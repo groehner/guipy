@@ -1,0 +1,2 @@
+inherited AFrameRtfdDiagram: TAFrameRtfdDiagram
+end
