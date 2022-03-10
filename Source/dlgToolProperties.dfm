@@ -7,6 +7,8 @@ inherited ToolProperties: TToolProperties
   ClientWidth = 444
   OnDestroy = FormDestroy
   OnShow = FormShow
+  ExplicitWidth = 450
+  ExplicitHeight = 527
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -311,7 +313,26 @@ inherited ToolProperties: TToolProperties
             Gutter.Font.Height = -11
             Gutter.Font.Name = 'Courier New'
             Gutter.Font.Style = []
-            Gutter.Width = 0
+            Gutter.Bands = <
+              item
+                Kind = gbkMarks
+                Visible = True
+                Width = 13
+              end
+              item
+                Kind = gbkLineNumbers
+              end
+              item
+                Kind = gbkFold
+              end
+              item
+                Kind = gbkTrackChanges
+              end
+              item
+                Kind = gbkMargin
+                Visible = True
+                Width = 3
+              end>
             HideSelection = True
             Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
             ScrollBars = ssNone
@@ -337,7 +358,26 @@ inherited ToolProperties: TToolProperties
             Gutter.Font.Height = -11
             Gutter.Font.Name = 'Courier New'
             Gutter.Font.Style = []
-            Gutter.Width = 0
+            Gutter.Bands = <
+              item
+                Kind = gbkMarks
+                Visible = True
+                Width = 13
+              end
+              item
+                Kind = gbkLineNumbers
+              end
+              item
+                Kind = gbkFold
+              end
+              item
+                Kind = gbkTrackChanges
+              end
+              item
+                Kind = gbkMargin
+                Visible = True
+                Width = 3
+              end>
             HideSelection = True
             Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
             ScrollBars = ssNone
@@ -363,7 +403,26 @@ inherited ToolProperties: TToolProperties
             Gutter.Font.Height = -11
             Gutter.Font.Name = 'Courier New'
             Gutter.Font.Style = []
-            Gutter.Width = 0
+            Gutter.Bands = <
+              item
+                Kind = gbkMarks
+                Visible = True
+                Width = 13
+              end
+              item
+                Kind = gbkLineNumbers
+              end
+              item
+                Kind = gbkFold
+              end
+              item
+                Kind = gbkTrackChanges
+              end
+              item
+                Kind = gbkMargin
+                Visible = True
+                Width = 3
+              end>
             HideSelection = True
             Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
             ScrollBars = ssNone
@@ -681,13 +740,13 @@ inherited ToolProperties: TToolProperties
         Name = 'Delete'
       end
       item
-        CollectionIndex = 87
+        CollectionIndex = 88
         CollectionName = 'Refresh'
         Disabled = False
         Name = 'Refresh'
       end
       item
-        CollectionIndex = 67
+        CollectionIndex = 68
         CollectionName = 'Plus'
         Disabled = False
         Name = 'Plus'

@@ -2,7 +2,7 @@ object FSequenceForm: TFSequenceForm
   Left = 0
   Top = 0
   BorderIcons = []
-  Caption = 'Sequencediagram'
+  Caption = 'Sequence diagram'
   ClientHeight = 324
   ClientWidth = 598
   Color = clBtnFace

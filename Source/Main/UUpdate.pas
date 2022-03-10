@@ -10,19 +10,19 @@ const
   Server   = 'https://guipy.de/download/';
   Inffile = Server + 'version.txt';
   {$IFDEF WIN32}
-  Zipfile = Server + 'guipy.zip';   // update portable version
+  Zipfile = 'GuiPy.zip';   // update portable version
   Setupfile = 'GuiPy-%s-x86-Setup.exe';   // update default version
-  Version = '1.0.0, 32 Bit';
+  Version = '1.0.1, 32 Bit';
   Bits = '32';
   {$ENDIF}
   {$IFDEF WIN64}
-  Zipfile = Server + 'guipy64.zip';
+  Zipfile = 'GuiPy64.zip';
   Setupfile = 'GuiPy-%s-x64-Setup.exe';
-  Version = '1.0.0, 64 Bit';
+  Version = '1.0.1, 64 Bit';
   Bits = '64';
   {$ENDIF}
 
-  Day   = 7;
+  Day   = 10;
   Month = 3;
   Year  = 2022;
 
@@ -113,7 +113,7 @@ begin
   Screen.Cursor:= crHourglass;
   try
     if TPyScripterSettings.IsPortable
-      then Filename:= 'GuiPy.zip'
+      then Filename:= ZipFile
       else Filename:= Format(Setupfile, [NewVersion]);
     Filepath:= TPath.Combine(LocalTempDir, Filename);
 

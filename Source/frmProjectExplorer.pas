@@ -327,7 +327,7 @@ begin
       with CommandsDataModule.dlgFileOpen do begin
         Title := _(SAddFilesToProject);
         FileName := '';
-        Filter := GetHighlightersFilter(CommandsDataModule.Highlighters) + _(SFilterAllFiles);
+        Filter := FConfiguration.GetFileFilters;
         Editor := GI_PyIDEServices.ActiveEditor;
         if Assigned(Editor) and (Editor.FileName <> '') and
           (ExtractFileDir(Editor.FileName) <> '')

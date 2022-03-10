@@ -2394,7 +2394,7 @@ begin
     // Give the time to the treads to terminate
     Sleep(200);
 
-    //  We need to do this here so that MRU and docking information are persisted
+    // We need to do this here so that MRU and docking information are persisted
     try
       SaveEnvironment;
     except
@@ -2956,7 +2956,7 @@ begin
   for i:= 0 to min(2, GI_EditorFactory.Count) - 1 do begin
     Editor:= GI_EditorFactory.GetEditor(i);
     Forms[i]:= Editor.Form as TEditorForm;
-    if Forms[i].Modified then
+    if Forms[i].Modified or Editor.FromTemplate then
       Forms[i].DoSave;
   end;
   NewTextDiff(Forms[0], Forms[1]);
@@ -4134,7 +4134,8 @@ begin
   with CommandsDataModule.dlgFileOpen do begin
     Title := _(SOpenFile);
     FileName := '';
-    // Filter := GetHighlightersFilter(CommandsDataModule.Highlighters) + _(SFilterAllFiles);
+    // doesn't support structogram, sequence diagram...
+    //Filter := GetHighlightersFilter(CommandsDataModule.Highlighters) + _(SFilterAllFiles);
     Filter:= FConfiguration.GetFileFilters;
     aFile := GetActiveFile;
     if Assigned(aFile) and (aFile.FileName <> '') and
@@ -4149,6 +4150,12 @@ begin
 
     Options := Options + [ofAllowMultiSelect];
     if Execute then begin
+      GuiPyOptions.Sourcepath:= ExtractFilePath(Filename);
+      if assigned(aFile) and (aFile.FileKind = fkTextDiff) then
+        if Files.Count >= 2
+          then (aFile.Form as TFTextDiff).Open(Files.Strings[0], Files.Strings[1])
+          else (aFile.Form as TFTextDiff).Open(Filename)
+      else
       for i := 0 to Files.Count - 1 do begin
         DoOpenFile(Files[i], '', TabControlIndex(ActiveTabControl));
         if (TPath.GetExtension(Files[i]) = '.pyw') then begin
@@ -4156,8 +4163,6 @@ begin
           DoOpenFile(pfmFile, '', TabControlIndex(ActiveTabControl));
         end;
       end;
-      if Files.Count > 0 then
-        GuiPyOptions.Sourcepath:= ExtractFilePath(Files[0]);
     end;
     Options := Options - [ofAllowMultiSelect];
   end;
@@ -4294,7 +4299,7 @@ begin
         if CommandsDataModule.IsHighlighterStored(Highlighters.Objects[i]) then
           AppStorage.WritePersistent('Highlighters\'+Highlighters[i],
             TPersistent(Highlighters.Objects[i]));
-      AppStorage.WritePersistent('Highlighters\Intepreter',
+      AppStorage.WritePersistent('Highlighters\Interpreter',
         PythonIIForm.SynEdit.Highlighter);
 
       AppStorage.DeleteSubTree('Interpreter Editor Options');
@@ -4432,8 +4437,8 @@ begin
   PyScripterVersion := AppStorage.ReadString('GuiPy Version', '1.0');
 
   // Change language
-  curLang:=  GetCurrentLanguage;
-  ChangeLanguage(AppStorage.ReadString('Language', curLang));
+  curLang:= AppStorage.ReadString('Language', GetCurrentLanguage);
+  ChangeLanguage(curLang);
 
   // Remove since it is now stored in PyScripter.local.ini
   if AppStorage.PathExists('Layouts') then AppStorage.DeleteSubTree('Layouts');
@@ -4484,11 +4489,11 @@ begin
         end;
       end;
       CommandsDataModule.ApplyEditorOptions;
-      if AppStorage.PathExists('Highlighters\Intepreter') then
+      if AppStorage.PathExists('Highlighters\Interpreter') then
       begin
         PythonIIForm.SynEdit.Highlighter.BeginUpdate;
         try
-          AppStorage.ReadPersistent('Highlighters\Intepreter',
+          AppStorage.ReadPersistent('Highlighters\Interpreter',
             PythonIIForm.SynEdit.Highlighter);
         finally
           PythonIIForm.SynEdit.Highlighter.EndUpdate;
@@ -4639,11 +4644,11 @@ begin
         end;
       end;
       CommandsDataModule.ApplyEditorOptions;
-      if MachineStorage.PathExists('Highlighters\Intepreter') then
+      if MachineStorage.PathExists('Highlighters\Interpreter') then
       begin
         PythonIIForm.SynEdit.Highlighter.BeginUpdate;
         try
-          MachineStorage.ReadPersistent('Highlighters\Intepreter',
+          MachineStorage.ReadPersistent('Highlighters\Interpreter',
             PythonIIForm.SynEdit.Highlighter);
         finally
           PythonIIForm.SynEdit.Highlighter.EndUpdate;

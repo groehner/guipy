@@ -6,17 +6,17 @@ interface
 Const
 
   // File Filters
-  sPythonFileFilter = 'Python Files (*.py;*.pyw;*.pyi)|*.py;*.pyw;*.pyi';
-  sCythonFileFilter = 'Cython Files (*.pyx*.pxd;*.pxi)|*.pyx;*.pxd;*.pxi';
-  sHTMLFileFilter = 'HTML Documents (*.htm;*.html)|*.htm;*.html';
-  sXMLFileFilter = 'XML Files (*.xml;*.xsd;*.xsl;*.xslt;*.dtd)|*.xml;*.xsd;*.xsl;*.xslt;*.dtd';
+  sPythonFileFilter = 'Python (*.py;*.pyw;*.pyi)|*.py;*.pyw;*.pyi';
+  sCythonFileFilter = 'Cython (*.pyx*.pxd;*.pxi)|*.pyx;*.pxd;*.pxi';
+  sHTMLFileFilter = 'HTML (*.htm;*.html)|*.htm;*.html';
+  sXMLFileFilter = 'XML (*.xml;*.xsd;*.xsl;*.xslt;*.dtd)|*.xml;*.xsd;*.xsl;*.xslt;*.dtd';
   sCSSFileFilter = 'Cascading Stylesheets (*.css)|*.css';
-  sCPPFileFilter = 'C/C++ Files (*.c;*.cpp;*.cc;*.h;*.hpp;*.hh;*.cxx;*.hxx;*.cu)|*.c;*.cpp;*.cc;*.h;*.hpp;*.hh;*.cxx;*.hxx;*.cu';
-  sYAMLFileFilter = 'YAML files (*.yaml)|*.yaml';
-  sJSFileFilter = 'Javascript Files (*.js)|*.js';
-  sPHPFileFilter = 'PHP Files (*.php;*.php3;*.phtml;*.inc)|*.php;*.php3;*.phtml;*.inc';
-  sJSONFileFilter = 'JSON Files (*.json;*.ipynb)|*.json;*.ipynb';
-  sGeneralFileFilter = 'Text Files(*.txt,*.*)|*.txt;*.*';
+  sCPPFileFilter = 'C/C++ (*.c;*.cpp;*.cc;*.h;*.hpp;*.hh;*.cxx;*.hxx;*.cu)|*.c;*.cpp;*.cc;*.h;*.hpp;*.hh;*.cxx;*.hxx;*.cu';
+  sYAMLFileFilter = 'YAML (*.yaml)|*.yaml';
+  sJSFileFilter = 'Javascript (*.js)|*.js';
+  sPHPFileFilter = 'PHP (*.php;*.php3;*.phtml;*.inc)|*.php;*.php3;*.phtml;*.inc';
+  sJSONFileFilter = 'JSON (*.json;*.ipynb)|*.json;*.ipynb';
+  sGeneralFileFilter = 'Text (*.txt,*.*)|*.txt;*.*';
 
   sPythonFormFileFilter = 'Python form (*.pfm)|*.pfm';
   sUMLFileFilter = 'UML (*.puml)|*.puml';

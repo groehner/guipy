@@ -8,6 +8,8 @@ inherited CustomizeParams: TCustomizeParams
   ShowHint = True
   OnDestroy = FormDestroy
   OnShow = FormShow
+  ExplicitWidth = 563
+  ExplicitHeight = 372
   PixelsPerInch = 96
   TextHeight = 13
   object Panel: TPanel
@@ -144,7 +146,26 @@ inherited CustomizeParams: TCustomizeParams
         Gutter.Font.Height = -11
         Gutter.Font.Name = 'Courier New'
         Gutter.Font.Style = []
-        Gutter.Width = 0
+        Gutter.Bands = <
+          item
+            Kind = gbkMarks
+            Visible = True
+            Width = 13
+          end
+          item
+            Kind = gbkLineNumbers
+          end
+          item
+            Kind = gbkFold
+          end
+          item
+            Kind = gbkTrackChanges
+          end
+          item
+            Kind = gbkMargin
+            Visible = True
+            Width = 3
+          end>
         HideSelection = True
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         ScrollBars = ssNone
@@ -229,31 +250,31 @@ inherited CustomizeParams: TCustomizeParams
     DisabledSuffix = '_Disabled'
     Images = <
       item
-        CollectionIndex = 14
+        CollectionIndex = 21
         CollectionName = 'Delete'
         Disabled = False
         Name = 'Delete'
       end
       item
-        CollectionIndex = 39
+        CollectionIndex = 88
         CollectionName = 'Refresh'
         Disabled = False
         Name = 'Refresh'
       end
       item
-        CollectionIndex = 47
+        CollectionIndex = 129
         CollectionName = 'Up'
         Disabled = False
         Name = 'Up'
       end
       item
-        CollectionIndex = 48
+        CollectionIndex = 22
         CollectionName = 'Down'
         Disabled = False
         Name = 'Down'
       end
       item
-        CollectionIndex = 49
+        CollectionIndex = 68
         CollectionName = 'Plus'
         Disabled = False
         Name = 'Plus'

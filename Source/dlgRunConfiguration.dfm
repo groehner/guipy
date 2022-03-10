@@ -4,6 +4,8 @@ inherited RunConfigurationForm: TRunConfigurationForm
   ClientHeight = 436
   ClientWidth = 399
   OnDestroy = FormDestroy
+  ExplicitWidth = 405
+  ExplicitHeight = 465
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -126,7 +128,26 @@ inherited RunConfigurationForm: TRunConfigurationForm
         Gutter.Font.Height = -11
         Gutter.Font.Name = 'Courier New'
         Gutter.Font.Style = []
-        Gutter.Width = 0
+        Gutter.Bands = <
+          item
+            Kind = gbkMarks
+            Visible = True
+            Width = 13
+          end
+          item
+            Kind = gbkLineNumbers
+          end
+          item
+            Kind = gbkFold
+          end
+          item
+            Kind = gbkTrackChanges
+          end
+          item
+            Kind = gbkMargin
+            Visible = True
+            Width = 3
+          end>
         HideSelection = True
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         ScrollBars = ssNone
@@ -151,7 +172,26 @@ inherited RunConfigurationForm: TRunConfigurationForm
         Gutter.Font.Height = -11
         Gutter.Font.Name = 'Courier New'
         Gutter.Font.Style = []
-        Gutter.Width = 0
+        Gutter.Bands = <
+          item
+            Kind = gbkMarks
+            Visible = True
+            Width = 13
+          end
+          item
+            Kind = gbkLineNumbers
+          end
+          item
+            Kind = gbkFold
+          end
+          item
+            Kind = gbkTrackChanges
+          end
+          item
+            Kind = gbkMargin
+            Visible = True
+            Width = 3
+          end>
         HideSelection = True
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         ScrollBars = ssNone
@@ -176,7 +216,26 @@ inherited RunConfigurationForm: TRunConfigurationForm
         Gutter.Font.Height = -11
         Gutter.Font.Name = 'Courier New'
         Gutter.Font.Style = []
-        Gutter.Width = 0
+        Gutter.Bands = <
+          item
+            Kind = gbkMarks
+            Visible = True
+            Width = 13
+          end
+          item
+            Kind = gbkLineNumbers
+          end
+          item
+            Kind = gbkFold
+          end
+          item
+            Kind = gbkTrackChanges
+          end
+          item
+            Kind = gbkMargin
+            Visible = True
+            Width = 3
+          end>
         HideSelection = True
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         ScrollBars = ssNone
@@ -324,7 +383,26 @@ inherited RunConfigurationForm: TRunConfigurationForm
         Gutter.Font.Height = -11
         Gutter.Font.Name = 'Courier New'
         Gutter.Font.Style = []
-        Gutter.Width = 0
+        Gutter.Bands = <
+          item
+            Kind = gbkMarks
+            Visible = True
+            Width = 13
+          end
+          item
+            Kind = gbkLineNumbers
+          end
+          item
+            Kind = gbkFold
+          end
+          item
+            Kind = gbkTrackChanges
+          end
+          item
+            Kind = gbkMargin
+            Visible = True
+            Width = 3
+          end>
         HideSelection = True
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         ScrollBars = ssNone
@@ -401,24 +479,24 @@ inherited RunConfigurationForm: TRunConfigurationForm
     DisabledSuffix = '_Disabled'
     Images = <
       item
-        CollectionIndex = 1
+        CollectionIndex = 38
         CollectionName = 'FileOpen'
         Disabled = False
         Name = 'FileOpen'
       end
       item
-        CollectionIndex = 45
+        CollectionIndex = 63
         CollectionName = 'OpenFolder'
         Disabled = False
         Name = 'OpenFolder'
       end
       item
-        CollectionIndex = 161
+        CollectionIndex = 23
         CollectionName = 'Download'
         Disabled = False
         Name = 'Download'
       end>
-    ImageCollection = CommandsDataModule.icSvgImages
+    ImageCollection = CommandsDataModule.icSVGImages
     PreserveItems = True
     Left = 24
     Top = 384

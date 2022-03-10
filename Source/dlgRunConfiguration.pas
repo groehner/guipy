@@ -79,8 +79,7 @@ implementation
 uses
   Math, dlgToolProperties, dmCommands, uHighlighterProcs, cProjectClasses,
   StringResources, JvGnugettext, Vcl.Themes, Vcl.FileCtrl,
-  dlgRemoteFile,
-  cSSHSupport;
+  dlgRemoteFile, cSSHSupport, UConfiguration;
 
 {$R *.dfm}
 
@@ -135,7 +134,7 @@ procedure TRunConfigurationForm.btnFileNameClick(Sender: TObject);
 begin
   with CommandsDataModule.dlgFileOpen do begin
     Title := _(SSelectPythonScript);
-    Filter := GetHighlightersFilter(CommandsDataModule.Highlighters) + _(SFilterAllFiles);
+    Filter := FConfiguration.GetFileFilters;
     FileName := '';
     if ActiveProject.FileName <> '' then
       InitialDir := ExtractFileDir(ActiveProject.FileName);

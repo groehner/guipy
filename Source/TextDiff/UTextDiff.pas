@@ -105,8 +105,6 @@ type
 
     procedure Undo;
     procedure Redo;
-    procedure Open(const Filename: string); overload;
-    procedure Open(const Filename1, Filename2: string); overload;
     procedure DoSaveBoth;
     procedure ShowFilenames;
     procedure SetFilesCompared(Value: boolean);
@@ -136,6 +134,8 @@ type
     Nr: integer;
     FilesCompared: boolean;
     procedure New(F1, F2: TEditorForm);
+    procedure Open(const Filename: string); overload;
+    procedure Open(const Filename1, Filename2: string); overload;
     procedure ShowDiffState;
     procedure Save(MitBackup: boolean);
     procedure SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
@@ -182,6 +182,7 @@ begin
     Gutter.ShowLineNumbers:= true;
     Gutter.DigitCount:= 0;
     Gutter.Autosize:= true;
+    Highlighter:= CommandsDataModule.GetHighlighterForFile('.py');
   end;
   CodeEdit1.Assign(EditorOptions);
   CodeEdit2:= TSynEditExDiff.create(self);
@@ -198,6 +199,7 @@ begin
     Gutter.ShowLineNumbers:= true;
     Gutter.DigitCount:= 0;
     Gutter.Autosize:= true;
+    Highlighter:= CommandsDataModule.GetHighlighterForFile('.py');
   end;
   CodeEdit2.Assign(EditorOptions);
   Nr:= 1;
@@ -235,6 +237,7 @@ begin
   inherited;
   GI_SearchCmds := Self;
   fActiveSynEdit := Sender as TSynEdit;
+  Nr:= (fActiveSynEdit as TSynEditExDiff).Nr;
   TBCopyBlockLeft.Hint:= _('Copy block left');
   TBCopyBlockRight.Hint:= _('Copy block right');
   EditorSearchOptions.TextDiffIsSearchTarget := True;
@@ -736,7 +739,7 @@ end;
 
 procedure TFTextDiff.MICloseClick(Sender: TObject);
 begin
-  Close;
+  (fFile as IFileCommands).ExecClose;
 end;
 
 procedure TFTextDiff.Undo;
@@ -970,9 +973,13 @@ procedure TFTextDiff.ChooseFiles(F1: TEditorForm);
 
 begin
   with CommandsDataModule.dlgFileOpen do begin
-    if assigned(F1)
-      then InitialDir:= ExtractFilePath(F1.Pathname)
-      else InitDir;
+    if assigned(F1)then begin
+      InitialDir:= ExtractFilePath(F1.Pathname);
+      Nr:= 2;
+    end else begin
+      InitDir;
+      Nr:= 1;
+    end;
     Filename:= '';
     TempFilter:= Filter;
     Filter:= 'Python (*.py;*.pyw)|*.py;*.pyw|HTML (*.html)|*.html;*.htm|Text (*.txt)|*.txt|' + _(LNGAll) + ' (*.*)|*.*';
@@ -982,9 +989,6 @@ begin
     try
       if Execute then begin
         GuiPyOptions.Sourcepath:= ExtractFilePath(Filename);
-        if assigned(F1)
-          then Nr:= 2
-          else Nr:= 1;
         if Files.Count >= 2
           then Open(Files.Strings[0], Files.Strings[1])
           else Open(Filename);

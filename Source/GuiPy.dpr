@@ -1,7 +1,8 @@
 {-----------------------------------------------------------------------------
- Program:   PyScripter
- Author:    Kiriakos Vlahos
- Date:      19-Oct-2005
+ Program:   GuiPy
+ Author:    Gerhard Röhner
+            Kiriakos Vlahos
+ Date:      2022.03.07
  Purpose:   Python IDE written with Python for Delphi
  History:
 -----------------------------------------------------------------------------}

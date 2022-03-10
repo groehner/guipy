@@ -1806,23 +1806,13 @@ object FConfiguration: TFConfiguration
             Caption = 'Available Themes'
           end
           object lbColorThemes: TListBox
-            Left = 19
+            Left = 27
             Top = 22
             Width = 166
-            Height = 307
+            Height = 343
             ItemHeight = 13
             TabOrder = 0
             OnClick = lbColorThemesClick
-            OnDblClick = btnApplyThemeClick
-          end
-          object btnApplyTheme: TButton
-            Left = 31
-            Top = 335
-            Width = 140
-            Height = 25
-            Caption = 'Apply Theme'
-            TabOrder = 1
-            OnClick = btnApplyThemeClick
           end
           object SynThemeSample: TSynEdit
             Left = 199
@@ -1836,7 +1826,7 @@ object FConfiguration: TFConfiguration
             Font.Name = 'Consolas'
             Font.Style = []
             Font.Quality = fqClearTypeNatural
-            TabOrder = 2
+            TabOrder = 1
             UseCodeFolding = False
             Gutter.Font.Charset = DEFAULT_CHARSET
             Gutter.Font.Color = clWindowText
@@ -2492,7 +2482,7 @@ object FConfiguration: TFConfiguration
             Width = 140
             Height = 21
             TabOrder = 4
-            Text = 'repeat for'
+            Text = 'for item in list'
           end
           object EYes: TEdit
             Left = 90
@@ -3364,35 +3354,35 @@ object FConfiguration: TFConfiguration
             OnClick = SBTempSelectClick
           end
           object LNoOfRecentFiles: TLabel
-            Left = 335
+            Left = 355
             Top = 46
             Width = 106
             Height = 13
             Caption = 'Number of recent files'
           end
           object LDaysBetweenUpdateChecks: TLabel
-            Left = 335
+            Left = 355
             Top = 16
             Width = 141
             Height = 13
             Caption = 'Days between update checks'
           end
           object LDockAnimationInterval: TLabel
-            Left = 335
+            Left = 355
             Top = 76
             Width = 111
             Height = 13
             Caption = 'Dock animation interval'
           end
           object LDockAnimationMoveWidth: TLabel
-            Left = 335
+            Left = 355
             Top = 106
             Width = 130
             Height = 13
             Caption = 'Dock animation move width'
           end
           object LFileTemplateForNewPythonScripts: TLabel
-            Left = 290
+            Left = 310
             Top = 141
             Width = 172
             Height = 13
@@ -3415,7 +3405,7 @@ object FConfiguration: TFConfiguration
             OnClick = BTempFolderClick
           end
           object ENoOfRecentFiles: TEdit
-            Left = 290
+            Left = 310
             Top = 43
             Width = 24
             Height = 21
@@ -3423,7 +3413,7 @@ object FConfiguration: TFConfiguration
             Text = '9'
           end
           object UDNoOfRecentFiles: TUpDown
-            Left = 314
+            Left = 334
             Top = 43
             Width = 16
             Height = 21
@@ -3481,7 +3471,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 9
           end
           object EDaysBetweenChecks: TEdit
-            Left = 290
+            Left = 310
             Top = 13
             Width = 24
             Height = 21
@@ -3489,7 +3479,7 @@ object FConfiguration: TFConfiguration
             Text = '0'
           end
           object UDDaysBetweenChecks: TUpDown
-            Left = 314
+            Left = 334
             Top = 13
             Width = 16
             Height = 21
@@ -3497,7 +3487,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 11
           end
           object EDockAnimationInterval: TEdit
-            Left = 290
+            Left = 310
             Top = 73
             Width = 24
             Height = 21
@@ -3505,7 +3495,7 @@ object FConfiguration: TFConfiguration
             Text = '0'
           end
           object UDDockAnimationInterval: TUpDown
-            Left = 314
+            Left = 334
             Top = 73
             Width = 16
             Height = 21
@@ -3513,7 +3503,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 13
           end
           object UDDockAnimationMoveWidth: TUpDown
-            Left = 314
+            Left = 334
             Top = 103
             Width = 16
             Height = 21
@@ -3521,7 +3511,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 14
           end
           object EDockAnimationMoveWidth: TEdit
-            Left = 290
+            Left = 310
             Top = 103
             Width = 24
             Height = 21
@@ -3529,7 +3519,7 @@ object FConfiguration: TFConfiguration
             Text = '0'
           end
           object RGEditorTabPosition: TRadioGroup
-            Left = 290
+            Left = 310
             Top = 204
             Width = 133
             Height = 62
@@ -3540,7 +3530,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 16
           end
           object EFileTemplateForNewScripts: TEdit
-            Left = 290
+            Left = 310
             Top = 160
             Width = 217
             Height = 21
@@ -3580,7 +3570,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 21
           end
           object RGFileChangeNotification: TRadioGroup
-            Left = 449
+            Left = 456
             Top = 204
             Width = 185
             Height = 85
@@ -3604,7 +3594,7 @@ object FConfiguration: TFConfiguration
             Top = 16
             Width = 268
             Height = 17
-            Caption = 'Save files automatically'
+            Caption = 'Save files automatically when closing'
             TabOrder = 24
           end
         end

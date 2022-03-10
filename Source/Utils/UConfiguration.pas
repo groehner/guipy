@@ -60,6 +60,9 @@ type
 
   TGuiPyOptions = class(TInterfacedPersistent)
   private
+    // Color themes
+    fColorTheme: string;
+
     // GUI designer
     fNameFromText: boolean;
     fGuiDesignerHints: Boolean;
@@ -185,6 +188,8 @@ type
     constructor create;
     destructor Destroy; override;
   published
+    // Color themes
+    property ColorTheme: string read fColorTheme write fColorTheme;
     // GUI designer
     property NameFromText : boolean read fNameFromText
       write FNameFromText default true;
@@ -595,7 +600,6 @@ type
     SpTBXLabel1: TLabel;
     SpTBXLabel2: TLabel;
     lbColorThemes: TListBox;
-    btnApplyTheme: TButton;
     SynThemeSample: TSynEdit;
     PCodeTemplates: TTabSheet;
     GroupBox: TGroupBox;
@@ -987,7 +991,6 @@ type
     procedure cbElementBackgroundSelectedColorChanged(Sender: TObject);
     procedure cbxElementBoldClick(Sender: TObject);
     procedure lbColorThemesClick(Sender: TObject);
-    procedure btnApplyThemeClick(Sender: TObject);
     procedure btnUpdateKeyClick(Sender: TObject);
     procedure btnAddKeyClick(Sender: TObject);
     procedure btnRemKeyClick(Sender: TObject);
@@ -1134,6 +1137,7 @@ type
     procedure StyleSelectorFormShow;
     procedure FillVclStylesList;
     procedure SetStyle(StyleName: string);
+    procedure ApplyColorTheme;
 
     procedure ModelToView;
     procedure ViewToModel;
@@ -1537,7 +1541,7 @@ end;
 procedure TFConfiguration.Changed;
 begin
   ShowAlways:= true;
-  CommandsDataModule.dlgFileOpen.Filter:= GetFileFilters;
+  CommandsDataModule.dlgFileOpen.Filter:= getFileFilters;
 
   // tab Editor
   IndentWidth:= EditorOptions.TabWidth;
@@ -1712,6 +1716,10 @@ begin
   end;
 
   with GuiPyOptions do begin
+    // Color themes
+    lbColorThemes.ItemIndex:= lbColorThemes.Items.IndexOf(fColorTheme);
+    lbColorThemesClick(Self);
+
     // GUI design
     CBNameFromText.Checked:= NameFromText;
     CBGuiDesignerHints.Checked:= GuiDesignerHints;
@@ -2000,6 +2008,7 @@ begin
 
     // tab general options
     AutoCheckForUpdates:= CBAutoCheckForUpdates.Checked;
+    SaveFilesAutomatically:= CBSaveFilesAutomatically.Checked;
     RestoreOpenFiles:= CBRestoreOpenFiles.Checked;
     RestoreOpenProject:= CBRestoreOpenProject.Checked;
     ShowTabCloseButton:= CBShowTabCloseButton.Checked;
@@ -2030,6 +2039,10 @@ begin
   end;
 
   with GuiPyOptions do begin
+    // Color themes
+    if lbColorThemes.ItemIndex > -1 then
+      fColorTheme:= lbColorThemes.Items[lbColorThemes.ItemIndex];
+
     // tab GUI designer
     NameFromText:= CBNameFromText.Checked;
     GuiDesignerHints:= CBGuiDesignerHints.Checked;
@@ -2126,6 +2139,7 @@ begin
     TempDir:= ExtendPath(ETempFolder);
   end;
   LanguageOptionsToModel;
+  ApplyColorTheme;
 
   // tab languages
   LanguageNr:= RGLanguages.ItemIndex;
@@ -2396,10 +2410,12 @@ begin
     '|' + _('Form') + ' (*.pfm)|*.pfm' +
     '|UML (*.puml)|*.puml' +
     '|' + _('Structogram') + ' (*.psg)|*.psg' +
-    '|' + _('Sequencediagram') + ' (*.psd)|*.psd' +
+    '|' + _('Sequence diagram') + ' (*.psd)|*.psd' +
+  	'|Cython (*.pyx*.pxd;*.pxi)|*.pyx;*.pxd;*.pxi' +
     '|HTML (*.html)|*.html;*.htm' +
     '|XML (*.xml)|*.xml|' + _('Text') + ' (*.txt)|*.txt' +
-    '|' + _('All files') + ' (*.*)|*.*';
+	  '|PHP (*.php;*.php3;*.phtml;*.inc)|*.php;*.php3;*.phtml;*.inc' +
+    '|' + _('All') + ' (*.*)|*.*';
 end;
 
 procedure TFConfiguration.SetElevationRequiredState(aControl: TWinControl);
@@ -3064,6 +3080,10 @@ procedure TFConfiguration.UpdateHighlighters;
 begin
   for i:= 0 to fHighlighters.Count-1 do
     CommandsDataModule.SynEditOptionsDialogSetHighlighter(self, i, fHighlighters[i]);
+
+   {if assigned(fSetHighlighterEvent) then
+      for i := 0 to fHighlighters.Count-1 do
+         fSetHighlighterEvent(self, loop, fHighlighters[i]);}
 end;
 
 procedure TFConfiguration.cbHighlightersChange(Sender: TObject);
@@ -3231,8 +3251,9 @@ Var
 begin
   if lbColorThemes.ItemIndex >= 0 then
   begin
+    GuiPyOptions.fColorTheme:= lbColorThemes.Items[lbColorThemes.ItemIndex];
     FileName := IncludeTrailingPathDelimiter(HighlighterFileDir) +
-                   lbColorThemes.Items[lbColorThemes.ItemIndex]+ '.ini';
+                  GuiPyOptions.fColorTheme + '.ini';
     AppStorage := TJvAppIniFileStorage.Create(nil);
     try
       AppStorage.FlushOnDestroy := False;
@@ -3251,16 +3272,14 @@ begin
   end;
 end;
 
-procedure TFConfiguration.btnApplyThemeClick(Sender: TObject);
+procedure TFConfiguration.ApplyColorTheme;
 Var
   i : integer;
   AppStorage : TJvAppIniFileStorage;
   FileName : string;
 begin
-  if lbColorThemes.ItemIndex >= 0 then
-  begin
-    FileName := IncludeTrailingPathDelimiter(HighlighterFileDir) +
-                   lbColorThemes.Items[lbColorThemes.ItemIndex]+ '.ini';
+  FileName := TPath.Combine(HighlighterFileDir, GuiPyOptions.ColorTheme + '.ini');
+  if FileExists(Filename) then begin
     AppStorage := TJvAppIniFileStorage.Create(nil);
     try
       AppStorage.FlushOnDestroy := False;
@@ -4801,6 +4820,7 @@ end;
 constructor TGuiPyOptions.Create;
 begin
   inherited;
+  fColorTheme:= 'Obsidian';
   // GUI designer
   fNameFromText:= true;
   fGuiDesignerHints:= true;
