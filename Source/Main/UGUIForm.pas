@@ -221,7 +221,7 @@ end;
 
 procedure TFGUIForm.FormClose(Sender: TObject; var aAction: TCloseAction);
 begin
-  if Modified and PyIDEOptions.SaveFilesAutomatically then
+  if PyIDEOptions.SaveFilesAutomatically then
     Save(PyIDEOptions.CreateBackupFiles);
   if Assigned(Partner) then begin
     Partner.Partner:= nil;
@@ -248,7 +248,6 @@ begin
   FreeAndNil(FMotion);
   FreeAndNil(FMouseWheel);
   FreeAndNil(FVisibility);
-  inherited;
 end;
 
 function TFGUIForm.getBackground: TColor;

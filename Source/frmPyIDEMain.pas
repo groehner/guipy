@@ -1675,7 +1675,7 @@ Var
 begin
   Result := nil;
   tbiRecentFileList.MRURemove(AFileName);
-  IsRemote :=  TSSHFileName.Parse(AFileName, Server, FName);
+  IsRemote := TSSHFileName.Parse(AFileName, Server, FName);
   GuiFormPath:= '';
   if TPath.GetExtension(aFileName) = '.pfm' then begin
     GuiFormPath:= aFileName;
@@ -1702,13 +1702,10 @@ begin
     Result := GI_FileFactory.GetFileByName(AFileName);
     if Assigned(Result) then begin
       Result.Activate;
-      if not AsEditor and (GuiFormPath <> '') then  // not AsEditor for Sequenceform as Text
+      if GuiFormPath <> '' then
         FGUIDesigner.Open(GuiFormPath);
-      Exit;
-    end
-    else if not FileExists(AFileName) then begin
-      WriteStatusMsg(_(Format('File %s does not exist', [AFileName])));
-      Exit;
+      if not AsEditor then  // not AsEditor for Sequenceform as Text
+        exit;
     end;
   end;
   // create a new editor, add it to the editor list, open the file
@@ -1892,7 +1889,7 @@ begin
     DoOpen(Pathname);
   end else begin
     s:= Format(_(LNGFileAlreadyExists), [Pathname]);
-    if FileExists(Pathname) then  begin
+    if FileExists(Pathname) then begin
        mr:= StyledMessageDlg(s, mtConfirmation, mbYesNoCancel, 0);
        case mr of
          mrYes: System.IOUtils.TFile.Delete(Pathname);
@@ -2790,12 +2787,11 @@ begin
     if assigned(aEditor) then
       NewName:= aEditor.FileName
     else
-      CommandsDataModule.GetSaveFileName(NewName,
-        CommandsDataModule.SynPythonSyn, 'py', false);
+      NewName:= getFilename('.py');
     if GI_EditorFactory <> nil then
       aEditor:= GI_EditorFactory.GetEditorByName(NewName);
     if not Assigned(aEditor) then begin
-      PyIDEMainForm.DoOpenAsEditor(NewName);
+      DoOpenAsEditor(NewName);
       aEditor:= GI_PyIDEServices.getActiveEditor;
     end;
     EditForm:= TEditorForm(aEditor.Form);

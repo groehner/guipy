@@ -64,6 +64,8 @@ inherited NewFileDialog: TNewFileDialog
           TreeOptions.PaintOptions = [toHotTrack, toShowButtons, toShowDropmark, toShowRoot, toShowTreeLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
           OnChange = tvCategoriesChange
           OnGetText = tvCategoriesGetText
+          Touch.InteractiveGestures = [igPan, igPressAndTap]
+          Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
           Columns = <>
         end
       end
@@ -115,15 +117,6 @@ inherited NewFileDialog: TNewFileDialog
       Enabled = False
       TabOrder = 2
       OnClick = btnCreateClick
-    end
-    object btnManageTemplates: TButton
-      Left = 13
-      Top = 263
-      Width = 166
-      Height = 25
-      Caption = 'Manage File Templates...'
-      TabOrder = 3
-      OnClick = btnManageTemplatesClick
     end
   end
 end

@@ -32,14 +32,13 @@ type
     procedure LBConnectionsDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
     procedure LBConnectionsDblClick(Sender: TObject);
+    procedure LBConnectionsClick(Sender: TObject);
   private
     isTurned: boolean;
-    SL: TStringList;
     ILSequenceDiagram: TImageList;
     procedure ChangeStyle;
   public
     LNGClose: string;
-    destructor Destroy; override;
     procedure init(IsConnecting: boolean; conn: TConnection; SelectedControls: integer);
     function getConnectionAttributes: TConnectionAttributes;
   end;
@@ -54,16 +53,8 @@ procedure TFConnectForm.FormCreate(Sender: TObject);
 begin
   inherited;
   LBConnections.ItemHeight:= LBConnections.Height div LBConnections.Items.Count;
-  SL:= TStringList.create;
-  SL.assign(LBConnections.Items);
   ILSequenceDiagram:= ILSequenceDiagramLight;
   ChangeStyle;
-end;
-
-destructor TFConnectForm.Destroy;
-begin
-  inherited;
-  FreeAndNil(SL);
 end;
 
 procedure TFConnectForm.FormShow(Sender: TObject);
@@ -75,6 +66,7 @@ begin
   if Left + Width > Application.MainForm.Width then
     Left:= Application.MainForm.Width - Width - 25;
   ShowScrollBar(LBConnections.Handle, SB_VERT, false);
+  ERelation.SetFocus;
 end;
 
 procedure TFConnectForm.LBConnectionsDrawItem(Control: TWinControl;
@@ -93,6 +85,11 @@ begin
   FreeAndNil(Bitmap);
 end;
 
+procedure TFConnectForm.LBConnectionsClick(Sender: TObject);
+begin
+  ERelation.SetFocus;
+end;
+
 procedure TFConnectForm.LBConnectionsDblClick(Sender: TObject);
 begin
   ModalResult:= mrOK;
@@ -100,10 +97,6 @@ end;
 
 procedure TFConnectForm.init(IsConnecting: Boolean; conn: TConnection; SelectedControls: integer);
 begin
-  if LBConnections.Items.Count <= 3 then begin
-    LBConnections.Items[3]:= SL.Strings[3];
-    LBConnections.Items[4]:= SL.Strings[4];
-  end;
   if IsConnecting then begin
     BTurn.Enabled:= false;
     BDelete.Enabled:= false;

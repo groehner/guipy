@@ -184,7 +184,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 661
         Height = 427
-        ActivePage = PStructogram
+        ActivePage = PAssociations
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -460,8 +460,8 @@ object FConfiguration: TFConfiguration
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 72
-                Height = 8
+                Width = 179
+                Height = 25
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -471,6 +471,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 72
+                ExplicitHeight = 8
               end
             end
             object cbGutterColor: TSpTBXColorEdit
@@ -706,8 +708,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 128
-                Height = 16
+                Width = 188
+                Height = 28
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Courier New 10pt'
@@ -717,6 +719,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Courier New'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 128
+                ExplicitHeight = 16
               end
             end
             object btnFont: TButton
@@ -5373,8 +5377,8 @@ object FConfiguration: TFConfiguration
             TabOrder = 2
           end
           object CBAssociationUml: TCheckBox
-            Left = 210
-            Top = 40
+            Left = 204
+            Top = 39
             Width = 60
             Height = 17
             Caption = '.puml'

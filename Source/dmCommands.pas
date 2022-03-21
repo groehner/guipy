@@ -334,7 +334,6 @@ type
     procedure actHelpEditorShortcutsExecute(Sender: TObject);
     procedure actInterpreterEditorOptionsExecute(Sender: TObject);
     procedure actEditToggleCommentExecute(Sender: TObject);
-    procedure actFileTemplatesExecute(Sender: TObject);
     procedure actEditFileEncodingExecute(Sender: TObject);
     procedure actFileReloadExecute(Sender: TObject);
     procedure actExportShortCutsExecute(Sender: TObject);
@@ -2684,17 +2683,6 @@ begin
       CodeTemplatesCompletion.AutoCompleteList.Text := CodeTemplateText;
     Free;
   end;
-end;
-
-procedure TCommandsDataModule.actFileTemplatesExecute(Sender: TObject);
-begin
-{
-  with TFileTemplatesDialog.Create(Self) do begin
-    SetItems;
-    if ShowModal = mrOK then
-      GetItems;
-    Free;
-  end;}
 end;
 
 procedure TCommandsDataModule.actConfigureToolsExecute(Sender: TObject);

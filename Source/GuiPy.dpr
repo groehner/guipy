@@ -122,7 +122,7 @@ uses
   JvDockTree in 'JvDockTree.pas',
   JvDockVSNetStyleSpTBX in 'JvDockVSNetStyleSpTBX.pas',
   frmFile in 'frmFile.pas' {FileForm},
-  UConnectForm in 'SequenceDiagram\UConnectForm.pas' {FConnectForm},
+  UConnectForm in 'SequenceDiagram\UConnectForm.pas',
   ULifeLine in 'SequenceDiagram\ULifeLine.pas',
   USequenceForm in 'SequenceDiagram\USequenceForm.pas' {FSequenceForm},
   USequencePanel in 'SequenceDiagram\USequencePanel.pas',

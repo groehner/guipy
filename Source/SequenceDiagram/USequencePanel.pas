@@ -1005,12 +1005,10 @@ begin
         pos:= i;
       inc(i);
     end;
-
     case SelectedControls of
       1: ConnectObjectsAt(Src, Src, Attributes, pos);
       2: ConnectObjectsAt(Src, Dest, Attributes, pos);
     end;
-
     FreeAndNil(Attributes);
   end;
   ClearSelection(false);

@@ -19,7 +19,6 @@ type
     Label2: TLabel;
     btnCancel: TButton;
     btnCreate: TButton;
-    btnManageTemplates: TButton;
     Splitter1: TSplitter;
     lvTemplates: TListview;
     procedure FormCreate(Sender: TObject);
@@ -28,7 +27,6 @@ type
       Column: TColumnIndex; TextType: TVSTTextType; var CellText: string);
     procedure FormShow(Sender: TObject);
     procedure tvCategoriesChange(Sender: TBaseVirtualTree; Node: PVirtualNode);
-    procedure btnManageTemplatesClick(Sender: TObject);
     procedure btnCreateClick(Sender: TObject);
     procedure lvTemplatesSelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
@@ -55,12 +53,6 @@ begin
     SelectedTemplate := TFileTemplate(lvTemplates.Selected.Data);
     ModalResult := mrOK;
   end;
-end;
-
-procedure TNewFileDialog.btnManageTemplatesClick(Sender: TObject);
-begin
-  CommandsDataModule.actFileTemplatesExecute(Self);
-  SetUp;
 end;
 
 procedure TNewFileDialog.FormCreate(Sender: TObject);

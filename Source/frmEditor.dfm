@@ -140,8 +140,6 @@ object EditorForm: TEditorForm
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
           OnPaintTransient = SynEditPaintTransient
-          ExplicitLeft = 24
-          ExplicitTop = 1
           RemovedKeystrokes = <
             item
               Command = ecUp

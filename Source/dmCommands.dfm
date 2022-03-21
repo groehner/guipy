@@ -2668,7 +2668,6 @@ object CommandsDataModule: TCommandsDataModule
       Caption = '&File Templates...'
       HelpContext = 640
       Hint = 'Add/Remove file templates'
-      OnExecute = actFileTemplatesExecute
     end
     object actEditUTF8: TAction
       Tag = 1

@@ -3570,10 +3570,8 @@ end;
 procedure TEditorForm.TBClassEditClick(Sender: TObject);
 begin
   if IsPython then begin
-    if Modified then
+    if Modified or fFile.GetFromTemplate then
       DoSave;
-    //if not myJavaCommands.HasValidClass(Pathname) then
-    //  myJavaCommands.CompileForm(Self);
     PyIDEMainForm.PrepareClassEdit(Pathname, 'Edit', nil);
   end;
 end;
@@ -3582,7 +3580,8 @@ procedure TEditorForm.TBClassOpenClick(Sender: TObject);
   var UMLForm: TFUMLForm; s: string;
 begin
   if IsPython then begin
-    if Modified then DoSave;
+    if Modified or fFile.GetFromTemplate then
+      DoSave;
     try
       s:= ChangeFileExt(Pathname, '.puml');
       if FileExists(s) then
@@ -3749,7 +3748,8 @@ end;
 
 procedure TEditorForm.TBBrowserClick(Sender: TObject);
 begin
-  If Modified then DoSave;
+  if Modified or fFile.GetFromTemplate then
+    DoSave;
   FConfiguration.DoHelp(Pathname);
 end;
 

@@ -250,7 +250,7 @@ object PyIDEMainForm: TPyIDEMainForm
     object TBControlItem1: TTBControlItem
     end
     object DockTopPanel: TPanel
-      Tag = 40750
+      Tag = 42676
       Left = 0
       Top = 0
       Width = 946
@@ -1421,12 +1421,13 @@ object PyIDEMainForm: TPyIDEMainForm
       Top = 26
       Width = 763
       Height = 55
-      ActiveTabIndex = 2
+      ActiveTabIndex = 0
       TabAutofit = True
       TabAutofitMaxSize = 80
       HiddenItems = <>
       object SpTBXTabItem2: TSpTBXTabItem
         Caption = 'Program'
+        Checked = True
         CustomWidth = 80
       end
       object SpTBXTabItem1: TSpTBXTabItem
@@ -1435,72 +1436,7 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       object SpTBXTabItem3: TSpTBXTabItem
         Caption = 'TTK'
-        Checked = True
         CustomWidth = 80
-      end
-      object SpTBXTabSheetProgram: TSpTBXTabSheet
-        Left = 0
-        Top = 25
-        Width = 763
-        Height = 30
-        Caption = 'Program'
-        ImageIndex = -1
-        TabItem = 'SpTBXTabItem2'
-        object ToolbarProgram: TToolBar
-          Left = 2
-          Top = 0
-          Width = 757
-          Height = 26
-          Align = alClient
-          ButtonHeight = 27
-          ButtonWidth = 30
-          Color = clBtnFace
-          Images = ILProgram
-          ParentColor = False
-          TabOrder = 0
-          object TBNew: TToolButton
-            Left = 0
-            Top = 0
-            Action = actFileNewModule
-            ImageIndex = 0
-          end
-          object TBClass: TToolButton
-            Left = 30
-            Top = 0
-            Hint = 'New class'
-            ImageIndex = 1
-            OnClick = actUMLNewClassExecute
-          end
-          object TBStructogram: TToolButton
-            Left = 60
-            Top = 0
-            Hint = 'New structogram'
-            ImageIndex = 2
-            OnClick = actFileNewStructogramExecute
-          end
-          object TBSequence: TToolButton
-            Left = 90
-            Top = 0
-            Hint = 'New sequence diagram'
-            ImageIndex = 3
-            OnClick = actFileNewSequencediagramExecute
-          end
-          object TBConsole: TToolButton
-            Tag = 1
-            Left = 120
-            Top = 0
-            Action = actFileNewModule
-            ImageIndex = 4
-          end
-          object TBApplication: TToolButton
-            Tag = 8
-            Left = 150
-            Top = 0
-            Hint = 'New Tk/TTK application'
-            ImageIndex = 8
-            OnClick = actFileNewTkinterExecute
-          end
-        end
       end
       object SpTBXTabSheetTkinter: TSpTBXTabSheet
         Left = 0
@@ -2056,6 +1992,70 @@ object PyIDEMainForm: TPyIDEMainForm
             OnClick = TBTkinterClick
             OnMouseDown = ToolButtonMouseDown
             OnStartDrag = ToolButtonStartDrag
+          end
+        end
+      end
+      object SpTBXTabSheetProgram: TSpTBXTabSheet
+        Left = 0
+        Top = 25
+        Width = 763
+        Height = 30
+        Caption = 'Program'
+        ImageIndex = -1
+        TabItem = 'SpTBXTabItem2'
+        object ToolbarProgram: TToolBar
+          Left = 2
+          Top = 0
+          Width = 757
+          Height = 26
+          Align = alClient
+          ButtonHeight = 27
+          ButtonWidth = 30
+          Color = clBtnFace
+          Images = ILProgram
+          ParentColor = False
+          TabOrder = 0
+          object TBNew: TToolButton
+            Left = 0
+            Top = 0
+            Action = actFileNewModule
+            ImageIndex = 0
+          end
+          object TBClass: TToolButton
+            Left = 30
+            Top = 0
+            Hint = 'New class'
+            ImageIndex = 1
+            OnClick = actUMLNewClassExecute
+          end
+          object TBStructogram: TToolButton
+            Left = 60
+            Top = 0
+            Hint = 'New structogram'
+            ImageIndex = 2
+            OnClick = actFileNewStructogramExecute
+          end
+          object TBSequence: TToolButton
+            Left = 90
+            Top = 0
+            Hint = 'New sequence diagram'
+            ImageIndex = 3
+            OnClick = actFileNewSequencediagramExecute
+          end
+          object TBConsole: TToolButton
+            Tag = 1
+            Left = 120
+            Top = 0
+            Action = actFileNewModule
+            ImageIndex = 4
+          end
+          object TBApplication: TToolButton
+            Tag = 8
+            Left = 150
+            Top = 0
+            Hint = 'New Tk/TTK application'
+            ImageIndex = 8
+            OnClick = actFileNewTkinterExecute
           end
         end
       end

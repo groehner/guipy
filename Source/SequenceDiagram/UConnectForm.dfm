@@ -41,7 +41,8 @@ object FConnectForm: TFConnectForm
       'Return'
       'Create'
       'Close')
-    TabOrder = 0
+    TabOrder = 1
+    OnClick = LBConnectionsClick
     OnDblClick = LBConnectionsDblClick
     OnDrawItem = LBConnectionsDrawItem
   end
@@ -94,7 +95,7 @@ object FConnectForm: TFConnectForm
     Font.Style = []
     Font.Quality = fqClearType
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 0
   end
   object ILSequencediagramLight: TImageList
     Height = 21
