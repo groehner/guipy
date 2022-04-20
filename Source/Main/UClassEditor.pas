@@ -281,6 +281,20 @@ begin
     ComboBoxInsert2(CBParamType, st);
   end;
   FreeAndNil(SL);
+
+  if not GuiPyOptions.ShowGetSetMethods then begin
+    CBGetMethod.Checked:= false;
+    CBSetMethod.Checked:= false;
+  end;
+  CBGetMethod.Visible:= GuiPyOptions.ShowGetSetMethods;
+  CBSetMethod.Visible:= GuiPyOptions.ShowGetSetMethods;
+  CBAttributeType.Visible:= GuiPyOptions.ShowTypeSelection;
+  LAttributeType.Visible:= GuiPyOptions.ShowTypeSelection;
+  if GuiPyOptions.ShowKindProcedure
+    then RGMethodKind.Items.Text:= _('Constructor') + #13#10 + _('Function') + #13#10 + _('Procedure')
+    else RGMethodKind.Items.Text:= _('Constructor') + #13#10 + _('Function');
+  CBParamType.Visible:= GuiPyOptions.ShowParameterTypeSelection;
+  LParameterType.Visible:= GuiPyOptions.ShowParameterTypeSelection;
 end;
 
 procedure TFClassEditor.FormClose(Sender: TObject; var aAction: TCloseAction);
@@ -765,8 +779,10 @@ begin
         RGAttributeAccess.ItemIndex := 0
       else
         RGAttributeAccess.ItemIndex := 1;
-      CBgetMethod.Checked := HasMethod(_(LNGGet), Attribut, Methode);
-      CBsetMethod.Checked := HasMethod(_(LNGSet), Attribut, Methode);
+      if CBgetMethod.Visible then
+        CBgetMethod.Checked := HasMethod(_(LNGGet), Attribut, Methode);
+      if CBsetMethod.Visible then
+        CBsetMethod.Checked := HasMethod(_(LNGSet), Attribut, Methode);
       CBAttributeStatic.Checked := Attribut.Static;
       CBAttributeFinal.Checked := Attribut.IsFinal;
     end
@@ -938,7 +954,7 @@ begin
         TreeView.Selected := GetAttributeNode;
         CBAttributeStatic.Checked := false;
         CBAttributeFinal.Checked := false;
-        if GuiPyOptions.DefaultModifiers then begin
+        if GuiPyOptions.DefaultModifiers and CBgetMethod.Visible then begin
           RGAttributeAccess.ItemIndex := 0;
           CBgetMethod.Checked := true;
         end;
@@ -957,7 +973,7 @@ begin
         CBMethodAbstract.Checked := false;
         if GuiPyOptions.DefaultModifiers then begin
           RGMethodKind.ItemIndex := 1;
-          RGMethodAccess.ItemIndex := 3;
+          RGMethodAccess.ItemIndex := 2;
         end;
       end;
   else
@@ -1315,16 +1331,16 @@ end;
 
 function TFClassEditor.Typ2Value(const typ: string): string;
 const
-  typs: array [1 .. 9] of String = ('int', 'double', 'float', 'char', 'boolean',
-    'String', 'long', 'byte', 'short');
+  typs: array [1 .. 8] of String = ('int', 'integer', 'float', 'bool', 'boolean',
+    'String', 'str', 'None');
 const
-  vals: array [1 .. 9] of String = ('0', '0', '0', '''\0''', 'false', '""', '0',
-    '0', '0');
+  vals: array [1 .. 8] of String = ('0', '0', '0', 'false', 'false',
+    '""', '""', 'None');
 var
   i: Integer;
 begin
-  Result := 'null';
-  for i := 1 to 9 do
+  Result := 'None';
+  for i := 1 to 8 do
     if typs[i] = typ then
     begin
       Result := vals[i];
@@ -1554,12 +1570,18 @@ var
 begin
   M.Name := CBMethodName.Text;
   M.ReturnValue := MakeType(CBMethodType);
-  if IsClass then
-    M.OperationType := TOperationType(RGMethodKind.ItemIndex)
+  if IsClass then begin
+    M.OperationType := TOperationType(RGMethodKind.ItemIndex);
+    if CBMethodType.Text = 'None' then begin
+      M.OperationType:= otProcedure;
+      M.ReturnValue:= nil;
+    end;
+  end
   else if RGMethodKind.ItemIndex = 0 then
-    M.OperationType := otProcedure
+    M.OperationType := otFunction
   else
-    M.OperationType := otFunction;
+    M.OperationType := otProcedure;
+
   M.Visibility:= TVisibility(RGMethodAccess.ItemIndex);
   if UUtils.Left(M.Name, 2) = '__' then
     M.Visibility:= viPrivate;
@@ -1610,8 +1632,10 @@ begin
     TSClass.Caption := '&' + _('Class');
     LClass.Caption := _('Class');
     CBMethodAbstract.Visible := true;
-    CBgetMethod.Visible := true;
-    CBsetMethod.Visible := true;
+    if GuiPyOptions.ShowGetSetMethods then begin
+      CBgetMethod.Visible := true;
+      CBsetMethod.Visible := true;
+    end;
     RGAttributeAccess.Height := 115;
     GBAttributeOptions.Height := 115;
     RGMethodKind.Height := 105;
@@ -1752,7 +1776,7 @@ end;
 procedure TFClassEditor.CBParamNameKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if (CBParamName.Text <> '') { and (CBParamType.Text <> '') } then
+  if CBParamName.Text <> '' then
     BMethodApply.Enabled := true;
   ShowMandatoryFields;
 end;
@@ -1989,8 +2013,7 @@ end;
 procedure TFClassEditor.CBMethodnameKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if { (CBMethodType.Text <> '') or } (RGMethodKind.ItemIndex = 1) then
-    BMethodApply.Enabled := true
+  BMethodApply.Enabled := true
 end;
 
 procedure TFClassEditor.CBMethodnameSelect(Sender: TObject);
@@ -2016,12 +2039,12 @@ end;
 procedure TFClassEditor.CBMethodTypeDropDown(Sender: TObject);
 begin
   SendMessage(CBMethodType.Handle, WM_SETCURSOR, 0, 0);
-  RGMethodKind.ItemIndex := 2;
+  RGMethodKind.ItemIndex := 1;
 end;
 
 procedure TFClassEditor.CBMethodTypeKeyPress(Sender: TObject; var Key: Char);
 begin
-  RGMethodKind.ItemIndex := 2;
+  RGMethodKind.ItemIndex := 1;
   if Key = #13 then
   begin
     ComboBoxInvalid := false;
@@ -2040,7 +2063,7 @@ end;
 procedure TFClassEditor.CBMethodTypeSelect(Sender: TObject);
   var s: string; p: Integer;
 begin
-  RGMethodKind.ItemIndex := 2;
+  RGMethodKind.ItemIndex := 1;
   p := CBMethodType.ItemIndex;
   if (p = -1) or (CBMethodType.Text <> CBMethodType.Items[p])
     then s := CBMethodType.Text
@@ -2155,8 +2178,7 @@ begin
         if CBMethodName.Enabled and (CBMethodName.Text = '')
           then CBMethodName.Color := clInfoBK
           else CBMethodName.Color := clWindow;
-        if CBMethodType.Enabled and (CBMethodType.Text = '') and
-          (RGMethodKind.ItemIndex = 2)
+        if CBMethodType.Enabled and (CBMethodType.Text = '')
           then CBMethodType.Color := clInfoBK
           else CBMethodType.Color := clWindow;
         if (CBParamName.Text <> '') and (CBParamType.Text = '')
@@ -2172,7 +2194,7 @@ end;
 function TFClassEditor.MethodToPython(Method: TOperation; Source: string): string;
 var
   s, s2, Indent1, Indent2, comment: string;
-  i, p1, count: Integer;
+  i, count: Integer;
   SL: TStringList;
 
   procedure delparam(const param: string);
@@ -2183,6 +2205,21 @@ var
       if Pos(param, SL.Strings[i]) > 0
         then SL.delete(i)
         else inc(i);
+  end;
+
+  procedure AdjustReturnValue;
+    const ReturnValues: Array[1..5] of string = (' return 0', ' return ""',
+       ' return false', ' return ''\0''', ' return None');
+    var i, p: integer;
+  begin
+    for i:= 1 to 5 do begin
+      p:= Pos(ReturnValues[i], Source);
+      if p > 0 then begin
+        Delete(Source, p, length(ReturnValues[i]));
+        Insert(' return ' + s2, Source, p);
+        break;
+      end;
+    end;
   end;
 
 begin
@@ -2197,17 +2234,19 @@ begin
     otConstructor: s := s + comment + makeConstructor(Method, Source);
     otFunction:
       begin
-        p1 := Pos(' return ', Source);
-        if p1 = 0 then begin
+        if assigned(Method.ReturnValue)
+          then s2:= Typ2Value(Method.ReturnValue.getShortType)
+          else s2:= 'None';
+        if Pos(' return ', Source) > 0 then begin
+          AdjustReturnValue;
+          s:= s + Source;
+        end else begin
           if Source = ''
             then s := s + comment + Indent2 + _(LNGTODO) + CrLf
             else s := s + Source;
-          if assigned(Method.ReturnValue)
-            then s2:= Typ2Value(Method.ReturnValue.getShortType)
-            else s2:= 'None';
           s:= s + Indent2 + 'return ' + s2 + CrLf;
-        end else
-          s:= s + Source;
+        end;
+
         SL.Text:= s;
         for i := SL.Count - 1 downto 0 do
           if trim(SL.Strings[i]) = 'pass' then
@@ -2259,8 +2298,8 @@ var
   SL: TStringList;
 begin
   if (not (MakeIdentifier(CBMethodName) and MakeIdentifier(CBMethodType) and
-    MakeIdentifier(CBParamName) and MakeIdentifier(CBParamType)) OR (CBMethodName.Text = '')) and
-    (RGMethodKind.ItemIndex > 0) then
+    MakeIdentifier(CBParamName) and MakeIdentifier(CBParamType)) or
+    (CBMethodName.Text = '')) and (RGMethodKind.ItemIndex > 0) then
     exit;
   Node := TreeView.Selected;
   if Assigned(Node)
@@ -2470,7 +2509,8 @@ begin
   if GuiPyOptions.DefaultModifiers then begin
     RGAttributeAccess.ItemIndex := -1;
     RGAttributeAccess.ItemIndex := 0;
-    CBgetMethod.Checked := true;
+    if CBgetMethod.Visible then
+      CBgetMethod.Checked := true;
     CBsetMethod.Checked := false;
     RGMethodKind.ItemIndex := 1;
     RGMethodAccess.ItemIndex := 3;

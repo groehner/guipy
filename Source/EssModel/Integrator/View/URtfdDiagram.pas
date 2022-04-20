@@ -1859,7 +1859,7 @@ begin
             if aModelClass = nil then
               aModelClass:= getModelClass(theClassname);        // model class from model
             if (aModelClass = nil) or (aModelClass.Pathname = '') then
-              aModelClass:= CreateModelClass(TheClassname);         // model class from python
+              aModelClass:= CreateModelClass(TheClassname);     // model class from python
           end;
           while InheritedLevel > 0 do begin
             aModelClass:= aModelClass.Ancestor[0];  // ToDo many ancestors
@@ -1883,7 +1883,7 @@ begin
         FreeAndNil(ParamValues);
       except
         on e: Exception do
-          ErrorMsg(e.Message);
+          ErrorMsg('TRtfdDiagram.CallMethod: ' + e.Message);
     end;
   end;
   finally

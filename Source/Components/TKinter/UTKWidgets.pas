@@ -10,11 +10,11 @@ unit UTKWidgets;
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, UBaseWidgets;
+  Windows, SysUtils, Classes, Graphics, UBaseTKWidgets;
 
 type
 
-  TKWidget = class (TBaseWidget)
+  TKWidget = class(TBaseTkWidget)
   private
     FActiveBackground: TColor;
     FDisabledForeground: TColor;

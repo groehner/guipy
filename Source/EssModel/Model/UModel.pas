@@ -35,7 +35,7 @@ type
   TLogicPackage = class;
   TUnitPackage = class;
 
-  TOperationType = (otConstructor, otProcedure, otFunction, otDestructor);
+  TOperationType = (otConstructor, otFunction, otProcedure, otDestructor);
 
   TObjectModel = class
   private

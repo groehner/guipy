@@ -20,7 +20,7 @@ unit UTKButtonBase;
 interface
 
 uses
-  Windows, Messages, Classes, Controls, Graphics, UBasewidgets, UTKWidgets;
+  Windows, Messages, Classes, Controls, Graphics, UBaseTkWidgets, UTkWidgets;
 
 type
 

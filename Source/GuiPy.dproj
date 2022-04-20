@@ -127,9 +127,9 @@
         <DCC_Define>JVDOCK_DEBUG;madExcept;DROPWATCH;$(DCC_Define)</DCC_Define>
         <VerInfo_MajorVer>1</VerInfo_MajorVer>
         <VerInfo_Build>0</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=1.0.2.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=1.0.4.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>GuiPy_Icon.ico</Icon_MainIcon>
-        <VerInfo_Release>2</VerInfo_Release>
+        <VerInfo_Release>4</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -143,10 +143,10 @@
         <DCC_DcuOutput>.\$(Config)\$(Platform)\DCUs</DCC_DcuOutput>
         <VerInfo_MajorVer>1</VerInfo_MajorVer>
         <VerInfo_Build>0</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=1.0.2.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=1.0.4.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
         <DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
         <DCC_ImportedDataReferences>false</DCC_ImportedDataReferences>
-        <VerInfo_Release>2</VerInfo_Release>
+        <VerInfo_Release>4</VerInfo_Release>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -439,7 +439,7 @@
         <DCCReference Include="Main\UStrings.pas">
             <Form>FStringEditor</Form>
         </DCCReference>
-        <DCCReference Include="Components\UBaseWidgets.pas"/>
+        <DCCReference Include="Components\UBaseTKWidgets.pas"/>
         <DCCReference Include="Utils\UHTMLHelp.pas"/>
         <DCCReference Include="Utils\UConfiguration.pas">
             <Form>FConfiguration</Form>
@@ -490,6 +490,7 @@
         <DCCReference Include="Main\UDownload.pas">
             <Form>FDownload</Form>
         </DCCReference>
+        <DCCReference Include="Components\UBaseWidgets.pas"/>
         <None Include="GuiPy.todo"/>
         <None Include="ModelSupport_PyScripter\default.txaPackage"/>
         <None Include="Main\ToDo.txt"/>
@@ -555,12 +556,6 @@
                 <Platform value="Win64">True</Platform>
             </Platforms>
             <Deployment Version="3">
-                <DeployFile LocalName="ModelSupport_PyScripter\default.txaPackage" Configuration="Debug" Class="ProjectFile">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="Main\ToDo.txt" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
@@ -569,6 +564,36 @@
                 </DeployFile>
                 <DeployFile LocalName="GuiPy.todo" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_PyScripter\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_PyScripter\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Debug\Win64\GuiPy.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>GuiPy.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Main\ToDo.txt" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="GuiPy.todo" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>

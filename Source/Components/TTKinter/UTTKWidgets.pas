@@ -10,11 +10,11 @@ unit UTTKWidgets;
 interface
 
 uses
-  Windows, SysUtils, Classes, UBaseWidgets;
+  Windows, SysUtils, Classes, UBaseTKWidgets;
 
 type
 
-  TTKWidget = class (TBaseWidget)
+  TTKWidget = class (TBaseTKWidget)
   private
     FPadding: string;
     FStyle: String;

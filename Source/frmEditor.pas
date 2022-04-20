@@ -4125,7 +4125,7 @@ begin
     s:= s + CrLf;
   with fActiveSynEdit do begin
     BeginUpdate;
-    collapsed:= (AllFoldRanges.Count > 1) and AllFoldRanges.Ranges[2].Collapsed;
+    collapsed:= (AllFoldRanges.Count > 2) and AllFoldRanges.Ranges[2].Collapsed;
     cx:= CaretX;
     cy:= CaretY;
     tl:= TopLine;

@@ -24,7 +24,7 @@ unit UTKMiscBase;
 interface
 
 uses
-  Windows, Messages, Classes, Controls, Graphics, UBaseWidgets, UTKWidgets;
+  Windows, Messages, Classes, Controls, Graphics, UBaseTkWidgets, UTKWidgets;
 
 type
 

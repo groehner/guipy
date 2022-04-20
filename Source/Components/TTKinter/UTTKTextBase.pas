@@ -18,7 +18,7 @@ unit UTTKTextBase;
 interface
 
 uses
-  Windows, Messages, Classes, Controls, Graphics, UBasewidgets, UTTKWidgets;
+  Windows, Messages, Classes, Controls, Graphics, UBaseTkWidgets, UTtkWidgets;
 
 type
 

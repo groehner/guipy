@@ -17,7 +17,7 @@ b) in variables (Model)
 c) in form (View)
 
            RestoreApplicationData              ModelToView
-registry  ------------------------>  model    -------------> view
+registry  ------------------------>  model   -------------> view
 INI-files <----------------------- variables <------------- gui-elements
            StoreApplicationData                ViewToModel
 
@@ -62,6 +62,12 @@ type
   private
     // Color themes
     fColorTheme: string;
+
+    // Class modeler
+    fShowGetSetMethods: boolean;
+    fShowTypeSelection: boolean;
+    fShowKindProcedure: boolean;
+    fShowParameterTypeSelection: boolean;
 
     // GUI designer
     fNameFromText: boolean;
@@ -190,6 +196,13 @@ type
   published
     // Color themes
     property ColorTheme: string read fColorTheme write fColorTheme;
+
+    // Class modeler
+    property ShowGetSetMethods: boolean read FShowGetSetMethods write FShowGetSetMethods;
+    property ShowTypeSelection: boolean read FShowTypeSelection write FShowTypeSelection;
+    property ShowKindProcedure: boolean read FShowKindProcedure write FShowKindProcedure;
+    property ShowParameterTypeSelection: boolean read FShowParameterTypeSelection write FShowParameterTypeSelection;
+
     // GUI designer
     property NameFromText : boolean read fNameFromText
       write FNameFromText default true;
@@ -942,6 +955,13 @@ type
     ESVNFolder: TEdit;
     BApplyStyle: TButton;
     CBGUICodeFolding: TCheckBox;
+    PClassModeler: TTabSheet;
+    GBAttribuesOptions: TGroupBox;
+    CBShowGetSetMethods: TCheckBox;
+    CBShowTypeSelection: TCheckBox;
+    GBMethodsOptions: TGroupBox;
+    CBShowKindProcedure: TCheckBox;
+    CBShowParameterTypeSelection: TCheckBox;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1534,10 +1554,6 @@ begin
   {$WARNINGS ON}
 end;
 
-//2: Set CaseSensitive til False        // til = dänisch
-//3: Set EndExpr til (\?>)
-//4: Set StartExpr til (<\?){1}(php){0,1}
-
 procedure TFConfiguration.Changed;
 begin
   ShowAlways:= true;
@@ -1720,6 +1736,12 @@ begin
     lbColorThemes.ItemIndex:= lbColorThemes.Items.IndexOf(fColorTheme);
     lbColorThemesClick(Self);
 
+    // Class modeler
+    CBShowGetSetMethods.Checked:= ShowGetSetMethods;
+    CBShowTypeSelection.Checked:= ShowTypeSelection;
+    CBShowKindProcedure.Checked:= ShowKindProcedure;
+    CBShowParameterTypeSelection.Checked:= ShowParameterTypeSelection;
+
     // GUI design
     CBNameFromText.Checked:= NameFromText;
     CBGuiDesignerHints.Checked:= GuiDesignerHints;
@@ -1756,6 +1778,8 @@ begin
     RGSequenceAttributsMethods.ItemIndex:= DISortOrder;
     RGParameterDisplay.ItemIndex:= DIShowParameter;
     RGVisibilityDisplay.ItemIndex:= 2 - DIShowIcons;
+    UDShadowWidth.Position:= ShadowWidth;
+    UDShadowIntensity.Position:= ShadowIntensity;
 
     // tab uml options
     CBUMLEdit.Checked:= PrivateAttributEditable;
@@ -1766,8 +1790,6 @@ begin
     CBDefaultModifiers.Checked:= DefaultModifiers;
     CBShowObjectsWithMethods.Checked:= ShowObjectsWithMethods;
     CBShowObjectsWithInheritedPrivateAttributes.Checked:= ShowObjectsWithInheritedPrivateAttributes;
-    UDShadowWidth.Position:= ShadowWidth;
-    UDShadowIntensity.Position:= ShadowIntensity;
     CBIntegerInsteadofInt.Checked:= IntegerInsteadofInt;
     CBShowAllNewObjects.Checked:= ShowAllNewObjects;
     CBObjectsWithoutVisibility.Checked:= ObjectsWithoutVisibility;
@@ -2043,6 +2065,12 @@ begin
     if lbColorThemes.ItemIndex > -1 then
       fColorTheme:= lbColorThemes.Items[lbColorThemes.ItemIndex];
 
+    // Class modeler
+    ShowGetSetMethods:= CBShowGetSetMethods.Checked;
+    ShowTypeSelection:= CBShowTypeSelection.Checked;
+    ShowKindProcedure:= CBShowKindProcedure.Checked;
+    ShowParameterTypeSelection:= CBShowParameterTypeSelection.Checked;
+
     // tab GUI designer
     NameFromText:= CBNameFromText.Checked;
     GuiDesignerHints:= CBGuiDesignerHints.Checked;
@@ -2083,20 +2111,20 @@ begin
     DIShowIcons:= 2 - RGVisibilityDisplay.ItemIndex;
 
     // tab uml options
+    PrivateAttributEditable:= CBUMLEdit.Checked;
     ShowEmptyRects:= CBShowEmptyRects.Checked;
-    IntegerInsteadofInt:= CBIntegerInsteadofInt.Checked;
     ConstructorWithVisibility:= CBConstructorWithVisibility.Checked;
+    ObjectLowerCaseLetter:= CBLowerCaseLetter.Checked;
+    ShowPublicOnly:= CBOpenPublicClasses.Checked;
+    DefaultModifiers:= CBDefaultModifiers.Checked;
+    ShowObjectsWithMethods:= CBShowObjectsWithMethods.Checked;
+    ShowObjectsWithInheritedPrivateAttributes:= CBShowObjectsWithInheritedPrivateAttributes.Checked;
+    IntegerInsteadofInt:= CBIntegerInsteadofInt.Checked;
+    ShowAllNewObjects:= CBShowAllNewObjects.Checked;
+    ObjectsWithoutVisibility:= CBObjectswithoutVisibility.Checked;
     RelationshipAttributesBold:= CBRelationshipAttributesBold.Checked;
     ShowClassparameterSeparately:= CBShowClassparameterSeparately.Checked;
     RoleHidesAttribute:= CBRoleHidesAttribute.Checked;
-    DefaultModifiers:= CBDefaultModifiers.Checked;
-    ShowPublicOnly:= CBOpenPublicClasses.Checked;
-    ShowObjectsWithInheritedPrivateAttributes:= CBShowObjectsWithInheritedPrivateAttributes.Checked;
-    ShowObjectsWithMethods:= CBShowObjectsWithMethods.Checked;
-    ObjectLowerCaseLetter:= CBLowerCaseLetter.Checked;
-    ShowAllNewObjects:= CBShowAllNewObjects.Checked;
-    ObjectsWithoutVisibility:= CBObjectswithoutVisibility.Checked;
-    PrivateAttributEditable:= CBUMLEdit.Checked;
 
     // tab restrictions
     LockedDOSWindow:= CBLockedDosWindow.Checked;
@@ -4821,6 +4849,12 @@ constructor TGuiPyOptions.Create;
 begin
   inherited;
   fColorTheme:= 'Obsidian';
+  // Class modeler
+  fShowGetSetMethods:= true;
+  fShowTypeSelection:= true;
+  fShowKindProcedure:= true;
+  fShowParameterTypeSelection:= true;
+
   // GUI designer
   fNameFromText:= true;
   fGuiDesignerHints:= true;

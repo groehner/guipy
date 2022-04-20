@@ -5,7 +5,7 @@ object FClassEditor: TFClassEditor
   BorderStyle = bsDialog
   Caption = 'UML class editor'
   ClientHeight = 453
-  ClientWidth = 622
+  ClientWidth = 710
   Color = clBtnFace
   ParentFont = True
   FormStyle = fsStayOnTop
@@ -25,9 +25,9 @@ object FClassEditor: TFClassEditor
   end
   object TreeView: TTreeView
     Left = 13
-    Top = 30
-    Width = 233
-    Height = 412
+    Top = 27
+    Width = 323
+    Height = 418
     DragMode = dmAutomatic
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -45,8 +45,8 @@ object FClassEditor: TFClassEditor
     OnDragOver = TreeViewDragOver
   end
   object PageControl: TPageControl
-    Left = 248
-    Top = 8
+    Left = 338
+    Top = 10
     Width = 364
     Height = 435
     ActivePage = TSMethods
@@ -135,14 +135,14 @@ object FClassEditor: TFClassEditor
       end
       object LAttributeType: TLabel
         Left = 8
-        Top = 188
+        Top = 220
         Width = 24
         Height = 13
         Caption = 'Type'
       end
       object LAttributeValue: TLabel
         Left = 8
-        Top = 220
+        Top = 187
         Width = 26
         Height = 13
         Caption = 'Value'
@@ -162,8 +162,8 @@ object FClassEditor: TFClassEditor
       end
       object CBAttributeType: TComboBox
         Left = 64
-        Top = 184
-        Width = 217
+        Top = 217
+        Width = 225
         Height = 21
         AutoDropDown = True
         Sorted = True
@@ -204,14 +204,14 @@ object FClassEditor: TFClassEditor
       object GBAttributeOptions: TGroupBox
         Left = 176
         Top = 16
-        Width = 105
+        Width = 113
         Height = 115
         Caption = 'Options'
         TabOrder = 1
         object CBsetMethod: TCheckBox
           Left = 8
           Top = 90
-          Width = 90
+          Width = 95
           Height = 17
           Caption = 'set method'
           Checked = True
@@ -221,7 +221,7 @@ object FClassEditor: TFClassEditor
         object CBgetMethod: TCheckBox
           Left = 8
           Top = 66
-          Width = 90
+          Width = 95
           Height = 17
           Caption = 'get method'
           Checked = True
@@ -252,7 +252,7 @@ object FClassEditor: TFClassEditor
       object EAttributeName: TEdit
         Left = 64
         Top = 149
-        Width = 217
+        Width = 225
         Height = 21
         TabOrder = 2
         OnKeyPress = EAttributeNameKeyPress
@@ -282,8 +282,8 @@ object FClassEditor: TFClassEditor
       end
       object CBAttributeValue: TComboBox
         Left = 64
-        Top = 217
-        Width = 217
+        Top = 184
+        Width = 225
         Height = 21
         TabOrder = 4
         OnCloseUp = ComboBoxCloseUp
@@ -341,6 +341,7 @@ object FClassEditor: TFClassEditor
           'boolean'
           'float'
           'integer'
+          'None'
           'String')
       end
       object RGMethodAccess: TRadioGroup
@@ -416,8 +417,8 @@ object FClassEditor: TFClassEditor
         Caption = 'Kind'
         Items.Strings = (
           'Constructor'
-          'Procedure'
-          'Function')
+          'Function'
+          'Procedure')
         TabOrder = 0
       end
       object GRFormalParameters: TGroupBox
@@ -436,7 +437,7 @@ object FClassEditor: TFClassEditor
         end
         object LParameterType: TLabel
           Left = 13
-          Top = 64
+          Top = 96
           Width = 24
           Height = 13
           Caption = 'Type'
@@ -553,14 +554,14 @@ object FClassEditor: TFClassEditor
         end
         object LParameterValue: TLabel
           Left = 13
-          Top = 96
+          Top = 64
           Width = 26
           Height = 13
           Caption = 'Value'
         end
         object CBParamType: TComboBox
           Left = 57
-          Top = 61
+          Top = 93
           Width = 113
           Height = 21
           AutoDropDown = True
@@ -634,7 +635,7 @@ object FClassEditor: TFClassEditor
         end
         object CBParamValue: TComboBox
           Left = 57
-          Top = 93
+          Top = 61
           Width = 113
           Height = 21
           TabOrder = 2
@@ -723,8 +724,8 @@ object FClassEditor: TFClassEditor
   object ILSpeedButton: TImageList
     Height = 13
     Width = 13
-    Left = 520
-    Top = 144
+    Left = 528
+    Top = 320
     Bitmap = {
       494C01010200080004000D000D00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000340000000D0000000100200000000000900A

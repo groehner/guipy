@@ -122,7 +122,7 @@ uses
   JvDockTree in 'JvDockTree.pas',
   JvDockVSNetStyleSpTBX in 'JvDockVSNetStyleSpTBX.pas',
   frmFile in 'frmFile.pas' {FileForm},
-  UConnectForm in 'SequenceDiagram\UConnectForm.pas',
+  UConnectForm in 'SequenceDiagram\UConnectForm.pas' {FConnectForm},
   ULifeLine in 'SequenceDiagram\ULifeLine.pas',
   USequenceForm in 'SequenceDiagram\USequenceForm.pas' {FSequenceForm},
   USequencePanel in 'SequenceDiagram\USequencePanel.pas',
@@ -167,7 +167,7 @@ uses
   UObjectInspector in 'Main\UObjectInspector.pas' {FObjectInspector},
   UOpenFolderForm in 'Main\UOpenFolderForm.pas' {FOpenFolderForm},
   UStrings in 'Main\UStrings.pas' {FStringEditor},
-  UBaseWidgets in 'Components\UBaseWidgets.pas',
+  UBaseTKWidgets in 'Components\UBaseTKWidgets.pas',
   UHTMLHelp in 'Utils\UHTMLHelp.pas',
   UConfiguration in 'Utils\UConfiguration.pas' {FConfiguration},
   UStyledMemo in 'Utils\UStyledMemo.pas',
@@ -199,7 +199,8 @@ uses
   cPythonSourceScanner in 'cPythonSourceScanner.pas',
   UBrowser in 'Main\UBrowser.pas' {FBrowser},
   UUpdate in 'Main\UUpdate.pas' {FUpdate},
-  UDownload in 'Main\UDownload.pas' {FDownload};
+  UDownload in 'Main\UDownload.pas' {FDownload},
+  UBaseWidgets in 'Components\UBaseWidgets.pas';
 
 {$R *.RES}
 {$R WebCopyAvi.RES}
