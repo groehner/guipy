@@ -250,7 +250,7 @@ object PyIDEMainForm: TPyIDEMainForm
     object TBControlItem1: TTBControlItem
     end
     object DockTopPanel: TPanel
-      Tag = 42676
+      Tag = 43960
       Left = 0
       Top = 0
       Width = 946

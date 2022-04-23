@@ -1572,7 +1572,7 @@ begin
   M.ReturnValue := MakeType(CBMethodType);
   if IsClass then begin
     M.OperationType := TOperationType(RGMethodKind.ItemIndex);
-    if CBMethodType.Text = 'None' then begin
+    if (CBMethodType.Text = 'None') or (CBMethodType.Text = '') then begin
       M.OperationType:= otProcedure;
       M.ReturnValue:= nil;
     end;
@@ -1769,7 +1769,7 @@ begin
   begin
     ComboBoxInvalid := false;
     CBParamNameSelect(Self);
-    CBParamType.SetFocus;
+    CBParamName.SetFocus;
   end;
 end;
 
@@ -2044,10 +2044,9 @@ end;
 
 procedure TFClassEditor.CBMethodTypeKeyPress(Sender: TObject; var Key: Char);
 begin
-  RGMethodKind.ItemIndex := 1;
-  if Key = #13 then
-  begin
+  if Key = #13 then begin
     ComboBoxInvalid := false;
+    BMethodChangeClick(Self);
     CBMethodTypeSelect(Self);
     CBParamName.SetFocus;
   end;
@@ -2063,7 +2062,6 @@ end;
 procedure TFClassEditor.CBMethodTypeSelect(Sender: TObject);
   var s: string; p: Integer;
 begin
-  RGMethodKind.ItemIndex := 1;
   p := CBMethodType.ItemIndex;
   if (p = -1) or (CBMethodType.Text <> CBMethodType.Items[p])
     then s := CBMethodType.Text
@@ -2104,7 +2102,7 @@ begin
   if Key = #13 then begin
     ComboBoxInvalid := false;
     CBParamTypeSelect(Self);
-    BParameterNew.SetFocus;
+    CBParamName.SetFocus;
   end;
 end;
 
@@ -2128,12 +2126,13 @@ begin
     else s := CBParamType.Items[p];
   if not ComboBoxInvalid then begin
     CBParamType.Text := s;
-    if (CBParamName.Text <> '') and (CBParamType.Text <> '') then begin
-      BMethodChangeClick(Self);
+    if (CBParamName.Text <> '') then begin
+      BMethodChangeClick(Self); {
       TThread.ForceQueue(nil, procedure
         begin
           CBParamType.Text:= '';
         end);
+        }
     end;
   end;
 end;

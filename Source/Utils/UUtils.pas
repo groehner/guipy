@@ -940,7 +940,7 @@ function isPythonType(aType: string): boolean;
 begin
   p:= Pos('[', aType); // GenericType?
   if p > 0 then Delete(aType, p, length(aType));
-  for p:= 0 to 40 do
+  for p:= 0 to 39 do
     if PythonTypes[p] = aType then
       Exit(True);
   Result:= false;

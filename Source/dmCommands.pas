@@ -834,6 +834,7 @@ begin
       Options:= Options - [ofOverwritePrompt];
     if Execute then begin
       ANewName := FileName;
+      GuiPyOptions.Sourcepath:= ExtractFilePath(aNewName);
       Result := TRUE;
     end else
       Result := FALSE;
@@ -2867,7 +2868,11 @@ end;
 
 procedure TCommandsDataModule.actToolsRestartLSExecute(Sender: TObject);
 begin
+  var b:= PyIDEOptions.LspDebug;
+  PyIDEOptions.LspDebug:= true;
   TJedi.CreateServer;
+  PyIDEOptions.LspDebug:= b;
+  PyIDEMainForm.DoOpenFile(TPath.Combine(TPyScripterSettings.UserDataPath, 'LspDebug.log'));
 end;
 
 procedure TCommandsDataModule.GetEditorUserCommand(AUserCommand: Integer;

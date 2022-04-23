@@ -52,7 +52,6 @@ type
     TBClassOpen: TToolButton;
     TBRefresh: TToolButton;
     PInteractive: TPanel;
-    SpTBXSplitter1: TSpTBXSplitter;
     TBInteractiveToolbar: TToolBar;
     TBExecute: TToolButton;
     TBDelete: TToolButton;
@@ -75,6 +74,7 @@ type
     SpTBXSeparatorItem3: TSpTBXSeparatorItem;
     MIClose: TSpTBXItem;
     EmptyPopupMenu: TPopupMenu;
+    SpTBXSplitter1: TSpTBXSplitter;
     procedure FormCreate(Sender: TObject); override;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormClose(Sender: TObject; var aAction: TCloseAction);

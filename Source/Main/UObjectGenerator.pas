@@ -479,8 +479,8 @@ begin
     try
       GetPropList(Comp.ClassInfo, tkAny, PropInfos);
       for j:= 0 to Count - 1 do begin
-        Eventname:= String(PropInfos^[j]^.Name);
-        if IsEvent(Eventname) then begin
+        Eventname:= String(PropInfos[j].Name);
+        if IsEvent('|' + Eventname + '|') then begin
           getEventProperties(comp, Eventname, Event);
           if Event.Active and not
             (EditorForm.getLineNumberOfBinding(Comp.Name, Eventname) > 0)

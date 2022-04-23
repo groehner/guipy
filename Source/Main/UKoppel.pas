@@ -45,7 +45,7 @@ Const
 
   MiscEvents      = '|Activate|Deactivate|Configure|FocusIn|FocusOut';
 
-  AllEvents       =  MouseEvents1 + MouseEvents2 + KeyboardEvents1 + MiscEvents;
+  AllEvents       =  MouseEvents1 + MouseEvents2 + KeyboardEvents1 + MiscEvents + '|';
 
   AllCommands     = '|Command|PostCommand|InvalidCommand|ValidateCommand|';
 

@@ -21,7 +21,9 @@ object FUMLForm: TFUMLForm
     Width = 749
     Height = 419
     Align = alClient
+    Constraints.MinHeight = 100
     TabOrder = 0
+    ExplicitHeight = 297
     object PDiagramPanel: TPanel
       Left = 1
       Top = 26
@@ -277,6 +279,8 @@ object FUMLForm: TFUMLForm
     Cursor = crSizeNS
     Align = alBottom
     ParentColor = False
+    ExplicitTop = 297
+    ExplicitWidth = 127
   end
   object PMInteractive: TSpTBXPopupMenu
     Images = DMImages.ILInteractive

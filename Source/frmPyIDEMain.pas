@@ -3919,10 +3919,10 @@ begin
   end else begin
     lbStatusCaret.Caption := '';
     lbStatusOverwrite.Caption := '';
+    aFile:= GI_ActiveFile;
+    if aFile <> nil then
+      SetStatusModified(aFile.GetModified);
   end;
-  aFile:= GI_ActiveFile;
-  if aFile <> nil then
-    SetStatusModified(aFile.GetModified);
 
   if GetCapsLockKeyState then
     lbStatusCAPS.Caption := 'CAPS'

@@ -4509,7 +4509,7 @@ begin
     if (0 <= line) and (line <= Lines.Count - 1) then
       if Pos('def ', Lines[line]) > 0 then begin
         CaretY:= line + 2;
-        CaretX:= 8;
+        CaretX:= Length(fIndent2) + 1;
       end else begin
         CaretX:= Pos(s, Lines[line]);
         CaretY:= line + 1;
