@@ -40,7 +40,7 @@ uses
 
 Const
   CrLf = #13#10;
-  Homepage = 'http://www.guipy.de';
+  Homepage = 'https://www.guipy.de';
   MaxTab = 1;
   MaxTabItem = 22;
 
@@ -4095,7 +4095,7 @@ begin
 end;
 
 procedure TFConfiguration.SetStyle(StyleName: string);
-// StyleName can be either a resource of a file name
+// StyleName can be either a resource or a file name
 var
   SName : string;
   StyleInfo : TStyleInfo;
@@ -4145,7 +4145,7 @@ begin
   LBStyleNames.Sorted := True;
   ExternalStyleFilesDict := TDictionary<string, string>.Create;
   FStylesPath := TPyScripterSettings.StylesFilesDir;
-  FPreview:=TVclStylesPreview.Create(Self);
+  FPreview:= TVclStylesPreview.Create(Self);
   FPreview.Parent:= StylesPreviewPanel;
   FPreview.Icon := Application.Icon.Handle;
   FPreview.BoundsRect := StylesPreviewPanel.ClientRect;
@@ -4179,7 +4179,7 @@ begin
    // First add resource styles
    LBStyleNames.Items.AddStrings(TStyleManager.StyleNames);
    // Remove Windows
-   LBStyleNames.Items.Delete(LBStyleNames.Items.IndexOf('Windows'));
+   // LBStyleNames.Items.Delete(LBStyleNames.Items.IndexOf('Windows'));
 
    // Then styles in files
     try
@@ -5076,7 +5076,7 @@ end;
 initialization
   TStyleManager.Engine.RegisterStyleHook(TEdit, TEditStyleHookColor);
 
-finalization
-  TStyleManager.Engine.UnRegisterStyleHook(TEdit, TEditStyleHookColor);
+//finalization
+  // TStyleManager.Engine.UnRegisterStyleHook(TEdit, TEditStyleHookColor);
 
 end.

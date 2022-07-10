@@ -85,8 +85,8 @@ end;
 initialization
   TStyleManager.Engine.RegisterStyleHook(TStyledMemo, TMemoStyleHookColor);
 
-finalization
-  TStyleManager.Engine.UnRegisterStyleHook(TStyledMemo, TMemoStyleHookColor);
+//finalization
+//  TStyleManager.Engine.UnRegisterStyleHook(TStyledMemo, TMemoStyleHookColor);
 
 end.
 

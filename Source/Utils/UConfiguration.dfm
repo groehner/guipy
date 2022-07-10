@@ -186,7 +186,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 661
         Height = 427
-        ActivePage = PClassModeler
+        ActivePage = PStyles
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -462,8 +462,8 @@ object FConfiguration: TFConfiguration
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 179
-                Height = 25
+                Width = 72
+                Height = 8
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -473,8 +473,6 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
-                ExplicitWidth = 72
-                ExplicitHeight = 8
               end
             end
             object cbGutterColor: TSpTBXColorEdit
@@ -710,8 +708,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 188
-                Height = 28
+                Width = 128
+                Height = 16
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Courier New 10pt'
@@ -721,8 +719,6 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Courier New'
                 Font.Style = []
                 ParentFont = False
-                ExplicitWidth = 128
-                ExplicitHeight = 16
               end
             end
             object btnFont: TButton

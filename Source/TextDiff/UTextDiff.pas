@@ -3,20 +3,20 @@
 // -----------------------------------------------------------------------------
 // Application:     TextDiff                                                   .
 // Module:          Main                                                       .
-// Version:         4.2                                                        .
-// Date:            24-JAN-2004                                                .
-// Target:          Win32, Delphi 7                                            .
+// Version:         4.3                                                        .
+// Date:            10.07.2022                                                 .
+// Target:          Win32, Delphi 10.4                                            .
 // Author:          Angus Johnson - angusj-AT-myrealbox-DOT-com
 // Lizenz:          Freeware - http://www.angusj.com/delphi/textdiff.html
 // Copyright:       © 2003-2004 Angus Johnson
-//                  © 2006-2021 Gerhard Röhner                                  .
+//                  © 2006-2022 Gerhard Röhner                                  .
 // -----------------------------------------------------------------------------
 
 interface
 
 uses
   Windows, Messages, Graphics, Controls, Forms, ExtCtrls, Menus, ComCtrls,
-  Classes, ImgList, frmFile, UDiffUnit, USynEditExDiff, SynEditTextBuffer,
+  Classes, ImgList, frmFile, UDiff, USynEditExDiff, SynEditTextBuffer,
   ToolWin, System.ImageList, SpTBXSkins, SynEdit, uEditAppIntfs, frmEditor,
   TB2Item, SpTBXItem;
 
@@ -88,7 +88,6 @@ type
     CodeEdit1: TSynEditExDiff;
     CodeEdit2: TSynEditExDiff;
     OnlyDifferences: boolean;
-    linesAdd, linesMod, linesDel: integer;
     addClr, delClr, modClr, DefaultClr: TColor;
     IgnoreBlanks: boolean;
     IgnoreCase: boolean;
@@ -382,9 +381,9 @@ end;
 procedure TFTextDiff.DoCompare;
 var
   i: integer;
-  HashList1, HashList2: TList;
+  HashArray1, HashArray2: TArrOfInteger;
   CodeEdit: TSynEditExDiff;
-  Caret: TBufferCoord;
+  Caret: {$IFNDEF LCL}TBufferCoord; {$ELSE} TPoint; {$ENDIF}
 begin
   if (Lines1.Count = 0) or (Lines2.Count = 0) then exit;
 
@@ -399,25 +398,26 @@ begin
 
   //THIS PROCEDURE IS WHERE ALL THE HEAVY LIFTING (COMPARING) HAPPENS ...
 
-  HashList1:= TList.create;
-  HashList2:= TList.create;
+  //Because it's SO MUCH EASIER AND FASTER comparing hashes (integers) than
+  //comparing whole lines of text, we'll build an array of hashes for each line
+  //in the source files. Each line is represented by a (virtually) unique
+  //hash that is based on the contents of that line. Also, since the
+  //likelihood of 2 different lines generating the same hash is so small,
+  //we can safely ignore that possibility.
+
   try
     Screen.Cursor:= crHourGlass;
-    // Create the hash lists used to compare line differences.
-    // nb - there is a small possibility of different lines hashing to the
-    // same value. However the probability of an invalid match occuring
-    // in proximity to its invalid partner is remote. Ideally, these hash
-    // collisions should be managed by ? incrementing the hash value.
-    HashList1.capacity:= Lines1.Count;
-    HashList2.capacity:= Lines2.Count;
+    SetLength(HashArray1, Lines1.Count);
+    SetLength(HashArray2, Lines2.Count);
     for i:= 0 to Lines1.Count-1 do
-      HashList1.add(HashLine(Lines1[i], IgnoreCase, IgnoreBlanks));
+      HashArray1[i]:= HashLine(Lines1[i], IgnoreCase, IgnoreBlanks);
     for i:= 0 to Lines2.Count-1 do
-      HashList2.add(HashLine(Lines2[i], IgnoreCase, IgnoreBlanks));
+      HashArray2[i]:= HashLine(Lines2[i], IgnoreCase, IgnoreBlanks);
     try
       //CALCULATE THE DIFFS HERE ...
-      if not Diff.Execute(PIntArray(HashList1.List), PIntArray(HashList2.List),
-                          HashList1.count, HashList2.count) then exit;
+       if not Diff.Execute(HashArray1, HashArray2,
+                           Lines1.Count, Lines2.Count) then exit;
+
       SetFilesCompared(true);
       DisplayDiffs;
     finally
@@ -428,8 +428,8 @@ begin
     SyncScroll(GetCodeEdit, sbVertical);
   finally
     Screen.Cursor:= crDefault;
-    FreeAndNil(HashList1);
-    FreeAndNil(HashList2);
+    HashArray1:= nil;
+    HashArray2:= nil;
   end;
 end;
 
@@ -440,7 +440,7 @@ begin
 end;
 
 procedure TFTextDiff.DisplayDiffs;
-  var i, j, k: integer;
+  var i: integer;
 
   procedure AddAndFormat(CodeEdit: TSynEditExDiff; const Text: string;
                          Color: TColor; Num: longint);
@@ -456,7 +456,6 @@ procedure TFTextDiff.DisplayDiffs;
 
 begin
   // THIS IS WHERE THE TDIFF RESULT IS CONVERTED INTO COLOR HIGHLIGHTING ...
-  linesAdd:= 0; linesMod:= 0; linesDel:= 0;
   CodeEdit1.Lines.BeginUpdate;
   CodeEdit2.Lines.BeginUpdate;
   try
@@ -468,67 +467,29 @@ begin
     CodeEdit1.OnGutterGetText:= CodeEdit1.GutterTextEvent;
     CodeEdit2.OnGutterGetText:= CodeEdit2.GutterTextEvent;
 
-    j:= 0; k:= 0;
-    with Diff do
-    for i:= 0 to ChangeCount-1 do
-      with Changes[i] do
-      begin
-        //first add preceeding unmodified lines...
-        if OnlyDifferences then
-          inc(k, x - j)
-        else
-          while j < x do
-          begin
-             AddAndFormat(CodeEdit1, lines1[j], DefaultClr, j+1);
-             AddAndFormat(CodeEdit2, lines2[k], DefaultClr, k+1);
-             inc(j); inc(k);
-          end;
-        if Kind = ckAdd then
-        begin
-          for j:= k to k+Range-1 do
-          begin
+    for i:= 0 to Diff.Count-1 do
+      with Diff.Compares[i] do
+        if Kind = ckAdd then begin
            AddAndFormat(CodeEdit1, '', addClr, 0);
-           AddAndFormat(CodeEdit2, lines2[j], addClr, j+1);
-           inc(linesAdd);
-          end;
-          j:= x;
-          k:= y+Range;
-        end else if Kind = ckModify then
-        begin
-          for j:= 0 to Range-1 do
-          begin
-           AddAndFormat(CodeEdit1, lines1[x+j], modClr, x+j+1);
-           AddAndFormat(CodeEdit2, lines2[k+j], modClr, k+j+1);
-           inc(linesMod);
-          end;
-          j:= x+Range;
-          k:= y+Range;
-        end else
-        begin
-          for j:= x to x+Range-1 do
-          begin
-           AddAndFormat(CodeEdit1, lines1[j], delClr, j+1);
+           AddAndFormat(CodeEdit2, lines2[oldindex2], addClr, oldindex2+1);
+        end else if Kind = ckDelete then begin
+           AddAndFormat(CodeEdit1, lines1[oldindex1], delClr, oldindex1+1);
            AddAndFormat(CodeEdit2, '', delClr, 0);
-           inc(linesDel);
-          end;
-          j:= x+Range;
+        end else if Kind = ckModify then begin
+           AddAndFormat(CodeEdit1, lines1[oldindex1], modClr, oldindex1+1);
+           AddAndFormat(CodeEdit2, lines2[oldindex2], modClr, oldindex2+1);
+        end else if not OnlyDifferences then begin
+           AddAndFormat(CodeEdit1, lines1[oldindex1], defaultClr, oldindex1+1);
+           AddAndFormat(CodeEdit2, lines2[oldindex2], defaultClr, oldindex2+1);
         end;
-      end;
-    //add remaining unmodified lines...
-    if not OnlyDifferences then
-      while j < lines1.count do
-      begin
-         AddAndFormat(CodeEdit1, lines1[j], DefaultClr, j+1);
-         AddAndFormat(CodeEdit2, lines2[k], DefaultClr, k+1);
-         inc(j); inc(k);
-      end;
     CodeEdit1.SetModified(false);
     CodeEdit2.SetModified(false);
   finally
     CodeEdit1.Lines.EndUpdate;
     CodeEdit2.Lines.EndUpdate;
   end;
-  if linesAdd + linesMod + linesDel = 0 then begin
+  with Diff.DiffStats do
+  if adds + modifies + deletes = 0 then begin
     CodeEdit1.WithColoredLines:= false;
     CodeEdit2.WithColoredLines:= false;
     end
@@ -543,16 +504,17 @@ procedure TFTextDiff.ShowDiffState;
   var s: string;
 begin
   Canvas.Font.Assign(StatusBar.Font);
-  s:= format(_('%d lines added'), [linesAdd]);
+  s:= format(_('%d lines added'), [Diff.DiffStats.adds]);
   StatusBar.Panels[4].Width:= Canvas.TextWidth(s) + 10;
   StatusBar.Panels[4].Text:= s;
-  s:= format(_('%d lines modified'), [linesMod]);
+  s:= format(_('%d lines modified'), [Diff.DiffStats.modifies]);
   StatusBar.Panels[5].Width:= Canvas.TextWidth(s) + 10;
   StatusBar.Panels[5].Text:= s;
-  s:= format(_('%d lines deleted'), [linesDel]);
+  s:= format(_('%d lines deleted'), [Diff.DiffStats.deletes]);
   StatusBar.Panels[6].Width:= Canvas.TextWidth(s) + 10;
   StatusBar.Panels[6].Text:= s;
-  if linesAdd + linesMod + linesDel = 0
+  with Diff.DiffStats do
+  if adds + modifies + deletes = 0
     then StatusBar.Panels[7].Text:= _('No differences.')
     else StatusBar.Panels[7].Text:= '';
 end;

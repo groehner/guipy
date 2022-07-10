@@ -2628,7 +2628,7 @@ end;
 
 procedure TCommandsDataModule.actHelpWebBlogExecute(Sender: TObject);
 begin
-  OpenObject('http://guipy.blogspot.com/');
+  OpenObject('https://guipy.blogspot.com/');
 end;
 
 procedure TCommandsDataModule.actHelpWebGroupSupportExecute(Sender: TObject);

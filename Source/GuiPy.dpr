@@ -180,7 +180,6 @@ uses
   UTTKMiscBase in 'Components\TTKinter\UTTKMiscBase.pas',
   UTTKTextBase in 'Components\TTKinter\UTTKTextBase.pas',
   UTTKWidgets in 'Components\TTKinter\UTTKWidgets.pas',
-  UDiffUnit in 'TextDiff\UDiffUnit.pas',
   UHashUnit in 'TextDiff\UHashUnit.pas',
   USynEditExDiff in 'TextDiff\USynEditExDiff.pas',
   UTextDiff in 'TextDiff\UTextDiff.pas' {FTextDiff},
@@ -200,7 +199,8 @@ uses
   UBrowser in 'Main\UBrowser.pas' {FBrowser},
   UUpdate in 'Main\UUpdate.pas' {FUpdate},
   UDownload in 'Main\UDownload.pas' {FDownload},
-  UBaseWidgets in 'Components\UBaseWidgets.pas';
+  UBaseWidgets in 'Components\UBaseWidgets.pas',
+  UDiff in 'TextDiff\UDiff.pas';
 
 {$R *.RES}
 {$R WebCopyAvi.RES}

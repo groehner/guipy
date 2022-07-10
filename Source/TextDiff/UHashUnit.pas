@@ -13,9 +13,10 @@ unit UHashUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils;
+  {$IFNDEF LCL} Windows, Messages, {$ELSE} LclIntf, LclType, {$ENDIF}
+  SysUtils;
 
-function HashLine(const line: string; IgnoreCase, IgnoreBlanks: boolean): pointer;
+function HashLine(const line: string; IgnoreCase, IgnoreBlanks: boolean): integer;
 
 implementation
 
@@ -104,7 +105,7 @@ begin
 end;
 //--------------------------------------------------------------------------
 
-function HashLine(const line: string; IgnoreCase, IgnoreBlanks: boolean): pointer;
+function HashLine(const line: string; IgnoreCase, IgnoreBlanks: boolean): integer;
   var i, j, len: integer;
       s: string;
 begin
@@ -123,8 +124,7 @@ begin
     setlength(s, j-1);
   end;
   if IgnoreCase then s:= AnsiLowerCase(s);
-  //return result as a pointer to save typecasting later...
-  Result:= pointer(CalcCRC32(pchar(s), length(s)));
+  Result:= CalcCRC32(pchar(s), length(s));
 end;
 
 end.

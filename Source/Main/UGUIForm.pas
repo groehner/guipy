@@ -15,6 +15,8 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormResize(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer;
+      var Resize: Boolean);
   private
     FAlwaysOnTop: boolean;
     FFullscreen: boolean;
@@ -97,6 +99,8 @@ type
     procedure ExecRedo;
     procedure ExecSelectAll;
     procedure ExecUndo;
+    procedure EndOfResizeMoveDetected(var Msg: Tmessage); message WM_EXITSIZEMOVE;
+    procedure Paint; override;
   published
     property AlwaysOnTop: boolean read FAlwaysOnTop write FAlwaysOnTop;
     property Background: TColor read getBackground write setBackground;
@@ -138,7 +142,7 @@ implementation
 
 uses Clipbrd, Themes, jvDockControlForm, frmPyIDEMain, cPyScripterSettings,
      UGUIDesigner, UObjectGenerator, UObjectInspector, UUtils, UKoppel,
-     UConfiguration;
+     UConfiguration, UXTheme;
 
 {$R *.DFM}
 
@@ -153,6 +157,8 @@ begin
   FTheme:= vista;
   Indent1:= FConfiguration.Indent1;
   Indent2:= FConfiguration.Indent2;
+  // don't theme this window
+  SetWindowTheme(Handle, nil, nil);
 end;
 
 procedure TFGUIForm.InitEvents;
@@ -341,10 +347,15 @@ begin
     PyIDEMainForm.TabControlWidgets.ActiveTabIndex:= 1;
 end;
 
+procedure TFGUIForm.FormCanResize(Sender: TObject; var NewWidth,
+  NewHeight: Integer; var Resize: Boolean);
+begin
+  if FGUIDesigner.ELDesigner.Active then
+    FGUIDesigner.ELDesigner.Active:= false;
+end;
+
 procedure TFGUIForm.FormResize(Sender: TObject);
 begin
-  LockFormUpdate(FObjectInspector);
-  FGUIDesigner.ChangeTo(nil);  // workaround, because oherwise GUIForm cannot be enlarged
   FObjectInspector.ELPropertyInspector.Modified;
   if Assigned(Partner) and not ReadOnly then begin
     FObjectGenerator.Partner:= TEditorForm(Partner);
@@ -352,8 +363,11 @@ begin
   end;
   Modified:= true;
   UpdateState;
-  FGUIDesigner.ChangeTo(Self);
-  UnLockFormUpdate(FObjectInspector);
+end;
+
+procedure TFGUIForm.EndOfResizeMoveDetected(var Msg: Tmessage);
+begin
+  FGUIDesigner.ELDesigner.Active:= true;
 end;
 
 procedure TFGUIForm.Print;
@@ -633,6 +647,12 @@ end;
 
 procedure TFGuiForm.ExecUndo;
 begin
+end;
+
+procedure TFGUIForm.Paint;
+begin
+  inherited;
+  Canvas.FillRect(ClientRect);
 end;
 
 end.

@@ -3678,9 +3678,9 @@ procedure TEditorForm.TBValidateClick(Sender: TObject);
 begin
   Browser:= PyIDEMainForm.NewBrowser('');
   if isCSS then
-    Browser.UploadFilesHttpPost('http://jigsaw.w3.org/css-validator/validator', [], [], ['file'], [Pathname])
+    Browser.UploadFilesHttpPost('https://jigsaw.w3.org/css-validator/validator', [], [], ['file'], [Pathname])
   else
-    Browser.UploadFilesHttpPost('http://validator.w3.org/check', [], [], ['uploaded_file'], [Pathname]);
+    Browser.UploadFilesHttpPost('https://validator.w3.org/check', [], [], ['uploaded_file'], [Pathname]);
 end;
 
 procedure TEditorForm.TBIndentClick(Sender: TObject);

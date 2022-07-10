@@ -9,6 +9,7 @@ object FGUIForm: TFGUIForm
   OldCreateOrder = True
   Position = poDefault
   Visible = True
+  OnCanResize = FormCanResize
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnDestroy = FormDestroy

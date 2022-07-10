@@ -181,7 +181,7 @@ Const
   SPythonLoadError = 'GuiPy could not load a Python engine.' + SLineBreak +
   '**Before** using GuiPy, you must ensure that a version of Python ' +
   'greater or equal to 3.6 is installed on your machine.' + SLineBreak +
-  'If you do not have one installed, you can download one from http://www.python.org/.'
+  'If you do not have one installed, you can download one from https://www.python.org/.'
   + SLineBreak +  SLineBreak +
   'The 64-bit version of GuiPy (x64) works only on 64-bit Windows **and** with 64-bit versions of Python.'
    + SLineBreak +

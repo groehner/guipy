@@ -412,6 +412,6 @@ end;
 initialization
   TCustomStyleEngine.RegisterStyleHook(TCustomSynEdit, TScrollingStyleHook);
 
-finalization
-  TCustomStyleEngine.UnRegisterStyleHook(TCustomSynEdit, TScrollingStyleHook);
+//finalization
+//  TCustomStyleEngine.UnRegisterStyleHook(TCustomSynEdit, TScrollingStyleHook);
 end.
