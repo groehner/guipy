@@ -4786,7 +4786,7 @@ begin
     ActiveSynedit.Lines[line]:= s
   else begin
     line:= getLineNumberWithWord(destination);  // self.create_widgets, self.button1
-    if line = -1 then
+    if (line = -1) or (line >= till) then
       line:= till
     else if after = 1 then begin
       inc(line);
@@ -4808,7 +4808,7 @@ begin
   aChanged:= true;
   till:= getLastCreateWidgetsLine;
   line:= getLineNumberWithWord(destination);  // self.create_widgets, self.button1
-  if line = -1 then
+  if (line = -1) or (line >= till) then
     line:= till
   else if after = 1 then begin
     inc(line);

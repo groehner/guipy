@@ -8,15 +8,14 @@
 unit UQtItemViews;
 
 { classes
-    QAbstractItemView
-      QListView
-        QListWidget
-      QColumnView
-      QTableView
-        QTableWidget
-      QTreeView
-        QTreeWidget
-
+    TQtAbstractItemView
+      TQtListView
+        TQtListWidget
+      TQtColumnView
+      TQtTreeView
+        TQtTreeWidget
+      TQtTableView
+        TQtTableWidget
 }
 
 interface
@@ -229,6 +228,100 @@ type
     property UpdatePreviewWidget: string read FUpdatePreviewWidget write FUpdatePreviewWidget;
   end;
 
+  TQtTreeView = class(TQtAbstractItemView)
+  private
+    FAutoExpandDelay: integer;
+    FIndentation: integer;
+    FRootIsDecorated: boolean;
+    FUniformRowHeights: boolean;
+    FItemsExpandable: boolean;
+    FSortingEnabled: boolean;
+    FAnimated: boolean;
+    FAllColumnsShowFocus: boolean;
+    FWordWrap: boolean;
+    FHeaderHidden: boolean;
+    FExpandsOnDoubleClick: boolean;
+    FColumnWidth: integer;
+    FCollapsed: string;
+    FExpanded: string;
+    procedure setIndentation(Value: integer);
+    procedure setColumnWidth(Value: integer);
+    procedure setHeaderHidden(Value: boolean);
+    procedure MakeColumWidth(Value: string);
+  public
+    constructor Create(AOwner: TComponent); override;
+    function getAttributes(ShowAttributes: integer): string; override;
+    procedure setAttribute(Attr, Value, Typ: string); override;
+    function getEvents(ShowEvents: integer): string; override;
+    function HandlerInfo(const event: string): string; override;
+    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(Widget: String = ''); override;
+  published
+    property AutoExpandDelay: integer read FAutoExpandDelay write FAutoExpandDelay;
+    property Indentation: integer read FIndentation write setIndentation;
+    property RootIsDecorated: boolean read FRootIsDecorated write FRootIsDecorated;
+    property UniformRowHeights: boolean read FUniformRowHeights write FUniformRowHeights;
+    property ItemsExpandable: boolean read FItemsExpandable write FItemsExpandable;
+    property SortingEnabled: boolean read FSortingEnabled write FSortingEnabled;
+    property Animated: boolean read FAnimated write FAnimated;
+    property AllColumnsShowFocus: boolean read FAllColumnsShowFocus write FAllColumnsShowFocus;
+    property WordWrap: boolean read FWordWrap write FWordWrap;
+    property HeaderHidden: boolean read FHeaderHidden write setHeaderHidden;
+    property ExpandsOnDoubleClick: boolean read FExpandsOnDoubleClick write FExpandsOnDoubleClick;
+    property ColumnWidth: integer read FColumnWidth write setColumnWidth;
+    // signals
+    property collapsed: string read FCollapsed write FCollapsed;
+    property expanded: string read FExpanded write FExpanded;
+  end;
+
+  TQtTreeWidget = class(TQtTreeView)
+  private
+    FItems: TStrings;
+    FHeader: TStrings;
+    FColumnCount: integer;
+    FCurrentItemChanged: string;
+    FItemActivated: string;
+    FItemChanged: string;
+    FItemClicked: string;
+    FItemCollapsed: string;
+    FItemDoubleClicked: string;
+    FItemEntered: string;
+    FItemExpanded: string;
+    FItemPressed: string;
+    FItemSelectionChanged: string;
+    procedure setColumnCount(Value: integer);
+    procedure setItems(Value: TStrings);
+    procedure setHeader(Value: TStrings);
+    procedure MakeItems;
+    procedure MakeHeader;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    function getAttributes(ShowAttributes: integer): string; override;
+    procedure setAttribute(Attr, Value, Typ: string); override;
+    procedure DeleteWidget; override;
+    function getEvents(ShowEvents: integer): string; override;
+    function HandlerInfo(const event: string): string; override;
+    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(Widget: String = ''); override;
+    procedure Paint; override;
+  published
+    property Header: TStrings read FHeader write setHeader;
+    property Items: TStrings read FItems write setItems;
+    property ColumnCount: integer read FColumnCount write setColumnCount;
+    // signals
+    property currentItemChanged: string read FCurrentItemChanged write FCurrentItemChanged;
+    property itemActivated: string read FItemActivated write FItemActivated;
+    property itemChanged: string read FItemChanged write FItemChanged;
+    property itemClicked: string read FItemClicked write FItemClicked;
+    property itemCollapsed: string read FItemCollapsed write FItemCollapsed;
+    property itemDoubleClicked: string read FItemDoubleClicked write FItemDoubleClicked;
+    property itemEntered: string read FItemEntered write FItemEntered;
+    property itemExpanded: string read FItemExpanded write FItemExpanded;
+    property itemPressed: string read FItemPressed write FItemPressed;
+    property itemSelectionChanged: string read FItemSelectionChanged write FItemSelectionChanged;
+  end;
+
   TQtTableView = Class(TQtAbstractItemView)
   private
     FShowGrid: boolean;
@@ -331,99 +424,7 @@ type
     property itemSelectionChanged: string read FItemSelectionChanged write FItemSelectionChanged;
   end;
 
-  TQtTreeView = class(TQtAbstractItemView)
-  private
-    FAutoExpandDelay: integer;
-    FIndentation: integer;
-    FRootIsDecorated: boolean;
-    FUniformRowHeights: boolean;
-    FItemsExpandable: boolean;
-    FSortingEnabled: boolean;
-    FAnimated: boolean;
-    FAllColumnsShowFocus: boolean;
-    FWordWrap: boolean;
-    FHeaderHidden: boolean;
-    FExpandsOnDoubleClick: boolean;
-    FColumnWidth: integer;
-    FCollapsed: string;
-    FExpanded: string;
-    procedure setIndentation(Value: integer);
-    procedure setColumnWidth(Value: integer);
-    procedure setHeaderHidden(Value: boolean);
-    procedure MakeColumWidth(Value: string);
-  public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
-  published
-    property AutoExpandDelay: integer read FAutoExpandDelay write FAutoExpandDelay;
-    property Indentation: integer read FIndentation write setIndentation;
-    property RootIsDecorated: boolean read FRootIsDecorated write FRootIsDecorated;
-    property UniformRowHeights: boolean read FUniformRowHeights write FUniformRowHeights;
-    property ItemsExpandable: boolean read FItemsExpandable write FItemsExpandable;
-    property SortingEnabled: boolean read FSortingEnabled write FSortingEnabled;
-    property Animated: boolean read FAnimated write FAnimated;
-    property AllColumnsShowFocus: boolean read FAllColumnsShowFocus write FAllColumnsShowFocus;
-    property WordWrap: boolean read FWordWrap write FWordWrap;
-    property HeaderHidden: boolean read FHeaderHidden write setHeaderHidden;
-    property ExpandsOnDoubleClick: boolean read FExpandsOnDoubleClick write FExpandsOnDoubleClick;
-    property ColumnWidth: integer read FColumnWidth write setColumnWidth;
-    // signals
-    property collapsed: string read FCollapsed write FCollapsed;
-    property expanded: string read FExpanded write FExpanded;
-  end;
 
-  TQtTreeWidget = class(TQtTreeView)
-  private
-    FItems: TStrings;
-    FHeader: TStrings;
-    FColumnCount: integer;
-    FCurrentItemChanged: string;
-    FItemActivated: string;
-    FItemChanged: string;
-    FItemClicked: string;
-    FItemCollapsed: string;
-    FItemDoubleClicked: string;
-    FItemEntered: string;
-    FItemExpanded: string;
-    FItemPressed: string;
-    FItemSelectionChanged: string;
-    procedure setColumnCount(Value: integer);
-    procedure setItems(Value: TStrings);
-    procedure setHeader(Value: TStrings);
-    procedure MakeItems;
-    procedure MakeHeader;
-  public
-    constructor Create(AOwner: TComponent); override;
-    destructor Destroy; override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    procedure DeleteWidget; override;
-    function getEvents(ShowEvents: integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
-    procedure Paint; override;
-  published
-    property Header: TStrings read FHeader write setHeader;
-    property Items: TStrings read FItems write setItems;
-    property ColumnCount: integer read FColumnCount write setColumnCount;
-    // signals
-    property currentItemChanged: string read FCurrentItemChanged write FCurrentItemChanged;
-    property itemActivated: string read FItemActivated write FItemActivated;
-    property itemChanged: string read FItemChanged write FItemChanged;
-    property itemClicked: string read FItemClicked write FItemClicked;
-    property itemCollapsed: string read FItemCollapsed write FItemCollapsed;
-    property itemDoubleClicked: string read FItemDoubleClicked write FItemDoubleClicked;
-    property itemEntered: string read FItemEntered write FItemEntered;
-    property itemExpanded: string read FItemExpanded write FItemExpanded;
-    property itemPressed: string read FItemPressed write FItemPressed;
-    property itemSelectionChanged: string read FItemSelectionChanged write FItemSelectionChanged;
-  end;
 
 implementation
 
@@ -434,11 +435,14 @@ uses SysUtils, Types, UITypes, Math, UUtils;
 procedure TQtAbstractItemView.setAttribute(Attr, Value, Typ: string);
 begin
   if (Attr = 'DragDropMode') or (Attr = 'SelectionMode') or
-     (Attr = 'SelectionBehavior') or (Attr = 'VerticalScrollMode') or
-     (Attr = 'HorizontalScrollMode') then
-    MakeAttribut(Attr, 'QAbstractItemView.' + Value)
-  else if (Attr = 'DefaultDropAction') or (Attr = 'TextElideMode') then
+     (Attr = 'SelectionBehavior') then
+    MakeAttribut(Attr, 'QAbstractItemView.' + Attr + '.' + Value)
+  else if (Attr = 'VerticalScrollMode') or (Attr = 'HorizontalScrollMode') then
+    MakeAttribut(Attr, 'QAbstractItemView.ScrollMode.' + Value)
+  else if Attr = 'TextElideMode' then
     MakeAttribut(Attr, 'Qt.' + Attr + '.' + Value)
+  else if Attr = 'DefaultDropAction' then
+    MakeAttribut(Attr, 'Qt.dropAction.' + Value)
   else
     inherited;
 end;
@@ -527,7 +531,7 @@ procedure TQtListView.setAttribute(Attr, Value, Typ: string);
 begin
   if (Attr = 'Movement') or (Attr = 'Flow') or
     (Attr = 'ViewMode') or (Attr = 'ResizeMode') or (Attr = 'LayoutMode') then
-    MakeAttribut(Attr, 'QListView.' + Value)
+    MakeAttribut(Attr, 'QListView.' + Attr + '.' + Value)
   else if Attr = 'ItemAlignment' then
     MakeAttribut(Attr, 'Qt.AlignmentFlag.' + Value)
   else
@@ -726,7 +730,7 @@ begin
   inherited create(AOwner);
   Tag:= 117;
   Width:= 256;
-  Height:= 192;
+  Height:= 104;
   FrameShadow:= Sunken;
   FItems:= TStringList.Create;
   FItems.Text:= 'First'#13#10'  node A'#13#10'  node B'#13#10'Second'#13#10'   node C'#13#10'    node D';
@@ -909,9 +913,9 @@ end;
 constructor TQtTableView.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
-  Tag:= 85;
+  Tag:= 119;
   Width:= 256;
-  Height:= 192;
+  Height:= 104;
   FrameShadow:= Sunken;
   FShowGrid:= true;
   FGridStyle:= SolidLine;
@@ -1355,9 +1359,9 @@ end;
 constructor TQtTreeView.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
-  Tag:= 86;
+  Tag:= 118;
   Width:= 256;
-  Height:= 192;
+  Height:= 104;
   FrameShadow:= Sunken;
   FAutoExpandDelay:= -1;
   FIndentation:= 20;

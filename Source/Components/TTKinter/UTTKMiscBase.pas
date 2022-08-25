@@ -308,8 +308,9 @@ type
 
 implementation
 
-uses Math, SysUtils, Forms, UITypes, GraphUtil, UUtils, UImages, UConfiguration,
-     UObjectGenerator, UObjectInspector, UGUIDesigner, UKoppel;
+uses Math, SysUtils, Forms, UITypes, GraphUtil, JvGnugettext,
+     UUtils, UImages, UConfiguration, UObjectGenerator, UObjectInspector,
+     UGUIDesigner, UKoppel;
 
 {--- TButtonBaseWidget --------------------------------------------------------}
 
@@ -832,6 +833,7 @@ begin
   FColumns:= 1;
   FItems:= TStringList.Create;
   FOldItems:= TStringList.Create;
+  FLabel:= ' ' + _('Continent') + ' ';
 end;
 
 destructor TTKRadiobuttonGroup.Destroy;
@@ -1015,7 +1017,7 @@ end;
 procedure TTKRadiobuttonGroup.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('ttk.Frame');
-  MakeLabel(' Continent ');
+  MakeLabel(' ' + _('Continent') + ' ');
   FItems.Text:= defaultItems;
   InsertValue('self.' + Name + 'CV = tk.StringVar()');
   InsertValue('self.' + Name + 'CV.set(' + asString(FItems[0]) + ')');

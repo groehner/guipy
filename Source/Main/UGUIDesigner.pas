@@ -119,7 +119,7 @@ uses System.Types, frmPyIDEMain, frmFile, JvGnugettext,
 {$R *.dfm}
 
 type
-  TClassArray = array [1..80] of TPersistentClass;
+  TClassArray = array [1..81] of TPersistentClass;
 
 const
   Modified = true;
@@ -136,13 +136,14 @@ const
 
     TQtLabel, TQtLineEdit, TQtPlainTextEdit, TQtPushButton, TQtCheckBox,
     TQtButtonGroup, TQtListWidget, TQtComboBox, TQtSpinBox, TQtScrollBar,
-    TQtCanvas, TQtFrame, TQtGroupBox, TQtSlider, TQtMenuBar, TQtContextMenu,
+    TQtCanvas, TQtFrame, TQtGroupBox, TQtSlider, TQtMenuBar, TQtMenu,
     TQtTabWidget, TQtTreeWidget, TQtTableWidget, TQtProgressBar, TQtStatusBar,
 
     TQtTextEdit, TQtTextBrowser, TQtToolButton, TQtCommandLinkButton,
     TQtFontComboBox, TQtDoubleSpinBox, TQtLCDNumber, TQtDateTimeEdit,
     TQtDateEdit, TQtTimeEdit, TQtDial, TQtLine, TQtScrollArea, TQtToolBox,
-    TQtStackedWidget, TQtListView, TQtColumnView, TQtTableView, TQtGraphicsView
+    TQtStackedWidget, TQtListView, TQtColumnView, TQtTreeView,
+    TQtTableView, TQtGraphicsView
   );
 
 procedure TFGUIDesigner.FormCreate(Sender: TObject);
@@ -162,7 +163,7 @@ begin
     OnControlDeleting:= ELDesignerControlDeleting;
     OnChangeSelection:= ELDesignerChangeSelection;
     OnDesignFormClose:= ELDesignerDesignFormClose;
-    OnDblClick:= ELDesignerDblClick;
+    OnDblClick       := ELDesignerDblClick;
   end;
   ELDesigner.GuiDesignerHints:= GuiPyOptions.GuiDesignerHints;
   SetOptions;
@@ -373,7 +374,7 @@ begin
     83: Result:= TQtGroupBox;
     84: Result:= TQtSlider;
     85: Result:= TQtMenuBar;
-    86: Result:= TQtContextMenu;
+    86: Result:= TQtMenu;
     87: Result:= TQtTabWidget;
     88: Result:= TQtTreeWidget;
     89: Result:= TQtTableWidget;
@@ -398,8 +399,9 @@ begin
    115: Result:= TQtStackedWidget;
    116: Result:= TQtListView;
    117: Result:= TQtColumnView;
-   118: Result:= TQtTableView;
-   119: Result:= TQtGraphicsView;
+   118: Result:= TQtTreeView;
+   119: Result:= TQtTableView;
+   120: Result:= TQtGraphicsView;
    else Result:= nil;
   end;
 end;
@@ -682,8 +684,8 @@ begin
   if ELDesigner.SelectedControls.Count = 1 then begin
     if ELDesigner.SelectedControls[0].Tag in [4, 34] then
       s:= 'def ' + ELDesigner.SelectedControls[0].Name + '_Command'
-    else if ELDesigner.SelectedControls[0].Tag = 74 then
-      s:= 'def ' + ELDesigner.SelectedControls[0].Name + '_Clicked'
+    else if ELDesigner.SelectedControls[0].Tag in [74, 103, 104] then
+      s:= 'def ' + ELDesigner.SelectedControls[0].Name + '_clicked'
     else
       s:= ELDesigner.SelectedControls[0].Name;
     GetEditForm.GoTo2(s);

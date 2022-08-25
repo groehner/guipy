@@ -7,13 +7,13 @@
 unit UQtFrameBased;
 
 { classes
-    QFrame
-      QLabel
-        QCanvas
-      QLine
-      QToolBox
-      QStackedWidget
-      QLCDNumber
+    TQtFrame
+      TQtLabel
+        TQtCanvas
+      TQtLine
+      TQtToolBox
+      TQtStackedWidget
+      TQtLCDNumber
 }
 
 interface
@@ -249,8 +249,10 @@ end;
 
 procedure TQtFrame.SetAttribute(Attr, Value, Typ: string);
 begin
-  if (Attr = 'FrameShape') or (Attr = 'FrameShadow') then
-    MakeAttribut(Attr, 'QFrame.' + Value)
+  if Attr = 'FrameShape' then
+    MakeAttribut(Attr, 'QFrame.Shape.' + Value)
+  else if Attr = 'FrameShadow' then
+    MakeAttribut(Attr, 'QFrame.Shadow.' + Value)
   else
     inherited;
 end;
@@ -695,16 +697,17 @@ procedure TQtCanvas.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('QLabel');
   Text:= '';
-  s:= surround('self.' + Name + '.setPixmap(QPixmap(self.' + Name + '.width(), self.' + Name + '.height()))');
-  s:= s + surround('self.' + Name + 'Painter = QPainter(self.' + Name + '.pixmap())');
-  s:= s + surround('self.' + Name + 'Painter.fillRect(self.' + Name + '.pixmap().rect(), Qt.GlobalColor.white)');
+  s:= surround('self.' + Name + 'Pixmap = QPixmap(self.' + Name + '.size())');
+  s:= s + surround('self.' + Name + 'Pixmap.fill()');
+  s:= s + surround('self.' + Name + 'Painter = QPainter(self.' + Name + 'Pixmap' + ') # draw with Painter');
+  s:= s + surround('self.' + Name + '.setPixmap(self.' + Name + 'Pixmap) # show the drawing');
   InsertValue(s);
 end;
 
 procedure TQtCanvas.DeleteWidget;
 begin
   inherited;
-  Partner.DeleteAttribute('self.' + Name + 'Painter');
+  Partner.DeleteAttributeValues('self.' + Name + 'Pixmap');
   Partner.DeleteAttribute('self.' + Name + 'Painter');
 end;
 
@@ -1002,7 +1005,7 @@ end;
 procedure TQtLCDNumber.setAttribute(Attr, Value, Typ: string);
 begin
   if (Attr = 'Mode') or (Attr = 'SegmentStyle') then
-    MakeAttribut(Attr, 'QLCDNumber.' + Value)
+    MakeAttribut(Attr, 'QLCDNumber.' + Attr + '.' + Value)
   else if Attr = 'Value' then
     MakeValue(Value)
   else if Attr = 'IntValue' then

@@ -7,12 +7,12 @@
 unit UQtSpinBoxes;
 
 { classes
-    QAbstractSpinBox
-      QSpinBox
-      QDoubleSpinBox
-      QDateTimeEdit
-        QDateEdit
-        QTimeEdit
+    TQtAbstractSpinBox
+      TQtSpinBox
+      TQtDoubleSpinBox
+      TQtDateTimeEdit
+        TQtDateEdit
+        TQTTimeEdit
 }
 
 
@@ -142,6 +142,7 @@ type
   published
     property Prefix: string read FPrefix write setPrefix;
     property Suffix: string read FSuffix write setSuffix;
+    property Decimals: integer read FDecimals write FDecimals;
     property Minimum: double read FMinimum write FMinimum;
     property Maximum: double read FMaximum write FMaximum;
     property SingleStep: double read FSingleStep write FSingleStep;
@@ -258,8 +259,9 @@ end;
 
 procedure TQtAbstractSpinBox.setAttribute(Attr, Value, Typ: string);
 begin
-  if (Attr = 'ButtonSymbols') or (Attr = 'CorrectionMode') then
-    MakeAttribut(Attr, 'QAbstractSpinBox.' + Value)
+  if (Attr = 'ButtonSymbols') or (Attr = 'CorrectionMode') or
+     (Attr = 'StepType') then
+    MakeAttribut(Attr, 'QAbstractSpinBox.' + Attr + '.' + Value)
   else if Attr = 'Alignment' then
     MakeAttribut(Attr, 'Qt.AlignmentFlag.' + Value)
   else if Attr = 'ShowGroupSeparator' then
@@ -497,11 +499,9 @@ end;
 
 function TQtDoubleSpinBox.getAttributes(ShowAttributes: integer): string;
 begin
-  Result:= '|Minimum|Maximum|SingleStep|Value';
+  Result:= '|Minimum|Maximum|SingleStep|Value|Decimals';
   if ShowAttributes >= 2 then
-    Result:= Result + '|Suffix|Prefix|Decimals';
-  if ShowAttributes = 3 then
-    Result:= Result + '|StepType';
+    Result:= Result + '|Suffix|Prefix|StepType';
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
@@ -594,7 +594,7 @@ constructor TQtDateTimeEdit.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 108;
-  Width:= 136;
+  Width:= 128;
   FS:= TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
   format:= myStringReplace(FS.ShortDateFormat + ' ' + FS.LongTimeFormat, '/', FS.DateSeparator);
   FDisplayFormat:= format;
@@ -617,8 +617,8 @@ begin
   Result:= '|DateTime|MaximumDateTime|MinimumDateTime|DisplayFormat';
   if ShowAttributes >= 2 then
     Result:= Result + '|Date|Time|MaximumDate|MinimumDate|MaximumTime' +
-                     '|MinimumTime|CurrentSection|CalendarPopup' +
-                     '|CurrentSectionIndex|TimeSpec';
+                      '|MinimumTime|CurrentSection|CalendarPopup' +
+                      '|CurrentSectionIndex|TimeSpec';
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
@@ -630,6 +630,10 @@ begin
     MakeDate(Value)
   else if Attr = 'Time' then
     MakeTime(Value)
+  else if Attr = 'CurrentSection' then
+    MakeAttribut(Attr, 'QDateTimeEdit.Section.' + Value)
+  else if Attr = 'TimeSpec' then
+    MakeAttribut(Attr, 'Qt.TimeSpec.' + Value)
   else
     inherited;
 end;
@@ -813,6 +817,7 @@ constructor TQtDateEdit.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 109;
+  Width:= 80;
   FS:= TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
   FDisplayFormat:= myStringReplace(FS.ShortDateFormat, '/', FS.DateSeparator);;
 end;
@@ -854,6 +859,7 @@ constructor TQtTimeEdit.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 110;
+  Width:= 80;
   FS:= TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
   FDisplayFormat:= FS.LongTimeFormat;
 end;

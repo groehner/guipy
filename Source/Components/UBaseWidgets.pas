@@ -279,7 +279,7 @@ end;
 
 procedure TBaseWidget.WrapText(Text: string; WrapWidth: integer;
                                var tw, th: integer; var SL: TStringList);
-  var s, s1, s2: string; p: integer;
+  var s, s1, s2: string; p: integer; SL1: TStringList;
 
   procedure split(s: string; var s1, s2: string);
     var p, m, n, x: integer;
@@ -313,15 +313,20 @@ procedure TBaseWidget.WrapText(Text: string; WrapWidth: integer;
 
 begin
   SL.Clear;
-  s:= myStringReplace(Text, '\n', CrLf);
-  s1:= '';
-  s2:= '';
-  while Canvas.TextWidth(s) > WrapWidth do begin
-    split(s, s1, s2);
-    SL.Add(s1);
-    s:= s2;
+  SL1:= TStringList.Create;
+  SL1.Text:= myStringReplace(Text, '\n', CrLf);
+  for p:= 0 to SL1.Count - 1 do begin
+    s:= SL1[p];
+    s1:= '';
+    s2:= '';
+    while Canvas.TextWidth(s) > WrapWidth do begin
+      split(s, s1, s2);
+      SL.Add(s1);
+      s:= s2;
+    end;
+    SL.Add(s);
   end;
-  SL.Add(s);
+  FreeAndNil(SL1);
 
   tw:= 0;
   for p:= 0 to SL.Count - 1 do

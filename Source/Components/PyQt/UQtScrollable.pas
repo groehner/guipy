@@ -7,17 +7,17 @@
 unit UQtScrollable;
 
 { classes
-    QAbstractScrollArea
-      QScrollArea
-      QPlainTextEdit
-      QTextEdit
-        QtTextBrowser
-      QGraphicsView
+    TQtAbstractScrollArea
+      TQtScrollArea
+      TQtPlainTextEdit
+      TQtTextEdit
+        TQtTextBrowser
+      TQtGraphicsView
 
-    QAbstractSlider
-      QScrollBar
-      QSlider
-      QDial
+    TQtAbstractSlider
+      TQtScrollBar
+      TQtSlider
+      TQtDial
 }
 
 interface
@@ -30,9 +30,7 @@ type
 
   TScrollBarPolicy = (ScrollBarAsNeeded, ScrollBarAlwaysOff, ScrollBarAlwaysOn);
 
-  TSizeAdjustPolicy = (AdjustIgnored, AdjutsToContentsOnFirstShow, AdjustToContents);
-
-  TLineWrapMode = (NoWrap, WidgetWidth);
+  TSizeAdjustPolicy = (AdjustIgnored, AdjustToContentsOnFirstShow, AdjustToContents);
 
   TTickPosition = (NoTicks, TicksAbove, TicksLeft, TicksBelow,
                    TicksRight, TicksBothSides);
@@ -80,6 +78,10 @@ type
    VerPattern, CrossPattern, BDiagPattern, FDiagPattern, DiagCrossPattern,
    LinearGradientPattern, RadialGradientPattern, ConicalGradientPattern);
 
+  TTextEditLineWrapMode = (NoWrap, WidgetWidth, FixedPixelWidth, FixedColumnWidth);
+  TPlainTextLineWrapMode = NoWrap..WidgetWidth;
+  TWordWrapMode = (_WW_NoWrap, _WW_WordWrap, _WW_ManualWrap, _WW_WrapAnywhere,
+                   _WW_WrapAtWordBoundaryOrAnywhere);
 
   TQtAbstractScrollArea = class(TQtFrame)
   private
@@ -121,35 +123,38 @@ type
 
   TQtPlainTextEdit = class(TQtAbstractScrollArea)
   private
-    FTabChangesFocus: boolean;
-    FDocumentTitle: string;
-    FUndoRedoEnabled: boolean;
-    FLineWrapMode: TLineWrapMode;
-    FReadOnly: boolean;
-    FPlainText: string;
-    FOverwriteMode: boolean;
-    FTabStopWidth: integer;
-    FTabStopDistance: integer;
-    FCursorWidth: integer;
-    FMaximumBlockCount: integer;
     FBackgroundVisible: boolean;
-    FCenterOnScroll: boolean;
-    FPlaceHolderText: string;
     FBlockCountChanged: string;
+    FCenterOnScroll: boolean;
     FCopyAvailable: string;
     FCursorPositionChanged: string;
+    FCursorWidth: integer;
+    FDocumentTitle: string;
+    FLineWrapMode: TPlainTextLineWrapMode;
+    FMaximumBlockCount: integer;
     FModificationChanged: string;
+    FOverwriteMode: boolean;
+    FPlaceHolderText: string;
+    FPlainText: TStrings;
+    FReadOnly: boolean;
     FRedoAvailable: string;
     FSelectionChanged: string;
+    FTabChangesFocus: boolean;
+    FTabStopDistance: integer;
+    FTabStopWidth: integer;
     FTextChanged: string;
     FUndoAvailable: string;
+    FUndoRedoEnabled: boolean;
     FUpdateRequest: string;
+    FWordWrapMode: TWordWrapMode;
     procedure setTabChangesFocus(Value: boolean);
-    procedure setLineWrapMode(Value: TLineWrapMode);
-    procedure setPlainText(Value: string);
+    procedure setLineWrapMode(Value: TPlainTextLineWrapMode);
+    procedure setPlainText(Value: TStrings);
     procedure setPlaceholderText(Value: string);
+    procedure MakePlainText;
   public
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getEvents(ShowEvents: integer): string; override;
@@ -161,9 +166,9 @@ type
     property TabChangesFocus: boolean read FTabChangesFocus write setTabChangesFocus;
     property DocumentTitle: string read FDocumentTitle write FDocumentTitle;
     property UndoRedoEnabled: boolean read FUndoRedoEnabled write FUndoRedoEnabled;
-    property LineWrapMode: TLineWrapMode read FLineWrapMode write setLineWrapMode;
+    property LineWrapMode: TPlainTextLineWrapMode read FLineWrapMode write setLineWrapMode;
     property ReadOnly: boolean read FReadOnly write FReadOnly;
-    property PlainText: string read FPlainText write setPlainText;
+    property PlainText: TStrings read FPlainText write setPlainText;
     property OverwriteMode: boolean read FOverwriteMode write FOverwriteMode;
     property TabStopWidth: integer read FTabStopWidth write FTabStopWidth;
     property TabStopDistance: integer read FTabStopDistance write FTabStopDistance;
@@ -173,6 +178,7 @@ type
     property BackgroundVisible: boolean read FBackgroundVisible write FBackgroundVisible;
     property CenterOnScroll: boolean read FCenterOnScroll write FCenterOnScroll;
     property PlaceholderText: string read FPlaceholderText write setPlaceholderText;
+    property WordWrapMode: TWordWrapMode read FWordWrapMode write FWordWrapMode;
     // signals
     property blockCountChanged: string read FBlockCountChanged write FBlockCountChanged;
     property copyAvailable: string read FCopyAvailable write FCopyAvailable;
@@ -191,11 +197,11 @@ type
     FTabChangesFocus: boolean;
     FDocumentTitle: string;
     FUndoRedoEnabled: boolean;
-    FLineWrapMode: TLineWrapMode;
+    FLineWrapMode: TTextEditLineWrapMode;
     FLineWarpColumnOrWidth: integer;
     FReadOnly: boolean;
     FMarkDown: string;
-    FHtml: string;
+    FHtml: TStrings;
     FOverwriteMode: boolean;
     FTabStopWidth: integer;
     FTabStopDistance: double;
@@ -209,12 +215,15 @@ type
     FSelectionChanged: string;
     FTextChanged: string;
     FUndoAvailable: string;
-    procedure setLineWrapMode(Value: TLineWrapMode);
-    procedure setHTML(Value: String);
+    FWordWrapMode: TWordWrapMode;
+    procedure setLineWrapMode(Value: TTextEditLineWrapMode);
+    procedure setHTML(Value: TStrings);
     procedure setPlaceholderText(Value: string);
     procedure MakeAutoFormatting;
+    procedure MakeHTML;
   public
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getEvents(ShowEvents: integer): string; override;
@@ -228,12 +237,12 @@ type
     property TabChangesFocus: boolean read FTabChangesFocus write FTabChangesFocus;
     property DocumentTitle: string read FDocumentTitle write FDocumentTitle;
     property UndoRedoEnabled: boolean read FUndoRedoEnabled write FUndoRedoEnabled;
-    property LineWrapMode: TLineWrapMode read FLineWrapMode write setLineWrapMode;
+    property LineWrapMode: TTextEditLineWrapMode read FLineWrapMode write setLineWrapMode;
     property LineWarpColumnOrWidth: integer
       read FLineWarpColumnOrWidth write FLineWarpColumnOrWidth;
     property ReadOnly: boolean read FReadOnly write FReadOnly;
     property MarkDown: string read FMarkDown write FMarkDown;
-    property Html: String read FHtml write setHtml;
+    property Html: TStrings read FHtml write setHtml;
     property OverwriteMode: boolean read FOverwriteMode write FOverwriteMode;
     property TextInteractionFlags;
     property TabStopWidth: integer read FTabStopWidth write FTabStopWidth;
@@ -241,6 +250,7 @@ type
     property AcceptRichText: boolean read FAcceptRichText write FAcceptRichText;
     property CursorWidth: integer read FCursorWidth write FCursorWidth;
     property PlaceholderText: string read FPlaceholderText write setPlaceholderText;
+    property WordWrapMode: TWordWrapMode read FWordWrapMode write FWordWrapMode;
     // signals
     property copyAvailable: string read FCopyAvailable write FCopyAvailable;
     property currentCharFormatChanged: string read FCurrentCharFormatChanged write FCurrentCharFormatChanged;
@@ -254,7 +264,7 @@ type
   TQtTextBrowser = class(TQtTextEdit)
   private
     FSource: string;
-    FSearchPaths: string;
+    FSearchPaths: TStrings;
     FOpenExternalLinks: boolean;
     FOpenLinks: boolean;
     FAnchorClicked: string;
@@ -263,16 +273,19 @@ type
     FHighlighted: string;
     FHistoryChanged: string;
     FSourceChanged: string;
+    function getSearchPaths: string;
   public
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     function getAttributes(ShowAttributes: integer): string; override;
+    procedure setAttribute(Attr, Value, Typ: string); override;
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: String = ''); override;
   published
     property Source: string read FSource write FSource;
-    property SearchPaths: string read FSearchPaths write FSearchPaths;
+    property SearchPaths: TStrings read FSearchPaths write FSearchPaths;
     property OpenExternalLinks: boolean read FOpenExternalLinks write FOpenExternalLinks;
     property OpenLinks: boolean read FOpenLinks write FOpenLinks;
     // signals
@@ -396,8 +409,8 @@ type
     procedure setTickInterval(Value: integer);
   public
     constructor Create(AOwner: TComponent); override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
+    procedure setAttribute(Attr, Value, Typ: string); override;
     procedure NewWidget(Widget: String = ''); override;
     procedure Paint; override;
   published
@@ -442,7 +455,7 @@ function TQtAbstractScrollArea.getAttributes(ShowAttributes: integer): string;
 begin
   Result:= '|VerticalScrollBarPolicy|HorizontalScrollBarPolicy|';
   if ShowAttributes = 3 then
-    Result:= Result + '|FSizeAdjustPolicy';
+    Result:= Result + '|SizeAdjustPolicy';
   Result:= Result + inherited getAttributes(ShowAttributes)
 end;
 
@@ -450,6 +463,8 @@ procedure TQtAbstractScrollArea.SetAttribute(Attr, Value, Typ: string);
 begin
   if (Attr = 'HorizontalScrollBarPolicy') or (Attr = 'VerticalScrollBarPolicy')  then
     MakeAttribut(Attr, 'Qt.ScrollBarPolicy.' + Value)
+  else if Attr = 'SizeAdjustPolicy' then
+    MakeAttribut(Attr, 'QAbstractScrollArea.SizeAdjustPolicy.' + Value)
   else
     inherited;
 end;
@@ -579,6 +594,13 @@ begin
   FTabStopdistance:= 80;
   Cursor:= crIBeam;
   FCursorWidth:= 1;
+  FPlainText:= TStringList.Create;
+end;
+
+destructor TQtPlainTextEdit.Destroy;
+begin
+  FreeAndNil(FPlainText);
+  inherited;
 end;
 
 function TQtPlainTextEdit.getAttributes(ShowAttributes: integer): string;
@@ -590,14 +612,18 @@ begin
     Result:= Result + '|TabChangesFocus|UndoRedoEnabled|ReadOnly|DocumentTitle' +
                       '|OverwriteMode|TabStopWidth|TabStopDistance|CursorWidth' +
                       '|MaximumBlockCount|BackgroundVisible|CenterOnScroll' +
-                      '|TextInteractionFlags';
+                      '|TextInteractionFlags|WordWrapMode';
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
 procedure TQtPlainTextEdit.setAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'LineWrapMode'  then
-    Makeattribut(Attr, 'QPlainTextEdit.' + Value)
+    MakeAttribut(Attr, 'QPlainTextEdit.LineWrapMode.' + Value)
+  else if Attr = 'PlainText' then
+    MakePlainText
+  else if Attr = 'WordWrapMode' then
+    MakeAttribut(Attr, 'QTextOption.WrapMode.' + Value)
   else
     inherited;
 end;
@@ -649,6 +675,11 @@ begin
   inherited;
 end;
 
+procedure TQtPlainTextEdit.MakePlainText;
+begin
+  MakeAttribut('PlainText', asString(myStringReplace(FPlainText.Text, sLineBreak, '\n')));
+end;
+
 procedure TQtPlainTextEdit.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('QPlainTextEdit');
@@ -660,15 +691,16 @@ procedure TQtPlainTextEdit.Paint;
 begin
   inherited;
   R:= InnerRect;
+  R.Inflate(-HalfX, -HalfX);
   Canvas.Brush.Color:= clWhite;
   Canvas.FillRect(R);
   SL:= TStringList.Create;
   format:= DT_LEFT;
   if FLineWrapMode = WidgetWidth then begin
     format:= format + DT_WORDBREAK;
-    WrapText(FPlainText, R.Right - R.Left, w, h, SL);
+    WrapText(FPlainText.Text, R.Right - R.Left, w, h, SL);
   end else
-    CalculateText(FPlainText, w, h, SL);
+    CalculateText(FPlainText.Text, w, h, SL);
   if SL.Text <> CrLf then
     DrawText(Canvas.Handle, PChar(SL.Text), Length(SL.Text), R, format);
   FreeAndNil(SL);
@@ -682,7 +714,7 @@ begin
   end;
 end;
 
-procedure TQtPlainTextEdit.setLineWrapMode(Value: TLineWrapMode);
+procedure TQtPlainTextEdit.setLineWrapMode(Value: TPlainTextLineWrapMode);
 begin
   if Value <> FLineWrapMode then begin
     FLineWrapMode:= Value;
@@ -690,10 +722,10 @@ begin
   end;
 end;
 
-procedure TQtPlainTextEdit.setPlainText(Value: string);
+procedure TQtPlainTextEdit.setPlainText(Value: TStrings);
 begin
-  if Value <> FPlainText then begin
-    FPlainText:= Value;
+  if Value.text <> FPlainText.Text then begin
+    FPlainText.Assign(Value);
     Invalidate;
   end;
 end;
@@ -709,6 +741,7 @@ end;
 {--- TQtTextEdit --------------------------------------------------------------}
 
 constructor TQtTextEdit.Create(AOwner: TComponent);
+  var SL: TStringList;
 begin
   inherited create(AOwner);
   Tag:= 101;
@@ -719,11 +752,25 @@ begin
   LineWidth:= 1;
   FUndoRedoEnabled:= true;
   FLineWrapMode:= WidgetWidth;
+  FHtml:= TStringList.Create;
+  SL:= TStringList.Create;
+  SL.Text:= DefaultItems;
+  var s:= '<ul>'#13#10;
+  for var i:= 0 to SL.Count-1 do
+    s:= s  + '<li>' + SL[i] + '</li>' + #13#10;
+  FHtml.Text:= s + '</ul>'#13#10;
+  FreeAndNil(SL);
   FTabStopWidth:= 80;
   FTabStopDistance:= 80;
   FAcceptRichtext:= true;
   FCursorWidth:= 1;
   Cursor:= crIBeam;
+end;
+
+destructor TQtTextEdit.Destroy;
+begin
+  inherited;
+  FreeAndNil(FHtml);
 end;
 
 function TQtTextEdit.getAttributes(ShowAttributes: integer): string;
@@ -732,7 +779,7 @@ begin
            '|Html|OverwriteMode|TabStopWidth|AcceptRichText|PlaceholderText';
   if ShowAttributes >= 2 then
     Result:= Result + '|CursorWidth|TextInteractionFlags|TabStopDistance' +
-              '|LineWrapColumnsOrWidth|LineWrapMode|TabChangesFocus';
+              '|LineWrapColumnsOrWidth|LineWrapMode|TabChangesFocus|WordWrapMode';
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
@@ -744,6 +791,10 @@ begin
     MakeAutoFormatting
   else if (Pos('Text', Attr) = 1) or (Pos('Link', Attr) = 1) or (Attr = 'NoTextInteraction') then
     MakeTextInteraction
+  else if Attr = 'Html' then
+    MakeHTML
+  else if Attr = 'WordWrapMode' then
+    MakeAttribut(Attr, 'QTextOption.WrapMode.' + Value)
   else
     inherited;
 end;
@@ -817,21 +868,42 @@ begin
     Partner.DeleteAttribute('self.' + name + '.setAutoFormatting');
 end;
 
+procedure TQtTextedit.MakeHTML;
+begin
+  MakeAttribut('Html', asString(myStringReplace(FHtml.Text, sLineBreak, '\n')));
+end;
+
 procedure TQtTextEdit.NewWidget(Widget: String = '');
 begin
-  if Widget = ''
-    then inherited NewWidget('QTextEdit')
-    else inherited NewWidget('QTextBrowser');
+  if Widget = ''then begin
+    inherited NewWidget('QTextEdit');
+    MakeHTML;
+  end else
+    inherited NewWidget('QTextBrowser');
 end;
 
 procedure TQtTextEdit.Paint;
+  var w, h, format: integer;
+      SL: TStringList; R: TRect;
 begin
   inherited;
+  R:= InnerRect;
+  R.Inflate(-HalfX, -HalfX);
   Canvas.Brush.Color:= clWhite;
-  Canvas.FillRect(InnerRect);
+  Canvas.FillRect(R);
+  SL:= TStringList.Create;
+  format:= DT_LEFT;
+  if FLineWrapMode = WidgetWidth then begin
+    format:= format + DT_WORDBREAK;
+    WrapText(FHtml.Text, R.Right - R.Left, w, h, SL);
+  end else
+    CalculateText(FHtml.Text, w, h, SL);
+  if SL.Text <> CrLf then
+    DrawText(Canvas.Handle, PChar(SL.Text), Length(SL.Text), R, format);
+  FreeAndNil(SL);
 end;
 
-procedure TQtTextEdit.setLineWrapMode(Value: TLineWrapMode);
+procedure TQtTextEdit.setLineWrapMode(Value: TTextEditLineWrapMode);
 begin
   if Value <> FLineWrapMode then begin
     FLineWrapMode:= Value;
@@ -839,10 +911,10 @@ begin
   end;
 end;
 
-procedure TQtTextEdit.setHTML(Value: String);
+procedure TQtTextEdit.setHTML(Value: TStrings);
 begin
-  if Value <> FHtml then begin
-    FHtml:= Value;
+  if Value.Text <> FHtml.Text then begin
+    FHtml.Assign(Value);
     Invalidate;
   end;
 end;
@@ -861,18 +933,43 @@ constructor TQtTextBrowser.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 102;
-  Width:= 256;
-  Height:= 192;
   FrameShape:= StyledPanel;
   FrameShadow:= Sunken;
   LineWidth:= 1;
   FOpenLinks:= true;
+  FSearchPaths:= TStringList.Create;
+  FSearchPaths.Text:= '';
+end;
+
+destructor TQtTextBrowser.Destroy;
+begin
+  inherited;
+  FreeAndNil(FSearchPaths);
 end;
 
 function TQtTextBrowser.getAttributes(ShowAttributes: integer): string;
 begin
   Result:= '|Source|SearchPaths|OpenExternalLinks|OpenLinks';
   Result:= Result + inherited getAttributes(ShowAttributes);
+end;
+
+procedure TQtTextBrowser.setAttribute(Attr, Value, Typ: string);
+begin
+  if Attr = 'SearchPaths' then
+    MakeAttribut(Attr, getSearchPaths)
+  else if Attr = 'Source' then
+    MakeAttribut(Attr, 'QUrl(' + asString(Value) + ')')
+  else
+    inherited;
+end;
+
+function TQtTextBrowser.getSearchPaths: string;
+begin
+  Result:= '';
+  for var i:= 0 to FSearchPaths.Count - 1 do
+    Result:= Result + asString(FSearchPaths[i]) + ', ';
+  delete(Result, Length(Result) - 1, 2);
+  Result:= '[' + Result + ']';
 end;
 
 function TQtTextBrowser.getEvents(ShowEvents: integer): string;
@@ -916,9 +1013,9 @@ end;
 constructor TQtGraphicsView.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
-  Tag:= 119;
+  Tag:= 120;
   Width:= 256;
-  Height:= 192;
+  Height:= 104;
   FrameShape:= StyledPanel;
   FrameShadow:= Sunken;
   LineWidth:= 1;
@@ -964,11 +1061,14 @@ end;
 
 procedure TQtGraphicsView.setAttribute(Attr, Value, Typ: string);
 begin
-  if (Attr = 'ViewportUpdateMode') or (Attr = 'DragMode') or (Attr = 'CacheMode') or
-    (Attr = 'ResizeAnchor') or (Attr = 'RubberBandSelectionMode') or
-    (Attr = 'TransformationAnchor')
-  then
-    MakeAttribut(Attr, 'QGraphicsView.' + Value)
+  if Attr = 'CacheMode' then
+    MakeAttribut(Attr, 'QGraphicsView.CacheModeFlag.' + Value)
+  else if (Attr = 'ViewportUpdateMode') or (Attr = 'DragMode') then
+    MakeAttribut(Attr, 'QGraphicsView.' + Attr + '.' + Value)
+  else if (Attr = 'ResizeAnchor') or (Attr = 'TransformationAnchor') then
+    MakeAttribut(Attr, 'QGraphicsView.ViewportAnchor.' + Value)
+  else if Attr = 'RubberBandSelectionMode' then
+    MakeAttribut(Attr, 'Qt.' + Value)
   else if (Pos('Antialiasing', Attr) > 0) or (Attr = 'SmoothPixmapTransform') or
     (Attr = 'LosslessImageRendering') then
     MakeRenderHints
@@ -1132,7 +1232,7 @@ constructor TQtScrollBar.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 80;
-  Width:= 160;
+  Width:= 120;
   Height:= 16;
   FMaximum:= 99;
   FSingleStep:= 1;
@@ -1159,7 +1259,7 @@ constructor TQtSlider.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 84;
-  Width:= 160;
+  Width:= 120;
   Height:= 24;
   FMaximum:= 99;
   FSingleStep:= 1;
@@ -1171,8 +1271,8 @@ end;
 
 procedure TQtSlider.setAttribute(Attr, Value, Typ: string);
 begin
-  if Attr = 'TickPosition'  then
-    MakeAttribut(Attr, 'QSlider.' + Value)
+  if Attr = 'TickPosition' then
+    MakeAttribut(Attr, 'QSlider.TickPosition.' + Value)
   else
     inherited;
 end;

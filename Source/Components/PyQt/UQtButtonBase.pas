@@ -30,8 +30,7 @@ type
                       ToolButtonTextBesideIcon, ToolButtonTextUnderIcon,
                       ToolButtonFollowStyle);
 
-  TArrowType = (NoArrow, UpArrow, DownArrow, LeftArrow,
-                RightArrow);
+  TArrowType = (NoArrow, UpArrow, DownArrow, LeftArrow, RightArrow);
 
   TQtAbstractButton = class(TBaseQtWidget)
   private
@@ -213,7 +212,7 @@ end;
 function TQtAbstractButton.HandlerInfo(const event: string): string;
 begin
   if (event = 'clicked') or (event = 'toggled') then
-    Result:= 'bool;ckecked'
+    Result:= 'bool;checked'
   else
     Result:= inherited;
 end;
@@ -563,7 +562,7 @@ begin
   if (Attr = 'ToolButtonStyle') or (Attr = 'ArrowType') then
     MakeAttribut(Attr, 'Qt.' + Attr + '.' + Value)
   else if Attr = 'PopupMode'  then
-    MakeAttribut(Attr, 'QToolButton.' + Value)
+    MakeAttribut(Attr, 'QToolButton.ToolButtonPopupMode.' + Value)
   else
     inherited;
 end;

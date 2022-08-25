@@ -1278,6 +1278,7 @@ type
     mnFileNewQtApplication: TSpTBXItem;
     actFileNewTkApp: TAction;
     actFileNewQtApp: TAction;
+    TBQtTreeView: TToolButton;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);

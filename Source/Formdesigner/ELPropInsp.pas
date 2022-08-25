@@ -3682,17 +3682,19 @@ begin
     // Anchor and LabelAnchor
     if (Propname = 'Anchor') or (Propname = 'Offset') then s:= '_TA_' + s else
     if Right(Propname, -6) = 'Relief' then s:= '_TR_' + s else
-    if Propname = 'Compound'    then s:= '_TC_' + s else
-    if Propname = 'Wrap'        then s:= '_TW_' + s else
-    if Propname = 'Justify'     then s:= '_TJ_' + s else
-    if Propname = 'ActiveStyle' then s:= '_TS_' + s else
-    if Propname = 'LabelAnchor' then s:= '_TL_' + s else
-    if Propname = 'Type_'       then s:= '_TT_' + s else
-    if Propname = 'Scrollbars'  then s:= '_TB_' + s else
-    if Propname = 'Validate'    then s:= '_TV_' + s else
-    if Propname = 'Side'        then s:= '_TS_' + s else
-    if Propname = 'Mode'        then s:= '_MO_' + s else
-    if (Propname = 'State') and (PropTypeInfo.Name = 'TTextState2') then s:= '_TS_' + s;
+    if Propname = 'Compound'     then s:= '_TC_' + s else
+    if Propname = 'Wrap'         then s:= '_TW_' + s else
+    if Propname = 'Justify'      then s:= '_TJ_' + s else
+    if Propname = 'ActiveStyle'  then s:= '_TS_' + s else
+    if Propname = 'LabelAnchor'  then s:= '_TL_' + s else
+    if Propname = 'Type_'        then s:= '_TT_' + s else
+    if Propname = 'Scrollbars'   then s:= '_TB_' + s else
+    if Propname = 'Validate'     then s:= '_TV_' + s else
+    if Propname = 'Side'         then s:= '_TS_' + s else
+    if Propname = 'Mode'         then s:= '_MO_' + s else
+    if Propname = 'WordWrapMode' then s:= '_WW_' + s else
+    if (Propname = 'State') and (PropTypeInfo.Name = 'TTextState2')
+      then s:= '_TS_' + s;
     LI:= GetEnumValue(PropTypeInfo, s);
     with GetTypeData(PropTypeInfo)^ do
       if (LI < MinValue) or (LI > MaxValue) then

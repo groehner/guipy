@@ -232,7 +232,7 @@ procedure TBaseQtWidget.setAttribute(Attr, Value, Typ: string);
 begin
   if isFontAttribute(Attr)then
     MakeFont
-  else if Attr = 'Cursor' then  // ok
+  else if Attr = 'Cursor' then
     MakeAttribut(Attr, 'QCursor(Qt.CursorShape.' + Value + ')')
   else if Attr = 'ContextMenu' then
     MakeContextMenu(Value)

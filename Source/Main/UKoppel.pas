@@ -130,7 +130,7 @@ begin
     83: Result:= 'GroupBox';
     84: Result:= 'Slider';
     85: Result:= 'MenuBar';
-    86: Result:= 'ContextMenu';
+    86: Result:= 'Menu';
     87: Result:= 'TabWidget';
     88: Result:= 'TreeWidget';
     89: Result:= 'TableWidget';
@@ -154,8 +154,9 @@ begin
    115: Result:= 'StackedWidget';
    116: Result:= 'ListView';
    117: Result:= 'ColumnView';
-   118: Result:= 'TableView';
-   119: Result:= 'GraphicsView';
+   118: Result:= 'TreeView';
+   119: Result:= 'TableView';
+   120: Result:= 'GraphicsView';
   end;
 end;
 

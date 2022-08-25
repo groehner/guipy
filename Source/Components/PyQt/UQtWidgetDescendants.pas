@@ -15,7 +15,7 @@ unit UQtWidgetDescendants;
     TQtGroupBox
     TQtTabWidget
     TQtMenuBar
-    TQtContextMenu
+    TQtMenu
     TQtButtonGroup
     TQtMainWindow
 }
@@ -25,8 +25,8 @@ interface
 uses
   Windows, Messages, Controls, Graphics, Classes, UBaseQtWidgets;
 
-
 type
+
   TEchoMode = (Normal, NoEcho, Password, PasswordEchoOnEdit);
 
   TCursorMoveStyle = (LogicalMoveStyle, VisualMoveStyle);
@@ -373,7 +373,7 @@ type
     property triggered: string read FTriggered write FTriggered;
   end;
 
-  TQtContextMenu = class(TQtMenuBar)
+  TQtMenu = class(TQtMenuBar)
   public
     constructor Create(AOwner: TComponent); override;
     procedure DeleteWidget; override;
@@ -446,7 +446,7 @@ type
 
 implementation
 
-uses SysUtils, Math, Types, UITypes, UImages, UUtils, UGUIDesigner;
+uses SysUtils, Math, Types, UITypes, JvGnugettext, UImages, UUtils, UGUIDesigner;
 
 {--- TQtLineEdit --------------------------------------------------------------}
 
@@ -477,7 +477,7 @@ end;
 procedure TQtLineEdit.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'EchoMode'  then
-    MakeAttribut(Attr, 'QLineEdit.' + Value)
+    MakeAttribut(Attr, 'QLineEdit.EchoMode.' + Value)
   else if Attr = 'CursorMoveStyle' then
     MakeAttribut(Attr, 'Qt.CursorMoveStyle.' + Value)
   else
@@ -630,7 +630,7 @@ begin
     var s:= 'self.' + Name  + '.setModel';
     setAttributValue(s, s + '(QStringListModel(' + getListItems + '))');
   end else if (Attr = 'InsertPolicy') or (Attr = 'SizeAdjustPolicy') then
-    MakeAttribut(Attr, 'QComboBox.' + Value)
+    MakeAttribut(Attr, 'QComboBox.' + Attr + '.' + Value)
   else
     inherited;
 end;
@@ -809,7 +809,7 @@ begin
   else if (Attr = 'CurrentFont') or (Pos(Attr, ' Name Size Bold Italic ') > 0) then
     MakeFont
   else if Attr = 'WritingSystem' then
-    MakeAttribut(Attr, 'QFontDatabase.' + Value)
+    MakeAttribut(Attr, 'QFontDatabase.WritingSystem.' + Value)
   else
     inherited;
 end;
@@ -1286,7 +1286,7 @@ constructor TQtTabWidget.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 87;
-  Width:= 120;
+  Width:= 160;
   Height:= 80;
   FTabs:= TStringList.Create;
   FTabs.Text:= 'Tab 1'#13#10'Tab 2'#13#10'Tab 3'#13#10;
@@ -1318,7 +1318,7 @@ end;
 procedure TQtTabWidget.setAttribute(Attr, Value, Typ: string);
 begin
   if (Attr = 'TabPosition') or (Attr = 'TabShape') then
-    MakeAttribut(Attr, 'QTabWidget.' + Value)
+    MakeAttribut(Attr, 'QTabWidget.' + Attr + '.' + Value)
   else if Attr = 'Tabs' then
     MakeTabs
   else
@@ -1806,9 +1806,9 @@ begin
   Canvas.TextOut(3, 3, s);
 end;
 
-{--- TQtContextMenu -----------------------------------------------------------}
+{--- TQtMenu -----------------------------------------------------------}
 
-constructor TQtContextMenu.create(AOwner: TComponent);
+constructor TQtMenu.create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 86;
@@ -1819,24 +1819,24 @@ begin
   Sizeable:= false;
 end;
 
-procedure TQtContextMenu.NewWidget(Widget: String = '');
+procedure TQtMenu.NewWidget(Widget: String = '');
 begin
   MenuItemsOld.Text:= '';
   MakeMenuItems;
 end;
 
-function TQtContextMenu.getCreateMenu: string;
+function TQtMenu.getCreateMenu: string;
 begin
   Result:= Indent2 + 'self.' + Name + ' = QMenu()';
 end;
 
-procedure TQtContextMenu.DeleteWidget;
+procedure TQtMenu.DeleteWidget;
 begin
   inherited;
   Partner.DeleteAttribute('self.' + Name + '.actions');
 end;
 
-procedure TQtContextMenu.Paint;
+procedure TQtMenu.Paint;
 begin
   Canvas.Rectangle(Rect(0, 0, Width, Height));
   DrawBitmap(7, 4, 18, Canvas, DMImages.ILSwing1);
@@ -1849,10 +1849,11 @@ begin
   inherited create(AOwner);
   Tag:= 67;
   Width:= 120;
-  Height:= 120;
+  Height:= 80;
   FColumns:= 1;
   FItems:= TStringList.Create;
   FOldItems:= TStringList.Create;
+  FTitle:= ' ' + _('Continent') + ' ';
 end;
 
 destructor TQtButtonGroup.Destroy;
@@ -1955,7 +1956,7 @@ begin
 end;
 
 procedure TQtButtonGroup.setPositionAndSize;
-  var col, row, ItemsInCol, line, x, y, dx, th: integer;
+  var col, row, ItemsInCol, line, x, y, dx, dy, th: integer;
       RadioHeight, RadioWidth, ColWidth, RowHeight, ColWidthRest, RowHeightRest: integer;
       xold, yold,ColWidthI, RowHeightI: integer;
       key: string;
@@ -1966,10 +1967,12 @@ begin
   th:= Canvas.TextHeight('Hg');
   if FTitle = '' then begin
     RadioWidth:= Width;
-    RadioHeight:= Height;
+    RadioHeight:= Height - 4;
+    dy:= 2;
   end else begin
     RadioWidth:= Width - 4;
     RadioHeight:= Height - th - 4;
+    dy:= 2 + th;
   end;
   dx:= Canvas.TextWidth('x');
 
@@ -1996,7 +1999,7 @@ begin
           then RowHeightI:= RowHeight + 1
           else RowHeightI:= RowHeight;
         if row = 0
-          then y:= th
+          then y:= dy
           else y:= yold + RowHeightI;
         dec(RowHeightRest);
         key:= RBName(line) + '.setGeometry';
@@ -2022,7 +2025,7 @@ end;
 procedure TQtButtonGroup.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('QGroupBox');
-  MakeTitle(' Continent ');
+  MakeTitle(' ' + _('Continent') + ' ');
   FItems.Text:= defaultItems;
   MakeButtongroupItems;
 end;
