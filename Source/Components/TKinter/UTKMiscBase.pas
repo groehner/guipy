@@ -7,7 +7,7 @@
 
 unit UTKMiscBase;
 
-{ class hierarchie
+{ class hierarchy
 
   TKMiscBaseWidget
     TKFrame
@@ -216,18 +216,19 @@ type
     FActiveBorderWidth: integer;
     FActiveForeground: TColor;
     FDisabledForeground: TColor;
-    FMenuItems: TStringList;
+    FMenuItems: TStrings;
     FPostCommand: Boolean;
     FSelectColor: TColor;
     FType: TType;
-
-    procedure setItems(aItems: TStringList);
+    procedure setItems(aItems: TStrings);
     procedure MakeMenuItems;
     function hasSubMenu(MenuItems: TStrings; i: integer): boolean;
     function makeMenuName(m, s: string): string;
-    procedure CalculateMenus(MenuItems, PyMenu, PyMethods: TStringList);
+    procedure CalculateMenus(MenuItems, PyMenu, PyMethods: TStrings);
+  protected
+    function MakeMenubar: string; virtual;
   public
-    MenuItemsOld: TStringList;
+    MenuItemsOld: TStrings;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure NewWidget(Widget: String = ''); override;
@@ -246,7 +247,7 @@ type
     property DisabledForeground: TColor read FDisabledForeground write FDisabledForeground default clGrayText;
     property Foreground;
     property Font;
-    property MenuItems: TStringList read FMenuItems write setItems;
+    property MenuItems: TStrings read FMenuItems write setItems;
     property PostCommand: Boolean read FPostCommand write FPostCommand;
     property Relief;
     // doesn't work
@@ -255,9 +256,10 @@ type
   end;
 
   TKMenu = class(TKPopupMenu)
+  protected
+    function MakeMenubar: string; override;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure NewWidget(Widget: String = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
   end;
@@ -315,9 +317,11 @@ type
     FLabel: string;
     FItems: TStrings;
     FOldItems: TStrings;
+    FCheckboxes: boolean;
     procedure setColumns(Value: integer);
     procedure setLabel(Value: string);
     procedure setItems(Value: TStrings);
+    procedure setCheckboxes(Value: boolean);
     procedure ChangeCommand(Value: string);
     procedure MakeButtongroupItems;
     procedure MakeLabel(aLabel: string);
@@ -329,6 +333,7 @@ type
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure NewWidget(Widget: String = ''); override;
+    procedure DeleteWidget; override;
     procedure MakeCommand(Attr, Value: String); override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
@@ -338,6 +343,7 @@ type
     property Command;
     property Font;
     property Label_: string read FLabel write setLabel;
+    property Checkboxes: boolean read FCheckboxes write setCheckboxes;
   end;
 
 implementation
@@ -350,6 +356,8 @@ uses Math, SysUtils, Forms, UITypes, GraphUtil, UUtils, UImages, UConfiguration,
 constructor TKMiscBaseWidget.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
+  Width:= 120;
+  Height:= 80;
   BorderWidth:= '1';
   FContainer:= false;
   FOrient:= vertical;
@@ -390,8 +398,6 @@ constructor TKFrame.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 13;
-  Width:= 150;
-  Height:= 150;
   ControlStyle := [csAcceptsControls];
   BorderWidth:= '0';
   HighlightThickness:= '0';
@@ -421,8 +427,6 @@ constructor TKLabelframe.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 14;
-  Width:= 150;
-  Height:= 150;
   BorderWidth:= '2';
   HighlightThickness:= '0';
   FLabelAnchor:= _TL_nw;
@@ -507,8 +511,6 @@ constructor TKMessage.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 10;
-  Height:= 100;
-  Width:= 150;
   FAnchor:= _TA_center;
   FAspect:= 150;
   HighlightThickness:= '0';
@@ -667,8 +669,8 @@ constructor TKScale.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 15;
-  Width:= 100;
-  Height:= 150;
+  Width:= 80;
+  Height:= 120;
   FBigIncrement:= 0;
   FDigits:= 0;
   HighlightThickness:= '2';
@@ -955,8 +957,8 @@ constructor TKScrollbar.create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 12;
-  Width:= 20;
-  Height:= 150;
+  Width:= 16;
+  Height:= 160;
   FActiveRelief:= _TR_raised;
   FElementBorderWidth:= -1;
   HighlightThickness:= '0';
@@ -992,9 +994,8 @@ constructor TKPopupMenu.create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 20;
-  Width:= 23;
-  Height:= 19;
-  Sizeable:= false;
+  Width:= 31;
+  Height:= 27;
   ActiveBackground:= clHighlight;
   FActiveBorderWidth:= 1;
   FActiveForeground:= clHighlightText;
@@ -1026,9 +1027,14 @@ end;
 
 procedure TKPopupMenu.NewWidget(Widget: String = '');
 begin
-  InsertVariable('self.' + Name + ' = tk.Menu(tearoff=0)');
+  InsertValue(Indent2 + 'self.' + Name + ' = tk.Menu(tearoff=0)');
   MenuItemsOld.Text:= '';
   MakeMenuItems;
+end;
+
+function TKPopupMenu.MakeMenubar: string;
+begin
+  Result:= '';
 end;
 
 procedure TKPopupMenu.SetPositionAndSize;
@@ -1036,7 +1042,7 @@ begin
   // do nothing
 end;
 
-procedure TKPopupMenu.setItems(aItems: TStringList);
+procedure TKPopupMenu.setItems(aItems: TStrings);
 begin
   MenuItemsOld.Text:= FMenuItems.Text;
   if aItems.Text <> FMenuItems.Text then
@@ -1059,7 +1065,7 @@ end;
 function TKPopupMenu.hasSubMenu(MenuItems: TStrings; i: integer): boolean;
 begin
   Result:= (i < MenuItems.count - 1) and
-           (LeftSpaces(MenuItems.Strings[i], 2) < LeftSpaces(MenuItems.Strings[i+1], 2));
+           (LeftSpaces(MenuItems[i], 2) < LeftSpaces(MenuItems[i+1], 2));
 end;
 
 function TKPopupMenu.makeMenuName(m, s: string): string;
@@ -1069,7 +1075,7 @@ begin
   Result:= m + OnlyCharsAndDigits(s) + 'Menu';
 end;
 
-procedure TKPopupMenu.CalculateMenus(MenuItems, PyMenu, PyMethods: TStringList);
+procedure TKPopupMenu.CalculateMenus(MenuItems, PyMenu, PyMethods: TStrings);
   var i, MenuIndent, ls: integer;
       s, ts: string;
       MenuName: array[-1..10] of String;
@@ -1083,7 +1089,7 @@ procedure TKPopupMenu.CalculateMenus(MenuItems, PyMenu, PyMethods: TStringList);
     else begin
       Com:= MenuName[Indent-1];
       Com:= copy(Com, 1, length(Com) - 4) + OnlyCharsAndDigits(ts) + '_Command';
-      PyMethods.Add(Com);
+      PyMethods.Add(Com + '(self):');
       PyMenu.Add(Indent2 + 'self.' + MenuName[Indent-1] +
                  '.add_command(label=''' + ts + ''', command=self.' + Com + ')');
     end;
@@ -1096,7 +1102,7 @@ begin
   // insert new MenuItems
   i:= 0;
   while i < MenuItems.Count do begin
-    s:= MenuItems.Strings[i];
+    s:= MenuItems[i];
     ts:= trim(s);
     ls:= LeftSpaces(s, 2) div 2;
     if ls < MenuIndent then begin  // close all open menus
@@ -1131,39 +1137,10 @@ procedure TKPopupMenu.MakeMenuItems;
       OldMethods: TStringList;
       NewMenu: TStringList;
       NewMethods: TStringList;
-
-  procedure FormatMenuItems;
-    var s, ts: string; ls, MenuIndent: integer;
-  begin
-    MenuIndent:= 0;
-    i:= 0;
-    while i < FMenuItems.Count - 1 do begin
-      s:= FMenuItems.Strings[i];
-      ts:= trim(s);
-      if ts = '' then begin
-        FMenuItems.Delete(i);
-        Continue;
-      end;
-      ls:= LeftSpaces(s, 2);
-      if ls > MenuIndent then begin
-        inc(MenuIndent, 2);
-        if ls <> MenuIndent then
-          FMenuItems.Strings[i]:= StringOfChar(' ', MenuIndent) + ts;
-      end else if ls < MenuIndent then begin
-        if ls mod 2 = 1 then begin
-          FMenuItems.Strings[i]:= StringOfchar(' ', ls + 1) + ts;
-          MenuIndent:= ls + 1;
-        end else
-          MenuIndent:= ls;
-      end;
-      inc(i);
-    end;
-  end;
-
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   Partner.ParseAndCreateModel;
-  FormatMenuItems;
+  FormatItems(FMenuItems);
   OldMenu:= TStringList.Create;
   OldMethods:= TStringList.Create;
   NewMenu:= TStringList.Create;
@@ -1171,12 +1148,13 @@ begin
 
   CalculateMenus(MenuItemsOld, OldMenu, OldMethods);
   CalculateMenus(FMenuItems, NewMenu, NewMethods);
-  Partner.DeleteOldAddNewMethods(OldMethods, NewMethods, 'self');
+  Partner.DeleteOldAddNewMethods(OldMethods, NewMethods);
 
   for i:= 0 to OldMenu.Count - 1 do
-    Partner.DeleteLine(OldMenu.Strings[i]);
+    Partner.DeleteLine(OldMenu[i]);
+  Partner.DeleteLine(MakeMenubar);
   if NewMenu.Text <> '' then
-    Partner.InsertAttribute(NewMenu.Text);
+    Partner.InsertValue(Name, NewMenu.Text + MakeMenubar, 1);
 
   FreeAndNil(OldMenu);
   FreeandNil(OldMethods);
@@ -1200,21 +1178,21 @@ begin
   NewMethods:= TStringList.Create;
   MenuItemsOld.Text:= FMenuItems.Text;
   Name:= OldName;
+  Partner.DeleteLine(MakeMenubar);
   CalculateMenus(MenuItemsOld, OldMenu, OldMethods);
   Name:= NewName;
   CalculateMenus(FMenuItems, NewMenu, NewMethods);
-  Partner.DeleteOldAddNewMethods(OldMethods, NewMethods, 'self');
-
+  Partner.DeleteOldAddNewMethods(OldMethods, NewMethods);
   for i:= 0 to OldMenu.Count - 1 do
-    Partner.DeleteLine(OldMenu.Strings[i]);
+    Partner.DeleteLine(OldMenu[i]);
+  Partner.ReplaceWord(OldName, NewName, true);
   if NewMenu.Text <> '' then
-    Partner.InsertAttribute(NewMenu.Text);
+    Partner.InsertValue(Name, NewMenu.Text + MakeMenubar, 1);
 
   FreeAndNil(OldMenu);
   FreeandNil(OldMethods);
   FreeAndNil(NewMenu);
   FreeAndNil(NewMethods);
-  Partner.ReplaceWord(OldName, NewName, true);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
@@ -1240,15 +1218,13 @@ constructor TKMenu.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 19;
-  Sizeable:= true;
-  Align:= alTop;
+  Width:= 100;
   Height:= 19;
 end;
 
-procedure TKMenu.NewWidget(Widget: String = '');
+function TKMenu.MakeMenubar: string;
 begin
-  inherited;
-  InsertVariable('self.root[''menu''] = self.' + Name);
+  Result:= Indent2 + 'self.root[''menu''] = self.' + Name;
 end;
 
 procedure TKMenu.DeleteWidget;
@@ -1260,13 +1236,13 @@ end;
 procedure TKMenu.Paint;
   var s, item: String; i: integer;
 begin
-  Height:= 19;
+  setBounds(0, 0, Parent.ClientWidth, 19);
   inherited;
   Canvas.Brush.Color:= clWhite;
   Canvas.FillRect(Rect(0, 0, Width, Height));
   s:= '';
   for i:= 0 to FMenuItems.Count - 1 do begin
-    item:= FMenuItems.Strings[i];
+    item:= FMenuItems[i];
     if (item <> '') and (item[1] <> '-') and (item[1] <> ' ') then
       s:= s + item + '     ';
   end;
@@ -1279,8 +1255,8 @@ constructor TKPanedWindow.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 16;
-  Width:= 200;
-  Height:= 150;
+  Width:= 80;
+  Height:= 120;
   ControlStyle := [csAcceptsControls];
   FHandlePad:= 8;
   FHandleSize:= '8';
@@ -1457,8 +1433,8 @@ constructor TKRadiobuttonGroup.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 7;
-  Width:= 100;
-  Height:= 100;
+  Width:= 80;
+  Height:= 80;
   FColumns:= 1;
   FItems:= TStringList.Create;
   FOldItems:= TStringList.Create;
@@ -1473,7 +1449,7 @@ end;
 
 function TKRadiobuttonGroup.getAttributes(ShowAttributes: integer): string;
 begin
-  Result:= '|Background|Columns|Command|Items|Font|Label_|Name';
+  Result:= '|Background|Columns|Command|Items|Font|Label_|Name|Checkboxes';
   if ShowAttributes = 3 then
     Result:= Result + '|Height|Width|Left|Top';
 end;
@@ -1482,7 +1458,7 @@ procedure TKRadiobuttonGroup.setAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'Command' then
     ChangeCommand(Value)
-  else if Attr = 'Items' then
+  else if (Attr = 'Items') or (Attr = 'Checkboxes') then
     MakeButtonGroupItems
   else if Attr = 'Columns' then
     SetPositionAndSize
@@ -1504,11 +1480,14 @@ begin
 end;
 
 procedure TKRadiobuttonGroup.MakeButtongroupItems;
-  var key, Options, CommonOptions: string;
+  var Options, CommonOptions, s: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
-  for var i := 0 to FOldItems.Count - 1 do
+  for var i := 0 to FOldItems.Count - 1 do begin
     Partner.DeleteAttributeValues(RBName(i));
+    Partner.DeleteAttributeValues(RBName(i) + 'CV');
+  end;
+  Partner.DeleteAttributeValues('self.' + Name + '[''variable'']');
 
   CommonOptions:= 'self.' + Name + ', ';
   if Background <> clBtnFace then
@@ -1516,14 +1495,23 @@ begin
   if (Font.Name <> 'Segoe UI') or (Font.Size <> 9) then
     CommonOptions:= CommonOptions + 'font = (' + asString(Font.Name) + ', ' + IntToStr(Font.Size) + '), ';
   CommonOptions:= CommonOptions + 'anchor=''w'', ';
-
+  s:= '';
   for var i:= 0 to FItems.Count - 1 do begin
-    Options:= CommonOptions + 'text=''' + FItems[i] + ''', value=''' + FItems[i] + '''';
-    InsertVariable(RBName(i) + ' = tk.Radiobutton(' + Options + ')');
-    key:= RBName(i) + '.place';
-    setAttributValue(key, key + '(x=0, y=0, width=0, height=0');
-    InsertVariable(RBName(i) + '[''variable''] = self.' + Name + 'CV');
+    if FCheckboxes then begin
+      Options:= CommonOptions + 'text=' + asString(FItems[i]);
+      s:= s + surround(RBName(i) + ' = tk.Checkbutton(' + Options + ')') +
+          surround(RBName(i) + '.place(x=0, y=0, width=0, height=0)') +
+          surround(RBName(i) + 'CV = tk.IntVar()') +
+          surround(RBName(i) + '[''variable''] = ' + RBName(i) + 'CV') +
+          surround(RBName(i) + 'CV.set(0)');
+    end else begin
+      Options:= CommonOptions + 'text=' + asString(FItems[i]) + ', value=' + asString(FItems[i]);
+      s:= s + surround( RBName(i) + ' = tk.Radiobutton(' + Options + ')') +
+          surround(RBName(i) + '.place(x=0, y=0, width=0, height=0)') +
+          surround(RBName(i) + '[''variable''] = self.' + Name + 'CV');
+    end;
   end;
+  insertValue(s);
   Partner.ActiveSynEdit.EndUpdate;
   FOldItems.Text:= FItems.Text;
   setPositionAndSize;
@@ -1538,11 +1526,11 @@ begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited;
 
+  th:= Canvas.TextHeight('Hg');
   if FLabel = '' then begin
     RadioWidth:= Width;
     RadioHeight:= Height;
   end else begin
-    th:= Canvas.TextHeight('Hg');
     RadioWidth:= Width - 4;
     RadioHeight:= Height - th - 4;
   end;
@@ -1570,7 +1558,7 @@ begin
           then RowHeightI:= RowHeight + 1
           else RowHeightI:= RowHeight;
         if row = 0
-          then y:= 0
+          then y:= 0 // th in Qt
           else y:= yold + RowHeightI;
         dec(RowHeightRest);
         key:= RBName(line) + '.place';
@@ -1586,7 +1574,7 @@ begin
 end;
 
 procedure TKRadiobuttonGroup.MakeCommand(Attr, Value: String);
-  var func, nam: string; i: integer;
+  var func, nam, s: string; i: integer;
 begin
   Command:= true;
   nam:= Name + '_Command';
@@ -1595,8 +1583,10 @@ begin
          Indent2 + '# ToDo insert source code here' + CrLf +
          Indent2 + 'pass' + CrLf;
   Partner.InsertProcedure(func);
+  s:= '';
   for i:= 0 to FItems.Count - 1 do
-    InsertVariable(RBName(i) + '[''command''] = ' + 'self.' + nam);
+    s:= s + surround(RBName(i) + '[''command''] = ' + 'self.' + nam);
+  insertValue(s);
 end;
 
 procedure TKRadiobuttonGroup.ChangeCommand(Value: string);
@@ -1638,11 +1628,19 @@ procedure TKRadiobuttonGroup.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('tk.Frame');
   MakeLabel(' Continent ');
-  FItems.Text:= 'America'#13#10'Europe'#13#10'Asia';
-  InsertVariable('self.' + Name + 'CV = tk.StringVar()');
-  InsertVariable('self.' + Name + 'CV.set(' + asString(FItems.Strings[0]) + ')');
+  FItems.Text:= defaultItems;
+  InsertValue('self.' + Name + 'CV = tk.StringVar()');
+  InsertValue('self.' + Name + 'CV.set(' + asString(FItems[0]) + ')');
   MakeButtongroupItems;
-  FOldItems.Text:= FItems.Text;
+end;
+
+procedure TkRadiobuttonGroup.DeleteWidget;
+begin
+  for var i := 0 to FItems.Count - 1 do begin
+    Partner.DeleteAttributeValues(RBName(i));
+    Partner.DeleteAttributeValues(RBName(i) + 'CV');
+  end;
+  inherited;
 end;
 
 procedure TKRadiobuttonGroup.setItems(Value: TStrings);
@@ -1670,6 +1668,14 @@ begin
   end;
 end;
 
+procedure TKRadiobuttonGroup.setCheckboxes(Value: boolean);
+begin
+  if FCheckboxes <> Value then begin
+    FCheckboxes:= Value;
+    Invalidate;
+  end;
+end;
+
 function TKRadiobuttonGroup.ItemsInColumn(i: integer): integer;
   var quot, rest: integer;
 begin
@@ -1686,6 +1692,7 @@ procedure TKRadiobuttonGroup.Paint;
       col, row, yc, ItemsInCol, line, x, y, th: integer;
       R: TRect; s: string;
 begin
+  FOldItems.Text:= FItems.Text;
   inherited;
   Canvas.FillRect(ClientRect);
   th:= Canvas.TextHeight('Hg');
@@ -1708,12 +1715,20 @@ begin
       ItemsInCol:= ItemsInColumn(col);
       for row:= 1 to ItemsInCol do begin
         x:= 4 + (col - 1)*ColumnWidth;
-        y:= LabelHeight + 2 + (row - 1)*RowWidth ;
-        yc:= y + RowWidth div 2 - Radius;
-        Canvas.Ellipse(x, yc, x + 2*Radius, yc + 2*Radius);
+        y:= LabelHeight + 2 + (row - 1)*RowWidth;
+        Canvas.Brush.Color:= clWhite;
+        if FCheckboxes then begin
+          R:= Rect(x, y + 6, x + 13, y + 19);
+          Canvas.Rectangle(R);
+        end else begin
+          yc:= y + RowWidth div 2 - Radius;
+          Canvas.Ellipse(x, yc, x + 2*Radius, yc + 2*Radius);
+        end;
+        Canvas.Brush.Color:= clBtnFace;
+
         yc:= y + RowWidth div 2 - th div 2;
-        R:= Rect(x + 15, yc, col*ColumnWidth, yc + RowWidth);
-        s:=  FItems.Strings[line];
+        R:= Rect(x + 19, yc, col*ColumnWidth, yc + RowWidth);
+        s:= FItems[line];
         Canvas.TextRect(R, s);
         inc(line);
       end;

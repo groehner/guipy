@@ -81,8 +81,7 @@ type
     procedure FindMethod(Reader: TReader; const MethodName: string;
                          var Address: Pointer; var Error: Boolean);
     procedure ErrorMethod(Reader: TReader; const Message: string; var Handled: Boolean);
-    procedure MIAWTSwing(Tag: Integer);
-    procedure TBTkinter(Tag: Integer);
+    procedure SetToolButton(Tag: Integer);
     procedure ChangeTo(Formular: TFGUIForm);
     function GetEditForm: TEditorForm;
     procedure UpdateState(Modified: boolean);
@@ -113,12 +112,14 @@ uses System.Types, frmPyIDEMain, frmFile, JvGnugettext,
      UBaseWidgets,
      UTKWidgets, UTKButtonBase, UTKTextBase, UTKMiscBase,
      UTTKWidgets, UTTKButtonBase, UTTKTextBase, UTTKMiscBase,
+     UQtButtonBase, UQtWidgetDescendants, UQtFrameBased, UQtScrollable,
+     UQtItemViews, UQtSpinboxes,
      TypInfo, uEditAppIntfs;
 
 {$R *.dfm}
 
 type
-  TClassArray = array [1..40] of TPersistentClass;
+  TClassArray = array [1..80] of TPersistentClass;
 
 const
   Modified = true;
@@ -131,8 +132,18 @@ const
 
     TTKLabel, TTKEntry, TTKButton, TTKCheckbutton, TTKRadiobuttonGroup, TTKCombobox,
     TTKSpinbox, TTKFrame, TTKLabelframe, TTKScale, TTKLabeledScale, TTKPanedwindow, TTKScrollbar,
-    TTKMenubutton, TTKOptionMenu, TTKNotebook, TTKTreeview, TTKProgressbar, TTKSeparator, TTKSizegrip
-    );
+    TTKMenubutton, TTKOptionMenu, TTKNotebook, TTKTreeview, TTKProgressbar, TTKSeparator, TTKSizegrip,
+
+    TQtLabel, TQtLineEdit, TQtPlainTextEdit, TQtPushButton, TQtCheckBox,
+    TQtButtonGroup, TQtListWidget, TQtComboBox, TQtSpinBox, TQtScrollBar,
+    TQtCanvas, TQtFrame, TQtGroupBox, TQtSlider, TQtMenuBar, TQtContextMenu,
+    TQtTabWidget, TQtTreeWidget, TQtTableWidget, TQtProgressBar, TQtStatusBar,
+
+    TQtTextEdit, TQtTextBrowser, TQtToolButton, TQtCommandLinkButton,
+    TQtFontComboBox, TQtDoubleSpinBox, TQtLCDNumber, TQtDateTimeEdit,
+    TQtDateEdit, TQtTimeEdit, TQtDial, TQtLine, TQtScrollArea, TQtToolBox,
+    TQtStackedWidget, TQtListView, TQtColumnView, TQtTableView, TQtGraphicsView
+  );
 
 procedure TFGUIDesigner.FormCreate(Sender: TObject);
 begin
@@ -154,6 +165,7 @@ begin
     OnDblClick:= ELDesignerDblClick;
   end;
   ELDesigner.GuiDesignerHints:= GuiPyOptions.GuiDesignerHints;
+  SetOptions;
 end;
 
 procedure TFGUIDesigner.ChangeTo(Formular: TFGUIForm);
@@ -163,10 +175,10 @@ begin
       ELDesigner.Active:= false;
       ELDesigner.DesignControl:= Formular;
       DesignForm:= Formular;
-      if FObjectInspector.Visible then
-        FObjectInspector.RefreshCBObjects;
       if Assigned(Formular) then
         ELDesigner.Active:= true;
+      if FObjectInspector.Visible then
+        FObjectInspector.RefreshCBObjects;
     end;
   end;
 end;
@@ -192,13 +204,6 @@ end;
 
 procedure TFGUIDesigner.UpdateState(Modified: boolean);
 begin
-{ ToDo
-  with FJava do begin
-    SetEnabledMI(MICut, ELDesigner.CanCut);
-    SetEnabledMI(MICopy, true);
-    SetEnabledMI(MICopyNormal, true);
-    SetEnabledMI(MIPaste, ELDesigner.CanPaste);
-  end;    }
   if Modified and Assigned(ELDesigner.DesignControl) then
     TFGUIForm(ELDesigner.DesignControl).Modified:= true;
 end;
@@ -231,16 +236,14 @@ begin
 end;
 
 procedure TFGUIDesigner.MIForegroundClick(Sender: TObject);
-  var i: integer;
 begin
-  for i:= 0 to ELDesigner.SelectedControls.Count - 1 do
+  for var i:= 0 to ELDesigner.SelectedControls.Count - 1 do
     FObjectGenerator.ComponentToForeground(GetEditForm, ELDesigner.SelectedControls.Items[i]);
 end;
 
 procedure TFGUIDesigner.MIBackgroundClick(Sender: TObject);
-  var i: integer;
 begin
-  for i:= 0 to ELDesigner.SelectedControls.Count - 1 do
+  for var i:= 0 to ELDesigner.SelectedControls.Count - 1 do
     FObjectGenerator.ComponentToBackground(GetEditForm, ELDesigner.SelectedControls.Items[i]);
 end;
 
@@ -280,24 +283,11 @@ begin
 end;
 
 procedure TFGUIDesigner.ELDragDrop(Sender, ASource, ATarget: TObject; AX, AY: Integer);
-  var w, h: integer; accept: boolean;
+  var accept: boolean;
       LInsertingControl: TControl;
       LName: string;
-      WinControl: TwinControl;
 begin
-  WinControl:= nil;
-  if ATarget is TForm then
-    WinControl:= ATarget as TForm
-  else if ATarget is TKFrame then
-    WinControl:= ATarget as TKFrame;
-  if assigned(WinControl) then begin
-    w:= WinControl.ClientWidth;
-    h:= WinControl.ClientHeight;
-  end else begin
-    w:= -1;
-    h:= -1;
-  end;
-  Accept:= (AX >= 0) and (AY >= 0) and (AX <= w) and (AY <= h);
+  Accept:= csAcceptsControls in (ATarget as TControl).ControlStyle;
   if Accept and assigned(ComponentToInsert) then begin
     LInsertingControl := ComponentToInsert.Create(Designform);
     try
@@ -306,7 +296,7 @@ begin
         Tag:= UKoppel.ComponentNrToInsert;
         ELDesigner.getUniqueName(Tag2PythonType(Tag), LName);
         Name  := LName; // <-- Here may be exception
-        Parent:= WinControl;
+        Parent:= ATarget as TWinControl;
       end;
     except
       FreeAndNil(LInsertingControl);
@@ -320,101 +310,104 @@ end;
 
 procedure TFGUIDesigner.ELDragOver (Sender, ASource, ATarget: TObject; AX, AY: Integer;
       AState: TDragState; var Accept: Boolean);
-  var w, h: integer;
-      WinControl: TwinControl;
 begin
-  WinControl:= nil;
-  if ATarget is TForm then
-    WinControl:= ATarget as TForm
-  else if ATarget is TKFrame then
-    WinControl:= ATarget as TKFrame;
-  if assigned(WinControl) then begin
-    w:= WinControl.ClientWidth;
-    h:= WinControl.ClientHeight;
-  end else begin
-    w:= -1;
-    h:= -1;
-  end;
-  Accept:= (AX >= 0) and (AY >= 0) and (AX <= w) and (AY <= h);
+  Accept:= csAcceptsControls in (ATarget as TControl).ControlStyle;
 end;
 
 function TFGuiDesigner.Tag2Class(Tag: integer): TControlClass;
 begin
   case Tag of
-   1: Result:= TKLabel;
-   2: Result:= TKEntry;
-   3: Result:= TKText;
-   4: Result:= TKButton;
-   5: Result:= TKCheckbutton;
-   7: Result:= TKRadiobuttonGroup;
-   8: Result:= TKListbox;
-   9: Result:= TKSpinbox;
-  10: Result:= TKMessage;
-  11: Result:= TKCanvas;
-  12: Result:= TKScrollbar;
-  13: Result:= TKFrame;
-  14: Result:= TKLabelFrame;
-  15: Result:= TKScale;
-  16: Result:= TKPanedWindow;
-  17: Result:= TKMenubutton;
-  18: Result:= TKOptionMenu;
-  19: Result:= TKMenu;
-  20: Result:= TKPopupMenu;
+     1: Result:= TKLabel;
+     2: Result:= TKEntry;
+     3: Result:= TKText;
+     4: Result:= TKButton;
+     5: Result:= TKCheckbutton;
+     7: Result:= TKRadiobuttonGroup;
+     8: Result:= TKListbox;
+     9: Result:= TKSpinbox;
+    10: Result:= TKMessage;
+    11: Result:= TKCanvas;
+    12: Result:= TKScrollbar;
+    13: Result:= TKFrame;
+    14: Result:= TKLabelFrame;
+    15: Result:= TKScale;
+    16: Result:= TKPanedWindow;
+    17: Result:= TKMenubutton;
+    18: Result:= TKOptionMenu;
+    19: Result:= TKMenu;
+    20: Result:= TKPopupMenu;
 
-  31: Result:= TTKLabel;
-  32: Result:= TTKEntry;
-  34: Result:= TTKButton;
-  35: Result:= TTKCheckbutton;
-  37: Result:= TTKRadiobuttongroup;
-  38: Result:= TTKCombobox;
-  39: Result:= TTKSpinbox;
-  42: Result:= TTKScrollbar;
-  43: Result:= TTKFrame;
-  44: Result:= TTKLabelFrame;
-  45: Result:= TTKScale;
-  46: Result:= TTKLabeledScale;
-  47: Result:= TTKPanedwindow;
-  48: Result:= TTKMenuButton;
-  49: Result:= TTKOptionMenu;
-  50: Result:= TTKNotebook;
-  51: Result:= TTKTreeview;
-  52: Result:= TTKProgressbar;
-  53: Result:= TTKSeparator;
-  54: Result:= TTKSizegrip;
-  else Result:= nil;
- end;
-end;
+    31: Result:= TTKLabel;
+    32: Result:= TTKEntry;
+    34: Result:= TTKButton;
+    35: Result:= TTKCheckbutton;
+    37: Result:= TTKRadiobuttongroup;
+    38: Result:= TTKCombobox;
+    39: Result:= TTKSpinbox;
+    42: Result:= TTKScrollbar;
+    43: Result:= TTKFrame;
+    44: Result:= TTKLabelFrame;
+    45: Result:= TTKScale;
+    46: Result:= TTKLabeledScale;
+    47: Result:= TTKPanedwindow;
+    48: Result:= TTKMenuButton;
+    49: Result:= TTKOptionMenu;
+    50: Result:= TTKNotebook;
+    51: Result:= TTKTreeview;
+    52: Result:= TTKProgressbar;
+    53: Result:= TTKSeparator;
+    54: Result:= TTKSizegrip;
+    // Qt Base
+    71: Result:= TQtLabel;
+    72: Result:= TQtLineEdit;
+    73: Result:= TQtPlainTextEdit;
+    74: Result:= TQtPushButton;
+    75: Result:= TQtCheckBox;
+    76: Result:= TQtButtonGroup;
+    77: Result:= TQtListWidget;
+    78: Result:= TQtComboBox;
+    79: Result:= TQtSpinBox;
+    80: Result:= TQtScrollBar;
+    81: Result:= TQtCanvas;
+    82: Result:= TQtFrame;
+    83: Result:= TQtGroupBox;
+    84: Result:= TQtSlider;
+    85: Result:= TQtMenuBar;
+    86: Result:= TQtContextMenu;
+    87: Result:= TQtTabWidget;
+    88: Result:= TQtTreeWidget;
+    89: Result:= TQtTableWidget;
+    90: Result:= TQtProgressBar;
+    91: Result:= TQtStatusBar;
 
-procedure TFGUIDesigner.MIAWTSwing(Tag: Integer);  // unclear
-  var x, y, dx, dy: integer; ctrl: TWinControl; myMouse: TPoint;
-begin
-  TBTkinter(Tag); // set Component to insert
-  if assigned(ComponentToInsert) then begin
-    GetCursorPos(myMouse);
-    if ELDesigner.SnapToGrid then begin
-      dx:= random(5)*ELDesigner.Grid.XStep;
-      dy:= random(5)*ELDesigner.Grid.YStep;
-    end else begin
-      dx:= random(40);
-      dy:= random(40);
-    end;
-    x:= PyIDEMainForm.Left + ELDesigner.DesignControl.Left + 18 + dx;
-    y:= PyIDEMainForm.Top  + ELDesigner.DesignControl.Top + 170 + dy;
-    SetCursorPos(x, y);
-    ctrl:= FindVCLWindow(Mouse.CursorPos);
-    if ctrl <> nil then begin
-      SendMessage(Ctrl.Handle, WM_LBUTTONDOWN, MK_LBUTTON, 0);
-      SendMessage(Ctrl.Handle, WM_LBUTTONUP, 0, 0);
-    end;
-    SetCursorPos(myMouse.x, myMouse.y);
+    // Qt Controls
+   101: Result:= TQtTextEdit;
+   102: Result:= TQtTextBrowser;
+   103: Result:= TQtToolButton;
+   104: Result:= TQtCommandLinkButton;
+   105: Result:= TQtFontComboBox;
+   106: Result:= TQtDoubleSpinBox;
+   107: Result:= TQtLCDNumber;
+   108: Result:= TQtDateTimeEdit;
+   109: Result:= TQtDateEdit;
+   110: Result:= TQtTimeEdit;
+   111: Result:= TQtDial;
+   112: Result:= TQtLine;
+   113: Result:= TQtScrollArea;
+   114: Result:= TQtToolBox;
+   115: Result:= TQtStackedWidget;
+   116: Result:= TQtListView;
+   117: Result:= TQtColumnView;
+   118: Result:= TQtTableView;
+   119: Result:= TQtGraphicsView;
+   else Result:= nil;
   end;
 end;
 
-procedure TFGUIDesigner.TBTkinter(Tag: Integer);
-  var EditorForm: TEditorForm;
+procedure TFGUIDesigner.SetToolButton(Tag: Integer);
 begin
   ComponentToInsert:= nil;
-  EditorForm:= GetEditForm;
+  var EditorForm:= GetEditForm;
   if assigned(EditorForm) then begin
     UKoppel.ComponentNrToInsert:= Tag;
     ComponentToInsert:= Tag2Class(Tag);
@@ -430,7 +423,6 @@ begin
   (Control as TBaseWidget).Resize;
   Control.Hint:= Control.Name;
   Control.ShowHint:= true;
-
   FObjectInspector.RefreshCBObjects;
   FObjectInspector.SetSelectedObject(Control);
   ComponentToInsert:= nil;
@@ -582,8 +574,8 @@ var
    end;
 
 var
-   Modified: boolean;
    WH: TPoint;
+   Modified: boolean;
    aForm: TEditorForm;
 begin
   Result:= nil;
@@ -599,8 +591,7 @@ begin
       ObjectTextToResource(FilStream, BinStream);
       BinStream.Seek(0, soFromBeginning);
       Modified:= aForm.ActiveSynEdit.Modified;
-      DesignForm:= TFGuiForm.Create(Self);
-      DesignForm.Partner:= aForm;
+      DesignForm:= TFGuiForm.Create(self);
       FObjectGenerator.Partner:= aForm;
 
       BinStream.ReadResHeader;
@@ -610,7 +601,7 @@ begin
       Reader.ReadRootComponent(DesignForm);
       DesignForm.FormStyle:= fsStayOnTop;
 
-      DesignForm.Open(Filename, '', WH);
+      DesignForm.Open(Filename, '', WH, aForm);
       ChangeTo(DesignForm);  // <== !
       if not Modified and not DesignForm.Modified then
         TEditorForm(DesignForm.Partner).Modified:= false;
@@ -626,7 +617,6 @@ begin
     FreeAndNil(FilStream);
     FreeAndNil(BinStream);
     FreeAndNil(SL);
-    FObjectInspector.RefreshCBObjects;
   end;
   if assigned(DesignForm) and DesignForm.ReadOnly then
      ELDesigner.LockAll([lmNoMove, lmNoResize, lmNoDelete, lmNoInsertIn, lmNoCopy]);
@@ -690,9 +680,12 @@ procedure TFGUIDesigner.ELDesignerDblClick(Sender: TObject);
   var s: string;
 begin
   if ELDesigner.SelectedControls.Count = 1 then begin
-    if ELDesigner.SelectedControls[0].Tag in [4, 34]
-      then s:= 'def ' + ELDesigner.SelectedControls[0].Name + '_Command'
-      else s:= ELDesigner.SelectedControls[0].Name;
+    if ELDesigner.SelectedControls[0].Tag in [4, 34] then
+      s:= 'def ' + ELDesigner.SelectedControls[0].Name + '_Command'
+    else if ELDesigner.SelectedControls[0].Tag = 74 then
+      s:= 'def ' + ELDesigner.SelectedControls[0].Name + '_Clicked'
+    else
+      s:= ELDesigner.SelectedControls[0].Name;
     GetEditForm.GoTo2(s);
     GUIDesignerTimer.Enabled:= true;
   end;
@@ -700,13 +693,12 @@ begin
 end;
 
 procedure TFGUIDesigner.GUIDesignerTimerTimer(Sender: TObject);
-  var EditForm: TEditorForm;
 begin
   GUIDesignerTimer.Enabled:= false;
-  EditForm:= GetEditForm;
+  var EditForm:= GetEditForm;
   if assigned(EditForm) then begin
     EditForm.BringToFront;
-    EditForm.Enter('Python');
+    EditForm.Enter(Self);
     if EditForm.CanFocus then EditForm.SetFocus;
   end;
 end;

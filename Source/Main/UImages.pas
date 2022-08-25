@@ -20,6 +20,7 @@ type
     ILPythonControls: TImageList;
     ILUMLToolbarLight: TImageList;
     ILUMLToolbarDark: TImageList;
+    ILQtControls: TImageList;
   end;
 
 var

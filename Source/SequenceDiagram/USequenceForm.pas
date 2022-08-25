@@ -240,10 +240,10 @@ begin
       LifeLinesTop:= min(Ini.ReadInteger('Diagram', 'Top', 30), 500);
       Ini.ReadSectionValues('Participants', SL);
       for i := 0 to SL.Count - 1 do
-        AddLifeLine(UnhideCrLf(SL.Strings[i]));
+        AddLifeLine(UnhideCrLf(SL[i]));
       Ini.ReadSectionValues('Messages', SL);
       for i := 0 to SL.Count - 1 do
-        AddConnection(SL.Strings[i]);
+        AddConnection(SL[i]);
       Font.Name:= Ini.ReadString('Diagram', 'FontName', 'Segoe UI');
       Font.Size:= Ini.ReadInteger('Diagram', 'FontSize', 12);
       setFont(Font);

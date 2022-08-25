@@ -1109,7 +1109,7 @@ var
       end;
 
       TempString := ReplacePatternInString(LineResult, GrepSettings, RegEx);
-      TempFile.Strings[i -1] := TempString;
+      TempFile[i -1] := TempString;
       Inc(Result, LineResult.Matches.Count);
     end
     else
@@ -1127,7 +1127,7 @@ var
         end;
 
         TempString := ReplacePatternInString(LineResult, GrepSettings, RegEx);
-        TempFile.Strings[LineResult.LineNo - 1] := TempString;
+        TempFile[LineResult.LineNo - 1] := TempString;
       end;
     end;
   end;

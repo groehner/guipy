@@ -32,16 +32,14 @@ type
     procedure ELPropertyInspectorClick(Sender: TObject);
     procedure ELPropertyInspectorFilterProp(Sender: TObject; AInstance: TPersistent;
       APropInfo: PPropInfo; var AIncludeProp: Boolean);
-    // changes in object inspector
     procedure ELPropertyInspectorModified(Sender: TObject);
 
     procedure ELEventInspectorClick(Sender: TObject);
-    procedure ELEventInspectorDblClick(Sender: TObject);
     procedure ELEventInspectorFilterProp(Sender: TObject; AInstance: TPersistent;
       APropInfo: PPropInfo; var AIncludeProp: Boolean);
     procedure ELEventInspectorModified(Sender: TObject);
-    procedure ELObjectInspectorDeactivate(Sender: TObject);
 
+    procedure ELObjectInspectorDeactivate(Sender: TObject);
     procedure BMoreClick(Sender: TObject);
     procedure BNewDeleteClick(Sender: TObject);
     procedure MICopyClick(Sender: TObject);
@@ -61,6 +59,10 @@ type
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure TCAttributesEventsMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+  private
+    procedure setTabs;
+    procedure MyOnGetSelectStrings(Sender: TObject; event: string; AResult: TStrings);
+    procedure MyOnGetComponentNames(Sender: TObject; AClass: TComponentClass; AResult: TStrings);
   protected
     // IJvAppStorageHandler implementation
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
@@ -75,7 +77,6 @@ type
 
     destructor Destroy; override;
     procedure RefreshCBObjects;
-    procedure MyOnGetComponentNames(Sender: TObject; AClass: TComponentClass; AResult: TStrings);
     procedure OnEnterEvent(Sender: TObject);
     procedure SetSelectedObject(Control: TControl);
     procedure ChangeSelection(SelectedControls: TELDesignerSelectedControls);
@@ -99,7 +100,7 @@ implementation
 
 uses SysUtils, Dialogs, Clipbrd, Math, Themes, JvGnugettext, StringResources,
      UGUIForm, UGUIDesigner, UKoppel, UObjectGenerator, frmPyIDEMain,
-     UConfiguration, UUtils, UBaseWidgets, ELEvents, frmFile, frmEditor,
+     UConfiguration, UUtils, UBaseWidgets, UBaseQtWidgets, ELEvents, frmFile, frmEditor,
      dmCommands;
 
 {$R *.dfm}
@@ -132,9 +133,9 @@ begin
     OnFilterProp:= ELEventInspectorFilterProp;
     OnModified  := ELEventInspectorModified;
     OnClick     := ELEventInspectorClick;
-    OnDblClick  := ELEventInspectorDblClick;
     OnMouseDown := OnMouseDownEvent;
     OnEnter     := OnEnterEvent;
+    OnGetSelectStrings:= MyOnGetSelectStrings;
   end;
   OnDeactivate:= ELObjectInspectorDeactivate;
   PObjects.Autosize:= true;
@@ -199,9 +200,30 @@ begin
     AResult.Add(Form.Components[i].Name);
 end;
 
+procedure TFObjectInspector.MyOnGetSelectStrings(Sender: TObject; event: string; AResult: TStrings);
+  var SourceWidget: TBaseQtWidget; Parametertypes: string; i: integer;
+      GuiForm: TFGuiForm;
+begin
+  SourceWidget:= TBaseQtWidget(FGUIDesigner.ELDesigner.SelectedControls[0]);
+  Parametertypes:= SourceWidget.Parametertypes(event);
+  GuiForm:= TFGUIForm(FGUIDesigner.ELDesigner.DesignControl);
+  for i:= 0 to GuiForm.ComponentCount - 1 do
+    if GuiForm.Components[i] is TBaseQtWidget then
+      (GuiForm.Components[i] as TBaseQtWidget).getSlots(Parametertypes, AResult);
+end;
+
 procedure TFObjectInspector.OnEnterEvent(Sender: TObject);
 begin
   UpdateState;
+end;
+
+procedure TFObjectInspector.setTabs;
+  var FrameType: integer;
+begin
+  FrameType:= TEditorForm(TFGUIForm(FGUIDesigner.ELDesigner.DesignControl).Partner).FrameType;
+  if FrameType < 3
+    then TCAttributesEvents.Tabs[1]:= _('Events')
+    else TCAttributesEvents.Tabs[1]:= _('Signals');
 end;
 
 procedure TFObjectInspector.RefreshCBObjects;
@@ -210,6 +232,7 @@ begin
   CBObjects.Clear;
   if not FGUIDesigner.ELDesigner.Active then exit;
   Form:= TFGUIForm(FGUIDesigner.ELDesigner.DesignControl);
+  setTabs;
   if Assigned(Form) then begin
     CBObjects.Items.AddObject(Form.Name + ': Frame', Form);
     for i:= 0 to Form.ComponentCount - 1 do
@@ -306,6 +329,17 @@ procedure TFObjectInspector.ELPropertyInspectorModified(Sender: TObject);
       PropertyItem: TELPropertyInspectorItem;
       Control: TControl;
       Widget: TBaseWidget;
+
+  procedure ChangeName(OldName, NewName: string; Control: TControl);
+  begin
+    Widget:= TBaseWidget(Control);
+    Widget.Rename(OldName, NewName, Widget.getEvents(3));
+    CBChangeName(OldName, NewName);
+    // update eventnames
+    ELEventInspector.Clear;
+    ELEventInspector.Add(Widget);
+  end;
+
 begin
   PropertyItem:= TELPropertyInspectorItem(ELPropertyInspector.ActiveItem);
   if PropertyItem = nil then exit;
@@ -332,38 +366,44 @@ begin
       if p > 0 then begin
         delete(OldName, p, length(OldName));
         Control:= SelectedControls.Items[0];
-        NewName:= Control.Name;
-        (Control as TBaseWidget).Rename(OldName, NewName, AllEvents);
-        CBChangeName(OldName, NewName);
+        ChangeName(OldName, Control.Name, Control);
+
+         {
+        Widget:= TBaseWidget(SelectedControls.Items[0]);
+        Widget.Rename(OldName, Widget.Name, Widget.getEvents(3));
+        CBChangeName(OldName, Widget.Name);
         // update eventnames
         ELEventInspector.Clear;
-        ELEventInspector.Add(Control);
+        ELEventInspector.Add(Widget);
+        }
       end;
     end else
       for i:= 0 to SelectedControls.Count-1 do begin
+        OldName:= SelectedControls.Items[I].Name;
         if GuiPyOptions.NameFromText and (ELPropertyInspector.GetByCaption('Name') <> '')
            and (Caption = 'Text') then begin
           NewName:= UpperLower(PropertyItem.Editor.Value);   // get name from text
-          if NewName <> '' then
-            case SelectedControls.Items[i].Tag of
-              1, 31: begin
-                Widget:= TBaseWidget(SelectedControls.Items[i]);
-                Widget.SizeLabelToText;
-                FObjectGenerator.MoveOrSizeComponent(Partner, Widget);
-                NewName:= 'l' + NewName;
-              end;
-              // 2, 32: NewName:= 'e' + NewName;  // Entry
-              4, 34: NewName:= 'b'  + NewName;    // Button
-              5, 35: NewName:= 'cb' + NewName;    // Checkbutton
-              //6, 36: NewName:= 'rb' + NewName;    // Radiobutton
-             else NewName:= '';
-            end;
           if NewName <> '' then begin
-            NewName:= UUtils.GetUniqueName(FGUIDesigner.ELDesigner.DesignControl, NewName);
-            ELPropertyInspector.SetByCaption('Name', NewName);
-            ELPropertyInspector.SelectByCaption('Name'); // make name to ActiveItem
-            ELPropertyInspectorModified(nil);
-            ELPropertyInspector.SelectByCaption('Text');  // make text to ActiveItem again
+            if SelectedControls.Items[i].Tag in [1, 31, 71, 4, 34, 74, 5, 35, 75] then
+            begin
+              Widget:= TBaseWidget(SelectedControls.Items[i]);
+              Widget.SizeToText;
+              FObjectGenerator.MoveOrSizeComponent(Partner, Widget);
+            end;
+            case SelectedControls.Items[i].Tag of
+              1, 31, 71: NewName:= 'l' + NewName;  // Label
+              4, 34, 74: NewName:= 'b' + NewName;  // Button
+              5, 35, 75: NewName:= 'cb' + NewName; // Checkbutton
+              else NewName:= '';
+            end;
+            if NewName <> '' then begin
+              NewName:= UUtils.GetUniqueName(FGUIDesigner.ELDesigner.DesignControl, NewName);
+              ELPropertyInspector.SetByCaption('Name', NewName);
+              ELPropertyInspector.SelectByCaption('Name'); // make name to ActiveItem
+              ELPropertyInspectorModified(nil);
+              ELPropertyInspector.SelectByCaption('Text');  // make text to ActiveItem again
+              ChangeName(OldName, NewName, SelectedControls.Items[i]);
+            end;
           end;
         end;
 
@@ -408,8 +448,12 @@ begin
   with FGUIDesigner.ELDesigner do begin
     TFGUIForm(DesignControl).Modified:= true;
     for i:= 0 to SelectedControls.Count - 1 do
-      FObjectGenerator.SetEventForComponent(PropertyItem.Caption,
-        SelectedControls.Items[i]);
+      if IsLower(PropertyItem.Caption[1]) then
+        FObjectGenerator.SetSlotForComponent(PropertyItem.Caption,
+          PropertyItem.DisplayValue, SelectedControls.Items[i])
+      else
+        FObjectGenerator.SetEventForComponent(PropertyItem.Caption,
+          SelectedControls.Items[i]);
   end;
   ELPropertyInspector.UpdateItems;  // due to renaming of Images, Command, ...
 end;
@@ -423,7 +467,16 @@ procedure TFObjectInspector.BNewDeleteClick(Sender: TObject);
       Widget: TBaseWidget;
       Event: TEvent;
       i: integer;
+
+  procedure SetDisplayValue(value: string);
+  begin
+    ELEventInspector.OnModified:= nil;
+    PropertyItem.DisplayValue:= Value;
+    ELEventInspector.OnModified:= ELEventInspectorModified;
+  end;
+
 begin
+  Event:= nil;
   PropertyItem:= ELEventInspector.ActiveItem;
   if not assigned(PropertyItem) then exit;
   i:= CBObjects.ItemIndex;
@@ -434,27 +487,30 @@ begin
   Partner:= TEditorForm(GUIForm.Partner);
   Partner.ActiveSynEdit.BeginUpdate;
   Eventname:= PropertyItem.Caption;
-  getEventProperties(Control, Eventname, Event);  // ToDO
+  getEventProperties(Control, Eventname, Event);
   if Control is TBaseWidget
     then Widget:= Control as TBaseWidget
     else Widget:= nil;
   if PropertyItem.DisplayValue <> '' then begin     // Delete
-    PropertyItem.DisplayValue:= '';
+    SetDisplayValue('');
     if assigned(Widget)
       then Widget.DeleteEventHandler(Eventname)
       else GUIForm.DeleteEventHandler(Eventname);
-    Event.Clear;
+    if assigned(Event) then
+      Event.Clear;
   end else begin                                    // Insert
     if assigned(Widget) then begin
-      PropertyItem.DisplayValue:= Widget.Handlername(Eventname);
+      setDisplayValue(Widget.Handlername(Eventname));
       Widget.setEvent(Eventname);
     end else begin
-      PropertyItem.DisplayValue:= GUIForm.Handlername(Eventname);
+      setDisplayValue(GUIForm.Handlername(Eventname));
       GUIForm.setEvent(Eventname);
     end;
-    Event.Active:= true;
+    if assigned(Event) then
+      Event.Active:= true;
   end;
-  setEventProperties(Control, Eventname, Event);
+  if assigned(Event) then
+    setEventProperties(Control, Eventname, Event);
   Partner.ActiveSynEdit.EndUpdate;
   Partner.NeedsParsing:= true;
   SetBNewDeleteCaption;
@@ -546,22 +602,6 @@ end;
 procedure TFObjectInspector.ELEventInspectorClick(Sender: TObject);
 begin
   SetBNewDeleteCaption;
-end;
-
-procedure TFObjectInspector.ELEventInspectorDblClick(Sender: TObject);
-  var s: string; Partner: TEditorForm;
-begin
-  if assigned(ELEventInspector.ActiveItem) then begin
-    s:= ELEventInspector.ActiveItem.DisplayValue;
-    if s = '' then
-      BNewDeleteClick(Self)
-    else begin
-      Partner:= TEditorForm(TFGUIForm(FGUIDesigner.ELDesigner.DesignControl).Partner);
-      Partner.GoTo2('def ' + s + '(self, event):');
-      if assigned(FGuiDesigner) then
-        FGuiDesigner.GUIDesignerTimer.Enabled:= true;
-    end;
-  end;
 end;
 
 procedure TFObjectInspector.PMObjectInspectorPopup(Sender: TObject);

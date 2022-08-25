@@ -142,6 +142,7 @@ function CanActuallyFocus(WinControl: TWinControl): Boolean;
 function isNumber(var s: string): boolean;
 function isBool(s: string): boolean;
 procedure ReplaceResourceString(RStringRec: PResStringRec; const AString: String);
+function DecToBase(nBase: integer; nDecValue: double): string;
 
 
 implementation
@@ -1104,7 +1105,7 @@ begin
   SL:= TStringList.Create;
   SL.Text:= s;
   for i:= 0 to SL.Count - 1 do
-    SL.Strings[i]:= Einrueck + SL.Strings[i];
+    SL[i]:= Einrueck + SL[i];
   Result:= SL.Text;
   FreeandNil(SL);
 end;
@@ -1494,7 +1495,7 @@ begin
     SL2:= Split('\', withoutTrailingSlash(s));
     i:= 0;
     while (i < SL1.Count) and (i < SL2.Count) and
-          (Uppercase(SL1.Strings[i]) = Uppercase(SL2.Strings[i])) do
+          (Uppercase(SL1[i]) = Uppercase(SL2[i])) do
       inc(i);
     Result:= '';
     j:= i;
@@ -1503,7 +1504,7 @@ begin
       inc(i);
     end;
     while j < SL2.Count do begin
-      Result:= Result + SL2.Strings[j] + '\';
+      Result:= Result + SL2[j] + '\';
       inc(j);
     end;
     Result:= withoutTrailingSlash(Result);
@@ -1528,13 +1529,13 @@ begin
     SL1:= Split('\', withoutTrailingSlash(ExtractFilePath(Application.Exename)));
     SL2:= Split('\', withoutTrailingSlash(s));
     i:= 0;
-    while (i < SL2.Count) and (SL2.Strings[i] = '..') do
+    while (i < SL2.Count) and (SL2[i] = '..') do
       inc(i);
-    Result:= SL1.Strings[0];
+    Result:= SL1[0];
     for j:= 1 to SL1.Count - 1 - i do
-      Result:= Result + '\' + SL1.Strings[j];
+      Result:= Result + '\' + SL1[j];
     for j:= i to SL2.Count - 1 do
-      Result:= Result + '\' + SL2.Strings[j];
+      Result:= Result + '\' + SL2[j];
     FreeAndNil(SL1);
     FreeAndNil(SL2);
   end else if not TPyScripterSettings.IsPortable and (copy(s, 1, 3) = '..\') then
@@ -1701,6 +1702,52 @@ begin
   end
   else ErrorMsg(SysErrorMessage(GetLastError));
 end;
+
+function DecToBase(nBase: integer; nDecValue: double): string;
+{Function   : converts decimal integer to base n, max = Base36
+ Parameters : nBase     = base number, ie. Hex is base 16
+              nDecValue = decimal to be converted
+              LeadZeros = min number of digits if leading zeros required
+ Returns    : number in base n as string}
+  var BaseString, DecToStr, f: string;
+      Modulus, p, IntVal, FracVal: integer;
+      negative: boolean;
+begin
+  Result:= '';
+  BaseString:= '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'; {max = Base36}
+  if nDecValue < 0 then begin
+    negative:= true;
+    nDecValue:= -nDecValue;
+  end else
+    negative:= false;
+  DecToStr:= FloatToStrF(nDecValue, ffGeneral, 15, 8);
+  p:= Pos('.', DecToStr);
+  if p > 0 then begin
+    IntVal:= StrToInt(copy(DecToStr, 1, p-1));
+    FracVal:= StrToInt(copy(DecToStr, p +1 , Length(DecToStr)));
+  end else begin
+    IntVal:= StrToInt(DecToStr);
+    FracVal:= 0;
+  end;
+  while IntVal > 0 do begin
+    Modulus:= IntVal mod nBase; {remainder is next digit}
+    Result:= BaseString[Modulus+1] + Result;
+    IntVal:= IntVal div nBase;
+  end;
+  if (FracVal > 0) and (nBase = 10) then begin
+    f:= '';
+    while FracVal > 0 do begin
+      Modulus:= FracVal mod nBase; {remainder is next digit}
+      f:= BaseString[Modulus+1] + f;
+      FracVal:= FracVal div nBase;
+    end;
+    Result:= Result + '.' + f;
+  end;
+  if Result = '' then
+    Result:= '0';
+  if negative then Result:= '-' + Result;
+end;
+
 
 end.
 

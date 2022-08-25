@@ -210,8 +210,8 @@ constructor TTKEntry.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 32;
-  Width:= 102;
-  Height:= 20;
+  Width:= 80;
+  Height:= 24;
   FShow:= true;
 end;
 
@@ -269,8 +269,8 @@ constructor TTKSpinbox.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 39;
-  Width:= 75;
-  Height:= 25;
+  Width:= 40;
+  Height:= 24;
   FFrom:= '0';
   FTo:= '0';
   FValue:= '0';
@@ -290,7 +290,7 @@ begin
   s1:= 'self.' + Name + '[''values'']';
   AllValues:= '[';
   for i := 0 to FValues.Count - 1 do begin
-    Value:= trim(FValues.Strings[i]);
+    Value:= trim(FValues[i]);
     if Value = '' then continue;
     AllValues:= AllValues + asString(Value) + ', ';
   end;
@@ -354,7 +354,7 @@ begin
   if FValue <> ''
     then s:= FValue
     else if FValues.Count > 0
-      then s:= FValues.Strings[0]
+      then s:= FValues[0]
       else s:= FFrom;
   if Scrollbar
     then newHeight:= Height - 20
@@ -398,10 +398,11 @@ constructor TTKCombobox.create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 38;
-  Width:= 75;
-  Height:= 25;
+  Width:= 80;
+  Height:= 24;
   Foreground:= clBtnText;
   FValues:= TStringList.Create;
+  FValues.Text:= defaultItems;
 end;
 
 destructor TTKCombobox.Destroy;
@@ -423,7 +424,7 @@ function TTKCombobox.getListItems: String;
 begin
   s:= '[';
   for i:= 0 to FValues.Count -1 do
-    s:= s + asString(FValues.Strings[i]) + ', ';
+    s:= s + asString(FValues[i]) + ', ';
   delete(s, length(s) - 1, 2);
   Result:= s + ']';
 end;
@@ -459,6 +460,7 @@ begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('ttk.Combobox');
   MakeControlVar('textvariable', Name + 'CV', FValue);
+  InsertValue('self.' + Name + '[' + asString('values') + '] = ' + getListItems);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
@@ -476,7 +478,7 @@ begin
   if FValue <> ''
     then s:= FValue
     else if FValues.Count > 0
-      then s:= FValues.Strings[0]
+      then s:= FValues[0]
       else s:= '';
   if Scrollbar
     then newHeight:= Height - 20

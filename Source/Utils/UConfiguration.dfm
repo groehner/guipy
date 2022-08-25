@@ -186,7 +186,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 661
         Height = 427
-        ActivePage = PStyles
+        ActivePage = POptions1
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -2315,21 +2315,21 @@ object FConfiguration: TFConfiguration
           ImageIndex = 21
           object LGridSize: TLabel
             Left = 57
-            Top = 94
+            Top = 118
             Width = 116
             Height = 13
             Caption = 'Grid size in GUI designer'
           end
           object LFrameheight: TLabel
             Left = 16
-            Top = 172
+            Top = 196
             Width = 63
             Height = 13
             Caption = 'Frame height'
           end
           object LFrameWidth: TLabel
             Left = 16
-            Top = 140
+            Top = 164
             Width = 59
             Height = 13
             Caption = 'Frame width'
@@ -2364,7 +2364,7 @@ object FConfiguration: TFConfiguration
           end
           object EGridSize: TEdit
             Left = 16
-            Top = 90
+            Top = 114
             Width = 21
             Height = 21
             TabOrder = 3
@@ -2372,7 +2372,7 @@ object FConfiguration: TFConfiguration
           end
           object UDGridSize: TUpDown
             Left = 37
-            Top = 90
+            Top = 114
             Width = 16
             Height = 21
             Associate = EGridSize
@@ -2383,7 +2383,7 @@ object FConfiguration: TFConfiguration
           end
           object EFrameheight: TEdit
             Left = 88
-            Top = 169
+            Top = 193
             Width = 41
             Height = 21
             TabOrder = 5
@@ -2391,11 +2391,21 @@ object FConfiguration: TFConfiguration
           end
           object EFrameWidth: TEdit
             Left = 88
-            Top = 137
+            Top = 161
             Width = 41
             Height = 21
             TabOrder = 6
             Text = '300'
+          end
+          object CBAlignToGrid: TCheckBox
+            Left = 16
+            Top = 88
+            Width = 199
+            Height = 17
+            Caption = 'Align to grid when inserting'
+            Checked = True
+            State = cbChecked
+            TabOrder = 7
           end
         end
         object PStructogram: TTabSheet

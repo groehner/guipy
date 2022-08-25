@@ -962,7 +962,7 @@ begin
   TPyScripterSettings.CreateEditorOptions;
   // Save Default editor keystrokes
   TPyScripterSettings.DefaultEditorKeyStrokes := TSynEditKeyStrokes.Create(nil);
-  TPyScripterSettings.DefaultEditorKeyStrokes.Assign(EditorOPtions.Keystrokes);
+  TPyScripterSettings.DefaultEditorKeyStrokes.Assign(EditorOptions.Keystrokes);
 end;
 
 class procedure TPyScripterSettings.CreateEditorOptions;

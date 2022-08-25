@@ -952,7 +952,7 @@ begin
       if Execute then begin
         GuiPyOptions.Sourcepath:= ExtractFilePath(Filename);
         if Files.Count >= 2
-          then Open(Files.Strings[0], Files.Strings[1])
+          then Open(Files[0], Files[1])
           else Open(Filename);
       end;
     finally

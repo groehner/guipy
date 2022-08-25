@@ -160,7 +160,6 @@ uses
   UAssociation in 'Main\UAssociation.pas' {FAssociation},
   UClassEditor in 'Main\UClassEditor.pas' {FClassEditor},
   UGUIDesigner in 'Main\UGUIDesigner.pas' {FGUIDesigner},
-  UGUIForm in 'Main\UGUIForm.pas' {FGUIForm},
   UImages in 'Main\UImages.pas' {DMImages: TDataModule},
   UKoppel in 'Main\UKoppel.pas',
   UObjectGenerator in 'Main\UObjectGenerator.pas' {FObjectGenerator},
@@ -200,7 +199,16 @@ uses
   UUpdate in 'Main\UUpdate.pas' {FUpdate},
   UDownload in 'Main\UDownload.pas' {FDownload},
   UBaseWidgets in 'Components\UBaseWidgets.pas',
-  UDiff in 'TextDiff\UDiff.pas';
+  UDiff in 'TextDiff\UDiff.pas',
+  UBaseQtWidgets in 'Components\UBaseQtWidgets.pas',
+  Vcl.Consts in 'Utils\Vcl.Consts.pas',
+  UGUIForm in 'Main\UGUIForm.pas' {FGUIForm},
+  UQtButtonBase in 'Components\PyQt\UQtButtonBase.pas',
+  UQtFrameBased in 'Components\PyQt\UQtFrameBased.pas',
+  UQtItemViews in 'Components\PyQt\UQtItemViews.pas',
+  UQtScrollable in 'Components\PyQt\UQtScrollable.pas',
+  UQtSpinBoxes in 'Components\PyQt\UQtSpinBoxes.pas',
+  UQtWidgetDescendants in 'Components\PyQt\UQtWidgetDescendants.pas';
 
 {$R *.RES}
 {$R WebCopyAvi.RES}

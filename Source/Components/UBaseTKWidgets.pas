@@ -47,6 +47,21 @@ type
     FUnderline: integer;
     FWrapLength: String;
 
+    // events
+    FActivate: TEvent;
+    FButtonPress: TEvent;
+    FButtonRelease: TEvent;
+    FConfigure: TEvent;
+    FDeactivate: TEvent;
+    FEnter: TEvent;
+    FFocusIn: TEvent;
+    FFocusOut: TEvent;
+    FKeyPress: TEvent;
+    FKeyRelease: TEvent;
+    FLeave: TEvent;
+    FMotion: TEvent;
+    FMouseWheel: TEvent;
+
     procedure setAnchor(aValue: TAnchor);
     procedure setBackground(aColor: TColor);
     procedure setForeground(aColor: TColor);
@@ -69,7 +84,7 @@ type
     function getMouseEvents(ShowEvents: integer): string; virtual;
     function getKeyboardEvents(ShowEvents: integer): string; virtual;
     function getCompound: TUCompound; virtual; abstract;
-    function getAttrAsKey(Attr: string): string; override;
+    function getAttrAsKey(Attr: string): string;
     procedure Calculate3DColors(var DarkColor, LightColor: TColor; Background: TColor);
     procedure CalculatePadding(var pl, pt, pr, pb: integer); virtual; abstract;
     procedure CalculateText(var tw, th: integer; var SL: TStringList); virtual; abstract;
@@ -104,8 +119,9 @@ type
     property WrapLength: String read FWrapLength write setWrapLength;
 
     constructor Create(aOwner: TComponent); override;
+    destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    procedure setEvent(Attr: string); override;
+    procedure setEvent(Event: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure DeleteEvents; override;
     procedure DeleteWidget; override;
@@ -113,19 +129,43 @@ type
     procedure NewWidget(Widget: String = ''); override;
     function MakeBinding(Eventname: string): string; override;
     function MakeHandler(const event: string ): string; override;
-    function HandlerName(const event: string): string; override;
     procedure Resize; override;
     procedure SetPositionAndSize; override;
     function ClientRectWithoutScrollbars: TRect;
-    procedure SizeLabelToText; override;
     function getType: String;
     function getNameAndType: String; override;
+    function getContainer: string;
+    procedure MakeFont;
+  published
+    // events
+    {$WARNINGS OFF}
+    property Activate: TEvent read Factivate write Factivate;
+    property ButtonPress: TEvent read FbuttonPress write FbuttonPress;
+    property ButtonRelease: TEvent read FbuttonRelease write FbuttonRelease;
+    property Configure: TEvent read Fconfigure write Fconfigure;
+    property Deactivate: TEvent read Fdeactivate write Fdeactivate;
+    property Enter: TEvent read FEnter write FEnter;
+    property FocusIn: TEvent read FfocusIn write FfocusIn;
+    property FocusOut: TEvent read FfocusOut write FfocusOut;
+    property KeyPress: TEvent read fkeyPress write fkeyPress;
+    property KeyRelease: TEvent read fkeyRelease write fkeyRelease;
+    property Leave: TEvent read fleave write fleave;
+    property Motion: TEvent read fMotion write fMotion;
+    property MouseWheel: TEvent read fmouseWheel write fmouseWheel;
+    {$WARNINGS ON}
+  end;
+
+  TKMainWindow = class(TBaseWidget)
+    function getAttributes(ShowAttributes: integer): string; override;
+    procedure setAttribute(Attr, Value, Typ: string); override;
+    function getEvents(ShowEvents: integer): string; override;
+    function HandlerParameter(const event: string): string; override;
+    function HandlerName(const event: string): string; override;
   end;
 
 implementation
 
 uses SysUtils, TypInfo, Math, UITypes, UGuiForm, UTKMiscBase, UTTKMiscBase,
-     Vcl.Imaging.GIFImg, Vcl.Imaging.jpeg, Vcl.Imaging.pngimage,
      UGUIDesigner, UObjectInspector, UKoppel, UConfiguration, UUtils;
 
 constructor TBaseTkWidget.create(aOwner: TComponent);
@@ -150,6 +190,38 @@ begin
   Font.Style:= [];
   HelpType:= htContext;
   Sizeable:= true;
+
+  FButtonPress:= TEvent.Create(Self);
+  FButtonRelease:= TEvent.Create(Self);
+  FKeyPress:= TEvent.Create(Self);
+  FKeyRelease:= TEvent.Create(Self);
+  FActivate:= TEvent.Create(Self);
+  FConfigure:= TEvent.Create(Self);
+  FDeactivate:= TEvent.Create(Self);
+  FEnter:= TEvent.Create(Self);
+  FFocusIn:= TEvent.Create(Self);
+  FFocusOut:= TEvent.Create(Self);
+  FLeave:= TEvent.Create(Self);
+  FMouseWheel:= TEvent.Create(Self);
+  FMotion:= TEvent.Create(Self);
+end;
+
+destructor TBaseTkWidget.Destroy;
+begin
+  FActivate.Destroy;
+  FButtonPress.Destroy;
+  FButtonRelease.Destroy;
+  FConfigure.Destroy;
+  FDeactivate.Destroy;
+  FEnter.Destroy;
+  FFocusIn.Destroy;
+  FFocusOut.Destroy;
+  FKeyPress.Destroy;
+  FKeyRelease.Destroy;
+  FLeave.Destroy;
+  FMotion.Destroy;
+  FMouseWheel.Destroy;
+  inherited;
 end;
 
 function TBaseTkWidget.getAttributes(ShowAttributes: integer): string;
@@ -174,8 +246,6 @@ end;
 function TBaseTkWidget.getKeyboardEvents(ShowEvents: integer): string;
 begin
   Result:= KeyboardEvents1;
-{  if ShowEvents >= 2 then
-    Result:= Result + KeyboardEvents2;}
   if ShowEvents = 3 then
     Result:= AllEvents;
   Result:= Result + '|';
@@ -240,10 +310,7 @@ end;
 procedure TBaseTkWidget.Paint;
   var tx, ty, tw, th, x, y, w, h, gw, gh, gx, gy, maxw, maxh, mgw, mtw,
       gtg, bx, by, pl, pt, pr, pb, center: integer;
-      pathname, ext: string;
-      png: TPngImage;
-      gif: TGifImage;
-      jpg: TJPEGImage;
+      pathname: string;
       bmp: Graphics.TBitmap;
       SL: TStringList;
       Compound: TUCompound;
@@ -304,9 +371,9 @@ begin
         _TA_NW:     begin x:= pl + LeftSpace;               y:= 1 + pt; end;
         _TA_N :     begin x:= center;                       y:= 1 + pt; end;
         _TA_NE:     begin x:= w - 3 - tw - pr - RightSpace; y:= 1 + pt; end;
-        _TA_W:      begin x:= pl + LeftSpace;               y:= (h - pb - th) div 2; end;
-        _TA_CENTER: begin x:= center;                       y:= (h - pb - th) div 2; end;
-        _TA_E:      begin x:= w - 3 - tw - pr - RightSpace; y:= (h - pb - th) div 2; end;
+        _TA_W:      begin x:= pl + LeftSpace;               y:= (h - th) div 2; end;
+        _TA_CENTER: begin x:= center;                       y:= (h - th) div 2; end;
+        _TA_E:      begin x:= w - 3 - tw - pr - RightSpace; y:= (h - th) div 2; end;
         _TA_SW:     begin x:= pl + LeftSpace;               y:= h - 1 - th - pb; end;
         _TA_S:      begin x:= center;                       y:= h - 1 - th - pb; end;
         _TA_SE:     begin x:= w - 3 - tw - pr - RightSpace; y:= h - 1 - th - pb; end;
@@ -318,25 +385,7 @@ begin
       TopSpace:= y;
     end else begin
       // with graphic
-      ext:= Uppercase(ExtractFileExt(Image));
-      bmp:= Graphics.TBitmap.Create;
-      if ext = '.PNG' then begin
-        png:= TPngImage.Create;
-        png.LoadFromFile(pathname);
-        bmp.Assign(png);
-        FreeAndNil(png);
-      end else if ext = '.GIF' then begin
-        gif:= TGifImage.Create;
-        gif.LoadFromFile(Pathname);
-        bmp.Assign(gif.Bitmap);
-        FreeAndNil(gif);
-      end else if (ext = '.JPG') or (ext = 'JPEG') then begin
-        jpg:= TJPEGImage.Create;
-        jpg.LoadFromFile(Pathname);
-        bmp.Assign(jpg);
-        FreeAndNil(jpg);
-      end;
-
+      bmp:= BitmapFromRelativePath(Image);
       gw:= bmp.Width;
       gh:= bmp.Height;
       gtg:= 4; // GraphicTextGap
@@ -549,7 +598,7 @@ begin
       else setAttributValue(s1, s1 + ' = ' + asString(Value))
   else if Typ = 'Boolean' then
     MakeBoolean(Attr, Value)
-  else if (Typ = 'string') or (Typ[1] = 'T') then  // enum type, TColor
+  else if (Typ = 'string') or ((Typ <> '') and (Typ[1] = 'T')) then  // enum type, TColor
     if Value = ''
       then Partner.DeleteAttribute(s1)  // borderwidth, padx, ...
       else setAttributValue(s1, s1 + ' = ' + asString(Value))
@@ -560,11 +609,11 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.setEvent(Attr: string);
+procedure TBaseTkWidget.setEvent(Event: string);
 begin
-  if not Partner.hasText('def ' + HandlerName(Attr) + '(self, event):') then
-    Partner.InsertProcedure(CrLf + MakeHandler(Attr));
-  Partner.InsertBinding(Name, Attr, MakeBinding(Attr));
+  if not Partner.hasText('def ' + HandlerNameAndParameter(Event)) then
+    Partner.InsertProcedure(CrLf + MakeHandler(Event));
+  Partner.InsertTkBinding(Name, Event, MakeBinding(Event));
 end;
 
 procedure TBaseTkWidget.MakeBoolean(Attr, Value: String);
@@ -595,28 +644,31 @@ begin
 end;
 
 procedure TBaseTkWidget.MakeControlVar(Variable, ControlVar: String; Value: String = ''; Typ: String = 'String');
+  var s: string;
 begin
-  InsertVariable('self.' + ControlVar + ' = tk.' + Typ + 'Var()');
+  s:= surround('self.' + ControlVar + ' = tk.' + Typ + 'Var()');
   if Typ = 'String'
-    then InsertVariable('self.' + ControlVar + '.set(' + asString(Value) + ')')
-    else InsertVariable('self.' + ControlVar + '.set(' + Value + ')');
-  InsertVariable('self.' + Name + '[' + asString(Variable) + '] = self.' + ControlVar);
+    then s:= s + surround('self.' + ControlVar + '.set(' + asString(Value) + ')')
+    else s:= s + surround('self.' + ControlVar + '.set(' + Value + ')');
+  s:= s + surround('self.' + Name + '[' + asString(Variable) + '] = self.' + ControlVar);
+  insertValue(s);
 end;
 
 procedure TBaseTkWidget.setMenu(Value: string);
   var s1, s2: string;
 begin
+  s1:= 'self.' + Name + '[' + asString('menu') + ']';
+  Partner.DeleteAttribute(s1);
   if Value = '' then begin
-    Partner.DeleteAttribute('self.' + Name + '[''menu'']');
     s1:= 'self.' + LOldValue + ' = tk.Menu';
     s2:= s1 + '(tearoff=0)';
+    setAttributValue(s1, s2);
   end else begin
-    s1:= 'self.' + Name + '[''menu'']';
-    setAttributValue(s1, s1 + ' = self.' + Value);
+    Partner.InsertAtEnd(Indent2 + s1 + ' = self.' + Value);
     s1:= 'self.' + Value + ' = tk.Menu';
     s2:= s1 + '(self.' + Name + ', tearoff=0)';
+    setAttributValue(s1, s2);
   end;
-  setAttributValue(s1, s2);
 end;
 
 procedure TBaseTkWidget.ChangeCommand(Attr, Value: string);
@@ -631,11 +683,6 @@ begin
     setAttributValue(key, key + ' = self.' + nam);
     MakeCommand(Attr, nam);
   end;
-end;
-
-function TBaseTkWidget.HandlerName(const event: string): string;
-begin
-  Result:= Name + '_' + Event;
 end;
 
 function TBaseTkWidget.MakeBinding(Eventname: string): string;
@@ -673,11 +720,7 @@ end;
 
 function TBaseTkWidget.MakeHandler(const event: string ): string;
 begin
-  //  Example:
-  //  def name(self, event):
-  //    // TODO insert source code here
-  //    pass
-  Result:= Indent1 + 'def ' + HandlerName(Event) + '(self, event):' + CrLf +
+  Result:= Indent1 + 'def ' + HandlerNameAndParameter(Event) + CrLf +
            Indent2 + '# ToDo insert source code here' + CrLf +
            Indent2 + 'pass' + CrLf;
 end;
@@ -700,14 +743,14 @@ begin
     ForceDirectories(Path + 'images\');
     if not FileExists(Dest) then
       copyFile(PChar(Value), PChar(Dest), true);
-    filename:= 'images/' + filename;
-    FObjectInspector.ELPropertyInspector.SetByCaption('Image', filename);
+    FImage:= 'images/' + filename;
     key1:= 'self.' + Name + 'Image';
-    s:= key1 + ' = tk.PhotoImage(file=' + asString(filename) + ')';
+    s:= key1 + ' = tk.PhotoImage(file=' + asString(FImage) + ')';
     setAttributValue(key1, s);
     key2:= 'self.' + Name + '[''image'']';
     s:= key2 + ' = ' + key1;
     setAttributValue(key2, s);
+    FObjectInspector.Invalidate;
   end;
 end;
 
@@ -769,26 +812,29 @@ procedure TBaseTkWidget.MakeScrollbars(Value, TkTyp: String);
   end;
 
   procedure InsertVertical;
+    var s: string;
   begin
-    InsertVariable(ScrollbarName + 'V = ' + TkTyp + 'Scrollbar(' + getContainer + ')');
-    InsertVariable(ScrollbarName + 'V.place(x=' + IntToStr(x + WidthNoScrollbar - 2) + ', y=' + IntToStr(y) +
-                                   ', width=20, height=' + IntToStr(HeightNoScrollbar) + ')');
-    InsertVariable(ScrollbarName + 'V[' + asString('command') + '] = self.' + Name + '.yview');
-    InsertVariable('self.' + Name + '[' + asString('yscrollcommand') + '] = ' + ScrollbarName + 'V.set');
+    s:= surround(ScrollbarName + 'V = ' + TkTyp + 'Scrollbar(' + getContainer + ')');
+    s:= s + surround(ScrollbarName + 'V.place(x=' + IntToStr(x + WidthNoScrollbar - 2) + ', y=' + IntToStr(y) +
+                            ', width=20, height=' + IntToStr(HeightNoScrollbar) + ')');
+    s:= s + surround(ScrollbarName + 'V[' + asString('command') + '] = self.' + Name + '.yview');
+    s:= s + surround('self.' + Name + '[' + asString('yscrollcommand') + '] = ' + ScrollbarName + 'V.set');
+    InsertValue(s);
     Inc(WidthScrollbar, 20);
   end;
 
   procedure InsertHorizontal;
-    var s: string;
+    var s, s1: string;
   begin
-    s:= getContainer;
-    if s <> '' then s:= s + ', ';
-    s:= s + 'orient=' + asString('horizontal');
-    InsertVariable(ScrollbarName + 'H = ' + TkTyp+ 'Scrollbar(' + s + ')');
-    InsertVariable(ScrollbarName + 'H.place(x=' + IntToStr(x) + ', y=' + IntToStr(y + HeightNoScrollbar - 2) +
+    s1:= getContainer;
+    if s1 <> '' then s1:= s1 + ', ';
+    s1:= s1 + 'orient=' + asString('horizontal');
+    s:= surround(ScrollbarName + 'H = ' + TkTyp+ 'Scrollbar(' + s1 + ')');
+    s:= s + surround(ScrollbarName + 'H.place(x=' + IntToStr(x) + ', y=' + IntToStr(y + HeightNoScrollbar - 2) +
                                    ', width=' + IntToStr(WidthNoScrollbar) + ', height=20)');
-    InsertVariable(ScrollbarName + 'H[' + asString('command') + '] = self.' + Name + '.xview');
-    InsertVariable('self.' + Name + '[' + asString('xscrollcommand') + '] = ' + ScrollbarName + 'H.set');
+    s:= s + surround(ScrollbarName + 'H[' + asString('command') + '] = self.' + Name + '.xview');
+    s:= s + surround('self.' + Name + '[' + asString('xscrollcommand') + '] = ' + ScrollbarName + 'H.set');
+    InsertValue(s);
     Inc(HeightScrollbar, 20);
   end;
 
@@ -938,7 +984,7 @@ end;
 procedure TBaseTkWidget.DeleteEventHandler(const Event: string);
 begin
   Partner.DeleteMethod(HandlerName(Event));
-  Partner.DeleteBinding(Name, Event);
+  Partner.DeleteBinding(MakeBinding(Event));
 end;
 
 procedure TBaseTkWidget.DeleteEvents;
@@ -952,13 +998,13 @@ begin
   while p > 0 do begin
     Event:= UUtils.Left(s, p-1);
     if Event <> '' then begin
-      Partner.DeleteBinding(Name, Event);
-      SL1.Add(HandlerName(Event));
+      Partner.DeleteBinding(MakeBinding(Name));
+      SL1.Add(HandlerNameAndParameter(Event));
     end;
     delete(s, 1, p);
     p:= Pos('|', s);
   end;
-  Partner.DeleteOldAddNewMethods(SL1, SL2, 'self, event');
+  Partner.DeleteOldAddNewMethods(SL1, SL2);
   FreeAndNil(SL1);
   FreeAndNil(SL2);
   Partner.ActiveSynEdit.EndUpdate;
@@ -967,15 +1013,12 @@ end;
 procedure TBaseTkWidget.NewWidget(Widget: String = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
-  InsertVariable('self.' + Name + ' = ' + Widget + '(' + getContainer + ')');
+  InsertValue('self.' + Name + ' = ' + Widget + '(' + getContainer + ')');
   setPositionAndSize;
-  if Parent is TKPanedWindow then begin
-    InsertVariable('self.' + Parent.Name + '.add(self.' + Name + ')');
-    //ControlStyle:= [];
-  end else if Parent is TTKPanedwindow then begin
-    InsertVariable('self.' + Parent.Name + '.add(self.' + Name + ', weight=1)');
-    //ControlStyle:= [];
-  end;
+  if Parent is TKPanedWindow then
+    InsertValue('self.' + Parent.Name + '.add(self.' + Name + ')')
+  else if Parent is TTKPanedwindow then
+    InsertValue('self.' + Parent.Name + '.add(self.' + Name + ', weight=1)');
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
@@ -1024,10 +1067,6 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.SizeLabelToText;
-begin
-end;
-
 function TBaseTkWidget.getType;
 begin
   if Pos('TTK', Classname) = 1
@@ -1038,6 +1077,116 @@ end;
 function TBaseTkWidget.getNameAndType;
 begin
   Result:= Name + ': ' + getType;
+end;
+
+function TBaseTkWidget.getContainer: string;
+begin
+  if (Parent = nil) or (Parent is TFGUIForm)
+    then Result:= ''
+    else Result:= 'self.' + Parent.Name;
+end;
+
+procedure TBaseTkWidget.MakeFont;
+  var s1, s2: string;
+begin
+  s1:= 'self.' + Name + '[''font'']';
+  s2:= ' = (' + asString(Font.Name) + ', ' + IntToStr(Font.Size);
+  if fsBold   in Font.Style then s2:= s2 + ', ' + asString('bold');
+  if fsItalic in Font.Style then s2:= s2 + ', ' + asString('italic');
+  if fsStrikeout in Font.Style then s2:= s2 + ', ' + asString('overstrike');
+  if fsUnderline in Font.Style then s2:= s2 + ', ' + asString('underline');
+  s2:= s2 + ')';
+  setAttributValue(s1, s1 + s2);
+  Invalidate;
+end;
+
+{--- TKMainWindow ------------------------------------------------------------}
+
+function TKMainWindow.getAttributes(ShowAttributes: integer): string;
+  const Attributes1 = '|Transparency|Resizable|Title|Background|Width|Height';
+        Attributes2 = Attributes1 + '|Fullscreen|AlwaysOnTop|Iconified';
+        Attributes3 = Attributes2 + '|MaxHeight|MaxWidth|MinHeight|MinWidth|Theme';
+begin
+  case ShowAttributes of
+    1: Result:= Attributes1 + '|';
+    2: Result:= Attributes2 + '|';
+  else Result:= Attributes3 + '|';
+  end;
+end;
+
+procedure TKMainWindow.setAttribute(Attr, Value, Typ: string);
+  var s1, s2: string;
+begin
+  if Attr = 'Title' then begin
+    s1:= 'self.root.title';
+    s2:= Indent2 + s1 + '(' + asString(Value) + ')';
+    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
+  end else if Attr = 'Background' then begin
+    s1:= 'self.root[''background'']';
+    s2:=  Indent2 + s1 + ' = ' + asString(Value);
+    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
+  end else if Attr = 'Resizable' then begin
+    s1:= 'self.root.resizable';
+    s2:=  Indent2 + s1 + '(' + Value + ', ' + Value + ')';
+    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
+  end else if Attr = 'Transparency' then begin
+    s1:= 'self.root.attributes(''-alpha''';
+    s2:=  Indent2 + s1 + ', ' + Value + ')';
+    Partner.setAttributValue('self.create_widgets', s1, s2, 0)
+  end else if Attr = 'Fullscreen' then begin
+    s1:= 'self.root.attributes(''-fullscreen''';
+    s2:=  Indent2 + s1 + ', ' + Value + ')';
+    if Value = 'True'
+      then Partner.setAttributValue('self.create_widgets', s1, s2, 0)
+      else Partner.DeleteAttribute(s1);
+  end else if (Attr = 'MaxHeight') or (Attr = 'MaxWidth') then begin
+    s1:= 'self.root.maxsize';
+    s2:=  Indent2 + s1 + '(' + Value + ')';
+    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
+  end else if (Attr = 'MinHeight') or (Attr = 'MinWidth') then begin
+    s1:= 'self.root.minsize';
+    s2:=  Indent2 + s1 + '(' + Value + ')';
+    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
+  end else if Attr = 'Iconified' then begin
+    s1:= 'self.root.iconify';
+    s2:=  Indent2 + s1 + '()';
+    if Value = 'True'
+      then Partner.setAttributValue('self.create_widgets', s1, s2, 0)
+      else Partner.DeleteAttribute(s1);
+  end else if Attr = 'AlwaysOnTop' then begin
+    s1:= 'self.root.attributes(''-topmost''';
+    s2:=  Indent2 + s1 + ', 1)';
+    if Value = 'True'
+      then Partner.setAttributValue('self.create_widgets', s1, s2, 0)
+      else Partner.DeleteAttribute(s1);
+  end else if Attr = 'Theme' then begin
+    s1:= 'self.theme';
+    s2:= Indent2 + s1 + ' = ttk.Style()';
+    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
+    s1:= 'self.theme.theme_use';
+    s2:= Indent2 + s1 + '(' + asString(Value) + ')';
+    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
+  end;
+end;
+
+function TKMainWindow.getEvents(ShowEvents: integer): string;
+begin
+  Result:= MouseEvents1;
+  if ShowEvents >= 2 then
+    Result:= MouseEvents1 + MouseEvents2;
+  if ShowEvents = 3 then
+    Result:= AllEvents;
+  Result:= Result + '|Destroy_|Expose|Visibility|';
+end;
+
+function TKMainWindow.HandlerParameter(const event: string): string;
+begin
+  Result:= 'self, event';
+end;
+
+function TKMainWindow.HandlerName(const event: string): string;
+begin
+  Result:= 'root_' + event;
 end;
 
 end.

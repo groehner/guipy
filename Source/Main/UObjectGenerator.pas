@@ -50,22 +50,16 @@ type
     procedure ComponentToForeground(aPartner: TEditorForm; Control: TControl);
 
     procedure setAttributForComponent(Attr, Value: string; Typ: string; Control: TControl);
-    procedure setAttributValue(const key, s: string; after: integer);
+    procedure SetSlotForComponent(Attr, Value: string; Control: TControl);
     procedure setEventForComponent(Attr: string; Control: TControl);
 
     procedure addRow(Attribut: string; const Value: string);
-    procedure jfmSetValue(const aCaption, value: string);
-    function GetStrings: TStrings;
-    function GetLines: string;
-    procedure SBControlStructures(EditForm: TEditorForm; KTag: integer; OnKey: boolean = false);
-    procedure TBLayout(aTag: integer);
     procedure Retranslate;
 
     // new component
     procedure InsertComponent(EditForm: TEditorForm; Control: TControl; Pasting: boolean);
     procedure setComponentValues(DesignForm: TFGUIForm; Control: TControl);
     procedure setControlEvents(DesignForm: TFGUIForm; EditorForm: TEditorForm);
-    procedure DeleteEvents(Component: TControl);
 
     // deletes a component
     procedure DeleteComponent(Component: TControl);
@@ -74,7 +68,6 @@ type
     procedure DeleteRow;
     procedure SetRow(i: integer);
     procedure SetColWidths;
-    function GetControlStructure(KTag: integer; const indent: string; block: string): string;
 end;
 
 var
@@ -135,23 +128,29 @@ begin
 end;
 
 procedure TFObjectGenerator.InsertComponent(EditForm: TEditorForm; Control: TControl; Pasting: boolean);
-  var Collapsed: boolean;
 begin
-  Collapsed:= EditForm.isGUICreationCollapsed;
+  var Collapsed:= EditForm.isGUICreationCollapsed;
   Partner:= EditForm;
   LockFormUpdate(EditForm);
   EditForm.ParseAndCreateModel;
   (Control as TBaseWidget).NewWidget;
   if PyIDEOptions.CodeFoldingForGuiElements and Collapsed then
     EditForm.CollapseGUICreation;
+  if GuiPyOptions.AlignToGrid then
+    FGuiDesigner.ELDesigner.SelectedControls.AlignToGrid;
   UnlockFormUpdate(EditForm);
 end;
 
 procedure TFObjectGenerator.SetBoundsForFormular(Form: TForm);
   var s1, s2: string;
 begin
-  s1:= 'self.root.geometry(';
-  s2:= Indent2 + s1 + '''' + IntToStr(Form.ClientWidth) + 'x' + IntToStr(Form.ClientHeight) + ''')';
+  if Partner.FrameType = 2 then begin
+    s1:= 'self.root.geometry(';
+    s2:= Indent2 + s1 + '''' + IntToStr(Form.ClientWidth) + 'x' + IntToStr(Form.ClientHeight) + ''')';
+  end else begin
+    s1:= 'self.resize(';
+    s2:= Indent2 + s1 + IntToStr(Form.ClientWidth) + ', ' + IntToStr(Form.ClientHeight) + ')';
+  end;
   Partner.ReplaceLine(s1, s2);
 end;
 
@@ -186,7 +185,6 @@ end;
 
 procedure TFObjectGenerator.SetAttributForComponent(Attr, Value, Typ: string; Control: TControl);
   var Widget: TBaseWidget; GuiForm: TFGuiForm;
-  // oder: MoveComponent
 begin
   Self.Partner:= TEditorForm(TFGUIForm(FGUIDesigner.ELDesigner.DesignControl).Partner);
   Value:= Delphi2PythonValues(Value);
@@ -199,22 +197,22 @@ begin
   end;
 end;
 
+procedure TFObjectGenerator.SetSlotForComponent(Attr, Value: string; Control: TControl);
+  var CName: string;
+begin
+  if Control.Tag = 76 // TQtButtonGroup
+    then CName:= Control.Name + 'BG'
+    else CName:= Control.Name;
+  Partner.InsertQtBinding(CName,
+    Indent2 + 'self.' + CName + '.' + Attr + '.connect(self.' + Value + ')');
+end;
+
 procedure TFObjectGenerator.SetEventForComponent(Attr: string; Control: TControl);
 begin
   if Control is TBaseWidget then
     (Control as TBaseWidget).setEvent(Attr)
   else if Control is TFGuiForm then
     (Control as TFGuiForm).setEvent(Attr);
-end;
-
-procedure TFObjectGenerator.jfmSetValue(const aCaption, value: string);
-begin
-  FObjectInspector.ELPropertyInspector.SetByCaption(aCaption, Value);
-end;
-
-procedure TFObjectGenerator.setAttributValue(const key, s: string; after: integer);
-begin
-  Partner.setAttributValue('', key, s, after);
 end;
 
 procedure TFObjectGenerator.ValueListEditorKeyUp(Sender: TObject; var Key: Word;
@@ -227,127 +225,12 @@ begin
       ModalResult:= mrOK;
 end;
 
-function TFObjectGenerator.GetStrings: TStrings;
-begin
-  Result:= FStringEditor.MStrings.Lines;
-end;
-
-function TFObjectGenerator.GetLines: string;
-  var i: integer; s: string;
-begin
-  with FStringEditor.MStrings do begin
-    s:= Lines[0];
-    for i:= 1 to Lines.Count-1 do
-      s:= s + '\n' + Lines[i];
-  end;
-  Result:= s;
-end;
-
 procedure TFObjectGenerator.AddRow(Attribut: string; const Value: string);
   var i: integer;
 begin
   ValueListEditor.InsertRow(Attribut, Value, true);
   i:= ValueListEditor.RowCount - 1;
   Defaults[i]:= Value;
-end;
-
-function TFObjectGenerator.GetControlStructure(KTag: integer; const Indent: string; block: string): string;
-  var s, s1: string;
-      p: integer;
-begin
-  Result:= '';
-  s:= '';
-  p:= 0;
-  while p < FConfiguration.ControlStructureTemplates[KTag].Count do begin
-    s1:= FConfiguration.ControlStructureTemplates[KTag].Strings[p];
-    if (block <> '') and (trim(s1) = '') then begin
-      s:= s + block;
-      block:= '';
-    end
-    else if (block <> '') and (trim(s1) = '|') then begin  
-      if KTag = 10 then
-        s:= s + '|' + block
-      else begin
-        s:= s + Indent + s1 + CrLf;
-        s:= s + block
-      end;
-      block:= '';
-    end
-    else
-      s:= s + Indent + s1 + CrLf;
-    inc(p);
-  end;
-  delete(s, length(s)-1, 2);
-  Result:= s;
-end;
-
-procedure TFObjectGenerator.SBControlStructures(EditForm: TEditorForm; KTag: integer; OnKey: boolean = false);
-  var s, line, SelectedBlock, Indent: String; empty: boolean;
-
-  function PrepareBlock(s: String): String;
-    var s1, s2: string; p: integer;
-  begin
-    s1:= '';
-    p:= System.Pos(CrLf, s);
-    while p > 0 do begin
-      s2:= copy(s, 1, p+1);
-      if KTag = 5 then // switch needs double indent
-        if trim(s2) = ''
-          then s1:= s1 + Indent + Indent2 + CrLf
-          else s1:= s1 + Indent2 + s2
-      else
-        if trim(s2) = ''
-          then s1:= s1 + Indent + Indent1 + CrLf
-          else s1:= s1 + Indent1 + s2;
-      delete(s, 1, p+1);
-      p:= Pos(CrLf, s);
-    end;
-    Result:= s1;
-  end;
-
-begin
-  if EditForm.ActiveSynEdit.SelAvail then begin
-    Indent:= StringOfChar(' ', CalcIndent(EditForm.ActiveSynEdit.Lines[EditForm.ActiveSynEdit.BlockBegin.Line]));
-    SelectedBlock:= EditForm.GetLinesWithSelection + CrLf;
-    SelectedBlock:= PrepareBlock(SelectedBlock);
-  end else begin
-    line:= EditForm.ActiveSynEdit.Lines[EditForm.ActiveSynEdit.CaretY-1];
-    empty:= (trim(line) = '');
-    delete(line, EditForm.ActiveSynEdit.CaretX, MaxInt);
-    if empty then begin
-      Indent:= StringOfChar(' ', CalcIndent(EditForm.ActiveSynEdit.Lines[EditForm.ActiveSynEdit.CaretY]));
-      EditForm.ActiveSynEdit.CaretX:= 1;
-      EditForm.ActiveSynEdit.Lines[EditForm.ActiveSynEdit.CaretY-1]:= '';
-    end else
-      Indent:= EditForm.getIndent;
-    SelectedBlock:= '';
-  end;
-  s:= GetControlStructure(KTag, Indent, SelectedBlock);
-  if not EditForm.ActiveSynEdit.SelAvail and (trim(line) <> '') then
-    delete(s, 1, length(Indent));
-  if (KTag = 1) and OnKeY
-    then // FJava.scpJava.ActivateTimer(EditForm.Editor) {$ENDIF}// if - else
-    else EditForm.PutText(s);
-end;
-
-procedure TFObjectGenerator.TBLayout(aTag: integer);
-  var s: string;
-begin
-  case aTag of
-    0: s:= 'Border';
-    1: s:= 'Flow';
-    2: s:= 'Grid';
-    3: s:= 'Card';
-    4: s:= 'GridBag';
-    5: s:= 'null';
-  end;
-  if aTag < 5
-    then s:= 'setLayout(new ' + s + 'Layout());'
-    else s:= 'setLayout(null);';
-{  with FJava.EditorForm do begin
-    s:= s + CrLf + getIndent + '|';
-    PutText(s);
-  end;}
 end;
 
 procedure TFObjectGenerator.ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
@@ -385,15 +268,6 @@ begin
   CommandsDataModule.dlgFontDialog.Options:= [];
   if CommandsDataModule.dlgFontDialog.Execute then
     Font.Assign(CommandsDataModule.dlgFontDialog.Font);
-end;
-
-procedure TFObjectGenerator.DeleteEvents(Component: TControl);
-  var Widget: TBaseWidget; myPartner: TEditorForm;
-begin
-  myPartner:= TEditorForm(TFGUIForm(FGUIDesigner.ELDesigner.DesignControl).Partner);
-  if (myPartner = nil) or (Component.Name = '') then exit;
-  Widget:= Component as TBaseWidget;
-  Widget.DeleteEvents;
 end;
 
 procedure TFObjectGenerator.DeleteComponent(Component: TControl);
@@ -488,10 +362,10 @@ begin
             if Comp is TBaseWidget then begin
               Widget:= Comp as TBaseWidget;
               EditorForm.InsertProcedure(CrLf + Widget.MakeHandler(Eventname));
-              EditorForm.InsertBinding(Name, Eventname, Widget.MakeBinding(Eventname));
+              EditorForm.InsertTkBinding(Name, Eventname, Widget.MakeBinding(Eventname));
             end else if Comp = DesignForm then begin
               EditorForm.InsertProcedure(CrLf + DesignForm.MakeHandler(Eventname));
-              EditorForm.InsertBinding(Name, Eventname, DesignForm.MakeBinding(Eventname));
+              EditorForm.InsertTkBinding(Name, Eventname, DesignForm.MakeBinding(Eventname));
             end;
         end;
       end

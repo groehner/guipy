@@ -44,6 +44,7 @@ Type
     procedure AddPHPTemplate;
     procedure AddPlainTextTemplate;
     procedure AddTkinterTemplate;
+    procedure AddQtTemplate;
     procedure Assign(Source: TFileTemplates);
     function TemplateByName(const Name : string) : TFileTemplate;
     function TemplateByExt(const Ext : string) : TFileTemplate;
@@ -137,18 +138,19 @@ end;
 
 procedure TFileTemplates.AddDefaultTemplates(NoCheck: Boolean);
 begin
-   if NoCheck or not Assigned(TemplateByExt('py')) then AddPythonTemplate;
-   if NoCheck or not Assigned(TemplateByExt('pyw')) then AddTkinterTemplate;
-   if NoCheck or not Assigned(TemplateByExt('pyx')) then AddCythonTemplate;
-   if NoCheck or not Assigned(TemplateByExt('htm')) then AddHTMLTemplate;
-   if NoCheck or not Assigned(TemplateByExt('xml')) then AddXMLTemplate;
-   if NoCheck or not Assigned(TemplateByExt('json')) then AddJSONTemplate;
-   if NoCheck or not Assigned(TemplateByExt('yaml')) then AddYAMLTemplate;
-   if NoCheck or not Assigned(TemplateByExt('css')) then AddCSSTemplate;
-   if NoCheck or not Assigned(TemplateByExt('js')) then AddJSTemplate;
-   if NoCheck or not Assigned(TemplateByExt('php')) then AddPHPTemplate;
-   if NoCheck or not Assigned(TemplateByExt('ipynb')) then AddJupyterTemplate;
-   if NoCheck or not Assigned(TemplateByExt('txt')) then AddPlainTextTemplate;
+  if NoCheck or not Assigned(TemplateByExt('py')) then AddPythonTemplate;
+  if NoCheck or not Assigned(TemplateByExt('pyw')) then AddTkinterTemplate;
+  if NoCheck or not Assigned(TemplateByName('Qt Script')) then AddQtTemplate;
+  if NoCheck or not Assigned(TemplateByExt('pyx')) then AddCythonTemplate;
+  if NoCheck or not Assigned(TemplateByExt('htm')) then AddHTMLTemplate;
+  if NoCheck or not Assigned(TemplateByExt('xml')) then AddXMLTemplate;
+  if NoCheck or not Assigned(TemplateByExt('json')) then AddJSONTemplate;
+  if NoCheck or not Assigned(TemplateByExt('yaml')) then AddYAMLTemplate;
+  if NoCheck or not Assigned(TemplateByExt('css')) then AddCSSTemplate;
+  if NoCheck or not Assigned(TemplateByExt('js')) then AddJSTemplate;
+  if NoCheck or not Assigned(TemplateByExt('php')) then AddPHPTemplate;
+  if NoCheck or not Assigned(TemplateByExt('ipynb')) then AddJupyterTemplate;
+  if NoCheck or not Assigned(TemplateByExt('txt')) then AddPlainTextTemplate;
 end;
 
 procedure TFileTemplates.AddHTMLTemplate;
@@ -239,6 +241,19 @@ begin
   FileTemplate.Category := 'Python';
   FileTemplate.Highlighter := 'Python';
   FileTemplate.Template := STkinterFileTemplate;
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddQtTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SQtTemplateName;
+  FileTemplate.Extension := 'pyw';
+  FileTemplate.Category := 'Python';
+  FileTemplate.Highlighter := 'Python';
+  FileTemplate.Template := SQtFileTemplate;
   Add(FileTemplate);
 end;
 

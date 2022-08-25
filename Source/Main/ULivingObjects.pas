@@ -181,7 +181,7 @@ begin
   NS := VariablesWindow.GlobalsNameSpace;
   for i := 0 to SL.Count - 1 do
   begin
-    Name := SL.Strings[i];
+    Name := SL[i];
     for j := 0 to NS.ChildCount - 1 do
       if NS.ChildNode[j].Name = Name then
       begin
@@ -229,7 +229,7 @@ begin
     if assigned(NS) then
       for i := 0 to SL.Count - 1 do
       begin
-        Name := SL.Strings[i];
+        Name := SL[i];
         for j := 0 to NS.ChildCount - 1 do
           if NS.ChildNode[j].Name = Name then
           begin

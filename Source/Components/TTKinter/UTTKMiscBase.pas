@@ -179,9 +179,11 @@ type
     FLabel: string;
     FItems: TStrings;
     FOldItems: TStrings;
+    FCheckboxes: boolean;
     procedure setColumns(Value: integer);
     procedure setLabel(Value: string);
     procedure setItems(Value: TStrings);
+    procedure setCheckboxes(Value: boolean);
     procedure ChangeCommand(Value: string);
     procedure MakeButtongroupItems;
     procedure MakeLabel(aLabel: string);
@@ -193,6 +195,7 @@ type
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure NewWidget(Widget: String = ''); override;
+    procedure DeleteWidget; override;
     procedure MakeCommand(Attr, Value: String); override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
@@ -202,6 +205,7 @@ type
     property Command;
     property Font;
     property Label_: String read FLabel write setLabel;
+    property Checkboxes: boolean read FCheckboxes write setCheckboxes;
   end;
 
   TTKNotebook = class(TTKMiscBaseWidget)
@@ -299,7 +303,7 @@ type
     procedure NewWidget(Widget: String = ''); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure Paint; override;
-    procedure Resize; override;
+    procedure SetPositionAndSize; override;
   end;
 
 implementation
@@ -313,6 +317,8 @@ constructor TTKMiscBaseWidget.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   FOrient:= vertical;
+  Width:= 120;
+  Height:= 80;
 end;
 
 function TTKMiscBaseWidget.getAttributes(ShowAttributes: integer): string;
@@ -347,8 +353,6 @@ constructor TTKFrame.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 43;
-  Width:= 150;
-  Height:= 150;
   ControlStyle := [csAcceptsControls];
 end;
 
@@ -386,8 +390,6 @@ constructor TTKLabelframe.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 44;
-  Width:= 150;
-  Height:= 150;
   FLabelAnchor:= _TL_nw;
   Relief:= _TR_solid;
 end;
@@ -472,8 +474,8 @@ constructor TTKScale.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 45;
-  Width:= 100;
-  Height:= 30;
+  Width:= 120;
+  Height:= 32;
   FOrient:= horizontal;
   FFrom:= 0;
   FTo:= 100;
@@ -495,17 +497,17 @@ procedure TTKScale.setAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'Value' then
     setValue(Name + 'CV', asString(Value))
+  else if Attr = 'To_' then
+    inherited setAttribute('To', Value, Typ)
   else
     inherited;
 end;
 
 procedure TTKScale.NewWidget(Widget: String = '');
 begin
-  Partner.ActiveSynEdit.BeginUpdate;
-  inherited NewWidget('ttk.Scale');
+ inherited NewWidget('ttk.Scale');
   MakeControlVar('variable', Name + 'CV', IntToStr(Round(FValue)), 'Int');
-  InsertVariable(getAttrAsKey('To') + ' = 100');
-  Partner.ActiveSynEdit.EndUpdate;
+  setAttribute('To', '100', '');
 end;
 
 procedure TTKScale.MakeCommand(Attr, Value: String);
@@ -578,8 +580,8 @@ constructor TTKLabeledScale.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 46;
-  Width:= 100;
-  Height:= 50;
+  Width:= 120;
+  Height:= 48;
   FCompound:= _TC_top;
   FFrom:= 0;
   FTo:= 100;
@@ -629,11 +631,9 @@ end;
 
 procedure TTKLabeledScale.NewWidget(Widget: String = '');
 begin
-  Partner.ActiveSynEdit.BeginUpdate;
-  InsertVariable('self.' + Name + 'CV = tk.IntVar()');
+  InsertValue('self.' + Name + 'CV = tk.IntVar()');
   inherited NewWidget('ttk.LabeledScale');
   setConfiguration;
-  Partner.ActiveSynEdit.EndUpdate;
 end;
 
 procedure TTKLabeledScale.MakeCommand(Attr, Value: String);
@@ -705,7 +705,7 @@ begin
   inherited Create(AOwner);
   Tag:= 42;
   Width:= 20;
-  Height:= 150;
+  Height:= 120;
 end;
 
 function TTKScrollbar.getAttributes(ShowAttributes: integer): string;
@@ -743,8 +743,6 @@ constructor TTKPanedWindow.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 47;
-  Width:= 200;
-  Height:= 150;
   ControlStyle := [csAcceptsControls];
   Orient:= vertical;
 end;
@@ -831,8 +829,6 @@ constructor TTKRadiobuttonGroup.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 37;
-  Width:= 100;
-  Height:= 100;
   FColumns:= 1;
   FItems:= TStringList.Create;
   FOldItems:= TStringList.Create;
@@ -847,7 +843,7 @@ end;
 
 function TTKRadiobuttonGroup.getAttributes(ShowAttributes: integer): string;
 begin
-  Result:= '|Columns|Command|Items|Label_|Name';
+  Result:= '|Columns|Command|Items|Label_|Name|Checkboxes';
   if ShowAttributes = 3 then
     Result:= Result + '|Height|Width|Left|Top';
 end;
@@ -865,7 +861,9 @@ begin
   else if Attr = 'Background' then begin
     inherited;
     MakeButtongroupItems;
-  end else if isFontAttribute(Attr) then begin
+  end else if Attr = 'Checkboxes' then
+    MakeButtongroupItems
+  else if isFontAttribute(Attr) then begin
     if Label_ <> '' then inherited;
     MakeButtongroupItems;
   end else
@@ -878,20 +876,33 @@ begin
 end;
 
 procedure TTKRadiobuttonGroup.MakeButtongroupItems;
-  var key, Options: string;
+  var key, Options, s: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
-  for var i := 0 to FOldItems.Count - 1 do
+  for var i := 0 to FOldItems.Count - 1 do begin
     Partner.DeleteAttributeValues(RBName(i));
-
-  for var i:= 0 to FItems.Count - 1 do begin
-    key:= FItems[i];
-    Options:= 'self.' + Name + ', text=''' + key + ''', value=''' + key + '''';
-    InsertVariable(RBName(i) + ' = ttk.Radiobutton(' + Options + ')');
-    key:= RBName(i) + '.place';
-    setAttributValue(key, key + '(x=0, y=0, width=0, height=0');
-    InsertVariable(RBName(i) + '[''variable''] = self.' + Name + 'CV');
+    Partner.DeleteAttributeValues(RBName(i) + 'CV');
   end;
+  Partner.DeleteAttributeValues('self.' + Name + '[''variable'']');
+
+  s:= '';
+  for var i:= 0 to FItems.Count - 1 do begin
+    key:= asString(FItems[i]);
+    if FCheckboxes then begin
+      Options:= 'self.' + Name + ', text=' + key;
+      s:= s + surround(RBName(i) + ' = ttk.Checkbutton(' + Options + ')') +
+          surround(RBName(i) + '.place(x=0, y=0, width=0, height=0)') +
+          surround(RBName(i) + 'CV = tk.IntVar()') +
+          surround(RBName(i) + '[''variable''] = ' + RBName(i) + 'CV') +
+          surround(RBName(i) + 'CV.set(0)');
+    end else begin
+      Options:= 'self.' + Name + ', text=' + key + ', value=' + key;
+      s:= s + surround(RBName(i) + ' = ttk.Radiobutton(' + Options + ')') +
+          surround(RBName(i) + '.place(x=0, y=0, width=0, height=0)') +
+          surround(RBName(i) + '[''variable''] = self.' + Name + 'CV');
+    end;
+  end;
+  insertValue(s);
   Partner.ActiveSynEdit.EndUpdate;
   FOldItems.Text:= FItems.Text;
   setPositionAndSize;
@@ -905,12 +916,11 @@ procedure TTKRadiobuttonGroup.SetPositionAndSize;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited;
-
+  th:= Canvas.TextHeight('Hg');
   if FLabel = '' then begin
     RadioWidth:= Width;
     RadioHeight:= Height;
   end else begin
-    th:= Canvas.TextHeight('Hg');
     RadioWidth:= Width - 4;
     RadioHeight:= Height - th - 4;
   end;
@@ -938,7 +948,7 @@ begin
           then RowHeightI:= RowHeight + 1
           else RowHeightI:= RowHeight;
         if row = 0
-          then y:= 0
+          then y:= 0 // th in Qt?
           else y:= yold + RowHeightI;
         dec(RowHeightRest);
         key:= RBName(line) + '.place';
@@ -954,7 +964,7 @@ begin
 end;
 
 procedure TTKRadiobuttonGroup.MakeCommand(Attr, Value: String);
-  var func, nam: string; i: integer;
+  var func, nam, s: string; i: integer;
 begin
   Command:= true;
   nam:= Name + '_Command';
@@ -963,8 +973,10 @@ begin
          Indent2 + '# ToDo insert source code here' + CrLf +
          Indent2 + 'pass' + CrLf;
   Partner.InsertProcedure(func);
+  s:= '';
   for i:= 0 to FItems.Count - 1 do
-    InsertVariable(RBName(i) + '[''command''] = ' + 'self.' + nam);
+    s:= s + surround(RBName(i) + '[''command''] = ' + 'self.' + nam);
+  insertValue(s);
 end;
 
 procedure TTKRadiobuttonGroup.ChangeCommand(Value: string);
@@ -1004,11 +1016,19 @@ procedure TTKRadiobuttonGroup.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('ttk.Frame');
   MakeLabel(' Continent ');
-  FItems.Text:= 'America'#13#10'Europe'#13#10'Asia';
-  InsertVariable('self.' + Name + 'CV = tk.StringVar()');
-  InsertVariable('self.' + Name + 'CV.set(' + asString(FItems.Strings[0]) + ')');
+  FItems.Text:= defaultItems;
+  InsertValue('self.' + Name + 'CV = tk.StringVar()');
+  InsertValue('self.' + Name + 'CV.set(' + asString(FItems[0]) + ')');
   MakeButtongroupItems;
-  FOldItems.Text:= FItems.Text;
+end;
+
+procedure TTKRadiobuttonGroup.DeleteWidget;
+begin
+  for var i := 0 to FItems.Count - 1 do begin
+    Partner.DeleteAttributeValues(RBName(i));
+    Partner.DeleteAttributeValues(RBName(i) + 'CV');
+  end;
+  inherited;
 end;
 
 procedure TTKRadiobuttonGroup.setItems(Value: TStrings);
@@ -1036,6 +1056,14 @@ begin
   end;
 end;
 
+procedure TTKRadiobuttonGroup.setCheckboxes(Value: boolean);
+begin
+  if FCheckboxes <> Value then begin
+    FCheckboxes:= Value;
+    Invalidate;
+  end;
+end;
+
 function TTKRadiobuttonGroup.ItemsInColumn(i: integer): integer;
   var quot, rest: integer;
 begin
@@ -1052,6 +1080,7 @@ procedure TTKRadiobuttonGroup.Paint;
       col, row, yc, ItemsInCol, line, x, y, th: integer;
       R: TRect; s: string;
 begin
+  FOldItems.Text:= FItems.Text;
   inherited;
   Canvas.FillRect(ClientRect);
   th:= Canvas.TextHeight('Hg');
@@ -1074,12 +1103,20 @@ begin
       ItemsInCol:= ItemsInColumn(col);
       for row:= 1 to ItemsInCol do begin
         x:= 4 + (col - 1)*ColumnWidth;
-        y:= LabelHeight + 2 + (row - 1)*RowWidth ;
-        yc:= y + RowWidth div 2 - Radius;
-        Canvas.Ellipse(x, yc, x + 2*Radius, yc + 2*Radius);
+        y:= LabelHeight + 2 + (row - 1)*RowWidth;
+        Canvas.Brush.Color:= clWhite;
+        if FCheckboxes then begin
+          R:= Rect(x, y + 6, x + 13, y + 19);
+          Canvas.Rectangle(R);
+        end else begin
+          yc:= y + RowWidth div 2 - Radius;
+          Canvas.Ellipse(x, yc, x + 2*Radius, yc + 2*Radius);
+        end;
+        Canvas.Brush.Color:= clBtnFace;
+
         yc:= y + RowWidth div 2 - th div 2;
-        R:= Rect(x + 15, yc, col*ColumnWidth, yc + RowWidth);
-        s:=  FItems.Strings[line];
+        R:= Rect(x + 19, yc, col*ColumnWidth, yc + RowWidth);
+        s:= FItems[line];
         Canvas.TextRect(R, s);
         inc(line);
       end;
@@ -1093,8 +1130,6 @@ constructor TTKNotebook.create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 50;
-  Width:= 150;
-  Height:= 150;
   FTabs:= TStringList.Create;
   FTabs.Text:= 'Tab 1'#13#10'Tab 2'#13#10'Tab 3';
   FOldTabs:= TStringList.Create;
@@ -1141,14 +1176,16 @@ begin
 end;
 
 procedure TTKNotebook.MakeTabs;
-  var i: integer;
+  var i: integer; s: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   DeleteTabs;
+  s:= '';
   for i:= 0 to FTabs.Count - 1 do begin
-    InsertVariable(TabName(i) + ' = ttk.Frame(self.' + Name + ')');
-    InsertVariable('self.' + Name + '.add(' + TabName(i) + ', text=' + asString(FTabs.Strings[i]) + ')');
+    s:= s + surround(TabName(i) + ' = ttk.Frame(self.' + Name + ')');
+    s:= s + surround('self.' + Name + '.add(' + TabName(i) + ', text=' + asString(FTabs[i]) + ')');
   end;
+  InsertValue(s);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
@@ -1179,7 +1216,7 @@ begin
   x:= pl;
   y:= pt;
   for i:= 0 to FTabs.Count - 1 do begin
-    s:= FTabs.Strings[i];
+    s:= FTabs[i];
     tw:= Canvas.TextWidth(s) + 8;
     th:= Canvas.TextHeight(s) + 4;
     if i = 0 then begin
@@ -1202,8 +1239,6 @@ constructor TTKTreeview.create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 51;
-  Width:= 150;
-  Height:= 150;
   FColumns:= TStringList.Create;
   FColumns.Text:= 'Items';
   FItems:= TStringList.Create;
@@ -1243,7 +1278,7 @@ begin
     key:= getAttrAsKey('Show');
     if Value = 'True'
       then Partner.DeleteAttribute(key)
-      else InsertVariable(key + ' = ' + asString('tree'));
+      else InsertValue(key + ' = ' + asString('tree'));   // prüfen
   end else
     inherited;
   if Attr = 'Padding' then
@@ -1270,38 +1305,40 @@ begin
 end;
 
 procedure TTKTreeview.MakeColumns;
-  var w, i, Count, pl, pt, pr, pb: integer; s1: String;
+  var w, i, Count, pl, pt, pr, pb: integer; s, s1: String;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   DeleteColumns;
   CalculatePadding(pl, pt, pr, pb);
+  s:= '';
   Count:= FColumns.Count;
   if Count = 0 then begin
     w:= Width - pl - pr - 2;
-    InsertVariable('self.' + Name + '.column(' + ColumnId(0) + ', width=' + IntToStr(w) + ')');
+    s:= s + surround('self.' + Name + '.column(' + ColumnId(0) + ', width=' + IntToStr(w) + ')');
   end else begin
     s1:= asString(FColumns[0]);
     for i:= 1 to FColumns.Count - 1 do
       s1:= s1 + ', ' + asString(FColumns[i]);
     s1:= '(' + s1 + ')';
-    InsertVariable(getAttrAsKey('Columns') + ' = ' + s1);
+    s:= s + surround(getAttrAsKey('Columns') + ' = ' + s1);
     UpdateObjectInspector;
     w:= (Width - pl - pr - 2) div Count;
     for i:= 0 to Count - 1 do
-      InsertVariable('self.' + Name + '.column(' + ColumnId(i) + ', width=' + IntToStr(w) + ')');
+      s:= s + surround('self.' + Name + '.column(' + ColumnId(i) + ', width=' + IntToStr(w) + ')');
     // hack
     if Count = 1 then
-      InsertVariable('self.' + Name + '.column(' + ColumnId(1) + ', width=0)');
+      s:= s+ surround('self.' + Name + '.column(' + ColumnId(1) + ', width=0)');
     for i:= 0 to Count - 1 do
-      InsertVariable('self.' + Name + '.heading(' + ColumnId(i) + ', text=' + asString(FColumns.Strings[i]) + ')');
+      s:=s + surround('self.' + Name + '.heading(' + ColumnId(i) + ', text=' + asString(FColumns[i]) + ')');
   end;
+  InsertValue(s);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
 function TTKTreeview.hasSubNodes(i: integer): boolean;
 begin
   Result:= (i < FItems.count - 1) and
-           (LeftSpaces(FItems.Strings[i], 2) < LeftSpaces(FItems.Strings[i+1], 2));
+           (LeftSpaces(FItems[i], 2) < LeftSpaces(FItems[i+1], 2));
 end;
 
 procedure TTKTreeview.MakeItems;
@@ -1309,42 +1346,14 @@ procedure TTKTreeview.MakeItems;
       s: string;
       NodeId: array[-1..10] of String;
 
-  procedure FormatMenuItems;
-    var s, ts: string; ls, Indent: integer;
-  begin
-    Indent:= 0;
-    i:= 0;
-    while i < FItems.Count - 1 do begin
-      s:= FItems.Strings[i];
-      ts:= trim(s);
-      if ts = '' then begin
-        FItems.Delete(i);
-        Continue;
-      end;
-      ls:= LeftSpaces(s, 2);
-      if ls > Indent then begin
-        inc(Indent, 2);
-        if ls <> Indent then
-          FItems.Strings[i]:= StringOfChar(' ', Indent) + ts;
-      end else if ls < Indent then begin
-        if ls mod 2 = 1 then begin
-          FItems.Strings[i]:= StringOfchar(' ', ls + 1) + ts;
-          Indent:= ls + 1;
-        end else
-          Indent:= ls;
-      end;
-      inc(i);
-    end;
-  end;
-
-  procedure MakeNode(Indent: integer; Id: string = '');
+  function MakeNode(Indent: integer; Id: string = ''): string;
     var s: string;
   begin
     s:= 'self.' + Name + '.insert(' + asString(NodeId[Indent-1]) + ', ' + asString('end');
     if Id <> '' then
       s:= s + ', ' + asString(Id);
     s:= s + ', text=' + asString(trim(FItems[i])) + ')';
-    InsertVariable(s);
+    Result:= surround(s);
   end;
 
   function getNextNodeId: string;
@@ -1357,30 +1366,31 @@ begin
   Partner.ActiveSynEdit.BeginUpdate;
   Partner.DeleteAttributeValues('self.' + Name + '.insert');
 
-  FormatMenuItems;
+  FormatItems(FItems);
   NodeCount:= 0;
   NodeId[-1]:= '';
   Indent:= 0;
   // insert new items
   i:= 0;
+  s:= '';
   while i < Items.Count do begin
-    s:= Items.Strings[i];
-    ls:= LeftSpaces(s, 2) div 2;
+    ls:= LeftSpaces(Items[i], 2) div 2;
     if ls < Indent then begin  // close open menus
       while Indent > ls do
         dec(Indent);
       dec(i);
     end else if ls > Indent then begin
-      MakeNode(Indent);
+      s:= s + MakeNode(Indent);
       inc(Indent);
     end else if hasSubNodes(i) then begin  // create new node/subnode
       NodeId[Indent]:= getNextNodeId;
-      MakeNode(Indent, NodeId[Indent]);
+      s:= s + MakeNode(Indent, NodeId[Indent]);
       inc(Indent);
     end else
-      MakeNode(Indent);
+      s:= s + MakeNode(Indent);
     inc(i);
   end;
+  InsertValue(s);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
@@ -1420,7 +1430,7 @@ procedure TTKTreeview.setShowHeadings(Value: boolean);
 begin
   if FShowHeadings <> Value then begin
     FShowHeadings:= Value;
-    inherited;
+    Invalidate;
   end;
 end;
 
@@ -1434,6 +1444,7 @@ procedure TTKTreeview.Paint;
       R: TRect; s: string;
 begin
   Background:= clWindow;
+  FOldItems.Text:= FItems.Text;
   inherited;
   CalculatePadding(pl, pt, pr, pb);
   // headings
@@ -1454,16 +1465,17 @@ begin
     for i:= 0 to Count - 1 do begin
       x:= pl + i*ColWidth + 1;
       R:= Rect(x, 4, x + ColWidth, 23);
-      s:= FColumns.Strings[i];
+      s:= FColumns[i];
       DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_CENTER);
     end;
-  end;
+    y:= 26;
+  end else
+    y:= 2;
   // nodes
   x:= 1;
-  y:= 26;
   i:= 0;
   while i < FItems.Count do begin
-    if LeftSpaces(FItems.Strings[i], 2) = 0 then begin
+    if LeftSpaces(FItems[i], 2) = 0 then begin
       if hasSubNodes(i) then begin
         R:= Rect(x + 5, y + 6, x + 14, y + 15);
         Canvas.Pen.Color:= $919191;
@@ -1475,7 +1487,7 @@ begin
         Canvas.MoveTo(x +  7, y + 10);
         Canvas.LineTo(x + 12, y + 10);
       end;
-      s:= FItems.Strings[i];
+      s:= FItems[i];
       R:= Rect(x + 20, y + 2, x + ColWidth - 1, y + 22);
       DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_LEFT);
       y:= y + 20;
@@ -1493,8 +1505,8 @@ constructor TTKProgressbar.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 52;
-  Width:= 100;
-  Height:= 20;
+  Width:= 120;
+  Height:= 24;
   FOrient:= horizontal;
   FMaximum:= 100;
   FMode:= determinate;
@@ -1568,7 +1580,7 @@ constructor TTKSeparator.create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 53;
-  Width:= 150;
+  Width:= 120;
   Height:= 2;
   FOrient:= horizontal;
 end;
@@ -1610,21 +1622,12 @@ begin
   Tag:= 54;
   Width:= 14;
   Height:= 14;
-  Sizeable:= false;
-  Anchors:= [akRight, akBottom];
 end;
 
 procedure TTKSizeGrip.NewWidget(Widget: String = '');
 begin
-  Partner.ActiveSynEdit.BeginUpdate;
-  InsertVariable('self.' + Name + ' = ttk.Sizegrip(' + getContainer + ')');
-  InsertVariable('self.' + Name + '.pack(side=' + asString('right') + ', anchor=' + asString('se') + ')');
-  Partner.ActiveSynEdit.EndUpdate;
-end;
-
-procedure TTKSizeGrip.Resize;
-begin
-  setBounds(Parent.ClientWidth-14, Parent.ClientHeight-14, 14, 14);
+  InsertValue('self.' + Name + ' = ttk.Sizegrip(' + getContainer + ')');
+  InsertValue('self.' + Name + '.pack(side=' + asString('right') + ', anchor=' + asString('se') + ')');
 end;
 
 function TTKSizeGrip.getAttributes(ShowAttributes: integer): string;
@@ -1635,6 +1638,7 @@ end;
 procedure TTKSizeGrip.Paint;
   var pw, ph: Integer; R: TRect;
 begin
+  setBounds(Parent.ClientWidth-14, Parent.ClientHeight-14, 14, 14);
   inherited;
   pw:= ClientWidth;
   ph:= ClientHeight;
@@ -1652,6 +1656,11 @@ begin
   Canvas.FillRect(R);
   R.Offset(-3, +3);
   Canvas.FillRect(R);
+end;
+
+procedure TTKSizeGrip.SetPositionAndSize;
+begin
+  // do nothing
 end;
 
 end.

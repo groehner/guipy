@@ -1429,7 +1429,7 @@ function TFStructogram.getAlgorithmParameter(ParamList: TStringList): string;
 begin
   Param:= '';
   for i:= 0 to ParamList.Count - 1 do begin
-    s:= trim(ParamList.Strings[i]);
+    s:= trim(ParamList[i]);
     Param:= Param + s + ', ';
   end;
   if Param <> '' then
@@ -1452,15 +1452,15 @@ begin
     Indent:= FConfiguration.Indent1;
     StrElementToPython(list.next, progList, VariablesList, Indent);
     for i:= 0 to paramList.Count-1 do begin
-      param:= ParamList.Strings[i];
+      param:= ParamList[i];
       if Pos(':', param) = 0 then begin
         j:= 0;
         while j < VariablesList.Count do begin
-          if (Pos(param + ':', VariablesList.Strings[j]) = 1) then begin
-            typ:= trim(VariablesList.Strings[j]);
+          if (Pos(param + ':', VariablesList[j]) = 1) then begin
+            typ:= trim(VariablesList[j]);
             p:= Pos(':', typ);
             typ:= copy(typ, p + 1, length(typ));
-            ParamList.Strings[i]:= param + ':' + typ;
+            ParamList[i]:= param + ':' + typ;
             VariablesList.Delete(j);
           end;
           inc(j);

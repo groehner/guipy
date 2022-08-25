@@ -164,7 +164,7 @@ begin
 
   if ParsedClass.SuperClasses.Count > 0 then  // ToDo only one superclass
     for i:= 0 to ParsedClass.SuperClasses.Count - 1 do begin
-      aClass := NeedClassifier(ParsedClass.SuperClasses.Strings[i], TClass);
+      aClass := NeedClassifier(ParsedClass.SuperClasses[i], TClass);
       if Assigned(aClass) and (aClass is TClass) then
         C.AddAncestors(aClass as TClass);
     end;

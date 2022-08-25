@@ -940,7 +940,7 @@ type
     actNavInterpreter: TAction;
     actNavBreakpoints: TAction;
     actNavWatches: TAction;
-    actNewFile: TAction;
+    actFileNewFile: TAction;
     actPythonRemoteWx: TAction;
     actPythonRemoteTk: TAction;
     actPythonRemote: TAction;
@@ -1067,9 +1067,9 @@ type
     spiLspLed: TSpTBXItem;
     vilTabDecorators: TVirtualImageList;
     TabControlWidgets: TSpTBXTabControl;
-    SpTBXTabItem1: TSpTBXTabItem;
-    SpTBXTabSheetTkinter: TSpTBXTabSheet;
     SpTBXTabItem2: TSpTBXTabItem;
+    SpTBXTabSheetTkinter: TSpTBXTabSheet;
+    SpTBXTabItem1: TSpTBXTabItem;
     SpTBXTabSheetProgram: TSpTBXTabSheet;
     SpTBXTabItem3: TSpTBXTabItem;
     SpTBXTabSheetTTK: TSpTBXTabSheet;
@@ -1079,7 +1079,7 @@ type
     TBStructogram: TToolButton;
     TBSequence: TToolButton;
     TBConsole: TToolButton;
-    TBApplication: TToolButton;
+    TBTkApplication: TToolButton;
     ILProgramDark: TImageList;
     ILProgram: TImageList;
     ILTKinterDark: TImageList;
@@ -1157,7 +1157,7 @@ type
     mnFileNewClass: TSpTBXItem;
     mnFileNewStrutogram: TSpTBXItem;
     mnFileNewSequencediagram: TSpTBXItem;
-    mnFileNewGUIApplication: TSpTBXItem;
+    mnFileNewTkApplication: TSpTBXItem;
     mnCopyMenu: TSpTBXSubmenuItem;
     mnEditCopy: TSpTBXItem;
     mnEditCopyRTF: TSpTBXItem;
@@ -1227,6 +1227,57 @@ type
     tbitbiDiagramFromOpenFiles: TSpTBXItem;
     mnPopupFileOpen: TSpTBXItem;
     tbiRunRunToCursor: TSpTBXItem;
+    SpTBXTabItem4: TSpTBXTabItem;
+    SpTBXTabSheetQtBase: TSpTBXTabSheet;
+    ToolBarQtBase: TToolBar;
+    TBQtLabel: TToolButton;
+    TBQtLineEdit: TToolButton;
+    TBQtPlainTextEdit: TToolButton;
+    TBQtPushButton: TToolButton;
+    TBQtCheckBox: TToolButton;
+    TBQtButtonGroup: TToolButton;
+    TBQtListWidget: TToolButton;
+    TBQtComboBox: TToolButton;
+    TBQtSpinBox: TToolButton;
+    TBQtScrollbar: TToolButton;
+    TBQtCanvas: TToolButton;
+    TBQtFrame: TToolButton;
+    TBQtSlider: TToolButton;
+    TBQMenuBar: TToolButton;
+    TBQtContextMenu: TToolButton;
+    TBQtTabWidget: TToolButton;
+    TBQtTreeWidget: TToolButton;
+    TBQtProgressBar: TToolButton;
+    TBQtGroupBox: TToolButton;
+    TBQtStatusBar: TToolButton;
+    TBQtApplication: TToolButton;
+    TBQtTableWidget: TToolButton;
+    SpTBXTabItem5: TSpTBXTabItem;
+    SpTBXTabSheetQtControls: TSpTBXTabSheet;
+    ToolBarQtControls: TToolBar;
+    TBQtTextedit: TToolButton;
+    TBQtTextBrowser: TToolButton;
+    TBQtToolButton: TToolButton;
+    ILQtControls: TImageList;
+    TBQtCommandLinkButton: TToolButton;
+    TBQtFontComboBox: TToolButton;
+    TBQtDoubleSpinBox: TToolButton;
+    TBQtLCDNumber: TToolButton;
+    TBQtDateTimeEdit: TToolButton;
+    TBQtDateEdit: TToolButton;
+    TBQtTimeEdit: TToolButton;
+    TBQtDial: TToolButton;
+    TBQtStackWidget: TToolButton;
+    TBQtTableView: TToolButton;
+    TBQtListView: TToolButton;
+    TBQtColumnView: TToolButton;
+    TBQtToolBox: TToolButton;
+    TBQtLine: TToolButton;
+    TBQtScrollArea: TToolButton;
+    TBQtGraphicsView: TToolButton;
+    mnFileNewQtApplication: TSpTBXItem;
+    actFileNewTkApp: TAction;
+    actFileNewQtApp: TAction;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1290,7 +1341,7 @@ type
       var CallHelp: Boolean): Boolean;
     procedure FormShow(Sender: TObject);
     procedure actAddWatchAtCursorExecute(Sender: TObject);
-    procedure actNewFileExecute(Sender: TObject);
+    procedure actFileNewFileExecute(Sender: TObject);
     procedure actNavWatchesExecute(Sender: TObject);
     procedure actNavBreakpointsExecute(Sender: TObject);
     procedure actNavInterpreterExecute(Sender: TObject);
@@ -1366,8 +1417,7 @@ type
     procedure actFileNewStructogramExecute(Sender: TObject);
     procedure actFileNewSequencediagramExecute(Sender: TObject);
     procedure actFileNewTkinterExecute(Sender: TObject);
-    procedure TBTkinterClick(Sender: TObject);
-    procedure ToolButton1Click(Sender: TObject);
+    procedure ToolButtonClick(Sender: TObject);
     procedure actUMLEditClassExecute(Sender: TObject);
     procedure tbiFindCloseClick(Sender: TObject);
     procedure mnViewDebugLayoutClick(Sender: TObject);
@@ -1383,6 +1433,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure ToolButtonStartDrag(Sender: TObject; var DragObject: TDragObject);
     procedure SpTBXItem3Click(Sender: TObject);
+    procedure TBQtApplicationClick(Sender: TObject);
   private
     DSAAppStorage: TDSAAppStorage;
     ShellExtensionFiles : TStringList;
@@ -1867,7 +1918,6 @@ begin
     aEditor.GUIFormOpen:= true;
   end else
     ErrorMsg(Format(_('Associated python file %s not found.'), [filename]));
-  FObjectInspector.RefreshCBObjects;
 end;
 
 procedure TPyIDEMainForm.DeleteObjectsInUMLForms;
@@ -2109,14 +2159,14 @@ begin
   SkinManager.AddSkinNotification(Self);
   SkinManager.BroadcastSkinNotification;
 
-  // Read Settings from PyScripter.ini
+  // Read Settings from GuiPy.ini
   if FileExists(AppStorage.IniFile.FileName) then
     RestoreApplicationData
   else
     PyIDEOptions.Changed;
   FConfiguration.Changed;
 
-  // Read Settings from PyScripter.local.ini
+  // Read Settings from GuiPy.local.ini
   if FileExists(LocalAppStorage.IniFile.FileName) then
   begin
     RestoreLocalApplicationData;
@@ -2627,7 +2677,7 @@ begin
   ShowIDEDockForm(WatchesWindow);
 end;
 
-procedure TPyIDEMainForm.actNewFileExecute(Sender: TObject);
+procedure TPyIDEMainForm.actFileNewFileExecute(Sender: TObject);
 begin
   with TNewFileDialog.Create(Self) do begin
     if ShowModal = mrOK then begin
@@ -2724,7 +2774,7 @@ begin
     if SL.Count > 0 then begin
       Filename:= path;
       for i:= 0 to SL.Count - 1 do
-        Filename:= Filename + SL.Strings[i];
+        Filename:= Filename + SL[i];
       Filename:= Filename + '.puml';
 
       mr:= mrNone;
@@ -2817,9 +2867,9 @@ begin
     FilterIndex:= 1;
     if Execute then begin
       for var i:= 0 to Files.Count - 1 do
-        DoOpenInUMLWindow(Files.Strings[i]);
+        DoOpenInUMLWindow(Files[i]);
       if Files.Count > 0 then
-        GuiPyOptions.Sourcepath:= ExtractFilePath(Files.Strings[0]);
+        GuiPyOptions.Sourcepath:= ExtractFilePath(Files[0]);
     end;
   end;
   UnlockWindow;
@@ -3453,7 +3503,6 @@ begin
     if CommandsDataModule.SynParamCompletion.Form.Visible then
       CommandsDataModule.SynParamCompletion.CancelCompletion;
   end;
-
   Done := True;
 end;
 
@@ -3461,7 +3510,7 @@ procedure TPyIDEMainForm.ApplicationOnHint(Sender: TObject);
 Var
   S : string;
 begin
-  S := StringReplace(GetLongHint(Application.Hint), #13#10, ' ', [rfReplaceAll]);
+  S := StringReplace(GetLongHint(Application.Hint), sLineBreak, ' ', [rfReplaceAll]);
   WriteStatusMsg(S);
 end;
 
@@ -4104,22 +4153,51 @@ begin
   FileTemplate := FileTemplates.TemplateByName(STkinterTemplateName);
   if assigned(FileTemplate) then begin
     aEditor:= NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl));
-    EditForm:= TEditorForm(aEditor.form);
+    EditForm:= TEditorForm(aEditor.Form);
     if Assigned(EditForm) then begin
       EditForm.SetGeometry;
-      EditForm.Modified:= false;
+      EditForm.SynEdit.Text := Parameters.ReplaceInText(FileTemplate.Template);
       if PyIDEOptions.CodeFoldingForGuiElements then
         EditForm.CollapseGUICreation;
       GUIForm:= TFGUIForm.Create(nil);
       GUIForm.Open(ChangeFileExt(EditForm.Pathname, '.pfm'), '',
-        Point(GuiPyOptions.FrameWidth, GuiPyOptions.FrameHeight));
+        Point(GuiPyOptions.FrameWidth, GuiPyOptions.FrameHeight), EditForm);
       GUIForm.Caption:= 'CAPTION';
       GUIForm.initEvents;
       FObjectInspector.ELPropertyInspector.SetByCaption('Title', 'CAPTION');
+      EditForm.Modified:= false;
     end;
     ShowDockForm(FObjectInspector)
   end else
     ErrorMsg(Format(_('File template %s missing!'), [STkinterTemplateName]));
+end;
+
+procedure TPyIDEMainForm.TBQtApplicationClick(Sender: TObject);
+  var EditForm: TEditorForm;
+      GUIForm: TFGUIForm;
+      aEditor: IEditor;
+      FileTemplate : TFileTemplate;
+begin
+  FileTemplate := FileTemplates.TemplateByName(SQtTemplateName);
+  if assigned(FileTemplate) then begin
+    aEditor:= NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl));
+    EditForm:= TEditorForm(aEditor.Form);
+    if Assigned(EditForm) then begin
+      EditForm.SetGeometry;
+      EditForm.SynEdit.Text := Parameters.ReplaceInText(FileTemplate.Template);
+      if PyIDEOptions.CodeFoldingForGuiElements then
+        EditForm.CollapseGUICreation;
+      GUIForm:= TFGUIForm.Create(nil);
+      GUIForm.Open(ChangeFileExt(EditForm.Pathname, '.pfm'), '',
+        Point(GuiPyOptions.FrameWidth, GuiPyOptions.FrameHeight), EditForm);
+      GUIForm.Caption:= 'CAPTION';
+      GUIForm.initEvents;
+      FObjectInspector.ELPropertyInspector.SetByCaption('Title', 'CAPTION');
+      EditForm.Modified:= false;
+    end;
+    ShowDockForm(FObjectInspector)
+  end else
+    ErrorMsg(Format(_('File template %s missing!'), [SQtTemplateName]));
 end;
 
 procedure TPyIDEMainForm.actFileOpenExecute(Sender: TObject);
@@ -4149,7 +4227,7 @@ begin
       GuiPyOptions.Sourcepath:= ExtractFilePath(Filename);
       if assigned(aFile) and (aFile.FileKind = fkTextDiff) then
         if Files.Count >= 2
-          then (aFile.Form as TFTextDiff).Open(Files.Strings[0], Files.Strings[1])
+          then (aFile.Form as TFTextDiff).Open(Files[0], Files[1])
           else (aFile.Form as TFTextDiff).Open(Filename)
       else
       for i := 0 to Files.Count - 1 do begin
@@ -5647,10 +5725,10 @@ begin
   DragObject:= TMyDragObject.Create(DragRectangle);
 end;
 
-procedure TPyIDEMainForm.TBTkinterClick(Sender: TObject);
+procedure TPyIDEMainForm.ToolButtonClick(Sender: TObject);
 begin
   if GuiDesignerOpen then begin
-    FGUIDesigner.TBTkinter(TToolButton(Sender).Tag);
+    FGUIDesigner.SetToolButton(TToolButton(Sender).Tag);
     if not FObjectInspector.Visible then
       ShowDockForm(FObjectInspector)
   end;
@@ -5681,11 +5759,6 @@ begin
     GradientEndColor := DarkenColor(GradColor, 20);
     Color := GradColor;
   end;
-end;
-
-procedure TPyIDEMainForm.ToolButton1Click(Sender: TObject);
-begin
-  //FLivingObjects.Logging(ToolButton1);
 end;
 
 procedure TPyIDEMainForm.FormKeyUp(Sender: TObject; var Key: Word;
@@ -6037,13 +6110,15 @@ begin
       Result:= aFile as IEditor;
       try
         Filename:= getFilename('.' + FileTemplate.Extension);
+        Result.SynEdit.Text:= FileTemplate.Template;
         Result.OpenFile(Filename, FileTemplate.Highlighter);
+        //Result.SynEdit.Text := Parameters.ReplaceInText(FileTemplate.Template);
         Result.Activate;
       except
         Result.Close;
         raise
       end;
-      Result.SynEdit.SelText := Parameters.ReplaceInText(FileTemplate.Template);
+
 
       // Locate the caret symbol |
       for i := 0 to Result.SynEdit.Lines.Count - 1 do begin
@@ -6537,6 +6612,10 @@ begin
   DoOpenFile(S, '', TabControlIndex(ActiveTabControl));
   // A bit problematic since it Frees the MRU Item which calls this click handler
   tbiRecentFileList.MRURemove(S);
+  if ExtractFileExt(s) = '.pyw' then begin
+    s:= ChangeFileExt(s, '.pfm');
+    DoOpenFile(S, '', TabControlIndex(ActiveTabControl));
+  end;
 end;
 
 procedure TPyIDEMainForm.tbiRecentProjectsClick(Sender: TObject;
@@ -6626,11 +6705,15 @@ begin
   if IsStyledWindowsColorDark then begin
     ToolbarProgram.Images:= ILProgramDark;
     ToolbarTkinter.Images:= ILTKinterDark;
-    ToolbarTTK.Images:= ILTKInterDarK;
+    ToolbarTTK.Images:= ILTKInterDark;
+    ToolbarQtBase.Images:= ILTKInterDark;
+    ToolbarQtControls.Images:= ILQtControls;
   end else begin
     ToolbarProgram.images:= ILProgram;
     ToolbarTkinter.Images:= ILTKinter;
     ToolbarTTK.Images:= ILTKinter;
+    ToolbarQtBase.Images:= ILTKInter;
+    ToolbarQtControls.Images:= ILQtControls;
   end;
 end;
 

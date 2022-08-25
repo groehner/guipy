@@ -404,7 +404,7 @@ function TStringListReader.nextLineIndent: integer;
   var s: string; p: integer;
 begin
   if nr < SL.Count - 1 then begin
-    s:= SL.Strings[nr+1];
+    s:= SL[nr+1];
     p:= 1;
     if s <> '' then
       while s[p] = ' ' do
@@ -441,11 +441,11 @@ begin
   val:= '';
 
   inc(nr);
-  while (nr < SL.Count) and (trim(SL.Strings[nr]) = '') do
+  while (nr < SL.Count) and (trim(SL[nr]) = '') do
     inc(nr);
 
   if nr < SL.Count then begin
-    line:= SL.Strings[nr];
+    line:= SL[nr];
     q:= 1;
     if line <> '' then
       while line[q] = ' ' do

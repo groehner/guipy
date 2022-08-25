@@ -50,7 +50,9 @@ interface
     procedure SkipToChars(ch: string);
     procedure SkipPairTo(const open, close: string);
     function LookAheadToken: String;
+    function getExtends: string;
     function getFilename: String;
+    function GetFrameType: integer;
   end;
 
 implementation
@@ -400,6 +402,35 @@ begin
     getNextToken;
   if Token = 'def' then
     Result:= getNextToken;
+end;
+
+function TPythonScannerWithTokens.getExtends: string;
+begin
+  Result:= '';
+  GetNextToken;
+  while (Token <> '') and (Token <> 'class') do
+    GetNextToken;
+
+  if Token = 'class' then begin
+    GetNextToken;
+    GetNextToken;
+    if Token = '(' then
+      Result:= GetNextToken;
+  end;
+end;
+
+function TPythonScannerWithTokens.GetFrameType: integer;
+  var Typ: string;
+begin
+  CompoundTokens:= true;
+  Typ:= getExtends;
+  if ScanStr <> '' then
+    if (Typ = 'QMainWindow') or (Typ = 'QWidget')
+      then Result:= 3
+    else if Typ = 'tk.Frame'
+      then Result:= 2
+      else Result:= 1
+  else Result:= 0;
 end;
 
 end.

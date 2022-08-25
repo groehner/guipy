@@ -173,7 +173,7 @@ begin
   SL.Add(s);
   tw:= 0;
   for p:= 0 to SL.Count - 1 do
-    tw:= max(tw, Canvas.TextWidth(SL.Strings[p]));
+    tw:= max(tw, Canvas.TextWidth(SL[p]));
   th:= SL.Count * Canvas.TextHeight('Hg');
 end;
 

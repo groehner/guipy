@@ -47,6 +47,7 @@ type
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getEvents(ShowEvents: integer): string; override;
+    procedure SizeToText; override;
   published
     property Compound: TCompound read FCompound write setCompound default _TC_none;
     property Image;
@@ -64,7 +65,6 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure NewWidget(Widget: String = ''); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure SizeLabelToText; override;
   published
     property Anchor;
     property Background;
@@ -104,6 +104,7 @@ type
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure NewWidget(Widget: String = ''); override;
+    procedure SizeToText; override;
   published
     property Command;
     property OffValue: String read fOffValue write fOffValue;
@@ -158,6 +159,8 @@ begin
   inherited create(AOwner);
   FCompound:= _TC_none;
   FState:= active;
+  Width:= 80;
+  Height:= 24;
 end;
 
 procedure TTKButtonBaseWidget.SetAttribute(Attr, Value, Typ: string);
@@ -206,6 +209,14 @@ begin
   end;
 end;
 
+procedure TTKButtonBaseWidget.SizeToText;
+begin
+  var d:= Canvas.TextWidth(Text + 'x') + - Width;
+  if d > 0 then Width:= Width + d;
+  d:= Canvas.TextHeight(Text)+ 4 - Height;
+  if d > 0 then Height:= Height + d;
+end;
+
 procedure TTKButtonBaseWidget.setCompound(aValue: TCompound);
 begin
   if aValue <> fCompound then begin
@@ -228,8 +239,6 @@ constructor TTKLabel.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 31;
-  Width:= 102;
-  Height:= 20;
   Text:= 'Text';
   Anchor:= _TA_w;
   Justify:= _TJ_left;
@@ -248,11 +257,8 @@ end;
 procedure TTKLabel.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('ttk.Label');
-  // self.label1['anchor'] = 'w'
-  var s:= 'self.' + Name + '[''anchor'']';
-  setAttributValue(s, s + ' = ''w''');
-  s:= 'self.' + Name + '[''text'']';
-  setAttributValue(s, s + ' = ''Text''');
+  InsertValue('self.' + Name + '[' + asString('anchor') + '] = ' + asString('w'));
+  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString('Text'));
 end;
 
 procedure TTKLabel.Paint;
@@ -261,24 +267,12 @@ begin
   inherited;
 end;
 
-procedure TTKLabel.SizeLabelToText;
-  var d: integer;
-begin
-  //Canvas.Font:= Font;
-  d:= Canvas.TextWidth(Text) + 4 - Width;
-  if d > 0 then Width:= Width + d;
-  d:= Canvas.TextHeight(Text)+ 4 - Height;
-  if d > 0 then Height:= Height + d;
-end;
-
 {--- TKButton -----------------------------------------------------------------}
 
 constructor TTKButton.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 34;
-  Width:= 75;
-  Height:= 25;
   FDefault:= false;
   Relief:= _TR_solid;
   Background:= $E1E1E1;
@@ -336,8 +330,6 @@ constructor TTKCheckbutton.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 35;
-  Width:= 102;
-  Height:= 20;
   Anchor:= _TA_w;
   FOffValue:= '0';
   FOnValue:= '1';
@@ -366,9 +358,6 @@ procedure TTKCheckbutton.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('ttk.Checkbutton');
   MakeControlVar('variable', Name + 'CV', '0', 'Int');
-  Anchor:= _TA_w;
-  var s:= 'self.' + Name + '[''anchor'']';
-  setAttributValue(s, s + ' = ''w''');
 end;
 
 procedure TTKCheckbutton.Paint;
@@ -378,15 +367,22 @@ begin
   DrawBitmap(LeftSpace, TopSpace, 2, Canvas, DMImages.ILPythonControls)
 end;
 
+procedure TTKCheckbutton.SizeToText;
+begin
+  var d:= Canvas.TextWidth(Text) + 18 + (3*Canvas.TextWidth('x')) div 2 - Width;
+  if d > 0 then Width:= Width + d;
+  d:= Canvas.TextHeight(Text)+ 4 - Height;
+  if d > 0 then Height:= Height + d;
+end;
+
 {--- TKMenuButton -------------------------------------------------------------}
 
 constructor TTKMenubutton.Create(AOwner: TComponent);
 begin
   inherited Create (AOwner);
   Tag:= 48;
-  Width:= 75;
-  Height:= 25;
   FDirection:= below;
+  Text:= 'Menubutton';
 end;
 
 function TTKMenubutton.getAttributes(ShowAttributes: integer): string;
@@ -440,11 +436,9 @@ constructor TTKOptionMenu.create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 49;
-  Width:= 75;
-  Height:= 25;
   FDirection:= Below;
   FNewItems:= TStringList.Create;
-  FNewItems.Text:= 'A'#13#10'B'#13#10'C';
+  FNewItems.Text:= defaultItems;
   FOldItems:= TStringList.Create;
 end;
 
@@ -476,8 +470,8 @@ end;
 procedure TTKOptionMenu.NewWidget(Widget: String = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
-  setAttributValue('self.' + Name + 'CV', 'self.' + Name + 'CV = tk.StringVar()');
-  setValue(Name + 'CV', asString('A'));
+  InsertValue('self.' + Name + 'CV = tk.StringVar()');
+  InsertValue('self.' + Name + 'CV.set(' + asString(MenuItems[0]) + ')');
   MakeMenuItems;
   Partner.ActiveSynEdit.EndUpdate;
 end;
@@ -495,7 +489,7 @@ procedure TTKOptionMenu.MakeMenuItems;
 begin
   MenuItems:= '';
   for i := 0 to FNewItems.Count - 1 do begin
-    newMenuTitle:= trim(FNewItems.Strings[i]);
+    newMenuTitle:= trim(FNewItems[i]);
     if newMenuTitle = '' then continue;
     MenuItems:= MenuItems + ', ' + asString(newMenuTitle);
   end;
@@ -507,7 +501,7 @@ function TTKOptionMenu.getText: String;
   var s: String;
 begin
   if FNewItems.Count > 0 then
-    s:= trim(FNewItems.Strings[0]);
+    s:= trim(FNewItems[0]);
   if s <> ''
     then Result:= s
     else Result:= Text;
@@ -516,6 +510,7 @@ end;
 procedure TTKOptionMenu.Paint;
   var PArray: array[0..2] of TPoint;
 begin
+  FOldItems.Text:= FNewItems.Text;
   inherited;
   PArray[0].x:= Width - 12;
   PArray[0].y:= Height div 2 - 2;

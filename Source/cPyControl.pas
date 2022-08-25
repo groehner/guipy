@@ -520,6 +520,7 @@ begin
         // Destroy any active remote interpeter
         ActiveDebugger := nil;
         ActiveInterpreter := nil;
+        {$WARNINGS OFF}
         try
           if Value = peSSH then
             RemoteInterpreter := TPySSHInterpreter.Create(SSHServer)
@@ -529,6 +530,7 @@ begin
         except
           Connected := False;
         end;
+        {$WARNINGS ON}
         if Connected then begin
           ActiveInterpreter := RemoteInterpreter;
           ActiveDebugger := ActiveInterpreter.CreateDebugger;
@@ -745,7 +747,9 @@ begin
     II := VarPythonEval('_II');
     InternalPython.PythonEngine.ExecString('del _II');
 
+    {$WARNINGS OFF}
     fInternalInterpreter := TPyInternalInterpreter.Create(II);
+    {$WARNINGS ON}
     fActiveInterpreter := fInternalInterpreter;
     fActiveDebugger := TPyInternalDebugger.Create;
 

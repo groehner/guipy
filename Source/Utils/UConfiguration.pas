@@ -73,6 +73,7 @@ type
     fNameFromText: boolean;
     fGuiDesignerHints: Boolean;
     fSnapToGrid: boolean;
+    fAlignToGrid: Boolean;
     fGridSize: Integer;
     fFrameWidth: Integer;
     fFrameHeight: Integer;
@@ -210,6 +211,8 @@ type
       write fGuiDesignerHints default true;
     property SnapToGrid : boolean read fSnapToGrid
       write fSnapToGrid default true;
+    property AlignToGrid : boolean read fAlignToGrid
+      write fAlignToGrid default true;
     property GridSize : Integer read fGridSize
       write fGridSize default 8;
     property FrameWidth : Integer read fFrameWidth
@@ -962,6 +965,7 @@ type
     GBMethodsOptions: TGroupBox;
     CBShowKindProcedure: TCheckBox;
     CBShowParameterTypeSelection: TCheckBox;
+    CBAlignToGrid: TCheckBox;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1747,6 +1751,7 @@ begin
     CBGuiDesignerHints.Checked:= GuiDesignerHints;
     UDGridSize.Position:= GridSize;
     CBSnapToGrid.Checked:= SnapToGrid;
+    CBAlignToGrid.Checked:= AlignToGrid;
     EFrameWidth.Text:= IntToStr(FrameWidth);
     EFrameHeight.Text:= IntToStr(FrameHeight);
 
@@ -2076,6 +2081,7 @@ begin
     GuiDesignerHints:= CBGuiDesignerHints.Checked;
     GridSize:= UDGridSize.Position;
     SnapToGrid:= CBSnapToGrid.Checked;
+    AlignToGrid:= CBAlignToGrid.Checked;
     FrameWidth:= StrToInt(EFrameWidth.Text);
     FrameHeight:= strToInt(EFrameHeight.Text);
 
@@ -2488,10 +2494,10 @@ begin
   ControlStructureTemplates[3].Text:= 'for | in range(n):' +  CrLf + Indent1 + CrLf;
   ControlStructureTemplates[4].Text:= ''; // 'do:';
   ControlStructureTemplates[5].Text:=
-         'if |:' + CrLf +
-            Indent1 + 'elif: ' + CrLf + Indent2 + CrLf +
-            Indent1 + 'elif: ' + CrLf + Indent2 + CrLf +
-            Indent1 + 'else: ' + CrLf + Indent2 + CrLf;
+         'if |:' + CrLf + Indent2 + CrLf +
+         'elif : ' + CrLf + Indent2 + CrLf +
+         'elif : ' + CrLf + Indent2 + CrLf +
+         'else: ' + CrLf + Indent2 + CrLf;
   ControlStructureTemplates[6].Text:=
          'try:' + CrLf +
             Indent1 + '|' + CrLf +
@@ -4859,6 +4865,7 @@ begin
   fNameFromText:= true;
   fGuiDesignerHints:= true;
   fSnapToGrid:= true;
+  fAlignToGrid:= true;
   fGridSize:= 8;
   fFrameWidth:= 300;
   fFrameHeight:= 300;

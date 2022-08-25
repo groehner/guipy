@@ -134,7 +134,6 @@ begin
      if UseCodeFolding then AppStorage.WriteString(BasePath+'\FoldState', FoldState);
      AppStorage.WriteBoolean(BasePath+'\ReadOnly', ReadOnly);
      AppStorage.WriteBoolean(BasePath+'\GUIFormOpen', GUIFormOpen);
-
      AppStorage.WriteBoolean(BasePath+'\SecondEditorVisible', SecondEditorVisible);
      IgnoreProperties := TStringList.Create;
      try
@@ -371,7 +370,6 @@ begin
           Editor.SynEdit.Assign(FilePersistInfo.EditorOptions);
           RestoreFoldInfo(Editor.SynEdit, FilePersistInfo.UseCodeFolding, FilePersistInfo.FoldState);
           Editor.ReadOnly := FilePersistInfo.ReadOnly;
-          Editor.GUIFormOpen:= FilePersistInfo.GUIFormOpen;
           if FilePersistInfo.SecondEditorVisible then begin
             Editor.SynEdit2.Assign(FilePersistInfo.EditorOptions2);
             RestoreFoldInfo(Editor.SynEdit2, FilePersistInfo.SecondEditorUseCodeFolding,
@@ -387,6 +385,9 @@ begin
               Editor.SynEdit2.Height := FilePersistInfo.SecondEditorSize;
             end;
           end;
+          if FilePersistInfo.GUIFormOpen then
+            PyIDEMainForm.DoOpenFile(ChangeFileExt(FilePersistInfo.FileName, '.pfm'), '',
+              FilePersistInfo.TabControlIndex);
         end;
         if aFile.FileKind = fkUML then begin
           (aFile.Form as TFUMLForm).PInteractive.Height:= FilePersistInfo.PInteractiveHeight;

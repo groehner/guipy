@@ -386,8 +386,8 @@ constructor TKEntry.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 2;
-  Width:= 102;
-  Height:= 20;
+  Width:= 80;
+  Height:= 24;
   HighlightThickness:= '0';
   Cursor:= crIBeam;
   FShow:= true;
@@ -468,8 +468,8 @@ constructor TKSpinbox.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 9;
-  Width:= 75;
-  Height:= 25;
+  Width:= 40;
+  Height:= 24;
   FButtonBackground:= clBtnFace;
   FButtonDownRelief:= _TR_raised;
   FButtonUpRelief:= _TR_raised;
@@ -498,7 +498,7 @@ begin
   s1:= 'self.' + Name + '[''values'']';
   AllValues:= '[';
   for i := 0 to FValues.Count - 1 do begin
-    Value:= trim(FValues.Strings[i]);
+    Value:= trim(FValues[i]);
     if Value = '' then continue;
     AllValues:= AllValues + asString(Value) + ', ';
   end;
@@ -551,10 +551,8 @@ begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('tk.Spinbox');
   MakeControlVar('textvariable', Name + 'CV', FValue);
-  var key:= 'self.' + Name + '[''to'']';
-  setAttributValue(key, key + ' = ' + asString('10'));
-  key:= 'self.' + Name + '[''from'']';
-  setAttributValue(key, key + ' = ' + asString('1'));
+  InsertValue('self.' + Name + '[' + asString('to') + '] = ' + asString('10'));
+  InsertValue('self.' + Name + '[' + asString('from') + '] = ' + asString('1'));
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
@@ -575,7 +573,7 @@ begin
   if FValue <> ''
     then s:= FValue
     else if FValues.Count > 0
-      then s:= FValues.Strings[0]
+      then s:= FValues[0]
       else s:= FFrom;
   if Scrollbar
     then newHeight:= Height - 20
@@ -627,8 +625,8 @@ constructor TKCanvas.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 11;
-  Height:= 150;
-  Width:= 150;
+  Height:= 80;
+  Width:= 120;
   Background:= clBtnFace;
   BorderWidth:= '0';
   HighlightThickness:= '2';
@@ -698,8 +696,8 @@ constructor TKText.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 3;
-  Width:= 200;
-  Height:= 100;
+  Width:= 120;
+  Height:= 80;
   FAutoSeparators:= true;
   FBlockCursor:= false;
   Cursor:= crIBeam;
@@ -746,10 +744,10 @@ procedure TKText.MakeStrings;
   var s1, s2: string; i: integer;
 begin
   if FText.Count > 0
-    then s2:= FText.Strings[0]
+    then s2:= FText[0]
     else s2:= '';
   for i:= 1 to FText.Count - 1 do
-    s2:= s2 + '\n' + FText.Strings[i];
+    s2:= s2 + '\n' + FText[i];
   s1:= 'self.' + Name  + '.insert';
   SetAttributValue(s1, s1 + '(''1.0'', ' + asString(s2) + ')');
 end;
@@ -795,7 +793,7 @@ procedure TKText.Paint;
   begin
     SL.Clear;
     for i:= 0 to FText.Count - 1 do begin
-      s:= FText.Strings[i]; s1:= ''; s2:= '';
+      s:= FText[i]; s1:= ''; s2:= '';
       while Canvas.TextWidth(s) > taw do begin
         split(s, s1, s2);
         SL.Add(s1);
@@ -814,7 +812,7 @@ begin
   inc(px, BorderWidthInt);
   inc(py, BorderWidthInt);
 
-  if FText.Text <> #$0D#$0A then begin
+  if FText.Text <> CrLf then begin
     SL:= TStringList.Create;
     SL.Text:= FText.Text;
 
@@ -866,11 +864,12 @@ constructor TKListbox.create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 8;
-  Width:= 150;
-  Height:= 150;
+  Width:= 120;
+  Height:= 80;
   Foreground:= clBtnText;
   FActiveStyle:= _TS_underline;
   FListItems:= TStringList.Create;
+  FListItems.Text:= defaultItems;
   FSelectMode:= browse;
   Justify:= _TJ_left;
   Relief:= _TR_sunken;
@@ -897,7 +896,7 @@ function TKListbox.getListItems: String;
 begin
   s:= '[';
   for i:= 0 to FListItems.Count -1 do
-    s:= s + asString(FListItems.Strings[i]) + ', ';
+    s:= s + asString(FListItems[i]) + ', ';
   delete(s, length(s) - 1, 2);
   Result:= s + ']';
 end;
@@ -921,6 +920,7 @@ begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('tk.Listbox');
   MakeControlVar('listvariable', Name + 'CV');
+  setAttribute('ListItems', '', '');
   Partner.ActiveSynEdit.EndUpdate;
 end;
 

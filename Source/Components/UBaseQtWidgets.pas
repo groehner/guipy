@@ -13,69 +13,69 @@ uses
   Windows, Messages, Controls, Graphics, Classes,
   ELEvents, UBaseWidgets, frmEditor;
 
+const CrLf = sLineBreak;
+
 type
 
-  TFocusPolicy = (_FP_NoFocus, _FP_TabFocus, _FP_ClickFocus, _FP_StrongFocus,
-                  _FP_WheelFocus);
-  TContextMenuPolicy = (_CP_NoContextMenu, _CP_DefaultContextMenu,
-         _CP_ActionsContextMenu, _CP_CustomContextMenu, _CP_PreventContextMenu);
-  TLayoutDirection = (_LD_LeftToRight, _LD_RightToLeft, _LD_LayoutDirectionAuto);
+  TFocusPolicy = (NoFocus, TabFocus, ClickFocus, StrongFocus, WheelFocus);
+
+  TContextMenuPolicy = (NoContextMenu, DefaultContextMenu, ActionsContextMenu,
+                        CustomContextMenu, PreventContextMenu);
+
+  TLayoutDirection = (LeftToRight, RightToLeft, LayoutDirectionAuto);
+
+  TAlignmentHorizontal = (AlignLeft, AlignRight, AlignHCenter, AlignJustify);
+
+  TAlignmentVertical = (AlignTop, AlignBottom, AlignVCenter, AlignBaseline);
+
+  TOrientation = (Vertical, Horizontal);
+
 
   TBaseQtWidget = class(TBaseWidget)
   private
-    FCommand: boolean;
-    FScrollbar: boolean;
-    FScrollbars: TScrollbar;
-
     FEnabled: boolean;
     FMouseTracking: boolean;
     FTabletTracking: boolean;
     FFocusPolicy: TFocusPolicy;
     FContextMenuPolicy: TContextMenuPolicy;
+    FContextMenu: string;
     FAcceptDrops: boolean;
     FToolTip: string;
     FToolTipDuration: integer;
     FStatusTip: string;
-    FWhatThis: string;
+    FWhatsThis: string;
     FAccessibleName: string;
     FAccessibleDescription: string;
     FLayoutDirection: TLayoutDirection;
     FAutoFillBackground: boolean;
     FStyleSheet: string;
-    procedure setMenu(Value: string);
-    function getObjectName: string;
-    procedure setObjectName(Value: string);
-    procedure MakeBoolean(Attr, Value: String);
-    procedure MakeShow(Value: String);
+    FHalfX: integer;
+    FCustomContextMenuRequested: string;
+    FWindowIconChanged: string;
+    FWindowTitleChanged: string;
+    procedure MakeContextMenu(Value: string);
+    procedure MakeFont;
+    function getType: String;
+    function getContainer: string;
+    function getAttrAsKey(Attr: string): string;
   protected
     TopSpace: integer;
     LeftSpace: integer;
-    RightSpace: integer;
-
-    function getMouseEvents(ShowEvents: integer): string; virtual;
-    function getKeyboardEvents(ShowEvents: integer): string; virtual;
-    function getAttrAsKey(Attr: string): string; override;
-    procedure CalculatePadding(var pl, pt, pr, pb: integer); virtual; abstract;
-    procedure CalculateText(var tw, th: integer; var SL: TStringList); virtual;
-    procedure AddParameter(const Value, par: String);
-    procedure MakeControlVar(Variable, ControlVar: String; Value: String = '';  Typ: String = 'String');
-    procedure MakeValidateCommand(Attr, Value: string);
-    procedure MakeScrollbar(Value, TkTyp: String);
-    procedure MakeScrollbars(Value, TkTyp: String);
-    procedure PaintAScrollbar(Value: boolean);
-    procedure PaintScrollbars(Scrollbar: TScrollbar);
-    procedure setScrollbar(Value: boolean);
-    procedure setScrollbars(Value: TScrollbar);
-    procedure Paint; override;
-    procedure PaintScrollbar(R: TRect; horizontal: boolean; ttk: boolean = false);
-    procedure ChangeCommand(Attr, Value: string);
+    function HalfX: integer;
+    procedure MakeAttribut(Attr, Value: string);
+    procedure CalculateText(s: string; var tw, th: integer; var SL: TStringList);
+    function InnerRect: TRect; virtual;
+    procedure PaintScrollbar(R: TRect; horizontal: boolean);
+    procedure PaintScrollbars(horizontal, vertical: boolean);
   public
-    property Command: Boolean read FCommand write FCommand;
-
-
     constructor Create(aOwner: TComponent); override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
+    function getEvents(ShowEvents: integer): string; override;
+    function HandlerInfo(const event: string): string; virtual;
+    function HandlerParameter(const event: string): string; override;
+    function Parametertypes(const event: string): string;
+    procedure getSlots(Parametertypes: string; Slots: TStrings); virtual;
+    procedure setAttribute(Attr, Value, Typ: string); override;
     procedure setEvent(Attr: string); override;
     procedure DeleteEvents; override;
     procedure DeleteWidget; override;
@@ -83,31 +83,33 @@ type
     procedure NewWidget(Widget: String = ''); override;
     function MakeBinding(Eventname: string): string; override;
     function MakeHandler(const event: string ): string; override;
-    function HandlerName(const event: string): string; override;
+    procedure Paint; override;
     procedure Resize; override;
     procedure SetPositionAndSize; override;
-    function ClientRectWithoutScrollbars: TRect;
-    procedure SizeLabelToText; override;
-    function getType: String;
     function getNameAndType: String; override;
   published
     // common attribute for QWidget
-    property ObjectName: string read getObjectName write setObjectName;
     property Enabled: boolean read FEnabled write FEnabled;
     property MouseTracking: boolean read FMouseTracking write FMouseTracking;
     property TabletTracking: boolean read FTabletTracking write FTabletTracking;
     property FocusPolicy: TFocusPolicy read FFocusPolicy write FFocusPolicy;
     property ContextMenuPolicy: TContextMenuPolicy read FContextMenuPolicy write FContextMenuPolicy;
+    property ContextMenu: string read FContextMenu write FContextMenu;
     property AcceptDrops: boolean read FAcceptDrops write FAcceptDrops;
     property ToolTip: string read FToolTip write FToolTip;
     property ToolTipDuration: integer read FToolTipDuration write FToolTipDuration;
     property StatusTip: string read FStatusTip write FStatusTip;
-    property WhatThis: string read FWhatThis write FWhatThis;
+    property WhatsThis: string read FWhatsThis write FWhatsThis;
     property AccessibleName: string read FAccessibleName write FAccessibleName;
     property AccessibleDescription: string read FAccessibleDescription write FAccessibleDescription;
     property LayoutDirection: TLayoutDirection read FLayoutDirection write FLayoutDirection;
     property AutoFillBackground: boolean read FAutoFillBackground write FAutoFillBackground;
     property StyleSheet: string read FStyleSheet write FStyleSheet;
+    property Font;
+    // signals
+    property customContextMenuRequested: string read FcustomContextMenuRequested write FcustomContextMenuRequested;
+    property windowIconChanged: string read FWindowIconChanged write FWindowIconChanged;
+    property windowTitleChanged: string read FWindowTitleChanged write FWindowTitleChanged;
   end;
 
 implementation
@@ -118,11 +120,16 @@ uses SysUtils, TypInfo, Math, UITypes, UGuiForm, UTKMiscBase, UTTKMiscBase,
 constructor TBaseQtWidget.create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
-  Width:= 100;
-  Height:= 100;
+  Width:= 120;
+  Height:= 80;
+  Enabled:= true;
+  ToolTipDuration:= -1;
+  FocusPolicy:= NoFocus;
+  LayoutDirection:= LeftToRight;
+  ContextMenuPolicy:= DefaultContextMenu;
   Canvas.Font.PixelsPerInch:= 72;
   Font.PixelsPerInch:= 72;
-  Font.Name:= 'MS Shell Dlg 2';   // QtDefaultFont
+  Font.Name:= 'MS Shell Dlg 2';
   Font.Size:= 8;
   Font.Style:= [];
   HelpType:= htContext;
@@ -131,34 +138,268 @@ end;
 
 function TBaseQtWidget.getAttributes(ShowAttributes: integer): string;
 begin
-  Result:= '|Name|Font';
-  if ShowAttributes >= 2 then
-    Result:= Result + '|BorderWidth|Relief';
+  Result:= '|Name|';
   if ShowAttributes = 3 then
-    Result:= Result + '|Cursor|Left|Top|Height|Width|TakeFocus';
+    Result:= '|Name|Left|Top|Height|Width|ToolTip|ToolTipDuration' +
+             '|MouseTracking|TabletTracking|FocusPolicy' +
+             '|ContextMenuPolicy|ContextMenu|AcceptDrops|StatusTip|WhatsThis' +
+             '|AccessibleName|AccessibleDescription|LayoutDirection' +
+             '|AutoFillBackground|StyleSheet|Cursor|Font|Enabled|';
 end;
 
-function TBaseQtWidget.getMouseEvents(ShowEvents: integer): string;
+function TBaseQtWidget.getEvents(ShowEvents: integer): string;
 begin
-  Result:= MouseEvents1;
-  if ShowEvents >= 2 then
-    Result:= MouseEvents1 + MouseEvents2;
-  if ShowEvents = 3 then
-    Result:= AllEvents;
+  Result:= '';
+  if (ShowEvents = 3) or (Classname = 'TQtMainWindow') then
+    Result:= '|customContextMenuRequested|windowIconChanged|windowTitleChanged';
   Result:= Result + '|';
 end;
 
-function TBaseQtWidget.getKeyboardEvents(ShowEvents: integer): string;
+function TBaseQtWidget.HandlerInfo(const event: string): string;
 begin
-  Result:= KeyboardEvents1;
-{  if ShowEvents >= 2 then
-    Result:= Result + KeyboardEvents2;}
-  if ShowEvents = 3 then
-    Result:= AllEvents;
-  Result:= Result + '|';
+  if event = 'customContextMenuRequested' then
+    Result:= 'QPoint pos'
+  else if event = 'windowIconChanged' then
+    Result:= 'QIcon icon'
+  else if event = 'windowTitleChanged' then
+    Result:= 'QString title'
+  else
+    Result:= '';
 end;
 
-procedure TBaseQtWidget.PaintScrollbar(R: TRect; horizontal: boolean; ttk: boolean = false);
+function TBaseQtWidget.HandlerParameter(const event: string): string;
+  var s: string; p: integer;
+begin
+  s:= HandlerInfo(event);
+  p:= Pos(';', s);
+  if p > 0
+    then Result:= 'self, ' + copy(s, p+1, length(s))
+    else Result:= 'self';
+end;
+
+function TBaseQtWidget.Parametertypes(const event: string): string;
+  var s: string; p: integer;
+begin
+  s:= HandlerInfo(event);
+  p:= Pos(';', s);
+  if p > 0
+    then Result:= copy(s, 1, p-1)
+    else Result:= '';
+end;
+
+procedure TBaseQtWidget.getSlots(Parametertypes: string; Slots: TStrings);
+begin
+  if Parametertypes = '' then begin
+    Slots.Add(Name + '.close');
+    Slots.Add(Name + '.hide');
+    Slots.Add(Name + '.lower');
+    Slots.Add(Name + '.raise');
+    Slots.Add(Name + '.repaint');
+    Slots.Add(Name + '.setFocus');
+    Slots.Add(Name + '.show');
+    Slots.Add(Name + '.showFullScreen');
+    Slots.Add(Name + '.showMaximized');
+    Slots.Add(Name + '.showMinimized');
+    Slots.Add(Name + '.showNormal');
+    Slots.Add(Name + '.update');
+  end else if Parametertypes = 'bool' then begin
+    Slots.Add(Name + '.setDisabled');
+    Slots.Add(Name + '.setEnabled');
+    Slots.Add(Name + '.setHidden');
+    Slots.Add(Name + '.setVisible');
+    Slots.Add(Name + '.setWindowModified');
+  end else if Parametertypes = 'QString' then begin
+    Slots.Add(Name + '.setStyleSheet');
+    Slots.Add(Name + '.setWindowTitle');
+  end;
+end;
+
+procedure TBaseQtWidget.SetPositionAndSize;
+  var R: TRect; key: string;
+begin
+  R:= ClientRect;
+  key:= 'self.' + Name + '.setGeometry';
+  setAttributValue(key, key + '(' + IntToStr(Left) + ', ' + IntToStr(Top) +
+    ', ' + IntToStr(R.Right) + ', ' + IntToStr(R.Bottom) + ')');
+end;
+
+function TBaseQtWidget.getAttrAsKey(Attr: string): string;
+begin
+  Result:= 'self.' + Name + '.set' + Attr;
+end;
+
+procedure TBaseQtWidget.setAttribute(Attr, Value, Typ: string);
+begin
+  if isFontAttribute(Attr)then
+    MakeFont
+  else if Attr = 'Cursor' then  // ok
+    MakeAttribut(Attr, 'QCursor(Qt.CursorShape.' + Value + ')')
+  else if Attr = 'ContextMenu' then
+    MakeContextMenu(Value)
+  else if (Attr = 'FocusPolicy') or
+          (Attr = 'ContextMenuPolicy') or
+          (Attr = 'LayoutDirection')  then
+    MakeAttribut(Attr, 'Qt.' + Attr + '.' + Value)
+  else if (Typ = 'string') or (copy(Typ, 1, 1) = 'T') then  // enum type, TColor
+    if Value = ''
+      then Partner.DeleteAttribute(getAttrAsKey(Attr))
+      else MakeAttribut(Attr, asString(Value))
+  else
+    if Value = ''                       // Typ int, real, ...
+      then Partner.DeleteAttribute(getAttrAsKey(Attr))
+      else MakeAttribut(Attr, Value)
+end;
+
+procedure TBaseQtWidget.setEvent(Attr: string);
+begin
+  if not Partner.hasText('def ' + HandlerNameAndParameter(Attr)) then
+    Partner.InsertProcedure(CrLf + MakeHandler(Attr));
+  Partner.InsertQtBinding(Name, MakeBinding(Attr));
+end;
+
+procedure TBaseQtWidget.MakeContextMenu(Value: string);
+begin
+  var s:= 'self.' + Name  + '.addActions';
+  if Value = '' then
+    Partner.DeleteAttribute(s)
+  else begin
+    MakeAttribut('ContextMenuPolicy', 'Qt.ContextMenuPolicy.ActionsContextMenu');
+    setAttributValue(s, s + '(self.' + Value + '.actions())');
+  end;
+end;
+
+procedure TBaseQtWidget.MakeAttribut(Attr, Value: String);
+  var s: string;
+begin
+  if Name = ''
+    then s:= 'self.set' +  Attr
+    else s:= 'self.' + Name  + '.set' +  Attr;
+  setAttributValue(s, s + '(' + Value + ')');
+end;
+
+procedure TBaseQtWidget.Paint;
+begin
+  Canvas.Font.Assign(Font);
+  Canvas.Font.Size:= Font.Size + (Font.Size + 1) div 3;
+  Canvas.Font.Color:= clWindowText;
+  FHalfX:= Canvas.TextWidth('x') div 2;
+end;
+
+procedure TBaseQtWidget.Resize;
+begin
+end;
+
+function TBaseQtWidget.MakeBinding(Eventname: string): string;
+begin
+  Result:= Indent2 + 'self.' + Name + '.' + Eventname + '.connect(self.' + HandlerName(Eventname) + ')';
+end;
+
+function TBaseQtWidget.MakeHandler(const event: string ): string;
+begin
+  Result:= Indent1 + 'def ' + HandlerNameAndParameter(Event) + CrLf +
+           Indent2 +     '# ToDo insert source code here' + CrLf +
+           Indent2 +     'pass' + CrLf;
+end;
+
+procedure TBaseQtWidget.DeleteWidget;
+begin
+  DeleteEvents;
+  Partner.DeleteComponent(Self);
+end;
+
+procedure TBaseQtWidget.DeleteEventHandler(const Event: string);
+begin
+  Partner.DeleteMethod(HandlerName(Event));
+  Partner.DeleteBinding(MakeBinding(Event));
+end;
+
+procedure TBaseQtWidget.DeleteEvents;
+  var p: integer; s, Event: string; SL1, SL2: TStringList;
+begin
+  Partner.ActiveSynEdit.BeginUpdate;
+  SL1:= TStringList.Create;
+  SL2:= TStringList.Create;
+  s:= getEvents(3) + '|';
+  p:= Pos('|', s);
+  while p > 0 do begin
+    Event:= UUtils.Left(s, p-1);
+    if Event <> '' then begin
+      Partner.DeleteBinding(MakeBinding(Event));
+      SL1.Add(HandlerNameAndParameter(Event));
+    end;
+    delete(s, 1, p);
+    p:= Pos('|', s);
+  end;
+  Partner.DeleteOldAddNewMethods(SL1, SL2);
+  FreeAndNil(SL1);
+  FreeAndNil(SL2);
+  Partner.ActiveSynEdit.EndUpdate;
+end;
+
+procedure TBaseQtWidget.NewWidget(Widget: String = '');
+begin
+  setAttributValue('self.' + Name, 'self.' + Name + ' = ' + Widget + '(' + getContainer + ')');
+  setPositionAndSize;
+end;
+
+function TBaseQtWidget.getType;
+begin
+  Result:= 'Q' + copy(Classname, 4, Length(Classname));
+end;
+
+function TBaseQtWidget.getNameAndType;
+begin
+  Result:= Name + ': ' + getType;
+end;
+
+function TBaseQtWidget.getContainer: string;
+begin
+  if (Parent = nil) or (Parent is TFGUIForm)
+    then Result:= 'self'
+    else Result:= 'self.' + Parent.Name;
+end;
+
+procedure TBaseQtWidget.MakeFont;
+  var s1, s2: string;
+begin
+  s1:= 'self.' + Name + '.setFont';
+  s2:= '(QFont(' + asString(Font.Name) + ', ' + IntToStr(Font.Size);
+  if fsBold   in Font.Style then s2:= s2 + ', QFont.Bold';
+  if fsItalic in Font.Style then s2:= s2 + ', QFont.StyleItalic';
+  s2:= s2 + '))';
+  setAttributValue(s1, s1 + s2);
+  s1:= 'self.' + Name + '.font().setUnderline';
+  if fsUnderline in Font.Style
+    then setAttributValue(s1, s1 + '(True)')
+    else Partner.DeleteAttribute(s1);
+  s1:= 'self.' + Name + '.font().setStrikeOut';
+  if fsStrikeout in Font.Style
+    then setAttributValue(s1, s1 + '(True)')
+    else Partner.DeleteAttribute(s1);
+  Invalidate;
+end;
+
+procedure TBaseQtWidget.CalculateText(s: string; var tw, th: integer; var SL: TStringList);
+begin
+  SL.Text:= myStringReplace(s, '\n', CrLf);
+  tw:= 0;
+  for var p:= 0 to SL.Count - 1 do
+    tw:= max(tw, Canvas.TextWidth(SL[p]));
+  th:= SL.Count * Canvas.TextHeight('Hg');
+end;
+
+function TBaseQtWidget.InnerRect: TRect;
+begin
+  Result:= ClientRect;
+  Result.Inflate(-1, -1);
+end;
+
+function TBaseQtWidget.HalfX: integer;
+begin
+  Result:= fHalfX;
+end;
+
+procedure TBaseQtWidget.PaintScrollbar(R: TRect; horizontal: boolean);
   var i, mid: integer;
 begin
   Canvas.Brush.Color:= clBtnFace;
@@ -180,13 +421,8 @@ begin
       Canvas.LineTo(R.Right -  6 + i, mid);
       Canvas.LineTo(R.Right - 10 + i, mid + 4);
     end;
-    if ttk then begin
-      R.Left:= R.Left + 18;
-      R.Right:= R.Right - 18;
-    end else begin
-      R.Left:= R.Left + 18;
-      R.Right:= R.Left + 18;
-    end;
+    R.Left:= R.Left + 18;
+    R.Right:= R.Left + 18;
   end else begin
     Canvas.MoveTo(R.Left, R.Top);
     Canvas.LineTo(R.Left, R.Bottom);
@@ -202,464 +438,39 @@ begin
       Canvas.LineTo(mid    , R.Bottom -  6 + i);
       Canvas.LineTo(mid + 4, R.Bottom - 10 + i);
     end;
-    if ttk then begin
-      R.Top:= R.Top + 18;
-      R.Bottom:= R.Bottom - 18;
-    end else begin
-      R.Top:= R.Top + 18;
-      R.Bottom:= R.Top + 18;
-    end;
+    R.Top:= R.Top + 18;
+    R.Bottom:= R.Top + 18;
   end;
   R.Inflate(-1, -1);
   Canvas.FillRect(R);
 end;
 
-procedure TBaseQtWidget.SetPositionAndSize;
-  var key: String; R: TRect;
+procedure TBaseQtWidget.PaintScrollbars(horizontal, vertical: boolean);
 begin
-key:= '';
-  R:= ClientRectWithoutScrollbars;
-  if not (Parent is TKPanedWindow) then
-    setAttributValue('self.' + Name + '.place',
-      'self.' + Name +
-      '.place(x=' + IntToStr(Left) + ', y=' + IntToStr(Top) +
-      ', width=' + IntToStr(R.Right) + ', height=' + IntToStr(R.Bottom) +')');
-{
-  if Scrollbars in [_TB_both, _TB_vertical] then begin
-    key:= 'self.' + Name + 'ScrollbarV.place';
-    setAttributValue(key,
-      key + '(x=' + IntToStr(x + R.Right - 2) + ', y=' + IntToStr(y) +
-            ', width=20, height='+ IntToStr(R.Bottom) + ')');
-  end;
-  if (Scrollbars in [_TB_both, _TB_horizontal]) or Scrollbar then begin
-    key:= 'self.' + Name + 'ScrollbarH.place';
-    setAttributValue(key,
-      key + '(x=' + IntToStr(x) + ', y=' + IntToStr(y + R.Bottom - 2) +
-            ', width=' + IntToStr(R.Right) + ', height=20)');
-  end;
-  }
-end;
-
-function TBaseQtWidget.ClientRectWithoutScrollbars: TRect;
-begin
-  Result:= ClientRect; {
-  if Scrollbars in [_TB_vertical, _TB_both]
-    then Result.Right:= Result.Right - 20;
-  if (Scrollbars in [_TB_horizontal, _TB_both]) or Scrollbar
-    then Result.Bottom:= Result.Bottom - 20;}
-end;
-
-procedure TBaseQtWidget.Resize;
-begin
-  inherited;
-  if Parent is TKPanedWindow then
-    (Parent as TKPanedWindow).Resize
-  //else if Self is TKPanedWindow then
-  //  (Self as TKPanedWindow).Resize
-  //else if Parent is TTKPanedwindow then
-  //  (Parent as TTKPanedwindow).Resize
-  //else if Self is TTKPanedwindow then
-  //  (Self as TTKPanedwindow).Resize;
-end;
-
-function TBaseQtWidget.getAttrAsKey(Attr: string): string;
-begin
-  Result:= 'self.' + Name + '[''' + Lowercase(Attr) + ''']';
-end;
-
-procedure TBaseQtWidget.setAttribute(Attr, Value, Typ: string);
-  var s1: string;
-begin
-  s1:= getAttrAsKey(Attr);
-  if isFontAttribute(Attr)then
-    MakeFont
-  else if Attr = 'TakeFocus' then
-    MakeBoolean(Attr, Value)
-  else if Attr = 'Menu' then
-    setMenu(Value)
-  else if Attr = 'Show' then
-    MakeShow(Value)
-  else if Right(Attr, -7) = 'Command' then
-    ChangeCommand(Attr, Value)
-  else if Typ = 'Source' then
-    if Value = ''
-      then Partner.DeleteAttribute(s1)
-      else setAttributValue(s1, s1 + ' = ' + Value)
-  else if Typ = 'TCursor' then
-    if Value = 'default'
-      then Partner.DeleteAttribute(s1)
-      else setAttributValue(s1, s1 + ' = ' + asString(Value))
-  else if Typ = 'Boolean' then
-    MakeBoolean(Attr, Value)
-  else if (Typ = 'string') or (Typ[1] = 'T') then  // enum type, TColor
-    if Value = ''
-      then Partner.DeleteAttribute(s1)  // borderwidth, padx, ...
-      else setAttributValue(s1, s1 + ' = ' + asString(Value))
-  else begin
-    if Value = ''                                  // Typ real
-      then Partner.DeleteAttribute(s1)
-      else setAttributValue(s1, s1 + ' = ' + Value);
-  end;
-end;
-
-procedure TBaseQtWidget.setEvent(Attr: string);
-begin
-  if not Partner.hasText('def ' + HandlerName(Attr) + '(self, event):') then
-    Partner.InsertProcedure(CrLf + MakeHandler(Attr));
-  Partner.InsertBinding(Name, Attr, MakeBinding(Attr));
-end;
-
-procedure TBaseQtWidget.MakeBoolean(Attr, Value: String);
-  var s1, s2: string;
-begin
-  s1:= getAttrAsKey(Attr);
-  if Value = 'True'
-    then s2:= s1 + ' = 1'
-    else s2:= s1 + ' = 0';
-  setAttributValue(s1, s2)
-end;
-
-procedure TBaseQtWidget.MakeShow(Value: String);
-  var s: string;
-begin
-  s:= 'self.' + Name  + '[''show'']';
-  if Value = 'True'
-    then Partner.DeleteAttribute(s)
-    else setAttributValue(s, s + ' = ''*''');
-end;
-
-procedure TBaseQtWidget.AddParameter(const Value, par: string);
-  var old, new: String;
-begin
-  old:= 'def ' + Value + '(self):';
-  new:= 'def ' + Value + '(self, ' + par + '):';
-  Partner.ReplaceWord(old, new, false);
-end;
-
-procedure TBaseQtWidget.MakeControlVar(Variable, ControlVar: String; Value: String = ''; Typ: String = 'String');
-begin
-  InsertVariable('self.' + ControlVar + ' = tk.' + Typ + 'Var()');
-  if Typ = 'String'
-    then InsertVariable('self.' + ControlVar + '.set(' + asString(Value) + ')')
-    else InsertVariable('self.' + ControlVar + '.set(' + Value + ')');
-  InsertVariable('self.' + Name + '[' + asString(Variable) + '] = self.' + ControlVar);
-end;
-
-procedure TBaseQtWidget.setMenu(Value: string);
-  var s1, s2: string;
-begin
-  if Value = '' then begin
-    Partner.DeleteAttribute('self.' + Name + '[''menu'']');
-    s1:= 'self.' + LOldValue + ' = tk.Menu';
-    s2:= s1 + '(tearoff=0)';
-  end else begin
-    s1:= 'self.' + Name + '[''menu'']';
-    setAttributValue(s1, s1 + ' = self.' + Value);
-    s1:= 'self.' + Value + ' = tk.Menu';
-    s2:= s1 + '(self.' + Name + ', tearoff=0)';
-  end;
-  setAttributValue(s1, s2);
-end;
-
-procedure TBaseQtWidget.ChangeCommand(Attr, Value: string);
-  var nam, key: string;
-begin
-  nam:= Name + '_' + Attr;
-  key:= 'self.' + Name + '[' + asString(lowercase(Attr)) + ']';
-  if Value = 'False' then begin
-    Partner.DeleteAttribute(key);
-    Partner.DeleteMethod(nam);
-  end else begin
-    setAttributValue(key, key + ' = self.' + nam);
-    MakeCommand(Attr, nam);
-  end;
-end;
-
-function TBaseQtWidget.HandlerName(const event: string): string;
-begin
-  Result:= Name + '_' + Event;
-end;
-
-function TBaseQtWidget.MakeBinding(Eventname: string): string;
-  var Event: TEvent;
-begin
-  if Eventname = 'ButtonPress' then
-    Event:= ButtonPress
-  else if Eventname = 'ButtonRelease' then
-    Event:= ButtonRelease
-  else if Eventname = 'KeyPress' then
-    Event:= KeyPress
-  else if Eventname = 'KeyRelease' then
-    Event:= KeyRelease
-  else if Eventname = 'Activate' then
-    Event:= Activate
-  else if Eventname = 'Configure' then
-    Event:= Configure
-  else if Eventname = 'Deactivate' then
-    Event:= Deactivate
-  else if Eventname = 'Enter' then
-    Event:= Enter
-  else if Eventname = 'FocusIn' then
-    Event:= FocusIn
-  else if Eventname = 'FocusOut' then
-    Event:= FocusOut
-  else if Eventname = 'Leave' then
-    Event:= Leave
-  else if Eventname = 'Motion' then
-    Event:= Motion
-  else
-    Event:= MouseWheel;
-  Result:= Indent2 + 'self.' + Name + '.bind(''<' + Event.getModifiers(Eventname) +
-           Eventname + Event.getDetail(Eventname) + '>'', self.' + HandlerName(Eventname) + ')';
-end;
-
-function TBaseQtWidget.MakeHandler(const event: string ): string;
-begin
-  //  Example:
-  //  def name(self, event):
-  //    // TODO insert source code here
-  //    pass
-  Result:= Indent1 + 'def ' + HandlerName(Event) + '(self, event):' + CrLf +
-           Indent2 + '# ToDo insert source code here' + CrLf +
-           Indent2 + 'pass' + CrLf;
-end;
-
-procedure TBaseQtWidget.MakeValidateCommand(Attr, Value: string);
-  var key: string;
-begin
-  if Value = '' then begin
-    Partner.DeleteAttribute(Name + 'VC');
-    Partner.DeleteAttribute('self.' + Name + '[''validatecommand'']');
-    Partner.DeleteMethod(UKoppel.LOldValue);
-  end else begin
-    key:= 'self.' + Name + 'VC';
-    setAttributValue(key, key + ' = self.register(self.' + Name + '_ValidateCommand)');
-    ChangeCommand(Attr, Value);
-    key:= 'self.' + Name + '[''validatecommand'']';
-    setAttributValue(key, key + ' = (self.' + Name + 'VC, ''%d'', ''%i'', ''%S'')');
-  end;
-end;
-
-procedure TBaseQtWidget.Paint;
-begin
-
-end;
-
-procedure TBaseQtWidget.setScrollbars(Value: TScrollbar);
-begin
-  if FScrollbars <> Value then begin
-    FScrollbars:= Value;
-    invalidate;
-  end;
-end;
-
-procedure TBaseQtWidget.setScrollbar(Value: boolean);
-begin
-  if FScrollbar <> Value then begin
-    FScrollbar:= Value;
-    invalidate;
-  end;
-end;
-
-procedure TBaseQtWidget.MakeScrollbar(Value, TkTyp: String);
-begin
-  if Value = 'True'
-    then MakeScrollbars('horizontal', TkTyp)
-    else MakeScrollbars('none', TkTyp);
-end;
-
-procedure TBaseQtWidget.MakeScrollbars(Value, TkTyp: String);
-  var ScrollbarName, OldValue: String;
-     WidthNoScrollbar, HeightNoScrollbar, WidthScrollbar, HeightScrollbar: integer;
-
-  procedure DeleteVertical;
-  begin
-    Partner.DeleteAttributeValues(ScrollbarName + 'V');
-    Partner.DeleteAttribute('self.' + Name +  '[' + asString('yscrollcommand') + ']');
-    Dec(WidthNoScrollbar, 20);
-  end;
-
-  procedure DeleteHorizontal;
-  begin
-    Partner.DeleteAttributeValues(ScrollbarName + 'H');
-    Partner.DeleteAttribute('self.' + Name +  '[' + asString('sxcrollcommand') + ']');
-    Dec(HeightNoScrollbar, 20);
-  end;
-
-  procedure InsertVertical;
-  begin
-    InsertVariable(ScrollbarName + 'V = ' + TkTyp + 'Scrollbar(' + getContainer + ')');
-    InsertVariable(ScrollbarName + 'V.place(x=' + IntToStr(x + WidthNoScrollbar - 2) + ', y=' + IntToStr(y) +
-                                   ', width=20, height=' + IntToStr(HeightNoScrollbar) + ')');
-    InsertVariable(ScrollbarName + 'V[' + asString('command') + '] = self.' + Name + '.yview');
-    InsertVariable('self.' + Name + '[' + asString('yscrollcommand') + '] = ' + ScrollbarName + 'V.set');
-    Inc(WidthScrollbar, 20);
-  end;
-
-  procedure InsertHorizontal;
-    var s: string;
-  begin
-    s:= getContainer;
-    if s <> '' then s:= s + ', ';
-    s:= s + 'orient=' + asString('horizontal');
-    InsertVariable(ScrollbarName + 'H = ' + TkTyp+ 'Scrollbar(' + s + ')');
-    InsertVariable(ScrollbarName + 'H.place(x=' + IntToStr(x) + ', y=' + IntToStr(y + HeightNoScrollbar - 2) +
-                                   ', width=' + IntToStr(WidthNoScrollbar) + ', height=20)');
-    InsertVariable(ScrollbarName + 'H[' + asString('command') + '] = self.' + Name + '.xview');
-    InsertVariable('self.' + Name + '[' + asString('xscrollcommand') + '] = ' + ScrollbarName + 'H.set');
-    Inc(HeightScrollbar, 20);
-  end;
-
-begin
-  OldValue:= UKoppel.LOldValue;
-  ScrollbarName:= 'self.' + Name + 'Scrollbar';
-  Partner.ActiveSynEdit.BeginUpdate;
-  WidthNoScrollbar:= Width;
-  HeightNoScrollbar:= Height;
-  if (OldValue = 'vertical') or (OldValue = 'both') then
-    DeleteVertical;
-  if (OldValue = 'horizontal') or (OldValue = 'both') or (OldValue = 'True') then
-    DeleteHorizontal;
-  WidthScrollbar:= WidthNoScrollbar;
-  HeightScrollbar:= HeightNoScrollbar;
-  if (Value = 'vertical') or (Value = 'both') then
-    InsertVertical;
-  if (Value = 'horizontal') or (Value = 'both') then
-    InsertHorizontal;
-  SetBounds(x, y, WidthScrollbar, HeightScrollbar);
-  Partner.ActiveSynEdit.EndUpdate;
-  FObjectInspector.Invalidate;
-end;
-
-procedure TBaseQtWidget.PaintAScrollbar(Value: boolean);
-begin
-  if Value then
-    PaintScrollbars(_TB_horizontal)
-end;
-
-procedure TBaseQtWidget.PaintScrollbars(Scrollbar: TScrollbar);
-  var R: TRect;
-begin
-  if Scrollbar = _TB_vertical then begin
-    R:= ClientRect;
-    R.Left:= R.Right - 20;
-    PaintScrollbar(R, false);
-  end;
-
-  if Scrollbar = _TB_horizontal then begin
-    R:= ClientRect;
-    R.Top:= R.Bottom - 20;
+  var R:= ClientRect;
+  R.Inflate(-1, -1);
+  if horizontal then begin
+    R.Top:= R.Bottom - 16;
+    if vertical then
+      R.Right:= R.Right - 16;
     PaintScrollbar(R, true);
   end;
-
-  if Scrollbar = _TB_both then begin
-    R:= ClientRect;
-    R.Left:= R.Right - 20;
-    R.Bottom:= R.Bottom - 20;
+  R:= ClientRect;
+  R.Inflate(-1, -1);
+  if vertical then begin
+    R.Left:= R.Right - 16;
+    if horizontal then
+      R.Bottom:= R.Bottom - 16;
     PaintScrollbar(R, false);
+  end;
+  if horizontal and vertical then begin
+    Canvas.Brush.Color:= clBtnFace;
     R:= ClientRect;
-    R.Top:= R.Bottom - 20;
-    R.Right:= R.Right - 20;
-    PaintScrollbar(R, true);
+    R.Inflate(-1, -1);
+    R.Top:= R.Bottom - 16;
+    R.Left:= R.Right - 16;
+    Canvas.FillRect(R);
   end;
-end;
-
-procedure TBaseQtWidget.DeleteWidget;
-begin
-  if FCommand then Partner.DeleteMethod(Name + '_Command');
-  Partner.DeleteMethod(Name + 'ScrollbarH.set');
-  Partner.DeleteMethod(Name + 'ScrollbarV.set');
-  DeleteEvents;
-  Partner.DeleteComponent(Self);
-  if (Parent is TKPanedWindow) or (Parent is TTKPanedWindow) then
-    Partner.DeleteAttribute('self.' + Parent.Name + '.add(self.' + Name);
-end;
-
-procedure TBaseQtWidget.DeleteEventHandler(const Event: string);
-begin
-  Partner.DeleteMethod(HandlerName(Event));
-  Partner.DeleteBinding(Name, Event);
-end;
-
-procedure TBaseQtWidget.DeleteEvents;
-  var p: integer; s, Event: string; SL1, SL2: TStringList;
-begin
-  Partner.ActiveSynEdit.BeginUpdate;
-  SL1:= TStringList.Create;
-  SL2:= TStringList.Create;
-  s:= getEvents(3) + '|';
-  p:= Pos('|', s);
-  while p > 0 do begin
-    Event:= UUtils.Left(s, p-1);
-    if Event <> '' then begin
-      Partner.DeleteBinding(Name, Event);
-      SL1.Add(HandlerName(Event));
-    end;
-    delete(s, 1, p);
-    p:= Pos('|', s);
-  end;
-  Partner.DeleteOldAddNewMethods(SL1, SL2, 'self, event');
-  FreeAndNil(SL1);
-  FreeAndNil(SL2);
-  Partner.ActiveSynEdit.EndUpdate;
-end;
-
-procedure TBaseQtWidget.NewWidget(Widget: String = '');
-begin
-  Partner.ActiveSynEdit.BeginUpdate;
-  InsertVariable('self.' + Name + ' = ' + Widget + '(' + getContainer + ')');
-  setPositionAndSize;
-  if Parent is TKPanedWindow then begin
-    InsertVariable('self.' + Parent.Name + '.add(self.' + Name + ')');
-    //ControlStyle:= [];
-  end else if Parent is TTKPanedwindow then begin
-    InsertVariable('self.' + Parent.Name + '.add(self.' + Name + ', weight=1)');
-    //ControlStyle:= [];
-  end;
-  Partner.ActiveSynEdit.EndUpdate;
-end;
-
-procedure TBaseQtWidget.SizeLabelToText;
-begin
-end;
-
-function TBaseQtWidget.getType;
-begin
-  if Pos('TTK', Classname) = 1
-    then Result:= copy(Classname, 4, Length(Classname))
-    else Result:= copy(Classname, 3, Length(Classname));
-end;
-
-function TBaseQtWidget.getNameAndType;
-begin
-  Result:= Name + ': ' + getType;
-end;
-
-function TBaseQtWidget.getObjectName: string;
-begin
-  Result:= Name;
-end;
-
-procedure TBaseQtWidget.setObjectName(Value: string);
-begin
-  Name:= Value;
-end;
-
-procedure TBaseQtWidget.CalculateText(var tw, th: integer; var SL: TStringlist);
-  var s: string; p: integer;
-begin
-  s:= Text;
-  p:= Pos('\n', s);
-  while p > 0 do begin
-    SL.Add(copy(s, 1, p-1));
-    delete(s, 1, p+1);
-    p:= Pos('\n', s);
-  end;
-  SL.Add(s);
-  tw:= 0;
-  for p:= 0 to SL.Count - 1 do
-    tw:= max(tw, Canvas.TextWidth(SL.Strings[p]));
-  th:= SL.Count * Canvas.TextHeight('Hg');
 end;
 
 end.

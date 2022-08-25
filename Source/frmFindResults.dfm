@@ -43,14 +43,20 @@ inherited FindResultsWindow: TFindResultsWindow
   OnKeyPress = FormKeyPress
   OnResize = FormResize
   OnShow = FormShow
+  ExplicitWidth = 619
+  ExplicitHeight = 397
   PixelsPerInch = 96
   TextHeight = 13
   inherited BGPanel: TPanel
     Width = 603
     Height = 358
+    ExplicitWidth = 603
+    ExplicitHeight = 358
     inherited FGPanel: TPanel
       Width = 599
       Height = 354
+      ExplicitWidth = 599
+      ExplicitHeight = 354
       object pnlMain: TPanel
         Left = 0
         Top = 0
@@ -194,7 +200,7 @@ inherited FindResultsWindow: TFindResultsWindow
           MinHeight = 20
         end
         object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-          CustomWidth = 570
+          CustomWidth = 0
         end
         object StatusRightLabel: TSpTBXLabelItem
           Alignment = taRightJustify

@@ -492,14 +492,14 @@ begin
       if EExtends.Text <> '' then begin
         SL := split(',', EExtends.Text);
         for i := SL.Count - 1 downto 0 do
-          if Trim(SL.Strings[i]) = '' then begin
+          if Trim(SL[i]) = '' then begin
             SL.delete(i);
             SkipUpdate := true;
           end;
         if SL.Count > 0 then begin
-          s := s + '(' + Trim(SL.Strings[0]);
+          s := s + '(' + Trim(SL[0]);
           for i := 1 to SL.Count - 1 do
-            s := s + ', ' + Trim(SL.Strings[i]);
+            s := s + ', ' + Trim(SL[i]);
           s := s + ')';
         end;
         FreeAndNil(SL);
@@ -1225,7 +1225,7 @@ begin
       try
         SL.Text := myEditor.getSource(Method.LineS, Method.LineE - 2);
         for p := SL.Count - 1 downto 0 do begin
-          s := Trim(SL.Strings[p]);
+          s := Trim(SL[p]);
           if (Pos('return', s) = 1) or (s = '') or (s = _(LNGTODO)) then
             SL.delete(p);
         end;
@@ -2201,7 +2201,7 @@ var
   begin
     i := 0;
     while i < SL.Count do
-      if Pos(param, SL.Strings[i]) > 0
+      if Pos(param, SL[i]) > 0
         then SL.delete(i)
         else inc(i);
   end;
@@ -2248,7 +2248,7 @@ begin
 
         SL.Text:= s;
         for i := SL.Count - 1 downto 0 do
-          if trim(SL.Strings[i]) = 'pass' then
+          if trim(SL[i]) = 'pass' then
             SL.Delete(i);
         s:= SL.Text;
       end;
@@ -2258,16 +2258,16 @@ begin
           count:= 0;
           SL.Text:= Source;
           for i:= 0 to SL.Count - 1 do begin
-            if trim(SL.Strings[i]) = 'pass' then
+            if trim(SL[i]) = 'pass' then
               inc(count);
-            if Pos(' return ', SL.Strings[i]) >  0 then begin
-              Sl.Strings[i] := Indent2 + 'pass';
+            if Pos(' return ', SL[i]) >  0 then begin
+              Sl[i] := Indent2 + 'pass';
               inc(count);
             end;
           end;
           i:= 0;
           while Count > 1 do begin
-            if trim(SL.Strings[i]) = 'pass' then begin
+            if trim(SL[i]) = 'pass' then begin
               SL.delete(i);
               dec(Count);
             end else
@@ -2347,7 +2347,7 @@ begin
         Source := myEditor.getSource(Method.LineS - 1, Method.LineE - 1);
         SL:= TStringList.Create;
         SL.Text:= Source;
-        while (SL.Count > 0) and (Pos(FConfiguration.Indent1 + 'def ', SL.Strings[0]) = 0) do
+        while (SL.Count > 0) and (Pos(FConfiguration.Indent1 + 'def ', SL[0]) = 0) do
           SL.Delete(0);
         if (SL.Count > 0) then SL.Delete(0);
         Source:= SL.Text;

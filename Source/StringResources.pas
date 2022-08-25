@@ -410,6 +410,7 @@ Const
   SFileTemplateCategoryOther = 'Other';
   SPythonTemplateName = 'Python Script';
   STkinterTemplateName = 'Tkinter Script';
+  SQtTemplateName = 'Qt Script';
   SCythonTemplateName = 'Cython Script';
   SCSSFileTemplateName = 'Cascading Style Sheet';
   SHTMLFileTemplateName = 'HTML Document';
@@ -526,6 +527,40 @@ Const
     '        pass' + sLineBreak +
     '' + sLineBreak +
     'app()';
+
+  SQtFileTemplate =
+    '#-------------------------------------------------------------------------------' + sLineBreak +
+    '# Name:        $[ActiveDoc-Name]' + sLineBreak +
+    '# Purpose:     ' + sLineBreak +
+    '#' + sLineBreak +
+    '# Author:      $[Author]' + sLineBreak +
+    '#' + sLineBreak +
+    '# Created:     $[DateTime-''DD/MM/YYYY''-DateFormat]' + sLineBreak +
+    '# Copyright:   (c) $[Author] $[DateTime-''YYYY''-DateFormat]' + sLineBreak +
+    '# Licence:     <your licence>' + sLineBreak +
+    '#-------------------------------------------------------------------------------' + sLineBreak +
+    '' + sLineBreak +
+    'from PyQt6.QtWidgets import *' + sLineBreak +
+    'from PyQt6.QtGui import *' + sLineBreak +
+    'from PyQt6.QtCore import *' + sLineBreak +
+    '' + sLineBreak +
+    'class Window(QMainWindow):' + sLineBreak +
+    '' + sLineBreak +
+    '    def __init__(self):' + sLineBreak +
+    '        super().__init__()' + sLineBreak +
+    '        self.resize(300, 300)' + sLineBreak +
+    '        self.setWindowTitle(''CAPTION'')' + sLineBreak +
+    '        self.setCentralWidget(QWidget(self))' + sLineBreak +
+    '        self.create_widgets()' + sLineBreak +
+    '' + sLineBreak +
+    '    def create_widgets(self):' + sLineBreak +
+    '        pass' + sLineBreak +
+    '' + sLineBreak +
+    'if __name == "__main__":' + sLineBreak +
+    '    app = QApplication([])' + sLineBreak +
+    '    window = Window()' + sLineBreak +
+    '    window.show()' + sLineBreak +
+    '    app.exec()';
 
   SXMLFileTemplate =
     '<?xml version="1.0" encoding="UTF-8"?>' + sLineBreak;

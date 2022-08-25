@@ -90,7 +90,7 @@ begin
   SL.Add(s);
   tw:= 0;
   for p:= 0 to SL.Count - 1 do
-    tw:= max(tw, Canvas.TextWidth(SL.Strings[p]));
+    tw:= max(tw, Canvas.TextWidth(SL[p]));
   th:= SL.Count * Canvas.TextHeight('Hg');
 end;
 
@@ -109,15 +109,15 @@ begin
     s:= copy(s, 2, length(s) - 2);
     SL:= Split(',', s);
     if SL.Count = 2 then begin
-      if not TryStrToInt(SL.Strings[0], pl) then pl:= 0;
+      if not TryStrToInt(SL[0], pl) then pl:= 0;
       pr:= pl;
-      if not TryStrToInt(SL.Strings[1], pt) then pt:= 0;
+      if not TryStrToInt(SL[1], pt) then pt:= 0;
       pb:= pt;
     end else if SL.Count = 4 then begin
-      if not TryStrToInt(SL.Strings[0], pl) then pl:= 0;
-      if not TryStrToInt(SL.Strings[1], pt) then pt:= 0;
-      if not TryStrToInt(SL.Strings[2], pr) then pr:= 0;
-      if not TryStrToInt(SL.Strings[3], pb) then pb:= 0;
+      if not TryStrToInt(SL[0], pl) then pl:= 0;
+      if not TryStrToInt(SL[1], pt) then pt:= 0;
+      if not TryStrToInt(SL[2], pr) then pr:= 0;
+      if not TryStrToInt(SL[3], pb) then pb:= 0;
     end;
     FreeandNil(SL);
   end else begin
@@ -183,10 +183,7 @@ begin
          PaintBottomRight($696969, $E3E3E3);
        end;
       _TR_solid: begin
-         //Canvas.Pen.Color:= $7A7A7A;
-         //Canvas.Brush.Color:= $7A7A7A;
          Canvas.Rectangle(R);
-         //Canvas.Brush.Color:= Background;
        end;
       _TR_sunken: begin
          PaintTopLeft($A0A0A0, $696969);

@@ -281,9 +281,10 @@ type
     fBookmark: integer;
     fMouseIsInBorderOfStructure: boolean;
     fMouseBorderOfStructure: integer;
+    FFrameType: integer; // 3 = Qt, 2 = Tk, 1 = else, 0 unknown
+
     procedure DoAssignInterfacePointer(AActive: boolean);
     function DoSave: boolean;
-    procedure DoUpdateHighlighter(HighlighterName: string = '');
     procedure AutoCompleteBeforeExecute(Sender: TObject);
     procedure AutoCompleteAfterExecute(Sender: TObject);
     procedure WMFolderChangeNotify(var Msg: TMessage); message WM_FOLDERCHANGENOTIFY;
@@ -303,6 +304,7 @@ type
     function getNumbered: TStringList;
     procedure TranslateStatements;
     procedure ChangeStyle;
+    procedure ShowTkOrQt;
 
     class var fOldEditorForm: TEditorForm;
     class var fHintIdentInfo: THotIdentInfo;
@@ -331,12 +333,12 @@ type
     FileTime: TDateTime;
     Model: TObjectModel;
     DefaultExtension: string;
-
     function DoSaveFile: boolean; override;
     procedure ClearSearchItems;
     procedure DoActivate;
     procedure DoActivateEditor(Primary: boolean = True);
     function DoActivateView(ViewFactory: IEditorViewFactory): IEditorView;
+    procedure Enter(Sender: TObject); override;
     function GetEditor: IEditor;
     procedure EditorCommandHandler(Sender: TObject; AfterProcessing: boolean;
       var Handled: boolean; var Command: TSynEditorCommand;
@@ -349,7 +351,6 @@ type
     procedure GoToSyntaxError;
     procedure CreateStructogram;
     procedure SetOptions;
-    procedure Enter(Highlightername: string); reintroduce;
 
     function isPython: boolean;
     function IsPythonAndGUI: boolean;
@@ -371,6 +372,7 @@ type
     function getCreateWidgets: TOperation;
     function getLastConstructorLine(ClassNumber: integer): integer;
     function getLastCreateWidgetsLine: integer;
+    function getFirstCreateWidgetsLine: integer;
     function getLineForConstructor(ClassNumber: integer): integer;
     function getLineForMethod(ClassNumber: Integer): integer;
     function getFirstWidget(From: integer; const widget: string): integer;
@@ -378,7 +380,7 @@ type
     function getLineNumberWith(const s: string): integer;
     function getLineNumberWithFrom(From: integer; const s: string): integer;
     function getLineNumberWithWord(const s: string): integer;
-    function getLineNumberWithWordFromTill(const s: string; From: integer; till: integer=0): integer;
+    function getLineNumberWithWordFromTill(s: string; From: integer; till: integer=0): integer;
     function getLineNumberOfBinding(Name, Attr: string): integer;
     function getSource(LineS, LineE: integer): string;
     function getLinesWithSelection: String;
@@ -391,10 +393,14 @@ type
     procedure RemovePass(Classnumber: integer);
     procedure setAttributValue(const destination, key, s: string; after: integer);
 
+    procedure InsertValue(const destination, s: string; after: integer);
     procedure InsertLinesAt(line: integer; s: string); overload;
-    procedure InsertAttribute(const s: string);
+    procedure InsertNewAttribute(const s: string);
+    procedure InsertAtBegin(const s: string);
+    procedure InsertAtEnd(const s: string);
     procedure InsertAttributeCE(const s: string; ClassNumber: integer);
-    procedure InsertBinding(const Name, Attr, Binding: String);
+    procedure InsertTkBinding(const Name, Attr, Binding: string);
+    procedure InsertQtBinding(const Name, Binding: string);
     procedure InsertProcedure(const aProcedure: string; ClassNumber: integer = 0);
     procedure InsertProcedureWithoutParse(const aProcedure: String; ClassNumber: integer = 0);
     procedure InsertConstructor(const aConstructor: String; ClassNumber: integer);
@@ -406,10 +412,11 @@ type
     procedure DeleteLine(line: Integer); overload;
     procedure DeleteLine(s: String); overload;
     procedure DeleteBlock(StartLine, EndLine: integer);
-    procedure DeleteComponent(Component: TControl);
+    procedure DeleteComponent(Control: TControl);
     procedure DeleteMethod(const Method: string);
-    procedure DeleteOldAddNewMethods(OldMethods, NewMethods: TStringList; Params: string);
-    procedure DeleteBinding(Name, Attr: string);
+    procedure DeleteOldAddNewMethods(OldMethods, NewMethods: TStringList);
+    procedure DeleteBinding(const Binding: string);
+    procedure DeleteItems(Name, Key: string);
 
     procedure MoveBlock(from, till, dest, desttill: integer; const blanklines: string);
     procedure toForeground(Control: TControl);
@@ -432,10 +439,13 @@ type
     procedure CollectClasses(SL: TStringList); override;
     procedure CollapseGUICreation;
     function isGUICreationCollapsed: boolean;
+    function getFrameType: Integer;
+    procedure DoUpdateHighlighter(HighlighterName: string = '');
 
     property Partner: TForm read fPartner write fPartner;
     property NeedsParsing: boolean read fNeedToParseModule write setNeedsParsing;
     property ActiveSynEdit: TSynEdit read fActiveSynEdit;
+    property FrameType: integer read getFrameType;
   end;
 
   TEditor = class(TFile, IUnknown, IEditor, IEditCommands, ISearchCommands)
@@ -838,7 +848,7 @@ end;
 
 function TEditor.GetActiveSynEdit: TSynEdit;
 begin
-  if fForm.SynEdit2.Visible and (fForm.fActiveSynEdit = fForm.SynEdit2) then
+  if fForm.SynEdit2.Visible and (fForm.ActiveSynEdit = fForm.SynEdit2) then
     Result := fForm.SynEdit2
   else
     Result := fForm.SynEdit;
@@ -1046,7 +1056,7 @@ begin
   end
   else
   begin
-    fForm.SynEdit.Lines.Clear;
+    //fForm.SynEdit.Lines.Clear;
     if AFileName = '' then
     begin
       // Default settings for new files
@@ -1056,7 +1066,11 @@ begin
     end;
   end;
 
-  fForm.enter(HighlighterName);
+  fForm.DoUpdateHighlighter(HighlighterName);
+  //fForm.enter(self);
+  fForm.SynEdit.Modified := False;
+  if PyIDEOptions.CodeFoldingForGuiElements then
+    fForm.CollapseGUICreation;
 
   if HasPythonFile then
     FSynLsp.FileOpened(GetFileId, lidPython)
@@ -1751,6 +1765,35 @@ begin
     CommandsDataModule.HighlightWordInActiveEditor(ASynEdit.SelText);
 end;
 
+procedure TEditorForm.ShowTkOrQt;
+begin
+  var PC:= PyIDEMainForm.TabControlWidgets;
+  if FrameType in [0, 1] then begin
+    PC.items[1].Visible:= true;
+    PC.items[2].Visible:= true;
+    PC.items[3].Visible:= true;
+    PC.items[4].Visible:= true;
+  end else if FrameType = 2 then begin
+    PC.items[1].Visible:= true;
+    PC.items[2].Visible:= true;
+    PC.items[3].Visible:= false;
+    PC.items[4].Visible:= false;
+    if PC.ActiveTabIndex = 3 then
+      PC.TabClick(TSpTBXTabItem(PC.Items[1]));
+  end else if FrameType = 3 then begin
+    PC.items[1].Visible:= false;
+    PC.items[2].Visible:= false;
+    PC.items[3].Visible:= true;
+    PC.items[4].Visible:= true;
+    if PC.ActiveTabIndex < 3 then
+      PC.TabClick(TSpTBXTabItem(PC.Items[3]));
+  end;
+  case FrameType of
+    2: CreateTkCursors;
+    3: CreateQtCursors;
+  end;
+end;
+
 procedure TEditorForm.SynEditEnter(Sender: TObject);
 Var
   ASynEdit: TSynEdit;
@@ -1759,6 +1802,7 @@ begin
   fActiveSynEdit := ASynEdit;
   fOldCaretY := ASynEdit.CaretY;
   PyIDEMainForm.ActiveTabControl := ParentTabControl;
+  Enter(Self);
   DoAssignInterfacePointer(True);
   CommandsDataModule.CodeTemplatesCompletion.Editor := ASynEdit;
   CommandsDataModule.CodeTemplatesCompletion.OnBeforeExecute :=
@@ -1961,22 +2005,21 @@ begin
   end;
 end;
 
-procedure TEditorForm.Enter(Highlightername: string);
+procedure TEditorForm.Enter(Sender: TObject);
 begin
-  SynEdit.Modified := False;
-  DoUpdateHighlighter(HighlighterName);
   DoUpdateCaption;
   fOldEditorForm:= Self;
   Synedit.UseCodeFolding := PyIDEOptions.CodeFoldingEnabled;
   Synedit2.UseCodeFolding := Synedit.UseCodeFolding;
   DefaultExtension:= copy(LowerCase(TPath.getExtension(Pathname)), 2, 20);
   SetToolButtons;
+  ShowTkOrQt;
 
+  if Assigned(Partner) then
+    FGUIDesigner.ChangeTo(TFGUIForm(Partner));
   if assigned(TVFileStructure) and (FFileStructure.myForm <> self) and
-    assigned(TVFileStructure.Items) then
+     assigned(TVFileStructure.Items) then
     FFileStructure.init(TVFileStructure.Items, Self);
-  if PyIDEOptions.CodeFoldingForGuiElements then
-    CollapseGUICreation;
 end;
 
 procedure TEditorForm.CollapseGUICreation;
@@ -2005,7 +2048,6 @@ begin
     end;
   end;
 end;
-
 
 function TEditorForm.DoSave: boolean;
 begin
@@ -2582,7 +2624,7 @@ begin
     if aLine mod 5 <> 0 then
       aText := '·'
     else
-      aText := '-';
+      aText := '–';
 end;
 
 procedure TEditorForm.SynEditSpecialLineColors(Sender: TObject; Line: Integer;
@@ -2748,7 +2790,7 @@ begin
       p:= Pos(#13#10, s1);
     end;
     OffX:= Length(s1) + 1;
-    with fActiveSynEdit do begin
+    with ActiveSynEdit do begin
       if SelText = '' then begin
         x:= CaretX;
         y:= CaretY;
@@ -2775,29 +2817,50 @@ function TEditorForm.getGeometry: TPoint;
 begin
   Result.X:= 300;
   Result.Y:= 300;
-  line:= getLineNumberWith('self.root.geometry');
-  if line >= 0 then begin
-    s:= ActiveSynEdit.Lines[line];
-    p:= Pos('(', s);
-    delete(s, 1, p+1);
-    p:= Pos('x', s);
-    sx:= copy(s, 1, p-1);
-    delete(s, 1, p);
-    p:= Pos(')', s);
-    sy:= copy(s, 1, p-2);
-    if sx <> '' then
-      TryStrToInt(sx, Result.X);
-    if sy <> '' then
-      TryStrToInt(sy, Result.Y);
+  if FrameType = 2 then begin
+    line:= getLineNumberWith('self.root.geometry');
+    if line >= 0 then begin
+      s:= ActiveSynEdit.Lines[line];
+      p:= Pos('(', s);
+      delete(s, 1, p+1);
+      p:= Pos('x', s);
+      sx:= copy(s, 1, p-1);
+      delete(s, 1, p);
+      p:= Pos(')', s);
+      sy:= copy(s, 1, p-2);
+    end;
+  end else begin
+    line:= getLineNumberWith('self.resize');
+    if line >= 0 then begin
+      s:= ActiveSynEdit.Lines[line];
+      p:= Pos('(', s);
+      delete(s, 1, p);
+      p:= Pos(',', s);
+      sx:= copy(s, 1, p-1);
+      delete(s, 1, p);
+      p:= Pos(')', s);
+      sy:= copy(s, 1, p-1);
+    end;
   end;
+
+  if sx <> '' then
+    TryStrToInt(sx, Result.X);
+  if sy <> '' then
+    TryStrToInt(sy, Result.Y);
 end;
 
 procedure TEditorForm.setGeometry;
 begin
-  ReplaceLine('self.root.geometry',
+  if FrameType = 2 then
+    ReplaceLine('self.root.geometry',
       FConfiguration.Indent2 + 'self.root.geometry(''' +
-        IntToStr(GuiPyOptions.FrameWidth) + 'x' +
-        IntToStr(GuiPyOptions.FrameHeight) + ''')');
+      IntToStr(GuiPyOptions.FrameWidth) + 'x' +
+      IntToStr(GuiPyOptions.FrameHeight) + ''')')
+  else if FrameType = 3 then
+    ReplaceLine('self.resize',
+      FConfiguration.Indent2 + 'self.resize(' +
+      IntToStr(GuiPyOptions.FrameWidth) + ', ' +
+      IntToStr(GuiPyOptions.FrameHeight) + ')');
 end;
 
 function TEditorForm.getIndent: String;
@@ -2877,7 +2940,7 @@ var
 begin
   ASynEdit := Sender as TSynEdit;
   if (ASynEdit.Gutter.Visible) and (X < ASynEdit.GutterWidth) or
-    (ASynEdit <> Self.FActiveSynEdit)
+    (ASynEdit <> Self.ActiveSynEdit)
   then
     Exit;
   aLineCharPos := ASynEdit.DisplayToBufferPos(ASynEdit.PixelsToRowColumn(X, Y));
@@ -3212,7 +3275,7 @@ procedure TEditorForm.SynCodeCompletionAfterCodeCompletion(Sender: TObject;
 var
   Editor: TSynEdit;
 begin
-  Editor := fActiveSynEdit;
+  Editor := ActiveSynEdit;
   if EndToken = '(' then
     TThread.ForceQueue(nil, procedure
     begin
@@ -3350,7 +3413,7 @@ end;
 procedure TEditorForm.setNeedsParsing(value: boolean);
 begin
   if value <> fNeedToParseModule then begin
-    if value and assigned(fActiveSynEdit) {and not fGetActiceSynEdit.LockBuildStructure}
+    if value and assigned(ActiveSynEdit) {and not fGetActiceSynEdit.LockBuildStructure}
       then fNeedToParseModule:= true
       else fNeedToParseModule:= false;
   end;
@@ -3921,7 +3984,7 @@ begin
   s:= '';
   p:= 0;
   while p < FConfiguration.ControlStructureTemplates[KTag].Count do begin
-    s1:= FConfiguration.ControlStructureTemplates[KTag].Strings[p];
+    s1:= FConfiguration.ControlStructureTemplates[KTag][p];
     if (block <> '') and (trim(s1) = '') then begin
       s:= s + block;
       block:= '';
@@ -4123,7 +4186,7 @@ procedure TEditorForm.InsertLinesAt(line: integer; s: string);
 begin
   if not endsWith(s, CrLf) then
     s:= s + CrLf;
-  with fActiveSynEdit do begin
+  with ActiveSynEdit do begin
     BeginUpdate;
     collapsed:= (AllFoldRanges.Count > 2) and AllFoldRanges.Ranges[2].Collapsed;
     cx:= CaretX;
@@ -4155,7 +4218,17 @@ begin
   Modified:= true;
 end;
 
-procedure TEditorForm.InsertAttribute(const s: string);
+procedure TEditorForm.InsertNewAttribute(const s: string);
+begin
+  InsertLinesAt(getLastCreateWidgetsLine, s);
+end;
+
+procedure TEditorForm.InsertAtBegin(const s: string);
+begin
+  InsertLinesAt(getFirstCreateWidgetsLine, s);
+end;
+
+procedure TEditorForm.InsertAtEnd(const s: string);
 begin
   InsertLinesAt(getLastCreateWidgetsLine, s);
 end;
@@ -4187,13 +4260,23 @@ begin
     Result:= line;
 end;
 
-procedure TEditorForm.InsertBinding(const Name, Attr, Binding: string);
+procedure TEditorForm.InsertTkBinding(const Name, Attr, Binding: string);
   var line: integer;
 begin
   line:= getLineNumberOfBinding(Name, Attr);
   if line >= 0
-    then ActiveSynedit.Lines[line]:= Binding
-    else InsertAttribute(Binding);
+    then ActiveSynEdit.Lines[line]:= Binding
+    else InsertValue(Name, Binding, 1);
+  Modified:= true;
+end;
+
+procedure TEditorForm.InsertQtBinding(const Name, Binding: string);
+  var line: integer;
+begin
+  line:= getLineNumberWith(Binding);
+  if line >= 0
+    then ActiveSynEdit.Lines[line]:= Binding
+    else InsertValue(Name, Binding, 1);
   Modified:= true;
 end;
 
@@ -4264,12 +4347,24 @@ begin
   ActiveSynEdit.EndUpdate;
 end;
 
-procedure TEditorForm.DeleteComponent(Component: TControl);
+procedure TEditorForm.DeleteComponent(Control: TControl);
 begin
   ActiveSynEdit.BeginUpdate;
   for var i:= getCreateWidgets.LineE - 1 downto getCreateWidgets.LineS do
-    if hasWidget(Component.Name, i) then
+    if hasWidget(Control.Name, i) then
       DeleteLine(i);
+  Modified:= true;
+  ActiveSynEdit.EndUpdate;
+end;
+
+procedure TEditorForm.DeleteItems(Name, Key: string);
+begin
+  ActiveSynEdit.BeginUpdate;
+  for var i:= getCreateWidgets.LineE - 1 downto getCreateWidgets.LineS do begin
+    var RegEx := '^[ \t]*self\.' + Name + '(' + Key + '\d+)';
+    if TRegEx.IsMatch(ActiveSynEdit.Lines[i], RegEx) then
+      DeleteLine(i);
+  end;
   Modified:= true;
   ActiveSynEdit.EndUpdate;
 end;
@@ -4301,7 +4396,7 @@ type
      till: integer;
   end;
 
-procedure TEditorForm.DeleteOldAddNewMethods(OldMethods, NewMethods: TStringList; Params: string);
+procedure TEditorForm.DeleteOldAddNewMethods(OldMethods, NewMethods: TStringList);
   var i, p, from, till, Index: integer;
       Ci, it: IModelIterator;
       cent: TModelEntity;
@@ -4311,11 +4406,10 @@ procedure TEditorForm.DeleteOldAddNewMethods(OldMethods, NewMethods: TStringList
       s1, s2, func: string;
 
   function inMethodArray(com: String): integer;
-    var i: integer;
   begin
     Result:= -1;
-    for i:= 0 to Index do
-      if MethodArray[i].Name = com then
+    for var i:= 0 to Index do
+      if Pos(MethodArray[i].Name + '(', com) = 1 then
         Result:= i;
   end;
 
@@ -4344,9 +4438,9 @@ begin
 
   //add missing new methods
   for i:= 0 to NewMethods.Count - 1 do
-    if inMethodArray(NewMethods.Strings[i]) = -1 then begin
+    if inMethodArray(NewMethods[i]) = -1 then begin
       func:= CrLf +
-             fIndent1 + 'def ' + NewMethods.Strings[i] +'(' + Params + '):' + CrLf +
+             fIndent1 + 'def ' + NewMethods[i] + CrLf +
              fIndent2 + '# ToDo insert source code here' + CrLf +
              fIndent2 + 'pass';
       SL.Add(func);
@@ -4357,18 +4451,18 @@ begin
   // determine methods to delete
   SL.Clear;
   for i := 0 to OldMethods.Count - 1 do   // keeps method lines valid
-    if NewMethods.IndexOf(OldMethods.Strings[i]) = -1 then begin
-      p:= inMethodArray(OldMethods.Strings[i]);
+    if NewMethods.IndexOf(OldMethods[i]) = -1 then begin
+      p:= inMethodArray(OldMethods[i]);
       if p > -1 then begin
         // delete if default
         from:= MethodArray[p].from;
         till:= MethodArray[p].till;
         s1:= getSource(from, till);
-        s2:= fIndent1 + 'def ' + MethodArray[p].Name +'(' + Params + '):' + CrLf +
+        s2:= fIndent1 + 'def ' + OldMethods[i] + CrLf +
              fIndent2 + '# ToDo insert source code here' + CrLf +
              fIndent2 + 'pass' + CrLf;
         if s1 = s2 then
-          SL.Add(OldMethods.Strings[i]);
+          SL.Add(copy(OldMethods[i], 1, Pos('(', OldMethods[i]) - 1));
       end;
     end;
 
@@ -4385,10 +4479,10 @@ begin
   FreeAndNil(SL);
 end;
 
-procedure TEditorForm.DeleteBinding(Name, Attr: string);
+procedure TEditorForm.DeleteBinding(const Binding: string);
   var line: integer;
 begin
-  line:= getLineNumberOfBinding(Name, Attr);
+  line:= getLineNumberWith(Binding);
   if line > -1 then begin
     DeleteLine(line);
     Modified:= true;
@@ -4523,10 +4617,13 @@ begin
 end;
 
 function TEditorForm.hasWidget(const key: String; line: integer): boolean;
+  var RegEx: string;
 begin
-  if Pos('self.', key) > 0 then
-    raise Exception.CreateFmt('Invalid name : ''%s''', ['HALLO']);
-  var RegEx := '^[ \t]*self\.' + key + '(CV|TV|LV|VC|ScrollbarH|ScrollbarV|Image|RB\d+|Tab\d+)?\b';
+ // if Pos('self.', key) > 0 then
+ //   raise Exception.CreateFmt('Invalid name : ''%s''', ['HALLO']);
+  if Pos(fIndent2, key) = 1
+    then RegEx := '^' + key + '(CV|TV|LV|VC|ScrollbarH|ScrollbarV|Image|RB\d+|Tab\d+)?\b'
+    else RegEx := '^[ \t]*self\.' + key + '(CV|TV|LV|VC|ScrollbarH|ScrollbarV|Image|RB\d+|Tab\d+)?\b';
   Result:= TRegEx.IsMatch(ActiveSynEdit.Lines[line], RegEx);
 end;
 
@@ -4705,6 +4802,27 @@ begin
   Modified:= aChanged;
 end;
 
+procedure TEditorForm.insertValue(const destination, s: string; after: integer);
+  var line, till: integer; aChanged: boolean;
+begin
+  aChanged:= true;
+  till:= getLastCreateWidgetsLine;
+  line:= getLineNumberWithWord(destination);  // self.create_widgets, self.button1
+  if line = -1 then
+    line:= till
+  else if after = 1 then begin
+    inc(line);
+    while (line < till) and hasWidget(destination, line) do
+      inc(line);
+  end;
+  if line >= 0 then begin
+    InsertLinesAt(line, s);
+    NeedsParsing:= true;
+  end else
+    aChanged:= false;
+  Modified:= aChanged;
+end;
+
 function TEditorForm.getLastConstructorLine(ClassNumber: integer): integer;
   var cent: TClassifier; Operation: TOperation; Ident, s: string;
 begin
@@ -4736,7 +4854,7 @@ begin
     end else
       Exit(-1);
   end;
-  LineE:= getLineNumberWithWordFromTill( 'pass', LineS+1);
+  LineE:= getLineNumberWithWordFromTill('pass', LineS+1);
   if LineE = -1 then begin
     ParseAndCreateModel;
     Operation:= getCreateWidgets;
@@ -4744,6 +4862,25 @@ begin
     Exit(Operation.LineE);
   end else
     Exit(LineE);
+end;
+
+function TEditorForm.getFirstCreateWidgetsLine: integer;
+  var cent: TClassifier; Ident, s: string;
+      LineS: integer;
+begin
+  LineS:= getLineNumberWith('def create_widgets(self):');
+  if LineS = -1 then begin
+    ParseAndCreateModel;
+    cent:= GetClass(0);
+    if assigned(cent) then begin
+      Ident:= StringTimesN(FConfiguration.Indent1, cent.Level + 1);
+      s:= CrLf + Ident + 'def create_widgets(self):' + CrLf;
+      InsertLinesAt(cent.LineE, s);
+      Result:= cent.LineE;
+    end else
+      Result:= -1;
+  end else
+    Result:= LineS + 1;
 end;
 
 function TEditorForm.getLineForConstructor(ClassNumber: integer): integer;
@@ -4782,10 +4919,10 @@ begin
   Result:= -1;
   i:= From;
   repeat
-    if (i < fActiveSynEdit.Lines.Count) and (Pos(s, fActiveSynEdit.Lines[i]) > 0) then
+    if (i < ActiveSynEdit.Lines.Count) and (Pos(s, ActiveSynEdit.Lines[i]) > 0) then
       Exit(i);
     inc(i);
-  until i >= fActiveSynEdit.Lines.Count;
+  until i >= ActiveSynEdit.Lines.Count;
 end;
 
 function TEditorForm.getLineNumberWithWord(const s: string): integer;
@@ -4793,17 +4930,19 @@ begin
   Result:= getLineNumberWithWordFromTill(s, 0);
 end;
 
-function TEditorForm.getLineNumberWithWordFromTill(const s: string; from: integer; till: integer=0): integer;
+function TEditorForm.getLineNumberWithWordFromTill(s: string; from: integer; till: integer=0): integer;
   var i: integer; RegEx: TRegEx;
 begin
   Result:= -1;
   if (s <> '') and (s[length(s)] = ']') then
     RegEx:= CompiledRegEx('\b' + TRegEx.Escape(s))
+  else if Pos(fIndent2, s) = 1 then
+    RegEx:= CompiledRegEx('^' + TRegEx.Escape(s) +'\b')
   else
     RegEx:= CompiledRegEx('\b' + TRegEx.Escape(s) +'\b');
   i:= From;
   if till = 0 then
-    till:= fActiveSynEdit.Lines.Count;
+    till:= ActiveSynEdit.Lines.Count;
   repeat
     if RegEx.IsMatch(ActiveSynEdit.Lines[i]) then
       Exit(i);
@@ -4850,7 +4989,7 @@ begin
   if (s1 = s2) or (s1 = '') then exit;
   ActiveSynEdit.BeginUpdate;
   // '(' + s1 + ')' is Groups[1]
-  RegExExpr:= '\b(' + TRegEx.Escape(s1) + ')(CV|TV|LV|ScrollbarH|ScrollbarV|Image|RB\d+|Tab\d+)?';
+  RegExExpr:= '\b(' + TRegEx.Escape(s1) + ')(CV|TV|LV|ScrollbarH|ScrollbarV|Image|Painter|RB\d+|Tab\d+)?';
   if not isWordBreakChar(s1[length(s1)]) then
     RegExExpr:= RegExExpr + '\b';
   RegEx := CompiledRegEx(RegExExpr);
@@ -4914,7 +5053,7 @@ begin
     ActiveSynEdit.Lines[line]:= s;
     Modified:= true;
   end else
-    InsertAttribute(s);
+    InsertNewAttribute(s);
 end;
 
 procedure TEditorForm.CreateModel;
@@ -5247,6 +5386,18 @@ begin
         SL.Add(WithoutArray(cent.Name));
     end;
   end;
+end;
+
+function TEditorForm.getFrameType: Integer;
+  var PythonScanner: TPythonScannerWithTokens;
+begin
+  if (FFrameType = 0) and (DefaultExtension = 'pyw') then begin
+    PythonScanner:= TPythonScannerWithTokens.create;
+    PythonScanner.Init(SynEdit.Lines.Text);
+    FFrameType:= PythonScanner.GetFrameType;
+    PythonScanner.Destroy;
+  end;
+  Result:= FFrameType;
 end;
 
 initialization

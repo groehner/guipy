@@ -999,7 +999,7 @@ begin
     SL:= TStringList.Create;
     Ini.ReadSectionValues('Interactive', SL);
     for i:= 0 to SL.Count - 1 do begin
-      s:= SL.Strings[i];
+      s:= SL[i];
       p:= Pos('=', s);
       delete(s, 1, p);
       UMLForm.SynEdit.Lines.Add(s);
@@ -1044,7 +1044,7 @@ begin
   typ:= withoutGeneric(typ);
   i:= 0;
   while i < BoxNames.Count do begin
-    s:= withoutGeneric( BoxNames.Strings[i]);
+    s:= withoutGeneric(BoxNames[i]);
     if typ = s then
       break;
     inc(i);
@@ -1906,7 +1906,7 @@ begin
   try
     SL.LoadFromFile(GuiPyOptions.TempDir + 'output.txt');
     if SL.Count > 0
-      then ShowMethodExited(CallMethodMethodName, CallMethodObjectname, 'Actor', SL.Strings[0])
+      then ShowMethodExited(CallMethodMethodName, CallMethodObjectname, 'Actor', SL[0])
       else ShowMethodExited(CallMethodMethodName, CallMethodObjectname, 'Actor', '');
   finally
     FreeAndNil(SL);
@@ -1935,7 +1935,7 @@ begin
     SL:= FLivingObjects.getClassMethods(Typ); // static and not static
     try
       for i:= 0 to SL.Count - 1 do begin
-        s:= SL.Strings[i];
+        s:= SL[i];
         Operation:= C.AddOperationWithoutType('');
         p:= Pos(chr(3), s);
         Operation.Name:= copy(s, 1, p - 1);
@@ -2112,7 +2112,7 @@ begin
       Attributes:= FLivingObjects.getObjectAttributeValues(Objectname);
       for i:= Attributes.Count - 1 downto 0 do
         if GuiPyOptions.PrivateAttributEditable or (Pos('__', Attributes.KeyNames[i]) = 0)
-          then Attributes.Strings[i]:= WithoutVisibility(Attributes.Strings[i])
+          then Attributes[i]:= WithoutVisibility(Attributes[i])
           else Attributes.Delete(i);
       Caption:= _('Edit object') + ' ' + ObjectName;
       Title  := _('Attribute') + #13#10 + _('Value');
@@ -2158,12 +2158,12 @@ begin
   if U = nil then exit;
   aObjectList:= U.GetAllObjects;
   for i:= 0 to aObjectList.Count - 1 do begin
-    if not FLivingObjects.ObjectExists(aObjectList.Strings[i]) then
+    if not FLivingObjects.ObjectExists(aObjectList[i]) then
       continue;
     if assigned(aObjectList.objects[i]) and (aObjectList.Objects[i] is TObjekt)
       then aModelObject:= aObjectList.objects[i] as TObjekt
       else continue;
-    SL_Attributes:= FLivingObjects.getObjectAttributeValues(aObjectList.Strings[i]);
+    SL_Attributes:= FLivingObjects.getObjectAttributeValues(aObjectList[i]);
     It:= aModelObject.GetAttributes;
     while It.HasNext do begin
       aModelAttribut:= It.Next as TAttribute;
@@ -2262,9 +2262,9 @@ procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
       if (BoxNames.Objects[i] is TRtfdClass) then
         Connections.Add('C' + (BoxNames.Objects[i] as TRtfdBox).Entity.FullName)
       else if (BoxNames.Objects[i] is TRtfdCommentBox) then
-        Connections.Add('K' + BoxNames.Strings[i]);
+        Connections.Add('K' + BoxNames[i]);
     for i:= 0 to Connections.Count - 1 do begin
-      s:= Connections.Strings[i];
+      s:= Connections[i];
       c:= s[1];
       s:= copy(s, 2, length(s));
       aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
@@ -2289,7 +2289,7 @@ procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
     s1:= WithoutGeneric(WithOutArray(s));
     if IsPythonType(s1) or (s1 = '') then exit;
     for i:= 0 to BoxNames.Count - 1 do
-      if s1 = BoxNames.Strings[i] then exit;
+      if s1 = BoxNames[i] then exit;
     if (Associations.IndexOf(s1) > -1) or
        (Interfaces.IndexOf(s1) > -1) then exit;
     s2:= getShortType(s1);
@@ -2530,9 +2530,9 @@ begin // PopMenuClassPopup
   {
   // unclear where to find classes, which we find as parameter types
   for i:= 0 to Associations.Count - 1 do
-    MakeOpenClassMenuItem(Associations.Strings[i], 0);
+    MakeOpenClassMenuItem(Associations[i], 0);
   for i:= 0 to Interfaces.Count - 1 do
-    MakeOpenClassMenuItem(Interfaces.Strings[i], 16);
+    MakeOpenClassMenuItem(Interfaces[i], 16);
   }
   MakeConnectClassMenuItems;
 
@@ -2624,7 +2624,7 @@ procedure TRtfdDiagram.PopMenuObjectPopup(Sender: TOBject);
     var i, e, p, img: integer; s, s1, s2: string;
   begin
     for i:= 0 to SLSorted.Count - 1 do begin
-      s:= SLSorted.Strings[i];
+      s:= SLSorted[i];
       p:= Pos(chr(3), s);
       delete(s, 1, p);
       p:= Pos(chr(3), s);
@@ -3174,7 +3174,7 @@ begin
   if assigned(Model) and assigned(Model.ModelRoot) then begin
     SL:= Model.ModelRoot.Files;
     for i:= 0 to SL.Count - 1 do begin
-      s:= SL.Strings[i];
+      s:= SL[i];
       s:= ExtractFilePath(s);
       if Pos(s, Result) = 0 then
         Result:= Result + ';' + s;

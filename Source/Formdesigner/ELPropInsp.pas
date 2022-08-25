@@ -197,7 +197,8 @@ type
         procedure BeginUpdate;
         procedure EndUpdate;
         procedure UpdateActiveRow;
-           property ActiveItem: TELPropsPageItem read GetActiveItem;
+
+        property ActiveItem: TELPropsPageItem read GetActiveItem;
         property SelText: String read getSelText write setSelText;
     end;
 
@@ -267,6 +268,7 @@ type
     TELOnGetComponent = procedure(Sender: TObject; const AComponentName: string; var AComponent: TComponent) of object;
     TELOnGetComponentNames = procedure(Sender: TObject; AClass: TComponentClass; AResult: TStrings) of object;
     TELOnGetComponentName = procedure(Sender: TObject; AComponent: TComponent; var AName: string) of object;
+    TELOnGetSelectStrings = procedure(Sender: TObject; event: string; AResult: TStrings) of object;
 
     TELPropEditorPropListItem = packed record
         Instance: TPersistent;
@@ -340,7 +342,7 @@ type
         destructor Destroy; override;
     end;
 
-    { Standart property editors }
+    { standard property editors }
 
     TELOrdinalPropEditor = class(TELPropEditor)
     protected
@@ -630,7 +632,7 @@ type
     public
     end;
 
-procedure ELGetObjectsProps(ADesigner: Pointer; AObjList: TList; AKinds: TTypeKinds;
+  procedure ELGetObjectsProps(ADesigner: Pointer; AObjList: TList; AKinds: TTypeKinds;
     AOnlyNestable: Boolean; AGetEditorClassProc: TELGetEditorClassProc; AResult: TList);
 
 { TELPropertyInspector }
@@ -661,8 +663,8 @@ type
     public
         destructor Destroy; override;
         procedure UpdateParams;
-        property Editor: TELPropEditor read FEditor write SetEditor; // Editor is destroyed
-        // with "Self"
+        property Editor: TELPropEditor read FEditor write SetEditor;
+        // Editor is destroyed with "Self"
     end;
 
     TELPropertyInspectorEditorDescr = record
@@ -688,6 +690,7 @@ type
         FEditors: array of TELPropertyInspectorEditorDescr;
         FOnGetComponent: TELOnGetComponent;
         FOnGetComponentNames: TELOnGetComponentNames;
+        FOnGetSelectStrings: TELOnGetSelectStrings;
         FOnModified: TNotifyEvent;
         FOnGetComponentName: TELOnGetComponentName;
         FPropKinds: TELPropertyInspectorPropKinds;
@@ -733,6 +736,7 @@ type
         property OnGetComponent: TELOnGetComponent read FOnGetComponent write FOnGetComponent;
         property OnGetComponentNames: TELOnGetComponentNames read FOnGetComponentNames write FOnGetComponentNames;
         property OnGetComponentName: TELOnGetComponentName read FOnGetComponentName write FOnGetComponentName;
+        property OnGetSelectStrings: TELOnGetSelectStrings read FOnGetSelectStrings write FOnGetSelectStrings;
         property OnFilterProp: TELPropertyInspectorOnFilterProp read FOnFilterProp write FOnFilterProp;
         property OnModified: TNotifyEvent read FOnModified write FOnModified;
         property OnGetCaptionColor: TELPropertyInspectorOnGetCaptionColor read FOnGetCaptionColor write FOnGetCaptionColor;
@@ -797,6 +801,7 @@ type
         property OnGetComponent;
         property OnGetComponentNames;
         property OnGetComponentName;
+        property OnGetSelectStrings;
         property OnFilterProp;
         property OnModified;
         property OnGetCaptionColor;
@@ -884,9 +889,6 @@ const
         'mrAll',
         'mrNoToAll',
         'mrYesToAll');
-
-
-
 
 {  idOK       = 1;
   idCancel   = 2;
@@ -2423,9 +2425,14 @@ begin
         begin
             LList := TStringList.Create;
             try
-                FEditor.GetValues(LList);
-                if praSortList in FEditor.GetAttrs then
+                // get slots for Qt events
+                if isLower(Caption[1]) and assigned(TelPropertyInspector(Owner).OnGetSelectStrings) then
+                  TelPropertyInspector(Owner).OnGetSelectStrings(self, Caption, LList)
+                else  begin
+                  FEditor.GetValues(LList);
+                  if praSortList in FEditor.GetAttrs then
                     LList.Sort;
+                end;
                 AResult.Assign(LList);
             finally
                 FreeAndNil(LList);
@@ -2553,7 +2560,7 @@ var
       SL:= TStringList.Create;
       TELPropertyInspector(Owner).GetComponentNames(nil, SL);
       for i:= 0 to SL.Count - 1 do
-        if SL.Strings[i] = s then
+        if SL[i] = s then
           Result:= true;
       FreeAndNil(SL);
     end;
@@ -2893,11 +2900,13 @@ begin
         tkChar: Result := TELCharPropEditor;
         tkEnumeration: Result := TELEnumPropEditor;
         tkFloat: Result := TELFloatPropEditor;
-      {tkRecord:  if LTypeInfo.Name = 'TEvent'
+       {tkRecord:  if LTypeInfo.Name = 'TEvent'
            then Result:= TELEventPropEditor;}
         tkString, tkLString, tkWString, tkUString:
-          if (APropInfo.Name = 'Image')
+          if (APropInfo.Name = 'Image') or (APropInfo.Name = 'Icon') or (ApropInfo.Name = 'Pixmap')
             then Result:= TELIconPropEditor
+          else if isLower(char(APropInfo.Name[1]))   // Qt signals
+            then Result:= TELSelectStringPropEditor
             else Result:= TELStringPropEditor;
         tkSet: Result := TELSetPropEditor;
         tkClass:
@@ -3682,9 +3691,9 @@ begin
     if Propname = 'Scrollbars'  then s:= '_TB_' + s else
     if Propname = 'Validate'    then s:= '_TV_' + s else
     if Propname = 'Side'        then s:= '_TS_' + s else
+    if Propname = 'Mode'        then s:= '_MO_' + s else
     if (Propname = 'State') and (PropTypeInfo.Name = 'TTextState2') then s:= '_TS_' + s;
-
-    LI := GetEnumValue(PropTypeInfo, s);
+    LI:= GetEnumValue(PropTypeInfo, s);
     with GetTypeData(PropTypeInfo)^ do
       if (LI < MinValue) or (LI > MaxValue) then
         raise EELPropEditor.Create('Invalid property value');
@@ -4444,7 +4453,6 @@ end;
 
 procedure TELSelectStringPropEditor.GetValues(AValues: TStrings);
 begin
-  AValues.Assign(UKoppel.SelectStrings);
 end;
 
 { TELImeNamePropEditor }

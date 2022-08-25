@@ -12,18 +12,18 @@ const
   {$IFDEF WIN32}
   Zipfile = 'GuiPy.zip';   // update portable version
   Setupfile = 'GuiPy-%s-x86-Setup.exe';   // update default version
-  Version = '1.0.6, 32 Bit';
+  Version = '2.0.0, 32 Bit';
   Bits = '32';
   {$ENDIF}
   {$IFDEF WIN64}
   Zipfile = 'GuiPy64.zip';
   Setupfile = 'GuiPy-%s-x64-Setup.exe';
-  Version = '1.0.6, 64 Bit';
+  Version = '2.0.0, 64 Bit';
   Bits = '64';
   {$ENDIF}
 
-  Day   = 10;
-  Month = 7;
+  Day   = 21;
+  Month = 8;
   Year  = 2022;
 
 type

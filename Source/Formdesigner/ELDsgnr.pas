@@ -1229,8 +1229,8 @@ begin
         FSelCtrls.ClearExcept(Sender);
         _InitDrawMode(Sender.Parent, SizeControlProc, True,
           TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppTop, ppBottom],
-          TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppLeft,
-          ppRight], False);
+          TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppLeft, ppRight],
+          False);
       end;
     WM_LBUTTONDOWN, WM_RBUTTONDOWN:
       if not((Sender = FForm) and (FRoot <> FForm)) then
