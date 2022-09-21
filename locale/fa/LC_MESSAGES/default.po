@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PyScripter GUI translation\n"
-"POT-Creation-Date: 2022-08-21 14:52\n"
-"PO-Revision-Date: 2022-08-21 15:17+0200\n"
+"POT-Creation-Date: 2022-09-21 17:11\n"
+"PO-Revision-Date: 2022-09-21 17:19+0200\n"
 "Last-Translator: Kiriakos Vlahos <pyscripter@gmail.com>, 2021\n"
 "Language-Team: Persian (https://www.transifex.com/pyscripter/teams/116142/"
 "fa/)\n"
@@ -195,7 +195,7 @@ msgstr "کمک"
 
 #. CodeTemplates..Panel..GroupBox..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Caption
-#: dlgCodeTemplates.dfm:110 Utils/UConfiguration.dfm:1878
+#: dlgCodeTemplates.dfm:110 Utils/UConfiguration.dfm:1888
 msgid "Code Template:"
 msgstr "قالب کد:"
 
@@ -208,7 +208,7 @@ msgstr "قالب کد:"
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label19..Caption
 #: dlgCodeTemplates.dfm:120 dlgCustomParams.dfm:121 dlgFileTemplates.dfm:41
 #: dlgToolProperties.dfm:96 dlgToolProperties.dfm:212
-#: Utils/UConfiguration.dfm:1888 Utils/UConfiguration.dfm:2099
+#: Utils/UConfiguration.dfm:1898 Utils/UConfiguration.dfm:2109
 msgid "&Name:"
 msgstr "نام:"
 
@@ -217,13 +217,13 @@ msgstr "نام:"
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label4..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label20..Caption
 #: dlgCodeTemplates.dfm:127 dlgFileTemplates.dfm:49
-#: Utils/UConfiguration.dfm:1895 Utils/UConfiguration.dfm:2107
+#: Utils/UConfiguration.dfm:1905 Utils/UConfiguration.dfm:2117
 msgid "&Template:"
 msgstr "قالب:"
 
 #. CodeTemplates..Panel..GroupBox..Label5..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label16..Caption
-#: dlgCodeTemplates.dfm:134 Utils/UConfiguration.dfm:1902
+#: dlgCodeTemplates.dfm:134 Utils/UConfiguration.dfm:1912
 msgid "&Description:"
 msgstr "شرح:"
 
@@ -233,7 +233,7 @@ msgstr "شرح:"
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label17..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label22..Caption
 #: dlgCodeTemplates.dfm:141 dlgCustomParams.dfm:38 dlgFileTemplates.dfm:65
-#: Utils/UConfiguration.dfm:1909 Utils/UConfiguration.dfm:2123
+#: Utils/UConfiguration.dfm:1919 Utils/UConfiguration.dfm:2133
 msgid "Press Shift+Ctrl+M for Modifier completion"
 msgstr "برای تکمیل تغییر دهنده، Shift+Ctrl+M را فشار دهید"
 
@@ -243,7 +243,7 @@ msgstr "برای تکمیل تغییر دهنده، Shift+Ctrl+M را فشار �
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label18..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label23..Caption
 #: dlgCodeTemplates.dfm:155 dlgCustomParams.dfm:30 dlgFileTemplates.dfm:73
-#: Utils/UConfiguration.dfm:1923 Utils/UConfiguration.dfm:2131
+#: Utils/UConfiguration.dfm:1933 Utils/UConfiguration.dfm:2141
 msgid "Press Shift+Ctrl+P for Parameter completion"
 msgstr "برای تکمیل مؤلّفه ، Shift+Ctrl+P را فشار دهید"
 
@@ -264,9 +264,9 @@ msgstr "برای تکمیل مؤلّفه ، Shift+Ctrl+P را فشار دهید"
 #: dlgCodeTemplates.dfm:232 dlgCustomParams.dfm:191 dlgFileTemplates.dfm:252
 #: dlgPythonVersions.dfm:37 dlgToolProperties.dfm:168 frmRegExpTester.dfm:265
 #: frmVariables.dfm:134 Main/UClassEditor.dfm:62 Main/UClassEditor.dfm:134
-#: Main/UClassEditor.dfm:316 Main/UClassEditor.dfm:436
-#: Utils/UConfiguration.dfm:216 Utils/UConfiguration.dfm:1998
-#: Utils/UConfiguration.dfm:2068 frmVariables.pas:453
+#: Main/UClassEditor.dfm:320 Main/UClassEditor.dfm:444
+#: Utils/UConfiguration.dfm:216 Utils/UConfiguration.dfm:2008
+#: Utils/UConfiguration.dfm:2078 frmVariables.pas:453
 msgid "Name"
 msgstr "نام"
 
@@ -276,7 +276,7 @@ msgstr "نام"
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..CodeTemplatesLvItems......Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..gbDescription..Caption
 #: dlgCodeTemplates.dfm:236 dlgCustomShortcuts.dfm:177 frmToDo.dfm:139
-#: Utils/UConfiguration.dfm:2002 Utils/UConfiguration.dfm:3269
+#: Utils/UConfiguration.dfm:2012 Utils/UConfiguration.dfm:3279
 msgid "Description"
 msgstr "شرح"
 
@@ -290,8 +290,8 @@ msgstr "شرح"
 #. FConfiguration..PTemplatesActionList..actFileAddItem..Caption
 #: dlgCodeTemplates.dfm:255 dlgCustomParams.dfm:213 dlgFileTemplates.dfm:274
 #: dlgSynEditOptions.dfm:937 dlgToolProperties.dfm:711
-#: Utils/UConfiguration.dfm:1569 Utils/UConfiguration.dfm:5848
-#: Utils/UConfiguration.dfm:5883
+#: Utils/UConfiguration.dfm:1569 Utils/UConfiguration.dfm:5858
+#: Utils/UConfiguration.dfm:5893
 msgid "&Add"
 msgstr "افزودن"
 
@@ -302,8 +302,8 @@ msgstr "افزودن"
 #. FConfiguration..PTemplatesActionList..actCodeAddItem..Hint
 #. FConfiguration..PTemplatesActionList..actFileAddItem..Hint
 #: dlgCodeTemplates.dfm:256 dlgCustomParams.dfm:214 dlgFileTemplates.dfm:275
-#: dlgToolProperties.dfm:712 Utils/UConfiguration.dfm:5849
-#: Utils/UConfiguration.dfm:5884
+#: dlgToolProperties.dfm:712 Utils/UConfiguration.dfm:5859
+#: Utils/UConfiguration.dfm:5894
 msgid "Add item"
 msgstr "افزودن مورد"
 
@@ -316,8 +316,8 @@ msgstr "افزودن مورد"
 #. FConfiguration..PTemplatesActionList..actCodeDeleteItem..Caption
 #. FConfiguration..PTemplatesActionList..actFileDeleteItem..Caption
 #: dlgCodeTemplates.dfm:262 dlgCustomParams.dfm:220 dlgDirectoryList.dfm:145
-#: dlgFileTemplates.dfm:281 dlgToolProperties.dfm:718 Main/UClassEditor.dfm:709
-#: Utils/UConfiguration.dfm:5855 Utils/UConfiguration.dfm:5890
+#: dlgFileTemplates.dfm:281 dlgToolProperties.dfm:718 Main/UClassEditor.dfm:721
+#: Utils/UConfiguration.dfm:5865 Utils/UConfiguration.dfm:5900
 msgid "&Delete"
 msgstr "حذف"
 
@@ -328,8 +328,8 @@ msgstr "حذف"
 #. FConfiguration..PTemplatesActionList..actCodeDeleteItem..Hint
 #. FConfiguration..PTemplatesActionList..actFileDeleteItem..Hint
 #: dlgCodeTemplates.dfm:263 dlgCustomParams.dfm:221 dlgFileTemplates.dfm:282
-#: dlgToolProperties.dfm:719 Utils/UConfiguration.dfm:5856
-#: Utils/UConfiguration.dfm:5891
+#: dlgToolProperties.dfm:719 Utils/UConfiguration.dfm:5866
+#: Utils/UConfiguration.dfm:5901
 msgid "Delete item"
 msgstr "حذف مورد"
 
@@ -342,7 +342,7 @@ msgstr "حذف مورد"
 #. FConfiguration..PTemplatesActionList..actFileMoveUp..Caption
 #: dlgCodeTemplates.dfm:269 dlgCollectionEditor.dfm:100 dlgCustomParams.dfm:227
 #: dlgFileTemplates.dfm:288 frmFileExplorer.dfm:320
-#: Utils/UConfiguration.dfm:5862 Utils/UConfiguration.dfm:5897
+#: Utils/UConfiguration.dfm:5872 Utils/UConfiguration.dfm:5907
 msgid "&Up"
 msgstr "بالا"
 
@@ -352,7 +352,7 @@ msgstr "بالا"
 #. FConfiguration..PTemplatesActionList..actCodeMoveUp..Hint
 #. FConfiguration..PTemplatesActionList..actFileMoveUp..Hint
 #: dlgCodeTemplates.dfm:270 dlgCustomParams.dfm:228 dlgFileTemplates.dfm:289
-#: Utils/UConfiguration.dfm:5863 Utils/UConfiguration.dfm:5898
+#: Utils/UConfiguration.dfm:5873 Utils/UConfiguration.dfm:5908
 msgid "Move item up"
 msgstr "بالا بردن مورد"
 
@@ -363,8 +363,8 @@ msgstr "بالا بردن مورد"
 #. FConfiguration..PTemplatesActionList..actCodeMoveDown..Caption
 #. FConfiguration..PTemplatesActionList..actFileMoveDown..Caption
 #: dlgCodeTemplates.dfm:276 dlgCollectionEditor.dfm:110 dlgCustomParams.dfm:234
-#: dlgFileTemplates.dfm:295 Utils/UConfiguration.dfm:5869
-#: Utils/UConfiguration.dfm:5904
+#: dlgFileTemplates.dfm:295 Utils/UConfiguration.dfm:5879
+#: Utils/UConfiguration.dfm:5914
 msgid "&Down"
 msgstr "پایین"
 
@@ -374,7 +374,7 @@ msgstr "پایین"
 #. FConfiguration..PTemplatesActionList..actCodeMoveDown..Hint
 #. FConfiguration..PTemplatesActionList..actFileMoveDown..Hint
 #: dlgCodeTemplates.dfm:277 dlgCustomParams.dfm:235 dlgFileTemplates.dfm:296
-#: Utils/UConfiguration.dfm:5870 Utils/UConfiguration.dfm:5905
+#: Utils/UConfiguration.dfm:5880 Utils/UConfiguration.dfm:5915
 msgid "Move item down"
 msgstr "پایین بردن مورد"
 
@@ -388,8 +388,8 @@ msgstr "پایین بردن مورد"
 #. FConfiguration..PTemplatesActionList..actFileUpdateItem..Caption
 #: dlgCodeTemplates.dfm:283 dlgCustomParams.dfm:241 dlgFileTemplates.dfm:302
 #: dlgSynEditOptions.dfm:955 dlgToolProperties.dfm:725
-#: Utils/UConfiguration.dfm:1578 Utils/UConfiguration.dfm:5876
-#: Utils/UConfiguration.dfm:5911
+#: Utils/UConfiguration.dfm:1578 Utils/UConfiguration.dfm:5886
+#: Utils/UConfiguration.dfm:5921
 msgid "&Update"
 msgstr "به روز رسانی"
 
@@ -400,8 +400,8 @@ msgstr "به روز رسانی"
 #. FConfiguration..PTemplatesActionList..actCodeUpdateItem..Hint
 #. FConfiguration..PTemplatesActionList..actFileUpdateItem..Hint
 #: dlgCodeTemplates.dfm:284 dlgCustomParams.dfm:242 dlgFileTemplates.dfm:303
-#: dlgToolProperties.dfm:726 Utils/UConfiguration.dfm:5877
-#: Utils/UConfiguration.dfm:5912
+#: dlgToolProperties.dfm:726 Utils/UConfiguration.dfm:5887
+#: Utils/UConfiguration.dfm:5922
 msgid "Update item"
 msgstr "به روز رسانی مورد"
 
@@ -420,7 +420,7 @@ msgstr "افزودن..."
 #. FConfiguration..IDEShortcutsActionList1..actRemoveShortcut..Caption
 #: dlgCollectionEditor.dfm:58 dlgCustomShortcuts.dfm:202
 #: dlgSynEditOptions.dfm:946 dlgToDoOptions.dfm:114 frmProjectExplorer.dfm:258
-#: Utils/UConfiguration.dfm:1560 Utils/UConfiguration.dfm:5836
+#: Utils/UConfiguration.dfm:1560 Utils/UConfiguration.dfm:5846
 msgid "&Remove"
 msgstr "حذف"
 
@@ -516,7 +516,7 @@ msgstr "مقدار:"
 #. FObjectGenerator..ValueListEditor....TitleCaptions.Strings
 #: dlgCustomParams.dfm:195 dlgOptionsEditor.dfm:60 dlgToolProperties.dfm:172
 #: frmRegExpTester.dfm:271 frmVariables.dfm:144 frmWatches.dfm:102
-#: Main/UClassEditor.dfm:148 Main/UClassEditor.dfm:560
+#: Main/UClassEditor.dfm:148 Main/UClassEditor.dfm:568
 #: Main/UObjectGenerator.dfm:69 frmVariables.pas:458
 #: EssModel/Integrator/View/URtfdDiagram.pas:1604
 #: EssModel/Integrator/View/URtfdDiagram.pas:1607
@@ -532,49 +532,49 @@ msgstr "سفارشی سازی میان برهای محیط توسعه"
 
 #. frmCustomKeyboard..Panel1..lblNewShortcutKey..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblNewShortcutKey..Caption
-#: dlgCustomShortcuts.dfm:43 Utils/UConfiguration.dfm:3196
+#: dlgCustomShortcuts.dfm:43 Utils/UConfiguration.dfm:3206
 msgid "Press &new shortcut key:"
 msgstr "کلید میان بر جدید را فشار دهید:"
 
 #. frmCustomKeyboard..Panel1..lblCategories..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCategories..Caption
-#: dlgCustomShortcuts.dfm:52 Utils/UConfiguration.dfm:3214
+#: dlgCustomShortcuts.dfm:52 Utils/UConfiguration.dfm:3224
 msgid "&Categories:"
 msgstr "دسته بندی ها:"
 
 #. frmCustomKeyboard..Panel1..lblCommands..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCommands..Caption
-#: dlgCustomShortcuts.dfm:61 Utils/UConfiguration.dfm:3205
+#: dlgCustomShortcuts.dfm:61 Utils/UConfiguration.dfm:3215
 msgid "C&ommands:"
 msgstr "فرمان ها:"
 
 #. frmCustomKeyboard..Panel1..lblCurrent..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCurrent..Caption
-#: dlgCustomShortcuts.dfm:70 Utils/UConfiguration.dfm:3177
+#: dlgCustomShortcuts.dfm:70 Utils/UConfiguration.dfm:3187
 msgid "Currently assigned to:"
 msgstr "در حال حاضر اختصاص داده شده به:"
 
 #. frmCustomKeyboard..Panel1..lblCurrentKeys..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCurrentKeys..Caption
-#: dlgCustomShortcuts.dfm:90 Utils/UConfiguration.dfm:3187
+#: dlgCustomShortcuts.dfm:90 Utils/UConfiguration.dfm:3197
 msgid "C&urrent Keys:"
 msgstr "کلیدهای کنونی:"
 
 #. frmCustomKeyboard..ActionList1..actAssignShortcut..Caption
 #. FConfiguration..IDEShortcutsActionList1..actAssignShortcut..Caption
-#: dlgCustomShortcuts.dfm:196 Utils/UConfiguration.dfm:5830
+#: dlgCustomShortcuts.dfm:196 Utils/UConfiguration.dfm:5840
 msgid "&Assign"
 msgstr "تعیین"
 
 #. frmCustomKeyboard..ActionList1..actAssignShortcut..Hint
 #. FConfiguration..IDEShortcutsActionList1..actAssignShortcut..Hint
-#: dlgCustomShortcuts.dfm:197 Utils/UConfiguration.dfm:5831
+#: dlgCustomShortcuts.dfm:197 Utils/UConfiguration.dfm:5841
 msgid "Assign shortcut to command"
 msgstr "تعیین میان بر برای فرمان"
 
 #. frmCustomKeyboard..ActionList1..actRemoveShortcut..Hint
 #. FConfiguration..IDEShortcutsActionList1..actRemoveShortcut..Hint
-#: dlgCustomShortcuts.dfm:203 Utils/UConfiguration.dfm:5837
+#: dlgCustomShortcuts.dfm:203 Utils/UConfiguration.dfm:5847
 msgid "Remove shortcut"
 msgstr "حذف میان بر"
 
@@ -655,31 +655,31 @@ msgstr "الگوهای فایل"
 
 #. FileTemplatesDialog..Panel..GroupBox..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Caption
-#: dlgFileTemplates.dfm:31 Utils/UConfiguration.dfm:2089
+#: dlgFileTemplates.dfm:31 Utils/UConfiguration.dfm:2099
 msgid "File Template:"
 msgstr "الگوی فایل:"
 
 #. FileTemplatesDialog..Panel..GroupBox..Label5..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label21..Caption
-#: dlgFileTemplates.dfm:57 Utils/UConfiguration.dfm:2115
+#: dlgFileTemplates.dfm:57 Utils/UConfiguration.dfm:2125
 msgid "&Category:"
 msgstr "دسته بندی:"
 
 #. FileTemplatesDialog..Panel..GroupBox..Label6..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label24..Caption
-#: dlgFileTemplates.dfm:81 Utils/UConfiguration.dfm:2139
+#: dlgFileTemplates.dfm:81 Utils/UConfiguration.dfm:2149
 msgid "&Default Extension:"
 msgstr "پسوند پیش فرض:"
 
 #. FileTemplatesDialog..Panel..GroupBox..Label7..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label25..Caption
-#: dlgFileTemplates.dfm:89 Utils/UConfiguration.dfm:2147
+#: dlgFileTemplates.dfm:89 Utils/UConfiguration.dfm:2157
 msgid "&Highlighter:"
 msgstr "متمایز کننده:"
 
 #. FileTemplatesDialog..Panel..lvItems......Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..FileTemplatesLvItems......Caption
-#: dlgFileTemplates.dfm:256 Utils/UConfiguration.dfm:2072
+#: dlgFileTemplates.dfm:256 Utils/UConfiguration.dfm:2082
 msgid "Category"
 msgstr "دسته بندی"
 
@@ -706,8 +706,8 @@ msgstr "متن مورد جستجو:"
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..Caption
 #: dlgFindInFiles.dfm:36 dlgSynEditOptions.dfm:36 dlgSynEditOptions.dfm:364
 #: dlgSynEditOptions.dfm:374 dlgToDoOptions.dfm:124 frmPyIDEMain.dfm:1353
-#: frmRegExpTester.dfm:84 Main/UClassEditor.dfm:209 Main/UClassEditor.dfm:365
-#: Utils/UConfiguration.dfm:936 Utils/UConfiguration.dfm:3377
+#: frmRegExpTester.dfm:84 Main/UClassEditor.dfm:213 Main/UClassEditor.dfm:373
+#: Utils/UConfiguration.dfm:936 Utils/UConfiguration.dfm:3387
 msgid "Options"
 msgstr "گزینه ها"
 
@@ -920,7 +920,7 @@ msgstr "نگارش پایتون"
 #. PythonVersionsDialog..Panel1..vtPythonVersions......Text
 #. FConfiguration..PMain..PanelRight..PageList..PPython..vtPythonVersions......Text
 #: dlgPythonVersions.dfm:44 Utils/UConfiguration.dfm:223
-#: Utils/UConfiguration.pas:1378
+#: Utils/UConfiguration.pas:1382
 msgid "Folder"
 msgstr "پوشه"
 
@@ -928,7 +928,7 @@ msgstr "پوشه"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonActivate..Caption
 #. FConfiguration..actlPythonVersions..actPVActivate..Caption
 #: dlgPythonVersions.dfm:106 Utils/UConfiguration.dfm:234
-#: Utils/UConfiguration.dfm:5964
+#: Utils/UConfiguration.dfm:5974
 msgid "Activate"
 msgstr "فعّال سازی"
 
@@ -936,7 +936,7 @@ msgstr "فعّال سازی"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonActivate..Hint
 #. FConfiguration..actlPythonVersions..actPVActivate..Hint
 #: dlgPythonVersions.dfm:108 Utils/UConfiguration.dfm:232
-#: Utils/UConfiguration.dfm:5966
+#: Utils/UConfiguration.dfm:5976
 msgid "Activate selected Python version"
 msgstr "فعّال سازی نگارش انتخاب شده ی پایتون"
 
@@ -946,7 +946,7 @@ msgstr "فعّال سازی نگارش انتخاب شده ی پایتون"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonAdd..Caption
 #. FConfiguration..actlPythonVersions..actPVAdd..Caption
 #: dlgPythonVersions.dfm:114 frmEditor.dfm:1243 frmPyIDEMain.dfm:951
-#: Utils/UConfiguration.dfm:246 Utils/UConfiguration.dfm:5971
+#: Utils/UConfiguration.dfm:246 Utils/UConfiguration.dfm:5981
 msgid "Add"
 msgstr "افزودن"
 
@@ -954,7 +954,7 @@ msgstr "افزودن"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonAdd..Hint
 #. FConfiguration..actlPythonVersions..actPVAdd..Hint
 #: dlgPythonVersions.dfm:116 Utils/UConfiguration.dfm:244
-#: Utils/UConfiguration.dfm:5973
+#: Utils/UConfiguration.dfm:5983
 msgid "Add a new Python version"
 msgstr "افزودن یک نگارش جدید پایتون"
 
@@ -964,7 +964,7 @@ msgstr "افزودن یک نگارش جدید پایتون"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonRemove..Caption
 #. FConfiguration..actlPythonVersions..actPVRemove..Caption
 #: dlgPythonVersions.dfm:122 frmEditor.dfm:1270 frmPyIDEMain.dfm:978
-#: Utils/UConfiguration.dfm:258 Utils/UConfiguration.dfm:5978
+#: Utils/UConfiguration.dfm:258 Utils/UConfiguration.dfm:5988
 msgid "Remove"
 msgstr "حذف"
 
@@ -972,46 +972,46 @@ msgstr "حذف"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonRemove..Hint
 #. FConfiguration..actlPythonVersions..actPVRemove..Hint
 #: dlgPythonVersions.dfm:124 Utils/UConfiguration.dfm:256
-#: Utils/UConfiguration.dfm:5980
+#: Utils/UConfiguration.dfm:5990
 msgid "Remove selected Python version"
 msgstr "حذف نگارش انتخاب شده ی پایتون"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVTest..Caption
 #. FConfiguration..actlPythonVersions..actPVTest..Caption
-#: dlgPythonVersions.dfm:130 Utils/UConfiguration.dfm:5985
+#: dlgPythonVersions.dfm:130 Utils/UConfiguration.dfm:5995
 msgid "Test"
 msgstr "آزمون"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVTest..Hint
 #. FConfiguration..actlPythonVersions..actPVTest..Hint
-#: dlgPythonVersions.dfm:132 Utils/UConfiguration.dfm:5987
+#: dlgPythonVersions.dfm:132 Utils/UConfiguration.dfm:5997
 msgid "Test selected Python version"
 msgstr "امتحان کردن نگارش انتخاب شده ی پایتون"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVShow..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay..Caption
 #. FConfiguration..actlPythonVersions..actPVShow..Caption
-#: dlgPythonVersions.dfm:138 Utils/UConfiguration.dfm:2955
-#: Utils/UConfiguration.dfm:5992
+#: dlgPythonVersions.dfm:138 Utils/UConfiguration.dfm:2965
+#: Utils/UConfiguration.dfm:6002
 msgid "Show"
 msgstr "نمایش"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVShow..Hint
 #. FConfiguration..actlPythonVersions..actPVShow..Hint
-#: dlgPythonVersions.dfm:140 Utils/UConfiguration.dfm:5994
+#: dlgPythonVersions.dfm:140 Utils/UConfiguration.dfm:6004
 msgid "Show selected Python version in Explorer"
 msgstr "نمایش محل نگارش انتخاب شده ی پایتون در Explorer"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVCommandShell..Caption
 #. FConfiguration..actlPythonVersions..actPVCommandShell..Caption
-#: dlgPythonVersions.dfm:146 Utils/UConfiguration.dfm:5999
+#: dlgPythonVersions.dfm:146 Utils/UConfiguration.dfm:6009
 msgid "Shell"
 msgstr "پوسته"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVCommandShell..Hint
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsConsole..Hint
 #. FConfiguration..actlPythonVersions..actPVCommandShell..Hint
-#: dlgPythonVersions.dfm:148 frmPyIDEMain.dfm:1073 Utils/UConfiguration.dfm:6001
+#: dlgPythonVersions.dfm:148 frmPyIDEMain.dfm:1073 Utils/UConfiguration.dfm:6011
 msgid "Open command prompt for the selected Python version"
 msgstr "باز کردن رابط دستور خط برای نگارش انتخاب شده ی پایتون"
 
@@ -1027,26 +1027,26 @@ msgstr "باز کردن رابط دستور خط برای نگارش انتخا�
 #. Programmer's name for it: SDlgHelpHelp
 #: dlgPythonVersions.dfm:154 dmCommands.dfm:2410 dmCommands.dfm:2421
 #: frmFindResults.dfm:345 frmFunctionList.dfm:289 frmRegExpTester.dfm:182
-#: frmToDo.dfm:235 Utils/UConfiguration.dfm:158 Utils/UConfiguration.dfm:6006
+#: frmToDo.dfm:235 Utils/UConfiguration.dfm:158 Utils/UConfiguration.dfm:6016
 #: StringResources.pas:152
 msgid "Help"
 msgstr "کمک"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVHelp..Hint
 #. FConfiguration..actlPythonVersions..actPVHelp..Hint
-#: dlgPythonVersions.dfm:156 Utils/UConfiguration.dfm:6008
+#: dlgPythonVersions.dfm:156 Utils/UConfiguration.dfm:6018
 msgid "Show Help"
 msgstr "نمایش کمک"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVRename..Caption
 #. FConfiguration..actlPythonVersions..actPVRename..Caption
-#: dlgPythonVersions.dfm:162 Utils/UConfiguration.dfm:6013
+#: dlgPythonVersions.dfm:162 Utils/UConfiguration.dfm:6023
 msgid "Rename"
 msgstr "تغییر نام"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVRename..Hint
 #. FConfiguration..actlPythonVersions..actPVRename..Hint
-#: dlgPythonVersions.dfm:164 Utils/UConfiguration.dfm:6015
+#: dlgPythonVersions.dfm:164 Utils/UConfiguration.dfm:6025
 msgid "Rename selected Python version"
 msgstr "تغییر نام نگارش انتخاب شده ی پایتون"
 
@@ -1169,7 +1169,7 @@ msgstr "بیرونی(Wx)"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..RGEngineTypes....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..Caption
 #: dlgRunConfiguration.dfm:330 Utils/UConfiguration.dfm:275
-#: Utils/UConfiguration.dfm:5551
+#: Utils/UConfiguration.dfm:5561
 msgid "SSH"
 msgstr "پوسته ی ایمن"
 
@@ -1189,7 +1189,7 @@ msgstr "تعیین ویژگی های اجرا با مفسر خارجی"
 #. Programmer's name for it: SYNS_AttrOutput
 #. Programmer's name for it: SYNS_FriendlyAttrOutput
 #: dlgRunConfiguration.dfm:355 frmCommandOutput.dfm:5
-#: Utils/UConfiguration.dfm:2429 SynHighlighterPython.pas:1567
+#: Utils/UConfiguration.dfm:2439 SynHighlighterPython.pas:1567
 #: SynHighlighterPython.pas:1568
 msgid "Output"
 msgstr "برون داد"
@@ -1211,19 +1211,19 @@ msgstr "ذخیره ی برون داد"
 
 #. StyleSelectorForm..Caption
 #. PyIDEMainForm..actlStandard..actSelectStyle..Hint
-#: dlgStyleSelector.dfm:5 frmPyIDEMain.dfm:3532
+#: dlgStyleSelector.dfm:5 frmPyIDEMain.dfm:3541
 msgid "Select Style"
 msgstr "انتخاب سبک"
 
 #. StyleSelectorForm..Label1..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..Label44..Caption
-#: dlgStyleSelector.dfm:1868 Utils/UConfiguration.dfm:3684
+#: dlgStyleSelector.dfm:1868 Utils/UConfiguration.dfm:3694
 msgid "Available Styles"
 msgstr "سبک های در دسترس"
 
 #. StyleSelectorForm..Label2..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..Label43..Caption
-#: dlgStyleSelector.dfm:1875 Utils/UConfiguration.dfm:3677
+#: dlgStyleSelector.dfm:1875 Utils/UConfiguration.dfm:3687
 msgid "Preview"
 msgstr "پیش نمایش"
 
@@ -1295,7 +1295,7 @@ msgstr "ستون لبه:"
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label31..Caption
 #: dlgSynEditOptions.dfm:111 dlgSynPageSetup.dfm:1523
-#: Utils/UConfiguration.dfm:442 Utils/UConfiguration.dfm:4795
+#: Utils/UConfiguration.dfm:442 Utils/UConfiguration.dfm:4805
 msgid "Gutter"
 msgstr "کناره"
 
@@ -1374,7 +1374,7 @@ msgstr "گرادیان حاشیه"
 #: Main/UObjectInspector.dfm:113 SequenceDiagram/USequenceForm.dfm:2611
 #: Structogram/UStructogram.dfm:1902 Utils/UConfiguration.dfm:556
 #: Utils/UConfiguration.dfm:733 Utils/UConfiguration.dfm:1499
-#: Utils/UConfiguration.dfm:6216 Utils/UConfiguration.dfm:6217
+#: Utils/UConfiguration.dfm:6226 Utils/UConfiguration.dfm:6227
 msgid "Font"
 msgstr "رسم الخط"
 
@@ -1836,13 +1836,13 @@ msgstr "فشردن کلید"
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label14..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PColorTheme..SpTBXLabel1..Caption
 #: dlgSynEditOptions.dfm:1010 dlgSynEditOptions.dfm:1118
-#: Utils/UConfiguration.dfm:1641 Utils/UConfiguration.dfm:1805
+#: Utils/UConfiguration.dfm:1651 Utils/UConfiguration.dfm:1815
 msgid "Code Sample"
 msgstr "نمونه کد"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..ColorThemes..SpTBXLabel2..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PColorTheme..SpTBXLabel2..Caption
-#: dlgSynEditOptions.dfm:1017 Utils/UConfiguration.dfm:1812
+#: dlgSynEditOptions.dfm:1017 Utils/UConfiguration.dfm:1822
 msgid "Available Themes"
 msgstr "زمینه های در دسترس"
 
@@ -1853,31 +1853,31 @@ msgstr "اعمال زمینه"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label11..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label11..Caption
-#: dlgSynEditOptions.dfm:1097 Utils/UConfiguration.dfm:1648
+#: dlgSynEditOptions.dfm:1097 Utils/UConfiguration.dfm:1658
 msgid "&Element:"
 msgstr "عنصر:"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label12..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label12..Caption
-#: dlgSynEditOptions.dfm:1104 Utils/UConfiguration.dfm:1634
+#: dlgSynEditOptions.dfm:1104 Utils/UConfiguration.dfm:1644
 msgid "&Foreground Color:"
 msgstr "رنگ پیش زمینه:"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label13..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label13..Caption
-#: dlgSynEditOptions.dfm:1111 Utils/UConfiguration.dfm:1627
+#: dlgSynEditOptions.dfm:1111 Utils/UConfiguration.dfm:1637
 msgid "B&ackground Color:"
 msgstr "رنگ پس زمینه:"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label15..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label15..Caption
-#: dlgSynEditOptions.dfm:1125 Utils/UConfiguration.dfm:1655
+#: dlgSynEditOptions.dfm:1125 Utils/UConfiguration.dfm:1665
 msgid "Editor Syntax Language"
 msgstr "دستور زبان محیط ویرایشگر"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..Caption
-#: dlgSynEditOptions.dfm:1132 Utils/UConfiguration.dfm:1672
+#: dlgSynEditOptions.dfm:1132 Utils/UConfiguration.dfm:1682
 #, fuzzy
 #| msgid " Text attributes "
 msgid "Text attributes"
@@ -1885,25 +1885,25 @@ msgstr " ویژگی های متن "
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementBold..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementBold..Caption
-#: dlgSynEditOptions.dfm:1142 Utils/UConfiguration.dfm:1682
+#: dlgSynEditOptions.dfm:1142 Utils/UConfiguration.dfm:1692
 msgid "&Bold"
 msgstr "ضخیم"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementItalic..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementItalic..Caption
-#: dlgSynEditOptions.dfm:1152 Utils/UConfiguration.dfm:1692
+#: dlgSynEditOptions.dfm:1152 Utils/UConfiguration.dfm:1702
 msgid "&Italic"
 msgstr "کج"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementUnderline..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementUnderline..Caption
-#: dlgSynEditOptions.dfm:1163 Utils/UConfiguration.dfm:1703
+#: dlgSynEditOptions.dfm:1163 Utils/UConfiguration.dfm:1713
 msgid "&Underline"
 msgstr "زیر خط دار"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementStrikeout..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementStrikeout..Caption
-#: dlgSynEditOptions.dfm:1174 Utils/UConfiguration.dfm:1714
+#: dlgSynEditOptions.dfm:1174 Utils/UConfiguration.dfm:1724
 msgid "&Strike Out"
 msgstr "خط زده"
 
@@ -1933,7 +1933,7 @@ msgstr "سربرگ و پانویس"
 
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox1..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..Caption
-#: dlgSynPageSetup.dfm:90 Utils/UConfiguration.dfm:4974
+#: dlgSynPageSetup.dfm:90 Utils/UConfiguration.dfm:4984
 msgid "Header"
 msgstr "سربرگ"
 
@@ -1946,7 +1946,7 @@ msgstr "سربرگ"
 #. Programmer's name for it: SEdCmdLeft
 #: dlgSynPageSetup.dfm:97 dlgSynPageSetup.dfm:254
 #: EssModel/Integrator/View/UDiagramFrame.dfm:3912 Main/UGUIDesigner.dfm:54
-#: Utils/UConfiguration.dfm:4981 Utils/UConfiguration.dfm:5138
+#: Utils/UConfiguration.dfm:4991 Utils/UConfiguration.dfm:5148
 #: StringResources.pas:68 EssModel/Integrator/View/UDiagramFrame.pas:365
 msgid "Left"
 msgstr "چپ"
@@ -1961,7 +1961,7 @@ msgstr "چپ"
 #: dlgSynPageSetup.dfm:104 dlgSynPageSetup.dfm:261
 #: EssModel/Integrator/View/UDiagramFrame.dfm:3918
 #: EssModel/Integrator/View/UDiagramFrame.dfm:3938 Main/UGUIDesigner.dfm:92
-#: Utils/UConfiguration.dfm:4988 Utils/UConfiguration.dfm:5145
+#: Utils/UConfiguration.dfm:4998 Utils/UConfiguration.dfm:5155
 msgid "Center"
 msgstr "وسط"
 
@@ -1974,7 +1974,7 @@ msgstr "وسط"
 #. Programmer's name for it: SEdCmdRight
 #: dlgSynPageSetup.dfm:111 dlgSynPageSetup.dfm:268
 #: EssModel/Integrator/View/UDiagramFrame.dfm:3924 Main/UGUIDesigner.dfm:66
-#: Utils/UConfiguration.dfm:4995 Utils/UConfiguration.dfm:5152
+#: Utils/UConfiguration.dfm:5005 Utils/UConfiguration.dfm:5162
 #: StringResources.pas:87 EssModel/Integrator/View/UDiagramFrame.pas:367
 msgid "Right"
 msgstr "راست"
@@ -1983,8 +1983,8 @@ msgstr "راست"
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..Caption
-#: dlgSynPageSetup.dfm:118 dlgSynPageSetup.dfm:275 Utils/UConfiguration.dfm:5002
-#: Utils/UConfiguration.dfm:5159
+#: dlgSynPageSetup.dfm:118 dlgSynPageSetup.dfm:275 Utils/UConfiguration.dfm:5012
+#: Utils/UConfiguration.dfm:5169
 msgid "Appearance"
 msgstr "ظاهر"
 
@@ -1992,8 +1992,8 @@ msgstr "ظاهر"
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..FooterLineColorBtn..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..HeaderLineColorBtn..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..FooterLineColorBtn..Caption
-#: dlgSynPageSetup.dfm:139 dlgSynPageSetup.dfm:296 Utils/UConfiguration.dfm:5023
-#: Utils/UConfiguration.dfm:5180
+#: dlgSynPageSetup.dfm:139 dlgSynPageSetup.dfm:296 Utils/UConfiguration.dfm:5033
+#: Utils/UConfiguration.dfm:5190
 msgid "Line color"
 msgstr "رنگ خط حاضر"
 
@@ -2001,14 +2001,14 @@ msgstr "رنگ خط حاضر"
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..FooterShadowColorBtn..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..HeaderShadowColorBtn..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..FooterShadowColorBtn..Caption
-#: dlgSynPageSetup.dfm:148 dlgSynPageSetup.dfm:305 Utils/UConfiguration.dfm:5032
-#: Utils/UConfiguration.dfm:5189
+#: dlgSynPageSetup.dfm:148 dlgSynPageSetup.dfm:305 Utils/UConfiguration.dfm:5042
+#: Utils/UConfiguration.dfm:5199
 msgid "Shadow color"
 msgstr "رنگ سایه"
 
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox1..GroupBox2..CBHeaderLine..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..CBHeaderLine..Caption
-#: dlgSynPageSetup.dfm:157 Utils/UConfiguration.dfm:5041
+#: dlgSynPageSetup.dfm:157 Utils/UConfiguration.dfm:5051
 msgid "Line under"
 msgstr "خط زیرین"
 
@@ -2016,8 +2016,8 @@ msgstr "خط زیرین"
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..CBFooterBox..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..CBHeaderBox..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..CBFooterBox..Caption
-#: dlgSynPageSetup.dfm:165 dlgSynPageSetup.dfm:322 Utils/UConfiguration.dfm:5049
-#: Utils/UConfiguration.dfm:5206
+#: dlgSynPageSetup.dfm:165 dlgSynPageSetup.dfm:322 Utils/UConfiguration.dfm:5059
+#: Utils/UConfiguration.dfm:5216
 msgid "Box"
 msgstr "کادر"
 
@@ -2027,9 +2027,9 @@ msgstr "کادر"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LShadow..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..CBHeaderShadow..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..CBFooterShadow..Caption
-#: dlgSynPageSetup.dfm:173 dlgSynPageSetup.dfm:330 Utils/UConfiguration.dfm:2492
-#: Utils/UConfiguration.dfm:2801 Utils/UConfiguration.dfm:5057
-#: Utils/UConfiguration.dfm:5214
+#: dlgSynPageSetup.dfm:173 dlgSynPageSetup.dfm:330 Utils/UConfiguration.dfm:2502
+#: Utils/UConfiguration.dfm:2811 Utils/UConfiguration.dfm:5067
+#: Utils/UConfiguration.dfm:5224
 msgid "Shadow"
 msgstr "سایه"
 
@@ -2037,128 +2037,128 @@ msgstr "سایه"
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..CBFooterMirror..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..CBHeaderMirror..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..CBFooterMirror..Caption
-#: dlgSynPageSetup.dfm:182 dlgSynPageSetup.dfm:339 Utils/UConfiguration.dfm:5066
-#: Utils/UConfiguration.dfm:5223
+#: dlgSynPageSetup.dfm:182 dlgSynPageSetup.dfm:339 Utils/UConfiguration.dfm:5076
+#: Utils/UConfiguration.dfm:5233
 msgid "Mirror position"
 msgstr "آیینه کردن موقعیّت"
 
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..Caption
-#: dlgSynPageSetup.dfm:247 Utils/UConfiguration.dfm:5131
+#: dlgSynPageSetup.dfm:247 Utils/UConfiguration.dfm:5141
 msgid "Footer"
 msgstr "پانویس"
 
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..CBFooterLine..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..CBFooterLine..Caption
-#: dlgSynPageSetup.dfm:314 Utils/UConfiguration.dfm:5198
+#: dlgSynPageSetup.dfm:314 Utils/UConfiguration.dfm:5208
 msgid "Line above"
 msgstr "خط بالا"
 
 #. PageSetupDlg..TabControl..tbMargins..Label1..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label35..Caption
-#: dlgSynPageSetup.dfm:1453 Utils/UConfiguration.dfm:4823
+#: dlgSynPageSetup.dfm:1453 Utils/UConfiguration.dfm:4833
 msgid "Left:"
 msgstr "چپ:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label2..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label34..Caption
-#: dlgSynPageSetup.dfm:1460 Utils/UConfiguration.dfm:4816
+#: dlgSynPageSetup.dfm:1460 Utils/UConfiguration.dfm:4826
 msgid "Right:"
 msgstr "راست:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label3..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label33..Caption
-#: dlgSynPageSetup.dfm:1467 Utils/UConfiguration.dfm:4809
+#: dlgSynPageSetup.dfm:1467 Utils/UConfiguration.dfm:4819
 msgid "Top:"
 msgstr "بالا:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label4..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label32..Caption
-#: dlgSynPageSetup.dfm:1474 Utils/UConfiguration.dfm:4802
+#: dlgSynPageSetup.dfm:1474 Utils/UConfiguration.dfm:4812
 msgid "Bottom:"
 msgstr "کف:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label5..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label36..Caption
-#: dlgSynPageSetup.dfm:1481 Utils/UConfiguration.dfm:4830
+#: dlgSynPageSetup.dfm:1481 Utils/UConfiguration.dfm:4840
 msgid "Units:"
 msgstr "واحدها:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label6..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label30..Caption
-#: dlgSynPageSetup.dfm:1488 Utils/UConfiguration.dfm:4788
+#: dlgSynPageSetup.dfm:1488 Utils/UConfiguration.dfm:4798
 msgid "Header:"
 msgstr "سربرگ:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label7..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label29..Caption
-#: dlgSynPageSetup.dfm:1495 Utils/UConfiguration.dfm:4781
+#: dlgSynPageSetup.dfm:1495 Utils/UConfiguration.dfm:4791
 msgid "Footer:"
 msgstr "پانویس:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label8..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label28..Caption
-#: dlgSynPageSetup.dfm:1502 Utils/UConfiguration.dfm:4774
+#: dlgSynPageSetup.dfm:1502 Utils/UConfiguration.dfm:4784
 msgid "Internal Margin:"
 msgstr "حاشیه ی داخلی:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label9..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label27..Caption
-#: dlgSynPageSetup.dfm:1509 Utils/UConfiguration.dfm:4767
+#: dlgSynPageSetup.dfm:1509 Utils/UConfiguration.dfm:4777
 msgid "Left Text Indent:"
 msgstr "تو گذاری سمت چپ متن:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label10..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label26..Caption
-#: dlgSynPageSetup.dfm:1516 Utils/UConfiguration.dfm:4760
+#: dlgSynPageSetup.dfm:1516 Utils/UConfiguration.dfm:4770
 msgid "Right Text Indent:"
 msgstr "توگذاری سمت راست متن:"
 
 #. PageSetupDlg..TabControl..tbMargins..CBMirrorMargins..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBMirrorMargins..Caption
-#: dlgSynPageSetup.dfm:1530 Utils/UConfiguration.dfm:4962
+#: dlgSynPageSetup.dfm:1530 Utils/UConfiguration.dfm:4972
 msgid "Mirror margins"
 msgstr "آیینه کردن لبه ها"
 
 #. PageSetupDlg..TabControl..tbMargins..CBLineNumbers..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBLineNumbers..Caption
-#: dlgSynPageSetup.dfm:1538 Utils/UConfiguration.dfm:4954
+#: dlgSynPageSetup.dfm:1538 Utils/UConfiguration.dfm:4964
 msgid "Line numbers"
 msgstr "شماره خط ها"
 
 #. PageSetupDlg..TabControl..tbMargins..CBLineNumbersInMargin..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBLineNumbersInMargin..Caption
-#: dlgSynPageSetup.dfm:1546 Utils/UConfiguration.dfm:4946
+#: dlgSynPageSetup.dfm:1546 Utils/UConfiguration.dfm:4956
 msgid "Print line numbers in margin"
 msgstr "چاپ شماره خط ها در لبه"
 
 #. PageSetupDlg..TabControl..tbMargins..CBHighlight..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBHighlight..Caption
-#: dlgSynPageSetup.dfm:1554 Utils/UConfiguration.dfm:4938
+#: dlgSynPageSetup.dfm:1554 Utils/UConfiguration.dfm:4948
 msgid "Syntax print"
 msgstr "چاپ دستور"
 
 #. PageSetupDlg..TabControl..tbMargins..CBColors..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBColors..Caption
-#: dlgSynPageSetup.dfm:1562 Utils/UConfiguration.dfm:4930
+#: dlgSynPageSetup.dfm:1562 Utils/UConfiguration.dfm:4940
 msgid "Use colors"
 msgstr "استفاده از رنگ ها"
 
 #. PageSetupDlg..TabControl..tbMargins..CBWrap..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBWrap..Caption
-#: dlgSynPageSetup.dfm:1570 Utils/UConfiguration.dfm:4922
+#: dlgSynPageSetup.dfm:1570 Utils/UConfiguration.dfm:4932
 msgid "Wrap lines"
 msgstr "جمع کردن خط ها در محدوده ی قابل نمایش"
 
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
-#: dlgSynPageSetup.dfm:1655 Utils/UConfiguration.dfm:4844
+#: dlgSynPageSetup.dfm:1655 Utils/UConfiguration.dfm:4854
 msgid "Inches"
 msgstr "اینچ"
 
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
-#: dlgSynPageSetup.dfm:1656 Utils/UConfiguration.dfm:4845
+#: dlgSynPageSetup.dfm:1656 Utils/UConfiguration.dfm:4855
 msgid "(1/1000) Inches"
 msgstr "اینج (1/1000)"
 
@@ -2167,7 +2167,7 @@ msgstr "اینج (1/1000)"
 #. FConfiguration..ActionListPageSetup..PageNumCmd..Caption
 #. FConfiguration..ActionListPageSetup..PageNumCmd..Hint
 #: dlgSynPageSetup.dfm:1698 dlgSynPageSetup.dfm:1699
-#: Utils/UConfiguration.dfm:6181 Utils/UConfiguration.dfm:6182
+#: Utils/UConfiguration.dfm:6191 Utils/UConfiguration.dfm:6192
 msgid "Page number"
 msgstr "شماره ی صفحه"
 
@@ -2176,7 +2176,7 @@ msgstr "شماره ی صفحه"
 #. FConfiguration..ActionListPageSetup..PagesCmd..Caption
 #. FConfiguration..ActionListPageSetup..PagesCmd..Hint
 #: dlgSynPageSetup.dfm:1705 dlgSynPageSetup.dfm:1706
-#: Utils/UConfiguration.dfm:6188 Utils/UConfiguration.dfm:6189
+#: Utils/UConfiguration.dfm:6198 Utils/UConfiguration.dfm:6199
 msgid "Num. pages"
 msgstr "شمار صفحات"
 
@@ -2185,7 +2185,7 @@ msgstr "شمار صفحات"
 #. FConfiguration..ActionListPageSetup..TimeCmd..Caption
 #. FConfiguration..ActionListPageSetup..TimeCmd..Hint
 #: dlgSynPageSetup.dfm:1712 dlgSynPageSetup.dfm:1713
-#: Utils/UConfiguration.dfm:6195 Utils/UConfiguration.dfm:6196
+#: Utils/UConfiguration.dfm:6205 Utils/UConfiguration.dfm:6206
 msgid "Time"
 msgstr "زمان"
 
@@ -2196,8 +2196,8 @@ msgstr "زمان"
 #. FConfiguration..ActionListPageSetup..DateCmd..Caption
 #. FConfiguration..ActionListPageSetup..DateCmd..Hint
 #: dlgSynPageSetup.dfm:1719 dlgSynPageSetup.dfm:1720 Main/UGit.dfm:31
-#: Main/USubversion.dfm:31 Utils/UConfiguration.dfm:6202
-#: Utils/UConfiguration.dfm:6203 Main/UGit.pas:41 Main/USubversion.pas:49
+#: Main/USubversion.dfm:31 Utils/UConfiguration.dfm:6212
+#: Utils/UConfiguration.dfm:6213 Main/UGit.pas:41 Main/USubversion.pas:49
 msgid "Date"
 msgstr "تاریخ"
 
@@ -2206,7 +2206,7 @@ msgstr "تاریخ"
 #. FConfiguration..ActionListPageSetup..TitleCmd..Caption
 #. FConfiguration..ActionListPageSetup..TitleCmd..Hint
 #: dlgSynPageSetup.dfm:1726 dlgSynPageSetup.dfm:1727
-#: Utils/UConfiguration.dfm:6209 Utils/UConfiguration.dfm:6210
+#: Utils/UConfiguration.dfm:6219 Utils/UConfiguration.dfm:6220
 msgid "Title"
 msgstr "عنوان"
 
@@ -2215,7 +2215,7 @@ msgstr "عنوان"
 #. FConfiguration..ActionListPageSetup..BoldCmd..Caption
 #. FConfiguration..ActionListPageSetup..BoldCmd..Hint
 #: dlgSynPageSetup.dfm:1740 dlgSynPageSetup.dfm:1741
-#: Utils/UConfiguration.dfm:6223 Utils/UConfiguration.dfm:6224
+#: Utils/UConfiguration.dfm:6233 Utils/UConfiguration.dfm:6234
 msgid "Bold"
 msgstr "ضخیم"
 
@@ -2224,7 +2224,7 @@ msgstr "ضخیم"
 #. FConfiguration..ActionListPageSetup..ItalicCmd..Caption
 #. FConfiguration..ActionListPageSetup..ItalicCmd..Hint
 #: dlgSynPageSetup.dfm:1747 dlgSynPageSetup.dfm:1748
-#: Utils/UConfiguration.dfm:6230 Utils/UConfiguration.dfm:6231
+#: Utils/UConfiguration.dfm:6240 Utils/UConfiguration.dfm:6241
 msgid "Italic"
 msgstr "کج"
 
@@ -2233,7 +2233,7 @@ msgstr "کج"
 #. FConfiguration..ActionListPageSetup..UnderlineCmd..Caption
 #. FConfiguration..ActionListPageSetup..UnderlineCmd..Hint
 #: dlgSynPageSetup.dfm:1754 dlgSynPageSetup.dfm:1755
-#: Utils/UConfiguration.dfm:6237 Utils/UConfiguration.dfm:6238
+#: Utils/UConfiguration.dfm:6247 Utils/UConfiguration.dfm:6248
 msgid "Underline"
 msgstr "زیر خط دار"
 
@@ -2382,7 +2382,7 @@ msgstr "چاپ|چاپ سند"
 #: SequenceDiagram/USequenceForm.dfm:2542 Setup/UMemo.dfm:36
 #: Setup/USetup.dfm:121 Structogram/UStructogram.dfm:71
 #: TextDiff/UTextDiff.dfm:34 TextDiff/UTextDiff.dfm:1332
-#: Utils/UConfiguration.dfm:2678
+#: Utils/UConfiguration.dfm:2688
 msgid "Close"
 msgstr "بستن"
 
@@ -2436,7 +2436,7 @@ msgstr "درج"
 
 #. fmToDoOptions..pnlBG..gbxTokens..btnApply..Caption
 #. FClassEditor..ActionList..ActionApply..Caption
-#: dlgToDoOptions.dfm:105 Main/UClassEditor.dfm:719
+#: dlgToDoOptions.dfm:105 Main/UClassEditor.dfm:731
 msgid "&Apply"
 msgstr "اعمال"
 
@@ -2792,7 +2792,7 @@ msgstr "ذخیره به عنوان| ذخیره ی فایل فعّال با نا�
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBClose..Caption
 #. FClassEditor..ActionList..ActionClose..Caption
 #. Programmer's name for it: SDlgClose
-#: dmCommands.dfm:2098 frmEditor.dfm:972 Main/UClassEditor.dfm:714
+#: dmCommands.dfm:2098 frmEditor.dfm:972 Main/UClassEditor.dfm:726
 #: StringResources.pas:159
 msgid "&Close"
 msgstr "بستن"
@@ -3632,7 +3632,7 @@ msgstr "نمایش/ پنهان کردن جمع کننده ی کد"
 
 #. CommandsDataModule..actlMain..actFoldAll..Caption
 #. CommandsDataModule..actlMain..actUnfoldAll..Caption
-#: dmCommands.dfm:2843 dmCommands.dfm:2851 Utils/UConfiguration.pas:2452
+#: dmCommands.dfm:2843 dmCommands.dfm:2851 Utils/UConfiguration.pas:2456
 msgid "All"
 msgstr "همه"
 
@@ -4146,7 +4146,7 @@ msgstr "جفت کردن کروشه"
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBClassEdit..Hint
 #. PyIDEMainForm..actlStandard..actUMLEditClass..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupClassEdit..Caption
-#: frmEditor.dfm:1028 frmPyIDEMain.dfm:3577
+#: frmEditor.dfm:1028 frmPyIDEMain.dfm:3586
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4282
 #: EssModel/Integrator/View/UDiagramFrame.pas:295
 msgid "Edit class"
@@ -4264,21 +4264,25 @@ msgstr "شماره خط ها"
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBZoomPlus..Hint
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBZoomIn..Hint
 #. FUMLForm..PInteractive..TBInteractiveToolbar..TBSynEditZoomPlus..Hint
+#. FGUIDesigner..PopupMenu..MIZoomIn..Caption
 #. FSequenceForm..PToolbar..TBSequence..TBZoomIn..Hint
 #. FStructogram..PanelLeft..ToolBarPanel..TBZoomIn..Hint
 #: frmEditor.dfm:1177 EssModel/System/UUMLForm.dfm:121
-#: EssModel/System/UUMLForm.dfm:215 SequenceDiagram/USequenceForm.dfm:71
-#: Structogram/UStructogram.dfm:186
+#: EssModel/System/UUMLForm.dfm:215 Main/UGUIDesigner.dfm:153
+#: SequenceDiagram/USequenceForm.dfm:71 Structogram/UStructogram.dfm:186
 msgid "Zoom in"
 msgstr "بزرگنمایی"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBZoomMinus..Hint
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBZoomOut..Hint
 #. FUMLForm..PInteractive..TBInteractiveToolbar..TBSynEditZoomMinus..Hint
+#. FGUIDesigner..PopupMenu..MIZoomOut..Caption
+#. FGUIForm..Caption
 #. FSequenceForm..PToolbar..TBSequence..TBZoomOut..Hint
 #. FStructogram..PanelLeft..ToolBarPanel..TBZoomOut..Hint
 #: frmEditor.dfm:1185 EssModel/System/UUMLForm.dfm:114
-#: EssModel/System/UUMLForm.dfm:208 SequenceDiagram/USequenceForm.dfm:62
+#: EssModel/System/UUMLForm.dfm:208 Main/UGUIDesigner.dfm:158
+#: Main/UGUIForm.dfm:5 SequenceDiagram/USequenceForm.dfm:62
 #: Structogram/UStructogram.dfm:176
 msgid "Zoom out"
 msgstr "کوچک نمایی"
@@ -4293,7 +4297,7 @@ msgstr "تایید اعتبار"
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupOpenClass..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupOpenClass..Caption
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBClassOpen..Hint
-#: frmEditor.dfm:1216 frmPyIDEMain.dfm:3570
+#: frmEditor.dfm:1216 frmPyIDEMain.dfm:3579
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4076
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4311
 #: EssModel/System/UUMLForm.dfm:86
@@ -4327,7 +4331,7 @@ msgstr "کپی کردن نام مسیر"
 #: frmEditor.dfm:1231 frmPyIDEMain.dfm:932
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4168
 #: SequenceDiagram/USequenceForm.dfm:2616 Structogram/UStructogram.dfm:1907
-#: Utils/UConfiguration.dfm:6 frmPyIDEMain.pas:2334
+#: Utils/UConfiguration.dfm:6 frmPyIDEMain.pas:2335
 #: EssModel/Integrator/View/UDiagramFrame.pas:390
 msgid "Configuration"
 msgstr "پیکربندی"
@@ -4378,7 +4382,7 @@ msgstr "گستردن"
 
 #. EditorForm..pmnuEditor..mnMaximizeEditor2..Caption
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnMaximizeEditor..Caption
-#: frmEditor.dfm:1395 frmPyIDEMain.dfm:598 frmPyIDEMain.pas:2313
+#: frmEditor.dfm:1395 frmPyIDEMain.dfm:598 frmPyIDEMain.pas:2314
 #, fuzzy
 #| msgid "&Maximize Editor"
 msgid "&Maximize/Restore Editor"
@@ -4708,7 +4712,7 @@ msgstr "فهرست تابع"
 
 #. FunctionListWindow..pnHolder..lvProcs......Caption
 #. FClassEditor..PageControl..TSMethods..RGMethodKind....Items.Strings
-#: frmFunctionList.dfm:75 Main/UClassEditor.dfm:420 Main/UClassEditor.pas:294
+#: frmFunctionList.dfm:75 Main/UClassEditor.dfm:428 Main/UClassEditor.pas:294
 #: Main/UClassEditor.pas:295
 msgid "Function"
 msgstr "تابع"
@@ -4795,7 +4799,7 @@ msgstr "پیام"
 
 #. MessagesWindow..BGPanel..FGPanel..MessagesView......Text
 #. Show/Hide FHint
-#: frmMessages.dfm:102 Formdesigner/ELDsgnr.pas:1356
+#: frmMessages.dfm:102 Formdesigner/ELDsgnr.pas:1369
 msgid "Position"
 msgstr "موقعیّت"
 
@@ -5011,7 +5015,7 @@ msgstr "نمایش ویژگی های فایل"
 #. PyIDEMainForm..TBXDockTop..MainMenu..RunMenu..Caption
 #. PyIDEMainForm..actlStandard..actRun..Caption
 #. UnitTestWindow..DialogActions..actRun..Caption
-#: frmProjectExplorer.dfm:324 frmPyIDEMain.dfm:799 frmPyIDEMain.dfm:2770
+#: frmProjectExplorer.dfm:324 frmPyIDEMain.dfm:799 frmPyIDEMain.dfm:2779
 #: frmUnitTests.dfm:297
 msgid "&Run"
 msgstr "اجرا"
@@ -5023,7 +5027,7 @@ msgstr "اجرای تنظیمات منتخب"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectExternalRun..Caption
 #. PyIDEMainForm..actlStandard..actExternalRun..Caption
-#: frmProjectExplorer.dfm:333 frmPyIDEMain.dfm:2852
+#: frmProjectExplorer.dfm:333 frmPyIDEMain.dfm:2861
 msgid "E&xternal Run"
 msgstr "اجرا با مفسر خارجی"
 
@@ -5034,7 +5038,7 @@ msgstr "اجرای پیکربندی با استفاده از مفسّر خارج
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectDebug..Caption
 #. PyIDEMainForm..actlStandard..actDebug..Caption
-#: frmProjectExplorer.dfm:342 frmPyIDEMain.dfm:2883
+#: frmProjectExplorer.dfm:342 frmPyIDEMain.dfm:2892
 msgid "&Debug"
 msgstr "اشکال زدا"
 
@@ -5071,8 +5075,8 @@ msgstr "موقعیّت متن"
 
 #. PyIDEMainForm..StatusBar..spiStatusLED..Hint
 #. PyIDEMainForm..StatusBar..spiLspLed..Hint
-#: frmPyIDEMain.dfm:90 frmPyIDEMain.dfm:96 frmPyIDEMain.pas:3430
-#: frmPyIDEMain.pas:3990
+#: frmPyIDEMain.dfm:90 frmPyIDEMain.dfm:96 frmPyIDEMain.pas:3431
+#: frmPyIDEMain.pas:3991
 msgid "Ready"
 msgstr "آماده"
 
@@ -5110,23 +5114,23 @@ msgstr "فایل"
 #. FObjectInspector..PNewDel..BNewDelete..Caption
 #. FSequenceForm..PopupMenuConnection..MINew..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..LSDNew..Caption
-#: frmPyIDEMain.dfm:276 frmPyIDEMain.dfm:3555 Main/UClassEditor.dfm:588
+#: frmPyIDEMain.dfm:276 frmPyIDEMain.dfm:3564 Main/UClassEditor.dfm:600
 #: Main/UObjectInspector.dfm:69 SequenceDiagram/USequenceForm.dfm:2536
-#: Utils/UConfiguration.dfm:2671 frmPyIDEMain.pas:2335
+#: Utils/UConfiguration.dfm:2681 frmPyIDEMain.pas:2336
 #: Main/UObjectInspector.pas:571
 msgid "New"
 msgstr "جدید"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewTkApplication..Caption
 #. PyIDEMainForm..actlStandard..actFileNewTkApp..Caption
-#: frmPyIDEMain.dfm:284 frmPyIDEMain.dfm:3650
+#: frmPyIDEMain.dfm:284 frmPyIDEMain.dfm:3659
 #, fuzzy
 msgid "Tk/Tkk Application"
 msgstr "برنامه جدید Tk/TTK"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewTkApplication..Hint
 #. PyIDEMainForm..actlStandard..actFileNewTkApp..Hint
-#: frmPyIDEMain.dfm:285 frmPyIDEMain.dfm:3651
+#: frmPyIDEMain.dfm:285 frmPyIDEMain.dfm:3660
 #, fuzzy
 msgid "New Tk/TKK Application"
 msgstr "برنامه جدید Tk/TTK"
@@ -5134,7 +5138,7 @@ msgstr "برنامه جدید Tk/TTK"
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewQtApplication..Caption
 #. PyIDEMainForm..TBXDockTop..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBQtApplication..Caption
 #. PyIDEMainForm..actlStandard..actFileNewQtApp..Caption
-#: frmPyIDEMain.dfm:289 frmPyIDEMain.dfm:2077 frmPyIDEMain.dfm:3656
+#: frmPyIDEMain.dfm:289 frmPyIDEMain.dfm:2077 frmPyIDEMain.dfm:3665
 #, fuzzy
 #| msgid "&Application:"
 msgid "Qt-Application"
@@ -5143,22 +5147,22 @@ msgstr "برنامه:"
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewQtApplication..Hint
 #. PyIDEMainForm..TBXDockTop..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBQtApplication..Hint
 #. PyIDEMainForm..actlStandard..actFileNewQtApp..Hint
-#: frmPyIDEMain.dfm:290 frmPyIDEMain.dfm:2076 frmPyIDEMain.dfm:3657
+#: frmPyIDEMain.dfm:290 frmPyIDEMain.dfm:2076 frmPyIDEMain.dfm:3666
 #, fuzzy
 msgid "New QT Application"
 msgstr "برنامه جدید Tk/TTK"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewClass..Caption
 #. FClassEditor..LClass..Caption
-#: frmPyIDEMain.dfm:296 Main/UClassEditor.dfm:24 Main/UClassEditor.pas:1632
-#: Main/UClassEditor.pas:1633
+#: frmPyIDEMain.dfm:296 Main/UClassEditor.dfm:24 Main/UClassEditor.pas:1631
+#: Main/UClassEditor.pas:1632
 msgid "Class"
 msgstr "کلاس"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewStrutogram..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..Caption
-#: frmPyIDEMain.dfm:300 Utils/UConfiguration.dfm:2416
-#: Utils/UConfiguration.pas:2446
+#: frmPyIDEMain.dfm:300 Utils/UConfiguration.dfm:2426
+#: Utils/UConfiguration.pas:2450
 #, fuzzy
 msgid "Structogram"
 msgstr "استروکتوگرام"
@@ -5167,7 +5171,7 @@ msgstr "استروکتوگرام"
 #. FSequenceForm..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..Caption
 #: frmPyIDEMain.dfm:304 SequenceDiagram/USequenceForm.dfm:5
-#: Utils/UConfiguration.dfm:2658 Utils/UConfiguration.pas:2447
+#: Utils/UConfiguration.dfm:2668 Utils/UConfiguration.pas:2451
 #, fuzzy
 msgid "Sequence diagram"
 msgstr "نمودار دنباله"
@@ -5216,37 +5220,37 @@ msgstr "چیدمان ها"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem47..Caption
 #. PyIDEMainForm..actlStandard..actLayoutSave..Caption
-#: frmPyIDEMain.dfm:575 frmPyIDEMain.dfm:3166
+#: frmPyIDEMain.dfm:575 frmPyIDEMain.dfm:3175
 msgid "Save Layout..."
 msgstr "ذخیره ی چیدمان..."
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem47..Hint
 #. PyIDEMainForm..actlStandard..actLayoutSave..Hint
-#: frmPyIDEMain.dfm:576 frmPyIDEMain.dfm:3168
+#: frmPyIDEMain.dfm:576 frmPyIDEMain.dfm:3177
 msgid "Save Current Layout"
 msgstr "ذخیره ی چیدمان کنونی"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem48..Caption
 #. PyIDEMainForm..actlStandard..actLayoutsDelete..Caption
-#: frmPyIDEMain.dfm:580 frmPyIDEMain.dfm:3173
+#: frmPyIDEMain.dfm:580 frmPyIDEMain.dfm:3182
 msgid "Delete Layouts..."
 msgstr "حذف چیدمان ها..."
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem48..Hint
 #. PyIDEMainForm..actlStandard..actLayoutsDelete..Hint
-#: frmPyIDEMain.dfm:581 frmPyIDEMain.dfm:3175
+#: frmPyIDEMain.dfm:581 frmPyIDEMain.dfm:3184
 msgid "Delete a layout"
 msgstr "حذف چیدمان"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem49..Caption
 #. PyIDEMainForm..actlStandard..actLayoutDebug..Caption
-#: frmPyIDEMain.dfm:585 frmPyIDEMain.dfm:3180
+#: frmPyIDEMain.dfm:585 frmPyIDEMain.dfm:3189
 msgid "Set Debug Layout"
 msgstr "ذخیره ی چیدمان رفع اشکال"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem49..Hint
 #. PyIDEMainForm..actlStandard..actLayoutDebug..Hint
-#: frmPyIDEMain.dfm:586 frmPyIDEMain.dfm:3182
+#: frmPyIDEMain.dfm:586 frmPyIDEMain.dfm:3191
 msgid "Set the current layout as the debug layout"
 msgstr "ذخیره ی چیدمان کنونی به عنوان چیدمان رفع اشکال"
 
@@ -5332,7 +5336,7 @@ msgstr "از متمایز کننده ی دستورها استفاده نکن"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLanguage..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PLanguage..Caption
-#: frmPyIDEMain.dfm:703 Utils/UConfiguration.dfm:3366
+#: frmPyIDEMain.dfm:703 Utils/UConfiguration.dfm:3376
 msgid "Language"
 msgstr "زبان"
 
@@ -5411,7 +5415,7 @@ msgstr "پنجره DOS"
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsBrowser..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..Caption
 #. Programmer's name for it: SWebPreviewTab
-#: frmPyIDEMain.dfm:1079 Utils/UConfiguration.dfm:3286 StringResources.pas:305
+#: frmPyIDEMain.dfm:1079 Utils/UConfiguration.dfm:3296 StringResources.pas:305
 msgid "Browser"
 msgstr "مرورگر"
 
@@ -5423,7 +5427,7 @@ msgstr "پنجره مرورگر را باز می کند"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnTools..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PTools..Caption
-#: frmPyIDEMain.dfm:1086 Utils/UConfiguration.dfm:5623
+#: frmPyIDEMain.dfm:1086 Utils/UConfiguration.dfm:5633
 msgid "Tools"
 msgstr "ابزارها"
 
@@ -5531,7 +5535,7 @@ msgstr "وسط"
 #. PyIDEMainForm..actlStandard..actUMLNewClass..Caption
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupNewClass..Caption
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBClassDefinition..Hint
-#: frmPyIDEMain.dfm:2041 frmPyIDEMain.dfm:3563
+#: frmPyIDEMain.dfm:2041 frmPyIDEMain.dfm:3572
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4071
 #: EssModel/System/UUMLForm.dfm:79
 #: EssModel/Integrator/View/UDiagramFrame.pas:373
@@ -5557,743 +5561,743 @@ msgid "New Tk/TTK application"
 msgstr "برنامه جدید Tk/TTK"
 
 #. PyIDEMainForm..TabControlPopupMenu..mnMaximizeEditor2..Caption
-#: frmPyIDEMain.dfm:2655
+#: frmPyIDEMain.dfm:2664
 #, fuzzy
 #| msgid "&Maximize Editor"
 msgid "&MaximizeRestore Editor"
 msgstr "بیشینه کردن ویراشگر"
 
 #. PyIDEMainForm..TabControlPopupMenu..mnFiles..Caption
-#: frmPyIDEMain.dfm:2661
+#: frmPyIDEMain.dfm:2670
 msgid "&Files"
 msgstr "فایل ها"
 
 #. PyIDEMainForm..TabControlPopupMenu..mnFiles..Hint
-#: frmPyIDEMain.dfm:2662
+#: frmPyIDEMain.dfm:2671
 msgid "Open Files"
 msgstr "گشودن فایل ها"
 
 #. PyIDEMainForm..actlImmutable..actViewNextEditor..Caption
-#: frmPyIDEMain.dfm:2704
+#: frmPyIDEMain.dfm:2713
 msgid "&Next Editor"
 msgstr "ویرایشگر بعدی"
 
 #. PyIDEMainForm..actlImmutable..actViewNextEditor..Hint
-#: frmPyIDEMain.dfm:2706
+#: frmPyIDEMain.dfm:2715
 msgid "Next Editor|Move to the next editor"
 msgstr "ویرایشگر بعدی|رفتن به ویرایشگر بعدی"
 
 #. PyIDEMainForm..actlImmutable..actViewPreviousEditor..Caption
-#: frmPyIDEMain.dfm:2714
+#: frmPyIDEMain.dfm:2723
 msgid "&Previous Editor"
 msgstr "ویرایشگر قبلی"
 
 #. PyIDEMainForm..actlImmutable..actViewPreviousEditor..Hint
-#: frmPyIDEMain.dfm:2716
+#: frmPyIDEMain.dfm:2725
 msgid "Previous editor|Move to the previous editor"
 msgstr "ویرایشگر قبلی|رفتن به ویرایشگر قبلی"
 
 #. PyIDEMainForm..actlStandard..actViewMainMenu..Caption
-#: frmPyIDEMain.dfm:2729
+#: frmPyIDEMain.dfm:2738
 msgid "Main Men&u"
 msgstr "منوی اصلی"
 
 #. PyIDEMainForm..actlStandard..actViewMainMenu..Hint
-#: frmPyIDEMain.dfm:2732
+#: frmPyIDEMain.dfm:2741
 msgid "View/Hide main menu"
 msgstr "نمایش/نهفتن منوی اصلی"
 
 #. PyIDEMainForm..actlStandard..actCallStackWin..Caption
 #. PyIDEMainForm..actlStandard..actNavCallStack..Caption
-#: frmPyIDEMain.dfm:2738 frmPyIDEMain.dfm:3340
+#: frmPyIDEMain.dfm:2747 frmPyIDEMain.dfm:3349
 msgid "&Call Stack"
 msgstr "پشته ی فراخوان"
 
 #. PyIDEMainForm..actlStandard..actCallStackWin..Hint
-#: frmPyIDEMain.dfm:2742
+#: frmPyIDEMain.dfm:2751
 msgid "Show/Hide Call Stack window"
 msgstr "نمایش/نهفتن پنجره ی فراخوان ها"
 
 #. PyIDEMainForm..actlStandard..actVariablesWin..Caption
 #. PyIDEMainForm..actlStandard..actNavVariables..Caption
-#: frmPyIDEMain.dfm:2749 frmPyIDEMain.dfm:3330
+#: frmPyIDEMain.dfm:2758 frmPyIDEMain.dfm:3339
 msgid "&Variables"
 msgstr "متغیّرها"
 
 #. PyIDEMainForm..actlStandard..actVariablesWin..Hint
-#: frmPyIDEMain.dfm:2753
+#: frmPyIDEMain.dfm:2762
 msgid "Show/Hide Variables window"
 msgstr "نمایش/نهفتن پنجره ی متغیّرها"
 
 #. PyIDEMainForm..actlStandard..actSyntaxCheck..Caption
-#: frmPyIDEMain.dfm:2760
+#: frmPyIDEMain.dfm:2769
 msgid "&Syntax Check"
 msgstr "بررسی دستور"
 
 #. PyIDEMainForm..actlStandard..actSyntaxCheck..Hint
-#: frmPyIDEMain.dfm:2763
+#: frmPyIDEMain.dfm:2772
 msgid "Syntax Check|Perform syntax check and load scripts"
 msgstr "بررسی دستور|بررسی دستوری و بارگذاری اسکریپت ها"
 
 #. PyIDEMainForm..actlStandard..actRun..Hint
-#: frmPyIDEMain.dfm:2773
+#: frmPyIDEMain.dfm:2782
 msgid "Run|Run active module"
 msgstr "اجرا|اجرای پیمانه ی فعّال"
 
 #. PyIDEMainForm..actlStandard..actCommandLine..Caption
-#: frmPyIDEMain.dfm:2781
+#: frmPyIDEMain.dfm:2790
 msgid "Command Line &Parameters..."
 msgstr "مؤلّفه(parameter)های محیط خط فرمان..."
 
 #. PyIDEMainForm..actlStandard..actCommandLine..Hint
-#: frmPyIDEMain.dfm:2784
+#: frmPyIDEMain.dfm:2793
 msgid "Set command line parameters"
 msgstr "تعیین مؤلّفه های محیط دستور خط"
 
 #. PyIDEMainForm..actlStandard..actImportModule..Caption
-#: frmPyIDEMain.dfm:2789
+#: frmPyIDEMain.dfm:2798
 #, fuzzy
 msgid "Import &Module"
 msgstr "وارد کردن پیمانه"
 
 #. PyIDEMainForm..actlStandard..actImportModule..Hint
-#: frmPyIDEMain.dfm:2792
+#: frmPyIDEMain.dfm:2801
 msgid "Import module"
 msgstr "وارد کردن پیمانه"
 
 #. PyIDEMainForm..actlStandard..actFileNewModule..Caption
-#: frmPyIDEMain.dfm:2799
+#: frmPyIDEMain.dfm:2808
 msgid "&New Python module"
 msgstr "پیمانه ی جدید پایتون"
 
 #. PyIDEMainForm..actlStandard..actFileNewModule..Hint
-#: frmPyIDEMain.dfm:2802
+#: frmPyIDEMain.dfm:2811
 msgid "New Python module"
 msgstr "پیمانه ی جدید پایتون"
 
 #. PyIDEMainForm..actlStandard..actFileOpen..Caption
-#: frmPyIDEMain.dfm:2810
+#: frmPyIDEMain.dfm:2819
 msgid "&Open..."
 msgstr "گشودن..."
 
 #. PyIDEMainForm..actlStandard..actFileOpen..Hint
-#: frmPyIDEMain.dfm:2813
+#: frmPyIDEMain.dfm:2822
 msgid "Select a file to open"
 msgstr "انتخاب فایل برای گشودن"
 
 #. PyIDEMainForm..actlStandard..actFileCloseAll..Caption
-#: frmPyIDEMain.dfm:2821
+#: frmPyIDEMain.dfm:2830
 msgid "Close A&ll"
 msgstr "بستن همه"
 
 #. PyIDEMainForm..actlStandard..actFileCloseAll..Hint
-#: frmPyIDEMain.dfm:2825
+#: frmPyIDEMain.dfm:2834
 msgid "Close all files"
 msgstr "بستن همه ی فایل ها"
 
 #. PyIDEMainForm..actlStandard..actFileExit..Caption
-#: frmPyIDEMain.dfm:2833
+#: frmPyIDEMain.dfm:2842
 msgid "E&xit"
 msgstr "خروج"
 
 #. PyIDEMainForm..actlStandard..actFileExit..Hint
-#: frmPyIDEMain.dfm:2836
+#: frmPyIDEMain.dfm:2845
 msgid "Exit"
 msgstr "خروج"
 
 #. PyIDEMainForm..actlStandard..actViewStatusBar..Caption
-#: frmPyIDEMain.dfm:2844
+#: frmPyIDEMain.dfm:2853
 #, fuzzy
 msgid "Status &Bar"
 msgstr "وضعیت &Bar"
 
 #. PyIDEMainForm..actlStandard..actViewStatusBar..Hint
-#: frmPyIDEMain.dfm:2847
+#: frmPyIDEMain.dfm:2856
 msgid "View/Hide status bar"
 msgstr "نمایش/نهفتن نوار وضعیّت"
 
 #. PyIDEMainForm..actlStandard..actExternalRun..Hint
-#: frmPyIDEMain.dfm:2855
+#: frmPyIDEMain.dfm:2864
 msgid "External Run|Run active module in external Python interpreter"
 msgstr ""
 "اجرا با مفسّر خارجی| پیمانه ی کنونی را در مفسّر پایتون خارج از برنامه اجرا می "
 "کند"
 
 #. PyIDEMainForm..actlStandard..actExternalRunConfigure..Caption
-#: frmPyIDEMain.dfm:2863
+#: frmPyIDEMain.dfm:2872
 #, fuzzy
 msgid "Configure &External Run..."
 msgstr "پیکربندی اجرای خارجی"
 
 #. PyIDEMainForm..actlStandard..actExternalRunConfigure..Hint
-#: frmPyIDEMain.dfm:2866
+#: frmPyIDEMain.dfm:2875
 msgid "Configure External Run"
 msgstr "پیکربندی اجرای خارجی"
 
 #. PyIDEMainForm..actlStandard..actRunDebugLastScript..Caption
-#: frmPyIDEMain.dfm:2873
+#: frmPyIDEMain.dfm:2882
 msgid "Debug Last Script"
 msgstr "اشکال زدایی آخرین اسکریپت"
 
 #. PyIDEMainForm..actlStandard..actRunDebugLastScript..Hint
 #. Programmer's name for it: SHintDebug
-#: frmPyIDEMain.dfm:2875 StringResources.pas:267
+#: frmPyIDEMain.dfm:2884 StringResources.pas:267
 msgid "Debug last script"
 msgstr "اشکال زدایی آخرین اسکریپت"
 
 #. PyIDEMainForm..actlStandard..actDebug..Hint
 #. Programmer's name for it: SDebugHint
-#: frmPyIDEMain.dfm:2886 StringResources.pas:265
+#: frmPyIDEMain.dfm:2895 StringResources.pas:265
 msgid "Debug|Debug active script"
 msgstr "اشکال زدایی |اشکال زدایی اسکریپت فعّال"
 
 #. PyIDEMainForm..actlStandard..actRestoreEditor..Caption
-#: frmPyIDEMain.dfm:2894
+#: frmPyIDEMain.dfm:2903
 msgid "&Restore Editor"
 msgstr "بازیابی ویرایشگر به حالت قبل"
 
 #. PyIDEMainForm..actlStandard..actRestoreEditor..Hint
-#: frmPyIDEMain.dfm:2897
+#: frmPyIDEMain.dfm:2906
 msgid "Restore editor window"
 msgstr "بازیابی پنجره ی ویرایشگر به حالت قبل"
 
 #. PyIDEMainForm..actlStandard..actRunToCursor..Caption
-#: frmPyIDEMain.dfm:2905
+#: frmPyIDEMain.dfm:2914
 msgid "Run To &Cursor"
 msgstr "اجرا تا جای محل مکان نما"
 
 #. PyIDEMainForm..actlStandard..actRunToCursor..Hint
-#: frmPyIDEMain.dfm:2908
+#: frmPyIDEMain.dfm:2917
 msgid "Run to cursor"
 msgstr "اجرا تا جای محل مکان نما"
 
 #. PyIDEMainForm..actlStandard..actStepInto..Caption
-#: frmPyIDEMain.dfm:2916
+#: frmPyIDEMain.dfm:2925
 msgid "Step &Into"
 msgstr "گام به داخل"
 
 #. PyIDEMainForm..actlStandard..actStepInto..Hint
-#: frmPyIDEMain.dfm:2919
+#: frmPyIDEMain.dfm:2928
 msgid "Step into subroutine "
 msgstr "گام به داخل زیر روال "
 
 #. PyIDEMainForm..actlStandard..actStepOver..Caption
-#: frmPyIDEMain.dfm:2927
+#: frmPyIDEMain.dfm:2936
 msgid "Step &Over"
 msgstr "پیش روی"
 
 #. PyIDEMainForm..actlStandard..actStepOver..Hint
-#: frmPyIDEMain.dfm:2930
+#: frmPyIDEMain.dfm:2939
 msgid "Step over next function call"
 msgstr "پرش از روی فراخوان بعدی تابع"
 
 #. PyIDEMainForm..actlStandard..actStepOut..Caption
-#: frmPyIDEMain.dfm:2938
+#: frmPyIDEMain.dfm:2947
 msgid "Step O&ut"
 msgstr "برون رفت"
 
 #. PyIDEMainForm..actlStandard..actStepOut..Hint
-#: frmPyIDEMain.dfm:2941
+#: frmPyIDEMain.dfm:2950
 msgid "Step out of the current subroutine"
 msgstr "بیرون رفتن از این زیر روال"
 
 #. PyIDEMainForm..actlStandard..actDebugPause..Caption
-#: frmPyIDEMain.dfm:2949
+#: frmPyIDEMain.dfm:2958
 msgid "&Pause"
 msgstr "درنگ"
 
 #. PyIDEMainForm..actlStandard..actDebugPause..Hint
-#: frmPyIDEMain.dfm:2952
+#: frmPyIDEMain.dfm:2961
 msgid "Pause running program"
 msgstr "درنگ در برنامه ی در حال اجرا"
 
 #. PyIDEMainForm..actlStandard..actDebugAbort..Caption
-#: frmPyIDEMain.dfm:2959
+#: frmPyIDEMain.dfm:2968
 msgid "&Abort Debugging"
 msgstr "قطع رفع اشکال"
 
 #. PyIDEMainForm..actlStandard..actDebugAbort..Hint
-#: frmPyIDEMain.dfm:2962
+#: frmPyIDEMain.dfm:2971
 msgid "Abort debugging"
 msgstr "قطع رفع اشکال"
 
 #. PyIDEMainForm..actlStandard..actRunLastScriptExternal..Caption
-#: frmPyIDEMain.dfm:2970
+#: frmPyIDEMain.dfm:2979
 msgid "Run Last Script Externally"
 msgstr "اجرای آخرین اسکریپیت به صورت خارجی"
 
 #. PyIDEMainForm..actlStandard..actRunLastScriptExternal..Hint
 #. Programmer's name for it: SHintExternalRun
-#: frmPyIDEMain.dfm:2972 StringResources.pas:268
+#: frmPyIDEMain.dfm:2981 StringResources.pas:268
 msgid "Run last script externally"
 msgstr "اجرای آخرین اسکریپیت به صورت خارجی"
 
 #. PyIDEMainForm..actlStandard..actRunLastScript..Caption
-#: frmPyIDEMain.dfm:2980
+#: frmPyIDEMain.dfm:2989
 msgid "Run Last Script"
 msgstr "اجرای آخرین اسکریپیت"
 
 #. PyIDEMainForm..actlStandard..actRunLastScript..Hint
 #. Programmer's name for it: SHintRun
-#: frmPyIDEMain.dfm:2982 StringResources.pas:266
+#: frmPyIDEMain.dfm:2991 StringResources.pas:266
 msgid "Run last script"
 msgstr "اجرای آخرین اسکریپیت"
 
 #. PyIDEMainForm..actlStandard..actToggleBreakPoint..Caption
-#: frmPyIDEMain.dfm:2990
+#: frmPyIDEMain.dfm:2999
 msgid "Toggle &breakpoint"
 msgstr "تغییر وضعیّت نقطه های توّقف"
 
 #. PyIDEMainForm..actlStandard..actToggleBreakPoint..Hint
-#: frmPyIDEMain.dfm:2993
+#: frmPyIDEMain.dfm:3002
 msgid "Toggle breakpoint"
 msgstr "تغییر وضعیّت نقطه های توّقف"
 
 #. PyIDEMainForm..actlStandard..actClearAllBreakpoints..Caption
-#: frmPyIDEMain.dfm:3001
+#: frmPyIDEMain.dfm:3010
 #, fuzzy
 msgid "Clear A&ll Breakpoints"
 msgstr "پاک کردن A&ll Breakpoints"
 
 #. PyIDEMainForm..actlStandard..actClearAllBreakpoints..Hint
-#: frmPyIDEMain.dfm:3004
+#: frmPyIDEMain.dfm:3013
 msgid "Clear all breakpoints"
 msgstr "پاکسازی همه ی نقطه های توقّف"
 
 #. PyIDEMainForm..actlStandard..actBreakPointsWin..Caption
-#: frmPyIDEMain.dfm:3011
+#: frmPyIDEMain.dfm:3020
 msgid "&Breakpoints"
 msgstr "نقطۀ گسست ها"
 
 #. PyIDEMainForm..actlStandard..actBreakPointsWin..Hint
-#: frmPyIDEMain.dfm:3015
+#: frmPyIDEMain.dfm:3024
 msgid "Show/Hide Breakpoints window"
 msgstr "نمایش/نهفتن پنجره ی نقاط توقّف اشکال زدایی"
 
 #. PyIDEMainForm..actlStandard..actWatchesWin..Caption
 #. PyIDEMainForm..actlStandard..actNavWatches..Caption
-#: frmPyIDEMain.dfm:3022 frmPyIDEMain.dfm:3300
+#: frmPyIDEMain.dfm:3031 frmPyIDEMain.dfm:3309
 msgid "&Watches"
 msgstr "کشیک ها"
 
 #. PyIDEMainForm..actlStandard..actWatchesWin..Hint
-#: frmPyIDEMain.dfm:3026
+#: frmPyIDEMain.dfm:3035
 msgid "Show/Hide Watches window"
 msgstr "نمایش/نهفتن پنجره ی کشیک ها"
 
 #. PyIDEMainForm..actlStandard..actMessagesWin..Caption
-#: frmPyIDEMain.dfm:3033
+#: frmPyIDEMain.dfm:3042
 msgid "&Messages"
 msgstr "پیام ها"
 
 #. PyIDEMainForm..actlStandard..actMessagesWin..Hint
-#: frmPyIDEMain.dfm:3037
+#: frmPyIDEMain.dfm:3046
 msgid "Show/Hide Messages window"
 msgstr "نمایش/نهفتن پنجره ی پیام ها"
 
 #. PyIDEMainForm..actlStandard..actViewII..Caption
-#: frmPyIDEMain.dfm:3044
+#: frmPyIDEMain.dfm:3053
 msgid "&Interactive Interpreter"
 msgstr "مفسّر تعاملی"
 
 #. PyIDEMainForm..actlStandard..actViewII..Hint
-#: frmPyIDEMain.dfm:3048
+#: frmPyIDEMain.dfm:3057
 msgid "View/Hide Interactive Interpreter"
 msgstr "نمایش/نهفتن مفسّر تعاملی"
 
 #. PyIDEMainForm..actlStandard..actViewCodeExplorer..Caption
 #. PyIDEMainForm..actlStandard..actNavCodeExplorer..Caption
-#: frmPyIDEMain.dfm:3055 frmPyIDEMain.dfm:3370
+#: frmPyIDEMain.dfm:3064 frmPyIDEMain.dfm:3379
 msgid "&Code Explorer"
 msgstr "کاوشگر کد"
 
 #. PyIDEMainForm..actlStandard..actViewCodeExplorer..Hint
-#: frmPyIDEMain.dfm:3059
+#: frmPyIDEMain.dfm:3068
 msgid "View/Hide Code Explorer"
 msgstr "نمایش/نهفتن کاوشگر کد"
 
 #. PyIDEMainForm..actlStandard..actViewFileExplorer..Caption
-#: frmPyIDEMain.dfm:3066
+#: frmPyIDEMain.dfm:3075
 msgid "&File Explorer"
 msgstr "کاوشگر فایل"
 
 #. PyIDEMainForm..actlStandard..actViewFileExplorer..Hint
-#: frmPyIDEMain.dfm:3070
+#: frmPyIDEMain.dfm:3079
 msgid "View/Hide File Explorer"
 msgstr "نمایش/نهفتن کاوشگر فایل"
 
 #. PyIDEMainForm..actlStandard..actViewToDoList..Caption
-#: frmPyIDEMain.dfm:3077
+#: frmPyIDEMain.dfm:3086
 msgid "&To-Do List"
 msgstr "لیست اقدام ها"
 
 #. PyIDEMainForm..actlStandard..actViewToDoList..Hint
-#: frmPyIDEMain.dfm:3080
+#: frmPyIDEMain.dfm:3089
 msgid "View/Hide To Do List"
 msgstr "نمایش/نهفتن لیست اقدام ها"
 
 #. PyIDEMainForm..actlStandard..actViewFindResults..Caption
-#: frmPyIDEMain.dfm:3087
+#: frmPyIDEMain.dfm:3096
 #, fuzzy
 msgid "Find &in Files Results"
 msgstr "نتایج پیدا کردن در فایل ها"
 
 #. PyIDEMainForm..actlStandard..actViewFindResults..Hint
-#: frmPyIDEMain.dfm:3090
+#: frmPyIDEMain.dfm:3099
 msgid "View/Hide Find in Files Results"
 msgstr "نمایش/نهفتن نتایج جستجو در فایل ها"
 
 #. PyIDEMainForm..actlStandard..actViewOutput..Caption
-#: frmPyIDEMain.dfm:3098
+#: frmPyIDEMain.dfm:3107
 msgid "&Output Window"
 msgstr "پنجره ی محوّطه ی برون داد"
 
 #. PyIDEMainForm..actlStandard..actViewOutput..Hint
-#: frmPyIDEMain.dfm:3101
+#: frmPyIDEMain.dfm:3110
 msgid "View/Hide Output Window"
 msgstr "نمایش/نهفتن پنجره ی محوّطه ی برون داد"
 
 #. PyIDEMainForm..actlStandard..actViewUnitTests..Caption
 #. PyIDEMainForm..actlStandard..actNavUnitTests..Caption
-#: frmPyIDEMain.dfm:3108 frmPyIDEMain.dfm:3390
+#: frmPyIDEMain.dfm:3117 frmPyIDEMain.dfm:3399
 msgid "&Unit Tests"
 msgstr "آزمون بخش های کد"
 
 #. PyIDEMainForm..actlStandard..actViewUnitTests..Hint
-#: frmPyIDEMain.dfm:3110
+#: frmPyIDEMain.dfm:3119
 msgid "View/Hide Unit Tests Window"
 msgstr "نمایش/نهفتن پنجره ی آزمون های واحدی"
 
 #. PyIDEMainForm..actlStandard..actFindDefinition..Caption
-#: frmPyIDEMain.dfm:3117
+#: frmPyIDEMain.dfm:3126
 msgid "Find &Definition"
 msgstr "پیدا کردن تعریف"
 
 #. PyIDEMainForm..actlStandard..actFindDefinition..Hint
-#: frmPyIDEMain.dfm:3120
+#: frmPyIDEMain.dfm:3129
 msgid "Find definition of an Identifier"
 msgstr "پیدا کردن تعریف یک شناساگر"
 
 #. PyIDEMainForm..actlStandard..actFindReferences..Caption
-#: frmPyIDEMain.dfm:3126
+#: frmPyIDEMain.dfm:3135
 #, fuzzy
 msgid "Find R&eferences"
 msgstr "یافتن R&eferences"
 
 #. PyIDEMainForm..actlStandard..actFindReferences..Hint
-#: frmPyIDEMain.dfm:3129
+#: frmPyIDEMain.dfm:3138
 msgid "Find references of an Identifier"
 msgstr "پیدا کردن ارجاع های یک شناساگر"
 
 #. PyIDEMainForm..actlStandard..actBrowseBack..Caption
-#: frmPyIDEMain.dfm:3134
+#: frmPyIDEMain.dfm:3143
 msgid "Browse &Back"
 msgstr "مرور قبل"
 
 #. PyIDEMainForm..actlStandard..actBrowseBack..Hint
-#: frmPyIDEMain.dfm:3137
+#: frmPyIDEMain.dfm:3146
 msgid "Browse back"
 msgstr "مرور قبل"
 
 #. PyIDEMainForm..actlStandard..actBrowseForward..Caption
-#: frmPyIDEMain.dfm:3145
+#: frmPyIDEMain.dfm:3154
 msgid "Browse &Forward"
 msgstr "مرور بعد"
 
 #. PyIDEMainForm..actlStandard..actBrowseForward..Hint
-#: frmPyIDEMain.dfm:3148
+#: frmPyIDEMain.dfm:3157
 msgid "Browse forward"
 msgstr "مرور بعد"
 
 #. PyIDEMainForm..actlStandard..actViewRegExpTester..Caption
-#: frmPyIDEMain.dfm:3156
+#: frmPyIDEMain.dfm:3165
 msgid "&Regular Expression Tester"
 msgstr "آزماینده ی عبارات منظّم و با قاعده"
 
 #. PyIDEMainForm..actlStandard..actViewRegExpTester..Hint
-#: frmPyIDEMain.dfm:3159
+#: frmPyIDEMain.dfm:3168
 msgid "View/Hide Regular Expression Tester"
 msgstr "نمایش/نهفتن آزماینده ی عبارات منظّم و با قاعده"
 
 #. PyIDEMainForm..actlStandard..actMaximizeEditor..Caption
-#: frmPyIDEMain.dfm:3187
+#: frmPyIDEMain.dfm:3196
 msgid "&Maximize Editor"
 msgstr "بیشینه کردن ویراشگر"
 
 #. PyIDEMainForm..actlStandard..actMaximizeEditor..Hint
-#: frmPyIDEMain.dfm:3190
+#: frmPyIDEMain.dfm:3199
 msgid "Maximize editor window"
 msgstr "بیشینه کردن پنجره ی ویراشگر"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomIn..Caption
-#: frmPyIDEMain.dfm:3198
+#: frmPyIDEMain.dfm:3207
 msgid "Zoom &In"
 msgstr "بزرگ تر"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomIn..Hint
-#: frmPyIDEMain.dfm:3200
+#: frmPyIDEMain.dfm:3209
 msgid "Increase the font size of the editor"
 msgstr "افزایش اندازه رسم الخطّ ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomOut..Caption
-#: frmPyIDEMain.dfm:3208
+#: frmPyIDEMain.dfm:3217
 msgid "Zoom &Out"
 msgstr "کوچک تر"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomOut..Hint
-#: frmPyIDEMain.dfm:3210
+#: frmPyIDEMain.dfm:3219
 msgid "Decrease the font size of the editor"
 msgstr "کاهش اندازه رسم الخطّ ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorVer..Caption
-#: frmPyIDEMain.dfm:3218
+#: frmPyIDEMain.dfm:3227
 msgid "Split Editor Vertically"
 msgstr "دو تکّه کردن عمودی محیط ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorVer..Hint
-#: frmPyIDEMain.dfm:3221
+#: frmPyIDEMain.dfm:3230
 msgid "Split the editor Windows vertically"
 msgstr "دو تکّه کردن عمودی پنجره های محیط ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actAddWatchAtCursor..Caption
-#: frmPyIDEMain.dfm:3228
+#: frmPyIDEMain.dfm:3237
 msgid "Add &Watch At Cursor"
 msgstr "افزودن کشیک در محلّ مکان نما"
 
 #. PyIDEMainForm..actlStandard..actAddWatchAtCursor..Hint
-#: frmPyIDEMain.dfm:3231
+#: frmPyIDEMain.dfm:3240
 msgid "Add the expression at the editor current position as a watch"
 msgstr "افزودن عبارت در موقعیّت حاضر ویرایشگر به عنوان کشیک"
 
 #. PyIDEMainForm..actlStandard..actPythonReinitialize..Caption
-#: frmPyIDEMain.dfm:3239
+#: frmPyIDEMain.dfm:3248
 msgid "Reinitiali&ze Python engine"
 msgstr "راه اندازی دوباره ی موتور پایتون"
 
 #. PyIDEMainForm..actlStandard..actPythonInternal..Caption
-#: frmPyIDEMain.dfm:3248
+#: frmPyIDEMain.dfm:3257
 msgid "&Internal"
 msgstr "داخلی"
 
 #. PyIDEMainForm..actlStandard..actPythonInternal..Hint
-#: frmPyIDEMain.dfm:3253
+#: frmPyIDEMain.dfm:3262
 msgid "Use internal Python Engine"
 msgstr "به کار بستن موتور داخلی پایتون"
 
 #. PyIDEMainForm..actlStandard..actPythonRemote..Caption
-#: frmPyIDEMain.dfm:3260
+#: frmPyIDEMain.dfm:3269
 msgid "&Remote"
 msgstr "راه دور"
 
 #. PyIDEMainForm..actlStandard..actPythonRemote..Hint
-#: frmPyIDEMain.dfm:3264
+#: frmPyIDEMain.dfm:3273
 msgid "Use a remote Python engine"
 msgstr "به کار بستن موتور راه دور پایتون"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteTk..Caption
-#: frmPyIDEMain.dfm:3271
+#: frmPyIDEMain.dfm:3280
 msgid "Remote (&Tk)"
 msgstr "راه دور (&Tk)"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteTk..Hint
-#: frmPyIDEMain.dfm:3275
+#: frmPyIDEMain.dfm:3284
 msgid "Use a remote Python engine for Tkinter applications"
 msgstr "به کار بستن موتور بیرونی پایتون برای برنامه های Tkinter"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteWx..Caption
-#: frmPyIDEMain.dfm:3282
+#: frmPyIDEMain.dfm:3291
 msgid "Remote (&Wx)"
 msgstr "بیرونی(&Wx)"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteWx..Hint
-#: frmPyIDEMain.dfm:3286
+#: frmPyIDEMain.dfm:3295
 msgid "Use a remote Python engine for wxPython applications"
 msgstr "به کار بستن موتور بیرونی پایتون برای برنامه های WxPython"
 
 #. PyIDEMainForm..actlStandard..actFileNewFile..Caption
-#: frmPyIDEMain.dfm:3291
+#: frmPyIDEMain.dfm:3300
 msgid "New File..."
 msgstr "فایل جدید..."
 
 #. PyIDEMainForm..actlStandard..actFileNewFile..Hint
-#: frmPyIDEMain.dfm:3293
+#: frmPyIDEMain.dfm:3302
 msgid "New file from template"
 msgstr "فایل جدید از روی قالب"
 
 #. PyIDEMainForm..actlStandard..actNavWatches..Hint
-#: frmPyIDEMain.dfm:3302
+#: frmPyIDEMain.dfm:3311
 msgid "Activate the Watches window"
 msgstr "فعّال سازی پنجره ی کشیک ها"
 
 #. PyIDEMainForm..actlStandard..actNavBreakpoints..Caption
-#: frmPyIDEMain.dfm:3310
+#: frmPyIDEMain.dfm:3319
 msgid "&BreakPoints"
 msgstr "نقطۀ گسست ها"
 
 #. PyIDEMainForm..actlStandard..actNavBreakpoints..Hint
-#: frmPyIDEMain.dfm:3312
+#: frmPyIDEMain.dfm:3321
 msgid "Activate the Breakpoints window"
 msgstr "فعّال سازی پنجره ی نقاط توقّف اشکال زدایی"
 
 #. PyIDEMainForm..actlStandard..actNavInterpreter..Caption
-#: frmPyIDEMain.dfm:3320
+#: frmPyIDEMain.dfm:3329
 msgid "&Interpreter"
 msgstr "مفسّر"
 
 #. PyIDEMainForm..actlStandard..actNavInterpreter..Hint
-#: frmPyIDEMain.dfm:3322
+#: frmPyIDEMain.dfm:3331
 msgid "Activate the Interpreter window"
 msgstr "فعّال سازی پنجره ی مفسّر"
 
 #. PyIDEMainForm..actlStandard..actNavVariables..Hint
-#: frmPyIDEMain.dfm:3332
+#: frmPyIDEMain.dfm:3341
 msgid "Activate the Variables window"
 msgstr "فعّال سازی پنجره ی متغیّرها"
 
 #. PyIDEMainForm..actlStandard..actNavCallStack..Hint
-#: frmPyIDEMain.dfm:3342
+#: frmPyIDEMain.dfm:3351
 msgid "Activate the Call Stack window"
 msgstr "فعّال سازی پنجره ی پشته ی فراخوان ها"
 
 #. PyIDEMainForm..actlStandard..actNavMessages..Caption
-#: frmPyIDEMain.dfm:3350
+#: frmPyIDEMain.dfm:3359
 msgid "&Messages "
 msgstr "پیام ها "
 
 #. PyIDEMainForm..actlStandard..actNavMessages..Hint
-#: frmPyIDEMain.dfm:3352
+#: frmPyIDEMain.dfm:3361
 msgid "Activate the Messages window"
 msgstr "فعّال سازی پنجره ی پیام ها"
 
 #. PyIDEMainForm..actlStandard..actNavFileExplorer..Caption
-#: frmPyIDEMain.dfm:3360
+#: frmPyIDEMain.dfm:3369
 msgid "File E&xplorer"
 msgstr "کاوشگر فایل"
 
 #. PyIDEMainForm..actlStandard..actNavFileExplorer..Hint
-#: frmPyIDEMain.dfm:3362
+#: frmPyIDEMain.dfm:3371
 msgid "Activate the File Explorer window"
 msgstr "فعّال سازی پنجره ی کاوشگر فایل"
 
 #. PyIDEMainForm..actlStandard..actNavCodeExplorer..Hint
-#: frmPyIDEMain.dfm:3372
+#: frmPyIDEMain.dfm:3381
 msgid "Activate the Code Explorer window"
 msgstr "فعّال سازی پنجره ی وارسی کد"
 
 #. PyIDEMainForm..actlStandard..actNavTodo..Caption
-#: frmPyIDEMain.dfm:3380
+#: frmPyIDEMain.dfm:3389
 msgid "&Todo List"
 msgstr "لیست اقدام ها"
 
 #. PyIDEMainForm..actlStandard..actNavTodo..Hint
 #. PyIDEMainForm..actlStandard..actNavUnitTests..Hint
-#: frmPyIDEMain.dfm:3382 frmPyIDEMain.dfm:3392
+#: frmPyIDEMain.dfm:3391 frmPyIDEMain.dfm:3401
 msgid "Activate the Todo List window"
 msgstr "فعّال سازی پنجره ی لیست اقدام ها"
 
 #. PyIDEMainForm..actlStandard..actNavOutput..Caption
-#: frmPyIDEMain.dfm:3400
+#: frmPyIDEMain.dfm:3409
 msgid "Command &Output"
 msgstr "برون داد فرمان"
 
 #. PyIDEMainForm..actlStandard..actNavOutput..Hint
-#: frmPyIDEMain.dfm:3402
+#: frmPyIDEMain.dfm:3411
 msgid "Activate the Command Output window"
 msgstr "فعّال سازی پنجره ی محوّطه ی برون داد فرمان"
 
 #. PyIDEMainForm..actlStandard..actNavEditor..Caption
-#: frmPyIDEMain.dfm:3410
+#: frmPyIDEMain.dfm:3419
 msgid "&Editor"
 msgstr "ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actNavEditor..Hint
-#: frmPyIDEMain.dfm:3412
+#: frmPyIDEMain.dfm:3421
 msgid "Activate the Editor"
 msgstr "فعّال سازی ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actPythonSSH..Caption
-#: frmPyIDEMain.dfm:3422
+#: frmPyIDEMain.dfm:3431
 msgid "&SSH"
 msgstr "پوسته ی ایمن"
 
 #. PyIDEMainForm..actlStandard..actPythonSSH..Hint
-#: frmPyIDEMain.dfm:3426
+#: frmPyIDEMain.dfm:3435
 msgid "Use an SSH remote Python engine"
 msgstr "به کار بستن یک موتور پایتون بیرونی با پوسته ی ایمن"
 
 #. PyIDEMainForm..actlStandard..actExecSelection..Caption
-#: frmPyIDEMain.dfm:3431
+#: frmPyIDEMain.dfm:3440
 msgid "E&xecute selection"
 msgstr "اجرای قسمت علامت خورده"
 
 #. PyIDEMainForm..actlStandard..actExecSelection..Hint
-#: frmPyIDEMain.dfm:3434
+#: frmPyIDEMain.dfm:3443
 msgid "Execute the editor selection"
 msgstr "اجرای قسمت علامت خورده ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorHor..Caption
-#: frmPyIDEMain.dfm:3442
+#: frmPyIDEMain.dfm:3451
 msgid "Split Editor Horizontally"
 msgstr "دو تکّه کردن محیط ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorHor..Hint
-#: frmPyIDEMain.dfm:3445
+#: frmPyIDEMain.dfm:3454
 msgid "Split the editor Windows horizontally"
 msgstr "دو تکّه کردن افقی پنجره های محیط ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondEditor..Caption
-#: frmPyIDEMain.dfm:3452
+#: frmPyIDEMain.dfm:3461
 msgid "Hide Second Editor"
 msgstr "نفهتن ویرایشگر دوم"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondEditor..Hint
-#: frmPyIDEMain.dfm:3455
+#: frmPyIDEMain.dfm:3464
 msgid "Clear the editor"
 msgstr "پاکسازی ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actPostMortem..Caption
-#: frmPyIDEMain.dfm:3460
+#: frmPyIDEMain.dfm:3469
 msgid "&Post Mortem"
 msgstr "کالبد شکافی"
 
 #. PyIDEMainForm..actlStandard..actPostMortem..Hint
-#: frmPyIDEMain.dfm:3463
+#: frmPyIDEMain.dfm:3472
 msgid "Enter post mortem analysis"
 msgstr "ورود به حالت تحلیل کالبد شکافی"
 
 #. PyIDEMainForm..actlStandard..actViewCustomizeToolbars..Caption
-#: frmPyIDEMain.dfm:3470
+#: frmPyIDEMain.dfm:3479
 msgid "Customize..."
 msgstr "سفارشی سازی..."
 
 #. PyIDEMainForm..actlStandard..actViewCustomizeToolbars..Hint
-#: frmPyIDEMain.dfm:3473
+#: frmPyIDEMain.dfm:3482
 msgid "Customize the toolbars"
 msgstr "سفارشی کردن نوار ابزارها"
 
 #. PyIDEMainForm..actlStandard..actViewProjectExplorer..Caption
 #. PyIDEMainForm..actlStandard..actNavProjectExplorer..Caption
-#: frmPyIDEMain.dfm:3478 frmPyIDEMain.dfm:3488
+#: frmPyIDEMain.dfm:3487 frmPyIDEMain.dfm:3497
 msgid "&Project Explorer"
 msgstr "کاوشگر پروژه"
 
 #. PyIDEMainForm..actlStandard..actViewProjectExplorer..Hint
-#: frmPyIDEMain.dfm:3481
+#: frmPyIDEMain.dfm:3490
 msgid "View/Hide Project Explorer"
 msgstr "نمایش/نهفتن کاوشگر پروژه"
 
 #. PyIDEMainForm..actlStandard..actNavProjectExplorer..Hint
-#: frmPyIDEMain.dfm:3491
+#: frmPyIDEMain.dfm:3500
 msgid "Activate the Project Explorer window"
 msgstr "فعّال سازی پنجره ی وارسی پروژه"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceVer..Caption
-#: frmPyIDEMain.dfm:3499
+#: frmPyIDEMain.dfm:3508
 msgid "Split Workspace Vertically"
 msgstr "دو تکّه کردن عمودی محیط ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceVer....Hint
-#: frmPyIDEMain.dfm:3504
+#: frmPyIDEMain.dfm:3513
 msgid ""
 "Split workspace vertically|Show secondary editor tabset vertically aligned"
 msgstr ""
@@ -6301,12 +6305,12 @@ msgstr ""
 "عمودی"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceHor..Caption
-#: frmPyIDEMain.dfm:3511
+#: frmPyIDEMain.dfm:3520
 msgid "Split Workspace Horizontally"
 msgstr "دو تکّه کردن افقی محیط ویرایشگر"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceHor....Hint
-#: frmPyIDEMain.dfm:3516
+#: frmPyIDEMain.dfm:3525
 msgid ""
 "Split workspace horizontally|Show secondary workspace horizontally aligned"
 msgstr ""
@@ -6314,44 +6318,44 @@ msgstr ""
 "افقی"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondaryWorkspace..Caption
-#: frmPyIDEMain.dfm:3523
+#: frmPyIDEMain.dfm:3532
 msgid "Hide Secondary Workspace"
 msgstr "نهفتن فضای کار دوم"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondaryWorkspace..Hint
-#: frmPyIDEMain.dfm:3526
+#: frmPyIDEMain.dfm:3535
 msgid "Hide secondary workspace"
 msgstr "نهفتن فضای کار دوم"
 
 #. PyIDEMainForm..actlStandard..actSelectStyle..Caption
-#: frmPyIDEMain.dfm:3531
+#: frmPyIDEMain.dfm:3540
 msgid "Styles..."
 msgstr "سبک ها..."
 
 #. PyIDEMainForm..actlStandard..actPythonSetup..Caption
-#: frmPyIDEMain.dfm:3539
+#: frmPyIDEMain.dfm:3548
 msgid "Setup Python Versions..."
 msgstr "برپایی نگارش پایتون..."
 
 #. PyIDEMainForm..actlStandard..actPythonSetup..Hint
-#: frmPyIDEMain.dfm:3540
+#: frmPyIDEMain.dfm:3549
 msgid "Setup Python engine"
 msgstr "برپایی موتور پایتون"
 
 #. PyIDEMainForm..actlStandard..actRemoteFileOpen..Caption
 #. SSH File and Remote engine
 #. Programmer's name for it: SRemoteFileOpen
-#: frmPyIDEMain.dfm:3547 StringResources.pas:430
+#: frmPyIDEMain.dfm:3556 StringResources.pas:430
 msgid "Open Remote File"
 msgstr "گشودن فایل بیرونی"
 
 #. PyIDEMainForm..actlStandard..actRemoteFileOpen..Hint
-#: frmPyIDEMain.dfm:3548
+#: frmPyIDEMain.dfm:3557
 msgid "Open Remote File with SSH"
 msgstr "گشودن فایل راه دور با پروتکل پوسته ی ایمن"
 
 #. PyIDEMainForm..actlStandard..actUMLNewUML..Hint
-#: frmPyIDEMain.dfm:3556
+#: frmPyIDEMain.dfm:3565
 #, fuzzy
 msgid "New UML window"
 msgstr "پنجره جدید UML"
@@ -6359,7 +6363,7 @@ msgstr "پنجره جدید UML"
 #. PyIDEMainForm..actlStandard..actUMLNewComment..Caption
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupNewComment..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupNewComment..Caption
-#: frmPyIDEMain.dfm:3584 EssModel/Integrator/View/UDiagramFrame.dfm:4081
+#: frmPyIDEMain.dfm:3593 EssModel/Integrator/View/UDiagramFrame.dfm:4081
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4316
 #: EssModel/Integrator/View/UDiagramFrame.pas:301
 #: EssModel/Integrator/View/UDiagramFrame.pas:375
@@ -6371,7 +6375,7 @@ msgstr "نظر جدید"
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBNewLayout..Hint
 #. FSequenceForm..PToolbar..TBSequence..TBNewLayout..Hint
 #. FSequenceForm..PopupMenuLifeLineAndSequencePanel..MIPopupNewLayout..Caption
-#: frmPyIDEMain.dfm:3591 EssModel/Integrator/View/UDiagramFrame.dfm:4086
+#: frmPyIDEMain.dfm:3600 EssModel/Integrator/View/UDiagramFrame.dfm:4086
 #: EssModel/System/UUMLForm.dfm:135 SequenceDiagram/USequenceForm.dfm:80
 #: SequenceDiagram/USequenceForm.dfm:2596
 #: EssModel/Integrator/View/UDiagramFrame.pas:376
@@ -6385,7 +6389,7 @@ msgstr "حذف چیدمان"
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBRefresh..Hint
 #. FSequenceForm..PToolbar..TBSequence..TBRefresh..Hint
 #. FSequenceForm..PopupMenuLifeLineAndSequencePanel..MIPopupRefresh..Caption
-#: frmPyIDEMain.dfm:3598 EssModel/Integrator/View/UDiagramFrame.dfm:4091
+#: frmPyIDEMain.dfm:3607 EssModel/Integrator/View/UDiagramFrame.dfm:4091
 #: EssModel/System/UUMLForm.dfm:142 SequenceDiagram/USequenceForm.dfm:89
 #: SequenceDiagram/USequenceForm.dfm:2601
 #: EssModel/Integrator/View/UDiagramFrame.pas:377
@@ -6393,46 +6397,46 @@ msgid "Refresh"
 msgstr "تازه کردن"
 
 #. PyIDEMainForm..actlStandard..actUMLDiagramFromOpenFiles..Caption
-#: frmPyIDEMain.dfm:3605
+#: frmPyIDEMain.dfm:3614
 #, fuzzy
 #| msgid "Scan &open files"
 msgid "Diagram from open files"
 msgstr "پویش فایل های باز"
 
 #. PyIDEMainForm..actlStandard..actUMLSaveAsPicture..Caption
-#: frmPyIDEMain.dfm:3612
+#: frmPyIDEMain.dfm:3621
 #, fuzzy
 msgid "Save as picture"
 msgstr "ذخیره به عنوان تصویر"
 
 #. PyIDEMainForm..actlStandard..actToolsTextDiff..Caption
-#: frmPyIDEMain.dfm:3619
+#: frmPyIDEMain.dfm:3628
 #, fuzzy
 #| msgid "Text"
 msgid "Textdiff"
 msgstr "متن"
 
 #. PyIDEMainForm..actlStandard..actToolsConfiguration..Caption
-#: frmPyIDEMain.dfm:3626
+#: frmPyIDEMain.dfm:3635
 #, fuzzy
 #| msgid "Run Configuration"
 msgid "Tools configuration"
 msgstr "اجرای تنظیمات"
 
 #. PyIDEMainForm..actlStandard..actViewObjectinspector..Caption
-#: frmPyIDEMain.dfm:3639
+#: frmPyIDEMain.dfm:3648
 #, fuzzy
 msgid "actViewObjectinspector"
 msgstr "actViewObjectinspector"
 
 #. PyIDEMainForm..actlStandard..actNavStructure..Caption
 #. FFileStructure..Caption
-#: frmPyIDEMain.dfm:3644 Main/UFileStructure.dfm:5
+#: frmPyIDEMain.dfm:3653 Main/UFileStructure.dfm:5
 msgid "Structure"
 msgstr "ساختار"
 
 #. PyIDEMainForm..actlStandard..actNavStructure..Hint
-#: frmPyIDEMain.dfm:3645
+#: frmPyIDEMain.dfm:3654
 #, fuzzy
 #| msgid "Activate the Watches window"
 msgid "Activate the Structure window"
@@ -6758,7 +6762,7 @@ msgstr "متغیّرها"
 #. FClassEditor..PageControl..TSMethods..LMethodType..Caption
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..LParameterType..Caption
 #: frmVariables.dfm:139 frmWatches.dfm:97 Main/UClassEditor.dfm:141
-#: Main/UClassEditor.dfm:323 Main/UClassEditor.dfm:443 frmVariables.pas:455
+#: Main/UClassEditor.dfm:327 Main/UClassEditor.dfm:451 frmVariables.pas:455
 msgid "Type"
 msgstr "نوع"
 
@@ -6796,14 +6800,14 @@ msgstr "پیش نمایش وب"
 
 #. AFrameDiagram..PopupMenuAlign..MIPopupTop..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGEditorTabPosition....Items.Strings
-#: EssModel/Integrator/View/UDiagramFrame.dfm:3932 Utils/UConfiguration.dfm:3596
+#: EssModel/Integrator/View/UDiagramFrame.dfm:3932 Utils/UConfiguration.dfm:3606
 #: EssModel/Integrator/View/UDiagramFrame.pas:368
 msgid "Top"
 msgstr "بالا"
 
 #. AFrameDiagram..PopupMenuAlign..MIPopupBottom..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGEditorTabPosition....Items.Strings
-#: EssModel/Integrator/View/UDiagramFrame.dfm:3944 Utils/UConfiguration.dfm:3597
+#: EssModel/Integrator/View/UDiagramFrame.dfm:3944 Utils/UConfiguration.dfm:3607
 #: EssModel/Integrator/View/UDiagramFrame.pas:370
 msgid "Bottom"
 msgstr "پایین"
@@ -6945,7 +6949,7 @@ msgstr "نوبه خود"
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4052
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4061
 #: EssModel/System/UUMLForm.dfm:309 Formdesigner/ELImage.dfm:27
-#: Main/UAssociation.dfm:106 Main/UClassEditor.dfm:632 Main/UGUIDesigner.dfm:128
+#: Main/UAssociation.dfm:106 Main/UClassEditor.dfm:644 Main/UGUIDesigner.dfm:128
 #: SequenceDiagram/UConnectForm.dfm:73 SequenceDiagram/USequenceForm.dfm:2562
 #: Structogram/UStructogram.dfm:1838
 #: EssModel/Integrator/View/UDiagramFrame.pas:361
@@ -6958,7 +6962,7 @@ msgstr "حذف"
 #. AFrameDiagram..PopMenuClass..MIClassPopupDisplay..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LAttributesAndMethods..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4096
-#: EssModel/Integrator/View/UDiagramFrame.dfm:4334 Utils/UConfiguration.dfm:2822
+#: EssModel/Integrator/View/UDiagramFrame.dfm:4334 Utils/UConfiguration.dfm:2832
 #: EssModel/Integrator/View/UDiagramFrame.pas:305
 #: EssModel/Integrator/View/UDiagramFrame.pas:378
 #, fuzzy
@@ -6982,7 +6986,7 @@ msgstr "ویژگی ها"
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4234
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4337
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4359
-#: EssModel/Integrator/View/UDiagramFrame.dfm:4393 Utils/UConfiguration.dfm:2982
+#: EssModel/Integrator/View/UDiagramFrame.dfm:4393 Utils/UConfiguration.dfm:2992
 msgid "none"
 msgstr "هیچ"
 
@@ -6992,7 +6996,7 @@ msgstr "هیچ"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4114
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4225
-#: EssModel/Integrator/View/UDiagramFrame.dfm:4351 Utils/UConfiguration.dfm:2960
+#: EssModel/Integrator/View/UDiagramFrame.dfm:4351 Utils/UConfiguration.dfm:2970
 msgid "all"
 msgstr "همه"
 
@@ -7000,7 +7004,7 @@ msgstr "همه"
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4119
-#: EssModel/Integrator/View/UDiagramFrame.dfm:4357 Utils/UConfiguration.dfm:2980
+#: EssModel/Integrator/View/UDiagramFrame.dfm:4357 Utils/UConfiguration.dfm:2990
 #: EssModel/Integrator/View/UDiagramFrame.pas:309
 #: EssModel/Integrator/View/UDiagramFrame.pas:381
 #: EssModel/Integrator/View/URtfdDiagram.pas:1607
@@ -7012,7 +7016,7 @@ msgstr "پارامتر"
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay1..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4126
-#: EssModel/Integrator/View/UDiagramFrame.dfm:4364 Utils/UConfiguration.dfm:2983
+#: EssModel/Integrator/View/UDiagramFrame.dfm:4364 Utils/UConfiguration.dfm:2993
 #: EssModel/Integrator/View/UDiagramFrame.pas:311
 #: EssModel/Integrator/View/UDiagramFrame.pas:383
 #, fuzzy
@@ -7024,7 +7028,7 @@ msgstr "نوع"
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay2..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4131
-#: EssModel/Integrator/View/UDiagramFrame.dfm:4369 Utils/UConfiguration.dfm:2984
+#: EssModel/Integrator/View/UDiagramFrame.dfm:4369 Utils/UConfiguration.dfm:2994
 #: EssModel/Integrator/View/UDiagramFrame.pas:312
 #: EssModel/Integrator/View/UDiagramFrame.pas:384
 #, fuzzy
@@ -7035,7 +7039,7 @@ msgstr "(...): نوع"
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay3..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4136
-#: EssModel/Integrator/View/UDiagramFrame.dfm:4374 Utils/UConfiguration.dfm:2985
+#: EssModel/Integrator/View/UDiagramFrame.dfm:4374 Utils/UConfiguration.dfm:2995
 #: EssModel/Integrator/View/UDiagramFrame.pas:313
 #: EssModel/Integrator/View/UDiagramFrame.pas:385
 #, fuzzy
@@ -7046,7 +7050,7 @@ msgstr "(نام): نوع"
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay4..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4141
-#: EssModel/Integrator/View/UDiagramFrame.dfm:4379 Utils/UConfiguration.dfm:2986
+#: EssModel/Integrator/View/UDiagramFrame.dfm:4379 Utils/UConfiguration.dfm:2996
 #: EssModel/Integrator/View/UDiagramFrame.pas:314
 #: EssModel/Integrator/View/UDiagramFrame.pas:386
 #, fuzzy
@@ -7057,7 +7061,7 @@ msgstr "(نام = مقدار): نوع"
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay5..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4146
-#: EssModel/Integrator/View/UDiagramFrame.dfm:4384 Utils/UConfiguration.dfm:2987
+#: EssModel/Integrator/View/UDiagramFrame.dfm:4384 Utils/UConfiguration.dfm:2997
 #: EssModel/Integrator/View/UDiagramFrame.pas:315
 #: EssModel/Integrator/View/UDiagramFrame.pas:387
 #, fuzzy
@@ -7074,8 +7078,8 @@ msgstr "(نام: نوع = مقدار): نوع"
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4151
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4231
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4390 Main/UClassEditor.dfm:155
-#: Main/UClassEditor.dfm:352 Utils/UConfiguration.dfm:2971
-#: Utils/UConfiguration.dfm:2995 EssModel/Integrator/View/UDiagramFrame.pas:317
+#: Main/UClassEditor.dfm:360 Utils/UConfiguration.dfm:2981
+#: Utils/UConfiguration.dfm:3005 EssModel/Integrator/View/UDiagramFrame.pas:317
 #: EssModel/Integrator/View/UDiagramFrame.pas:336
 #: EssModel/Integrator/View/UDiagramFrame.pas:388
 msgid "Visibility"
@@ -7087,8 +7091,8 @@ msgstr "دید"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGVisibilityDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4159
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4239
-#: EssModel/Integrator/View/UDiagramFrame.dfm:4398 Utils/UConfiguration.dfm:2998
-#: Utils/UConfiguration.pas:2450
+#: EssModel/Integrator/View/UDiagramFrame.dfm:4398 Utils/UConfiguration.dfm:3008
+#: Utils/UConfiguration.pas:2454
 msgid "Text"
 msgstr "متن"
 
@@ -7305,9 +7309,9 @@ msgstr "تصویر"
 #. FConfiguration..PMain..PanelRight..PageList..PGit..BGitRepository..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..BRepository..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..BSVN..Caption
-#: Formdesigner/ELImage.dfm:18 Utils/UConfiguration.dfm:3351
-#: Utils/UConfiguration.dfm:5690 Utils/UConfiguration.dfm:5699
-#: Utils/UConfiguration.dfm:5771 Utils/UConfiguration.dfm:5780
+#: Formdesigner/ELImage.dfm:18 Utils/UConfiguration.dfm:3361
+#: Utils/UConfiguration.dfm:5700 Utils/UConfiguration.dfm:5709
+#: Utils/UConfiguration.dfm:5781 Utils/UConfiguration.dfm:5790
 msgid "Select"
 msgstr "انتخاب"
 
@@ -7481,61 +7485,61 @@ msgstr "ویژگی ها"
 #. FClassEditor..PageControl..TSAttributes..CBAttributeType....Items.Strings
 #. FClassEditor..PageControl..TSMethods..CBMethodType....Items.Strings
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamType....Items.Strings
-#: Main/UClassEditor.dfm:182 Main/UClassEditor.dfm:345 Main/UClassEditor.dfm:581
+#: Main/UClassEditor.dfm:185 Main/UClassEditor.dfm:352 Main/UClassEditor.dfm:592
 msgid "String"
 msgstr "رشته"
 
 #. FClassEditor..PageControl..TSAttributes..GBAttributeOptions..CBsetMethod..Caption
-#: Main/UClassEditor.dfm:216
+#: Main/UClassEditor.dfm:220
 #, fuzzy
 msgid "set method"
 msgstr "مجموعه روش"
 
 #. FClassEditor..PageControl..TSAttributes..GBAttributeOptions..CBgetMethod..Caption
-#: Main/UClassEditor.dfm:226
+#: Main/UClassEditor.dfm:230
 #, fuzzy
 msgid "get method"
 msgstr "دریافت روش"
 
 #. FClassEditor..PageControl..TSMethods..Caption
-#: Main/UClassEditor.dfm:309
+#: Main/UClassEditor.dfm:313
 #, fuzzy
 msgid "&Methods"
 msgstr "&Methods"
 
 #. FClassEditor..PageControl..TSMethods..RGMethodKind..Caption
-#: Main/UClassEditor.dfm:417
+#: Main/UClassEditor.dfm:425
 msgid "Kind"
 msgstr "نوع"
 
 #. FClassEditor..PageControl..TSMethods..RGMethodKind....Items.Strings
-#: Main/UClassEditor.dfm:419 Main/UClassEditor.pas:294 Main/UClassEditor.pas:295
+#: Main/UClassEditor.dfm:427 Main/UClassEditor.pas:294 Main/UClassEditor.pas:295
 #, fuzzy
 #| msgid "Inspector"
 msgid "Constructor"
 msgstr "کارپژوه"
 
 #. FClassEditor..PageControl..TSMethods..RGMethodKind....Items.Strings
-#: Main/UClassEditor.dfm:421 Main/UClassEditor.pas:294
+#: Main/UClassEditor.dfm:429 Main/UClassEditor.pas:294
 #, fuzzy
 msgid "Procedure"
 msgstr "روش"
 
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..Caption
-#: Main/UClassEditor.dfm:429
+#: Main/UClassEditor.dfm:437
 #, fuzzy
 #| msgid "Command line parameter"
 msgid "formal parameters"
 msgstr "مؤلّفه(parameter)های محیط خط فرمان"
 
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParameter..Text
-#: Main/UClassEditor.dfm:621 Main/UClassEditor.pas:969
-#: Main/UClassEditor.pas:1876 Main/UClassEditor.pas:2088
+#: Main/UClassEditor.dfm:633 Main/UClassEditor.pas:968
+#: Main/UClassEditor.pas:1875 Main/UClassEditor.pas:2087
 msgid "Select attribute"
 msgstr "انتخاب ویژگی"
 
 #. FClassEditor..ActionList..ActionNew..Caption
-#: Main/UClassEditor.dfm:704
+#: Main/UClassEditor.dfm:716
 #, fuzzy
 msgid "&New"
 msgstr "جدید"
@@ -7547,8 +7551,8 @@ msgid "Download"
 msgstr "دانلود"
 
 #. FDownload..LFile..Caption
-#: Main/UDownload.dfm:26 frmFile.pas:758 frmPyIDEMain.pas:1902
-#: frmPyIDEMain.pas:1905
+#: Main/UDownload.dfm:26 frmFile.pas:758 frmPyIDEMain.pas:1903
+#: frmPyIDEMain.pas:1906
 msgid "File"
 msgstr "فایل"
 
@@ -7642,7 +7646,7 @@ msgstr "در زیر"
 
 #. FGUIDesigner..PopupMenu..MISnapToGrid..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..CBSnapToGrid..Caption
-#: Main/UGUIDesigner.dfm:118 Utils/UConfiguration.dfm:2364
+#: Main/UGUIDesigner.dfm:118 Utils/UConfiguration.dfm:2374
 #, fuzzy
 msgid "Snap to grid"
 msgstr "ضربه محکم و ناگهانی به شبکه"
@@ -7974,8 +7978,8 @@ msgstr "زیربرنامه"
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LAlgorithm..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EAlgorithm..Text
 #. Structogram
-#: Structogram/UStructogram.dfm:156 Utils/UConfiguration.dfm:2436
-#: Utils/UConfiguration.dfm:2537 Utils/UConfiguration.pas:5066
+#: Structogram/UStructogram.dfm:156 Utils/UConfiguration.dfm:2446
+#: Utils/UConfiguration.dfm:2547 Utils/UConfiguration.pas:5077
 #, fuzzy
 msgid "Algorithm"
 msgstr "الگوریتم"
@@ -7997,7 +8001,7 @@ msgstr "حالت پازل"
 
 #. FStructogram..StructoPopupMenu..MISwitchWithCaseLine..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBSwitchWithCaseLine..Caption
-#: Structogram/UStructogram.dfm:1848 Utils/UConfiguration.dfm:2593
+#: Structogram/UStructogram.dfm:1848 Utils/UConfiguration.dfm:2603
 #, fuzzy
 #| msgid "Selection available"
 msgid "Selection with case line"
@@ -8031,7 +8035,7 @@ msgid "Copy as picture"
 msgstr "کپی به عنوان تصویر"
 
 #. FTextDiff..Caption
-#: TextDiff/UTextDiff.dfm:4 frmPyIDEMain.pas:5349
+#: TextDiff/UTextDiff.dfm:4 frmPyIDEMain.pas:5353
 msgid "Compare text"
 msgstr "متن مقایسه"
 
@@ -8440,204 +8444,211 @@ msgstr "تکمیل کننده ی کد ویرایشگر"
 msgid "Interpreter code completion"
 msgstr "تکمیل کننده ی کد مفسّر"
 
+#. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..btnResetKeys..Hint
+#: Utils/UConfiguration.dfm:1621
+#, fuzzy
+#| msgid "Setup für GuiPy"
+msgid "Restart GuiPy"
+msgstr "راه اندازی برای GuiPy"
+
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Caption
-#: Utils/UConfiguration.dfm:1618
+#: Utils/UConfiguration.dfm:1628
 #, fuzzy
 #| msgid "Syntax Colors"
 msgid "Syntax colors"
 msgstr "رنگ"
 
 #. FConfiguration..PMain..PanelRight..PageList..PColorTheme..Caption
-#: Utils/UConfiguration.dfm:1795
+#: Utils/UConfiguration.dfm:1805
 #, fuzzy
 #| msgid "Color Theme"
 msgid "Color themes"
 msgstr "رنگ زمینه"
 
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..Caption
-#: Utils/UConfiguration.dfm:1867 Utils/UConfiguration.pas:2400
+#: Utils/UConfiguration.dfm:1877 Utils/UConfiguration.pas:2404
 #, fuzzy
 #| msgid "Code Templates"
 msgid "Code templates"
 msgstr "قالب های کد"
 
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..Caption
-#: Utils/UConfiguration.dfm:2056 Utils/UConfiguration.pas:2395
+#: Utils/UConfiguration.dfm:2066 Utils/UConfiguration.pas:2399
 #, fuzzy
 #| msgid "File Templates"
 msgid "File templates"
 msgstr "الگوهای فایل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..Caption
-#: Utils/UConfiguration.dfm:2266
+#: Utils/UConfiguration.dfm:2276
 #, fuzzy
 #| msgid "Class Name"
 msgid "Class modeler"
 msgstr "نام کلاس"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..Caption
-#: Utils/UConfiguration.dfm:2273
+#: Utils/UConfiguration.dfm:2283
 #, fuzzy
 #| msgid "Attributes"
 msgid "Attributes options"
 msgstr "ویژگی ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..CBShowGetSetMethods..Caption
-#: Utils/UConfiguration.dfm:2280
+#: Utils/UConfiguration.dfm:2290
 #, fuzzy
 msgid "Show get/set methods"
 msgstr "نمایش با روش"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..CBShowTypeSelection..Caption
-#: Utils/UConfiguration.dfm:2288
+#: Utils/UConfiguration.dfm:2298
 #, fuzzy
 #| msgid "of the selection"
 msgid "Show type selection"
 msgstr "از منتخب"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBMethodsOptions..Caption
-#: Utils/UConfiguration.dfm:2297
+#: Utils/UConfiguration.dfm:2307
 #, fuzzy
 #| msgid "To Do Options"
 msgid "Methods options"
 msgstr "گزینه های لیست اقدامات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBMethodsOptions..CBShowKindProcedure..Caption
-#: Utils/UConfiguration.dfm:2304
+#: Utils/UConfiguration.dfm:2314
 #, fuzzy
 #| msgid "Show line numbers"
 msgid "Show kind procedure"
 msgstr "نمایش شماره های خط"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBMethodsOptions..CBShowParameterTypeSelection..Caption
-#: Utils/UConfiguration.dfm:2312
+#: Utils/UConfiguration.dfm:2322
 #, fuzzy
 #| msgid "Parameter Completion"
 msgid "Show parameter type selection"
 msgstr "برای تکمیل مؤلّفه ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..Caption
-#: Utils/UConfiguration.dfm:2318
+#: Utils/UConfiguration.dfm:2328
 #, fuzzy
 msgid "GUI Designer"
 msgstr "طراح GUI"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..LGridSize..Caption
-#: Utils/UConfiguration.dfm:2325
+#: Utils/UConfiguration.dfm:2335
 #, fuzzy
 msgid "Grid size in GUI designer"
 msgstr "اندازه شبکه در طراح GUI"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..LFrameheight..Caption
-#: Utils/UConfiguration.dfm:2332
+#: Utils/UConfiguration.dfm:2342
 msgid "Frame height"
 msgstr "ارتفاع قاب"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..LFrameWidth..Caption
-#: Utils/UConfiguration.dfm:2339
+#: Utils/UConfiguration.dfm:2349
 msgid "Frame width"
 msgstr "عرض قاب"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..CBNameFromText..Caption
-#: Utils/UConfiguration.dfm:2346
+#: Utils/UConfiguration.dfm:2356
 #, fuzzy
 msgid "Name GUI components after attribute Text"
 msgstr "نام اجزای GUI پس از ویژگی متن"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..CBGuiDesignerHints..Caption
-#: Utils/UConfiguration.dfm:2354
+#: Utils/UConfiguration.dfm:2364
 #, fuzzy
 msgid "Show hints permanently in GUI designer"
 msgstr "نمایش نکات به طور دائم در طراح GUI"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..CBAlignToGrid..Caption
-#: Utils/UConfiguration.dfm:2409
+#: Utils/UConfiguration.dfm:2419
 #, fuzzy
 msgid "Align to grid when inserting"
 msgstr "تراز به شبکه"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LInput..Caption
-#: Utils/UConfiguration.dfm:2422
+#: Utils/UConfiguration.dfm:2432
 msgid "Input"
 msgstr "ورودی"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LYes..Caption
-#: Utils/UConfiguration.dfm:2457
+#: Utils/UConfiguration.dfm:2467
 msgid "Yes"
 msgstr "بله"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LNo..Caption
-#: Utils/UConfiguration.dfm:2464
+#: Utils/UConfiguration.dfm:2474
 msgid "No"
 msgstr "خیر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LDatatype..Caption
-#: Utils/UConfiguration.dfm:2471
+#: Utils/UConfiguration.dfm:2481
 #, fuzzy
 msgid "Datatype"
 msgstr "Datatype"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LCaseCount..Caption
-#: Utils/UConfiguration.dfm:2478
+#: Utils/UConfiguration.dfm:2488
 #, fuzzy
 #| msgid "Number of recent files"
 msgid "Number of cases"
 msgstr "شمار فایل های اخیر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LOther..Caption
-#: Utils/UConfiguration.dfm:2485
+#: Utils/UConfiguration.dfm:2495
 #, fuzzy
 msgid "Else"
 msgstr "دیگری"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LStructogramShadowWidth..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LShadowWidth..Caption
-#: Utils/UConfiguration.dfm:2499 Utils/UConfiguration.dfm:2780
+#: Utils/UConfiguration.dfm:2509 Utils/UConfiguration.dfm:2790
 msgid "Width"
 msgstr "عرض"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LStructogramShadowIntensity..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LShadowIntensity..Caption
-#: Utils/UConfiguration.dfm:2506 Utils/UConfiguration.dfm:2787
+#: Utils/UConfiguration.dfm:2516 Utils/UConfiguration.dfm:2797
 msgid "Intensity"
 msgstr "شدت"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EInput..Text
-#: Utils/UConfiguration.dfm:2521 Utils/UConfiguration.pas:5067
+#: Utils/UConfiguration.dfm:2531 Utils/UConfiguration.pas:5078
 msgid "Input:"
 msgstr "ورودی:"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EOutput..Text
-#: Utils/UConfiguration.dfm:2529 Utils/UConfiguration.pas:5068
+#: Utils/UConfiguration.dfm:2539 Utils/UConfiguration.pas:5079
 msgid "Output:"
 msgstr "خروجی:"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EWhile..Text
-#: Utils/UConfiguration.dfm:2545 Utils/UConfiguration.pas:5069
+#: Utils/UConfiguration.dfm:2555 Utils/UConfiguration.pas:5080
 #, fuzzy
 msgid "repeat while"
 msgstr "تکرار در حالی که"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EFor..Text
-#: Utils/UConfiguration.dfm:2553 Utils/UConfiguration.pas:5070
+#: Utils/UConfiguration.dfm:2563 Utils/UConfiguration.pas:5081
 msgid "for item in list"
 msgstr "برای مورد در لیست"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EYes..Text
-#: Utils/UConfiguration.dfm:2561 Utils/UConfiguration.pas:5071
+#: Utils/UConfiguration.dfm:2571 Utils/UConfiguration.pas:5082
 msgid "yes"
 msgstr "بله"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..ENo..Text
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDNoFilling..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGVisibilityDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:2569 Utils/UConfiguration.dfm:2748
-#: Utils/UConfiguration.dfm:2997 Utils/UConfiguration.pas:5072
+#: Utils/UConfiguration.dfm:2579 Utils/UConfiguration.dfm:2758
+#: Utils/UConfiguration.dfm:3007 Utils/UConfiguration.pas:5083
 msgid "no"
 msgstr "خیر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EOther..Text
-#: Utils/UConfiguration.dfm:2620 Utils/UConfiguration.pas:5073
+#: Utils/UConfiguration.dfm:2630 Utils/UConfiguration.pas:5084
 #, fuzzy
 msgid "else"
 msgstr "دیگری"
@@ -8646,86 +8657,86 @@ msgstr "دیگری"
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..ESDObject..Text
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption....Items.Strings
 #. Sequencediagram
-#: Utils/UConfiguration.dfm:2664 Utils/UConfiguration.dfm:2693
-#: Utils/UConfiguration.dfm:2853 Utils/UConfiguration.pas:5076
+#: Utils/UConfiguration.dfm:2674 Utils/UConfiguration.dfm:2703
+#: Utils/UConfiguration.dfm:2863 Utils/UConfiguration.pas:5087
 msgid "Object"
 msgstr "شیء"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..LSDFilling..Caption
-#: Utils/UConfiguration.dfm:2685
+#: Utils/UConfiguration.dfm:2695
 #, fuzzy
 msgid "Filling"
 msgstr "پر کردن"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..ESDNew..Text
-#: Utils/UConfiguration.dfm:2701 Utils/UConfiguration.pas:5077
+#: Utils/UConfiguration.dfm:2711 Utils/UConfiguration.pas:5088
 msgid "new"
 msgstr "جدید"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..ESDClose..Text
-#: Utils/UConfiguration.dfm:2709 Utils/UConfiguration.pas:5078
+#: Utils/UConfiguration.dfm:2719 Utils/UConfiguration.pas:5089
 msgid "close"
 msgstr "بستن"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDShowMainCall..Caption
-#: Utils/UConfiguration.dfm:2724
+#: Utils/UConfiguration.dfm:2734
 #, fuzzy
 msgid "Show main call"
 msgstr "نمایش تماس اصلی"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDShowParameter..Caption
-#: Utils/UConfiguration.dfm:2732
+#: Utils/UConfiguration.dfm:2742
 #, fuzzy
 #| msgid "Unknown parameter"
 msgid "Show parameter"
 msgstr "مؤلّفه ی ناشناخته"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDShowReturn..Caption
-#: Utils/UConfiguration.dfm:2740
+#: Utils/UConfiguration.dfm:2750
 #, fuzzy
 #| msgid "Show Selection"
 msgid "Show return"
 msgstr "نمایش قسمت علامت خورده"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..Caption
-#: Utils/UConfiguration.dfm:2753
+#: Utils/UConfiguration.dfm:2763
 #, fuzzy
 msgid "UML Design"
 msgstr "UML طراحی"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LObjectDesign..Caption
-#: Utils/UConfiguration.dfm:2759
+#: Utils/UConfiguration.dfm:2769
 #, fuzzy
 msgid "Design of Objects"
 msgstr "طراحی اشیاء"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LClassDesign..Caption
-#: Utils/UConfiguration.dfm:2766
+#: Utils/UConfiguration.dfm:2776
 #, fuzzy
 msgid "Design of Classes"
 msgstr "طراحی کلاس ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LValidClassColor..Caption
-#: Utils/UConfiguration.dfm:2773
+#: Utils/UConfiguration.dfm:2783
 #, fuzzy
 #| msgid "Fold classes"
 msgid "valid class"
 msgstr "جمع کردن کلاس ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LInvalidClassColor..Caption
-#: Utils/UConfiguration.dfm:2794
+#: Utils/UConfiguration.dfm:2804
 #, fuzzy
 #| msgid "Unfold classes"
 msgid "invalid class"
 msgstr "گستردن کلاس ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LObjectColor..Caption
-#: Utils/UConfiguration.dfm:2808
+#: Utils/UConfiguration.dfm:2818
 msgid "Color"
 msgstr "رنگ"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LCommentDesign..Caption
-#: Utils/UConfiguration.dfm:2815
+#: Utils/UConfiguration.dfm:2825
 #, fuzzy
 #| msgid "&Ignore comments"
 msgid "Design of Comments"
@@ -8733,15 +8744,15 @@ msgstr "نادیده گرفتن یادداشت ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectHead..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGClassHead..Caption
-#: Utils/UConfiguration.dfm:2829 Utils/UConfiguration.dfm:2873
+#: Utils/UConfiguration.dfm:2839 Utils/UConfiguration.dfm:2883
 msgid "Head"
 msgstr "سر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectHead....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGClassHead....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectFooter....Items.Strings
-#: Utils/UConfiguration.dfm:2832 Utils/UConfiguration.dfm:2876
-#: Utils/UConfiguration.dfm:2938
+#: Utils/UConfiguration.dfm:2842 Utils/UConfiguration.dfm:2886
+#: Utils/UConfiguration.dfm:2948
 #, fuzzy
 msgid "rectangular"
 msgstr "مستطیل شکل"
@@ -8749,540 +8760,540 @@ msgstr "مستطیل شکل"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectHead....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGClassHead....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectFooter....Items.Strings
-#: Utils/UConfiguration.dfm:2833 Utils/UConfiguration.dfm:2877
-#: Utils/UConfiguration.dfm:2939
+#: Utils/UConfiguration.dfm:2843 Utils/UConfiguration.dfm:2887
+#: Utils/UConfiguration.dfm:2949
 msgid "rounded"
 msgstr "گرد"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption..Caption
-#: Utils/UConfiguration.dfm:2849
+#: Utils/UConfiguration.dfm:2859
 #, fuzzy
 msgid "Labeling"
 msgstr "برچسب گذاری"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption....Items.Strings
-#: Utils/UConfiguration.dfm:2852
+#: Utils/UConfiguration.dfm:2862
 #, fuzzy
 #| msgid "&Objects"
 msgid "Object: Class"
 msgstr "اشیاء"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption....Items.Strings
-#: Utils/UConfiguration.dfm:2854
+#: Utils/UConfiguration.dfm:2864
 #, fuzzy
 #| msgid "Classes"
 msgid ": Class"
 msgstr "نام کلاس"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..CBObjectUnderline..Caption
-#: Utils/UConfiguration.dfm:2863
+#: Utils/UConfiguration.dfm:2873
 msgid "Underlined"
 msgstr "مورد تأکید"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectFooter..Caption
-#: Utils/UConfiguration.dfm:2935
+#: Utils/UConfiguration.dfm:2945
 msgid "Foot"
 msgstr "فوت"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:2957
+#: Utils/UConfiguration.dfm:2967
 #, fuzzy
 msgid "not any"
 msgstr "نه هیچ"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGSequenceAttributsMethods..Caption
-#: Utils/UConfiguration.dfm:2968
+#: Utils/UConfiguration.dfm:2978
 msgid "Order"
 msgstr "سفارش"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGSequenceAttributsMethods....Items.Strings
-#: Utils/UConfiguration.dfm:2970
+#: Utils/UConfiguration.dfm:2980
 #, fuzzy
 #| msgid "Source Code"
 msgid "Sourcecode"
 msgstr "کد منبع"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGSequenceAttributsMethods....Items.Strings
-#: Utils/UConfiguration.dfm:2972
+#: Utils/UConfiguration.dfm:2982
 msgid "Alphabetical"
 msgstr "حروف الفبا"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGVisibilityDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:2999
+#: Utils/UConfiguration.dfm:3009
 msgid "Icons"
 msgstr "آیکون"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..Caption
-#: Utils/UConfiguration.dfm:3004
+#: Utils/UConfiguration.dfm:3014
 #, fuzzy
 #| msgid "Options"
 msgid "UML Options"
 msgstr "گزینه ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..Caption
-#: Utils/UConfiguration.dfm:3010
+#: Utils/UConfiguration.dfm:3020
 #, fuzzy
 msgid "Class representation"
 msgstr "نمایندگی کلاس"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBShowEmptyRects..Caption
-#: Utils/UConfiguration.dfm:3017
+#: Utils/UConfiguration.dfm:3027
 #, fuzzy
 msgid "show empty attribute and method rectangles"
 msgstr "نشان دادن ویژگی خالی و مستطیل روش"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBIntegerInsteadofInt..Caption
-#: Utils/UConfiguration.dfm:3027
+#: Utils/UConfiguration.dfm:3037
 #, fuzzy
 msgid "Integer instead of int"
 msgstr "Integer به جای int"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBShowClassparameterSeparately..Caption
-#: Utils/UConfiguration.dfm:3035
+#: Utils/UConfiguration.dfm:3045
 #, fuzzy
 msgid "Display class parameters separately"
 msgstr "نمایش پارامترهای کلاس به طور جداگانه"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBRoleHidesAttribute..Caption
-#: Utils/UConfiguration.dfm:3043
+#: Utils/UConfiguration.dfm:3053
 #, fuzzy
 #| msgid "Class attributes"
 msgid "Role hides attribute"
 msgstr "ویژگی های کلاس"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBConstructorWithVisibility..Caption
-#: Utils/UConfiguration.dfm:3051
+#: Utils/UConfiguration.dfm:3061
 #, fuzzy
 msgid "Show constructor with visibility"
 msgstr "نمایش سازنده با دید"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBRelationshipAttributesBold..Caption
-#: Utils/UConfiguration.dfm:3059
+#: Utils/UConfiguration.dfm:3069
 #, fuzzy
 msgid "Relationship attributes in bold"
 msgstr "ویژگی های رابطه در جسورانه"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..Caption
-#: Utils/UConfiguration.dfm:3068
+#: Utils/UConfiguration.dfm:3078
 #, fuzzy
 #| msgid "Goto implementation"
 msgid "Object representation"
 msgstr "رفتن به مورد به کار رفته"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBShowObjectsWithMethods..Caption
-#: Utils/UConfiguration.dfm:3075
+#: Utils/UConfiguration.dfm:3085
 #, fuzzy
 msgid "show with methods"
 msgstr "نمایش با روش"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBShowObjectsWithInheritedPrivateAttributes..Caption
-#: Utils/UConfiguration.dfm:3083
+#: Utils/UConfiguration.dfm:3093
 #, fuzzy
 msgid "show with inherited private attributes"
 msgstr "نمایش با ویژگی های خصوصی موروثی"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBShowAllNewObjects..Caption
-#: Utils/UConfiguration.dfm:3091
+#: Utils/UConfiguration.dfm:3101
 #, fuzzy
 #| msgid "Start a new project"
 msgid "show all new objects"
 msgstr "شروع یک پروژه ی جدید"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBLowerCaseLetter..Caption
-#: Utils/UConfiguration.dfm:3099
+#: Utils/UConfiguration.dfm:3109
 #, fuzzy
 msgid "start names with lowercase letters"
 msgstr "شروع نام با حروف کوچک"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBObjectsWithoutVisibility..Caption
-#: Utils/UConfiguration.dfm:3107
+#: Utils/UConfiguration.dfm:3117
 #, fuzzy
 msgid "without visibility"
 msgstr "بدون دید"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassEditing..Caption
-#: Utils/UConfiguration.dfm:3116
+#: Utils/UConfiguration.dfm:3126
 #, fuzzy
 #| msgid "Class Name"
 msgid "Class editing"
 msgstr "نام کلاس"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassEditing..CBOpenPublicClasses..Caption
-#: Utils/UConfiguration.dfm:3123
+#: Utils/UConfiguration.dfm:3133
 #, fuzzy
 msgid "only open public classes"
 msgstr "فقط کلاس های عمومی را باز کنید"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassEditing..CBDefaultModifiers..Caption
-#: Utils/UConfiguration.dfm:3131
+#: Utils/UConfiguration.dfm:3141
 #, fuzzy
 msgid "Standard modifiers for attributes and methods"
 msgstr "اصلاح کننده های استاندارد برای ویژگی ها و روش ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectEditing..Caption
-#: Utils/UConfiguration.dfm:3142
+#: Utils/UConfiguration.dfm:3152
 #, fuzzy
 msgid "Object editing"
 msgstr "ویرایش شیء"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectEditing..CBUMLEdit..Caption
-#: Utils/UConfiguration.dfm:3149
+#: Utils/UConfiguration.dfm:3159
 #, fuzzy
 msgid "private attributes editable"
 msgstr "ویژگی های خصوصی قابل ویرایش"
 
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..Caption
-#: Utils/UConfiguration.dfm:3157
+#: Utils/UConfiguration.dfm:3167
 #, fuzzy
 #| msgid "IDE &Shortcuts..."
 msgid "IDE Shortcuts"
 msgstr "میان برهای محیط توسعه(IDE)..."
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..LBrowser..Caption
-#: Utils/UConfiguration.dfm:3293
+#: Utils/UConfiguration.dfm:3303
 #, fuzzy
 #| msgid "External Tools"
 msgid "External browser"
 msgstr "ابزارهای خارجی"
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..LBrowserTitle..Caption
-#: Utils/UConfiguration.dfm:3300
+#: Utils/UConfiguration.dfm:3310
 #, fuzzy
 #| msgid "Browser"
 msgid "Browser title"
 msgstr "مرورگر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..LAltKeysBrowser..Caption
-#: Utils/UConfiguration.dfm:3307
+#: Utils/UConfiguration.dfm:3317
 #, fuzzy
 msgid "Keystrokes for \"Open address\" in the browser"
 msgstr "ضربه های کلیدی برای \"آدرس باز\" در مرورگر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..CBUseIEinternForDocuments..Caption
-#: Utils/UConfiguration.dfm:3314
+#: Utils/UConfiguration.dfm:3324
 #, fuzzy
 msgid "use Internet Explorer internally for documents"
 msgstr "استفاده از اینترنت اکسپلورر داخلی برای اسناد"
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..CBOnlyOneBrowserWindow..Caption
-#: Utils/UConfiguration.dfm:3322
+#: Utils/UConfiguration.dfm:3332
 #, fuzzy
 msgid "only use one browser window"
 msgstr "فقط از یک پنجره مرورگر استفاده کنید"
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..BBrowserTitle..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..BTempFolder..Caption
-#: Utils/UConfiguration.dfm:3360 Utils/UConfiguration.dfm:3471
+#: Utils/UConfiguration.dfm:3370 Utils/UConfiguration.dfm:3481
 #: Main/UObjectInspector.pas:563
 msgid "Default"
 msgstr "پیش فرض"
 
 #. FConfiguration..PMain..PanelRight..PageList..PLanguage..RGLanguages..Caption
-#: Utils/UConfiguration.dfm:3372
+#: Utils/UConfiguration.dfm:3382
 msgid "Languages"
 msgstr "زبان ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LTempFolder..Caption
-#: Utils/UConfiguration.dfm:3383
+#: Utils/UConfiguration.dfm:3393
 #, fuzzy
 #| msgid "File explorer filter"
 msgid "Folder for temporary files"
 msgstr "سرند کاوشگر فایل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LNoOfRecentFiles..Caption
-#: Utils/UConfiguration.dfm:3429 dmCommands.pas:2023
+#: Utils/UConfiguration.dfm:3439 dmCommands.pas:2023
 msgid "Number of recent files"
 msgstr "شمار فایل های اخیر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LDaysBetweenUpdateChecks..Caption
-#: Utils/UConfiguration.dfm:3436 dmCommands.pas:2009
+#: Utils/UConfiguration.dfm:3446 dmCommands.pas:2009
 msgid "Days between update checks"
 msgstr "فاصله ی بین روزهای بررسی به روز رسانی"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LDockAnimationInterval..Caption
-#: Utils/UConfiguration.dfm:3443
+#: Utils/UConfiguration.dfm:3453
 #, fuzzy
 #| msgid "Dock animation interval (ms)"
 msgid "Dock animation interval"
 msgstr "طول زمان پویانمایی سینی کار"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LDockAnimationMoveWidth..Caption
-#: Utils/UConfiguration.dfm:3450
+#: Utils/UConfiguration.dfm:3460
 #, fuzzy
 #| msgid "Dock animation move width (pixels)"
 msgid "Dock animation move width"
 msgstr "عرض حرکت پویانمایی سینی کار (برحسب پیکسل)"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LFileTemplateForNewPythonScripts..Caption
-#: Utils/UConfiguration.dfm:3457 dmCommands.pas:2021
+#: Utils/UConfiguration.dfm:3467 dmCommands.pas:2021
 msgid "File template for new Python scripts"
 msgstr "قالب فایل برای اسکریپت های پایتون"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBRestoreOpenFiles..Caption
-#: Utils/UConfiguration.dfm:3498 dmCommands.pas:2027
+#: Utils/UConfiguration.dfm:3508 dmCommands.pas:2027
 msgid "Restore open files"
 msgstr "بازگشایی فایل های باز"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBRestoreOpenProject..Caption
-#: Utils/UConfiguration.dfm:3506 dmCommands.pas:2029
+#: Utils/UConfiguration.dfm:3516 dmCommands.pas:2029
 #, fuzzy
 msgid "Restore open project"
 msgstr "بازگرداندن پروژه باز"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBShowTabCloseButton..Caption
-#: Utils/UConfiguration.dfm:3514 dmCommands.pas:2015
+#: Utils/UConfiguration.dfm:3524 dmCommands.pas:2015
 msgid "Show tab close button"
 msgstr "نمایش دکمه ی بستن سربرگ"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBSmartNextPrevPage..Caption
-#: Utils/UConfiguration.dfm:3522
+#: Utils/UConfiguration.dfm:3532
 #, fuzzy
 #| msgid "Smart Next Previous Page"
 msgid "Smart next prev page"
 msgstr "صفحه ی بعدی قبلی هوشمند"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBStyleMainWindowBorder..Caption
-#: Utils/UConfiguration.dfm:3530
+#: Utils/UConfiguration.dfm:3540
 #, fuzzy
 #| msgid "Style Main Window Border"
 msgid "Style main window border"
 msgstr "تغییر سبک لبه ی پنجره ی اصلی"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBAutoCheckForUpdates..Caption
-#: Utils/UConfiguration.dfm:3538
+#: Utils/UConfiguration.dfm:3548
 #, fuzzy
 #| msgid "Check for updates automatically"
 msgid "Check for updates automaticallly"
 msgstr "بررسی خودکار به روز رسانی ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGEditorTabPosition..Caption
-#: Utils/UConfiguration.dfm:3594 dmCommands.pas:2011
+#: Utils/UConfiguration.dfm:3604 dmCommands.pas:2011
 msgid "Editor tab position"
 msgstr "موقعیّت زبانه ی ویرایشگر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBExporerInitiallyExpanded..Caption
-#: Utils/UConfiguration.dfm:3613
+#: Utils/UConfiguration.dfm:3623
 #, fuzzy
 #| msgid "Initially expanded"
 msgid "File explorer initially expanded"
 msgstr "گسترش یافته از ابتدا"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBProjectExporerInitiallyExpanded..Caption
-#: Utils/UConfiguration.dfm:3621
+#: Utils/UConfiguration.dfm:3631
 #, fuzzy
 #| msgid "Initially expanded"
 msgid "Project explorer initially expanded"
 msgstr "گسترش یافته از ابتدا"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBFileExplorerContextMenu..Caption
-#: Utils/UConfiguration.dfm:3629
+#: Utils/UConfiguration.dfm:3639
 #, fuzzy
 #| msgid "File Explorer context menu"
 msgid "File explorer context menu"
 msgstr "منوی محتوای کاوشگر فایل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBFileExplorerBackgroundProcessing..Caption
-#: Utils/UConfiguration.dfm:3637
+#: Utils/UConfiguration.dfm:3647
 #, fuzzy
 #| msgid "File Explorer background processing"
 msgid "File explorer background processing"
 msgstr "پردازش پس زمینه ی کاوشگر فایل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification..Caption
-#: Utils/UConfiguration.dfm:3645
+#: Utils/UConfiguration.dfm:3655
 #, fuzzy
 #| msgid "File Change Notification"
 msgid "File change notification"
 msgstr "اعلان تغییر فایل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification....Items.Strings
-#: Utils/UConfiguration.dfm:3647 Main/UObjectInspector.pas:562
+#: Utils/UConfiguration.dfm:3657 Main/UObjectInspector.pas:562
 msgid "Full"
 msgstr "کامل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification....Items.Strings
-#: Utils/UConfiguration.dfm:3648
+#: Utils/UConfiguration.dfm:3658
 #, fuzzy
 #| msgid "All matched files"
 msgid "No mapped files"
 msgstr "همه ی فایل های منطبق"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification....Items.Strings
-#: Utils/UConfiguration.dfm:3649
+#: Utils/UConfiguration.dfm:3659
 msgid "Disabled"
 msgstr "غیر فعال"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBMethodsWithComment..Caption
-#: Utils/UConfiguration.dfm:3657
+#: Utils/UConfiguration.dfm:3667
 #, fuzzy
 msgid "Methods with comment"
 msgstr "روش های با نظر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBSaveFilesAutomatically..Caption
-#: Utils/UConfiguration.dfm:3665
+#: Utils/UConfiguration.dfm:3675
 #, fuzzy
 #| msgid "Check for updates automatically"
 msgid "Save files automatically when closing"
 msgstr "بررسی خودکار به روز رسانی ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..Caption
-#: Utils/UConfiguration.dfm:3670
+#: Utils/UConfiguration.dfm:3680
 msgid "Styles"
 msgstr "استایل ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..BApplyStyle..Caption
-#: Utils/UConfiguration.dfm:3708
+#: Utils/UConfiguration.dfm:3718
 #, fuzzy
 #| msgid "&Apply Style"
 msgid "Apply Style"
 msgstr "اعمال ظاهر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Caption
-#: Utils/UConfiguration.dfm:3714
+#: Utils/UConfiguration.dfm:3724
 msgid "Printer"
 msgstr "چاپگر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..Caption
-#: Utils/UConfiguration.dfm:4967
+#: Utils/UConfiguration.dfm:4977
 msgid "Header/Footer"
 msgstr "سربرگ/فوتر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..Caption
-#: Utils/UConfiguration.dfm:5334
+#: Utils/UConfiguration.dfm:5344
 msgid "Restrictions"
 msgstr "محدودیت ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..LRestrictions..Caption
-#: Utils/UConfiguration.dfm:5340
+#: Utils/UConfiguration.dfm:5350
 #, fuzzy
 msgid "Restrictions can only be modified with administrator rights."
 msgstr "محدودیت ها فقط می توانند با مدیر-حقوق اصلاح شوند."
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedInternet..Caption
-#: Utils/UConfiguration.dfm:5353
+#: Utils/UConfiguration.dfm:5363
 #, fuzzy
 msgid "Lock internet access"
 msgstr "قفل دسترسی به اینترنت"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedPaths..Caption
-#: Utils/UConfiguration.dfm:5361
+#: Utils/UConfiguration.dfm:5371
 #, fuzzy
 msgid "Lock paths"
 msgstr "مسیرهای قفل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedDosWindow..Caption
-#: Utils/UConfiguration.dfm:5369
+#: Utils/UConfiguration.dfm:5379
 #, fuzzy
 msgid "Deactivate DOS-Window"
 msgstr "غیر فعال کردن DOS-Window"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedStructogram..Caption
-#: Utils/UConfiguration.dfm:5377
+#: Utils/UConfiguration.dfm:5387
 #, fuzzy
 msgid "Lock conversion structogram <-> program"
 msgstr "قفل تبدیل برنامه <-> structogram</->"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBUsePredefinedLayouts..Caption
-#: Utils/UConfiguration.dfm:5385
+#: Utils/UConfiguration.dfm:5395
 #, fuzzy
 msgid "Use predefined default and debug layouts"
 msgstr "استفاده از طرح های پیش فرض و اشکال زدایی از پیش تعریف شده"
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..Caption
-#: Utils/UConfiguration.dfm:5390
+#: Utils/UConfiguration.dfm:5400
 #, fuzzy
 #| msgid "Donations"
 msgid "Associations"
 msgstr "پیشکش ها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LAssociations..Caption
-#: Utils/UConfiguration.dfm:5396
+#: Utils/UConfiguration.dfm:5406
 #, fuzzy
 msgid "Associate these file extensions with GuiPy"
 msgstr "مرتبط کردن این پسوند فایل با GuiPy"
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LAdditionalAssociations..Caption
-#: Utils/UConfiguration.dfm:5403
+#: Utils/UConfiguration.dfm:5413
 #, fuzzy
 #| msgid "Display file extensions"
 msgid "Additional file extensions"
 msgstr "نمایش پسوندهای فایل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LJEAssociation..Caption
-#: Utils/UConfiguration.dfm:5417
+#: Utils/UConfiguration.dfm:5427
 #, fuzzy
 msgid "Association of GuiPy"
 msgstr "انجمن GuiPy"
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..BFileExtensions..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..BJEAssociation..Caption
-#: Utils/UConfiguration.dfm:5505 Utils/UConfiguration.dfm:5521
+#: Utils/UConfiguration.dfm:5515 Utils/UConfiguration.dfm:5531
 msgid "Change"
 msgstr "تغییر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LScpCommand..Caption
-#: Utils/UConfiguration.dfm:5558 dmCommands.pas:2191
+#: Utils/UConfiguration.dfm:5568 dmCommands.pas:2191
 msgid "SCP command"
 msgstr "دستور پروتکل کپی امن فایل (SCP)"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LScpOptions..Caption
-#: Utils/UConfiguration.dfm:5565 cSSHSupport.pas:259 dmCommands.pas:2193
+#: Utils/UConfiguration.dfm:5575 cSSHSupport.pas:259 dmCommands.pas:2193
 msgid "SCP options"
 msgstr "گزینه های پروتکل کپی امن فایل (SCP)"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LSSHCommand..Caption
-#: Utils/UConfiguration.dfm:5572 dmCommands.pas:2187
+#: Utils/UConfiguration.dfm:5582 dmCommands.pas:2187
 msgid "SSH command"
 msgstr "دستور پوسته ی ایمن"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LSSHOptions..Caption
-#: Utils/UConfiguration.dfm:5579 cSSHSupport.pas:255 dmCommands.pas:2189
+#: Utils/UConfiguration.dfm:5589 cSSHSupport.pas:255 dmCommands.pas:2189
 msgid "SSH options"
 msgstr "گزینه های پوسته ی ایمن"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..CBSSHDisableVariablesWin..Caption
-#: Utils/UConfiguration.dfm:5586 dmCommands.pas:2195
+#: Utils/UConfiguration.dfm:5596 dmCommands.pas:2195
 msgid "Disable Variables Window with SSH"
 msgstr "غیر فعّال سازی پنجره ی متغیّرها با SSH"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LGitFolder..Caption
-#: Utils/UConfiguration.dfm:5632
+#: Utils/UConfiguration.dfm:5642
 #, fuzzy
 #| msgid "Folder"
 msgid "Git folder"
 msgstr "پوشه"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LLocalRepository..Caption
-#: Utils/UConfiguration.dfm:5648
+#: Utils/UConfiguration.dfm:5658
 #, fuzzy
 msgid "Repository local"
 msgstr "مخزن محلی"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LUserName..Caption
-#: Utils/UConfiguration.dfm:5655
+#: Utils/UConfiguration.dfm:5665
 #, fuzzy
 #| msgid "User name"
 msgid "user.name"
 msgstr "نام کاربر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LRemoteRepository..Caption
-#: Utils/UConfiguration.dfm:5662
+#: Utils/UConfiguration.dfm:5672
 #, fuzzy
 msgid "Repository remote"
 msgstr "مخزن از راه دور"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..BGitClone..Caption
-#: Utils/UConfiguration.dfm:5729
+#: Utils/UConfiguration.dfm:5739
 msgid "Clone"
 msgstr "شبیه"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..LRepository..Caption
-#: Utils/UConfiguration.dfm:5741
+#: Utils/UConfiguration.dfm:5751
 msgid "Repository"
 msgstr "مخزن"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..LSVN..Caption
-#: Utils/UConfiguration.dfm:5748
+#: Utils/UConfiguration.dfm:5758
 #, fuzzy
 #| msgid "Folder"
 msgid "SVN folder"
@@ -9562,7 +9573,7 @@ msgstr "لطفاً انتخاب کنید"
 msgid "Replace this occurrence of \"%s\"?"
 msgstr "این مورد \"%s\" جایگزین شود؟"
 
-#: dlgCustomShortcuts.pas:156 Utils/UConfiguration.pas:3852
+#: dlgCustomShortcuts.pas:156 Utils/UConfiguration.pas:3863
 msgid "Unassigned"
 msgstr "تعیین نشده"
 
@@ -9586,11 +9597,11 @@ msgstr ""
 "پوشه ی داراب نصب پایتون را انتخاب کنید ( شامل محیط مجازی virtualenv و venv می "
 "شود)"
 
-#: dlgPythonVersions.pas:220 Utils/UConfiguration.pas:2717
+#: dlgPythonVersions.pas:220 Utils/UConfiguration.pas:2721
 msgid "Rename Python Version"
 msgstr "تغییر نام نگارش پایتون"
 
-#: dlgPythonVersions.pas:220 Utils/UConfiguration.pas:2717
+#: dlgPythonVersions.pas:220 Utils/UConfiguration.pas:2721
 msgid "New name:"
 msgstr "نام جدید:"
 
@@ -9804,7 +9815,7 @@ msgstr "ویژگی های کلاس"
 msgid "Class attribute \"%s\" defined at line %d"
 msgstr "ویژگی کلاس  \"%s\" در خط %d تعریف شده"
 
-#: frmEditor.pas:5217 frmPyIDEMain.pas:2005
+#: frmEditor.pas:5217 frmPyIDEMain.pas:2006
 #, fuzzy
 #| msgid "Export"
 msgid "Export to"
@@ -9863,60 +9874,60 @@ msgstr ""
 msgid "GuiPy project files (*.%s)|*.%0:s"
 msgstr "فایل پروژه های PyScripter(*.%s)|*.%0:s"
 
-#: frmPyIDEMain.pas:1920
+#: frmPyIDEMain.pas:1921
 msgid "Associated python file %s not found."
 msgstr "پرونده پایتون مرتبط %s یافت نشد."
 
-#: frmPyIDEMain.pas:3045 Main/UBrowser.pas:158 Utils/UConfiguration.pas:2229
+#: frmPyIDEMain.pas:3046 Main/UBrowser.pas:158 Utils/UConfiguration.pas:2233
 #, fuzzy
 #| msgid "&Indent Block"
 msgid "Internet locked!"
 msgstr "تو گذاری تکّه کد"
 
-#: frmPyIDEMain.pas:3334
+#: frmPyIDEMain.pas:3335
 msgid "Debug"
 msgstr "اشکال زدا"
 
-#: frmPyIDEMain.pas:3422
+#: frmPyIDEMain.pas:3423
 msgid "Running"
 msgstr "در حال اجرا"
 
-#: frmPyIDEMain.pas:3426
+#: frmPyIDEMain.pas:3427
 msgid "Paused"
 msgstr "متوقّف"
 
-#: frmPyIDEMain.pas:3434
+#: frmPyIDEMain.pas:3435
 msgid "Post mortem"
 msgstr "کالبد شکافی"
 
-#: frmPyIDEMain.pas:3440
+#: frmPyIDEMain.pas:3441
 msgid "Python not available"
 msgstr "پایتون در دسترس نیست"
 
-#: frmPyIDEMain.pas:3443
+#: frmPyIDEMain.pas:3444
 msgid "Debugger state: "
 msgstr "حالت اشکال زدا: "
 
-#: frmPyIDEMain.pas:3985
+#: frmPyIDEMain.pas:3986
 msgid "Python Not Available"
 msgstr "پایتون در دسترس نیست"
 
-#: frmPyIDEMain.pas:3990 frmPyIDEMain.pas:3993
+#: frmPyIDEMain.pas:3991 frmPyIDEMain.pas:3994
 #, fuzzy
 msgid "Language server"
 msgstr "سرور زبان"
 
-#: frmPyIDEMain.pas:3993
+#: frmPyIDEMain.pas:3994
 msgid "Not available"
 msgstr "در دسترس نیست"
 
-#: frmPyIDEMain.pas:4172 frmPyIDEMain.pas:4200
+#: frmPyIDEMain.pas:4173 frmPyIDEMain.pas:4201
 #, fuzzy
 #| msgid "File Templates"
 msgid "File template %s missing!"
 msgstr "الگوهای فایل"
 
-#: frmPyIDEMain.pas:5699 Utils/UConfiguration.pas:2356
+#: frmPyIDEMain.pas:5703 Utils/UConfiguration.pas:2360
 #, fuzzy
 #| msgid "\"%s\" not found"
 msgid "File \\\"%s\\\" not found."
@@ -12023,35 +12034,46 @@ msgstr "شماره ی خطّ حاضر در سند فعّال"
 msgid "Selected text in the active document"
 msgstr "متن انتخاب شده در سند فعال"
 
-#: Components/UBaseWidgets.pas:219
+#: Components/UBaseWidgets.pas:221
 msgid "America"
 msgstr "آمریکا"
 
-#: Components/UBaseWidgets.pas:219
+#: Components/UBaseWidgets.pas:221
 msgid "Europe"
 msgstr "اروپا"
 
-#: Components/UBaseWidgets.pas:219
+#: Components/UBaseWidgets.pas:221
 msgid "Asia"
 msgstr "آسیا"
 
-#: Components/PyQt/UQtSpinBoxes.pas:739
+#: Components/PyQt/UQtSpinBoxes.pas:743
 #, fuzzy
 #| msgid "Invalid condition format"
 msgid "invalid date time format"
 msgstr "قالب شرطی نامشخّص"
 
-#: Components/PyQt/UQtSpinBoxes.pas:847
+#: Components/PyQt/UQtSpinBoxes.pas:852
 #, fuzzy
 #| msgid "Invalid condition format"
 msgid "invalid date format"
 msgstr "قالب شرطی نامشخّص"
 
-#: Components/PyQt/UQtSpinBoxes.pas:892
+#: Components/PyQt/UQtSpinBoxes.pas:898
 #, fuzzy
 #| msgid "Invalid condition format"
 msgid "invalid time format"
 msgstr "قالب شرطی نامشخّص"
+
+#: Components/PyQt/UQtWidgetDescendants.pas:1857
+#: Components/PyQt/UQtWidgetDescendants.pas:2029
+#: Components/TKinter/UTKMiscBase.pas:1442
+#: Components/TKinter/UTKMiscBase.pas:1632
+#: Components/TTKinter/UTTKMiscBase.pas:836
+#: Components/TTKinter/UTTKMiscBase.pas:1020
+#, fuzzy
+#| msgid "&Contents"
+msgid "Continent"
+msgstr "مطالب"
 
 #: EssModel/Integrator/View/UDiagramFrame.pas:354
 #, fuzzy
@@ -12111,7 +12133,7 @@ msgstr "برای تکمیل مؤلّفه ها"
 msgid "Edit object"
 msgstr "حذف مورد"
 
-#: Formdesigner/ELDsgnr.pas:1358
+#: Formdesigner/ELDsgnr.pas:1371
 msgid "Size"
 msgstr "اندازه"
 
@@ -12160,15 +12182,15 @@ msgstr "گرفتن"
 msgid "Methods"
 msgstr "&Methods"
 
-#: Main/UClassEditor.pas:1103 Main/UClassEditor.pas:2340
+#: Main/UClassEditor.pas:1102 Main/UClassEditor.pas:2339
 msgid "%s already exists"
 msgstr "%s در حال حاضر وجود دارد"
 
-#: Main/UClassEditor.pas:1239
+#: Main/UClassEditor.pas:1238
 msgid "Method %s contains source code."
 msgstr "روش %s حاوی کد منبع است."
 
-#: Main/UClassEditor.pas:1240
+#: Main/UClassEditor.pas:1239
 #, fuzzy
 #| msgid "Source Code"
 msgid "Delete method with source code?"
@@ -12408,11 +12430,11 @@ msgstr "%d حذف شده"
 msgid "No differences."
 msgstr "یافتن ارجاع بعدی"
 
-#: Utils/UConfiguration.pas:2444
+#: Utils/UConfiguration.pas:2448
 msgid "Form"
 msgstr "فرم"
 
-#: Utils/UConfiguration.pas:2622
+#: Utils/UConfiguration.pas:2626
 #, fuzzy
 #| msgid ""
 #| "Select folder with Python installation (inlcuding virtualenv and venv)"

@@ -54,7 +54,6 @@ type
     FWindowIconChanged: string;
     FWindowTitleChanged: string;
     procedure MakeContextMenu(Value: string);
-    procedure MakeFont;
     function getType: String;
     function getContainer: string;
     function getAttrAsKey(Attr: string): string;
@@ -87,6 +86,7 @@ type
     procedure Resize; override;
     procedure SetPositionAndSize; override;
     function getNameAndType: String; override;
+    procedure MakeFont; override;
   published
     // common attribute for QWidget
     property Enabled: boolean read FEnabled write FEnabled;
@@ -127,10 +127,10 @@ begin
   FocusPolicy:= NoFocus;
   LayoutDirection:= LeftToRight;
   ContextMenuPolicy:= DefaultContextMenu;
-  Canvas.Font.PixelsPerInch:= 72;
-  Font.PixelsPerInch:= 72;
-  Font.Name:= 'MS Shell Dlg 2';
-  Font.Size:= 8;
+  //Canvas.Font.PixelsPerInch:= 96; // 72;
+  //Font.PixelsPerInch:= 96; // 72;
+  Font.Name:= 'Segoe UI';
+  Font.Size:= 9;
   Font.Style:= [];
   HelpType:= htContext;
   Sizeable:= true;
@@ -223,6 +223,11 @@ begin
     ', ' + IntToStr(R.Right) + ', ' + IntToStr(R.Bottom) + ')');
 end;
 
+procedure setFontSize;
+begin
+
+end;
+
 function TBaseQtWidget.getAttrAsKey(Attr: string): string;
 begin
   Result:= 'self.' + Name + '.set' + Attr;
@@ -280,7 +285,7 @@ end;
 procedure TBaseQtWidget.Paint;
 begin
   Canvas.Font.Assign(Font);
-  Canvas.Font.Size:= Font.Size + (Font.Size + 1) div 3;
+  Canvas.Font.Size:= Font.Size; // + (Font.Size + 1) div 3;
   Canvas.Font.Color:= clWindowText;
   FHalfX:= Canvas.TextWidth('x') div 2;
 end;
@@ -364,8 +369,10 @@ procedure TBaseQtWidget.MakeFont;
 begin
   s1:= 'self.' + Name + '.setFont';
   s2:= '(QFont(' + asString(Font.Name) + ', ' + IntToStr(Font.Size);
-  if fsBold   in Font.Style then s2:= s2 + ', QFont.Bold';
-  if fsItalic in Font.Style then s2:= s2 + ', QFont.StyleItalic';
+  if fsBold in Font.Style then
+    s2:= s2 + ', QFont.Weight.Bold';
+  if fsItalic in Font.Style then
+    s2:= s2 + ', italic=True';
   s2:= s2 + '))';
   setAttributValue(s1, s1 + s2);
   s1:= 'self.' + Name + '.font().setUnderline';

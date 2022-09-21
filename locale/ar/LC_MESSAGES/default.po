@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PyScripter GUI translation\n"
-"POT-Creation-Date: 2022-08-20 17:41\n"
-"PO-Revision-Date: 2022-08-20 17:52+0200\n"
+"POT-Creation-Date: 2022-09-21 17:11\n"
+"PO-Revision-Date: 2022-09-21 17:17+0200\n"
 "Last-Translator: Mohammed Nasman <mnasman@gmail.com>, 2020\n"
 "Language-Team: Arabic (https://www.transifex.com/pyscripter/teams/116142/"
 "ar/)\n"
@@ -198,7 +198,7 @@ msgstr "&مساعدة"
 
 #. CodeTemplates..Panel..GroupBox..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Caption
-#: dlgCodeTemplates.dfm:110 Utils/UConfiguration.dfm:1878
+#: dlgCodeTemplates.dfm:110 Utils/UConfiguration.dfm:1888
 msgid "Code Template:"
 msgstr "قالب الكود:"
 
@@ -211,7 +211,7 @@ msgstr "قالب الكود:"
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label19..Caption
 #: dlgCodeTemplates.dfm:120 dlgCustomParams.dfm:121 dlgFileTemplates.dfm:41
 #: dlgToolProperties.dfm:96 dlgToolProperties.dfm:212
-#: Utils/UConfiguration.dfm:1888 Utils/UConfiguration.dfm:2099
+#: Utils/UConfiguration.dfm:1898 Utils/UConfiguration.dfm:2109
 msgid "&Name:"
 msgstr "الإ&سم:"
 
@@ -220,13 +220,13 @@ msgstr "الإ&سم:"
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label4..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label20..Caption
 #: dlgCodeTemplates.dfm:127 dlgFileTemplates.dfm:49
-#: Utils/UConfiguration.dfm:1895 Utils/UConfiguration.dfm:2107
+#: Utils/UConfiguration.dfm:1905 Utils/UConfiguration.dfm:2117
 msgid "&Template:"
 msgstr "&قالب:"
 
 #. CodeTemplates..Panel..GroupBox..Label5..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label16..Caption
-#: dlgCodeTemplates.dfm:134 Utils/UConfiguration.dfm:1902
+#: dlgCodeTemplates.dfm:134 Utils/UConfiguration.dfm:1912
 msgid "&Description:"
 msgstr "الو&صف:"
 
@@ -236,7 +236,7 @@ msgstr "الو&صف:"
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label17..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label22..Caption
 #: dlgCodeTemplates.dfm:141 dlgCustomParams.dfm:38 dlgFileTemplates.dfm:65
-#: Utils/UConfiguration.dfm:1909 Utils/UConfiguration.dfm:2123
+#: Utils/UConfiguration.dfm:1919 Utils/UConfiguration.dfm:2133
 #, fuzzy
 msgid "Press Shift+Ctrl+M for Modifier completion"
 msgstr "اضغط على Shift +Ctrl+M لإتمام التعديل"
@@ -247,7 +247,7 @@ msgstr "اضغط على Shift +Ctrl+M لإتمام التعديل"
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label18..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label23..Caption
 #: dlgCodeTemplates.dfm:155 dlgCustomParams.dfm:30 dlgFileTemplates.dfm:73
-#: Utils/UConfiguration.dfm:1923 Utils/UConfiguration.dfm:2131
+#: Utils/UConfiguration.dfm:1933 Utils/UConfiguration.dfm:2141
 msgid "Press Shift+Ctrl+P for Parameter completion"
 msgstr "اضغط Shift+Ctrl+P لتكملة المعامل"
 
@@ -268,9 +268,9 @@ msgstr "اضغط Shift+Ctrl+P لتكملة المعامل"
 #: dlgCodeTemplates.dfm:232 dlgCustomParams.dfm:191 dlgFileTemplates.dfm:252
 #: dlgPythonVersions.dfm:37 dlgToolProperties.dfm:168 frmRegExpTester.dfm:265
 #: frmVariables.dfm:134 Main/UClassEditor.dfm:62 Main/UClassEditor.dfm:134
-#: Main/UClassEditor.dfm:316 Main/UClassEditor.dfm:436
-#: Utils/UConfiguration.dfm:216 Utils/UConfiguration.dfm:1998
-#: Utils/UConfiguration.dfm:2068 frmVariables.pas:453
+#: Main/UClassEditor.dfm:320 Main/UClassEditor.dfm:444
+#: Utils/UConfiguration.dfm:216 Utils/UConfiguration.dfm:2008
+#: Utils/UConfiguration.dfm:2078 frmVariables.pas:453
 msgid "Name"
 msgstr "الاسم"
 
@@ -280,7 +280,7 @@ msgstr "الاسم"
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..CodeTemplatesLvItems......Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..gbDescription..Caption
 #: dlgCodeTemplates.dfm:236 dlgCustomShortcuts.dfm:177 frmToDo.dfm:139
-#: Utils/UConfiguration.dfm:2002 Utils/UConfiguration.dfm:3269
+#: Utils/UConfiguration.dfm:2012 Utils/UConfiguration.dfm:3279
 msgid "Description"
 msgstr "الوصف"
 
@@ -294,8 +294,8 @@ msgstr "الوصف"
 #. FConfiguration..PTemplatesActionList..actFileAddItem..Caption
 #: dlgCodeTemplates.dfm:255 dlgCustomParams.dfm:213 dlgFileTemplates.dfm:274
 #: dlgSynEditOptions.dfm:937 dlgToolProperties.dfm:711
-#: Utils/UConfiguration.dfm:1569 Utils/UConfiguration.dfm:5848
-#: Utils/UConfiguration.dfm:5883
+#: Utils/UConfiguration.dfm:1569 Utils/UConfiguration.dfm:5858
+#: Utils/UConfiguration.dfm:5893
 msgid "&Add"
 msgstr "إ&ضافة"
 
@@ -306,8 +306,8 @@ msgstr "إ&ضافة"
 #. FConfiguration..PTemplatesActionList..actCodeAddItem..Hint
 #. FConfiguration..PTemplatesActionList..actFileAddItem..Hint
 #: dlgCodeTemplates.dfm:256 dlgCustomParams.dfm:214 dlgFileTemplates.dfm:275
-#: dlgToolProperties.dfm:712 Utils/UConfiguration.dfm:5849
-#: Utils/UConfiguration.dfm:5884
+#: dlgToolProperties.dfm:712 Utils/UConfiguration.dfm:5859
+#: Utils/UConfiguration.dfm:5894
 msgid "Add item"
 msgstr "إضافة عنصر"
 
@@ -320,8 +320,8 @@ msgstr "إضافة عنصر"
 #. FConfiguration..PTemplatesActionList..actCodeDeleteItem..Caption
 #. FConfiguration..PTemplatesActionList..actFileDeleteItem..Caption
 #: dlgCodeTemplates.dfm:262 dlgCustomParams.dfm:220 dlgDirectoryList.dfm:145
-#: dlgFileTemplates.dfm:281 dlgToolProperties.dfm:718 Main/UClassEditor.dfm:709
-#: Utils/UConfiguration.dfm:5855 Utils/UConfiguration.dfm:5890
+#: dlgFileTemplates.dfm:281 dlgToolProperties.dfm:718 Main/UClassEditor.dfm:721
+#: Utils/UConfiguration.dfm:5865 Utils/UConfiguration.dfm:5900
 msgid "&Delete"
 msgstr "&حذف"
 
@@ -332,8 +332,8 @@ msgstr "&حذف"
 #. FConfiguration..PTemplatesActionList..actCodeDeleteItem..Hint
 #. FConfiguration..PTemplatesActionList..actFileDeleteItem..Hint
 #: dlgCodeTemplates.dfm:263 dlgCustomParams.dfm:221 dlgFileTemplates.dfm:282
-#: dlgToolProperties.dfm:719 Utils/UConfiguration.dfm:5856
-#: Utils/UConfiguration.dfm:5891
+#: dlgToolProperties.dfm:719 Utils/UConfiguration.dfm:5866
+#: Utils/UConfiguration.dfm:5901
 msgid "Delete item"
 msgstr "حذف عنصر"
 
@@ -346,7 +346,7 @@ msgstr "حذف عنصر"
 #. FConfiguration..PTemplatesActionList..actFileMoveUp..Caption
 #: dlgCodeTemplates.dfm:269 dlgCollectionEditor.dfm:100 dlgCustomParams.dfm:227
 #: dlgFileTemplates.dfm:288 frmFileExplorer.dfm:320
-#: Utils/UConfiguration.dfm:5862 Utils/UConfiguration.dfm:5897
+#: Utils/UConfiguration.dfm:5872 Utils/UConfiguration.dfm:5907
 msgid "&Up"
 msgstr "&للأعلي"
 
@@ -356,7 +356,7 @@ msgstr "&للأعلي"
 #. FConfiguration..PTemplatesActionList..actCodeMoveUp..Hint
 #. FConfiguration..PTemplatesActionList..actFileMoveUp..Hint
 #: dlgCodeTemplates.dfm:270 dlgCustomParams.dfm:228 dlgFileTemplates.dfm:289
-#: Utils/UConfiguration.dfm:5863 Utils/UConfiguration.dfm:5898
+#: Utils/UConfiguration.dfm:5873 Utils/UConfiguration.dfm:5908
 msgid "Move item up"
 msgstr "رفع العنصر لأعلي"
 
@@ -367,8 +367,8 @@ msgstr "رفع العنصر لأعلي"
 #. FConfiguration..PTemplatesActionList..actCodeMoveDown..Caption
 #. FConfiguration..PTemplatesActionList..actFileMoveDown..Caption
 #: dlgCodeTemplates.dfm:276 dlgCollectionEditor.dfm:110 dlgCustomParams.dfm:234
-#: dlgFileTemplates.dfm:295 Utils/UConfiguration.dfm:5869
-#: Utils/UConfiguration.dfm:5904
+#: dlgFileTemplates.dfm:295 Utils/UConfiguration.dfm:5879
+#: Utils/UConfiguration.dfm:5914
 msgid "&Down"
 msgstr "لأ&سفل"
 
@@ -378,7 +378,7 @@ msgstr "لأ&سفل"
 #. FConfiguration..PTemplatesActionList..actCodeMoveDown..Hint
 #. FConfiguration..PTemplatesActionList..actFileMoveDown..Hint
 #: dlgCodeTemplates.dfm:277 dlgCustomParams.dfm:235 dlgFileTemplates.dfm:296
-#: Utils/UConfiguration.dfm:5870 Utils/UConfiguration.dfm:5905
+#: Utils/UConfiguration.dfm:5880 Utils/UConfiguration.dfm:5915
 msgid "Move item down"
 msgstr "نقل العنصر لأسفل"
 
@@ -392,8 +392,8 @@ msgstr "نقل العنصر لأسفل"
 #. FConfiguration..PTemplatesActionList..actFileUpdateItem..Caption
 #: dlgCodeTemplates.dfm:283 dlgCustomParams.dfm:241 dlgFileTemplates.dfm:302
 #: dlgSynEditOptions.dfm:955 dlgToolProperties.dfm:725
-#: Utils/UConfiguration.dfm:1578 Utils/UConfiguration.dfm:5876
-#: Utils/UConfiguration.dfm:5911
+#: Utils/UConfiguration.dfm:1578 Utils/UConfiguration.dfm:5886
+#: Utils/UConfiguration.dfm:5921
 msgid "&Update"
 msgstr "&تحديث"
 
@@ -404,8 +404,8 @@ msgstr "&تحديث"
 #. FConfiguration..PTemplatesActionList..actCodeUpdateItem..Hint
 #. FConfiguration..PTemplatesActionList..actFileUpdateItem..Hint
 #: dlgCodeTemplates.dfm:284 dlgCustomParams.dfm:242 dlgFileTemplates.dfm:303
-#: dlgToolProperties.dfm:726 Utils/UConfiguration.dfm:5877
-#: Utils/UConfiguration.dfm:5912
+#: dlgToolProperties.dfm:726 Utils/UConfiguration.dfm:5887
+#: Utils/UConfiguration.dfm:5922
 msgid "Update item"
 msgstr "تحديث عنصر"
 
@@ -424,7 +424,7 @@ msgstr "إ&ضافة..."
 #. FConfiguration..IDEShortcutsActionList1..actRemoveShortcut..Caption
 #: dlgCollectionEditor.dfm:58 dlgCustomShortcuts.dfm:202
 #: dlgSynEditOptions.dfm:946 dlgToDoOptions.dfm:114 frmProjectExplorer.dfm:258
-#: Utils/UConfiguration.dfm:1560 Utils/UConfiguration.dfm:5836
+#: Utils/UConfiguration.dfm:1560 Utils/UConfiguration.dfm:5846
 msgid "&Remove"
 msgstr "&إزالة"
 
@@ -523,7 +523,7 @@ msgstr "ال%قيمة:"
 #. FObjectGenerator..ValueListEditor....TitleCaptions.Strings
 #: dlgCustomParams.dfm:195 dlgOptionsEditor.dfm:60 dlgToolProperties.dfm:172
 #: frmRegExpTester.dfm:271 frmVariables.dfm:144 frmWatches.dfm:102
-#: Main/UClassEditor.dfm:148 Main/UClassEditor.dfm:560
+#: Main/UClassEditor.dfm:148 Main/UClassEditor.dfm:568
 #: Main/UObjectGenerator.dfm:69 frmVariables.pas:458
 #: EssModel/Integrator/View/URtfdDiagram.pas:1604
 #: EssModel/Integrator/View/URtfdDiagram.pas:1607
@@ -539,49 +539,49 @@ msgstr "تخصيص إختصارات بيئة التطوير"
 
 #. frmCustomKeyboard..Panel1..lblNewShortcutKey..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblNewShortcutKey..Caption
-#: dlgCustomShortcuts.dfm:43 Utils/UConfiguration.dfm:3196
+#: dlgCustomShortcuts.dfm:43 Utils/UConfiguration.dfm:3206
 msgid "Press &new shortcut key:"
 msgstr "إ&ختصار جديد:"
 
 #. frmCustomKeyboard..Panel1..lblCategories..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCategories..Caption
-#: dlgCustomShortcuts.dfm:52 Utils/UConfiguration.dfm:3214
+#: dlgCustomShortcuts.dfm:52 Utils/UConfiguration.dfm:3224
 msgid "&Categories:"
 msgstr "ال&فئات:"
 
 #. frmCustomKeyboard..Panel1..lblCommands..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCommands..Caption
-#: dlgCustomShortcuts.dfm:61 Utils/UConfiguration.dfm:3205
+#: dlgCustomShortcuts.dfm:61 Utils/UConfiguration.dfm:3215
 msgid "C&ommands:"
 msgstr "الأ&وامر:"
 
 #. frmCustomKeyboard..Panel1..lblCurrent..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCurrent..Caption
-#: dlgCustomShortcuts.dfm:70 Utils/UConfiguration.dfm:3177
+#: dlgCustomShortcuts.dfm:70 Utils/UConfiguration.dfm:3187
 msgid "Currently assigned to:"
 msgstr "تم تعيينه حالياً إلى:"
 
 #. frmCustomKeyboard..Panel1..lblCurrentKeys..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCurrentKeys..Caption
-#: dlgCustomShortcuts.dfm:90 Utils/UConfiguration.dfm:3187
+#: dlgCustomShortcuts.dfm:90 Utils/UConfiguration.dfm:3197
 msgid "C&urrent Keys:"
 msgstr "ال&مفاتيح الحالية:"
 
 #. frmCustomKeyboard..ActionList1..actAssignShortcut..Caption
 #. FConfiguration..IDEShortcutsActionList1..actAssignShortcut..Caption
-#: dlgCustomShortcuts.dfm:196 Utils/UConfiguration.dfm:5830
+#: dlgCustomShortcuts.dfm:196 Utils/UConfiguration.dfm:5840
 msgid "&Assign"
 msgstr "تعيين"
 
 #. frmCustomKeyboard..ActionList1..actAssignShortcut..Hint
 #. FConfiguration..IDEShortcutsActionList1..actAssignShortcut..Hint
-#: dlgCustomShortcuts.dfm:197 Utils/UConfiguration.dfm:5831
+#: dlgCustomShortcuts.dfm:197 Utils/UConfiguration.dfm:5841
 msgid "Assign shortcut to command"
 msgstr "تعيين إختصار لأمر"
 
 #. frmCustomKeyboard..ActionList1..actRemoveShortcut..Hint
 #. FConfiguration..IDEShortcutsActionList1..actRemoveShortcut..Hint
-#: dlgCustomShortcuts.dfm:203 Utils/UConfiguration.dfm:5837
+#: dlgCustomShortcuts.dfm:203 Utils/UConfiguration.dfm:5847
 msgid "Remove shortcut"
 msgstr "الغاء الإختصار"
 
@@ -662,32 +662,32 @@ msgstr "قوالب الملف"
 
 #. FileTemplatesDialog..Panel..GroupBox..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Caption
-#: dlgFileTemplates.dfm:31 Utils/UConfiguration.dfm:2089
+#: dlgFileTemplates.dfm:31 Utils/UConfiguration.dfm:2099
 msgid "File Template:"
 msgstr "قالب الملف:"
 
 #. FileTemplatesDialog..Panel..GroupBox..Label5..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label21..Caption
-#: dlgFileTemplates.dfm:57 Utils/UConfiguration.dfm:2115
+#: dlgFileTemplates.dfm:57 Utils/UConfiguration.dfm:2125
 msgid "&Category:"
 msgstr "ال&فئة:"
 
 #. FileTemplatesDialog..Panel..GroupBox..Label6..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label24..Caption
-#: dlgFileTemplates.dfm:81 Utils/UConfiguration.dfm:2139
+#: dlgFileTemplates.dfm:81 Utils/UConfiguration.dfm:2149
 msgid "&Default Extension:"
 msgstr "الأمتداد الإفتراضي:"
 
 #. FileTemplatesDialog..Panel..GroupBox..Label7..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label25..Caption
-#: dlgFileTemplates.dfm:89 Utils/UConfiguration.dfm:2147
+#: dlgFileTemplates.dfm:89 Utils/UConfiguration.dfm:2157
 #, fuzzy
 msgid "&Highlighter:"
 msgstr "قلم تمييز:"
 
 #. FileTemplatesDialog..Panel..lvItems......Caption
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..FileTemplatesLvItems......Caption
-#: dlgFileTemplates.dfm:256 Utils/UConfiguration.dfm:2072
+#: dlgFileTemplates.dfm:256 Utils/UConfiguration.dfm:2082
 msgid "Category"
 msgstr "الفئة"
 
@@ -714,8 +714,8 @@ msgstr "ن&ص البحث:"
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..Caption
 #: dlgFindInFiles.dfm:36 dlgSynEditOptions.dfm:36 dlgSynEditOptions.dfm:364
 #: dlgSynEditOptions.dfm:374 dlgToDoOptions.dfm:124 frmPyIDEMain.dfm:1353
-#: frmRegExpTester.dfm:84 Main/UClassEditor.dfm:209 Main/UClassEditor.dfm:365
-#: Utils/UConfiguration.dfm:936 Utils/UConfiguration.dfm:3377
+#: frmRegExpTester.dfm:84 Main/UClassEditor.dfm:213 Main/UClassEditor.dfm:373
+#: Utils/UConfiguration.dfm:936 Utils/UConfiguration.dfm:3387
 msgid "Options"
 msgstr "الخيارات"
 
@@ -933,7 +933,7 @@ msgstr "إصدارات بايثون"
 #. PythonVersionsDialog..Panel1..vtPythonVersions......Text
 #. FConfiguration..PMain..PanelRight..PageList..PPython..vtPythonVersions......Text
 #: dlgPythonVersions.dfm:44 Utils/UConfiguration.dfm:223
-#: Utils/UConfiguration.pas:1378
+#: Utils/UConfiguration.pas:1382
 msgid "Folder"
 msgstr "مجلد"
 
@@ -941,7 +941,7 @@ msgstr "مجلد"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonActivate..Caption
 #. FConfiguration..actlPythonVersions..actPVActivate..Caption
 #: dlgPythonVersions.dfm:106 Utils/UConfiguration.dfm:234
-#: Utils/UConfiguration.dfm:5964
+#: Utils/UConfiguration.dfm:5974
 msgid "Activate"
 msgstr "تفعيل"
 
@@ -949,7 +949,7 @@ msgstr "تفعيل"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonActivate..Hint
 #. FConfiguration..actlPythonVersions..actPVActivate..Hint
 #: dlgPythonVersions.dfm:108 Utils/UConfiguration.dfm:232
-#: Utils/UConfiguration.dfm:5966
+#: Utils/UConfiguration.dfm:5976
 msgid "Activate selected Python version"
 msgstr "تفعيل إصدار بايثون المحدد"
 
@@ -958,8 +958,8 @@ msgstr "تفعيل إصدار بايثون المحدد"
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitAdd..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonAdd..Caption
 #. FConfiguration..actlPythonVersions..actPVAdd..Caption
-#: dlgPythonVersions.dfm:114 frmEditor.dfm:1249 frmPyIDEMain.dfm:951
-#: Utils/UConfiguration.dfm:246 Utils/UConfiguration.dfm:5971
+#: dlgPythonVersions.dfm:114 frmEditor.dfm:1243 frmPyIDEMain.dfm:951
+#: Utils/UConfiguration.dfm:246 Utils/UConfiguration.dfm:5981
 msgid "Add"
 msgstr "أضافة"
 
@@ -967,7 +967,7 @@ msgstr "أضافة"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonAdd..Hint
 #. FConfiguration..actlPythonVersions..actPVAdd..Hint
 #: dlgPythonVersions.dfm:116 Utils/UConfiguration.dfm:244
-#: Utils/UConfiguration.dfm:5973
+#: Utils/UConfiguration.dfm:5983
 msgid "Add a new Python version"
 msgstr "أضافة  إصدار بايثون جديد"
 
@@ -976,8 +976,8 @@ msgstr "أضافة  إصدار بايثون جديد"
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitRemove..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonRemove..Caption
 #. FConfiguration..actlPythonVersions..actPVRemove..Caption
-#: dlgPythonVersions.dfm:122 frmEditor.dfm:1276 frmPyIDEMain.dfm:978
-#: Utils/UConfiguration.dfm:258 Utils/UConfiguration.dfm:5978
+#: dlgPythonVersions.dfm:122 frmEditor.dfm:1270 frmPyIDEMain.dfm:978
+#: Utils/UConfiguration.dfm:258 Utils/UConfiguration.dfm:5988
 msgid "Remove"
 msgstr "إزالة"
 
@@ -985,39 +985,39 @@ msgstr "إزالة"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonRemove..Hint
 #. FConfiguration..actlPythonVersions..actPVRemove..Hint
 #: dlgPythonVersions.dfm:124 Utils/UConfiguration.dfm:256
-#: Utils/UConfiguration.dfm:5980
+#: Utils/UConfiguration.dfm:5990
 msgid "Remove selected Python version"
 msgstr "إزالة إصدار بايثون المحدد"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVTest..Caption
 #. FConfiguration..actlPythonVersions..actPVTest..Caption
-#: dlgPythonVersions.dfm:130 Utils/UConfiguration.dfm:5985
+#: dlgPythonVersions.dfm:130 Utils/UConfiguration.dfm:5995
 msgid "Test"
 msgstr "اختبار"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVTest..Hint
 #. FConfiguration..actlPythonVersions..actPVTest..Hint
-#: dlgPythonVersions.dfm:132 Utils/UConfiguration.dfm:5987
+#: dlgPythonVersions.dfm:132 Utils/UConfiguration.dfm:5997
 msgid "Test selected Python version"
 msgstr "اختبار إصدار بايثون المحدد"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVShow..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay..Caption
 #. FConfiguration..actlPythonVersions..actPVShow..Caption
-#: dlgPythonVersions.dfm:138 Utils/UConfiguration.dfm:2955
-#: Utils/UConfiguration.dfm:5992
+#: dlgPythonVersions.dfm:138 Utils/UConfiguration.dfm:2965
+#: Utils/UConfiguration.dfm:6002
 msgid "Show"
 msgstr "عرض"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVShow..Hint
 #. FConfiguration..actlPythonVersions..actPVShow..Hint
-#: dlgPythonVersions.dfm:140 Utils/UConfiguration.dfm:5994
+#: dlgPythonVersions.dfm:140 Utils/UConfiguration.dfm:6004
 msgid "Show selected Python version in Explorer"
 msgstr "عرض إصدار بايثون المحدد في المستكشف"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVCommandShell..Caption
 #. FConfiguration..actlPythonVersions..actPVCommandShell..Caption
-#: dlgPythonVersions.dfm:146 Utils/UConfiguration.dfm:5999
+#: dlgPythonVersions.dfm:146 Utils/UConfiguration.dfm:6009
 #, fuzzy
 msgid "Shell"
 msgstr "صدفة"
@@ -1026,7 +1026,7 @@ msgstr "صدفة"
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsConsole..Hint
 #. FConfiguration..actlPythonVersions..actPVCommandShell..Hint
 #: dlgPythonVersions.dfm:148 frmPyIDEMain.dfm:1073
-#: Utils/UConfiguration.dfm:6001
+#: Utils/UConfiguration.dfm:6011
 #, fuzzy
 msgid "Open command prompt for the selected Python version"
 msgstr "فتح موجه الأوامر لإصدار Python المحدد"
@@ -1043,26 +1043,26 @@ msgstr "فتح موجه الأوامر لإصدار Python المحدد"
 #. Programmer's name for it: SDlgHelpHelp
 #: dlgPythonVersions.dfm:154 dmCommands.dfm:2410 dmCommands.dfm:2421
 #: frmFindResults.dfm:345 frmFunctionList.dfm:289 frmRegExpTester.dfm:182
-#: frmToDo.dfm:235 Utils/UConfiguration.dfm:158 Utils/UConfiguration.dfm:6006
+#: frmToDo.dfm:235 Utils/UConfiguration.dfm:158 Utils/UConfiguration.dfm:6016
 #: StringResources.pas:152
 msgid "Help"
 msgstr "مساعدة"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVHelp..Hint
 #. FConfiguration..actlPythonVersions..actPVHelp..Hint
-#: dlgPythonVersions.dfm:156 Utils/UConfiguration.dfm:6008
+#: dlgPythonVersions.dfm:156 Utils/UConfiguration.dfm:6018
 msgid "Show Help"
 msgstr "عرض المساعدة"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVRename..Caption
 #. FConfiguration..actlPythonVersions..actPVRename..Caption
-#: dlgPythonVersions.dfm:162 Utils/UConfiguration.dfm:6013
+#: dlgPythonVersions.dfm:162 Utils/UConfiguration.dfm:6023
 msgid "Rename"
 msgstr "إعادة تسمية"
 
 #. PythonVersionsDialog..actlPythonVersions..actPVRename..Hint
 #. FConfiguration..actlPythonVersions..actPVRename..Hint
-#: dlgPythonVersions.dfm:164 Utils/UConfiguration.dfm:6015
+#: dlgPythonVersions.dfm:164 Utils/UConfiguration.dfm:6025
 msgid "Rename selected Python version"
 msgstr "إعادة تسمية إصدار بايثون المحدد"
 
@@ -1163,7 +1163,7 @@ msgstr "رينيتالي&amp؛زي قبل تشغيل"
 #. EditorForm..pmnuEditor..mnGit..mnGitRemote..Caption
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitRemote..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPython..RGEngineTypes....Items.Strings
-#: dlgRunConfiguration.dfm:323 dlgRunConfiguration.dfm:327 frmEditor.dfm:1283
+#: dlgRunConfiguration.dfm:323 dlgRunConfiguration.dfm:327 frmEditor.dfm:1277
 #: frmPyIDEMain.dfm:985 Utils/UConfiguration.dfm:272 cPyControl.pas:554
 msgid "Remote"
 msgstr "بعيد"
@@ -1191,7 +1191,7 @@ msgstr "البعيد (WX)"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..RGEngineTypes....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..Caption
 #: dlgRunConfiguration.dfm:330 Utils/UConfiguration.dfm:275
-#: Utils/UConfiguration.dfm:5551
+#: Utils/UConfiguration.dfm:5561
 msgid "SSH"
 msgstr "SSH"
 
@@ -1213,7 +1213,7 @@ msgstr "تعيين خصائص التشغيل الخارجي"
 #. Programmer's name for it: SYNS_AttrOutput
 #. Programmer's name for it: SYNS_FriendlyAttrOutput
 #: dlgRunConfiguration.dfm:355 frmCommandOutput.dfm:5
-#: Utils/UConfiguration.dfm:2429 SynHighlighterPython.pas:1567
+#: Utils/UConfiguration.dfm:2439 SynHighlighterPython.pas:1567
 #: SynHighlighterPython.pas:1568
 msgid "Output"
 msgstr "المخرجات"
@@ -1235,20 +1235,20 @@ msgstr "حفظ المخرجات"
 
 #. StyleSelectorForm..Caption
 #. PyIDEMainForm..actlStandard..actSelectStyle..Hint
-#: dlgStyleSelector.dfm:5 frmPyIDEMain.dfm:3532
+#: dlgStyleSelector.dfm:5 frmPyIDEMain.dfm:3541
 msgid "Select Style"
 msgstr "اختر نمط العرض"
 
 #. StyleSelectorForm..Label1..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..Label44..Caption
-#: dlgStyleSelector.dfm:1868 Utils/UConfiguration.dfm:3684
+#: dlgStyleSelector.dfm:1868 Utils/UConfiguration.dfm:3694
 #, fuzzy
 msgid "Available Styles"
 msgstr "الأنماط المتوفرة"
 
 #. StyleSelectorForm..Label2..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..Label43..Caption
-#: dlgStyleSelector.dfm:1875 Utils/UConfiguration.dfm:3677
+#: dlgStyleSelector.dfm:1875 Utils/UConfiguration.dfm:3687
 msgid "Preview"
 msgstr "معاينة"
 
@@ -1326,7 +1326,7 @@ msgstr "عمود الحافة:"
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label31..Caption
 #: dlgSynEditOptions.dfm:111 dlgSynPageSetup.dfm:1523
-#: Utils/UConfiguration.dfm:442 Utils/UConfiguration.dfm:4795
+#: Utils/UConfiguration.dfm:442 Utils/UConfiguration.dfm:4805
 msgid "Gutter"
 msgstr "مزراب"
 
@@ -1411,7 +1411,7 @@ msgstr "تدرج المزراب"
 #: Main/UObjectInspector.dfm:113 SequenceDiagram/USequenceForm.dfm:2611
 #: Structogram/UStructogram.dfm:1902 Utils/UConfiguration.dfm:556
 #: Utils/UConfiguration.dfm:733 Utils/UConfiguration.dfm:1499
-#: Utils/UConfiguration.dfm:6216 Utils/UConfiguration.dfm:6217
+#: Utils/UConfiguration.dfm:6226 Utils/UConfiguration.dfm:6227
 msgid "Font"
 msgstr "الخط"
 
@@ -1919,13 +1919,13 @@ msgstr "ضغط المفاتيح"
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label14..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PColorTheme..SpTBXLabel1..Caption
 #: dlgSynEditOptions.dfm:1010 dlgSynEditOptions.dfm:1118
-#: Utils/UConfiguration.dfm:1641 Utils/UConfiguration.dfm:1805
+#: Utils/UConfiguration.dfm:1651 Utils/UConfiguration.dfm:1815
 msgid "Code Sample"
 msgstr "أمثلة الكود"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..ColorThemes..SpTBXLabel2..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PColorTheme..SpTBXLabel2..Caption
-#: dlgSynEditOptions.dfm:1017 Utils/UConfiguration.dfm:1812
+#: dlgSynEditOptions.dfm:1017 Utils/UConfiguration.dfm:1822
 #, fuzzy
 msgid "Available Themes"
 msgstr "السمات المتاحة"
@@ -1938,34 +1938,34 @@ msgstr "تطبيق السمة"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label11..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label11..Caption
-#: dlgSynEditOptions.dfm:1097 Utils/UConfiguration.dfm:1648
+#: dlgSynEditOptions.dfm:1097 Utils/UConfiguration.dfm:1658
 #, fuzzy
 msgid "&Element:"
 msgstr "العنصر:"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label12..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label12..Caption
-#: dlgSynEditOptions.dfm:1104 Utils/UConfiguration.dfm:1634
+#: dlgSynEditOptions.dfm:1104 Utils/UConfiguration.dfm:1644
 #, fuzzy
 msgid "&Foreground Color:"
 msgstr "لون المقدمة:"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label13..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label13..Caption
-#: dlgSynEditOptions.dfm:1111 Utils/UConfiguration.dfm:1627
+#: dlgSynEditOptions.dfm:1111 Utils/UConfiguration.dfm:1637
 #, fuzzy
 msgid "B&ackground Color:"
 msgstr "B&amp؛ackground اللون:"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label15..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label15..Caption
-#: dlgSynEditOptions.dfm:1125 Utils/UConfiguration.dfm:1655
+#: dlgSynEditOptions.dfm:1125 Utils/UConfiguration.dfm:1665
 msgid "Editor Syntax Language"
 msgstr "محرر تركيب الجملة"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..Caption
-#: dlgSynEditOptions.dfm:1132 Utils/UConfiguration.dfm:1672
+#: dlgSynEditOptions.dfm:1132 Utils/UConfiguration.dfm:1682
 #, fuzzy
 #| msgid " Text attributes "
 msgid "Text attributes"
@@ -1973,25 +1973,25 @@ msgstr " سمات النص "
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementBold..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementBold..Caption
-#: dlgSynEditOptions.dfm:1142 Utils/UConfiguration.dfm:1682
+#: dlgSynEditOptions.dfm:1142 Utils/UConfiguration.dfm:1692
 msgid "&Bold"
 msgstr "&غامق"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementItalic..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementItalic..Caption
-#: dlgSynEditOptions.dfm:1152 Utils/UConfiguration.dfm:1692
+#: dlgSynEditOptions.dfm:1152 Utils/UConfiguration.dfm:1702
 msgid "&Italic"
 msgstr "&مائل"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementUnderline..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementUnderline..Caption
-#: dlgSynEditOptions.dfm:1163 Utils/UConfiguration.dfm:1703
+#: dlgSynEditOptions.dfm:1163 Utils/UConfiguration.dfm:1713
 msgid "&Underline"
 msgstr "تسطير"
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementStrikeout..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementStrikeout..Caption
-#: dlgSynEditOptions.dfm:1174 Utils/UConfiguration.dfm:1714
+#: dlgSynEditOptions.dfm:1174 Utils/UConfiguration.dfm:1724
 #, fuzzy
 msgid "&Strike Out"
 msgstr "و الإضراب"
@@ -2024,7 +2024,7 @@ msgstr "رأس و تذييل الصفحة"
 
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox1..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..Caption
-#: dlgSynPageSetup.dfm:90 Utils/UConfiguration.dfm:4974
+#: dlgSynPageSetup.dfm:90 Utils/UConfiguration.dfm:4984
 msgid "Header"
 msgstr "الهيدر"
 
@@ -2037,7 +2037,7 @@ msgstr "الهيدر"
 #. Programmer's name for it: SEdCmdLeft
 #: dlgSynPageSetup.dfm:97 dlgSynPageSetup.dfm:254
 #: EssModel/Integrator/View/UDiagramFrame.dfm:3912 Main/UGUIDesigner.dfm:54
-#: Utils/UConfiguration.dfm:4981 Utils/UConfiguration.dfm:5138
+#: Utils/UConfiguration.dfm:4991 Utils/UConfiguration.dfm:5148
 #: StringResources.pas:68 EssModel/Integrator/View/UDiagramFrame.pas:365
 msgid "Left"
 msgstr "يسار"
@@ -2052,7 +2052,7 @@ msgstr "يسار"
 #: dlgSynPageSetup.dfm:104 dlgSynPageSetup.dfm:261
 #: EssModel/Integrator/View/UDiagramFrame.dfm:3918
 #: EssModel/Integrator/View/UDiagramFrame.dfm:3938 Main/UGUIDesigner.dfm:92
-#: Utils/UConfiguration.dfm:4988 Utils/UConfiguration.dfm:5145
+#: Utils/UConfiguration.dfm:4998 Utils/UConfiguration.dfm:5155
 msgid "Center"
 msgstr "منصف"
 
@@ -2065,7 +2065,7 @@ msgstr "منصف"
 #. Programmer's name for it: SEdCmdRight
 #: dlgSynPageSetup.dfm:111 dlgSynPageSetup.dfm:268
 #: EssModel/Integrator/View/UDiagramFrame.dfm:3924 Main/UGUIDesigner.dfm:66
-#: Utils/UConfiguration.dfm:4995 Utils/UConfiguration.dfm:5152
+#: Utils/UConfiguration.dfm:5005 Utils/UConfiguration.dfm:5162
 #: StringResources.pas:87 EssModel/Integrator/View/UDiagramFrame.pas:367
 msgid "Right"
 msgstr "يمين"
@@ -2075,7 +2075,7 @@ msgstr "يمين"
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..Caption
 #: dlgSynPageSetup.dfm:118 dlgSynPageSetup.dfm:275
-#: Utils/UConfiguration.dfm:5002 Utils/UConfiguration.dfm:5159
+#: Utils/UConfiguration.dfm:5012 Utils/UConfiguration.dfm:5169
 msgid "Appearance"
 msgstr "المظهر"
 
@@ -2084,7 +2084,7 @@ msgstr "المظهر"
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..HeaderLineColorBtn..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..FooterLineColorBtn..Caption
 #: dlgSynPageSetup.dfm:139 dlgSynPageSetup.dfm:296
-#: Utils/UConfiguration.dfm:5023 Utils/UConfiguration.dfm:5180
+#: Utils/UConfiguration.dfm:5033 Utils/UConfiguration.dfm:5190
 msgid "Line color"
 msgstr "لون الخط"
 
@@ -2093,13 +2093,13 @@ msgstr "لون الخط"
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..HeaderShadowColorBtn..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..FooterShadowColorBtn..Caption
 #: dlgSynPageSetup.dfm:148 dlgSynPageSetup.dfm:305
-#: Utils/UConfiguration.dfm:5032 Utils/UConfiguration.dfm:5189
+#: Utils/UConfiguration.dfm:5042 Utils/UConfiguration.dfm:5199
 msgid "Shadow color"
 msgstr "لون الظل"
 
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox1..GroupBox2..CBHeaderLine..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..CBHeaderLine..Caption
-#: dlgSynPageSetup.dfm:157 Utils/UConfiguration.dfm:5041
+#: dlgSynPageSetup.dfm:157 Utils/UConfiguration.dfm:5051
 #, fuzzy
 msgid "Line under"
 msgstr "خط تحت"
@@ -2109,7 +2109,7 @@ msgstr "خط تحت"
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..CBHeaderBox..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..CBFooterBox..Caption
 #: dlgSynPageSetup.dfm:165 dlgSynPageSetup.dfm:322
-#: Utils/UConfiguration.dfm:5049 Utils/UConfiguration.dfm:5206
+#: Utils/UConfiguration.dfm:5059 Utils/UConfiguration.dfm:5216
 msgid "Box"
 msgstr "صندوق"
 
@@ -2120,8 +2120,8 @@ msgstr "صندوق"
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..CBHeaderShadow..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..CBFooterShadow..Caption
 #: dlgSynPageSetup.dfm:173 dlgSynPageSetup.dfm:330
-#: Utils/UConfiguration.dfm:2492 Utils/UConfiguration.dfm:2801
-#: Utils/UConfiguration.dfm:5057 Utils/UConfiguration.dfm:5214
+#: Utils/UConfiguration.dfm:2502 Utils/UConfiguration.dfm:2811
+#: Utils/UConfiguration.dfm:5067 Utils/UConfiguration.dfm:5224
 msgid "Shadow"
 msgstr "الظل"
 
@@ -2130,137 +2130,137 @@ msgstr "الظل"
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..CBHeaderMirror..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..CBFooterMirror..Caption
 #: dlgSynPageSetup.dfm:182 dlgSynPageSetup.dfm:339
-#: Utils/UConfiguration.dfm:5066 Utils/UConfiguration.dfm:5223
+#: Utils/UConfiguration.dfm:5076 Utils/UConfiguration.dfm:5233
 #, fuzzy
 msgid "Mirror position"
 msgstr "موضع المرآة"
 
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..Caption
-#: dlgSynPageSetup.dfm:247 Utils/UConfiguration.dfm:5131
+#: dlgSynPageSetup.dfm:247 Utils/UConfiguration.dfm:5141
 msgid "Footer"
 msgstr "الفوتر"
 
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..CBFooterLine..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..CBFooterLine..Caption
-#: dlgSynPageSetup.dfm:314 Utils/UConfiguration.dfm:5198
+#: dlgSynPageSetup.dfm:314 Utils/UConfiguration.dfm:5208
 #, fuzzy
 msgid "Line above"
 msgstr "الخط أعلاه"
 
 #. PageSetupDlg..TabControl..tbMargins..Label1..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label35..Caption
-#: dlgSynPageSetup.dfm:1453 Utils/UConfiguration.dfm:4823
+#: dlgSynPageSetup.dfm:1453 Utils/UConfiguration.dfm:4833
 msgid "Left:"
 msgstr "يسار:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label2..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label34..Caption
-#: dlgSynPageSetup.dfm:1460 Utils/UConfiguration.dfm:4816
+#: dlgSynPageSetup.dfm:1460 Utils/UConfiguration.dfm:4826
 msgid "Right:"
 msgstr "يمين:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label3..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label33..Caption
-#: dlgSynPageSetup.dfm:1467 Utils/UConfiguration.dfm:4809
+#: dlgSynPageSetup.dfm:1467 Utils/UConfiguration.dfm:4819
 msgid "Top:"
 msgstr "فوق:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label4..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label32..Caption
-#: dlgSynPageSetup.dfm:1474 Utils/UConfiguration.dfm:4802
+#: dlgSynPageSetup.dfm:1474 Utils/UConfiguration.dfm:4812
 msgid "Bottom:"
 msgstr "تحت:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label5..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label36..Caption
-#: dlgSynPageSetup.dfm:1481 Utils/UConfiguration.dfm:4830
+#: dlgSynPageSetup.dfm:1481 Utils/UConfiguration.dfm:4840
 msgid "Units:"
 msgstr "الوحدات:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label6..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label30..Caption
-#: dlgSynPageSetup.dfm:1488 Utils/UConfiguration.dfm:4788
+#: dlgSynPageSetup.dfm:1488 Utils/UConfiguration.dfm:4798
 #, fuzzy
 msgid "Header:"
 msgstr "راس:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label7..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label29..Caption
-#: dlgSynPageSetup.dfm:1495 Utils/UConfiguration.dfm:4781
+#: dlgSynPageSetup.dfm:1495 Utils/UConfiguration.dfm:4791
 #, fuzzy
 msgid "Footer:"
 msgstr "تذييل الصفحه:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label8..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label28..Caption
-#: dlgSynPageSetup.dfm:1502 Utils/UConfiguration.dfm:4774
+#: dlgSynPageSetup.dfm:1502 Utils/UConfiguration.dfm:4784
 #, fuzzy
 msgid "Internal Margin:"
 msgstr "الهامش الداخلي:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label9..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label27..Caption
-#: dlgSynPageSetup.dfm:1509 Utils/UConfiguration.dfm:4767
+#: dlgSynPageSetup.dfm:1509 Utils/UConfiguration.dfm:4777
 #, fuzzy
 msgid "Left Text Indent:"
 msgstr "المسافة البادئة للنص الأيسر:"
 
 #. PageSetupDlg..TabControl..tbMargins..Label10..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label26..Caption
-#: dlgSynPageSetup.dfm:1516 Utils/UConfiguration.dfm:4760
+#: dlgSynPageSetup.dfm:1516 Utils/UConfiguration.dfm:4770
 #, fuzzy
 msgid "Right Text Indent:"
 msgstr "المسافة البادئة للنص الأيمن:"
 
 #. PageSetupDlg..TabControl..tbMargins..CBMirrorMargins..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBMirrorMargins..Caption
-#: dlgSynPageSetup.dfm:1530 Utils/UConfiguration.dfm:4962
+#: dlgSynPageSetup.dfm:1530 Utils/UConfiguration.dfm:4972
 msgid "Mirror margins"
 msgstr "عكس الهامش"
 
 #. PageSetupDlg..TabControl..tbMargins..CBLineNumbers..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBLineNumbers..Caption
-#: dlgSynPageSetup.dfm:1538 Utils/UConfiguration.dfm:4954
+#: dlgSynPageSetup.dfm:1538 Utils/UConfiguration.dfm:4964
 msgid "Line numbers"
 msgstr "أرقام الأسطر"
 
 #. PageSetupDlg..TabControl..tbMargins..CBLineNumbersInMargin..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBLineNumbersInMargin..Caption
-#: dlgSynPageSetup.dfm:1546 Utils/UConfiguration.dfm:4946
+#: dlgSynPageSetup.dfm:1546 Utils/UConfiguration.dfm:4956
 msgid "Print line numbers in margin"
 msgstr "طباعة أرقام الأسطر في الهامش"
 
 #. PageSetupDlg..TabControl..tbMargins..CBHighlight..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBHighlight..Caption
-#: dlgSynPageSetup.dfm:1554 Utils/UConfiguration.dfm:4938
+#: dlgSynPageSetup.dfm:1554 Utils/UConfiguration.dfm:4948
 msgid "Syntax print"
 msgstr "طباعة تركيب الجمل"
 
 #. PageSetupDlg..TabControl..tbMargins..CBColors..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBColors..Caption
-#: dlgSynPageSetup.dfm:1562 Utils/UConfiguration.dfm:4930
+#: dlgSynPageSetup.dfm:1562 Utils/UConfiguration.dfm:4940
 #, fuzzy
 msgid "Use colors"
 msgstr "استخدام الألوان"
 
 #. PageSetupDlg..TabControl..tbMargins..CBWrap..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBWrap..Caption
-#: dlgSynPageSetup.dfm:1570 Utils/UConfiguration.dfm:4922
+#: dlgSynPageSetup.dfm:1570 Utils/UConfiguration.dfm:4932
 #, fuzzy
 msgid "Wrap lines"
 msgstr "خطوط التفاف"
 
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
-#: dlgSynPageSetup.dfm:1655 Utils/UConfiguration.dfm:4844
+#: dlgSynPageSetup.dfm:1655 Utils/UConfiguration.dfm:4854
 #, fuzzy
 msgid "Inches"
 msgstr "البوصات"
 
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
-#: dlgSynPageSetup.dfm:1656 Utils/UConfiguration.dfm:4845
+#: dlgSynPageSetup.dfm:1656 Utils/UConfiguration.dfm:4855
 #, fuzzy
 msgid "(1/1000) Inches"
 msgstr "(1/1000) بوصة"
@@ -2270,7 +2270,7 @@ msgstr "(1/1000) بوصة"
 #. FConfiguration..ActionListPageSetup..PageNumCmd..Caption
 #. FConfiguration..ActionListPageSetup..PageNumCmd..Hint
 #: dlgSynPageSetup.dfm:1698 dlgSynPageSetup.dfm:1699
-#: Utils/UConfiguration.dfm:6181 Utils/UConfiguration.dfm:6182
+#: Utils/UConfiguration.dfm:6191 Utils/UConfiguration.dfm:6192
 msgid "Page number"
 msgstr "رقم الصفحة"
 
@@ -2279,7 +2279,7 @@ msgstr "رقم الصفحة"
 #. FConfiguration..ActionListPageSetup..PagesCmd..Caption
 #. FConfiguration..ActionListPageSetup..PagesCmd..Hint
 #: dlgSynPageSetup.dfm:1705 dlgSynPageSetup.dfm:1706
-#: Utils/UConfiguration.dfm:6188 Utils/UConfiguration.dfm:6189
+#: Utils/UConfiguration.dfm:6198 Utils/UConfiguration.dfm:6199
 #, fuzzy
 msgid "Num. pages"
 msgstr "نوم.pages"
@@ -2289,7 +2289,7 @@ msgstr "نوم.pages"
 #. FConfiguration..ActionListPageSetup..TimeCmd..Caption
 #. FConfiguration..ActionListPageSetup..TimeCmd..Hint
 #: dlgSynPageSetup.dfm:1712 dlgSynPageSetup.dfm:1713
-#: Utils/UConfiguration.dfm:6195 Utils/UConfiguration.dfm:6196
+#: Utils/UConfiguration.dfm:6205 Utils/UConfiguration.dfm:6206
 msgid "Time"
 msgstr "الوقت"
 
@@ -2300,8 +2300,8 @@ msgstr "الوقت"
 #. FConfiguration..ActionListPageSetup..DateCmd..Caption
 #. FConfiguration..ActionListPageSetup..DateCmd..Hint
 #: dlgSynPageSetup.dfm:1719 dlgSynPageSetup.dfm:1720 Main/UGit.dfm:31
-#: Main/USubversion.dfm:31 Utils/UConfiguration.dfm:6202
-#: Utils/UConfiguration.dfm:6203 Main/UGit.pas:41 Main/USubversion.pas:49
+#: Main/USubversion.dfm:31 Utils/UConfiguration.dfm:6212
+#: Utils/UConfiguration.dfm:6213 Main/UGit.pas:41 Main/USubversion.pas:49
 msgid "Date"
 msgstr "التاريخ"
 
@@ -2310,7 +2310,7 @@ msgstr "التاريخ"
 #. FConfiguration..ActionListPageSetup..TitleCmd..Caption
 #. FConfiguration..ActionListPageSetup..TitleCmd..Hint
 #: dlgSynPageSetup.dfm:1726 dlgSynPageSetup.dfm:1727
-#: Utils/UConfiguration.dfm:6209 Utils/UConfiguration.dfm:6210
+#: Utils/UConfiguration.dfm:6219 Utils/UConfiguration.dfm:6220
 msgid "Title"
 msgstr "العنوان"
 
@@ -2319,7 +2319,7 @@ msgstr "العنوان"
 #. FConfiguration..ActionListPageSetup..BoldCmd..Caption
 #. FConfiguration..ActionListPageSetup..BoldCmd..Hint
 #: dlgSynPageSetup.dfm:1740 dlgSynPageSetup.dfm:1741
-#: Utils/UConfiguration.dfm:6223 Utils/UConfiguration.dfm:6224
+#: Utils/UConfiguration.dfm:6233 Utils/UConfiguration.dfm:6234
 msgid "Bold"
 msgstr "غامق"
 
@@ -2328,7 +2328,7 @@ msgstr "غامق"
 #. FConfiguration..ActionListPageSetup..ItalicCmd..Caption
 #. FConfiguration..ActionListPageSetup..ItalicCmd..Hint
 #: dlgSynPageSetup.dfm:1747 dlgSynPageSetup.dfm:1748
-#: Utils/UConfiguration.dfm:6230 Utils/UConfiguration.dfm:6231
+#: Utils/UConfiguration.dfm:6240 Utils/UConfiguration.dfm:6241
 msgid "Italic"
 msgstr "مائل"
 
@@ -2337,7 +2337,7 @@ msgstr "مائل"
 #. FConfiguration..ActionListPageSetup..UnderlineCmd..Caption
 #. FConfiguration..ActionListPageSetup..UnderlineCmd..Hint
 #: dlgSynPageSetup.dfm:1754 dlgSynPageSetup.dfm:1755
-#: Utils/UConfiguration.dfm:6237 Utils/UConfiguration.dfm:6238
+#: Utils/UConfiguration.dfm:6247 Utils/UConfiguration.dfm:6248
 msgid "Underline"
 msgstr "تحته خط"
 
@@ -2492,7 +2492,7 @@ msgstr "طباعة | طباعة المستند"
 #: SequenceDiagram/USequenceForm.dfm:2542 Setup/UMemo.dfm:36
 #: Setup/USetup.dfm:121 Structogram/UStructogram.dfm:71
 #: TextDiff/UTextDiff.dfm:34 TextDiff/UTextDiff.dfm:1332
-#: Utils/UConfiguration.dfm:2678
+#: Utils/UConfiguration.dfm:2688
 msgid "Close"
 msgstr "اغلاق"
 
@@ -2550,7 +2550,7 @@ msgstr "إدراج"
 
 #. fmToDoOptions..pnlBG..gbxTokens..btnApply..Caption
 #. FClassEditor..ActionList..ActionApply..Caption
-#: dlgToDoOptions.dfm:105 Main/UClassEditor.dfm:719
+#: dlgToDoOptions.dfm:105 Main/UClassEditor.dfm:731
 msgid "&Apply"
 msgstr "&تطبيق"
 
@@ -2819,7 +2819,7 @@ msgstr "ملف جديد"
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox5..Caption
 #. EditorForm..pmnuEditor..mnGit..mnGitConsole..Caption
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitConsole..Caption
-#: dlgToolProperties.dfm:656 frmEditor.dfm:1310 frmPyIDEMain.dfm:1012
+#: dlgToolProperties.dfm:656 frmEditor.dfm:1304 frmPyIDEMain.dfm:1012
 msgid "Console"
 msgstr "وحدة التحكم"
 
@@ -2946,14 +2946,14 @@ msgstr "حفظ بإسم | احفظ الملف النشط بإسم آخر"
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBClose..Caption
 #. FClassEditor..ActionList..ActionClose..Caption
 #. Programmer's name for it: SDlgClose
-#: dmCommands.dfm:2098 frmEditor.dfm:978 Main/UClassEditor.dfm:714
+#: dmCommands.dfm:2098 frmEditor.dfm:972 Main/UClassEditor.dfm:726
 #: StringResources.pas:159
 msgid "&Close"
 msgstr "إ&غلاق"
 
 #. CommandsDataModule..actlMain..actFileClose..Hint
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBClose..Hint
-#: dmCommands.dfm:2101 frmEditor.dfm:977
+#: dmCommands.dfm:2101 frmEditor.dfm:971
 msgid "Close|Close active file"
 msgstr "أغلاق | أغلق الملف النشط"
 
@@ -3860,7 +3860,7 @@ msgstr "إظهار/إخفاء شفرة قابلة للطي"
 
 #. CommandsDataModule..actlMain..actFoldAll..Caption
 #. CommandsDataModule..actlMain..actUnfoldAll..Caption
-#: dmCommands.dfm:2843 dmCommands.dfm:2851 Utils/UConfiguration.pas:2452
+#: dmCommands.dfm:2843 dmCommands.dfm:2851 Utils/UConfiguration.pas:2456
 msgid "All"
 msgstr "الجميع"
 
@@ -4338,67 +4338,67 @@ msgstr "السورس"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbiUpdateView..Caption
 #. EditorForm..pmnuViewsTab..mnUpdateView..Caption
-#: frmEditor.dfm:50 frmEditor.dfm:1411
+#: frmEditor.dfm:50 frmEditor.dfm:1405
 #, fuzzy
 msgid "Update View"
 msgstr "عرض التحديث"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbiUpdateView..Hint
 #. EditorForm..pmnuViewsTab..mnUpdateView..Hint
-#: frmEditor.dfm:51 frmEditor.dfm:1412
+#: frmEditor.dfm:51 frmEditor.dfm:1406
 #, fuzzy
 msgid "Update View|Update the selected view"
 msgstr "تحديث طريقة العرض| تحديث طريقة العرض المحددة"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbiCloseTab..Caption
 #. EditorForm..pmnuViewsTab..mnCloseTab..Caption
-#: frmEditor.dfm:57 frmEditor.dfm:1418
+#: frmEditor.dfm:57 frmEditor.dfm:1412
 #, fuzzy
 msgid "Close Tab"
 msgstr "إغلاق علامة التبويب"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbiCloseTab..Hint
 #. EditorForm..pmnuViewsTab..mnCloseTab..Hint
-#: frmEditor.dfm:58 frmEditor.dfm:1419
+#: frmEditor.dfm:58 frmEditor.dfm:1413
 #, fuzzy
 msgid "Close active tab"
 msgstr "إغلاق علامة التبويب النشطة"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBExplorer..Hint
-#: frmEditor.dfm:986
+#: frmEditor.dfm:980
 #, fuzzy
 #| msgid "Open a project file"
 msgid "Open explorer for current file"
 msgstr "فتح ملف مشروع"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBBrowser..Hint
-#: frmEditor.dfm:994
+#: frmEditor.dfm:988
 #, fuzzy
 #| msgid "Show line numbers"
 msgid "Show in browser"
 msgstr "عرض أرقام الأسطر"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBDesignform..Hint
-#: frmEditor.dfm:1002
+#: frmEditor.dfm:996
 #, fuzzy
 msgid "Open associated design form"
 msgstr "فتح نموذج التصميم المقترن"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBClassOpen..Hint
-#: frmEditor.dfm:1010
+#: frmEditor.dfm:1004
 #, fuzzy
 msgid "Open class in the UML window"
 msgstr "فتح الفئة في إطار UML"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBCheck..Hint
-#: frmEditor.dfm:1018
+#: frmEditor.dfm:1012
 #, fuzzy
 #| msgid "&No Syntax"
 msgid "Check Syntax"
 msgstr "&بدون تركيب الجمل"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBMatchBracket..Hint
-#: frmEditor.dfm:1026
+#: frmEditor.dfm:1020
 #, fuzzy
 #| msgid "Matching Brace"
 msgid "Match bracket"
@@ -4407,7 +4407,7 @@ msgstr "مطابقة الأقواس"
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBClassEdit..Hint
 #. PyIDEMainForm..actlStandard..actUMLEditClass..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupClassEdit..Caption
-#: frmEditor.dfm:1034 frmPyIDEMain.dfm:3577
+#: frmEditor.dfm:1028 frmPyIDEMain.dfm:3586
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4282
 #: EssModel/Integrator/View/UDiagramFrame.pas:295
 #, fuzzy
@@ -4415,108 +4415,108 @@ msgid "Edit class"
 msgstr "تحرير الفئة"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBStructureIndent..Hint
-#: frmEditor.dfm:1042
+#: frmEditor.dfm:1036
 #, fuzzy
 msgid "Indent structured"
 msgstr "المسافة البادئة المنظمة"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBIfStatement..Hint
-#: frmEditor.dfm:1050
+#: frmEditor.dfm:1044
 #, fuzzy
 msgid "If-Statement"
 msgstr "إذا بيان"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBIfElseStatement..Hint
-#: frmEditor.dfm:1059
+#: frmEditor.dfm:1053
 #, fuzzy
 msgid "If-Else-Statement"
 msgstr "إذا-آخر-بيان"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBWhileStatement..Hint
-#: frmEditor.dfm:1068
+#: frmEditor.dfm:1062
 #, fuzzy
 msgid "while-Statement"
 msgstr "بينما بيان"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBForStatement..Hint
-#: frmEditor.dfm:1077
+#: frmEditor.dfm:1071
 #, fuzzy
 msgid "for-Statement"
 msgstr "للبيان"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBIfElifStatement..Hint
-#: frmEditor.dfm:1086
+#: frmEditor.dfm:1080
 #, fuzzy
 msgid "if-elif-Statement"
 msgstr "بيان if-elif"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBTryStatement..Hint
-#: frmEditor.dfm:1095
+#: frmEditor.dfm:1089
 #, fuzzy
 msgid "try-Statement"
 msgstr "محاولة بيان"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBComment..Hint
-#: frmEditor.dfm:1103
+#: frmEditor.dfm:1097
 #, fuzzy
 #| msgid "&Comment out"
 msgid "Comment on/off"
 msgstr "علق"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBWordWrap..Hint
-#: frmEditor.dfm:1111
+#: frmEditor.dfm:1105
 #, fuzzy
 #| msgid "Word wrap"
 msgid "Wordwrap"
 msgstr "التفاف الكلمة"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBIndent..Hint
-#: frmEditor.dfm:1119
+#: frmEditor.dfm:1113
 msgid "Indent"
 msgstr "مسافة بادئة"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBUnindent..Hint
-#: frmEditor.dfm:1127
+#: frmEditor.dfm:1121
 #, fuzzy
 msgid "Unindent"
 msgstr "غير بادئة"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBBreakpoint..Hint
-#: frmEditor.dfm:1135
+#: frmEditor.dfm:1129
 #, fuzzy
 #| msgid "Breakpoints"
 msgid "Breakpoint on/off"
 msgstr "نقاط التوقف"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBBreakpointsClear..Hint
-#: frmEditor.dfm:1143
+#: frmEditor.dfm:1137
 #, fuzzy
 #| msgid "Deselect all items"
 msgid "Delete all breakpoints"
 msgstr "عدم اختيار جميع العناصر"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBBookmark..Hint
-#: frmEditor.dfm:1151
+#: frmEditor.dfm:1145
 #, fuzzy
 #| msgid "Bookmarks"
 msgid "Set bookmark"
 msgstr "إشارات مرجعية"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBGotoBookmark..Hint
-#: frmEditor.dfm:1159
+#: frmEditor.dfm:1153
 #, fuzzy
 #| msgid "Bookmarks"
 msgid "Goto bookmark"
 msgstr "إشارات مرجعية"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBParagraph..Hint
-#: frmEditor.dfm:1167
+#: frmEditor.dfm:1161
 #, fuzzy
 msgid "Paragraph marks on/off"
 msgstr "علامات الفقرة على /إيقاف"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBNumbers..Hint
-#: frmEditor.dfm:1175
+#: frmEditor.dfm:1169
 #, fuzzy
 #| msgid "Line numbers"
 msgid "Line numbers on/off"
@@ -4525,27 +4525,31 @@ msgstr "أرقام الأسطر"
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBZoomPlus..Hint
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBZoomIn..Hint
 #. FUMLForm..PInteractive..TBInteractiveToolbar..TBSynEditZoomPlus..Hint
+#. FGUIDesigner..PopupMenu..MIZoomIn..Caption
 #. FSequenceForm..PToolbar..TBSequence..TBZoomIn..Hint
 #. FStructogram..PanelLeft..ToolBarPanel..TBZoomIn..Hint
-#: frmEditor.dfm:1183 EssModel/System/UUMLForm.dfm:121
-#: EssModel/System/UUMLForm.dfm:215 SequenceDiagram/USequenceForm.dfm:71
-#: Structogram/UStructogram.dfm:186
+#: frmEditor.dfm:1177 EssModel/System/UUMLForm.dfm:121
+#: EssModel/System/UUMLForm.dfm:215 Main/UGUIDesigner.dfm:153
+#: SequenceDiagram/USequenceForm.dfm:71 Structogram/UStructogram.dfm:186
 msgid "Zoom in"
 msgstr "تقريب"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBZoomMinus..Hint
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBZoomOut..Hint
 #. FUMLForm..PInteractive..TBInteractiveToolbar..TBSynEditZoomMinus..Hint
+#. FGUIDesigner..PopupMenu..MIZoomOut..Caption
+#. FGUIForm..Caption
 #. FSequenceForm..PToolbar..TBSequence..TBZoomOut..Hint
 #. FStructogram..PanelLeft..ToolBarPanel..TBZoomOut..Hint
-#: frmEditor.dfm:1191 EssModel/System/UUMLForm.dfm:114
-#: EssModel/System/UUMLForm.dfm:208 SequenceDiagram/USequenceForm.dfm:62
+#: frmEditor.dfm:1185 EssModel/System/UUMLForm.dfm:114
+#: EssModel/System/UUMLForm.dfm:208 Main/UGUIDesigner.dfm:158
+#: Main/UGUIForm.dfm:5 SequenceDiagram/USequenceForm.dfm:62
 #: Structogram/UStructogram.dfm:176
 msgid "Zoom out"
 msgstr "إبعاد"
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBValidate..Hint
-#: frmEditor.dfm:1199
+#: frmEditor.dfm:1193
 msgid "Validate"
 msgstr "التحقق"
 
@@ -4554,7 +4558,7 @@ msgstr "التحقق"
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupOpenClass..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupOpenClass..Caption
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBClassOpen..Hint
-#: frmEditor.dfm:1222 frmPyIDEMain.dfm:3570
+#: frmEditor.dfm:1216 frmPyIDEMain.dfm:3579
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4076
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4311
 #: EssModel/System/UUMLForm.dfm:86
@@ -4566,14 +4570,14 @@ msgid "Open class"
 msgstr "فتح الملفات"
 
 #. EditorForm..pmnuEditor..mnEditClassEditor..Caption
-#: frmEditor.dfm:1226
+#: frmEditor.dfm:1220
 #, fuzzy
 #| msgid "Clear the editor"
 msgid "Class editor"
 msgstr "امسح المحرر"
 
 #. EditorForm..pmnuEditor..mnEditCopyPathname..Caption
-#: frmEditor.dfm:1233
+#: frmEditor.dfm:1227
 #, fuzzy
 msgid "Copy pathname"
 msgstr "نسخ اسم المسار"
@@ -4585,43 +4589,43 @@ msgstr "نسخ اسم المسار"
 #. FStructogram..StructoPopupMenu..MIConfiguration..Caption
 #. FConfiguration..Caption
 #. two captions which are not translated
-#: frmEditor.dfm:1237 frmPyIDEMain.dfm:932
+#: frmEditor.dfm:1231 frmPyIDEMain.dfm:932
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4168
 #: SequenceDiagram/USequenceForm.dfm:2616 Structogram/UStructogram.dfm:1907
-#: Utils/UConfiguration.dfm:6 frmPyIDEMain.pas:2334
+#: Utils/UConfiguration.dfm:6 frmPyIDEMain.pas:2335
 #: EssModel/Integrator/View/UDiagramFrame.pas:390
 msgid "Configuration"
 msgstr "ترتيب"
 
 #. EditorForm..pmnuEditor..mnGit..mnGitStatus..Caption
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitStatus..Caption
-#: frmEditor.dfm:1244 frmPyIDEMain.dfm:946
+#: frmEditor.dfm:1238 frmPyIDEMain.dfm:946
 msgid "Status"
 msgstr "الحالة"
 
 #. EditorForm..pmnuEditor..mnGit..mnGitCommit..Caption
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitCommit..Caption
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNCommit..Caption
-#: frmEditor.dfm:1254 frmPyIDEMain.dfm:956 frmPyIDEMain.dfm:1021
+#: frmEditor.dfm:1248 frmPyIDEMain.dfm:956 frmPyIDEMain.dfm:1021
 #, fuzzy
 msgid "Commit"
 msgstr "ارتكب"
 
 #. EditorForm..pmnuEditor..mnGit..mnGitLog..Caption
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitLog..Caption
-#: frmEditor.dfm:1259 frmPyIDEMain.dfm:961
+#: frmEditor.dfm:1253 frmPyIDEMain.dfm:961
 msgid "Log"
 msgstr "سجل"
 
 #. EditorForm..pmnuEditor..mnGit..mnGitCheckout..Caption
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitCheckout..Caption
-#: frmEditor.dfm:1271 frmPyIDEMain.dfm:973
+#: frmEditor.dfm:1265 frmPyIDEMain.dfm:973
 msgid "Checkout"
 msgstr "الدفع"
 
 #. EditorForm..pmnuEditor..mnGit..mnGitViewer..Caption
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitViewer..Caption
-#: frmEditor.dfm:1305 frmPyIDEMain.dfm:1007
+#: frmEditor.dfm:1299 frmPyIDEMain.dfm:1007
 #, fuzzy
 #| msgid "&View"
 msgid "Viewer"
@@ -4629,26 +4633,26 @@ msgstr "&عرض"
 
 #. EditorForm..pmnuEditor..mnFold..Caption
 #. mnSourceCode.Caption := _('Source code');
-#: frmEditor.dfm:1337 frmEditor.pas:2599
+#: frmEditor.dfm:1331 frmEditor.pas:2600
 #, fuzzy
 msgid "Fold"
 msgstr "ثنى"
 
 #. EditorForm..pmnuEditor..mnUnfold..Caption
-#: frmEditor.dfm:1368 frmEditor.pas:2600
+#: frmEditor.dfm:1362 frmEditor.pas:2601
 msgid "Unfold"
 msgstr "اظهار"
 
 #. EditorForm..pmnuEditor..mnMaximizeEditor2..Caption
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnMaximizeEditor..Caption
-#: frmEditor.dfm:1401 frmPyIDEMain.dfm:598 frmPyIDEMain.pas:2313
+#: frmEditor.dfm:1395 frmPyIDEMain.dfm:598 frmPyIDEMain.pas:2314
 #, fuzzy
 #| msgid "&Maximize Editor"
 msgid "&Maximize/Restore Editor"
 msgstr "تك&بير المحرر"
 
 #. EditorForm..pmnuEditor..mnMaximizeEditor2..Hint
-#: frmEditor.dfm:1402
+#: frmEditor.dfm:1396
 #, fuzzy
 #| msgid "Maximize editor window"
 msgid "Maximize/Restore editor window"
@@ -5004,7 +5008,7 @@ msgstr "قائمة الدوال"
 
 #. FunctionListWindow..pnHolder..lvProcs......Caption
 #. FClassEditor..PageControl..TSMethods..RGMethodKind....Items.Strings
-#: frmFunctionList.dfm:75 Main/UClassEditor.dfm:420 Main/UClassEditor.pas:294
+#: frmFunctionList.dfm:75 Main/UClassEditor.dfm:428 Main/UClassEditor.pas:294
 #: Main/UClassEditor.pas:295
 msgid "Function"
 msgstr "دالة"
@@ -5099,7 +5103,7 @@ msgstr "رسالة"
 
 #. MessagesWindow..BGPanel..FGPanel..MessagesView......Text
 #. Show/Hide FHint
-#: frmMessages.dfm:102 Formdesigner/ELDsgnr.pas:1356
+#: frmMessages.dfm:102 Formdesigner/ELDsgnr.pas:1369
 msgid "Position"
 msgstr "الموضع"
 
@@ -5329,7 +5333,7 @@ msgstr "عرض خصائص الملف"
 #. PyIDEMainForm..TBXDockTop..MainMenu..RunMenu..Caption
 #. PyIDEMainForm..actlStandard..actRun..Caption
 #. UnitTestWindow..DialogActions..actRun..Caption
-#: frmProjectExplorer.dfm:324 frmPyIDEMain.dfm:799 frmPyIDEMain.dfm:2770
+#: frmProjectExplorer.dfm:324 frmPyIDEMain.dfm:799 frmPyIDEMain.dfm:2779
 #: frmUnitTests.dfm:297
 msgid "&Run"
 msgstr "ت&شغيل"
@@ -5342,7 +5346,7 @@ msgstr "تشغيل التكوين المحدد"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectExternalRun..Caption
 #. PyIDEMainForm..actlStandard..actExternalRun..Caption
-#: frmProjectExplorer.dfm:333 frmPyIDEMain.dfm:2852
+#: frmProjectExplorer.dfm:333 frmPyIDEMain.dfm:2861
 #, fuzzy
 msgid "E&xternal Run"
 msgstr "تشغيل E&amp.xternal"
@@ -5355,7 +5359,7 @@ msgstr "تشغيل التكوين باستخدام مترجم بيثون خار�
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectDebug..Caption
 #. PyIDEMainForm..actlStandard..actDebug..Caption
-#: frmProjectExplorer.dfm:342 frmPyIDEMain.dfm:2883
+#: frmProjectExplorer.dfm:342 frmPyIDEMain.dfm:2892
 msgid "&Debug"
 msgstr "&نقح"
 
@@ -5394,8 +5398,8 @@ msgstr "موضع النص"
 
 #. PyIDEMainForm..StatusBar..spiStatusLED..Hint
 #. PyIDEMainForm..StatusBar..spiLspLed..Hint
-#: frmPyIDEMain.dfm:90 frmPyIDEMain.dfm:96 frmPyIDEMain.pas:3430
-#: frmPyIDEMain.pas:3990
+#: frmPyIDEMain.dfm:90 frmPyIDEMain.dfm:96 frmPyIDEMain.pas:3431
+#: frmPyIDEMain.pas:3991
 msgid "Ready"
 msgstr "جاهز"
 
@@ -5434,23 +5438,23 @@ msgstr "&ملف"
 #. FObjectInspector..PNewDel..BNewDelete..Caption
 #. FSequenceForm..PopupMenuConnection..MINew..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..LSDNew..Caption
-#: frmPyIDEMain.dfm:276 frmPyIDEMain.dfm:3555 Main/UClassEditor.dfm:588
+#: frmPyIDEMain.dfm:276 frmPyIDEMain.dfm:3564 Main/UClassEditor.dfm:600
 #: Main/UObjectInspector.dfm:69 SequenceDiagram/USequenceForm.dfm:2536
-#: Utils/UConfiguration.dfm:2671 frmPyIDEMain.pas:2335
+#: Utils/UConfiguration.dfm:2681 frmPyIDEMain.pas:2336
 #: Main/UObjectInspector.pas:571
 msgid "New"
 msgstr "جديد"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewTkApplication..Caption
 #. PyIDEMainForm..actlStandard..actFileNewTkApp..Caption
-#: frmPyIDEMain.dfm:284 frmPyIDEMain.dfm:3650
+#: frmPyIDEMain.dfm:284 frmPyIDEMain.dfm:3659
 #, fuzzy
 msgid "Tk/Tkk Application"
 msgstr "تطبيق TK/TTK جديد"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewTkApplication..Hint
 #. PyIDEMainForm..actlStandard..actFileNewTkApp..Hint
-#: frmPyIDEMain.dfm:285 frmPyIDEMain.dfm:3651
+#: frmPyIDEMain.dfm:285 frmPyIDEMain.dfm:3660
 #, fuzzy
 msgid "New Tk/TKK Application"
 msgstr "تطبيق TK/TTK جديد"
@@ -5458,7 +5462,7 @@ msgstr "تطبيق TK/TTK جديد"
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewQtApplication..Caption
 #. PyIDEMainForm..TBXDockTop..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBQtApplication..Caption
 #. PyIDEMainForm..actlStandard..actFileNewQtApp..Caption
-#: frmPyIDEMain.dfm:289 frmPyIDEMain.dfm:2077 frmPyIDEMain.dfm:3656
+#: frmPyIDEMain.dfm:289 frmPyIDEMain.dfm:2077 frmPyIDEMain.dfm:3665
 #, fuzzy
 msgid "Qt-Application"
 msgstr "واجهة المستخدم الرسومية-التطبيق"
@@ -5466,22 +5470,22 @@ msgstr "واجهة المستخدم الرسومية-التطبيق"
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewQtApplication..Hint
 #. PyIDEMainForm..TBXDockTop..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBQtApplication..Hint
 #. PyIDEMainForm..actlStandard..actFileNewQtApp..Hint
-#: frmPyIDEMain.dfm:290 frmPyIDEMain.dfm:2076 frmPyIDEMain.dfm:3657
+#: frmPyIDEMain.dfm:290 frmPyIDEMain.dfm:2076 frmPyIDEMain.dfm:3666
 #, fuzzy
 msgid "New QT Application"
 msgstr "تطبيق TK/TTK جديد"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewClass..Caption
 #. FClassEditor..LClass..Caption
-#: frmPyIDEMain.dfm:296 Main/UClassEditor.dfm:24 Main/UClassEditor.pas:1632
-#: Main/UClassEditor.pas:1633
+#: frmPyIDEMain.dfm:296 Main/UClassEditor.dfm:24 Main/UClassEditor.pas:1631
+#: Main/UClassEditor.pas:1632
 msgid "Class"
 msgstr "اسم كلاس آضافى"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewStrutogram..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..Caption
-#: frmPyIDEMain.dfm:300 Utils/UConfiguration.dfm:2416
-#: Utils/UConfiguration.pas:2446
+#: frmPyIDEMain.dfm:300 Utils/UConfiguration.dfm:2426
+#: Utils/UConfiguration.pas:2450
 #, fuzzy
 msgid "Structogram"
 msgstr "هيكلة"
@@ -5490,7 +5494,7 @@ msgstr "هيكلة"
 #. FSequenceForm..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..Caption
 #: frmPyIDEMain.dfm:304 SequenceDiagram/USequenceForm.dfm:5
-#: Utils/UConfiguration.dfm:2658 Utils/UConfiguration.pas:2447
+#: Utils/UConfiguration.dfm:2668 Utils/UConfiguration.pas:2451
 #, fuzzy
 msgid "Sequence diagram"
 msgstr "مخطط تسلسلي"
@@ -5540,38 +5544,38 @@ msgstr "المخططات"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem47..Caption
 #. PyIDEMainForm..actlStandard..actLayoutSave..Caption
-#: frmPyIDEMain.dfm:575 frmPyIDEMain.dfm:3166
+#: frmPyIDEMain.dfm:575 frmPyIDEMain.dfm:3175
 msgid "Save Layout..."
 msgstr "حفظ المخطط..."
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem47..Hint
 #. PyIDEMainForm..actlStandard..actLayoutSave..Hint
-#: frmPyIDEMain.dfm:576 frmPyIDEMain.dfm:3168
+#: frmPyIDEMain.dfm:576 frmPyIDEMain.dfm:3177
 msgid "Save Current Layout"
 msgstr "احفظ المخطط الحالي"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem48..Caption
 #. PyIDEMainForm..actlStandard..actLayoutsDelete..Caption
-#: frmPyIDEMain.dfm:580 frmPyIDEMain.dfm:3173
+#: frmPyIDEMain.dfm:580 frmPyIDEMain.dfm:3182
 msgid "Delete Layouts..."
 msgstr "حذف المخططات..."
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem48..Hint
 #. PyIDEMainForm..actlStandard..actLayoutsDelete..Hint
-#: frmPyIDEMain.dfm:581 frmPyIDEMain.dfm:3175
+#: frmPyIDEMain.dfm:581 frmPyIDEMain.dfm:3184
 msgid "Delete a layout"
 msgstr "حذف مخطط"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem49..Caption
 #. PyIDEMainForm..actlStandard..actLayoutDebug..Caption
-#: frmPyIDEMain.dfm:585 frmPyIDEMain.dfm:3180
+#: frmPyIDEMain.dfm:585 frmPyIDEMain.dfm:3189
 #, fuzzy
 msgid "Set Debug Layout"
 msgstr "تعيين تخطيط التصحيح"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLayouts..TBXItem49..Hint
 #. PyIDEMainForm..actlStandard..actLayoutDebug..Hint
-#: frmPyIDEMain.dfm:586 frmPyIDEMain.dfm:3182
+#: frmPyIDEMain.dfm:586 frmPyIDEMain.dfm:3191
 msgid "Set the current layout as the debug layout"
 msgstr "حفظ المخطط الحالي كمخطط التنقيح"
 
@@ -5657,7 +5661,7 @@ msgstr "لا تقوم بإبراز تركيب الجملة"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ViewMenu..mnLanguage..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PLanguage..Caption
-#: frmPyIDEMain.dfm:703 Utils/UConfiguration.dfm:3366
+#: frmPyIDEMain.dfm:703 Utils/UConfiguration.dfm:3376
 msgid "Language"
 msgstr "اللغة (Language)"
 
@@ -5734,7 +5738,7 @@ msgstr "إطار DOS"
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnToolsBrowser..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..Caption
 #. Programmer's name for it: SWebPreviewTab
-#: frmPyIDEMain.dfm:1079 Utils/UConfiguration.dfm:3286 StringResources.pas:305
+#: frmPyIDEMain.dfm:1079 Utils/UConfiguration.dfm:3296 StringResources.pas:305
 msgid "Browser"
 msgstr "المتصفح"
 
@@ -5746,7 +5750,7 @@ msgstr "فتح نافذة مستعرض"
 
 #. PyIDEMainForm..TBXDockTop..MainMenu..ToolsMenu..mnTools..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PTools..Caption
-#: frmPyIDEMain.dfm:1086 Utils/UConfiguration.dfm:5623
+#: frmPyIDEMain.dfm:1086 Utils/UConfiguration.dfm:5633
 msgid "Tools"
 msgstr "أدوات"
 
@@ -5855,7 +5859,7 @@ msgstr "منصف"
 #. PyIDEMainForm..actlStandard..actUMLNewClass..Caption
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupNewClass..Caption
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBClassDefinition..Hint
-#: frmPyIDEMain.dfm:2041 frmPyIDEMain.dfm:3563
+#: frmPyIDEMain.dfm:2041 frmPyIDEMain.dfm:3572
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4071
 #: EssModel/System/UUMLForm.dfm:79
 #: EssModel/Integrator/View/UDiagramFrame.pas:373
@@ -5881,867 +5885,857 @@ msgstr "مخطط تسلسل جديد"
 msgid "New Tk/TTK application"
 msgstr "تطبيق TK/TTK جديد"
 
-#. PyIDEMainForm..TBXDockTop..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtButtonGroup..Hint
-#: frmPyIDEMain.dfm:2171
-msgid "ButtonGroup"
-msgstr ""
-
-#. PyIDEMainForm..TBXDockTop..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtCanvas..Hint
-#: frmPyIDEMain.dfm:2225
-msgid "Canvas"
-msgstr "(Canvas) القماشة"
-
 #. PyIDEMainForm..TabControlPopupMenu..mnMaximizeEditor2..Caption
-#: frmPyIDEMain.dfm:2655
+#: frmPyIDEMain.dfm:2664
 #, fuzzy
 #| msgid "&Maximize Editor"
 msgid "&MaximizeRestore Editor"
 msgstr "تك&بير المحرر"
 
 #. PyIDEMainForm..TabControlPopupMenu..mnFiles..Caption
-#: frmPyIDEMain.dfm:2661
+#: frmPyIDEMain.dfm:2670
 msgid "&Files"
 msgstr "%ملفات"
 
 #. PyIDEMainForm..TabControlPopupMenu..mnFiles..Hint
-#: frmPyIDEMain.dfm:2662
+#: frmPyIDEMain.dfm:2671
 msgid "Open Files"
 msgstr "فتح الملفات"
 
 #. PyIDEMainForm..actlImmutable..actViewNextEditor..Caption
-#: frmPyIDEMain.dfm:2704
+#: frmPyIDEMain.dfm:2713
 msgid "&Next Editor"
 msgstr "المحر&ر التالي"
 
 #. PyIDEMainForm..actlImmutable..actViewNextEditor..Hint
-#: frmPyIDEMain.dfm:2706
+#: frmPyIDEMain.dfm:2715
 msgid "Next Editor|Move to the next editor"
 msgstr "المحرر التالي | انتقل إلى المحرر التالي"
 
 #. PyIDEMainForm..actlImmutable..actViewPreviousEditor..Caption
-#: frmPyIDEMain.dfm:2714
+#: frmPyIDEMain.dfm:2723
 msgid "&Previous Editor"
 msgstr "المحرر ال&سابق"
 
 #. PyIDEMainForm..actlImmutable..actViewPreviousEditor..Hint
-#: frmPyIDEMain.dfm:2716
+#: frmPyIDEMain.dfm:2725
 #, fuzzy
 msgid "Previous editor|Move to the previous editor"
 msgstr "المحرر السابق| الانتقال إلى المحرر السابق"
 
 #. PyIDEMainForm..actlStandard..actViewMainMenu..Caption
-#: frmPyIDEMain.dfm:2729
+#: frmPyIDEMain.dfm:2738
 msgid "Main Men&u"
 msgstr "ال&قائمة الرئيسية"
 
 #. PyIDEMainForm..actlStandard..actViewMainMenu..Hint
-#: frmPyIDEMain.dfm:2732
+#: frmPyIDEMain.dfm:2741
 msgid "View/Hide main menu"
 msgstr "عرض / اخفاء القائمة الرئيسية"
 
 #. PyIDEMainForm..actlStandard..actCallStackWin..Caption
 #. PyIDEMainForm..actlStandard..actNavCallStack..Caption
-#: frmPyIDEMain.dfm:2738 frmPyIDEMain.dfm:3340
+#: frmPyIDEMain.dfm:2747 frmPyIDEMain.dfm:3349
 #, fuzzy
 msgid "&Call Stack"
 msgstr "&amp؛ استدعاء المكدس"
 
 #. PyIDEMainForm..actlStandard..actCallStackWin..Hint
-#: frmPyIDEMain.dfm:2742
+#: frmPyIDEMain.dfm:2751
 #, fuzzy
 msgid "Show/Hide Call Stack window"
 msgstr "إظهار/إخفاء إطار مكدس الاستدعاءات"
 
 #. PyIDEMainForm..actlStandard..actVariablesWin..Caption
 #. PyIDEMainForm..actlStandard..actNavVariables..Caption
-#: frmPyIDEMain.dfm:2749 frmPyIDEMain.dfm:3330
+#: frmPyIDEMain.dfm:2758 frmPyIDEMain.dfm:3339
 msgid "&Variables"
 msgstr "المت&غيرات"
 
 #. PyIDEMainForm..actlStandard..actVariablesWin..Hint
-#: frmPyIDEMain.dfm:2753
+#: frmPyIDEMain.dfm:2762
 msgid "Show/Hide Variables window"
 msgstr "عرض / اخفاء شاشة المتغيرات"
 
 #. PyIDEMainForm..actlStandard..actSyntaxCheck..Caption
-#: frmPyIDEMain.dfm:2760
+#: frmPyIDEMain.dfm:2769
 msgid "&Syntax Check"
 msgstr "&فحص تركيب الجمل"
 
 #. PyIDEMainForm..actlStandard..actSyntaxCheck..Hint
-#: frmPyIDEMain.dfm:2763
+#: frmPyIDEMain.dfm:2772
 msgid "Syntax Check|Perform syntax check and load scripts"
 msgstr "فحص تركيب الجمل | قم بفحص الجمل وتنفيذ السكريبت"
 
 #. PyIDEMainForm..actlStandard..actRun..Hint
-#: frmPyIDEMain.dfm:2773
+#: frmPyIDEMain.dfm:2782
 #, fuzzy
 msgid "Run|Run active module"
 msgstr "تشغيل| تشغيل الوحدة النمطية النشطة"
 
 #. PyIDEMainForm..actlStandard..actCommandLine..Caption
-#: frmPyIDEMain.dfm:2781
+#: frmPyIDEMain.dfm:2790
 #, fuzzy
 msgid "Command Line &Parameters..."
 msgstr "معاملات سطر الأوامر"
 
 #. PyIDEMainForm..actlStandard..actCommandLine..Hint
-#: frmPyIDEMain.dfm:2784
+#: frmPyIDEMain.dfm:2793
 #, fuzzy
 msgid "Set command line parameters"
 msgstr "تعيين معلمات سطر الأوامر"
 
 #. PyIDEMainForm..actlStandard..actImportModule..Caption
-#: frmPyIDEMain.dfm:2789
+#: frmPyIDEMain.dfm:2798
 #, fuzzy
 msgid "Import &Module"
 msgstr "استيراد وحدة نمطية"
 
 #. PyIDEMainForm..actlStandard..actImportModule..Hint
-#: frmPyIDEMain.dfm:2792
+#: frmPyIDEMain.dfm:2801
 #, fuzzy
 msgid "Import module"
 msgstr "استيراد وحدة نمطية"
 
 #. PyIDEMainForm..actlStandard..actFileNewModule..Caption
-#: frmPyIDEMain.dfm:2799
+#: frmPyIDEMain.dfm:2808
 #, fuzzy
 msgid "&New Python module"
 msgstr "وحدة بيثون الجديدة"
 
 #. PyIDEMainForm..actlStandard..actFileNewModule..Hint
-#: frmPyIDEMain.dfm:2802
+#: frmPyIDEMain.dfm:2811
 #, fuzzy
 msgid "New Python module"
 msgstr "وحدة بيثون جديدة"
 
 #. PyIDEMainForm..actlStandard..actFileOpen..Caption
-#: frmPyIDEMain.dfm:2810
+#: frmPyIDEMain.dfm:2819
 msgid "&Open..."
 msgstr "&فتح..."
 
 #. PyIDEMainForm..actlStandard..actFileOpen..Hint
-#: frmPyIDEMain.dfm:2813
+#: frmPyIDEMain.dfm:2822
 msgid "Select a file to open"
 msgstr "اختر ملف لفتحه"
 
 #. PyIDEMainForm..actlStandard..actFileCloseAll..Caption
-#: frmPyIDEMain.dfm:2821
+#: frmPyIDEMain.dfm:2830
 msgid "Close A&ll"
 msgstr "إ&غلاق الكل"
 
 #. PyIDEMainForm..actlStandard..actFileCloseAll..Hint
-#: frmPyIDEMain.dfm:2825
+#: frmPyIDEMain.dfm:2834
 msgid "Close all files"
 msgstr "إغلاق جميع الملفات"
 
 #. PyIDEMainForm..actlStandard..actFileExit..Caption
-#: frmPyIDEMain.dfm:2833
+#: frmPyIDEMain.dfm:2842
 msgid "E&xit"
 msgstr "&خروج"
 
 #. PyIDEMainForm..actlStandard..actFileExit..Hint
-#: frmPyIDEMain.dfm:2836
+#: frmPyIDEMain.dfm:2845
 msgid "Exit"
 msgstr "خروج"
 
 #. PyIDEMainForm..actlStandard..actViewStatusBar..Caption
-#: frmPyIDEMain.dfm:2844
+#: frmPyIDEMain.dfm:2853
 #, fuzzy
 msgid "Status &Bar"
 msgstr "الحالة وشريط"
 
 #. PyIDEMainForm..actlStandard..actViewStatusBar..Hint
-#: frmPyIDEMain.dfm:2847
+#: frmPyIDEMain.dfm:2856
 msgid "View/Hide status bar"
 msgstr "عرض / اخفاء شريط الحالة"
 
 #. PyIDEMainForm..actlStandard..actExternalRun..Hint
-#: frmPyIDEMain.dfm:2855
+#: frmPyIDEMain.dfm:2864
 #, fuzzy
 msgid "External Run|Run active module in external Python interpreter"
 msgstr "تشغيل خارجي| تشغيل الوحدة النمطية النشطة في مترجم بيثون خارجي"
 
 #. PyIDEMainForm..actlStandard..actExternalRunConfigure..Caption
-#: frmPyIDEMain.dfm:2863
+#: frmPyIDEMain.dfm:2872
 #, fuzzy
 msgid "Configure &External Run..."
 msgstr "تكوين وتشغيل خارجي..."
 
 #. PyIDEMainForm..actlStandard..actExternalRunConfigure..Hint
-#: frmPyIDEMain.dfm:2866
+#: frmPyIDEMain.dfm:2875
 #, fuzzy
 msgid "Configure External Run"
 msgstr "تكوين التشغيل الخارجي"
 
 #. PyIDEMainForm..actlStandard..actRunDebugLastScript..Caption
-#: frmPyIDEMain.dfm:2873
+#: frmPyIDEMain.dfm:2882
 #, fuzzy
 msgid "Debug Last Script"
 msgstr "تصحيح البرنامج النصي الأخير"
 
 #. PyIDEMainForm..actlStandard..actRunDebugLastScript..Hint
 #. Programmer's name for it: SHintDebug
-#: frmPyIDEMain.dfm:2875 StringResources.pas:267
+#: frmPyIDEMain.dfm:2884 StringResources.pas:267
 #, fuzzy
 msgid "Debug last script"
 msgstr "تصحيح آخر برنامج نصي"
 
 #. PyIDEMainForm..actlStandard..actDebug..Hint
 #. Programmer's name for it: SDebugHint
-#: frmPyIDEMain.dfm:2886 StringResources.pas:265
+#: frmPyIDEMain.dfm:2895 StringResources.pas:265
 #, fuzzy
 msgid "Debug|Debug active script"
 msgstr "تصحيح| تصحيح البرنامج النصي النشط"
 
 #. PyIDEMainForm..actlStandard..actRestoreEditor..Caption
-#: frmPyIDEMain.dfm:2894
+#: frmPyIDEMain.dfm:2903
 msgid "&Restore Editor"
 msgstr "استر&جاع المحرر"
 
 #. PyIDEMainForm..actlStandard..actRestoreEditor..Hint
-#: frmPyIDEMain.dfm:2897
+#: frmPyIDEMain.dfm:2906
 msgid "Restore editor window"
 msgstr "استرجاع نافذة المحرر"
 
 #. PyIDEMainForm..actlStandard..actRunToCursor..Caption
-#: frmPyIDEMain.dfm:2905
+#: frmPyIDEMain.dfm:2914
 #, fuzzy
 msgid "Run To &Cursor"
 msgstr "تشغيل إلى المؤشر"
 
 #. PyIDEMainForm..actlStandard..actRunToCursor..Hint
-#: frmPyIDEMain.dfm:2908
+#: frmPyIDEMain.dfm:2917
 #, fuzzy
 msgid "Run to cursor"
 msgstr "تشغيل إلى المؤشر"
 
 #. PyIDEMainForm..actlStandard..actStepInto..Caption
-#: frmPyIDEMain.dfm:2916
+#: frmPyIDEMain.dfm:2925
 #, fuzzy
 msgid "Step &Into"
 msgstr "خطوة وإلى"
 
 #. PyIDEMainForm..actlStandard..actStepInto..Hint
-#: frmPyIDEMain.dfm:2919
+#: frmPyIDEMain.dfm:2928
 #, fuzzy
 msgid "Step into subroutine "
 msgstr "خطوة إلى روتين فرعي "
 
 #. PyIDEMainForm..actlStandard..actStepOver..Caption
-#: frmPyIDEMain.dfm:2927
+#: frmPyIDEMain.dfm:2936
 #, fuzzy
 msgid "Step &Over"
 msgstr "خطوة و أكثر"
 
 #. PyIDEMainForm..actlStandard..actStepOver..Hint
-#: frmPyIDEMain.dfm:2930
+#: frmPyIDEMain.dfm:2939
 msgid "Step over next function call"
 msgstr "تجاوز لما بعد استدعاء الدالة"
 
 #. PyIDEMainForm..actlStandard..actStepOut..Caption
-#: frmPyIDEMain.dfm:2938
+#: frmPyIDEMain.dfm:2947
 #, fuzzy
 msgid "Step O&ut"
 msgstr "الخطوة O&amp.ut"
 
 #. PyIDEMainForm..actlStandard..actStepOut..Hint
-#: frmPyIDEMain.dfm:2941
+#: frmPyIDEMain.dfm:2950
 #, fuzzy
 msgid "Step out of the current subroutine"
 msgstr "الخروج من الروتين الفرعي الحالي"
 
 #. PyIDEMainForm..actlStandard..actDebugPause..Caption
-#: frmPyIDEMain.dfm:2949
+#: frmPyIDEMain.dfm:2958
 #, fuzzy
 msgid "&Pause"
 msgstr "&amp؛ إيقاف مؤقت"
 
 #. PyIDEMainForm..actlStandard..actDebugPause..Hint
-#: frmPyIDEMain.dfm:2952
+#: frmPyIDEMain.dfm:2961
 #, fuzzy
 msgid "Pause running program"
 msgstr "إيقاف تشغيل البرنامج مؤقتا"
 
 #. PyIDEMainForm..actlStandard..actDebugAbort..Caption
-#: frmPyIDEMain.dfm:2959
+#: frmPyIDEMain.dfm:2968
 #, fuzzy
 msgid "&Abort Debugging"
 msgstr "إحباط التصحيح"
 
 #. PyIDEMainForm..actlStandard..actDebugAbort..Hint
-#: frmPyIDEMain.dfm:2962
+#: frmPyIDEMain.dfm:2971
 #, fuzzy
 msgid "Abort debugging"
 msgstr "إحباط التصحيح"
 
 #. PyIDEMainForm..actlStandard..actRunLastScriptExternal..Caption
-#: frmPyIDEMain.dfm:2970
+#: frmPyIDEMain.dfm:2979
 #, fuzzy
 msgid "Run Last Script Externally"
 msgstr "تشغيل البرنامج النصي الأخير خارجيا"
 
 #. PyIDEMainForm..actlStandard..actRunLastScriptExternal..Hint
 #. Programmer's name for it: SHintExternalRun
-#: frmPyIDEMain.dfm:2972 StringResources.pas:268
+#: frmPyIDEMain.dfm:2981 StringResources.pas:268
 #, fuzzy
 msgid "Run last script externally"
 msgstr "تشغيل البرنامج النصي الأخير خارجيا"
 
 #. PyIDEMainForm..actlStandard..actRunLastScript..Caption
-#: frmPyIDEMain.dfm:2980
+#: frmPyIDEMain.dfm:2989
 #, fuzzy
 msgid "Run Last Script"
 msgstr "تشغيل البرنامج النصي الأخير"
 
 #. PyIDEMainForm..actlStandard..actRunLastScript..Hint
 #. Programmer's name for it: SHintRun
-#: frmPyIDEMain.dfm:2982 StringResources.pas:266
+#: frmPyIDEMain.dfm:2991 StringResources.pas:266
 #, fuzzy
 msgid "Run last script"
 msgstr "تشغيل البرنامج النصي الأخير"
 
 #. PyIDEMainForm..actlStandard..actToggleBreakPoint..Caption
-#: frmPyIDEMain.dfm:2990
+#: frmPyIDEMain.dfm:2999
 #, fuzzy
 msgid "Toggle &breakpoint"
 msgstr "تبديل نقطة التوقف"
 
 #. PyIDEMainForm..actlStandard..actToggleBreakPoint..Hint
-#: frmPyIDEMain.dfm:2993
+#: frmPyIDEMain.dfm:3002
 #, fuzzy
 msgid "Toggle breakpoint"
 msgstr "نقطة إيقاف التبديل"
 
 #. PyIDEMainForm..actlStandard..actClearAllBreakpoints..Caption
-#: frmPyIDEMain.dfm:3001
+#: frmPyIDEMain.dfm:3010
 #, fuzzy
 msgid "Clear A&ll Breakpoints"
 msgstr "مسح نقاط التوقف A&ll"
 
 #. PyIDEMainForm..actlStandard..actClearAllBreakpoints..Hint
-#: frmPyIDEMain.dfm:3004
+#: frmPyIDEMain.dfm:3013
 #, fuzzy
 msgid "Clear all breakpoints"
 msgstr "مسح كافة نقاط التوقف"
 
 #. PyIDEMainForm..actlStandard..actBreakPointsWin..Caption
-#: frmPyIDEMain.dfm:3011
+#: frmPyIDEMain.dfm:3020
 #, fuzzy
 msgid "&Breakpoints"
 msgstr "نقاط التوقف"
 
 #. PyIDEMainForm..actlStandard..actBreakPointsWin..Hint
-#: frmPyIDEMain.dfm:3015
+#: frmPyIDEMain.dfm:3024
 #, fuzzy
 msgid "Show/Hide Breakpoints window"
 msgstr "إظهار/إخفاء نافذة نقاط التوقف"
 
 #. PyIDEMainForm..actlStandard..actWatchesWin..Caption
 #. PyIDEMainForm..actlStandard..actNavWatches..Caption
-#: frmPyIDEMain.dfm:3022 frmPyIDEMain.dfm:3300
+#: frmPyIDEMain.dfm:3031 frmPyIDEMain.dfm:3309
 #, fuzzy
 msgid "&Watches"
 msgstr "الساعات"
 
 #. PyIDEMainForm..actlStandard..actWatchesWin..Hint
-#: frmPyIDEMain.dfm:3026
+#: frmPyIDEMain.dfm:3035
 #, fuzzy
 msgid "Show/Hide Watches window"
 msgstr "إظهار/إخفاء نافذة الساعات"
 
 #. PyIDEMainForm..actlStandard..actMessagesWin..Caption
-#: frmPyIDEMain.dfm:3033
+#: frmPyIDEMain.dfm:3042
 msgid "&Messages"
 msgstr "&الرسائل"
 
 #. PyIDEMainForm..actlStandard..actMessagesWin..Hint
-#: frmPyIDEMain.dfm:3037
+#: frmPyIDEMain.dfm:3046
 msgid "Show/Hide Messages window"
 msgstr "عرض / اخفاء شاشة الرسائل"
 
 #. PyIDEMainForm..actlStandard..actViewII..Caption
-#: frmPyIDEMain.dfm:3044
+#: frmPyIDEMain.dfm:3053
 msgid "&Interactive Interpreter"
 msgstr "المفسر ال&تفاعلي"
 
 #. PyIDEMainForm..actlStandard..actViewII..Hint
-#: frmPyIDEMain.dfm:3048
+#: frmPyIDEMain.dfm:3057
 msgid "View/Hide Interactive Interpreter"
 msgstr "عرض / أخفاء المفسر التفاعلي"
 
 #. PyIDEMainForm..actlStandard..actViewCodeExplorer..Caption
 #. PyIDEMainForm..actlStandard..actNavCodeExplorer..Caption
-#: frmPyIDEMain.dfm:3055 frmPyIDEMain.dfm:3370
+#: frmPyIDEMain.dfm:3064 frmPyIDEMain.dfm:3379
 msgid "&Code Explorer"
 msgstr "&مستكشف الكود"
 
 #. PyIDEMainForm..actlStandard..actViewCodeExplorer..Hint
-#: frmPyIDEMain.dfm:3059
+#: frmPyIDEMain.dfm:3068
 msgid "View/Hide Code Explorer"
 msgstr "عرض / اخفاء مستكشف الكود"
 
 #. PyIDEMainForm..actlStandard..actViewFileExplorer..Caption
-#: frmPyIDEMain.dfm:3066
+#: frmPyIDEMain.dfm:3075
 msgid "&File Explorer"
 msgstr "مستك&شف الملفات"
 
 #. PyIDEMainForm..actlStandard..actViewFileExplorer..Hint
-#: frmPyIDEMain.dfm:3070
+#: frmPyIDEMain.dfm:3079
 msgid "View/Hide File Explorer"
 msgstr "عرض /أخفاء مستكشف الملفات"
 
 #. PyIDEMainForm..actlStandard..actViewToDoList..Caption
-#: frmPyIDEMain.dfm:3077
+#: frmPyIDEMain.dfm:3086
 msgid "&To-Do List"
 msgstr "قائمة الأ&عمال"
 
 #. PyIDEMainForm..actlStandard..actViewToDoList..Hint
-#: frmPyIDEMain.dfm:3080
+#: frmPyIDEMain.dfm:3089
 msgid "View/Hide To Do List"
 msgstr "عرض / اخفاء قائمة الأعمال"
 
 #. PyIDEMainForm..actlStandard..actViewFindResults..Caption
-#: frmPyIDEMain.dfm:3087
+#: frmPyIDEMain.dfm:3096
 #, fuzzy
 msgid "Find &in Files Results"
 msgstr "البحث عن نتائج الملفات"
 
 #. PyIDEMainForm..actlStandard..actViewFindResults..Hint
-#: frmPyIDEMain.dfm:3090
+#: frmPyIDEMain.dfm:3099
 #, fuzzy
 msgid "View/Hide Find in Files Results"
 msgstr "عرض/إخفاء البحث في نتائج الملفات"
 
 #. PyIDEMainForm..actlStandard..actViewOutput..Caption
-#: frmPyIDEMain.dfm:3098
+#: frmPyIDEMain.dfm:3107
 #, fuzzy
 msgid "&Output Window"
 msgstr "نافذة الإخراج"
 
 #. PyIDEMainForm..actlStandard..actViewOutput..Hint
-#: frmPyIDEMain.dfm:3101
+#: frmPyIDEMain.dfm:3110
 #, fuzzy
 msgid "View/Hide Output Window"
 msgstr "عرض/إخفاء نافذة الإخراج"
 
 #. PyIDEMainForm..actlStandard..actViewUnitTests..Caption
 #. PyIDEMainForm..actlStandard..actNavUnitTests..Caption
-#: frmPyIDEMain.dfm:3108 frmPyIDEMain.dfm:3390
+#: frmPyIDEMain.dfm:3117 frmPyIDEMain.dfm:3399
 #, fuzzy
 msgid "&Unit Tests"
 msgstr "اختبارات الوحدة"
 
 #. PyIDEMainForm..actlStandard..actViewUnitTests..Hint
-#: frmPyIDEMain.dfm:3110
+#: frmPyIDEMain.dfm:3119
 #, fuzzy
 msgid "View/Hide Unit Tests Window"
 msgstr "عرض/إخفاء نافذة اختبارات الوحدة"
 
 #. PyIDEMainForm..actlStandard..actFindDefinition..Caption
-#: frmPyIDEMain.dfm:3117
+#: frmPyIDEMain.dfm:3126
 #, fuzzy
 msgid "Find &Definition"
 msgstr "البحث والتعريف"
 
 #. PyIDEMainForm..actlStandard..actFindDefinition..Hint
-#: frmPyIDEMain.dfm:3120
+#: frmPyIDEMain.dfm:3129
 #, fuzzy
 msgid "Find definition of an Identifier"
 msgstr "البحث عن تعريف معرف"
 
 #. PyIDEMainForm..actlStandard..actFindReferences..Caption
-#: frmPyIDEMain.dfm:3126
+#: frmPyIDEMain.dfm:3135
 #, fuzzy
 msgid "Find R&eferences"
 msgstr "البحث عن R&amp الإذعان"
 
 #. PyIDEMainForm..actlStandard..actFindReferences..Hint
-#: frmPyIDEMain.dfm:3129
+#: frmPyIDEMain.dfm:3138
 #, fuzzy
 msgid "Find references of an Identifier"
 msgstr "البحث عن مراجع معرف"
 
 #. PyIDEMainForm..actlStandard..actBrowseBack..Caption
-#: frmPyIDEMain.dfm:3134
+#: frmPyIDEMain.dfm:3143
 #, fuzzy
 msgid "Browse &Back"
 msgstr "تصفح و الخلف"
 
 #. PyIDEMainForm..actlStandard..actBrowseBack..Hint
-#: frmPyIDEMain.dfm:3137
+#: frmPyIDEMain.dfm:3146
 #, fuzzy
 msgid "Browse back"
 msgstr "استعراض مرة أخرى"
 
 #. PyIDEMainForm..actlStandard..actBrowseForward..Caption
-#: frmPyIDEMain.dfm:3145
+#: frmPyIDEMain.dfm:3154
 #, fuzzy
 msgid "Browse &Forward"
 msgstr "تصفح وإلى الأمام"
 
 #. PyIDEMainForm..actlStandard..actBrowseForward..Hint
-#: frmPyIDEMain.dfm:3148
+#: frmPyIDEMain.dfm:3157
 #, fuzzy
 msgid "Browse forward"
 msgstr "استعرض للأمام"
 
 #. PyIDEMainForm..actlStandard..actViewRegExpTester..Caption
-#: frmPyIDEMain.dfm:3156
+#: frmPyIDEMain.dfm:3165
 msgid "&Regular Expression Tester"
 msgstr "فاح&ص التعابير النمطية"
 
 #. PyIDEMainForm..actlStandard..actViewRegExpTester..Hint
-#: frmPyIDEMain.dfm:3159
+#: frmPyIDEMain.dfm:3168
 msgid "View/Hide Regular Expression Tester"
 msgstr "عرض / اخفاء التعابير النمطية"
 
 #. PyIDEMainForm..actlStandard..actMaximizeEditor..Caption
-#: frmPyIDEMain.dfm:3187
+#: frmPyIDEMain.dfm:3196
 msgid "&Maximize Editor"
 msgstr "تك&بير المحرر"
 
 #. PyIDEMainForm..actlStandard..actMaximizeEditor..Hint
-#: frmPyIDEMain.dfm:3190
+#: frmPyIDEMain.dfm:3199
 msgid "Maximize editor window"
 msgstr "تكبير شاشة المحرر"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomIn..Caption
-#: frmPyIDEMain.dfm:3198
+#: frmPyIDEMain.dfm:3207
 #, fuzzy
 msgid "Zoom &In"
 msgstr "تكبير وتصغير"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomIn..Hint
-#: frmPyIDEMain.dfm:3200
+#: frmPyIDEMain.dfm:3209
 msgid "Increase the font size of the editor"
 msgstr "قم بزيادة حجم الخط في المحرر"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomOut..Caption
-#: frmPyIDEMain.dfm:3208
+#: frmPyIDEMain.dfm:3217
 #, fuzzy
 msgid "Zoom &Out"
 msgstr "التكبير والتصغير"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomOut..Hint
-#: frmPyIDEMain.dfm:3210
+#: frmPyIDEMain.dfm:3219
 msgid "Decrease the font size of the editor"
 msgstr "قم بتقليل حجم الخط في المحرر"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorVer..Caption
-#: frmPyIDEMain.dfm:3218
+#: frmPyIDEMain.dfm:3227
 msgid "Split Editor Vertically"
 msgstr "قسم المحرر عمودياً"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorVer..Hint
-#: frmPyIDEMain.dfm:3221
+#: frmPyIDEMain.dfm:3230
 msgid "Split the editor Windows vertically"
 msgstr "قسم نوافذ المحرر عمودياً"
 
 #. PyIDEMainForm..actlStandard..actAddWatchAtCursor..Caption
-#: frmPyIDEMain.dfm:3228
+#: frmPyIDEMain.dfm:3237
 #, fuzzy
 msgid "Add &Watch At Cursor"
 msgstr "إضافة &amp؛ مشاهدة عند المؤشر"
 
 #. PyIDEMainForm..actlStandard..actAddWatchAtCursor..Hint
-#: frmPyIDEMain.dfm:3231
+#: frmPyIDEMain.dfm:3240
 #, fuzzy
 msgid "Add the expression at the editor current position as a watch"
 msgstr "إضافة التعبير في موضع المحرر الحالي كساعة"
 
 #. PyIDEMainForm..actlStandard..actPythonReinitialize..Caption
-#: frmPyIDEMain.dfm:3239
+#: frmPyIDEMain.dfm:3248
 #, fuzzy
 msgid "Reinitiali&ze Python engine"
 msgstr "رينيتالي&زي بيثون المحرك"
 
 #. PyIDEMainForm..actlStandard..actPythonInternal..Caption
-#: frmPyIDEMain.dfm:3248
+#: frmPyIDEMain.dfm:3257
 #, fuzzy
 msgid "&Internal"
 msgstr "داخلي"
 
 #. PyIDEMainForm..actlStandard..actPythonInternal..Hint
-#: frmPyIDEMain.dfm:3253
+#: frmPyIDEMain.dfm:3262
 msgid "Use internal Python Engine"
 msgstr "استخدم محرك بايثون الداخلي"
 
 #. PyIDEMainForm..actlStandard..actPythonRemote..Caption
-#: frmPyIDEMain.dfm:3260
+#: frmPyIDEMain.dfm:3269
 #, fuzzy
 msgid "&Remote"
 msgstr "بعيد"
 
 #. PyIDEMainForm..actlStandard..actPythonRemote..Hint
-#: frmPyIDEMain.dfm:3264
+#: frmPyIDEMain.dfm:3273
 msgid "Use a remote Python engine"
 msgstr "استخدم محرك بايثون بعيد"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteTk..Caption
-#: frmPyIDEMain.dfm:3271
+#: frmPyIDEMain.dfm:3280
 #, fuzzy
 msgid "Remote (&Tk)"
 msgstr "عن بعد (&amp؛TK)"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteTk..Hint
-#: frmPyIDEMain.dfm:3275
+#: frmPyIDEMain.dfm:3284
 #, fuzzy
 msgid "Use a remote Python engine for Tkinter applications"
 msgstr "استخدام محرك بيثون البعيد لتطبيقات Tkinter"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteWx..Caption
-#: frmPyIDEMain.dfm:3282
+#: frmPyIDEMain.dfm:3291
 #, fuzzy
 msgid "Remote (&Wx)"
 msgstr "عن بعد (&amp؛ Wx)"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteWx..Hint
-#: frmPyIDEMain.dfm:3286
+#: frmPyIDEMain.dfm:3295
 #, fuzzy
 msgid "Use a remote Python engine for wxPython applications"
 msgstr "استخدام مشغل بيثون بعيد لتطبيقات wxPython"
 
 #. PyIDEMainForm..actlStandard..actFileNewFile..Caption
-#: frmPyIDEMain.dfm:3291
+#: frmPyIDEMain.dfm:3300
 msgid "New File..."
 msgstr "ملف جديد..."
 
 #. PyIDEMainForm..actlStandard..actFileNewFile..Hint
-#: frmPyIDEMain.dfm:3293
+#: frmPyIDEMain.dfm:3302
 #, fuzzy
 msgid "New file from template"
 msgstr "ملف جديد من قالب"
 
 #. PyIDEMainForm..actlStandard..actNavWatches..Hint
-#: frmPyIDEMain.dfm:3302
+#: frmPyIDEMain.dfm:3311
 #, fuzzy
 msgid "Activate the Watches window"
 msgstr "تنشيط نافذة الساعات"
 
 #. PyIDEMainForm..actlStandard..actNavBreakpoints..Caption
-#: frmPyIDEMain.dfm:3310
+#: frmPyIDEMain.dfm:3319
 #, fuzzy
 msgid "&BreakPoints"
 msgstr "نقاط التوقف"
 
 #. PyIDEMainForm..actlStandard..actNavBreakpoints..Hint
-#: frmPyIDEMain.dfm:3312
+#: frmPyIDEMain.dfm:3321
 #, fuzzy
 msgid "Activate the Breakpoints window"
 msgstr "تنشيط إطار نقاط التوقف"
 
 #. PyIDEMainForm..actlStandard..actNavInterpreter..Caption
-#: frmPyIDEMain.dfm:3320
+#: frmPyIDEMain.dfm:3329
 msgid "&Interpreter"
 msgstr "الم&فسر"
 
 #. PyIDEMainForm..actlStandard..actNavInterpreter..Hint
-#: frmPyIDEMain.dfm:3322
+#: frmPyIDEMain.dfm:3331
 #, fuzzy
 msgid "Activate the Interpreter window"
 msgstr "تنشيط نافذة المترجم"
 
 #. PyIDEMainForm..actlStandard..actNavVariables..Hint
-#: frmPyIDEMain.dfm:3332
+#: frmPyIDEMain.dfm:3341
 #, fuzzy
 msgid "Activate the Variables window"
 msgstr "تنشيط إطار المتغيرات"
 
 #. PyIDEMainForm..actlStandard..actNavCallStack..Hint
-#: frmPyIDEMain.dfm:3342
+#: frmPyIDEMain.dfm:3351
 #, fuzzy
 msgid "Activate the Call Stack window"
 msgstr "تنشيط إطار مكدس الاستدعاءات"
 
 #. PyIDEMainForm..actlStandard..actNavMessages..Caption
-#: frmPyIDEMain.dfm:3350
+#: frmPyIDEMain.dfm:3359
 #, fuzzy
 msgid "&Messages "
 msgstr "&الرسائل"
 
 #. PyIDEMainForm..actlStandard..actNavMessages..Hint
-#: frmPyIDEMain.dfm:3352
+#: frmPyIDEMain.dfm:3361
 #, fuzzy
 msgid "Activate the Messages window"
 msgstr "تنشيط إطار الرسائل"
 
 #. PyIDEMainForm..actlStandard..actNavFileExplorer..Caption
-#: frmPyIDEMain.dfm:3360
+#: frmPyIDEMain.dfm:3369
 msgid "File E&xplorer"
 msgstr "مستك&شف الملفات"
 
 #. PyIDEMainForm..actlStandard..actNavFileExplorer..Hint
-#: frmPyIDEMain.dfm:3362
+#: frmPyIDEMain.dfm:3371
 msgid "Activate the File Explorer window"
 msgstr "تفعيل نافذة مستكشف الملفات"
 
 #. PyIDEMainForm..actlStandard..actNavCodeExplorer..Hint
-#: frmPyIDEMain.dfm:3372
+#: frmPyIDEMain.dfm:3381
 msgid "Activate the Code Explorer window"
 msgstr "تفعيل نافذة مستكشف الكود"
 
 #. PyIDEMainForm..actlStandard..actNavTodo..Caption
-#: frmPyIDEMain.dfm:3380
+#: frmPyIDEMain.dfm:3389
 msgid "&Todo List"
 msgstr "&قائمة المهام"
 
 #. PyIDEMainForm..actlStandard..actNavTodo..Hint
 #. PyIDEMainForm..actlStandard..actNavUnitTests..Hint
-#: frmPyIDEMain.dfm:3382 frmPyIDEMain.dfm:3392
+#: frmPyIDEMain.dfm:3391 frmPyIDEMain.dfm:3401
 msgid "Activate the Todo List window"
 msgstr "تفعيل نافذة قائمة المهام"
 
 #. PyIDEMainForm..actlStandard..actNavOutput..Caption
-#: frmPyIDEMain.dfm:3400
+#: frmPyIDEMain.dfm:3409
 #, fuzzy
 msgid "Command &Output"
 msgstr "الأمر والإخراج"
 
 #. PyIDEMainForm..actlStandard..actNavOutput..Hint
-#: frmPyIDEMain.dfm:3402
+#: frmPyIDEMain.dfm:3411
 #, fuzzy
 msgid "Activate the Command Output window"
 msgstr "تنشيط إطار إخراج الأمر"
 
 #. PyIDEMainForm..actlStandard..actNavEditor..Caption
-#: frmPyIDEMain.dfm:3410
+#: frmPyIDEMain.dfm:3419
 msgid "&Editor"
 msgstr "&المحرر"
 
 #. PyIDEMainForm..actlStandard..actNavEditor..Hint
-#: frmPyIDEMain.dfm:3412
+#: frmPyIDEMain.dfm:3421
 msgid "Activate the Editor"
 msgstr "تفعيل المحرر"
 
 #. PyIDEMainForm..actlStandard..actPythonSSH..Caption
-#: frmPyIDEMain.dfm:3422
+#: frmPyIDEMain.dfm:3431
 #, fuzzy
 msgid "&SSH"
 msgstr "SSH"
 
 #. PyIDEMainForm..actlStandard..actPythonSSH..Hint
-#: frmPyIDEMain.dfm:3426
+#: frmPyIDEMain.dfm:3435
 #, fuzzy
 msgid "Use an SSH remote Python engine"
 msgstr "استخدام محرك بيثون بعيد SSH"
 
 #. PyIDEMainForm..actlStandard..actExecSelection..Caption
-#: frmPyIDEMain.dfm:3431
+#: frmPyIDEMain.dfm:3440
 #, fuzzy
 msgid "E&xecute selection"
 msgstr "اختيار E&amp.xecute"
 
 #. PyIDEMainForm..actlStandard..actExecSelection..Hint
-#: frmPyIDEMain.dfm:3434
+#: frmPyIDEMain.dfm:3443
 msgid "Execute the editor selection"
 msgstr "نفذ الإختيار في المحرر"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorHor..Caption
-#: frmPyIDEMain.dfm:3442
+#: frmPyIDEMain.dfm:3451
 msgid "Split Editor Horizontally"
 msgstr "تقسيم المحرر أفقياً"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorHor..Hint
-#: frmPyIDEMain.dfm:3445
+#: frmPyIDEMain.dfm:3454
 msgid "Split the editor Windows horizontally"
 msgstr "تقسيم  نوافذ المحرر أفقياً"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondEditor..Caption
-#: frmPyIDEMain.dfm:3452
+#: frmPyIDEMain.dfm:3461
 msgid "Hide Second Editor"
 msgstr "اخفاء المحرر الثاني"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondEditor..Hint
-#: frmPyIDEMain.dfm:3455
+#: frmPyIDEMain.dfm:3464
 msgid "Clear the editor"
 msgstr "امسح المحرر"
 
 #. PyIDEMainForm..actlStandard..actPostMortem..Caption
-#: frmPyIDEMain.dfm:3460
+#: frmPyIDEMain.dfm:3469
 #, fuzzy
 msgid "&Post Mortem"
 msgstr "وبعد الوفاة"
 
 #. PyIDEMainForm..actlStandard..actPostMortem..Hint
-#: frmPyIDEMain.dfm:3463
+#: frmPyIDEMain.dfm:3472
 #, fuzzy
 msgid "Enter post mortem analysis"
 msgstr "أدخل تحليل ما بعد الوفاة"
 
 #. PyIDEMainForm..actlStandard..actViewCustomizeToolbars..Caption
-#: frmPyIDEMain.dfm:3470
+#: frmPyIDEMain.dfm:3479
 msgid "Customize..."
 msgstr "تخصيص..."
 
 #. PyIDEMainForm..actlStandard..actViewCustomizeToolbars..Hint
-#: frmPyIDEMain.dfm:3473
+#: frmPyIDEMain.dfm:3482
 #, fuzzy
 msgid "Customize the toolbars"
 msgstr "تخصيص أشرطة الأدوات"
 
 #. PyIDEMainForm..actlStandard..actViewProjectExplorer..Caption
 #. PyIDEMainForm..actlStandard..actNavProjectExplorer..Caption
-#: frmPyIDEMain.dfm:3478 frmPyIDEMain.dfm:3488
+#: frmPyIDEMain.dfm:3487 frmPyIDEMain.dfm:3497
 msgid "&Project Explorer"
 msgstr "م&ستكشف المشروع"
 
 #. PyIDEMainForm..actlStandard..actViewProjectExplorer..Hint
-#: frmPyIDEMain.dfm:3481
+#: frmPyIDEMain.dfm:3490
 msgid "View/Hide Project Explorer"
 msgstr "عرض / اخفاء مستكشف المشروع"
 
 #. PyIDEMainForm..actlStandard..actNavProjectExplorer..Hint
-#: frmPyIDEMain.dfm:3491
+#: frmPyIDEMain.dfm:3500
 msgid "Activate the Project Explorer window"
 msgstr "تفعيل نافذة مستكشف المشروع"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceVer..Caption
-#: frmPyIDEMain.dfm:3499
+#: frmPyIDEMain.dfm:3508
 msgid "Split Workspace Vertically"
 msgstr "تقسيم بيئة العمل عمودياً"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceVer....Hint
-#: frmPyIDEMain.dfm:3504
+#: frmPyIDEMain.dfm:3513
 msgid ""
 "Split workspace vertically|Show secondary editor tabset vertically aligned"
 msgstr "تقسيم بيئة العمل عمودياً | أعرض شاشة المحرر الثانية مرتبة عمودياً"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceHor..Caption
-#: frmPyIDEMain.dfm:3511
+#: frmPyIDEMain.dfm:3520
 msgid "Split Workspace Horizontally"
 msgstr "تقسيم بيئة العمل أفقياً"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceHor....Hint
-#: frmPyIDEMain.dfm:3516
+#: frmPyIDEMain.dfm:3525
 msgid ""
 "Split workspace horizontally|Show secondary workspace horizontally aligned"
 msgstr "تقسيم بيئة العمل أفقيا| أعرض شاشة المحرر الثانية مرتبة أفقياً"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondaryWorkspace..Caption
-#: frmPyIDEMain.dfm:3523
+#: frmPyIDEMain.dfm:3532
 msgid "Hide Secondary Workspace"
 msgstr "اخفى بيئة العمل الثانية"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondaryWorkspace..Hint
-#: frmPyIDEMain.dfm:3526
+#: frmPyIDEMain.dfm:3535
 msgid "Hide secondary workspace"
 msgstr "اخفى بيئة العمل الثانية"
 
 #. PyIDEMainForm..actlStandard..actSelectStyle..Caption
-#: frmPyIDEMain.dfm:3531
+#: frmPyIDEMain.dfm:3540
 #, fuzzy
 msgid "Styles..."
 msgstr "انماط..."
 
 #. PyIDEMainForm..actlStandard..actPythonSetup..Caption
-#: frmPyIDEMain.dfm:3539
+#: frmPyIDEMain.dfm:3548
 #, fuzzy
 msgid "Setup Python Versions..."
 msgstr "إعداد إصدارات بيثون..."
 
 #. PyIDEMainForm..actlStandard..actPythonSetup..Hint
-#: frmPyIDEMain.dfm:3540
+#: frmPyIDEMain.dfm:3549
 #, fuzzy
 msgid "Setup Python engine"
 msgstr "إعداد محرك بيثون"
@@ -6749,19 +6743,19 @@ msgstr "إعداد محرك بيثون"
 #. PyIDEMainForm..actlStandard..actRemoteFileOpen..Caption
 #. SSH File and Remote engine
 #. Programmer's name for it: SRemoteFileOpen
-#: frmPyIDEMain.dfm:3547 StringResources.pas:430
+#: frmPyIDEMain.dfm:3556 StringResources.pas:430
 #, fuzzy
 msgid "Open Remote File"
 msgstr "فتح ملف بعيد"
 
 #. PyIDEMainForm..actlStandard..actRemoteFileOpen..Hint
-#: frmPyIDEMain.dfm:3548
+#: frmPyIDEMain.dfm:3557
 #, fuzzy
 msgid "Open Remote File with SSH"
 msgstr "فتح ملف بعيد مع SSH"
 
 #. PyIDEMainForm..actlStandard..actUMLNewUML..Hint
-#: frmPyIDEMain.dfm:3556
+#: frmPyIDEMain.dfm:3565
 #, fuzzy
 msgid "New UML window"
 msgstr "إطار UML جديد"
@@ -6769,7 +6763,7 @@ msgstr "إطار UML جديد"
 #. PyIDEMainForm..actlStandard..actUMLNewComment..Caption
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupNewComment..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupNewComment..Caption
-#: frmPyIDEMain.dfm:3584 EssModel/Integrator/View/UDiagramFrame.dfm:4081
+#: frmPyIDEMain.dfm:3593 EssModel/Integrator/View/UDiagramFrame.dfm:4081
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4316
 #: EssModel/Integrator/View/UDiagramFrame.pas:301
 #: EssModel/Integrator/View/UDiagramFrame.pas:375
@@ -6781,7 +6775,7 @@ msgstr "تعليق جديد"
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBNewLayout..Hint
 #. FSequenceForm..PToolbar..TBSequence..TBNewLayout..Hint
 #. FSequenceForm..PopupMenuLifeLineAndSequencePanel..MIPopupNewLayout..Caption
-#: frmPyIDEMain.dfm:3591 EssModel/Integrator/View/UDiagramFrame.dfm:4086
+#: frmPyIDEMain.dfm:3600 EssModel/Integrator/View/UDiagramFrame.dfm:4086
 #: EssModel/System/UUMLForm.dfm:135 SequenceDiagram/USequenceForm.dfm:80
 #: SequenceDiagram/USequenceForm.dfm:2596
 #: EssModel/Integrator/View/UDiagramFrame.pas:376
@@ -6795,7 +6789,7 @@ msgstr "حذف مخطط"
 #. FUMLForm..PDiagram..PUMLPanel..TBUMLToolbar..TBRefresh..Hint
 #. FSequenceForm..PToolbar..TBSequence..TBRefresh..Hint
 #. FSequenceForm..PopupMenuLifeLineAndSequencePanel..MIPopupRefresh..Caption
-#: frmPyIDEMain.dfm:3598 EssModel/Integrator/View/UDiagramFrame.dfm:4091
+#: frmPyIDEMain.dfm:3607 EssModel/Integrator/View/UDiagramFrame.dfm:4091
 #: EssModel/System/UUMLForm.dfm:142 SequenceDiagram/USequenceForm.dfm:89
 #: SequenceDiagram/USequenceForm.dfm:2601
 #: EssModel/Integrator/View/UDiagramFrame.pas:377
@@ -6803,43 +6797,43 @@ msgid "Refresh"
 msgstr "تحديث"
 
 #. PyIDEMainForm..actlStandard..actUMLDiagramFromOpenFiles..Caption
-#: frmPyIDEMain.dfm:3605
+#: frmPyIDEMain.dfm:3614
 #, fuzzy
 msgid "Diagram from open files"
 msgstr "رسم تخطيطي من الملفات المفتوحة"
 
 #. PyIDEMainForm..actlStandard..actUMLSaveAsPicture..Caption
-#: frmPyIDEMain.dfm:3612
+#: frmPyIDEMain.dfm:3621
 #, fuzzy
 msgid "Save as picture"
 msgstr "حفظ كصورة"
 
 #. PyIDEMainForm..actlStandard..actToolsTextDiff..Caption
-#: frmPyIDEMain.dfm:3619
+#: frmPyIDEMain.dfm:3628
 #, fuzzy
 msgid "Textdiff"
 msgstr "نص يف"
 
 #. PyIDEMainForm..actlStandard..actToolsConfiguration..Caption
-#: frmPyIDEMain.dfm:3626
+#: frmPyIDEMain.dfm:3635
 #, fuzzy
 msgid "Tools configuration"
 msgstr "تكوين الأدوات"
 
 #. PyIDEMainForm..actlStandard..actViewObjectinspector..Caption
-#: frmPyIDEMain.dfm:3639
+#: frmPyIDEMain.dfm:3648
 #, fuzzy
 msgid "actViewObjectinspector"
 msgstr "أكتفيوبيكتينسبكتور"
 
 #. PyIDEMainForm..actlStandard..actNavStructure..Caption
 #. FFileStructure..Caption
-#: frmPyIDEMain.dfm:3644 Main/UFileStructure.dfm:5
+#: frmPyIDEMain.dfm:3653 Main/UFileStructure.dfm:5
 msgid "Structure"
 msgstr "تركيب"
 
 #. PyIDEMainForm..actlStandard..actNavStructure..Hint
-#: frmPyIDEMain.dfm:3645
+#: frmPyIDEMain.dfm:3654
 #, fuzzy
 #| msgid "Activate the Project Explorer window"
 msgid "Activate the Structure window"
@@ -7192,7 +7186,7 @@ msgstr "المتغيرات"
 #. FClassEditor..PageControl..TSMethods..LMethodType..Caption
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..LParameterType..Caption
 #: frmVariables.dfm:139 frmWatches.dfm:97 Main/UClassEditor.dfm:141
-#: Main/UClassEditor.dfm:323 Main/UClassEditor.dfm:443 frmVariables.pas:455
+#: Main/UClassEditor.dfm:327 Main/UClassEditor.dfm:451 frmVariables.pas:455
 msgid "Type"
 msgstr "النوع"
 
@@ -7235,14 +7229,14 @@ msgstr "&معاينة الويب"
 #. AFrameDiagram..PopupMenuAlign..MIPopupTop..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGEditorTabPosition....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:3932
-#: Utils/UConfiguration.dfm:3596 EssModel/Integrator/View/UDiagramFrame.pas:368
+#: Utils/UConfiguration.dfm:3606 EssModel/Integrator/View/UDiagramFrame.pas:368
 msgid "Top"
 msgstr "أعلى"
 
 #. AFrameDiagram..PopupMenuAlign..MIPopupBottom..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGEditorTabPosition....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:3944
-#: Utils/UConfiguration.dfm:3597 EssModel/Integrator/View/UDiagramFrame.pas:370
+#: Utils/UConfiguration.dfm:3607 EssModel/Integrator/View/UDiagramFrame.pas:370
 msgid "Bottom"
 msgstr "اسفل"
 
@@ -7381,7 +7375,7 @@ msgstr "انعطاف"
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4052
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4061
 #: EssModel/System/UUMLForm.dfm:309 Formdesigner/ELImage.dfm:27
-#: Main/UAssociation.dfm:106 Main/UClassEditor.dfm:632
+#: Main/UAssociation.dfm:106 Main/UClassEditor.dfm:644
 #: Main/UGUIDesigner.dfm:128 SequenceDiagram/UConnectForm.dfm:73
 #: SequenceDiagram/USequenceForm.dfm:2562 Structogram/UStructogram.dfm:1838
 #: EssModel/Integrator/View/UDiagramFrame.pas:361
@@ -7395,7 +7389,7 @@ msgstr "حذف"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LAttributesAndMethods..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4096
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4334
-#: Utils/UConfiguration.dfm:2822 EssModel/Integrator/View/UDiagramFrame.pas:305
+#: Utils/UConfiguration.dfm:2832 EssModel/Integrator/View/UDiagramFrame.pas:305
 #: EssModel/Integrator/View/UDiagramFrame.pas:378
 #, fuzzy
 msgid "Attributes and Methods"
@@ -7418,7 +7412,7 @@ msgstr "السمات والأساليب"
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4337
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4359
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4393
-#: Utils/UConfiguration.dfm:2982
+#: Utils/UConfiguration.dfm:2992
 msgid "none"
 msgstr "لا شيء"
 
@@ -7429,7 +7423,7 @@ msgstr "لا شيء"
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4114
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4225
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4351
-#: Utils/UConfiguration.dfm:2960
+#: Utils/UConfiguration.dfm:2970
 msgid "all"
 msgstr "الكل"
 
@@ -7438,7 +7432,7 @@ msgstr "الكل"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4119
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4357
-#: Utils/UConfiguration.dfm:2980 EssModel/Integrator/View/UDiagramFrame.pas:309
+#: Utils/UConfiguration.dfm:2990 EssModel/Integrator/View/UDiagramFrame.pas:309
 #: EssModel/Integrator/View/UDiagramFrame.pas:381
 #: EssModel/Integrator/View/URtfdDiagram.pas:1607
 #: EssModel/Integrator/View/URtfdDiagram.pas:1844
@@ -7450,7 +7444,7 @@ msgstr "بارامتر"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4126
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4364
-#: Utils/UConfiguration.dfm:2983 EssModel/Integrator/View/UDiagramFrame.pas:311
+#: Utils/UConfiguration.dfm:2993 EssModel/Integrator/View/UDiagramFrame.pas:311
 #: EssModel/Integrator/View/UDiagramFrame.pas:383
 #, fuzzy
 msgid ": type"
@@ -7461,7 +7455,7 @@ msgstr "نوع محرك بايثون"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4131
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4369
-#: Utils/UConfiguration.dfm:2984 EssModel/Integrator/View/UDiagramFrame.pas:312
+#: Utils/UConfiguration.dfm:2994 EssModel/Integrator/View/UDiagramFrame.pas:312
 #: EssModel/Integrator/View/UDiagramFrame.pas:384
 #, fuzzy
 msgid "(...): type"
@@ -7472,7 +7466,7 @@ msgstr "&نوع المحرك:"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4136
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4374
-#: Utils/UConfiguration.dfm:2985 EssModel/Integrator/View/UDiagramFrame.pas:313
+#: Utils/UConfiguration.dfm:2995 EssModel/Integrator/View/UDiagramFrame.pas:313
 #: EssModel/Integrator/View/UDiagramFrame.pas:385
 #, fuzzy
 msgid "(name): type"
@@ -7483,7 +7477,7 @@ msgstr "(الاسم): نوع"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4141
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4379
-#: Utils/UConfiguration.dfm:2986 EssModel/Integrator/View/UDiagramFrame.pas:314
+#: Utils/UConfiguration.dfm:2996 EssModel/Integrator/View/UDiagramFrame.pas:314
 #: EssModel/Integrator/View/UDiagramFrame.pas:386
 #, fuzzy
 msgid "(name = value): type"
@@ -7494,7 +7488,7 @@ msgstr "(الاسم = القيمة): نوع"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4146
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4384
-#: Utils/UConfiguration.dfm:2987 EssModel/Integrator/View/UDiagramFrame.pas:315
+#: Utils/UConfiguration.dfm:2997 EssModel/Integrator/View/UDiagramFrame.pas:315
 #: EssModel/Integrator/View/UDiagramFrame.pas:387
 #, fuzzy
 msgid "(name: type = value): type"
@@ -7510,8 +7504,8 @@ msgstr "(الاسم: نوع = قيمة): نوع"
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4151
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4231
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4390 Main/UClassEditor.dfm:155
-#: Main/UClassEditor.dfm:352 Utils/UConfiguration.dfm:2971
-#: Utils/UConfiguration.dfm:2995 EssModel/Integrator/View/UDiagramFrame.pas:317
+#: Main/UClassEditor.dfm:360 Utils/UConfiguration.dfm:2981
+#: Utils/UConfiguration.dfm:3005 EssModel/Integrator/View/UDiagramFrame.pas:317
 #: EssModel/Integrator/View/UDiagramFrame.pas:336
 #: EssModel/Integrator/View/UDiagramFrame.pas:388
 msgid "Visibility"
@@ -7524,7 +7518,7 @@ msgstr "الرؤية"
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4159
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4239
 #: EssModel/Integrator/View/UDiagramFrame.dfm:4398
-#: Utils/UConfiguration.dfm:2998 Utils/UConfiguration.pas:2450
+#: Utils/UConfiguration.dfm:3008 Utils/UConfiguration.pas:2454
 msgid "Text"
 msgstr "نص"
 
@@ -7743,9 +7737,9 @@ msgstr "صورة"
 #. FConfiguration..PMain..PanelRight..PageList..PGit..BGitRepository..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..BRepository..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..BSVN..Caption
-#: Formdesigner/ELImage.dfm:18 Utils/UConfiguration.dfm:3351
-#: Utils/UConfiguration.dfm:5690 Utils/UConfiguration.dfm:5699
-#: Utils/UConfiguration.dfm:5771 Utils/UConfiguration.dfm:5780
+#: Formdesigner/ELImage.dfm:18 Utils/UConfiguration.dfm:3361
+#: Utils/UConfiguration.dfm:5700 Utils/UConfiguration.dfm:5709
+#: Utils/UConfiguration.dfm:5781 Utils/UConfiguration.dfm:5790
 msgid "Select"
 msgstr "تحديد"
 
@@ -7919,61 +7913,61 @@ msgstr " سمات النص "
 #. FClassEditor..PageControl..TSAttributes..CBAttributeType....Items.Strings
 #. FClassEditor..PageControl..TSMethods..CBMethodType....Items.Strings
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamType....Items.Strings
-#: Main/UClassEditor.dfm:182 Main/UClassEditor.dfm:345
-#: Main/UClassEditor.dfm:581
+#: Main/UClassEditor.dfm:185 Main/UClassEditor.dfm:352
+#: Main/UClassEditor.dfm:592
 msgid "String"
 msgstr "سلسلة"
 
 #. FClassEditor..PageControl..TSAttributes..GBAttributeOptions..CBsetMethod..Caption
-#: Main/UClassEditor.dfm:216
+#: Main/UClassEditor.dfm:220
 #, fuzzy
 msgid "set method"
 msgstr "تعيين أسلوب"
 
 #. FClassEditor..PageControl..TSAttributes..GBAttributeOptions..CBgetMethod..Caption
-#: Main/UClassEditor.dfm:226
+#: Main/UClassEditor.dfm:230
 #, fuzzy
 msgid "get method"
 msgstr "الحصول على طريقة"
 
 #. FClassEditor..PageControl..TSMethods..Caption
-#: Main/UClassEditor.dfm:309
+#: Main/UClassEditor.dfm:313
 #, fuzzy
 msgid "&Methods"
 msgstr "أساليب"
 
 #. FClassEditor..PageControl..TSMethods..RGMethodKind..Caption
-#: Main/UClassEditor.dfm:417
+#: Main/UClassEditor.dfm:425
 msgid "Kind"
 msgstr "طبيعة"
 
 #. FClassEditor..PageControl..TSMethods..RGMethodKind....Items.Strings
-#: Main/UClassEditor.dfm:419 Main/UClassEditor.pas:294
+#: Main/UClassEditor.dfm:427 Main/UClassEditor.pas:294
 #: Main/UClassEditor.pas:295
 #, fuzzy
 msgid "Constructor"
 msgstr "منشئ"
 
 #. FClassEditor..PageControl..TSMethods..RGMethodKind....Items.Strings
-#: Main/UClassEditor.dfm:421 Main/UClassEditor.pas:294
+#: Main/UClassEditor.dfm:429 Main/UClassEditor.pas:294
 msgid "Procedure"
 msgstr "الإجراء"
 
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..Caption
-#: Main/UClassEditor.dfm:429
+#: Main/UClassEditor.dfm:437
 #, fuzzy
 #| msgid "Custom Parameters"
 msgid "formal parameters"
 msgstr "معاملات مخصصة"
 
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParameter..Text
-#: Main/UClassEditor.dfm:621 Main/UClassEditor.pas:969
-#: Main/UClassEditor.pas:1876 Main/UClassEditor.pas:2088
+#: Main/UClassEditor.dfm:633 Main/UClassEditor.pas:968
+#: Main/UClassEditor.pas:1875 Main/UClassEditor.pas:2087
 msgid "Select attribute"
 msgstr "اختر خاصية"
 
 #. FClassEditor..ActionList..ActionNew..Caption
-#: Main/UClassEditor.dfm:704
+#: Main/UClassEditor.dfm:716
 msgid "&New"
 msgstr "جديد"
 
@@ -7984,8 +7978,8 @@ msgid "Download"
 msgstr "تحميل"
 
 #. FDownload..LFile..Caption
-#: Main/UDownload.dfm:26 frmFile.pas:758 frmPyIDEMain.pas:1902
-#: frmPyIDEMain.pas:1905
+#: Main/UDownload.dfm:26 frmFile.pas:758 frmPyIDEMain.pas:1903
+#: frmPyIDEMain.pas:1906
 msgid "File"
 msgstr "ملف"
 
@@ -8079,7 +8073,7 @@ msgstr "أسفل"
 
 #. FGUIDesigner..PopupMenu..MISnapToGrid..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..CBSnapToGrid..Caption
-#: Main/UGUIDesigner.dfm:118 Utils/UConfiguration.dfm:2364
+#: Main/UGUIDesigner.dfm:118 Utils/UConfiguration.dfm:2374
 #, fuzzy
 msgid "Snap to grid"
 msgstr "الانطباق على الشبكة"
@@ -8387,8 +8381,8 @@ msgid "Recycle bin"
 msgstr "سلة المهملات"
 
 #. FStructogram..PanelLeft..ToolBarPanel..TBStatement..Hint
-#: Structogram/UStructogram.dfm:82 frmEditor.pas:2585 frmEditor.pas:2586
-#: frmEditor.pas:2587 frmEditor.pas:2588 frmEditor.pas:2589 frmEditor.pas:2590
+#: Structogram/UStructogram.dfm:82 frmEditor.pas:2586 frmEditor.pas:2587
+#: frmEditor.pas:2588 frmEditor.pas:2589 frmEditor.pas:2590 frmEditor.pas:2591
 msgid "Statement"
 msgstr "بيان"
 
@@ -8414,8 +8408,8 @@ msgstr "البرنامج الفرعي"
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LAlgorithm..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EAlgorithm..Text
 #. Structogram
-#: Structogram/UStructogram.dfm:156 Utils/UConfiguration.dfm:2436
-#: Utils/UConfiguration.dfm:2537 Utils/UConfiguration.pas:5066
+#: Structogram/UStructogram.dfm:156 Utils/UConfiguration.dfm:2446
+#: Utils/UConfiguration.dfm:2547 Utils/UConfiguration.pas:5077
 #, fuzzy
 msgid "Algorithm"
 msgstr "خوارزمية"
@@ -8437,7 +8431,7 @@ msgstr "وضع اللغز"
 
 #. FStructogram..StructoPopupMenu..MISwitchWithCaseLine..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBSwitchWithCaseLine..Caption
-#: Structogram/UStructogram.dfm:1848 Utils/UConfiguration.dfm:2593
+#: Structogram/UStructogram.dfm:1848 Utils/UConfiguration.dfm:2603
 #, fuzzy
 msgid "Selection with case line"
 msgstr "التحديد مع سطر الحالة"
@@ -8470,7 +8464,7 @@ msgid "Copy as picture"
 msgstr "النسخ كصورة"
 
 #. FTextDiff..Caption
-#: TextDiff/UTextDiff.dfm:4 frmPyIDEMain.pas:5349
+#: TextDiff/UTextDiff.dfm:4 frmPyIDEMain.pas:5353
 #, fuzzy
 #| msgid "Clipboard as text"
 msgid "Compare text"
@@ -8888,204 +8882,209 @@ msgstr "إكمال التعليمات البرمجية المحرر"
 msgid "Interpreter code completion"
 msgstr "مفسر الإكمال التلقائي"
 
+#. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..btnResetKeys..Hint
+#: Utils/UConfiguration.dfm:1621
+msgid "Restart GuiPy"
+msgstr ""
+
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Caption
-#: Utils/UConfiguration.dfm:1618
+#: Utils/UConfiguration.dfm:1628
 #, fuzzy
 #| msgid "Syntax Colors"
 msgid "Syntax colors"
 msgstr "الوان تركيب الجملة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PColorTheme..Caption
-#: Utils/UConfiguration.dfm:1795
+#: Utils/UConfiguration.dfm:1805
 #, fuzzy
 msgid "Color themes"
 msgstr "سمات الألوان"
 
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..Caption
-#: Utils/UConfiguration.dfm:1867 Utils/UConfiguration.pas:2400
+#: Utils/UConfiguration.dfm:1877 Utils/UConfiguration.pas:2404
 #, fuzzy
 #| msgid "Code Templates"
 msgid "Code templates"
 msgstr "قوالب الكود"
 
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..Caption
-#: Utils/UConfiguration.dfm:2056 Utils/UConfiguration.pas:2395
+#: Utils/UConfiguration.dfm:2066 Utils/UConfiguration.pas:2399
 #, fuzzy
 #| msgid "File Templates"
 msgid "File templates"
 msgstr "قوالب الملف"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..Caption
-#: Utils/UConfiguration.dfm:2266
+#: Utils/UConfiguration.dfm:2276
 #, fuzzy
 #| msgid "Class Name"
 msgid "Class modeler"
 msgstr "اسم الفصل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..Caption
-#: Utils/UConfiguration.dfm:2273
+#: Utils/UConfiguration.dfm:2283
 #, fuzzy
 #| msgid "Attributes"
 msgid "Attributes options"
 msgstr "السمات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..CBShowGetSetMethods..Caption
-#: Utils/UConfiguration.dfm:2280
+#: Utils/UConfiguration.dfm:2290
 #, fuzzy
 msgid "Show get/set methods"
 msgstr "إظهار مع أساليب"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..CBShowTypeSelection..Caption
-#: Utils/UConfiguration.dfm:2288
+#: Utils/UConfiguration.dfm:2298
 #, fuzzy
 #| msgid "of the selection"
 msgid "Show type selection"
 msgstr "من التحديد"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBMethodsOptions..Caption
-#: Utils/UConfiguration.dfm:2297
+#: Utils/UConfiguration.dfm:2307
 #, fuzzy
 msgid "Methods options"
 msgstr "إلى خيارات للقيام"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBMethodsOptions..CBShowKindProcedure..Caption
-#: Utils/UConfiguration.dfm:2304
+#: Utils/UConfiguration.dfm:2314
 #, fuzzy
 #| msgid "Show line numbers"
 msgid "Show kind procedure"
 msgstr "عرض أرقام الأسطر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBMethodsOptions..CBShowParameterTypeSelection..Caption
-#: Utils/UConfiguration.dfm:2312
+#: Utils/UConfiguration.dfm:2322
 #, fuzzy
 msgid "Show parameter type selection"
 msgstr "إكمال المعلمة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..Caption
-#: Utils/UConfiguration.dfm:2318
+#: Utils/UConfiguration.dfm:2328
 #, fuzzy
 msgid "GUI Designer"
 msgstr "مصمم واجهة المستخدم الرسومية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..LGridSize..Caption
-#: Utils/UConfiguration.dfm:2325
+#: Utils/UConfiguration.dfm:2335
 #, fuzzy
 msgid "Grid size in GUI designer"
 msgstr "حجم الشبكة في مصمم واجهة المستخدم الرسومية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..LFrameheight..Caption
-#: Utils/UConfiguration.dfm:2332
+#: Utils/UConfiguration.dfm:2342
 #, fuzzy
 msgid "Frame height"
 msgstr "ارتفاع الإطار"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..LFrameWidth..Caption
-#: Utils/UConfiguration.dfm:2339
+#: Utils/UConfiguration.dfm:2349
 #, fuzzy
 #| msgid "Page width"
 msgid "Frame width"
 msgstr "عرض الصفحة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..CBNameFromText..Caption
-#: Utils/UConfiguration.dfm:2346
+#: Utils/UConfiguration.dfm:2356
 #, fuzzy
 msgid "Name GUI components after attribute Text"
 msgstr "مكونات واجهة المستخدم الرسومية الاسم بعد نص السمة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..CBGuiDesignerHints..Caption
-#: Utils/UConfiguration.dfm:2354
+#: Utils/UConfiguration.dfm:2364
 #, fuzzy
 msgid "Show hints permanently in GUI designer"
 msgstr "إظهار تلميحات بشكل دائم في مصمم واجهة المستخدم الرسومية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..CBAlignToGrid..Caption
-#: Utils/UConfiguration.dfm:2409
+#: Utils/UConfiguration.dfm:2419
 #, fuzzy
 msgid "Align to grid when inserting"
 msgstr "المحاذاة إلى الشبكة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LInput..Caption
-#: Utils/UConfiguration.dfm:2422
+#: Utils/UConfiguration.dfm:2432
 msgid "Input"
 msgstr "الإدخال"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LYes..Caption
-#: Utils/UConfiguration.dfm:2457
+#: Utils/UConfiguration.dfm:2467
 msgid "Yes"
 msgstr "نعم"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LNo..Caption
-#: Utils/UConfiguration.dfm:2464
+#: Utils/UConfiguration.dfm:2474
 msgid "No"
 msgstr "لا"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LDatatype..Caption
-#: Utils/UConfiguration.dfm:2471
+#: Utils/UConfiguration.dfm:2481
 #, fuzzy
 msgid "Datatype"
 msgstr "نوع البيانات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LCaseCount..Caption
-#: Utils/UConfiguration.dfm:2478
+#: Utils/UConfiguration.dfm:2488
 #, fuzzy
 #| msgid "Number of context lines"
 msgid "Number of cases"
 msgstr "عدد أسطر السياق"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LOther..Caption
-#: Utils/UConfiguration.dfm:2485
+#: Utils/UConfiguration.dfm:2495
 #, fuzzy
 msgid "Else"
 msgstr "اخر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LStructogramShadowWidth..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LShadowWidth..Caption
-#: Utils/UConfiguration.dfm:2499 Utils/UConfiguration.dfm:2780
+#: Utils/UConfiguration.dfm:2509 Utils/UConfiguration.dfm:2790
 msgid "Width"
 msgstr "العرض"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LStructogramShadowIntensity..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LShadowIntensity..Caption
-#: Utils/UConfiguration.dfm:2506 Utils/UConfiguration.dfm:2787
+#: Utils/UConfiguration.dfm:2516 Utils/UConfiguration.dfm:2797
 msgid "Intensity"
 msgstr "الكثافة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EInput..Text
-#: Utils/UConfiguration.dfm:2521 Utils/UConfiguration.pas:5067
+#: Utils/UConfiguration.dfm:2531 Utils/UConfiguration.pas:5078
 msgid "Input:"
 msgstr "الإدخال:"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EOutput..Text
-#: Utils/UConfiguration.dfm:2529 Utils/UConfiguration.pas:5068
+#: Utils/UConfiguration.dfm:2539 Utils/UConfiguration.pas:5079
 msgid "Output:"
 msgstr "صيغة روابط قنوات الايبي تيفي:"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EWhile..Text
-#: Utils/UConfiguration.dfm:2545 Utils/UConfiguration.pas:5069
+#: Utils/UConfiguration.dfm:2555 Utils/UConfiguration.pas:5080
 #, fuzzy
 msgid "repeat while"
 msgstr "تكرار أثناء"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EFor..Text
-#: Utils/UConfiguration.dfm:2553 Utils/UConfiguration.pas:5070
+#: Utils/UConfiguration.dfm:2563 Utils/UConfiguration.pas:5081
 msgid "for item in list"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EYes..Text
-#: Utils/UConfiguration.dfm:2561 Utils/UConfiguration.pas:5071
+#: Utils/UConfiguration.dfm:2571 Utils/UConfiguration.pas:5082
 msgid "yes"
 msgstr "نعم"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..ENo..Text
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDNoFilling..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGVisibilityDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:2569 Utils/UConfiguration.dfm:2748
-#: Utils/UConfiguration.dfm:2997 Utils/UConfiguration.pas:5072
+#: Utils/UConfiguration.dfm:2579 Utils/UConfiguration.dfm:2758
+#: Utils/UConfiguration.dfm:3007 Utils/UConfiguration.pas:5083
 msgid "no"
 msgstr "لا"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EOther..Text
-#: Utils/UConfiguration.dfm:2620 Utils/UConfiguration.pas:5073
+#: Utils/UConfiguration.dfm:2630 Utils/UConfiguration.pas:5084
 #, fuzzy
 msgid "else"
 msgstr "اخر"
@@ -9094,83 +9093,83 @@ msgstr "اخر"
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..ESDObject..Text
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption....Items.Strings
 #. Sequencediagram
-#: Utils/UConfiguration.dfm:2664 Utils/UConfiguration.dfm:2693
-#: Utils/UConfiguration.dfm:2853 Utils/UConfiguration.pas:5076
+#: Utils/UConfiguration.dfm:2674 Utils/UConfiguration.dfm:2703
+#: Utils/UConfiguration.dfm:2863 Utils/UConfiguration.pas:5087
 msgid "Object"
 msgstr "كائن"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..LSDFilling..Caption
-#: Utils/UConfiguration.dfm:2685
+#: Utils/UConfiguration.dfm:2695
 msgid "Filling"
 msgstr "تعبئة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..ESDNew..Text
-#: Utils/UConfiguration.dfm:2701 Utils/UConfiguration.pas:5077
+#: Utils/UConfiguration.dfm:2711 Utils/UConfiguration.pas:5088
 msgid "new"
 msgstr "جديد"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..ESDClose..Text
-#: Utils/UConfiguration.dfm:2709 Utils/UConfiguration.pas:5078
+#: Utils/UConfiguration.dfm:2719 Utils/UConfiguration.pas:5089
 msgid "close"
 msgstr "إغلاق"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDShowMainCall..Caption
-#: Utils/UConfiguration.dfm:2724
+#: Utils/UConfiguration.dfm:2734
 #, fuzzy
 msgid "Show main call"
 msgstr "إظهار المكالمة الرئيسية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDShowParameter..Caption
-#: Utils/UConfiguration.dfm:2732
+#: Utils/UConfiguration.dfm:2742
 #, fuzzy
 #| msgid "Unknown parameter"
 msgid "Show parameter"
 msgstr "وسيط مجهول"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDShowReturn..Caption
-#: Utils/UConfiguration.dfm:2740
+#: Utils/UConfiguration.dfm:2750
 #, fuzzy
 #| msgid "Show Help"
 msgid "Show return"
 msgstr "عرض المساعدة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..Caption
-#: Utils/UConfiguration.dfm:2753
+#: Utils/UConfiguration.dfm:2763
 #, fuzzy
 msgid "UML Design"
 msgstr "تصميم UML"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LObjectDesign..Caption
-#: Utils/UConfiguration.dfm:2759
+#: Utils/UConfiguration.dfm:2769
 #, fuzzy
 msgid "Design of Objects"
 msgstr "تصميم الكائنات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LClassDesign..Caption
-#: Utils/UConfiguration.dfm:2766
+#: Utils/UConfiguration.dfm:2776
 #, fuzzy
 msgid "Design of Classes"
 msgstr "تصميم الفصول الدراسية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LValidClassColor..Caption
-#: Utils/UConfiguration.dfm:2773
+#: Utils/UConfiguration.dfm:2783
 #, fuzzy
 msgid "valid class"
 msgstr "فئة صالحة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LInvalidClassColor..Caption
-#: Utils/UConfiguration.dfm:2794
+#: Utils/UConfiguration.dfm:2804
 #, fuzzy
 msgid "invalid class"
 msgstr "فئة غير صالحة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LObjectColor..Caption
-#: Utils/UConfiguration.dfm:2808
+#: Utils/UConfiguration.dfm:2818
 msgid "Color"
 msgstr "اللون"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LCommentDesign..Caption
-#: Utils/UConfiguration.dfm:2815
+#: Utils/UConfiguration.dfm:2825
 #, fuzzy
 #| msgid "&Ignore comments"
 msgid "Design of Comments"
@@ -9178,15 +9177,15 @@ msgstr "&تجاهل التعليقات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectHead..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGClassHead..Caption
-#: Utils/UConfiguration.dfm:2829 Utils/UConfiguration.dfm:2873
+#: Utils/UConfiguration.dfm:2839 Utils/UConfiguration.dfm:2883
 msgid "Head"
 msgstr "جبهة الموقع"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectHead....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGClassHead....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectFooter....Items.Strings
-#: Utils/UConfiguration.dfm:2832 Utils/UConfiguration.dfm:2876
-#: Utils/UConfiguration.dfm:2938
+#: Utils/UConfiguration.dfm:2842 Utils/UConfiguration.dfm:2886
+#: Utils/UConfiguration.dfm:2948
 #, fuzzy
 msgid "rectangular"
 msgstr "مستطيل"
@@ -9194,539 +9193,539 @@ msgstr "مستطيل"
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectHead....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGClassHead....Items.Strings
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectFooter....Items.Strings
-#: Utils/UConfiguration.dfm:2833 Utils/UConfiguration.dfm:2877
-#: Utils/UConfiguration.dfm:2939
+#: Utils/UConfiguration.dfm:2843 Utils/UConfiguration.dfm:2887
+#: Utils/UConfiguration.dfm:2949
 msgid "rounded"
 msgstr "حواف دائرية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption..Caption
-#: Utils/UConfiguration.dfm:2849
+#: Utils/UConfiguration.dfm:2859
 #, fuzzy
 msgid "Labeling"
 msgstr "وصفها"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption....Items.Strings
-#: Utils/UConfiguration.dfm:2852
+#: Utils/UConfiguration.dfm:2862
 #, fuzzy
 msgid "Object: Class"
 msgstr "الكائن: الفئة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption....Items.Strings
-#: Utils/UConfiguration.dfm:2854
+#: Utils/UConfiguration.dfm:2864
 #, fuzzy
 #| msgid "Classes"
 msgid ": Class"
 msgstr "الأصناف"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..CBObjectUnderline..Caption
-#: Utils/UConfiguration.dfm:2863
+#: Utils/UConfiguration.dfm:2873
 msgid "Underlined"
 msgstr "تحته خط"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectFooter..Caption
-#: Utils/UConfiguration.dfm:2935
+#: Utils/UConfiguration.dfm:2945
 msgid "Foot"
 msgstr "مشي بالأقدام"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:2957
+#: Utils/UConfiguration.dfm:2967
 #, fuzzy
 msgid "not any"
 msgstr "ليس أي"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGSequenceAttributsMethods..Caption
-#: Utils/UConfiguration.dfm:2968
+#: Utils/UConfiguration.dfm:2978
 msgid "Order"
 msgstr "طلب"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGSequenceAttributsMethods....Items.Strings
-#: Utils/UConfiguration.dfm:2970
+#: Utils/UConfiguration.dfm:2980
 #, fuzzy
 #| msgid "Source Code"
 msgid "Sourcecode"
 msgstr "الكود المصدري"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGSequenceAttributsMethods....Items.Strings
-#: Utils/UConfiguration.dfm:2972
+#: Utils/UConfiguration.dfm:2982
 msgid "Alphabetical"
 msgstr "أبجدي"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGVisibilityDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:2999
+#: Utils/UConfiguration.dfm:3009
 msgid "Icons"
 msgstr "إضافة الرموز الاجتماعية لهذا الملف"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..Caption
-#: Utils/UConfiguration.dfm:3004
+#: Utils/UConfiguration.dfm:3014
 #, fuzzy
 #| msgid "Options"
 msgid "UML Options"
 msgstr "الخيارات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..Caption
-#: Utils/UConfiguration.dfm:3010
+#: Utils/UConfiguration.dfm:3020
 #, fuzzy
 msgid "Class representation"
 msgstr "تمثيل الفئة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBShowEmptyRects..Caption
-#: Utils/UConfiguration.dfm:3017
+#: Utils/UConfiguration.dfm:3027
 #, fuzzy
 msgid "show empty attribute and method rectangles"
 msgstr "إظهار مستطيلات السمة والأسلوب الفارغة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBIntegerInsteadofInt..Caption
-#: Utils/UConfiguration.dfm:3027
+#: Utils/UConfiguration.dfm:3037
 #, fuzzy
 msgid "Integer instead of int"
 msgstr "عدد صحيح بدلا من int"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBShowClassparameterSeparately..Caption
-#: Utils/UConfiguration.dfm:3035
+#: Utils/UConfiguration.dfm:3045
 #, fuzzy
 msgid "Display class parameters separately"
 msgstr "عرض معلمات الفئة بشكل منفصل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBRoleHidesAttribute..Caption
-#: Utils/UConfiguration.dfm:3043
+#: Utils/UConfiguration.dfm:3053
 #, fuzzy
 #| msgid " Text attributes "
 msgid "Role hides attribute"
 msgstr " سمات النص "
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBConstructorWithVisibility..Caption
-#: Utils/UConfiguration.dfm:3051
+#: Utils/UConfiguration.dfm:3061
 #, fuzzy
 msgid "Show constructor with visibility"
 msgstr "إظهار المنشئ مع الرؤية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBRelationshipAttributesBold..Caption
-#: Utils/UConfiguration.dfm:3059
+#: Utils/UConfiguration.dfm:3069
 #, fuzzy
 msgid "Relationship attributes in bold"
 msgstr "سمات العلاقة بالخط العريض"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..Caption
-#: Utils/UConfiguration.dfm:3068
+#: Utils/UConfiguration.dfm:3078
 #, fuzzy
 msgid "Object representation"
 msgstr "تمثيل الكائن"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBShowObjectsWithMethods..Caption
-#: Utils/UConfiguration.dfm:3075
+#: Utils/UConfiguration.dfm:3085
 #, fuzzy
 msgid "show with methods"
 msgstr "إظهار مع أساليب"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBShowObjectsWithInheritedPrivateAttributes..Caption
-#: Utils/UConfiguration.dfm:3083
+#: Utils/UConfiguration.dfm:3093
 #, fuzzy
 msgid "show with inherited private attributes"
 msgstr "إظهار مع سمات خاصة موروثة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBShowAllNewObjects..Caption
-#: Utils/UConfiguration.dfm:3091
+#: Utils/UConfiguration.dfm:3101
 #, fuzzy
 #| msgid "Start a new project"
 msgid "show all new objects"
 msgstr "أبدا مشروع جديد"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBLowerCaseLetter..Caption
-#: Utils/UConfiguration.dfm:3099
+#: Utils/UConfiguration.dfm:3109
 #, fuzzy
 msgid "start names with lowercase letters"
 msgstr "بدء الأسماء بأحرف صغيرة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBObjectsWithoutVisibility..Caption
-#: Utils/UConfiguration.dfm:3107
+#: Utils/UConfiguration.dfm:3117
 #, fuzzy
 msgid "without visibility"
 msgstr "بدون رؤية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassEditing..Caption
-#: Utils/UConfiguration.dfm:3116
+#: Utils/UConfiguration.dfm:3126
 #, fuzzy
 #| msgid "Classes"
 msgid "Class editing"
 msgstr "الأصناف"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassEditing..CBOpenPublicClasses..Caption
-#: Utils/UConfiguration.dfm:3123
+#: Utils/UConfiguration.dfm:3133
 #, fuzzy
 msgid "only open public classes"
 msgstr "الفصول العامة المفتوحة فقط"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassEditing..CBDefaultModifiers..Caption
-#: Utils/UConfiguration.dfm:3131
+#: Utils/UConfiguration.dfm:3141
 #, fuzzy
 msgid "Standard modifiers for attributes and methods"
 msgstr "المعدلات القياسية للسمات والأساليب"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectEditing..Caption
-#: Utils/UConfiguration.dfm:3142
+#: Utils/UConfiguration.dfm:3152
 #, fuzzy
 msgid "Object editing"
 msgstr "تحرير الكائنات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectEditing..CBUMLEdit..Caption
-#: Utils/UConfiguration.dfm:3149
+#: Utils/UConfiguration.dfm:3159
 #, fuzzy
 msgid "private attributes editable"
 msgstr "سمات خاصة قابلة للتحرير"
 
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..Caption
-#: Utils/UConfiguration.dfm:3157
+#: Utils/UConfiguration.dfm:3167
 #, fuzzy
 #| msgid "IDE &Shortcuts..."
 msgid "IDE Shortcuts"
 msgstr "ا&ختصارات بيئة التطوير..."
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..LBrowser..Caption
-#: Utils/UConfiguration.dfm:3293
+#: Utils/UConfiguration.dfm:3303
 #, fuzzy
 #| msgid "External Tools"
 msgid "External browser"
 msgstr "الأدوات الخارجية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..LBrowserTitle..Caption
-#: Utils/UConfiguration.dfm:3300
+#: Utils/UConfiguration.dfm:3310
 #, fuzzy
 #| msgid "Browser"
 msgid "Browser title"
 msgstr "المتصفح"
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..LAltKeysBrowser..Caption
-#: Utils/UConfiguration.dfm:3307
+#: Utils/UConfiguration.dfm:3317
 #, fuzzy
 msgid "Keystrokes for \"Open address\" in the browser"
 msgstr "ضغطات المفاتيح ل \"فتح العنوان\" في المستعرض"
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..CBUseIEinternForDocuments..Caption
-#: Utils/UConfiguration.dfm:3314
+#: Utils/UConfiguration.dfm:3324
 #, fuzzy
 msgid "use Internet Explorer internally for documents"
 msgstr "استخدام Internet Explorer داخليا للمستندات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..CBOnlyOneBrowserWindow..Caption
-#: Utils/UConfiguration.dfm:3322
+#: Utils/UConfiguration.dfm:3332
 #, fuzzy
 msgid "only use one browser window"
 msgstr "استخدام نافذة مستعرض واحدة فقط"
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..BBrowserTitle..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..BTempFolder..Caption
-#: Utils/UConfiguration.dfm:3360 Utils/UConfiguration.dfm:3471
+#: Utils/UConfiguration.dfm:3370 Utils/UConfiguration.dfm:3481
 #: Main/UObjectInspector.pas:563
 msgid "Default"
 msgstr "افتراضي"
 
 #. FConfiguration..PMain..PanelRight..PageList..PLanguage..RGLanguages..Caption
-#: Utils/UConfiguration.dfm:3372
+#: Utils/UConfiguration.dfm:3382
 msgid "Languages"
 msgstr "اللغات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LTempFolder..Caption
-#: Utils/UConfiguration.dfm:3383
+#: Utils/UConfiguration.dfm:3393
 #, fuzzy
 msgid "Folder for temporary files"
 msgstr "مجلد للملفات المؤقتة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LNoOfRecentFiles..Caption
-#: Utils/UConfiguration.dfm:3429 dmCommands.pas:2023
+#: Utils/UConfiguration.dfm:3439 dmCommands.pas:2023
 #, fuzzy
 msgid "Number of recent files"
 msgstr "عدد الملفات الحديثة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LDaysBetweenUpdateChecks..Caption
-#: Utils/UConfiguration.dfm:3436 dmCommands.pas:2009
+#: Utils/UConfiguration.dfm:3446 dmCommands.pas:2009
 msgid "Days between update checks"
 msgstr "عدد الأيام بين فحص التحديثات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LDockAnimationInterval..Caption
-#: Utils/UConfiguration.dfm:3443
+#: Utils/UConfiguration.dfm:3453
 #, fuzzy
 msgid "Dock animation interval"
 msgstr "الفاصل الزمني للرسوم المتحركة في Dock"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LDockAnimationMoveWidth..Caption
-#: Utils/UConfiguration.dfm:3450
+#: Utils/UConfiguration.dfm:3460
 #, fuzzy
 msgid "Dock animation move width"
 msgstr "عرض نقل حركة الإرساء"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LFileTemplateForNewPythonScripts..Caption
-#: Utils/UConfiguration.dfm:3457 dmCommands.pas:2021
+#: Utils/UConfiguration.dfm:3467 dmCommands.pas:2021
 #, fuzzy
 msgid "File template for new Python scripts"
 msgstr "قالب ملف لنصوص Python الجديدة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBRestoreOpenFiles..Caption
-#: Utils/UConfiguration.dfm:3498 dmCommands.pas:2027
+#: Utils/UConfiguration.dfm:3508 dmCommands.pas:2027
 msgid "Restore open files"
 msgstr "استرجاع الملفات المفتوحة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBRestoreOpenProject..Caption
-#: Utils/UConfiguration.dfm:3506 dmCommands.pas:2029
+#: Utils/UConfiguration.dfm:3516 dmCommands.pas:2029
 #, fuzzy
 msgid "Restore open project"
 msgstr "استعادة مشروع مفتوح"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBShowTabCloseButton..Caption
-#: Utils/UConfiguration.dfm:3514 dmCommands.pas:2015
+#: Utils/UConfiguration.dfm:3524 dmCommands.pas:2015
 #, fuzzy
 msgid "Show tab close button"
 msgstr "إظهار زر إغلاق علامة التبويب"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBSmartNextPrevPage..Caption
-#: Utils/UConfiguration.dfm:3522
+#: Utils/UConfiguration.dfm:3532
 #, fuzzy
 msgid "Smart next prev page"
 msgstr "صفحة البادف الذكية التالية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBStyleMainWindowBorder..Caption
-#: Utils/UConfiguration.dfm:3530
+#: Utils/UConfiguration.dfm:3540
 #, fuzzy
 msgid "Style main window border"
 msgstr "حد النافذة الرئيسية للنمط"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBAutoCheckForUpdates..Caption
-#: Utils/UConfiguration.dfm:3538
+#: Utils/UConfiguration.dfm:3548
 #, fuzzy
 #| msgid "Check for updates automatically"
 msgid "Check for updates automaticallly"
 msgstr "فحص التحديثات تلقائياً"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGEditorTabPosition..Caption
-#: Utils/UConfiguration.dfm:3594 dmCommands.pas:2011
+#: Utils/UConfiguration.dfm:3604 dmCommands.pas:2011
 #, fuzzy
 msgid "Editor tab position"
 msgstr "وضع علامة التبويب محرر"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBExporerInitiallyExpanded..Caption
-#: Utils/UConfiguration.dfm:3613
+#: Utils/UConfiguration.dfm:3623
 #, fuzzy
 msgid "File explorer initially expanded"
 msgstr "تم توسيع مستكشف الملفات في البداية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBProjectExporerInitiallyExpanded..Caption
-#: Utils/UConfiguration.dfm:3621
+#: Utils/UConfiguration.dfm:3631
 #, fuzzy
 msgid "Project explorer initially expanded"
 msgstr "تم توسيع مستكشف المشروع في البداية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBFileExplorerContextMenu..Caption
-#: Utils/UConfiguration.dfm:3629
+#: Utils/UConfiguration.dfm:3639
 #, fuzzy
 #| msgid "File Explorer"
 msgid "File explorer context menu"
 msgstr "مستكشف الملفات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBFileExplorerBackgroundProcessing..Caption
-#: Utils/UConfiguration.dfm:3637
+#: Utils/UConfiguration.dfm:3647
 #, fuzzy
 msgid "File explorer background processing"
 msgstr "معالجة خلفية مستكشف الملفات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification..Caption
-#: Utils/UConfiguration.dfm:3645
+#: Utils/UConfiguration.dfm:3655
 #, fuzzy
 msgid "File change notification"
 msgstr "إعلام بتغيير الملف"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification....Items.Strings
-#: Utils/UConfiguration.dfm:3647 Main/UObjectInspector.pas:562
+#: Utils/UConfiguration.dfm:3657 Main/UObjectInspector.pas:562
 msgid "Full"
 msgstr "كامل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification....Items.Strings
-#: Utils/UConfiguration.dfm:3648
+#: Utils/UConfiguration.dfm:3658
 #, fuzzy
 #| msgid "All matched files"
 msgid "No mapped files"
 msgstr "جميع الملفات المطابقة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification....Items.Strings
-#: Utils/UConfiguration.dfm:3649
+#: Utils/UConfiguration.dfm:3659
 msgid "Disabled"
 msgstr "معطل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBMethodsWithComment..Caption
-#: Utils/UConfiguration.dfm:3657
+#: Utils/UConfiguration.dfm:3667
 #, fuzzy
 msgid "Methods with comment"
 msgstr "أساليب مع تعليق"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBSaveFilesAutomatically..Caption
-#: Utils/UConfiguration.dfm:3665
+#: Utils/UConfiguration.dfm:3675
 #, fuzzy
 #| msgid "Check for updates automatically"
 msgid "Save files automatically when closing"
 msgstr "فحص التحديثات تلقائياً"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..Caption
-#: Utils/UConfiguration.dfm:3670
+#: Utils/UConfiguration.dfm:3680
 msgid "Styles"
 msgstr "الأنماط"
 
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..BApplyStyle..Caption
-#: Utils/UConfiguration.dfm:3708
+#: Utils/UConfiguration.dfm:3718
 #, fuzzy
 msgid "Apply Style"
 msgstr "تطبيق النمط"
 
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Caption
-#: Utils/UConfiguration.dfm:3714
+#: Utils/UConfiguration.dfm:3724
 msgid "Printer"
 msgstr "الطابعه"
 
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..Caption
-#: Utils/UConfiguration.dfm:4967
+#: Utils/UConfiguration.dfm:4977
 #, fuzzy
 msgid "Header/Footer"
 msgstr "رأس/تذييل الصفحة"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..Caption
-#: Utils/UConfiguration.dfm:5334
+#: Utils/UConfiguration.dfm:5344
 msgid "Restrictions"
 msgstr "القيود"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..LRestrictions..Caption
-#: Utils/UConfiguration.dfm:5340
+#: Utils/UConfiguration.dfm:5350
 #, fuzzy
 msgid "Restrictions can only be modified with administrator rights."
 msgstr "يمكن تعديل القيود فقط مع حقوق المسؤول."
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedInternet..Caption
-#: Utils/UConfiguration.dfm:5353
+#: Utils/UConfiguration.dfm:5363
 #, fuzzy
 msgid "Lock internet access"
 msgstr "تأمين الوصول إلى الإنترنت"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedPaths..Caption
-#: Utils/UConfiguration.dfm:5361
+#: Utils/UConfiguration.dfm:5371
 #, fuzzy
 msgid "Lock paths"
 msgstr "تأمين المسارات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedDosWindow..Caption
-#: Utils/UConfiguration.dfm:5369
+#: Utils/UConfiguration.dfm:5379
 #, fuzzy
 msgid "Deactivate DOS-Window"
 msgstr "إلغاء تنشيط نافذة DOS"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedStructogram..Caption
-#: Utils/UConfiguration.dfm:5377
+#: Utils/UConfiguration.dfm:5387
 #, fuzzy
 msgid "Lock conversion structogram <-> program"
 msgstr "<->تأمين برنامج</-> هيكلة التحويل"
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBUsePredefinedLayouts..Caption
-#: Utils/UConfiguration.dfm:5385
+#: Utils/UConfiguration.dfm:5395
 #, fuzzy
 msgid "Use predefined default and debug layouts"
 msgstr "استخدام تخطيطات افتراضية وتصحيحات معرفة مسبقا"
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..Caption
-#: Utils/UConfiguration.dfm:5390
+#: Utils/UConfiguration.dfm:5400
 #, fuzzy
 #| msgid "Description"
 msgid "Associations"
 msgstr "الوصف"
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LAssociations..Caption
-#: Utils/UConfiguration.dfm:5396
+#: Utils/UConfiguration.dfm:5406
 #, fuzzy
 msgid "Associate these file extensions with GuiPy"
 msgstr "إقران ملحقات الملفات هذه مع GuiPy"
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LAdditionalAssociations..Caption
-#: Utils/UConfiguration.dfm:5403
+#: Utils/UConfiguration.dfm:5413
 #, fuzzy
 #| msgid "Display file extensions"
 msgid "Additional file extensions"
 msgstr "عرض إمتداد الملفات"
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LJEAssociation..Caption
-#: Utils/UConfiguration.dfm:5417
+#: Utils/UConfiguration.dfm:5427
 #, fuzzy
 msgid "Association of GuiPy"
 msgstr "رابطة غيبي"
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..BFileExtensions..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..BJEAssociation..Caption
-#: Utils/UConfiguration.dfm:5505 Utils/UConfiguration.dfm:5521
+#: Utils/UConfiguration.dfm:5515 Utils/UConfiguration.dfm:5531
 msgid "Change"
 msgstr "تغيير"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LScpCommand..Caption
-#: Utils/UConfiguration.dfm:5558 dmCommands.pas:2191
+#: Utils/UConfiguration.dfm:5568 dmCommands.pas:2191
 #, fuzzy
 msgid "SCP command"
 msgstr "الأمر SCP"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LScpOptions..Caption
-#: Utils/UConfiguration.dfm:5565 cSSHSupport.pas:259 dmCommands.pas:2193
+#: Utils/UConfiguration.dfm:5575 cSSHSupport.pas:259 dmCommands.pas:2193
 #, fuzzy
 msgid "SCP options"
 msgstr "خيارات SCP"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LSSHCommand..Caption
-#: Utils/UConfiguration.dfm:5572 dmCommands.pas:2187
+#: Utils/UConfiguration.dfm:5582 dmCommands.pas:2187
 #, fuzzy
 msgid "SSH command"
 msgstr "الأمر SSH"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LSSHOptions..Caption
-#: Utils/UConfiguration.dfm:5579 cSSHSupport.pas:255 dmCommands.pas:2189
+#: Utils/UConfiguration.dfm:5589 cSSHSupport.pas:255 dmCommands.pas:2189
 #, fuzzy
 msgid "SSH options"
 msgstr "خيارات SSH"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..CBSSHDisableVariablesWin..Caption
-#: Utils/UConfiguration.dfm:5586 dmCommands.pas:2195
+#: Utils/UConfiguration.dfm:5596 dmCommands.pas:2195
 #, fuzzy
 msgid "Disable Variables Window with SSH"
 msgstr "تعطيل إطار المتغيرات مع SSH"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LGitFolder..Caption
-#: Utils/UConfiguration.dfm:5632
+#: Utils/UConfiguration.dfm:5642
 #, fuzzy
 #| msgid "Folder"
 msgid "Git folder"
 msgstr "مجلد"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LLocalRepository..Caption
-#: Utils/UConfiguration.dfm:5648
+#: Utils/UConfiguration.dfm:5658
 #, fuzzy
 msgid "Repository local"
 msgstr "مستودع محلي"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LUserName..Caption
-#: Utils/UConfiguration.dfm:5655
+#: Utils/UConfiguration.dfm:5665
 #, fuzzy
 #| msgid "Rename"
 msgid "user.name"
 msgstr "إعادة تسمية"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LRemoteRepository..Caption
-#: Utils/UConfiguration.dfm:5662
+#: Utils/UConfiguration.dfm:5672
 #, fuzzy
 msgid "Repository remote"
 msgstr "مستودع بعيد"
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..BGitClone..Caption
-#: Utils/UConfiguration.dfm:5729
+#: Utils/UConfiguration.dfm:5739
 msgid "Clone"
 msgstr "استنساخ"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..LRepository..Caption
-#: Utils/UConfiguration.dfm:5741
+#: Utils/UConfiguration.dfm:5751
 #, fuzzy
 msgid "Repository"
 msgstr "مستودع"
 
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..LSVN..Caption
-#: Utils/UConfiguration.dfm:5748
+#: Utils/UConfiguration.dfm:5758
 #, fuzzy
 #| msgid "Folder"
 msgid "SVN folder"
@@ -10041,7 +10040,7 @@ msgstr "يرجى تحديد"
 msgid "Replace this occurrence of \"%s\"?"
 msgstr "استبدال هذا التواجد من \"%s\"؟"
 
-#: dlgCustomShortcuts.pas:156 Utils/UConfiguration.pas:3852
+#: dlgCustomShortcuts.pas:156 Utils/UConfiguration.pas:3863
 msgid "Unassigned"
 msgstr "غير معين"
 
@@ -10067,11 +10066,11 @@ msgstr "دليل للبحث:"
 msgid "Select folder with Python installation (inlcuding virtualenv and venv)"
 msgstr "حدد المجلد مع تثبيت بيثون (inlcuding virtualenv و venv)"
 
-#: dlgPythonVersions.pas:220 Utils/UConfiguration.pas:2717
+#: dlgPythonVersions.pas:220 Utils/UConfiguration.pas:2721
 msgid "Rename Python Version"
 msgstr "أعد تسمية إصدار بايثون"
 
-#: dlgPythonVersions.pas:220 Utils/UConfiguration.pas:2717
+#: dlgPythonVersions.pas:220 Utils/UConfiguration.pas:2721
 #, fuzzy
 msgid "New name:"
 msgstr "الاسم الجديد:"
@@ -10321,7 +10320,7 @@ msgstr "سمات الفئة"
 msgid "Class attribute \"%s\" defined at line %d"
 msgstr "سمة الفئة \"%s\" المعرفة في سطر %d"
 
-#: frmEditor.pas:5206 frmPyIDEMain.pas:2005
+#: frmEditor.pas:5217 frmPyIDEMain.pas:2006
 #, fuzzy
 #| msgid "Export"
 msgid "Export to"
@@ -10386,61 +10385,61 @@ msgstr ""
 msgid "GuiPy project files (*.%s)|*.%0:s"
 msgstr "ملفات مشروع GuiPy (*.{ 0})|*.٪0:s"
 
-#: frmPyIDEMain.pas:1920
+#: frmPyIDEMain.pas:1921
 msgid "Associated python file %s not found."
 msgstr ""
 
-#: frmPyIDEMain.pas:3045 Main/UBrowser.pas:158 Utils/UConfiguration.pas:2229
+#: frmPyIDEMain.pas:3046 Main/UBrowser.pas:158 Utils/UConfiguration.pas:2233
 #, fuzzy
 msgid "Internet locked!"
 msgstr "كتلة المسافة البادئة"
 
-#: frmPyIDEMain.pas:3334
+#: frmPyIDEMain.pas:3335
 msgid "Debug"
 msgstr "تصحيح الخطأ"
 
-#: frmPyIDEMain.pas:3422
+#: frmPyIDEMain.pas:3423
 msgid "Running"
 msgstr "مفتوح"
 
-#: frmPyIDEMain.pas:3426
+#: frmPyIDEMain.pas:3427
 msgid "Paused"
 msgstr "متوقف مؤقتا"
 
-#: frmPyIDEMain.pas:3434
+#: frmPyIDEMain.pas:3435
 #, fuzzy
 msgid "Post mortem"
 msgstr "بعد الوفاة"
 
-#: frmPyIDEMain.pas:3440
+#: frmPyIDEMain.pas:3441
 msgid "Python not available"
 msgstr "بايثون غير متوفر"
 
-#: frmPyIDEMain.pas:3443
+#: frmPyIDEMain.pas:3444
 #, fuzzy
 msgid "Debugger state: "
 msgstr "حالة مصحح الأخطاء: "
 
-#: frmPyIDEMain.pas:3985
+#: frmPyIDEMain.pas:3986
 msgid "Python Not Available"
 msgstr "بايثون غير متوفر"
 
-#: frmPyIDEMain.pas:3990 frmPyIDEMain.pas:3993
+#: frmPyIDEMain.pas:3991 frmPyIDEMain.pas:3994
 #, fuzzy
 msgid "Language server"
 msgstr "خادم اللغة"
 
-#: frmPyIDEMain.pas:3993
+#: frmPyIDEMain.pas:3994
 msgid "Not available"
 msgstr "غير متوفر"
 
-#: frmPyIDEMain.pas:4172 frmPyIDEMain.pas:4200
+#: frmPyIDEMain.pas:4173 frmPyIDEMain.pas:4201
 #, fuzzy
 #| msgid "File Templates"
 msgid "File template %s missing!"
 msgstr "قوالب الملف"
 
-#: frmPyIDEMain.pas:5699 Utils/UConfiguration.pas:2356
+#: frmPyIDEMain.pas:5703 Utils/UConfiguration.pas:2360
 #, fuzzy
 msgid "File \\\"%s\\\" not found."
 msgstr "\"%s\" لم يتم العثور على"
@@ -12755,20 +12754,44 @@ msgstr "رقم السطر الحالي في المستند النشط"
 msgid "Selected text in the active document"
 msgstr "النص المحدد في المستند النشط"
 
-#: Components/PyQt/UQtSpinBoxes.pas:739
+#: Components/UBaseWidgets.pas:221
+#, fuzzy
+msgid "America"
+msgstr "القيمة الرقمية"
+
+#: Components/UBaseWidgets.pas:221
+msgid "Europe"
+msgstr "أوروبا"
+
+#: Components/UBaseWidgets.pas:221
+msgid "Asia"
+msgstr "آسيا"
+
+#: Components/PyQt/UQtSpinBoxes.pas:743
 #, fuzzy
 msgid "invalid date time format"
 msgstr "تنسيق الشرط غير صالح"
 
-#: Components/PyQt/UQtSpinBoxes.pas:847
+#: Components/PyQt/UQtSpinBoxes.pas:852
 #, fuzzy
 msgid "invalid date format"
 msgstr "تنسيق الشرط غير صالح"
 
-#: Components/PyQt/UQtSpinBoxes.pas:892
+#: Components/PyQt/UQtSpinBoxes.pas:898
 #, fuzzy
 msgid "invalid time format"
 msgstr "تنسيق الشرط غير صالح"
+
+#: Components/PyQt/UQtWidgetDescendants.pas:1857
+#: Components/PyQt/UQtWidgetDescendants.pas:2029
+#: Components/TKinter/UTKMiscBase.pas:1442
+#: Components/TKinter/UTKMiscBase.pas:1632
+#: Components/TTKinter/UTTKMiscBase.pas:836
+#: Components/TTKinter/UTTKMiscBase.pas:1020
+#, fuzzy
+#| msgid "&Contents"
+msgid "Continent"
+msgstr "الم&حتويات"
 
 #: EssModel/Integrator/View/UDiagramFrame.pas:354
 #, fuzzy
@@ -12827,7 +12850,7 @@ msgstr "إكمال المعلمة"
 msgid "Edit object"
 msgstr "حذف عنصر"
 
-#: Formdesigner/ELDsgnr.pas:1358
+#: Formdesigner/ELDsgnr.pas:1371
 msgid "Size"
 msgstr "الحجم"
 
@@ -12874,15 +12897,15 @@ msgstr ""
 msgid "Methods"
 msgstr "أساليب"
 
-#: Main/UClassEditor.pas:1103 Main/UClassEditor.pas:2340
+#: Main/UClassEditor.pas:1102 Main/UClassEditor.pas:2339
 msgid "%s already exists"
 msgstr "%s موجود بالفعل"
 
-#: Main/UClassEditor.pas:1239
+#: Main/UClassEditor.pas:1238
 msgid "Method %s contains source code."
 msgstr ""
 
-#: Main/UClassEditor.pas:1240
+#: Main/UClassEditor.pas:1239
 #, fuzzy
 #| msgid "Source Code"
 msgid "Delete method with source code?"
@@ -13110,14 +13133,17 @@ msgstr ""
 msgid "No differences."
 msgstr "الفرق التالي"
 
-#: Utils/UConfiguration.pas:2444
+#: Utils/UConfiguration.pas:2448
 msgid "Form"
 msgstr "نموذج"
 
-#: Utils/UConfiguration.pas:2622
+#: Utils/UConfiguration.pas:2626
 #, fuzzy
 msgid "Select folder with Python installation (including virtualenv and venv)"
 msgstr "حدد المجلد مع تثبيت بيثون (بما في ذلك فيرتلف وفينف)"
+
+#~ msgid "Canvas"
+#~ msgstr "(Canvas) القماشة"
 
 #~ msgid "Manage File Templates..."
 #~ msgstr "ادارة قوالب الملفات..."

@@ -180,7 +180,6 @@ type
     FCurrentFontChanged: string;
     procedure setCurrentFont(Value: TFont);
     procedure MakeFontFilters;
-    procedure MakeFont;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -191,6 +190,7 @@ type
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: String = ''); override;
     procedure Paint; override;
+    procedure MakeFont; override;
   published
     property WritingSystem: TWritingSystem read FWritingSystem write FWritingSystem;
     property FontFilters: TSetOfFontFilters read FFontFilters write FFontFilters;
@@ -418,6 +418,7 @@ type
     procedure Paint; override;
     procedure SetPositionAndSize; override;
     function MakeBinding(Eventname: string): string; override;
+    procedure Rename(const OldName, NewName, Events: string); override;
   published
     property Items: TStrings read fItems write setItems; // must stay before columns or label
     property Columns: integer read FColumns write setColumns;
@@ -840,8 +841,10 @@ procedure TQtFontComboBox.MakeFont;
 begin
   s1:= 'self.' + Name + '.setCurrentFont';
   s2:= '(QFont(' + asString(FCurrentFont.Name) + ', ' + IntToStr(FCurrentFont.Size);
-  if fsBold   in FCurrentFont.Style then s2:= s2 + ', QFont.Bold';
-  if fsItalic in FCurrentFont.Style then s2:= s2 + ', QFont.StyleItalic';
+  if fsBold   in FCurrentFont.Style then
+    s2:= s2 + ', QFont.Weight.Bold';
+  if fsItalic in FCurrentFont.Style then
+    s2:= s2 + ', italic=True';
   s2:= s2 + '))';
   setAttributValue(s1, s1 + s2);
   s1:= 'self.' + Name + '.currentFont().setUnderline';
@@ -1842,7 +1845,7 @@ begin
   DrawBitmap(7, 4, 18, Canvas, DMImages.ILSwing1);
 end;
 
-{--- TQtButtonGroup ------------------------------------------------------}
+{--- TQtButtonGroup -----------------------------------------------------------}
 
 constructor TQtButtonGroup.Create(AOwner: TComponent);
 begin
@@ -2071,6 +2074,12 @@ begin
   if i <= rest
     then Result:= quot + 1
     else Result:= quot;
+end;
+
+procedure TQtButtonGroup.Rename(const OldName, NewName, Events: string);
+begin
+  inherited;
+  Partner.ReplaceWord('self.' + OldName + 'BG', 'self.' + NewName + 'BG', true);
 end;
 
 procedure TQtButtonGroup.Paint;

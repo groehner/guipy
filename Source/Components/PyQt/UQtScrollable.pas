@@ -64,7 +64,7 @@ type
     SmartViewportUpdate, BoundingRectViewportUpdate, NoViewportUpdate);
 
   // Qt
-  TRubberBandSelectioMode = (ContainsItemShape, IntersectsItemShape,
+  TRubberBandSelectionMode = (ContainsItemShape, IntersectsItemShape,
     ContainsItemBoundingRect, IntersectsItemBoundingRect);
 
   // QGraphicsView
@@ -312,7 +312,7 @@ type
     FTransformationAnchor: TAnchor;
     FResizeAnchor: TAnchor;
     FViewportUpdateMode: TViewportUpdateMode;
-    FRubberBandSelectioMode: TRubberBandSelectioMode;
+    FRubberBandSelectionMode: TRubberBandSelectionMode;
     FOptimizationFlags: TOptimizationFlags;
     FRubberBandChanged: string;
     procedure MakeRenderHints;
@@ -341,7 +341,7 @@ type
     property TransformationAnchor: TAnchor read FTransformationAnchor write FTransformationAnchor;
     property ResizeAnchor: TAnchor read FResizeAnchor write FResizeAnchor;
     property ViewportUpdateMode: TViewportUpdateMode read FViewportUpdateMode write FViewportUpdateMode;
-    property RubberBandSelectioMode: TRubberBandSelectioMode read FRubberBandSelectioMode write FRubberBandSelectioMode;
+    property RubberBandSelectionMode: TRubberBandSelectionMode read FRubberBandSelectionMode write FRubberBandSelectionMode;
     property OptimizationFlags: TOptimizationFlags read FOptimizationFlags write FOptimizationFlags;
     // signals
     property rubberBandChanged: string read FRubberBandChanged write FRubberBandChanged;
@@ -1023,7 +1023,7 @@ begin
   FRenderHints:= [TextAntialiasing];
   FTransformationAnchor:= AnchorViewCenter;
   FViewportUpdateMode:= MinimalViewportUpdate;
-  FRubberBandSelectioMode:= IntersectsItemShape;
+  FRubberBandSelectionMode:= IntersectsItemShape;
 end;
 
 function TQtGraphicsView.getAttributes(ShowAttributes: integer): string;
@@ -1068,7 +1068,7 @@ begin
   else if (Attr = 'ResizeAnchor') or (Attr = 'TransformationAnchor') then
     MakeAttribut(Attr, 'QGraphicsView.ViewportAnchor.' + Value)
   else if Attr = 'RubberBandSelectionMode' then
-    MakeAttribut(Attr, 'Qt.' + Value)
+    MakeAttribut(Attr, 'Qt.ItemSelectionMode.' + Value)
   else if (Pos('Antialiasing', Attr) > 0) or (Attr = 'SmoothPixmapTransform') or
     (Attr = 'LosslessImageRendering') then
     MakeRenderHints

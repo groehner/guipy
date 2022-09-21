@@ -135,7 +135,7 @@ type
     function getType: String;
     function getNameAndType: String; override;
     function getContainer: string;
-    procedure MakeFont;
+    procedure MakeFont; override;
   published
     // events
     {$WARNINGS OFF}
@@ -183,8 +183,8 @@ begin
   FTakeFocus:= true;
   FUnderline:= -1;
   FWrapLength:= '0';
-  Canvas.Font.PixelsPerInch:= 72;
-  Font.PixelsPerInch:= 72;
+  //Canvas.Font.PixelsPerInch:= 96; // 72;
+  //Font.PixelsPerInch:= 72;
   Font.Name:= 'Segoe UI';   // TkDefaultFont and TkTextFont
   Font.Size:= 9;
   Font.Style:= [];
@@ -339,7 +339,6 @@ procedure TBaseTkWidget.Paint;
 
 begin
   Canvas.Font.Assign(Font);
-  Canvas.Font.Size:= Font.Size + (Font.Size + 1) div 3;
   Canvas.Font.Color:= FForeground;
   Canvas.Brush.Color:= FBackground;
   if (Parent is TKPanedWindow) or (Parent is TTKPanedwindow) then

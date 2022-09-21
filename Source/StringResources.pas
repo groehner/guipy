@@ -556,7 +556,7 @@ Const
     '    def create_widgets(self):' + sLineBreak +
     '        pass' + sLineBreak +
     '' + sLineBreak +
-    'if __name == "__main__":' + sLineBreak +
+    'if __name__ == "__main__":' + sLineBreak +
     '    app = QApplication([])' + sLineBreak +
     '    window = Window()' + sLineBreak +
     '    window.show()' + sLineBreak +

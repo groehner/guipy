@@ -40,6 +40,9 @@ type
     MIAlignRight: TSpTBXItem;
     MIAlignCentered: TSpTBXItem;
     MIAlignLeft: TSpTBXItem;
+    MIZoomIn: TSpTBXItem;
+    MIZoomOut: TSpTBXItem;
+    SpTBXSeparatorItem5: TSpTBXSeparatorItem;
     procedure FormCreate(Sender: TObject);
     procedure ELDesignerControlInserting(Sender: TObject;
       var AControlClass: TControlClass);
@@ -69,6 +72,8 @@ type
     procedure MIForegroundClick(Sender: TObject);
     procedure MIBackgroundClick(Sender: TObject);
     procedure MIAlignClick(Sender: TObject);
+    procedure MIZoomInClick(Sender: TObject);
+    procedure MIZoomOutClick(Sender: TObject);
   private
     function Tag2Class(Tag: integer): TControlClass;
     procedure SetEnabledMI(MenuItem: TSpTBXItem; Enabled: boolean);
@@ -217,7 +222,6 @@ begin
   SetEnabledMI(MIPaste, ELDesigner.CanPaste);
   SetEnabledMI(MIAlign, ELDesigner.SelectedControls.Count > 1);
   MISnapToGrid.Checked:= ELDesigner.SnapToGrid;
-
   en:= (ELDesigner.SelectedControls.Count > 0) and
        (ELDesigner.SelectedControls[0].ClassName <> 'TFGUIForm');
   SetEnabledMI(MIAlignToGrid, en);
@@ -414,6 +418,16 @@ begin
     UKoppel.ComponentNrToInsert:= Tag;
     ComponentToInsert:= Tag2Class(Tag);
   end;
+end;
+
+procedure TFGUIDesigner.MIZoomOutClick(Sender: TObject);
+begin
+  DesignForm.Zoom(false);
+end;
+
+procedure TFGUIDesigner.MIZoomInClick(Sender: TObject);
+begin
+  DesignForm.Zoom(true);
 end;
 
 procedure TFGUIDesigner.ELDesignerControlInserted(Sender: TObject);

@@ -49,7 +49,7 @@ object FClassEditor: TFClassEditor
     Top = 10
     Width = 364
     Height = 435
-    ActivePage = TSMethods
+    ActivePage = TSAttributes
     TabOrder = 0
     OnChange = PageControlChange
     object TSClass: TTabSheet
@@ -177,9 +177,13 @@ object FClassEditor: TFClassEditor
         OnSelect = CBAttributeTypeSelect
         Items.Strings = (
           'boolean'
+          'Dict'
           'float'
           'integer'
-          'String')
+          'List'
+          'Set'
+          'String'
+          'Tuple')
       end
       object BAttributeDelete: TButton
         Left = 184
@@ -339,10 +343,14 @@ object FClassEditor: TFClassEditor
         OnSelect = CBMethodTypeSelect
         Items.Strings = (
           'boolean'
+          'Dict'
           'float'
           'integer'
+          'List'
           'None'
-          'String')
+          'Set'
+          'String'
+          'Tuple')
       end
       object RGMethodAccess: TRadioGroup
         Left = 126
@@ -576,9 +584,13 @@ object FClassEditor: TFClassEditor
           OnSelect = CBParamTypeSelect
           Items.Strings = (
             'boolean'
+            'Dict'
             'float'
             'integer'
-            'String')
+            'List'
+            'Set'
+            'String'
+            'Tuple')
         end
         object BParameterNew: TButton
           Left = 178

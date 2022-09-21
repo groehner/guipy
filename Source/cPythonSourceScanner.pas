@@ -728,6 +728,9 @@ begin
   SourceLines := nil;
   ClassStaticMethodStart:= 0;
   LastNotEmptyLine:= 0;
+  isClassMethod:= false;
+  isStaticMethod:= false;
+  isAbstractMethod:= false;
 
   LineStarts := TSmartPtr.Make(TList.Create)();
   GlobalList := TSmartPtr.Make(TStringList.Create)();

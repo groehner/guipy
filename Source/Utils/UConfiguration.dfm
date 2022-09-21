@@ -186,7 +186,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 661
         Height = 427
-        ActivePage = POptions1
+        ActivePage = PKeystrokes
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -462,8 +462,8 @@ object FConfiguration: TFConfiguration
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 72
-                Height = 8
+                Width = 179
+                Height = 25
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -473,6 +473,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 72
+                ExplicitHeight = 8
               end
             end
             object cbGutterColor: TSpTBXColorEdit
@@ -708,8 +710,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 128
-                Height = 16
+                Width = 188
+                Height = 28
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Courier New 10pt'
@@ -719,6 +721,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Courier New'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 128
+                ExplicitHeight = 16
               end
             end
             object btnFont: TButton
@@ -1549,7 +1553,7 @@ object FConfiguration: TFConfiguration
             end
           end
           object btnRemKey: TButton
-            Left = 376
+            Left = 328
             Top = 185
             Width = 102
             Height = 25
@@ -1558,7 +1562,7 @@ object FConfiguration: TFConfiguration
             OnClick = btnRemKeyClick
           end
           object btnAddKey: TButton
-            Left = 253
+            Left = 205
             Top = 185
             Width = 102
             Height = 25
@@ -1567,7 +1571,7 @@ object FConfiguration: TFConfiguration
             OnClick = btnAddKeyClick
           end
           object btnUpdateKey: TButton
-            Left = 130
+            Left = 82
             Top = 185
             Width = 102
             Height = 25
@@ -1608,6 +1612,16 @@ object FConfiguration: TFConfiguration
               TabOrder = 0
               ViewStyle = vsReport
             end
+          end
+          object btnResetKeys: TButton
+            Left = 452
+            Top = 185
+            Width = 102
+            Height = 25
+            Hint = 'Restart GuiPy'
+            Caption = 'Reset'
+            TabOrder = 5
+            OnClick = btnResetKeysClick
           end
         end
         object PSyntaxColors: TTabSheet
@@ -2345,7 +2359,7 @@ object FConfiguration: TFConfiguration
           object CBGuiDesignerHints: TCheckBox
             Left = 16
             Top = 40
-            Width = 290
+            Width = 349
             Height = 17
             Caption = 'Show hints permanently in GUI designer'
             Checked = True
@@ -2355,7 +2369,7 @@ object FConfiguration: TFConfiguration
           object CBSnapToGrid: TCheckBox
             Left = 16
             Top = 64
-            Width = 199
+            Width = 349
             Height = 17
             Caption = 'Snap to grid'
             Checked = True
@@ -2400,7 +2414,7 @@ object FConfiguration: TFConfiguration
           object CBAlignToGrid: TCheckBox
             Left = 16
             Top = 88
-            Width = 199
+            Width = 349
             Height = 17
             Caption = 'Align to grid when inserting'
             Checked = True

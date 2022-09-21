@@ -1227,6 +1227,16 @@ begin
         Sender := GetDesignControl(Sender);
         FSelCtrls.SetVisible(False);
         FSelCtrls.ClearExcept(Sender);
+        if FDesigner.FSnapToGrid then begin
+         if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppTopLeft, ppTop, ppTopRight] then
+            Sender.Top:= Round(Sender.Top / FGrid.FYStep)* FGrid.FYStep;
+         if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppBottomLeft, ppBottom, ppBottomRight] then
+            Sender.Height:= Round((Sender.Top + Sender.Height)/ FGrid.FYStep)* FGrid.FYStep - Sender.Top;
+         if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppTopLeft, ppLeft, ppBottomLeft] then
+            Sender.Left:= Round(Sender.Left / FGrid.FXStep)* FGrid.FXStep;
+         if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppTopright, ppRight, ppBottomright] then
+            Sender.Width:= Round((Sender.Left + Sender.Width)/ FGrid.FXStep)* FGrid.FXStep - Sender.Left;
+        end;
         _InitDrawMode(Sender.Parent, SizeControlProc, True,
           TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppTop, ppBottom],
           TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppLeft, ppRight],
@@ -1254,7 +1264,7 @@ begin
         end;
         if not LInsertingControl then
         begin
-          Sender := GetDesignControl(Sender);
+         Sender := GetDesignControl(Sender);
           if ssShift in KeysToShiftState(TWMMouse(Message).Keys) then
           begin
             FSelCtrls.BeginUpdate;
@@ -1298,10 +1308,13 @@ begin
             begin
               LControls := TList.Create;
               try
-                if FSelCtrls.IndexOf(Sender) = -1 then
-                  LControls.Add(Sender)
-                else
-                begin
+                if FSelCtrls.IndexOf(Sender) = -1 then begin
+                  if FDesigner.FSnapToGrid then begin
+                    Sender.Top:= Round(Sender.Top / FGrid.FYStep)* FGrid.FYStep;
+                    Sender.Left:= Round(Sender.Left / FGrid.FXStep)* FGrid.FXStep;
+                  end;
+                  LControls.Add(Sender);
+                end else begin
                   FSelCtrls.ClearNotChildrensOf(Sender.Parent);
                   FSelCtrls.GetControls(LControls);
                 end;
@@ -3024,6 +3037,7 @@ begin
     Exit;
   FMode := Value;
   Update;
+  Control.Invalidate; // added due to invalid ellipse resizing
 end;
 
 procedure TDSelCtrlItem.Update;

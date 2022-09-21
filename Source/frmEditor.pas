@@ -305,6 +305,7 @@ type
     procedure TranslateStatements;
     procedure ChangeStyle;
     procedure ShowTkOrQt;
+    function getFrameType: Integer;
 
     class var fOldEditorForm: TEditorForm;
     class var fHintIdentInfo: THotIdentInfo;
@@ -439,7 +440,6 @@ type
     procedure CollectClasses(SL: TStringList); override;
     procedure CollapseGUICreation;
     function isGUICreationCollapsed: boolean;
-    function getFrameType: Integer;
     procedure DoUpdateHighlighter(HighlighterName: string = '');
 
     property Partner: TForm read fPartner write fPartner;

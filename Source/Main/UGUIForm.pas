@@ -117,6 +117,7 @@ type
     procedure ExecUndo;
     procedure EndOfResizeMoveDetected(var Msg: Tmessage); message WM_EXITSIZEMOVE;
     procedure Paint; override;
+    procedure Zoom(_in: boolean);
   published
     property AlwaysOnTop: boolean read FAlwaysOnTop write FAlwaysOnTop;
     property Background: TColor read getBackground write setBackground;
@@ -593,6 +594,13 @@ begin
   for var i := 0 to ComponentCount - 1 do
     if Components[i] is TBaseWidget then
       (Components[i] as TBaseWidget).Partner:= Partner;
+end;
+
+procedure TFGuiForm.Zoom(_in: boolean);
+begin
+  for var i:= 0 to ComponentCount - 1 do
+    if Components[i] is TBaseWidget then
+      (Components[i] as TBaseWidget).Zoom(_in);
 end;
 
 end.

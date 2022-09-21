@@ -2,7 +2,7 @@
  Unit:     UConfiguration
  Author:   Gerhard Röhner
  Date:     July 2000
- Purpose:  utility functions
+ Purpose:  configuration
 -------------------------------------------------------------------------------}
 
 unit UConfiguration;
@@ -966,6 +966,7 @@ type
     CBShowKindProcedure: TCheckBox;
     CBShowParameterTypeSelection: TCheckBox;
     CBAlignToGrid: TCheckBox;
+    btnResetKeys: TButton;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1075,6 +1076,7 @@ type
     procedure BBrowserTitleClick(Sender: TObject);
     procedure BApplyStyleClick(Sender: TObject);
     procedure RGLanguagesClick(Sender: TObject);
+    procedure btnResetKeysClick(Sender: TObject);
   private
     fHighlighters : TList;
     fColorThemeHighlighter : TSynCustomHighlighter;
@@ -1188,6 +1190,7 @@ type
     GitOK: boolean;
     SubversionOK: boolean;
     EditorFolder: String;
+    KeyStrokesReset: boolean;
 
     procedure Changed;
     function getEncoding(const Pathname: string): TEncoding;
@@ -1326,6 +1329,7 @@ begin
   Editor := nil;
   EditorFolder:= ExtractFilePath(ParamStr(0));
   StyleSelectorFormCreate;
+  KeyStrokesReset:= false;
   Changed;
 end;
 
@@ -2909,6 +2913,13 @@ begin
      end;
   end;
   FillInKeystrokeInfo(TSynEditKeyStroke(KeyList.Selected.Data), KeyList.Selected);
+end;
+
+procedure TFConfiguration.btnResetKeysClick(Sender: TObject);
+begin
+  FSynEdit.Keystrokes.ResetDefaults;
+  PrepareKeyStrokes;
+  KeyStrokesReset:= true;
 end;
 
 procedure TFConfiguration.btnAddKeyClick(Sender: TObject);

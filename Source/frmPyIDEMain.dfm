@@ -26,6 +26,7 @@ object PyIDEMainForm: TPyIDEMainForm
     Width = 946
     Height = 25
     SizeGrip = False
+    ExplicitTop = 641
     object lbStatusMessage: TSpTBXLabelItem
       Wrapping = twEndEllipsis
       Options = [tboNoAutoHint]
@@ -249,7 +250,7 @@ object PyIDEMainForm: TPyIDEMainForm
     object TBControlItem1: TTBControlItem
     end
     object DockTopPanel: TPanel
-      Tag = 76702
+      Tag = 77344
       Left = 0
       Top = 0
       Width = 946
@@ -2531,7 +2532,6 @@ object PyIDEMainForm: TPyIDEMainForm
             Tag = 118
             Left = 476
             Top = 0
-            Caption = 'TBQtTreeView'
             ImageIndex = 17
             OnClick = ToolButtonClick
             OnMouseDown = ToolButtonMouseDown

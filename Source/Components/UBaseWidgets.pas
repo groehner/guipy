@@ -82,6 +82,8 @@ type
     function MakeBinding(Eventname: string): string; virtual; abstract;
     function MakeHandler(const event: string ): string; virtual; abstract;
     procedure SizeToText; virtual;
+    procedure MakeFont; virtual; abstract;
+    procedure Zoom(_in: boolean);
   end;
 
 implementation
@@ -344,6 +346,19 @@ end;
 procedure TBaseWidget.SizeToText;
 begin
   // do nothing
+end;
+
+procedure TBaseWidget.Zoom(_in: boolean);
+begin
+  if _in
+    then Font.Size:= Font.Size + 1
+    else Font.Size:= max(Font.Size -1, 6);
+  Canvas.Font.Assign(Font);
+  SizeToText;
+  if Sizeable then
+    SetPositionAndSize;
+  MakeFont;
+  Invalidate;
 end;
 
 end.

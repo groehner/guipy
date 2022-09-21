@@ -4437,6 +4437,8 @@ begin
 
     // Save Toolbar Items
     SaveToolbarItems('Toolbar Items');
+    if FConfiguration.KeyStrokesReset then
+       AppStorage.DeleteSubTree('Toolbar Items');
 
     //  Needed since save toolbar Items below does not save secondary shortcuts! Issue 307
     // Save IDE Shortcuts
@@ -4447,6 +4449,7 @@ begin
     finally
       ActionProxyCollection.Free;
     end;
+
 
     // Save Interpreter History
     TempStringList.Clear;

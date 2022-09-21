@@ -785,17 +785,15 @@ begin
         CBsetMethod.Checked := HasMethod(_(LNGSet), Attribut, Methode);
       CBAttributeStatic.Checked := Attribut.Static;
       CBAttributeFinal.Checked := Attribut.IsFinal;
-    end
-    else
-    begin
-      ComboBoxInsert(CBAttributeType);
+    end else begin
       CBAttributeType.Text := '';
       CBAttributeType.ItemIndex := -1;
       CBAttributeValue.Text := '';
       CBAttributeValue.ItemIndex := -1;
       ActiveControl := EAttributeName;
       EAttributeName.Text := '';
-    end
+    end;
+    ComboBoxInsert(CBAttributeType);
   end else begin
     PageControl.ActivePageIndex := 2;
     BMethodApply.Enabled := false;
@@ -831,12 +829,10 @@ begin
         then RGMethodKind.ItemIndex := 1 // wg. constructor
         else RGMethodKind.ItemIndex := 0;
       CBMethodName.Text := '';
-      ComboBoxInsert(CBMethodType);
       CBMethodType.Text := '';
       CBMethodType.ItemIndex := -1;
-      ComboBoxInsert(CBParamName);
+
       CBParamName.Text := '';
-      ComboBoxInsert(CBParamType);
       CBParamType.Text := '';
       CBParamType.ItemIndex := -1;
       CBMethodStatic.Checked:= false;
@@ -848,6 +844,9 @@ begin
         ActiveControl := CBMethodName;
       end;
     end;
+    ComboBoxInsert(CBMethodType);
+    ComboBoxInsert(CBParamName);
+    ComboBoxInsert(CBParamType);
     CBMethodName.Enabled := (RGMethodKind.ItemIndex > 0) or not IsClass;
     CBMethodType.Enabled := (RGMethodKind.ItemIndex in [1, 2]) or
       (not IsClass and (RGMethodKind.ItemIndex = 1));
@@ -1636,10 +1635,10 @@ begin
       CBgetMethod.Visible := true;
       CBsetMethod.Visible := true;
     end;
-    RGAttributeAccess.Height := 115;
-    GBAttributeOptions.Height := 115;
-    RGMethodKind.Height := 105;
-    RGMethodAccess.Height := 105;
+    RGAttributeAccess.Height := PPIScale(115);
+    GBAttributeOptions.Height := PPIScale(115);
+    RGMethodKind.Height := PPIScale(105);
+    RGMethodAccess.Height := PPIScale(105);
     GBMethodOptions.Visible := true;
   end else begin
     TSClass.Caption := '&' + _('Interface');
@@ -1648,10 +1647,10 @@ begin
     CBMethodAbstract.Visible := false;
     CBgetMethod.Visible := false;
     CBsetMethod.Visible := false;
-    RGAttributeAccess.Height := 65;
-    GBAttributeOptions.Height := 65;
-    RGMethodKind.Height := 65;
-    RGMethodAccess.Height := 65;
+    RGAttributeAccess.Height := PPIScale(65);
+    GBAttributeOptions.Height := PPIScale(65);
+    RGMethodKind.Height := PPIScale(65);
+    RGMethodAccess.Height := PPIScale(65);
     GBMethodOptions.Visible := false;
   end;
   CBMethodStatic.Enabled := aIsClass;

@@ -442,7 +442,7 @@ begin
   else if Attr = 'TextElideMode' then
     MakeAttribut(Attr, 'Qt.' + Attr + '.' + Value)
   else if Attr = 'DefaultDropAction' then
-    MakeAttribut(Attr, 'Qt.dropAction.' + Value)
+    MakeAttribut(Attr, 'Qt.DropAction.' + Value)
   else
     inherited;
 end;
@@ -966,7 +966,7 @@ begin
     Slots.Add(Name + '.showRow');
   end else if Parametertypes = 'bool' then
     Slots.Add(Name + '.setShowGrid')
-  else if Parametertypes = 'int, SortOrder' then  // ToDo Qt.SortOder
+  else if Parametertypes = 'int, SortOrder' then  // ToDo Qt.SortOrder
     Slots.Add(Name + '.sortByColumn');
   inherited;
 end;
