@@ -1211,10 +1211,8 @@ type
     property GetUserCommandNames: TSynEditorOptionsUserCommand read FUserCommand
       write FUserCommand;
     property GetAllUserCommands: TSynEditorOptionsAllUserCommands
-      read FAllUserCommands
-      write FAllUserCommands;
-    property CurrentAction : TActionProxyItem
-      read GetCurrentAction;
+      read FAllUserCommands write FAllUserCommands;
+    property CurrentAction : TActionProxyItem read GetCurrentAction;
   end;
 
  var
@@ -1344,7 +1342,7 @@ begin
 
   FreeAndNil(fHighlighters);
   FreeAndNil(fColorThemeHighlighter);
-  FreeandNil(FSynEdit);
+  FreeAndNil(FSynEdit);
 
   ActionProxyCollection.Free;
   FMargins.Free;
@@ -2848,8 +2846,7 @@ end;
 procedure TFConfiguration.btnFontClick(Sender: TObject);
 begin
   FontDialog.Font.Assign(labFont.Font);
-  if FontDialog.Execute then
-  begin
+  if FontDialog.Execute then begin
     labFont.Font.Assign(FontDialog.Font);
     labFont.Caption:= labFont.Font.Name;
     labFont.Caption:= labFont.Font.Name + ' ' + IntToStr(labFont.Font.Size) + 'pt';

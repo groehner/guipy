@@ -74,6 +74,7 @@ type
     procedure NewWidget(Widget: String = ''); virtual; abstract;
     procedure SetPositionAndSize; virtual; abstract;
     function getNameAndType: String; virtual; abstract;
+    function getType: String; virtual; abstract;
     procedure DeleteEvents; virtual; abstract;
     procedure Resize; override; abstract;
     procedure DeleteWidget; virtual; abstract;

@@ -31,7 +31,7 @@ type
   end;
 
 var
-  FIconEditor: TFIconEditor;
+  FIconEditor: TFIconEditor = nil;
 
 implementation
 

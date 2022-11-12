@@ -51,7 +51,6 @@ type
 
     procedure setAttributForComponent(Attr, Value: string; Typ: string; Control: TControl);
     procedure SetSlotForComponent(Attr, Value: string; Control: TControl);
-    procedure setEventForComponent(Attr: string; Control: TControl);
 
     procedure addRow(Attribut: string; const Value: string);
     procedure Retranslate;
@@ -198,21 +197,26 @@ begin
 end;
 
 procedure TFObjectGenerator.SetSlotForComponent(Attr, Value: string; Control: TControl);
-  var CName: string;
+  var CName, s, dest: string;
 begin
-  if Control.Tag = 76 // TQtButtonGroup
-    then CName:= Control.Name + 'BG'
-    else CName:= Control.Name;
-  Partner.InsertQtBinding(CName,
-    Indent2 + 'self.' + CName + '.' + Attr + '.connect(self.' + Value + ')');
-end;
-
-procedure TFObjectGenerator.SetEventForComponent(Attr: string; Control: TControl);
-begin
-  if Control is TBaseWidget then
-    (Control as TBaseWidget).setEvent(Attr)
-  else if Control is TFGuiForm then
-    (Control as TFGuiForm).setEvent(Attr);
+  if Value = '' then begin
+    if Control.Tag = 0
+      then Partner.DeleteMethod('MainWindow_' + Attr)
+      else Partner.DeleteMethod(Control.Name + '_' + Attr);
+    Partner.DeleteBinding(Attr + '.connect');
+  end else begin
+    s:= Attr + '.connect(self.' + Value + ')';
+    if Control.Tag = 76 // TQtButtonGroup
+      then CName:= Control.Name + 'BG'
+      else CName:= Control.Name;
+    if Control.Tag = 0 then
+      dest:= Indent2 + 'self.'
+    else begin
+      s:= CName + '.' + s;
+      dest:= 'self.' + CName;
+    end;
+    Partner.InsertQtBinding(dest, Indent2 + 'self.' + s);
+  end;
 end;
 
 procedure TFObjectGenerator.ValueListEditorKeyUp(Sender: TObject; var Key: Word;

@@ -197,6 +197,7 @@ type
         procedure BeginUpdate;
         procedure EndUpdate;
         procedure UpdateActiveRow;
+        procedure EnableEditing;
 
         property ActiveItem: TELPropsPageItem read GetActiveItem;
         property SelText: String read getSelText write setSelText;
@@ -1533,6 +1534,7 @@ begin
                                 if (LGridCoord.Y < TopRow + VisibleRowCount) then
                                     Row := LGridCoord.Y;
                         end;
+                    EnableEditing;
                 end;
         end;
 end;
@@ -1826,6 +1828,17 @@ end;
 procedure TELCustomPropsPage.UpdateActiveRow;
 begin
   UpdateData(Row);
+end;
+
+procedure TELCustomPropsPage.EnableEditing;
+begin
+  TThread.ForceQueue(nil, procedure
+    begin
+      with InplaceEditor do begin
+        SetFocus;
+        SelStart:= Length(Text);
+      end;
+    end);
 end;
 
 procedure TELCustomPropsPage.CMExit(var Message: TMessage);
@@ -2426,9 +2439,10 @@ begin
             LList := TStringList.Create;
             try
                 // get slots for Qt events
-                if isLower(Caption[1]) and assigned(TelPropertyInspector(Owner).OnGetSelectStrings) then
+                if isLower(Caption[1]) and
+                   assigned(TelPropertyInspector(Owner).OnGetSelectStrings) then
                   TelPropertyInspector(Owner).OnGetSelectStrings(self, Caption, LList)
-                else  begin
+                else begin
                   FEditor.GetValues(LList);
                   if praSortList in FEditor.GetAttrs then
                     LList.Sort;
@@ -4497,6 +4511,7 @@ begin
   FIconEditor.setValue(GetValue);
   if FIconEditor.ShowModal = mrOK then
     SetStrValue(FIconEditor.Value);
+  FreeAndNil(FIconEditor);
 end;
 
 { TELGraphicPropeditor }

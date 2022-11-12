@@ -29,15 +29,15 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
 
+    procedure ELPropertyInspectorModified(Sender: TObject);
     procedure ELPropertyInspectorClick(Sender: TObject);
     procedure ELPropertyInspectorFilterProp(Sender: TObject; AInstance: TPersistent;
       APropInfo: PPropInfo; var AIncludeProp: Boolean);
-    procedure ELPropertyInspectorModified(Sender: TObject);
 
+    procedure ELEventInspectorModified(Sender: TObject);
     procedure ELEventInspectorClick(Sender: TObject);
     procedure ELEventInspectorFilterProp(Sender: TObject; AInstance: TPersistent;
       APropInfo: PPropInfo; var AIncludeProp: Boolean);
-    procedure ELEventInspectorModified(Sender: TObject);
 
     procedure ELObjectInspectorDeactivate(Sender: TObject);
     procedure BMoreClick(Sender: TObject);
@@ -61,6 +61,7 @@ type
       Shift: TShiftState; X, Y: Integer);
   private
     procedure setTabs;
+    procedure SetFont(Font: TFont);
     procedure MyOnGetSelectStrings(Sender: TObject; event: string; AResult: TStrings);
     procedure MyOnGetComponentNames(Sender: TObject; AClass: TComponentClass; AResult: TStrings);
   protected
@@ -76,6 +77,7 @@ type
     ShowAttributes: integer;
 
     destructor Destroy; override;
+    procedure RefreshCB(newname: string = '');
     procedure RefreshCBObjects;
     procedure OnEnterEvent(Sender: TObject);
     procedure SetSelectedObject(Control: TControl);
@@ -86,9 +88,9 @@ type
     procedure CutToClipboard;
     procedure CopyToClipboard;
     procedure PasteFromClipboard;
-    procedure SetFontSize(Delta: integer);
-    procedure SetFont(aFont: TFont);
     procedure UpdateState;
+    procedure UpdatePropertyInspector;
+    procedure UpdateEventInspector;
     procedure Add(AObject: TControl);
     procedure ChangeStyle;
   end;
@@ -140,8 +142,6 @@ begin
   OnDeactivate:= ELObjectInspectorDeactivate;
   PObjects.Autosize:= true;
   CBObjects.Align:= alTop;
-  Font.Name:= 'Segoe UI';
-  Font.Size:= 10;
   TranslateComponent(Self);
   ChangeStyle;
 end;
@@ -155,7 +155,8 @@ procedure TFObjectInspector.OnMouseDownEvent(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   // due to wrong determination auf parent form if form is docked
-  SetFocus;
+  if CanFocus then
+    SetFocus;
 end;
 
 destructor TFObjectInspector.Destroy;
@@ -171,6 +172,7 @@ begin
   ELPropertyInspector.Splitter := AppStorage.ReadInteger(BasePath + '\ELPropertyInspector.Splitter', 100);
   ELEventInspector.Splitter := AppStorage.ReadInteger(BasePath + '\ELEventInspector.Splitter', 100);
   AppStorage.ReadPersistent(BasePath + '\Font', Font);
+  setFont(Font);
 end;
 
 procedure TFObjectInspector.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
@@ -178,7 +180,7 @@ procedure TFObjectInspector.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
 begin
   AppStorage.WriteInteger(BasePath + '\ELPropertyInspector.Splitter', ELPropertyInspector.Splitter);
   AppStorage.WriteInteger(BasePath + '\ELEventInspector.Splitter', ELEventInspector.Splitter);
-  AppStorage.WritePersistent(BasePath+'\Font', Font);
+  AppStorage.WritePersistent(BasePath + '\Font', Font);
 end;
 
 procedure TFObjectInspector.CBChangeName(const OldName, NewName: string);
@@ -204,8 +206,12 @@ procedure TFObjectInspector.MyOnGetSelectStrings(Sender: TObject; event: string;
   var SourceWidget: TBaseQtWidget; Parametertypes: string; i: integer;
       GuiForm: TFGuiForm;
 begin
-  SourceWidget:= TBaseQtWidget(FGUIDesigner.ELDesigner.SelectedControls[0]);
-  Parametertypes:= SourceWidget.Parametertypes(event);
+  if FGUIDesigner.ELDesigner.SelectedControls[0] is TBaseQTWidget then begin
+    SourceWidget:= FGUIDesigner.ELDesigner.SelectedControls[0] as TBaseQTWidget;
+    Parametertypes:= SourceWidget.Parametertypes(event);
+  end else
+    Parametertypes:= '';
+  AResult.Add('');
   GuiForm:= TFGUIForm(FGUIDesigner.ELDesigner.DesignControl);
   for i:= 0 to GuiForm.ComponentCount - 1 do
     if GuiForm.Components[i] is TBaseQtWidget then
@@ -217,6 +223,44 @@ begin
   UpdateState;
 end;
 
+procedure TFObjectInspector.RefreshCB(newname: string = '');
+  var i, index: integer; typ, nam, namtyp: string; Form: TFGUIForm;
+begin
+  if not FGUIDesigner.ELDesigner.Active then exit;
+  Form:= TFGUIForm(FGUIDesigner.ELDesigner.DesignControl);
+  index:= CBObjects.ItemIndex;
+  if Assigned(Form) then begin
+    setTabs;
+    CBObjects.Clear;
+    CBObjects.Items.AddObject(Form.Name + ': Frame', Form);
+    for i:= 0 to Form.ComponentCount - 1 do begin
+      nam:= Form.Components[i].Name;
+      if Form.Components[i] is TBaseWidget then begin
+        typ:= (Form.Components[i] as TBaseWidget).getType;
+        if (nam <> '') and (typ <> '') then
+          CBObjects.Items.AddObject(nam + ': ' + typ, Form.Components[i]);
+        if nam = newname then
+          namtyp:= nam + ': ' + typ;
+      end;
+    end;
+  end;
+  if newname = ''
+    then CBObjects.ItemIndex:= index
+    else CBObjects.ItemIndex:= CBObjects.Items.IndexOf(namtyp);
+end;
+
+procedure TFObjectInspector.RefreshCBObjects;
+begin
+  RefreshCB;
+  if FGUIDesigner.ELDesigner.SelectedControls.Count = 1 then begin
+    CBObjects.ItemIndex:= CBObjects.Items.IndexOfObject(FGUIDesigner.ELDesigner.SelectedControls[0]);
+    try
+      SetSelectedObject(FGUIDesigner.ELDesigner.SelectedControls[0]);
+    except
+    end;
+  end;
+end;
+
 procedure TFObjectInspector.setTabs;
   var FrameType: integer;
 begin
@@ -224,27 +268,6 @@ begin
   if FrameType < 3
     then TCAttributesEvents.Tabs[1]:= _('Events')
     else TCAttributesEvents.Tabs[1]:= _('Signals');
-end;
-
-procedure TFObjectInspector.RefreshCBObjects;
-  var i: integer; Form: TFGUIForm;
-begin
-  CBObjects.Clear;
-  if not FGUIDesigner.ELDesigner.Active then exit;
-  Form:= TFGUIForm(FGUIDesigner.ELDesigner.DesignControl);
-  setTabs;
-  if Assigned(Form) then begin
-    CBObjects.Items.AddObject(Form.Name + ': Frame', Form);
-    for i:= 0 to Form.ComponentCount - 1 do
-      if Form.Components[i] is TBaseWidget then
-        CBObjects.Items.AddObject(
-          (Form.Components[i] as TBaseWidget).getNameAndType, Form.Components[i]);
-  end;
-  CBObjects.ItemIndex:= -1;
-  if FGUIDesigner.ELDesigner.SelectedControls.Count = 1 then begin
-    CBObjects.ItemIndex:= CBObjects.Items.IndexOfObject(FGUIDesigner.ELDesigner.SelectedControls[0]);
-    SetSelectedObject(FGUIDesigner.ELDesigner.SelectedControls[0]);
-  end;
 end;
 
 procedure TFObjectInspector.SetSelectedObject(Control: TControl);
@@ -275,9 +298,10 @@ procedure TFObjectInspector.FormMouseActivate(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y, HitTest: Integer;
   var MouseActivate: TMouseActivate);
 begin
-  if ELPropertyInspector.Visible
-    then ELPropertyInspector.SetFocus
-    else ELEventInspector.SetFocus;
+  if ELPropertyInspector.Visible and ELPropertyInspector.CanFocus then
+    ELPropertyInspector.SetFocus
+  else if ELEventInspector.CanFocus then
+    ELEventInspector.SetFocus;
 end;
 
 procedure TFObjectInspector.FormShow(Sender: TObject);
@@ -285,7 +309,8 @@ begin
   SetButtonCaption(1);
   TCAttributesEvents.Height:= Canvas.TextHeight('Attribute') + 10;
   PObjects.Height:= TCAttributesEvents.Height;
-  ELPropertyInspector.SetFocus;
+  if ELPropertyInspector.CanFocus then
+    ELPropertyInspector.SetFocus;
 end;
 
 procedure TFObjectInspector.MICloseClick(Sender: TObject);
@@ -313,14 +338,24 @@ begin
   //FJava.MIDefaultLayoutClick(Self); ToDo
 end;
 
+procedure TFObjectInspector.SetFont(Font: TFont);
+begin
+  ELPropertyInspector.Font.Size:= Font.Size;
+  ELPropertyInspector.Font.Name:= Font.Name;
+  ELEventInspector.Font.Size:= Font.Size;
+  ELEventInspector.Font.Name:= Font.Name;
+  TCAttributesEvents.Height:= Canvas.TextHeight('Attribute') + 10;
+  PObjects.Height:= TCAttributesEvents.Height;
+end;
+
 procedure TFObjectInspector.MIFontClick(Sender: TObject);
 begin
   CommandsDataModule.dlgFontDialog.Font.Assign(Font);
   CommandsDataModule.dlgFontDialog.Options:= [];
-  if CommandsDataModule.dlgFontDialog.Execute then
+  if CommandsDataModule.dlgFontDialog.Execute then begin
     Font.Assign(CommandsDataModule.dlgFontDialog.Font);
-  TCAttributesEvents.Height:= Canvas.TextHeight('Attribute') + 10;
-  PObjects.Height:= TCAttributesEvents.Height;
+    SetFont(Font);
+  end;
 end;
 
 procedure TFObjectInspector.ELPropertyInspectorModified(Sender: TObject);
@@ -329,6 +364,14 @@ procedure TFObjectInspector.ELPropertyInspectorModified(Sender: TObject);
       PropertyItem: TELPropertyInspectorItem;
       Control: TControl;
       Widget: TBaseWidget;
+
+  procedure Refresh(NewName: string);
+  begin
+    TThread.ForceQueue(nil, procedure
+      begin
+        RefreshCB(NewName);
+      end);
+  end;
 
   procedure ChangeName(OldName, NewName: string; Control: TControl);
   begin
@@ -362,21 +405,10 @@ begin
         end
     else if (Caption = 'Name') and (PropertyItem.Level = 0) then begin
       OldName:= CBObjects.Text;
-      var p:= Pos(':', OldName);
-      if p > 0 then begin
-        delete(OldName, p, length(OldName));
-        Control:= SelectedControls.Items[0];
-        ChangeName(OldName, Control.Name, Control);
-
-         {
-        Widget:= TBaseWidget(SelectedControls.Items[0]);
-        Widget.Rename(OldName, Widget.Name, Widget.getEvents(3));
-        CBChangeName(OldName, Widget.Name);
-        // update eventnames
-        ELEventInspector.Clear;
-        ELEventInspector.Add(Widget);
-        }
-      end;
+      delete(OldName, Pos(':', OldName), length(OldName));
+      Control:= SelectedControls.Items[0];
+      ChangeName(OldName, Control.Name, Control);
+      Refresh(Control.Name);
     end else
       for i:= 0 to SelectedControls.Count-1 do begin
         OldName:= SelectedControls.Items[I].Name;
@@ -440,22 +472,16 @@ begin
 end;
 
 procedure TFObjectInspector.ELEventInspectorModified(Sender: TObject);
-  var PropertyItem: TELPropertyInspectorItem;
-      i: integer;
 begin
-  PropertyItem:= TELPropertyInspectorItem(ELEventInspector.ActiveItem);
+  var PropertyItem:= TELPropertyInspectorItem(ELEventInspector.ActiveItem);
   if PropertyItem = nil then exit;
   with FGUIDesigner.ELDesigner do begin
     TFGUIForm(DesignControl).Modified:= true;
-    for i:= 0 to SelectedControls.Count - 1 do
-      if IsLower(PropertyItem.Caption[1]) then
-        FObjectGenerator.SetSlotForComponent(PropertyItem.Caption,
-          PropertyItem.DisplayValue, SelectedControls.Items[i])
-      else
-        FObjectGenerator.SetEventForComponent(PropertyItem.Caption,
-          SelectedControls.Items[i]);
+    for var i:= 0 to SelectedControls.Count - 1 do
+      FObjectGenerator.SetSlotForComponent(PropertyItem.Caption,
+        PropertyItem.DisplayValue, SelectedControls.Items[i]);
+    SetBNewDeleteCaption;
   end;
-  ELPropertyInspector.UpdateItems;  // due to renaming of Images, Command, ...
 end;
 
 procedure TFObjectInspector.BNewDeleteClick(Sender: TObject);
@@ -535,7 +561,8 @@ begin
          ELPropertyInspector.Visible:= true;
          BNewDelete.visible:= false;
          SetButtonCaption(ShowAttributes);
-         ELPropertyInspector.SetFocus;
+         if ELPropertyInspector.CanFocus then
+           ELPropertyInspector.SetFocus;
       end;
    1: begin
          ELPropertyInspector.Visible:= false;
@@ -543,7 +570,8 @@ begin
          BNewDelete.Visible:= true;
          SetBNewDeleteCaption;
          SetButtonCaption(ShowEvents);
-         ELEventInspector.SetFocus;
+         if ELEventInspector.CanFocus then
+           ELEventInspector.SetFocus;
        end;
   end;
   UpdateState;
@@ -552,7 +580,8 @@ end;
 procedure TFObjectInspector.TCAttributesEventsMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  SetFocus;
+  if CanFocus then
+    SetFocus;
 end;
 
 procedure TFObjectInspector.setButtonCaption(aShow: integer);
@@ -570,6 +599,7 @@ begin
   if ELEventInspector.ActiveItem.DisplayValue = ''
     then BNewDelete.Caption:= _('New')
     else BNewDelete.Caption:= _('Delete');
+  UpdateEventInspector;
 end;
 
 procedure TFObjectInspector.BMoreClick(Sender: TObject);
@@ -661,24 +691,6 @@ begin
   SetBNewDeleteCaption;
 end;
 
-procedure TFObjectInspector.SetFont(aFont: TFont);
-begin
-  Font.Assign(aFont);
-  TCAttributesEvents.Height:= Canvas.TextHeight('Attribute') + 10;
-  PObjects.Height:= TCAttributesEvents.Height;
-end;
-
-procedure TFObjectInspector.SetFontSize(Delta: integer);
-  var Size: integer;
-begin
-  Size:= Font.Size + Delta;
-  if Size < 6 then Size:= 6;
-  Font.Size:= Size;
-  TCAttributesEvents.Height:= Canvas.TextHeight('Attribute') + 10;
-  PObjects.Height:= TCAttributesEvents.Height;
-  Show;
-end;
-
 procedure TFObjectInspector.UpdateState;
   //var b: boolean;
 begin
@@ -688,6 +700,22 @@ begin
     SetEnabledMI(MICopy, b);
     SetEnabledMI(MIPaste, Clipboard.HasFormat(CF_Text) and (TCAttributesEvents.TabIndex = 0));
   end;}
+end;
+
+procedure TFObjectInspector.UpdatePropertyInspector;
+begin
+  TThread.ForceQueue(nil, procedure
+    begin
+      ELPropertyInspector.UpdateItems;
+    end);
+end;
+
+procedure TFObjectInspector.UpdateEventInspector;
+begin
+  TThread.ForceQueue(nil, procedure
+    begin
+      ELEventInspector.UpdateItems;
+    end);
 end;
 
 procedure TFObjectInspector.Add(AObject: TControl);

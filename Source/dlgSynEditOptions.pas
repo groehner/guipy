@@ -622,8 +622,8 @@ begin
   FSelectedColor.Background:= clHighlight;
   fActiveLineColor := clNone;
   FFont:= TFont.Create;
-  FFont.Name:= 'Courier New';
-  FFont.Size:= 8;
+  FFont.Name:= 'Consolas';
+  FFont.Size:= 11;
   Color:= clWindow;
   Keystrokes.ResetDefaults;
   Options := [eoAutoIndent,eoDragDropEditing,eoDropFiles,eoScrollPastEol,

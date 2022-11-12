@@ -54,7 +54,6 @@ type
     FWindowIconChanged: string;
     FWindowTitleChanged: string;
     procedure MakeContextMenu(Value: string);
-    function getType: String;
     function getContainer: string;
     function getAttrAsKey(Attr: string): string;
   protected
@@ -87,6 +86,7 @@ type
     procedure SetPositionAndSize; override;
     function getNameAndType: String; override;
     procedure MakeFont; override;
+    function getType: String; override;
   published
     // common attribute for QWidget
     property Enabled: boolean read FEnabled write FEnabled;
@@ -285,7 +285,7 @@ end;
 procedure TBaseQtWidget.Paint;
 begin
   Canvas.Font.Assign(Font);
-  Canvas.Font.Size:= Font.Size; // + (Font.Size + 1) div 3;
+  //Canvas.Font.Size:= Font.Size;
   Canvas.Font.Color:= clWindowText;
   FHalfX:= Canvas.TextWidth('x') div 2;
 end;
@@ -315,11 +315,12 @@ end;
 procedure TBaseQtWidget.DeleteEventHandler(const Event: string);
 begin
   Partner.DeleteMethod(HandlerName(Event));
-  Partner.DeleteBinding(MakeBinding(Event));
+  var Binding:= MakeBinding(Event);
+  Partner.DeleteBinding(Copy(Binding, 1, Pos('(', Binding)));
 end;
 
 procedure TBaseQtWidget.DeleteEvents;
-  var p: integer; s, Event: string; SL1, SL2: TStringList;
+  var p: integer; s, Event, Binding: string; SL1, SL2: TStringList;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   SL1:= TStringList.Create;
@@ -329,7 +330,8 @@ begin
   while p > 0 do begin
     Event:= UUtils.Left(s, p-1);
     if Event <> '' then begin
-      Partner.DeleteBinding(MakeBinding(Event));
+      Binding:= MakeBinding(Event);
+      Partner.DeleteBinding(Copy(Binding, 1, Pos('(', Binding)));
       SL1.Add(HandlerNameAndParameter(Event));
     end;
     delete(s, 1, p);

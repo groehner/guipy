@@ -132,7 +132,7 @@ type
     procedure Resize; override;
     procedure SetPositionAndSize; override;
     function ClientRectWithoutScrollbars: TRect;
-    function getType: String;
+    function getType: String; override;
     function getNameAndType: String; override;
     function getContainer: string;
     procedure MakeFont; override;
@@ -183,8 +183,6 @@ begin
   FTakeFocus:= true;
   FUnderline:= -1;
   FWrapLength:= '0';
-  //Canvas.Font.PixelsPerInch:= 96; // 72;
-  //Font.PixelsPerInch:= 72;
   Font.Name:= 'Segoe UI';   // TkDefaultFont and TkTextFont
   Font.Size:= 9;
   Font.Style:= [];

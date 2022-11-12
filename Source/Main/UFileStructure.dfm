@@ -18,7 +18,7 @@ object FFileStructure: TFFileStructure
   OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object TVFileStructure: TTreeView
     Left = 0
     Top = 0
@@ -1382,13 +1382,13 @@ object FFileStructure: TFFileStructure
   object PMFileStructure: TSpTBXPopupMenu
     Left = 40
     Top = 88
-    object MIFont: TSpTBXItem
-      Caption = 'Font'
-      OnClick = MIFontClick
-    end
     object MIDefaultLayout: TSpTBXItem
       Caption = 'Default layout'
       OnClick = MIDefaulLayoutClick
+    end
+    object MIFont: TSpTBXItem
+      Caption = 'Font'
+      OnClick = MIFontClick
     end
     object MIClose: TSpTBXItem
       Caption = 'Close'

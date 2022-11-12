@@ -452,7 +452,7 @@ begin
     Partner.InsertProcedure(CrLf + MakeHandler(Event));
   if Partner.FrameType < 3
     then Partner.InsertTkBinding('root', Event, MakeBinding(Event))
-    else Partner.InsertQtBinding(Name, MakeBinding(Event));
+    else Partner.InsertQtBinding(Indent2 + 'self.', MakeBinding(Event));
 end;
 
 function TFGuiForm.HandlerName(Event: string): string;
@@ -508,7 +508,10 @@ end;
 procedure TFGuiForm.DeleteEventHandler(const Event: string);
 begin
   Partner.DeleteMethod(HandlerName(Event));
-  Partner.DeleteBinding(MakeBinding(Event));
+  var Binding:= MakeBinding(Event);
+  if Partner.FrameType >= 3 then
+    Binding:= Copy(Binding, 1, Pos('(', Binding));
+  Partner.DeleteBinding(Binding)
 end;
 
 {--- IEditorCommands implementation -------------------------------------------}

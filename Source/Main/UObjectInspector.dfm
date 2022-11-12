@@ -12,12 +12,13 @@ object FObjectInspector: TFObjectInspector
   ParentFont = True
   FormStyle = fsStayOnTop
   OldCreateOrder = False
+  PopupMenu = PMObjectInspector
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
   OnMouseActivate = FormMouseActivate
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object TCAttributesEvents: TTabControl
     Left = 0
     Top = 33
@@ -43,7 +44,7 @@ object FObjectInspector: TFObjectInspector
       Left = 5
       Top = 4
       Width = 252
-      Height = 21
+      Height = 22
       Style = csDropDownList
       Sorted = True
       TabOrder = 0
@@ -83,8 +84,8 @@ object FObjectInspector: TFObjectInspector
     end
   end
   object PMObjectInspector: TSpTBXPopupMenu
-    Left = 24
-    Top = 72
+    Left = 32
+    Top = 80
     object MICut: TSpTBXItem
       Caption = 'Cut'
       ImageIndex = 2

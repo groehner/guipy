@@ -181,6 +181,7 @@ type
     ILContextMenuLight: TImageList;
     ILContextMenuDark: TImageList;
     TVFileStructure: TTreeView;
+    mnFont: TSpTBXItem;
     procedure FormCreate(Sender: TObject); override;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject); override;
@@ -265,6 +266,7 @@ type
     procedure TBBrowserClick(Sender: TObject);
     procedure TBExplorerClick(Sender: TObject);
     procedure TBValidateClick(Sender: TObject);
+    procedure mnFontClick(Sender: TObject);
   private
     fEditor: TEditor;
     fPartner: TForm;
@@ -3133,6 +3135,18 @@ begin
   Clipboard.AsText:= Pathname;
 end;
 
+procedure TEditorForm.mnFontClick(Sender: TObject);
+  var FontDialog: TFontDialog;
+begin
+  FontDialog:= TFontDialog.Create(Self);
+  FontDialog.font.Assign(ActiveSynEdit.Font);
+  if FontDialog.Execute then begin
+    ActiveSynEdit.Font.Assign(FontDialog.Font);
+    FConfiguration.labFont.Font.Assign(ActiveSynEdit.Font);
+  end;
+  FreeAndNil(FontDialog);
+end;
+
 procedure TEditorForm.mnGitExecute(Sender: TObject);
 begin
   FGit.Execute(TSpTBXItem(Sender).Tag, GetEditor);
@@ -4271,12 +4285,10 @@ begin
 end;
 
 procedure TEditorForm.InsertQtBinding(const Name, Binding: string);
-  var line: integer;
+  var key: string;
 begin
-  line:= getLineNumberWith(Binding);
-  if line >= 0
-    then ActiveSynEdit.Lines[line]:= Binding
-    else InsertValue(Name, Binding, 1);
+  key:= copy(Binding, 1, Pos('(', Binding) - 1);
+  SetAttributValue(Name, key, Binding, 1);
   Modified:= true;
 end;
 
@@ -4783,7 +4795,9 @@ begin
   line:= getLineNumberWithWord(key);
   till:= getLastCreateWidgetsLine;
   if (line >= 0) and (line < till) then
-    ActiveSynedit.Lines[line]:= s
+    if trim(s) = ''
+      then DeleteLine(line)
+      else ActiveSynedit.Lines[line]:= s
   else begin
     line:= getLineNumberWithWord(destination);  // self.create_widgets, self.button1
     if (line = -1) or (line >= till) then
@@ -4803,18 +4817,20 @@ begin
 end;
 
 procedure TEditorForm.insertValue(const destination, s: string; after: integer);
-  var line, till: integer; aChanged: boolean;
+  var line, from, till: integer; aChanged: boolean;
 begin
   aChanged:= true;
+  from:= getFirstCreateWidgetsLine;
   till:= getLastCreateWidgetsLine;
-  line:= getLineNumberWithWord(destination);  // self.create_widgets, self.button1
+  line:= getLineNumberWithWordFromTill(destination, from, till);
   if (line = -1) or (line >= till) then
     line:= till
-  else if after = 1 then begin
-    inc(line);
-    while (line < till) and hasWidget(destination, line) do
+  else
+    if after = 1 then begin
       inc(line);
-  end;
+      while (line < till) and hasWidget(destination, line) do
+        inc(line);
+    end;
   if line >= 0 then begin
     InsertLinesAt(line, s);
     NeedsParsing:= true;

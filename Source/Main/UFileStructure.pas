@@ -45,7 +45,6 @@ type
     myForm: TFileForm;
     procedure Init(Items: TTreeNodes; Form: TFileForm);
     procedure Clear;
-    procedure SetFont(aFont: TFont);
     procedure ShowEditorCodeElement;
     procedure NavigateToNodeElement(Node: TTreeNode;
                 ForceToMiddle : Boolean = True; Activate : Boolean = True);
@@ -101,13 +100,19 @@ begin
 end;
 
 procedure TFFileStructure.Init(items: TTreeNodes; Form: TFileForm);
+var
+  i: Integer;
 begin
   myForm:= Form;
   if DifferentItems(Items) then begin
     // Lock.Acquire;
     TVFileStructure.Items.BeginUpdate;
+    for i:= 0 to TVFileStructure.Items.Count - 1 do
+      FreeAndNil(TVFileStructure.Items[i].Data);
     TVFileStructure.Items.Clear;
     TVFileStructure.Items.Assign(Items);
+    for i:= 0 to TVFileStructure.Items.Count - 1 do
+      TVFileStructure.Items[i].Data:= TInteger.create(TInteger(Items[i].Data).i);
     TVFileStructure.FullExpand;
     TVFileStructure.HideSelection:= false;
     TVFileStructure.Items.EndUpdate;
@@ -117,19 +122,15 @@ end;
 
 function TFFileStructure.DifferentItems(Items: TTreeNodes): boolean;
   var i: integer;
-
-  function DifferentNodes(Node1, Node2: TTreeNode): boolean;
-  begin
-    Result:= (Node1.Text <> Node2.Text) or
-             (TInteger(Node1.Data).i <> TInteger(Node2.Data).i);
-  end;
-
 begin
   if TVFileStructure.Items.Count <> Items.Count then
     Exit(true);
   for i:= 0 to TVFileStructure.Items.Count - 1 do
-    if DifferentNodes(TVFileStructure.Items[i], Items[i]) then
+    if TVFileStructure.Items[i].Text <> Items[i].Text then
       Exit(true);
+  for i:= 0 to TVFileStructure.Items.Count - 1 do
+    TInteger(TVFileStructure.Items[i].Data).i:=
+      TInteger(Items[i].Data).i;
   Result:= false;
 end;
 
@@ -137,6 +138,8 @@ procedure TFFileStructure.Clear;
 begin
   if assigned(TVFileStructure) then begin
     TVFileStructure.Items.BeginUpdate;
+    for var i:= TVFileStructure.Items.Count - 1 downto 0 do
+      FreeAndNil(TVFileStructure.Items[i].Data);
     TVFileStructure.Items.Clear;
     TVFileStructure.Items.EndUpdate;
   end;
@@ -155,13 +158,10 @@ begin
 end;
 
 procedure TFFileStructure.MIFontClick(Sender: TObject);
-  var aFont: TFont;
 begin
   CommandsDataModule.dlgFontDialog.Font.Assign(Font);
-  if CommandsDataModule.dlgFontDialog.Execute then begin
-    aFont:= CommandsDataModule.dlgFontDialog.Font;
-    SetFont(aFont);
-  end;
+  if CommandsDataModule.dlgFontDialog.Execute then
+    Font.Assign(CommandsDataModule.dlgFontDialog.Font);
 end;
 
 procedure TFFileStructure.MIDefaulLayoutClick(Sender: TObject);
@@ -302,11 +302,6 @@ begin
     PMFileStructure.Popup(X+(Sender as TTreeView).ClientOrigin.X-40, Y+(Sender as TTreeView).ClientOrigin.Y-5);
 end;
 
-procedure TFFileStructure.SetFont(aFont: TFont);
-begin
-  Font.Assign(aFont);
-end;
-
 procedure TFFileStructure.ChangeStyle;
 begin
   if IsStyledWindowsColorDark
@@ -316,7 +311,9 @@ end;
 
 procedure TFFileStructure.ShowSelected;
 begin
-  if assigned(TVFileStructure.Selected) and not LockShowSelected then begin
+  if assigned(TVFileStructure.Selected) and not TVFileStructure.Selected.isVisible
+    and not LockShowSelected
+  then begin
     LockWindow(Self.Handle);
     TVFileStructure.Selected.MakeVisible;
     SendMessage(TVFileStructure.Handle, WM_HSCROLL, SB_PAGELEFT, 0);
