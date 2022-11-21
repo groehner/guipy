@@ -14,21 +14,20 @@ object FUMLForm: TFUMLForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object PDiagram: TPanel
     Left = 0
     Top = 0
     Width = 749
-    Height = 419
-    Align = alClient
+    Height = 420
+    Align = alTop
     Constraints.MinHeight = 100
     TabOrder = 0
-    ExplicitHeight = 297
     object PDiagramPanel: TPanel
       Left = 1
       Top = 26
       Width = 747
-      Height = 392
+      Height = 393
       Align = alClient
       BevelEdges = [beLeft, beTop]
       BevelOuter = bvNone
@@ -174,7 +173,7 @@ object FUMLForm: TFUMLForm
     Top = 424
     Width = 749
     Height = 196
-    Align = alBottom
+    Align = alClient
     PopupMenu = PMInteractive
     TabOrder = 1
     object TBInteractiveToolbar: TToolBar
@@ -273,14 +272,12 @@ object FUMLForm: TFUMLForm
   end
   object SpTBXSplitter1: TSpTBXSplitter
     Left = 0
-    Top = 419
+    Top = 420
     Width = 749
-    Height = 5
+    Height = 4
     Cursor = crSizeNS
-    Align = alBottom
+    Align = alTop
     ParentColor = False
-    ExplicitTop = 297
-    ExplicitWidth = 127
   end
   object PMInteractive: TSpTBXPopupMenu
     Images = DMImages.ILInteractive

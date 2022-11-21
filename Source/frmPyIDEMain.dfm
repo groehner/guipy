@@ -19,7 +19,7 @@ object PyIDEMainForm: TPyIDEMainForm
   OnShortCut = FormShortCut
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object StatusBar: TSpTBXStatusBar
     Left = 0
     Top = 626
@@ -33,7 +33,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 324
+      CustomWidth = 0
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -116,6 +116,8 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
+    ExplicitWidth = 286
+    ExplicitHeight = 83
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -250,7 +252,7 @@ object PyIDEMainForm: TPyIDEMainForm
     object TBControlItem1: TTBControlItem
     end
     object DockTopPanel: TPanel
-      Tag = 77344
+      Tag = 77986
       Left = 0
       Top = 0
       Width = 946
@@ -1400,9 +1402,9 @@ object PyIDEMainForm: TPyIDEMainForm
         Left = 63
         Top = 2
         Width = 160
-        Height = 21
+        Height = 22
         AutoCloseUp = True
-        ItemHeight = 13
+        ItemHeight = 14
         TabOrder = 0
         OnChange = tbiSearchTextChange
         OnExit = tbiSearchTextExit
@@ -1413,8 +1415,8 @@ object PyIDEMainForm: TPyIDEMainForm
         Left = 304
         Top = 2
         Width = 160
-        Height = 21
-        ItemHeight = 13
+        Height = 22
+        ItemHeight = 14
         TabOrder = 1
         Visible = False
         OnChange = tbiReplaceTextChange

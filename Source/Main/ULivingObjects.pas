@@ -401,20 +401,19 @@ end;
 
 function TLivingObjects.isObject(Node: TBaseNameSpaceItem): boolean;
 begin
-  if Node.isClass or Node.IsDict or Node.IsModule or Node.isFunction or Node.isMethod
-  then
-    Exit(false);
-
-  Result := { (Node.ObjectType <> 'list') and
-    (Node.ObjectType <> 'NoneType') and
-    (Node.ObjectType <> 'str') and }
-    (Pos('object at', Node.Value) > 0);
+  Result:= false;
+  if not (Node.isClass or Node.IsDict or Node.IsModule or
+          Node.isFunction or Node.isMethod) and
+          (Pos('object at', Node.Value) > 0) then
+    Result := (Node.ObjectType <> 'Window') and
+              (Node.ObjectType <> 'QMetaObject') and
+              (Node.ObjectType <> 'QApplication');
 end;
 
 function TLivingObjects.isAttribute(Node: TBaseNameSpaceItem): boolean;
 begin
   Result := (Node.ObjectType <> 'method') and
-    (Node.ObjectType <> 'method-wrapper');
+            (Node.ObjectType <> 'method-wrapper');
 end;
 
 function TLivingObjects.getClassnameOfObject(const Objectname: string): string;
@@ -511,10 +510,8 @@ begin
   NS := VariablesWindow.GlobalsNameSpace;
   i := 0;
   // collect objects with direct access first
-  while (i < NS.ChildCount - 1) and not isDunder(NS.ChildNode[i].Name) do
-  begin
-    if isObject(NS.ChildNode[i]) then
-    begin
+  while (i < NS.ChildCount - 1) and not isDunder(NS.ChildNode[i].Name) do begin
+    if isObject(NS.ChildNode[i]) then begin
       PyOb := NS.ChildNode[i].PyObject;
       SLObjectsAddressName.Add(PyOb + '=' + NS.ChildNode[i].Name);
       SLObjectsNamePath.Add(NS.ChildNode[i].Name + '=' + NS.ChildNode[i].Name);
@@ -523,8 +520,7 @@ begin
   end;
   i := 0;
   // collect object with indirect access second
-  while (i < NS.ChildCount - 1) and not isDunder(NS.ChildNode[i].Name) do
-  begin
+  while (i < NS.ChildCount - 1) and not isDunder(NS.ChildNode[i].Name) do begin
     if isObject(NS.ChildNode[i]) then
       Add(NS.ChildNode[i].Name, NS.ChildNode[i]);
     inc(i);

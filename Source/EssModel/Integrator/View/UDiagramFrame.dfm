@@ -4376,11 +4376,16 @@ object AFrameDiagram: TAFrameDiagram
       end
       object MIClassPopupParameterDisplay4: TSpTBXItem
         Tag = 4
-        Caption = '(name = value): type'
+        Caption = '(name: type): type'
         OnClick = MIClassPopupParameterDisplayClick
       end
       object MIClassPopupParameterDisplay5: TSpTBXItem
         Tag = 5
+        Caption = '(name = value): type'
+        OnClick = MIClassPopupParameterDisplayClick
+      end
+      object MIClassPopupParameterDisplay6: TSpTBXItem
+        Tag = 6
         Caption = '(name: type = value): type'
         OnClick = MIClassPopupParameterDisplayClick
       end

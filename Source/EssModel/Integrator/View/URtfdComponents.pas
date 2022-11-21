@@ -1571,6 +1571,7 @@ begin
         3: s:= s + Parameter.asUMLString(3) + ', ';
         4: s:= s + Parameter.asUMLString(4) + ', ';
         5: s:= s + Parameter.asUMLString(5) + ', ';
+        6: s:= s + Parameter.asUMLString(6) + ', ';
       end
     end;
     if (ShowParameter = 2) and (ParameterCount > 0) then
@@ -1578,12 +1579,12 @@ begin
     if Copy(s, length(s)-1, 2) = ', ' then
       Delete(s, length(s)-1, 2); // delete last comma
     s:= s + ')';
-    if O.OperationType = otFunction then
-      s:= s + ':';
+    //if O.OperationType = otFunction then
+    //  s:= s + ':';
   end;
 
   if (ShowParameter > 0) and Assigned(O.ReturnValue) then
-       s:= s + ' ' + asUMLType(O.ReturnValue.GetShortType);
+       s:= s + ': ' + asUMLType(O.ReturnValue.GetShortType);
   Caption:= s;
   Font.Style:= [];
   //Font.Color:= ColorMap[O.OperationType];
@@ -1617,9 +1618,9 @@ begin
     Caption:= A.Name + ' = ' + A.Value
   else begin
     s:= A.Name;
-    if Assigned(A.TypeClassifier) and ((Owner as TRtfdBox).ShowParameter = 5) then
-        s:= s + ': ' + asUMLType(A.TypeClassifier.ShortName);
-    if (A.Value <> '') and ((Owner as TRtfdBox).ShowParameter >= 4) then
+    if Assigned(A.TypeClassifier) and ((Owner as TRtfdBox).ShowParameter >= 4) then
+      s:= s + ': ' + asUMLType(A.TypeClassifier.ShortName);
+    if (A.Value <> '') and ((Owner as TRtfdBox).ShowParameter >= 5) then
       s:= s + ' = ' + A.Value;
     Caption:= s;
   end

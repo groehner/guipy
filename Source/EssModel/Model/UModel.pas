@@ -1380,9 +1380,9 @@ begin
   s:= '';
   if ShowParameter >= 3 then begin
     s:= Name;
-    if assigned(TypeClassifier) and (ShowParameter = 5) then
+    if assigned(TypeClassifier) and (ShowParameter in [4, 6]) then
       s:= s + ': ' + asUMLType(TypeClassifier.GetShortType);
-    if (Value <> '') and (ShowParameter >= 4) then
+    if (Value <> '') and (ShowParameter >= 5) then
       s:= s + ' = ' + Value;
   end;
   Result:= s;

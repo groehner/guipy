@@ -15,12 +15,12 @@ object FClassEditor: TFClassEditor
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object LClass: TLabel
     Left = 8
     Top = 8
-    Width = 25
-    Height = 13
+    Width = 27
+    Height = 14
     Caption = 'Class'
   end
   object TreeView: TTreeView
@@ -58,21 +58,21 @@ object FClassEditor: TFClassEditor
         Left = 8
         Top = 20
         Width = 27
-        Height = 13
+        Height = 14
         Caption = 'Name'
       end
       object LExtends: TLabel
         Left = 8
         Top = 52
         Width = 39
-        Height = 13
+        Height = 14
         Caption = 'Extends'
       end
       object EClass: TEdit
         Left = 96
         Top = 16
         Width = 129
-        Height = 21
+        Height = 22
         TabOrder = 0
         OnKeyPress = EClassKeyPress
       end
@@ -91,7 +91,7 @@ object FClassEditor: TFClassEditor
         Left = 96
         Top = 48
         Width = 129
-        Height = 21
+        Height = 22
         TabOrder = 1
         OnKeyPress = EClassKeyPress
       end
@@ -130,21 +130,21 @@ object FClassEditor: TFClassEditor
         Left = 8
         Top = 153
         Width = 27
-        Height = 13
+        Height = 14
         Caption = 'Name'
       end
       object LAttributeType: TLabel
         Left = 8
         Top = 220
-        Width = 24
-        Height = 13
+        Width = 23
+        Height = 14
         Caption = 'Type'
       end
       object LAttributeValue: TLabel
         Left = 8
         Top = 187
-        Width = 26
-        Height = 13
+        Width = 27
+        Height = 14
         Caption = 'Value'
       end
       object RGAttributeAccess: TRadioGroup
@@ -164,7 +164,7 @@ object FClassEditor: TFClassEditor
         Left = 64
         Top = 217
         Width = 225
-        Height = 21
+        Height = 22
         AutoDropDown = True
         Sorted = True
         TabOrder = 3
@@ -177,13 +177,14 @@ object FClassEditor: TFClassEditor
         OnSelect = CBAttributeTypeSelect
         Items.Strings = (
           'boolean'
-          'Dict'
+          'dict'
           'float'
           'integer'
-          'List'
-          'Set'
+          'list'
+          'set'
+          'str'
           'String'
-          'Tuple')
+          'tuple')
       end
       object BAttributeDelete: TButton
         Left = 184
@@ -257,7 +258,7 @@ object FClassEditor: TFClassEditor
         Left = 64
         Top = 149
         Width = 225
-        Height = 21
+        Height = 22
         TabOrder = 2
         OnKeyPress = EAttributeNameKeyPress
         OnKeyUp = EAttributeNameKeyUp
@@ -288,7 +289,7 @@ object FClassEditor: TFClassEditor
         Left = 64
         Top = 184
         Width = 225
-        Height = 21
+        Height = 22
         TabOrder = 4
         OnCloseUp = ComboBoxCloseUp
         OnDropDown = CBAttributeValueDropDown
@@ -316,21 +317,21 @@ object FClassEditor: TFClassEditor
         Left = 8
         Top = 140
         Width = 27
-        Height = 13
+        Height = 14
         Caption = 'Name'
       end
       object LMethodType: TLabel
         Left = 8
         Top = 166
-        Width = 24
-        Height = 13
+        Width = 23
+        Height = 14
         Caption = 'Type'
       end
       object CBMethodType: TComboBox
         Left = 64
         Top = 163
         Width = 162
-        Height = 21
+        Height = 22
         AutoDropDown = True
         Sorted = True
         TabOrder = 4
@@ -343,14 +344,15 @@ object FClassEditor: TFClassEditor
         OnSelect = CBMethodTypeSelect
         Items.Strings = (
           'boolean'
-          'Dict'
+          'dict'
           'float'
           'integer'
-          'List'
+          'list'
           'None'
-          'Set'
+          'set'
+          'str'
           'String'
-          'Tuple')
+          'tuple')
       end
       object RGMethodAccess: TRadioGroup
         Left = 126
@@ -440,14 +442,14 @@ object FClassEditor: TFClassEditor
           Left = 13
           Top = 32
           Width = 27
-          Height = 13
+          Height = 14
           Caption = 'Name'
         end
         object LParameterType: TLabel
           Left = 13
           Top = 96
-          Width = 24
-          Height = 13
+          Width = 23
+          Height = 14
           Caption = 'Type'
         end
         object SBUp: TSpeedButton
@@ -563,15 +565,15 @@ object FClassEditor: TFClassEditor
         object LParameterValue: TLabel
           Left = 13
           Top = 64
-          Width = 26
-          Height = 13
+          Width = 27
+          Height = 14
           Caption = 'Value'
         end
         object CBParamType: TComboBox
           Left = 57
           Top = 93
           Width = 113
-          Height = 21
+          Height = 22
           AutoDropDown = True
           Sorted = True
           TabOrder = 1
@@ -584,13 +586,14 @@ object FClassEditor: TFClassEditor
           OnSelect = CBParamTypeSelect
           Items.Strings = (
             'boolean'
-            'Dict'
+            'dict'
             'float'
             'integer'
-            'List'
-            'Set'
+            'list'
+            'set'
+            'str'
             'String'
-            'Tuple')
+            'tuple')
         end
         object BParameterNew: TButton
           Left = 178
@@ -607,7 +610,7 @@ object FClassEditor: TFClassEditor
           Width = 104
           Height = 85
           TabStop = False
-          ItemHeight = 13
+          ItemHeight = 14
           TabOrder = 4
           OnKeyUp = LBParamsKeyUp
         end
@@ -615,7 +618,7 @@ object FClassEditor: TFClassEditor
           Left = 57
           Top = 29
           Width = 113
-          Height = 21
+          Height = 22
           Sorted = True
           TabOrder = 0
           OnKeyDown = ComboBoxKeyDown
@@ -627,7 +630,7 @@ object FClassEditor: TFClassEditor
           Left = 15
           Top = 128
           Width = 157
-          Height = 21
+          Height = 22
           AutoDropDown = True
           TabOrder = 3
           Text = 'Select attribute'
@@ -649,7 +652,7 @@ object FClassEditor: TFClassEditor
           Left = 57
           Top = 61
           Width = 113
-          Height = 21
+          Height = 22
           TabOrder = 2
           OnCloseUp = ComboBoxCloseUp
           OnEnter = CBComboBoxEnter
@@ -681,7 +684,7 @@ object FClassEditor: TFClassEditor
         Left = 64
         Top = 136
         Width = 162
-        Height = 21
+        Height = 22
         Sorted = True
         TabOrder = 3
         OnKeyDown = ComboBoxKeyDown

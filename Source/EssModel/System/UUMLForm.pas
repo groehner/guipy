@@ -393,12 +393,11 @@ end;
 
 procedure TFUMLForm.TBInteractiveClick(Sender: TObject);
 begin
-  if PInteractive.Height = 0 then
-    PInteractive.Height:= max(RememberedHeight, 100)
-  else begin
-    RememberedHeight:= PInteractive.Height;
-    PInteractive.Height:= 0;
-  end;
+  if PDiagram.Height < ClientHeight - 10 then begin
+    RememberedHeight:= PDiagram.Height;
+    PDiagram.Height:= ClientHeight - 4;
+  end else
+    PDiagram.Height:= min(RememberedHeight, ClientHeight - 100);
 end;
 
 procedure TFUMLForm.Refresh;

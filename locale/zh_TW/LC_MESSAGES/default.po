@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PyScripter GUI translation\n"
 "POT-Creation-Date: 2022-08-21 14:52\n"
-"PO-Revision-Date: 2022-08-21 16:20+0200\n"
+"PO-Revision-Date: 2022-11-21 16:01+0100\n"
 "Last-Translator: startgo <startgo@youp.ga>, 2021\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/pyscripter/"
 "teams/116142/zh_TW/)\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
 #. AboutBox..Caption
 #: dlgAboutPyScripter.dfm:5
@@ -6998,7 +6998,7 @@ msgstr "檔案類型"
 #: Utils/UConfiguration.dfm:2984 EssModel/Integrator/View/UDiagramFrame.pas:312
 #: EssModel/Integrator/View/UDiagramFrame.pas:384
 msgid "(...): type"
-msgstr ""
+msgstr "（...）：類型"
 
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupParameter..MIWindowPopupParameterDisplay3..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay3..Caption
@@ -7008,7 +7008,7 @@ msgstr ""
 #: Utils/UConfiguration.dfm:2985 EssModel/Integrator/View/UDiagramFrame.pas:313
 #: EssModel/Integrator/View/UDiagramFrame.pas:385
 msgid "(name): type"
-msgstr ""
+msgstr "（名稱）：類型"
 
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupParameter..MIWindowPopupParameterDisplay4..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay4..Caption
@@ -7018,7 +7018,7 @@ msgstr ""
 #: Utils/UConfiguration.dfm:2986 EssModel/Integrator/View/UDiagramFrame.pas:314
 #: EssModel/Integrator/View/UDiagramFrame.pas:386
 msgid "(name = value): type"
-msgstr ""
+msgstr "（名稱 = 值）：類型"
 
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupParameter..MIWindowPopupParameterDisplay5..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay5..Caption
@@ -7028,7 +7028,7 @@ msgstr ""
 #: Utils/UConfiguration.dfm:2987 EssModel/Integrator/View/UDiagramFrame.pas:315
 #: EssModel/Integrator/View/UDiagramFrame.pas:387
 msgid "(name: type = value): type"
-msgstr ""
+msgstr "（名稱：類型=值）：類型"
 
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupVisibility..Caption
 #. AFrameDiagram..PopMenuObject..MIObjectPopupVisibility..Caption

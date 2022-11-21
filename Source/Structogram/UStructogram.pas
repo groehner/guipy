@@ -1043,6 +1043,8 @@ var
   StrList: TStrList;
   aFile: IFile;
 begin
+  if curList = nil then curList:= getAlgorithm;
+  if curList = nil then curList:= getList;
   if curList = nil then exit;
   StrList:= curList;
   aName:= getName(StrList);
@@ -1058,7 +1060,7 @@ begin
       then
         Filename:= PyIDEMainForm.getFilename('.py');
       if Filename <> '' then begin
-        progList.SaveToFile(Filename);
+        progList.SaveToFile(Filename, TEncoding.UTF8);
         PyIDEMainForm.DoOpen(Filename);
       end;
     except on e: Exception do

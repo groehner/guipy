@@ -134,8 +134,8 @@ type
     MIClassPopupDisplay2: TSpTBXItem;
     MIClassPopupDisplay1: TSpTBXItem;
     MIClassPopupDisplay0: TSpTBXItem;
+    MIClassPopupParameterDisplay6: TSpTBXItem;
     MIClassPopupParameterDisplay5: TSpTBXItem;
-    MIClassPopupParameterDisplay4: TSpTBXItem;
     MIClassPopupParameterDisplay3: TSpTBXItem;
     MIClassPopupParameterDisplay2: TSpTBXItem;
     MIClassPopupParameterDisplay1: TSpTBXItem;
@@ -144,6 +144,7 @@ type
     MIClassPopupVisibilityText: TSpTBXItem;
     MIClassPopupVisibilityNone: TSpTBXItem;
     MIObjectPopupShowNewObject: TSpTBXSubmenuItem;
+    MIClassPopupParameterDisplay4: TSpTBXItem;
 
     procedure PopMenuClassPopup(Sender: TObject);
       procedure MIClassPopupClassEditClick(Sender: TObject);
@@ -311,8 +312,9 @@ begin
     MIClassPopupParameterDisplay1.Caption:= _(': type');
     MIClassPopupParameterDisplay2.Caption:= _('(...): type');
     MIClassPopupParameterDisplay3.Caption:= _('(name): type');
-    MIClassPopupParameterDisplay4.Caption:= _('(name = value): type');
-    MIClassPopupParameterDisplay5.Caption:= _('(name: type = value): type');
+    MIClassPopupParameterDisplay4.Caption:= _('(name: type): type');
+    MIClassPopupParameterDisplay5.Caption:= _('(name = value): type');
+    MIClassPopupParameterDisplay6.Caption:= _('(name: type = value): type');
 
   MIClassPopupVisibility.Caption:= _('Visibility');
     MIClassPopupVisibilityNone.Caption:= _(LNGNone);

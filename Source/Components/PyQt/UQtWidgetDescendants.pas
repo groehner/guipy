@@ -1857,6 +1857,7 @@ begin
   FItems:= TStringList.Create;
   FOldItems:= TStringList.Create;
   FTitle:= ' ' + _('Continent') + ' ';
+  FCheckboxes:= false;
 end;
 
 destructor TQtButtonGroup.Destroy;
@@ -1928,8 +1929,9 @@ begin
 end;
 
 procedure TQtButtonGroup.MakeButtongroupItems;
-  var i: integer; s1, s2: String;
+  var i, p: integer; s, s1, s2: String;
 begin
+  Partner.ActiveSynEdit.BeginUpdate;
   for i:= 0 to FOldItems.Count - 1 do
     Partner.DeleteAttributeValues(RBName(i));
   Partner.DeleteAttribute('self.' + Name + 'BG');
@@ -1941,9 +1943,14 @@ begin
     then s2:= s2 + surround('self.' + Name + 'BG.setExclusive(False)')
     else s2:= s2 + surround('self.' + Name + 'BG.setExclusive(True)');
   for i:= 0 to FItems.Count - 1 do begin
+    s:= FItems[i];
+    p:= Pos(', selected', s);
+    if p > 0
+      then s:= asString(copy(s, 1, p-1))
+      else s:= asString(s);
     if FCheckboxes
-      then s1:= s1 + surround(RBName(i) + ' = QCheckBox(' + asString(FItems[i]) + ', self.' + Name + ')')
-      else s1:= s1 + surround(RBName(i) + ' = QRadioButton(' + asString(FItems[i]) + ', self.' + Name + ')');
+      then s1:= s1 + surround(RBName(i) + ' = QCheckBox(' + s + ', self.' + Name + ')')
+      else s1:= s1 + surround(RBName(i) + ' = QRadioButton(' + s + ', self.' + Name + ')');
     s1:= s1 + surround(RBName(i) + '.setGeometry(0, 0, 0, 0)');
     s2:= s2 + surround('self.' + Name + 'BG.addButton(' + RBName(i) + ')');
     s2:= s2 + surround('self.' + Name + 'BG.setId(' + RBName(i) + ', ' + IntToStr(i) + ')');
@@ -1951,6 +1958,7 @@ begin
   insertValue(s1 + s2);
   FOldItems.Text:= FItems.Text;
   setPositionAndSize;
+  Partner.ActiveSynEdit.EndUpdate;
 end;
 
 function TQtButtonGroup.MakeBinding(Eventname: string): string;
@@ -2008,6 +2016,11 @@ begin
         key:= RBName(line) + '.setGeometry';
         setAttributValue(key, key + '(' + IntToStr(x) + ', ' + IntToStr(y) +
           ', ' + IntToStr(ColWidthI) + ', ' + IntToStr(RowHeightI) + ')');
+        if Pos(', ' + _('selected'), FItems[line]) > 0 then begin
+          key:= RBName(line) + '.setChecked';
+          setAttributValue(key, key + '(True)');
+        end;
+
         inc(line);
         yold:= y;
       end;
@@ -2020,8 +2033,7 @@ end;
 procedure TQtButtonGroup.MakeTitle(Title: string);
 begin
   FTitle:= Title;
-  var key:= 'self.' + Name + '.setTitle';
-  setAttributValue(key, key + '(' + asString(FTitle) + ')');
+  MakeAttribut('Title', asString(FTitle));
   setPositionAndSize;
 end;
 
@@ -2030,6 +2042,7 @@ begin
   inherited NewWidget('QGroupBox');
   MakeTitle(' ' + _('Continent') + ' ');
   FItems.Text:= defaultItems;
+  FItems[0]:= FItems[0] + ', ' + _('selected');
   MakeButtongroupItems;
 end;
 
@@ -2085,7 +2098,7 @@ end;
 procedure TQtButtonGroup.Paint;
   const Radius = 7;
   var ColumnWidth, RowWidth, RadioHeight, LabelHeight,
-      col, row, yc, ItemsInCol, line, x, y, th: integer;
+      col, row, yc, ItemsInCol, line, x, y, th, p: integer;
       R: TRect; s: string;
 begin
   FOldItems.Text:= FItems.Text;
@@ -2096,6 +2109,11 @@ begin
   LabelHeight:= 0;
   RadioHeight:= Height;
   R:= ClientRect;
+  Canvas.Pen.Color:= $BABABA;
+  if FTitle <> '' then
+    R.Top:= th div 2;
+  Canvas.Rectangle(R);
+
   if FTitle <> '' then begin
     R.Top:= th div 2;
     LabelHeight:= th;
@@ -2112,21 +2130,35 @@ begin
     for col:= 1 to FColumns do begin
       ItemsInCol:= ItemsInColumn(col);
       for row:= 1 to ItemsInCol do begin
+        s:= FItems[line];
+        p:= Pos(', selected', s);
+        if p > 0 then
+          s:= copy(s, 1, p-1);
         x:= 4 + (col - 1)*ColumnWidth;
         y:= LabelHeight + 2 + (row - 1)*RowWidth;
         Canvas.Brush.Color:= clWhite;
         if FCheckboxes then begin
           R:= Rect(x, y + 6, x + 13, y + 19);
           Canvas.Rectangle(R);
+          if p > 0 then begin
+            Canvas.Pen.Width:= 2;
+            Canvas.MoveTo(x + 3, yc + 6);
+            Canvas.LineTo(x + 4, yc + 9);
+            Canvas.LineTo(x + 9, yc + 3);
+            Canvas.Pen.Width:= 1;
+          end;
         end else begin
           yc:= y + RowWidth div 2 - Radius;
           Canvas.Ellipse(x, yc, x + 2*Radius, yc + 2*Radius);
+          if p > 0 then begin
+            Canvas.Brush.Color:= clBlack;
+            Canvas.Ellipse(x+3, yc+3, x + 2*Radius-3, yc + 2*Radius-3);
+            Canvas.Brush.Color:= clWhite;
+          end;
         end;
         Canvas.Brush.Color:= clBtnFace;
-
         yc:= y + RowWidth div 2 - th div 2;
         R:= Rect(x + 19, yc, col*ColumnWidth, yc + RowWidth);
-        s:= FItems[line];
         Canvas.TextRect(R, s);
         inc(line);
       end;

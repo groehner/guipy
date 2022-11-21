@@ -2566,14 +2566,14 @@ begin
       FClassEditor.PrepareNewClass;
     FClassEditor.ShowModal;
 
-    if Editor.Modified then begin
-      Editform.DoSave; // Here
-      // CompileForm(EditForm);
-    end;
+    if Editor.Modified then
+      Editform.DoSave;
+
 
     Editor.ActiveSynEdit.UnlockUndo;
 
     if Assigned(UMLEdit) then begin
+      (UMLEdit.MainModul.Diagram as TRtfdDiagram).Reinitalize;
       UMLEdit.MainModul.AddToProject(Editor.Filename);
       UMLEdit.Modified:= true;
       if EditClassStatus = 'Refresh' then
