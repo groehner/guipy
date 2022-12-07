@@ -105,17 +105,19 @@ type
     procedure TBInteractiveClick(Sender: TObject);
     procedure TBClassOpenClick(Sender: TObject);
     procedure SynEditChange(Sender: TObject);
-    procedure PDiagramPanelEnter(Sender: TObject);
+    //procedure PDiagramPanelEnter(Sender: TObject);
     procedure TBReInitializeClick(Sender: TObject);
   private
     LockEnter: boolean;
+    LockRefresh: boolean;
+    LockCreateTV: boolean;
     AlreadySavedAs: boolean;
     procedure ChangeStyle;
   protected
     procedure Retranslate; override;
     function LoadFromFile(const FileName: string): boolean; override;
     //function OpenFile(const aFilename: String): boolean; virtual;
-    procedure DoActivateFile(Primary: boolean = True); override;
+    // procedure DoActivateFile(Primary: boolean = True); override;
     function CanCopy: boolean; override;
     procedure CopyToClipboard; override;
     procedure SetFont(aFont: TFont); override;
@@ -123,7 +125,6 @@ type
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
     // IJvAppStorageHandler implementation
   public
-    { Public declarations }
     RememberedHeight: integer;
     MainModul: TDMUMLModule;
     procedure Open(const Filename: string; State: string);
@@ -135,7 +136,6 @@ type
     procedure Enter(Sender: TObject); override;
     procedure SetOnlyModified(aModified: boolean);
     procedure CollectClasses(SL: TStringList); override;
-
     procedure Refresh;
     procedure OnPanelModified(aValue: Boolean);
     procedure OnInteractiveModified(Sender: TObject);
@@ -145,6 +145,7 @@ type
     procedure ExecCommand(cmd: integer); override;
     procedure ShowAll;
     procedure ClassEdit;
+    procedure OnFormMouseDown(Sender: TObject);
   end;
 
 implementation
@@ -169,7 +170,7 @@ begin
   SynEdit.PopupMenu:= PMInteractive;
   SynEdit.Font.Assign(EditorOptions.Font);
   ChangeStyle;
-  TBInteractiveClick(Self);
+  //TBInteractiveClick(Self);
 end;
 
 procedure TFUMLForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -186,16 +187,12 @@ procedure TFUMLForm.FormClose(Sender: TObject; var aAction: TCloseAction);
 begin
   inherited;
   LockEnter:= true;
+  LockRefresh:= true;
+  LockCreateTV:= true;
   aAction:= caFree;
   FFileStructure.Clear;
   for var i:= TVFileStructure.Items.Count - 1 downto 0 do
     FreeAndNil(TVFileStructure.Items[i].Data);
-
-  {
-  for var i:= TVFileStructure.Items.Count - 1 downto 0 do begin
-    var aInteger:= TInteger(TVFileStructure.Items[i].Data);
-    FreeAndNil(aInteger);
-  end;}
 end;
 
 procedure TFUMLForm.FormDestroy(Sender: TObject);
@@ -204,20 +201,27 @@ begin
   inherited;
 end;
 
+procedure TFUMLForm.OnFormMouseDown(Sender: TObject);
+begin
+  PyIDEMainForm.ActiveTabControl := ParentTabControl;
+  CreateTVFileStructure;
+end;
+
 procedure TFUMLForm.Open(const Filename: string; State: string);
 begin
   MainModul.LoadUML(Filename);
   MainModul.Diagram.SetInteractive(OnInteractiveModified);
+  MainModul.Diagram.SetFormMouseDown(OnFormMouseDown);
   Pathname:= Filename;
   Caption:= Filename;
   SetState(State);
   MainModul.Diagram.SetOnModified(OnPanelModified);
   DoActivate;
-  Enter(Self);
   LockEnter:= false;
+  LockRefresh:= false;
+  LockCreateTV:= false;
   MainModul.AddToProject(Filename);
-  setActiveControl(MainModul.Diagram.GetPanel);
-  CreateTVFileStructure;
+  //setActiveControl(MainModul.Diagram.GetPanel);
 end;
 
 function TFUMLForm.LoadFromFile(const FileName: string): boolean;
@@ -278,7 +282,8 @@ begin
   LockEnter:= true;
   inherited;
   if Visible then begin  // due to bug, else ActiveForm doesn't change
-    if PUMLPanel.Visible and PUMLPanel.CanFocus then PUMLPanel.SetFocus;
+    if PUMLPanel.Visible and PUMLPanel.CanFocus then
+      PUMLPanel.SetFocus;
     if assigned(MainModul) and assigned(MainModul.Diagram) then begin
       aPanel:= MainModul.Diagram.GetPanel;
       if assigned(aPanel) and aPanel.CanFocus then
@@ -286,8 +291,10 @@ begin
     end;
   end;
   DoActivate;
-  if assigned(FFileStructure) then
-    FFileStructure.init(TVFileStructure.Items, Self);
+  TThread.ForceQueue(nil, procedure
+    begin
+      Refresh;
+    end);
   LockEnter:= false;
 end;
 
@@ -402,13 +409,17 @@ end;
 
 procedure TFUMLForm.Refresh;
 begin
-  LockWindow(Self.Handle);
-  DoSave;
-  MainModul.LoadUML(Pathname);
-  MainModul.RefreshDiagram;
-  Modified:= false;
-  SynEdit.Modified:= false;
-  UnlockWindow;
+  if LockRefresh then exit;
+  LockRefresh:= true;
+  if Pathname <> '' then begin
+    LockWindow(Self.Handle);
+    DoSave;
+    MainModul.LoadUML(Pathname);
+    MainModul.RefreshDiagram;
+    CreateTVFileStructure;
+    UnlockWindow;
+  end;
+  LockRefresh:= false;
 end;
 
 procedure TFUMLForm.TBRefreshClick(Sender: TObject);
@@ -476,11 +487,6 @@ begin
   end;
   PyIDEMainForm.actUMLOpenClassExecute(Self);
   Modified:= true;
-end;
-
-procedure TFUMLForm.PDiagramPanelEnter(Sender: TObject);
-begin
-  Enter(Self);
 end;
 
 procedure TFUMLForm.PDiagramPanelResize(Sender: TObject);
@@ -580,6 +586,8 @@ procedure TFUMLForm.CreateTVFileStructure;
   end;
 
 begin
+  if LockCreateTV then exit;
+  LockCreateTV:= true;
   Indent:= 0;
   Classnode:= nil;
   TVFileStructure.Items.BeginUpdate;
@@ -594,7 +602,7 @@ begin
     if (MainModul.Model.ModelRoot.Files.Indexof(Cent.Pathname) = -1) or
        not Cent.IsVisible or endsWith(Cent.Name, '[]') then
       continue;
-    
+
     CName:= cent.ShortName;
     IndentOld:= Indent;
     Indent:= CalculateIndentation(CName);
@@ -644,6 +652,7 @@ begin
   end;
   TVFileStructure.Items.EndUpdate;
   FFileStructure.init(TVFileStructure.Items, Self);
+  LockCreateTV:= false;
 end;
 
 procedure TFUMLForm.WMSpSkinChange(var Message: TMessage);
@@ -664,12 +673,6 @@ begin
     PMInteractive.Images:= DMImages.ILInteractive
   end;
   MainModul.Diagram.ChangeStyle;
-end;
-
-procedure TFUMLForm.DoActivateFile(Primary: boolean = True);
-begin
-  inherited;
-  Enter(Self);
 end;
 
 function TFUMLForm.getAsStringList: TStringList;

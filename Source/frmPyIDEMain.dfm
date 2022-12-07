@@ -33,7 +33,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 324
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -116,8 +116,6 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
-    ExplicitWidth = 286
-    ExplicitHeight = 83
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -252,7 +250,7 @@ object PyIDEMainForm: TPyIDEMainForm
     object TBControlItem1: TTBControlItem
     end
     object DockTopPanel: TPanel
-      Tag = 77986
+      Tag = 83122
       Left = 0
       Top = 0
       Width = 946
@@ -1221,7 +1219,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object DebugToolbar: TSpTBXToolbar
       Left = 3
-      Top = 55
+      Top = 52
       Width = 162
       Height = 26
       DockMode = dmCannotFloatOrChangeDocks

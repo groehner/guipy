@@ -117,6 +117,8 @@ type
     OnModified: TBoolEvent; // TNotifyEvent
     OnDeleteSelectedControls: TNotifyEvent;
     OnClassEditSelectedDiagramElements: TNotifyEvent;
+    OnFormMouseDown: TNotifyEvent;
+    //OnMouseDown: TNoti
 
     PopupMenuConnection: TPopupMenu;
     PopupMenuAlign: TPopupMenu;
@@ -310,11 +312,11 @@ begin
     newObj.FOnClick    := crkObj.OnClick;
     newObj.FOnDblClick := crkObj.OnDblClick;
 
-    crkObj.OnMouseDown := {$IFDEF LCL}@{$ENDIF}OnManagedObjectMouseDown;
-    crkObj.OnMouseMove := {$IFDEF LCL}@{$ENDIF}OnManagedObjectMouseMove;
-    crkObj.OnMouseUp   := {$IFDEF LCL}@{$ENDIF}OnManagedObjectMouseUp;
-    crkObj.OnClick     := {$IFDEF LCL}@{$ENDIF}OnManagedObjectClick;
-    crkObj.OnDblClick  := {$IFDEF LCL}@{$ENDIF}OnManagedObjectDblClick;
+    crkObj.OnMouseDown := OnManagedObjectMouseDown;
+    crkObj.OnMouseMove := OnManagedObjectMouseMove;
+    crkObj.OnMouseUp   := OnManagedObjectMouseUp;
+    crkObj.OnClick     := OnManagedObjectClick;
+    crkObj.OnDblClick  := OnManagedObjectDblClick;
     //end;
     Result := AObject;
   end;
@@ -1100,16 +1102,15 @@ var
   aChanged: boolean;
 begin
   if not MouseDownOK then begin MouseDownOK:= true; exit end;
-  inherited;
   if not (ssDouble in Shift) then
     CloseEdit;
-
   // repaint TrMemo
   if assigned(Application.MainForm.ActiveControl) and
       (Application.Mainform.ActiveControl is TMemo)
   then
     (Application.Mainform.ActiveControl as TMemo).Parent.Invalidate;
-
+  if not Focused then
+    OnFormMouseDown(self);
   SetFocus;  // a TPanel can have the Focus
   if GetCaptureControl <> Self then
     SetCaptureControl(Self);
@@ -1677,9 +1678,10 @@ begin
     // To avoid having the scrollbox resetting its positions after a setfocus call.
     X := (Parent as TScrollBox).HorzScrollBar.Position;
     Y := (Parent as TScrollBox).VertScrollBar.Position;
-    inherited;
+    //inherited;
     (Parent as TScrollBox).HorzScrollBar.Position := X;
     (Parent as TScrollBox).VertScrollBar.Position := Y;
+    inherited;
   end;
   //if GetCaptureControl <> Self then SetCaptureControl(Self);
 end;
@@ -1731,8 +1733,6 @@ begin
       else conn.visible:= false;
     end;
   end;
-  Self.Repaint;
-  Self.SetFocus;
 end;
 
 procedure TessConnectPanel.SetShowObjectDiagram(b: boolean);
@@ -1748,8 +1748,7 @@ begin
           else aControl.Parent:= Self;
       end;
     end;
-  Self.Repaint;
-  Self.SetFocus;
+  Invalidate;
 end;
 
 procedure TessConnectPanel.KeyUp(var Key: Word; Shift: TShiftState);

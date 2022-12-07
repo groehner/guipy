@@ -32,7 +32,7 @@ Type
   private
     FileKind: TFileKind;
     TabControlIndex : integer;
-    PInteractiveHeight: integer;  // UMLForm
+    PDiagramHeight: integer;      // UMLForm
     RememberedHeight: integer;    // UMLForm
     Line, Char, TopLine : integer;
     BreakPoints : TObjectList;
@@ -154,7 +154,7 @@ begin
      end;
    end;
    if FileKind = fkUML then begin
-     AppStorage.WriteInteger(BasePath+'\PInteractiveHeight', PInteractiveHeight);
+     AppStorage.WriteInteger(BasePath+'\PDiagramHeight', PDiagramHeight);
      AppStorage.WriteInteger(BasePath+'\RememberedHeight', RememberedHeight);
    end;
 end;
@@ -194,7 +194,7 @@ begin
      end;
    end;
    if FileKind = fkUML then begin
-     PInteractiveHeight:= AppStorage.ReadInteger(BasePath+'\PInteractiveHeight');
+     PDiagramHeight:= AppStorage.ReadInteger(BasePath+'\PDiagramHeight');
      RememberedHeight:= AppStorage.ReadInteger(BasePath+'\RememberedHeight');
    end;
 end;
@@ -290,7 +290,7 @@ begin
   Create;
   FileKind:= aFile.FileKind;
   if FileKind = fkUML then begin
-    PInteractiveHeight:= (aFile.Form as TFUMLForm).PInteractive.Height;
+    PDiagramHeight:= (aFile.Form as TFUMLForm).PDiagram.Height;
     RememberedHeight:= (aFile.Form as TFUMLForm).RememberedHeight;
   end;
   if aFile.FileName <> '' then
@@ -390,7 +390,7 @@ begin
               FilePersistInfo.TabControlIndex);
         end;
         if aFile.FileKind = fkUML then begin
-          (aFile.Form as TFUMLForm).PInteractive.Height:= FilePersistInfo.PInteractiveHeight;
+          (aFile.Form as TFUMLForm).PDiagram.Height:= FilePersistInfo.PDiagramHeight;
           (aFile.Form as TFUMLForm).RememberedHeight:= FilePersistInfo.RememberedHeight;
         end;
       end;

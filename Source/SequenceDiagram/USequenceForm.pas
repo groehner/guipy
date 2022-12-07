@@ -1017,6 +1017,7 @@ end;
 procedure TFSequenceForm.OnPanelClick(Sender: TObject);
 begin
   CloseEdit(true);
+  PyIDEMainForm.ActiveTabControl := ParentTabControl;
 end;
 
 procedure TFSequenceForm.OnPanelModified(Sender: TObject);

@@ -1171,6 +1171,7 @@ procedure TFStructogram.ScrollBoxClick(Sender: TObject);
 begin
   UpdateState;
   CloseEdit(true);
+  PyIDEMainForm.ActiveTabControl := ParentTabControl;
 end;
 
 procedure TFStructogram.ScrollBoxMouseMove(Sender: TObject; Shift: TShiftState;

@@ -526,7 +526,7 @@ var
 begin
   aName := Attribute.Name;
   if Assigned(Attribute.TypeClassifier)
-    then datatype := asPythonType(Attribute.TypeClassifier.Name)
+    then datatype := Attribute.TypeClassifier.asType
     else datatype := '';
   if getset = _(LNGGet)
     then s := _(LNGGet) + '_' + aName + '('
@@ -764,7 +764,7 @@ begin
         exit;
       SetEditText(EAttributeName, Attribut.Name);
       if Assigned(Attribut.TypeClassifier)
-        then CBAttributeType.Text := asUMLType(Attribut.TypeClassifier.Name)
+        then CBAttributeType.Text := Attribut.TypeClassifier.asUMLType
         else CBAttributeType.Text := '';
       {
       if Attribut.Value <> Attribut.Name
@@ -805,7 +805,7 @@ begin
         exit;
       CBMethodName.Text := Methode.Name;
       if Assigned(Methode.ReturnValue)
-        then CBMethodType.Text := asUMLType(Methode.ReturnValue.getShortType)
+        then CBMethodType.Text := Methode.ReturnValue.asUMLType
         else CBMethodType.Text := '';
       if IsClass then begin
         RGMethodKind.ItemIndex := Integer(Methode.OperationType);
@@ -897,6 +897,18 @@ var
   Parameter: TParameter;
   s: string;
   i: Integer;
+
+  function asUMLType(aType: string): string;
+  begin
+    Result:= aType;
+    if aType = 'bool' then
+      Result:= 'boolean'
+    else if aType = 'str' then
+      Result:= 'String'
+    else if aType = 'int' then
+      Result:= 'integer';
+  end;
+
 begin
   LB.Clear;
   It2 := Method.GetParameters;
@@ -906,7 +918,7 @@ begin
       continue;
     s:= Parameter.Name;
     if Assigned(Parameter.TypeClassifier) then
-      s:= s + ': ' + asUMLType(Parameter.TypeClassifier.getShortType);
+      s:= s + ': ' + Parameter.TypeClassifier.asUMLType;
     if Parameter.Value <> '' then
       s:= s + ' = ' + Parameter.Value;
     LB.Items.Add(s);
@@ -992,7 +1004,7 @@ var
   Method: TOperation;
 begin
   myEditor.ActiveSynEdit.BeginUpdate;
-  myEditor.InsertLinesAt(Line, Attribute.toPython {+ GetAttrValue});
+  myEditor.InsertLinesAt(Line, Attribute.toPython(false, false));
   if IsClass and CBgetMethod.Checked and not HasMethod(_(LNGGet), Attribute, Method) then
     myEditor.InsertProcedure(CrLf + CreateMethod(_(LNGGet), Attribute), ClassNumber);
   if IsClass and CBsetMethod.Checked and not HasMethod(_(LNGSet), Attribute, Method) then
@@ -1003,36 +1015,36 @@ end;
 procedure TFClassEditor.ChangeGetSet(Attribut: TAttribute; ClassNumber: Integer);
 var
   NewGet, NewSet: string;
-  Methode1, Methode2: TOperation;
+  Method1, Method2: TOperation;
   getIsFirst: Boolean;
 
   procedure DoGet;
   begin
     if CBgetMethod.Checked then
-      if Assigned(Methode1)
-        then ReplaceMethod(Methode1, NewGet)
-        else myEditor.InsertProcedurewithoutParse(CrLf + NewGet, ClassNumber)
-    else if Assigned(Methode1) then
-      DeleteMethod(Methode1);
+      if Assigned(Method1)
+        then ReplaceMethod(Method1, NewGet)
+        else myEditor.InsertProcedureWithoutParse(CrLf + NewGet, ClassNumber)
+    else if Assigned(Method1) then
+      DeleteMethod(Method1);
   end;
 
   procedure DoSet;
   begin
     if CBsetMethod.Checked then
-      if Assigned(Methode2)
-        then ReplaceMethod(Methode2, NewSet)
-        else myEditor.InsertProcedurewithoutParse(CrLf + NewSet, ClassNumber)
-    else if Assigned(Methode2) then
-      DeleteMethod(Methode2);
+      if Assigned(Method2)
+        then ReplaceMethod(Method2, NewSet)
+        else myEditor.InsertProcedureWithoutParse(CrLf + NewSet, ClassNumber)
+    else if Assigned(Method2) then
+      DeleteMethod(Method2);
   end;
 
 begin
   // replace get/set-methods, names could be changed
-  HasMethod(_(LNGGet), Attribut, Methode1);
-  HasMethod(_(LNGSet), Attribut, Methode2);
+  HasMethod(_(LNGGet), Attribut, Method1);
+  HasMethod(_(LNGSet), Attribut, Method2);
   getIsFirst := true;
-  if Assigned(Methode1) and Assigned(Methode2) and
-    (Methode1.LineS > Methode2.LineS) then
+  if Assigned(Method1) and Assigned(Method2) and
+    (Method1.LineS > Method2.LineS) then
     getIsFirst := false;
   ChangeAttribute(Attribut);
   if IsClass then begin
@@ -1047,15 +1059,15 @@ begin
     end;
   end else begin
     if getIsFirst then begin
-      if Assigned(Methode2) then
-        DeleteMethod(Methode2);
-      if Assigned(Methode1) then
-        DeleteMethod(Methode1);
+      if Assigned(Method2) then
+        DeleteMethod(Method2);
+      if Assigned(Method1) then
+        DeleteMethod(Method1);
     end else begin
-      if Assigned(Methode1) then
-        DeleteMethod(Methode1);
-      if Assigned(Methode2) then
-        DeleteMethod(Methode2);
+      if Assigned(Method1) then
+        DeleteMethod(Method1);
+      if Assigned(Method2) then
+        DeleteMethod(Method2);
     end;
   end;
 end;
@@ -1082,7 +1094,7 @@ var
   ClassNumber, NodeIndex, TopItemIndex, Line: Integer;
   Attribute: TAttribute;
   Node: TTreeNode;
-  OldStatic: Boolean;
+  OldStatic, ValueChanged, TypeChanged: Boolean;
 begin
   if not MakeIdentifier(EAttributeName) or (EAttributeName.Text = '') then
     exit;
@@ -1107,13 +1119,20 @@ begin
     end;
     FreeAndNil(Attribute);
   end else begin
+    ValueChanged:= CBAttributeValue.Focused;
+    TypeChanged:= CBAttributeType.Focused;
     Attribute := TAttribute(Node.Data);
     OldName := Attribute.Name;
     OldStatic := Attribute.Static;
-    Old := Attribute.toPython;
+    Old := Attribute.toPython(false, false);
     ChangeGetSet(Attribute, ClassNumber);
-    New := Attribute.toPython;
+
+    New := Attribute.toPython(ValueChanged, TypeChanged);
     NewName:= Attribute.Name;
+    if CBattributeValue.Text <> '' then
+      CBAttributeValue.Text:= Attribute.Value;
+    if CBAttributeType.Text <> '' then
+      CBattributeType.Text:= Attribute.TypeClassifier.Name;
     if New <> Old then begin
       if OldStatic = Attribute.Static then
         myEditor.ReplaceLineInLine(Attribute.LineS - 1, Old, New)
@@ -1310,7 +1329,7 @@ begin
   Ident1:= StringTimesN(FConfiguration.Indent1, Attribute.Level + 1);
   Ident2:= StringTimesN(FConfiguration.Indent1, Attribute.Level + 2);
   if Assigned(Attribute.TypeClassifier)
-    then datatype := asPythonType(Attribute.TypeClassifier.Name)
+    then datatype := Attribute.TypeClassifier.asType
     else datatype := '';
   aName := Attribute.Name;
 
@@ -1352,6 +1371,7 @@ var
   Indent, aName, val, vis, s,key: string;
   it: IModelIterator;
   Parameter: TParameter;
+  Attribute: TAttribute;
   found: Boolean;
   p: Integer;
   Node: TTreeNode;
@@ -1367,9 +1387,14 @@ var
 
 begin
   Parameter := nil;
+  Indent:= StringTimesN(FConfiguration.Indent1, Method.Level + 2);
   SourceSL:= TStringList.Create;
   SourceSL.Text:= Source;
-  Indent:= StringTimesN(FConfiguration.Indent1, Method.Level + 2);
+  p:= 0;
+  while (p < SourceSL.Count) and (Pos('def __init__', SourceSL[p]) = 0) do
+    inc(p);
+  if p < SourceSL.Count then
+    SourceSL[p]:= Method.HeadToPython;
   Node := GetAttributeNode.getFirstChild;
   it := Method.GetParameters;
   while it.HasNext do begin
@@ -1394,7 +1419,7 @@ begin
       p:= getSourceIndex('self.' + vis + Parameter.Name);
       if assigned(Parameter.TypeClassifier) then
         s:= Indent + 'self.' + vis + Parameter.Name + ': ' +
-            asPythonType(Parameter.TypeClassifier.name) + ' = ' + Parameter.Name
+            Parameter.TypeClassifier.asType + ' = ' + Parameter.Name
       else
         s:= Indent + 'self.' + vis + Parameter.Name + ' = ' + Parameter.Name;
       if p > -1 then begin
@@ -1404,16 +1429,16 @@ begin
         SourceSL.Add(s);
       Parameter.UsedForAttribute := true;
     end else begin
-      aName := Node.Text;
-      val := 'None';
-      s:= Indent + 'self.' + vis + aName + ' = ' + val;
-      key:= 'self.' + vis + aName + ' = ' + aName;
+      Attribute:= TAttribute(Node.Data);
+      Attribute.Value:= '';
+      s:= Attribute.toPython(false, false);
+      key:= 'self.' + vis + Node.Text;
       p:= getSourceIndex(key);
       if p > -1 then begin
         SourceSL.Delete(p);
         SourceSL.Insert(p, s);
       end else begin
-        key:= 'self.' + vis + aName;
+        key:= 'self.' + vis + Node.Text;
         p := getSourceIndex(key);
         if p = -1 then
           SourceSL.Add(s);
@@ -1571,7 +1596,9 @@ begin
   M.ReturnValue := MakeType(CBMethodType);
   if IsClass then begin
     M.OperationType := TOperationType(RGMethodKind.ItemIndex);
-    if (CBMethodType.Text = 'None') or (CBMethodType.Text = '') then begin
+    if (M.OperationType = otFunction) and
+       ((CBMethodType.Text = 'None') or (CBMethodType.Text = ''))
+    then begin
       M.OperationType:= otProcedure;
       M.ReturnValue:= nil;
     end;
@@ -2342,18 +2369,12 @@ begin
     Method := TOperation(Node.Data);
     if Assigned(Method) then begin
       ChangeMethod(Method);
-      if Method.hasSourceCode then begin
-        Source := myEditor.getSource(Method.LineS - 1, Method.LineE - 1);
-        SL:= TStringList.Create;
-        SL.Text:= Source;
-        while (SL.Count > 0) and (Pos(FConfiguration.Indent1 + 'def ', SL[0]) = 0) do
-          SL.Delete(0);
-        if (SL.Count > 0) then SL.Delete(0);
-        Source:= SL.Text;
-        FreeAndNil(SL);
-      end else
-        Source := '';
-      New := MethodToPython(Method, Source);
+      if Method.hasSourceCode
+        then Source := myEditor.getSource(Method.LineS - 1, Method.LineE - 1)
+        else Source := '';
+      if Method.OperationType = otConstructor
+        then New:= makeConstructor(Method, Source)
+        else New:= MethodToPython(Method, Source);
       ReplaceMethod(Method, New);
     end;
   end;

@@ -85,6 +85,9 @@ type
     //function isReference: boolean;
     function getAncestorName(index: integer): string; virtual;
     function asValue: string;
+    function asType: string;
+    function asUMLType: string;
+    function ValueToType(Value: string): string;
     procedure setCapacity(capacity: integer);
   end;
 
@@ -122,7 +125,7 @@ type
     property TypeClassifier: TClassifier read FTypeClassifier write SetTypeClassifier;
     property Value: string read FValue write SetValue;
     property Connected: boolean read FConnected write SetConnected;
-    function toPython: string;
+    function toPython(ValueChanged, TypeChanged: boolean): string;
     function toShortStringNode: string;
     function VisName: string;
   end;
@@ -652,7 +655,7 @@ begin
     Ai:= Cent.GetAllAttributes;
     while Ai.HasNext do begin
       Attribute:= ai.Next as TAttribute;
-      SL.Add(Attribute.toPython);
+      SL.Add(Attribute.toPython(false, false));
     end;
     SL.Add('--- Operations ---');
     oi:= cent.GetOperations;
@@ -994,7 +997,7 @@ begin
     Ai:= Cent.GetAllAttributes;
     while Ai.HasNext do begin
       Attribute:= ai.Next as TAttribute;
-      SL.Add(Attribute.toPython);
+      SL.Add(Attribute.toPython(false, false));
     end;
     SL.Add('--- Operations ---');
     oi:= cent.GetOperations;
@@ -1369,7 +1372,7 @@ function TParameter.asPythonString: string;
 begin
   Result:= Name;
   if assigned(TypeClassifier) then
-    Result:= Result + ': ' + asPythonType(TypeClassifier.GetShortType);
+    Result:= Result + ': ' + TypeClassifier.asType;
   if Value <> '' then
     Result:= Result + ' = ' + Value;
 end;
@@ -1381,7 +1384,7 @@ begin
   if ShowParameter >= 3 then begin
     s:= Name;
     if assigned(TypeClassifier) and (ShowParameter in [4, 6]) then
-      s:= s + ': ' + asUMLType(TypeClassifier.GetShortType);
+      s:= s + ': ' + TypeClassifier.asUMLType;
     if (Value <> '') and (ShowParameter >= 5) then
       s:= s + ' = ' + Value;
   end;
@@ -1391,7 +1394,7 @@ end;
 function TParameter.toShortStringNode: string;
 begin
   if assigned(TypeClassifier)
-    then result:= Name + ': ' + asUMLType(TypeClassifier.GetShortType)
+    then result:= Name + ': ' + TypeClassifier.asUMLType
     else result:= Name;
 end;
 
@@ -1524,7 +1527,7 @@ begin
     otConstructor: s:= '__init__' + s;
     otProcedure:   s:= VisName + s;
     otFunction:    if assigned(ReturnValue)
-                     then s:= VisName + s + ' -> ' + asPythonType(ReturnValue.GetShortType)
+                     then s:= VisName + s + ' -> ' + ReturnValue.asType
                      else s:= VisName + s;
   end;
   s:= Ident + 'def ' + s + ':';
@@ -1545,7 +1548,7 @@ begin
   while it2.HasNext do begin
     Parameter:= it2.next as TParameter;
     if assigned(Parameter.TypeClassifier)
-      then s:= s + asPythonType(Parameter.TypeClassifier.Name) + ', '
+      then s:= s + Parameter.TypeClassifier.asType + ', '
       else s:= s + ', ';
   end;
   if Copy(s, length(s) - 1, 2) = ', ' then
@@ -1555,7 +1558,7 @@ begin
     otConstructor: Result:= '__init__' + s;
     otProcedure:   Result:= Name + s;
     otFunction:    if assigned(ReturnValue)
-                     then Result:= Name + s + ' ->' + ReturnValue.GetShortType
+                     then Result:= Name + s + ' ->' + ReturnValue.asType
                      else Result:= Name + s;
   end;
 end;
@@ -1577,7 +1580,7 @@ begin
     otConstructor: Result:= Name + s;
     otProcedure:   Result:= Name + s;
     otFunction:    if assigned(ReturnValue)
-                     then Result:= Name + s + ': ' + asUMLType(ReturnValue.GetShortType)
+                     then Result:= Name + s + ': ' + ReturnValue.asUMLType
                      else Result:= Name + s;
   end;
 end;
@@ -1683,7 +1686,7 @@ end;
 function TAttribute.toShortStringNode: string;
 begin
   if assigned(TypeClassifier)
-    then result:= Name + ': ' + asUMLType(TypeClassifier.GetShortType)
+    then result:= Name + ': ' + TypeClassifier.asUMLType
     else result:= Name;
 end;
 
@@ -1700,20 +1703,31 @@ begin
   Result:= s;
 end;
 
-function TAttribute.toPython: string;
+function TAttribute.toPython(ValueChanged, TypeChanged: boolean): string;
+  const
+    Values = '0|0.0|''''''|True|False|None|[]|()|{}';
+    Types  = 'int|integer|float|boolean|str|String|string|list|tuple|dict|set';
   var s: string; count: integer;
+
 begin
   s:= VisName;
   if not Static then
     s:= 'self.' + s;
-  if IsFinal or assigned(TypeClassifier) then begin
+  if assigned(TypeClassifier) or IsFinal then begin
     s:= s + ': ';
     if IsFinal then begin
       s:= s + 'Final';
       if assigned(TypeClassifier) then
-        s:= s + '[' + asPythonType(TypeClassifier.Name) + ']';
-    end else
-      s:= s + asPythonType(TypeClassifier.Name);
+        s:= s + '[' + TypeClassifier.asType + ']';
+    end else begin
+      if ValueChanged and (Pos(Value, Values) > 0) and
+        (Pos(TypeClassifier.asType, Types) > 0)
+        then s:= s + TypeClassifier.ValueToType(Value)
+        else s:= s + TypeClassifier.asType;
+      if TypeChanged and (Pos(Value, Values) > 0) then
+        Value:= TypeClassifier.asValue;
+    end;
+
   end;
   s:= s + ' = ';
   if Value <> '' then
@@ -1804,16 +1818,64 @@ end;
 
 function TClassifier.asValue: string;
 begin
-  if Name = 'int' then
+  if (Name = 'int') or (Name = 'integer') then
     Result:= '0'
   else if Name = 'float' then
     Result:= '0.0'
   else if Name = 'boolean' then
     Result:= 'False'
-  else if Name = 'string' then
+  else if (Name = 'str') or (Name = 'String')  or (Name = 'string') then
     Result:= ''''''
+  else if Name = 'list' then
+    Result:= '[]'
+  else if Name = 'tuple' then
+    Result:= '()'
+  else if (Name = 'dict') or (Name = 'set') then
+    Result:= '{}'
   else
     Result:= 'None';
+end;
+
+function TClassifier.ValueToType(Value: string): string;
+begin
+  if Value = '0' then
+    Result:= 'int'
+  else if Value = '0.0' then
+    Result:= 'float'
+  else if (Value = 'True') or (Value = 'False') then
+    Result:= 'boolean'
+  else if Value = '''''' then
+    Result:= 'str'
+  else if Value = '[]' then
+    Result:= 'list'
+  else if Value = '()' then
+    Result:= 'tuple'
+  else if Value = '{}' then
+    Result:= 'set'
+  else
+    Result:= asType;
+end;
+
+function TClassifier.asType: string;
+begin
+  Result:= Name;
+  if Result = 'boolean' then
+    Result:= 'bool'
+  else if (Result = 'String') or (Result = 'string') then
+    Result:= 'str'
+  else if Result = 'integer' then
+    Result:= 'int';
+end;
+
+function TClassifier.asUMLType: string;
+begin
+  Result:= Name;
+  if Result = 'bool' then
+    Result:= 'boolean'
+  else if Result = 'str' then
+    Result:= 'String'
+  else if Result = 'int' then
+    Result:= 'integer';
 end;
 
 procedure TClassifier.setCapacity(capacity: integer);

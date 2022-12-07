@@ -55,7 +55,7 @@ begin
         then EditForm:= TEditorform(GI_EditorFactory.GetEditorByName(AName))
         else EditForm:= Form as TEditorForm;
       if Assigned(EditForm) then begin
-        Source:= EditForm.Synedit.Text + #0;
+        Source:= EditForm.SynEdit.Text + #0;
         if Source = #0 then Source:= 'null' + #0;
         Result:= TStringStream.Create(Source, TEncoding.Unicode);
       end else if FileExists(AName) and ValidFilename(AName) then begin

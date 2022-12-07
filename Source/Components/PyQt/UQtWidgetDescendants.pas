@@ -2097,7 +2097,7 @@ end;
 
 procedure TQtButtonGroup.Paint;
   const Radius = 7;
-  var ColumnWidth, RowWidth, RadioHeight, LabelHeight,
+  var ColumnWidth, RowHeight, RadioHeight, LabelHeight,
       col, row, yc, ItemsInCol, line, x, y, th, p: integer;
       R: TRect; s: string;
 begin
@@ -2125,7 +2125,7 @@ begin
   if FItems.Count > 0 then begin
     Canvas.Pen.Color:= $333333;
     ColumnWidth:= Width div FColumns;
-    RowWidth:= RadioHeight div ItemsInColumn(1);
+    RowHeight:= RadioHeight div ItemsInColumn(1);
     line:= 0;
     for col:= 1 to FColumns do begin
       ItemsInCol:= ItemsInColumn(col);
@@ -2135,8 +2135,9 @@ begin
         if p > 0 then
           s:= copy(s, 1, p-1);
         x:= 4 + (col - 1)*ColumnWidth;
-        y:= LabelHeight + 2 + (row - 1)*RowWidth;
+        y:= LabelHeight + 2 + (row - 1)*RowHeight;
         Canvas.Brush.Color:= clWhite;
+        yc:= y + RowHeight div 2 - th div 2;
         if FCheckboxes then begin
           R:= Rect(x, y + 6, x + 13, y + 19);
           Canvas.Rectangle(R);
@@ -2148,7 +2149,7 @@ begin
             Canvas.Pen.Width:= 1;
           end;
         end else begin
-          yc:= y + RowWidth div 2 - Radius;
+          yc:= y + RowHeight div 2 - Radius;
           Canvas.Ellipse(x, yc, x + 2*Radius, yc + 2*Radius);
           if p > 0 then begin
             Canvas.Brush.Color:= clBlack;
@@ -2157,8 +2158,8 @@ begin
           end;
         end;
         Canvas.Brush.Color:= clBtnFace;
-        yc:= y + RowWidth div 2 - th div 2;
-        R:= Rect(x + 19, yc, col*ColumnWidth, yc + RowWidth);
+        yc:= y + RowHeight div 2 - th div 2;
+        R:= Rect(x + 19, yc, col*ColumnWidth, yc + RowHeight);
         Canvas.TextRect(R, s);
         inc(line);
       end;

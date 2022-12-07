@@ -286,7 +286,7 @@ type
 implementation
 
 uses SysUtils, Forms, Themes, UITypes, Types, Math, Dialogs, ExtCtrls, clipbrd,
-     uIterators, uConfiguration, uViewIntegrator, UImages;
+     uIterators, uConfiguration, uViewIntegrator, UImages, frmPyIDEMain;
 
 const
   cDefaultWidth = 150;
@@ -380,8 +380,8 @@ procedure TRtfdBox.Paint;
 var
   R, R1: TRect;
   Sw, Si, TopH, NeedH, i, Separator: integer;
-  IsObject, IsClassOrInterface, IsValid: boolean;
-  Pathname, s: String;
+  IsObject, IsClass, IsValid: boolean;
+  Pathname: String;
 
 begin
   if assigned(fBitmap) and fBitmapOK then begin
@@ -393,17 +393,10 @@ begin
 
   IsValid:= false;
   IsObject:= (Self is TRtfdObject);
-  IsClassOrInterface:= (Self is TRtfdClass) or (Self is TRtfdInterface);
-  if IsClassOrInterface then begin
-    if Self is TRtfdClass
-      then Pathname:= (Self as TRtfdClass).Pathname
-      else Pathname:= (Self as TRtfdInterface).Pathname;
-    if hasClassExtension(Pathname) then begin
-      s:= ChangeFileExt(Pathname, '.py');
-      if FileExists(s) then
-        IsValid:= true;
-    end else
-      IsValid:= HasAValidClass(Pathname);
+  IsClass:= (Self is TRTfdClass);
+  if IsClass then begin
+    Pathname:= (Self as TRtfdClass).Pathname;
+    IsValid:= PyIDEMainForm.IsAValidClass(Pathname);
   end;
 
   Sw:= GuiPyOptions.ShadowWidth;
@@ -436,7 +429,7 @@ begin
     R1:= Rect(R.Left + Sw, R.Top + Sw + ExtentY, R.Right, R.Bottom);
 
     if (IsObject and (GuiPyOptions.ObjectHead = 1)) or
-       (IsClassOrInterface  and (GuiPyOptions.ClassHead = 1))
+       (IsClass and (GuiPyOptions.ClassHead = 1))
       then PaintShadow(true,  sw, Canvas, R1)
       else PaintShadow(false, sw, Canvas, R1);
 
@@ -453,8 +446,8 @@ begin
       LineTo(R.Right - Sw - 1, R.Bottom - Sw - TopH div 2 - 1);
       Pen.Color:= FGColor;
     end else // room for attributes and methods
-    if R.Bottom > TopH + Sw then
-      Rectangle(R.Left, R.Top + TopH - 1 + ExtentY, R.Right - Sw, R.Bottom - Sw);
+      if R.Bottom > TopH + Sw then
+        Rectangle(R.Left, R.Top + TopH - 1 + ExtentY, R.Right - Sw, R.Bottom - Sw);
 
     // Class- or Object-Label
     if IsObject
@@ -463,7 +456,7 @@ begin
       then Brush.Color:= BGColor // GuiPyOptions.ValidClassColor
       else Brush.Color:= GuiPyOptions.InvalidClassColor;
     if (IsObject and (GuiPyOptions.ObjectHead = 1)) or
-       (IsClassOrInterface and (GuiPyOptions.ClassHead = 1))
+       (IsClass and (GuiPyOptions.ClassHead = 1))
     then begin
       RoundRect(R.Left, R.Top, R.Right - Sw, R.Top + TopH, 16, 16);
       FillRect(Rect(R.Left, R.Top + TopH div 2, R.Right - Sw, R.Top + TopH));
@@ -478,11 +471,14 @@ begin
     //   Canvas.Brush.Color:= clRed;
     //   FrameRect(ClientRect);
 
-    if IsObject and (GuiPyOptions.ObjectFooter = 1) then Pen.Color:= clGray;
+    if IsObject and (GuiPyOptions.ObjectFooter = 1) then
+      Pen.Color:= clGray;
 
-    if IsClassOrInterface or (IsObject and GuiPyOptions.ShowObjectsWithMethods) then begin
+    //if IsClassOrInterface or (IsObject and GuiPyOptions.ShowObjectsWithMethods) then begin
       Separator:= ExtentY;
-      if (Self is TRtfdInterface) or isJUnitTestClass then i:= 3 else i:= 2;
+      if (Self is TRtfdInterface) or isJUnitTestClass
+        then i:= 3
+        else i:= 2;
       while (i < ComponentCount) and (Components[i] is TRtfdAttribute) do begin
         Separator:= Separator + TGraphicControl(Components[i]).Height;
         inc(i);
@@ -492,7 +488,7 @@ begin
         MoveTo(R.Left, Separator);
         LineTo(R.Right - Sw, Separator);
       end;
-    end;
+    //end;
   end;
   // paintTo in makeBitmap calls Paint to create the bitmap
   // it doesn't copy the screen-pixels, because controls can be covered by others
@@ -1584,7 +1580,7 @@ begin
   end;
 
   if (ShowParameter > 0) and Assigned(O.ReturnValue) then
-       s:= s + ': ' + asUMLType(O.ReturnValue.GetShortType);
+    s:= s + ': ' + O.ReturnValue.asUMLType;
   Caption:= s;
   Font.Style:= [];
   //Font.Color:= ColorMap[O.OperationType];
@@ -1619,7 +1615,7 @@ begin
   else begin
     s:= A.Name;
     if Assigned(A.TypeClassifier) and ((Owner as TRtfdBox).ShowParameter >= 4) then
-      s:= s + ': ' + asUMLType(A.TypeClassifier.ShortName);
+      s:= s + ': ' + A.TypeClassifier.asUMLType;
     if (A.Value <> '') and ((Owner as TRtfdBox).ShowParameter >= 5) then
       s:= s + ' = ' + A.Value;
     Caption:= s;

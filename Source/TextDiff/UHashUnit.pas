@@ -13,8 +13,7 @@ unit UHashUnit;
 interface
 
 uses
-  {$IFNDEF LCL} Windows, Messages, {$ELSE} LclIntf, LclType, {$ENDIF}
-  SysUtils;
+  Windows, Messages, SysUtils;
 
 function HashLine(const line: string; IgnoreCase, IgnoreBlanks: boolean): integer;
 

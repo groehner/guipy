@@ -1518,7 +1518,6 @@ type
     function GetIDELayouts: IIDELayouts;
     function GetAppStorage: TJvCustomAppStorage;
     function GetLocalAppStorage: TJvCustomAppStorage;
-    procedure UMLsReinitialize;
     procedure MRUAddFile(aFile: IFile);
     procedure ChangeStyle;
   public
@@ -1593,6 +1592,8 @@ type
     procedure LoadDefaultLayout(LayoutAppStorage: TJvAppIniFileStorage; const Layout: string);
     procedure Run(const pathname: string);
     procedure ImportModule(pathname: string);
+    function IsAValidClass(const Pathname: String): boolean;
+    procedure RefreshUMLWindows;
 
     property ActiveTabControl : TSpTBXCustomTabControl read GetActiveTabControl
       write SetActiveTabControl;
@@ -2523,12 +2524,6 @@ end;
 
 procedure TPyIDEMainForm.PrepareClassEdit(const Pathname, Status: String; UML: TFUMLForm);
 begin
-{
-  if ((Status = 'Edit') or (Status = 'Refresh')) and
-      not (myJavaCommands.AcceptableError(Pathname) or
-           (MessageDlg(LNGOpenUMLAnyway, mtConfirmation, mbYesNo, -1) = idYes))
-     then exit;
-}
   EditClass:= Pathname;
   EditClassStatus:= Status;
   UMLedit:= UML;
@@ -2566,19 +2561,19 @@ begin
       FClassEditor.PrepareNewClass;
     FClassEditor.ShowModal;
 
-    if Editor.Modified then
+    if Editform.Modified then begin
       Editform.DoSave;
-
-
+      actRunExecute(nil);
+    end;
     Editor.ActiveSynEdit.UnlockUndo;
 
     if Assigned(UMLEdit) then begin
       (UMLEdit.MainModul.Diagram as TRtfdDiagram).Reinitalize;
       UMLEdit.MainModul.AddToProject(Editor.Filename);
       UMLEdit.Modified:= true;
-      if EditClassStatus = 'Refresh' then
+      {if EditClassStatus = 'Refresh' then
         UMLEdit.TBRefreshClick(Self);
-      UMLEdit.CreateTVFileStructure;
+      UMLEdit.CreateTVFileStructure;}
       UMLEdit.MainModul.Diagram.Lock(false);
     end;
 
@@ -2940,19 +2935,20 @@ begin
       mtWarning, [mbYes, mbNo], 0) = idNo then Exit;
   end;
   PyControl.ActiveInterpreter.ReInitialize;
-  UMLsReinitialize;
+  GI_FileFactory.ApplyToFiles(procedure(Fi: IFile)
+  begin
+    if (Fi as TFile).GetFileKind = fkEditor then
+      (Fi as TFile).fForm.DoSave;
+  end);
+  RefreshUMLWindows;
 end;
 
-procedure TPyIDEMainForm.UMLsReinitialize;
+procedure TPyIDEMainForm.RefreshUMLWindows;
 begin
   GI_FileFactory.ApplyToFiles(procedure(Fi: IFile)
   begin
-    if (Fi as TFile).GetFileKind = fkUML then begin
-      var UMLForm:= (Fi as TFile).fForm as TFUmlForm;
-      var MModul:= UMLForm.MainModul;
-      if assigned(MModul) then
-        (MModul.Diagram as TRtfdDiagram).Reinitalize;
-    end;
+    if (Fi as TFile).GetFileKind = fkUML then
+      ((Fi as TFile).fForm as TFUmlForm).Refresh;
   end);
 end;
 
@@ -3120,7 +3116,7 @@ begin
   if Assigned(ActiveFile) then
     if ActiveFile.FileKind = fkEditor then begin
       run(ActiveFile.FileId);
-      UMLsReinitialize;
+      RefreshUMLWindows;
     end else if ActiveFile.FileKind = fkUML then begin
       actPythonReinitializeExecute(self);
       var Files:= (ActiveFile.Form as TFUmlForm).MainModul.getFiles;
@@ -3128,6 +3124,7 @@ begin
         if FileExists(Files[i]) then
           ImportModule(Files[i]);
   end;
+
 end;
 
 procedure TPyIDEMainForm.ImportModule(pathname: string);
@@ -3139,6 +3136,29 @@ begin
   PyControl.ActiveInterpreter.RunSource('os.chdir(' + asString(Path) + ')', '<interactive input>');
   Modul:= ChangeFileExt(ExtractFileName(pathname), '');
   PyControl.ActiveInterpreter.RunSource('from ' + Modul + ' import *', '<interactive input>');
+end;
+
+function TPyIDEMainForm.IsAValidClass(const Pathname: String): boolean;
+  var Editor: IEditor; Modified: boolean;
+      FDCached, FDPath: TDateTime;
+      CachedFile: string;
+begin
+  if (Pathname = '') or not FileExists(Pathname) then
+    exit(true);
+  Editor:= GI_EditorFactory.GetEditorByName(Pathname);
+  Modified:= assigned(Editor) and Editor.Modified;
+  if Modified then
+    exit(false);
+  CachedFile:=
+    TPath.Combine(ExtractFilePath(Pathname),
+      TPath.Combine('__pycache__',
+        TPath.getFileNameWithoutExtension(Pathname) +
+          '.cpython-' + myStringReplace(PyControl.PythonVersion.SysVersion, '.', '') +
+          '.pyc'));
+  Result:= false;
+  if FileExists(CachedFile) and
+     FileAge(CachedFile, FDCached) and FileAge(Pathname, FDPath) then
+    Result:= (FDCached >= FDPath)
 end;
 
 procedure TPyIDEMainForm.Run(const pathname: string);
@@ -4874,8 +4894,15 @@ begin
   if Assigned(IV) and (IV.Item is TSpTBXTabItem) then
     TabItem := TSpTBXTabItem(IV.Item);
 
-  if Assigned(TabItem) and (Button = mbMiddle) then begin
+  if Assigned(TabItem) then begin
     aFile := FileFromTab(TabItem);
+    if aFile.FileKind = fkEditor then
+      TEditorForm(aFile.Form).Enter(Self)
+    else if aFile.FileKind = fkUML then
+      TFUMLForm(aFile.Form).Enter(Self)
+  end;
+
+  if Assigned(TabItem) and (Button = mbMiddle) then begin
     if Assigned(aFile) then
       (aFile as IFileCommands).ExecClose;
   end else if (not Assigned(IV) or (IV.Item is TSpTBXRightAlignSpacerItem)) and (Shift = [ssLeft, ssDouble]) then begin
@@ -5316,7 +5343,7 @@ Var
   NewTab : TSpTBXTabItem;
   Sheet,
   NewSheet : TSpTBXTabSheet;
-  EditorForm : TEditorForm;
+  FileForm : TFileForm;
 begin
   if (Tab.Owner = TabControl) or not Assigned(Tab) then
     Exit;
@@ -5326,24 +5353,23 @@ begin
   else
     NewTab := TabControl.Add(Tab.Caption);
 
-  EditorForm := nil;
+  FileForm := nil;
   Sheet := (Tab.Owner as TSpTBXTabControl).GetPage(Tab);
-  if Assigned(Sheet) and (Sheet.ControlCount > 0) then
-    EditorForm := Sheet.Controls[0] as TEditorForm;
-
-  if Assigned(EditorForm) then begin
-    EditorForm.Visible := False;
+  if Assigned(Sheet) and (Sheet.ControlCount > 0) and
+    (Sheet.Controls[0] is TFileForm)
+  then begin
+    FileForm := Sheet.Controls[0] as TFileForm;
+    FileForm.Visible := False;
     NewSheet := (NewTab.Owner as TSpTBXTabControl).GetPage(NewTab);
-    EditorForm.ParentTabItem := NewTab;
-    EditorForm.ParentTabControl := TabControl;
-    EditorForm.Parent := NewSheet;
-    EditorForm.Align := alClient;
-    NewSheet.InsertComponent(EditorForm);  // changes ownership
+    FileForm.ParentTabItem := NewTab;
+    FileForm.ParentTabControl := TabControl;
+    FileForm.Parent := NewSheet;
+    FileForm.Align := alClient;
+    NewSheet.InsertComponent(FileForm);  // changes ownership
     NewTab.OnTabClosing := TabControlTabClosing;
     NewTab.OnDrawTabCloseButton := DrawCloseButton;
-    EditorForm.Visible := True;
+    FileForm.Visible := True;
   end;
-
   Tab.Free;
   NewTab.Click;
 end;

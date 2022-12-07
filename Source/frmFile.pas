@@ -95,8 +95,8 @@ type
     procedure ExecCommand(cmd: integer); virtual;
     procedure OpenWindow(Sender: TObject); virtual;
     procedure CollectClasses(SL: TStringList); virtual;
-
     procedure SetActiveControl(aControl: TWinControl);
+
     property Modified: boolean read GetModified write SetModified;
     property Pathname: string read GetPathname write SetPathname;
   end;

@@ -42,7 +42,6 @@ object FUMLForm: TFUMLForm
       ParentCtl3D = False
       ParentFont = False
       TabOrder = 0
-      OnEnter = PDiagramPanelEnter
       OnResize = PDiagramPanelResize
     end
     object PUMLPanel: TPanel

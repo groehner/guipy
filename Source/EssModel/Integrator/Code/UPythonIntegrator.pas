@@ -54,7 +54,7 @@ type
 
 implementation
 
-uses SysUtils, Math, UConfiguration, uCodeProvider;
+uses SysUtils, Math, uEditAppIntfs, frmEditor, UConfiguration, uCodeProvider;
 
 { TPythonImporter }
 
@@ -74,10 +74,14 @@ var
   Module: TParsedModule;
   Parser: TPythonParser;
   Encoding: TEncoding;
+  Editor: IEditor;
 begin
   Encoding:= FConfiguration.getEncoding(Filename);
   SL:= TStringList.Create;
-  SL.LoadFromFile(FileName, Encoding);
+  Editor:= GI_EditorFactory.GetEditorByName(filename);
+  if assigned(Editor)
+    then SL.Text:= (Editor.Form as TEditorForm).SynEdit.Text
+    else SL.LoadFromFile(FileName, Encoding);
   SourceScanner := TAsynchSourceScanner.Create(FileName, SL.Text);
   Module:= SourceScanner.ParsedModule;
   Parser:= TPythonParser.Create(true);

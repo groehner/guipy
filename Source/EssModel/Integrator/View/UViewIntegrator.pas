@@ -96,6 +96,7 @@ type
     procedure ResolveObjectAssociations; virtual; abstract;
     function hasSelectedConnection: boolean; virtual; abstract;
     procedure SetInteractive(OnInteractiveModified: TNotifyEvent); virtual; abstract;
+    procedure SetFormMouseDown(OnFormMouseDown: TNotifyEvent); virtual; abstract;
     function getSourcePath: string; virtual; abstract;
     procedure SetFont(const aFont: TFont); virtual;
     function  GetFont: TFont; virtual;

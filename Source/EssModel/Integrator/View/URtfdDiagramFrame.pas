@@ -45,5 +45,4 @@ begin
   Self.Diagram:= aDiagram;
 end;
 
-
 end.

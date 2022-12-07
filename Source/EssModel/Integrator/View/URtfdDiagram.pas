@@ -119,6 +119,7 @@ type
     function hasSelectedConnection: boolean; override;
     function GetPanel: TCustomPanel; override;
     procedure SetInteractive(OnInteractiveModified: TNotifyEvent); override;
+    procedure SetFormMouseDown(OnFormMouseDown: TNotifyEvent); override;
     procedure AddToInteractive(const s: string);
     function getSourcePath: string; override;
     procedure Reinitalize; override;
@@ -728,7 +729,7 @@ begin
       Ini.WriteInteger(S, 'Fontsize', Font.Size);
       Ini.WriteBool   (S, 'ShowObjectDiagram', ShowObjectDiagram);
       Ini.WriteInteger(S, 'RememberedHeight', UMLForm.RememberedHeight);
-      Ini.WriteInteger(S, 'Interactive.Height', UMLForm.PInteractive.Height);
+      Ini.WriteInteger(S, 'Diagram.Height', UMLForm.PDiagram.Height);
       Ini.WriteString (S, 'SynEditFontname', UMLForm.SynEdit.Font.Name);
       Ini.WriteInteger(S, 'SynEditFontsize', UMLForm.SynEdit.Font.Size);
 
@@ -827,7 +828,7 @@ begin
     UMLForm.SynEdit.Font.Name:= Ini.ReadString (S, 'SynEditFontname', 'Consolas');
     UMLForm.SynEdit.Font.Size:= Ini.ReadInteger(S, 'SynEditFontsize', 11);
     UMLForm.RememberedHeight:=  Ini.ReadInteger(S, 'RememberedHeight', 90);
-    UMLForm.PInteractive.Height:= Ini.ReadInteger(S, 'Interactive.Height', 90);
+    UMLForm.PDiagram.Height:= Ini.ReadInteger(S, 'Diagram.Height', 90);
 
     // read files
     Ini.ReadSections(Sections);
@@ -1235,7 +1236,7 @@ procedure TRtfdDiagram.ClassEditSelectedDiagramElementsControl(Sender: TObject);
     Editor: IEditor; aFile: IFile;
 begin
   aBox:= (Sender as TRtfdBox);
-  if ((aBox is TRtfdClass) or (aBox is TRtfdInterface)) and Assigned(GetBox(aBox.Entity.FullName)) then begin
+  if (aBox is TRtfdClass) and Assigned(GetBox(aBox.Entity.FullName)) then begin
     aFile:= GI_PyIDEServices.getActiveFile;
     Pathname:= ChangeFileExt(aBox.GetPathname, '.py');
     Editor:= IEditor(PyIDEMainForm.DoOpen(Pathname));
@@ -2426,9 +2427,9 @@ begin // PopMenuClassPopup
             s2:= s2 + Parameter.Name;
             // chr(x) are used as separators
             if assigned(Parameter.TypeClassifier) then begin
-              s1:= s1 + ': ' + asPythonType(Parameter.TypeClassifier.GetShortType);
+              s1:= s1 + ': ' + Parameter.TypeClassifier.asType;
               if InheritedLevel = 0 then
-                AddDatatype(asPythonType(Parameter.TypeClassifier.Name));
+                AddDatatype(Parameter.TypeClassifier.asType);
             end;
             s2:= s2 + chr(4);
             if Parameter.Value <> '' then  begin
@@ -2462,9 +2463,9 @@ begin // PopMenuClassPopup
             s1:= s1 + Parameter.Name;
             s2:= s2 + Parameter.Name;
             if assigned(Parameter.TypeClassifier) then begin
-              s1:= s1 + ': ' + asPythonType(Parameter.TypeClassifier.GetShortType);
+              s1:= s1 + ': ' + Parameter.TypeClassifier.asType;
               if InheritedLevel = 0 then
-                AddDatatype(asPythonType(Parameter.TypeClassifier.Name));
+                AddDatatype(Parameter.TypeClassifier.asType);
             end;
             s2:= s2 + chr(4);
             if Parameter.Value <> '' then  begin
@@ -2767,7 +2768,7 @@ begin // PopMenuObjectPopup
               s1:= s1 + Parameter.Name;
               s2:= s2 + Parameter.Name;
               if assigned(Parameter.TypeClassifier) then
-                s1:= s1 + ': ' + asPythonType(Parameter.TypeClassifier.GetShortType);
+                s1:= s1 + ': ' + Parameter.TypeClassifier.asType;
               s2:= s2 + chr(4);
               if Parameter.Value <> '' then begin
                 s1:= s1 + chr(4) + Parameter.Value;
@@ -3027,6 +3028,11 @@ begin
   OnModified:= OnInteractiveModified;
 end;
 
+procedure TRtfdDiagram.SetFormMouseDown(OnFormMouseDown: TNotifyEvent);
+begin
+  Panel.OnFormMouseDown:= OnFormMouseDown;
+end;
+
 procedure TRtfdDiagram.AddToInteractive(const s: string);
   var line: integer;
 begin
@@ -3099,6 +3105,7 @@ procedure TRtfdDiagram.Reinitalize;
 begin
   DeleteObjects;
   FLivingObjects.DeleteObjects;
+  RefreshDiagram;
 end;
 
 procedure TRtfdDiagram.SetRecursiv(P: TPoint; pos: integer);
@@ -3477,6 +3484,5 @@ procedure TRtfdDiagram.ExecutePython(s: String);
 begin
   FLivingObjects.ExecutePython(s);
 end;
-
 
 end.

@@ -116,6 +116,7 @@ begin
     TVFileStructure.FullExpand;
     TVFileStructure.HideSelection:= false;
     TVFileStructure.Items.EndUpdate;
+    // PyIDEMainForm.RefreshUMLWindows;
     // Lock.Release;
   end;
 end;

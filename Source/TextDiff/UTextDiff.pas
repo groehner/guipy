@@ -383,7 +383,7 @@ var
   i: integer;
   HashArray1, HashArray2: TArrOfInteger;
   CodeEdit: TSynEditExDiff;
-  Caret: {$IFNDEF LCL}TBufferCoord; {$ELSE} TPoint; {$ENDIF}
+  Caret: TBufferCoord;
 begin
   if (Lines1.Count = 0) or (Lines2.Count = 0) then exit;
 

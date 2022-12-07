@@ -82,7 +82,6 @@ function hasPythonExtension(const Pathname: String): Boolean;
 function ValidFilename(s: String): boolean;
 function max3(m1, m2, m3: integer): integer;
 function min3(m1, m2, m3: integer): integer;
-function HasAValidClass(Pathname: string): boolean;
 procedure LockFormUpdate(F: TForm);
 procedure UnlockFormUpdate(F: TForm);
 function WithoutArray(const s: String): String;
@@ -97,8 +96,6 @@ function getFirstWord(s: string): string;
 procedure SetAnimation(Value: boolean);
 function einruecken(Einrueck, s: string): string;
 function isDunder(Name: string): boolean;
-function asUMLType(aType: string): string;
-function asPythonType(aType: string): string;
 function StringTimesN(s: string; n: integer): string;
 function GetUniqueName(Control: TControl; Basename: string): string;
 function OnlyCharsAndDigits(const s: string): string;
@@ -973,11 +970,6 @@ begin
   Result:= min(m1, min(m2, m3));
 end;
 
-function HasAValidClass(Pathname: string): boolean;
-begin
-  Result:= true;
-end;
-
 var FLockFormUpdatePile : integer;
 
 procedure LockFormUpdate(F: TForm);
@@ -1116,27 +1108,7 @@ begin
            (Copy(Name, Length(Name) - 1, 2) = '__');
 end;
 
-function asUMLType(aType: string): string;
-begin
-  Result:= aType;
-  if aType = 'bool' then
-    Result:= 'boolean'
-  else if aType = 'str' then
-    Result:= 'String'
-  else if aType = 'int' then
-    Result:= 'integer';
-end;
 
-function asPythonType(aType: string): string;
-begin
-  Result:= aType;
-  if aType = 'boolean' then
-    Result:= 'bool'
-  else if (aType = 'String') or (aType = 'string') then
-    Result:= 'str'
-  else if aType = 'integer' then
-    Result:= 'int';
-end;
 
 function StringTimesN(s: string; n: integer): string;
   var i: integer;

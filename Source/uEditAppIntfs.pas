@@ -284,7 +284,7 @@ type
     function GetAppStorage: TJvCustomAppStorage;
     function GetLocalAppStorage: TJvCustomAppStorage;
     procedure MRUAddFile(aFile: IFile);
-    property ActiveFile: IFile read GetactiveFile;
+    property ActiveFile: IFile read GetActiveFile;
     property ActiveEditor: IEditor read GetActiveEditor;
     property IsClosing: Boolean read GetIsClosing;
     property Messages: IMessageServices read GetMessageServices;
