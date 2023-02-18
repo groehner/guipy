@@ -1109,7 +1109,7 @@ begin
       (Application.Mainform.ActiveControl is TMemo)
   then
     (Application.Mainform.ActiveControl as TMemo).Parent.Invalidate;
-  if not Focused then
+  if not Focused and assigned(OnFormMouseDown) then
     OnFormMouseDown(self);
   SetFocus;  // a TPanel can have the Focus
   if GetCaptureControl <> Self then

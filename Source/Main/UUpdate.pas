@@ -7,24 +7,24 @@ uses
   dlgPyIDEBase, UDownload;
 
 const
-  Server   = 'https://guipy.de/download/';
+  Server  = 'https://guipy.de/download/';
   Inffile = Server + 'version.txt';
   {$IFDEF WIN32}
   Zipfile = 'GuiPy.zip';   // update portable version
   Setupfile = 'GuiPy-%s-x86-Setup.exe';   // update default version
-  Version = '2.0.5, 32 Bit';
+  Version = '2.0.6, 32 Bit';
   Bits = '32';
   {$ENDIF}
   {$IFDEF WIN64}
   Zipfile = 'GuiPy64.zip';
   Setupfile = 'GuiPy-%s-x64-Setup.exe';
-  Version = '2.0.5, 64 Bit';
+  Version = '2.0.6, 64 Bit';
   Bits = '64';
   {$ENDIF}
 
-  Day   = 7;
-  Month = 12;
-  Year  = 2022;
+  Day   = 18;
+  Month = 2;
+  Year  = 2023;
 
 type
   TFUpdate = class(TPyIDEDlgBase)
@@ -38,14 +38,11 @@ type
     ProgressBar: TProgressBar;
     BClose: TButton;
     BUpdate: TButton;
-    UpdateTimer: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var aAction: TCloseAction);
-    procedure FormDestroy(Sender: TObject);
     procedure BCloseClick(Sender: TObject);
     procedure BUpdateClick(Sender: TObject);
-    procedure UpdateTimerTimer(Sender: TObject);
   private
     FDownload: TFDownload;
     NewVersion: string;
@@ -81,29 +78,20 @@ procedure TFUpdate.FormShow(Sender: TObject);
 begin
   LocalTempDir:= TPath.Combine(GuiPyOptions.TempDir, 'GuiPy\');
   ForceDirectories(LocalTempDir);
-  UpdateTimer.Enabled:= true;
+  TThread.ForceQueue(nil, procedure
+    begin
+      GetNewVersion;
+    end);
 end;
 
 procedure TFUpdate.FormClose(Sender: TObject; var aAction: TCloseAction);
 begin
   PyIDEMainForm.AppStorage.WriteInteger('Program\Update', CBUpdate.ItemIndex);
-  aAction:= caHide;
-end;
-
-procedure TFUpdate.FormDestroy(Sender: TObject);
-begin
-  FDownload.Release;
 end;
 
 procedure TFUpdate.BCloseClick(Sender: TObject);
 begin
   Close;
-end;
-
-procedure TFUpdate.UpdateTimerTimer(Sender: TObject);
-begin
-  UpdateTimer.Enabled:= false;
-  GetNewVersion;
 end;
 
 {$WARN SYMBOL_PLATFORM OFF}
@@ -217,7 +205,8 @@ procedure TFUpdate.CheckAutomatically;
   begin
     inc(AMonth);
     if AMonth = 13 then begin
-      inc(AYear); AMonth:= 1;
+      inc(AYear);
+      AMonth:= 1;
     end;
     AWeekOfMonth:= 1;
     ADayOfWeek:= 1;
@@ -227,14 +216,15 @@ procedure TFUpdate.CheckAutomatically;
   begin
     ADayOfWeek:= 1;
     inc(AWeekOfMonth);
-    if not IsValidDateMonthWeek(AYear, AMonth, AWeekOfMonth, ADayOfWeek)
-    then NextMonth;
+    if not IsValidDateMonthWeek(AYear, AMonth, AWeekOfMonth, ADayOfWeek)then
+      NextMonth;
   end;
 
   procedure NextDay;
   begin
     inc(ADayOfWeek);
-    if ADayOfWeek = 8 then NextWeek;
+    if ADayOfWeek = 8 then
+      NextWeek;
   end;
 
 begin
@@ -257,9 +247,8 @@ end;
 
 function TFUpdate.ShowVersionDate(s: string): string;
   var Day, Month, Year, p: integer;
-      Version, se: string;
+      Version: string;
 begin
-  se:= s;
   p:= Pos(',', s);
   Version:= copy(s, 1, p);
   delete(s, 1, p);

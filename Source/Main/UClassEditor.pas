@@ -251,7 +251,7 @@ begin
 end;
 
 procedure TFClassEditor.FormCreate(Sender: TObject);
-  const Values =  '0'#$D#$A'0.0'#$D#$A''''''#$D#$A'True'#$D#$A'False'#$D#$A'None'#$D#$A'[]'#$D#$A'()'#$D#$A'{}';
+  const Values = '0'#$D#$A'0.0'#$D#$A''''''#$D#$A'True'#$D#$A'False'#$D#$A'None'#$D#$A'[]'#$D#$A'()'#$D#$A'{}';
 begin
   inherited;
   MakeNewClass := false;
@@ -1368,7 +1368,7 @@ end;
 
 function TFClassEditor.makeConstructor(Method: TOperation; Source: string): string;
 var
-  Indent, aName, val, vis, s,key: string;
+  Indent, vis, s,key: string;
   it: IModelIterator;
   Parameter: TParameter;
   Attribute: TAttribute;
@@ -2320,7 +2320,6 @@ var
   Method: TOperation;
   ClassNumber, NodeIndex, TopItemIndex, Level: Integer;
   Node, Cursor: TTreeNode;
-  SL: TStringList;
 begin
   if (not (MakeIdentifier(CBMethodName) and MakeIdentifier(CBMethodType) and
     MakeIdentifier(CBParamName) and MakeIdentifier(CBParamType)) or

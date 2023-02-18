@@ -13,29 +13,28 @@ object FUpdate: TFUpdate
   Position = poOwnerFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object LOldVersion: TLabel
     Left = 13
     Top = 11
     Width = 75
-    Height = 13
+    Height = 14
     Caption = 'Current version'
   end
   object LChecking: TLabel
     Left = 13
     Top = 186
     Width = 98
-    Height = 13
+    Height = 14
     Caption = 'Check automatically '
   end
   object LNewVersion: TLabel
     Left = 13
     Top = 42
-    Width = 59
-    Height = 13
+    Width = 62
+    Height = 14
     Caption = 'New version'
   end
   object BClose: TButton
@@ -58,7 +57,7 @@ object FUpdate: TFUpdate
     Left = 101
     Top = 7
     Width = 225
-    Height = 21
+    Height = 22
     TabOrder = 2
   end
   object BUpdate: TButton
@@ -77,7 +76,7 @@ object FUpdate: TFUpdate
     Left = 192
     Top = 182
     Width = 134
-    Height = 21
+    Height = 22
     TabOrder = 4
     Items.Strings = (
       'never'
@@ -100,14 +99,7 @@ object FUpdate: TFUpdate
     Left = 101
     Top = 38
     Width = 225
-    Height = 21
+    Height = 22
     TabOrder = 6
-  end
-  object UpdateTimer: TTimer
-    Enabled = False
-    Interval = 50
-    OnTimer = UpdateTimerTimer
-    Left = 112
-    Top = 232
   end
 end
