@@ -40,8 +40,7 @@ inherited WatchesWindow: TWatchesWindow
     72FFCF9971FFCE986FFFCB956EFFC9936BFFC39679F4A670516B000000000000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 776
   inherited BGPanel: TPanel
     Width = 760
     Height = 229
@@ -86,6 +85,8 @@ inherited WatchesWindow: TWatchesWindow
           OnInitChildren = WatchesViewInitChildren
           OnInitNode = WatchesViewInitNode
           OnKeyDown = WatchesViewKeyDown
+          Touch.InteractiveGestures = [igPan, igPressAndTap]
+          Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
           Columns = <
             item
               Position = 0
@@ -158,8 +159,6 @@ inherited WatchesWindow: TWatchesWindow
     end
   end
   object vilCodeImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 8
@@ -227,8 +226,6 @@ inherited WatchesWindow: TWatchesWindow
     Top = 136
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 16
@@ -243,19 +240,19 @@ inherited WatchesWindow: TWatchesWindow
         Name = 'Delete'
       end
       item
-        CollectionIndex = 67
+        CollectionIndex = 68
         CollectionName = 'Plus'
         Disabled = False
         Name = 'Plus'
       end
       item
-        CollectionIndex = 61
+        CollectionIndex = 62
         CollectionName = 'Minus'
         Disabled = False
         Name = 'Minus'
       end
       item
-        CollectionIndex = 132
+        CollectionIndex = 134
         CollectionName = 'Watch'
         Disabled = False
         Name = 'Watch'

@@ -62,7 +62,7 @@ type
     procedure FormCreate(Sender: TObject); override;
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction); override;
 
     // used by buttons
     procedure StrElementMouseDown(Sender: TObject; Button: TMouseButton;

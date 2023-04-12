@@ -49,7 +49,7 @@ object FClassEditor: TFClassEditor
     Top = 10
     Width = 364
     Height = 435
-    ActivePage = TSMethods
+    ActivePage = TSClass
     TabOrder = 0
     OnChange = PageControlChange
     object TSClass: TTabSheet
@@ -96,8 +96,8 @@ object FClassEditor: TFClassEditor
         OnKeyPress = EClassKeyPress
       end
       object BClassApply: TButton
-        Left = 96
-        Top = 375
+        Left = 94
+        Top = 378
         Width = 80
         Height = 25
         Action = ActionApply

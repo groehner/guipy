@@ -103,8 +103,9 @@ type
 
   IEditor = interface (IFile)
   ['{15E8BD28-6E18-4D49-8499-1DB594AB88F7}']
-
+    procedure Activate(Primary : Boolean = True);
     function ActivateView(ViewFactory : IEditorViewFactory) : IEditorView;
+    function CanClose: Boolean;
     procedure Close;
     function GetSynEdit : TSynEdit;
     function GetSynEdit2 : TSynEdit;
@@ -112,38 +113,59 @@ type
     function GetBreakPoints : TObjectList;
     function GetCaretPos: TPoint;
     function GetEditorState: string;
+    function GetFileName: string;
+    function GetFileTitle: string;
+    function GetFileId: string;
+    function GetModified: Boolean;
     function GetFileEncoding : TFileSaveFormat;
-    function GetEncodedText : AnsiString;
-    function GetSourceScanner : IInterface;
+    function GetForm : TForm;
     function GetDocSymbols: TObject;
+    function GetEncodedText : AnsiString;
+    function GetTabControlIndex : integer;
     function GetReadOnly : Boolean;
     function GetGUIFormOpen: Boolean;
     procedure SetGUIFormOpen(Value: Boolean);
+    function GetRemoteFileName: string;
+    function GetHasSearchHighlight: Boolean;
+    function GetSSHServer: string;
     procedure SetReadOnly(Value : Boolean);
+    procedure SetHasSearchHighlight(Value : Boolean);
     procedure SetFileEncoding(FileEncoding : TFileSaveFormat);
+    procedure SetHighlighter(const HighlighterName: string);
     procedure OpenFile(const AFileName: string; HighlighterName : string = '');
+    procedure OpenRemoteFile(const FileName, ServerName: string);
+    function SaveToRemoteFile(const FileName, ServerName: string) : Boolean;
     function HasPythonFile : Boolean;
     procedure ExecuteSelection;
     procedure SplitEditorHorizontally;
     procedure SplitEditorVertrically;
+    procedure Retranslate;
     procedure RefreshSymbols;
-
-    property SynEdit : TSynEdit read GetSynEdit;
-    property SynEdit2 : TSynEdit read GetSynEdit2;
-    property ActiveSynEdit : TSynEdit read GetActiveSynEdit;
-    property BreakPoints : TObjectList read GetBreakPoints;
-    property FileEncoding : TFileSaveFormat read GetFileEncoding write SetFileEncoding;
-    property EncodedText : AnsiString read GetEncodedText;
-    property SourceScanner : IInterface read GetSourceScanner;  // IAsyncSourceScanner
+    property FileName: string read GetFileName;
+    property RemoteFileName : string read GetRemoteFileName;
+    property FileId: string read GetFileId;
+    property SSHServer: string read GetSSHServer;
+    property FileTitle: string read GetFileTitle;
+    //property Modified: Boolean read GetModified;
+    property SynEdit: TSynEdit read GetSynEdit;
+    property SynEdit2: TSynEdit read GetSynEdit2;
+    property ActiveSynEdit: TSynEdit read GetActiveSynEdit;
+    property BreakPoints: TObjectList read GetBreakPoints;
+    property FileEncoding: TFileSaveFormat read GetFileEncoding write SetFileEncoding;
+    property EncodedText: AnsiString read GetEncodedText;
+    property Form: TForm read GetForm;
     property DocSymbols: TObject read GetDocSymbols;
     property GUIFormOpen : Boolean read GetGUIFormOpen write SetGUIFormOpen;
+    property HasSearchHighlight: Boolean read GetHasSearchHighlight
+      write SetHasSearchHighlight;
+    property TabControlIndex : integer read GetTabControlIndex;
     property ReadOnly : Boolean read GetReadOnly write SetReadOnly;
   end;
 
   IFileFactory = interface
     function CanCloseAll: Boolean;
     procedure CloseAll;
-    function CreateTabSheet(FileKind: TFileKind; AOwner: TSpTBXCustomTabControl): IFile;
+    function NewFile(FileKind: TFileKind; TabControlIndex: integer = 1): IFile;
     function GetFileCount: integer;
     function GetFile(Index: integer): IFile;
     function GetFileByName(const Name : string): IFile;
@@ -162,7 +184,7 @@ type
   ['{FDAE7FBD-4B61-4D7C-BEE6-DB7740A225E8}']
     function CanCloseAll: Boolean;
     procedure CloseAll;
-    function CreateTabSheet(AOwner: TSpTBXCustomTabControl): IEditor;
+    function NewEditor(TabControlIndex:Integer = 1): IEditor;
     function GetEditorCount: integer;
     function GetEditor(Index: integer): IEditor;
     function GetEditorByName(const Name : string): IEditor;
@@ -173,6 +195,8 @@ type
     function GetViewFactory(Index: integer): IEditorViewFactory;
     procedure SetupEditorViewsMenu(ViewsMenu: TSpTBXItem; IL: TCustomImageList);
     procedure UpdateEditorViewsMenu(ViewsMenu: TSpTBXItem);
+    procedure CreateRecoveryFiles;
+    procedure RecoverFiles;
     procedure LockList;
     procedure UnlockList;
     procedure ApplyToEditors(const Proc: TProc<IEditor>);

@@ -7,10 +7,7 @@ inherited ToolProperties: TToolProperties
   ClientWidth = 444
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ExplicitWidth = 450
-  ExplicitHeight = 527
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
@@ -91,23 +88,23 @@ inherited ToolProperties: TToolProperties
           object Label15: TLabel
             Left = 14
             Top = 28
-            Width = 31
-            Height = 13
+            Width = 35
+            Height = 15
             Caption = '&Name:'
             FocusControl = edEnvName
           end
           object Label16: TLabel
             Left = 14
             Top = 50
-            Width = 30
-            Height = 13
+            Width = 31
+            Height = 15
             Caption = '&Value:'
           end
           object edEnvName: TEdit
             Left = 77
             Top = 23
             Width = 171
-            Height = 21
+            Height = 23
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 0
           end
@@ -115,7 +112,7 @@ inherited ToolProperties: TToolProperties
             Left = 77
             Top = 48
             Width = 334
-            Height = 21
+            Height = 23
             Cursor = crIBeam
             Anchors = [akLeft, akTop, akRight]
             HideSelection = False
@@ -207,16 +204,16 @@ inherited ToolProperties: TToolProperties
           object Label1: TLabel
             Left = 6
             Top = 16
-            Width = 31
-            Height = 13
+            Width = 35
+            Height = 15
             Caption = '&Name:'
             FocusControl = edName
           end
           object Label5: TLabel
             Left = 6
             Top = 43
-            Width = 57
-            Height = 13
+            Width = 63
+            Height = 15
             Caption = 'Desc&ription:'
             FocusControl = edDescription
           end
@@ -237,7 +234,7 @@ inherited ToolProperties: TToolProperties
             Left = 90
             Top = 13
             Width = 193
-            Height = 21
+            Height = 23
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 0
           end
@@ -245,7 +242,7 @@ inherited ToolProperties: TToolProperties
             Left = 90
             Top = 40
             Width = 325
-            Height = 21
+            Height = 23
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 1
           end
@@ -264,32 +261,32 @@ inherited ToolProperties: TToolProperties
           object Label2: TLabel
             Left = 6
             Top = 18
-            Width = 56
-            Height = 13
+            Width = 64
+            Height = 15
             Caption = '&Application:'
             FocusControl = SynApplication
           end
           object Label6: TLabel
             Left = 6
             Top = 43
-            Width = 59
-            Height = 13
+            Width = 62
+            Height = 15
             Caption = '&Parameters:'
             FocusControl = SynParameters
           end
           object Label7: TLabel
             Left = 6
             Top = 66
-            Width = 89
-            Height = 13
+            Width = 98
+            Height = 15
             Caption = 'Working &directory:'
             FocusControl = SynWorkDir
           end
           object Label3: TLabel
             Left = 8
             Top = 86
-            Width = 252
-            Height = 13
+            Width = 272
+            Height = 15
             Caption = 'Parameters : Shift+Ctrl+P, Modifiers : Shift+Ctrl+M '
             Enabled = False
           end
@@ -308,16 +305,18 @@ inherited ToolProperties: TToolProperties
             TabOrder = 0
             OnEnter = SynApplicationEnter
             UseCodeFolding = False
+            ExtraLineSpacing = 0
             Gutter.Font.Charset = DEFAULT_CHARSET
             Gutter.Font.Color = clWindowText
             Gutter.Font.Height = -11
             Gutter.Font.Name = 'Courier New'
             Gutter.Font.Style = []
+            Gutter.Font.Quality = fqClearTypeNatural
+            Gutter.Visible = False
             Gutter.Bands = <
               item
                 Kind = gbkMarks
-                Visible = True
-                Width = 13
+                Width = 15
               end
               item
                 Kind = gbkLineNumbers
@@ -326,16 +325,13 @@ inherited ToolProperties: TToolProperties
                 Kind = gbkFold
               end
               item
-                Kind = gbkTrackChanges
-              end
-              item
                 Kind = gbkMargin
-                Visible = True
-                Width = 3
+                Width = 2
               end>
             HideSelection = True
             Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
             ScrollBars = ssNone
+            SelectedColor.Alpha = 0.400000005960464500
             WantReturns = False
           end
           object SynParameters: TSynEdit
@@ -353,16 +349,18 @@ inherited ToolProperties: TToolProperties
             TabOrder = 2
             OnEnter = SynParametersEnter
             UseCodeFolding = False
+            ExtraLineSpacing = 0
             Gutter.Font.Charset = DEFAULT_CHARSET
             Gutter.Font.Color = clWindowText
             Gutter.Font.Height = -11
             Gutter.Font.Name = 'Courier New'
             Gutter.Font.Style = []
+            Gutter.Font.Quality = fqClearTypeNatural
+            Gutter.Visible = False
             Gutter.Bands = <
               item
                 Kind = gbkMarks
-                Visible = True
-                Width = 13
+                Width = 15
               end
               item
                 Kind = gbkLineNumbers
@@ -371,16 +369,13 @@ inherited ToolProperties: TToolProperties
                 Kind = gbkFold
               end
               item
-                Kind = gbkTrackChanges
-              end
-              item
                 Kind = gbkMargin
-                Visible = True
-                Width = 3
+                Width = 2
               end>
             HideSelection = True
             Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
             ScrollBars = ssNone
+            SelectedColor.Alpha = 0.400000005960464500
             WantReturns = False
           end
           object SynWorkDir: TSynEdit
@@ -398,16 +393,18 @@ inherited ToolProperties: TToolProperties
             TabOrder = 3
             OnEnter = SynWorkDirEnter
             UseCodeFolding = False
+            ExtraLineSpacing = 0
             Gutter.Font.Charset = DEFAULT_CHARSET
             Gutter.Font.Color = clWindowText
             Gutter.Font.Height = -11
             Gutter.Font.Name = 'Courier New'
             Gutter.Font.Style = []
+            Gutter.Font.Quality = fqClearTypeNatural
+            Gutter.Visible = False
             Gutter.Bands = <
               item
                 Kind = gbkMarks
-                Visible = True
-                Width = 13
+                Width = 15
               end
               item
                 Kind = gbkLineNumbers
@@ -416,16 +413,13 @@ inherited ToolProperties: TToolProperties
                 Kind = gbkFold
               end
               item
-                Kind = gbkTrackChanges
-              end
-              item
                 Kind = gbkMargin
-                Visible = True
-                Width = 3
+                Width = 2
               end>
             HideSelection = True
             Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
             ScrollBars = ssNone
+            SelectedColor.Alpha = 0.400000005960464500
             WantReturns = False
           end
           object btnAppDir: TButton
@@ -463,23 +457,23 @@ inherited ToolProperties: TToolProperties
           object lbShortcut: TLabel
             Left = 6
             Top = 18
-            Width = 45
-            Height = 13
+            Width = 48
+            Height = 15
             Caption = '&Shortcut:'
           end
           object lbContext: TLabel
             Left = 6
             Top = 40
-            Width = 43
-            Height = 13
+            Width = 45
+            Height = 15
             Caption = 'Conte&xt:'
             FocusControl = cbContext
           end
           object Label13: TLabel
             Left = 270
             Top = 18
-            Width = 50
-            Height = 13
+            Width = 51
+            Height = 15
             Anchors = [akTop, akRight]
             Caption = 'Sa&ve files:'
             FocusControl = cbSaveFiles
@@ -488,7 +482,7 @@ inherited ToolProperties: TToolProperties
             Left = 90
             Top = 36
             Width = 140
-            Height = 21
+            Height = 23
             Hint = 'Specifies the context in which'#13#10'the tool is enabled.'
             Style = csDropDownList
             TabOrder = 0
@@ -502,7 +496,7 @@ inherited ToolProperties: TToolProperties
             Left = 271
             Top = 37
             Width = 142
-            Height = 21
+            Height = 23
             Style = csDropDownList
             Anchors = [akTop, akRight]
             TabOrder = 1
@@ -526,24 +520,24 @@ inherited ToolProperties: TToolProperties
           object Label10: TLabel
             Left = 6
             Top = 26
-            Width = 53
-            Height = 13
+            Width = 54
+            Height = 15
             Caption = 'Std. &Input:'
             FocusControl = cbStandardInput
           end
           object Label11: TLabel
             Left = 6
             Top = 54
-            Width = 61
-            Height = 13
+            Width = 64
+            Height = 15
             Caption = 'Std. &Output:'
             FocusControl = cbStandardOutput
           end
           object Label12: TLabel
             Left = 8
             Top = 82
-            Width = 88
-            Height = 13
+            Width = 95
+            Height = 15
             Caption = 'Messages &Format:'
             FocusControl = edMessagesFormat
           end
@@ -615,7 +609,7 @@ inherited ToolProperties: TToolProperties
             Left = 90
             Top = 20
             Width = 140
-            Height = 21
+            Height = 23
             Hint = 
               'Select option other than None to '#13#10'feed the corresponding inform' +
               'ation'#13#10'to the standard input.'
@@ -632,7 +626,7 @@ inherited ToolProperties: TToolProperties
             Left = 90
             Top = 49
             Width = 140
-            Height = 21
+            Height = 23
             Hint = 
               'Select option other than None to '#13#10'redirect the output to the '#13#10 +
               'corresponding outlet.'
@@ -730,25 +724,20 @@ inherited ToolProperties: TToolProperties
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 21
         CollectionName = 'Delete'
-        Disabled = False
         Name = 'Delete'
       end
       item
         CollectionIndex = 88
         CollectionName = 'Refresh'
-        Disabled = False
         Name = 'Refresh'
       end
       item
         CollectionIndex = 68
         CollectionName = 'Plus'
-        Disabled = False
         Name = 'Plus'
       end>
     ImageCollection = CommandsDataModule.icSVGImages

@@ -48,15 +48,21 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
     000000000000000000F77E7E1023000000000000000000000000F77D7E11FFFF
     0000E00F00008003000000010000000100000001000000010000000100000003
     00000007000080030000E0010000FF800000FFC00000FFE00000FFF00000}
+  ExplicitWidth = 400
+  ExplicitHeight = 517
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   inherited BGPanel: TPanel
     Width = 384
     Height = 478
+    ExplicitWidth = 384
+    ExplicitHeight = 478
     inherited FGPanel: TPanel
       Width = 380
       Height = 474
       ParentBackground = False
+      ExplicitWidth = 380
+      ExplicitHeight = 474
       object TBXDock: TSpTBXDock
         Left = 0
         Top = 0
@@ -78,11 +84,13 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
             Caption = 'Clear'
             Hint = 'Clear all fields'
             ImageIndex = 0
+            ImageName = 'Delete'
             OnClick = TiClearClick
           end
           object TBXSubmenuItem2: TSpTBXSubmenuItem
             Caption = 'Options'
             ImageIndex = 4
+            ImageName = 'Setup'
             object CI_DOTALL: TSpTBXItem
               Caption = 'DOTALL'
               Hint = 'Sets the DOTALL re flag'
@@ -174,6 +182,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
             Caption = 'Execute'
             Hint = 'Execute search or match'
             ImageIndex = 1
+            ImageName = 'Execute'
             OnClick = TIExecuteClick
           end
           object TBXSeparatorItem3: TSpTBXSeparatorItem
@@ -182,6 +191,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
             Caption = 'Help'
             Hint = 'Show Python Help on the re module'
             ImageIndex = 5
+            ImageName = 'Help'
             OnClick = tiHelpClick
           end
         end
@@ -196,6 +206,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
         object lbStatusBar: TSpTBXLabelItem
           Caption = 'Not executed'
           ImageIndex = 3
+          ImageName = 'Stop'
         end
       end
       object pnlBackground: TPanel
@@ -218,7 +229,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
             Left = 1
             Top = 1
             Width = 376
-            Height = 21
+            Height = 22
             Caption = 'Groups:'
             Align = alTop
             Font.Charset = DEFAULT_CHARSET
@@ -233,9 +244,9 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
           end
           object GroupsView: TVirtualStringTree
             Left = 1
-            Top = 22
+            Top = 23
             Width = 376
-            Height = 115
+            Height = 114
             Align = alClient
             BevelEdges = []
             BevelInner = bvNone
@@ -249,6 +260,8 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
             TreeOptions.PaintOptions = [toHideSelection, toHotTrack, toShowButtons, toShowDropmark, toShowHorzGridLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
             TreeOptions.StringOptions = [toAutoAcceptEditChange]
             OnGetText = GroupsViewGetText
+            Touch.InteractiveGestures = [igPan, igPressAndTap]
+            Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
             Columns = <
               item
                 Alignment = taRightJustify
@@ -300,9 +313,9 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
             TabOrder = 0
             object RegExpText: TRichEdit
               Left = 1
-              Top = 22
+              Top = 23
               Width = 374
-              Height = 57
+              Height = 56
               Align = alClient
               BevelInner = bvNone
               BevelOuter = bvNone
@@ -318,12 +331,14 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
               TabOrder = 0
               Zoom = 100
               OnChange = RegExpTextChange
+              ExplicitTop = 22
+              ExplicitHeight = 57
             end
             object TBXLabel3: TSpTBXLabel
               Left = 1
               Top = 1
               Width = 374
-              Height = 21
+              Height = 22
               Caption = 'Regular Expression'
               Align = alTop
               Font.Charset = DEFAULT_CHARSET
@@ -373,9 +388,9 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
               TabOrder = 0
               object SearchText: TRichEdit
                 Left = 1
-                Top = 22
+                Top = 23
                 Width = 372
-                Height = 70
+                Height = 69
                 Align = alClient
                 BevelInner = bvNone
                 BevelOuter = bvNone
@@ -391,12 +406,14 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 TabOrder = 0
                 Zoom = 100
                 OnChange = RegExpTextChange
+                ExplicitTop = 22
+                ExplicitHeight = 70
               end
               object TBXLabel4: TSpTBXLabel
                 Left = 1
                 Top = 1
                 Width = 372
-                Height = 21
+                Height = 22
                 Caption = 'Search Text:'
                 Align = alTop
                 Font.Charset = DEFAULT_CHARSET
@@ -464,7 +481,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 Left = 2
                 Top = 2
                 Width = 327
-                Height = 21
+                Height = 22
                 Caption = 'Match:'
                 Anchors = [akLeft, akTop, akRight]
                 Font.Charset = DEFAULT_CHARSET
@@ -481,9 +498,10 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 Left = 335
                 Top = 2
                 Width = 41
-                Height = 19
+                Height = 20
                 Hint = 'Show a found match'
                 Anchors = [akTop, akRight]
+                DoubleBuffered = True
                 Enabled = False
                 NumbersOnly = True
                 ParentDoubleBuffered = False
@@ -492,7 +510,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 SpinButton.Left = 27
                 SpinButton.Top = 0
                 SpinButton.Width = 14
-                SpinButton.Height = 19
+                SpinButton.Height = 20
                 SpinButton.Align = alRight
                 SpinButton.Enabled = False
                 SpinOptions.Decimal = 0
@@ -536,13 +554,13 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
         Name = 'Check'
       end
       item
-        CollectionIndex = 109
+        CollectionIndex = 110
         CollectionName = 'Stop'
         Disabled = False
         Name = 'Stop'
       end
       item
-        CollectionIndex = 102
+        CollectionIndex = 103
         CollectionName = 'Setup'
         Disabled = False
         Name = 'Setup'

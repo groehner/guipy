@@ -181,6 +181,7 @@ inherited CodeTemplates: TCodeTemplates
         Gutter.Font.Height = -11
         Gutter.Font.Name = 'Courier New'
         Gutter.Font.Style = []
+
         Gutter.Bands = <
           item
             Kind = gbkMarks

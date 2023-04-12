@@ -104,7 +104,6 @@ uses
   JvDockVIDStyle in 'JvDockVIDStyle.pas',
   cCodeCompletion in 'cCodeCompletion.pas',
   dlgStyleSelector in 'dlgStyleSelector.pas' {StyleSelectorForm},
-  cVirtualStringTreeHelper in 'cVirtualStringTreeHelper.pas',
   VCL.Styles.PyScripter in 'VCL.Styles.PyScripter.pas' {/  Vcl.Styles.Utils.Forms;},
   cPyScripterSettings in 'cPyScripterSettings.pas',
   cPySupportTypes in 'cPySupportTypes.pas',
@@ -208,7 +207,8 @@ uses
   UQtItemViews in 'Components\PyQt\UQtItemViews.pas',
   UQtScrollable in 'Components\PyQt\UQtScrollable.pas',
   UQtSpinBoxes in 'Components\PyQt\UQtSpinBoxes.pas',
-  UQtWidgetDescendants in 'Components\PyQt\UQtWidgetDescendants.pas';
+  UQtWidgetDescendants in 'Components\PyQt\UQtWidgetDescendants.pas',
+  dlgFileTemplates in 'dlgFileTemplates.pas';
 
 {$R *.RES}
 {$R WebCopyAvi.RES}

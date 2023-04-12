@@ -7,6 +7,7 @@ object FGUIForm: TFGUIForm
   ClientWidth = 300
   Color = clBtnFace
   ParentFont = True
+  FormStyle = fsStayOnTop
   OldCreateOrder = True
   Position = poDefault
   Visible = True
@@ -16,5 +17,5 @@ object FGUIForm: TFGUIForm
   OnDestroy = FormDestroy
   OnResize = FormResize
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
 end

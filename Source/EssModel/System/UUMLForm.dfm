@@ -247,7 +247,6 @@ object FUMLForm: TFUMLForm
       Gutter.Bands = <
         item
           Kind = gbkMarks
-          Visible = True
           Width = 13
         end
         item
@@ -261,11 +260,11 @@ object FUMLForm: TFUMLForm
         end
         item
           Kind = gbkMargin
-          Visible = True
           Width = 3
         end>
       Highlighter = CommandsDataModule.SynGeneralSyn
       RightEdge = 0
+      SelectedColor.Alpha = 0.400000005960464500
       OnChange = SynEditChange
     end
   end

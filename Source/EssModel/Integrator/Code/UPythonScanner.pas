@@ -57,6 +57,8 @@ interface
 
 implementation
 
+uses Character;
+
 {--- Scanner ------------------------------------------------------------------}
 
 constructor TPythonScannerWithTokens.Create;
@@ -257,12 +259,12 @@ begin
     AddOne;
     TokenTyp:= 'int'; // instead of char
   end else //Identifier
-    if CharInSet(CurrPos^, ['A'..'Z', 'a'..'z', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß', '_', '$']) then begin
+    if CurrPos^.isLetter or (CurrPos^ = '_') then begin
       while CurrPos^ = '_' do
         GetChar;
       AddOne;
       while true do begin
-        while CharInSet(CurrPos^, ['A'..'Z', 'a'..'z', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß', '_', '0'..'9']) do
+        while CurrPos^.IsLetterOrDigit or (CurrPos^ = '_') do
           AddOne;
         if CompoundTokens and (CurrPos^ = '.') then begin
           AddOne;

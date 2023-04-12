@@ -33,7 +33,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 324
+      CustomWidth = 0
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -116,6 +116,8 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
+    ExplicitWidth = 286
+    ExplicitHeight = 83
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -250,7 +252,7 @@ object PyIDEMainForm: TPyIDEMainForm
     object TBControlItem1: TTBControlItem
     end
     object DockTopPanel: TPanel
-      Tag = 83122
+      Tag = 94678
       Left = 0
       Top = 0
       Width = 946
@@ -442,7 +444,53 @@ object PyIDEMainForm: TPyIDEMainForm
             Action = actExecSelection
           end
         end
-        object TBXSeparatorItem13: TSpTBXSeparatorItem
+        object SpTBXSeparatorItem29: TSpTBXSeparatorItem
+        end
+        object mnSpelling: TSpTBXSubmenuItem
+          Caption = 'Spelling'
+          Visible = False
+          OnPopup = mnSpellingPopup
+          object mnSpellCheckTopSeparator: TSpTBXSeparatorItem
+          end
+          object mnSpellCheckAdd: TSpTBXItem
+            Action = CommandsDataModule.actSynSpellErrorAdd
+          end
+          object mnSpellCheckDelete: TSpTBXItem
+            Action = CommandsDataModule.actSynSpellErrorDelete
+          end
+          object mnSpellCheckIgnore: TSpTBXItem
+            Action = CommandsDataModule.actSynSpellErrorIgnore
+          end
+          object mnSpellCheckIgnoreOnce: TSpTBXItem
+            Action = CommandsDataModule.actSynSpellErrorIgnoreOnce
+          end
+          object mnSpellCheckSecondSeparator: TSpTBXSeparatorItem
+          end
+          object SpTBXItem20: TSpTBXItem
+            Action = CommandsDataModule.actSynSpellCheckWord
+          end
+          object SpTBXItem21: TSpTBXItem
+            Action = CommandsDataModule.actSynSpellCheckLine
+          end
+          object SpTBXItem22: TSpTBXItem
+            Action = CommandsDataModule.actSynSpellCheckSelection
+          end
+          object SpTBXItem23: TSpTBXItem
+            Action = CommandsDataModule.actSynSpellCheckFile
+          end
+          object SpTBXSeparatorItem31: TSpTBXSeparatorItem
+          end
+          object SpTBXItem24: TSpTBXItem
+            Action = CommandsDataModule.actSynSpellClearErrors
+          end
+          object SpTBXSeparatorItem32: TSpTBXSeparatorItem
+          end
+          object SpTBXItem25: TSpTBXItem
+            Action = CommandsDataModule.actSynSpellCheckAsYouType
+          end
+        end
+        object mnIsertCodeTemplate: TSpTBXItem
+          Action = CommandsDataModule.actInsertTemplate
         end
         object mnEditParameters1: TSpTBXSubmenuItem
           Caption = 'Parameters'
@@ -457,9 +505,6 @@ object PyIDEMainForm: TPyIDEMainForm
           object mnReplaceParameter: TSpTBXItem
             Action = CommandsDataModule.actReplaceParameters
           end
-        end
-        object mnIsertCodeTemplate: TSpTBXItem
-          Action = CommandsDataModule.actInsertTemplate
         end
         object N6: TSpTBXSeparatorItem
         end
@@ -1132,7 +1177,9 @@ object PyIDEMainForm: TPyIDEMainForm
             Action = CommandsDataModule.actCodeTemplates
           end
           object mnFileTemplates: TSpTBXItem
-            Action = CommandsDataModule.actFileTemplates
+            Caption = '&File Templates...'
+            Hint = 'Add/Remove file templates'
+            HelpContext = 640
           end
         end
         object TBXSeparatorItem15: TSpTBXSeparatorItem
@@ -1427,12 +1474,13 @@ object PyIDEMainForm: TPyIDEMainForm
       Top = 22
       Width = 763
       Height = 55
-      ActiveTabIndex = 4
+      ActiveTabIndex = 0
       TabAutofit = True
       TabAutofitMaxSize = 80
       HiddenItems = <>
       object SpTBXTabItem1: TSpTBXTabItem
         Caption = 'Program'
+        Checked = True
         CustomWidth = 80
       end
       object SpTBXTabItem2: TSpTBXTabItem
@@ -1449,7 +1497,6 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       object SpTBXTabItem5: TSpTBXTabItem
         Caption = 'Qt Controls'
-        Checked = True
         CustomWidth = 80
       end
       object SpTBXTabSheetTkinter: TSpTBXTabSheet
@@ -2009,77 +2056,6 @@ object PyIDEMainForm: TPyIDEMainForm
           end
         end
       end
-      object SpTBXTabSheetProgram: TSpTBXTabSheet
-        Left = 0
-        Top = 25
-        Width = 763
-        Height = 30
-        Caption = 'Program'
-        ImageIndex = -1
-        TabItem = 'SpTBXTabItem1'
-        object ToolbarProgram: TToolBar
-          Left = 2
-          Top = 0
-          Width = 757
-          Height = 26
-          Align = alClient
-          ButtonHeight = 27
-          ButtonWidth = 30
-          Color = clBtnFace
-          Images = ILProgram
-          ParentColor = False
-          TabOrder = 0
-          object TBNew: TToolButton
-            Left = 0
-            Top = 0
-            Action = actFileNewModule
-            ImageIndex = 0
-          end
-          object TBClass: TToolButton
-            Left = 30
-            Top = 0
-            Hint = 'New class'
-            ImageIndex = 1
-            OnClick = actUMLNewClassExecute
-          end
-          object TBStructogram: TToolButton
-            Left = 60
-            Top = 0
-            Hint = 'New structogram'
-            ImageIndex = 2
-            OnClick = actFileNewStructogramExecute
-          end
-          object TBSequence: TToolButton
-            Left = 90
-            Top = 0
-            Hint = 'New sequence diagram'
-            ImageIndex = 3
-            OnClick = actFileNewSequencediagramExecute
-          end
-          object TBConsole: TToolButton
-            Tag = 1
-            Left = 120
-            Top = 0
-            Action = actFileNewModule
-            ImageIndex = 4
-          end
-          object TBTkApplication: TToolButton
-            Left = 150
-            Top = 0
-            Hint = 'New Tk/TTK application'
-            ImageIndex = 5
-            OnClick = actFileNewTkinterExecute
-          end
-          object TBQtApplication: TToolButton
-            Left = 180
-            Top = 0
-            Hint = 'New QT Application'
-            Caption = 'Qt-Application'
-            ImageIndex = 6
-            OnClick = TBQtApplicationClick
-          end
-        end
-      end
       object SpTBXTabSheetQtBase: TSpTBXTabSheet
         Left = 0
         Top = 25
@@ -2556,6 +2532,77 @@ object PyIDEMainForm: TPyIDEMainForm
             OnClick = ToolButtonClick
             OnMouseDown = ToolButtonMouseDown
             OnStartDrag = ToolButtonStartDrag
+          end
+        end
+      end
+      object SpTBXTabSheetProgram: TSpTBXTabSheet
+        Left = 0
+        Top = 25
+        Width = 763
+        Height = 30
+        Caption = 'Program'
+        ImageIndex = -1
+        TabItem = 'SpTBXTabItem1'
+        object ToolbarProgram: TToolBar
+          Left = 2
+          Top = 0
+          Width = 757
+          Height = 26
+          Align = alClient
+          ButtonHeight = 27
+          ButtonWidth = 30
+          Color = clBtnFace
+          Images = ILProgram
+          ParentColor = False
+          TabOrder = 0
+          object TBNew: TToolButton
+            Left = 0
+            Top = 0
+            Action = actFileNewModule
+            ImageIndex = 0
+          end
+          object TBClass: TToolButton
+            Left = 30
+            Top = 0
+            Hint = 'New class'
+            ImageIndex = 1
+            OnClick = actUMLNewClassExecute
+          end
+          object TBStructogram: TToolButton
+            Left = 60
+            Top = 0
+            Hint = 'New structogram'
+            ImageIndex = 2
+            OnClick = actFileNewStructogramExecute
+          end
+          object TBSequence: TToolButton
+            Left = 90
+            Top = 0
+            Hint = 'New sequence diagram'
+            ImageIndex = 3
+            OnClick = actFileNewSequencediagramExecute
+          end
+          object TBConsole: TToolButton
+            Tag = 1
+            Left = 120
+            Top = 0
+            Action = actFileNewModule
+            ImageIndex = 4
+          end
+          object TBTkApplication: TToolButton
+            Left = 150
+            Top = 0
+            Hint = 'New Tk/TTK application'
+            ImageIndex = 5
+            OnClick = actFileNewTkinterExecute
+          end
+          object TBQtApplication: TToolButton
+            Left = 180
+            Top = 0
+            Hint = 'New QT Application'
+            Caption = 'Qt-Application'
+            ImageIndex = 6
+            OnClick = TBQtApplicationClick
           end
         end
       end
@@ -3665,6 +3712,12 @@ object PyIDEMainForm: TPyIDEMainForm
       Caption = 'Qt-Application'
       Hint = 'New QT Application'
     end
+    object actEditorZoomReset: TAction
+      Category = 'View'
+      Caption = '&Reset Zoom'
+      Hint = 'Reset the font size of the editor to its default'
+      OnExecute = actEditorZoomResetExecute
+    end
   end
   object LocalAppStorage: TJvAppIniFileStorage
     StorageOptions.BooleanStringTrueValues = 'TRUE, YES, Y'
@@ -3725,7 +3778,7 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'Print'
       end
       item
-        CollectionIndex = 127
+        CollectionIndex = 128
         CollectionName = 'Undo'
         Disabled = False
         Name = 'Undo'
@@ -3899,19 +3952,19 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'RunToCursor'
       end
       item
-        CollectionIndex = 107
+        CollectionIndex = 108
         CollectionName = 'StepIn'
         Disabled = False
         Name = 'StepIn'
       end
       item
-        CollectionIndex = 109
+        CollectionIndex = 110
         CollectionName = 'StepOver'
         Disabled = False
         Name = 'StepOver'
       end
       item
-        CollectionIndex = 108
+        CollectionIndex = 109
         CollectionName = 'StepOut'
         Disabled = False
         Name = 'StepOut'
@@ -3935,13 +3988,13 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'CallStack'
       end
       item
-        CollectionIndex = 131
+        CollectionIndex = 132
         CollectionName = 'VariablesWin'
         Disabled = False
         Name = 'VariablesWin'
       end
       item
-        CollectionIndex = 135
+        CollectionIndex = 136
         CollectionName = 'WatchesWin'
         Disabled = False
         Name = 'WatchesWin'
@@ -3971,7 +4024,7 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'CodeComment'
       end
       item
-        CollectionIndex = 126
+        CollectionIndex = 127
         CollectionName = 'UnCodeComment'
         Disabled = False
         Name = 'UnCodeComment'
@@ -4001,25 +4054,25 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'PageSetup'
       end
       item
-        CollectionIndex = 113
+        CollectionIndex = 114
         CollectionName = 'TabNext'
         Disabled = False
         Name = 'TabNext'
       end
       item
-        CollectionIndex = 114
+        CollectionIndex = 115
         CollectionName = 'TabPrevious'
         Disabled = False
         Name = 'TabPrevious'
       end
       item
-        CollectionIndex = 122
+        CollectionIndex = 123
         CollectionName = 'Tools'
         Disabled = False
         Name = 'Tools'
       end
       item
-        CollectionIndex = 123
+        CollectionIndex = 124
         CollectionName = 'ToolsSetup'
         Disabled = False
         Name = 'ToolsSetup'
@@ -4031,7 +4084,7 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'FileExplorer'
       end
       item
-        CollectionIndex = 120
+        CollectionIndex = 121
         CollectionName = 'TodoWin'
         Disabled = False
         Name = 'TodoWin'
@@ -4091,13 +4144,13 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'Keyboard'
       end
       item
-        CollectionIndex = 128
+        CollectionIndex = 129
         CollectionName = 'UnitTestWin'
         Disabled = False
         Name = 'UnitTestWin'
       end
       item
-        CollectionIndex = 111
+        CollectionIndex = 112
         CollectionName = 'Styles'
         Disabled = False
         Name = 'Styles'
@@ -4109,13 +4162,13 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'Assembly'
       end
       item
-        CollectionIndex = 138
+        CollectionIndex = 139
         CollectionName = 'ZoomIn'
         Disabled = False
         Name = 'ZoomIn'
       end
       item
-        CollectionIndex = 139
+        CollectionIndex = 140
         CollectionName = 'ZoomOut'
         Disabled = False
         Name = 'ZoomOut'
@@ -4157,19 +4210,19 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'GoToError'
       end
       item
-        CollectionIndex = 137
+        CollectionIndex = 138
         CollectionName = 'WordWrap'
         Disabled = False
         Name = 'WordWrap'
       end
       item
-        CollectionIndex = 106
+        CollectionIndex = 107
         CollectionName = 'SplitVertical'
         Disabled = False
         Name = 'SplitVertical'
       end
       item
-        CollectionIndex = 105
+        CollectionIndex = 106
         CollectionName = 'SplitHorizontal'
         Disabled = False
         Name = 'SplitHorizontal'
@@ -4229,19 +4282,19 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'Link'
       end
       item
-        CollectionIndex = 136
+        CollectionIndex = 137
         CollectionName = 'Web'
         Disabled = False
         Name = 'Web'
       end
       item
-        CollectionIndex = 112
+        CollectionIndex = 113
         CollectionName = 'TabClose'
         Disabled = False
         Name = 'TabCLose'
       end
       item
-        CollectionIndex = 116
+        CollectionIndex = 117
         CollectionName = 'TabsClose'
         Disabled = False
         Name = 'TabsClose'
@@ -4259,7 +4312,7 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'Download'
       end
       item
-        CollectionIndex = 130
+        CollectionIndex = 131
         CollectionName = 'Upload'
         Disabled = False
         Name = 'Upload'
@@ -4271,7 +4324,7 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'Layouts'
       end
       item
-        CollectionIndex = 115
+        CollectionIndex = 116
         CollectionName = 'Tabs'
         Disabled = False
         Name = 'Tabs'
@@ -4295,73 +4348,73 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'Setup'
       end
       item
-        CollectionIndex = 140
+        CollectionIndex = 142
         CollectionName = 'UMLNew'
         Disabled = False
         Name = 'UMLNew'
       end
       item
-        CollectionIndex = 141
+        CollectionIndex = 143
         CollectionName = 'UMLOpen'
         Disabled = False
         Name = 'UMLOpen'
       end
       item
-        CollectionIndex = 142
+        CollectionIndex = 144
         CollectionName = 'ClassEdit'
         Disabled = False
         Name = 'ClassEdit'
       end
       item
-        CollectionIndex = 143
+        CollectionIndex = 145
         CollectionName = 'NewComment'
         Disabled = False
         Name = 'NewComment'
       end
       item
-        CollectionIndex = 144
+        CollectionIndex = 146
         CollectionName = 'Aktualisieren'
         Disabled = False
         Name = 'Aktualisieren'
       end
       item
-        CollectionIndex = 145
+        CollectionIndex = 147
         CollectionName = 'NewLayout'
         Disabled = False
         Name = 'NewLayout'
       end
       item
-        CollectionIndex = 146
+        CollectionIndex = 148
         CollectionName = 'DiagramFromFiles'
         Disabled = False
         Name = 'DiagramFromFiles'
       end
       item
-        CollectionIndex = 147
+        CollectionIndex = 149
         CollectionName = 'SaveAsPicture'
         Disabled = False
         Name = 'SaveAsPicture'
       end
       item
-        CollectionIndex = 148
+        CollectionIndex = 150
         CollectionName = 'TextDiff'
         Disabled = False
         Name = 'TextDiff'
       end
       item
-        CollectionIndex = 149
+        CollectionIndex = 151
         CollectionName = 'Configuration'
         Disabled = False
         Name = 'Configuration'
       end
       item
-        CollectionIndex = 150
+        CollectionIndex = 152
         CollectionName = 'git'
         Disabled = False
         Name = 'git'
       end
       item
-        CollectionIndex = 151
+        CollectionIndex = 153
         CollectionName = 'svn'
         Disabled = False
         Name = 'svn'

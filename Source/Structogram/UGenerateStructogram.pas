@@ -55,7 +55,7 @@ type
 
 implementation
 
-uses ComCtrls, SysUtils, UConfiguration, UUtils;
+uses ComCtrls, SysUtils, Character, UConfiguration, UUtils;
 
 constructor TGenerateStructogram.Create;
 begin
@@ -126,21 +126,17 @@ begin
 end;
 
 function TGenerateStructogram.IsIdentifier(s: string): Boolean;
-var
-  I: integer;
 begin
   Result := False;
-  I := Pos('<', s);
+  var I := Pos('<', s);
   if I > 0 then
     Delete(s, I, length(s));
   if length(s) = 0 then
     exit;
-  if not CharInSet(s[1], ['A' .. 'Z', 'a' .. 'z', 'ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü',
-    'ß', '_', '$']) then
+  if not (s[1].isLetter or (s[1] = '_')) then
     exit;
   for I := 2 to length(s) do
-    if not CharInSet(s[I], ['A' .. 'Z', 'a' .. 'z', 'ä', 'ö', 'ü', 'Ä', 'Ö',
-      'Ü', 'ß', '0' .. '9', '_', '.', '[', ']', '<', '>']) then
+    if not (s[i].IsLetterOrDigit or (Pos(s[i], '_,[]<>') > 0)) then
       exit;
   if s[length(s)] = '.' then
     exit;

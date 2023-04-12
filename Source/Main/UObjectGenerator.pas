@@ -1,8 +1,8 @@
 ﻿unit UObjectGenerator;
 
-// wird gebraucht für Sehbehinderte, die ohne GUI-Designer arbeiten,
-// zum Erzeugen von AWT/Swing-Dialogen
-// zum Erzeugen und Bearbeiten von Objekten!
+// is needed for the visually impaired working without a GUI designer,
+// for generating AWT/Swing dialogs
+// for creating and manipulating objects!
 
 interface
 

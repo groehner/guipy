@@ -41,20 +41,13 @@ inherited MessagesWindow: TMessagesWindow
     E9BDDAC3ABBDB78757800000000000000000000000000000000000000000B885
     5928B786568EB88756B1B88756B1B88756B1B88756B1B88756B1B88756B1B886
     57A9B6855763BB88551E0000000000000000000000000000000000000000}
-  ExplicitWidth = 757
-  ExplicitHeight = 257
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   inherited BGPanel: TPanel
     Width = 741
     Height = 218
-    ExplicitWidth = 741
-    ExplicitHeight = 218
     inherited FGPanel: TPanel
       Width = 737
       Height = 214
-      ExplicitWidth = 737
-      ExplicitHeight = 214
       object MessagesView: TVirtualStringTree
         Left = 0
         Top = 0
@@ -219,31 +212,25 @@ inherited MessagesWindow: TMessagesWindow
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 16
         CollectionName = 'Copy'
-        Disabled = False
         Name = 'Copy'
       end
       item
         CollectionIndex = 21
         CollectionName = 'Delete'
-        Disabled = False
         Name = 'Delete'
       end
       item
         CollectionIndex = 2
         CollectionName = 'ArrowLeft'
-        Disabled = False
         Name = 'ArrowLeft'
       end
       item
         CollectionIndex = 3
         CollectionName = 'ArrowRight'
-        Disabled = False
         Name = 'ArrowRight'
       end>
     ImageCollection = CommandsDataModule.icSVGImages

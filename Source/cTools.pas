@@ -303,6 +303,7 @@ end;
 constructor TExternalToolAction.CreateExtToolAction(AOwner: TComponent;
   ExternalTool: TExternalTool);
 var
+  S: string;
   AppFile: string;
 begin
   inherited Create(AOwner);
@@ -310,7 +311,9 @@ begin
   if Assigned(FExternalTool) then begin
     ShortCut := FExternalTool.ShortCut;
     Caption := _(FExternalTool.Caption);
-    Name := 'actTools' + MakeValidIdentifier(Caption);
+    S := StrRemoveChars(Caption , [' ', '&', '.']);  // Fix error reported by David Funtowiez
+    if IsValidIdent(S) then
+      Name := 'actTools' + S;
     Category := 'External Tools';
     Hint := _(FExternalTool.Description);
     ImageIndex := -1;
@@ -449,6 +452,23 @@ initialization
     ParseMessages := False;
     CaptureOutput := False;
     ConsoleHidden := True;
+    Utf8IO := True;
+  end;
+
+  with (ToolsCollection.Add as TToolItem).ExternalTool do begin
+    Caption := _('Format Selection');
+    Description := _('Format selected code using the "black" module');
+    ApplicationName := '$[PythonExe-Short]';
+    Parameters := '-m black -';
+    ShortCut := Vcl.Menus.Shortcut(Ord('F'), [ssShift, ssAlt]);
+    Context := tcSelectionAvailable;
+    SaveFiles := sfNone;
+    ProcessInput := piSelection;
+    ProcessOutput := poSelection;
+    ParseMessages := False;
+    CaptureOutput := False;
+    ConsoleHidden := True;
+    Utf8IO := True;
   end;
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
@@ -464,6 +484,7 @@ initialization
     ParseMessages := False;
     CaptureOutput := False;
     ConsoleHidden := True;
+    Utf8IO := True;
   end;
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin

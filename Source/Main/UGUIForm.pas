@@ -1,5 +1,17 @@
 unit UGUIForm;
 
+{ For a long time there was a very hard to find runtime error
+  when closing CodeCompletion. The cause was that when the
+  CodeCompletion window was closed, another window was activated,
+  which was a GUIForm window if it was in a certain order. This
+  opened the corresponding EditorForm window. That means when
+  typing an empty character with the CodeCompletion window open
+  in the source code of a class, it jumped to the source code
+  of the GUIForm window.
+
+  Workaround: Set FormStyle to fsStayOnTop
+  This took me 2 days to solve
+}
 interface
 
 uses SysUtils, Messages, Windows, Classes, Graphics, Forms, Controls,

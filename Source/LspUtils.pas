@@ -12,9 +12,6 @@ uses
   System.SysUtils,
   System.JSON,
   System.Generics.Collections,
-  Win.ComObj,
-  WinApi.WinInet,
-  Winapi.ShLwApi,
   WinApi.Windows;
 
 
@@ -48,32 +45,32 @@ type
     TypeParameter = 25);
 
   TSymbolKind = (
-       _File = 1,
-       Module = 2,
-       Namespace = 3,
-       Package = 4,
-       _Class = 5,
-       Method = 6,
-     _Property = 7,
-       Field = 8,
-       _Constructor = 9,
-       _Enum = 10,
-       _Interface = 11,
-       _Function = 12,
-       _Variable = 13,
-       _Constant = 14,
-       _String = 15,
+	  _File = 1,
+	  Module = 2,
+ 	  Namespace = 3,
+	  Package = 4,
+	  _Class = 5,
+ 	  Method = 6,
+  	_Property = 7,
+	  Field = 8,
+	  _Constructor = 9,
+	  _Enum = 10,
+	  _Interface = 11,
+	  _Function = 12,
+	  _Variable = 13,
+	  _Constant = 14,
+	  _String = 15,
     Number = 16,
-       _Boolean = 17,
-       _Array = 18,
-       _Object = 19,
-       _Key = 20,
-       _Null = 21,
-       _EnumMember = 22,
-       _Struct = 23,
-       _Event = 24,
-       _Operator = 25,
-       _TypeParameter = 26);
+	  _Boolean = 17,
+	  _Array = 18,
+	  _Object = 19,
+	  _Key = 20,
+	  _Null = 21,
+	  _EnumMember = 22,
+	  _Struct = 23,
+	  _Event = 24,
+	  _Operator = 25,
+	  _TypeParameter = 26);
 
    TDiagnositicSeverity = (
      Error = 1,
@@ -104,7 +101,7 @@ type
 
 function FormatJSON(const json: string): string;
 function FileIdToURI(const FilePath: string): string;
-function FileIdFromURI(const Url: string): string;
+function FileIdFromURI(const URI: string): string;
 function LSPInitializeParams(const ClientName, ClientVersion: string;
   ClientCapabilities: TJsonObject;
   InitializationOptions: TJsonObject = nil): TJsonObject;
@@ -150,7 +147,6 @@ end;
 
 function FileIdToURI(const FilePath: string): string;
 var
-  BufferLen: DWORD;
   ServerName, FileName: string;
 begin
   if FindDelimiter(':\/', FilePath) > 0 then
@@ -162,12 +158,7 @@ begin
       Result := 'file://SSH/' + ServerName + FileName;
     end
     else
-    begin
-      BufferLen := INTERNET_MAX_URL_LENGTH;
-      SetLength(Result, BufferLen);
-      OleCheck(UrlCreateFromPath(PChar(FilePath), PChar(Result), @BufferLen, 0));
-      SetLength(Result, BufferLen);
-    end;
+      Result := FilePathToURI(FilePath);
   end
   else
     // Not sure how to handle unsaved files
@@ -175,17 +166,15 @@ begin
     Result := 'file://untitled/temp/'+ FilePath;
 end;
 
-function FileIdFromURI(const Url: string): string;
-var
-  BufferLen: DWORD;
+function FileIdFromURI(const URI: string): string;
 begin
-  if Url.StartsWith('file://untitled/temp/') then
+  if URI.StartsWith('file://untitled/temp/') then
   begin
-    Result := Copy(Url, 22);
+    Result := Copy(URI, 22);
   end
-  else if Url.StartsWith('file://SSH/') then
+  else if URI.StartsWith('file://SSH/') then
   begin
-    var FilePath := Copy(Url, 12);
+    var FilePath := Copy(URI, 12);
     var Server := StrToken(FilePath, '/');
     FilePath := TNetEncoding.URL.Decode(FilePath, []);
     if FilePath[2] <> DriveDelim then
@@ -193,12 +182,7 @@ begin
     Result := TSSHFileName.Format(Server, FilePath);
   end
   else
-  begin
-    BufferLen := MAX_PATH;
-    SetLength(Result, BufferLen);
-    OleCheck(PathCreateFromUrl(PChar(Url), PChar(Result), @BufferLen, 0));
-    SetLength(Result, BufferLen);
-  end;
+    Result := URIToFilePath(URI);
 end;
 
 function LSPInitializeParams(const ClientName, ClientVersion: string;

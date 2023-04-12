@@ -64,6 +64,8 @@ inherited CommandLineDlg: TCommandLineDlg
       Gutter.Font.Height = -11
       Gutter.Font.Name = 'Courier New'
       Gutter.Font.Style = []
+      Gutter.Font.Quality = fqClearTypeNatural
+      Gutter.Visible = False
       Gutter.Bands = <
         item
           Kind = gbkMarks
@@ -77,9 +79,6 @@ inherited CommandLineDlg: TCommandLineDlg
           Kind = gbkFold
         end
         item
-          Kind = gbkTrackChanges
-        end
-        item
           Kind = gbkMargin
           Visible = True
           Width = 3
@@ -87,6 +86,7 @@ inherited CommandLineDlg: TCommandLineDlg
       HideSelection = True
       Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
       ScrollBars = ssNone
+      SelectedColor.Alpha = 0.400000005960464500
       WantReturns = False
     end
     object TBXButton1: TSpTBXButton

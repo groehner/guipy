@@ -229,8 +229,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 45

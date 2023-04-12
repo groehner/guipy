@@ -288,14 +288,14 @@ begin
   if not assigned(SD) then begin
     SD:= TSaveDialog.Create(Self);
     SD.InitialDir:= ExtractFilePath(Model.ModelRoot.GetConfigFile);
-    SD.Filter:= 'PNG files (*.png)|*.png|WMF files (*.wmf)|*.wmf|All files (*.*)|*.*';
+    SD.Filter:= 'SVG files (*.svg)|*.svg|PNG files (*.png)|*.png|All files (*.*)|*.*';
     SD.Options:= SD.Options + [ofOverwritePrompt];
   end;
   if SD.Execute then begin
     if ExtractFileExt(SD.FileName) = '' then begin
-      if SD.FilterIndex = 1
+      if SD.FilterIndex = 2
         then SD.FileName:= ChangeFileExt(SD.FileName, '.png')
-        else SD.FileName:= ChangeFileExt(SD.FileName, '.wmf');
+        else SD.FileName:= ChangeFileExt(SD.FileName, '.svg');
     end;
     Diagram.SaveAsPicture(SD.FileName);
   end;

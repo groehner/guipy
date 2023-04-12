@@ -76,6 +76,10 @@ uses
   JvDockControlForm,
   JvAppStorage,
   JvComponentBase,
+  VirtualTrees.Types,
+  VirtualTrees.BaseAncestorVCL,
+  VirtualTrees.AncestorVCL,
+  VirtualTrees.BaseTree,
   VirtualTrees,
   SynUnicode,
   uCommonFunctions,
@@ -927,7 +931,7 @@ procedure TToDoWindow.ToDoViewInitNode(Sender: TBaseVirtualTree;
   ParentNode, Node: PVirtualNode;
   var InitialStates: TVirtualNodeInitStates);
 begin
-  Assert(ToDoView.GetNodeLevel(Node) = 0);
+  Assert(ParentNode = nil);
   Assert(Integer(Node.Index) < fDataList.Count);
   PToDoRec(ToDoView.GetNodeData(Node))^.ToDoInfo :=
     fDataList[Node.Index] as TToDoInfo;
@@ -937,7 +941,6 @@ procedure TToDoWindow.ToDoViewGetText(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
   var CellText: string);
 begin
-  Assert(ToDoView.GetNodeLevel(Node) = 0);
   Assert(Integer(Node.Index) < fDataList.Count);
   with PToDoRec(ToDoView.GetNodeData(Node))^.ToDoInfo do
     case Column of
@@ -970,7 +973,6 @@ procedure TToDoWindow.ToDoViewGetImageIndex(Sender: TBaseVirtualTree;
   var Ghosted: Boolean; var ImageIndex: TImageIndex);
 begin
   if (Kind in [ikNormal, ikSelected]) and (Column = 0) then begin
-    Assert(ToDoView.GetNodeLevel(Node) = 0);
     Assert(Integer(Node.Index) < fDataList.Count);
     with PToDoRec(ToDoView.GetNodeData(Node))^.ToDoInfo do
       if Priority = tpMed then

@@ -111,7 +111,6 @@ type
     procedure SetConnections(const Value: integer); override;
 
     procedure SelectAssociation; override;
-    procedure Translate; override;
     procedure DeleteSelectedControls(Sender: TObject);
     procedure DeleteSelectedControlsAndRefresh; override;
 
@@ -189,12 +188,14 @@ type
     procedure ChangeStyle; override;
     procedure DeleteComment; override;
     function getDebug: TStringList;
+    function getSVG: string; override;
     function getParameterAsString(Parameter, ParamValues: TStringList): string;
     function getInternName(aClass: TClass; aName: String; aVisibility: TVisibility): String;
     function StrToPythonValue(s: String): String;
     function StrAndTypeToPythonValue(s, pValue: String): string;
     procedure ExecCommand(cmd: integer);
     procedure ExecutePython(s: String); override;
+    procedure Retranslate; override;
   end;
 
 implementation
@@ -355,6 +356,35 @@ begin
   Panel.TextTo(Canvas);
   Panel.SelectedOnly := False;
   Panel.BackBitmap := OldBit;
+end;
+
+function TRtfdDiagram.getSVG: string;
+  var s, sw, si, ga: string; i, w, h: integer;
+begin
+  Panel.GetDiagramSize(w, h);
+  s:= '<?xml version="1.0" encoding="UTF-8" ?>'#13#10;
+  s:= s + '<svg width="' + IntToStr(w) + '"' + ' height="' + IntToStr(h) + '"' +
+          ' font-family="' + Font.Name + '"' +
+          ' font-size="' + IntToStr(round(Font.Size*1.3)) + '">'#13#10;
+  if GuiPyOptions.Shadowwidth > 0 then begin
+    sw:= FloatToVal(GuiPyOptions.ShadowWidth / 2.0);
+    si:= FloatToVal(min(2*GuiPyOptions.ShadowIntensity/10.0, 1));
+    ga:= FloatToVal(min(GuiPyOptions.ShadowWidth, 10)*0.4);
+    s:= s +
+      '  <defs>'#13#10 +
+      '    <filter style="color-interpolation-filters:sRGB;" id="Shadow">'#13#10 +
+      '      <feFlood flood-opacity=' + si + ' flood-color="rgb(0,0,0)" result="flood" />'#13#10 +
+      '      <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>'#13#10 +
+      '      <feGaussianBlur in="composite1" stdDeviation=' + ga + ' result="blur" />'#13#10 +
+      '      <feOffset dx=' + sw + ' dy=' + sw + ' result="offset" />'#13#10 +
+      '      <feComposite in="SourceGraphic" in2="offset" operator="over" result="composite2" />'#13#10 +
+      '    </filter>'#13#10 +
+      '  </defs>'#13#10;
+  end;
+  s:= s + Panel.getSVGConnections;
+  for i:= 0 to BoxNames.Count-1 do
+    s:= s + (BoxNames.Objects[i] as TRtfdBox).getSVG;
+  Result:= s + '</svg>'#13#10;
 end;
 
 procedure TRtfdDiagram.ClearDiagram;
@@ -1244,7 +1274,7 @@ begin
       if Editor.Modified then
         TFileForm(Editor.Form).DoSave;
       if assigned(aFile) and (aFile.FileKind = fkUML) then
-        PyIDEMainForm.PrepareClassEdit(Pathname, 'Refresh', TFUMLForm(aFile.Form));
+        PyIDEMainForm.PrepareClassEdit(Editor, 'Edit', TFUMLForm(aFile.Form));
     end;
   end;
   Panel.ClearSelection;
@@ -1459,18 +1489,15 @@ begin
   Result:= Panel;
 end;
 
-procedure TRtfdDiagram.Translate;
+procedure TRtfdDiagram.Retranslate;
 begin
-  Frame.Translate;
+  Frame.Retranslate;
 end;
 
 procedure TRtfdDiagram.Run(C: TControl);
-  var Pathname: String;
 begin
-  if Assigned(GetBox((C as TRtfdBox).Entity.FullName)) then begin
-    Pathname:= ChangeFileExt((C as TRtfdBox).GetPathname, '.py');
-    PyIDEMainForm.Run(Pathname);
-  end;
+  if Assigned(GetBox((C as TRtfdBox).Entity.FullName)) then
+    PyIDEMainForm.actRunExecute(nil);
   Panel.ClearSelection;
 end;
 
@@ -3407,6 +3434,7 @@ var
   W, H : integer;
   SelRect: TRect;
 begin
+  Panel.ChangeStyle(true);
   SelRect:= GetSelectedRect;
   Selected:= (SelRect.Right > SelRect.Left);
   GetDiagramSize(W, H);
@@ -3422,8 +3450,8 @@ begin
       B2.Width := SelRect.Right - SelRect.Left + 2;
       B2.Height:= SelRect.Bottom - SelRect.Top + 2;
       B2.Canvas.Draw(-SelRect.Left + 1, -SelRect.Top + 1, B1);
-      Clipboard.Assign(B2) end
-    else
+      Clipboard.Assign(B2)
+    end else
       Clipboard.Assign(B1);
     B1.Canvas.Unlock;
   finally
@@ -3431,6 +3459,7 @@ begin
     FreeAndNil(B2);
   end;
   ClearSelection;
+  Panel.ChangeStyle(false);
 end;
 
 procedure TRtfdDiagram.ClearMarkerAndConnections(Control: TControl);

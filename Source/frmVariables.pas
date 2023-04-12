@@ -36,9 +36,12 @@ uses
   SpTBXPageScroller,
   SpTBXItem,
   SpTBXControls,
+  VirtualTrees.Types,
+  VirtualTrees.BaseAncestorVCL,
+  VirtualTrees.AncestorVCL,
+  VirtualTrees.BaseTree,
   VirtualTrees.HeaderPopup,
   VirtualTrees,
-  VirtualTrees.Types,
   frmIDEDockWin,
   cPyBaseDebugger;
 
@@ -103,7 +106,6 @@ uses
   uCommonFunctions,
   dmCommands,
   frmCallStack,
-  cVirtualStringTreeHelper,
   cPyControl,
   cPySupportTypes,
   cInternalPython,
@@ -148,19 +150,27 @@ procedure TVariablesWindow.VariablesTreeInitNode(Sender: TBaseVirtualTree;
 var
   Data, ParentData: PNodeData;
 begin
-  var Py := SafePyEngine;
   Data := Node.GetData;
-  if not VariablesTree.Enabled then begin
+  if Assigned(ParentNode) then
+    ParentData := ParentNode.GetData
+  else
+    ParentData := nil;
+
+  if not VariablesTree.Enabled or
+    ((ParentData <> nil) and (ParentData.NameSpaceItem = nil)) then
+  begin
     Data.NameSpaceItem := nil;
     Exit;
   end;
 
-  if VariablesTree.GetNodeLevel(Node) = 0 then begin
+  var Py := SafePyEngine;
+  if ParentNode = nil then begin
+    // Top level
     Assert(Node.Index <= 1);
     if CurrentModule <> '' then begin
       if Node.Index = 0 then begin
-        Assert(Assigned(FGlobalsNameSpace));
-        Data.NameSpaceItem := FGlobalsNameSpace;
+        Assert(Assigned(GlobalsNameSpace));
+        Data.NameSpaceItem := GlobalsNameSpace;
         InitialStates := [ivsHasChildren];
       end else if Node.Index = 1 then begin
         Assert(Assigned(LocalsNameSpace));
@@ -169,12 +179,11 @@ begin
       end;
     end else begin
       Assert(Node.Index = 0);
-      Assert(Assigned(FGlobalsNameSpace));
-      Data.NameSpaceItem := FGlobalsNameSpace;
+      Assert(Assigned(GlobalsNameSpace));
+      Data.NameSpaceItem := GlobalsNameSpace;
       InitialStates := [ivsExpanded, ivsHasChildren];
     end;
   end else begin
-    ParentData := ParentNode.GetData;
     Data.NameSpaceItem := ParentData.NameSpaceItem.ChildNode[Node.Index];
     if Data.NameSpaceItem.ChildCount > 0 then
       InitialStates := [ivsHasChildren]
@@ -192,7 +201,9 @@ begin
       Data.Value := Data.NameSpaceItem.Value;
     except
       Data.Value := '';
-    end;
+    end
+  else
+    Data.Value := '';
   // ImageIndex
   if Data.NameSpaceItem.IsDict then
     Data.ImageIndex := Ord(TCodeImages.Namespace)
@@ -207,9 +218,8 @@ begin
   else if (Data.ObjectType = 'list') or (Data.ObjectType = 'tuple') then
     Data.ImageIndex := Ord(TCodeImages.List)
   else begin
-    if Assigned(ParentNode) and
-      (PNodeData(ParentNode.GetData).NameSpaceItem.IsDict
-        or PNodeData(ParentNode.GetData).NameSpaceItem.IsModule)
+    if Assigned(ParentData) and
+      (ParentData.NameSpaceItem.IsDict or ParentData.NameSpaceItem.IsModule)
     then
       Data.ImageIndex := Ord(TCodeImages.Variable)
     else
@@ -330,9 +340,9 @@ begin
                 (CurrentModule = CurrentFrame.FileName) and
                 (CurrentFunction = CurrentFrame.FunctionName));
 
-  OldGlobalsNameSpace := FGlobalsNameSpace;
+  OldGlobalsNameSpace := GlobalsNameSpace;
   OldLocalsNamespace := LocalsNameSpace;
-  FGlobalsNameSpace := nil;
+  GlobalsNameSpace := nil;
   LocalsNameSpace := nil;
 
   // Turn off Animation to speed things up
@@ -343,9 +353,9 @@ begin
     CurrentModule := CurrentFrame.FileName;
     CurrentFunction := CurrentFrame.FunctionName;
     // Set the initial number of nodes.
-    FGlobalsNameSpace := PyControl.ActiveDebugger.GetFrameGlobals(CurrentFrame);
+    GlobalsNameSpace := PyControl.ActiveDebugger.GetFrameGlobals(CurrentFrame);
     LocalsNameSpace := PyControl.ActiveDebugger.GetFrameLocals(CurrentFrame);
-    if Assigned(FGlobalsNameSpace) and Assigned(LocalsNameSpace) then
+    if Assigned(GlobalsNameSpace) and Assigned(LocalsNameSpace) then
       RootNodeCount := 2
     else
       RootNodeCount := 0;
@@ -353,7 +363,7 @@ begin
     CurrentModule := '';
     CurrentFunction := '';
     try
-      FGlobalsNameSpace := PyControl.ActiveInterpreter.GetGlobals;
+      GlobalsNameSpace := PyControl.ActiveInterpreter.GetGlobals;
       RootNodeCount := 1;
     except
       RootNodeCount := 0;
@@ -361,27 +371,22 @@ begin
   end;
 
   if (RootNodeCount > 0) and SameFrame and (RootNodeCount = VariablesTree.RootNodeCount) then begin
-    if Assigned(FGlobalsNameSpace) and Assigned(OldGlobalsNameSpace) then
-      FGlobalsNameSpace.CompareToOldItem(OldGlobalsNameSpace);
+    if Assigned(GlobalsNameSpace) and Assigned(OldGlobalsNameSpace) then
+      GlobalsNameSpace.CompareToOldItem(OldGlobalsNameSpace);
     if Assigned(LocalsNameSpace) and Assigned(OldLocalsNameSpace) then
       LocalsNameSpace.CompareToOldItem(OldLocalsNameSpace);
     VariablesTree.BeginUpdate;
     try
       // The following will Reinitialize only initialized nodes
-      // Do not use ReinitNode because it Reinits non-expanded children
-      // potentially leading to deep recursion
-      VariablesTree.ReinitInitializedChildren(nil, True);
-      // No need to initialize nodes they will be initialized as needed
-      // The following initializes non-initialized nodes without expansion
-      //VariablesTree.InitRecursive(nil);
-      VariablesTree.InvalidateToBottom(VariablesTree.GetFirstVisible);
+      // No need to initialize other nodes they will be initialized as needed
+      VariablesTree.ReinitChildren(nil, True);
+      VariablesTree.Invalidate;
     finally
       VariablesTree.EndUpdate;
     end;
   end else begin
     VariablesTree.Clear;
     VariablesTree.RootNodeCount := RootNodeCount;
-    //VariablesTree.InitRecursive(nil);
   end;
   FreeAndNil(OldGlobalsNameSpace);
   FreeAndNil(OldLocalsNameSpace);
@@ -396,10 +401,10 @@ end;
 procedure TVariablesWindow.ClearAll;
 begin
   VariablesTree.Clear;
-  if Assigned(FGlobalsNameSpace) or Assigned(LocalsNameSpace) then
+  if Assigned(GlobalsNameSpace) or Assigned(LocalsNameSpace) then
   begin
     var Py := SafePyEngine;
-    FreeAndNil(FGlobalsNameSpace);
+    FreeAndNil(GlobalsNameSpace);
     FreeAndNil(LocalsNameSpace);
   end;
 end;

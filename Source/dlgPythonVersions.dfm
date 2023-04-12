@@ -1,10 +1,13 @@
 inherited PythonVersionsDialog: TPythonVersionsDialog
   HelpContext = 880
+  BorderStyle = bsSizeToolWin
   Caption = 'Python Versions'
   ClientHeight = 315
   ClientWidth = 630
+  ExplicitWidth = 646
+  ExplicitHeight = 354
   PixelsPerInch = 96
-  TextHeight = 15
+  TextHeight = 14
   object Panel1: TPanel
     Left = 0
     Top = 30
@@ -168,45 +171,55 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
     end
   end
   object vilImages: TVirtualImageList
+    DisabledGrayscale = False
+    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 63
         CollectionName = 'OpenFolder'
+        Disabled = False
         Name = 'OpenFolder'
       end
       item
         CollectionIndex = 82
         CollectionName = 'PySetupAdd'
+        Disabled = False
         Name = 'PySetupAdd'
       end
       item
         CollectionIndex = 83
         CollectionName = 'PySetupRemove'
+        Disabled = False
         Name = 'PySetupRemove'
       end
       item
         CollectionIndex = 52
         CollectionName = 'Help'
+        Disabled = False
         Name = 'Help'
       end
       item
         CollectionIndex = 12
         CollectionName = 'CmdOuputWin'
+        Disabled = False
         Name = 'CmdOuputWin'
       end
       item
         CollectionIndex = 32
         CollectionName = 'ExternalRun'
+        Disabled = False
         Name = 'ExternalRun'
       end
       item
         CollectionIndex = 79
         CollectionName = 'PyActivate'
+        Disabled = False
         Name = 'PyActivate'
       end
       item
         CollectionIndex = 90
         CollectionName = 'Rename'
+        Disabled = False
         Name = 'Rename'
       end>
     ImageCollection = CommandsDataModule.icSVGImages
@@ -217,10 +230,13 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
     Top = 65
   end
   object vilTreeImages: TVirtualImageList
+    DisabledGrayscale = False
+    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 3
         CollectionName = 'ArrowRight'
+        Disabled = False
         Name = 'ArrowRight'
       end>
     ImageCollection = CommandsDataModule.icSVGImages

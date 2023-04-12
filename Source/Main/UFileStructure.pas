@@ -90,7 +90,6 @@ end;
 
 procedure TFFileStructure.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  inherited;
   Action:= caHide;
 end;
 
@@ -116,7 +115,8 @@ begin
     TVFileStructure.FullExpand;
     TVFileStructure.HideSelection:= false;
     TVFileStructure.Items.EndUpdate;
-    // PyIDEMainForm.RefreshUMLWindows;
+    PyIDEMainForm.RefreshUMLWindows;
+    Form.SetFocus;
     // Lock.Release;
   end;
 end;

@@ -15,9 +15,9 @@ uses
   System.JSON,
   System.SyncObjs,
   System.Generics.Collections,
-  LspUtils,
   SynEditTypes,
-  SynEdit;
+  SynEdit,
+  LspUtils;
 
 type
   TLangId = (lidNone, lidPython);
@@ -37,7 +37,6 @@ type
   private
     FPlugIn: TLspSynEditPlugin;
     FRefreshing: Boolean;
-    FDestroying: Boolean;
     FOnNotify: TNotifyEvent;
     function GetFileId: string;
   public
@@ -49,11 +48,12 @@ type
     procedure Lock;
     procedure Unlock;
     property FileId: string read GetFileId;
-    property Destroying: Boolean read FDestroying;
     property OnNotify: TNotifyEvent read FOnNotify write FOnNotify;
   end;
 
   TLspSynEditPlugin = class(TSynEditPlugin)
+  public
+    const DiagnosticsErrorIndicatorSpec: TGUID = '{48005990-9661-4DA7-A1B1-84A20045F37B}';
   private
     FFileId: string;
     FLangId: TLangId;
@@ -83,7 +83,6 @@ type
     procedure FileClosed;
     procedure FileSaved;
     procedure FileSavedAs(const FileId: string; LangId: TLangId);
-    procedure InvalidateErrorLines;
     procedure ApplyNewDiagnostics;
     procedure ClearDiagnostics;
     property TransmitChanges: boolean read fTransmitChanges
@@ -106,9 +105,12 @@ procedure RangeFromJson(Json: TJsonObject; out BlockBegin, BlockEnd: TBufferCoor
 implementation
 
 uses
-  System.StrUtils,
+  System.UITypes,
   System.Threading,
   System.Math,
+  SynEditMiscProcs,
+  SynEditMiscClasses,
+  SynDWrite,
   LspClient,
   JediLspClient,
   uEditAppIntfs,
@@ -127,14 +129,17 @@ begin
   TJedi.OnInitialized.AddHandler(FOnLspInitialized);
   Instances.Add(Self);
   FDocSymbols := TDocSymbols.Create(Self);
+  AOwner.Indicators.RegisterSpec(DiagnosticsErrorIndicatorSpec,
+    TSynIndicatorSpec.New(sisSquiggleMicrosoftWord,
+    D2D1ColorF(TColors.Red), clNoneF, []));
 end;
 
 destructor TLspSynEditPlugin.Destroy;
 begin
   Instances.Remove(Self);
   TJedi.OnInitialized.RemoveHandler(FOnLspInitialized);
-  FDiagnostics.Free;
   FNewDiagnostics.Free;
+  FDiagnostics.Free;
   FIncChanges.Free;
   FDocSymbols.Free;
   inherited;
@@ -149,7 +154,7 @@ end;
 
 procedure TLspSynEditPlugin.FileClosed;
 begin
-  DocSymbols.Clear;
+  FDocSymbols.Clear;
   var OldLangId := FLangId;
   FLangId := lidNone;
   var OldFileId := FFileId;
@@ -236,17 +241,27 @@ begin
     Exit;
   end;
 
-  //Params.Owned := False;
   var Task := TTask.Create(procedure
   var
     DiagArray: TArray<TDiagnostic>;
-    LFileId : string;
+    LFileId: string;
+    DocVersion: NativeUInt;
   begin
     try
       var Uri: string;
       if not Params.TryGetValue('uri', Uri) then Exit;
       LFileId := FileIdFromUri(Uri);
       if LFileId = '' then Exit;
+
+      // compare versions
+      if Params.TryGetValue('version', DocVersion) then
+      begin
+        var Plugin := FindPluginWithFileId(LFileId);
+        if not Assigned(Plugin) then Exit;
+        if DocVersion <> Plugin.FVersion then
+          Exit;
+      end;
+
       var Diagnostics := Params.FindValue('diagnostics');
       if not (Diagnostics is TJSONArray) then Exit;
 
@@ -265,6 +280,7 @@ begin
       Params.Free;
     end;
 
+    // Find plugin again just in case it has been destroyed
     var Plugin := FindPluginWithFileId(LFileId);
     if not Assigned(Plugin) then Exit;
 
@@ -272,10 +288,10 @@ begin
     try
       List.Clear;
       List.AddRange(DiagArray);
+      Plugin.FNeedToRefreshDiagnostics := True;
     finally
       PlugIn.FNewDiagnostics.UnLockList;
     end;
-    Plugin.FNeedToRefreshDiagnostics := True;
   end);
   Task.Start;
 end;
@@ -299,7 +315,9 @@ begin
     begin
       DocSymbols.Symbols := TJsonArray(Result);
       Result := nil;
-    end;
+    end
+    else
+      DocSymbols.Symbols := TJSONArray.Create;
     if Assigned(DocSymbols.FOnNotify) then
       DocSymbols.FOnNotify(DocSymbols);
   finally
@@ -323,12 +341,6 @@ begin
   end;
 end;
 
-procedure TLspSynEditPlugin.InvalidateErrorLines;
-begin
-  for var Diag in FDiagnostics do
-    Editor.InvalidateLine(Diag.BlockBegin.Line);
-end;
-
 procedure TLspSynEditPlugin.LinesChanged;
 begin
   Inc(FVersion);
@@ -348,10 +360,10 @@ begin
     begin
       FIncChanges.Clear;
       var Text := Editor.Text;
-      if (Text = '') and (Editor.Lines.Count = 1) then
-        Text := SLineBreak;
+
       var Change := TJsonObject.Create;
       Change.AddPair('text', TJsonString.Create(Text));
+
       FIncChanges.Add(Change);
     end;
     Params.AddPair('contentChanges', FIncChanges as TJsonValue);
@@ -364,6 +376,11 @@ begin
 end;
 
 procedure TLspSynEditPlugin.LinesDeleted(FirstLine, Count: Integer);
+{
+   FirstLine 0-based
+   Called after deletion
+   Lines.Count may be 0
+}
 var
   Change: TJsonObject;
   BB, BE: TBufferCoord;
@@ -375,7 +392,11 @@ begin
     Exit;
 
   BB := BufferCoord(1, FirstLine + 1);
-  BE := BufferCoord(1, FirstLine + Count + 1);
+  if FirstLine = Editor.Lines.Count then
+    // we have deleted the last line
+    BE := BufferCoord(Editor.Lines[FirstLine + Count - 1].Length + 1, FirstLine + Count)
+  else
+    BE := BufferCoord(1, FirstLine + Count + 1);
   Change := TJsonObject.Create;
   Change.AddPair('range', LspRange(BB, BE));
   Change.AddPair('text', TJsonString.Create(''));
@@ -383,21 +404,38 @@ begin
 end;
 
 procedure TLspSynEditPlugin.LinesInserted(FirstLine, Count: Integer);
+{
+   FirstLine 0-based
+   Called after insertion therefore Lines.Count >= Count and
+   0 <= FirstLine <= Lines.Count - Count
+}
 var
   Change: TJsonObject;
   BB, BE: TBufferCoord;
 begin
   if not TJedi.Ready or (FFileId = '') or (FlangId <> lidPython) or
-    not FTransmitChanges or
+    not FTransmitChanges or (Count <= 0) or
     not (lspscIncrementalSync in TJedi.LspClient.ServerCapabilities)
   then
     Exit;
 
-  BB := BufferCoord(1, FirstLine + 1);
+  if (FirstLine = Editor.Lines.Count - Count) and (FirstLine > 0) then
+    // Special case: Added at the end and not starting from the first line
+    BB := BufferCoord(Editor.Lines[FirstLine - 1].Length + 1, FirstLine)
+  else
+    BB := BufferCoord(1, FirstLine + 1);
   BE := BB;
+
   var TextAdded := '';
   for var I := FirstLine to FirstLine + Count - 1 do
     TextAdded := TextAdded + Editor.Lines[I]  + SLineBreak;
+  if (FirstLine = Editor.Lines.Count - Count) and (FirstLine > 0) then
+    // Lines added at the end
+    TextAdded := SLineBreak + TextAdded;
+  if (FirstLine = Editor.Lines.Count - Count) then
+    // Lines added at the end
+    Delete(TextAdded, TextAdded.Length - Length(SLineBreak) + 1, Length(SLineBreak));
+
   Change := TJsonObject.Create;
   Change.AddPair('range', LspRange(BB, BE));
   Change.AddPair('text', TJsonString.Create(TextAdded));
@@ -405,6 +443,9 @@ begin
 end;
 
 procedure TLspSynEditPlugin.LinePut(aIndex: Integer; const OldLine: string);
+var
+  NewLine: string;
+  Start, OldLen, NewLen: integer;
 begin
   if not TJedi.Ready or (FFileId = '') or (FLangId <> lidPython) or
     not FTransmitChanges or
@@ -412,27 +453,12 @@ begin
   then
     Exit;
 
-  var NewLine := Editor.Lines[aIndex];
-  var OldL := OldLine.Length;
-  var NewL := NewLine.Length;
-  // Compare from end
-  while (OldL > 0) and (NewL > 0) and (OldLine[OldL] = NewLine[NewL]) do
-  begin
-    Dec(OldL);
-    Dec(NewL);
-  end;
-  // Compare from start
-  var Start := 1;
-  while (OldL > 0) and (NewL > 0) and (OldLine[Start] = NewLine[Start]) do
-  begin
-    Dec(OldL);
-    Dec(NewL);
-    Inc(Start);
-  end;
+  NewLine := Editor.Lines[aIndex];
+  LineDiff(NewLine, OldLine, Start, OldLen, NewLen);
 
-  var Diff := Copy(NewLine, Start, NewL);
+  var Diff := Copy(NewLine, Start, NewLen);
   var BB := BufferCoord(Start, aIndex + 1);
-  var BE := BufferCoord(Start + OldL, aIndex + 1);
+  var BE := BufferCoord(Start + OldLen, aIndex + 1);
 
   if (Diff = '') and (BB = BE) then Exit;  // no change
 
@@ -521,15 +547,18 @@ begin
   try
     FDiagnostics.AddRange(List);
     FNeedToRefreshDiagnostics := False;
+    for var I := 0 to FDiagnostics.Count - 1 do
+      Editor.Indicators.Add(FDiagnostics[I].BlockBegin.Line,
+        TSynIndicator.New(DiagnosticsErrorIndicatorSpec,
+        FDiagnostics[I].BlockBegin.Char, FDiagnostics[I].BlockEnd.Char, I));
   finally
     FNewDiagnostics.UnlockList;
   end;
-  InvalidateErrorLines;
 end;
 
 procedure TLspSynEditPlugin.ClearDiagnostics;
 begin
-  InvalidateErrorLines;
+  Editor.Indicators.Clear(DiagnosticsErrorIndicatorSpec);
   FDiagnostics.Clear;
 end;
 
@@ -573,8 +602,6 @@ end;
 
 destructor TDocSymbols.Destroy;
 begin
-  // signal it is destroyed
-  FDestroying := True;
   Clear;
   inherited;
 end;

@@ -19,16 +19,17 @@
 }
 
 
-{ Gedanken zur Darstellung im UML-Fenster
+{
 
- einfaches Anklicken/MouseDown
-   Hier muss der Hintergrund nicht geleert werden, es reicht wenn die Boxen neu
-   gezeichnet werden.
+Thoughts on the representation in the UML window
 
-   Wenn zwei Boxen sich überlappen muss jeweils die angeklickt Box in den
-   Vordergrund gebracht werden. Daher muss auf alle Fälle beim Anklicken
-   die gesamte Box gezeichnet werden, es reicht nicht nur die Markierungen
-   zu zeichnen.
+  simple click/mousedown
+    The background does not have to be emptied here, it is sufficient if the boxes are new
+    be drawn.
+    If two boxes overlap, the box you clicked on must go into the
+    be brought to the fore. Therefore must in any case when clicking
+    the entire box can be drawn, it is not enough just the markings
+    to draw.
 
 }
 
@@ -211,8 +212,8 @@ type
     procedure CloseEdit;
     procedure EditBox(Control: TControl);
     procedure SetModified(const Value: boolean);
-
-    procedure ChangeStyle;
+    procedure ChangeStyle(BlackAndWhite: boolean = false);
+    function getSVGConnections: string;
 
     property IsModified: Boolean read FIsModified write SetModified;
     property IsMoving: boolean read FIsMoving write FIsMoving;
@@ -1092,7 +1093,7 @@ begin
   ClearSelection;
 end;
 
-// zentrale MouseDown-Routine für das TessConnectPanel
+// central MouseDown routine for TessConnectPanel
 procedure TessConnectPanel.MouseDown(Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var
@@ -1671,7 +1672,7 @@ end;
 procedure TessConnectPanel.SetFocus;
   var X,Y : integer;
 begin
-  Anchors:= [akTop, akLeft];  // ToDo ergänzt
+  Anchors:= [akTop, akLeft];  // ToDo added
   // Try to see if we can call inherited, otherwise there is a risc of getting
   // 'Cannot focus' exception when starting from delphi-tools.
   if CanFocus and Assigned(myForm) then begin
@@ -1801,10 +1802,10 @@ begin
   Result:= MovedRect;
 end;
 
-procedure TessConnectPanel.ChangeStyle;
+procedure TessConnectPanel.ChangeStyle(BlackAndWhite: boolean = false);
   var i: integer;
 begin
-  if StyleServices.IsSystemStyle then begin
+  if StyleServices.IsSystemStyle or BlackAndWhite then begin
     BGColor:= clWhite;
     FGColor:= clBlack;
   end else begin
@@ -1815,9 +1816,21 @@ begin
   Canvas.Pen.Color:= FGColor;
   Canvas.Brush.Color:= BGColor;
   for i:= 0 to FConnections.Count - 1 do
-    TConnection(FConnections[i]).ChangeStyle;
+    TConnection(FConnections[i]).ChangeStyle(BlackAndWhite);
   for i:= 0 to FManagedObjects.Count -1 do
-    (TManagedObject(FManagedObjects[i]).FControl as TRtfdBox).ChangeStyle;
+    (TManagedObject(FManagedObjects[i]).FControl as TRtfdBox).ChangeStyle(BlackAndWhite);
+end;
+
+function TessConnectPanel.getSVGConnections: string;
+  var i: integer; conn: TConnection; s: string;
+begin
+  s:= '';
+  for i:= 0 to FConnections.Count -1 do begin
+    conn:= (FConnections[i] as TConnection);
+    if Conn.FFrom.Visible and Conn.FTo.Visible then
+      s:= s + Conn.getSVG;
+  end;
+  Result:= s;
 end;
 
 procedure TessConnectPanel.CheckRoleHidesAttribute(conn: TConnection; Attributes: TConnectionAttributes);

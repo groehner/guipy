@@ -3,10 +3,22 @@ unit dlgNewFile;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, System.Contnrs,
-  Controls, Forms,
-  Dialogs, VirtualTrees, cFileTemplates,
-  dlgPyIDEBase, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls;
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Classes,
+  System.Contnrs,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  VirtualTrees.Types,
+  VirtualTrees.BaseTree,
+  VirtualTrees,
+  cFileTemplates,
+  dlgPyIDEBase,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.ComCtrls, VirtualTrees.BaseAncestorVCL, VirtualTrees.AncestorVCL;
 
 type
   TNewFileDialog = class(TPyIDEDlgBase)
@@ -19,6 +31,7 @@ type
     Label2: TLabel;
     btnCancel: TButton;
     btnCreate: TButton;
+    btnManageTemplates: TButton;
     Splitter1: TSplitter;
     lvTemplates: TListview;
     procedure FormCreate(Sender: TObject);
@@ -27,6 +40,7 @@ type
       Column: TColumnIndex; TextType: TVSTTextType; var CellText: string);
     procedure FormShow(Sender: TObject);
     procedure tvCategoriesChange(Sender: TBaseVirtualTree; Node: PVirtualNode);
+    procedure btnManageTemplatesClick(Sender: TObject);
     procedure btnCreateClick(Sender: TObject);
     procedure lvTemplatesSelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
@@ -43,7 +57,7 @@ type
 implementation
 
 uses
-  ShellAPI, dmCommands, MPCommonObjects;
+  Winapi.ShellAPI, dmCommands, MPCommonObjects;
 
 {$R *.dfm}
 
@@ -53,6 +67,12 @@ begin
     SelectedTemplate := TFileTemplate(lvTemplates.Selected.Data);
     ModalResult := mrOK;
   end;
+end;
+
+procedure TNewFileDialog.btnManageTemplatesClick(Sender: TObject);
+begin
+  CommandsDataModule.actFileTemplatesExecute(Self);
+  SetUp;
 end;
 
 procedure TNewFileDialog.FormCreate(Sender: TObject);

@@ -46,7 +46,7 @@ inherited PythonIIForm: TPythonIIForm
   ExplicitWidth = 717
   ExplicitHeight = 490
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   inherited BGPanel: TPanel
     Width = 701
     Height = 451
@@ -87,12 +87,12 @@ inherited PythonIIForm: TPythonIIForm
         Gutter.Font.Height = -11
         Gutter.Font.Name = 'Courier New'
         Gutter.Font.Style = []
+        Gutter.Font.Quality = fqClearTypeNatural
         Gutter.Visible = False
         Gutter.Gradient = True
         Gutter.Bands = <
           item
             Kind = gbkMarks
-            Visible = True
             Width = 13
           end
           item
@@ -103,18 +103,17 @@ inherited PythonIIForm: TPythonIIForm
           end
           item
             Kind = gbkMargin
-            Visible = True
             Width = 3
           end>
         Options = [eoDragDropEditing, eoEnhanceHomeKey, eoGroupUndo, eoHideShowScrollbars, eoKeepCaretX, eoShowScrollHint, eoTabIndent, eoTabsToSpaces]
         RightEdge = 0
+        SelectedColor.Alpha = 0.400000005960464500
         TabWidth = 4
         WantTabs = True
         WordWrap = True
         OnCommandProcessed = SynEditCommandProcessed
         OnProcessCommand = SynEditProcessCommand
         OnProcessUserCommand = SynEditProcessUserCommand
-        OnPaintTransient = SynEditPaintTransient
       end
     end
   end

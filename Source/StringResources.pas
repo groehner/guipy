@@ -10,7 +10,7 @@ Const
   sCythonFileFilter = 'Cython (*.pyx*.pxd;*.pxi)|*.pyx;*.pxd;*.pxi';
   sHTMLFileFilter = 'HTML (*.htm;*.html)|*.htm;*.html';
   sXMLFileFilter = 'XML (*.xml;*.xsd;*.xsl;*.xslt;*.dtd)|*.xml;*.xsd;*.xsl;*.xslt;*.dtd';
-  sCSSFileFilter = 'Cascading Stylesheets (*.css)|*.css';
+  sCSSFileFilter = 'CSS (*.css)|*.css';
   sCPPFileFilter = 'C/C++ (*.c;*.cpp;*.cc;*.h;*.hpp;*.hh;*.cxx;*.hxx;*.cu)|*.c;*.cpp;*.cc;*.h;*.hpp;*.hh;*.cxx;*.hxx;*.cu';
   sYAMLFileFilter = 'YAML (*.yaml)|*.yaml';
   sJSFileFilter = 'Javascript (*.js)|*.js';
@@ -179,17 +179,19 @@ Const
   SEngineActive = '*** %s Python engine is active ***';
   SInterpreterNA = 'The internal Python interpreter is not available';
   SPythonLoadError = 'GuiPy could not load a Python engine.' + SLineBreak +
-  '**Before** using GuiPy, you must ensure that a version of Python ' +
-  'greater or equal to 3.6 is installed on your machine.' + SLineBreak +
+  'You must ensure that a version of Python ' +
+  'greater or equal to %s is installed on your machine.' + SLineBreak +
   'If you do not have one installed, you can download one from https://www.python.org/.'
   + SLineBreak +  SLineBreak +
-  'The 64-bit version of GuiPy (x64) works only on 64-bit Windows **and** with 64-bit versions of Python.'
+  'The 64-bit version of GuiPy works only with 64-bit versions of Python.'
    + SLineBreak +
-  'The 32-bit version of GuiPy works on both 32-bit and 64-bit Windows with 32-bit versions of Python.';
-  SPythonFindError =  'GuiPy could not find a usable Python installation at the specified path.' + SLineBreak +
-  'Note that the 64-bit version of GuiPy (x64) works only on 64-bit Windows **and**' + SLineBreak +
-  'with 64-bit versions of Python. The 32-bit version of GuiPy works on both' + SLineBreak +
-  '32-bit and 64-bit Windows with 32-bit versions of Python.';
+  'The 32-bit version of GuiPy works only with 32-bit versions of Python.';
+  SPythonFindError32 = 'This 32-bit version of GuiPy works only ' + SLineBreak +
+  'with a 32-bit version (from %s to %s) of Python.';
+  SPythonFindError64 = 'This 64-bit version of GuiPy works only ' + SLineBreak +
+  'with a 64-bit version (from %s to %s) of Python.';
+  SPythonMinMaxError = 'Only Python versions from %s to %s are usable for GuiPy.' + SLineBreak +
+  'If you have not installed one yet, you can download one from https://www.python.org/.';
   SPostMortemInfo = 'You are now in post-mortem analysis mode.' + SLineBreak +
                     'You can examine the Call Stack, ' +
                     'Variables and Watches windows, evaluate expressions etc.' + SLineBreak +
@@ -308,8 +310,12 @@ Const
   SOpenDialogFilter = 'Open dialog %s filter';
   SOnlyJupyterFiles  = 'Web preview is only available for Jupyter JSON files';
   SNoJupyter = 'The ''jupyter'' package is not available.' + SLineBreak + 'Please install ''jupyter'' first.';
+  SWebView2Error = 'The WebView2 control creation failed.' + SLineBreak +  'Please install the WebView2 runtime.';
   SExternalProcessRunning = 'An external process is still running.' + SLineBreak +
                             'Please terminate it first from the ''Output'' window.';
+  SDictionaryNA = 'The dictionary for language code "%s" is not available.' + sLineBreak +
+                  'You can get spell checking dictionaries through the Windows language settings.' + sLineBreak +
+                  'You can change the active language through the IDE options dialog.';
 
   //  Project Manager
   SAskSaveProject = 'The active project has not been saved.' + SLineBreak +
@@ -411,6 +417,7 @@ Const
   SPythonTemplateName = 'Python Script';
   STkinterTemplateName = 'Tkinter Script';
   SQtTemplateName = 'Qt Script';
+  SClassTemplateName = 'Class Template';
   SCythonTemplateName = 'Cython Script';
   SCSSFileTemplateName = 'Cascading Style Sheet';
   SHTMLFileTemplateName = 'HTML Document';
@@ -562,6 +569,23 @@ Const
     '    window.show()' + sLineBreak +
     '    app.exec()';
 
+  SClassFileTemplate =
+    '#-------------------------------------------------------------------------------' + sLineBreak +
+    '# Name:        $[ActiveDoc-Name]' + sLineBreak +
+    '# Purpose:     ' + sLineBreak +
+    '#' + sLineBreak +
+    '# Author:      $[Author]' + sLineBreak +
+    '#' + sLineBreak +
+    '# Created:     $[DateTime-''DD/MM/YYYY''-DateFormat]' + sLineBreak +
+    '# Copyright:   (c) $[Author] $[DateTime-''YYYY''-DateFormat]' + sLineBreak +
+    '# Licence:     <your licence>' + sLineBreak +
+    '#-------------------------------------------------------------------------------' + sLineBreak +
+    sLineBreak +
+    'class $[ActiveDoc-NameNoExt]:' + sLineBreak +
+    sLineBreak +
+    '    def __init__(self):' + sLineBreak +
+    '        pass' + sLineBreak;
+
   SXMLFileTemplate =
     '<?xml version="1.0" encoding="UTF-8"?>' + sLineBreak;
   SJSONFileTemplate ='{'+ SLineBreak + SLineBreak + '}';
@@ -616,17 +640,13 @@ Const
 
 implementation
 
-uses JvGnugettext, SysUtils, Vcl.Menus;
-
-initialization
-
-  // GNU Initialization is put here to make sure that
-  // all localized stings get translated
-  // Setup Languages
-
-
-  UseLanguage('');
-  UseLanguage(LowerCase(Copy(GetCurrentLanguage,1,2)));  // do not use the country part
+//uses JvGnugettext, SysUtils;
+//initialization
+//  // GNU Initialization is put here to make sure that
+//  // all localized stings get translated
+//  // Setup Languages
+//  UseLanguage('');
+//  UseLanguage(LowerCase(Copy(GetCurrentLanguage,1,2)));  // do not use the country part
 end.
 
 

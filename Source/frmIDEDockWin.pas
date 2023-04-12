@@ -117,7 +117,7 @@ begin
 
   CreateFormIcon;
 
-  SkinManager.AddSkinNotification(Self);
+  SkinManager.AddSkinNotification(Self, True);
 
   DockClient.OnConjoinHostFormCreated := DockClientConjoinHostFormCreated;
 end;

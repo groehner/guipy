@@ -13,7 +13,7 @@ object FBrowser: TFBrowser
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object WebBrowser: TWebBrowser
     Left = 0
     Top = 25
@@ -21,6 +21,7 @@ object FBrowser: TFBrowser
     Height = 311
     Align = alClient
     TabOrder = 0
+    SelectedEngine = EdgeIfAvailable
     OnCommandStateChange = WebBrowserCommandStateChange
     OnDownloadBegin = WebBrowserDownloadBegin
     OnDownloadComplete = WebBrowserDownloadComplete
@@ -73,7 +74,7 @@ object FBrowser: TFBrowser
           Left = 0
           Top = 1
           Width = 156
-          Height = 21
+          Height = 22
           Hint = 'Enter address'
           Anchors = [akLeft, akRight]
           ParentShowHint = False

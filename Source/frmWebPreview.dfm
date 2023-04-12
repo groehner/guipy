@@ -7,24 +7,11 @@ object WebPreviewForm: TWebPreviewForm
   ClientWidth = 463
   Color = clBtnFace
   ParentFont = True
+  OldCreateOrder = True
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
-  TextHeight = 15
-  object WebBrowser: TWebBrowser
-    Left = 0
-    Top = 30
-    Width = 463
-    Height = 416
-    HelpContext = 850
-    Align = alClient
-    TabOrder = 0
-    OnCommandStateChange = WebBrowserCommandStateChange
-    ControlData = {
-      4C000000DA2F0000FF2A00000000000000000000000000000000000000000000
-      000000004C000000000000000000000001000000E0D057007335CF11AE690800
-      2B2E126208000000000000004C0000000114020000000000C000000000000046
-      8000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000100000000000000000000000000000000000000}
-  end
+  TextHeight = 14
   object TBXDock1: TSpTBXDock
     Left = 0
     Top = 0
@@ -62,25 +49,13 @@ object WebPreviewForm: TWebPreviewForm
       end
       object TBXSeparatorItem2: TSpTBXSeparatorItem
       end
-      object TBXItem4: TSpTBXItem
-        Hint = 'Page Setup'
-        ImageIndex = 3
-        ImageName = 'PageSetup'
-        OnClick = ToolButtonPageSetupClick
-      end
-      object TBXItem6: TSpTBXItem
-        Hint = 'Print Preview'
-        ImageIndex = 4
-        ImageName = 'Preview'
-        OnClick = ToolButtonPrintPreviewClick
-      end
       object TBXItem5: TSpTBXItem
         Hint = 'Print'
         ImageIndex = 5
         ImageName = 'Print'
         OnClick = ToolButtonPrintClick
       end
-      object TBXSeparatorItem4: TSpTBXSeparatorItem
+      object SpTBXSeparatorItem1: TSpTBXSeparatorItem
       end
       object TBXItem7: TSpTBXItem
         Hint = 'Save'
@@ -90,41 +65,61 @@ object WebPreviewForm: TWebPreviewForm
       end
     end
   end
+  object WebBrowser: TEdgeBrowser
+    Left = 0
+    Top = 30
+    Width = 463
+    Height = 416
+    HelpContext = 850
+    Align = alClient
+    TabOrder = 0
+    TabStop = True
+    OnCreateWebViewCompleted = WebBrowserCreateWebViewCompleted
+  end
   object BrowserImages: TVirtualImageList
+    DisabledGrayscale = False
+    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 0
         CollectionName = 'Browser\Back'
+        Disabled = False
         Name = 'Back'
       end
       item
         CollectionIndex = 2
         CollectionName = 'Browser\Forward'
+        Disabled = False
         Name = 'Forward'
       end
       item
         CollectionIndex = 1
         CollectionName = 'Browser\Cancel'
+        Disabled = False
         Name = 'Cancel'
       end
       item
         CollectionIndex = 3
         CollectionName = 'Browser\PageSetup'
+        Disabled = False
         Name = 'PageSetup'
       end
       item
         CollectionIndex = 4
         CollectionName = 'Browser\Preview'
+        Disabled = False
         Name = 'Preview'
       end
       item
         CollectionIndex = 5
         CollectionName = 'Browser\Print'
+        Disabled = False
         Name = 'Print'
       end
       item
         CollectionIndex = 6
         CollectionName = 'Browser\Save'
+        Disabled = False
         Name = 'Save'
       end>
     ImageCollection = CommandsDataModule.icBrowserImages

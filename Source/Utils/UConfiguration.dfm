@@ -186,7 +186,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 661
         Height = 427
-        ActivePage = PPython
+        ActivePage = PInterpreter
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -350,7 +350,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 6
           end
           object CBReinitializeBeforeRun: TCheckBox
-            Left = 17
+            Left = 16
             Top = 184
             Width = 270
             Height = 17
@@ -366,7 +366,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 8
           end
           object CBSaveFilesBeforeRun: TCheckBox
-            Left = 17
+            Left = 16
             Top = 232
             Width = 270
             Height = 17
@@ -374,7 +374,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 9
           end
           object CBSaveInterpreterHistory: TCheckBox
-            Left = 17
+            Left = 16
             Top = 256
             Width = 270
             Height = 17
@@ -382,7 +382,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 10
           end
           object CBTraceOnlyIntoOpenFiles: TCheckBox
-            Left = 17
+            Left = 16
             Top = 280
             Width = 270
             Height = 17
@@ -1767,11 +1767,11 @@ object FConfiguration: TFConfiguration
             Gutter.Font.Height = -11
             Gutter.Font.Name = 'Courier New'
             Gutter.Font.Style = []
+            Gutter.Font.Quality = fqClearTypeNatural
             Gutter.Visible = False
             Gutter.Bands = <
               item
                 Kind = gbkMarks
-                Visible = True
                 Width = 13
               end
               item
@@ -1785,10 +1785,10 @@ object FConfiguration: TFConfiguration
               end
               item
                 Kind = gbkMargin
-                Visible = True
                 Width = 3
               end>
             RightEdge = 0
+            SelectedColor.Alpha = 0.400000005960464500
           end
           object lbElements: TSpTBXListBox
             Left = 8
@@ -1849,11 +1849,11 @@ object FConfiguration: TFConfiguration
             Gutter.Font.Height = -11
             Gutter.Font.Name = 'Courier New'
             Gutter.Font.Style = []
+            Gutter.Font.Quality = fqClearTypeNatural
             Gutter.Visible = False
             Gutter.Bands = <
               item
                 Kind = gbkMarks
-                Visible = True
                 Width = 13
               end
               item
@@ -1867,10 +1867,10 @@ object FConfiguration: TFConfiguration
               end
               item
                 Kind = gbkMargin
-                Visible = True
                 Width = 3
               end>
             RightEdge = 0
+            SelectedColor.Alpha = 0.400000005960464500
           end
         end
         object PCodeTemplates: TTabSheet
@@ -1959,10 +1959,10 @@ object FConfiguration: TFConfiguration
               Gutter.Font.Height = -11
               Gutter.Font.Name = 'Courier New'
               Gutter.Font.Style = []
+              Gutter.Font.Quality = fqClearTypeNatural
               Gutter.Bands = <
                 item
                   Kind = gbkMarks
-                  Visible = True
                   Width = 13
                 end
                 item
@@ -1976,9 +1976,9 @@ object FConfiguration: TFConfiguration
                 end
                 item
                   Kind = gbkMargin
-                  Visible = True
                   Width = 3
                 end>
+              SelectedColor.Alpha = 0.400000005960464500
               TabWidth = 4
             end
             object edDescription: TEdit
@@ -2176,10 +2176,10 @@ object FConfiguration: TFConfiguration
               Gutter.Font.Height = -11
               Gutter.Font.Name = 'Courier New'
               Gutter.Font.Style = []
+              Gutter.Font.Quality = fqClearTypeNatural
               Gutter.Bands = <
                 item
                   Kind = gbkMarks
-                  Visible = True
                   Width = 13
                 end
                 item
@@ -2193,9 +2193,9 @@ object FConfiguration: TFConfiguration
                 end
                 item
                   Kind = gbkMargin
-                  Visible = True
                   Width = 3
                 end>
+              SelectedColor.Alpha = 0.400000005960464500
               TabWidth = 4
             end
             object CBFileTemplatesHighlighter: TComboBox
@@ -5943,7 +5943,7 @@ object FConfiguration: TFConfiguration
         Name = 'Refresh'
       end
       item
-        CollectionIndex = 129
+        CollectionIndex = 130
         CollectionName = 'Up'
         Disabled = False
         Name = 'Up'

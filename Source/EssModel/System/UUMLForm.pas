@@ -33,8 +33,6 @@ uses
 
 type
 
-  { TFUMLForm }
-
   TFUMLForm = class(TFileForm)
     PDiagramPanel: TPanel;
     PDiagram: TPanel;
@@ -77,7 +75,7 @@ type
     SpTBXSplitter1: TSpTBXSplitter;
     procedure FormCreate(Sender: TObject); override;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure FormClose(Sender: TObject; var aAction: TCloseAction);
+    procedure FormClose(Sender: TObject; var aAction: TCloseAction); override;
     procedure FormDestroy(Sender: TObject); override;
     procedure SBCloseClick(Sender: TObject);
     procedure TBShowConnectionsClick(Sender: TObject);
@@ -154,7 +152,7 @@ uses SysUtils, Types, IniFiles, Math, Clipbrd, SynEditKeyCmds,
      frmPyIDEMain, dmCommands, uEditAppIntfs, uCommonFunctions,
      JvGnugettext, StringResources, cPyScripterSettings, UFileStructure,
      UConfiguration, UUtils, UModelEntity, UModel, URtfdDiagram, UViewIntegrator,
-     UImages, frmPythonII, cPyControl, frmEditor;
+     UImages, frmPythonII, cPyControl, cFileTemplates, cParameters, frmEditor;
 
 {$R *.DFM}
 
@@ -221,6 +219,7 @@ begin
   LockRefresh:= false;
   LockCreateTV:= false;
   MainModul.AddToProject(Filename);
+  PyIDEMainForm.actRunExecute(Self);
   //setActiveControl(MainModul.Diagram.GetPanel);
 end;
 
@@ -271,8 +270,8 @@ end;
 
 procedure TFUMLForm.Retranslate;
 begin
-  inherited;
-  MainModul.Diagram.Translate;
+  RetranslateComponent(Self);
+  MainModul.Diagram.Retranslate;
 end;
 
 procedure TFUMLForm.Enter(Sender: TObject);
@@ -424,30 +423,28 @@ end;
 
 procedure TFUMLForm.TBRefreshClick(Sender: TObject);
 begin
-  Refresh;
+  PyIDEMainForm.actRunExecute(self);
 end;
 
 procedure TFUMLForm.TBClassDefinitionClick(Sender: TObject);
-  var EditForm: TEditorform; aEditor: IEditor;
-      NewName: string; Files: TStringList;
+  var NewName: string; Editor: IEditor;
+      FileTemplate : TFileTemplate;
 begin
   NewName:= '';
-  Files:= MainModul.getFiles;
-  if assigned(Files) and (Files.Count > 0) then
-    NewName:= Files[0]
-  else
-    CommandsDataModule.GetSaveFileName(NewName,
-      CommandsDataModule.SynPythonSyn, 'py', false);
-  if GI_EditorFactory <> nil then
-    aEditor:= GI_EditorFactory.GetEditorByName(NewName);
-  if not Assigned(aEditor) then begin
-    PyIDEMainForm.DoOpenAsEditor(NewName);
-    aEditor:= GI_PyIDEServices.getActiveEditor;
+  if CommandsDataModule.GetSaveFileName(NewName, CommandsDataModule.SynPythonSyn, 'py', true)
+  then begin
+    FileTemplate := FileTemplates.TemplateByName(SClassTemplateName);
+    if assigned(FileTemplate) then begin
+      Editor:= PyIDEMainForm.NewFileFromTemplate(FileTemplate,
+        PyIDEMainForm.TabControlIndex(PyIDEMainForm.ActiveTabControl), NewName);
+      PyIDEMainForm.PrepareClassEdit(Editor, 'New', Self);
+      ConfigureWindow(Self);
+      Modified:= true;
+    end else begin
+      ErrorMsg(Format(_('File template %s missing!'), [SClassTemplateName]));
+      exit;
+    end;
   end;
-  EditForm:= TEditorForm(aEditor.Form);
-  PyIDEMainForm.PrepareClassEdit(EditForm.Pathname, 'New', Self);
-  ConfigureWindow(Self);
-  Modified:= true;
 end;
 
 procedure TFUMLForm.Save(MitBackup: boolean);
@@ -699,7 +696,6 @@ end;
 
 procedure TFUMLForm.ClassEdit;
 begin
-  PyIDEMainForm.UMLEdit:= Self;
   MainModul.EditSelectedElement;
   Modified:= true;
 end;

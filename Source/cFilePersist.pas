@@ -1,7 +1,7 @@
 unit cFilePersist;
 {-----------------------------------------------------------------------------
  Unit Name: cFilePersist
- Author:    Kiriakos Vlahos
+ Author:    Kiriakos Vlahos, Gerhard Röhner
  Date:      09-Mar-2006
  Purpose:   Support class for editor file persistence
  History:
@@ -41,11 +41,11 @@ Type
     Highlighter : string;
     UseCodeFolding: Boolean;
     EditorOptions : TSynEditorOptionsContainer;
+    EditorOptions2 : TSynEditorOptionsContainer;
     SecondEditorVisible : Boolean;
     SecondEditorAlign : TAlign;
     SecondEditorSize : integer;
     SecondEditorUseCodeFolding: Boolean;
-    EditorOptions2 : TSynEditorOptionsContainer;
     ReadOnly : Boolean;
     FoldState : string;
     FoldState2 : string;
@@ -133,11 +133,12 @@ begin
      AppStorage.WriteBoolean(BasePath+'\UseCodeFolding', UseCodeFolding);
      if UseCodeFolding then AppStorage.WriteString(BasePath+'\FoldState', FoldState);
      AppStorage.WriteBoolean(BasePath+'\ReadOnly', ReadOnly);
+
      AppStorage.WriteBoolean(BasePath+'\GUIFormOpen', GUIFormOpen);
      AppStorage.WriteBoolean(BasePath+'\SecondEditorVisible', SecondEditorVisible);
      IgnoreProperties := TStringList.Create;
      try
-       IgnoreProperties.Add('Keystrokes');
+       IgnoreProperties.AddStrings(['Keystrokes', 'TrackChanges', 'SelectedColor', 'IndentGuides']);
        AppStorage.WritePersistent(BasePath+'\Editor Options', EditorOptions,
          True, IgnoreProperties);
        if SecondEditorVisible then begin

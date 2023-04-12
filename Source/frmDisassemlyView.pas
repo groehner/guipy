@@ -79,19 +79,19 @@ var
 Const
   Code =
   'def GetDis(m):'#10 +
-       #9'import dis'#10 +
-       #9'import sys'#10 +
+	     #9'import dis'#10 +
+	     #9'import sys'#10 +
        #9'if sys.version_info[0]==3:'#10 +
             #9#9'StringIO = __import__("io").StringIO'#10 +
        #9'else:'#10 +
             #9#9'StringIO = __import__("StringIO").StringIO'#10 +
-       #9'oldstdout = sys.stdout'#10 +
-       #9'sys.stdout = StringIO()'#10 +
-       #9'try:'#10 +
-            #9#9'dis.dis(m)'#10 +
+	     #9'oldstdout = sys.stdout'#10 +
+	     #9'sys.stdout = StringIO()'#10 +
+	     #9'try:'#10 +
+		        #9#9'dis.dis(m)'#10 +
             #9#9'result = sys.stdout.getvalue()'#10 +
        #9'finally:'#10 +
-            #9#9'sys.stdout.close()'#10 +
+		        #9#9'sys.stdout.close()'#10 +
             #9#9'sys.stdout = oldstdout'#10 +
        #9'return result'#10;
   Header = ''''''''#13#10#9+'Disassembly of %s'#13#10+''''''''#13#10#13#10;

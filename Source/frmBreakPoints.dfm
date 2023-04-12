@@ -80,6 +80,8 @@ inherited BreakPointsWindow: TBreakPointsWindow
           OnGetText = BreakPointsViewGetText
           OnInitNode = BreakPointsViewInitNode
           OnKeyDown = BreakPointsViewKeyDown
+          Touch.InteractiveGestures = [igPan, igPressAndTap]
+          Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
           Columns = <
             item
               Position = 0
@@ -135,8 +137,6 @@ inherited BreakPointsWindow: TBreakPointsWindow
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 16

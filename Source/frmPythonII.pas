@@ -44,10 +44,12 @@ uses
   JvDockControlForm,
   SynHighlighterPython,
   SynEditHighlighter,
+  dlgSynEditOptions,
   TB2Item,
   SpTBXItem,
   SpTBXSkins,
   SpTBXControls,
+  JvAppIniStorage,
   SynEdit,
   SynEditTypes,
   SynEditKeyCmds,
@@ -90,8 +92,6 @@ type
     vilCodeImages: TVirtualImageList;
     vilImages: TVirtualImageList;
     mnReinitialzePython: TSpTBXItem;
-    procedure SynEditPaintTransient(Sender: TObject; Canvas: TCanvas;
-      TransientType: TTransientType);
     procedure FormCreate(Sender: TObject);
     procedure SynEditProcessCommand(Sender: TObject;
       var Command: TSynEditorCommand; var AChar: WideChar; Data: Pointer);
@@ -144,6 +144,7 @@ type
     procedure GetBlockCode(var Source: string;
       var Buffer: array of string; EndLineN: Integer; StartLineN: Integer);
     procedure DoCodeCompletion(Editor: TSynEdit; Caret: TBufferCoord);
+    procedure ApplyPyIDEOptions;
     // ISearchCommands implementation
     function CanFind: boolean;
     function CanFindNext: boolean;
@@ -187,8 +188,12 @@ type
     procedure PythonIOSendData(Sender: TObject; const Data: string);
     procedure AppendToPrompt(const Buffer : array of string);
     function IsEmpty : Boolean;
-    procedure RegisterHistoryCommands;
     procedure UpdateInterpreterActions;
+    procedure RegisterHistoryCommands;
+    procedure ValidateEditorOptions(SynEditOptions: TSynEditorOptionsContainer);
+    procedure ApplyEditorOptions;
+    procedure StoreOptions(AppStorage: TJvCustomAppIniStorage);
+    procedure RestoreOptions(AppStorage: TJvCustomAppIniStorage);
     property ShowOutput : boolean read GetShowOutput write SetShowOutput;
     property CommandHistory : TStringList read fCommandHistory;
     property CommandHistoryPointer : integer read fCommandHistoryPointer write fCommandHistoryPointer;
@@ -257,14 +262,6 @@ end;
 function TPythonIIForm.OutputSuppressor: IInterface;
 begin
   Result := TSuppressOutput.Create(Self);
-end;
-
-procedure TPythonIIForm.SynEditPaintTransient(Sender: TObject; Canvas: TCanvas;
-  TransientType: TTransientType);
-begin
-  if (not Assigned(SynEdit.Highlighter)) then
-    Exit;
-  CommandsDataModule.PaintMatchingBrackets(Canvas, SynEdit, TransientType);
 end;
 
 procedure TPythonIIForm.PythonIOReceiveData(Sender: TObject;
@@ -502,6 +499,39 @@ begin
   end;
 end;
 
+procedure TPythonIIForm.ValidateEditorOptions(
+  SynEditOptions: TSynEditorOptionsContainer);
+begin
+  with SynEditOptions do begin
+    Options := Options - [eoTrimTrailingSpaces, eoScrollPastEol, eoShowLigatures];
+    Gutter.Visible := False;
+    IndentGuides.Visible := False;
+    RightEdge := 0;
+  end;
+end;
+
+procedure TPythonIIForm.ApplyEditorOptions;
+begin
+  var SynEditOptions := TSmartPtr.Make(TSynEditorOptionsContainer.Create(nil))();
+
+  var OldWordWrap := SynEdit.WordWrap;
+  SynEditOptions.Assign(EditorOptions);
+  ValidateEditorOptions(SynEditOptions);
+  SynEdit.Assign(SynEditOptions);
+  SynEdit.WordWrap := OldWordWrap;
+  RegisterHistoryCommands;
+
+  SynEdit.Highlighter.Assign(CommandsDataModule.SynPythonSyn);
+end;
+
+procedure TPythonIIForm.ApplyPyIDEOptions;
+begin
+  SynEdit.SelectedColor.Assign(PyIDEOptions.SelectionColor);
+
+  // Command History Size
+  CommandHistorySize := PyIDEOptions.InterpreterHistorySize;
+end;
+
 procedure TPythonIIForm.FormCreate(Sender: TObject);
 begin
   ImageName := 'Python';
@@ -510,8 +540,7 @@ begin
   SynEdit.Highlighter := TSynPythonInterpreterSyn.Create(Self);
   SynEdit.Highlighter.Assign(CommandsDataModule.SynPythonSyn);
 
-  SynEdit.Assign(InterpreterEditorOptions);
-  RegisterHistoryCommands;
+  ApplyEditorOptions;
 
   // IO
   PythonIO.OnSendUniData := PythonIOSendData;
@@ -532,11 +561,17 @@ begin
 
   SetPyInterpreterPrompt(pipNormal);
 
+  // PyIDEOptions change notification
+  PyIDEOptions.OnChange.AddHandler(ApplyPyIDEOptions);
+
   GI_PyInterpreter := Self;
 end;
 
 procedure TPythonIIForm.FormDestroy(Sender: TObject);
 begin
+  // PyIDEOptions change notification
+  PyIDEOptions.OnChange.RemoveHandler(ApplyPyIDEOptions);
+
   GI_PyInterpreter := nil;
   FreeAndNil(fCommandHistory);
   FCriticalSection.Destroy;
@@ -548,14 +583,14 @@ end;
 procedure TPythonIIForm.GetBlockBoundary(LineN: integer; var StartLineN,
   EndLineN: integer; var IsCode: Boolean);
 {-----------------------------------------------------------------------------
-       GetBlockBoundary takes a line number, and will return the
-       start and end line numbers of the block, and a flag indicating if the
-       block is a Python code block.
-       If the line specified has a Python prompt, then the lines are parsed
+	  GetBlockBoundary takes a line number, and will return the
+	  start and end line numbers of the block, and a flag indicating if the
+	  block is a Python code block.
+	  If the line specified has a Python prompt, then the lines are parsed
     backwards and forwards, and the IsCode is true.
-       If the line does not start with a prompt, the block is searched forward
-       and backward until a prompt _is_ found, and all lines in between without
-       prompts are returned, and the IsCode is false.
+	  If the line does not start with a prompt, the block is searched forward
+	  and backward until a prompt _is_ found, and all lines in between without
+	  prompts are returned, and the IsCode is false.
 -----------------------------------------------------------------------------}
 Var
   Line, Prefix : string;
@@ -629,7 +664,6 @@ Var
   Buffer : array of string;
   NewCommand : TSynEditorCommand;
   WChar : WideChar;
-  BC : TBufferCoord;
   Match : TMatch;
 begin
   if (Command <> ecLostFocus) and (Command <> ecGotFocus) then
@@ -638,9 +672,12 @@ begin
     ecLineBreak :
       begin
         Command := ecNone;  // do not processed it further
+
         fCommandHistoryPrefix := '';
+
         CommandsDataModule.SynParamCompletion.CancelCompletion;
         CommandsDataModule.SynCodeCompletion.CancelCompletion;
+
         LineN := SynEdit.CaretY - 1;  // Caret is 1 based
         GetBlockBoundary(LineN, StartLineN, EndLineN, IsCode);
         if not IsCode then begin
@@ -801,43 +838,6 @@ begin
     ecRight :  // Implement Visual Studio like behaviour when selection is available
       if SynEdit.SelAvail then with SynEdit do begin
         CaretXY := BlockEnd;
-        Command := ecNone;  // do not processed it further
-      end;
-    ecWordRight, ecSelWordRight:  // Implement Visual Studio like behaviour
-      begin
-        BC := VSNextWordPos(SynEdit, SynEdit.CaretXY);
-        if Command = ecWordRight then
-          SynEdit.CaretXY := BC
-        else begin
-          if (SynEdit.BlockEnd.Line = SynEdit.CaretXY.Line) and
-             (SynEdit.BlockEnd.Char = SynEdit.CaretXY.Char)
-          then
-            SynEdit.SetCaretAndSelection(BC, SynEdit.BlockBegin, BC)
-          else
-            SynEdit.SetCaretAndSelection(BC, SynEdit.BlockEnd, BC);
-        end;
-        Command := ecNone;  // do not processed it further
-      end;
-    ecWordLeft, ecSelWordLeft:  // Implement Visual Studio like behaviour
-      begin
-        BC := VSPrevWordPos(SynEdit, SynEdit.CaretXY);
-        if Command = ecWordLeft then
-          SynEdit.CaretXY := BC
-        else begin
-          if (SynEdit.BlockEnd.Line = SynEdit.CaretXY.Line) and
-             (SynEdit.BlockEnd.Char = SynEdit.CaretXY.Char)
-          then
-            SynEdit.SetCaretAndSelection(BC, SynEdit.BlockBegin, BC)
-          else
-            SynEdit.SetCaretAndSelection(BC, SynEdit.BlockEnd, BC);
-        end;
-        Command := ecNone;  // do not processed it further
-      end;
-    ecMatchBracket :
-      begin
-        BC := GetMatchingBracket(SynEdit);
-        if BC.Char > 0 then
-          SynEdit.CaretXY := BC;
         Command := ecNone;  // do not processed it further
       end;
     ecLostFocus:
@@ -1013,7 +1013,6 @@ Var
   Source, BlockSource : string;
   Buffer : array of string;
   P1, P2 : PWideChar;
-  BC : TBufferCoord;
 begin
   case Command of
     ecCodeCompletion :
@@ -1028,12 +1027,6 @@ begin
         if CommandsDataModule.SynParamCompletion.Form.Visible then
           CommandsDataModule.SynParamCompletion.CancelCompletion;
         CommandsDataModule.SynParamCompletion.ActivateCompletion;
-      end;
-    ecSelMatchBracket :
-      begin
-        BC := GetMatchingBracket(SynEdit);
-        if BC.Char > 0 then
-          SynEdit.SetCaretAndSelection(BC, SynEdit.CaretXY, BC);
       end;
     ecRecallCommandPrev,
     ecRecallCommandNext,
@@ -1089,6 +1082,7 @@ begin
           end;
 
           SynEdit.BeginUpdate;
+          //SynEdit.LockDrawing;
           try
             if IsCode and (EndLineN = SynEdit.Lines.Count - 1) then begin
               // already at the bottom and inside the prompt
@@ -1135,6 +1129,7 @@ begin
             SynEdit.ExecuteCommand(ecEditorBottom, ' ', nil);
             SynEdit.EnsureCursorPosVisible;
           finally
+            //SynEdit.UnLockDrawing;
             SynEdit.EndUpdate;
           end;
         end;
@@ -1190,6 +1185,7 @@ procedure TPythonIIForm.ShowWindow;
 begin
   PyIDEMainForm.ShowIDEDockForm(Self);
 end;
+
 
 procedure TPythonIIForm.SynCodeCompletionAfterCodeCompletion(Sender: TObject;
   const Value: string; Shift: TShiftState; Index: Integer; EndToken: Char);
@@ -1623,30 +1619,6 @@ begin
   CommandsDataModule.ShowSearchReplaceDialog(SynEdit, TRUE);
 end;
 
-procedure TPythonIIForm.RegisterHistoryCommands;
-  procedure AddEditorCommand(Cmd: TSynEditorCommand; SC: TShortcut);
-  Var
-    Index : integer;
-  begin
-    // Remove if it exists
-    Index :=  SynEdit.Keystrokes.FindShortcut(SC);
-    if Index >= 0 then
-      SynEdit.Keystrokes.Delete(Index);
-    // Addit
-    with SynEdit.Keystrokes.Add do
-    begin
-      ShortCut := SC;
-      Command := Cmd;
-    end;
-  end;
-
-begin
-  // Register the Recall History Command
-  AddEditorCommand(ecRecallCommandPrev, Vcl.Menus.ShortCut(VK_UP, [ssAlt]));
-  AddEditorCommand(ecRecallCommandNext, Vcl.Menus.ShortCut(VK_DOWN, [ssAlt]));
-  AddEditorCommand(ecRecallCommandEsc, Vcl.Menus.ShortCut(VK_ESCAPE, []));
-end;
-
 procedure TPythonIIForm.ReinitInterpreter;
 begin
   if Assigned(PyControl.ActiveInterpreter) then
@@ -1693,5 +1665,91 @@ begin
   Delete(Source, Length(Source), 1);
 end;
 
+procedure TPythonIIForm.RegisterHistoryCommands;
+// Register the Recall History Command
+
+  procedure AddEditorCommand(Cmd: TSynEditorCommand; SC: TShortcut);
+  begin
+    // Remove if it exists
+    var Index :=  SynEdit.Keystrokes.FindShortcut(SC);
+    if Index >= 0 then
+      SynEdit.Keystrokes.Delete(Index);
+    // Addit
+    with SynEdit.Keystrokes.Add do
+    begin
+      ShortCut := SC;
+      Command := Cmd;
+    end;
+  end;
+
+begin
+  AddEditorCommand(ecRecallCommandPrev, Vcl.Menus.ShortCut(VK_UP, [ssAlt]));
+  AddEditorCommand(ecRecallCommandNext, Vcl.Menus.ShortCut(VK_DOWN, [ssAlt]));
+  AddEditorCommand(ecRecallCommandEsc, Vcl.Menus.ShortCut(VK_ESCAPE, []));
+end;
+
+procedure TPythonIIForm.StoreOptions(AppStorage: TJvCustomAppIniStorage);
+begin
+  var TempStringList := TSmartPtr.Make(TStringList.Create)();
+
+  // Save Options
+  var SynEditOptions := TSmartPtr.Make(TSynEditorOptionsContainer.Create(nil))();
+  SynEditOptions.Assign(SynEdit);
+
+  AppStorage.DeleteSubTree('Interpreter Editor Options');
+  TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides', 'KeyStrokes']);
+  AppStorage.WritePersistent('Interpreter Editor Options', SynEditOptions, True, TempStringList);
+
+  //Save Highlighter
+  AppStorage.WritePersistent('Highlighters\Intepreter', SynEdit.Highlighter);
+
+  // Save Interpreter History
+  TempStringList.Clear;
+  for var I := 0 to CommandHistory.Count - 1 do
+    TempStringList.Add(StrStringToEscaped(CommandHistory[i]));
+  AppStorage.StorageOptions.PreserveLeadingTrailingBlanks := True;
+  AppStorage.WriteStringList('Command History', TempStringList);
+  AppStorage.StorageOptions.PreserveLeadingTrailingBlanks := False;
+end;
+
+procedure TPythonIIForm.RestoreOptions(AppStorage: TJvCustomAppIniStorage);
+begin
+  var TempStringList := TSmartPtr.Make(TStringList.Create)();
+
+  // Restore Options
+  if AppStorage.PathExists('Interpreter Editor Options') then begin
+    var SynEditOptions := TSmartPtr.Make(TSynEditorOptionsContainer.Create(nil))();
+
+    SynEditOptions.Assign(SynEdit);
+
+    TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides', 'KeyStrokes']);
+    AppStorage.ReadPersistent('Interpreter Editor Options', SynEditOptions, True, True, TempStringList);
+
+    ValidateEditorOptions(SynEditOptions);
+    SynEdit.Assign(SynEditOptions);
+  end;
+
+  // Restore Highlighter
+  if AppStorage.PathExists('Highlighters\Intepreter') then
+  begin
+    SynEdit.Highlighter.BeginUpdate;
+    try
+      AppStorage.ReadPersistent('Highlighters\Intepreter', SynEdit.Highlighter);
+    finally
+      SynEdit.Highlighter.EndUpdate;
+    end;
+  end;
+
+  // Restore Interpreter History
+  TempStringList.Clear;
+  AppStorage.StorageOptions.PreserveLeadingTrailingBlanks := True;
+  AppStorage.ReadStringList('Command History', TempStringList);
+  AppStorage.StorageOptions.PreserveLeadingTrailingBlanks := False;
+
+  CommandHistory.Clear;
+  for var I := 0 to TempStringList.Count - 1 do
+    CommandHistory.Add(StrEscapedToString(TempStringList[i]));
+  CommandHistoryPointer := TempStringList.Count;  // one after the last one
+end;
 
 end.

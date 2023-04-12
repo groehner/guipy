@@ -35,7 +35,7 @@ inherited FileExplorerWindow: TFileExplorerWindow
     0000001F0000001F0000001F0000001F0000001F0000003F00000FFF0000}
   ExplicitHeight = 478
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   inherited BGPanel: TPanel
     Height = 439
     ExplicitHeight = 439
@@ -268,7 +268,7 @@ inherited FileExplorerWindow: TFileExplorerWindow
   end
   object ShellContextPopUp: TPopupMenu
     Images = vilImages
-    Left = 86
+    Left = 30
     Top = 148
     object ExploreHere: TMenuItem
       Caption = '&Explore Here'

@@ -7,26 +7,10 @@ object DocForm: TDocForm
   ClientWidth = 463
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = False
-  OnDestroy = FormDestroy
+  OldCreateOrder = True
+  OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 13
-  object WebBrowser: TWebBrowser
-    Left = 0
-    Top = 30
-    Width = 463
-    Height = 416
-    HelpContext = 850
-    Align = alClient
-    TabOrder = 0
-    OnCommandStateChange = WebBrowserCommandStateChange
-    ControlData = {
-      4C000000DA2F0000FF2A00000000000000000000000000000000000000000000
-      000000004C000000000000000000000001000000E0D057007335CF11AE690800
-      2B2E126208000000000000004C0000000114020000000000C000000000000046
-      8000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000100000000000000000000000000000000000000}
-  end
+  TextHeight = 14
   object TBXDock1: TSpTBXDock
     Left = 0
     Top = 0
@@ -45,11 +29,13 @@ object DocForm: TDocForm
       object ToolButtonBack: TSpTBXItem
         Hint = 'Go Back'
         ImageIndex = 0
+        ImageName = 'Back'
         OnClick = ToolButtonBackClick
       end
       object ToolButtonForward: TSpTBXItem
         Hint = 'Go Forward'
         ImageIndex = 1
+        ImageName = 'Forward'
         OnClick = ToolButtonForwardClick
       end
       object TBXSeparatorItem1: TSpTBXSeparatorItem
@@ -57,23 +43,15 @@ object DocForm: TDocForm
       object TBXItem3: TSpTBXItem
         Hint = 'Stop'
         ImageIndex = 2
+        ImageName = 'Cancel'
         OnClick = ToolButtonStopClick
       end
       object TBXSeparatorItem2: TSpTBXSeparatorItem
       end
-      object TBXItem4: TSpTBXItem
-        Hint = 'Page Setup'
-        ImageIndex = 3
-        OnClick = ToolButtonPageSetupClick
-      end
-      object TBXItem6: TSpTBXItem
-        Hint = 'Print Preview'
-        ImageIndex = 4
-        OnClick = ToolButtonPrintPreviewClick
-      end
       object TBXItem5: TSpTBXItem
         Hint = 'Print'
         ImageIndex = 5
+        ImageName = 'Print'
         OnClick = ToolButtonPrintClick
       end
       object TBXSeparatorItem4: TSpTBXSeparatorItem
@@ -81,9 +59,21 @@ object DocForm: TDocForm
       object TBXItem7: TSpTBXItem
         Hint = 'Save'
         ImageIndex = 6
+        ImageName = 'Save'
         OnClick = ToolButtonSaveClick
       end
     end
+  end
+  object WebBrowser: TEdgeBrowser
+    Left = 0
+    Top = 30
+    Width = 463
+    Height = 416
+    HelpContext = 850
+    Align = alClient
+    TabOrder = 0
+    TabStop = True
+    OnCreateWebViewCompleted = WebBrowserCreateWebViewCompleted
   end
   object BrowserImages: TVirtualImageList
     DisabledGrayscale = False

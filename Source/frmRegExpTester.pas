@@ -37,9 +37,10 @@ uses
   SpTBXEditors,
   JvAppStorage,
   JvComponentBase,
+  VirtualTrees.BaseTree,
   VirtualTrees,
   frmIDEDockWin,
-  Vcl.ImgList;
+  Vcl.ImgList, VirtualTrees.BaseAncestorVCL, VirtualTrees.AncestorVCL;
 
 type
   TRegExpTesterWindow = class(TIDEDockWindow, IJvAppStorageHandler)
@@ -322,13 +323,14 @@ Var
   AdjSearchText: string;
   OutputSuppressor: IInterface;
 begin
-  Clear;
+  if not GI_PyControl.Inactive then Exit;
 
   if RegExpText.Text = '' then Exit;
   if SearchText.Text = '' then Exit;
 
+  Clear;
+
   Py := SafePyEngine;
-  if not GI_PyControl.Inactive then Exit;
 
   re := Import('re');
   Flags := 0;

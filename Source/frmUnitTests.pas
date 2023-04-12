@@ -25,6 +25,10 @@ uses
   SVGIconImageCollection,
   JvComponentBase,
   JvDockControlForm,
+  VirtualTrees.Types,
+  VirtualTrees.BaseAncestorVCL,
+  VirtualTrees.AncestorVCL,
+  VirtualTrees.BaseTree,
   VirtualTrees,
   TB2Item,
   TB2Dock,
@@ -306,7 +310,7 @@ end;
 procedure TUnitTestWindow.UnitTestsInitNode(Sender: TBaseVirtualTree;
   ParentNode, Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
 begin
-  if UnitTests.GetNodeLevel(Node) = 0 then begin
+  if ParentNode = nil then begin
     Node.CheckType := ctTriStateCheckBox;
     if TStringList(TestClasses.Objects[Node.Index]).Count > 0 then
       InitialStates := [ivsHasChildren, ivsExpanded]

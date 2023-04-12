@@ -143,8 +143,10 @@ end;
 destructor TModelEntity.Destroy;
 begin
   FreeAndNil(FDocumentation);
-  // here we get sometines exceptions/memory leaks
+  // here we get sometimes exceptions/memory leaks
   // when called by TLogicPackage.Destroy
+
+  // presumably only if MadExcept is reporting memory leaks
 
   //if not (Self.ClassName = 'TLogicPackage') then
   try

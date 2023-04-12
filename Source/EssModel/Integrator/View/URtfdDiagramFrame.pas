@@ -37,12 +37,13 @@ implementation
 
 {$R *.DFM}
 
-// vermutlich aus Gründen zirkulärer Bezüge wirklich nötig
+// probably really necessary for reasons of circular references
 
 constructor TAFrameRtfdDiagram.Create(aOwner: TComponent; aDiagram: TRtfdDiagram);
 begin
   inherited Create(aOwner, aDiagram.Model);
   Self.Diagram:= aDiagram;
 end;
+
 
 end.

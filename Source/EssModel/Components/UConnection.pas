@@ -96,6 +96,7 @@ type
     Cutted: boolean;
     BGColor: TColor;
     FGColor: TColor;
+    svg: string;
     constructor create(Src, Dst: TControl; Attributes: TConnectionAttributes; aCanvas: TCanvas);
     destructor Destroy; override;
     procedure Draw(aCanvas: TCanvas; show: boolean);
@@ -119,7 +120,13 @@ type
     function getBoundsRect(aControl: TControl): TRect; overload;
     function getCenter(R: TRect): TPoint;
     function ArrowToConnect(Arrow: TessConnectionArrowStyle): TessConnectionStyle;
-    procedure ChangeStyle;
+    procedure ChangeStyle(BlackAndWhite: boolean = false);
+    function calcSVGBaseLine(R: TRect): integer;
+    function getSVGText(R: TRect; s: string): string;
+    function getSVGLine(x1, y1, x2, y2: real): string;
+    function getSVGPolyline(Points: array of TPoint): string;
+    function getSVGPolygon(Points: array of TPoint; color: string): string;
+    function getSVG: string;
   end;
 
 
@@ -415,6 +422,7 @@ procedure TConnection.Draw(aCanvas: TCanvas; show: boolean);
     R2: TRect;
     MyRgn: HRGN;
     ConRect: TRect;
+    PointArray: array of TPoint;
 
   function aCalcRect(ACanvas: TCanvas; const AString: string): TRect;
   begin
@@ -487,6 +495,7 @@ procedure TConnection.Draw(aCanvas: TCanvas; show: boolean);
     if not turned and (Quadrant in [1, 4]) or turned and (Quadrant in [2, 3])
       then Square.enlargeRight(FromPStart, ToPEnd, tw + 15, th)
       else Square.enlargeLeft(FromPStart, ToPEnd, tw + 15, th);
+    svg:= svg + getSVGText(R, Multiplicity);
   end;
 
   procedure ShowRole(turned: boolean; xr, yr: integer; R2: TRect; const Role: string);
@@ -543,7 +552,8 @@ procedure TConnection.Draw(aCanvas: TCanvas; show: boolean);
     DrawText(aCanvas.Handle, PChar(Role), -1, R, Flags);
     if not turned and (Quadrant in [1, 4]) or turned and (Quadrant in [2, 3])
       then Square.enlargeLeft(FromPStart, ToPEnd, tw + 15, th)
-      else Square.enlargeRight(FromPStart, ToPEnd, tw + 15, th)
+      else Square.enlargeRight(FromPStart, ToPEnd, tw + 15, th);
+    svg:= svg + getSVGText(R, Role);
   end;
 
   procedure ShowRelation(R2: TRect; dx, dy: integer; Relation: string);
@@ -575,6 +585,7 @@ procedure TConnection.Draw(aCanvas: TCanvas; show: boolean);
     if Quadrant in [1, 4]
       then Square.enlargeLeft(FromPStart, ToPEnd, tw + abs(dx), th)
       else Square.enlargeRight(FromPStart, ToPEnd, tw + abs(dx), th);
+    svg:= svg + getSVGText(R, Relation);
   end;
 
 begin  // of draw
@@ -628,12 +639,19 @@ begin  // of draw
   MyRgn:= CreateRectRgn(ConRect.Left, ConRect.Top, ConRect.Right, ConRect.Bottom);
   SelectClipRgn(aCanvas.Handle, MyRgn);
 
+  svg:= '<g>'#13#10;
   aCanvas.MoveTo(x1, y1);
   if Canvas.Pen.Width = 1 then begin
     aCanvas.LineTo(x2, y2);
     aCanvas.Pixels[x2, y2]:= aCanvas.Pen.Color;
-  end else
+    svg:= svg + getSVGLine(x1, y1, x2, y2);
+  end else begin
     aCanvas.LineTo(x2-Round(5*xLineUnitDelta), y2 - Round(5*yLineUnitDelta));
+    svg:= svg + getSVGLine(x1, y1, x2 - SimpleRoundTo(5*xLineUnitDelta, -1), y2 - SimpleRoundTo(5*yLineUnitDelta, -1));
+    insert('stroke-width="3" ', svg, pos('/>', svg));
+  end;
+  if ArrowStyle in [asImplements, asInstanceOf, asComment] then
+    insert('stroke-dasharray="1.5% 0.5%" ', svg, pos('/>', svg));
 
   SelectClipRgn(aCanvas.Handle, HRGN(nil));
   DeleteObject(MyRgn);
@@ -682,16 +700,18 @@ begin  // of draw
   MyRgn:= CreateRectRgn(ConRect.Left, ConRect.Top, ConRect.Right, ConRect.Bottom);
   SelectClipRgn(aCanvas.Handle, MyRgn);
   if ArrowStyle in [asAggregation1, asAggregation2, asComposition1, asComposition2] then begin
-    aCanvas.Polygon([
-      Point(x1, y1),
-      Point(xBase + dx, yBase + dy),
-      Point(x1 + d2x, y1 + d2y),
-      Point(xBase - dx, yBase - dy) ]);
+    PointArray:= [Point(x1, y1), Point(xBase + dx, yBase + dy),
+                  Point(x1 + d2x, y1 + d2y), Point(xBase - dx, yBase - dy)];
+    aCanvas.Polygon(PointArray);
+    if ArrowStyle in [asAggregation1, asAggregation2]
+      then svg:= svg + getSVGPolygon(PointArray, 'white')
+      else svg:= svg + getSVGPolygon(PointArray, 'black');
+
   end else if Arrowstyle = asAssociation3 then begin
-    aCanvas.Polyline([
-      Point(xBase + dx, yBase + dy),
-      Point(x1, y1),
-      Point(xBase - dx, yBase - dy) ]);
+    PointArray:= [Point(xBase + dx, yBase + dy), Point(x1, y1),
+                  Point(xBase - dx, yBase - dy)];
+    aCanvas.Polyline(PointArray);
+    svg:= svg + getSVGPolyline(PointArray);
   end;
   SelectClipRgn(aCanvas.Handle, HRGN(nil));
   DeleteObject(MyRgn);
@@ -721,18 +741,23 @@ begin  // of draw
   SelectClipRgn(aCanvas.Handle, MyRgn);
   case ArrowStyle of
     asInheritends, asImplements:
-      aCanvas.Polygon([
-        Point(x2, y2),
-        Point(xBase + dx, yBase + dy),
-        Point(xBase - dx, yBase - dy)]);
+    begin
+      PointArray:= [Point(x2, y2), Point(xBase + dx, yBase + dy),
+                    Point(xBase - dx, yBase - dy)];
+      aCanvas.Polygon(PointArray);
+      svg:= svg + getSVGPolygon(PointArray, 'white');
+    end;
     asAssociation2, asAssociation3, asAggregation2, asComposition2, asInstanceOf:
-      aCanvas.Polyline([
-        Point(xBase + dx, yBase + dy),
-        Point(x2, y2),
-        Point(xBase - dx, yBase - dy)]);
+    begin
+      PointArray:= [Point(xBase + dx, yBase + dy), Point(x2, y2),
+                    Point(xBase - dx, yBase - dy)];
+      aCanvas.Polyline(PointArray);
+      svg:= svg + getSVGPolyline(PointArray);
+    end;
   end;
   SelectClipRgn(aCanvas.Handle, HRGN(nil));
   DeleteObject(MyRgn);
+  svg:= svg + '</g>'#13#10;
 
   {--- draw multiplicities and roles ------------------------------------------}
 
@@ -783,6 +808,8 @@ end;
 
 procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: boolean);
 
+  var PointArray: array of TPoint;
+
   procedure DrawArrowStart(P1, P2: TPoint);
     var P3, P4: TPoint; dx, dy: integer;
   begin
@@ -810,9 +837,17 @@ procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: boolean);
       P4.X:= P1.X - Headlength;
       P4.Y:= P3.Y;
     end;
-    if ArrowStyle = asAssociation3
-      then aCanvas.Polyline([P3, P1, P4])
-      else aCanvas.Polygon([P1, P3, P2, P4]);
+    if ArrowStyle = asAssociation3 then begin
+      PointArray:= [P3, P1, P4];
+      aCanvas.Polyline(PointArray);
+      svg:= svg + getSVGPolyline(PointArray);
+    end else begin
+      PointArray:= [P1, P3, P2, P4];
+      aCanvas.Polygon(PointArray);
+      if ArrowStyle in [asAggregation1, asAggregation2]
+        then svg:= svg + getSVGPolygon(PointArray, 'white')
+        else svg:= svg + getSVGPolygon(PointArray, 'black');
+    end;
     aCanvas.Brush.Color:= BGColor;
   end;
 
@@ -835,19 +870,31 @@ procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: boolean);
     end;
     case ArrowStyle of
       asInheritends,
-      asImplements: aCanvas.Polygon([P1, P3, P4]);
+      asImplements: begin
+        PointArray:= [P1, P3, P4];
+        aCanvas.Polygon(PointArray);
+        if ArrowStyle in [asAggregation1, asAggregation2]
+          then svg:= svg + getSVGPolygon(PointArray, 'white')
+          else svg:= svg + getSVGPolygon(PointArray, 'black');
+      end;
       asAssociation2,
       asAssociation3,
       asAggregation2,
       asComposition2,
       asInstanceOf: begin
-        aCanvas.Polyline([P3, P1, P4]);
+        PointArray:= [P3, P1, P4];
+        aCanvas.Polyline(PointArray);
         aCanvas.Pixels[P4.x, P4.y]:= aCanvas.Pen.Color;
+        svg:= svg + getSVGPolyline(PointArray);
       end;
       asAssociation1,
       asAggregation1,
       asComposition1,
-      asComment: aCanvas.Polyline([P1, P2]);
+      asComment: begin
+        PointArray:= [P1, P2];
+        aCanvas.Polyline(PointArray);
+        svg:= svg + getSVGPolyline(PointArray);
+      end;
     end;
     aCanvas.Brush.Color:= BGColor;
   end;
@@ -858,6 +905,10 @@ begin
     then aCanvas.Pen.Color:= FGColor
     else aCanvas.Pen.Color:= BGColor;
   aCanvas.Polyline(Pl);
+  svg:= '<g>'#13#10 + getSVGPolyline(Pl);
+  if ArrowStyle in [asImplements, asInstanceOf, asComment] then
+    insert('stroke-dasharray="1.5% 0.5%" ', svg, pos('/>', svg));
+
   aCanvas.Pen.Width:= 1;
   aCanvas.Pen.Style:= psSolid;
   if isTurned then begin
@@ -867,6 +918,7 @@ begin
     DrawArrowStart(Pl[1], PL[2]);
     DrawArrowHead(Pl[5], Pl[4]);
   end;
+  svg:= svg + '</g>'#13#10;
   DrawRecursivAnnotations(aCanvas);
   DrawSelection(aCanvas);
   Square.term(RecursivCorner, Pl);
@@ -922,6 +974,7 @@ begin
     end;
     OffsetRect(R, x1, y1);
     DrawText(aCanvas.Handle, PChar(ma), -1, R, Flags);
+    svg:= svg + getSVGText(R, ma);
   end;
 
   if ra <> '' then begin // Role A
@@ -946,6 +999,7 @@ begin
     end;
     OffsetRect(R, x1, y1);
     DrawText(aCanvas.Handle, PChar(ra), -1, R, Flags);
+    svg:= svg + getSVGText(R, ra);
   end;
 
   if Relation <> '' then begin // Relationname
@@ -980,6 +1034,7 @@ begin
     end;
     OffsetRect(R, x1, y1);
     DrawText(aCanvas.Handle, PChar(Relation), -1, R, Flags);
+    svg:= svg + getSVGText(R, Relation);
   end;
 
   if mb <> '' then begin // Multiplicity B
@@ -1004,6 +1059,7 @@ begin
     end;
     OffsetRect(R, x1, y1);
     DrawText(aCanvas.Handle, PChar(mb), -1, R, Flags);
+    svg:= svg + getSVGText(R, mb);
   end;
 
   if rb <> '' then begin // Role B
@@ -1028,6 +1084,7 @@ begin
     end;
     OffsetRect(R, x1, y1);
     DrawText(aCanvas.Handle, PChar(rb), -1, R, Flags);
+    svg:= svg + getSVGText(R, rb);
   end;
 end;
 
@@ -1456,9 +1513,9 @@ begin
   Result:= aRect;
 end;
 
-procedure TConnection.ChangeStyle;
+procedure TConnection.ChangeStyle(BlackAndWhite: boolean = false);
 begin
-  if StyleServices.IsSystemStyle then begin
+  if StyleServices.IsSystemStyle or BlackandWhite then begin
     BGColor:= clWhite;
     FGColor:= clBlack;
   end else begin
@@ -1466,5 +1523,49 @@ begin
     FGColor:= StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
   end;
 end;
+
+function TConnection.calcSVGBaseLine(R: TRect): integer;
+begin
+  Result:= R.Top + Round(1.0*abs(Canvas.Font.Height));
+end;
+
+function TConnection.getSVGText(R: TRect; s: string): string;
+begin
+  Result:= '  <text x=' + IntToVal(R.Left) + ' y=' + IntToVal(calcSVGBaseLine(R)) +
+           ' white-space="pre-line">' + s + '</text>'#13#10;
+end;
+
+function TConnection.getSVGLine(x1, y1, x2, y2: real): string;
+begin
+  Result:= '  <line x1=' + FloatToVal(x1) + ' y1=' + FloatToVal(y1) +
+           ' x2=' + FloatToVal(x2) + ' y2=' + FloatToVal(y2) +
+           ' stroke="black" stroke-linecap="square" />'#13#10;
+end;
+
+function TConnection.getSVGPolyline(Points: array of TPoint): string;
+  var i: integer;
+begin
+  Result:= '  <polyline points="';
+  for i:= 0 to High(Points) do
+    Result:= Result + PointToVal(Points[i]);
+  Result[length(Result)]:= '"';
+  Result:= Result + ' fill="none" stroke="black" />'#13#10;
+end;
+
+function TConnection.getSVGPolygon(Points: array of TPoint; color: string): string;
+  var i: integer;
+begin
+  Result:= '  <polygon points="';
+  for i:= 0 to High(Points) do
+    Result:= Result + PointToVal(Points[i]);
+  Result[length(Result)]:= '"';
+  Result:= Result + ' fill="' + color + '" stroke="black" />'#13#10;
+end;
+
+function TConnection.getSVG: string;
+begin
+  Result:= svg;
+end;
+
 
 end.

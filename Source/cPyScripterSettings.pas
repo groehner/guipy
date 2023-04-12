@@ -1,6 +1,6 @@
 {-----------------------------------------------------------------------------
  Unit Name: cPyScripterSettings
- Author:    Pyscripter
+ Author:    Pyscripter, Gerhard Röhner
  Date:      22-Jan-2018
  Purpose:   Centralize the management of PyScripter settings
  History:
@@ -10,6 +10,7 @@ unit cPyScripterSettings;
 
 interface
 Uses
+  WinApi.Windows,
   System.Classes,
   Vcl.ImgList,
   Vcl.Graphics,
@@ -17,7 +18,9 @@ Uses
   SpTBXTabs,
   SynEditTypes,
   SynEditCodeFolding,
+  SynEditMiscClasses,
   SynEditKeyCmds,
+  SynEdit,
   WrapDelphi,
   uEditAppIntfs,
   cPySupportTypes,
@@ -29,6 +32,7 @@ Const
   dsaReplaceNumber = 3;
   dsaSearchStartReached = 4;
   dsaPostMortemInfo = 5;
+  dsaDictonaryNA = 6;
 
 type
   TFileChangeNotificationType = (fcnFull, fcnNoMappedDrives, fcnDisabled);
@@ -49,7 +53,7 @@ type
   TPythonIDEOptions = class(TBaseOptions, IFreeNotification)
   private
     fFreeNotifyImpl : IFreeNotification;
-    fOnChange: TJclNotifyEventBroadcast;
+    fOnChange: TJclProcedureEventBroadcast;
     fTimeOut : integer;
     fUndoAfterSave : Boolean;
     fSaveFilesBeforeRun : Boolean;
@@ -58,8 +62,8 @@ type
     fRestoreOpenFiles : Boolean;
     fRestoreOpenProject : Boolean;
     fCreateBackupFiles : Boolean;
-    fExporerInitiallyExpanded : Boolean;
-    fProjectExporerInitiallyExpanded : Boolean;
+    fExplorerInitiallyExpanded : Boolean;
+    fProjectExplorerInitiallyExpanded : Boolean;
     fSearchTextAtCaret : Boolean;
     fPythonFileFilter : string;
     fCythonFileFilter : string;
@@ -141,8 +145,20 @@ type
     fTraceOnlyIntoOpenFiles: Boolean;
     fLspDebug: Boolean;
     fMethodsWithComment: Boolean;
+    fDictLanguage: string;
+    fSpellCheckedTokens: string;
+    fSpellCheckAsYouType: Boolean;
+    fAutoRestart: Boolean;
+    fLoggingEnabled: Boolean;
+    fTrackChanges: TSynTrackChanges;
+    fSelectionColor: TSynSelectedColor;
+    fIndentGuides: TSynIndentGuides;
     function GetPythonFileExtensions: string;
     procedure SetAutoCompletionFont(const Value: TFont);
+    procedure SetCodeFolding(const Value: TSynCodeFolding);
+    procedure SetTrackChanges(const Value: TSynTrackChanges);
+    procedure SetSelectionColor(const Value: TSynSelectedColor);
+    procedure SetIndentGuides(const Value: TSynIndentGuides);
   protected
     property FreeNotifyImpl : IFreeNotification read fFreeNotifyImpl implements IFreeNotification;
   public
@@ -151,10 +167,16 @@ type
     procedure Assign(Source: TPersistent); override;
     procedure Changed;
     property PythonFileExtensions : string read GetPythonFileExtensions;
-    property OnChange: TJclNotifyEventBroadcast read fOnChange;
+    property OnChange: TJclProcedureEventBroadcast read fOnChange;
   published
     property CodeFolding : TSynCodeFolding read fCodeFolding
-      write fCodeFolding;
+      write SetCodeFolding;
+    property TrackChanges: TSynTrackChanges read fTrackChanges
+      write SetTrackChanges;
+    property SelectionColor: TSynSelectedColor read fSelectionColor
+      write SetSelectionColor;
+    property IndentGuides: TSynIndentGuides read fIndentGuides
+      write SetIndentGuides;
     property TimeOut : integer read fTimeOut write fTimeOut default 0;
     property UndoAfterSave : boolean read fUndoAfterSave
       write fUndoAfterSave default True;
@@ -170,10 +192,10 @@ type
       write fRestoreOpenProject default True;
     property CreateBackupFiles : boolean read fCreateBackupFiles
       write fCreateBackupFiles default False;
-    property ExporerInitiallyExpanded : boolean read fExporerInitiallyExpanded
-      write fExporerInitiallyExpanded default False;
-    property ProjectExporerInitiallyExpanded : boolean read fProjectExporerInitiallyExpanded
-      write fProjectExporerInitiallyExpanded default True;
+    property ExplorerInitiallyExpanded : boolean read fExplorerInitiallyExpanded
+      write fExplorerInitiallyExpanded default False;
+    property ProjectExplorerInitiallyExpanded : boolean read fProjectExplorerInitiallyExpanded
+      write fProjectExplorerInitiallyExpanded default True;
     property SearchTextAtCaret : Boolean read fSearchTextAtCaret
       write fSearchTextAtCaret stored False;
     property PythonFileFilter : string read fPythonFileFilter
@@ -325,31 +347,103 @@ type
     property TraceOnlyIntoOpenFiles : Boolean read fTraceOnlyIntoOpenFiles
       write fTraceOnlyIntoOpenFiles default False;
     property LspDebug: Boolean read fLspDebug write fLspDebug default false;
-
+    property DictLanguage: string read fDictLanguage write fDictLanguage;
+    property SpellCheckedTokens: string read fSpellCheckedTokens write fSpellCheckedTokens;
+    property SpellCheckAsYouType: Boolean read fSpellCheckAsYouType
+      write fSpellCheckAsYouType default False;
+    property AutoRestart: Boolean read fAutoRestart write fAutoRestart default True;
+    property LoggingEnabled: Boolean read fLoggingEnabled write fLoggingEnabled default False;
     property MethodsWithComment: Boolean read fMethodsWithComment
       write fMethodsWithComment default false;
   end;
 {$METHODINFO OFF}
 
+  TSearchCaseSensitiveType = (scsAuto, scsNotCaseSenitive, scsCaseSensitive);
+
+  TEditorSearchOptions = class(TPersistent)
+  private
+    fSearchBackwards: boolean;
+    fSearchCaseSensitiveType: TSearchCaseSensitiveType;
+    fSearchFromCaret: boolean;
+    fSearchSelectionOnly: boolean;
+    fSearchTextAtCaret: boolean;
+    fSearchWholeWords: boolean;
+    fUseRegExp: boolean;
+    fIncrementalSearch: boolean;
+
+    fSearchText: string;
+    fSearchTextHistory: string;
+    fReplaceText: string;
+    fReplaceTextHistory: string;
+
+    fTempSearchFromCaret: boolean;
+    fInitBlockBegin : TBufferCoord;
+    fInitBlockEnd : TBufferCoord;
+    fInitCaretXY : TBufferCoord;
+    fLastReplaceAction: TSynReplaceAction;
+    fTempSelectionOnly : boolean;
+    fNoReplaceCount : integer;
+    fWrappedSearch : boolean;
+    fCanWrapSearch : boolean;
+    fBackwardSearch : boolean;
+    fInterpreterIsSearchTarget : Boolean;
+    fTextDiffIsSearchTarget : Boolean;
+  public
+    procedure Assign(Source: TPersistent); override;
+    procedure InitSearch;
+    procedure NewSearch(SynEdit : TCustomSynEdit; ABackwards : Boolean);
+    property SearchBackwards: boolean read fSearchBackwards write fSearchBackwards;
+    property SearchText: string read fSearchText write fSearchText;
+    property ReplaceText: string read fReplaceText write fReplaceText;
+    property TempSearchFromCaret: boolean read fTempSearchFromCaret write fTempSearchFromCaret;
+    property TempSelectionOnly: boolean read fTempSelectionOnly write fTempSelectionOnly;
+    property NoReplaceCount: integer read fNoReplaceCount write fNoReplaceCount;
+    property LastReplaceAction: TSynReplaceAction read fLastReplaceAction write fLastReplaceAction;
+    property CanWrapSearch: boolean read fCanWrapSearch write fCanWrapSearch;
+    property WrappedSearch: boolean read fWrappedSearch write fWrappedSearch;
+    property BackwardSearch: boolean read fBackwardSearch write fBackwardSearch;
+    property InitBlockBegin : TBufferCoord read fInitBlockBegin write fInitBlockBegin;
+    property InitBlockEnd : TBufferCoord read fInitBlockEnd write fInitBlockEnd;
+    property InitCaretXY : TBufferCoord read fInitCaretXY write fInitCaretXY;
+    property InterpreterIsSearchTarget : Boolean read fInterpreterIsSearchTarget write fInterpreterIsSearchTarget;
+    property TextDiffIsSearchTarget : Boolean read fTextDiffIsSearchTarget write fTextDiffIsSearchTarget;
+  published
+    property SearchTextHistory: string read fSearchTextHistory write fSearchTextHistory;
+    property ReplaceTextHistory: string read fReplaceTextHistory write fReplaceTextHistory;
+    property SearchSelectionOnly: boolean read fSearchSelectionOnly write fSearchSelectionOnly;
+    property SearchCaseSensitiveType: TSearchCaseSensitiveType read fSearchCaseSensitiveType write fSearchCaseSensitiveType;
+    property SearchFromCaret: boolean read fSearchFromCaret write fSearchFromCaret;
+    property SearchTextAtCaret: boolean read fSearchTextAtCaret write fSearchTextAtCaret;
+    property SearchWholeWords: boolean read fSearchWholeWords write fSearchWholeWords;
+    property UseRegExp: boolean read fUseRegExp write fUseRegExp;
+    property IncrementalSearch: boolean read fIncrementalSearch write fIncrementalSearch;
+  end;
+
   TPyScripterSettings = class
+  private
+    class procedure ApplyPyIDEOptions;
+  public
     class var IsPortable: Boolean;
     class var UserDataPath: string;
     class var OptionsFileName: string;
     class var ColorThemesFilesDir: string;
     class var StylesFilesDir: string;
     class var LspServerPath: string;
+    class var RecoveryDir: string;
     class var EngineInitFile: string;
     class var PyScripterInitFile: string;
+    class var PyScripterLogFile: string;
     class var ShellImages: TCustomImageList;
     class var DefaultEditorKeyStrokes: TSynEditKeyStrokes;
     class procedure RegisterEditorUserCommands(Keystrokes: TSynEditKeyStrokes);
     class procedure CreateIDEOptions;
     class procedure CreateEditorOptions;
+    class procedure CreateSearchOptions;
     class constructor CreateSettings;
     class destructor Destroy;
   end;
 
-Const
+const
   // Additional Synedit commands
   ecRecallCommandPrev = ecUserFirst + 100;
   ecRecallCommandNext = ecUserFirst + 101;
@@ -358,16 +452,14 @@ Const
   ecParamCompletion = ecUserFirst + 104;
   ecSelMatchBracket = ecUserFirst + 105;
 
-
-Var
+var
   PyIDEOptions : TPythonIDEOptions;
   EditorOptions : TSynEditorOptionsContainer;
-  InterpreterEditorOptions : TSynEditorOptionsContainer;
+  EditorSearchOptions : TEditorSearchOptions;
 
 implementation
 
 uses
-  Winapi.Windows,
   System.UITypes,
   System.SysUtils,
   System.IOUtils,
@@ -377,11 +469,11 @@ uses
   uHighlighterProcs,
   JvAppStorage,
   JvGnuGettext,
-  SynEdit,
+  SynUnicode,
   SynEditStrConst,
-  SynEditMiscClasses,
   SynHighlighterPython,
   SynHighlighterYAML,
+  SynEditRegexSearch,
   StringResources,
   uCommonFunctions,
   uUtils;
@@ -393,6 +485,9 @@ begin
   if Source is TPythonIDEOptions then
     with TPythonIDEOptions(Source) do begin
       Self.fCodeFolding.Assign(CodeFolding);
+      Self.fTrackChanges.Assign(TrackChanges);
+      Self.fSelectionColor.Assign(SelectionColor);
+      Self.fIndentGuides.Assign(IndentGuides);
       Self.fTimeOut := TimeOut;
       Self.fUndoAfterSave := UndoAfterSave;
       Self.fSaveFilesBeforeRun := SaveFilesBeforeRun;
@@ -401,8 +496,8 @@ begin
       Self.fRestoreOpenFiles := fRestoreOpenFiles;
       Self.fRestoreOpenProject := fRestoreOpenProject;
       Self.fCreateBackUpFiles := CreateBackUpFiles;
-      Self.fExporerInitiallyExpanded := ExporerInitiallyExpanded;
-      Self.fProjectExporerInitiallyExpanded := ProjectExporerInitiallyExpanded;
+      Self.fExplorerInitiallyExpanded := ExplorerInitiallyExpanded;
+      Self.fProjectExplorerInitiallyExpanded := ProjectExplorerInitiallyExpanded;
       Self.fSearchTextAtCaret := SearchTextAtCaret;
       Self.fPythonFileFilter := PythonFileFilter;
       Self.fCythonFileFilter := CythonFileFilter;
@@ -481,7 +576,12 @@ begin
       Self.fAlwaysUseSockets := AlwaysUseSockets;
       Self.fTrimTrailingSpacesOnSave := TrimTrailingSpacesOnSave;
       Self.fTraceOnlyIntoOpenFiles := TraceOnlyIntoOpenFiles;
-      Self.fLspDebug := LspDebug;
+      Self.fLspDebug := LSpDebug;
+      Self.fDictLanguage := DictLanguage;
+      Self.fSpellCheckedTokens := SpellCheckedTokens;
+      Self.fSpellCheckAsYouType := SpellCheckAsYouType;
+      Self.fAutoRestart := AutoRestart;
+      Self.fLoggingEnabled := LoggingEnabled;
     end
   else
     inherited;
@@ -489,21 +589,21 @@ end;
 
 procedure TPythonIDEOptions.Changed;
 begin
-  fOnChange.Notify(Self);
+  fOnChange.CallAllProcedures;
 end;
 
 constructor TPythonIDEOptions.Create;
 begin
   fFreeNotifyImpl := TFreeNotificationImpl.Create(Self);
-  fOnChange := TJclNotifyEventBroadcast.Create;
+  fOnChange := TJclProcedureEventBroadcast.Create;
 
   fTimeOut := 0; // 5000;
   fUndoAfterSave := True;
   fSaveFilesBeforeRun := True;
   fSaveEnvironmentBeforeRun := False;
   fCreateBackupFiles := False;
-  fExporerInitiallyExpanded := False;
-  fProjectExporerInitiallyExpanded := True;
+  fExplorerInitiallyExpanded := False;
+  fProjectExplorerInitiallyExpanded := True;
   fPythonFileFilter := _(sPythonFileFilter);
   fCythonFileFilter := _(sCythonFileFilter);
   fHTMLFileFilter := _(sHTMLFileFilter);
@@ -558,7 +658,7 @@ begin
   fSaveInterpreterHistory := True;
   fReinitializeBeforeRun := True;
   fJumpToErrorOnException := True;
-  fFileTemplateForNewScripts := SPythonTemplateName;
+  fFileTemplateForNewScripts := _(SPythonTemplateName);
   fAutoCompletionFont := TFont.Create;
   SetDefaultUIFont(fAutoCompletionFont);
   fHighlightSelectedWord := True;
@@ -586,14 +686,28 @@ begin
   fTrimTrailingSpacesOnSave := True;
   fTraceOnlyIntoOpenFiles := False;
   fLspDebug := False;
+  fDictLanguage := UserLocaleName;
+  fSpellCheckedTokens := 'Comment, Text, String, Multi-Line String, Documentation';
+  fSpellCheckAsYouType := False;
+  fAutoRestart := True;
+  fLoggingEnabled := False;
   fCodeFolding := TSynCodeFolding.Create;
   fCodeFolding.GutterShapeSize := 9;  // default value
+  fTrackChanges := TSynTrackChanges.Create(nil);
+  fTrackChanges.Visible := True;
+  fTrackChanges.Width := 3;
+  fSelectionColor := TSynSelectedColor.Create;
+  fIndentGuides := TSynIndentGuides.Create;
+  fIndentGuides.Style := igsDotted;
 end;
 
 destructor TPythonIDEOptions.Destroy;
 begin
   FreeAndNil(fAutoCompletionFont);
   FreeAndNil(fCodeFolding);
+  FreeAndNil(fTrackChanges);
+  FreeAndNil(fSelectionColor);
+  FreeAndNil(fIndentGuides);
   FreeAndNil(fOnChange);
   inherited;
 end;
@@ -608,6 +722,157 @@ begin
   fAutoCompletionFont.Assign(Value);
 end;
 
+
+procedure TPythonIDEOptions.SetCodeFolding(const Value: TSynCodeFolding);
+begin
+  fCodeFolding.Assign(Value);
+end;
+
+procedure TPythonIDEOptions.SetIndentGuides(const Value: TSynIndentGuides);
+begin
+  fIndentGuides.Assign(Value);
+end;
+
+procedure TPythonIDEOptions.SetSelectionColor(const Value: TSynSelectedColor);
+begin
+  fSelectionColor.Assign(Value);
+end;
+
+procedure TPythonIDEOptions.SetTrackChanges(const Value: TSynTrackChanges);
+begin
+  fTrackChanges.Assign(Value);
+end;
+
+{ TEditorSearchOptions }
+
+procedure TEditorSearchOptions.Assign(Source: TPersistent);
+begin
+  if Source is TEditorSearchOptions then
+    with TEditorSearchOptions(Source) do begin
+      Self.fSearchBackwards := SearchBackwards;
+      Self.fSearchCaseSensitiveType := SearchCaseSensitiveType;
+      Self.fSearchFromCaret := SearchFromCaret;
+      Self.fTempSearchFromCaret := TempSearchFromCaret;
+      Self.fSearchSelectionOnly := SearchSelectionOnly;
+      Self.fSearchTextAtCaret := SearchTextAtCaret;
+      Self.fSearchWholeWords := SearchWholeWords;
+      Self.fUseRegExp := UseRegExp;
+      Self.fIncrementalSearch := IncrementalSearch;
+
+      Self.fSearchText := SearchText;
+      Self.fSearchTextHistory := SearchTextHistory;
+      Self.fReplaceText := ReplaceText;
+      Self.fReplaceTextHistory := ReplaceTextHistory;
+    end
+  else
+    inherited;
+end;
+
+procedure TEditorSearchOptions.InitSearch;
+begin
+  TempSearchFromCaret := SearchFromCaret;
+  LastReplaceAction := raReplace;
+  InitBlockBegin := BufferCoord(0, 0);
+end;
+
+procedure TEditorSearchOptions.NewSearch(SynEdit : TCustomSynEdit; ABackwards :
+    Boolean);
+
+  function BC_GT(BC1, BC2 : TBufferCoord): Boolean;
+  begin
+    Result := (BC1.Line > BC2.Line) or (BC1.Line = BC2.Line) and (BC1.Char > BC2.Char);
+  end;
+
+  function FindTextInBlock(Strings : TStrings; BlockBegin, BlockEnd : TBufferCoord) : Boolean;
+  Var
+    Line :  integer;
+    S : string;
+  begin
+    Result := False;
+    // preconditions start
+    Assert(BlockBegin.Line <= Strings.Count);
+    Assert(BlockEnd.Line <= Strings.Count);
+    Assert(BlockBegin.Line <= BlockEnd.Line);
+    if BlockBegin.Line <= 0 then Exit;
+    if BlockEnd.Line <= 0 then Exit;
+    // preconditions end
+
+    // work backwards
+    Line := BlockEnd.Line;
+    S := Copy(Strings[Line-1], 1, BlockEnd.Char - 1);
+    Repeat
+      Result := SynEdit.SearchEngine.FindAll(S) > 0;
+      Dec(Line);
+      if Line >= BlockBegin.Line then
+        S := Strings[Line-1]
+      else
+        break;
+      if Line = BlockBegin.Line then
+        Delete(S, 1, BlockBegin.Char -1);
+    Until Result;
+  end;
+
+Var
+  //TextLeft : string;
+  SearchOptions : TSynSearchOptions;
+begin
+  InitSearch;
+  BackwardSearch := ABackwards;
+  WrappedSearch := False;
+  TempSelectionOnly := SearchSelectionOnly and SynEdit.SelAvail;
+  if TempSelectionOnly then begin
+    InitBlockBegin := SynEdit.BlockBegin;
+    InitBlockEnd := SynEdit.BlockEnd;
+  end else begin
+    InitBlockBegin := BufferCoord(1, 1);
+    InitBlockEnd  := BufferCoord(Length(SynEdit.Lines[SynEdit.Lines.Count - 1]) + 1,
+                                 SynEdit.Lines.Count);
+  end;
+
+  if TempSelectionOnly then begin
+    if ABackwards then
+      InitCaretXY := InitBlockEnd
+    else
+      InitCaretXY := InitBlockBegin;
+  end else begin
+    if ABackwards then
+      SynEdit.CaretXY := SynEdit.BlockBegin
+    else
+      SynEdit.CaretXY := SynEdit.BlockEnd;
+    InitCaretXY := SynEdit.CaretXY;
+  end;
+
+  CanWrapSearch := (ABackwards and BC_GT(InitBlockEnd, InitCaretXY) or
+             (not ABackwards and BC_GT(InitCaretXY, InitBlockBegin)));
+  if CanWrapSearch then begin
+//    if ABackwards then
+//      TextLeft := GetBlockText(SynEdit.Lines, InitCaretXY, InitBlockEnd)
+//    else
+//      TextLeft := GetBlockText(SynEdit.Lines, InitBlockBegin, InitCaretXY);
+    SearchOptions := [];
+
+    case SearchCaseSensitiveType of
+      scsAuto:           if LowerCase(SearchText) <> SearchText then
+                           Include(SearchOptions, ssoMatchCase);
+      scsCaseSensitive : Include(SearchOptions, ssoMatchCase);
+    end;
+    if SearchWholeWords then
+      Include(SearchOptions, ssoWholeWord);
+    SynEdit.SearchEngine.Options := SearchOptions;
+    try
+      SynEdit.SearchEngine.Pattern := ''; //  To deal with case sensitivity
+      SynEdit.SearchEngine.Pattern := SearchText;
+      if ABackwards then
+        CanWrapSearch := FindTextInBlock(SynEdit.Lines, InitCaretXY, InitBlockEnd)
+      else
+        CanWrapSearch := FindTextInBlock(SynEdit.Lines, InitBlockBegin, InitCaretXY);
+    except
+      on E: ESynRegEx do begin
+        CanWrapSearch := False;
+      end;
+    end;
+  end;
+end;
 
 {$REGION 'AppStorage handlers' }
 
@@ -690,12 +955,17 @@ type
 // Modify JvAppStorage handling of TSynGutter
 // We want to PPI scale size properties
 TJvAppStorageGutterPropertyEngine = class(TJvAppStoragePropertyBaseEngine)
+  private
+    class var FGutterIgnoreProperties: TStringList;
 public
   function Supports(AObject: TObject; AProperty: TObject): Boolean; override;
   procedure ReadProperty(AStorage: TJvCustomAppStorage; const APath: string; AObject: TObject; AProperty: TObject; const Recursive,
     ClearFirst: Boolean; const IgnoreProperties: TStrings = nil); override;
   procedure WriteProperty(AStorage: TJvCustomAppStorage; const APath: string; AObject: TObject; AProperty: TObject; const
     Recursive: Boolean; const IgnoreProperties: TStrings = nil); override;
+strict private
+  class constructor Create;
+  class destructor Destroy;
 end;
 
 { TJvAppStorageGutterPropertyEngine }
@@ -706,6 +976,17 @@ begin
   Result := AProperty is TSynGutter;
 end;
 
+class constructor TJvAppStorageGutterPropertyEngine.Create;
+begin
+  FGutterIgnoreProperties := TStringList.Create;
+  FGutterIgnoreProperties.AddStrings(['Bands', 'TrackChanges']);
+end;
+
+class destructor TJvAppStorageGutterPropertyEngine.Destroy;
+begin
+  FGutterIgnoreProperties.Free;
+end;
+
 procedure TJvAppStorageGutterPropertyEngine.ReadProperty(
   AStorage: TJvCustomAppStorage; const APath: string; AObject,
   AProperty: TObject; const Recursive, ClearFirst: Boolean;
@@ -714,7 +995,7 @@ Var
   FontSize : Integer;
 begin
   AStorage.ReadPersistent(APath, AProperty as TSynGutter, Recursive, ClearFirst,
-    IgnoreProperties);
+    FGutterIgnoreProperties);
   FontSize := TSynGutter(AProperty).Font.Size;
   TSynGutter(AProperty).ChangeScale(Screen.PixelsPerInch, 96);
   TSynGutter(AProperty).Font.Size := FontSize;
@@ -732,7 +1013,7 @@ begin
   TSynGutter(AProperty).Font.Size := FontSize;
   AStorage.StorageOptions.StoreDefaultValues := True;
   AStorage.WritePersistent(APath, AProperty as TSynGutter, Recursive,
-    IgnoreProperties);
+    FGutterIgnoreProperties);
   AStorage.StorageOptions.StoreDefaultValues := False;
   TSynGutter(AProperty).ChangeScale(Screen.PixelsPerInch, 96);
   TSynGutter(AProperty).Font.Size := FontSize;
@@ -888,6 +1169,15 @@ begin
   RegisterAppStoragePropertyEngine(TJvAppStorageKeyStrokesPropertyEngine);
 end;
 
+class procedure TPyScripterSettings.CreateSearchOptions;
+begin
+  EditorSearchOptions := TEditorSearchOptions.Create;
+  EditorSearchOptions.fSearchTextAtCaret := True;
+  EditorSearchOptions.fSearchFromCaret := True;
+  EditorSearchOptions.fIncrementalSearch := True;
+  EditorSearchOptions.InitSearch;
+end;
+
 class constructor TPyScripterSettings.CreateSettings;
 
   procedure CopyFileIfNeeded(const Source, Dest: string);
@@ -931,12 +1221,10 @@ begin
   HandlePortable;
   if IsPortable then begin
     // Portable version - nothing is stored in other directories
-    if UserDataPath = '' then
-      UserDataPath := ExtractFilePath(Application.ExeName);
-    PublicPath:= ExtractFilePath(Application.ExeName);
-    ColorThemesFilesDir := TPath.Combine(PublicPath, 'Highlighters');
-    StylesFilesDir := TPath.Combine(PublicPath, 'Styles');
-    LspServerPath :=  TPath.Combine(PublicPath, 'Lsp');
+    UserDataPath := ExtractFilePath(Application.ExeName);
+    ColorThemesFilesDir := TPath.Combine(UserDataPath, 'Highlighters');
+    StylesFilesDir := TPath.Combine(UserDataPath, 'Styles');
+    LspServerPath :=  TPath.Combine(UserDataPath, 'Lib\Lsp');
   end else begin
     UserDataPath := TPath.Combine(GetHomePath,  'GuiPy\');
     OptionsFileName := TPath.Combine(UserDataPath, 'GuiPy.ini');
@@ -952,17 +1240,30 @@ begin
   end;
   EngineInitFile := TPath.Combine(UserDataPath, 'python_init.py');
   PyScripterInitFile := TPath.Combine(UserDataPath, 'pyscripter_init.py');
+  PyScripterLogFile := TPath.Combine(UserDataPath, 'pyscripter.log');
+  RecoveryDir := TPath.Combine(UserDataPath, 'Recovery');
   if not IsPortable then begin
     // First use setup
     CopyFileIfNeeded(TPath.Combine(PublicPath, 'python_init.py'), EngineInitFile);
     CopyFileIfNeeded(TPath.Combine(PublicPath, 'pyscripter_init.py'), PyScripterInitFile);
   end;
 
-  TPyScripterSettings.CreateIDEOptions;
-  TPyScripterSettings.CreateEditorOptions;
+  CreateIDEOptions;
+  CreateEditorOptions;
+  CreateSearchOptions;
+  ApplyPyIDEOptions;
+  PyIDEOptions.OnChange.AddHandler(ApplyPyIDEOptions);
   // Save Default editor keystrokes
   TPyScripterSettings.DefaultEditorKeyStrokes := TSynEditKeyStrokes.Create(nil);
   TPyScripterSettings.DefaultEditorKeyStrokes.Assign(EditorOptions.Keystrokes);
+end;
+
+class procedure TPyScripterSettings.ApplyPyIDEOptions;
+begin
+  EditorOptions.Gutter.TrackChanges.Assign(PyIDEOptions.TrackChanges);
+  EditorOptions.SelectedColor.Assign(PyIDEOptions.SelectionColor);
+  EditorOptions.IndentGuides.Assign(PyIDEOptions.IndentGuides);
+  EditorSearchOptions.SearchTextAtCaret := PyIDEOptions.SearchTextAtCaret;
 end;
 
 class procedure TPyScripterSettings.CreateEditorOptions;
@@ -970,6 +1271,7 @@ begin
   EditorOptions := TSynEditorOptionsContainer.Create(nil);
   with EditorOptions do begin
     Font.Name := DefaultCodeFontName;
+    Font.Size := 10;
     Gutter.Font.Name := Font.Name;
     Gutter.Font.Color := clGrayText;
     Gutter.Gradient := False;
@@ -977,36 +1279,30 @@ begin
     Gutter.ShowLineNumbers := True;
     Gutter.Autosize := True;
     Gutter.ChangeScale(Screen.PixelsPerInch, 96);
-    Font.Size := 10;
     Gutter.Font.Size := 9;
+    Gutter.BorderStyle := gbsNone;
 
-    Options := [eoDragDropEditing, eoEnhanceHomeKey,
+    Options := [eoDragDropEditing, eoEnhanceHomeKey, eoShowLigatures,
                 eoEnhanceEndKey, eoGroupUndo, eoHideShowScrollbars, eoKeepCaretX,
                 eoShowScrollHint, eoSmartTabDelete, eoTabsToSpaces, eoTabIndent,
-                eoTrimTrailingSpaces, eoAutoIndent];
+                eoTrimTrailingSpaces, eoAutoIndent, eoBracketsHighlight];
     WantTabs := True;
     TabWidth := 4;
     MaxUndo := 0;
+
     // Scale BookmarkOptions
     BookMarkOptions.ChangeScale(Screen.PixelsPerInch, 96);
 
-    TPyScripterSettings.RegisterEditorUserCommands(EditorOptions.Keystrokes);
-  end;
-  InterpreterEditorOptions := TSynEditorOptionsContainer.Create(nil);
-  InterpreterEditorOptions.Assign(EditorOptions);
-  with InterpreterEditorOptions do begin
-    Options := Options - [eoTrimTrailingSpaces, eoScrollPastEol];
-    WordWrap := True;
-    Gutter.Visible := False;
-    RightEdge := 0;
+    RegisterEditorUserCommands(EditorOptions.Keystrokes);
   end;
 end;
 
 class destructor TPyScripterSettings.Destroy;
 begin
+  PyIDEOptions.OnChange.RemoveHandler(ApplyPyIDEOptions);
+  EditorSearchOptions.Free;
   PyIDEOptions.Free;
   EditorOptions.Free;
-  InterpreterEditorOptions.Free;
   TPyScripterSettings.DefaultEditorKeyStrokes.Free;
 end;
 
@@ -1017,11 +1313,6 @@ begin
   with Keystrokes do begin
     AddKey(ecCodeCompletion, VK_SPACE, [ssCtrl]);
     AddKey(ecParamCompletion, VK_SPACE, [ssCtrl, ssShift]);
-    AddKey(ecSelMatchBracket  , 221, [ssCtrl, ssShift]);
-    // 221 code for ]
-    // Visual studio shortcut for Match Bracket
-    Delete(FindCommand(ecMatchBracket));
-    AddKey(ecMatchBracket, 221, [ssCtrl]);
     // #869
     Delete(FindCommand(ecDeleteLine));
     AddKey(ecDeleteLine, Ord('D'), [ssCtrl, ssShift]);

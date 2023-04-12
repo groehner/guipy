@@ -40,14 +40,20 @@ inherited ToDoWindow: TToDoWindow
     A3FF000000000000000000000000000000000000000000000000000000000000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
+  ExplicitWidth = 508
+  ExplicitHeight = 332
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   inherited BGPanel: TPanel
     Width = 492
     Height = 293
+    ExplicitWidth = 492
+    ExplicitHeight = 293
     inherited FGPanel: TPanel
       Width = 488
       Height = 289
+      ExplicitWidth = 488
+      ExplicitHeight = 289
       object TBXDock1: TSpTBXDock
         Left = 0
         Top = 0
@@ -121,6 +127,8 @@ inherited ToDoWindow: TToDoWindow
         OnInitNode = ToDoViewInitNode
         OnKeyPress = TodoViewKeyPress
         OnShortenString = ToDoViewShortenString
+        Touch.InteractiveGestures = [igPan, igPressAndTap]
+        Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
         Columns = <
           item
             Alignment = taCenter
@@ -295,7 +303,7 @@ inherited ToDoWindow: TToDoWindow
     DisabledSuffix = '_Disabled'
     Images = <
       item
-        CollectionIndex = 69
+        CollectionIndex = 70
         CollectionName = 'Print'
         Disabled = False
         Name = 'Print'
@@ -307,7 +315,7 @@ inherited ToDoWindow: TToDoWindow
         Name = 'Copy'
       end
       item
-        CollectionIndex = 102
+        CollectionIndex = 103
         CollectionName = 'Setup'
         Disabled = False
         Name = 'Setup'
@@ -325,7 +333,7 @@ inherited ToDoWindow: TToDoWindow
         Name = 'Help'
       end
       item
-        CollectionIndex = 87
+        CollectionIndex = 88
         CollectionName = 'Refresh'
         Disabled = False
         Name = 'Refresh'

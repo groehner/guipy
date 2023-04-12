@@ -34,10 +34,15 @@ uses
   SpTBXControls,
   JvComponentBase,
   JvDockControlForm,
+  JvAppStorage,
+  VirtualTrees.BaseAncestorVCL,
+  VirtualTrees.AncestorVCL,
+  VirtualTrees.BaseTree,
   VirtualTrees,
   VirtualExplorerTree,
   VirtualShellHistory,
   MPShellUtilities,
+  cPyScripterSettings,
   frmIDEDockWin;
 
 type
@@ -147,10 +152,15 @@ type
     { Private declarations }
     procedure PathItemClick(Sender: TObject);
     function GetExplorerPath: string;
+    procedure ApplyPyIDEOptions;
     procedure SetExplorerPath(const Value: string);
   public
     { Public declarations }
     procedure UpdateWindow;
+    procedure RestoreOptions(AppStorage: TJvCustomAppStorage);
+    procedure StoreOptions(AppStorage: TJvCustomAppStorage);
+    procedure ConfigureThreads(FCN : TFileChangeNotificationType;
+      BackgroundProcessing : Boolean);
     property Favorites : TStringList read fFavorites;
     property ExplorerPath : string read GetExplorerPath write SetExplorerPath;
   end;
@@ -171,7 +181,6 @@ uses
   dlgDirectoryList,
   uEditAppIntfs,
   cPyBaseDebugger,
-  cPyScripterSettings,
   cFindInFiles,
   cPyControl;
 
@@ -208,6 +217,42 @@ end;
 procedure TFileExplorerWindow.MyDocumentsClick(Sender: TObject);
 begin
   FileExplorerTree.RootFolder := rfPersonal;
+end;
+
+procedure TFileExplorerWindow.ConfigureThreads(FCN: TFileChangeNotificationType;
+  BackgroundProcessing: Boolean);
+begin
+  with FileExplorerTree.TreeOptions do
+  begin
+    case FCN of
+      fcnFull:
+        VETMiscOptions := VETMiscOptions +
+          [toChangeNotifierThread, toTrackChangesInMappedDrives];
+      fcnNoMappedDrives:
+        VETMiscOptions := VETMiscOptions +
+          [toChangeNotifierThread] - [toTrackChangesInMappedDrives];
+      fcnDisabled:
+        VETMiscOptions := VETMiscOptions -
+          [toChangeNotifierThread, toTrackChangesInMappedDrives];
+     end;
+
+    if BackgroundProcessing then begin
+      VETImageOptions := VETImageOptions + [toThreadedImages];
+      VETFolderOptions := VETFolderOptions + [toThreadedExpandMark];
+    end else begin
+      VETImageOptions := VETImageOptions - [toThreadedImages];
+      VETFolderOptions := VETFolderOptions - [toThreadedExpandMark];
+    end;
+  end;
+
+  // Connect ChangeNotify
+  if FCN = fcnDisabled then
+    FileExplorerTree.OnAfterShellNotify := nil
+  else
+    FileExplorerTree.OnAfterShellNotify := CommandsDataModule.ProcessShellNotify;
+
+  if FileExplorerTree.Active then
+    FileExplorerTree.RefreshTree;
 end;
 
 procedure TFileExplorerWindow.CurrentDirectoryClick(Sender: TObject);
@@ -277,6 +322,16 @@ begin
     FindResultsWindow.FindInFilesExpert.GrepSearch := 3;  //Directory
     FindResultsWindow.Execute(False)
   end;
+end;
+
+procedure TFileExplorerWindow.ApplyPyIDEOptions;
+begin
+  TThread.ForceQueue(nil, procedure
+  begin
+    ConfigureThreads(PyIDEOptions.FileChangeNotification,
+      PyIDEOptions.FileExplorerBackgroundProcessing);
+  end);
+
 end;
 
 function TFileExplorerWindow.GetExplorerPath: string;
@@ -421,13 +476,15 @@ begin
   fFavorites := TStringList.Create;
   fFavorites.Duplicates := dupIgnore;
   fFavorites.Sorted := True;
+  PyIDEOptions.OnChange.AddHandler(ApplyPyIDEOptions);
 end;
 
 procedure TFileExplorerWindow.FormDestroy(Sender: TObject);
 begin
-  inherited;
+  PyIDEOptions.OnChange.RemoveHandler(ApplyPyIDEOptions);
   fFavorites.Free;
   FileExplorerWindow := nil;
+  inherited;
 end;
 
 procedure TFileExplorerWindow.tbiItemBackPopup(Sender: TTBCustomItem;
@@ -489,6 +546,20 @@ begin
          VirtualShellHistory.VirtualExplorerTree := FileExplorerTree;
       end;
   end;
+end;
+
+procedure TFileExplorerWindow.RestoreOptions(AppStorage: TJvCustomAppStorage);
+begin
+  actEnableFilter.Checked := AppStorage.ReadBoolean('File Explorer Filter', True);
+  ExplorerPath := AppStorage.ReadString('File Explorer Path');
+  AppStorage.ReadStringList('File Explorer Favorites', Favorites);
+end;
+
+procedure TFileExplorerWindow.StoreOptions(AppStorage: TJvCustomAppStorage);
+begin
+  AppStorage.WriteBoolean('File Explorer Filter', actEnableFilter.Checked);
+  AppStorage.WriteString('File Explorer Path', ExplorerPath);
+  AppStorage.WriteStringList('File Explorer Favorites', Favorites);
 end;
 
 end.

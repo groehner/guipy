@@ -63,7 +63,7 @@ type
     MIPopupNewLifeLine: TSpTBXItem;
     MIPopupConnectWith: TSpTBXSubmenuItem;
     procedure FormCreate(Sender: TObject); override;
-    procedure FormClose(Sender: TObject; var aAction: TCloseAction);
+    procedure FormClose(Sender: TObject; var aAction: TCloseAction); override;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure TBCloseClick(Sender: TObject);
     procedure TBZoomOutClick(Sender: TObject);

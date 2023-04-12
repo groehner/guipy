@@ -44,15 +44,18 @@ type
     FShowView: integer;
     FExtentX: integer;
     FExtentY: integer;
+    FShadowWidth: integer;
     FTypeBinding: string;
     FSelected: boolean;
     FTypeParameter: string;
     FLocked: boolean;
     FETypeBinding: TEdit;
-    BGColor: TColor;
-    FGColor: TColor;
+    FBGColor: TColor;
+    FFGColor: TColor;
     FBitmap: TBitmap;
     FBitmapOK: boolean;
+    SVGHead: string;
+    SVGComment: string;
     procedure SetMinVisibility(const Value: TVisibility);
     procedure SetShowParameter(const Value: integer);
     procedure SetSortOrder(const Value: integer);
@@ -60,6 +63,7 @@ type
     procedure SetShowView(const Value: integer);
     procedure SetSelected(const Value: boolean); virtual;
     procedure SetTypeBinding(const Value: string);
+    procedure SetShadowWidth(const Value: integer);
     procedure OnChildMouseDown(Sender: TObject; Button: TMouseButton;  Shift: TShiftState; X, Y: Integer);
     procedure OnChildMouseDblClick(Sender: TObject);
     procedure OnEditKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -87,7 +91,9 @@ type
     procedure CloseEdit;
     procedure Lock(b: Boolean);
     procedure makeBitmap;
-    procedure ChangeStyle;
+    procedure ChangeStyle(BlackAndWhite: boolean = false);
+    function getSVG: string; virtual;
+    function getTopH: integer;
 
     property MinVisibility : TVisibility read FMinVisibility write SetMinVisibility;
     property ShowParameter: integer read FShowParameter write SetShowParameter;
@@ -98,8 +104,11 @@ type
     property ExtentX: integer read FExtentX write FExtentX;
     property ExtentY: integer read FExtentY write FExtentY;
     property Selected: boolean read FSelected write SetSelected;
+    property ShadowWidth: integer read FShadowWidth write SetShadowWidth;
     property TypeParameter: String read FTypeParameter write FTypeParameter;
     property TypeBinding: String read FTypeBinding write SetTypeBinding;
+    property FGColor: TColor read FFGColor write FFGColor;
+    property BGColor: TColor read FBGColor write FBGColor;
   end;
 
   TRtfdClass = class(TRtfdBox, IAfterClassListener)
@@ -172,13 +181,13 @@ type
     FTextWidth: integer;
     FGColor: TColor;
     BGColor: TColor;
+    SingleLineHeight: integer;
     function GetAlignment: TAlignment;
     procedure SetAlignment(const Value: TAlignment);
     procedure SetTransparent(const Value: Boolean);
     procedure CMTextChanged(var Message: TMessage); message CM_TEXTCHANGED;
     procedure AdjustBounds;
     procedure DoDrawText(var Rect: TRect; Flags: Integer);
-    procedure SetColors;
   public
     constructor Create(aOwner: TComponent; aEntity: TModelEntity); reintroduce; virtual;
     procedure Paint; override;
@@ -186,6 +195,8 @@ type
     procedure AddChild(Sender: TModelEntity; NewChild: TModelEntity); virtual;
     procedure Remove(Sender: TModelEntity); virtual;
     procedure EntityChange(Sender: TModelEntity); virtual;
+    procedure SetColors;
+    function getSVG(OwnerRect: TRect): string; virtual;
     property Alignment: TAlignment read GetAlignment write SetAlignment default taLeftJustify;
     property Transparent: Boolean read FTransparent write SetTransparent;
     property TextWidth: integer read FTextWidth;
@@ -203,6 +214,8 @@ type
     destructor Destroy; override;
     procedure EntityChange(Sender: TModelEntity); override;
     procedure Paint; override;
+    function getSVG(OwnerRect: TRect): string; override;
+    function getSVGTypeAndBinding(R: TRect): string;
     property TextWidthParameter: integer read FTextWidthParameter;
     property ExtentX: integer read FExtentX write FExtentX;
     property ExtentY: integer read FExtentY;
@@ -214,6 +227,7 @@ type
     destructor Destroy; override;
     procedure EntityChange(Sender: TModelEntity); override;
     procedure Paint; override;
+    function getSVG(OwnerRect: TRect): string; override;
   end;
 
   TRtfdInterfaceName = class(TRtfdCustomLabel, IAfterInterfaceListener)
@@ -221,6 +235,7 @@ type
     constructor Create(aOwner: TComponent; aEntity: TModelEntity); override;
     destructor Destroy; override;
     procedure EntityChange(Sender: TModelEntity); override;
+    function getSVG(OwnerRect: TRect): string; override;
   end;
 
   TRtfdStereotype = class(TRtfdCustomLabel)
@@ -254,6 +269,7 @@ type
   protected
   public
     procedure Paint; override;
+    function getSVG(OwnerRect: TRect): string; override;
   end;
 
   TRtfdOperation = class(TVisibilityLabel, IAfterOperationListener)
@@ -280,16 +296,89 @@ type
   public
     constructor Create(aOwner: TComponent); override;
     procedure Paint; override;
+    function getSVG(OwnerRect: TRect): string;
   end;
 
 
 implementation
 
-uses SysUtils, Forms, Themes, UITypes, Types, Math, Dialogs, ExtCtrls, clipbrd,
-     uIterators, uConfiguration, uViewIntegrator, UImages, frmPyIDEMain;
+uses SysUtils, Forms, Themes, UITypes, Types, Math, Dialogs, ExtCtrls, Clipbrd,
+     StrUtils, uIterators, uConfiguration, uViewIntegrator, UImages, frmPyIDEMain;
 
 const
   cDefaultWidth = 150;
+
+  function getSVGRect(x, y, w, h: real; color: string; attribut: string = ''): string;
+  begin
+    Result:= '  <rect x=' + FloatToVal(x) + ' y=' + FloatToVal(y) +
+             ' width=' + FloatToVal(w) + ' height=' + FloatToVal(h) +
+             ' fill="' + color + '" stroke="black"' + attribut + ' />'#13#10;
+  end;
+
+  function getSVGCircle(x, y, r: real): string;
+  begin
+    Result:= '  <circle cx=' + FloatToVal(x) + ' cy=' + FloatToVal(y) +
+             ' r=' + FloatToVal(r) + ' fill="none" stroke="black" />'#13#10;
+  end;
+
+  function getSVGText(x, y: real; attribut, text: string): string;
+    var SL: TStringList; i: integer; dyr: real; dys: string;
+
+    function getPreserve(s: string): string;
+    begin
+      if (length(s) > 0) and (s[1] = ' ')
+        then Result:= ' xml:space="preserve"'
+        else Result:= '';
+    end;
+
+  begin
+    SL:= TStringList.Create;
+    SL.Text:= ConvertLtGt(text);
+    Result:= '  <text x=' + FloatToVal(x) + ' y=' + FloatToVal(y) + attribut + '>';
+    if SL.Count > 1 then begin
+      Result:= Result + #13#10'    <tspan' + getPreserve(SL.Strings[0]) + '>' + SL.Strings[0] + '</tspan>'#13#10;
+      dyr:= 1.3;
+      for i:= 1 to SL.Count - 1 do begin
+        if trim(SL.Strings[i]) = '' then
+          dyr:= dyr + 1.3
+        else begin
+          dys:= FloatToVal(dyr);
+          insert('em', dys, length(dys));
+          Result:= Result + '    <tspan' + getPreserve(SL.Strings[i]) +
+            ' x=' + FloatToVal(x) + ' dy=' + dys + '>' + SL.Strings[i] + '</tspan>'#13#10;
+          dyr:= 1.3;
+        end;
+      end;
+      Result:= Result + '  </text>'#13#10;
+    end else
+      Result:= Result + ReplaceText(SL.Text, #13#10, '') + '</text>'#13#10;
+    FreeAndNil(SL);
+  end;
+
+  function getSVGPolyline(Points: array of TPoint; color: string): string;
+    var i: integer;
+  begin
+    Result:= '  <polyline points="';
+    for i:= 0 to High(Points) do
+      Result:= Result + PointToVal(Points[i]);
+    Result[length(Result)]:= '"';
+    Result:= Result + ' fill="none" stroke="' + color +'" stroke-width="2" />'#13#10;
+  end;
+
+  function getSVGPolygon(Points: array of TPoint; color: string): string;
+    var i: integer;
+  begin
+    Result:= '  <polygon points="';
+    for i:= 0 to High(Points) do
+      Result:= Result + PointToVal(Points[i]);
+    Result[length(Result)]:= '"';
+    Result:= Result + ' fill="' + color + '" stroke="black" />'#13#10;
+  end;
+
+  function calcSVGBaseLine(R: TRect; Font: TFont): integer;
+  begin
+    Result:= R.Top + Round(1.0*abs(Font.Height));
+  end;
 
 { TRtfdBox }
 constructor TRtfdBox.Create(aOwner: TComponent; aEntity: TModelEntity; aFrame: TAFrameDiagram; MinVisibility: TVisibility);
@@ -304,6 +393,7 @@ begin
   Left:= (aFrame.ClientWidth - Self.Width) div 2 + Random(50) - 25;
   ParentBackground:= true;
   DoubleBuffered:= false;  // bad for debugging
+  ShadowWidth:= GuiPyOptions.ShadowWidth;
   FETypeBinding:= nil;
   FBitmap:= nil;
   ChangeStyle;
@@ -327,8 +417,8 @@ end;
 function TRtfdBox.GetBoundsRect: TRect;
 begin
   Result:= BoundsRect;
-  Result.Bottom:= Result.Bottom - GuiPyOptions.ShadowWidth;
-  Result.Right:= Result.Right - GuiPyOptions.ShadowWidth;
+  Result.Bottom:= Result.Bottom - ShadowWidth;
+  Result.Right:= Result.Right - ShadowWidth;
 end;
 
 function TRtfdBox.MyGetClientRect: TRect;
@@ -381,7 +471,7 @@ var
   R, R1: TRect;
   Sw, Si, TopH, NeedH, i, Separator: integer;
   IsObject, IsClass, IsValid: boolean;
-  Pathname: String;
+  Pathname, SVGColor: String;
 
 begin
   if assigned(fBitmap) and fBitmapOK then begin
@@ -399,11 +489,11 @@ begin
     IsValid:= PyIDEMainForm.IsAValidClass(Pathname);
   end;
 
-  Sw:= GuiPyOptions.ShadowWidth;
+  Sw:= ShadowWidth;
   Si:= 255 - Round(GuiPyOptions.ShadowIntensity*25.5);
   R:= MyGetClientRect;    // Client
   NeedH:= BorderWidth + Sw + 5;
-  if ComponentCount >0 then begin
+  if ComponentCount > 0 then begin
     TopH:= TGraphicControl(Components[0]).Height + NeedH - Sw;
     if Components[0] is TRtfdStereotype then
       TopH:= TopH + TGraphicControl(Components[0]).Height;
@@ -450,11 +540,16 @@ begin
         Rectangle(R.Left, R.Top + TopH - 1 + ExtentY, R.Right - Sw, R.Bottom - Sw);
 
     // Class- or Object-Label
-    if IsObject
-      then Brush.Color:= GuiPyOptions.ObjectColor
-    else if IsValid or FLocked
-      then Brush.Color:= BGColor // GuiPyOptions.ValidClassColor
-      else Brush.Color:= GuiPyOptions.InvalidClassColor;
+    if IsObject then begin
+      Brush.Color:= GuiPyOptions.ObjectColor;
+      SVGColor:=  myColorToRGB(GuiPyOptions.ObjectColor);
+    end else if IsValid or FLocked then begin
+      Brush.Color:= BGColor;
+      SVGColor:= myColorToRGB(GuiPyOptions.ValidClassColor);
+    end else begin
+      Brush.Color:= GuiPyOptions.InvalidClassColor;
+      SVGColor:= myColorToRGB(GuiPyOptions.InvalidClassColor);
+    end;
     if (IsObject and (GuiPyOptions.ObjectHead = 1)) or
        (IsClass and (GuiPyOptions.ClassHead = 1))
     then begin
@@ -464,8 +559,18 @@ begin
       LineTo(R.Left, R.Top + TopH - 1);
       LineTo(R.Right - Sw - 1, R.Top + TopH - 1);
       LineTo(R.Right - Sw - 1, R.Top + TopH div 2 - 1);
-    end else // class label
+      SVGHead:= '  <path d="M ' + XYToVal(R.Left, R.Top + TopH - 1) +
+                ' h ' + IntToStr(R.Width - sw) +
+                ' v ' + IntToStr(-TopH + 1 + 8) +
+                ' a ' + PointToVal(Point(8, 8)) + '90 0 0 ' + PointToVal(Point(-8, -8)) +
+                ' h ' + IntToStr(-R.Width + sw + 2*8) +
+                ' a ' + PointToVal(Point(8, 8)) + '90 0 0 ' + PointToVal(Point(-8, +8)) +
+                ' v ' + IntToStr(TopH - 1 - 8) + '" fill="' + SVGColor + '" stroke="black" />'#13#10;
+    end else begin // class label
       Rectangle(R.Left, R.Top + ExtentY, R.Right - Sw, R.Top + TopH + ExtentY);
+      SVGHead:= getSVGRect(R.Left, R.Top + ExtentY, R.Right - sw,
+                           R.Top + TopH - 1, SVGColor);
+    end;
 
     // debug: show box frame
     //   Canvas.Brush.Color:= clRed;
@@ -494,6 +599,88 @@ begin
   // it doesn't copy the screen-pixels, because controls can be covered by others
   // or can be partially places outside the window
   if assigned(FBitmap) then fBitmapOK:= true;
+end;
+
+function TRtfdBox.getSVG: string;
+  var R: TRect; TopH, sw: integer;
+      IsObject, IsClassOrInterface, IsComment: boolean;
+    S, ShadowFilter: string;
+    CustomLabel: TRtfdCustomLabel;
+    Separator: TRtfdSeparator;
+    i: integer;
+begin
+  R:= MyGetClientRect;
+  sw:= ShadowWidth;
+  TopH:= getTopH;
+  IsObject:= (Self is TRtfdObject);
+  IsClassOrInterface:= (Self is TRtfdClass) or (Self is TRtfdInterface);
+  IsComment:= (Self is TRtfdCommentBox);
+  if (IsObject and (GuiPyOptions.ObjectHead = 1)) or
+    (IsClassOrInterface and (GuiPyOptions.ClassHead = 1)) then
+    R.Top:= R.Top + TopH - 1;
+  if ShadowWidth > 0
+    then ShadowFilter:= ' style="filter:url(#Shadow)"'
+    else ShadowFilter:= '';
+
+  s:= '<g id="' + ConvertLtGt(Entity.Name) + '" transform="translate(' + IntToStr(Left) +
+      ', ' + IntToStr(Top) + ')" font-family="' + Font.Name +
+      '" font-size=' + IntToVal(round(Font.Size*1.3)) + ShadowFilter + '>'#13#10;
+  if IsObject and (GuiPyOptions.ObjectFooter = 1) then
+    s:= s + '  <path d="M ' + XYToVal(R.Left, R.Top) +
+            ' v ' + IntToStr(R.Height - 8 - sw) +
+            ' a ' + PointToVal(Point(8, 8)) + '90 0 0 ' + PointToVal(Point(8, 8)) +
+            ' h ' + IntToStr(R.Width - sw - 2*8) +
+            ' a ' + PointToVal(Point(8, 8)) + '90 0 0 ' + PointToVal(Point(8, -8)) +
+            ' v ' + IntToStr(-R.Height + 8 + sw) +
+            ' h ' + IntToStr(-R.Width + sw) + '" fill="white" stroke="black" />'#13#10
+  else if isComment then begin
+    Paint;
+    s:= s + SVGComment
+  end else
+    s:= s + getSVGRect(R.Left, R.Top + FExtentY, R.Width - sw, R.Height - FExtentY - sw, 'white');
+
+  if IsClassOrInterface and (SVGHead = '') then
+    Paint;
+  s:= s + SVGHead;
+  R:= getBoundsRect;
+  R.Width:= R.Width - FExtentX;
+  R.Top:= R.Top + FExtentY;
+  for i:= 0 to ControlCount - 1 do begin
+    if Controls[i] is TRtfdCustomLabel then begin
+      CustomLabel:= Controls[i] as TRtfdCustomLabel;
+      s:= s + CustomLabel.getSVG(R); // BoundsRect
+    end;
+    if Controls[i] is TRtfdSeparator then begin
+      Separator:= Controls[i] as TRtfdSeparator;
+      s:= s + Separator.getSVG(R);
+    end;
+  end;
+  Result:= S + '</g>'#13#10;
+
+  if (Controls[0] is TRtfdClassname) and ((Controls[0] as TRtfdClassname).TypeAndBinding <> '') then begin
+    s:= '<g id="' + ConvertLtGt(Entity.Name + '1') + '" transform="translate(' + IntToStr(Left) +
+        ', ' + IntToStr(Top) + ')" font-family="' + Font.Name +
+        '" font-size=' + IntToVal(round(Font.Size*1.3)) + '>'#13#10;
+    Result:= Result + s;
+    Result:= Result + (Controls[0] as TRtfdClassname).getSVGTypeAndBinding(R);
+    Result:= Result + '</g>'#13#10;
+  end;
+  Result:= ReplaceStr(Result, '[]', '[ ]');
+  Result:= Result + #13#10;
+end;
+
+function TRtfdBox.getTopH: integer;
+  var NeedH: integer; CustomLabel: TRtfdCustomLabel;
+begin
+  NeedH:= BorderWidth + ShadowWidth + 5;
+  if ComponentCount > 0 then begin
+    CustomLabel:= TRtfdCustomLabel(Components[0]);
+    Result:= CustomLabel.Height + NeedH - ShadowWidth;
+    if CustomLabel is TRtfdStereotype then
+      Result:= Result + CustomLabel.Height;
+  end else
+    Result:= NeedH - ShadowWidth;
+  Result:= Result - ExtentY;
 end;
 
 procedure TRtfdBox.AddChild(Sender, NewChild: TModelEntity);
@@ -568,6 +755,15 @@ procedure TRtfdBox.SetTypeBinding(const Value: string);
 begin
   if Value <> FTypeBinding then begin
     FTypeBinding:= Value;
+    RefreshEntities;
+  end;
+end;
+
+procedure TRtfdBox.SetShadowWidth(const Value: integer);
+begin
+  if Value <> FShadowWidth then
+  begin
+    FShadowWidth:= Value;
     RefreshEntities;
   end;
 end;
@@ -682,9 +878,9 @@ begin
   end;
 end;
 
-procedure TRtfdBox.ChangeStyle;
+procedure TRtfdBox.ChangeStyle(BlackAndWhite: boolean = false);
 begin
- if StyleServices.IsSystemStyle then begin
+  if StyleServices.IsSystemStyle or BlackAndWhite then begin
     BGColor:= clWhite;
     FGColor:= clBlack;
   end else begin
@@ -692,8 +888,8 @@ begin
     FGColor:= StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
   end;
   Color:= BGColor;
+  FreeAndNil(fBitmap);
 end;
-
 
 { TRtfdClass }
 
@@ -792,7 +988,7 @@ begin
     Operation:= TRtfdOperation.Create(Self, Omi.Next);
     Inc(NeedH, Operation.Height);
   end;
-  Height:= NeedH + GuiPyOptions.ShadowWidth;
+  Height:= NeedH + ShadowWidth;
 
   for i:= 0 to ControlCount-1 do
     if Controls[i] is TRtfdCustomLabel then begin
@@ -826,7 +1022,7 @@ begin
 
   //if aClassname.Parameter <> '' then
   Width:= Width + ExtentX;
-  Width:= Width + GuiPyOptions.ShadowWidth;
+  Width:= Width + ShadowWidth;
   Visible:= true;
 
  // debugging
@@ -938,7 +1134,7 @@ begin
     while Omi.HasNext do
       Inc(NeedH, TRtfdOperation.Create(Self,Omi.Next).Height);
   end;
-  Height:= NeedH + GuiPyOptions.ShadowWidth;
+  Height:= NeedH + ShadowWidth;
 
   for i:= 0 to ControlCount-1 do
     if Controls[i] is TRtfdCustomLabel then begin
@@ -959,7 +1155,7 @@ begin
       aTop:= aTop + Separator.Height;
     end;
 
-  Width:= Width + GuiPyOptions.ShadowWidth;
+  Width:= Width + ShadowWidth;
   Visible:= true;
 end;
 
@@ -1023,7 +1219,7 @@ var
   Points: Array[0..4] of TPoint;
 begin
   ResizeMemo;  // relevant
-  Sw:= GuiPyOptions.ShadowWidth;
+  Sw:= ShadowWidth;
   TrMemo.Color:= GuiPyOptions.CommentColor;
   TrMemo.Brush.Color:= GuiPyOptions.CommentColor;
 
@@ -1051,10 +1247,21 @@ begin
     Points[3]:= Point(R.Right - Sw, R.Bottom - Sw);
     Points[4]:= Point(R.Left, R.Bottom - Sw);
     Polygon(Points);
+    SVGComment:= getSVGPolygon(Points, myColorToRGB(GuiPyOptions.CommentColor));
 
     MoveTo(R.Right - Sw - corner, R.Top);
     LineTo(R.Right - Sw - corner, R.Top + corner);
     LineTo(R.Right - Sw, R.Top + corner);
+
+    SVGComment:= SVGComment +
+                   '  <path d="M ' + PointToVal(Point(R.Right - sw - corner, R.Top)) +
+                   'L ' + PointToVal(Point(R.Right - sw - corner, R.Top + corner)) +
+                   'L ' + PointToVal(Point(R.Right - sw, R.Top + corner)) + '"' +
+                   ' stroke="black" fill="' + myColorToRGB(GuiPyOptions.CommentColor) + '" />'#13#10;
+
+    R:= TrMemo.BoundsRect;
+    SVGComment:= SVGComment + getSVGText(TrMemo.Left, calcSVGBaseLine(R, Canvas.Font), '', TrMemo.Lines.Text);
+
     if FSelected then begin
       Brush.Color:= FGColor;
       for i:= 0 to 7 do begin
@@ -1134,8 +1341,8 @@ begin
   HandleSizeH:= handleSize;
   TrMemo.Left:= 2*HandleSizeH;
   TrMemo.Top:= 2*HandleSizeH;
-  TrMemo.Width:= Self.Width - 4*HandleSizeH - GuiPyOptions.ShadowWidth - 5;
-  TrMemo.Height:= Self.Height - 4*HandleSizeH - GuiPyOptions.ShadowWidth;
+  TrMemo.Width:= Self.Width - 4*HandleSizeH - ShadowWidth - 5;
+  TrMemo.Height:= Self.Height - 4*HandleSizeH - ShadowWidth;
 
   //  Rect:= GetHandleClientRect;
   Rect:= MygetClientrect;
@@ -1213,8 +1420,9 @@ var
   s: String;
   Style: TFontStyles;
 begin
-  //Canvas.Brush.Color:= clRed;
-  //Canvas.FillRect(ClientRect);
+  // for debugging
+  //   Canvas.Brush.Color:= clRed;
+  //   Canvas.FillRect(ClientRect);
   SetColors;
   R:= ClientRect;
   if Entity.Visibility = viPublished then
@@ -1267,6 +1475,92 @@ begin
   end;
 end;
 
+function TVisibilityLabel.getSVG(OwnerRect: TRect): string;
+var
+  BildNr: integer;
+  S, fontstyle, Icon, attribut, span: string;
+  c: char;
+  bx, by: real;
+
+begin
+  fontstyle:= '';
+  if GuiPyOptions.RelationshipAttributesBold and (Entity is TAttribute) and
+    (Entity as TAttribute).Connected then
+    fontstyle:= fontstyle + ' font-weight="bold"';
+  if Entity.Static then
+    fontstyle:= fontstyle + ' text-decoration="underline"';
+  if Entity.IsAbstract then
+    fontstyle:= fontstyle + ' font-style="italic"';
+
+  //R:= ClientRect;
+  if (Entity is TAttribute)
+    then BildNr:= integer(Entity.Visibility)
+    else BildNr:= integer(Entity.Visibility) + 4;
+  if not GuiPyOptions.ConstructorWithVisibility and (Entity is TOperation) and
+    ((Entity as TOperation).OperationType = otConstructor) then
+    BildNr:= 8;
+  case (Owner as TRtfdBox).ShowIcons of
+    0: begin
+        if (Entity is TAttribute)
+          then Icon:= getSVGRect(Left, Top + (Height - Font.size)/2, Font.Size, Font.Size, 'none')
+          else Icon:= getSVGCircle(Left + Font.Size/2, Top + Height/2, Font.Size/2);
+
+        c:= ' ';
+        case Entity.Visibility of
+          viPrivate:   c:= '-';
+          viPackage:   c:= '~';
+          viProtected: c:= '#';
+          viPublic:    c:= '+';
+        end;
+        if BildNr = 8 then
+          c:= 'c';
+
+        bx:= Left;
+        // Canvas.TextOut starts output at left/top
+        // SVG start output at left/baseline of text
+        by:= Top + Round(0.65*Height);
+        case c of
+          'c': begin bx:= bx + 1.5; by:= by + 0.5 end;
+          '~': begin bx:= bx + 0.5; by:= by + 1.5 end;
+          '#': begin bx:= bx + 2.1; by:= by + 1.3 end;   // 2,5   1.0
+          '+': begin bx:= bx + 0.5; by:= by + 1.3 end;
+          '-': begin bx:= bx + 1.9; by:= by + 1.5 end;
+        end;
+        case c of
+          '#': attribut:= ' font-size=' + FloatToVal(Font.Size);
+          '-': attribut:= ' font-size=' + FloatToVal(Font.Size*1.5);
+        else   attribut:= '';
+        end;
+        Icon:= Icon + getSVGText(bx, by, attribut, c);
+        Result:= Icon + getSVGText(Left + Font.Size + 4, Top + Round(0.65*Height) + 1,
+                         fontstyle, Text);
+      end;
+    1:
+      begin
+        bx:= Left;
+        by:= Top + Round(0.65*Height) + 1;
+        case Entity.Visibility of
+          viPrivate:   begin S:= '-'; bx:= Left + 1 end;
+          viPackage:   S:= '~';
+          viProtected: S:= '#';
+          viPublic:    S:= '+';
+        end;
+        if BildNr = 8 then
+          S:= 'c';
+
+        Result:= getSVGText(bx, by, '', S);
+        span:= '<tspan x=' + IntToVal(Left + Font.Size + 4) + fontstyle + '>' +
+                ConvertLtGt(Text) + '</tspan>';
+        insert(span, Result, Pos('>' + S, Result) + 2);
+      end;
+    2: Result:= getSVGText(Left, Top + Round(0.65*Height) + 1, fontstyle, Text);
+  end;
+
+  // if GuiPyOptions.UseAbstract and Entity.IsAbstract then
+  //  Result:= Result + getSVGText(OwnerRect.Width-8 - ShadowWidth, Top + Round(0.65*Height) + 1,
+  //                      ' font-style="italic" text-anchor="end"', '{abstract}');'
+end;
+
 { TRtfdClassName }
 
 constructor TRtfdClassName.Create(aOwner: TComponent; aEntity: TModelEntity);
@@ -1279,6 +1573,8 @@ begin
     else Font.Style:= [fsBold];
   Alignment:= taCenter;
   aEntity.AddListener(IAfterClassListener(Self));
+  Caption:= aEntity.Name;
+  SingleLineHeight:= Height;
 
   s:= getShortTypeWith(aEntity.Name);
   TypeParameter:= GenericOf(s);   // class<Parameter>
@@ -1323,7 +1619,11 @@ begin
 end;
 
 procedure TRtfdClassName.Paint;
-  var R: TRect; NeedH: integer; HeadColor: TColor;
+var
+  R: TRect;
+  s: string;
+  p, NeedH: integer;
+  HeadColor: TColor;
 
   function isDark(Color: TColor): boolean;
     var V: integer;
@@ -1352,7 +1652,17 @@ begin
     R:= ClientRect;
     R.Top:= R.Top + 2*FExtentY;
     R.Right:= R.Right - FExtentX - GuiPyOptions.ShadowWidth;
-    DrawText(Canvas.Handle, PChar(Caption), Length(Caption), r, DT_CENTER);
+    p:= Pos(#13#10'{abstract}', Caption);
+    if p > 0
+      then s:= copy(Caption, 1, p-1)
+      else s:= Caption;
+    DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_CENTER);
+    if p > 0 then begin
+      Canvas.Font.Style:= [fsItalic];
+      R.Top:= R.top + SingleLineHeight;
+      s:= '{abstract}';
+      DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_CENTER);
+    end;
 
     // draw parameter
     SetColors;
@@ -1368,6 +1678,36 @@ begin
     DrawText(Canvas.Handle, PChar(TypeAndBinding), Length(TypeAndBinding), r, DT_CENTER);
   end else
     inherited;
+end;
+
+function TRtfdClassName.getSVG(OwnerRect: TRect): string;
+  var x, y, p: integer; s, attribut: string;
+begin
+  attribut:= ' font-weight="bold" text-anchor="middle"';
+  if Entity.IsAbstract then
+    attribut:= attribut + ' font-style="italic"';
+  x:= OwnerRect.Width div 2;
+  y:= Top + 2*FExtentY + round(0.65*SingleLineHeight) + 1;
+  p:= Pos(#13#10'{abstract}', Caption);
+  if p > 0
+    then s:= Copy(Caption, 1, p-1)
+    else s:= Caption;
+  Result:= getSVGText(x, y, attribut, s);
+  if p > 0 then begin
+    attribut:= ' text-anchor="middle" font-style="italic"';
+    y:= y + SingleLineHeight;
+    Result:= Result + getSVGText(x, y, attribut, '{abstract}');
+  end;
+end;
+
+function TRtfdClassName.getSVGTypeAndBinding(R: TRect): string;
+  var s: string;
+begin
+  R:= Parent.ClientRect;
+  R.Right:= R.Right - GuiPyOptions.ShadowWidth - 4;
+  s:= getSVGRect(R.Right - 2*FExtentX, 0, 2*FExtentX, 2*FExtentY,
+        'white', ' stroke-dasharray="1.5% 0.5%"');
+  Result:= s + getSVGText(R.Right - 2*FExtentX + 6, Round(2*FExtentY*0.7), '', TypeAndBinding);
 end;
 
 { TRtfdObjectName }
@@ -1433,6 +1773,15 @@ begin
   DrawText(Canvas.Handle, PChar(Caption), Length(Caption), R, Alig);
 end;
 
+function TRtfdObjectName.getSVG(OwnerRect: TRect): string;
+  var x: integer; attribut: string;
+begin
+  attribut:= ' font-weight="bold" text-anchor="middle"';
+  if fsUnderline in Font.Style then
+    attribut:= attribut + ' text-decoration="underline"';
+  x:= OwnerRect.Width div 2;
+  Result:= getSVGText(x, Top + Height - 4, attribut, Text);
+end;
 
 { TRtfdInterfaceName }
 
@@ -1442,6 +1791,8 @@ begin
   Font.Style:= [fsBold];
   Alignment:= taCenter;
   aEntity.AddListener(IAfterInterfaceListener(Self));
+  Caption:= aEntity.Name;
+  SingleLineHeight:= Height;
   EntityChange(nil);
 end;
 
@@ -1456,6 +1807,18 @@ begin
   if ((Owner as TRtfdBox).Frame as TAFrameDiagram).Diagram.Package <> Entity.Owner
     then Caption:= Entity.FullName
     else Caption:= Entity.Name;
+end;
+
+function TRtfdInterfaceName.getSVG(OwnerRect: TRect): string;
+  var x, y: integer; attribut: string;
+begin
+  attribut:= ' text-anchor="middle"';
+  x:= OwnerRect.Width div 2;
+  y:= Top + round(0.65*SingleLineHeight) + 1 - SingleLineHeight;
+  Result:= getSVGText(x, y, attribut, '<<interface>>');
+  attribut:= ' font-weight="bold" text-anchor="middle"';
+  y:= y + SingleLineHeight;
+  Result:= Result + getSVGText(x, y, attribut, Text);
 end;
 
 { TRtfdSeparator }
@@ -1496,6 +1859,13 @@ begin
   Box.Canvas.MoveTo(1, Top + (Height div 2));
   Box.Canvas.LineTo(Box.Width-4, Top + (Height div 2));
 }
+end;
+
+function TRtfdSeparator.getSVG(OwnerRect: TRect): string;
+begin
+  Result:= '  <line x1="0" y1="' + IntToStr(Top + Height div 2) +
+           '" x2="' + IntToStr(OwnerRect.Width) +
+           '" y2="' + IntToStr(Top + Height div 2) + '" stroke="black" />'#13#10;
 end;
 
 { TRtfdPackageName }
@@ -1709,7 +2079,7 @@ begin
   //Operations
   while Omi.HasNext do
     Inc(NeedH, TRtfdOperation.Create(Self,Omi.Next).Height);
-  Height:= NeedH + GuiPyOptions.ShadowWidth;
+  Height:= NeedH + ShadowWidth;
 
   for i:= 0 to ControlCount-1 do
     if Controls[i] is TRtfdCustomLabel then begin
@@ -1730,7 +2100,7 @@ begin
       aTop:= aTop + Separator.Height;
     end;
 
-  Width:= Width + GuiPyOptions.ShadowWidth;
+  Width:= Width + ShadowWidth;
   Visible:= true;
 end;
 
@@ -1801,9 +2171,11 @@ begin
 end;
 
 procedure TRtfdCustomLabel.Paint;
-  var Alig: Integer; R: TRect;
+var
+  Alig, p: integer;
+  R: TRect;
+  s: string;
 begin
-  inherited;
   SetColors;
   if FTransparent
     then Canvas.Brush.Style:= bsClear
@@ -1815,19 +2187,30 @@ begin
     taCenter      : Alig:= DT_CENTER;
   end;
   R:= ClientRect;
-  R.Right:= R.Right - GuiPyOptions.ShadowWidth;
-  DrawText(Canvas.Handle, PChar(Caption), Length(Caption), R, Alig);
+  p:= Pos(#13#10'{abstract}', Caption);
+  if p > 0 then begin
+    s:= Copy(Caption, 1, p-1);
+    Canvas.Font.Style:= [fsItalic, fsBold];
+  end else
+    s:= Caption;
+  DrawText(Canvas.Handle, PChar(S), Length(S), R, Alig);
+  if p > 0 then begin
+    Canvas.Font.Style:= [fsItalic];
+    R.Top:= R.Top + SingleLineHeight;
+    s:= '{abstract}';
+    DrawText(Canvas.Handle, PChar(S), Length(S), R, Alig);
+  end;
+end;
+
+function TRtfdCustomLabel.getSVG(OwnerRect: TRect): string;
+begin
+  Result:= '';
 end;
 
 procedure TRtfdCustomLabel.SetColors;
 begin
-  if StyleServices.IsSystemStyle then begin
-    BGColor:= clWhite;
-    FGColor:= clBlack;
-  end else begin
-    BGColor:= StyleServices.GetStyleColor(scPanel);
-    FGColor:= StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
-  end;
+  FGColor:= (Parent as TRtfdBox).FGColor;
+  BGColor:= (Parent as TRtfdBox).BGColor;
   Canvas.Font.Color:= FGColor;
 end;
 

@@ -140,12 +140,17 @@ function isNumber(var s: string): boolean;
 function isBool(s: string): boolean;
 procedure ReplaceResourceString(RStringRec: PResStringRec; const AString: String);
 function DecToBase(nBase: integer; nDecValue: double): string;
-
+function ConvertLtGt(s: string): string;
+function FloatToVal(x: real): string;
+function PointToVal(P: TPoint): string;
+function IntToVal(x: integer): string;
+function myColorToRGB(Color: TColor): string;
+function XYToVal(x, y: integer): string;
 
 implementation
 
 uses Dialogs, UITypes, WinInet, Winapi.SHFolder, Registry, Printers, Math, Messages,
-     ShellAPI, IOUtils, SHDocVw, URLMon, cPyScripterSettings, uCommonFunctions;
+     ShellAPI, IOUtils, SHDocVw, URLMon, StrUtils, cPyScripterSettings, uCommonFunctions;
 
 function CtrlPressed: boolean;
 begin
@@ -1168,7 +1173,7 @@ begin
   end;
 end;
 
-function CodiereLeerzeichen(s: String): string;
+function CodeSpaces(s: String): string;
   var i: integer;
 begin
   for i:= Length(s) downto 1 do
@@ -1185,7 +1190,7 @@ function toWeb(const Browser: string; s: String): String;
 begin
   IsUNC:= (Copy(s, 1, 2) = '\\');
   IsLaufwerk:= (Copy(s, 2, 1) = ':');
-  s:= CodiereLeerzeichen(s);
+  s:= CodeSpaces(s);
   p:= pos('\', s);
   while p > 0 do begin
     s[p]:= '/';
@@ -1720,6 +1725,43 @@ begin
   if negative then Result:= '-' + Result;
 end;
 
+function ConvertLtGt(s: string): string;
+begin
+  Result:= ReplaceStr(ReplaceStr(s, '<', '&lt;'), '>', '&gt;');
+end;
+
+function FloatToVal(x: real): string;
+begin
+  Result:= '"' + FloatToStr(x) + '"';
+  var p:= Pos(',', Result);
+  if p > 0 then
+    Result[p]:= '.';
+end;
+
+function PointToVal(P: TPoint): string;
+begin
+  Result:= IntToStr(P.x) + ',' + IntToStr(P.y) + ' ';
+end;
+
+function IntToVal(x: integer): string;
+begin
+  Result:= '"' + IntToStr(x) + '"';
+end;
+
+function myColorToRGB(Color: TColor): string;
+  var ColorInt, r, g, b: integer;
+begin
+  ColorInt:= ColorToRGB(Color);
+  r:= GetRValue(ColorInt);
+  g:= GetGValue(ColorInt);
+  b:= GetBValue(ColorInt);
+  Result:= 'rgb(' + IntToStr(r) + ',' + IntToStr(g) + ',' + IntToStr(b) + ')';
+end;
+
+function XYToVal(x, y: integer): string;
+begin
+  Result:= IntToStr(x) + ',' + IntToStr(y) + ' ';
+end;
 
 end.
 

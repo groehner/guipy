@@ -89,7 +89,7 @@ type
     procedure ClearDiagram; virtual; abstract;
     procedure RecalcPanelSize; virtual; abstract;
     procedure SelectAssociation; virtual; abstract;
-    procedure Translate; virtual; abstract;
+    procedure Retranslate; virtual; abstract;
     procedure InitShowParameter(const Value: integer);
     function GetPanel: TCustomPanel; virtual; abstract;
     procedure ResolveAssociations; virtual; abstract;
@@ -130,6 +130,7 @@ type
     procedure SetOnModified(OnBoolEvent: TBoolEvent); virtual; abstract;
     procedure ChangeStyle; virtual; abstract;
     procedure DeleteComment; virtual; abstract;
+    function getSVG: string; virtual; abstract;
     procedure ExecutePython(s: string); virtual; abstract;
     procedure Reinitalize; virtual; abstract;
 
@@ -268,35 +269,19 @@ procedure TDiagramIntegrator.SaveAsPicture(const FileName: string);
     end;
   end;
 
-  procedure InToWMF;
-  var
-    Wmf : TMetaFile;
-    WmfCanvas : TMetaFileCanvas;
+  procedure InToSVG;
+    var SL: TStringList;
   begin
-    Wmf := TMetafile.Create;
-    try
-      try
-        Wmf.Width := W;
-        Wmf.Height := H;
-        WmfCanvas := TMetafileCanvas.Create(Wmf, 0);
-        try
-          PaintTo(WmfCanvas, 0, 0, False);
-        finally
-          FreeAndNil(WmfCanvas);
-        end;
-        Wmf.SaveToFile( FileName );
-      finally
-        FreeAndNil(Wmf);
-      end;
-    except
-    end;
+    SL:= TStringList.Create;
+    SL.Text:= getSVG;
+    SL.SaveToFile(Filename, TEncoding.UTF8);
+    FreeAndNil(SL);
   end;
-
 
 begin
   GetDiagramSize(W, H);
-  if Pos('wmf', LowerCase(ExtractFileExt(FileName))) > 0
-    then InToWmf
+  if LowerCase(ExtractFileExt(FileName)) = '.svg'
+    then InToSVG
     else InToPng;
 end;
 

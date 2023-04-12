@@ -10,11 +10,31 @@ unit frmBreakPoints;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, JvDockControlForm, frmIDEDockWin, ExtCtrls,
-  Contnrs, TB2Item, Menus, VirtualTrees, JvComponentBase,
-  SpTBXSkins, SpTBXItem, JvAppStorage, SpTBXControls, System.ImageList,
-  Vcl.ImgList, Vcl.VirtualImageList;
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  System.ImageList,
+  System.Contnrs,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.Menus,
+  Vcl.ExtCtrls,
+  JvAppStorage,
+  JvComponentBase,
+  JvDockControlForm,
+  frmIDEDockWin,
+  TB2Item,
+  VirtualTrees.BaseTree,
+  VirtualTrees,
+  SpTBXSkins,
+  SpTBXItem,
+  SpTBXControls,
+  Vcl.ImgList,
+  Vcl.VirtualImageList, VirtualTrees.BaseAncestorVCL, VirtualTrees.AncestorVCL;
 
 type
   TBreakPointsWindow = class(TIDEDockWindow, IJvAppStorageHandler)
@@ -202,7 +222,7 @@ procedure TBreakPointsWindow.BreakPointsViewInitNode(
   Sender: TBaseVirtualTree; ParentNode, Node: PVirtualNode;
   var InitialStates: TVirtualNodeInitStates);
 begin
-  Assert(BreakPointsView.GetNodeLevel(Node) = 0);
+  Assert(ParentNode = nil);
   Assert(Integer(Node.Index) < fBreakPointsList.Count);
   PBreakPointRec(BreakPointsView.GetNodeData(Node))^.BreakPoint :=
     fBreakPointsList[Node.Index] as TBreakPointInfo;
@@ -217,7 +237,6 @@ procedure TBreakPointsWindow.BreakPointsViewGetText(
   Sender: TBaseVirtualTree; Node: PVirtualNode; Column: TColumnIndex;
   TextType: TVSTTextType; var CellText: string);
 begin
-  Assert(BreakPointsView.GetNodeLevel(Node) = 0);
   Assert(Integer(Node.Index) < fBreakPointsList.Count);
   with PBreakPointRec(BreakPointsView.GetNodeData(Node))^.BreakPoint do
     case Column of

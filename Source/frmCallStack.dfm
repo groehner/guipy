@@ -40,14 +40,20 @@ inherited CallStackWindow: TCallStackWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
+  ExplicitWidth = 620
+  ExplicitHeight = 207
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   inherited BGPanel: TPanel
     Width = 604
     Height = 168
+    ExplicitWidth = 604
+    ExplicitHeight = 168
     inherited FGPanel: TPanel
       Width = 600
       Height = 164
+      ExplicitWidth = 600
+      ExplicitHeight = 164
       object Panel1: TPanel
         Left = 190
         Top = 0
@@ -83,6 +89,8 @@ inherited CallStackWindow: TCallStackWindow
           OnGetCellText = CallStackViewGetCellText
           OnGetImageIndex = CallStackViewGetImageIndex
           OnInitNode = CallStackViewInitNode
+          Touch.InteractiveGestures = [igPan, igPressAndTap]
+          Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
           Columns = <
             item
               Position = 0
@@ -124,6 +132,7 @@ inherited CallStackWindow: TCallStackWindow
           Header.AutoSizeIndex = 0
           Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowSortGlyphs, hoVisible, hoFullRepaintOnResize]
           Images = vilImages
+          NodeDataSize = 0
           StateImages = vilImages
           TabOrder = 0
           TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScrollOnExpand, toAutoTristateTracking, toAutoDeleteMovedNodes, toAutoChangeScale]
@@ -132,6 +141,8 @@ inherited CallStackWindow: TCallStackWindow
           OnAddToSelection = ThreadViewAddToSelection
           OnGetCellText = ThreadViewGetCellText
           OnGetImageIndex = ThreadViewGetImageIndex
+          Touch.InteractiveGestures = [igPan, igPressAndTap]
+          Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
           Columns = <
             item
               Position = 0
@@ -183,19 +194,19 @@ inherited CallStackWindow: TCallStackWindow
     DisabledSuffix = '_Disabled'
     Images = <
       item
-        CollectionIndex = 66
+        CollectionIndex = 67
         CollectionName = 'Pin'
         Disabled = False
         Name = 'Pin'
       end
       item
-        CollectionIndex = 118
+        CollectionIndex = 120
         CollectionName = 'ThreadRunning'
         Disabled = False
         Name = 'ThreadRunning'
       end
       item
-        CollectionIndex = 117
+        CollectionIndex = 119
         CollectionName = 'ThreadPaused'
         Disabled = False
         Name = 'ThreadPaused'

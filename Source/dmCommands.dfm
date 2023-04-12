@@ -1,9 +1,9 @@
 object CommandsDataModule: TCommandsDataModule
-  OldCreateOrder = False
+  OldCreateOrder = True
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Height = 392
-  Width = 675
+  Height = 402
+  Width = 717
   object SynEditPrint: TSynEditPrint
     Copies = 1
     Header.DefaultFont.Charset = DEFAULT_CHARSET
@@ -62,6 +62,11 @@ object CommandsDataModule: TCommandsDataModule
     TitleFont.Height = -11
     TitleFont.Name = 'MS Shell Dlg 2'
     TitleFont.Style = [fsBold]
+    GripperFont.Charset = DEFAULT_CHARSET
+    GripperFont.Color = clBtnText
+    GripperFont.Height = -11
+    GripperFont.Name = 'Tahoma'
+    GripperFont.Style = []
     Columns = <
       item
         ColumnWidth = 120
@@ -93,6 +98,11 @@ object CommandsDataModule: TCommandsDataModule
     TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = [fsBold]
+    GripperFont.Charset = DEFAULT_CHARSET
+    GripperFont.Color = clBtnText
+    GripperFont.Height = -11
+    GripperFont.Name = 'Tahoma'
+    GripperFont.Style = []
     Columns = <
       item
         ColumnWidth = 120
@@ -198,7 +208,7 @@ object CommandsDataModule: TCommandsDataModule
     VersionHistoryFileOptions.XMLOptions.UseOldItemNameFormat = False
     VersionHistoryFileOptions.XMLOptions.WhiteSpaceReplacement = '_'
     VersionHistoryFileOptions.XMLOptions.InvalidCharReplacement = '_'
-    Left = 419
+    Left = 435
     Top = 183
   end
   object ProgramVersionHTTPLocation: TJvProgramVersionHTTPLocation
@@ -210,11 +220,8 @@ object CommandsDataModule: TCommandsDataModule
     Top = 184
   end
   object SynIniSyn: TSynIniSyn
-    Options.AutoDetectEnabled = False
-    Options.AutoDetectLineLimit = 0
-    Options.Visible = False
-    Left = 344
-    Top = 324
+    Left = 531
+    Top = 272
   end
   object JvMultiStringHolder: TJvMultiStringHolder
     MultipleStrings = <
@@ -718,6 +725,43 @@ object CommandsDataModule: TCommandsDataModule
           '        if process.returncode != 0:'
           '            print('#39'Error code: '#39', process.returncode)'
           ''
+          '    def htmldoc(self, module):'
+          '        import sys'
+          '        import pydoc'
+          '        class _HTMLDoc(pydoc.HTMLDoc):'
+          '            def page(self, title, contents):'
+          '                """Format an HTML page."""'
+          '                css = '#39#39
+          '                if sys.version_info[0:2] >= (3, 11):'
+          '                    import os'
+          
+            '                    css_path = os.path.join(sys.base_prefix, "Li' +
+            'b", "pydoc_data", "_pydoc.css")'
+          '                    if os.path.exists(css_path):'
+          '                        with open(css_path, '#39'r'#39') as file:'
+          
+            '                            css = "<style>\n" + file.read() + "\' +
+            'n</style>"'
+          ''
+          '                return '#39#39#39'\'
+          '<!DOCTYPE>'
+          '<html lang="en">'
+          '<head>'
+          '<meta charset="utf-8">'
+          '<title>Pydoc: %s</title>'
+          '%s'
+          '</head>'
+          '<body>'
+          '%s'
+          '</body>'
+          '</html>'#39#39#39' % (title, css, contents)'
+          ''
+          '        htmldoc = _HTMLDoc()'
+          
+            '        html = htmldoc.page(pydoc.describe(module), htmldoc.docu' +
+            'ment(module))'
+          '        return html'
+          ''
           '_II = PythonInteractiveInterpreter(globals())'
           ''
           'sys.modules['#39'builtins'#39'].input=_II.Win32RawInput'
@@ -745,12 +789,10 @@ object CommandsDataModule: TCommandsDataModule
           'import sys'
           'import code'
           'import threading'
-          'import logging'
+          '#import logging'
           ''
           '##logging.basicConfig(level=logging.DEBUG,'
-          
-            '##                    filename = "c:/users/kiriakos/desktop/test' +
-            '.log",'
+          '##                    filename = "test.log",'
           '##                    filemode = "a",'
           '##                    format='#39'(%(threadName)-10s) %(message)s'#39')'
           ''
@@ -955,6 +997,11 @@ object CommandsDataModule: TCommandsDataModule
             '                #logging.debug("dispatch_call " + frame.f_code.c' +
             'o_filename + " " + frame.f_code.co_name)'
           '            return res'
+          ''
+          '        def clear_all_breaks(self):'
+          '            super().clear_all_breaks()'
+          '            self.breaks = self.debug_manager.breakpoints'
+          '            self.breaks.clear()'
           ''
           '##        def trace_dispatch(self, frame, event, arg):'
           
@@ -1531,6 +1578,42 @@ object CommandsDataModule: TCommandsDataModule
           '            ret = ret[:size]'
           '        return ret'
           ''
+          '    def htmldoc(self, module):'
+          '        import sys'
+          '        import pydoc'
+          '        class _HTMLDoc(pydoc.HTMLDoc):'
+          '            def page(self, title, contents):'
+          '                """Format an HTML page."""'
+          '                css = '#39#39
+          '                if sys.version_info[0:2] >= (3, 11):'
+          '                    import os'
+          
+            '                    css_path = os.path.join(sys.base_prefix, "Li' +
+            'b", "pydoc_data", "_pydoc.css")'
+          '                    if os.path.exists(css_path):'
+          '                        with open(css_path, '#39'r'#39') as file:'
+          
+            '                            css = "<style>\n" + file.read() + "\' +
+            'n</style>"'
+          ''
+          '                return '#39#39#39'\'
+          '<!DOCTYPE>'
+          '<html lang="en">'
+          '<head>'
+          '<meta charset="utf-8">'
+          '<title>Pydoc: %s</title>'
+          '%s'
+          '</head>'
+          '<body>'
+          '%s'
+          '</body>'
+          '</html>'#39#39#39' % (title, css, contents)'
+          ''
+          '        htmldoc = _HTMLDoc()'
+          
+            '        html = htmldoc.page(pydoc.describe(module), htmldoc.docu' +
+            'ment(module))'
+          '        return html'
           ''
           '_RPI = RemotePythonInterpreter(globals())'
           ''
@@ -2024,7 +2107,7 @@ object CommandsDataModule: TCommandsDataModule
           'if __name__ == "__main__":'
           '    main()')
       end>
-    Left = 303
+    Left = 335
     Top = 184
   end
   object dlgFileOpen: TOpenDialog
@@ -2038,37 +2121,36 @@ object CommandsDataModule: TCommandsDataModule
     Top = 68
   end
   object SynWebHtmlSyn: TSynWebHtmlSyn
-    Options.HtmlVersion = shvHtml5
-    Options.UseEngineOptions = True
+    Brackets = '()[]{}<>'
     ActiveHighlighterSwitch = False
     Engine = SynWebEngine
-    Left = 432
+    Options.HtmlVersion = shvHtml5
+    Options.UseEngineOptions = True
+    Left = 620
     Top = 272
   end
   object SynWebXmlSyn: TSynWebXmlSyn
     ActiveHighlighterSwitch = False
     Engine = SynWebEngine
-    Left = 436
-    Top = 328
+    Left = 259
+    Top = 336
   end
   object SynWebCssSyn: TSynWebCssSyn
-    Options.HtmlVersion = shvHtml401Transitional
+    Brackets = '()[]{}<>'
     ActiveHighlighterSwitch = False
     Engine = SynWebEngine
-    Left = 528
-    Top = 324
+    Options.HtmlVersion = shvHtml401Transitional
+    Left = 350
+    Top = 336
   end
   object SynCppSyn: TSynCppSyn
-    Options.AutoDetectEnabled = False
-    Options.AutoDetectLineLimit = 0
-    Options.Visible = False
-    Left = 344
+    Left = 442
     Top = 272
   end
   object SynWebEngine: TSynWebEngine
     Options.HtmlVersion = shvHtml5
-    Left = 616
-    Top = 324
+    Left = 624
+    Top = 336
   end
   object actlMain: TActionList
     Images = PyIDEMainForm.vilImages
@@ -2114,7 +2196,6 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 9
       ImageName = 'Cut'
       ShortCut = 16472
-      OnExecute = actEditCutExecute
     end
     object actEditCopy: TEditCopy
       Category = 'Edit'
@@ -2668,6 +2749,7 @@ object CommandsDataModule: TCommandsDataModule
       Caption = '&File Templates...'
       HelpContext = 640
       Hint = 'Add/Remove file templates'
+      OnExecute = actFileTemplatesExecute
     end
     object actEditUTF8: TAction
       Tag = 1
@@ -2969,6 +3051,46 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Restart the Language Server'
       OnExecute = actToolsRestartLSExecute
     end
+    object actSynSpellCheckFile: TSynSpellCheckFile
+      Category = 'Spell Check'
+      Caption = 'Check File'
+    end
+    object actSynSpellCheckLine: TSynSpellCheckLine
+      Category = 'Spell Check'
+      Caption = 'Check Line'
+    end
+    object actSynSpellCheckSelection: TSynSpellCheckSelection
+      Category = 'Spell Check'
+      Caption = 'Check Selection'
+    end
+    object actSynSpellCheckWord: TSynSpellCheckWord
+      Category = 'Spell Check'
+      Caption = 'Check Word'
+    end
+    object actSynSpellClearErrors: TSynSpellClearErrors
+      Category = 'Spell Check'
+      Caption = 'Clear Errors'
+    end
+    object actSynSpellCheckAsYouType: TSynSpellCheckAsYouType
+      Category = 'Spell Check'
+      Caption = 'Check As You Type'
+    end
+    object actSynSpellErrorAdd: TSynSpellErrorAdd
+      Category = 'Spell Check'
+      Caption = 'Add'
+    end
+    object actSynSpellErrorIgnoreOnce: TSynSpellErrorIgnoreOnce
+      Category = 'Spell Check'
+      Caption = 'Ignore Once'
+    end
+    object actSynSpellErrorIgnore: TSynSpellErrorIgnore
+      Category = 'Spell Check'
+      Caption = 'Ignore'
+    end
+    object actSynSpellErrorDelete: TSynSpellErrorDelete
+      Category = 'Spell Check'
+      Caption = 'Delete'
+    end
     object actFileExport: TAction
       Category = 'File'
       Caption = 'Export'
@@ -2990,18 +3112,12 @@ object CommandsDataModule: TCommandsDataModule
   end
   object SynGeneralSyn: TSynGeneralSyn
     DefaultFilter = 'Text Files(*.txt,*.*)|*.txt;*.*'
-    Options.AutoDetectEnabled = False
-    Options.AutoDetectLineLimit = 0
-    Options.Visible = False
     DetectPreprocessor = False
     SpaceAttri.Foreground = clSilver
-    Left = 264
-    Top = 328
+    Left = 168
+    Top = 336
   end
   object SynJSONSyn: TSynJSONSyn
-    Options.AutoDetectEnabled = False
-    Options.AutoDetectLineLimit = 0
-    Options.Visible = False
     Left = 264
     Top = 272
   end
@@ -3225,8 +3341,8 @@ object CommandsDataModule: TCommandsDataModule
           '-5.7L7.9,18.4z"/>'#13#10'</svg>'#13#10
       end>
     ApplyFixedColorToRootOnly = True
-    Left = 29
-    Top = 328
+    Left = 109
+    Top = 272
   end
   object icGutterGlyphs: TSVGIconImageCollection
     SVGIconItems = <
@@ -3273,8 +3389,8 @@ object CommandsDataModule: TCommandsDataModule
           '="2"/>'#13#10'</svg>'
       end>
     ApplyFixedColorToRootOnly = True
-    Left = 136
-    Top = 320
+    Left = 184
+    Top = 264
   end
   object icSVGImages: TSVGIconImageCollection
     SVGIconItems = <
@@ -4826,6 +4942,13 @@ object CommandsDataModule: TCommandsDataModule
           '3.3z"/>'#13#10'</svg>'#13#10
       end
       item
+        IconName = 'SpellCheck'
+        SVGText = 
+          '<svg viewBox="0 0 24 24"><path d="M21.59,11.59L13.5,19.68L9.83,1' +
+          '6L8.42,17.41L13.5,22.5L23,13M6.43,11L8.5,5.5L10.57,11M12.45,16H1' +
+          '4.54L9.43,3H7.57L2.46,16H4.55L5.67,13H11.31L12.45,16Z" /></svg>'
+      end
+      item
         IconName = 'SplitHorizontal'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10'<path d="M26.2,6.3L26.2,6.3l-0.1-1.1H' +
@@ -5251,6 +5374,17 @@ object CommandsDataModule: TCommandsDataModule
           'L21.7,19.3z M12.7,19.3c-3.7,0-6.8-3-6.8-6.8s3-6.8,6.8-6.8c3.7,0,' +
           '6.8,3,6.8,6.8'#13#10#9'S16.4,19.3,12.7,19.3z M9,11.8h7.5v1.5H9V11.8z"/>' +
           #13#10'</svg>'
+      end
+      item
+        IconName = 'ZoomReset'
+        SVGText = 
+          '<svg viewBox="0 0 32 32" stroke="black">'#13#10#9'<path stroke-width="0' +
+          '" d="M20.1,19l-0.4-0.4l-1.1,1.1'#13#10#9'l0.4,0.4v1.2l7.5,7.5l2.2-2.2L2' +
+          '1.7,19.3z" />'#13#10#9'<path transform="translate(2.2,2.2)" fill="none"' +
+          ' stroke-width="2.7" d="M17.502 7.001C16.273 4.41 13.596 2.625 10' +
+          '.5 2.625C6.15 2.625 2.625 6.15 2.625 10.5C2.625 14.849 6.15 18.3' +
+          '75 10.5 18.375L10.5 18.375C14.849 18.375 18.375 14.849 18.375 10' +
+          '.5M18.375 2.625L18.375 7.875L13.125 7.875"/>'#13#10'</svg>'
       end
       item
         IconName = 'UMLNew'
@@ -6368,6 +6502,11 @@ object CommandsDataModule: TCommandsDataModule
     TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = [fsBold]
+    GripperFont.Charset = DEFAULT_CHARSET
+    GripperFont.Color = clBtnText
+    GripperFont.Height = -11
+    GripperFont.Name = 'Tahoma'
+    GripperFont.Style = []
     Columns = <
       item
         ColumnWidth = 100
@@ -6392,6 +6531,11 @@ object CommandsDataModule: TCommandsDataModule
     TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = [fsBold]
+    GripperFont.Charset = DEFAULT_CHARSET
+    GripperFont.Color = clBtnText
+    GripperFont.Height = -11
+    GripperFont.Name = 'Tahoma'
+    GripperFont.Style = []
     Columns = <>
     ShortCut = 0
     TimerInterval = 300
@@ -6413,6 +6557,11 @@ object CommandsDataModule: TCommandsDataModule
     TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = [fsBold]
+    GripperFont.Charset = DEFAULT_CHARSET
+    GripperFont.Color = clBtnText
+    GripperFont.Height = -11
+    GripperFont.Name = 'Tahoma'
+    GripperFont.Style = []
     Columns = <>
     Resizeable = True
     ShortCut = 0
@@ -6428,5 +6577,16 @@ object CommandsDataModule: TCommandsDataModule
     Font.Style = []
     Left = 96
     Top = 16
+  end
+  object SynSpellCheck: TSynSpellCheck
+    AttributesChecked.Strings = (
+      'Comment'
+      'Text'
+      'String'
+      'Documentation')
+    CheckAsYouType = False
+    OnChange = SynSpellCheckChange
+    Left = 24
+    Top = 336
   end
 end

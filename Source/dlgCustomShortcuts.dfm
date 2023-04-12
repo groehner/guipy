@@ -174,7 +174,7 @@ inherited frmCustomKeyboard: TfrmCustomKeyboard
       Width = 441
       Height = 61
       Anchors = [akLeft, akTop, akRight]
-      Caption = 'Description'
+      Caption = ' Description '
       TabOrder = 0
       object lblDescription: TLabel
         Left = 2

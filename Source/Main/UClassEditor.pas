@@ -163,10 +163,10 @@ type
   public
     AttributeNode: TTreeNode;
     MethodNode: TTreeNode;
-    function CreateTreeView(Editor: TEditorForm; UMLForm: TFUMLForm): Boolean;
+    function CreateTreeView(EditForm: TEditorForm; UMLForm: TFUMLForm): Boolean;
     procedure UpdateTreeView;
     procedure AttributeToPython(Attribute: TAttribute; ClassNumber, Line: Integer);
-    function RGMethodKindChanged(ClassNumber: integer): boolean;
+    function RGMethodKindHasChanged: boolean;
     procedure ShowMandatoryFields;
     procedure SetClassOrInterface(aIsClass: Boolean);
     procedure TVClassOrInterface(Classifier: TClassifier);
@@ -221,7 +221,6 @@ type
     procedure TakeParameter;
     function StrToPythonValue(s: String): String;
     procedure ChangeStyle;
-    procedure PrepareNewClass;
   end;
 
 var
@@ -231,9 +230,9 @@ implementation
 
 {$R *.dfm}
 
-uses Math, UITypes, SynEdit, JvGnugettext, StringResources, uCommonFunctions,
-     UFileStructure, uModelEntity, uFileProvider, UConfiguration, UUtils,
-     uEditAppIntfs, frmFile;
+uses Math, UITypes, SynEdit, Character, JvGnugettext, StringResources,
+     uCommonFunctions, UFileStructure, uModelEntity, uFileProvider,
+     UConfiguration, UUtils, uEditAppIntfs, frmFile;
 
 const
   CrLf = #13#10;
@@ -247,15 +246,15 @@ type
 
 constructor TParamTyp.create(const s: string);
 begin
-  typ := s;
+  typ:= s;
 end;
 
 procedure TFClassEditor.FormCreate(Sender: TObject);
   const Values = '0'#$D#$A'0.0'#$D#$A''''''#$D#$A'True'#$D#$A'False'#$D#$A'None'#$D#$A'[]'#$D#$A'()'#$D#$A'{}';
 begin
   inherited;
-  MakeNewClass := false;
-  TreeView.Images := FFileStructure.ILFileStructureLight;
+  MakeNewClass:= false;
+  TreeView.Images:= FFileStructure.ILFileStructureLight;
   CBAttributeValue.Items.Text:= Values;
   CBParamValue.Items.Text:= Values;
   LNGTODO:= _('# TODO add your code here');
@@ -271,11 +270,11 @@ var
   st: string;
 begin
   Init;
-  SL := TStringList.create;
+  SL:= TStringList.create;
   for i:= 0 to GI_FileFactory.Count - 1 do
     (GI_FileFactory.FactoryFile[i].Form as TFileForm).CollectClasses(SL);
-  for i := 0 to SL.Count - 1 do begin
-    st := getShortType(SL[i]);
+  for i:= 0 to SL.Count - 1 do begin
+    st:= getShortType(SL[i]);
     ComboBoxInsert2(CBAttributeType, st);
     ComboBoxInsert2(CBMethodType, st);
     ComboBoxInsert2(CBParamType, st);
@@ -302,10 +301,10 @@ var
   i: Integer;
   aObject: TObject;
 begin
-  TreeView.OnChange := nil;
+  TreeView.OnChange:= nil;
   TreeView.Items.Clear;
-  for i := 0 to CBParamName.Items.Count - 1 do begin
-    aObject := CBParamName.Items.Objects[i];
+  for i:= 0 to CBParamName.Items.Count - 1 do begin
+    aObject:= CBParamName.Items.Objects[i];
     FreeAndNil(aObject);
   end;
 end;
@@ -322,50 +321,50 @@ var
     s1: string;
     p: Integer;
   begin
-    Result := nil;
-    Node := TreeView.Items.GetFirstNode;
-    p := Pos('.', s);
-    s1 := copy(s, 1, p - 1);
+    Result:= nil;
+    Node:= TreeView.Items.GetFirstNode;
+    p:= Pos('.', s);
+    s1:= copy(s, 1, p - 1);
     delete(s, 1, p);
     while s1 <> '' do begin
       while Assigned(Node) and (withoutGeneric(Node.Text) <> s1) do
-        Node := Node.getNextSibling;
+        Node:= Node.getNextSibling;
       if Node = nil then
         exit;
-      Node := Node.getFirstChild;
-      p := Pos('.', s);
-      s1 := copy(s, 1, p - 1);
+      Node:= Node.getFirstChild;
+      p:= Pos('.', s);
+      s1:= copy(s, 1, p - 1);
       delete(s, 1, p);
     end;
-    Result := Node;
+    Result:= Node;
   end;
 
 begin
-  CName := Classifier.Name;
-  p := LastDelimiter('.', CName);
+  CName:= Classifier.Name;
+  p:= LastDelimiter('.', CName);
   if p = 0 then
-    Anchor := nil
+    Anchor:= nil
   else begin
-    Anchor := GetCorINode(copy(CName, 1, p));
+    Anchor:= GetCorINode(copy(CName, 1, p));
     delete(CName, 1, p);
   end;
 
-  Node := TreeView.Items.AddObject(Anchor, CName, Classifier);
+  Node:= TreeView.Items.AddObject(Anchor, CName, Classifier);
   if Classifier is TClass then begin
-    Node.ImageIndex := 1;
-    Node.SelectedIndex := 1
+    Node.ImageIndex:= 1;
+    Node.SelectedIndex:= 1
   end else begin
-    Node.ImageIndex := 11;
-    Node.SelectedIndex := 11;
+    Node.ImageIndex:= 11;
+    Node.SelectedIndex:= 11;
   end;
 
-  AttributeNode := TreeView.Items.AddChild(Node, _('Attributes'));
-  AttributeNode.ImageIndex := 12;
-  AttributeNode.SelectedIndex := 12;
+  AttributeNode:= TreeView.Items.AddChild(Node, _('Attributes'));
+  AttributeNode.ImageIndex:= 12;
+  AttributeNode.SelectedIndex:= 12;
 
-  MethodNode := TreeView.Items.AddChild(Node, _('Methods'));
-  MethodNode.ImageIndex := 13;
-  MethodNode.SelectedIndex := 13;
+  MethodNode:= TreeView.Items.AddChild(Node, _('Methods'));
+  MethodNode.ImageIndex:= 13;
+  MethodNode.SelectedIndex:= 13;
 
   ComboBoxInsert2(CBAttributeType, CName);
   ComboBoxInsert2(CBMethodType, CName);
@@ -376,10 +375,10 @@ procedure TFClassEditor.TVAttribute(Attribute: TAttribute);
 var
   Node: TTreeNode;
 begin
-  Node := TreeView.Items.AddChildObject(AttributeNode, Attribute.Name,
+  Node:= TreeView.Items.AddChildObject(AttributeNode, Attribute.Name,
     Attribute);
-  Node.ImageIndex := Integer(Attribute.Visibility) + 2;
-  Node.SelectedIndex := Integer(Attribute.Visibility) + 2;
+  Node.ImageIndex:= Integer(Attribute.Visibility) + 2;
+  Node.SelectedIndex:= Integer(Attribute.Visibility) + 2;
 end;
 
 procedure TFClassEditor.TVMethod(Method: TOperation);
@@ -387,12 +386,12 @@ var
   Node: TTreeNode;
   ImageNr: Integer;
 begin
-  Node := TreeView.Items.AddChildObject(MethodNode, Method.toShortStringNode, Method);
+  Node:= TreeView.Items.AddChildObject(MethodNode, Method.toShortStringNode, Method);
   if Method.OperationType = otConstructor
-    then ImageNr := 6
-    else ImageNr := Integer(Method.Visibility) + 7;
-  Node.ImageIndex := ImageNr;
-  Node.SelectedIndex := ImageNr;
+    then ImageNr:= 6
+    else ImageNr:= Integer(Method.Visibility) + 7;
+  Node.ImageIndex:= ImageNr;
+  Node.SelectedIndex:= ImageNr;
 end;
 
 procedure TFClassEditor.NewClass;
@@ -402,7 +401,7 @@ var
   SL: TStringList;
   i: Integer;
 begin
-  MakeNewClass := false;
+  MakeNewClass:= false;
   Indent1:= FConfiguration.Indent1;
   s:= FConfiguration.getClassCodeTemplate;
   p1:= Pos('class ', s);
@@ -422,23 +421,23 @@ begin
     end;
   end else begin
     if CBClassInner.Checked
-      then Indent2 := Indent1
-      else Indent2 := '';
-    s := CrLf + Indent2 + 'class ' + EClass.Text;
+      then Indent2:= Indent1
+      else Indent2:= '';
+    s:= CrLf + Indent2 + 'class ' + EClass.Text;
     if EExtends.Text <> '' then
-      s := s + '(' + EExtends.Text + ')';
-    s := s + ':' + CrLf;
-    s := s +
+      s:= s + '(' + EExtends.Text + ')';
+    s:= s + ':' + CrLf;
+    s:= s +
          Indent2 + Indent1 + CrLf +
          Indent2 + Indent1 + 'def __init__(self):' + CrLf +
          Indent2 + Indent1 + Indent1 + 'pass' + CrLf;
-    s := s + CrLf;
+    s:= s + CrLf;
   end;
-  Line := GetLastLineOflastClass;
+  Line:= GetLastLineOflastClass;
   myEditor.InsertLinesAt(Line + 1, s);
   myEditor.Modified:= true;
   UpdateTreeView;
-  TreeView.Selected := TreeView.Items[TreeView.Items.Count - 3];
+  TreeView.Selected:= TreeView.Items[TreeView.Items.Count - 3];
   TreeViewChange(Self, TreeView.Selected);
 end;
 
@@ -457,65 +456,65 @@ begin
   if MakeNewClass then
     NewClass
   else begin
-    Node := TreeView.Selected;
+    Node:= TreeView.Selected;
     if not Assigned(Node) or not Assigned(Node.Data) then
       exit;
 
-    NodeIndex := Node.AbsoluteIndex;
-    IsClass := PartOfClass(Node);
-    aClassifier := TClassifier(Node.Data);
-    newClassname := Trim(EClass.Text);
-    ClassOrInterfaceName := getShortType(aClassifier.ShortName);
-    Searchtext := 'class ' + ClassOrInterfaceName;
-    ReplaceText := 'class ' + newClassname;
+    NodeIndex:= Node.AbsoluteIndex;
+    IsClass:= PartOfClass(Node);
+    aClassifier:= TClassifier(Node.Data);
+    newClassname:= Trim(EClass.Text);
+    ClassOrInterfaceName:= getShortType(aClassifier.ShortName);
+    Searchtext:= 'class ' + ClassOrInterfaceName;
+    ReplaceText:= 'class ' + newClassname;
 
     with myEditor do begin
       GotoWord(Searchtext);
-      s := ActiveSynEdit.LineText;
-      s := myStringReplace(s, Searchtext, ReplaceText);
+      s:= ActiveSynEdit.LineText;
+      s:= myStringReplace(s, Searchtext, ReplaceText);
 
-      p := length(s);
+      p:= length(s);
       while (p > 0) and (s[p] <> ':') do
         Dec(p);
       if p > 0 then begin
-        tail := copy(s, p + 1, length(s));
-        s := copy(s, 1, p - 1);
+        tail:= copy(s, p + 1, length(s));
+        s:= copy(s, 1, p - 1);
       end else
-        tail := '';
+        tail:= '';
 
-      p := Pos('(', s);
+      p:= Pos('(', s);
       if p > 0 then
-        s := copy(s, 1, p - 1);
-      s := Trim(s);
-      SkipUpdate := false;
+        s:= copy(s, 1, p - 1);
+      s:= Trim(s);
+      SkipUpdate:= false;
 
       if EExtends.Text <> '' then begin
-        SL := split(',', EExtends.Text);
-        for i := SL.Count - 1 downto 0 do
+        SL:= split(',', EExtends.Text);
+        for i:= SL.Count - 1 downto 0 do
           if Trim(SL[i]) = '' then begin
             SL.delete(i);
-            SkipUpdate := true;
+            SkipUpdate:= true;
           end;
         if SL.Count > 0 then begin
-          s := s + '(' + Trim(SL[0]);
-          for i := 1 to SL.Count - 1 do
-            s := s + ', ' + Trim(SL[i]);
-          s := s + ')';
+          s:= s + '(' + Trim(SL[0]);
+          for i:= 1 to SL.Count - 1 do
+            s:= s + ', ' + Trim(SL[i]);
+          s:= s + ')';
         end;
         FreeAndNil(SL);
       end;
 
-      s := s + ':' + tail;
-      ActiveSynEdit.LineText := s;
-      Modified := true;
+      s:= s + ':' + tail;
+      ActiveSynEdit.LineText:= s;
+      Modified:= true;
       if SkipUpdate = false then begin
         UpdateTreeView;
         if NodeIndex < TreeView.Items.Count then
-          TreeView.Selected := TreeView.Items[NodeIndex];
+          TreeView.Selected:= TreeView.Items[NodeIndex];
       end;
     end;
   end;
-  BClassApply.Enabled := false;
+  BClassApply.Enabled:= false;
 end;
 
 function TFClassEditor.HasMethod(const getset: string; Attribute: TAttribute;
@@ -524,26 +523,26 @@ var
   s, aName, sNode, datatype: string;
   Node: TTreeNode;
 begin
-  aName := Attribute.Name;
+  aName:= Attribute.Name;
   if Assigned(Attribute.TypeClassifier)
-    then datatype := Attribute.TypeClassifier.asType
-    else datatype := '';
+    then datatype:= Attribute.TypeClassifier.asType
+    else datatype:= '';
   if getset = _(LNGGet)
-    then s := _(LNGGet) + '_' + aName + '('
-    else s := _(LNGSet) + '_' + aName + '(';
-  Node := GetMethodNode;
+    then s:= _(LNGGet) + '_' + aName + '('
+    else s:= _(LNGSet) + '_' + aName + '(';
+  Node:= GetMethodNode;
   if Assigned(Node) then
-    Node := Node.getFirstChild;
+    Node:= Node.getFirstChild;
   while Assigned(Node) and Assigned(Node.Data) do begin
-    sNode := TOperation(Node.Data).toShortStringWithoutParameterNames;
+    sNode:= TOperation(Node.Data).toShortStringWithoutParameterNames;
     if Pos(s, sNode) = 1 then
       break;
-    Node := Node.getNextSibling;
+    Node:= Node.getNextSibling;
   end;
   if Assigned(Node)
-    then Method := TOperation(Node.Data)
-    else Method := nil;
-  Result := Assigned(Method);
+    then Method:= TOperation(Node.Data)
+    else Method:= nil;
+  Result:= Assigned(Method);
 end;
 
 procedure TFClassEditor.EnableEvents(enable: Boolean);
@@ -552,44 +551,44 @@ begin
     // EClass.OnChange:= @BClassChangeClick;
     // EExtends.OnChange:=  @BClassChangeClick;
 
-    RGAttributeAccess.OnClick := BAttributeChangeClick;
-    CBAttributeStatic.OnClick := BAttributeChangeClick;
-    CBAttributeFinal.OnClick := BAttributeChangeClick;
-    CBgetMethod.OnClick := BAttributeChangeClick;
-    CBsetMethod.OnClick := BAttributeChangeClick;
+    RGAttributeAccess.OnClick:= BAttributeChangeClick;
+    CBAttributeStatic.OnClick:= BAttributeChangeClick;
+    CBAttributeFinal.OnClick:= BAttributeChangeClick;
+    CBgetMethod.OnClick:= BAttributeChangeClick;
+    CBsetMethod.OnClick:= BAttributeChangeClick;
 
-    RGMethodKind.OnClick := BMethodChangeClick;
-    RGMethodAccess.OnClick := BMethodChangeClick;
-    CBMethodStatic.OnClick := BMethodChangeClick;
-    CBMethodClass.OnClick := BMethodChangeClick;
-    CBMethodAbstract.OnClick := BMethodChangeClick;
+    RGMethodKind.OnClick:= BMethodChangeClick;
+    RGMethodAccess.OnClick:= BMethodChangeClick;
+    CBMethodStatic.OnClick:= BMethodChangeClick;
+    CBMethodClass.OnClick:= BMethodChangeClick;
+    CBMethodAbstract.OnClick:= BMethodChangeClick;
   end
   else
   begin
-    EClass.OnChange := nil;
-    EExtends.OnChange := nil;
+    EClass.OnChange:= nil;
+    EExtends.OnChange:= nil;
 
-    RGAttributeAccess.OnClick := nil;
-    CBAttributeStatic.OnClick := nil;
-    CBAttributeFinal.OnClick := nil;
-    CBgetMethod.OnClick := nil;
-    CBsetMethod.OnClick := nil;
+    RGAttributeAccess.OnClick:= nil;
+    CBAttributeStatic.OnClick:= nil;
+    CBAttributeFinal.OnClick:= nil;
+    CBgetMethod.OnClick:= nil;
+    CBsetMethod.OnClick:= nil;
 
-    RGMethodKind.OnClick := nil;
-    RGMethodAccess.OnClick := nil;
-    CBMethodStatic.OnClick := nil;
-    CBMethodClass.OnClick := nil;
-    CBMethodAbstract.OnClick := nil;
+    RGMethodKind.OnClick:= nil;
+    RGMethodAccess.OnClick:= nil;
+    CBMethodStatic.OnClick:= nil;
+    CBMethodClass.OnClick:= nil;
+    CBMethodAbstract.OnClick:= nil;
   end;
 end;
 
 function TFClassEditor.PartOfClass(Node: TTreeNode): Boolean;
 begin
-  Result := false;
+  Result:= false;
   if Assigned(Node) then begin
     while (Node.ImageIndex <> 1) and (Node.ImageIndex <> 11) do
-      Node := Node.Parent;
-    Result := (Node.ImageIndex = 1);
+      Node:= Node.Parent;
+    Result:= (Node.ImageIndex = 1);
   end;
 end;
 
@@ -597,26 +596,26 @@ function TFClassEditor.GetClassNumber(Node: TTreeNode): Integer;
 var
   aCursor: TTreeNode;
 begin
-  Result := -1;
-  aCursor := TreeView.Items.GetFirstNode;
+  Result:= -1;
+  aCursor:= TreeView.Items.GetFirstNode;
   while aCursor <> Node do begin
     if IsClassOrInterface(aCursor) then
       inc(Result);
-    aCursor := aCursor.GetNext;
+    aCursor:= aCursor.GetNext;
   end;
 end;
 
 function TFClassEditor.GetClassNode(ClassNumber: integer): TTreeNode;
   var aCursor: TTreeNode;
 begin
-  aCursor := TreeView.Items.GetFirstNode;
+  aCursor:= TreeView.Items.GetFirstNode;
   while aCursor <> nil do begin
     if IsClassOrInterface(aCursor) then begin
       dec(ClassNumber);
       if ClassNumber = -1 then
         Exit(aCursor);
     end;
-    aCursor := aCursor.GetNext;
+    aCursor:= aCursor.GetNext;
   end;
   Result:= nil;
 end;
@@ -626,15 +625,15 @@ var
   aCursor: TTreeNode;
   i: Integer;
 begin
-  i := -1;
-  aCursor := TreeView.Items.GetFirstNode;
+  i:= -1;
+  aCursor:= TreeView.Items.GetFirstNode;
   while Assigned(aCursor) do begin
     if IsClassOrInterface(aCursor) then
       inc(i);
-    aCursor := aCursor.GetNext;
+    aCursor:= aCursor.GetNext;
   end;
   inc(i);
-  Result := IntToStr(i);
+  Result:= IntToStr(i);
 end;
 
 function TFClassEditor.GetLastLineOflastClass: Integer;
@@ -642,12 +641,12 @@ var
   Ci: IModelIterator;
   cent: TClassifier;
 begin
-  Result := -1;
+  Result:= -1;
   myEditor.ParseAndCreateModel;
-  Ci := myEditor.Model.ModelRoot.GetAllClassifiers;
+  Ci:= myEditor.Model.ModelRoot.GetAllClassifiers;
   while Ci.HasNext do begin
-    cent := TClassifier(Ci.Next);
-    Result := max(Result, cent.LineE);
+    cent:= TClassifier(Ci.Next);
+    Result:= max(Result, cent.LineE);
   end;
 end;
 
@@ -655,14 +654,14 @@ function TFClassEditor.GetClassInterfaceNode: TTreeNode;
 var
   i: Integer;
 begin
-  Result := TreeView.Selected;
+  Result:= TreeView.Selected;
   if Assigned(Result) then // we may have multiple classes in the treeview
     while (Result <> nil) and (Result.ImageIndex <> 1) and (Result.ImageIndex <> 11) do
-      Result := Result.Parent
+      Result:= Result.Parent
   else
-    for i := 0 to TreeView.Items.Count - 1 do
+    for i:= 0 to TreeView.Items.Count - 1 do
       if TreeView.Items[i].ImageIndex in [1, 11] then begin
-        Result := TreeView.Items[i];
+        Result:= TreeView.Items[i];
         break;
       end;
 end;
@@ -671,34 +670,34 @@ function TFClassEditor.GetAttributeNode: TTreeNode;
 var
   Node: TTreeNode;
 begin
-  Node := GetClassInterfaceNode;
+  Node:= GetClassInterfaceNode;
   if Assigned(Node) then
-    Result := Node.getFirstChild
+    Result:= Node.getFirstChild
   else
-    Result := nil;
+    Result:= nil;
 end;
 
 function TFClassEditor.GetMethodNode: TTreeNode;
 var
   Node: TTreeNode;
 begin
-  Node := GetClassInterfaceNode;
+  Node:= GetClassInterfaceNode;
   if Assigned(Node) then
   begin
-    Node := Node.getFirstChild;
+    Node:= Node.getFirstChild;
     if Assigned(Node) then
-      Node := Node.getNextSibling
+      Node:= Node.getNextSibling
     else
-      Node := nil;
+      Node:= nil;
   end;
-  Result := Node;
+  Result:= Node;
 end;
 
 procedure TFClassEditor.Timer1Timer(Sender: TObject);
 begin
-  Timer1.Enabled := false;
-  EAttributeName.SelStart := 1;
-  EAttributeName.SelLength := 0;
+  Timer1.Enabled:= false;
+  EAttributeName.SelStart:= 1;
+  EAttributeName.SelLength:= 0;
 end;
 
 procedure TFClassEditor.TreeViewChange(Sender: TObject; Node: TTreeNode);
@@ -713,59 +712,59 @@ begin
   if Node = nil then exit;
   
   EnableEvents(false);
-  IsClass := PartOfClass(Node);
-  //ClassNumber := GetClassNumber(Node);
+  IsClass:= PartOfClass(Node);
+  //ClassNumber:= GetClassNumber(Node);
   if IsClassOrInterface(Node) then begin
-    PageControl.ActivePageIndex := 0;
-    aClassifier := TClassifier(Node.Data);
+    PageControl.ActivePageIndex:= 0;
+    aClassifier:= TClassifier(Node.Data);
     if aClassifier = nil then
       exit;
-    EClass.Text := getShortType(aClassifier.ShortName);
-    CBClassInner.Checked := (aClassifier.Level > 0);
+    EClass.Text:= getShortType(aClassifier.ShortName);
+    CBClassInner.Checked:= (aClassifier.Level > 0);
     if IsClass then  begin
-      s := (aClassifier as TClass).AncestorsAsString;
+      s:= (aClassifier as TClass).AncestorsAsString;
       SetEditText(EExtends, s);
-      it := (aClassifier as TClass).GetImplements;
-      s := '';
+      it:= (aClassifier as TClass).GetImplements;
+      s:= '';
       while it.HasNext do begin
-        s1 := getShortType((it.Next as TInterface).ShortName);
-        s := s + ', ';
+        s1:= getShortType((it.Next as TInterface).ShortName);
+        s:= s + ', ';
         if Pos('{', s1) = 0 then
-          s := s + s1;
+          s:= s + s1;
       end;
       delete(s, 1, 2);
       // EImplements.Text:= s;
     end else begin
-      it := (aClassifier as TInterface).GetExtends;
-      s := '';
+      it:= (aClassifier as TInterface).GetExtends;
+      s:= '';
       while it.HasNext do begin
-        s1 := getShortType((it.Next as TInterface).ShortName);
-        s := s + ', ';
+        s1:= getShortType((it.Next as TInterface).ShortName);
+        s:= s + ', ';
         if Pos('{', s1) = 0 then
-          s := s + s1;
+          s:= s + s1;
       end;
       delete(s, 1, 2);
-      p := EExtends.SelStart;
-      q := length(EExtends.Text);
-      l := length(s);
-      EExtends.Text := s;
+      p:= EExtends.SelStart;
+      q:= length(EExtends.Text);
+      l:= length(s);
+      EExtends.Text:= s;
       if l > q then
-        EExtends.SelStart := p + 1
+        EExtends.SelStart:= p + 1
       else if l < q then
-        EExtends.SelStart := p - 1;
+        EExtends.SelStart:= p - 1;
     end;
   end
   else if IsAttributesNode(Node) or IsAttributesNodeLeaf(Node) then begin
-    PageControl.ActivePageIndex := 1;
-    BAttributeApply.Enabled := false;
+    PageControl.ActivePageIndex:= 1;
+    BAttributeApply.Enabled:= false;
     if IsAttributesNodeLeaf(Node) then begin
-      Attribut := TAttribute(Node.Data);
+      Attribut:= TAttribute(Node.Data);
       if Attribut = nil then
         exit;
       SetEditText(EAttributeName, Attribut.Name);
       if Assigned(Attribut.TypeClassifier)
-        then CBAttributeType.Text := Attribut.TypeClassifier.asUMLType
-        else CBAttributeType.Text := '';
+        then CBAttributeType.Text:= Attribut.TypeClassifier.asUMLType
+        else CBAttributeType.Text:= '';
       {
       if Attribut.Value <> Attribut.Name
         then SetComboBoxValue(CBAttributeValue, Attribut.Value)
@@ -774,90 +773,88 @@ begin
 
       SetComboBoxValue(CBAttributeValue, Attribut.Value);
       if IsClass then
-        RGAttributeAccess.ItemIndex := Integer(Attribut.Visibility)
+        RGAttributeAccess.ItemIndex:= Integer(Attribut.Visibility)
       else if Attribut.Visibility = viPackage then
-        RGAttributeAccess.ItemIndex := 0
+        RGAttributeAccess.ItemIndex:= 0
       else
-        RGAttributeAccess.ItemIndex := 1;
+        RGAttributeAccess.ItemIndex:= 1;
       if CBgetMethod.Visible then
-        CBgetMethod.Checked := HasMethod(_(LNGGet), Attribut, Methode);
+        CBgetMethod.Checked:= HasMethod(_(LNGGet), Attribut, Methode);
       if CBsetMethod.Visible then
-        CBsetMethod.Checked := HasMethod(_(LNGSet), Attribut, Methode);
-      CBAttributeStatic.Checked := Attribut.Static;
-      CBAttributeFinal.Checked := Attribut.IsFinal;
+        CBsetMethod.Checked:= HasMethod(_(LNGSet), Attribut, Methode);
+      CBAttributeStatic.Checked:= Attribut.Static;
+      CBAttributeFinal.Checked:= Attribut.IsFinal;
     end else begin
-      CBAttributeType.Text := '';
-      CBAttributeType.ItemIndex := -1;
-      CBAttributeValue.Text := '';
-      CBAttributeValue.ItemIndex := -1;
-      ActiveControl := EAttributeName;
-      EAttributeName.Text := '';
+      CBAttributeType.Text:= '';
+      CBAttributeType.ItemIndex:= -1;
+      CBAttributeValue.Text:= '';
+      CBAttributeValue.ItemIndex:= -1;
+      ActiveControl:= EAttributeName;
+      EAttributeName.Text:= '';
     end;
     ComboBoxInsert(CBAttributeType);
   end else begin
-    PageControl.ActivePageIndex := 2;
-    BMethodApply.Enabled := false;
+    PageControl.ActivePageIndex:= 2;
+    BMethodApply.Enabled:= false;
     AllAttributesAsParameters(Node);
     if IsMethodsNodeLeaf(Node) then begin
-      EClass.Text := Node.Parent.Parent.Text; // wg. constructor
-      Methode := TOperation(Node.Data);
+      EClass.Text:= Node.Parent.Parent.Text; // wg. constructor
+      Methode:= TOperation(Node.Data);
       if Methode = nil then
         exit;
-      CBMethodName.Text := Methode.Name;
+      CBMethodName.Text:= Methode.Name;
       if Assigned(Methode.ReturnValue)
-        then CBMethodType.Text := Methode.ReturnValue.asUMLType
-        else CBMethodType.Text := '';
+        then CBMethodType.Text:= Methode.ReturnValue.asUMLType
+        else CBMethodType.Text:= '';
       if IsClass then begin
-        RGMethodKind.ItemIndex := Integer(Methode.OperationType);
-        RGMethodAccess.ItemIndex := Integer(Methode.Visibility);
+        RGMethodKind.ItemIndex:= Integer(Methode.OperationType);
+        RGMethodAccess.ItemIndex:= Integer(Methode.Visibility);
       end else begin
-        RGMethodKind.ItemIndex := Integer(Methode.OperationType) - 1;
+        RGMethodKind.ItemIndex:= Integer(Methode.OperationType) - 1;
         if Methode.Visibility = viPackage
-          then RGMethodAccess.ItemIndex := 0
-          else RGMethodAccess.ItemIndex := 1;
+          then RGMethodAccess.ItemIndex:= 0
+          else RGMethodAccess.ItemIndex:= 1;
       end;
-      CBMethodStatic.Checked := Methode.isStaticMethod;
-      CBMethodClass.Checked := Methode.isClassMethod;
-      CBMethodAbstract.Checked := Methode.IsAbstract;
+      CBMethodStatic.Checked:= Methode.isStaticMethod;
+      CBMethodClass.Checked:= Methode.isClassMethod;
+      CBMethodAbstract.Checked:= Methode.IsAbstract;
       GetParameter(LBParams, Methode);
     end else begin
-      if Assigned(Node) then
-        EClass.Text := Node.Parent.Text // wg. constructor
-      else
-        EClass.Text:= '';
+      if Assigned(Node)
+        then EClass.Text:= Node.Parent.Text // wg. constructor
+        else EClass.Text:= '';
       if IsClass
-        then RGMethodKind.ItemIndex := 1 // wg. constructor
-        else RGMethodKind.ItemIndex := 0;
-      CBMethodName.Text := '';
-      CBMethodType.Text := '';
-      CBMethodType.ItemIndex := -1;
+        then RGMethodKind.ItemIndex:= 1 // wg. constructor
+        else RGMethodKind.ItemIndex:= 0;
+      CBMethodName.Text:= '';
+      CBMethodType.Text:= '';
+      CBMethodType.ItemIndex:= -1;
 
-      CBParamName.Text := '';
-      CBParamType.Text := '';
-      CBParamType.ItemIndex := -1;
+      CBParamName.Text:= '';
+      CBParamType.Text:= '';
+      CBParamType.ItemIndex:= -1;
       CBMethodStatic.Checked:= false;
       CBMethodClass.Checked:= false;
       CBMethodAbstract.Checked:= false;
       LBParams.Clear;
       if IsClass and (RGMethodKind.ItemIndex > 0) or not IsClass then begin
-        CBMethodName.Enabled := true;
-        ActiveControl := CBMethodName;
+        CBMethodName.Enabled:= true;
+        ActiveControl:= CBMethodName;
       end;
     end;
     ComboBoxInsert(CBMethodType);
     ComboBoxInsert(CBParamName);
     ComboBoxInsert(CBParamType);
-    CBMethodName.Enabled := (RGMethodKind.ItemIndex > 0) or not IsClass;
-    CBMethodType.Enabled := (RGMethodKind.ItemIndex in [1, 2]) or
-      (not IsClass and (RGMethodKind.ItemIndex = 1));
+    CBMethodName.Enabled:= (RGMethodKind.ItemIndex > 0) or not IsClass;
+    CBMethodType.Enabled:= (RGMethodKind.ItemIndex = 1);
   end;
   if IsAttributesNode(Node) or IsMethodsNode(Node) then
     if myEditor.ActiveSynEdit.ReadOnly
-      then Zeile := -1
-      else Zeile := myEditor.ActiveSynEdit.CaretY
+      then Zeile:= -1
+      else Zeile:= myEditor.ActiveSynEdit.CaretY
   else if assigned(Node) // Class, Interface, Leaf
-    then Zeile := TModelEntity(Node.Data).LineS
-    else Zeile := -1;
+    then Zeile:= TModelEntity(Node.Data).LineS
+    else Zeile:= -1;
   if Zeile <> -1 then
     myEditor.GotoLine(Zeile);
   SetClassOrInterface(IsClass);
@@ -871,9 +868,9 @@ var
 begin
   if E.Text <> s then
   begin
-    p := E.SelStart;
-    E.Text := s;
-    E.SelStart := p;
+    p:= E.SelStart;
+    E.Text:= s;
+    E.SelStart:= p;
   end;
 end;
 
@@ -883,11 +880,11 @@ var
 begin
   if CB.Text <> s then
   begin
-    p := CB.SelStart;
+    p:= CB.SelStart;
     if (Pos('''', s) > 0) and (Pos('''', CB.Text) = 0) then
       inc(p);
-    CB.Text := s;
-    CB.SelStart := p;
+    CB.Text:= s;
+    CB.SelStart:= p;
   end;
 end;
 
@@ -911,9 +908,9 @@ var
 
 begin
   LB.Clear;
-  It2 := Method.GetParameters;
+  It2:= Method.GetParameters;
   while It2.HasNext do begin
-    Parameter := It2.Next as TParameter;
+    Parameter:= It2.Next as TParameter;
     if (Parameter.Name = 'self') or (Parameter.Name = 'cls') then
       continue;
     s:= Parameter.Name;
@@ -924,9 +921,9 @@ begin
     LB.Items.Add(s);
   end;
   if CBParamType.Text <> ''
-    then s := CBParamName.Text + ': ' + asUMLType(CBParamType.Text)
-    else s := CBParamName.Text;
-  i := LB.Items.IndexOf(s);
+    then s:= CBParamName.Text + ': ' + asUMLType(CBParamType.Text)
+    else s:= CBParamName.Text;
+  i:= LB.Items.IndexOf(s);
   if i <> -1 then
     LB.Items.delete(i);
 end;
@@ -936,65 +933,65 @@ var
   Node: TTreeNode;
   tab: Integer;
 begin
-  tab := PageControl.TabIndex;
+  tab:= PageControl.TabIndex;
   if BClassApply.Enabled then
     BClassChangeClick(Sender);
   if BAttributeApply.Enabled then
     BAttributeChangeClick(Sender);
   if BMethodApply.Enabled then
     BMethodChangeClick(Sender);
-  PageControl.TabIndex := tab;
+  PageControl.TabIndex:= tab;
   case PageControl.TabIndex of
-    0: Node := GetClassInterfaceNode;
-    1: Node := GetAttributeNode;
+    0: Node:= GetClassInterfaceNode;
+    1: Node:= GetAttributeNode;
   else begin
-       Node := GetMethodNode;
+       Node:= GetMethodNode;
        AllAttributesAsParameters(Node);
        end;
   end;
-  TreeView.Selected := Node;
+  TreeView.Selected:= Node;
 end;
 
 procedure TFClassEditor.ActionNewExecute(Sender: TObject);
 begin
   case PageControl.ActivePageIndex of
     1: begin
-        EAttributeName.Text := '';
-        CBAttributeType.Text := '';
-        CBAttributeValue.Text := '';
-        TreeView.Selected := GetAttributeNode;
-        CBAttributeStatic.Checked := false;
-        CBAttributeFinal.Checked := false;
+        EAttributeName.Text:= '';
+        CBAttributeType.Text:= '';
+        CBAttributeValue.Text:= '';
+        TreeView.Selected:= GetAttributeNode;
+        CBAttributeStatic.Checked:= false;
+        CBAttributeFinal.Checked:= false;
         if GuiPyOptions.DefaultModifiers and CBgetMethod.Visible then begin
-          RGAttributeAccess.ItemIndex := 0;
-          CBgetMethod.Checked := true;
+          RGAttributeAccess.ItemIndex:= 0;
+          CBgetMethod.Checked:= true;
         end;
       end;
     2: begin
-        CBMethodName.Text := '';
-        CBMethodType.Text := '';
-        CBParamName.Text := '';
-        CBParamType.Text := '';
-        CBParamValue.Text := '';
+        CBMethodName.Text:= '';
+        CBMethodType.Text:= '';
+        CBParamName.Text:= '';
+        CBParamType.Text:= '';
+        CBParamValue.Text:= '';
         LBParams.Items.Clear;
-        CBParameter.Text := _('Select attribute');
-        TreeView.Selected := GetMethodNode;
-        CBMethodStatic.Checked := false;
-        CBMethodClass.Checked := false;
-        CBMethodAbstract.Checked := false;
+        CBParameter.Text:= _('Select attribute');
+        TreeView.Selected:= GetMethodNode;
+        CBMethodStatic.Checked:= false;
+        CBMethodClass.Checked:= false;
+        CBMethodAbstract.Checked:= false;
         if GuiPyOptions.DefaultModifiers then begin
-          RGMethodKind.ItemIndex := 1;
-          RGMethodAccess.ItemIndex := 2;
+          RGMethodKind.ItemIndex:= 1;
+          RGMethodAccess.ItemIndex:= 2;
         end;
       end;
   else
     begin
-      EClass.Text := '';
-      EExtends.Text := '';
-      CBClassInner.Checked := false;
+      EClass.Text:= '';
+      EExtends.Text:= '';
+      CBClassInner.Checked:= false;
       if Assigned(TreeView.Selected) then
         TreeView.Selected.Selected:= false;
-      MakeNewClass := true;
+      MakeNewClass:= true;
     end;
   end;
 end;
@@ -1042,14 +1039,14 @@ begin
   // replace get/set-methods, names could be changed
   HasMethod(_(LNGGet), Attribut, Method1);
   HasMethod(_(LNGSet), Attribut, Method2);
-  getIsFirst := true;
+  getIsFirst:= true;
   if Assigned(Method1) and Assigned(Method2) and
     (Method1.LineS > Method2.LineS) then
-    getIsFirst := false;
+    getIsFirst:= false;
   ChangeAttribute(Attribut);
   if IsClass then begin
-    NewGet := CreateMethod(_(LNGGet), Attribut);
-    NewSet := CreateMethod(_(LNGSet), Attribut);
+    NewGet:= CreateMethod(_(LNGGet), Attribut);
+    NewSet:= CreateMethod(_(LNGSet), Attribut);
     if getIsFirst then begin
       DoSet;
       DoGet;
@@ -1077,15 +1074,15 @@ var
   Node: TTreeNode;
   s: string;
 begin
-  Node := TreeView.Selected;
+  Node:= TreeView.Selected;
   if Assigned(Node) then begin
-    s := EAttributeName.Text + ': ' + CBAttributeType.Text;
+    s:= EAttributeName.Text + ': ' + CBAttributeType.Text;
     if CBAttributeValue.Text <> '' then
-      s := s + ' = ' + CBAttributeValue.Text;
-    Result := (Node.Text <> s)
+      s:= s + ' = ' + CBAttributeValue.Text;
+    Result:= (Node.Text <> s)
   end
   else
-    Result := false;
+    Result:= false;
 end;
 
 procedure TFClassEditor.BAttributeChangeClick(Sender: TObject);
@@ -1098,17 +1095,17 @@ var
 begin
   if not MakeIdentifier(EAttributeName) or (EAttributeName.Text = '') then
     exit;
-  Node := TreeView.Selected;
+  Node:= TreeView.Selected;
   if (Node = nil) or (not PartOfClass(Node) and (CBAttributeValue.Text = '')) then
     exit;
-  NodeIndex := Node.AbsoluteIndex;
-  TopItemIndex := TreeView.TopItem.AbsoluteIndex;
-  ClassNumber := GetClassNumber(Node);
+  NodeIndex:= Node.AbsoluteIndex;
+  TopItemIndex:= TreeView.TopItem.AbsoluteIndex;
+  ClassNumber:= GetClassNumber(Node);
 
   myEditor.ActiveSynEdit.BeginUpdate;
   if IsAttributesNode(Node) then begin
-    NodeIndex := NodeIndex + Node.Count + 1;
-    Attribute := MakeAttribute;
+    NodeIndex:= NodeIndex + Node.Count + 1;
+    Attribute:= MakeAttribute;
     NewName:= Attribute.Name;
     if AttributeAlreadyExists(Attribute.Name) then
       ErrorMsg(Format(_('%s already exists'), [Attribute.Name]))
@@ -1121,13 +1118,13 @@ begin
   end else begin
     ValueChanged:= CBAttributeValue.Focused;
     TypeChanged:= CBAttributeType.Focused;
-    Attribute := TAttribute(Node.Data);
-    OldName := Attribute.Name;
-    OldStatic := Attribute.Static;
-    Old := Attribute.toPython(false, false);
+    Attribute:= TAttribute(Node.Data);
+    OldName:= Attribute.Name;
+    OldStatic:= Attribute.Static;
+    Old:= Attribute.toPython(false, false);
     ChangeGetSet(Attribute, ClassNumber);
 
-    New := Attribute.toPython(ValueChanged, TypeChanged);
+    New:= Attribute.toPython(ValueChanged, TypeChanged);
     NewName:= Attribute.Name;
     if CBattributeValue.Text <> '' then
       CBAttributeValue.Text:= Attribute.Value;
@@ -1158,10 +1155,10 @@ begin
   end;
 
   if (0 <= TopItemIndex) and (TopItemIndex < TreeView.Items.Count) then
-    TreeView.TopItem := TreeView.Items[TopItemIndex];
+    TreeView.TopItem:= TreeView.Items[TopItemIndex];
   if (0 <= NodeIndex) and (NodeIndex < TreeView.Items.Count) then
-    TreeView.Selected := TreeView.Items[NodeIndex];
-  BAttributeApply.Enabled := false;
+    TreeView.Selected:= TreeView.Items[NodeIndex];
+  BAttributeApply.Enabled:= false;
   myEditor.ActiveSynEdit.EndUpdate;
 end;
 
@@ -1171,10 +1168,10 @@ var
 begin
   myEditor.ActiveSynEdit.BeginUpdate;
   myEditor.DeleteBlock(Method.LineS - 1, Method.LineE - 1);
-  i := Method.LineS - 1;
+  i:= Method.LineS - 1;
   if Method.hasComment then begin
     myEditor.DeleteBlock(Method.Documentation.LineS - 1, Method.Documentation.LineE - 1);
-    i := Method.Documentation.LineS - 1;
+    i:= Method.Documentation.LineS - 1;
   end;
   myEditor.DeleteEmptyLine(i - 1);
   myEditor.ActiveSynEdit.EndUpdate;
@@ -1187,10 +1184,10 @@ var
   p1, p2, p3, ClassNumber: Integer;
   Node: TTreeNode;
 begin
-  Node := TreeView.Selected;
+  Node:= TreeView.Selected;
   if Assigned(Node) and Assigned(Node.Data) and IsAttributesNodeLeaf(Node) then begin
     myEditor.ActiveSynEdit.BeginUpdate;
-    Attribute := TAttribute(Node.Data);
+    Attribute:= TAttribute(Node.Data);
     HasMethod(_(LNGGet), Attribute, Methode1);
     HasMethod(_(LNGSet), Attribute, Methode2);
     if Assigned(Methode1) and Assigned(Methode2) then begin
@@ -1211,17 +1208,17 @@ begin
     myEditor.DeleteAttributeCE('self.' + Attribute.VisName, ClassNumber);
     myEditor.ActiveSynEdit.EndUpdate;
 
-    myEditor.Modified := true;
-    p1 := TreeView.Selected.AbsoluteIndex;
-    p2 := TreeView.FindNextToSelect.AbsoluteIndex;
-    p3 := TreeView.TopItem.AbsoluteIndex;
+    myEditor.Modified:= true;
+    p1:= TreeView.Selected.AbsoluteIndex;
+    p2:= TreeView.FindNextToSelect.AbsoluteIndex;
+    p3:= TreeView.TopItem.AbsoluteIndex;
     UpdateTreeView;
     if (0 <= p3) and (p3 < TreeView.Items.Count) then
-      TreeView.TopItem := TreeView.Items[p3];
-    p1 := min(p1, p2);
+      TreeView.TopItem:= TreeView.Items[p3];
+    p1:= min(p1, p2);
     if (0 <= p1) and (p1 < TreeView.Items.Count) then
-      TreeView.Selected := TreeView.Items[p1];
-    BAttributeApply.Enabled := false;
+      TreeView.Selected:= TreeView.Items[p1];
+    BAttributeApply.Enabled:= false;
   end;
 end;
 
@@ -1234,20 +1231,20 @@ var
   s: String;
   hasSourceCode: Boolean;
 begin
-  Node := TreeView.Selected;
+  Node:= TreeView.Selected;
   if Assigned(Node) and Assigned(Node.Data) and IsMethodsNodeLeaf(Node) then begin
-    Method := TOperation(Node.Data);
-    hasSourceCode := false;
+    Method:= TOperation(Node.Data);
+    hasSourceCode:= false;
     if Method.hasSourceCode then begin
-      SL := TStringList.create;
+      SL:= TStringList.create;
       try
-        SL.Text := myEditor.getSource(Method.LineS, Method.LineE - 2);
-        for p := SL.Count - 1 downto 0 do begin
-          s := Trim(SL[p]);
+        SL.Text:= myEditor.getSource(Method.LineS, Method.LineE - 2);
+        for p:= SL.Count - 1 downto 0 do begin
+          s:= Trim(SL[p]);
           if (Pos('return', s) = 1) or (s = '') or (s = _(LNGTODO)) then
             SL.delete(p);
         end;
-        hasSourceCode := (SL.Count > 0);
+        hasSourceCode:= (SL.Count > 0);
       finally
         SL.Free;
       end;
@@ -1258,13 +1255,13 @@ begin
        _('Delete method with source code?'), mtConfirmation, mbYesNoCancel, 0) = mrYes) then
       exit;
     DeleteMethod(Method);
-    myEditor.Modified := true;
-    p := Node.AbsoluteIndex;
+    myEditor.Modified:= true;
+    p:= Node.AbsoluteIndex;
     UpdateTreeView;
     if p = TreeView.Items.Count then
       Dec(p);
-    TreeView.Selected := TreeView.Items[p];
-    BMethodApply.Enabled := false;
+    TreeView.Selected:= TreeView.Items[p];
+    BMethodApply.Enabled:= false;
   end;
 end;
 
@@ -1301,24 +1298,24 @@ function TFClassEditor.GetAttrValue: string;
 var
   s: string;
 begin
-  Result := '';
-  s := Trim(CBAttributeValue.Text);
+  Result:= '';
+  s:= Trim(CBAttributeValue.Text);
   if s = '' then
     exit;
   if CBAttributeType.Text = 'char' then
   begin
-    s := myStringReplace(s, '''', '');
+    s:= myStringReplace(s, '''', '');
     if s = '' then
-      s := ''''''
+      s:= ''''''
     else
-      s := '''' + s[1] + ''''
+      s:= '''' + s[1] + ''''
   end
   else if CBAttributeType.Text = 'String' then
   begin
-    s := myStringReplace(s, '"', '');
-    s := '"' + s + '"';
+    s:= myStringReplace(s, '"', '');
+    s:= '"' + s + '"';
   end;
-  Result := ' = ' + s;
+  Result:= ' = ' + s;
 end;
 
 function TFClassEditor.CreateMethod(const getset: string;
@@ -1329,20 +1326,20 @@ begin
   Ident1:= StringTimesN(FConfiguration.Indent1, Attribute.Level + 1);
   Ident2:= StringTimesN(FConfiguration.Indent1, Attribute.Level + 2);
   if Assigned(Attribute.TypeClassifier)
-    then datatype := Attribute.TypeClassifier.asType
-    else datatype := '';
-  aName := Attribute.Name;
+    then datatype:= Attribute.TypeClassifier.asType
+    else datatype:= '';
+  aName:= Attribute.Name;
 
   if getset = _(LNGGet) then begin
-    s := Ident1 + 'def ' + _(LNGGet) + '_' + aName + '(self)';
+    s:= Ident1 + 'def ' + _(LNGGet) + '_' + aName + '(self)';
     if datatype <> '' then
-      s := s + ' -> ' + datatype;
-    s := s + ':' + CrLf + Ident2 + 'return self.' + Attribute.VisName + CrLf;
+      s:= s + ' -> ' + datatype;
+    s:= s + ':' + CrLf + Ident2 + 'return self.' + Attribute.VisName + CrLf;
   end else begin
-    s := Ident1 + 'def ' + _(LNGSet) + '_' + aName + '(self, ' + aName;
+    s:= Ident1 + 'def ' + _(LNGSet) + '_' + aName + '(self, ' + aName;
     if datatype <> '' then
-      s := s + ': ' + datatype;
-    s := s + '):' + CrLf + Ident2 + 'self.' + Attribute.VisName + ' = ' + aName + CrLf;
+      s:= s + ': ' + datatype;
+    s:= s + '):' + CrLf + Ident2 + 'self.' + Attribute.VisName + ' = ' + aName + CrLf;
   end;
   Result:= s;
 end;
@@ -1357,18 +1354,18 @@ const
 var
   i: Integer;
 begin
-  Result := 'None';
-  for i := 1 to 8 do
+  Result:= 'None';
+  for i:= 1 to 8 do
     if typs[i] = typ then
     begin
-      Result := vals[i];
+      Result:= vals[i];
       break;
     end;
 end;
 
 function TFClassEditor.makeConstructor(Method: TOperation; Source: string): string;
 var
-  Indent, vis, s,key: string;
+  Indent, vis, s, key, head: string;
   it: IModelIterator;
   Parameter: TParameter;
   Attribute: TAttribute;
@@ -1386,34 +1383,36 @@ var
   end;
 
 begin
-  Parameter := nil;
+  Parameter:= nil;
   Indent:= StringTimesN(FConfiguration.Indent1, Method.Level + 2);
   SourceSL:= TStringList.Create;
   SourceSL.Text:= Source;
+  head:= Method.HeadToPython;
   p:= 0;
   while (p < SourceSL.Count) and (Pos('def __init__', SourceSL[p]) = 0) do
     inc(p);
-  if p < SourceSL.Count then
-    SourceSL[p]:= Method.HeadToPython;
-  Node := GetAttributeNode.getFirstChild;
-  it := Method.GetParameters;
+  if p < SourceSL.Count
+    then SourceSL[p]:= head
+    else SourceSL.Insert(0, head);
+  Node:= GetAttributeNode.getFirstChild;
+  it:= Method.GetParameters;
   while it.HasNext do begin
-    Parameter := it.Next as TParameter;
-    Parameter.UsedForAttribute := false;
+    Parameter:= it.Next as TParameter;
+    Parameter.UsedForAttribute:= false;
   end;
 
   while Assigned(Node) do begin // iterate over all attributes
     it.Reset;
-    found := false;
+    found:= false;
     case Node.ImageIndex of
-        2: vis := '__';
-        3: vis := '_';
-      else vis := '';
+        2: vis:= '__';
+        3: vis:= '_';
+      else vis:= '';
     end;
     while it.HasNext and not found do begin // exists a corresponding parameter?
-      Parameter := it.Next as TParameter;
+      Parameter:= it.Next as TParameter;
       if Parameter.Name = Node.Text then
-        found := true;
+        found:= true;
     end;
     if found then begin // corresponding parameter exists or
       p:= getSourceIndex('self.' + vis + Parameter.Name);
@@ -1427,7 +1426,7 @@ begin
         SourceSL.Insert(p, s);
       end else
         SourceSL.Add(s);
-      Parameter.UsedForAttribute := true;
+      Parameter.UsedForAttribute:= true;
     end else begin
       Attribute:= TAttribute(Node.Data);
       Attribute.Value:= '';
@@ -1439,16 +1438,16 @@ begin
         SourceSL.Insert(p, s);
       end else begin
         key:= 'self.' + vis + Node.Text;
-        p := getSourceIndex(key);
+        p:= getSourceIndex(key);
         if p = -1 then
           SourceSL.Add(s);
       end;
     end;
-    Node := Node.getNextSibling;
+    Node:= Node.getNextSibling;
   end;
   if SourceSL.Count = 0 then
     SourceSL.Add(Indent + 'pass');
-  Result := SourceSL.Text;
+  Result:= SourceSL.Text;
   FreeAndNil(SourceSL);
 end;
 
@@ -1457,26 +1456,20 @@ var
   i: Integer;
   s2: string;
 begin
-  s2 := s;
-  Result := 0;
+  s2:= s;
+  Result:= 0;
   // delete illegal chars at the beginning
-  while (length(s) > 0) and
-    not(CharInSet(s[1], ['A' .. 'Z', 'a' .. 'z', '_', '$', 'ä', 'ö', 'ü', 'Ä',
-    'Ö', 'Ü'])) do
-  begin
+  while (length(s) > 0) and not (s[1].isLetter or (s[1] = '_')) do begin
     delete(s, 1, 1);
-    Result := 1;
+    Result:= 1;
   end;
   // delete illegal chars after the beginning
-  i := 2;
+  i:= 2;
   while i <= length(s) do
-    if not(CharInSet(s[i], ['A' .. 'Z', 'a' .. 'z', '0' .. '9', '_']) or
-      (Pos(s[i], 'äöüÄÖÜß') > 0)) then
-    begin
+    if not (s[i].IsLetterOrDigit or (s[i] = '_')) then begin
       delete(s, i, 1);
-      Result := i;
-    end
-    else
+      Result:= i;
+    end else
       inc(i);
 end;
 
@@ -1486,25 +1479,25 @@ var
   s: string;
   OnChange: TNotifyEvent;
 begin
-  Result := true;
-  s := CB.Text;
-  errpos := MakeIdentifier(s);
+  Result:= true;
+  s:= CB.Text;
+  errpos:= MakeIdentifier(s);
   if errpos = 0 then
     exit;
   if errpos = -1 then
   begin
-    Result := false;
+    Result:= false;
     exit;
   end;
-  len := length(CB.Text) - length(s);
-  OnChange := CB.OnChange;
-  CB.OnChange := nil;
-  CB.Text := s;
-  CB.OnChange := OnChange;
+  len:= length(CB.Text) - length(s);
+  OnChange:= CB.OnChange;
+  CB.OnChange:= nil;
+  CB.Text:= s;
+  CB.OnChange:= OnChange;
   if len = 1 then
-    CB.SelStart := errpos - 1
+    CB.SelStart:= errpos - 1
   else
-    CB.SelStart := length(s);
+    CB.SelStart:= length(s);
 end;
 
 function TFClassEditor.MakeIdentifier(E: TEdit): Boolean;
@@ -1513,43 +1506,43 @@ var
   s: string;
   OnChange: TNotifyEvent;
 begin
-  Result := true;
-  s := E.Text;
-  errpos := MakeIdentifier(s);
+  Result:= true;
+  s:= E.Text;
+  errpos:= MakeIdentifier(s);
   if errpos = 0 then
     exit;
-  Result := false;
+  Result:= false;
   if errpos = -1 then
     exit;
-  errlen := length(E.Text) - length(s);
-  OnChange := E.OnChange;
-  E.OnChange := nil;
-  E.Text := s;
-  E.OnChange := OnChange;
+  errlen:= length(E.Text) - length(s);
+  OnChange:= E.OnChange;
+  E.OnChange:= nil;
+  E.Text:= s;
+  E.OnChange:= OnChange;
   if errlen = 1 then
-    E.SelStart := errpos - 1
+    E.SelStart:= errpos - 1
   else
-    E.SelStart := length(s);
+    E.SelStart:= length(s);
 end;
 
 procedure TFClassEditor.ChangeAttribute(var A: TAttribute);
 begin
-  A.Name := EAttributeName.Text;
-  A.TypeClassifier := MakeType(CBAttributeType);
-  A.Value := CBAttributeValue.Text;
+  A.Name:= EAttributeName.Text;
+  A.TypeClassifier:= MakeType(CBAttributeType);
+  A.Value:= CBAttributeValue.Text;
   if IsClass then
-    A.Visibility := TVisibility(RGAttributeAccess.ItemIndex)
+    A.Visibility:= TVisibility(RGAttributeAccess.ItemIndex)
   else if RGAttributeAccess.ItemIndex = 0 then
-    A.Visibility := viPackage
+    A.Visibility:= viPackage
   else
-    A.Visibility := viPublic;
-  A.Static := CBAttributeStatic.Checked;
-  A.IsFinal := CBAttributeFinal.Checked;
+    A.Visibility:= viPublic;
+  A.Static:= CBAttributeStatic.Checked;
+  A.IsFinal:= CBAttributeFinal.Checked;
 end;
 
 function TFClassEditor.MakeAttribute: TAttribute;
 begin
-  Result := TAttribute.create(nil);
+  Result:= TAttribute.create(nil);
   ChangeAttribute(Result);
 end;
 
@@ -1558,14 +1551,14 @@ var
   s: string;
   i: Integer;
 begin
-  s := CB.Text;
-  i := CB.Items.IndexOf(s);
+  s:= CB.Text;
+  i:= CB.Items.IndexOf(s);
   if i <> -1 then
-    s := CB.Items[i];
+    s:= CB.Items[i];
   if s = '' then
-    Result := nil
+    Result:= nil
   else
-    Result := MakeType(s);
+    Result:= MakeType(s);
 end;
 
 function TFClassEditor.MakeType(const s: string): TClassifier;
@@ -1573,16 +1566,16 @@ var
   MyUnit: TUnitPackage;
   aClass: TClass;
 begin
-  Result := nil;
-  MyUnit := myEditor.Model.ModelRoot.FindUnitPackage('Default');
+  Result:= nil;
+  MyUnit:= myEditor.Model.ModelRoot.FindUnitPackage('Default');
   if Assigned(MyUnit) then
-    Result := MyUnit.FindClassifier(s, nil, true);
+    Result:= MyUnit.FindClassifier(s, nil, true);
   if Result = nil then begin
-    aClass := TClass.create(nil);
-    aClass.Name := s;
+    aClass:= TClass.create(nil);
+    aClass.Name:= s;
     if Assigned(MyUnit) then
       MyUnit.AddClass(aClass);
-    Result := aClass;
+    Result:= aClass;
   end;
 end;
 
@@ -1592,30 +1585,30 @@ var
   typ, s, Value: string;
   Parameter: TParameter;
 begin
-  M.Name := CBMethodName.Text;
-  M.ReturnValue := MakeType(CBMethodType);
+  M.Name:= CBMethodName.Text;
+  M.ReturnValue:= MakeType(CBMethodType);
   if IsClass then begin
-    M.OperationType := TOperationType(RGMethodKind.ItemIndex);
-    if (M.OperationType = otFunction) and
+    M.OperationType:= TOperationType(RGMethodKind.ItemIndex);
+    {if (M.OperationType = otFunction) and
        ((CBMethodType.Text = 'None') or (CBMethodType.Text = ''))
     then begin
       M.OperationType:= otProcedure;
       M.ReturnValue:= nil;
-    end;
+    end;}
   end
   else if RGMethodKind.ItemIndex = 0 then
-    M.OperationType := otFunction
+    M.OperationType:= otFunction
   else
-    M.OperationType := otProcedure;
+    M.OperationType:= otProcedure;
 
   M.Visibility:= TVisibility(RGMethodAccess.ItemIndex);
   if UUtils.Left(M.Name, 2) = '__' then
     M.Visibility:= viPrivate;
-  M.isStaticMethod := CBMethodStatic.Checked;
-  M.isClassMethod := CBMethodClass.Checked;
-  M.IsAbstract := CBMethodAbstract.Checked and IsClass;
+  M.isStaticMethod:= CBMethodStatic.Checked;
+  M.isClassMethod:= CBMethodClass.Checked;
+  M.IsAbstract:= CBMethodAbstract.Checked and IsClass;
   M.NewParameters;
-  for i := 0 to LBParams.Items.Count - 1 do begin
+  for i:= 0 to LBParams.Items.Count - 1 do begin
     s:= LBParams.Items[i];
     p:= Pos(' = ', s);
     if p > 0 then begin
@@ -1623,9 +1616,9 @@ begin
       delete(s, p, length(s));
     end else
       Value:= '';
-    p := Pos(':', s);
+    p:= Pos(':', s);
     if p > 0 then begin
-      typ := copy(s, p + 2, length(s));
+      typ:= copy(s, p + 2, length(s));
       delete(s, p, length(s));
     end else
       typ:= '';
@@ -1636,7 +1629,7 @@ begin
     Parameter.Value:= Value;
   end;
   if (CBParamName.Text <> '') and (CBParamType.Text <> '') then
-    M.AddParameter(CBParamName.Text).TypeClassifier := MakeType(CBParamType);
+    M.AddParameter(CBParamName.Text).TypeClassifier:= MakeType(CBParamType);
 end;
 
 procedure TFClassEditor.SetClassOrInterface(aIsClass: Boolean);
@@ -1647,41 +1640,41 @@ procedure TFClassEditor.SetClassOrInterface(aIsClass: Boolean);
   begin
     if RG.Items.Text <> Text then
     begin
-      index := RG.ItemIndex;
-      RG.Items.Text := Text;
-      RG.ItemIndex := index;
+      index:= RG.ItemIndex;
+      RG.Items.Text:= Text;
+      RG.ItemIndex:= index;
     end;
   end;
 
 begin
   if aIsClass then begin
-    TSClass.Caption := '&' + _('Class');
-    LClass.Caption := _('Class');
-    CBMethodAbstract.Visible := true;
+    TSClass.Caption:= '&' + _('Class');
+    LClass.Caption:= _('Class');
+    CBMethodAbstract.Visible:= true;
     if GuiPyOptions.ShowGetSetMethods then begin
-      CBgetMethod.Visible := true;
-      CBsetMethod.Visible := true;
+      CBgetMethod.Visible:= true;
+      CBsetMethod.Visible:= true;
     end;
-    RGAttributeAccess.Height := PPIScale(115);
-    GBAttributeOptions.Height := PPIScale(115);
-    RGMethodKind.Height := PPIScale(105);
-    RGMethodAccess.Height := PPIScale(105);
-    GBMethodOptions.Visible := true;
+    RGAttributeAccess.Height:= PPIScale(115);
+    GBAttributeOptions.Height:= PPIScale(115);
+    RGMethodKind.Height:= PPIScale(105);
+    RGMethodAccess.Height:= PPIScale(105);
+    GBMethodOptions.Visible:= true;
   end else begin
-    TSClass.Caption := '&' + _('Interface');
-    LClass.Caption := _('Interface');
+    TSClass.Caption:= '&' + _('Interface');
+    LClass.Caption:= _('Interface');
     RGMethodKind.Items.delete(0);
-    CBMethodAbstract.Visible := false;
-    CBgetMethod.Visible := false;
-    CBsetMethod.Visible := false;
-    RGAttributeAccess.Height := PPIScale(65);
-    GBAttributeOptions.Height := PPIScale(65);
-    RGMethodKind.Height := PPIScale(65);
-    RGMethodAccess.Height := PPIScale(65);
-    GBMethodOptions.Visible := false;
+    CBMethodAbstract.Visible:= false;
+    CBgetMethod.Visible:= false;
+    CBsetMethod.Visible:= false;
+    RGAttributeAccess.Height:= PPIScale(65);
+    GBAttributeOptions.Height:= PPIScale(65);
+    RGMethodKind.Height:= PPIScale(65);
+    RGMethodAccess.Height:= PPIScale(65);
+    GBMethodOptions.Visible:= false;
   end;
-  CBMethodStatic.Enabled := aIsClass;
-  CBMethodClass.Enabled := aIsClass;
+  CBMethodStatic.Enabled:= aIsClass;
+  CBMethodClass.Enabled:= aIsClass;
 end;
 
 procedure TFClassEditor.UpdateTreeView;
@@ -1692,46 +1685,46 @@ var
   Methode: TOperation;
   IsFirstClass: Boolean;
 begin
-  TreeView.OnChange := nil;
+  TreeView.OnChange:= nil;
   EnableEvents(false);
-  IsFirstClass := true;
+  IsFirstClass:= true;
   myEditor.ParseAndCreateModel;
   TreeView.Items.BeginUpdate;
   TreeView.Items.Clear;
-  Ci := myEditor.Model.ModelRoot.GetAllClassifiers;
+  Ci:= myEditor.Model.ModelRoot.GetAllClassifiers;
   while Ci.HasNext do begin
-    cent := TClassifier(Ci.Next);
+    cent:= TClassifier(Ci.Next);
     if (cent.pathname <> myEditor.pathname) or cent.anonym then
       continue;
     if IsFirstClass then begin
-      EClass.Text := getShortType(cent.ShortName);
-      IsFirstClass := false;
+      EClass.Text:= getShortType(cent.ShortName);
+      IsFirstClass:= false;
     end;
     TVClassOrInterface(cent);
-    it := cent.GetAttributes;
+    it:= cent.GetAttributes;
     while it.HasNext do begin
-      Attribut := it.Next as TAttribute;
+      Attribut:= it.Next as TAttribute;
       TVAttribute(Attribut);
     end;
-    it := cent.GetOperations;
+    it:= cent.GetOperations;
     while it.HasNext do begin
-      Methode := it.Next as TOperation;
+      Methode:= it.Next as TOperation;
       TVMethod(Methode);
     end;
   end;
   TreeView.FullExpand;
   TreeView.Items.EndUpdate;
   EnableEvents(true);
-  TreeView.OnChange := TreeViewChange;
+  TreeView.OnChange:= TreeViewChange;
 end;
 
 function TFClassEditor.CountClassOrInterface: Integer;
 var
   Ci: IModelIterator; cent: TClassifier;
 begin
-  Result := 0;
+  Result:= 0;
   if assigned(myUMLForm) then begin
-    Ci := myUMLForm.MainModul.Model.ModelRoot.GetAllClassifiers;
+    Ci:= myUMLForm.MainModul.Model.ModelRoot.GetAllClassifiers;
     while Ci.HasNext do begin
       cent:= TClassifier(Ci.Next);
       if cent.Pathname = myEditor.pathname then
@@ -1740,18 +1733,18 @@ begin
   end;
 end;
 
-function TFClassEditor.CreateTreeView(Editor: TEditorForm;
+function TFClassEditor.CreateTreeView(EditForm: TEditorForm;
   UMLForm: TFUMLForm): Boolean;
 begin
-  myUMLForm := UMLForm;
-  myEditor := Editor;
+  myUMLForm:= UMLForm;
+  myEditor:= EditForm;
   UpdateTreeView;
   if TreeView.Items.Count > 0 then begin
-    TreeView.Selected := AttributeNode;
-    TreeView.TopItem := TreeView.Items.GetFirstNode;
+    TreeView.Selected:= AttributeNode;
+    TreeView.TopItem:= TreeView.Items.GetFirstNode;
   end;
-  Editor.Invalidate;
-  Result := true;
+  myEditor.Invalidate;
+  Result:= true;
 end;
 
 procedure TFClassEditor.ActionListUpdate(aAction: TBasicAction;
@@ -1762,12 +1755,12 @@ begin
   if (aAction is TAction) then
   begin
     if Assigned(myEditor) then
-      vis := not myEditor.ActiveSynEdit.ReadOnly
+      vis:= not myEditor.ActiveSynEdit.ReadOnly
     else
-      vis := true;
-    (aAction as TAction).Enabled := vis;
+      vis:= true;
+    (aAction as TAction).Enabled:= vis;
   end;
-  Handled := true;
+  Handled:= true;
 end;
 
 procedure TFClassEditor.BParameterNewClick(Sender: TObject);
@@ -1784,8 +1777,8 @@ end;
 
 procedure TFClassEditor.BParameterDeleteClick(Sender: TObject);
 begin
-  CBParamName.Text := '';
-  CBParamType.Text := '';
+  CBParamName.Text:= '';
+  CBParamType.Text:= '';
   CBParamValue.Text:= '';
 end;
 
@@ -1793,7 +1786,7 @@ procedure TFClassEditor.CBParamNameKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = #13 then
   begin
-    ComboBoxInvalid := false;
+    ComboBoxInvalid:= false;
     CBParamNameSelect(Self);
     CBParamName.SetFocus;
   end;
@@ -1803,7 +1796,7 @@ procedure TFClassEditor.CBParamNameKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if CBParamName.Text <> '' then
-    BMethodApply.Enabled := true;
+    BMethodApply.Enabled:= true;
   ShowMandatoryFields;
 end;
 
@@ -1812,15 +1805,15 @@ var
   s: string;
   p: Integer;
 begin
-  p := CBParamName.ItemIndex;
+  p:= CBParamName.ItemIndex;
   if (p = -1) or (CBParamName.Text <> CBParamName.Items[p]) then
-    s := CBParamName.Text
+    s:= CBParamName.Text
   else
-    s := CBParamName.Items[p];
+    s:= CBParamName.Items[p];
   if not ComboBoxInvalid then begin
     if (-1 < p) and Assigned(CBParamName.Items.Objects[p]) then
-      CBParamType.Text := TParamTyp(CBParamName.Items.Objects[p]).typ;
-    CBParamName.Text := s;
+      CBParamType.Text:= TParamTyp(CBParamName.Items.Objects[p]).typ;
+    CBParamName.Text:= s;
     SBRightClick(Self);
   end;
 end;
@@ -1839,28 +1832,28 @@ var
   procedure MakeParameterFromAttributes(cent: TClassifier);
     var it: IModelIterator;
   begin
-    it := cent.GetAttributes;
+    it:= cent.GetAttributes;
     while it.HasNext do begin
-      Attribute := it.Next as TAttribute;
-      s := Attribute.toShortStringNode;
+      Attribute:= it.Next as TAttribute;
+      s:= Attribute.toShortStringNode;
       if CBParameter.Items.IndexOf(s) = -1 then
         CBParameter.Items.Add(s);
     end;
   end;
 
 begin
-  cent := nil;
+  cent:= nil;
   CBParameter.Clear;
-  aNode := GetClassInterfaceNode;
+  aNode:= GetClassInterfaceNode;
   if Assigned(aNode) and Assigned(aNode.Data) then
-    aClassname := TClassifier(aNode.Data).Name
+    aClassname:= TClassifier(aNode.Data).Name
   else
-    aClassname := '';
+    aClassname:= '';
 
   // look in modified model
-  Ci := myEditor.Model.ModelRoot.GetAllClassifiers;
+  Ci:= myEditor.Model.ModelRoot.GetAllClassifiers;
   while Ci.HasNext do begin
-    cent := TClassifier(Ci.Next);
+    cent:= TClassifier(Ci.Next);
     if cent.Name = aClassname then
       break;
   end;
@@ -1868,7 +1861,7 @@ begin
     MakeParameterFromAttributes(cent);
 
   while (cent is TClass) and ((cent as TClass).AncestorsCount > 0) do begin // ToDo n ancestors
-    cent := (cent as TClass).Ancestor[0];
+    cent:= (cent as TClass).Ancestor[0];
     MakeParameterFromAttributes(cent);
   end;
 
@@ -1876,35 +1869,35 @@ begin
   if Assigned(myUMLForm) and Assigned(myUMLForm.MainModul) and
     Assigned(myUMLForm.MainModul.Model) and
     Assigned(myUMLForm.MainModul.Model.ModelRoot) then begin
-    Ci := myUMLForm.MainModul.Model.ModelRoot.GetAllClassifiers;
+    Ci:= myUMLForm.MainModul.Model.ModelRoot.GetAllClassifiers;
     while Ci.HasNext do begin
-      cent := TClassifier(Ci.Next);
+      cent:= TClassifier(Ci.Next);
       if cent.Name = aClassname then
         break;
     end;
     while (cent is TClass) and ((cent as TClass).AncestorsCount > 0) do begin // Todo n ancestors
-      cent := (cent as TClass).Ancestor[0];
+      cent:= (cent as TClass).Ancestor[0];
       MakeParameterFromAttributes(cent);
     end;
   end;
 
   if Assigned(Node) and Assigned(Node.Data) and IsMethodsNodeLeaf(Node) then begin
-    Method := TOperation(Node.Data);
-    it := Method.GetParameters;
+    Method:= TOperation(Node.Data);
+    it:= Method.GetParameters;
     while it.HasNext do begin
-      Parameter := it.Next as TParameter;
-      s := Parameter.toShortStringNode;
-      p := CBParameter.Items.IndexOf(s);
+      Parameter:= it.Next as TParameter;
+      s:= Parameter.toShortStringNode;
+      p:= CBParameter.Items.IndexOf(s);
       if p > -1 then
         CBParameter.Items.delete(p);
     end;
   end;
-  CBParameter.Text := _('Select attribute');
+  CBParameter.Text:= _('Select attribute');
 end;
 
 procedure TFClassEditor.ComboBoxCloseUp(Sender: TObject);
 begin
-  ComboBoxInvalid := false;
+  ComboBoxInvalid:= false;
 end;
 
 procedure TFClassEditor.CBComboBoxEnter(Sender: TObject);
@@ -1935,7 +1928,7 @@ procedure TFClassEditor.CBAttributeTypeKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = #13 then
   begin
-    ComboBoxInvalid := false;
+    ComboBoxInvalid:= false;
     CBAttributeTypeSelect(Self);
     CBAttributeValue.SetFocus;
   end;
@@ -1945,18 +1938,18 @@ procedure TFClassEditor.CBAttributeTypeKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if Key <> VK_Return then
-    BAttributeApply.Enabled := true
+    BAttributeApply.Enabled:= true
 end;
 
 procedure TFClassEditor.CBAttributeTypeSelect(Sender: TObject);
   var s: string;  p: Integer;
 begin
-  p := CBAttributeType.ItemIndex;
+  p:= CBAttributeType.ItemIndex;
   if (p = -1) or (CBAttributeType.Text <> CBAttributeType.Items[p])
-    then s := CBAttributeType.Text
-    else s := CBAttributeType.Items[p];
+    then s:= CBAttributeType.Text
+    else s:= CBAttributeType.Items[p];
   if not ComboBoxInvalid then begin
-    CBAttributeType.Text := s;
+    CBAttributeType.Text:= s;
     if NameTypeValueChanged then
       BAttributeChangeClick(Self);
   end;
@@ -1965,7 +1958,7 @@ end;
 procedure TFClassEditor.CBAttributeValueKeyPress(Sender: TObject;
   var Key: Char);
 begin
-  BAttributeApply.Enabled := true;
+  BAttributeApply.Enabled:= true;
   if (Key = #13) and NameTypeValueChanged then
     BAttributeChangeClick(Self);
   if Key = #13 then
@@ -1976,7 +1969,7 @@ procedure TFClassEditor.CBAttributeValueKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if Key <> VK_Return then
-    BAttributeApply.Enabled := true
+    BAttributeApply.Enabled:= true
 end;
 
 procedure TFClassEditor.CBAttributeValueSelect(Sender: TObject);
@@ -1984,14 +1977,14 @@ var
   s: string;
   p: Integer;
 begin
-  p := CBAttributeValue.ItemIndex;
+  p:= CBAttributeValue.ItemIndex;
   if (p = -1) or (CBAttributeValue.Text <> CBAttributeValue.Items[p]) then
-    s := CBAttributeValue.Text
+    s:= CBAttributeValue.Text
   else
-    s := CBAttributeValue.Items[p];
+    s:= CBAttributeValue.Items[p];
   if not ComboBoxInvalid then
   begin
-    CBAttributeValue.Text := s;
+    CBAttributeValue.Text:= s;
     if NameTypeValueChanged then
       BAttributeChangeClick(Self);
   end;
@@ -2005,7 +1998,7 @@ end;
 procedure TFClassEditor.CBClassAbstractMouseUp(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  BClassApply.Enabled := true;
+  BClassApply.Enabled:= true;
 end;
 
 procedure TFClassEditor.EAttributeNameKeyPress(Sender: TObject; var Key: Char);
@@ -2017,14 +2010,14 @@ end;
 procedure TFClassEditor.EAttributeNameKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  BAttributeApply.Enabled := true;
+  BAttributeApply.Enabled:= true;
   if Key = VK_Return then
     BAttributeChangeClick(Self);
 end;
 
 procedure TFClassEditor.EClassKeyPress(Sender: TObject; var Key: Char);
 begin
-  BClassApply.Enabled := true;
+  BClassApply.Enabled:= true;
 end;
 
 procedure TFClassEditor.CBMethodnameKeyPress(Sender: TObject; var Key: Char);
@@ -2039,7 +2032,7 @@ end;
 procedure TFClassEditor.CBMethodnameKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  BMethodApply.Enabled := true
+  BMethodApply.Enabled:= true
 end;
 
 procedure TFClassEditor.CBMethodnameSelect(Sender: TObject);
@@ -2047,14 +2040,14 @@ var
   s: string;
   p: Integer;
 begin
-  p := CBMethodName.ItemIndex;
+  p:= CBMethodName.ItemIndex;
   if (p = -1) or (CBMethodName.Text <> CBMethodName.Items[p]) then
-    s := CBMethodName.Text
+    s:= CBMethodName.Text
   else
-    s := CBMethodName.Items[p];
+    s:= CBMethodName.Items[p];
   if not ComboBoxInvalid then
   begin
-    CBMethodName.Text := s;
+    CBMethodName.Text:= s;
     if CBMethodName.Items.IndexOf(s) = -11 then
       CBMethodName.Items.Add(s);
     if (CBMethodName.Text <> '') and (RGMethodKind.ItemIndex < 2) then
@@ -2065,13 +2058,13 @@ end;
 procedure TFClassEditor.CBMethodTypeDropDown(Sender: TObject);
 begin
   SendMessage(CBMethodType.Handle, WM_SETCURSOR, 0, 0);
-  RGMethodKind.ItemIndex := 1;
+  RGMethodKind.ItemIndex:= 1;
 end;
 
 procedure TFClassEditor.CBMethodTypeKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = #13 then begin
-    ComboBoxInvalid := false;
+    ComboBoxInvalid:= false;
     BMethodChangeClick(Self);
     CBMethodTypeSelect(Self);
     CBParamName.SetFocus;
@@ -2082,19 +2075,19 @@ procedure TFClassEditor.CBMethodParamTypeKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if Key <> VK_Return then
-    BMethodApply.Enabled := true
+    BMethodApply.Enabled:= true
 end;
 
 procedure TFClassEditor.CBMethodTypeSelect(Sender: TObject);
   var s: string; p: Integer;
 begin
-  p := CBMethodType.ItemIndex;
+  p:= CBMethodType.ItemIndex;
   if (p = -1) or (CBMethodType.Text <> CBMethodType.Items[p])
-    then s := CBMethodType.Text
-    else s := CBMethodType.Items[p];
-  BMethodApply.Enabled := true;
+    then s:= CBMethodType.Text
+    else s:= CBMethodType.Items[p];
+  BMethodApply.Enabled:= true;
   if not ComboBoxInvalid then begin
-    CBMethodType.Text := s;
+    CBMethodType.Text:= s;
     if (CBMethodName.Text <> '') and (CBMethodType.Text <> '') then
       BMethodChangeClick(Self);
   end;
@@ -2103,14 +2096,14 @@ end;
 procedure TFClassEditor.ComboBoxKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  ComboBoxInvalid := true;
+  ComboBoxInvalid:= true;
 end;
 
 procedure TFClassEditor.CBParameterSelect(Sender: TObject);
 var
   s: string;
 begin
-  s := CBParameter.Items[CBParameter.ItemIndex];
+  s:= CBParameter.Items[CBParameter.ItemIndex];
   if (s <> _('Select attribute')) and (LBParams.Items.IndexOf(s) = -1) then
   begin
     LBParams.Items.Add(s);
@@ -2126,7 +2119,7 @@ end;
 procedure TFClassEditor.CBParamTypeKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = #13 then begin
-    ComboBoxInvalid := false;
+    ComboBoxInvalid:= false;
     CBParamTypeSelect(Self);
     CBParamName.SetFocus;
   end;
@@ -2134,61 +2127,46 @@ end;
 
 procedure TFClassEditor.CBParameterKeyPress(Sender: TObject; var Key: Char);
 begin
-  if Key = #13 then
-  begin
-    ComboBoxInvalid := false;
+  if Key = #13 then begin
+    ComboBoxInvalid:= false;
     CBParameterSelect(Self);
   end;
 end;
 
 procedure TFClassEditor.CBParamTypeSelect(Sender: TObject);
-var
-  s: string;
-  p: Integer;
+  var s: string; p: Integer;
 begin
-  p := CBParamType.ItemIndex;
+  p:= CBParamType.ItemIndex;
   if (p = -1) or (CBParamType.Text <> CBParamType.Items[p])
-    then s := CBParamType.Text
-    else s := CBParamType.Items[p];
+    then s:= CBParamType.Text
+    else s:= CBParamType.Items[p];
   if not ComboBoxInvalid then begin
-    CBParamType.Text := s;
+    CBParamType.Text:= s;
     if (CBParamName.Text <> '') then begin
-      BMethodChangeClick(Self); {
+      BMethodChangeClick(Self);
       TThread.ForceQueue(nil, procedure
         begin
           CBParamType.Text:= '';
+          CBParamName.SetFocus;
         end);
-        }
     end;
   end;
 end;
 
-
-function TFClassEditor.RGMethodKindChanged(ClassNumber: integer): boolean;
-  var Node: TTreeNode;
+function TFClassEditor.RGMethodKindHasChanged: boolean;
 begin
-  Result:= false;
+  Result:= true;
   if (RGMethodKind.ItemIndex = 0) and (CBMethodName.Text <> '__init__') then begin
-    Node:= GetClassNode(ClassNumber);
-    if assigned(Node) then begin
-      Node:= Node.getFirstChild.getNextSibling.getFirstChild;
-      while assigned(Node) and (pos('__init__(', Node.Text) = 0) do
-        Node:= Node.GetNextSibling;
-      if assigned(Node) then begin
-        Node.Selected:= true;
-        TreeViewChange(self, Node);
-        Result:= true;
-      end else begin
-        CBMethodName.Text:= '__init__';
-      end;
-    end;
-  end else if (RGMethodKind.ItemIndex > 0) and (CBMethodName.Text = '__init__') then begin
-    RGMethodKind.ItemIndex:= 0;
-    Result:= true;
-  end;
+    if CBMethodType.Text = ''
+      then RGMethodKind.ItemIndex:= 2
+      else RGMethodKind.ItemIndex:= 1;
+  end else if (RGMethodKind.ItemIndex > 0) and (CBMethodName.Text = '__init__') then
+    RGMethodKind.ItemIndex:= 0
+  else
+    Result:= false;
 
-  CBMethodName.Enabled := (RGMethodKind.ItemIndex > 0);
-  CBMethodType.Enabled := true;
+  CBMethodName.Enabled:= (RGMethodKind.ItemIndex > 0);
+  CBMethodType.Enabled:= (RGMethodKind.ItemIndex > 0);
   ShowMandatoryFields;
 end;
 
@@ -2196,22 +2174,22 @@ procedure TFClassEditor.ShowMandatoryFields;
 begin
   case PageControl.ActivePageIndex of
     1: if EAttributeName.Text = ''
-         then EAttributeName.Color := clInfoBK
-         else EAttributeName.Color := clWindow;
+         then EAttributeName.Color:= clInfoBK
+         else EAttributeName.Color:= clWindow;
     2:
       begin
         if CBMethodName.Enabled and (CBMethodName.Text = '')
-          then CBMethodName.Color := clInfoBK
-          else CBMethodName.Color := clWindow;
+          then CBMethodName.Color:= clInfoBK
+          else CBMethodName.Color:= clWindow;
         if CBMethodType.Enabled and (CBMethodType.Text = '')
-          then CBMethodType.Color := clInfoBK
-          else CBMethodType.Color := clWindow;
+          then CBMethodType.Color:= clInfoBK
+          else CBMethodType.Color:= clWindow;
         if (CBParamName.Text <> '') and (CBParamType.Text = '')
-          then CBParamType.Color := clInfoBK
-          else CBParamType.Color := clWindow;
+          then CBParamType.Color:= clInfoBK
+          else CBParamType.Color:= clWindow;
         if (CBParamName.Text = '') and (CBParamType.Text <> '')
-          then CBParamName.Color := clInfoBK
-          else CBParamName.Color := clWindow;
+          then CBParamName.Color:= clInfoBK
+          else CBParamName.Color:= clWindow;
       end;
   end;
 end;
@@ -2225,7 +2203,7 @@ var
   procedure delparam(const param: string);
     var i: Integer;
   begin
-    i := 0;
+    i:= 0;
     while i < SL.Count do
       if Pos(param, SL[i]) > 0
         then SL.delete(i)
@@ -2253,10 +2231,10 @@ begin
   if Pos('"""', Source) = 0
     then comment:= FConfiguration.getMultiLineComment(Indent2)
     else comment:= '';
-  s := Method.HeadToPython + CrLf;
+  s:= Method.HeadToPython + CrLf;
   SL:= TStringList.Create;
   case Method.OperationType of
-    otConstructor: s := s + comment + makeConstructor(Method, Source);
+    otConstructor: s:= s + comment + makeConstructor(Method, Source);
     otFunction:
       begin
         if assigned(Method.ReturnValue)
@@ -2267,13 +2245,13 @@ begin
           s:= s + Source;
         end else begin
           if Source = ''
-            then s := s + comment + Indent2 + _(LNGTODO) + CrLf
-            else s := s + Source;
+            then s:= s + comment + Indent2 + _(LNGTODO) + CrLf
+            else s:= s + Source;
           s:= s + Indent2 + 'return ' + s2 + CrLf;
         end;
 
         SL.Text:= s;
-        for i := SL.Count - 1 downto 0 do
+        for i:= SL.Count - 1 downto 0 do
           if trim(SL[i]) = 'pass' then
             SL.Delete(i);
         s:= SL.Text;
@@ -2287,7 +2265,7 @@ begin
             if trim(SL[i]) = 'pass' then
               inc(count);
             if Pos(' return ', SL[i]) >  0 then begin
-              Sl[i] := Indent2 + 'pass';
+              Sl[i]:= Indent2 + 'pass';
               inc(count);
             end;
           end;
@@ -2303,14 +2281,14 @@ begin
             SL.Add(Indent2 + 'pass');
           s:= s + SL.Text;
         end else
-          s := s + comment + Indent2 + _(LNGTODO) + CrLf
+          s:= s + comment + Indent2 + _(LNGTODO) + CrLf
                  + Indent2 + 'pass' + CrLf;
       end;
   end;
   LBParams.Items.Clear;
   if not Method.hasComment then
-    Method.hasComment := (comment <> '');
-  Result := s;
+    Method.hasComment:= (comment <> '');
+  Result:= s;
   FreeAndNil(SL);
 end;
 
@@ -2321,21 +2299,22 @@ var
   ClassNumber, NodeIndex, TopItemIndex, Level: Integer;
   Node, Cursor: TTreeNode;
 begin
+  CBMethodType.Enabled:= (RGMethodKind.ItemIndex = 1);
   if (not (MakeIdentifier(CBMethodName) and MakeIdentifier(CBMethodType) and
     MakeIdentifier(CBParamName) and MakeIdentifier(CBParamType)) or
     (CBMethodName.Text = '')) and (RGMethodKind.ItemIndex > 0) then
     exit;
-  Node := TreeView.Selected;
+  Node:= TreeView.Selected;
   if Assigned(Node)
-    then NodeIndex := Node.AbsoluteIndex
+    then NodeIndex:= Node.AbsoluteIndex
     else exit;
   if Assigned(TreeView.TopItem)
-    then TopItemIndex := TreeView.TopItem.AbsoluteIndex
+    then TopItemIndex:= TreeView.TopItem.AbsoluteIndex
     else exit;
 
   TakeParameter;
-  ClassNumber := GetClassNumber(Node);
-  if RGMethodKindChanged(ClassNumber) then
+  ClassNumber:= GetClassNumber(Node);
+  if RGMethodKindHasChanged then
     exit;
 
   myEditor.ActiveSynEdit.BeginUpdate;
@@ -2348,16 +2327,16 @@ begin
     end;
     if RGMethodKind.ItemIndex = 0 then begin
       inc(NodeIndex);
-      Node := Node.GetNext;
+      Node:= Node.GetNext;
       while Assigned(Node) and (Node.ImageIndex = 6) do begin
         inc(NodeIndex);
-        Node := Node.GetNext;
+        Node:= Node.GetNext;
       end;
     end else
-      NodeIndex := NodeIndex + Node.Count + 1;
-    Method := MakeMethod(Level);
+      NodeIndex:= NodeIndex + Node.Count + 1;
+    Method:= MakeMethod(Level);
     if not MethodAlreadyExists(Method.toShortStringNode) then begin
-      New := sLineBreak + MethodToPython(Method, '');
+      New:= sLineBreak + MethodToPython(Method, '');
       if IsClass and (RGMethodKind.ItemIndex = 0)
         then myEditor.InsertConstructor(New, Classnumber)
         else myEditor.InsertProcedure(New, ClassNumber);
@@ -2365,25 +2344,25 @@ begin
       ErrorMsg(Format(_('%s already exists'), [Method.toShortStringNode]));
     FreeAndNil(Method);
   end else begin
-    Method := TOperation(Node.Data);
+    Method:= TOperation(Node.Data);
     if Assigned(Method) then begin
       ChangeMethod(Method);
       if Method.hasSourceCode
-        then Source := myEditor.getSource(Method.LineS - 1, Method.LineE - 1)
-        else Source := '';
+        then Source:= myEditor.getSource(Method.LineS, Method.LineE - 1)
+        else Source:= '';
       if Method.OperationType = otConstructor
         then New:= makeConstructor(Method, Source)
         else New:= MethodToPython(Method, Source);
       ReplaceMethod(Method, New);
     end;
   end;
-  myEditor.Modified := true;
+  myEditor.Modified:= true;
   UpdateTreeView;
-  BMethodApply.Enabled := false;
+  BMethodApply.Enabled:= false;
   if TopItemIndex < TreeView.Items.Count then
-    TreeView.TopItem := TreeView.Items[TopItemIndex];
+    TreeView.TopItem:= TreeView.Items[TopItemIndex];
   if NodeIndex < TreeView.Items.Count then
-    TreeView.Selected := TreeView.Items[NodeIndex];
+    TreeView.Selected:= TreeView.Items[NodeIndex];
   myEditor.ActiveSynEdit.EndUpdate;
 end;
 
@@ -2397,7 +2376,7 @@ end;
 
 function TFClassEditor.MakeMethod(Level: integer): TOperation;
 begin
-  Result := TOperation.create(nil);
+  Result:= TOperation.create(nil);
   Result.Level:= Level;
   ChangeMethod(Result);
 end;
@@ -2415,35 +2394,35 @@ end;
 procedure TFClassEditor.ReadFromAppStorage(
   AppStorage: TJvCustomAppStorage; const BasePath: string);
 begin
-  RGAttributeAccess.ItemIndex := AppStorage.ReadInteger(BasePath + '\RGAttributeAccess', 0);
-  CBgetMethod.Checked := AppStorage.ReadBoolean(BasePath + '\CBGetMethod', false);
-  CBsetMethod.Checked := AppStorage.ReadBoolean(BasePath + '\CBSetMethod', false);
-  RGMethodKind.ItemIndex := AppStorage.ReadInteger(BasePath + '\RGMethodKind', 1);
-  RGMethodAccess.ItemIndex := AppStorage.ReadInteger(BasePath + '\RGMethodAccess', 2);
+  RGAttributeAccess.ItemIndex:= AppStorage.ReadInteger(BasePath + '\RGAttributeAccess', 0);
+  CBgetMethod.Checked:= AppStorage.ReadBoolean(BasePath + '\CBGetMethod', false);
+  CBsetMethod.Checked:= AppStorage.ReadBoolean(BasePath + '\CBSetMethod', false);
+  RGMethodKind.ItemIndex:= AppStorage.ReadInteger(BasePath + '\RGMethodKind', 1);
+  RGMethodAccess.ItemIndex:= AppStorage.ReadInteger(BasePath + '\RGMethodAccess', 2);
 end;
 
 procedure TFClassEditor.SBDeleteClick(Sender: TObject);
 var
   i: Integer;
 begin
-  i := LBParams.ItemIndex;
+  i:= LBParams.ItemIndex;
   LBParams.DeleteSelected;
   BMethodChangeClick(Self);
   if i = LBParams.Count then
     Dec(i);
   if i >= 0 then
-    LBParams.Selected[i] := true;
+    LBParams.Selected[i]:= true;
 end;
 
 procedure TFClassEditor.SBDownClick(Sender: TObject);
 var
   i: Integer;
 begin
-  i := LBParams.ItemIndex;
+  i:= LBParams.ItemIndex;
   if (0 <= i) and (i < LBParams.Count - 1) then begin
     LBParams.Items.Exchange(i, i + 1);
     BMethodChangeClick(Self);
-    LBParams.Selected[i + 1] := true;
+    LBParams.Selected[i + 1]:= true;
   end;
 end;
 
@@ -2451,11 +2430,11 @@ procedure TFClassEditor.SBUpClick(Sender: TObject);
 var
   i: Integer;
 begin
-  i := LBParams.ItemIndex;
+  i:= LBParams.ItemIndex;
   if (0 < i) and (i < LBParams.Count) then begin
     LBParams.Items.Exchange(i, i - 1);
     BMethodChangeClick(Self);
-    LBParams.Selected[i - 1] := true;
+    LBParams.Selected[i - 1]:= true;
   end;
 end;
 
@@ -2467,18 +2446,18 @@ begin
   if (CBParamName.Text = '') and (CBParamType.Text = '') and
     (LBParams.ItemIndex < LBParams.Items.Count) and (0 <= LBParams.ItemIndex)
   then begin
-    s := LBParams.Items[LBParams.ItemIndex];
-    p := Pos(' = ', s);
+    s:= LBParams.Items[LBParams.ItemIndex];
+    p:= Pos(' = ', s);
     if p > 0 then begin
-      CBParamValue.Text := copy(s, p + 3, length(s));
+      CBParamValue.Text:= copy(s, p + 3, length(s));
       delete(s, p, length(s));
     end;
-    p := Pos(': ', s);
+    p:= Pos(': ', s);
     if p > 0 then begin
-      CBParamType.Text := copy(s, p + 2, length(s));
+      CBParamType.Text:= copy(s, p + 2, length(s));
       delete(s, p, length(s));
     end;
-    CBParamName.Text := s;
+    CBParamName.Text:= s;
     LBParams.Items.delete(LBParams.ItemIndex);
   end;
 end;
@@ -2502,9 +2481,9 @@ begin
     if CBParamValue.Text <> '' then
       s:= s + ' = ' + StrToPythonValue(CBParamValue.Text);
     LBParams.Items.Add(s);
-    CBParamName.Text := '';
-    CBParamValue.Text := '';
-    CBParamType.Text := '';
+    CBParamName.Text:= '';
+    CBParamValue.Text:= '';
+    CBParamType.Text:= '';
   end;
 end;
 
@@ -2519,19 +2498,19 @@ end;
 procedure TFClassEditor.Init;
 begin
   EnableEvents(false);
-  CBAttributeStatic.Checked := false;
-  CBAttributeFinal.Checked := false;
-  CBMethodStatic.Checked := false;
-  CBMethodClass.Checked := false;
-  CBMethodAbstract.Checked := false;
+  CBAttributeStatic.Checked:= false;
+  CBAttributeFinal.Checked:= false;
+  CBMethodStatic.Checked:= false;
+  CBMethodClass.Checked:= false;
+  CBMethodAbstract.Checked:= false;
   if GuiPyOptions.DefaultModifiers then begin
-    RGAttributeAccess.ItemIndex := -1;
-    RGAttributeAccess.ItemIndex := 0;
+    RGAttributeAccess.ItemIndex:= -1;
+    RGAttributeAccess.ItemIndex:= 0;
     if CBgetMethod.Visible then
-      CBgetMethod.Checked := true;
-    CBsetMethod.Checked := false;
-    RGMethodKind.ItemIndex := 1;
-    RGMethodAccess.ItemIndex := 3;
+      CBgetMethod.Checked:= true;
+    CBsetMethod.Checked:= false;
+    RGMethodKind.ItemIndex:= 1;
+    RGMethodAccess.ItemIndex:= 3;
   end;
   EnableEvents(true);
 end;
@@ -2541,12 +2520,12 @@ procedure TFClassEditor.TreeViewDragDrop(Sender, Source: TObject;
   var TargetNode, SourceNode: TTreeNode;
 begin
   with TreeView do begin
-    TargetNode := GetNodeAt(X, Y); // Get target node
+    TargetNode:= GetNodeAt(X, Y); // Get target node
     if TargetNode = nil then begin
       EndDrag(false);
       exit;
     end;
-    SourceNode := Selected;
+    SourceNode:= Selected;
     MoveNode(TargetNode, SourceNode);
   end;
 end;
@@ -2555,7 +2534,7 @@ procedure TFClassEditor.TreeViewDragOver(Sender, Source: TObject; X, Y: Integer;
   State: TDragState; var Accept: Boolean);
 begin
   if (Sender = TreeView) then
-    Accept := true;
+    Accept:= true;
 end;
 
 procedure TFClassEditor.MoveNode(TargetNode, SourceNode: TTreeNode);
@@ -2571,9 +2550,9 @@ begin
   if IsAttributesNode(TargetNode) or IsMethodsNode(TargetNode) then
     TargetNode:= TargetNode.getFirstChild;
   if IsAttributesNodeLeaf(SourceNode) and IsAttributesNodeLeaf(TargetNode) then
-    Leerzeilen := ''
+    Leerzeilen:= ''
   else if IsMethodsNodeLeaf(SourceNode) and IsMethodsNodeLeaf(TargetNode) then
-    Leerzeilen := #13#10
+    Leerzeilen:= #13#10
   else
     exit;
 
@@ -2584,7 +2563,7 @@ begin
     exit;
 
   if assigned(TModelEntity(TargetNode.Data)) then begin
-    nach := TModelEntity(TargetNode.Data).LineS;
+    nach:= TModelEntity(TargetNode.Data).LineS;
     nachbis:= TModelEntity(TargetNode.Data).LineE;
   end else
     exit;
@@ -2594,10 +2573,10 @@ begin
   if (von <= nach) and (nach <= bis) then
     exit;
   myEditor.MoveBlock(von - 1, bis - 1, nach - 1, nachbis-1, Leerzeilen);
-  NodeIndex := TargetNode.AbsoluteIndex;
+  NodeIndex:= TargetNode.AbsoluteIndex;
   UpdateTreeView;
   if NodeIndex < TreeView.Items.Count then
-    TreeView.Selected := TreeView.Items[NodeIndex];
+    TreeView.Selected:= TreeView.Items[NodeIndex];
 end;
 
 procedure TFClassEditor.LBParamsKeyUp(Sender: TObject; var Key: Word;
@@ -2609,28 +2588,28 @@ end;
 
 function TFClassEditor.IsClassOrInterface(Node: TTreeNode): Boolean;
 begin
-  Result := Assigned(Node) and
+  Result:= Assigned(Node) and
     ((Node.ImageIndex = 1) or (Node.ImageIndex = 11));
 end;
 
 function TFClassEditor.IsAttributesNodeLeaf(Node: TTreeNode): Boolean;
 begin
-  Result := Assigned(Node) and (Node.Parent.ImageIndex = 12);
+  Result:= Assigned(Node) and (Node.Parent.ImageIndex = 12);
 end;
 
 function TFClassEditor.IsAttributesNode(Node: TTreeNode): Boolean;
 begin
-  Result := Assigned(Node) and (Node.ImageIndex = 12);
+  Result:= Assigned(Node) and (Node.ImageIndex = 12);
 end;
 
 function TFClassEditor.IsMethodsNodeLeaf(Node: TTreeNode): Boolean;
 begin
-  Result := Assigned(Node) and (Node.Parent.ImageIndex = 13);
+  Result:= Assigned(Node) and (Node.Parent.ImageIndex = 13);
 end;
 
 function TFClassEditor.IsMethodsNode(Node: TTreeNode): Boolean;
 begin
-  Result := Assigned(Node) and (Node.ImageIndex = 13);
+  Result:= Assigned(Node) and (Node.ImageIndex = 13);
 end;
 
 function TFClassEditor.AttributeAlreadyExists(const s: string): Boolean;
@@ -2638,51 +2617,42 @@ var
   Node: TTreeNode;
   p: Integer;
 begin
-  Node := AttributeNode.getFirstChild;
+  Node:= AttributeNode.getFirstChild;
   while Assigned(Node) do
   begin
-    p := Pos(':', Node.Text);
+    p:= Pos(':', Node.Text);
     if copy(Node.Text, 1, p - 1) = s then
       break;
-    Node := Node.getNextSibling;
+    Node:= Node.getNextSibling;
   end;
-  Result := Assigned(Node);
+  Result:= Assigned(Node);
 end;
 
 function TFClassEditor.MethodAlreadyExists(const s: string): Boolean;
 var
   Node: TTreeNode;
 begin
-  Node := MethodNode.getFirstChild;
+  Node:= MethodNode.getFirstChild;
   while Assigned(Node) and (Node.Text <> s) do
-    Node := Node.getNextSibling;
-  Result := Assigned(Node);
+    Node:= Node.getNextSibling;
+  Result:= Assigned(Node);
 end;
 
 procedure TFClassEditor.ChangeStyle;
 var
   Bitmap: TBitmap;
 begin
-  Bitmap := TBitmap.create;
-  Bitmap.Transparent := true;
+  Bitmap:= TBitmap.create;
+  Bitmap.Transparent:= true;
   if IsStyledWindowsColorDark then begin
     ILSpeedButton.GetBitmap(1, Bitmap);
-    TreeView.Images := FFileStructure.ILFileStructureDark;
+    TreeView.Images:= FFileStructure.ILFileStructureDark;
   end else begin
     ILSpeedButton.GetBitmap(0, Bitmap);
-    TreeView.Images := FFileStructure.ILFileStructureLight;
+    TreeView.Images:= FFileStructure.ILFileStructureLight;
   end;
-  SBDelete.Glyph := Bitmap;
+  SBDelete.Glyph:= Bitmap;
   FreeAndNil(Bitmap);
-end;
-
-procedure TFClassEditor.PrepareNewClass;
-begin
-  if assigned(TReeView.Selected) then
-    TreeView.Selected.Selected:= false;
-  PageControl.ActivePageIndex:= 0;
-  FClassEditor.EClass.Text := '';
-  MakeNewClass:= true;
 end;
 
 end.

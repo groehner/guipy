@@ -1756,7 +1756,7 @@ begin
                 else
                     LItem.Expand;
         end;
-    // Hier Doppelklick-Aktion ergänzen Roehner
+    // Add double click action here
     if ppsMovingSplitter in FState then begin
       Max:= 0;
       for i:= 0 to FItems.Count - 1 do begin

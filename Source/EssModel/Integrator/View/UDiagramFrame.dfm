@@ -4164,10 +4164,16 @@ object AFrameDiagram: TAFrameDiagram
         OnClick = MIWindowPopupVisibilityClick
       end
     end
-    object MIWindowsPopupConfiguration: TSpTBXItem
+    object MIWindowPopupCopyAsPicture: TSpTBXItem
+      Tag = 1
+      Caption = 'Copy as picture'
+      ImageIndex = 15
+      OnClick = MIWindowPopupCopyAsPictureClick
+    end
+    object MIWindowPopupConfiguration: TSpTBXItem
       Caption = 'Configuration'
       ImageIndex = 13
-      OnClick = MIWindowsPopupConfigurationClick
+      OnClick = MIWindowPopupConfigurationClick
     end
   end
   object PopMenuObject: TSpTBXPopupMenu
@@ -4253,7 +4259,7 @@ object AFrameDiagram: TAFrameDiagram
     end
     object MIObjectPopupCopyAsPicture: TSpTBXItem
       Tag = 1
-      Caption = 'Copy as image'
+      Caption = 'Copy as picture'
       ImageIndex = 5
       OnClick = MIClassPopupCopyAsPictureClick
     end
@@ -4262,7 +4268,7 @@ object AFrameDiagram: TAFrameDiagram
     Images = ILUMLLight
     OnPopup = PopMenuClassPopup
     Left = 32
-    Top = 8
+    Top = 16
     object MIClassPopupRunAllTests: TSpTBXItem
       Tag = 1
       Caption = 'Run all tests'
@@ -4416,7 +4422,7 @@ object AFrameDiagram: TAFrameDiagram
     end
     object MIClassPopupCopyAsPicture: TSpTBXItem
       Tag = 1
-      Caption = 'Copy as image'
+      Caption = 'Copy as picture'
       ImageIndex = 5
       OnClick = MIClassPopupCopyAsPictureClick
     end

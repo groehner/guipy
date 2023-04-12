@@ -29,7 +29,7 @@ type
     ILBrowser: TImageList;
     procedure FormCreate(Sender: TObject); override;
     procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction); override;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure CBUrlsClick(Sender: TObject);

@@ -58,7 +58,7 @@ type
     procedure FormCreate(Sender: TObject); override;
     procedure FormResize(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction); override;
 
     procedure NextClick(Sender: TObject);
     procedure PrevClick(Sender: TObject);

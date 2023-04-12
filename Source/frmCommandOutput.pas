@@ -90,6 +90,7 @@ type
     FNewLine: array [TOutputType] of Boolean;
     FInputString: string;
     FActiveEditorId: string;
+    FRunningTool: string;
     procedure InitializeOutput;
     procedure FinalilzeOuput;
     procedure ProcessOutput(OutType: TOutputType; const Bytes: TBytes; BytesRead: Cardinal);
@@ -107,6 +108,7 @@ type
     procedure FontOrColorUpdated;
     procedure ExecuteTool(Tool : TExternalTool);
     property IsRunning: Boolean read FIsRunning;
+    property RunningTool: string read FRunningTool;
   end;
 
 var
@@ -259,7 +261,7 @@ Var
   end;
 
  Var
-  LineNo, ErrLineNo, ColNo, Indx, p : integer;
+  LineNo, ErrLineNo, ColNo, Indx : integer;
   ErrorMsg, RE, FileName, OutStr, OldCurrentDir : string;
   ActiveEditor: IEditor;
 begin
@@ -275,10 +277,6 @@ begin
   end;
 
   ErrorMsg := Format(_(sProcessTerminated), [fTool.Caption.Replace('&', ''), FCmdOptions.ExitCode]);
-  if FCmdOptions.ExitCode = 0 then begin
-    p:= Pos(',', ErrorMsg);
-    if p > 0 then delete(ErrorMsg, p, Length(ErrorMsg));
-  end;
   AddNewLine('');
   AddNewLine(ErrorMsg);
   GI_PyIDEServices.WriteStatusMsg(ErrorMsg);
@@ -526,6 +524,7 @@ begin
 
   InitializeOutput;
   // Execute Process
+  FRunningTool := Tool.Caption;
   var Task := TTask.Create(procedure
     begin
        FIsRunning := True;
@@ -535,6 +534,7 @@ begin
          FIsRunning := False;
        end;
 
+       FRunningTool := '';
        if not GI_PyIDEServices.IsClosing then
          TThread.ForceQueue(nil, procedure
            begin

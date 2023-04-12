@@ -22,6 +22,7 @@ Uses
   Vcl.Graphics,
   Vcl.Forms,
   Vcl.Dialogs,
+  JclSysUtils,
   SynEditTypes,
   SynUnicode,
   SynEdit,
@@ -132,12 +133,6 @@ function ComparePythonIdents(List: TStringList; Index1, Index2: Integer): Intege
 function DefaultCodeFontName: string;
 procedure SetDefaultUIFont(const AFont: TFont);
 procedure SetContentFont(const AFont: TFont);
-
-(* Visual Studio replacement for SynEdits NextWord *)
-function VSNextWordPos(SynEdit: TCustomSynEdit; const XY: TBufferCoord): TBufferCoord;
-
-(* Visual Studio replacement for SynEdits PrevWord *)
-function VSPrevWordPos(SynEdit: TCustomSynEdit; const XY: TBufferCoord): TBufferCoord;
 
 (* Get the text between two Synedit Block coordinates *)
 function GetBlockText(Strings : TStrings; BlockBegin, BlockEnd : TBufferCoord) : string;
@@ -268,8 +263,22 @@ function SvgFixedColor(Color: TColor): TColor;
 {Frees Encoding if it is not standard}
 procedure FreeAndNilEncoding(var Encoding: TEncoding);
 
+{Create URI from FileName}
+function FilePathToURI(FilePath: string): string;
+
+{Extract FileName from URI}
+function URIToFilePath(URI: string): string;
+
+{RegisterApplicationRestart}
+function RegisterApplicationRestart(Flags: DWORD = 0): Boolean;
+
+{UnregisterApplicationRestart}
+procedure UnregisterApplicationRestart;
+
+
 type
-  (*  Extends System.RegularExperssions.TRegEx *)
+
+  (*  Extends System.RegularExperssions.TRegEx, only from Delphi 11 *)
   TRegExHelper = record helper for TRegEx
   public
     procedure Study;
@@ -307,7 +316,6 @@ type
   TXStringList = class(TStringList)
   private
     fUTF8CheckLen: Integer;
-    fFileFormat: TSynEditFileFormat;
     fOnInfoLoss: TSynInfoLossEvent;
     fDetectUTF8: Boolean;
   public
@@ -315,7 +323,6 @@ type
     procedure SetTextAndFileFormat(const Value: string);
     procedure LoadFromStream(Stream: TStream; Encoding: TEncoding); override;
     procedure SaveToStream(Stream: TStream; Encoding: TEncoding); override;
-    property FileFormat: TSynEditFileFormat read FFileFormat write fFileFormat;
   published
     property UTF8CheckLen: Integer read fUTF8CheckLen write fUTF8CheckLen default -1;
     property DetectUTF8: Boolean read fDetectUTF8 write fDetectUTF8 default True;
@@ -341,22 +348,24 @@ type
   http://blog.barrkel.com/2008/11/reference-counted-pointers-revisited.html,
   https://stackoverflow.com/questions/30153682/why-does-this-optimization-of-a-smartpointer-not-work
 *)
-  TObjectHandle<T: class> = class(TInterfacedObject, TFunc<T>)
-  // used by TSmartPointer
-  private
-    FValue:  T;
-  public
-    constructor  Create(AValue:  T);
-    destructor  Destroy;  override;
-    function  Invoke:  T;
-  end;
-
   TSmartPtr = record
+  private type
+    TObjectHandle<T: class> = class(TInterfacedObject, TFunc<T>)
+    private
+      FValue: T;
+    protected
+      function Invoke:  T;
+    public
+      constructor Create(AValue:  T);
+      destructor Destroy;  override;
+    end;
+  public
     class function Make<T: class>(AValue: T): TFunc<T>; static;
   end;
 
 Var
-  StopWatch : TStopWatch;
+  StopWatch: TStopWatch;
+  Logger: TJclSimpleLog;
 
 implementation
 Uses
@@ -364,20 +373,21 @@ Uses
   Winapi.CommCtrl,
   Winapi.TlHelp32,
   Winapi.Wincodec,
+  WinApi.WinInet,
+  Winapi.ShLwApi,
   System.Types,
-  System.StrUtils,
   System.AnsiStrings,
   System.UITypes,
   System.IOUtils,
   System.Character,
   System.Math,
+  System.Win.ComObj,
   Vcl.ExtCtrls,
   Vcl.Themes,
   JclFileUtils,
   JclBase,
   JclStrings,
   JclPeImage,
-  JclSysUtils,
   JvJCLUtils,
   JvGnugettext,
   MPCommonUtilities,
@@ -385,6 +395,7 @@ Uses
   MPShellUtilities,
   SynEditMiscClasses,
   SynEditTextBuffer,
+  SynEditHighlighter,
   VarPyth,
   PythonEngine,
   cInternalPython,
@@ -774,8 +785,7 @@ end;
 
 function FileIsPythonPackage(FileName : string): boolean;
 begin
-  Result := (ExtractFileExt(FileName) = '.py') and
-    (ChangeFileExt(ExtractFileName(FileName), '') = '__init__');
+  Result := TPath.GetFileName(FileName) = '__init__.py';
 end;
 
 function GetPackageRootDir(Dir : string): string;
@@ -1079,131 +1089,13 @@ begin
 
   // work backwards
   Line := BlockEnd.Line;
-  Result := System.StrUtils.LeftStr(Strings[Line-1], BlockEnd.Char - 1);
+  Result := Copy(Strings[Line-1], 1, BlockEnd.Char - 1);
   While (Line > BlockBegin.Line) and (Line > 1) do begin
     Dec(Line);
     Result := Strings[Line-1] + WideCRLF + Result;
   end;
   if Line = BlockBegin.Line then
     Delete(Result, 1, BlockBegin.Char -1);
-end;
-
-function VSNextWordPos(SynEdit: TCustomSynEdit; const XY: TBufferCoord): TBufferCoord;
-var
-  CX, CY, LineLen: Integer;
-  Line: UnicodeString;
-begin
-  CX := XY.Char;
-  CY := XY.Line;
-
-  // valid line?
-  if (CY >= 1) and (CY <= SynEdit.Lines.Count) then
-  with SynEdit do begin
-    Line := Lines[CY - 1];
-
-    LineLen := Length(Line);
-    if CX > LineLen then
-    begin
-      // invalid char
-      // find first char in the next line
-      if CY < Lines.Count then
-      begin
-        Line := Lines[CY];
-        LineLen := Length(Line);
-        Inc(CY);
-        CX := 1;
-        while (CX <= LineLen) and IsWhiteChar(Line[CX]) do
-          Inc(CX);
-      end;
-    end
-    else
-    begin
-      if CX = 0 then
-        CX := 1;
-      // valid char
-      if IsIdentChar(Line[CX]) then begin
-        while (CX <= LineLen) and IsIdentChar(Line[CX]) do
-          Inc(CX);
-        while (CX <= LineLen) and IsWhiteChar(Line[CX]) do
-          Inc(CX);
-      end else if IsWhiteChar(Line[CX]) then begin
-        while (CX <= LineLen) and IsWhiteChar(Line[CX]) do
-          Inc(CX);
-      end else begin
-        // breakchar and not whitechar
-        while (CX <= LineLen) and (IsWordBreakChar(Line[CX]) and not IsWhiteChar(Line[CX])) do
-          Inc(CX);
-        while (CX <= LineLen) and IsWhiteChar(Line[CX]) do
-          Inc(CX);
-      end;
-    end;
-  end;
-  Result.Char := CX;
-  Result.Line := CY;
-end;
-
-function VSPrevWordPos(SynEdit: TCustomSynEdit; const XY: TBufferCoord): TBufferCoord;
-var
-  CX, CY: Integer;
-  Line: UnicodeString;
-begin
-  CX := XY.Char;
-  CY := XY.Line;
-
-  // valid line?
-  if (CY >= 1) and (CY <= SynEdit.Lines.Count) then
-  with SynEdit do begin
-    Line := Lines[CY - 1];
-    CX := Min(CX, Length(Line) + 1);
-
-    if CX <= 1 then
-    begin
-      // find last IdentChar in the previous line
-      if CY > 1 then
-      begin
-        Dec(CY);
-        Line := Lines[CY - 1];
-        CX := Length(Line) + 1;
-        while (CX > 1) and IsWhiteChar(Line[CX-1]) do
-          Dec(CX);
-      end;
-    end
-    else
-    begin
-      // CX > 1 and <= LineLenght + 1
-      if IsIdentChar(Line[CX-1]) then begin
-        while (CX > 1) and IsIdentChar(Line[CX-1]) do
-          Dec(CX);
-      end else if IsWhiteChar(Line[CX-1]) then begin
-        while (CX > 1) and IsWhiteChar(Line[CX-1]) do
-          Dec(CX);
-        if CX <= 1 then begin
-          // find last IdentChar in the previous line
-          if CY > 1 then
-          begin
-            Dec(CY);
-            Line := Lines[CY - 1];
-            CX := Length(Line) + 1;
-            while (CX > 1) and IsWhiteChar(Line[CX-1]) do
-              Dec(CX);
-          end;
-        end else if IsIdentChar(Line[CX-1]) then begin
-          while (CX > 1) and IsIdentChar(Line[CX-1]) do
-            Dec(CX);
-        end else begin
-          // breakchar and not whitechar
-          while (CX > 1) and (IsWordBreakChar(Line[CX-1]) and not IsWhiteChar(Line[CX-1])) do
-            Dec(CX);
-        end;
-      end else begin
-        // breakchar and not whitechar
-        while (CX > 1) and (IsWordBreakChar(Line[CX-1]) and not IsWhiteChar(Line[CX-1])) do
-          Dec(CX);
-      end;
-    end;
-  end;
-  Result.Char := CX;
-  Result.Line := CY;
 end;
 
 procedure ExtractPyErrorInfo(E: Variant; var FileName: string; var LineNo: Integer; var Offset: Integer);
@@ -1427,7 +1319,6 @@ function SaveWideStringsToFile(const AFileName: string;
 Var
   FileStream : TFileStream;
   S : AnsiString;
-  OldLineBreak: string;
 begin
   try
     // Create Backup
@@ -1449,15 +1340,7 @@ begin
     end;
 
     // For Ansi encoded Python files you have deal with coding comments
-    OldLineBreak := Lines.LineBreak;
-    if Lines is TSynEditStringList then
-      Lines.LineBreak := LineBreakFromFileFormat(TSynEditStringListAccess(Lines).FileFormat)
-    else if Lines is TXStringList then
-      Lines.LineBreak := LineBreakFromFileFormat(TXStringList(Lines).FileFormat);
-
     Result := WideStringsToEncodedText(AFileName, Lines, S, True);
-
-    Lines.LineBreak := OldLineBreak;
 
     if Result then begin
       FileStream := TFileStream.Create(AFileName, fmCreate);
@@ -1623,10 +1506,10 @@ procedure WalkThroughDirectories(const Paths, Masks: string;
   const Recursive: Boolean);
 Var
   Path, PathName : string;
-  PathList, MaskList : TStringDynArray;
+  PathList, MaskList : TArray<string>;
 begin
-  PathList := SplitString(Paths, ';');
-  MaskList := SplitString(Masks, ';');
+  PathList := Paths.Split([';']);
+  MaskList := Masks.Split([';']);
   for Path in PathList do
   begin
     PathName := Parameters.ReplaceInText(Path);
@@ -1785,7 +1668,6 @@ begin
   fUTF8CheckLen := -1;
   Options := Options - [soWriteBOM, soTrailingLineBreak];
   fDetectUTF8 := True;
-  fFileFormat := sffDos;
 end;
 
 procedure TXStringList.LoadFromStream(Stream: TStream; Encoding: TEncoding);
@@ -1813,21 +1695,13 @@ end;
 procedure TXStringList.SaveToStream(Stream: TStream; Encoding: TEncoding);
 Var
   Cancel: Boolean;
-  OldLineBreak: string;
   S: string;
   Buffer, Preamble: TBytes;
 begin
   if Encoding = nil then
     Encoding := DefaultEncoding;
 
-  OldLineBreak := LineBreak;
-  try
-    LineBreak := LineBreakFromFileFormat(fFileFormat);
-    S := GetTextStr;
-  finally
-    LineBreak := OldLineBreak;
-  end;
-
+  S := GetTextStr;
   Cancel := False;
   if (Encoding = TEncoding.ANSI) and Assigned(fOnInfoLoss) and not IsAnsiOnly(S) then
   begin
@@ -1853,9 +1727,9 @@ var
   S: string;
   Size: Integer;
   P, Start, Pmax: PWideChar;
-  fCR, fLF, fLINESEPARATOR: Boolean;
+  fCR, fLF, fUnicodeSeparator: Boolean;
 begin
-  fLINESEPARATOR := False;
+  fUnicodeSeparator := False;
   fCR := False;
   fLF := False;
   BeginUpdate;
@@ -1880,7 +1754,7 @@ begin
         end else Insert(Count, '');
         if P^ = WideLineSeparator then
         begin
-          fLINESEPARATOR := True;
+          fUnicodeSeparator := True;
           Inc(P);
         end;
         if P^ = WideCR then
@@ -1903,14 +1777,14 @@ begin
   finally
     EndUpdate;
   end;
-  if fLINESEPARATOR then
-    FileFormat := sffUnicode
+  if fUnicodeSeparator then
+    LineBreak := WideLineSeparator
   else if fCR and not fLF then
-    FileFormat := sffMac
+    LineBreak := WideCR
   else if fLF and not fCR then
-    FileFormat := sffUnix
+    LineBreak := WideLF
   else
-    FileFormat := sffDos;
+    LineBreak := WideCRLF;
 end;
 
 procedure AddFormatText(RE : TRichEdit; const S: string;  FontStyle: TFontStyles = [];
@@ -2290,6 +2164,46 @@ begin
   with Self do FRegEx.SetAdditionalPCREOptions(PCREOptions);
 end;
 
+function FilePathToURI(FilePath: string): string;
+begin
+  var BufferLen: DWORD := INTERNET_MAX_URL_LENGTH;
+  SetLength(Result, BufferLen);
+  OleCheck(UrlCreateFromPath(PChar(FilePath), PChar(Result), @BufferLen, 0));
+  SetLength(Result, BufferLen);
+end;
+
+function URIToFilePath(URI: string): string;
+begin
+  var BufferLen: DWORD := MAX_PATH;
+  SetLength(Result, BufferLen);
+  OleCheck(PathCreateFromUrl(PChar(URI), PChar(Result), @BufferLen, 0));
+  SetLength(Result, BufferLen);
+end;
+
+function RegisterApplicationRestart(Flags: DWORD = 0): Boolean;
+type
+  TPKernelRegisterApplicationRestart = function(lpCmdLine: PWideChar; dwFlags: DWORD): HRESULT; stdcall;
+var
+  RegisterApplicationRestart: TPKernelRegisterApplicationRestart;
+begin
+  Logger.Write('RegisterApplicationRestart');
+  Result := False;
+  @RegisterApplicationRestart := GetProcAddress(GetModuleHandle('kernel32.dll'), 'RegisterApplicationRestart');
+  if @RegisterApplicationRestart <> nil then
+    Result := RegisterApplicationRestart('', 0) = S_OK;
+end;
+
+procedure UnregisterApplicationRestart;
+type
+  TPKernelUnregisterApplicationRestart = function(): HRESULT; stdcall;
+var
+  UnregisterApplicationRestart: TPKernelUnregisterApplicationRestart;
+begin
+  @UnregisterApplicationRestart := GetProcAddress(GetModuleHandle('kernel32.dll'), 'UnregisterApplicationRestart');
+  if @UnregisterApplicationRestart <> nil then
+    UnRegisterApplicationRestart();
+end;
+
 { TMatchHelper }
 
 function TMatchHelper.GroupIndex(Index: integer): integer;
@@ -2380,25 +2294,22 @@ begin
    Result := MulDiv(ASize, 96, FCurrentPPI);
 end;
 
-{ TObjectHandle }
+{ TSmartPointer }
 
-constructor  TObjectHandle<T>.Create(AValue:  T);
+constructor TSmartPtr.TObjectHandle<T>.Create(AValue:  T);
 begin
   FValue  :=  AValue;
 end;
 
-destructor  TObjectHandle<T>.Destroy;
+destructor TSmartPtr.TObjectHandle<T>.Destroy;
 begin
   FValue.Free;
 end;
 
-function  TObjectHandle<T>.Invoke:  T;
+function TSmartPtr.TObjectHandle<T>.Invoke:  T;
 begin
   Result  :=  FValue;
 end;
-
-
-{ TSmartPointer }
 
 class function TSmartPtr.Make<T>(AValue: T): TFunc<T>;
 begin
@@ -2408,12 +2319,18 @@ end;
 
 initialization
   StopWatch := TStopWatch.StartNew;
+  try
+    Logger := TJclSimpleLog.Create(TPyScripterSettings.PyScripterLogFile);
+    Logger.LoggingActive := False;
+  except
+  end;
 
   @OldGetCursorPos := GetProcAddress(GetModuleHandle(user32), 'GetCursorPos');
   with TJclPeMapImgHooks do
     ReplaceImport(SystemBase, user32, @OldGetCursorPos, @PatchedGetCursorPos);
 
 finalization
+ Logger.Free;
  with TJclPeMapImgHooks do
    ReplaceImport(SystemBase, user32, @PatchedGetCursorPos, @OldGetCursorPos);
 end.

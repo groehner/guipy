@@ -37,8 +37,11 @@ uses
   SpTBXSkins,
   SpTBXControls,
   SpTBXItem,
-  VirtualTrees,
   VirtualTrees.Types,
+  VirtualTrees.BaseAncestorVCL,
+  VirtualTrees.AncestorVCL,
+  VirtualTrees.BaseTree,
+  VirtualTrees,
   cPyControl;
 
 type
@@ -119,8 +122,7 @@ uses
   frmCallStack,
   cPySupportTypes,
   cInternalPython,
-  cPyBaseDebugger,
-  cVirtualStringTreeHelper;
+  cPyBaseDebugger;
 
 {$R *.dfm}
 
@@ -469,13 +471,9 @@ begin
   try
     WatchesView.RootNodeCount := fWatchesList.Count;
     // The following will Reinitialize only initialized nodes
-    // Do not use ReinitNode because it Reinits non-expanded children
-    // potentially leading to deep recursion
-    WatchesView.ReinitInitializedChildren(nil, True);
-    // No need to initialize nodes they will be initialized as needed
-    // The following initializes non-initialized nodes without expansion
-    //WatchesView.InitRecursive(nil);
-    WatchesView.InvalidateToBottom(WatchesView.GetFirstVisible);
+    // No need to initialize other nodes they will be initialized as needed
+    WatchesView.ReinitChildren(nil, True);
+    WatchesView.Invalidate;
  finally
     WatchesView.EndUpdate;
   end;

@@ -16,7 +16,6 @@ uses
   Vcl.Forms,
   uEditAppIntfs,
   cPySupportTypes,
-  cPythonSourceScanner,
   PythonEngine;
 
 type
@@ -92,22 +91,17 @@ type
     property ExpandSequences : Boolean read fExpandSequences write fExpandSequences;
   end;
 
-  TModuleProxy = class;
   TPyBaseDebugger = class;
 
   TPyBaseInterpreter = class(TObject)
   //  Base (abstract) class for implementing Python Interpreters
-  private
-    function GetMainModule: TModuleProxy;
   protected
     fInterpreterCapabilities : TInterpreterCapabilities;
     fEngineType : TPythonEngineType;
-    fMainModule : TModuleProxy;
     fCanDoPostMortem : Boolean;
-    procedure CreateMainModule; virtual; abstract;
     function SystemTempFolder: string; virtual;
+    function GetInterpreter: Variant; virtual; abstract;
   public
-    destructor Destroy; override;
     procedure Initialize; virtual;
     // Create matching debugger
     function CreateDebugger: TPyBaseDebugger; virtual; abstract;
@@ -143,8 +137,8 @@ type
     function NameSpaceItemFromPyObject(aName : string; aPyObject : Variant): TBaseNameSpaceItem; virtual; abstract;
     property EngineType : TPythonEngineType read fEngineType;
     property InterpreterCapabilities : TInterpreterCapabilities read fInterpreterCapabilities;
-    property MainModule : TModuleProxy read GetMainModule;
     property CanDoPostMortem: Boolean read fCanDoPostMortem write fCanDoPostMortem;
+    property PyInteractiveInterpreter : Variant read GetInterpreter;
   end;
 
   TThreadChangeType = (tctAdded, tctRemoved, tctStatusChange);
@@ -187,66 +181,6 @@ type
     procedure ExitPostMortem; virtual; abstract;
 
     class var ThreadChangeNotify : TThreadChangeNotifyEvent;
-  end;
-
-  TModuleProxy = class(TParsedModule)
-  private
-    fPyModule : Variant;
-    fIsExpanded : boolean;
-    fPyInterpreter: TPyBaseInterpreter;
-  protected
-    function GetAllExportsVar: string; override;
-    function GetDocString: string; override;
-  public
-    constructor CreateFromModule(const AModule : Variant; aPyInterpreter : TPyBaseInterpreter);
-    procedure Expand;
-    procedure GetNameSpace(SList : TStringList); override;
-    property PyModule : Variant read fPyModule;
-    property IsExpanded : boolean read fIsExpanded;
-    property Interpreter: TPyBaseInterpreter read fPyInterpreter;
-  end;
-
-  TClassProxy = class(TParsedClass)
-  private
-    fPyClass : Variant;
-    fIsExpanded : boolean;
-  protected
-    function GetDocString: string; override;
-  public
-    constructor CreateFromClass(AName : string; const AClass : Variant);
-    procedure Expand;
-    procedure GetNameSpace(SList : TStringList); override;
-    property PyClass : Variant read fPyClass;
-    property IsExpanded : boolean read fIsExpanded;
-  end;
-
-  TFunctionProxy = class(TParsedFunction)
-  private
-    fPyFunction : Variant;
-    fIsExpanded : boolean;
-  protected
-    function GetDocString: string; override;
-  public
-    constructor CreateFromFunction(AName : string; const AFunction : Variant);
-    procedure Expand;
-    function ArgumentsString : string; override;
-    procedure GetNameSpace(SList : TStringList); override;
-    property PyFunction : Variant read fPyFunction;
-    property IsExpanded : boolean read fIsExpanded;
-  end;
-
-  TVariableProxy = class(TCodeElement)
-  private
-    fPyObject : Variant;
-    fIsExpanded : boolean;
-  protected
-    function GetDocString: string; override;
-  public
-    constructor CreateFromPyObject(const AName : string; const AnObject : Variant);
-    procedure Expand;
-    procedure GetNameSpace(SList : TStringList); override;
-    property PyObject : Variant read fPyObject;
-    property IsExpanded : boolean read fIsExpanded;
   end;
 
 Const
@@ -357,19 +291,6 @@ begin
     Result := TPythonPathAdder.Create(SysPathAdd, SysPathRemove, Path, AutoRemove)
 end;
 
-destructor TPyBaseInterpreter.Destroy;
-begin
-  FreeAndNil(fMainModule);
-  inherited;
-end;
-
-function TPyBaseInterpreter.GetMainModule: TModuleProxy;
-begin
-  if not Assigned(fMainModule) then
-    CreateMainModule;
-  Result := fMainModule;
-end;
-
 procedure TPyBaseInterpreter.HandlePyException(Traceback: TPythonTraceback; ErrorMsg : string; SkipFrames : integer = 1);
 Var
   TI : TTracebackItem;
@@ -453,7 +374,7 @@ end;
 
 procedure TBaseNameSpaceItem.CompareToOldItem(OldItem: TBaseNameSpaceItem);
 var
-  i, Index : integer;
+  I, Index : integer;
   Child, OldChild : TBaseNameSpaceItem;
 begin
   if OldItem.GotBufferedValue then begin
@@ -462,9 +383,14 @@ begin
   end;
   if OldItem.GotChildNodes then begin
     GetChildNodes;
-    for i := 0 to ChildCount - 1 do begin
-      Child := ChildNode[i];
-      Index := OldItem.IndexOfChild(Child.Name);
+    for I := 0 to ChildCount - 1 do begin
+      Child := ChildNode[I];
+      if (ObjectType <> 'list') and (ObjectType <> 'tuple') then
+        Index := OldItem.IndexOfChild(Child.Name)
+      else if I < OldItem.ChildCount then
+        Index := I
+      else
+        Index := -1;
       if Index >= 0 then begin
         OldChild := OldItem.ChildNode[Index];
         if OldChild.GotBufferedValue then
@@ -477,16 +403,13 @@ end;
 
 function TBaseNameSpaceItem.GetOrCalculateValue: string;
 begin
-  Result:= GetValue;
-  {
-
   if GotBufferedValue then
     Result := BufferedValue
   else begin
     BufferedValue := GetValue;
     GotBufferedValue := True;
     Result := BufferedValue;
-  end;}
+  end;
 end;
 
 { TPyBaseDebugger }
@@ -496,336 +419,6 @@ begin
   Result := HaveTraceback;
 end;
 
-{ TModuleProxy }
-
-procedure TModuleProxy.Expand;
-var
-  Py: IPyEngineAndGIL;
-  i : integer;
-  VariableProxy : TVariableProxy;
-  NS, ChildNS : TBaseNameSpaceItem;
-begin
-  Py := SafePyEngine;
-  if Name = '__main__' then begin
-    if Assigned(fChildren) then fChildren.Clear;
-    fGlobals.Clear;
-  end else if fIsExpanded then
-    Exit;
-
-  NS := Interpreter.NameSpaceItemFromPyObject(Name, fPyModule);
-  try
-    for I := 0 to NS.ChildCount - 1 do begin
-      ChildNS := NS.ChildNode[i];
-      if ChildNS.IsFunction or ChildNS.IsMethod then
-       AddChild(TFunctionProxy.CreateFromFunction(ChildNS.Name, ChildNS.PyObject))
-      else if ChildNS.IsClass then
-        AddChild(TClassProxy.CreateFromClass(ChildNS.Name, ChildNS.PyObject))
-      else begin
-        VariableProxy := TVariableProxy.CreateFromPyObject(ChildNS.Name, ChildNS.PyObject);
-        VariableProxy.Parent := self;
-        Globals.Add(VariableProxy);
-      end;
-    end;
-  finally
-    NS.Free;
-  end;
-  fIsExpanded := True;
-end;
-
-constructor TModuleProxy.CreateFromModule(const AModule: Variant; aPyInterpreter : TPyBaseInterpreter);
-var
-  Py: IPyEngineAndGIL;
-begin
-  inherited Create;
-  Py := SafePyEngine;
-  if not VarIsPython(AModule) or (AModule.__class__.__name__ <> 'module') then
-    Raise Exception.Create('TModuleProxy creation error');
-  Name := AModule.__name__;
-  fPyModule := AModule;
-  fIsExpanded := false;
-  fIsProxy := True;
-  if BuiltInModule.hasattr(fPyModule, '__file__') then
-    FileName := fPyModule.__file__;
-  fPyInterpreter := aPyInterpreter;
-end;
-
-procedure TModuleProxy.GetNameSpace(SList: TStringList);
-begin
-  Expand;
-  inherited;
-end;
-
-function TModuleProxy.GetAllExportsVar: string;
-begin
-   Result := '';
-//   No need since we are exporting what is needed
-//   if BuiltInModule.hasattr(fPyModule, '__all__') then begin
-//     try
-//       PythonIIForm.ShowOutput := False;
-//       Result := BuiltInModule.str(fPyModule.__all__);
-//       Result := Copy(Result, 2, Length(Result) - 2);
-//     except
-//       Result := '';
-//     end;
-//     PythonIIForm.ShowOutput := True;
-//   end;
-end;
-
-function TModuleProxy.GetDocString: string;
-var
-  Py: IPyEngineAndGIL;
-  PyDocString : Variant;
-begin
-  Py := SafePyEngine;
-  PyDocString := Import('inspect').getdoc(fPyModule);
-  if not VarIsNone(PyDocString) then
-    Result := PyDocString
-  else
-    Result := '';
-end;
-
-{ TClassProxy }
-
-procedure TClassProxy.Expand;
-var
-  Py: IPyEngineAndGIL;
-  i : integer;
-  VariableProxy : TVariableProxy;
-  NS, ChildNS : TBaseNameSpaceItem;
-begin
-  if fIsExpanded then Exit;
-
-  Py := SafePyEngine;
-  NS := (GetModule as TModuleProxy).Interpreter.NameSpaceItemFromPyObject(Name, fPyClass);
-  NS.ExpandCommonTypes := True;
-  NS.ExpandSequences := False;
-  try
-    for I := 0 to NS.ChildCount - 1 do begin
-      ChildNS := NS.ChildNode[i];
-      if ChildNS.IsFunction or ChildNS.IsMethod then
-       AddChild(TFunctionProxy.CreateFromFunction(ChildNS.Name, ChildNS.PyObject))
-      else if ChildNS.IsClass then
-        AddChild(TClassProxy.CreateFromClass(ChildNS.Name, ChildNS.PyObject))
-      else begin
-        VariableProxy := TVariableProxy.CreateFromPyObject(ChildNS.Name, ChildNS.PyObject);
-        VariableProxy.Parent := self;
-        Attributes.Add(VariableProxy);
-      end;
-    end;
-  finally
-    NS.Free;
-  end;
-
-  // setup base classes
-  try
-    for i := 0 to len(fPyClass.__bases__) - 1 do
-      SuperClasses.Add(fPyClass.__bases__[i].__name__);
-  except
-    // absorb this exception - nothing we can do
-  end;
-
-  fIsExpanded := True;
-end;
-
-constructor TClassProxy.CreateFromClass(AName : string; const AClass: Variant);
-var
-  Py: IPyEngineAndGIL;
-begin
-  Py := SafePyEngine;
-  inherited Create;
-  if not VarIsPythonClass(AClass) then
-    Raise Exception.Create('TClassProxy creation error');
-  Name := AName;
-  fPyClass := AClass;
-  fIsExpanded := false;
-  fIsProxy := True;
-end;
-
-procedure TClassProxy.GetNameSpace(SList: TStringList);
-Var
-  i : integer;
-begin
-  Expand;
-  //  There is no need to examine base classes so we do not call inherited
-  //  Add from Children
-  for i := 0 to ChildCount - 1 do
-    SList.AddObject(TCodeElement(Children[i]).Name, Children[i]);
-  for i := 0 to Attributes.Count - 1 do
-    SList.AddObject(TVariable(Attributes[i]).Name, Attributes[i])
-end;
-
-function TClassProxy.GetDocString: string;
-var
-  Py: IPyEngineAndGIL;
-  PyDocString : Variant;
-begin
-  Py := SafePyEngine;
-  PyDocString := Import('inspect').getdoc(fPyClass);
-  if not VarIsNone(PyDocString) then
-    Result := PyDocString
-  else
-    Result := '';
-end;
-
-{ TFunctionProxy }
-
-function TFunctionProxy.ArgumentsString: string;
-var
-  Py: IPyEngineAndGIL;
-begin
-  Py := SafePyEngine;
-  Result := TPyInternalInterpreter(PyControl.InternalInterpreter).
-    PyInteractiveInterpreter.get_arg_text(fPyFunction).__getitem__(0);
-end;
-
-constructor TFunctionProxy.CreateFromFunction(AName : string; const AFunction: Variant);
-var
-  Py: IPyEngineAndGIL;
-  InspectModule : Variant;
-begin
-  Py := SafePyEngine;
-  inherited Create;
-  InspectModule := Import('inspect');
-  if InspectModule.isroutine(AFunction) then begin
-//    Name := AFunction.__name__;
-    Name := AName;
-    fPyFunction := AFunction;
-    fIsExpanded := false;
-    fIsProxy := True;
-  end else
-    Raise Exception.Create('TFunctionProxy creation error');
-end;
-
-procedure TFunctionProxy.Expand;
-var
-  Py: IPyEngineAndGIL;
-  i : integer;
-  NoOfArgs : integer;
-  Variable : TVariable;
-  NS, ChildNS : TBaseNameSpaceItem;
-begin
-  if fIsExpanded then Exit;
-
-  Py := SafePyEngine;
-  NS := (GetModule as TModuleProxy).Interpreter.NameSpaceItemFromPyObject(Name, fPyFunction);
-  NS.ExpandCommonTypes := True;
-  NS.ExpandSequences := False;
-  try
-    for I := 0 to NS.ChildCount - 1 do begin
-      ChildNS := NS.ChildNode[i];
-      if ChildNS.IsFunction or ChildNS.IsMethod then
-       AddChild(TFunctionProxy.CreateFromFunction(ChildNS.Name, ChildNS.PyObject))
-      else if ChildNS.IsClass then
-        AddChild(TClassProxy.CreateFromClass(ChildNS.Name, ChildNS.PyObject))
-      else begin
-        AddChild(TVariableProxy.CreateFromPyObject(ChildNS.Name, ChildNS.PyObject));
-      end;
-    end;
-  finally
-    NS.Free;
-  end;
-
-  fIsExpanded := True;
-
-  // Arguments and Locals
-  if BuiltinModule.hasattr(fPyFunction, '__code__') then begin
-    NoOfArgs := fPyFunction.__code__.co_argcount;
-    for i := 0 to len(fPyFunction.__code__.co_varnames) - 1 do begin
-      Variable := TVariable.Create;
-      Variable.Name := fPyFunction.__code__.co_varnames[i];
-      Variable.Parent := Self;
-      if i < NoOfArgs then begin
-        Variable.Attributes := [vaArgument];
-        Arguments.Add(Variable);
-      end else
-        Locals.Add(Variable);
-    end;
-  end;
-end;
-
-function TFunctionProxy.GetDocString: string;
-var
-  Py: IPyEngineAndGIL;
-  PyDocString : Variant;
-begin
-  Py := SafePyEngine;
-  PyDocString := Import('inspect').getdoc(fPyFunction);
-  if not VarIsNone(PyDocString) then
-    Result := PyDocString
-  else
-    Result := '';
-end;
-
-procedure TFunctionProxy.GetNameSpace(SList: TStringList);
-begin
-  Expand;
-  inherited;
-end;
-
-{ TVariableProxy }
-
-constructor TVariableProxy.CreateFromPyObject(const AName: string; const AnObject: Variant);
-var
-  Py: IPyEngineAndGIL;
-begin
-  Py := SafePyEngine;
-  inherited Create;
-  Name := AName;
-  fPyObject := AnObject;
-  fIsExpanded := false;
-  fIsProxy := True;
-end;
-
-procedure TVariableProxy.GetNameSpace(SList: TStringList);
-begin
-  Expand;
-  inherited;
-end;
-
-procedure TVariableProxy.Expand;
-var
-  Py: IPyEngineAndGIL;
-  i : integer;
-  NS, ChildNS : TBaseNameSpaceItem;
-begin
-  if fIsExpanded then Exit;
-
-  Py := SafePyEngine;
-  NS := (GetModule as TModuleProxy).Interpreter.NameSpaceItemFromPyObject(Name, fPyObject);
-  NS.ExpandCommonTypes := True;
-  NS.ExpandSequences := False;
-  try
-    for I := 0 to NS.ChildCount - 1 do begin
-      ChildNS := NS.ChildNode[i];
-      if ChildNS.IsFunction or ChildNS.IsMethod then
-       AddChild(TFunctionProxy.CreateFromFunction(ChildNS.Name, ChildNS.PyObject))
-      else if ChildNS.IsClass then
-        AddChild(TClassProxy.CreateFromClass(ChildNS.Name, ChildNS.PyObject))
-      else if ChildNS.IsModule then
-        AddChild(TModuleProxy.CreateFromModule(ChildNS.PyObject,
-          (GetModule as TModuleProxy).Interpreter))
-      else begin
-        AddChild(TVariableProxy.CreateFromPyObject(ChildNS.Name, ChildNS.PyObject));
-      end;
-    end;
-  finally
-    NS.Free;
-  end;
-  fIsExpanded := True;
-end;
-
-function TVariableProxy.GetDocString: string;
-var
-  Py: IPyEngineAndGIL;
-  PyDocString : Variant;
-begin
-  Py := SafePyEngine;
-  PyDocString := Import('inspect').getdoc(fPyObject);
-  if not VarIsNone(PyDocString) then
-    Result := PyDocString
-  else
-    Result := '';
-end;
 
 { TThreadInfo }
 

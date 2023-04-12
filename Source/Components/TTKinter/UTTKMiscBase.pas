@@ -1280,7 +1280,7 @@ begin
     key:= getAttrAsKey('Show');
     if Value = 'True'
       then Partner.DeleteAttribute(key)
-      else InsertValue(key + ' = ' + asString('tree'));   // prüfen
+      else InsertValue(key + ' = ' + asString('tree'));   // test
   end else
     inherited;
   if Attr = 'Padding' then

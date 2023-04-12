@@ -231,11 +231,11 @@ type
 
   { example debug of a switch element
 
-    TStrSwitch Kind = 6 Text= Fälle rct(0, 0, 300, 125)
+    TStrSwitch Kind = 6 Text= cases rct(0, 0, 300, 125)
 
     CASE 0
     TStrListHead Kind=8 Text=case 0 head rct(0, 25, 75, 125)
-    TStrCase Kind = 9 Text= Fall A rct(0, 25, 75, 50)
+    TStrCase Kind = 9 Text= case A rct(0, 25, 75, 50)
     StrStatement Kind=1 Text=A rct(0, 50, 75, 75)
     StrStatement Kind=1 Text=X rct(0, 75, 75, 100)
     StrStatement Kind=1 Text=Y rct(0, 100, 75, 125)
@@ -243,20 +243,20 @@ type
 
     CASE 1
     TStrListHead Kind=8 Text=case 1 head rct(75, 25, 75, 125)
-    TStrCase Kind = 9 Text= Fall B rct(75, 25, 75, 50)
+    TStrCase Kind = 9 Text= case B rct(75, 25, 75, 50)
     StrStatement Kind=1 Text=B rct(75, 50, 75, 75)
     StrStatement Kind=1 Text=W rct(75, 75, 75, 125)
     CASE 1 END
 
     CASE 2
     TStrListHead Kind=8 Text=case 2 head rct(150, 25, 75, 125)
-    TStrCase Kind = 9 Text= Fall C rct(150, 25, 75, 50)
+    TStrCase Kind = 9 Text= case C rct(150, 25, 75, 50)
     StrStatement Kind=1 Text=B rct(150, 50, 75, 125)
     CASE 2 END
 
     CASE 3
     TStrListHead Kind=8 Text=case 3 head rct(225, 25, 75, 125)
-    TStrCase Kind = 9 Text= sonst rct(225, 25, 75, 50)
+    TStrCase Kind = 9 Text= else rct(225, 25, 75, 50)
     StrStatement Kind=1 Text=D rct(225, 50, 75, 125)
     CASE 3 END
 

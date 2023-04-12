@@ -36,7 +36,9 @@ uses
   Vcl.VirtualImageList, TB2Item, SpTBXItem, TB2Dock, TB2Toolbar, SpTBXEditors,
   SynEdit, Vcl.WinXPanels, SpTBXExtEditors,
   cPyScripterSettings, dlgSynEditOptions, dlgCustomShortcuts, SynEditKeyCmds,
-  SynEditMiscClasses, SynEditPrintMargins, cFileTemplates, dlgPyIDEBase;
+  SynEditMiscClasses, SynEditPrintMargins, cFileTemplates, dlgPyIDEBase,
+  VirtualTrees.Types, VirtualTrees.BaseAncestorVCL, VirtualTrees.BaseTree,
+  VirtualTrees.AncestorVCL;
 
 Const
   CrLf = #13#10;
@@ -1713,9 +1715,9 @@ begin
     CBShowTabCloseButton.Checked:= ShowTabCloseButton;
     CBSmartNextPrevPage.Checked:= SmartNextPrevPage;
     CBStyleMainWindowBorder.Checked:= StyleMainWindowBorder;
-    CBExporerInitiallyExpanded.Checked:= ExporerInitiallyExpanded;
+    CBExporerInitiallyExpanded.Checked:= ExplorerInitiallyExpanded;
     CBFileExplorerContextMenu.Checked:= FileExplorerContextMenu;
-    CBProjectExporerInitiallyExpanded.Checked:= ProjectExporerInitiallyExpanded;
+    CBProjectExporerInitiallyExpanded.Checked:= ProjectExplorerInitiallyExpanded;
     CBFileExplorerBackgroundProcessing.Checked:= FileExplorerBackgroundProcessing;
     CBMethodsWithComment.Checked:= MethodsWithComment;
     CBAutoCheckForUpdates.Checked:= AutoCheckForUpdates;
@@ -2043,9 +2045,9 @@ begin
     ShowTabCloseButton:= CBShowTabCloseButton.Checked;
     SmartNextPrevPage:= CBSmartNextPrevPage.Checked;
     StyleMainWindowBorder:= CBStyleMainWindowBorder.Checked;
-    ExporerInitiallyExpanded:= CBExporerInitiallyExpanded.Checked;
+    ExplorerInitiallyExpanded:= CBExporerInitiallyExpanded.Checked;
     FileExplorerContextMenu:= CBFileExplorerContextMenu.Checked;
-    ProjectExporerInitiallyExpanded:= CBProjectExporerInitiallyExpanded.Checked;
+    ProjectExplorerInitiallyExpanded:= CBProjectExporerInitiallyExpanded.Checked;
     FileExplorerBackgroundProcessing:= CBFileExplorerBackgroundProcessing.Checked;
     MethodsWithComment:= CBMethodsWithComment.Checked;
 
@@ -2243,7 +2245,7 @@ var
       ('python', 'interpreter', 'compiler', 'programme', 'applets', 'disassembler', 'jar',
        'editor', 'optionen', 'code', 'farben', 'kommentar', 'vorlagen', 'tastatur',
        'struktogramm', 'sequenzdiagramm', 'browser', 'dokumentation', 'drucker', 'mindstorms', 'android',
-       'sprache', 'optionen', 'restriktionen', 'verküpfungen', 'uml', 'uml2', 'sichtbarkeit',
+       'sprache', 'optionen', 'restriktionen', 'verknüpfungen', 'uml', 'uml2', 'sichtbarkeit',
        'protokolle', 'tools', 'git', 'junit', 'checkstyle', 'jalopy', 'subversion');
 
 procedure TFConfiguration.BHelpClick(Sender: TObject);
@@ -2620,17 +2622,26 @@ procedure TFConfiguration.actPVAddExecute(Sender: TObject);
 Var
   PythonVersion: TPythonVersion;
   Directories: TArray<string>;
+  PVResult: integer; err: string;
 begin
   if SelectDirectory('', Directories, [], _('Select folder with Python installation (including virtualenv and venv)'))
   then begin
-    if PythonVersionFromPath(Directories[0], PythonVersion) then
-    begin
+    PVResult:= PythonVersionFromPath(Directories[0], PythonVersion, true, PyControl.MinPyVersion, PyControl.MaxPyVersion);
+    if PVResult = 0 then begin
       SetLength(PyControl.CustomPythonVersions, Length(PyControl.CustomPythonVersions) + 1);
       PyControl.CustomPythonVersions[Length(PyControl.CustomPythonVersions)-1] := PythonVersion;
       vtPythonVersions.ReinitChildren(nil, True);
       vtPythonVersions.Selected[vtPythonVersions.GetLast] := True;
+    end else if PVResult = 1 then begin
+      {$IFDEF WIN32}
+      err:= Format(_(SPythonFindError32), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
+      {$ELSE}
+      err:= Format(_(SPythonFindError64), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
+      {$ENDIF}
+      StyledMessageDlg(err,mtError, [mbOK], 0);
     end else
-      StyledMessageDlg(_(SPythonFindError), mtError, [mbOK], 0);
+      StyledMessageDlg(Format(_(SPythonMinMaxError),
+        [PyControl.MinPyVersion, PyControl.MaxPyVersion]) , mtError, [mbOK], 0);
   end;
 end;
 
@@ -5089,7 +5100,7 @@ end;
 
 
 initialization
-  TStyleManager.Engine.RegisterStyleHook(TEdit, TEditStyleHookColor);
+  //TStyleManager.Engine.RegisterStyleHook(TEdit, TEditStyleHookColor);
 
 //finalization
   // TStyleManager.Engine.UnRegisterStyleHook(TEdit, TEditStyleHookColor);

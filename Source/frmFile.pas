@@ -44,7 +44,7 @@ type
   TFileForm = class(TForm)
     procedure FormCreate(Sender: TObject); virtual;
     procedure FormDestroy(Sender: TObject); virtual;
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction); virtual;
   private
     function getPathname: string;
     procedure setPathname(aFilename: string);
@@ -105,7 +105,6 @@ type
   private
     fFileKind: TFileKind;
     // IFile implementation
-    procedure Activate(Primary: boolean = True);
     procedure Retranslate;
     function GetForm: TForm;
     function GetTabControlIndex: Integer;
@@ -119,6 +118,8 @@ type
     procedure ExecSaveAs;
     procedure ExecSaveAsRemote;
   protected
+    fUntitledNumber: Integer;
+    procedure Activate(Primary: boolean = True); virtual;
     procedure Close; virtual;
     function GetFileTitle: string; virtual;
     function GetModified: boolean; virtual;
@@ -135,12 +136,11 @@ type
     procedure ExecReload(Quiet: boolean = False); virtual;
     procedure Translate; virtual;
   public
+    fFileName: string;
     fRemoteFileName : string;
     fSSHServer : string;
     fForm: TFileForm;
-    fFilename: string;
     fFromTemplate: boolean;
-    fUntitledNumber: Integer;
     constructor Create(FileKind: TFileKind; AForm: TFileForm); virtual;
     function GetFileKind: TFileKind;
     function GetFileName: string;
@@ -156,6 +156,11 @@ type
     procedure ExecSave;
     procedure ExecExport;
     procedure DoOnIdle; virtual;
+
+    class var UntitledNumbers: TBits;
+    class function GetUntitledNumber: Integer;
+    class constructor Create;
+    class destructor Destroy;
   end;
 
   TFileFactory = class(TInterfacedObject, IFileFactory)
@@ -174,7 +179,7 @@ type
     fFiles: TInterfaceList;
     constructor Create;
     destructor Destroy; override;
-    function CreateTabSheet(FileKind: TFileKind; AOwner: TSpTBXCustomTabControl): IFile; overload;
+    function NewFile(FileKind: TFileKind; TabControlIndex: integer = 1): IFile; overload;
     function GetFileCount: Integer;
     function GetFile(Index: Integer): IFile;
     procedure RemoveFile(aFile: IFile);
@@ -627,13 +632,23 @@ begin
   if (fForm <> nil) then
   begin
     GI_PyIDEServices.MRUAddFile(Self);
+    if fUntitledNumber <> -1 then
+      UntitledNumbers[fUntitledNumber] := False;
+
+    fForm.DoAssignInterfacePointer(False);
+    Assert(GI_FileFactory <> nil);
+    GI_FileFactory.RemoveFile(Self);
+    if GI_FileFactory.Count = 0 then
+      PyIDEMainForm.UpdateCaption;
+
     TabSheet := (fForm.Parent as TSpTBXTabSheet);
     TabControl := TabSheet.TabControl;
     TabControl.View.BeginUpdate;
     try
       (fForm.ParentTabControl as TSpTBXTabControl).zOrder.Remove(TabSheet.Item);
-      fForm.DoAssignInterfacePointer(False);
-      fForm.Close;
+      fForm:= nil;
+      //fForm.DoAssignInterfacePointer(False);
+      //fForm.Close;
       TabSheet.Free;
       if Assigned(TabControl) then
         TabControl.Toolbar.MakeVisible(TabControl.ActiveTab);
@@ -650,9 +665,9 @@ begin
     fFileName := AFileName;
     fRemoteFileName := '';
     fSSHServer := '';
-    if fUntitledNumber <> -1 then
+    if ((AFileName <> '') or (fRemoteFileName <> '')) and (fUntitledNumber <> -1) then
     begin
-      CommandsDataModule.ReleaseUntitledNumber(fUntitledNumber);
+      UntitledNumbers[fUntitledNumber] := False;
       fUntitledNumber := -1;
     end;
     // Kernel change notification
@@ -689,7 +704,7 @@ begin
   else
   begin
     if fUntitledNumber = -1 then
-      fUntitledNumber := CommandsDataModule.GetUntitledNumber;
+      fUntitledNumber := GetUntitledNumber;
     Result := _(SNonameFileTitle) + IntToStr(fUntitledNumber);
   end;
 end;
@@ -947,6 +962,23 @@ begin
   fForm.DoOnIdle;
 end;
 
+class function TFile.GetUntitledNumber: Integer;
+begin
+  Result := UntitledNumbers.OpenBit;
+  UntitledNumbers[Result] := True;
+end;
+
+class constructor TFile.Create;
+begin
+  UntitledNumbers := TBits.Create;
+  UntitledNumbers[0] := True;  // do not use 0
+end;
+
+class destructor TFile.Destroy;
+begin
+  UntitledNumbers.Free;
+end;
+
 {--- TFileFactory -------------------------------------------------------------}
 
 constructor TFileFactory.Create;
@@ -1002,22 +1034,28 @@ procedure TFileFactory.CloseAll;
 var
   i: Integer;
 begin
-  i := fFiles.Count - 1;
-  while i >= 0 do
-  begin
-    IFile(fFiles[i]).Close;
-    Dec(i);
+  fFiles.Lock;
+  try
+    i := fFiles.Count - 1;
+    while i >= 0 do
+    begin
+      IFile(fFiles[i]).Close;
+      Dec(i);
+    end;
+  finally
+    fFiles.Unlock;
   end;
 end;
 
-function TFileFactory.CreateTabSheet(FileKind: TFileKind; AOwner: TSpTBXCustomTabControl): IFile;
+function TFileFactory.NewFile(FileKind: TFileKind; TabControlIndex: integer = 1): IFile;
 var
   Sheet: TSpTBXTabSheet;
   LForm: TFileForm;
   TabItem: TSpTBXTabItem;
 begin
-  TabItem := AOwner.Add('');
-  Sheet := AOwner.GetPage(TabItem);
+  var TabControl := PyIDEMainForm.TabControl(TabControlIndex);
+  TabItem := TabControl.Add('');
+  Sheet := TabControl.GetPage(TabItem);
   try
     LForm:= nil;
     case FileKind of
@@ -1030,7 +1068,9 @@ begin
     with LForm do begin
       fFile:= TFile.Create(FileKind, LForm);
       ParentTabItem := TabItem;
-      ParentTabControl := AOwner;
+      ParentTabControl := TabControl;
+      ParentTabItem.OnTabClosing := PyIDEMainForm.TabControlTabClosing;
+      ParentTabItem.OnDrawTabCloseButton := PyIDEMainForm.DrawCloseButton;
       Result := fFile;
       BorderStyle := bsNone;
       Parent := Sheet;

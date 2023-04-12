@@ -72,7 +72,7 @@ type
     PopupMenuComment: TSpTBXPopupMenu;
     PopupMenuCommentDelete: TSpTBXItem;
     PopupMenuWindow: TSpTBXPopupMenu;
-    MIWindowsPopupConfiguration: TSpTBXItem;
+    MIWindowPopupConfiguration: TSpTBXItem;
     MIWindowPopupVisibility: TSpTBXSubmenuItem;
     MIWindowPopupParameter: TSpTBXSubmenuItem;
     MIWindowPopupDisplay: TSpTBXSubmenuItem;
@@ -110,9 +110,10 @@ type
     MIObjectPopupVisibilityIcon: TSpTBXItem;
     MIObjectPopupVisibilityText: TSpTBXItem;
     MIObjectPopupVisibilityNone: TSpTBXItem;
+    MIObjectPopupShowNewObject: TSpTBXSubmenuItem;
+
     PopMenuClass: TSpTBXPopupMenu;
     MIClassPopupCreateTestClass: TSpTBXItem;
-    MIClassPopupCopyAsPicture: TSpTBXItem;
     MIClassPopupDelete: TSpTBXItem;
     MIClassPopupVisibility: TSpTBXSubmenuItem;
     MIClassPopupParameter: TSpTBXSubmenuItem;
@@ -143,8 +144,9 @@ type
     MIClassPopupVisibilityIcon: TSpTBXItem;
     MIClassPopupVisibilityText: TSpTBXItem;
     MIClassPopupVisibilityNone: TSpTBXItem;
-    MIObjectPopupShowNewObject: TSpTBXSubmenuItem;
+    MIClassPopupCopyAsPicture: TSpTBXItem;
     MIClassPopupParameterDisplay4: TSpTBXItem;
+    MIWindowPopupCopyAsPicture: TSpTBXItem;
 
     procedure PopMenuClassPopup(Sender: TObject);
       procedure MIClassPopupClassEditClick(Sender: TObject);
@@ -191,9 +193,10 @@ type
     procedure MIWindowPopupDisplayClick(Sender: TObject);
     procedure MIObjectPopupVisibilityClick(Sender: TObject);
     procedure MIObjectPopupDisplayClick(Sender: TObject);
-    procedure MIWindowsPopupConfigurationClick(Sender: TObject);
+    procedure MIWindowPopupConfigurationClick(Sender: TObject);
     procedure PopupMenuWindowPopup(Sender: TObject);
     procedure PopupMenuCommentDeleteClick(Sender: TObject);
+    procedure MIWindowPopupCopyAsPictureClick(Sender: TObject);
   private
     //Model listener
     procedure ModelBeforeChange(Sender: TModelEntity);
@@ -208,7 +211,7 @@ type
     constructor Create(AOwner: TComponent; aModel: TObjectModel); reintroduce;
     destructor Destroy; override;
     procedure OnUpdateToolbar(Sender : TObject);
-    procedure Translate;
+    procedure Retranslate;
     function getPopMenuClass: TControl;
     function getPopMenuObject: TControl;
   end;
@@ -261,7 +264,8 @@ end;
 constructor TAFrameDiagram.Create(AOwner: TComponent; aModel: TObjectModel);
 begin
   inherited Create(AOwner);
-  Translate;
+  //Translate; //
+  TranslateComponent(Self);
   Self.Model:= aModel;
   Self.Model.AddListener(IAfterObjectModelListener(Self));  // without self
   ScrollBox:= TScrollBoxWithNotify.Create(Self);
@@ -276,6 +280,7 @@ begin
   inherited;
 end;
 
+
 procedure TAFrameDiagram.OnUpdateToolbar(Sender: TObject);
 begin
 end;
@@ -289,109 +294,9 @@ procedure TAFrameDiagram.ModelAfterChange(Sender: TModelEntity);
 begin
 end;
 
-procedure TAFrameDiagram.Translate;
+procedure TAFrameDiagram.Retranslate;
 begin
-  MIClassPopupRunAllTests.Caption:= _('Run all tests');
-  MIClassPopupRunOneTest.Caption:= _('Run one test');
-  MIClassPopupClassEdit.Caption:= _('Edit class');
-  MIClassPopupRun.Caption:= _('Run');
-  MIClassPopupOpenSource.Caption:= _('Open source code');
-  MIClassPopupConnect.Caption:= _('Connect with');
-  MIClassPopupSelectAssociation.Caption:= _('Select connection type');
-  MIClassPopupOpenClass.Caption:= _('Open class');
-  MIClassPopupNewComment.Caption:= _('New comment');
-  MIClassPopupShowInherited.Caption:= _('Show inherited methods of system classes');
-  MIClassPopupHideInherited.Caption:= _('Hide inherited methods of system classes');
-
-  MIClassPopupDisplay.Caption:= _('Attributes and Methods');
-    MIClassPopupDisplay0.Caption:= _(LNGNone);
-    MIClassPopupDisplay3.Caption:= _(LNGAll);
-
-  MIClassPopupParameter.Caption:=  _('Parameter');
-    MIClassPopupParameterDisplay0.Caption:= _(LNGNone);
-    MIClassPopupParameterDisplay1.Caption:= _(': type');
-    MIClassPopupParameterDisplay2.Caption:= _('(...): type');
-    MIClassPopupParameterDisplay3.Caption:= _('(name): type');
-    MIClassPopupParameterDisplay4.Caption:= _('(name: type): type');
-    MIClassPopupParameterDisplay5.Caption:= _('(name = value): type');
-    MIClassPopupParameterDisplay6.Caption:= _('(name: type = value): type');
-
-  MIClassPopupVisibility.Caption:= _('Visibility');
-    MIClassPopupVisibilityNone.Caption:= _(LNGNone);
-
-  MIClassPopupDelete.Caption:= _('Delete class');
-  MIClassPopupCopyAsPicture.Caption:= _('Copy as picture');
-  MIClassPopupCreateTestClass.Caption:= _('Create test class');
-
-  {--- objects ---------------------------------------}
-
-  MIObjectPopupEdit.Caption:= _('Edit');
-  MIObjectPopupShowAllNewObjects.Caption:= _('Show all new objects');
-  MIObjectPopupShowNewObject.Caption:= _('Show object');
-  MIObjectPopupShowInherited.Caption:= _('Show inherited methods of system classes');
-  MIObjectPopupHideInherited.Caption:= ('Hide inherited methods of system classes');
-
-  MIObjectPopupDisplay.Caption:= _('Display');
-    MIObjectPopupDisplay0.Caption:= _(LNGNone);
-    MIObjectPopupDisplay3.Caption:= _(LNGAll);
-
-  MIObjectPopupVisibility.Caption:= _('Visibility');
-    MIObjectPopupVisibilityNone.Caption:= _(LNGNone);
-
-  MIObjectPopupDelete.Caption:= _('Delete object');
-  MIObjectPopupCopyAsPicture.Caption:= _('Copy as picture');
-
-  {--- Connections ------------}
-
-  MIConnectionAssociation.Caption:= _('Association');
-  MIConnectionAssociationArrow.Caption:= _('Association directed');
-  MIConnectionAssociationBidirectional.Caption:= _('Association bidirectional');
-  MIConnectionAggregation.Caption:= _('Aggregation');
-  MIConnectionAggregationArrow.Caption:=_('Aggregation with arrow');
-  MIConnectionComposition.Caption:= _('Composition');
-  MIConnectionCompositionArrow.Caption:= _('Composition with arrow');
-  MIConnectionInheritance.Caption:= _('Extends');
-  MIConnectionImplements.Caption:= _('Implements');
-  MIConnectionInstanceOf.Caption:= _('Instance of');
-  MIConnectionRecursiv.Caption:= _('Recursiv relation');
-  MIConnectionTopRight.Caption:= _('Top right');
-  MIConnectionTopLeft.Caption:= _('Top left');
-  MIConnectionBottomLeft.Caption:= _('Bottom left');
-  MIConnectionBottomRight.Caption:= _('Bottom right');
-  MIConnectionEdit.Caption:= _('Edit');
-  MIConnectionTurn.Caption:= _('Turn');
-  MIConnectionDelete.Caption:= _('Delete');
-
-  {--- Align ------------}
-
-  MIPopupLeft.Caption:= _('Left');
-  MIPopupCentered.Caption:= _('Centered');
-  MIPopupRight.Caption:= _('Right');
-  MIPopupTop.Caption:= _('Top');
-  MIPopupMiddle.Caption:= _('Middle');
-  MIPopupBottom.Caption:= _('Bottom');
-
-  {--- Window ------------}
-  MIWindowPopupNewClass.Caption:= _('New class');
-  MIWindowPopupOpenClass.Caption:= _('Open class');
-  MIWindowPopupNewComment.Caption:= _('New comment');
-  MIWindowPopupNewLayout.Caption:= _('New layout');
-  MIWindowPopupRefresh.Caption:= _('Refresh');
-  MIWindowPopupDisplay.Caption:= _('Attributes and Methods');
-    MIWindowPopupDisplay0.Caption:= _(LNGNone);
-    MIWindowPopupDisplay3.Caption:= _(LNGAll);
-  MIWindowPopupParameter.Caption:= _('Parameter');
-    MIWindowPopupParameterDisplay0.Caption:= _(LNGNone);
-    MIWindowPopupParameterDisplay1.Caption:= _(': type');
-    MIWindowPopupParameterDisplay2.Caption:= _('(...): type');
-    MIWindowPopupParameterDisplay3.Caption:= _('(name): type');
-    MIWindowPopupParameterDisplay4.Caption:= _('(name = value): type');
-    MIWindowPopupParameterDisplay5.Caption:= _('(name: type = value): type');
-  MIWindowPopupVisibility.Caption:= _('Visibility');
-    MIWindowPopupVisibilityNone.Caption:= _(LNGNone);
-  MIWindowsPopupConfiguration.Caption:= _('Configuration');
-
-  PopupMenuCommentDelete.Caption:= _('Delete');
+  RetranslateComponent(Self);
 end;
 
 procedure TAFrameDiagram.PopMenuClassPopup(Sender: TObject);
@@ -639,6 +544,12 @@ begin
     Diagram.RefreshDiagram;
 end;
 
+procedure TAFrameDiagram.MIWindowPopupCopyAsPictureClick(Sender: TObject);
+begin
+  if assigned(Diagram) then
+    Diagram.CopyDiagramToClipboard;
+end;
+
 procedure TAFrameDiagram.MIWindowPopupDisplayClick(Sender: TObject);
 begin
   GuiPyOptions.DIVisibilityFilter:= (Sender as TSpTBXItem).Tag;
@@ -660,7 +571,7 @@ begin
     Diagram.ShowIcons:= (Sender as TSpTBXItem).Tag;
 end;
 
-procedure TAFrameDiagram.MIWindowsPopupConfigurationClick(Sender: TObject);
+procedure TAFrameDiagram.MIWindowPopupConfigurationClick(Sender: TObject);
 begin
   FConfiguration.OpenAndShowPage('UML Design');
 end;

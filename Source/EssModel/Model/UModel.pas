@@ -101,7 +101,7 @@ type
     class function GetAfterListener: TGUID; override;
   public
     constructor Create(aOwner: TModelEntity); override;
-    function asPythonString: string;
+    function asPythonString(classname: string): string;
     function asUMLString(ShowParameter: integer): string;
     function toShortStringNode: string;
     property TypeClassifier : TClassifier read FTypeClassifier write FTypeClassifier;
@@ -248,7 +248,7 @@ type
     function AncestorsAsString: string;
   end;
 
-  TJUnitClass = class(TClass, IBeforeClassListener) // ToDo prüfen
+  TJUnitClass = class(TClass, IBeforeClassListener) // ToDo test
   end;
 
   TObjekt = class(TClassifier)
@@ -1368,11 +1368,16 @@ begin
   Result := IBeforeParameterListener;
 end;
 
-function TParameter.asPythonString: string;
+function TParameter.asPythonString(classname: string): string;
 begin
   Result:= Name;
-  if assigned(TypeClassifier) then
-    Result:= Result + ': ' + TypeClassifier.asType;
+  if assigned(TypeClassifier) then begin
+    var astype:= TypeClassifier.asType;
+    if astype = classname
+       // pep 0484 forward references, shell be solved with python 3.11 but isn't,
+      then Result:= Result + ': ' + asString(TypeClassifier.asType)
+      else Result:= Result + ': ' + TypeClassifier.asType;
+  end;
   if Value <> '' then
     Result:= Result + ' = ' + Value;
 end;
@@ -1518,7 +1523,7 @@ begin
   while it2.HasNext do begin
     Parameter:= it2.next as TParameter;
     if (Parameter.Name <> 'cls') and (Parameter.Name <> 'self') then
-      s:= s + Parameter.asPythonString + ', ';
+      s:= s + Parameter.asPythonString(Parentname) + ', ';
   end;
   if Copy(s, length(s) - 1, 2) = ', ' then
     Delete(s, length(s) - 1, 2);

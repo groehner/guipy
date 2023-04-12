@@ -141,11 +141,14 @@ inherited CustomizeParams: TCustomizeParams
         Font.Quality = fqClearTypeNatural
         TabOrder = 1
         UseCodeFolding = False
+        ExtraLineSpacing = 0
         Gutter.Font.Charset = DEFAULT_CHARSET
         Gutter.Font.Color = clWindowText
         Gutter.Font.Height = -11
         Gutter.Font.Name = 'Courier New'
         Gutter.Font.Style = []
+        Gutter.Font.Quality = fqClearTypeNatural
+        Gutter.Visible = False
         Gutter.Bands = <
           item
             Kind = gbkMarks
@@ -159,9 +162,6 @@ inherited CustomizeParams: TCustomizeParams
             Kind = gbkFold
           end
           item
-            Kind = gbkTrackChanges
-          end
-          item
             Kind = gbkMargin
             Visible = True
             Width = 3
@@ -169,6 +169,7 @@ inherited CustomizeParams: TCustomizeParams
         HideSelection = True
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         ScrollBars = ssNone
+        SelectedColor.Alpha = 0.400000005960464500
         WantReturns = False
       end
       object edName: TEdit
@@ -246,8 +247,6 @@ inherited CustomizeParams: TCustomizeParams
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 21

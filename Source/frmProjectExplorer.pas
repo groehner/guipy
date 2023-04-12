@@ -42,6 +42,10 @@ uses
   SpTBXControls,
   JvComponentBase,
   JvDockControlForm,
+  VirtualTrees.Types,
+  VirtualTrees.BaseAncestorVCL,
+  VirtualTrees.AncestorVCL,
+  VirtualTrees.BaseTree,
   VirtualTrees,
   frmIDEDockWin,
   cProjectClasses;
@@ -207,7 +211,7 @@ type
   end;
 
 resourcestring
-  ProjectFilter = 'GuiPy project files (*.%s)|*.%0:s';
+  ProjectFilter = 'PyScripter project files (*.%s)|*.%0:s';
 
 const
   ProjectDefaultExtension = 'psproj';
@@ -239,8 +243,7 @@ uses
   cPyScripterSettings,
   cPyControl,
   cSSHSupport,
-  dlgRemoteFile,
-  UConfiguration;
+  dlgRemoteFile;
 
 {$R *.dfm}
 
@@ -327,14 +330,12 @@ begin
       with CommandsDataModule.dlgFileOpen do begin
         Title := _(SAddFilesToProject);
         FileName := '';
-        Filter := FConfiguration.GetFileFilters;
+        Filter := GetHighlightersFilter(CommandsDataModule.Highlighters) + _(SFilterAllFiles);
         Editor := GI_PyIDEServices.ActiveEditor;
         if Assigned(Editor) and (Editor.FileName <> '') and
           (ExtractFileDir(Editor.FileName) <> '')
         then
-          InitialDir := ExtractFileDir(Editor.FileName)
-        else
-          InitialDir := GuiPyOptions.Sourcepath;
+          InitialDir := ExtractFileDir(Editor.FileName);
 
         Options := Options + [ofAllowMultiSelect];
         if Execute then begin
@@ -566,9 +567,8 @@ begin
       if Assigned(Editor) and (Editor.FileName <> '') and
         (ExtractFileDir(Editor.FileName) <> '')
       then
-        InitialDir := ExtractFileDir(Editor.FileName)
-      else
-        InitialDir := GuiPyOptions.SourcePath;
+        InitialDir := ExtractFileDir(Editor.FileName);
+
       if Execute then
         DoOpenProjectFile(FileName);
     end;
@@ -763,7 +763,7 @@ begin
       FileName := ExtractFileName(NewName);
       Title := Format(_(SSaveProjectFileAs), [FileName]);
     end else begin
-      InitialDir := GuiPyOptions.SourcePath;
+      InitialDir := '';
       FileName := '';
       Title := _(SSaveProjectAs);
     end;
@@ -1181,7 +1181,7 @@ Var
   Data, ParentData: PNodeDataRec;
 begin
   Data := ExplorerTree.GetNodeData(Node);
-  if ExplorerTree.GetNodeLevel(Node) = 0 then
+  if ParentNode = nil then
     Data.ProjectNode := ActiveProject
   else begin
     ParentData := ExplorerTree.GetNodeData(ParentNode);
@@ -1190,7 +1190,7 @@ begin
   end;
   if Data.ProjectNode.Children.Count > 0 then begin
     InitialStates := [ivsHasChildren];
-    if (not (ivsReInit in InitialStates) and PyIDEOptions.ProjectExporerInitiallyExpanded)
+    if (not (ivsReInit in InitialStates) and PyIDEOptions.ProjectExplorerInitiallyExpanded)
       or (Node.Parent = ExplorerTree.RootNode)
     then
       Include(InitialStates, ivsExpanded);

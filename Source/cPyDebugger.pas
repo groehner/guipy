@@ -84,6 +84,8 @@ type
     fII : Variant;  // Python VarPyth wrapper to the interactive interpreter
     fDebugger : Variant;
     fOldargv : Variant;
+  protected
+    function GetInterpreter: Variant; override;
   public
     constructor Create(II : Variant);
     function CreateDebugger: TPyBaseDebugger; override;
@@ -111,7 +113,6 @@ type
     function UnitTestResult : Variant; override;
     function NameSpaceItemFromPyObject(aName : string; aPyObject : Variant): TBaseNameSpaceItem; override;
     property Debugger : Variant read fDebugger;
-    property PyInteractiveInterpreter : Variant read fII;
   end;
 
   TPyInternalDebugger = class(TPyBaseDebugger)
@@ -244,7 +245,7 @@ begin
   else begin
     SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
     try
-      Result := TPyInternalInterpreter(PyControl.InternalInterpreter).PyInteractiveInterpreter.membercount(fPyObject, ExpandSequences,
+      Result := PyControl.InternalInterpreter.PyInteractiveInterpreter.membercount(fPyObject, ExpandSequences,
         ExpandCommonTypes, ExpandSequences);
     except
       Result := 0;
@@ -275,7 +276,7 @@ begin
     GotChildNodes := True;
     SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
     try
-      FullInfoTuple := TPyInternalInterpreter(PyControl.InternalInterpreter).PyInteractiveInterpreter.safegetmembersfullinfo(fPyObject, ExpandSequences,
+      FullInfoTuple := PyControl.InternalInterpreter.PyInteractiveInterpreter.safegetmembersfullinfo(fPyObject, ExpandSequences,
         ExpandCommonTypes, ExpandSequences);
       fChildCount := len(FullInfoTuple);
 
@@ -339,7 +340,7 @@ var
 begin
   SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
   try
-    fObjectInfo := TPyInternalInterpreter(PyControl.InternalInterpreter).PyInteractiveInterpreter.objectinfo(fPyObject);
+    fObjectInfo := PyControl.InternalInterpreter.PyInteractiveInterpreter.objectinfo(fPyObject);
   except
     fObjectInfo := 0;
   end;
@@ -361,7 +362,7 @@ Var
 begin
   SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
   try
-    Result :=  TPyInternalInterpreter(PyControl.InternalInterpreter).PyInteractiveInterpreter.saferepr(fPyObject);
+    Result :=  PyControl.InternalInterpreter.PyInteractiveInterpreter.saferepr(fPyObject);
   except
     Result := '';
   end;
@@ -1316,6 +1317,11 @@ begin
   end;
 end;
 
+function TPyInternalInterpreter.GetInterpreter: Variant;
+begin
+  Result := fII;
+end;
+
 procedure TPyInternalInterpreter.Run(ARunConfig: TRunConfiguration);
 Var
   Code : Variant;
@@ -1450,9 +1456,8 @@ function TPyInternalInterpreter.SyntaxCheck(Editor: IEditor; out ErrorPos: TEdit
 Var
   FName: string;
   Source: AnsiString;
-  tmp:PPyObject;
-  PyErrType, PyErrValue, PyErrTraceback, PyErrValueTuple: PPyObject;
   SuppressOutput: IInterface;
+  Flags: PyCompilerFlags;
 begin
   ErrorPos := TEditorPos.EmptyPos;
 
@@ -1465,77 +1470,30 @@ begin
   with SafePyEngine.PythonEngine do begin
     if Quiet then
       SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
-    Result := CheckExecSyntax(Source);
-    if not Result then begin
-      if Quiet then begin
-        if Assigned(PyErr_Occurred()) then begin
-          if (PyErr_ExceptionMatches(PyExc_SyntaxError^) = 1) then begin
-            PyErr_Fetch(PyErrType, PyErrValue, PyErrTraceback);  // Clears the Error
-            if Assigned(PyErrValue) then begin
-            // Sometimes there's a tuple instead of instance...
-              if PyTuple_Check( PyErrValue )  and (PyTuple_Size( PyErrValue) >= 2) then
-              begin
-                ErrorPos.ErrorMsg := PyObjectAsString(PyTuple_GetItem( PyErrValue, 0));
-                PyErrValueTuple := PyTuple_GetItem( PyErrValue, 1);
-                if PyTuple_Check( PyErrValueTuple )  and (PyTuple_Size( PyErrValueTuple) >= 4) then
-                begin
-                  ErrorPos.Line := PyLong_AsLong(PyTuple_GetItem( PyErrValueTuple, 1));
-                  ErrorPos.Char := PyLong_AsLong(PyTuple_GetItem( PyErrValueTuple, 2));
-                end;
-              end else
-                // Is it an instance of the SyntaxError class ?
-              if PyObject_IsInstance(PyErrValue, PyExc_SyntaxError^) = 1 then
-              begin
-                // Get the text containing the error, cut of carriage return
-                tmp := PyObject_GetAttrString(PyErrValue, 'text');
-                if Assigned(tmp) and PyUnicode_Check(tmp) then
-                  ErrorPos.ErrorMsg := Trim(PyUnicodeAsString(tmp));
-                Py_XDECREF(tmp);
-                // Get the offset where the error should appear
-                tmp := PyObject_GetAttrString(PyErrValue, 'offset' );
-                if Assigned(tmp) and PyLong_Check(tmp) then
-                  ErrorPos.Char := PyLong_AsLong(tmp);
-                Py_XDECREF(tmp);
-                // Get the line number of the error
-                tmp := PyObject_GetAttrString(PyErrValue, 'lineno' );
-                if Assigned(tmp) and PyLong_Check(tmp) then
-                  ErrorPos.Line := PyLong_AsLong(tmp);
-                Py_XDECREF(tmp);
-                PyErr_Clear;
-              end;
-              ErrorPos.Editor := Editor;
-              ErrorPos.IsSyntax := True;
-            end;
-            Py_XDECREF(PyErrType);
-            Py_XDECREF(PyErrValue);
-            Py_XDECREF(PyErrTraceback);
-          end else
-            PyErr_Clear;
-        end;
-      end
-      else
-      begin
-        // Display error
-        // New Line for output
-        GI_PyIDEServices.Messages.ClearMessages;
 
+    Result := True;
+    Flags.flags := PyCF_ONLY_AST;
+    Flags.cf_feature_version := MinorVersion;
+    try
+      // Print and throw exception for the error
+      Py_CompileStringExFlags(PAnsiChar(Source),
+        PAnsiChar(EncodeWindowsFilePath(FName)), file_input, @Flags, -1);
+      if Assigned(PyErr_Occurred()) and not Quiet then
         GI_PyInterpreter.AppendText(sLineBreak);
-        try
-          // Print and throw exception for the error
-          CheckError;
-        except
-          on E: EPySyntaxError do begin
-            E.EFileName := FName;  // add the filename
-            if GI_PyIDEServices.ShowFilePosition(E.EFileName, E.ELineNumber, E.EOffset) and
-              Assigned(GI_ActiveEditor)
-            then
-            begin
-              ErrorPos := TEditorPos.NPos(GI_ActiveEditor, E.ELineNumber, E.EOffset, True);
-              PyControl.ErrorPos := ErrorPos;
-            end;
-          end;
+      CheckError;
+    except
+      on E: EPySyntaxError do begin
+        Result := False;
+        ErrorPos := TEditorPos.NPos(Editor, E.ELineNumber, E.EOffset, True);
+
+        if not Quiet then
+        begin
+          GI_PyIDEServices.Messages.ClearMessages;
+          // New Line for output
+          GI_PyInterpreter.AppendPrompt;
+          if GI_PyIDEServices.ShowFilePosition(E.EFileName, E.ELineNumber, E.EOffset) then
+            PyControl.ErrorPos := ErrorPos;
         end;
-        GI_PyInterpreter.AppendPrompt;
       end;
     end;
   end;

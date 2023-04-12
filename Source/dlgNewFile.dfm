@@ -8,7 +8,7 @@ inherited NewFileDialog: TNewFileDialog
   ExplicitWidth = 472
   ExplicitHeight = 326
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object Panel1: TPanel
     Left = 0
     Top = 0
@@ -29,9 +29,6 @@ inherited NewFileDialog: TNewFileDialog
         Height = 253
         Cursor = crSizeWE
         ResizeStyle = rsUpdate
-        ExplicitLeft = 187
-        ExplicitTop = 2
-        ExplicitHeight = 251
       end
       object Panel3: TPanel
         Left = 1
@@ -43,8 +40,8 @@ inherited NewFileDialog: TNewFileDialog
         object Label1: TLabel
           Left = 9
           Top = 7
-          Width = 56
-          Height = 13
+          Width = 55
+          Height = 14
           Caption = 'Categories:'
         end
         object tvCategories: TVirtualStringTree
@@ -79,8 +76,8 @@ inherited NewFileDialog: TNewFileDialog
         object Label2: TLabel
           Left = 6
           Top = 7
-          Width = 53
-          Height = 13
+          Width = 51
+          Height = 14
           Caption = 'Templates:'
         end
         object lvTemplates: TListView
@@ -117,6 +114,15 @@ inherited NewFileDialog: TNewFileDialog
       Enabled = False
       TabOrder = 2
       OnClick = btnCreateClick
+    end
+    object btnManageTemplates: TButton
+      Left = 13
+      Top = 263
+      Width = 166
+      Height = 25
+      Caption = 'Manage File Templates...'
+      TabOrder = 3
+      OnClick = btnManageTemplatesClick
     end
   end
 end
