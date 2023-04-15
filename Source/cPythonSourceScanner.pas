@@ -1518,13 +1518,13 @@ end;
 
 function TAsynchSourceScanner.FutureTask(Sender : TObject) : TParsedModule;
 begin
-  //StopWatch.Reset;
-  //StopWatch.Start;
+  StopWatch.Reset; //
+  StopWatch.Start;
   if not fPythonScanner.ScanModule(fParsedModule) then
     FreeAndNil(fParsedModule);
   Result := fParsedModule;
-  //StopWatch.Stop;
-  //OutputDebugString(PWideChar(Format('ScanModule time in ms: %d', [StopWatch.ElapsedMilliseconds])));
+  StopWatch.Stop;
+  OutputDebugString(PWideChar(Format('ScanModule time in ms: %d', [StopWatch.ElapsedMilliseconds])));
 end;
 
 { TAsynchSourceScannerFactory }

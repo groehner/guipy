@@ -575,6 +575,7 @@ uses
   UUMLForm,
   UGUIForm,
   UGUIDesigner,
+  UClassEditor,
   UBrowser,
   UKoppel,
   UFileStructure,
@@ -1662,6 +1663,7 @@ begin
     PyControl.ErrorPos := TEditorPos.EmptyPos;
 
   ClearSearchHighlight(FEditor);
+  fNeedToParseModule:= true; // at every change of th source code
 end;
 
 procedure TEditorForm.SynEditDblClick(Sender: TObject);
@@ -1820,8 +1822,6 @@ begin
     fCloseBracketChar := #0;
     fEditor.RefreshSymbols;
   end;
-  if Changes * [scCaretX, scCaretY, scSelection] <> [] then
-    fNeedToParseModule:= true;
   if (scCaretY in Changes) and ASynEdit.Gutter.Visible
     and ASynEdit.Gutter.ShowLineNumbers
     and PyIDEOptions.CompactLineNumbers then
@@ -2434,8 +2434,7 @@ end;
 
 procedure TEditorForm.SyncCodeExplorer;
 begin
-  if fNeedToSyncCodeExplorer and GetEditor.HasPythonFile then
-  begin
+  if fNeedToSyncCodeExplorer and GetEditor.HasPythonFile then begin
     CodeExplorerWindow.ShowEditorCodeElement;
     fNeedToSyncCodeExplorer := False;
   end;
@@ -2451,19 +2450,22 @@ end;
 
 function TEditorForm.ReparseIfNeeded: boolean;
 begin
-  Result := False;
-  if fNeedToParseModule then begin
-    if GetEditor.HasPythonFile then begin
-      if Assigned(SourceScanner) then
-        SourceScanner.StopScanning;
-      SourceScanner := AsynchSourceScannerFactory.CreateAsynchSourceScanner
-        (fEditor.GetFileId, SynEdit.Text);
-      Result := True;
-      CreateModel;
-    end else
-      SourceScanner := nil;
-    fNeedToParseModule := False;
+  if fNeedToParseModule and GetEditor.HasPythonFile then begin
+    fNeedToParseModule:= false;
+    if Assigned(SourceScanner) then
+      SourceScanner.StopScanning;
+    SourceScanner:= AsynchSourceScannerFactory.CreateAsynchSourceScanner
+      (fEditor.GetFileId, SynEdit.Text);  // ToDo asynchron?
+    while not SourceScanner.Finished do
+      Sleep(50);
+    CreateModel;
     CreateTVFileStructure;
+    if FClassEditor.Visible then
+      FClassEditor.UpdateTreeView;
+    Result:= true; // due to recursive call of ReparseIfNeeded
+  end else begin
+    SourceScanner:= nil;
+    Result:= false;
   end;
 end;
 
@@ -2738,8 +2740,7 @@ begin
       if SelText = '' then begin
         x:= CaretX;
         y:= CaretY;
-        end
-      else begin
+      end else begin
         x:= BlockBegin.Char;
         y:= BlockBegin.Line;
       end;
@@ -2752,7 +2753,6 @@ begin
     end;
   except
   end;
-  NeedsParsing:= true;
   if ChangedIndent or ChangedTrailing then ActiveSynEdit.Options := OrigOptions;
 end;
 
@@ -3934,8 +3934,7 @@ end;
 
 procedure TEditorForm.DoOnIdle;
 begin
-  if fNeedToParseModule and GetEditor.HasPythonFile then
-    ParseAndCreateModel;
+  ReparseIfNeeded;
   SyncCodeExplorer;
   SyncFileStructure;
   if PyIDEOptions.CheckSyntaxAsYouType and FEditor.HasPythonFile then
@@ -4236,7 +4235,6 @@ begin
       DeleteBlock(line, line+2);
       while (line < ActiveSynEdit.Lines.Count - 1) and (trim(ActiveSynEdit.Lines[line]) = '') do
         DeleteLine(line);
-      NeedsParsing:= true;
     end;
     ActiveSynEdit.Lines.EndUpdate;
   end;
@@ -4648,10 +4646,9 @@ begin
       while (line < till) and hasWidget(destination, line) do
         inc(line);
     end;
-    if line >= 0 then begin
-      InsertLinesAt(line, s);
-      NeedsParsing:= true;
-    end else
+    if line >= 0 then
+      InsertLinesAt(line, s)
+    else
       aChanged:= false;
   end;
   Modified:= aChanged;
@@ -4672,10 +4669,9 @@ begin
       while (line < till) and hasWidget(destination, line) do
         inc(line);
     end;
-  if line >= 0 then begin
-    InsertLinesAt(line, s);
-    NeedsParsing:= true;
-  end else
+  if line >= 0 then
+    InsertLinesAt(line, s)
+  else
     aChanged:= false;
   Modified:= aChanged;
 end;
@@ -5235,7 +5231,6 @@ procedure TEditorForm.CollectClasses(SL: TStringList);
     cent: TModelEntity;
 begin
   if IsPython then begin
-    ReparseIfNeeded;
     Ci:= Model.ModelRoot.GetAllClassifiers;
     while Ci.HasNext do begin
       cent:= Ci.Next;

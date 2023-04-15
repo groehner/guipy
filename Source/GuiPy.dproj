@@ -134,10 +134,10 @@
         <DCC_Define>JVDOCK_DEBUG;madExcept;DROPWATCH;$(DCC_Define)</DCC_Define>
         <VerInfo_MajorVer>2</VerInfo_MajorVer>
         <VerInfo_Build>0</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=2.0.7.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=2.0.8.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>GuiPy_Icon.ico</Icon_MainIcon>
         <DCC_ImportedDataReferences>false</DCC_ImportedDataReferences>
-        <VerInfo_Release>7</VerInfo_Release>
+        <VerInfo_Release>8</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -148,14 +148,14 @@
         <DCC_DcuOutput>.\$(Config)\$(Platform)\DCUs</DCC_DcuOutput>
         <VerInfo_MajorVer>2</VerInfo_MajorVer>
         <VerInfo_Build>0</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=2.0.7.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=2.0.8.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
         <DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <BRCC_Language>-l409</BRCC_Language>
         <DCC_ImportedDataReferences>false</DCC_ImportedDataReferences>
         <DCC_Optimize>false</DCC_Optimize>
-        <VerInfo_Release>7</VerInfo_Release>
+        <VerInfo_Release>8</VerInfo_Release>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">

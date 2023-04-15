@@ -2601,39 +2601,14 @@ begin
 end;
 
 procedure TCommandsDataModule.actCheckForUpdatesExecute(Sender: TObject);
-Var
-  PlatformSuffix : string;
 begin
-  {$IFDEF WIN64}
-  PlatformSuffix := '-x64';
-  {$ELSE}
-  PlatformSuffix := '';
-  {$ENDIF}
-  ProgramVersionHTTPLocation.VersionInfoFileName := 'PyScripterVersionInfo' +
-    PlatformSuffix + '.ini';
-  try
-    ProgramVersionCheck.LocalDirectory := TPyScripterSettings.UserDataPath + 'Updates';
-    try
-      FormatSettings.DateSeparator := '/';
-      FormatSettings.ShortDateFormat := 'dd/MM/yyyy';
-      ProgramVersionCheck.Execute;
-    finally
-      GetFormatSettings;
-    end;
-  except
-    if Assigned(Sender) then
-      raise
-    else
-      Exit;
+  with FUpdate do begin
+    EOldVersion.Text:= Version + ', ' + GetVersionDate;
+    ENewVersion.Text:= '';
+    Memo.Lines.Clear;
+    ProgressBar.Position:= 0;
+    ShowModal;
   end;
-
-  if Assigned(Sender) and not ProgramVersionCheck.IsRemoteProgramVersionNewer then
-    if ProgramVersionCheck.DownloadError <> '' then
-      StyledMessageDlg(_(SErrorWhileDownload) +
-        ProgramVersionCheck.DownloadError, mtError, [mbOK], 0)
-    else
-      StyledMessageDlg(_(SCurrentVersionUptodate), mtInformation, [mbOK], 0);
-  PyIDEOptions.DateLastCheckedForUpdates := Now;
 end;
 
 procedure TCommandsDataModule.actToolsRestartLSExecute(Sender: TObject);
