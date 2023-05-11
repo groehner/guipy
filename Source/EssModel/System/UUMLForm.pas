@@ -434,16 +434,15 @@ begin
   if CommandsDataModule.GetSaveFileName(NewName, CommandsDataModule.SynPythonSyn, 'py', true)
   then begin
     FileTemplate := FileTemplates.TemplateByName(SClassTemplateName);
-    if assigned(FileTemplate) then begin
-      Editor:= PyIDEMainForm.NewFileFromTemplate(FileTemplate,
-        PyIDEMainForm.TabControlIndex(PyIDEMainForm.ActiveTabControl), NewName);
-      PyIDEMainForm.PrepareClassEdit(Editor, 'New', Self);
-      ConfigureWindow(Self);
-      Modified:= true;
-    end else begin
-      ErrorMsg(Format(_('File template %s missing!'), [SClassTemplateName]));
-      exit;
+    if FileTemplate = nil then begin
+      FileTemplates.AddClassTemplate;
+      FileTemplate:= FileTemplates.TemplateByName(SClassTemplateName);
     end;
+    Editor:= PyIDEMainForm.NewFileFromTemplate(FileTemplate,
+      PyIDEMainForm.TabControlIndex(PyIDEMainForm.ActiveTabControl), NewName);
+    PyIDEMainForm.PrepareClassEdit(Editor, 'New', Self);
+    ConfigureWindow(Self);
+    Modified:= true;
   end;
 end;
 

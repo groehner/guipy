@@ -43,7 +43,7 @@ type
     procedure DoOperation(ParsedFunction: TParsedFunction; O: TOperation;
                 const ParentName: string; Level: integer);
     procedure ParseFunction(ParsedFunction: TParsedFunction);
-    function NeedClassifier(const CName: string; TheClass: TModelEntityClass = nil): TClassifier;
+    function NeedClassifier(const ParentClass, CName: string): TClassifier;
     function ShowView(IsInner: Boolean): Boolean;
     procedure SetAttributeVisibility(M: TModelEntity);
     procedure SetOperationVisibility(M: TModelEntity);
@@ -168,7 +168,7 @@ begin
 
   if ParsedClass.SuperClasses.Count > 0 then  // ToDo only one superclass
     for i:= 0 to ParsedClass.SuperClasses.Count - 1 do begin
-      aClass := NeedClassifier(ParsedClass.SuperClasses[i], TClass);
+      aClass := NeedClassifier('', ParsedClass.SuperClasses[i]);
       if Assigned(aClass) and (aClass is TClass) then
         C.AddAncestors(aClass as TClass);
     end;
@@ -195,7 +195,7 @@ begin
       Attribute.Static:= (vaClassAttribute in Variable.Attributes);
       Attribute.IsFinal:= Variable.IsFinal;
       if Variable.Typ <> '' then
-        Attribute.TypeClassifier:= NeedClassifier(Variable.Typ, TClass);
+        Attribute.TypeClassifier:= NeedClassifier(C.Name, Variable.Typ);
       Variablename:= WithoutVisibility(Variable.Name);
       if Variable.DefaultValue <> Variablename
         then Attribute.Value:= Variable.DefaultValue
@@ -261,7 +261,7 @@ begin
   O.Level:= Level;
   SetOperationVisibility(O);
   if ParsedFunction.ReturnType <> '' then
-    O.ReturnValue := NeedClassifier(ParsedFunction.ReturnType);
+    O.ReturnValue := NeedClassifier(Parentname, ParsedFunction.ReturnType);
   if O.Name = '__init__' then
     O.OperationType := otConstructor
   else if ParsedFunction.ReturnType <> '' then
@@ -275,7 +275,7 @@ begin
     aVariable:= TVariable(Arguments[i]);
     Param := O.AddParameter(FormatVarArgument(aVariable));
     if aVariable.aType <> ''
-      then Param.TypeClassifier:= NeedClassifier(aVariable.aType)
+      then Param.TypeClassifier:= NeedClassifier(Parentname, aVariable.aType)
       else Param.TypeClassifier:= nil;
     Param.Value:= aVariable.DefaultValue;
   end;
@@ -291,27 +291,19 @@ begin
   FUnit.AddFunction(Operation);
 end;
 
-function TPythonParser.NeedClassifier(const CName: string; TheClass: TModelEntityClass = nil): TClassifier;
+function TPythonParser.NeedClassifier(const ParentClass, CName: string): TClassifier;
 
   function AddAClass(const CName: string): TClassifier;
   var
     C: TClass;
-    I: TInterface;
   begin
     Result := nil;
-    if TheClass = TInterface then begin
-      I := FUnit.MakeInterface(CName, '');
-      I.Importname := CName;
-      FUnit.AddInterfaceWithoutShowing(I);
-      Result := TClassifier(I);
-    end else begin
-      C := FUnit.MakeClass(CName, '');
-      if not Assigned(C) then
-        exit;
-      C.Importname := CName;
-      FUnit.AddClassWithoutShowing(C);
-      Result := TClassifier(C);
-    end;
+    C := FUnit.MakeClass(CName, '');
+    if not Assigned(C) then
+      exit;
+    C.Importname := CName;
+    FUnit.AddClassWithoutShowing(C);
+    Result := TClassifier(C);
   end;
 
 begin
@@ -319,10 +311,11 @@ begin
   if not assigned(FUnit) then
     exit;
 
-  Result:= FUnit.FindClassifier(CName, TheClass, true);
-  if Assigned(Result)
-    then exit
-    else Result := AddAClass(CName);
+  Result:= FUnit.FindClassifier(CName, TClass, true);
+  if Result = nil then
+    Result := AddAClass(CName);
+//  if ParentClass = CName then
+//    Result.Recursive:= true;
 end;
 
 function TPythonParser.ShowView(IsInner: Boolean): Boolean;

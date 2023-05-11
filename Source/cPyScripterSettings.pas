@@ -1,4 +1,4 @@
-{-----------------------------------------------------------------------------
+﻿{-----------------------------------------------------------------------------
  Unit Name: cPyScripterSettings
  Author:    Pyscripter, Gerhard Röhner
  Date:      22-Jan-2018
@@ -116,7 +116,6 @@ type
     fSaveInterpreterHistory : Boolean;
     fReinitializeBeforeRun: Boolean;
     fJumpToErrorOnException : Boolean;
-    fFileTemplateForNewScripts : string;
     fAutoCompletionFont : TFont;
     fHighlightSelectedWord : Boolean;
     fHighlightSelectedWordColor : TColor;
@@ -298,8 +297,6 @@ type
       write fReinitializeBeforeRun default True;
     property JumpToErrorOnException : Boolean read fJumpToErrorOnException
       write fJumpToErrorOnException default True;
-    property FileTemplateForNewScripts: string read fFileTemplateForNewScripts
-      write fFileTemplateForNewScripts;
     property AutoCompletionFont : TFont read fAutoCompletionFont
       write SetAutoCompletionFont;
     property HighlightSelectedWord : boolean read fHighlightSelectedWord
@@ -550,7 +547,6 @@ begin
       Self.fSaveInterpreterHistory := SaveInterpreterHistory;
       Self.fReinitializeBeforeRun := ReinitializeBeforeRun;
       Self.fJumpToErrorOnException := JumpToErrorOnException;
-      Self.fFileTemplateForNewScripts := FileTemplateForNewScripts;
       Self.fAutoCompletionFont.Assign(AutoCompletionFont);
       Self.fHighlightSelectedWord := HighlightSelectedWord;
       Self.fHighlightSelectedWordColor := HighlightSelectedWordColor;
@@ -658,7 +654,6 @@ begin
   fSaveInterpreterHistory := True;
   fReinitializeBeforeRun := True;
   fJumpToErrorOnException := True;
-  fFileTemplateForNewScripts := _(SPythonTemplateName);
   fAutoCompletionFont := TFont.Create;
   SetDefaultUIFont(fAutoCompletionFont);
   fHighlightSelectedWord := True;
@@ -1236,7 +1231,7 @@ begin
     StylesFilesDir := TPath.Combine(PublicPath, 'Styles');
     LspServerPath :=  TPath.Combine(PublicPath, 'Lsp');
     // First use setup
-    CopyFileIfNeeded(TPath.Combine(PublicPath, 'GuiPy.ini'), OptionsFileName);
+    //CopyFileIfNeeded(TPath.Combine(PublicPath, 'GuiPy.ini'), OptionsFileName);
   end;
   EngineInitFile := TPath.Combine(UserDataPath, 'python_init.py');
   PyScripterInitFile := TPath.Combine(UserDataPath, 'pyscripter_init.py');

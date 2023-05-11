@@ -56,8 +56,6 @@ function UnHideBlanks(const s: String): String;
 function GetLongPathName(const PathName: string): string;
 function left(const s: string; p: integer): string;
 function right(const s: string; p: integer): string;
-function getIndent(const s: string): integer;
-function getDefaultLanguagefile: string;
 function CountChar(c: char; const s: string): integer;
 function HasWriteAccess(const Directory: string): boolean;
 procedure SetPrinterIndex( i : Integer );
@@ -642,33 +640,6 @@ begin
   if p >= 0
     then Result:= copy(s, p, length(s))
     else Result:= copy(s, length(s)+p+1, length(s));
-end;
-
-function getIndent(const s: string): integer;
-  var i, l: integer;
-begin
-  l:= Length(s);
-  i:= 1;
-  while (i <= l) and (s[i] <= ' ') do inc(i);
-  Result:= i-1;
-end;
-
-function getDefaultLanguagefile: string;
-  var i: integer; s: string;
-begin
-  i:= GetUserDefaultLangID mod 256;
-  case i of
-     7: s:= ''; // deutsch.ini
-     9: s:= 'english.ini';
-    10: s:= 'spanish.ini';
-    16: s:= 'pt-br.ini';
-    19: s:= 'dutch.ini';
-  else
-    s:= 'english.ini';
-  end;
-  if s <> '' then
-    s:= ExtractFilePath(ParamStr(0)) + 'languages\' + s;
-  Result:= s;
 end;
 
 function CountChar(c: char; const s: string): integer;

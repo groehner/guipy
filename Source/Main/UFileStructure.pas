@@ -115,7 +115,7 @@ begin
     TVFileStructure.FullExpand;
     TVFileStructure.HideSelection:= false;
     TVFileStructure.Items.EndUpdate;
-    PyIDEMainForm.RefreshUMLWindows;
+    // PyIDEMainForm.RefreshUMLWindows;  ToDo disables Cursor
     Form.SetFocus;
     // Lock.Release;
   end;

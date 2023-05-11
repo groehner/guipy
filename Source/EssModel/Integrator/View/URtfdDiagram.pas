@@ -507,7 +507,6 @@ begin
             Panel.ConnectObjects(CBox, DestBox, asInheritends);
         end;
       end;
-
       //Implements
       Mi := (CBox.Entity as TClass).GetImplements;
       while Mi.HasNext do begin
@@ -534,44 +533,42 @@ begin
         if Assigned(A.TypeClassifier) then begin
           for j:= 0 to aClass.AncestorsCount - 1 do
             if (A.TypeClassifier = aClass.Ancestor[j]) and assigned(getBox(A.TypeClassifier.Name)) then
-            A.Connected:= true;
-          if not A.Connected then begin
-            s:= A.TypeClassifier.Fullname;
-            if IsPythonType(s) then continue;
-            Generic:= GenericOf(s);
-            if Generic <> '' then begin // Vector<E>, Stack<E>, ArrayList<E>,...
-              DestBox:= GetBox(Generic);
-              if Assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) = -1) and (DestBox.Entity.Name = Generic) then
-                Panel.ConnectObjects(CBox, DestBox, asAggregation1);
-            end else if Pos('[]', s) > 0 then begin // Typ[]
-              Agg:= WithoutArray(s);
-              DestBox:= GetBox(Agg);
-              if not assigned(DestBox) and (Pos('.', Agg) = 0) and (CBox.Entity.Package <> '') then begin
-                Ass:= CBox.Entity.Package + '.' + Agg;
-                DestBox:= GetBox(Ass);
-              end;
-              if Assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) = -1) then
-                Panel.ConnectObjects(CBox, DestBox, asAggregation1)
-            end else  begin
-              Ass:= s;
-              DestBox:= GetBox(Ass);
-              if not assigned(DestBox) and (Pos('.', Ass) = 0) and (CBox.Entity.Package <> '') then begin
-                Ass:= CBox.Entity.Package + '.' + Ass;
-                DestBox:= GetBox(Ass);
-              end;
-              if Assigned(DestBox) then
-                if Panel.HaveConnection(CBox, DestBox) = -1  then
-                  Panel.ConnectObjects(CBox, DestBox, asAssociation2)
-                else begin
-                  p:= Panel.HaveConnection(DestBox, CBox, asAssociation2);
-                  if p > -1 then
-                    Panel.SetConnection(p, asAssociation3)
-                end;
-            end;
-            if assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) > -1) and DestBox.Entity.IsVisible then begin
               A.Connected:= true;
-              AttributeConnected:= true;
+          s:= A.TypeClassifier.Fullname;
+          if IsPythonType(s) then continue;
+          Generic:= GenericOf(s);
+          if Generic <> '' then begin // Vector<E>, Stack<E>, ArrayList<E>,...
+            DestBox:= GetBox(Generic);
+            if Assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) = -1) and (DestBox.Entity.Name = Generic) then
+              Panel.ConnectObjects(CBox, DestBox, asAggregation1);
+          end else if Pos('[]', s) > 0 then begin // Typ[]
+            Agg:= WithoutArray(s);
+            DestBox:= GetBox(Agg);
+            if not assigned(DestBox) and (Pos('.', Agg) = 0) and (CBox.Entity.Package <> '') then begin
+              Ass:= CBox.Entity.Package + '.' + Agg;
+              DestBox:= GetBox(Ass);
             end;
+            if Assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) = -1) then
+              Panel.ConnectObjects(CBox, DestBox, asAggregation1)
+          end else begin
+            Ass:= s;
+            DestBox:= GetBox(Ass);
+            if not assigned(DestBox) and (Pos('.', Ass) = 0) and (CBox.Entity.Package <> '') then begin
+              Ass:= CBox.Entity.Package + '.' + Ass;
+              DestBox:= GetBox(Ass);
+            end;
+            if Assigned(DestBox) then
+              if Panel.HaveConnection(CBox, DestBox) = -1  then
+                Panel.ConnectObjects(CBox, DestBox, asAssociation2)
+              else begin
+                p:= Panel.HaveConnection(DestBox, CBox, asAssociation2);
+                if p > -1 then
+                  Panel.SetConnection(p, asAssociation3)
+              end;
+          end;
+          if assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) > -1) and DestBox.Entity.IsVisible then begin
+            A.Connected:= true;
+            AttributeConnected:= true;
           end;
         end;
       end;
@@ -1877,7 +1874,7 @@ begin
           if CallMethodObjectName = '' then begin // static method of a class
             aModelClass:= (C as TRtfdClass).Entity as TClass;
             CallMethodObjectname:= aModelClass.GetTyp;
-          end else begin                       // method of an object
+          end else begin                          // method of an object
             theClassname:= FLivingObjects.getClassnameOfObject(CallMethodObjectname);
             // get model class for object to get the methods
             aViewClass:= GetBox(theClassname) as TRtfdClass;

@@ -163,7 +163,7 @@ type
     fBrowserProgram: string;
 
     // comment
-    fMethodComment: TStringList;
+    fLicence: String;
     fAuthor: String;
 
     // others
@@ -175,7 +175,6 @@ type
     fStructogramFont: TFont;
     fSequenceFont: TFont;
 
-    procedure setMethodComment(Value: TStringList);
     procedure setUMLFont(Value: TFont);
     procedure setStructogramFont(Value: TFont);
     procedure setSequenceFont(Value: TFont);
@@ -357,10 +356,10 @@ type
     property BrowserProgram: string read fBrowserProgram write fBrowserProgram;
 
     // Comment
-    property MethodComment: TStringList read fMethodComment
-      write setMethodComment;
     property Author: string read fAuthor
       write fAuthor;
+    property Licence: string read fLicence
+      write fLicence;
 
     // Others
     property SourcePath: string read getSourcePath
@@ -791,7 +790,6 @@ type
     LDaysBetweenUpdateChecks: TLabel;
     LDockAnimationInterval: TLabel;
     LDockAnimationMoveWidth: TLabel;
-    LFileTemplateForNewPythonScripts: TLabel;
     ETempFolder: TEdit;
     BTempFolder: TButton;
     ENoOfRecentFiles: TEdit;
@@ -809,7 +807,6 @@ type
     UDDockAnimationMoveWidth: TUpDown;
     EDockAnimationMoveWidth: TEdit;
     RGEditorTabPosition: TRadioGroup;
-    EFileTemplateForNewScripts: TEdit;
     CBExporerInitiallyExpanded: TCheckBox;
     CBProjectExporerInitiallyExpanded: TCheckBox;
     CBFileExplorerContextMenu: TCheckBox;
@@ -969,6 +966,12 @@ type
     CBShowParameterTypeSelection: TCheckBox;
     CBAlignToGrid: TCheckBox;
     btnResetKeys: TButton;
+    LLicence: TLabel;
+    ELicence: TEdit;
+    btnFileDefaultItem: TButton;
+    actFileDefaultItem: TAction;
+    btnFileDefaultAll: TButton;
+    actFileDefaultAll: TAction;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1079,6 +1082,8 @@ type
     procedure BApplyStyleClick(Sender: TObject);
     procedure RGLanguagesClick(Sender: TObject);
     procedure btnResetKeysClick(Sender: TObject);
+    procedure actFileDefaultItemExecute(Sender: TObject);
+    procedure actFileDefaultAllExecute(Sender: TObject);
   private
     fHighlighters : TList;
     fColorThemeHighlighter : TSynCustomHighlighter;
@@ -1203,6 +1208,7 @@ type
     function getFileFilters: String;
     procedure OpenAndShowPage(Page: string);
     function RunAsAdmin(hWnd: HWND; const aFile, aParameters: string): THandle;
+    procedure AddScriptsPath;
 
     procedure LanguageOptionsToView;
     procedure LanguageOptionsToModel;
@@ -1726,7 +1732,6 @@ begin
     UDNoOfRecentFiles.Position:= NoOfRecentFiles;
     UDDockAnimationInterval.Position:= DockAnimationInterval;
     UDDockAnimationMoveWidth.Position:= DockAnimationMoveWidth;
-    EFileTemplateForNewScripts.Text:= FileTemplateForNewScripts;
     RGEditorTabPosition.ItemIndex:= Ord(EditorsTabPosition);
     RGFileChangeNotification.ItemIndex:= Ord(FileChangeNotification);
     ShortenPath(ETempFolder, GuiPyOptions.TempDir);
@@ -1855,6 +1860,7 @@ begin
 
     // others
     EAuthor.Text:= Author;
+    ELicence.Text:= Licence;
     ETempFolder.Text:= TempDir;
   end;
   LanguageOptionsToView;
@@ -2055,7 +2061,6 @@ begin
     NoOfRecentFiles:= UDNoOfRecentFiles.Position;
     DockAnimationInterval:= UDDockAnimationInterval.Position;
     DockAnimationMoveWidth:= UDDockAnimationMoveWidth.Position;
-    FileTemplateForNewScripts:= EFileTemplateForNewScripts.Text;
     EditorsTabPosition:= TSpTBXTabPosition(RGEditorTabPosition.ItemIndex);
     FileChangeNotification:= TFileChangeNotificationType(RGFileChangeNotification.ItemIndex);
 
@@ -2174,6 +2179,7 @@ begin
 
     // others
     Author:= EAuthor.Text;
+    Licence:= ELicence.Text;
     TempDir:= ExtendPath(ETempFolder);
   end;
   LanguageOptionsToModel;
@@ -2614,6 +2620,7 @@ begin
       else if Node.Parent.Index = 1 then
         PyControl.PythonVersionIndex := - (Node.Index + 1);
       vtPythonVersions.InvalidateChildren(nil, True);
+      AddScriptsPath;
     end;
   end;
 end;
@@ -3582,7 +3589,7 @@ begin
                          (FileTemplatesLvItems.ItemIndex < FileTemplatesLvItems.Items.Count - 1);
   actFileAddItem.Enabled := (edName.Text <> '') and (edCategory.Text <> '');
   actFileUpdateItem.Enabled := (edName.Text <> '') and (FileTemplatesLvItems.ItemIndex >= 0);
-
+  actFileDefaultItem.Enabled := FileTemplatesLvItems.ItemIndex >= 0;
   Handled := True;
 end;
 
@@ -3620,7 +3627,7 @@ begin
     FileTemplatesLvItems.Items.Clear;
     for var i := 0 to TempFileTemplates.Count - 1 do
       with FileTemplatesLvItems.Items.Add() do begin
-        Caption := (TempFileTemplates[i] as TFileTemplate).Name;
+        Caption := _((TempFileTemplates[i] as TFileTemplate).Name);
         Data := TempFileTemplates[i];
         SubItems.Add(TFileTemplate(TempFileTemplates[i]).Category);
       end;
@@ -3636,7 +3643,19 @@ var
 begin
   if Selected then begin
     FileTemplate := TFileTemplate(Item.Data);
-    edName.Text := FileTemplate.Name;
+    edName.Text := _(FileTemplate.Name);
+    // the names of these templates can't be changed, because we need access to them
+    if (FileTemplate.Name = SPythonTemplateName) or
+       (FileTemplate.Name = STkinterTemplateName) or
+       (FileTemplate.Name = SQtTemplateName) or
+       (FileTemplate.Name = SClassTemplateName)
+    then begin
+      edName.Enabled:= false;
+      edExtension.Enabled:= false;
+    end else begin
+      edName.Enabled:= true;
+      edExtension.Enabled:= true;
+    end;
     edCategory.Text := FileTemplate.Category;
     edExtension.Text := FileTemplate.Extension;
     CBFileTemplatesHighlighter.ItemIndex := CBFileTemplatesHighlighter.Items.IndexOf(FileTemplate.Highlighter);
@@ -3682,6 +3701,37 @@ begin
       Selected := True;
       MakeVisible(False);
     end;
+  end;
+end;
+
+procedure TFConfiguration.actFileDefaultAllExecute(Sender: TObject);
+begin
+  var i:= FileTemplatesLvItems.ItemIndex;
+  TempFileTemplates.Clear;
+  FileTemplates.Clear;
+  FileTemplates.AddDefaultTemplates(true);
+  FileTemplatesInit;
+  if i > -1 then
+    FileTemplatesLvItems.ItemIndex:= i;
+end;
+
+procedure TFConfiguration.actFileDefaultItemExecute(Sender: TObject);
+begin
+  if FileTemplatesLvItems.ItemIndex >= 0 then begin
+    var Item := FileTemplatesLvItems.Items[FileTemplatesLvItems.ItemIndex];
+    var FileTemplate := TFileTemplate(Item.Data);
+    var DefaultFileTemplate:= FileTemplates.getDefaultByName(Filetemplate.name);
+    if assigned(DefaultFileTemplate) then begin
+      edName.Text:= DefaultFileTemplate.Name;
+      edExtension.Text:= DefaultFileTemplate.Extension;
+      edCategory.Text:= DefaultFileTemplate.Category;
+      CBHighlighters.Text:= DefaultFileTemplate.Highlighter;
+      CBFileTemplatesHighlighter.ItemIndex := CBFileTemplatesHighlighter.Items.IndexOf(DefaultFileTemplate.Highlighter);
+      CBFileTemplatesHighlightersChange(Self);
+      FileSynTemplate.Text:= DefaultFileTemplate.Template;
+      actFileUpdateItemExecute(nil);
+    end;
+    FreeAndNil(DefaultFileTemplate);
   end;
 end;
 
@@ -4866,6 +4916,17 @@ begin
   end;
 end;
 
+procedure TFConfiguration.AddScriptsPath;
+begin
+  var ScriptsPath:= TPath.Combine(PyControl.PythonVersion.InstallPath, 'Scripts');
+  var path:= GetEnvironmentVariable('PATH');
+  if Pos(ScriptsPath, path) = 0 then begin
+    path:= path + ';' + ScriptsPath;
+    SetEnvironmentVariable('PATH', PChar(path));
+  end;
+end;
+
+
 {--- end of Configuration -----------------------------------------------------}
 
 {--- TGuiPyOptions ---------------------------------------------------------}
@@ -4963,7 +5024,7 @@ begin
   fSVNRepository:= '';
 
   // Others
-  fMethodComment:= TStringList.Create;
+  fLicence:= '';
   fAuthor:= '';
 
   // Others
@@ -4987,15 +5048,9 @@ end;
 destructor TGuiPyOptions.destroy;
 begin
   inherited;
-  FreeAndNil(fMethodComment);
   FreeAndNil(fUMLFont);
   FreeAndNil(fStructogramFont);
   FreeAndNil(fSequenceFont);
-end;
-
-procedure TGuiPyOptions.setMethodComment(Value: TStringList);
-begin
-  fMethodComment.assign(Value);
 end;
 
 procedure TGuiPyOptions.setUMLFont(Value: TFont);

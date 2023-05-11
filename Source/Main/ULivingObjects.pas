@@ -1,9 +1,9 @@
-{ -------------------------------------------------------------------------------
+{ ------------------------------------------------------------------------------
   Unit:     ULivingObjects
   Author:   Gerhard Röhner
   Date:     May 2021
   Purpose:  administration of created objects
-  ------------------------------------------------------------------------------- }
+-------------------------------------------------------------------------------}
 
 unit ULivingObjects;
 
@@ -144,8 +144,7 @@ var
   p: integer;
 begin
   if not ClassExists('inspect') then
-    PyControl.ActiveInterpreter.RunSource('import inspect',
-      '<interactive input>');
+    PyControl.ActiveInterpreter.RunSource('import inspect', '<interactive input>');
   Py := SafePyEngine;
   Cursor := WaitCursor;
   Application.ProcessMessages;
@@ -312,13 +311,25 @@ begin
   Result := SL;
 end;
 
-function TLivingObjects.getObjectObjectMembers(const Objectname: string)
-  : TStringList;
+function TLivingObjects.getObjectObjectMembers(const Objectname: string): TStringList;
 var
   i: integer;
   SL: TStringList;
   Py: IPyEngineAndGIL;
   NS: TBaseNameSpaceItem;
+
+  procedure AddObjectsFromList(Prefixname: string; NS: TBaseNameSpaceItem);
+  begin
+    var i := 0;
+    while (i < NS.ChildCount) and not isDunder(NS.ChildNode[i].Name) do begin
+      if (NS.ChildNode[i].ObjectType = 'list') {or (NS.ChildNode[i].ObjectType = 'set')} then
+        AddObjectsFromList(Prefixname + '.' + NS.ChildNode[i].Name, NS.ChildNode[i])
+      else if isObject(NS.ChildNode[i]) then // ToDo recursive call for nested objects?
+        SL.Add(NS.ChildNode[i].Name + '=' + getNameFromValue(NS.ChildNode[i].Value));
+      inc(i);
+    end;
+  end;
+
 begin
   SL := TStringList.Create;
   Py := SafePyEngine;
@@ -327,9 +338,10 @@ begin
     for i := 0 to NS.ChildCount - 1 do
       if isDunder(NS.ChildNode[i].Name) then
         break
-      else if isObject(NS.ChildNode[i]) then
-        SL.Add(NS.ChildNode[i].Name + '=' +
-          getNameFromValue(NS.ChildNode[i].Value));
+      else if (NS.ChildNode[i].ObjectType = 'list') {or (NS.ChildNode[i].ObjectType = 'set') }then
+        AddObjectsFromList(NS.ChildNode[i].Name, NS.ChildNode[i])
+      else if isObject(NS.ChildNode[i]) then  // ToDo recursive call for nested objects?
+        SL.Add(NS.ChildNode[i].Name + '=' + getNameFromValue(NS.ChildNode[i].Value));
   Result := SL;
 end;
 
@@ -372,15 +384,11 @@ begin
 end;
 
 function TLivingObjects.getAddressFromName(Name: String): String;
-var
-  i: integer;
 begin
   Result := '';
-  i := 0;
-  while i < SLObjectsAddressName.Count do
-  begin
-    if SLObjectsAddressName.ValueFromIndex[i] = Name then
-    begin
+  var i := 0;
+  while i < SLObjectsAddressName.Count do begin
+    if SLObjectsAddressName.ValueFromIndex[i] = Name then begin
       Result := SLObjectsAddressName.KeyNames[i];
       break;
     end;
@@ -389,10 +397,8 @@ begin
 end;
 
 function TLivingObjects.getPathFromName(Name: String): String;
-var
-  i: integer;
 begin
-  i := SLObjectsNamePath.IndexOfName(Name);
+  var i := SLObjectsNamePath.IndexOfName(Name);
   if i > -1 then
     Result := SLObjectsNamePath.ValueFromIndex[i]
   else
@@ -407,7 +413,8 @@ begin
           (Pos('object at', Node.Value) > 0) then
     Result := (Node.ObjectType <> 'Window') and
               (Node.ObjectType <> 'QMetaObject') and
-              (Node.ObjectType <> 'QApplication');
+              (Node.ObjectType <> 'QApplication') {and
+              (Node.ObjectType <> 'list')};
 end;
 
 function TLivingObjects.isAttribute(Node: TBaseNameSpaceItem): boolean;
@@ -487,16 +494,25 @@ var
     Name, Path: String;
   begin
     i := 0;
-    while (i < NS.ChildCount - 1) and not isDunder(NS.ChildNode[i].Name) do
-    begin
-      if isObject(NS.ChildNode[i]) then
-      begin
+    while (i < NS.ChildCount) and not isDunder(NS.ChildNode[i].Name) do begin
+      if NS.ChildNode[i].ObjectType = 'list' then
+        Add(Prefixname + '.' + NS.ChildNode[i].Name, NS.ChildNode[i])
+    {  else if NS.ChildNode[i].ObjectType = 'set' then begin
+        elements:= copy(NS.ChildNode[i].Value, 2, length(NS.ChildNode[i].Value) - 2);
+        SL:= Split(',', elements);
+        for j := 0 to SL.Count - 1 do begin
+          Name := getNameFromValue(trim(SL.Strings[j]));
+          Path := getPathFromName(Name);
+          if Path = '' then  // avoid cycles
+            SLObjectsNamePath.Add(Name + '=' + Prefixname + '.' + NS.ChildNode[i].Name);
+        end;
+        FreeAndNil(SL);
+      end}
+      else if isObject(NS.ChildNode[i]) then begin
         Name := getNameFromValue(NS.ChildNode[i].Value);
         Path := getPathFromName(Name);
-        if Path = '' then
-        begin // avoid cycles
-          SLObjectsNamePath.Add(Name + '=' + Prefixname + '.' +
-            NS.ChildNode[i].Name);
+        if Path = '' then begin // avoid cycles
+          SLObjectsNamePath.Add(Name + '=' + Prefixname + '.' + NS.ChildNode[i].Name);
           Add(Prefixname + '.' + NS.ChildNode[i].Name, NS.ChildNode[i]);
         end;
       end;
@@ -505,12 +521,13 @@ var
   end;
 
 begin
+  SLObjectsAddressName.Clear;
   SLObjectsNamePath.Clear;
   Py := SafePyEngine;
   NS := VariablesWindow.GlobalsNameSpace;
   i := 0;
   // collect objects with direct access first
-  while (i < NS.ChildCount - 1) and not isDunder(NS.ChildNode[i].Name) do begin
+  while (i < NS.ChildCount) and not isDunder(NS.ChildNode[i].Name) do begin
     if isObject(NS.ChildNode[i]) then begin
       PyOb := NS.ChildNode[i].PyObject;
       SLObjectsAddressName.Add(PyOb + '=' + NS.ChildNode[i].Name);
@@ -520,7 +537,7 @@ begin
   end;
   i := 0;
   // collect object with indirect access second
-  while (i < NS.ChildCount - 1) and not isDunder(NS.ChildNode[i].Name) do begin
+  while (i < NS.ChildCount) and not isDunder(NS.ChildNode[i].Name) do begin
     if isObject(NS.ChildNode[i]) then
       Add(NS.ChildNode[i].Name, NS.ChildNode[i]);
     inc(i);

@@ -140,7 +140,7 @@ begin
 
   CmdLine := Format('"%s" -u "%s"',
     [GI_PyControl.PythonVersion.PythonExecutable, ServerPath]);
-  if PyIDEOptions.LspDebug then
+  if PyIDEOptions.LspDebug or true then
   begin
     CmdLine := Format('%s -v --log-file "%s"', [CmdLine,
       TPath.Combine(TPyScripterSettings.UserDataPath, LspDebugFile)]);
@@ -215,7 +215,7 @@ begin
      QuotePackages(PyIDEOptions.SpecialPackages),
      BoolToStr(not PyIDEOptions.CodeCompletionCaseSensitive, True).ToLower])), 0);
 
-  LspClient.Initialize('PyScripter', ApplicationVersion, ClientCapabilities,
+  LspClient.Initialize('GuiPy', ApplicationVersion, ClientCapabilities,
     InitializationOptions);
 end;
 

@@ -573,6 +573,27 @@ begin
   Result:= GuiPyOptions.Author;
 end;
 
+function GetLicence: string;
+begin
+  Result:= GuiPyOptions.Licence;
+end;
+
+function GetGeometry: string;
+begin
+  Result:= IntToStr(GuiPyOptions.FrameWidth) + ',' +
+           IntToStr(GuiPyOptions.FrameHeight);
+end;
+
+function GetTkGeometry(const Geometry: string): string;
+begin
+  Result:= '''' + StringReplace(Geometry, ',', 'x', [rfReplaceAll]) + '''';
+end;
+
+function GetQtGeometry(const Geometry: string): string;
+begin
+  Result:= '''' + StringReplace(Geometry, ',', 'x', [rfReplaceAll]) + '''';
+end;
+
 function GetPhysicalDesktopFolder : string;
 begin
   Result := PhysicalDesktopFolder.NameForParsing;
@@ -643,6 +664,8 @@ begin
     RegisterParameter('Paste', _('Clipboard as text'), GetClipboard);
     RegisterParameter('UserName', _('User name'), GetUserName);
     RegisterParameter('Author', _('Author'), GetAuthor);
+    RegisterParameter('Licence', _('Licence'), GetLicence);
+    RegisterParameter('Geometry', _('Geometry'), GetGeometry);
     RegisterParameter('CurrentDir', _('Current directory'), GetCurrentDir);
     RegisterParameter('Exe', _('Executable name'), GetExe);
     RegisterParameter('CmdLineArgs', _('Python Command Line Arguments'), GetCmdLineArgs);
@@ -671,6 +694,8 @@ begin
     RegisterModifier('LowerCase', _('Lower case of string'), System.SysUtils.AnsiLowerCase);
     RegisterModifier('Quote', _('Quoted string'), StrDefQuote);
     RegisterModifier('UnQuote', _('Unquoted string'), StrUnquote);
+    RegisterModifier('Tk', 'Tk', getTkGeometry);
+    RegisterModifier('Qt', 'Qt', getQtGeometry);
 
    (* parameters, specific for PyScripter *)
     RegisterParameter('SelectFile', '$[-SelectFile]', nil);

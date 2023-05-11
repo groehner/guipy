@@ -6479,11 +6479,101 @@ object CommandsDataModule: TCommandsDataModule
       end
       item
         SVGText = 
-          '<svg viewBox="0 0 32 32">'#13#10#9'<path  d="M24.9,10.2L27,5.9L22.5,8l-' +
-          '6.2,6.2L5.6,3.5L3.4,5.8l10.7,10.7l-9,9l2.2,2.2l9-9l9,9l3.3,0.7l-' +
-          '1.2-3l-8.9-8.9L24.9,10.2z"/>'#13#10'</svg>'
+          '<svg viewBox="0 0 36 36">'#13#10'   <path d="M6 6 l 24 24 M 6 30 l 24 ' +
+          '-24" style="stroke: #000000; stroke-width: 3"  />'#13#10'</svg>'
+      end
+      item
+        IconName = 'EditClass'
+        SVGText = 
+          '<svg viewBox="0 0 16 16">'#13#10'  <defs/>'#13#10'  <g id="x3e8cce_r62_g140_' +
+          'b206_a1.0">'#13#10'    <path d="M 3,13 3,3 13,3 13,13 z M 5,10 5,12 8,' +
+          '12 11,12 11,11 12,11 12,9 10,9 10,10 9,10 9,11 8,11 8,10 7,10 7,' +
+          '9 6,9 6,7 7,7 7,6 8,6 8,5 9,5 9,6 10,6 10,7 12,7 12,5 11,5 11,4 ' +
+          '10,4 5,4 5,6 4,6 4,10 z" fill="#3e8cce" fill-opacity="1.0" id="x' +
+          '3e8cce_r62_g140_b206_a1.0_shape1"/>'#13#10'  </g>'#13#10'  <g id="x96fff9_r1' +
+          '50_g255_b249_a1.0">'#13#10'    <path d="M 14,14 2,14 2,13 7,13 13,13 1' +
+          '3,5 13,2 14,2 14,5 z" fill="#96fff9" fill-opacity="1.0" id="x96f' +
+          'ff9_r150_g255_b249_a1.0_shape1"/>'#13#10'    <path d="M 2,2 2,1 6,1 13' +
+          ',1 13,2 10,2 z" fill="#96fff9" fill-opacity="1.0" id="x96fff9_r1' +
+          '50_g255_b249_a1.0_shape2"/>'#13#10'  </g>'#13#10'  <g id="x90b5de_r144_g181_' +
+          'b222_a1.0">'#13#10'    <path d="M 3,3 3,13 2,13 2,2 13,2 13,3 z" fill=' +
+          '"#90b5de" fill-opacity="1.0" id="x90b5de_r144_g181_b222_a1.0_sha' +
+          'pe1"/>'#13#10'  </g>'#13#10'  <g id="xcfe2f2_r207_g226_b242_a1.0">'#13#10'    <pat' +
+          'h d="M 9,4 10,4 10,5 9,5 8,5 8,4 z" fill="#cfe2f2" fill-opacity=' +
+          '"1.0" id="xcfe2f2_r207_g226_b242_a1.0_shape1"/>'#13#10'    <path d="M ' +
+          '10,12 8,12 8,11 10,11 z" fill="#cfe2f2" fill-opacity="1.0" id="x' +
+          'cfe2f2_r207_g226_b242_a1.0_shape2"/>'#13#10'  </g>'#13#10'  <g id="xf9fbfd_r' +
+          '249_g251_b253_a1.0">'#13#10'    <path d="M 6,7 5,7 5,6 6,6 z" fill="#f' +
+          '9fbfd" fill-opacity="1.0" id="xf9fbfd_r249_g251_b253_a1.0_shape1' +
+          '"/>'#13#10'    <path d="M 5,10 5,9 6,9 6,10 z" fill="#f9fbfd" fill-opa' +
+          'city="1.0" id="xf9fbfd_r249_g251_b253_a1.0_shape2"/>'#13#10'    <path ' +
+          'd="M 7,11 8,11 8,12 7,12 z" fill="#f9fbfd" fill-opacity="1.0" id' +
+          '="xf9fbfd_r249_g251_b253_a1.0_shape3"/>'#13#10'  </g>'#13#10'  <g id="x4892d' +
+          '0_r72_g146_b208_a1.0">'#13#10'    <path d="M 6,6 7,6 7,7 6,7 z" fill="' +
+          '#4892d0" fill-opacity="1.0" id="x4892d0_r72_g146_b208_a1.0_shape' +
+          '1"/>'#13#10'    <path d="M 6,10 6,9 7,9 7,10 z" fill="#4892d0" fill-op' +
+          'acity="1.0" id="x4892d0_r72_g146_b208_a1.0_shape2"/>'#13#10'    <path ' +
+          'd="M 12,10 12,11 11,11 11,10 z" fill="#4892d0" fill-opacity="1.0' +
+          '" id="x4892d0_r72_g146_b208_a1.0_shape3"/>'#13#10'  </g>'#13#10'  <g id="x44' +
+          '8fcf_r68_g143_b207_a1.0">'#13#10'    <path d="M 6,4 6,5 5,5 5,4 z" fil' +
+          'l="#448fcf" fill-opacity="1.0" id="x448fcf_r68_g143_b207_a1.0_sh' +
+          'ape1"/>'#13#10'    <path d="M 6,11 6,12 5,12 5,11 z" fill="#448fcf" fi' +
+          'll-opacity="1.0" id="x448fcf_r68_g143_b207_a1.0_shape2"/>'#13#10'  </g' +
+          '>'#13#10'  <g id="x5399d3_r83_g153_b211_a1.0">'#13#10'    <path d="M 11,5 10' +
+          ',5 10,4 11,4 z" fill="#5399d3" fill-opacity="1.0" id="x5399d3_r8' +
+          '3_g153_b211_a1.0_shape1"/>'#13#10'    <path d="M 11,12 10,12 10,11 11,' +
+          '11 z" fill="#5399d3" fill-opacity="1.0" id="x5399d3_r83_g153_b21' +
+          '1_a1.0_shape2"/>'#13#10'  </g>'#13#10'  <g id="xc3dbef_r195_g219_b239_a1.0">' +
+          #13#10'    <path d="M 6,6 5,6 5,5 6,5 z" fill="#c3dbef" fill-opacity=' +
+          '"1.0" id="xc3dbef_r195_g219_b239_a1.0_shape1"/>'#13#10'    <path d="M ' +
+          '5,10 6,10 6,11 5,11 z" fill="#c3dbef" fill-opacity="1.0" id="xc3' +
+          'dbef_r195_g219_b239_a1.0_shape2"/>'#13#10'  </g>'#13#10'  <g id="xb4d2eb_r18' +
+          '0_g210_b235_a1.0">'#13#10'    <path d="M 7,6 6,6 6,5 7,5 z" fill="#b4d' +
+          '2eb" fill-opacity="1.0" id="xb4d2eb_r180_g210_b235_a1.0_shape1"/' +
+          '>'#13#10'    <path d="M 6,10 7,10 7,11 6,11 z" fill="#b4d2eb" fill-opa' +
+          'city="1.0" id="xb4d2eb_r180_g210_b235_a1.0_shape2"/>'#13#10'  </g>'#13#10'  ' +
+          '<g id="x4791d0_r71_g145_b208_a1.0">'#13#10'    <path d="M 7,6 7,5 8,5 ' +
+          '8,6 z" fill="#4791d0" fill-opacity="1.0" id="x4791d0_r71_g145_b2' +
+          '08_a1.0_shape1"/>'#13#10'    <path d="M 7,11 7,10 8,10 8,11 z" fill="#' +
+          '4791d0" fill-opacity="1.0" id="x4791d0_r71_g145_b208_a1.0_shape2' +
+          '"/>'#13#10'  </g>'#13#10'  <g id="xe9f1f9_r233_g241_b249_a1.0">'#13#10'    <path d' +
+          '="M 10,5 11,5 11,6 10,6 z" fill="#e9f1f9" fill-opacity="1.0" id=' +
+          '"xe9f1f9_r233_g241_b249_a1.0_shape1"/>'#13#10'    <path d="M 11,10 11,' +
+          '11 10,11 10,10 z" fill="#e9f1f9" fill-opacity="1.0" id="xe9f1f9_' +
+          'r233_g241_b249_a1.0_shape2"/>'#13#10'  </g>'#13#10'  <g id="xd2e4f3_r210_g22' +
+          '8_b243_a1.0">'#13#10'    <path d="M 6,9 5,9 5,8 5,7 6,7 6,8 z" fill="#' +
+          'd2e4f3" fill-opacity="1.0" id="xd2e4f3_r210_g228_b243_a1.0_shape' +
+          '1"/>'#13#10'  </g>'#13#10'  <g id="x6ea8da_r110_g168_b218_a1.0">'#13#10'    <path ' +
+          'd="M 12,10 11,10 11,9 12,9 z" fill="#6ea8da" fill-opacity="1.0" ' +
+          'id="x6ea8da_r110_g168_b218_a1.0_shape1"/>'#13#10'    <path d="M 9,10 1' +
+          '0,10 10,11 9,11 z" fill="#6ea8da" fill-opacity="1.0" id="x6ea8da' +
+          '_r110_g168_b218_a1.0_shape2"/>'#13#10'  </g>'#13#10'  <g id="xa2c7e7_r162_g1' +
+          '99_b231_a1.0">'#13#10'    <path d="M 6,4 7,4 7,5 6,5 z" fill="#a2c7e7"' +
+          ' fill-opacity="1.0" id="xa2c7e7_r162_g199_b231_a1.0_shape1"/>'#13#10' ' +
+          ' </g>'#13#10'  <g id="xf3f8fc_r243_g248_b252_a1.0">'#13#10'    <path d="M 8,' +
+          '5 7,5 7,4 8,4 z" fill="#f3f8fc" fill-opacity="1.0" id="xf3f8fc_r' +
+          '243_g248_b252_a1.0_shape1"/>'#13#10'  </g>'#13#10'  <g id="x74acdb_r116_g172' +
+          '_b219_a1.0">'#13#10'    <path d="M 9,5 10,5 10,6 9,6 z" fill="#74acdb"' +
+          ' fill-opacity="1.0" id="x74acdb_r116_g172_b219_a1.0_shape1"/>'#13#10' ' +
+          ' </g>'#13#10'  <g id="x60a0d6_r96_g160_b214_a1.0">'#13#10'    <path d="M 5,7' +
+          ' 4,7 4,6 5,6 z" fill="#60a0d6" fill-opacity="1.0" id="x60a0d6_r9' +
+          '6_g160_b214_a1.0_shape1"/>'#13#10'  </g>'#13#10'  <g id="x71aadb_r113_g170_b' +
+          '219_a1.0">'#13#10'    <path d="M 10,7 10,6 11,6 11,7 z" fill="#71aadb"' +
+          ' fill-opacity="1.0" id="x71aadb_r113_g170_b219_a1.0_shape1"/>'#13#10' ' +
+          ' </g>'#13#10'  <g id="x4f96d2_r79_g150_b210_a1.0">'#13#10'    <path d="M 12,' +
+          '6 12,7 11,7 11,6 z" fill="#4f96d2" fill-opacity="1.0" id="x4f96d' +
+          '2_r79_g150_b210_a1.0_shape1"/>'#13#10'  </g>'#13#10'  <g id="x78aedc_r120_g1' +
+          '74_b220_a1.0">'#13#10'    <path d="M 4,9 4,8 5,8 5,9 z" fill="#78aedc"' +
+          ' fill-opacity="1.0" id="x78aedc_r120_g174_b220_a1.0_shape1"/>'#13#10' ' +
+          ' </g>'#13#10'  <g id="x5d9ed6_r93_g158_b214_a1.0">'#13#10'    <path d="M 5,9' +
+          ' 5,10 4,10 4,9 z" fill="#5d9ed6" fill-opacity="1.0" id="x5d9ed6_' +
+          'r93_g158_b214_a1.0_shape1"/>'#13#10'  </g>'#13#10'  <g id="x96c0e4_r150_g192' +
+          '_b228_a1.0">'#13#10'    <path d="M 10,9 11,9 11,10 10,10 z" fill="#96c' +
+          '0e4" fill-opacity="1.0" id="x96c0e4_r150_g192_b228_a1.0_shape1"/' +
+          '>'#13#10'  </g>'#13#10'  <g id="xaccdea_r172_g205_b234_a1.0">'#13#10'    <path d="' +
+          'M 6,12 6,11 7,11 7,12 z" fill="#accdea" fill-opacity="1.0" id="x' +
+          'accdea_r172_g205_b234_a1.0_shape1"/>'#13#10'  </g>'#13#10'</svg>'#13#10
       end>
-    ApplyFixedColorToRootOnly = True
     Left = 112
     Top = 208
   end

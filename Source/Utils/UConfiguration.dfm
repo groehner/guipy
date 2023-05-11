@@ -190,7 +190,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 661
         Height = 427
-        ActivePage = PInterpreter
+        ActivePage = PFileTemplates
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -397,7 +397,7 @@ object FConfiguration: TFConfiguration
             Left = 312
             Top = 254
             Width = 16
-            Height = 21
+            Height = 23
             Associate = EInterpreterHistorySize
             TabOrder = 12
           end
@@ -413,7 +413,7 @@ object FConfiguration: TFConfiguration
             Left = 312
             Top = 182
             Width = 16
-            Height = 21
+            Height = 23
             Associate = ETimeOut
             Max = 2000
             TabOrder = 14
@@ -445,7 +445,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akRight, akBottom]
             Caption = 'Gutter'
             TabOrder = 0
-            ExplicitTop = 228
             DesignSize = (
               558
               149)
@@ -467,8 +466,8 @@ object FConfiguration: TFConfiguration
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 72
-                Height = 8
+                Width = 179
+                Height = 25
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -478,6 +477,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 72
+                ExplicitHeight = 8
               end
             end
             object cbGutterColor: TSpTBXColorEdit
@@ -713,8 +714,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 128
-                Height = 16
+                Width = 188
+                Height = 28
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Courier New 10pt'
@@ -724,6 +725,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Courier New'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 128
+                ExplicitHeight = 16
               end
             end
             object btnFont: TButton
@@ -927,6 +930,13 @@ object FConfiguration: TFConfiguration
             Height = 15
             Caption = 'Author'
           end
+          object LLicence: TLabel
+            Left = 330
+            Top = 325
+            Width = 40
+            Height = 15
+            Caption = 'Licence'
+          end
           object gbOptions: TGroupBox
             AlignWithMargins = True
             Left = 3
@@ -940,9 +950,9 @@ object FConfiguration: TFConfiguration
             TabOrder = 0
             object GridPanel1: TGridPanel
               Left = 2
-              Top = 16
+              Top = 17
               Width = 643
-              Height = 292
+              Height = 291
               Align = alClient
               BevelOuter = bvNone
               ColumnCollection = <
@@ -972,7 +982,7 @@ object FConfiguration: TFConfiguration
                 Left = 0
                 Top = 0
                 Width = 322
-                Height = 292
+                Height = 291
                 Align = alClient
                 BevelOuter = bvNone
                 ControlCollection = <
@@ -1177,7 +1187,7 @@ object FConfiguration: TFConfiguration
                 Left = 322
                 Top = 0
                 Width = 321
-                Height = 292
+                Height = 291
                 Align = alClient
                 BevelOuter = bvNone
                 ControlCollection = <
@@ -1397,11 +1407,18 @@ object FConfiguration: TFConfiguration
             end
           end
           object EAuthor: TEdit
-            Left = 32
-            Top = 348
-            Width = 357
+            Left = 16
+            Top = 346
+            Width = 241
             Height = 23
             TabOrder = 1
+          end
+          object ELicence: TEdit
+            Left = 330
+            Top = 346
+            Width = 241
+            Height = 23
+            TabOrder = 2
           end
         end
         object PCodeCompletion: TTabSheet
@@ -1505,7 +1522,7 @@ object FConfiguration: TFConfiguration
             Left = 338
             Top = 21
             Width = 16
-            Height = 22
+            Height = 23
             Associate = ECodeCompletionListSize
             TabOrder = 10
           end
@@ -1546,7 +1563,7 @@ object FConfiguration: TFConfiguration
               Left = 185
               Top = 23
               Width = 268
-              Height = 22
+              Height = 23
               Style = csDropDownList
               Sorted = True
               TabOrder = 0
@@ -1669,7 +1686,7 @@ object FConfiguration: TFConfiguration
             Left = 8
             Top = 23
             Width = 560
-            Height = 22
+            Height = 23
             Style = csDropDownList
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 0
@@ -1827,7 +1844,7 @@ object FConfiguration: TFConfiguration
             Top = 22
             Width = 166
             Height = 343
-            ItemHeight = 14
+            ItemHeight = 15
             TabOrder = 0
             OnClick = lbColorThemesClick
           end
@@ -2203,7 +2220,7 @@ object FConfiguration: TFConfiguration
               Left = 400
               Top = 44
               Width = 146
-              Height = 22
+              Height = 23
               Style = csDropDownList
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 4
@@ -2233,44 +2250,60 @@ object FConfiguration: TFConfiguration
             end
           end
           object btnFileAdd: TButton
-            Left = 22
+            Left = 30
             Top = 118
-            Width = 101
+            Width = 80
             Height = 24
             Action = actFileAddItem
             TabOrder = 2
           end
           object btnFileDelete: TButton
-            Left = 127
+            Left = 116
             Top = 118
-            Width = 101
+            Width = 80
             Height = 24
             Action = actFileDeleteItem
             TabOrder = 3
           end
           object btnFileDown: TButton
-            Left = 339
+            Left = 288
             Top = 118
-            Width = 101
+            Width = 80
             Height = 24
             Action = actFileMoveDown
             TabOrder = 4
           end
           object btnFileUp: TButton
-            Left = 233
+            Left = 202
             Top = 118
-            Width = 101
+            Width = 80
             Height = 24
             Action = actFileMoveUp
             TabOrder = 5
           end
           object btnFileUpdate: TButton
-            Left = 446
+            Left = 374
             Top = 118
-            Width = 101
+            Width = 80
             Height = 24
             Action = actFileUpdateItem
             TabOrder = 6
+          end
+          object btnFileDefaultItem: TButton
+            Left = 460
+            Top = 118
+            Width = 80
+            Height = 24
+            Action = actFileDefaultItem
+            TabOrder = 7
+          end
+          object btnFileDefaultAll: TButton
+            Left = 546
+            Top = 118
+            Width = 80
+            Height = 24
+            Action = actFileDefaultAll
+            TabOrder = 8
           end
         end
         object PClassModeler: TTabSheet
@@ -2389,7 +2422,7 @@ object FConfiguration: TFConfiguration
             Left = 37
             Top = 114
             Width = 16
-            Height = 22
+            Height = 23
             Associate = EGridSize
             Min = 2
             Max = 60
@@ -2583,7 +2616,7 @@ object FConfiguration: TFConfiguration
             Left = 275
             Top = 38
             Width = 140
-            Height = 21
+            Height = 23
             AutoComplete = False
             AutoDropDown = True
             Sorted = True
@@ -2608,7 +2641,7 @@ object FConfiguration: TFConfiguration
             Left = 513
             Top = 176
             Width = 16
-            Height = 22
+            Height = 23
             Associate = ECaseCount
             Max = 10
             Position = 4
@@ -2642,7 +2675,7 @@ object FConfiguration: TFConfiguration
             Left = 522
             Top = 36
             Width = 16
-            Height = 22
+            Height = 23
             Associate = EStructogramShadowWidth
             Position = 3
             TabOrder = 14
@@ -2659,7 +2692,7 @@ object FConfiguration: TFConfiguration
             Left = 522
             Top = 63
             Width = 16
-            Height = 22
+            Height = 23
             Associate = EStructogramShadowIntensity
             Max = 10
             TabOrder = 15
@@ -2908,7 +2941,7 @@ object FConfiguration: TFConfiguration
             Left = 490
             Top = 42
             Width = 16
-            Height = 22
+            Height = 23
             Associate = EShadowWidth
             Position = 3
             TabOrder = 7
@@ -2917,7 +2950,7 @@ object FConfiguration: TFConfiguration
             Left = 490
             Top = 69
             Width = 16
-            Height = 22
+            Height = 23
             Associate = EShadowIntensity
             Max = 10
             TabOrder = 8
@@ -3248,7 +3281,7 @@ object FConfiguration: TFConfiguration
             Width = 249
             Height = 57
             Anchors = [akLeft, akTop, akRight]
-            ItemHeight = 14
+            ItemHeight = 15
             TabOrder = 2
           end
           object lbCategories: TListBox
@@ -3256,7 +3289,7 @@ object FConfiguration: TFConfiguration
             Top = 28
             Width = 184
             Height = 97
-            ItemHeight = 14
+            ItemHeight = 15
             TabOrder = 3
             OnClick = lbCategoriesClick
           end
@@ -3266,7 +3299,7 @@ object FConfiguration: TFConfiguration
             Width = 249
             Height = 97
             Anchors = [akLeft, akTop, akRight]
-            ItemHeight = 14
+            ItemHeight = 15
             Sorted = True
             TabOrder = 4
             OnClick = lbCommandsClick
@@ -3281,9 +3314,9 @@ object FConfiguration: TFConfiguration
             TabOrder = 5
             object lblDescription: TLabel
               Left = 2
-              Top = 16
+              Top = 17
               Width = 459
-              Height = 43
+              Height = 42
               Align = alClient
               AutoSize = False
               Color = clNone
@@ -3353,7 +3386,7 @@ object FConfiguration: TFConfiguration
             Left = 289
             Top = 145
             Width = 161
-            Height = 22
+            Height = 23
             TabOrder = 4
           end
           object BSelectBrowser: TButton
@@ -3462,13 +3495,6 @@ object FConfiguration: TFConfiguration
             Height = 15
             Caption = 'Dock animation move width'
           end
-          object LFileTemplateForNewPythonScripts: TLabel
-            Left = 310
-            Top = 141
-            Width = 189
-            Height = 15
-            Caption = 'File template for new Python scripts'
-          end
           object ETempFolder: TEdit
             Left = 33
             Top = 357
@@ -3497,7 +3523,7 @@ object FConfiguration: TFConfiguration
             Left = 334
             Top = 43
             Width = 16
-            Height = 22
+            Height = 23
             Associate = ENoOfRecentFiles
             Max = 20
             Position = 9
@@ -3563,7 +3589,7 @@ object FConfiguration: TFConfiguration
             Left = 334
             Top = 13
             Width = 16
-            Height = 22
+            Height = 23
             Associate = EDaysBetweenChecks
             TabOrder = 11
           end
@@ -3579,7 +3605,7 @@ object FConfiguration: TFConfiguration
             Left = 334
             Top = 73
             Width = 16
-            Height = 22
+            Height = 23
             Associate = EDockAnimationInterval
             TabOrder = 13
           end
@@ -3587,7 +3613,7 @@ object FConfiguration: TFConfiguration
             Left = 334
             Top = 103
             Width = 16
-            Height = 22
+            Height = 23
             Associate = EDockAnimationMoveWidth
             TabOrder = 14
           end
@@ -3600,8 +3626,8 @@ object FConfiguration: TFConfiguration
             Text = '0'
           end
           object RGEditorTabPosition: TRadioGroup
-            Left = 310
-            Top = 204
+            Left = 303
+            Top = 160
             Width = 133
             Height = 62
             Caption = 'Editor tab position'
@@ -3610,21 +3636,13 @@ object FConfiguration: TFConfiguration
               'Bottom')
             TabOrder = 16
           end
-          object EFileTemplateForNewScripts: TEdit
-            Left = 310
-            Top = 160
-            Width = 217
-            Height = 23
-            TabOrder = 17
-            Text = 'Python Script'
-          end
           object CBExporerInitiallyExpanded: TCheckBox
             Left = 16
             Top = 160
             Width = 260
             Height = 17
             Caption = 'File explorer initially expanded'
-            TabOrder = 18
+            TabOrder = 17
           end
           object CBProjectExporerInitiallyExpanded: TCheckBox
             Left = 16
@@ -3632,7 +3650,7 @@ object FConfiguration: TFConfiguration
             Width = 260
             Height = 17
             Caption = 'Project explorer initially expanded'
-            TabOrder = 19
+            TabOrder = 18
           end
           object CBFileExplorerContextMenu: TCheckBox
             Left = 16
@@ -3640,7 +3658,7 @@ object FConfiguration: TFConfiguration
             Width = 260
             Height = 17
             Caption = 'File explorer context menu'
-            TabOrder = 20
+            TabOrder = 19
           end
           object CBFileExplorerBackgroundProcessing: TCheckBox
             Left = 16
@@ -3648,11 +3666,11 @@ object FConfiguration: TFConfiguration
             Width = 249
             Height = 17
             Caption = 'File explorer background processing'
-            TabOrder = 21
+            TabOrder = 20
           end
           object RGFileChangeNotification: TRadioGroup
-            Left = 456
-            Top = 204
+            Left = 449
+            Top = 160
             Width = 185
             Height = 85
             Caption = 'File change notification'
@@ -3660,7 +3678,7 @@ object FConfiguration: TFConfiguration
               'Full'
               'No mapped files'
               'Disabled')
-            TabOrder = 22
+            TabOrder = 21
           end
           object CBMethodsWithComment: TCheckBox
             Left = 16
@@ -3668,7 +3686,7 @@ object FConfiguration: TFConfiguration
             Width = 201
             Height = 17
             Caption = 'Methods with comment'
-            TabOrder = 23
+            TabOrder = 22
           end
           object CBSaveFilesAutomatically: TCheckBox
             Left = 16
@@ -3676,7 +3694,7 @@ object FConfiguration: TFConfiguration
             Width = 268
             Height = 17
             Caption = 'Save files automatically when closing'
-            TabOrder = 24
+            TabOrder = 23
           end
         end
         object PStyles: TTabSheet
@@ -3708,7 +3726,7 @@ object FConfiguration: TFConfiguration
             Top = 27
             Width = 241
             Height = 334
-            ItemHeight = 14
+            ItemHeight = 15
             TabOrder = 1
             OnClick = LBStyleNamesClick
             OnDblClick = ActionApplyStyleExecute
@@ -4847,7 +4865,7 @@ object FConfiguration: TFConfiguration
             Left = 130
             Top = 10
             Width = 151
-            Height = 21
+            Height = 23
             Style = csDropDownList
             ItemHeight = 15
             TabOrder = 0
@@ -5693,7 +5711,7 @@ object FConfiguration: TFConfiguration
             Left = 140
             Top = 48
             Width = 394
-            Height = 22
+            Height = 23
             TabOrder = 1
           end
           object BGitFolder: TButton
@@ -5718,7 +5736,7 @@ object FConfiguration: TFConfiguration
             Left = 140
             Top = 80
             Width = 394
-            Height = 22
+            Height = 23
             TabOrder = 4
           end
           object EUserName: TEdit
@@ -5774,7 +5792,7 @@ object FConfiguration: TFConfiguration
             Left = 140
             Top = 48
             Width = 394
-            Height = 22
+            Height = 23
             TabOrder = 0
           end
           object BRepository: TButton
@@ -5927,6 +5945,16 @@ object FConfiguration: TFConfiguration
       ImageIndex = 1
       OnExecute = actFileUpdateItemExecute
     end
+    object actFileDefaultItem: TAction
+      Category = 'FileTemplate'
+      Caption = 'Default'
+      OnExecute = actFileDefaultItemExecute
+    end
+    object actFileDefaultAll: TAction
+      Category = 'FileTemplate'
+      Caption = 'Default all'
+      OnExecute = actFileDefaultAllExecute
+    end
   end
   object TemplatesVirtualImageList: TVirtualImageList
     DisabledGrayscale = False
@@ -5963,8 +5991,8 @@ object FConfiguration: TFConfiguration
         Name = 'Plus'
       end>
     ImageCollection = CommandsDataModule.icSVGImages
-    Left = 742
-    Top = 160
+    Left = 758
+    Top = 200
   end
   object ColorDialog: TColorDialog
     Left = 463

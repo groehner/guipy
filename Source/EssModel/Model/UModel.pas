@@ -74,6 +74,7 @@ type
     Inner: boolean;
     Anonym: boolean;
     SourceRead: boolean;
+    //Recursive: boolean;
     constructor Create(aOwner: TModelEntity); override;
     destructor Destroy; override;
     function GetFeatures : IModelIterator;
@@ -101,7 +102,7 @@ type
     class function GetAfterListener: TGUID; override;
   public
     constructor Create(aOwner: TModelEntity); override;
-    function asPythonString(classname: string): string;
+    function asPythonString: string;
     function asUMLString(ShowParameter: integer): string;
     function toShortStringNode: string;
     property TypeClassifier : TClassifier read FTypeClassifier write FTypeClassifier;
@@ -1368,16 +1369,12 @@ begin
   Result := IBeforeParameterListener;
 end;
 
-function TParameter.asPythonString(classname: string): string;
+function TParameter.asPythonString: string;
 begin
   Result:= Name;
-  if assigned(TypeClassifier) then begin
-    var astype:= TypeClassifier.asType;
-    if astype = classname
+  if assigned(TypeClassifier) then
        // pep 0484 forward references, shell be solved with python 3.11 but isn't,
-      then Result:= Result + ': ' + asString(TypeClassifier.asType)
-      else Result:= Result + ': ' + TypeClassifier.asType;
-  end;
+    Result:= Result + ': ' + TypeClassifier.asType;
   if Value <> '' then
     Result:= Result + ' = ' + Value;
 end;
@@ -1523,7 +1520,7 @@ begin
   while it2.HasNext do begin
     Parameter:= it2.next as TParameter;
     if (Parameter.Name <> 'cls') and (Parameter.Name <> 'self') then
-      s:= s + Parameter.asPythonString(Parentname) + ', ';
+      s:= s + Parameter.asPythonString + ', ';
   end;
   if Copy(s, length(s) - 1, 2) = ', ' then
     Delete(s, length(s) - 1, 2);
@@ -1768,6 +1765,7 @@ begin
   GenericName:= '';
   Inner:= false;
   SourceRead:= false;
+  //Recursive:= false;
 end;
 
 destructor TClassifier.Destroy;
@@ -1870,6 +1868,8 @@ begin
     Result:= 'str'
   else if Result = 'integer' then
     Result:= 'int';
+//  if Recursive then
+//    Result:= asString(Result);
 end;
 
 function TClassifier.asUMLType: string;

@@ -19,7 +19,7 @@ object PyIDEMainForm: TPyIDEMainForm
   OnShortCut = FormShortCut
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 14
+  TextHeight = 13
   object StatusBar: TSpTBXStatusBar
     Left = 0
     Top = 626
@@ -33,7 +33,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 324
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -116,8 +116,6 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
-    ExplicitWidth = 286
-    ExplicitHeight = 83
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -252,7 +250,7 @@ object PyIDEMainForm: TPyIDEMainForm
     object TBControlItem1: TTBControlItem
     end
     object DockTopPanel: TPanel
-      Tag = 94678
+      Tag = 99814
       Left = 0
       Top = 0
       Width = 946
@@ -1113,13 +1111,6 @@ object PyIDEMainForm: TPyIDEMainForm
         object mnViewRegExpTester: TSpTBXItem
           Action = actViewRegExpTester
         end
-        object mnToolsConsole: TSpTBXItem
-          Caption = 'DOS window'
-          Hint = 'Open command prompt for the selected Python version'
-          HelpContext = 880
-          ImageIndex = 4
-          OnClick = mnToolsConsoleClick
-        end
         object mnToolsBrowser: TSpTBXItem
           Caption = 'Browser'
           Hint = 'Opens a browser window'
@@ -1447,9 +1438,9 @@ object PyIDEMainForm: TPyIDEMainForm
         Left = 63
         Top = 2
         Width = 160
-        Height = 22
+        Height = 21
         AutoCloseUp = True
-        ItemHeight = 14
+        ItemHeight = 13
         TabOrder = 0
         OnChange = tbiSearchTextChange
         OnExit = tbiSearchTextExit
@@ -1460,8 +1451,8 @@ object PyIDEMainForm: TPyIDEMainForm
         Left = 304
         Top = 2
         Width = 160
-        Height = 22
-        ItemHeight = 14
+        Height = 21
+        ItemHeight = 13
         TabOrder = 1
         Visible = False
         OnChange = tbiReplaceTextChange
@@ -4420,8 +4411,14 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'svn'
       end
       item
-        CollectionIndex = 152
+        CollectionIndex = 154
         Disabled = False
+      end
+      item
+        CollectionIndex = 155
+        CollectionName = 'EditClass'
+        Disabled = False
+        Name = 'EditClass'
       end>
     ImageCollection = CommandsDataModule.icSVGImages
     PreserveItems = True

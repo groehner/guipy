@@ -1191,7 +1191,6 @@ type
     SpTBXSeparatorItem10: TSpTBXSeparatorItem;
     mnViewDebugLayout: TSpTBXItem;
     mnViewDefaultLayout: TSpTBXItem;
-    mnToolsConsole: TSpTBXItem;
     mnToolsGit: TSpTBXSubmenuItem;
     mnToolsGitStatus: TSpTBXItem;
     mnToolsGitAdd: TSpTBXItem;
@@ -1465,7 +1464,6 @@ type
     procedure tbiFindCloseClick(Sender: TObject);
     procedure mnViewDebugLayoutClick(Sender: TObject);
     procedure mnViewDefaultLayoutClick(Sender: TObject);
-    procedure mnToolsConsoleClick(Sender: TObject);
     procedure mnToolsGitClick(Sender: TObject);
     procedure mnToolsSVNClick(Sender: TObject);
     procedure mnLanguageClick(Sender: TObject);
@@ -1623,6 +1621,7 @@ type
     procedure DeleteObjectsInUMLForms;
     procedure StructogramFromText(sourcecode, pathname: string);
     procedure DoExport(const Pathname: String; Bitmap: TBitmap);
+    procedure NewTkOrQTFile(FileTemplate: TFileTemplate);
     procedure NewTextDiff(Form1, Form2: TEditorForm);
     function NewBrowser(Adresse: string): TFBrowser;
     procedure LoadDefaultLayout(LayoutAppStorage: TJvAppIniFileStorage; const Layout: string);
@@ -2385,7 +2384,7 @@ begin
   for var i := 0 to ToolsCollection.Count - 1 do begin
     var Tool := (ToolsCollection.Items[i] as TToolItem).ExternalTool;
     if (Tool.ApplicationName = '$[PythonExe-Short]') and (Tool.Parameters = '') or
-       (Tool.ApplicationName = '%COMSPEC%')
+       (Tool.ApplicationName = '%COMSPEC%') and not GuiPyOptions.LockedDOSWindow
     then
       MoveToToolsMenu(_(Tool.Caption));
   end;
@@ -2822,14 +2821,12 @@ begin
     if CommandsDataModule.GetSaveFileName(NewName, CommandsDataModule.SynPythonSyn, 'py', true)
     then begin
       FileTemplate:= FileTemplates.TemplateByName(SClassTemplateName);
-      if assigned(FileTemplate) then begin
-        Editor:= NewFileFromTemplate(FileTemplate,
-          TabControlIndex(ActiveTabControl), NewName);
-        PrepareClassEdit(Editor, 'New', nil);
-      end else begin
-        ErrorMsg(Format(_('File template %s missing!'), [SClassTemplateName]));
-        exit;
+      if FileTemplate = nil then begin
+        FileTemplates.AddClassTemplate;
+        FileTemplate:= FileTemplates.TemplateByName(SClassTemplateName);
       end;
+      Editor:= NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl), NewName);
+      PrepareClassEdit(Editor, 'New', nil);
     end;
   end;
 end;
@@ -4219,19 +4216,13 @@ begin
 end;
 
 procedure TPyIDEMainForm.actFileNewModuleExecute(Sender: TObject);
-Var
-  TemplateName : string;
-  FileTemplate : TFileTemplate;
 begin
-  FileTemplate := nil;
-  TemplateName := PyIDEOptions.FileTemplateForNewScripts;
-  if TemplateName <> '' then
-    FileTemplate := FileTemplates.TemplateByName(TemplateName);
-
-  if Assigned(FileTemplate) then
-    NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl))
-  else
-    DoOpenFile(getFilename('.py'), 'Python', TabControlIndex(ActiveTabControl));
+  var FileTemplate := FileTemplates.TemplateByName(SPythonTemplateName);
+  if FileTemplate = nil then begin
+    FileTemplates.AddPythonTemplate;
+    FileTemplate:= FileTemplates.TemplateByName(SPythonTemplateName);
+  end;
+  NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl))
 end;
 
 procedure TPyIDEMainForm.actFileNewSequencediagramExecute(Sender: TObject);
@@ -4244,60 +4235,41 @@ begin
   DoOpenFile(getFilename('.psg'));
 end;
 
-procedure TPyIDEMainForm.actFileNewTkinterExecute(Sender: TObject);
-  var EditForm: TEditorForm;
-      GUIForm: TFGUIForm;
+procedure TPyIDEMainForm.NewTkOrQtFile(FileTemplate: TFileTemplate);
+  var GUIForm: TFGUIForm;
       aEditor: IEditor;
-      FileTemplate : TFileTemplate;
 begin
-  FileTemplate := FileTemplates.TemplateByName(STkinterTemplateName);
-  if assigned(FileTemplate) then begin
-    aEditor:= NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl));
-    EditForm:= TEditorForm(aEditor.Form);
-    if Assigned(EditForm) then begin
-      EditForm.SetGeometry;
-      EditForm.SynEdit.Text := Parameters.ReplaceInText(FileTemplate.Template);
-      if PyIDEOptions.CodeFoldingForGuiElements then
-        EditForm.CollapseGUICreation;
-      GUIForm:= TFGUIForm.Create(nil);
-      GUIForm.Open(ChangeFileExt(EditForm.Pathname, '.pfm'), '',
-        Point(GuiPyOptions.FrameWidth, GuiPyOptions.FrameHeight), EditForm);
-      GUIForm.Caption:= 'CAPTION';
-      GUIForm.initEvents;
-      FObjectInspector.ELPropertyInspector.SetByCaption('Title', 'CAPTION');
-      EditForm.Modified:= false;
-    end;
-    ShowDockForm(FObjectInspector)
-  end else
-    ErrorMsg(Format(_('File template %s missing!'), [STkinterTemplateName]));
+  aEditor:= NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl));
+  if Assigned(aEditor) then begin
+    GUIForm:= TFGUIForm.Create(nil);
+    GUIForm.Open(ChangeFileExt(aEditor.FileName, '.pfm'), '',
+      Point(GuiPyOptions.FrameWidth, GuiPyOptions.FrameHeight), TEditorForm(aEditor.Form));
+    GUIForm.Caption:= 'CAPTION';
+    GUIForm.initEvents;
+    FObjectInspector.ELPropertyInspector.SetByCaption('Title', 'CAPTION');
+    aEditor.SynEdit.ClearUndo; // because GUIForm.Open changes geometry
+  end;
+  ShowDockForm(FObjectInspector);
+end;
+
+procedure TPyIDEMainForm.actFileNewTkinterExecute(Sender: TObject);
+begin
+  var FileTemplate := FileTemplates.TemplateByName(sTkinterTemplateName);
+  if FileTemplate = nil then begin
+    FileTemplates.AddTkinterTemplate;
+    FileTemplate:= FileTemplates.TemplateByName(sTkinterTemplateName);
+  end;
+  NewTkOrQtFile(FileTemplate);
 end;
 
 procedure TPyIDEMainForm.TBQtApplicationClick(Sender: TObject);
-  var EditForm: TEditorForm;
-      GUIForm: TFGUIForm;
-      aEditor: IEditor;
-      FileTemplate : TFileTemplate;
 begin
-  FileTemplate := FileTemplates.TemplateByName(SQtTemplateName);
-  if assigned(FileTemplate) then begin
-    aEditor:= NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl));
-    EditForm:= TEditorForm(aEditor.Form);
-    if Assigned(EditForm) then begin
-      EditForm.SetGeometry;
-      EditForm.SynEdit.Text := Parameters.ReplaceInText(FileTemplate.Template);
-      if PyIDEOptions.CodeFoldingForGuiElements then
-        EditForm.CollapseGUICreation;
-      GUIForm:= TFGUIForm.Create(nil);
-      GUIForm.Open(ChangeFileExt(EditForm.Pathname, '.pfm'), '',
-        Point(GuiPyOptions.FrameWidth, GuiPyOptions.FrameHeight), EditForm);
-      GUIForm.Caption:= 'CAPTION';
-      GUIForm.initEvents;
-      FObjectInspector.ELPropertyInspector.SetByCaption('Title', 'CAPTION');
-      EditForm.Modified:= false;
-    end;
-    ShowDockForm(FObjectInspector)
-  end else
-    ErrorMsg(Format(_('File template %s missing!'), [SQtTemplateName]));
+  var FileTemplate := FileTemplates.TemplateByName(sQtTemplateName);
+  if FileTemplate = nil then begin
+    FileTemplates.AddTkinterTemplate;
+    FileTemplate:= FileTemplates.TemplateByName(sQtTemplateName);
+  end;
+  NewTkOrQtFile(FileTemplate);
 end;
 
 procedure TPyIDEMainForm.actFileOpenExecute(Sender: TObject);
@@ -4699,7 +4671,6 @@ begin
   MachineStorage.DefaultSection:= 'Other Settings';
   if MachineStorage.PathExists('Restricted') then begin
     GuiPyOptions.LockedDOSWindow:= MachineStorage.ReadBoolean('Restricted\LockedDOSWindow', false);
-    mnToolsConsole.Visible:= not GuiPyOptions.LockedDOSWindow;
     GuiPyOptions.LockedInternet:= MachineStorage.ReadBoolean('Restricted\LockedInternet', false);
     GuiPyOptions.LockedPaths:= MachineStorage.ReadBoolean('Restricted\LockedPaths', false);
     GuiPyOptions.LockedStructogram:= MachineStorage.ReadBoolean('Restricted\LockedStructogram', false);
@@ -4832,6 +4803,7 @@ begin
   // Load MRU Lists
   tbiRecentFileList.LoadFromIni(AppStorage.IniFile, 'MRU File List');
   tbiRecentProjects.LoadFromIni(AppStorage.IniFile, 'MRU Project List');
+  FConfiguration.AddScriptsPath;
 end;
 
 procedure TPyIDEMainForm.RestoreLocalApplicationData;
@@ -5250,13 +5222,6 @@ end;
 procedure TPyIDEMainForm.mnToolsBrowserClick(Sender: TObject);
 begin
   NewBrowser('about:blank');
-end;
-
-procedure TPyIDEMainForm.mnToolsConsoleClick(Sender: TObject);
-begin
-  ShellExecute(0, 'open',
-    PChar(PrepareCommandLine('%COMSPEC%')), nil,
-    PChar(PrepareCommandLine('$[ActiveDoc-Dir]')), SW_Show);
 end;
 
 procedure TPyIDEMainForm.mnToolsGitClick(Sender: TObject);
@@ -6121,7 +6086,7 @@ begin
   TabCtrl.Toolbar.BeginUpdate;
   try
     Result := GI_EditorFactory.NewEditor(TabControlIndex);
-    if Result <> nil then begin
+    if assigned(Result) then begin
       try
         Result.FromTemplate:= true;
         if Filename = '' then
@@ -6147,6 +6112,7 @@ begin
       Result.SynEdit.ClearUndo;
       Result.RefreshSymbols;
       TEditorForm(Result.Form).DefaultExtension := FileTemplate.Extension;
+      TEditorForm(Result.Form).CollapseGUICreation;
       // Jupyter support
       if (LowerCase(FileTemplate.Extension) = 'ipynb') and
         not OutputWindow.IsRunning then

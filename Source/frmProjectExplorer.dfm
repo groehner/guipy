@@ -40,7 +40,7 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     9C4100019C4100039C4100079C4100079C4100079C4100079C4100079C41}
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 14
+  TextHeight = 13
   inherited BGPanel: TPanel
     inherited FGPanel: TPanel
       object Panel1: TPanel

@@ -414,10 +414,11 @@ Const
   // File Templates
   SFileTemplateCategoryInternet = 'Internet';
   SFileTemplateCategoryOther = 'Other';
+
   SPythonTemplateName = 'Python Script';
   STkinterTemplateName = 'Tkinter Script';
   SQtTemplateName = 'Qt Script';
-  SClassTemplateName = 'Class Template';
+  SClassTemplateName = 'Class Script';
   SCythonTemplateName = 'Cython Script';
   SCSSFileTemplateName = 'Cascading Style Sheet';
   SHTMLFileTemplateName = 'HTML Document';
@@ -489,14 +490,14 @@ Const
 
   SPythonFileTemplate =
     '#-------------------------------------------------------------------------------' + sLineBreak +
-    '# Name:        $[ActiveDoc-Name]' + sLineBreak +
-    '# Purpose:     ' + sLineBreak +
+    '# Name:         $[ActiveDoc-Name]' + sLineBreak +
+    '# Purpose:      ' + sLineBreak +
     '#' + sLineBreak +
-    '# Author:      $[Author]' + sLineBreak +
+    '# Author:       $[Author]' + sLineBreak +
     '#' + sLineBreak +
-    '# Created:     $[DateTime-''DD/MM/YYYY''-DateFormat]' + sLineBreak +
-    '# Copyright:   (c) $[Author] $[DateTime-''YYYY''-DateFormat]' + sLineBreak +
-    '# Licence:     <your licence>' + sLineBreak +
+    '# Created:      $[DateTime-''DD/MM/YYYY''-DateFormat]' + sLineBreak +
+    '# Copyright:    (c) $[Author] $[DateTime-''YYYY''-DateFormat]' + sLineBreak +
+    '# Licence:      $[Licence]' + sLineBreak +
     '#-------------------------------------------------------------------------------' + sLineBreak +
     '' + sLineBreak +
     'def main():' + sLineBreak +
@@ -507,14 +508,14 @@ Const
 
   STkinterFileTemplate =
     '#-------------------------------------------------------------------------------' + sLineBreak +
-    '# Name:        $[ActiveDoc-Name]' + sLineBreak +
-    '# Purpose:     ' + sLineBreak +
+    '# Name:         $[ActiveDoc-Name]' + sLineBreak +
+    '# Purpose:      ' + sLineBreak +
     '#' + sLineBreak +
-    '# Author:      $[Author]' + sLineBreak +
+    '# Author:       $[Author]' + sLineBreak +
     '#' + sLineBreak +
-    '# Created:     $[DateTime-''DD/MM/YYYY''-DateFormat]' + sLineBreak +
-    '# Copyright:   (c) $[Author] $[DateTime-''YYYY''-DateFormat]' + sLineBreak +
-    '# Licence:     <your licence>' + sLineBreak +
+    '# Created:      $[DateTime-''DD/MM/YYYY''-DateFormat]' + sLineBreak +
+    '# Copyright:    (c) $[Author] $[DateTime-''YYYY''-DateFormat]' + sLineBreak +
+    '# Licence:      $[Licence]' + sLineBreak +
     '#-------------------------------------------------------------------------------' + sLineBreak +
     '' + sLineBreak +
     'import tkinter as tk' + sLineBreak +
@@ -525,7 +526,7 @@ Const
     '    def __init__(self):' + sLineBreak +
     '        self.root = tk.Tk()' + sLineBreak +
     '        super().__init__(self.root)' + sLineBreak +
-    '        self.root.geometry(''300x300'')' + sLineBreak +
+    '        self.root.geometry($[Geometry-Tk])' + sLineBreak +
     '        self.root.title(''CAPTION'')' + sLineBreak +
     '        self.create_widgets()' + sLineBreak +
     '        self.mainloop()' + sLineBreak +
@@ -537,14 +538,14 @@ Const
 
   SQtFileTemplate =
     '#-------------------------------------------------------------------------------' + sLineBreak +
-    '# Name:        $[ActiveDoc-Name]' + sLineBreak +
-    '# Purpose:     ' + sLineBreak +
+    '# Name:         $[ActiveDoc-Name]' + sLineBreak +
+    '# Purpose:      ' + sLineBreak +
     '#' + sLineBreak +
-    '# Author:      $[Author]' + sLineBreak +
+    '# Author:       $[Author]' + sLineBreak +
     '#' + sLineBreak +
-    '# Created:     $[DateTime-''DD/MM/YYYY''-DateFormat]' + sLineBreak +
-    '# Copyright:   (c) $[Author] $[DateTime-''YYYY''-DateFormat]' + sLineBreak +
-    '# Licence:     <your licence>' + sLineBreak +
+    '# Created:      $[DateTime-''DD/MM/YYYY''-DateFormat]' + sLineBreak +
+    '# Copyright:    (c) $[Author] $[DateTime-''YYYY''-DateFormat]' + sLineBreak +
+    '# Licence:      $[Licence]' + sLineBreak +
     '#-------------------------------------------------------------------------------' + sLineBreak +
     '' + sLineBreak +
     'from PyQt6.QtWidgets import *' + sLineBreak +
@@ -555,7 +556,7 @@ Const
     '' + sLineBreak +
     '    def __init__(self):' + sLineBreak +
     '        super().__init__()' + sLineBreak +
-    '        self.resize(300, 300)' + sLineBreak +
+    '        self.resize($[Geometry-Qt])' + sLineBreak +
     '        self.setWindowTitle(''CAPTION'')' + sLineBreak +
     '        self.setCentralWidget(QWidget(self))' + sLineBreak +
     '        self.create_widgets()' + sLineBreak +
@@ -571,14 +572,14 @@ Const
 
   SClassFileTemplate =
     '#-------------------------------------------------------------------------------' + sLineBreak +
-    '# Name:        $[ActiveDoc-Name]' + sLineBreak +
-    '# Purpose:     ' + sLineBreak +
+    '# Name:         $[ActiveDoc-Name]' + sLineBreak +
+    '# Purpose:      ' + sLineBreak +
     '#' + sLineBreak +
-    '# Author:      $[Author]' + sLineBreak +
+    '# Author:       $[Author]' + sLineBreak +
     '#' + sLineBreak +
-    '# Created:     $[DateTime-''DD/MM/YYYY''-DateFormat]' + sLineBreak +
-    '# Copyright:   (c) $[Author] $[DateTime-''YYYY''-DateFormat]' + sLineBreak +
-    '# Licence:     <your licence>' + sLineBreak +
+    '# Created:      $[DateTime-''DD/MM/YYYY''-DateFormat]' + sLineBreak +
+    '# Copyright:    (c) $[Author] $[DateTime-''YYYY''-DateFormat]' + sLineBreak +
+    '# Licence:      $[Licence]' + sLineBreak +
     '#-------------------------------------------------------------------------------' + sLineBreak +
     sLineBreak +
     'class $[ActiveDoc-NameNoExt]:' + sLineBreak +

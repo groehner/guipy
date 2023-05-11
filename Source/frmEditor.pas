@@ -350,7 +350,6 @@ type
     procedure GotoLine(i: integer);
     procedure GotoWord(const s: string);
     procedure PutText(s: String);
-    procedure setGeometry;
     function getGeometry: TPoint;
     function getIndent: String;
 
@@ -1417,9 +1416,7 @@ begin
       ApplyPyIDEOptions;
     end;
     if Result <> nil then
-    begin
       fFiles.Add(Result);
-    end;
   except
     Sheet.Free;
   end;
@@ -1765,12 +1762,7 @@ begin
 
   if {(fOldEditorForm <> Self) and }not GI_PyIDEServices.IsClosing then
     CodeExplorerWindow.UpdateWindow(fEditor.FSynLsp.DocSymbols, ceuEditorEnter);
-
-  if assigned(TVFileStructure) and (FFileStructure.myForm <> self) and
-    assigned(TVFileStructure.Items) then
-    FFileStructure.init(TVFileStructure.Items, Self);
   fOldEditorForm := Self;
-
   // Search and Replace Target
   EditorSearchOptions.InterpreterIsSearchTarget := False;
   EditorSearchOptions.TextDiffIsSearchTarget := False;
@@ -2005,6 +1997,9 @@ begin
         if Line <> TrimmedLine then
           SynEdit.Lines[I] := TrimmedLine;
       end;
+
+      if (SynEdit.Lines.Count > 1) and (Pos('# Name:', SynEdit.Lines[1]) = 1) then
+        SynEdit.Lines[1]:= '# Name:         ' + ExtractFilename(fEditor.fFileName);
     finally
       SynEdit.EndUpdate;
     end;
@@ -2791,20 +2786,6 @@ begin
     TryStrToInt(sx, Result.X);
   if sy <> '' then
     TryStrToInt(sy, Result.Y);
-end;
-
-procedure TEditorForm.setGeometry;
-begin
-  if FrameType = 2 then
-    ReplaceLine('self.root.geometry',
-      FConfiguration.Indent2 + 'self.root.geometry(''' +
-      IntToStr(GuiPyOptions.FrameWidth) + 'x' +
-      IntToStr(GuiPyOptions.FrameHeight) + ''')')
-  else if FrameType = 3 then
-    ReplaceLine('self.resize',
-      FConfiguration.Indent2 + 'self.resize(' +
-      IntToStr(GuiPyOptions.FrameWidth) + ', ' +
-      IntToStr(GuiPyOptions.FrameHeight) + ')');
 end;
 
 function TEditorForm.getIndent: String;

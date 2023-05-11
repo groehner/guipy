@@ -164,9 +164,9 @@ type
     procedure TVClassOrInterface(Classifier: TClassifier);
     procedure TVAttribute(Attribute: TAttribute);
     procedure TVMethod(Method: TOperation);
-    procedure ChangeAttribute(var A: TAttribute);
-    procedure ChangeGetSet(Attribut: TAttribute; ClassNumber: Integer);
-    function MakeAttribute: TAttribute;
+    procedure ChangeAttribute(var A: TAttribute; CName: string);
+    procedure ChangeGetSet(Attribut: TAttribute; ClassNumber: Integer; cName: string);
+    function MakeAttribute(Cname: String): TAttribute;
     function MakeType(CB: TComboBox): TClassifier; overload;
     function MakeType(const s: string): TClassifier; overload;
     procedure GetParameter(LB: TListBox; Method: TOperation);
@@ -966,7 +966,7 @@ begin
   myEditor.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TFClassEditor.ChangeGetSet(Attribut: TAttribute; ClassNumber: Integer);
+procedure TFClassEditor.ChangeGetSet(Attribut: TAttribute; ClassNumber: Integer; CName: string);
 var
   NewGet, NewSet: string;
   Method1, Method2: TOperation;
@@ -1000,7 +1000,7 @@ begin
   if Assigned(Method1) and Assigned(Method2) and
     (Method1.LineS > Method2.LineS) then
     getIsFirst:= false;
-  ChangeAttribute(Attribut);
+  ChangeAttribute(Attribut, CName);
   if IsClass then begin
     NewGet:= CreateMethod(_(LNGGet), Attribut);
     NewSet:= CreateMethod(_(LNGSet), Attribut);
@@ -1062,7 +1062,7 @@ begin
   myEditor.ActiveSynEdit.BeginUpdate;
   if IsAttributesNode(Node) then begin
     NodeIndex:= NodeIndex + Node.Count + 1;
-    Attribute:= MakeAttribute;
+    Attribute:= MakeAttribute(Node.Parent.Text);
     NewName:= Attribute.Name;
     if AttributeAlreadyExists(Attribute.Name) then
       ErrorMsg(Format(_('%s already exists'), [Attribute.Name]))
@@ -1079,7 +1079,7 @@ begin
     OldName:= Attribute.Name;
     OldStatic:= Attribute.Static;
     Old:= Attribute.toPython(false, false);
-    ChangeGetSet(Attribute, ClassNumber);
+    ChangeGetSet(Attribute, ClassNumber, Node.Parent.Parent.Text);
 
     New:= Attribute.toPython(ValueChanged, TypeChanged);
     NewName:= Attribute.Name;
@@ -1461,10 +1461,12 @@ begin
     E.SelStart:= length(s);
 end;
 
-procedure TFClassEditor.ChangeAttribute(var A: TAttribute);
+procedure TFClassEditor.ChangeAttribute(var A: TAttribute; CName: String);
 begin
   A.Name:= EAttributeName.Text;
   A.TypeClassifier:= MakeType(CBAttributeType);
+  //if A.TypeClassifier.Name = CName then
+  //  A.TypeClassifier.Recursive:= true;
   A.Value:= CBAttributeValue.Text;
   if IsClass then
     A.Visibility:= TVisibility(RGAttributeAccess.ItemIndex)
@@ -1476,10 +1478,10 @@ begin
   A.IsFinal:= CBAttributeFinal.Checked;
 end;
 
-function TFClassEditor.MakeAttribute: TAttribute;
+function TFClassEditor.MakeAttribute(CName: string): TAttribute;
 begin
   Result:= TAttribute.create(nil);
-  ChangeAttribute(Result);
+  ChangeAttribute(Result, CName);
 end;
 
 function TFClassEditor.MakeType(CB: TComboBox): TClassifier;
