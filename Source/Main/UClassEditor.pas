@@ -243,7 +243,7 @@ begin
 end;
 
 procedure TFClassEditor.FormCreate(Sender: TObject);
-  const Values = '0'#$D#$A'0.0'#$D#$A''''''#$D#$A'True'#$D#$A'False'#$D#$A'None'#$D#$A'[]'#$D#$A'()'#$D#$A'{}';
+  const Values = '0'#$D#$A'0.0'#$D#$A''''''#$D#$A'True'#$D#$A'False'#$D#$A'None'#$D#$A'[]'#$D#$A'()'#$D#$A'{}'#$D#$A'set()';
 begin
   inherited;
   MakeNewClass:= false;

@@ -1095,7 +1095,6 @@ type
     SpTBXTabItem3: TSpTBXTabItem;
     SpTBXTabSheetTTK: TSpTBXTabSheet;
     ToolbarProgram: TToolBar;
-    TBNew: TToolButton;
     TBClass: TToolButton;
     TBStructogram: TToolButton;
     TBSequence: TToolButton;
@@ -1316,6 +1315,9 @@ type
     SpTBXSeparatorItem32: TSpTBXSeparatorItem;
     SpTBXItem24: TSpTBXItem;
     actEditorZoomReset: TAction;
+    lbFileFormat: TSpTBXLabelItem;
+    SpTBXSeparatorItem30: TSpTBXSeparatorItem;
+    mnToolsRestartLS: TSpTBXItem;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -2288,21 +2290,6 @@ end;
 
 procedure TPyIDEMainForm.ChangeMenuSystem;
   var ViewMenuItem: TTBCustomItem;
-      aSeparator: TSpTBXSeparatorItem;
-
-  procedure MoveToToolsMenu(key: string);
-    var aMenuItem: TTBCustomItem; i: integer;
-  begin
-    key:= 'actTools' + MakeValidIdentifier(key);
-    for i:= mnTools.Count - 1 downto 0 do
-      if assigned(mnTools.Items[i].Action) and (mnTools.Items[i].Action.Name = key)
-      then begin
-        aMenuItem:= mnTools.Items[i];
-        mnTools.Remove(aMenuItem);
-        ToolsMenu.Insert(11, aMenuItem);
-      end;
-  end;
-
 begin
   EditorToolBar.Visible:= false;
 
@@ -2361,7 +2348,7 @@ begin
   mnPythonPath.Visible:= false;
   ViewMenuItem:= EditorViewsMenu.Items[2];
   EditorViewsMenu.Remove(ViewMenuItem);
-  ToolsMenu.Insert(2, ViewMenuItem);
+  // ToolsMenu.Insert(2, ViewMenuItem);  the documentation is currently not working
   EditorViewsMenu.Visible:= false;
 
   // two captions which are not translated
@@ -2375,20 +2362,7 @@ begin
 
   mnToolsEditStartupScript.Visible:= false;
   mnToolsOptionsImportExport.Visible:= false;
-
-  aSeparator:= TSpTBXSeparatorItem.Create(Self);
-  mnTools.Add(aSeparator);
-  ToolsMenu.Remove(mnConfigureTools);
-  mnTools.Add(mnConfigureTools);
-
-  for var i := 0 to ToolsCollection.Count - 1 do begin
-    var Tool := (ToolsCollection.Items[i] as TToolItem).ExternalTool;
-    if (Tool.ApplicationName = '$[PythonExe-Short]') and (Tool.Parameters = '') or
-       (Tool.ApplicationName = '%COMSPEC%') and not GuiPyOptions.LockedDOSWindow
-    then
-      MoveToToolsMenu(_(Tool.Caption));
-  end;
-
+  mnToolsRestartLS.Visible:= false;
   OptionsMenu.Visible:= false;
   {
   mnCustomizeParameters.Visible:= false;
@@ -2922,12 +2896,11 @@ begin
       mtWarning, [mbYes, mbNo], 0) = idNo then Exit;
   end;
   PyControl.ActiveInterpreter.ReInitialize;
-  GI_FileFactory.ApplyToFiles(procedure(Fi: IFile)
+  GI_FileFactory.ApplyToFiles(procedure(Fi: IFile)     // Why?
     begin
       if (Fi as TFile).GetFileKind = fkEditor then
         (Fi as TFile).fForm.DoSave;
     end);
-  //RefreshUMLWindows;
 end;
 
 procedure TPyIDEMainForm.RefreshUMLWindows;
@@ -4090,6 +4063,7 @@ var
 begin
   Editor := GI_ActiveEditor;
   if Editor <> nil then begin
+    lbFileFormat.Caption:= Editor.GetFileFormat;
     ptCaret := Editor.GetCaretPos;
     if (ptCaret.X > 0) and (ptCaret.Y > 0) then
       lbStatusCaret.Caption := Format('%d:%d', [ptCaret.Y, ptCaret.X])
@@ -4577,7 +4551,7 @@ begin
   begin
     TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides']);
     AppStorage.ReadPersistent('Editor Options', EditorOptions, True, True, TempStringList);
-    EditorOptions.Options := EditorOptions.Options + [eoBracketsHighlight];
+    EditorOptions.Options := EditorOptions.Options + [eoBracketsHighlight, eoCopyPlainText];
   end;
 
   if AppStorage.PathExists('Editor Search Options') then begin
@@ -5125,7 +5099,16 @@ Var
   MenuItem : TSpTBXItem;
   Action : TAction;
   Tool : TExternalTool;
+
 begin
+  if ToolsMenu.IndexOf(mnConfigureTools) > 0 then // first run
+    ToolsMenu.Remove(mnConfigureTools)
+  else begin
+    mnTools.Remove(mnConfigureTools);
+    ToolsMenu.Delete(12); // Python Interpreter
+    ToolsMenu.Delete(11); // Command Prompt
+  end;
+
   // delete actions and menus added in previous calls
   mnTools.Clear;
   for i := actlStandard.ActionCount - 1 downto 0 do
@@ -5137,11 +5120,17 @@ begin
       MenuItem := TSpTBXItem.Create(Self);
       Action := TExternalToolAction.CreateExtToolAction(Self, Tool);
       Action.ActionList := actlStandard;
-      mnTools.Add(MenuItem);
       MenuItem.Action := Action;
       MenuItem.Images := TPyScripterSettings.ShellImages;
+      if (Tool.ApplicationName = '$[PythonExe-Short]') and (Tool.Parameters = '') or
+         (Tool.ApplicationName = '%COMSPEC%') and not GuiPyOptions.LockedDOSWindow
+        then ToolsMenu.Insert(11, MenuItem)
+        else mnTools.Add(MenuItem);
     end;
   end;
+
+  mnTools.Add(TSpTBXSeparatorItem.Create(Self));
+  mnTools.Add(mnConfigureTools);
 end;
 
 procedure TPyIDEMainForm.SetupLanguageMenu;
@@ -5228,6 +5217,7 @@ procedure TPyIDEMainForm.mnToolsGitClick(Sender: TObject);
 begin
   FGit.Execute(TSpTBXItem(Sender).Tag, GetActiveEditor);
 end;
+
 
 procedure TPyIDEMainForm.mnToolsSVNClick(Sender: TObject);
 begin

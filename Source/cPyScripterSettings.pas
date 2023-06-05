@@ -1235,7 +1235,7 @@ begin
   end;
   EngineInitFile := TPath.Combine(UserDataPath, 'python_init.py');
   PyScripterInitFile := TPath.Combine(UserDataPath, 'pyscripter_init.py');
-  PyScripterLogFile := TPath.Combine(UserDataPath, 'pyscripter.log');
+  PyScripterLogFile := TPath.Combine(UserDataPath, 'guipy.log');
   RecoveryDir := TPath.Combine(UserDataPath, 'Recovery');
   if not IsPortable then begin
     // First use setup
@@ -1280,7 +1280,8 @@ begin
     Options := [eoDragDropEditing, eoEnhanceHomeKey, eoShowLigatures,
                 eoEnhanceEndKey, eoGroupUndo, eoHideShowScrollbars, eoKeepCaretX,
                 eoShowScrollHint, eoSmartTabDelete, eoTabsToSpaces, eoTabIndent,
-                eoTrimTrailingSpaces, eoAutoIndent, eoBracketsHighlight];
+                eoTrimTrailingSpaces, eoAutoIndent, eoBracketsHighlight,
+                eoCopyPlainText];
     WantTabs := True;
     TabWidth := 4;
     MaxUndo := 0;

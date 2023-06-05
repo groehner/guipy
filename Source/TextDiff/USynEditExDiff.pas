@@ -9,7 +9,7 @@ unit USynEditExDiff;
 
 interface
 
-uses Classes, Graphics, ExtCtrls, SynEdit, SynEditTextBuffer;
+uses Classes, Graphics, ExtCtrls, Forms, SynEdit, SynEditTextBuffer;
 
 type
 
@@ -66,11 +66,12 @@ type
       function  CopyIntoClipboard(von, bis: integer): boolean;
       procedure PasteClipboard(EmptyClipboard: boolean; von, bis, aNr: integer);
       procedure ChangeStyle;
+      procedure SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
     end;
 
 implementation
 
-uses SysUtils, Windows, Controls, Forms, Clipbrd, JvGnugettext, StringResources,
+uses SysUtils, Windows, Controls, Clipbrd, JvGnugettext, StringResources,
      UTextDiff, UUtils, frmFile, SynEditTypes, FileCtrl, UConfiguration,
      uEditAppIntfs, cPyScripterSettings, dmCommands, uCommonFunctions;
 
@@ -97,6 +98,7 @@ begin
   OnStatusChange:= EditorStatusChange;
   OnEnter:= Enter;
   OnExit:= DoExit1;
+  onScroll:= SyncScroll;
   ChangeStyle;
 end;
 
@@ -105,6 +107,7 @@ begin
   OnStatusChange:= nil;
   OnEnter:= nil;
   OnExit:= nil;
+  TSynEditStringList(Lines).onCleared:= nil;
   LinesClearAll;
   inherited;
 end;
@@ -250,8 +253,7 @@ begin
         if Zeile.Tag = 0 then begin
           FreeAndNil(Zeile);
           Lines.Delete(i);
-          end
-        else
+        end else
           Zeile.Spezial:= false;
     end;
     WithColoredLines:= false;
@@ -445,6 +447,11 @@ begin
     fYellowGray:= $97734F;
     fSilveryGray:= $16A231;
   end;
+end;
+
+procedure TSynEditExDiff.SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
+begin
+  (myOwner as TFTextDiff).SyncScroll(Self, ScrollBar);
 end;
 
 end.

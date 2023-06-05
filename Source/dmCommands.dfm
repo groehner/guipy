@@ -2207,6 +2207,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 10
       ImageName = 'Copy'
       ShortCut = 16451
+      OnExecute = actEditCopyExecute
     end
     object actEditCopyRTF: TAction
       Category = 'Edit'

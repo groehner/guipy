@@ -89,11 +89,11 @@ const
    'learning and teaching informatics with various modeling techniques.' + SLineBreak +
    SLineBreak +
    'GuiPy is based on PyScripter and extends it with a lot of graphical tools:' + SLineBreak +
-   '- Class designer for modeling class' + SLineBreak +
-   '- UML window with class diagrams and interactive object creation ' + SLineBreak +
+   '- Class designer for modeling classes' + SLineBreak +
+   '- UML window with class diagrams and interactive object creation' + SLineBreak +
    '- sequence diagram editor' + SLineBreak +
    '- structogram editor' + SLineBreak +
-   '- GUI designer for easy creation of Tkinter and TTK apps' + SLineBreak +
+   '- GUI designer for easy creation of Tkinter, TTK or Qt apps' + SLineBreak +
    '- diff text tool';
 
 resourcestring

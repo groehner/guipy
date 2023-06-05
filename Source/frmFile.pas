@@ -646,9 +646,9 @@ begin
     TabControl.View.BeginUpdate;
     try
       (fForm.ParentTabControl as TSpTBXTabControl).zOrder.Remove(TabSheet.Item);
+      fForm.DoAssignInterfacePointer(False);
+      fForm.Close;
       fForm:= nil;
-      //fForm.DoAssignInterfacePointer(False);
-      //fForm.Close;
       TabSheet.Free;
       if Assigned(TabControl) then
         TabControl.Toolbar.MakeVisible(TabControl.ActiveTab);

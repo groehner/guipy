@@ -600,7 +600,7 @@ begin
     else if (BoxNames.Objects[i] is TRtfdObject) then begin
       // connect Objects to Classes
       OBox:= (BoxNames.Objects[I] as TRtfdObject);
-      if Assigned(OBox.Entity) and FLivingObjects.ObjectExists(OBox.Entity.Name) then begin
+      if Assigned(OBox.Entity) then begin
         DestBox:= GetBox(FLivingObjects.getClassnameOfObject(OBox.Entity.Name));
         if Assigned(DestBox) then
           Panel.ConnectObjects(OBox, DestBox, asInstanceOf);
@@ -624,7 +624,7 @@ begin
       if Assigned(OBox.Entity) then begin
         SLObjectAttributes:= FLivingObjects.getObjectObjectMembers(OBox.Entity.Name);
         for j:= 0 to SLObjectAttributes.Count - 1 do begin
-          DestBox:= GetBox(SLObjectAttributes.ValueFromIndex[j]);
+          DestBox:= GetBox(SLObjectAttributes[j]);
           if Assigned(DestBox) then
             Panel.ConnectObjects(OBox, DestBox, asAssociation2);
         end;
@@ -1448,16 +1448,13 @@ begin
 end;
 
 procedure TRtfdDiagram.RefreshDiagram;
-  var i: Integer;
 begin
-  Panel.Hide;
   ResolveAssociations;
   ResolveObjectAssociations;
-  for i:= 0 to BoxNames.Count - 1 do
+  for var i:= 0 to BoxNames.Count - 1 do
     (BoxNames.Objects[I] as TRtfdBox).RefreshEntities;
   Panel.RecalcSize;
   Panel.ShowAll;
-  Panel.Show;
   Panel.IsModified:= true;
 end;
 
@@ -2172,7 +2169,7 @@ procedure TRtfdDiagram.UpdateAllObjects;
       while (p > 0) and (s[p] <> ',') do
         dec(p);
       if p = 0 then p:= 96;
-      Result:= copy(s, 1, p+1) + '...KLAMMERZU';
+      Result:= copy(s, 1, p+1) + '...';
     end;
   end;
 
@@ -2674,7 +2671,7 @@ procedure TRtfdDiagram.PopMenuObjectPopup(Sender: TOBject);
       Result:= (s <> '') and (BoxNames.IndexOf(s) = -1) and (SL2.IndexOf(s) = -1);
     end;
 
-    procedure PrepareMenu(const attr, typ: string);
+    procedure PrepareMenu(const attr: string);
     begin
       if NotShown(attr) then
         SL2.Add(attr);
@@ -2699,7 +2696,7 @@ procedure TRtfdDiagram.PopMenuObjectPopup(Sender: TOBject);
     SL1:= FLivingObjects.getObjectObjectMembers(Objectname);
     SL2:= TStringList.Create;
     for i:= 0 to SL1.Count - 1 do
-      PrepareMenu(SL1.ValueFromIndex[i], SL1.KeyNames[i]);
+      PrepareMenu(SL1[i]);
     for i:= 0 to SL2.Count - 1 do begin
       aMenuItem:= MakeMenuItem(SL2[i], SL2.Count);
       if SL2.Count > 3 then
@@ -2952,7 +2949,7 @@ begin
 end;
 
 procedure TRtfdDiagram.ShowUnnamedObject(Sender: TObject);
-  var Objectname: String; p: integer;
+  var address, Objectname: String; p: integer;
 begin
   try
     LockWindow(UMLForm.Handle);
@@ -2964,8 +2961,14 @@ begin
     end;
     if FLivingObjects.ObjectExists(Objectname) then begin
       ShowNewObject(Objectname);
+
+      // ToDo is this necessary?
+      PyControl.ActiveInterpreter.RunSource('import ctypes', '<interactive input>');
+      address:= FLivingObjects.getRealAddressFromName(Objectname);
       PyControl.ActiveInterpreter.RunSource(
-        Objectname + '=' + FLivingObjects.getPathFromName(Objectname), '<interactive input>');
+        Objectname + ' = ctypes.cast(' + address + ', ctypes.py_object).value',
+        '<interactive input>');
+      FLivingObjects.SimplifyPath(Objectname);
       ResolveAssociations;
       ResolveObjectAssociations;
     end;
@@ -3004,17 +3007,23 @@ end;
 procedure TRtfdDiagram.ShowAllNewObjectsString(From: string = '');
   var SLObjects: TStringList;
       Py: IPyEngineAndGIL;
-      newObject: string;
+      newObject, address: string;
       i: integer;
 begin
+  PyControl.ActiveInterpreter.RunSource('import ctypes', '<interactive input>');
   SLObjects:= FLivingObjects.getAllObjects;
   Py := SafePyEngine;
   for i:= 0 to SLObjects.Count - 1 do begin
     newObject:= SLObjects.KeyNames[i];
     if BoxNames.IndexOf(newObject) = -1 then begin
-      PyControl.ActiveInterpreter.RunSource(newObject + '=' + SLObjects.ValueFromIndex[i], '<interactive input>');
+      address:= FLivingObjects.getRealAddressFromName(newObject);
+      PyControl.ActiveInterpreter.RunSource(
+        newObject + ' = ctypes.cast(' + address + ', ctypes.py_object).value',
+        '<interactive input>');
+      FLivingObjects.SimplifyPath(newObject);
       ShowNewObject(newObject);
-      if From = '' then From:= 'Actor';
+      if From = '' then
+        From:= 'Actor';
       ShowMethodEntered('<init>', From, newObject, '');
     end;
   end;

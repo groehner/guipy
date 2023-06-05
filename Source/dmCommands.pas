@@ -2461,8 +2461,13 @@ end;
 
 procedure TCommandsDataModule.actEditCopyHTMLExecute(Sender: TObject);
 begin
-  if Assigned(GI_ActiveEditor) then
-    TEditorForm(GI_ActiveEditor.Form).CopyHTML(false);
+  if Assigned(GI_ActiveEditor) then begin
+    GI_ActiveEditor.GetActiveSynEdit.Options:=
+      GI_ActiveEditor.GetActiveSynEdit.Options - [eoCopyPlainText];
+    actEditCopyExecute(self);
+    GI_ActiveEditor.GetActiveSynEdit.Options:=
+      GI_ActiveEditor.GetActiveSynEdit.Options + [eoCopyPlainText];
+  end;
 end;
 
 procedure TCommandsDataModule.actEditCopyHTMLasTextExecute(Sender: TObject);

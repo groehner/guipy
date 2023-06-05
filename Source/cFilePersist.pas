@@ -1,4 +1,4 @@
-unit cFilePersist;
+﻿unit cFilePersist;
 {-----------------------------------------------------------------------------
  Unit Name: cFilePersist
  Author:    Kiriakos Vlahos, Gerhard Röhner
@@ -368,6 +368,7 @@ begin
               FilePersistInfo.Highlighter, CommandsDataModule.Highlighters);
             Editor.SynEdit2.Highlighter := Editor.SynEdit.Highlighter;
           end;
+          FilePersistInfo.EditorOptions.Options:= FilePersistInfo.EditorOptions.Options + [eoCopyPlainText];
           Editor.SynEdit.Assign(FilePersistInfo.EditorOptions);
           RestoreFoldInfo(Editor.SynEdit, FilePersistInfo.UseCodeFolding, FilePersistInfo.FoldState);
           Editor.ReadOnly := FilePersistInfo.ReadOnly;

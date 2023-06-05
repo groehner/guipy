@@ -112,6 +112,7 @@ type
     function GetActiveSynEdit : TSynEdit;
     function GetBreakPoints : TObjectList;
     function GetCaretPos: TPoint;
+    function GetFileFormat: string;
     function GetEditorState: string;
     function GetFileName: string;
     function GetFileTitle: string;

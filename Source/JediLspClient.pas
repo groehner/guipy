@@ -140,7 +140,7 @@ begin
 
   CmdLine := Format('"%s" -u "%s"',
     [GI_PyControl.PythonVersion.PythonExecutable, ServerPath]);
-  if PyIDEOptions.LspDebug or true then
+  if PyIDEOptions.LspDebug or true then  // or TRUE
   begin
     CmdLine := Format('%s -v --log-file "%s"', [CmdLine,
       TPath.Combine(TPyScripterSettings.UserDataPath, LspDebugFile)]);

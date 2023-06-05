@@ -142,7 +142,8 @@ type
 
 implementation
 
-uses SysUtils, Themes, Dialogs, JvGnugettext, uCommonFunctions,
+uses SysUtils, Themes, Dialogs, SyneditTypes,
+     JvGnugettext, uCommonFunctions,
      frmPyIDEMain, cPyScripterSettings, StringResources, dmCommands,
      UConfiguration, UUtils, UHashUnit;
 
@@ -530,7 +531,7 @@ begin
   try
     if (Sender as  TSynEditExDiff) = CodeEdit1
       then CodeEdit2.TopLine:= CodeEdit1.TopLine
-      else CodeEdit1.TopLine:= CodeEdit2.TopLine;
+      else CodeEdit1.TopLine:= CodeEdit2.TopLine
   finally
     IsSyncing:= false;
   end;
@@ -544,13 +545,11 @@ end;
 
 procedure TFTextDiff.LinkScroll(IsLinked: boolean);
 begin
-  if IsLinked then
-  begin
-    CodeEdit1.OnScroll:= SyncScroll;
-    CodeEdit2.OnScroll:= SyncScroll;
+  if IsLinked then begin
+    CodeEdit1.OnScroll:= CodeEdit1.SyncScroll;
+    CodeEdit2.OnScroll:= CodeEdit2.SyncScroll;
     SyncScroll(GetCodeEdit, sbVertical);
-  end else
-  begin
+  end else begin
     CodeEdit1.OnScroll:= nil;
     CodeEdit2.OnScroll:= nil;
   end;

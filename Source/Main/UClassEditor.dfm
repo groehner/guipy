@@ -53,7 +53,7 @@ object FClassEditor: TFClassEditor
     Top = 10
     Width = 364
     Height = 435
-    ActivePage = TSMethods
+    ActivePage = TSAttributes
     TabOrder = 0
     OnChange = PageControlChange
     object TSClass: TTabSheet
@@ -311,7 +311,8 @@ object FClassEditor: TFClassEditor
           'None'
           '[]'
           '()'
-          '{}')
+          '{}'
+          'set()')
       end
     end
     object TSMethods: TTabSheet

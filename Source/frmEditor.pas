@@ -430,6 +430,7 @@ type
     procedure CollapseGUICreation;
     function isGUICreationCollapsed: boolean;
     procedure DoUpdateHighlighter(HighlighterName: string = '');
+    function GetFileFormat: string;
 
     property Partner: TForm read fPartner write fPartner;
     property NeedsParsing: boolean read fNeedToParseModule write setNeedsParsing;
@@ -447,6 +448,7 @@ type
     function GetSynEdit2: TSynEdit;
     function GetActiveSynEdit: TSynEdit;
     function GetBreakPoints: TObjectList;
+    function GetFileFormat: string;
     function GetEditorState: string;
     function GetFileName: string;
     function GetHasSearchHighlight: Boolean;
@@ -761,6 +763,13 @@ end;
 function TEditor.GetDocSymbols: TObject;
 begin
   Result := FSynLsp.DocSymbols;
+end;
+
+function TEditor.GetFileFormat: string;
+begin
+  if fForm <> nil
+    then Result:= fForm.GetFileformat
+    else Result:= '';
 end;
 
 function TEditor.GetEditorState: string;
@@ -1767,7 +1776,7 @@ begin
   EditorSearchOptions.InterpreterIsSearchTarget := False;
   EditorSearchOptions.TextDiffIsSearchTarget := False;
   PyIDEMainForm.UpdateCaption;
-  SynEdit.Options:= SynEdit.Options + [eoDropFiles];
+  SynEdit.Options:= SynEdit.Options + [eoDropFiles, eoNoHTMLBackground ];
 end;
 
 procedure TEditorForm.SynEditExit(Sender: TObject);
@@ -2146,6 +2155,23 @@ begin
     DefaultExtension := DefaultExtensionFromFilter(SynEdit.Highlighter.DefaultFilter)
   else
     DefaultExtension := '';
+end;
+
+function TEditorForm.GetFileFormat: string;
+begin
+  var ASynEdit := fEditor.GetActiveSynEdit;
+  var Encoding:= Uppercase(ASynEdit.Lines.Encoding.EncodingName);
+  if Pos('ANSI', Encoding) > 0 then Encoding:= 'ANSI' else
+  if Pos('ASCII', Encoding) > 0 then Encoding:= 'ASCII' else
+  if Pos('UTF-8', Encoding) > 0 then Encoding:= 'UTF-8' else
+  if Pos('UTF-16', Encoding) > 0 then Encoding:= 'UTF-16' else
+  if Pos('UNICODE', Encoding) > 0 then Encoding:= 'UTF-16' else
+  if Pos('CP1252', Encoding) > 0 then Encoding:= 'ANSI';
+  var LineBreak:= ASynEdit.Lines.LineBreak;
+  if LineBreak = #13#10 then LineBreak:= 'Windows' else
+  if LineBreak = #10 then LineBreak:= 'Unix'
+  else LineBreak:= 'Mac';
+  Result:= Encoding + '/' + LineBreak;
 end;
 
 procedure TEditorForm.EditorMouseWheel(theDirection: Integer;
@@ -3013,7 +3039,6 @@ procedure TEditorForm.ApplyEditorOptions;
 begin
   SynEdit.Assign(EditorOptions);
   SynEdit2.Assign(EditorOptions);
-
   SynEdit.BracketsHighlight.SetFontColorsAndStyle(
     CommandsDataModule.SynPythonSyn.MatchingBraceAttri.Foreground,
     CommandsDataModule.SynPythonSyn.UnbalancedBraceAttri.Foreground, [fsBold]);
@@ -5009,21 +5034,20 @@ begin
 end;
 
 procedure TEditorForm.CopyHTML(asText: boolean);
-  var Lines: TStringList;
-      HTMLExporter: TSynExporterHTML;
 begin
-  Lines:= TStringList.Create;
+  var Lines:= TStringList.Create;
   Lines.Text:= ActiveSynEdit.SelText;
-  HTMLExporter:= TSynExporterHTML.Create(Self);
-  ExportToClipboard(Lines, HTMLExporter, false);
+  var HTMLExporter:= TSynExporterHTML.Create(Self);
+  if not asText then
+    HTMLExporter.CreateHTMLFragment:= true;
+  ExportToClipboard(Lines, HTMLExporter, asText);
   FreeAndNil(Lines);
   FreeAndNil(HTMLExporter);
 end;
 
 procedure TEditorForm.CopyNumbered;
-  var Lines: TStringList;
 begin
-  Lines:= getNumbered;
+  var Lines:= getNumbered;
   Clipboard.AsText:= Lines.Text;
   FreeAndNil(Lines);
 end;
@@ -5070,6 +5094,7 @@ begin
         if LowerCase(ExtractFileExt(Filename)) = '.rtf'
           then Exporter:= TSynExporterRTF.Create(Self)
           else Exporter:= TSynExporterHTML.Create(Self);
+        Exporter.Font.assign(fActiveSynEdit.Font);
         ExportToFile(Filename, Exporter);
         if CanFocus then SetFocus;
         GuiPyOptions.Sourcepath:= ExtractFilePath(Filename);

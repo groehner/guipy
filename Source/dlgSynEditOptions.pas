@@ -631,7 +631,7 @@ begin
   Keystrokes.ResetDefaults;
   Options := [eoAutoIndent,eoDragDropEditing,eoDropFiles,eoScrollPastEol,
     eoShowScrollHint,eoSmartTabs,eoAltSetsColumnMode, eoTabsToSpaces,
-    eoTrimTrailingSpaces, eoKeepCaretX];
+    eoTrimTrailingSpaces, eoKeepCaretX, eoCopyPlainText];
   ExtraLineSpacing := 0;
   HideSelection := False;
   InsertCaret := ctVerticalLine;

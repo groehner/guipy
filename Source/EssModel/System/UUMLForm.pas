@@ -111,6 +111,7 @@ type
     LockCreateTV: boolean;
     AlreadySavedAs: boolean;
     procedure ChangeStyle;
+    procedure RunExecuteUMLWindow;
   protected
     procedure Retranslate; override;
     function LoadFromFile(const FileName: string): boolean; override;
@@ -160,7 +161,7 @@ procedure TFUMLForm.FormCreate(Sender: TObject);
 begin
   inherited;
   MainModul:= TDMUMLModule.Create(Self, PDiagramPanel);
-  SetFont(GuiPyOptions.UMLFont);
+  SetFont(GuiPyOptions.UMLFont);  // ToDo makes a RefreshDiagramm
   DefaultExtension:= 'uml';
   Modified:= false;
   // to avoid popup of PopupMenuWindow on Classes
@@ -318,6 +319,7 @@ begin
     sa:= (Mainmodul.Diagram.ShowConnections + 1) mod 3;
     MainModul.Diagram.ShowConnections:= sa;
     Modified:= true;
+    MainModul.Diagram.GetPanel.Invalidate;
   end;
 end;
 
@@ -338,6 +340,7 @@ begin
     sv:= (Mainmodul.Diagram.ShowView + 1) mod 3;
     MainModul.Diagram.ShowView:= sv;
     Modified:= true;
+    MainModul.Diagram.GetPanel.Invalidate;
   end;
 end;
 
@@ -414,7 +417,6 @@ begin
     LockWindow(Self.Handle);
     DoSave;
     MainModul.LoadUML(Pathname);
-    MainModul.RefreshDiagram;
     CreateTVFileStructure;
     UnlockWindow;
   end;
@@ -423,7 +425,15 @@ end;
 
 procedure TFUMLForm.TBRefreshClick(Sender: TObject);
 begin
-  PyIDEMainForm.actRunExecute(self);
+  if Pathname <> '' then begin
+    LockWindow(Self.Handle);
+    //Save(true);
+    //MainModul.LoadUML(Pathname);
+    MainModul.RefreshDiagram;
+    CreateTVFileStructure;
+    UnlockWindow;
+  end;
+  // PyIDEMainForm.actRunExecute(self);
 end;
 
 procedure TFUMLForm.TBClassDefinitionClick(Sender: TObject);
@@ -504,9 +514,10 @@ end;
 
 procedure TFUMLForm.SetFont(aFont: TFont);
 begin
-  MainModul.Diagram.SetFont(aFont);
-  MainModul.RefreshDiagram;
-  SynEdit.Font.Size:= 12;
+  if (AFont.Name <> Font.Name) or (AFont.Size <> Font.Size) then begin
+    MainModul.Diagram.SetFont(aFont);
+    MainModul.RefreshDiagram;
+  end;
 end;
 
 function TFUMLForm.GetFont: TFont;
@@ -541,6 +552,40 @@ end;
 procedure TFUMLForm.TBReInitializeClick(Sender: TObject);
 begin
   pyIDEMainform.actPythonReinitializeExecute(Sender);
+  Refresh;
+  RunExecuteUMLWindow;
+end;
+
+procedure TFUMLForm.RunExecuteUMLWindow;
+  var Timer: ITimer; Loops: integer;
+begin
+  Loops:= 0;
+  Timer:= NewTimer(50);
+  Timer.Start(procedure
+      var i: integer;
+    begin
+      if not GI_PyControl.Running then begin
+        Timer.Stop;
+        var SL:= TStringList.Create;
+        SL.AddStrings(MainModul.getFiles);
+        for i:= SL.Count - 1 downto 0 do
+          if pyIDEMainform.isAValidClass(SL[i]) then
+            SL.Delete(i);
+        if SL.Count > 0 then begin
+          for i:= 0 to SL.Count - 1 do
+            if FileExists(SL[i]) then
+              pyIDEMainform.ImportModule(SL[i]);
+        end;
+        MainModul.RefreshDiagram;
+        FreeAndNil(SL);
+        Timer:= nil;
+      end;
+      Loops:= Loops + 1;
+      if Loops >= 20 then begin
+        Timer.Stop;
+        Timer:= nil;
+      end;
+    end);
 end;
 
 procedure TFUMLForm.AddToProject(const Filename: string);

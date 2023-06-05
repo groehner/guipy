@@ -58,7 +58,7 @@ var
 
 implementation
 
-uses StringResources, JvGnugettext;
+uses StringResources, System.Types, JvGnugettext;
 
 { TFileTemplate }
 

@@ -33,7 +33,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 324
+      CustomWidth = 312
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -52,6 +52,12 @@ object PyIDEMainForm: TPyIDEMainForm
       MinWidth = 100
     end
     object SpTBXSeparatorItem5: TSpTBXSeparatorItem
+    end
+    object lbFileFormat: TSpTBXLabelItem
+      Hint = 'File format'
+      Alignment = taCenter
+    end
+    object SpTBXSeparatorItem30: TSpTBXSeparatorItem
     end
     object lbStatusCaret: TSpTBXLabelItem
       Hint = 'Text position'
@@ -250,7 +256,7 @@ object PyIDEMainForm: TPyIDEMainForm
     object TBControlItem1: TTBControlItem
     end
     object DockTopPanel: TPanel
-      Tag = 99814
+      Tag = 111370
       Left = 0
       Top = 0
       Width = 946
@@ -273,35 +279,37 @@ object PyIDEMainForm: TPyIDEMainForm
       object FileMenu: TSpTBXSubmenuItem
         Caption = '&File'
         object TBXSubmenuItem5: TSpTBXSubmenuItem
-          Caption = 'New'
+          Caption = '&New'
           object mnNewModule: TSpTBXItem
+            Caption = '&Python module'
             Action = actFileNewModule
           end
           object mnNewFile: TSpTBXItem
+            Caption = '&File...'
             Action = actFileNewFile
           end
           object mnFileNewTkApplication: TSpTBXItem
-            Caption = 'Tk/Tkk Application'
+            Caption = '&Tk/Tkk Application'
             Hint = 'New Tk/TKK Application'
             OnClick = actFileNewTkinterExecute
           end
           object mnFileNewQtApplication: TSpTBXItem
-            Caption = 'Qt-Application'
+            Caption = '&Qt-Application'
             Hint = 'New QT Application'
             OnClick = TBQtApplicationClick
           end
           object TBXSeparatorItem23: TSpTBXSeparatorItem
           end
           object mnFileNewClass: TSpTBXItem
-            Caption = 'Class'
+            Caption = '&Class'
             Action = actUMLNewClass
           end
           object mnFileNewStrutogram: TSpTBXItem
-            Caption = 'Structogram'
+            Caption = '&Structogram'
             OnClick = actFileNewStructogramExecute
           end
           object mnFileNewSequencediagram: TSpTBXItem
-            Caption = 'Sequence diagram'
+            Caption = 'Sequence &diagram'
             OnClick = actFileNewSequencediagramExecute
           end
         end
@@ -333,6 +341,7 @@ object PyIDEMainForm: TPyIDEMainForm
           Action = CommandsDataModule.actFileSaveAs
         end
         object mnFileExport: TSpTBXItem
+          Caption = 'Expor&t'
           Action = CommandsDataModule.actFileExport
         end
         object mnFileReload: TSpTBXItem
@@ -1178,7 +1187,7 @@ object PyIDEMainForm: TPyIDEMainForm
         object mnToolsEditStartupScript: TSpTBXItem
           Action = CommandsDataModule.actToolsEditStartupScripts
         end
-        object SpTBXItem15: TSpTBXItem
+        object mnToolsRestartLS: TSpTBXItem
           Action = CommandsDataModule.actToolsRestartLS
         end
         object SpTBXSeparatorItem12: TSpTBXSeparatorItem
@@ -2546,28 +2555,22 @@ object PyIDEMainForm: TPyIDEMainForm
           Images = ILProgram
           ParentColor = False
           TabOrder = 0
-          object TBNew: TToolButton
-            Left = 0
-            Top = 0
-            Action = actFileNewModule
-            ImageIndex = 0
-          end
           object TBClass: TToolButton
-            Left = 30
+            Left = 0
             Top = 0
             Hint = 'New class'
             ImageIndex = 1
             OnClick = actUMLNewClassExecute
           end
           object TBStructogram: TToolButton
-            Left = 60
+            Left = 30
             Top = 0
             Hint = 'New structogram'
             ImageIndex = 2
             OnClick = actFileNewStructogramExecute
           end
           object TBSequence: TToolButton
-            Left = 90
+            Left = 60
             Top = 0
             Hint = 'New sequence diagram'
             ImageIndex = 3
@@ -2575,20 +2578,20 @@ object PyIDEMainForm: TPyIDEMainForm
           end
           object TBConsole: TToolButton
             Tag = 1
-            Left = 120
+            Left = 90
             Top = 0
             Action = actFileNewModule
             ImageIndex = 4
           end
           object TBTkApplication: TToolButton
-            Left = 150
+            Left = 120
             Top = 0
             Hint = 'New Tk/TTK application'
             ImageIndex = 5
             OnClick = actFileNewTkinterExecute
           end
           object TBQtApplication: TToolButton
-            Left = 180
+            Left = 150
             Top = 0
             Hint = 'New QT Application'
             Caption = 'Qt-Application'
