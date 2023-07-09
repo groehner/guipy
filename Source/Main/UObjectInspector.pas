@@ -365,14 +365,6 @@ procedure TFObjectInspector.ELPropertyInspectorModified(Sender: TObject);
       Control: TControl;
       Widget: TBaseWidget;
 
-  procedure Refresh(NewName: string);
-  begin
-    TThread.ForceQueue(nil, procedure
-      begin
-        RefreshCB(NewName);
-      end);
-  end;
-
   procedure ChangeName(OldName, NewName: string; Control: TControl);
   begin
     Widget:= TBaseWidget(Control);
@@ -408,7 +400,6 @@ begin
       delete(OldName, Pos(':', OldName), length(OldName));
       Control:= SelectedControls.Items[0];
       ChangeName(OldName, Control.Name, Control);
-      Refresh(Control.Name);
     end else
       for i:= 0 to SelectedControls.Count-1 do begin
         OldName:= SelectedControls.Items[I].Name;

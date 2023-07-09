@@ -1591,6 +1591,8 @@ begin
   PyIDEMainForm.mnToolsSVN.Visible:= SubversionOK;
   if SubversionOK and (FSubversion = nil) then
     FSubversion:= TFSubversion.Create(Self);
+
+  PyIDEMainForm.setLayoutMenus(GuiPyOptions.UsePredefinedLayouts);
 end;
 
 procedure TFConfiguration.ModelToView;

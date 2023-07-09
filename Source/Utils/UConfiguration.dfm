@@ -190,7 +190,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 661
         Height = 427
-        ActivePage = PFileTemplates
+        ActivePage = PCodeTemplates
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2

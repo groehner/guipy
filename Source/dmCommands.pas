@@ -2411,7 +2411,7 @@ end;
 procedure TCommandsDataModule.actCodeTemplatesExecute(Sender: TObject);
 begin
   with TCodeTemplates.Create(Self) do begin
-    //SetItems(CodeTemplatesCompletion.AutoCompleteList);
+    // SetItems(CodeTemplatesCompletion.AutoCompleteList);
     CodeTemplateText := CodeTemplatesCompletion.AutoCompleteList.Text;
     if ShowModal = mrOK then
       CodeTemplatesCompletion.AutoCompleteList.Text := CodeTemplateText;

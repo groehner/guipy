@@ -116,6 +116,7 @@ type
     SequenceForm: TForm;
     BGColor: TColor;
     FGColor: TColor;
+    FMoved: boolean;
 
     procedure SetSelectedOnly(const Value : boolean);
     procedure SetModified(const Value: boolean);
@@ -1203,6 +1204,7 @@ var
   p2: TPoint;
   conn: TConnection;
 begin
+  FMoved:= false;
   if not MouseDownOK then begin MouseDownOK:= true; exit end;
   inherited;
   SetFocus;  // a TPanel can have the Focus
@@ -1250,8 +1252,8 @@ begin
       if Assigned(OnSelectionChanged) then
         OnSelectionChanged(nil);
     end else begin
-      if SelectionChangedOnClear then
-        ShowAll;
+      //if SelectionChangedOnClear then
+      //  ShowAll;
       if Button = mbLeft then
         FIsRectSelecting := True;
     end;
@@ -1343,7 +1345,6 @@ var
 
 begin
   inherited;
-
   if shift = [] then exit;
   pt1 := Mouse.CursorPos;
   pt.x := X;
@@ -1351,6 +1352,7 @@ begin
   dx := pt.x - FMemMousePos.x;
   dy := pt.y - FMemMousePos.y;
   if (dx = 0) and (dy = 0) then exit;
+  FMoved:= true;
   if abs(dy) > 3*abs(dx)
     then dx:= 0
     else dy:= 0;
@@ -1491,9 +1493,10 @@ begin
   end else
     if PtInRect(r, pt) then
       SetCaptureControl(nil);
-  //Invalidate;
-  ShowAll;
+  if FMoved then
+    ShowAll;
   FIsRectSelecting:= False;
+  FMoved:= false;
 end;
 
 function TSequencePanel.DoMouseWheel(Shift: TShiftState;

@@ -686,8 +686,6 @@ begin
     GI_PyIDEServices.MRUAddFile(Self);
     if fUntitledNumber <> -1 then
       UntitledNumbers[fUntitledNumber] := False;
-
-    fForm.DoAssignInterfacePointer(False);
     Assert(GI_EditorFactory <> nil);
     GI_EditorFactory.RemoveEditor(Self);
     if GI_EditorFactory.Count = 0 then
@@ -698,7 +696,6 @@ begin
     TabControl.View.BeginUpdate;
     try
       (fForm.ParentTabControl as TSpTBXTabControl).zOrder.Remove(TabSheet.Item);
-      fForm.DoAssignInterfacePointer(False);
       fForm.Close;
       fForm := nil;
       TabSheet.Free;
@@ -4028,18 +4025,6 @@ procedure TEditorForm.SynEditGutterDebugInfoMouseCursor(Sender: TObject; X, Y,
 begin
   Cursor := crHandPoint;
 end;
-
-{procedure TEditorForm.WndProc(var Message: TMessage);
-begin
-  if assigned(fEditor) and (fEditor.fFileKind = fkEditor) then begin
-    if Message.Msg = CM_ENTER then
-      DoAssignInterfacePointer(true)
-    else if Message.Msg = CM_EXIT then
-      DoAssignInterfacePointer(false);
-  end;
-  inherited;
-end;
-}
 
 procedure TEditorForm.InsertLinesAt(line: integer; s: string);
   var cx, cy, tl, cl: integer; collapsed: boolean;

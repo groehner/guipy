@@ -122,8 +122,8 @@ function WithoutVisibility(s: string): string;
 function IsSimpleType(const s: string): boolean;
 function ShellExecuteFile(const FileName, Params, DefaultDir: string; ShowCmd: Integer): THandle;
 function FilenameToFileKind(const Filename: string): TFileKind;
-function RemovePortableDrive(const s: string): string;
-function AddPortableDrive(const s: string): string;
+function RemovePortableDrive(const s: string; folder: string = ''): string;
+function AddPortableDrive(const s: string; folder: string = ''): string;
 function WriteLog(LogString: String): Integer;
 function getProtocol(url: string): string;
 function getProtocolAndDomain(url: string): string;
@@ -1429,17 +1429,20 @@ end;
 
 {--- Portable -----------------------------------------------------------------}
 
-function RemovePortableDrive(const s: string): string;
+function RemovePortableDrive(const s: string; folder: string = ''): string;
+  // if folder is set then switch to relative paths, used in Store/FetchDiagram
   var SL1, SL2: TStringList;
-      AppFolder: string;
-      i, j: integer;
+      i, j: integer; Basefolder: string;
 begin
-  AppFolder:= ExtractFilePath(Application.ExeName);
   Result:= s;
-  if TPyScripterSettings.IsPortable and (copy(s, 2, 2) = ':\')  and
-    (Uppercase(copy(AppFolder, 1, 2)) = Uppercase(copy(s, 1, 2)))  // same drive
+  if TPyScripterSettings.IsPortable
+    then Basefolder:= ExtractFilePath(Application.ExeName)
+    else Basefolder:= folder;
+  // same drive
+  if TPath.isDriveRooted(Basefolder) and
+    (Uppercase(copy(Basefolder, 1, 2)) = Uppercase(copy(s, 1, 2)))
   then begin
-    SL1:= Split('\', withoutTrailingSlash(AppFolder));
+    SL1:= Split('\', withoutTrailingSlash(Basefolder));
     SL2:= Split('\', withoutTrailingSlash(s));
     i:= 0;
     while (i < SL1.Count) and (i < SL2.Count) and
@@ -1461,20 +1464,23 @@ begin
   end;
 end;
 
-function AddPortableDrive(const s: string): string;
+function AddPortableDrive(const s: string; folder: string = ''): string;
+  // if folder is set then switch to relative paths, used in Store/FetchDiagram
   var SL1, SL2: TStringList;
-      i, j: integer;
+      i, j: integer; Basefolder: string;
 begin
   Result:= s;
-  if UUtils.left(s, 4) = 'its:' then
-    exit;
-  if (copy(s, 2, 2) = ':\') or (copy(s, 1, 7) = 'file://') then // absolute path
-    exit;
-  if (Pos('\\', s) = 1) or (Pos('://', s) > 1) then // UNC or https:// or http://
+  if (UUtils.left(s, 4) = 'its:') or ( s = '') or
+     (copy(s, 2, 2) = ':\') or (copy(s, 1, 7) = 'file://') or // absolute path
+     (Pos('\\', s) = 1) or (Pos('://', s) > 1) then // UNC or https:// or http://
     exit;
 
-  if TPyScripterSettings.IsPortable and (s <> '') then begin
-    SL1:= Split('\', withoutTrailingSlash(ExtractFilePath(Application.Exename)));
+  if TPyScripterSettings.IsPortable
+    then Basefolder:= ExtractFilePath(Application.ExeName)
+    else Basefolder:= folder;
+
+  if Basefolder <> '' then begin
+    SL1:= Split('\', withoutTrailingSlash(Basefolder));
     SL2:= Split('\', withoutTrailingSlash(s));
     i:= 0;
     while (i < SL2.Count) and (SL2[i] = '..') do
@@ -1486,9 +1492,7 @@ begin
       Result:= Result + '\' + SL2[j];
     FreeAndNil(SL1);
     FreeAndNil(SL2);
-  end else if not TPyScripterSettings.IsPortable and (copy(s, 1, 3) = '..\') then
-    // read a portable file in an unportable configuration
-    Result:= ExtractFilename(s);
+  end;
 end;
 
 function WriteLog(LogString: String): Integer;

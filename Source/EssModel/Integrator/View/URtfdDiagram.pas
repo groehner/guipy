@@ -675,7 +675,7 @@ var
   Ini : TMemIniFile;
   I, p, comments: integer;
   Box: TRtfdBox;
-  S, C, fname, s1: string;
+  S, C, fname, s1, path: string;
   Verbindungen: TList;
   Conn: TConnection;
   Values: TStrings;
@@ -688,6 +688,11 @@ begin
     FreeAndNil(Ini);
   end;
   DeleteFile(Filename);
+
+  path:= ExtractFilePath(Filename);
+  if isUNC(path)
+    then path:= ''
+    else SetCurrentDir(path); // due to relativ paths
 
   Ini:= TMemIniFile.Create(Filename, TEncoding.UTF8);
   try
@@ -705,9 +710,7 @@ begin
           if FLivingObjects.ObjectExists(Box.Entity.Name)
             then Ini.WriteString(S, 'Typ', FLivingObjects.getClassnameOfObject(Box.Entity.Name))
             else Ini.WriteString(S, 'Typ','unknown')
-          end
-        else
-        if BoxNames.Objects[i] is TRtfdCommentBox then begin
+        end else if BoxNames.Objects[i] is TRtfdCommentBox then begin
           // Comments
           Box:= BoxNames.Objects[i] as TRtfdBox;
           S:= Box.Entity.FullName;
@@ -719,13 +722,12 @@ begin
           Ini.WriteString(S, 'FontName', Box.Font.Name);
           s1:= (Box as TRtfdCommentBox).TrMemo.Text;
           Ini.WriteString(S, 'Comment', myStringReplace(s1, #13#10, '_;_'));
-          end
-        else begin
+        end else begin
           // Class, Stereotype, Interface
           Box:= BoxNames.Objects[i] as TRtfdBox;
           if Box.Entity.IsVisible then begin
             S:= 'Box: ' + Box.Entity.FullName;
-            fName:= RemovePortableDrive((Box.Entity as TClassifier).Pathname);
+            fName:= RemovePortableDrive((Box.Entity as TClassifier).Pathname, path);
             Ini.WriteString(S, 'File', fName);
             Ini.WriteInteger(S, 'X', Box.Left);
             Ini.WriteInteger(S, 'Y', Box.Top);
@@ -826,12 +828,7 @@ var
   BoxFontName, BoxTypeBinding: string;
   CommentBox: TRtfdCommentBox;
   VisibilityFilterAsInteger: integer;
-
 begin
-  path:= ExtractFilePath(Filename);
-  if not isUNC(Path) then
-    SetCurrentDir(Path); // due to relativ paths
-
   Filename:= ExpandFileName(Filename);
   Ini:= TMemIniFile.Create(Filename);
   Files:= TStringList.Create;
@@ -858,12 +855,16 @@ begin
     UMLForm.PDiagram.Height:= Ini.ReadInteger(S, 'Diagram.Height', 90);
 
     // read files
+    path:= ExtractFilePath(Filename);
+    if isUNC(path)
+      then path:= ''
+      else SetCurrentDir(path); // due to relativ paths
     Ini.ReadSections(Sections);
     for i:= 0 to Sections.Count - 1 do begin
       if Pos('Box: ', Sections[i]) > 0 then begin
         aFile:= Ini.ReadString(Sections[i], 'File', '');
         if aFile <> '' then begin
-          aFile:= ExpandUNCFileName(AddPortableDrive(aFile));
+          aFile:= ExpandUNCFileName(AddPortableDrive(aFile, path));
           if not FileExistsCaseSensitive(aFile) then
             aFile:= ExtractFilePath(Filename) + extractFilename(aFile);
           if FileExistsCaseSensitive(aFile) and (Files.IndexOf(aFile) = -1) then
@@ -1566,10 +1567,11 @@ begin
     B2.Top := B2.Top  + random(30) - 30;
     B2.Left:= B2.Left + random(30) - 30;
   end;
-  Panel.RecalcSize;
   ShowAttributes(Objectname, aClass, aModelObject);
   if (B2 = nil) and assigned(aModelObject) then
     AddBox(aModelObject);
+  UpdateAllObjects;
+  Panel.RecalcSize;
 end;
 
 procedure TRtfdDiagram.CreateObjectForSelectedClass(Sender: TObject);
@@ -1700,7 +1702,7 @@ procedure TRtfdDiagram.ShowAttributes(Objectname: string; aClass: TClass;
         Ami : IModelIterator;
         aEntity: TModelEntity;
         aBox: TRtfdBox;
-        p: integer;
+        p: integer; iname: string;
         SuperClass: TClass;
   begin
     if aClass.AncestorsCount > 0 then begin
@@ -1721,7 +1723,8 @@ procedure TRtfdDiagram.ShowAttributes(Objectname: string; aClass: TClass;
     //Attributes
     while Ami.HasNext do begin
       aEntity:= Ami.Next;
-      p:= SLObject.IndexOfName(getInternName(aClass, aEntity.Name, aEntity.Visibility));
+      iname:= getInternName(aClass, aEntity.Name, aEntity.Visibility);
+      p:= SLObject.IndexOfName(iname);
       if {(p > -1) and }not aEntity.Static then begin
         SL1:= Split('|', SLObject.ValueFromIndex[p]);
         if SL1.Count = 2 then begin // object has an attribute
@@ -2960,8 +2963,6 @@ begin
       p:= Pos(' ', Objectname);
     end;
     if FLivingObjects.ObjectExists(Objectname) then begin
-      ShowNewObject(Objectname);
-
       // ToDo is this necessary?
       PyControl.ActiveInterpreter.RunSource('import ctypes', '<interactive input>');
       address:= FLivingObjects.getRealAddressFromName(Objectname);
@@ -2969,6 +2970,7 @@ begin
         Objectname + ' = ctypes.cast(' + address + ', ctypes.py_object).value',
         '<interactive input>');
       FLivingObjects.SimplifyPath(Objectname);
+      ShowNewObject(Objectname);
       ResolveAssociations;
       ResolveObjectAssociations;
     end;

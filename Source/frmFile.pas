@@ -215,11 +215,11 @@ begin
   if Modified and PyIDEOptions.SaveFilesAutomatically then
     DoSave;
   SkinManager.RemoveSkinNotification(Self);
+  DoAssignInterfacePointer(false);
 end;
 
 procedure TFileForm.FormDestroy(Sender: TObject);
 begin
-  DoAssignInterfacePointer(false);
   if assigned(fFile) and assigned(GI_FileFactory) then begin
     fFile.fForm := nil;
     GI_FileFactory.RemoveFile(fFile);
@@ -635,7 +635,6 @@ begin
     if fUntitledNumber <> -1 then
       UntitledNumbers[fUntitledNumber] := False;
 
-    fForm.DoAssignInterfacePointer(False);
     Assert(GI_FileFactory <> nil);
     GI_FileFactory.RemoveFile(Self);
     if GI_FileFactory.Count = 0 then
@@ -646,7 +645,6 @@ begin
     TabControl.View.BeginUpdate;
     try
       (fForm.ParentTabControl as TSpTBXTabControl).zOrder.Remove(TabSheet.Item);
-      fForm.DoAssignInterfacePointer(False);
       fForm.Close;
       fForm:= nil;
       TabSheet.Free;

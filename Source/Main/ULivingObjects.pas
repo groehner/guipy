@@ -284,8 +284,8 @@ begin
         break
       else if isAttribute(NS.ChildNode[i]) then
         SL.Add(NS.ChildNode[i].Name + '=' +
-          getNameFromValue(NS.ChildNode[i].Value) + '|' + NS.ChildNode[i]
-          .ObjectType);
+          getNameFromValue(NS.ChildNode[i].Value) + '|' +
+          NS.ChildNode[i].ObjectType);
   Result := SL;
 end;
 
@@ -536,10 +536,10 @@ procedure TLivingObjects.makeAllObjects;
       if SLObjectsAddressName.IndexOfName(Address) = -1 then
         SLObjectsAddressName.Add(Address + '=' + Objectname);
       Result := Objectname;
-      FreeandNil(SL);
+      FreeAndNil(SL);
     end;
 
-    function AddObject(Prefixname, aObject: string): string;
+    function getObjectName(aObject: string): string;
       var Name: string;
     begin
       var j := SLObjectsAddressNameDuplicat.IndexOfName(aObject);
@@ -552,6 +552,13 @@ procedure TLivingObjects.makeAllObjects;
           then Name:= SLObjectsAddressName.ValueFromIndex[j]
           else Name:= getNameFromAddress(aObject);
       end;
+      Result:= Name;
+    end;
+
+    function AddObject(Prefixname, aObject: string): string;
+      var Name: string;
+    begin
+      Name:= getObjectName(aObject);
       if SLObjectsNamePath.IndexOfName(Name) = -1 then
         SLObjectsNamePath.Add(Name + '=' + Prefixname);
       Result:= Name;
@@ -603,9 +610,11 @@ procedure TLivingObjects.makeAllObjects;
       else if OType = 'set' then
         AddObjectsFromString(Prefixname + '.' + NS.ChildNode[i].Name, NS.ChildNode[i].Value)
       else if isObject(NS.ChildNode[i]) then begin
-        var Name:= AddObject(Prefixname + '.' + NS.ChildNode[i].Name, NS.ChildNode[i].Value);
-        if getPathFromName(Name) = '' then  // avoid cycles
+        var Name:= getObjectName(NS.ChildNode[i].Value);
+        if SLObjectsNamePath.IndexOfName(Name) = -1 then begin
+          SLObjectsNamePath.Add(Name + '=' + Prefixname);
           Add(Prefixname + '.' + NS.ChildNode[i].Name, NS.ChildNode[i]);
+        end;
       end else if isDunder(NS.ChildNode[i].Name) then
         break;
     end;

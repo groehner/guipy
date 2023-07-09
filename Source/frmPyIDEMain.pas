@@ -1632,6 +1632,7 @@ type
     function IsAValidClass(const Pathname: String): boolean;
     procedure RunExecuteUMLWindows;
     procedure RefreshUMLWindows;
+    procedure SetLayoutMenus(Predefined: boolean);
 
     property ActiveTabControl : TSpTBXCustomTabControl read GetActiveTabControl
       write SetActiveTabControl;
@@ -2334,9 +2335,7 @@ begin
   mnMaximizeEditor.Caption:= _('&Maximize/Restore Editor');
   mnStyles.Visible:= false;
 
-  mnLayouts.Visible:= not GuiPyOptions.UsePredefinedLayouts;
-  mnViewDefaultLayout.Visible:= GuiPyOptions.UsePredefinedLayouts;
-  mnViewDebugLayout.Visible:= GuiPyOptions.UsePredefinedLayouts;
+  setLayoutMenus(GuiPyOptions.UsePredefinedLayouts);
 
   mnSyntaxCheck.Visible:= false;
   mnLanguage.Visible:= false;
@@ -2376,6 +2375,16 @@ begin
   {PyScripter1.Remove(mnHelpContents);
   HelpMenu.Insert(2, mnHelpContents);}
   PyScripter1.Visible:= false;
+end;
+
+procedure TPyIDEMainForm.SetLayoutMenus(Predefined: boolean);
+begin
+  mnLayouts.Visible:= not Predefined;
+  mnViewDefaultLayout.Visible:= Predefined;
+  mnViewDebugLayout.Visible:= Predefined;
+  if Predefined
+    then Layouts.text:= 'Debug'#13#10'Default'#13#10
+    else LocalAppStorage.ReadStringList('Layouts', Layouts, True);
 end;
 
 procedure TPyIDEMainForm.FormCloseQuery(Sender: TObject;
@@ -4588,8 +4597,13 @@ begin
       FileTemplates.AddDefaultTemplates;
     end;
 
-    if AppStorage.PathExists('Code Templates') then
-      AppStorage.ReadStringList('Code Templates', CodeTemplatesCompletion.AutoCompleteList);
+    if AppStorage.PathExists('Code Templates') then begin
+      var SL:= TStringList.Create;
+      AppStorage.ReadStringList('Code Templates', SL);
+      if SL.Text <> '' then
+        CodeTemplatesCompletion.AutoCompleteList.assign(SL);
+      FreeAndNil(SL);
+    end;
     AppStorage.StorageOptions.PreserveLeadingTrailingBlanks := False;
   end;
 
@@ -5218,7 +5232,6 @@ begin
   FGit.Execute(TSpTBXItem(Sender).Tag, GetActiveEditor);
 end;
 
-
 procedure TPyIDEMainForm.mnToolsSVNClick(Sender: TObject);
 begin
   FSubversion.Execute(TSpTBXItem(Sender).Tag, getActiveEditor);
@@ -5253,42 +5266,26 @@ begin
   end;
 end;
 
-  {
-  LocalAppStorage.BeginUpdate;
-  SaveLayout('DebugLayout');
-  LocalAppStorage.EndUpdate;
-  LocalAppStorage.Flush;
-  exit;
-  }
-
 procedure TPyIDEMainForm.mnViewDebugLayoutClick(Sender: TObject);
-  var LayoutAppStorage: TJvAppIniFileStorage;
 begin
-  if GuiPyOptions.UsePredefinedLayouts then begin
-    LayoutAppStorage:= TJvAppIniFileStorage.Create(self);
-    LayoutAppStorage.FileName:=
-      TPath.Combine(ExtractFilePath(Application.ExeName), 'DebugLayout.ini');
-    LoadDefaultLayout(LayoutAppStorage, 'DebugLayout');
-    FreeAndNil(LayoutAppStorage);
-  end else begin
-    LoadLayout('DebugLayout');
-    //TSpTBXItem(Sender).Checked := True;
-  end;
+  var LayoutAppStorage:= TJvAppIniFileStorage.Create(self);
+  LayoutAppStorage.FileName:=
+    TPath.Combine(ExtractFilePath(Application.ExeName), 'DebugLayout.ini');
+  LoadDefaultLayout(LayoutAppStorage, 'Debug');
+  mnViewDebugLayout.Checked:= true;
+  mnViewDefaultLayout.Checked:= false;
+  FreeAndNil(LayoutAppStorage);
 end;
 
 procedure TPyIDEMainForm.mnViewDefaultLayoutClick(Sender: TObject);
- var LayoutAppStorage: TJvAppIniFileStorage;
 begin
-  if GuiPyOptions.UsePredefinedLayouts then begin
-    LayoutAppStorage:= TJvAppIniFileStorage.Create(self);
-    LayoutAppStorage.FileName:=
-      TPath.Combine(ExtractFilePath(application.ExeName), 'DefaultLayout.ini');
-    LoadDefaultLayout(LayoutAppStorage, 'DefaultLayout');
-    FreeAndNil(LayoutAppStorage);
-  end else begin
-    LoadLayout('DefaultLayout');
-    //TSpTBXItem(Sender).Checked := True;
-  end;
+  var LayoutAppStorage:= TJvAppIniFileStorage.Create(self);
+  LayoutAppStorage.FileName:=
+    TPath.Combine(ExtractFilePath(Application.ExeName), 'DefaultLayout.ini');
+  LoadDefaultLayout(LayoutAppStorage, 'Default');
+  mnViewDebugLayout.Checked:= false;
+  mnViewDefaultLayout.Checked:= true;
+  FreeAndNil(LayoutAppStorage);
 end;
 
 procedure TPyIDEMainForm.MoveTab(Tab: TSpTBXTabItem;
@@ -5512,29 +5509,34 @@ Var
   SaveActiveControl : TWinControl;
   TempCursor : IInterface;
 begin
-  Path := 'Layouts\'+ Layout;
-  if LocalAppStorage.PathExists(Path + '\Forms') then begin
-    TempCursor := WaitCursor;
-    SaveActiveControl := ActiveControl;
-
-    try
-      // Now Load the DockTree
-      LoadDockTreeFromAppStorage(LocalAppStorage, Path);
-    finally
-      for i := 0 to Screen.FormCount - 1 do begin
-        if Screen.Forms[i] is TIDEDockWindow then
-          TIDEDockWindow(Screen.Forms[i]).FormDeactivate(Self);
-      end;
-    end;
-    if CanActuallyFocus(SaveActiveControl)
-    then
+  if GuiPyOptions.UsePredefinedLayouts then begin
+    if Layout = 'Debug'
+      then mnViewDebugLayoutClick(self)
+      else mnViewDefaultLayoutClick(self)
+  end else begin
+    Path := 'Layouts\'+ Layout;
+    if LocalAppStorage.PathExists(Path + '\Forms') then begin
+      TempCursor := WaitCursor;
+      SaveActiveControl := ActiveControl;
       try
-        SaveActiveControl.SetFocus;
-      except
+        // Now Load the DockTree
+        LoadDockTreeFromAppStorage(LocalAppStorage, Path);
+      finally
+        for i := 0 to Screen.FormCount - 1 do begin
+          if Screen.Forms[i] is TIDEDockWindow then
+            TIDEDockWindow(Screen.Forms[i]).FormDeactivate(Self);
+        end;
       end;
+      if CanActuallyFocus(SaveActiveControl)
+      then
+        try
+          SaveActiveControl.SetFocus;
+        except
+        end;
+    end;
+    // Now Restore the toolbars
+    LoadToolbarLayout(Layout);
   end;
-  // Now Restore the toolbars
-  LoadToolbarLayout(Layout);
 end;
 
 procedure TPyIDEMainForm.SaveLayout(const Layout: string);
@@ -5552,7 +5554,7 @@ end;
 
 function TPyIDEMainForm.LayoutExists(const Layout: string): Boolean;
 begin
-  Result := Layouts.IndexOf(Name) >= 0;
+  Result := Layouts.IndexOf(Layout) >= 0;
 end;
 
 procedure TPyIDEMainForm.lbPythonEngineClick(Sender: TObject);

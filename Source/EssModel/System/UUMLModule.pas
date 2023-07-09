@@ -320,7 +320,7 @@ end;
 procedure TDMUMLModule.LoadUML(const Pathname: string);
 begin
   Diagram.FetchDiagram(Pathname);
-end;
+ end;
 
 function TDMUMLModule.getUMLFilename: String;
 begin

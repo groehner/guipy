@@ -1000,7 +1000,6 @@ begin
     UpdateState;
     EditMemo.Visible:= false;
   end;
-  DoAssignInterfacePointer(true);
 end;
 
 procedure TFStructogram.FormKeyPress(Sender: TObject; var Key: Char);
@@ -1170,6 +1169,7 @@ end;
 procedure TFStructogram.ScrollBoxClick(Sender: TObject);
 begin
   UpdateState;
+  SetFocus;
   CloseEdit(true);
   PyIDEMainForm.ActiveTabControl := ParentTabControl;
 end;

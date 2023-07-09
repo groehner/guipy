@@ -526,9 +526,8 @@ begin
 end;
 
 procedure TFUMLForm.SetFontSize(Delta: integer);
-  var aFont: TFont;
 begin
-  aFont:= GetFont;
+  var aFont:= GetFont;
   aFont.Size:= aFont.Size + Delta;
   if aFont.Size < 6 then aFont.Size:= 6;
   SetFont(aFont);
