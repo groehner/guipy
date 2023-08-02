@@ -252,7 +252,7 @@ begin
   {$ENDIF}
   inherited;
   Copyright.Caption := #$00A9' Gerhard Röhner 2021-' + CurrentYear.ToString;
-  Version.Caption:= 'Version ' + UUpdate.Version + sLineBreak + FUpdate.GetVersionDate;
+  Version.Caption:= 'Version ' + UUpdate.Version + sLineBreak + TFUpdate.GetVersionDate;
   //Version.Caption := Format('Version %s %s', [ApplicationVersion, winplatform]);
   Comments.Caption:= sComments;
 

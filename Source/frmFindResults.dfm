@@ -43,13 +43,19 @@ inherited FindResultsWindow: TFindResultsWindow
   OnKeyPress = FormKeyPress
   OnResize = FormResize
   OnShow = FormShow
+  ExplicitWidth = 611
+  ExplicitHeight = 385
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 603
     Height = 358
+    ExplicitWidth = 595
+    ExplicitHeight = 346
     inherited FGPanel: TPanel
       Width = 599
       Height = 354
+      ExplicitWidth = 591
+      ExplicitHeight = 342
       object pnlMain: TPanel
         Left = 0
         Top = 0
@@ -60,6 +66,8 @@ inherited FindResultsWindow: TFindResultsWindow
         FullRepaint = False
         PopupMenu = TBXPopupMenu
         TabOrder = 0
+        ExplicitWidth = 591
+        ExplicitHeight = 318
         object Splitter: TSpTBXSplitter
           Left = 0
           Top = 239
@@ -69,6 +77,8 @@ inherited FindResultsWindow: TFindResultsWindow
           Align = alBottom
           ParentColor = False
           MinSize = 20
+          ExplicitTop = 227
+          ExplicitWidth = 591
         end
         object TBXDock1: TSpTBXDock
           Left = 0
@@ -77,6 +87,7 @@ inherited FindResultsWindow: TFindResultsWindow
           Height = 30
           AllowDrag = False
           DoubleBuffered = True
+          ExplicitWidth = 591
           object ToolBar: TSpTBXToolbar
             Left = 0
             Top = 0
@@ -161,6 +172,8 @@ inherited FindResultsWindow: TFindResultsWindow
           OnKeyPress = lbResultsKeyPress
           OnMouseUp = lbResultsMouseUp
           HotTrack = False
+          ExplicitWidth = 591
+          ExplicitHeight = 197
         end
         object reContext: TRichEdit
           Left = 0
@@ -180,6 +193,8 @@ inherited FindResultsWindow: TFindResultsWindow
           TabOrder = 1
           WordWrap = False
           StyleElements = [seClient, seBorder]
+          ExplicitTop = 230
+          ExplicitWidth = 591
         end
       end
       object StatusBar: TSpTBXStatusBar
@@ -188,6 +203,8 @@ inherited FindResultsWindow: TFindResultsWindow
         Width = 599
         Height = 24
         SizeGrip = False
+        ExplicitTop = 318
+        ExplicitWidth = 591
         object StatusLeftLabel: TSpTBXLabelItem
           Wrapping = twEndEllipsis
           MinHeight = 20
@@ -464,7 +481,7 @@ inherited FindResultsWindow: TFindResultsWindow
         CollectionName = 'FindRefresh'
         Name = 'FindRefresh'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20

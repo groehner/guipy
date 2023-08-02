@@ -83,7 +83,6 @@ uses
   VirtualTrees,
   SynUnicode,
   uCommonFunctions,
-  dmCommands,
   frmIDEDockWin;
 
 type
@@ -229,14 +228,15 @@ implementation
 
 uses
   System.Math,
+  System.IOUtils,
   Vcl.Themes,
   Vcl.Clipbrd,
   MPCommonUtilities,
   uEditAppIntfs,
-  dlgToDoOptions,
   cProjectClasses,
-  cParameters,
-  cPyScripterSettings;
+  cPyScripterSettings,
+  dmResources,
+  dlgToDoOptions;
 
 {$R *.dfm}
 
@@ -265,7 +265,7 @@ begin
     with TToDoInfo(fDataList[i]) do begin
       ClipText.Add(IntToStr(Ord(Priority)) + #9 +
         Display + #9 +
-        XtractFileName(FileName) + #9 +
+        TPath.GetFileName(FileName) + #9 +
         IntToStr(LineNo));
     end;
     Clipboard.AsText := ClipText.Text;
@@ -381,7 +381,7 @@ begin
           end;
           Size := 10;
         end;
-        RichEdit.Lines.Add(XtractFileName(FileName) + ' (' + IntToStr(LineNo) + ')' +
+        RichEdit.Lines.Add(TPath.GetFileName(FileName) + ' (' + IntToStr(LineNo) + ')' +
           #09 + PriorityText[Priority] + #9 + Display);
       end;
     end;
@@ -618,15 +618,13 @@ var
   IsDoneTodoItem: Boolean;
   ParsingString: string;
   OptionChar: WideChar;
-  TokenStringUpped : string;
 begin
   // Token string is alread trimmed and without SComment
   Result := nil;
-  TokenStringUpped := TokenString.ToUpper;
   for i := 0 to ToDoExpert.FTokenList.Count - 1 do
   begin
-    if StrIsLeft(PWideChar(TokenStringUpped),
-      PWideChar(TTokenInfo(ToDoExpert.FTokenList.Objects[i]).Token)) then
+    if TokenString.StartsWith(
+      TTokenInfo(ToDoExpert.FTokenList.Objects[i]).Token, True) then
     begin
       // We found a token that looks like a TODO comment and is in the position 1.
       n := 1;
@@ -870,8 +868,8 @@ begin
      Result := False;
    end;
    if (Node is TProjectFileNode) and (TProjectFileNode(Node).FileName <> '') then begin
-     FileName := Parameters.ReplaceInText(TProjectFileNode(Node).FileName);
-     if FileIsPythonSource(FileName)
+     FileName := GI_PyIDEServices.ReplaceParams(TProjectFileNode(Node).FileName);
+     if GI_PyIDEServices.FileIsPythonSource(FileName)
      then
        TToDoWindow(Data).LoadFile(FileName);
    end;
@@ -1000,8 +998,8 @@ begin
     -1: Result := 0;
     0: Result := Ord(ToDoInfo1.Priority) - Ord(ToDoInfo2.Priority);
     1: Result := AnsiCompareStr(ToDoInfo1.Display, ToDoInfo2.Display);
-    2: Result := AnsiCompareStr(XtractFileName(ToDoInfo1.FileName),
-                    XtractFileName(ToDoInfo2.FileName));
+    2: Result := AnsiCompareStr(TPath.GetFileName(ToDoInfo1.FileName),
+                    TPath.GetFileName(ToDoInfo2.FileName));
     3: Result := ToDoInfo1.LineNo - ToDoInfo2.LineNo;
   end;
 end;

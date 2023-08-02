@@ -429,7 +429,7 @@ procedure Register;
 implementation
 
 uses RTLConsts, Math, Clipbrd, ExtCtrls, Types,
-  StringResources, JvGnugettext, ELHintWindow, ELSConsts, UKoppel;
+  StringResources, JvGnugettext, ELHintWindow, ELSConsts, ULink;
 
 procedure Register;
 begin
@@ -598,6 +598,11 @@ type
       const CurName, NewName: string);
     function UniqueName(const BaseName: string): string;
     function GetRoot: TComponent;
+    procedure UpdateCaption(AVisible: boolean; AUpdateFrame: boolean);
+    procedure UpdateDesigner;
+    function DesignPPI(AControl: TWinControl): integer;
+    function GetDesignerHighDPIMode: TVCLDesignerHighDPIMode;
+
     { Other }
     function IsUniqueName(const AName: string): Boolean;
     function IsDesignControl(AControl: TControl): Boolean;
@@ -853,6 +858,24 @@ end;
 function TDEng.GetRoot: TComponent;
 begin
   Result := FRoot;
+end;
+
+procedure TDEng.UpdateCaption(AVisible: boolean; AUpdateFrame: boolean);
+begin
+end;
+
+procedure TDEng.UpdateDesigner;
+begin
+end;
+
+function TDEng.DesignPPI(AControl: TWinControl): integer;
+begin
+  Result:= 0;
+end;
+
+function TDEng.GetDesignerHighDPIMode: TVCLDesignerHighDPIMode;
+begin
+  Result:= hdmAutoScale;
 end;
 
 procedure TDEng.GridParamsChanged;

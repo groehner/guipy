@@ -171,7 +171,7 @@ implementation
 
 uses Printers, IniFiles, Math, Clipbrd, Themes, Dialogs, UITypes,
      uCommonFunctions, JvGnugettext, {UDebugger, } UConfiguration, UUtils,
-     UConnectForm, dmCommands, StringResources, frmPyIDEMain;
+     UConnectForm, dmResources, StringResources, frmPyIDEMain;
 
 const cMinDist = 20;
       cLifeLinesTop = 30;

@@ -832,7 +832,7 @@ type
 implementation
 
 uses Variants, Forms, Dialogs, RTTI, Vcl.Menus, StdCtrls, ELStringsEdit, ELImage,
-     ELEvents, StringResources, JvGnugettext, UConfiguration, UKoppel, UUtils,
+     ELEvents, StringResources, JvGnugettext, UConfiguration, ULink, UUtils,
      UBaseWidgets, Generics.Collections;
 
 const
@@ -2371,7 +2371,7 @@ end;
 
 function TELPropsPageItem.GetDisplayValue: string;
 begin
-    Result := UKoppel.Delphi2PythonValues(FDisplayValue);
+    Result := ULink.Delphi2PythonValues(FDisplayValue);
 end;
 
 procedure TELPropsPageItem.EditButtonClick;
@@ -2525,7 +2525,7 @@ end;
 
 function TELPropertyInspectorItem.GetDisplayValue: string;
 begin
-    Result := UKoppel.Delphi2PythonValues(FDisplayValue);
+    Result := ULink.Delphi2PythonValues(FDisplayValue);
 end;
 
 procedure TELPropertyInspectorItem.GetEditPickList(APickList: TStrings);
@@ -2582,7 +2582,7 @@ var
 begin
   if Value <> FDisplayValue then begin
     LOldValue:= FDisplayValue;
-    UKoppel.LOldValue:= LOldValue;
+    ULink.LOldValue:= LOldValue;
     LNewValue := Value;
     if (FCaption = 'Name') and (FEditor.classname = 'TELComponentNamePropEditor') then begin
       if not isValid(LNewValue) then begin
@@ -2598,7 +2598,7 @@ begin
     try
       try
         // t:= TPersistent(TELPropertyInspector(Owner).FObjects[0]); // TURTLE
-        FEditor.Value := UKoppel.turnRGB(LNewValue); // May raise an exception
+        FEditor.Value := ULink.turnRGB(LNewValue); // May raise an exception
         FDisplayValue := LNewValue; // FEditor.Value may be not equal with Value
       except
         on e: Exception do
@@ -2655,7 +2655,7 @@ begin
     try
       // the property-inspector can hold more than one component with a common item to change for all components
       if Assigned(Parent) then FClassname:= Parent.Caption;
-      Caption := UKoppel.Delphi2PythonValues(FEditor.PropName);
+      Caption := ULink.Delphi2PythonValues(FEditor.PropName);
       LPropAttrs := FEditor.GetAttrs;
       if (praValueList in LPropAttrs) and not TELCustomPropertyInspector(Owner).ReadOnly then
         EditStyle := esPickList
@@ -4265,7 +4265,7 @@ procedure TELColorPropEditor.GetValues(AValues: TStrings);
 begin
   FValues := AValues;
   //GetColorValues(AddValue);
-  AValues.Text:= UKoppel.PythonColorsText;
+  AValues.Text:= ULink.PythonColorsText;
 end;
 
 procedure TELColorPropEditor.SetValue(const Value: string);
@@ -4313,7 +4313,7 @@ begin
             LOldBrushColor := Brush.Color;
             Pen.Color := Brush.Color;
             Rectangle(ARect.Left, ARect.Top, LRight, ARect.Bottom);
-            Brush.Color := StringToColor(UKoppel.Python2DelphiColors(AValue));  // Röhner
+            Brush.Color := StringToColor(ULink.Python2DelphiColors(AValue));  // Röhner
             Pen.Color := _ColorToBorderColor(ColorToRGB(Brush.Color));
             Rectangle(ARect.Left + 1, ARect.Top + 1, LRight - 1, ARect.Bottom - 1);
             Brush.Color := LOldBrushColor;
@@ -4354,7 +4354,7 @@ end;
 procedure TELCursorPropEditor.GetValues(AValues: TStrings);
 begin
   FValues := AValues;
-  AValues.Text:= UKoppel.PythonCursorText;
+  AValues.Text:= ULink.PythonCursorText;
 end;
 
 procedure TELCursorPropEditor.SetValue(const Value: string);
@@ -4506,12 +4506,12 @@ end;
 
 procedure TELIconPropeditor.Edit;
 begin
-  if not assigned(FIconEditor) then
-    FIconEditor:= TFIconEditor.create(nil);
-  FIconEditor.setValue(GetValue);
-  if FIconEditor.ShowModal = mrOK then
-    SetStrValue(FIconEditor.Value);
-  FreeAndNil(FIconEditor);
+  with TFIconEditor.create(nil) do begin
+    setValue(GetValue);
+    if ShowModal = mrOK then
+      SetStrValue(Value);
+    Free;
+  end;
 end;
 
 { TELGraphicPropeditor }
@@ -4534,11 +4534,12 @@ end;
 
 procedure TELGraphicPropeditor.Edit;
 begin
-  if not assigned(FIconEditor) then
-    FIconEditor:= TFIconEditor.create(nil);
-  FIconEditor.setValue(GetValue);
-  if FIconEditor.ShowModal = mrOK then
-    SetStrValue(FIconEditor.Value);
+  with TFIconEditor.create(nil) do begin
+    setValue(GetValue);
+    if ShowModal = mrOK then
+      SetStrValue(Value);
+    Free;
+  end;
 end;
 
 { TELFilePropeditor }
@@ -4895,19 +4896,15 @@ end;
 { TELStringsPropEditor }
 
 procedure TELStringsPropEditor.Edit;
-var
-    LStringsEditorDlg: TELStringsEditorDlg;
 begin
-    LStringsEditorDlg := TELStringsEditorDlg.Create(Application);
-    try
-        LStringsEditorDlg.Lines := TStrings(GetOrdValue(0));
-        if LStringsEditorDlg.Execute then begin
-          if LStringsEditorDlg.Lines.Count = 0 then
-            LStringsEditorDlg.Lines.Add('');
-          SetOrdValue(Longint(LStringsEditorDlg.Lines));
+    with TELStringsEditorDlg.Create(Application) do begin
+        Lines := TStrings(GetOrdValue(0));
+        if Execute then begin
+          if Lines.Count = 0 then
+            Lines.Add('');
+          SetOrdValue(Longint(Lines));
         end;
-    finally
-        FreeAndNil(LStringsEditorDlg);
+       Free;
     end;
 end;
 
@@ -4924,22 +4921,19 @@ end;
 { TELEventPropEditor }
 
 procedure TELEventPropEditor.Edit;
-  var LEventEditorDlg: TELEventEditorDlg;
-      Event: TEvent;
+  var Event: TEvent;
 begin
-    LEventEditorDlg:= TELEventEditorDlg.Create(Application);
+  with TELEventEditorDlg.Create(Application) do begin
     GetEventProperties(GetInstance(0), PropName, Event);
-    try
-      LEventEditorDlg.setEvent(Event);
-      if LEventEditorDlg.Execute then begin
-        LEventEditorDlg.getEvent(Event);
-        Event.Active:= true;
-        SetEventProperties(GetInstance(0), PropName, Event);
-        Modified;
-      end;
-    finally
-      FreeAndNil(LEventEditorDlg);
+    setEvent(Event);
+    if Execute then begin
+      getEvent(Event);
+      Event.Active:= true;
+      SetEventProperties(GetInstance(0), PropName, Event);
+      Modified;
     end;
+    Free;
+  end;
 end;
 
 function TELEventPropEditor.GetAttrs: TELPropAttrs;

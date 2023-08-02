@@ -55,7 +55,6 @@ uses
   Vcl.ImgList,
   Vcl.VirtualImageList,
   cFindInFiles,
-  dmCommands,
   dlgPyIDEBase;
 
 type
@@ -119,10 +118,10 @@ uses
   JvGnugettext,
   uEditAppIntfs,
   uCommonFunctions,
+  dmResources,
   frmFindResults,
   StringResources,
   cPyScripterSettings,
-  cParameters,
   cPyControl;
 
 function GetScrollbarWidth: Integer;
@@ -201,7 +200,7 @@ begin
     for Dir in Dirs do
     begin
       if Dir = '' then continue;
-      DirName := ExpandFileName(Parameters.ReplaceInText(Dir));
+      DirName := ExpandFileName(GI_PyIDEServices.ReplaceParams(Dir));
       if not System.SysUtils.DirectoryExists(DirName) then begin
         StyledMessageDlg(Format(_(SSearchDirectoryDoesNotExist), [DirName]), mtError, [mbOK], 0);
         Abort;

@@ -4,10 +4,9 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
   Caption = 'Python Versions'
   ClientHeight = 315
   ClientWidth = 630
-  ExplicitWidth = 646
-  ExplicitHeight = 354
-  PixelsPerInch = 96
-  TextHeight = 14
+  ExplicitWidth = 638
+  ExplicitHeight = 342
+  TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 30
@@ -15,6 +14,8 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
     Height = 285
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 622
+    ExplicitHeight = 273
     object vtPythonVersions: TVirtualStringTree
       Left = 1
       Top = 1
@@ -54,6 +55,7 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
     Top = 0
     Width = 630
     Height = 30
+    ExplicitWidth = 622
     object SpTBXToolbar: TSpTBXToolbar
       Left = 0
       Top = 0
@@ -171,58 +173,48 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 63
         CollectionName = 'OpenFolder'
-        Disabled = False
         Name = 'OpenFolder'
       end
       item
         CollectionIndex = 82
         CollectionName = 'PySetupAdd'
-        Disabled = False
         Name = 'PySetupAdd'
       end
       item
         CollectionIndex = 83
         CollectionName = 'PySetupRemove'
-        Disabled = False
         Name = 'PySetupRemove'
       end
       item
         CollectionIndex = 52
         CollectionName = 'Help'
-        Disabled = False
         Name = 'Help'
       end
       item
         CollectionIndex = 12
         CollectionName = 'CmdOuputWin'
-        Disabled = False
         Name = 'CmdOuputWin'
       end
       item
         CollectionIndex = 32
         CollectionName = 'ExternalRun'
-        Disabled = False
         Name = 'ExternalRun'
       end
       item
         CollectionIndex = 79
         CollectionName = 'PyActivate'
-        Disabled = False
         Name = 'PyActivate'
       end
       item
         CollectionIndex = 90
         CollectionName = 'Rename'
-        Disabled = False
         Name = 'Rename'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20
@@ -230,16 +222,8 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
     Top = 65
   end
   object vilTreeImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
-    Images = <
-      item
-        CollectionIndex = 3
-        CollectionName = 'ArrowRight'
-        Disabled = False
-        Name = 'ArrowRight'
-      end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    Images = <>
+    ImageCollection = ResourcesDataModule.icSVGImages
     Left = 456
     Top = 120
   end

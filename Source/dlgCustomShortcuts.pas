@@ -29,8 +29,8 @@ type
     Category : string;
     Caption : string;
     Hint : string;
-    function IsSecondaryShortCutsStored: Boolean;
     destructor Destroy; override;
+    function IsSecondaryShortCutsStored: Boolean;
   published
     property ActionListName : string read fActionListName write fActionListName;
     property ActionName : string read fActionName write fActionName;

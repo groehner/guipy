@@ -17,6 +17,10 @@ type
 
   TBoolEvent = procedure (Value: Boolean) of object;
 
+const
+  UTF8BOMString : RawByteString = AnsiChar($EF) + AnsiChar($BB) + AnsiChar($BF);
+
+
 function CtrlPressed: boolean;
 procedure ErrorMsg(const s: string);
 function myStringReplace(ImString: string; const DenString, DurchString: string): String;
@@ -144,6 +148,7 @@ function PointToVal(P: TPoint): string;
 function IntToVal(x: integer): string;
 function myColorToRGB(Color: TColor): string;
 function XYToVal(x, y: integer): string;
+function CalcIndent(S : string; TabWidth : integer = 4): integer;
 
 implementation
 
@@ -1736,6 +1741,20 @@ end;
 function XYToVal(x, y: integer): string;
 begin
   Result:= IntToStr(x) + ',' + IntToStr(y) + ' ';
+end;
+
+function CalcIndent(S : string; TabWidth : integer = 4): integer;
+Var
+  i : integer;
+begin
+  Result := 0;
+  for i := 1 to Length(S) do
+    if S[i] = WideChar(#9) then
+      Inc(Result, TabWidth)
+    else if S[i] = ' ' then
+      Inc(Result)
+    else
+      break;
 end;
 
 end.

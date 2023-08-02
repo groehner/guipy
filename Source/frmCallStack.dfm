@@ -3,8 +3,8 @@ inherited CallStackWindow: TCallStackWindow
   Top = 397
   HelpContext = 470
   Caption = 'Call Stack'
-  ClientHeight = 168
-  ClientWidth = 604
+  ClientHeight = 156
+  ClientWidth = 596
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -40,32 +40,33 @@ inherited CallStackWindow: TCallStackWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 620
-  ExplicitHeight = 207
-  PixelsPerInch = 96
-  TextHeight = 14
+  ExplicitWidth = 604
+  ExplicitHeight = 183
+  TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 604
-    Height = 168
-    ExplicitWidth = 604
-    ExplicitHeight = 168
+    Width = 596
+    Height = 156
+    ExplicitWidth = 588
+    ExplicitHeight = 144
     inherited FGPanel: TPanel
-      Width = 600
-      Height = 164
-      ExplicitWidth = 600
-      ExplicitHeight = 164
+      Width = 592
+      Height = 152
+      ExplicitWidth = 584
+      ExplicitHeight = 140
       object Panel1: TPanel
         Left = 190
         Top = 0
-        Width = 410
-        Height = 164
+        Width = 402
+        Height = 152
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 394
+        ExplicitHeight = 140
         object CallStackView: TVirtualStringTree
           Left = 1
           Top = 1
-          Width = 408
-          Height = 162
+          Width = 400
+          Height = 150
           Align = alClient
           Alignment = taRightJustify
           BevelInner = bvNone
@@ -100,7 +101,7 @@ inherited CallStackWindow: TCallStackWindow
             item
               Position = 1
               Text = 'File Name'
-              Width = 258
+              Width = 250
             end
             item
               Alignment = taRightJustify
@@ -113,14 +114,15 @@ inherited CallStackWindow: TCallStackWindow
         Left = 0
         Top = 0
         Width = 185
-        Height = 164
+        Height = 152
         Align = alLeft
         TabOrder = 1
+        ExplicitHeight = 140
         object ThreadView: TVirtualStringTree
           Left = 1
           Top = 1
           Width = 183
-          Height = 162
+          Height = 150
           Align = alClient
           BevelInner = bvNone
           BevelOuter = bvNone
@@ -154,10 +156,11 @@ inherited CallStackWindow: TCallStackWindow
       object Splitter1: TSpTBXSplitter
         Left = 185
         Top = 0
-        Height = 164
+        Height = 152
         Cursor = crSizeWE
         ParentColor = False
         MinSize = 3
+        ExplicitHeight = 140
       end
     end
   end
@@ -190,28 +193,23 @@ inherited CallStackWindow: TCallStackWindow
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 67
         CollectionName = 'Pin'
-        Disabled = False
         Name = 'Pin'
       end
       item
         CollectionIndex = 120
         CollectionName = 'ThreadRunning'
-        Disabled = False
         Name = 'ThreadRunning'
       end
       item
         CollectionIndex = 119
         CollectionName = 'ThreadPaused'
-        Disabled = False
         Name = 'ThreadPaused'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Left = 423
     Top = 32

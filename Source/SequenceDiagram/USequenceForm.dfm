@@ -7,14 +7,12 @@ object FSequenceForm: TFSequenceForm
   ClientWidth = 598
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   Visible = True
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object PToolbar: TPanel
     Left = 0
     Top = 0
@@ -107,7 +105,7 @@ object FSequenceForm: TFSequenceForm
     Left = 456
     Top = 31
     Width = 121
-    Height = 21
+    Height = 22
     TabOrder = 1
     Visible = False
   end

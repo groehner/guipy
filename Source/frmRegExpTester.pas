@@ -26,6 +26,7 @@ uses
   Vcl.ExtCtrls,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
+  Vcl.ImgList,
   Vcl.VirtualImageList,
   TB2Item,
   TB2Dock,
@@ -38,9 +39,10 @@ uses
   JvAppStorage,
   JvComponentBase,
   VirtualTrees.BaseTree,
+  VirtualTrees.BaseAncestorVCL,
+  VirtualTrees.AncestorVCL,
   VirtualTrees,
-  frmIDEDockWin,
-  Vcl.ImgList, VirtualTrees.BaseAncestorVCL, VirtualTrees.AncestorVCL;
+  frmIDEDockWin;
 
 type
   TRegExpTesterWindow = class(TIDEDockWindow, IJvAppStorageHandler)
@@ -127,10 +129,10 @@ uses
   JvGnugettext,
   JvAppIniStorage,
   VarPyth,
+  dmResources,
   dmCommands,
   PythonEngine,
   uEditAppIntfs,
-  cInternalPython,
   uCommonFunctions;
 
 {$R *.dfm}
@@ -178,7 +180,7 @@ begin
   end;
   if GI_PyControl.PythonLoaded then
   begin
-    var Py := SafePyEngine;
+    var Py := GI_PyControl.SafePyEngine;
     VarClear(RegExp);
     VarClear(MatchObject);
     MatchList.Clear;
@@ -297,7 +299,7 @@ Var
   Py: IPyEngineAndGIL;
   Index : Integer;
 begin
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   Index := Trunc(SpinMatches.Value);
   if (Index > 0) and (Index <= MatchList.Count) then begin
     GroupsView.Clear;
@@ -324,13 +326,12 @@ Var
   OutputSuppressor: IInterface;
 begin
   if not GI_PyControl.Inactive then Exit;
-
   if RegExpText.Text = '' then Exit;
   if SearchText.Text = '' then Exit;
 
   Clear;
 
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
 
   re := Import('re');
   Flags := 0;
@@ -436,7 +437,7 @@ Var
   GroupDict, Keys : Variant;
   i : integer;
 begin
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   Assert(VarIsPython(MatchObject) and not VarIsNone(MatchObject));
   Assert(Integer(Node.Index) < len(MatchObject.groups()));
   case Column of
@@ -469,7 +470,7 @@ begin
   OldSelLen := SearchText.SelLength;
   SearchText.Lines.BeginUpdate;
   try
-    var Py := SafePyEngine;
+    var Py := GI_PyControl.SafePyEngine;
     for VMatch in MatchList do
     begin
       SearchText.SelStart := VMatch.start();

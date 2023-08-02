@@ -3,8 +3,8 @@ inherited OutputWindow: TOutputWindow
   Top = 173
   HelpContext = 450
   Caption = 'Output'
-  ClientHeight = 331
-  ClientWidth = 552
+  ClientHeight = 295
+  ClientWidth = 528
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000040040000000000000000000000000000000000000000
@@ -42,25 +42,24 @@ inherited OutputWindow: TOutputWindow
     000000000000000000000000000000000000000000000000000000000000FFFF
     0000FFFF00000000000000000000000000000000000000000000000000000000
     0000000000000000000000000000000000000000000000000000FFFF0000}
-  ExplicitWidth = 568
-  ExplicitHeight = 370
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 544
+  ExplicitHeight = 334
+  TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 552
-    Height = 331
-    ExplicitWidth = 552
-    ExplicitHeight = 331
+    Width = 528
+    Height = 295
+    ExplicitWidth = 528
+    ExplicitHeight = 295
     inherited FGPanel: TPanel
-      Width = 548
-      Height = 327
-      ExplicitWidth = 548
-      ExplicitHeight = 327
+      Width = 524
+      Height = 291
+      ExplicitWidth = 524
+      ExplicitHeight = 291
       object lsbConsole: TListBox
         Left = 0
         Top = 0
-        Width = 548
-        Height = 327
+        Width = 524
+        Height = 291
         TabStop = False
         Align = alClient
         BevelInner = bvNone
@@ -138,46 +137,38 @@ inherited OutputWindow: TOutputWindow
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 16
         CollectionName = 'Copy'
-        Disabled = False
         Name = 'Copy'
       end
       item
         CollectionIndex = 21
         CollectionName = 'Delete'
-        Disabled = False
         Name = 'Delete'
       end
       item
         CollectionIndex = 111
         CollectionName = 'Stop'
-        Disabled = False
         Name = 'Stop'
       end
       item
         CollectionIndex = 30
         CollectionName = 'Exit'
-        Disabled = False
         Name = 'Exit'
       end
       item
         CollectionIndex = 86
         CollectionName = 'Quit'
-        Disabled = False
         Name = 'Quit'
       end
       item
         CollectionIndex = 47
         CollectionName = 'Font'
-        Disabled = False
         Name = 'Font'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20

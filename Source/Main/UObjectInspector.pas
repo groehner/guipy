@@ -101,9 +101,9 @@ var
 implementation
 
 uses SysUtils, Dialogs, Clipbrd, Math, Themes, JvGnugettext, StringResources,
-     UGUIForm, UGUIDesigner, UKoppel, UObjectGenerator, frmPyIDEMain,
+     UGUIForm, UGUIDesigner, ULink, UObjectGenerator, frmPyIDEMain,
      UConfiguration, UUtils, UBaseWidgets, UBaseQtWidgets, ELEvents, frmFile, frmEditor,
-     dmCommands;
+     dmResources;
 
 {$R *.dfm}
 
@@ -350,10 +350,10 @@ end;
 
 procedure TFObjectInspector.MIFontClick(Sender: TObject);
 begin
-  CommandsDataModule.dlgFontDialog.Font.Assign(Font);
-  CommandsDataModule.dlgFontDialog.Options:= [];
-  if CommandsDataModule.dlgFontDialog.Execute then begin
-    Font.Assign(CommandsDataModule.dlgFontDialog.Font);
+  ResourcesDataModule.dlgFontDialog.Font.Assign(Font);
+  ResourcesDataModule.dlgFontDialog.Options:= [];
+  if ResourcesDataModule.dlgFontDialog.Execute then begin
+    Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
     SetFont(Font);
   end;
 end;

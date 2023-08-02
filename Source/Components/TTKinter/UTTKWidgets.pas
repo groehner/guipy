@@ -46,7 +46,7 @@ type
 implementation
 
 uses Math, UITypes, TypInfo, GraphUtil, UImages, UUtils, UObjectGenerator,
-     UObjectInspector, UGuiForm, UTKMiscBase, UConfiguration, UKoppel;
+     UObjectInspector, UGuiForm, UTKMiscBase, UConfiguration, ULink;
 
 {--- TTKWidget ----------------------------------------------------------------}
 

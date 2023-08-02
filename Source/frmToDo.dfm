@@ -40,26 +40,20 @@ inherited ToDoWindow: TToDoWindow
     A3FF000000000000000000000000000000000000000000000000000000000000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 508
-  ExplicitHeight = 332
-  PixelsPerInch = 96
-  TextHeight = 14
+  TextHeight = 15
   inherited BGPanel: TPanel
     Width = 492
     Height = 293
-    ExplicitWidth = 492
-    ExplicitHeight = 293
     inherited FGPanel: TPanel
       Width = 488
       Height = 289
-      ExplicitWidth = 488
-      ExplicitHeight = 289
       object TBXDock1: TSpTBXDock
         Left = 0
         Top = 0
         Width = 488
         Height = 30
         AllowDrag = False
+        DoubleBuffered = True
         object Toolbar: TSpTBXToolbar
           Left = 0
           Top = 0
@@ -266,31 +260,24 @@ inherited ToDoWindow: TToDoWindow
     end
   end
   object ToDoImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 1
         CollectionName = 'ToDo\Exclamation'
-        Disabled = False
         Name = 'Exclamation'
       end
       item
-        CollectionIndex = -1
         CollectionName = 'ToDo\MediumPriority'
-        Disabled = False
         Name = 'MediumPriority'
       end
       item
         CollectionIndex = 2
         CollectionName = 'ToDo\LowPriority'
-        Disabled = False
         Name = 'LowPriority'
       end
       item
         CollectionIndex = 0
         CollectionName = 'ToDo\Done'
-        Disabled = False
         Name = 'Done'
       end>
     ImageCollection = icTodo
@@ -299,52 +286,43 @@ inherited ToDoWindow: TToDoWindow
     Top = 64
   end
   object vicImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 70
         CollectionName = 'Print'
-        Disabled = False
         Name = 'Print'
       end
       item
         CollectionIndex = 16
         CollectionName = 'Copy'
-        Disabled = False
         Name = 'Copy'
       end
       item
         CollectionIndex = 103
         CollectionName = 'Setup'
-        Disabled = False
         Name = 'Setup'
       end
       item
         CollectionIndex = 51
         CollectionName = 'GoToLine'
-        Disabled = False
         Name = 'GoToLine'
       end
       item
         CollectionIndex = 52
         CollectionName = 'Help'
-        Disabled = False
         Name = 'Help'
       end
       item
         CollectionIndex = 88
         CollectionName = 'Refresh'
-        Disabled = False
         Name = 'Refresh'
       end
       item
         CollectionIndex = 0
         CollectionName = 'Abort'
-        Disabled = False
         Name = 'Abort'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20

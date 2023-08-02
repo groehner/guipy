@@ -186,7 +186,7 @@ type
 implementation
 
 uses Clipbrd, Themes, jvDockControlForm, frmPyIDEMain, cPyScripterSettings,
-     UGUIDesigner, UObjectGenerator, UObjectInspector, UUtils, UKoppel,
+     UGUIDesigner, UObjectGenerator, UObjectInspector, UUtils, ULink,
      UConfiguration, UXTheme, UQtWidgetDescendants, UBaseTKWidgets;
 
 {$R *.DFM}

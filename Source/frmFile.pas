@@ -29,7 +29,6 @@ type
     TFGUIDesigner        no need
     TFObjectGenerator    no need
     TFOpenFolderForm     no need - temporary window
-    TFStringEditor       no need
     TFSubversion         no need
     TFUpdate             no need
     TFConnectForm        ChangeStyle - temporary window
@@ -87,7 +86,6 @@ type
     ParentTabItem: TSpTBXTabItem;
     ParentTabControl: TSpTBXCustomTabControl;
     DefaultExtension: string;
-    procedure DoUpdateCaption;
     function GetFile: IFile;
     function DoSave: boolean;
     procedure DoExport; virtual;
@@ -95,6 +93,7 @@ type
     procedure ExecCommand(cmd: integer); virtual;
     procedure OpenWindow(Sender: TObject); virtual;
     procedure CollectClasses(SL: TStringList); virtual;
+    procedure DoUpdateCaption; virtual;
     procedure SetActiveControl(aControl: TWinControl);
 
     property Modified: boolean read GetModified write SetModified;
@@ -192,8 +191,8 @@ type
 
 implementation
 
-uses UITypes, Types, JvGnugettext, StringResources, uCommonFunctions,
-  dlgPickList, frmPyIDEMain, frmEditor, dmCommands, cSSHSupport,
+uses System.IOUtils, UITypes, Types, JvGnugettext, StringResources, uCommonFunctions,
+  dlgPickList, frmPyIDEMain, frmEditor, dmResources, cSSHSupport,
   UUMLForm, UGUIForm, USequenceForm, UStructogram, UTextDiff, UBrowser,
   cPyScripterSettings, VirtualShellNotifier, dlgRemoteFile, JclFileUtils,
   UUtils, UConfiguration;
@@ -238,7 +237,7 @@ begin
     DoActivateFile;
     MessageBeep(MB_ICONQUESTION);
     Assert(fFile <> nil);
-    S := Format(_(SAskSaveChanges), [XtractFileName(fFile.GetFileTitle)]);
+    S := Format(_(SAskSaveChanges), [TPath.GetFileName(fFile.GetFileTitle)]);
     case StyledMessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0,
       mbYes) of
       mrYes:
@@ -277,7 +276,7 @@ Var
 begin
   Assert(fFile <> nil);
   if fFile.fRemoteFileName <> '' then
-    TabCaption := XtractFileName(fFile.fRemoteFileName)
+    TabCaption := TPath.GetFileName(fFile.fRemoteFileName)
   else
     TabCaption := fFile.GetFileTitle;
 
@@ -429,7 +428,7 @@ begin
   if IsHttp(NewName) and (copy(Lowercase(ExtractFileExt(NewName)), 1, 4) <> '.htm') then
       NewName:= NewName + '.html';
 
-  if CommandsDataModule.GetSaveFileName(NewName, nil, '.' + DefaultExtension) then
+  if ResourcesDataModule.GetSaveFileName(NewName, nil, '.' + DefaultExtension) then
   begin
     aFile := GI_FileFactory.GetFileByName(NewName);
     if Assigned(aFile) and (aFile <> Self.fFile as IFile) then
@@ -488,9 +487,9 @@ end;
 procedure TFileForm.SelectFont(FileKind: TFileKind);
   var i: Integer; aFont: TFont; aFile: IFile;
 begin
-  CommandsDataModule.dlgFontDialog.Font.Assign(Font);
-  if CommandsDataModule.dlgFontDialog.Execute then begin
-    aFont:= CommandsDataModule.dlgFontDialog.Font;
+  ResourcesDataModule.dlgFontDialog.Font.Assign(Font);
+  if ResourcesDataModule.dlgFontDialog.Execute then begin
+    aFont:= ResourcesDataModule.dlgFontDialog.Font;
     for i:= 0 to GI_FileFactory.Count - 1 do begin
       aFile:= GI_FileFactory.FactoryFile[i];
       if assigned(aFile) and (aFile.FileKind = FileKind) then
@@ -537,7 +536,7 @@ begin
     else if Message.Msg = CM_EXIT then
       DoAssignInterfacePointer(false);
   end;
-  inherited;
+  inherited WndProc(Message);
 end;
 
 function TFileForm.GetState: string;
@@ -797,7 +796,7 @@ end;
 procedure TFile.ExecPrint;
 begin
   if fForm <> nil then
-    with CommandsDataModule do
+    with ResourcesDataModule do
     begin
       PrintDialog.PrintRange := prAllPages;
       if PrintDialog.Execute then
@@ -906,7 +905,7 @@ begin
   DoSetFileName('');
 
   TempFileName := ChangeFileExt(FileGetTempName('PyScripter'), ExtractFileExt(FileName));
-  if not ScpDownload(ServerName, FileName, TempFileName, ErrorMsg) then begin
+  if not GI_SSHServices.ScpDownload(ServerName, FileName, TempFileName, ErrorMsg) then begin
     StyledMessageDlg(Format(_(SFileOpenError), [FileName, ErrorMsg]), mtError, [mbOK], 0);
     Abort;
   end else begin
@@ -924,19 +923,16 @@ begin
 end;
 
 function TFile.SaveToRemoteFile(const FileName, ServerName: string): boolean;
-Var
-  TempFileName : string;
-  ErrorMsg : string;
-  SL: TStringList;
+  var ErrorMsg : string;
 begin
   Result:= false;
   if (fForm = nil)  or (FileName = '') or (ServerName = '') then exit;    // ToDo was Abort
 
-  TempFileName := FileGetTempName('PyScripter');
-  SL:= fForm.getAsStringList;
+  var TempFileName := FileGetTempName('PyScripter');
+  var SL:= fForm.getAsStringList;
   Result := SaveWideStringsToFile(TempFileName, SL, False);
   if Result then begin
-    Result := ScpUpload(ServerName, TempFileName, FileName, ErrorMsg);
+    Result := GI_SSHServices.ScpUpload(ServerName, TempFileName, FileName, ErrorMsg);
     DeleteFile(TempFileName);
     if not Result then
       Vcl.Dialogs.MessageDlg(Format(_(SFileSaveError), [FileName, ErrorMsg]), mtError, [mbOK], 0);

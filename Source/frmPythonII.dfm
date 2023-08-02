@@ -3,8 +3,8 @@ inherited PythonIIForm: TPythonIIForm
   Top = 201
   HelpContext = 410
   Caption = 'Python Interpreter'
-  ClientHeight = 451
-  ClientWidth = 701
+  ClientHeight = 427
+  ClientWidth = 685
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -43,26 +43,25 @@ inherited PythonIIForm: TPythonIIForm
     9C41F00F9C41F00F9C41F00F9C4180019C4100009C4100009C4100009C410000
     9C4100009C4100009C4180019C41F00F9C41F00F9C41F00F9C41F81F9C41}
   OnHelp = FormHelp
-  ExplicitWidth = 717
-  ExplicitHeight = 490
-  PixelsPerInch = 96
-  TextHeight = 14
+  ExplicitWidth = 693
+  ExplicitHeight = 454
+  TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 701
-    Height = 451
-    ExplicitWidth = 701
-    ExplicitHeight = 451
+    Width = 685
+    Height = 427
+    ExplicitWidth = 677
+    ExplicitHeight = 415
     inherited FGPanel: TPanel
-      Width = 697
-      Height = 447
+      Width = 681
+      Height = 423
       Color = clInactiveBorder
-      ExplicitWidth = 697
-      ExplicitHeight = 447
+      ExplicitWidth = 673
+      ExplicitHeight = 411
       object SynEdit: TSynEdit
         Left = 0
         Top = 0
-        Width = 697
-        Height = 447
+        Width = 681
+        Height = 423
         HelpContext = 410
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
@@ -114,6 +113,8 @@ inherited PythonIIForm: TPythonIIForm
         OnCommandProcessed = SynEditCommandProcessed
         OnProcessCommand = SynEditProcessCommand
         OnProcessUserCommand = SynEditProcessUserCommand
+        ExplicitWidth = 673
+        ExplicitHeight = 411
       end
     end
   end
@@ -225,121 +226,100 @@ inherited PythonIIForm: TPythonIIForm
     end
   end
   object vilCodeImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 8
         CollectionName = 'CodeImages\Python'
-        Disabled = False
         Name = 'Python'
       end
       item
         CollectionIndex = 9
         CollectionName = 'CodeImages\Variable'
-        Disabled = False
         Name = 'Variable'
       end
       item
         CollectionIndex = 1
         CollectionName = 'CodeImages\Field'
-        Disabled = False
         Name = 'Field'
       end
       item
         CollectionIndex = 2
         CollectionName = 'CodeImages\Function'
-        Disabled = False
         Name = 'Function'
       end
       item
         CollectionIndex = 5
         CollectionName = 'CodeImages\Method'
-        Disabled = False
         Name = 'Method'
       end
       item
         CollectionIndex = 0
         CollectionName = 'CodeImages\Class'
-        Disabled = False
         Name = 'Class'
       end
       item
         CollectionIndex = 7
         CollectionName = 'CodeImages\Namespace'
-        Disabled = False
         Name = 'Namespace'
       end
       item
         CollectionIndex = 4
         CollectionName = 'CodeImages\List'
-        Disabled = False
         Name = 'List'
       end
       item
         CollectionIndex = 6
         CollectionName = 'CodeImages\Module'
-        Disabled = False
         Name = 'Module'
       end
       item
         CollectionIndex = 3
         CollectionName = 'CodeImages\Keyword'
-        Disabled = False
         Name = 'Keyword'
       end>
-    ImageCollection = CommandsDataModule.icCodeImages
+    ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True
     Left = 40
     Top = 160
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 17
         CollectionName = 'Cut'
-        Disabled = False
         Name = 'Cut'
       end
       item
         CollectionIndex = 16
         CollectionName = 'Copy'
-        Disabled = False
         Name = 'Copy'
       end
       item
         CollectionIndex = 65
         CollectionName = 'Paste'
-        Disabled = False
         Name = 'Paste'
       end
       item
         CollectionIndex = 21
         CollectionName = 'Delete'
-        Disabled = False
         Name = 'Delete'
       end
       item
         CollectionIndex = 27
         CollectionName = 'EditOptions'
-        Disabled = False
         Name = 'EditOptions'
       end
       item
         CollectionIndex = 84
         CollectionName = 'Python'
-        Disabled = False
         Name = 'Python'
       end
       item
         CollectionIndex = 81
         CollectionName = 'PySetup'
-        Disabled = False
         Name = 'PySetup'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20

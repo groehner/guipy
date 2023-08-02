@@ -150,7 +150,7 @@ implementation
 
 uses Math, SysUtils, System.Types, UITypes, UUtils, UImages, UConfiguration,
      Vcl.Imaging.GIFImg, Vcl.Imaging.jpeg, Vcl.Imaging.pngimage,
-     UObjectGenerator, UObjectInspector, UGUIDesigner, UKoppel;
+     UObjectGenerator, UObjectInspector, UGUIDesigner, ULink;
 
 {--- TButtonBaseWidget --------------------------------------------------------}
 

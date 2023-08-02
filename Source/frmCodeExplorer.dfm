@@ -3,8 +3,8 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
   Top = 237
   HelpContext = 430
   Caption = 'Code Explorer'
-  ClientHeight = 306
-  ClientWidth = 249
+  ClientHeight = 294
+  ClientWidth = 241
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -40,13 +40,19 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000078AA723108FB1F3078AA723000000000000
     000000000000000000000000000000000000000000000000000000000000}
+  ExplicitWidth = 257
+  ExplicitHeight = 333
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 249
-    Height = 306
+    Width = 241
+    Height = 294
+    ExplicitWidth = 241
+    ExplicitHeight = 294
     inherited FGPanel: TPanel
       Width = 245
       Height = 302
+      ExplicitWidth = 237
+      ExplicitHeight = 290
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -55,6 +61,8 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 237
+        ExplicitHeight = 290
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 0
@@ -224,7 +232,7 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
         CollectionName = 'CodeImages\Keyword'
         Name = 'Keyword'
       end>
-    ImageCollection = CommandsDataModule.icCodeImages
+    ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True
     Left = 24
     Top = 176
@@ -246,7 +254,7 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
         CollectionName = 'Highlight'
         Name = 'Highlight'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20

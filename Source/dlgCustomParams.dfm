@@ -3,38 +3,39 @@ inherited CustomizeParams: TCustomizeParams
   Top = 192
   HelpContext = 720
   Caption = 'Custom Parameters'
-  ClientHeight = 343
-  ClientWidth = 557
+  ClientHeight = 342
+  ClientWidth = 553
   ShowHint = True
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ExplicitWidth = 563
-  ExplicitHeight = 372
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 565
+  ExplicitHeight = 380
+  TextHeight = 15
   object Panel: TPanel
     Left = 0
     Top = 0
-    Width = 557
-    Height = 343
+    Width = 553
+    Height = 342
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 549
+    ExplicitHeight = 341
     DesignSize = (
-      557
-      343)
+      553
+      342)
     object Label3: TLabel
       Left = 12
       Top = 304
-      Width = 214
-      Height = 13
+      Width = 235
+      Height = 15
       Caption = 'Press Shift+Ctrl+P for Parameter completion'
       Enabled = False
     end
     object Label4: TLabel
       Left = 12
       Top = 319
-      Width = 204
-      Height = 13
+      Width = 230
+      Height = 15
       Caption = 'Press Shift+Ctrl+M for Modifier completion'
       Enabled = False
     end
@@ -84,8 +85,8 @@ inherited CustomizeParams: TCustomizeParams
       TabOrder = 7
     end
     object btnOK: TButton
-      Left = 382
-      Top = 308
+      Left = 370
+      Top = 307
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -93,10 +94,12 @@ inherited CustomizeParams: TCustomizeParams
       Default = True
       ModalResult = 1
       TabOrder = 1
+      ExplicitLeft = 366
+      ExplicitTop = 306
     end
     object btnCancel: TButton
-      Left = 462
-      Top = 308
+      Left = 450
+      Top = 307
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -104,27 +107,31 @@ inherited CustomizeParams: TCustomizeParams
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 8
+      ExplicitLeft = 446
+      ExplicitTop = 306
     end
     object GroupBox1: TGroupBox
       Left = 10
       Top = 215
-      Width = 536
-      Height = 83
+      Width = 524
+      Height = 82
       Anchors = [akLeft, akTop, akRight, akBottom]
       Caption = 'Name-Value Pair'
       TabOrder = 2
+      ExplicitWidth = 520
+      ExplicitHeight = 81
       object Label1: TLabel
         Left = 14
         Top = 28
-        Width = 31
-        Height = 13
+        Width = 35
+        Height = 15
         Caption = '&Name:'
       end
       object Label2: TLabel
         Left = 14
         Top = 50
-        Width = 30
-        Height = 13
+        Width = 31
+        Height = 15
         Caption = '&Value:'
       end
       object SynValue: TSynEdit
@@ -152,7 +159,6 @@ inherited CustomizeParams: TCustomizeParams
         Gutter.Bands = <
           item
             Kind = gbkMarks
-            Visible = True
             Width = 13
           end
           item
@@ -163,7 +169,6 @@ inherited CustomizeParams: TCustomizeParams
           end
           item
             Kind = gbkMargin
-            Visible = True
             Width = 3
           end>
         HideSelection = True
@@ -176,7 +181,7 @@ inherited CustomizeParams: TCustomizeParams
         Left = 133
         Top = 23
         Width = 155
-        Height = 21
+        Height = 23
         TabOrder = 0
         OnKeyPress = edNameKeyPress
       end
@@ -184,7 +189,7 @@ inherited CustomizeParams: TCustomizeParams
     object lvItems: TListView
       Left = 1
       Top = 1
-      Width = 555
+      Width = 551
       Height = 171
       Align = alTop
       Columns = <
@@ -203,6 +208,7 @@ inherited CustomizeParams: TCustomizeParams
       TabOrder = 0
       ViewStyle = vsReport
       OnSelectItem = lvItemsSelectItem
+      ExplicitWidth = 547
     end
   end
   object ActionList: TActionList
@@ -251,34 +257,29 @@ inherited CustomizeParams: TCustomizeParams
       item
         CollectionIndex = 21
         CollectionName = 'Delete'
-        Disabled = False
         Name = 'Delete'
       end
       item
         CollectionIndex = 88
         CollectionName = 'Refresh'
-        Disabled = False
         Name = 'Refresh'
       end
       item
-        CollectionIndex = 129
+        CollectionIndex = 130
         CollectionName = 'Up'
-        Disabled = False
         Name = 'Up'
       end
       item
         CollectionIndex = 22
         CollectionName = 'Down'
-        Disabled = False
         Name = 'Down'
       end
       item
         CollectionIndex = 68
         CollectionName = 'Plus'
-        Disabled = False
         Name = 'Plus'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Left = 304
     Top = 17

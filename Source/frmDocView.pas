@@ -14,6 +14,7 @@ uses
   WinApi.Windows,
   WinApi.Messages,
   WinApi.ActiveX,
+  Winapi.WebView2,
   System.SysUtils,
   System.Variants,
   System.Classes,
@@ -26,13 +27,12 @@ uses
   Vcl.ImgList,
   Vcl.BaseImageCollection,
   Vcl.VirtualImageList,
-  SHDocVw,
+  Vcl.Edge,
   TB2Item,
   TB2Dock,
   TB2Toolbar,
   SpTBXItem,
-  dmCommands,
-  uEditAppIntfs, WebView2, Vcl.Edge;
+  uEditAppIntfs;
 
 type
   TDocForm = class(TForm, IEditorView)
@@ -54,12 +54,14 @@ type
     procedure ToolButtonStopClick(Sender: TObject);
     procedure ToolButtonPrintClick(Sender: TObject);
     procedure ToolButtonSaveClick(Sender: TObject);
-    procedure WebBrowserCommandStateChange(Sender: TObject;
-      Command: Integer; Enable: WordBool);
     procedure WebBrowserCreateWebViewCompleted(Sender: TCustomEdgeBrowser; AResult:
         HRESULT);
+    procedure WebBrowserExecuteScript(Sender: TCustomEdgeBrowser; AResult: HRESULT;
+        const AResultObjectAsJson: string);
+    procedure WebBrowserHistoryChanged(Sender: TCustomEdgeBrowser);
   private
     { Private declarations }
+    FSaveFileName: string;
     procedure UpdateView(Editor : IEditor);
   public
     { Public declarations }
@@ -85,14 +87,14 @@ implementation
 
 uses
   System.IOUtils,
+  System.NetEncoding,
   JvJVCLUtils,
   JvGnugettext,
   StringResources,
   uCommonFunctions,
-  cPyBaseDebugger,
-  cInternalPython,
   cPyControl,
-  cPyScripterSettings;
+  cPyScripterSettings,
+  dmResources;
 
 {$R *.dfm}
 
@@ -124,31 +126,8 @@ end;
 
 procedure TDocForm.ToolButtonSaveClick(Sender: TObject);
 begin
-  var JS :=
-    'async function savehtml() {'#13#10 +
-      'const opts = {'#13#10 +
-      '  types: [{'#13#10 +
-      '      description: ''html file'','#13#10 +
-      '      accept: { ''text/html'': [''.html''] },'#13#10 +
-      '  }],'#13#10 +
-      '};'#13#10 +
-      'const handle = await window.showSaveFilePicker(opts);'#13#10 +
-      'const writable = await handle.createWritable();'#13#10 +
-      'var html = document.documentElement.outerHTML;'#13#10 +
-      'writable.write(html);'#13#10 +
-      'writable.close();}'#13#10 +
-     'savehtml();';
-
-  WebBrowser.ExecuteScript(JS);
-end;
-
-procedure TDocForm.WebBrowserCommandStateChange(Sender: TObject;
-  Command: Integer; Enable: WordBool);
-begin
-  case Command of
-    CSC_NAVIGATEBACK: ToolButtonBack.Enabled := Enable;
-    CSC_NAVIGATEFORWARD: ToolButtonForward.Enabled := Enable;
-  end;
+  if ResourcesDataModule.GetSaveFileName(FSaveFileName, ResourcesDataModule.SynWebHtmlSyn, 'html') then
+    WebBrowser.ExecuteScript('encodeURIComponent(document.documentElement.outerHTML)');
 end;
 
 procedure TDocForm.UpdateView(Editor: IEditor);
@@ -160,7 +139,7 @@ var
 begin
   if not Assigned(Editor) then Exit;
 
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   Cursor := WaitCursor;
 
   module := PyControl.ActiveInterpreter.ImportModule(Editor);
@@ -182,6 +161,25 @@ begin
     StyledMessageDlg(_(SWebView2Error), mtError, [mbOK], 0);
 end;
 
+procedure TDocForm.WebBrowserExecuteScript(Sender: TCustomEdgeBrowser; AResult:
+    HRESULT; const AResultObjectAsJson: string);
+begin
+  if (FSaveFileName <> '') and (AResultObjectAsJson <> 'null') then
+  begin
+    var SL := TSmartPtr.Make(TStringList.Create);
+    SL.Text := TNetEncoding.URL.Decode(AResultObjectAsJson.DeQuotedString('"'));
+    SL.WriteBOM := False;
+    SL.SaveToFile(FSaveFileName, TEncoding.UTF8);
+    FSaveFileName := '';
+  end;
+end;
+
+procedure TDocForm.WebBrowserHistoryChanged(Sender: TCustomEdgeBrowser);
+begin
+  ToolButtonBack.Enabled := WebBrowser.CanGoBack;
+  ToolButtonForward.Enabled := WebBrowser.CanGoForward;
+end;
+
 { TDocView }
 
 function TDocView.CreateForm(Editor: IEditor; AOwner : TComponent): TCustomForm;
@@ -196,7 +194,7 @@ end;
 
 procedure TDocView.GetContextHighlighters(List: TList);
 begin
-  List.Add(CommandsDataModule.SynPythonSyn);
+  List.Add(ResourcesDataModule.SynPythonSyn);
 end;
 
 function TDocView.GetHint: string;

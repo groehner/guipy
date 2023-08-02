@@ -4,26 +4,26 @@ object FObjectGenerator: TFObjectGenerator
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSizeToolWin
   Caption = 'Object generator'
-  ClientHeight = 603
-  ClientWidth = 265
+  ClientHeight = 591
+  ClientWidth = 257
   Color = clBtnFace
   ParentFont = True
   FormStyle = fsStayOnTop
-  OldCreateOrder = False
   Position = poDefault
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object StatusBar: TStatusBar
     Left = 0
-    Top = 572
-    Width = 265
+    Top = 560
+    Width = 257
     Height = 31
     Panels = <>
+    ExplicitTop = 572
+    ExplicitWidth = 265
     DesignSize = (
-      265
+      257
       31)
     object BCancel: TButton
       Left = 160
@@ -59,8 +59,8 @@ object FObjectGenerator: TFObjectGenerator
   object ValueListEditor: TValueListEditor
     Left = 0
     Top = 0
-    Width = 265
-    Height = 572
+    Width = 257
+    Height = 560
     Align = alClient
     Constraints.MinWidth = 235
     TabOrder = 0
@@ -68,6 +68,8 @@ object FObjectGenerator: TFObjectGenerator
       'Attribute'
       'Value')
     OnKeyUp = ValueListEditorKeyUp
+    ExplicitWidth = 265
+    ExplicitHeight = 572
     ColWidths = (
       111
       148)

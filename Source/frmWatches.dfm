@@ -3,8 +3,8 @@ inherited WatchesWindow: TWatchesWindow
   Top = 325
   HelpContext = 490
   Caption = 'Watches'
-  ClientHeight = 229
-  ClientWidth = 760
+  ClientHeight = 217
+  ClientWidth = 752
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -40,25 +40,33 @@ inherited WatchesWindow: TWatchesWindow
     72FFCF9971FFCE986FFFCB956EFFC9936BFFC39679F4A670516B000000000000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 776
+  ExplicitWidth = 768
+  ExplicitHeight = 256
+  TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 760
-    Height = 229
+    Width = 752
+    Height = 217
+    ExplicitWidth = 744
+    ExplicitHeight = 205
     inherited FGPanel: TPanel
-      Width = 756
-      Height = 225
+      Width = 748
+      Height = 213
+      ExplicitWidth = 740
+      ExplicitHeight = 201
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 756
-        Height = 225
+        Width = 748
+        Height = 213
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 740
+        ExplicitHeight = 201
         object WatchesView: TVirtualStringTree
           Left = 1
           Top = 1
-          Width = 754
-          Height = 223
+          Width = 746
+          Height = 211
           Align = alClient
           Alignment = taRightJustify
           BevelInner = bvNone
@@ -101,7 +109,7 @@ inherited WatchesWindow: TWatchesWindow
             item
               Position = 2
               Text = 'Value'
-              Width = 434
+              Width = 426
             end>
         end
       end
@@ -163,64 +171,54 @@ inherited WatchesWindow: TWatchesWindow
       item
         CollectionIndex = 8
         CollectionName = 'CodeImages\Python'
-        Disabled = False
         Name = 'Python'
       end
       item
         CollectionIndex = 9
         CollectionName = 'CodeImages\Variable'
-        Disabled = False
         Name = 'Variable'
       end
       item
         CollectionIndex = 1
         CollectionName = 'CodeImages\Field'
-        Disabled = False
         Name = 'Field'
       end
       item
         CollectionIndex = 2
         CollectionName = 'CodeImages\Function'
-        Disabled = False
         Name = 'Function'
       end
       item
         CollectionIndex = 5
         CollectionName = 'CodeImages\Method'
-        Disabled = False
         Name = 'Method'
       end
       item
         CollectionIndex = 0
         CollectionName = 'CodeImages\Class'
-        Disabled = False
         Name = 'Class'
       end
       item
         CollectionIndex = 7
         CollectionName = 'CodeImages\Namespace'
-        Disabled = False
         Name = 'Namespace'
       end
       item
         CollectionIndex = 4
         CollectionName = 'CodeImages\List'
-        Disabled = False
         Name = 'List'
       end
       item
         CollectionIndex = 6
         CollectionName = 'CodeImages\Module'
-        Disabled = False
         Name = 'Module'
       end
       item
         CollectionIndex = 3
         CollectionName = 'CodeImages\Keyword'
-        Disabled = False
         Name = 'Keyword'
       end>
-    ImageCollection = CommandsDataModule.icCodeImages
+    ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True
     Left = 24
     Top = 136
@@ -230,40 +228,34 @@ inherited WatchesWindow: TWatchesWindow
       item
         CollectionIndex = 16
         CollectionName = 'Copy'
-        Disabled = False
         Name = 'Copy'
       end
       item
         CollectionIndex = 21
         CollectionName = 'Delete'
-        Disabled = False
         Name = 'Delete'
       end
       item
         CollectionIndex = 68
         CollectionName = 'Plus'
-        Disabled = False
         Name = 'Plus'
       end
       item
         CollectionIndex = 62
         CollectionName = 'Minus'
-        Disabled = False
         Name = 'Minus'
       end
       item
-        CollectionIndex = 134
+        CollectionIndex = 135
         CollectionName = 'Watch'
-        Disabled = False
         Name = 'Watch'
       end
       item
         CollectionIndex = 24
         CollectionName = 'Edit'
-        Disabled = False
         Name = 'Edit'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20

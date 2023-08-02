@@ -310,7 +310,7 @@ implementation
 
 uses Math, SysUtils, Forms, UITypes, GraphUtil, JvGnugettext,
      UUtils, UImages, UConfiguration, UObjectGenerator, UObjectInspector,
-     UGUIDesigner, UKoppel;
+     UGUIDesigner, ULink;
 
 {--- TButtonBaseWidget --------------------------------------------------------}
 

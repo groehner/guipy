@@ -135,7 +135,7 @@ implementation
 
 uses Math, SysUtils, UITypes, GraphUtil, UUtils, UImages, UConfiguration,
      Vcl.Imaging.GIFImg, Vcl.Imaging.jpeg, Vcl.Imaging.pngimage, System.Types,
-     UObjectGenerator, UObjectInspector, UGUIDesigner, UTKMiscBase, UKoppel;
+     UObjectGenerator, UObjectInspector, UGUIDesigner, UTKMiscBase, ULink;
 
 {--- TButtonBaseWidget --------------------------------------------------------}
 

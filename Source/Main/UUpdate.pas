@@ -12,18 +12,18 @@ const
   {$IFDEF WIN32}
   Zipfile = 'GuiPy.zip';   // update portable version
   Setupfile = 'GuiPy-%s-x86-Setup.exe';   // update default version
-  Version = '3.0, 32 Bit';
+  Version = '3.2, 32 Bit';
   Bits = '32';
   {$ENDIF}
   {$IFDEF WIN64}
   Zipfile = 'GuiPy64.zip';
   Setupfile = 'GuiPy-%s-x64-Setup.exe';
-  Version = '3.0, 64 Bit';
+  Version = '3.1, 64 Bit';
   Bits = '64';
   {$ENDIF}
 
-  Day   = 5;
-  Month = 6;
+  Day   = 2;
+  Month = 8;
   Year  = 2023;
 
 type
@@ -44,7 +44,6 @@ type
     procedure BCloseClick(Sender: TObject);
     procedure BUpdateClick(Sender: TObject);
   private
-    FDownload: TFDownload;
     NewVersion: string;
     LocalTempDir: string;
     procedure MakeUpdate;
@@ -52,12 +51,9 @@ type
     function ShowVersionDate(s: string): string;
     function ExtractZipToDir(const Filename, Dir: string): boolean;
   public
-    function GetVersionDate: string;
+    class function GetVersionDate: string;
     procedure CheckAutomatically;
   end;
-
-var
-  FUpdate: TFUpdate = nil;
 
 implementation
 
@@ -70,8 +66,8 @@ uses SysUtils, DateUtils, Dialogs, IOUtils, Zip,
 procedure TFUpdate.FormCreate(Sender: TObject);
 begin
   inherited;
-  FDownload:= TFDownload.create(Self);
   SetElevationRequiredState(BUpdate);
+  PopupParent := Sender as TForm;
 end;
 
 procedure TFUpdate.FormShow(Sender: TObject);
@@ -104,22 +100,24 @@ begin
       then Filename:= ZipFile
       else Filename:= Format(Setupfile, [NewVersion]);
     Filepath:= TPath.Combine(LocalTempDir, Filename);
-
-    if FDownload.GetInetFile(Server + Filename, Filepath, ProgressBar) then begin
-      if TPyScripterSettings.IsPortable then begin
-        if ExtractZipToDir(Filepath, LocalTempDir)
-          then MakeUpdate
-          else Memo.Lines.Add(_('Unpacking error'))
+    with TFDownload.Create(Self) do begin
+      if GetInetFile(Server + Filename, Filepath, ProgressBar) then begin
+        if TPyScripterSettings.IsPortable then begin
+          if ExtractZipToDir(Filepath, LocalTempDir)
+            then MakeUpdate
+            else Memo.Lines.Add(_('Unpacking error'))
+        end else
+          if FConfiguration.RunAsAdmin(Handle, Filepath, '') = 33 then begin
+            Close;
+            TThread.ForceQueue(nil, procedure
+              begin
+                PyIDEMainForm.Close;
+              end);
+          end;
       end else
-        if FConfiguration.RunAsAdmin(Handle, Filepath, '') = 33 then begin
-          Close;
-          TThread.ForceQueue(nil, procedure
-            begin
-              PyIDEMainForm.Close;
-            end);
-        end;
-    end else
-      Memo.Lines.Add(_('Download failed!'));
+        Memo.Lines.Add(_('Download failed!'));
+      Free;
+    end;
   finally
     Screen.Cursor:= crDefault;
   end;
@@ -143,10 +141,9 @@ begin
 end;
 
 function TFUpdate.ExtractZipToDir(const Filename, Dir: string): boolean;
-  var ZipFile: TZipFile;
 begin
   Result:= false;
-  ZipFile:= TZipFile.Create;
+  var ZipFile:= TZipFile.Create;
   try
     try
       ZipFile.Open(Filename, zmRead);
@@ -265,7 +262,7 @@ begin
   end;
 end;
 
-function TFUpdate.GetVersionDate: string;
+class function TFUpdate.GetVersionDate: string;
 begin
   Result:= DateToStr(EncodeDate(Year, Month, Day));
 end;

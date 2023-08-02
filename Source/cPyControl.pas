@@ -12,10 +12,12 @@ unit cPyControl;
 interface
 
 Uses
+  System.SysUtils,
   System.Classes,
   JclNotify,
   JvAppStorage,
   PythonVersions,
+  PythonEngine,
   uEditAppIntfs,
   cPySupportTypes,
   cPyBaseDebugger,
@@ -80,6 +82,9 @@ type
     function GetPythonVersion: TPythonVersion;
     function GetOnPythonVersionChange: TJclNotifyEventBroadcast;
     function AddPathToInternalPythonPath(const Path: string): IInterface;
+    function SafePyEngine: IPyEngineAndGIL;
+    procedure ThreadPythonExec(ExecuteProc : TProc; TerminateProc : TProc = nil;
+      WaitToFinish: Boolean = False; ThreadExecMode : TThreadExecMode = emNewState);
   public
     const MinPyVersion = '3.7';
     const MaxPyVersion = '3.11'; //PYTHON311
@@ -155,7 +160,6 @@ implementation
 
 uses
   WinApi.Windows,
-  System.SysUtils,
   System.Contnrs,
   System.UITypes,
   System.Math,
@@ -163,13 +167,11 @@ uses
   Vcl.Dialogs,
   JvGnugettext,
   JvJVCLUtils,
-  PythonEngine,
   VarPyth,
   StringResources,
   uCmdLine,
   uCommonFunctions,
   cPyScripterSettings,
-  cParameters,
   cPyDebugger,
   cPyRemoteDebugger,
   cProjectClasses,
@@ -201,7 +203,7 @@ begin
   PrepareRun;
 
   if fRunConfig.WriteOutputToFile then
-    GI_PyInterpreter.StartOutputMirror(Parameters.ReplaceInText(fRunConfig.OutputFileName),
+    GI_PyInterpreter.StartOutputMirror(GI_PyIDEServices.ReplaceParams(fRunConfig.OutputFileName),
       fRunConfig.AppendToFile);
   try
     ActiveDebugger.Debug(fRunConfig, InitStepIn, RunToCursorLine);
@@ -346,8 +348,8 @@ begin
         break;
       end;
     if not Result then begin
-      Result := (PythonVersionFromPath(DLLPath, Version, True,
-                  MinPyVersion, MaxPyVersion) = 0);
+      Result := PythonVersionFromPath(DLLPath, Version, True,
+        MinPyVersion, MaxPyVersion);
       if Result then begin
         SetLength(CustomPythonVersions, Length(CustomPythonVersions) + 1);
         CustomPythonVersions[Length(CustomPythonVersions)-1] := Version;
@@ -390,6 +392,12 @@ begin
   end;
 end;
 
+procedure TPythonControl.ThreadPythonExec(ExecuteProc, TerminateProc: TProc;
+  WaitToFinish: Boolean; ThreadExecMode: TThreadExecMode);
+begin
+  InternalThreadPythonExec(ExecuteProc, TerminateProc, WaitToFinish, ThreadExecMode);
+end;
+
 procedure TPythonControl.ToggleBreakpoint(Editor : IEditor; ALine: integer;
   CtrlPressed : Boolean = False);
 var
@@ -423,6 +431,11 @@ begin
     end;
     DoOnBreakpointChanged(Editor, ALine);
   end;
+end;
+
+function TPythonControl.SafePyEngine: IPyEngineAndGIL;
+begin
+  Result := InternalSafePyEngine;
 end;
 
 procedure TPythonControl.SetActiveDebugger(const Value: TPyBaseDebugger);
@@ -721,7 +734,7 @@ begin
     fRunConfig.Assign(ARunConfig);
     // Expand Parameters in filename
     fRunConfig.ScriptName := '';  // to avoid circular substitution
-    fRunConfig.ScriptName := Parameters.ReplaceInText(ARunConfig.ScriptName);
+    fRunConfig.ScriptName := GI_PyIDEServices.ReplaceParams(ARunConfig.ScriptName);
     GI_PyIDEServices.SetRunLastScriptHints(fRunConfig.ScriptName);
   end;
 end;
@@ -798,7 +811,7 @@ begin
   PrepareRun;
 
   if fRunConfig.WriteOutputToFile then
-    GI_PyInterpreter.StartOutputMirror(Parameters.ReplaceInText(fRunConfig.OutputFileName),
+    GI_PyInterpreter.StartOutputMirror(GI_PyIDEServices.ReplaceParams(fRunConfig.OutputFileName),
       fRunConfig.AppendToFile);
   try
     ActiveInterpreter.Run(fRunConfig);
@@ -840,8 +853,9 @@ begin
       if Name = '' then
         Path := CustomVersions[Index]
       else
-        Path := CustomVersions.ValueFromIndex[Index];
-      if PythonVersionFromPath(Path, Version, True, MinPyVersion, MaxPyVersion) = 0
+         Path := CustomVersions.ValueFromIndex[Index];
+      if PythonVersionFromPath(Path, Version, True,
+        MinPyVersion, MaxPyVersion)
       then
       begin
         CustomPythonVersions[Count] := Version;

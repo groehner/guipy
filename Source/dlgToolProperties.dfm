@@ -3,26 +3,30 @@ inherited ToolProperties: TToolProperties
   Top = 153
   HelpContext = 710
   Caption = 'External Tool Properties'
-  ClientHeight = 498
-  ClientWidth = 444
+  ClientHeight = 497
+  ClientWidth = 440
   OnDestroy = FormDestroy
   OnShow = FormShow
+  ExplicitWidth = 456
+  ExplicitHeight = 536
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 444
-    Height = 498
+    Width = 440
+    Height = 497
     Align = alClient
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
+    ExplicitWidth = 436
+    ExplicitHeight = 496
     DesignSize = (
-      444
-      498)
+      440
+      497)
     object btnOK: TButton
-      Left = 187
-      Top = 460
+      Left = 175
+      Top = 459
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -30,10 +34,12 @@ inherited ToolProperties: TToolProperties
       Default = True
       ModalResult = 1
       TabOrder = 0
+      ExplicitLeft = 171
+      ExplicitTop = 458
     end
     object btnCancel: TButton
-      Left = 271
-      Top = 460
+      Left = 259
+      Top = 459
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -41,24 +47,29 @@ inherited ToolProperties: TToolProperties
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 1
+      ExplicitLeft = 255
+      ExplicitTop = 458
     end
     object btnHelp: TButton
-      Left = 355
-      Top = 460
+      Left = 343
+      Top = 459
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
       Caption = '&Help'
       TabOrder = 2
       OnClick = btnHelpClick
+      ExplicitLeft = 339
+      ExplicitTop = 458
     end
     object TabControl: TSpTBXTabControl
       Left = 1
       Top = 1
-      Width = 442
+      Width = 438
       Height = 453
       Align = alTop
       ActiveTabIndex = 0
+      ExplicitWidth = 434
       HiddenItems = <>
       object SpTBXTabItem1: TSpTBXTabItem
         Caption = '&Properties'
@@ -70,10 +81,11 @@ inherited ToolProperties: TToolProperties
       object tabEnvironment: TSpTBXTabSheet
         Left = 0
         Top = 25
-        Width = 442
+        Width = 438
         Height = 428
         Caption = '&Environment'
         ImageIndex = -1
+        ExplicitWidth = 434
         TabItem = 'SpTBXTabItem2'
         object GroupBox6: TGroupBox
           Left = 7
@@ -157,7 +169,7 @@ inherited ToolProperties: TToolProperties
         object lvItems: TListView
           Left = 2
           Top = 0
-          Width = 436
+          Width = 432
           Height = 263
           Align = alTop
           Columns = <
@@ -182,24 +194,26 @@ inherited ToolProperties: TToolProperties
       object tabProperties: TSpTBXTabSheet
         Left = 0
         Top = 25
-        Width = 442
+        Width = 438
         Height = 428
         Caption = '&Properties'
         ImageIndex = -1
+        ExplicitWidth = 434
         DesignSize = (
-          442
+          438
           428)
         TabItem = 'SpTBXTabItem1'
         object GroupBox1: TGroupBox
           Left = 7
           Top = 5
-          Width = 428
+          Width = 416
           Height = 70
           Anchors = [akLeft, akTop, akRight]
           Caption = 'General'
           TabOrder = 0
+          ExplicitWidth = 412
           DesignSize = (
-            428
+            416
             70)
           object Label1: TLabel
             Left = 6
@@ -233,30 +247,33 @@ inherited ToolProperties: TToolProperties
           object edName: TEdit
             Left = 90
             Top = 13
-            Width = 193
+            Width = 181
             Height = 23
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 0
+            ExplicitWidth = 177
           end
           object edDescription: TEdit
             Left = 90
             Top = 40
-            Width = 325
+            Width = 313
             Height = 23
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 1
+            ExplicitWidth = 309
           end
         end
         object GroupBox2: TGroupBox
           Left = 6
           Top = 79
-          Width = 428
+          Width = 416
           Height = 108
           Anchors = [akLeft, akTop, akRight]
           Caption = 'Command'
           TabOrder = 1
+          ExplicitWidth = 412
           DesignSize = (
-            428
+            416
             108)
           object Label2: TLabel
             Left = 6
@@ -293,7 +310,7 @@ inherited ToolProperties: TToolProperties
           object SynApplication: TSynEdit
             Left = 90
             Top = 18
-            Width = 303
+            Width = 291
             Height = 18
             Anchors = [akLeft, akTop, akRight]
             Font.Charset = DEFAULT_CHARSET
@@ -303,7 +320,7 @@ inherited ToolProperties: TToolProperties
             Font.Style = []
             Font.Quality = fqClearTypeNatural
             TabOrder = 0
-            OnEnter = SynApplicationEnter
+            OnEnter = SynEditEnter
             UseCodeFolding = False
             ExtraLineSpacing = 0
             Gutter.Font.Charset = DEFAULT_CHARSET
@@ -333,11 +350,12 @@ inherited ToolProperties: TToolProperties
             ScrollBars = ssNone
             SelectedColor.Alpha = 0.400000005960464500
             WantReturns = False
+            ExplicitWidth = 287
           end
           object SynParameters: TSynEdit
             Left = 90
             Top = 41
-            Width = 325
+            Width = 313
             Height = 18
             Anchors = [akLeft, akTop, akRight]
             Font.Charset = DEFAULT_CHARSET
@@ -347,7 +365,7 @@ inherited ToolProperties: TToolProperties
             Font.Style = []
             Font.Quality = fqClearTypeNatural
             TabOrder = 2
-            OnEnter = SynParametersEnter
+            OnEnter = SynEditEnter
             UseCodeFolding = False
             ExtraLineSpacing = 0
             Gutter.Font.Charset = DEFAULT_CHARSET
@@ -377,11 +395,12 @@ inherited ToolProperties: TToolProperties
             ScrollBars = ssNone
             SelectedColor.Alpha = 0.400000005960464500
             WantReturns = False
+            ExplicitWidth = 309
           end
           object SynWorkDir: TSynEdit
             Left = 114
             Top = 64
-            Width = 275
+            Width = 263
             Height = 18
             Anchors = [akLeft, akTop, akRight]
             Font.Charset = DEFAULT_CHARSET
@@ -391,7 +410,7 @@ inherited ToolProperties: TToolProperties
             Font.Style = []
             Font.Quality = fqClearTypeNatural
             TabOrder = 3
-            OnEnter = SynWorkDirEnter
+            OnEnter = SynEditEnter
             UseCodeFolding = False
             ExtraLineSpacing = 0
             Gutter.Font.Charset = DEFAULT_CHARSET
@@ -421,9 +440,10 @@ inherited ToolProperties: TToolProperties
             ScrollBars = ssNone
             SelectedColor.Alpha = 0.400000005960464500
             WantReturns = False
+            ExplicitWidth = 259
           end
           object btnAppDir: TButton
-            Left = 395
+            Left = 383
             Top = 15
             Width = 19
             Height = 20
@@ -431,9 +451,10 @@ inherited ToolProperties: TToolProperties
             Caption = '...'
             TabOrder = 1
             OnClick = btnAppDirClick
+            ExplicitLeft = 379
           end
           object btnWorkDir: TButton
-            Left = 395
+            Left = 383
             Top = 63
             Width = 19
             Height = 20
@@ -441,18 +462,20 @@ inherited ToolProperties: TToolProperties
             Caption = '...'
             TabOrder = 4
             OnClick = btnWorkDirClick
+            ExplicitLeft = 379
           end
         end
         object GroupBox4: TGroupBox
           Left = 6
           Top = 193
-          Width = 428
+          Width = 416
           Height = 64
           Anchors = [akLeft, akTop, akRight]
           Caption = 'Shortcut and Context'
           TabOrder = 2
+          ExplicitWidth = 412
           DesignSize = (
-            428
+            416
             64)
           object lbShortcut: TLabel
             Left = 6
@@ -470,13 +493,14 @@ inherited ToolProperties: TToolProperties
             FocusControl = cbContext
           end
           object Label13: TLabel
-            Left = 270
+            Left = 258
             Top = 18
             Width = 51
             Height = 15
             Anchors = [akTop, akRight]
             Caption = 'Sa&ve files:'
             FocusControl = cbSaveFiles
+            ExplicitLeft = 270
           end
           object cbContext: TComboBox
             Left = 90
@@ -493,7 +517,7 @@ inherited ToolProperties: TToolProperties
               'Selection available')
           end
           object cbSaveFiles: TComboBox
-            Left = 271
+            Left = 259
             Top = 37
             Width = 142
             Height = 23
@@ -509,13 +533,14 @@ inherited ToolProperties: TToolProperties
         object GroupBox3: TGroupBox
           Left = 6
           Top = 260
-          Width = 428
+          Width = 416
           Height = 115
           Anchors = [akLeft, akTop, akRight]
           Caption = 'Standard Input and Output'
           TabOrder = 3
+          ExplicitWidth = 412
           DesignSize = (
-            428
+            416
             115)
           object Label10: TLabel
             Left = 6
@@ -542,7 +567,7 @@ inherited ToolProperties: TToolProperties
             FocusControl = edMessagesFormat
           end
           object btnStdFormats: TButton
-            Left = 397
+            Left = 385
             Top = 78
             Width = 19
             Height = 20
@@ -551,9 +576,10 @@ inherited ToolProperties: TToolProperties
             DropDownMenu = FormatsPopup
             TabOrder = 6
             OnClick = btnStdFormatsClick
+            ExplicitLeft = 381
           end
           object cbCaptureOutput: TCheckBox
-            Left = 271
+            Left = 259
             Top = 13
             Width = 141
             Height = 21
@@ -562,9 +588,10 @@ inherited ToolProperties: TToolProperties
             Checked = True
             State = cbChecked
             TabOrder = 2
+            ExplicitLeft = 255
           end
           object cbParseMessages: TCheckBox
-            Left = 271
+            Left = 259
             Top = 33
             Width = 141
             Height = 21
@@ -577,9 +604,10 @@ inherited ToolProperties: TToolProperties
             State = cbChecked
             TabOrder = 3
             OnClick = cbParseMessagesClick
+            ExplicitLeft = 255
           end
           object cbParseTraceback: TCheckBox
-            Left = 271
+            Left = 259
             Top = 54
             Width = 141
             Height = 21
@@ -591,11 +619,12 @@ inherited ToolProperties: TToolProperties
             Checked = True
             State = cbChecked
             TabOrder = 4
+            ExplicitLeft = 255
           end
           object edMessagesFormat: TEdit
             Left = 136
             Top = 79
-            Width = 257
+            Width = 245
             Height = 21
             Hint = 
               'A grep expression for parsing output lines.'#13#10'Use the button on t' +
@@ -604,6 +633,7 @@ inherited ToolProperties: TToolProperties
             AutoSelect = False
             AutoSize = False
             TabOrder = 5
+            ExplicitWidth = 241
           end
           object cbStandardInput: TComboBox
             Left = 90
@@ -644,11 +674,12 @@ inherited ToolProperties: TToolProperties
         object GroupBox5: TGroupBox
           Left = 6
           Top = 378
-          Width = 428
+          Width = 416
           Height = 44
           Anchors = [akLeft, akTop, akRight]
           Caption = 'Console'
           TabOrder = 4
+          ExplicitWidth = 412
           object cbHideConsole: TCheckBox
             Left = 8
             Top = 16
@@ -740,7 +771,7 @@ inherited ToolProperties: TToolProperties
         CollectionName = 'Plus'
         Name = 'Plus'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Left = 141
     Top = 452

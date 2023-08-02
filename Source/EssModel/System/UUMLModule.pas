@@ -341,12 +341,6 @@ end;
 
 {$WARNINGS OFF}
 function TDMUMLModule.OpenFolderActionExecute(Sender: TObject): boolean;
-var
-  L : TStringList;
-  Ints : TClassList;
-  Exts : TStringList;
-  I : integer;
-  OpenFolderForm: TFOpenFolderForm;
 
   procedure _AddFileNames(Files: TStringList; const Path, Ext: string; rekursiv: boolean);
     var Sr: TSearchRec;
@@ -366,12 +360,12 @@ var
 
 begin
   Result:= false;
-  L := TStringList.Create;
+  var SL := TStringList.Create;
+  var OpenFolderForm:= TFOpenFolderForm.Create(nil);
+  var Ints := Integrators.Get(TImportIntegrator);
   try
-    Ints := Integrators.Get(TImportIntegrator);
-    OpenFolderForm:= TFOpenFolderForm.Create(nil);
-    for I := 0 to Ints.Count - 1 do begin
-      Exts := TImportIntegratorClass(Ints[I]).GetFileExtensions;
+    for var i := 0 to Ints.Count - 1 do begin
+      var Exts := TImportIntegratorClass(Ints[i]).GetFileExtensions;
       try
         OpenFolderForm.CBFiletype.Items.Add( '*' + Exts.Names[0]);
       finally
@@ -382,17 +376,17 @@ begin
 
     if OpenFolderForm.ShowModal = mrOk then begin
       Result:= true;
-      _AddFileNames(L, OpenFolderForm.PathTreeView.Path,
+      _AddFileNames(SL, OpenFolderForm.PathTreeView.Path,
                     Copy(OpenFolderForm.CBFiletype.Items[OpenFolderForm.CBFiletype.ItemIndex], 2, 10),
                     OpenFolderForm.CBWithSubFolder.Checked);
-      if L.Count > 0 then begin
-        LoadProject(L);
+      if SL.Count > 0 then begin
+        LoadProject(SL);
         FDiagram.ResolveAssociations;
       end else
         ShowMessage('No files found.');
     end;
   finally
-    FreeAndNil(L);
+    FreeAndNil(SL);
     FreeAndNil(Ints);
     OpenFolderForm.Release;
   end;

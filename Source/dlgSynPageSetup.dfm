@@ -1518,9 +1518,9 @@ inherited PageSetupDlg: TPageSetupDlg
       object Label11: TLabel
         Left = 10
         Top = 144
-        Width = 31
-        Height = 13
-        Caption = 'Gutter'
+        Width = 36
+        Height = 15
+        Caption = 'Gutter:'
       end
       object CBMirrorMargins: TCheckBox
         Left = 3
@@ -1759,8 +1759,6 @@ inherited PageSetupDlg: TPageSetupDlg
     end
   end
   object vilPageSetup: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 5

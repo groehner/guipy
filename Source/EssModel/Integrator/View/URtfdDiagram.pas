@@ -3014,7 +3014,7 @@ procedure TRtfdDiagram.ShowAllNewObjectsString(From: string = '');
 begin
   PyControl.ActiveInterpreter.RunSource('import ctypes', '<interactive input>');
   SLObjects:= FLivingObjects.getAllObjects;
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   for i:= 0 to SLObjects.Count - 1 do begin
     newObject:= SLObjects.KeyNames[i];
     if BoxNames.IndexOf(newObject) = -1 then begin

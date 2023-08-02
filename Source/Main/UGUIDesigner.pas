@@ -111,7 +111,7 @@ var
 implementation
 
 uses System.Types, frmPyIDEMain, frmFile, JvGnugettext,
-     StringResources, UObjectInspector, UObjectGenerator, UKoppel,
+     StringResources, UObjectInspector, UObjectGenerator, ULink,
      UConfiguration, UUtils,
 
      UBaseWidgets,
@@ -298,7 +298,7 @@ begin
     try
       with LInsertingControl do begin
         SetBounds(AX-LInsertingControl.Width, AY-LInsertingControl.Height, LInsertingControl.Width, LInsertingControl.Height);
-        Tag:= UKoppel.ComponentNrToInsert;
+        Tag:= ULink.ComponentNrToInsert;
         ELDesigner.getUniqueName(Tag2PythonType(Tag), LName);
         Name  := LName; // <-- Here may be exception
         Parent:= ATarget as TWinControl;
@@ -415,7 +415,7 @@ begin
   ComponentToInsert:= nil;
   var EditorForm:= GetEditForm;
   if assigned(EditorForm) then begin
-    UKoppel.ComponentNrToInsert:= Tag;
+    ULink.ComponentNrToInsert:= Tag;
     ComponentToInsert:= Tag2Class(Tag);
   end;
 end;

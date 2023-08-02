@@ -1,30 +1,33 @@
 inherited RunConfigurationForm: TRunConfigurationForm
   HelpContext = 940
   Caption = 'Run Configuration'
-  ClientHeight = 436
-  ClientWidth = 399
+  ClientHeight = 435
+  ClientWidth = 395
   OnDestroy = FormDestroy
-  ExplicitWidth = 405
-  ExplicitHeight = 465
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 407
+  ExplicitHeight = 473
+  TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 399
-    Height = 436
+    Width = 395
+    Height = 435
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 391
+    ExplicitHeight = 434
     DesignSize = (
-      399
-      436)
+      395
+      435)
     object Bevel1: TBevel
       Left = 3
-      Top = 392
-      Width = 396
+      Top = 391
+      Width = 384
       Height = 4
       Anchors = [akLeft, akRight, akBottom]
       Shape = bsBottomLine
+      ExplicitTop = 392
+      ExplicitWidth = 396
     end
     object GroupBox1: TGroupBox
       Left = 8
@@ -39,8 +42,8 @@ inherited RunConfigurationForm: TRunConfigurationForm
       object Label5: TLabel
         Left = 8
         Top = 22
-        Width = 57
-        Height = 13
+        Width = 63
+        Height = 15
         Anchors = [akLeft, akBottom]
         Caption = 'Desc&ription:'
         Color = clNone
@@ -51,7 +54,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
         Left = 105
         Top = 19
         Width = 268
-        Height = 21
+        Height = 23
         Anchors = [akLeft, akRight, akBottom]
         TabOrder = 0
       end
@@ -66,8 +69,8 @@ inherited RunConfigurationForm: TRunConfigurationForm
       object Label2: TLabel
         Left = 8
         Top = 21
-        Width = 50
-        Height = 13
+        Width = 56
+        Height = 15
         Caption = '&File Name:'
         Color = clNone
         FocusControl = SynFileName
@@ -76,8 +79,8 @@ inherited RunConfigurationForm: TRunConfigurationForm
       object Label6: TLabel
         Left = 8
         Top = 45
-        Width = 59
-        Height = 13
+        Width = 62
+        Height = 15
         Caption = '&Parameters:'
         Color = clNone
         FocusControl = SynParameters
@@ -86,8 +89,8 @@ inherited RunConfigurationForm: TRunConfigurationForm
       object Label7: TLabel
         Left = 8
         Top = 69
-        Width = 90
-        Height = 13
+        Width = 99
+        Height = 15
         Caption = 'Working &Directory:'
         Color = clNone
         FocusControl = SynWorkDir
@@ -134,7 +137,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
         Gutter.Bands = <
           item
             Kind = gbkMarks
-            Visible = True
             Width = 13
           end
           item
@@ -145,7 +147,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
           end
           item
             Kind = gbkMargin
-            Visible = True
             Width = 3
           end>
         HideSelection = True
@@ -179,7 +180,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
         Gutter.Bands = <
           item
             Kind = gbkMarks
-            Visible = True
             Width = 13
           end
           item
@@ -190,7 +190,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
           end
           item
             Kind = gbkMargin
-            Visible = True
             Width = 3
           end>
         HideSelection = True
@@ -224,7 +223,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
         Gutter.Bands = <
           item
             Kind = gbkMarks
-            Visible = True
             Width = 13
           end
           item
@@ -235,7 +233,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
           end
           item
             Kind = gbkMargin
-            Visible = True
             Width = 3
           end>
         HideSelection = True
@@ -291,8 +288,8 @@ inherited RunConfigurationForm: TRunConfigurationForm
       object Label1: TLabel
         Left = 8
         Top = 18
-        Width = 63
-        Height = 13
+        Width = 66
+        Height = 15
         Caption = 'Engine &Type:'
         Color = clNone
         FocusControl = cbEngineType
@@ -360,8 +357,8 @@ inherited RunConfigurationForm: TRunConfigurationForm
       object Label4: TLabel
         Left = 8
         Top = 44
-        Width = 50
-        Height = 13
+        Width = 56
+        Height = 15
         Caption = 'File &Name:'
         Color = clNone
         FocusControl = SynOutputFileName
@@ -392,7 +389,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
         Gutter.Bands = <
           item
             Kind = gbkMarks
-            Visible = True
             Width = 13
           end
           item
@@ -403,7 +399,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
           end
           item
             Kind = gbkMargin
-            Visible = True
             Width = 3
           end>
         HideSelection = True
@@ -446,8 +441,8 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
     end
     object btnOK: TButton
-      Left = 139
-      Top = 402
+      Left = 127
+      Top = 401
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -455,10 +450,12 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Default = True
       ModalResult = 1
       TabOrder = 5
+      ExplicitLeft = 123
+      ExplicitTop = 400
     end
     object btnCancel: TButton
-      Left = 223
-      Top = 402
+      Left = 211
+      Top = 401
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -466,16 +463,20 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 6
+      ExplicitLeft = 207
+      ExplicitTop = 400
     end
     object btnHelp: TButton
-      Left = 307
-      Top = 402
+      Left = 295
+      Top = 401
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
       Caption = '&Help'
       TabOrder = 7
       OnClick = btnHelpClick
+      ExplicitLeft = 291
+      ExplicitTop = 400
     end
   end
   object vilImages: TVirtualImageList
@@ -483,22 +484,19 @@ inherited RunConfigurationForm: TRunConfigurationForm
       item
         CollectionIndex = 38
         CollectionName = 'FileOpen'
-        Disabled = False
         Name = 'FileOpen'
       end
       item
         CollectionIndex = 63
         CollectionName = 'OpenFolder'
-        Disabled = False
         Name = 'OpenFolder'
       end
       item
         CollectionIndex = 23
         CollectionName = 'Download'
-        Disabled = False
         Name = 'Download'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Left = 24
     Top = 384

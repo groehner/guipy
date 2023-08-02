@@ -263,7 +263,7 @@ uses
   System.Character,
   System.RegularExpressionsCore,
   SynEditStrConst,
-  uCommonFunctions;
+  SynEditMiscProcs;
 
 function TSynPythonSyn.GetKeyWords(TokenKind: Integer): UnicodeString;
 begin
@@ -530,7 +530,7 @@ begin
   BlockOpenerRE.Create(
      '^(def|class|while|for|if|else|elif|try|except|finally|with'+
      '|(async[ \t]+def)|(async[ \t]+with)|(async[ \t]+for))\b');
-  BlockOpenerRE.Study;
+  BlockOpenerRE.Study([preJIT]);
 
   fRange := rsUnknown;
   fCommentAttri := TSynHighlighterAttributes.Create(SYNS_AttrComment, SYNS_FriendlyAttrComment);
@@ -1440,27 +1440,6 @@ const
     end;
   end;
 
-  function LeftSpaces: Integer;
-  var
-    p: PWideChar;
-  begin
-    p := PWideChar(CurLine);
-    if Assigned(p) then
-    begin
-      Result := 0;
-      while (p^ >= #1) and (p^ <= #32) do
-      begin
-        if (p^ = #9) then
-          Inc(Result, TabW)
-        else
-          Inc(Result);
-        Inc(p);
-      end;
-    end
-    else
-      Result := 0;
-  end;
-
 begin
   //  Deal with multiline strings
   for Line := FromLine to ToLine do begin
@@ -1491,15 +1470,15 @@ begin
       Continue;
 
     TabW := TabWidth(LinesToScan);
-    Indent := LeftSpaces;
+    Indent := LeftSpaces(CurLine, True, TabW);
 
     // find fold openers
     with BlockOpenerRE.Match(LeftTrimmedLine) do
       if Success then
       begin
-        if GroupValue(1) = 'class' then
+        if Groups[1].Value = 'class' then
           FoldType := ClassDefType
-        else if Pos('def', GroupValue(1)) >= 1 then
+        else if Pos('def', Groups[1].Value) >= 1 then
           FoldType := FunctionDefType
         else
           FoldType := 1;
@@ -1611,11 +1590,11 @@ begin
   fSystemCmdAttri.Foreground := clFuchsia;
   AddAttribute(fSystemCmdAttri);
   fTracebackStartRE.Create('^Traceback \(|File ".*line');
-  fTracebackStartRE.Study;
+  fTracebackStartRE.Study([preJIT]);
   fTracebackEndRE.Create('^\w*(Error|Exception|Warning|KeyboardInterrupt):');
-  fTracebackEndRE.Study;
+  fTracebackEndRE.Study([preJIT]);
   fSystemCmdRE.Create(Format('^(%s)?%s\s*!', [fDbg, fPS1]));
-  fSystemCmdRE.Study;
+  fSystemCmdRE.Study([preJIT]);
 
   SetAttributesOnChange(DefHighlightChange);
 end;

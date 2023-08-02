@@ -254,11 +254,13 @@ implementation
 
 uses
   System.Math,
+  System.IOUtils,
   System.Threading,
   JvGNUGetText,
   SynEdit,
-  frmPyIDEMain,
+  dmResources,
   dmCommands,
+  frmPyIDEMain,
   uEditAppIntfs,
   uCommonFunctions,
   LspUtils,
@@ -480,7 +482,8 @@ begin
     //UpdatePopupActions;
     CENode := Node.GetData<TAbstractCENode>;
     mnFindDefinition.Enabled :=
-      (CENode is TCodeElementCENode) and not (CENode is TModuleCENode);
+      (CENode is TCodeElementCENode) and not (CENode is TModuleCENode) or
+      (CENode is TVariableCENode) or (CENode is TImportCENode);
     mnFindReferences.Enabled := mnFindDefinition.Enabled;
     mnHighlight.Enabled := mnFindDefinition.Enabled;
   end else
@@ -690,7 +693,8 @@ begin
   var Node := ExplorerTree.GetFirstSelected();
   if Assigned(Node) then begin
     var CENode := Node.GetData<TAbstractCENode>;
-    if (CENode is TCodeElementCENode) and not (CENode is TModuleCENode) then
+    if (CENode is TCodeElementCENode) and not (CENode is TModuleCENode) or
+       (CENode is TVariableCENode) or (CENode is TImportCENode) then
     begin
       NavigateToNodeElement(Node);
       PyIDEMainForm.actFindReferencesExecute(Self);
@@ -709,7 +713,9 @@ begin
   var Node := ExplorerTree.GetFirstSelected();
   if Assigned(Node) then begin
     var CENode := Node.GetData<TAbstractCENode>;
-    if (CENode is TCodeElementCENode) and not (CENode is TModuleCENode) then
+    if (CENode is TCodeElementCENode) and not (CENode is TModuleCENode) or
+       (CENode is TVariableCENode) or (CENode is TImportCENode)
+    then
       CommandsDataModule.HighlightWordInActiveEditor(CENode.Name);
   end;
 end;
@@ -845,7 +851,7 @@ var
 begin
   inherited Create;
   FileName := AFileName;
-  FName := XtractFileName(AFileName);
+  FName := TPath.GetFileName(AFileName);
   fExpanded := esExpanded;
   FCodePos := BufferCoord(1, 1);
   FCodeBlock.StartLine := 1;

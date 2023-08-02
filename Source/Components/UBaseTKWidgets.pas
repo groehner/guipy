@@ -166,7 +166,7 @@ type
 implementation
 
 uses SysUtils, TypInfo, Math, UITypes, UGuiForm, UTKMiscBase, UTTKMiscBase,
-     UGUIDesigner, UObjectInspector, UKoppel, UConfiguration, UUtils;
+     UGUIDesigner, UObjectInspector, ULink, UConfiguration, UUtils;
 
 constructor TBaseTkWidget.create(aOwner: TComponent);
 begin
@@ -757,7 +757,7 @@ begin
   if Value = '' then begin
     Partner.DeleteAttribute(Name + 'VC');
     Partner.DeleteAttribute('self.' + Name + '[''validatecommand'']');
-    Partner.DeleteMethod(UKoppel.LOldValue);
+    Partner.DeleteMethod(ULink.LOldValue);
   end else begin
     key:= 'self.' + Name + 'VC';
     setAttributValue(key, key + ' = self.register(self.' + Name + '_ValidateCommand)');
@@ -836,7 +836,7 @@ procedure TBaseTkWidget.MakeScrollbars(Value, TkTyp: String);
   end;
 
 begin
-  OldValue:= UKoppel.LOldValue;
+  OldValue:= ULink.LOldValue;
   ScrollbarName:= 'self.' + Name + 'Scrollbar';
   Partner.ActiveSynEdit.BeginUpdate;
   WidthNoScrollbar:= Width;

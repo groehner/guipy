@@ -25,12 +25,11 @@ uses
   SpTBXItem,
   TB2Item,
   VirtualTrees.Types,
-  VirtualTrees.BaseTree,
-  VirtualTrees.AncestorVCL,
   VirtualTrees.BaseAncestorVCL,
+  VirtualTrees.AncestorVCL,
+  VirtualTrees.BaseTree,
   VirtualTrees,
-  dlgPyIDEBase,
-  dmCommands;
+  dlgPyIDEBase;
 
 type
   TPythonVersionsDialog = class(TPyIDEDlgBase)
@@ -100,7 +99,8 @@ Uses
   uEditAppIntfs,
   uCommonFunctions,
   cPyControl,
-  PythonVersions;
+  PythonVersions,
+  dmResources;
 
 procedure TPythonVersionsDialog.actlPythonVersionsUpdate(Action: TBasicAction;
   var Handled: Boolean);
@@ -150,26 +150,25 @@ procedure TPythonVersionsDialog.actPVAddExecute(Sender: TObject);
 Var
   PythonVersion: TPythonVersion;
   Directories: TArray<string>;
-  PVResult: integer; err: string;
+  err: string;
 begin
-  if SelectDirectory('', Directories, [], _('Select folder with Python installation (including virtualenv and venv)'))
+  if SelectDirectory('', Directories, [], _('Select folder with Python installation (inlcuding virtualenv and venv)'))
   then begin
-    PVResult:= PythonVersionFromPath(Directories[0], PythonVersion, true, PyControl.MinPyVersion, PyControl.MaxPyVersion);
-    if PVResult = 0 then begin
+    if PythonVersionFromPath(Directories[0], PythonVersion, True,
+      PyControl.MinPyVersion, PyControl.MaxPyVersion)
+    then
+    begin
       SetLength(PyControl.CustomPythonVersions, Length(PyControl.CustomPythonVersions) + 1);
       PyControl.CustomPythonVersions[Length(PyControl.CustomPythonVersions)-1] := PythonVersion;
       vtPythonVersions.ReinitChildren(nil, True);
       vtPythonVersions.Selected[vtPythonVersions.GetLast] := True;
-    end else if PVResult = 1 then begin
+    end else
       {$IFDEF WIN32}
       err:= Format(_(SPythonFindError32), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
       {$ELSE}
       err:= Format(_(SPythonFindError64), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
       {$ENDIF}
-      StyledMessageDlg(err,mtError, [mbOK], 0);
-    end else
-      StyledMessageDlg(Format(_(SPythonMinMaxError),
-        [PyControl.MinPyVersion, PyControl.MaxPyVersion]) , mtError, [mbOK], 0);
+      StyledMessageDlg(_(err), mtError, [mbOK], 0);
   end;
 end;
 

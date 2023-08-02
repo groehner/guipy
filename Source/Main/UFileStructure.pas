@@ -59,7 +59,7 @@ implementation
 
 {$R *.dfm}
 
-uses frmPyIDEMAin, frmEditor, JvDockControlForm, dmCommands, uEditAppIntfs,
+uses frmPyIDEMAin, frmEditor, JvDockControlForm, dmResources, uEditAppIntfs,
      JvGnugettext, SynEdit, uCommonFunctions,
      UUMLForm, UConfiguration, UUtils, UImages, UGUIDesigner;
 
@@ -160,9 +160,9 @@ end;
 
 procedure TFFileStructure.MIFontClick(Sender: TObject);
 begin
-  CommandsDataModule.dlgFontDialog.Font.Assign(Font);
-  if CommandsDataModule.dlgFontDialog.Execute then
-    Font.Assign(CommandsDataModule.dlgFontDialog.Font);
+  ResourcesDataModule.dlgFontDialog.Font.Assign(Font);
+  if ResourcesDataModule.dlgFontDialog.Execute then
+    Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
 end;
 
 procedure TFFileStructure.MIDefaulLayoutClick(Sender: TObject);

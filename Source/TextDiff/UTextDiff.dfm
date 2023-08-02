@@ -2,12 +2,11 @@ object FTextDiff: TFTextDiff
   Left = 362
   Top = 211
   Caption = 'Compare text'
-  ClientHeight = 538
-  ClientWidth = 812
+  ClientHeight = 535
+  ClientWidth = 800
   Color = clBtnFace
   ParentFont = True
   KeyPreview = True
-  OldCreateOrder = True
   Position = poDefault
   Visible = True
   OnClose = FormClose
@@ -15,12 +14,11 @@ object FTextDiff: TFTextDiff
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnResize = FormResize
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object TBTextDiff: TToolBar
     Left = 0
     Top = 0
-    Width = 812
+    Width = 800
     Height = 26
     AutoSize = True
     EdgeBorders = [ebTop, ebBottom]
@@ -29,6 +27,7 @@ object FTextDiff: TFTextDiff
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
+    ExplicitWidth = 812
     object TBClose: TToolButton
       Left = 4
       Top = 0
@@ -121,11 +120,13 @@ object FTextDiff: TFTextDiff
   object PMain: TPanel
     Left = 0
     Top = 26
-    Width = 812
-    Height = 493
+    Width = 800
+    Height = 490
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 812
+    ExplicitHeight = 493
     object Splitter: TSplitter
       Left = 315
       Top = 0
@@ -186,8 +187,8 @@ object FTextDiff: TFTextDiff
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 519
-    Width = 812
+    Top = 516
+    Width = 800
     Height = 19
     Panels = <
       item
@@ -221,6 +222,8 @@ object FTextDiff: TFTextDiff
         Width = 150
       end>
     OnDrawPanel = StatusBarDrawPanel
+    ExplicitTop = 519
+    ExplicitWidth = 812
   end
   object ILTextDiffLight: TImageList
     Left = 35

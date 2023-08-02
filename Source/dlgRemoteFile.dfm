@@ -3,8 +3,9 @@ inherited RemoteFileDialog: TRemoteFileDialog
   ClientHeight = 130
   ClientWidth = 434
   OnCloseQuery = FormCloseQuery
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 446
+  ExplicitHeight = 168
+  TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
@@ -12,32 +13,34 @@ inherited RemoteFileDialog: TRemoteFileDialog
     Height = 93
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 430
+    ExplicitHeight = 92
     object Label1: TLabel
       Left = 16
       Top = 16
-      Width = 45
-      Height = 13
+      Width = 48
+      Height = 15
       Caption = 'File Path:'
     end
     object Label2: TLabel
       Left = 16
       Top = 47
-      Width = 58
-      Height = 13
+      Width = 59
+      Height = 15
       Caption = 'SSH Server:'
     end
     object edFileName: TEdit
       Left = 144
       Top = 13
       Width = 265
-      Height = 21
+      Height = 23
       TabOrder = 0
     end
     object cbSSHConfigs: TComboBox
       Left = 144
       Top = 45
       Width = 235
-      Height = 21
+      Height = 23
       Style = csDropDownList
       TabOrder = 1
     end
@@ -65,11 +68,13 @@ inherited RemoteFileDialog: TRemoteFileDialog
     ParentColor = True
     ShowCaption = False
     TabOrder = 1
+    ExplicitTop = 92
+    ExplicitWidth = 430
     DesignSize = (
       434
       37)
     object OKButton: TButton
-      Left = 143
+      Left = 139
       Top = 6
       Width = 75
       Height = 25
@@ -78,9 +83,10 @@ inherited RemoteFileDialog: TRemoteFileDialog
       Default = True
       ModalResult = 1
       TabOrder = 0
+      ExplicitLeft = 135
     end
     object CancelButton: TButton
-      Left = 239
+      Left = 235
       Top = 6
       Width = 75
       Height = 25
@@ -89,9 +95,10 @@ inherited RemoteFileDialog: TRemoteFileDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 1
+      ExplicitLeft = 231
     end
     object HelpButton: TButton
-      Left = 335
+      Left = 331
       Top = 6
       Width = 75
       Height = 25
@@ -99,19 +106,17 @@ inherited RemoteFileDialog: TRemoteFileDialog
       Caption = '&Help'
       TabOrder = 2
       OnClick = HelpButtonClick
+      ExplicitLeft = 327
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
-        CollectionIndex = 23
+        CollectionIndex = 103
         CollectionName = 'Setup'
-        Disabled = False
         Name = 'Setup'
       end>
-    ImageCollection = CommandsDataModule.icSvgImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Left = 16
     Top = 80

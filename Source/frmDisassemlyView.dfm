@@ -3,18 +3,17 @@ object DisForm: TDisForm
   Top = 152
   HelpContext = 860
   Caption = 'Disassembly View'
-  ClientHeight = 382
-  ClientWidth = 599
+  ClientHeight = 381
+  ClientWidth = 595
   Color = clBtnFace
   ParentFont = True
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 15
   object DisSynEdit: TSynEdit
     Left = 0
     Top = 0
-    Width = 599
-    Height = 382
+    Width = 595
+    Height = 381
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -29,11 +28,11 @@ object DisForm: TDisForm
     Gutter.Font.Height = -11
     Gutter.Font.Name = 'Courier New'
     Gutter.Font.Style = []
+    Gutter.Font.Quality = fqClearTypeNatural
     Gutter.ShowLineNumbers = True
     Gutter.Bands = <
       item
         Kind = gbkMarks
-        Visible = True
         Width = 13
       end
       item
@@ -44,8 +43,10 @@ object DisForm: TDisForm
       end
       item
         Kind = gbkMargin
-        Visible = True
         Width = 3
       end>
+    SelectedColor.Alpha = 0.400000005960464500
+    ExplicitWidth = 599
+    ExplicitHeight = 382
   end
 end

@@ -18,8 +18,7 @@ uses
   System.Classes,
   System.Contnrs,
   JvAppStorage,
-  cPySupportTypes,
-  cPyBaseDebugger;
+  cPySupportTypes;
 
 type
   TAbstractProjectNode = class;
@@ -156,11 +155,11 @@ Var
 implementation
 
 uses
+  System.IOUtils,
   JvGnuGetText,
   uCommonFunctions,
   cPyControl,
-  cPyDebugger,
-  cParameters;
+  uEditAppIntfs;
 
 { TAbstractProjectNode }
 
@@ -366,7 +365,7 @@ end;
 function TProjectRootNode.GetName: string;
 begin
   if fFileName <> '' then
-    Result := ChangeFileExt(ExtractFileName(fFileName), '')
+    Result := ChangeFileExt(TPath.GetFileName(fFileName), '')
   else
     Result := _('Untitled');
 end;
@@ -488,7 +487,7 @@ Var
   FolderName : string;
   FileName : string;
 begin
-  FolderName := ExtractFileName(Directory);
+  FolderName := TPath.GetFileName(Directory);
   if (FolderName = '.') or (FolderName = '..') then
     Exit;
 
@@ -552,7 +551,7 @@ end;
 function TProjectFileNode.GetName: string;
 begin
   if fFileName <> '' then  begin
-    Result := XtractFileName(Parameters.ReplaceInText(fFileName));
+    Result := TPath.GetFileName(GI_PyIDEServices.ReplaceParams(fFileName));
     if not ActiveProject.ShowFileExtensions then
       Result := ChangeFileExt(Result, '');
   end else
@@ -584,7 +583,7 @@ begin
       end;
     end;
   end else
-    fFileName := Parameters.ReplaceInText(fFileName);
+    fFileName := GI_PyIDEServices.ReplaceParams(fFileName);
 
   AppStorage.WriteString(BasePath + '\FileName', fFileName);
 end;

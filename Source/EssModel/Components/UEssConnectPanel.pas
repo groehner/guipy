@@ -687,82 +687,78 @@ begin
 end;
 
 procedure TessConnectPanel.SelectAssociation;
-  var i: integer;
-      Tmp : TObjectList;
-      Attributes: TConnectionAttributes;
-      conn: TConnection; 
-      SelectedControls: integer;
-      FAssociation: TFAssociation;
 begin
-  FAssociation:= TFAssociation.Create(Self);
-  conn:= getSelectedConnection;
-  SelectedControls:= CountSelectedControls;
-  if conn = nil then
-    case SelectedControls of
-      1: FAssociation.init(false, conn, 1);
-      2: FAssociation.init(false, conn, 2)
-      else exit;
-    end
-  else
-    FAssociation.init(false, conn, SelectedControls);
-
-  case FAssociation.ShowModal of
-    mrOK: begin
-      Attributes:= FAssociation.getConnectionAttributes;
-      if HasSelectedConnection then
-        SetSelectedConnection(Attributes)
-      else begin
-        Tmp:= GetSelectedControls;
-        case Tmp.Count of
-          1: ConnectObjects(Tmp[0] as TControl, Tmp[0] as TControl, Attributes);
-          2: ConnectObjects(Tmp[0] as TControl, Tmp[1] as TControl, Attributes);
+  var FAssociation:= TFAssociation.Create(Self);
+  try
+    var conn:= getSelectedConnection;
+    var SelectedControls:= CountSelectedControls;
+    if conn = nil then
+      case SelectedControls of
+        1: FAssociation.init(false, conn, 1);
+        2: FAssociation.init(false, conn, 2)
+        else exit;
+      end
+    else
+      FAssociation.init(false, conn, SelectedControls);
+    case FAssociation.ShowModal of
+      mrOK: begin
+        var Attributes:= FAssociation.getConnectionAttributes;
+        if HasSelectedConnection then
+          SetSelectedConnection(Attributes)
+        else begin
+          var Tmp:= GetSelectedControls;
+          case Tmp.Count of
+            1: ConnectObjects(Tmp[0] as TControl, Tmp[0] as TControl, Attributes);
+            2: ConnectObjects(Tmp[0] as TControl, Tmp[1] as TControl, Attributes);
+          end;
+          FreeAndNil(Tmp);
         end;
-        FreeAndNil(Tmp);
+        FreeAndNil(Attributes);
       end;
-      FreeAndNil(Attributes);
+      mrYes: // turn
+        for var i:= 0 to FConnections.Count - 1 do
+          if TConnection(FConnections[i]).Selected then
+            TurnConnection(i);
+      mrNo:
+        DeleteSelectedConnection;
     end;
-    mrYes: // turn
-      for i:= 0 to FConnections.Count - 1 do
-        if TConnection(FConnections[i]).Selected then
-          TurnConnection(i);
-    mrNo:
-      DeleteSelectedConnection;
+    Invalidate;
+    ShowAll;
+    IsModified:= true;
+  finally
+    FAssociation.Release;
   end;
-  FAssociation.Release;
-  Invalidate;
-  ShowAll;
-  IsModified:= true;
 end;
 
 procedure TessConnectPanel.ConnectBoxes(Src, Dest: TControl);
-  var Attributes: TConnectionAttributes;
-      SelectedControls: integer;
-      FAssociation: TFAssociation;
 begin
-  FAssociation:= TFAssociation.Create(Self);
-  SelectedControls:= CountSelectedControls;
-  case SelectedControls of
-    1: FAssociation.init(false, nil, 1);
-    2: FAssociation.init(false, nil, 2)
-    else exit;
-  end;
-  if Dest is TRtfdCommentBox then begin
-    Attributes:= FAssociation.getConnectionAttributes;
-    Attributes.ArrowStyle:= asComment;
-    ConnectObjects(Src, Dest, Attributes);
-    FreeAndNil(Attributes);
-  end else if FAssociation.ShowModal =  mrOK then begin
-    Attributes:= FAssociation.getConnectionAttributes;
+  var FAssociation:= TFAssociation.Create(Self);
+  try
+    var SelectedControls:= CountSelectedControls;
     case SelectedControls of
-      1: ConnectObjects(Src, Src, Attributes);
-      2: ConnectObjects(Src, Dest, Attributes);
+      1: FAssociation.init(false, nil, 1);
+      2: FAssociation.init(false, nil, 2)
+      else exit;
     end;
-    FreeAndNil(Attributes);
+    if Dest is TRtfdCommentBox then begin
+      var Attributes:= FAssociation.getConnectionAttributes;
+      Attributes.ArrowStyle:= asComment;
+      ConnectObjects(Src, Dest, Attributes);
+      FreeAndNil(Attributes);
+    end else if FAssociation.ShowModal =  mrOK then begin
+      var Attributes:= FAssociation.getConnectionAttributes;
+      case SelectedControls of
+        1: ConnectObjects(Src, Src, Attributes);
+        2: ConnectObjects(Src, Dest, Attributes);
+      end;
+      FreeAndNil(Attributes);
+    end;
+    ClearSelection(true);
+    //Invalidate;
+    IsModified:= true;
+  finally
+    FAssociation.Release;
   end;
-  ClearSelection(true);
-  //Invalidate;
-  IsModified:= true;
-  FAssociation.Release;
 end;
 
 procedure TEssConnectPanel.DoConnection(Item: integer);

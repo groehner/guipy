@@ -3,21 +3,19 @@ inherited AboutBox: TAboutBox
   Top = 155
   BorderIcons = [biSystemMenu]
   Caption = 'About GuiPy'
-  ClientHeight = 428
-  ClientWidth = 534
+  ClientHeight = 427
+  ClientWidth = 530
   KeyPreview = True
-  OldCreateOrder = True
   StyleElements = [seFont, seBorder]
   OnKeyPress = FormKeyPress
-  ExplicitWidth = 540
-  ExplicitHeight = 457
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 546
+  ExplicitHeight = 466
+  TextHeight = 15
   object SpTBXTabControl: TSpTBXTabControl
     Left = 0
     Top = 0
-    Width = 534
-    Height = 428
+    Width = 530
+    Height = 427
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -29,6 +27,8 @@ inherited AboutBox: TAboutBox
     ActiveTabIndex = 0
     TabBackgroundBorders = True
     TabPosition = ttpBottom
+    ExplicitWidth = 534
+    ExplicitHeight = 428
     HiddenItems = <>
     object tbAbout: TSpTBXTabItem
       Caption = 'About'
@@ -83,7 +83,6 @@ inherited AboutBox: TAboutBox
             Font.Style = []
             ParentFont = False
             TabOrder = 0
-            Zoom = 100
             OnResizeRequest = reCreditsResizeRequest
           end
         end
@@ -92,10 +91,12 @@ inherited AboutBox: TAboutBox
     object SpTBXTabSheet3: TSpTBXTabSheet
       Left = 0
       Top = 0
-      Width = 534
-      Height = 403
+      Width = 530
+      Height = 402
       Caption = 'Links'
       ImageIndex = -1
+      ExplicitWidth = 534
+      ExplicitHeight = 403
       TabItem = 'tbLinks'
       object reLinks: TRichEdit
         Left = 2
@@ -110,16 +111,17 @@ inherited AboutBox: TAboutBox
         Font.Style = []
         ParentFont = False
         TabOrder = 0
-        Zoom = 100
       end
     end
     object SpTBXTabSheet1: TSpTBXTabSheet
       Left = 0
       Top = 0
-      Width = 534
-      Height = 403
+      Width = 530
+      Height = 402
       Caption = 'About'
       ImageIndex = -1
+      ExplicitWidth = 534
+      ExplicitHeight = 403
       TabItem = 'tbAbout'
       object Panel1: TPanel
         AlignWithMargins = True
@@ -145,8 +147,8 @@ inherited AboutBox: TAboutBox
         TabOrder = 0
         OnClick = Panel1Click
         DesignSize = (
-          488
-          359)
+          484
+          358)
         object Copyright: TLabel
           Left = 199
           Top = 130
@@ -195,10 +197,10 @@ inherited AboutBox: TAboutBox
         end
         object Comments: TLabel
           AlignWithMargins = True
-          Left = 25
+          Left = 21
           Top = 200
           Width = 433
-          Height = 153
+          Height = 152
           Margins.Left = 10
           Margins.Top = 0
           Margins.Right = 0
@@ -217,12 +219,14 @@ inherited AboutBox: TAboutBox
           ParentFont = False
           WordWrap = True
           OnClick = Panel1Click
+          ExplicitLeft = 25
+          ExplicitHeight = 153
         end
         object SVGIconImage1: TSVGIconImage
           Left = 9
           Top = 0
-          Width = 152
-          Height = 216
+          Width = 148
+          Height = 215
           AutoSize = False
           SVGText = 
             '<svg'#13#10'   viewBox="0 0 148 210"'#13#10'   id="svg974"'#13#10'   >'#13#10'<svg'#10'   wi' +

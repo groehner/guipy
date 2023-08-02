@@ -99,6 +99,7 @@ uses
   System.Threading,
   System.RegularExpressions,
   System.Generics.Defaults,
+  dmResources,
   dmCommands,
   uCommonFunctions,
   SynEditLsp,
@@ -136,8 +137,6 @@ begin
     TPath.Combine(TPyScripterSettings.LspServerPath,
     'jls\run-jedi-language-server.py');
   if not FileExists(ServerPath) then Exit;
-
-
   CmdLine := Format('"%s" -u "%s"',
     [GI_PyControl.PythonVersion.PythonExecutable, ServerPath]);
   if PyIDEOptions.LspDebug or true then  // or TRUE
@@ -186,10 +185,10 @@ Const
     '       "resolveEagerly": false'#13#10 +
     '   },'#13#10 +
 //    '   "markupKindPreferred": "markdown",'#13#10 +
-    '	  "jediSettings": {'#13#10 +
-    '		"autoImportModules": [%s],'#13#10 +
-    '		"caseInsensitiveCompletion": %s'#13#10 +
-    '	  }'#13#10 +
+    '   "jediSettings": {'#13#10 +
+    '   "autoImportModules": [%s],'#13#10 +
+    '   "caseInsensitiveCompletion": %s'#13#10 +
+    '   }'#13#10 +
     '}';
 
   function QuotePackages(Packages: string): string;
@@ -522,7 +521,7 @@ begin
       then
         ModuleName := FileNameToModuleName(DefFileName)
       else
-        ModuleName := ExtractFileName(DefFileName);
+        ModuleName := TPath.GetFileName(DefFileName);
       ModuleName := TPath.GetFileNameWithoutExtension(ModuleName);
       DefinedIn := Format(_(SFilePosInfoCodeHint),
         [DefFileName, DefBC.Line, DefBC.Char,

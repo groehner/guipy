@@ -180,13 +180,14 @@ uses
   System.SysUtils,
   System.StrUtils,
   System.Math,
+  System.IOUtils,
   System.JSON,
   Vcl.Clipbrd,
   JvJVCLUtils,
   JvGnuGetText,
   frmPyIDEMain,
   SynEditTypes,
-  dmCommands,
+  dmResources,
   uEditAppIntfs,
   SynEditLsp,
   LspClient,
@@ -269,7 +270,7 @@ procedure TFunctionListWindow.LoadProcs;
 var
   DocSymbols: TJsonArray;
 begin
-  Caption := Caption + ' - ' + XtractFileName(FFileName);
+  Caption := Caption + ' - ' + TPath.GetFileName(FFileName);
   DocSymbols := TSmartPtr.Make(TJedi.DocumentSymbols(FFileName))();
   if not Assigned(DocSymbols) then Exit;
 

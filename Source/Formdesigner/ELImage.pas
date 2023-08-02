@@ -30,9 +30,6 @@ type
     property Value: String read FValue write SetValue;
   end;
 
-var
-  FIconEditor: TFIconEditor = nil;
-
 implementation
 
 uses SysUtils, Graphics, UGuiDesigner, UUtils;

@@ -1209,7 +1209,7 @@ type
     procedure OpenAndShowPage(Page: string);
     function RunAsAdmin(hWnd: HWND; const aFile, aParameters: string): THandle;
     procedure AddScriptsPath;
-
+    procedure PatchConfiguration;
     procedure LanguageOptionsToView;
     procedure LanguageOptionsToModel;
 
@@ -1235,7 +1235,7 @@ implementation
 uses SynUnicode, StringResources, JvGnugettext, FileCtrl,
      StrUtils, Menus, Printers, ValEdit, ShlObj, Math, Themes, Styles,
      ShellAPI, Winapi.RichEdit, SynEditTypes, UUtils, UHtmlHelp, Contnrs,
-     Registry, SynEditPrintTypes, dmCommands, cPyControl, uEditAppIntfs,
+     Registry, SynEditPrintTypes, dmResources, dmCommands, cPyControl, uEditAppIntfs,
      PythonVersions, uCommonFunctions, cPySupportTypes, frmPyIDEMain, SpTBXTabs,
      IOUtils, JvAppStorage, JvAppIniStorage, SynEditKeyConst, JvJCLUtils,
      frmFile, frmEditor, UGit, USubversion;
@@ -1571,7 +1571,7 @@ end;
 procedure TFConfiguration.Changed;
 begin
   ShowAlways:= true;
-  CommandsDataModule.dlgFileOpen.Filter:= getFileFilters;
+  ResourcesDataModule.dlgFileOpen.Filter:= getFileFilters;
 
   // tab Editor
   IndentWidth:= EditorOptions.TabWidth;
@@ -1603,7 +1603,7 @@ begin
   PrepareKeyStrokes;
   DoneItems;
   PrepActions;  // IDE commands
-  CodeTemplateText:= CommandsDataModule.CodeTemplatesCompletion.AutoCompleteList.Text;
+  CodeTemplateText:= ResourcesDataModule.CodeTemplatesCompletion.AutoCompleteList.Text;
   SetValues(CommandsDataModule.SynEditPrint);
   CodeTemplatesInit;
   FileTemplatesInit;
@@ -2286,7 +2286,7 @@ begin
   winplatform := 'x86';
   {$ENDIF}
   Result:= '';
-  Pathname:= GuiPyOptions.TempDir + 'Configuration.ini';
+  Pathname:= TPath.Combine(GuiPyOptions.TempDir, 'Configuration.ini');
   aFile:= GI_FileFactory.GetFileByFileId(Pathname);
   if Assigned(aFile) then
     aFile.Close;
@@ -2405,21 +2405,21 @@ begin
   LTitle.Caption:= PageList.ActivePage.Caption;
   PageListClose;
   if PageList.ActivePage.Caption = _('File templates') then begin
-    CommandsDataModule.ParameterCompletion.Editor := CodeSynTemplate;
-    CommandsDataModule.ModifierCompletion.Editor := CodeSynTemplate;
-    CodeSynTemplate.Highlighter := CommandsDataModule.SynPythonSyn;
+    ResourcesDataModule.ParameterCompletion.Editor := CodeSynTemplate;
+    ResourcesDataModule.ModifierCompletion.Editor := CodeSynTemplate;
+    CodeSynTemplate.Highlighter := ResourcesDataModule.SynPythonSyn;
   end;
   if PageList.ActivePage.Caption = _('Code templates') then begin
-    CommandsDataModule.ParameterCompletion.Editor := CodeSynTemplate;
-    CommandsDataModule.ModifierCompletion.Editor := CodeSynTemplate;
-    CodeSynTemplate.Highlighter := CommandsDataModule.SynPythonSyn;
+    ResourcesDataModule.ParameterCompletion.Editor := CodeSynTemplate;
+    ResourcesDataModule.ModifierCompletion.Editor := CodeSynTemplate;
+    CodeSynTemplate.Highlighter := ResourcesDataModule.SynPythonSyn;
   end;
 end;
 
 procedure TFConfiguration.PageListClose;
 begin
-  CommandsDataModule.ParameterCompletion.Editor := nil;
-  CommandsDataModule.ModifierCompletion.Editor := nil;
+  ResourcesDataModule.ParameterCompletion.Editor := nil;
+  ResourcesDataModule.ModifierCompletion.Editor := nil;
   CodeSynTemplate.Highlighter := nil;
   FileSynTemplate.Highlighter := nil;
 end;
@@ -2631,26 +2631,25 @@ procedure TFConfiguration.actPVAddExecute(Sender: TObject);
 Var
   PythonVersion: TPythonVersion;
   Directories: TArray<string>;
-  PVResult: integer; err: string;
+  err: string;
 begin
-  if SelectDirectory('', Directories, [], _('Select folder with Python installation (including virtualenv and venv)'))
+  if SelectDirectory('', Directories, [], _('Select folder with Python installation (inlcuding virtualenv and venv)'))
   then begin
-    PVResult:= PythonVersionFromPath(Directories[0], PythonVersion, true, PyControl.MinPyVersion, PyControl.MaxPyVersion);
-    if PVResult = 0 then begin
+    if PythonVersionFromPath(Directories[0], PythonVersion, True,
+      PyControl.MinPyVersion, PyControl.MaxPyVersion)
+    then
+    begin
       SetLength(PyControl.CustomPythonVersions, Length(PyControl.CustomPythonVersions) + 1);
       PyControl.CustomPythonVersions[Length(PyControl.CustomPythonVersions)-1] := PythonVersion;
       vtPythonVersions.ReinitChildren(nil, True);
       vtPythonVersions.Selected[vtPythonVersions.GetLast] := True;
-    end else if PVResult = 1 then begin
+    end else
       {$IFDEF WIN32}
       err:= Format(_(SPythonFindError32), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
       {$ELSE}
       err:= Format(_(SPythonFindError64), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
       {$ENDIF}
-      StyledMessageDlg(err,mtError, [mbOK], 0);
-    end else
-      StyledMessageDlg(Format(_(SPythonMinMaxError),
-        [PyControl.MinPyVersion, PyControl.MaxPyVersion]) , mtError, [mbOK], 0);
+      StyledMessageDlg(_(err), mtError, [mbOK], 0);
   end;
 end;
 
@@ -2895,9 +2894,9 @@ end;
 
 procedure TFConfiguration.BCodeCompletionFontClick(Sender: TObject);
 begin
-  CommandsDataModule.dlgFontDialog.Font.Assign(PyIDEOptions.AutoCompletionFont);
-  if CommandsDataModule.dlgFontDialog.Execute then
-    PyIDEOptions.AutoCompletionFont.assign(CommandsDataModule.dlgFontDialog.Font);
+  ResourcesDataModule.dlgFontDialog.Font.Assign(PyIDEOptions.AutoCompletionFont);
+  if ResourcesDataModule.dlgFontDialog.Execute then
+    PyIDEOptions.AutoCompletionFont.assign(ResourcesDataModule.dlgFontDialog.Font);
 end;
 
 {--- Keystrokes ---------------------------------------------------------------}
@@ -3398,7 +3397,7 @@ begin
       CodeTemplateText := CodeTemplateText + '=' +
         TStringList(CodeTemplatesLvItems.Items[i].Data)[j] + sLineBreak;
   end;
-  CommandsDataModule.CodeTemplatesCompletion.AutoCompleteList.Text:= CodeTemplateText;
+  ResourcesDataModule.CodeTemplatesCompletion.AutoCompleteList.Text:= CodeTemplateText;
 end;
 
 procedure TFConfiguration.CodeTemplatesSetItems;
@@ -3411,7 +3410,7 @@ begin
   Count := 0;
   List := TStringList.Create;
   try
-    List.Text := CommandsDataModule.CodeTemplatesCompletion.AutoCompleteList.Text;
+    List.Text := ResourcesDataModule.CodeTemplatesCompletion.AutoCompleteList.Text;
     while i < List.Count do begin
       if Length(List[i]) <= 0 then // Delphi's string list adds a blank line at the end
         Inc(i)
@@ -3601,9 +3600,9 @@ procedure TFConfiguration.FileTemplatesInit;
 begin
   TempFileTemplates.Clear;
   if cbFileTemplatesHighlighter.Items.Count = 0 then
-    for var i := 0 to CommandsDataModule.Highlighters.Count - 1 do
-      cbFileTemplatesHighlighter.Items.AddObject(CommandsDataModule.Highlighters[i],
-        CommandsDataModule.Highlighters.Objects[i]);
+    for var Highlighter in ResourcesDataModule.Highlighters do
+      cbHighlighters.Items.AddObject(_(Highlighter.FriendlyLanguageName),
+        Highlighter);
   FileTemplatesSetItems;
 end;
 
@@ -4782,13 +4781,13 @@ procedure TFConfiguration.RegisterGuiPy;
       CloseKey;
       OpenKey(Key + '\Shell\Open\ddeexec', true);
       WriteString('', '[FileOpen("%1")]');
-      OpenKey('Application', TRUE);
+      OpenKey('Application', true);
       FileName := ExtractFileName(ParamStr(0));
       FileName := Copy(FileName, 1, Length(FileName)-4);
       WriteString('', Filename);
       CloseKey;
       OpenKey(Key + '\Shell\Open\ddeexec\topic', true);
-      WriteString('', 'System');
+      WriteString('', 'DdeServerConv');
       CloseKey;
     end;
   end;
@@ -4803,6 +4802,27 @@ begin
       WriteToRegistry('SOFTWARE\Classes\GuiPy');
       RootKey:= HKEY_CURRENT_USER;
       WriteToRegistry('\SOFTWARE\Classes\GuiPy');
+    end;
+  finally
+    FreeAndNil(Reg);
+  end;
+end;
+
+procedure TFConfiguration.PatchConfiguration;
+  // first used for version 3.2
+begin
+  var Reg:= TRegistry.Create;
+  try
+    with Reg do begin
+      Access:= KEY_ALL_ACCESS;
+      RootKey:= HKEY_LOCAL_MACHINE;
+      if OpenKey('SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', false) then
+        if readString('') = 'System' then
+          writeString('', 'DdeServerConv');
+      RootKey:= HKEY_CURRENT_USER;
+      if OpenKey('SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', false) then
+        if readString('') = 'System' then
+          writeString('', 'DdeServerConv');
     end;
   finally
     FreeAndNil(Reg);
@@ -5118,6 +5138,8 @@ end;
 procedure TGuiPyOptions.setSourcePath(aValue: string);
 begin
   fSourcePath:= RemovePortableDrive(aValue);
+  if not SysUtils.DirectoryExists(fSourcePath) then
+    fSourcePath:= GetDocumentsPath;
 end;
 
 function TGuiPyOptions.getTempDir: string;

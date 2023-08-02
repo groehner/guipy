@@ -7,12 +7,10 @@ object EditorForm: TEditorForm
   Color = clWindow
   Ctl3D = False
   ParentFont = True
-  OldCreateOrder = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object BGPanel: TPanel
     Left = 0
     Top = 0
@@ -44,7 +42,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 238
+        CustomWidth = 516
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -148,6 +146,8 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
+          ExplicitLeft = 24
+          ExplicitTop = 1
           ExplicitHeight = 658
         end
         object SynEdit2: TSynEdit
@@ -496,6 +496,10 @@ object EditorForm: TEditorForm
     object mnEditCreateStructogram: TSpTBXItem
       Action = CommandsDataModule.actEditCreateStructogram
     end
+    object mnEditAddImports: TSpTBXItem
+      Caption = 'Add imports'
+      OnClick = mnEditAddImportsClick
+    end
     object mnEditCopyPathname: TSpTBXItem
       Caption = 'Copy pathname'
       OnClick = mnEditCopyPathnameClick
@@ -697,46 +701,37 @@ object EditorForm: TEditorForm
     end
   end
   object vilGutterGlyphs: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 5
         CollectionName = 'EditorGutter\Executable'
-        Disabled = False
         Name = 'Executable'
       end
       item
         CollectionIndex = 3
         CollectionName = 'EditorGutter\Current'
-        Disabled = False
         Name = 'Current'
       end
       item
         CollectionIndex = 4
         CollectionName = 'EditorGutter\CurrentBreak'
-        Disabled = False
         Name = 'CurrentBreak'
       end
       item
         CollectionIndex = 0
         CollectionName = 'EditorGutter\Break'
-        Disabled = False
         Name = 'Break'
       end
       item
         CollectionIndex = 2
         CollectionName = 'EditorGutter\BreakInvalid'
-        Disabled = False
         Name = 'BreakInvalid'
       end
       item
         CollectionIndex = 1
         CollectionName = 'EditorGutter\BreakDisabled'
-        Disabled = False
         Name = 'BreakDisabled'
       end>
-    ImageCollection = CommandsDataModule.icGutterGlyphs
     PreserveItems = True
     Width = 11
     Height = 14
@@ -744,70 +739,57 @@ object EditorForm: TEditorForm
     Top = 176
   end
   object vilCodeImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 8
         CollectionName = 'CodeImages\Python'
-        Disabled = False
         Name = 'Python'
       end
       item
         CollectionIndex = 9
         CollectionName = 'CodeImages\Variable'
-        Disabled = False
         Name = 'Variable'
       end
       item
         CollectionIndex = 1
         CollectionName = 'CodeImages\Field'
-        Disabled = False
         Name = 'Field'
       end
       item
         CollectionIndex = 2
         CollectionName = 'CodeImages\Function'
-        Disabled = False
         Name = 'Function'
       end
       item
         CollectionIndex = 5
         CollectionName = 'CodeImages\Method'
-        Disabled = False
         Name = 'Method'
       end
       item
         CollectionIndex = 0
         CollectionName = 'CodeImages\Class'
-        Disabled = False
         Name = 'Class'
       end
       item
         CollectionIndex = 7
         CollectionName = 'CodeImages\Namespace'
-        Disabled = False
         Name = 'Namespace'
       end
       item
         CollectionIndex = 4
         CollectionName = 'CodeImages\List'
-        Disabled = False
         Name = 'List'
       end
       item
         CollectionIndex = 6
         CollectionName = 'CodeImages\Module'
-        Disabled = False
         Name = 'Module'
       end
       item
         CollectionIndex = 3
         CollectionName = 'CodeImages\Keyword'
-        Disabled = False
         Name = 'Keyword'
       end>
-    ImageCollection = CommandsDataModule.icCodeImages
     PreserveItems = True
     Left = 92
     Top = 177

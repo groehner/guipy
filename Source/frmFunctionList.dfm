@@ -7,8 +7,8 @@ inherited FunctionListWindow: TFunctionListWindow
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSizeable
   Caption = 'Function List'
-  ClientHeight = 317
-  ClientWidth = 536
+  ClientHeight = 316
+  ClientWidth = 532
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000040040000000000000000000000000000000000000000
@@ -51,13 +51,14 @@ inherited FunctionListWindow: TFunctionListWindow
   OnClose = FormClose
   OnKeyPress = edtMethodsKeyPress
   OnResize = FormResize
-  PixelsPerInch = 96
+  ExplicitWidth = 548
+  ExplicitHeight = 355
   TextHeight = 15
   object pnHolder: TPanel
     Left = 0
     Top = 73
-    Width = 536
-    Height = 219
+    Width = 532
+    Height = 218
     Align = alClient
     TabOrder = 0
     object lvProcs: TListView
@@ -87,12 +88,14 @@ inherited FunctionListWindow: TFunctionListWindow
       OnChange = lvProcsChange
       OnColumnClick = lvProcsColumnClick
       OnDblClick = actViewGotoExecute
+      ExplicitWidth = 530
+      ExplicitHeight = 216
     end
   end
   object pnlHeader: TPanel
     Left = 0
     Top = 30
-    Width = 536
+    Width = 532
     Height = 43
     Align = alTop
     ParentShowHint = False
@@ -135,6 +138,7 @@ inherited FunctionListWindow: TFunctionListWindow
       Height = 35
       Align = alClient
       TabOrder = 1
+      ExplicitWidth = 258
       object lblObjects: TLabel
         Left = 13
         Top = 8
@@ -161,7 +165,7 @@ inherited FunctionListWindow: TFunctionListWindow
   object ToolBarDock: TSpTBXDock
     Left = 0
     Top = 0
-    Width = 536
+    Width = 532
     Height = 30
     AllowDrag = False
     LimitToOneRow = True
@@ -205,8 +209,8 @@ inherited FunctionListWindow: TFunctionListWindow
   end
   object StatusBar: TSpTBXStatusBar
     Left = 0
-    Top = 292
-    Width = 536
+    Top = 291
+    Width = 532
     Height = 25
     ParentShowHint = False
     ShowHint = True
@@ -218,7 +222,7 @@ inherited FunctionListWindow: TFunctionListWindow
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 514
+      CustomWidth = 0
     end
     object SpTBXSeparatorItem5: TSpTBXSeparatorItem
     end
@@ -343,7 +347,7 @@ inherited FunctionListWindow: TFunctionListWindow
         CollectionName = 'CodeImages\Keyword'
         Name = 'Keyword'
       end>
-    ImageCollection = CommandsDataModule.icCodeImages
+    ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True
     Left = 32
     Top = 192
@@ -371,16 +375,16 @@ inherited FunctionListWindow: TFunctionListWindow
         Name = 'Font'
       end
       item
-        CollectionIndex = 132
+        CollectionIndex = 133
         CollectionName = 'ViewAny'
         Name = 'ViewAny'
       end
       item
-        CollectionIndex = 133
+        CollectionIndex = 134
         CollectionName = 'ViewStart'
         Name = 'ViewStart'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20

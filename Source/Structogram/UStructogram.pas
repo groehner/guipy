@@ -184,7 +184,7 @@ implementation
 
 uses SysUtils, Math, Printers, Clipbrd, Dialogs, Themes, Types, UITypes,
      JvGnugettext, StringResources, IOUtils, UUtils, UConfiguration,
-     frmPyIDEMain, uEditAppIntfs, dmCommands, uCommonFunctions,
+     frmPyIDEMain, uEditAppIntfs, uCommonFunctions,
      cPyScripterSettings, frmMessages, UObjectGenerator, UGenerateStructogram;
 
 procedure TFStructogram.FormCreate(Sender: TObject);

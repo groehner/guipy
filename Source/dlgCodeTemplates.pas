@@ -90,7 +90,7 @@ uses
   Vcl.Themes,
   Vcl.Graphics,
   JvGnugettext,
-  dmCommands,
+  dmResources,
   StringResources,
   uCommonFunctions;
 
@@ -98,16 +98,16 @@ uses
 
 procedure TCodeTemplates.FormDestroy(Sender: TObject);
 begin
-  CommandsDataModule.ParameterCompletion.Editor := nil;
-  CommandsDataModule.ModifierCompletion.Editor := nil;
+  ResourcesDataModule.ParameterCompletion.Editor := nil;
+  ResourcesDataModule.ModifierCompletion.Editor := nil;
   SynTemplate.Highlighter := nil;
 end;
 
 procedure TCodeTemplates.FormShow(Sender: TObject);
 begin
-  SynTemplate.Highlighter := CommandsDataModule.SynPythonSyn;
-  CommandsDataModule.ParameterCompletion.Editor := SynTemplate;
-  CommandsDataModule.ModifierCompletion.Editor := SynTemplate;
+  SynTemplate.Highlighter := ResourcesDataModule.SynPythonSyn;
+  ResourcesDataModule.ParameterCompletion.Editor := SynTemplate;
+  ResourcesDataModule.ModifierCompletion.Editor := SynTemplate;
   SetItems;
   // Styling
   SynTemplate.Color := StyleServices.GetSystemColor(clWindow);

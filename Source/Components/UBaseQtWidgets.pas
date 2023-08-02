@@ -115,7 +115,7 @@ type
 implementation
 
 uses SysUtils, TypInfo, Math, UITypes, UGuiForm, UTKMiscBase, UTTKMiscBase,
-     UGUIDesigner, UObjectInspector, UKoppel, UConfiguration, UUtils;
+     UGUIDesigner, UObjectInspector, UConfiguration, UUtils, ULink;
 
 constructor TBaseQtWidget.create(aOwner: TComponent);
 begin

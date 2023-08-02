@@ -37,9 +37,9 @@ uses
   JvComponentBase,
   JvDockControlForm,
   JclSynch,
-  JclSysUtils,
   SynEditTypes,
   frmIDEDockWin,
+  uSysUtils,
   uEditAppIntfs,
   cTools;
 
@@ -124,6 +124,7 @@ uses
   JvGnugettext,
   SynEdit,
   StringResources,
+  dmResources,
   dmCommands,
   frmPyIDEMain,
   uCommonFunctions;
@@ -395,7 +396,7 @@ begin
       fRegEx := CompiledRegEx(STracebackFilePosExpr);
       LineNo := 0;
       while LineNo < Length(Strings) do begin
-        if StrIsLeft(PChar(Strings[LineNo]), 'Traceback') then begin
+        if Strings[LineNo].StartsWith('Traceback') then begin
           // Traceback found
           GI_PyIDEServices.Messages.AddMessage('Traceback');
           Inc(LineNo);
@@ -414,7 +415,7 @@ begin
             GI_PyIDEServices.Messages.AddMessage(Strings[LineNo]);
           GI_PyIDEServices.Messages.ShowWindow;
           break;  // finished processing traceback
-        end else if StrIsLeft(PChar(Strings[LineNo]), 'SyntaxError:')
+        end else if Strings[LineNo].StartsWith('SyntaxError:')
           and (LineNo > 2) then
         begin
           // Syntax error found

@@ -53,7 +53,6 @@ type
     procedure SetSlotForComponent(Attr, Value: string; Control: TControl);
 
     procedure addRow(Attribut: string; const Value: string);
-    procedure Retranslate;
 
     // new component
     procedure InsertComponent(EditForm: TEditorForm; Control: TControl; Pasting: boolean);
@@ -76,10 +75,10 @@ implementation
 
 uses
   SysUtils, Math, SynEdit, TypInfo, UITypes, Types, JvGnugettext, StringResources,
-  SynCompletionProposal, UStrings, frmPyIDEMain, cPyScripterSettings,
-  UKoppel, UUtils, frmFile, UObjectInspector, UGUIDesigner, UConfiguration,
+  SynCompletionProposal, frmPyIDEMain, cPyScripterSettings,
+  ULink, UUtils, frmFile, UObjectInspector, UGUIDesigner, UConfiguration,
   UTKWidgets, UBaseWidgets, ELEvents, ELPropInsp, uCommonFunctions, uEditAppIntfs,
-  dmCommands;
+  dmResources;
 
 const
   FrameKonsole = 1;
@@ -98,7 +97,6 @@ procedure TFObjectGenerator.FormCreate(Sender: TObject);
 begin
   inherited;
   ValueListEditor.Color:= clBtnFace;
-  FStringEditor:= TFStringEditor.Create(Self);
   setDefault(1, 'Alignment', 'taLeftJustify', TagAlignment);
   setDefault(2, 'Background', 'clBtnFace', TagColor);
   setDefault(3, 'Enabled', 'True', TagBoolean);
@@ -268,10 +266,10 @@ end;
 
 procedure TFObjectGenerator.MIFontClick(Sender: TObject);
 begin
-  CommandsDataModule.dlgFontDialog.Font.Assign(Font);
-  CommandsDataModule.dlgFontDialog.Options:= [];
-  if CommandsDataModule.dlgFontDialog.Execute then
-    Font.Assign(CommandsDataModule.dlgFontDialog.Font);
+  ResourcesDataModule.dlgFontDialog.Font.Assign(Font);
+  ResourcesDataModule.dlgFontDialog.Options:= [];
+  if ResourcesDataModule.dlgFontDialog.Execute then
+    Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
 end;
 
 procedure TFObjectGenerator.DeleteComponent(Component: TControl);
@@ -487,11 +485,6 @@ begin
   Hide;
   Height:= h;
   Width:= w;
-end;
-
-procedure TFObjectGenerator.Retranslate;
-begin
-  RetranslateComponent(FStringEditor);
 end;
 
 end.

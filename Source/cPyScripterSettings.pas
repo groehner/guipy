@@ -116,6 +116,7 @@ type
     fSaveInterpreterHistory : Boolean;
     fReinitializeBeforeRun: Boolean;
     fJumpToErrorOnException : Boolean;
+    fFileTemplateForNewScripts : string;
     fAutoCompletionFont : TFont;
     fHighlightSelectedWord : Boolean;
     fHighlightSelectedWordColor : TColor;
@@ -149,6 +150,7 @@ type
     fSpellCheckAsYouType: Boolean;
     fAutoRestart: Boolean;
     fLoggingEnabled: Boolean;
+    fUIContentFontSize: Integer;
     fTrackChanges: TSynTrackChanges;
     fSelectionColor: TSynSelectedColor;
     fIndentGuides: TSynIndentGuides;
@@ -297,6 +299,8 @@ type
       write fReinitializeBeforeRun default True;
     property JumpToErrorOnException : Boolean read fJumpToErrorOnException
       write fJumpToErrorOnException default True;
+    property FileTemplateForNewScripts: string read fFileTemplateForNewScripts
+      write fFileTemplateForNewScripts;
     property AutoCompletionFont : TFont read fAutoCompletionFont
       write SetAutoCompletionFont;
     property HighlightSelectedWord : boolean read fHighlightSelectedWord
@@ -350,6 +354,8 @@ type
       write fSpellCheckAsYouType default False;
     property AutoRestart: Boolean read fAutoRestart write fAutoRestart default True;
     property LoggingEnabled: Boolean read fLoggingEnabled write fLoggingEnabled default False;
+    property UIContentFontSize: Integer read fUIContentFontSize write fUIContentFontSize default 9;
+
     property MethodsWithComment: Boolean read fMethodsWithComment
       write fMethodsWithComment default false;
   end;
@@ -430,7 +436,6 @@ type
     class var EngineInitFile: string;
     class var PyScripterInitFile: string;
     class var PyScripterLogFile: string;
-    class var ShellImages: TCustomImageList;
     class var DefaultEditorKeyStrokes: TSynEditKeyStrokes;
     class procedure RegisterEditorUserCommands(Keystrokes: TSynEditKeyStrokes);
     class procedure CreateIDEOptions;
@@ -447,7 +452,7 @@ const
   ecRecallCommandEsc = ecUserFirst + 102;
   ecCodeCompletion = ecUserFirst + 103;
   ecParamCompletion = ecUserFirst + 104;
-  ecSelMatchBracket = ecUserFirst + 105;
+  //ecSelMatchBracket = ecUserFirst + 105;
 
 var
   PyIDEOptions : TPythonIDEOptions;
@@ -547,6 +552,7 @@ begin
       Self.fSaveInterpreterHistory := SaveInterpreterHistory;
       Self.fReinitializeBeforeRun := ReinitializeBeforeRun;
       Self.fJumpToErrorOnException := JumpToErrorOnException;
+      Self.fFileTemplateForNewScripts := FileTemplateForNewScripts;
       Self.fAutoCompletionFont.Assign(AutoCompletionFont);
       Self.fHighlightSelectedWord := HighlightSelectedWord;
       Self.fHighlightSelectedWordColor := HighlightSelectedWordColor;
@@ -578,6 +584,7 @@ begin
       Self.fSpellCheckAsYouType := SpellCheckAsYouType;
       Self.fAutoRestart := AutoRestart;
       Self.fLoggingEnabled := LoggingEnabled;
+      Self.fUIContentFontSize := UIContentFontSize;
     end
   else
     inherited;
@@ -654,6 +661,7 @@ begin
   fSaveInterpreterHistory := True;
   fReinitializeBeforeRun := True;
   fJumpToErrorOnException := True;
+  fFileTemplateForNewScripts := _(SPythonTemplateName);
   fAutoCompletionFont := TFont.Create;
   SetDefaultUIFont(fAutoCompletionFont);
   fHighlightSelectedWord := True;
@@ -686,6 +694,7 @@ begin
   fSpellCheckAsYouType := False;
   fAutoRestart := True;
   fLoggingEnabled := False;
+  fUIContentFontSize := 9;
   fCodeFolding := TSynCodeFolding.Create;
   fCodeFolding.GutterShapeSize := 9;  // default value
   fTrackChanges := TSynTrackChanges.Create(nil);
@@ -1219,7 +1228,7 @@ begin
     UserDataPath := ExtractFilePath(Application.ExeName);
     ColorThemesFilesDir := TPath.Combine(UserDataPath, 'Highlighters');
     StylesFilesDir := TPath.Combine(UserDataPath, 'Styles');
-    LspServerPath :=  TPath.Combine(UserDataPath, 'Lib\Lsp');
+    LspServerPath :=  TPath.Combine(UserDataPath, 'Lsp');
   end else begin
     UserDataPath := TPath.Combine(GetHomePath,  'GuiPy\');
     OptionsFileName := TPath.Combine(UserDataPath, 'GuiPy.ini');
@@ -1231,7 +1240,7 @@ begin
     StylesFilesDir := TPath.Combine(PublicPath, 'Styles');
     LspServerPath :=  TPath.Combine(PublicPath, 'Lsp');
     // First use setup
-    //CopyFileIfNeeded(TPath.Combine(PublicPath, 'GuiPy.ini'), OptionsFileName);
+    CopyFileIfNeeded(TPath.Combine(PublicPath, 'GuiPy.ini'), OptionsFileName);
   end;
   EngineInitFile := TPath.Combine(UserDataPath, 'python_init.py');
   PyScripterInitFile := TPath.Combine(UserDataPath, 'pyscripter_init.py');
@@ -1281,7 +1290,7 @@ begin
                 eoEnhanceEndKey, eoGroupUndo, eoHideShowScrollbars, eoKeepCaretX,
                 eoShowScrollHint, eoSmartTabDelete, eoTabsToSpaces, eoTabIndent,
                 eoTrimTrailingSpaces, eoAutoIndent, eoBracketsHighlight,
-                eoCopyPlainText];
+                eoCopyPlainText, eoAccessibility];
     WantTabs := True;
     TabWidth := 4;
     MaxUndo := 0;

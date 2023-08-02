@@ -3,33 +3,37 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
   Top = 192
   HelpContext = 640
   Caption = 'File Templates'
-  ClientHeight = 451
-  ClientWidth = 554
+  ClientHeight = 450
+  ClientWidth = 550
   ShowHint = True
   OnClose = FormClose
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
+  ExplicitWidth = 562
+  ExplicitHeight = 488
   TextHeight = 15
   object Panel: TPanel
     Left = 0
     Top = 0
-    Width = 554
-    Height = 451
+    Width = 550
+    Height = 450
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 546
+    ExplicitHeight = 449
     DesignSize = (
-      554
-      451)
+      550
+      450)
     object GroupBox: TGroupBox
       Left = 5
       Top = 148
-      Width = 544
+      Width = 532
       Height = 264
       Anchors = [akLeft, akTop, akRight]
       Caption = 'File Template:'
       TabOrder = 2
+      ExplicitWidth = 528
       DesignSize = (
-        544
+        532
         264)
       object Label1: TLabel
         Left = 10
@@ -90,7 +94,7 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       object SynTemplate: TSynEdit
         Left = 10
         Top = 90
-        Width = 524
+        Width = 512
         Height = 131
         Anchors = [akLeft, akTop, akRight]
         Font.Charset = DEFAULT_CHARSET
@@ -106,6 +110,7 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
         Gutter.Font.Height = -11
         Gutter.Font.Name = 'Courier New'
         Gutter.Font.Style = []
+        Gutter.Font.Quality = fqClearTypeNatural
         Gutter.Visible = False
         Gutter.Bands = <
           item
@@ -114,28 +119,29 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
           end
           item
             Kind = gbkLineNumbers
-            Visible = False
           end
           item
             Kind = gbkFold
-            Visible = False
           end
           item
             Kind = gbkMargin
             Width = 2
           end>
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
+        SelectedColor.Alpha = 0.400000005960464500
         TabWidth = 4
+        ExplicitWidth = 508
       end
       object CBHighlighters: TComboBox
         Left = 400
         Top = 44
-        Width = 134
+        Width = 122
         Height = 23
         Style = csDropDownList
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 4
         OnChange = CBHighlightersChange
+        ExplicitWidth = 118
       end
       object edName: TEdit
         Left = 127
@@ -147,10 +153,11 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       object edCategory: TEdit
         Left = 400
         Top = 20
-        Width = 134
+        Width = 122
         Height = 23
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 2
+        ExplicitWidth = 118
       end
       object edExtension: TEdit
         Left = 216
@@ -206,8 +213,8 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       TabOrder = 7
     end
     object btnCancel: TButton
-      Left = 382
-      Top = 418
+      Left = 370
+      Top = 417
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -215,10 +222,12 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 9
+      ExplicitLeft = 366
+      ExplicitTop = 416
     end
     object btnOK: TButton
-      Left = 294
-      Top = 418
+      Left = 282
+      Top = 417
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -226,21 +235,25 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       Default = True
       ModalResult = 1
       TabOrder = 1
+      ExplicitLeft = 278
+      ExplicitTop = 416
     end
     object btnHelp: TButton
-      Left = 470
-      Top = 418
+      Left = 458
+      Top = 417
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
       Caption = '&Help'
       TabOrder = 8
       OnClick = btnHelpClick
+      ExplicitLeft = 454
+      ExplicitTop = 416
     end
     object lvItems: TListView
       Left = 1
       Top = 1
-      Width = 552
+      Width = 548
       Height = 109
       Align = alTop
       Columns = <
@@ -259,6 +272,7 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       TabOrder = 0
       ViewStyle = vsReport
       OnSelectItem = lvItemsSelectItem
+      ExplicitWidth = 544
     end
   end
   object ActionList: TActionList
@@ -315,7 +329,7 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
         Name = 'Refresh'
       end
       item
-        CollectionIndex = 129
+        CollectionIndex = 130
         CollectionName = 'Up'
         Name = 'Up'
       end
@@ -329,7 +343,7 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
         CollectionName = 'Plus'
         Name = 'Plus'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Left = 320
     Top = 27

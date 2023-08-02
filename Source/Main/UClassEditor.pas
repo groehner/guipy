@@ -1312,11 +1312,73 @@ var
 
   function getSourceIndex(const s: string): integer;
   begin
-    Result:= -1;
     for var i:= 0 to SourceSL.Count - 1 do
       if Pos(s, SourceSL[i]) > 0 then
         Exit(i);
+    Result:= MaxInt;
   end;
+
+  function getSuperClass: TClass;
+    var Ci: IModelIterator;
+  begin
+    Result:= nil;
+    var aClassname:= TClassifier(GetClassInterfaceNode.Data).Name;
+    if assigned(myUMLForm)
+      then Ci:= myUMLForm.MainModul.Model.ModelRoot.GetAllClassifiers
+      else Ci:= myEditor.Model.ModelRoot.GetAllClassifiers;
+    while Ci.HasNext do begin
+      var cent:= TClassifier(Ci.Next);
+      if (cent.name = aClassname) and ((cent as TClass).AncestorsCount > 0) then
+        Exit((cent as TClass).Ancestor[0]);
+    end;
+  end;
+
+  procedure CallInheritedConstructor;
+  begin
+    var SuperClass:= GetSuperClass;
+    if assigned(SuperClass) then begin
+      var SL:= TStringList.Create;
+      try
+        it.Reset;
+        while it.HasNext  do begin
+          Parameter:= it.next as TParameter;
+          if not Parameter.UsedForAttribute and assigned(Parameter.TypeClassifier) then
+            SL.Add(Parameter.Name + ': ' + Parameter.TypeClassifier.GetShortType);
+        end;
+        It:= SuperClass.GetOperations;
+        while It.HasNext do begin
+          var Operation:= It.Next as TOperation;
+          if Operation.OperationType = otConstructor then begin
+            var s2:= Indent + 'super().__init__(';
+            found:= true;
+            var it2:= Operation.GetParameters;
+            while it2.HasNext do begin
+              Parameter:= it2.next as TParameter;
+              var param:= Parameter.Name;
+              if assigned(Parameter.TypeClassifier) then
+                param:= param + ': ' + Parameter.TypeClassifier.asUMLType;
+              if (Param = 'self') or (SL.IndexOf(Param) >= 0)
+                then s2:= s2 + Parameter.Name + ', '
+                else found:= false;
+            end;
+            if found then begin
+              if s2.EndsWith(', ') then
+                s2:= UUtils.Left(s2, -2);
+              p:= getSourceIndex('super().__init__');
+              if p < SourceSL.Count then
+                SourceSL.Delete(p);
+              p:= getSourceIndex('def __init__');
+              SourceSL.Insert(p+1, s2 + ')');
+              break;
+            end;
+          end;
+        end;
+      finally
+        FreeAndNil(SL);
+      end
+    end;
+  end;
+
 
 begin
   Parameter:= nil;
@@ -1324,9 +1386,7 @@ begin
   SourceSL:= TStringList.Create;
   SourceSL.Text:= Source;
   head:= Method.HeadToPython;
-  p:= 0;
-  while (p < SourceSL.Count) and (Pos('def __init__', SourceSL[p]) = 0) do
-    inc(p);
+  p:= getSourceIndex('def __init__');
   if p < SourceSL.Count
     then SourceSL[p]:= head
     else SourceSL.Insert(0, head);
@@ -1381,8 +1441,7 @@ begin
     end;
     Node:= Node.getNextSibling;
   end;
-  if SourceSL.Count = 0 then
-    SourceSL.Add(Indent + 'pass');
+  CallInheritedConstructor;
   Result:= SourceSL.Text;
   FreeAndNil(SourceSL);
 end;
@@ -1630,6 +1689,7 @@ begin
     TreeView.Items.BeginUpdate;
     TreeView.Items.Clear;
     Ci:= myEditor.Model.ModelRoot.GetAllClassifiers;
+    // Ci:= myUMLForm.MainModul.Model.ModelRoot.GetAllClassifiers;
     while Ci.HasNext do begin
       cent:= TClassifier(Ci.Next);
       if (cent.pathname <> myEditor.pathname) or cent.anonym then

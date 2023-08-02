@@ -8,10 +8,10 @@ inherited DirectoryListDialog: TDirectoryListDialog
   ClientWidth = 379
   Constraints.MinHeight = 208
   Constraints.MinWidth = 358
-  OldCreateOrder = True
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 391
+  ExplicitHeight = 380
+  TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
@@ -19,20 +19,22 @@ inherited DirectoryListDialog: TDirectoryListDialog
     Height = 232
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 375
+    ExplicitHeight = 231
     DesignSize = (
       379
       232)
     object Label1: TLabel
       Left = 10
       Top = 9
-      Width = 120
-      Height = 13
+      Width = 129
+      Height = 15
       Caption = 'Ordered list of file paths:'
       Color = clNone
       ParentColor = False
     end
     object btnMoveUp: TButton
-      Left = 345
+      Left = 341
       Top = 96
       Width = 28
       Height = 24
@@ -44,9 +46,10 @@ inherited DirectoryListDialog: TDirectoryListDialog
       Images = vilImages
       TabOrder = 1
       OnClick = btnMoveUpClick
+      ExplicitLeft = 337
     end
     object btnMoveDown: TButton
-      Left = 345
+      Left = 341
       Top = 126
       Width = 28
       Height = 24
@@ -58,19 +61,22 @@ inherited DirectoryListDialog: TDirectoryListDialog
       Images = vilImages
       TabOrder = 2
       OnClick = btnMoveDownClick
+      ExplicitLeft = 337
     end
     object DirectoryList: TListBox
       Left = 10
       Top = 34
-      Width = 332
+      Width = 328
       Height = 189
       Anchors = [akLeft, akTop, akRight, akBottom]
       DragMode = dmAutomatic
-      ItemHeight = 13
+      ItemHeight = 15
       TabOrder = 0
       OnClick = DirectoryListClick
       OnDragDrop = DirectoryListDragDrop
       OnDragOver = DirectoryListDragOver
+      ExplicitWidth = 324
+      ExplicitHeight = 188
     end
   end
   object Panel2: TPanel
@@ -80,6 +86,8 @@ inherited DirectoryListDialog: TDirectoryListDialog
     Height = 110
     Align = alBottom
     TabOrder = 1
+    ExplicitTop = 231
+    ExplicitWidth = 375
     DesignSize = (
       379
       110)
@@ -90,6 +98,7 @@ inherited DirectoryListDialog: TDirectoryListDialog
       Height = 42
       Align = alBottom
       TabOrder = 0
+      ExplicitWidth = 373
       DesignSize = (
         377
         42)
@@ -103,6 +112,7 @@ inherited DirectoryListDialog: TDirectoryListDialog
         Default = True
         ModalResult = 1
         TabOrder = 0
+        ExplicitLeft = 198
       end
       object CancelBtn: TButton
         Left = 290
@@ -114,6 +124,7 @@ inherited DirectoryListDialog: TDirectoryListDialog
         Caption = '&Cancel'
         ModalResult = 2
         TabOrder = 1
+        ExplicitLeft = 286
       end
     end
     object btnAdd: TButton
@@ -149,8 +160,8 @@ inherited DirectoryListDialog: TDirectoryListDialog
     object edPath: TButtonedEdit
       Left = 10
       Top = 6
-      Width = 332
-      Height = 21
+      Width = 328
+      Height = 23
       Hint = 'Enter file path here'
       Anchors = [akLeft, akTop, akRight]
       Color = clBtnFace
@@ -161,31 +172,27 @@ inherited DirectoryListDialog: TDirectoryListDialog
       TabOrder = 3
       OnChange = edPathChange
       OnRightButtonClick = BtnPathClick
+      ExplicitWidth = 324
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
-        CollectionIndex = 60
+        CollectionIndex = 63
         CollectionName = 'OpenFolder'
-        Disabled = False
         Name = 'OpenFolder'
       end
       item
-        CollectionIndex = 126
+        CollectionIndex = 130
         CollectionName = 'Up'
-        Disabled = False
         Name = 'Up'
       end
       item
-        CollectionIndex = 21
+        CollectionIndex = 22
         CollectionName = 'Down'
-        Disabled = False
         Name = 'Down'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Left = 40
     Top = 120

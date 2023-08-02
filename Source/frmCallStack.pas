@@ -39,7 +39,6 @@ uses
   VirtualTrees.BaseTree,
   VirtualTrees,
   frmIDEDockWin,
-  dmCommands,
   cPyControl,
   cPyBaseDebugger;
 
@@ -109,7 +108,7 @@ uses
   uCommonFunctions,
   uEditAppIntfs,
   cPySupportTypes,
-  cInternalPython;
+  dmResources;
 
 {$R *.dfm}
 
@@ -134,7 +133,7 @@ begin
     CallStackView.BeginUpdate;
     try
       // OutputDebugString('Call Stack filled');
-      var Py := SafePyEngine;
+      var Py := GI_PyControl.SafePyEngine;
       CallStackView.RootNodeCount := fActiveThread.CallStack.Count;  // Fills the View
       CallStackView.ReInitNode(nil, True, True);
     finally
@@ -235,7 +234,7 @@ end;
 procedure TCallStackWindow.CallStackViewAddToSelection(Sender: TBaseVirtualTree;
   Node: PVirtualNode);
 begin
-  if Assigned(Node) { and not (tsUpdating in CallStackView.TreeStates) } then
+  if Assigned(Node) and not CallStackView.IsUpdating then
   begin
     Assert(Assigned(fActiveThread));
     Assert(Integer(Node.Index) < fActiveThread.CallStack.Count);
@@ -394,7 +393,7 @@ var
   T : TThreadInfo;
 begin
   // OutputDebugString(PChar(Format('status: %d change: %d', [Ord(Thread.Status), Ord(ChangeType)])));
-  var Py := SafePyEngine;
+  var Py := GI_PyControl.SafePyEngine;
   case ChangeType of
     tctAdded:
       begin

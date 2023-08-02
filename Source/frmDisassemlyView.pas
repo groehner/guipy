@@ -56,9 +56,8 @@ uses
   JvJVCLUtils,
   JvGnugettext,
   StringResources,
-  dmCommands,
+  dmResources,
   cPyScripterSettings,
-  cInternalPython,
   cPyControl;
 
 {$R *.dfm}
@@ -66,7 +65,7 @@ uses
 procedure TDisForm.FormCreate(Sender: TObject);
 begin
  DisSynEdit.Assign(EditorOptions);
- DisSynEdit.Highlighter := CommandsDataModule.SynPythonSyn;
+ DisSynEdit.Highlighter := ResourcesDataModule.SynPythonSyn;
 end;
 
 { TDisForm }
@@ -79,21 +78,12 @@ var
 Const
   Code =
   'def GetDis(m):'#10 +
-	     #9'import dis'#10 +
-	     #9'import sys'#10 +
-       #9'if sys.version_info[0]==3:'#10 +
-            #9#9'StringIO = __import__("io").StringIO'#10 +
-       #9'else:'#10 +
-            #9#9'StringIO = __import__("StringIO").StringIO'#10 +
-	     #9'oldstdout = sys.stdout'#10 +
-	     #9'sys.stdout = StringIO()'#10 +
-	     #9'try:'#10 +
-		        #9#9'dis.dis(m)'#10 +
-            #9#9'result = sys.stdout.getvalue()'#10 +
-       #9'finally:'#10 +
-		        #9#9'sys.stdout.close()'#10 +
-            #9#9'sys.stdout = oldstdout'#10 +
-       #9'return result'#10;
+       #9'import dis'#10 +
+       #9'import sys'#10 +
+       #9'StringIO = __import__("io").StringIO'#10 +
+       #9'sio = StringIO()'#10 +
+       #9'dis.dis(m, file = sio)'#10 +
+       #9'return sio.getvalue()'#10;
   Header = ''''''''#13#10#9+'Disassembly of %s'#13#10+''''''''#13#10#13#10;
 
 begin
@@ -102,7 +92,8 @@ begin
   Cursor := WaitCursor;
   Application.ProcessMessages;
 
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
+
   module := PyControl.ActiveInterpreter.ImportModule(Editor);
   PyControl.ActiveInterpreter.RunSource(Code, '<Getdis>', 'exec');
   getdis := PyControl.ActiveInterpreter.EvalCode('GetDis');
@@ -120,7 +111,7 @@ end;
 
 procedure TDisView.GetContextHighlighters(List: TList);
 begin
-  List.Add(CommandsDataModule.SynPythonSyn);
+  List.Add(ResourcesDataModule.SynPythonSyn);
 end;
 
 function TDisView.GetHint: string;

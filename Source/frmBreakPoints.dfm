@@ -40,14 +40,19 @@ inherited BreakPointsWindow: TBreakPointsWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 387
+  ExplicitHeight = 271
+  TextHeight = 15
   inherited BGPanel: TPanel
     Width = 379
     Height = 244
+    ExplicitWidth = 371
+    ExplicitHeight = 232
     inherited FGPanel: TPanel
       Width = 375
       Height = 240
+      ExplicitWidth = 367
+      ExplicitHeight = 228
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -55,6 +60,8 @@ inherited BreakPointsWindow: TBreakPointsWindow
         Height = 240
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 367
+        ExplicitHeight = 228
         object BreakPointsView: TVirtualStringTree
           Left = 1
           Top = 1
@@ -141,16 +148,14 @@ inherited BreakPointsWindow: TBreakPointsWindow
       item
         CollectionIndex = 16
         CollectionName = 'Copy'
-        Disabled = False
         Name = 'Copy'
       end
       item
         CollectionIndex = 7
         CollectionName = 'BreakpointsRemove'
-        Disabled = False
         Name = 'BreakpointsRemove'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20

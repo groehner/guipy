@@ -171,11 +171,8 @@ uses
   Vcl.Menus,
   JclStrings,
   JvGnuGetText,
-  cParameters,
   uEditAppIntfs,
-  uCommonFunctions,
-  cPyScripterSettings,
-  UUtils;
+  uCommonFunctions;
 
 
 function ExpandEnv(const S: string): string;
@@ -197,7 +194,7 @@ end;
 function PrepareCommandLine(S: string): string;
 begin
   S := ExpandEnv(S);
-  S:= Parameters.ReplaceInText(S);
+  S:= GI_PyIDEServices.ReplaceParams(S);
   Result := Trim(S);
 end;
 
@@ -225,7 +222,7 @@ end;
 
 function TToolItem.GetDisplayName: string;
 begin
-  Result := StrRemoveChars(_(fExternalTool.Caption), ['&']);
+  Result := StripHotKey(_(fExternalTool.Caption));
 end;
 
 { TExternalTool }

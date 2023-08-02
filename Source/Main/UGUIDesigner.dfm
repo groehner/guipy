@@ -7,11 +7,9 @@ object FGUIDesigner: TFGUIDesigner
   Color = clBtnFace
   DragMode = dmAutomatic
   ParentFont = True
-  OldCreateOrder = True
   WindowState = wsMaximized
   OnCreate = FormCreate
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object GUIDesignerTimer: TTimer
     Enabled = False
     Interval = 10

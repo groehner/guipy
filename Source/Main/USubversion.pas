@@ -37,7 +37,7 @@ implementation
 
 uses Dialogs, frmCommandOutput, cTools, JvDockControlForm, JvGnugettext,
      StringResources, SysUtils, UConfiguration, UUtils, UTextDiff,
-     frmPyIDEMain, dmCommands;
+     frmPyIDEMain;
 
 {$R *.dfm}
 

@@ -3,15 +3,14 @@ object IDEDockWindow: TIDEDockWindow
   Top = 263
   BorderStyle = bsSizeToolWin
   Caption = 'IDE Dock Window'
-  ClientHeight = 408
-  ClientWidth = 227
+  ClientHeight = 372
+  ClientWidth = 203
   Color = clBtnFace
   DefaultMonitor = dmDesktop
   DockSite = True
   DragKind = dkDock
   DragMode = dmAutomatic
   ParentFont = True
-  OldCreateOrder = False
   PopupMode = pmExplicit
   Position = poDesigned
   ShowHint = True
@@ -19,13 +18,12 @@ object IDEDockWindow: TIDEDockWindow
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object BGPanel: TPanel
     Left = 0
     Top = 0
-    Width = 227
-    Height = 408
+    Width = 203
+    Height = 372
     Align = alClient
     BevelOuter = bvNone
     Padding.Left = 2
@@ -34,6 +32,8 @@ object IDEDockWindow: TIDEDockWindow
     Padding.Bottom = 2
     TabOrder = 0
     StyleElements = [seFont]
+    ExplicitWidth = 227
+    ExplicitHeight = 408
     object FGPanel: TPanel
       Left = 2
       Top = 2

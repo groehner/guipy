@@ -14,6 +14,7 @@ uses
   Winapi.Windows,
   Winapi.Messages,
   Winapi.ActiveX,
+  Winapi.WebView2,
   System.SysUtils,
   System.Variants,
   System.Classes,
@@ -25,17 +26,14 @@ uses
   Vcl.OleCtrls,
   Vcl.VirtualImageList,
   Vcl.BaseImageCollection,
-  SHDocVw,
   Vcl.ImgList,
+  Vcl.Edge,
   TB2Item,
   TB2Dock,
   TB2Toolbar,
   SpTBXItem,
-  dmCommands,
   uEditAppIntfs,
-  cTools,
-//  Winapi.WebView2,
-  Vcl.Edge, WebView2;
+  cTools;
 
 type
   TWebPreviewForm = class(TForm, IEditorView)
@@ -58,15 +56,17 @@ type
     procedure ToolButtonStopClick(Sender: TObject);
     procedure ToolButtonPrintClick(Sender: TObject);
     procedure ToolButtonSaveClick(Sender: TObject);
-    procedure WebBrowserCommandStateChange(Sender: TObject;
-      Command: Integer; Enable: WordBool);
     procedure WebBrowserCreateWebViewCompleted(Sender: TCustomEdgeBrowser; AResult:
         HRESULT);
+    procedure WebBrowserExecuteScript(Sender: TCustomEdgeBrowser; AResult: HRESULT;
+        const AResultObjectAsJson: string);
+    procedure WebBrowserHistoryChanged(Sender: TCustomEdgeBrowser);
   private
     { Private declarations }
     fEditor: IEditor;
     procedure UpdateView(Editor : IEditor);
   private
+    FSaveFileName: string;
     class var FExternalTool: TExternalTool;
     class constructor Create;
     class destructor Destroy;
@@ -96,13 +96,13 @@ implementation
 uses
   System.UITypes,
   System.IOUtils,
-  MSHTML,
+  System.NetEncoding,
   JvGnugettext,
   uCommonFunctions,
   StringResources,
   VarPyth,
+  dmResources,
   frmCommandOutput,
-  cParameters,
   cPyScripterSettings;
 
 {$R *.dfm}
@@ -164,40 +164,17 @@ end;
 
 procedure TWebPreviewForm.ToolButtonSaveClick(Sender: TObject);
 begin
-  var JS :=
-    'async function savehtml() {'#13#10 +
-      'const opts = {'#13#10 +
-      '  types: [{'#13#10 +
-      '      description: ''html file'','#13#10 +
-      '      accept: { ''text/html'': [''.html''] },'#13#10 +
-      '  }],'#13#10 +
-      '};'#13#10 +
-      'const handle = await window.showSaveFilePicker(opts);'#13#10 +
-      'const writable = await handle.createWritable();'#13#10 +
-      'var html = document.documentElement.outerHTML;'#13#10 +
-      'writable.write(html);'#13#10 +
-      'writable.close();}'#13#10 +
-     'savehtml();';
-
-  WebBrowser.ExecuteScript(JS);
-end;
-
-procedure TWebPreviewForm.WebBrowserCommandStateChange(Sender: TObject;
-  Command: Integer; Enable: WordBool);
-begin
-  case Command of
-    CSC_NAVIGATEBACK: ToolButtonBack.Enabled := Enable;
-    CSC_NAVIGATEFORWARD: ToolButtonForward.Enabled := Enable;
-  end;
+  if ResourcesDataModule.GetSaveFileName(FSaveFileName, ResourcesDataModule.SynWebHtmlSyn, 'html') then
+    WebBrowser.ExecuteScript('encodeURIComponent(document.documentElement.outerHTML)');
 end;
 
 procedure TWebPreviewForm.UpdateView(Editor: IEditor);
 begin
   fEditor := Editor;
   if Assigned(Editor.SynEdit.Highlighter) and
-    (Editor.SynEdit.Highlighter = CommandsDataModule.SynJSONSyn) then
+    (Editor.SynEdit.Highlighter = ResourcesDataModule.SynJSONSyn) then
   begin
-    var FN := ExtractFileName(Editor.FileName);
+    var FN := TPath.GetFileName(Editor.FileName);
     FN := StringReplace(FN, ' ', '%20', [rfReplaceAll]);
     WebBrowser.Navigate('http://localhost:8888/notebooks/'+FN);
   end else begin
@@ -217,12 +194,31 @@ begin
     StyledMessageDlg(_(SWebView2Error), mtError, [mbOK], 0);
 end;
 
+procedure TWebPreviewForm.WebBrowserExecuteScript(Sender: TCustomEdgeBrowser;
+    AResult: HRESULT; const AResultObjectAsJson: string);
+begin
+  if (FSaveFileName <> '') and (AResultObjectAsJson <> 'null') then
+  begin
+    var SL := TSmartPtr.Make(TStringList.Create);
+    SL.Text := TNetEncoding.URL.Decode(AResultObjectAsJson.DeQuotedString('"'));
+    SL.WriteBOM := False;
+    SL.SaveToFile(FSaveFileName, TEncoding.UTF8);
+    FSaveFileName := '';
+  end;
+end;
+
+procedure TWebPreviewForm.WebBrowserHistoryChanged(Sender: TCustomEdgeBrowser);
+begin
+  ToolButtonBack.Enabled := WebBrowser.CanGoBack;
+  ToolButtonForward.Enabled := WebBrowser.CanGoForward;
+end;
+
 { TDocView }
 
 function TWebPreviewView.CreateForm(Editor: IEditor; AOwner : TComponent): TCustomForm;
 begin
   if Assigned(Editor.SynEdit.Highlighter) and
-    (Editor.SynEdit.Highlighter = CommandsDataModule.SynJSONSyn) then
+    (Editor.SynEdit.Highlighter = ResourcesDataModule.SynJSONSyn) then
   begin
     if Editor.FileName = '' then
       (Editor as IFileCommands).ExecSave;
@@ -231,7 +227,7 @@ begin
       Abort;
     end;
 
-    if not FileExists(Parameters.ReplaceInText(TWebPreviewForm.JupyterServer)) then
+    if not FileExists(GI_PyIDEServices.ReplaceParams(TWebPreviewForm.JupyterServer)) then
     begin
       StyledMessageDlg(_(SNoJupyter), mtError, [mbOK], 0);
       Abort;
@@ -259,10 +255,10 @@ end;
 
 procedure TWebPreviewView.GetContextHighlighters(List: TList);
 begin
-  List.Add(CommandsDataModule.SynWebHtmlSyn);
-  List.Add(CommandsDataModule.SynWebXmlSyn);
-  List.Add(CommandsDataModule.SynWebCssSyn);
-  List.Add(CommandsDataModule.SynJSONSyn);
+  List.Add(ResourcesDataModule.SynWebHtmlSyn);
+  List.Add(ResourcesDataModule.SynWebXmlSyn);
+  List.Add(ResourcesDataModule.SynWebCssSyn);
+  List.Add(ResourcesDataModule.SynJSONSyn);
 end;
 
 function TWebPreviewView.GetHint: string;

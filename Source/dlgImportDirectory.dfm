@@ -4,8 +4,9 @@ inherited ImportDirectoryForm: TImportDirectoryForm
   ClientWidth = 469
   PopupMode = pmAuto
   Position = poOwnerFormCenter
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 481
+  ExplicitHeight = 183
+  TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
@@ -13,14 +14,16 @@ inherited ImportDirectoryForm: TImportDirectoryForm
     Height = 145
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 465
+    ExplicitHeight = 144
     DesignSize = (
       469
       145)
     object Label1: TLabel
       Left = 8
       Top = 15
-      Width = 94
-      Height = 13
+      Width = 104
+      Height = 15
       Caption = 'Directory to import:'
       Color = clNone
       ParentColor = False
@@ -28,8 +31,8 @@ inherited ImportDirectoryForm: TImportDirectoryForm
     object Label2: TLabel
       Left = 8
       Top = 72
-      Width = 142
-      Height = 13
+      Width = 144
+      Height = 15
       Caption = 'File Masks (e.g. *.py;*.pyw):'
       Color = clNone
       ParentColor = False
@@ -48,7 +51,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
       TabOrder = 0
     end
     object cbRecursive: TCheckBox
-      Left = 352
+      Left = 348
       Top = 71
       Width = 108
       Height = 17
@@ -57,6 +60,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
       Checked = True
       State = cbChecked
       TabOrder = 3
+      ExplicitLeft = 344
     end
     object Button1: TButton
       Left = 124
@@ -68,6 +72,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
       Default = True
       ModalResult = 1
       TabOrder = 1
+      ExplicitTop = 110
     end
     object Button2: TButton
       Left = 228
@@ -79,12 +84,13 @@ inherited ImportDirectoryForm: TImportDirectoryForm
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 2
+      ExplicitTop = 110
     end
     object DirectoryEdit: TButtonedEdit
       Left = 8
       Top = 38
-      Width = 452
-      Height = 21
+      Width = 448
+      Height = 23
       Anchors = [akLeft, akTop, akRight]
       Images = vilImages
       RightButton.ImageIndex = 0
@@ -92,19 +98,17 @@ inherited ImportDirectoryForm: TImportDirectoryForm
       RightButton.Visible = True
       TabOrder = 4
       OnRightButtonClick = DirectoryEditBtnClick
+      ExplicitWidth = 444
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
-        CollectionIndex = 62
+        CollectionIndex = 63
         CollectionName = 'OpenFolder'
-        Disabled = False
         Name = 'OpenFolder'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Left = 24
     Top = 93

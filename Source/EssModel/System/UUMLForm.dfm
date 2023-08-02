@@ -2,23 +2,21 @@ object FUMLForm: TFUMLForm
   Left = 394
   Top = 229
   Caption = 'UML'
-  ClientHeight = 620
-  ClientWidth = 749
+  ClientHeight = 618
+  ClientWidth = 741
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   ShowHint = True
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
-  TextHeight = 14
+  TextHeight = 15
   object PDiagram: TPanel
     Left = 0
     Top = 0
-    Width = 749
+    Width = 741
     Height = 420
     Align = alTop
     Constraints.MinHeight = 100
@@ -26,7 +24,7 @@ object FUMLForm: TFUMLForm
     object PDiagramPanel: TPanel
       Left = 1
       Top = 26
-      Width = 747
+      Width = 739
       Height = 393
       Align = alClient
       BevelEdges = [beLeft, beTop]
@@ -43,11 +41,12 @@ object FUMLForm: TFUMLForm
       ParentFont = False
       TabOrder = 0
       OnResize = PDiagramPanelResize
+      ExplicitWidth = 747
     end
     object PUMLPanel: TPanel
       Left = 1
       Top = 1
-      Width = 747
+      Width = 739
       Height = 25
       Align = alTop
       TabOrder = 1
@@ -170,15 +169,17 @@ object FUMLForm: TFUMLForm
   object PInteractive: TPanel
     Left = 0
     Top = 424
-    Width = 749
-    Height = 196
+    Width = 741
+    Height = 194
     Align = alClient
     PopupMenu = PMInteractive
     TabOrder = 1
+    ExplicitWidth = 745
+    ExplicitHeight = 195
     object TBInteractiveToolbar: TToolBar
       Left = 1
       Top = 1
-      Width = 747
+      Width = 743
       Height = 22
       Color = clBtnFace
       Images = DMImages.ILInteractive
@@ -227,8 +228,8 @@ object FUMLForm: TFUMLForm
     object SynEdit: TSynEdit
       Left = 1
       Top = 23
-      Width = 747
-      Height = 172
+      Width = 743
+      Height = 171
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -262,20 +263,22 @@ object FUMLForm: TFUMLForm
           Kind = gbkMargin
           Width = 3
         end>
-      Highlighter = CommandsDataModule.SynGeneralSyn
       RightEdge = 0
       SelectedColor.Alpha = 0.400000005960464500
       OnChange = SynEditChange
+      ExplicitWidth = 747
+      ExplicitHeight = 172
     end
   end
   object SpTBXSplitter1: TSpTBXSplitter
     Left = 0
     Top = 420
-    Width = 749
+    Width = 741
     Height = 4
     Cursor = crSizeNS
     Align = alTop
     ParentColor = False
+    ExplicitWidth = 749
   end
   object PMInteractive: TSpTBXPopupMenu
     Images = DMImages.ILInteractive

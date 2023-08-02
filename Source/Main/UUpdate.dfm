@@ -4,37 +4,35 @@ object FUpdate: TFUpdate
   BorderIcons = [biSystemMenu, biMaximize]
   BorderStyle = bsDialog
   Caption = 'Update'
-  ClientHeight = 270
-  ClientWidth = 337
+  ClientHeight = 269
+  ClientWidth = 333
   Color = clBtnFace
   ParentFont = True
   FormStyle = fsStayOnTop
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 14
+  TextHeight = 15
   object LOldVersion: TLabel
     Left = 13
     Top = 11
-    Width = 75
-    Height = 14
+    Width = 81
+    Height = 15
     Caption = 'Current version'
   end
   object LChecking: TLabel
     Left = 13
     Top = 186
-    Width = 98
-    Height = 14
+    Width = 111
+    Height = 15
     Caption = 'Check automatically '
   end
   object LNewVersion: TLabel
     Left = 13
     Top = 42
-    Width = 62
-    Height = 14
+    Width = 65
+    Height = 15
     Caption = 'New version'
   end
   object BClose: TButton
@@ -57,7 +55,7 @@ object FUpdate: TFUpdate
     Left = 101
     Top = 7
     Width = 225
-    Height = 22
+    Height = 23
     TabOrder = 2
   end
   object BUpdate: TButton
@@ -76,7 +74,7 @@ object FUpdate: TFUpdate
     Left = 192
     Top = 182
     Width = 134
-    Height = 22
+    Height = 23
     TabOrder = 4
     Items.Strings = (
       'never'
@@ -99,7 +97,7 @@ object FUpdate: TFUpdate
     Left = 101
     Top = 38
     Width = 225
-    Height = 22
+    Height = 23
     TabOrder = 6
   end
 end

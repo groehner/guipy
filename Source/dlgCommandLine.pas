@@ -51,15 +51,16 @@ type
 implementation
 
 uses
-  dmCommands,
-  frmPyIDEMain;
+  JvAppIniStorage,
+  dmResources,
+  uEditAppIntfs;
 
 {$R *.dfm}
 
 procedure TCommandLineDlg.SynParametersEnter(Sender: TObject);
 begin
-  CommandsDataModule.ParameterCompletion.Editor := SynParameters;
-  CommandsDataModule.ModifierCompletion.Editor := SynParameters;
+  ResourcesDataModule.ParameterCompletion.Editor := SynParameters;
+  ResourcesDataModule.ModifierCompletion.Editor := SynParameters;
 end;
 
 procedure TCommandLineDlg.TBXPopupHistoryPopup(Sender: TObject);
@@ -71,14 +72,16 @@ end;
 procedure TCommandLineDlg.FormCreate(Sender: TObject);
 begin
   inherited;
-  mnCommandHistoryMRU.LoadFromIni(PyIDEMainForm.AppStorage.IniFile, 'CommandLine MRU');
+  mnCommandHistoryMRU.LoadFromIni(
+    (GI_PyIDEServices.AppStorage as TJvAppIniFileStorage).IniFile,
+      'CommandLine MRU');
 end;
 
 procedure TCommandLineDlg.FormDestroy(Sender: TObject);
 begin
-  CommandsDataModule.ParameterCompletion.Editor := nil;
-  CommandsDataModule.ModifierCompletion.Editor := nil;
-  mnCommandHistoryMRU.SaveToIni(PyIDEMainForm.AppStorage.IniFile, 'CommandLine MRU');
+  mnCommandHistoryMRU.SaveToIni(
+    (GI_PyIDEServices.AppStorage as TJvAppIniFileStorage).IniFile,
+      'CommandLine MRU');
 end;
 
 procedure TCommandLineDlg.mnCommandHistoryMRUClick(Sender: TObject;

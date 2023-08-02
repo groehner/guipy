@@ -8,11 +8,9 @@ object FGit: TFGit
   ClientWidth = 531
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object LVRevisions: TListView
     Left = 8
     Top = 8

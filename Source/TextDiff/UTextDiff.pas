@@ -142,10 +142,20 @@ type
 
 implementation
 
-uses SysUtils, Themes, Dialogs, SyneditTypes,
-     JvGnugettext, uCommonFunctions,
-     frmPyIDEMain, cPyScripterSettings, StringResources, dmCommands,
-     UConfiguration, UUtils, UHashUnit;
+uses SysUtils,
+     Themes,
+     Dialogs,
+     SynEditTypes,
+     JvGnugettext,
+     uCommonFunctions,
+     frmPyIDEMain,
+     cPyScripterSettings,
+     StringResources,
+     dmCommands,
+     dmResources,
+     UConfiguration,
+     UUtils,
+     UHashUnit;
 
 {$R *.DFM}
 
@@ -182,7 +192,7 @@ begin
     Gutter.ShowLineNumbers:= true;
     Gutter.DigitCount:= 0;
     Gutter.Autosize:= true;
-    Highlighter:= CommandsDataModule.GetHighlighterForFile('.py');
+    Highlighter:= ResourcesDataModule.Highlighters.HighlighterFromFileExt('.py');
   end;
   CodeEdit1.Assign(EditorOptions);
   CodeEdit2:= TSynEditExDiff.create(self);
@@ -199,7 +209,7 @@ begin
     Gutter.ShowLineNumbers:= true;
     Gutter.DigitCount:= 0;
     Gutter.Autosize:= true;
-    Highlighter:= CommandsDataModule.GetHighlighterForFile('.py');
+    Highlighter:= ResourcesDataModule.Highlighters.HighlighterFromFileExt('.py');
   end;
   CodeEdit2.Assign(EditorOptions);
   Nr:= 1;
@@ -462,8 +472,8 @@ begin
   try
     CodeEdit1.LinesClearAll;
     CodeEdit2.LinesClearAll;
-    CodeEdit1.OnSpecialLineColors:= CodeEdit1.SynEditorSpecialLineColors;
-    CodeEdit2.OnSpecialLineColors:= CodeEdit2.SynEditorSpecialLineColors;
+    //CodeEdit1.OnSpecialLineColors:= CodeEdit1.SynEditorSpecialLineColors;
+    //CodeEdit2.OnSpecialLineColors:= CodeEdit2.SynEditorSpecialLineColors;
 
     CodeEdit1.OnGutterGetText:= CodeEdit1.GutterTextEvent;
     CodeEdit2.OnGutterGetText:= CodeEdit2.GutterTextEvent;
@@ -574,7 +584,7 @@ begin
     until (i = Lines.Count) or (GetLineObj(i).BackClr <> color);
     if (i = Lines.Count) then
     begin
-      Windows.Beep(600, 100);  //not found
+      Beep;  //not found
       exit;
     end;
     CaretY:= i+1;
@@ -596,17 +606,17 @@ begin
   with GetCodeEdit do begin
     if not WithColoredLines then exit;
     i:= CaretY-1;
-    if i = Lines.count then begin Windows.Beep(600, 100); exit end;
+    if i = Lines.count then begin Beep; exit end;
     clr:= GetLineObj(i).BackClr;
     repeat
       dec(i);
     until (i < 0) or (GetLineObj(i).BackClr <> clr);
-    if i < 0 then begin Windows.Beep(600, 100); exit end;;
+    if i < 0 then begin Beep; exit end;;
     if GetLineObj(i).BackClr = Color then
     repeat
       dec(i);
     until (i < 0) or (GetLineObj(i).BackClr <> Color);
-    if i < 0 then Windows.Beep(600, 100)
+    if i < 0 then Beep
     else begin
       clr:= GetLineObj(i).BackClr;
       while (i > 0) and (GetLineObj(i-1).BackClr = clr) do dec(i);
@@ -925,7 +935,7 @@ procedure TFTextDiff.ChooseFiles(F1: TEditorForm);
 
   procedure InitDir;
   begin
-    with CommandsDataModule.dlgFileOpen do begin
+    with ResourcesDataModule.dlgFileOpen do begin
       InitialDir:= GuiPyOptions.Sourcepath;
       if not SysUtils.DirectoryExists(InitialDir) then
         InitialDir:= GetDocumentsPath;
@@ -933,7 +943,7 @@ procedure TFTextDiff.ChooseFiles(F1: TEditorForm);
   end;
 
 begin
-  with CommandsDataModule.dlgFileOpen do begin
+  with ResourcesDataModule.dlgFileOpen do begin
     if assigned(F1)then begin
       InitialDir:= ExtractFilePath(F1.Pathname);
       Nr:= 2;

@@ -4,8 +4,8 @@ object FClassEditor: TFClassEditor
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'UML class editor'
-  ClientHeight = 453
-  ClientWidth = 710
+  ClientHeight = 452
+  ClientWidth = 706
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,12 +13,10 @@ object FClassEditor: TFClassEditor
   Font.Name = 'Segoe UI'
   Font.Style = []
   FormStyle = fsStayOnTop
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 15
   object LClass: TLabel
     Left = 8
@@ -53,7 +51,7 @@ object FClassEditor: TFClassEditor
     Top = 10
     Width = 364
     Height = 435
-    ActivePage = TSAttributes
+    ActivePage = TSMethods
     TabOrder = 0
     OnChange = PageControlChange
     object TSClass: TTabSheet

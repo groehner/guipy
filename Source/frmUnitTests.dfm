@@ -1,8 +1,8 @@
 inherited UnitTestWindow: TUnitTestWindow
   HelpContext = 467
   Caption = 'Unit Tests'
-  ClientHeight = 451
-  ClientWidth = 262
+  ClientHeight = 439
+  ClientWidth = 254
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000040040000000000000000000000000000000000000000
@@ -40,20 +40,27 @@ inherited UnitTestWindow: TUnitTestWindow
     000000000022000000150000000000000000000000000000000000000000C3C1
     00008001000000000000000000000000000080010000C0030000E00700000000
     000000000000F00F0000C00300008C3100009C390000FC3F0000F99F0000}
+  ExplicitWidth = 262
+  ExplicitHeight = 466
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 262
-    Height = 451
+    Width = 254
+    Height = 439
+    ExplicitWidth = 246
+    ExplicitHeight = 427
     inherited FGPanel: TPanel
-      Width = 258
-      Height = 447
+      Width = 250
+      Height = 435
+      ExplicitWidth = 242
+      ExplicitHeight = 423
       object ExplorerDock: TSpTBXDock
         Left = 0
         Top = 0
-        Width = 258
+        Width = 250
         Height = 30
         AllowDrag = False
         DoubleBuffered = True
+        ExplicitWidth = 242
         object ExplorerToolbar: TSpTBXToolbar
           Left = 0
           Top = 0
@@ -102,26 +109,30 @@ inherited UnitTestWindow: TUnitTestWindow
       end
       object SpTBXSplitter1: TSpTBXSplitter
         Left = 0
-        Top = 269
-        Width = 258
+        Top = 257
+        Width = 250
         Height = 5
         Cursor = crSizeNS
         Align = alBottom
         ParentColor = False
         MinSize = 1
+        ExplicitTop = 245
+        ExplicitWidth = 242
       end
       object Panel1: TPanel
         Left = 0
         Top = 30
-        Width = 258
-        Height = 239
+        Width = 250
+        Height = 227
         Align = alClient
         TabOrder = 1
+        ExplicitWidth = 242
+        ExplicitHeight = 215
         object UnitTests: TVirtualStringTree
           Left = 1
           Top = 1
-          Width = 256
-          Height = 237
+          Width = 248
+          Height = 225
           Align = alClient
           BorderStyle = bsNone
           Header.AutoSizeIndex = -1
@@ -151,21 +162,24 @@ inherited UnitTestWindow: TUnitTestWindow
       end
       object Panel2: TPanel
         Left = 0
-        Top = 274
-        Width = 258
+        Top = 262
+        Width = 250
         Height = 173
         Align = alBottom
         TabOrder = 2
+        ExplicitTop = 250
+        ExplicitWidth = 242
         DesignSize = (
-          258
+          250
           173)
         object Bevel1: TBevel
           Left = 8
           Top = 58
-          Width = 242
+          Width = 226
           Height = 5
           Anchors = [akLeft, akTop, akRight]
           Shape = bsTopLine
+          ExplicitWidth = 242
         end
         object Label2: TLabel
           Left = 7
@@ -192,7 +206,7 @@ inherited UnitTestWindow: TUnitTestWindow
           Transparent = True
         end
         object lbFoundTests: TLabel
-          Left = 172
+          Left = 156
           Top = 1
           Width = 66
           Height = 13
@@ -206,6 +220,7 @@ inherited UnitTestWindow: TUnitTestWindow
           Font.Style = []
           ParentFont = False
           Transparent = True
+          ExplicitLeft = 172
         end
         object lblRunTests: TLabel
           Left = 7
@@ -240,15 +255,16 @@ inherited UnitTestWindow: TUnitTestWindow
         object SpTBXPanel1: TPanel
           Left = 1
           Top = 85
-          Width = 256
+          Width = 248
           Height = 87
           Align = alBottom
           Anchors = [akLeft, akTop, akRight, akBottom]
           TabOrder = 0
+          ExplicitWidth = 240
           object ErrorText: TRichEdit
             Left = 1
             Top = 1
-            Width = 254
+            Width = 246
             Height = 85
             Align = alClient
             BorderStyle = bsNone
@@ -263,6 +279,7 @@ inherited UnitTestWindow: TUnitTestWindow
             ReadOnly = True
             ScrollBars = ssBoth
             TabOrder = 0
+            ExplicitWidth = 238
           end
         end
       end
@@ -439,7 +456,7 @@ inherited UnitTestWindow: TUnitTestWindow
         CollectionName = 'TestsFailed'
         Name = 'TestsFailed'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20

@@ -3,26 +3,27 @@ inherited CodeTemplates: TCodeTemplates
   Top = 192
   HelpContext = 540
   Caption = 'Code Templates'
-  ClientHeight = 426
-  ClientWidth = 554
+  ClientHeight = 425
+  ClientWidth = 550
   ShowHint = True
   OnClose = FormClose
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ExplicitWidth = 560
-  ExplicitHeight = 455
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 562
+  ExplicitHeight = 463
+  TextHeight = 15
   object Panel: TPanel
     Left = 0
     Top = 0
-    Width = 554
-    Height = 426
+    Width = 550
+    Height = 425
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 546
+    ExplicitHeight = 424
     DesignSize = (
-      554
-      426)
+      550
+      425)
     object btnAdd: TButton
       Left = 13
       Top = 118
@@ -69,8 +70,8 @@ inherited CodeTemplates: TCodeTemplates
       TabOrder = 7
     end
     object btnCancel: TButton
-      Left = 387
-      Top = 394
+      Left = 375
+      Top = 393
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -78,10 +79,12 @@ inherited CodeTemplates: TCodeTemplates
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 9
+      ExplicitLeft = 371
+      ExplicitTop = 392
     end
     object btnOK: TButton
-      Left = 303
-      Top = 394
+      Left = 291
+      Top = 393
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -89,48 +92,53 @@ inherited CodeTemplates: TCodeTemplates
       Default = True
       ModalResult = 1
       TabOrder = 1
+      ExplicitLeft = 287
+      ExplicitTop = 392
     end
     object btnHelp: TButton
-      Left = 471
-      Top = 394
+      Left = 459
+      Top = 393
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
       Caption = '&Help'
       TabOrder = 8
       OnClick = btnHelpClick
+      ExplicitLeft = 455
+      ExplicitTop = 392
     end
     object GroupBox: TGroupBox
       AlignWithMargins = True
       Left = 3
       Top = 148
-      Width = 548
+      Width = 536
       Height = 239
       Anchors = [akLeft, akTop, akRight]
       Caption = 'Code Template:'
       TabOrder = 2
+      ExplicitWidth = 532
       DesignSize = (
-        548
+        536
         239)
       object Label1: TLabel
         Left = 8
         Top = 21
-        Width = 31
-        Height = 13
+        Width = 35
+        Height = 15
         Caption = '&Name:'
       end
       object Label2: TLabel
         Left = 8
         Top = 65
-        Width = 48
-        Height = 13
+        Width = 51
+        Height = 15
         Caption = '&Template:'
       end
       object Label5: TLabel
         Left = 8
         Top = 44
-        Width = 57
-        Height = 13
+        Width = 63
+        Height = 15
         Caption = '&Description:'
       end
       object Label4: TLabel
@@ -164,7 +172,7 @@ inherited CodeTemplates: TCodeTemplates
       object SynTemplate: TSynEdit
         Left = 9
         Top = 84
-        Width = 532
+        Width = 520
         Height = 116
         Anchors = [akLeft, akTop, akRight]
         Font.Charset = DEFAULT_CHARSET
@@ -181,11 +189,10 @@ inherited CodeTemplates: TCodeTemplates
         Gutter.Font.Height = -11
         Gutter.Font.Name = 'Courier New'
         Gutter.Font.Style = []
-
+        Gutter.Font.Quality = fqClearTypeNatural
         Gutter.Bands = <
           item
             Kind = gbkMarks
-            Visible = True
             Width = 13
           end
           item
@@ -199,25 +206,27 @@ inherited CodeTemplates: TCodeTemplates
           end
           item
             Kind = gbkMargin
-            Visible = True
             Width = 3
           end>
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
+        SelectedColor.Alpha = 0.400000005960464500
         TabWidth = 4
+        ExplicitWidth = 516
       end
       object edDescription: TEdit
         Left = 115
         Top = 43
-        Width = 426
-        Height = 21
+        Width = 414
+        Height = 23
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 2
+        ExplicitWidth = 410
       end
       object edShortcut: TEdit
         Left = 115
         Top = 16
         Width = 121
-        Height = 21
+        Height = 23
         TabOrder = 0
         OnKeyPress = edShortcutKeyPress
       end
@@ -225,7 +234,7 @@ inherited CodeTemplates: TCodeTemplates
     object lvItems: TListView
       Left = 1
       Top = 1
-      Width = 552
+      Width = 548
       Height = 109
       Align = alTop
       Columns = <
@@ -245,6 +254,7 @@ inherited CodeTemplates: TCodeTemplates
       ViewStyle = vsReport
       OnDeletion = lvItemsDeletion
       OnSelectItem = lvItemsSelectItem
+      ExplicitWidth = 544
     end
   end
   object ActionList: TActionList
@@ -289,40 +299,33 @@ inherited CodeTemplates: TCodeTemplates
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 21
         CollectionName = 'Delete'
-        Disabled = False
         Name = 'Delete'
       end
       item
         CollectionIndex = 88
         CollectionName = 'Refresh'
-        Disabled = False
         Name = 'Refresh'
       end
       item
-        CollectionIndex = 129
+        CollectionIndex = 130
         CollectionName = 'Up'
-        Disabled = False
         Name = 'Up'
       end
       item
         CollectionIndex = 22
         CollectionName = 'Down'
-        Disabled = False
         Name = 'Down'
       end
       item
         CollectionIndex = 68
         CollectionName = 'Plus'
-        Disabled = False
         Name = 'Plus'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Left = 320
     Top = 27

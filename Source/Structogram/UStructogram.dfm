@@ -8,15 +8,13 @@ object FStructogram: TFStructogram
   Color = clWhite
   ParentFont = True
   KeyPreview = True
-  OldCreateOrder = True
   Visible = True
   WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnKeyUp = FormKeyUp
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object ScrollBox: TScrollBox
     Left = 24
     Top = 0

@@ -8,7 +8,6 @@ object PyIDEMainForm: TPyIDEMainForm
   Color = clWindow
   Ctl3D = False
   ParentFont = True
-  OldCreateOrder = True
   Position = poDefault
   ShowHint = True
   StyleElements = [seFont, seClient]
@@ -18,22 +17,20 @@ object PyIDEMainForm: TPyIDEMainForm
   OnKeyUp = FormKeyUp
   OnShortCut = FormShortCut
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object StatusBar: TSpTBXStatusBar
     Left = 0
     Top = 626
     Width = 946
     Height = 25
     SizeGrip = False
-    ExplicitTop = 641
     object lbStatusMessage: TSpTBXLabelItem
       Wrapping = twEndEllipsis
       Options = [tboNoAutoHint]
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 312
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -122,8 +119,6 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
-    ExplicitWidth = 286
-    ExplicitHeight = 83
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -173,7 +168,6 @@ object PyIDEMainForm: TPyIDEMainForm
       object tbiTabClose: TSpTBXItem
         Tag = 1
         Action = CommandsDataModule.actFileClose
-        ImageName = 'TabClose'
         Options = [tboToolbarStyle]
       end
     end
@@ -258,7 +252,7 @@ object PyIDEMainForm: TPyIDEMainForm
     object TBControlItem1: TTBControlItem
     end
     object DockTopPanel: TPanel
-      Tag = 114580
+      Tag = 120698
       Left = 0
       Top = 0
       Width = 946
@@ -271,13 +265,17 @@ object PyIDEMainForm: TPyIDEMainForm
     object MainMenu: TSpTBXToolbar
       Left = 0
       Top = -1
-      Width = 323
+      Width = 377
       Height = 21
       DockMode = dmCannotFloatOrChangeDocks
       DockPos = 0
       FullSize = True
       Images = vilImages
+      ProcessShortCuts = True
+      ShrinkMode = tbsmWrap
       TabOrder = 0
+      Customizable = False
+      MenuBar = True
       object FileMenu: TSpTBXSubmenuItem
         Caption = '&File'
         object TBXSubmenuItem5: TSpTBXSubmenuItem
@@ -817,12 +815,10 @@ object PyIDEMainForm: TPyIDEMainForm
         Caption = '&Project'
         object mnProjectNew: TSpTBXItem
           Action = ProjectExplorerWindow.actProjectNew
-          ImageName = 'Print'
           Images = ProjectExplorerWindow.vilImages
         end
         object mnProjectOpen: TSpTBXItem
           Action = ProjectExplorerWindow.actProjectOpen
-          ImageName = 'Undo'
           Images = ProjectExplorerWindow.vilImages
         end
         object SpTBXSubmenuItem1: TSpTBXSubmenuItem
@@ -837,7 +833,6 @@ object PyIDEMainForm: TPyIDEMainForm
         end
         object mnProjectSave: TSpTBXItem
           Action = ProjectExplorerWindow.actProjectSave
-          ImageName = 'Delete'
           Images = ProjectExplorerWindow.vilImages
         end
         object mnProjectSaveAs: TSpTBXItem
@@ -1447,28 +1442,28 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       object tbiSearchText: TSpTBXComboBox
         Left = 63
-        Top = 2
+        Top = 1
         Width = 160
-        Height = 21
+        Height = 23
+        AutoDropDownWidth = True
         AutoCloseUp = True
-        ItemHeight = 13
+        ItemHeight = 15
         TabOrder = 0
         OnChange = tbiSearchTextChange
         OnExit = tbiSearchTextExit
         OnKeyPress = tbiSearchTextKeyPress
-        AutoDropDownWidth = True
       end
       object tbiReplaceText: TSpTBXComboBox
         Left = 304
-        Top = 2
+        Top = 1
         Width = 160
-        Height = 21
-        ItemHeight = 13
+        Height = 23
+        AutoDropDownWidth = True
+        ItemHeight = 15
         TabOrder = 1
         Visible = False
         OnChange = tbiReplaceTextChange
         OnKeyPress = tbiReplaceTextKeyPress
-        AutoDropDownWidth = True
       end
     end
     object TabControlWidgets: TSpTBXTabControl
@@ -2660,18 +2655,18 @@ object PyIDEMainForm: TPyIDEMainForm
     Location = flCustom
     DefaultSection = 'Other Settings'
     SubStorages = <>
-    Left = 466
-    Top = 141
+    Left = 562
+    Top = 133
   end
   object CloseTimer: TTimer
     Enabled = False
     OnTimer = CloseTimerTimer
-    Left = 39
-    Top = 219
+    Left = 439
+    Top = 147
   end
   object TabControlPopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 320
+    Left = 408
     Top = 282
     object mnNewModule2: TSpTBXItem
       Action = actFileNewModule
@@ -2717,20 +2712,20 @@ object PyIDEMainForm: TPyIDEMainForm
   end
   object RunningProcessesPopUpMenu: TSpTBXPopupMenu
     LinkSubitems = OutputWindow.RunningProcess
-    Left = 172
+    Left = 220
     Top = 280
   end
   object JvAppInstances: TJvAppInstances
     Active = False
     OnCmdLineReceived = JvAppInstancesCmdLineReceived
-    Left = 467
+    Left = 667
     Top = 213
   end
   object SpTBXCustomizer: TSpTBXCustomizer
     Images = vilImages
     OnGetCustomizeForm = SpTBXCustomizerGetCustomizeForm
-    Left = 296
-    Top = 136
+    Left = 328
+    Top = 144
   end
   object ToolbarPopupMenu: TSpTBXPopupMenu
     Images = vilImages
@@ -2744,12 +2739,12 @@ object PyIDEMainForm: TPyIDEMainForm
     AppStoragePath = 'Main Form Placement\'
     VersionCheck = fpvcNocheck
     StoredValues = <>
-    Left = 545
+    Left = 793
     Top = 213
   end
   object actlImmutable: TActionList
     Images = vilImages
-    Left = 208
+    Left = 216
     Top = 140
     object actViewNextEditor: TAction
       Category = 'View'
@@ -3724,712 +3719,594 @@ object PyIDEMainForm: TPyIDEMainForm
     Location = flCustom
     DefaultSection = 'Other Settings'
     SubStorages = <>
-    Left = 546
-    Top = 141
+    Left = 674
+    Top = 133
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 37
         CollectionName = 'FileNew'
-        Disabled = False
         Name = 'FileNew'
       end
       item
         CollectionIndex = 38
         CollectionName = 'FileOpen'
-        Disabled = False
         Name = 'FileOpen'
       end
       item
         CollectionIndex = 99
         CollectionName = 'Save'
-        Disabled = False
         Name = 'Save'
       end
       item
         CollectionIndex = 100
         CollectionName = 'SaveAll'
-        Disabled = False
         Name = 'SaveAll'
       end
       item
         CollectionIndex = 72
         CollectionName = 'PrintSetup'
-        Disabled = False
         Name = 'PrintSetup'
       end
       item
         CollectionIndex = 71
         CollectionName = 'PrintPreview'
-        Disabled = False
         Name = 'PrintPreview'
       end
       item
         CollectionIndex = 70
         CollectionName = 'Print'
-        Disabled = False
         Name = 'Print'
       end
       item
         CollectionIndex = 128
         CollectionName = 'Undo'
-        Disabled = False
         Name = 'Undo'
       end
       item
         CollectionIndex = 87
         CollectionName = 'Redo'
-        Disabled = False
         Name = 'Redo'
       end
       item
         CollectionIndex = 17
         CollectionName = 'Cut'
-        Disabled = False
         Name = 'Cut'
       end
       item
         CollectionIndex = 16
         CollectionName = 'Copy'
-        Disabled = False
         Name = 'Copy'
       end
       item
         CollectionIndex = 65
         CollectionName = 'Paste'
-        Disabled = False
         Name = 'Paste'
       end
       item
         CollectionIndex = 21
         CollectionName = 'Delete'
-        Disabled = False
         Name = 'Delete'
       end
       item
         CollectionIndex = 101
         CollectionName = 'Search'
-        Disabled = False
         Name = 'Search'
       end
       item
         CollectionIndex = 41
         CollectionName = 'FindNext'
-        Disabled = False
         Name = 'FindNext'
       end
       item
         CollectionIndex = 91
         CollectionName = 'Replace'
-        Disabled = False
         Name = 'Replace'
       end
       item
         CollectionIndex = 29
         CollectionName = 'Execute'
-        Disabled = False
         Name = 'Execute'
       end
       item
         CollectionIndex = 11
         CollectionName = 'Check'
-        Disabled = False
         Name = 'Check'
       end
       item
         CollectionIndex = 27
         CollectionName = 'EditOptions'
-        Disabled = False
         Name = 'EditOptions'
       end
       item
         CollectionIndex = 1
         CollectionName = 'AppSettings'
-        Disabled = False
         Name = 'AppSettings'
       end
       item
         CollectionIndex = 46
         CollectionName = 'Folders'
-        Disabled = False
         Name = 'Folders'
       end
       item
         CollectionIndex = 49
         CollectionName = 'Function'
-        Disabled = False
         Name = 'Function'
       end
       item
         CollectionIndex = 32
         CollectionName = 'ExternalRun'
-        Disabled = False
         Name = 'ExternalRun'
       end
       item
         CollectionIndex = 31
         CollectionName = 'Expand'
-        Disabled = False
         Name = 'Expand'
       end
       item
         CollectionIndex = 15
         CollectionName = 'Collapse'
-        Disabled = False
         Name = 'Collapse'
       end
       item
         CollectionIndex = 55
         CollectionName = 'Info'
-        Disabled = False
         Name = 'Info'
       end
       item
         CollectionIndex = 51
         CollectionName = 'GoToLine'
-        Disabled = False
         Name = 'GoToLine'
       end
       item
         CollectionIndex = 52
         CollectionName = 'Help'
-        Disabled = False
         Name = 'Help'
       end
       item
         CollectionIndex = 97
         CollectionName = 'RunScript'
-        Disabled = False
         Name = 'RunScript'
       end
       item
         CollectionIndex = 88
         CollectionName = 'Refresh'
-        Disabled = False
         Name = 'Refresh'
       end
       item
         CollectionIndex = 0
         CollectionName = 'Abort'
-        Disabled = False
         Name = 'Abort'
       end
       item
         CollectionIndex = 58
         CollectionName = 'LineNumbers'
-        Disabled = False
         Name = 'LineNumbers'
       end
       item
         CollectionIndex = 30
         CollectionName = 'Exit'
-        Disabled = False
         Name = 'Exit'
       end
       item
         CollectionIndex = 93
         CollectionName = 'Run'
-        Disabled = False
         Name = 'Run'
       end
       item
         CollectionIndex = 18
         CollectionName = 'Debug'
-        Disabled = False
         Name = 'Debug'
       end
       item
         CollectionIndex = 98
         CollectionName = 'RunToCursor'
-        Disabled = False
         Name = 'RunToCursor'
       end
       item
         CollectionIndex = 108
         CollectionName = 'StepIn'
-        Disabled = False
         Name = 'StepIn'
       end
       item
         CollectionIndex = 110
         CollectionName = 'StepOver'
-        Disabled = False
         Name = 'StepOver'
       end
       item
         CollectionIndex = 109
         CollectionName = 'StepOut'
-        Disabled = False
         Name = 'StepOut'
       end
       item
         CollectionIndex = 6
         CollectionName = 'Breakpoint'
-        Disabled = False
         Name = 'Breakpoint'
       end
       item
         CollectionIndex = 7
         CollectionName = 'BreakpointsRemove'
-        Disabled = False
         Name = 'BreakpointsRemove'
       end
       item
         CollectionIndex = 10
         CollectionName = 'CallStack'
-        Disabled = False
         Name = 'CallStack'
       end
       item
         CollectionIndex = 132
         CollectionName = 'VariablesWin'
-        Disabled = False
         Name = 'VariablesWin'
       end
       item
         CollectionIndex = 136
         CollectionName = 'WatchesWin'
-        Disabled = False
         Name = 'WatchesWin'
       end
       item
         CollectionIndex = 8
         CollectionName = 'BreakpointsWin'
-        Disabled = False
         Name = 'BreakpointsWin'
       end
       item
         CollectionIndex = 54
         CollectionName = 'Indent'
-        Disabled = False
         Name = 'Indent'
       end
       item
         CollectionIndex = 20
         CollectionName = 'Dedent'
-        Disabled = False
         Name = 'Dedent'
       end
       item
         CollectionIndex = 13
         CollectionName = 'CodeComment'
-        Disabled = False
         Name = 'CodeComment'
       end
       item
         CollectionIndex = 127
         CollectionName = 'UnCodeComment'
-        Disabled = False
         Name = 'UnCodeComment'
       end
       item
         CollectionIndex = 61
         CollectionName = 'MessagesWin'
-        Disabled = False
         Name = 'MessagesWin'
       end
       item
         CollectionIndex = 14
         CollectionName = 'CodeExplorer'
-        Disabled = False
         Name = 'CodeExplorer'
       end
       item
         CollectionIndex = 80
         CollectionName = 'PyDoc'
-        Disabled = False
         Name = 'PyDoc'
       end
       item
         CollectionIndex = 64
         CollectionName = 'PageSetup'
-        Disabled = False
         Name = 'PageSetup'
       end
       item
         CollectionIndex = 114
         CollectionName = 'TabNext'
-        Disabled = False
         Name = 'TabNext'
       end
       item
         CollectionIndex = 115
         CollectionName = 'TabPrevious'
-        Disabled = False
         Name = 'TabPrevious'
       end
       item
         CollectionIndex = 123
         CollectionName = 'Tools'
-        Disabled = False
         Name = 'Tools'
       end
       item
         CollectionIndex = 124
         CollectionName = 'ToolsSetup'
-        Disabled = False
         Name = 'ToolsSetup'
       end
       item
         CollectionIndex = 36
         CollectionName = 'FileExplorer'
-        Disabled = False
         Name = 'FileExplorer'
       end
       item
         CollectionIndex = 121
         CollectionName = 'TodoWin'
-        Disabled = False
         Name = 'TodoWin'
       end
       item
         CollectionIndex = 102
         CollectionName = 'SearchFolder'
-        Disabled = False
         Name = 'SearchFolder'
       end
       item
         CollectionIndex = 44
         CollectionName = 'FindResults'
-        Disabled = False
         Name = 'FindResults'
       end
       item
         CollectionIndex = 34
         CollectionName = 'ExternalRunSetup'
-        Disabled = False
         Name = 'ExternalRunSetup'
       end
       item
         CollectionIndex = 12
         CollectionName = 'CmdOuputWin'
-        Disabled = False
         Name = 'CmdOuputWin'
       end
       item
         CollectionIndex = 104
         CollectionName = 'SpecialChars'
-        Disabled = False
         Name = 'SpecialChars'
       end
       item
         CollectionIndex = 2
         CollectionName = 'ArrowLeft'
-        Disabled = False
         Name = 'ArrowLeft'
       end
       item
         CollectionIndex = 3
         CollectionName = 'ArrowRight'
-        Disabled = False
         Name = 'ArrowRight'
       end
       item
         CollectionIndex = 89
         CollectionName = 'RegExp'
-        Disabled = False
         Name = 'RegExp'
       end
       item
         CollectionIndex = 56
         CollectionName = 'Keyboard'
-        Disabled = False
         Name = 'Keyboard'
       end
       item
         CollectionIndex = 129
         CollectionName = 'UnitTestWin'
-        Disabled = False
         Name = 'UnitTestWin'
       end
       item
         CollectionIndex = 112
         CollectionName = 'Styles'
-        Disabled = False
         Name = 'Styles'
       end
       item
         CollectionIndex = 4
         CollectionName = 'Assembly'
-        Disabled = False
         Name = 'Assembly'
       end
       item
         CollectionIndex = 139
         CollectionName = 'ZoomIn'
-        Disabled = False
         Name = 'ZoomIn'
       end
       item
         CollectionIndex = 140
         CollectionName = 'ZoomOut'
-        Disabled = False
         Name = 'ZoomOut'
       end
       item
         CollectionIndex = 66
         CollectionName = 'Pause'
-        Disabled = False
         Name = 'Pause'
       end
       item
         CollectionIndex = 25
         CollectionName = 'EditorMax'
-        Disabled = False
         Name = 'EditorMax'
       end
       item
         CollectionIndex = 28
         CollectionName = 'EditorMin'
-        Disabled = False
         Name = 'EditorMin'
       end
       item
         CollectionIndex = 42
         CollectionName = 'FindPrevious'
-        Disabled = False
         Name = 'FindPrevious'
       end
       item
         CollectionIndex = 53
         CollectionName = 'Highlight'
-        Disabled = False
         Name = 'Highlight'
       end
       item
         CollectionIndex = 50
         CollectionName = 'GoToError'
-        Disabled = False
         Name = 'GoToError'
       end
       item
         CollectionIndex = 138
         CollectionName = 'WordWrap'
-        Disabled = False
         Name = 'WordWrap'
       end
       item
         CollectionIndex = 107
         CollectionName = 'SplitVertical'
-        Disabled = False
         Name = 'SplitVertical'
       end
       item
         CollectionIndex = 106
         CollectionName = 'SplitHorizontal'
-        Disabled = False
         Name = 'SplitHorizontal'
       end
       item
         CollectionIndex = 69
         CollectionName = 'PostMortem'
-        Disabled = False
         Name = 'PostMortem'
       end
       item
         CollectionIndex = 84
         CollectionName = 'Python'
-        Disabled = False
         Name = 'Python'
       end
       item
         CollectionIndex = 85
         CollectionName = 'PythonScript'
-        Disabled = False
         Name = 'PythonScript'
       end
       item
         CollectionIndex = 74
         CollectionName = 'ProjectExplorer'
-        Disabled = False
         Name = 'ProjectExplorer'
       end
       item
         CollectionIndex = 26
         CollectionName = 'Editor'
-        Disabled = False
         Name = 'Editor'
       end
       item
         CollectionIndex = 96
         CollectionName = 'RunLast'
-        Disabled = False
         Name = 'RunLast'
       end
       item
         CollectionIndex = 19
         CollectionName = 'DebugLast'
-        Disabled = False
         Name = 'DebugLast'
       end
       item
         CollectionIndex = 33
         CollectionName = 'ExternalRunLast'
-        Disabled = False
         Name = 'ExternalRunLast'
       end
       item
         CollectionIndex = 59
         CollectionName = 'Link'
-        Disabled = False
         Name = 'Link'
       end
       item
         CollectionIndex = 137
         CollectionName = 'Web'
-        Disabled = False
         Name = 'Web'
       end
       item
         CollectionIndex = 113
         CollectionName = 'TabClose'
-        Disabled = False
         Name = 'TabCLose'
       end
       item
         CollectionIndex = 117
         CollectionName = 'TabsClose'
-        Disabled = False
         Name = 'TabsClose'
       end
       item
         CollectionIndex = 81
         CollectionName = 'PySetup'
-        Disabled = False
         Name = 'PySetup'
       end
       item
         CollectionIndex = 23
         CollectionName = 'Download'
-        Disabled = False
         Name = 'Download'
       end
       item
         CollectionIndex = 131
         CollectionName = 'Upload'
-        Disabled = False
         Name = 'Upload'
       end
       item
         CollectionIndex = 57
         CollectionName = 'Layouts'
-        Disabled = False
         Name = 'Layouts'
       end
       item
         CollectionIndex = 116
         CollectionName = 'Tabs'
-        Disabled = False
         Name = 'Tabs'
       end
       item
         CollectionIndex = 9
         CollectionName = 'Bug'
-        Disabled = False
         Name = 'Bug'
       end
       item
         CollectionIndex = 24
         CollectionName = 'Edit'
-        Disabled = False
         Name = 'Edit'
       end
       item
         CollectionIndex = 103
         CollectionName = 'Setup'
-        Disabled = False
         Name = 'Setup'
       end
       item
         CollectionIndex = 142
         CollectionName = 'UMLNew'
-        Disabled = False
         Name = 'UMLNew'
       end
       item
         CollectionIndex = 143
         CollectionName = 'UMLOpen'
-        Disabled = False
         Name = 'UMLOpen'
       end
       item
         CollectionIndex = 144
         CollectionName = 'ClassEdit'
-        Disabled = False
         Name = 'ClassEdit'
       end
       item
         CollectionIndex = 145
         CollectionName = 'NewComment'
-        Disabled = False
         Name = 'NewComment'
       end
       item
         CollectionIndex = 146
         CollectionName = 'Aktualisieren'
-        Disabled = False
         Name = 'Aktualisieren'
       end
       item
         CollectionIndex = 147
         CollectionName = 'NewLayout'
-        Disabled = False
         Name = 'NewLayout'
       end
       item
         CollectionIndex = 148
         CollectionName = 'DiagramFromFiles'
-        Disabled = False
         Name = 'DiagramFromFiles'
       end
       item
         CollectionIndex = 149
         CollectionName = 'SaveAsPicture'
-        Disabled = False
         Name = 'SaveAsPicture'
       end
       item
         CollectionIndex = 150
         CollectionName = 'TextDiff'
-        Disabled = False
         Name = 'TextDiff'
       end
       item
         CollectionIndex = 151
         CollectionName = 'Configuration'
-        Disabled = False
         Name = 'Configuration'
       end
       item
         CollectionIndex = 152
         CollectionName = 'git'
-        Disabled = False
         Name = 'git'
       end
       item
         CollectionIndex = 153
         CollectionName = 'svn'
-        Disabled = False
         Name = 'svn'
       end
       item
         CollectionIndex = 154
-        Disabled = False
       end
       item
         CollectionIndex = 155
         CollectionName = 'EditClass'
-        Disabled = False
         Name = 'EditClass'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20
-    Left = 360
+    Left = 392
     Top = 432
   end
   object icIndicators: TSVGIconImageCollection
@@ -4471,38 +4348,33 @@ object PyIDEMainForm: TPyIDEMainForm
     Top = 432
   end
   object vilIndicators: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 0
         CollectionName = 'StatusLED'
-        Disabled = False
         Name = 'StatusLED'
       end
       item
         CollectionIndex = 1
         CollectionName = 'ExternalToolsLED'
-        Disabled = False
         Name = 'ExternalToolsLED'
       end
       item
         CollectionIndex = 2
         CollectionName = 'LspLED'
-        Disabled = False
         Name = 'LspLED'
       end>
     ImageCollection = icIndicators
     PreserveItems = True
     Width = 12
     Height = 12
-    Left = 120
+    Left = 144
     Top = 432
   end
   object ILProgramDark: TImageList
     Height = 17
     Width = 23
-    Left = 120
+    Left = 128
     Top = 353
     Bitmap = {
       494C010108004800040017001100FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -7806,7 +7678,7 @@ object PyIDEMainForm: TPyIDEMainForm
   object ILTKinter: TImageList
     Height = 21
     Width = 21
-    Left = 208
+    Left = 216
     Top = 352
     Bitmap = {
       494C010123002800040015001500FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -9875,30 +9747,26 @@ object PyIDEMainForm: TPyIDEMainForm
     StorageOptions.BooleanStringTrueValues = 'TRUE, YES, Y'
     StorageOptions.BooleanStringFalseValues = 'FALSE, NO, N'
     SubStorages = <>
-    Left = 641
-    Top = 144
+    Left = 793
+    Top = 136
   end
   object vilTabDecorators: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 9
         CollectionName = 'Bug'
-        Disabled = False
         Name = 'Bug'
       end
       item
         CollectionIndex = 60
         CollectionName = 'Lock'
-        Disabled = False
         Name = 'Lock'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 14
     Height = 14
-    Left = 280
+    Left = 264
     Top = 432
   end
   object ILQtControls: TImageList
@@ -11283,5 +11151,10 @@ object PyIDEMainForm: TPyIDEMainForm
       01F00003FFEFF000C0003E0001FFFFFFFFFFF000C0003E0001FFFFFFFFFFF000
       C0003E0001FFFFFFFFFFF000FFFFFFFFFFFFFFFFFFFFF0000000000000000000
       0000000000000000000000000000}
+  end
+  object DdeServerConv: TDdeServerConv
+    OnExecuteMacro = DdeServerConvExecuteMacro
+    Left = 536
+    Top = 280
   end
 end

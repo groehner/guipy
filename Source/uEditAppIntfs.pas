@@ -19,11 +19,11 @@ uses
   Vcl.ImgList,
   JvAppStorage,
   JclNotify,
+  JclSysUtils,
   PythonEngine,
   PythonVersions,
   SynEdit,
-  SpTBXItem,
-  SpTBXTabs;
+  SpTBXItem;
 
 type
   TBreakPoint = class(TPersistent)
@@ -105,6 +105,7 @@ type
   ['{15E8BD28-6E18-4D49-8499-1DB594AB88F7}']
     procedure Activate(Primary : Boolean = True);
     function ActivateView(ViewFactory : IEditorViewFactory) : IEditorView;
+
     function CanClose: Boolean;
     procedure Close;
     function GetSynEdit : TSynEdit;
@@ -290,12 +291,14 @@ type
       Returns the active editor irrespective of whether it is has the focus
       If want the active editor with focus then use GI_ActiveEditor
     }
+    function ReplaceParams(const AText: string): string;
     function GetActiveEditor : IEditor;
     function GetIsClosing: Boolean;
     function GetActiveTextDiff: ISearchCommands;
     function GetActiveFile : IFile;
     procedure WriteStatusMsg(const S: string);
-    function ShowFilePosition(FileName : string; Line: integer =0;
+    function FileIsPythonSource(const FileName: string): Boolean;
+    function ShowFilePosition(FileName : string; Line: integer = 0;
       Offset : integer = 1; SelLen : integer = 0;
       ForceToMiddle : boolean = True; FocusEditor : boolean = True) : boolean;
     procedure ClearPythonWindows;
@@ -308,6 +311,7 @@ type
     function GetIDELayouts: IIDELayouts;
     function GetAppStorage: TJvCustomAppStorage;
     function GetLocalAppStorage: TJvCustomAppStorage;
+    function GetLogger: TJclSimpleLog;
     procedure MRUAddFile(aFile: IFile);
     property ActiveFile: IFile read GetActiveFile;
     property ActiveEditor: IEditor read GetActiveEditor;
@@ -317,6 +321,14 @@ type
     property Layouts: IIDELayouts read GetIDELayouts;
     property AppStorage: TJvCustomAppStorage read GetAppStorage;
     property LocalAppStorage: TJvCustomAppStorage read GetLocalAppStorage;
+    property Logger: TJclSimpleLog read GetLogger;
+  end;
+
+  IPyEngineAndGIL = interface
+    function GetPyEngine: TPythonEngine;
+    function GetThreadState: PPyThreadState;
+    property PythonEngine: TPythonEngine read GetPyEngine;
+    property ThreadState: PPyThreadState read GetThreadState;
   end;
 
   IPyControl = interface
@@ -327,6 +339,9 @@ type
     function GetPythonVersion: TPythonVersion;
     function GetOnPythonVersionChange: TJclNotifyEventBroadcast;
     function AddPathToInternalPythonPath(const Path: string): IInterface;
+    function SafePyEngine: IPyEngineAndGIL;
+    procedure ThreadPythonExec(ExecuteProc : TProc; TerminateProc : TProc = nil;
+      WaitToFinish: Boolean = False; ThreadExecMode : TThreadExecMode = emNewState);
     property PythonVersion: TPythonVersion read GetPythonVersion;
     property OnPythonVersionChange: TJclNotifyEventBroadcast
       read GetOnPythonVersionChange;
@@ -351,17 +366,30 @@ type
     procedure SetPyInterpreterPrompt(Pip: TPyInterpreterPropmpt);
     procedure ReinitInterpreter;
     function GetPythonIO: TPythonInputOutput;
+    function GetEditor: TCustomSynEdit;
     function GetShowOutput: boolean;
     procedure SetShowOutput(const Value: boolean);
+    property Editor: TCustomSynEdit read GetEditor;
     property PythonIO: TPythonInputOutput read GetPythonIO;
     property ShowOutput: Boolean read GetShowOutput write SetShowOutput;
   end;
 
+  ISSHServices = interface
+  ['{255E5E08-DCFD-481A-B0C3-F0AB0C5A1571}']
+    function FormatFileName(Server, FileName : string): string;
+    function ParseFileName(Const Unc : string; out Server, FileName : string): boolean;
+
+    function Scp(const ScpCommand, FromFile, ToFile: string; out ErrorMsg: string;
+       ScpOptions : string = ''): Boolean;
+    function ScpUpload(const ServerName, LocalFile, RemoteFile: string; out ErrorMsg: string): boolean;
+    function ScpDownload(const ServerName, RemoteFile, LocalFile: string; out ErrorMsg: string): boolean;
+  end;
+
 var
   GI_FileFactory: IFileFactory;
+  GI_ActiveFile: IFile;
   GI_EditorFactory: IEditorFactory;
   GI_ActiveEditor: IEditor;
-  GI_ActiveFile: IFile;
 
   GI_EditCmds: IEditCommands;
   GI_FileCmds: IFileCommands;
@@ -370,6 +398,7 @@ var
   GI_PyIDEServices: IPyIDEServices;
   GI_PyControl: IPyControl;
   GI_PyInterpreter: IPyInterpreter;
+  GI_SSHServices: ISSHServices;
 
 implementation
 

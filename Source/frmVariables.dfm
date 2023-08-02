@@ -3,8 +3,8 @@ inherited VariablesWindow: TVariablesWindow
   Top = 237
   HelpContext = 480
   Caption = 'Variables'
-  ClientHeight = 247
-  ClientWidth = 579
+  ClientHeight = 235
+  ClientWidth = 571
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -40,13 +40,12 @@ inherited VariablesWindow: TVariablesWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 595
-  ExplicitHeight = 286
-  PixelsPerInch = 96
-  TextHeight = 14
+  ExplicitWidth = 587
+  ExplicitHeight = 274
+  TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 579
-    Height = 247
+    Width = 571
+    Height = 235
     ExplicitWidth = 579
     ExplicitHeight = 247
     inherited FGPanel: TPanel
@@ -78,26 +77,29 @@ inherited VariablesWindow: TVariablesWindow
           ParentFont = False
           ReadOnly = True
           TabOrder = 0
-          Zoom = 100
           OnResizeRequest = reInfoResizeRequest
         end
       end
       object SpTBXSplitter: TSpTBXSplitter
-        Left = 195
+        Left = 187
         Top = 0
-        Height = 243
+        Height = 231
         Cursor = crSizeWE
         Align = alRight
         ParentColor = False
         MinSize = 3
+        ExplicitLeft = 195
+        ExplicitHeight = 243
       end
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 195
-        Height = 243
+        Width = 187
+        Height = 231
         Align = alClient
         TabOrder = 2
+        ExplicitWidth = 195
+        ExplicitHeight = 243
         object VariablesTree: TVirtualStringTree
           Left = 1
           Top = 1
@@ -159,70 +161,58 @@ inherited VariablesWindow: TVariablesWindow
     Top = 75
   end
   object vilCodeImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 8
         CollectionName = 'CodeImages\Python'
-        Disabled = False
         Name = 'Python'
       end
       item
         CollectionIndex = 9
         CollectionName = 'CodeImages\Variable'
-        Disabled = False
         Name = 'Variable'
       end
       item
         CollectionIndex = 1
         CollectionName = 'CodeImages\Field'
-        Disabled = False
         Name = 'Field'
       end
       item
         CollectionIndex = 2
         CollectionName = 'CodeImages\Function'
-        Disabled = False
         Name = 'Function'
       end
       item
         CollectionIndex = 5
         CollectionName = 'CodeImages\Method'
-        Disabled = False
         Name = 'Method'
       end
       item
         CollectionIndex = 0
         CollectionName = 'CodeImages\Class'
-        Disabled = False
         Name = 'Class'
       end
       item
         CollectionIndex = 7
         CollectionName = 'CodeImages\Namespace'
-        Disabled = False
         Name = 'Namespace'
       end
       item
         CollectionIndex = 4
         CollectionName = 'CodeImages\List'
-        Disabled = False
         Name = 'List'
       end
       item
         CollectionIndex = 6
         CollectionName = 'CodeImages\Module'
-        Disabled = False
         Name = 'Module'
       end
       item
         CollectionIndex = 3
         CollectionName = 'CodeImages\Keyword'
-        Disabled = False
         Name = 'Keyword'
       end>
-    ImageCollection = CommandsDataModule.icCodeImages
+    ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True
     Left = 22
     Top = 123

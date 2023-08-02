@@ -136,7 +136,7 @@ Const
   // User editor commands
   SEdCmdCodeCompletion = 'Code Completion';
   SEdCmdParameterCompletion = 'Parameter Completion';
-  SEdCmdSelectToBracket = 'Select to Bracket';
+  SEdCmdSelectToBracket = 'Select Match Bracket';
 
   // Delphi dialogs (from Vcl.Consts)
   srNone = '(None)';
@@ -166,7 +166,7 @@ Const
 
   SInternalError = 'Internal Error in %s';
   SNotFound = '"%s" not found';
-  SItemsReplaced = '%d items found and %d" items replaced';
+  SItemsReplaced = '%d items found and %d items replaced';
   SNotAvailable = 'n/a';
   SNotImplented = 'Not implemented';
   SFailedToBackupFile = 'Failed to backup file "%s"';
@@ -301,7 +301,7 @@ Const
   SDisassemblyTab = 'Disassembly';
   SDocumentationHint = 'Documentation|Generate HTML documentation';
   SDocumentation = '&Documentation';
-  SDocTab = 'Doc';
+  SDocTab = 'Documentation';
   SWebPreviewHint = 'Web Preview|Preview HTML in browser';
   SWebPreview = '&Web Preview';
   SWebPreviewTab = 'Browser';
@@ -394,6 +394,9 @@ Const
   SInvalidConditionFormat = 'Invalid condition format';
   SDuplicateModifier = 'Duplicate Modifier "%s"';
 
+  // Tools
+  SPackageName = 'Package Name';
+
   // Refactoring
   SCouldNotLoadModule = 'Could not load and parse module: "%s"';
   SNoIdentifier = 'No Identifier at the given line and column';
@@ -414,7 +417,6 @@ Const
   // File Templates
   SFileTemplateCategoryInternet = 'Internet';
   SFileTemplateCategoryOther = 'Other';
-
   SPythonTemplateName = 'Python Script';
   STkinterTemplateName = 'Tkinter Script';
   SQtTemplateName = 'Qt Script';

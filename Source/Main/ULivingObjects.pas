@@ -63,7 +63,7 @@ type
 implementation
 
 uses
-  Windows, Forms, SysUtils, JvJVCLUtils, SynEditKeyCmds, cInternalPython,
+  Windows, Forms, SysUtils, Variants, JvJVCLUtils, SynEditKeyCmds, cInternalPython,
   frmVariables, frmCallStack, frmPythonII, uEditAppIntfs, uCommonFunctions,
   UConfiguration, UUtils;
 
@@ -149,7 +149,7 @@ var
 begin
   if not ClassExists('inspect') then
     PyControl.ActiveInterpreter.RunSource('import inspect', '<interactive input>');
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   Cursor := WaitCursor;
   Application.ProcessMessages;
   v := PyControl.ActiveInterpreter.EvalCode('inspect.signature(' + from + ')');
@@ -179,7 +179,7 @@ var
   Name: String;
 begin
   Result := false;
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   SL := Split('.', Objectname); // also find Class.SubClass
   NS := VariablesWindow.GlobalsNameSpace;
   for i := 0 to SL.Count - 1 do begin
@@ -190,7 +190,7 @@ begin
           NS := NS.ChildNode[j]
         else begin
           Result := true;
-          SLObjectsAddressName.Add(NS.ChildNode[j].Value + '=' + Objectname);
+          SLObjectsAddressName.Add(VarToStr(NS.ChildNode[i].PyObject) + '=' + Objectname);
         end;
         break;
       end;
@@ -221,7 +221,7 @@ var
   Name: string;
 begin
   Result := nil;
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   SL := Split('.', Path); // also find Class.SubClass
   try
     NS := VariablesWindow.GlobalsNameSpace;
@@ -276,7 +276,7 @@ var
   NS: TBaseNameSpaceItem;
 begin
   SL := TStringList.Create;
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   NS := getNodeFromName(Objectname);
   if assigned(NS) then
     for i := 0 to NS.ChildCount - 1 do
@@ -284,7 +284,7 @@ begin
         break
       else if isAttribute(NS.ChildNode[i]) then
         SL.Add(NS.ChildNode[i].Name + '=' +
-          getNameFromValue(NS.ChildNode[i].Value) + '|' +
+          getNameFromValue(VarToStr(NS.ChildNode[i].PyObject)) + '|' +
           NS.ChildNode[i].ObjectType);
   Result := SL;
 end;
@@ -298,14 +298,14 @@ var
   NS: TBaseNameSpaceItem;
 begin
   SL := TStringList.Create;
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   NS := getNodeFromName(Objectname);
   for i := 0 to NS.ChildCount - 1 do
     if isDunder(NS.ChildNode[i].Name) then
       break
     else if isAttribute(NS.ChildNode[i]) then
       SL.Add(NS.ChildNode[i].Name + '=' + getNameFromValue
-        (NS.ChildNode[i].Value));
+        (VarToStr(NS.ChildNode[i].PyObject)));
   Result := SL;
 end;
 
@@ -319,7 +319,7 @@ var
     // set or dict names
     var p, pa, pe: integer;
   begin
-    p:= Pos(' object at 0x', values);
+    p:= Pos('object at 0x', values);
     while p > 0 do begin
       pa:= p - 1;
       while values[pa] <> '<' do
@@ -329,7 +329,7 @@ var
         inc(pe);
       SL.Add(getNameFromValue(copy(values, pa, pe - pa +1)));
       values:= copy(values, pe + 1, length(values));
-      p:= Pos(' object at 0x', values);
+      p:= Pos('object at 0x', values);
     end;
   end;
 
@@ -339,7 +339,7 @@ var
       var s:= NS.ChildNode[i].Name;
       if (s[1] = '(') and (s[length(s)] = ')') then  // a tuple
         AddObjectsFromString(s)
-      else if Pos(' object at 0x', s) > 0 then       // a object
+      else if Pos('object at 0x', s) > 0 then       // a object
         SL.Add(getNameFromValue(s))
     end;
   end;
@@ -354,9 +354,9 @@ var
         AddObjectsFromDictNames(NS.ChildNode[i]);
         AddObjects(NS.ChildNode[i])
       end else if OType = 'set' then
-        AddObjectsFromString(NS.ChildNode[i].Value)
+        AddObjectsFromString(VarToStr(NS.ChildNode[i].PyObject))
       else if isObject(NS.ChildNode[i]) then
-        SL.Add(getNameFromValue(NS.ChildNode[i].Value))
+        SL.Add(getNameFromValue(VarToStr(NS.ChildNode[i].PyObject)))
       else if isDunder(NS.ChildNode[i].Name) then
         break;
     end;
@@ -364,7 +364,7 @@ var
 
 begin
   SL := TStringList.Create;
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   NS := getNodeFromName(Objectname);
   if assigned(NS) then
     AddObjects(NS);
@@ -464,7 +464,7 @@ var
   NS: TBaseNameSpaceItem;
 begin
   SL := TStringList.Create;
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   NS := getNodeFromPath(Classname);
   for i := 0 to NS.ChildCount - 1 do
     if isDunder(NS.ChildNode[i].Name) then
@@ -482,7 +482,7 @@ var
   NS: TBaseNameSpaceItem;
 begin
   SL := TStringList.Create;
-  Py := SafePyEngine;
+  Py := GI_PyControl.SafePyEngine;
   NS := getNodeFromPath(Classname);
   for i := 0 to NS.ChildCount - 1 do
     if (NS.ChildNode[i].ObjectType = 'method') or
@@ -568,7 +568,7 @@ procedure TLivingObjects.makeAllObjects;
       // set or dict names
       var p, pa, pe: integer;
     begin
-      p:= Pos(' object at 0x', values);
+      p:= Pos('object at 0x', values);
       while p > 0 do begin
         pa:= p - 1;
         while values[pa] <> '<' do
@@ -578,7 +578,7 @@ procedure TLivingObjects.makeAllObjects;
           inc(pe);
         AddObject(Prefixname, copy(values, pa, pe - pa +1));
         values:= copy(values, pe + 1, length(values));
-        p:= Pos(' object at 0x', values);
+        p:= Pos('object at 0x', values);
       end;
     end;
 
@@ -589,7 +589,7 @@ procedure TLivingObjects.makeAllObjects;
         var s:= NS.ChildNode[i].Name;
         if (s[1] = '(') and (s[length(s)] = ')') then  // a tuple
           AddObjectsFromString(Prefixname, s)
-        else if Pos(' object at 0x', s) > 0 then       // a object
+        else if Pos('object at 0x', s) > 0 then       // a object
           AddObject(Prefixname + s, s);
       end;
     end;
@@ -608,9 +608,9 @@ procedure TLivingObjects.makeAllObjects;
       else if OType = 'dict' then
         AddObjectsFromDict(Prefixname, NS.ChildNode[i])
       else if OType = 'set' then
-        AddObjectsFromString(Prefixname + '.' + NS.ChildNode[i].Name, NS.ChildNode[i].Value)
+        AddObjectsFromString(Prefixname + '.' + NS.ChildNode[i].Name, VarToStr(NS.ChildNode[i].PyObject))
       else if isObject(NS.ChildNode[i]) then begin
-        var Name:= getObjectName(NS.ChildNode[i].Value);
+        var Name:= getObjectName(VarToStr(NS.ChildNode[i].PyObject));
         if SLObjectsNamePath.IndexOfName(Name) = -1 then begin
           SLObjectsNamePath.Add(Name + '=' + Prefixname);
           Add(Prefixname + '.' + NS.ChildNode[i].Name, NS.ChildNode[i]);
@@ -625,12 +625,12 @@ begin
   SLObjectsAddressNameDuplicat.Assign(SLObjectsAddressName);
   SLObjectsAddressName.Clear;
   SLObjectsNamePath.Clear;
-  var Py := SafePyEngine;
+  var Py := GI_PyControl.SafePyEngine;
   var NS := VariablesWindow.GlobalsNameSpace;
   // collect objects with direct access first
   for i:= 0 to NS.ChildCount -1 do
     if isObject(NS.ChildNode[i]) then begin
-      SLObjectsAddressName.Add(NS.ChildNode[i].Value + '=' + NS.ChildNode[i].Name);
+      SLObjectsAddressName.Add(VarToStr(NS.ChildNode[i].PyObject) + '=' + NS.ChildNode[i].Name);
       SLObjectsNamePath.Add(NS.ChildNode[i].Name + '=' + NS.ChildNode[i].Name);
     end else if isDunder(NS.ChildNode[i].Name) then
       break;

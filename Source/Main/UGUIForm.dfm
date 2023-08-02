@@ -8,7 +8,6 @@ object FGUIForm: TFGUIForm
   Color = clBtnFace
   ParentFont = True
   FormStyle = fsStayOnTop
-  OldCreateOrder = True
   Position = poDefault
   Visible = True
   OnCanResize = FormCanResize
@@ -16,6 +15,5 @@ object FGUIForm: TFGUIForm
   OnCloseQuery = FormCloseQuery
   OnDestroy = FormDestroy
   OnResize = FormResize
-  PixelsPerInch = 96
-  TextHeight = 14
+  TextHeight = 15
 end

@@ -120,8 +120,8 @@ type
     // GetDockedControls:  NEW! -WPostma.
     // base class doesn't have this capability.
     // see TJvDockAdvPanel for override that implements this!
-       procedure GetDockedControls(WinControls: TList); virtual;  { not supported in base! }
-       function FindTabHostForm:TWinControl; virtual;
+	  procedure GetDockedControls(WinControls: TList); virtual;  { not supported in base! }
+	  function FindTabHostForm:TWinControl; virtual;
 
     property PanelIndex: Integer read GetPanelIndex;
     property DockServer: TJvDockServer read FDockServer write SetDockServer;
@@ -137,7 +137,7 @@ type
     function DoUnDock(NewTarget: TWinControl; Client: TControl): Boolean; override;
   public
     procedure GetDockedControls(WinControls: TList); override;
-     function FindTabHostForm:TWinControl; override;
+	function FindTabHostForm:TWinControl; override;
     procedure DockDrop(Source: TDragDockObject; X, Y: Integer); override;
   end;
 
@@ -1596,30 +1596,30 @@ begin
     is much more reliable, and consistent, and updates the DOckManager state
      which prevents all manner of weird problems. }
 
-     if oldTechnique then begin
-       HostForm :=  dockPanel.FindTabHostForm as TForm;
-       if Assigned(HostForm) then begin
-          ManualTabDockAddPage( TJvDockTabHostForm(HostForm), Form1 );
-          ManualTabDockAddPage( TJvDockTabHostForm(HostForm), Form2 );
-          result := TJvDockTabHostForm(HostForm);
-          exit;
-       end;
-       // This is the original way I had it in 2006: It had bugs.
-       HostForm := DockClient.CreateTabHostAndDockControl(FOrm1,Form2);
-       FOrm1.Show;
-       FOrm2.Show;
+	if oldTechnique then begin
+	  HostForm :=  dockPanel.FindTabHostForm as TForm;
+	  if Assigned(HostForm) then begin
+		ManualTabDockAddPage( TJvDockTabHostForm(HostForm), Form1 );
+		ManualTabDockAddPage( TJvDockTabHostForm(HostForm), Form2 );
+		result := TJvDockTabHostForm(HostForm);
+		exit;
+	  end;
+	  // This is the original way I had it in 2006: It had bugs.
+	  HostForm := DockClient.CreateTabHostAndDockControl(FOrm1,Form2);
+	  FOrm1.Show;
+	  FOrm2.Show;
 
-       HostForm.ManualDock(DockSite,nil,alClient);
-       HostForm.Show;
+	  HostForm.ManualDock(DockSite,nil,alClient);
+	  HostForm.Show;
 
   end else begin
-       // This was the fix in 2008, which broke somehow, later:
-       TWinControlAccess(DockSite).DockManager.InsertControl(Form2, alClient, Form1);
+	  // This was the fix in 2008, which broke somehow, later:
+	  TWinControlAccess(DockSite).DockManager.InsertControl(Form2, alClient, Form1);
   end;
 
   {$IFDEF JVDOCK_DEBUG}
   if not Assigned(Form1.Parent) then begin
-       OutputDebugString('no parent on form 1');
+	  OutputDebugString('no parent on form 1');
   end;
   if not Assigned(Form2.Parent) then begin
       OutputDebugString('no parent on form 2');
@@ -1635,7 +1635,7 @@ begin
   if HostForm = nil then
     raise EInvalidOperation.Create('ManualTabDock:TabHost not created. Your Docking Style may not support tabbed docking.');
 
-     Result := HostForm as TJvDockTabHostForm; {not nil, we checked, so this won't fail.}
+	Result := HostForm as TJvDockTabHostForm; {not nil, we checked, so this won't fail.}
 end;
 
 
@@ -2185,14 +2185,14 @@ var
  n:Integer;
  wc:TControl;
 begin
-     for n := 0 to Self.DockClientCount-1 do begin
-          wc := Self.DockClients[n];
-          if wc is TJvDockTabHostForm then begin
-           result := wc as TWinControl;
-           exit;
-          end;
-     end;
-     result := nil;
+	for n := 0 to Self.DockClientCount-1 do begin
+		wc := Self.DockClients[n];
+		if wc is TJvDockTabHostForm then begin
+		 result := wc as TWinControl;
+		 exit;
+		end;
+	end;
+	result := nil;
 
 end;
 
@@ -4061,8 +4061,8 @@ end;
 
 function TJvDockPanel.FindTabHostForm:TWinControl;
 begin
-     // base class does not support this. This version just returns nil.
-     result := nil;
+	// base class does not support this. This version just returns nil.
+	result := nil;
 end;
 
 

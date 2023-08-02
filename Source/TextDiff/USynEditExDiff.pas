@@ -73,7 +73,7 @@ implementation
 
 uses SysUtils, Windows, Controls, Clipbrd, JvGnugettext, StringResources,
      UTextDiff, UUtils, frmFile, SynEditTypes, FileCtrl, UConfiguration,
-     uEditAppIntfs, cPyScripterSettings, dmCommands, uCommonFunctions;
+     uEditAppIntfs, cPyScripterSettings, dmResources, uCommonFunctions;
 
 constructor TSynEditExDiff.Create(AOwner: TComponent);
 begin
@@ -307,7 +307,7 @@ procedure TSynEditExDiff.SetHighlighter;
   var s: string;
 begin
   s:= Lowercase(ExtractFileExt(Pathname));
-  Highlighter:= CommandsDataModule.GetHighlighterForFile(s);
+  Highlighter:= ResourcesDataModule.Highlighters.HighlighterFromFriendlyName(s);
   if Highlighter = nil then
     OnPaintTransient:= nil;
 end;

@@ -52,7 +52,6 @@ uses
   JvAppIniStorage,
   SynEdit,
   SynEditTypes,
-  SynEditKeyCmds,
   SynCompletionProposal,
   PythonEngine,
   WrapDelphi,
@@ -62,7 +61,6 @@ uses
   cCodeCompletion;
 
 const
-  WM_APPENDTEXT = WM_USER + 1020;
   WM_REINITINTERPRETER = WM_USER + 1030;
 
 type
@@ -91,7 +89,6 @@ type
     mnPythonVersions: TSpTBXSubmenuItem;
     vilCodeImages: TVirtualImageList;
     vilImages: TVirtualImageList;
-    mnReinitialzePython: TSpTBXItem;
     procedure FormCreate(Sender: TObject);
     procedure SynEditProcessCommand(Sender: TObject;
       var Command: TSynEditorCommand; var AChar: WideChar; Data: Pointer);
@@ -173,6 +170,7 @@ type
     procedure UpdatePythonKeywords;
     procedure SetPyInterpreterPrompt(Pip: TPyInterpreterPropmpt);
     procedure ReinitInterpreter;
+    function GetEditor: TCustomSynEdit;
     function GetPythonIO: TPythonInputOutput;
     function GetShowOutput: boolean;
     procedure SetShowOutput(const Value: boolean);
@@ -180,7 +178,6 @@ type
     procedure PythonIOReceiveData(Sender: TObject; var Data: string);
     procedure EditorMouseWheel(theDirection: Integer; Shift: TShiftState );
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
-    procedure WMAPPENDTEXT(var Message: TMessage); message WM_APPENDTEXT;
     procedure WMREINITINTERPRETER(var Message: TMessage); message WM_REINITINTERPRETER;
   public
     { Public declarations }
@@ -194,6 +191,7 @@ type
     procedure ApplyEditorOptions;
     procedure StoreOptions(AppStorage: TJvCustomAppIniStorage);
     procedure RestoreOptions(AppStorage: TJvCustomAppIniStorage);
+    procedure ExecuteStatement(const SourceCode: string; WaitToFinish: Boolean = False);
     property ShowOutput : boolean read GetShowOutput write SetShowOutput;
     property CommandHistory : TStringList read fCommandHistory;
     property CommandHistoryPointer : integer read fCommandHistoryPointer write fCommandHistoryPointer;
@@ -215,16 +213,17 @@ Uses
   JclStrings,
   JvJVCLUtils,
   JvGnugettext,
+  SynEditKeyCmds,
+  SynEditMiscProcs,
   StringResources,
   frmPyIDEMain,
+  dmResources,
   dmCommands,
   frmUnitTests,
   uCommonFunctions,
   uCmdLine,
-  cInternalPython,
   cPyDebugger,
   cPyScripterSettings,
-  cParameters,
   cPyControl;
 
 {$R *.dfm}
@@ -285,30 +284,28 @@ Var
 begin
   if Data.Length = 0 then Exit;
 
-
   if fShowOutput then begin
     fCriticalSection.Enter;
     try
       IsPending := fOutputStream.Size > 0;
 
       fOutputStream.Write(Data[1], Length (Data) * 2);
-      //fOutputStream.Write(sLineBreak[1], Length (sLineBreak) * 2);  RawOutput
       if Assigned(fOutputMirror) then begin
         S := Utf8Encode(Data);
         fOutputMirror.Write(S[1], Length(S));
       end;
 
-//      if (GetCurrentThreadId = MainThreadId) and (PyControl.PythonEngineType = peInternal) then
-//        WritePendingMessages
-//      else
-//        PostMessage(Handle, WM_APPENDTEXT, 0, 0);
-
+      // If IsPending then a previous request to WritePendingMessages will be
+      // executed. There is no need to send a new one.
+      // The delay (100) is so that if more output comes soon enough,
+      // it will be processed by the same request.
       if not IsPending then
         TThread.ForceQueue(nil, procedure
         begin
           WritePendingMessages;
         end, 100);
-//      else if fOutputStream.Size > 500 then
+//      Queue a call to WritePendingMessages now if buffer becomes big enough
+//      else if fOutputStream.Size > 1000 then
 //        TThread.ForceQueue(nil, procedure
 //        begin
 //          WritePendingMessages;
@@ -344,24 +341,10 @@ begin
 end;
 
 procedure TPythonIIForm.actPasteAndExecuteExecute(Sender: TObject);
-
-  procedure ExecuteBuffer(Buffer : TStringDynArray; NLines : integer);
-  begin
-    if NLines > 1 then begin
-      SetLength(Buffer, NLines + 1);
-      Buffer[NLines] := '';
-    end
-    else
-      SetLength(Buffer, NLines);
-    AppendToPrompt(Buffer);
-    SynEdit.CommandProcessor(ecLineBreak, ' ', nil);
-  end;
-
 Var
-  Buffer : TStringDynArray;
+  Buffer: TArray<string>;
+  Buffers: TArray<TArray<string>>;
   Text : string;
-  SL : TStringList;
-  i, Line: Integer;
 begin
   Text := Clipboard.AsText;
   if Text = '' then Exit;
@@ -371,38 +354,47 @@ begin
      StringOfChar(' ', SynEdit.TabWidth), [rfReplaceAll]);
   // Dedent
   Text := Dedent(Text);
-  Line := 0;
 
-  SL := TStringList.Create;
-  try
+  var SL := TSmartPtr.Make(TStringList.Create)();
     SL.Text := Text;
 
-    for i := 0 to SL.Count - 1 do begin
-      if SL[i] = '' then continue;
+  for var Line in SL do begin
+    if Line = '' then Continue;
 
-      if CalcIndent(SL[i]) = 0 then
-      begin
-        if Length(Buffer) > 0 then
-          // Allready have a full statement we need to execute
-          ExecuteBuffer(Buffer, Line);
-        Line := 0;
-        SetLength(Buffer, SL.Count);
-      end;
-      Buffer[Line] := SL[i];
-      Inc(Line);
+    if LeftSpaces(Line, False) = 0 then
+    begin
+      if Length(Buffer) > 0 then
+        // Allready have a full statement we need to execute
+        Buffers := Buffers + [Copy(Buffer)];
+      Buffer := [];
     end;
-  finally
-    SL.Free;
+    Buffer := Buffer + [Line];
   end;
-  if Line > 0 then
-    ExecuteBuffer(Buffer, Line);
+  if Length(Buffer) > 0 then
+    Buffers := Buffers + [Copy(Buffer)];
+
+  TThread.ForceQueue(nil, procedure
+    procedure ExecuteBuffer(Buffer : TArray<string>; WaitToFinish: Boolean);
+    begin
+      if Length(Buffer) > 1 then
+        Buffer := Buffer + [''];
+      AppendToPrompt(Buffer);
+      var Code := String.Join(#10, Buffer);
+      ExecuteStatement(Code, WaitToFinish);
+    end;
+
+  begin
+    for var I := Low(Buffers) to High(Buffers) do
+      // don't wait for the last statement
+      ExecuteBuffer(Buffers[I], I < High(Buffers));
+  end);
 end;
 
 procedure TPythonIIForm.PrintInterpreterBanner(AVersion: string = ''; APlatform: string = '');
 var
   S: string;
 begin
-  var Py := SafePyEngine;
+  var Py := GI_PyControl.SafePyEngine;
   if AVersion = '' then AVersion := SysModule.version;
   if APlatform = '' then APlatform := SysModule.platform;
   AVersion := AVersion.Replace(Char($A), ' ');
@@ -521,7 +513,7 @@ begin
   SynEdit.WordWrap := OldWordWrap;
   RegisterHistoryCommands;
 
-  SynEdit.Highlighter.Assign(CommandsDataModule.SynPythonSyn);
+  SynEdit.Highlighter.Assign(ResourcesDataModule.SynPythonSyn);
 end;
 
 procedure TPythonIIForm.ApplyPyIDEOptions;
@@ -538,7 +530,7 @@ begin
   inherited;
   SynEdit.OnReplaceText := CommandsDataModule.SynEditReplaceText;
   SynEdit.Highlighter := TSynPythonInterpreterSyn.Create(Self);
-  SynEdit.Highlighter.Assign(CommandsDataModule.SynPythonSyn);
+  SynEdit.Highlighter.Assign(ResourcesDataModule.SynPythonSyn);
 
   ApplyEditorOptions;
 
@@ -583,14 +575,14 @@ end;
 procedure TPythonIIForm.GetBlockBoundary(LineN: integer; var StartLineN,
   EndLineN: integer; var IsCode: Boolean);
 {-----------------------------------------------------------------------------
-	  GetBlockBoundary takes a line number, and will return the
-	  start and end line numbers of the block, and a flag indicating if the
-	  block is a Python code block.
-	  If the line specified has a Python prompt, then the lines are parsed
+    GetBlockBoundary takes a line number, and will return the
+    start and end line numbers of the block, and a flag indicating if the
+    block is a Python code block.
+    If the line specified has a Python prompt, then the lines are parsed
     backwards and forwards, and the IsCode is true.
-	  If the line does not start with a prompt, the block is searched forward
-	  and backward until a prompt _is_ found, and all lines in between without
-	  prompts are returned, and the IsCode is false.
+    If the line does not start with a prompt, the block is searched forward
+    and backward until a prompt _is_ found, and all lines in between without
+    prompts are returned, and the IsCode is false.
 -----------------------------------------------------------------------------}
 Var
   Line, Prefix : string;
@@ -653,14 +645,91 @@ begin
   Result := fShowOutput;
 end;
 
+procedure TPythonIIForm.ExecuteStatement(const SourceCode: string; WaitToFinish: Boolean = False);
+{ Execute a possibly incomplete python statement }
+var
+  NeedIndent : boolean;
+  LineN: Integer;
+begin
+  NeedIndent := False;  // True denotes an incomplete statement
+  LineN := SynEdit.CaretY - 1;  // Caret is 1 based
+  SynEdit.ExecuteCommand(ecEditorBottom, ' ', nil);
+  AppendText(sLineBreak);
+
+  // Call RunSource
+  GI_PyControl.ThreadPythonExec(
+    procedure
+    begin
+      if GI_PyControl.PythonLoaded and not GI_PyControl.Running then
+        case PyControl.DebuggerState of
+          dsInactive :
+            NeedIndent :=
+              PyControl.ActiveInterpreter.RunSource(SourceCode, '<interactive input>');
+          dsPaused, dsPostMortem :
+            NeedIndent :=
+              PyControl.ActiveDebugger.RunSource(SourceCode, '<interactive input>');
+        end;
+    end,
+    procedure
+    var
+      Buffer : array of string;
+      Index, Position: integer;
+      CurLine, Indent: string;
+    begin
+      if not NeedIndent then begin
+        // The source code has been executed
+        WritePendingMessages;
+        // If the last line isnt empty, append a newline
+        SetLength(Buffer, 0);
+        AppendToPrompt(Buffer);
+
+        //  Add the command executed to History
+        Index := fCommandHistory.IndexOf(SourceCode);
+        if Index >= 0  then
+          fCommandHistory.Delete(Index);
+        FCommandHistory.Add(SourceCode);
+        SetCommandHistorySize(fCommandHistorySize);
+        fCommandHistoryPointer := fCommandHistory.Count;
+        SynEdit.Refresh;
+      end else begin
+        // Now attempt to correct indentation
+        CurLine := Copy(SynEdit.Lines[lineN], Length(PS2)+1); //!!
+        Position := 1;
+        Indent := '';
+        while (Length(CurLine)>=Position) and
+             CharInSet(CurLine[Position], [#09, #32]) do begin
+          Indent := Indent + CurLine[Position];
+          Inc(Position);
+        end;
+
+        if TPyRegExpr.IsBlockOpener(CurLine) then begin
+          if eoTabsToSpaces in SynEdit.Options then
+            Indent := Indent + StringOfChar(' ', SynEdit.TabWidth)
+          else
+            Indent := indent + #9;
+        end else if TPyRegExpr.IsBlockCloser(CurLine) then begin
+          if (eoTabsToSpaces in SynEdit.Options) and (Length(Indent) > 0) and
+            (Indent[Length(Indent)] <> #9)
+          then
+            Delete(Indent, Length(Indent) - SynEdit.TabWidth + 1, SynEdit.TabWidth)
+          else
+            Delete(Indent, Length(Indent), 1);
+        end;
+        // use ReplaceSel to ensure it goes at the cursor rather than end of buffer.
+        SynEdit.SelText := PS2 + Indent;
+      end;
+      SynEdit.EnsureCursorPosVisible;
+      if assigned(fOnExecuted) then
+        fOnExecuted(Self);
+    end, WaitToFinish);
+end;
+
 procedure TPythonIIForm.SynEditProcessCommand(Sender: TObject;
   var Command: TSynEditorCommand; var AChar: WideChar; Data: Pointer);
 Var
-  LineN, StartLineN, EndLineN, i, Position, Index : integer;
-  NeedIndent : boolean;
+  LineN, StartLineN, EndLineN: integer;
   IsCode : Boolean;
-  Line, CurLine, Source, Indent : string;
-  EncodedSource : AnsiString;
+  Line, Source : string;
   Buffer : array of string;
   NewCommand : TSynEditorCommand;
   WChar : WideChar;
@@ -694,99 +763,32 @@ begin
             AppendText(sLineBreak);
             AppendText(PS1);
           end else begin
-            SynEdit.ExecuteCommand(ecEditorBottom, ' ', nil);
-            AppendText(sLineBreak);
-
             //remove trailing whitespace
-            for i := Length(Source) downto 1 do
-              if (Source[i] = #9) or (Source[i] = #32) then Delete(Source, i, 1)
-            else
-              break;
+            Source := Source.TrimRight([#9, #32]);
 
-            EncodedSource := Utf8Encode(Source);
-            // RunSource
-            ThreadPythonExec(
-              procedure
+            if not GI_PyControl.PythonLoaded or GI_PyControl.Running then
+              // it is dangerous to execute code while running scripts
+              // so just beep and do nothing
+              MessageBeep(MB_ICONERROR)
+            else begin
+              Match := TRegEx.Match(Source, '^\s*!(.+)');
+              if Match.Success and (EndLineN = StartLineN) then
+                // System Command
               begin
-                NeedIndent := False;  // True denotes an incomplete statement
-                if GI_PyControl.PythonLoaded then
-                begin
-                  if GI_PyControl.Running then
-                    // it is dangerous to execute code while running scripts
-                    // so just beep and do nothing
-                    MessageBeep(MB_ICONERROR)
-                  else begin
-                    Match := TRegEx.Match(Source, '^\s*!(.+)');
-                    if Match.Success and (EndLineN = StartLineN) then
-                    begin
-                      // System Command
-                      PyControl.ActiveInterpreter.SystemCommand(Parameters.ReplaceInText( Match.Groups[1].Value));
-                    end
-                    else
-                    begin
-                      case PyControl.DebuggerState of
-                        dsInactive :
-                          NeedIndent :=
-                            PyControl.ActiveInterpreter.RunSource(Source, '<interactive input>');
-                        dsPaused, dsPostMortem :
-                          NeedIndent :=
-                            PyControl.ActiveDebugger.RunSource(Source, '<interactive input>');
-                      end;
-                    end;
-                  end;
-                end;
-              end,
-              procedure
-              begin
-                if not NeedIndent then begin
-                  // The source code has been executed
-                  WritePendingMessages;
-                  // If the last line isnt empty, append a newline
-                  SetLength(Buffer, 0);
-                  AppendToPrompt(Buffer);
-
-                  //  Add the command executed to History
-                  Index := fCommandHistory.IndexOf(Source);
-                  if Index >= 0  then
-                    fCommandHistory.Delete(Index);
-                  FCommandHistory.Add(Source);
-                  SetCommandHistorySize(fCommandHistorySize);
-                  fCommandHistoryPointer := fCommandHistory.Count;
-                  SynEdit.Refresh;
-                end else begin
-                  // Now attempt to correct indentation
-                  CurLine := Copy(SynEdit.Lines[lineN], Length(PS2)+1, MaxInt); //!!
-                  Position := 1;
-                  Indent := '';
-                  while (Length(CurLine)>=Position) and
-                       CharInSet(CurLine[Position], [#09, #32]) do begin
-                    Indent := Indent + CurLine[Position];
-                    Inc(Position);
-                  end;
-
-                  if TPyRegExpr.IsBlockOpener(CurLine) then begin
-                    if eoTabsToSpaces in SynEdit.Options then
-                      Indent := Indent + StringOfChar(' ', SynEdit.TabWidth)
-                    else
-                      Indent := indent + #9;
-                  end else if TPyRegExpr.IsBlockCloser(CurLine) then begin
-                    if (eoTabsToSpaces in SynEdit.Options) and (Length(Indent) > 0) and
-                      (Indent[Length(Indent)] <> #9)
-                    then
-                      Delete(Indent, Length(Indent) - SynEdit.TabWidth + 1, SynEdit.TabWidth)
-                    else
-                      Delete(Indent, Length(Indent), 1);
-                  end;
-                  // use ReplaceSel to ensure it goes at the cursor rather than end of buffer.
-                  SynEdit.SelText := PS2 + Indent;
-                end;
-                SynEdit.EnsureCursorPosVisible;
-                if assigned(fOnExecuted) then
-                  fOnExecuted(Self);
-              end);
+                SynEdit.ExecuteCommand(ecEditorBottom, ' ', nil);
+                AppendText(sLineBreak);
+                GI_PyControl.ThreadPythonExec(
+                  procedure
+                  begin
+                    PyControl.ActiveInterpreter.SystemCommand(GI_PyIDEServices.ReplaceParams(Match.Groups[1].Value));
+                  end)
+              end
+              else
+                ExecuteStatement(Source);
+            end;
           end;
+          SynEdit.EnsureCursorPosVisible;
         end;
-        SynEdit.EnsureCursorPosVisible;
       end;
     ecDeleteLastChar, ecDeleteLastWord :
       begin
@@ -1070,7 +1072,7 @@ begin
               fCommandHistoryPointer := EnsureRange(fCommandHistoryPointer, -1, fCommandHistory.Count);
             Until not InRange(fCommandHistoryPointer, 0, fCommandHistory.Count-1) or
               (fCommandHistoryPrefix = '') or
-               StrIsLeft(PWideChar(fCommandHistory[fCommandHistoryPointer]), PWideChar(fCommandHistoryPrefix));
+              fCommandHistory[fCommandHistoryPointer].StartsWith(fCommandHistoryPrefix);
 
           if InRange(fCommandHistoryPointer, 0, fCommandHistory.Count-1) then
             Source := fCommandHistory[fCommandHistoryPointer]
@@ -1082,7 +1084,7 @@ begin
           end;
 
           SynEdit.BeginUpdate;
-          //SynEdit.LockDrawing;
+          SynEdit.LockDrawing;
           try
             if IsCode and (EndLineN = SynEdit.Lines.Count - 1) then begin
               // already at the bottom and inside the prompt
@@ -1129,7 +1131,7 @@ begin
             SynEdit.ExecuteCommand(ecEditorBottom, ' ', nil);
             SynEdit.EnsureCursorPosVisible;
           finally
-            //SynEdit.UnLockDrawing;
+            SynEdit.UnLockDrawing;
             SynEdit.EndUpdate;
           end;
         end;
@@ -1186,7 +1188,6 @@ begin
   PyIDEMainForm.ShowIDEDockForm(Self);
 end;
 
-
 procedure TPythonIIForm.SynCodeCompletionAfterCodeCompletion(Sender: TObject;
   const Value: string; Shift: TShiftState; Index: Integer; EndToken: Char);
 begin
@@ -1224,7 +1225,7 @@ begin
   Highlighter := SynEdit.Highlighter;
   Dec(Caret.Char);
   SynEdit.GetHighlighterAttriAtRowCol(Caret, DummyToken, Attr);
-  locLine := StrPadRight(SynEdit.LineText, Caret.Char, ' '); // to deal with trim trailing spaces
+  locLine := SynEdit.LineText.PadRight(Caret.Char); // to deal with trim trailing spaces
   Inc(Caret.Char);
 
   Prompt := GetPromptPrefix(locLine);
@@ -1454,7 +1455,10 @@ begin
       if Append and (fOutputMirror.Size > 0) then
         fOutputMirror.Seek(0, soFromEnd)
       else
-        fOutputMirror.Write(UTF8BOMString[1], Length(UTF8BomString));  // save in utf8 encoding
+      begin
+        var BOM := TEncoding.UTF8.GetPreamble;
+        fOutputMirror.Write(BOM, Length(BOM));  // save in utf8 encoding
+      end;
     except
       StyledMessageDlg(Format(_(SCouldNotOpenOutputFile), [AFileName]), mtWarning, [mbOK], 0);
     end;
@@ -1484,7 +1488,7 @@ Var
   Keywords, Builtins, BuiltInMod : Variant;
   i : integer;
 begin
-  with CommandsDataModule do begin
+  with ResourcesDataModule do begin
     SynPythonSyn.Keywords.Clear;
     SynPythonSyn.Keywords.Sorted := False;
     Keywords := Import('keyword').kwlist;
@@ -1529,16 +1533,6 @@ begin
   // Update the gutter of the PythonII editor
   PyIDEMainForm.ThemeEditorGutter(SynEdit.Gutter);
   SynEdit.InvalidateGutter;
-end;
-
-procedure TPythonIIForm.WMAPPENDTEXT(var Message: TMessage);
-Var
-  Msg : TMsg;
-begin
-  // Remove other similar messages
-  while PeekMessage(Msg, 0, WM_APPENDTEXT, WM_APPENDTEXT, PM_REMOVE) do
-    ; // do nothing
-  WritePendingMessages;
 end;
 
 procedure TPythonIIForm.WMREINITINTERPRETER(var Message: TMessage);
@@ -1663,6 +1657,11 @@ begin
     Source := Source + Buffer[i - StartLineN] + WideLF;
   end;
   Delete(Source, Length(Source), 1);
+end;
+
+function TPythonIIForm.GetEditor: TCustomSynEdit;
+begin
+  Result := SynEdit;
 end;
 
 procedure TPythonIIForm.RegisterHistoryCommands;

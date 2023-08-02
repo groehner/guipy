@@ -221,6 +221,7 @@ implementation
 uses
   System.UITypes,
   System.Contnrs,
+  System.IOUtils,
   Vcl.Dialogs,
   VarPyth,
   JvGnuGettext,
@@ -228,7 +229,6 @@ uses
   StringResources,
   uCommonFunctions,
   cPyControl,
-  cInternalPython,
   cPyDebugger,
   cPyScripterSettings,
   cSSHSupport;
@@ -263,7 +263,7 @@ begin
   if (fPath <> '') then begin
     // Add parent directory of the root of the package first
     if DirIsPythonPackage(fPath) then begin
-      S := ExtractFileDir(GetPackageRootDir(fPath));
+      S := TPath.GetDirectoryName(GetPackageRootDir(fPath));
       if S <> fPath then
         PackageRootAdder :=
           TPythonPathAdder.Create(SysPathAdd, SysPathRemove, S, AutoRemove);
@@ -305,7 +305,7 @@ begin
       FileName := FromPythonFileName(TI.FileName);
       Editor := GI_EditorFactory.GetEditorByFileId(FileName);
       // Check whether the error occurred in the active editor
-      if (Assigned(Editor) and (Editor = GI_PyIDEServices.ActiveEditor)) or
+      if (Assigned(Editor) and (Editor = GI_PyIDEServices.ActiveFile)) or
         PyIDEOptions.JumpToErrorOnException then
       begin
         if GI_PyIDEServices.ShowFilePosition(TI.FileName, TI.LineNo, 1) and

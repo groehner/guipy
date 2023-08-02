@@ -1,11 +1,12 @@
-﻿unit cFilePersist;
-{-----------------------------------------------------------------------------
+﻿{-----------------------------------------------------------------------------
  Unit Name: cFilePersist
  Author:    Kiriakos Vlahos, Gerhard Röhner
  Date:      09-Mar-2006
  Purpose:   Support class for editor file persistence
  History:
 -----------------------------------------------------------------------------}
+
+unit cFilePersist;
 
 interface
 Uses
@@ -95,7 +96,7 @@ uses
   SpTBXTabs,
   TB2Item,
   JvJCLUtils,
-  dmCommands,
+  dmResources,
   frmPyIDEMain,
   uHighlighterProcs,
   cPyBaseDebugger,
@@ -345,12 +346,15 @@ begin
       PersistFileInfo.CreateListItem,  True, 'File');
     for i := 0 to PersistFileInfo.fFileInfoList.Count - 1 do begin
       FilePersistInfo := TFilePersistInfo(PersistFileInfo.fFileInfoList[i]);
-      try
-        aFile := PyIDEMainForm.DoOpenFile(FilePersistInfo.FileName, '',
-          FilePersistInfo.TabControlIndex);
-      except
-        Continue; // to the next file
-      end;
+      if FileExists(FilePersistInfo.FileName) then
+        try
+          aFile := PyIDEMainForm.DoOpenFile(FilePersistInfo.FileName, '',
+            FilePersistInfo.TabControlIndex);
+        except
+          Continue; // to the next file
+        end
+      else
+        Continue;
       if assigned(aFile) then begin
         if aFile.FileKind = fkEditor then begin
           Editor:= aFile as IEditor;
@@ -364,8 +368,8 @@ begin
             with TBookMarkInfo(FilePersistInfo.BookMarks[j]) do
               Editor.SynEdit.SetBookMark(BookMarkNumber, Char, Line);
           if FilePersistInfo.Highlighter <> '' then begin
-            Editor.SynEdit.Highlighter := GetHighlighterFromLanguageName(
-              FilePersistInfo.Highlighter, CommandsDataModule.Highlighters);
+            Editor.SynEdit.Highlighter := ResourcesDataModule.Highlighters.
+             HighlighterFromFriendlyName(FilePersistInfo.Highlighter);
             Editor.SynEdit2.Highlighter := Editor.SynEdit.Highlighter;
           end;
           FilePersistInfo.EditorOptions.Options:= FilePersistInfo.EditorOptions.Options + [eoCopyPlainText];
@@ -485,17 +489,15 @@ Var
   Size : integer;
   Alignment : TAlign;
 begin
-  with PyIDEMainForm do begin
-    IsVisible := AppStorage.ReadBoolean(BasePath+'\Visible', False);
-    if IsVisible then begin
-      Alignment := alRight;
-      AppStorage.ReadEnumeration(BasePath+'\Align', TypeInfo(TAlign),
-        Alignment, Alignment);
-      Size := AppStorage.ReadInteger(BasePath+'\Size', -1);
-      SplitWorkspace(True, Alignment, Size);
-    end else
-      SplitWorkspace(False);
-  end;
+  IsVisible := AppStorage.ReadBoolean(BasePath+'\Visible', False);
+  if IsVisible then begin
+    Alignment := alRight;
+    AppStorage.ReadEnumeration(BasePath+'\Align', TypeInfo(TAlign),
+      Alignment, Alignment);
+    Size := AppStorage.ReadInteger(BasePath+'\Size', -1);
+    PyIDEMainForm.SplitWorkspace(True, Alignment, Size);
+  end else
+    PyIDEMainForm.SplitWorkspace(False);
 end;
 
 procedure TTabsPersistInfo.WriteToAppStorage(AppStorage: TJvCustomAppStorage;

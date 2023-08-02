@@ -1,6 +1,6 @@
-{-----------------------------------------------------------------------------
+﻿{-----------------------------------------------------------------------------
  Program:   GuiPy
- Author:    Gerhard R�hner
+ Author:    Gerhard Röhner
             Kiriakos Vlahos
  Date:      2022.03.07
  Purpose:   Python IDE written with Python for Delphi
@@ -98,7 +98,6 @@ uses
   dlgRunConfiguration in 'dlgRunConfiguration.pas' {RunConfigurationForm},
   dlgPyIDEBase in 'dlgPyIDEBase.pas' {PyIDEDlgBase},
   JvDockInfo in 'JvDockInfo.pas',
-  SynHighlighterYAML in 'SynHighlighterYAML.pas',
   dlgSynEditOptions in 'dlgSynEditOptions.pas' {fmEditorOptionsDialog: TForm},
   JvDockSupportControl in 'JvDockSupportControl.pas',
   JvDockVIDStyle in 'JvDockVIDStyle.pas',
@@ -114,7 +113,6 @@ uses
   cSSHSupport in 'cSSHSupport.pas',
   dlgRemoteFile in 'dlgRemoteFile.pas' {RemoteFileDialog},
   cPySSHDebugger in 'cPySSHDebugger.pas',
-  JclSysUtils in 'JclSysUtils.pas',
   RtlVclFixes in 'RtlVclFixes.pas',
   JvDockAdvTree in 'JvDockAdvTree.pas',
   JvDockSupportProc in 'JvDockSupportProc.pas',
@@ -160,11 +158,10 @@ uses
   UClassEditor in 'Main\UClassEditor.pas' {FClassEditor},
   UGUIDesigner in 'Main\UGUIDesigner.pas' {FGUIDesigner},
   UImages in 'Main\UImages.pas' {DMImages: TDataModule},
-  UKoppel in 'Main\UKoppel.pas',
+  ULink in 'Main\ULink.pas',
   UObjectGenerator in 'Main\UObjectGenerator.pas' {FObjectGenerator},
   UObjectInspector in 'Main\UObjectInspector.pas' {FObjectInspector},
   UOpenFolderForm in 'Main\UOpenFolderForm.pas' {FOpenFolderForm},
-  UStrings in 'Main\UStrings.pas' {FStringEditor},
   UBaseTKWidgets in 'Components\UBaseTKWidgets.pas',
   UHTMLHelp in 'Utils\UHTMLHelp.pas',
   UConfiguration in 'Utils\UConfiguration.pas' {FConfiguration},
@@ -200,7 +197,6 @@ uses
   UBaseWidgets in 'Components\UBaseWidgets.pas',
   UDiff in 'TextDiff\UDiff.pas',
   UBaseQtWidgets in 'Components\UBaseQtWidgets.pas',
-  Vcl.Consts in 'Utils\Vcl.Consts.pas',
   UGUIForm in 'Main\UGUIForm.pas' {FGUIForm},
   UQtButtonBase in 'Components\PyQt\UQtButtonBase.pas',
   UQtFrameBased in 'Components\PyQt\UQtFrameBased.pas',
@@ -208,7 +204,10 @@ uses
   UQtScrollable in 'Components\PyQt\UQtScrollable.pas',
   UQtSpinBoxes in 'Components\PyQt\UQtSpinBoxes.pas',
   UQtWidgetDescendants in 'Components\PyQt\UQtWidgetDescendants.pas',
-  dlgFileTemplates in 'dlgFileTemplates.pas';
+  dlgFileTemplates in 'dlgFileTemplates.pas',
+  dmResources in 'dmResources.pas' {ResourcesDataModule: TDataModule},
+  uSysUtils in 'uSysUtils.pas',
+  Vcl.Consts in 'Utils\Vcl.Consts.pas';
 
 {$R *.RES}
 {$R WebCopyAvi.RES}
@@ -231,6 +230,7 @@ begin
     TStyleSelectorForm.CurrentSkinName := 'Windows10 SlateGray';
 
   Application.Title := 'GuiPy';
+  Application.CreateForm(TResourcesDataModule, ResourcesDataModule);
   Application.CreateForm(TCommandsDataModule, CommandsDataModule);
   Application.CreateForm(TPyIDEMainForm, PyIDEMainForm);
   Application.Run;

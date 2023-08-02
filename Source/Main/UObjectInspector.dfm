@@ -3,26 +3,24 @@ object FObjectInspector: TFObjectInspector
   Top = 270
   BorderStyle = bsSizeToolWin
   Caption = 'Object Inspector'
-  ClientHeight = 461
-  ClientWidth = 263
+  ClientHeight = 449
+  ClientWidth = 255
   Color = clBtnFace
   Constraints.MinHeight = 150
   DragKind = dkDock
   DragMode = dmAutomatic
   ParentFont = True
   FormStyle = fsStayOnTop
-  OldCreateOrder = False
   PopupMenu = PMObjectInspector
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
   OnMouseActivate = FormMouseActivate
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 14
+  TextHeight = 15
   object TCAttributesEvents: TTabControl
     Left = 0
     Top = 33
-    Width = 263
+    Width = 255
     Height = 25
     Align = alTop
     TabOrder = 0
@@ -36,15 +34,16 @@ object FObjectInspector: TFObjectInspector
   object PObjects: TPanel
     Left = 0
     Top = 0
-    Width = 263
+    Width = 255
     Height = 33
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 263
     object CBObjects: TComboBox
       Left = 5
       Top = 4
       Width = 252
-      Height = 22
+      Height = 21
       Style = csDropDownList
       Sorted = True
       TabOrder = 0
@@ -53,14 +52,16 @@ object FObjectInspector: TFObjectInspector
   end
   object PNewDel: TPanel
     Left = 0
-    Top = 436
-    Width = 263
+    Top = 424
+    Width = 255
     Height = 25
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
+    ExplicitTop = 436
+    ExplicitWidth = 263
     DesignSize = (
-      263
+      255
       25)
     object BNewDelete: TButton
       Left = 0
@@ -73,7 +74,7 @@ object FObjectInspector: TFObjectInspector
       OnClick = BNewDeleteClick
     end
     object BMore: TButton
-      Left = 188
+      Left = 172
       Top = 0
       Width = 75
       Height = 25
@@ -81,6 +82,7 @@ object FObjectInspector: TFObjectInspector
       Caption = 'More'
       TabOrder = 1
       OnClick = BMoreClick
+      ExplicitLeft = 188
     end
   end
   object PMObjectInspector: TSpTBXPopupMenu

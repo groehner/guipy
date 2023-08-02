@@ -150,7 +150,7 @@ type
 implementation
 
 uses SysUtils, Types, IniFiles, Math, Clipbrd, SynEditKeyCmds,
-     frmPyIDEMain, dmCommands, uEditAppIntfs, uCommonFunctions,
+     frmPyIDEMain, dmResources, uEditAppIntfs, uCommonFunctions,
      JvGnugettext, StringResources, cPyScripterSettings, UFileStructure,
      UConfiguration, UUtils, UModelEntity, UModel, URtfdDiagram, UViewIntegrator,
      UImages, frmPythonII, cPyControl, cFileTemplates, cParameters, frmEditor;
@@ -259,9 +259,9 @@ end;
 
 procedure TFUMLForm.MIFontClick(Sender: TObject);
 begin
-  CommandsDataModule.dlgFontDialog.Font.Assign(SynEdit.Font);
-  if CommandsDataModule.dlgFontDialog.Execute then
-    SynEdit.Font.Assign(CommandsDataModule.dlgFontDialog.Font);
+  ResourcesDataModule.dlgFontDialog.Font.Assign(SynEdit.Font);
+  if ResourcesDataModule.dlgFontDialog.Execute then
+    SynEdit.Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
 end;
 
 procedure TFUMLForm.MIPasteClick(Sender: TObject);
@@ -441,7 +441,8 @@ procedure TFUMLForm.TBClassDefinitionClick(Sender: TObject);
       FileTemplate : TFileTemplate;
 begin
   NewName:= '';
-  if CommandsDataModule.GetSaveFileName(NewName, CommandsDataModule.SynPythonSyn, 'py', true)
+  if ResourcesDataModule.GetSaveFileName(NewName,
+    ResourcesDataModule.SynPythonSyn, 'py')
   then begin
     FileTemplate := FileTemplates.TemplateByName(SClassTemplateName);
     if FileTemplate = nil then begin

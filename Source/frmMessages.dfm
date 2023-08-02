@@ -41,13 +41,19 @@ inherited MessagesWindow: TMessagesWindow
     E9BDDAC3ABBDB78757800000000000000000000000000000000000000000B885
     5928B786568EB88756B1B88756B1B88756B1B88756B1B88756B1B88756B1B886
     57A9B6855763BB88551E0000000000000000000000000000000000000000}
+  ExplicitWidth = 749
+  ExplicitHeight = 245
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 741
     Height = 218
+    ExplicitWidth = 733
+    ExplicitHeight = 206
     inherited FGPanel: TPanel
       Width = 737
       Height = 214
+      ExplicitWidth = 729
+      ExplicitHeight = 202
       object MessagesView: TVirtualStringTree
         Left = 0
         Top = 0
@@ -104,7 +110,7 @@ inherited MessagesWindow: TMessagesWindow
     end
   end
   object Panel1: TPanel [1]
-    Left = 702
+    Left = 686
     Top = 2
     Width = 39
     Height = 17
@@ -112,6 +118,7 @@ inherited MessagesWindow: TMessagesWindow
     AutoSize = True
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitLeft = 678
     DesignSize = (
       39
       17)
@@ -233,7 +240,7 @@ inherited MessagesWindow: TMessagesWindow
         CollectionName = 'ArrowRight'
         Name = 'ArrowRight'
       end>
-    ImageCollection = CommandsDataModule.icSVGImages
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20
