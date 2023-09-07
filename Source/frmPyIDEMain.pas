@@ -596,27 +596,24 @@ interface
 uses
   WinAPI.Windows,
   WinAPI.Messages,
-  WinApi.ActiveX,
   System.Types,
   System.UITypes,
-  System.SysUtils,
   System.Classes,
   System.Actions,
-  System.Variants,
   System.ImageList,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.ImgList,
   Vcl.ActnList,
-  Vcl.Menus,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.ComCtrls,
-  VCL.Styles,
   Vcl.VirtualImageList,
   Vcl.BaseImageCollection,
+  Vcl.DdeMan,
+  Vcl.ToolWin,
+  Vcl.Menus,
   SVGIconImageCollection,
   JclSysUtils,
   JvAppInst,
@@ -626,6 +623,7 @@ uses
   JvAppIniStorage,
   JvFormPlacement,
   JvDSADialogs,
+  JvComponentBase,
   TB2Dock,
   TB2Toolbar,
   TB2Item,
@@ -638,26 +636,19 @@ uses
   SpTBXTabs,
   SpTBXDkPanels,
   MPCommonObjects,
-  SynEditTypes,
   SynEditMiscClasses,
   SynEdit,
   dmResources,
   dmCommands,
-  dlgCustomShortcuts,
   uEditAppIntfs,
   uHighlighterProcs,
   cFileTemplates,
   cPySupportTypes,
-  cPyBaseDebugger,
-  cPyDebugger,
-  cPyScripterSettings,
   cPyControl,
-  Vcl.ToolWin,
   frmEditor,
   UUMLForm,
   UGUIForm,
-  UStructogram,
-  UBrowser, JvComponentBase, Vcl.DdeMan;
+  UBrowser;
 
 const
   WM_FINDDEFINITION  = WM_USER + 100;
@@ -1638,7 +1629,6 @@ type
   end;
 
 Const
-  ctkRemember : TDSACheckTextKind = 100;
   FactoryToolbarItems = 'Factory Toolbar Items v1.0';
 
 var
@@ -1647,27 +1637,26 @@ var
 implementation
 
 uses
+  WinApi.ActiveX,
   Winapi.ShellAPI,
+  System.SysUtils,
   System.Contnrs,
   System.Math,
   System.IniFiles,
-  System.DateUtils,
   System.RegularExpressions,
   System.IOUtils,
   System.StrUtils,
   Vcl.Clipbrd,
   Vcl.StdActns,
+  Vcl.Dialogs,
   Vcl.Themes,
   Vcl.Imaging.pngimage,
   JclSysInfo,
   JvJVCLUtils,
-  SpTBXControls,
-  VirtualTrees.BaseTree,
   VirtualTrees,
-  VirtualExplorerTree,
-  MPDataObject,
   SynHighlighterPython,
   SynEditHighlighter,
+  SynEditTypes,
   SynEditKeyCmds,
   SynCompletionProposal,
   SynSpellCheck,
@@ -1705,17 +1694,20 @@ uses
   cTools,
   cParameters,
   cFilePersist,
-  cCodeHint,
   cPyRemoteDebugger,
+  cPyBaseDebugger,
+  cPyDebugger,
+  cPyScripterSettings,
   cProjectClasses,
   dlgPythonVersions,
   dlgRemoteFile,
   cSSHSupport,
   LspUtils,
   JediLspClient,
+  dlgCustomShortcuts,
+  UStructogram,
   UUtils,
   UTextDiff,
-  UAssociation,
   UConfiguration,
   UImages,
   UClassEditor,
@@ -1723,13 +1715,15 @@ uses
   UObjectInspector,
   UFileStructure,
   UGUIDesigner,
-  ULivingObjects,
   UGit,
   USubversion,
   UUpdate,
   URtfdDiagram;
 
 {$R *.DFM}
+
+Const
+  ctkRemember : TDSACheckTextKind = 100;
 
 { TWorkbookMainForm }
 
@@ -6082,7 +6076,8 @@ begin
   TabCtrl := TabControl(TabControlIndex);
   TabCtrl.Toolbar.BeginUpdate;
   try
-    Result := GI_EditorFactory.NewEditor(TabControlIndex);;
+    Result := GI_EditorFactory.NewEditor(TabControlIndex);
+
     if Result <> nil then begin
       try
         Result.FromTemplate:= true;
@@ -6094,7 +6089,7 @@ begin
         Result.Close;
         raise
       end;
-      Result.SynEdit.SelText := Parameters.ReplaceInText(FileTemplate.Template);
+      Result.SynEdit.Text := Parameters.ReplaceInText(FileTemplate.Template);
 
       // Locate the caret symbol |
       for i := 0 to Result.SynEdit.Lines.Count - 1 do begin

@@ -8,20 +8,18 @@ object FOpenFolderForm: TFOpenFolderForm
   ClientWidth = 398
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   DesignSize = (
     398
     337)
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object LFiletype: TLabel
     Left = 14
     Top = 279
-    Width = 75
-    Height = 13
+    Width = 79
+    Height = 15
     Anchors = [akLeft, akBottom]
     Caption = 'Select file type:'
   end
@@ -48,14 +46,15 @@ object FOpenFolderForm: TFOpenFolderForm
     Left = 108
     Top = 275
     Width = 69
-    Height = 21
+    Height = 23
     Style = csDropDownList
     Anchors = [akLeft, akBottom]
     TabOrder = 2
     TabStop = False
+    ExplicitTop = 274
   end
   object CBWithSubFolder: TCheckBox
-    Left = 13
+    Left = 9
     Top = 310
     Width = 161
     Height = 17
@@ -64,5 +63,7 @@ object FOpenFolderForm: TFOpenFolderForm
     Checked = True
     State = cbChecked
     TabOrder = 3
+    ExplicitLeft = 5
+    ExplicitTop = 309
   end
 end

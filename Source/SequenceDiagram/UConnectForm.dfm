@@ -8,24 +8,22 @@ object FConnectForm: TFConnectForm
   ClientWidth = 317
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object LSelect: TLabel
     Left = 8
     Top = 8
-    Width = 62
-    Height = 13
+    Width = 66
+    Height = 15
     Caption = 'Please select'
   end
   object LMessage: TLabel
     Left = 8
     Top = 155
-    Width = 42
-    Height = 13
+    Width = 46
+    Height = 15
     Caption = 'Message'
   end
   object LBConnections: TListBox

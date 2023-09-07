@@ -15,7 +15,7 @@ unit ELStringsEdit;
 interface
 
 uses
-  Windows, Messages, Classes, Forms, ExtCtrls, Vcl.StdCtrls, Vcl.Controls,
+  Classes, ExtCtrls, Vcl.StdCtrls, Vcl.Controls,
   dlgPyIDEBase;
 
 var
@@ -45,7 +45,7 @@ type
 implementation
 
 uses
-  SysUtils;
+  Windows, Forms, SysUtils;
 
 {$R *.dfm}
 

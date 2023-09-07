@@ -3,7 +3,7 @@ unit USubversion;
 interface
 
 uses
-  Windows, Messages, Controls, Forms, StdCtrls, ComCtrls, Classes,
+  Controls, StdCtrls, ComCtrls, Classes,
   uEditAppIntfs, dlgPyIDEBase, frmEditor;
 
 type
@@ -35,9 +35,8 @@ var
 
 implementation
 
-uses Dialogs, frmCommandOutput, cTools, JvDockControlForm, JvGnugettext,
-     StringResources, SysUtils, UConfiguration, UUtils, UTextDiff,
-     frmPyIDEMain;
+uses Forms, Dialogs, SysUtils, JvGnugettext,
+     frmCommandOutput, cTools, UConfiguration, UUtils, frmPyIDEMain;
 
 {$R *.dfm}
 

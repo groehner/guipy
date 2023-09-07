@@ -51,7 +51,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
       TabOrder = 0
     end
     object cbRecursive: TCheckBox
-      Left = 348
+      Left = 340
       Top = 71
       Width = 108
       Height = 17
@@ -60,7 +60,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
       Checked = True
       State = cbChecked
       TabOrder = 3
-      ExplicitLeft = 344
+      ExplicitLeft = 336
     end
     object Button1: TButton
       Left = 124
@@ -89,7 +89,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
     object DirectoryEdit: TButtonedEdit
       Left = 8
       Top = 38
-      Width = 448
+      Width = 440
       Height = 23
       Anchors = [akLeft, akTop, akRight]
       Images = vilImages
@@ -98,7 +98,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
       RightButton.Visible = True
       TabOrder = 4
       OnRightButtonClick = DirectoryEditBtnClick
-      ExplicitWidth = 444
+      ExplicitWidth = 436
     end
   end
   object vilImages: TVirtualImageList

@@ -20,7 +20,7 @@ unit UTKTextBase;
 interface
 
 uses
-  Windows, Messages, Classes, Controls, Graphics, UBaseTkWidgets, UTkWidgets;
+  Classes, Controls, Graphics, UBaseTkWidgets, UTkWidgets;
 
 type
 
@@ -315,9 +315,7 @@ type
 
 implementation
 
-uses Math, SysUtils, UITypes, GraphUtil, UUtils, UImages, UConfiguration,
-     Vcl.Imaging.GIFImg, Vcl.Imaging.jpeg, Vcl.Imaging.pngimage, System.Types,
-     UObjectGenerator, UObjectInspector, UGUIDesigner, UTKMiscBase, ULink;
+uses System.Types, Windows, Math, SysUtils, UITypes, UUtils, UConfiguration;
 
 {--- TButtonBaseWidget --------------------------------------------------------}
 

@@ -6,10 +6,9 @@ inherited AskParamForm: TAskParamForm
   ClientHeight = 113
   ClientWidth = 385
   Position = poScreenCenter
-  ExplicitWidth = 391
-  ExplicitHeight = 142
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 397
+  ExplicitHeight = 151
+  TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
@@ -17,19 +16,21 @@ inherited AskParamForm: TAskParamForm
     Height = 113
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 381
+    ExplicitHeight = 112
     DesignSize = (
       385
       113)
     object Label1: TLabel
       Left = 8
       Top = 5
-      Width = 128
-      Height = 13
+      Width = 136
+      Height = 15
       Caption = 'Enter value for parameter '
       FocusControl = txtParamValue
     end
     object btnOK: TButton
-      Left = 221
+      Left = 217
       Top = 80
       Width = 75
       Height = 25
@@ -38,9 +39,11 @@ inherited AskParamForm: TAskParamForm
       Default = True
       ModalResult = 1
       TabOrder = 2
+      ExplicitLeft = 213
+      ExplicitTop = 79
     end
     object btnCancel: TButton
-      Left = 302
+      Left = 298
       Top = 80
       Width = 75
       Height = 25
@@ -49,6 +52,8 @@ inherited AskParamForm: TAskParamForm
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 3
+      ExplicitLeft = 294
+      ExplicitTop = 79
     end
     object chkSaveToFile: TCheckBox
       Left = 8
@@ -61,10 +66,11 @@ inherited AskParamForm: TAskParamForm
     object txtParamValue: TEdit
       Left = 8
       Top = 24
-      Width = 367
-      Height = 21
+      Width = 363
+      Height = 23
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
+      ExplicitWidth = 359
     end
   end
 end

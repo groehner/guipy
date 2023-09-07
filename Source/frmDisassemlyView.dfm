@@ -46,7 +46,7 @@ object DisForm: TDisForm
         Width = 3
       end>
     SelectedColor.Alpha = 0.400000005960464500
-    ExplicitWidth = 599
-    ExplicitHeight = 382
+    ExplicitWidth = 591
+    ExplicitHeight = 380
   end
 end

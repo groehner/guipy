@@ -59,7 +59,7 @@ unit UDiff;
 interface
 
 uses
-  Windows, SysUtils, Classes, Math, Forms, Dialogs;
+  Windows, Classes;
 
 const
   MAX_DIAGONAL = $FFFFFF; //~16 million
@@ -67,12 +67,6 @@ const
 type
 
   TArrOfInteger = array of integer;
-
-{$IFDEF UNICODE}
-  P8Bits = PByte;
-{$ELSE}
-  P8Bits = PAnsiChar;
-{$ENDIF}
 
   PDiags = ^TDiags;
   TDiags = array [-MAX_DIAGONAL .. MAX_DIAGONAL] of integer;
@@ -87,14 +81,6 @@ type
     case boolean of
       false   : (chr1, chr2 : Char);
       true    : (int1, int2 : integer);
-  end;
-
-  PDiffVars = ^TDiffVars;
-  TDiffVars = record
-    offset1 : integer;
-    offset2 : integer;
-    len1    : integer;
-    len2    : integer;
   end;
 
   TDiffStats = record
@@ -143,6 +129,24 @@ type
   end;
 
 implementation
+
+uses Forms;
+
+type
+
+{$IFDEF UNICODE}
+  P8Bits = PByte;
+{$ELSE}
+  P8Bits = PAnsiChar;
+{$ENDIF}
+
+  PDiffVars = ^TDiffVars;
+  TDiffVars = record
+    offset1 : integer;
+    offset2 : integer;
+    len1    : integer;
+    len2    : integer;
+  end;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

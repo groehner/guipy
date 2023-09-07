@@ -1,4 +1,4 @@
-{
+﻿{
   syn
   Copyright © 2002, Danail Traichev. All rights reserved.
   neum@developer.bg
@@ -46,12 +46,8 @@ unit cParameters;
 interface
 
 uses
-  Winapi.Windows,
-  System.UITypes,
   System.Classes,
-  System.SysUtils,
-  Vcl.Dialogs,
-  Vcl.Controls;
+  System.SysUtils;
 
 type
   (* function, that returns value of a system parameter *)
@@ -177,6 +173,8 @@ implementation
 uses
   System.TypInfo,
   System.Variants,
+  System.UITypes,
+  Vcl.Dialogs,
   JvGnugettext,
   StringResources,
   uCommonFunctions;

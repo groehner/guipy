@@ -14,16 +14,13 @@ interface
 uses
   Winapi.Messages,
   Winapi.Windows,
-  System.SysUtils,
   System.Classes,
   Vcl.Controls,
   Vcl.Graphics,
-  Vcl.ComCtrls,
   Vcl.ExtCtrls,
   SpTBXSkins,
   JvDockTree,
   JvDockControlForm,
-  JvDockSupportControl,
   JvDockVSNetStyle;
 
 Type
@@ -138,9 +135,12 @@ Uses
   Winapi.CommCtrl,
   System.Math,
   System.Types,
+  System.SysUtils,
+  Vcl.ComCtrls,
   Vcl.Forms,
   Vcl.Themes,
   JvDockVIDStyle,
+  JvDockSupportControl,
   SpTBXDkPanels,
   SpTBXItem,
   JvDockGlobals,

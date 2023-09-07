@@ -161,7 +161,6 @@ implementation
 uses
   WinApi.Windows,
   System.Contnrs,
-  System.UITypes,
   System.Math,
   Vcl.Forms,
   Vcl.Dialogs,

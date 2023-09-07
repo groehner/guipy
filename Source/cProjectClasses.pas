@@ -13,8 +13,6 @@ unit cProjectClasses;
 interface
 
 uses
-  System.Types,
-  System.SysUtils,
   System.Classes,
   System.Contnrs,
   JvAppStorage,
@@ -155,7 +153,9 @@ Var
 implementation
 
 uses
+  System.SysUtils,
   System.IOUtils,
+  System.Types,
   JvGnuGetText,
   uCommonFunctions,
   cPyControl,

@@ -11,16 +11,13 @@ unit frmWatches;
 interface
 
 uses
-  WinApi.Windows,
   WinApi.Messages,
   WinApi.ActiveX,
-  System.Types,
-  System.UITypes,
   System.SysUtils,
-  System.Variants,
   System.Classes,
   System.Contnrs,
   System.ImageList,
+  System.Types,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
@@ -111,6 +108,8 @@ var
 implementation
 
 uses
+  System.UITypes,
+  WinApi.Windows,
   Vcl.Clipbrd,
   SynEdit,
   JvGnugettext,
@@ -119,8 +118,6 @@ uses
   uCommonFunctions,
   dmResources,
   frmPyIDEMain,
-  frmCallStack,
-  cPySupportTypes,
   cPyBaseDebugger;
 
 {$R *.dfm}

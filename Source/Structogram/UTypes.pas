@@ -11,7 +11,7 @@ unit UTypes;
 interface
 
 uses
-  Windows, Messages, Classes, Graphics, ExtCtrls, Forms;
+  Windows, Classes, Graphics, ExtCtrls, Forms;
 
 const
   LEFT_RIGHT = 10;                { Default left/right margin of element }

@@ -9,7 +9,7 @@ unit UGenerateStructogram;
 
 interface
 
-uses Classes, Forms, UTypes, UPythonScanner, UPythonIntegrator;
+uses UTypes, UPythonScanner, UPythonIntegrator;
 
 type
   TGenerateStructogram = class(TPythonParser)
@@ -55,7 +55,7 @@ type
 
 implementation
 
-uses ComCtrls, SysUtils, Character, UConfiguration, UUtils;
+uses SysUtils, Character, UConfiguration, UUtils;
 
 constructor TGenerateStructogram.Create;
 begin

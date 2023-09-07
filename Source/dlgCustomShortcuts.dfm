@@ -9,8 +9,8 @@ inherited frmCustomKeyboard: TfrmCustomKeyboard
   Position = poOwnerFormCenter
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ExplicitWidth = 471
-  ExplicitHeight = 414
+  ExplicitWidth = 467
+  ExplicitHeight = 413
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
@@ -22,15 +22,15 @@ inherited frmCustomKeyboard: TfrmCustomKeyboard
     ParentColor = True
     ShowCaption = False
     TabOrder = 0
-    ExplicitWidth = 459
-    ExplicitHeight = 376
+    ExplicitWidth = 451
+    ExplicitHeight = 374
     DesignSize = (
       455
       375)
     object Bevel1: TBevel
       Left = 4
       Top = 329
-      Width = 453
+      Width = 449
       Height = 2
       Anchors = [akLeft, akRight, akBottom]
       Shape = bsTopLine
@@ -94,7 +94,7 @@ inherited frmCustomKeyboard: TfrmCustomKeyboard
       ParentColor = False
     end
     object btnOK: TButton
-      Left = 200
+      Left = 196
       Top = 342
       Width = 75
       Height = 25
@@ -103,11 +103,11 @@ inherited frmCustomKeyboard: TfrmCustomKeyboard
       Default = True
       ModalResult = 1
       TabOrder = 3
-      ExplicitLeft = 208
-      ExplicitTop = 343
+      ExplicitLeft = 192
+      ExplicitTop = 341
     end
     object btnCancel: TButton
-      Left = 284
+      Left = 280
       Top = 342
       Width = 75
       Height = 25
@@ -116,11 +116,11 @@ inherited frmCustomKeyboard: TfrmCustomKeyboard
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 4
-      ExplicitLeft = 292
-      ExplicitTop = 343
+      ExplicitLeft = 276
+      ExplicitTop = 341
     end
     object btnHelp: TButton
-      Left = 368
+      Left = 364
       Top = 342
       Width = 75
       Height = 25
@@ -128,8 +128,8 @@ inherited frmCustomKeyboard: TfrmCustomKeyboard
       Caption = '&Help'
       TabOrder = 8
       OnClick = HelpButtonClick
-      ExplicitLeft = 376
-      ExplicitTop = 343
+      ExplicitLeft = 360
+      ExplicitTop = 341
     end
     object btnAssign: TButton
       Left = 8
@@ -152,50 +152,54 @@ inherited frmCustomKeyboard: TfrmCustomKeyboard
       Top = 28
       Width = 184
       Height = 97
-      ItemHeight = 13
+      ItemHeight = 15
       TabOrder = 1
       OnClick = lbCategoriesClick
     end
     object lbCommands: TListBox
       Left = 200
       Top = 28
-      Width = 241
+      Width = 237
       Height = 97
       Anchors = [akLeft, akTop, akRight]
-      ItemHeight = 13
+      ItemHeight = 15
       Sorted = True
       TabOrder = 2
       OnClick = lbCommandsClick
+      ExplicitWidth = 233
     end
     object lbCurrentKeys: TListBox
       Left = 200
       Top = 224
-      Width = 241
+      Width = 237
       Height = 57
       Anchors = [akLeft, akTop, akRight]
-      ItemHeight = 13
+      ItemHeight = 15
       TabOrder = 5
+      ExplicitWidth = 233
     end
     object gbDescription: TGroupBox
       Left = 10
       Top = 131
-      Width = 433
+      Width = 429
       Height = 61
       Anchors = [akLeft, akTop, akRight]
       Caption = ' Description '
       TabOrder = 0
-      ExplicitWidth = 441
+      ExplicitWidth = 425
       object lblDescription: TLabel
         Left = 2
-        Top = 15
-        Width = 437
-        Height = 44
+        Top = 17
+        Width = 425
+        Height = 42
         Align = alClient
         AutoSize = False
         Color = clNone
         ParentColor = False
         Transparent = True
+        ExplicitTop = 15
         ExplicitWidth = 324
+        ExplicitHeight = 44
       end
     end
   end

@@ -3,21 +3,14 @@ unit dlgRemoteFile;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
   System.UITypes,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
   System.ImageList,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
+  System.Classes,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
-  Vcl.ImgList,
   Vcl.VirtualImageList,
+  Vcl.ImgList,
+  Vcl.Controls,
   dlgPyIDEBase;
 
 type
@@ -50,6 +43,8 @@ type
 implementation
 
 Uses
+  Vcl.Forms,
+  Vcl.Dialogs,
   StringResources,
   cSSHSupport,
   JvGnugettext,

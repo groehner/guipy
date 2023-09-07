@@ -11,13 +11,9 @@ unit dlgDirectoryList;
 interface
 
 uses
-  Winapi.Windows,
-  System.Types,
-  System.SysUtils,
   System.Classes,
   System.ImageList,
   Vcl.Controls,
-  Vcl.Forms,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.ImgList,
@@ -63,10 +59,10 @@ implementation
 
 uses
   Winapi.ShLwApi,
-  Vcl.FileCtrl,
-  Vcl.Themes,
-  Vcl.Graphics,
+  System.Types,
   System.Math,
+  Vcl.Forms,
+  Vcl.FileCtrl,
   JVBoxProcs,
   JvGnuGetText,
   dmResources;

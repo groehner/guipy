@@ -3,8 +3,8 @@ unit frmFile;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms,
   SpTBXTabs, SpTBXSkins, uEditAppIntfs;
 
 type
@@ -191,9 +191,9 @@ type
 
 implementation
 
-uses System.IOUtils, UITypes, Types, JvGnugettext, StringResources, uCommonFunctions,
-  dlgPickList, frmPyIDEMain, frmEditor, dmResources, cSSHSupport,
-  UUMLForm, UGUIForm, USequenceForm, UStructogram, UTextDiff, UBrowser,
+uses System.IOUtils, UITypes, Types, Vcl.Dialogs, JvGnugettext, StringResources, uCommonFunctions,
+  dlgPickList, frmPyIDEMain, dmResources, cSSHSupport,
+  UUMLForm, USequenceForm, UStructogram, UTextDiff, UBrowser,
   cPyScripterSettings, VirtualShellNotifier, dlgRemoteFile, JclFileUtils,
   UUtils, UConfiguration;
 

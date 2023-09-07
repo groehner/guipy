@@ -71,9 +71,10 @@ type
 
 implementation
 
-uses SysUtils, Windows, Controls, Clipbrd, JvGnugettext, StringResources,
-     UTextDiff, UUtils, frmFile, SynEditTypes, FileCtrl, UConfiguration,
-     uEditAppIntfs, cPyScripterSettings, dmResources, uCommonFunctions;
+uses SysUtils, Windows, Controls, Clipbrd, FileCtrl,
+     JvGnugettext, StringResources,
+     UTextDiff, UUtils, frmFile, SynEditTypes,
+     cPyScripterSettings, dmResources, uCommonFunctions;
 
 constructor TSynEditExDiff.Create(AOwner: TComponent);
 begin

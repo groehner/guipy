@@ -3,22 +3,14 @@ unit dlgNewFile;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
   System.Classes,
-  System.Contnrs,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  VirtualTrees.Types,
-  VirtualTrees.BaseTree,
   VirtualTrees,
   cFileTemplates,
   dlgPyIDEBase,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
-  Vcl.ComCtrls, VirtualTrees.BaseAncestorVCL, VirtualTrees.AncestorVCL;
+  Vcl.ComCtrls, Vcl.Controls, VirtualTrees.BaseAncestorVCL,
+  VirtualTrees.BaseTree, VirtualTrees.AncestorVCL;
 
 type
   TNewFileDialog = class(TPyIDEDlgBase)
@@ -57,7 +49,14 @@ type
 implementation
 
 uses
-  Winapi.ShellAPI, dmCommands, MPCommonObjects;
+  System.Contnrs,
+  System.SysUtils,
+  Winapi.Windows,
+  Vcl.Forms,
+  VirtualTrees.Types,
+  Winapi.ShellAPI,
+  dmCommands,
+  MPCommonObjects;
 
 {$R *.dfm}
 

@@ -3,8 +3,7 @@ unit UUpdate;
 interface
 
 uses
-  Windows, Messages, Forms, StdCtrls, ComCtrls, ExtCtrls, Controls, Classes,
-  dlgPyIDEBase, UDownload;
+  Vcl.Controls, System.Classes, Forms, StdCtrls, ComCtrls, dlgPyIDEBase;
 
 const
   Server  = 'https://guipy.de/download/';
@@ -12,18 +11,18 @@ const
   {$IFDEF WIN32}
   Zipfile = 'GuiPy.zip';   // update portable version
   Setupfile = 'GuiPy-%s-x86-Setup.exe';   // update default version
-  Version = '3.2, 32 Bit';
+  Version = '3.3, 32 Bit';
   Bits = '32';
   {$ENDIF}
   {$IFDEF WIN64}
   Zipfile = 'GuiPy64.zip';
   Setupfile = 'GuiPy-%s-x64-Setup.exe';
-  Version = '3.1, 64 Bit';
+  Version = '3.3, 64 Bit';
   Bits = '64';
   {$ENDIF}
 
-  Day   = 2;
-  Month = 8;
+  Day   = 7;
+  Month = 9;
   Year  = 2023;
 
 type
@@ -57,9 +56,9 @@ type
 
 implementation
 
-uses SysUtils, DateUtils, Dialogs, IOUtils, Zip,
-     frmPyIDEMain, jvGnugettext, StringResources, cPyScripterSettings,
-     UUtils, UConfiguration;
+uses Windows, SysUtils, DateUtils, IOUtils, Zip,
+     frmPyIDEMain, jvGnugettext, cPyScripterSettings,
+     UUtils, UConfiguration, UDownload;
 
 {$R *.dfm}
 

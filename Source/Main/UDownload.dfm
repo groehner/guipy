@@ -6,23 +6,21 @@ object FDownload: TFDownload
   ClientWidth = 431
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object LUrl: TLabel
     Left = 8
     Top = 20
-    Width = 19
-    Height = 13
+    Width = 21
+    Height = 15
     Caption = 'URL'
   end
   object LFile: TLabel
     Left = 8
     Top = 52
-    Width = 16
-    Height = 13
+    Width = 18
+    Height = 15
     Caption = 'File'
   end
   object SPOpen: TSpeedButton
@@ -66,7 +64,7 @@ object FDownload: TFDownload
     Left = 56
     Top = 16
     Width = 361
-    Height = 21
+    Height = 23
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
@@ -93,7 +91,7 @@ object FDownload: TFDownload
     Left = 56
     Top = 48
     Width = 329
-    Height = 21
+    Height = 23
     ParentShowHint = False
     ShowHint = True
     TabOrder = 3

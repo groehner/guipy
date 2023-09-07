@@ -1,6 +1,8 @@
 inherited ProjectExplorerWindow: TProjectExplorerWindow
   HelpContext = 435
   Caption = 'Project Explorer'
+  ClientHeight = 372
+  ClientWidth = 203
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -41,20 +43,30 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   OnShow = FormShow
   TextHeight = 15
   inherited BGPanel: TPanel
+    Width = 203
+    Height = 372
+    ExplicitWidth = 195
+    ExplicitHeight = 360
     inherited FGPanel: TPanel
+      Width = 199
+      Height = 368
+      ExplicitWidth = 191
+      ExplicitHeight = 356
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 223
-        Height = 404
+        Width = 199
+        Height = 368
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 191
+        ExplicitHeight = 356
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 30
-          Width = 223
-          Height = 374
+          Width = 199
+          Height = 338
           Align = alClient
           BorderStyle = bsNone
           Header.AutoSizeIndex = -1
@@ -85,15 +97,18 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           OnNodeDblClick = ExplorerTreeNodeDblClick
           Touch.InteractiveGestures = [igPan, igPressAndTap]
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
+          ExplicitWidth = 191
+          ExplicitHeight = 326
           Columns = <>
         end
         object SpTBXDock1: TSpTBXDock
           Left = 0
           Top = 0
-          Width = 223
+          Width = 199
           Height = 30
           AllowDrag = False
           DoubleBuffered = True
+          ExplicitWidth = 191
           object SpTBXToolbar1: TSpTBXToolbar
             Left = 0
             Top = 0
@@ -614,6 +629,7 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
         CollectionName = 'ExternalRunLast'
         Name = 'ExternalRunLast'
       end>
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20

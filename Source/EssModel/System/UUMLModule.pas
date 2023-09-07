@@ -22,7 +22,7 @@ unit UUMLModule;
 interface
 
 uses
-  Windows, Messages, Dialogs, Classes, ExtCtrls,
+  Dialogs, Classes, ExtCtrls,
   uModel, uViewIntegrator, uFeedback;
 
 type
@@ -66,9 +66,9 @@ type
 
 implementation
 
-uses SysUtils, Graphics, Controls, Forms, Clipbrd, Printers, Contnrs,
+uses Windows, SysUtils, Graphics, Controls, Forms, Clipbrd, Printers, Contnrs,
      INIFiles, uIntegrator, uFileProvider, uEditAppIntfs,
-     frmFile, uOpenFolderForm, UUtils, UConfiguration, {,UUMLForm{} URtfdDiagram;
+     uOpenFolderForm, UUtils, {,UUMLForm{} URtfdDiagram;
 
 {$R *.DFM}
 

@@ -176,21 +176,18 @@ implementation
 {$R *.dfm}
 
 uses
-  System.Generics.Collections,
   System.SysUtils,
   System.StrUtils,
-  System.Math,
   System.IOUtils,
   System.JSON,
+  System.Math,
+  System.Generics.Collections,
   Vcl.Clipbrd,
   JvJVCLUtils,
   JvGnuGetText,
   frmPyIDEMain,
-  SynEditTypes,
   dmResources,
   uEditAppIntfs,
-  SynEditLsp,
-  LspClient,
   LspUtils,
   JediLspClient,
   uCommonFunctions;

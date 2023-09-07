@@ -10,9 +10,10 @@ unit ELEvents;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, RTTI,
-  dlgPyIDEBase;
+  System.Classes,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  dlgPyIDEBase, Vcl.Controls;
 
 type
 
@@ -76,7 +77,11 @@ procedure SetEventProperties(Obj: TObject; PropName: string; Event: TEvent);
 
 implementation
 
-uses UBaseWidgets;
+uses
+  System.SysUtils,
+  Vcl.Forms,
+  RTTI,
+  UBaseWidgets;
 
 {$R *.dfm}
 

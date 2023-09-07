@@ -19,10 +19,10 @@ unit USequenceForm;
 interface
 
 uses
-  Windows, Messages, SysUtils,  Classes, Graphics, Controls, Forms, ComCtrls,
-  ExtCtrls, StdCtrls, Menus, Toolwin, ImgList, ImageList,
+  Windows, Messages, Classes, Graphics, Controls, Forms, ComCtrls,
+  ExtCtrls, StdCtrls, Toolwin, ImgList, ImageList,
   uEditAppIntfs, SpTBXSkins, frmFile, USequencePanel, ULifeLine, TB2Item,
-  SpTBXItem;
+  SpTBXItem, Vcl.Menus;
 
 type
   TFSequenceForm = class(TFileForm)
@@ -169,9 +169,9 @@ implementation
 
 {$R *.dfm}
 
-uses Printers, IniFiles, Math, Clipbrd, Themes, Dialogs, UITypes,
-     uCommonFunctions, JvGnugettext, {UDebugger, } UConfiguration, UUtils,
-     UConnectForm, dmResources, StringResources, frmPyIDEMain;
+uses SysUtils, Printers, IniFiles, Math, Clipbrd, Themes, Dialogs,
+     UITypes, uCommonFunctions, {UDebugger, } UConfiguration, UUtils,
+     frmPyIDEMain;
 
 const cMinDist = 20;
       cLifeLinesTop = 30;

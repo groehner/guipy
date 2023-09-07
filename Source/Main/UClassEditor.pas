@@ -3,10 +3,9 @@
 interface
 
 uses
-  Windows, Messages, Actions, SysUtils, Variants, Classes, Graphics, Controls,
-  Forms, Dialogs, StdCtrls, ComCtrls, ImgList, ExtCtrls, IniFiles, Buttons,
+  Classes, Controls, Forms, StdCtrls, ComCtrls, ImgList, ExtCtrls, Buttons,
   ActnList, System.ImageList, JvAppStorage, dlgPyIDEBase,
-  UModel, UUMLForm, frmEditor;
+  UModel, UUMLForm, frmEditor, System.Actions;
 
 type
   TFClassEditor = class(TPyIDEDlgBase, IJvAppStorageHandler)
@@ -223,8 +222,9 @@ implementation
 
 {$R *.dfm}
 
-uses Math, UITypes, SynEdit, Character, JvGnugettext, StringResources,
-     uCommonFunctions, UFileStructure, uModelEntity, uFileProvider,
+uses Windows, Math, Graphics, Messages, SysUtils, Dialogs, UITypes, Character,
+     SynEdit, JvGnugettext,
+     uCommonFunctions, UFileStructure, uModelEntity,
      UConfiguration, UUtils, uEditAppIntfs, frmFile;
 
 const
@@ -1342,35 +1342,33 @@ var
         it.Reset;
         while it.HasNext  do begin
           Parameter:= it.next as TParameter;
-          if not Parameter.UsedForAttribute and assigned(Parameter.TypeClassifier) then
-            SL.Add(Parameter.Name + ': ' + Parameter.TypeClassifier.GetShortType);
+          if not Parameter.UsedForAttribute then
+            if assigned(Parameter.TypeClassifier)
+              then SL.Add(Parameter.Name + ': ' + Parameter.TypeClassifier.GetShortType)
+              else SL.Add(Parameter.Name);
         end;
         It:= SuperClass.GetOperations;
         while It.HasNext do begin
           var Operation:= It.Next as TOperation;
           if Operation.OperationType = otConstructor then begin
             var s2:= Indent + 'super().__init__(';
-            found:= true;
             var it2:= Operation.GetParameters;
             while it2.HasNext do begin
               Parameter:= it2.next as TParameter;
               var param:= Parameter.Name;
               if assigned(Parameter.TypeClassifier) then
                 param:= param + ': ' + Parameter.TypeClassifier.asUMLType;
-              if (Param = 'self') or (SL.IndexOf(Param) >= 0)
-                then s2:= s2 + Parameter.Name + ', '
-                else found:= false;
+              if SL.IndexOf(Param) >= 0 then
+                s2:= s2 + Parameter.Name + ', '
             end;
-            if found then begin
-              if s2.EndsWith(', ') then
-                s2:= UUtils.Left(s2, -2);
-              p:= getSourceIndex('super().__init__');
-              if p < SourceSL.Count then
-                SourceSL.Delete(p);
-              p:= getSourceIndex('def __init__');
-              SourceSL.Insert(p+1, s2 + ')');
-              break;
-            end;
+            if s2.EndsWith(', ') then
+              s2:= UUtils.Left(s2, -2);
+            p:= getSourceIndex('super().__init__');
+            if p < SourceSL.Count then
+              SourceSL.Delete(p);
+            p:= getSourceIndex('def __init__');
+            SourceSL.Insert(p+1, s2 + ')');
+            break;
           end;
         end;
       finally

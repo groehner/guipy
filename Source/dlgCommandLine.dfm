@@ -5,8 +5,8 @@ inherited CommandLineDlg: TCommandLineDlg
   ClientHeight = 171
   ClientWidth = 524
   OnDestroy = FormDestroy
-  ExplicitWidth = 540
-  ExplicitHeight = 210
+  ExplicitWidth = 536
+  ExplicitHeight = 209
   TextHeight = 15
   object Panel: TPanel
     Left = 0
@@ -15,15 +15,15 @@ inherited CommandLineDlg: TCommandLineDlg
     Height = 171
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 528
-    ExplicitHeight = 172
+    ExplicitWidth = 520
+    ExplicitHeight = 170
     DesignSize = (
       524
       171)
     object Label1: TLabel
       Left = 13
       Top = 42
-      Width = 452
+      Width = 448
       Height = 35
       Anchors = [akLeft, akRight, akBottom]
       AutoSize = False
@@ -51,7 +51,7 @@ inherited CommandLineDlg: TCommandLineDlg
     object SynParameters: TSynEdit
       Left = 11
       Top = 83
-      Width = 476
+      Width = 472
       Height = 18
       Anchors = [akLeft, akRight, akBottom]
       Font.Charset = DEFAULT_CHARSET
@@ -90,11 +90,11 @@ inherited CommandLineDlg: TCommandLineDlg
       ScrollBars = ssNone
       SelectedColor.Alpha = 0.400000005960464500
       WantReturns = False
-      ExplicitTop = 84
-      ExplicitWidth = 484
+      ExplicitTop = 82
+      ExplicitWidth = 468
     end
     object TBXButton1: TSpTBXButton
-      Left = 493
+      Left = 489
       Top = 82
       Width = 17
       Height = 19
@@ -104,8 +104,8 @@ inherited CommandLineDlg: TCommandLineDlg
       ShowHint = True
       TabOrder = 5
       DropDownMenu = TBXPopupHistory
-      ExplicitLeft = 501
-      ExplicitTop = 83
+      ExplicitLeft = 485
+      ExplicitTop = 81
     end
     object cbUseCommandLine: TCheckBox
       Left = 13
@@ -116,7 +116,7 @@ inherited CommandLineDlg: TCommandLineDlg
       TabOrder = 4
     end
     object OKButton: TButton
-      Left = 136
+      Left = 132
       Top = 136
       Width = 75
       Height = 25
@@ -126,11 +126,11 @@ inherited CommandLineDlg: TCommandLineDlg
       ModalResult = 1
       TabOrder = 1
       OnClick = OKButtonClick
-      ExplicitLeft = 144
-      ExplicitTop = 137
+      ExplicitLeft = 128
+      ExplicitTop = 135
     end
     object btnCancel: TButton
-      Left = 230
+      Left = 226
       Top = 136
       Width = 75
       Height = 25
@@ -139,11 +139,11 @@ inherited CommandLineDlg: TCommandLineDlg
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 2
-      ExplicitLeft = 238
-      ExplicitTop = 137
+      ExplicitLeft = 222
+      ExplicitTop = 135
     end
     object btnHelp: TButton
-      Left = 325
+      Left = 321
       Top = 136
       Width = 75
       Height = 25
@@ -151,8 +151,8 @@ inherited CommandLineDlg: TCommandLineDlg
       Caption = '&Help'
       TabOrder = 3
       OnClick = btnHelpClick
-      ExplicitLeft = 333
-      ExplicitTop = 137
+      ExplicitLeft = 317
+      ExplicitTop = 135
     end
   end
   object TBXPopupHistory: TSpTBXPopupMenu

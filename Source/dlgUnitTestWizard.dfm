@@ -60,7 +60,7 @@ inherited UnitTestWizard: TUnitTestWizard
     object ExplorerTree: TVirtualStringTree
       Left = 5
       Top = 106
-      Width = 422
+      Width = 418
       Height = 338
       Anchors = [akLeft, akTop, akRight, akBottom]
       BevelKind = bkSoft
@@ -89,7 +89,7 @@ inherited UnitTestWizard: TUnitTestWizard
       Columns = <>
     end
     object OKButton: TButton
-      Left = 81
+      Left = 77
       Top = 454
       Width = 75
       Height = 25
@@ -98,11 +98,11 @@ inherited UnitTestWizard: TUnitTestWizard
       Default = True
       ModalResult = 1
       TabOrder = 1
-      ExplicitLeft = 77
+      ExplicitLeft = 73
       ExplicitTop = 453
     end
     object BitBtn2: TButton
-      Left = 177
+      Left = 173
       Top = 454
       Width = 75
       Height = 25
@@ -111,11 +111,11 @@ inherited UnitTestWizard: TUnitTestWizard
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 2
-      ExplicitLeft = 173
+      ExplicitLeft = 169
       ExplicitTop = 453
     end
     object HelpButton: TButton
-      Left = 273
+      Left = 269
       Top = 454
       Width = 75
       Height = 25
@@ -123,7 +123,7 @@ inherited UnitTestWizard: TUnitTestWizard
       Caption = '&Help'
       TabOrder = 3
       OnClick = HelpButtonClick
-      ExplicitLeft = 269
+      ExplicitLeft = 265
       ExplicitTop = 453
     end
   end

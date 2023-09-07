@@ -10,7 +10,6 @@ unit cTools;
 
 interface
 uses
-  System.SysUtils,
   System.Classes,
   Vcl.ActnList;
 
@@ -168,6 +167,7 @@ implementation
 
 uses
   Winapi.Windows,
+  System.SysUtils,
   Vcl.Menus,
   JclStrings,
   JvGnuGetText,

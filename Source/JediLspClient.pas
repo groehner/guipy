@@ -12,16 +12,12 @@ interface
 
 uses
   Winapi.Windows,
-  System.Classes,
-  System.SyncObjs,
   System.Generics.Collections,
   System.JSON,
   JclNotify,
   LspClient,
-  SynEditTypes,
   SynEdit,
-  LspUtils,
-  uEditAppIntfs;
+  LspUtils;
 
 type
 
@@ -96,16 +92,19 @@ uses
   System.Character,
   System.SysUtils,
   System.IOUtils,
-  System.Threading,
   System.RegularExpressions,
   System.Generics.Defaults,
+  System.Classes,
+  System.SyncObjs,
   dmResources,
   dmCommands,
   uCommonFunctions,
   SynEditLsp,
+  SynEditTypes,
   cPyScripterSettings,
   StringResources,
-  JvGnugettext;
+  JvGnugettext,
+  uEditAppIntfs;
 
 { TJedi }
 

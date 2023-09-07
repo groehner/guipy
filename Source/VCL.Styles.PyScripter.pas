@@ -29,8 +29,6 @@ unit VCL.Styles.PyScripter;
 interface
 uses
   WinApi.Windows,
-  Winapi.UxTheme,
-  System.Types,
   System.Classes,
   Vcl.Graphics,
   Vcl.Controls,
@@ -92,8 +90,7 @@ type
 implementation
 uses
   System.SysUtils,
-  Vcl.Forms,
-  SynEdit;
+  System.Types;
 
 { TVclStylePreview }
 

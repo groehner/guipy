@@ -28,19 +28,15 @@ interface
 uses
   Winapi.Windows,
   Winapi.Messages,
-  System.SysUtils,
   System.Classes,
   Vcl.Graphics,
   Vcl.Forms,
   Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
-  Vcl.Menus,
   Vcl.ImgList,
   SynEditTypes,
-  SynEditKeyCmds,
-  SynEdit,
-  SynUnicode;
+  SynEdit;
 
 type
   SynCompletionType = (ctCode, ctHint, ctParams);
@@ -561,11 +557,12 @@ implementation
 
 uses
   System.Math,
-  Vcl.Themes,
+  System.SysUtils,
   System.Types,
   System.UITypes,
-  SynEditTextBuffer,
-  SynEditMiscProcs,
+  Vcl.Themes,
+  Vcl.Menus,
+  SynEditKeyCmds,
   SynEditKeyConst,
   JvGnugettext;
 

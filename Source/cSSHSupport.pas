@@ -10,7 +10,7 @@ unit cSSHSupport;
 
 interface
 
-Uses
+uses
   System.SysUtils,
   System.Classes,
   System.RegularExpressions,
@@ -374,6 +374,7 @@ begin
       ErrorMsg := Format(_(SScpErrorOther), [Output, Error]);
   end;
 end;
+
 
 function TSSHServices.ScpDownload(const ServerName, RemoteFile,
   LocalFile: string; out ErrorMsg: string): boolean;

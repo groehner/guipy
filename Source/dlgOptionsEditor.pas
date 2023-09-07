@@ -11,10 +11,9 @@ unit dlgOptionsEditor;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Buttons, dlgPyIDEBase, zBase,
+  Classes, Controls, dlgPyIDEBase,
   zObjInspector, Vcl.ExtCtrls, System.Generics.Collections,
-  cPyScripterSettings, Vcl.StdCtrls;
+  cPyScripterSettings, Vcl.StdCtrls, zBase;
 
 type
 
@@ -56,6 +55,9 @@ function InspectOptions(OptionsObject : TBaseOptions;
   HelpCntxt : integer = 0; ShowCategories: boolean = True): boolean;
 
 implementation
+
+uses
+  Forms, SysUtils;
 
 {$R *.dfm}
 

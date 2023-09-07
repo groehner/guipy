@@ -14,7 +14,6 @@ uses
   WinApi.Windows,
   WinApi.Messages,
   System.SysUtils,
-  System.Variants,
   System.Classes,
   System.Actions,
   System.ImageList,

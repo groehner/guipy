@@ -3,7 +3,7 @@ unit UImages;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, ImgList, Controls, System.ImageList;
+   Classes, Controls, ImgList, System.ImageList;
 
 type
   TDMImages = class(TDataModule)

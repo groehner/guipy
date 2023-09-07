@@ -11,9 +11,9 @@ unit UStructogram;
 interface
 
 uses
-  Windows, Messages, Buttons, Classes, Controls, ExtCtrls, Forms, Graphics,
-  ComCtrls, Menus, StdCtrls, Vcl.ToolWin, System.ImageList, Vcl.ImgList,
-  SpTBXSkins, frmFile, UTypes, SpTBXItem, TB2Item;
+  Windows, Messages, Classes, Controls, ExtCtrls, Forms, Graphics,
+  ComCtrls, StdCtrls, Vcl.ToolWin, System.ImageList, Vcl.ImgList,
+  SpTBXSkins, frmFile, UTypes, SpTBXItem, TB2Item, Vcl.Menus;
 
 type
 
@@ -182,10 +182,10 @@ implementation
 
 {$R *.DFM}
 
-uses SysUtils, Math, Printers, Clipbrd, Dialogs, Themes, Types, UITypes,
+uses SysUtils, Math, Clipbrd, Dialogs, Themes, Types, UITypes, Buttons,
      JvGnugettext, StringResources, IOUtils, UUtils, UConfiguration,
      frmPyIDEMain, uEditAppIntfs, uCommonFunctions,
-     cPyScripterSettings, frmMessages, UObjectGenerator, UGenerateStructogram;
+     cPyScripterSettings, frmMessages, UGenerateStructogram;
 
 procedure TFStructogram.FormCreate(Sender: TObject);
 begin

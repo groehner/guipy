@@ -12,7 +12,6 @@ unit cPythonSourceScanner;
 interface
 
 uses
-  System.SysUtils,
   System.Classes,
   System.Contnrs,
   System.RegularExpressions,
@@ -250,25 +249,15 @@ Type
   Var
     AsynchSourceScannerFactory : TAsynchSourceScannerFactory;
 
-  function CodeBlock(StartLine, EndLine : integer) : TCodeBlock;
-  function GetExpressionBuiltInType(Expr : string; Var IsBuiltIn : boolean) : string;
-  function GetExpressionType(Expr: string; var VarAtts: TVariableAttributes): string;
-
 implementation
 
 uses
   WinApi.Windows,
-  System.Math,
-  VarPyth,
+  System.SysUtils,
   JclStrings,
-  JvGnugettext,
   SynCompletionProposal,
-  StringResources,
-  uEditAppIntfs,
   uCommonFunctions,
   cPySupportTypes,
-  cPyBaseDebugger,
-  cSSHSupport,
   uUtils;
 
 Const
@@ -276,6 +265,12 @@ Const
 
 Var
   DocStringRE : TRegEx;
+
+function CodeBlock(StartLine, EndLine : integer) : TCodeBlock;
+begin
+  Result.StartLine := StartLine;
+  Result.EndLine := EndLine;
+end;
 
 function HaveImplicitContinuation(S : string; var BracesCount : integer) : Boolean;
 var
@@ -310,6 +305,62 @@ begin
   if i < Match.Groups.Count
     then Result:= Match.Groups[i].Length
     else Result:= 0;
+end;
+
+function GetExpressionBuiltInType(Expr : string; Var IsBuiltIn : boolean) : string;
+Var
+  i :  integer;
+begin
+  Result := '';
+  IsBuiltIn := False;
+
+  Expr := Trim(Expr);
+  if (Expr = '') or (Word(Expr[1]) > $FF) then Exit;
+
+  IsBuiltIn := True;
+  case Expr[1] of
+    '"','''' : Result := 'str';
+    '0'..'9', '+', '-' :
+      begin
+        Result := 'int';
+        for i := 2 to Length(Expr) - 1 do begin
+          if Expr[i] = '.' then begin
+            Result := 'float';
+            break;
+          end else if not CharInSet(Expr[i], ['0'..'9', '+', '-']) then
+            break;
+        end;
+      end;
+    '{' :
+      if (CharPos(Expr, ',') = 0) or (CharPos(Expr, ':') <> 0) then
+        Result := 'dict'
+      else
+        Result := 'set';
+    '[': Result := 'list';
+  else
+    if (Expr[1] = '(') and (CharPos(Expr, ',') <> 0) then
+      Result := 'tuple'  // speculative
+    else
+      IsBuiltIn := False;
+  end;
+end;
+
+function GetExpressionType(Expr: string; var VarAtts: TVariableAttributes): string;
+Var
+  IsBuiltInType : Boolean;
+begin
+  if Expr.Length = 0 then Exit('');
+
+  var Match:= TPyRegExpr.FunctionCallRE.Match(Expr);
+  if Match.Success then begin
+    Result := getGroup(Match, 1);
+    if getGroup(Match, 2) <> '' then  //= '('
+    Include(VarAtts, vaCall);
+  end else begin
+    Result := GetExpressionBuiltInType(Expr, IsBuiltInType);
+    if IsBuiltInType then
+      Include(VarAtts, vaBuiltIn);
+  end;
 end;
 
 { Code Ellement }
@@ -1400,68 +1451,6 @@ begin
   FreeAndNil(fSuperClasses);
   FreeAndNil(fAttributes);
   inherited;
-end;
-
-function CodeBlock(StartLine, EndLine : integer) : TCodeBlock;
-begin
-  Result.StartLine := StartLine;
-  Result.EndLine := EndLine;
-end;
-
-function GetExpressionType(Expr: string; var VarAtts: TVariableAttributes): string;
-Var
-  IsBuiltInType : Boolean;
-begin
-  if Expr.Length = 0 then Exit('');
-
-  var Match:= TPyRegExpr.FunctionCallRE.Match(Expr);
-  if Match.Success then begin
-    Result := getGroup(Match, 1);
-    if getGroup(Match, 2) <> '' then  //= '('
-    Include(VarAtts, vaCall);
-  end else begin
-    Result := GetExpressionBuiltInType(Expr, IsBuiltInType);
-    if IsBuiltInType then
-      Include(VarAtts, vaBuiltIn);
-  end;
-end;
-
-function GetExpressionBuiltInType(Expr : string; Var IsBuiltIn : boolean) : string;
-Var
-  i :  integer;
-begin
-  Result := '';
-  IsBuiltIn := False;
-
-  Expr := Trim(Expr);
-  if (Expr = '') or (Word(Expr[1]) > $FF) then Exit;
-
-  IsBuiltIn := True;
-  case Expr[1] of
-    '"','''' : Result := 'str';
-    '0'..'9', '+', '-' :
-      begin
-        Result := 'int';
-        for i := 2 to Length(Expr) - 1 do begin
-          if Expr[i] = '.' then begin
-            Result := 'float';
-            break;
-          end else if not CharInSet(Expr[i], ['0'..'9', '+', '-']) then
-            break;
-        end;
-      end;
-    '{' :
-      if (CharPos(Expr, ',') = 0) or (CharPos(Expr, ':') <> 0) then
-        Result := 'dict'
-      else
-        Result := 'set';
-    '[': Result := 'list';
-  else
-    if (Expr[1] = '(') and (CharPos(Expr, ',') <> 0) then
-      Result := 'tuple'  // speculative
-    else
-      IsBuiltIn := False;
-  end;
 end;
 
 { TBaseCodeElement }

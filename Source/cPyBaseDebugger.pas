@@ -9,11 +9,8 @@ unit cPyBaseDebugger;
 
 interface
 uses
-  WinApi.Windows,
-  System.SysUtils,
   System.Classes,
   System.Generics.Collections,
-  Vcl.Forms,
   uEditAppIntfs,
   cPySupportTypes,
   PythonEngine;
@@ -219,17 +216,14 @@ Const
 implementation
 
 uses
-  System.UITypes,
-  System.Contnrs,
+  System.SysUtils,
   System.IOUtils,
   Vcl.Dialogs,
-  VarPyth,
   JvGnuGettext,
   JclSysInfo,
   StringResources,
   uCommonFunctions,
   cPyControl,
-  cPyDebugger,
   cPyScripterSettings,
   cSSHSupport;
 

@@ -1850,7 +1850,6 @@ object StyleSelectorForm: TStyleSelectorForm
     0000000000000000000000000000000000F01FAC41E007AC418003AC418001AC
     410001AC410000AC410000AC410000AC410000AC410000AC410000AC410001AC
     418001AC41C003AC41E007AC41F01FAC41}
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -1858,7 +1857,6 @@ object StyleSelectorForm: TStyleSelectorForm
   DesignSize = (
     726
     487)
-  PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 8
@@ -1911,6 +1909,7 @@ object StyleSelectorForm: TStyleSelectorForm
     Default = True
     ModalResult = 1
     TabOrder = 0
+    ExplicitTop = 445
   end
   object ActionManager1: TActionManager
     Left = 296

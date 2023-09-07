@@ -15,7 +15,7 @@ object DocForm: TDocForm
     Width = 459
     Height = 30
     AllowDrag = False
-    ExplicitWidth = 463
+    ExplicitWidth = 455
     object TBXToolbar1: TSpTBXToolbar
       Left = 0
       Top = 0
@@ -76,6 +76,8 @@ object DocForm: TDocForm
     OnCreateWebViewCompleted = WebBrowserCreateWebViewCompleted
     OnExecuteScript = WebBrowserExecuteScript
     OnHistoryChanged = WebBrowserHistoryChanged
+    ExplicitWidth = 455
+    ExplicitHeight = 414
   end
   object BrowserImages: TVirtualImageList
     Images = <

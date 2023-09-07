@@ -18,9 +18,8 @@ unit UQtFrameBased;
 
 interface
 
-
 uses
-  Windows, Messages, Controls, Graphics, Classes, UBaseQtWidgets;
+  Windows, Graphics, Classes, UBaseQtWidgets;
 
 type
   TFrameShape = (NoFrame, Box, Panel, WinPanel, HLine, VLine, StyledPanel);
@@ -221,7 +220,7 @@ type
 
 implementation
 
-uses SysUtils, Math, Types, UUtils, UGuiDesigner, UObjectInspector;
+uses  Controls, SysUtils, Math, Types,  UUtils, UGuiDesigner;
 
 {--- TQtFrame -----------------------------------------------------------------}
 

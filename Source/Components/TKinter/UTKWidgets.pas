@@ -10,7 +10,7 @@ unit UTKWidgets;
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, UBaseTKWidgets;
+  Windows, Classes, Graphics, UBaseTKWidgets;
 
 type
 
@@ -55,7 +55,7 @@ type
 
 implementation
 
-uses Math;
+uses Math, SysUtils;
 
 {--- TKWidget ------------------------------------------------------------------}
 

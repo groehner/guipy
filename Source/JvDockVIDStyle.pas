@@ -34,7 +34,7 @@ uses
   JclUnitVersioning,
   {$ENDIF UNITVERSIONING}
   Windows, Messages, Classes, Graphics, Controls, ComCtrls, ImgList,
-  JvConsts, JvDockControlForm, JvDockSupportControl, JvDockTree,
+  JvDockControlForm, JvDockSupportControl, JvDockTree,
   JvDockAdvTree, JvDockGlobals;
 
 type

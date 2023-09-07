@@ -3,33 +3,17 @@ unit dlgPythonVersions;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
   System.Classes,
-  System.UITypes,
-  System.Actions,
-  System.ImageList,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.ActnList,
-  Vcl.ImgList,
   Vcl.VirtualImageList,
-  TB2Dock,
-  TB2Toolbar,
   SpTBXItem,
-  TB2Item,
-  VirtualTrees.Types,
-  VirtualTrees.BaseAncestorVCL,
-  VirtualTrees.AncestorVCL,
   VirtualTrees.BaseTree,
   VirtualTrees,
-  dlgPyIDEBase;
+  dlgPyIDEBase, System.ImageList, Vcl.ImgList, System.Actions, TB2Item, TB2Dock,
+  TB2Toolbar, VirtualTrees.BaseAncestorVCL, VirtualTrees.AncestorVCL,
+  System.UITypes,
+  Vcl.Controls;
 
 type
   TPythonVersionsDialog = class(TPyIDEDlgBase)
@@ -92,7 +76,11 @@ implementation
 {$R *.dfm}
 
 Uses
+  Winapi.Windows,
   Winapi.ShellAPI,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  System.SysUtils,
   Vcl.FileCtrl,
   JvGnuGetText,
   StringResources,
@@ -100,6 +88,7 @@ Uses
   uCommonFunctions,
   cPyControl,
   PythonVersions,
+  VirtualTrees.Types,
   dmResources;
 
 procedure TPythonVersionsDialog.actlPythonVersionsUpdate(Action: TBasicAction;

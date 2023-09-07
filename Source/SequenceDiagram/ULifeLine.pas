@@ -10,10 +10,7 @@ unit ULifeLine;
 interface
 
 uses
-  Windows, Messages, Classes, Graphics, UPanelTransparent, USequencePanel;
-
-const
-  cPadding: Integer = 20;
+  Classes, Graphics, UPanelTransparent, USequencePanel;
 
 type
   TLifeLine = class(TPanelTransparent)
@@ -54,7 +51,7 @@ type
 implementation
 
 uses
-  Types, Controls, Math, SysUtils, UITypes, Themes, UConfiguration;
+  Windows, Types, Controls, Math, SysUtils, UITypes, Themes, UConfiguration;
 
 constructor TLifeLine.CreateLL(aOwner: TComponent; const aParticipant: String; aFont: TFont);
 begin
@@ -72,6 +69,7 @@ begin
 end;
 
 procedure TLifeLine.SetFont(aFont: TFont);
+  const cPadding: Integer = 20;
 begin
   Canvas.Font.Assign(aFont);
   DistY:= Round(cDistY*Font.Size/12.0);

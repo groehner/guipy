@@ -10,19 +10,10 @@ unit dlgUnitTestWizard;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.UITypes,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
   System.ImageList,
   System.JSON,
-  Vcl.Graphics,
+  System.Classes,
   Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.Buttons,
   Vcl.Menus,
   Vcl.ExtCtrls,
   Vcl.StdCtrls,
@@ -85,9 +76,11 @@ type
 implementation
 
 uses
+  System.UITypes,
+  System.SysUtils,
   System.Generics.Collections,
+  Vcl.Forms,
   JvJVCLUtils,
-  SpTBXSkins,
   JvGnugettext,
   dmResources,
   uCommonFunctions,

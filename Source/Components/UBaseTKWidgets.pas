@@ -10,8 +10,8 @@ unit UBaseTKWidgets;
 interface
 
 uses
-  Windows, Messages, Controls, Graphics, Classes,
-  ELEvents, UBaseWidgets, frmEditor;
+  Windows, Graphics, Classes,
+  ELEvents, UBaseWidgets;
 
 type
 
@@ -165,8 +165,11 @@ type
 
 implementation
 
-uses SysUtils, TypInfo, Math, UITypes, UGuiForm, UTKMiscBase, UTTKMiscBase,
-     UGUIDesigner, UObjectInspector, ULink, UConfiguration, UUtils;
+uses Math, Controls, SysUtils, UITypes,
+     UGuiForm, UTKMiscBase, UTTKMiscBase,
+     UGUIDesigner, UObjectInspector, UUtils, ULink, frmEditor;
+
+const CrLf = #13#10;
 
 constructor TBaseTkWidget.create(aOwner: TComponent);
 begin

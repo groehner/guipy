@@ -9,10 +9,8 @@ unit LspUtils;
 interface
 
 uses
-  System.SysUtils,
   System.JSON,
-  System.Generics.Collections,
-  WinApi.Windows;
+  System.Generics.Collections;
 
 
 type
@@ -123,6 +121,7 @@ implementation
 uses
   System.Character,
   System.NetEncoding,
+  System.SysUtils,
   cSSHSupport,
   uCommonFunctions;
 

@@ -31,6 +31,8 @@ object FStructogram: TFStructogram
     TabOrder = 0
     OnClick = ScrollBoxClick
     OnMouseMove = ScrollBoxMouseMove
+    ExplicitWidth = 703
+    ExplicitHeight = 609
   end
   object PanelLeft: TPanel
     Left = 0
@@ -40,6 +42,7 @@ object FStructogram: TFStructogram
     Align = alLeft
     ParentBackground = False
     TabOrder = 1
+    ExplicitHeight = 609
     object TrashImage: TImage
       Left = 1
       Top = 287

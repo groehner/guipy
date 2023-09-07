@@ -3,9 +3,9 @@ unit UObjectInspector;
 interface
 
 uses
-  Windows, Messages, Classes, Graphics, Controls, ComCtrls, StdCtrls, ExtCtrls,
-  TypInfo, Menus, Forms, JvAppStorage, frmIDEDockWin, ELDsgnr, ELPropInsp,
-  TB2Item, SpTBXItem;
+  Classes, Graphics, Controls, ComCtrls, StdCtrls, ExtCtrls, TypInfo,
+  JvAppStorage, frmIDEDockWin, ELDsgnr, ELPropInsp, SpTBXItem, TB2Item,
+  Vcl.Menus;
 
 type
 
@@ -100,10 +100,10 @@ var
 
 implementation
 
-uses SysUtils, Dialogs, Clipbrd, Math, Themes, JvGnugettext, StringResources,
-     UGUIForm, UGUIDesigner, ULink, UObjectGenerator, frmPyIDEMain,
-     UConfiguration, UUtils, UBaseWidgets, UBaseQtWidgets, ELEvents, frmFile, frmEditor,
-     dmResources;
+uses SysUtils, Dialogs, Clipbrd, Math, Themes, Forms, JvGnugettext,
+     UGUIForm, UGUIDesigner, ULink, UObjectGenerator,
+     UConfiguration, UUtils, UBaseWidgets, UBaseQtWidgets, ELEvents,
+     frmEditor, dmResources;
 
 {$R *.dfm}
 

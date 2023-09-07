@@ -10,7 +10,7 @@ unit ULivingObjects;
 interface
 
 uses
-  Classes, Types, cPyControl, cPyBaseDebugger, ComCtrls;
+  Classes, cPyBaseDebugger;
 
 type
 
@@ -63,8 +63,8 @@ type
 implementation
 
 uses
-  Windows, Forms, SysUtils, Variants, JvJVCLUtils, SynEditKeyCmds, cInternalPython,
-  frmVariables, frmCallStack, frmPythonII, uEditAppIntfs, uCommonFunctions,
+  Windows, Forms, SysUtils, Variants, Types, JvJVCLUtils, SynEditKeyCmds,
+  cPyControl, frmVariables, frmPythonII, uEditAppIntfs, uCommonFunctions,
   UConfiguration, UUtils;
 
 constructor TLivingObjects.Create;

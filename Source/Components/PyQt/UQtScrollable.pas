@@ -23,7 +23,7 @@ unit UQtScrollable;
 interface
 
 uses
-  Windows, Messages, Controls, Graphics, Classes,
+  Windows, Graphics, Classes,
   UBaseQtWidgets, UQtFrameBased;
 
 type
@@ -440,7 +440,7 @@ type
 
 implementation
 
-uses SysUtils, Types, Math, Forms, UUtils;
+uses Controls, SysUtils, Types, Math, UUtils;
 
 {--- TQtAbstractScrollArea ----------------------------------------------------}
 
@@ -709,7 +709,7 @@ end;
 procedure TQtPlainTextEdit.setTabChangesFocus(Value: boolean);
 begin
   if Value <> FTabChangesFocus then begin
-    TabChangesFocus:= Value;
+    FTabChangesFocus:= Value;
     Invalidate;
   end;
 end;

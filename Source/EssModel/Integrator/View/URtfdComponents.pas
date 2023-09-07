@@ -302,7 +302,7 @@ type
 
 implementation
 
-uses SysUtils, Forms, Themes, UITypes, Types, Math, Dialogs, ExtCtrls, Clipbrd,
+uses SysUtils, Forms, Themes, UITypes, Types, Math, ExtCtrls,
      StrUtils, uIterators, uConfiguration, uViewIntegrator, UImages, frmPyIDEMain;
 
 const

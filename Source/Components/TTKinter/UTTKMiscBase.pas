@@ -27,7 +27,7 @@ unit UTTKMiscBase;
 interface
 
 uses
-  Windows, Messages, Classes, Controls, Graphics, UBaseTkWidgets, UTtkWidgets;
+  Classes, UTtkWidgets;
 
 type
 
@@ -308,9 +308,8 @@ type
 
 implementation
 
-uses Math, SysUtils, Forms, UITypes, GraphUtil, JvGnugettext,
-     UUtils, UImages, UConfiguration, UObjectGenerator, UObjectInspector,
-     UGUIDesigner, ULink;
+uses Math, Windows, Controls, Graphics, SysUtils,
+     JvGnugettext, UBaseTkWidgets, UUtils, UConfiguration;
 
 {--- TButtonBaseWidget --------------------------------------------------------}
 

@@ -8,12 +8,10 @@ object ELStringsEditorDlg: TELStringsEditorDlg
   ClientWidth = 431
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = False
   Position = poScreenCenter
   OnActivate = FormActivate
   OnResize = FormResize
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object lbLineCount: TLabel
     Left = 12
     Top = 12

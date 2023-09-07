@@ -12,12 +12,13 @@ unit UHashUnit;
 
 interface
 
-uses
-  Windows, Messages, SysUtils;
 
 function HashLine(const line: string; IgnoreCase, IgnoreBlanks: boolean): integer;
 
 implementation
+
+uses
+  Windows, SysUtils;
 
 const
   table:  ARRAY[0..255] OF DWORD =

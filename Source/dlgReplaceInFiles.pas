@@ -46,12 +46,10 @@ interface
 
 uses
   System.Classes,
-  Vcl.Controls,
   Vcl.ExtCtrls,
   Vcl.StdCtrls,
-  Vcl.Forms,
   cFindInFiles,
-  dlgPyIDEBase;
+  dlgPyIDEBase, Vcl.Controls;
 
 type
   TReplaceInFilesDialog = class(TPyIDEDlgBase)
@@ -88,6 +86,7 @@ implementation
 
 uses
   System.SysUtils,
+  Vcl.Forms,
   frmFindResults;
 
 constructor TReplaceInFilesDialog.Create(AOwner: TComponent);

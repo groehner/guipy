@@ -85,7 +85,7 @@ inherited CustomizeParams: TCustomizeParams
       TabOrder = 7
     end
     object btnOK: TButton
-      Left = 370
+      Left = 362
       Top = 307
       Width = 75
       Height = 25
@@ -94,11 +94,11 @@ inherited CustomizeParams: TCustomizeParams
       Default = True
       ModalResult = 1
       TabOrder = 1
-      ExplicitLeft = 366
+      ExplicitLeft = 358
       ExplicitTop = 306
     end
     object btnCancel: TButton
-      Left = 450
+      Left = 442
       Top = 307
       Width = 75
       Height = 25
@@ -107,18 +107,18 @@ inherited CustomizeParams: TCustomizeParams
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 8
-      ExplicitLeft = 446
+      ExplicitLeft = 438
       ExplicitTop = 306
     end
     object GroupBox1: TGroupBox
       Left = 10
       Top = 215
-      Width = 524
+      Width = 516
       Height = 82
       Anchors = [akLeft, akTop, akRight, akBottom]
       Caption = 'Name-Value Pair'
       TabOrder = 2
-      ExplicitWidth = 520
+      ExplicitWidth = 512
       ExplicitHeight = 81
       object Label1: TLabel
         Left = 14

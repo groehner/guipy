@@ -1,5 +1,4 @@
 object DMImages: TDMImages
-  OldCreateOrder = False
   Height = 291
   Width = 541
   object ILBookmarksLight: TImageList

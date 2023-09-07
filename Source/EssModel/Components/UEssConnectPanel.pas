@@ -38,8 +38,8 @@ unit UEssConnectPanel;
 interface
 
 uses
-  Windows, Messages, Menus, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, Contnrs, UUtils, UConnection;
+  Windows, Messages, Menus, Classes, Graphics, Controls, Forms,
+  ExtCtrls, Contnrs, UUtils, UConnection;
 
 const
   HANDLESIZE: Integer = 8;
@@ -276,9 +276,8 @@ type
 
 implementation
 
-uses Math, Types, UITypes, StdCtrls, Themes,
-     UStyledMemo, UModel, UModelEntity,
-     UConfiguration, UAssociation, URtfdComponents;
+uses Math, Types, UITypes, StdCtrls, Themes, SysUtils,
+     UModel, UModelEntity, UConfiguration, UAssociation, URtfdComponents;
 
 
 {--- TessConnectPanel ---------------------------------------------------------}

@@ -11,20 +11,17 @@ unit frmIDEDockWin;
 interface
 
 uses
+  System.Classes,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
-  System.Variants,
-  System.Classes,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.ExtCtrls,
-  JvComponentBase,
   JvDockControlForm,
-  SpTBXSkins,
-  SpTBXItem;
+  JvComponentBase,
+  SpTBXSkins;
 
 type
   TIDEDockWindow = class(TForm)
@@ -61,7 +58,6 @@ implementation
 uses
   Vcl.Themes,
   SVG,
-  SVGIconImageCollection,
   dmResources,
   uCommonFunctions;
 

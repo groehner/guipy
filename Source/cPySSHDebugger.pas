@@ -13,14 +13,8 @@ interface
 
 uses
   WinApi.Windows,
-  System.UITypes,
-  System.SysUtils,
-  System.Classes,
   System.Threading,
   uSysUtils,
-  PythonEngine,
-  cPyBaseDebugger,
-  cPyDebugger,
   cPyRemoteDebugger,
   cSSHSupport;
 
@@ -64,17 +58,16 @@ type
 implementation
 
 Uses
+  System.UITypes,
+  System.SysUtils,
+  System.Classes,
   Vcl.Dialogs,
-  Vcl.Forms,
   JvGNUGetText,
+  MPCommonUtilities,
   StringResources,
   cPySupportTypes,
-  cPyScripterSettings,
-  System.StrUtils,
   uEditAppIntfs,
-  uCommonFunctions,
-  cPyControl,
-  MPCommonUtilities;
+  uCommonFunctions;
 
 { TPySSHInterpreter }
 

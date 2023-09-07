@@ -34,7 +34,7 @@ inherited DirectoryListDialog: TDirectoryListDialog
       ParentColor = False
     end
     object btnMoveUp: TButton
-      Left = 341
+      Left = 337
       Top = 96
       Width = 28
       Height = 24
@@ -46,10 +46,10 @@ inherited DirectoryListDialog: TDirectoryListDialog
       Images = vilImages
       TabOrder = 1
       OnClick = btnMoveUpClick
-      ExplicitLeft = 337
+      ExplicitLeft = 333
     end
     object btnMoveDown: TButton
-      Left = 341
+      Left = 337
       Top = 126
       Width = 28
       Height = 24
@@ -61,12 +61,12 @@ inherited DirectoryListDialog: TDirectoryListDialog
       Images = vilImages
       TabOrder = 2
       OnClick = btnMoveDownClick
-      ExplicitLeft = 337
+      ExplicitLeft = 333
     end
     object DirectoryList: TListBox
       Left = 10
       Top = 34
-      Width = 328
+      Width = 324
       Height = 189
       Anchors = [akLeft, akTop, akRight, akBottom]
       DragMode = dmAutomatic
@@ -75,7 +75,7 @@ inherited DirectoryListDialog: TDirectoryListDialog
       OnClick = DirectoryListClick
       OnDragDrop = DirectoryListDragDrop
       OnDragOver = DirectoryListDragOver
-      ExplicitWidth = 324
+      ExplicitWidth = 320
       ExplicitHeight = 188
     end
   end
@@ -160,7 +160,7 @@ inherited DirectoryListDialog: TDirectoryListDialog
     object edPath: TButtonedEdit
       Left = 10
       Top = 6
-      Width = 328
+      Width = 324
       Height = 23
       Hint = 'Enter file path here'
       Anchors = [akLeft, akTop, akRight]
@@ -172,7 +172,7 @@ inherited DirectoryListDialog: TDirectoryListDialog
       TabOrder = 3
       OnChange = edPathChange
       OnRightButtonClick = BtnPathClick
-      ExplicitWidth = 324
+      ExplicitWidth = 320
     end
   end
   object vilImages: TVirtualImageList

@@ -5,10 +5,9 @@ inherited NewFileDialog: TNewFileDialog
   ClientWidth = 466
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ExplicitWidth = 472
-  ExplicitHeight = 326
-  PixelsPerInch = 96
-  TextHeight = 14
+  ExplicitWidth = 478
+  ExplicitHeight = 335
+  TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
@@ -16,6 +15,8 @@ inherited NewFileDialog: TNewFileDialog
     Height = 297
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 462
+    ExplicitHeight = 296
     object Panel2: TPanel
       Left = 1
       Top = 1
@@ -23,6 +24,7 @@ inherited NewFileDialog: TNewFileDialog
       Height = 255
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 460
       object Splitter1: TSplitter
         Left = 186
         Top = 1
@@ -40,8 +42,8 @@ inherited NewFileDialog: TNewFileDialog
         object Label1: TLabel
           Left = 9
           Top = 7
-          Width = 55
-          Height = 14
+          Width = 59
+          Height = 15
           Caption = 'Categories:'
         end
         object tvCategories: TVirtualStringTree
@@ -73,11 +75,12 @@ inherited NewFileDialog: TNewFileDialog
         Height = 253
         Align = alClient
         TabOrder = 1
+        ExplicitWidth = 270
         object Label2: TLabel
           Left = 6
           Top = 7
-          Width = 51
-          Height = 14
+          Width = 56
+          Height = 15
           Caption = 'Templates:'
         end
         object lvTemplates: TListView
@@ -92,6 +95,7 @@ inherited NewFileDialog: TNewFileDialog
           TabOrder = 0
           OnDblClick = lvTemplatesDblClick
           OnSelectItem = lvTemplatesSelectItem
+          ExplicitWidth = 268
         end
       end
     end

@@ -3,8 +3,7 @@ unit dlgPyIDEBase;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs;
+  Forms;
 
 type
   TPyIDEDlgBase = class(TForm)

@@ -14,9 +14,8 @@ unit UGUIForm;
 }
 interface
 
-uses SysUtils, Messages, Windows, Classes, Graphics, Forms, Controls,
-  ComCtrls, Dialogs, Buttons, Grids, ExtCtrls, StdCtrls,
-  uEditAppIntfs, frmFile, frmEditor, ELEvents, UBaseWidgets;
+uses Messages, Windows, Classes, Graphics, Forms,
+     uEditAppIntfs, frmEditor, ELEvents, UBaseWidgets;
 
 type
 
@@ -185,8 +184,9 @@ type
 
 implementation
 
-uses Clipbrd, Themes, jvDockControlForm, frmPyIDEMain, cPyScripterSettings,
-     UGUIDesigner, UObjectGenerator, UObjectInspector, UUtils, ULink,
+uses Clipbrd, Themes, SysUtils, Controls, frmFile,
+     jvDockControlForm, frmPyIDEMain, cPyScripterSettings,
+     UGUIDesigner, UObjectGenerator, UObjectInspector, UUtils,
      UConfiguration, UXTheme, UQtWidgetDescendants, UBaseTKWidgets;
 
 {$R *.DFM}

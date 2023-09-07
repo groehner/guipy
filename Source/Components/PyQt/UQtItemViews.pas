@@ -21,8 +21,7 @@ unit UQtItemViews;
 interface
 
 uses
-  Windows, Messages, Controls, Graphics, Classes,
-  UBaseQtWidgets, UQtScrollable, UQtFrameBased;
+  Windows, Classes, UBaseQtWidgets, UQtScrollable;
 
 type
 
@@ -424,11 +423,9 @@ type
     property itemSelectionChanged: string read FItemSelectionChanged write FItemSelectionChanged;
   end;
 
-
-
 implementation
 
-uses SysUtils, Types, UITypes, Math, UUtils;
+uses Controls, Graphics, SysUtils, Types, UITypes, Math, UQtFrameBased, UUtils;
 
 {--- TQtAbstractItemView ------------------------------------------------------}
 

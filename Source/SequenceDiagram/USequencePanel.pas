@@ -276,7 +276,7 @@ type
 implementation
 
 uses Math, SysUtils, StdCtrls, Types, Themes, UITypes,
-     UUtils, USequenceForm, UConnectForm;
+     UUtils, UConnectForm;
 
 type
   TCrackControl = class(TControl)

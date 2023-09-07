@@ -20,7 +20,7 @@ unit UTKButtonBase;
 interface
 
 uses
-  Windows, Messages, Classes, Controls, Graphics, UBaseTkWidgets, UTkWidgets;
+  Classes, Graphics, UBaseTkWidgets, UTkWidgets;
 
 type
 
@@ -171,9 +171,7 @@ type
 
 implementation
 
-uses Math, SysUtils, System.Types, UITypes, UUtils, UImages, UConfiguration,
-     Vcl.Imaging.GIFImg, Vcl.Imaging.jpeg, Vcl.Imaging.pngimage,
-     UObjectGenerator, UObjectInspector, UGUIDesigner, ULink;
+uses Math, Controls, SysUtils, System.Types, UUtils, UImages;
 
 {--- TButtonBaseWidget --------------------------------------------------------}
 

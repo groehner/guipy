@@ -54,7 +54,7 @@ type
 
 implementation
 
-uses SysUtils, Math, uEditAppIntfs, frmEditor, UConfiguration, uCodeProvider;
+uses SysUtils, Math, uEditAppIntfs, frmEditor, UConfiguration;
 
 { TPythonImporter }
 

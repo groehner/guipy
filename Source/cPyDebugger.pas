@@ -11,14 +11,10 @@ unit cPyDebugger;
 interface
 
 uses
-  WinApi.Windows,
-  System.UITypes,
   System.SysUtils,
   System.Classes,
-  System.Contnrs,
   System.Generics.Collections,
   System.SyncObjs,
-  Vcl.Forms,
   PythonEngine,
   uEditAppIntfs,
   cPySupportTypes,
@@ -171,15 +167,16 @@ type
 implementation
 
 uses
+  WinApi.Windows,
   WinApi.MMSystem,
+  System.UITypes,
   System.Math,
-  System.Variants,
-  System.StrUtils,
   System.IOUtils,
+  System.Contnrs,
+  Vcl.Forms,
   Vcl.Dialogs,
   JvDSADialogs,
   JvGnugettext,
-  JclSysInfo,
   VarPyth,
   StringResources,
   uCommonFunctions,

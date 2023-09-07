@@ -23,7 +23,7 @@ unit UQtWidgetDescendants;
 interface
 
 uses
-  Windows, Messages, Controls, Graphics, Classes, UBaseQtWidgets;
+  Windows, Graphics, Classes, UBaseQtWidgets;
 
 type
 
@@ -447,7 +447,7 @@ type
 
 implementation
 
-uses SysUtils, Math, Types, UITypes, JvGnugettext, UImages, UUtils, UGUIDesigner;
+uses Controls, SysUtils, Math, Types, UITypes, JvGnugettext, UImages, UUtils;
 
 {--- TQtLineEdit --------------------------------------------------------------}
 

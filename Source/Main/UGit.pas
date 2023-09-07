@@ -3,8 +3,7 @@ unit UGit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics,
-  Controls, Forms, Dialogs, StdCtrls, ComCtrls, uEditAppIntfs, dlgPyIDEBase;
+  System.Classes, Vcl.Controls, StdCtrls, ComCtrls, uEditAppIntfs, dlgPyIDEBase;
 
 type
   TFGit = class(TPyIDEDlgBase)
@@ -18,7 +17,6 @@ type
     procedure ShowConsole(const Path: string);
     procedure ShowViewer(const Path: string);
   public
-    { Public declarations }
     procedure Execute(Tag: integer; aEditor: IEditor);
     function IsRepository(const Dir: string): boolean;
   end;
@@ -28,8 +26,9 @@ var
 
 implementation
 
-uses frmCommandOutput, cTools, JvDockControlForm, JvGnugettext,
-     StringResources, UConfiguration, UUtils, frmPyIDEMain, frmEditor;
+uses Windows, SysUtils, Forms, Dialogs,
+     frmCommandOutput, cTools, JvDockControlForm, JvGnugettext,
+     UConfiguration, UUtils, frmEditor;
 
 {$R *.dfm}
 

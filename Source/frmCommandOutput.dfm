@@ -42,19 +42,19 @@ inherited OutputWindow: TOutputWindow
     000000000000000000000000000000000000000000000000000000000000FFFF
     0000FFFF00000000000000000000000000000000000000000000000000000000
     0000000000000000000000000000000000000000000000000000FFFF0000}
-  ExplicitWidth = 544
-  ExplicitHeight = 334
+  ExplicitWidth = 536
+  ExplicitHeight = 322
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 528
     Height = 295
-    ExplicitWidth = 528
-    ExplicitHeight = 295
+    ExplicitWidth = 520
+    ExplicitHeight = 283
     inherited FGPanel: TPanel
       Width = 524
       Height = 291
-      ExplicitWidth = 524
-      ExplicitHeight = 291
+      ExplicitWidth = 516
+      ExplicitHeight = 279
       object lsbConsole: TListBox
         Left = 0
         Top = 0
@@ -75,6 +75,8 @@ inherited OutputWindow: TOutputWindow
         ParentFont = False
         PopupMenu = OutputPopup
         TabOrder = 0
+        ExplicitWidth = 516
+        ExplicitHeight = 279
       end
     end
   end
@@ -173,6 +175,6 @@ inherited OutputWindow: TOutputWindow
     Width = 20
     Height = 20
     Left = 24
-    Top = 240
+    Top = 208
   end
 end

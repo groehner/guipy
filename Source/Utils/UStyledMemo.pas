@@ -5,7 +5,7 @@ unit UStyledMemo;
 interface
 
 uses
-  Windows, Messages, Controls, StdCtrls, Classes, Themes, Grids;
+  Messages, Controls, StdCtrls;
 
 type
 
@@ -26,7 +26,7 @@ type
 implementation
 
 uses
-  Graphics, SysUtils, System.UITypes, SynEdit;
+  Windows, Themes, Graphics, UITypes;
 
 {--- TMemoStyleHook -----------------------------------------------------------}
 {--- https://theroadtodelphi.com/2012/02/06/changing-the-color-of-edit-controls-with-vcl-styles-enabled/ }

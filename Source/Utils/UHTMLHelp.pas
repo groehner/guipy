@@ -3,15 +3,9 @@ unit UHTMLHelp;
 interface
 
 uses
-  Windows, Messages, OleCtrls, SysUtils, Classes, Graphics, Controls,
-  Forms, Dialogs, ActiveX, ComObj, ComCtrls, ImgList;
-
+  Windows, ActiveX;
 
 //From KeyWorks CITS.H
-
-const
-  CLSID_ITStorage: TGUID = (D1:$5d02926a; D2:$212e; D3:$11d0; D4:($9d,$f9,$00,$a0,$c9,$22,$e6,$ec));
-  IID_ITStorage: TGUID = (D1:$88cc31de; D2:$27ab; D3:$11d0; D4:($9d,$f9,$00,$a0,$c9,$22,$e6,$ec));
 
 type
   SNB = PChar; // from objidl.h
@@ -57,7 +51,11 @@ type
 
 implementation
 
-uses UUtils;
+uses SysUtils, ComObj, UUtils;
+
+const
+  CLSID_ITStorage: TGUID = (D1:$5d02926a; D2:$212e; D3:$11d0; D4:($9d,$f9,$00,$a0,$c9,$22,$e6,$ec));
+  IID_ITStorage: TGUID = (D1:$88cc31de; D2:$27ab; D3:$11d0; D4:($9d,$f9,$00,$a0,$c9,$22,$e6,$ec));
 
 var
   mDumpBuffer: array of AnsiChar;

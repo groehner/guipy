@@ -2,7 +2,7 @@ unit ULink;
 
 interface
 
-uses Graphics, Classes;
+uses Graphics;
 
 Const
   PythonTkCursorText = 'default'#13#10'fleur'#13#10'hand2'#13#10'sb_h_double_arrow'#13#10'sb_v_double_arrow'#13#10 +

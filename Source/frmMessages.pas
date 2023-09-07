@@ -13,7 +13,6 @@ uses
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
-  System.Variants,
   System.Classes,
   System.Contnrs,
   System.Actions,
@@ -24,7 +23,6 @@ uses
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.Menus,
   Vcl.ExtCtrls,
   Vcl.ActnList,
@@ -113,8 +111,7 @@ uses
   frmPyIDEMain,
   uCommonFunctions,
   JvGnugettext,
-  StringResources,
-  cPyControl;
+  StringResources;
 
 {$R *.dfm}
 Type

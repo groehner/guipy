@@ -26,14 +26,14 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
     object GroupBox: TGroupBox
       Left = 5
       Top = 148
-      Width = 532
+      Width = 528
       Height = 264
       Anchors = [akLeft, akTop, akRight]
       Caption = 'File Template:'
       TabOrder = 2
-      ExplicitWidth = 528
+      ExplicitWidth = 524
       DesignSize = (
-        532
+        528
         264)
       object Label1: TLabel
         Left = 10
@@ -94,7 +94,7 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       object SynTemplate: TSynEdit
         Left = 10
         Top = 90
-        Width = 512
+        Width = 508
         Height = 131
         Anchors = [akLeft, akTop, akRight]
         Font.Charset = DEFAULT_CHARSET
@@ -130,18 +130,18 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         SelectedColor.Alpha = 0.400000005960464500
         TabWidth = 4
-        ExplicitWidth = 508
+        ExplicitWidth = 504
       end
       object CBHighlighters: TComboBox
         Left = 400
         Top = 44
-        Width = 122
+        Width = 118
         Height = 23
         Style = csDropDownList
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 4
         OnChange = CBHighlightersChange
-        ExplicitWidth = 118
+        ExplicitWidth = 114
       end
       object edName: TEdit
         Left = 127
@@ -153,11 +153,11 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       object edCategory: TEdit
         Left = 400
         Top = 20
-        Width = 122
+        Width = 118
         Height = 23
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 2
-        ExplicitWidth = 118
+        ExplicitWidth = 114
       end
       object edExtension: TEdit
         Left = 216
@@ -213,7 +213,7 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       TabOrder = 7
     end
     object btnCancel: TButton
-      Left = 370
+      Left = 366
       Top = 417
       Width = 75
       Height = 25
@@ -222,11 +222,11 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 9
-      ExplicitLeft = 366
+      ExplicitLeft = 362
       ExplicitTop = 416
     end
     object btnOK: TButton
-      Left = 282
+      Left = 278
       Top = 417
       Width = 75
       Height = 25
@@ -235,11 +235,11 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       Default = True
       ModalResult = 1
       TabOrder = 1
-      ExplicitLeft = 278
+      ExplicitLeft = 274
       ExplicitTop = 416
     end
     object btnHelp: TButton
-      Left = 458
+      Left = 454
       Top = 417
       Width = 75
       Height = 25
@@ -247,7 +247,7 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
       Caption = '&Help'
       TabOrder = 8
       OnClick = btnHelpClick
-      ExplicitLeft = 454
+      ExplicitLeft = 450
       ExplicitTop = 416
     end
     object lvItems: TListView

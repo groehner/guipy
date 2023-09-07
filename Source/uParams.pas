@@ -36,10 +36,10 @@
  $Id: uParams.pas,v 1.12 2004/06/07 23:03:48 neum Exp $
  }
 unit uParams;
+
 interface
 
 Uses
-  System.UITypes,
   System.Classes;
 
 
@@ -74,7 +74,6 @@ uses
   uCommonFunctions,
   cPyScripterSettings,
   cParameters,
-  cPyBaseDebugger,
   cProjectClasses,
   cPyControl,
   UConfiguration;

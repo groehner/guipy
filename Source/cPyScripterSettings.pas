@@ -9,10 +9,9 @@
 unit cPyScripterSettings;
 
 interface
-Uses
-  WinApi.Windows,
+
+uses
   System.Classes,
-  Vcl.ImgList,
   Vcl.Graphics,
   JclNotify,
   SpTBXTabs,
@@ -462,19 +461,17 @@ var
 implementation
 
 uses
-  System.UITypes,
+  WinApi.Windows,
   System.SysUtils,
   System.IOUtils,
   System.IniFiles,
+  System.UITypes,
   Vcl.Forms,
   Vcl.Dialogs,
   uHighlighterProcs,
   JvAppStorage,
   JvGnuGettext,
   SynUnicode,
-  SynEditStrConst,
-  SynHighlighterPython,
-  SynHighlighterYAML,
   SynEditRegexSearch,
   StringResources,
   uCommonFunctions,

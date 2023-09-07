@@ -10,11 +10,6 @@ unit uSearchHighlighter;
 interface
 
 uses
-  Winapi.Windows,
-  System.Classes,
-  System.SysUtils,
-  Vcl.Graphics,
-  Synedit,
   SynEditTypes,
   SynEditMiscClasses,
   uEditAppIntfs;

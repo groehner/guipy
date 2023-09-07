@@ -28,8 +28,7 @@ unit dlgExceptionMail;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, AppEvnts, JclSysUtils, JclMapi,
+  Windows, Messages, SysUtils, Classes, Controls, StdCtrls, ExtCtrls,
   {$IFDEF UNITVERSIONING}
   JclUnitVersioning,
   JclUnitVersioningProviders,
@@ -95,7 +94,8 @@ implementation
 {$R *.dfm}
 
 uses
-  ClipBrd, Math, JclBase, JclFileUtils, JclHookExcept, JclPeImage, JclStrings,
+  ClipBrd, Graphics, Forms, Dialogs, AppEvnts, JclSysUtils, JclMapi,
+  JclBase, JclFileUtils, JclHookExcept, JclPeImage, JclStrings,
   JclSysInfo, JclWin32, uCommonFunctions, PythonEngine, TypInfo,
   uEditAppIntfs, cPySupportTypes, cPyScripterSettings;
 

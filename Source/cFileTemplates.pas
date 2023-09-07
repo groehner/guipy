@@ -11,7 +11,7 @@ unit cFileTemplates;
 interface
 
 Uses
-  Classes, SysUtils, Contnrs, JvAppStorage;
+  Classes, Contnrs, JvAppStorage;
 
 Type
 
@@ -58,7 +58,7 @@ var
 
 implementation
 
-uses System.Types, StringResources, JvGnugettext;
+uses Types, StringResources, JvGnugettext;
 
 { TFileTemplate }
 

@@ -16,14 +16,9 @@ uses
   WinApi.Windows,
   WinApi.Messages,
   WinApi.ActiveX,
-  System.UITypes,
-  System.SysUtils,
-  System.Contnrs,
-  System.Variants,
   System.Classes,
   System.Actions,
   System.ImageList,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
   Vcl.Dialogs,
@@ -211,18 +206,15 @@ type
     function CanClose: boolean;
   end;
 
-resourcestring
-  ProjectFilter = 'PyScripter project files (*.%s)|*.%0:s';
-
-const
-  ProjectDefaultExtension = 'psproj';
 var
   ProjectExplorerWindow: TProjectExplorerWindow;
 
 implementation
 
 uses
-  System.IOUtils,
+  System.SysUtils,
+  System.Contnrs,
+  Vcl.Graphics,
   Vcl.Themes,
   MPDataObject,
   JclShell,
@@ -240,7 +232,6 @@ uses
   dlgDirectoryList,
   uEditAppIntfs,
   uHighlighterProcs,
-  cPyBaseDebugger,
   cPyScripterSettings,
   cPyControl,
   cSSHSupport,
@@ -248,12 +239,17 @@ uses
 
 {$R *.dfm}
 
+resourcestring
+  ProjectFilter = 'PyScripter project files (*.%s)|*.%0:s';
+
+const
+  ProjectDefaultExtension = 'psproj';
+
 Type
   PNodeDataRec = ^TNodeDataRec;
   TNodeDataRec = record
     ProjectNode : TAbstractProjectNode;
   end;
-
 
 procedure TProjectExplorerWindow.actProjectAddRemoteFileExecute(Sender: TObject);
 Var

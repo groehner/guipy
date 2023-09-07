@@ -70,7 +70,7 @@ inherited CodeTemplates: TCodeTemplates
       TabOrder = 7
     end
     object btnCancel: TButton
-      Left = 375
+      Left = 367
       Top = 393
       Width = 75
       Height = 25
@@ -79,11 +79,11 @@ inherited CodeTemplates: TCodeTemplates
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 9
-      ExplicitLeft = 371
+      ExplicitLeft = 363
       ExplicitTop = 392
     end
     object btnOK: TButton
-      Left = 291
+      Left = 283
       Top = 393
       Width = 75
       Height = 25
@@ -92,11 +92,11 @@ inherited CodeTemplates: TCodeTemplates
       Default = True
       ModalResult = 1
       TabOrder = 1
-      ExplicitLeft = 287
+      ExplicitLeft = 279
       ExplicitTop = 392
     end
     object btnHelp: TButton
-      Left = 459
+      Left = 451
       Top = 393
       Width = 75
       Height = 25
@@ -104,21 +104,21 @@ inherited CodeTemplates: TCodeTemplates
       Caption = '&Help'
       TabOrder = 8
       OnClick = btnHelpClick
-      ExplicitLeft = 455
+      ExplicitLeft = 447
       ExplicitTop = 392
     end
     object GroupBox: TGroupBox
       AlignWithMargins = True
       Left = 3
       Top = 148
-      Width = 536
+      Width = 528
       Height = 239
       Anchors = [akLeft, akTop, akRight]
       Caption = 'Code Template:'
       TabOrder = 2
-      ExplicitWidth = 532
+      ExplicitWidth = 524
       DesignSize = (
-        536
+        528
         239)
       object Label1: TLabel
         Left = 8
@@ -172,7 +172,7 @@ inherited CodeTemplates: TCodeTemplates
       object SynTemplate: TSynEdit
         Left = 9
         Top = 84
-        Width = 520
+        Width = 512
         Height = 116
         Anchors = [akLeft, akTop, akRight]
         Font.Charset = DEFAULT_CHARSET
@@ -211,16 +211,16 @@ inherited CodeTemplates: TCodeTemplates
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         SelectedColor.Alpha = 0.400000005960464500
         TabWidth = 4
-        ExplicitWidth = 516
+        ExplicitWidth = 508
       end
       object edDescription: TEdit
         Left = 115
         Top = 43
-        Width = 414
+        Width = 406
         Height = 23
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 2
-        ExplicitWidth = 410
+        ExplicitWidth = 402
       end
       object edShortcut: TEdit
         Left = 115

@@ -11,21 +11,14 @@ unit dlgToolProperties;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.Types,
-  System.SysUtils,
   System.Classes,
   System.Actions,
   System.ImageList,
   Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.Menus,
   Vcl.ActnList,
   Vcl.ComCtrls,
-  Vcl.Samples.Spin,
   Vcl.ExtCtrls,
   Vcl.ImgList,
   Vcl.VirtualImageList,
@@ -135,7 +128,12 @@ type
 implementation
 
 uses
+  Winapi.Windows,
+  System.Types,
+  System.SysUtils,
   System.UITypes,
+  Vcl.Forms,
+  Vcl.Dialogs,
   Vcl.Graphics,
   Vcl.Themes,
   Vcl.FileCtrl,

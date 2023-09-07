@@ -17,7 +17,7 @@ unit ELUtils;
 interface
 
 uses
-  Windows, Messages, Classes;
+  Windows, Classes;
 
   { Strings streaming routines }
 
@@ -55,35 +55,6 @@ procedure ELQuickSort(AFromIndex, AToIndex: Integer;
   ACompareProc: TELQSCompareProc; AExchangeProc: TELQSExchangeProc;
   ACustomPar: Pointer);
 
-
-  { Search files }
-
-const
-  {   From SysUtils unit:
-    faReadOnly  = $00000001;
-    faHidden    = $00000002;
-    faSysFile   = $00000004;
-    faVolumeID  = $00000008;
-    faDirectory = $00000010;
-    faArchive   = $00000020;
-    faAnyFile   = $0000003F;  }
-    // Extended flag
-    elfaNormal    = $00000040;  // File with no attributes
-
-const
-  EL_SF_RECURSION        = $00000001;  // Recursion search
-  // Search files :
-  EL_SF_USE_ATTRS        = $00000002;  // With Query.Attributes attributes
-      // With size:
-  EL_SF_USE_SIZE_MIN     = $00000004;  // Not less then Query.SizeMin;
-  EL_SF_USE_SIZE_MAX     = $00000008;  // Not greate then Query.SizeMax;
-      // With time:
-  EL_SF_USE_FROM_TIME    = $00000010;  // Greate then Query.TimeMin
-  EL_SF_USE_TO_TIME      = $00000020;  // Less then Query.TimeMax
-  // Time type:
-  EL_SF_CREATION_TIME    = $00000040;  // Creation time
-  EL_SF_LAST_ACCESS_TIME = $00000080;  // Last access time
-  EL_SF_LAST_WRITE_TIME  = $000000C0;  // Last write time
 
 type
   TELSearchFilesQuery = record
@@ -129,6 +100,26 @@ type
 implementation
 
 uses SysUtils;
+
+const
+    // Extended flag
+    elfaNormal    = $00000040;  // File with no attributes
+
+  { Search files }
+
+  EL_SF_RECURSION        = $00000001;  // Recursion search
+  // Search files :
+  EL_SF_USE_ATTRS        = $00000002;  // With Query.Attributes attributes
+      // With size:
+  EL_SF_USE_SIZE_MIN     = $00000004;  // Not less then Query.SizeMin;
+  EL_SF_USE_SIZE_MAX     = $00000008;  // Not greate then Query.SizeMax;
+      // With time:
+  EL_SF_USE_FROM_TIME    = $00000010;  // Greate then Query.TimeMin
+  EL_SF_USE_TO_TIME      = $00000020;  // Less then Query.TimeMax
+  // Time type:
+  EL_SF_CREATION_TIME    = $00000040;  // Creation time
+  EL_SF_LAST_ACCESS_TIME = $00000080;  // Last access time
+  EL_SF_LAST_WRITE_TIME  = $000000C0;  // Last write time
 
 function ELPackStrings(AValue: TStrings): string;
 var

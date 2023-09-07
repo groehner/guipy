@@ -51,8 +51,8 @@ inherited FunctionListWindow: TFunctionListWindow
   OnClose = FormClose
   OnKeyPress = edtMethodsKeyPress
   OnResize = FormResize
-  ExplicitWidth = 548
-  ExplicitHeight = 355
+  ExplicitWidth = 544
+  ExplicitHeight = 354
   TextHeight = 15
   object pnHolder: TPanel
     Left = 0
@@ -61,11 +61,13 @@ inherited FunctionListWindow: TFunctionListWindow
     Height = 218
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 528
+    ExplicitHeight = 217
     object lvProcs: TListView
       Left = 1
       Top = 1
-      Width = 534
-      Height = 217
+      Width = 530
+      Height = 216
       Align = alClient
       Columns = <
         item
@@ -88,8 +90,8 @@ inherited FunctionListWindow: TFunctionListWindow
       OnChange = lvProcsChange
       OnColumnClick = lvProcsColumnClick
       OnDblClick = actViewGotoExecute
-      ExplicitWidth = 530
-      ExplicitHeight = 216
+      ExplicitWidth = 526
+      ExplicitHeight = 215
     end
   end
   object pnlHeader: TPanel
@@ -102,6 +104,7 @@ inherited FunctionListWindow: TFunctionListWindow
     ShowHint = True
     TabOrder = 1
     OnResize = pnlHeaderResize
+    ExplicitWidth = 528
     object pnlHeaderLeft: TPanel
       AlignWithMargins = True
       Left = 4
@@ -134,11 +137,11 @@ inherited FunctionListWindow: TFunctionListWindow
       AlignWithMargins = True
       Left = 270
       Top = 4
-      Width = 262
+      Width = 258
       Height = 35
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 258
+      ExplicitWidth = 254
       object lblObjects: TLabel
         Left = 13
         Top = 8
@@ -169,6 +172,7 @@ inherited FunctionListWindow: TFunctionListWindow
     Height = 30
     AllowDrag = False
     LimitToOneRow = True
+    ExplicitWidth = 528
     object Toolbar: TSpTBXToolbar
       Left = 0
       Top = 0
@@ -215,6 +219,8 @@ inherited FunctionListWindow: TFunctionListWindow
     ParentShowHint = False
     ShowHint = True
     SizeGrip = False
+    ExplicitTop = 290
+    ExplicitWidth = 528
     object LeftStatusLabel: TSpTBXLabelItem
       Wrapping = twEndEllipsis
       Options = [tboShowHint]
@@ -222,7 +228,7 @@ inherited FunctionListWindow: TFunctionListWindow
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 510
     end
     object SpTBXSeparatorItem5: TSpTBXSeparatorItem
     end

@@ -34,6 +34,8 @@ object FFileStructure: TFFileStructure
     OnClick = TVFileStructureClick
     OnKeyPress = TVFileStructureKeyPress
     OnMouseDown = TVFileStructureMouseDown
+    ExplicitWidth = 220
+    ExplicitHeight = 299
   end
   object ILFileStructureDark: TImageList
     Left = 144

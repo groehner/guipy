@@ -3,8 +3,8 @@ unit UDownload;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, ExtCtrls, Buttons, dlgPyIDEBase;
+  System.Classes, Dialogs, Vcl.Controls, StdCtrls, ComCtrls, ExtCtrls, Buttons,
+  dlgPyIDEBase;
 
 type
   TFDownload = class(TPyIDEDlgBase)
@@ -35,7 +35,7 @@ implementation
 
 {$R *.dfm}
 
-uses WinINet, IOUtils, jvGnugettext, StringResources, UConfiguration, UUtils;
+uses Windows, SysUtils, Forms, WinINet, jvGnugettext, UUtils;
 
 procedure TFDownload.FormShow(Sender: TObject);
 begin

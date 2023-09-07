@@ -10,10 +10,9 @@ unit UBaseQtWidgets;
 interface
 
 uses
-  Windows, Messages, Controls, Graphics, Classes,
-  ELEvents, UBaseWidgets, frmEditor;
+  Windows, Classes, UBaseWidgets;
 
-const CrLf = sLineBreak;
+const CrLf = #13#10;
 
 type
 
@@ -29,6 +28,7 @@ type
   TAlignmentVertical = (AlignTop, AlignBottom, AlignVCenter, AlignBaseline);
 
   TOrientation = (Vertical, Horizontal);
+
 
 
   TBaseQtWidget = class(TBaseWidget)
@@ -114,8 +114,8 @@ type
 
 implementation
 
-uses SysUtils, TypInfo, Math, UITypes, UGuiForm, UTKMiscBase, UTTKMiscBase,
-     UGUIDesigner, UObjectInspector, UConfiguration, UUtils, ULink;
+uses Math, Controls, Graphics, SysUtils, UITypes,
+     frmEditor, UGuiForm, UUtils;
 
 constructor TBaseQtWidget.create(aOwner: TComponent);
 begin

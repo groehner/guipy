@@ -11,23 +11,17 @@ unit dlgCodeTemplates;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.UITypes,
-  System.ImageList,
-  System.Actions,
-  System.SysUtils,
-  System.Variants,
   System.Classes,
-  Vcl.Controls,
+  System.Actions,
+  System.ImageList,
   Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.ActnList,
   Vcl.ComCtrls,
   Vcl.ExtCtrls,
-  Vcl.ImgList,
   Vcl.VirtualImageList,
+  Vcl.ImgList,
+  Vcl.Controls,
   SynEdit,
   dlgPyIDEBase;
 
@@ -87,8 +81,10 @@ type
 implementation
 
 uses
+  System.SysUtils,
   Vcl.Themes,
   Vcl.Graphics,
+  Vcl.Dialogs,
   JvGnugettext,
   dmResources,
   StringResources,

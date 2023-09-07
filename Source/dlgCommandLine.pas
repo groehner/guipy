@@ -3,24 +3,13 @@ unit dlgCommandLine;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
   Vcl.ExtCtrls,
-  Vcl.Forms,
-  Vcl.Buttons,
-  Vcl.Menus,
   Vcl.StdCtrls,
   SynEdit,
-  TB2Item,
   SpTBXControls,
   SpTBXItem,
   SpTBXMDIMRU,
-  dlgPyIDEBase;
+  dlgPyIDEBase, TB2Item, Vcl.Menus, Vcl.Controls, System.Classes;
 
 type
   TCommandLineDlg = class(TPyIDEDlgBase)
@@ -51,6 +40,7 @@ type
 implementation
 
 uses
+  Vcl.Forms,
   JvAppIniStorage,
   dmResources,
   uEditAppIntfs;

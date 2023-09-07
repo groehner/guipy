@@ -25,10 +25,9 @@ unit UModel;
 
 interface
 
-uses Contnrs, Classes, uListeners, uIterators, uModelEntity, uUtils;
+uses Contnrs, Classes, uListeners, uModelEntity, uUtils;
 
 const
-  UNKNOWNPACKAGE_NAME = '<<Unknown>>';
   ConfigFileExt = '.puml';
 
 type
@@ -349,7 +348,10 @@ type
 
 implementation
 
-uses SysUtils, Types, UConfiguration;
+uses SysUtils, Types, uIterators, UConfiguration;
+
+const
+  UNKNOWNPACKAGE_NAME = '<<Unknown>>';
 
 type
   //Used by Class.GetDescendant

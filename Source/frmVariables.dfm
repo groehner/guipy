@@ -40,28 +40,30 @@ inherited VariablesWindow: TVariablesWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 587
-  ExplicitHeight = 274
+  ExplicitWidth = 579
+  ExplicitHeight = 262
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 571
     Height = 235
-    ExplicitWidth = 579
-    ExplicitHeight = 247
+    ExplicitWidth = 563
+    ExplicitHeight = 223
     inherited FGPanel: TPanel
-      Width = 575
-      Height = 243
-      ExplicitWidth = 575
-      ExplicitHeight = 243
+      Width = 567
+      Height = 231
+      ExplicitWidth = 559
+      ExplicitHeight = 219
       object DocPanel: TSpTBXPageScroller
-        Left = 200
+        Left = 192
         Top = 0
         Width = 375
-        Height = 243
+        Height = 231
         Align = alRight
         Color = clNone
         ParentColor = False
         TabOrder = 0
+        ExplicitLeft = 184
+        ExplicitHeight = 219
         object reInfo: TRichEdit
           Left = 0
           Top = 0
@@ -88,8 +90,8 @@ inherited VariablesWindow: TVariablesWindow
         Align = alRight
         ParentColor = False
         MinSize = 3
-        ExplicitLeft = 195
-        ExplicitHeight = 243
+        ExplicitLeft = 179
+        ExplicitHeight = 219
       end
       object Panel1: TPanel
         Left = 0
@@ -98,13 +100,13 @@ inherited VariablesWindow: TVariablesWindow
         Height = 231
         Align = alClient
         TabOrder = 2
-        ExplicitWidth = 195
-        ExplicitHeight = 243
+        ExplicitWidth = 179
+        ExplicitHeight = 219
         object VariablesTree: TVirtualStringTree
           Left = 1
           Top = 1
-          Width = 193
-          Height = 241
+          Width = 185
+          Height = 229
           Align = alClient
           Alignment = taRightJustify
           Anchors = [akLeft, akTop, akBottom]

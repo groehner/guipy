@@ -41,15 +41,11 @@ unit dlgConfirmReplace;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
   System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.ExtCtrls, 
+  Winapi.Windows,
+  Vcl.ExtCtrls,
   Vcl.StdCtrls,
+  Vcl.Controls,
   dlgPyIDEBase;
 
 type
@@ -72,6 +68,10 @@ var
   ConfirmReplaceDialog: TConfirmReplaceDialog;
 
 implementation
+
+uses
+  SysUtils,
+  Vcl.Forms;
 
 {$R *.DFM}
 

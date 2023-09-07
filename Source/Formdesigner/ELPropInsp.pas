@@ -633,9 +633,6 @@ type
     public
     end;
 
-  procedure ELGetObjectsProps(ADesigner: Pointer; AObjList: TList; AKinds: TTypeKinds;
-    AOnlyNestable: Boolean; AGetEditorClassProc: TELGetEditorClassProc; AResult: TList);
-
 { TELPropertyInspector }
 
 type
@@ -831,9 +828,8 @@ type
 
 implementation
 
-uses Variants, Forms, Dialogs, RTTI, Vcl.Menus, StdCtrls, ELStringsEdit, ELImage,
-     ELEvents, StringResources, JvGnugettext, UConfiguration, ULink, UUtils,
-     UBaseWidgets, Generics.Collections;
+uses Variants, Forms, Dialogs, Vcl.Menus, StdCtrls, ELStringsEdit, ELImage,
+     ELEvents, JvGnugettext, ULink, UUtils;
 
 const
     SNull = '(Null)';

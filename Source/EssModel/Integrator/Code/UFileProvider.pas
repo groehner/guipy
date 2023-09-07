@@ -40,7 +40,7 @@ type
 
 implementation
 
-uses SysUtils, SynUnicode, uEditAppIntfs, UUtils, uCommonFunctions, frmEditor;
+uses SysUtils, uEditAppIntfs, UUtils, uCommonFunctions, frmEditor;
 
 { TFileProvider }
 

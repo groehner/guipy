@@ -3,27 +3,15 @@ unit dlgStyleSelector;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
-  System.Types,
   System.Classes,
   System.Actions,
   System.Generics.Collections,
-  Vcl.Graphics,
+  Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.StdCtrls,
-  Vcl.ComCtrls,
   Vcl.ExtCtrls,
   Vcl.ActnList,
-  Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ActnMan,
-  Vcl.ToolWin,
-  Vcl.Themes,
-  Vcl.Styles,
   Vcl.Styles.PyScripter,
   dlgPyIDEBase;
 
@@ -60,6 +48,9 @@ type
 implementation
 
 uses
+  System.SysUtils,
+  Vcl.Themes,
+  Vcl.Forms,
   System.IOUtils,
   cPyScripterSettings;
 

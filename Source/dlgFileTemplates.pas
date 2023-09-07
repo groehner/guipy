@@ -11,18 +11,11 @@ unit dlgFileTemplates;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.UITypes,
-  System.SysUtils,
-  System.Variants,
   System.Classes,
-  System.Contnrs,
-  System.Actions,
   System.ImageList,
+  System.Actions,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.ActnList,
   Vcl.ComCtrls,
@@ -93,6 +86,9 @@ type
 implementation
 
 uses
+  System.SysUtils,
+  System.Contnrs,
+  Vcl.Dialogs,
   SynEditHighlighter,
   JvGnugettext,
   uCommonFunctions,

@@ -8,8 +8,8 @@ inherited AboutBox: TAboutBox
   KeyPreview = True
   StyleElements = [seFont, seBorder]
   OnKeyPress = FormKeyPress
-  ExplicitWidth = 546
-  ExplicitHeight = 466
+  ExplicitWidth = 542
+  ExplicitHeight = 465
   TextHeight = 15
   object SpTBXTabControl: TSpTBXTabControl
     Left = 0
@@ -27,8 +27,8 @@ inherited AboutBox: TAboutBox
     ActiveTabIndex = 0
     TabBackgroundBorders = True
     TabPosition = ttpBottom
-    ExplicitWidth = 534
-    ExplicitHeight = 428
+    ExplicitWidth = 526
+    ExplicitHeight = 426
     HiddenItems = <>
     object tbAbout: TSpTBXTabItem
       Caption = 'About'
@@ -43,16 +43,18 @@ inherited AboutBox: TAboutBox
     object SpTBXTabSheet2: TSpTBXTabSheet
       Left = 0
       Top = 0
-      Width = 534
-      Height = 403
+      Width = 530
+      Height = 402
       Caption = 'Credits'
       ImageIndex = -1
+      ExplicitWidth = 526
+      ExplicitHeight = 401
       TabItem = 'tbCredits'
       object ScrollBox: TSpTBXPageScroller
         Left = 2
         Top = 4
-        Width = 528
-        Height = 399
+        Width = 524
+        Height = 398
         Align = alClient
         ButtonSize = 15
         Color = clBtnFace
@@ -60,10 +62,12 @@ inherited AboutBox: TAboutBox
         ParentColor = False
         ParentCtl3D = False
         TabOrder = 0
+        ExplicitWidth = 520
+        ExplicitHeight = 397
         object Panel2: TPanel
           Left = 0
           Top = 0
-          Width = 528
+          Width = 524
           Height = 89
           Align = alTop
           AutoSize = True
@@ -72,7 +76,7 @@ inherited AboutBox: TAboutBox
           object reCredits: TRichEdit
             Left = 0
             Top = 0
-            Width = 528
+            Width = 524
             Height = 89
             Align = alTop
             BorderStyle = bsNone
@@ -84,6 +88,7 @@ inherited AboutBox: TAboutBox
             ParentFont = False
             TabOrder = 0
             OnResizeRequest = reCreditsResizeRequest
+            ExplicitWidth = 520
           end
         end
       end
@@ -95,14 +100,14 @@ inherited AboutBox: TAboutBox
       Height = 402
       Caption = 'Links'
       ImageIndex = -1
-      ExplicitWidth = 534
-      ExplicitHeight = 403
+      ExplicitWidth = 526
+      ExplicitHeight = 401
       TabItem = 'tbLinks'
       object reLinks: TRichEdit
         Left = 2
         Top = 4
-        Width = 528
-        Height = 399
+        Width = 524
+        Height = 398
         Align = alClient
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -111,6 +116,8 @@ inherited AboutBox: TAboutBox
         Font.Style = []
         ParentFont = False
         TabOrder = 0
+        ExplicitWidth = 520
+        ExplicitHeight = 397
       end
     end
     object SpTBXTabSheet1: TSpTBXTabSheet
@@ -120,15 +127,15 @@ inherited AboutBox: TAboutBox
       Height = 402
       Caption = 'About'
       ImageIndex = -1
-      ExplicitWidth = 534
-      ExplicitHeight = 403
+      ExplicitWidth = 526
+      ExplicitHeight = 401
       TabItem = 'tbAbout'
       object Panel1: TPanel
         AlignWithMargins = True
         Left = 22
         Top = 24
-        Width = 488
-        Height = 359
+        Width = 484
+        Height = 358
         Margins.Left = 20
         Margins.Top = 20
         Margins.Right = 20
@@ -146,6 +153,8 @@ inherited AboutBox: TAboutBox
         ShowCaption = False
         TabOrder = 0
         OnClick = Panel1Click
+        ExplicitWidth = 480
+        ExplicitHeight = 357
         DesignSize = (
           484
           358)
@@ -197,10 +206,10 @@ inherited AboutBox: TAboutBox
         end
         object Comments: TLabel
           AlignWithMargins = True
-          Left = 21
+          Left = 17
           Top = 200
           Width = 433
-          Height = 152
+          Height = 151
           Margins.Left = 10
           Margins.Top = 0
           Margins.Right = 0
@@ -225,8 +234,8 @@ inherited AboutBox: TAboutBox
         object SVGIconImage1: TSVGIconImage
           Left = 9
           Top = 0
-          Width = 148
-          Height = 215
+          Width = 144
+          Height = 214
           AutoSize = False
           SVGText = 
             '<svg'#13#10'   viewBox="0 0 148 210"'#13#10'   id="svg974"'#13#10'   >'#13#10'<svg'#10'   wi' +

@@ -3,12 +3,9 @@
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Menus, ExtCtrls, {$WARNINGS OFF} FileCtrl, Outline, {$WARNINGS ON}
-  Buttons, Clipbrd, Comctrls, Ddeman, Grids, Mask, Mplayer, Oleconst, Olectnrs,
-  Olectrls, Tabnotbk, Tabs, ToolWin, Spin, ImgList, ActnList, dlgPyIDEBase,
-  ELDsgnr, ELEvents, UGUIForm, frmEditor, Vcl.StdCtrls, SpTBXItem, TB2Item,
-  System.ImageList;
+  Windows, Classes, Controls, Forms, ExtCtrls, ImgList, ActnList,
+  System.ImageList, Vcl.Menus,
+  dlgPyIDEBase, ELDsgnr, UGUIForm, frmEditor, SpTBXItem, TB2Item;
 
 type
   TFGUIDesigner = class (TPyIDEDlgBase)
@@ -110,16 +107,13 @@ var
 
 implementation
 
-uses System.Types, frmPyIDEMain, frmFile, JvGnugettext,
-     StringResources, UObjectInspector, UObjectGenerator, ULink,
-     UConfiguration, UUtils,
-
-     UBaseWidgets,
-     UTKWidgets, UTKButtonBase, UTKTextBase, UTKMiscBase,
-     UTTKWidgets, UTTKButtonBase, UTTKTextBase, UTTKMiscBase,
+uses System.Types, TypInfo, SysUtils, Graphics,
+     UObjectInspector, UObjectGenerator, UConfiguration, UUtils, ULink,
+     UBaseWidgets, UTKButtonBase, UTKTextBase, UTKMiscBase,
+     UTTKButtonBase, UTTKTextBase, UTTKMiscBase,
      UQtButtonBase, UQtWidgetDescendants, UQtFrameBased, UQtScrollable,
      UQtItemViews, UQtSpinboxes,
-     TypInfo, uEditAppIntfs;
+     uEditAppIntfs;
 
 {$R *.dfm}
 

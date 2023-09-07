@@ -19,7 +19,7 @@ unit UQtSpinBoxes;
 interface
 
 uses
-  Windows, Messages, Controls, Graphics, Classes, UBaseQtWidgets;
+  Windows, Classes, UBaseQtWidgets;
 
 type
 
@@ -234,7 +234,8 @@ type
 
 implementation
 
-uses SysUtils, Types, DateUtils, JvGnugettext, UUtils, UObjectInspector;
+uses Controls, Graphics, SysUtils, Types, DateUtils,
+     JvGnugettext, UUtils;
 
 {--- TQtAbstractSpinBox -------------------------------------------------------}
 

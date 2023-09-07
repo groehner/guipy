@@ -11,13 +11,11 @@ unit dmResources;
 interface
 
 uses
-  System.SysUtils,
   System.Classes,
   Vcl.Dialogs,
   Vcl.BaseImageCollection,
   JclSysUtils,
   JvStringHolder,
-  JvDockVIDStyle,
   JvDockVSNetStyleSpTBX,
   SVGIconImageCollection,
   SynEditHighlighter,
@@ -25,11 +23,11 @@ uses
   SynHighlighterPython,
   SynHighlighterGeneral,
   SynHighlighterJSON,
-  SynEditCodeFolding,
   SynHighlighterCpp,
   SynHighlighterIni,
   SynHighlighterWeb,
   SynHighlighterYAML,
+  SynEditCodeFolding,
   uHighlighterProcs;
 
 type
@@ -110,10 +108,12 @@ implementation
 uses
   System.UITypes,
   System.IOUtils,
+  System.SysUtils,
   Vcl.Themes,
   JvAppStorage,
   JvAppIniStorage,
   JvGnugettext,
+  JvDockVIDStyle,
   TB2Item,
   StringResources,
   uEditAppIntfs,

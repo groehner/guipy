@@ -13,17 +13,11 @@ interface
 uses
   WinApi.Windows,
   WinApi.Messages,
-  System.UITypes,
-  System.SysUtils,
-  System.Variants,
   System.Classes,
   System.ImageList,
-  Vcl.Graphics,
   Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.Menus,
   Vcl.StdCtrls,
+  Vcl.Menus,
   Vcl.ExtCtrls,
   Vcl.ComCtrls,
   Vcl.ImgList,
@@ -36,7 +30,6 @@ uses
   SpTBXPageScroller,
   SpTBXItem,
   SpTBXControls,
-  VirtualTrees.Types,
   VirtualTrees.BaseAncestorVCL,
   VirtualTrees.AncestorVCL,
   VirtualTrees.BaseTree,
@@ -98,8 +91,10 @@ implementation
 
 uses
   System.Math,
-  Vcl.Themes,
-  JvJVCLUtils,
+  System.SysUtils,
+  Vcl.Forms,
+  Vcl.Graphics,
+  VirtualTrees.Types,
   JvGnugettext,
   StringResources,
   uEditAppIntfs,
@@ -108,9 +103,7 @@ uses
   frmCallStack,
   cPyControl,
   cPySupportTypes,
-  cInternalPython,
-  cPyScripterSettings,
-  ULivingObjects;
+  cPyScripterSettings;
 
 {$R *.dfm}
 Type

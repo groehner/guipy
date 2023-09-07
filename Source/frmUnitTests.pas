@@ -3,18 +3,11 @@ unit frmUnitTests;
 interface
 
 uses
-  WinApi.Windows,
   WinApi.Messages,
-  System.UITypes,
   System.ImageList,
   System.Actions,
-  System.SysUtils,
-  System.Variants,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.ComCtrls,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
@@ -25,7 +18,6 @@ uses
   SVGIconImageCollection,
   JvComponentBase,
   JvDockControlForm,
-  VirtualTrees.Types,
   VirtualTrees.BaseAncestorVCL,
   VirtualTrees.AncestorVCL,
   VirtualTrees.BaseTree,
@@ -139,8 +131,14 @@ var
 implementation
 
 uses
+  WinApi.Windows,
   System.StrUtils,
+  System.SysUtils,
+  Vcl.Graphics,
+  Vcl.Forms,
+  Vcl.Dialogs,
   Vcl.Themes,
+  VirtualTrees.Types,
   JvJVCLUtils,
   JvGnugettext,
   PythonEngine,
@@ -148,7 +146,6 @@ uses
   StringResources,
   uCommonFunctions,
   cPyBaseDebugger,
-  cPyDebugger,
   cPyControl,
   dmResources;
 

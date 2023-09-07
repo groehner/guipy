@@ -23,8 +23,7 @@ unit URtfdDiagramFrame;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  Menus, Buttons, System.ImageList, ImgList,
+  Messages, Classes, Controls, Forms, Vcl.Menus, System.ImageList, ImgList,
   uListeners, uDiagramFrame, uRtfdDiagram, SpTBXItem, TB2Item;
 
 type

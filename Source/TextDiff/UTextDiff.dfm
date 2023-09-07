@@ -27,7 +27,7 @@ object FTextDiff: TFTextDiff
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
-    ExplicitWidth = 812
+    ExplicitWidth = 796
     object TBClose: TToolButton
       Left = 4
       Top = 0
@@ -125,12 +125,12 @@ object FTextDiff: TFTextDiff
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 812
-    ExplicitHeight = 493
+    ExplicitWidth = 796
+    ExplicitHeight = 489
     object Splitter: TSplitter
       Left = 315
       Top = 0
-      Height = 493
+      Height = 490
       OnMoved = SplitterMoved
       ExplicitHeight = 214
     end
@@ -138,10 +138,11 @@ object FTextDiff: TFTextDiff
       Left = 0
       Top = 0
       Width = 315
-      Height = 493
+      Height = 490
       Align = alLeft
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitHeight = 489
       object PCaptionLeft: TPanel
         Left = 0
         Top = 0
@@ -162,15 +163,17 @@ object FTextDiff: TFTextDiff
     object PRight: TPanel
       Left = 318
       Top = 0
-      Width = 494
-      Height = 493
+      Width = 482
+      Height = 490
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitWidth = 478
+      ExplicitHeight = 489
       object PCaptionRight: TPanel
         Left = 0
         Top = 0
-        Width = 494
+        Width = 482
         Height = 20
         Align = alTop
         Alignment = taLeftJustify
@@ -182,6 +185,7 @@ object FTextDiff: TFTextDiff
         Font.Style = []
         ParentFont = False
         TabOrder = 0
+        ExplicitWidth = 478
       end
     end
   end
@@ -222,8 +226,8 @@ object FTextDiff: TFTextDiff
         Width = 150
       end>
     OnDrawPanel = StatusBarDrawPanel
-    ExplicitTop = 519
-    ExplicitWidth = 812
+    ExplicitTop = 515
+    ExplicitWidth = 796
   end
   object ILTextDiffLight: TImageList
     Left = 35

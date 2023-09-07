@@ -8,52 +8,50 @@ object FAssociation: TFAssociation
   ClientWidth = 314
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object LSelect: TLabel
     Left = 8
     Top = 8
-    Width = 62
-    Height = 13
+    Width = 66
+    Height = 15
     Caption = 'Please select'
   end
   object LMultiplicityA: TLabel
     Left = 8
     Top = 354
-    Width = 59
-    Height = 13
+    Width = 71
+    Height = 15
     Caption = 'Multiplicity A'
   end
   object LRelation: TLabel
     Left = 136
     Top = 282
-    Width = 39
-    Height = 13
+    Width = 43
+    Height = 15
     Caption = 'Relation'
   end
   object LMultiplicityB: TLabel
     Left = 230
     Top = 354
-    Width = 58
-    Height = 13
+    Width = 70
+    Height = 15
     Caption = 'Multiplicity B'
   end
   object LRoleA: TLabel
     Left = 8
     Top = 282
-    Width = 31
-    Height = 13
+    Width = 34
+    Height = 15
     Caption = 'Role A'
   end
   object LRoleB: TLabel
     Left = 266
     Top = 282
-    Width = 30
-    Height = 13
+    Width = 33
+    Height = 15
     Caption = 'Role B'
   end
   object LBAssociations: TListBox

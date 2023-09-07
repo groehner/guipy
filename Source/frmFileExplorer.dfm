@@ -33,13 +33,14 @@ inherited FileExplorerWindow: TFileExplorerWindow
     000000000000000000000000000000000000000000000000000000000000FBC1
     0000FD410000FBC10000FFFF0000FBC10000FD410000FBC10000FFFF0000001F
     0000001F0000001F0000001F0000001F0000001F0000003F00000FFF0000}
-  ExplicitHeight = 478
-  PixelsPerInch = 96
-  TextHeight = 14
+  ExplicitWidth = 211
+  ExplicitHeight = 466
+  TextHeight = 15
   inherited BGPanel: TPanel
     Height = 439
-    ExplicitHeight = 439
+    ExplicitHeight = 427
     inherited FGPanel: TPanel
+      Width = 199
       Height = 435
       ExplicitHeight = 435
       object FileExplorerTree: TVirtualExplorerTree
@@ -86,6 +87,7 @@ inherited FileExplorerWindow: TFileExplorerWindow
         OnDblClick = FileExplorerTreeDblClick
         OnEnumFolder = FileExplorerTreeEnumFolder
         OnKeyPress = FileExplorerTreeKeyPress
+        ExplicitWidth = 199
         Columns = <>
       end
       object ExplorerDock: TSpTBXDock
@@ -95,6 +97,7 @@ inherited FileExplorerWindow: TFileExplorerWindow
         Height = 30
         AllowDrag = False
         DoubleBuffered = True
+        ExplicitWidth = 191
         object ExplorerToolbar: TSpTBXToolbar
           Left = 0
           Top = 0
@@ -394,67 +397,55 @@ inherited FileExplorerWindow: TFileExplorerWindow
     end
   end
   object vilImages: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 2
         CollectionName = 'ArrowLeft'
-        Disabled = False
         Name = 'ArrowLeft'
       end
       item
         CollectionIndex = 3
         CollectionName = 'ArrowRight'
-        Disabled = False
         Name = 'ArrowRight'
       end
       item
         CollectionIndex = 88
         CollectionName = 'Refresh'
-        Disabled = False
         Name = 'Refresh'
       end
       item
         CollectionIndex = 63
         CollectionName = 'OpenFolder'
-        Disabled = False
         Name = 'OpenFolder'
       end
       item
         CollectionIndex = 40
         CollectionName = 'Filter'
-        Disabled = False
         Name = 'Filter'
       end
       item
         CollectionIndex = 36
         CollectionName = 'FileExplorer'
-        Disabled = False
         Name = 'FileExplorer'
       end
       item
         CollectionIndex = 102
         CollectionName = 'SearchFolder'
-        Disabled = False
         Name = 'SearchFolder'
       end
       item
         CollectionIndex = 35
         CollectionName = 'Favorite'
-        Disabled = False
         Name = 'Favorite'
       end
       item
         CollectionIndex = 45
         CollectionName = 'FolderAdd'
-        Disabled = False
         Name = 'FolderAdd'
       end
       item
         CollectionIndex = 46
         CollectionName = 'Folders'
-        Disabled = False
         Name = 'Folders'
       end>
     ImageCollection = ResourcesDataModule.icSVGImages

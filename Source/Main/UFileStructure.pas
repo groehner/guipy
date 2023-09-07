@@ -3,9 +3,9 @@ unit UFileStructure;
 interface
 
 uses
-  Windows, Messages, Math, SysUtils, Variants, Classes, Graphics, Controls,
-  Forms, Dialogs, StdCtrls, ComCtrls, Buttons, Menus, JvAppStorage,
-  frmIDEDockWin, frmFile, System.ImageList, Vcl.ImgList, TB2Item, SpTBXItem;
+  System.Classes, System.ImageList, Vcl.ImgList,  Vcl.Menus, Controls, Forms,
+  ComCtrls, JvAppStorage,
+  frmIDEDockWin, frmFile, TB2Item, SpTBXItem;
 
 type
   TInteger = class
@@ -59,9 +59,10 @@ implementation
 
 {$R *.dfm}
 
-uses frmPyIDEMAin, frmEditor, JvDockControlForm, dmResources, uEditAppIntfs,
+uses Math, Windows, Messages, SysUtils, Graphics, Dialogs,
+     frmPyIDEMAin, frmEditor, JvDockControlForm, dmResources, uEditAppIntfs,
      JvGnugettext, SynEdit, uCommonFunctions,
-     UUMLForm, UConfiguration, UUtils, UImages, UGUIDesigner;
+     UUMLForm, UUtils, UGUIDesigner;
 
 constructor TInteger.create(aI: Integer);
 begin

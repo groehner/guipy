@@ -584,7 +584,6 @@ uses
   ULink,
   UFileStructure,
   UBaseWidgets,
-  UObjectGenerator,
   UPythonScanner,
   UImages,
   UGit,
@@ -3721,9 +3720,8 @@ begin
 end;
 
 procedure TEditorForm.TBBreakpointClick(Sender: TObject);
-  var Editor : IEditor;
 begin
-  Editor := GI_PyIDEServices.GetActiveEditor;
+  var Editor := GI_PyIDEServices.GetActiveEditor;
   if Assigned(Editor) and Editor.HasPythonFile then
     PyControl.ToggleBreakpoint(Editor, Editor.SynEdit.CaretY);
 end;

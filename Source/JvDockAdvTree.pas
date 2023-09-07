@@ -40,8 +40,7 @@ uses
   {$IFDEF UNITVERSIONING}
   JclUnitVersioning,
   {$ENDIF UNITVERSIONING}
-  Windows, Messages, Classes, Graphics, Controls, Forms,
-  JvDockTree;
+  Windows, Messages, Controls, JvDockTree;
 
 type
   TJvDockAdvTree = class(TJvDockTree)

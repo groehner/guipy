@@ -10,7 +10,7 @@ unit UPanelTransparent;
 interface
 
 uses
-  Windows, Messages, Controls, ExtCtrls;
+  Messages, Controls, ExtCtrls;
 
 type
   TPanelTransparent = class (TPanel)
@@ -24,6 +24,8 @@ type
 
 
 implementation
+
+uses Windows;
 
 procedure TPanelTransparent.CreateParams (var Params: TCreateParams);
   begin

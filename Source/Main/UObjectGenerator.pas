@@ -7,10 +7,8 @@
 interface
 
 uses
-  Windows, Messages, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls,
-  ComCtrls, Grids, ValEdit, JvAppStorage, dlgPyIDEBase, frmEditor, UGuiForm;
-
-const CrLf = #13#10;
+  Classes, Controls, Forms, Dialogs, StdCtrls, Grids,
+  ComCtrls, ValEdit, JvAppStorage, dlgPyIDEBase, frmEditor, UGuiForm;
 
 type
    jfmRec = record
@@ -74,11 +72,9 @@ var
 implementation
 
 uses
-  SysUtils, Math, SynEdit, TypInfo, UITypes, Types, JvGnugettext, StringResources,
-  SynCompletionProposal, frmPyIDEMain, cPyScripterSettings,
-  ULink, UUtils, frmFile, UObjectInspector, UGUIDesigner, UConfiguration,
-  UTKWidgets, UBaseWidgets, ELEvents, ELPropInsp, uCommonFunctions, uEditAppIntfs,
-  dmResources;
+  Windows, Graphics, SysUtils, Math, SynEdit, TypInfo, UITypes, Types,
+  JvGnugettext, cPyScripterSettings, ULink, UUtils, UObjectInspector, UGUIDesigner,
+  UConfiguration, UBaseWidgets, ELEvents, ELPropInsp, dmResources;
 
 const
   FrameKonsole = 1;

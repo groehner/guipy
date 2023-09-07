@@ -13,7 +13,6 @@ interface
 
 Uses
   System.SysUtils,
-  System.Classes,
   PythonEngine,
   PythonVersions,
   WrapDelphi,
@@ -77,11 +76,10 @@ implementation
 
 uses
   WinApi.Windows,
-  System.UITypes,
+  System.Classes,
   System.StrUtils,
   Vcl.Dialogs,
   VarPyth,
-  SynHighlighterPython,
   cPyScripterSettings,
   uCommonFunctions;
 

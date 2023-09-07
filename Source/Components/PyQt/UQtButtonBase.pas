@@ -20,7 +20,7 @@ unit UQtButtonBase;
 interface
 
 uses
-  Windows, Messages, Controls, Graphics, Classes, UBaseQtWidgets;
+  Windows, Graphics, Classes, UBaseQtWidgets;
 
 type
 
@@ -174,7 +174,7 @@ type
 implementation
 
 uses
-  Math, Types, SysUtils, UObjectInspector, UGUIDesigner, UImages, UUtils;
+  Controls, Math, Types, SysUtils, UGUIDesigner, UImages, UUtils;
 
 {--- TQtAbstractButton ---------------------------------------------------------}
 

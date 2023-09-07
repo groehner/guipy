@@ -45,11 +45,8 @@ unit cFileSearch;
 interface
 
 uses
-  System.SysUtils,
   System.Classes,
-  System.RegularExpressionsCore,
-  System.RegularExpressions,
-  SynUnicode;
+  System.RegularExpressions;
 
 type
 
@@ -107,12 +104,9 @@ implementation
 
 uses
   Winapi.Windows,
-  System.UITypes,
-  Vcl.Dialogs,
+  System.SysUtils,
   uEditAppIntfs,
-  StringResources,
-  uCommonFunctions,
-  JvGnugettext;
+  uCommonFunctions;
 
 const
   SearchLineSize = 1024;

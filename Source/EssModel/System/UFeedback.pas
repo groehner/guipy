@@ -21,7 +21,7 @@ unit UFeedback;
 
 interface
 
-uses Classes, ExtCtrls;
+uses ExtCtrls;
 
 type
   IEldeanFeedback = interface(IUnknown)

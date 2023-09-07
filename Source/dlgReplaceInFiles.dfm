@@ -6,10 +6,9 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
   ClientHeight = 158
   ClientWidth = 401
   Position = poScreenCenter
-  ExplicitWidth = 407
-  ExplicitHeight = 187
-  PixelsPerInch = 96
-  TextHeight = 13
+  ExplicitWidth = 413
+  ExplicitHeight = 196
+  TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
@@ -17,14 +16,16 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
     Height = 158
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 397
+    ExplicitHeight = 157
     DesignSize = (
       401
       158)
     object lblReplaceString: TLabel
       Left = 92
       Top = 8
-      Width = 49
-      Height = 13
+      Width = 51
+      Height = 15
       Caption = 'TestString'
       Color = clNone
       ParentColor = False
@@ -33,8 +34,8 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
     object lblWith: TLabel
       Left = 10
       Top = 33
-      Width = 22
-      Height = 13
+      Width = 25
+      Height = 15
       Caption = '&With'
       Color = clNone
       FocusControl = cbReplace
@@ -44,7 +45,7 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
       Left = 10
       Top = 57
       Width = 10
-      Height = 13
+      Height = 15
       Caption = 'In'
       Color = clNone
       ParentColor = False
@@ -52,8 +53,8 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
     object lblReplace: TLabel
       Left = 10
       Top = 8
-      Width = 38
-      Height = 13
+      Width = 41
+      Height = 15
       Caption = 'Replace'
       Color = clNone
       ParentColor = False
@@ -61,23 +62,25 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
     object lblInString: TLabel
       Left = 92
       Top = 57
-      Width = 3
-      Height = 13
+      Width = -1
+      Height = 15
       Anchors = [akLeft, akTop, akRight]
       Color = clNone
       ParentColor = False
       ShowAccelChar = False
+      ExplicitWidth = 3
     end
     object cbReplace: TComboBox
       Left = 92
       Top = 30
-      Width = 302
-      Height = 21
+      Width = 298
+      Height = 23
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
+      ExplicitWidth = 294
     end
     object btnOK: TButton
-      Left = 160
+      Left = 156
       Top = 125
       Width = 75
       Height = 25
@@ -86,9 +89,11 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
       Default = True
       ModalResult = 1
       TabOrder = 1
+      ExplicitLeft = 152
+      ExplicitTop = 124
     end
     object btnCancel: TButton
-      Left = 239
+      Left = 235
       Top = 125
       Width = 75
       Height = 25
@@ -97,9 +102,11 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 2
+      ExplicitLeft = 231
+      ExplicitTop = 124
     end
     object btnHelp: TButton
-      Left = 318
+      Left = 314
       Top = 125
       Width = 75
       Height = 25
@@ -107,6 +114,8 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
       Caption = '&Help'
       TabOrder = 3
       OnClick = btnHelpClick
+      ExplicitLeft = 310
+      ExplicitTop = 124
     end
     object cbBackup: TCheckBox
       Left = 10

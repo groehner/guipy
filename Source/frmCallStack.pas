@@ -10,10 +10,8 @@ unit frmCallStack;
 interface
 
 uses
-  WinApi.Windows,
   WinApi.Messages,
   System.SysUtils,
-  System.Variants,
   System.Classes,
   System.Generics.Collections,
   System.Actions,
@@ -21,7 +19,6 @@ uses
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.ActnList,
   Vcl.ImgList,

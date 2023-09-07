@@ -28,8 +28,8 @@ http://dxgettext.po.dk/documentation/how-to
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Buttons, ComCtrls, ExtCtrls, IniFiles, Generics.Collections,
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Dialogs,
+  StdCtrls, Buttons, ComCtrls, ExtCtrls, Generics.Collections,
   UITypes, SynEditHighlighter, SynEditPrintHeaderFooter, SynEditPrint,
   VirtualTrees, System.Actions, VCL.Styles.PyScripter, Vcl.BaseImageCollection,
   SVGIconImageCollection, Vcl.ActnList, System.ImageList, Vcl.ImgList,
@@ -1232,9 +1232,8 @@ implementation
 
 {$R *.DFM}
 
-uses SynUnicode, StringResources, JvGnugettext, FileCtrl,
-     StrUtils, Menus, Printers, ValEdit, ShlObj, Math, Themes, Styles,
-     ShellAPI, Winapi.RichEdit, SynEditTypes, UUtils, UHtmlHelp, Contnrs,
+uses SynUnicode, StringResources, JvGnugettext, FileCtrl, Forms,
+     Menus, ShlObj, Themes, ShellAPI, Winapi.RichEdit, SynEditTypes, UUtils, Contnrs,
      Registry, SynEditPrintTypes, dmResources, dmCommands, cPyControl, uEditAppIntfs,
      PythonVersions, uCommonFunctions, cPySupportTypes, frmPyIDEMain, SpTBXTabs,
      IOUtils, JvAppStorage, JvAppIniStorage, SynEditKeyConst, JvJCLUtils,

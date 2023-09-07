@@ -26,10 +26,9 @@ unit UUMLForm;
 interface
 
 uses
-  Windows, Messages, ToolWin, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, ComCtrls, Vcl.Menus, SpTBXDkPanels, SpTBXSkins,
-  UUMLModule, frmFile, SynEdit, System.ImageList, Vcl.ImgList, TB2Item,
-  SpTBXItem;
+  Messages, Classes, Graphics, Forms, ToolWin, Controls, ExtCtrls, ComCtrls,
+  Menus, System.ImageList, Vcl.ImgList,
+  SpTBXDkPanels, SpTBXSkins, UUMLModule, frmFile, SynEdit, SpTBXItem, TB2Item;
 
 type
 
@@ -149,11 +148,11 @@ type
 
 implementation
 
-uses SysUtils, Types, IniFiles, Math, Clipbrd, SynEditKeyCmds,
+uses SysUtils, Types, IniFiles, Math, Clipbrd, Dialogs,
      frmPyIDEMain, dmResources, uEditAppIntfs, uCommonFunctions,
      JvGnugettext, StringResources, cPyScripterSettings, UFileStructure,
      UConfiguration, UUtils, UModelEntity, UModel, URtfdDiagram, UViewIntegrator,
-     UImages, frmPythonII, cPyControl, cFileTemplates, cParameters, frmEditor;
+     UImages, cPyControl, cFileTemplates;
 
 {$R *.DFM}
 

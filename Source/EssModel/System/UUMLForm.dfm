@@ -21,6 +21,7 @@ object FUMLForm: TFUMLForm
     Align = alTop
     Constraints.MinHeight = 100
     TabOrder = 0
+    ExplicitWidth = 737
     object PDiagramPanel: TPanel
       Left = 1
       Top = 26
@@ -41,7 +42,7 @@ object FUMLForm: TFUMLForm
       ParentFont = False
       TabOrder = 0
       OnResize = PDiagramPanelResize
-      ExplicitWidth = 747
+      ExplicitWidth = 735
     end
     object PUMLPanel: TPanel
       Left = 1
@@ -50,6 +51,7 @@ object FUMLForm: TFUMLForm
       Height = 25
       Align = alTop
       TabOrder = 1
+      ExplicitWidth = 735
       object TBUMLToolbar: TToolBar
         Left = 1
         Top = 1
@@ -174,17 +176,18 @@ object FUMLForm: TFUMLForm
     Align = alClient
     PopupMenu = PMInteractive
     TabOrder = 1
-    ExplicitWidth = 745
-    ExplicitHeight = 195
+    ExplicitWidth = 737
+    ExplicitHeight = 193
     object TBInteractiveToolbar: TToolBar
       Left = 1
       Top = 1
-      Width = 743
+      Width = 739
       Height = 22
       Color = clBtnFace
       Images = DMImages.ILInteractive
       ParentColor = False
       TabOrder = 0
+      ExplicitWidth = 735
       object TBInteractiveClose: TToolButton
         Left = 0
         Top = 0
@@ -228,8 +231,8 @@ object FUMLForm: TFUMLForm
     object SynEdit: TSynEdit
       Left = 1
       Top = 23
-      Width = 743
-      Height = 171
+      Width = 739
+      Height = 170
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -266,8 +269,8 @@ object FUMLForm: TFUMLForm
       RightEdge = 0
       SelectedColor.Alpha = 0.400000005960464500
       OnChange = SynEditChange
-      ExplicitWidth = 747
-      ExplicitHeight = 172
+      ExplicitWidth = 735
+      ExplicitHeight = 169
     end
   end
   object SpTBXSplitter1: TSpTBXSplitter
@@ -278,7 +281,7 @@ object FUMLForm: TFUMLForm
     Cursor = crSizeNS
     Align = alTop
     ParentColor = False
-    ExplicitWidth = 749
+    ExplicitWidth = 737
   end
   object PMInteractive: TSpTBXPopupMenu
     Images = DMImages.ILInteractive

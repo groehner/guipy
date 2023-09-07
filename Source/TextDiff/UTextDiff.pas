@@ -15,10 +15,10 @@
 interface
 
 uses
-  Windows, Messages, Graphics, Controls, Forms, ExtCtrls, Menus, ComCtrls,
-  Classes, ImgList, frmFile, UDiff, USynEditExDiff, SynEditTextBuffer,
-  ToolWin, System.ImageList, SpTBXSkins, SynEdit, uEditAppIntfs, frmEditor,
-  TB2Item, SpTBXItem;
+  Windows, Messages, Graphics, Controls, Forms, ExtCtrls, ComCtrls,
+  frmFile, UDiff, USynEditExDiff, SynEditTextBuffer,
+  ToolWin, SpTBXSkins, SynEdit, uEditAppIntfs, frmEditor,
+  TB2Item, SpTBXItem, Vcl.Menus, System.ImageList, Vcl.ImgList, System.Classes;
 
 type
 

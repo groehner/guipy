@@ -40,13 +40,19 @@ inherited ToDoWindow: TToDoWindow
     A3FF000000000000000000000000000000000000000000000000000000000000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
+  ExplicitWidth = 500
+  ExplicitHeight = 320
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 492
     Height = 293
+    ExplicitWidth = 484
+    ExplicitHeight = 281
     inherited FGPanel: TPanel
       Width = 488
       Height = 289
+      ExplicitWidth = 480
+      ExplicitHeight = 277
       object TBXDock1: TSpTBXDock
         Left = 0
         Top = 0
@@ -54,6 +60,7 @@ inherited ToDoWindow: TToDoWindow
         Height = 30
         AllowDrag = False
         DoubleBuffered = True
+        ExplicitWidth = 480
         object Toolbar: TSpTBXToolbar
           Left = 0
           Top = 0

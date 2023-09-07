@@ -3,17 +3,12 @@ unit dlgCustomParams;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.UITypes,
   System.SysUtils,
-  System.Variants,
   System.Classes,
-  System.Actions,
   System.ImageList,
-  Vcl.Controls,
+  System.Actions,
   Vcl.Forms,
-  Vcl.Dialogs,
+  Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.ActnList,
   Vcl.ComCtrls,
@@ -71,6 +66,7 @@ implementation
 uses
   Vcl.Themes,
   Vcl.Graphics,
+  Vcl.Dialogs,
   JvGnugettext,
   dmResources,
   StringResources,

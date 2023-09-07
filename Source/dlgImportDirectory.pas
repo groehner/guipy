@@ -3,20 +3,11 @@ unit dlgImportDirectory;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  System.ImageList,
-  Vcl.Controls,
   Vcl.ExtCtrls,
-  Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.ImgList,
   Vcl.VirtualImageList,
-  dlgPyIDEBase;
+  dlgPyIDEBase, System.ImageList, Vcl.Controls, System.Classes;
 
 type
   TImportDirectoryForm = class(TPyIDEDlgBase)
@@ -45,9 +36,8 @@ implementation
 
 uses
   Winapi.ShLwApi,
+  Vcl.Forms,
   Vcl.FileCtrl,
-  Vcl.Graphics,
-  Vcl.Themes,
   JvGnuGetText,
   dmResources;
 

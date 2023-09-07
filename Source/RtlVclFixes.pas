@@ -11,22 +11,6 @@ unit RtlVclFixes;
 interface
 
 implementation
-Uses
-  Winapi.Windows,
-  Winapi.Wincodec,
-  System.Types,
-  System.SysUtils,
-  System.Classes,
-  System.Math,
-  Vcl.Consts,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.StdCtrls,
-  Vcl.ImgList,
-  Vcl.Themes,
-  DDetours;
 
 {$REGION 'Fix TWICImage - https://quality.embarcadero.com/browse/RSP-26621'}
 {$IF CompilerVersion < 34}

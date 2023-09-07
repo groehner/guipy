@@ -10,8 +10,13 @@ unit ELImage;
 interface
 
 uses
-  Windows, Messages, Classes, Forms, ExtDlgs, ExtCtrls,
-  Vcl.StdCtrls, Vcl.Controls, Vcl.Dialogs, dlgPyIDEBase;
+  System.Classes,
+  Vcl.Controls,
+  Vcl.StdCtrls,
+  Vcl.Dialogs,
+  ExtDlgs,
+  ExtCtrls,
+  dlgPyIDEBase;
 
 type
   TFIconEditor = class(TPyIDEDlgBase)

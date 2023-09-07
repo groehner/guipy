@@ -41,31 +41,23 @@ unit dlgSynEditOptions;
 interface
 
 uses
-  System.Types,
   System.Classes,
-  System.SysUtils,
-  Winapi.Windows,
-  Winapi.Messages,
   Vcl.Graphics,
   Vcl.Controls,
-  Vcl.Forms,
   Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
   Vcl.ExtCtrls,
   Vcl.WinXPanels,
-  Vcl.Buttons,
-  Vcl.Menus,
-  TB2Item,
-  SpTBXControls,
   SpTBXEditors,
-  SpTBXItem,
   SpTBXExtEditors,
   SpTBXTabs,
   SynEdit,
   SynEditHighlighter,
   SynEditMiscClasses,
   SynEditKeyCmds,
+  TB2Item,
+  SpTBXItem,
   dlgPyIDEBase;
 
 type
@@ -356,7 +348,11 @@ implementation
 {$R *.dfm}
 
 uses
-  SynEditKeyConst, uCommonFunctions, JvGnugettext, StringResources, SpTBXSkins,
+  System.SysUtils,
+  Winapi.Windows,
+  Vcl.Menus,
+  Vcl.Forms,
+  SynEditKeyConst, uCommonFunctions, JvGnugettext, StringResources,
   System.IOUtils, JvAppStorage, JvAppIniStorage, Vcl.Themes;
 
 { TSynEditOptionsDialog }

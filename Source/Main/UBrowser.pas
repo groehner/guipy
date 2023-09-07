@@ -3,10 +3,8 @@ unit UBrowser;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.OleCtrls, SHDocVw,
-  Vcl.ComCtrls, Vcl.ToolWin, Vcl.StdCtrls, Vcl.ExtCtrls, System.ImageList,
-  Vcl.ImgList, JvAppStorage, frmFile;
+  Classes, Controls, OleCtrls, Forms, SHDocVw, ComCtrls, ToolWin, StdCtrls, ExtCtrls,
+  ImageList, ImgList, frmFile;
 
 type
   TFBrowser = class(TFileForm)
@@ -70,8 +68,9 @@ type
 
 implementation
 
-uses Clipbrd, ActiveX, MSHTML, JvGnugettext,
-     StringResources, uEditAppIntfs, uCommonFunctions, frmPyIDEMain, frmEditor,
+uses Winapi.Windows, System.SysUtils, System.Variants, Vcl.Dialogs,
+     Clipbrd, ActiveX, MSHTML, JvGnugettext,
+     uEditAppIntfs, uCommonFunctions, frmPyIDEMain,
      frmFileExplorer, UUtils, UConfiguration;
 
 {$R *.dfm}

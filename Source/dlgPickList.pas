@@ -10,24 +10,13 @@ unit dlgPickList;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  System.ImageList,
-  Vcl.Graphics,
-  Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.StdCtrls,
-  Vcl.Buttons,
   Vcl.ExtCtrls,
   Vcl.CheckLst,
   Vcl.Menus,
-  Vcl.ImgList,
   Vcl.VirtualImageList,
-  dlgPyIDEBase;
+  dlgPyIDEBase, System.ImageList, Vcl.ImgList, Vcl.Controls, System.Classes;
 
 type
   TPickListDialog = class(TPyIDEDlgBase)
@@ -61,7 +50,9 @@ var
 implementation
 
 uses
+  Winapi.Windows,
   System.Math,
+  Vcl.Graphics,
   dmResources;
 
 {$R *.dfm}

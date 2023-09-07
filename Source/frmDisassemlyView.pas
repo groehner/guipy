@@ -11,19 +11,10 @@ unit frmDisassemlyView;
 interface                          
 
 uses
-  WinApi.Windows,
-  WinApi.Messages,
-  System.SysUtils,
-  System.Variants,
   System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
-  SynEditHighlighter,
-  SynHighlighterPython,
+  Vcl.Controls,
   SynEdit,
-  SynEditCodeFolding,
   uEditAppIntfs;
 
 type
@@ -53,6 +44,7 @@ type
 implementation
 
 uses
+  SysUtils,
   JvJVCLUtils,
   JvGnugettext,
   StringResources,

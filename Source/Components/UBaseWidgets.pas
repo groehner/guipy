@@ -10,7 +10,7 @@ unit UBaseWidgets;
 interface
 
 uses
-  Windows, Messages, Controls, Graphics, Classes, StdCtrls, ELEvents, frmEditor;
+  Controls, Graphics, Classes, frmEditor;
 
 const
   TagText      =  1;   // used in UObjectGenerator
@@ -18,7 +18,6 @@ const
   TagBoolean   =  3;
   TagColor     =  4;
   PickBoolean  = 'true'#13#10'false';
-  CrLf         = sLineBreak;
 
 type
 
@@ -93,6 +92,8 @@ uses SysUtils, TypInfo, Math, UITypes, RTTI,
      Vcl.Imaging.GIFImg, Vcl.Imaging.jpeg, Vcl.Imaging.pngimage,
      JvGnugettext,
      UGuiForm, UGUIDesigner, UObjectInspector, UConfiguration, UUtils;
+
+const CrLf = #13#10;
 
 constructor TBaseWidget.create(aOwner: TComponent);
 begin

@@ -23,9 +23,10 @@ unit UDiagramFrame;
 interface
 
 uses
-  Windows, Messages, Menus, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, ActnList, Buttons, Vcl.ImgList, System.ImageList,
-  uViewIntegrator, uListeners, uModelEntity, uModel, TB2Item, SpTBXItem;
+  Messages, Classes, Controls, Forms,
+  Vcl.ImgList, System.ImageList,
+  uViewIntegrator, uListeners, uModelEntity, uModel, SpTBXItem, TB2Item,
+  Vcl.Menus;
 
 const
   WM_ChangePackage = WM_USER + 1;
@@ -218,7 +219,7 @@ type
 
 implementation
 
-uses JvGnugettext, StringResources, uUtils, UConfiguration;
+uses JvGnugettext, uUtils, UConfiguration;
 
 {$R *.DFM}
 

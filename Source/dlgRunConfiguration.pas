@@ -3,24 +3,15 @@ unit dlgRunConfiguration;
 interface
 
 uses
-  WinApi.Windows,
-  WinApi.Messages,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  System.Generics.Collections,
   System.ImageList,
-  Vcl.Graphics,
+  System.Classes,
   Vcl.Controls,
-  Vcl.StdCtrls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.ExtCtrls,
   Vcl.ImgList,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
   Vcl.VirtualImageList,
   SynEdit,
   cPySupportTypes,
-  cPyBaseDebugger,
   dlgPyIDEBase;
 
 type
@@ -84,6 +75,9 @@ uses
   System.IOUtils,
   Vcl.Themes,
   Vcl.FileCtrl,
+  Vcl.Graphics,
+  Vcl.Forms,
+  Vcl.Dialogs,
   JvGnugettext,
   dlgToolProperties,
   dmResources,
@@ -91,8 +85,7 @@ uses
   cProjectClasses,
   StringResources,
   dlgRemoteFile,
-  cSSHSupport,
-  UConfiguration;
+  cSSHSupport;
 
 {$R *.dfm}
 

@@ -14,16 +14,11 @@ uses
   System.UITypes,
   System.SysUtils,
   System.Classes,
-  System.Contnrs,
   System.Generics.Collections,
-  System.Variants,
-  System.SyncObjs,
   System.Threading,
-  Vcl.Forms,
   uSysUtils,
   PythonEngine,
   uEditAppIntfs,
-  cTools,
   cPySupportTypes,
   cPyBaseDebugger,
   cPyDebugger;
@@ -180,21 +175,19 @@ type
 implementation
 
 uses
-  System.Generics.Defaults,
-  System.StrUtils,
   System.IOUtils,
+  System.Contnrs,
   Vcl.Dialogs,
+  Vcl.Forms,
   VarPyth,
-  JclSysInfo,
-  JvJCLUtils,
   JvDSADialogs,
   JvGnugettext,
   StringResources,
   cProjectClasses,
   cPyScripterSettings,
   cPyControl,
-  uCommonFunctions,
-  cSSHSupport;
+  cTools,
+  uCommonFunctions;
 
 { TRemNameSpaceItem }
 constructor TRemNameSpaceItem.Create(aName : string; const aPyObject : Variant;

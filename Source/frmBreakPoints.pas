@@ -10,18 +10,11 @@ unit frmBreakPoints;
 interface
 
 uses
-  Winapi.Windows,
   Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
   System.Classes,
   System.ImageList,
   System.Contnrs,
   Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.Menus,
   Vcl.ExtCtrls,
   Vcl.ImgList,
   Vcl.VirtualImageList,
@@ -36,7 +29,7 @@ uses
   SpTBXSkins,
   SpTBXItem,
   SpTBXControls,
-  frmIDEDockWin;
+  frmIDEDockWin, Vcl.Menus, Vcl.Controls;
 
 type
   TBreakPointsWindow = class(TIDEDockWindow, IJvAppStorageHandler)
@@ -85,7 +78,11 @@ var
 implementation
 
 uses
+  Winapi.Windows,
+  System.SysUtils,
   Vcl.Clipbrd,
+  Vcl.Forms,
+  Vcl.Dialogs,
   uEditAppIntfs,
   uCommonFunctions,
   cPyControl,

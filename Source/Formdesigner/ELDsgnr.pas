@@ -14,7 +14,7 @@ unit ELDsgnr;
 interface
 
 uses
-  Windows, Messages, Forms, Classes, Controls, SysUtils, Graphics, Menus;
+  Messages, Forms, Classes, Controls, SysUtils, Graphics, Menus;
 
 { TELDesignPanel }
 
@@ -428,8 +428,8 @@ procedure Register;
 
 implementation
 
-uses RTLConsts, Math, Clipbrd, ExtCtrls, Types,
-  StringResources, JvGnugettext, ELHintWindow, ELSConsts, ULink;
+uses Windows, RTLConsts, Math, Clipbrd, ExtCtrls, Types,
+     JvGnugettext, ELHintWindow, ELSConsts, ULink;
 
 procedure Register;
 begin
@@ -679,7 +679,7 @@ function HintHookMsgProc(ACode: Integer; AParam: Longint; var AMsg: TMsg)
 var
   Message: TMessage;
 begin
-  Result := CallNextHookEx(DHintHook, ACode, AParam, Longint(@AMsg));
+  Result := CallNextHookEx(DHintHook, ACode, AParam, LPARAM(@AMsg)); // LPARAM instead of LongInt
   if (DHintWindowShower <> nil) and DHintWindowShower.Active then
   begin
     Message.Msg := AMsg.Message;
@@ -968,10 +968,10 @@ begin
               begin
                 if (Sender <> nil) and (Sender is TWinControl) then
                 begin
-                  Result := Longint(TWinControl(Sender)
+                  Result := LPARAM(TWinControl(Sender) // LPARAM instaed of LongInt
                     .ControlAtPos(Sender.ScreenToClient(DragRec.Pos), False));
                   if Result = 0 then
-                    Result := Longint(Sender);
+                    Result := LPARAM(Sender);  // LPARAM instead of LongInt
                 end
                 else
                   TCMDrag(Message).Result := 0;
@@ -3327,7 +3327,7 @@ begin
 {$ENDIF}
 {$IFDEF WIN64}
     AMsg.Msg := LDMSng.Msg;
-    AMsg.WParam := Longint(LDMSng.MouseMessage);
+    AMsg.WParam := WPARAM(LDMSng.MouseMessage);   // WPARAM instead of LongInt
     AMsg.LParam := LDMSng.Unused;
     AMsg.Result := LDMSng.Result;
     LEng.IsDesignMsg(FSelCtrl.Control, AMsg);

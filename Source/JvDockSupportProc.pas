@@ -33,7 +33,7 @@ uses
   {$IFDEF UNITVERSIONING}
   JclUnitVersioning,
   {$ENDIF UNITVERSIONING}
-  Types, Windows, Messages, Classes, Graphics, Controls, Forms, ImgList;
+  Windows, Messages, Classes, Graphics, Controls, Forms, ImgList;
 
 type
   TJvDockListScanKind = (lskForward, lskBackward);
@@ -107,8 +107,8 @@ const
 implementation
 
 uses
-  SysUtils, Math, CommCtrl,
-  JvJVCLUtils, JvDockControlForm, JvDockGlobals;
+  SysUtils, Math, CommCtrl, Types,
+  JvJVCLUtils, JvDockGlobals;
 
 type
   { The dock style components used to hook the form they were dropped on, so

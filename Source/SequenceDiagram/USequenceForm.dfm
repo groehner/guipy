@@ -20,6 +20,7 @@ object FSequenceForm: TFSequenceForm
     Height = 25
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 594
     object TBSequence: TToolBar
       Left = 1
       Top = 1
@@ -27,6 +28,7 @@ object FSequenceForm: TFSequenceForm
       Height = 23
       Images = ILSequenceToolbar
       TabOrder = 0
+      ExplicitWidth = 592
       object TBClose: TToolButton
         Left = 0
         Top = 0
@@ -100,12 +102,14 @@ object FSequenceForm: TFSequenceForm
     Align = alClient
     TabOrder = 2
     OnResize = SequenceScrollboxResize
+    ExplicitWidth = 594
+    ExplicitHeight = 298
   end
   object EMessage: TEdit
     Left = 456
     Top = 31
     Width = 121
-    Height = 22
+    Height = 23
     TabOrder = 1
     Visible = False
   end

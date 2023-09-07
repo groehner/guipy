@@ -6,10 +6,8 @@ object ELEventEditorDlg: TELEventEditorDlg
   ClientWidth = 297
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = False
   OnResize = FormResize
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object GBModifier: TGroupBox
     Left = 8
     Top = 8
@@ -82,7 +80,7 @@ object ELEventEditorDlg: TELEventEditorDlg
       Left = 8
       Top = 22
       Width = 89
-      Height = 21
+      Height = 23
       TabOrder = 0
       OnSelect = CBKeySelect
       Items.Strings = (

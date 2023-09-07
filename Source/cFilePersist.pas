@@ -11,7 +11,6 @@ unit cFilePersist;
 interface
 Uses
   System.Classes,
-  System.SysUtils,
   System.Contnrs,
   Vcl.Controls,
   JvAppStorage,
@@ -91,6 +90,7 @@ implementation
 
 uses
   System.Math,
+  System.SysUtils,
   SynEditTypes,
   SynEdit,
   SpTBXTabs,
@@ -99,7 +99,6 @@ uses
   dmResources,
   frmPyIDEMain,
   uHighlighterProcs,
-  cPyBaseDebugger,
   cPyControl,
   cPyScripterSettings,
   UUMLForm,

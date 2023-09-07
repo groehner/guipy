@@ -36,8 +36,7 @@ unit dlgAskParam;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, 
-  StdCtrls, ExtCtrls, dlgPyIDEBase;
+  StdCtrls, ExtCtrls, dlgPyIDEBase, Vcl.Controls, System.Classes;
 
 type
   (* asks for parameter value and optionally stores parameter to file *)
@@ -64,7 +63,7 @@ var
 implementation
 
 uses
-  uParams, cParameters;
+  Forms, uParams, cParameters;
 
 {$R *.DFM}
 

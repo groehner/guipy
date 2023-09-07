@@ -14,17 +14,16 @@ inherited ExceptionDialogMail: TExceptionDialogMail
   OnPaint = FormPaint
   OnResize = FormResize
   OnShow = FormShow
-  ExplicitWidth = 438
-  ExplicitHeight = 284
+  ExplicitWidth = 434
+  ExplicitHeight = 283
   DesignSize = (
     422
     245)
-  PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object BevelDetails: TBevel
     Left = 3
     Top = 91
-    Width = 412
+    Width = 408
     Height = 9
     Anchors = [akLeft, akTop, akRight]
     Shape = bsTopLine
@@ -33,7 +32,7 @@ inherited ExceptionDialogMail: TExceptionDialogMail
   object DetailsMemo: TMemo
     Left = 4
     Top = 101
-    Width = 411
+    Width = 407
     Height = 137
     Anchors = [akLeft, akTop, akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
@@ -48,11 +47,13 @@ inherited ExceptionDialogMail: TExceptionDialogMail
     TabOrder = 4
     WantReturns = False
     WordWrap = False
+    ExplicitWidth = 403
+    ExplicitHeight = 136
   end
   object TextMemo: TMemo
     Left = 56
     Top = 8
-    Width = 271
+    Width = 267
     Height = 75
     Hint = 'Use Ctrl+C to copy the report to the clipboard'
     Anchors = [akLeft, akTop, akRight]
@@ -63,9 +64,10 @@ inherited ExceptionDialogMail: TExceptionDialogMail
     ReadOnly = True
     TabOrder = 1
     WantReturns = False
+    ExplicitWidth = 263
   end
   object SendBtn: TButton
-    Left = 341
+    Left = 337
     Top = 32
     Width = 75
     Height = 25
@@ -74,9 +76,10 @@ inherited ExceptionDialogMail: TExceptionDialogMail
     Caption = '&Send'
     TabOrder = 0
     OnClick = SendBtnClick
+    ExplicitLeft = 333
   end
   object OkBtn: TButton
-    Left = 342
+    Left = 338
     Top = 4
     Width = 75
     Height = 25
@@ -85,9 +88,10 @@ inherited ExceptionDialogMail: TExceptionDialogMail
     Default = True
     ModalResult = 1
     TabOrder = 2
+    ExplicitLeft = 334
   end
   object DetailsBtn: TButton
-    Left = 342
+    Left = 338
     Top = 60
     Width = 75
     Height = 25
@@ -97,5 +101,6 @@ inherited ExceptionDialogMail: TExceptionDialogMail
     Enabled = False
     TabOrder = 3
     OnClick = DetailsBtnClick
+    ExplicitLeft = 334
   end
 end

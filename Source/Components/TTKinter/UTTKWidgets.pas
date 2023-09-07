@@ -10,7 +10,7 @@ unit UTTKWidgets;
 interface
 
 uses
-  Windows, SysUtils, Classes, UBaseTKWidgets;
+  Windows, Classes, UBaseTKWidgets;
 
 type
 
@@ -45,8 +45,7 @@ type
 
 implementation
 
-uses Math, UITypes, TypInfo, GraphUtil, UImages, UUtils, UObjectGenerator,
-     UObjectInspector, UGuiForm, UTKMiscBase, UConfiguration, ULink;
+uses Math, SysUtils, UITypes, UUtils;
 
 {--- TTKWidget ----------------------------------------------------------------}
 

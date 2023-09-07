@@ -6,14 +6,12 @@ object FBrowser: TFBrowser
   ClientWidth = 527
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = False
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 14
+  TextHeight = 15
   object WebBrowser: TWebBrowser
     Left = 0
     Top = 25
@@ -26,10 +24,6 @@ object FBrowser: TFBrowser
     OnDownloadBegin = WebBrowserDownloadBegin
     OnDownloadComplete = WebBrowserDownloadComplete
     OnBeforeNavigate2 = WebBrowserBeforeNavigate2
-    ExplicitLeft = 8
-    ExplicitTop = 152
-    ExplicitWidth = 300
-    ExplicitHeight = 150
     ControlData = {
       4C00000078360000252000000000000000000000000000000000000000000000
       000000004C000000000000000000000001000000E0D057007335CF11AE690800
@@ -44,6 +38,7 @@ object FBrowser: TFBrowser
     Height = 25
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 523
     object PTop: TPanel
       Left = 188
       Top = 1
@@ -52,6 +47,7 @@ object FBrowser: TFBrowser
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitWidth = 334
       object Splitter: TSplitter
         Left = 156
         Top = 0
@@ -74,7 +70,7 @@ object FBrowser: TFBrowser
           Left = 0
           Top = 1
           Width = 156
-          Height = 22
+          Height = 23
           Hint = 'Enter address'
           Anchors = [akLeft, akRight]
           ParentShowHint = False
@@ -93,6 +89,7 @@ object FBrowser: TFBrowser
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitWidth = 174
       end
     end
     object ToolBar: TToolBar

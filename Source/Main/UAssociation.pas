@@ -3,9 +3,8 @@ unit UAssociation;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, ImgList, ExtCtrls, UConnection, System.ImageList,
-  dlgPyIDEBase;
+  Windows, Controls, StdCtrls, ComCtrls, ImgList, ExtCtrls, ImageList,
+  UConnection, dlgPyIDEBase, System.Classes;
 
 type
   TFAssociation = class(TPyIDEDlgBase)
@@ -50,7 +49,8 @@ type
 
 implementation
 
-uses uCommonFunctions, UConfiguration, JvGnugettext;
+uses SysUtils, Graphics, Forms,
+     uCommonFunctions;
 
 {$R *.dfm}
 

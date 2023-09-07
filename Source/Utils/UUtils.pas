@@ -9,7 +9,7 @@ unit UUtils;
 
 interface
 
-uses Windows, Classes, StdCtrls, Forms, Menus, SysUtils, Controls, Graphics,
+uses Windows, Classes, StdCtrls, Forms, SysUtils, Controls, Graphics,
      uEditAppIntfs;
 
 type
@@ -28,7 +28,6 @@ function HideCrLf(const s: string): string;
 function UnHideCrLf(const s: string): string;
 function Split(Delimiter: Char; Input: string): TStringList;
 function IsWriteProtected(const Filename: string): boolean;
-function GetLocalUserName: string;
 function dissolveUsername(const s: String): String;
 function IsHTTP(const Pathname: String): Boolean;
 function EndsWith(const Str, Substr: string): Boolean;
@@ -47,9 +46,7 @@ procedure ErweiterePath(const s: string);
 function  GetEnvironmentVar(const VarName: string): string;
 procedure SetEnvironmentVar(const VarName, VarValue: string);
 function GetTempDir: String;
-function IsCHM(const Pathname: String): Boolean;
 function ExtractFilePathEx(const s: string): string;
-function GetExeForExtension(const Ext:string): string;
 function hasDefaultPrinter: boolean;
 procedure CreateMyFile(const Path: string);
 function IsAdministrator: Boolean;
@@ -101,7 +98,6 @@ function isDunder(Name: string): boolean;
 function StringTimesN(s: string; n: integer): string;
 function GetUniqueName(Control: TControl; Basename: string): string;
 function OnlyCharsAndDigits(const s: string): string;
-function changeVowels(const s: string): string;
 function ToWeb(const Browser: string; s: String): String;
 procedure DrawBitmap(x, y, i: integer; aCanvas: TCanvas; aImagelist: TImageList);
 procedure RotateBitmap(Bmp: TBitmap; Rads: Single; AdjustSize: Boolean;
@@ -129,7 +125,6 @@ function FilenameToFileKind(const Filename: string): TFileKind;
 function RemovePortableDrive(const s: string; folder: string = ''): string;
 function AddPortableDrive(const s: string; folder: string = ''): string;
 function WriteLog(LogString: String): Integer;
-function getProtocol(url: string): string;
 function getProtocolAndDomain(url: string): string;
 function IsHTML(const Pathname: String): Boolean;
 function HttpToWeb(s: String): String;
@@ -1099,6 +1094,24 @@ begin
     Result:= Result + s;
 end;
 
+function changeVowels(const s: string): string;
+  const Vowels = 'ÄÖÜäöüß';
+  const Nowels = 'AOUaous';
+  var i, p: integer;
+begin
+  Result:= s;
+  for i:= 1 to Length(Vowels) do begin
+    p:= Pos(Vowels[i], Result);
+    while p > 0 do begin
+      Result[p]:= Nowels[i];
+      if i < 7
+        then insert('e', Result, p+1)
+        else insert('s', Result, p+1);
+      p:= Pos(Vowels[i], Result);
+    end;
+  end;
+end;
+
 function GetUniqueName(Control: TControl; Basename: string): string;
   var i: integer; s: string;
 begin
@@ -1128,24 +1141,6 @@ begin
     c:= s[i];
     if not IsWordBreakChar(c) then
       Result:= Result + c;
-  end;
-end;
-
-function changeVowels(const s: string): string;
-  const Vowels = 'ÄÖÜäöüß';
-  const Nowels = 'AOUaous';
-  var i, p: integer;
-begin
-  Result:= s;
-  for i:= 1 to Length(Vowels) do begin
-    p:= Pos(Vowels[i], Result);
-    while p > 0 do begin
-      Result[p]:= Nowels[i];
-      if i < 7
-        then insert('e', Result, p+1)
-        else insert('s', Result, p+1);
-      p:= Pos(Vowels[i], Result);
-    end;
   end;
 end;
 

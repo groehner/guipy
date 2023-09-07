@@ -22,7 +22,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
     object Bevel1: TBevel
       Left = 3
       Top = 391
-      Width = 384
+      Width = 380
       Height = 4
       Anchors = [akLeft, akRight, akBottom]
       Shape = bsBottomLine
@@ -441,7 +441,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
     end
     object btnOK: TButton
-      Left = 127
+      Left = 123
       Top = 401
       Width = 75
       Height = 25
@@ -450,11 +450,11 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Default = True
       ModalResult = 1
       TabOrder = 5
-      ExplicitLeft = 123
+      ExplicitLeft = 119
       ExplicitTop = 400
     end
     object btnCancel: TButton
-      Left = 211
+      Left = 207
       Top = 401
       Width = 75
       Height = 25
@@ -463,11 +463,11 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 6
-      ExplicitLeft = 207
+      ExplicitLeft = 203
       ExplicitTop = 400
     end
     object btnHelp: TButton
-      Left = 295
+      Left = 291
       Top = 401
       Width = 75
       Height = 25
@@ -475,7 +475,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Caption = '&Help'
       TabOrder = 7
       OnClick = btnHelpClick
-      ExplicitLeft = 291
+      ExplicitLeft = 287
       ExplicitTop = 400
     end
   end

@@ -252,7 +252,7 @@ object PyIDEMainForm: TPyIDEMainForm
     object TBControlItem1: TTBControlItem
     end
     object DockTopPanel: TPanel
-      Tag = 120698
+      Tag = 122308
       Left = 0
       Top = 0
       Width = 946
@@ -1293,7 +1293,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object EditorToolbar: TSpTBXToolbar
       Left = 610
-      Top = 27
+      Top = 26
       Width = 206
       Height = 26
       DockPos = 574

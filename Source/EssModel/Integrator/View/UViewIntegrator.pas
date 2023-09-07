@@ -22,7 +22,7 @@ unit UViewIntegrator;
 
 interface
 
-uses Windows, Messages, Controls, Graphics, IniFiles, Classes, Types, Forms,
+uses Controls, Graphics, IniFiles, Classes, Types,
      ExtCtrls, uFeedback, uIntegrator, uModel, uModelEntity, UUtils;
 
 type
@@ -150,9 +150,7 @@ type
 
 implementation
 
-uses SysUtils, Contnrs, Math, Clipbrd, Imaging.pngimage,
-     uConfiguration;
-
+uses SysUtils, Contnrs, Forms, Imaging.pngimage, uConfiguration;
 
 var
   _CurrentEntity : TModelEntity = nil;

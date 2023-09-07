@@ -15,7 +15,7 @@ unit ELControls;
 interface
 
 uses
-  Windows, Messages, Classes, Graphics, Menus, SysUtils, Controls, ExtCtrls;
+  Classes, SysUtils;
 
   { TELObjectList }
 
@@ -51,8 +51,6 @@ type
   { TELEventSender, TELEvent }
 
 implementation
-
-uses Forms;
 
 { TELObjectList }
 

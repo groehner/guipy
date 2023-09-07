@@ -10,8 +10,7 @@ unit dlgCustomShortcuts;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Menus, System.Actions, ActnList, Buttons, dlgPyIDEBase,
+  Classes, Controls, StdCtrls, System.Actions, ActnList, dlgPyIDEBase,
   ExtCtrls, SynEditMiscClasses, System.Generics.Collections;
 
 type
@@ -112,7 +111,13 @@ var
   frmCustomKeyboard: TfrmCustomKeyboard;
 
 implementation
+
 uses
+  Windows,
+  SysUtils,
+  Graphics,
+  Menus,
+  Forms,
   Vcl.Themes,
   JvGnugettext,
   uCommonFunctions;

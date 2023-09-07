@@ -35,8 +35,7 @@ uses
   {$IFDEF UNITVERSIONING}
   JclUnitVersioning,
   {$ENDIF UNITVERSIONING}
-  ComCtrls,
-  Windows, Messages, Classes, Graphics, Controls, Forms,
+  ComCtrls, Windows, Messages, Classes, Graphics, Controls,
   JvComponentBase;
 
 type
@@ -611,7 +610,7 @@ uses
   {$IFDEF JVCLThemesEnabled}
   JvThemes,
   {$ENDIF JVCLThemesEnabled}
-  Consts, SysUtils, Math,
+  Consts, SysUtils, Math, Forms,
   JvDockControlForm, JvDockSupportProc, JvDockGlobals, JvDockVSNetStyle,
   JvDockAdvTree;
 

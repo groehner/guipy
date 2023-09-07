@@ -46,10 +46,8 @@ unit SynHighlighterPython;
 interface
 
 uses
-  System.SysUtils,
   System.Classes,
   System.RegularExpressions,
-  Vcl.Graphics,
   SynEditHighlighter,
   SynEditCodeFolding,
   StringResources;
@@ -262,6 +260,8 @@ implementation
 uses
   System.Character,
   System.RegularExpressionsCore,
+  System.SysUtils,
+  Vcl.Graphics,
   SynEditStrConst,
   SynEditMiscProcs;
 

@@ -11,9 +11,10 @@ unit dlgAboutPyScripter;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, SysUtils, Classes, Graphics, Forms, Controls,
-  Buttons, ExtCtrls, dlgPyIDEBase, SpTBXControls, SpTBXItem, SpTBXTabs, TB2Item,
-  SpTBXPageScroller, Vcl.StdCtrls, Vcl.ComCtrls, SVGIconImage;
+  Winapi.Windows, Winapi.Messages, Controls,
+  ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls,
+  dlgPyIDEBase, SpTBXTabs, SpTBXPageScroller, SVGIconImage,
+  TB2Item, SpTBXItem, System.Classes;
 
 type
   TRichEdit = class(Vcl.ComCtrls.TRichEdit)
@@ -57,8 +58,8 @@ var
 implementation
 
 uses
-  Winapi.ShellAPI, Winapi.RichEdit, uCommonFunctions, JvJCLUtils, JvGnugettext,
-  UUpdate;
+  Winapi.ShellAPI, Winapi.RichEdit, uCommonFunctions, JvGnugettext,
+  SysUtils, Graphics, Forms, UUpdate;
 
 {$R *.dfm}
 

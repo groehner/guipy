@@ -40,34 +40,34 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000078AA723108FB1F3078AA723000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 257
-  ExplicitHeight = 333
+  ExplicitWidth = 249
+  ExplicitHeight = 321
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 241
     Height = 294
-    ExplicitWidth = 241
-    ExplicitHeight = 294
+    ExplicitWidth = 233
+    ExplicitHeight = 282
     inherited FGPanel: TPanel
-      Width = 245
-      Height = 302
-      ExplicitWidth = 237
-      ExplicitHeight = 290
+      Width = 237
+      Height = 290
+      ExplicitWidth = 229
+      ExplicitHeight = 278
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 245
-        Height = 302
+        Width = 237
+        Height = 290
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 237
-        ExplicitHeight = 290
+        ExplicitWidth = 229
+        ExplicitHeight = 278
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 0
-          Width = 245
-          Height = 302
+          Width = 237
+          Height = 290
           Align = alClient
           BorderStyle = bsNone
           Colors.UnfocusedColor = clHighlightText
@@ -102,7 +102,7 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
             item
               Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus, coStyleColor]
               Position = 0
-              Width = 245
+              Width = 237
             end>
         end
       end

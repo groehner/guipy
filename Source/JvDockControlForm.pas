@@ -51,10 +51,8 @@ uses
   {$IFDEF RTL330_UP}
   System.Messaging,
   {$ENDIF RTL330_UP}
-  Windows, Messages, Classes, Graphics, Controls, Forms, Menus,
-  ExtCtrls, ComCtrls,
-  JvComponentBase, JvComponent, JvAppStorage, JvConsts,
-  JvDockTree, JvDockSupportClass, JvDockSupportControl, JvDockAdvTree;
+  Windows, Messages, Classes, Graphics, Controls, Forms, Menus, ExtCtrls,
+  JvComponentBase, JvAppStorage, JvDockTree, JvDockSupportControl;
 
 const
   JvDockPositionCount = 5;
@@ -892,9 +890,8 @@ const
 implementation
 
 uses
-  Types, SysUtils,
-  JclSysInfo,
-  JvAppRegistryStorage, JvAppIniStorage, JvTypes,
+  Types, SysUtils, ComCtrls,
+  JclSysInfo, JvAppRegistryStorage, JvAppIniStorage, JvTypes,
   JvDockSupportProc, JvDockGlobals, JvDockInfo, JvDockVSNetStyle, JvJVCLUtils;
 
 {$R JvDockableForm.dfm}

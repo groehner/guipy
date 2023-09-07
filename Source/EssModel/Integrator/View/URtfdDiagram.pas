@@ -24,7 +24,7 @@ unit URtfdDiagram;
 
 interface
 
-uses Windows, Menus, Messages, Controls, Types, Graphics, Classes, Forms, ExtCtrls,
+uses Controls, Types, Graphics, Classes, ExtCtrls,
   uDiagramFrame, uRtfdComponents, uFeedback, uListeners, uModelEntity, uModel,
   UUtils, uViewIntegrator, UEssConnectPanel, USequenceform,
   UUMLForm, UConnection, ULivingObjects;
@@ -200,12 +200,12 @@ type
 
 implementation
 
-uses Math, Grids, SysUtils, UITypes, StdCtrls, Dialogs, Contnrs,
-  IniFiles, Clipbrd, JvGnugettext, TB2Item, SpTBXItem, StringResources,
+uses Menus, Forms, Math, SysUtils, UITypes, Dialogs, Contnrs,
+  IniFiles, Clipbrd, JvGnugettext, TB2Item, SpTBXItem,
   uIterators, uRtfdDiagramFrame, USugiyamaLayout, uIntegrator, UConfiguration,
   SynEdit, UUMLModule, UImages, UObjectGenerator,
-  frmPyIDEMain, uEditAppIntfs, frmEditor, frmFile, frmPythonII, frmVariables,
-  cPyControl, cInternalPython, cPyBaseDebugger, uCommonFunctions;
+  frmPyIDEMain, uEditAppIntfs, frmFile, frmPythonII, frmVariables,
+  cPyControl, cPyBaseDebugger, uCommonFunctions;
 
 { TRtfdDiagram }
 
@@ -535,22 +535,24 @@ begin
             if (A.TypeClassifier = aClass.Ancestor[j]) and assigned(getBox(A.TypeClassifier.Name)) then
               A.Connected:= true;
           s:= A.TypeClassifier.Fullname;
-          if IsPythonType(s) then continue;
           Generic:= GenericOf(s);
           if Generic <> '' then begin // Vector<E>, Stack<E>, ArrayList<E>,...
             DestBox:= GetBox(Generic);
             if Assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) = -1) and (DestBox.Entity.Name = Generic) then
               Panel.ConnectObjects(CBox, DestBox, asAggregation1);
-          end else if Pos('[]', s) > 0 then begin // Typ[]
-            Agg:= WithoutArray(s);
+          end else if (Pos('[', s) > 0) and (Pos(']', s) > 0) then begin // Typ[]
+            Agg:= copy(s, Pos('[', s) + 1, length(s));
+            Agg:= copy(Agg, 1, Pos(']', Agg) - 1);
             DestBox:= GetBox(Agg);
             if not assigned(DestBox) and (Pos('.', Agg) = 0) and (CBox.Entity.Package <> '') then begin
-              Ass:= CBox.Entity.Package + '.' + Agg;
-              DestBox:= GetBox(Ass);
+              Agg:= CBox.Entity.Package + '.' + Agg;
+              DestBox:= GetBox(Agg);
             end;
             if Assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) = -1) then
-              Panel.ConnectObjects(CBox, DestBox, asAggregation1)
-          end else begin
+              Panel.ConnectObjects(CBox, DestBox, asAggregation1);
+          end else if IsPythonType(s)
+            then continue
+          else begin
             Ass:= s;
             DestBox:= GetBox(Ass);
             if not assigned(DestBox) and (Pos('.', Ass) = 0) and (CBox.Entity.Package <> '') then begin

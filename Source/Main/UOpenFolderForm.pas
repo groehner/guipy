@@ -5,8 +5,7 @@ interface
 {$WARN UNIT_PLATFORM OFF}
 
 uses
-  Windows, Messages, Forms, Dialogs, StdCtrls, Controls, ShellCtrls, Classes,
-  dlgPyIDEBase;
+  System.Classes, Vcl.Controls, Forms, StdCtrls, ShellCtrls, dlgPyIDEBase;
 
 type
 
@@ -25,7 +24,7 @@ type
 
 implementation
 
-uses SysUtils, UConfiguration, JvGnugettext;
+uses SysUtils;
 
 {$R *.dfm}
 

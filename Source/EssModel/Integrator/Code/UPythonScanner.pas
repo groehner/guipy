@@ -9,8 +9,6 @@ unit UPythonScanner;
 
 interface
 
-  uses Classes, ComCtrls, SysUtils;
-
   const
     NEWLINE = Chr($0A);
     INDENT = Chr($03);
@@ -57,7 +55,7 @@ interface
 
 implementation
 
-uses Character;
+uses SysUtils, Character;
 
 {--- Scanner ------------------------------------------------------------------}
 

@@ -46,11 +46,10 @@ interface
 
 uses
   System.Classes,
+  Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.Dialogs,
-  Vcl.Controls,
   Vcl.ExtCtrls,
-  Vcl.Forms,
   Vcl.Samples.Spin,
   dlgPyIDEBase;
 
@@ -80,7 +79,9 @@ type
 
 implementation
 
-uses Vcl.Graphics;
+uses
+  Vcl.Forms,
+  Vcl.Graphics;
 
 {$R *.dfm}
 

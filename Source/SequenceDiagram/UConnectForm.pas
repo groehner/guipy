@@ -10,8 +10,8 @@ unit UConnectForm;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, ImgList, ImageList, dlgPyIDEBase, USequencePanel;
+  Windows, Classes, Controls, StdCtrls, ComCtrls, ImgList, ImageList,
+  dlgPyIDEBase, USequencePanel;
 
 type
 
@@ -45,7 +45,7 @@ type
 
 implementation
 
-uses Themes, uCommonFunctions, JvGnugettext, UConfiguration;
+uses SysUtils, Graphics, Forms, Themes, uCommonFunctions;
 
 {$R *.dfm}
 
