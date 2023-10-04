@@ -19,6 +19,7 @@ type
     // from address to name
     // <__main__.Node object at 0x0306546DF9>=node1
     // <Auto.Auto object at 0x03770658>=auto1
+    // <TurtleIntern Sprite(in 771 groups)>
     SLObjectsAddressName: TStringList;
 
     // path in the namespace
@@ -176,7 +177,7 @@ var
   SL: TStringList;
   Py: IPyEngineAndGIL;
   NS: TBaseNameSpaceItem;
-  Name: String;
+  Name, Address: String;
 begin
   Result := false;
   Py := GI_PyControl.SafePyEngine;
@@ -190,7 +191,8 @@ begin
           NS := NS.ChildNode[j]
         else begin
           Result := true;
-          SLObjectsAddressName.Add(VarToStr(NS.ChildNode[i].PyObject) + '=' + Objectname);
+          Address:= VarToStr(NS.ChildNode[j].PyObject);
+          SLObjectsAddressName.Add(Address + '=' + Objectname);
         end;
         break;
       end;
@@ -282,10 +284,11 @@ begin
     for i := 0 to NS.ChildCount - 1 do
       if isDunder(NS.ChildNode[i].Name) then
         break
-      else if isAttribute(NS.ChildNode[i]) then
-        SL.Add(NS.ChildNode[i].Name + '=' +
-          getNameFromValue(VarToStr(NS.ChildNode[i].PyObject)) + '|' +
-          NS.ChildNode[i].ObjectType);
+      else if isAttribute(NS.ChildNode[i]) then begin
+        var s:= VarToStr(NS.ChildNode[i].PyObject);
+        s:= getNameFromValue(s);
+        SL.Add(NS.ChildNode[i].Name + '=' + s + '|' + NS.ChildNode[i].ObjectType);
+      end;
   Result := SL;
 end;
 
@@ -303,9 +306,11 @@ begin
   for i := 0 to NS.ChildCount - 1 do
     if isDunder(NS.ChildNode[i].Name) then
       break
-    else if isAttribute(NS.ChildNode[i]) then
-      SL.Add(NS.ChildNode[i].Name + '=' + getNameFromValue
-        (VarToStr(NS.ChildNode[i].PyObject)));
+    else if isAttribute(NS.ChildNode[i]) then begin
+      var s:= VarToStr(NS.ChildNode[i].PyObject);
+      s:= getNameFromValue(s);
+      SL.Add(NS.ChildNode[i].Name + '=' + s);
+    end;
   Result := SL;
 end;
 
@@ -345,6 +350,7 @@ var
   end;
 
   procedure AddObjects(NS: TBaseNameSpaceItem);
+    var s: String;
   begin
     for var i:= 0 to NS.ChildCount - 1 do begin
       var OType:= NS.ChildNode[i].ObjectType;
@@ -353,11 +359,14 @@ var
       else if OType = 'dict' then begin
         AddObjectsFromDictNames(NS.ChildNode[i]);
         AddObjects(NS.ChildNode[i])
-      end else if OType = 'set' then
-        AddObjectsFromString(VarToStr(NS.ChildNode[i].PyObject))
-      else if isObject(NS.ChildNode[i]) then
-        SL.Add(getNameFromValue(VarToStr(NS.ChildNode[i].PyObject)))
-      else if isDunder(NS.ChildNode[i].Name) then
+      end else if OType = 'set' then begin
+        s:= VarToStr(NS.ChildNode[i].PyObject);
+        AddObjectsFromString(s);
+      end else if isObject(NS.ChildNode[i]) then begin
+        s:= VarToStr(NS.ChildNode[i].PyObject);
+        s:= getNameFromValue(s);
+        SL.Add(s);
+      end else if isDunder(NS.ChildNode[i].Name) then
         break;
     end;
   end;
@@ -381,6 +390,9 @@ begin
     Result := SLObjectsAddressName.ValueFromIndex[i]
   else if copy(Value, 1, 1) = '<' then begin
     Classname := getClassnameFromAddress(Value);
+    p1:= Pos('(', Classname);
+    if p1 > 0 then
+      delete(Classname, p1, length(Classname));
     Objectname := getNewObjectName(Classname);
     if SLObjectsAddressName.IndexOfName(Value) = -1 then
       SLObjectsAddressName.Add(Value + '=' + Objectname);
@@ -494,11 +506,15 @@ end;
 function TLivingObjects.getClassnameFromAddress(Address: string): string;
   var p: integer;
 begin
-  // example: <__main__.Node object at 0x0306546DF9>
+  // examples: <__main__.Node object at 0x0306546DF9>
+  // '<TurtleIntern Sprite(in 37 groups)>'
   p := Pos('.', Address);
   delete(Address, 1, p);
   p := Pos(' ', Address);
-  Result := copy(Address, 1, p - 1);
+  Address:= copy(Address, 1, p - 1);
+  if copy(Address, 1, 1) = '<' then
+    delete(Address, 1, 1);
+  Result:= Address;
 end;
 
 procedure TLivingObjects.makeAllObjects;
@@ -607,10 +623,12 @@ procedure TLivingObjects.makeAllObjects;
         Add(Prefixname + '.' + NS.ChildNode[i].Name, NS.ChildNode[i])
       else if OType = 'dict' then
         AddObjectsFromDict(Prefixname, NS.ChildNode[i])
-      else if OType = 'set' then
-        AddObjectsFromString(Prefixname + '.' + NS.ChildNode[i].Name, VarToStr(NS.ChildNode[i].PyObject))
-      else if isObject(NS.ChildNode[i]) then begin
-        var Name:= getObjectName(VarToStr(NS.ChildNode[i].PyObject));
+      else if OType = 'set' then begin
+        var s:= VarToStr(NS.ChildNode[i].PyObject);
+        AddObjectsFromString(Prefixname + '.' + NS.ChildNode[i].Name, s);
+      end else if isObject(NS.ChildNode[i]) then begin
+        var s:= VarToStr(NS.ChildNode[i].PyObject);
+        var Name:= getObjectName(s);
         if SLObjectsNamePath.IndexOfName(Name) = -1 then begin
           SLObjectsNamePath.Add(Name + '=' + Prefixname);
           Add(Prefixname + '.' + NS.ChildNode[i].Name, NS.ChildNode[i]);
@@ -630,7 +648,8 @@ begin
   // collect objects with direct access first
   for i:= 0 to NS.ChildCount -1 do
     if isObject(NS.ChildNode[i]) then begin
-      SLObjectsAddressName.Add(VarToStr(NS.ChildNode[i].PyObject) + '=' + NS.ChildNode[i].Name);
+      var s:= VarToStr(NS.ChildNode[i].PyObject);
+      SLObjectsAddressName.Add(s + '=' + NS.ChildNode[i].Name);
       SLObjectsNamePath.Add(NS.ChildNode[i].Name + '=' + NS.ChildNode[i].Name);
     end else if isDunder(NS.ChildNode[i].Name) then
       break;

@@ -1183,7 +1183,7 @@ var
   pt, pt1, p2: TPoint;
   found, Src: TControl;
   mcont: TManagedObject;
-  i, dx, dy, SelControls, Handle_Shadow, newLeft, newTop: Integer;
+  i, dx, dy, SelControls, Handle_Shadow, newLeft, newTop, w, h: Integer;
   curr: TCrackControl;
   r, rt, MovedRect, mRectDxDy: TRect;
   resized: boolean;
@@ -1283,7 +1283,7 @@ var
       DrawMarkers((mcont.FControl as TRtfdBox).GetBoundsRect, show);
   end;
 
-begin
+begin // of MouseMove
   inherited;
 
   if shift = [] then exit;
@@ -1348,12 +1348,12 @@ begin
               mRectDxDy.Union(rt);
 
               // scrolling
-              if curr.Left + curr.Width + 50 > Width then begin
-                Width:= curr.Left + curr.Width + 50;
+              if curr.Left + curr.Width + 30 > Width then begin
+                Width:= curr.Left + curr.Width + 30;
                 Resized:= true;
               end;
-              if curr.Top + curr.Height + 50 > Height then begin
-                Height:= curr.Top + curr.Height + 50; // ToDo wird nicht vergrößert
+              if curr.Top + curr.Height + 30 > Height then begin
+                Height:= curr.Top + curr.Height + 30; // ToDo wird nicht vergrößert
                 Resized:= true;
               end;
 
@@ -1367,6 +1367,9 @@ begin
             end;
           end;
 
+          GetDiagramSize(W, H);
+          TScrollBox(Parent).HorzScrollBar.Visible:= W + 5 > Parent.Width;
+          TScrollBox(Parent).VertScrollBar.Visible:= H + 5 > Parent.Height;
         // debug
         //   Canvas.Brush.Color:= clRed;
         //   Canvas.FrameRect(MovedRect);
@@ -1582,6 +1585,8 @@ begin
   end;
   if (Width <> xmax) or (Height <> ymax) then
     SetBounds(Left, Top, xmax, ymax);
+  TScrollBox(Parent).HorzScrollBar.Visible:= xmax >= Parent.Width;
+  TScrollBox(Parent).VertScrollBar.Visible:= ymax >= Parent.Height;
   if Assigned(OnContentChanged) then
     OnContentChanged(nil);
 end;

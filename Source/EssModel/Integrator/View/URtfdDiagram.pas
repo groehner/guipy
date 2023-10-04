@@ -214,7 +214,7 @@ begin
   inherited Create(Om, Parent, aFeedback);
   Frame:= TAFrameRtfdDiagram.Create(Parent, Self);
   Frame.Parent:= Parent;  // assigment to the gui
-  UMLForm:= (Parent.Parent.Parent as TFUMLForm);
+  UMLForm:= (Parent.Parent.Parent.Parent as TFUMLForm);
   FLivingObjects:= TLivingObjects.Create;
 
   // Panel is ActiveControl in MainForm
@@ -467,8 +467,8 @@ begin
       then Panel.AddManagedObject(InCreateBox(E, TRtfdInterface));
   end
   else if E is TObjekt then begin
-    if GetBox(E.FullName) = nil
-      then Panel.AddManagedObject(InCreateBox(E, TRtfdObject))
+    if GetBox(E.FullName) = nil then
+      Panel.AddManagedObject(InCreateBox(E, TRtfdObject))
   end;
 end;
 
@@ -529,7 +529,7 @@ begin
       while Mi.HasNext do begin
         AttributeConnected:= false;
         A := TAttribute(Mi.Next);
-        //Avoid arrows that points to themselves, also associations to ancestor (double arrows)
+        // avoid arrows that points to themselves, also associations to ancestor (double arrows)
         if Assigned(A.TypeClassifier) then begin
           for j:= 0 to aClass.AncestorsCount - 1 do
             if (A.TypeClassifier = aClass.Ancestor[j]) and assigned(getBox(A.TypeClassifier.Name)) then
@@ -759,8 +759,8 @@ begin
       Ini.WriteString (S, 'Fontname', Font.Name);
       Ini.WriteInteger(S, 'Fontsize', Font.Size);
       Ini.WriteBool   (S, 'ShowObjectDiagram', ShowObjectDiagram);
-      Ini.WriteInteger(S, 'RememberedHeight', UMLForm.RememberedHeight);
-      Ini.WriteInteger(S, 'Diagram.Height', UMLForm.PDiagram.Height);
+      Ini.WriteBool   (S, 'InteractiveClosed', UMLForm.InteractiveClosed);
+      Ini.WriteInteger(S, 'InteractiveHeight', UMLForm.InteractiveHeight);
       Ini.WriteString (S, 'SynEditFontname', UMLForm.SynEdit.Font.Name);
       Ini.WriteInteger(S, 'SynEditFontsize', UMLForm.SynEdit.Font.Size);
 
@@ -853,8 +853,8 @@ begin
     setFont(Font);
     UMLForm.SynEdit.Font.Name:= Ini.ReadString (S, 'SynEditFontname', 'Consolas');
     UMLForm.SynEdit.Font.Size:= Ini.ReadInteger(S, 'SynEditFontsize', 11);
-    UMLForm.RememberedHeight:=  Ini.ReadInteger(S, 'RememberedHeight', 90);
-    UMLForm.PDiagram.Height:= Ini.ReadInteger(S, 'Diagram.Height', 90);
+    UMLForm.InteractiveClosed:= Ini.ReadBool(S, 'InteractiveClosed', true);
+    UMLForm.InteractiveHeight:= Ini.ReadInteger(S, 'InteractiveHeight', 100);
 
     // read files
     path:= ExtractFilePath(Filename);
@@ -1126,9 +1126,9 @@ begin
       case value of
         0: B.MinVisibility:= TVisibility(0);
         1: if B is TRtfdClass
-             then B.MinVisibility:= TVisibility(4)
+             then B.MinVisibility:= TVisibility(3)
              else B.MinVisibility:= TVisibility(0);
-        2: B.MinVisibility:= TVisibility(4);
+        2: B.MinVisibility:= TVisibility(3);
       end;
     end;
   finally
@@ -1697,8 +1697,9 @@ procedure TRtfdDiagram.ShowAttributes(Objectname: string; aClass: TClass;
   // just create attributes, they will be shown by UpdateAllObjects
 
   var SLObject: TStringList;
+      AddedAttributes: TStringList;
 
-  procedure ShowAttributesOfClass(aClass: TClass);
+  procedure ShowAttributesOfClass1(aClass: TClass);
     var aModelAttribut: TAttribute;
         SL1: TStringList;
         Ami : IModelIterator;
@@ -1707,11 +1708,12 @@ procedure TRtfdDiagram.ShowAttributes(Objectname: string; aClass: TClass;
         p: integer; iname: string;
         SuperClass: TClass;
   begin
+    // add from knowledge about model
     if aClass.AncestorsCount > 0 then begin
       SuperClass:= aClass.Ancestor[0];
-      ShowAttributesOfClass(SuperClass);
+      ShowAttributesOfClass1(SuperClass);
     end;
-    aBox:= GetBox(aClass.Name);
+    aBox:= GetBox(Objectname);
     // get names in visibility order like in TRtfdClass.RefreshEntities
     if assigned(aBox) then
       if aBox.MinVisibility > Low(TVisibility) then
@@ -1731,6 +1733,7 @@ procedure TRtfdDiagram.ShowAttributes(Objectname: string; aClass: TClass;
         SL1:= Split('|', SLObject.ValueFromIndex[p]);
         if SL1.Count = 2 then begin // object has an attribute
           aModelAttribut:= aModelObject.AddAttribute(aEntity.Name);  // AddAttribut can raise an exception
+          AddedAttributes.Add(iname);
           aModelAttribut.Visibility:= aEntity.Visibility;
           aModelAttribut.Static:= aEntity.Static;
           aModelAttribut.IsFinal:= aEntity.IsFinal;
@@ -1748,11 +1751,46 @@ procedure TRtfdDiagram.ShowAttributes(Objectname: string; aClass: TClass;
     end;
   end;
 
+  procedure ShowAttributesOfClass2(aClass: TClass);
+    var aModelAttribut: TAttribute;
+        SL1: TStringList;
+        iname: string;
+  begin
+    // add from knowldege about LivingObjects
+    for var i:= 0 to SLObject.Count - 1 do begin
+      iname:= SLObject.KeyNames[i];
+      if AddedAttributes.IndexOf(iname) = -1 then begin
+        SL1:= Split('|', SLObject.ValueFromIndex[i]);
+        if SL1.Count = 2 then begin // object has an attribute
+          aModelAttribut:= aModelObject.AddAttribute(iname);  // AddAttribut can raise an exception
+          AddedAttributes.Add(iName);
+          aModelAttribut.Visibility:= String2Visibility(iname);
+          //aModelAttribut.Static:= aEntity.Static;
+          //aModelAttribut.IsFinal:= aEntity.IsFinal;
+          //if aModelAttribut.IsFinal then
+          //  aModelObject.hasFinal:= true;
+          aModelAttribut.Value:= SL1[0];
+          aModelAttribut.TypeClassifier:= FindClassifier(SL1[1]);
+          if aModelAttribut.TypeClassifier = nil then begin
+            aModelAttribut.TypeClassifier:= TClassifier.Create(nil);
+            aModelAttribut.TypeClassifier.Name:= SL1[1];
+          end;
+        end;
+        FreeAndNil(SL1);
+      end;
+    end;
+  end;
+
 begin
+  aModelObject.Locked:= true;
+  AddedAttributes:= TStringList.Create;
   SLObject:= FLivingObjects.getObjectMembers(Objectname);
   aModelObject.setCapacity(SLObject.Count);
-  ShowAttributesOfClass(aClass);
+  ShowAttributesOfClass1(aClass);
+  ShowAttributesOfClass2(aClass);
   FreeAndNil(SLObject);
+  FreeAndNil(AddedAttributes);
+  aModelObject.Locked:= false;
 end;
 
 function TRtfdDiagram.StrToPythonValue(s: String): String;
@@ -1776,11 +1814,17 @@ function TRtfdDiagram.getParameterAsString(Parameter, ParamValues: TStringList):
   var s, s1, value: String; i: integer;
 begin
   s:= '';
+  var AllParameters:= true;
   for i:= 0 to Parameter.Count - 1 do begin
     value:= ParamValues[i];
     s1:= StrAndTypeToPythonValue(Parameter.ValueFromIndex[i], Value);
-    if s1 <> '' then
-      s:= s + s1 + ', ';
+    if AllParameters then
+      if s1 <> ''
+        then s:= s +  s1 + ', '
+        else AllParameters:= false
+    else
+      if s1 <> '' then
+        s:= s + Parameter.KeyNames[i] + '=' + s1 + ', ';
   end;
   Result:= copy(s, 1, length(s)-2);
 end;
@@ -2372,19 +2416,19 @@ procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
       aInheritedMenu.Add(aMenuItem);
   end;
 
-procedure Debugmenu(aMenu: TSpTBXPopupMenu);
-  var i, j: integer; s: string; aMenuItem: TTBCustomItem;
-begin
-  s:= '';
-  for i:= 0 to aMenu.Items.Count - 1 do begin
-    aMenuItem:= aMenu.Items[i];
-    s:= s + aMenuItem.caption + ' ' + BoolToStr(aMenuItem.visible, true) + sLineBreak;
-    for j:= 0 to aMenuItem.Count - 1 do
-      s:= s + '-- ' + aMenuItem.Items[j].caption + ' ' + BoolToStr(aMenuItem.Items[j].visible, true) + sLineBreak;
-  end;
+  procedure Debugmenu(aMenu: TSpTBXPopupMenu);
+    var i, j: integer; s: string; aMenuItem: TTBCustomItem;
+  begin
+    s:= '';
+    for i:= 0 to aMenu.Items.Count - 1 do begin
+      aMenuItem:= aMenu.Items[i];
+      s:= s + aMenuItem.caption + ' ' + BoolToStr(aMenuItem.visible, true) + sLineBreak;
+      for j:= 0 to aMenuItem.Count - 1 do
+        s:= s + '-- ' + aMenuItem.Items[j].caption + ' ' + BoolToStr(aMenuItem.Items[j].visible, true) + sLineBreak;
+    end;
 
-  ShowMessage(s);
-end;
+    ShowMessage(s);
+  end;
 
 begin // PopMenuClassPopup
   aBox:= FindVCLWindow((Sender as TPopupMenu).PopupPoint);
@@ -2439,10 +2483,12 @@ begin // PopMenuClassPopup
     // get constructors
     if not aModelClass.IsAbstract then begin
       it1:= aModelClass.GetOperations;
+      var ConstructorMissing:= true;
       while it1.HasNext do begin
         Operation:= it1.Next as UModel.TOperation;
         if Operation.OperationType = otConstructor then begin
-          s1:= Operation.Name + '(';
+          ConstructorMissing:= false;
+          s1:= aModelClass.Name + '(';   // ModelClass.Name
           s2:= s1;
           it2:= Operation.GetParameters;
           while it2.HasNext do begin
@@ -2469,6 +2515,10 @@ begin // PopMenuClassPopup
           s2:= s2 + ')';
           MakeMenuItem(s1, s2, 2);
         end
+      end;
+      if ConstructorMissing then begin
+        s1:= aModelClass.Name + '()';
+        MakeMenuItem(s1, s1, 2);
       end;
     end;
     // get static|class methods and Parameterclasses
@@ -2822,8 +2872,11 @@ begin // PopMenuObjectPopup
           dec(MenuIndex);
         end;
         if aModelClass.AncestorsCount > 0 then begin
+          var aClassname:= aModelClass.Name;
           ancest:= aModelClass.Ancestor[0].Name;
           aModelClass:= getModelClass(ancest);
+          if aModelClass.Name = aClassname then
+            break;
           if aModelClass = nil then
             aModelClass:= CreateModelClass(ancest);
         end else

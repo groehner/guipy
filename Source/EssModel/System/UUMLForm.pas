@@ -72,6 +72,7 @@ type
     MIClose: TSpTBXItem;
     EmptyPopupMenu: TPopupMenu;
     SpTBXSplitter1: TSpTBXSplitter;
+    PUML: TPanel;
     procedure FormCreate(Sender: TObject); override;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormClose(Sender: TObject; var aAction: TCloseAction); override;
@@ -82,7 +83,6 @@ type
     procedure TBDiagramFromOpenWindowsClick(Sender: TObject);
     procedure TBClassDefinitionClick(Sender: TObject);
     procedure TBRefreshClick(Sender: TObject);
-    procedure PDiagramPanelResize(Sender: TObject);
     procedure TBObjectDiagramClick(Sender: TObject);
     procedure TBCommentClick(Sender: TObject);
     procedure TBZoomOutClick(Sender: TObject);
@@ -104,13 +104,20 @@ type
     procedure SynEditChange(Sender: TObject);
     //procedure PDiagramPanelEnter(Sender: TObject);
     procedure TBReInitializeClick(Sender: TObject);
+    procedure PUMLResize(Sender: TObject);
+    procedure PDiagramPanelResize(Sender: TObject);
+    procedure TBInteractiveCloseClick(Sender: TObject);
   private
     LockEnter: boolean;
     LockRefresh: boolean;
     LockCreateTV: boolean;
+    FInteractiveHeight: integer;
+    FInteractiveClosed: boolean;
     AlreadySavedAs: boolean;
     procedure ChangeStyle;
     procedure RunExecuteUMLWindow;
+    procedure setInteractiveClosed(value: boolean);
+    procedure setInteractiveHeight(value: integer);
   protected
     procedure Retranslate; override;
     function LoadFromFile(const FileName: string): boolean; override;
@@ -123,7 +130,6 @@ type
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
     // IJvAppStorageHandler implementation
   public
-    RememberedHeight: integer;
     MainModul: TDMUMLModule;
     procedure Open(const Filename: string; State: string);
     procedure ConfigureWindow(Sender: TObject);
@@ -144,6 +150,9 @@ type
     procedure ShowAll;
     procedure ClassEdit;
     procedure OnFormMouseDown(Sender: TObject);
+
+    property InteractiveHeight: integer read FInteractiveHeight write setInteractiveHeight;
+    property InteractiveClosed: boolean read FInteractiveClosed write setInteractiveClosed;
   end;
 
 implementation
@@ -401,11 +410,47 @@ end;
 
 procedure TFUMLForm.TBInteractiveClick(Sender: TObject);
 begin
-  if PDiagram.Height < ClientHeight - 10 then begin
-    RememberedHeight:= PDiagram.Height;
-    PDiagram.Height:= ClientHeight - 4;
-  end else
-    PDiagram.Height:= min(RememberedHeight, ClientHeight - 100);
+  FInteractiveClosed:= false;
+  FInteractiveHeight:= max(FInteractiveHeight, 100);
+  PUMLResize(Self);
+end;
+
+procedure TFUMLForm.TBInteractiveCloseClick(Sender: TObject);
+begin
+  FInteractiveClosed:= true;
+  FInteractiveHeight:= max(PInteractive.Height, 100);
+  PUMLResize(Self);
+end;
+
+procedure TFUMLForm.PUMLResize(Sender: TObject);
+begin
+  if FInteractiveClosed
+    then PDiagram.Height:= ClientHeight - 4
+    else PDiagram.Height:= ClientHeight - 4 - FInteractiveHeight;
+end;
+
+procedure TFUMLForm.PDiagramPanelResize(Sender: TObject);
+begin
+  if Assigned(MainModul) then
+    MainModul.Diagram.RecalcPanelSize;
+end;
+
+procedure TFUMLForm.setInteractiveClosed(value: boolean);
+begin
+  if FInteractiveClosed <> value then begin
+    FInteractiveClosed:= value;
+    if FInteractiveClosed
+      then TBInteractiveCloseClick(self)
+      else TBInteractiveClick(self);
+  end;
+end;
+
+procedure TFUMLForm.setInteractiveHeight(value: integer);
+begin
+  if FInteractiveHeight <> value then begin
+    FInteractiveHeight:= value;
+    PUMLResize(self);
+  end;
 end;
 
 procedure TFUMLForm.Refresh;
@@ -493,13 +538,6 @@ begin
   end;
   PyIDEMainForm.actUMLOpenClassExecute(Self);
   Modified:= true;
-end;
-
-procedure TFUMLForm.PDiagramPanelResize(Sender: TObject);
-begin
-  inherited;
-  if Assigned(MainModul) then
-    MainModul.Diagram.RecalcPanelSize;
 end;
 
 function TFUMLForm.CanCopy: boolean;
@@ -712,6 +750,7 @@ begin
     TBInteractiveToolbar.Images:= DMImages.ILInteractive;
     PMInteractive.Images:= DMImages.ILInteractive
   end;
+  SynEdit.Highlighter:= ResourcesDataModule.Highlighters.HighlighterFromFileExt('py');
   MainModul.Diagram.ChangeStyle;
 end;
 

@@ -122,7 +122,8 @@ Type
     fLocals : TObjectList;
   public
     ReturnType : string;
-    ReturnAttributes : TVariableAttributes;
+    ReturnValue: string;
+    ReturnAttributes: TVariableAttributes;
     isStaticMethod: boolean;
     isClassMethod: boolean;
     isAbstractMethod: boolean;
@@ -1194,9 +1195,10 @@ begin
         if (LastCodeElement is TParsedFunction) and
           (TParsedFunction(LastCodeElement).ReturnType = '')
         then
-          TParsedFunction(LastCodeElement).ReturnType :=
+          TParsedFunction(LastCodeElement).ReturnValue :=
             GetExpressionType(getGroup(ReturnMatch, 1),
             TParsedFunction(LastCodeElement).ReturnAttributes);
+
       end else if WithMatch.Success then begin
         Variable := TVariable.Create;
         Variable.Name := getGroup(WithMatch, 3);

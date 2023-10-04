@@ -291,10 +291,12 @@ begin
       end;
     end;
   end;
-  if Activate and CanActuallyFocus(EditForm.ActiveSynEdit) then
-    EditForm.ActiveSynEdit.SetFocus;
-  if isWrapping then
-    EditForm.TBWordWrapClick(nil);
+  if assigned(EditForm) then begin
+    if Activate and CanActuallyFocus(EditForm.ActiveSynEdit) then
+      EditForm.ActiveSynEdit.SetFocus;
+    if isWrapping then
+      EditForm.TBWordWrapClick(nil);
+  end;
 end;
 
 procedure TFFileStructure.TVFileStructureMouseDown(Sender: TObject;

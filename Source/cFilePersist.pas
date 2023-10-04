@@ -32,8 +32,8 @@ Type
   private
     FileKind: TFileKind;
     TabControlIndex : integer;
-    PDiagramHeight: integer;      // UMLForm
-    RememberedHeight: integer;    // UMLForm
+    InteractiveClosed: boolean;    // UMLForm
+    InteractiveHeight: integer;    // UMLForm
     Line, Char, TopLine : integer;
     BreakPoints : TObjectList;
     BookMarks : TObjectList;
@@ -155,8 +155,8 @@ begin
      end;
    end;
    if FileKind = fkUML then begin
-     AppStorage.WriteInteger(BasePath+'\PDiagramHeight', PDiagramHeight);
-     AppStorage.WriteInteger(BasePath+'\RememberedHeight', RememberedHeight);
+     AppStorage.WriteBoolean(BasePath+'\InteractiveClosed', InteractiveClosed);
+     AppStorage.WriteInteger(BasePath+'\InteractiveHeight', InteractiveHeight);
    end;
 end;
 
@@ -195,8 +195,8 @@ begin
      end;
    end;
    if FileKind = fkUML then begin
-     PDiagramHeight:= AppStorage.ReadInteger(BasePath+'\PDiagramHeight');
-     RememberedHeight:= AppStorage.ReadInteger(BasePath+'\RememberedHeight');
+     InteractiveClosed:= AppStorage.ReadBoolean(BasePath+'\InteractiveClosed');
+     InteractiveHeight:= AppStorage.ReadInteger(BasePath+'\InteractiveHeight');
    end;
 end;
 
@@ -291,8 +291,8 @@ begin
   Create;
   FileKind:= aFile.FileKind;
   if FileKind = fkUML then begin
-    PDiagramHeight:= (aFile.Form as TFUMLForm).PDiagram.Height;
-    RememberedHeight:= (aFile.Form as TFUMLForm).RememberedHeight;
+    InteractiveClosed:= (aFile.Form as TFUMLForm).InteractiveClosed;
+    InteractiveHeight:= (aFile.Form as TFUMLForm).InteractiveHeight;
   end;
   if aFile.FileName <> '' then
     FileName := aFile.FileName
@@ -395,8 +395,8 @@ begin
               FilePersistInfo.TabControlIndex);
         end;
         if aFile.FileKind = fkUML then begin
-          (aFile.Form as TFUMLForm).PDiagram.Height:= FilePersistInfo.PDiagramHeight;
-          (aFile.Form as TFUMLForm).RememberedHeight:= FilePersistInfo.RememberedHeight;
+          (aFile.Form as TFUMLForm).InteractiveClosed:= FilePersistInfo.InteractiveClosed;
+          (aFile.Form as TFUMLForm).InteractiveHeight:= FilePersistInfo.InteractiveHeight;
         end;
       end;
     end;

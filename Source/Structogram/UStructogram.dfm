@@ -3,8 +3,8 @@ object FStructogram: TFStructogram
   Top = 96
   BorderIcons = []
   Caption = 'Diagram'
-  ClientHeight = 610
-  ClientWidth = 731
+  ClientHeight = 609
+  ClientWidth = 727
   Color = clWhite
   ParentFont = True
   KeyPreview = True
@@ -18,8 +18,8 @@ object FStructogram: TFStructogram
   object ScrollBox: TScrollBox
     Left = 24
     Top = 0
-    Width = 707
-    Height = 610
+    Width = 703
+    Height = 609
     Align = alClient
     BevelInner = bvNone
     BevelOuter = bvNone
@@ -31,18 +31,15 @@ object FStructogram: TFStructogram
     TabOrder = 0
     OnClick = ScrollBoxClick
     OnMouseMove = ScrollBoxMouseMove
-    ExplicitWidth = 703
-    ExplicitHeight = 609
   end
   object PanelLeft: TPanel
     Left = 0
     Top = 0
     Width = 24
-    Height = 610
+    Height = 609
     Align = alLeft
     ParentBackground = False
     TabOrder = 1
-    ExplicitHeight = 609
     object TrashImage: TImage
       Left = 1
       Top = 287

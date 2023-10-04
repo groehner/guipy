@@ -1053,7 +1053,8 @@ end;
 
 { TRtfdObject }
 
-constructor TRtfdObject.Create(aOwner: TComponent; aEntity: TModelEntity; aFrame: TAFrameDiagram; aMinVisibility: TVisibility);
+constructor TRtfdObject.Create(aOwner: TComponent; aEntity: TModelEntity;
+                 aFrame: TAFrameDiagram; aMinVisibility: TVisibility);
 begin
   inherited Create(aOwner, aEntity, aFrame, aMinVisibility);
   Self.FShowStatic:= false;
@@ -1063,7 +1064,7 @@ begin
   if GuiPyOptions.ObjectsWithoutVisibility
     then FShowIcons:= 2
     else FShowIcons:= GuiPyOptions.DiShowIcons;
-  FMinVisibility:= TVisibility(GuiPyOptions.DiVisibilityFilter);
+  FMinVisibility:= aMinVisibility;
   RefreshEntities;
 end;
 
@@ -1094,6 +1095,7 @@ var
   Attribut: TRtfdAttribute;
   Separator: TRtfdSeparator;
 begin
+  Locked:= true;
   if not Visible then exit;
   inherited;
 
@@ -1156,6 +1158,7 @@ begin
     end;
 
   Width:= Width + ShadowWidth;
+  Locked:= false;
   Visible:= true;
 end;
 
@@ -1656,6 +1659,8 @@ begin
     if p > 0
       then s:= copy(Caption, 1, p-1)
       else s:= Caption;
+    if GuiPyOptions.ClassnameInUppercase then
+      s:= Uppercase(s);
     DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_CENTER);
     if p > 0 then begin
       Canvas.Font.Style:= [fsItalic];
@@ -1730,13 +1735,14 @@ begin
 end;
 
 procedure TRtfdObjectName.EntityChange(Sender: TModelEntity);
-  var Obj: TObjekt;
 begin
-  Obj:= (Entity as TObjekt);
+  var classname:= (Entity as TObjekt).GenericName;
+  if GuiPyOptions.ClassnameInUppercase then
+    classname:= Uppercase(classname);
   case GuiPyOptions.ObjectCaption of
-    0: Caption:= Entity.Name + ': ' + Obj.GenericName;
+    0: Caption:= Entity.Name + ': ' + classname;
     1: Caption:= Entity.FullName;
-  else Caption:= ': ' + Obj.GenericName;
+  else Caption:= ': ' + classname;
   end;
 end;
 
@@ -1945,12 +1951,13 @@ begin
     if Copy(s, length(s)-1, 2) = ', ' then
       Delete(s, length(s)-1, 2); // delete last comma
     s:= s + ')';
-    //if O.OperationType = otFunction then
-    //  s:= s + ':';
   end;
 
-  if (ShowParameter > 0) and Assigned(O.ReturnValue) then
-    s:= s + ': ' + O.ReturnValue.asUMLType;
+  if (ShowParameter > 0) and (O.OperationType = otFunction) then begin
+    s:= s + ':';
+    if Assigned(O.ReturnValue) then
+      s:= s + ' ' + O.ReturnValue.asUMLType;
+  end;
   Caption:= s;
   Font.Style:= [];
   //Font.Color:= ColorMap[O.OperationType];
@@ -2193,12 +2200,14 @@ begin
     Canvas.Font.Style:= [fsItalic, fsBold];
   end else
     s:= Caption;
-  DrawText(Canvas.Handle, PChar(S), Length(S), R, Alig);
+  if GuiPyOptions.ClassnameInUppercase then
+    s:= Uppercase(s);
+  DrawText(Canvas.Handle, PChar(s), Length(s), R, Alig);
   if p > 0 then begin
     Canvas.Font.Style:= [fsItalic];
     R.Top:= R.Top + SingleLineHeight;
     s:= '{abstract}';
-    DrawText(Canvas.Handle, PChar(S), Length(S), R, Alig);
+    DrawText(Canvas.Handle, PChar(s), Length(s), R, Alig);
   end;
 end;
 
@@ -2233,6 +2242,7 @@ procedure TRtfdCustomLabel.AdjustBounds;
 var
   DC: HDC;
   X: Integer;
+  s: string;
   aRect: TRect;
   AAlignment: TAlignment;
 
@@ -2247,14 +2257,16 @@ begin
         Canvas.Font.Style:= Canvas.Font.Style + [fsBold];
     if (Entity is TOperation) and Entity.IsAbstract then
       Canvas.Font.Style:= Canvas.Font.Style + [fsItalic];
-    drawText(Canvas.handle, PChar(Caption), length(Caption), aRect, DT_CALCRECT);
+    s:= Caption;
+    if GuiPyOptions.ClassnameInUppercase then
+      s:= Uppercase(s);
+    drawText(Canvas.handle, PChar(s), length(s), aRect, DT_CALCRECT);
     FTextWidth:= 8 + aRect.Right + 8;
     case (Owner as TRtfdBox).ShowIcons of
       0: FTextWidth:= FTextWidth + IconW + 4;
       1: FTextWidth:= FTextWidth + Canvas.Textwidth('+ ');
       2: FTextWidth:= FTextWidth + 0;
     end;
-
     DoDrawText(aRect, DT_EXPANDTABS or DT_CALCRECT);
     Canvas.Handle:= 0;
     ReleaseDC(0, DC);

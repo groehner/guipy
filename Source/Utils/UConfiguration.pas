@@ -118,6 +118,7 @@ type
     fRelationshipAttributesBold: boolean;
     fShowClassparameterSeparately: boolean;
     fRoleHidesAttribute: boolean;
+    fClassnameInUppercase: boolean;
     fDefaultModifiers: boolean;
     fShowPublicOnly: boolean;
     fShowObjectsWithInheritedPrivateAttributes: boolean;
@@ -289,6 +290,8 @@ type
       write fShowClassparameterSeparately default false;
     property RoleHidesAttribute : boolean read fRoleHidesAttribute
       write fRoleHidesAttribute default false;
+    property ClassnameInUppercase : boolean read fClassnameInUppercase
+      write fClassnameInUppercase default false;
     property DefaultModifiers : boolean read fDefaultModifiers
       write fDefaultModifiers default true;
     property ShowPublicOnly : boolean read fShowPublicOnly
@@ -972,6 +975,7 @@ type
     actFileDefaultItem: TAction;
     btnFileDefaultAll: TButton;
     actFileDefaultAll: TAction;
+    CBClassnameInUppercase: TCheckBox;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1811,6 +1815,7 @@ begin
     CBRelationshipAttributesBold.Checked:= RelationshipAttributesBold;
     CBShowClassparameterSeparately.Checked:= ShowClassparameterSeparately;
     CBRoleHidesAttribute.Checked:= RoleHidesAttribute;
+    CBClassnameInUppercase.Checked:= ClassnameInUppercase;
 
     // tab restrictions
     CBLockedDosWindow.Checked:= LockedDOSWindow;
@@ -2141,6 +2146,7 @@ begin
     RelationshipAttributesBold:= CBRelationshipAttributesBold.Checked;
     ShowClassparameterSeparately:= CBShowClassparameterSeparately.Checked;
     RoleHidesAttribute:= CBRoleHidesAttribute.Checked;
+    ClassnameInUppercase:= CBClassnameInUppercase.Checked;
 
     // tab restrictions
     LockedDOSWindow:= CBLockedDosWindow.Checked;

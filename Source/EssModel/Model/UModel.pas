@@ -1,6 +1,7 @@
 {
   ESS-Model
-  Copyright (C) 2002  Eldean AB, Peter Söderman, Ville Krumlinde
+  Copyright (C) 2002  Eldean AB, Peter Söderman, Ville Krumlinde,
+  Gerhard Röhner
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -375,7 +376,7 @@ type
   TStrCompare = function(const S1, S2: string): Integer;
 
 const
-  CompareFunc : array[boolean] of TStrCompare = ({$IFDEF LCL}@{$ENDIF}CompareText, {$IFDEF LCL}@{$ENDIF}CompareStr);
+  CompareFunc : array[boolean] of TStrCompare = (CompareText, CompareStr);
 
 { TObjectModel }
 

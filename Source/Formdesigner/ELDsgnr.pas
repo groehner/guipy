@@ -968,7 +968,7 @@ begin
               begin
                 if (Sender <> nil) and (Sender is TWinControl) then
                 begin
-                  Result := LPARAM(TWinControl(Sender) // LPARAM instaed of LongInt
+                  Result := LPARAM(TWinControl(Sender) // LPARAM instead of LongInt
                     .ControlAtPos(Sender.ScreenToClient(DragRec.Pos), False));
                   if Result = 0 then
                     Result := LPARAM(Sender);  // LPARAM instead of LongInt

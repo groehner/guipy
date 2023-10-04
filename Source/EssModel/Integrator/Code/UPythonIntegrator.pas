@@ -196,6 +196,8 @@ begin
       Attribute.IsFinal:= Variable.IsFinal;
       if Variable.Typ <> '' then
         Attribute.TypeClassifier:= NeedClassifier(C.Name, Variable.Typ);
+      //if Variable.ObjType <> '' then
+      //  Attribute.TypeClassifier:= NeedClassifier(C.Name, Variable.ObjType);
       Variablename:= WithoutVisibility(Variable.Name);
       if Variable.DefaultValue <> Variablename
         then Attribute.Value:= Variable.DefaultValue
@@ -264,7 +266,7 @@ begin
     O.ReturnValue := NeedClassifier(Parentname, ParsedFunction.ReturnType);
   if O.Name = '__init__' then
     O.OperationType := otConstructor
-  else if ParsedFunction.ReturnType <> '' then
+  else if (ParsedFunction.ReturnType <> '') or (ParsedFunction.ReturnValue <> '') then
     O.OperationType := otFunction
   else
     O.OperationType := otProcedure;

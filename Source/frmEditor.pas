@@ -3153,11 +3153,11 @@ begin
   if IsStyledWindowsColorDark then begin
     EditFormToolbar.Images:= ILEditorToolbarDark;
     pmnuEditor.Images:= ILContextMenuDark;
-    //Editor.BookMarkOptions.BookmarkImages:= DMImages.ILBookmarksDark;
+    SynEdit.BookMarkOptions.BookmarkImages:= DMImages.ILBookmarksDark;
   end else begin
     EditFormToolbar.Images:= ILEditorToolbar;
     pmnuEditor.Images:= ILContextMenuLight;
-    //Editor.BookMarkOptions.BookmarkImages:= DMImages.ILBookmarksLight;
+    SynEdit.BookMarkOptions.BookmarkImages:= DMImages.ILBookmarksLight;
   end;
 
   if HasFocus then
@@ -5365,7 +5365,7 @@ begin
     BC1 := BufferCoord(Indicator.CharStart, BC.Line);
     BC2 := BufferCoord(Indicator.CharEnd, BC.Line);
     // Setting HintInfo.CursorRect is important.  Otherwise no other hint
-    // will be shown unlessmouse leaves and reenters the control
+    // will be shown unless mouse leaves and reenters the control
     HintInfo.CursorRect := CursorRect(SynEd, BC1, BC2, HintInfo.HintPos);
     HintStr := FEditor.FSynLsp.Diagnostics[Indicator.Tag].Msg;
   end

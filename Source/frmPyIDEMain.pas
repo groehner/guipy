@@ -2403,11 +2403,13 @@ begin
       CanClose := False;
 
   // Ask about saving unsaved editor buffers
-  if CanClose and (GI_EditorFactory <> nil) then
+  if CanClose and not PyIDEOptions.SaveFilesAutomatically and
+    (GI_EditorFactory <> nil) then
     CanClose := GI_EditorFactory.CanCloseAll;
 
   // Ask about saving unsaved project
-  CanClose := CanClose and ProjectExplorerWindow.CanClose;
+  if CanClose and not PyIDEOptions.SaveFilesAutomatically then
+    CanClose := CanClose and ProjectExplorerWindow.CanClose;
 
   if CanClose then begin
     // Shut down help
@@ -2769,7 +2771,7 @@ end;
 
 procedure TPyIDEMainForm.actUMLNewClassExecute(Sender: TObject);
   var NewName: string; Editor: IEditor;
-      FileTemplate : TFileTemplate;
+      FileTemplate : TFileTemplate; UML: TFUMLForm;
 begin
   var aFile:= GI_PyIDEServices.getActiveFile;
   if assigned(aFile) and (aFile.FileKind = fkUML) then begin
@@ -2785,7 +2787,8 @@ begin
         FileTemplate:= FileTemplates.TemplateByName(SClassTemplateName);
       end;
       Editor:= NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl), NewName);
-      PrepareClassEdit(Editor, 'New', nil);
+      UML:= TFUMLForm(DoOpenFile(getFilename('.puml')).Form);
+      PrepareClassEdit(Editor, 'New', UML);
     end;
   end;
 end;

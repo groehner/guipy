@@ -68,7 +68,7 @@ implementation
 
 uses Windows, SysUtils, Graphics, Controls, Forms, Clipbrd, Printers, Contnrs,
      INIFiles, uIntegrator, uFileProvider, uEditAppIntfs,
-     uOpenFolderForm, UUtils, {,UUMLForm{} URtfdDiagram;
+     uOpenFolderForm, UUtils, UUMLForm, URtfdDiagram;
 
 {$R *.DFM}
 
