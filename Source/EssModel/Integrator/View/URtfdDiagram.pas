@@ -152,7 +152,7 @@ type
     function CollectClasses: boolean;
 
     procedure EditObject(C: TControl); override;
-    function HasAttributes(aModelClass: TClass): boolean;
+    function HasAttributes(Objectname: string): boolean;
     procedure UpdateAllObjects;
     procedure ShowAttributes(Objectname: string; aClass: TClass; aModelObject: TObjekt);
     procedure SetAttributeValues(aModelClass: TClass; Objectname: String; Attributes: TStringList);
@@ -195,6 +195,7 @@ type
     function StrAndTypeToPythonValue(s, pValue: String): string;
     procedure ExecCommand(cmd: integer);
     procedure ExecutePython(s: String); override;
+    procedure GetVisFromName(var Name: string; var vis: TVisibility);
     procedure Retranslate; override;
   end;
 
@@ -396,11 +397,10 @@ begin
   BoxNames.Clear;
 end;
 
-//Add a 'Box' to the diagram (class/interface/package/objekt/comment).
+//Add a 'Box' to the diagram (class/package/objekt/comment).
 procedure TRtfdDiagram.AddBox(E: TModelEntity);
 var
   Mi : IModelIterator;
-  Int : TInterface;
   C : TClass;
   A : TAttribute;
   i: integer;
@@ -427,15 +427,6 @@ begin
           (GetBox(C.Ancestor[i].FullName) = nil) then begin
             Panel.AddManagedObject(InCreateBox(C.Ancestor[i], TRtfdClass));
         end;
-      //Implementing interface that is in another package and is not already inserted
-      //is added to the diagram.
-      Mi := C.GetImplements;
-      while Mi.HasNext do begin
-        Int := Mi.Next as TInterface;
-        if (Int.Owner<>E.Owner) and
-          ( GetBox( Int.FullName )=nil ) then
-          Panel.AddManagedObject(InCreateBox(Int,TRtfdInterface) );
-      end;
       //Attribute associations that are in other packages are added
       Mi := C.GetAttributes;
       while Mi.HasNext do begin
@@ -454,18 +445,6 @@ begin
     if E.IsVisible and (GetBox(E.getFullnameWithoutOuter) = nil)
       then Panel.AddManagedObject(InCreateBox(E, TRtfdClass));
   end
-  else if E is TInterface then begin
-    //Interface
-    //Ancestor that is in another package and that is not already inserted
-    //is added to the diagram.
-    IsAllClasses:= true; // for testing
-    if (not IsAllClasses) and  Assigned((E as TInterface).Ancestor) and
-      (TInterface(E).Ancestor.Owner<>E.Owner) and
-      (GetBox(TInterface(E).Ancestor.FullName) = nil) then
-        Panel.AddManagedObject(InCreateBox((E as TInterface).Ancestor, TRtfdInterface));
-    if GetBox(E.FullName) = nil
-      then Panel.AddManagedObject(InCreateBox(E, TRtfdInterface));
-  end
   else if E is TObjekt then begin
     if GetBox(E.FullName) = nil then
       Panel.AddManagedObject(InCreateBox(E, TRtfdObject))
@@ -478,7 +457,6 @@ var
   i, j, p : integer;
   CBox: TRtfdClass;
   aClass: TClass;
-  IBox : TRtfdInterface;
   A : TAttribute;
   OBox: TRtfdObject;
 
@@ -506,14 +484,6 @@ begin
           if Assigned(DestBox) then
             Panel.ConnectObjects(CBox, DestBox, asInheritends);
         end;
-      end;
-      //Implements
-      Mi := (CBox.Entity as TClass).GetImplements;
-      while Mi.HasNext do begin
-        s:= Mi.Next.FullName;
-        DestBox := GetBox(s);
-        if Assigned(DestBox) then
-          Panel.ConnectObjects(CBox, DestBox, asImplements);
       end;
       p:= Pos('.', CBox.Entity.Name);
       if p > 0 then begin
@@ -576,15 +546,6 @@ begin
       end;
       if AttributeConnected then
         CBox.RefreshEntities;
-    end else if (BoxNames.Objects[I] is TRtfdInterface) then begin
-      //Interface
-      IBox := (BoxNames.Objects[I] as TRtfdInterface);
-      //Ancestor
-      if Assigned((IBox.Entity as TInterface).Ancestor) then begin
-        DestBox := GetBox( (IBox.Entity as TInterface).Ancestor.FullName);
-        if Assigned(DestBox) then
-          Panel.ConnectObjects(IBox, DestBox, asInheritends);
-      end;
     end else if (BoxNames.Objects[I] is TRtfdUnitPackage) then begin
       //Unit
       UBox := (BoxNames.Objects[I] as TRtfdUnitPackage);
@@ -656,7 +617,7 @@ end;
 
 procedure TRtfdDiagram.UnitPackageAfterAddChild(Sender, NewChild: TModelEntity);
 begin
-  if (NewChild is TClass) or (NewChild is TInterface) or (NewChild is TObjekt) then
+  if (NewChild is TClass) or (NewChild is TObjekt) then
     AddBox(NewChild);
 end;
 
@@ -725,7 +686,7 @@ begin
           s1:= (Box as TRtfdCommentBox).TrMemo.Text;
           Ini.WriteString(S, 'Comment', myStringReplace(s1, #13#10, '_;_'));
         end else begin
-          // Class, Stereotype, Interface
+          // Class
           Box:= BoxNames.Objects[i] as TRtfdBox;
           if Box.Entity.IsVisible then begin
             S:= 'Box: ' + Box.Entity.FullName;
@@ -1325,7 +1286,7 @@ var
       C:= TControl(L[i]);
       if C is TRtfdBox then begin
         Box:= C as TRtfdBox;
-        if (C is TRtfdClass) or (C is TRtfdInterface) then begin
+        if C is TRtfdClass then begin
           s:= Box.Entity.Name;
           delete(s, 1, LastDelimiter('.', s));
           //if Pos(classname, s) = 1 then inc(Result);
@@ -1343,7 +1304,7 @@ begin
       C:= L[i] as TControl;
       if C is TRtfdBox then begin
         Box:= C as TRtfdBox;
-        if (C is TRtfdClass) or (C is TRtfdInterface) then begin
+        if C is TRtfdClass then begin
           Box.Entity.isVisible:= false;
           k:= BoxNames.IndexOf(Box.Entity.FullName);
           if k > -1 then begin
@@ -1421,7 +1382,7 @@ begin
     InitFromModel;
   end;
 
-  if (CurrentEntity is TClass) or (CurrentEntity is TInterface) then
+  if CurrentEntity is TClass then
     ScreenCenterEntity(CurrentEntity);
 end;
 
@@ -1522,19 +1483,20 @@ begin
 end;
 
 function TRtfdDiagram.CollectClasses: boolean;
-  var i: integer;
-      Pathname, Boxname: String;
+  var Pathname, Boxname, aClassname: String;
       SLFiles: TStringList;
 begin
   Result:= true;
   SLFiles:= TStringList.Create;
-  for i:= BoxNames.Count - 1 downto 0 do begin
+  for var i:= BoxNames.Count - 1 downto 0 do begin
     Boxname:= (BoxNames.Objects[i] as TRtfdBox).Entity.Name;
-    if not FLivingObjects.ClassExists(Boxname) then begin
+    if BoxNames.Objects[i] is TRtfdObject then begin
+      aClassname:= FLivingObjects.getClassnameOfObject(Boxname);
+      if not FLivingObjects.ClassExists(aClassname) then
+        FLivingObjects.LoadClassOfObject(Boxname, aClassname)
+    end else if not FLivingObjects.ClassExists(Boxname) then begin
       if (BoxNames.Objects[i] is TRtfdClass) then
-        Pathname:= ((BoxNames.Objects[i] as TRtfdBox).Entity as TClass).Pathname
-      else if (BoxNames.Objects[i] is TRtfdInterface) then
-        Pathname:= ((BoxNames.Objects[i] as TRtfdInterface).Entity as TInterface).Pathname;
+        Pathname:= ((BoxNames.Objects[i] as TRtfdBox).Entity as TClass).Pathname;
       if SLFiles.IndexOf(Pathname) = -1 then begin
         PyIDEMainForm.ImportModule(Pathname);
         SLFiles.Add(Pathname);
@@ -1555,7 +1517,7 @@ begin
   if not Assigned(U) then
     U:= Model.ModelRoot.AddUnit('Default');
   if aClass = nil then begin
-    Address:= FLivingObjects.getAddressFromName(Objectname);
+    Address:= FLivingObjects.getHexAddressFromName(Objectname);
     Classname:= FLivingObjects.getClassnameFromAddress(Address);
     aClass:= TClass(FindClassifier(Classname));
   end;
@@ -1671,24 +1633,31 @@ begin
 end;
 
 function TRtfdDiagram.getInternName(aClass: TClass; aName: String; aVisibility: TVisibility): String;
-  var Ami : IModelIterator; Attribute: TModelEntity;
+
+  function getAncestorInternName(aClass: TClass; aName: String): string;
+  begin
+    Result:= '';
+    if aClass.AncestorsCount > 0 then
+      Result:= getAncestorInternName(aClass.Ancestor[0], aName);
+    if Result = '' then begin
+      var Ami:= TModelIterator.Create(aClass.GetAttributes);
+      while Ami.HasNext do begin // we have a model from sourecode
+        var Attribute:= Ami.Next;
+        if Attribute.Name = aName then
+          Exit('_' + aClass.Name + '__' + aName);
+      end;
+    end;
+  end;
+
 begin
   Result:= '';
   if aVisibility <> viPrivate then
     Result:= VisibilityAsString(aVisibility) + aName
   else begin
     if aClass.AncestorsCount > 0 then
-      Result:= getInternName(aClass.Ancestor[0], aName, aVisibility);
-    if Result = '' then begin
-      Ami:= TModelIterator.Create(aClass.GetAttributes);
-      while Ami.HasNext do begin
-        Attribute:= Ami.Next;
-        if Attribute.Name = aName then begin
-          Result:= '_' + aClass.Name + '__' + aName;
-          exit;
-        end;
-      end;
-    end;
+      Result:= getAncestorInternName(aClass.Ancestor[0], aName);
+    if Result = '' then  // we use live values from python
+      Result:= '_' + aClass.Name + '__' + aName;
   end;
 end;
 
@@ -1755,6 +1724,7 @@ procedure TRtfdDiagram.ShowAttributes(Objectname: string; aClass: TClass;
     var aModelAttribut: TAttribute;
         SL1: TStringList;
         iname: string;
+        vis: TVisibility;
   begin
     // add from knowldege about LivingObjects
     for var i:= 0 to SLObject.Count - 1 do begin
@@ -1762,13 +1732,9 @@ procedure TRtfdDiagram.ShowAttributes(Objectname: string; aClass: TClass;
       if AddedAttributes.IndexOf(iname) = -1 then begin
         SL1:= Split('|', SLObject.ValueFromIndex[i]);
         if SL1.Count = 2 then begin // object has an attribute
-          aModelAttribut:= aModelObject.AddAttribute(iname);  // AddAttribut can raise an exception
-          AddedAttributes.Add(iName);
-          aModelAttribut.Visibility:= String2Visibility(iname);
-          //aModelAttribut.Static:= aEntity.Static;
-          //aModelAttribut.IsFinal:= aEntity.IsFinal;
-          //if aModelAttribut.IsFinal then
-          //  aModelObject.hasFinal:= true;
+          getVisFromName(iname, vis);
+          aModelAttribut:= aModelObject.AddAttribute(iname);
+          aModelAttribut.Visibility:= vis;
           aModelAttribut.Value:= SL1[0];
           aModelAttribut.TypeClassifier:= FindClassifier(SL1[1]);
           if aModelAttribut.TypeClassifier = nil then begin
@@ -1916,6 +1882,7 @@ begin
         // get parameter-values from user
         if (Parameter.Count = 0) or EditObjectOrParams(Caption, Title, Parameter) then begin
           ParameterAsString:= getParameterAsString(Parameter, ParamValues);
+          CollectClasses;
           // call the method
           if CallMethodObjectName = '' then begin // static method of a class
             aModelClass:= (C as TRtfdClass).Entity as TClass;
@@ -1923,32 +1890,31 @@ begin
           end else begin                          // method of an object
             theClassname:= FLivingObjects.getClassnameOfObject(CallMethodObjectname);
             // get model class for object to get the methods
+            aModelClass:= nil;
             aViewClass:= GetBox(theClassname) as TRtfdClass;
-            if assigned(aViewClass)
-              then aModelClass:= (aViewClass.Entity as TClass)  // model class from view class
-              else aModelClass:= nil;
+            if aViewClass = nil then
+              aViewClass:= GetBox(getShortType(theClassname)) as TRtfdClass;
+            if assigned(aViewClass) then
+              aModelClass:= (aViewClass.Entity as TClass);      // model class from view class
             if aModelClass = nil then
               aModelClass:= getModelClass(theClassname);        // model class from model
             if (aModelClass = nil) or (aModelClass.Pathname = '') then
               aModelClass:= CreateModelClass(TheClassname);     // model class from python
           end;
-          while InheritedLevel > 0 do begin
+          while assigned(aModelClass) and (InheritedLevel > 0) do begin
             aModelClass:= aModelClass.Ancestor[0];  // ToDo many ancestors
             dec(InheritedLevel);
           end;
-          theClassname:= aModelClass.GetTyp;
-          if FLivingObjects.ClassExists(theClassname) then begin
-            CollectClasses;
-            CallMethodFrom:= CallMethodObjectname;
-            if CallMethodFrom = '' then CallMethodFrom:= aModelClass.Name;
-            Methodcall:= CallMethodObjectname + '.' + CallMethodMethodname + '(' + ParameterAsString + ')';
-            AddToInteractive(MethodCall);
-            ShowMethodEntered(CallMethodMethodName, 'Actor', CallMethodObjectname, ParameterAsString);
-            PythonIIForm.OnExecuted:= CallMethodExecuted;
-            GI_PyInterpreter.StartOutputMirror(GuiPyOptions.TempDir + 'output.txt', false);
-            // execute within a thread
-            FLivingObjects.Execute(Methodcall);
-          end;
+          CallMethodFrom:= CallMethodObjectname;
+          if (CallMethodFrom = '') and assigned(aModelClass) then
+            CallMethodFrom:= aModelClass.Name;
+          Methodcall:= CallMethodObjectname + '.' + CallMethodMethodname + '(' + ParameterAsString + ')';
+          AddToInteractive(MethodCall);
+          ShowMethodEntered(CallMethodMethodName, 'Actor', CallMethodObjectname, ParameterAsString);
+          PythonIIForm.OnExecuted:= CallMethodExecuted;
+          GI_PyInterpreter.StartOutputMirror(GuiPyOptions.TempDir + 'output.txt', false);
+          // execute within a thread
+          FLivingObjects.Execute(Methodcall);
         end;
         FreeAndNil(Parameter);
         FreeAndNil(ParamValues);
@@ -1988,81 +1954,66 @@ function TRtfdDiagram.CreateModelClass(const Typ: string): TClass;
   var U: TUnitPackage;
       C, C1: TClass;
       Operation: UModel.TOperation;
-      Attribute: UModel.TAttribute;
-      SL: TStringList;
+      SLMethods, SLParams: TStringList;
       i, p: integer;
-      s, ParName: String;
-      TypeClass: TClassifier;
+      Method, ParName, OpName, Params: String;
+      vis: TVisibility;
 begin
   Result:= nil;
   U:= Model.ModelRoot.FindUnitPackage('Default');
+  CollectClasses;
   if FLivingObjects.ClassExists(Typ) then begin
     C:= U.MakeClass(Typ, '');
-    if not assigned(C) then exit;
     C.Importname:= Typ;
     U.AddClassWithoutShowing(C);
 
     // make operations
-    SL:= FLivingObjects.getClassMethods(Typ); // static and not static
+    SLMethods:= FLivingObjects.getClassMethods(Typ); // static and not static
     try
-      for i:= 0 to SL.Count - 1 do begin
-        s:= SL[i];
+      for i:= 0 to SLMethods.Count - 1 do begin
+        Method:= SLMethods[i];
+        p:= Pos(chr(3), Method);
+        OpName:= copy(Method, 1, p - 1);
+        if OpName = '__init__' then continue;
+        Params:= FLivingObjects.getSignature(Typ + '.' + OpName);
         Operation:= C.AddOperationWithoutType('');
-        p:= Pos(chr(3), s);
-        Operation.Name:= copy(s, 1, p - 1);
-        delete(s, 1, p);
-        if s = 'function' then
-          Operation.OperationType:= otFunction
-        else
-          Operation.OperationType:= otProcedure;
+        getVisFromName(OpName, vis);
+        Operation.Visibility:= vis;
+        Operation.Name:= OpName;
+        delete(Method, 1, p);
+        if Method = 'function'
+          then Operation.OperationType:= otFunction
+          else Operation.OperationType:= otProcedure;
         Operation.Static:= false;
-        Operation.Visibility:= String2Visibility(s);
-
-        s:= FLivingObjects.getSignature(Typ + '.' + Operation.Name);
-        p:= Pos(' ->', s);
+        // Parameters
+        p:= Pos(' ->', Params);
         if p > 0 then begin
-          C1:= U.MakeClass(copy(s, p+3, length(s)), '');
+          C1:= U.MakeClass(copy(Params, p+3, length(Params)), '');
           if assigned(C1) then begin
             Operation.ReturnValue:= C1;
             U.AddClassWithoutShowing(C1);
           end;
-          delete(s, p, length(s));
+          delete(Params, p, length(Params));
         end;
-        ParName:= GetNextPart(s, ',');
-        while ParName <> '' do begin
-          Operation.AddParameter(ParName);
-          ParName:= GetNextPart(s, ',');
+        Params:= copy(Params, 2, length(Params)-2);
+        SLParams:= Split(',', Params);
+        for var j:= 0 to SLParams.Count - 1 do begin
+          ParName:= SLParams[j];
+          p:= Pos(':', Parname);
+          if p > 0 then
+            delete(Parname, p, length(Parname));
+          ParName:= trim(ParName);
+          if ParName <> '' then
+            Operation.AddParameter(ParName);
         end;
+        FreeAndNil(SLParams);
       end;
     finally
-      FreeAndNil(SL);
+      FreeAndNil(SLMethods);
     end;
-
-    // make attributes
-    SL:= FLivingObjects.getClassAttributes(Typ);
-    try
-      for i:= 0 to SL.Count - 1 do begin
-        TypeClass:= FindClassifier(SL.ValueFromIndex[i]);
-        if TypeClass = nil then begin
-          TypeClass:= TClassifier.Create(nil);
-          TypeClass.Name:= SL.ValueFromIndex[i];
-        end;
-        Attribute:= C.AddAttribute('', TypeClass);
-        Attribute.Visibility:= String2Visibility(SL.KeyNames[i]);
-        Attribute.Static:= false;
-        Attribute.IsFinal:= false;
-        Attribute.Name:= SL.KeyNames[i];
-      end;
-      // make ancestor
-
-      {if C.AncestorsCount > 0 then begin
-        C.Ancestor:= TClass(FindClassifier(SuperclassName));
-      SuperclassName:= C.getSuperclassName;
-      if Superclassname <> '' then }
-      Result:= C;
-    finally
-      FreeAndNil(SL);
-    end;
+    // no attributes, because classes don't have them
+    C.Pathname:= FLivingObjects.getPathOf(Typ);
+    Result:= C;
   end;
 end;
 
@@ -2071,7 +2022,6 @@ var
   PName, ShortName : string;
   CacheI : integer;
   aClass: TClass;
-  aInterface: TInterface;
   TheClass: TModelEntityClass;
 
   function InLookInModel: TClassifier;
@@ -2138,16 +2088,6 @@ begin
       aClass.Visibility:= Result.Visibility;
       aClass.Static:= Result.Static;
       Result:= aClass;
-      end
-    else begin
-      aInterface:= TInterface.Create(Result.Owner);
-      aInterface.Pathname:= Result.Pathname;
-      aInterface.Importname:= Result.Importname;
-      aInterface.Ancestor:= (Result as TInterface).Ancestor;
-      aInterface.Name:= CName;
-      aInterface.Visibility:= Result.Visibility;
-      aInterface.Static:= Result.Static;
-      Result:= aInterface;
     end;
     Model.NameCache.AddObject(CName, Result);
   end;
@@ -2296,32 +2236,29 @@ procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
   var s1, s2: string;
       i, j, MenuIndex, InheritedLevel, StartIndex: integer;
       aViewClass: TRtfdClass;
-      aViewInterface: TRtfdInterface;
-      aModelClass, superClass: TClass;
-      it1, it2: IModelIterator;
+      aModelClass: TClass;
+      it1: IModelIterator;
       Operation: UModel.TOperation;
       Attribute: UModel.TAttribute;
-      aInterface: UModel.TInterface;
-      Parameter: TParameter;
       aInheritedMenu: TSpTBXItem;
       HasSourcecode: boolean;
       Associations: TStringList;
-      Interfaces: TStringList;
       Connections: TStringlist;
       SLSorted: TStringList;
       aBox: TControl;
       hasInheritedSystemMethods: boolean;
 
-  procedure MakeOpenClassMenuItem(aClass: TClass; ImageIndex: integer);
-    var aMenuItem: TSpTBXItem;
+  procedure MakeOpenClassMenuItem(aClass: String; ImageIndex: integer);
   begin
-    if BoxNames.IndexOf(aClass.Fullname) = -1 then begin
-      aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
-      aMenuItem.Caption:= WithoutGeneric(aClass.Fullname);
+    if (BoxNames.IndexOf(aClass) = -1) and FLivingObjects.ClassExists(aClass) and
+       (MenuClassFiles.IndexOfName(aClass) = -1)
+    then begin
+      var aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
+      aMenuItem.Caption:= WithoutGeneric(aClass);
       aMenuItem.OnClick:= OpenClassOrInterface;
       aMenuItem.ImageIndex:= ImageIndex;
       Frame.MIClassPopupOpenClass.Add(aMenuItem);
-      MenuClassFiles.Add(aClass.Fullname + '=' + aClass.Pathname);
+      MenuClassFiles.Add(aClass + '=' + FLivingObjects.getPathOf(aClass));
     end;
   end;
 
@@ -2354,24 +2291,22 @@ procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
   end;
 
   procedure AddDatatype(const s: string);
-    var s1, s2: string; i: integer;
   begin
-    if IsPythonType(s) then exit;
-    s1:= WithoutGeneric(WithOutArray(s));
-    if IsPythonType(s1) or (s1 = '') then exit;
-    for i:= 0 to BoxNames.Count - 1 do
+    if IsPythonType(s) then
+      exit;
+    var s1:= WithoutGeneric(WithOutArray(s));
+    if IsPythonType(s1) or (s1 = '') then
+      exit;
+    for var i:= 0 to BoxNames.Count - 1 do
       if s1 = BoxNames[i] then exit;
-    if (Associations.IndexOf(s1) > -1) or
-       (Interfaces.IndexOf(s1) > -1) then exit;
-    s2:= getShortType(s1);
-    //if FLivingObjects.ClassExists(s1) then
-      Associations.Add(s1);
+    if (Associations.IndexOf(s1) > -1) then
+      exit;
+    Associations.Add(getShortType(s1));
   end;
 
   procedure MakeMenuItem(const s1, s2: string; ImageIndex: integer);
-    var aMenuItem: TSpTBXItem;
   begin
-    aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
+    var aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
     aMenuItem.Caption:= myStringReplace(s1, chr(4), ' = '); // Copy(Caption, 1, 50);
     aMenuItem.Tag:= InheritedLevel;
     if s1 <> '-' then begin
@@ -2392,9 +2327,8 @@ procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
   end;
 
   function MakeTestMenuItem(const s1, s2: string): TSpTBXItem;
-    var aMenuItem: TSpTBXItem;
   begin
-    aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
+    var aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
     aMenuItem.Caption:= s1; // Copy(Caption, 1, 50);
     aMenuItem.OnClick:= OnRunJunitTestMethod;
     aMenuItem.ImageIndex:= 21;
@@ -2403,9 +2337,8 @@ procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
   end;
 
   procedure MakeSeparatorItem;
-    var aMenuItem: TSpTBXSeparatorItem;
   begin
-    aMenuItem:= TSpTBXSeparatorItem.Create(Frame.PopMenuClass);
+    var aMenuItem:= TSpTBXSeparatorItem.Create(Frame.PopMenuClass);
     aMenuItem.Tag:= InheritedLevel;
     if (InheritedLevel = 0) and (0 <= MenuIndex) and
        (MenuIndex < Frame.PopMenuClass.Items.Count) then begin
@@ -2414,6 +2347,39 @@ procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
       end
     else
       aInheritedMenu.Add(aMenuItem);
+  end;
+
+  procedure AddParameter(var s1, s2: string; Operation: TOperation);
+    var Parameter: TParameter;
+  begin
+    var it2:= Operation.GetParameters;
+    while it2.HasNext do begin
+      Parameter:= it2.next as TParameter;
+      if (Parameter.Name = 'self') or (Parameter.Name = 'cls') then
+        continue;
+      s1:= s1 + Parameter.Name;
+      s2:= s2 + Parameter.Name;
+      // chr(x) are used as separators
+      if assigned(Parameter.TypeClassifier) then begin
+        s1:= s1 + ': ' + Parameter.TypeClassifier.asType;
+        if InheritedLevel = 0 then
+          AddDatatype(Parameter.TypeClassifier.asType);
+      end;
+      s2:= s2 + chr(4);
+      if Parameter.Value <> '' then  begin
+        s1:= s1 + chr(4) + Parameter.Value;
+        s2:= s2 + Parameter.Value;
+      end;
+      s1:= s1 + ', ';
+      s2:= s2 + chr(5);
+    end;
+    s1:= myStringReplace(s1 + ')', ', )', ')');
+    s2:= s2 + ')';
+    if (Operation.OperationType = otFunction) and assigned(Operation.ReturnValue) then begin
+      s1:= s1 + ': ' + Operation.ReturnValue.GetShortType;
+      if InheritedLevel = 0 then
+        AddDatatype(Operation.ReturnValue.Name);
+    end;
   end;
 
   procedure Debugmenu(aMenu: TSpTBXPopupMenu);
@@ -2426,7 +2392,6 @@ procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
       for j:= 0 to aMenuItem.Count - 1 do
         s:= s + '-- ' + aMenuItem.Items[j].caption + ' ' + BoolToStr(aMenuItem.Items[j].visible, true) + sLineBreak;
     end;
-
     ShowMessage(s);
   end;
 
@@ -2434,7 +2399,6 @@ begin // PopMenuClassPopup
   aBox:= FindVCLWindow((Sender as TPopupMenu).PopupPoint);
 
   aViewClass:= nil;
-  aViewInterface:= nil;
   MenuClassFiles.Clear;
   Panel.ClearSelection;
   if assigned(aBox)
@@ -2459,9 +2423,6 @@ begin // PopMenuClassPopup
   Associations:= TStringList.Create;
   Associations.Sorted:= true;
   Associations.Duplicates:= dupIgnore;
-  Interfaces:= TStringList.Create;
-  Interfaces.Sorted:= true;
-  Interfaces.Duplicates:= dupIgnore;
   Connections:= TStringList.Create;
   Connections.Sorted:= true;
   Connections.Duplicates:= dupIgnore;
@@ -2474,54 +2435,32 @@ begin // PopMenuClassPopup
     aViewClass:= aBox as TRtfdClass;
     aModelClass:= aViewClass.Entity as TClass;
 
-    // get superclass
-    if aModelClass.AncestorsCount > 0 then begin // ToDo n ancestors
-      superClass:= aModelClass.Ancestor[0];
-      MakeOpenClassMenuItem(superClass, 13);
-    end;
+    // get superclasses
+    for i:= 1 to aModelClass.AncestorsCount do
+      MakeOpenClassMenuItem(aModelClass.Ancestor[i-1].Name, 13);
 
-    // get constructors
+    // get constructor
     if not aModelClass.IsAbstract then begin
-      it1:= aModelClass.GetOperations;
       var ConstructorMissing:= true;
+      it1:= aModelClass.GetOperations;
       while it1.HasNext do begin
         Operation:= it1.Next as UModel.TOperation;
         if Operation.OperationType = otConstructor then begin
           ConstructorMissing:= false;
-          s1:= aModelClass.Name + '(';   // ModelClass.Name
+          s1:= aModelClass.Name + '(';   // Konto() instead of __init__()
           s2:= s1;
-          it2:= Operation.GetParameters;
-          while it2.HasNext do begin
-            Parameter:= it2.next as TParameter;
-            if (Parameter.Name = 'self') or (Parameter.Name = 'cls') then
-              continue;
-            s1:= s1 + Parameter.Name;
-            s2:= s2 + Parameter.Name;
-            // chr(x) are used as separators
-            if assigned(Parameter.TypeClassifier) then begin
-              s1:= s1 + ': ' + Parameter.TypeClassifier.asType;
-              if InheritedLevel = 0 then
-                AddDatatype(Parameter.TypeClassifier.asType);
-            end;
-            s2:= s2 + chr(4);
-            if Parameter.Value <> '' then  begin
-              s1:= s1 + chr(4) + Parameter.Value;
-              s2:= s2 + Parameter.Value;
-            end;
-            s1:= s1 + ', ';
-            s2:= s2 + chr(5);
-          end;
-          s1:= myStringReplace(s1 + ')', ', )', ')');
-          s2:= s2 + ')';
-          MakeMenuItem(s1, s2, 2);
+          AddParameter(s1, s2, Operation);
+          break;  // only one constructor
         end
       end;
       if ConstructorMissing then begin
         s1:= aModelClass.Name + '()';
-        MakeMenuItem(s1, s1, 2);
+        s2:= s1;
       end;
+      MakeMenuItem(s1, s1, 2);
     end;
-    // get static|class methods and Parameterclasses
+
+    // get static|class methods and parameter classes
     repeat
       it1:= aModelClass.GetOperations;
       while it1.HasNext do begin
@@ -2531,35 +2470,7 @@ begin // PopMenuClassPopup
             continue;
           s1:= Operation.Name + '(';
           s2:= s1;
-          it2:= Operation.GetParameters;
-          while it2.HasNext do begin
-            Parameter:= it2.next as TParameter;
-            if (Parameter.Name = 'self') or (Parameter.Name = 'cls') then
-              continue;
-            s1:= s1 + Parameter.Name;
-            s2:= s2 + Parameter.Name;
-            if assigned(Parameter.TypeClassifier) then begin
-              s1:= s1 + ': ' + Parameter.TypeClassifier.asType;
-              if InheritedLevel = 0 then
-                AddDatatype(Parameter.TypeClassifier.asType);
-            end;
-            s2:= s2 + chr(4);
-            if Parameter.Value <> '' then  begin
-              s1:= s1 + chr(4) + Parameter.Value;
-              s2:= s2 + Parameter.Value;
-            end;
-            s1:= s1 + ', ';
-            s2:= s2 + chr(5);
-          end;
-
-          s1:= myStringReplace(s1 + ')', ', )', ')');
-          s2:= s2 + ')';
-          if Operation.OperationType = otFunction then
-            if assigned(Operation.ReturnValue) then begin
-              s1:= s1 + ': ' + Operation.ReturnValue.GetShortType;
-              if InheritedLevel = 0 then
-                AddDatatype(Operation.ReturnValue.Name);
-            end;
+          addParameter(s1, s2, Operation);
           MakeMenuItem(s1, s2, Integer(Operation.Visibility) + 7);
         end;
       end;
@@ -2570,19 +2481,13 @@ begin // PopMenuClassPopup
         dec(MenuIndex);
       end;
 
-      // get Associationclasses
+      // get association classes
       if InheritedLevel = 0 then begin
         it1:= aModelClass.GetAttributes;
         while it1.HasNext do begin
           Attribute:= it1.Next as UModel.TAttribute;
           if assigned(Attribute.TypeClassifier) then
             AddDatatype(Attribute.TypeClassifier.Importname)
-        end;
-
-        it1:= aModelClass.GetImplements;
-        while it1.HasNext do begin
-          aInterface:= it1.Next as UModel.TInterface;
-          AddDatatype(aInterface.FullName);
         end;
       end;
 
@@ -2604,13 +2509,8 @@ begin // PopMenuClassPopup
     until aModelClass = nil;
   end;
 
-  {
-  // unclear where to find classes, which we find as parameter types
   for i:= 0 to Associations.Count - 1 do
     MakeOpenClassMenuItem(Associations[i], 0);
-  for i:= 0 to Interfaces.Count - 1 do
-    MakeOpenClassMenuItem(Interfaces[i], 16);
-  }
   MakeConnectClassMenuItems;
 
   InheritedLevel:= 0;
@@ -2619,8 +2519,8 @@ begin // PopMenuClassPopup
 
   s1:= ChangeFileExt((aBox as TRtfdBox).GetPathname, '.py');
   HasSourcecode:= FileExists(s1);
-  Frame.MIClassPopupRun.Visible:= true; // was hasMain
 
+  Frame.MIClassPopupRun.Visible:= true; // was hasMain
   Frame.MIClassPopupClassEdit.Visible := (aBox is TRtfdClass) and HasSourceCode;
   Frame.MIClassPopupOpenSource.Visible:= HasSourceCode;  // in Arbeit
   Frame.MIClassPopupOpenclass.Visible := (Frame.MIClassPopupOpenclass.Count > 0);
@@ -2632,31 +2532,27 @@ begin // PopMenuClassPopup
   Frame.MIClassPopupRunOneTest.Visible:= false;
   Frame.NEndOfJUnitTest.Visible:= false;
   Frame.MIClassPopupCreateTestClass.Visible:= false;
-
   for i:= 0 to Frame.MIClassPopupDisplay.Count - 1 do
     Frame.MIClassPopupDisplay.Items[i].Checked:= false;
-  if assigned(aViewClass)
-    then i:= 3 - Ord(aViewClass.MinVisibility)
-    else i:= 3 - Ord(aViewInterface.MinVisibility);
-  Frame.MIClassPopupDisplay.Items[i].Checked:= true;
-
+  if assigned(aViewClass) then begin
+    i:= 3 - Ord(aViewClass.MinVisibility);
+    Frame.MIClassPopupDisplay.Items[i].Checked:= true;
+  end;
   for i:= 0 to Frame.MIClassPopupParameter.Count - 1 do
     Frame.MIClassPopupParameter.Items[i].Checked:= false;
-  if assigned(aViewClass)
-    then i:= aViewClass.ShowParameter
-    else i:= aViewInterface.ShowParameter;
-  Frame.MIClassPopUpParameter.Items[i].Checked:= true;
-
+  if assigned(aViewClass) then begin
+    i:= aViewClass.ShowParameter;
+    Frame.MIClassPopUpParameter.Items[i].Checked:= true;
+  end;
   for i:= 0 to Frame.MIClassPopupVisibility.Count - 1 do
     Frame.MIClassPopupVisibility.Items[i].Checked:= false;
-  if assigned(aViewClass)
-    then i:= 2 - aViewClass.ShowIcons
-    else i:= 2 - aViewInterface.ShowIcons;
-  Frame.MIClassPopupVisibility.Items[i].Checked:= true;
+  if assigned(aViewClass) then begin
+    i:= 2 - aViewClass.ShowIcons;
+    Frame.MIClassPopupVisibility.Items[i].Checked:= true;
+  end;
   Frame.MIClassPopupVisibility.Visible:= true;
 
   FreeAndNil(Associations);
-  FreeAndNil(Interfaces);
   FreeAndNil(Connections);
   FreeAndNil(SLSorted);
   // DebugMenu(Frame.PopMenuClass);
@@ -2664,18 +2560,14 @@ end;  // PopMenuClassPopup
 
 procedure TRtfdDiagram.PopMenuObjectPopup(Sender: TOBject);
 
-  var s1, s2, LongType, ancest, objectname: string; C: TControl;
+  var LongType, objectname: string; C: TControl;
       i, InheritedLevel, MenuIndex: integer;
       aObjectBox: TRtfdObject;
       aViewClass: TRtfdClass;
       aModelClass: TClass;
       aModelClassRoot: TClass;
-      it1, it2: IModelIterator;
-      Operation: UModel.TOperation;
-      Parameter: TParameter;
-      aInheritedMenu: TSpTBXItem;
-      SLSorted: TStringList;
       aMenuItem: TTBCustomItem;
+      aInheritedMenu: TSpTBXItem;
 
   procedure MakeMenuItem(const s1, s2: string; ImageIndex: integer);
     var aMenuItem: TSpTBXItem;
@@ -2690,8 +2582,7 @@ procedure TRtfdDiagram.PopMenuObjectPopup(Sender: TOBject);
     if InheritedLevel = 0 then begin
       Frame.PopMenuObject.Items.Insert(MenuIndex, aMenuItem);
       Inc(MenuIndex);
-      end
-    else begin
+    end else begin
       aMenuItem.Tag:= InheritedLevel;
       aInheritedMenu.Add(aMenuItem);
     end;
@@ -2768,18 +2659,140 @@ procedure TRtfdDiagram.PopMenuObjectPopup(Sender: TOBject);
   end;
 
   procedure MakeSeparatorItem;
-    var aMenuItem: TSpTBXSeparatorItem;
   begin
-    aMenuItem:= TSpTBXSeparatorItem.Create(Frame.PopMenuObject);
+    var aMenuItem:= TSpTBXSeparatorItem.Create(Frame.PopMenuObject);
     aMenuItem.Tag:= InheritedLevel;
     if (InheritedLevel = 0) then begin
         Frame.PopMenuObject.Items.Insert(MenuIndex, aMenuItem);
         Inc(MenuIndex);
-      end
-    else begin
+    end else begin
       aMenuItem.Tag:= InheritedLevel;
       aInheritedMenu.Add(aMenuItem);
     end;
+  end;
+
+  procedure MakeMethodMenuFromModel;
+    var
+      Operation: UModel.TOperation;
+      Parameter: TParameter;
+      s1, s2, ancest, iname: string;
+      it1, it2: IModelIterator;
+  begin
+    var SLSorted:= TStringList.Create;
+    SLSorted.Sorted:= true;
+    repeat
+      it1:= aModelClass.GetOperations;
+      while it1.HasNext do begin
+        Operation:= it1.Next as UModel.TOperation;
+        if (InheritedLevel > 0) and (Operation.Visibility = viPrivate) then continue;
+        if (Operation.OperationType in [otProcedure, otFunction]) and not Operation.IsAbstract then begin
+          iname:= getInternName(aModelClass, Operation.Name, Operation.Visibility);
+          s1:= Operation.Name + '(';
+          s2:= iname + '(';
+          it2:= Operation.GetParameters;
+          while it2.HasNext do begin
+            Parameter:= it2.next as TParameter;
+            if (Parameter.Name = 'self') or (Parameter.Name = 'cls') then
+              continue;
+            s1:= s1 + Parameter.Name;
+            s2:= s2 + Parameter.Name;
+            if assigned(Parameter.TypeClassifier) then
+              s1:= s1 + ': ' + Parameter.TypeClassifier.asType;
+            s2:= s2 + chr(4);
+            if Parameter.Value <> '' then begin
+              s1:= s1 + chr(4) + Parameter.Value;
+              s2:= s2 + Parameter.Value;
+            end;
+            s1:= s1 + ', ';
+            s2:= s2 + chr(5);
+          end;
+          s1:= myStringReplace(s1 + ')', ', )', ')');
+          s2:= s2 + ')';
+          if (Operation.OperationType = otFunction) and assigned(Operation.ReturnValue) then
+            s1:= s1 + ': ' + Operation.ReturnValue.GetShortType;
+          // Operation.Name is sort-criteria, s1 is Menu.caption, s2 is for calling method
+          SLSorted.add(Operation.Name + chr(3) + s1 + chr(3) + s2 + chr(3) + IntToStr(Integer(Operation.Visibility) + 7));
+        end;
+      end;
+      // end of while - all methods handelt
+
+      MakeSortedMenu(SLSorted);
+      SLSorted.Text:= '';
+
+      // empty inherited methods menu
+      if (InheritedLevel > 0) and (aInheritedMenu.Count = 0) then begin
+        FreeAndNil(aInheritedMenu);
+        dec(MenuIndex);
+      end;
+      if aModelClass.AncestorsCount > 0 then begin
+        var aClassname:= aModelClass.Name;
+        ancest:= aModelClass.Ancestor[0].Name;
+        aModelClass:= getModelClass(ancest);
+        { if assigned(aModelClass) and (aModelClass.Name = aClassname) then
+          break;}
+        if (aModelClass = nil) or (aModelClass.Pathname = '') then
+          aModelClass:= CreateModelClass(ancest);
+      end else
+        aModelClass:= nil;
+      if assigned(aModelClass) then begin
+        inc(InheritedLevel);
+        aInheritedMenu:= TSpTBXSubmenuItem.Create(Frame.PopMenuObject);
+        aInheritedMenu.Caption:= _('Inherited from') + ' ' + aModelClass.Name;
+        Frame.PopMenuObject.Items.Insert(MenuIndex, aInheritedMenu);
+        inc(MenuIndex);
+      end else
+        break;
+    until false;
+    FreeAndNil(SLSorted);
+  end;
+
+  procedure MakeMethodMenuFromLivingObjects;
+    var SLSorted, SLMethods, SLParameters: TStringList;
+        s1, s2, Param, ParamTyp, ReturnType, Signature: string;
+  begin
+    SLSorted:= TStringList.Create;
+    SLSorted.Sorted:= true;
+    SLMethods:= FLivingObjects.getMethods(Objectname);
+    var p:= SLMethods.IndexOf('__init__');
+    if p > -1 then SLMethods.Delete(p);
+    for var i:= 0 to SLMethods.Count - 1 do begin
+       s1:= SLMethods[i] + '(';
+       s2:= s1;
+       Signature:= FLivingObjects.getSignature(Objectname + '.' + SLMethods[i]);
+       p:= Pos('->', Signature);
+       if p > 0 then begin
+         ReturnType:= trim(copy(Signature, p + 2, length(Signature)));
+         Signature:= trim(copy(Signature, 1, p - 1));
+       end else
+         ReturnType:= '';
+       Signature:= copy(Signature, 2, length(Signature) - 2);
+       SLParameters:= Split(',', Signature);
+       for var j:= 0 to SLParameters.Count -1 do begin
+          Param:= SLParameters[j];
+          p:= Pos(':', Param);
+          if p > 0 then begin
+            ParamTyp:= trim(copy(Param, p+1, length(Param)));
+            Param:= copy(Param, 1, p - 1);
+          end else
+            ParamTyp:= '';
+          s1:= s1 + Param;
+          s2:= s2 + Param;
+          if ParamTyp <> '' then
+            s1:= s1 + ': ' + ParamTyp;
+          s2:= s2 + chr(4);
+          s1:= s1 + ', ';
+          s2:= s2 + chr(5);
+       end;
+       s1:= myStringReplace(s1 + ')', ', )', ')');
+       s2:= s2 + ')';
+       if ReturnType <> '' then
+         s1:= s1 + ': ' + ReturnType;
+       SLSorted.add(SLMethods[i] + chr(3) + s1 + chr(3) + s2 + chr(3) + IntToStr(Integer(viPublic) + 7));
+       FreeAndNil(SLParameters);
+    end;
+    FreeAndNil(SLMethods);
+    MakeSortedMenu(SLSorted);
+    FreeAndNil(SLSorted);
   end;
 
 begin // PopMenuObjectPopup
@@ -2796,9 +2809,9 @@ begin // PopMenuObjectPopup
       FreeAndNil(aMenuItem);
     end;
   for i:= Frame.MIObjectPopupShowNewObject.Count - 1 downto 0 do begin
-      aMenuItem:= Frame.MIObjectPopupShowNewObject.Items[i];
-      FreeAndNil(aMenuItem);
-    end;
+    aMenuItem:= Frame.MIObjectPopupShowNewObject.Items[i];
+    FreeAndNil(aMenuItem);
+  end;
 
   FullParameters.Clear;
 
@@ -2816,94 +2829,31 @@ begin // PopMenuObjectPopup
     aViewClass:= GetBox(Longtype) as TRtfdClass;
     if aViewClass = nil then
       aViewClass:= GetBox(getShortType(LongType)) as TRtfdClass;
-    if assigned(aViewClass)
-      then aModelClass:= (aViewClass.Entity as TClass)  // model class from view class
-      else aModelClass:= nil;
+    aModelClass:= nil;
+    if assigned(aViewClass) then
+      aModelClass:= (aViewClass.Entity as TClass);       // model class from view class
     if aModelClass = nil then
       aModelClass:= getModelClass(LongType);             // model class from model
     if (aModelClass = nil) or (aModelClass.Pathname = '') then
-      aModelClass:= CreateModelClass(LongType);          // model class from java
+      aModelClass:= CreateModelClass(LongType);          // model class from python
     aModelClassRoot:= aModelClass;
 
-    if assigned(aModelClass) then begin // known Class in Model
-      SLSorted:= TStringList.Create;
-      SLSorted.Sorted:= true;
-      repeat
-        it1:= aModelClass.GetOperations;
-        while it1.HasNext do begin
-          Operation:= it1.Next as UModel.TOperation;
-          if (InheritedLevel > 0) and (Operation.Visibility = viPrivate) then continue;
-          if (Operation.OperationType in [otProcedure, otFunction]) and not Operation.IsAbstract then begin
-            s1:= Operation.Name + '(';
-            s2:= s1;
-            it2:= Operation.GetParameters;
-            while it2.HasNext do begin
-              Parameter:= it2.next as TParameter;
-              if (Parameter.Name = 'self') or (Parameter.Name = 'cls') then
-                continue;
-              s1:= s1 + Parameter.Name;
-              s2:= s2 + Parameter.Name;
-              if assigned(Parameter.TypeClassifier) then
-                s1:= s1 + ': ' + Parameter.TypeClassifier.asType;
-              s2:= s2 + chr(4);
-              if Parameter.Value <> '' then begin
-                s1:= s1 + chr(4) + Parameter.Value;
-                s2:= s2 + Parameter.Value;
-              end;
-              s1:= s1 + ', ';
-              s2:= s2 + chr(5);
-            end;
-            s1:= myStringReplace(s1 + ')', ', )', ')');
-            s2:= s2 + ')';
-            if (Operation.OperationType = otFunction) and assigned(Operation.ReturnValue) then
-              s1:= s1 + ': ' + Operation.ReturnValue.GetShortType;
-            // Operation.Name is sort-criteria, s1 is Menu.caption, s2 is for calling method
-            SLSorted.add(Operation.Name + chr(3) + s1 + chr(3) + s2 + chr(3) + IntToStr(Integer(Operation.Visibility) + 7));
-          end;
-        end;
-        // end of while - all methods handelt
-
-        MakeSortedMenu(SLSorted);
-        SLSorted.Text:= '';
-
-        // empty inherited methods menu
-        if (InheritedLevel > 0) and (aInheritedMenu.Count = 0) then begin
-          FreeAndNil(aInheritedMenu);
-          dec(MenuIndex);
-        end;
-        if aModelClass.AncestorsCount > 0 then begin
-          var aClassname:= aModelClass.Name;
-          ancest:= aModelClass.Ancestor[0].Name;
-          aModelClass:= getModelClass(ancest);
-          if aModelClass.Name = aClassname then
-            break;
-          if aModelClass = nil then
-            aModelClass:= CreateModelClass(ancest);
-        end else
-          aModelClass:= nil;
-        if assigned(aModelClass) then begin
-          inc(InheritedLevel);
-          aInheritedMenu:= TSpTBXSubmenuItem.Create(Frame.PopMenuObject);
-          aInheritedMenu.Caption:= 'Inherited from ' + aModelClass.Name;
-          Frame.PopMenuObject.Items.Insert(MenuIndex, aInheritedMenu);
-          inc(MenuIndex);
-        end else
-          break;
-      until false;
-      FreeAndNil(SLSorted);
-    end;
+    if assigned(aModelClass)
+      then MakeMethodMenuFromModel // known Class in Model
+      else MakeMethodMenuFromLivingObjects;
 
     InheritedLevel:= 0;
-    Inc(MenuIndex,1);
+    Inc(MenuIndex, 1);
     MakeSeparatorItem;
     if assigned(aModelClassRoot)
-      then Frame.MIObjectPopupEdit.Visible:= HasAttributes(aModelClassRoot)
+      then Frame.MIObjectPopupEdit.Visible:= HasAttributes(Objectname)
       else Frame.MIObjectPopupEdit.Visible:= false;
     if assigned(aObjectBox) then begin
       Frame.MIObjectPopupShowInherited.Visible:= not aObjectBox.ShowInherited;
       Frame.MIObjectPopupHideInherited.Visible:= aObjectBox.ShowInherited;
     end;
-    // ToDO
+
+    // ToDo
     Frame.MIObjectPopupShowInherited.Visible:= false;
     Frame.MIObjectPopupHideInherited.Visible:= false;
 
@@ -2921,52 +2871,33 @@ end; // PopMenuObjectPopup
 
 procedure TRtfdDiagram.PopMenuConnectionPopup(Sender: TObject);
   var Conn: TConnection;
-      BothClassOrInterface, AClassAInterface, AClassAObject: boolean;
+      BothClass, AClassAObject: boolean;
 begin
   Conn:= Panel.GetClickedConnection;
   if Conn = nil then exit;
 
-  BothClassOrInterface:=
-    ((Conn.FFrom is TRtfdClass) and (Conn.FTo is TRtfdClass)) or
-    ((Conn.FFrom is TRtfdInterface) and (Conn.FTo is TRtfdInterface));
-  AClassAInterface:=
-    ((Conn.FFrom is TRtfdClass) and (Conn.FTo is TRtfdInterface)) or
-    ((Conn.FFrom is TRtfdInterface) and (Conn.FTo is TRtfdClass));
+  BothClass:=
+    ((Conn.FFrom is TRtfdClass) and (Conn.FTo is TRtfdClass));
   AClassAObject:=
     ((Conn.FFrom is TRtfdClass) and (Conn.FTo is TRtfdObject)) or
     ((Conn.FFrom is TRtfdObject) and (Conn.FTo is TRtfdClass));
-  Frame.MIConnectionAssociation.Visible:= BothClassOrInterface;
-  Frame.MIConnectionAssociationArrow.Visible:= BothClassOrInterface;
-  Frame.MIConnectionAssociationBidirectional.Visible:= BothClassOrInterface;
-  Frame.MIConnectionAggregation.Visible:= BothClassOrInterface;
-  Frame.MIConnectionAggregationArrow.Visible:= BothClassOrInterface;
-  Frame.MIConnectionComposition.Visible:= BothClassOrInterface;
-  Frame.MIConnectionCompositionArrow.Visible:= BothClassOrInterface;
-  Frame.MIConnectionInheritance.Visible:= not Conn.isRecursiv and BothClassOrInterface;
-  Frame.MIConnectionImplements.Visible:= AClassAInterface;
+  Frame.MIConnectionAssociation.Visible:= BothClass;
+  Frame.MIConnectionAssociationArrow.Visible:= BothClass;
+  Frame.MIConnectionAssociationBidirectional.Visible:= BothClass;
+  Frame.MIConnectionAggregation.Visible:= BothClass;
+  Frame.MIConnectionAggregationArrow.Visible:= BothClass;
+  Frame.MIConnectionComposition.Visible:= BothClass;
+  Frame.MIConnectionCompositionArrow.Visible:= BothClass;
+  Frame.MIConnectionInheritance.Visible:= not Conn.isRecursiv and BothClass;
   Frame.MIConnectionInstanceOf.Visible:= AClassAObject;
   Frame.MIConnectionRecursiv.Visible:= Conn.isRecursiv;
 end;
 
-function TRtfdDiagram.HasAttributes(aModelClass: TClass): boolean;
-  var It: IModelIterator;
-      aItAttribut: TAttribute;
-      i: integer;
+function TRtfdDiagram.HasAttributes(Objectname: string): boolean;
 begin
-  i:= 0;
-  while (i = 0) and (AModelClass <> nil) do begin
-    It:= aModelClass.GetAttributes;
-    while It.HasNext do begin
-      aItAttribut:= It.Next as TAttribute;
-      if GuiPyOptions.PrivateAttributEditable or (aItAttribut.Visibility <> viPrivate)
-        then inc(i);
-    end;
-    if AModelClass.AncestorsCount > 0 then
-      AModelClass:= AModelClass.Ancestor[0] // ToDo n ancestors
-    else
-      AModelClass:= nil;
-  end;
-  Result:= (i > 0);
+  var SL:= FLivingObjects.getObjectMembers(Objectname);
+  Result:= (SL.Count > 0);
+  FreeAndNil(SL);
 end;
 
 function TRtfdDiagram.hasSelectedConnection: boolean;
@@ -3217,18 +3148,11 @@ begin
         break;
       end;
     end;
-  end;
+  end;                    // without source
   if assigned(Result) and (Result.Pathname = '') then begin
-    while Ci.HasNext do begin
-      cent:= TClassifier(Ci.Next);
-      if cent is TClass then begin
-        typ:= (cent as TClass).getTyp;
-        if (typ = s) or (typ = GetShortType(s)) then begin
-          Result:= (cent as TClass);
-          break;
-        end;
-      end;
-    end;
+    var U:= Model.ModelRoot.FindUnitPackage('Default');
+    U.DeleteObject(typ);
+    Result:= nil;
   end;
 end;
 
@@ -3258,7 +3182,6 @@ begin
     asComposition1: Result:= 'Composition';
     asComposition2: Result:= 'CompositionArrow';
     asInheritends:  Result:= 'Inheritends';
-    asImplements:   Result:= 'Implements';
     asInstanceOf:   Result:= 'InstanceOf';
     asComment:      Result:= 'Comment';
   end;
@@ -3575,6 +3498,20 @@ end;
 procedure TRtfdDiagram.ExecutePython(s: String);
 begin
   FLivingObjects.ExecutePython(s);
+end;
+
+procedure TRtfdDiagram.GetVisFromName(var Name: string; var vis: TVisibility);
+begin
+  vis:= viPublic;
+  var p:= Pos('__', Name);
+  if p > 0 then begin
+    Name:= copy(Name, p+2, length(Name));
+    vis:= viPrivate;
+  end;
+  if Name[1] = '_' then begin
+    Name:= copy(Name, 2, length(Name));
+    vis:= viProtected;
+  end;
 end;
 
 end.

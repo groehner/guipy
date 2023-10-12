@@ -3997,12 +3997,6 @@ object AFrameDiagram: TAFrameDiagram
       ImageIndex = 7
       OnClick = MIConnectionClick
     end
-    object MIConnectionImplements: TSpTBXItem
-      Tag = 8
-      Caption = 'Implements'
-      ImageIndex = 8
-      OnClick = MIConnectionClick
-    end
     object MIConnectionInstanceOf: TSpTBXItem
       Tag = 9
       Caption = 'Instance of'
@@ -4210,7 +4204,7 @@ object AFrameDiagram: TAFrameDiagram
     end
     object MIObjectPopupDisplay: TSpTBXSubmenuItem
       Tag = 1
-      Caption = 'Display'
+      Caption = 'Attributes'
       object MIObjectPopupDisplay0: TSpTBXItem
         Tag = 3
         Caption = 'none'
@@ -4227,7 +4221,6 @@ object AFrameDiagram: TAFrameDiagram
         OnClick = MIObjectPopupDisplayClick
       end
       object MIObjectPopupDisplay3: TSpTBXItem
-        Tag = 1
         Caption = 'all'
         OnClick = MIObjectPopupDisplayClick
       end
@@ -4246,7 +4239,6 @@ object AFrameDiagram: TAFrameDiagram
         OnClick = MIObjectPopupVisibilityClick
       end
       object MIObjectPopupVisibilityIcon: TSpTBXItem
-        Tag = 1
         Caption = 'Icon'
         OnClick = MIObjectPopupVisibilityClick
       end

@@ -54,8 +54,7 @@ type
   TessConnectionArrowStyle = (asAssociation1, asAssociation2, asAssociation3,
                               asAggregation1, asAggregation2,
                               asComposition1, asComposition2,
-                              asInheritends,  asImplements,
-                              asInstanceOf,   asComment);
+                              asInheritends,  asInstanceOf,   asComment);
 
   TConnectionAttributes = class
   public
@@ -360,7 +359,6 @@ function TConnection.ArrowToConnect(Arrow: TessConnectionArrowStyle): TessConnec
 begin
   case Arrow of
     asInheritends: Result:= csNormal;
-    asImplements,
     asInstanceOf,
     asComment :    Result:= csThinDash;
     else           Result:= csThin;
@@ -650,7 +648,7 @@ begin  // of draw
     svg:= svg + getSVGLine(x1, y1, x2 - SimpleRoundTo(5*xLineUnitDelta, -1), y2 - SimpleRoundTo(5*yLineUnitDelta, -1));
     insert('stroke-width="3" ', svg, pos('/>', svg));
   end;
-  if ArrowStyle in [asImplements, asInstanceOf, asComment] then
+  if ArrowStyle in [asInstanceOf, asComment] then
     insert('stroke-dasharray="1.5% 0.5%" ', svg, pos('/>', svg));
 
   SelectClipRgn(aCanvas.Handle, HRGN(nil));
@@ -724,7 +722,7 @@ begin  // of draw
   aCanvas.Brush.Color:= BGColor;
   xBase:= x2 - Round(HeadLength * xLineUnitDelta);
   yBase:= y2 - Round(HeadLength * yLineUnitDelta);
-  if ArrowStyle in [asInheritends, asImplements, asAssociation2, asAssociation3,
+  if ArrowStyle in [asInheritends, asAssociation2, asAssociation3,
                     asAggregation2, asComposition2, asInstanceOf] then
       case ToPEnd of
         1, 3: begin
@@ -740,7 +738,7 @@ begin  // of draw
   MyRgn:= CreateRectRgn(ConRect.Left, ConRect.Top, ConRect.Right, ConRect.Bottom);
   SelectClipRgn(aCanvas.Handle, MyRgn);
   case ArrowStyle of
-    asInheritends, asImplements:
+    asInheritends:
     begin
       PointArray:= [Point(x2, y2), Point(xBase + dx, yBase + dy),
                     Point(xBase - dx, yBase - dy)];
@@ -784,7 +782,7 @@ begin  // of draw
 
   R2:= getBoundsRect(FTo);
   if ArrowStyle in [asAssociation2, asAssociation3, asAggregation2, asComposition2,
-                    asInheritends,  asImplements, asInstanceOf] then begin
+                    asInheritends,  asInstanceOf] then begin
     inc(R2.Right, abs(d2x));
     dec(R2.Top, abs(d2y));
     dec(R2.Left, abs(d2x));
@@ -869,8 +867,7 @@ procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: boolean);
       P4.Y:= P3.Y;
     end;
     case ArrowStyle of
-      asInheritends,
-      asImplements: begin
+      asInheritends: begin
         PointArray:= [P1, P3, P4];
         aCanvas.Polygon(PointArray);
         if ArrowStyle in [asAggregation1, asAggregation2]
@@ -906,7 +903,7 @@ begin
     else aCanvas.Pen.Color:= BGColor;
   aCanvas.Polyline(Pl);
   svg:= '<g>'#13#10 + getSVGPolyline(Pl);
-  if ArrowStyle in [asImplements, asInstanceOf, asComment] then
+  if ArrowStyle in [asInstanceOf, asComment] then
     insert('stroke-dasharray="1.5% 0.5%" ', svg, pos('/>', svg));
 
   aCanvas.Pen.Width:= 1;
@@ -1302,7 +1299,7 @@ end;
 function TConnection.ArrowHeadLength(Arrow: TessConnectionArrowStyle): integer;
 begin
   if arrow in [asAssociation2, asAssociation3, asAggregation2, asComposition2,
-               asInheritends, asImplements, asInstanceOf]
+               asInheritends, asInstanceOf]
     then Result:= HeadLength
     else Result:= 0;
 end;

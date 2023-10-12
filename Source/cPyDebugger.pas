@@ -216,6 +216,7 @@ begin
   fChildCount := -1;  // unknown
   fObjectInfo := 0;
   fExpandSequences := True;
+  fParent:= nil;
 end;
 
 destructor TNameSpaceItem.Destroy;
@@ -288,6 +289,7 @@ begin
           APyObject := VarPythonCreate(PyTuple_GetItem(PyFullInfo, 0));
 
           NameSpaceItem := TNameSpaceItem.Create(ObjName, APyObject);
+          NameSpaceItem.Parent:= Self;
           NameSpaceItem.ExpandCommonTypes := ExpandCommonTypes;
           NameSpaceItem.ExpandSequences := ExpandSequences;
 

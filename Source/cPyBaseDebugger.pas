@@ -55,6 +55,7 @@ type
     fPyObject : Variant;
     fExpandCommonTypes : Boolean;
     fExpandSequences : Boolean;
+    fParent: TBaseNameSpaceItem;
     GotChildNodes : Boolean;
     GotBufferedValue : Boolean;
     BufferedValue : string;
@@ -86,6 +87,7 @@ type
     property PyObject : Variant read fPyObject;
     property ExpandCommonTypes : Boolean read fExpandCommonTypes write fExpandCommonTypes;
     property ExpandSequences : Boolean read fExpandSequences write fExpandSequences;
+    property Parent: TBaseNameSpaceItem read fParent write fParent;
   end;
 
   TPyBaseDebugger = class;

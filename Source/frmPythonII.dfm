@@ -3,8 +3,8 @@ inherited PythonIIForm: TPythonIIForm
   Top = 201
   HelpContext = 410
   Caption = 'Python Interpreter'
-  ClientHeight = 427
-  ClientWidth = 685
+  ClientHeight = 415
+  ClientWidth = 677
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -47,8 +47,8 @@ inherited PythonIIForm: TPythonIIForm
   ExplicitHeight = 454
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 685
-    Height = 427
+    Width = 677
+    Height = 415
     ExplicitWidth = 677
     ExplicitHeight = 415
     inherited FGPanel: TPanel

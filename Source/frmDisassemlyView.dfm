@@ -3,8 +3,8 @@ object DisForm: TDisForm
   Top = 152
   HelpContext = 860
   Caption = 'Disassembly View'
-  ClientHeight = 381
-  ClientWidth = 595
+  ClientHeight = 380
+  ClientWidth = 591
   Color = clBtnFace
   ParentFont = True
   OnCreate = FormCreate
@@ -12,8 +12,8 @@ object DisForm: TDisForm
   object DisSynEdit: TSynEdit
     Left = 0
     Top = 0
-    Width = 595
-    Height = 381
+    Width = 591
+    Height = 380
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -46,7 +46,5 @@ object DisForm: TDisForm
         Width = 3
       end>
     SelectedColor.Alpha = 0.400000005960464500
-    ExplicitWidth = 591
-    ExplicitHeight = 380
   end
 end

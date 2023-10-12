@@ -57,7 +57,6 @@ type
     MIConnectionRecursiv: TSpTBXSubmenuItem;
     SpTBXSeparatorItem2: TSpTBXSeparatorItem;
     MIConnectionInstanceOf: TSpTBXItem;
-    MIConnectionImplements: TSpTBXItem;
     MIConnectionInheritance: TSpTBXItem;
     MIConnectionCompositionArrow: TSpTBXItem;
     MIConnectionComposition: TSpTBXItem;

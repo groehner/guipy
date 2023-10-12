@@ -256,6 +256,7 @@ begin
           APyObject := VarPythonCreate(PyTuple_GetItem(PyFullInfo, 0));
 
           NameSpaceItem := TRemNameSpaceItem.Create(ObjName, APyObject, fRemotePython);
+          NameSpaceItem.Parent:= Self;
           NameSpaceItem.ExpandCommonTypes := ExpandCommonTypes;
           NameSpaceItem.ExpandSequences := ExpandSequences;
 

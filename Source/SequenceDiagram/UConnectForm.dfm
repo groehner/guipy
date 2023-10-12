@@ -4,8 +4,8 @@ object FConnectForm: TFConnectForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Connection type'
-  ClientHeight = 207
-  ClientWidth = 317
+  ClientHeight = 206
+  ClientWidth = 313
   Color = clBtnFace
   ParentFont = True
   Position = poOwnerFormCenter
