@@ -713,7 +713,7 @@ procedure TLivingObjects.makeAllObjects;
           // object with modified string representation by __repr__
           // for example: <TurtleIntern Sprite(in 1039 groups)>
           s:= VarToStr(NSi.PyObject);
-          if s[1] = '<' then begin
+          if copy(s, 1, 1) = '<' then begin
             Name:= getHexAddress(Prefixname + '.' + NSi.Name, s);
             //  if SLObjectsNamePath.IndexOfName(Name) = -1 then
             //    SLObjectsNamePath.Add(Name + '=' + Prefixname);

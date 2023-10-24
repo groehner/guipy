@@ -2,8 +2,8 @@ object FUMLForm: TFUMLForm
   Left = 394
   Top = 229
   Caption = 'UML'
-  ClientHeight = 615
-  ClientWidth = 729
+  ClientHeight = 611
+  ClientWidth = 713
   Color = clBtnFace
   ParentFont = True
   Position = poOwnerFormCenter
@@ -16,8 +16,8 @@ object FUMLForm: TFUMLForm
   object PUML: TPanel
     Left = 0
     Top = 0
-    Width = 729
-    Height = 615
+    Width = 713
+    Height = 611
     Align = alClient
     Caption = 'PUML'
     TabOrder = 0
@@ -25,7 +25,7 @@ object FUMLForm: TFUMLForm
     object PDiagram: TPanel
       Left = 1
       Top = 5
-      Width = 727
+      Width = 711
       Height = 420
       Align = alTop
       Constraints.MinHeight = 100
@@ -33,7 +33,7 @@ object FUMLForm: TFUMLForm
       object PDiagramPanel: TPanel
         Left = 1
         Top = 26
-        Width = 725
+        Width = 709
         Height = 393
         Align = alClient
         BevelEdges = [beLeft, beTop]
@@ -50,12 +50,12 @@ object FUMLForm: TFUMLForm
         ParentFont = False
         TabOrder = 0
         OnResize = PDiagramPanelResize
-        ExplicitWidth = 729
+        ExplicitWidth = 721
       end
       object PUMLPanel: TPanel
         Left = 1
         Top = 1
-        Width = 725
+        Width = 709
         Height = 25
         Align = alTop
         TabOrder = 1
@@ -178,17 +178,17 @@ object FUMLForm: TFUMLForm
     object PInteractive: TPanel
       Left = 1
       Top = 425
-      Width = 727
-      Height = 189
+      Width = 711
+      Height = 185
       Align = alClient
       PopupMenu = PMInteractive
       TabOrder = 1
-      ExplicitWidth = 731
-      ExplicitHeight = 190
+      ExplicitWidth = 715
+      ExplicitHeight = 186
       object TBInteractiveToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 729
+        Width = 713
         Height = 22
         Color = clBtnFace
         Images = DMImages.ILInteractive
@@ -237,8 +237,8 @@ object FUMLForm: TFUMLForm
       object SynEdit: TSynEdit
         Left = 1
         Top = 23
-        Width = 729
-        Height = 166
+        Width = 713
+        Height = 162
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -276,17 +276,19 @@ object FUMLForm: TFUMLForm
         RightEdge = 0
         SelectedColor.Alpha = 0.400000005960464500
         OnChange = SynEditChange
+        ExplicitWidth = 721
+        ExplicitHeight = 164
       end
     end
     object SpTBXSplitter1: TSpTBXSplitter
       Left = 1
       Top = 1
-      Width = 727
+      Width = 711
       Height = 4
       Cursor = crSizeNS
       Align = alTop
       ParentColor = False
-      ExplicitWidth = 731
+      ExplicitWidth = 723
     end
   end
   object PMInteractive: TSpTBXPopupMenu

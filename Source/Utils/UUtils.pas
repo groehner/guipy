@@ -144,6 +144,7 @@ function IntToVal(x: integer): string;
 function myColorToRGB(Color: TColor): string;
 function XYToVal(x, y: integer): string;
 function CalcIndent(S : string; TabWidth : integer = 4): integer;
+function encodeQuotationMark(const s: string): string;
 
 implementation
 
@@ -579,9 +580,13 @@ begin
   reg:= TRegistry.Create;
   reg.RootKey:= HKEY_LOCAL_MACHINE;
   reg.Access:= KEY_READ;
-  if reg.OpenKey('SOFTWARE\Classes\GuiPy\shell\open\command', false)
+  if reg.OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', false)
     then Result:= reg.ReadString('')
     else Result:= '';
+  reg.CloseKey;
+  var p:= Pos(' "%1"', Result);
+  if p > 0 then
+    Result:= copy(Result, 1, p-1);
   FreeAndNil(reg);
 end;
 
@@ -1750,6 +1755,11 @@ begin
       Inc(Result)
     else
       break;
+end;
+
+function encodeQuotationMark(const s: string): string;
+begin
+  Result:= ReplaceStr(s, '"', '&quot;');
 end;
 
 end.

@@ -82,7 +82,6 @@ type
     TempHidden : TObjectList;
     BGColor: TColor;
     FGColor: TColor;
-
     procedure SetSelectedOnly(const Value : boolean);
   protected
     { Protected declarations }
@@ -119,7 +118,6 @@ type
     OnDeleteSelectedControls: TNotifyEvent;
     OnClassEditSelectedDiagramElements: TNotifyEvent;
     OnFormMouseDown: TNotifyEvent;
-    //OnMouseDown: TNoti
 
     PopupMenuConnection: TPopupMenu;
     PopupMenuAlign: TPopupMenu;

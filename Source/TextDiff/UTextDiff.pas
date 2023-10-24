@@ -94,7 +94,7 @@ type
 
     procedure DoCompare;
     procedure DoLoadFile(const Filename: string; Nr: integer);
-    procedure DoSaveFile(Nr: integer; MitBackup: boolean); reintroduce;
+    procedure DoSaveFile(Nr: integer); reintroduce;
     procedure ChooseFiles(F1: TEditorForm);
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
@@ -136,7 +136,7 @@ type
     procedure Open(const Filename: string); overload;
     procedure Open(const Filename1, Filename2: string); overload;
     procedure ShowDiffState;
-    procedure Save(MitBackup: boolean);
+    procedure Save;
     procedure SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
   end;
 
@@ -328,9 +328,9 @@ begin
   end;
 end;
 
-procedure TFTextDiff.Save(MitBackup: boolean);
+procedure TFTextDiff.Save;
 begin
-  DoSaveFile(GetCodeEdit.Nr, MitBackup);
+  DoSaveFile(GetCodeEdit.Nr);
 end;
 
 procedure TFTextDiff.Open(const Filename: string);
@@ -472,8 +472,8 @@ begin
   try
     CodeEdit1.LinesClearAll;
     CodeEdit2.LinesClearAll;
-    //CodeEdit1.OnSpecialLineColors:= CodeEdit1.SynEditorSpecialLineColors;
-    //CodeEdit2.OnSpecialLineColors:= CodeEdit2.SynEditorSpecialLineColors;
+    CodeEdit1.OnSpecialLineColors:= CodeEdit1.SynEditorSpecialLineColors;
+    CodeEdit2.OnSpecialLineColors:= CodeEdit2.SynEditorSpecialLineColors;
 
     CodeEdit1.OnGutterGetText:= CodeEdit1.GutterTextEvent;
     CodeEdit2.OnGutterGetText:= CodeEdit2.GutterTextEvent;
@@ -500,14 +500,16 @@ begin
     CodeEdit2.Lines.EndUpdate;
   end;
   with Diff.DiffStats do
-  if adds + modifies + deletes = 0 then begin
-    CodeEdit1.WithColoredLines:= false;
-    CodeEdit2.WithColoredLines:= false;
-    end
-  else begin
-    CodeEdit1.WithColoredLines:= true;
-    CodeEdit2.WithColoredLines:= true;
-  end;
+    if adds + modifies + deletes = 0 then begin
+      CodeEdit1.WithColoredLines:= false;
+      CodeEdit2.WithColoredLines:= false;
+      end
+    else begin
+      CodeEdit1.WithColoredLines:= true;
+      CodeEdit2.WithColoredLines:= true;
+    end;
+  CodeEdit1.ClearUndo;
+  CodeEdit2.ClearUndo;
   ShowDiffState;
 end;
 
@@ -785,14 +787,14 @@ begin
   DoCompare;
 end;
 
-procedure TFTextDiff.DoSaveFile(Nr: integer; MitBackup: boolean);
+procedure TFTextDiff.DoSaveFile(Nr: integer);
   var CodeEdit: TSynEditExDiff;
 begin
   if Nr = 1
     then CodeEdit:= CodeEdit1
     else CodeEdit:= CodeEdit2;
   if (CodeEdit.Pathname = '') or OnlyDifferences then exit;
-  CodeEdit.Save(MitBackup);
+  CodeEdit.Save;
   if Nr = 1
     then Lines1.Assign(CodeEdit.Lines)
     else Lines2.Assign(CodeEdit.Lines);
@@ -801,8 +803,8 @@ end;
 
 procedure TFTextDiff.DoSaveBoth;
 begin
-  DoSaveFile(1, false);
-  DoSaveFile(2, false);
+  DoSaveFile(1);
+  DoSaveFile(2);
 end;
 
 procedure TFTextDiff.TBSourcecodeClick(Sender: TObject);
@@ -812,8 +814,8 @@ begin
   if OnlyDifferences then TBDiffsOnlyClick(Self);
   CodeEdit:= GetCodeEdit;
   Caret:= CodeEdit.CaretXY;
-  DoSaveFile(1, false);
-  DoSaveFile(2, false);
+  DoSaveFile(1);
+  DoSaveFile(2);
   CodeEdit.CaretXY:= Caret;
   setActiveControl(CodeEdit);
   SyncScroll(GetCodeEdit, sbVertical);

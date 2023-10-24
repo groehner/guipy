@@ -646,6 +646,8 @@ begin
     RegisterParameter('Python39Exe', '$[PYTHON39DIR]python.exe', nil);
     RegisterParameter('Python310Exe', '$[PYTHON310DIR]python.exe', nil);
     RegisterParameter('Python311Exe', '$[PYTHON311DIR]python.exe', nil);
+    RegisterParameter('Python312Exe', '$[PYTHON312DIR]python.exe', nil);
+    RegisterParameter('Python313Exe', '$[PYTHON313DIR]python.exe', nil);
     RegisterParameter('PythonDir', _('Directory of active Python version'), GetActivePythonDir);
     RegisterParameter('PythonExe', _('Executable of active Python'), GetActivePythonExe);
     RegisterParameter('PythonwExe', _('Executable of active Python'), GetActivePythonwExe);

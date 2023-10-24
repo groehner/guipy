@@ -152,6 +152,7 @@ type
     IsClass: Boolean;
     ComboBoxInvalid: Boolean;
     MakeNewClass: Boolean;
+    TreeViewUpdating: Boolean;
     LNGTODO: string;
     LNGSet: string;
     LNGGet: string;
@@ -205,6 +206,8 @@ type
     function NameTypeValueChanged: Boolean;
     procedure TakeParameter;
     function StrToPythonValue(s: String): String;
+    function getConstructorHead(Superclass: string): string;
+    function PrepareParameter(head: string): string;
   protected
     // IJvAppStorageHandler implementation
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
@@ -223,7 +226,7 @@ implementation
 {$R *.dfm}
 
 uses Windows, Math, Graphics, Messages, SysUtils, Dialogs, UITypes, Character,
-     SynEdit, JvGnugettext,
+     System.IOUtils, SynEdit, JvGnugettext,
      uCommonFunctions, UFileStructure, uModelEntity,
      UConfiguration, UUtils, uEditAppIntfs, frmFile;
 
@@ -247,6 +250,7 @@ procedure TFClassEditor.FormCreate(Sender: TObject);
 begin
   inherited;
   MakeNewClass:= false;
+  TreeViewUpdating:= false;
   TreeView.Images:= FFileStructure.ILFileStructureLight;
   CBAttributeValue.Items.Text:= Values;
   CBParamValue.Items.Text:= Values;
@@ -364,7 +368,7 @@ end;
 
 procedure TFClassEditor.TVAttribute(Attribute: TAttribute);
 begin
-  var Node:= TreeView.Items.AddChildObject(AttributeNode, Attribute.Name,
+  var Node:= TreeView.Items.AddChildObject(AttributeNode, Attribute.toShortStringNode,
     Attribute);
   Node.ImageIndex:= Integer(Attribute.Visibility) + 2;
   Node.SelectedIndex:= Integer(Attribute.Visibility) + 2;
@@ -381,15 +385,79 @@ begin
   Node.SelectedIndex:= ImageNr;
 end;
 
+function TFClassEditor.getConstructorHead(Superclass: string): string;
+begin
+  Result:= '';
+  var Line:= myEditor.getLineNumberWithWord('class ' + Superclass);
+  if Line = -1 then begin
+    var SL:= FConfiguration.getClassesAndFilename(myEditor.Pathname);
+    try
+      var p:= SL.indexOfName(Superclass);
+      if p >= 0 then begin
+        var Filename:= SL.ValueFromIndex[p];
+        SL.LoadFromFile(TPath.Combine(ExtractFilePath(myEditor.Pathname), Filename));
+        for var i:= 0 to SL.Count -1 do begin
+          p:= Pos('class ' + Superclass, SL[i]);
+          if p > 0 then begin
+            for var j:= i+1 to SL.Count - 1 do begin
+              p:= Pos('def __init__(self', SL[j]);
+              if p > 0 then
+                Exit(trim(SL[j]));
+            end;
+          end;
+        end;
+      end;
+    finally
+      FreeAndNil(SL);
+    end;
+  end else begin
+    Line:= myEditor.getLineNumberWithWordFromTill('def __init__(self', Line);
+    if Line > -1 then
+      Result:= trim(myEditor.ActiveSynEdit.Lines[Line]);
+  end;
+end;
+
+function TFClassEditor.PrepareParameter(head: string): string;
+begin
+  delete(head, 1, length('def __init__('));
+  var p:= Pos('):', head);
+  head:= copy(head, 1, p-1);
+  var SL:= Split(',', head);
+  head:= '';
+  SL.Delete(0); // self
+  for var i:= 0 to SL.Count -1 do begin
+    var s1:= SL[i];
+    p:= Pos(':', s1);
+    if p > 0 then
+      delete(s1, p, length(s1));
+    s1:= trim(s1);
+    if head = ''
+      then head:= s1
+      else head:= head + ', ' + s1;
+  end;
+  FreeAndNil(SL);
+  Result:= head;
+end;
+
 procedure TFClassEditor.NewClass;
 var
   Indent1, Indent2, s: string;
   Line, p1, p2, p3, p4: Integer;
-  SL: TStringList;
-  i: Integer;
+
+  function MakeInner(s: string): string;
+  begin
+    var SL:= TStringList.Create;
+    SL.Text:= s;
+    for var i:= 0 to SL.Count - 1 do
+      SL[i]:= Indent1 + SL[i];
+    Result:= SL.Text;
+    FreeAndNil(SL);
+  end;
+
 begin
   MakeNewClass:= false;
   Indent1:= FConfiguration.Indent1;
+  Indent2:= FConfiguration.Indent2;
   s:= FConfiguration.getClassCodeTemplate;
   p1:= Pos('class ', s);
   p2:= Pos(':', s);
@@ -397,31 +465,31 @@ begin
   p4:= Pos('pass', s);
   if (p1 > 0) and (p2 > p1) and (p3 > p2) and (p4 > p3) then begin
     delete(s, p1, p2 - p1);
-    insert('class ' + EClass.Text, s, p1);
-    if CBClassInner.Checked then begin
-      SL:= TStringList.Create;
-      SL.Text:= s;
-      for i:= 0 to SL.Count - 1 do
-        SL[i]:= Indent1 + SL[i];
-      s:= SL.Text;
-      FreeAndNil(SL);
-    end;
-  end else begin
-    if CBClassInner.Checked
-      then Indent2:= Indent1
-      else Indent2:= '';
-    s:= CrLf + Indent2 + 'class ' + EClass.Text;
+    var cls:= EClass.Text;
     if EExtends.Text <> '' then
-      s:= s + '(' + EExtends.Text + ')';
+      cls:= cls + '(' + EExtends.Text + ')';
+    insert('class ' + cls, s, p1);
+  end else begin
+    s:= CrLf + Indent1 + 'class ' + EClass.Text;
+    if EExtends.Text <> '' then
+      s:= CrLf + CrLf + s + '(' + EExtends.Text + ')';
     s:= s + ':' + CrLf;
-    s:= s +
-         Indent2 + Indent1 + CrLf +
-         Indent2 + Indent1 + 'def __init__(self):' + CrLf +
-         Indent2 + Indent1 + Indent1 + 'pass' + CrLf;
-    s:= s + CrLf;
+    s:= s + Indent2 + CrLf +
+            Indent2 + 'def __init__(self):' + CrLf +
+            Indent2 + Indent1 + 'pass' + CrLf + CrLf;
   end;
+  if EExtends.Text <> '' then begin
+    var head:= getConstructorHead(EExtends.Text);
+    if head <> '' then begin
+      s:= myStringReplace(s, 'def __init__(self):', head);
+      head:= prepareParameter(head);
+      s:= myStringReplace(s, 'pass', 'super().__init__(' + head + ')');
+    end;
+  end;
+  if CBClassInner.Checked then
+    s:= MakeInner(s);
   Line:= GetLastLineOflastClass;
-  myEditor.InsertLinesAt(Line + 1, s);
+  myEditor.InsertLinesAt(Line + 1, sLineBreak + s);
   myEditor.Modified:= true;
   UpdateTreeView;
   TreeView.Selected:= TreeView.Items[TreeView.Items.Count - 3];
@@ -491,9 +559,29 @@ begin
         end;
         FreeAndNil(SL);
       end;
-
       s:= s + ':' + tail;
       ActiveSynEdit.LineText:= s;
+
+      if EExtends.Text <> '' then begin
+        var line:= myEditor.getLineNumberWithWord('class ' + newClassname);
+        if line > -1 then begin
+          Line:= myEditor.getLineNumberWithWordFromTill('def __init__(self', Line);
+          if Line > -1 then begin
+            s:= myEditor.ActiveSynEdit.Lines[Line];
+            var head:= getConstructorHead(EExtends.Text);
+            if head <> '' then
+              s:= myStringReplace(s, 'def __init__(self):', head);
+            myEditor.ActiveSynEdit.Lines[Line]:= s;
+            s:= myEditor.ActiveSynEdit.Lines[Line + 1];
+            if Pos('super().__init__', s) = 0 then begin
+              head:= PrepareParameter(head);
+              s:= FConfiguration.Indent2 + 'super().__init__(' + head + ')';
+              myEditor.ActiveSynEdit.Lines.Insert(Line+1, s);
+            end;
+          end;
+        end;
+      end;
+
       Modified:= true;
       if SkipUpdate = false then begin
         UpdateTreeView;
@@ -510,14 +598,15 @@ end;
 function TFClassEditor.HasMethod(const getset: string; Attribute: TAttribute;
   var Method: TOperation): Boolean;
 var
-  s, aName, sNode, datatype: string;
+  s, aName, sNode: string;
   Node: TTreeNode;
 begin
   aName:= Attribute.Name;
-  if Assigned(Attribute.TypeClassifier)
-    then datatype:= Attribute.TypeClassifier.asType
-    else datatype:= '';
-  if getset = _(LNGGet)
+  if GuiPyOptions.GetSetMethodsAsProperty then
+    if getset = _(LNGGet)
+      then s:= aName + '()'
+      else s:= aName + '(,'
+  else if getset = _(LNGGet)
     then s:= _(LNGGet) + '_' + aName + '('
     else s:= _(LNGSet) + '_' + aName + '(';
   Node:= GetMethodNode;
@@ -1060,7 +1149,7 @@ begin
 
     New:= Attribute.toPython(ValueChanged, TypeChanged);
     NewName:= Attribute.Name;
-    if CBattributeValue.Text <> '' then
+    if CBAttributeValue.Text <> '' then
       CBAttributeValue.Text:= Attribute.Value;
     if CBAttributeType.Text <> '' then
       CBattributeType.Text:= Attribute.TypeClassifier.Name;
@@ -1221,8 +1310,8 @@ end;
 procedure TFClassEditor.ActionCloseExecute(Sender: TObject);
 begin
   myEditor.DoSave;
-  if assigned(myUMLForm) then
-    myUMLForm.Refresh;
+ // if assigned(myUMLForm) then
+ //   myUMLForm.Refresh;
 end;
 
 procedure TFClassEditor.ActionDeleteExecute(Sender: TObject);
@@ -1244,16 +1333,32 @@ begin
     else datatype:= '';
   aName:= Attribute.Name;
 
-  if getset = _(LNGGet) then begin
-    s:= Ident1 + 'def ' + _(LNGGet) + '_' + aName + '(self)';
-    if datatype <> '' then
-      s:= s + ' -> ' + datatype;
-    s:= s + ':' + CrLf + Ident2 + 'return self.' + Attribute.VisName + CrLf;
+  if GuiPyOptions.GetSetMethodsAsProperty then begin
+    if getset = _(LNGGet) then begin
+      s:= Ident1 + '@property' + CrLf +
+          Ident1 + 'def ' + aName + '(self)';
+      if datatype <> '' then
+        s:= s + ' -> ' + datatype;
+      s:= s + ':' + CrLf + Ident2 + 'return self.' + Attribute.VisName + CrLf;
+    end else begin
+      s:=  Ident1 + '@' + aName + '.setter' + CrLf +
+           Ident1 + 'def ' + aName + '(self, value';
+      if datatype <> '' then
+        s:= s + ': ' + datatype;
+      s:= s + '):' + CrLf + Ident2 + 'self.' + Attribute.VisName + ' = value' + CrLf;
+    end;
   end else begin
-    s:= Ident1 + 'def ' + _(LNGSet) + '_' + aName + '(self, ' + aName;
-    if datatype <> '' then
-      s:= s + ': ' + datatype;
-    s:= s + '):' + CrLf + Ident2 + 'self.' + Attribute.VisName + ' = ' + aName + CrLf;
+    if getset = _(LNGGet) then begin
+      s:= Ident1 + 'def ' + _(LNGGet) + '_' + aName + '(self)';
+      if datatype <> '' then
+        s:= s + ' -> ' + datatype;
+      s:= s + ':' + CrLf + Ident2 + 'return self.' + Attribute.VisName + CrLf;
+    end else begin
+      s:= Ident1 + 'def ' + _(LNGSet) + '_' + aName + '(self, ' + aName;
+      if datatype <> '' then
+        s:= s + ': ' + datatype;
+      s:= s + '):' + CrLf + Ident2 + 'self.' + Attribute.VisName + ' = value' + CrLf;
+    end;
   end;
   Result:= s;
 end;
@@ -1352,8 +1457,7 @@ var
     end;
   end;
 
-
-begin
+begin // makeConstructor
   Parameter:= nil;
   Indent:= StringTimesN(FConfiguration.Indent1, Method.Level + 2);
   SourceSL:= TStringList.Create;
@@ -1649,6 +1753,8 @@ var
   Methode: TOperation;
   IsFirstClass: Boolean;
 begin
+  if TreeViewUpdating then exit;
+  TreeViewUpdating:= true;
   TreeView.OnChange:= nil;
   IsFirstClass:= true;
   if myEditor.reparseIfNeeded then begin
@@ -1680,6 +1786,7 @@ begin
     TreeView.Items.EndUpdate;
   end;
   TreeView.OnChange:= TreeViewChange;
+  TreeViewUpdating:= false;
 end;
 
 function TFClassEditor.CreateTreeView(EditForm: TEditorForm;
@@ -1845,6 +1952,7 @@ end;
 procedure TFClassEditor.ComboBoxCloseUp(Sender: TObject);
 begin
   ComboBoxInvalid:= false;
+  (Sender as TComboBox).AutoComplete:= true;
 end;
 
 procedure TFClassEditor.CBComboBoxEnter(Sender: TObject);
@@ -1871,12 +1979,23 @@ begin
   SendMessage(CBAttributeValue.Handle, WM_SETCURSOR, 0, 0)
 end;
 
+procedure TFClassEditor.ComboBoxKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+  var cb: TComboBox;
+begin
+  ComboBoxInvalid:= true;
+  if (Sender is TComboBox) and (Ord('0') <= Key) and (key <= Ord('Z')) then begin
+    cb:= Sender as TComboBox;
+    if (0 < cb.SelStart) and (cb.SelStart < Length(cb.Text)) then
+      cb.AutoComplete:= false;
+  end;
+end;
+
 procedure TFClassEditor.CBAttributeTypeKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = #13 then begin
     ComboBoxInvalid:= false;
     CBAttributeTypeSelect(Self);
-    CBAttributeValue.SetFocus;
   end;
 end;
 
@@ -1890,14 +2009,15 @@ end;
 procedure TFClassEditor.CBAttributeTypeSelect(Sender: TObject);
   var s: string; p: Integer;
 begin
-  p:= CBAttributeType.ItemIndex;
-  if (p = -1) or (CBAttributeType.Text <> CBAttributeType.Items[p])
-    then s:= CBAttributeType.Text
-    else s:= CBAttributeType.Items[p];
   if not ComboBoxInvalid then begin
+    p:= CBAttributeType.ItemIndex;
+    if (p = -1) or (CBAttributeType.Text <> CBAttributeType.Items[p])
+      then s:= CBAttributeType.Text
+      else s:= CBAttributeType.Items[p];
     CBAttributeType.Text:= s;
     if NameTypeValueChanged then
       BAttributeChangeClick(Self);
+    CBAttributeType.AutoComplete:= true;
   end;
 end;
 
@@ -1932,6 +2052,7 @@ begin
     CBAttributeValue.Text:= s;
     if NameTypeValueChanged then
       BAttributeChangeClick(Self);
+    CBAttributeValue.AutoComplete:= true;
   end;
 end;
 
@@ -2036,13 +2157,8 @@ begin
     CBMethodType.Text:= s;
     if (CBMethodName.Text <> '') and (CBMethodType.Text <> '') then
       BMethodChangeClick(Self);
+    CBMethodType.AutoComplete:= true;
   end;
-end;
-
-procedure TFClassEditor.ComboBoxKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  ComboBoxInvalid:= true;
 end;
 
 procedure TFClassEditor.CBParameterSelect(Sender: TObject);
@@ -2086,8 +2202,9 @@ begin
     else s:= CBParamType.Items[p];
   if not ComboBoxInvalid then begin
     CBParamType.Text:= s;
-    if (CBParamName.Text <> '') then begin
+    if CBParamName.Text <> '' then begin
       BMethodChangeClick(Self);
+      CBParamType.AutoComplete:= true;
       TThread.ForceQueue(nil, procedure
         begin
           CBParamType.Text:= '';
@@ -2294,16 +2411,17 @@ begin
         if Method.isStaticMethod then inc(from);
         if Method.isClassMethod then inc(from);
         if Method.IsAbstract then inc(from);
+        if Method.isPropertyMethod then inc(from);
         Source:= myEditor.getSource(from, Method.LineE - 1)
       end else
         Source:= '';
-
       ChangeMethod(Method);
-
       if Method.OperationType = otConstructor
         then New:= makeConstructor(Method, Source)
         else New:= MethodToPython(Method, Source);
       ReplaceMethod(Method, New);
+      if Method.IsAbstract then
+        myEditor.InsertImport('from abc import abstractmethod');
     end;
   end;
   myEditor.Modified:= true;

@@ -260,6 +260,7 @@ begin
   O.isStaticMethod:= ParsedFunction.isStaticMethod;
   O.isClassMethod:= ParsedFunction.isClassMethod;
   O.isAbstract:= ParsedFunction.isAbstractMethod;
+  O.isPropertyMethod:= ParsedFunction.isPropertyMethod;
   O.Level:= Level;
   SetOperationVisibility(O);
   if ParsedFunction.ReturnType <> '' then

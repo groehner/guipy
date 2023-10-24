@@ -48,7 +48,6 @@ type
     FTypeBinding: string;
     FSelected: boolean;
     FTypeParameter: string;
-    FLocked: boolean;
     FETypeBinding: TEdit;
     FBGColor: TColor;
     FFGColor: TColor;
@@ -89,7 +88,6 @@ type
                 const Fontname: string; aFont: TFont; const TypeBinding: string);
     function isJUnitTestclass: boolean;
     procedure CloseEdit;
-    procedure Lock(b: Boolean);
     procedure makeBitmap;
     procedure ChangeStyle(BlackAndWhite: boolean = false);
     function getSVG: string; virtual;
@@ -408,7 +406,7 @@ end;
 procedure TRtfdBox.RefreshEntities;
 begin
   Frame.Diagram.ClearMarkerAndConnections(Self);
-  Hide;
+  //Hide;
   DestroyComponents;
   FreeAndNil(fBitmap);
   FBitmapOK:= false;
@@ -543,7 +541,7 @@ begin
     if IsObject then begin
       Brush.Color:= GuiPyOptions.ObjectColor;
       SVGColor:=  myColorToRGB(GuiPyOptions.ObjectColor);
-    end else if IsValid or FLocked then begin
+    end else if IsValid then begin
       Brush.Color:= BGColor;
       SVGColor:= myColorToRGB(GuiPyOptions.ValidClassColor);
     end else begin
@@ -853,11 +851,6 @@ begin
   if Entity is TClass
     then Result:= (Entity as TClass).isJUnitTestClass
     else Result:= false;
-end;
-
-procedure TRtfdBox.Lock(b: Boolean);
-begin
-  FLocked:= b;
 end;
 
 procedure TRtfdBox.makeBitmap;
@@ -2258,7 +2251,7 @@ begin
     if (Entity is TOperation) and Entity.IsAbstract then
       Canvas.Font.Style:= Canvas.Font.Style + [fsItalic];
     s:= Caption;
-    if GuiPyOptions.ClassnameInUppercase then
+    if (Self is TRtfdClassname) and GuiPyOptions.ClassnameInUppercase then
       s:= Uppercase(s);
     drawText(Canvas.handle, PChar(s), length(s), aRect, DT_CALCRECT);
     FTextWidth:= 8 + aRect.Right + 8;

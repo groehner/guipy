@@ -178,18 +178,19 @@ type
     class procedure SynParamCompletionExecute(Kind: SynCompletionType;
       Sender: TObject; var CurrentInput: string; var X, Y: Integer;
       var CanExecute: boolean);
-    procedure FormDestroy(Sender: TObject); override;
     procedure SynEditChange(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
     procedure SynEditStatusChange(Sender: TObject; Changes: TSynStatusChanges);
-    procedure FormCreate(Sender: TObject); override;
     procedure SynEditSpecialLineColors(Sender: TObject; Line: Integer;
       var Special: boolean; var FG, BG: TColor);
     procedure SynEditKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure SynEditMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure FormCreate(Sender: TObject); override;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction); override;
+    procedure FormDestroy(Sender: TObject); override;
     procedure FGPanelEnter(Sender: TObject);
     procedure FGPanelExit(Sender: TObject);
     procedure mnCloseTabClick(Sender: TObject);
@@ -255,7 +256,6 @@ type
     procedure TBExplorerClick(Sender: TObject);
     procedure TBValidateClick(Sender: TObject);
     procedure mnFontClick(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction); override;
     procedure mnEditAddImportsClick(Sender: TObject);
   private
     const HotIdentIndicatorSpec: TGUID = '{8715589E-C990-4423-978F-F00F26041AEF}';
@@ -394,7 +394,7 @@ type
     procedure InsertProcedure(const aProcedure: string; ClassNumber: integer = 0);
     procedure InsertProcedureWithoutParse(const aProcedure: String; ClassNumber: integer = 0);
     procedure InsertConstructor(const aConstructor: String; ClassNumber: integer);
-    procedure InsertImport(const Module: string);
+    procedure InsertImport(Module: string);
 
     procedure DeleteAttribute(const s: string);
     procedure DeleteAttributeCE(const s: string; ClassNumber: integer);
@@ -679,34 +679,11 @@ end;
 
 procedure TEditor.Close;
 // Closes without asking
-Var
-  TabSheet: TSpTBXTabSheet;
-  TabControl: TSpTBXCustomTabControl;
 begin
-  if (fForm <> nil) then
-  begin
+  if fForm <> nil then begin
     FSynLsp.FileClosed;
-    GI_PyIDEServices.MRUAddFile(Self);
-    if fUntitledNumber <> -1 then
-      UntitledNumbers[fUntitledNumber] := False;
-    Assert(GI_EditorFactory <> nil);
     GI_EditorFactory.RemoveEditor(Self);
-    if GI_EditorFactory.Count = 0 then
-      PyIDEMainForm.UpdateCaption;
-
-    TabSheet := (fForm.Parent as TSpTBXTabSheet);
-    TabControl := TabSheet.TabControl;
-    TabControl.View.BeginUpdate;
-    try
-      (fForm.ParentTabControl as TSpTBXTabControl).zOrder.Remove(TabSheet.Item);
-      fForm.Close;
-      fForm := nil;
-      TabSheet.Free;
-      if Assigned(TabControl) then
-        TabControl.Toolbar.MakeVisible(TabControl.ActiveTab);
-    finally
-      TabControl.View.EndUpdate;
-    end;
+    inherited;
   end;
 end;
 
@@ -2023,9 +2000,12 @@ begin
   if fEditor.fFileName <> '' then begin
     Result := SaveWideStringsToFile(fEditor.fFileName, SynEdit.Lines,
       PyIDEOptions.CreateBackupFiles);
-    if Result then
+    if Result then begin
       if not FileAge(fEditor.fFileName, FileTime) then
         FileTime := 0;
+    end else begin
+
+    end
   end else if fEditor.fRemoteFileName <> '' then
      Result := fEditor.SaveToRemoteFile(fEditor.fRemoteFileName, fEditor.fSSHServer);
   if Result then
@@ -2702,24 +2682,15 @@ begin
 end;
 
 procedure TEditorForm.GotoWord(const s: string);
-  var p: integer; line: integer;
+  var line: integer;
 begin
   with ActiveSynEdit do begin
     line:= getLineNumberWithWord(s);
-    if (0 <= line) and (line <= Lines.Count - 1) then
-      if Pos('public void ', Lines[line]) > 0 then begin  //ToDo noch JAVA
-        CaretY:= line + 2;
-        if line + 1 < Lines.Count
-          then p:= Pos('}', Lines[line+1])
-          else p:= 0;
-        if (0 < p) and (p < 5)
-          then CaretX:= p
-          else CaretX:= 5;
-      end else begin
-        CaretX:= Pos(s, Lines[line]);
-        CaretY:= line + 1;
-      end;
+    if (0 <= line) and (line <= Lines.Count - 1) then begin
+      CaretX:= Pos(s, Lines[line]);
+      CaretY:= line + 1;
     end;
+  end;
 end;
 
 procedure TEditorForm.PutText(s: String);
@@ -2949,37 +2920,15 @@ begin
 end;
 
 procedure TEditorForm.mnEditAddImportsClick(Sender: TObject);
-
-  function getClassesAndFilename(path: string): TStringList;
-    var SR: TSearchRec;
-  begin
-    Result:= TStringList.Create;
-    var SL:= TStringList.Create;
-    try
-      var RegEx:= CompiledRegEx('\s*class\s+(\w*)(\(.*\))?\s*:');
-      if FindFirst(Path + '\*.py', faNormal, SR) = 0 then
-        repeat
-          SL.LoadFromFile(Path + '\' + SR.Name);
-          var matches:= RegEx.Matches(SL.Text);
-          for var i:= 0 to matches.count - 1 do
-            Result.Add(matches[i].groups[1].value + '=' + SR.Name);
-        until FindNext(SR) <> 0;
-    finally
-      FindClose(SR);
-      FreeAndNil(SL);
-    end;
-  end;
-
-
 begin
   var Filename:= ExtractFilename(Pathname);
-  var SL:= getClassesAndFilename(ExtractFilePath(Pathname));
+  var SL:= FConfiguration.getClassesAndFilename(Pathname);
   for var i:= 0 to SL.Count - 1 do begin
      if SL.ValueFromIndex[i] <> Filename then begin
        var RegEx:= CompiledRegEx('\W' + SL.KeyNames[i] + '\W');
        if RegEx.IsMatch(ActiveSynedit.Text) then
          InsertImport('from ' + ChangeFileExt(SL.ValueFromIndex[i], '') +
-                      ' import ' + SL.KeyNames[i])
+                      ' import ' + SL.KeyNames[i]);
      end;
   end;
   FreeAndNil(SL);
@@ -4180,15 +4129,16 @@ begin
     InsertLinesAt(Line, aConstructor);
 end;
 
-procedure TEditorForm.InsertImport(const Module: string);
+procedure TEditorForm.InsertImport(Module: string);
 begin
   with ActiveSynEdit do begin
     var line:= getLineNumberWithWord('import');
     if line = -1 then begin
+      Module:= Module + CrLf;
       line:= getLineNumberWithWord('class');
-      if Line > -1
-        then Line:= Line - 1
-        else Line:= 0;
+      if line > -1
+        then line:= line - 1
+        else line:= 0;
     end else begin
       while (line < Lines.Count) and (Pos('import', Lines[line]) > 0) do begin
         if Pos(Module, Lines[line]) > 0 then exit;

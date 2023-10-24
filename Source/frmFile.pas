@@ -211,8 +211,6 @@ end;
 
 procedure TFileForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  if Modified and PyIDEOptions.SaveFilesAutomatically then
-    DoSave;
   SkinManager.RemoveSkinNotification(Self);
   DoAssignInterfacePointer(false);
 end;
@@ -228,26 +226,30 @@ begin
 end;
 
 function TFileForm.DoAskSaveChanges: boolean;
-var
-  S: string;
 begin
   // this is necessary to prevent second confirmation when closing tabs
-  if fModified and not PyIDEOptions.SaveFilesAutomatically then
-  begin
-    DoActivateFile;
-    MessageBeep(MB_ICONQUESTION);
-    Assert(fFile <> nil);
-    S := Format(_(SAskSaveChanges), [TPath.GetFileName(fFile.GetFileTitle)]);
-    case StyledMessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0,
-      mbYes) of
-      mrYes:
-        Result := DoSave;
-      mrNo:
-        Result := True;
-    else
-      Result := False;
-    end;
-  end
+  if fModified then
+    if PyIDEOptions.SaveFilesAutomatically then begin
+      Result:= DoSave;
+      if not Result then begin
+        var s:= Format(_(SCloseWithoutSaving), [TPath.GetFileName(fFile.GetFileTitle)]);
+        if StyledMessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0, mbYes) = mrYes then
+          Result:= true;
+      end
+    end else begin
+      DoActivateFile;
+      MessageBeep(MB_ICONQUESTION);
+      Assert(fFile <> nil);
+      var S := Format(_(SAskSaveChanges), [TPath.GetFileName(fFile.GetFileTitle)]);
+      case StyledMessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0, mbYes) of
+        mrYes:
+          Result := DoSave;
+        mrNo:
+          Result := True;
+      else
+        Result := False;
+      end;
+    end
   else
     Result := True;
 end;
@@ -647,8 +649,12 @@ begin
       fForm.Close;
       fForm:= nil;
       TabSheet.Free;
-      if Assigned(TabControl) then
+      if Assigned(TabControl) then begin
         TabControl.Toolbar.MakeVisible(TabControl.ActiveTab);
+        var aFile:= GI_PyIDEServices.GetActiveFile;
+        if assigned(aFile) then
+          aFile.Activate;
+      end;
     finally
       TabControl.View.EndUpdate;
     end;

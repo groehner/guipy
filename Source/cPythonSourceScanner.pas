@@ -127,6 +127,7 @@ Type
     isStaticMethod: boolean;
     isClassMethod: boolean;
     isAbstractMethod: boolean;
+    isPropertyMethod: boolean;
     constructor Create;
     destructor Destroy; override;
     function ArgumentsString : string; virtual;
@@ -201,6 +202,7 @@ Type
     fClassMethodRE : TRegEx;
     fStaticMethodRE : TRegEx;
     fAbstractMethodRE : TRegEx;
+    fPropertyMethodRE : TRegEx;
   protected
     procedure DoScannerProgress(CharNo, NoOfChars : integer; var Stop : Boolean);
   public
@@ -557,6 +559,7 @@ begin
   fClassMethodRE := CompiledRegEx('^[ \t]*@classmethod[ \t]*$');
   fStaticMethodRE := CompiledRegEx('^[ \t]*@staticmethod[ \t]*$');
   fAbstractMethodRE := CompiledRegEx('^[ \t]*@abstractmethod[ \t]*$');
+  fPropertyMethodRE := CompiledRegEx('^[ \t]*@(property|\w*\.setter)[ \t]*$');
 end;
 
 procedure TPythonScanner.DoScannerProgress(CharNo, NoOfChars : integer;
@@ -792,6 +795,7 @@ var
   isClassMethod: boolean;
   isStaticMethod: boolean;
   isAbstractMethod: boolean;
+  isPropertyMethod: boolean;
   initialComment: boolean;
   ClassStaticMethodStart: integer;
   LastNotEmptyLine: integer;
@@ -802,6 +806,7 @@ begin
   isClassMethod:= false;
   isStaticMethod:= false;
   isAbstractMethod:= false;
+  isPropertyMethod:= false;
 
   LineStarts := TSmartPtr.Make(TList.Create)();
   GlobalList := TSmartPtr.Make(TStringList.Create)();
@@ -881,9 +886,11 @@ begin
         TParsedFunction(CodeElement).isStaticMethod:= isStaticMethod;
         TParsedFunction(CodeElement).isClassMethod:= isClassMethod;
         TParsedFunction(CodeElement).isAbstractMethod:= isAbstractMethod;
+        TParsedFunction(CodeElement).isPropertyMethod:= isPropertyMethod;
         isStaticMethod:= false;
         isClassMethod:= false;
         isAbstractMethod:= false;
+        isPropertyMethod:= false;
 
         if S <> '' then begin
           CharOffset := getGroupOffset(CodeMatch, 5);
@@ -1229,6 +1236,10 @@ begin
           ClassStaticMethodStart:= LineNo;
       end else if fAbstractMethodRE.IsMatch(Line) then begin
         isAbstractMethod:= true;
+        if ClassStaticMethodStart = 0 then
+          ClassStaticMethodStart:= LineNo;
+      end else if fPropertyMethodRE.IsMatch(Line) then begin
+        isPropertyMethod:= true;
         if ClassStaticMethodStart = 0 then
           ClassStaticMethodStart:= LineNo;
       end;

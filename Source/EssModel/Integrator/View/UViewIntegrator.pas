@@ -100,7 +100,6 @@ type
     function getSourcePath: string; virtual; abstract;
     procedure SetFont(const aFont: TFont); virtual;
     function  GetFont: TFont; virtual;
-    procedure Lock(b: boolean); virtual; abstract;
     procedure PopMenuClassPopup(Sender: TObject); virtual; abstract;
     procedure PopMenuObjectPopup(Sender: TOBject); virtual; abstract;
     procedure PopMenuConnectionPopup(Sender: TObject); virtual; abstract;

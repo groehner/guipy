@@ -1,6 +1,6 @@
-{-------------------------------------------------------------------------------
+﻿{-------------------------------------------------------------------------------
  Unit:     USynEditExDiff
- Author:   Gerhard R�hner
+ Author:   Gerhard Röhner
  Date:     2011
  Purpose:  SynEdit descendent for TextDiff
 -------------------------------------------------------------------------------}
@@ -34,8 +34,8 @@ type
       procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
       function DoSaveFile: boolean;
       procedure SetHighlighter;
-      procedure DeleteObjects(von, bis: integer);
-      procedure CreateObjects(von, bis, aTag: integer); overload;
+      procedure DeleteObjects(from, _to: integer);
+      procedure CreateObjects(from, _to, aTag: integer); overload;
       function EncodingAsString(const aEncoding: String): string;
     public
       Encoding: string;   // ANSI, UTF-8, UTF-16
@@ -51,7 +51,7 @@ type
       procedure DoRedo;
       procedure Enter(Sender: TObject);
       procedure LinesClearAll;
-      procedure Save(MitBackup: boolean);
+      procedure Save;
       procedure CreateObjects; overload;
       function LinebreakAsString: String;
       procedure SynEditorSpecialLineColors(Sender: TObject;
@@ -63,8 +63,8 @@ type
       procedure SetModified(Value: boolean);
       procedure ShowFilename;
       procedure InsertItem(index: integer; const s: string; LineObject: TLineObj);
-      function  CopyIntoClipboard(von, bis: integer): boolean;
-      procedure PasteClipboard(EmptyClipboard: boolean; von, bis, aNr: integer);
+      function  CopyIntoClipboard(from, _to: integer): boolean;
+      procedure PasteClipboard(EmptyClipboard: boolean; from, _to, aNr: integer);
       procedure ChangeStyle;
       procedure SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
     end;
@@ -242,20 +242,20 @@ begin
   (myOwner as TFTextDiff).setActiveControl(Self);
 end;
 
-procedure TSynEditExDiff.Save(MitBackup: boolean);
+procedure TSynEditExDiff.Save;
   var i: integer;
-      Zeile: TLineObj;
+      Line: TLineObj;
 begin
   if WithColoredLines then begin
     BeginUpdate;
     for i:= Lines.Count - 1 downto 0 do begin
-      Zeile:= GetLineObj(i);
-      if assigned(Zeile) then
-        if Zeile.Tag = 0 then begin
-          FreeAndNil(Zeile);
+      Line:= GetLineObj(i);
+      if assigned(Line) then
+        if Line.Tag = 0 then begin
+          FreeAndNil(Line);
           Lines.Delete(i);
         end else
-          Zeile.Spezial:= false;
+          Line.Spezial:= false;
     end;
     WithColoredLines:= false;
     EndUpdate;
@@ -338,11 +338,11 @@ begin
   OnGutterGetText:= nil;
 end;
 
-procedure TSynEditExDiff.DeleteObjects(von, bis: integer);
+procedure TSynEditExDiff.DeleteObjects(from, _to: integer);
   var i: integer;
       LineObject: TLineObj;
 begin
-  for i:= von to bis do begin
+  for i:= from to _to do begin
     LineObject:= GetLineObj(i);
     if assigned(LineObject) then begin
       FreeAndNil(LineObject);
@@ -372,11 +372,11 @@ begin
   Invalidate;
 end;
 
-procedure TSynEditExDiff.CreateObjects(von, bis, aTag: integer);
+procedure TSynEditExDiff.CreateObjects(from, _to, aTag: integer);
   var i: integer;
       LineObject: TLineObj;
 begin
-  for i:= von to bis do
+  for i:= from to _to do
     if GetLineObj(i) = nil then begin
       LineObject:= TLineObj.Create;
       LineObject.Spezial:= true;
@@ -403,12 +403,12 @@ begin
   ShowFilename;
 end;
 
-function TSynEditExDiff.CopyIntoClipboard(von, bis: integer): boolean;
+function TSynEditExDiff.CopyIntoClipboard(from, _to: integer): boolean;
 begin
-  SelStart:= RowColToCharIndex(BufferCoord(1, von+1));
-  if bis + 2 > Lines.Count
-    then SelEnd:= RowColToCharIndex(BufferCoord(length(Lines[Lines.count-1])+1, bis+1))
-    else SelEnd:= RowColToCharIndex(BufferCoord(1, bis+2)) - 2;
+  SelStart:= RowColToCharIndex(BufferCoord(1, from + 1));
+  if _to + 2 > Lines.Count
+    then SelEnd:= RowColToCharIndex(BufferCoord(length(Lines[Lines.count-1]) + 1, _to + 1))
+    else SelEnd:= RowColToCharIndex(BufferCoord(1, _to + 2)) - 2;
   Result:= (SelLength = 0);
   if Result
     then Clipboard.Clear
@@ -416,13 +416,13 @@ begin
   SelLength:= 0;
 end;
 
-procedure TSynEditExDiff.PasteClipboard(EmptyClipboard: boolean; von, bis, aNr: integer);
+procedure TSynEditExDiff.PasteClipboard(EmptyClipboard: boolean; from, _to, aNr: integer);
 begin
-  DeleteObjects(von, bis);
-  SelStart:= RowColToCharIndex(BufferCoord(1, von+1));
-  if bis + 2 > Lines.Count
-    then SelEnd:= RowColToCharIndex(BufferCoord(length(Lines[Lines.count-1])+1, bis+1))
-    else SelEnd:= RowColToCharIndex(BufferCoord(1, bis+2)) - 2;
+  DeleteObjects(from, _To);
+  SelStart:= RowColToCharIndex(BufferCoord(1, from+1));
+  if _to + 2 > Lines.Count
+    then SelEnd:= RowColToCharIndex(BufferCoord(length(Lines[Lines.count-1])+1, _to + 1))
+    else SelEnd:= RowColToCharIndex(BufferCoord(1, _To + 2)) - 2;
   try
     if EmptyClipboard then begin
       CutToClipboard;
@@ -432,7 +432,7 @@ begin
       PasteFromClipboard;
   except
   end;
-  CreateObjects(von, bis, aNr);
+  CreateObjects(from, _To, aNr);
   SetModified(true);
   Invalidate;
 end;

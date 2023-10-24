@@ -147,6 +147,7 @@ type
     hasComment: boolean;
     isStaticMethod: boolean;
     isClassMethod: boolean;
+    isPropertyMethod: boolean;
     Parentname: String;
     Annotation: String;
     constructor Create(aOwner: TModelEntity); override;
@@ -1021,8 +1022,8 @@ constructor TClass.Create(aOwner: TModelEntity);
 begin
   inherited Create(aOwner);
   FAncestor:= nil;
-  FImplements:= TObjectList.Create(False); //Only reference
-  FAncestors:= TObjectList.Create(False); //Only reference
+  FImplements:= TObjectList.Create(False); // only reference
+  FAncestors:= TObjectList.Create(False);  // only reference
 end;
 
 destructor TClass.Destroy;
@@ -1542,6 +1543,8 @@ begin
     s:= Ident + '@classmethod' + CrLf + s;
   if isAbstract then
     s:= Ident + '@abstractmethod' + CrLf + s;
+  if isPropertyMethod then
+    s:= Ident + '@property' + CrLf + s;
   Result:= s;
 end;
 

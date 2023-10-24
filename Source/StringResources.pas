@@ -199,8 +199,8 @@ Const
   SFileEncodingWarning = 'Encoding file "%s" using "%s" encoding will ' +
                         'result in information loss.' + SLineBreak + 'Do you want to proceed?';
   SDecodingError = 'Error in decoding file "%s" from "%s" encoding';
-  SFileOpenError = 'Error in opening file: "%s".' + sLineBreak + 'Error: %s';
-  SFileSaveError = 'Error in saving file: "%s".' + sLineBreak +'Error: %s';
+  SFileOpenError = 'Error in opening file: "%s".' + sLineBreak + '%s';
+  SFileSaveError = 'Error in saving file: "%s".' + sLineBreak +'%s';
   SErrorGettingNamespace = 'Error in getting the namespace of %s';
   SCouldNotSetDirectory = 'Could not set the current directory to the script path';
   SCannotCompileWhileRunning = 'You cannot compile, import or run modules while debugging or running programs';
@@ -380,6 +380,7 @@ Const
                           'Do you want to proceed?';
   SFileAlreadyOpen = 'Another editor with the same file is open.' + SLineBreak +
                      'You can not have two editors with the same file.';
+  SCloseWithoutSaving = 'The text in the "%s" file has changed.'#13#10#13#10 + 'Do you want to close the file without saving?';
 
   // Parameters
   SEnterParameterCaption = 'Parameter replacement';

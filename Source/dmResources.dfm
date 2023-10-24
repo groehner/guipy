@@ -4,7 +4,7 @@ object ResourcesDataModule: TResourcesDataModule
   Height = 376
   Width = 746
   object dlgFileOpen: TOpenDialog
-    Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
+    Options = [ofHideReadOnly, ofAllowMultiSelect, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     Left = 20
     Top = 22
   end

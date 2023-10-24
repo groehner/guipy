@@ -4,8 +4,8 @@ object FClassEditor: TFClassEditor
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'UML class editor'
-  ClientHeight = 451
-  ClientWidth = 702
+  ClientHeight = 448
+  ClientWidth = 690
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -51,7 +51,7 @@ object FClassEditor: TFClassEditor
     Top = 10
     Width = 364
     Height = 435
-    ActivePage = TSAttributes
+    ActivePage = TSMethods
     TabOrder = 0
     OnChange = PageControlChange
     object TSClass: TTabSheet
@@ -169,7 +169,7 @@ object FClassEditor: TFClassEditor
         Height = 23
         AutoDropDown = True
         Sorted = True
-        TabOrder = 3
+        TabOrder = 4
         OnCloseUp = ComboBoxCloseUp
         OnDropDown = CBAttributeTypeDropDown
         OnEnter = CBComboBoxEnter
@@ -292,7 +292,7 @@ object FClassEditor: TFClassEditor
         Top = 184
         Width = 225
         Height = 23
-        TabOrder = 4
+        TabOrder = 3
         OnCloseUp = ComboBoxCloseUp
         OnDropDown = CBAttributeValueDropDown
         OnEnter = CBComboBoxEnter

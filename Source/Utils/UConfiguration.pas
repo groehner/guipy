@@ -67,9 +67,11 @@ type
 
     // Class modeler
     fShowGetSetMethods: boolean;
+    fGetSetMethodsAsProperty: boolean;
     fShowTypeSelection: boolean;
     fShowKindProcedure: boolean;
     fShowParameterTypeSelection: boolean;
+    fFromFutureImport: boolean;
 
     // GUI designer
     fNameFromText: boolean;
@@ -201,10 +203,18 @@ type
     property ColorTheme: string read fColorTheme write fColorTheme;
 
     // Class modeler
-    property ShowGetSetMethods: boolean read FShowGetSetMethods write FShowGetSetMethods;
-    property ShowTypeSelection: boolean read FShowTypeSelection write FShowTypeSelection;
-    property ShowKindProcedure: boolean read FShowKindProcedure write FShowKindProcedure;
-    property ShowParameterTypeSelection: boolean read FShowParameterTypeSelection write FShowParameterTypeSelection;
+    property ShowGetSetMethods: boolean read FShowGetSetMethods
+      write FShowGetSetMethods default true;
+    property GetSetMethodsAsProperty: boolean read FGetSetMethodsAsProperty
+      write FGetSetMethodsAsProperty default true;
+    property ShowTypeSelection: boolean read FShowTypeSelection
+      write FShowTypeSelection default true;
+    property ShowKindProcedure: boolean read FShowKindProcedure
+      write FShowKindProcedure default true;
+    property ShowParameterTypeSelection: boolean read FShowParameterTypeSelection
+      write FShowParameterTypeSelection default true;
+    property FromFutureImport: boolean read FFromFutureImport
+      write FFromFutureImport default true;
 
     // GUI designer
     property NameFromText : boolean read fNameFromText
@@ -269,7 +279,7 @@ type
     property CommentColor : TColor read fCommentColor
       write fCommentColor default clSkyBlue;
     property DiVisibilityFilter : integer read fDiVisibilityFilter
-      write fDiVisibilityFilter default 0;
+      write fDiVisibilityFilter default 0;  // otherwise 0 isn't saved
     property DiSortOrder : integer read fDiSortOrder
       write fDiSortOrder default 0;
     property DIShowParameter : integer read fDIShowParameter
@@ -319,7 +329,7 @@ type
     property LockedStructogram : boolean read fLockedStructogram
       write fLockedStructogram default false;
     property UsePredefinedLayouts : boolean read FUsePredefinedLayouts
-      write fUsePredefinedLayouts;
+      write fUsePredefinedLayouts default false;
 
     // Associations
     property AdditionalAssociations: string read fAdditionalAssociations
@@ -352,11 +362,16 @@ type
       write fTextDiffIgnoreBlanks default false;
 
     // Browser
-    property UseIEinternForDocuments: boolean read fUseIEinternForDocuments write fUseIEinternForDocuments;
-    property OnlyOneBrowserWindow: boolean read fOnlyOneBrowserWindow write fOnlyOneBrowserWindow;
-    property BrowserTitle: string read fBrowserTitle write fBrowserTitle;
-    property OpenBrowserShortcut: string read fOpenBrowserShortcut write fOpenBrowserShortcut;
-    property BrowserProgram: string read fBrowserProgram write fBrowserProgram;
+    property UseIEinternForDocuments: boolean read fUseIEinternForDocuments
+      write fUseIEinternForDocuments default true;
+    property OnlyOneBrowserWindow: boolean read fOnlyOneBrowserWindow
+      write fOnlyOneBrowserWindow default false;
+    property BrowserTitle: string read fBrowserTitle
+      write fBrowserTitle;
+    property OpenBrowserShortcut: string read fOpenBrowserShortcut
+      write fOpenBrowserShortcut;
+    property BrowserProgram: string read fBrowserProgram
+      write fBrowserProgram;
 
     // Comment
     property Author: string read fAuthor
@@ -921,7 +936,7 @@ type
     EAdditionalAssociations: TEdit;
     CBAssociationInc: TCheckBox;
     BFileExtensions: TButton;
-    EJEAssociation: TEdit;
+    EGuiPyAssociation: TEdit;
     BJEAssociation: TButton;
     CBAssociationJsg: TCheckBox;
     CBAssociationJSD: TCheckBox;
@@ -963,6 +978,7 @@ type
     PClassModeler: TTabSheet;
     GBAttribuesOptions: TGroupBox;
     CBShowGetSetMethods: TCheckBox;
+    CBGetSetMethodsAsProperty: TCheckBox;
     CBShowTypeSelection: TCheckBox;
     GBMethodsOptions: TGroupBox;
     CBShowKindProcedure: TCheckBox;
@@ -976,6 +992,8 @@ type
     btnFileDefaultAll: TButton;
     actFileDefaultAll: TAction;
     CBClassnameInUppercase: TCheckBox;
+    GBClassOptions: TGroupBox;
+    CBFromFutureImport: TCheckBox;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1216,8 +1234,8 @@ type
     procedure PatchConfiguration;
     procedure LanguageOptionsToView;
     procedure LanguageOptionsToModel;
-
     procedure DoHelp(Adresse: string);
+    function getClassesAndFilename(Pathname: string): TStringList;
     class function isDark: boolean;
 
     property GetUserCommandNames: TSynEditorOptionsUserCommand read FUserCommand
@@ -1756,9 +1774,11 @@ begin
 
     // Class modeler
     CBShowGetSetMethods.Checked:= ShowGetSetMethods;
+    CBGetSetMethodsAsProperty.Checked:= GetSetMethodsAsProperty;
     CBShowTypeSelection.Checked:= ShowTypeSelection;
     CBShowKindProcedure.Checked:= ShowKindProcedure;
     CBShowParameterTypeSelection.Checked:= ShowParameterTypeSelection;
+    CBFromFutureImport.Checked:= FromFutureImport;
 
     // GUI design
     CBNameFromText.Checked:= NameFromText;
@@ -1843,7 +1863,7 @@ begin
     CBAssociationInc.Checked := HasAssociationWithGuiPy('.inc');
     CBAssociationJsg.Checked := HasAssociationWithGuiPy('.psg');
     CBAssociationJsd.Checked := HasAssociationWithGuiPy('.psd');
-    EJEAssociation.Text:= getRegisteredGuiPy;
+    EGuiPyAssociation.Text:= getRegisteredGuiPy;
     EAdditionalAssociations.Text:= AdditionalAssociations;
 
     // tab Git
@@ -2087,9 +2107,11 @@ begin
 
     // Class modeler
     ShowGetSetMethods:= CBShowGetSetMethods.Checked;
+    GetSetMethodsAsProperty:= CBGetSetMethodsAsProperty.Checked;
     ShowTypeSelection:= CBShowTypeSelection.Checked;
     ShowKindProcedure:= CBShowKindProcedure.Checked;
     ShowParameterTypeSelection:= CBShowParameterTypeSelection.Checked;
+    FromFutureImport:= CBFromFutureImport.Checked;
 
     // tab GUI designer
     NameFromText:= CBNameFromText.Checked;
@@ -4696,7 +4718,9 @@ end;
 
 procedure TFConfiguration.BJEAssociationClick(Sender: TObject);
 begin
- // CallUpdater(ParamStr(0), 'jeregistry', HideBlanks(encodeQuotationMark(EJEAssociation.Text)))
+  CallUpdater(ParamStr(0), 'gpregistry',
+              HideBlanks(encodeQuotationMark(EGuiPyAssociation.Text)));
+  SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nil, nil);
 end;
 
 procedure TFConfiguration.MakeAssociations;
@@ -4766,7 +4790,7 @@ begin
   finally
     FreeAndNil(Reg);
   end;
-  SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nil, nil) ;
+  SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nil, nil);
 end;
 
 procedure TFConfiguration.RegisterGuiPy;
@@ -4798,7 +4822,7 @@ procedure TFConfiguration.RegisterGuiPy;
   end;
 
 begin
-  GuiPy:= HideBlanks(ParamStr(0));
+  GuiPy:= HideBlanks(ParamStr(0)) + ' "%1"';
   Reg:= TRegistry.Create;
   try
     with Reg do begin
@@ -4815,19 +4839,33 @@ end;
 
 procedure TFConfiguration.PatchConfiguration;
   // first used for version 3.2
+  var s: string;
 begin
   var Reg:= TRegistry.Create;
   try
     with Reg do begin
       Access:= KEY_ALL_ACCESS;
       RootKey:= HKEY_LOCAL_MACHINE;
-      if OpenKey('SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', false) then
+      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', false) then
         if readString('') = 'System' then
           writeString('', 'DdeServerConv');
+      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', false) then begin
+        s:= readstring('');
+        if Pos(' "%1"', s) = 0 then
+          writeString('', s + ' "%1"');
+      end;
+      CloseKey;
+
       RootKey:= HKEY_CURRENT_USER;
-      if OpenKey('SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', false) then
+      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', false) then
         if readString('') = 'System' then
           writeString('', 'DdeServerConv');
+      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', false) then begin
+        s:= readstring('');
+        if Pos(' "%1"', s) = 0 then
+          writeString('', s + ' "%1"');
+      end;
+      CloseKey;
     end;
   finally
     FreeAndNil(Reg);
@@ -4953,6 +4991,35 @@ begin
   end;
 end;
 
+function TFConfiguration.getClassesAndFilename(Pathname: string): TStringList;
+  var SR: TSearchRec;
+begin
+  Result:= TStringList.Create;
+  var SL:= TStringList.Create;
+  try
+    var RegEx:= CompiledRegEx('\s*class\s+(\w*)(\(.*\))?\s*:');
+    // classes in the active source file
+    SL.LoadFromFile(Pathname);
+    var matches:= RegEx.Matches(SL.Text);
+    for var i:= 0 to matches.count - 1 do
+       Result.Add(matches[i].groups[1].value + '=' + ExtractFilename(Pathname));
+    // classes in other files of the active directory
+    var path:= ExtractFilePath(Pathname);
+    if FindFirst(Path + '\*.py', faNormal, SR) = 0 then
+      repeat
+        SL.LoadFromFile(Path + '\' + SR.Name);
+        matches:= RegEx.Matches(SL.Text);
+        for var i:= 0 to matches.count - 1 do begin
+          var key := matches[i].groups[1].value;
+          if Result.IndexOfName(key) = -1 then
+            Result.Add(key + '=' + SR.Name);
+        end;
+      until FindNext(SR) <> 0;
+  finally
+    FindClose(SR);
+    FreeAndNil(SL);
+  end;
+end;
 
 {--- end of Configuration -----------------------------------------------------}
 
@@ -4962,11 +5029,14 @@ constructor TGuiPyOptions.Create;
 begin
   inherited;
   fColorTheme:= 'Obsidian';
+
   // Class modeler
   fShowGetSetMethods:= true;
+  fGetSetMethodsAsProperty:= true;
   fShowTypeSelection:= true;
   fShowKindProcedure:= true;
   fShowParameterTypeSelection:= true;
+  fFromFutureImport:= true;
 
   // GUI designer
   fNameFromText:= true;
@@ -4984,7 +5054,7 @@ begin
   fStructogramShadowWidth:= 3;
   fStructogramShadowIntensity:= 8;
 
-  // Sequencediagram
+  // Sequence diagram
   fSDFillingcolor:= clYellow;
   fSDNoFilling:= false;
   fSDShowMainCall:= false;

@@ -171,7 +171,6 @@ type
     procedure DoShowVisibility(aControl: TControl; Mode: integer); override;
     procedure DoShowVisibilityFilter(aControl: TControl; Mode: integer); override;
     procedure CreateTestClass(aControl: TControl); override;
-    procedure Lock(b: boolean); override;
     procedure RunTests(aControl: TControl; const Method: string); override;
     procedure OnRunJunitTestMethod(Sender: TObject);
     procedure ShowMethodEntered(const aMethodname, From, _To, Parameter: String);
@@ -1226,6 +1225,7 @@ procedure TRtfdDiagram.ClassEditSelectedDiagramElementsControl(Sender: TObject);
   var Pathname: string; aBox: TRtfdBox;
     Editor: IEditor; aFile: IFile;
 begin
+  LockWindow(PyIDEMainForm.Handle);
   aBox:= (Sender as TRtfdBox);
   if (aBox is TRtfdClass) and Assigned(GetBox(aBox.Entity.FullName)) then begin
     aFile:= GI_PyIDEServices.getActiveFile;
@@ -1237,8 +1237,10 @@ begin
       if assigned(aFile) and (aFile.FileKind = fkUML) then
         PyIDEMainForm.PrepareClassEdit(Editor, 'Edit', TFUMLForm(aFile.Form));
     end;
+    aFile.Activate;
   end;
   Panel.ClearSelection;
+  UnlockWindow;
 end;
 
 procedure TRtfdDiagram.ClassEditSelectedDiagramElements;
@@ -1363,7 +1365,7 @@ end;
 procedure TRtfdDiagram.UnSelectAllElements;
 begin
   if assigned(Panel) then
-    Panel.ClearSelection;
+    Panel.ClearSelection(false)
 end;
 
 procedure TRtfdDiagram.CurrentEntityChanged;
@@ -2234,7 +2236,7 @@ end;
 
 procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
   var s1, s2: string;
-      i, j, MenuIndex, InheritedLevel, StartIndex: integer;
+      i, MenuIndex, InheritedLevel, StartIndex: integer;
       aViewClass: TRtfdClass;
       aModelClass: TClass;
       it1: IModelIterator;
@@ -2457,7 +2459,7 @@ begin // PopMenuClassPopup
         s1:= aModelClass.Name + '()';
         s2:= s1;
       end;
-      MakeMenuItem(s1, s1, 2);
+      MakeMenuItem(s1, s2, 2);
     end;
 
     // get static|class methods and parameter classes
@@ -2492,19 +2494,17 @@ begin // PopMenuClassPopup
       end;
 
       // get inherited static methods
-      if aModelClass.AncestorsCount > 0 then
-        for j:= 0 to aModelClass.AncestorsCount -1 do begin
-          aModelClass:= aModelClass.Ancestor[j];
-          if assigned(aModelClass) then begin
-            //if InheritedLevel = 0 then MakeSeparatorItem;
-            inc(InheritedLevel);
-            aInheritedMenu:= TSpTBXSubmenuItem.Create(Frame.PopMenuClass);
-            aInheritedMenu.Caption:= 'Inherited from ' + aModelClass.Name;
-            Frame.PopMenuClass.Items.Insert(MenuIndex, aInheritedMenu);
-            inc(MenuIndex);
-          end
-        end
-      else
+      if aModelClass.AncestorsCount > 0 then begin
+         //for j:= 0 to aModelClass.AncestorsCount -1 do begin // wrong approach
+         aModelClass:= aModelClass.Ancestor[0];
+         if assigned(aModelClass) then begin
+           inc(InheritedLevel);
+           aInheritedMenu:= TSpTBXSubmenuItem.Create(Frame.PopMenuClass);
+           aInheritedMenu.Caption:= 'Inherited from ' + aModelClass.Name;
+           Frame.PopMenuClass.Items.Insert(MenuIndex, aInheritedMenu);
+           inc(MenuIndex);
+         end
+       end else
         aModelClass:= nil;
     until aModelClass = nil;
   end;
@@ -3109,7 +3109,6 @@ procedure TRtfdDiagram.DeleteObjects;
   var i: integer; aObject: TRtfdObject; ManagedObject: TManagedObject;
 begin
   UnSelectAllElements;
-  Application.ProcessMessages;
   for i:= BoxNames.Count - 1 downto 0 do
     if (BoxNames.Objects[i] is TRtfdObject) then begin
       aObject:= BoxNames.Objects[i] as TRtfdObject;
@@ -3345,13 +3344,6 @@ begin
       myJavaCommands.RunTests((aControl as TRtfdClass).Entity as TClass, Method);
     end;
     }
-end;
-
-procedure TRtfdDiagram.Lock(b: boolean);
-  var i: integer;
-begin
-  for i:= 0 to BoxNames.Count - 1 do
-    (BoxNames.Objects[i] as TRtfdBox).Lock(b);
 end;
 
 procedure TRtfdDiagram.ShowMethodEntered(const aMethodname, From, _To, Parameter: String);

@@ -122,7 +122,7 @@ type
     procedure Retranslate; override;
     function LoadFromFile(const FileName: string): boolean; override;
     //function OpenFile(const aFilename: String): boolean; virtual;
-    // procedure DoActivateFile(Primary: boolean = True); override;
+    procedure DoActivateFile(Primary: boolean = True); override;
     function CanCopy: boolean; override;
     procedure CopyToClipboard; override;
     procedure SetFont(aFont: TFont); override;
@@ -223,7 +223,7 @@ begin
   Caption:= Filename;
   SetState(State);
   MainModul.Diagram.SetOnModified(OnPanelModified);
-  DoActivate;
+  //DoActivate;
   LockEnter:= false;
   LockRefresh:= false;
   LockCreateTV:= false;
@@ -239,6 +239,15 @@ begin
 end;
 
 //function OpenFile(const aFilename: String): boolean; virtual;
+
+procedure TFUMLForm.DoActivateFile(Primary: boolean = True);
+begin
+  inherited;
+  TThread.ForceQueue(nil, procedure
+    begin
+      Refresh;
+    end);
+end;
 
 procedure TFUMLForm.MICloseClick(Sender: TObject);
 begin
@@ -298,11 +307,7 @@ begin
         aPanel.SetFocus;
     end;
   end;
-  DoActivate;
-  TThread.ForceQueue(nil, procedure
-    begin
-      Refresh;
-    end);
+  DoActivateFile;
   LockEnter:= false;
 end;
 

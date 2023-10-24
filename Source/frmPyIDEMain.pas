@@ -1,7 +1,7 @@
-﻿{-----------------------------------------------------------------------------
+{-----------------------------------------------------------------------------
  Unit Name: frmPyIDEMain
  Author:    Kiriakos Vlahos
-            Gerhard Röhner
+             Gerhard Röhner
  Date:      11-Feb-2005
  Purpose:   The main form of the Python IDE
 
@@ -1477,7 +1477,7 @@ type
 //    function FindAction(var Key: Word; Shift: TShiftState) : TCustomAction;
     procedure DebugActiveScript(ActiveEditor: IEditor;
       InitStepIn : Boolean = False; RunToCursorLine : integer = -1);
-    procedure SetupRunConfiguration(var RunConfig: TRunConfiguration; ActiveEditor: IEditor);
+    procedure SetupRunConfiguration(var RunConfig: TRunConfiguration; FileId: String);
     procedure tbiSearchTextAcceptText(const NewText: string);
     procedure tbiReplaceTextAcceptText(const NewText: string);
     function GetActiveTabControl: TSpTBXCustomTabControl;
@@ -1549,6 +1549,7 @@ type
     function GetLogger: TJclSimpleLog;
     procedure MRUAddFile(aFile: IFile);
     procedure ChangeStyle;
+    procedure DeleteObjectsInUMLForms;
   public
     ActiveTabControlIndex : integer;
     PythonKeywordHelpRequested : Boolean;
@@ -1610,17 +1611,16 @@ type
     function getFilename(const Extension: string): string;
     procedure PrepareClassEdit(Editor: IEditor; const Status: String; UML: TFUMLForm);
     procedure ConnectGUIandPyWindow(GUIForm: TFGUIForm);
-    procedure DeleteObjectsInUMLForms;
     procedure StructogramFromText(sourcecode, pathname: string);
     procedure DoExport(const Pathname: String; Bitmap: TBitmap);
     procedure NewTkOrQTFile(FileTemplate: TFileTemplate);
     procedure NewTextDiff(Form1, Form2: TEditorForm);
     function NewBrowser(Adresse: string): TFBrowser;
     procedure LoadDefaultLayout(LayoutAppStorage: TJvAppIniFileStorage; const Layout: string);
-    procedure Run(ActiveEditor: IEditor);
+    procedure RunEditor(ActiveEditor: IEditor);
     procedure ImportModule(pathname: string);
     function IsAValidClass(const Pathname: String): boolean;
-    procedure RunExecuteUMLWindows;
+    procedure RunExecuteUMLWindows(const Pathname: String);
     procedure RefreshUMLWindows;
     procedure SetLayoutMenus(Predefined: boolean);
     procedure DropFiles(Sender: TObject; X, Y: Integer; AFiles: TStrings);
@@ -1800,9 +1800,9 @@ begin
           Editor.OpenFile(AFilename, HighlighterName)
         else
           Result.OpenFile(AFileName);
+        Result.Activate;  // necessary!
 
         tbiRecentFileList.MRURemove(AFileName);
-        Result.Activate;
         if GuiFormPath <> '' then
           FGUIDesigner.Open(GuiFormPath);
       except
@@ -2263,7 +2263,7 @@ begin
   //SkinManager.AddSkinNotification(Self);
   //SkinManager.BroadcastSkinNotification;
 
-//FConfiguration.PatchConfiguration;
+  FConfiguration.PatchConfiguration;
   ChangeStyle;
 end;
 
@@ -2519,28 +2519,21 @@ begin
 end;
 
 procedure TPyIDEMainForm.ClassEdit(Editor: IEditor; Status: string; UML: TFUMLForm);
-  var s: string; EditForm: TEditorform;
 begin
-  Editform:= TEditorForm(Editor.Form);
+  var Editform:= TEditorForm(Editor.Form);
   if FClassEditor.CreateTreeView(Editform, UML) then begin
-    if Assigned(UML) then begin
-      ActivateFile(UML.Pathname);
-      Application.ProcessMessages;
-      UML.MainModul.Diagram.Lock(true);
-    end;
     Editor.ActiveSynEdit.LockUndo;
     FClassEditor.ShowModal;
     Editform.mnEditAddImportsClick(self);
     Editor.ActiveSynEdit.UnlockUndo;
+    actRunExecute(Self);
     if Assigned(UML) then begin
-      (UML.MainModul.Diagram as TRtfdDiagram).Reinitalize;
       UML.MainModul.AddToProject(Editor.Filename);
+      (UML.MainModul.Diagram as TRtfdDiagram).Reinitalize;
       UML.Modified:= true;
-      UML.MainModul.Diagram.Lock(false);
-      actRunExecute(Self);
     end;
   end else begin
-    s:= ChangeFileExt(ExtractFilename(Editor.Filename), '');
+    var s:= ChangeFileExt(ExtractFilename(Editor.Filename), '');
     ErrorMsg(Format(_('Class not found %s'), [s]));
   end;
   if Assigned(UML) then begin
@@ -2627,9 +2620,8 @@ end;
 procedure TPyIDEMainForm.actFileNewFileExecute(Sender: TObject);
 begin
   with TNewFileDialog.Create(Self) do begin
-    if ShowModal = mrOK then begin
+    if ShowModal = mrOK then
       NewFileFromTemplate(SelectedTemplate);
-    end;
     Free;
   end;
 end;
@@ -2787,7 +2779,7 @@ begin
         FileTemplate:= FileTemplates.TemplateByName(SClassTemplateName);
       end;
       Editor:= NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl), NewName);
-      UML:= TFUMLForm(DoOpenFile(getFilename('.puml')).Form);
+      UML:= TFUMLForm(DoOpenFile(ChangeFileExt(NewName, '.puml')).Form);
       PrepareClassEdit(Editor, 'New', UML);
     end;
   end;
@@ -2800,7 +2792,7 @@ end;
 
 procedure TPyIDEMainForm.actUMLOpenClassExecute(Sender: TObject);
 begin
-  LockWindow(PyIDEMainForm.Handle);
+  LockWindow(Handle);
   with ResourcesDataModule.dlgFileOpen do begin
     if assigned(GI_PyIDEServices.getActiveFile)
       then InitialDir:= ExtractFilePath(GI_PyIDEServices.getActiveFile.FileName)
@@ -2809,6 +2801,7 @@ begin
       InitialDir:= GetDocumentsPath;
     Filename:= '*.py';
     FilterIndex:= 1;
+    Options := Options + [ofAllowMultiSelect];
     if Execute then begin
       for var i:= 0 to Files.Count - 1 do
         DoOpenInUMLWindow(Files[i]);
@@ -3059,53 +3052,35 @@ end;
 
 procedure TPyIDEMainForm.actRunExecute(Sender: TObject);
 begin
-  TThread.ForceQueue(nil, procedure
-    begin
-      var aFile:= GetActiveFile;
-      if Assigned(aFile) then begin
-        if aFile.FileKind = fkEditor
-          then run(aFile as IEditor)
-          else actPythonReinitializeExecute(Sender);
-        RefreshUMLWindows;
-        RunExecuteUMLWindows;
-      end;
-    end);
+  var aFile:= GetActiveFile;
+  if Assigned(aFile) then begin
+    var ActiveFilename:= '';
+    if aFile.FileKind = fkEditor then begin
+      runEditor(aFile as IEditor);
+      ActiveFilename:= aFile.Filename;
+    end else
+      actPythonReinitializeExecute(Sender);
+    RunExecuteUMLWindows(ActiveFilename);
+  end;
 end;
 
-procedure TPyIDEMainForm.RunExecuteUMLWindows;
-  var Timer: ITimer; Loops: integer;
+procedure TPyIDEMainForm.RunExecuteUMLWindows(const Pathname: string);
+  var i: integer;
 begin
-  Loops:= 0;
-  Timer:= NewTimer(50);
-  Timer.Start(procedure
-      var i: integer;
-    begin
-      if not GI_PyControl.Running then begin
-        Timer.Stop;
-        var SL:= TStringList.Create;
-        for i:= 0 to GI_FileFactory.Count - 1 do
-          if GI_FileFactory.FactoryFile[i].FileKind = fkUML then
-            SL.AddStrings((GI_FileFactory.FactoryFile[i].Form as TFUMLForm).MainModul.getFiles);
-        for i:= SL.Count - 1 downto 0 do
-          if isAValidClass(SL[i]) then
-            SL.Delete(i);
-        if SL.Count > 0 then begin
-          for  i:= 0 to SL.Count - 1 do
-            if FileExists(SL[i]) then
-              ImportModule(SL[i]);
-          for i:= 0 to GI_FileFactory.Count - 1 do
-            if GI_FileFactory.FactoryFile[i].FileKind = fkUML then
-              (GI_FileFactory.FactoryFile[i].Form as TFUMLForm).MainModul.RefreshDiagram;
-        end;
-        FreeAndNil(SL);
-        Timer:= nil;
-      end;
-      Loops:= Loops + 1;
-      if Loops >= 20 then begin
-        Timer.Stop;
-        Timer:= nil;
-      end;
-    end);
+  DeleteObjectsInUMLForms;
+  if not GI_PyControl.Running then begin
+    var SL:= TStringList.Create(dupIgnore, true, false);
+    for i:= 0 to GI_FileFactory.Count - 1 do
+      if GI_FileFactory.FactoryFile[i].FileKind = fkUML then
+        SL.AddStrings((GI_FileFactory.FactoryFile[i].Form as TFUMLForm).MainModul.getFiles);
+    {for i:= SL.Count - 1 downto 0 do
+      if isAValidClass(SL[i]) then
+        SL.Delete(i);}
+    for i:= 0 to SL.Count - 1 do
+      if FileExists(SL[i]) and (SL[i] <> Pathname) then
+         ImportModule(SL[i]);
+    FreeAndNil(SL);
+  end;
 end;
 
 procedure TPyIDEMainForm.ImportModule(pathname: string);
@@ -3142,17 +3117,15 @@ begin
     Result:= (FDCached >= FDPath)
 end;
 
-procedure TPyIDEMainForm.Run(ActiveEditor: IEditor);
+procedure TPyIDEMainForm.RunEditor(ActiveEditor: IEditor);
 begin
   var RunConfig :=  TRunConfiguration.Create;
   try
-    SetupRunConfiguration(RunConfig, ActiveEditor);
+    SetupRunConfiguration(RunConfig, ActiveEditor.FileId);
     PyControl.Run(RunConfig);
   finally
     RunConfig.Free;
   end;
-
-  DeleteObjectsInUMLForms;
   WriteStatusMsg(_(StrScriptRunOK));
 end;
 
@@ -3272,9 +3245,9 @@ begin
 end;
 
 procedure TPyIDEMainForm.SetupRunConfiguration(var RunConfig: TRunConfiguration;
-            ActiveEditor: IEditor);
+            FileId: String);
 begin
-  RunConfig.ScriptName := ActiveEditor.FileId;
+  RunConfig.ScriptName := FileId;
   RunConfig.EngineType := PyControl.PythonEngineType;
   RunConfig.Parameters := iff(PyIDEOptions.UseCommandLine, PyIDEOptions.CommandLine, '');
   RunConfig.ExternalRun.Assign(ExternalPython);
@@ -3291,7 +3264,7 @@ begin
   Assert(GI_PyControl.Inactive);
   RunConfig := TRunConfiguration.Create;
   try
-    SetupRunConfiguration(RunConfig, ActiveEditor);
+    SetupRunConfiguration(RunConfig, ActiveEditor.FileId);
     PyControl.Debug(RunConfig, InitStepIn, RunToCursorLine);
   finally
     RunConfig.Free;
@@ -4099,11 +4072,9 @@ begin
 end;
 
 function TPyIDEMainForm.CmdLineOpenFiles(): boolean;
-var
-  i : integer;
 begin
   Result := False;
-  for i := Low(CmdLineReader.readNamelessString) to High(CmdLineReader.readNamelessString) do
+  for var i := Low(CmdLineReader.readNamelessString) to High(CmdLineReader.readNamelessString) do
     Result := OpenCmdLineFile(CmdLineReader.readNamelessString[i]) or Result;
 
   // Project Filename
@@ -4140,8 +4111,8 @@ begin
       TabControl1.MakeVisible(TabControl1.ActiveTab);
     if Assigned(TabControl2.ActiveTab) then
       TabControl2.MakeVisible(TabControl2.ActiveTab);
-    if Assigned(GetActiveFile()) then
-      GetActiveFile.Activate;
+    //if Assigned(GetActiveFile()) then
+    //  GetActiveFile.Activate;
     UpdateCaption;
   end;
 end;
@@ -4353,6 +4324,7 @@ begin
     AppStorage.WritePersistent('Editor Search Options', EditorSearchOptions);
 
     // GuiPyOptions!
+    AppStorage.DeleteSubTree('GuiPy Options');
     AppStorage.WritePersistent('GuiPy Options', GuiPyOptions);
     AppStorage.WritePersistent('GuiPy Language Options\' + GetCurrentLanguage,
       GuiPyLanguageoptions);
@@ -5119,7 +5091,7 @@ begin
     // Translate the language code to English language name and then to a localized language name
     English:= dgettext('languagecodes', fLanguageList[i]);
     MenuItem.Caption := dgettext('languages', English);
-  	if (i = 0) and (pos('Englis', MenuItem.Caption) = 0) then
+    if (i = 0) and (pos('Englis', MenuItem.Caption) = 0) then
       MenuItem.Caption:= MenuItem.Caption + ' (English)';
     FConfiguration.RGLanguages.Items.Add(MenuItem.Caption);
     MenuItem.Tag := i;
@@ -5298,7 +5270,7 @@ end;
 procedure TPyIDEMainForm.DdeServerConvExecuteMacro(Sender: TObject; Msg: TStrings);
   var filename: string;
 begin
-  // loads selected files from windows explorer
+  // loads selected files from windows explorer if GuiPy is already running
   // onExecuteMacro of System: TDdeServerConv component
   LockFormUpdate(Self);
   for var i:= 0 to Msg.Count - 1 do begin
@@ -5604,7 +5576,7 @@ begin
     ActiveEditor.Activate;
     RunConfig :=  TRunConfiguration.Create;
     try
-      SetupRunConfiguration(RunConfig, ActiveEditor);
+      SetupRunConfiguration(RunConfig, ActiveEditor.FileId);
       PyControl.ExternalRun(RunConfig);
     finally
       RunConfig.Free;
@@ -6094,6 +6066,9 @@ begin
       end;
       Result.SynEdit.Text := Parameters.ReplaceInText(FileTemplate.Template);
 
+      if (FileTemplate.Name = SClassTemplateName) and GuiPyOptions.FromFutureImport then
+        TEditorForm(Result.Form).InsertImport('from __future__ import annotations');
+
       // Locate the caret symbol |
       for i := 0 to Result.SynEdit.Lines.Count - 1 do begin
         j := Result.SynEdit.Lines[i].IndexOf('|');
@@ -6452,6 +6427,7 @@ begin
       TSynEdit(ActiveControl).Font.Size - 2;
   end;
 end;
+
 
 procedure TPyIDEMainForm.mnFilesClick(Sender: TObject);
 //Fill in the Files submenu of the Tabs popup menu
