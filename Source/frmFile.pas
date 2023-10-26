@@ -90,7 +90,6 @@ type
     function DoSave: boolean;
     procedure DoExport; virtual;
     function getAsStringList: TStringList; virtual;
-    procedure ExecCommand(cmd: integer); virtual;
     procedure OpenWindow(Sender: TObject); virtual;
     procedure CollectClasses(SL: TStringList); virtual;
     procedure DoUpdateCaption; virtual;
@@ -151,7 +150,6 @@ type
     function SaveToRemoteFile(const FileName, ServerName: string) : boolean; virtual;
     function AskSaveChanges: boolean;
     function DefaultFilename: boolean;
-    procedure ExecCommand(cmd: integer);
     procedure ExecSave;
     procedure ExecExport;
     procedure DoOnIdle; virtual;
@@ -327,13 +325,8 @@ begin
     SetFocus;
     ReadOnly:= IsWriteProtected(aFilename);
     PyIDEMainForm.ActiveTabControl := ParentTabControl;
-    //UpdateState;
   end else
     Close;
-end;
-
-procedure TFileForm.ExecCommand(cmd: integer);
-begin
 end;
 
 procedure TFileForm.Retranslate;
@@ -344,7 +337,7 @@ end;
 procedure TFileForm.OpenWindow(Sender: TObject);
 begin
   try
-    LockWindow(Self.Handle);
+    LockFormUpdate(Self);
     try
       SetAnimation(false);
       Visible:= true;
@@ -355,7 +348,7 @@ begin
       ErrorMsg('OpenWindow: ' + Pathname);
     end;
   finally
-    UnlockWindow;
+    UnLockFormUpdate(Self);
   end;
 end;
 
@@ -785,11 +778,6 @@ begin
       else
         Result:= false;
     end;
-end;
-
-procedure TFile.ExecCommand(cmd: integer);
-begin
-  fForm.ExecCommand(cmd);
 end;
 
 // IFileCommands implementation

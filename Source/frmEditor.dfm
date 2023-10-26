@@ -42,7 +42,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 470
+        CustomWidth = 558
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -60,17 +60,19 @@ object EditorForm: TEditorForm
       end
       object tbshSource: TSpTBXTabSheet
         Left = 0
-        Top = 30
+        Top = 25
         Width = 578
-        Height = 662
+        Height = 667
         Caption = 'Source'
         ImageIndex = -1
+        ExplicitTop = 30
+        ExplicitHeight = 662
         TabItem = 'tabSource'
         object SynEdit: TSynEdit
           Left = 25
           Top = 0
           Width = 344
-          Height = 658
+          Height = 663
           HelpContext = 510
           Align = alClient
           Ctl3D = False
@@ -144,12 +146,13 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
+          ExplicitHeight = 658
         end
         object SynEdit2: TSynEdit
           Left = 374
           Top = 0
           Width = 200
-          Height = 658
+          Height = 663
           Align = alRight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -210,26 +213,29 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
+          ExplicitHeight = 658
         end
         object EditorSplitter: TSpTBXSplitter
           Left = 369
           Top = 0
-          Height = 658
+          Height = 663
           Cursor = crSizeWE
           Align = alRight
           ParentColor = False
           Visible = False
           GripSize = 80
+          ExplicitHeight = 658
         end
         object EditformToolbar: TToolBar
           Left = 2
           Top = 0
           Width = 23
-          Height = 658
+          Height = 663
           Align = alLeft
           AutoSize = True
           Images = ILEditorToolbar
           TabOrder = 3
+          ExplicitHeight = 658
           object TBClose: TToolButton
             Left = 0
             Top = 0

@@ -243,7 +243,6 @@ type
     procedure ExecSaveAs;
     procedure ExecSaveAsRemote;
     procedure ExecReload(Quiet : Boolean = False);
-    procedure ExecCommand(cmd: integer);
   end;
 
   ISearchCommands = interface

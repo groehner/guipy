@@ -515,7 +515,7 @@ begin
     if not Assigned(Node) or not Assigned(Node.Data) then
       exit;
 
-    LockWindow(myEditor.Handle);
+    LockFormUpdate(myEditor);
     myEditor.ActiveSynEdit.BeginUpdate;
     NodeIndex:= Node.AbsoluteIndex;
     IsClass:= PartOfClass(Node);
@@ -590,7 +590,7 @@ begin
       end;
     end;
     myEditor.ActiveSynEdit.EndUpdate;
-    UnlockWindow;
+    UnlockFormUpdate(myEditor);
   end;
   BClassApply.Enabled:= false;
 end;
@@ -1124,7 +1124,7 @@ begin
   TopItemIndex:= TreeView.TopItem.AbsoluteIndex;
   ClassNumber:= GetClassNumber(Node);
 
-  LockWindow(myEditor.Handle);
+  LockFormUpdate(myEditor);
   myEditor.ActiveSynEdit.BeginUpdate;
   if IsAttributesNode(Node) then begin
     NodeIndex:= NodeIndex + Node.Count + 1;
@@ -1183,7 +1183,7 @@ begin
     TreeView.Selected:= TreeView.Items[NodeIndex];
   BAttributeApply.Enabled:= false;
   myEditor.ActiveSynEdit.EndUpdate;
-  UnlockWindow;
+  UnLockFormUpdate(myEditor);
 end;
 
 procedure TFClassEditor.DeleteMethod(Method: TOperation);
@@ -1208,7 +1208,7 @@ var
 begin
   Node:= TreeView.Selected;
   if Assigned(Node) and Assigned(Node.Data) and IsAttributesNodeLeaf(Node) then begin
-    LockWindow(myEditor.Handle);
+    LockFormUpdate(myEditor);
     myEditor.ActiveSynEdit.BeginUpdate;
     Attribute:= TAttribute(Node.Data);
     HasMethod(_(LNGGet), Attribute, Methode1);
@@ -1241,7 +1241,7 @@ begin
       TreeView.Selected:= TreeView.Items[p1];
     BAttributeApply.Enabled:= false;
     myEditor.ActiveSynEdit.EndUpdate;
-    UnlockWindow;
+    UnLockFormUpdate(myEditor);;
   end;
 end;
 
@@ -1256,7 +1256,7 @@ var
 begin
   Node:= TreeView.Selected;
   if Assigned(Node) and Assigned(Node.Data) and IsMethodsNodeLeaf(Node) then begin
-    LockWindow(myEditor.Handle);
+    LockFormUpdate(myEditor);
     myEditor.ActiveSynEdit.BeginUpdate;
     Method:= TOperation(Node.Data);
     hasSourceCode:= false;
@@ -1288,7 +1288,7 @@ begin
       BMethodApply.Enabled:= false;
     end;
     myEditor.ActiveSynEdit.EndUpdate;
-    UnlockWindow;
+    UnLockFormUpdate(myEditor);
   end;
 end;
 
@@ -2376,7 +2376,7 @@ begin
   if RGMethodKindHasChanged then
     exit;
 
-  LockWindow(myEditor.Handle);
+  LockFormUpdate(myEditor);
   myEditor.ActiveSynEdit.BeginUpdate;
   if IsMethodsNode(Node) then begin
     Level:= -1;
@@ -2432,7 +2432,7 @@ begin
   if NodeIndex < TreeView.Items.Count then
     TreeView.Selected:= TreeView.Items[NodeIndex];
   myEditor.ActiveSynEdit.EndUpdate;
-  UnlockWindow;
+  UnLockFormUpdate(myEditor);
 end;
 
 procedure TFClassEditor.ReplaceMethod(var Method: TOperation; const New: string);

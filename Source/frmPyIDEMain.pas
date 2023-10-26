@@ -1,7 +1,7 @@
-{-----------------------------------------------------------------------------
+﻿{-----------------------------------------------------------------------------
  Unit Name: frmPyIDEMain
  Author:    Kiriakos Vlahos
-             Gerhard Röhner
+            Gerhard Röhner
  Date:      11-Feb-2005
  Purpose:   The main form of the Python IDE
 
@@ -1485,7 +1485,6 @@ type
     procedure OpenInitialFiles;
     procedure ChangeMenuSystem;
     procedure ClassEdit(Editor: IEditor; Status: string; UML: TFUMLForm);
-
   protected
     fCurrentBrowseInfo : string;
     function CmdLineOpenFiles(): boolean;
@@ -1624,6 +1623,8 @@ type
     procedure RefreshUMLWindows;
     procedure SetLayoutMenus(Predefined: boolean);
     procedure DropFiles(Sender: TObject; X, Y: Integer; AFiles: TStrings);
+    procedure RunFile(aFile: IFile);
+
     property ActiveTabControl : TSpTBXCustomTabControl read GetActiveTabControl
       write SetActiveTabControl;
   end;
@@ -1823,7 +1824,6 @@ begin
     TabCtrl.Toolbar.EndUpdate;
     if Assigned(TabCtrl.ActiveTab) then
       TabCtrl.MakeVisible(TabCtrl.ActiveTab);
-    UpdateCaption;
   end;
 end;
 
@@ -1869,17 +1869,24 @@ begin
 end;
 
 function TPyIDEMainForm.CreateUMLForm(Filename: String): TFUMLForm;
-  var aFile: IFile; TabCtrl : TSpTBXTabControl;
 begin
-  TabCtrl := TSpTBXTabControl(GetActiveTabControl);
-  aFile:= GI_FileFactory.NewFile(fkUML, ActiveTabControlIndex);
-  Result:= TFUMLForm(aFile.Form);
-  Result.Pathname:= Filename;
-  Result.DoUpdateCaption;
-  Result.Enter(Self);
-  aFile.Activate;
-  if Assigned(TabCtrl.ActiveTab) then
-    TabCtrl.MakeVisible(TabCtrl.ActiveTab);
+  Result:= nil;
+  var TabCtrl := TSpTBXTabControl(GetActiveTabControl);
+  TabCtrl.Toolbar.BeginUpdate;
+  try
+    var aFile:= GI_FileFactory.NewFile(fkUML, ActiveTabControlIndex);
+    if aFile <> nil then begin
+      Result:= TFUMLForm(aFile.Form);
+      Result.Pathname:= Filename;
+      Result.DoUpdateCaption;
+      Result.Enter(Self);
+      aFile.Activate;
+    end;
+  finally
+    TabCtrl.Toolbar.EndUpdate;
+    if Assigned(TabCtrl.ActiveTab) then
+      TabCtrl.MakeVisible(TabCtrl.ActiveTab);
+  end;
 end;
 
 procedure TPyIDEMainForm.ActivateFile(Filename: String);
@@ -1946,9 +1953,8 @@ procedure TPyIDEMainForm.DeleteObjectsInUMLForms;
 begin
   GI_FileFactory.ApplyToFiles(procedure(aFile: IFile)
   begin
-    var FileCommands := aFile as IFileCommands;
-    if Assigned(FileCommands) then
-      FileCommands.ExecCommand(1); // delete objects in uml windows
+    if (aFile as TFile).GetFileKind = fkUML then
+      ((aFile as TFile).fForm as TFUmlForm).DeleteObjects;
   end);
 end;
 
@@ -2521,16 +2527,29 @@ end;
 procedure TPyIDEMainForm.ClassEdit(Editor: IEditor; Status: string; UML: TFUMLForm);
 begin
   var Editform:= TEditorForm(Editor.Form);
+  if Assigned(UML) then ActivateFile(UML.Pathname);
+
   if FClassEditor.CreateTreeView(Editform, UML) then begin
     Editor.ActiveSynEdit.LockUndo;
-    FClassEditor.ShowModal;
-    Editform.mnEditAddImportsClick(self);
-    Editor.ActiveSynEdit.UnlockUndo;
-    actRunExecute(Self);
-    if Assigned(UML) then begin
-      UML.MainModul.AddToProject(Editor.Filename);
-      (UML.MainModul.Diagram as TRtfdDiagram).Reinitalize;
-      UML.Modified:= true;
+    try
+      Application.ProcessMessages;
+      if FClassEditor.ShowModal = mrOK then begin
+        Editform.mnEditAddImportsClick(self);
+        if Assigned(UML) then begin
+          try
+            LockFormUpdate(UML);
+            UML.MainModul.AddToProject(Editor.Filename);
+            (UML.MainModul.Diagram as TRtfdDiagram).Reinitalize;
+            UML.Modified:= true;
+            RunFile(UML.fFile);
+          finally
+            UnlockFormUpdate(UML);
+          end;
+        end else
+          RunFile(Editor);
+      end;
+    finally
+      Editor.ActiveSynEdit.UnlockUndo;
     end;
   end else begin
     var s:= ChangeFileExt(ExtractFilename(Editor.Filename), '');
@@ -2792,7 +2811,7 @@ end;
 
 procedure TPyIDEMainForm.actUMLOpenClassExecute(Sender: TObject);
 begin
-  LockWindow(Handle);
+  LockFormUpdate(Self);
   with ResourcesDataModule.dlgFileOpen do begin
     if assigned(GI_PyIDEServices.getActiveFile)
       then InitialDir:= ExtractFilePath(GI_PyIDEServices.getActiveFile.FileName)
@@ -2810,7 +2829,7 @@ begin
       actRunExecute(Self);
     end;
   end;
-  UnlockWindow;
+  UnLockFormUpdate(Self);
 end;
 
 procedure TPyIDEMainForm.actPostMortemExecute(Sender: TObject);
@@ -2877,11 +2896,6 @@ begin
       mtWarning, [mbYes, mbNo], 0) = idNo then Exit;
   end;
   PyControl.ActiveInterpreter.ReInitialize;
-  GI_FileFactory.ApplyToFiles(procedure(Fi: IFile)     // Why?
-    begin
-      if (Fi as TFile).GetFileKind = fkEditor then
-        (Fi as TFile).fForm.DoSave;
-    end);
 end;
 
 procedure TPyIDEMainForm.RefreshUMLWindows;
@@ -2970,7 +2984,6 @@ begin
     TabCtrl.Toolbar.EndUpdate;
     if Assigned(TabCtrl.ActiveTab) then
       TabCtrl.MakeVisible(TabCtrl.ActiveTab);
-    UpdateCaption;
   end;
 end;
 
@@ -3052,15 +3065,21 @@ end;
 
 procedure TPyIDEMainForm.actRunExecute(Sender: TObject);
 begin
-  var aFile:= GetActiveFile;
+  RunFile(getActiveFile);
+end;
+
+procedure TPyIDEMainForm.RunFile(aFile: IFile);
+begin
   if Assigned(aFile) then begin
+    LockFormUpdate(Self);
     var ActiveFilename:= '';
     if aFile.FileKind = fkEditor then begin
       runEditor(aFile as IEditor);
       ActiveFilename:= aFile.Filename;
     end else
-      actPythonReinitializeExecute(Sender);
+      actPythonReinitializeExecute(nil);
     RunExecuteUMLWindows(ActiveFilename);
+    UnLockFormUpdate(Self);
   end;
 end;
 
@@ -3073,9 +3092,6 @@ begin
     for i:= 0 to GI_FileFactory.Count - 1 do
       if GI_FileFactory.FactoryFile[i].FileKind = fkUML then
         SL.AddStrings((GI_FileFactory.FactoryFile[i].Form as TFUMLForm).MainModul.getFiles);
-    {for i:= SL.Count - 1 downto 0 do
-      if isAValidClass(SL[i]) then
-        SL.Delete(i);}
     for i:= 0 to SL.Count - 1 do
       if FileExists(SL[i]) and (SL[i] <> Pathname) then
          ImportModule(SL[i]);
@@ -4084,8 +4100,11 @@ end;
 
 procedure TPyIDEMainForm.CreateWnd;
 begin
-  inherited;
-  WTSRegisterSessionNotification(Handle, NOTIFY_FOR_THIS_SESSION);
+  try
+    inherited;
+    WTSRegisterSessionNotification(Handle, NOTIFY_FOR_THIS_SESSION);
+  except // Error during installation?
+  end;
 end;
 
 procedure TPyIDEMainForm.OpenInitialFiles;

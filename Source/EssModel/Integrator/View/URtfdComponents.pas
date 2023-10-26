@@ -472,6 +472,8 @@ var
   Pathname, SVGColor: String;
 
 begin
+  //if Frame.Diagram.PanelIsLocked then exit;
+
   if assigned(fBitmap) and fBitmapOK then begin
     Canvas.Draw(0, 0, fBitmap);
     if Selected then

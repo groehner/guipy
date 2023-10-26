@@ -82,7 +82,9 @@ type
     TempHidden : TObjectList;
     BGColor: TColor;
     FGColor: TColor;
+    FUpdateCounter: integer;
     procedure SetSelectedOnly(const Value : boolean);
+    procedure SetUpdateCounter(value: integer);
   protected
     { Protected declarations }
     FManagedObjects: TList;
@@ -106,15 +108,15 @@ type
     procedure OnManagedObjectClick(Sender: TObject);
     procedure OnManagedObjectDblClick(Sender: TObject);
 
-    procedure Paint; override;
     function ClickOnConnection: boolean;
     procedure HideConnections;
     procedure ShowCuttedConnections;
     function DoMouseWheel(Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint): Boolean; override;
+    procedure Paint; override;
 
   public
     OnContentChanged : TNotifyEvent;
-    OnModified: TBoolEvent; // TNotifyEvent
+    OnModified: TBoolEvent;
     OnDeleteSelectedControls: TNotifyEvent;
     OnClassEditSelectedDiagramElements: TNotifyEvent;
     OnFormMouseDown: TNotifyEvent;
@@ -212,6 +214,8 @@ type
     procedure SetModified(const Value: boolean);
     procedure ChangeStyle(BlackAndWhite: boolean = false);
     function getSVGConnections: string;
+    procedure BeginUpdate;
+    procedure EndUpdate;
 
     property IsModified: Boolean read FIsModified write SetModified;
     property IsMoving: boolean read FIsMoving write FIsMoving;
@@ -219,6 +223,7 @@ type
     property BackBitmap : TBitmap read FBackBitmap write FBackBitmap;
     // Only draw selected
     property SelectedOnly: boolean read FSelectedOnly write SetSelectedOnly;
+    property UpdateCounter: integer read FUpdateCounter write SetUpdateCounter;
   published
     { Published declarations }
     property Align;
@@ -380,11 +385,10 @@ begin
 end;
 
 procedure TessConnectPanel.ShowAll;
-  var i: Integer;
 begin
   HideConnections;
-  if assigned(FManagedObjects) then begin
-    for i:= 0 to FManagedObjects.Count -1 do
+  if assigned(FManagedObjects) and (UpdateCounter = 0) then begin
+    for var i:= 0 to FManagedObjects.Count - 1 do
       if TManagedObject(FManagedObjects[i]).FControl.Visible then
         TManagedObject(FManagedObjects[i]).FControl.Invalidate;
     ShowConnections;
@@ -599,6 +603,7 @@ begin
   TempHidden := TObjectList.Create(False);
   UseDockManager := True;
   MouseDownOK:= True;
+  FUpdateCounter:= 0;
   ChangeStyle;
   SetFocus;
 end;
@@ -1083,7 +1088,7 @@ begin
       end;
   EditParallelConnections;
   RecalcSize;
-  ClearSelection;
+  ClearSelection(false);
 end;
 
 // central MouseDown routine for TessConnectPanel
@@ -1518,7 +1523,8 @@ end;
 procedure TessConnectPanel.Paint;
   var Rect: TRect;
 begin
-  if IsMoving then exit;  // this inhibits painting while moving
+  if IsMoving or (UpdateCounter > 0) then
+    exit;  // this inhibits painting while moving
   Canvas.Pen.Mode := pmCopy;
   Rect:= ClientRect;
   Frame3D(Canvas, Rect, Color, Color, BorderWidth);
@@ -1526,6 +1532,18 @@ begin
   Canvas.Pen.Color:= FGColor;
   Canvas.Font:= Font;
   ShowAll;
+end;
+
+procedure TessConnectPanel.BeginUpdate;
+begin
+  UpdateCounter:= UpdateCounter + 1;
+end;
+
+procedure TessConnectPanel.EndUpdate;
+begin
+  UpdateCounter:= UpdateCounter - 1;
+  if UpdateCounter = 0 then
+    Invalidate;
 end;
 
 procedure TessConnectPanel.ShowConnections;
@@ -1718,6 +1736,11 @@ begin
       TempHidden.Clear;
     end;
   end;
+end;
+
+procedure TessConnectPanel.SetUpdateCounter(value: integer);
+begin
+  FUpdateCounter:= value;
 end;
 
 procedure TessConnectPanel.SetConnections(Value: integer);

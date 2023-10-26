@@ -192,10 +192,10 @@ type
     function getInternName(aClass: TClass; aName: String; aVisibility: TVisibility): String;
     function StrToPythonValue(s: String): String;
     function StrAndTypeToPythonValue(s, pValue: String): string;
-    procedure ExecCommand(cmd: integer);
     procedure ExecutePython(s: String); override;
     procedure GetVisFromName(var Name: string; var vis: TVisibility);
     procedure Retranslate; override;
+    function PanelIsLocked: boolean; override;
   end;
 
 implementation
@@ -1225,7 +1225,7 @@ procedure TRtfdDiagram.ClassEditSelectedDiagramElementsControl(Sender: TObject);
   var Pathname: string; aBox: TRtfdBox;
     Editor: IEditor; aFile: IFile;
 begin
-  LockWindow(PyIDEMainForm.Handle);
+  LockFormUpdate(PyIDEMainForm);
   aBox:= (Sender as TRtfdBox);
   if (aBox is TRtfdClass) and Assigned(GetBox(aBox.Entity.FullName)) then begin
     aFile:= GI_PyIDEServices.getActiveFile;
@@ -1240,7 +1240,7 @@ begin
     aFile.Activate;
   end;
   Panel.ClearSelection;
-  UnlockWindow;
+  UnlockFormUpdate(PyIDEMainForm);
 end;
 
 procedure TRtfdDiagram.ClassEditSelectedDiagramElements;
@@ -1417,8 +1417,9 @@ procedure TRtfdDiagram.RefreshDiagram;
 begin
   ResolveAssociations;
   ResolveObjectAssociations;
-  for var i:= 0 to BoxNames.Count - 1 do
-    (BoxNames.Objects[I] as TRtfdBox).RefreshEntities;
+  if not PanelIsLocked then
+    for var i:= 0 to BoxNames.Count - 1 do
+      (BoxNames.Objects[I] as TRtfdBox).RefreshEntities;
   Panel.RecalcSize;
   Panel.ShowAll;
   Panel.IsModified:= true;
@@ -1850,7 +1851,7 @@ begin
   try
     if Assigned(C) and ((C is TRtfdObject) or (C is TRtfdClass)) then begin
       if not CollectClasses then exit;
-      LockWindow(UMLForm.Handle);
+      LockFormUpdate(UMLForm);
       try
         Panel.ClearSelection;
         if C is TRtfdObject
@@ -1923,11 +1924,10 @@ begin
       except
         on e: Exception do
           ErrorMsg('TRtfdDiagram.CallMethod: ' + e.Message);
+      end;
     end;
-  end;
   finally
-    if assigned(UMLForm) then
-      UnlockWindow;
+    UnlockFormUpdate(UMLForm);
   end;
 end;
 
@@ -2941,7 +2941,7 @@ procedure TRtfdDiagram.ShowUnnamedObject(Sender: TObject);
   var address, Objectname: String; p: integer;
 begin
   try
-    LockWindow(UMLForm.Handle);
+    LockFormUpdate(UMLForm);
     Objectname:= (Sender as TSpTBXItem).Caption;
     p:= Pos(' ', Objectname);
     while p > 0 do begin
@@ -2961,7 +2961,7 @@ begin
       ResolveObjectAssociations;
     end;
   finally
-    UnlockWindow;
+    UnlockFormUpdate(UMLForm);
   end;
 end;
 
@@ -2969,7 +2969,7 @@ procedure TRtfdDiagram.ShowAllNewObjects(Sender: TObject);
   var i: integer;
 begin
   try
-    LockWindow(Application.Handle);
+    LockFormUpdate(UMLForm);
     Screen.Cursor:= crHourglass;
     if Frame.MIObjectPopupShowNewObject.Visible then
       for i:= 0 to Frame.MIObjectPopupShowNewObject.Count - 1 do
@@ -2987,7 +2987,7 @@ begin
       end;
     end;
   finally
-    LockWindow(0);
+    UnLockFormUpdate(UMLForm);
     Screen.Cursor:= crDefault;
   end;
 end;
@@ -3108,6 +3108,7 @@ end;
 procedure TRtfdDiagram.DeleteObjects;
   var i: integer; aObject: TRtfdObject; ManagedObject: TManagedObject;
 begin
+  // FLivingObjects.makeAllObjects;
   UnSelectAllElements;
   for i:= BoxNames.Count - 1 downto 0 do
     if (BoxNames.Objects[i] is TRtfdObject) then begin
@@ -3118,7 +3119,6 @@ begin
       end;
     end;
   DeleteSelectedControls(nil);
-  Panel.Invalidate;
 end;
 
 procedure TRtfdDiagram.Reinitalize;
@@ -3479,14 +3479,6 @@ begin
   end;
 end;
 
-procedure TRtfdDiagram.ExecCommand(cmd: integer);
-begin
-  if cmd = 1 then begin
-    FLivingObjects.makeAllObjects;
-    DeleteObjects;
-  end;
-end;
-
 procedure TRtfdDiagram.ExecutePython(s: String);
 begin
   FLivingObjects.ExecutePython(s);
@@ -3505,5 +3497,11 @@ begin
     vis:= viProtected;
   end;
 end;
+
+function TRtfdDiagram.PanelIsLocked: boolean;
+begin
+  Result:= (Panel.UpdateCounter > 0);
+end;
+
 
 end.

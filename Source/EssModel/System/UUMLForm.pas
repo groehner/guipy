@@ -115,13 +115,11 @@ type
     FInteractiveClosed: boolean;
     AlreadySavedAs: boolean;
     procedure ChangeStyle;
-    procedure RunExecuteUMLWindow;
     procedure setInteractiveClosed(value: boolean);
     procedure setInteractiveHeight(value: integer);
   protected
     procedure Retranslate; override;
     function LoadFromFile(const FileName: string): boolean; override;
-    //function OpenFile(const aFilename: String): boolean; virtual;
     procedure DoActivateFile(Primary: boolean = True); override;
     function CanCopy: boolean; override;
     procedure CopyToClipboard; override;
@@ -146,10 +144,12 @@ type
     procedure AddToProject(const Filename: string);
     procedure CreateTVFileStructure;
     function getAsStringList: TStringList; override;
-    procedure ExecCommand(cmd: integer); override;
     procedure ShowAll;
     procedure ClassEdit;
     procedure OnFormMouseDown(Sender: TObject);
+    procedure BeginUpdate;
+    procedure EndUpdate;
+    procedure DeleteObjects;
 
     property InteractiveHeight: integer read FInteractiveHeight write setInteractiveHeight;
     property InteractiveClosed: boolean read FInteractiveClosed write setInteractiveClosed;
@@ -172,6 +172,7 @@ begin
   SetFont(GuiPyOptions.UMLFont);  // ToDo makes a RefreshDiagramm
   DefaultExtension:= 'uml';
   Modified:= false;
+  FInteractiveClosed:= true;
   // to avoid popup of PopupMenuWindow on Classes
   PDiagramPanel.PopupMenu:= EmptyPopupMenu;
   SynEdit.PopupMenu:= PMInteractive;
@@ -216,20 +217,23 @@ end;
 
 procedure TFUMLForm.Open(const Filename: string; State: string);
 begin
-  MainModul.LoadUML(Filename);
-  MainModul.Diagram.SetInteractive(OnInteractiveModified);
-  MainModul.Diagram.SetFormMouseDown(OnFormMouseDown);
-  Pathname:= Filename;
-  Caption:= Filename;
-  SetState(State);
-  MainModul.Diagram.SetOnModified(OnPanelModified);
-  //DoActivate;
-  LockEnter:= false;
-  LockRefresh:= false;
-  LockCreateTV:= false;
-  MainModul.AddToProject(Filename);
-  PyIDEMainForm.actRunExecute(Self);
-  //setActiveControl(MainModul.Diagram.GetPanel);
+  LockFormUpdate(Self);
+  try
+    MainModul.LoadUML(Filename);
+    MainModul.Diagram.SetInteractive(OnInteractiveModified);
+    MainModul.Diagram.SetFormMouseDown(OnFormMouseDown);
+    Pathname:= Filename;
+    Caption:= Filename;
+    SetState(State);
+    MainModul.Diagram.SetOnModified(OnPanelModified);
+    LockEnter:= false;
+    LockRefresh:= false;
+    LockCreateTV:= false;
+    MainModul.AddToProject(Filename);
+    PyIDEMainForm.RunFile(fFile);
+  finally
+    UnlockFormUpdate(Self);
+  end;
 end;
 
 function TFUMLForm.LoadFromFile(const FileName: string): boolean;
@@ -293,7 +297,7 @@ begin
 end;
 
 procedure TFUMLForm.Enter(Sender: TObject);
-  var  aPanel: TCustomPanel;
+  var aPanel: TCustomPanel;
 begin
   if LockEnter then exit;
   LockEnter:= true;
@@ -326,10 +330,9 @@ begin
 end;
 
 procedure TFUMLForm.TBShowConnectionsClick(Sender: TObject);
-  var sa: integer;
 begin
   if assigned(MainModul) and assigned(MainModul.Diagram) then begin
-    sa:= (Mainmodul.Diagram.ShowConnections + 1) mod 3;
+    var sa:= (Mainmodul.Diagram.ShowConnections + 1) mod 3;
     MainModul.Diagram.ShowConnections:= sa;
     Modified:= true;
     MainModul.Diagram.GetPanel.Invalidate;
@@ -347,10 +350,9 @@ begin
 end;
 
 procedure TFUMLForm.TBViewClick(Sender: TObject);
-  var sv: integer;
 begin
   if assigned(MainModul) and assigned(MainModul.Diagram) then begin
-    sv:= (Mainmodul.Diagram.ShowView + 1) mod 3;
+    var sv:= (Mainmodul.Diagram.ShowView + 1) mod 3;
     MainModul.Diagram.ShowView:= sv;
     Modified:= true;
     MainModul.Diagram.GetPanel.Invalidate;
@@ -415,39 +417,31 @@ end;
 
 procedure TFUMLForm.TBInteractiveClick(Sender: TObject);
 begin
-  FInteractiveClosed:= false;
-  FInteractiveHeight:= max(FInteractiveHeight, 100);
+  FInteractiveClosed:= not FInteractiveClosed;
   PUMLResize(Self);
 end;
 
 procedure TFUMLForm.TBInteractiveCloseClick(Sender: TObject);
 begin
   FInteractiveClosed:= true;
-  FInteractiveHeight:= max(PInteractive.Height, 100);
   PUMLResize(Self);
 end;
 
 procedure TFUMLForm.PUMLResize(Sender: TObject);
 begin
+  Modified:= true;
+  FInteractiveHeight:= max(FInteractiveHeight, 100);
   if FInteractiveClosed
     then PDiagram.Height:= ClientHeight - 4
     else PDiagram.Height:= ClientHeight - 4 - FInteractiveHeight;
 end;
 
-procedure TFUMLForm.PDiagramPanelResize(Sender: TObject);
-begin
-  if Assigned(MainModul) then
-    MainModul.Diagram.RecalcPanelSize;
-end;
-
 procedure TFUMLForm.setInteractiveClosed(value: boolean);
 begin
-  if FInteractiveClosed <> value then begin
-    FInteractiveClosed:= value;
-    if FInteractiveClosed
-      then TBInteractiveCloseClick(self)
-      else TBInteractiveClick(self);
-  end;
+  FInteractiveClosed:= value;
+  if FInteractiveClosed
+    then TBInteractiveCloseClick(self)
+    else PUMLResize(Self);
 end;
 
 procedure TFUMLForm.setInteractiveHeight(value: integer);
@@ -458,31 +452,30 @@ begin
   end;
 end;
 
+procedure TFUMLForm.PDiagramPanelResize(Sender: TObject);
+begin
+  if Assigned(MainModul) then
+    MainModul.Diagram.RecalcPanelSize;
+  FInteractiveHeight:= ClientHeight - 4 - PDiagram.Height;
+end;
+
 procedure TFUMLForm.Refresh;
 begin
   if LockRefresh then exit;
   LockRefresh:= true;
   if Pathname <> '' then begin
-    LockWindow(Self.Handle);
+    LockFormUpdate(Self);
     DoSave;
     MainModul.LoadUML(Pathname);
     CreateTVFileStructure;
-    UnlockWindow;
+    UnLockFormUpdate(Self);
   end;
   LockRefresh:= false;
 end;
 
 procedure TFUMLForm.TBRefreshClick(Sender: TObject);
 begin
-  if Pathname <> '' then begin
-    LockWindow(Self.Handle);
-    //Save(true);
-    //MainModul.LoadUML(Pathname);
-    MainModul.RefreshDiagram;
-    CreateTVFileStructure;
-    UnlockWindow;
-  end;
-  // PyIDEMainForm.actRunExecute(self);
+  Refresh;
 end;
 
 procedure TFUMLForm.TBClassDefinitionClick(Sender: TObject);
@@ -519,10 +512,9 @@ begin
 end;
 
 procedure TFUMLForm.TBObjectDiagramClick(Sender: TObject);
-  var b: boolean;
 begin
   if assigned(MainModul) and assigned(MainModul.Diagram) then begin
-    b:= not Mainmodul.Diagram.ShowObjectDiagram;
+    var b:= not Mainmodul.Diagram.ShowObjectDiagram;
     Mainmodul.Diagram.ShowObjectDiagram:= b;
     Modified:= true;
     TBObjectDiagram.Down:= b;
@@ -592,42 +584,29 @@ begin
 end;
 
 procedure TFUMLForm.TBReInitializeClick(Sender: TObject);
+  var i, Loops: integer;
 begin
+  BeginUpdate;
+  // inhibit erasing of object background during delete
+  LockFormUpdate(Self);
+  DeleteObjects;
   pyIDEMainform.actPythonReinitializeExecute(Sender);
-  Refresh;
-  RunExecuteUMLWindow;
-end;
-
-procedure TFUMLForm.RunExecuteUMLWindow;
-  var Timer: ITimer; Loops: integer;
-begin
   Loops:= 0;
-  Timer:= NewTimer(50);
-  Timer.Start(procedure
-      var i: integer;
-    begin
-      if not GI_PyControl.Running then begin
-        Timer.Stop;
-        var SL:= TStringList.Create;
-        SL.AddStrings(MainModul.getFiles);
-        for i:= SL.Count - 1 downto 0 do
-          if pyIDEMainform.isAValidClass(SL[i]) then
-            SL.Delete(i);
-        if SL.Count > 0 then begin
-          for i:= 0 to SL.Count - 1 do
-            if FileExists(SL[i]) then
-              pyIDEMainform.ImportModule(SL[i]);
-        end;
-        MainModul.RefreshDiagram;
-        FreeAndNil(SL);
-        Timer:= nil;
-      end;
-      Loops:= Loops + 1;
-      if Loops >= 20 then begin
-        Timer.Stop;
-        Timer:= nil;
-      end;
-    end);
+  while GI_PyControl.Running and (Loops < 20) do begin
+    sleep(50);
+    inc(Loops);
+  end;
+  if not GI_PyControl.Running then begin
+    var SL:= TStringList.Create(dupIgnore, true, false);
+    SL.AddStrings(MainModul.getFiles);
+    for i:= 0 to SL.Count - 1 do
+      if FileExists(SL[i]) then
+        pyIDEMainform.ImportModule(SL[i]);
+    MainModul.RefreshDiagram;
+    FreeAndNil(SL);
+  end;
+  UnLockFormUpdate(Self);
+  EndUpdate;
 end;
 
 procedure TFUMLForm.AddToProject(const Filename: string);
@@ -766,11 +745,6 @@ begin
   Result.LoadFromFile(Pathname);
 end;
 
-procedure TFUMLForm.ExecCommand(cmd: integer);
-begin
-  (MainModul.Diagram as TRtfdDiagram).ExecCommand(cmd);
-end;
-
 procedure TFUMLForm.ShowAll;
 begin
   (MainModul.Diagram as TRtfdDiagram).ShowAll;
@@ -785,6 +759,21 @@ procedure TFUMLForm.ClassEdit;
 begin
   MainModul.EditSelectedElement;
   Modified:= true;
+end;
+
+procedure TFUMLForm.BeginUpdate;
+begin
+  (MainModul.Diagram as TRtfdDiagram).Panel.BeginUpdate;
+end;
+
+procedure TFUMLForm.EndUpdate;
+begin
+  (MainModul.Diagram as TRtfdDiagram).Panel.EndUpdate;
+end;
+
+procedure TFUMLForm.DeleteObjects;
+begin
+  (MainModul.Diagram as TRtfdDiagram).DeleteObjects;
 end;
 
 end.

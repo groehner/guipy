@@ -318,10 +318,10 @@ begin
   if assigned(TVFileStructure.Selected) and not TVFileStructure.Selected.isVisible
     and not LockShowSelected
   then begin
-    LockWindow(Self.Handle);
+    LockFormUpdate(Self);
     TVFileStructure.Selected.MakeVisible;
     SendMessage(TVFileStructure.Handle, WM_HSCROLL, SB_PAGELEFT, 0);
-    UnlockWindow;
+    UnLockFormUpdate(Self);
   end;
 end;
 

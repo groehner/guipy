@@ -89,8 +89,6 @@ function ExtractFileNameEx(s: string): string;
 function StripHttpParams(const s: string): string;
 function ToWindows(s: String): String;
 function FileExistsCaseSensitive(const Filename: TFileName): Boolean;
-procedure LockWindow(Handle: THandle);
-procedure UnlockWindow;
 function getFirstWord(s: string): string;
 procedure SetAnimation(Value: boolean);
 function einruecken(Einrueck, s: string): string;
@@ -1042,16 +1040,6 @@ begin
   Result:= FindFirst(Filename, faAnyFile, SR) = 0;
   if Result then Sysutils.FindClose(SR);
   Result:= Result and (SR.Attr and faDirectory = 0) and (SR.Name = ExtractFileName(Filename));
-end;
-
-procedure LockWindow(Handle: THandle);
-begin
-  LockWindowUpdate(Handle);
-end;
-
-procedure UnlockWindow;
-begin
-  LockWindowUpdate(0);
 end;
 
 function getFirstWord(s: string): string;

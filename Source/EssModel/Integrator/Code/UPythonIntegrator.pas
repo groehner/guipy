@@ -32,6 +32,7 @@ type
     fModule: TParsedModule;
     fFileName: string;
     ModVisibility: TVisibility;
+    //function ShowView(IsInner: Boolean): Boolean;
   public
     constructor Create(aWithView: Boolean); virtual;
     procedure ParseModul(Module: TParsedModule; AModel: TAbstractPackage;
@@ -44,7 +45,6 @@ type
                 const ParentName: string; Level: integer);
     procedure ParseFunction(ParsedFunction: TParsedFunction);
     function NeedClassifier(const ParentClass, CName: string): TClassifier;
-    function ShowView(IsInner: Boolean): Boolean;
     procedure SetAttributeVisibility(M: TModelEntity);
     procedure SetOperationVisibility(M: TModelEntity);
     procedure SetVisibility(M: TModelEntity);
@@ -321,17 +321,18 @@ begin
 //    Result.Recursive:= true;
 end;
 
-function TPythonParser.ShowView(IsInner: Boolean): Boolean;
+{function TPythonParser.ShowView(IsInner: Boolean): Boolean;
 begin
   Result := WithView;
-  {
+
   if FConfiguration.ShowPublicOnly and (ModVisibility <> viPublic) then
     Result := False;
-  }
+
   Result := Result or FConfiguration.ShowAlways;
   if IsInner then
     Result := true;
 end;
+}
 
 procedure TPythonParser.SetAttributeVisibility(M: TModelEntity);
 begin

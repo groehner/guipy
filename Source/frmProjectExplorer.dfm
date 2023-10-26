@@ -1,8 +1,8 @@
 inherited ProjectExplorerWindow: TProjectExplorerWindow
   HelpContext = 435
   Caption = 'Project Explorer'
-  ClientHeight = 192
-  ClientWidth = 83
+  ClientHeight = 180
+  ClientWidth = 75
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -41,12 +41,12 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     9C41FC039C41F8019C41F0009C4100009C4100009C4100009C4100009C410000
     9C4100019C4100039C4100079C4100079C4100079C4100079C4100079C41}
   OnShow = FormShow
-  ExplicitWidth = 99
-  ExplicitHeight = 231
+  ExplicitWidth = 91
+  ExplicitHeight = 219
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 83
-    Height = 192
+    Width = 75
+    Height = 180
     ExplicitWidth = 195
     ExplicitHeight = 360
     inherited FGPanel: TPanel

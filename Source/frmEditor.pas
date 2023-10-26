@@ -3511,24 +3511,25 @@ begin
 end;
 
 procedure TEditorForm.TBClassOpenClick(Sender: TObject);
-  var UMLForm: TFUMLForm; s: string;
 begin
   if IsPython then begin
-    if Modified or fFile.GetFromTemplate then
-      DoSave;
     try
-      s:= ChangeFileExt(Pathname, '.puml');
+      if Modified or fFile.GetFromTemplate then
+        DoSave;
+      var s:= ChangeFileExt(Pathname, '.puml');
       if FileExists(s) then
         PyIDEMainForm.DoOpenFile(s, '', PyIDEMainForm.ActiveTabControlIndex)
       else begin
-        UMLForm:= PyIDEMainForm.CreateUMLForm(s);
         FConfiguration.ShowAlways:= false;
+        var UMLForm:= PyIDEMainForm.CreateUMLForm(s);
+        UMLForm.Visible:= false;
         UMLForm.MainModul.AddToProject(Pathname);
         UMLForm.CreateTVFileStructure;
         UMLForm.MainModul.DoLayout;
-        FConfiguration.ShowAlways:= true;
         UMLForm.DoSave;
-        PyIDEMainForm.actRunExecute(nil);
+        PyIDEMainForm.RunFile(UMLForm.fFile);
+        UMLForm.Visible:= true;
+        FConfiguration.ShowAlways:= true;
       end;
     except on e: Exception do
       ErrorMsg(e.Message);
