@@ -2,7 +2,7 @@
  Unit Name: dmResources
  Author:    Kiriakos Vlahos
  Date:      03-Jul-2023
- Purpose:   Strores project resources and non-visual components
+ Purpose:   Stores project resources and non-visual components
  History:
 -----------------------------------------------------------------------------}
 

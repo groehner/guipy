@@ -1377,7 +1377,7 @@ function TParameter.asPythonString: string;
 begin
   Result:= Name;
   if assigned(TypeClassifier) then
-       // pep 0484 forward references, shell be solved with python 3.11 but isn't,
+    // pep 0484 forward references, shell be solved with python 3.11 but arn't,
     Result:= Result + ': ' + TypeClassifier.asType;
   if Value <> '' then
     Result:= Result + ' = ' + Value;

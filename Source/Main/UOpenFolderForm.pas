@@ -31,6 +31,7 @@ uses SysUtils;
 procedure TFOpenFolderForm.FormCreate(Sender: TObject);
 begin
   inherited;
+  ParentFont:= false;
   PathTreeView:= TShellTreeView.Create(self);
   with PathTreeView do begin
     Parent:= Self;

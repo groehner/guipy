@@ -118,8 +118,6 @@ type
     vilGutterGlyphs: TVirtualImageList;
     vilCodeImages: TVirtualImageList;
     SpTBXSeparatorItem8: TSpTBXSeparatorItem;
-    ILEditorToolbar: TImageList;
-    ILEditorToolbarDark: TImageList;
     EditformToolbar: TToolBar;
     TBClose: TToolButton;
     TBExplorer: TToolButton;
@@ -339,10 +337,10 @@ type
     procedure GoToSyntaxError;
 
     procedure Enter(Sender: TObject); override;
+    procedure SetOptions; override;
     function ReparseIfNeeded: boolean;
     procedure SyncFileStructure;
     procedure CreateStructogram;
-    procedure SetOptions;
     function isPython: boolean;
     function IsPythonAndGUI: boolean;
     function isHTML: boolean;
@@ -469,6 +467,7 @@ type
     procedure ExecuteSelection;
     procedure SplitEditorHorizontally;
     procedure SplitEditorVertrically;
+    procedure SplitEditorHide;
     procedure RefreshSymbols;
     procedure Retranslate;
     function GetForm: TForm;
@@ -559,7 +558,7 @@ uses
   dmCommands,
   uHighlighterProcs,
   dlgSynPrintPreview,
-  dlgPickList,
+  dlgRemoteFile,
   frmPyIDEMain,
   frmBreakPoints,
   frmPythonII,
@@ -572,7 +571,6 @@ uses
   cCodeHint,
   cPyScripterSettings,
   cSSHSupport,
-  dlgRemoteFile,
   UUtils,
   UConfiguration,
   uModelEntity,
@@ -909,6 +907,17 @@ begin
     EditorSplitter.Align := alRight;
     SynEdit2.Visible := True;
     EditorSplitter.Visible := True;
+  end;
+end;
+
+procedure TEditor.SplitEditorHide;
+begin
+  with fForm do
+  begin
+    EditorSplitter.Visible:= False;
+    SynEdit2.Visible := False;
+    if Synedit2.IsChained then
+      SynEdit2.RemoveLinesPointer;
   end;
 end;
 
@@ -1531,7 +1540,8 @@ begin
   Editor := GI_PyIDEServices.ActiveEditor;
   if not Assigned(Editor) then
     Exit;
-  Index := (Sender as TSpTBXItem).Tag;
+  //Index := (Sender as TSpTBXItem).Tag;
+  Index:= 2;  // Tag = 0 for valid menu items
   if (Index >= 0) and (Index < fEditorViewFactories.Count) then
   begin
     ViewFactory := fEditorViewFactories[Index] as IEditorViewFactory;
@@ -1922,7 +1932,7 @@ begin
   Synedit.UseCodeFolding := PyIDEOptions.CodeFoldingEnabled;
   Synedit2.UseCodeFolding := Synedit.UseCodeFolding;
   DefaultExtension:= copy(LowerCase(TPath.getExtension(Pathname)), 2, 20);
-  SetToolButtons;
+  SetOptions;
   ShowTkOrQt;
 
   if Assigned(Partner) then
@@ -2493,7 +2503,7 @@ end;
 
 procedure TEditorForm.FormCreate(Sender: TObject);
 begin
-  inherited;
+  StyledBorderColors(BorderNormal, BorderHighlight);
 
   FGPanelExit(Self);
 
@@ -2540,6 +2550,7 @@ begin
   TranslateComponent(Self);
 
   // GuiPy
+  SetOptions;
   PyIDEMainForm.ThemeEditorGutter(SynEdit.Gutter);
   Retranslate;
   fIndent1:= FConfiguration.Indent1;
@@ -2649,7 +2660,10 @@ end;
 
 procedure TEditorForm.SetOptions;
 begin
-  mnEditCreateStructogram.Visible:= not GuiPyOptions.LockedStructogram;
+  FConfiguration.setToolbarVisibility(EditFormToolbar, 2);
+  SetToolButtons;
+  if GuiPyOptions.LockedStructogram then
+    mnEditCreateStructogram.Visible:= false;
 end;
 
 function TEditorForm.IsPython: boolean;
@@ -3076,14 +3090,7 @@ end;
 
 procedure TEditorForm.WMSpSkinChange(var Message: TMessage);
 begin
-  if HasFocus then
-  begin
-    BGPanel.Color := frmIDEDockWin.BorderHighlight;
-  end
-  else
-  begin
-    BGPanel.Color := frmIDEDockWin.BorderNormal;
-  end;
+  StyledBorderColors(BorderNormal, BorderHighlight);
 
   PyIDEMainForm.ThemeEditorGutter(SynEdit.Gutter);
   SynEdit.InvalidateGutter;
@@ -3100,11 +3107,11 @@ end;
 procedure TEditorForm.ChangeStyle;
 begin
   if IsStyledWindowsColorDark then begin
-    EditFormToolbar.Images:= ILEditorToolbarDark;
+    EditFormToolbar.Images:= DMIMages.ILEditorToolbarDark;
     pmnuEditor.Images:= ILContextMenuDark;
     SynEdit.BookMarkOptions.BookmarkImages:= DMImages.ILBookmarksDark;
   end else begin
-    EditFormToolbar.Images:= ILEditorToolbar;
+    EditFormToolbar.Images:= DMImages.ILEditorToolbar;
     pmnuEditor.Images:= ILContextMenuLight;
     SynEdit.BookMarkOptions.BookmarkImages:= DMImages.ILBookmarksLight;
   end;
@@ -3134,6 +3141,10 @@ var
   Editor: TSynEdit;
 begin
   Editor := ActiveSynEdit;
+  if Value.EndsWith('()') then begin
+    Editor.CaretX:= Editor.CaretX - 1;
+    EndToken:= '(';
+  end;
   if EndToken = '(' then
     TThread.ForceQueue(nil, procedure
     begin
@@ -3273,32 +3284,32 @@ begin
   Python:= IsPython;
   // TBClose.Visible:= true;
   // TBExplorer.Visible:= true;
-  TBBrowser.Visible:= isHTML;
-  TBDesignform.Visible:= Python;
-  TBClassOpen.Visible:= Python;
-  TBCheck.Visible:= Python;
+  TBBrowser.Visible:= isHTML and TBBrowser.Visible;
+  TBDesignform.Visible:= Python and TBDesignform.Visible;
+  TBClassOpen.Visible:= Python and TBClassOpen.Visible;
+  TBCheck.Visible:= Python and TBCheck.Visible;
   // TBMatchBracket.Visible:= true;
-  TBClassEdit.Visible:= Python;
-  TBStructureIndent.Visible:= Python;
-  TBIfStatement.Visible:= Python;
-  TBIfElseStatement.Visible:= Python;
-  TBWhileStatement.Visible:= Python;
-  TBForStatement.Visible:= Python;
-  TBIfElifStatement.Visible:= Python;
-  TBTryStatement.Visible:= Python;
+  TBClassEdit.Visible:= Python and TBClassEdit.Visible;
+  TBStructureIndent.Visible:= Python and TBStructureIndent.Visible;
+  TBIfStatement.Visible:= Python and TBIfStatement.Visible;
+  TBIfElseStatement.Visible:= Python and TBIfElseStatement.Visible;
+  TBWhileStatement.Visible:= Python and TBWhileStatement.Visible;
+  TBForStatement.Visible:= Python and TBForStatement.Visible;
+  TBIfElifStatement.Visible:= Python and TBIfElifStatement.Visible;
+  TBTryStatement.Visible:= Python and TBTryStatement.Visible;
   // TBComment.Visible:= true;
   // TBWordWrap.Visible:= true;
   // TBIndent.Visible:= true;
   // TBUnindent.Visible:= true;
-  TBBreakpoint.Visible:= Python;
-  TBBreakpointsClear.Visible:= Python;
+  TBBreakpoint.Visible:= Python and TBBreakpoint.Visible;
+  TBBreakpointsClear.Visible:= Python and TBBreakpointsClear.Visible;
   // TBBookmark.Visible:= true;
   // TBGotoBookmark.Visible:= true;
   // TBParagraph.Visible:= true;
   // TBNumbers.Visible:= true;
   // TBZoomPlus.Visible:= true;
   // TBZoomMinus.Visible:= true;
-  TBValidate.Visible:= isHTML or isCSS; // needs TFBrowser-Support
+  TBValidate.Visible:= (isHTML or isCSS) and TBValidate.Visible; // needs TFBrowser-Support
 end;
 
 procedure TEditorForm.SynCodeCompletionExecute(Kind: SynCompletionType;
@@ -4011,7 +4022,7 @@ end;
 procedure TEditorForm.InsertLinesAt(line: integer; s: string);
   var cx, cy, tl, cl: integer; collapsed: boolean;
 begin
-  if not endsWith(s, CrLf) then
+  if not s.endsWith(CrLf) then
     s:= s + CrLf;
   with ActiveSynEdit do begin
     BeginUpdate;
@@ -5154,7 +5165,7 @@ begin
     while Ci.HasNext do begin
       cent := TClassifier(Ci.Next);
       if Cent.Pathname <> Pathname then continue;
-      if endsWith(Cent.Name, '[]') then continue;
+      if Cent.Name.endsWith('[]') then continue;
       AddFunctions(cent.LineS);
 
       {if (Cent is TClass)

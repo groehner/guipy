@@ -17,7 +17,7 @@ b) in variables (Model)
 c) in form (View)
 
            RestoreApplicationData              ModelToView
-registry  ------------------------>  model   -------------> view
+INI-Files  ----------------------->  model   -------------> view
 INI-files <----------------------- variables <------------- gui-elements
            StoreApplicationData                ViewToModel
 
@@ -35,7 +35,7 @@ uses
   SVGIconImageCollection, Vcl.ActnList, System.ImageList, Vcl.ImgList,
   Vcl.VirtualImageList, TB2Item, SpTBXItem, TB2Dock, TB2Toolbar, SpTBXEditors,
   SynEdit, Vcl.WinXPanels, SpTBXExtEditors,
-  cPyScripterSettings, dlgSynEditOptions, dlgCustomShortcuts, SynEditKeyCmds,
+  cPyScripterSettings, dlgSynEditOptions, cCustomShortcuts, SynEditKeyCmds,
   SynEditMiscClasses, SynEditPrintMargins, cFileTemplates, dlgPyIDEBase,
   VirtualTrees.Types, VirtualTrees.BaseAncestorVCL, VirtualTrees.BaseTree,
   VirtualTrees.AncestorVCL;
@@ -43,8 +43,11 @@ uses
 Const
   CrLf = #13#10;
   Homepage = 'https://www.guipy.de';
-  MaxTab = 1;
-  MaxTabItem = 22;
+  VisTabsLen = 5; // Program, Tkinter, TTK, QtBase, QtControls
+  VisMenusLen = 9; // all menus
+  VisToolbarsLen = 6; // Main, Debug, Editor, UML, Structogram, Sequencediagram
+  MaxVisLen = VisTabsLen + VisMenusLen + VisToolbarsLen;
+  MaxTabItem = 28;
 
 type
   TBoolArray = array of boolean;
@@ -140,6 +143,31 @@ type
     // Associations
     fAdditionalAssociations: string;
 
+    // Visibility
+    fVisProgram: string;
+    fVisTkinter: string;
+    fVisTTK: string;
+    fVisQTBase: string;
+    fVisQTControls: string;
+    fVisTabs: string;
+    fVisMenus: string;
+    fVisToolbars: string;
+    fVisFileMenu: string;
+    fVisEditMenu: string;
+    fVisSearchMenu: string;
+    fVisViewMenu: string;
+    fVisProjectMenu: string;
+    fVisRunMenu: string;
+    fVisUMLMenu: string;
+    fVisToolsMenu: string;
+    fVisHelpMenu: string;
+    fVisMainToolbar: string;
+    fVisDebugToolbar: string;
+    fVisEditToolbar: string;
+    fVisUMLToolbar: string;
+    fVisStructoToolbar: string;
+    FVisSequenceToolbar: string;
+
     // Git
     fGitFolder: string;
     fGitLocalRepository: string;
@@ -204,136 +232,164 @@ type
 
     // Class modeler
     property ShowGetSetMethods: boolean read FShowGetSetMethods
-      write FShowGetSetMethods default true;
+      write FShowGetSetMethods;
     property GetSetMethodsAsProperty: boolean read FGetSetMethodsAsProperty
-      write FGetSetMethodsAsProperty default true;
+      write FGetSetMethodsAsProperty;
     property ShowTypeSelection: boolean read FShowTypeSelection
-      write FShowTypeSelection default true;
+      write FShowTypeSelection;
     property ShowKindProcedure: boolean read FShowKindProcedure
-      write FShowKindProcedure default true;
+      write FShowKindProcedure;
     property ShowParameterTypeSelection: boolean read FShowParameterTypeSelection
-      write FShowParameterTypeSelection default true;
+      write FShowParameterTypeSelection;
     property FromFutureImport: boolean read FFromFutureImport
-      write FFromFutureImport default true;
+      write FFromFutureImport;
 
     // GUI designer
     property NameFromText : boolean read fNameFromText
-      write FNameFromText default true;
+      write FNameFromText;
     property GuiDesignerHints : boolean read fGuiDesignerHints
-      write fGuiDesignerHints default true;
+      write fGuiDesignerHints;
     property SnapToGrid : boolean read fSnapToGrid
-      write fSnapToGrid default true;
+      write fSnapToGrid;
     property AlignToGrid : boolean read fAlignToGrid
-      write fAlignToGrid default true;
+      write fAlignToGrid;
     property GridSize : Integer read fGridSize
-      write fGridSize default 8;
+      write fGridSize;
     property FrameWidth : Integer read fFrameWidth
-      write fFrameWidth default 300;
+      write fFrameWidth;
     property FrameHeight : Integer read fFrameHeight
-      write fFrameHeight default 300;
+      write fFrameHeight;
 
     // structogram
     property StructoDatatype : string read fStructoDatatype
       write fStructoDatatype;
     property SwitchWithCaseLine : boolean read fSwitchWithCaseLine
-      write fSwitchWithCaseLine default true;
-    property CaseCount : Integer read fCaseCount write fCaseCount default 4;
+      write fSwitchWithCaseLine;
+    property CaseCount : Integer read fCaseCount write fCaseCount;
     property StructogramShadowWidth : Integer read fStructogramShadowWidth
-      write fStructogramShadowWidth default 3;
+      write fStructogramShadowWidth;
     property StructogramShadowIntensity : Integer read fStructogramShadowIntensity
-      write fStructogramShadowIntensity default 8;
+      write fStructogramShadowIntensity;
 
     // sequence diagram
     property SDFillingColor : TColor read fSDFillingcolor
-      write fSDFillingColor default clYellow;
+      write fSDFillingColor;
     property SDNoFilling : boolean read fSDNoFilling
-      write fSDNoFilling default false;
+      write fSDNoFilling;
     property SDShowMainCall : boolean read fSDShowMainCall
-      write fSDShowMainCall default false;
+      write fSDShowMainCall;
     property SDShowParameter : boolean read fSDShowParameter
-      write fSDShowParameter default true;
+      write fSDShowParameter;
     property SDShowReturn : boolean read fSDShowReturn
-      write fSDShowReturn default true;
+      write fSDShowReturn;
 
     // UML design
     property ValidClassColor : TColor read fValidClassColor
-      write fValidClassColor default clWhite;
+      write fValidClassColor;
     property InvalidClassColor : TColor read fInvalidClassColor
-      write fInvalidClassColor default clFuchsia;
+      write fInvalidClassColor;
     property ClassHead : integer read fClassHead
-      write fClassHead default 0;
+      write fClassHead;
     property ShadowWidth : integer read fShadowWidth
-      write fShadowWidth default 3;
+      write fShadowWidth;
     property ShadowIntensity : integer read fShadowIntensity
-      write fShadowIntensity default 8;
+      write fShadowIntensity;
     property ObjectColor : TColor read fObjectColor
-      write fObjectColor default clYellow;
+      write fObjectColor;
     property ObjectHead : integer read fObjectHead
-      write fObjectHead default 1;
+      write fObjectHead;
     property ObjectFooter : integer read fObjectFooter
-      write fObjectFooter default 1;
+      write fObjectFooter;
     property ObjectCaption : integer read fObjectCaption
-      write fObjectCaption default 0;
+      write fObjectCaption;
     property ObjectUnderline : boolean read fObjectUnderline
-      write fObjectUnderline default true;
+      write fObjectUnderline;
     property CommentColor : TColor read fCommentColor
-      write fCommentColor default clSkyBlue;
+      write fCommentColor;
     property DiVisibilityFilter : integer read fDiVisibilityFilter
-      write fDiVisibilityFilter default 0;  // otherwise 0 isn't saved
+      write fDiVisibilityFilter;
     property DiSortOrder : integer read fDiSortOrder
-      write fDiSortOrder default 0;
+      write fDiSortOrder;
     property DIShowParameter : integer read fDIShowParameter
-      write fDIShowParameter default 4;
+      write fDIShowParameter;
     property DiShowIcons : integer read fDiShowIcons
-      write fDiShowIcons default 1;
+      write fDiShowIcons;
 
     // UML options
     property ShowEmptyRects : boolean read fShowEmptyRects
-      write fShowEmptyRects default false;
+      write fShowEmptyRects;
     property IntegerInsteadofInt : boolean read fIntegerInsteadofInt
-      write fIntegerInsteadofInt default false;
+      write fIntegerInsteadofInt;
     property ConstructorWithVisibility : boolean read fConstructorWithVisibility
-      write fConstructorWithVisibility default false;
+      write fConstructorWithVisibility;
     property RelationshipAttributesBold : boolean read fRelationshipAttributesBold
-      write fRelationshipAttributesBold default true;
+      write fRelationshipAttributesBold;
     property ShowClassparameterSeparately : boolean read fShowClassparameterSeparately
-      write fShowClassparameterSeparately default false;
+      write fShowClassparameterSeparately ;
     property RoleHidesAttribute : boolean read fRoleHidesAttribute
-      write fRoleHidesAttribute default false;
+      write fRoleHidesAttribute;
     property ClassnameInUppercase : boolean read fClassnameInUppercase
-      write fClassnameInUppercase default false;
+      write fClassnameInUppercase;
     property DefaultModifiers : boolean read fDefaultModifiers
-      write fDefaultModifiers default true;
+      write fDefaultModifiers;
     property ShowPublicOnly : boolean read fShowPublicOnly
-      write fShowPublicOnly default false;
+      write fShowPublicOnly;
     property ShowObjectsWithInheritedPrivateAttributes : boolean read fShowObjectsWithInheritedPrivateAttributes
-      write fShowObjectsWithInheritedPrivateAttributes default true;
+      write fShowObjectsWithInheritedPrivateAttributes;
     property ShowObjectsWithMethods : boolean read fShowObjectsWithMethods
-      write fShowObjectsWithMethods default false;
+      write fShowObjectsWithMethods;
     property ObjectLowerCaseLetter : boolean read fObjectLowerCaseLetter
-      write fObjectLowerCaseLetter default true;
+      write fObjectLowerCaseLetter;
     property ShowAllNewObjects : boolean read fShowAllNewObjects
-      write fShowAllNewObjects default true;
+      write fShowAllNewObjects;
     property ObjectsWithoutVisibility : boolean read fObjectsWithoutVisibility
-      write fObjectsWithoutVisibility default true;
+      write fObjectsWithoutVisibility;
     property PrivateAttributEditable : boolean read fPrivateAttributEditable
-      write fPrivateAttributEditable default true;
+      write fPrivateAttributEditable;
 
     // restrictions
     property LockedDOSWindow : boolean read fLockedDOSWindow
-      write fLockedDOSWindow default false;
+      write fLockedDOSWindow;
     property LockedInternet : boolean read fLockedInternet
-      write fLockedInternet default false;
+      write fLockedInternet;
     property LockedPaths : boolean read fLockedPaths
-      write fLockedPaths default false;
+      write fLockedPaths;
     property LockedStructogram : boolean read fLockedStructogram
-      write fLockedStructogram default false;
+      write fLockedStructogram;
     property UsePredefinedLayouts : boolean read FUsePredefinedLayouts
-      write fUsePredefinedLayouts default false;
+      write fUsePredefinedLayouts;
 
     // Associations
     property AdditionalAssociations: string read fAdditionalAssociations
       write fAdditionalAssociations;
+
+    // Visibility
+    property VisTabs: string read fVisTabs write fVisTabs;
+    property VisMenus: string read fVisMenus write fVisMenus;
+    property VisToolbars: string read fVisToolbars write fVisToolbars;
+
+    property VisProgram: string read fVisProgram write fVisProgram;
+    property VisTkinter: string read fVisTkinter write fVisTkinter;
+    property VisTTK: string read fVisTTK write fVisTTK;
+    property VisQtBase: string read fVisQtBase write fVisQtBase;
+    property VisQtControls: string read fVisQtControls write fVisQtControls;
+
+    property VisFileMenu: string read fVisFileMenu write fVisFileMenu;
+    property VisEditMenu: string read fVisEditMenu write fVisEditMenu;
+    property VisSearchMenu: string read fVisSearchMenu write fVisSearchMenu;
+    property VisViewMenu: string read fVisViewMenu write fVisViewMenu;
+    property VisProjectMenu: string read fVisProjectMenu write fVisProjectMenu;
+    property VisRunMenu: string read fVisRunMenu write fVisRunMenu;
+    property VisUMLMenu: string read fVisUMLMenu write fVisUMLMenu;
+    property VisToolsMenu: string read fVisToolsMenu write fVisToolsMenu;
+    property VisHelpMenu: string read fVisHelpMenu write fVisHelpMenu;
+
+    property VisMainToolbar: string read fVisMainToolbar write fVisMainToolbar;
+    property VisDebugToolbar: string read fVisDebugToolbar write fVisDebugToolbar;
+    property VisEditToolbar: string read fVisEditToolbar write fVisEditToolbar;
+    property VisUMLToolbar: string read fVisUMLToolbar write fVisUMLToolbar;
+    property VisStructoToolbar: string read fVisStructoToolbar write fVisStructoToolbar;
+    property VisSequenceToolbar: string read fVisSequenceToolbar write fVisSequenceToolbar;
 
     // Git
     property GitFolder: string read getGitFolder
@@ -357,15 +413,15 @@ type
     property TextDiffState: string read fTextDiffState
       write fTextDiffState;
     property TextDiffIgnoreCase: boolean read fTextDiffIgnoreCase
-      write fTextDiffIgnoreCase default false;
+      write fTextDiffIgnoreCase;
     property TextDiffIgnoreBlanks: boolean read fTextDiffIgnoreBlanks
-      write fTextDiffIgnoreBlanks default false;
+      write fTextDiffIgnoreBlanks;
 
     // Browser
     property UseIEinternForDocuments: boolean read fUseIEinternForDocuments
-      write fUseIEinternForDocuments default true;
+      write fUseIEinternForDocuments;
     property OnlyOneBrowserWindow: boolean read fOnlyOneBrowserWindow
-      write fOnlyOneBrowserWindow default false;
+      write fOnlyOneBrowserWindow;
     property BrowserTitle: string read fBrowserTitle
       write fBrowserTitle;
     property OpenBrowserShortcut: string read fOpenBrowserShortcut
@@ -994,6 +1050,18 @@ type
     CBClassnameInUppercase: TCheckBox;
     GBClassOptions: TGroupBox;
     CBFromFutureImport: TCheckBox;
+    PVisibility: TTabSheet;
+    LVisTabs: TLabel;
+    LVVisibilityTabs: TListView;
+    LVVisibilityElements: TListView;
+    LVisMenus: TLabel;
+    LVVisibilityMenus: TListView;
+    LVisToolbars: TLabel;
+    LVVisibilityToolbars: TListView;
+    BVisDefault: TButton;
+    UDIDEFontSize: TUpDown;
+    LIDEFontSize: TLabel;
+    EIDEFontSize: TEdit;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1106,7 +1174,27 @@ type
     procedure btnResetKeysClick(Sender: TObject);
     procedure actFileDefaultItemExecute(Sender: TObject);
     procedure actFileDefaultAllExecute(Sender: TObject);
+    procedure BVisDefaultClick(Sender: TObject);
+    procedure LVVisibilityTabsChange(Sender: TObject; Item: TListItem;
+      Change: TItemChange);
+    procedure LVVisibilityToolbarsChange(Sender: TObject; Item: TListItem;
+      Change: TItemChange);
+    procedure LVVisibilityMenusChange(Sender: TObject; Item: TListItem;
+      Change: TItemChange);
+    procedure LVVisibilityChanging(Sender: TObject; Item: TListItem;
+      Change: TItemChange; var AllowChange: Boolean);
   private
+    const
+      DefaultVisFileMenu   = '11100111011101011';      // len = 17
+      DefaultVisEditMenu   = '111110011110001';        // len = 15
+      DefaultVisSearchMenu = '100101111111011';        // len = 15
+      DefaultVisViewMenu   = '1100110001111111111111'; // len = 22
+      DefaultVisProjectMenu = '111111';                // len = 6
+      DefaultVisRunMenu     = '01111011111111111';     // len = 17
+      DefaultVisUMLMenu     = '111111111';             // len = 9
+      DefaultVisToolsMenu   = '11101111111110001';     // len = 17
+      DefaultVisHelpMenu    = '11111';                 // len = 5
+    var
     fHighlighters : TList;
     fColorThemeHighlighter : TSynCustomHighlighter;
     HighlighterFileDir: string;
@@ -1138,6 +1226,11 @@ type
     FHandleChanges : Boolean;  //Normally true, can prevent unwanted execution of event handlers
     IndentWidth: Integer;
     CurrentLanguage: string;
+
+    // tab Visibility
+    vis1: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of boolean;
+    vis2: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of boolean;
+    TabsMenusToolbars: integer;
 
     function DirectoryFilesExists(s: String): boolean;
     procedure CheckFolder(Edit: TEdit; emptyAllowed: boolean);
@@ -1191,7 +1284,6 @@ type
     procedure StyleSelectorFormCreate;
     procedure StyleSelectorFormShow;
     procedure FillVclStylesList;
-    procedure SetStyle(StyleName: string);
     procedure ApplyColorTheme;
 
     procedure ModelToView;
@@ -1211,17 +1303,33 @@ type
     procedure MakeControlStructureTemplates;
     procedure EnableColorItems(aEnable:boolean);
     procedure StoreApplicationData;
+
+    procedure LoadVisibility;
+    procedure SaveVisibility;
+    procedure VisibilityViewToModel;
+    procedure VisibilityModelToView;
+    function CountMenuItems(Menu: TTBCustomItem): integer;
+    procedure PrepareVisibilityPage;
+    procedure ActivateOnChangings(active: boolean);
+    procedure setSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Nr: integer);
   public
     ShowAlways: boolean;
-    CurrentSkinName : string;
+    class var CurrentSkinName : string;
     Indent1, Indent2, Indent3: string;
     ControlStructureTemplates: array[1..21] of TStringList;
     GitOK: boolean;
     SubversionOK: boolean;
     EditorFolder: String;
     KeyStrokesReset: boolean;
+    VisTabs:     TBoolArray;
+    VisMenus:    TBoolArray;
+    VisToolbars: TBoolArray;
 
     procedure Changed;
+    procedure RestoreApplicationData;
+    procedure setToolbarVisibility(Toolbar: TToolbar; Nr: integer);
+    procedure InitVisibility;
+    procedure SetVisibility;
     function getEncoding(const Pathname: string): TEncoding;
     procedure PrepareShow;
     function getMultiLineComment(Indent: string): string;
@@ -1236,6 +1344,7 @@ type
     procedure LanguageOptionsToModel;
     procedure DoHelp(Adresse: string);
     function getClassesAndFilename(Pathname: string): TStringList;
+    procedure SetStyle(StyleName: string);
     class function isDark: boolean;
 
     property GetUserCommandNames: TSynEditorOptionsUserCommand read FUserCommand
@@ -1254,12 +1363,13 @@ implementation
 
 {$R *.DFM}
 
-uses SynUnicode, StringResources, JvGnugettext, FileCtrl, Forms,
+uses SynUnicode, StringResources, JvGnugettext, FileCtrl, Forms, Math,
      Menus, ShlObj, Themes, ShellAPI, Winapi.RichEdit, SynEditTypes, UUtils, Contnrs,
      Registry, SynEditPrintTypes, dmResources, dmCommands, cPyControl, uEditAppIntfs,
      PythonVersions, uCommonFunctions, cPySupportTypes, frmPyIDEMain, SpTBXTabs,
      IOUtils, JvAppStorage, JvAppIniStorage, SynEditKeyConst, JvJCLUtils,
-     frmFile, frmEditor, UGit, USubversion;
+     frmFile, frmEditor, UUMLForm, UStructogram, USequenceform, UImages, UGit,
+     USubversion;
 
 const
   MaxPages = 34;
@@ -1326,6 +1436,7 @@ procedure TFConfiguration.FormCreate(Sender: TObject);
   var i: integer;
 begin
   inherited;
+  Width:= 860;
   TempFileTemplates := TFileTemplates.Create;
   GuiPyOptions:= TGuiPyOptions.Create;
   GuiPyLanguageOptions:= TGuiPyLanguageOptions.Create;
@@ -1357,7 +1468,11 @@ begin
   EditorFolder:= ExtractFilePath(ParamStr(0));
   StyleSelectorFormCreate;
   KeyStrokesReset:= false;
-  Changed;
+  setLength(VisTabs, VisTabsLen);
+  setLength(VisMenus, VisMenusLen);
+  setLength(VisToolbars, VisToolbarsLen);
+  TabsMenusToolbars:= 1;
+  ParentFont:= false;
 end;
 
 procedure TFConfiguration.FormDestroy(Sender: TObject);
@@ -1402,9 +1517,8 @@ begin
 end;
 
 procedure TFConfiguration.FormShow(Sender: TObject);
-  var i: integer;
 begin
-  for i:= 0 to PageList.PageCount - 1 do
+  for var i:= 0 to PageList.PageCount - 1 do
     TVConfiguration.Items[i].Text:= PageList.Pages[i].Caption;
   vtPythonVersions.Header.Columns.Items[1].Text:= _('Folder');
 
@@ -1431,7 +1545,7 @@ begin
     while p > 0 do begin
       dir:= Trim(Copy(s, 1, p-1));
       delete(s, 1, p);
-      if endsWith(dir, '*') then delete(dir, length(dir), 1);
+      if dir.endsWith('*') then delete(dir, length(dir), 1);
       if ((Copy(dir, 2, 1) = ':') or (Copy(dir, 1, 2) = '\\')) and
          not (SysUtils.DirectoryExists(dir) or FileExists(dir)) then
           Result:= false;
@@ -1502,7 +1616,6 @@ begin
   try
     ViewToModel;
     StoreApplicationData;
-    Changed;
   finally
     Screen.Cursor:= crDefault;
   end;
@@ -1593,6 +1706,7 @@ procedure TFConfiguration.Changed;
 begin
   ShowAlways:= true;
   ResourcesDataModule.dlgFileOpen.Filter:= getFileFilters;
+  SetVisibility;
 
   // tab Editor
   IndentWidth:= EditorOptions.TabWidth;
@@ -1603,17 +1717,22 @@ begin
 
   // tab Git
   GitOK := FileExists(GuiPyOptions.GitFolder + '\bin\git.exe');
-  PyIDEMainForm.mnToolsGit.Visible:= GitOK;
+  PyIDEMainForm.mnToolsGit.Visible:= GitOK and vis1[VisTabsLen + 7, 4];
   if GitOK and (FGit = nil) then
     FGit:= TFGit.Create(Self);
 
   // tab Subversion
   SubversionOK := FileExists(GuiPyOptions.SVNFolder + '\svn.exe');
-  PyIDEMainForm.mnToolsSVN.Visible:= SubversionOK;
+  PyIDEMainForm.mnToolsSVN.Visible:= SubversionOK  and vis1[VisTabsLen + 7, 5];
   if SubversionOK and (FSubversion = nil) then
     FSubversion:= TFSubversion.Create(Self);
 
   PyIDEMainForm.setLayoutMenus(GuiPyOptions.UsePredefinedLayouts);
+
+  GI_FileFactory.ApplyToFiles(procedure(aFile: IFile)
+  begin
+      (aFile as TFile).fForm.setOptions;
+  end);
 end;
 
 procedure TFConfiguration.ModelToView;
@@ -1755,6 +1874,7 @@ begin
     UDNoOfRecentFiles.Position:= NoOfRecentFiles;
     UDDockAnimationInterval.Position:= DockAnimationInterval;
     UDDockAnimationMoveWidth.Position:= DockAnimationMoveWidth;
+    UDIDEFontSize.Position:= UIContentFontSize;
     RGEditorTabPosition.ItemIndex:= Ord(EditorsTabPosition);
     RGFileChangeNotification.ItemIndex:= Ord(FileChangeNotification);
     ShortenPath(ETempFolder, GuiPyOptions.TempDir);
@@ -1866,6 +1986,9 @@ begin
     EGuiPyAssociation.Text:= getRegisteredGuiPy;
     EAdditionalAssociations.Text:= AdditionalAssociations;
 
+    // tab Visibility
+    VisibilityModelToView;
+
     // tab Git
     ShortenPath(EGitFolder, AddPortableDrive(GitFolder));
     ShortenPath(CBLocalRepository, AddPortableDrive(GitLocalRepository));
@@ -1936,8 +2059,22 @@ end;
 
 procedure TFConfiguration.StoreApplicationData;
 begin
+  SaveVisibility;
+  Changed;
   PyIDEOptions.Changed;
   PyIDEMainForm.StoreApplicationData;
+end;
+
+procedure TFConfiguration.RestoreApplicationData;
+begin
+  LoadVisibility;
+  Changed;
+end;
+
+procedure TFConfiguration.PrepareShow;
+begin
+  ModelToView;
+  CheckAllFilesAndFolders;
 end;
 
 procedure TFConfiguration.ViewToModel;
@@ -2087,6 +2224,7 @@ begin
     NoOfRecentFiles:= UDNoOfRecentFiles.Position;
     DockAnimationInterval:= UDDockAnimationInterval.Position;
     DockAnimationMoveWidth:= UDDockAnimationMoveWidth.Position;
+    UIContentFontSize:= UDIDEFontSize.Position;
     EditorsTabPosition:= TSpTBXTabPosition(RGEditorTabPosition.ItemIndex);
     FileChangeNotification:= TFileChangeNotificationType(RGFileChangeNotification.ItemIndex);
 
@@ -2179,6 +2317,9 @@ begin
 
     // tab Associations
     AdditionalAssociations:= EAdditionalAssociations.Text;
+
+    // Visibility
+    VisibilityViewToModel;
 
     // tab Git
     GitFolder:= ExtendPath(EGitFolder);
@@ -2443,18 +2584,13 @@ begin
   end;
 end;
 
+
 procedure TFConfiguration.PageListClose;
 begin
   ResourcesDataModule.ParameterCompletion.Editor := nil;
   ResourcesDataModule.ModifierCompletion.Editor := nil;
   CodeSynTemplate.Highlighter := nil;
   FileSynTemplate.Highlighter := nil;
-end;
-
-procedure TFConfiguration.PrepareShow;
-begin
-  ModelToView;
-  CheckAllFilesAndFolders;
 end;
 
 function TFConfiguration.GetEncoding(const Pathname: string): TEncoding;
@@ -4916,7 +5052,7 @@ begin
     FGit.GitCall('clone ' + Remote + ' ', Dir);
     aName:= ExtractFileNameEx(Remote);
     aName:= ChangeFileExt(aName, '');
-    if not EndsWith(Dir, '\' + aName) then
+    if not Dir.EndsWith('\' + aName) then
       CBLocalRepository.Text:= Dir + '\' + aName;
     if CBRemoteRepository.Items.IndexOf(Remote) = -1 then
       CBRemoteRepository.Items.Insert(0, Remote);
@@ -5019,6 +5155,616 @@ begin
     FindClose(SR);
     FreeAndNil(SL);
   end;
+end;
+
+procedure TFConfiguration.InitVisibility;
+begin
+  PrepareVisibilityPage;
+  Changed;
+end;
+
+procedure TFConfiguration.LoadVisibility;
+  var n: integer;
+
+  procedure StringVisibilityToArr1(s: string; var arr: TBoolArray);
+  begin
+    for var i:= 0 to high(arr) do
+      arr[i]:= (s[i+1] = '1');
+  end;
+
+  procedure StringVisibilityToArr2(s: string; l, n: integer);
+  begin
+    for var i:= 0 to l - 1 do
+      vis1[n, i]:= (s[i+1] = '1');
+  end;
+
+begin
+  if Length(GuiPyOptions.VisTabs) <> VisTabsLen then
+    GuiPyOptions.VisTabs:= StringOfChar('1', VisTabsLen);
+  StringVisibilityToArr1(GuiPyOptions.VisTabs, VisTabs);
+
+  if Length(GuiPyOptions.VisMenus) <> VisMenusLen then
+    GuiPyOptions.VisMenus:= StringOfChar('1', VisMenusLen);
+  StringVisibilityToArr1(GuiPyOptions.VisMenus, VisMenus);
+
+  if Length(GuiPyOptions.VisToolbars) <> VisToolbarsLen then
+    GuiPyOptions.VisToolbars:= StringOfChar('1', VisToolbarsLen);
+  StringVisibilityToArr1(GuiPyOptions.VisToolbars, VisToolbars);
+
+  n:= PyIDEMainForm.ToolbarProgram.ButtonCount;
+  if Length(GuiPyOptions.VisProgram) <> n then
+    GuiPyOptions.VisProgram:= StringOfChar('1', n);
+  StringVisibilityToArr2(GuiPyOptions.VisProgram, n, 0);
+
+  n:= PyIDEMainForm.ToolbarTkinter.ButtonCount;
+  if Length(GuiPyOptions.VisTkinter) <> n then
+    GuiPyOptions.VisTkinter:= StringOfChar('1', n);
+  StringVisibilityToArr2(GuiPyOptions.VisTkinter, n, 1);
+
+  n:= PyIDEMainForm.ToolBarTTK.ButtonCount;
+  if Length(GuiPyOptions.VisTTK) <> n then
+    GuiPyOptions.VisTTK:= StringOfChar('1', n);
+  StringVisibilityToArr2(GuiPyOptions.VisTTK, n, 2);
+
+  n:= PyIDEMainForm.ToolbarQtBase.ButtonCount;
+  if Length(GuiPyOptions.VisQtBase) <> n then
+    GuiPyOptions.VisQtBase:= StringOfChar('1', n);
+  StringVisibilityToArr2(GuiPyOptions.VisQtBase, n, 3);
+
+  n:= PyIDEMainForm.ToolbarQtControls.ButtonCount;
+  if Length(GuiPyOptions.VisQtControls) <> n then
+    GuiPyOptions.VisQtControls:= StringOfChar('1', n);
+  StringVisibilityToArr2(GuiPyOptions.VisQtControls, n, 4);
+
+  // --- Menus
+  n:= Length(DefaultVisFileMenu);
+  if Length(GuiPyOptions.VisFileMenu) <> n then
+    GuiPyOptions.VisFileMenu:= DefaultVisFileMenu;
+  StringVisibilityToArr2(GuiPyOptions.VisFileMenu, n, 5);
+
+  n:= Length(DefaultVisEditMenu);
+  if Length(GuiPyOptions.VisEditMenu) <> n then
+    GuiPyOptions.VisEditMenu:= DefaultVisEditMenu;
+  StringVisibilityToArr2(GuiPyOptions.VisEditMenu, n, 6);
+
+  n:= Length(DefaultVisSearchMenu);
+  if Length(GuiPyOptions.VisSearchMenu) <> n then
+    GuiPyOptions.VisSearchMenu:= DefaultVisSearchMenu;
+  StringVisibilityToArr2(GuiPyOptions.VisSearchMenu, n, 7);
+
+  n:= Length(DefaultVisViewMenu);
+  if Length(GuiPyOptions.VisViewMenu) <> n then
+    GuiPyOptions.VisViewMenu:= DefaultVisViewMenu;
+  StringVisibilityToArr2(GuiPyOptions.VisViewMenu, n, 8);
+
+  n:= Length(DefaultVisProjectMenu);
+  if Length(GuiPyOptions.VisProjectMenu) <> n then
+    GuiPyOptions.VisProjectMenu:= DefaultVisProjectMenu;
+  StringVisibilityToArr2(GuiPyOptions.VisProjectMenu, n, 9);
+
+  n:= Length(DefaultVisRunMenu);
+  if Length(GuiPyOptions.VisRunMenu) <> n then
+    GuiPyOptions.VisRunMenu:= DefaultVisRunMenu;
+  StringVisibilityToArr2(GuiPyOptions.VisRunMenu, n, 10);
+
+  n:= Length(DefaultVisUMLMenu);
+  if Length(GuiPyOptions.VisUMLMenu) <> n then
+    GuiPyOptions.VisUMLMenu:= DefaultVisUMLMenu;
+  StringVisibilityToArr2(GuiPyOptions.VisUMLMenu, n, 11);
+
+  n:= Length(DefaultVisToolsMenu);
+  if Length(GuiPyOptions.VisToolsMenu) <> n then
+    GuiPyOptions.VisToolsMenu:= DefaultVisToolsMenu;
+  StringVisibilityToArr2(GuiPyOptions.VisToolsMenu, n, 12);
+
+  n:= Length(DefaultVisHelpMenu);
+  if Length(GuiPyOptions.VisHelpMenu) <> n then
+    GuiPyOptions.VisHelpMenu:= DefaultVisHelpMenu;
+  StringVisibilityToArr2(GuiPyOptions.VisHelpMenu, n, 13);
+
+  // --- Toolbars
+
+  n:= PyIDEMainForm.MainToolbar.Items.Count;
+  if Length(GuiPyOptions.VisMainToolbar) <> n then
+    GuiPyOptions.VisMainToolbar:= StringOfChar('1', n);
+  StringVisibilityToArr2(GuiPyOptions.VisMainToolbar, n, 14);
+
+  n:= PyIDEMainForm.DebugToolbar.Items.Count;
+  if Length(GuiPyOptions.VisDebugToolbar) <> n then
+    GuiPyOptions.VisDebugToolbar:= StringOfChar('1', n);
+  StringVisibilityToArr2(GuiPyOptions.VisDebugToolbar, n, 15);
+
+  n:= DMImages.ILEditorToolbar.Count;
+  if Length(GuiPyOptions.VisEditToolbar) <> n then
+    GuiPyOptions.VisEditToolbar:= StringOfChar('1', n);
+  StringVisibilityToArr2(GuiPyOptions.VisEditToolbar, n, 16);
+
+  n:= DMImages.ILUMLToolbarLight.Count;
+  if Length(GuiPyOptions.VisUMLToolbar) <> n then
+    GuiPyOptions.VisUMLToolbar:= StringOfChar('1', n);
+  StringVisibilityToArr2(GuiPyOptions.VisUMLToolbar, n, 17);
+
+  n:= DMImages.ILStructogramToolbar.Count;
+  if Length(GuiPyOptions.VisStructoToolbar) <> n then
+    GuiPyOptions.VisStructoToolbar:= StringOfChar('1', n);
+  StringVisibilityToArr2(GuiPyOptions.VisStructoToolbar, n, 18);
+
+  n:= DMImages.ILSequenceToolbar.Count;
+  if Length(GuiPyOptions.VisSequenceToolbar) <> n then
+    GuiPyOptions.VisSequenceToolbar:= StringOfChar('1', n);
+  StringVisibilityToArr2(GuiPyOptions.VisSequenceToolbar, n, 19);
+end;
+
+procedure TFConfiguration.SaveVisibility;
+
+  function ArrVisibilityToString1(arr: array of boolean): string;
+  begin
+    var s:= '';
+    for var i:= 0 to High(arr) do
+      if arr[i]
+        then s:= s + '1'
+        else s:= s + '0';
+    Result:= s;
+  end;
+
+  function ArrVisibilityToString2(Tab, n: integer): string;
+  begin
+    var s:= '';
+    for var i:= 0 to n-1 do
+      if vis1[Tab, i]
+        then s:= s + '1'
+        else s:= s + '0';
+    Result:= s;
+  end;
+
+begin
+  GuiPyOptions.VisTabs      := ArrVisibilityToString1(VisTabs);
+  GuiPyOptions.VisMenus     := ArrVisibilityToString1(VisMenus);
+  GuiPyOptions.VisToolbars  := ArrVisibilityToString1(VisToolbars);
+
+  GuiPyOptions.VisProgram   := ArrVisibilityToString2(0, PyIDEMainForm.ToolbarProgram.ButtonCount);
+  GuiPyOptions.VisTkinter   := ArrVisibilityToString2(1, PyIDEMainForm.ToolbarTkinter.ButtonCount);
+  GuiPyOptions.VisTTK       := ArrVisibilityToString2(2, PyIDEMainForm.ToolbarTTK.ButtonCount);
+  GuiPyOptions.VisQtBase    := ArrVisibilityToString2(3, PyIDEMainForm.ToolbarQtBase.ButtonCount);
+  GuiPyOptions.VisQtControls:= ArrVisibilityToString2(4, PyIDEMainForm.ToolbarQtControls.ButtonCount);
+
+  GuiPyOptions.VisFileMenu   := ArrVisibilityToString2( 5, CountMenuItems(PyIDEMainForm.MainMenu.Items[0]));
+  GuiPyOptions.VisEditMenu   := ArrVisibilityToString2( 6, CountMenuItems(PyIDEMainForm.MainMenu.Items[1]));
+  GuiPyOptions.VisSearchMenu := ArrVisibilityToString2( 7, CountMenuItems(PyIDEMainForm.MainMenu.Items[2]));
+  GuiPyOptions.VisViewMenu   := ArrVisibilityToString2( 8, CountMenuItems(PyIDEMainForm.MainMenu.Items[3]));
+  GuiPyOptions.VisProjectMenu:= ArrVisibilityToString2( 9, CountMenuItems(PyIDEMainForm.MainMenu.Items[4]));
+  GuiPyOptions.VisRunMenu    := ArrVisibilityToString2(10, CountMenuItems(PyIDEMainForm.MainMenu.Items[5]));
+  GuiPyOptions.VisUMLMenu    := ArrVisibilityToString2(11, CountMenuItems(PyIDEMainForm.MainMenu.Items[6]));
+  GuiPyOptions.VisToolsMenu  := ArrVisibilityToString2(12, CountMenuItems(PyIDEMainForm.MainMenu.Items[7]));
+  GuiPyOptions.VisHelpMenu   := ArrVisibilityToString2(13, CountMenuItems(PyIDEMainForm.MainMenu.Items[8]));
+
+  GuiPyOptions.VisMainToolbar    := ArrVisibilityToString2(14, PyIDEMainForm.MainToolbar.Items.Count);
+  GuiPyOptions.VisDebugToolbar   := ArrVisibilityToString2(15, PyIDEMainForm.DebugToolbar.Items.Count);
+  GuiPyOptions.VisEditToolbar    := ArrVisibilityToString2(16, DMImages.ILEditorToolbar.Count);
+  GuiPyOptions.VisUMLToolbar     := ArrVisibilityToString2(17, DMImages.ILUMLToolbarLight.Count);
+  GuiPyOptions.VisStructoToolbar := ArrVisibilityToString2(18, DMImages.ILStructogramToolbar.Count);
+  GuiPyOptions.VisSequenceToolbar:= ArrVisibilityToString2(19, DMImages.ILSequenceToolbar.Count);
+end;
+
+procedure TFConfiguration.SetVisibility;
+  var i, j: integer; Toolbar: TToolbar; Toolbutton: TToolbutton;
+      Menu: TTBCustomItem; allTabsClosed: boolean;
+
+  function IndexItemsToPages(Index: integer): integer;
+  begin
+    var Lookup:= PyIDEMainForm.TabControlWidgets.Items[Index].Caption;
+    for var i := 0 to PyIDEMainForm.TabControlWidgets.Items.Count - 1 do
+      if PyIDEMainForm.TabControlWidgets.Pages[i].Caption = Lookup then
+        Exit(i);
+    Result:= -1;
+  end;
+
+  begin
+  allTabsClosed:= true;
+  for i:= 0 to High(VisTabs) do begin
+    PyIDEMainForm.TabControlWidgets.Pages[IndexItemsToPages(i)].TabVisible:= VisTabs[i];
+    if VisTabs[i] then allTabsClosed:= false;
+    j:= IndexItemsToPages(i);
+    Toolbar:= TToolbar(PyIDEMainForm.TabControlWidgets.Pages[j].Controls[0]);
+    for j:= 0 to Toolbar.ControlCount - 1 do begin
+      Toolbutton:= TToolbutton(Toolbar.Controls[j]);
+      Toolbutton.Visible:= vis1[i, j];
+    end;
+  end;
+  PyIDEMainForm.TabControlWidgets.Visible:= not allTabsClosed;
+
+  PyIDEMainForm.FileMenu.Visible   := VisMenus[0];
+  PyIDEMainForm.EditMenu.Visible   := VisMenus[1];
+  PyIDEMainForm.SearchMenu.Visible := VisMenus[2];
+  PyIDEMainForm.ViewMenu.Visible   := VisMenus[3];
+  PyIDEMainForm.ProjectMenu.Visible:= VisMenus[4];
+  PyIDEMainForm.RunMenu.Visible    := VisMenus[5];
+  PyIDEMainForm.UMLMenu.Visible    := VisMenus[6];
+  PyIDEMainForm.ToolsMenu.Visible  := VisMenus[7];
+  PyIDEMainForm.HelpMenu.Visible   := VisMenus[8];
+
+  for i:= 0 to PyIDEMainForm.MainMenu.Items.Count - 1 do begin
+    Menu:= PyIDEMainForm.MainMenu.Items[i];
+    var k:= 0;
+    for j:= 0 to Menu.Count - 1 do
+      if Menu.Items[j].Tag = -1 then  // invalid menu item
+        Menu.Items[j].Visible:= false
+      else if Menu.Items[j].Tag = -2 then
+        Menu.Items[j].Visible:= true  // Separator
+      else begin                      // Tag = 0 means valid menu item
+        Menu.Items[j].Visible:= vis1[VisTabsLen + i, k];
+        inc(k);
+      end;
+  end;
+  PyIDEMainForm.mnToolsGit.Visible:= PyIDEMainForm.mnToolsGit.Visible and GitOK;
+  PyIDEMainForm.mnToolsSVN.Visible:= PyIDEMainForm.mnToolsSVN.Visible and SubversionOK;
+
+  PyIDEMainForm.MainToolbar.Visible:= VisToolbars[0];
+  setSpTBXToolbarVisibility(PyIDEMainForm.MainToolbar, 0);
+  PyIDEMainForm.DebugToolbar.Visible:= VisToolbars[1];
+  setSpTBXToolbarVisibility(PyIDEMainForm.DebugToolbar, 1);
+
+  PyIDEMainForm.SetDockTopPanel;
+
+  GI_FileFactory.ApplyToFiles(procedure(aFile: IFile)
+    begin
+      (aFile as TFile).fForm.setOptions;
+    end);
+end;
+
+procedure TFConfiguration.setSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Nr: integer);
+begin
+  Toolbar.Visible:= VisToolbars[Nr];
+  for var i:= 0 to Toolbar.Items.Count - 1 do
+    Toolbar.Items[i].Visible:= vis1[VisTabsLen + VisMenusLen + Nr, i];
+end;
+
+procedure TFConfiguration.PrepareVisibilityPage;
+  var i: integer;
+      TC: TSpTBXTabControl;
+      anItem: TListItem;
+begin
+  ActivateOnChangings(false);
+  LVVisibilityTabs.Items.BeginUpdate;
+  TC:= PyIDEMainForm.TabControlWidgets;
+  for i:= 0 to TC.Items.Count - 1 do begin
+    anItem:= LVVisibilityTabs.Items.Add;
+    anItem.Caption:= TC.Items[i].Caption;
+  end;
+  LVVisibilityTabs.Items.EndUpdate;
+  LVVisibilityMenus.Items.BeginUpdate;
+  for i:= 0 to high(VisMenus) do begin
+    anItem:= LVVisibilityMenus.Items.Add;
+    anItem.Caption:= ReplaceStr(PyIDEMainForm.MainMenu.Items[i].Caption, '&', '');
+  end;
+  LVVisibilityMenus.Items.EndUpdate;
+  LVVisibilityToolbars.Items.BeginUpdate;
+  for i:= 0 to high(VisToolbars) do
+    LVVisibilityToolbars.Items.Add;
+  LVVisibilityToolbars.Items[0].Caption:= ReplaceStr(PyIDEMainForm.MainMenu.Items[0].Caption, '&', '');
+  LVVisibilityToolbars.Items[1].Caption:= ReplaceStr(PyIDEMainForm.MainMenu.Items[5].Caption, '&', '');
+  LVVisibilityToolbars.Items[2].Caption:= _('Editor');
+  LVVisibilityToolbars.Items[3].Caption:= _('UML');
+  LVVisibilityToolbars.Items[4].Caption:= _('Structogram');
+  LVVisibilityToolbars.Items[5].Caption:= _('Sequence diagram');
+  LVVisibilityToolbars.Items.EndUpdate;
+  ActivateOnChangings(true);
+  VisibilityModelToView;
+  LVVisibilityTabs.ItemIndex:= 0;
+  LVVisibilityTabsChange(nil, nil, ctState);
+end;
+
+procedure TFConfiguration.ActivateOnChangings(active: boolean);
+begin
+  if active then begin
+    LVVisibilityTabs.OnChange:= LVVisibilityTabsChange;
+    LVVisibilityTabs.OnChanging:= LVVisibilityChanging;
+    LVVisibilityMenus.OnChange:= LVVisibilityMenusChange;
+    LVVisibilityMenus.OnChanging:= LVVisibilityChanging;
+    LVVisibilityToolbars.OnChange:= LVVisibilityToolbarsChange;
+    LVVisibilityToolbars.OnChanging:= LVVisibilityChanging;
+  end else begin
+    LVVisibilityTabs.OnChange:= nil;
+    LVVisibilityTabs.OnChanging:= nil;
+    LVVisibilityMenus.OnChange:= nil;
+    LVVisibilityMenus.OnChanging:= nil;
+    LVVisibilityToolbars.OnChange:= nil;
+    LVVisibilityToolbars.OnChanging:= nil;
+  end;
+end;
+
+procedure TFConfiguration.VisibilityModelToView;
+  var i, j: integer;
+begin
+  ActivateOnChangings(false);
+  for i:= 0 to LVVisibilityTabs.Items.Count - 1 do
+    LVVisibilityTabs.Items[i].Checked:= VisTabs[i];
+
+  for i:= 0 to LVVisibilityMenus.Items.Count -1 do
+    LVVisibilityMenus.Items[i].Checked:= VisMenus[i];
+
+  for i:= 0 to LVVisibilityToolbars.Items.Count - 1 do
+    LVVisibilityToolbars.Items[i].Checked:= VisToolbars[i];
+  ActivateOnChangings(true);
+
+  // save visibility settings in vis2 for changing
+  for i:= 0 to MaxVisLen - 1 do
+    for j:= 0 to MaxTabItem - 1 do
+      vis2[i, j]:= vis1[i, j];
+
+  var ac:= true;
+  LVVisibilityChanging(self, nil, ctState, ac);
+end;
+
+procedure TFConfiguration.VisibilityViewToModel;
+  var i, j: integer;
+begin
+  for i:= 0 to high(VisTabs) do
+    VisTabs[i]:= LVVisibilityTabs.Items[i].Checked;
+
+  if assigned(LVVisibilityMenus.Items[0]) then // due to unknown problem
+    for i:= 0 to high(VisMenus) do
+      VisMenus[i]:= LVVisibilityMenus.Items[i].Checked;
+
+  if assigned(LVVisibilityToolbars.Items[0]) then
+    for i:= 0 to high(VisToolbars) do
+      VisToolbars[i]:= LVVisibilityToolbars.Items[i].Checked;
+
+  var ac:= true;
+  LVVisibilityChanging(self, nil, ctState, ac);
+
+  // tab Visibility   view to model
+  for i:= 0 to MaxVisLen - 1 do
+    for j:= 0 to MaxTabItem - 1 do
+      vis1[i, j]:= vis2[i, j];
+end;
+
+procedure TFConfiguration.LVVisibilityTabsChange(Sender: TObject;
+  Item: TListItem; Change: TItemChange);
+  var s: string; i, p, Tab: integer;
+      TB: TToolBar; anItem: TListItem;
+begin
+  TabsMenusToolbars:= 1;
+  Tab:= LVVisibilityTabs.ItemIndex;
+  LVVisibilityElements.Clear;
+  case Tab of
+    0: begin
+         LVVisibilityElements.SmallImages:= PyIDEMainForm.ILProgram;
+         TB:= PyIDEMainForm.ToolbarProgram;
+    end;
+    1: begin
+         LVVisibilityElements.SmallImages:= PyIDEMainForm.ILTKinter;
+         TB:= PyIDEMainForm.ToolbarTkinter;
+    end;
+    2: begin
+         LVVisibilityElements.SmallImages:= PyIDEMainForm.ILTTK;
+         TB:= PyIDEMainForm.ToolbarTTK;
+    end;
+    3: begin
+         LVVisibilityElements.SmallImages:= PyIDEMainForm.ILQtBase;
+         TB:= PyIDEMainForm.ToolbarQtBase;
+    end;
+    4: begin
+         LVVisibilityElements.SmallImages:= PyIDEMainForm.ILQtControls;
+         TB:= PyIDEMainForm.ToolbarQtControls;
+    end;
+    else
+      exit;
+  end;
+  if assigned(TB) then begin
+    for i:= 0 to TB.ButtonCount - 1 do begin
+      s:= TB.Buttons[i].Hint;
+      p:= Pos('Tk ', s);
+      if p > 0 then s:= copy(s, p + 3, Length(s));
+      p:= Pos('TTK ', s);
+      if p > 0 then s:= copy(s, p + 4, Length(s));
+      anItem:= LVVisibilityElements.Items.Add;
+      anItem.Caption:= ' ' + s;
+      anItem.Checked:= vis2[Tab, i];
+      anItem.ImageIndex:= i;
+    end;
+  end;
+end;
+
+procedure TFConfiguration.LVVisibilityMenusChange(Sender: TObject;
+  Item: TListItem; Change: TItemChange);
+  var s: string; i, Tab: integer;
+      Menu: TTBCustomItem; anItem: TListItem;
+begin
+  TabsMenusToolbars:= 2;
+  Tab:= LVVisibilityMenus.ItemIndex;
+  if Tab = -1 then exit;
+  LVVisibilityElements.Clear;
+  LVVisibilityElements.SmallImages:= PyIDEMainForm.vilimages;
+  Menu:= PyIDEMainForm.MainMenu.Items[Tab];
+  var k:= 0;
+  for i:= 0 to Menu.Count - 1 do begin
+    s:= Menu.Items[i].Caption;
+    if Menu.Items[i].Tag = 0 then begin
+      s:= ReplaceStr(s, '&', '');
+      anItem:= LVVisibilityElements.Items.Add;
+      anItem.Caption:= ' ' + s;
+      anItem.Checked:= vis2[VisTabsLen + Tab, k];
+      anItem.ImageIndex:= Menu.Items[i].ImageIndex;
+      inc(k);
+    end;
+  end;
+end;
+
+procedure TFConfiguration.LVVisibilityToolbarsChange(Sender: TObject;
+  Item: TListItem; Change: TItemChange);
+  var s: string; i, p, Tab: integer;
+      TSpB: TSpTBXToolBar; TB: TToolbar;
+      anItem: TListItem;
+      EditForm: TEditorForm; UMLForm: TFUMLform;
+      StructogramForm: TFStructogram; SequencediagramForm: TFSequenceForm;
+begin
+  TabsMenusToolbars:= 3;
+  TSpB:= nil;
+  TB:= nil;
+  EditForm:= nil;
+  UMLForm:= nil;
+  StructogramForm:= nil;
+  SequencediagramForm:= nil;
+  try
+    Tab:= LVVisibilityToolbars.ItemIndex;
+    LVVisibilityElements.Clear;
+    case Tab of
+      0: begin
+           LVVisibilityElements.SmallImages:= PyIDEMainForm.vilimages;
+           TSpB:= PyIDEMainForm.MainToolbar;
+      end;
+      1: begin
+           LVVisibilityElements.SmallImages:= PyIDEMainForm.vilimages;
+           TSpB:= PyIDEMainForm.DebugToolbar;
+      end;
+      2: begin
+           EditForm:= TEditorForm.Create(nil);
+           if IsDark
+             then LVVisibilityElements.SmallImages:= DMImages.ILEditorToolbarDark
+             else LVVisibilityElements.SmallImages:= DMImages.ILEditorToolbar;
+           TB:= EditForm.EditformToolbar;
+      end;
+      3: begin
+           UMLForm:= TFUMLForm.Create(nil);
+           if IsDark
+             then LVVisibilityElements.SmallImages:= DMImages.ILUMLToolbarDark
+             else LVVisibilityElements.SmallImages:= DMImages.ILUMLToolbarLight;
+           TB:= UMLForm.UMLToolbar;
+      end;
+      4: begin
+           StructogramForm:= TFStructogram.Create(nil);
+           if IsDark
+             then LVVisibilityElements.SmallImages:= DMImages.ILStructogramToolbarDark
+             else LVVisibilityElements.SmallImages:= DMImages.ILStructogramToolbar;
+           TB:= StructogramForm.StructogramToolbar;
+      end;
+      5: begin
+           SequencediagramForm:= TFSequenceForm.Create(nil);
+           if IsDark
+             then LVVisibilityElements.SmallImages:= DMImages.ILSequenceToolbarDark
+             else LVVisibilityElements.SmallImages:= DMImages.ILSequenceToolbar;
+           TB:= SequencediagramForm.SequenceToolbar;
+      end;
+      else
+        exit;
+    end;
+    if Tab <= 1 then begin
+      for i:= 0 to TSpB.Items.Count - 1 do begin
+        s:= TSpB.Items[i].Hint;
+        p:= Pos('|', s);
+        if p > 0 then s:= copy(s, 1, p-1);
+        anItem:= LVVisibilityElements.Items.Add;
+        anItem.Caption:= ' ' + s;
+        anItem.Checked:= vis2[VisTabsLen + VisMenusLen + Tab, i];
+        anItem.ImageIndex:= TSpB.Items[i].ImageIndex;
+      end;
+    end;
+    if Tab >= 2 then begin
+      for i:= 0 to TB.ButtonCount - 1 do begin
+        s:= TB.Buttons[i].Hint;
+        p:= Pos('|', s);
+        if p > 0 then s:= copy(s, 1, p-1);
+        anItem:= LVVisibilityElements.Items.Add;
+        anItem.Caption:= ' ' + s;
+        anItem.Checked:= vis2[VisTabsLen + VisMenusLen + Tab, i];
+        anItem.ImageIndex:= i;
+      end;
+    end;
+  finally
+    FreeAndNil(UMLForm);
+    FreeAndNil(EditForm);
+    FreeAndNil(StructogramForm);
+    FreeandNil(SequencediagramForm);
+  end;
+end;
+
+procedure TFConfiguration.LVVisibilityChanging(Sender: TObject;
+  Item: TListItem; Change: TItemChange; var AllowChange: Boolean);
+  var i: integer;
+begin
+  case TabsMenusToolbars of
+    1: i:= max(LVVisibilityTabs.ItemIndex, 0);
+    2: i:= VisTabsLen + max(LVVisibilityMenus.ItemIndex, 0);
+  else i:= VisTabsLen + VisMenusLen + max(LVVisibilityToolbars.ItemIndex, 0);
+  end;
+  for var j:= 0 to LVVisibilityElements.Items.Count - 1 do
+    vis2[i, j]:= LVVisibilityElements.Items[j].Checked;
+end;
+
+procedure TFConfiguration.BVisDefaultClick(Sender: TObject);
+  var i, j, n: integer;
+
+  procedure DefaultVis(var arr: array of boolean);
+  begin
+    for var i:= 0 to High(arr) do
+      arr[i]:= true;
+  end;
+
+  procedure StringVisibilityToArr2(s: string; l, n: integer);
+  begin
+    for var i:= 0 to l - 1 do
+      vis2[n, i]:= (s[i+1] = '1');
+  end;
+
+begin
+  DefaultVis(VisTabs);
+  DefaultVis(VisMenus);
+  DefaultVis(VisToolbars);
+  for i:= 0 to high(VisTabs) do
+    LVVisibilityTabs.Items[i].Checked:= true;
+  for i:= 0 to high(VisMenus) do
+    LVVisibilityMenus.Items[i].Checked:= true;
+  for i:= 0 to high(VisToolbars) do
+    LVVisibilityToolbars.Items[i].Checked:= true;
+
+  // details of tabs, menus and toolbars
+  for i:= 0 to MaxVisLen - 1 do
+    for j:= 0 to MaxTabItem - 1 do
+      vis2[i, j]:= true;
+
+  // --- default menu visibility
+  n:= Length(DefaultVisFileMenu);
+  StringVisibilityToArr2(DefaultVisFileMenu, n, 5);
+  n:= Length(DefaultVisEditMenu);
+  StringVisibilityToArr2(DefaultVisEditMenu, n, 6);
+  n:= Length(DefaultVisSearchMenu);
+  StringVisibilityToArr2(DefaultVisSearchMenu, n, 7);
+  n:= Length(DefaultVisViewMenu);
+  StringVisibilityToArr2(DefaultVisViewMenu, n, 8);
+  n:= Length(DefaultVisProjectMenu);
+  StringVisibilityToArr2(DefaultVisProjectMenu, n, 9);
+  n:= Length(DefaultVisRunMenu);
+  StringVisibilityToArr2(DefaultVisRunMenu, n, 10);
+  n:= Length(DefaultVisUMLMenu);
+  StringVisibilityToArr2(DefaultVisUMLMenu, n, 11);
+  n:= Length(DefaultVisToolsMenu);
+  StringVisibilityToArr2(DefaultVisToolsMenu, n, 12);
+  n:= Length(DefaultVisHelpMenu);
+  StringVisibilityToArr2(DefaultVisHelpMenu, n, 13);
+
+  case TabsMenusToolbars of
+    1: i:= max(LVVisibilityTabs.ItemIndex, 0);
+    2: i:= VisTabsLen + max(LVVisibilityMenus.ItemIndex, 0);
+  else i:= VisTabsLen + VisMenusLen + max(LVVisibilityToolbars.ItemIndex, 0);
+  end;
+  for j:= 0 to LVVisibilityElements.Items.Count - 1 do
+    LVVisibilityElements.Items[j].Checked:= vis2[i, j];
+end;
+
+procedure TFConfiguration.setToolbarVisibility(Toolbar: TToolbar; Nr: integer);
+begin
+  Toolbar.Visible:= VisToolbars[Nr];
+  for var i:= 0 to Toolbar.ButtonCount - 1 do
+    Toolbar.Buttons[i].Visible:= vis1[VisTabsLen + VisMenusLen + Nr, i];
+end;
+
+function TFConfiguration.CountMenuItems(Menu: TTBCustomItem): integer;
+begin
+  Result:= 0;
+  for var i:= 0 to Menu.Count - 1 do
+    if Menu.Items[i].Tag = 0 then
+      inc(Result);
 end;
 
 {--- end of Configuration -----------------------------------------------------}
@@ -5251,6 +5997,7 @@ begin
   fSDClose:= _('close');
   UseLanguage(CurrentLanguage);
 end;
+
 
 
 initialization

@@ -330,6 +330,18 @@ class function TJedi.HandleCodeCompletion(const Filename: string;
     end;
   end;
 
+  function ToLabel(Item: TCompletionItem): string;
+  begin
+    case Item.Kind of
+      TLspCompletionItemKind._Constructor,
+      TLspCompletionItemKind.Method,
+      TLspCompletionItemKind._Function:
+      Result := Item._Label + '()'#10
+    else
+      Result := Item._Label + #10;
+    end;
+  end;
+
 var
   Param: TJsonObject;
   AResult, Error: TJsonValue;
@@ -349,8 +361,8 @@ begin
     DisplayText := '';
     for var Item in CompletionItems do
     begin
-      InsertText := InsertText + Item._label + #10;
-      var ImageIndex := KindToImageIndex(TLspCompletionItemKind(Item.kind));
+      InsertText := InsertText + toLabel(Item);
+      var ImageIndex := KindToImageIndex(Item.kind);
       DisplayText := DisplayText + Format('\Image{%d}\hspace{8}%s', [ImageIndex, Item._label]) + #10;
     end;
     Result := True;

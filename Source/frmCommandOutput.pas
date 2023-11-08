@@ -13,28 +13,31 @@ interface
 uses
   Winapi.Windows,
   Winapi.Messages,
+  System.UITypes,
   System.SysUtils,
+  System.Variants,
   System.Classes,
   System.Actions,
   System.ImageList,
   System.SyncObjs,
   System.RegularExpressions,
+  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Graphics,
   Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.StdCtrls,
+  Vcl.Menus,
   Vcl.ActnList,
   Vcl.ImgList,
   Vcl.VirtualImageList,
-  Vcl.Menus,
   TB2Item,
   SpTBXItem,
   SpTBXControls,
+  JclSynch,
   JvComponentBase,
   JvDockControlForm,
-  JclSynch,
+  JvAppStorage,
   SynEditTypes,
   frmIDEDockWin,
   uSysUtils,
@@ -72,8 +75,8 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
   private
-    { Private declarations }
-    FTool : TExternalTool;
+    const FBasePath = 'Breakpoints Window Options'; // Used for storing settings
+    var FTool : TExternalTool;
     FCmdOptions: TJclExecuteCmdProcessOptions;
     FAbortEvent: TJclEvent;
     FIsRunning: Boolean;
@@ -99,12 +102,13 @@ type
     procedure ProcessTerminate;
     procedure WriteOutput(OutputType: TOutputType);
   public
-    { Public declarations }
     procedure AddNewLine(const S: string; OutputType: TOutputType = TOutputType.Normal);
     procedure AppendToLastLine(const S: string; OutputType: TOutputType);
     procedure ClearScreen;
     procedure FontOrColorUpdated;
     procedure ExecuteTool(Tool : TExternalTool);
+    procedure StoreSettings(Storage: TJvCustomAppStorage); override;
+    procedure RestoreSettings(Storage: TJvCustomAppStorage); override;
     property IsRunning: Boolean read FIsRunning;
     property RunningTool: string read FRunningTool;
   end;
@@ -193,12 +197,13 @@ end;
 
 procedure TOutputWindow.actOutputFontExecute(Sender: TObject);
 begin
+  lsbConsole.Font.PixelsPerInch := FCurrentPPI;
   with TFontDialog.Create(Application) do
   try
-    Font := lsbConsole.Font;
+    Font.Assign(lsbConsole.Font);
     if Execute then
     begin
-      lsbConsole.Font := Font;
+      lsbConsole.Font.Assign(Font);
       FontOrColorUpdated;
     end;
   finally
@@ -437,6 +442,26 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TOutputWindow.RestoreSettings(Storage: TJvCustomAppStorage);
+begin
+  if not Storage.PathExists(FBasePath) then exit;
+  inherited;
+  lsbConsole.Font.PixelsPerInch := FCurrentPPI;
+  Storage.ReadPersistent(FBasePath, lsbConsole.Font);
+  FontOrColorUpdated;
+end;
+
+procedure TOutputWindow.StoreSettings(Storage: TJvCustomAppStorage);
+begin
+  inherited;
+  var StoredFont := TSmartPtr.Make(TStoredFont.Create)();
+  lsbConsole.Font.PixelsPerInch := FCurrentPPI;
+  StoredFont.PixelsPerInch := FCurrentPPI;
+  StoredFont.Assign(lsbConsole.Font);
+  Storage.DeleteSubTree(FBasePath);
+  Storage.WritePersistent(FBasePath, StoredFont);
 end;
 
 procedure TOutputWindow.ExecuteTool(Tool : TExternalTool);

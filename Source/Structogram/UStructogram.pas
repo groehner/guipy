@@ -20,7 +20,7 @@ type
   TFStructogram = class(TFileForm)
     ScrollBox: TScrollBox;
     PanelLeft: TPanel;
-    ToolBarPanel: TToolBar;
+    StructogramToolbar: TToolBar;
     TBClose: TToolButton;
     TBStatement: TToolButton;
     TBIfElse: TToolButton;
@@ -36,9 +36,6 @@ type
     TBPuzzleMode: TToolButton;
     TrashImage: TImage;
     ILStructogram: TImageList;
-    ILStructogramDark: TImageList;
-    ILStructogramToolbar: TImageList;
-    ILStructogramToolbarDark: TImageList;
     StructoPopupMenu: TSpTBXPopupMenu;
     MIConfiguration: TSpTBXItem;
     MIFont: TSpTBXItem;
@@ -58,6 +55,7 @@ type
     MIFloat: TSpTBXItem;
     MIBoolean: TSpTBXItem;
     MILong: TSpTBXItem;
+    ILStructogramDark: TImageList;
 
     procedure FormCreate(Sender: TObject); override;
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -136,7 +134,6 @@ type
     procedure Save(MitBackup: boolean);
     procedure CutToClipboard;
     procedure UpdateState;
-    procedure SetOptions;
 
     procedure setEvents(Image: TListImage);
     procedure DoEdit(StrElement: TStrElement; s: string);
@@ -176,6 +173,7 @@ type
     procedure RenewFromText(const s: string);
     procedure DoExport; override;
     procedure debug(const s: String);
+    procedure SetOptions; override;
 end;
 
 implementation
@@ -184,7 +182,7 @@ implementation
 
 uses SysUtils, Math, Clipbrd, Dialogs, Themes, Types, UITypes, Buttons,
      JvGnugettext, StringResources, IOUtils, UUtils, UConfiguration,
-     frmPyIDEMain, uEditAppIntfs, uCommonFunctions,
+     frmPyIDEMain, uEditAppIntfs, uCommonFunctions, UImages,
      cPyScripterSettings, frmMessages, UGenerateStructogram;
 
 procedure TFStructogram.FormCreate(Sender: TObject);
@@ -206,7 +204,7 @@ begin
   Separating:= 0;
   PuzzleMode:= 0;
   TBPuzzlemode.Visible:= false;
-  ToolBarPanel.Height:= 308 - 22;
+  StructogramToolbar.Height:= 308 - 22;
   Version:= $0E;
   curList:= nil;
   curElement:= nil;
@@ -303,8 +301,8 @@ end;
 
 procedure TFStructogram.enter(Sender: TObject);
 begin
-  if ToolbarPanel.Visible and ToolbarPanel.CanFocus then
-    ToolbarPanel.SetFocus;
+  if StructogramToolbar.Visible and StructogramToolbar.CanFocus then
+    StructogramToolbar.SetFocus;
   PyIDEMainForm.ActiveTabControl := ParentTabControl;
 end;
 
@@ -500,7 +498,7 @@ begin
     StrList.setFont(Font);
     StrList.ResizeAll;
     PtScreen:= (Sender as TToolButton).ClientToScreen(Point(X, Y));
-    PtClient:= ToolBarPanel.ScreenToClient(PtScreen);
+    PtClient:= StructogramToolbar.ScreenToClient(PtScreen);
     StrList.Image.SetBounds(PtClient.X - StrList.rctList.Width div 2,
                             PtClient.y - StrList.LineHeight div 2,
                             StrList.rctList.Width, StrList.rctList.Height);
@@ -815,7 +813,7 @@ begin
     TBPuzzlemode.Visible:= false;
   end else begin
     MIPuzzle.Checked:= true;
-    TBPuzzlemode.Visible:= true;
+    TBPuzzlemode.Visible:= true and TBPuzzleMode.Visible;
   end;
 end;
 
@@ -934,7 +932,7 @@ begin
     Image:= StrElement.List.Image;
     EditMemoBeginText:= StrElement.text;
     EditMemo.Text:= StrElement.text + s;
-    le:= ToolBarPanel.Width + Image.Left + StrElement.rct.Left;
+    le:= StructogramToolbar.Width + Image.Left + StrElement.rct.Left;
     aTop:= Image.Top + StrElement.rct.Top;
     wi:= StrElement.rct.Right - StrElement.rct.Left + 1;
     he:= EditMemo.Lines.Count*StrElement.list.LineHeight + 1;
@@ -942,15 +940,15 @@ begin
 
     if StrElement is TStrIf then begin
       wi:= StrElement.list.getWidthOfLines(EditMemo.Text) + 10;
-      le:= ToolBarPanel.Width + Image.Left + StrElement.TextPos.x - 5;
+      le:= StructogramToolbar.Width + Image.Left + StrElement.TextPos.x - 5;
     end else if StrElement is TStrSwitch then begin
-      le:= ToolBarPanel.Width + Image.Left + StrElement.TextPos.x - 5;
+      le:= StructogramToolbar.Width + Image.Left + StrElement.TextPos.x - 5;
       wi:= Math.max(100, StrElement.list.getWidthOfLines(EditMemo.Text) + 10);
     end else if (StrElement is TStrSubProgram) then begin
-      le:= ToolBarPanel.Width + Image.Left + StrElement.TextPos.x - 5;
+      le:= StructogramToolbar.Width + Image.Left + StrElement.TextPos.x - 5;
       EditMemo.Width:= EditMemo.Width - LEFT_RIGHT;
     end else if (StrElement is TStrBreak) then begin
-      le:= ToolBarPanel.Width + Image.Left + StrElement.TextPos.x - 5;
+      le:= StructogramToolbar.Width + Image.Left + StrElement.TextPos.x - 5;
       wi:= EditMemo.Width - LEFT_RIGHT;
     end;
 
@@ -1365,15 +1363,15 @@ begin
 end;
 
 procedure TFStructogram.SetOptions;
-  var i: integer; b: boolean;
 begin
-  for i:= 0 to ScrollBox.ControlCount - 1 do
+  FConfiguration.setToolbarVisibility(StructogramToolbar, 4);
+  for var i:= 0 to ScrollBox.ControlCount - 1 do
     if ScrollBox.Controls[i] is TListImage then
       TListImage(ScrollBox.Controls[i]).StrList.Paint;
-  b:= not GuiPyOptions.LockedStructogram;
+  var b:= not GuiPyOptions.LockedStructogram;
   TBCreatePythoncode.Enabled:= b;
-  MIGenerateFunction.Visible:= b;
-  MIDatatype.Visible:= b;
+  MIGenerateFunction.Visible:= b and MIGenerateFunction.Visible;
+  MIDatatype.Visible:= b and MIDatatype.Visible;
 end;
 
 procedure TFStructogram.AddParameter(list: TStrList; paramList: TStringList);
@@ -1895,16 +1893,16 @@ procedure TFStructogram.ChangeStyle;
       i: integer;
 begin
   if IsStyledWindowsColorDark then begin
-    ToolBarPanel.Images:= ILStructogramToolbarDark;
+    StructogramToolbar.Images:= DMImages.ILStructogramToolbarDark;
     StructoPopupMenu.Images:= ILStructogramDark;
   end else begin
-    ToolBarPanel.Images:= ILStructogramToolbar;
+    StructogramToolbar.Images:= DMImages.ILStructogramToolbar;
     StructoPopupMenu.Images:= ILStructogram;
   end;
 
   BitMap:= TBitmap.Create;
   Bitmap.Transparent:= true;
-  ToolBarPanel.Images.GetBitmap(14, Bitmap);
+  StructogramToolbar.Images.GetBitmap(13, Bitmap);
   TrashImage.Picture.Bitmap.Transparent:= true;
   TrashImage.Picture.Bitmap:= Bitmap;
   FreeAndNil(Bitmap);

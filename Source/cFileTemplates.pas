@@ -49,7 +49,7 @@ Type
     procedure Assign(Source: TFileTemplates);
     function TemplateByName(const Name : string) : TFileTemplate;
     function TemplateByExt(const Ext : string) : TFileTemplate;
-    procedure AddDefaultTemplates(NoCheck: Boolean= False);
+    procedure AddDefaultTemplates(NoCheck: Boolean = False);
     function getDefaultByName(Templatename: string): TFileTemplate;
   end;
 
@@ -108,7 +108,7 @@ end;
 
 { TFileTemplates }
 
-procedure TFileTemplates.AddDefaultTemplates(NoCheck: Boolean);
+procedure TFileTemplates.AddDefaultTemplates(NoCheck: Boolean = false);
 begin
   if NoCheck or not Assigned(TemplateByExt('py')) then AddPythonTemplate;
   if NoCheck or not Assigned(TemplateByExt('pyw')) then AddTkinterTemplate;

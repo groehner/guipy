@@ -200,6 +200,9 @@ function IsColorDark(AColor : TColor) : boolean;
 (* Returns true if the styled clWindows system oolor is dark *)
 function IsStyledWindowsColorDark : boolean;
 
+(* Calculates styled border colors *)
+procedure StyledBorderColors(out BorderNormal, BorderHighlight: TColor);
+
 (* Adds formated text to a Richedit control *)
 procedure AddFormatText(RE : TRichEdit; const S: string;  FontStyle: TFontStyles = [];
  const FontColor: TColor = clDefault; FontSize: Integer = 0);
@@ -317,6 +320,14 @@ type
     end;
   public
     class function Make<T: class>(AValue: T): TFunc<T>; static;
+  end;
+
+(* Font that persists Size instead of Height to be used for DPI awareness *)
+  TStoredFont = class(Vcl.Graphics.TFont)
+  published
+    property Height stored False;
+    property Size stored True;
+    property Style default [];
   end;
 
 Var
@@ -1067,7 +1078,7 @@ begin
     if (PyEncoding = '') and (Lines.Count > 1) then
       PyEncoding := ParsePySourceEncoding(Lines[1]);
 
-    with GI_PyControl.SafePyEngine.PythonEngine do begin
+    with SafePyEngine.PythonEngine do begin
       if PyEncoding = '' then
         PyEncoding := SysModule.getdefaultencoding();
       SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
@@ -1203,7 +1214,7 @@ begin
 
     PyWstr := nil;
     try
-      var Py := GI_PyControl.SafePyEngine;
+      var Py := SafePyEngine;
       with Py.PythonEngine do begin
         try
             PyWstr := PyUnicode_Decode(PAnsiChar(FileText),
@@ -1575,6 +1586,17 @@ end;
 function IsStyledWindowsColorDark : boolean;
 begin
   Result := IsColorDark(StyleServices.GetSystemColor(clWindow));
+end;
+
+procedure StyledBorderColors(out BorderNormal, BorderHighlight: TColor);
+begin
+  if IsStyledWindowsColorDark then begin
+    BorderHighlight := StyleServices.GetSystemColor(clBtnHighlight);
+    BorderNormal := StyleServices.GetSystemColor(clBtnFace);
+  end else begin
+    BorderHighlight := StyleServices.GetSystemColor(clBtnShadow);
+    BorderNormal := StyleServices.GetSystemColor(clBtnFace);
+  end;
 end;
 
 { TXStringList }

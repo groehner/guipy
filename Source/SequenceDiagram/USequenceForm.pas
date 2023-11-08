@@ -28,7 +28,7 @@ type
   TFSequenceForm = class(TFileForm)
     SequenceScrollbox: TScrollBox;
     PToolbar: TPanel;
-    TBSequence: TToolBar;
+    SequenceToolbar: TToolBar;
     TBClose: TToolButton;
     TBLifeLine: TToolButton;
     TBZoomOut: TToolButton;
@@ -37,10 +37,8 @@ type
     TBNewLayout: TToolButton;
     TBRefresh: TToolButton;
     EMessage: TEdit;
-    ILSequenceToolbar: TImageList;
-    ILSequenceToolbarDark: TImageList;
     ILSequencediagram: TImageList;
-    ILSequenzdiagramDark: TImageList;
+    ILSequencediagramDark: TImageList;
     PopupMenuConnection: TSpTBXPopupMenu;
     MISynchron: TSpTBXItem;
     MIAsynchron: TSpTBXItem;
@@ -163,6 +161,7 @@ type
     procedure RefreshFromEditor;
     function getAsStringList: TStringList; override;
     procedure DoExport; override;
+    procedure SetOptions; override;
   end;
 
 implementation
@@ -170,7 +169,7 @@ implementation
 {$R *.dfm}
 
 uses SysUtils, Printers, IniFiles, Math, Clipbrd, Themes, Dialogs,
-     UITypes, uCommonFunctions, {UDebugger, } UConfiguration, UUtils,
+     UITypes, uCommonFunctions, UImages, UConfiguration, UUtils,
      frmPyIDEMain;
 
 const cMinDist = 20;
@@ -207,6 +206,7 @@ begin
 
   LifeLines:= TList.Create;
   setFont(GuiPyOptions.SequenceFont);
+  setOptions;
   DefaultExtension:= 'psd';
   ChangeStyle;
 end;
@@ -923,7 +923,7 @@ begin
     EditConnection:= Conn;
     EMessage.Text:= Conn.aMessage;
     EMessage.Font.Assign(Font);
-    EMessage.SetBounds(Conn.TextRect.Left-1, TBSequence.Height + Conn.TextRect.Top + 1,
+    EMessage.SetBounds(Conn.TextRect.Left-1, SequenceToolbar.Height + Conn.TextRect.Top + 1,
                        Round(Conn.TextRect.Width + 100), Conn.TextRect.Height);
     EMessage.Visible:= true;
     if EMessage.canFocus then EMessage.SetFocus;
@@ -1235,12 +1235,12 @@ begin
     SequencePanel.Color:= Color;
   end;
   if IsStyledWindowsColorDark then begin
-    TBSequence.Images:= ILSequenceToolbarDark;
-    PopupMenuLifeLineAndSequencePanel.Images:= ILSequenceToolbarDark;
-    PopupMenuConnection.Images:= ILSequenzdiagramDark;
+    SequenceToolbar.Images:= DMImages.ILSequenceToolbarDark;
+    PopupMenuLifeLineAndSequencePanel.Images:= DMImages.ILSequenceToolbarDark;
+    PopupMenuConnection.Images:= ILSequencediagramDark;
   end else begin
-    TBSequence.Images:= ILSequenceToolbar;
-    PopupMenuLifeLineAndSequencePanel.Images:= ILSequenceToolbar;
+    SequenceToolbar.Images:= DMImages.ILSequenceToolbar;
+    PopupMenuLifeLineAndSequencePanel.Images:= DMImages.ILSequenceToolbar;
     PopupMenuConnection.Images:= ILSequencediagram;
   end;
 end;
@@ -1264,6 +1264,11 @@ begin
   Result:= MaxInt;
   for var i:= 0 to LifeLines.Count - 1 do
     Result:= min(Result, TLifeLine(LifeLines.Items[i]).Left);
+end;
+
+procedure TFSequenceForm.SetOptions;
+begin
+  FConfiguration.setToolbarVisibility(SequenceToolbar, 5);
 end;
 
 

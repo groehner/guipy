@@ -641,6 +641,8 @@ begin
     RegisterParameter('Python39Dir', GetPythonDir('3.9'), nil);
     RegisterParameter('Python310Dir', GetPythonDir('3.10'), nil);
     RegisterParameter('Python311Dir', GetPythonDir('3.11'), nil);
+    RegisterParameter('Python312Dir', GetPythonDir('3.12'), nil);
+    RegisterParameter('Python313Dir', GetPythonDir('3.13'), nil);
     RegisterParameter('Python37Exe', '$[PYTHON37DIR]python.exe', nil);
     RegisterParameter('Python38Exe', '$[PYTHON38DIR]python.exe', nil);
     RegisterParameter('Python39Exe', '$[PYTHON39DIR]python.exe', nil);
@@ -752,6 +754,8 @@ begin
     UnRegisterParameter('Python39Exe');
     UnRegisterParameter('Python310Exe');
     UnRegisterParameter('Python311Exe');
+    UnRegisterParameter('Python312Exe');
+    UnRegisterParameter('Python313Exe');
     UnRegisterParameter('PythonDir');
     UnRegisterParameter('PythonExe');
     UnRegisterParameter('PythonwExe');

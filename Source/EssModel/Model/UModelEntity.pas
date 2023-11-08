@@ -164,7 +164,7 @@ begin
     if Pos('.', FName) > 0 then begin
       // remove all long package types
       s:= FName;
-      if EndsWith(s, '...') then begin
+      if s.EndsWith('...') then begin
         delete(s, length(s)-2, 3);
         vararg:= '...'
       end else

@@ -86,7 +86,7 @@ type
   function ServerFromName(ServerName: string): TSSHServer;
   function EditSSHServers : boolean;
   function SelectSSHServer : string;
-  function EditSSHConfiguration(Item : TCollectionItem) : boolean;
+  // function EditSSHConfiguration(Item : TCollectionItem) : boolean;
   procedure FillSSHConfigNames(Strings: TStrings);
 
 var
@@ -105,8 +105,6 @@ uses
   uSysUtils,
   JvGnugettext,
   MPCommonUtilities,
-  dlgCollectionEditor,
-  dlgOptionsEditor,
   StringResources,
   uCommonFunctions;
 
@@ -223,53 +221,20 @@ end;
 
 function EditSSHServers : boolean;
 begin
-  Result := EditCollection(SSHServers,
-    TSSHServerItem, _('SSH Servers'), EditSSHConfiguration, 580);
+  Result := false;
+  //EditCollection(SSHServers,
+  //  TSSHServerItem, _('SSH Servers'), EditSSHConfiguration, 580);
 end;
 
 function SelectSSHServer : string;
-Var
-  Index : integer;
 begin
   Result := '';
+  {
   if SelectFromCollection(SSHServers,
     TSSHServerItem, _('Select SSH Server'), EditSSHConfiguration, 580, Index)
   then
-    Result := TSSHServerItem(SSHServers.Items[Index]).SSHServer.Name;
+    Result := TSSHServerItem(SSHServers.Items[Index]).SSHServer.Name;}
 end;
-
-function EditSSHConfiguration(Item : TCollectionItem) : boolean;
-Var
-  Categories : array of TOptionCategory;
-begin
-  SetLength(Categories, 1);
-  with Categories[0] do begin
-    DisplayName :='SSH';
-    SetLength(Options, 9);
-    Options[0].PropertyName := 'Name';
-    Options[0].DisplayName := _('SSH Server name');
-    Options[1].PropertyName := 'HostName';
-    Options[1].DisplayName := _('Host name');
-    Options[2].PropertyName := 'UserName';
-    Options[2].DisplayName := _('User name');
-    Options[3].PropertyName := 'PythonCommand';
-    Options[3].DisplayName := _('Command to execute Python (no spaces)');
-    Options[4].PropertyName := 'SSHCommand';
-    Options[4].DisplayName := _('Path to SSH Command');
-    Options[5].PropertyName := 'SSHOptions';
-    Options[5].DisplayName := _('SSH options');
-    Options[6].PropertyName := 'ScpCommand';
-    Options[6].DisplayName := _('Path to SCP Command');
-    Options[7].PropertyName := 'ScpOptions';
-    Options[7].DisplayName := _('SCP options');
-    Options[8].PropertyName := 'PasswordNeeded';
-    Options[8].DisplayName := _('Password Needed (PyTTY only)');
-  end;
-
-  Result := InspectOptions((Item as TSSHServerItem).fSSHServer,
-     Categories, _('Edit SSH Server'), 580, False);
-end;
-
 
 procedure FillSSHConfigNames(Strings: TStrings);
 Var

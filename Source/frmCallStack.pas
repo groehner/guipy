@@ -40,7 +40,7 @@ uses
   cPyBaseDebugger;
 
 type
-  TCallStackWindow = class(TIDEDockWindow, IJvAppStorageHandler)
+  TCallStackWindow = class(TIDEDockWindow)
     CallStackView: TVirtualStringTree;
     actlCallStack: TActionList;
     actPreviousFrame: TAction;
@@ -75,17 +75,15 @@ type
     procedure ThreadViewGetCellText(Sender: TCustomVirtualStringTree;
       var E: TVSTGetCellTextEventArgs);
   private
-    { Private declarations }
-    fActiveThread : TThreadInfo;
+    const FBasePath = 'Call Stack Window Options';
+    var fActiveThread : TThreadInfo;
     fThreads : TList<TThreadInfo>;
     procedure ThreadChangeNotify(Thread : TThreadInfo; ChangeType : TThreadChangeType);
     procedure UpdateCallStack;
     procedure SetActiveThread(const Value: TThreadInfo);
-  protected
-    procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
-    procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
   public
-    { Public declarations }
+    procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
+    procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure ClearAll(IncludeThreads : Boolean = True);
     function GetSelectedStackFrame : TBaseFrameInfo;
     procedure UpdateWindow(DebuggerState, OldState : TDebuggerState);
@@ -100,6 +98,7 @@ implementation
 uses
   System.Generics.Defaults,
   System.Math,
+  PythonEngine,
   frmVariables,
   frmWatches,
   uCommonFunctions,
@@ -130,7 +129,7 @@ begin
     CallStackView.BeginUpdate;
     try
       // OutputDebugString('Call Stack filled');
-      var Py := GI_PyControl.SafePyEngine;
+      var Py := SafePyEngine;
       CallStackView.RootNodeCount := fActiveThread.CallStack.Count;  // Fills the View
       CallStackView.ReInitNode(nil, True, True);
     finally
@@ -390,7 +389,7 @@ var
   T : TThreadInfo;
 begin
   // OutputDebugString(PChar(Format('status: %d change: %d', [Ord(Thread.Status), Ord(ChangeType)])));
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
   case ChangeType of
     tctAdded:
       begin
@@ -486,26 +485,25 @@ begin
     ImageIndex := 0;
 end;
 
-procedure TCallStackWindow.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
-  const BasePath: string);
+procedure TCallStackWindow.StoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  AppStorage.WriteInteger(BasePath+'\Threads Width',
+  AppStorage.WriteInteger(FBasePath+'\Threads Width',
    PPIUnScale(ThreadView.Width));
-  AppStorage.WriteInteger(BasePath+'\Function Width',
+  AppStorage.WriteInteger(FBasePath+'\Function Width',
    PPIUnScale(CallStackView.Header.Columns[0].Width));
-  AppStorage.WriteInteger(BasePath+'\Line Width',
+  AppStorage.WriteInteger(FBasePath+'\Line Width',
     PPIUnScale(CallStackView.Header.Columns[2].Width));
 end;
 
-procedure TCallStackWindow.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
-  const BasePath: string);
+procedure TCallStackWindow.reStoreSettings(AppStorage: TJvCustomAppStorage);
 begin
+  if not AppStorage.PathExists(FBasePath) then exit;
   ThreadView.Width :=
-    PPIScale(AppStorage.ReadInteger(BasePath+'\Threads Width', 140));
+    PPIScale(AppStorage.ReadInteger(FBasePath+'\Threads Width', 140));
   CallStackView.Header.Columns[0].Width :=
-    PPIScale(AppStorage.ReadInteger(BasePath+'\Function Width', 100));
+    PPIScale(AppStorage.ReadInteger(FBasePath+'\Function Width', 100));
   CallStackView.Header.Columns[2].Width :=
-    PPIScale(AppStorage.ReadInteger(BasePath+'\Line Width', 50));
+    PPIScale(AppStorage.ReadInteger(FBasePath+'\Line Width', 50));
 end;
 
 procedure TCallStackWindow.SetActiveThread(const Value: TThreadInfo);

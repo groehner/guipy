@@ -105,6 +105,7 @@ begin
   Indent3:= FConfiguration.Indent3;
   Font.Name:= 'Segoe UI';
   Font.Size:= 12;
+  ParentFont:= false;
 end;
 
 procedure TFObjectGenerator.FormShow(Sender: TObject);

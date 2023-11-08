@@ -83,11 +83,10 @@ type
     function GetOnPythonVersionChange: TJclNotifyEventBroadcast;
     function AddPathToInternalPythonPath(const Path: string): IInterface;
     function SafePyEngine: IPyEngineAndGIL;
-    procedure ThreadPythonExec(ExecuteProc : TProc; TerminateProc : TProc = nil;
-      WaitToFinish: Boolean = False; ThreadExecMode : TThreadExecMode = emNewState);
+    procedure Pickle(AValue: Variant; FileName: string);
   public
     const MinPyVersion = '3.7';
-    const MaxPyVersion = '3.11'; //PYTHON311
+    const MaxPyVersion = '3.13'; //PYTHON313
   public
     // ActiveInterpreter and ActiveDebugger are created
     // and destroyed in frmPythonII
@@ -302,7 +301,11 @@ begin
   else if CmdLineReader.readFlag('PYTHON310') then
     expectedVersion := '3.10'
   else if CmdLineReader.readFlag('PYTHON311') then
-    expectedVersion := '3.11';
+    expectedVersion := '3.11'
+  else if CmdLineReader.readFlag('PYTHON312') then
+    expectedVersion := '3.12'
+  else if CmdLineReader.readFlag('PYTHON313') then
+    expectedVersion := '3.13';
   DllPath := CmdLineReader.readString('PYTHONDLLPATH');
 
   ReadFromAppStorage(GI_PyIDEServices.LocalAppStorage, LastVersion, LastInstallPath);
@@ -389,12 +392,6 @@ begin
   with Editor.SynEdit do begin
     Result := TPyRegExpr.IsExecutableLine(Lines[ALine-1]);
   end;
-end;
-
-procedure TPythonControl.ThreadPythonExec(ExecuteProc, TerminateProc: TProc;
-  WaitToFinish: Boolean; ThreadExecMode: TThreadExecMode);
-begin
-  InternalThreadPythonExec(ExecuteProc, TerminateProc, WaitToFinish, ThreadExecMode);
 end;
 
 procedure TPythonControl.ToggleBreakpoint(Editor : IEditor; ALine: integer;
@@ -693,6 +690,12 @@ begin
   SetRunConfig(ARunConfig);
   fRunConfig.ExternalRun.Execute;
 end;
+
+procedure TPythonControl.Pickle(AValue: Variant; FileName: string);
+begin
+  ActiveInterpreter.Pickle(AValue, FileName);
+end;
+
 
 procedure TPythonControl.PrepareRun;
 Var

@@ -73,7 +73,7 @@ object CommandsDataModule: TCommandsDataModule
     VersionInfoLocationPathList.Strings = (
       'https://raw.githubusercontent.com/pyscripter/pyscripter/master')
     VersionInfoFileName = 'PyScripterVersionInfo.ini'
-    Left = 158
+    Left = 206
     Top = 24
   end
   object actlMain: TActionList
@@ -321,24 +321,6 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'PageSetup'
       OnExecute = actPageSetupExecute
     end
-    object actEditorOptions: TAction
-      Category = 'Options'
-      Caption = '&Editor Options...'
-      HelpContext = 620
-      Hint = 'Set Editor Options'
-      ImageIndex = 18
-      ImageName = 'EditOptions'
-      OnExecute = actEditorOptionsExecute
-    end
-    object actIDEOptions: TAction
-      Category = 'Options'
-      Caption = '&IDE Options...'
-      HelpContext = 610
-      Hint = 'Set IDE Options'
-      ImageIndex = 19
-      ImageName = 'AppSettings'
-      OnExecute = actIDEOptionsExecute
-    end
     object actEditIndent: TAction
       Category = 'Source Code'
       Caption = '&Indent Block'
@@ -402,15 +384,6 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Untabify|Convert tabs to spaces'
       ShortCut = 41182
       OnExecute = actEditUntabifyExecute
-    end
-    object actPythonPath: TAction
-      Category = 'Tools'
-      Caption = 'Python &Path...'
-      HelpContext = 870
-      Hint = 'Python Path|View or edit the Python path'
-      ImageIndex = 20
-      ImageName = 'Folders'
-      OnExecute = actPythonPathExecute
     end
     object actHelpContents: THelpContents
       Category = 'Help'
@@ -510,29 +483,6 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Insert a Code Template'
       ShortCut = 16458
       OnExecute = actInsertTemplateExecute
-    end
-    object actCustomizeParameters: TAction
-      Category = 'Parameters'
-      Caption = 'Custom &Parameters...'
-      HelpContext = 720
-      Hint = 'Add/Remove custom parameters'
-      OnExecute = actCustomizeParametersExecute
-    end
-    object actIDEShortcuts: TAction
-      Category = 'Options'
-      Caption = 'IDE &Shortcuts...'
-      HelpContext = 615
-      Hint = 'Customize IDE shortcuts'
-      ImageIndex = 67
-      ImageName = 'Keyboard'
-      OnExecute = actIDEShortcutsExecute
-    end
-    object actCodeTemplates: TAction
-      Category = 'Options'
-      Caption = '&Code Templates...'
-      HelpContext = 540
-      Hint = 'Add/Remove code templates'
-      OnExecute = actCodeTemplatesExecute
     end
     object actConfigureTools: TAction
       Category = 'Tools'
@@ -650,15 +600,6 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'UnitTestWin'
       OnExecute = actUnitTestWizardExecute
     end
-    object actInterpreterEditorOptions: TAction
-      Category = 'Options'
-      Caption = '&Interpreter Editor Options...'
-      HelpContext = 620
-      Hint = 'Set Interpreter Editor Options'
-      ImageIndex = 18
-      ImageName = 'EditOptions'
-      OnExecute = actInterpreterEditorOptionsExecute
-    end
     object actEditToggleComment: TAction
       Category = 'Source Code'
       Caption = 'Toggle &Comment'
@@ -668,13 +609,6 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'CodeComment'
       ShortCut = 16606
       OnExecute = actEditToggleCommentExecute
-    end
-    object actFileTemplates: TAction
-      Category = 'Options'
-      Caption = '&File Templates...'
-      HelpContext = 640
-      Hint = 'Add/Remove file templates'
-      OnExecute = actFileTemplatesExecute
     end
     object actEditUTF8: TAction
       Tag = 1
@@ -1021,6 +955,24 @@ object CommandsDataModule: TCommandsDataModule
       Caption = 'Export'
       Hint = 'Export to RTF or HTML file'
       OnExecute = actFileExportExecute
+    end
+    object actInterpreterEditorOptions: TAction
+      Category = 'Options'
+      Caption = '&Interpreter Editor Options...'
+      HelpContext = 620
+      Hint = 'Set Interpreter Editor Options'
+      ImageIndex = 18
+      ImageName = 'EditOptions'
+      OnExecute = actInterpreterEditorOptionsExecute
+    end
+    object actPythonPath: TAction
+      Category = 'Tools'
+      Caption = 'Python &Path...'
+      HelpContext = 870
+      Hint = 'Python Path|View or edit the Python path'
+      ImageIndex = 20
+      ImageName = 'Folders'
+      OnExecute = actPythonPathExecute
     end
   end
   object SynWebCompletion: TSynCompletionProposal

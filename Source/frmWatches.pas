@@ -42,7 +42,7 @@ uses
   cPyControl;
 
 type
-  TWatchesWindow = class(TIDEDockWindow, IJvAppStorageHandler)
+  TWatchesWindow = class(TIDEDockWindow)
     TBXPopupMenu: TSpTBXPopupMenu;
     mnAddWatch: TSpTBXItem;
     mnRemoveWatch: TSpTBXItem;
@@ -86,18 +86,15 @@ type
       Node: PVirtualNode; var ChildCount: Cardinal);
     procedure WatchesViewFreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);
   private
-    { Private declarations }
-    fWatchesList: TObjectList;
+  private
+    const FBasePath = 'Watches';
+    var fWatchesList: TObjectList;
   protected
-    // IJvAppStorageHandler implementation
-    procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
-      const BasePath: string);
-    procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage;
-      const BasePath: string);
     function CreateWatch(Sender: TJvCustomAppStorage; const Path: string;
       Index: Integer): TPersistent;
   public
-    { Public declarations }
+    procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
+    procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure UpdateWindow(DebuggerState: TDebuggerState);
     procedure AddWatch(S: string);
   end;
@@ -112,6 +109,7 @@ uses
   WinApi.Windows,
   Vcl.Clipbrd,
   SynEdit,
+  PythonEngine,
   JvGnugettext,
   StringResources,
   uEditAppIntfs,
@@ -146,7 +144,7 @@ destructor TWatchInfo.Destroy;
 begin
   if Assigned(fNS) then
   begin
-    var Py := GI_PyControl.SafePyEngine;
+    var Py := SafePyEngine;
     FreeAndNil(fNS);
   end;
   inherited;
@@ -176,7 +174,7 @@ begin
     Assert(Integer(Node.Index) < fWatchesList.Count);
     if Assigned(Data.NS) then
     begin
-      var Py := GI_PyControl.SafePyEngine;
+      var Py := SafePyEngine;
       ChildCount := Data.NS.ChildCount
     end
     else
@@ -184,7 +182,7 @@ begin
   end
   else
   begin
-    var Py := GI_PyControl.SafePyEngine;
+    var Py := SafePyEngine;
     ParentData := Node.Parent.GetData;
     Assert(Assigned(ParentData.NS));
     Data.NS := ParentData.NS.ChildNode[Node.Index];
@@ -212,14 +210,14 @@ begin
     Data.NS := TWatchInfo(fWatchesList[Node.Index]).fNS;
     if Assigned(Data.NS) then
     begin
-      var Py := GI_PyControl.SafePyEngine;
+      var Py := SafePyEngine;
       ChildCount := Data.NS.ChildCount
     end else
       ChildCount := 0;
   end
   else
   begin
-    var Py := GI_PyControl.SafePyEngine;
+    var Py := SafePyEngine;
     ParentData := ParentNode.GetData;
     Assert(Assigned(ParentData.NS));
     Data.NS := ParentData.NS.ChildNode[Node.Index];
@@ -232,7 +230,7 @@ begin
 
   // Node Text
   if Assigned(Data.NS) then begin
-     var Py := GI_PyControl.SafePyEngine;
+     var Py := SafePyEngine;
      Data.Name := Data.NS.Name;
      Data.ObjectType := Data.NS.ObjectType;
      Data.Value := Data.NS.Value;
@@ -449,7 +447,7 @@ begin
   end else
     WatchesView.Enabled := True;
 
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
   // Clear NameSpace Items
   for i := 0 to fWatchesList.Count - 1 do
     with TWatchInfo(fWatchesList[i]) do
@@ -485,26 +483,27 @@ begin
   mnCopyToClipboard.Enabled := fWatchesList.Count > 0;
 end;
 
-procedure TWatchesWindow.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
-  const BasePath: string);
+procedure TWatchesWindow.StoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  AppStorage.WriteObjectList(BasePath, fWatchesList, 'Watch');
-  AppStorage.WriteInteger(BasePath + '\WatchesWidth',
+  inherited;
+  AppStorage.WriteObjectList(FBasePath, fWatchesList, 'Watch');
+  AppStorage.WriteInteger(FBasePath + '\WatchesWidth',
     PPIUnScale(WatchesView.Header.Columns[0].Width));
-  AppStorage.WriteInteger(BasePath+'\Types Width',
+  AppStorage.WriteInteger(FBasePath+'\Types Width',
     PPIUnScale(WatchesView.Header.Columns[1].Width));
 end;
 
-procedure TWatchesWindow.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
-  const BasePath: string);
+procedure TWatchesWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
+  if not AppStorage.PathExists(FBasePath) then exit;
+  inherited;
   mnClearAllClick(Self);
-  AppStorage.ReadObjectList(BasePath, fWatchesList, CreateWatch, True,
+  AppStorage.ReadObjectList(FBasePath, fWatchesList, CreateWatch, True,
     'Watch');
   WatchesView.Header.Columns[0].Width :=
-    PPIScale(AppStorage.ReadInteger(BasePath + '\WatchesWidth', 200));
+    PPIScale(AppStorage.ReadInteger(FBasePath + '\WatchesWidth', 200));
   WatchesView.Header.Columns[1].Width :=
-    PPIScale(AppStorage.ReadInteger(BasePath+'\Types Width', 100));
+    PPIScale(AppStorage.ReadInteger(FBasePath+'\Types Width', 100));
   UpdateWindow(PyControl.DebuggerState);
 end;
 

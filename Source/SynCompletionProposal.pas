@@ -3005,8 +3005,11 @@ begin
             if (Form.FAssignedList.Count > Position) then
               // Added check to make sure item is only used when no EndChar
               if (InsertList.Count > Integer(Form.FAssignedList.Objects[position])) and
-                 ((scoEndCharCompletion in fOptions) or (EndToken = #0)) then
-                Value := InsertList[Integer(Form.FAssignedList.Objects[position])]
+                 ((scoEndCharCompletion in fOptions) or (EndToken = #0)) then begin // Rr
+                Value := InsertList[Integer(Form.FAssignedList.Objects[position])];  // method or function
+                //if Pos('Image{3}', Form.FAssignedList[position]) > 0 then
+                //  Value:= Value + '()';
+                end
               else
                 Value := SelText
             else

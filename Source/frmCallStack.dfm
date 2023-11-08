@@ -3,8 +3,8 @@ inherited CallStackWindow: TCallStackWindow
   Top = 397
   HelpContext = 470
   Caption = 'Call Stack'
-  ClientHeight = 156
-  ClientWidth = 596
+  ClientHeight = 144
+  ClientWidth = 588
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -44,8 +44,8 @@ inherited CallStackWindow: TCallStackWindow
   ExplicitHeight = 183
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 596
-    Height = 156
+    Width = 588
+    Height = 144
     ExplicitWidth = 588
     ExplicitHeight = 144
     inherited FGPanel: TPanel
@@ -81,6 +81,7 @@ inherited CallStackWindow: TCallStackWindow
           HintMode = hmTooltip
           StateImages = vilImages
           TabOrder = 0
+          TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScrollOnExpand, toAutoTristateTracking, toAutoHideButtons, toAutoDeleteMovedNodes, toAutoChangeScale]
           TreeOptions.MiscOptions = [toFullRepaintOnResize, toInitOnSave, toReportMode, toToggleOnDblClick, toWheelPanning]
           TreeOptions.PaintOptions = [toHotTrack, toShowButtons, toShowDropmark, toShowHorzGridLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
           TreeOptions.SelectionOptions = [toExtendedFocus, toFullRowSelect]
@@ -94,17 +95,20 @@ inherited CallStackWindow: TCallStackWindow
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
           Columns = <
             item
+              Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 0
               Text = 'Function Name'
               Width = 100
             end
             item
+              Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 1
               Text = 'File Name'
               Width = 250
             end
             item
               Alignment = taRightJustify
+              Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 2
               Text = 'Line'
             end>
@@ -147,6 +151,7 @@ inherited CallStackWindow: TCallStackWindow
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
           Columns = <
             item
+              Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 0
               Text = 'Threads'
               Width = 183

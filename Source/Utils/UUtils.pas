@@ -30,7 +30,6 @@ function Split(Delimiter: Char; Input: string): TStringList;
 function IsWriteProtected(const Filename: string): boolean;
 function dissolveUsername(const s: String): String;
 function IsHTTP(const Pathname: String): Boolean;
-function EndsWith(const Str, Substr: string): Boolean;
 procedure ComboBoxAdd(ComboBox: TComboBox);
 procedure ComboBoxInsert(ComboBox: TComboBox);
 procedure ComboBoxInsert2(ComboBox: TComboBox; const s: string);
@@ -242,15 +241,6 @@ function IsHTTP(const Pathname: String): Boolean;
 begin
   aPath:= Uppercase(Pathname);
   Result:= (pos('HTTP://', aPath) + pos('RES://', aPath) + pos('HTTPS://', aPath) > 0);
-end;
-
-function EndsWith(const Str, Substr: String): boolean;
-  var SubTextLocation: Integer;
-begin
-  SubTextLocation := Length(Str) - Length(Substr) + 1;
-  if (SubTextLocation > 0) and (Str <> '')
-    then Result:= CompareStr(copy(Str, SubTextLocation, Length(Str)), SubStr) = 0
-    else Result:= False;
 end;
 
 procedure ComboBoxAdd(ComboBox: TComboBox);

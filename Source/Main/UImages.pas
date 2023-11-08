@@ -9,11 +9,7 @@ type
   TDMImages = class(TDataModule)
     ILBookmarksLight: TImageList;
     ILUMLRtfdComponentsLight: TImageList;
-    ILSwing1: TImageList;
     ILInteractive: TImageList;
-    ILProgram: TImageList;
-    ILProgramDark: TImageList;
-    ILSwing1Dark: TImageList;
     ILInteractiveDark: TImageList;
     ILUMLRtfdComponentsDark: TImageList;
     ILBookmarksDark: TImageList;
@@ -21,6 +17,12 @@ type
     ILUMLToolbarLight: TImageList;
     ILUMLToolbarDark: TImageList;
     ILQtControls: TImageList;
+    ILEditorToolbar: TImageList;
+    ILEditorToolbarDark: TImageList;
+    ILStructogramToolbar: TImageList;
+    ILStructogramToolbarDark: TImageList;
+    ILSequenceToolbar: TImageList;
+    ILSequenceToolbarDark: TImageList;
   end;
 
 var

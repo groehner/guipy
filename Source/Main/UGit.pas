@@ -41,6 +41,7 @@ begin
     Columns.Items[3].Caption:= _('Message');
   end;
   Caption:= _('Revisions');
+  ParentFont:= false;
 end;
 
 function TFGit.IsRepository(const Dir: string): boolean;

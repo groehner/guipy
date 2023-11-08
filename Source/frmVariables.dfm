@@ -40,79 +40,110 @@ inherited VariablesWindow: TVariablesWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 579
-  ExplicitHeight = 262
+  ExplicitWidth = 587
+  ExplicitHeight = 274
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 571
     Height = 235
-    ExplicitWidth = 563
-    ExplicitHeight = 223
+    ExplicitWidth = 571
+    ExplicitHeight = 235
     inherited FGPanel: TPanel
-      Width = 567
-      Height = 231
-      ExplicitWidth = 559
-      ExplicitHeight = 219
+      Width = 575
+      Height = 243
+      ExplicitWidth = 567
+      ExplicitHeight = 231
       object DocPanel: TSpTBXPageScroller
-        Left = 192
+        Left = 200
         Top = 0
         Width = 375
-        Height = 231
+        Height = 243
         Align = alRight
         Color = clNone
         ParentColor = False
         TabOrder = 0
-        ExplicitLeft = 184
-        ExplicitHeight = 219
-        object reInfo: TRichEdit
+        ExplicitLeft = 192
+        ExplicitHeight = 231
+        object synInfo: TSynEdit
           Left = 0
           Top = 0
           Width = 375
           Height = 89
+          Cursor = crDefault
           Align = alTop
-          BorderStyle = bsNone
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
+          Font.Height = -12
+          Font.Name = 'Consolas'
           Font.Style = []
-          ParentFont = False
-          ReadOnly = True
+          Font.Quality = fqClearTypeNatural
           TabOrder = 0
-          OnResizeRequest = reInfoResizeRequest
+          UseCodeFolding = False
+          BorderStyle = bsNone
+          Gutter.Font.Charset = DEFAULT_CHARSET
+          Gutter.Font.Color = clWindowText
+          Gutter.Font.Height = -11
+          Gutter.Font.Name = 'Consolas'
+          Gutter.Font.Style = []
+          Gutter.Visible = False
+          Gutter.Bands = <
+            item
+              Kind = gbkMarks
+              Width = 13
+            end
+            item
+              Kind = gbkLineNumbers
+            end
+            item
+              Kind = gbkFold
+            end
+            item
+              Kind = gbkTrackChanges
+            end
+            item
+              Kind = gbkMargin
+              Width = 3
+            end>
+          HideSelection = True
+          ReadOnly = True
+          RightEdge = 0
+          ScrollBars = ssNone
+          SelectedColor.Alpha = 0.400000005960464500
+          WordWrap = True
         end
       end
       object SpTBXSplitter: TSpTBXSplitter
-        Left = 187
+        Left = 195
         Top = 0
-        Height = 231
+        Height = 243
         Cursor = crSizeWE
         Align = alRight
         ParentColor = False
         MinSize = 3
-        ExplicitLeft = 179
-        ExplicitHeight = 219
+        ExplicitLeft = 187
+        ExplicitHeight = 231
       end
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 187
-        Height = 231
+        Width = 195
+        Height = 243
         Align = alClient
         TabOrder = 2
-        ExplicitWidth = 179
-        ExplicitHeight = 219
+        ExplicitWidth = 187
+        ExplicitHeight = 231
         object VariablesTree: TVirtualStringTree
           Left = 1
           Top = 1
-          Width = 185
-          Height = 229
+          Width = 193
+          Height = 241
           Align = alClient
           Alignment = taRightJustify
           Anchors = [akLeft, akTop, akBottom]
           BorderStyle = bsNone
           Header.AutoSizeIndex = 2
-          Header.Options = [hoAutoResize, hoColumnResize, hoDblClickResize, hoHotTrack, hoOwnerDraw, hoVisible]
+          Header.Images = vilCodeImages
+          Header.Options = [hoAutoResize, hoColumnResize, hoDblClickResize, hoHotTrack, hoOwnerDraw, hoShowImages, hoVisible]
           Header.PopupMenu = VTHeaderPopupMenu
           HintMode = hmTooltip
           Images = vilCodeImages
@@ -130,23 +161,33 @@ inherited VariablesWindow: TVariablesWindow
           OnGetImageIndex = VariablesTreeGetImageIndex
           OnInitChildren = VariablesTreeInitChildren
           OnInitNode = VariablesTreeInitNode
+          OnNodeClick = VariablesTreeNodeClick
           Touch.InteractiveGestures = [igPan, igPressAndTap]
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
           Columns = <
             item
+              Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 0
               Text = 'Name'
               Width = 160
             end
             item
+              Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 1
               Text = 'Type'
               Width = 100
             end
             item
+              Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 2
               Text = 'Value'
               Width = 10
+            end
+            item
+              ImageIndex = 10
+              Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coShowDropMark, coVisible, coAllowFocus, coStyleColor]
+              Position = 3
+              Width = 20
             end>
         end
       end
@@ -213,6 +254,10 @@ inherited VariablesWindow: TVariablesWindow
         CollectionIndex = 3
         CollectionName = 'CodeImages\Keyword'
         Name = 'Keyword'
+      end
+      item
+        CollectionName = 'Inspect'
+        Name = 'Inspect'
       end>
     ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True

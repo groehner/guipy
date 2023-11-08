@@ -3,8 +3,8 @@ inherited WatchesWindow: TWatchesWindow
   Top = 325
   HelpContext = 490
   Caption = 'Watches'
-  ClientHeight = 217
-  ClientWidth = 752
+  ClientHeight = 205
+  ClientWidth = 744
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -44,8 +44,8 @@ inherited WatchesWindow: TWatchesWindow
   ExplicitHeight = 244
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 752
-    Height = 217
+    Width = 744
+    Height = 205
     ExplicitWidth = 744
     ExplicitHeight = 205
     inherited FGPanel: TPanel
@@ -97,16 +97,19 @@ inherited WatchesWindow: TWatchesWindow
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
           Columns = <
             item
+              Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 0
               Text = 'Watches'
               Width = 200
             end
             item
+              Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 1
               Text = 'Type'
               Width = 120
             end
             item
+              Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 2
               Text = 'Value'
               Width = 426

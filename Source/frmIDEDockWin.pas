@@ -11,17 +11,21 @@ unit frmIDEDockWin;
 interface
 
 uses
-  System.Classes,
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
+  System.Variants,
+  System.Classes,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
+  Vcl.Dialogs,
   Vcl.ExtCtrls,
-  JvDockControlForm,
   JvComponentBase,
-  SpTBXSkins;
+  JvDockControlForm,
+  JvAppStorage,
+  SpTBXSkins,
+  SpTBXItem;
 
 type
   TIDEDockWindow = class(TForm)
@@ -36,16 +40,21 @@ type
       ConjoinHost: TJvDockConjoinHostForm);
     procedure FormDeactivate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure CMParentFontChanged(var Message: TCMParentFontChanged); message CM_PARENTFONTCHANGED;
   private
     { Private declarations }
   protected
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
     { Public declarations }
+    BorderHighlight : TColor;
+    BorderNormal : TColor;
     HasFocus : Boolean;
     ImageName: string;
     procedure CreateFormIcon;
     procedure ScaleForPPI(NewPPI: Integer); override;
+    procedure StoreSettings(AppStorage: TJvCustomAppStorage); virtual;
+    procedure RestoreSettings(AppStorage: TJvCustomAppStorage); virtual;
   end;
 
 var
@@ -58,6 +67,7 @@ implementation
 uses
   Vcl.Themes,
   SVG,
+  SVGIconImageCollection,
   dmResources,
   uCommonFunctions;
 
@@ -78,23 +88,13 @@ end;
 
 procedure TIDEDockWindow.WMSpSkinChange(var Message: TMessage);
 begin
-  Assert(SkinManager.GetSkinType(nil) <> sknSkin);
   CreateFormIcon;
 
-  if IsStyledWindowsColorDark then begin
-    BorderHighlight := StyleServices.GetSystemColor(clBtnHighlight);
-    BorderNormal := StyleServices.GetSystemColor(clBtnFace);
-  end else begin
-    BorderHighlight := StyleServices.GetSystemColor(clBtnShadow);
-    BorderNormal := StyleServices.GetSystemColor(clBtnFace);
-  end;
-  if HasFocus then begin
-    BGPanel.Color := BorderHighlight;
-    //FGPanel.Margins.SetBounds(2,2,2,2);
-  end else begin
+  StyledBorderColors(BorderNormal, BorderHighlight);
+  if HasFocus then
+    BGPanel.Color := BorderHighlight
+  else
     BGPanel.Color := BorderNormal;
-    //FGPanel.Margins.SetBounds(0,0,0,0);
-  end;
   Invalidate;
 end;
 
@@ -102,18 +102,19 @@ procedure TIDEDockWindow.FormActivate(Sender: TObject);
 begin
   HasFocus := True;
   BGPanel.Color := BorderHighlight;
-  //FGPanel.Margins.SetBounds(2,2,2,2);
 end;
 
 procedure TIDEDockWindow.FormCreate(Sender: TObject);
 begin
   DockClient.DockStyle := ResourcesDataModule.DockStyle;
-  BorderHighlight := StyleServices.GetSystemColor(clBtnHighlight);
-  BorderNormal := StyleServices.GetSystemColor(clBtnShadow);
+  StyledBorderColors(BorderNormal, BorderHighlight);
 
   CreateFormIcon;
 
   SkinManager.AddSkinNotification(Self, True);
+
+  Font.Assign(Application.DefaultFont);
+  Font.Height := MulDiv(Font.Height, FCurrentPPI, Font.PixelsPerInch);
 
   DockClient.OnConjoinHostFormCreated := DockClientConjoinHostFormCreated;
 end;
@@ -133,6 +134,16 @@ begin
   SkinManager.RemoveSkinNotification(Self);
 end;
 
+procedure TIDEDockWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
+begin
+  // Empty at the base class
+end;
+
+procedure TIDEDockWindow.StoreSettings(AppStorage: TJvCustomAppStorage);
+begin
+  // Empty at the base class
+end;
+
 procedure TIDEDockWindow.ScaleForPPI(NewPPI: Integer);
 begin
   DockClient.LRDockWidth := MulDiv(DockClient.LRDockWidth, NewPPI, FCurrentPPI);
@@ -148,6 +159,13 @@ begin
   TabHost.FormStyle := fsNormal;
   TabHost.PopupMode := pmExplicit;
   TabHost.PopupParent := Application.MainForm;
+end;
+
+procedure TIDEDockWindow.CMParentFontChanged(var Message: TCMParentFontChanged);
+{ Invoked when Application.DefaultFont changes }
+begin
+  Font.Height := MulDiv(Application.DefaultFont.Height, FCurrentPPI,
+    Screen.PixelsPerInch);
 end;
 
 procedure TIDEDockWindow.CreateFormIcon;

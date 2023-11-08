@@ -447,7 +447,8 @@ type
 
 implementation
 
-uses Controls, SysUtils, Math, Types, UITypes, JvGnugettext, UImages, UUtils;
+uses Controls, SysUtils, Math, Types, UITypes, JvGnugettext,
+     frmPyIDEMain, UImages, UUtils;
 
 {--- TQtLineEdit --------------------------------------------------------------}
 
@@ -1842,7 +1843,7 @@ end;
 procedure TQtMenu.Paint;
 begin
   Canvas.Rectangle(Rect(0, 0, Width, Height));
-  DrawBitmap(7, 4, 18, Canvas, DMImages.ILSwing1);
+  DrawBitmap(7, 4, 16, Canvas, PyIDEMainForm.ILTkinter);
 end;
 
 {--- TQtButtonGroup -----------------------------------------------------------}

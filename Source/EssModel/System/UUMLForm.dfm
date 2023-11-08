@@ -2,8 +2,8 @@ object FUMLForm: TFUMLForm
   Left = 394
   Top = 229
   Caption = 'UML'
-  ClientHeight = 611
-  ClientWidth = 713
+  ClientHeight = 609
+  ClientWidth = 705
   Color = clBtnFace
   ParentFont = True
   Position = poOwnerFormCenter
@@ -16,27 +16,27 @@ object FUMLForm: TFUMLForm
   object PUML: TPanel
     Left = 0
     Top = 0
-    Width = 713
-    Height = 611
+    Width = 705
+    Height = 609
     Align = alClient
     Caption = 'PUML'
     TabOrder = 0
     OnResize = PUMLResize
-    ExplicitWidth = 709
-    ExplicitHeight = 610
+    ExplicitWidth = 701
+    ExplicitHeight = 608
     object PDiagram: TPanel
       Left = 1
       Top = 1
-      Width = 711
+      Width = 703
       Height = 420
       Align = alTop
       Constraints.MinHeight = 100
       TabOrder = 0
-      ExplicitWidth = 707
+      ExplicitWidth = 699
       object PDiagramPanel: TPanel
         Left = 1
         Top = 26
-        Width = 709
+        Width = 701
         Height = 393
         Align = alClient
         BevelEdges = [beLeft, beTop]
@@ -53,17 +53,17 @@ object FUMLForm: TFUMLForm
         ParentFont = False
         TabOrder = 0
         OnResize = PDiagramPanelResize
-        ExplicitWidth = 705
+        ExplicitWidth = 697
       end
       object PUMLPanel: TPanel
         Left = 1
         Top = 1
-        Width = 709
+        Width = 701
         Height = 25
         Align = alTop
         TabOrder = 1
-        ExplicitWidth = 705
-        object TBUMLToolbar: TToolBar
+        ExplicitWidth = 697
+        object UMLToolbar: TToolBar
           Left = 1
           Top = 1
           Width = 352
@@ -101,70 +101,70 @@ object FUMLForm: TFUMLForm
             Left = 72
             Top = 0
             Hint = 'Connections: none, classes and objects, all'
-            ImageIndex = 4
+            ImageIndex = 3
             OnClick = TBShowConnectionsClick
           end
           object TBObjectDiagram: TToolButton
             Left = 96
             Top = 0
             Hint = 'Class diagram on/off'
-            ImageIndex = 5
+            ImageIndex = 4
             OnClick = TBObjectDiagramClick
           end
           object TBView: TToolButton
             Left = 120
             Top = 0
             Hint = 'View'
-            ImageIndex = 6
+            ImageIndex = 5
             OnClick = TBViewClick
           end
           object TBZoomOut: TToolButton
             Left = 144
             Top = 0
             Hint = 'Zoom out'
-            ImageIndex = 7
+            ImageIndex = 6
             OnClick = TBZoomOutClick
           end
           object TBZoomIn: TToolButton
             Left = 168
             Top = 0
             Hint = 'Zoom in'
-            ImageIndex = 8
+            ImageIndex = 7
             OnClick = TBZoomInClick
           end
           object TBComment: TToolButton
             Left = 192
             Top = 0
             Hint = 'Comment'
-            ImageIndex = 9
+            ImageIndex = 8
             OnClick = TBCommentClick
           end
           object TBNewLayout: TToolButton
             Left = 216
             Top = 0
             Hint = 'New layout'
-            ImageIndex = 10
+            ImageIndex = 9
             OnClick = TBNewLayoutClick
           end
           object TBRefresh: TToolButton
             Left = 240
             Top = 0
             Hint = 'Refresh'
-            ImageIndex = 11
+            ImageIndex = 10
             OnClick = TBRefreshClick
           end
           object TBInteractive: TToolButton
             Left = 264
             Top = 0
             Hint = 'Show/hide interactive'
-            ImageIndex = 12
+            ImageIndex = 11
             OnClick = TBInteractiveClick
           end
           object TBReInitialize: TToolButton
             Left = 288
             Top = 0
             Hint = 'Reinitialize Python engine'
-            ImageIndex = 14
+            ImageIndex = 12
             OnClick = TBReInitializeClick
           end
         end
@@ -182,23 +182,23 @@ object FUMLForm: TFUMLForm
     object PInteractive: TPanel
       Left = 1
       Top = 424
-      Width = 711
-      Height = 186
+      Width = 703
+      Height = 184
       Align = alClient
       PopupMenu = PMInteractive
       TabOrder = 1
-      ExplicitWidth = 707
-      ExplicitHeight = 185
+      ExplicitWidth = 699
+      ExplicitHeight = 183
       object TBInteractiveToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 709
+        Width = 701
         Height = 22
         Color = clBtnFace
         Images = DMImages.ILInteractive
         ParentColor = False
         TabOrder = 0
-        ExplicitWidth = 705
+        ExplicitWidth = 697
         object TBInteractiveClose: TToolButton
           Left = 0
           Top = 0
@@ -242,8 +242,8 @@ object FUMLForm: TFUMLForm
       object SynEdit: TSynEdit
         Left = 1
         Top = 23
-        Width = 709
-        Height = 162
+        Width = 701
+        Height = 160
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -281,19 +281,19 @@ object FUMLForm: TFUMLForm
         RightEdge = 0
         SelectedColor.Alpha = 0.400000005960464500
         OnChange = SynEditChange
-        ExplicitWidth = 705
-        ExplicitHeight = 161
+        ExplicitWidth = 697
+        ExplicitHeight = 159
       end
     end
     object SpTBXSplitter1: TSpTBXSplitter
       Left = 1
       Top = 421
-      Width = 711
+      Width = 703
       Height = 3
       Cursor = crSizeNS
       Align = alTop
       ParentColor = False
-      ExplicitWidth = 707
+      ExplicitWidth = 699
     end
   end
   object PMInteractive: TSpTBXPopupMenu

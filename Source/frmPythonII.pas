@@ -34,6 +34,7 @@ uses
   Vcl.VirtualImageList,
   JvComponentBase,
   JvDockControlForm,
+  JvAppStorage,
   dlgSynEditOptions,
   TB2Item,
   SpTBXItem,
@@ -169,6 +170,9 @@ type
   public
     { Public declarations }
     PS1, PS2 : string;
+    // AppStorage
+    procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
+    procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure PythonIOSendData(Sender: TObject; const Data: string);
     procedure AppendToPrompt(const Buffer : array of string);
     function IsEmpty : Boolean;
@@ -176,8 +180,6 @@ type
     procedure RegisterHistoryCommands;
     procedure ValidateEditorOptions(SynEditOptions: TSynEditorOptionsContainer);
     procedure ApplyEditorOptions;
-    procedure StoreOptions(AppStorage: TJvCustomAppIniStorage);
-    procedure RestoreOptions(AppStorage: TJvCustomAppIniStorage);
     procedure ExecuteStatement(const SourceCode: string; WaitToFinish: Boolean = False);
     property ShowOutput : boolean read GetShowOutput write SetShowOutput;
     property CommandHistory : TStringList read fCommandHistory;
@@ -386,7 +388,7 @@ procedure TPythonIIForm.PrintInterpreterBanner(AVersion: string = ''; APlatform:
 var
   S: string;
 begin
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
   if AVersion = '' then AVersion := SysModule.version;
   if APlatform = '' then APlatform := SysModule.platform;
   AVersion := AVersion.Replace(Char($A), ' ');
@@ -649,7 +651,7 @@ begin
   AppendText(sLineBreak);
 
   // Call RunSource
-  GI_PyControl.ThreadPythonExec(
+  ThreadPythonExec(
     procedure
     begin
       if GI_PyControl.PythonLoaded and not GI_PyControl.Running then
@@ -769,7 +771,7 @@ begin
               begin
                 SynEdit.ExecuteCommand(ecEditorBottom, ' ', nil);
                 AppendText(sLineBreak);
-                GI_PyControl.ThreadPythonExec(
+                ThreadPythonExec(
                   procedure
                   begin
                     PyControl.ActiveInterpreter.SystemCommand(GI_PyIDEServices.ReplaceParams(Match.Groups[1].Value));
@@ -1183,6 +1185,10 @@ end;
 procedure TPythonIIForm.SynCodeCompletionAfterCodeCompletion(Sender: TObject;
   const Value: string; Shift: TShiftState; Index: Integer; EndToken: Char);
 begin
+  if Value.EndsWith('()') then begin
+    SynEdit.CaretX:= SynEdit.CaretX - 1;
+    EndToken:= '(';
+  end;
   if EndToken = '(' then
     TThread.ForceQueue(nil, procedure
     begin
@@ -1312,7 +1318,6 @@ begin
     if CanExecute then
     begin
       CP.Font := PyIDEOptions.AutoCompletionFont;
-      CP.FontsAreScaled := True;
       CP.ItemList.Text := CC.CompletionInfo.DisplayText;
       CP.InsertList.Text := CC.CompletionInfo.InsertText;
       CP.NbLinesInWindow := PyIDEOptions.CodeCompletionListSize;
@@ -1679,7 +1684,7 @@ begin
   AddEditorCommand(ecRecallCommandEsc, Vcl.Menus.ShortCut(VK_ESCAPE, []));
 end;
 
-procedure TPythonIIForm.StoreOptions(AppStorage: TJvCustomAppIniStorage);
+procedure TPythonIIForm.StoreSettings(AppStorage: TJvCustomAppStorage);
 begin
   var TempStringList := TSmartPtr.Make(TStringList.Create)();
 
@@ -1692,40 +1697,44 @@ begin
   AppStorage.WritePersistent('Interpreter Editor Options', SynEditOptions, True, TempStringList);
 
   //Save Highlighter
-  AppStorage.WritePersistent('Highlighters\Intepreter', SynEdit.Highlighter);
+  AppStorage.WritePersistent('Highlighters\Interpreter', SynEdit.Highlighter);
 
   // Save Interpreter History
   TempStringList.Clear;
   for var I := 0 to CommandHistory.Count - 1 do
     TempStringList.Add(StrStringToEscaped(CommandHistory[i]));
-  AppStorage.StorageOptions.PreserveLeadingTrailingBlanks := True;
+  var AppIniStorageOptions := TJvAppIniStorageOptions(AppStorage.StorageOptions);
+  var OldPreserveLeadingTrailingBlanks := AppIniStorageOptions.PreserveLeadingTrailingBlanks;
+  AppIniStorageOptions.PreserveLeadingTrailingBlanks := True;
   AppStorage.WriteStringList('Command History', TempStringList);
-  AppStorage.StorageOptions.PreserveLeadingTrailingBlanks := False;
+  AppIniStorageOptions.PreserveLeadingTrailingBlanks := OldPreserveLeadingTrailingBlanks;
 end;
 
-procedure TPythonIIForm.RestoreOptions(AppStorage: TJvCustomAppIniStorage);
+procedure TPythonIIForm.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
   var TempStringList := TSmartPtr.Make(TStringList.Create)();
 
-  // Restore Options
   if AppStorage.PathExists('Interpreter Editor Options') then begin
-    var SynEditOptions := TSmartPtr.Make(TSynEditorOptionsContainer.Create(nil))();
+    // Restore Options
+    if AppStorage.PathExists('Interpreter Editor Options') then begin
+      var SynEditOptions := TSmartPtr.Make(TSynEditorOptionsContainer.Create(nil))();
 
-    SynEditOptions.Assign(SynEdit);
+      SynEditOptions.Assign(SynEdit);
 
-    TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides', 'KeyStrokes']);
-    AppStorage.ReadPersistent('Interpreter Editor Options', SynEditOptions, True, True, TempStringList);
+      TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides', 'KeyStrokes']);
+      AppStorage.ReadPersistent('Interpreter Editor Options', SynEditOptions, True, True, TempStringList);
 
-    ValidateEditorOptions(SynEditOptions);
-    SynEdit.Assign(SynEditOptions);
+      ValidateEditorOptions(SynEditOptions);
+      SynEdit.Assign(SynEditOptions);
+    end;
   end;
 
   // Restore Highlighter
-  if AppStorage.PathExists('Highlighters\Intepreter') then
+  if AppStorage.PathExists('Highlighters\Interpreter') then
   begin
     SynEdit.Highlighter.BeginUpdate;
     try
-      AppStorage.ReadPersistent('Highlighters\Intepreter', SynEdit.Highlighter);
+      AppStorage.ReadPersistent('Highlighters\Interpreter', SynEdit.Highlighter);
     finally
       SynEdit.Highlighter.EndUpdate;
     end;
@@ -1733,14 +1742,19 @@ begin
 
   // Restore Interpreter History
   TempStringList.Clear;
-  AppStorage.StorageOptions.PreserveLeadingTrailingBlanks := True;
-  AppStorage.ReadStringList('Command History', TempStringList);
-  AppStorage.StorageOptions.PreserveLeadingTrailingBlanks := False;
 
-  CommandHistory.Clear;
-  for var I := 0 to TempStringList.Count - 1 do
-    CommandHistory.Add(StrEscapedToString(TempStringList[i]));
-  CommandHistoryPointer := TempStringList.Count;  // one after the last one
+  if AppStorage.PathExists('Command History') then begin
+    var AppIniStorageOptions := TJvAppIniStorageOptions(AppStorage.StorageOptions);
+    var OldPreserveLeadingTrailingBlanks := AppIniStorageOptions.PreserveLeadingTrailingBlanks;
+    AppIniStorageOptions.PreserveLeadingTrailingBlanks := True;
+    AppStorage.ReadStringList('Command History', TempStringList);
+    AppIniStorageOptions.PreserveLeadingTrailingBlanks := OldPreserveLeadingTrailingBlanks;
+
+    CommandHistory.Clear;
+    for var I := 0 to TempStringList.Count - 1 do
+      CommandHistory.Add(StrEscapedToString(TempStringList[i]));
+    CommandHistoryPointer := TempStringList.Count;  // one after the last one
+  end;
 end;
 
 end.

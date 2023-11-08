@@ -74,9 +74,7 @@ type
     actEditUTF16LE: TAction;
     actEditUTF8NoBOM: TAction;
     actEditUTF8: TAction;
-    actFileTemplates: TAction;
     actEditToggleComment: TAction;
-    actInterpreterEditorOptions: TAction;
     actUnitTestWizard: TAction;
     actCheckForUpdates: TAction;
     actHelpEditorShortcuts: TAction;
@@ -91,9 +89,6 @@ type
     actFindFunction: TAction;
     actHelpExternalTools: TAction;
     actConfigureTools: TAction;
-    actCodeTemplates: TAction;
-    actIDEShortcuts: TAction;
-    actCustomizeParameters: TAction;
     actInsertTemplate: TAction;
     actHelpParameters: TAction;
     actReplaceParameters: TAction;
@@ -103,7 +98,6 @@ type
     actSearchGoToSyntaxError: TAction;
     actSearchGoToLine: TAction;
     actAbout: TAction;
-    actPythonPath: TAction;
     actEditUntabify: TAction;
     actEditTabify: TAction;
     actSearchMatchingBrace: TAction;
@@ -111,8 +105,6 @@ type
     actEditCommentOut: TAction;
     actEditDedent: TAction;
     actEditIndent: TAction;
-    actIDEOptions: TAction;
-    actEditorOptions: TAction;
     actPageSetup: TAction;
     actPrintPreview: TAction;
     actPrinterSetup: TAction;
@@ -172,12 +164,13 @@ type
     actEditCopyHTMLasText: TAction;
     actEditCopyNumbered: TAction;
     actFileExport: TAction;
+    actInterpreterEditorOptions: TAction;
+    actPythonPath: TAction;
     function ProgramVersionHTTPLocationLoadFileFromRemote(
       AProgramVersionLocation: TJvProgramVersionHTTPLocation; const ARemotePath,
       ARemoteFileName, ALocalPath, ALocalFileName: string): string;
     procedure actCheckForUpdatesExecute(Sender: TObject);
     procedure actUnitTestWizardExecute(Sender: TObject);
-    procedure actIDEShortcutsExecute(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure actFileSaveExecute(Sender: TObject);
@@ -199,7 +192,6 @@ type
     procedure actPrinterSetupExecute(Sender: TObject);
     procedure actPageSetupExecute(Sender: TObject);
     procedure actPrintPreviewExecute(Sender: TObject);
-    procedure actEditorOptionsExecute(Sender: TObject);
     procedure actEditIndentExecute(Sender: TObject);
     procedure actEditDedentExecute(Sender: TObject);
     procedure actEditCommentOutExecute(Sender: TObject);
@@ -208,7 +200,6 @@ type
     procedure actEditTabifyExecute(Sender: TObject);
     procedure actEditUntabifyExecute(Sender: TObject);
     procedure actIDEOptionsExecute(Sender: TObject);
-    procedure actPythonPathExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
     procedure actPythonManualsExecute(Sender: TObject);
     procedure UpdateMainActions;
@@ -223,8 +214,6 @@ type
     procedure actReplaceParametersExecute(Sender: TObject);
     procedure actHelpParametersExecute(Sender: TObject);
     procedure actInsertTemplateExecute(Sender: TObject);
-    procedure actCustomizeParametersExecute(Sender: TObject);
-    procedure actCodeTemplatesExecute(Sender: TObject);
     procedure actConfigureToolsExecute(Sender: TObject);
     procedure actHelpExternalToolsExecute(Sender: TObject);
     procedure actFindFunctionExecute(Sender: TObject);
@@ -233,9 +222,7 @@ type
     procedure actFindNextReferenceExecute(Sender: TObject);
     procedure actEditLBExecute(Sender: TObject);
     procedure actHelpEditorShortcutsExecute(Sender: TObject);
-    procedure actInterpreterEditorOptionsExecute(Sender: TObject);
     procedure actEditToggleCommentExecute(Sender: TObject);
-    procedure actFileTemplatesExecute(Sender: TObject);
     procedure actEditFileEncodingExecute(Sender: TObject);
     procedure actFileReloadExecute(Sender: TObject);
     procedure actExportShortCutsExecute(Sender: TObject);
@@ -282,6 +269,8 @@ type
     procedure actEditCopyNumberedExecute(Sender: TObject);
     procedure actFileExportExecute(Sender: TObject);
     procedure SynSpellCheckChange(Sender: TObject);
+    procedure actInterpreterEditorOptionsExecute(Sender: TObject);
+    procedure actPythonPathExecute(Sender: TObject);
   private
     fConfirmReplaceDialogRect: TRect;
     procedure PyIDEOptionsChanged;
@@ -357,8 +346,6 @@ uses
   SynEditTypes,
   SynEditTextBuffer,
   SynEditKeyCmds,
-  dlgSynEditOptions,
-  dlgOptionsEditor,
   cPyBaseDebugger,
   dmResources,
   StringResources,
@@ -366,14 +353,12 @@ uses
   dlgDirectoryList,
   dlgAboutPyScripter,
   dlgConfirmReplace,
-  dlgCustomShortcuts,
+  cCustomShortcuts,
   dlgUnitTestWizard,
-  dlgFileTemplates,
   dlgPickList,
-  dlgCodeTemplates,
   dlgCollectionEditor,
   dlgToolProperties,
-  dlgCustomParams,
+  dlgSynEditOptions,
   frmPythonII,
   frmPyIDEMain,
   frmEditor,
@@ -888,85 +873,6 @@ begin
   end);
 end;
 
-
-procedure TCommandsDataModule.actEditorOptionsExecute(Sender: TObject);
-var
-  TempEditorOptions: TSynEditorOptionsContainer;
-  TempStream: TMemoryStream;
-  TempIniFile: TMemIniFile;
-begin
-  TempEditorOptions := TSynEditorOptionsContainer.Create(Self);
-  TempEditorOptions.Assign(EditorOptions);  // Initialize with defaults
-  // SynWeb attribute changes are taking immediate effect in Web Engine
-  // So Cancel does not work.  As a workaround we save the syntax attributes
-  // and restore them if the dialog is cancelled.
-  TempStream := TMemoryStream.Create;
-  TempIniFile := TMemIniFile.Create(TempStream);
-  ResourcesDataModule.SynWebHtmlSyn.SaveToIniFile(TempIniFile);
-  try
-    with TSynEditOptionsDialog.Create(Self) do begin
-      if Assigned(GI_ActiveEditor) then begin
-        TempEditorOptions.Assign(GI_ActiveEditor.ActiveSynEdit);
-        Form.cbApplyToAll.Checked := True;
-        Form.cbApplyToAll.Enabled := True;
-      end else begin
-        TempEditorOptions.Assign(EditorOptions);
-        Form.cbApplyToAll.Checked := True;
-        Form.cbApplyToAll.Enabled := False;
-      end;
-      OnGetHighlighterCount := SynEditOptionsDialogGetHighlighterCount;
-      OnGetHighlighter := SynEditOptionsDialogGetHighlighter;
-      OnSetHighlighter := SynEditOptionsDialogSetHighlighter;
-      VisiblePages := [soDisplay, soOptions, soKeystrokes, soColor];
-      TSynEditOptionsDialog.HighlighterFileDir := TPyScripterSettings.ColorThemesFilesDir;
-      GetUserCommand := GetEditorUserCommand;
-      GetAllUserCommands := GetEditorAllUserCommands;
-      UseExtendedStrings := True;
-      if Execute(TempEditorOptions) then begin
-        UpdateHighlighters;
-        if Form.cbApplyToAll.Checked then begin
-          EditorOptions.Assign(TempEditorOptions);
-          ApplyEditorOptions;
-          PythonIIForm.ApplyEditorOptions;
-          PyIDEMainForm.StoreApplicationData;
-        end else if Assigned(GI_ActiveEditor) then
-          GI_ActiveEditor.ActiveSynEdit.Assign(TempEditorOptions);
-      end else
-        //  If canceled restore original settings
-        ResourcesDataModule.SynWebHtmlSyn.LoadFromIniFile(TempIniFile);
-      Free;
-    end;
-  finally
-    TempEditorOptions.Free;
-    TempIniFile.Free;
-    TempStream.Free;
-  end;
-end;
-
-procedure TCommandsDataModule.actInterpreterEditorOptionsExecute(
-  Sender: TObject);
-begin
-  var TempEditorOptions := TSmartPtr.Make(TSynEditorOptionsContainer.Create(Self))();
-
-  with TSynEditOptionsDialog.Create(Self) do begin
-    TempEditorOptions.Assign(GI_PyInterpreter.Editor);
-    Form.cbApplyToAll.Checked := False;
-    Form.cbApplyToAll.Enabled := False;
-    Form.Caption := 'Interpreter Editor Options';
-    OnGetHighlighterCount := SynInterpreterOptionsDialogGetHighlighterCount;
-    OnGetHighlighter := SynInterpreterOptionsDialogGetHighlighter;
-    OnSetHighlighter := SynInterpreterOptionsDialogSetHighlighter;
-    VisiblePages := [soDisplay, soOptions, soColor];
-    TSynEditOptionsDialog.HighlighterFileDir := TPyScripterSettings.ColorThemesFilesDir;
-    if Execute(TempEditorOptions) then begin
-      UpdateHighlighters;
-      PythonIIForm.ValidateEditorOptions(TempEditorOptions);
-      GI_PyInterpreter.Editor.Assign(TempEditorOptions);
-    end;
-    Free;
-  end;
-end;
-
 procedure TCommandsDataModule.actEditIndentExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
@@ -1380,238 +1286,10 @@ end;
 
 procedure TCommandsDataModule.actIDEOptionsExecute(Sender: TObject);
 Var
-  Categories : array of TOptionCategory;
   Reg : TRegistry;
   IsRegistered : Boolean;
   Key : string;
 begin
-  SetLength(Categories, 12);
-  with Categories[0] do begin
-    DisplayName := _('IDE');
-    SetLength(Options, 15);
-    Options[0].PropertyName := 'AutoCheckForUpdates';
-    Options[0].DisplayName := _('Check for updates automatically');
-    Options[1].PropertyName := 'DaysBetweenChecks';
-    Options[1].DisplayName := _('Days between update checks');
-    Options[2].PropertyName := 'EditorsTabPosition';
-    Options[2].DisplayName := _('Editor tab position');
-    Options[3].PropertyName := 'SmartNextPrevPage';
-    Options[3].DisplayName := _('Smart Next Previous Page');
-    Options[4].PropertyName := 'ShowTabCloseButton';
-    Options[4].DisplayName := _('Show tab close button');
-    Options[5].PropertyName := 'DockAnimationInterval';
-    Options[5].DisplayName := _('Dock animation interval (ms)');
-    Options[6].PropertyName := 'DockAnimationMoveWidth';
-    Options[6].DisplayName := _('Dock animation move width (pixels)');
-    Options[7].PropertyName := 'FileTemplateForNewScripts';
-    Options[7].DisplayName := _('File template for new Python scripts');
-    Options[8].PropertyName := 'NoOfRecentFiles';
-    Options[8].DisplayName := _('Number of recent files');
-    Options[9].PropertyName := 'StyleMainWindowBorder';
-    Options[9].DisplayName := _('Style Main Window Border');
-    Options[10].PropertyName := 'RestoreOpenFiles';
-    Options[10].DisplayName := _('Restore open files');
-    Options[11].PropertyName := 'RestoreOpenProject';
-    Options[11].DisplayName := _('Restore open project');
-    Options[12].PropertyName := 'AutoRestart';
-    Options[12].DisplayName := _('Automatic restart');
-    Options[13].PropertyName := 'LoggingEnabled';
-    Options[13].DisplayName := _('Logging enabled');
-    Options[14].PropertyName := 'UIContentFontSize';
-    Options[14].DisplayName := _('User Interface content font size in points');
-  end;
-  with Categories[1] do begin
-    DisplayName := _('Python Interpreter');
-    SetLength(Options, 15);
-    Options[0].PropertyName := 'SaveFilesBeforeRun';
-    Options[0].DisplayName := _('Save files before run');
-    Options[1].PropertyName := 'SaveEnvironmentBeforeRun';
-    Options[1].DisplayName := _('Save environment before run');
-    Options[2].PropertyName := 'TimeOut';
-    Options[2].DisplayName := _('Timeout for running scripts in ms');
-    Options[3].PropertyName := 'PythonEngineType';
-    Options[3].DisplayName := _('Python engine type');
-    Options[4].PropertyName := 'PrettyPrintOutput';
-    Options[4].DisplayName := _('Pretty print output');
-    Options[5].PropertyName := 'ClearOutputBeforeRun';
-    Options[5].DisplayName := _('Clear output before run');
-    Options[6].PropertyName := 'PostMortemOnException';
-    Options[6].DisplayName := _('Post-mortem on exception');
-    Options[7].PropertyName := 'InterpreterHistorySize';
-    Options[7].DisplayName := _('Interpreter history size');
-    Options[8].PropertyName := 'SaveInterpreterHistory';
-    Options[8].DisplayName := _('Save interpreter history');
-    Options[9].PropertyName := 'ReinitializeBeforeRun';
-    Options[9].DisplayName := _('Reinitialize before run');
-    Options[10].PropertyName := 'JumpToErrorOnException';
-    Options[10].DisplayName := _('Jump to error on exception');
-    Options[11].PropertyName := 'InternalInterpreterHidden';
-    Options[11].DisplayName := _('Internal Interpreter hidden');
-    Options[12].PropertyName := 'AlwaysUseSockets';
-    Options[12].DisplayName := _('Always use sockets');
-    Options[13].PropertyName := 'TraceOnlyIntoOpenFiles';
-    Options[13].DisplayName := _('Step into open files only');
-    Options[14].PropertyName := 'MaskFPUExceptions';
-    Options[14].DisplayName := _('Mask FPU Exceptions');
-  end;
-  with Categories[2] do begin
-    DisplayName := _('Code Explorer');
-    SetLength(Options, 1);
-    Options[0].PropertyName := 'ExplorerInitiallyExpanded';
-    Options[0].DisplayName := _('Initially expanded');
-  end;
-  with Categories[3] do begin
-    DisplayName := _('Project Explorer');
-    SetLength(Options, 1);
-    Options[0].PropertyName := 'ProjectExplorerInitiallyExpanded';
-    Options[0].DisplayName := _('Initially expanded');
-  end;
-  with Categories[4] do begin
-    DisplayName := _('File Filters');
-    SetLength(Options, 12);
-    Options[0].PropertyName := 'PythonFileFilter';
-    Options[0].DisplayName := Format(_(SOpenDialogFilter), ['Python']);
-    Options[1].PropertyName := 'HTMLFileFilter';
-    Options[1].DisplayName := Format(_(SOpenDialogFilter), ['HTML']);
-    Options[2].PropertyName := 'XMLFileFilter';
-    Options[2].DisplayName := Format(_(SOpenDialogFilter), ['XML']);
-    Options[3].PropertyName := 'CSSFileFilter';
-    Options[3].DisplayName := Format(_(SOpenDialogFilter), ['CSS']);
-    Options[4].PropertyName := 'CPPFileFilter';
-    Options[4].DisplayName := Format(_(SOpenDialogFilter), ['CPP']);
-    Options[5].PropertyName := 'YAMLFileFilter';
-    Options[5].DisplayName := Format(_(SOpenDialogFilter), ['YAML']);
-    Options[6].PropertyName := 'JSFileFilter';
-    Options[6].DisplayName := Format(_(SOpenDialogFilter), ['JavaScript']);
-    Options[7].PropertyName := 'PHPFileFilter';
-    Options[7].DisplayName := Format(_(SOpenDialogFilter), ['PHP']);
-    Options[8].PropertyName := 'FileExplorerFilter';
-    Options[8].DisplayName := _('File explorer filter');
-    Options[9].PropertyName := 'CythonFileFilter';
-    Options[9].DisplayName := Format(_(SOpenDialogFilter), ['Cython']);
-    Options[10].PropertyName := 'JSONFileFilter';
-    Options[10].DisplayName := Format(_(SOpenDialogFilter), ['JSON']);
-    Options[11].PropertyName := 'GeneralFileFilter';
-    Options[11].DisplayName := Format(_(SOpenDialogFilter), [_('text file')]);
-  end;
-  with Categories[5] do begin
-    DisplayName := _('Editor');
-    SetLength(Options, 22);
-    Options[0].PropertyName := 'SearchTextAtCaret';
-    Options[0].DisplayName := _('Search text at caret');
-    Options[1].PropertyName := 'CreateBackupFiles';
-    Options[1].DisplayName := _('Create backup files');
-    Options[2].PropertyName := 'UndoAfterSave';
-    Options[2].DisplayName := _('Undo after save');
-    Options[3].PropertyName := 'ShowCodeHints';
-    Options[3].DisplayName := _('Show code hints');
-    Options[4].PropertyName := 'ShowDebuggerHints';
-    Options[4].DisplayName := _('Show debugger hints');
-    Options[5].PropertyName := 'AutoCompleteBrackets';
-    Options[5].DisplayName := _('Auto-complete brackets');
-    Options[6].PropertyName := 'MarkExecutableLines';
-    Options[6].DisplayName := _('Show executable line marks');
-    Options[7].PropertyName := 'NewFileLineBreaks';
-    Options[7].DisplayName := _('Default line break format for new files');
-    Options[8].PropertyName := 'NewFileEncoding';
-    Options[8].DisplayName := _('Default file encoding for new files');
-    Options[9].PropertyName := 'DetectUTF8Encoding';
-    Options[9].DisplayName := _('Detect UTF-8 encoding when opening files');
-    Options[10].PropertyName := 'AutoReloadChangedFiles';
-    Options[10].DisplayName := _('Auto-reload changed files');
-    Options[11].PropertyName := 'AutoHideFindToolbar';
-    Options[11].DisplayName := _('Auto-hide find toolbar');
-    Options[12].PropertyName := 'HighlightSelectedWord';
-    Options[12].DisplayName := _('Highlight selected word');
-    Options[13].PropertyName := 'HighlightSelectedWordColor';
-    Options[13].DisplayName := _('Highlight color of selected word');
-    Options[14].PropertyName := 'DisplayPackageNames';
-    Options[14].DisplayName := _('Display package names in editor tabs');
-    Options[15].PropertyName := 'CodeFoldingEnabled';
-    Options[15].DisplayName := _('Code folding enabled by default');
-    Options[16].PropertyName := 'CodeFolding';
-    Options[16].DisplayName := _('Code folding options');
-    Options[17].PropertyName := 'CompactLineNumbers';
-    Options[17].DisplayName := _('Compact Line Numbers');
-    Options[18].PropertyName := 'TrimTrailingSpacesOnSave';
-    Options[18].DisplayName := _('Trim trailing spaces when files are saved');
-    Options[19].PropertyName := 'TrackChanges';
-    Options[19].DisplayName := _('Track changes bar');
-    Options[20].PropertyName := 'SelectionColor';
-    Options[20].DisplayName := _('Selection color');
-    Options[21].PropertyName := 'IndentGuides';
-    Options[21].DisplayName := _('Indentation Guides');
-  end;
-  with Categories[6] do begin
-    DisplayName := _('Code Completion');
-    SetLength(Options, 9);
-    Options[0].PropertyName := 'CodeCompletionListSize';
-    Options[0].DisplayName := _('Code completion list size');
-    Options[1].PropertyName := 'EditorCodeCompletion';
-    Options[1].DisplayName := _('Editor code completion');
-    Options[2].PropertyName := 'InterpreterCodeCompletion';
-    Options[2].DisplayName := _('Interpreter code completion');
-    Options[3].PropertyName := 'CodeCompletionCaseSensitive';
-    Options[3].DisplayName := _('Case sensitive');
-    Options[4].PropertyName := 'CompleteKeywords';
-    Options[4].DisplayName := _('Complete Python keywords');
-    Options[5].PropertyName := 'CompleteAsYouType';
-    Options[5].DisplayName := _('Complete as you type');
-    Options[6].PropertyName := 'AutoCompletionFont';
-    Options[6].DisplayName := _('Auto completion font');
-    Options[7].PropertyName := 'CompleteWithWordBreakChars';
-    Options[7].DisplayName := _('Complete with word-break characters');
-    Options[8].PropertyName := 'CompleteWithOneEntry';
-    Options[8].DisplayName := _('Auto-complete with one entry');
-  end;
-  with Categories[7] do begin
-    DisplayName := _('Shell Integration');
-    SetLength(Options, 1);
-    Options[0].PropertyName := 'FileExplorerContextMenu';
-    Options[0].DisplayName := _('File Explorer context menu');
-  end;
-  with Categories[8] do begin
-    DisplayName := _('File Explorer');
-    SetLength(Options, 2);
-    Options[0].PropertyName := 'FileExplorerBackgroundProcessing';
-    Options[0].DisplayName := _('File Explorer background processing');
-    Options[1].PropertyName := 'FileChangeNotification';
-    Options[1].DisplayName := _('File Change Notification');
-  end;
-  with Categories[9] do begin
-    DisplayName := 'SSH';
-    SetLength(Options, 5);
-    Options[0].PropertyName := 'SSHCommand';
-    Options[0].DisplayName := _('SSH command');
-    Options[1].PropertyName := 'SSHOptions';
-    Options[1].DisplayName := _('SSH options');
-    Options[2].PropertyName := 'ScpCommand';
-    Options[2].DisplayName := _('SCP command');
-    Options[3].PropertyName := 'ScpOptions';
-    Options[3].DisplayName := _('SCP options');
-    Options[4].PropertyName := 'SSHDisableVariablesWin';
-    Options[4].DisplayName := _('Disable Variables Window with SSH');
-  end;
-  with Categories[10] do begin
-    DisplayName := _('Language Server');
-    SetLength(Options, 3);
-    Options[0].PropertyName := 'LspDebug';
-    Options[0].DisplayName := _('Language server debug output');
-    Options[1].PropertyName := 'CheckSyntaxAsYouType';
-    Options[1].DisplayName := _('Check syntax as you type');
-    Options[2].PropertyName := 'SpecialPackages';
-    Options[2].DisplayName := _('Special packages');
-  end;
-  with Categories[11] do begin
-    DisplayName := _('Spell Checking');
-    SetLength(Options, 3);
-    Options[0].PropertyName := 'DictLanguage';
-    Options[0].DisplayName := _('Dictionary language code');
-    Options[1].PropertyName := 'SpellCheckAsYouType';
-    Options[1].DisplayName := _('Spell check as you type');
-    Options[2].PropertyName := 'SpellCheckedTokens';
-    Options[2].DisplayName := _('Spell checked syntax tokens');
-  end;
 
   // Shell Integration
   IsRegistered := False;
@@ -1628,7 +1306,6 @@ begin
 
   PyIDEOptions.SearchTextAtCaret := EditorSearchOptions.SearchTextAtCaret;
 
-  if InspectOptions(PyIDEOptions, Categories, _(SIDEOptions), 610) then begin
     PyIDEOptions.Changed;
     PyIDEMainForm.StoreApplicationData;
     if PyIDEOptions.FileExplorerContextMenu <> IsRegistered then begin
@@ -1651,32 +1328,7 @@ begin
       end;
       FreeAndNil(Reg);
     end;
-  end;
-end;
 
-procedure TCommandsDataModule.actIDEShortcutsExecute(Sender: TObject);
-begin
-  with TfrmCustomKeyboard.Create(Self) do begin
-    if Execute then
-      PyIDEMainForm.StoreApplicationData;
-    Release;
-  end;
-end;
-
-procedure TCommandsDataModule.actPythonPathExecute(Sender: TObject);
-Var
-  Paths : TStringList;
-begin
-  if not GI_PyControl.PythonLoaded then Exit;
-
-  Paths := TStringList.Create;
-  try
-    PyControl.ActiveInterpreter.SysPathToStrings(Paths);
-    if EditFolderList(Paths, _('Python Path'), 870) then
-      PyControl.ActiveInterpreter.StringsToSysPath(Paths);
-  finally
-    Paths.Free;
-  end;
 end;
 
 procedure TCommandsDataModule.actAboutExecute(Sender: TObject);
@@ -1704,6 +1356,22 @@ begin
     end;
   end else if ExtractFileExt(PythonHelpFile) = '.html' then  // python 11
     ShellExecute(0, 'open', PChar(FilePathToURI(PythonHelpFile)), '', '', SW_SHOWNORMAL);
+end;
+
+procedure TCommandsDataModule.actPythonPathExecute(Sender: TObject);
+Var
+  Paths : TStringList;
+begin
+  if not GI_PyControl.PythonLoaded then Exit;
+
+  Paths := TStringList.Create;
+  try
+    PyControl.ActiveInterpreter.SysPathToStrings(Paths);
+    if EditFolderList(Paths, _('Python Path'), 870) then
+      PyControl.ActiveInterpreter.StringsToSysPath(Paths);
+  finally
+    Paths.Free;
+  end;
 end;
 
 function TCommandsDataModule.ShowPythonKeywordHelp(KeyWord : string): Boolean;
@@ -1882,8 +1550,6 @@ begin
     actReplaceParameters.Enabled := False;
     actInsertTemplate.Enabled := False;
   end;
-  // Other actions
-  actPythonPath.Enabled := GI_PyControl.PythonLoaded;
 end;
 
 procedure TCommandsDataModule.actHelpContentsExecute(Sender: TObject);
@@ -1970,6 +1636,28 @@ begin
   end;
 end;
 
+procedure TCommandsDataModule.actInterpreterEditorOptionsExecute(Sender: TObject);
+begin
+  var TempEditorOptions := TSmartPtr.Make(TSynEditorOptionsContainer.Create(Self))();
+  with TSynEditOptionsDialog.Create(Self) do begin
+    TempEditorOptions.Assign(GI_PyInterpreter.Editor);
+    Form.cbApplyToAll.Checked := False;
+    Form.cbApplyToAll.Enabled := False;
+    Form.Caption := 'Interpreter Editor Options';
+    OnGetHighlighterCount := SynInterpreterOptionsDialogGetHighlighterCount;
+    OnGetHighlighter := SynInterpreterOptionsDialogGetHighlighter;
+    OnSetHighlighter := SynInterpreterOptionsDialogSetHighlighter;
+    VisiblePages := [soDisplay, soOptions, soColor];
+    TSynEditOptionsDialog.HighlighterFileDir := TPyScripterSettings.ColorThemesFilesDir;
+    if Execute(TempEditorOptions) then begin
+      UpdateHighlighters;
+      PythonIIForm.ValidateEditorOptions(TempEditorOptions);
+      GI_PyInterpreter.Editor.Assign(TempEditorOptions);
+    end;
+    Free;
+  end;
+end;
+
 procedure TCommandsDataModule.actHelpParametersExecute(Sender: TObject);
 begin
   PyIDEMainForm.MenuHelpRequested := True;
@@ -2011,40 +1699,6 @@ begin
   PyIDEMainForm.MenuHelpRequested := True;
   Application.HelpJump('editorshortcuts');
   PyIDEMainForm.MenuHelpRequested := False;
-end;
-
-procedure TCommandsDataModule.actCustomizeParametersExecute(
-  Sender: TObject);
-begin
-  with TCustomizeParams.Create(Self) do begin
-    SetItems(CustomParams);
-    if ShowModal = mrOK then begin
-      GetItems(CustomParams);
-      RegisterCustomParams;
-    end;
-    Free;
-  end;
-end;
-
-procedure TCommandsDataModule.actCodeTemplatesExecute(Sender: TObject);
-begin
-  with ResourcesDataModule.CodeTemplatesCompletion, TCodeTemplates.Create(Self) do
-  begin
-    CodeTemplateText := AutoCompleteList.Text;
-    if ShowModal = mrOK then
-      AutoCompleteList.Text := CodeTemplateText;
-    Free;
-  end;
-end;
-
-procedure TCommandsDataModule.actFileTemplatesExecute(Sender: TObject);
-begin
-  with TFileTemplatesDialog.Create(Self) do begin
-    SetItems;
-    if ShowModal = mrOK then
-      GetItems;
-    Free;
-  end;
 end;
 
 procedure TCommandsDataModule.actConfigureToolsExecute(Sender: TObject);
@@ -2577,6 +2231,7 @@ begin
   SynParamCompletion.Font.Assign(PyIDEOptions.AutoCompletionFont);
 
   // SpellCheck
+  {
   SynSpellCheck.BeginUpdate;
   try
     SynSpellCheck.CheckAsYouType := PyIDEOptions.SpellCheckAsYouType;
@@ -2594,6 +2249,7 @@ begin
       [CommandsDataModule.SynSpellCheck.LanguageCode]),
       mtInformation, [mbOK], 0, dckActiveForm, 0, mbOK);
   end);
+  }
 end;
 
 procedure TCommandsDataModule.SynSpellCheckChange(Sender: TObject);

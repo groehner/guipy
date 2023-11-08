@@ -71,7 +71,7 @@ implementation
 
 uses
   Windows, Forms, SysUtils, Variants, Types, StrUtils, JvJVCLUtils, SynEditKeyCmds,
-  cPyControl, frmVariables, frmPythonII, uEditAppIntfs, uCommonFunctions,
+  cPyControl, PythonEngine, frmVariables, frmPythonII, uEditAppIntfs, uCommonFunctions,
   System.RegularExpressions, UConfiguration, UUtils;
 
 constructor TLivingObjects.Create;
@@ -154,7 +154,7 @@ var
 begin
   if not ClassExists('inspect') then
     PyControl.ActiveInterpreter.RunSource('import inspect', '<interactive input>');
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   Cursor := WaitCursor;
   Application.ProcessMessages;
   v := PyControl.ActiveInterpreter.EvalCode('inspect.signature(' + from + ')');
@@ -167,7 +167,7 @@ var
   v: Variant;
   Filepath: string;
 begin
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   v := PyControl.ActiveInterpreter.EvalCode(Objectname + '.__module__');
   Filepath:= String(v);
   PyControl.ActiveInterpreter.RunSource('from ' + Filepath + ' import ' + aClassname, '<interactive input>');
@@ -179,7 +179,7 @@ var
   v: Variant;
   Path, Filename: string;
 begin
-  Py:= GI_PyControl.SafePyEngine;
+  Py:= SafePyEngine;
   if not ClassExists('os') then
     PyControl.ActiveInterpreter.RunSource('import os', '<interactive input>');
   v:= PyControl.ActiveInterpreter.EvalCode('os.path.abspath(os.curdir)');
@@ -191,7 +191,7 @@ end;
 
 function TLivingObjects.getHexAddress(from, value: String): String;
 begin
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
   var hex := PyControl.ActiveInterpreter.EvalCode('hex(id(' + from + '))');
   var p:= pos(' ', value);
   if p = -1
@@ -207,7 +207,7 @@ begin
   var SL:= TStringList.Create;
   if not ClassExists('inspect') then
     PyControl.ActiveInterpreter.RunSource('import inspect', '<interactive input>');
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   v := PyControl.ActiveInterpreter.EvalCode('inspect.getmembers(' + from + ', inspect.ismethod)');
   Regex:= CompiledRegEx('''(\w+)''');
   Matches:= RegEx.Matches(String(v));
@@ -235,7 +235,7 @@ var
   Name, Address: String;
 begin
   Result := false;
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   SL := Split('.', Objectname); // also find Class.SubClass
   NS := VariablesWindow.GlobalsNameSpace;
   for i := 0 to SL.Count - 1 do begin
@@ -278,7 +278,7 @@ var
   Name: string;
 begin
   Result := nil;
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   SL := Split('.', Path); // also find Class.SubClass
   try
     NS := VariablesWindow.GlobalsNameSpace;
@@ -333,7 +333,7 @@ var
   NS, NSi: TBaseNameSpaceItem;
 begin
   SL := TStringList.Create;
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   NS := getNodeFromName(Objectname);
   if assigned(NS) then
     for i := 0 to NS.ChildCount - 1 do begin
@@ -358,7 +358,7 @@ var
   NS, NSi: TBaseNameSpaceItem;
 begin
   SL := TStringList.Create;
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   NS := getNodeFromName(Objectname);
   for i := 0 to NS.ChildCount - 1 do begin
     NSi:= NS.ChildNode[i];
@@ -435,7 +435,7 @@ var
 
 begin
   SL := TStringList.Create;
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   NS := getNodeFromName(Objectname);
   if assigned(NS) then
     AddObjects(NS);
@@ -542,7 +542,7 @@ var
   NS, NSi: TBaseNameSpaceItem;
 begin
   SL := TStringList.Create;
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   NS := getNodeFromPath(Classname);
   for i := 0 to NS.ChildCount - 1 do begin
     NSi:= NS.ChildNode[i];
@@ -562,7 +562,7 @@ var
   NS, NSi: TBaseNameSpaceItem;
 begin
   SL := TStringList.Create;
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   NS := getNodeFromPath(Classname);
   for i := 0 to NS.ChildCount - 1 do begin
     NSi:= NS.ChildNode[i];
@@ -729,7 +729,7 @@ begin
   SLObjectsAddressNameDuplicat.Assign(SLObjectsAddressName);
   SLObjectsAddressName.Clear;
   SLObjectsNamePath.Clear;
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
   var NS := VariablesWindow.GlobalsNameSpace;
   // collect objects with direct access first
   for i:= 0 to NS.ChildCount -1 do begin

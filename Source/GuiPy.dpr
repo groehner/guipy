@@ -29,7 +29,6 @@ uses
   Vcl.StdCtrls,
   VirtualTrees.Accessibility,
   uCmdLine in 'uCmdLine.pas',
-  dlgExceptionMail in 'dlgExceptionMail.pas' {ExceptionDialogMail},
   frmPyIDEMain in 'frmPyIDEMain.pas' {PyIDEMainForm},
   uEditAppIntfs in 'uEditAppIntfs.pas',
   frmEditor in 'frmEditor.pas' {EditorForm},
@@ -46,7 +45,6 @@ uses
   frmWatches in 'frmWatches.pas' {WatchesWindow},
   frmVariables in 'frmVariables.pas' {VariablesWindow},
   frmCodeExplorer in 'frmCodeExplorer.pas' {CodeExplorerWindow},
-  dlgOptionsEditor in 'dlgOptionsEditor.pas' {OptionsInspector},
   dlgDirectoryList in 'dlgDirectoryList.pas' {DirectoryListDialog},
   frmFileExplorer in 'frmFileExplorer.pas' {FileExplorerWindow},
   frmIDEDockWin in 'frmIDEDockWin.pas' {IDEDockWindow},
@@ -64,8 +62,6 @@ uses
   dlgReplaceInFiles in 'dlgReplaceInFiles.pas' {ReplaceInFilesDialog},
   cParameters in 'cParameters.pas',
   uParams in 'uParams.pas',
-  dlgCustomParams in 'dlgCustomParams.pas' {CustomizeParams},
-  dlgAskParam in 'dlgAskParam.pas' {AskParamForm},
   cTools in 'cTools.pas',
   dlgCollectionEditor in 'dlgCollectionEditor.pas' {CollectionEditor},
   dlgToolProperties in 'dlgToolProperties.pas' {ToolProperties},
@@ -77,7 +73,6 @@ uses
   frmRegExpTester in 'frmRegExpTester.pas' {RegExpTesterWindow},
   cCodeHint in 'cCodeHint.pas',
   dlgCommandLine in 'dlgCommandLine.pas' {CommandLineDlg},
-  dlgCustomShortcuts in 'dlgCustomShortcuts.pas' {frmCustomKeyboard},
   dlgUnitTestWizard in 'dlgUnitTestWizard.pas' {UnitTestWizard},
   frmUnitTests in 'frmUnitTests.pas' {UnitTestWindow},
   cFilePersist in 'cFilePersist.pas',
@@ -86,7 +81,6 @@ uses
   cPyBaseDebugger in 'cPyBaseDebugger.pas',
   cPyRemoteDebugger in 'cPyRemoteDebugger.pas',
   cFileTemplates in 'cFileTemplates.pas',
-  dlgCodeTemplates in 'dlgCodeTemplates.pas' {CodeTemplates},
   dlgNewFile in 'dlgNewFile.pas' {NewFileDialog},
   JvDockVSNetStyle in 'JvDockVSNetStyle.pas',
   JvDockControlForm in 'JvDockControlForm.pas',
@@ -98,11 +92,9 @@ uses
   dlgRunConfiguration in 'dlgRunConfiguration.pas' {RunConfigurationForm},
   dlgPyIDEBase in 'dlgPyIDEBase.pas' {PyIDEDlgBase},
   JvDockInfo in 'JvDockInfo.pas',
-  dlgSynEditOptions in 'dlgSynEditOptions.pas' {fmEditorOptionsDialog: TForm},
   JvDockSupportControl in 'JvDockSupportControl.pas',
   JvDockVIDStyle in 'JvDockVIDStyle.pas',
   cCodeCompletion in 'cCodeCompletion.pas',
-  dlgStyleSelector in 'dlgStyleSelector.pas' {StyleSelectorForm},
   VCL.Styles.PyScripter in 'VCL.Styles.PyScripter.pas' {/  Vcl.Styles.Utils.Forms;},
   cPyScripterSettings in 'cPyScripterSettings.pas',
   cPySupportTypes in 'cPySupportTypes.pas',
@@ -204,10 +196,11 @@ uses
   UQtScrollable in 'Components\PyQt\UQtScrollable.pas',
   UQtSpinBoxes in 'Components\PyQt\UQtSpinBoxes.pas',
   UQtWidgetDescendants in 'Components\PyQt\UQtWidgetDescendants.pas',
-  dlgFileTemplates in 'dlgFileTemplates.pas',
   dmResources in 'dmResources.pas' {ResourcesDataModule: TDataModule},
   uSysUtils in 'uSysUtils.pas',
-  Vcl.Consts in 'Utils\Vcl.Consts.pas';
+  Vcl.Consts in 'Utils\Vcl.Consts.pas',
+  cCustomShortcuts in 'cCustomShortcuts.pas',
+  dlgSynEditOptions in 'dlgSynEditOptions.pas' {fmEditorOptionsDialog};
 
 {$R *.RES}
 {$R WebCopyAvi.RES}
@@ -227,7 +220,7 @@ begin
   Application.MainFormOnTaskbar := True;
 
   if TStyleManager.TrySetStyle('Windows10 SlateGray') then
-    TStyleSelectorForm.CurrentSkinName := 'Windows10 SlateGray';
+    TFConfiguration.CurrentSkinName := 'Windows10 SlateGray';
 
   Application.Title := 'GuiPy';
   Application.CreateForm(TResourcesDataModule, ResourcesDataModule);

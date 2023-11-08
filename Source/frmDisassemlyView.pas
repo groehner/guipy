@@ -49,6 +49,7 @@ uses
   JvGnugettext,
   StringResources,
   dmResources,
+  PythonEngine,
   cPyScripterSettings,
   cPyControl;
 
@@ -84,7 +85,7 @@ begin
   Cursor := WaitCursor;
   Application.ProcessMessages;
 
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
 
   module := PyControl.ActiveInterpreter.ImportModule(Editor);
   PyControl.ActiveInterpreter.RunSource(Code, '<Getdis>', 'exec');

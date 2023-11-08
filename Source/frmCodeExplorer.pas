@@ -173,7 +173,7 @@ type
 
   TCEUpdateReason = (ceuSymbolsChanged, ceuEditorEnter);
 
-  TCodeExplorerWindow = class(TIDEDockWindow, IJvAppStorageHandler)
+  TCodeExplorerWindow = class(TIDEDockWindow)
     Panel1: TPanel;
     ExplorerTree: TVirtualStringTree;
     CEPopupMenu: TSpTBXPopupMenu;
@@ -223,19 +223,18 @@ type
     procedure ExplorerTreeGetCellText(Sender: TCustomVirtualStringTree;
       var E: TVSTGetCellTextEventArgs);
   private
-    FFileId: string;
+    const FBasePath = 'Code Explorer Options'; // Used for storing settings
+    var FFileId: string;
     FModuleNode: TModuleCENode;
     procedure NavigateToNodeElement(Node: PVirtualNode;
       ForceToMiddle : Boolean = True; Activate : Boolean = True);
     procedure UpdateModuleNode(const FileId: string; Symbols: TJsonArray);
     procedure UpdateTree(const FileId: string;
       UpdateReason: TCEUpdateReason; NewModuleNode: TModuleCENode);
-  protected
-    // IJvAppStorageHandler implementation
-    procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
-    procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
   public
-    { Public declarations }
+    procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
+    procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
+
     procedure ClearAll;
     procedure ShowEditorCodeElement;
     procedure UpdateWindow(DocSymbols: TDocSymbols; UpdateReason: TCEUpdateReason);
@@ -568,12 +567,12 @@ begin
   end;
 end;
 
-procedure TCodeExplorerWindow.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
-  const BasePath: string);
+procedure TCodeExplorerWindow.StoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  AppStorage.WriteBoolean(BasePath+'\AlphaSort', mnAlphaSort.Checked);
-  AppStorage.WriteBoolean(BasePath+'\Show Selection', mnShowSelection.Checked);
-  AppStorage.WriteBoolean(BasePath+'\Follow Editor', mnFollowEditor.Checked);
+  inherited;
+  AppStorage.WriteBoolean(FBasePath+'\AlphaSort', mnAlphaSort.Checked);
+  AppStorage.WriteBoolean(FBasePath+'\Show Selection', mnShowSelection.Checked);
+  AppStorage.WriteBoolean(FBasePath+'\Follow Editor', mnFollowEditor.Checked);
 end;
 
 procedure TCodeExplorerWindow.ClearAll;
@@ -721,12 +720,13 @@ begin
   ExplorerTree.FullCollapse;
 end;
 
-procedure TCodeExplorerWindow.ReadFromAppStorage(
-  AppStorage: TJvCustomAppStorage; const BasePath: string);
+procedure TCodeExplorerWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  mnAlphaSort.Checked := AppStorage.ReadBoolean(BasePath+'\AlphaSort', False);
-  mnShowSelection.Checked := AppStorage.ReadBoolean(BasePath+'\Show Selection', True);
-  mnFollowEditor.Checked := AppStorage.ReadBoolean(BasePath+'\Follow Editor', True);
+  if not AppStorage.PathExists(FBasePath) then exit;
+  inherited;
+  mnAlphaSort.Checked := AppStorage.ReadBoolean(FBasePath+'\AlphaSort', False);
+  mnShowSelection.Checked := AppStorage.ReadBoolean(FBasePath+'\Show Selection', True);
+  mnFollowEditor.Checked := AppStorage.ReadBoolean(FBasePath+'\Follow Editor', True);
 end;
 
 { TAbstractCENode }

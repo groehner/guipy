@@ -141,6 +141,7 @@ begin
   end;
   OnDeactivate:= ELObjectInspectorDeactivate;
   PObjects.Autosize:= true;
+  ParentFont:= false;
   CBObjects.Align:= alTop;
   TranslateComponent(Self);
   ChangeStyle;

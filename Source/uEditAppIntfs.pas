@@ -141,8 +141,10 @@ type
     procedure ExecuteSelection;
     procedure SplitEditorHorizontally;
     procedure SplitEditorVertrically;
+    procedure SplitEditorHide;
     procedure Retranslate;
     procedure RefreshSymbols;
+
     property FileName: string read GetFileName;
     property RemoteFileName : string read GetRemoteFileName;
     property FileId: string read GetFileId;
@@ -323,13 +325,6 @@ type
     property Logger: TJclSimpleLog read GetLogger;
   end;
 
-  IPyEngineAndGIL = interface
-    function GetPyEngine: TPythonEngine;
-    function GetThreadState: PPyThreadState;
-    property PythonEngine: TPythonEngine read GetPyEngine;
-    property ThreadState: PPyThreadState read GetThreadState;
-  end;
-
   IPyControl = interface
   ['{DE1C1145-DC0F-4829-B36B-74EC818E168E}']
     function PythonLoaded: Boolean;
@@ -338,9 +333,7 @@ type
     function GetPythonVersion: TPythonVersion;
     function GetOnPythonVersionChange: TJclNotifyEventBroadcast;
     function AddPathToInternalPythonPath(const Path: string): IInterface;
-    function SafePyEngine: IPyEngineAndGIL;
-    procedure ThreadPythonExec(ExecuteProc : TProc; TerminateProc : TProc = nil;
-      WaitToFinish: Boolean = False; ThreadExecMode : TThreadExecMode = emNewState);
+    procedure Pickle(AValue: Variant; FileName: string);
     property PythonVersion: TPythonVersion read GetPythonVersion;
     property OnPythonVersionChange: TJclNotifyEventBroadcast
       read GetOnPythonVersionChange;

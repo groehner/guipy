@@ -3,8 +3,8 @@ inherited PythonIIForm: TPythonIIForm
   Top = 201
   HelpContext = 410
   Caption = 'Python Interpreter'
-  ClientHeight = 415
-  ClientWidth = 677
+  ClientHeight = 355
+  ClientWidth = 637
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -43,25 +43,25 @@ inherited PythonIIForm: TPythonIIForm
     9C41F00F9C41F00F9C41F00F9C4180019C4100009C4100009C4100009C410000
     9C4100009C4100009C4180019C41F00F9C41F00F9C41F00F9C41F81F9C41}
   OnHelp = FormHelp
-  ExplicitWidth = 693
-  ExplicitHeight = 454
+  ExplicitWidth = 653
+  ExplicitHeight = 394
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 677
-    Height = 415
-    ExplicitWidth = 677
-    ExplicitHeight = 415
+    Width = 637
+    Height = 355
+    ExplicitWidth = 661
+    ExplicitHeight = 391
     inherited FGPanel: TPanel
-      Width = 681
-      Height = 423
+      Width = 641
+      Height = 363
       Color = clInactiveBorder
-      ExplicitWidth = 673
-      ExplicitHeight = 411
+      ExplicitWidth = 657
+      ExplicitHeight = 387
       object SynEdit: TSynEdit
         Left = 0
         Top = 0
-        Width = 681
-        Height = 423
+        Width = 641
+        Height = 363
         HelpContext = 410
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
@@ -113,8 +113,8 @@ inherited PythonIIForm: TPythonIIForm
         OnCommandProcessed = SynEditCommandProcessed
         OnProcessCommand = SynEditProcessCommand
         OnProcessUserCommand = SynEditProcessUserCommand
-        ExplicitWidth = 673
-        ExplicitHeight = 411
+        ExplicitWidth = 657
+        ExplicitHeight = 387
       end
     end
   end
@@ -176,7 +176,6 @@ inherited PythonIIForm: TPythonIIForm
     end
     object mnInterpreterEditorOptions: TSpTBXItem
       Action = CommandsDataModule.actInterpreterEditorOptions
-      ImageIndex = 4
     end
     object mnReinitialzePython: TSpTBXItem
       Action = PyIDEMainForm.actPythonReinitialize

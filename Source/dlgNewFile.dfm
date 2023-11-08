@@ -60,6 +60,7 @@ inherited NewFileDialog: TNewFileDialog
           Header.Options = [hoColumnResize, hoDrag]
           NodeDataSize = 0
           TabOrder = 0
+          TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScrollOnExpand, toAutoTristateTracking, toAutoHideButtons, toAutoDeleteMovedNodes, toAutoChangeScale]
           TreeOptions.PaintOptions = [toHotTrack, toShowButtons, toShowDropmark, toShowRoot, toShowTreeLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
           OnChange = tvCategoriesChange
           OnGetText = tvCategoriesGetText
@@ -118,15 +119,6 @@ inherited NewFileDialog: TNewFileDialog
       Enabled = False
       TabOrder = 2
       OnClick = btnCreateClick
-    end
-    object btnManageTemplates: TButton
-      Left = 13
-      Top = 263
-      Width = 166
-      Height = 25
-      Caption = 'Manage File Templates...'
-      TabOrder = 3
-      OnClick = btnManageTemplatesClick
     end
   end
 end

@@ -36,9 +36,9 @@ object FUpdate: TFUpdate
     Caption = 'New version'
   end
   object BClose: TButton
-    Left = 163
-    Top = 237
-    Width = 75
+    Left = 147
+    Top = 236
+    Width = 80
     Height = 25
     Caption = 'Close'
     TabOrder = 0
@@ -59,9 +59,9 @@ object FUpdate: TFUpdate
     TabOrder = 2
   end
   object BUpdate: TButton
-    Left = 255
-    Top = 237
-    Width = 74
+    Left = 240
+    Top = 236
+    Width = 80
     Height = 25
     Hint = 'Performs an update. To do this, you need sufficient rights.'
     Caption = 'Update'

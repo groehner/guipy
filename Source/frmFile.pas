@@ -93,6 +93,7 @@ type
     procedure OpenWindow(Sender: TObject); virtual;
     procedure CollectClasses(SL: TStringList); virtual;
     procedure DoUpdateCaption; virtual;
+    procedure SetOptions; virtual;
     procedure SetActiveControl(aControl: TWinControl);
 
     property Modified: boolean read GetModified write SetModified;
@@ -287,6 +288,10 @@ begin
       Hint := fFile.GetFileId;
     end;
   PyIDEMainForm.UpdateCaption;
+end;
+
+procedure TFileform.SetOptions;
+begin
 end;
 
 function TFileForm.DoSaveAsRemote: boolean;

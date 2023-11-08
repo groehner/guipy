@@ -70,6 +70,7 @@ inherited MessagesWindow: TMessagesWindow
         PopupMenu = TBXPopupMenu
         TabOrder = 0
         TreeOptions.AnimationOptions = [toAnimatedToggle]
+        TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScrollOnExpand, toAutoTristateTracking, toAutoHideButtons, toAutoDeleteMovedNodes, toAutoChangeScale]
         TreeOptions.MiscOptions = [toFullRepaintOnResize, toInitOnSave, toReportMode, toToggleOnDblClick, toWheelPanning]
         TreeOptions.PaintOptions = [toHideSelection, toHotTrack, toShowButtons, toShowDropmark, toShowHorzGridLines, toShowVertGridLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
         TreeOptions.SelectionOptions = [toExtendedFocus, toFullRowSelect, toRightClickSelect]
@@ -81,22 +82,26 @@ inherited MessagesWindow: TMessagesWindow
         Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
         Columns = <
           item
+            Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
             Position = 0
             Text = 'Message'
             Width = 377
           end
           item
+            Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
             Position = 1
             Text = 'File Name'
             Width = 200
           end
           item
             Alignment = taRightJustify
+            Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
             Position = 2
             Text = 'Line'
           end
           item
             Alignment = taRightJustify
+            Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
             Position = 3
             Text = 'Position'
             Width = 60
@@ -110,7 +115,7 @@ inherited MessagesWindow: TMessagesWindow
     end
   end
   object Panel1: TPanel [1]
-    Left = 686
+    Left = 670
     Top = 2
     Width = 39
     Height = 17
@@ -118,7 +123,7 @@ inherited MessagesWindow: TMessagesWindow
     AutoSize = True
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitLeft = 678
+    ExplicitLeft = 662
     DesignSize = (
       39
       17)

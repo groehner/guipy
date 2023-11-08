@@ -2,8 +2,8 @@ object PyIDEDlgBase: TPyIDEDlgBase
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  ClientHeight = 238
-  ClientWidth = 384
+  ClientHeight = 228
+  ClientWidth = 344
   Color = clBtnFace
   ParentFont = True
   Position = poMainFormCenter

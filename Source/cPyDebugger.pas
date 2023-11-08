@@ -93,7 +93,6 @@ type
     procedure StringsToSysPath(Strings : TStrings); override;
     function Compile(ARunConfig : TRunConfiguration) : Variant;
     function GetGlobals : TBaseNameSpaceItem; override;
-    procedure GetModulesOnPath(const Path : Variant; SL : TStrings); override;
     function NameSpaceFromExpression(const Expr : string) : TBaseNameSpaceItem; override;
     function CallTipFromExpression(const Expr : string;
       var DisplayString, DocString : string) : Boolean; override;
@@ -108,6 +107,7 @@ type
     function GetObjectType(Ob : Variant) : string; override;
     function UnitTestResult : Variant; override;
     function NameSpaceItemFromPyObject(aName : string; aPyObject : Variant): TBaseNameSpaceItem; override;
+    procedure Pickle(AValue: Variant; const FileName: string); override;
     property Debugger : Variant read fDebugger;
   end;
 
@@ -477,7 +477,7 @@ Var
   Py: IPyEngineAndGIL;
   Frame, BotFrame, TraceBack : Variant;
 begin
-  Py:= GI_PyControl.SafePyEngine;
+  Py:= SafePyEngine;
   if not (HaveTraceback and (PyControl.DebuggerState = dsInactive)) then
     Exit;
 
@@ -509,7 +509,7 @@ begin
   if PyControl.DebuggerState in [dsPaused, dsPostMortem] then begin
     SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
     try
-      Py := GI_PyControl.SafePyEngine;
+      Py := SafePyEngine;
       // evalcode knows we are in the debugger and uses current frame locals/globals
       V := InternalInterpreter.PyInteractiveInterpreter.evalcode(Expr);
       Result := TNameSpaceItem.Create(Expr, V);
@@ -530,7 +530,7 @@ begin
   if PyControl.DebuggerState in [dsPaused, dsPostMortem] then begin
     SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
     try
-      Py := GI_PyControl.SafePyEngine;
+      Py := SafePyEngine;
       // evalcode knows we are in the debugger and uses current frame locals/globals
       V := InternalInterpreter.PyInteractiveInterpreter.evalcode(Expr);
       ObjType := InternalInterpreter.PyInteractiveInterpreter.objecttype(V);
@@ -592,7 +592,7 @@ end;
 function TPyInternalDebugger.HaveTraceback: boolean;
 begin
   try
-    var Py := GI_PyControl.SafePyEngine;
+    var Py := SafePyEngine;
     Result := VarModuleHasObject(SysModule, 'last_traceback');
   except
     Result := False;
@@ -698,7 +698,7 @@ begin
     //set breakpoints
     SetDebuggerBreakPoints;
 
-    GI_PyControl.ThreadPythonExec(procedure
+    ThreadPythonExec(procedure
     begin
       if RunToCursorLine >= 0 then  // add temp breakpoint
         InternalInterpreter.Debugger.set_break(Code.co_filename, RunToCursorLine, 1);
@@ -771,7 +771,7 @@ begin
   // Set Temporary breakpoint
   SetDebuggerBreakPoints;  // So that this one is not cleared
   FName := InternalInterpreter.ToPythonFileName(Editor.FileId);
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
   InternalInterpreter.Debugger.set_break(VarPythonCreate(FName), ALine, 1);
 
   fDebuggerCommand := dcRunToCursor;
@@ -931,7 +931,7 @@ procedure TPyInternalDebugger.SetDebuggerBreakpoints;
 begin
   if not PyControl.BreakPointsChanged then Exit;
 
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
   LoadLineCache;
   InternalInterpreter.Debugger.clear_all_breaks();
 
@@ -984,7 +984,7 @@ end;
 
 procedure TPyInternalDebugger.MakeFrameActive(Frame: TBaseFrameInfo);
 begin
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
   if Assigned(Frame) then
     InternalInterpreter.Debugger.currentframe := (Frame as TFrameInfo).fPyFrame
   else
@@ -1040,7 +1040,7 @@ begin
   DocString := '';
   if Expr = '' then Exit;
 
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
   try
     //Evaluate the lookup expression and get the hint text
@@ -1072,7 +1072,7 @@ begin
     System.SysUtils.Abort;
   end;
 
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
 
   VarClear(Result);
   PyControl.ErrorPos := TEditorPos.EmptyPos;
@@ -1129,16 +1129,6 @@ begin
   Result := TNameSpaceItem.Create('globals', VarPythonEval('globals()'));
 end;
 
-procedure TPyInternalInterpreter.GetModulesOnPath(const Path: Variant; SL: TStrings);
-Var
-  i : integer;
-  ModuleList : Variant;
-begin
-  ModuleList := fII.getmodules(Path);
-  for I := 0 to Len(ModuleList) - 1 do
-    SL.Add(ModuleList.__getitem__(i));
-end;
-
 function TPyInternalInterpreter.GetObjectType(Ob: Variant): string;
 Var
   SuppressOutput : IInterface;
@@ -1165,7 +1155,7 @@ Var
   PythonPathAdder : IInterface;
   RunConfiguration : TRunConfiguration;
 begin
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
   Assert(Assigned(Editor));
   VarClear(Result);
   //Compile
@@ -1263,7 +1253,7 @@ procedure TPyInternalInterpreter.RestoreCommandLine;
 var
   Py: IPyEngineAndGIL;
 begin
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   SysModule.argv := fOldargv;
 end;
 
@@ -1274,7 +1264,7 @@ var
   S, Param : string;
   P : PChar;
 begin
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   SysMod := SysModule;
   fOldargv := SysMod.argv;
   SysMod.argv := NewPythonList;
@@ -1301,7 +1291,7 @@ var
   i: Integer;
   PythonPath: Variant;
 begin
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   PythonPath := NewPythonList;
   for i := 0 to Strings.Count - 1 do
     PythonPath.append(Strings[i]);
@@ -1323,6 +1313,29 @@ end;
 function TPyInternalInterpreter.GetInterpreter: Variant;
 begin
   Result := fII;
+end;
+
+procedure TPyInternalInterpreter.Pickle(AValue: Variant; const FileName: string);
+var
+  f: Variant;
+  Py: IPyEngineAndGIL;
+  SuppressOutput : IInterface;
+begin
+  Py := SafePyEngine;
+  SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
+  try
+    f := BuiltinModule.open(Filename, 'wb');
+  except
+    raise Exception.CreateFmt(SCouldNotOpenOutputFile, [FileName]);
+  end;
+
+  try
+    Import('pickle').dump(AValue, f);
+  except
+    f.close();
+    raise Exception.Create(SPickleFailed);
+  end;
+  f.close();
 end;
 
 procedure TPyInternalInterpreter.Run(ARunConfig: TRunConfiguration);
@@ -1392,7 +1405,7 @@ begin
         mmResult := TimeSetEvent(PyIDEOptions.TimeOut, resolution,
           @TimeCallBack, DWORD(@mmResult), TIME_PERIODIC or 256);
       end;
-      var Py := GI_PyControl.SafePyEngine;
+      var Py := SafePyEngine;
       try
         try
           fII.run_nodebug(Code);
@@ -1445,7 +1458,7 @@ begin
   OldPos := PyControl.CurrentPos;
   PyControl.DebuggerState := dsRunning;
   try
-    var Py := GI_PyControl.SafePyEngine;
+    var Py := SafePyEngine;
     // Workaround due to PREFER_UNICODE flag to make sure
     // no conversion to Unicode and back will take place
     var PySource := VarPythonCreate(Source);
@@ -1472,7 +1485,7 @@ begin
     Source := CleanEOLs(Editor.EncodedText)+AnsiString(#10);
   end);
 
-  with GI_PyControl.SafePyEngine.PythonEngine do begin
+  with SafePyEngine.PythonEngine do begin
     if Quiet then
       SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
 
@@ -1508,7 +1521,7 @@ function TPyInternalInterpreter.SysPathAdd(const Path: string): boolean;
 Var
   Py: IPyEngineAndGIL;
 begin
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   if SysModule.path.__contains__(Path) then
     Result := false
   else begin
@@ -1521,7 +1534,7 @@ function TPyInternalInterpreter.SysPathRemove(const Path: string): boolean;
 Var
   Py: IPyEngineAndGIL;
 begin
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   if SysModule.path.__contains__(Path) then begin
     Result := True;
     SysModule.path.remove(Path);
@@ -1534,14 +1547,14 @@ var
   Py: IPyEngineAndGIL;
   i: Integer;
 begin
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   for i := 0 to Len(SysModule.path) - 1  do
     Strings.Add(SysModule.path.__getitem__(i));
 end;
 
 procedure TPyInternalInterpreter.SystemCommand(const Cmd: string);
 begin
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
   fII.system_command(Cmd);
 end;
 

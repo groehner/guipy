@@ -88,6 +88,7 @@ uses
   JvGnugettext,
   StringResources,
   uCommonFunctions,
+  PythonEngine,
   cPyControl,
   cPyScripterSettings,
   dmResources;
@@ -135,7 +136,7 @@ var
 begin
   if not Assigned(Editor) then Exit;
 
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   Cursor := WaitCursor;
 
   module := PyControl.ActiveInterpreter.ImportModule(Editor);

@@ -14,14 +14,17 @@ uses
   Winapi.Windows,
   Winapi.Messages,
   System.SysUtils,
+  System.Variants,
   System.Classes,
   System.ImageList,
   System.Generics.Collections,
-  JvDockControlForm,
-  Vcl.StdCtrls,
+  Vcl.Graphics,
   Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  JvDockControlForm,
   Vcl.ExtCtrls,
-  Vcl.ComCtrls,
+  Vcl.StdCtrls,
   Vcl.ImgList,
   Vcl.VirtualImageList,
   TB2Item,
@@ -34,14 +37,16 @@ uses
   SpTBXEditors,
   JvAppStorage,
   JvComponentBase,
+  VirtualTrees.Types,
   VirtualTrees.BaseTree,
   VirtualTrees.BaseAncestorVCL,
   VirtualTrees.AncestorVCL,
   VirtualTrees,
+  SynEdit,
   frmIDEDockWin;
 
 type
-  TRegExpTesterWindow = class(TIDEDockWindow, IJvAppStorageHandler)
+  TRegExpTesterWindow = class(TIDEDockWindow)
     TBXDock: TSpTBXDock;
     RegExpTesterToolbar: TSpTBXToolbar;
     TBXSubmenuItem2: TSpTBXSubmenuItem;
@@ -80,12 +85,12 @@ type
     pnlMiddle: TPanel;
     SpTBXSplitter3: TSpTBXSplitter;
     pnlBackground: TPanel;
-    RegExpText: TRichEdit;
-    SearchText: TRichEdit;
-    MatchText: TRichEdit;
     RI_findall: TSpTBXItem;
     SpinMatches: TSpTBXSpinEdit;
     vilImages: TVirtualImageList;
+    RegExpText: TSynEdit;
+    SearchText: TSynEdit;
+    MatchText: TSynEdit;
     procedure TiClearClick(Sender: TObject);
     procedure GroupsViewGetText(Sender: TBaseVirtualTree; Node: PVirtualNode;
       Column: TColumnIndex; TextType: TVSTTextType; var CellText: string);
@@ -96,22 +101,23 @@ type
     procedure FormActivate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure SpinMatchesValueChanged(Sender: TObject);
+    procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   private
-    { Private declarations }
     OldRegExp : string;
     OldSearchText : string;
     RegExp : Variant;
     MatchObject : Variant;
     MatchList : TList<Variant>;
   protected
-    // IJvAppStorageHandler implementation
-    procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
-    procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
+    const FBasePath = 'RegExp Tester Options'; // Used for storing settings
+    const FHighlightIndicatorID: TGUID = '{10FBEC66-4210-49F5-9F7D-189B6252080B}';
   public
-    { Public declarations }
     procedure Clear;
     procedure HighlightMatches;
     procedure ClearHighlight;
+    // AppStorage
+    procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
+    procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
   end;
 
 var
@@ -120,13 +126,12 @@ var
 implementation
 
 uses
-  Winapi.RichEdit,
   Vcl.Themes,
-  Vcl.Graphics,
-  Vcl.Forms,
   JvGnugettext,
   JvAppIniStorage,
   VarPyth,
+  SynDWrite,
+  SynEditMiscClasses,
   dmResources,
   dmCommands,
   PythonEngine,
@@ -135,29 +140,9 @@ uses
 
 {$R *.dfm}
 
-procedure RE_SetSelBgColor(RichEdit: TRichEdit; SelectionOnly: Boolean; AColor: TColor);
-var
-  Format: TCharFormat2;
-  WParam : integer;
-begin
-  if SelectionOnly then
-    WParam := SCF_SELECTION
-  else
-    WParam := SCF_ALL;
-
-  FillChar(Format, SizeOf(Format), 0);
-  with Format do
-  begin
-    cbSize := SizeOf(Format);
-    dwMask := CFM_BACKCOLOR;
-    crBackColor := ColorToRGB(StyleServices.GetSystemColor(AColor));
-    Richedit.Perform(EM_SETCHARFORMAT, WParam, LPARAM(@Format));
-  end;
-end;
-
 procedure TRegExpTesterWindow.ClearHighlight;
 begin
-  RE_SetSelBgColor(SearchText, False, SearchText.Color);
+  SearchText.Indicators.Clear(FHighlightIndicatorID);
 end;
 
 procedure TRegExpTesterWindow.Clear;
@@ -178,7 +163,7 @@ begin
   end;
   if GI_PyControl.PythonLoaded then
   begin
-    var Py := GI_PyControl.SafePyEngine;
+    var Py := SafePyEngine;
     VarClear(RegExp);
     VarClear(MatchObject);
     MatchList.Clear;
@@ -209,59 +194,77 @@ begin
   inherited;
 end;
 
-procedure TRegExpTesterWindow.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
-  const BasePath: string);
+procedure TRegExpTesterWindow.WMSpSkinChange(var Message: TMessage);
+begin
+  inherited;
+  RegExpText.Font.Color := StyleServices.GetSystemColor(clWindowText);
+  RegExpText.Color := StyleServices.GetSystemColor(clWindow);
+  SearchText.Font.Color := StyleServices.GetSystemColor(clWindowText);
+  SearchText.Color := StyleServices.GetSystemColor(clWindow);
+  MatchText.Font.Color := StyleServices.GetSystemColor(clWindowText);
+  MatchText.Color := StyleServices.GetSystemColor(clWindow);
+
+  var FHighlightIndicatorSpec := TSynIndicatorSpec.Create(sisTextDecoration,
+    clNoneF, D2D1ColorF(StyleServices.GetSystemColor(clHighlight)), [fsBold]);
+  SearchText.Indicators.RegisterSpec(FHighlightIndicatorID, FHighlightIndicatorSpec);
+end;
+
+procedure TRegExpTesterWindow.StoreSettings(AppStorage: TJvCustomAppStorage);
 Var
   SearchType : integer;
 begin
+  inherited;
   if RI_findall.Checked then
     SearchType := 0
   else if RI_Search.Checked then
     SearchType := 1
   else
     SearchType := 2;
-  TJvAppIniStorageOptions(AppStorage.StorageOptions).ReplaceCRLF := True;
-  TJvAppIniStorageOptions(AppStorage.StorageOptions).PreserveLeadingTrailingBlanks := True;
-  AppStorage.WriteString(BasePath+'\Regular Expression', RegExpText.Text);
-  AppStorage.WriteString(BasePath+'\Search Text', SearchText.Text);
-  TJvAppIniStorageOptions(AppStorage.StorageOptions).ReplaceCRLF := False;
-  TJvAppIniStorageOptions(AppStorage.StorageOptions).PreserveLeadingTrailingBlanks := False;
+  var AppIniStorageOptions := TJvAppIniStorageOptions(AppStorage.StorageOptions);
+  var OldReplaceCRLF := AppIniStorageOptions.ReplaceCRLF;
+  var OldPreserveLeadingTrailingBlanks := AppIniStorageOptions.PreserveLeadingTrailingBlanks;
+  AppIniStorageOptions.ReplaceCRLF := True;
+  AppIniStorageOptions.PreserveLeadingTrailingBlanks := True;
+  AppStorage.WriteString(FBasePath+'\Regular Expression', RegExpText.Text);
+  AppStorage.WriteString(FBasePath+'\Search Text', SearchText.Text);
+  AppIniStorageOptions.ReplaceCRLF := OldReplaceCRLF;
+  AppIniStorageOptions.PreserveLeadingTrailingBlanks := OldPreserveLeadingTrailingBlanks;
 
-  AppStorage.WriteBoolean(BasePath+'\DOTALL', CI_DOTALL.Checked);
-  AppStorage.WriteBoolean(BasePath+'\IGNORECASE', CI_IGNORECASE.Checked);
-  AppStorage.WriteBoolean(BasePath+'\LOCALE', CI_LOCALE.Checked);
-  AppStorage.WriteBoolean(BasePath+'\MULTILINE', CI_MULTILINE.Checked);
-  AppStorage.WriteBoolean(BasePath+'\UNICODE', CI_UNICODE.Checked);
-  AppStorage.WriteBoolean(BasePath+'\VERBOSE', CI_VERBOSE.Checked);
-  AppStorage.WriteInteger(BasePath+'\SearchType', SearchType);
-  AppStorage.WriteBoolean(BasePath+'\AutoExec', CI_AutoExecute.Checked);
-  AppStorage.WriteInteger(BasePath+'\RegExpHeight', PPIUnScale(dpRegExpText.Height));
-  AppStorage.WriteInteger(BasePath+'\GroupsHeight', PPIUnScale(dpGroupsView.Height));
-  AppStorage.WriteInteger(BasePath+'\SearchHeight', PPIUnScale(dpSearchText.Height));
+  AppStorage.WriteBoolean(FBasePath+'\DOTALL', CI_DOTALL.Checked);
+  AppStorage.WriteBoolean(FBasePath+'\IGNORECASE', CI_IGNORECASE.Checked);
+  AppStorage.WriteBoolean(FBasePath+'\LOCALE', CI_LOCALE.Checked);
+  AppStorage.WriteBoolean(FBasePath+'\MULTILINE', CI_MULTILINE.Checked);
+  AppStorage.WriteBoolean(FBasePath+'\UNICODE', CI_UNICODE.Checked);
+  AppStorage.WriteBoolean(FBasePath+'\VERBOSE', CI_VERBOSE.Checked);
+  AppStorage.WriteInteger(FBasePath+'\SearchType', SearchType);
+  AppStorage.WriteBoolean(FBasePath+'\AutoExec', CI_AutoExecute.Checked);
+  AppStorage.WriteInteger(FBasePath+'\RegExpHeight', PPIUnScale(dpRegExpText.Height));
+  AppStorage.WriteInteger(FBasePath+'\GroupsHeight', PPIUnScale(dpGroupsView.Height));
+  AppStorage.WriteInteger(FBasePath+'\SearchHeight', PPIUnScale(dpSearchText.Height));
   TJvAppIniStorageOptions(AppStorage.StorageOptions).ReplaceCRLF := False;
 end;
 
-procedure TRegExpTesterWindow.ReadFromAppStorage(
-  AppStorage: TJvCustomAppStorage; const BasePath: string);
-Var
-  SearchType : integer;
+procedure TRegExpTesterWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  TJvAppIniStorageOptions(AppStorage.StorageOptions).ReplaceCRLF := True;
-  TJvAppIniStorageOptions(AppStorage.StorageOptions).PreserveLeadingTrailingBlanks := True;
-  RegExpText.HandleNeeded;
-  RegExpText.Text := AppStorage.ReadString(BasePath+'\Regular Expression');
-  SearchText.HandleNeeded;
-  SearchText.Text := AppStorage.ReadString(BasePath+'\Search Text');
-  TJvAppIniStorageOptions(AppStorage.StorageOptions).ReplaceCRLF := False;
-  TJvAppIniStorageOptions(AppStorage.StorageOptions).PreserveLeadingTrailingBlanks := False;
+  if not AppStorage.PathExists(FBasePath) then exit;
+  inherited;
+  var AppIniStorageOptions := TJvAppIniStorageOptions(AppStorage.StorageOptions);
+  var OldReplaceCRLF := AppIniStorageOptions.ReplaceCRLF;
+  var OldPreserveLeadingTrailingBlanks := AppIniStorageOptions.PreserveLeadingTrailingBlanks;
+  AppIniStorageOptions.ReplaceCRLF := True;
+  AppIniStorageOptions.PreserveLeadingTrailingBlanks := True;
+  RegExpText.Text := AppStorage.ReadString(FBasePath+'\Regular Expression');
+  SearchText.Text := AppStorage.ReadString(FBasePath+'\Search Text');
+  AppIniStorageOptions.ReplaceCRLF := OldReplaceCRLF;
+  AppIniStorageOptions.PreserveLeadingTrailingBlanks := OldPreserveLeadingTrailingBlanks;
 
-  CI_DOTALL.Checked := AppStorage.ReadBoolean(BasePath+'\DOTALL', False);
-  CI_IGNORECASE.Checked := AppStorage.ReadBoolean(BasePath+'\IGNORECASE', False);
-  CI_LOCALE.Checked := AppStorage.ReadBoolean(BasePath+'\LOCALE', False);
-  CI_MULTILINE.Checked := AppStorage.ReadBoolean(BasePath+'\MULTILINE', False);
-  CI_UNICODE.Checked := AppStorage.ReadBoolean(BasePath+'\UNICODE', False);
-  CI_VERBOSE.Checked := AppStorage.ReadBoolean(BasePath+'\VERBOSE', False);
-  SearchType := AppStorage.ReadInteger(BasePath+'\SearchType');
+  CI_DOTALL.Checked := AppStorage.ReadBoolean(FBasePath+'\DOTALL', False);
+  CI_IGNORECASE.Checked := AppStorage.ReadBoolean(FBasePath+'\IGNORECASE', False);
+  CI_LOCALE.Checked := AppStorage.ReadBoolean(FBasePath+'\LOCALE', False);
+  CI_MULTILINE.Checked := AppStorage.ReadBoolean(FBasePath+'\MULTILINE', False);
+  CI_UNICODE.Checked := AppStorage.ReadBoolean(FBasePath+'\UNICODE', False);
+  CI_VERBOSE.Checked := AppStorage.ReadBoolean(FBasePath+'\VERBOSE', False);
+  var SearchType := AppStorage.ReadInteger(FBasePath+'\SearchType');
   case SearchType of
     1: RI_Search.Checked := True;
     2: RI_Match.Checked := True;
@@ -269,12 +272,12 @@ begin
     RI_findall.Checked := True;
   end;
   dpRegExpText.Height :=
-    PPIScale(AppStorage.ReadInteger(BasePath+'\RegExpHeight', dpRegExpText.Height));
+    PPIScale(AppStorage.ReadInteger(FBasePath+'\RegExpHeight', dpRegExpText.Height));
   dpGroupsView.Height :=
-    PPIScale(AppStorage.ReadInteger(BasePath+'\GroupsHeight', dpGroupsView.Height));
+    PPIScale(AppStorage.ReadInteger(FBasePath+'\GroupsHeight', dpGroupsView.Height));
   dpSearchText.Height :=
-    PPIScale(AppStorage.ReadInteger(BasePath+'\SearchHeight', dpSearchText.Height));
-  CI_AutoExecute.Checked := AppStorage.ReadBoolean(BasePath+'\AutoExec', False);
+    PPIScale(AppStorage.ReadInteger(FBasePath+'\SearchHeight', dpSearchText.Height));
+  CI_AutoExecute.Checked := AppStorage.ReadBoolean(FBasePath+'\AutoExec', False);
 end;
 
 procedure TRegExpTesterWindow.RegExpTextChange(Sender: TObject);
@@ -297,7 +300,7 @@ Var
   Py: IPyEngineAndGIL;
   Index : Integer;
 begin
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   Index := Trunc(SpinMatches.Value);
   if (Index > 0) and (Index <= MatchList.Count) then begin
     GroupsView.Clear;
@@ -329,7 +332,7 @@ begin
 
   Clear;
 
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
 
   re := Import('re');
   Flags := 0;
@@ -435,7 +438,7 @@ Var
   GroupDict, Keys : Variant;
   i : integer;
 begin
-  Py := GI_PyControl.SafePyEngine;
+  Py := SafePyEngine;
   Assert(VarIsPython(MatchObject) and not VarIsNone(MatchObject));
   Assert(Integer(Node.Index) < len(MatchObject.groups()));
   case Column of
@@ -459,27 +462,35 @@ begin
 end;
 
 procedure TRegExpTesterWindow.HighlightMatches;
-Var
-  OldSelStart,
-  OldSelLen : integer;
+
+  procedure HighlightText(StartIndex, EndIndex: Integer);
+  var
+    Indicator: TSynIndicator;
+  begin
+    var StartCoord := SearchText.CharIndexToRowCol(StartIndex, #10);
+    var EndCoord := SearchText.CharIndexToRowCol(EndIndex, #10);
+
+    for var I := StartCoord.Line to EndCoord.Line do
+    begin
+      var StartChar := StartCoord.Char;
+      var EndChar := EndCoord.Char;
+
+      if I > StartCoord.Line then
+        StartChar := 1;
+      if I < EndCoord.Line then
+        EndChar := SearchText.Lines[I - 1].Length + 1;
+
+      Indicator := TSynIndicator.Create(FHighlightIndicatorID, StartChar, EndChar);
+      SearchText.Indicators.Add(I, Indicator);
+    end;
+  end;
+
+var
   VMatch : Variant;
 begin
-  OldSelStart := SearchText.SelStart;
-  OldSelLen := SearchText.SelLength;
-  SearchText.Lines.BeginUpdate;
-  try
-    var Py := GI_PyControl.SafePyEngine;
-    for VMatch in MatchList do
-    begin
-      SearchText.SelStart := VMatch.start();
-      SearchText.SelLength := VMatch.end() - SearchText.SelStart;
-      RE_SetSelBgColor(SearchText, True, clHighlight);
-    end;
-  finally
-    SearchText.SelStart := OldSelStart;
-    SearchText.SelLength := OldSelLen;
-    SearchText.Lines.EndUpdate;
-  end;
+  var Py := SafePyEngine;
+  for VMatch in MatchList do
+    HighlightText(VMatch.start(), VMatch.end());
 end;
 
 procedure TRegExpTesterWindow.TiClearClick(Sender: TObject);

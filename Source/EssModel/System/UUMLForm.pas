@@ -36,7 +36,7 @@ type
     PDiagramPanel: TPanel;
     PDiagram: TPanel;
     PUMLPanel: TPanel;
-    TBUMLToolbar: TToolBar;
+    UMLToolbar: TToolBar;
     TBClose: TToolButton;
     TBShowConnections: TToolButton;
     TBNewLayout: TToolButton;
@@ -134,7 +134,7 @@ type
     procedure Save(MitBackup: boolean);
     procedure Print; override;
     function  GetFont: TFont;
-    procedure SetOptions;
+    procedure SetOptions; override;
     procedure Enter(Sender: TObject); override;
     procedure SetOnlyModified(aModified: boolean);
     procedure CollectClasses(SL: TStringList); override;
@@ -178,6 +178,7 @@ begin
   SynEdit.PopupMenu:= PMInteractive;
   SynEdit.Font.Assign(EditorOptions.Font);
   ChangeStyle;
+  SetOptions;
   //TBInteractiveClick(Self);
 end;
 
@@ -482,9 +483,9 @@ procedure TFUMLForm.TBClassDefinitionClick(Sender: TObject);
   var NewName: string; Editor: IEditor;
       FileTemplate : TFileTemplate;
 begin
-  NewName:= '';
+  NewName:= Pathname;
   if ResourcesDataModule.GetSaveFileName(NewName,
-    ResourcesDataModule.SynPythonSyn, 'py')
+      ResourcesDataModule.SynPythonSyn, 'py')
   then begin
     FileTemplate := FileTemplates.TemplateByName(SClassTemplateName);
     if FileTemplate = nil then begin
@@ -493,6 +494,7 @@ begin
     end;
     Editor:= PyIDEMainForm.NewFileFromTemplate(FileTemplate,
       PyIDEMainForm.TabControlIndex(PyIDEMainForm.ActiveTabControl), NewName);
+    (Editor as IFileCommands).ExecSave;
     PyIDEMainForm.PrepareClassEdit(Editor, 'New', Self);
     ConfigureWindow(Self);
     Modified:= true;
@@ -570,7 +572,7 @@ end;
 
 procedure TFUMLForm.SetOptions;
 begin
-  Refresh;
+  FConfiguration.setToolbarVisibility(UMLToolbar, 3);
 end;
 
 procedure TFUMLForm.SetOnlyModified(aModified: boolean);
@@ -662,7 +664,7 @@ begin
   while Ci.HasNext do begin
     cent := TClassifier(Ci.Next);
     if (MainModul.Model.ModelRoot.Files.Indexof(Cent.Pathname) = -1) or
-       not Cent.IsVisible or endsWith(Cent.Name, '[]') then
+       not Cent.IsVisible or Cent.Name.EndsWith('[]') then
       continue;
 
     CName:= cent.ShortName;
@@ -726,11 +728,11 @@ end;
 procedure TFUMLForm.ChangeStyle;
 begin
   if IsStyledWindowsColorDark then begin
-    TBUMLToolbar.Images:= DMImages.ILUMLToolbarDark;
+    UMLToolbar.Images:= DMImages.ILUMLToolbarDark;
     TBInteractiveToolbar.Images:= DMImages.ILInteractiveDark;
     PMInteractive.Images:= DMImages.ILInteractiveDark;
   end else begin
-    TBUMLToolbar.Images:= DMImages.ILUMLToolbarLight;
+    UMLToolbar.Images:= DMImages.ILUMLToolbarLight;
     TBInteractiveToolbar.Images:= DMImages.ILInteractive;
     PMInteractive.Images:= DMImages.ILInteractive
   end;

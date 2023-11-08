@@ -3,7 +3,8 @@ inherited FileExplorerWindow: TFileExplorerWindow
   Top = 201
   HelpContext = 420
   Caption = 'File Explorer'
-  ClientHeight = 439
+  ClientHeight = 415
+  ClientWidth = 698
   Icon.Data = {
     0000010001001010000000000000680300001600000028000000100000002000
     0000010018000000000000030000000000000000000000000000000000000000
@@ -33,20 +34,23 @@ inherited FileExplorerWindow: TFileExplorerWindow
     000000000000000000000000000000000000000000000000000000000000FBC1
     0000FD410000FBC10000FFFF0000FBC10000FD410000FBC10000FFFF0000001F
     0000001F0000001F0000001F0000001F0000001F0000003F00000FFF0000}
-  ExplicitWidth = 211
-  ExplicitHeight = 466
+  ExplicitWidth = 714
+  ExplicitHeight = 454
   TextHeight = 15
   inherited BGPanel: TPanel
-    Height = 439
+    Width = 698
+    Height = 415
+    ExplicitWidth = 43
     ExplicitHeight = 427
     inherited FGPanel: TPanel
-      Width = 199
+      Width = 710
       Height = 435
-      ExplicitHeight = 435
+      ExplicitWidth = 39
+      ExplicitHeight = 423
       object FileExplorerTree: TVirtualExplorerTree
         Left = 0
         Top = 30
-        Width = 223
+        Width = 710
         Height = 405
         Active = False
         Align = alClient
@@ -87,17 +91,18 @@ inherited FileExplorerWindow: TFileExplorerWindow
         OnDblClick = FileExplorerTreeDblClick
         OnEnumFolder = FileExplorerTreeEnumFolder
         OnKeyPress = FileExplorerTreeKeyPress
-        ExplicitWidth = 199
+        ExplicitWidth = 39
+        ExplicitHeight = 393
         Columns = <>
       end
       object ExplorerDock: TSpTBXDock
         Left = 0
         Top = 0
-        Width = 223
+        Width = 710
         Height = 30
         AllowDrag = False
         DoubleBuffered = True
-        ExplicitWidth = 191
+        ExplicitWidth = 39
         object ExplorerToolbar: TSpTBXToolbar
           Left = 0
           Top = 0
@@ -160,7 +165,6 @@ inherited FileExplorerWindow: TFileExplorerWindow
             end
             object tbiPythonPath: TSpTBXItem
               Caption = 'Manage Python &Path...'
-              Action = CommandsDataModule.actPythonPath
               ImageIndex = 9
             end
             object TBXSeparatorItem2: TSpTBXSeparatorItem
@@ -247,8 +251,8 @@ inherited FileExplorerWindow: TFileExplorerWindow
     end
     object mnManagePythonPath: TSpTBXItem
       Caption = 'Manage Python &Path...'
-      Action = CommandsDataModule.actPythonPath
       ImageIndex = 9
+      ImageName = 'Folders'
     end
     object TBXSeparatorItem6: TSpTBXSeparatorItem
     end

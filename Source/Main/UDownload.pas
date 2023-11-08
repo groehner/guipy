@@ -42,6 +42,7 @@ begin
   BCancel.Enabled:= false;
   ProgressBar.Position:= 0;
   Cancel:= false;
+  ParentFont:= false;
 end;
 
 procedure TFDownload.SPOpenClick(Sender: TObject);

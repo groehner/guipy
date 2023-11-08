@@ -446,37 +446,16 @@ begin
 end;
 
 procedure TPersistFileInfo.GetFileInfo;
-
-  procedure ProcessTabControl(TabControl : TSpTBXCustomTabControl);
-  var
-    I: Integer;
-    IV: TTBItemViewer;
-    Editor : IEditor;
-    aFile : IFile;
-    FilePersistInfo : TFilePersistInfo;
-  begin
-    // Note that the Pages property may have a different order than the
-    // physical order of the tabs
-    for I := 0 to TabControl.View.ViewerCount - 1 do begin
-      IV := TabControl.View.Viewers[I];
-      if IV.Item is TSpTBXTabItem then begin
-        aFile := PyIDEMainForm.FileFromTab(TSpTBXTabItem(IV.Item));
-        if Assigned(aFile) and ((aFile.FileName <> '') or (aFile.RemoteFileName <> '')) then begin
-          if aFile.FileKind = fkEditor then begin
-            Editor:= aFile as IEditor;
-            FilePersistInfo := TFilePersistInfo.CreateFromEditor(Editor);
-          end else
-            FilePersistInfo := TFilePersistInfo.CreateFromFile(aFile);
-          fFileInfoList.Add(FilePersistInfo);
-          // We need to do it here before we call SaveEnvironement
-          GI_PyIDEServices.MRUAddFile(aFile);
-        end;
-      end;
-    end;
-  end;
 begin
-  ProcessTabControl(PyIDEMainForm.TabControl1);
-  ProcessTabControl(PyIDEMainForm.TabControl2);
+  GI_EditorFactory.ApplyToEditors(procedure(Editor: IEditor)
+  begin
+    if Assigned(Editor) and ((Editor.FileName <> '') or (Editor.RemoteFileName <> '')) then begin
+      var FilePersistInfo := TFilePersistInfo.CreateFromEditor(Editor);
+      fFileInfoList.Add(FilePersistInfo);
+      // We need to do it here before we call StoreApplicationData
+      GI_PyIDEServices.MRUAddFile(Editor);
+    end;
+  end);
 end;
 
 { TTabsPersistInfo }

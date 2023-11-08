@@ -258,6 +258,7 @@ begin
   LNGSet:= _('set');
   LNGGet:= _('get');
   ChangeStyle;
+  ParentFont:= false;
 end;
 
 procedure TFClassEditor.FormShow(Sender: TObject);
@@ -960,14 +961,12 @@ begin
 end;
 
 procedure TFClassEditor.PageControlChange(Sender: TObject);
-var
-  Node: TTreeNode;
-  tab: Integer;
+  var Node: TTreeNode;
 begin
-  tab:= PageControl.TabIndex;
-  if BClassApply.Enabled then BClassChangeClick(Sender);
-  if BAttributeApply.Enabled then BAttributeChangeClick(Sender);
-  if BMethodApply.Enabled then BMethodChangeClick(Sender);
+  var tab:= PageControl.TabIndex;
+  if BClassApply.Enabled then BClassChangeClick(Sender)
+  else if BAttributeApply.Enabled then BAttributeChangeClick(Sender)
+  else if BMethodApply.Enabled then BMethodChangeClick(Sender);
   PageControl.TabIndex:= tab;
   case PageControl.TabIndex of
     0: Node:= GetClassInterfaceNode;
@@ -1109,7 +1108,7 @@ end;
 
 procedure TFClassEditor.BAttributeChangeClick(Sender: TObject);
 var
-  Old, New, OldName, NewName: string;
+  Old, New, OldName, NewName, OldVisName, NewVisName: string;
   ClassNumber, NodeIndex, TopItemIndex, Line: Integer;
   Attribute: TAttribute;
   Node: TTreeNode;
@@ -1143,12 +1142,14 @@ begin
     TypeChanged:= CBAttributeType.Focused;
     Attribute:= TAttribute(Node.Data);
     OldName:= Attribute.Name;
+    OldVisName:= Attribute.VisName;
     OldStatic:= Attribute.Static;
     Old:= Attribute.toPython(false, false);
     ChangeGetSet(Attribute, ClassNumber, Node.Parent.Parent.Text);
 
     New:= Attribute.toPython(ValueChanged, TypeChanged);
     NewName:= Attribute.Name;
+    NewVisName:= Attribute.VisName;
     if CBAttributeValue.Text <> '' then
       CBAttributeValue.Text:= Attribute.Value;
     if CBAttributeType.Text <> '' then
@@ -1164,6 +1165,7 @@ begin
         myEditor.DeleteLine(Attribute.LineS - 1);
       end;
       myEditor.ReplaceWord(OldName, Attribute.Name, true);
+      myEditor.ReplaceWord('self.' + OldVisName, 'self.' + NewVisName, true);
     end;
   end;
 
@@ -1482,9 +1484,13 @@ begin // makeConstructor
         3: vis:= '_';
       else vis:= '';
     end;
+    var NodeName:= Node.Text;
+    p:= Pos(':', NodeName);
+    if p > 0 then NodeName:= copy(NodeName, 1, p-1);
+
     while it.HasNext and not found do begin // exists a corresponding parameter?
       Parameter:= it.Next as TParameter;
-      if Parameter.Name = Node.Text then
+      if Parameter.Name = NodeName then
         found:= true;
     end;
     if found then begin // corresponding parameter exists or

@@ -106,33 +106,9 @@ uses
   cPyScripterSettings,
   cPySupportTypes,
   cPyControl,
+  PythonEngine,
   LspUtils,
   JediLspClient;
-
-procedure GetModuleList(Path: Variant; out InsertText, DisplayText : string);
-Var
-  i: Integer;
-  S: string;
-  SortedNameSpace: TStringList;
-begin
-  SortedNameSpace := TStringList.Create;
-  SortedNameSpace.CaseSensitive := True;
-  SortedNameSpace.Duplicates := dupIgnore; // Remove duplicates
-  SortedNameSpace.Sorted := True;
-  try
-    PyControl.InternalInterpreter.GetModulesOnPath(Path, SortedNameSpace);
-    InsertText := SortedNameSpace.Text;
-    for i := 0 to SortedNameSpace.Count - 1 do
-    begin
-      S := SortedNameSpace[i];
-      DisplayText := DisplayText + Format('\Image{%d}\hspace{2}%s', [16, S]);
-      if i < SortedNameSpace.Count - 1 then
-        DisplayText := DisplayText + #10;
-    end;
-  finally
-    SortedNameSpace.Free;
-  end;
-end;
 
 { TRegExpressions }
 type
@@ -238,7 +214,7 @@ begin
   FreeAndNil(fNameSpace);
   if Assigned(fPyNameSpace) then
   begin
-    var Py := GI_PyControl.SafePyEngine;
+    var Py := SafePyEngine;
     FreeAndNil(fPyNameSpace);
   end;
 end;
@@ -256,7 +232,7 @@ begin
       Result := _(SPythonKeyword)
     else
     begin
-      var Py := GI_PyControl.SafePyEngine;
+      var Py := SafePyEngine;
       Result := GetLineRange(NameSpaceItem.DocString, 1, 20);
     end;
   end;
@@ -266,6 +242,14 @@ function TLiveNamespaceCompletionHandler.HandleCodeCompletion(const Line,
   FileName: string; Caret: TBufferCoord; Highlighter: TSynCustomHighlighter;
   HighlighterAttr: TSynHighlighterAttributes; out InsertText,
   DisplayText: string): Boolean;
+
+  function ToInsertItem(const Name: string; Item : TBaseNameSpaceItem): string;
+  begin
+    if Assigned(Item) and (Item.IsClass or Item.IsFunction or Item.IsMethod) then
+      Result := Name + '()'
+    else
+      Result := Name;
+  end;
 Var
   I, TmpX, Index, ImageIndex : Integer;
   lookup : string;
@@ -289,7 +273,7 @@ begin
   end else
     lookup := '';  // Completion from global namespace
 
-  var Py := GI_PyControl.SafePyEngine;
+  var Py := SafePyEngine;
   if (Index < 0) or (lookup <> '') then begin
     if GI_PyControl.Inactive then
       fPyNameSpace := PyControl.ActiveInterpreter.NameSpaceFromExpression(lookup)
@@ -324,9 +308,9 @@ begin
   fNameSpace.CustomSort(ComparePythonIdents);
 
   for I := 0 to fNameSpace.Count - 1 do begin
-    InsertText := InsertText + fNameSpace[I];
-
     NameSpaceItem := fNameSpace.Objects[I] as TBaseNameSpaceItem;
+    InsertText := InsertText + ToInsertItem(fNameSpace[I], NameSpaceItem);
+
     if not Assigned(NameSpaceItem) then
        DisplayText := DisplayText + Format('\Image{%d}\hspace{8}\color{$FF8844}%s',
          [Integer(TCodeImages.Keyword), fNameSpace[I]])
