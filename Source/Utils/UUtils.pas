@@ -36,7 +36,6 @@ procedure ComboBoxInsert2(ComboBox: TComboBox; const s: string);
 procedure ComboBoxDelete2(ComboBox: TComboBox; const s: string);
 function ComboBoxItemsSpeichern(s: string): string;
 function ComboBoxItemsLaden(s: string): string;
-
 function withoutTrailingSlash(const s: String): string;
 function withTrailingSlash(const s: String): string;
 function VistaOrBetter: boolean;
