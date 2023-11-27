@@ -7,7 +7,11 @@ object FAssociation: TFAssociation
   ClientHeight = 494
   ClientWidth = 310
   Color = clBtnFace
-  ParentFont = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
   Position = poMainFormCenter
   OnCreate = FormCreate
   OnShow = FormShow
@@ -87,8 +91,8 @@ object FAssociation: TFAssociation
     TabOrder = 2
   end
   object BTurn: TButton
-    Left = 230
-    Top = 64
+    Left = 231
+    Top = 63
     Width = 76
     Height = 25
     Caption = 'Turn'
@@ -117,14 +121,7 @@ object FAssociation: TFAssociation
     Left = 104
     Top = 301
     Width = 105
-    Height = 25
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    Font.Quality = fqClearType
-    ParentFont = False
+    Height = 23
     TabOrder = 1
   end
   object RGRecursivCorner: TRadioGroup

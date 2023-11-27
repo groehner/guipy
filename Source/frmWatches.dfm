@@ -3,8 +3,8 @@ inherited WatchesWindow: TWatchesWindow
   Top = 325
   HelpContext = 490
   Caption = 'Watches'
-  ClientHeight = 205
-  ClientWidth = 744
+  ClientHeight = 229
+  ClientWidth = 760
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -40,33 +40,25 @@ inherited WatchesWindow: TWatchesWindow
     72FFCF9971FFCE986FFFCB956EFFC9936BFFC39679F4A670516B000000000000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 760
-  ExplicitHeight = 244
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 744
-    Height = 205
-    ExplicitWidth = 744
-    ExplicitHeight = 205
+    Width = 760
+    Height = 229
     inherited FGPanel: TPanel
-      Width = 748
-      Height = 213
-      ExplicitWidth = 740
-      ExplicitHeight = 201
+      Width = 756
+      Height = 225
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 748
-        Height = 213
+        Width = 756
+        Height = 225
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 740
-        ExplicitHeight = 201
         object WatchesView: TVirtualStringTree
           Left = 1
           Top = 1
-          Width = 746
-          Height = 211
+          Width = 754
+          Height = 223
           Align = alClient
           Alignment = taRightJustify
           BevelInner = bvNone
@@ -112,7 +104,7 @@ inherited WatchesWindow: TWatchesWindow
               Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 2
               Text = 'Value'
-              Width = 426
+              Width = 434
             end>
         end
       end

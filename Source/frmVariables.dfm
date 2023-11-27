@@ -3,8 +3,8 @@ inherited VariablesWindow: TVariablesWindow
   Top = 237
   HelpContext = 480
   Caption = 'Variables'
-  ClientHeight = 235
-  ClientWidth = 571
+  ClientHeight = 223
+  ClientWidth = 563
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -40,30 +40,28 @@ inherited VariablesWindow: TVariablesWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 587
-  ExplicitHeight = 274
+  ExplicitWidth = 579
+  ExplicitHeight = 262
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 571
-    Height = 235
+    Width = 563
+    Height = 223
     ExplicitWidth = 571
     ExplicitHeight = 235
     inherited FGPanel: TPanel
-      Width = 575
-      Height = 243
+      Width = 567
+      Height = 231
       ExplicitWidth = 567
       ExplicitHeight = 231
       object DocPanel: TSpTBXPageScroller
-        Left = 200
+        Left = 192
         Top = 0
         Width = 375
-        Height = 243
+        Height = 231
         Align = alRight
         Color = clNone
         ParentColor = False
         TabOrder = 0
-        ExplicitLeft = 192
-        ExplicitHeight = 231
         object synInfo: TSynEdit
           Left = 0
           Top = 0
@@ -113,25 +111,21 @@ inherited VariablesWindow: TVariablesWindow
         end
       end
       object SpTBXSplitter: TSpTBXSplitter
-        Left = 195
+        Left = 187
         Top = 0
-        Height = 243
+        Height = 231
         Cursor = crSizeWE
         Align = alRight
         ParentColor = False
         MinSize = 3
-        ExplicitLeft = 187
-        ExplicitHeight = 231
       end
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 195
-        Height = 243
+        Width = 187
+        Height = 231
         Align = alClient
         TabOrder = 2
-        ExplicitWidth = 187
-        ExplicitHeight = 231
         object VariablesTree: TVirtualStringTree
           Left = 1
           Top = 1

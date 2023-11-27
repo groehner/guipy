@@ -315,6 +315,8 @@ type
     procedure SetModified(Value: boolean); override;
     function GetModified: boolean; override;
   public
+    BorderHighlight : TColor;
+    BorderNormal : TColor;
     BreakPoints: TObjectList;
     HasFocus: boolean;
     HasSearchHighlight: Boolean;
@@ -1413,6 +1415,7 @@ begin
       Parent := Sheet;
       Align := alClient;
       Visible := True;
+      ScaleForPPI(Sheet.CurrentPPI);
       ApplyEditorOptions;
       ApplyPyIDEOptions;
     end;
@@ -2902,13 +2905,13 @@ end;
 procedure TEditorForm.FGPanelEnter(Sender: TObject);
 begin
   HasFocus := True;
-  BGPanel.Color := frmIDEDockWin.BorderHighlight;
+  BGPanel.Color := BorderHighlight;
 end;
 
 procedure TEditorForm.FGPanelExit(Sender: TObject);
 begin
   HasFocus := False;
-  BGPanel.Color := frmIDEDockWin.BorderNormal;
+  BGPanel.Color := BorderNormal;
 end;
 
 procedure TEditorForm.mnCloseTabClick(Sender: TObject);
@@ -3116,14 +3119,9 @@ begin
     SynEdit.BookMarkOptions.BookmarkImages:= DMImages.ILBookmarksLight;
   end;
 
-  if HasFocus then
-  begin
-    BGPanel.Color := frmIDEDockWin.BorderHighlight;
-  end
-  else
-  begin
-    BGPanel.Color := frmIDEDockWin.BorderNormal;
-  end;
+  if HasFocus
+    then BGPanel.Color := BorderHighlight
+    else BGPanel.Color := BorderNormal;
 
   PyIDEMainForm.ThemeEditorGutter(SynEdit.Gutter);
   SynEdit.InvalidateGutter;
@@ -3331,7 +3329,6 @@ begin
     if CanExecute then
     begin
       CP.Font := PyIDEOptions.AutoCompletionFont;
-      CP.FontsAreScaled := True;
       CP.ItemList.Text := CC.CompletionInfo.DisplayText;
       CP.InsertList.Text := CC.CompletionInfo.InsertText;
       CP.NbLinesInWindow := PyIDEOptions.CodeCompletionListSize;
@@ -3477,7 +3474,6 @@ begin
   SynWebFillCompletionProposal(SynEdit, ResourcesDataModule.SynWebHTMLSyn,
     CommandsDataModule.SynWebCompletion, CurrentInput);
   TSynCompletionProposal(Sender).Font := PyIDEOptions.AutoCompletionFont;
-  TSynCompletionProposal(Sender).FontsAreScaled := True;
 end;
 
 procedure TEditorForm.SetDeleteBookmark(XPos, YPos: Integer);
@@ -4209,9 +4205,12 @@ end;
 procedure TEditorForm.DeleteComponent(Control: TControl);
 begin
   ActiveSynEdit.BeginUpdate;
-  for var i:= getCreateWidgets.LineE - 1 downto getCreateWidgets.LineS do
-    if hasWidget(Control.Name, i) then
-      DeleteLine(i);
+  var cw:= GetCreateWidgets;
+  if assigned(cw) then begin
+    for var i:= cw.LineE - 1 downto cw.LineS do
+      if hasWidget(Control.Name, i) then
+        DeleteLine(i);
+  end;
   Modified:= true;
   ActiveSynEdit.EndUpdate;
 end;
@@ -4219,10 +4218,13 @@ end;
 procedure TEditorForm.DeleteItems(Name, Key: string);
 begin
   ActiveSynEdit.BeginUpdate;
-  for var i:= getCreateWidgets.LineE - 1 downto getCreateWidgets.LineS do begin
-    var RegEx := '^[ \t]*self\.' + Name + '(' + Key + '\d+)';
-    if TRegEx.IsMatch(ActiveSynEdit.Lines[i], RegEx) then
-      DeleteLine(i);
+  var cw:= GetCreateWidgets;
+  if assigned(cw) then begin
+    for var i:= cw.LineE - 1 downto cw.LineS do begin
+      var RegEx := '^[ \t]*self\.' + Name + '(' + Key + '\d+)';
+      if TRegEx.IsMatch(ActiveSynEdit.Lines[i], RegEx) then
+        DeleteLine(i);
+    end;
   end;
   Modified:= true;
   ActiveSynEdit.EndUpdate;
@@ -4428,13 +4430,15 @@ procedure TEditorForm.toBackground(Control: TControl);
 begin
   if Control is TBaseWidget then begin
     OP:= getCreateWidgets;
-    from:= getFirstWidget(OP.LineS, Control.Name);
-    till:= from + 1;
-    while (till < OP.LineE) and hasWidget(Control.Name, till) do
-      inc(till);
-    dec(till);
-    if till > -1 then
-      MoveBlock(from, till, OP.LineS, 0, '');
+    if assigned(OP) then begin
+      from:= getFirstWidget(OP.LineS, Control.Name);
+      till:= from + 1;
+      while (till < OP.LineE) and hasWidget(Control.Name, till) do
+        inc(till);
+      dec(till);
+      if till > -1 then
+       MoveBlock(from, till, OP.LineS, 0, '');
+    end;
   end;
 end;
 
@@ -4443,13 +4447,15 @@ procedure TEditorForm.toForeground(Control: TControl);
 begin
   if Control is TBaseWidget then begin
     OP:= getCreateWidgets;
-    from:= getFirstWidget(OP.LineS, Control.Name);
-    till:= from + 1;
-    while (till < OP.LineE) and hasWidget(Control.Name, till) do
-      inc(till);
-    dec(till);
-    if till > -1 then
-      MoveBlock(from, till, OP.LineE-2, OP.LineE-2, '');
+    if assigned(OP) then begin
+      from:= getFirstWidget(OP.LineS, Control.Name);
+      till:= from + 1;
+      while (till < OP.LineE) and hasWidget(Control.Name, till) do
+        inc(till);
+      dec(till);
+      if till > -1 then
+        MoveBlock(from, till, OP.LineE-2, OP.LineE-2, '');
+    end;
   end;
 end;
 
@@ -4702,6 +4708,7 @@ function TEditorForm.getLastCreateWidgetsLine: integer;
   var cent: TClassifier; Operation: TOperation; Ident, s: string;
       LineS, LineE: integer;
 begin
+  Result:= -1;
   LineS:= getLineNumberWith('def create_widgets(self):');
   if LineS = -1 then begin
     ParseAndCreateModel;
@@ -4718,8 +4725,10 @@ begin
   if LineE = -1 then begin
     ParseAndCreateModel;
     Operation:= getCreateWidgets;
-    InsertLinesAt(Operation.LineE, FConfiguration.Indent2 + 'pass');
-    Exit(Operation.LineE);
+    if assigned(Operation) then begin
+      InsertLinesAt(Operation.LineE, FConfiguration.Indent2 + 'pass');
+      Exit(Operation.LineE);
+    end;
   end else
     Exit(LineE);
 end;

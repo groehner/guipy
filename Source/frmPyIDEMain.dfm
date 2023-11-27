@@ -3,14 +3,15 @@ object PyIDEMainForm: TPyIDEMainForm
   Top = 115
   HelpContext = 100
   Caption = 'GuiPy'
-  ClientHeight = 651
-  ClientWidth = 946
+  ClientHeight = 668
+  ClientWidth = 1007
   Color = clWindow
   Ctl3D = False
   ParentFont = True
   Position = poDefault
   ShowHint = True
   StyleElements = [seFont, seClient]
+  OnAfterMonitorDpiChanged = FormAfterMonitorDpiChanged
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -20,8 +21,8 @@ object PyIDEMainForm: TPyIDEMainForm
   TextHeight = 15
   object StatusBar: TSpTBXStatusBar
     Left = 0
-    Top = 626
-    Width = 946
+    Top = 643
+    Width = 1007
     Height = 25
     SizeGrip = False
     object lbStatusMessage: TSpTBXLabelItem
@@ -30,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 373
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -111,21 +112,19 @@ object PyIDEMainForm: TPyIDEMainForm
   end
   object BGPanel: TPanel
     Left = 9
-    Top = 84
-    Width = 928
-    Height = 533
+    Top = 113
+    Width = 989
+    Height = 521
     Align = alClient
     BevelEdges = []
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
-    ExplicitWidth = 606
-    ExplicitHeight = 323
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
-      Width = 924
-      Height = 533
+      Width = 985
+      Height = 521
       Align = alClient
       PopupMenu = TabControlPopupMenu
       OnContextPopup = TabContolContextPopup
@@ -136,7 +135,7 @@ object PyIDEMainForm: TPyIDEMainForm
       OnActiveTabChange = TabControlActiveTabChange
       HiddenItems = <>
       object tbiRightAlign: TSpTBXRightAlignSpacerItem
-        CustomWidth = 798
+        CustomWidth = 859
       end
       object tbiTabSep: TSpTBXSeparatorItem
       end
@@ -174,10 +173,10 @@ object PyIDEMainForm: TPyIDEMainForm
       end
     end
     object TabControl2: TSpTBXTabControl
-      Left = 924
+      Left = 985
       Top = 0
       Width = 0
-      Height = 533
+      Height = 521
       Align = alRight
       PopupMenu = TabControlPopupMenu
       Visible = False
@@ -227,10 +226,10 @@ object PyIDEMainForm: TPyIDEMainForm
       end
     end
     object TabSplitter: TSpTBXSplitter
-      Left = 924
+      Left = 985
       Top = 0
       Width = 4
-      Height = 533
+      Height = 521
       Cursor = crSizeWE
       Align = alRight
       ParentColor = False
@@ -240,2403 +239,2405 @@ object PyIDEMainForm: TPyIDEMainForm
   object TBXDockTop: TSpTBXDockablePanel
     Left = 0
     Top = 0
-    Width = 946
-    Height = 84
+    Width = 1007
+    Height = 113
     Align = alTop
     DockMode = dmCannotFloatOrChangeDocks
     DockPos = 0
+    ParentShowHint = False
     PopupMenu = ToolbarPopupMenu
+    ShowHint = False
     TabOrder = 1
     Options.Close = False
+    Options.TitleBarMaxSize = 0
+    ShowCaption = False
+    ShowCaptionWhenDocked = False
     object TBControlItem3: TTBControlItem
-      Control = DockTopPanel
     end
     object TBControlItem1: TTBControlItem
     end
     object DockTopPanel: TPanel
-      Tag = 136798
       Left = 0
       Top = 0
-      Width = 946
-      Height = 80
-      Align = alTop
-      Color = clNone
-      ParentBackground = False
-      TabOrder = 0
-    end
-    object MainMenu: TSpTBXToolbar
-      Left = 0
-      Top = 0
-      Width = 377
-      Height = 21
-      DockMode = dmCannotFloatOrChangeDocks
-      DockPos = 0
-      FullSize = True
-      Images = vilImages
-      ProcessShortCuts = True
-      ShrinkMode = tbsmWrap
-      TabOrder = 0
-      Customizable = False
-      MenuBar = True
-      object FileMenu: TSpTBXSubmenuItem
-        Caption = '&File'
-        object TBXSubmenuItem5: TSpTBXSubmenuItem
-          Caption = '&New'
-          Hint = 'New file'
-          object mnNewModule: TSpTBXItem
-            Caption = '&Python module'
-            Action = actFileNewModule
-          end
-          object mnNewFile: TSpTBXItem
-            Caption = '&File...'
-            Action = actFileNewFile
-          end
-          object mnFileNewTkApplication: TSpTBXItem
-            Caption = '&Tk/Tkk Application'
-            Hint = 'New Tk/TKK Application'
-            OnClick = actFileNewTkinterExecute
-          end
-          object mnFileNewQtApplication: TSpTBXItem
-            Caption = '&Qt-Application'
-            Hint = 'New QT Application'
-            OnClick = TBQtApplicationClick
-          end
-          object TBXSeparatorItem23: TSpTBXSeparatorItem
-          end
-          object mnFileNewClass: TSpTBXItem
-            Caption = '&Class'
-            Action = actUMLNewClass
-          end
-          object mnFileNewStrutogram: TSpTBXItem
-            Caption = '&Structogram'
-            OnClick = actFileNewStructogramExecute
-          end
-          object mnFileNewSequencediagram: TSpTBXItem
-            Caption = 'Sequence &diagram'
-            OnClick = actFileNewSequencediagramExecute
-          end
-        end
-        object mnFileOpen: TSpTBXItem
-          Action = actFileOpen
-        end
-        object RecentSubmenu: TSpTBXSubmenuItem
-          Caption = '&Recent Files'
-          Hint = 'Recent files'
-          object tbiRecentFileList: TSpTBXMRUListItem
-            HidePathExtension = False
-            MaxItems = 6
-            OnClick = tbiRecentFileListClick
-          end
-        end
-        object SpTBXSeparatorItem21: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnRemoteFileOpen: TSpTBXItem
-          Action = actRemoteFileOpen
-        end
-        object mnRemoteFileSave: TSpTBXItem
-          Action = CommandsDataModule.actFileSaveToRemote
-        end
-        object N14: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnFileSave: TSpTBXItem
-          Action = CommandsDataModule.actFileSave
-        end
-        object mnFileSaveAs: TSpTBXItem
-          Action = CommandsDataModule.actFileSaveAs
-        end
-        object mnFileExport: TSpTBXItem
-          Caption = 'Expor&t'
-          Action = CommandsDataModule.actFileExport
-        end
-        object mnFileReload: TSpTBXItem
-          Action = CommandsDataModule.actFileReload
-        end
-        object mnFileClose: TSpTBXItem
-          Action = CommandsDataModule.actFileClose
-        end
-        object N1: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnFileSaveAll: TSpTBXItem
-          Action = CommandsDataModule.actFileSaveAll
-        end
-        object mnFileCloseAll: TSpTBXItem
-          Action = actFileCloseAll
-        end
-        object N2: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object PageSetup1: TSpTBXItem
-          Action = CommandsDataModule.actPageSetup
-        end
-        object PrinterSetup1: TSpTBXItem
-          Action = CommandsDataModule.actPrinterSetup
-        end
-        object PrintPreview1: TSpTBXItem
-          Action = CommandsDataModule.actPrintPreview
-        end
-        object Print1: TSpTBXItem
-          Action = CommandsDataModule.actFilePrint
-        end
-        object N4: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object N3: TSpTBXItem
-          Action = actFileExit
-        end
-      end
-      object EditMenu: TSpTBXSubmenuItem
-        Caption = '&Edit'
-        object mnEditUndo: TSpTBXItem
-          Action = CommandsDataModule.actEditUndo
-        end
-        object mnEditRedo: TSpTBXItem
-          Action = CommandsDataModule.actEditRedo
-        end
-        object N5: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnEditCut: TSpTBXItem
-          Action = CommandsDataModule.actEditCut
-        end
-        object mnCopyMenu: TSpTBXSubmenuItem
-          Caption = '&Copy'
-          Hint = 'Copy'
-          object mnEditCopy: TSpTBXItem
-            Action = CommandsDataModule.actEditCopy
-          end
-          object mnEditCopyRTF: TSpTBXItem
-            Action = CommandsDataModule.actEditCopyRTF
-          end
-          object mnEditCopyRTFNumbered: TSpTBXItem
-            Action = CommandsDataModule.actEditCopyRTFNumbered
-          end
-          object mnEditCopyHTML: TSpTBXItem
-            Action = CommandsDataModule.actEditCopyHTML
-          end
-          object mnEditCopyHTMLAsText: TSpTBXItem
-            Action = CommandsDataModule.actEditCopyHTMLasText
-          end
-          object mnEditCopyNumbered: TSpTBXItem
-            Action = CommandsDataModule.actEditCopyNumbered
-          end
-        end
-        object mnEditPaste: TSpTBXItem
-          Action = CommandsDataModule.actEditPaste
-        end
-        object mnEditDelete: TSpTBXItem
-          Action = CommandsDataModule.actEditDelete
-        end
-        object mnEditSelectAll: TSpTBXItem
-          Action = CommandsDataModule.actEditSelectAll
-        end
-        object SpTBXSeparatorItem19: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnIndentBlock: TSpTBXItem
-          Action = CommandsDataModule.actEditIndent
-        end
-        object mnDedentBlock: TSpTBXItem
-          Action = CommandsDataModule.actEditDedent
-        end
-        object mnToggleComment: TSpTBXItem
-          Action = CommandsDataModule.actEditToggleComment
-        end
-        object TBXSeparatorItem27: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnExecSelection: TSpTBXItem
-          Action = actExecSelection
-        end
-        object mnEditReadOnly: TSpTBXItem
-          Action = CommandsDataModule.actEditReadOnly
-        end
-        object TBXSeparatorItem9: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnSourceCode: TSpTBXSubmenuItem
-          Tag = -1
-          Caption = '&Source Code'
-          object mnTabify: TSpTBXItem
-            Action = CommandsDataModule.actEditTabify
-          end
-          object mnUnTabify: TSpTBXItem
-            Action = CommandsDataModule.actEditUntabify
-          end
-        end
-        object SpTBXSeparatorItem29: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnSpelling: TSpTBXSubmenuItem
-          Tag = -1
-          Caption = 'Spelling'
-          Visible = False
-          OnPopup = mnSpellingPopup
-          object mnSpellCheckTopSeparator: TSpTBXSeparatorItem
-          end
-          object mnSpellCheckAdd: TSpTBXItem
-            Action = CommandsDataModule.actSynSpellErrorAdd
-          end
-          object mnSpellCheckDelete: TSpTBXItem
-            Action = CommandsDataModule.actSynSpellErrorDelete
-          end
-          object mnSpellCheckIgnore: TSpTBXItem
-            Action = CommandsDataModule.actSynSpellErrorIgnore
-          end
-          object mnSpellCheckIgnoreOnce: TSpTBXItem
-            Action = CommandsDataModule.actSynSpellErrorIgnoreOnce
-          end
-          object mnSpellCheckSecondSeparator: TSpTBXSeparatorItem
-          end
-          object SpTBXItem20: TSpTBXItem
-            Action = CommandsDataModule.actSynSpellCheckWord
-          end
-          object SpTBXItem21: TSpTBXItem
-            Action = CommandsDataModule.actSynSpellCheckLine
-          end
-          object SpTBXItem22: TSpTBXItem
-            Action = CommandsDataModule.actSynSpellCheckSelection
-          end
-          object SpTBXItem23: TSpTBXItem
-            Action = CommandsDataModule.actSynSpellCheckFile
-          end
-          object SpTBXSeparatorItem31: TSpTBXSeparatorItem
-          end
-          object SpTBXItem24: TSpTBXItem
-            Action = CommandsDataModule.actSynSpellClearErrors
-          end
-          object SpTBXSeparatorItem32: TSpTBXSeparatorItem
-          end
-          object SpTBXItem25: TSpTBXItem
-            Action = CommandsDataModule.actSynSpellCheckAsYouType
-          end
-        end
-        object mnIsertCodeTemplate: TSpTBXItem
-          Action = CommandsDataModule.actInsertTemplate
-        end
-        object mnEditParameters1: TSpTBXSubmenuItem
-          Caption = 'Parameters'
-          object mnInsertParameter: TSpTBXItem
-            Action = CommandsDataModule.actParameterCompletion
-          end
-          object mnInsertModifier: TSpTBXItem
-            Action = CommandsDataModule.actModifierCompletion
-          end
-          object N16: TSpTBXSeparatorItem
-          end
-          object mnReplaceParameter: TSpTBXItem
-            Action = CommandsDataModule.actReplaceParameters
-          end
-        end
-        object N6: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object TBXSubmenuItem3: TSpTBXSubmenuItem
-          Caption = 'File Format'
-          Hint = 'File format'
-          object mnEditAnsi: TSpTBXItem
-            Action = CommandsDataModule.actEditAnsi
-            RadioItem = True
-          end
-          object mnEditUtf8NoBom: TSpTBXItem
-            Action = CommandsDataModule.actEditUTF8NoBOM
-            RadioItem = True
-          end
-          object mnEditUtf8: TSpTBXItem
-            Action = CommandsDataModule.actEditUTF8
-            RadioItem = True
-          end
-          object mnEditUtf16LE: TSpTBXItem
-            Action = CommandsDataModule.actEditUTF16LE
-          end
-          object mnEditUtf16BE: TSpTBXItem
-            Action = CommandsDataModule.actEditUTF16BE
-          end
-          object TBXSeparatorItem12: TSpTBXSeparatorItem
-          end
-          object mnEditLBDos: TSpTBXItem
-            Action = CommandsDataModule.actEditLBDos
-            RadioItem = True
-          end
-          object mnEditLBUnix: TSpTBXItem
-            Action = CommandsDataModule.actEditLBUnix
-            RadioItem = True
-          end
-          object mnEditLBMac: TSpTBXItem
-            Action = CommandsDataModule.actEditLBMac
-            RadioItem = True
-          end
-        end
-      end
-      object SearchMenu: TSpTBXSubmenuItem
-        Caption = '&Search'
-        object mnSearchFind: TSpTBXItem
-          Action = CommandsDataModule.actSearchFind
-        end
-        object mnSearchFindNext: TSpTBXItem
-          Action = CommandsDataModule.actSearchFindNext
-        end
-        object mnSearchFindPrevious: TSpTBXItem
-          Action = CommandsDataModule.actSearchFindPrev
-        end
-        object mnSearchReplace: TSpTBXItem
-          Action = CommandsDataModule.actSearchReplace
-        end
-        object mnSearchHighlight: TSpTBXItem
-          Action = CommandsDataModule.actSearchHighlight
-        end
-        object N15: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnFindinFiles: TSpTBXItem
-          Action = CommandsDataModule.actFindInFiles
-        end
-        object N7: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnGoToLine: TSpTBXItem
-          Action = CommandsDataModule.actSearchGoToLine
-        end
-        object mnGotoSyntaxError: TSpTBXItem
-          Action = CommandsDataModule.actSearchGoToSyntaxError
-        end
-        object mnGoToDebugLine: TSpTBXItem
-          Action = CommandsDataModule.actSearchGoToDebugLine
-        end
-        object TBXSeparatorItem31: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnFindFunction: TSpTBXItem
-          Action = CommandsDataModule.actFindFunction
-        end
-        object mnFindNextReference: TSpTBXItem
-          Action = CommandsDataModule.actFindNextReference
-        end
-        object mnFindPreviousReference: TSpTBXItem
-          Action = CommandsDataModule.actFindPreviousReference
-        end
-        object mnMatchingBrace: TSpTBXItem
-          Action = CommandsDataModule.actSearchMatchingBrace
-        end
-        object N23: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnFindDefinition: TSpTBXItem
-          Action = actFindDefinition
-        end
-        object mnFindReferences: TSpTBXItem
-          Action = actFindReferences
-        end
-      end
-      object ViewMenu: TSpTBXSubmenuItem
-        Caption = '&View'
-        object mnViewDefaultLayout: TSpTBXItem
-          Tag = -1
-          Caption = 'Default Layout'
-          OnClick = mnViewDefaultLayoutClick
-        end
-        object mnViewDebugLayout: TSpTBXItem
-          Tag = -1
-          Caption = 'Debug Layout'
-          OnClick = mnViewDebugLayoutClick
-        end
-        object mnLayouts: TSpTBXSubmenuItem
-          Caption = 'Layouts'
-          Hint = 'Layouts'
-          ImageIndex = 97
-          ImageName = 'Layouts'
-          object mnLayOutSeparator: TSpTBXSeparatorItem
-          end
-          object TBXItem47: TSpTBXItem
-            Caption = 'Save Layout...'
-            Hint = 'Save Current Layout'
-            OnClick = actLayoutSaveExecute
-          end
-          object TBXItem48: TSpTBXItem
-            Caption = 'Delete Layouts...'
-            Hint = 'Delete a layout'
-            OnClick = actLayoutsDeleteExecute
-          end
-          object TBXItem49: TSpTBXItem
-            Caption = 'Set Debug Layout'
-            Hint = 'Set the current layout as the debug layout'
-            OnClick = actLayoutDebugExecute
-          end
-          object TBXSeparatorItem17: TSpTBXSeparatorItem
-          end
-          object mnViewRestoreEditor: TSpTBXItem
-            Tag = -1
-            Action = actRestoreEditor
-          end
-        end
-        object SpTBXSeparatorItem10: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnMaximizeEditor: TSpTBXItem
-          Caption = '&Maximize/Restore Editor'
-          Action = actMaximizeEditor
-        end
-        object mnNextEditor: TSpTBXItem
-          Action = actViewNextEditor
-        end
-        object mnPreviousEditor: TSpTBXItem
-          Action = actViewPreviousEditor
-        end
-        object mnSplitEditors: TSpTBXSubmenuItem
-          Caption = 'Split Editor'
-          Hint = 'Split Editor'
-          object mnSplitEditorVer: TSpTBXItem
-            Action = actViewSplitEditorVer
-          end
-          object mnSplitEditorHor: TSpTBXItem
-            Action = actViewSplitEditorHor
-          end
-          object SpTBXSeparatorItem15: TSpTBXSeparatorItem
-          end
-          object mnHideSecondEditor: TSpTBXItem
-            Action = actViewHideSecondEditor
-          end
-        end
-        object mnSplitWorkspace: TSpTBXSubmenuItem
-          Caption = 'Split Workspace'
-          Hint = 'Split Workspace'
-          object SpTBXItem8: TSpTBXItem
-            Action = actViewSplitWorkspaceVer
-          end
-          object SpTBXItem7: TSpTBXItem
-            Action = actViewSplitWorkspaceHor
-          end
-          object SpTBXSeparatorItem14: TSpTBXSeparatorItem
-          end
-          object SpTBXItem9: TSpTBXItem
-            Action = actViewHideSecondaryWorkspace
-          end
-        end
-        object TBXSeparatorItem20: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnZoomIn: TSpTBXItem
-          Action = actEditorZoomIn
-        end
-        object mnZoomOut: TSpTBXItem
-          Action = actEditorZoomOut
-        end
-        object N10: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnuToolbars: TSpTBXSubmenuItem
-          Tag = -1
-          Caption = '&Toolbars'
-          object mnViewMainMenu: TSpTBXItem
-            Action = actViewMainMenu
-          end
-          object mnMainToolbarVisibilityToggle: TSpTBXItem
-            Caption = '&Main Toolbar'
-            Hint = 'Main toolbar|Show/Hide the Main toolbar'
-            HelpContext = 360
-            Control = MainToolBar
-          end
-          object mnDebugtoolbarVisibilityToggle: TSpTBXItem
-            Caption = '&Debug Toolbar'
-            Hint = 'Debug toolbar|Show/Hide the Debug toolbar'
-            HelpContext = 360
-            Control = DebugToolbar
-          end
-          object mnEditorToolbarVisibilityToggle: TSpTBXItem
-            Caption = '&Editor Toolbar'
-            Hint = 'Editor toolbar|Show/Hide the Editor toolbar'
-            HelpContext = 360
-            Control = EditorToolbar
-          end
-          object mnViewToolbarVisibilityToggle: TSpTBXItem
-            Caption = '&View Toolbar'
-            Hint = 'View toolbar|Show/Hide the View toolbar'
-            HelpContext = 360
-          end
-          object mnuUserToolbarVisibilityToggle: TSpTBXItem
-            Caption = 'Use&r Toolbar'
-            Hint = 'User toolbar|Show/Hide the User toolbar'
-            HelpContext = 360
-          end
-          object SpTBXSeparatorItem3: TSpTBXSeparatorItem
-          end
-          object mnViewCustomizeToolbars: TSpTBXItem
-            Action = actViewCustomizeToolbars
-          end
-        end
-        object mnViewStatusBar: TSpTBXItem
-          Tag = -1
-          Action = actViewStatusBar
-        end
-        object TBXSeparatorItem18: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnSyntax: TSpTBXSubmenuItem
-          Caption = '&Syntax'
-          OnPopup = mnSyntaxPopup
-          object TBXSeparatorItem19: TSpTBXSeparatorItem
-          end
-          object mnNoSyntax: TSpTBXItem
-            Caption = '&No Syntax'
-            Hint = 'Do not use syntax highlighting'
-            OnClick = mnNoSyntaxClick
-          end
-        end
-        object TBXSeparatorItem21: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnLanguage: TSpTBXSubmenuItem
-          Tag = -1
-          Caption = 'Language'
-        end
-        object mnStyles: TSpTBXItem
-          Tag = -1
-          Action = actSelectStyle
-        end
-        object mnViewII: TSpTBXItem
-          Action = actViewII
-          ShortCut = 49225
-        end
-        object mnObjectInspector: TSpTBXItem
-          Caption = 'Object Inspector'
-          Hint = 'Object inspector'
-          Action = actViewObjectinspector
-          ShortCut = 49226
-        end
-        object SpTBXItem2: TSpTBXItem
-          Action = actNavStructure
-        end
-        object mnViewFileExplorer: TSpTBXItem
-          Action = actViewFileExplorer
-          ShortCut = 49240
-        end
-        object mnViewCodeExplorer: TSpTBXItem
-          Action = actViewCodeExplorer
-          ShortCut = 49219
-        end
-        object mnViewToDoList: TSpTBXItem
-          Action = actViewToDoList
-          ShortCut = 49236
-        end
-        object mnViewFindResults: TSpTBXItem
-          Action = actViewFindResults
-        end
-        object mnViewOutput: TSpTBXItem
-          Action = actViewOutput
-          ShortCut = 49231
-        end
-        object SpTBXSeparatorItem28: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnViewBreakpoints: TSpTBXItem
-          Action = actBreakPointsWin
-          ShortCut = 49218
-        end
-        object mnViewCallStack: TSpTBXItem
-          Action = actCallStackWin
-          ShortCut = 49235
-        end
-        object mnViewMessages: TSpTBXItem
-          Action = actMessagesWin
-          ShortCut = 49229
-        end
-        object mnViewVariables: TSpTBXItem
-          Action = actVariablesWin
-          ShortCut = 49238
-        end
-        object mnViewWatches: TSpTBXItem
-          Action = actWatchesWin
-          ShortCut = 49239
-        end
-      end
-      object ProjectMenu: TSpTBXSubmenuItem
-        Caption = '&Project'
-        object mnProjectNew: TSpTBXItem
-          Action = ProjectExplorerWindow.actProjectNew
-          Images = ProjectExplorerWindow.vilImages
-        end
-        object mnProjectOpen: TSpTBXItem
-          Action = ProjectExplorerWindow.actProjectOpen
-          Images = ProjectExplorerWindow.vilImages
-        end
-        object SpTBXSubmenuItem1: TSpTBXSubmenuItem
-          Caption = '&Recent Projects'
-          object tbiRecentProjects: TSpTBXMRUListItem
-            HidePathExtension = False
-            MaxItems = 6
-            OnClick = tbiRecentProjectsClick
-          end
-        end
-        object SpTBXSeparatorItem16: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnProjectSave: TSpTBXItem
-          Action = ProjectExplorerWindow.actProjectSave
-          Images = ProjectExplorerWindow.vilImages
-        end
-        object mnProjectSaveAs: TSpTBXItem
-          Action = ProjectExplorerWindow.actProjectSaveAs
-        end
-        object SpTBXSeparatorItem4: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnNavProjectExplorer2: TSpTBXItem
-          Action = actNavProjectExplorer
-        end
-      end
-      object RunMenu: TSpTBXSubmenuItem
-        Caption = '&Run'
-        object mnSyntaxCheck: TSpTBXItem
-          Action = actSyntaxCheck
-        end
-        object mnImportModule: TSpTBXItem
-          Action = actImportModule
-        end
-        object mnRun: TSpTBXItem
+      Width = 1007
+      Height = 113
+      Align = alClient
+      TabOrder = 1
+      object DebugToolbar: TSpTBXToolbar
+        Left = 2
+        Top = 23
+        Width = 162
+        Height = 26
+        DockMode = dmCannotFloatOrChangeDocks
+        DockPos = 0
+        DockRow = 2
+        Images = vilImages
+        TabOrder = 0
+        Caption = 'Debug Toolbar'
+        object tbiRunRun: TSpTBXItem
           Action = actRun
         end
-        object mnCommandLineParams: TSpTBXItem
-          Action = actCommandLine
-        end
-        object N22: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnExternalRun: TSpTBXItem
-          Action = actExternalRun
-        end
-        object mnConfigureExternalRun: TSpTBXItem
-          Action = actExternalRunConfigure
-        end
-        object N8: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnDebug: TSpTBXItem
+        object tbiRunDebug: TSpTBXItem
           Action = actDebug
         end
-        object mnRunToCursor: TSpTBXItem
+        object tbiRunRunToCursor: TSpTBXItem
           Action = actRunToCursor
         end
-        object mnStepInto: TSpTBXItem
+        object tbiRunStepInto: TSpTBXItem
           Action = actStepInto
         end
-        object mnStepOver: TSpTBXItem
+        object tbiRunStepOver: TSpTBXItem
           Action = actStepOver
         end
-        object mnStepOut: TSpTBXItem
-          Action = actStepOut
-        end
-        object mnPause: TSpTBXItem
-          Action = actDebugPause
-        end
-        object mnAbortDebugging: TSpTBXItem
+        object tbiRunAbort: TSpTBXItem
           Action = actDebugAbort
         end
-        object TBXSeparatorItem33: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnPostMortem: TSpTBXItem
-          Action = actPostMortem
-        end
-        object N9: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnTogglebreakpoint: TSpTBXItem
-          Action = actToggleBreakPoint
-        end
-        object mnClearAllBreakpoints: TSpTBXItem
-          Action = actClearAllBreakpoints
-        end
-        object mnAddWatchAtCursor: TSpTBXItem
-          Action = actAddWatchAtCursor
-        end
-        object SpTBXSeparatorItem17: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnPythonVersions: TSpTBXSubmenuItem
-          Tag = -1
-          Caption = 'Python Versions'
-          ImageIndex = 83
-          ImageName = 'Python'
-          OnPopup = mnPythonVersionsPopup
-          object SpTBXSeparatorItem18: TSpTBXSeparatorItem
-          end
-          object SpTBXItem4: TSpTBXItem
-            Action = actPythonSetup
-            Images = vilImages
-          end
-        end
-        object mnPythonEngines: TSpTBXSubmenuItem
-          Tag = -1
-          Caption = 'Python Engine'
-          object mnEngineInternal: TSpTBXItem
-            Action = actPythonInternal
-          end
-          object mnEngineRemote: TSpTBXItem
-            Action = actPythonRemote
-          end
-          object mnEngineRemoteTk: TSpTBXItem
-            Action = actPythonRemoteTk
-          end
-          object mnEngineRemoteWx: TSpTBXItem
-            Action = actPythonRemoteWx
-          end
-          object mnPythonEngineSSH: TSpTBXItem
-            Action = actPythonSSH
-          end
-          object TBXSeparatorItem26: TSpTBXSeparatorItem
-          end
-          object mnReinitEngine: TSpTBXItem
-            Action = actPythonReinitialize
-          end
-        end
       end
-      object UMLMenu: TSpTBXSubmenuItem
-        Caption = '&UML'
-        object mnNewUML: TSpTBXItem
-          Action = actUMLNewUML
-        end
-        object mnNewClass: TSpTBXItem
-          Hint = 'New class'
-          Action = actUMLNewClass
-        end
-        object mnOpenClass: TSpTBXItem
-          Hint = 'Open class'
-          Action = actUMLOpenClass
-        end
-        object mnEditClass: TSpTBXItem
-          Hint = 'Edit class'
-          Action = actUMLEditClass
-        end
-        object mnNewComment: TSpTBXItem
-          Hint = 'New comment'
-          Action = actUMLNewComment
-        end
-        object mnNewLayout: TSpTBXItem
-          Hint = 'New layout'
-          Action = actUMLNewLayout
-        end
-        object mnRefresh: TSpTBXItem
-          Hint = 'Refresh'
-          Action = actUMLRefresh
-        end
-        object mnDiagramFromOpenFiles: TSpTBXItem
-          Hint = 'Diagram from open files'
-          Action = actUMLDiagramFromOpenFiles
-        end
-        object mnSaveAsPicture: TSpTBXItem
-          Hint = 'Save as picture'
-          Action = actUMLSaveAsPicture
-        end
-      end
-      object ToolsMenu: TSpTBXSubmenuItem
-        Caption = '&Tools'
-        object mnToolsConfiguration: TSpTBXItem
-          Caption = 'Configuration'
-          Hint = 'Configuration'
-          Action = actToolsConfiguration
-        end
-        object mnToolsTextCompare: TSpTBXItem
-          Hint = 'Textdiff'
-          Action = actToolsTextDiff
-        end
-        object mnPythonPath: TSpTBXItem
-          Action = CommandsDataModule.actPythonPath
-        end
-        object mnToolsGit: TSpTBXSubmenuItem
-          Caption = 'Git'
-          Hint = 'Git'
-          ImageIndex = 112
-          object mnToolsGitStatus: TSpTBXItem
-            Tag = 1
-            Caption = 'Status'
-            OnClick = mnToolsGitClick
-          end
-          object mnToolsGitAdd: TSpTBXItem
-            Tag = 2
-            Caption = 'Add'
-            OnClick = mnToolsGitClick
-          end
-          object mnToolsGitCommit: TSpTBXItem
-            Tag = 3
-            Caption = 'Commit'
-            OnClick = mnToolsGitClick
-          end
-          object mnToolsGitLog: TSpTBXItem
-            Tag = 4
-            Caption = 'Log'
-            OnClick = mnToolsGitClick
-          end
-          object SpTBXSeparatorItem24: TSpTBXSeparatorItem
-          end
-          object mnToolsGitReset: TSpTBXItem
-            Tag = 5
-            Caption = 'Reset'
-            OnClick = mnToolsGitClick
-          end
-          object mnToolsGitCheckout: TSpTBXItem
-            Tag = 6
-            Caption = 'Checkout'
-            OnClick = mnToolsGitClick
-          end
-          object mnToolsGitRemove: TSpTBXItem
-            Tag = 7
-            Caption = 'Remove'
-            OnClick = mnToolsGitClick
-          end
-          object SpTBXSeparatorItem25: TSpTBXSeparatorItem
-          end
-          object mnToolsGitRemote: TSpTBXItem
-            Tag = 8
-            Caption = 'Remote'
-            OnClick = mnToolsGitClick
-          end
-          object mnToolsGitFetch: TSpTBXItem
-            Tag = 9
-            Caption = 'Fetch'
-            OnClick = mnToolsGitClick
-          end
-          object mnToolsGitPush: TSpTBXItem
-            Tag = 10
-            Caption = 'Push'
-            OnClick = mnToolsGitClick
-          end
-          object SpTBXSeparatorItem26: TSpTBXSeparatorItem
-          end
-          object mnToolsGitGUI: TSpTBXItem
-            Tag = 11
-            Caption = 'GUI'
-            OnClick = mnToolsGitClick
-          end
-          object mnToolsGitViewer: TSpTBXItem
-            Tag = 12
-            Caption = 'Viewer'
-            OnClick = mnToolsGitClick
-          end
-          object mnToolsGitConsole: TSpTBXItem
-            Tag = 13
-            Caption = 'Console'
-            OnClick = mnToolsGitClick
-          end
-        end
-        object mnToolsSVN: TSpTBXSubmenuItem
-          Caption = 'SVN'
-          Hint = 'SVN'
-          ImageIndex = 113
-          object mnToolsSVNCommit: TSpTBXItem
-            Tag = 1
-            Caption = 'Commit'
-            OnClick = mnToolsSVNClick
-          end
-          object mnToolsSVNAdd: TSpTBXItem
-            Tag = 2
-            Caption = 'Add file'
-            OnClick = mnToolsSVNClick
-          end
-          object mnToolsSVNLog: TSpTBXItem
-            Tag = 3
-            Caption = 'Log of file'
-            OnClick = mnToolsSVNClick
-          end
-          object mnToolsSVNCompare: TSpTBXItem
-            Tag = 4
-            Caption = 'Compare file'
-            OnClick = mnToolsSVNClick
-          end
-          object SpTBXSeparatorItem27: TSpTBXSeparatorItem
-          end
-          object mnToolsSVNStatus: TSpTBXItem
-            Tag = 5
-            Caption = 'Status of folder'
-            OnClick = mnToolsSVNClick
-          end
-          object mnToolsSVNTree: TSpTBXItem
-            Tag = 6
-            Caption = 'Tree of repository'
-            OnClick = mnToolsSVNClick
-          end
-          object mnToolsSVNUpdate: TSpTBXItem
-            Tag = 7
-            Caption = 'Update from repository'
-            OnClick = mnToolsSVNClick
-          end
-        end
-        object mnUnitTestWizard: TSpTBXItem
-          Action = CommandsDataModule.actUnitTestWizard
-        end
-        object mnViewUnitTests: TSpTBXItem
-          Action = actViewUnitTests
-          ShortCut = 49237
-        end
-        object EditorViewsMenu: TSpTBXSubmenuItem
-          Tag = -1
-          Caption = 'Source Code Views'
-          OnClick = EditorViewsMenuClick
-        end
-        object mnViewRegExpTester: TSpTBXItem
-          Action = actViewRegExpTester
-        end
-        object mnToolsBrowser: TSpTBXItem
-          Caption = 'Browser'
-          Hint = 'Opens a browser window'
-          OnClick = mnToolsBrowserClick
-        end
-        object N13: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnTools: TSpTBXSubmenuItem
-          Caption = 'Tools'
-          Hint = 'External Tools'
-          ImageIndex = 55
-          ImageName = 'Tools'
-        end
-        object mnConfigureTools: TSpTBXItem
-          Action = CommandsDataModule.actConfigureTools
-        end
-        object N20: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object OptionsMenu: TSpTBXSubmenuItem
-          Caption = '&Options'
-          object mnImportShortcuts: TSpTBXItem
-            Action = CommandsDataModule.actImportShortcuts
-          end
-          object mnExportShortcuts: TSpTBXItem
-            Action = CommandsDataModule.actExportShortCuts
-          end
-          object TBXSeparatorItem30: TSpTBXSeparatorItem
-          end
-          object mnImportHighlighters: TSpTBXItem
-            Action = CommandsDataModule.actImportHighlighters
-          end
-          object mnExportHighlighters: TSpTBXItem
-            Action = CommandsDataModule.actExportHighlighters
-          end
-        end
-        object TBXSeparatorItem15: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnToolsEditStartupScript: TSpTBXItem
-          Action = CommandsDataModule.actToolsEditStartupScripts
-        end
-        object mnToolsRestartLS: TSpTBXItem
-          Action = CommandsDataModule.actToolsRestartLS
-        end
-        object SpTBXSeparatorItem12: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnCheckForUpdates: TSpTBXItem
-          Action = CommandsDataModule.actCheckForUpdates
-        end
-      end
-      object HelpMenu: TSpTBXSubmenuItem
-        Caption = '&Help'
-        object mnHelpPythonManuals: TSpTBXItem
-          Action = CommandsDataModule.actPythonManuals
-        end
-        object N18: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object PyScripter1: TSpTBXSubmenuItem
-          Tag = -1
-          Caption = 'PyScripter1'
-          object mnHelpContents: TSpTBXItem
-            Action = CommandsDataModule.actHelpContents
-          end
-          object mnHelpEditorShortcuts: TSpTBXItem
-            Action = CommandsDataModule.actHelpEditorShortcuts
-          end
-          object mnHelpExternalTools: TSpTBXItem
-            Action = CommandsDataModule.actHelpExternalTools
-          end
-          object mnHelpParameters: TSpTBXItem
-            Action = CommandsDataModule.actHelpParameters
-          end
-        end
-        object mnHelpProjectHome: TSpTBXItem
-          Action = CommandsDataModule.actHelpWebProjectHome
-        end
-        object mnHelpWebSupport: TSpTBXItem
-          Action = CommandsDataModule.actHelpWebGroupSupport
-        end
-        object SpTBXItem14: TSpTBXItem
-          Action = CommandsDataModule.actDonate
-        end
-        object N17: TSpTBXSeparatorItem
-          Tag = -2
-        end
-        object mnHelpAbout: TSpTBXItem
-          Action = CommandsDataModule.actAbout
-        end
-      end
-    end
-    object MainToolBar: TSpTBXToolbar
-      Left = 2
-      Top = 24
-      Width = 162
-      Height = 26
-      DockMode = dmCannotFloatOrChangeDocks
-      DockPos = 0
-      DockRow = 1
-      Images = vilImages
-      TabOrder = 1
-      Caption = 'Main Toolbar'
-      object tbiFileOpen: TSpTBXItem
-        Hint = 'Open|Select a file to open'
-        Action = actFileOpen
-      end
-      object tbiFileSave: TSpTBXItem
-        Action = CommandsDataModule.actFileSave
-      end
-      object tbiFileSaveAll: TSpTBXItem
-        Action = CommandsDataModule.actFileSaveAll
-      end
-      object tbiEditUndo: TSpTBXItem
-        Action = CommandsDataModule.actEditUndo
-      end
-      object tbiEditRedo: TSpTBXItem
-        Action = CommandsDataModule.actEditRedo
-      end
-      object tbitbiDiagramFromOpenFiles: TSpTBXItem
-        Hint = 'UML-Diagram from open files'
-        Action = actUMLDiagramFromOpenFiles
-      end
-    end
-    object DebugToolbar: TSpTBXToolbar
-      Left = 2
-      Top = 52
-      Width = 162
-      Height = 26
-      DockMode = dmCannotFloatOrChangeDocks
-      DockPos = 0
-      DockRow = 2
-      Images = vilImages
-      TabOrder = 2
-      Caption = 'Debug Toolbar'
-      object tbiRunRun: TSpTBXItem
-        Action = actRun
-      end
-      object tbiRunDebug: TSpTBXItem
-        Action = actDebug
-      end
-      object tbiRunRunToCursor: TSpTBXItem
-        Action = actRunToCursor
-      end
-      object tbiRunStepInto: TSpTBXItem
-        Action = actStepInto
-      end
-      object tbiRunStepOver: TSpTBXItem
-        Action = actStepOver
-      end
-      object tbiRunAbort: TSpTBXItem
-        Action = actDebugAbort
-      end
-    end
-    object EditorToolbar: TSpTBXToolbar
-      Left = 610
-      Top = 26
-      Width = 206
-      Height = 26
-      DockPos = 574
-      DockRow = 1
-      Images = vilImages
-      TabOrder = 5
-      Visible = False
-      Caption = 'Editor Toolbar'
-      object tbiBrowsePrevious: TSpTBXSubmenuItem
-        Action = actBrowseBack
-        Options = [tboDropdownArrow]
-        DropdownCombo = True
-        object mnPreviousList: TSpTBXMRUListItem
-          HidePathExtension = False
-          MaxItems = 15
-          OnClick = PreviousListClick
-        end
-      end
-      object tbiBrowseNext: TSpTBXSubmenuItem
-        Action = actBrowseForward
-        Options = [tboDropdownArrow]
-        DropdownCombo = True
-        object mnNextList: TSpTBXMRUListItem
-          HidePathExtension = False
-          MaxItems = 15
-          OnClick = NextListClick
-        end
-      end
-      object TBXSeparatorItem14: TSpTBXSeparatorItem
-      end
-      object tbiEditDedent: TSpTBXItem
-        Action = CommandsDataModule.actEditDedent
-      end
-      object tbiEditIndent: TSpTBXItem
-        Action = CommandsDataModule.actEditIndent
-      end
-      object TBXSeparatorItem10: TSpTBXSeparatorItem
-      end
-      object tbiEditToggleComment: TSpTBXItem
-        Action = CommandsDataModule.actEditToggleComment
-      end
-      object TBXSeparatorItem11: TSpTBXSeparatorItem
-      end
-      object tbiEditLineNumbers: TSpTBXItem
-        Action = CommandsDataModule.actEditLineNumbers
-      end
-    end
-    object FindToolbar: TSpTBXToolbar
-      Left = 2
-      Top = 81
-      Width = 524
-      Height = 26
-      CloseButtonWhenDocked = True
-      DockPos = 0
-      DockRow = 3
-      Images = vilImages
-      Options = [tboDropdownArrow]
-      TabOrder = 3
-      Visible = False
-      OnVisibleChanged = FindToolbarVisibleChanged
-      Caption = 'Find Toolbar'
-      Customizable = False
-      object tbiFindClose: TSpTBXItem
-        Caption = 'Close'
-        Hint = 'Close'
-        ImageIndex = 114
-        OnClick = tbiFindCloseClick
-      end
-      object tbiFindLabel: TSpTBXLabelItem
-        Caption = 'Find:'
-      end
-      object TBControlItem2: TTBControlItem
-        Control = tbiSearchText
-      end
-      object tbiFindNext: TSpTBXItem
-        Action = CommandsDataModule.actSearchFindNext
-      end
-      object tbiFindPrevious: TSpTBXItem
-        Action = CommandsDataModule.actSearchFindPrev
-      end
-      object tbiHighlight: TSpTBXItem
-        Action = CommandsDataModule.actSearchHighlight
-        RadioItem = True
-      end
-      object tbiReplaceSeparator: TSpTBXSeparatorItem
-        Visible = False
-      end
-      object tbiReplaceLabel: TSpTBXLabelItem
-        Caption = 'Replace with:'
-        Visible = False
-      end
-      object TBControlItem4: TTBControlItem
-        Control = tbiReplaceText
-      end
-      object tbiReplaceExecute: TSpTBXItem
-        Action = CommandsDataModule.actSearchReplaceNow
-      end
-      object TBXSeparatorItem32: TSpTBXSeparatorItem
-      end
-      object tbiSearchOptions: TSpTBXSubmenuItem
-        Caption = 'Options'
-        ImageIndex = 101
-        ImageName = 'Setup'
-        OnPopup = tbiSearchOptionsPopup
-        object tbiSearchFromCaret: TSpTBXItem
-          Caption = 'Search From C&aret'
-          AutoCheck = True
-          OnClick = SearchOptionsChanged
-        end
-        object SpTBXSeparatorItem2: TSpTBXSeparatorItem
-        end
-        object tbiAutoCaseSensitive: TSpTBXItem
-          Caption = '&Auto Case Sensitive'
-          Hint = 'Case Sensitive when search text contains upper case characters'
-          AutoCheck = True
-          Checked = True
-          OnClick = SearchOptionsChanged
-        end
-        object tbiCaseSensitive: TSpTBXItem
-          Caption = '&Case Sensitive'
-          AutoCheck = True
-          OnClick = SearchOptionsChanged
-        end
-        object tbiWholeWords: TSpTBXItem
-          Caption = '&Whole Words Only'
-          AutoCheck = True
-          OnClick = SearchOptionsChanged
-        end
-        object tbiSearchInSelection: TSpTBXItem
-          Caption = 'Search in &Selection'
-          AutoCheck = True
-          OnClick = SearchOptionsChanged
-        end
-        object tbiRegExp: TSpTBXItem
-          Caption = '&Regular Expressions'
-          AutoCheck = True
-          OnClick = SearchOptionsChanged
-        end
-        object SpTBXSeparatorItem1: TSpTBXSeparatorItem
-        end
-        object tbiIncrementalSearch: TSpTBXItem
-          Caption = '&Incremental Search'
-          AutoCheck = True
-          OnClick = SearchOptionsChanged
-        end
-      end
-      object tbiSearchText: TSpTBXComboBox
-        Left = 63
-        Top = 1
-        Width = 160
-        Height = 23
-        AutoDropDownWidth = True
-        AutoCloseUp = True
-        ItemHeight = 15
-        TabOrder = 0
-        OnChange = tbiSearchTextChange
-        OnExit = tbiSearchTextExit
-        OnKeyPress = tbiSearchTextKeyPress
-      end
-      object tbiReplaceText: TSpTBXComboBox
-        Left = 304
-        Top = 1
-        Width = 160
-        Height = 23
-        AutoDropDownWidth = True
-        ItemHeight = 15
+      object EditorToolbar: TSpTBXToolbar
+        Left = 547
+        Top = 0
+        Width = 206
+        Height = 26
+        DockPos = 574
+        DockRow = 1
+        Images = vilImages
         TabOrder = 1
         Visible = False
-        OnChange = tbiReplaceTextChange
-        OnKeyPress = tbiReplaceTextKeyPress
-      end
-    end
-    object TabControlWidgets: TSpTBXTabControl
-      Left = 171
-      Top = 23
-      Width = 763
-      Height = 55
-      ActiveTabIndex = 2
-      TabAutofit = True
-      TabAutofitMaxSize = 80
-      HiddenItems = <>
-      object SpTBXTabItem1: TSpTBXTabItem
-        Caption = 'Program'
-        CustomWidth = 80
-      end
-      object SpTBXTabItem2: TSpTBXTabItem
-        Caption = 'Tkinter'
-        CustomWidth = 80
-      end
-      object SpTBXTabItem3: TSpTBXTabItem
-        Caption = 'TTK'
-        Checked = True
-        CustomWidth = 80
-      end
-      object SpTBXTabItem4: TSpTBXTabItem
-        Caption = 'Qt Base'
-        CustomWidth = 80
-      end
-      object SpTBXTabItem5: TSpTBXTabItem
-        Caption = 'Qt Controls'
-        CustomWidth = 80
-      end
-      object SpTBXTabSheetQtBase: TSpTBXTabSheet
-        Left = 0
-        Top = 25
-        Width = 763
-        Height = 30
-        Caption = 'Qt Base'
-        ImageIndex = -1
-        TabItem = 'SpTBXTabItem4'
-        object ToolBarQtBase: TToolBar
-          Left = 2
-          Top = 0
-          Width = 757
-          Height = 26
-          Align = alClient
-          AutoSize = True
-          ButtonHeight = 27
-          ButtonWidth = 28
-          Color = clBtnFace
-          EdgeInner = esNone
-          EdgeOuter = esNone
-          Images = ILQTBase
-          ParentColor = False
-          TabOrder = 0
-          Wrapable = False
-          object TBQtLabel: TToolButton
-            Tag = 71
-            Left = 0
-            Top = 0
-            Hint = 'QLabel'
-            ImageIndex = 0
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtLineEdit: TToolButton
-            Tag = 72
-            Left = 28
-            Top = 0
-            Hint = 'QLineEdit'
-            ImageIndex = 1
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtPlainTextEdit: TToolButton
-            Tag = 73
-            Left = 56
-            Top = 0
-            Hint = 'QPlainTextEdit'
-            ImageIndex = 2
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtPushButton: TToolButton
-            Tag = 74
-            Left = 84
-            Top = 0
-            Hint = 'QPushButton'
-            ImageIndex = 3
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtCheckBox: TToolButton
-            Tag = 75
-            Left = 112
-            Top = 0
-            Hint = 'QCheckBox'
-            ImageIndex = 4
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtButtonGroup: TToolButton
-            Tag = 76
-            Left = 140
-            Top = 0
-            Hint = 'QButtonGroup'
-            ImageIndex = 5
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtListWidget: TToolButton
-            Tag = 77
-            Left = 168
-            Top = 0
-            Hint = 'QListWidget'
-            ImageIndex = 6
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtComboBox: TToolButton
-            Tag = 78
-            Left = 196
-            Top = 0
-            Hint = 'QComboBox'
-            ImageIndex = 7
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtSpinBox: TToolButton
-            Tag = 79
-            Left = 224
-            Top = 0
-            Hint = 'QSpinBox'
-            ImageIndex = 8
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtScrollbar: TToolButton
-            Tag = 80
-            Left = 252
-            Top = 0
-            Hint = 'QScrollbar'
-            ImageIndex = 9
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtCanvas: TToolButton
-            Tag = 81
-            Left = 280
-            Top = 0
-            Hint = 'QCanvas'
-            ImageIndex = 10
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtFrame: TToolButton
-            Tag = 82
-            Left = 308
-            Top = 0
-            Hint = 'QFrame'
-            ImageIndex = 11
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtGroupBox: TToolButton
-            Tag = 83
-            Left = 336
-            Top = 0
-            Hint = 'QGroupBox'
-            ImageIndex = 12
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtSlider: TToolButton
-            Tag = 84
-            Left = 364
-            Top = 0
-            Hint = 'QSlider'
-            ImageIndex = 13
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQMenuBar: TToolButton
-            Tag = 85
-            Left = 392
-            Top = 0
-            Hint = 'QMenuBar'
-            ImageIndex = 14
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtContextMenu: TToolButton
-            Tag = 86
-            Left = 420
-            Top = 0
-            Hint = 'QContextMenu'
-            ImageIndex = 15
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtTabWidget: TToolButton
-            Tag = 87
-            Left = 448
-            Top = 0
-            Hint = 'QTabWidget'
-            ImageIndex = 16
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtTreeWidget: TToolButton
-            Tag = 88
-            Left = 476
-            Top = 0
-            Hint = 'QTreeWidget'
-            ImageIndex = 17
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtTableWidget: TToolButton
-            Tag = 89
-            Left = 504
-            Top = 0
-            Hint = 'QTableWidget'
-            ImageIndex = 18
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtProgressBar: TToolButton
-            Tag = 90
-            Left = 532
-            Top = 0
-            Hint = 'QProgressBar'
-            ImageIndex = 19
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtStatusBar: TToolButton
-            Tag = 91
-            Left = 560
-            Top = 0
-            Hint = 'QStatusBar'
-            ImageIndex = 20
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
+        Caption = 'Editor Toolbar'
+        object tbiBrowsePrevious: TSpTBXSubmenuItem
+          Action = actBrowseBack
+          Options = [tboDropdownArrow]
+          DropdownCombo = True
+          object mnPreviousList: TSpTBXMRUListItem
+            HidePathExtension = False
+            MaxItems = 15
+            OnClick = PreviousListClick
           end
         end
-      end
-      object SpTBXTabSheetQtControls: TSpTBXTabSheet
-        Left = 0
-        Top = 25
-        Width = 763
-        Height = 30
-        Caption = 'Qt Controls'
-        ImageIndex = -1
-        TabItem = 'SpTBXTabItem5'
-        object ToolBarQtControls: TToolBar
-          Left = 2
-          Top = 0
-          Width = 757
-          Height = 26
-          Align = alClient
-          ButtonHeight = 27
-          ButtonWidth = 28
-          Color = clBtnFace
-          EdgeInner = esNone
-          EdgeOuter = esNone
-          Images = ILQtControls
-          ParentColor = False
-          TabOrder = 0
-          object TBQtTextedit: TToolButton
-            Tag = 101
-            Left = 0
-            Top = 0
-            Hint = 'QTextEdit'
-            ImageIndex = 0
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtTextBrowser: TToolButton
-            Tag = 102
-            Left = 28
-            Top = 0
-            Hint = 'QTextBrowser'
-            ImageIndex = 1
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtToolButton: TToolButton
-            Tag = 103
-            Left = 56
-            Top = 0
-            Hint = 'QToolButton'
-            ImageIndex = 2
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtCommandLinkButton: TToolButton
-            Tag = 104
-            Left = 84
-            Top = 0
-            Hint = 'QCommandLinkButton'
-            ImageIndex = 3
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtFontComboBox: TToolButton
-            Tag = 105
-            Left = 112
-            Top = 0
-            Hint = 'QFontComboBox'
-            ImageIndex = 4
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtDoubleSpinBox: TToolButton
-            Tag = 106
-            Left = 140
-            Top = 0
-            Hint = 'QDoubleSpinBox'
-            ImageIndex = 5
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtLCDNumber: TToolButton
-            Tag = 107
-            Left = 168
-            Top = 0
-            Hint = 'QLCDNumber'
-            ImageIndex = 6
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtDateTimeEdit: TToolButton
-            Tag = 108
-            Left = 196
-            Top = 0
-            Hint = 'QDateTimeEdit'
-            ImageIndex = 7
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtDateEdit: TToolButton
-            Tag = 109
-            Left = 224
-            Top = 0
-            Hint = 'QDateEdit'
-            ImageIndex = 8
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtTimeEdit: TToolButton
-            Tag = 110
-            Left = 252
-            Top = 0
-            Hint = 'QTimeEdit'
-            ImageIndex = 9
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtDial: TToolButton
-            Tag = 111
-            Left = 280
-            Top = 0
-            Hint = 'QDial'
-            ImageIndex = 10
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtLine: TToolButton
-            Tag = 112
-            Left = 308
-            Top = 0
-            Hint = 'QLine'
-            ImageIndex = 11
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtScrollArea: TToolButton
-            Tag = 113
-            Left = 336
-            Top = 0
-            Hint = 'QScrollArea'
-            ImageIndex = 12
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtToolBox: TToolButton
-            Tag = 114
-            Left = 364
-            Top = 0
-            Hint = 'QToolBox'
-            ImageIndex = 13
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtStackWidget: TToolButton
-            Tag = 115
-            Left = 392
-            Top = 0
-            Hint = 'QStackWidget'
-            ImageIndex = 14
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtListView: TToolButton
-            Tag = 116
-            Left = 420
-            Top = 0
-            Hint = 'QListView'
-            ImageIndex = 15
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtColumnView: TToolButton
-            Tag = 117
-            Left = 448
-            Top = 0
-            Hint = 'QColumnView'
-            ImageIndex = 16
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtTreeView: TToolButton
-            Tag = 118
-            Left = 476
-            Top = 0
-            Hint = 'QTreeWidget'
-            ImageIndex = 17
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtTableView: TToolButton
-            Tag = 119
-            Left = 504
-            Top = 0
-            Hint = 'QTableView'
-            ImageIndex = 18
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBQtGraphicsView: TToolButton
-            Tag = 120
-            Left = 532
-            Top = 0
-            Hint = 'QGraphicsView'
-            ImageIndex = 19
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
+        object tbiBrowseNext: TSpTBXSubmenuItem
+          Action = actBrowseForward
+          Options = [tboDropdownArrow]
+          DropdownCombo = True
+          object mnNextList: TSpTBXMRUListItem
+            HidePathExtension = False
+            MaxItems = 15
+            OnClick = NextListClick
           end
         end
+        object TBXSeparatorItem14: TSpTBXSeparatorItem
+        end
+        object tbiEditDedent: TSpTBXItem
+          Action = CommandsDataModule.actEditDedent
+        end
+        object tbiEditIndent: TSpTBXItem
+          Action = CommandsDataModule.actEditIndent
+        end
+        object TBXSeparatorItem10: TSpTBXSeparatorItem
+        end
+        object tbiEditToggleComment: TSpTBXItem
+          Action = CommandsDataModule.actEditToggleComment
+        end
+        object TBXSeparatorItem11: TSpTBXSeparatorItem
+        end
+        object tbiEditLineNumbers: TSpTBXItem
+          Action = CommandsDataModule.actEditLineNumbers
+        end
       end
-      object SpTBXTabSheetProgram: TSpTBXTabSheet
-        Left = 0
-        Top = 25
-        Width = 763
-        Height = 30
-        Caption = 'Program'
-        ImageIndex = -1
-        TabItem = 'SpTBXTabItem1'
-        object ToolbarProgram: TToolBar
-          Left = 2
-          Top = 0
-          Width = 757
-          Height = 26
-          Align = alClient
-          ButtonHeight = 27
-          ButtonWidth = 30
-          Color = clBtnFace
-          Images = ILProgram
-          ParentColor = False
+      object FindToolbar: TSpTBXToolbar
+        Left = 2
+        Top = 83
+        Width = 524
+        Height = 26
+        CloseButtonWhenDocked = True
+        DockPos = 0
+        DockRow = 3
+        Images = vilImages
+        Options = [tboDropdownArrow]
+        TabOrder = 2
+        Visible = False
+        OnVisibleChanged = FindToolbarVisibleChanged
+        Caption = 'Find Toolbar'
+        Customizable = False
+        object tbiFindClose: TSpTBXItem
+          Caption = 'Close'
+          Hint = 'Close'
+          ImageIndex = 114
+          OnClick = tbiFindCloseClick
+        end
+        object tbiFindLabel: TSpTBXLabelItem
+          Caption = 'Find:'
+        end
+        object TBControlItem2: TTBControlItem
+          Control = tbiSearchText
+        end
+        object tbiFindNext: TSpTBXItem
+          Action = CommandsDataModule.actSearchFindNext
+        end
+        object tbiFindPrevious: TSpTBXItem
+          Action = CommandsDataModule.actSearchFindPrev
+        end
+        object tbiHighlight: TSpTBXItem
+          Action = CommandsDataModule.actSearchHighlight
+          RadioItem = True
+        end
+        object tbiReplaceSeparator: TSpTBXSeparatorItem
+          Visible = False
+        end
+        object tbiReplaceLabel: TSpTBXLabelItem
+          Caption = 'Replace with:'
+          Visible = False
+        end
+        object TBControlItem4: TTBControlItem
+          Control = tbiReplaceText
+        end
+        object tbiReplaceExecute: TSpTBXItem
+          Action = CommandsDataModule.actSearchReplaceNow
+        end
+        object TBXSeparatorItem32: TSpTBXSeparatorItem
+        end
+        object tbiSearchOptions: TSpTBXSubmenuItem
+          Caption = 'Options'
+          ImageIndex = 101
+          ImageName = 'Setup'
+          OnPopup = tbiSearchOptionsPopup
+          object tbiSearchFromCaret: TSpTBXItem
+            Caption = 'Search From C&aret'
+            AutoCheck = True
+            OnClick = SearchOptionsChanged
+          end
+          object SpTBXSeparatorItem2: TSpTBXSeparatorItem
+          end
+          object tbiAutoCaseSensitive: TSpTBXItem
+            Caption = '&Auto Case Sensitive'
+            Hint = 'Case Sensitive when search text contains upper case characters'
+            AutoCheck = True
+            Checked = True
+            OnClick = SearchOptionsChanged
+          end
+          object tbiCaseSensitive: TSpTBXItem
+            Caption = '&Case Sensitive'
+            AutoCheck = True
+            OnClick = SearchOptionsChanged
+          end
+          object tbiWholeWords: TSpTBXItem
+            Caption = '&Whole Words Only'
+            AutoCheck = True
+            OnClick = SearchOptionsChanged
+          end
+          object tbiSearchInSelection: TSpTBXItem
+            Caption = 'Search in &Selection'
+            AutoCheck = True
+            OnClick = SearchOptionsChanged
+          end
+          object tbiRegExp: TSpTBXItem
+            Caption = '&Regular Expressions'
+            AutoCheck = True
+            OnClick = SearchOptionsChanged
+          end
+          object SpTBXSeparatorItem1: TSpTBXSeparatorItem
+          end
+          object tbiIncrementalSearch: TSpTBXItem
+            Caption = '&Incremental Search'
+            AutoCheck = True
+            OnClick = SearchOptionsChanged
+          end
+        end
+        object tbiSearchText: TSpTBXComboBox
+          Left = 63
+          Top = 1
+          Width = 160
+          Height = 23
+          AutoDropDownWidth = True
+          AutoCloseUp = True
+          ItemHeight = 15
           TabOrder = 0
-          object TBClass: TToolButton
-            Left = 0
-            Top = 0
+          OnChange = tbiSearchTextChange
+          OnExit = tbiSearchTextExit
+          OnKeyPress = tbiSearchTextKeyPress
+        end
+        object tbiReplaceText: TSpTBXComboBox
+          Left = 304
+          Top = 1
+          Width = 160
+          Height = 23
+          AutoDropDownWidth = True
+          ItemHeight = 15
+          TabOrder = 1
+          Visible = False
+          OnChange = tbiReplaceTextChange
+          OnKeyPress = tbiReplaceTextKeyPress
+        end
+      end
+      object MainMenu: TSpTBXToolbar
+        Left = 2
+        Top = 0
+        Width = 377
+        Height = 21
+        DockMode = dmCannotFloatOrChangeDocks
+        DockPos = 0
+        FullSize = True
+        Images = vilImages
+        ProcessShortCuts = True
+        ShrinkMode = tbsmWrap
+        TabOrder = 3
+        Caption = 'Mainmneu'
+        Customizable = False
+        MenuBar = True
+        object FileMenu: TSpTBXSubmenuItem
+          Caption = '&File'
+          object TBXSubmenuItem5: TSpTBXSubmenuItem
+            Caption = '&New'
+            Hint = 'New file'
+            object mnNewModule: TSpTBXItem
+              Caption = '&Python module'
+              Action = actFileNewModule
+            end
+            object mnNewFile: TSpTBXItem
+              Caption = '&File...'
+              Action = actFileNewFile
+            end
+            object mnFileNewTkApplication: TSpTBXItem
+              Caption = '&Tk/Tkk Application'
+              Hint = 'New Tk/TKK Application'
+              OnClick = actFileNewTkinterExecute
+            end
+            object mnFileNewQtApplication: TSpTBXItem
+              Caption = '&Qt-Application'
+              Hint = 'New QT Application'
+              OnClick = TBQtApplicationClick
+            end
+            object TBXSeparatorItem23: TSpTBXSeparatorItem
+            end
+            object mnFileNewClass: TSpTBXItem
+              Caption = '&Class'
+              Action = actUMLNewClass
+            end
+            object mnFileNewStrutogram: TSpTBXItem
+              Caption = '&Structogram'
+              OnClick = actFileNewStructogramExecute
+            end
+            object mnFileNewSequencediagram: TSpTBXItem
+              Caption = 'Sequence &diagram'
+              OnClick = actFileNewSequencediagramExecute
+            end
+          end
+          object mnFileOpen: TSpTBXItem
+            Action = actFileOpen
+          end
+          object RecentSubmenu: TSpTBXSubmenuItem
+            Caption = '&Recent Files'
+            Hint = 'Recent files'
+            object tbiRecentFileList: TSpTBXMRUListItem
+              HidePathExtension = False
+              MaxItems = 6
+              OnClick = tbiRecentFileListClick
+            end
+          end
+          object SpTBXSeparatorItem21: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnRemoteFileOpen: TSpTBXItem
+            Action = actRemoteFileOpen
+          end
+          object mnRemoteFileSave: TSpTBXItem
+            Action = CommandsDataModule.actFileSaveToRemote
+          end
+          object N14: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnFileSave: TSpTBXItem
+            Action = CommandsDataModule.actFileSave
+          end
+          object mnFileSaveAs: TSpTBXItem
+            Action = CommandsDataModule.actFileSaveAs
+          end
+          object mnFileExport: TSpTBXItem
+            Caption = 'Expor&t'
+            Action = CommandsDataModule.actFileExport
+          end
+          object mnFileReload: TSpTBXItem
+            Action = CommandsDataModule.actFileReload
+          end
+          object mnFileClose: TSpTBXItem
+            Action = CommandsDataModule.actFileClose
+          end
+          object N1: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnFileSaveAll: TSpTBXItem
+            Action = CommandsDataModule.actFileSaveAll
+          end
+          object mnFileCloseAll: TSpTBXItem
+            Action = actFileCloseAll
+          end
+          object N2: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object PageSetup1: TSpTBXItem
+            Action = CommandsDataModule.actPageSetup
+          end
+          object PrinterSetup1: TSpTBXItem
+            Action = CommandsDataModule.actPrinterSetup
+          end
+          object PrintPreview1: TSpTBXItem
+            Action = CommandsDataModule.actPrintPreview
+          end
+          object Print1: TSpTBXItem
+            Action = CommandsDataModule.actFilePrint
+          end
+          object N4: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object N3: TSpTBXItem
+            Action = actFileExit
+          end
+        end
+        object EditMenu: TSpTBXSubmenuItem
+          Caption = '&Edit'
+          object mnEditUndo: TSpTBXItem
+            Action = CommandsDataModule.actEditUndo
+          end
+          object mnEditRedo: TSpTBXItem
+            Action = CommandsDataModule.actEditRedo
+          end
+          object N5: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnEditCut: TSpTBXItem
+            Action = CommandsDataModule.actEditCut
+          end
+          object mnCopyMenu: TSpTBXSubmenuItem
+            Caption = '&Copy'
+            Hint = 'Copy'
+            object mnEditCopy: TSpTBXItem
+              Action = CommandsDataModule.actEditCopy
+            end
+            object mnEditCopyRTF: TSpTBXItem
+              Action = CommandsDataModule.actEditCopyRTF
+            end
+            object mnEditCopyRTFNumbered: TSpTBXItem
+              Action = CommandsDataModule.actEditCopyRTFNumbered
+            end
+            object mnEditCopyHTML: TSpTBXItem
+              Action = CommandsDataModule.actEditCopyHTML
+            end
+            object mnEditCopyHTMLAsText: TSpTBXItem
+              Action = CommandsDataModule.actEditCopyHTMLasText
+            end
+            object mnEditCopyNumbered: TSpTBXItem
+              Action = CommandsDataModule.actEditCopyNumbered
+            end
+          end
+          object mnEditPaste: TSpTBXItem
+            Action = CommandsDataModule.actEditPaste
+          end
+          object mnEditDelete: TSpTBXItem
+            Action = CommandsDataModule.actEditDelete
+          end
+          object mnEditSelectAll: TSpTBXItem
+            Action = CommandsDataModule.actEditSelectAll
+          end
+          object SpTBXSeparatorItem19: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnIndentBlock: TSpTBXItem
+            Action = CommandsDataModule.actEditIndent
+          end
+          object mnDedentBlock: TSpTBXItem
+            Action = CommandsDataModule.actEditDedent
+          end
+          object mnToggleComment: TSpTBXItem
+            Action = CommandsDataModule.actEditToggleComment
+          end
+          object TBXSeparatorItem27: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnExecSelection: TSpTBXItem
+            Action = actExecSelection
+          end
+          object mnEditReadOnly: TSpTBXItem
+            Action = CommandsDataModule.actEditReadOnly
+          end
+          object TBXSeparatorItem9: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnSourceCode: TSpTBXSubmenuItem
+            Tag = -1
+            Caption = '&Source Code'
+            object mnTabify: TSpTBXItem
+              Action = CommandsDataModule.actEditTabify
+            end
+            object mnUnTabify: TSpTBXItem
+              Action = CommandsDataModule.actEditUntabify
+            end
+          end
+          object SpTBXSeparatorItem29: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnSpelling: TSpTBXSubmenuItem
+            Tag = -1
+            Caption = 'Spelling'
+            Visible = False
+            OnPopup = mnSpellingPopup
+            object mnSpellCheckTopSeparator: TSpTBXSeparatorItem
+            end
+            object mnSpellCheckAdd: TSpTBXItem
+              Action = CommandsDataModule.actSynSpellErrorAdd
+            end
+            object mnSpellCheckDelete: TSpTBXItem
+              Action = CommandsDataModule.actSynSpellErrorDelete
+            end
+            object mnSpellCheckIgnore: TSpTBXItem
+              Action = CommandsDataModule.actSynSpellErrorIgnore
+            end
+            object mnSpellCheckIgnoreOnce: TSpTBXItem
+              Action = CommandsDataModule.actSynSpellErrorIgnoreOnce
+            end
+            object mnSpellCheckSecondSeparator: TSpTBXSeparatorItem
+            end
+            object SpTBXItem20: TSpTBXItem
+              Action = CommandsDataModule.actSynSpellCheckWord
+            end
+            object SpTBXItem21: TSpTBXItem
+              Action = CommandsDataModule.actSynSpellCheckLine
+            end
+            object SpTBXItem22: TSpTBXItem
+              Action = CommandsDataModule.actSynSpellCheckSelection
+            end
+            object SpTBXItem23: TSpTBXItem
+              Action = CommandsDataModule.actSynSpellCheckFile
+            end
+            object SpTBXSeparatorItem31: TSpTBXSeparatorItem
+            end
+            object SpTBXItem24: TSpTBXItem
+              Action = CommandsDataModule.actSynSpellClearErrors
+            end
+            object SpTBXSeparatorItem32: TSpTBXSeparatorItem
+            end
+            object SpTBXItem25: TSpTBXItem
+              Action = CommandsDataModule.actSynSpellCheckAsYouType
+            end
+          end
+          object mnIsertCodeTemplate: TSpTBXItem
+            Action = CommandsDataModule.actInsertTemplate
+          end
+          object mnEditParameters1: TSpTBXSubmenuItem
+            Caption = 'Parameters'
+            object mnInsertParameter: TSpTBXItem
+              Action = CommandsDataModule.actParameterCompletion
+            end
+            object mnInsertModifier: TSpTBXItem
+              Action = CommandsDataModule.actModifierCompletion
+            end
+            object N16: TSpTBXSeparatorItem
+            end
+            object mnReplaceParameter: TSpTBXItem
+              Action = CommandsDataModule.actReplaceParameters
+            end
+          end
+          object N6: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object TBXSubmenuItem3: TSpTBXSubmenuItem
+            Caption = 'File Format'
+            Hint = 'File format'
+            object mnEditAnsi: TSpTBXItem
+              Action = CommandsDataModule.actEditAnsi
+              RadioItem = True
+            end
+            object mnEditUtf8NoBom: TSpTBXItem
+              Action = CommandsDataModule.actEditUTF8NoBOM
+              RadioItem = True
+            end
+            object mnEditUtf8: TSpTBXItem
+              Action = CommandsDataModule.actEditUTF8
+              RadioItem = True
+            end
+            object mnEditUtf16LE: TSpTBXItem
+              Action = CommandsDataModule.actEditUTF16LE
+            end
+            object mnEditUtf16BE: TSpTBXItem
+              Action = CommandsDataModule.actEditUTF16BE
+            end
+            object TBXSeparatorItem12: TSpTBXSeparatorItem
+            end
+            object mnEditLBDos: TSpTBXItem
+              Action = CommandsDataModule.actEditLBDos
+              RadioItem = True
+            end
+            object mnEditLBUnix: TSpTBXItem
+              Action = CommandsDataModule.actEditLBUnix
+              RadioItem = True
+            end
+            object mnEditLBMac: TSpTBXItem
+              Action = CommandsDataModule.actEditLBMac
+              RadioItem = True
+            end
+          end
+        end
+        object SearchMenu: TSpTBXSubmenuItem
+          Caption = '&Search'
+          object mnSearchFind: TSpTBXItem
+            Action = CommandsDataModule.actSearchFind
+          end
+          object mnSearchFindNext: TSpTBXItem
+            Action = CommandsDataModule.actSearchFindNext
+          end
+          object mnSearchFindPrevious: TSpTBXItem
+            Action = CommandsDataModule.actSearchFindPrev
+          end
+          object mnSearchReplace: TSpTBXItem
+            Action = CommandsDataModule.actSearchReplace
+          end
+          object mnSearchHighlight: TSpTBXItem
+            Action = CommandsDataModule.actSearchHighlight
+          end
+          object N15: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnFindinFiles: TSpTBXItem
+            Action = CommandsDataModule.actFindInFiles
+          end
+          object N7: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnGoToLine: TSpTBXItem
+            Action = CommandsDataModule.actSearchGoToLine
+          end
+          object mnGotoSyntaxError: TSpTBXItem
+            Action = CommandsDataModule.actSearchGoToSyntaxError
+          end
+          object mnGoToDebugLine: TSpTBXItem
+            Action = CommandsDataModule.actSearchGoToDebugLine
+          end
+          object TBXSeparatorItem31: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnFindFunction: TSpTBXItem
+            Action = CommandsDataModule.actFindFunction
+          end
+          object mnFindNextReference: TSpTBXItem
+            Action = CommandsDataModule.actFindNextReference
+          end
+          object mnFindPreviousReference: TSpTBXItem
+            Action = CommandsDataModule.actFindPreviousReference
+          end
+          object mnMatchingBrace: TSpTBXItem
+            Action = CommandsDataModule.actSearchMatchingBrace
+          end
+          object N23: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnFindDefinition: TSpTBXItem
+            Action = actFindDefinition
+          end
+          object mnFindReferences: TSpTBXItem
+            Action = actFindReferences
+          end
+        end
+        object ViewMenu: TSpTBXSubmenuItem
+          Caption = '&View'
+          object mnViewDefaultLayout: TSpTBXItem
+            Tag = -1
+            Caption = 'Default Layout'
+            OnClick = mnViewDefaultLayoutClick
+          end
+          object mnViewDebugLayout: TSpTBXItem
+            Tag = -1
+            Caption = 'Debug Layout'
+            OnClick = mnViewDebugLayoutClick
+          end
+          object mnLayouts: TSpTBXSubmenuItem
+            Caption = 'Layouts'
+            Hint = 'Layouts'
+            ImageIndex = 97
+            ImageName = 'Layouts'
+            object mnLayOutSeparator: TSpTBXSeparatorItem
+            end
+            object TBXItem47: TSpTBXItem
+              Caption = 'Save Layout...'
+              Hint = 'Save Current Layout'
+              OnClick = actLayoutSaveExecute
+            end
+            object TBXItem48: TSpTBXItem
+              Caption = 'Delete Layouts...'
+              Hint = 'Delete a layout'
+              OnClick = actLayoutsDeleteExecute
+            end
+            object TBXItem49: TSpTBXItem
+              Caption = 'Set Debug Layout'
+              Hint = 'Set the current layout as the debug layout'
+              OnClick = actLayoutDebugExecute
+            end
+            object TBXSeparatorItem17: TSpTBXSeparatorItem
+            end
+            object mnViewRestoreEditor: TSpTBXItem
+              Tag = -1
+              Action = actRestoreEditor
+            end
+          end
+          object SpTBXSeparatorItem10: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnMaximizeEditor: TSpTBXItem
+            Caption = '&Maximize/Restore Editor'
+            Action = actMaximizeEditor
+          end
+          object mnNextEditor: TSpTBXItem
+            Action = actViewNextEditor
+          end
+          object mnPreviousEditor: TSpTBXItem
+            Action = actViewPreviousEditor
+          end
+          object mnSplitEditors: TSpTBXSubmenuItem
+            Caption = 'Split Editor'
+            Hint = 'Split Editor'
+            object mnSplitEditorVer: TSpTBXItem
+              Action = actViewSplitEditorVer
+            end
+            object mnSplitEditorHor: TSpTBXItem
+              Action = actViewSplitEditorHor
+            end
+            object SpTBXSeparatorItem15: TSpTBXSeparatorItem
+            end
+            object mnHideSecondEditor: TSpTBXItem
+              Action = actViewHideSecondEditor
+            end
+          end
+          object mnSplitWorkspace: TSpTBXSubmenuItem
+            Caption = 'Split Workspace'
+            Hint = 'Split Workspace'
+            object SpTBXItem8: TSpTBXItem
+              Action = actViewSplitWorkspaceVer
+            end
+            object SpTBXItem7: TSpTBXItem
+              Action = actViewSplitWorkspaceHor
+            end
+            object SpTBXSeparatorItem14: TSpTBXSeparatorItem
+            end
+            object SpTBXItem9: TSpTBXItem
+              Action = actViewHideSecondaryWorkspace
+            end
+          end
+          object TBXSeparatorItem20: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnZoomIn: TSpTBXItem
+            Action = actEditorZoomIn
+          end
+          object mnZoomOut: TSpTBXItem
+            Action = actEditorZoomOut
+          end
+          object N10: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnuToolbars: TSpTBXSubmenuItem
+            Tag = -1
+            Caption = '&Toolbars'
+            object mnViewMainMenu: TSpTBXItem
+              Action = actViewMainMenu
+            end
+            object mnMainToolbarVisibilityToggle: TSpTBXItem
+              Caption = '&Main Toolbar'
+              Hint = 'Main toolbar|Show/Hide the Main toolbar'
+              HelpContext = 360
+              Control = MainToolBar
+            end
+            object mnDebugtoolbarVisibilityToggle: TSpTBXItem
+              Caption = '&Debug Toolbar'
+              Hint = 'Debug toolbar|Show/Hide the Debug toolbar'
+              HelpContext = 360
+              Control = DebugToolbar
+            end
+            object mnEditorToolbarVisibilityToggle: TSpTBXItem
+              Caption = '&Editor Toolbar'
+              Hint = 'Editor toolbar|Show/Hide the Editor toolbar'
+              HelpContext = 360
+              Control = EditorToolbar
+            end
+            object mnViewToolbarVisibilityToggle: TSpTBXItem
+              Caption = '&View Toolbar'
+              Hint = 'View toolbar|Show/Hide the View toolbar'
+              HelpContext = 360
+            end
+            object mnuUserToolbarVisibilityToggle: TSpTBXItem
+              Caption = 'Use&r Toolbar'
+              Hint = 'User toolbar|Show/Hide the User toolbar'
+              HelpContext = 360
+            end
+            object SpTBXSeparatorItem3: TSpTBXSeparatorItem
+            end
+            object mnViewCustomizeToolbars: TSpTBXItem
+              Action = actViewCustomizeToolbars
+            end
+          end
+          object mnViewStatusBar: TSpTBXItem
+            Tag = -1
+            Action = actViewStatusBar
+          end
+          object TBXSeparatorItem18: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnSyntax: TSpTBXSubmenuItem
+            Caption = '&Syntax'
+            OnPopup = mnSyntaxPopup
+            object TBXSeparatorItem19: TSpTBXSeparatorItem
+            end
+            object mnNoSyntax: TSpTBXItem
+              Caption = '&No Syntax'
+              Hint = 'Do not use syntax highlighting'
+              OnClick = mnNoSyntaxClick
+            end
+          end
+          object TBXSeparatorItem21: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnLanguage: TSpTBXSubmenuItem
+            Tag = -1
+            Caption = 'Language'
+          end
+          object mnStyles: TSpTBXItem
+            Tag = -1
+            Action = actSelectStyle
+          end
+          object mnViewII: TSpTBXItem
+            Action = actViewII
+            ShortCut = 49225
+          end
+          object mnObjectInspector: TSpTBXItem
+            Caption = 'Object Inspector'
+            Hint = 'Object inspector'
+            Action = actViewObjectinspector
+            ShortCut = 49226
+          end
+          object SpTBXItem2: TSpTBXItem
+            Action = actNavStructure
+          end
+          object mnViewFileExplorer: TSpTBXItem
+            Action = actViewFileExplorer
+            ShortCut = 49240
+          end
+          object mnViewCodeExplorer: TSpTBXItem
+            Action = actViewCodeExplorer
+            ShortCut = 49219
+          end
+          object mnViewToDoList: TSpTBXItem
+            Action = actViewToDoList
+            ShortCut = 49236
+          end
+          object mnViewFindResults: TSpTBXItem
+            Action = actViewFindResults
+          end
+          object mnViewOutput: TSpTBXItem
+            Action = actViewOutput
+            ShortCut = 49231
+          end
+          object SpTBXSeparatorItem28: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnViewBreakpoints: TSpTBXItem
+            Action = actBreakPointsWin
+            ShortCut = 49218
+          end
+          object mnViewCallStack: TSpTBXItem
+            Action = actCallStackWin
+            ShortCut = 49235
+          end
+          object mnViewMessages: TSpTBXItem
+            Action = actMessagesWin
+            ShortCut = 49229
+          end
+          object mnViewVariables: TSpTBXItem
+            Action = actVariablesWin
+            ShortCut = 49238
+          end
+          object mnViewWatches: TSpTBXItem
+            Action = actWatchesWin
+            ShortCut = 49239
+          end
+        end
+        object ProjectMenu: TSpTBXSubmenuItem
+          Caption = '&Project'
+          object mnProjectNew: TSpTBXItem
+            Action = ProjectExplorerWindow.actProjectNew
+            Images = ProjectExplorerWindow.vilImages
+          end
+          object mnProjectOpen: TSpTBXItem
+            Action = ProjectExplorerWindow.actProjectOpen
+            Images = ProjectExplorerWindow.vilImages
+          end
+          object SpTBXSubmenuItem1: TSpTBXSubmenuItem
+            Caption = '&Recent Projects'
+            object tbiRecentProjects: TSpTBXMRUListItem
+              HidePathExtension = False
+              MaxItems = 6
+              OnClick = tbiRecentProjectsClick
+            end
+          end
+          object SpTBXSeparatorItem16: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnProjectSave: TSpTBXItem
+            Action = ProjectExplorerWindow.actProjectSave
+            Images = ProjectExplorerWindow.vilImages
+          end
+          object mnProjectSaveAs: TSpTBXItem
+            Action = ProjectExplorerWindow.actProjectSaveAs
+          end
+          object SpTBXSeparatorItem4: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnNavProjectExplorer2: TSpTBXItem
+            Action = actNavProjectExplorer
+          end
+        end
+        object RunMenu: TSpTBXSubmenuItem
+          Caption = '&Run'
+          object mnSyntaxCheck: TSpTBXItem
+            Action = actSyntaxCheck
+          end
+          object mnImportModule: TSpTBXItem
+            Action = actImportModule
+          end
+          object mnRun: TSpTBXItem
+            Action = actRun
+          end
+          object mnCommandLineParams: TSpTBXItem
+            Action = actCommandLine
+          end
+          object N22: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnExternalRun: TSpTBXItem
+            Action = actExternalRun
+          end
+          object mnConfigureExternalRun: TSpTBXItem
+            Action = actExternalRunConfigure
+          end
+          object N8: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnDebug: TSpTBXItem
+            Action = actDebug
+          end
+          object mnRunToCursor: TSpTBXItem
+            Action = actRunToCursor
+          end
+          object mnStepInto: TSpTBXItem
+            Action = actStepInto
+          end
+          object mnStepOver: TSpTBXItem
+            Action = actStepOver
+          end
+          object mnStepOut: TSpTBXItem
+            Action = actStepOut
+          end
+          object mnPause: TSpTBXItem
+            Action = actDebugPause
+          end
+          object mnAbortDebugging: TSpTBXItem
+            Action = actDebugAbort
+          end
+          object TBXSeparatorItem33: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnPostMortem: TSpTBXItem
+            Action = actPostMortem
+          end
+          object N9: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnTogglebreakpoint: TSpTBXItem
+            Action = actToggleBreakPoint
+          end
+          object mnClearAllBreakpoints: TSpTBXItem
+            Action = actClearAllBreakpoints
+          end
+          object mnAddWatchAtCursor: TSpTBXItem
+            Action = actAddWatchAtCursor
+          end
+          object SpTBXSeparatorItem17: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnPythonVersions: TSpTBXSubmenuItem
+            Tag = -1
+            Caption = 'Python Versions'
+            ImageIndex = 83
+            ImageName = 'Python'
+            OnPopup = mnPythonVersionsPopup
+            object SpTBXSeparatorItem18: TSpTBXSeparatorItem
+            end
+            object SpTBXItem4: TSpTBXItem
+              Action = actPythonSetup
+              Images = vilImages
+            end
+          end
+          object mnPythonEngines: TSpTBXSubmenuItem
+            Tag = -1
+            Caption = 'Python Engine'
+            object mnEngineInternal: TSpTBXItem
+              Action = actPythonInternal
+            end
+            object mnEngineRemote: TSpTBXItem
+              Action = actPythonRemote
+            end
+            object mnEngineRemoteTk: TSpTBXItem
+              Action = actPythonRemoteTk
+            end
+            object mnEngineRemoteWx: TSpTBXItem
+              Action = actPythonRemoteWx
+            end
+            object mnPythonEngineSSH: TSpTBXItem
+              Action = actPythonSSH
+            end
+            object TBXSeparatorItem26: TSpTBXSeparatorItem
+            end
+            object mnReinitEngine: TSpTBXItem
+              Action = actPythonReinitialize
+            end
+          end
+        end
+        object UMLMenu: TSpTBXSubmenuItem
+          Caption = '&UML'
+          object mnNewUML: TSpTBXItem
+            Action = actUMLNewUML
+          end
+          object mnNewClass: TSpTBXItem
             Hint = 'New class'
-            ImageIndex = 0
-            OnClick = actUMLNewClassExecute
+            Action = actUMLNewClass
           end
-          object TBStructogram: TToolButton
-            Left = 30
-            Top = 0
-            Hint = 'New structogram'
-            ImageIndex = 1
-            OnClick = actFileNewStructogramExecute
+          object mnOpenClass: TSpTBXItem
+            Hint = 'Open class'
+            Action = actUMLOpenClass
           end
-          object TBSequence: TToolButton
-            Left = 60
-            Top = 0
-            Hint = 'New sequence diagram'
-            ImageIndex = 2
-            OnClick = actFileNewSequencediagramExecute
+          object mnEditClass: TSpTBXItem
+            Hint = 'Edit class'
+            Action = actUMLEditClass
           end
-          object TBConsole: TToolButton
-            Tag = 1
-            Left = 90
-            Top = 0
-            Action = actFileNewModule
-            ImageIndex = 3
+          object mnNewComment: TSpTBXItem
+            Hint = 'New comment'
+            Action = actUMLNewComment
           end
-          object TBTkApplication: TToolButton
-            Left = 120
-            Top = 0
-            Hint = 'New Tk/TTK-Application'
-            ImageIndex = 4
-            OnClick = actFileNewTkinterExecute
+          object mnNewLayout: TSpTBXItem
+            Hint = 'New layout'
+            Action = actUMLNewLayout
           end
-          object TBQtApplication: TToolButton
-            Left = 150
-            Top = 0
-            Hint = 'New Qt Application'
-            Caption = 'Qt-Application'
-            ImageIndex = 5
-            OnClick = TBQtApplicationClick
+          object mnRefresh: TSpTBXItem
+            Hint = 'Refresh'
+            Action = actUMLRefresh
+          end
+          object mnDiagramFromOpenFiles: TSpTBXItem
+            Hint = 'Diagram from open files'
+            Action = actUMLDiagramFromOpenFiles
+          end
+          object mnSaveAsPicture: TSpTBXItem
+            Hint = 'Save as picture'
+            Action = actUMLSaveAsPicture
+          end
+        end
+        object ToolsMenu: TSpTBXSubmenuItem
+          Caption = '&Tools'
+          object mnToolsConfiguration: TSpTBXItem
+            Caption = 'Configuration'
+            Hint = 'Configuration'
+            Action = actToolsConfiguration
+          end
+          object mnToolsTextCompare: TSpTBXItem
+            Hint = 'Textdiff'
+            Action = actToolsTextDiff
+          end
+          object mnPythonPath: TSpTBXItem
+            Action = CommandsDataModule.actPythonPath
+          end
+          object mnToolsGit: TSpTBXSubmenuItem
+            Caption = 'Git'
+            Hint = 'Git'
+            ImageIndex = 112
+            object mnToolsGitStatus: TSpTBXItem
+              Tag = 1
+              Caption = 'Status'
+              OnClick = mnToolsGitClick
+            end
+            object mnToolsGitAdd: TSpTBXItem
+              Tag = 2
+              Caption = 'Add'
+              OnClick = mnToolsGitClick
+            end
+            object mnToolsGitCommit: TSpTBXItem
+              Tag = 3
+              Caption = 'Commit'
+              OnClick = mnToolsGitClick
+            end
+            object mnToolsGitLog: TSpTBXItem
+              Tag = 4
+              Caption = 'Log'
+              OnClick = mnToolsGitClick
+            end
+            object SpTBXSeparatorItem24: TSpTBXSeparatorItem
+            end
+            object mnToolsGitReset: TSpTBXItem
+              Tag = 5
+              Caption = 'Reset'
+              OnClick = mnToolsGitClick
+            end
+            object mnToolsGitCheckout: TSpTBXItem
+              Tag = 6
+              Caption = 'Checkout'
+              OnClick = mnToolsGitClick
+            end
+            object mnToolsGitRemove: TSpTBXItem
+              Tag = 7
+              Caption = 'Remove'
+              OnClick = mnToolsGitClick
+            end
+            object SpTBXSeparatorItem25: TSpTBXSeparatorItem
+            end
+            object mnToolsGitRemote: TSpTBXItem
+              Tag = 8
+              Caption = 'Remote'
+              OnClick = mnToolsGitClick
+            end
+            object mnToolsGitFetch: TSpTBXItem
+              Tag = 9
+              Caption = 'Fetch'
+              OnClick = mnToolsGitClick
+            end
+            object mnToolsGitPush: TSpTBXItem
+              Tag = 10
+              Caption = 'Push'
+              OnClick = mnToolsGitClick
+            end
+            object SpTBXSeparatorItem26: TSpTBXSeparatorItem
+            end
+            object mnToolsGitGUI: TSpTBXItem
+              Tag = 11
+              Caption = 'GUI'
+              OnClick = mnToolsGitClick
+            end
+            object mnToolsGitViewer: TSpTBXItem
+              Tag = 12
+              Caption = 'Viewer'
+              OnClick = mnToolsGitClick
+            end
+            object mnToolsGitConsole: TSpTBXItem
+              Tag = 13
+              Caption = 'Console'
+              OnClick = mnToolsGitClick
+            end
+          end
+          object mnToolsSVN: TSpTBXSubmenuItem
+            Caption = 'SVN'
+            Hint = 'SVN'
+            ImageIndex = 113
+            object mnToolsSVNCommit: TSpTBXItem
+              Tag = 1
+              Caption = 'Commit'
+              OnClick = mnToolsSVNClick
+            end
+            object mnToolsSVNAdd: TSpTBXItem
+              Tag = 2
+              Caption = 'Add file'
+              OnClick = mnToolsSVNClick
+            end
+            object mnToolsSVNLog: TSpTBXItem
+              Tag = 3
+              Caption = 'Log of file'
+              OnClick = mnToolsSVNClick
+            end
+            object mnToolsSVNCompare: TSpTBXItem
+              Tag = 4
+              Caption = 'Compare file'
+              OnClick = mnToolsSVNClick
+            end
+            object SpTBXSeparatorItem27: TSpTBXSeparatorItem
+            end
+            object mnToolsSVNStatus: TSpTBXItem
+              Tag = 5
+              Caption = 'Status of folder'
+              OnClick = mnToolsSVNClick
+            end
+            object mnToolsSVNTree: TSpTBXItem
+              Tag = 6
+              Caption = 'Tree of repository'
+              OnClick = mnToolsSVNClick
+            end
+            object mnToolsSVNUpdate: TSpTBXItem
+              Tag = 7
+              Caption = 'Update from repository'
+              OnClick = mnToolsSVNClick
+            end
+          end
+          object mnUnitTestWizard: TSpTBXItem
+            Action = CommandsDataModule.actUnitTestWizard
+          end
+          object mnViewUnitTests: TSpTBXItem
+            Action = actViewUnitTests
+            ShortCut = 49237
+          end
+          object EditorViewsMenu: TSpTBXSubmenuItem
+            Tag = -1
+            Caption = 'Source Code Views'
+            OnClick = EditorViewsMenuClick
+          end
+          object mnViewRegExpTester: TSpTBXItem
+            Action = actViewRegExpTester
+          end
+          object mnToolsBrowser: TSpTBXItem
+            Caption = 'Browser'
+            Hint = 'Opens a browser window'
+            OnClick = mnToolsBrowserClick
+          end
+          object N13: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnTools: TSpTBXSubmenuItem
+            Caption = 'Tools'
+            Hint = 'External Tools'
+            ImageIndex = 55
+            ImageName = 'Tools'
+          end
+          object mnConfigureTools: TSpTBXItem
+            Action = CommandsDataModule.actConfigureTools
+          end
+          object N20: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object OptionsMenu: TSpTBXSubmenuItem
+            Caption = '&Options'
+            object mnImportShortcuts: TSpTBXItem
+              Action = CommandsDataModule.actImportShortcuts
+            end
+            object mnExportShortcuts: TSpTBXItem
+              Action = CommandsDataModule.actExportShortCuts
+            end
+            object TBXSeparatorItem30: TSpTBXSeparatorItem
+            end
+            object mnImportHighlighters: TSpTBXItem
+              Action = CommandsDataModule.actImportHighlighters
+            end
+            object mnExportHighlighters: TSpTBXItem
+              Action = CommandsDataModule.actExportHighlighters
+            end
+          end
+          object TBXSeparatorItem15: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnToolsEditStartupScript: TSpTBXItem
+            Action = CommandsDataModule.actToolsEditStartupScripts
+          end
+          object mnToolsRestartLS: TSpTBXItem
+            Action = CommandsDataModule.actToolsRestartLS
+          end
+          object SpTBXSeparatorItem12: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnCheckForUpdates: TSpTBXItem
+            Action = CommandsDataModule.actCheckForUpdates
+          end
+        end
+        object HelpMenu: TSpTBXSubmenuItem
+          Caption = '&Help'
+          object mnHelpPythonManuals: TSpTBXItem
+            Action = CommandsDataModule.actPythonManuals
+          end
+          object N18: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object PyScripter1: TSpTBXSubmenuItem
+            Tag = -1
+            Caption = 'PyScripter1'
+            object mnHelpContents: TSpTBXItem
+              Action = CommandsDataModule.actHelpContents
+            end
+            object mnHelpEditorShortcuts: TSpTBXItem
+              Action = CommandsDataModule.actHelpEditorShortcuts
+            end
+            object mnHelpExternalTools: TSpTBXItem
+              Action = CommandsDataModule.actHelpExternalTools
+            end
+            object mnHelpParameters: TSpTBXItem
+              Action = CommandsDataModule.actHelpParameters
+            end
+          end
+          object mnHelpProjectHome: TSpTBXItem
+            Action = CommandsDataModule.actHelpWebProjectHome
+          end
+          object mnHelpWebSupport: TSpTBXItem
+            Action = CommandsDataModule.actHelpWebGroupSupport
+          end
+          object SpTBXItem14: TSpTBXItem
+            Action = CommandsDataModule.actDonate
+          end
+          object N17: TSpTBXSeparatorItem
+            Tag = -2
+          end
+          object mnHelpAbout: TSpTBXItem
+            Action = CommandsDataModule.actAbout
           end
         end
       end
-      object SpTBXTabSheetTkinter: TSpTBXTabSheet
-        Left = 0
-        Top = 25
-        Width = 763
-        Height = 30
-        Caption = 'Tkinter'
-        ImageIndex = -1
-        TabItem = 'SpTBXTabItem2'
-        object ToolbarTkinter: TToolBar
-          Left = 2
-          Top = 0
-          Width = 757
-          Height = 26
-          Align = alClient
-          AutoSize = True
-          ButtonHeight = 27
-          ButtonWidth = 28
-          EdgeInner = esNone
-          EdgeOuter = esNone
-          Images = ILTKinter
-          TabOrder = 0
-          Wrapable = False
-          object TBLabel: TToolButton
-            Tag = 1
-            Left = 0
-            Top = 0
-            Hint = 'Tk Label'
-            Grouped = True
-            ImageIndex = 0
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBEntry: TToolButton
-            Tag = 2
-            Left = 28
-            Top = 0
-            Hint = 'Tk Entry'
-            Grouped = True
-            ImageIndex = 1
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBText: TToolButton
-            Tag = 3
-            Left = 56
-            Top = 0
-            Hint = 'Tk Text'
-            Grouped = True
-            ImageIndex = 2
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBButton: TToolButton
-            Tag = 4
-            Left = 84
-            Top = 0
-            Hint = 'Tk Button'
-            Grouped = True
-            ImageIndex = 3
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBCheckbutton: TToolButton
-            Tag = 5
-            Left = 112
-            Top = 0
-            Hint = 'Tk Checkbutton'
-            Grouped = True
-            ImageIndex = 4
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBRadiobuttonGroup: TToolButton
-            Tag = 7
-            Left = 140
-            Top = 0
-            Hint = 'Tk RadiobuttonGroup'
-            ImageIndex = 5
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBListbox: TToolButton
-            Tag = 8
-            Left = 168
-            Top = 0
-            Hint = 'Tk Listbox'
-            Grouped = True
-            ImageIndex = 6
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBSpinBox: TToolButton
-            Tag = 9
-            Left = 196
-            Top = 0
-            Hint = 'Tk SpinBox'
-            Grouped = True
-            ImageIndex = 7
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBScrollbar: TToolButton
-            Tag = 12
-            Left = 224
-            Top = 0
-            Hint = 'Tk Scrollbar'
-            Grouped = True
-            ImageIndex = 8
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTMessage: TToolButton
-            Tag = 10
-            Left = 252
-            Top = 0
-            Hint = 'Tk Message'
-            ImageIndex = 9
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBCanvas: TToolButton
-            Tag = 11
-            Left = 280
-            Top = 0
-            Hint = 'Tk Canvas'
-            Grouped = True
-            ImageIndex = 10
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBFrame: TToolButton
-            Tag = 13
-            Left = 308
-            Top = 0
-            Hint = 'Tk Frame'
-            Grouped = True
-            ImageIndex = 11
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBLabelFrame: TToolButton
-            Tag = 14
-            Left = 336
-            Top = 0
-            Hint = 'Tk LabelFrame'
-            Grouped = True
-            ImageIndex = 12
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBScale: TToolButton
-            Tag = 15
-            Left = 364
-            Top = 0
-            Hint = 'Tk Scale'
-            ImageIndex = 13
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBPanedWindow: TToolButton
-            Tag = 16
-            Left = 392
-            Top = 0
-            Hint = 'Tk PanedWindow'
-            ImageIndex = 14
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBMenu: TToolButton
-            Tag = 19
-            Left = 420
-            Top = 0
-            Hint = 'Tk Menu'
-            Grouped = True
-            ImageIndex = 15
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBPopupMenu: TToolButton
-            Tag = 20
-            Left = 448
-            Top = 0
-            Hint = 'Tk PopupMenu'
-            Grouped = True
-            ImageIndex = 16
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBMenubutton: TToolButton
-            Tag = 17
-            Left = 476
-            Top = 0
-            Hint = 'Tk Menubutton'
-            ImageIndex = 17
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBOptionMenu: TToolButton
-            Tag = 18
-            Left = 504
-            Top = 0
-            Hint = 'Tk Optionmenu'
-            ImageIndex = 18
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
+      object MainToolBar: TSpTBXToolbar
+        Left = 2
+        Top = 52
+        Width = 162
+        Height = 26
+        DockMode = dmCannotFloatOrChangeDocks
+        DockPos = 0
+        DockRow = 1
+        Images = vilImages
+        TabOrder = 4
+        Caption = 'Main Toolbar'
+        object tbiFileOpen: TSpTBXItem
+          Hint = 'Open|Select a file to open'
+          Action = actFileOpen
+        end
+        object tbiFileSave: TSpTBXItem
+          Action = CommandsDataModule.actFileSave
+        end
+        object tbiFileSaveAll: TSpTBXItem
+          Action = CommandsDataModule.actFileSaveAll
+        end
+        object tbiEditUndo: TSpTBXItem
+          Action = CommandsDataModule.actEditUndo
+        end
+        object tbiEditRedo: TSpTBXItem
+          Action = CommandsDataModule.actEditRedo
+        end
+        object tbitbiDiagramFromOpenFiles: TSpTBXItem
+          Hint = 'UML-Diagram from open files'
+          Action = actUMLDiagramFromOpenFiles
         end
       end
-      object SpTBXTabSheetTTK: TSpTBXTabSheet
-        Left = 0
-        Top = 25
+      object TabControlWidgets: TSpTBXTabControl
+        Left = 166
+        Top = 23
         Width = 763
-        Height = 30
-        Caption = 'TTK'
-        ImageIndex = -1
-        TabItem = 'SpTBXTabItem3'
-        object ToolbarTTK: TToolBar
-          Left = 2
-          Top = 0
-          Width = 757
-          Height = 26
-          Align = alClient
-          AutoSize = True
-          ButtonHeight = 27
-          ButtonWidth = 28
-          Color = clBtnFace
-          EdgeInner = esNone
-          EdgeOuter = esNone
-          Images = ILTTK
-          ParentColor = False
-          TabOrder = 0
-          Wrapable = False
-          object TBTTKLabel: TToolButton
-            Tag = 31
-            Left = 0
+        Height = 57
+        ActiveTabIndex = 1
+        TabAutofit = True
+        TabAutofitMaxSize = 80
+        HiddenItems = <>
+        object SpTBXTabItem1: TSpTBXTabItem
+          Caption = 'Program'
+          CustomWidth = 80
+        end
+        object SpTBXTabItem2: TSpTBXTabItem
+          Caption = 'Tkinter'
+          Checked = True
+          CustomWidth = 80
+        end
+        object SpTBXTabItem3: TSpTBXTabItem
+          Caption = 'TTK'
+          CustomWidth = 80
+        end
+        object SpTBXTabItem4: TSpTBXTabItem
+          Caption = 'Qt Base'
+          CustomWidth = 80
+        end
+        object SpTBXTabItem5: TSpTBXTabItem
+          Caption = 'Qt Controls'
+          CustomWidth = 80
+        end
+        object SpTBXTabSheetTTK: TSpTBXTabSheet
+          Left = 0
+          Top = 25
+          Width = 763
+          Height = 32
+          Caption = 'TTK'
+          ImageIndex = -1
+          TabItem = 'SpTBXTabItem3'
+          object ToolbarTTK: TToolBar
+            Left = 2
             Top = 0
-            Hint = 'TTK Label'
-            ImageIndex = 0
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
+            Width = 757
+            Height = 28
+            Align = alClient
+            AutoSize = True
+            ButtonHeight = 27
+            ButtonWidth = 28
+            Color = clBtnFace
+            EdgeInner = esNone
+            EdgeOuter = esNone
+            Images = ILTTK
+            ParentColor = False
+            TabOrder = 0
+            Wrapable = False
+            object TBTTKLabel: TToolButton
+              Tag = 31
+              Left = 0
+              Top = 0
+              Hint = 'TTK Label'
+              ImageIndex = 0
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKEntry: TToolButton
+              Tag = 32
+              Left = 28
+              Top = 0
+              Hint = 'TTK Entry'
+              ImageIndex = 1
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKText: TToolButton
+              Tag = 3
+              Left = 56
+              Top = 0
+              Hint = 'Tk Text'
+              ImageIndex = 2
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKButton: TToolButton
+              Tag = 34
+              Left = 84
+              Top = 0
+              Hint = 'TTK Button'
+              ImageIndex = 3
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKCheckbutton: TToolButton
+              Tag = 35
+              Left = 112
+              Top = 0
+              Hint = 'TTK Checkbutton'
+              ImageIndex = 4
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKRadiogroup: TToolButton
+              Tag = 37
+              Left = 140
+              Top = 0
+              Hint = 'TTK RadiobuttonGroup'
+              ImageIndex = 5
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKListbox: TToolButton
+              Tag = 8
+              Left = 168
+              Top = 0
+              Hint = 'Tk Listbox'
+              ImageIndex = 6
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKCombobox: TToolButton
+              Tag = 38
+              Left = 196
+              Top = 0
+              Hint = 'TTK Combobox'
+              ImageIndex = 7
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKSpinbox: TToolButton
+              Tag = 39
+              Left = 224
+              Top = 0
+              Hint = 'TTK Spinbox'
+              ImageIndex = 8
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKScrollbar: TToolButton
+              Tag = 42
+              Left = 252
+              Top = 0
+              Hint = 'TTK Scrollbar'
+              ImageIndex = 9
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKMessage: TToolButton
+              Tag = 10
+              Left = 280
+              Top = 0
+              Hint = 'TTK Message'
+              ImageIndex = 10
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKCanvas: TToolButton
+              Tag = 11
+              Left = 308
+              Top = 0
+              Hint = 'Tk Canvas'
+              ImageIndex = 11
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKFrame: TToolButton
+              Tag = 43
+              Left = 336
+              Top = 0
+              Hint = 'TTK Frame'
+              ImageIndex = 12
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKLabelFrame: TToolButton
+              Tag = 44
+              Left = 364
+              Top = 0
+              Hint = 'TTK LabelFrame'
+              ImageIndex = 13
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKScale: TToolButton
+              Tag = 45
+              Left = 392
+              Top = 0
+              Hint = 'TTK Scale'
+              ImageIndex = 14
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKLabeldScale: TToolButton
+              Tag = 46
+              Left = 420
+              Top = 0
+              Hint = 'TTK LabeldScale'
+              ImageIndex = 15
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKPanedWindow: TToolButton
+              Tag = 47
+              Left = 448
+              Top = 0
+              Hint = 'TTK PanedWindow'
+              ImageIndex = 16
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKMenu: TToolButton
+              Tag = 19
+              Left = 476
+              Top = 0
+              Hint = 'Tk Menu'
+              ImageIndex = 17
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKPopupMenu: TToolButton
+              Tag = 20
+              Left = 504
+              Top = 0
+              Hint = 'Tk PopupMenu'
+              ImageIndex = 18
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKMenuButton: TToolButton
+              Tag = 48
+              Left = 532
+              Top = 0
+              Hint = 'TTK Menubutton'
+              ImageIndex = 19
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKOptionMenu: TToolButton
+              Tag = 49
+              Left = 560
+              Top = 0
+              Hint = 'TTK OptionMenu'
+              ImageIndex = 20
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKNotebook: TToolButton
+              Tag = 50
+              Left = 588
+              Top = 0
+              Hint = 'TTK Notebook'
+              ImageIndex = 21
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKTreeview: TToolButton
+              Tag = 51
+              Left = 616
+              Top = 0
+              Hint = 'TTK Treeview'
+              ImageIndex = 22
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKProgressbar: TToolButton
+              Tag = 52
+              Left = 644
+              Top = 0
+              Hint = 'TTK Progressbar'
+              ImageIndex = 23
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKSeparator: TToolButton
+              Tag = 53
+              Left = 672
+              Top = 0
+              Hint = 'TTK Separator'
+              ImageIndex = 24
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKSizegrip: TToolButton
+              Tag = 54
+              Left = 700
+              Top = 0
+              Hint = 'TTK Sizegrip'
+              ImageIndex = 25
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
           end
-          object TBTTKEntry: TToolButton
-            Tag = 32
-            Left = 28
+        end
+        object SpTBXTabSheetQtBase: TSpTBXTabSheet
+          Left = 0
+          Top = 25
+          Width = 763
+          Height = 32
+          Caption = 'Qt Base'
+          ImageIndex = -1
+          TabItem = 'SpTBXTabItem4'
+          object ToolBarQtBase: TToolBar
+            Left = 2
             Top = 0
-            Hint = 'TTK Entry'
-            ImageIndex = 1
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
+            Width = 757
+            Height = 28
+            Align = alClient
+            AutoSize = True
+            ButtonHeight = 27
+            ButtonWidth = 28
+            Color = clBtnFace
+            EdgeInner = esNone
+            EdgeOuter = esNone
+            Images = ILQTBase
+            ParentColor = False
+            TabOrder = 0
+            Wrapable = False
+            object TBQtLabel: TToolButton
+              Tag = 71
+              Left = 0
+              Top = 0
+              Hint = 'QLabel'
+              ImageIndex = 0
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtLineEdit: TToolButton
+              Tag = 72
+              Left = 28
+              Top = 0
+              Hint = 'QLineEdit'
+              ImageIndex = 1
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtPlainTextEdit: TToolButton
+              Tag = 73
+              Left = 56
+              Top = 0
+              Hint = 'QPlainTextEdit'
+              ImageIndex = 2
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtPushButton: TToolButton
+              Tag = 74
+              Left = 84
+              Top = 0
+              Hint = 'QPushButton'
+              ImageIndex = 3
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtCheckBox: TToolButton
+              Tag = 75
+              Left = 112
+              Top = 0
+              Hint = 'QCheckBox'
+              ImageIndex = 4
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtButtonGroup: TToolButton
+              Tag = 76
+              Left = 140
+              Top = 0
+              Hint = 'QButtonGroup'
+              ImageIndex = 5
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtListWidget: TToolButton
+              Tag = 77
+              Left = 168
+              Top = 0
+              Hint = 'QListWidget'
+              ImageIndex = 6
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtComboBox: TToolButton
+              Tag = 78
+              Left = 196
+              Top = 0
+              Hint = 'QComboBox'
+              ImageIndex = 7
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtSpinBox: TToolButton
+              Tag = 79
+              Left = 224
+              Top = 0
+              Hint = 'QSpinBox'
+              ImageIndex = 8
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtScrollbar: TToolButton
+              Tag = 80
+              Left = 252
+              Top = 0
+              Hint = 'QScrollbar'
+              ImageIndex = 9
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtCanvas: TToolButton
+              Tag = 81
+              Left = 280
+              Top = 0
+              Hint = 'QCanvas'
+              ImageIndex = 10
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtFrame: TToolButton
+              Tag = 82
+              Left = 308
+              Top = 0
+              Hint = 'QFrame'
+              ImageIndex = 11
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtGroupBox: TToolButton
+              Tag = 83
+              Left = 336
+              Top = 0
+              Hint = 'QGroupBox'
+              ImageIndex = 12
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtSlider: TToolButton
+              Tag = 84
+              Left = 364
+              Top = 0
+              Hint = 'QSlider'
+              ImageIndex = 13
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQMenuBar: TToolButton
+              Tag = 85
+              Left = 392
+              Top = 0
+              Hint = 'QMenuBar'
+              ImageIndex = 14
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtContextMenu: TToolButton
+              Tag = 86
+              Left = 420
+              Top = 0
+              Hint = 'QContextMenu'
+              ImageIndex = 15
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTabWidget: TToolButton
+              Tag = 87
+              Left = 448
+              Top = 0
+              Hint = 'QTabWidget'
+              ImageIndex = 16
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTreeWidget: TToolButton
+              Tag = 88
+              Left = 476
+              Top = 0
+              Hint = 'QTreeWidget'
+              ImageIndex = 17
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTableWidget: TToolButton
+              Tag = 89
+              Left = 504
+              Top = 0
+              Hint = 'QTableWidget'
+              ImageIndex = 18
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtProgressBar: TToolButton
+              Tag = 90
+              Left = 532
+              Top = 0
+              Hint = 'QProgressBar'
+              ImageIndex = 19
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtStatusBar: TToolButton
+              Tag = 91
+              Left = 560
+              Top = 0
+              Hint = 'QStatusBar'
+              ImageIndex = 20
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
           end
-          object TBTTKText: TToolButton
-            Tag = 3
-            Left = 56
+        end
+        object SpTBXTabSheetQtControls: TSpTBXTabSheet
+          Left = 0
+          Top = 25
+          Width = 763
+          Height = 32
+          Caption = 'Qt Controls'
+          ImageIndex = -1
+          TabItem = 'SpTBXTabItem5'
+          object ToolBarQtControls: TToolBar
+            Left = 2
             Top = 0
-            Hint = 'Tk Text'
-            ImageIndex = 2
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
+            Width = 757
+            Height = 28
+            Align = alClient
+            ButtonHeight = 27
+            ButtonWidth = 28
+            Color = clBtnFace
+            EdgeInner = esNone
+            EdgeOuter = esNone
+            Images = ILQtControls
+            ParentColor = False
+            TabOrder = 0
+            object TBQtTextedit: TToolButton
+              Tag = 101
+              Left = 0
+              Top = 0
+              Hint = 'QTextEdit'
+              ImageIndex = 0
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTextBrowser: TToolButton
+              Tag = 102
+              Left = 28
+              Top = 0
+              Hint = 'QTextBrowser'
+              ImageIndex = 1
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtToolButton: TToolButton
+              Tag = 103
+              Left = 56
+              Top = 0
+              Hint = 'QToolButton'
+              ImageIndex = 2
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtCommandLinkButton: TToolButton
+              Tag = 104
+              Left = 84
+              Top = 0
+              Hint = 'QCommandLinkButton'
+              ImageIndex = 3
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtFontComboBox: TToolButton
+              Tag = 105
+              Left = 112
+              Top = 0
+              Hint = 'QFontComboBox'
+              ImageIndex = 4
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtDoubleSpinBox: TToolButton
+              Tag = 106
+              Left = 140
+              Top = 0
+              Hint = 'QDoubleSpinBox'
+              ImageIndex = 5
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtLCDNumber: TToolButton
+              Tag = 107
+              Left = 168
+              Top = 0
+              Hint = 'QLCDNumber'
+              ImageIndex = 6
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtDateTimeEdit: TToolButton
+              Tag = 108
+              Left = 196
+              Top = 0
+              Hint = 'QDateTimeEdit'
+              ImageIndex = 7
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtDateEdit: TToolButton
+              Tag = 109
+              Left = 224
+              Top = 0
+              Hint = 'QDateEdit'
+              ImageIndex = 8
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTimeEdit: TToolButton
+              Tag = 110
+              Left = 252
+              Top = 0
+              Hint = 'QTimeEdit'
+              ImageIndex = 9
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtDial: TToolButton
+              Tag = 111
+              Left = 280
+              Top = 0
+              Hint = 'QDial'
+              ImageIndex = 10
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtLine: TToolButton
+              Tag = 112
+              Left = 308
+              Top = 0
+              Hint = 'QLine'
+              ImageIndex = 11
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtScrollArea: TToolButton
+              Tag = 113
+              Left = 336
+              Top = 0
+              Hint = 'QScrollArea'
+              ImageIndex = 12
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtToolBox: TToolButton
+              Tag = 114
+              Left = 364
+              Top = 0
+              Hint = 'QToolBox'
+              ImageIndex = 13
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtStackWidget: TToolButton
+              Tag = 115
+              Left = 392
+              Top = 0
+              Hint = 'QStackWidget'
+              ImageIndex = 14
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtListView: TToolButton
+              Tag = 116
+              Left = 420
+              Top = 0
+              Hint = 'QListView'
+              ImageIndex = 15
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtColumnView: TToolButton
+              Tag = 117
+              Left = 448
+              Top = 0
+              Hint = 'QColumnView'
+              ImageIndex = 16
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTreeView: TToolButton
+              Tag = 118
+              Left = 476
+              Top = 0
+              Hint = 'QTreeWidget'
+              ImageIndex = 17
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTableView: TToolButton
+              Tag = 119
+              Left = 504
+              Top = 0
+              Hint = 'QTableView'
+              ImageIndex = 18
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtGraphicsView: TToolButton
+              Tag = 120
+              Left = 532
+              Top = 0
+              Hint = 'QGraphicsView'
+              ImageIndex = 19
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
           end
-          object TBTTKButton: TToolButton
-            Tag = 34
-            Left = 84
+        end
+        object SpTBXTabSheetProgram: TSpTBXTabSheet
+          Left = 0
+          Top = 25
+          Width = 763
+          Height = 32
+          Caption = 'Program'
+          ImageIndex = -1
+          TabItem = 'SpTBXTabItem1'
+          object ToolbarProgram: TToolBar
+            Left = 2
             Top = 0
-            Hint = 'TTK Button'
-            ImageIndex = 3
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
+            Width = 757
+            Height = 28
+            Align = alClient
+            ButtonHeight = 27
+            ButtonWidth = 30
+            Color = clBtnFace
+            Images = ILProgram
+            ParentColor = False
+            TabOrder = 0
+            object TBClass: TToolButton
+              Left = 0
+              Top = 0
+              Hint = 'New class'
+              ImageIndex = 0
+              OnClick = actUMLNewClassExecute
+            end
+            object TBStructogram: TToolButton
+              Left = 30
+              Top = 0
+              Hint = 'New structogram'
+              ImageIndex = 1
+              OnClick = actFileNewStructogramExecute
+            end
+            object TBSequence: TToolButton
+              Left = 60
+              Top = 0
+              Hint = 'New sequence diagram'
+              ImageIndex = 2
+              OnClick = actFileNewSequencediagramExecute
+            end
+            object TBConsole: TToolButton
+              Tag = 1
+              Left = 90
+              Top = 0
+              Action = actFileNewModule
+              ImageIndex = 3
+            end
+            object TBTkApplication: TToolButton
+              Left = 120
+              Top = 0
+              Hint = 'New Tk/TTK-Application'
+              ImageIndex = 4
+              OnClick = actFileNewTkinterExecute
+            end
+            object TBQtApplication: TToolButton
+              Left = 150
+              Top = 0
+              Hint = 'New Qt Application'
+              Caption = 'Qt-Application'
+              ImageIndex = 5
+              OnClick = TBQtApplicationClick
+            end
           end
-          object TBTTKCheckbutton: TToolButton
-            Tag = 35
-            Left = 112
+        end
+        object SpTBXTabSheetTkinter: TSpTBXTabSheet
+          Left = 0
+          Top = 25
+          Width = 763
+          Height = 32
+          Caption = 'Tkinter'
+          ImageIndex = -1
+          TabItem = 'SpTBXTabItem2'
+          object ToolbarTkinter: TToolBar
+            Left = 2
             Top = 0
-            Hint = 'TTK Checkbutton'
-            ImageIndex = 4
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKRadiogroup: TToolButton
-            Tag = 37
-            Left = 140
-            Top = 0
-            Hint = 'TTK RadiobuttonGroup'
-            ImageIndex = 5
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKListbox: TToolButton
-            Tag = 8
-            Left = 168
-            Top = 0
-            Hint = 'Tk Listbox'
-            ImageIndex = 6
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKCombobox: TToolButton
-            Tag = 38
-            Left = 196
-            Top = 0
-            Hint = 'TTK Combobox'
-            ImageIndex = 7
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKSpinbox: TToolButton
-            Tag = 39
-            Left = 224
-            Top = 0
-            Hint = 'TTK Spinbox'
-            ImageIndex = 8
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKScrollbar: TToolButton
-            Tag = 42
-            Left = 252
-            Top = 0
-            Hint = 'TTK Scrollbar'
-            ImageIndex = 9
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKMessage: TToolButton
-            Tag = 10
-            Left = 280
-            Top = 0
-            Hint = 'TTK Message'
-            ImageIndex = 10
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKCanvas: TToolButton
-            Tag = 11
-            Left = 308
-            Top = 0
-            Hint = 'Tk Canvas'
-            ImageIndex = 11
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKFrame: TToolButton
-            Tag = 43
-            Left = 336
-            Top = 0
-            Hint = 'TTK Frame'
-            ImageIndex = 12
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKLabelFrame: TToolButton
-            Tag = 44
-            Left = 364
-            Top = 0
-            Hint = 'TTK LabelFrame'
-            ImageIndex = 13
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKScale: TToolButton
-            Tag = 45
-            Left = 392
-            Top = 0
-            Hint = 'TTK Scale'
-            ImageIndex = 14
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKLabeldScale: TToolButton
-            Tag = 46
-            Left = 420
-            Top = 0
-            Hint = 'TTK LabeldScale'
-            ImageIndex = 15
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKPanedWindow: TToolButton
-            Tag = 47
-            Left = 448
-            Top = 0
-            Hint = 'TTK PanedWindow'
-            ImageIndex = 16
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKMenu: TToolButton
-            Tag = 19
-            Left = 476
-            Top = 0
-            Hint = 'Tk Menu'
-            ImageIndex = 17
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKPopupMenu: TToolButton
-            Tag = 20
-            Left = 504
-            Top = 0
-            Hint = 'Tk PopupMenu'
-            ImageIndex = 18
-            ParentShowHint = False
-            ShowHint = True
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKMenuButton: TToolButton
-            Tag = 48
-            Left = 532
-            Top = 0
-            Hint = 'TTK Menubutton'
-            ImageIndex = 19
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKOptionMenu: TToolButton
-            Tag = 49
-            Left = 560
-            Top = 0
-            Hint = 'TTK OptionMenu'
-            ImageIndex = 20
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKNotebook: TToolButton
-            Tag = 50
-            Left = 588
-            Top = 0
-            Hint = 'TTK Notebook'
-            ImageIndex = 21
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKTreeview: TToolButton
-            Tag = 51
-            Left = 616
-            Top = 0
-            Hint = 'TTK Treeview'
-            ImageIndex = 22
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKProgressbar: TToolButton
-            Tag = 52
-            Left = 644
-            Top = 0
-            Hint = 'TTK Progressbar'
-            ImageIndex = 23
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKSeparator: TToolButton
-            Tag = 53
-            Left = 672
-            Top = 0
-            Hint = 'TTK Separator'
-            ImageIndex = 24
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
-          end
-          object TBTTKSizegrip: TToolButton
-            Tag = 54
-            Left = 700
-            Top = 0
-            Hint = 'TTK Sizegrip'
-            ImageIndex = 25
-            OnClick = ToolButtonClick
-            OnMouseDown = ToolButtonMouseDown
-            OnStartDrag = ToolButtonStartDrag
+            Width = 757
+            Height = 28
+            Align = alClient
+            AutoSize = True
+            ButtonHeight = 27
+            ButtonWidth = 28
+            EdgeInner = esNone
+            EdgeOuter = esNone
+            Images = ILTKinter
+            TabOrder = 0
+            Wrapable = False
+            object TBLabel: TToolButton
+              Tag = 1
+              Left = 0
+              Top = 0
+              Hint = 'Tk Label'
+              Grouped = True
+              ImageIndex = 0
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBEntry: TToolButton
+              Tag = 2
+              Left = 28
+              Top = 0
+              Hint = 'Tk Entry'
+              Grouped = True
+              ImageIndex = 1
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBText: TToolButton
+              Tag = 3
+              Left = 56
+              Top = 0
+              Hint = 'Tk Text'
+              Grouped = True
+              ImageIndex = 2
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBButton: TToolButton
+              Tag = 4
+              Left = 84
+              Top = 0
+              Hint = 'Tk Button'
+              Grouped = True
+              ImageIndex = 3
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBCheckbutton: TToolButton
+              Tag = 5
+              Left = 112
+              Top = 0
+              Hint = 'Tk Checkbutton'
+              Grouped = True
+              ImageIndex = 4
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBRadiobuttonGroup: TToolButton
+              Tag = 7
+              Left = 140
+              Top = 0
+              Hint = 'Tk RadiobuttonGroup'
+              ImageIndex = 5
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBListbox: TToolButton
+              Tag = 8
+              Left = 168
+              Top = 0
+              Hint = 'Tk Listbox'
+              Grouped = True
+              ImageIndex = 6
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBSpinBox: TToolButton
+              Tag = 9
+              Left = 196
+              Top = 0
+              Hint = 'Tk SpinBox'
+              Grouped = True
+              ImageIndex = 7
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBScrollbar: TToolButton
+              Tag = 12
+              Left = 224
+              Top = 0
+              Hint = 'Tk Scrollbar'
+              Grouped = True
+              ImageIndex = 8
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTMessage: TToolButton
+              Tag = 10
+              Left = 252
+              Top = 0
+              Hint = 'Tk Message'
+              ImageIndex = 9
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBCanvas: TToolButton
+              Tag = 11
+              Left = 280
+              Top = 0
+              Hint = 'Tk Canvas'
+              Grouped = True
+              ImageIndex = 10
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBFrame: TToolButton
+              Tag = 13
+              Left = 308
+              Top = 0
+              Hint = 'Tk Frame'
+              Grouped = True
+              ImageIndex = 11
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBLabelFrame: TToolButton
+              Tag = 14
+              Left = 336
+              Top = 0
+              Hint = 'Tk LabelFrame'
+              Grouped = True
+              ImageIndex = 12
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBScale: TToolButton
+              Tag = 15
+              Left = 364
+              Top = 0
+              Hint = 'Tk Scale'
+              ImageIndex = 13
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBPanedWindow: TToolButton
+              Tag = 16
+              Left = 392
+              Top = 0
+              Hint = 'Tk PanedWindow'
+              ImageIndex = 14
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBMenu: TToolButton
+              Tag = 19
+              Left = 420
+              Top = 0
+              Hint = 'Tk Menu'
+              Grouped = True
+              ImageIndex = 15
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBPopupMenu: TToolButton
+              Tag = 20
+              Left = 448
+              Top = 0
+              Hint = 'Tk PopupMenu'
+              Grouped = True
+              ImageIndex = 16
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBMenubutton: TToolButton
+              Tag = 17
+              Left = 476
+              Top = 0
+              Hint = 'Tk Menubutton'
+              ImageIndex = 17
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBOptionMenu: TToolButton
+              Tag = 18
+              Left = 504
+              Top = 0
+              Hint = 'Tk Optionmenu'
+              ImageIndex = 18
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
           end
         end
       end
@@ -2644,26 +2645,26 @@ object PyIDEMainForm: TPyIDEMainForm
   end
   object TBXDockLeft: TSpTBXDock
     Left = 0
-    Top = 84
+    Top = 113
     Width = 9
-    Height = 533
+    Height = 521
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpLeft
   end
   object TBXDockRight: TSpTBXDock
-    Left = 937
-    Top = 84
+    Left = 998
+    Top = 113
     Width = 9
-    Height = 533
+    Height = 521
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpRight
   end
   object TBXDockBottom: TSpTBXDock
     Left = 0
-    Top = 617
-    Width = 946
+    Top = 634
+    Width = 1007
     Height = 9
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
@@ -2694,18 +2695,13 @@ object PyIDEMainForm: TPyIDEMainForm
     StorageOptions.BooleanStringFalseValues = 'FALSE, NO, N'
     StorageOptions.DateTimeAsString = False
     StorageOptions.DefaultIfReadConvertError = True
+    StorageOptions.StoreDefaultValues = False
     FlushOnDestroy = False
     Location = flCustom
     DefaultSection = 'Other Settings'
     SubStorages = <>
     Left = 562
     Top = 133
-  end
-  object CloseTimer: TTimer
-    Enabled = False
-    OnTimer = CloseTimerTimer
-    Left = 439
-    Top = 147
   end
   object TabControlPopupMenu: TSpTBXPopupMenu
     Images = vilImages
@@ -2775,15 +2771,6 @@ object PyIDEMainForm: TPyIDEMainForm
     LinkSubitems = mnuToolbars
     Left = 40
     Top = 280
-  end
-  object JvFormStorage: TJvFormStorage
-    Active = False
-    AppStorage = LocalAppStorage
-    AppStoragePath = 'Main Form Placement\'
-    VersionCheck = fpvcNocheck
-    StoredValues = <>
-    Left = 793
-    Top = 213
   end
   object actlImmutable: TActionList
     Images = vilImages

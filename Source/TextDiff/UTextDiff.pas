@@ -100,6 +100,7 @@ type
     procedure SynEditExit(Sender: TObject);
     procedure DisplayDiffs;
     procedure CalculateStatusBar;
+    procedure SetCurrentFontSize;
     procedure LinkScroll(IsLinked: boolean);
 
     procedure Undo;
@@ -289,7 +290,8 @@ begin
   else aStatusBar.Canvas.Brush.Color := clBtnFace;
   end;
   aStatusBar.Canvas.FillRect(Rect);
-  aStatusBar.Canvas.TextOut(Rect.Left+4,Rect.Top,Panel.Text);
+  var h:= Canvas.TextHeight(Text);
+  aStatusBar.Canvas.TextOut(Rect.Left + 8, Rect.Top + (Rect.Height-h) div 2,Panel.Text);
 end;
 
 procedure TFTextDiff.TBDiffsOnlyClick(Sender: TObject);
@@ -516,15 +518,15 @@ end;
 procedure TFTextDiff.ShowDiffState;
   var s: string;
 begin
-  Canvas.Font.Assign(StatusBar.Font);
+  SetCurrentFontSize;
   s:= format(_('%d lines added'), [Diff.DiffStats.adds]);
-  StatusBar.Panels[4].Width:= Canvas.TextWidth(s) + 10;
+  StatusBar.Panels[4].Width:= Canvas.TextWidth(s) + 20;
   StatusBar.Panels[4].Text:= s;
   s:= format(_('%d lines modified'), [Diff.DiffStats.modifies]);
-  StatusBar.Panels[5].Width:= Canvas.TextWidth(s) + 10;
+  StatusBar.Panels[5].Width:= Canvas.TextWidth(s) + 20;
   StatusBar.Panels[5].Text:= s;
   s:= format(_('%d lines deleted'), [Diff.DiffStats.deletes]);
-  StatusBar.Panels[6].Width:= Canvas.TextWidth(s) + 10;
+  StatusBar.Panels[6].Width:= Canvas.TextWidth(s) + 20;
   StatusBar.Panels[6].Text:= s;
   with Diff.DiffStats do
   if adds + modifies + deletes = 0
@@ -536,14 +538,23 @@ end;
 var IsSyncing: boolean;
 
 procedure TFTextDiff.SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
+ var CurrMouse: TPoint;
 begin
   if IsSyncing or not (CodeEdit1.WithColoredLines and CodeEdit2.WithColoredLines)
     then exit;
   IsSyncing:= true; //stops recursion
   try
-    if (Sender as  TSynEditExDiff) = CodeEdit1
+    if (Sender as TSynEditExDiff) = CodeEdit1
       then CodeEdit2.TopLine:= CodeEdit1.TopLine
-      else CodeEdit1.TopLine:= CodeEdit2.TopLine
+      else CodeEdit1.TopLine:= CodeEdit2.TopLine;
+
+    // Workaround to force the scroll bars to show their actual position
+    CurrMouse:= Mouse.CursorPos;
+    SendMessage(CodeEdit1.Handle,
+      WM_MouseMove, 0, MAKELPARAM(CodeEdit1.Width - 10, CodeEdit1.Height div 2));
+    SendMessage(CodeEdit2.Handle,
+      WM_MouseMove, 0, MAKELPARAM(CodeEdit2.Width - 10, CodeEdit2.Height div 2));
+    Mouse.CursorPos:= CurrMouse;
   finally
     IsSyncing:= false;
   end;
@@ -595,8 +606,10 @@ begin
     repeat
       inc(i);
     until(i = Lines.Count) or (GetLineObj(i).BackClr <> clr);
-    if i >= TopLine + LinesInWindow then TopLine:= CaretY;
-    SyncScroll(GetCodeEdit, sbVertical);
+    if i >= TopLine + LinesInWindow then begin
+      TopLine:= CaretY;
+      SyncScroll(GetCodeEdit, sbVertical);
+    end;
   end;
 end;
 
@@ -745,15 +758,9 @@ end;
 
 procedure TFTextDiff.SetFont(aFont: TFont);
 begin
-  PCaptionLeft.Font.Size:= aFont.Size-2;
-  PCaptionRight.Font.Size:= aFont.Size-2;
-  Canvas.Font.Assign(PCaptionLeft.Font);
-  PCaptionLeft.Height:= aFont.Size + 8;
-  PCaptionRight.Height:= aFont.Size + 8;
+  SetCurrentFontSize;
   CodeEdit1.Font.Assign(aFont);
   CodeEdit2.Font.Assign(aFont);
-  //CodeEdit1.Gutter.Width:= CodeEdit1.CharWidth*(Log10(Lines1.Count)+1);
-  //CodeEdit2.Gutter.Width:= CodeEdit2.CharWidth*(Log10(Lines2.Count)+1);
 end;
 
 procedure TFTextDiff.SetFontSize(Delta: integer);
@@ -763,14 +770,10 @@ begin
   if Size < 6 then Size:= 6;
   PCaptionLeft.Font.Size:= Size;
   PCaptionRight.Font.Size:= Size;
-  PCaptionLeft.Height:= Size + 8;
-  PCaptionRight.Height:= Size + 8;
   CodeEdit1.Font.Size:= Size;
   CodeEdit2.Font.Size:= Size;
   CodeEdit1.Gutter.Font.Size:= Size;
   CodeEdit2.Gutter.Font.Size:= Size;
-  //CodeEdit1.Gutter.Width:= CodeEdit1.CharWidth*(Log10(Lines1.Count)+1);
-  //CodeEdit2.Gutter.Width:= CodeEdit2.CharWidth*(Log10(Lines2.Count)+1);
   ShowFileNames;
 end;
 
@@ -873,9 +876,20 @@ begin
   TBParagraph.Down:= (eoShowSpecialChars in Options);
 end;
 
+procedure TFTextDiff.SetCurrentFontSize; // after DPI change
+begin
+  StatusBar.Font.Assign(PyIDEMainForm.StatusBar.Font);
+  StatusBar.Font.Size:= PPIScale(StatusBar.Font.Size);
+  StatusBar.Canvas.Font.Assign(StatusBar.Font);
+  Canvas.Font.Assign(StatusBar.Font);
+  PCaptionLeft.Font.Assign(StatusBar.Font);
+  PCaptionRight.Font.Assign(StatusBar.Font);
+end;
+
 procedure TFTextDiff.CalculateStatusBar;
   var s: string; w: integer;
 begin
+  SetCurrentFontSize;
   with StatusBar do begin
     StatusBar.Constraints.MinHeight:= Canvas.TextHeight('Ag') + 4;
     w:= Canvas.TextWidth('_' + _('Line') + ':_9999_' + _('Column') + ':_999_');

@@ -11,10 +11,10 @@ unit UTypes;
 interface
 
 uses
-  Windows, Classes, Graphics, ExtCtrls, Forms;
+  Windows, Classes, Graphics, ExtCtrls, Forms, Controls;
 
 const
-  LEFT_RIGHT = 10;                { Default left/right margin of element }
+  LEFT_RIGHT = 10;   { Default left/right margin of element }
 
 type
 
@@ -313,6 +313,8 @@ type
     procedure Draw; override;
     procedure Resize(x, y: integer); override;
     procedure SetRctList(X1, Y1, X2, Y2: integer); override;
+    function PPIScale(ASize: integer): integer;
+    function PPIUnScale(ASize: integer): integer;
   public
     LoadError: boolean;
     SwitchWithCaseLine: boolean;
@@ -325,7 +327,8 @@ type
     SL: TStringList;
     nr: integer;
     dirty: boolean;
-    constructor create(ScrollBox: TScrollBox; Mode: integer; Font: TFont);
+    PPIControl: TControl;
+    constructor create(ScrollBox: TScrollBox; Mode: integer; Font: TFont; PPIControl: TControl);
     destructor Destroy; override;
     procedure PaintShadow;
     procedure Paint; virtual;
@@ -359,7 +362,7 @@ type
   private
     procedure Resize(x, y: integer); override;
   public
-    constructor create(ScrollBox: TScrollBox; Mode: integer; Font: TFont);
+    constructor create(ScrollBox: TScrollBox; Mode: integer; Font: TFont; PPIControl: TControl);
     function getAlgorithmName: string;
     function asString: String; override;
     procedure debug; override;
@@ -375,8 +378,7 @@ type
 
 implementation
 
-uses SysUtils, Printers, Math, Themes, Controls,
-     System.UITypes, System.Types,
+uses SysUtils, Printers, Math, Themes, System.UITypes, System.Types,
      frmMessages, UUtils, UConfiguration;
 
 const
@@ -2511,12 +2513,13 @@ end;
 (*                                      LIST                                   *)
 (*******************************************************************************)
 
-constructor TStrList.create(Scrollbox: TScrollBox; Mode: integer; Font: TFont);
+constructor TStrList.create(Scrollbox: TScrollBox; Mode: integer; Font: TFont; PPIControl: TControl);
 begin
   Kind:= Ord(nsList);
   text:= 'list head';
   LoadError:= false;
   list:= Self;
+  self.PPIControl:= PPIControl;
   Image:= TListImage.Create(ScrollBox, Self);
   Image.setBounds(100, 150, 400, 250);
   Image.AutoSize:= true;
@@ -2591,8 +2594,8 @@ procedure TStrList.LoadFromReader(Reader: TStringListReader);
 begin
   Reader.ReadLine;   // RectPos [...]
   rctList:= Reader.aRect;
-  Image.Left:= Reader.Point.X;
-  Image.Top:= Reader.Point.Y;
+  Image.Left:= PPIScale(Reader.Point.X);
+  Image.Top:= PPIScale(Reader.Point.Y);
 
   Reader.ReadLine;   // Algorithm or list head
   Text:= Reader.Text;
@@ -2639,7 +2642,7 @@ end;
 
 function TStrList.getRectPos(Indent: string): string;
 begin
-  Result:= getRectPosAsText(Indent, rctList, Point(Image.Left, Image.Top));
+  Result:= getRectPosAsText(Indent, rctList, Point(PPIUnScale(Image.Left), PPIUnScale(Image.Top)));
 end;
 
 procedure TStrList.PaintShadow;
@@ -2902,13 +2905,23 @@ begin
   end;
 end;
 
+function TStrList.PPIScale(ASize: integer): integer;
+begin
+  Result := MulDiv(ASize, PPIControl.CurrentPPI, 96);
+end;
+
+function TStrList.PPIUnScale(ASize: integer): integer;
+begin
+  Result := MulDiv(ASize, 96, PPIControl.CurrentPPI);
+end;
+
 (******************************************************************************)
 (*                                TStrAlgorithm                               *)
 (******************************************************************************)
 
-constructor TStrAlgorithm.create(Scrollbox: TScrollBox; Mode: integer; Font: TFont);
+constructor TStrAlgorithm.create(Scrollbox: TScrollBox; Mode: integer; Font: TFont; PPIControl: TControl);
 begin
-  inherited create(Scrollbox, Mode, Font);
+  inherited create(Scrollbox, Mode, Font, PPIControl);
   text:= '';
   Kind:= Ord(nsAlgorithm);
 end;

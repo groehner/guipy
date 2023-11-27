@@ -34,6 +34,8 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer;
       var Resize: Boolean);
+    procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
+      NewDPI: Integer);
   private
     // Tk
     FAlwaysOnTop: boolean;
@@ -89,6 +91,7 @@ type
     procedure setTransparency(Value: real);
     function Without_(s: String): String;
     procedure setWidgetPartners;
+    procedure SetGridOptions;
   public
     ReadOnly: boolean;
     Pathname: String;
@@ -101,7 +104,6 @@ type
     procedure Save(MitBackup: boolean);
     procedure Print;
     procedure UpdateState;
-    procedure SetOptions;
     procedure EnsureOnDesktop;
     procedure setAttribute(Attr, Value, Typ: string);
     function getAttributes(ShowAttributes: integer): string;
@@ -187,7 +189,8 @@ implementation
 uses Clipbrd, Themes, SysUtils, Controls, frmFile,
      jvDockControlForm, frmPyIDEMain, cPyScripterSettings,
      UGUIDesigner, UObjectGenerator, UObjectInspector, UUtils,
-     UConfiguration, UXTheme, UQtWidgetDescendants, UBaseTKWidgets;
+     UConfiguration, UXTheme, UQtWidgetDescendants, UBaseTKWidgets,
+     uCommonFunctions;
 
 {$R *.DFM}
 
@@ -204,7 +207,8 @@ begin
   Indent2:= FConfiguration.Indent2;
   // don't theme this window
   SetWindowTheme(Handle, nil, nil);
-  SetOptions;
+  SetGridOptions;
+  ParentFont:= false;
 end;
 
 procedure TFGUIForm.InitEvents;
@@ -366,6 +370,20 @@ begin
     PyIDEMainForm.TabControlWidgets.ActiveTabIndex:= 1;
 end;
 
+procedure TFGUIForm.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
+  NewDPI: Integer);
+begin
+  Invalidate;
+  SetGridOptions;
+end;
+
+procedure TFGUIForm.SetGridOptions;
+begin
+  FGUIDesigner.ELDesigner.SnapToGrid:= GuiPyOptions.SnapToGrid;
+  FGUIDesigner.ELDesigner.Grid.XStep:= PPIScale(GuiPyOptions.GridSize);
+  FGUIDesigner.ELDesigner.Grid.YStep:= PPIScale(GuiPyOptions.GridSize);
+end;
+
 procedure TFGUIForm.FormCanResize(Sender: TObject; var NewWidth,
   NewHeight: Integer; var Resize: Boolean);
 begin
@@ -397,13 +415,6 @@ end;
 procedure TFGUIForm.UpdateState;
 begin
   FGuiDesigner.UpdateState(false);
-end;
-
-procedure TFGUIForm.SetOptions;
-begin
-  FGuiDesigner.ELDesigner.SnapToGrid:= GuiPyOptions.SnapToGrid;
-  FGuiDesigner.ELDesigner.Grid.XStep:= GuiPyOptions.GridSize;
-  FGuiDesigner.ELDesigner.Grid.YStep:= GuiPyOptions.GridSize;
 end;
 
 procedure TFGUIForm.EnsureOnDesktop;

@@ -147,6 +147,7 @@ type
     MIClassPopupCopyAsPicture: TSpTBXItem;
     MIClassPopupParameterDisplay4: TSpTBXItem;
     MIWindowPopupCopyAsPicture: TSpTBXItem;
+    MIWindowPopupFont: TSpTBXItem;
 
     procedure PopMenuClassPopup(Sender: TObject);
       procedure MIClassPopupClassEditClick(Sender: TObject);
@@ -197,14 +198,13 @@ type
     procedure PopupMenuWindowPopup(Sender: TObject);
     procedure PopupMenuCommentDeleteClick(Sender: TObject);
     procedure MIWindowPopupCopyAsPictureClick(Sender: TObject);
+    procedure MIWindowPopupFontClick(Sender: TObject);
   private
-    //Model listener
     procedure ModelBeforeChange(Sender: TModelEntity);
     procedure ModelAfterChange(Sender: TModelEntity);
     procedure IBeforeObjectModelListener.Change = ModelBeforeChange;
     procedure IAfterObjectModelListener.Change = ModelAfterChange;
   public
-    { Public declarations }
     Diagram : TDiagramIntegrator;
     Model : TObjectModel;
     ScrollBox : TScrollBox;
@@ -555,6 +555,12 @@ begin
   GuiPyOptions.DIVisibilityFilter:= (Sender as TSpTBXItem).Tag;
   if assigned(Diagram) then
     Diagram.VisibilityFilter:= TVisibility((Sender as TSpTBXItem).Tag);
+end;
+
+procedure TAFrameDiagram.MIWindowPopupFontClick(Sender: TObject);
+begin
+  if assigned(Diagram) then
+    Diagram.SetUMLFont;
 end;
 
 procedure TAFrameDiagram.MIWindowPopupParameterDisplayClick(Sender: TObject);

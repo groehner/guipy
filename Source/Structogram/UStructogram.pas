@@ -174,6 +174,7 @@ type
     procedure DoExport; override;
     procedure debug(const s: String);
     procedure SetOptions; override;
+    procedure DPIChanged;
 end;
 
 implementation
@@ -231,7 +232,7 @@ begin
   //setActiveControl(SBClose);
   if Pathname = '' then Pathname:= PyIDEMainForm.getFilename('.psg');
   Caption:= Pathname;
-  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font);
+  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font, TBClose);
   StrList.text:= GuiPyLanguageOptions.Algorithm + ' ' + ChangeFileExt(ExtractFilename(Pathname), '');
   elem:= TStrStatement.create(StrList);
   StrList.insert(StrList, elem);
@@ -248,7 +249,7 @@ procedure TFStructogram.FromText(const s: string);
       StrList: TStrAlgorithm;
 begin
   if Pathname = '' then Pathname:= PyIDEMainForm.getFilename('.psg');
-  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font);
+  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font, TBClose);
   StrList.Text:= GuiPyLanguageOptions.Algorithm + ' ';
   Generator:= TGenerateStructogram.Create(true);
   try
@@ -276,7 +277,7 @@ begin
     FreeAndNil(Strlist);
   end;
 
-  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font);
+  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font, TBClose);
   StrList.Text:= Alg;
   setEvents(StrList.Image);
   StrList.Text:= GuiPyLanguageOptions.Algorithm + ' ';
@@ -333,7 +334,7 @@ begin
         if Reader.key = 'FontName' then
           Font.Name:= Reader.val
         else if Reader.key = 'FontSize' then
-          Font.Size:= StrToInt(Reader.val)
+          Font.Size:= PPIScale(StrToInt(Reader.val))
         else if Reader.key = 'FontColor' then
           Font.Color:= StrToInt(Reader.val)
         else if Reader.key = 'FontBold' then
@@ -352,8 +353,8 @@ begin
 
       while (Reader.key = '- Kind') and Result do begin
         if Reader.val = 'Algorithm'
-          then StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font)
-          else StrList:= TStrList.Create(Scrollbox, PuzzleMode, Font);
+          then StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font, TBClose)
+          else StrList:= TStrList.Create(Scrollbox, PuzzleMode, Font, TBClose);
         Reader.ReadLine;
         if Reader.key = 'SwitchWithCaseLine'
           then SwitchWithCaseLine:= (Reader.val = 'true')
@@ -381,9 +382,10 @@ function TFStructogram.getAsStringList: TStringList;
 begin
   SL:= TStringList.Create;
   SL.Add( 'PSG: true');
-  if Font.Name = 'Arial' then Font.Name:= 'Segoe UI';
+  if Font.Name = 'Arial' then
+    Font.Name:= 'Segoe UI';
   SL.Add('FontName: ' + Font.Name);
-  SL.Add('FontSize: ' + IntToStr(Font.Size));
+  SL.Add('FontSize: ' + IntToStr(PPIUnscale(Font.Size)));
   if fsBold in Font.Style then
     SL.Add('FontBold: true');
   if fsItalic in Font.Style then
@@ -472,8 +474,8 @@ begin
   if Button = mbLeft then begin
     CloseEdit(true);
     if TSpeedButton(Sender).Tag = 0
-      then StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font)
-      else StrList:= TStrList.create(Scrollbox, PuzzleMode, Font);
+      then StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font, TBClose)
+      else StrList:= TStrList.create(Scrollbox, PuzzleMode, Font, TBClose);
     elem:= nil;
     case TSpeedButton(Sender).Tag of
       ord(nsAlgorithm):  begin
@@ -603,7 +605,7 @@ begin
         curList.Paint;
 
         // create new list
-        StrList:= TStrList.create(ScrollBox, PuzzleMode, Font);
+        StrList:= TStrList.create(ScrollBox, PuzzleMode, Font, TBClose);
         StrList.setFont(Font);
         StrList.insert(StrList, curElement);
         StrList.setList(StrList);
@@ -830,6 +832,20 @@ begin
   end;
 end;
 
+procedure TFStructogram.DPIChanged;
+begin
+  for var i:= 0 to ScrollBox.ControlCount -1 do begin
+    var aList:= TListImage(Scrollbox.Controls[i]).StrList;
+    aList.Paint;
+  end;
+  PanelLeft.Show;
+  PanelLeft.Invalidate;
+  ScrollBox.Show;
+  ScrollBox.Invalidate;
+  //ControlCanvas.Show;
+
+end;
+
 procedure TFStructogram.MIAddCaseClick(Sender: TObject);
   var Switch: TStrSwitch; i: integer;
 begin
@@ -894,8 +910,8 @@ begin
     try
       curList.SaveToStream(Stream);
       if curList is TStrAlgorithm
-        then StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font)
-        else StrList:= TStrList.create(Scrollbox, PuzzleMode, Font);
+        then StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font, TBClose)
+        else StrList:= TStrList.create(Scrollbox, PuzzleMode, Font, TBClose);
       Stream.Position:= 0;
       StrList.LoadFromStream(stream, Version);
       StrList.setFont(Font);

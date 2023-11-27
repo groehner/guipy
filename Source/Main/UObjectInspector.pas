@@ -10,7 +10,6 @@ uses
 type
 
   TFObjectInspector = class(TIDEDockWindow, IJvAppStorageHandler)
-    PObjects: TPanel;
       CBObjects: TComboBox;
     TCAttributesEvents: TTabControl;
     PNewDel: TPanel;
@@ -103,7 +102,7 @@ implementation
 uses SysUtils, Dialogs, Clipbrd, Math, Themes, Forms, JvGnugettext,
      UGUIForm, UGUIDesigner, ULink, UObjectGenerator,
      UConfiguration, UUtils, UBaseWidgets, UBaseQtWidgets, ELEvents,
-     frmEditor, dmResources;
+     frmEditor, frmPyIDEMain, dmResources, uCommonFunctions;
 
 {$R *.dfm}
 
@@ -140,8 +139,7 @@ begin
     OnGetSelectStrings:= MyOnGetSelectStrings;
   end;
   OnDeactivate:= ELObjectInspectorDeactivate;
-  PObjects.Autosize:= true;
-  ParentFont:= false;
+  //CBObjects.Autosize:= true;
   CBObjects.Align:= alTop;
   TranslateComponent(Self);
   ChangeStyle;
@@ -170,18 +168,22 @@ end;
 procedure TFObjectInspector.ReadFromAppStorage(
   AppStorage: TJvCustomAppStorage; const BasePath: string);
 begin
-  ELPropertyInspector.Splitter := AppStorage.ReadInteger(BasePath + '\ELPropertyInspector.Splitter', 100);
-  ELEventInspector.Splitter := AppStorage.ReadInteger(BasePath + '\ELEventInspector.Splitter', 100);
+  ELPropertyInspector.Splitter := PPIScale(AppStorage.ReadInteger(BasePath + '\ELPropertyInspector.Splitter', 100));
+  ELEventInspector.Splitter := PPIScale(AppStorage.ReadInteger(BasePath + '\ELEventInspector.Splitter', 100));
   AppStorage.ReadPersistent(BasePath + '\Font', Font);
+  Font.Size:= PPIScale(Font.Size);
   setFont(Font);
 end;
 
 procedure TFObjectInspector.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
 begin
-  AppStorage.WriteInteger(BasePath + '\ELPropertyInspector.Splitter', ELPropertyInspector.Splitter);
-  AppStorage.WriteInteger(BasePath + '\ELEventInspector.Splitter', ELEventInspector.Splitter);
+  AppStorage.WriteInteger(BasePath + '\ELPropertyInspector.Splitter', PPIUnScale(ELPropertyInspector.Splitter));
+  AppStorage.WriteInteger(BasePath + '\ELEventInspector.Splitter', PPIUnScale(ELEventInspector.Splitter));
+  var CurrentSize:= Font.Size;
+  Font.Size:= PPIUnScale(Font.Size);
   AppStorage.WritePersistent(BasePath + '\Font', Font);
+  Font.Size:= CurrentSize;
 end;
 
 procedure TFObjectInspector.CBChangeName(const OldName, NewName: string);
@@ -309,7 +311,7 @@ procedure TFObjectInspector.FormShow(Sender: TObject);
 begin
   SetButtonCaption(1);
   TCAttributesEvents.Height:= Canvas.TextHeight('Attribute') + 10;
-  PObjects.Height:= TCAttributesEvents.Height;
+  CBObjects.Height:= TCAttributesEvents.Height;
   if ELPropertyInspector.CanFocus then
     ELPropertyInspector.SetFocus;
 end;
@@ -336,7 +338,7 @@ end;
 
 procedure TFObjectInspector.MIDefaultLayoutClick(Sender: TObject);
 begin
-  //FJava.MIDefaultLayoutClick(Self); ToDo
+  PyIDEMainForm.mnViewDefaultLayoutClick(Self);
 end;
 
 procedure TFObjectInspector.SetFont(Font: TFont);
@@ -346,7 +348,7 @@ begin
   ELEventInspector.Font.Size:= Font.Size;
   ELEventInspector.Font.Name:= Font.Name;
   TCAttributesEvents.Height:= Canvas.TextHeight('Attribute') + 10;
-  PObjects.Height:= TCAttributesEvents.Height;
+  CBObjects.Height:= TCAttributesEvents.Height;
 end;
 
 procedure TFObjectInspector.MIFontClick(Sender: TObject);

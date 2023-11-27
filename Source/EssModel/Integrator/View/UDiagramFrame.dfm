@@ -4158,6 +4158,10 @@ object AFrameDiagram: TAFrameDiagram
         OnClick = MIWindowPopupVisibilityClick
       end
     end
+    object MIWindowPopupFont: TSpTBXItem
+      Caption = 'Font'
+      OnClick = MIWindowPopupFontClick
+    end
     object MIWindowPopupCopyAsPicture: TSpTBXItem
       Tag = 1
       Caption = 'Copy as picture'

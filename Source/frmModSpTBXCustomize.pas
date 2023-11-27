@@ -9,13 +9,13 @@ uses
   Vcl.StdCtrls,
   Vcl.ComCtrls,
   Vcl.ExtCtrls,
-  TB2Item, 
+  TB2Item,
   SpTBXCustomizer,
-  SpTBXCustomizerForm, 
+  SpTBXCustomizerForm,
   SpTBXEditors,
   SpTBXControls,
-  SpTBXItem, 
-  SpTBXSkins, 
+  SpTBXItem,
+  SpTBXSkins,
   SpTBXTabs;
 
 type
@@ -63,6 +63,7 @@ Uses
 procedure TSpTBXCustomizeFormMod.FormCreate(Sender: TObject);
 begin
   inherited;
+  SetDefaultUIFont(Font);
   TranslateComponent(Self);
 end;
 

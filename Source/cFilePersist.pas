@@ -64,7 +64,7 @@ Type
   end;
 
   TPersistFileInfo = class
-  // Stores/loads open editor file information through the class methods
+  // Stores/loads open file information through the class methods
   // WriteToAppStorage and ReadFromAppStorage
   private
     fFileInfoList : TObjectList;
@@ -102,6 +102,7 @@ uses
   cPyControl,
   cPyScripterSettings,
   UUMLForm,
+  frmEditor,
   UUtils;
 
 { TFilePersistInfo }
@@ -294,6 +295,8 @@ begin
     InteractiveClosed:= (aFile.Form as TFUMLForm).InteractiveClosed;
     InteractiveHeight:= (aFile.Form as TFUMLForm).InteractiveHeight;
   end;
+  //if FileKind = fkEditor then
+  //  CreateFromEditor(aFile as IEditor);
   if aFile.FileName <> '' then
     FileName := aFile.FileName
   else
@@ -447,13 +450,13 @@ end;
 
 procedure TPersistFileInfo.GetFileInfo;
 begin
-  GI_EditorFactory.ApplyToEditors(procedure(Editor: IEditor)
+  GI_FileFactory.ApplyToFiles(procedure(aFile: IFile)
   begin
-    if Assigned(Editor) and ((Editor.FileName <> '') or (Editor.RemoteFileName <> '')) then begin
-      var FilePersistInfo := TFilePersistInfo.CreateFromEditor(Editor);
+    if Assigned(aFile) and ((aFile.FileName <> '') or (aFile.RemoteFileName <> '')) then begin
+      var FilePersistInfo := TFilePersistInfo.CreateFromFile(aFile);
       fFileInfoList.Add(FilePersistInfo);
       // We need to do it here before we call StoreApplicationData
-      GI_PyIDEServices.MRUAddFile(Editor);
+      GI_PyIDEServices.MRUAddFile(aFile);
     end;
   end);
 end;

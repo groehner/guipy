@@ -3,8 +3,8 @@ object FSequenceForm: TFSequenceForm
   Top = 0
   BorderIcons = []
   Caption = 'Sequence diagram'
-  ClientHeight = 324
-  ClientWidth = 598
+  ClientHeight = 323
+  ClientWidth = 594
   Color = clBtnFace
   ParentFont = True
   Position = poOwnerFormCenter
@@ -16,19 +16,19 @@ object FSequenceForm: TFSequenceForm
   object PToolbar: TPanel
     Left = 0
     Top = 0
-    Width = 598
+    Width = 594
     Height = 25
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 594
+    ExplicitWidth = 590
     object SequenceToolbar: TToolBar
       Left = 1
       Top = 1
-      Width = 596
+      Width = 592
       Height = 23
       Images = DMImages.ILSequenceToolbar
       TabOrder = 0
-      ExplicitWidth = 592
+      ExplicitWidth = 588
       object TBClose: TToolButton
         Left = 0
         Top = 0
@@ -97,13 +97,15 @@ object FSequenceForm: TFSequenceForm
   object SequenceScrollbox: TScrollBox
     Left = 0
     Top = 25
-    Width = 598
-    Height = 299
+    Width = 594
+    Height = 298
     Align = alClient
+    Color = clBtnFace
+    ParentColor = False
     TabOrder = 2
     OnResize = SequenceScrollboxResize
-    ExplicitWidth = 594
-    ExplicitHeight = 298
+    ExplicitWidth = 590
+    ExplicitHeight = 297
   end
   object EMessage: TEdit
     Left = 456
@@ -775,7 +777,7 @@ object FSequenceForm: TFSequenceForm
   end
   object ILSequencediagramDark: TImageList
     Width = 26
-    Left = 240
+    Left = 272
     Top = 184
     Bitmap = {
       494C01010800480004001A001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -1490,7 +1492,7 @@ object FSequenceForm: TFSequenceForm
   end
   object PopupMenuLifeLineAndSequencePanel: TSpTBXPopupMenu
     OnPopup = PopupMenuLifeLineAndSequencePanelPopup
-    Left = 232
+    Left = 272
     Top = 41
     object MIPopupNewLifeLine: TSpTBXItem
       Caption = 'New lifeline'

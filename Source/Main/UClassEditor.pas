@@ -258,7 +258,6 @@ begin
   LNGSet:= _('set');
   LNGGet:= _('get');
   ChangeStyle;
-  ParentFont:= false;
 end;
 
 procedure TFClassEditor.FormShow(Sender: TObject);

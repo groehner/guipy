@@ -10,7 +10,7 @@ unit ULifeLine;
 interface
 
 uses
-  Classes, Graphics, UPanelTransparent, USequencePanel;
+  Classes, Graphics, Controls, UPanelTransparent, USequencePanel;
 
 type
   TLifeLine = class(TPanelTransparent)
@@ -28,8 +28,10 @@ type
     FGColor: TColor;
     LineHeight: integer;
     Renamed: boolean;
+    PPIControl: TControl;
     procedure SetCreated(const Value: boolean);
     procedure ShowHead;
+    function PPIScale(ASize: integer): integer;
   protected
     procedure Paint; override;
   public
@@ -40,7 +42,8 @@ type
     Closed: boolean;
     First: boolean;
     onCreatedChanged: TNotifyEvent;
-    constructor CreateLL(aOwner: TComponent; const aParticipant: String; aFont: TFont);
+    constructor CreateLL(aOwner: TComponent; const aParticipant: String;
+                         aFont: TFont; PPIControl: TControl);
     procedure SetFont(aFont: TFont);
     procedure getWidthHeigthOfText(const aText: string; var w, h: integer);
     procedure CalcWidthHeight;
@@ -51,9 +54,9 @@ type
 implementation
 
 uses
-  Windows, Types, Controls, Math, SysUtils, UITypes, Themes, UConfiguration;
+  Windows, Types, Math, SysUtils, UITypes, Themes, UConfiguration;
 
-constructor TLifeLine.CreateLL(aOwner: TComponent; const aParticipant: String; aFont: TFont);
+constructor TLifeLine.CreateLL(aOwner: TComponent; const aParticipant: String; aFont: TFont; PPIControl: TControl);
 begin
   inherited Create(aOwner);
   SequencePanel:= aOwner as TSequencePanel;
@@ -64,19 +67,19 @@ begin
   Created:= false;
   Closed:= false;
   Renamed:= (aParticipant = 'Actor');
+  self.PPIControl:= PPIControl;
   setFont(aFont);
-  CalcWidthHeight;
 end;
 
 procedure TLifeLine.SetFont(aFont: TFont);
   const cPadding: Integer = 20;
 begin
   Canvas.Font.Assign(aFont);
-  DistY:= Round(cDistY*Font.Size/12.0);
-  ActivationWidth:= Round(cActivationWidth*Font.Size/12.0);
-  MinWidth:= Round(cMinWidth*Font.Size/12.0);
-  MinHeight:= Round(cMinHeight*Font.Size/12.0);
-  Padding:= Round(cPadding*Font.Size/12.0);
+  DistY:= PPIScale(Round(cDistY*Font.Size/12.0));
+  ActivationWidth:= PPIScale(Round(cActivationWidth*Font.Size/12.0));
+  MinWidth:= PPIScale(Round(cMinWidth*Font.Size/12.0));
+  MinHeight:= PPIScale(Round(cMinHeight*Font.Size/12.0));
+  Padding:= PPIScale(Round(cPadding*Font.Size/12.0));
   CalcWidthHeight;
 end;
 
@@ -195,6 +198,11 @@ begin
     DrawText(Canvas.Handle, PChar(Participant), Length(Participant), R, DT_CENTER);
   end;
   Canvas.Brush.Color:= BGColor;
+end;
+
+function TLifeLine.PPIScale(ASize: integer): integer;
+begin
+  Result := MulDiv(ASize, PPIControl.CurrentPPI, 96);
 end;
 
 procedure TLifeLine.CalcWidthHeight;

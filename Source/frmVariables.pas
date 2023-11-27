@@ -168,6 +168,7 @@ procedure TVariablesWindow.VariablesTreeInitNode(Sender: TBaseVirtualTree;
   ParentNode, Node: PVirtualNode;
   var InitialStates: TVirtualNodeInitStates);
 var
+  Py: IPyEngineAndGIL;
   Data, ParentData: PNodeData;
 begin
   Data := Node.GetData;
@@ -183,7 +184,7 @@ begin
     Exit;
   end;
 
-  var Py := SafePyEngine;
+  Py := SafePyEngine;
   if ParentNode = nil then begin
     // Top level
     Assert(Node.Index <= 1);
@@ -335,6 +336,7 @@ end;
 
 procedure TVariablesWindow.UpdateWindow;
 Var
+  Py: IPyEngineAndGIL;
   CurrentFrame : TBaseFrameInfo;
   SameFrame : boolean;
   RootNodeCount : Cardinal;
@@ -357,7 +359,7 @@ begin
   end else
     VariablesTree.Enabled := True;
 
-  var Py := SafePyEngine;
+  Py := SafePyEngine;
 
   // Get the selected frame
   CurrentFrame := CallStackWindow.GetSelectedStackFrame;

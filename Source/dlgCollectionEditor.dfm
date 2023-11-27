@@ -4,6 +4,7 @@ inherited CollectionEditor: TCollectionEditor
   BorderIcons = [biSystemMenu]
   ClientHeight = 267
   ClientWidth = 301
+  ParentFont = False
   OnCloseQuery = FormCloseQuery
   OnDestroy = FormDestroy
   OnShow = FormShow
@@ -28,7 +29,7 @@ inherited CollectionEditor: TCollectionEditor
     object ItemList: TListBox
       Left = 8
       Top = 8
-      Width = 177
+      Width = 173
       Height = 251
       Anchors = [akLeft, akTop, akRight, akBottom]
       DragMode = dmAutomatic
@@ -38,11 +39,11 @@ inherited CollectionEditor: TCollectionEditor
       OnDblClick = ModifyBtnClick
       OnDragDrop = ItemListDragDrop
       OnDragOver = ItemListDragOver
-      ExplicitWidth = 173
+      ExplicitWidth = 169
       ExplicitHeight = 250
     end
     object AddBtn: TButton
-      Left = 196
+      Left = 192
       Top = 12
       Width = 90
       Height = 25
@@ -50,10 +51,10 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Add...'
       TabOrder = 0
       OnClick = AddBtnClick
-      ExplicitLeft = 192
+      ExplicitLeft = 188
     end
     object RemoveBtn: TButton
-      Left = 196
+      Left = 192
       Top = 76
       Width = 90
       Height = 25
@@ -61,10 +62,10 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Remove'
       TabOrder = 2
       OnClick = RemoveBtnClick
-      ExplicitLeft = 192
+      ExplicitLeft = 188
     end
     object ModifyBtn: TButton
-      Left = 196
+      Left = 192
       Top = 44
       Width = 90
       Height = 25
@@ -72,10 +73,10 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Modify..'
       TabOrder = 1
       OnClick = ModifyBtnClick
-      ExplicitLeft = 192
+      ExplicitLeft = 188
     end
     object OKBtn: TButton
-      Left = 196
+      Left = 192
       Top = 206
       Width = 90
       Height = 25
@@ -84,11 +85,11 @@ inherited CollectionEditor: TCollectionEditor
       Default = True
       ModalResult = 1
       TabOrder = 3
-      ExplicitLeft = 192
+      ExplicitLeft = 188
       ExplicitTop = 205
     end
     object CancelBtn: TButton
-      Left = 196
+      Left = 192
       Top = 237
       Width = 90
       Height = 25
@@ -97,11 +98,11 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 4
-      ExplicitLeft = 192
+      ExplicitLeft = 188
       ExplicitTop = 236
     end
     object MoveUpBtn: TButton
-      Left = 196
+      Left = 192
       Top = 108
       Width = 90
       Height = 25
@@ -109,10 +110,10 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Up'
       TabOrder = 6
       OnClick = MoveUpBtnClick
-      ExplicitLeft = 192
+      ExplicitLeft = 188
     end
     object MoveDownBtn: TButton
-      Left = 196
+      Left = 192
       Top = 140
       Width = 90
       Height = 25
@@ -120,7 +121,7 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Down'
       TabOrder = 7
       OnClick = MoveDownBtnClick
-      ExplicitLeft = 192
+      ExplicitLeft = 188
     end
   end
 end

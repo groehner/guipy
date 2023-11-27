@@ -34,24 +34,24 @@ inherited FileExplorerWindow: TFileExplorerWindow
     000000000000000000000000000000000000000000000000000000000000FBC1
     0000FD410000FBC10000FFFF0000FBC10000FD410000FBC10000FFFF0000001F
     0000001F0000001F0000001F0000001F0000001F0000003F00000FFF0000}
-  ExplicitWidth = 714
-  ExplicitHeight = 454
+  ExplicitWidth = 706
+  ExplicitHeight = 442
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 698
     Height = 415
-    ExplicitWidth = 43
-    ExplicitHeight = 427
+    ExplicitWidth = 690
+    ExplicitHeight = 403
     inherited FGPanel: TPanel
-      Width = 710
-      Height = 435
-      ExplicitWidth = 39
-      ExplicitHeight = 423
+      Width = 694
+      Height = 411
+      ExplicitWidth = 686
+      ExplicitHeight = 399
       object FileExplorerTree: TVirtualExplorerTree
         Left = 0
         Top = 30
-        Width = 710
-        Height = 405
+        Width = 694
+        Height = 381
         Active = False
         Align = alClient
         AnimationDuration = 100
@@ -91,18 +91,16 @@ inherited FileExplorerWindow: TFileExplorerWindow
         OnDblClick = FileExplorerTreeDblClick
         OnEnumFolder = FileExplorerTreeEnumFolder
         OnKeyPress = FileExplorerTreeKeyPress
-        ExplicitWidth = 39
-        ExplicitHeight = 393
         Columns = <>
       end
       object ExplorerDock: TSpTBXDock
         Left = 0
         Top = 0
-        Width = 710
+        Width = 694
         Height = 30
         AllowDrag = False
         DoubleBuffered = True
-        ExplicitWidth = 39
+        ExplicitWidth = 686
         object ExplorerToolbar: TSpTBXToolbar
           Left = 0
           Top = 0

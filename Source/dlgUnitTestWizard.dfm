@@ -3,6 +3,7 @@ inherited UnitTestWizard: TUnitTestWizard
   Caption = 'Unit Test Wizard'
   ClientHeight = 491
   ClientWidth = 436
+  ParentFont = False
   ExplicitWidth = 448
   ExplicitHeight = 529
   TextHeight = 15
@@ -33,7 +34,7 @@ inherited UnitTestWizard: TUnitTestWizard
       Top = 81
       Width = 353
       Height = 15
-      Caption = 
+      Caption =
         'Select the functions and methods for which tests will be generat' +
         'ed:'
       Color = clNone
@@ -51,22 +52,19 @@ inherited UnitTestWizard: TUnitTestWizard
     object lbFileName: TLabel
       Left = 10
       Top = 36
-      Width = 399
-      Height = 13
-      AutoSize = False
+      Width = 3
+      Height = 15
       Color = clNone
       ParentColor = False
     end
     object ExplorerTree: TVirtualStringTree
       Left = 5
       Top = 106
-      Width = 414
+      Width = 418
       Height = 338
       Anchors = [akLeft, akTop, akRight, akBottom]
-      BevelKind = bkSoft
-      BorderStyle = bsNone
-      BorderWidth = 2
       Header.AutoSizeIndex = -1
+      Header.Height = 15
       Header.MainColumn = -1
       Header.Options = [hoColumnResize, hoDrag]
       HintMode = hmHint
@@ -87,10 +85,12 @@ inherited UnitTestWizard: TUnitTestWizard
       OnInitNode = ExplorerTreeInitNode
       Touch.InteractiveGestures = [igPan, igPressAndTap]
       Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
+      ExplicitWidth = 414
+      ExplicitHeight = 337
       Columns = <>
     end
     object OKButton: TButton
-      Left = 73
+      Left = 77
       Top = 454
       Width = 75
       Height = 25
@@ -99,11 +99,11 @@ inherited UnitTestWizard: TUnitTestWizard
       Default = True
       ModalResult = 1
       TabOrder = 1
-      ExplicitLeft = 69
+      ExplicitLeft = 73
       ExplicitTop = 453
     end
     object BitBtn2: TButton
-      Left = 169
+      Left = 173
       Top = 454
       Width = 75
       Height = 25
@@ -112,11 +112,11 @@ inherited UnitTestWizard: TUnitTestWizard
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 2
-      ExplicitLeft = 165
+      ExplicitLeft = 169
       ExplicitTop = 453
     end
     object HelpButton: TButton
-      Left = 265
+      Left = 269
       Top = 454
       Width = 75
       Height = 25
@@ -124,7 +124,7 @@ inherited UnitTestWizard: TUnitTestWizard
       Caption = '&Help'
       TabOrder = 3
       OnClick = HelpButtonClick
-      ExplicitLeft = 261
+      ExplicitLeft = 265
       ExplicitTop = 453
     end
   end

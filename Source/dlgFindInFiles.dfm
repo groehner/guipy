@@ -5,6 +5,7 @@ inherited FindInFilesDialog: TFindInFilesDialog
   Caption = 'Find in Files Search'
   ClientHeight = 301
   ClientWidth = 388
+  ParentFont = False
   Position = poScreenCenter
   OnShow = FormShow
   ExplicitWidth = 400
@@ -72,14 +73,14 @@ inherited FindInFilesDialog: TFindInFilesDialog
       end
     end
     object gbxWhere: TGroupBox
-      Left = 185
+      Left = 181
       Top = 53
       Width = 188
       Height = 106
       Anchors = [akRight]
       Caption = 'Where'
       TabOrder = 3
-      ExplicitLeft = 181
+      ExplicitLeft = 177
       object rbOpenFiles: TRadioButton
         Left = 11
         Top = 36
@@ -120,15 +121,15 @@ inherited FindInFilesDialog: TFindInFilesDialog
     object gbxDirectories: TGroupBox
       Left = 8
       Top = 166
-      Width = 366
+      Width = 362
       Height = 97
       Anchors = [akLeft, akRight, akBottom]
       Caption = 'Directory Search'
       TabOrder = 1
       ExplicitTop = 165
-      ExplicitWidth = 362
+      ExplicitWidth = 358
       DesignSize = (
-        366
+        362
         97)
       object lblMasks: TLabel
         Left = 9
@@ -147,7 +148,7 @@ inherited FindInFilesDialog: TFindInFilesDialog
         FocusControl = cbDirectory
       end
       object btnBrowse: TButton
-        Left = 341
+        Left = 337
         Top = 22
         Width = 20
         Height = 20
@@ -161,42 +162,42 @@ inherited FindInFilesDialog: TFindInFilesDialog
         TabOrder = 1
         TabStop = False
         OnClick = btnBrowseClick
-        ExplicitLeft = 337
+        ExplicitLeft = 333
       end
       object cbInclude: TCheckBox
         Left = 96
         Top = 73
-        Width = 192
+        Width = 188
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         Caption = 'Include su&bdirectories'
         TabOrder = 3
-        ExplicitWidth = 188
+        ExplicitWidth = 184
       end
       object cbMasks: TComboBox
         Left = 96
         Top = 48
-        Width = 265
+        Width = 261
         Height = 23
         Anchors = [akLeft, akTop, akRight]
         DropDownCount = 15
         TabOrder = 2
-        ExplicitWidth = 261
+        ExplicitWidth = 257
       end
       object cbDirectory: TComboBox
         Left = 96
         Top = 21
-        Width = 243
+        Width = 239
         Height = 23
         Anchors = [akLeft, akTop, akRight]
         DropDownCount = 15
         TabOrder = 0
         OnDropDown = cbDirectoryDropDown
-        ExplicitWidth = 239
+        ExplicitWidth = 235
       end
     end
     object btnOK: TButton
-      Left = 138
+      Left = 134
       Top = 269
       Width = 75
       Height = 25
@@ -206,11 +207,11 @@ inherited FindInFilesDialog: TFindInFilesDialog
       ModalResult = 1
       TabOrder = 4
       OnClick = btnOKClick
-      ExplicitLeft = 134
+      ExplicitLeft = 130
       ExplicitTop = 268
     end
     object btnCancel: TButton
-      Left = 219
+      Left = 215
       Top = 269
       Width = 75
       Height = 25
@@ -219,11 +220,11 @@ inherited FindInFilesDialog: TFindInFilesDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 5
-      ExplicitLeft = 215
+      ExplicitLeft = 211
       ExplicitTop = 268
     end
     object btnHelp: TButton
-      Left = 299
+      Left = 295
       Top = 269
       Width = 75
       Height = 25
@@ -231,18 +232,18 @@ inherited FindInFilesDialog: TFindInFilesDialog
       Caption = '&Help'
       TabOrder = 6
       OnClick = btnHelpClick
-      ExplicitLeft = 295
+      ExplicitLeft = 291
       ExplicitTop = 268
     end
     object cbText: TComboBox
       Left = 8
       Top = 28
-      Width = 364
+      Width = 360
       Height = 23
       Anchors = [akLeft, akTop, akRight]
       DropDownCount = 15
       TabOrder = 0
-      ExplicitWidth = 360
+      ExplicitWidth = 356
     end
   end
   object vilImages: TVirtualImageList

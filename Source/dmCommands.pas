@@ -342,6 +342,7 @@ uses
   JvAppStorage,
   JvDSADialogs,
   JvJCLUtils,
+  JvDynControlEngineVCL, // necessary
   JvGnugettext,
   SynEditTypes,
   SynEditTextBuffer,
@@ -382,10 +383,7 @@ uses
 procedure TCommandsDataModule.DataModuleCreate(Sender: TObject);
 begin
   SynCodeCompletion.EndOfTokenChr := WordBreakString;
-  SynCodeCompletion.FontsAreScaled := True;
-
   SynParamCompletion.EndOfTokenChr := WordBreakString;
-  SynParamCompletion.FontsAreScaled := True;
 
   // Set the language before all calls to TranslateComponent
   // This avoids retranslating if the local lanuage <> "en"
@@ -2043,7 +2041,7 @@ begin
           [IfThen(ssoReplace in Options, _(STheSearchAndReplace), _(STheSearch)),
            IfThen(ABackwards, _(SFromTheEnd), _(SFromTheStart))]);
 
-        if  IsIncremental or (DSAMessageDlg(dlgID, 'PyScripter', MsgText,
+        if  IsIncremental or (DSAMessageDlg(dlgID, 'GuiPy', MsgText,
            mtConfirmation, [mbYes, mbNo], 0, dckActiveForm, 0, mbYes, mbNo) = mrYes) then
         begin
           WrappedSearch := True;
@@ -2061,7 +2059,7 @@ begin
       if (ssoReplace in Options) and (Result > 0) then begin
         MsgText := Format(_(SItemsReplaced), [Result, Result - NoReplaceCount - OldNoReplaceCount]);
         GI_PyIDEServices.WriteStatusMsg(MsgText);
-        DSAMessageDlg(dsaReplaceNumber, 'PyScripter', MsgText,
+        DSAMessageDlg(dsaReplaceNumber, 'GuiPy', MsgText,
            mtInformation, [mbOK], 0, dckActiveForm, 0, mbOK);
       end;
     end;

@@ -26,14 +26,6 @@ under the MPL, indicate your decision by deleting the provisions above and
 replace them with the notice and other provisions required by the GPL.
 If you do not delete the provisions above, a recipient may use your version
 of this file under either the MPL or the GPL.
-
-$Id: dlgSynEditOptions.pas,v 1.21 2004/06/26 20:55:33 markonjezic Exp $
-
-You may retrieve the latest version of this file at the SynEdit home page,
-located at http://SynEdit.SourceForge.net
-
-Known Issues:
-
 -------------------------------------------------------------------------------}
 
 unit dlgSynEditOptions;
@@ -551,7 +543,6 @@ begin
     Self.WantTabs := TCustomSynEdit(Source).WantTabs;
     Self.WordWrap := TCustomSynEdit(Source).WordWrap;
     Self.ActiveLineColor := TCustomSynEdit(Source).ActiveLineColor;
-//!!    Self.WordBreakChars := TSynEdit(Source).WordBreakChars;
   end else if Assigned(Source) and (Source is TSynEditorOptionsContainer) then
   begin
     Self.Font.Assign(TSynEditorOptionsContainer(Source).Font);
@@ -639,7 +630,6 @@ begin
   TabWidth := 8;
   WantTabs := True;
   WordWrap := False;
-//!!  WordBreakChars:= '.,;:''"&!?$%#@<>[](){}^-=+-*/\|';
 end;
 
 destructor TSynEditorOptionsContainer.Destroy;
@@ -724,8 +714,6 @@ begin
   //Line Spacing
   eLineSpacing.Text:= IntToStr(FSynEdit.ExtraLineSpacing);
   eTabWidth.Text:= IntToStr(FSynEdit.TabWidth);
-  //Break Chars
-//!!  eBreakchars.Text:= FSynEdit.WordBreakChars;
   //Bookmarks
   ckBookmarkKeys.Checked:= FSynEdit.BookMarkOptions.EnableKeys;
   ckBookmarkVisible.Checked:= FSynEdit.BookMarkOptions.GlyphsVisible;
@@ -805,8 +793,6 @@ begin
   //Line Spacing
   FSynEdit.ExtraLineSpacing:= StrToIntDef(eLineSpacing.Text, 0);
   FSynEdit.TabWidth:= StrToIntDef(eTabWidth.Text, 8);
-  //Break Chars
-//!!  FSynEdit.WordBreakChars:= eBreakchars.Text;
   //Bookmarks
   FSynEdit.BookMarkOptions.EnableKeys:= ckBookmarkKeys.Checked;
   FSynEdit.BookMarkOptions.GlyphsVisible:= ckBookmarkVisible.Checked;
@@ -882,9 +868,6 @@ begin
     Font.Color := StyleServices.GetSystemColor(clWindowText);
     Color := StyleServices.GetSystemColor(clWindow);
   end;
-
-  StackPanel1.Spacing := MulDiv(StackPanel1.Spacing, FCurrentPPI, 96);
-  StackPanel2.Spacing := MulDiv(StackPanel2.Spacing, FCurrentPPI, 96);
 end;
 
 
@@ -895,7 +878,7 @@ begin
   begin
     labFont.Font.Assign(FontDialog.Font);
     labFont.Caption:= labFont.Font.Name;
-    labFont.Caption:= labFont.Font.Name + ' ' + IntToStr(labFont.Font.Size) + 'pt';    
+    labFont.Caption:= labFont.Font.Name + ' ' + IntToStr(labFont.Font.Size) + 'pt';
   end;
 end;
 
@@ -1016,11 +999,12 @@ begin
 end;
 
 procedure TfmEditorOptionsDialog.FormShow(Sender: TObject);
-var Commands: TStringList;
-    i : Integer;
+var
+ Commands: TStringList;
+ i : Integer;
 begin
-//We need to do this now because it will not have been assigned when
-//create occurs
+  //We need to do this now because it will not have been assigned when
+  //create occurs
   cKeyCommand.Items.Clear;
   //Start the callback to add the strings
   if FExtended then
@@ -1044,7 +1028,6 @@ begin
 
   TabControl.ActivePage := Display;
 
-  //Added by KF 2005_JUL_15
   if Color.TabVisible then
   begin
     if cbHighlighters.Items.Count > 0 then
@@ -1055,6 +1038,15 @@ begin
     else
       cbHighlightersChange(cbHighlighters);  //run OnChange handler (it wont be fired on setting the itemindex prop)
   end;
+
+  // DPI Scaling
+  LabFont.Font.PixelsPerInch := FCurrentPPI;
+  LabFont.Canvas.Font.PixelsPerInch := FCurrentPPI;
+  lblGutterFont.Font.PixelsPerInch := FCurrentPPI;
+  lblGutterFont.Canvas.Font.PixelsPerInch := FCurrentPPI;
+
+  StackPanel1.Spacing := MulDiv(StackPanel1.Spacing, FCurrentPPI, 96);
+  StackPanel2.Spacing := MulDiv(StackPanel2.Spacing, FCurrentPPI, 96);
 end;
 
 procedure TfmEditorOptionsDialog.KeyListSelectItem(Sender: TObject;

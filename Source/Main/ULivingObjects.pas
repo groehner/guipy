@@ -30,7 +30,7 @@ type
     function getNodeFromPath(Path: string): TBaseNameSpaceItem;
     function isObject(Node: TBaseNameSpaceItem): boolean;
     function isAttribute(Node: TBaseNameSpaceItem): boolean;
-    function getNameFromValue(Value: String; Node: TBaseNameSpaceItem = nil): string;
+    function getNameFromValue(Value, Parentname: String; Node: TBaseNameSpaceItem = nil): string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -190,11 +190,16 @@ begin
 end;
 
 function TLivingObjects.getHexAddress(from, value: String): String;
+  var Py: IPyEngineAndGIL; hex: Variant;
 begin
-  var Py := SafePyEngine;
-  var hex := PyControl.ActiveInterpreter.EvalCode('hex(id(' + from + '))');
+  Py := SafePyEngine;
+  try
+    hex := PyControl.ActiveInterpreter.EvalCode('hex(id(' + from + '))');
+  except
+    hex:= '';
+  end;
   var p:= pos(' ', value);
-  if p = -1
+  if (p = -1) or (hex = '')
     then Result:= value
     else Result:= copy(value, 1, p) + 'object at ' + hex + '>';
 end;
@@ -342,7 +347,7 @@ begin
         break
       else if isAttribute(NSi) then begin
         var s:= VarToStr(NSi.PyObject);
-        s:= getNameFromValue(s, NSi);
+        s:= getNameFromValue(s, NS.Name, NSi);
         SL.Add(NSi.Name + '=' + s + '|' + NSi.ObjectType);
       end;
     end;
@@ -366,7 +371,7 @@ begin
       break
     else if isAttribute(NSi) then begin
       var s:= VarToStr(NSi.PyObject);
-      s:= getNameFromValue(s, NSi);
+      s:= getNameFromValue(s, NS.Name, NSi);
       SL.Add(NSi.Name + '=' + s);
     end;
   end;
@@ -391,7 +396,7 @@ var
       pe:= p + length('object at 0x');
       while values[pe] <> '>' do
         inc(pe);
-      SL.Add(getNameFromValue(copy(values, pa, pe - pa +1), NS));
+      SL.Add(getNameFromValue(copy(values, pa, pe - pa +1), NS.Name, NS));
       values:= copy(values, pe + 1, length(values));
       p:= Pos('object at 0x', values);
     end;
@@ -406,7 +411,7 @@ var
       if (s[1] = '(') and (s[length(s)] = ')') then  // a tuple
         AddObjectsFromString(NSi, s)
       else if Pos('object at 0x', s) > 0 then       // a object
-        SL.Add(getNameFromValue(s, NSi))
+        SL.Add(getNameFromValue(s, NS.Name, NSi))
     end;
   end;
 
@@ -426,7 +431,7 @@ var
         AddObjectsFromString(NSi, s);
       end else if isObject(NSi) then begin
         s:= VarToStr(NSi.PyObject);
-        s:= getNameFromValue(s, NSi);
+        s:= getNameFromValue(s, NS.Name, NSi);
         SL.Add(s);
       end else if isDunder(NSi.Name) then
         break;
@@ -442,7 +447,7 @@ begin
   Result := SL;
 end;
 
-function TLivingObjects.getNameFromValue(Value: string; Node: TBaseNameSpaceItem): string;
+function TLivingObjects.getNameFromValue(Value, Parentname: string; Node: TBaseNameSpaceItem): string;
 var
   i, p1, p2: integer;
   Classname, Objectname: String;
@@ -454,7 +459,7 @@ begin
   else if Pos('<', Value) > 0 then begin
     if copy(Value, 1, 1) = '<' then begin
       // for example: <TurtleIntern Sprite(in <xxx> groups)>
-      Value:= getHexAddress(Node.Parent.Name + '.' + Node.Name, Value);
+      Value:= getHexAddress(ParentName + '.' + Node.Name, Value);
       i := SLObjectsAddressName.IndexOfName(Value);
       if i > -1 then
         Result := SLObjectsAddressName.ValueFromIndex[i]
@@ -587,7 +592,8 @@ begin
 end;
 
 procedure TLivingObjects.makeAllObjects;
-  var SLObjectsAddressNameDuplicat: TStringList;
+  var Py: IPyEngineAndGIL;
+      SLObjectsAddressNameDuplicat: TStringList;
       i: integer; s, Name: string;
       NSi: TBaseNameSpaceItem;
 
@@ -729,7 +735,7 @@ begin
   SLObjectsAddressNameDuplicat.Assign(SLObjectsAddressName);
   SLObjectsAddressName.Clear;
   SLObjectsNamePath.Clear;
-  var Py := SafePyEngine;
+  Py := SafePyEngine;
   var NS := VariablesWindow.GlobalsNameSpace;
   // collect objects with direct access first
   for i:= 0 to NS.ChildCount -1 do begin

@@ -280,7 +280,8 @@ type
 implementation
 
 uses Math, Types, UITypes, StdCtrls, Themes, SysUtils,
-     UModel, UModelEntity, UConfiguration, UAssociation, URtfdComponents;
+     UModel, UModelEntity, UConfiguration, UAssociation, URtfdComponents,
+     UZOrderControl;
 
 
 {--- TessConnectPanel ---------------------------------------------------------}
@@ -385,13 +386,36 @@ begin
 end;
 
 procedure TessConnectPanel.ShowAll;
+  var ZOrderArr: array of integer;  NextZ, i, j, Anz: integer;
+  ZNameArr: array of string; aBox: TRtfdBox;
 begin
   HideConnections;
+
   if assigned(FManagedObjects) and (UpdateCounter = 0) then begin
-    for var i:= 0 to FManagedObjects.Count - 1 do
-      if TManagedObject(FManagedObjects[i]).FControl.Visible then
-        TManagedObject(FManagedObjects[i]).FControl.Invalidate;
+    Anz:= FManagedObjects.Count;
+    SetLength(ZOrderArr, Anz);
+    Setlength(ZNameArr, Anz);
+    for i:= 0 to Anz - 1 do begin
+      ZOrderArr[i]:= zzGetControlZOrder(TManagedObject(FManagedObjects[i]).FControl);
+      if (TManagedObject(FManagedObjects[i]).FControl is TRtfdBox) then begin
+        aBox:= TManagedObject(FManagedObjects[i]).FControl as TRtfdBox;
+        ZNameArr[i]:= aBox.Entity.Name + '-' + IntToStr(ZOrderArr[i]);
+      end;
+    end;
     ShowConnections;
+
+    NextZ:= 0;
+    for i:= 0 to Anz - 1 do begin
+      for j:= 0 to Anz - 1 do
+        if ZOrderArr[j] = NextZ
+          then break;
+      if (j <= Anz - 1) and TManagedObject(FManagedObjects[j]).FControl.Visible then begin
+        aBox:= TManagedObject(FManagedObjects[j]).FControl as TRtfdBox;
+        aBox.Paint;
+      end;
+      inc(NextZ);
+    end;
+    //ShowConnections;
   end;
 end;
 
@@ -1099,6 +1123,8 @@ var
   mcont: TManagedObject;
   cconn: TConnection;
   aChanged: boolean;
+  aBox: TRtfdBox;
+  aName: string;
 begin
   if not MouseDownOK then begin MouseDownOK:= true; exit end;
   if not (ssDouble in Shift) then
@@ -1130,13 +1156,15 @@ begin
       mcont := FindManagedControl(found);
       if Assigned(mcont) then begin
         if not mcont.Selected then begin
-          if (mcont.FControl is TRtfdBox) then
-            (mcont.FControl as TRtfdBox).makeBitmap;
+          if (mcont.FControl is TRtfdBox) then begin
+            aBox:= mcont.FControl as TRtfdBox;
+            aBox.BringToFront;
+            aName:= aBox.Entity.Name;
+          end;
           if not CtrlPressed then
             SelectionChangedOnClear;
           if mcont.control.visible then begin
             mcont.Selected:= true;
-            TManagedObject(mcont).FControl.SendToBack;
             aChanged:= true;
           end;
         end else if CtrlPressed then begin
@@ -1248,7 +1276,7 @@ var
         for i:= 0 to FManagedObjects.Count - 1 do begin
           aControl:= TManagedObject(FManagedObjects[i]).Control;
           if aControl.Visible and connect.square.intersects(aControl.BoundsRect) then
-            aControl.Invalidate;
+            (aControl as TRtfdBox).Paint;  // invalidate
         end;
 
         // mark cutted connections
@@ -1269,7 +1297,8 @@ var
       aControl:= TManagedObject(FManagedObjects[i]).Control;
       if aControl.Visible and (aControl <> Src) and
          intersect(TManagedObject(FManagedObjects[i]).SelectedBoundsRect, SrcRect) then
-        aControl.Invalidate;
+        // aControl.Invalidate;
+        (aControl as TRtfdBox).Paint;
     end;
 
     if Show then
@@ -1343,6 +1372,7 @@ begin // of MouseMove
                   newTop:= curr.Top + dy;
                 if (newLeft <> curr.Left) or (newTop <> curr.Top) then
                   curr.setBounds(newLeft, newTop, curr.width, curr.height);
+                 // (mcont.FControl as TRtfdBox).Paint;
               end;
 
               rt:= curr.BoundsRect;
@@ -1367,6 +1397,7 @@ begin // of MouseMove
               //   Canvas.Brush.Color:= clRed;
               //   Canvas.FrameRect(MovedRect);
               ShowConnectionsAndMarkers(true);
+              ShowAll; // (mcont.FControl as TRtfdBox).Paint;
             end;
           end;
 
@@ -1389,6 +1420,7 @@ begin // of MouseMove
           ShowConnections;
         end else
           ShowCuttedConnections;
+
       end else if Assigned(found) then begin
         if Assigned(TCrackControl(found).OnMouseMove) then begin
           p2 := found.ScreenToClient(pt);

@@ -4,6 +4,7 @@ inherited PageSetupDlg: TPageSetupDlg
   Caption = 'Page Setup'
   ClientHeight = 397
   ClientWidth = 632
+  ParentFont = False
   Position = poScreenCenter
   OnDestroy = FormDestroy
   OnShow = FormShow

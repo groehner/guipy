@@ -1,3 +1,11 @@
+{-----------------------------------------------------------------------------
+ Unit Name: dlgPyIDEBase
+ Author:    Kiriakos Vlahos, Gerhard Röhner
+ Date:      08-Aug-2006
+ Purpose:   base class for all dialogs
+ History:
+-----------------------------------------------------------------------------}
+
 unit dlgPyIDEBase;
 
 interface
@@ -27,6 +35,17 @@ uses
 
 procedure TPyIDEDlgBase.FormCreate(Sender: TObject);
 begin
+  { I have problems to load dfm forms correctly.
+    The ParentFont property ofetn changes it's valud during loading from th stream.
+    Therefore I here a ParentFont:= false
+
+    Debugging in these two methods
+      procedure TControl.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+      procedure TCustomForm.WMDpiChanged(var Message: TWMDpi);
+    was very helpful to understand the things during a dpi change.
+  }
+
+  ParentFont:= false;
   TranslateComponent(Self);
   var LFont := TFont.Create;
   try

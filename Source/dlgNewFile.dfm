@@ -3,6 +3,7 @@ inherited NewFileDialog: TNewFileDialog
   Caption = 'New File'
   ClientHeight = 297
   ClientWidth = 466
+  ParentFont = False
   OnDestroy = FormDestroy
   OnShow = FormShow
   ExplicitWidth = 478

@@ -4,6 +4,7 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
   Caption = 'Python Versions'
   ClientHeight = 315
   ClientWidth = 630
+  ParentFont = False
   ExplicitWidth = 638
   ExplicitHeight = 342
   TextHeight = 15
@@ -223,7 +224,12 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
     Top = 65
   end
   object vilTreeImages: TVirtualImageList
-    Images = <>
+    Images = <
+      item
+        CollectionIndex = 3
+        CollectionName = 'ArrowRight'
+        Name = 'ArrowRight'
+      end>
     ImageCollection = ResourcesDataModule.icSVGImages
     Left = 456
     Top = 120

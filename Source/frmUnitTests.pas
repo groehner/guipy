@@ -3,12 +3,18 @@ unit frmUnitTests;
 interface
 
 uses
+  WinApi.Windows,
   WinApi.Messages,
+  System.UITypes,
   System.ImageList,
   System.Actions,
+  System.SysUtils,
+  System.Variants,
   System.Classes,
+  Vcl.Graphics,
   Vcl.Controls,
-  Vcl.ComCtrls,
+  Vcl.Forms,
+  Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.ImgList,
@@ -18,6 +24,7 @@ uses
   SVGIconImageCollection,
   JvComponentBase,
   JvDockControlForm,
+  VirtualTrees.Types,
   VirtualTrees.BaseAncestorVCL,
   VirtualTrees.AncestorVCL,
   VirtualTrees.BaseTree,
@@ -30,7 +37,7 @@ uses
   SpTBXItem,
   SpTBXSkins,
   uEditAppIntfs,
-  frmIDEDockWin;
+  frmIDEDockWin, SynEdit;
 
 type
   TUnitTestWindowStatus = (utwEmpty, utwLoaded, utwRunning, utwRun);
@@ -71,10 +78,10 @@ type
     lblRunTests: TLabel;
     lblFailures: TLabel;
     SpTBXPanel1: TPanel;
-    ErrorText: TRichEdit;
     vilRunImages: TVirtualImageList;
     vilImages: TVirtualImageList;
     icRunImages: TSVGIconImageCollection;
+    ErrorText: TSynEdit;
     procedure UnitTestsDblClick(Sender: TObject);
     procedure actStopExecute(Sender: TObject);
     procedure actClearAllExecute(Sender: TObject);
@@ -131,14 +138,8 @@ var
 implementation
 
 uses
-  WinApi.Windows,
   System.StrUtils,
-  System.SysUtils,
-  Vcl.Graphics,
-  Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.Themes,
-  VirtualTrees.Types,
   JvJVCLUtils,
   JvGnugettext,
   PythonEngine,
@@ -146,6 +147,7 @@ uses
   StringResources,
   uCommonFunctions,
   cPyBaseDebugger,
+  cPyDebugger,
   cPyControl,
   dmResources;
 
@@ -265,7 +267,8 @@ begin
 end;
 
 procedure TUnitTestWindow.ClearAll;
-Var
+var
+  Py: IPyEngineAndGIL;
   i, j : integer;
   SL : TStringList;
   PyTestCase : PPyObject;
@@ -273,7 +276,7 @@ begin
   UnitTests.Clear;
   if (TestClasses.Count > 0) or VarIsPython(TestSuite) then
   begin
-    var Py := SafePyEngine;
+    Py := SafePyEngine;
 
     for i := 0 to TestClasses.Count - 1 do begin
       SL := TStringList(TestClasses.Objects[i]);
@@ -363,11 +366,12 @@ procedure TUnitTestWindow.UnitTestsGetHint(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex;
   var LineBreakStyle: TVTTooltipLineBreakStyle; var HintText: string);
 var
+  Py: IPyEngineAndGIL;
   PyTestCase : PPyObject;
   TestCase : Variant;
 begin
   HintText := '';
-  var Py := SafePyEngine;
+  Py := SafePyEngine;
   if UnitTests.GetNodeLevel(Node) = 0 then begin
     if Assigned(Node.FirstChild) then begin
       PyTestCase := PPyObject(TStringList(TestClasses.Objects[Node.Index]).Objects[0]);
@@ -419,12 +423,13 @@ begin
 end;
 
 procedure TUnitTestWindow.actSelectFailedExecute(Sender: TObject);
-Var
-  ClassNode, TestCaseNode : PVirtualNode;
+var
+ Py: IPyEngineAndGIL;
+ ClassNode, TestCaseNode : PVirtualNode;
 begin
   actDeselectAllExecute(Sender);
 
-  var Py := SafePyEngine;
+  Py := SafePyEngine;
   ClassNode := UnitTests.RootNode^.FirstChild;
   while Assigned(ClassNode) do begin
     TestCaseNode := ClassNode.FirstChild;
@@ -613,18 +618,19 @@ end;
 
 procedure TUnitTestWindow.UnitTestsChange(Sender: TBaseVirtualTree;
   Node: PVirtualNode);
+var
+  Py: IPyEngineAndGIL;
 begin
+  ErrorText.Clear;
   if Assigned(Node) and (vsSelected in Node.States) and
     (UnitTests.GetNodeLevel(Node) = 1) then
   begin
-    var Py := SafePyEngine;
+    Py := SafePyEngine;
     var PyTestCase := PPyObject(TStringList(TestClasses.Objects[Node.Parent.Index]).Objects[Node.Index]);
     var TestCase: Variant := VarPythonCreate(PyTestCase);
     ErrorText.Text := TestCase.errMsg;
     VarClear(TestCase);
-  end
-  else
-    ErrorText.Text := '';
+  end;
 end;
 
 procedure TUnitTestWindow.actClearAllExecute(Sender: TObject);

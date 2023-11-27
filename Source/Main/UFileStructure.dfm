@@ -3,13 +3,17 @@ object FFileStructure: TFFileStructure
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Structure'
-  ClientHeight = 299
-  ClientWidth = 220
+  ClientHeight = 298
+  ClientWidth = 216
   Color = clBtnFace
   UseDockManager = True
   DragKind = dkDock
   DragMode = dmAutomatic
-  ParentFont = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
   FormStyle = fsStayOnTop
   Position = poDefault
   OnClose = FormClose
@@ -20,8 +24,8 @@ object FFileStructure: TFFileStructure
   object TVFileStructure: TTreeView
     Left = 0
     Top = 0
-    Width = 220
-    Height = 299
+    Width = 216
+    Height = 298
     Align = alClient
     Images = ILFileStructureLight
     Indent = 19
@@ -34,6 +38,8 @@ object FFileStructure: TFFileStructure
     OnClick = TVFileStructureClick
     OnKeyPress = TVFileStructureKeyPress
     OnMouseDown = TVFileStructureMouseDown
+    ExplicitWidth = 212
+    ExplicitHeight = 297
   end
   object ILFileStructureDark: TImageList
     Left = 144

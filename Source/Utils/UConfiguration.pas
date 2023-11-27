@@ -1436,7 +1436,7 @@ procedure TFConfiguration.FormCreate(Sender: TObject);
   var i: integer;
 begin
   inherited;
-  Width:= 860;
+  Width:= PPIScale(860);
   TempFileTemplates := TFileTemplates.Create;
   GuiPyOptions:= TGuiPyOptions.Create;
   GuiPyLanguageOptions:= TGuiPyLanguageOptions.Create;
@@ -1472,7 +1472,10 @@ begin
   setLength(VisMenus, VisMenusLen);
   setLength(VisToolbars, VisToolbarsLen);
   TabsMenusToolbars:= 1;
-  ParentFont:= false;
+  IndentWidth:= EditorOptions.TabWidth;
+  Indent1:= StringOfChar(' ', 1*IndentWidth);
+  Indent2:= StringOfChar(' ', 2*IndentWidth);
+  Indent3:= StringOfChar(' ', 3*IndentWidth);
 end;
 
 procedure TFConfiguration.FormDestroy(Sender: TObject);

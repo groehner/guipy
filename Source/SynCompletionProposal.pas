@@ -256,7 +256,6 @@ type
     FDotOffset: Integer;
     FOptions: TSynCompletionOptions;
     FNbLinesInWindow: Integer;
-    FFontsAreScaled: Boolean;
     FPaintFormShadow: Boolean;
     FShowGripper: Boolean;
     FFormatParams : Boolean;
@@ -357,7 +356,6 @@ type
     property Form: TSynBaseCompletionProposalForm read FForm;
     property PreviousToken: string read FPreviousToken;
     property Position: Integer read GetPosition write SetPosition;
-    property FontsAreScaled: Boolean read fFontsAreScaled write fFontsAreScaled;
     property FormatParams : boolean read fFormatParams write fFormatParams;
   published
     property DefaultType: SynCompletionType read GetDefaultKind write SetDefaultKind default ctCode;
@@ -1237,11 +1235,26 @@ begin
   FTitleFont := TFont.Create;
   FTitleFont.Style := [fsBold];
   FTitleFont.Color := clBtnText;
+  FTitleFont.PixelsPerInch := Screen.DefaultPixelsPerInch;
+  FTitleFont.Size := Application.DefaultFont.Size;
+  {$IF CompilerVersion >= 36}
+  FTitleFont.IsScreenFont := True;
+  {$IFEND CompilerVersion >= 36}
 
   FFont := TFont.Create;
+  FFont.PixelsPerInch := Screen.DefaultPixelsPerInch;
+  FFont.Size := Application.DefaultFont.Size;
+  {$IF CompilerVersion >= 36}
+  FFont.IsScreenFont := True;
+  {$IFEND CompilerVersion >= 36}
 
   FGripperFont := TFont.Create;
   FGripperFont.Color := clBtnText;
+  FGripperFont.PixelsPerInch := Screen.DefaultPixelsPerInch;
+  FGripperFont.Size := Application.DefaultFont.Size;
+  {$IF CompilerVersion >= 36}
+  FGripperFont.IsScreenFont := True;
+  {$IFEND CompilerVersion >= 36}
 
   ClSelect := clHighlight;
   ClSelectedText := clHighlightText;
@@ -1520,6 +1533,7 @@ begin
     Pen.Color := StyleServices.GetSystemColor(FClBackGround);
     Brush.Color := Pen.Color;
     Brush.Style := bsSolid;
+    Canvas.Font.PixelsPerInch := GetCurrentPPI;
     Font.Assign(FFont);
     Font.Color := StyleServices.GetSystemColor(FFont.Color);
   end;
@@ -1530,6 +1544,7 @@ begin
   case FDisplayKind of
     ctCode:
     begin
+      Canvas.Font.PixelsPerInch := GetCurrentPPI;
       PaintTitle;
       PaintCodeItems;
       PaintGripper;
@@ -1611,19 +1626,21 @@ begin
     Canvas.LineTo(GripperBarRect.Right,GripperBarRect.Top);
     LStyle := StyleServices;
 
-    if FGripperText <> '' then
-    begin
-      textRect := TRect.Create(0, ClientHeight - ScaledGripSize , ClientWidth - ScaledGripSize, ClientHeight);
-      textRect.Inflate(-FScaledMargin, -FScaledMargin);
-      Canvas.Font.Assign(FGripperFont);
-      Canvas.TextRect(textRect, FGripperText);
-    end;
-
     //Draw gripper.
     if StyleServices.Available then
     begin
       details := StyleServices(Self).GetElementDetails(tsGripper);
       LStyle.DrawElement(Canvas.Handle, Details, GripperRect, nil, GetCurrentPPI);
+    end;
+
+    if FGripperText <> '' then
+    begin
+      textRect := TRect.Create(0, ClientHeight - ScaledGripSize, ClientWidth - ScaledGripSize, ClientHeight);
+      textRect.Inflate(-FScaledMargin, 0);
+      Canvas.Font.Assign(FGripperFont);
+      Canvas.Brush.Style := bsClear;
+      Canvas.TextRect(textRect, FGripperText, [tfSingleLine, tfVerticalCenter]);
+      Canvas.Brush.Style := bsSolid;
     end;
   end;
 end;
@@ -1944,6 +1961,7 @@ end;
 procedure TSynBaseCompletionProposalForm.RecalcItemHeight;
 begin
   HandleNeeded;
+  Canvas.Font.PixelsPerInch := GetCurrentPPI;
   Canvas.Font.Assign(FFont);
   FFontHeight := Canvas.TextHeight(TextHeightString);
   if FItemHeight > 0 then
@@ -2081,13 +2099,6 @@ begin
   if CurrentEditor <> nil then
   begin
     (CurrentEditor as TCustomSynEdit).AlwaysShowCaret := OldShowCaret;
-//    (CurrentEditor as TCustomSynEdit).UpdateCaret;
-    if (Owner as TSynBaseCompletionProposal).FontsAreScaled then
-    begin
-      TitleFont.Height := MulDiv(TitleFont.Height, 96, GetCurrentPPI);
-      Font.Height := MulDiv(Font.Height, 96, CurrentEditor.CurrentPPI);
-      TSynBaseCompletionProposal(Owner).FontsAreScaled := False;
-    end;
     if DisplayType = ctCode then
     begin
       // Save after removing the PPI scaling
@@ -2128,6 +2139,7 @@ begin
 
   if DisplayType = ctCode then
   begin
+    Canvas.Font.PixelsPerInch := GetCurrentPPI;
     Canvas.Font.Assign(FTitleFont);
     TitleFontHeight := Canvas.TextHeight(TextHeightString);
 
@@ -2349,13 +2361,6 @@ Var
       FForm.FScrollbar.Width := GetSystemMetricsForDPI(SM_CXVSCROLL, ActivePPI)
     else
       FForm.FScrollbar.Width := GetSystemMetrics(SM_CXVSCROLL);
-
-    if not FFontsAreScaled then
-    begin
-      TitleFont.Height := MulDiv(TitleFont.Height, ActivePPI, 96);
-      Font.Height := MulDiv(Font.Height, ActivePPI, 96);
-      FFontsAreScaled := True;
-    end;
 
     // Now we can do the measurements
     FForm.RecalcItemHeight;
@@ -3005,11 +3010,8 @@ begin
             if (Form.FAssignedList.Count > Position) then
               // Added check to make sure item is only used when no EndChar
               if (InsertList.Count > Integer(Form.FAssignedList.Objects[position])) and
-                 ((scoEndCharCompletion in fOptions) or (EndToken = #0)) then begin // Rr
-                Value := InsertList[Integer(Form.FAssignedList.Objects[position])];  // method or function
-                //if Pos('Image{3}', Form.FAssignedList[position]) > 0 then
-                //  Value:= Value + '()';
-                end
+                 ((scoEndCharCompletion in fOptions) or (EndToken = #0)) then
+                Value := InsertList[Integer(Form.FAssignedList.Objects[position])]
               else
                 Value := SelText
             else

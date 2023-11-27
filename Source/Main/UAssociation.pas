@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Controls, StdCtrls, ComCtrls, ImgList, ExtCtrls, ImageList,
-  UConnection, dlgPyIDEBase, System.Classes;
+  System.Classes, UConnection, dlgPyIDEBase;
 
 type
   TFAssociation = class(TPyIDEDlgBase)

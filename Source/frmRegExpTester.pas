@@ -486,9 +486,10 @@ procedure TRegExpTesterWindow.HighlightMatches;
   end;
 
 var
+  Py: IPyEngineAndGIL;
   VMatch : Variant;
 begin
-  var Py := SafePyEngine;
+  Py := SafePyEngine;
   for VMatch in MatchList do
     HighlightText(VMatch.start(), VMatch.end());
 end;

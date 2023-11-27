@@ -4,24 +4,29 @@ object FOpenFolderForm: TFOpenFolderForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Open folder'
-  ClientHeight = 337
-  ClientWidth = 398
+  ClientHeight = 336
+  ClientWidth = 394
   Color = clBtnFace
-  ParentFont = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
   Position = poOwnerFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   DesignSize = (
-    398
-    337)
+    394
+    336)
   TextHeight = 15
   object LFiletype: TLabel
     Left = 14
-    Top = 279
+    Top = 278
     Width = 79
     Height = 15
     Anchors = [akLeft, akBottom]
     Caption = 'Select file type:'
+    ExplicitTop = 279
   end
   object BOK: TButton
     Left = 211
@@ -44,18 +49,17 @@ object FOpenFolderForm: TFOpenFolderForm
   end
   object CBFiletype: TComboBox
     Left = 108
-    Top = 275
+    Top = 274
     Width = 69
     Height = 23
     Style = csDropDownList
     Anchors = [akLeft, akBottom]
     TabOrder = 2
     TabStop = False
-    ExplicitTop = 274
   end
   object CBWithSubFolder: TCheckBox
-    Left = 9
-    Top = 310
+    Left = -7
+    Top = 309
     Width = 161
     Height = 17
     Anchors = [akRight, akBottom]
@@ -63,7 +67,6 @@ object FOpenFolderForm: TFOpenFolderForm
     Checked = True
     State = cbChecked
     TabOrder = 3
-    ExplicitLeft = 5
-    ExplicitTop = 309
+    ExplicitLeft = -3
   end
 end

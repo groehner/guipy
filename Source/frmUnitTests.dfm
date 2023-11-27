@@ -1,8 +1,8 @@
 inherited UnitTestWindow: TUnitTestWindow
   HelpContext = 467
   Caption = 'Unit Tests'
-  ClientHeight = 415
-  ClientWidth = 238
+  ClientHeight = 439
+  ClientWidth = 254
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000040040000000000000000000000000000000000000000
@@ -40,12 +40,12 @@ inherited UnitTestWindow: TUnitTestWindow
     000000000022000000150000000000000000000000000000000000000000C3C1
     00008001000000000000000000000000000080010000C0030000E00700000000
     000000000000F00F0000C00300008C3100009C390000FC3F0000F99F0000}
-  ExplicitWidth = 254
-  ExplicitHeight = 454
+  ExplicitWidth = 262
+  ExplicitHeight = 466
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 238
-    Height = 415
+    Width = 254
+    Height = 439
     ExplicitWidth = 246
     ExplicitHeight = 427
     inherited FGPanel: TPanel
@@ -136,6 +136,7 @@ inherited UnitTestWindow: TUnitTestWindow
           Align = alClient
           BorderStyle = bsNone
           Header.AutoSizeIndex = -1
+          Header.Height = 15
           Header.MainColumn = -1
           Header.Options = [hoColumnResize, hoDrag]
           HintMode = hmHint
@@ -171,12 +172,12 @@ inherited UnitTestWindow: TUnitTestWindow
         ExplicitTop = 250
         ExplicitWidth = 242
         DesignSize = (
-          234
+          250
           173)
         object Bevel1: TBevel
           Left = 8
           Top = 58
-          Width = 202
+          Width = 226
           Height = 5
           Anchors = [akLeft, akTop, akRight]
           Shape = bsTopLine
@@ -207,7 +208,7 @@ inherited UnitTestWindow: TUnitTestWindow
           Transparent = True
         end
         object lbFoundTests: TLabel
-          Left = 132
+          Left = 156
           Top = 1
           Width = 66
           Height = 13
@@ -256,30 +257,58 @@ inherited UnitTestWindow: TUnitTestWindow
         object SpTBXPanel1: TPanel
           Left = 1
           Top = 85
-          Width = 232
+          Width = 248
           Height = 87
           Align = alBottom
           Anchors = [akLeft, akTop, akRight, akBottom]
           TabOrder = 0
           ExplicitWidth = 240
-          object ErrorText: TRichEdit
+          object ErrorText: TSynEdit
             Left = 1
             Top = 1
             Width = 246
             Height = 85
+            Cursor = crDefault
             Align = alClient
-            BorderStyle = bsNone
+            Constraints.MinHeight = 10
             Font.Charset = ANSI_CHARSET
             Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Shell Dlg 2'
+            Font.Height = -12
+            Font.Name = 'Consolas'
             Font.Style = []
-            Constraints.MinHeight = 10
-            ParentFont = False
-            PlainText = True
-            ReadOnly = True
-            ScrollBars = ssBoth
+            Font.Quality = fqClearTypeNatural
             TabOrder = 0
+            UseCodeFolding = False
+            BorderStyle = bsNone
+            Gutter.Font.Charset = DEFAULT_CHARSET
+            Gutter.Font.Color = clWindowText
+            Gutter.Font.Height = -11
+            Gutter.Font.Name = 'Consolas'
+            Gutter.Font.Style = []
+            Gutter.Visible = False
+            Gutter.Bands = <
+              item
+                Kind = gbkMarks
+                Width = 13
+              end
+              item
+                Kind = gbkLineNumbers
+              end
+              item
+                Kind = gbkFold
+              end
+              item
+                Kind = gbkTrackChanges
+              end
+              item
+                Kind = gbkMargin
+                Width = 3
+              end>
+            HideSelection = True
+            ReadOnly = True
+            RightEdge = 0
+            SelectedColor.Alpha = 0.400000005960464500
+            ExplicitWidth = 238
           end
         end
       end

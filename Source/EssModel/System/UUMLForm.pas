@@ -288,7 +288,7 @@ end;
 
 procedure TFUMLForm.MIPasteClick(Sender: TObject);
 begin
-  Synedit.PasteFromClipboard;
+  SynEdit.PasteFromClipboard;
 end;
 
 procedure TFUMLForm.Retranslate;

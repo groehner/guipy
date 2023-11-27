@@ -2,6 +2,7 @@ inherited RemoteFileDialog: TRemoteFileDialog
   HelpContext = 580
   ClientHeight = 130
   ClientWidth = 434
+  ParentFont = False
   OnCloseQuery = FormCloseQuery
   ExplicitWidth = 446
   ExplicitHeight = 168
@@ -74,7 +75,7 @@ inherited RemoteFileDialog: TRemoteFileDialog
       434
       37)
     object OKButton: TButton
-      Left = 135
+      Left = 131
       Top = 6
       Width = 75
       Height = 25
@@ -83,10 +84,10 @@ inherited RemoteFileDialog: TRemoteFileDialog
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 131
+      ExplicitLeft = 127
     end
     object CancelButton: TButton
-      Left = 231
+      Left = 227
       Top = 6
       Width = 75
       Height = 25
@@ -95,10 +96,10 @@ inherited RemoteFileDialog: TRemoteFileDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 227
+      ExplicitLeft = 223
     end
     object HelpButton: TButton
-      Left = 327
+      Left = 323
       Top = 6
       Width = 75
       Height = 25
@@ -106,7 +107,7 @@ inherited RemoteFileDialog: TRemoteFileDialog
       Caption = '&Help'
       TabOrder = 2
       OnClick = HelpButtonClick
-      ExplicitLeft = 323
+      ExplicitLeft = 319
     end
   end
   object vilImages: TVirtualImageList

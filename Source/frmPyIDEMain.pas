@@ -566,6 +566,15 @@
           Issues addressed
             #1195
 
+  History:   v 4.2.8
+          New Features
+            - Python 3.12 support added
+            - Improved display in multi-monitor setups
+            - Customizable user interface content font size (#1209)
+            - Screen reader support in the editor
+          Issues addressed
+            #1172, #1195, #1197, #1198, #1199, #1208, #1210, #1214
+
   History:  v 1.0.0
             First published GuiPy version.
 
@@ -673,7 +682,6 @@ type
     AppStorage: TJvAppIniFileStorage;
     MachineStorage: TJvAppIniFileStorage;
     BGPanel: TPanel;
-    CloseTimer: TTimer;
     TBXDockTop: TSpTBXDockablePanel;
     MainMenu: TSpTBXToolbar;
     FileMenu: TSpTBXSubmenuItem;
@@ -887,7 +895,6 @@ type
     ToolbarPopupMenu: TSpTBXPopupMenu;
     SpTBXSeparatorItem3: TSpTBXSeparatorItem;
     mnViewCustomizeToolbars: TSpTBXItem;
-    JvFormStorage: TJvFormStorage;
     ProjectMenu: TSpTBXSubmenuItem;
     mnProjectSaveAs: TSpTBXItem;
     mnProjectSave: TSpTBXItem;
@@ -1219,7 +1226,6 @@ type
     SpTBXItem2: TSpTBXItem;
     actNavStructure: TAction;
     TBControlItem1: TTBControlItem;
-    DockTopPanel: TPanel;
     TBControlItem3: TTBControlItem;
     tbitbiDiagramFromOpenFiles: TSpTBXItem;
     mnPopupFileOpen: TSpTBXItem;
@@ -1301,6 +1307,7 @@ type
     ILTTKDark: TImageList;
     ILQTBase: TImageList;
     ILQTBaseDark: TImageList;
+    DockTopPanel: TPanel;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1350,7 +1357,6 @@ type
         var AImageList: TCustomImageList; var AImageIndex: Integer;
         var ARect: TRect; var PaintDefault: Boolean);
     procedure FormShortCut(var Msg: TWMKey; var Handled: Boolean);
-    procedure CloseTimerTimer(Sender: TObject);
     procedure actImportModuleExecute(Sender: TObject);
     procedure actViewToDoListExecute(Sender: TObject);
     procedure actViewFindResultsExecute(Sender: TObject);
@@ -1462,6 +1468,9 @@ type
     procedure mnSpellingPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure actEditorZoomResetExecute(Sender: TObject);
     procedure DdeServerConvExecuteMacro(Sender: TObject; Msg: TStrings);
+//    procedure DpiChanged(var Msg: TMessage); message WM_DPICHANGED;
+    procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
+      NewDPI: Integer);
   private
     DSAAppStorage: TDSAAppStorage;
     ShellExtensionFiles : TStringList;
@@ -1516,6 +1525,7 @@ type
     procedure NextMRUAdd(S : string);
   private
     OldMonitorProfile : string;
+    FShellImages: TCustomImageList;
     // IIDELayouts implementation
     function LayoutExists(const Layout: string): Boolean;
     procedure LoadLayout(const Layout : string);
@@ -1642,6 +1652,7 @@ uses
   System.RegularExpressions,
   System.IOUtils,
   System.StrUtils,
+  System.Generics.Collections,
   Vcl.Clipbrd,
   Vcl.StdActns,
   Vcl.Dialogs,
@@ -2065,6 +2076,12 @@ Var
   TabHost : TJvDockTabHostForm;
   LocalOptionsFileName: string;
 begin
+  // Shell Images
+  FShellImages := TCommonVirtualImageList.Create(Self);
+  TCommonVirtualImageList(FShellImages).SourceImageList := SmallSysImages;
+  FShellImages.SetSize(MulDiv(FShellImages.Width, FCurrentPPI, Screen.PixelsPerInch),
+    MulDiv(FShellImages.Height, FCurrentPPI, Screen.PixelsPerInch));
+
   //Set the HelpFile
   Application.HelpFile := ExtractFilePath(Application.ExeName) + 'PyScripter.chm';
   Application.OnHelp := Self.ApplicationHelp;
@@ -2145,7 +2162,6 @@ begin
 
   // And now translate after all the docking forms have been created
   // They will be translated as well
-  TP_GlobalIgnoreClass(TJvFormStorage);
   TP_GlobalIgnoreClass(TVirtualImageList);
   TranslateComponent(Self);
 
@@ -2180,14 +2196,9 @@ begin
 
   // Read Settings from GuiPy.local.ini
   if FileExists(LocalAppStorage.IniFile.FileName) then
-  begin
-    RestoreLocalApplicationData;
-    if OldMonitorProfile = MonitorProfile then
-      JvFormStorage.RestoreFormPlacement
-    else
-      WindowState := wsMaximized;
-  end else
-    WindowState := wsMaximized;
+    RestoreLocalApplicationData
+  else
+    WindowState := TWindowState.wsMaximized;
 
   // DSA stuff - Don't Show Again
   DSAAppStorage := TDSAAppStorage.Create(AppStorage, 'DSA');
@@ -2204,7 +2215,6 @@ begin
     SaveToolbarItems(FactoryToolbarItems);
 
   if (OldMonitorProfile = MonitorProfile) and
-     LocalAppStorage.PathExists('Layouts\Default\Forms') and
      LocalAppStorage.PathExists('Layouts\Current\Forms') then
   begin
     try
@@ -2290,12 +2300,64 @@ begin
     else LocalAppStorage.ReadStringList('Layouts', Layouts, True);
 end;
 
+procedure TPyIDEMainForm.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
+  var Files: Array[0..10] of string;
+      FilesCount: integer;
+      aFile: IFile;
+      ActiveFilename: String;
+begin
+  SetDockTopPanel;
+  FilesCount:= 0;
+
+  TThread.ForceQueue(nil, procedure
+  begin
+    Invalidate;
+    MainMenu.Invalidate;
+    MainToolbar.Invalidate;
+    DebugToolbar.Invalidate;
+    TabControlWidgets.Invalidate;
+    FFileStructure.Invalidate; // not necessary with ParentFont = false
+
+    // a structogram form loses it's components during dpi switching!
+    // workaround: save, close and reopen
+    aFile:= GetActiveFile;
+    if assigned(aFile)
+      then ActiveFilename:= (aFile.Form as TFileForm).Pathname
+      else ActiveFilename:= '';
+    for var i := 0 to GI_FileFactory.Count -1 do begin
+      aFile := GI_FileFactory.FactoryFile[i];
+      if aFile.FileKind = fkStructogram then begin
+        Files[FilesCount]:= (aFile.Form as TFStructogram).Pathname;
+        inc(FilesCount);
+      end;
+    end;
+    for var i:= 0 to FilesCount - 1 do begin
+      var Pathname:= Files[i];
+      aFile:= GI_FileFactory.GetFileByName(Pathname);
+      (aFile.Form as TFileForm).DoSave;
+      (aFile as IFileCommands).ExecClose;
+      DoOpen(Pathname);
+    end;
+    if ActiveFilename <> '' then
+      ActivateFile(ActiveFilename);
+  end);
+end;
+
 procedure TPyIDEMainForm.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
+
+  procedure DelayedClose;
+  begin
+    TThread.ForceQueue(nil, procedure
+    begin
+      PostMessage(Application.Handle, WM_CLOSE, 0, 0);
+    end, 1000);
+  end;
+
 begin
   if JvGlobalDockIsLoading then begin
     CanClose := False;
-    CloseTimer.Enabled := True;
+    DelayedClose;
     Exit;
   end else if PyControl.DebuggerState <> dsInactive then begin
     if StyledMessageDlg(_(SAbortDebugging), mtWarning, [mbYes, mbNo], 0) = mrYes then
@@ -2305,12 +2367,12 @@ begin
       begin
         CanClose := False;
         PyControl.ActiveDebugger.Abort;
-        CloseTimer.Enabled := True;
+        DelayedClose;
         Exit;
       end else begin
         CanClose := False;
         PyControl.ActiveInterpreter.ReInitialize;
-        CloseTimer.Enabled := True;
+        DelayedClose;
         Exit;
       end;
     end else begin  // mrNo
@@ -2329,8 +2391,8 @@ begin
 
   // Ask about saving unsaved editor buffers
   if CanClose and not PyIDEOptions.SaveFilesAutomatically and
-    (GI_EditorFactory <> nil) then
-    CanClose := GI_EditorFactory.CanCloseAll;
+    (GI_FileFactory <> nil) then
+    CanClose := GI_FileFactory.CanCloseAll;
 
   // Ask about saving unsaved project
   if CanClose and not PyIDEOptions.SaveFilesAutomatically then
@@ -2936,12 +2998,13 @@ end;
 
 procedure TPyIDEMainForm.actImportModuleExecute(Sender: TObject);
 var
+  Py: IPyEngineAndGIL;
   ActiveEditor : IEditor;
 begin
   ActiveEditor := GetActiveEditor;
   if not Assigned(ActiveEditor) then Exit;
 
-  var Py := SafePyEngine;
+  Py := SafePyEngine;
   var PyModule := PyControl.ActiveInterpreter.ImportModule(ActiveEditor, True);
   VarClear(PyModule);
 
@@ -3372,7 +3435,8 @@ begin
 end;
 
 procedure TPyIDEMainForm.ApplicationOnIdle(Sender: TObject; var Done: Boolean);
-Var
+var
+  Py: IPyEngineAndGIL;
   i : integer;
 begin
   UpdateStandardActions;
@@ -3393,7 +3457,7 @@ begin
       if Connected and (EngineType in [peRemoteTk, peRemoteWx]) then
       try
         // Ignore exceptions here
-        var Py := SafePyEngine;
+        Py := SafePyEngine;
         ServeConnection;
       except
       end;
@@ -3488,7 +3552,7 @@ end;
 
 procedure TPyIDEMainForm.SpTBXItem3Click(Sender: TObject);
 begin
-  PyIDEMainForm.show;
+  ShowMessage('Statusbar Fontsize : ' + IntToStr(Statusbar.Font.Size));
 end;
 
 procedure TPyIDEMainForm.mnSpellingPopup(Sender: TTBCustomItem;
@@ -4267,13 +4331,13 @@ begin
     AppStorage.WritePersistent('GuiPy Language Options\' + GetCurrentLanguage,
       GuiPyLanguageoptions);
 
+    AppStorage.DeleteSubTree('Highlighters');
     // Store dock form settings
     for var i:= 0 to Screen.FormCount - 1 do
       if Screen.Forms[I] is TIDEDockWindow then
         TIDEDockWindow(Screen.Forms[i]).StoreSettings(AppStorage);
 
     // Store Highlighters
-    AppStorage.DeleteSubTree('Highlighters');
     for var Highlighter in ResourcesDataModule.Highlighters do
       if ResourcesDataModule.IsHighlighterStored(Highlighter) then
         AppStorage.WritePersistent('Highlighters\' +
@@ -4313,7 +4377,6 @@ begin
     AppStorage.WriteCollection('SSH', SSHServers, 'Server');
     AppStorage.StorageOptions.StoreDefaultValues := False;
     AppStorage.WritePersistent('Tools\External Run', ExternalPython);
-    AppStorage.WritePersistent('Watches', WatchesWindow);
     AppStorage.WriteBoolean('Status Bar', StatusBar.Visible);
 
     // Save Style Name
@@ -4360,9 +4423,6 @@ begin
     LocalAppStorage.WriteString('Monitor profile', MonitorProfile);
 
     LocalAppStorage.WriteStringList('Layouts', Layouts);
-
-    // Form Placement
-    JvFormStorage.SaveFormPlacement;
 
     // Store Python Versions
     PyControl.WriteToAppStorage(LocalAppStorage);
@@ -4880,12 +4940,6 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.CloseTimerTimer(Sender: TObject);
-begin
-  PostMessage(Application.Handle, WM_CLOSE, 0, 0);
-  CloseTimer.Enabled := False;
-end;
-
 procedure TPyIDEMainForm.SetupToolsMenu;
 Var
   i : integer;
@@ -4914,7 +4968,7 @@ begin
       Action := TExternalToolAction.CreateExtToolAction(Self, Tool);
       Action.ActionList := actlStandard;
       MenuItem.Action := Action;
-      MenuItem.Images := SmallSysImages;
+      MenuItem.Images := FShellImages;
       if (Tool.ApplicationName = '$[PythonExe-Short]') and (Tool.Parameters = '') or
          (Tool.ApplicationName = '%COMSPEC%') and not GuiPyOptions.LockedDOSWindow
         then ToolsMenu.Insert(11, MenuItem)
@@ -5113,7 +5167,7 @@ end;
 
 procedure TPyIDEMainForm.SyntaxClick(Sender: TObject);
 begin
-  // Change Syntax sheme
+  // Change Syntax scheme
   var Editor := GetActiveEditor;
   if Assigned(Editor) then begin
     Editor.SynEdit.Highlighter := TSynCustomHighlighter((Sender as TTBCustomItem).Tag);
@@ -5144,10 +5198,8 @@ begin
 end;
 
 procedure TPyIDEMainForm.mnNoSyntaxClick(Sender: TObject);
-Var
-  Editor : IEditor;
 begin
-  Editor := GetActiveEditor;
+  var Editor := GetActiveEditor;
   if Assigned(Editor) then begin
     Editor.SynEdit.Highlighter := nil;
     Editor.SynEdit2.Highlighter := nil;
@@ -5289,7 +5341,7 @@ begin
             Item := TSpTBXItem.Create(Self);
             Item.Name := 'tb' + Action.Name;
             if Action is TExternalToolAction then
-              Item.Images := SmallSysImages;
+              Item.Images := FShellImages;
             SpTBXCustomizer.Items.Add(Item);
           end;
           Item.Action := Action;
@@ -5693,32 +5745,33 @@ begin
   var allTabsClosed:= true;
   for var i:= 0 to High(FConfiguration.VisTabs) do
     if FConfiguration.VisTabs[i] then allTabsClosed:= false;
+  if allTabsClosed then
+    TabControlWidgets.Visible:= false;
 
-  if not AlltabsClosed then
-    aHeight:= aHeight + 55
+  if not allTabsClosed then
+    aHeight:= aHeight + 57
   else if FConfiguration.VisToolbars[0] or FConfiguration.VisToolbars[1] then
-    aHeight:= aHeight + 26;
+    aHeight:= aHeight + 28;
   aTopFindToolbar:= aHeight;
 
   if FindToolbar.Visible then
     aHeight:= aHeight + 26;
 
-  MainToolBar.Top:= aTopToolbars;
+  DebugToolbar.Left:= MainToolbar.Left;
+  MainToolBar.Top:= PPIScale(aTopToolbars + 1);
   if MainToolBar.Visible then begin
     if TabControlWidgets.Visible then begin
-      DebugToolbar.Top:= aTopToolbars + 29;
-      DebugToolbar.Left:= 0;
+      DebugToolbar.Top:= PPIScale(aTopToolbars + 26 + 3);
     end else begin
-      DebugToolbar.Top:= aTopToolbars;
-      DebugToolbar.Left:= MainToolbar.Width + 1;
-      DebugToolbar.BringToFront;
+      DebugToolbar.Top:= PPIScale(aTopToolbars + 1);
+      DebugToolbar.Left:= MainToolbar.Left + MainToolbar.Width + 3;
     end;
-  end;
-  TabControlWidgets.Top:= aTopToolbars;
-  FindToolbar.Top:= aTopFindToolbar;
-  FindToolbar.BringToFront;
-  DockTopPanel.Height:= aHeight;
-  TBXDockTop.Height:= aHeight;
+  end else
+    DebugToolbar.Top:= PPIScale(aTopToolbars + 1);
+
+  TabControlWidgets.Top:= PPIScale(aTopToolbars);
+  FindToolbar.Top:= PPIScale(aTopFindToolbar);
+  TBXDockTop.Height:= PPIScale(aHeight);
 end;
 
 procedure TPyIDEMainForm.actFindReferencesExecute(Sender: TObject);

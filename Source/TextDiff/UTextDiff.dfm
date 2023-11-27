@@ -2,8 +2,8 @@ object FTextDiff: TFTextDiff
   Left = 362
   Top = 211
   Caption = 'Compare text'
-  ClientHeight = 535
-  ClientWidth = 800
+  ClientHeight = 534
+  ClientWidth = 796
   Color = clBtnFace
   ParentFont = True
   KeyPreview = True
@@ -12,13 +12,12 @@ object FTextDiff: TFTextDiff
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnResize = FormResize
   TextHeight = 15
   object TBTextDiff: TToolBar
     Left = 0
     Top = 0
-    Width = 800
+    Width = 796
     Height = 26
     AutoSize = True
     EdgeBorders = [ebTop, ebBottom]
@@ -27,7 +26,7 @@ object FTextDiff: TFTextDiff
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
-    ExplicitWidth = 796
+    ExplicitWidth = 792
     object TBClose: TToolButton
       Left = 4
       Top = 0
@@ -120,17 +119,17 @@ object FTextDiff: TFTextDiff
   object PMain: TPanel
     Left = 0
     Top = 26
-    Width = 800
-    Height = 490
+    Width = 796
+    Height = 489
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 796
-    ExplicitHeight = 489
+    ExplicitWidth = 792
+    ExplicitHeight = 488
     object Splitter: TSplitter
       Left = 315
       Top = 0
-      Height = 490
+      Height = 489
       OnMoved = SplitterMoved
       ExplicitHeight = 214
     end
@@ -138,11 +137,11 @@ object FTextDiff: TFTextDiff
       Left = 0
       Top = 0
       Width = 315
-      Height = 490
+      Height = 489
       Align = alLeft
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitHeight = 489
+      ExplicitHeight = 488
       object PCaptionLeft: TPanel
         Left = 0
         Top = 0
@@ -151,48 +150,36 @@ object FTextDiff: TFTextDiff
         Align = alTop
         Alignment = taLeftJustify
         BevelOuter = bvLowered
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        ParentFont = False
         TabOrder = 0
       end
     end
     object PRight: TPanel
       Left = 318
       Top = 0
-      Width = 482
-      Height = 490
+      Width = 478
+      Height = 489
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitWidth = 478
-      ExplicitHeight = 489
+      ExplicitWidth = 474
+      ExplicitHeight = 488
       object PCaptionRight: TPanel
         Left = 0
         Top = 0
-        Width = 482
+        Width = 478
         Height = 20
         Align = alTop
         Alignment = taLeftJustify
         BevelOuter = bvLowered
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 478
+        ExplicitWidth = 474
       end
     end
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 516
-    Width = 800
+    Top = 515
+    Width = 796
     Height = 19
     Panels = <
       item
@@ -225,9 +212,11 @@ object FTextDiff: TFTextDiff
       item
         Width = 150
       end>
+    ParentFont = True
+    UseSystemFont = False
     OnDrawPanel = StatusBarDrawPanel
-    ExplicitTop = 515
-    ExplicitWidth = 796
+    ExplicitTop = 514
+    ExplicitWidth = 792
   end
   object ILTextDiffLight: TImageList
     Left = 35

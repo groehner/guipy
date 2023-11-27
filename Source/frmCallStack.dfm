@@ -3,8 +3,9 @@ inherited CallStackWindow: TCallStackWindow
   Top = 397
   HelpContext = 470
   Caption = 'Call Stack'
-  ClientHeight = 144
-  ClientWidth = 588
+  ClientHeight = 168
+  ClientWidth = 604
+  ParentFont = False
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -40,33 +41,33 @@ inherited CallStackWindow: TCallStackWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 604
-  ExplicitHeight = 183
+  ExplicitWidth = 612
+  ExplicitHeight = 195
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 588
-    Height = 144
-    ExplicitWidth = 588
-    ExplicitHeight = 144
+    Width = 604
+    Height = 168
+    ExplicitWidth = 596
+    ExplicitHeight = 156
     inherited FGPanel: TPanel
-      Width = 592
-      Height = 152
-      ExplicitWidth = 584
-      ExplicitHeight = 140
+      Width = 600
+      Height = 164
+      ExplicitWidth = 592
+      ExplicitHeight = 152
       object Panel1: TPanel
         Left = 190
         Top = 0
-        Width = 402
-        Height = 152
+        Width = 410
+        Height = 164
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 394
-        ExplicitHeight = 140
+        ExplicitWidth = 402
+        ExplicitHeight = 152
         object CallStackView: TVirtualStringTree
           Left = 1
           Top = 1
-          Width = 400
-          Height = 150
+          Width = 408
+          Height = 162
           Align = alClient
           Alignment = taRightJustify
           BevelInner = bvNone
@@ -104,7 +105,7 @@ inherited CallStackWindow: TCallStackWindow
               Options = [coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coEditable, coStyleColor]
               Position = 1
               Text = 'File Name'
-              Width = 250
+              Width = 258
             end
             item
               Alignment = taRightJustify
@@ -118,15 +119,15 @@ inherited CallStackWindow: TCallStackWindow
         Left = 0
         Top = 0
         Width = 185
-        Height = 152
+        Height = 164
         Align = alLeft
         TabOrder = 1
-        ExplicitHeight = 140
+        ExplicitHeight = 152
         object ThreadView: TVirtualStringTree
           Left = 1
           Top = 1
           Width = 183
-          Height = 150
+          Height = 162
           Align = alClient
           BevelInner = bvNone
           BevelOuter = bvNone
@@ -161,11 +162,11 @@ inherited CallStackWindow: TCallStackWindow
       object Splitter1: TSpTBXSplitter
         Left = 185
         Top = 0
-        Height = 152
+        Height = 164
         Cursor = crSizeWE
         ParentColor = False
         MinSize = 3
-        ExplicitHeight = 140
+        ExplicitHeight = 152
       end
     end
   end

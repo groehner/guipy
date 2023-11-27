@@ -4,6 +4,7 @@ inherited PickListDialog: TPickListDialog
   Caption = 'PickListDialog'
   ClientHeight = 323
   ClientWidth = 461
+  ParentFont = False
   ExplicitWidth = 473
   ExplicitHeight = 361
   TextHeight = 15
@@ -23,7 +24,7 @@ inherited PickListDialog: TPickListDialog
     object Bevel1: TBevel
       Left = 0
       Top = 36
-      Width = 488
+      Width = 484
       Height = 2
       Anchors = [akLeft, akTop, akRight, akBottom]
       Shape = bsTopLine
@@ -42,7 +43,7 @@ inherited PickListDialog: TPickListDialog
       OnClick = mnSelectAllClick
     end
     object btnDeselectAll: TButton
-      Left = 232
+      Left = 228
       Top = 6
       Width = 130
       Height = 24
@@ -53,10 +54,10 @@ inherited PickListDialog: TPickListDialog
       Images = vilImages
       TabOrder = 1
       OnClick = mnDeselectAllClick
-      ExplicitLeft = 228
+      ExplicitLeft = 224
     end
     object btnOk: TButton
-      Left = 267
+      Left = 263
       Top = 48
       Width = 80
       Height = 25
@@ -65,10 +66,10 @@ inherited PickListDialog: TPickListDialog
       Default = True
       ModalResult = 1
       TabOrder = 2
-      ExplicitLeft = 263
+      ExplicitLeft = 259
     end
     object btnCancel: TButton
-      Left = 364
+      Left = 360
       Top = 48
       Width = 80
       Height = 25
@@ -77,7 +78,7 @@ inherited PickListDialog: TPickListDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 3
-      ExplicitLeft = 360
+      ExplicitLeft = 356
     end
   end
   object Panel1: TPanel
@@ -102,7 +103,7 @@ inherited PickListDialog: TPickListDialog
     object lbMessage: TLabel
       Left = 58
       Top = 14
-      Width = 386
+      Width = 382
       Height = 52
       Anchors = [akLeft, akTop, akRight]
       AutoSize = False

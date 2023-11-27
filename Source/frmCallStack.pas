@@ -10,8 +10,10 @@ unit frmCallStack;
 interface
 
 uses
+  WinApi.Windows,
   WinApi.Messages,
   System.SysUtils,
+  System.Variants,
   System.Classes,
   System.Generics.Collections,
   System.Actions,
@@ -19,6 +21,7 @@ uses
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
+  Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.ActnList,
   Vcl.ImgList,
@@ -75,15 +78,17 @@ type
     procedure ThreadViewGetCellText(Sender: TCustomVirtualStringTree;
       var E: TVSTGetCellTextEventArgs);
   private
-    const FBasePath = 'Call Stack Window Options';
+    const FBasePath = 'Call Stack Window Options'; // Used for storing settings
     var fActiveThread : TThreadInfo;
     fThreads : TList<TThreadInfo>;
     procedure ThreadChangeNotify(Thread : TThreadInfo; ChangeType : TThreadChangeType);
     procedure UpdateCallStack;
     procedure SetActiveThread(const Value: TThreadInfo);
   public
+    // AppStorage
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
+
     procedure ClearAll(IncludeThreads : Boolean = True);
     function GetSelectedStackFrame : TBaseFrameInfo;
     procedure UpdateWindow(DebuggerState, OldState : TDebuggerState);
@@ -121,6 +126,7 @@ type
 
 procedure TCallStackWindow.UpdateCallStack;
 var
+  Py: IPyEngineAndGIL;
   FirstNode : PVirtualNode;
   FrameData : PFrameData;
   Editor : IEditor;
@@ -129,7 +135,7 @@ begin
     CallStackView.BeginUpdate;
     try
       // OutputDebugString('Call Stack filled');
-      var Py := SafePyEngine;
+      Py := SafePyEngine;
       CallStackView.RootNodeCount := fActiveThread.CallStack.Count;  // Fills the View
       CallStackView.ReInitNode(nil, True, True);
     finally
@@ -383,13 +389,14 @@ procedure TCallStackWindow.ThreadChangeNotify(Thread: TThreadInfo;
   end;
 
 var
+  Py: IPyEngineAndGIL;
   Index : integer;
   Node,
   Node1 : PVirtualNode;
   T : TThreadInfo;
 begin
   // OutputDebugString(PChar(Format('status: %d change: %d', [Ord(Thread.Status), Ord(ChangeType)])));
-  var Py := SafePyEngine;
+  Py := SafePyEngine;
   case ChangeType of
     tctAdded:
       begin
@@ -487,6 +494,7 @@ end;
 
 procedure TCallStackWindow.StoreSettings(AppStorage: TJvCustomAppStorage);
 begin
+  inherited;
   AppStorage.WriteInteger(FBasePath+'\Threads Width',
    PPIUnScale(ThreadView.Width));
   AppStorage.WriteInteger(FBasePath+'\Function Width',
@@ -495,9 +503,9 @@ begin
     PPIUnScale(CallStackView.Header.Columns[2].Width));
 end;
 
-procedure TCallStackWindow.reStoreSettings(AppStorage: TJvCustomAppStorage);
+procedure TCallStackWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  if not AppStorage.PathExists(FBasePath) then exit;
+  inherited;
   ThreadView.Width :=
     PPIScale(AppStorage.ReadInteger(FBasePath+'\Threads Width', 140));
   CallStackView.Header.Columns[0].Width :=

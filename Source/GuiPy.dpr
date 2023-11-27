@@ -200,7 +200,8 @@ uses
   uSysUtils in 'uSysUtils.pas',
   Vcl.Consts in 'Utils\Vcl.Consts.pas',
   cCustomShortcuts in 'cCustomShortcuts.pas',
-  dlgSynEditOptions in 'dlgSynEditOptions.pas' {fmEditorOptionsDialog};
+  dlgSynEditOptions in 'dlgSynEditOptions.pas' {fmEditorOptionsDialog},
+  UZOrderControl in 'Utils\UZOrderControl.pas';
 
 {$R *.RES}
 {$R WebCopyAvi.RES}

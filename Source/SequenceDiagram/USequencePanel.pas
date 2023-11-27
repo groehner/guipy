@@ -39,6 +39,8 @@ type
 
   // Specifies a connection between two managed objects.
   TConnection = class(TConnectionAttributes)
+  private
+    function PPIScale(ASize: integer): integer;
   public
     Selected: Boolean;
     FFrom, FTo: TControl; // from --> to Lifeline
@@ -276,11 +278,16 @@ type
 implementation
 
 uses Math, SysUtils, StdCtrls, Types, Themes, UITypes,
-     UUtils, UConnectForm;
+     uCommonFunctions, UUtils, UConnectForm;
 
 type
   TCrackControl = class(TControl)
   end;
+
+function TConnection.PPIScale(ASize: integer): integer;
+begin
+  Result:= FFrom.PPIScale(ASize);
+end;
 
 procedure TConnection.SetPenBrushArrow(Canvas: TCanvas);
 begin
@@ -302,8 +309,8 @@ end;
 
 procedure TConnection.Draw(Canvas: TCanvas);
   var
-    x1,x2: Integer;
-    y1,y2: Integer;
+    x1, x2: Integer;
+    y1, y2: Integer;
     xbase: Integer;
     ybase: Integer;
     xLineDelta: Integer;
@@ -330,7 +337,6 @@ procedure TConnection.Draw(Canvas: TCanvas);
     SetBkColor(Canvas.Handle, BGColor);
     DrawText(Canvas.Handle, PChar(aMessage), -1, TextRect, DT_CALCRECT);
     DrawText(Canvas.Handle, PChar(aMessage), -1, TextRect, 0);
-
     ConRect.Union(TextRect);
   end;
 
@@ -429,15 +435,15 @@ begin  // of draw
 
   // close message
   if ArrowStyle = casClose then begin
-    Canvas.MoveTo(x2,   y2 - HeadLength);
+    Canvas.MoveTo(x2, y2 - HeadLength);
     Canvas.LineTo(x2 + 2*Activationwidth, y2 + HeadLength);
     Canvas.MoveTo(x2 + 2*ActivationWidth, y2 - HeadLength);
-    Canvas.LineTo(x2 ,   y2 + HeadLength);
+    Canvas.LineTo(x2, y2 + HeadLength);
   end;
   Canvas.Pen.Color:= FGColor;
-
-  ConRect:= Rect(min(x1, x2), min(y1, y2) - abs(dy), max(x1, x2), max(y1, y2) + abs(dy));
-  ConRect.Inflate(2, 2);
+  ConRect:= Rect(min(x1, x2), min(y1, y2) - abs(dy),
+                 max(x1, x2), max(y1, y2) + abs(dy));
+  ConRect.Inflate(PPIScale(2), PPIScale(2));
   DrawMessage;
 
   // debug
@@ -588,16 +594,16 @@ end;
 
 constructor TConnection.create(Src, Dst: TControl; Attributes: TConnectionAttributes; aOnConnectionChanged: TConnectionChanged);
 begin
-  FFrom:= Src;
-  FTo  := Dst;
+  FFrom       := Src;
+  FTo         := Dst;
   Selected    := false;
   ArrowStyle  := Attributes.ArrowStyle;
   ConnectStyle:= csThin;
   aMessage    := Attributes.aMessage;
   isRecursiv  := (FFrom = FTo);
   YPos        := 0;
-  FromP       := Point(FFrom.Left + FFrom.Width div 2, FFrom.Top + YPos);
-  ToP         := Point(FTo.Left + FTo.Width div 2, FFrom.Top + YPos);
+  FromP       := Point(PPIScale(FFrom.Left + FFrom.Width div 2), PPIScale(FFrom.Top + YPos));
+  ToP         := Point(PPIScale(FTo.Left + FTo.Width div 2), PPIScale(FFrom.Top + YPos));
   Self.OnConnectionChanged:= aOnConnectionChanged;
   ConRect     := Rect(0, 0, 0, 0);
   CalcPolyline;
@@ -703,10 +709,10 @@ end;
 
 procedure TConnection.setFont(aFont: TFont);
 begin
-  DistX:= Round(cDistX*aFont.Size/12.0);
-  DistY:= Round(cDistY*aFont.Size/12.0);
-  ActivationWidth:= Round(cActivationWidth*aFont.Size/12.0);
-  HeadLength:= Round(cHeadLength*aFont.Size/12.0);
+  DistX:= PPIScale(Round(cDistX*aFont.Size/12.0));
+  DistY:= PPIScale(Round(cDistY*aFont.Size/12.0));
+  ActivationWidth:= PPIScale(Round(cActivationWidth*aFont.Size/12.0));
+  HeadLength:= PPIScale(Round(cHeadLength*aFont.Size/12.0));
 end;
 
 {--- TSequencePanel -----------------------------------------------------------}
@@ -877,6 +883,7 @@ begin
   TempHidden := TObjectList.Create(False);
   UseDockManager := True;
   MouseDownOK:= True;
+  Anchors:= [akLeft, akTop];
   SetFocus;
 end;
 
@@ -1227,7 +1234,7 @@ begin
         if not CtrlPressed then
           SelectionChangedOnClear;
         mcont.Selected:= true;
-        TManagedObject(mcont).FControl.SendToBack;
+        //TManagedObject(mcont).FControl.SendToBack;
         aChanged:= true;
       end else if CtrlPressed then begin
         mcont.Selected:= false;
@@ -1397,11 +1404,10 @@ begin
 
             if (curr.Left + dx >= 0) and (dx <> 0) then
               curr.Left:= curr.Left + dx;
-            if (curr.Top + dy >= minTop) and (dy <> 0) then begin
+            if dy <> 0 then
               for j:= 0 to FManagedObjects.Count -1 do
                 TManagedObject(FManagedObjects[j]).FControl.Top:=
                   min(max(TManagedObject(FManagedObjects[j]).FControl.Top + dy, minTop), 500);
-            end;
             rt:= curr.BoundsRect;
             mRectDxDy.Union(rt);
 
@@ -1573,32 +1579,8 @@ begin
 end;
 
 procedure TSequencePanel.Paint;
-var
-  Rect: TRect;
-  TopColor, BottomColor: TColor;
-  i: integer;
-
-  procedure AdjustColors(Bevel: TPanelBevel);
-  begin
-    TopColor := clBtnHighlight;
-    if Bevel = bvLowered then TopColor := clBtnShadow;
-    BottomColor := clBtnShadow;
-    if Bevel = bvLowered then BottomColor := clBtnHighlight;
-  end;
-
 begin
   Canvas.Pen.Mode := pmCopy;
-  Rect := ClientRect;
-  if BevelOuter <> bvNone then begin
-    AdjustColors(BevelOuter);
-    Frame3D(Canvas, Rect, TopColor, BottomColor, BevelWidth);
-  end;
-  Frame3D(Canvas, Rect, Color, Color, BorderWidth);
-  if BevelInner <> bvNone then begin
-    AdjustColors(BevelInner);
-    Frame3D(Canvas, Rect, TopColor, BottomColor, BevelWidth);
-  end;
-
   if Assigned(FBackBitmap)
     then Canvas.Brush.Bitmap := FBackBitmap
   else if StyleServices.IsSystemStyle then begin
@@ -1610,11 +1592,11 @@ begin
   end;
   Canvas.Pen.Color:= FGColor;
   Canvas.Brush.Color:= BGColor;
-  Canvas.FillRect(Rect);
+  Canvas.FillRect(ClientRect);
   Canvas.Font:= Font;
   Canvas.Font.Color:= FGColor;
   ShowConnections;
-  for i:= 0 to FManagedObjects.Count -1 do
+  for var i:= 0 to FManagedObjects.Count -1 do
     if TManagedObject(FManagedObjects[i]).FControl.Visible then
       TManagedObject(FManagedObjects[i]).FControl.Invalidate;
 end;

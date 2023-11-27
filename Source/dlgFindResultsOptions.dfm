@@ -6,7 +6,9 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
   Caption = 'Find in Files Options'
   ClientHeight = 307
   ClientWidth = 307
+  ParentFont = False
   Position = poScreenCenter
+  OnShow = FormShow
   ExplicitWidth = 319
   ExplicitHeight = 345
   TextHeight = 15
@@ -69,12 +71,12 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
     object gbxMatchContext: TGroupBox
       Left = 5
       Top = 114
-      Width = 293
+      Width = 289
       Height = 153
       Anchors = [akLeft, akTop, akRight]
       Caption = 'Match Context Display'
       TabOrder = 1
-      ExplicitWidth = 289
+      ExplicitWidth = 285
       object lblContextLines: TLabel
         Left = 28
         Top = 101
@@ -119,7 +121,7 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       end
     end
     object btnOK: TButton
-      Left = 26
+      Left = 22
       Top = 274
       Width = 75
       Height = 25
@@ -128,11 +130,11 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       Default = True
       ModalResult = 1
       TabOrder = 2
-      ExplicitLeft = 22
+      ExplicitLeft = 18
       ExplicitTop = 273
     end
     object btnCancel: TButton
-      Left = 110
+      Left = 106
       Top = 274
       Width = 75
       Height = 25
@@ -141,11 +143,11 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 3
-      ExplicitLeft = 106
+      ExplicitLeft = 102
       ExplicitTop = 273
     end
     object btnHelp: TButton
-      Left = 194
+      Left = 190
       Top = 274
       Width = 75
       Height = 25
@@ -153,7 +155,7 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       Caption = '&Help'
       TabOrder = 4
       OnClick = btnHelpClick
-      ExplicitLeft = 190
+      ExplicitLeft = 186
       ExplicitTop = 273
     end
   end

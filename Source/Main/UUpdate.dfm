@@ -4,10 +4,14 @@ object FUpdate: TFUpdate
   BorderIcons = [biSystemMenu, biMaximize]
   BorderStyle = bsDialog
   Caption = 'Update'
-  ClientHeight = 267
-  ClientWidth = 325
+  ClientHeight = 266
+  ClientWidth = 321
   Color = clBtnFace
-  ParentFont = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
   FormStyle = fsStayOnTop
   Position = poOwnerFormCenter
   OnClose = FormClose
@@ -36,9 +40,9 @@ object FUpdate: TFUpdate
     Caption = 'New version'
   end
   object BClose: TButton
-    Left = 147
+    Left = 111
     Top = 236
-    Width = 80
+    Width = 100
     Height = 25
     Caption = 'Close'
     TabOrder = 0
@@ -59,9 +63,9 @@ object FUpdate: TFUpdate
     TabOrder = 2
   end
   object BUpdate: TButton
-    Left = 240
+    Left = 217
     Top = 236
-    Width = 80
+    Width = 100
     Height = 25
     Hint = 'Performs an update. To do this, you need sufficient rights.'
     Caption = 'Update'

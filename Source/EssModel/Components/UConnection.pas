@@ -602,7 +602,7 @@ begin  // of draw
     DrawRecursiv(aCanvas, show);
     exit;
   end;
-  if IntersectRect({$IFDEF LCL} R1, {$ENDIF} getBoundsRect(FFrom), getBoundsRect(FTo)) then exit;
+  if IntersectRect(getBoundsRect(FFrom), getBoundsRect(FTo)) then exit;
 
   parallelCorrection;  // use actual position, control might be moved
   CalcShortest;

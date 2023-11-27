@@ -5,7 +5,7 @@ interface
 uses
   System.Classes, System.ImageList, Vcl.ImgList,  Vcl.Menus, Controls, Forms,
   ComCtrls, JvAppStorage,
-  frmIDEDockWin, frmFile, TB2Item, SpTBXItem;
+  frmIDEDockWin, frmFile, TB2Item, SpTBXItem, Vcl.ExtCtrls;
 
 type
   TInteger = class
@@ -50,6 +50,8 @@ type
                 ForceToMiddle : Boolean = True; Activate : Boolean = True);
     procedure ShowSelected;
     procedure ChangeStyle;
+   // procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;  ??
+   // procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
   end;
 
 var
@@ -71,6 +73,13 @@ begin
 end;
 
 {--- TFFileStructure ----------------------------------------------------------}
+
+{ If TVFiletructure has ParentFont true and the default font with size 9
+  then during dpi change the font doesn't change, remains small. But if it has
+  another font size, then during dpi change it's size is scaled.
+
+  But the dependency does not exist if ParentFont is false.
+}
 
 procedure TFFileStructure.FormCreate(Sender: TObject);
 begin
@@ -100,12 +109,10 @@ begin
 end;
 
 procedure TFFileStructure.Init(items: TTreeNodes; Form: TFileForm);
-var
-  i: Integer;
+  var i: Integer;
 begin
   myForm:= Form;
   if DifferentItems(Items) then begin
-    // Lock.Acquire;
     TVFileStructure.Items.BeginUpdate;
     for i:= 0 to TVFileStructure.Items.Count - 1 do
       FreeAndNil(TVFileStructure.Items[i].Data);
@@ -116,9 +123,7 @@ begin
     TVFileStructure.FullExpand;
     TVFileStructure.HideSelection:= false;
     TVFileStructure.Items.EndUpdate;
-    // PyIDEMainForm.RefreshUMLWindows;  ToDo disables Cursor
     Form.SetFocus;
-    // Lock.Release;
   end;
 end;
 
@@ -150,25 +155,29 @@ end;
 procedure TFFileStructure.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
 begin
+  var CurrentSize:= Font.Size;
+  Font.Size:= PPIUnScale(Font.Size);
   AppStorage.WritePersistent(BasePath+'\Font', Font);
+  Font.Size:= CurrentSize;
 end;
 
 procedure TFFileStructure.ReadFromAppStorage(
   AppStorage: TJvCustomAppStorage; const BasePath: string);
 begin
   AppStorage.ReadPersistent(BasePath + '\Font', Font);
+  TVFilestructure.Font.Size:= PPIScale(Font.Size);
 end;
 
 procedure TFFileStructure.MIFontClick(Sender: TObject);
 begin
-  ResourcesDataModule.dlgFontDialog.Font.Assign(Font);
+  ResourcesDataModule.dlgFontDialog.Font.Assign(TVFilestructure.Font);
   if ResourcesDataModule.dlgFontDialog.Execute then
-    Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
+    TVFilestructure.Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
 end;
 
 procedure TFFileStructure.MIDefaulLayoutClick(Sender: TObject);
 begin
-  pyIDEMainForm.mnViewDefaultLayoutClick(Self);
+  PyIDEMainForm.mnViewDefaultLayoutClick(Self);
 end;
 
 procedure TFFileStructure.MICloseClick(Sender: TObject);

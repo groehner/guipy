@@ -2,6 +2,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
   Caption = 'Import Directory'
   ClientHeight = 145
   ClientWidth = 469
+  ParentFont = False
   PopupMode = pmAuto
   Position = poOwnerFormCenter
   ExplicitWidth = 481
@@ -51,7 +52,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
       TabOrder = 0
     end
     object cbRecursive: TCheckBox
-      Left = 340
+      Left = 336
       Top = 71
       Width = 108
       Height = 17
@@ -60,7 +61,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
       Checked = True
       State = cbChecked
       TabOrder = 3
-      ExplicitLeft = 336
+      ExplicitLeft = 332
     end
     object Button1: TButton
       Left = 124
@@ -89,7 +90,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
     object DirectoryEdit: TButtonedEdit
       Left = 8
       Top = 38
-      Width = 440
+      Width = 436
       Height = 23
       Anchors = [akLeft, akTop, akRight]
       Images = vilImages
@@ -98,7 +99,7 @@ inherited ImportDirectoryForm: TImportDirectoryForm
       RightButton.Visible = True
       TabOrder = 4
       OnRightButtonClick = DirectoryEditBtnClick
-      ExplicitWidth = 436
+      ExplicitWidth = 432
     end
   end
   object vilImages: TVirtualImageList

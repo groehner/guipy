@@ -11,13 +11,16 @@ unit frmWatches;
 interface
 
 uses
+  WinApi.Windows,
   WinApi.Messages,
   WinApi.ActiveX,
+  System.Types,
+  System.UITypes,
   System.SysUtils,
+  System.Variants,
   System.Classes,
   System.Contnrs,
   System.ImageList,
-  System.Types,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
@@ -86,15 +89,16 @@ type
       Node: PVirtualNode; var ChildCount: Cardinal);
     procedure WatchesViewFreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);
   private
-  private
-    const FBasePath = 'Watches';
+    const FBasePath = 'Watches'; // Used for storing settings
     var fWatchesList: TObjectList;
   protected
     function CreateWatch(Sender: TJvCustomAppStorage; const Path: string;
       Index: Integer): TPersistent;
   public
+    // AppStorage
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
+
     procedure UpdateWindow(DebuggerState: TDebuggerState);
     procedure AddWatch(S: string);
   end;
@@ -105,17 +109,17 @@ var
 implementation
 
 uses
-  System.UITypes,
-  WinApi.Windows,
   Vcl.Clipbrd,
   SynEdit,
-  PythonEngine,
   JvGnugettext,
+  PythonEngine,
   StringResources,
   uEditAppIntfs,
   uCommonFunctions,
   dmResources,
   frmPyIDEMain,
+  frmCallStack,
+  cPySupportTypes,
   cPyBaseDebugger;
 
 {$R *.dfm}
@@ -438,7 +442,8 @@ begin
 end;
 
 procedure TWatchesWindow.UpdateWindow(DebuggerState: TDebuggerState);
-Var
+var
+  Py: IPyEngineAndGIL;
   i: Integer;
 begin
   if not GI_PyControl.PythonLoaded or GI_PyControl.Running then begin
@@ -447,7 +452,7 @@ begin
   end else
     WatchesView.Enabled := True;
 
-  var Py := SafePyEngine;
+  Py := SafePyEngine;
   // Clear NameSpace Items
   for i := 0 to fWatchesList.Count - 1 do
     with TWatchInfo(fWatchesList[i]) do
@@ -495,7 +500,6 @@ end;
 
 procedure TWatchesWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  if not AppStorage.PathExists(FBasePath) then exit;
   inherited;
   mnClearAllClick(Self);
   AppStorage.ReadObjectList(FBasePath, fWatchesList, CreateWatch, True,

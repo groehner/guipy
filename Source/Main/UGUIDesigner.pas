@@ -87,7 +87,7 @@ type
     procedure ChangeTo(Formular: TFGUIForm);
     function GetEditForm: TEditorForm;
     procedure UpdateState(Modified: boolean);
-    procedure SetOptions;
+    procedure SetGridOptions;
     function getPath: string;
     function getControlWidthHeigth: TPoint;
   end;
@@ -113,7 +113,7 @@ uses System.Types, TypInfo, SysUtils, Graphics,
      UTTKButtonBase, UTTKTextBase, UTTKMiscBase,
      UQtButtonBase, UQtWidgetDescendants, UQtFrameBased, UQtScrollable,
      UQtItemViews, UQtSpinboxes,
-     uEditAppIntfs;
+     uCommonFunctions, uEditAppIntfs;
 
 {$R *.dfm}
 
@@ -165,7 +165,7 @@ begin
     OnDblClick       := ELDesignerDblClick;
   end;
   ELDesigner.GuiDesignerHints:= GuiPyOptions.GuiDesignerHints;
-  SetOptions;
+  //SetGridOptions;
 end;
 
 procedure TFGUIDesigner.ChangeTo(Formular: TFGUIForm);
@@ -791,11 +791,11 @@ begin
     else Result:= nil;
 end;
 
-procedure TFGUIDesigner.SetOptions;
+procedure TFGUIDesigner.SetGridOptions;
 begin
   ELDesigner.SnapToGrid:= GuiPyOptions.SnapToGrid;
-  ELDesigner.Grid.XStep:= GuiPyOptions.GridSize;
-  ELDesigner.Grid.YStep:= GuiPyOptions.GridSize;
+  ELDesigner.Grid.XStep:= PPIScale(GuiPyOptions.GridSize);
+  ELDesigner.Grid.YStep:= PPIScale(GuiPyOptions.GridSize);
 end;
 
 function TFGUIDesigner.getPath: string;

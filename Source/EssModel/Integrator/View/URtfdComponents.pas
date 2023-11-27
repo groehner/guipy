@@ -596,7 +596,9 @@ begin
   // paintTo in makeBitmap calls Paint to create the bitmap
   // it doesn't copy the screen-pixels, because controls can be covered by others
   // or can be partially places outside the window
-  if assigned(FBitmap) then fBitmapOK:= true;
+  if not assigned(FBitmap) then
+    makeBitmap;
+  fBitmapOK:= true;
 end;
 
 function TRtfdBox.getSVG: string;

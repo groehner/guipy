@@ -49,7 +49,6 @@ begin
     Columns.Items[3].Caption:= _('Message');
   end;
   Caption:= _('Revisions');
-  ParentFont:= false;
 end;
 
 procedure TFSubversion.ForFile(const aFile: string);

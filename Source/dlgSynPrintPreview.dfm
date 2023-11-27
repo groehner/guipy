@@ -6,6 +6,7 @@ inherited PrintPreviewDlg: TPrintPreviewDlg
   Caption = 'Print Preview'
   ClientHeight = 374
   ClientWidth = 490
+  ParentFont = False
   Position = poDefault
   ShowHint = True
   StyleElements = [seFont, seClient]

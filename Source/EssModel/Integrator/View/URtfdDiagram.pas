@@ -196,6 +196,7 @@ type
     procedure GetVisFromName(var Name: string; var vis: TVisibility);
     procedure Retranslate; override;
     function PanelIsLocked: boolean; override;
+    procedure SetUMLFont; override;
   end;
 
 implementation
@@ -203,7 +204,7 @@ implementation
 uses Menus, Forms, Math, SysUtils, UITypes, Dialogs, Contnrs,
   IniFiles, Clipbrd, JvGnugettext, TB2Item, SpTBXItem,
   uIterators, uRtfdDiagramFrame, USugiyamaLayout, uIntegrator, UConfiguration,
-  SynEdit, UUMLModule, UImages, UObjectGenerator,
+  SynEdit, UUMLModule, UImages, UObjectGenerator, dmResources,
   frmPyIDEMain, uEditAppIntfs, frmFile, frmPythonII, frmVariables,
   cPyControl, cPyBaseDebugger, PythonEngine, uCommonFunctions;
 
@@ -911,7 +912,7 @@ begin
 
     // read comments
     for i:= 0 to Sections.Count - 1 do begin
-      if Pos('Comment ', Sections[i]) = 1 then begin
+      if Pos('Comment: ', Sections[i]) = 1 then begin
         S:= Sections[i];
         j:= BoxNames.IndexOf(S);
         if j = -1 then begin
@@ -1625,13 +1626,21 @@ end;
 procedure TRtfdDiagram.CreateObjectExecuted(Sender: TObject);
 begin
   VariablesWindow.OnNotify:= nil;
-  FLivingObjects.makeAllObjects;
-  if FLivingObjects.InsertObject(CreateObjectObjectname) then begin
-    ShowMethodEntered('<init>', 'Actor', CreateObjectObjectname, CreateObjectParameter);
-    ShowNewObject(CreateObjectObjectname, CreateObjectClass);
-    if GuiPyOptions.ShowAllNewObjects then
-      ShowAllNewObjectsString(CreateObjectObjectname);
-    UpdateAllObjects;
+  LockFormUpdate(UMLForm);
+  Screen.Cursor := crHourGlass;
+  try
+    FLivingObjects.makeAllObjects;
+    if FLivingObjects.InsertObject(CreateObjectObjectname) then begin
+      ShowMethodEntered('<init>', 'Actor', CreateObjectObjectname, CreateObjectParameter);
+      ShowNewObject(CreateObjectObjectname, CreateObjectClass);
+      if GuiPyOptions.ShowAllNewObjects then
+        ShowAllNewObjectsString(CreateObjectObjectname);
+      UpdateAllObjects;
+    end;
+    ShowAll;
+  finally
+    Screen.Cursor := crDefault;
+    UnLockFormUpdate(UMLForm);
   end;
 end;
 
@@ -3227,7 +3236,6 @@ begin
   CommentBox.Left:= 50 + random(50);
   CommentBox.Width:= 150;
   CommentBox.Height:= 100;
-  CommentBox.Font.Assign(Font);
   BoxNames.AddObject(S, CommentBox);
   Panel.AddManagedObject(CommentBox);
 
@@ -3235,6 +3243,7 @@ begin
     aControl:= Panel.GetFirstSelected;
   if assigned(aControl) and (aControl is TRtfdClass) then begin
     aClass:= (aControl as TRtfdClass);
+    CommentBox.Font.Assign(Panel.Font);
     CommentBox.Top:= aClass.Top + random(50);
     CommentBox.Left:= aClass.Left + aClass.Width + 100 + random(50);
     Panel.ConnectObjects(aClass, CommentBox, asComment);
@@ -3501,6 +3510,17 @@ end;
 function TRtfdDiagram.PanelIsLocked: boolean;
 begin
   Result:= (Panel.UpdateCounter > 0);
+end;
+
+procedure TRtfdDiagram.SetUMLFont;
+begin
+  ResourcesDataModule.dlgFontDialog.Font.Assign(Font);
+  if ResourcesDataModule.dlgFontDialog.Execute then begin
+    Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
+    GuiPyOptions.UMLFont.Assign(Font);
+    SetFont(Font);
+    RefreshDiagram;
+  end;
 end;
 
 

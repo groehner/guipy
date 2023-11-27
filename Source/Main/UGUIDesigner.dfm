@@ -6,7 +6,11 @@ object FGUIDesigner: TFGUIDesigner
   ClientWidth = 346
   Color = clBtnFace
   DragMode = dmAutomatic
-  ParentFont = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
   WindowState = wsMaximized
   OnCreate = FormCreate
   TextHeight = 15

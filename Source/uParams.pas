@@ -749,6 +749,8 @@ begin
     UnRegisterParameter('Python39Dir');
     UnRegisterParameter('Python310Dir');
     UnRegisterParameter('Python311Dir');
+    UnRegisterParameter('Python312Dir');
+    UnRegisterParameter('Python313Dir');
     UnRegisterParameter('Python37Exe');
     UnRegisterParameter('Python38Exe');
     UnRegisterParameter('Python39Exe');

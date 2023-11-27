@@ -3,13 +3,17 @@ object FObjectInspector: TFObjectInspector
   Top = 270
   BorderStyle = bsSizeToolWin
   Caption = 'Object Inspector'
-  ClientHeight = 449
-  ClientWidth = 255
+  ClientHeight = 437
+  ClientWidth = 247
   Color = clBtnFace
   Constraints.MinHeight = 150
   DragKind = dkDock
   DragMode = dmAutomatic
-  ParentFont = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
   FormStyle = fsStayOnTop
   PopupMenu = PMObjectInspector
   OnCreate = FormCreate
@@ -19,8 +23,8 @@ object FObjectInspector: TFObjectInspector
   TextHeight = 15
   object TCAttributesEvents: TTabControl
     Left = 0
-    Top = 33
-    Width = 255
+    Top = 23
+    Width = 247
     Height = 25
     Align = alTop
     TabOrder = 0
@@ -30,39 +34,17 @@ object FObjectInspector: TFObjectInspector
     TabIndex = 0
     OnChange = TCAttributesEventsChange
     OnMouseDown = TCAttributesEventsMouseDown
-    ExplicitWidth = 247
-  end
-  object PObjects: TPanel
-    Left = 0
-    Top = 0
-    Width = 255
-    Height = 33
-    Align = alTop
-    TabOrder = 1
-    ExplicitWidth = 247
-    object CBObjects: TComboBox
-      Left = 5
-      Top = 4
-      Width = 252
-      Height = 23
-      Style = csDropDownList
-      Sorted = True
-      TabOrder = 0
-      OnChange = CBObjectsChange
-    end
   end
   object PNewDel: TPanel
     Left = 0
-    Top = 424
-    Width = 255
+    Top = 412
+    Width = 247
     Height = 25
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 2
-    ExplicitTop = 412
-    ExplicitWidth = 247
+    TabOrder = 1
     DesignSize = (
-      255
+      247
       25)
     object BNewDelete: TButton
       Left = 0
@@ -75,7 +57,7 @@ object FObjectInspector: TFObjectInspector
       OnClick = BNewDeleteClick
     end
     object BMore: TButton
-      Left = 156
+      Left = 124
       Top = 0
       Width = 75
       Height = 25
@@ -83,8 +65,19 @@ object FObjectInspector: TFObjectInspector
       Caption = 'More'
       TabOrder = 1
       OnClick = BMoreClick
-      ExplicitLeft = 148
+      ExplicitLeft = 132
     end
+  end
+  object CBObjects: TComboBox
+    Left = 0
+    Top = 0
+    Width = 247
+    Height = 23
+    Align = alTop
+    Style = csDropDownList
+    Sorted = True
+    TabOrder = 2
+    OnChange = CBObjectsChange
   end
   object PMObjectInspector: TSpTBXPopupMenu
     Left = 32

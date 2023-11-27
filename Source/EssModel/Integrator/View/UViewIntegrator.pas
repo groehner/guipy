@@ -133,6 +133,7 @@ type
     procedure ExecutePython(s: string); virtual; abstract;
     procedure Reinitalize; virtual; abstract;
     function PanelIsLocked: boolean; virtual; abstract;
+    procedure SetUMLFont; virtual; abstract;
 
     //Current package
     property Package: TAbstractPackage read FPackage write SetPackage;

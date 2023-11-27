@@ -9,6 +9,7 @@ inherited FunctionListWindow: TFunctionListWindow
   Caption = 'Function List'
   ClientHeight = 316
   ClientWidth = 532
+  ParentFont = False
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000040040000000000000000000000000000000000000000

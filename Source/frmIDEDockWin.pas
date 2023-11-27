@@ -52,38 +52,39 @@ type
     HasFocus : Boolean;
     ImageName: string;
     procedure CreateFormIcon;
-    procedure ScaleForPPI(NewPPI: Integer); override;
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); virtual;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); virtual;
   end;
 
-var
-  IDEDockWindow: TIDEDockWindow;
-  BorderHighlight : TColor;
-  BorderNormal : TColor;
-
 implementation
 
 uses
+  System.Types,
   Vcl.Themes,
-  SVG,
+  Vcl.SysStyles,
+  SVGInterfaces,
   SVGIconImageCollection,
   dmResources,
   uCommonFunctions;
 
 {$R *.dfm}
 
-function SvgToIcon(SVGText: string; Size: integer; FixedColor: TColor): HIcon;
+function SvgToIcon(SVG: ISVG; Size: integer; FixedColor: TColor): HIcon;
 begin
-   var SvgIcon := TSVG.Create;
-   try
-     SvgIcon.FixedColor := SvgFixedColor(FixedColor);
-     SvgIcon.ApplyFixedColorToRootOnly := True;
-     SvgIcon.LoadFromText(SvgText);
-     Result := SvgIcon.RenderToIcon(Size);
-   finally
-      SvgIcon.Free;
-   end;
+  var LBitmap := TSmartPtr.Make(TBitmap.Create)();
+  LBitmap.PixelFormat := TPixelFormat.pf32bit;   // 32bit bitmap
+  LBitmap.AlphaFormat := TAlphaFormat.afDefined; // Enable alpha channel
+
+  LBitmap.SetSize(Size, Size);
+
+  // Fill background with transparent
+  LBitmap.Canvas.Brush.Color := clNone;
+  LBitmap.Canvas.FillRect(Rect(0, 0, Size, Size));
+
+  SVG.FixedColor := SvgFixedColor(FixedColor);
+  SVG.ApplyFixedColorToRootOnly := True;
+  SVG.PaintTo(LBitmap.Canvas.Handle, TRectF.Create(0, 0, Size, Size));
+  Result := BmpToIcon(LBitmap.Handle);
 end;
 
 procedure TIDEDockWindow.WMSpSkinChange(var Message: TMessage);
@@ -144,13 +145,6 @@ begin
   // Empty at the base class
 end;
 
-procedure TIDEDockWindow.ScaleForPPI(NewPPI: Integer);
-begin
-  DockClient.LRDockWidth := MulDiv(DockClient.LRDockWidth, NewPPI, FCurrentPPI);
-  DockClient.TBDockHeight := MulDiv(DockClient.TBDockHeight, NewPPI, FCurrentPPI);
-  inherited;
-end;
-
 procedure TIDEDockWindow.DockClientTabHostFormCreated(
   DockClient: TJvDockClient; TabHost: TJvDockTabHostForm);
 begin
@@ -177,7 +171,7 @@ begin
      var Color: TColor;
      if not StyleServices.GetElementColor(Details, ecTextColor, Color) then
        Color := StyleServices.GetSystemColor(clBtnText);
-     Icon.Handle := SvgToIcon(SVGItem.SVGText, PPIScale(20), Color);
+     Icon.Handle := SvgToIcon(SVGItem.Svg, PPIScale(20), Color);
    end;
 end;
 

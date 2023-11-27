@@ -3,6 +3,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
   Caption = 'Run Configuration'
   ClientHeight = 435
   ClientWidth = 395
+  ParentFont = False
   OnDestroy = FormDestroy
   ExplicitWidth = 407
   ExplicitHeight = 473
@@ -22,7 +23,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
     object Bevel1: TBevel
       Left = 3
       Top = 391
-      Width = 380
+      Width = 376
       Height = 4
       Anchors = [akLeft, akRight, akBottom]
       Shape = bsBottomLine
@@ -441,7 +442,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
     end
     object btnOK: TButton
-      Left = 123
+      Left = 119
       Top = 401
       Width = 75
       Height = 25
@@ -450,11 +451,11 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Default = True
       ModalResult = 1
       TabOrder = 5
-      ExplicitLeft = 119
+      ExplicitLeft = 115
       ExplicitTop = 400
     end
     object btnCancel: TButton
-      Left = 207
+      Left = 203
       Top = 401
       Width = 75
       Height = 25
@@ -463,11 +464,11 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 6
-      ExplicitLeft = 203
+      ExplicitLeft = 199
       ExplicitTop = 400
     end
     object btnHelp: TButton
-      Left = 291
+      Left = 287
       Top = 401
       Width = 75
       Height = 25
@@ -475,7 +476,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Caption = '&Help'
       TabOrder = 7
       OnClick = btnHelpClick
-      ExplicitLeft = 287
+      ExplicitLeft = 283
       ExplicitTop = 400
     end
   end

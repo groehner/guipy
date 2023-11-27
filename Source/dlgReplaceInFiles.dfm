@@ -5,6 +5,7 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
   Caption = 'Replace Matches'
   ClientHeight = 158
   ClientWidth = 401
+  ParentFont = False
   Position = poScreenCenter
   ExplicitWidth = 413
   ExplicitHeight = 196
@@ -73,14 +74,14 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
     object cbReplace: TComboBox
       Left = 92
       Top = 30
-      Width = 298
+      Width = 294
       Height = 23
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
-      ExplicitWidth = 294
+      ExplicitWidth = 290
     end
     object btnOK: TButton
-      Left = 156
+      Left = 152
       Top = 125
       Width = 75
       Height = 25
@@ -89,11 +90,11 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
       Default = True
       ModalResult = 1
       TabOrder = 1
-      ExplicitLeft = 152
+      ExplicitLeft = 148
       ExplicitTop = 124
     end
     object btnCancel: TButton
-      Left = 235
+      Left = 231
       Top = 125
       Width = 75
       Height = 25
@@ -102,11 +103,11 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 2
-      ExplicitLeft = 231
+      ExplicitLeft = 227
       ExplicitTop = 124
     end
     object btnHelp: TButton
-      Left = 314
+      Left = 310
       Top = 125
       Width = 75
       Height = 25
@@ -114,7 +115,7 @@ inherited ReplaceInFilesDialog: TReplaceInFilesDialog
       Caption = '&Help'
       TabOrder = 3
       OnClick = btnHelpClick
-      ExplicitLeft = 310
+      ExplicitLeft = 306
       ExplicitTop = 124
     end
     object cbBackup: TCheckBox

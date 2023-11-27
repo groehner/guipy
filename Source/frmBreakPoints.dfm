@@ -5,6 +5,7 @@ inherited BreakPointsWindow: TBreakPointsWindow
   Caption = 'Breakpoints'
   ClientHeight = 244
   ClientWidth = 379
+  ParentFont = False
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000

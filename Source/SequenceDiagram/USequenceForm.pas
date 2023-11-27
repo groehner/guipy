@@ -139,7 +139,6 @@ type
     procedure SetFontSize(Delta: integer); override;
     procedure DoActivateFile(Primary: boolean = True); override;
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
-
   public
     // debugger related
     FromParticipant: string;
@@ -158,7 +157,6 @@ type
     procedure ObjectDelete;
 
     procedure Print; override;
-    procedure RefreshFromEditor;
     function getAsStringList: TStringList; override;
     procedure DoExport; override;
     procedure SetOptions; override;
@@ -191,6 +189,7 @@ begin
   SequencePanel.Parent:= SequenceScrollbox;
   SequencePanel.Width:= 800;
   SequencePanel.Height:= 600;
+  // SequencePanel.Align:= alClient; inhibits Scrollbars
 
   EditMemo:= TMemo.Create(Self);
   EditMemo.Parent:= Self;
@@ -237,7 +236,7 @@ begin
   Ini:= TMemIniFile.Create(Filename, TEncoding.UTF8);
   try
     try
-      LifeLinesTop:= min(Ini.ReadInteger('Diagram', 'Top', 30), 500);
+      LifeLinesTop:= PPIScale(min(Ini.ReadInteger('Diagram', 'Top', 30), 500));
       Ini.ReadSectionValues('Participants', SL);
       for i := 0 to SL.Count - 1 do
         AddLifeLine(UnhideCrLf(SL[i]));
@@ -272,7 +271,7 @@ begin
   SL.add('# Object | x-position');
   for i:= 0 to LifeLines.Count - 1 do begin
     aLifeline:= TLifeLine(LifeLines.Items[i]);
-    SL.add(HideCrLf(aLifeLine.Participant) + ' | ' +  IntToStr(aLifeLine.Left));
+    SL.add(HideCrLf(aLifeLine.Participant) + ' | ' +  IntToStr(PPIUnScale(aLifeLine.Left)));
   end;
 
   SL.add('');
@@ -299,8 +298,8 @@ begin
   SL.add('');
   SL.add('[Diagram]');
   if LifeLines.Count = 0
-    then SL.Add('Top=' + IntToStr(LifeLinesTop))
-    else SL.Add('Top=' + IntToStr(TLifeLine(LifeLines.Items[0]).Top));
+    then SL.Add('Top=' + IntToStr(PPIUnScale(LifeLinesTop)))
+    else SL.Add('Top=' + IntToStr(PPIUnScale(TLifeLine(LifeLines.Items[0]).Top)));
   SL.add('FontName=' + Font.Name);
   SL.add('FontSize=' + IntToStr(Font.Size));
   Result:= SL;
@@ -526,19 +525,6 @@ begin
   Modified:= true;
 end;
 
-procedure TFSequenceForm.RefreshFromEditor;
-begin
-  SequencePanel.isLocked:= true;
-  SequencePanel.ClearManagedObjects;
-  LifeLines.Clear;
-  LoadFromFile(Pathname);
-  SequencePanel.isLocked:= false;
-  CalculateDiagram;
-  SequencePanel.ShowAll;
-  Invalidate;
-  Modified:= true;
-end;
-
 procedure TFSequenceForm.PopupMenuConnectionPopup(Sender: TObject);
   var Pt: TPoint;
 begin
@@ -651,12 +637,12 @@ procedure TFSequenceForm.SetFont(aFont: TFont);
 begin
   inherited;
   Font.Assign(aFont);
-  DistY:= Round(cDistY*Font.Size/12.0);
-  ActivationWidth:= Round(cActivationWidth*Font.Size/12.0);
-  MinWidth:= Round(cMinWidth*Font.Size/12.0);
-  MinHeight:= Round(cMinHeight*Font.Size/12.0);
-  LifeLinesTop:= Round(cLifeLinesTop*Font.Size/12.0);
-  minDist:= Round(cMinDist*Font.Size/12.0);
+  DistY:= PPIScale(Round(cDistY*Font.Size/12.0));
+  ActivationWidth:= PPIScale(Round(cActivationWidth*Font.Size/12.0));
+  MinWidth:= PPIScale(Round(cMinWidth*Font.Size/12.0));
+  MinHeight:= PPIScale(Round(cMinHeight*Font.Size/12.0));
+  LifeLinesTop:= PPIScale(Round(cLifeLinesTop*Font.Size/12.0));
+  minDist:= PPIScale(Round(cMinDist*Font.Size/12.0));
   Canvas.Font.Assign(aFont);
 
   setPanelFont(aFont);
@@ -730,16 +716,16 @@ begin
 end;
 
 procedure TFSequenceForm.AddLifeline(const Participant: String);
-  var LifeLine: TLifeLine; i, maxx, x1: integer; SL: TStringList;
+  var LifeLine: TLifeLine; i, maxx, x1, lef: integer; SL: TStringList;
 begin
   if copy(Participant, 1, 1) = '#' then exit;
   SL:= Split('|', Participant);
-  LifeLine:= TLifeLine.createLL(SequencePanel, trim(SL[0]), Font);
+  LifeLine:= TLifeLine.createLL(SequencePanel, trim(SL[0]), Font, TBClose);
   LifeLine.OnDblClick:= LifeLineDblClick;
   LifeLine.PopupMenu:= PopupMenuLifeLineAndSequencePanel;
   LifeLine.onCreatedChanged:= onCreatedChanged;
-  if (Sl.Count > 1) and TryStrToInt(trim(SL[1]), i) then begin
-    LifeLine.Left:= i;
+  if (Sl.Count > 1) and TryStrToInt(trim(SL[1]), lef) then begin
+    LifeLine.Left:= PPIScale(lef);
     if LifeLines.Count > 0
       then LifeLine.Top:= TLifeLine(LifeLines.Items[0]).Top
       else LifeLine.Top:= LifeLinesTop;
@@ -771,7 +757,8 @@ procedure TFSequenceForm.AddConnection(const Connection: String);
       Attributes: TConnectionAttributes;
       Lifeline1, LifeLine2: TLifeLine;
 begin
-  if Copy(Connection, 1, 1) = '#' then exit;
+  if Copy(Connection, 1, 1) = '#' then
+    exit;
   ArrowStyle:= casSynchron;
   p:= Pos('->>', Connection);
   if p > 0 then
@@ -940,7 +927,7 @@ begin
 end;
 
 procedure TFSequenceForm.EditMemoChange(Sender: TObject);
-  var w, h: integer;  LifeLine: TLifeLine;
+  var w, h: integer; LifeLine: TLifeLine;
 begin
   LifeLine:= EditMemoElement;
   if assigned(LifeLine) then begin

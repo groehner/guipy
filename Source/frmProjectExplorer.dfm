@@ -1,8 +1,8 @@
 inherited ProjectExplorerWindow: TProjectExplorerWindow
   HelpContext = 435
   Caption = 'Project Explorer'
-  ClientHeight = 369
-  ClientWidth = 655
+  ClientHeight = 345
+  ClientWidth = 639
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -41,34 +41,34 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     9C41FC039C41F8019C41F0009C4100009C4100009C4100009C4100009C410000
     9C4100019C4100039C4100079C4100079C4100079C4100079C4100079C41}
   OnShow = FormShow
-  ExplicitWidth = 671
-  ExplicitHeight = 408
+  ExplicitWidth = 647
+  ExplicitHeight = 372
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 655
-    Height = 369
-    ExplicitWidth = 59
-    ExplicitHeight = 156
+    Width = 639
+    Height = 345
+    ExplicitWidth = 631
+    ExplicitHeight = 333
     inherited FGPanel: TPanel
-      Width = 731
-      Height = 485
-      ExplicitWidth = 55
-      ExplicitHeight = 152
+      Width = 635
+      Height = 341
+      ExplicitWidth = 627
+      ExplicitHeight = 329
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 731
-        Height = 485
+        Width = 635
+        Height = 341
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 55
-        ExplicitHeight = 152
+        ExplicitWidth = 627
+        ExplicitHeight = 329
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 30
-          Width = 731
-          Height = 455
+          Width = 635
+          Height = 311
           Align = alClient
           BorderStyle = bsNone
           Header.AutoSizeIndex = -1
@@ -99,18 +99,16 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           OnNodeDblClick = ExplorerTreeNodeDblClick
           Touch.InteractiveGestures = [igPan, igPressAndTap]
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
-          ExplicitLeft = 104
-          ExplicitTop = 14
           Columns = <>
         end
         object SpTBXDock1: TSpTBXDock
           Left = 0
           Top = 0
-          Width = 731
+          Width = 635
           Height = 30
           AllowDrag = False
           DoubleBuffered = True
-          ExplicitWidth = 55
+          ExplicitWidth = 627
           object SpTBXToolbar1: TSpTBXToolbar
             Left = 0
             Top = 0

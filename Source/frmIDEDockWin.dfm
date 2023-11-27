@@ -3,14 +3,18 @@ object IDEDockWindow: TIDEDockWindow
   Top = 263
   BorderStyle = bsSizeToolWin
   Caption = 'IDE Dock Window'
-  ClientHeight = 60
-  ClientWidth = 0
+  ClientHeight = 48
+  ClientWidth = 616
   Color = clBtnFace
   DefaultMonitor = dmDesktop
   DockSite = True
   DragKind = dkDock
   DragMode = dmAutomatic
-  ParentFont = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
   PopupMode = pmExplicit
   Position = poDesigned
   ShowHint = True
@@ -22,8 +26,8 @@ object IDEDockWindow: TIDEDockWindow
   object BGPanel: TPanel
     Left = 0
     Top = 0
-    Width = 0
-    Height = 60
+    Width = 616
+    Height = 48
     Align = alClient
     BevelOuter = bvNone
     Padding.Left = 2
@@ -32,19 +36,21 @@ object IDEDockWindow: TIDEDockWindow
     Padding.Bottom = 2
     TabOrder = 0
     StyleElements = [seFont]
-    ExplicitWidth = 227
-    ExplicitHeight = 408
+    ExplicitWidth = 608
+    ExplicitHeight = 36
     object FGPanel: TPanel
       Left = 2
       Top = 2
-      Width = 223
-      Height = 404
+      Width = 612
+      Height = 44
       Align = alClient
       BevelOuter = bvNone
       Ctl3D = False
       FullRepaint = False
       ParentCtl3D = False
       TabOrder = 0
+      ExplicitWidth = 604
+      ExplicitHeight = 32
     end
   end
   object DockClient: TJvDockClient

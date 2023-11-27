@@ -4,10 +4,14 @@ object FObjectGenerator: TFObjectGenerator
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSizeToolWin
   Caption = 'Object generator'
-  ClientHeight = 591
-  ClientWidth = 257
+  ClientHeight = 567
+  ClientWidth = 241
   Color = clBtnFace
-  ParentFont = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
   FormStyle = fsStayOnTop
   Position = poDefault
   OnClose = FormClose
@@ -16,14 +20,14 @@ object FObjectGenerator: TFObjectGenerator
   TextHeight = 15
   object StatusBar: TStatusBar
     Left = 0
-    Top = 560
-    Width = 257
+    Top = 536
+    Width = 241
     Height = 31
     Panels = <>
-    ExplicitTop = 572
-    ExplicitWidth = 265
+    ExplicitTop = 548
+    ExplicitWidth = 249
     DesignSize = (
-      257
+      241
       31)
     object BCancel: TButton
       Left = 160
@@ -59,8 +63,8 @@ object FObjectGenerator: TFObjectGenerator
   object ValueListEditor: TValueListEditor
     Left = 0
     Top = 0
-    Width = 257
-    Height = 560
+    Width = 241
+    Height = 536
     Align = alClient
     Constraints.MinWidth = 235
     TabOrder = 0
@@ -68,11 +72,11 @@ object FObjectGenerator: TFObjectGenerator
       'Attribute'
       'Value')
     OnKeyUp = ValueListEditorKeyUp
-    ExplicitWidth = 265
-    ExplicitHeight = 572
+    ExplicitWidth = 249
+    ExplicitHeight = 548
     ColWidths = (
       111
-      148)
+      140)
   end
   object PictureDialog: TOpenDialog
     Filter = 

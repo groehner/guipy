@@ -5,6 +5,7 @@ inherited fmToDoOptions: TfmToDoOptions
   Caption = 'To Do Options'
   ClientHeight = 283
   ClientWidth = 512
+  ParentFont = False
   Position = poScreenCenter
   OnShow = FormShow
   ExplicitWidth = 524
@@ -211,7 +212,7 @@ inherited fmToDoOptions: TfmToDoOptions
       end
     end
     object btnOK: TButton
-      Left = 250
+      Left = 242
       Top = 251
       Width = 80
       Height = 26
@@ -220,11 +221,11 @@ inherited fmToDoOptions: TfmToDoOptions
       Default = True
       ModalResult = 1
       TabOrder = 3
-      ExplicitLeft = 246
+      ExplicitLeft = 238
       ExplicitTop = 250
     end
     object btnCancel: TButton
-      Left = 338
+      Left = 330
       Top = 251
       Width = 80
       Height = 26
@@ -233,11 +234,11 @@ inherited fmToDoOptions: TfmToDoOptions
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 4
-      ExplicitLeft = 334
+      ExplicitLeft = 326
       ExplicitTop = 250
     end
     object btnHelp: TButton
-      Left = 426
+      Left = 418
       Top = 252
       Width = 75
       Height = 25
@@ -245,7 +246,7 @@ inherited fmToDoOptions: TfmToDoOptions
       Caption = '&Help'
       TabOrder = 5
       OnClick = btnHelpClick
-      ExplicitLeft = 422
+      ExplicitLeft = 414
       ExplicitTop = 251
     end
   end

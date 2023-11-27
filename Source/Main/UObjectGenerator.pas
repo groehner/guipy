@@ -30,10 +30,10 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ValueListEditorKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure MIFontClick(Sender: TObject);
+    function Indent2: string;
   private
     Defaults: array[1..50] of string;
     jfmDefaults: array[1..50] of jfmrec;
-    Indent1, Indent2, Indent3: string;
     MaxDefaults: integer;
   protected
     // IJvAppStorageHandler implementation
@@ -100,12 +100,8 @@ begin
   setDefault(5, 'Text', '', TagText);
   setDefault(6, 'Font', '(Font)', TagText);
   MaxDefaults:= 5;
-  Indent1:= FConfiguration.Indent1;
-  Indent2:= FConfiguration.Indent2;
-  Indent3:= FConfiguration.Indent3;
   Font.Name:= 'Segoe UI';
   Font.Size:= 12;
-  ParentFont:= false;
 end;
 
 procedure TFObjectGenerator.FormShow(Sender: TObject);
@@ -482,6 +478,11 @@ begin
   Hide;
   Height:= h;
   Width:= w;
+end;
+
+function TFObjectGenerator.Indent2: string;
+begin
+  Result:= Fconfiguration.Indent2;
 end;
 
 end.

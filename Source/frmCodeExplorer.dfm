@@ -3,8 +3,9 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
   Top = 237
   HelpContext = 430
   Caption = 'Code Explorer'
-  ClientHeight = 294
-  ClientWidth = 241
+  ClientHeight = 282
+  ClientWidth = 233
+  ParentFont = False
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -40,34 +41,34 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000078AA723108FB1F3078AA723000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 249
-  ExplicitHeight = 321
+  ExplicitWidth = 241
+  ExplicitHeight = 309
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 241
-    Height = 294
-    ExplicitWidth = 233
-    ExplicitHeight = 282
+    Width = 233
+    Height = 282
+    ExplicitWidth = 225
+    ExplicitHeight = 270
     inherited FGPanel: TPanel
-      Width = 237
-      Height = 290
-      ExplicitWidth = 229
-      ExplicitHeight = 278
+      Width = 229
+      Height = 278
+      ExplicitWidth = 221
+      ExplicitHeight = 266
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 237
-        Height = 290
+        Width = 229
+        Height = 278
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 229
-        ExplicitHeight = 278
+        ExplicitWidth = 221
+        ExplicitHeight = 266
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 0
-          Width = 237
-          Height = 290
+          Width = 229
+          Height = 278
           Align = alClient
           BorderStyle = bsNone
           Colors.UnfocusedColor = clHighlightText
@@ -102,7 +103,7 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
             item
               Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus, coStyleColor]
               Position = 0
-              Width = 237
+              Width = 229
             end>
         end
       end

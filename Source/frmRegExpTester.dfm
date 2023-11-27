@@ -1,8 +1,8 @@
 inherited RegExpTesterWindow: TRegExpTesterWindow
   HelpContext = 865
   Caption = 'Regular Expressions'
-  ClientHeight = 466
-  ClientWidth = 376
+  ClientHeight = 454
+  ClientWidth = 368
   Icon.Data = {
     0000010001001010000000000000680500001600000028000000100000002000
     0000010008000000000040010000000000000000000000010000000000000000
@@ -48,28 +48,27 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
     000000000000000000F77E7E1023000000000000000000000000F77D7E11FFFF
     0000E00F00008003000000010000000100000001000000010000000100000003
     00000007000080030000E0010000FF800000FFC00000FFE00000FFF00000}
-  ExplicitWidth = 392
-  ExplicitHeight = 505
+  ExplicitWidth = 384
+  ExplicitHeight = 493
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 376
-    Height = 466
+    Width = 368
+    Height = 454
     ExplicitWidth = 376
     ExplicitHeight = 466
     inherited FGPanel: TPanel
-      Width = 380
-      Height = 474
+      Width = 372
+      Height = 462
       ParentBackground = False
       ExplicitWidth = 372
       ExplicitHeight = 462
       object TBXDock: TSpTBXDock
         Left = 0
         Top = 0
-        Width = 380
+        Width = 372
         Height = 30
         AllowDrag = False
         DoubleBuffered = True
-        ExplicitWidth = 372
         object RegExpTesterToolbar: TSpTBXToolbar
           Left = 0
           Top = 0
@@ -199,13 +198,11 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
       end
       object StatusBar: TSpTBXStatusBar
         Left = 0
-        Top = 444
-        Width = 380
+        Top = 432
+        Width = 372
         Height = 30
         Images = vilImages
         SizeGrip = False
-        ExplicitTop = 432
-        ExplicitWidth = 372
         object lbStatusBar: TSpTBXLabelItem
           Caption = 'Not executed'
           ImageIndex = 3
@@ -215,23 +212,19 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
       object pnlBackground: TPanel
         Left = 0
         Top = 30
-        Width = 380
-        Height = 414
+        Width = 372
+        Height = 402
         Align = alClient
         ParentColor = True
         TabOrder = 2
-        ExplicitWidth = 372
-        ExplicitHeight = 402
         object dpGroupsView: TPanel
           Left = 1
-          Top = 313
-          Width = 378
+          Top = 301
+          Width = 370
           Height = 100
           Align = alBottom
           ParentColor = True
           TabOrder = 0
-          ExplicitTop = 301
-          ExplicitWidth = 370
           object TBXLabel1: TSpTBXLabel
             Left = 1
             Top = 1
@@ -297,38 +290,34 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
         end
         object SpTBXSplitter1: TSpTBXSplitter
           Left = 1
-          Top = 308
-          Width = 378
+          Top = 296
+          Width = 370
           Height = 5
           Cursor = crSizeNS
           Align = alBottom
           ParentColor = False
-          ExplicitTop = 296
-          ExplicitWidth = 370
         end
         object dpRegExpText: TPanel
           Left = 1
           Top = 1
-          Width = 378
+          Width = 370
           Height = 100
           Align = alTop
           Constraints.MinHeight = 40
           ParentColor = True
           TabOrder = 1
-          ExplicitWidth = 370
           object SpTBXPanel1: TPanel
             Left = 1
             Top = 1
-            Width = 376
+            Width = 368
             Height = 98
             Align = alClient
             ParentColor = True
             TabOrder = 0
-            ExplicitWidth = 368
             object TBXLabel3: TSpTBXLabel
               Left = 1
               Top = 1
-              Width = 374
+              Width = 366
               Height = 21
               Caption = 'Regular Expression'
               Align = alTop
@@ -341,12 +330,11 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
               Wrapping = twEndEllipsis
               Underline = True
               UnderlineColor = 16746564
-              ExplicitWidth = 366
             end
             object RegExpText: TSynEdit
               Left = 1
               Top = 22
-              Width = 374
+              Width = 366
               Height = 75
               Cursor = crDefault
               Align = alClient
@@ -389,53 +377,47 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
               SelectedColor.Alpha = 0.400000005960464500
               WordWrap = True
               OnChange = RegExpTextChange
-              ExplicitWidth = 366
             end
           end
         end
         object SpTBXSplitter2: TSpTBXSplitter
           Left = 1
           Top = 101
-          Width = 378
+          Width = 370
           Height = 5
           Cursor = crSizeNS
           Align = alTop
           ParentColor = False
-          ExplicitWidth = 370
         end
         object pnlMiddle: TPanel
           Left = 1
           Top = 106
-          Width = 378
-          Height = 202
+          Width = 370
+          Height = 190
           Align = alClient
           Constraints.MinHeight = 40
           ParentBackground = False
           ParentColor = True
           TabOrder = 2
-          ExplicitWidth = 370
-          ExplicitHeight = 190
           object dpSearchText: TPanel
             Left = 1
             Top = 1
-            Width = 376
+            Width = 368
             Height = 120
             Align = alTop
             ParentColor = True
             TabOrder = 0
-            ExplicitWidth = 368
             object SpTBXPanel2: TPanel
               Left = 1
               Top = 1
-              Width = 374
+              Width = 366
               Height = 118
               Align = alClient
               TabOrder = 0
-              ExplicitWidth = 366
               object TBXLabel4: TSpTBXLabel
                 Left = 1
                 Top = 1
-                Width = 372
+                Width = 364
                 Height = 21
                 Caption = 'Search Text:'
                 Align = alTop
@@ -448,12 +430,11 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 Wrapping = twEndEllipsis
                 Underline = True
                 UnderlineColor = 16746564
-                ExplicitWidth = 364
               end
               object SearchText: TSynEdit
                 Left = 1
                 Top = 22
-                Width = 372
+                Width = 364
                 Height = 95
                 Cursor = crDefault
                 Align = alClient
@@ -496,48 +477,42 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 SelectedColor.Alpha = 0.400000005960464500
                 WordWrap = True
                 OnChange = RegExpTextChange
-                ExplicitWidth = 364
               end
             end
           end
           object SpTBXSplitter3: TSpTBXSplitter
             Left = 1
             Top = 121
-            Width = 376
+            Width = 368
             Height = 5
             Cursor = crSizeNS
             Align = alTop
             ParentColor = False
-            ExplicitWidth = 368
           end
           object dpMatchText: TPanel
             Left = 1
             Top = 126
-            Width = 376
-            Height = 75
+            Width = 368
+            Height = 63
             Align = alClient
             ParentColor = True
             TabOrder = 1
-            ExplicitWidth = 368
-            ExplicitHeight = 63
             object SpTBXPanel3: TPanel
               Left = 1
               Top = 1
-              Width = 374
-              Height = 73
+              Width = 366
+              Height = 61
               Align = alClient
               Constraints.MinHeight = 40
               ParentColor = True
               TabOrder = 0
-              ExplicitWidth = 366
-              ExplicitHeight = 61
               DesignSize = (
-                366
-                61)
+                358
+                49)
               object lblMatch: TSpTBXLabel
                 Left = 1
                 Top = 1
-                Width = 364
+                Width = 356
                 Height = 21
                 Caption = 'Match:'
                 Align = alTop
@@ -550,9 +525,10 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 Wrapping = twEndEllipsis
                 Underline = True
                 UnderlineColor = 16746564
+                ExplicitWidth = 364
               end
               object SpinMatches: TSpTBXSpinEdit
-                Left = 311
+                Left = 295
                 Top = 0
                 Width = 41
                 Height = 21
@@ -580,8 +556,8 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
               object MatchText: TSynEdit
                 Left = 1
                 Top = 22
-                Width = 364
-                Height = 38
+                Width = 356
+                Height = 26
                 Cursor = crDefault
                 Align = alClient
                 Font.Charset = ANSI_CHARSET
@@ -623,6 +599,8 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 ScrollBars = ssVertical
                 SelectedColor.Alpha = 0.400000005960464500
                 WordWrap = True
+                ExplicitWidth = 364
+                ExplicitHeight = 38
               end
             end
           end
