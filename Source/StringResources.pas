@@ -381,6 +381,7 @@ Const
                           'Do you want to proceed?';
   SFileAlreadyOpen = 'Another editor with the same file is open.' + SLineBreak +
                      'You can not have two editors with the same file.';
+  SWriteProtected = 'The file "%s" is write protected.';
   SCloseWithoutSaving = 'The text in the "%s" file has changed.'#13#10#13#10 + 'Do you want to close the file without saving?';
 
   // Parameters

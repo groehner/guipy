@@ -286,10 +286,8 @@ begin
     for i:= 0 to Connections.Count-1 do begin
       Conn:= TConnection(Connections[i]);
       with conn do
-        c:= HideCrLf((FFrom as TLifeLine).Participant) +
-            getArrowStyleAsString +
-            HideCrLf((FTo as TLifeLine).Participant) +
-            ' | ' + conn.aMessage;
+        c:= HideCrLf((FFrom as TLifeLine).Participant) + getArrowStyleAsString +
+            HideCrLf((FTo as TLifeLine).Participant) + ' | ' + conn.aMessage;
        SL.add(c);
     end;
   finally

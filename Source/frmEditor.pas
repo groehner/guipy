@@ -1686,13 +1686,13 @@ procedure TEditorForm.ShowTkOrQt;
 begin
   var PC:= PyIDEMainForm.TabControlWidgets;
   if FrameType in [0, 1] then begin
-    PC.items[1].Visible:= true;
-    PC.items[2].Visible:= true;
-    PC.items[3].Visible:= true;
-    PC.items[4].Visible:= true;
+    PC.items[1].Visible:= FConfiguration.VisTabs[1];
+    PC.items[2].Visible:= FConfiguration.VisTabs[2];
+    PC.items[3].Visible:= FConfiguration.VisTabs[3];
+    PC.items[4].Visible:= FConfiguration.VisTabs[4];
   end else if FrameType = 2 then begin
-    PC.items[1].Visible:= true;
-    PC.items[2].Visible:= true;
+    PC.items[1].Visible:= FConfiguration.VisTabs[1];
+    PC.items[2].Visible:= FConfiguration.VisTabs[2];
     PC.items[3].Visible:= false;
     PC.items[4].Visible:= false;
     if PC.ActiveTabIndex = 3 then
@@ -1700,8 +1700,8 @@ begin
   end else if FrameType = 3 then begin
     PC.items[1].Visible:= false;
     PC.items[2].Visible:= false;
-    PC.items[3].Visible:= true;
-    PC.items[4].Visible:= true;
+    PC.items[3].Visible:= FConfiguration.VisTabs[3];
+    PC.items[4].Visible:= FConfiguration.VisTabs[4];
     if PC.ActiveTabIndex < 3 then
       PC.TabClick(TSpTBXTabItem(PC.Items[3]));
   end;

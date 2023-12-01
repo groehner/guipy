@@ -1328,7 +1328,6 @@ type
     procedure Changed;
     procedure RestoreApplicationData;
     procedure setToolbarVisibility(Toolbar: TToolbar; Nr: integer);
-    procedure InitVisibility;
     procedure SetVisibility;
     function getEncoding(const Pathname: string): TEncoding;
     procedure PrepareShow;
@@ -1476,6 +1475,7 @@ begin
   Indent1:= StringOfChar(' ', 1*IndentWidth);
   Indent2:= StringOfChar(' ', 2*IndentWidth);
   Indent3:= StringOfChar(' ', 3*IndentWidth);
+  PrepareVisibilityPage;
 end;
 
 procedure TFConfiguration.FormDestroy(Sender: TObject);
@@ -4322,10 +4322,7 @@ begin
         TEditorForm(Fi.Form).Partner.Hide;
     end;
   end);
-
   ActionApplyStyleExecute(Self);
-  Application.ProcessMessages;
-
   GI_FileFactory.ApplyToFiles(procedure(Fi: IFile)
   begin
     if Fi.GetFileKind = fkEditor then begin
@@ -5160,12 +5157,6 @@ begin
   end;
 end;
 
-procedure TFConfiguration.InitVisibility;
-begin
-  PrepareVisibilityPage;
-  Changed;
-end;
-
 procedure TFConfiguration.LoadVisibility;
   var n: integer;
 
@@ -5350,8 +5341,7 @@ begin
 end;
 
 procedure TFConfiguration.SetVisibility;
-  var i, j: integer; Toolbar: TToolbar; Toolbutton: TToolbutton;
-      Menu: TTBCustomItem; allTabsClosed: boolean;
+  var i, j: integer; Menu: TTBCustomItem;
 
   function IndexItemsToPages(Index: integer): integer;
   begin
@@ -5362,17 +5352,15 @@ procedure TFConfiguration.SetVisibility;
     Result:= -1;
   end;
 
-  begin
-  allTabsClosed:= true;
+begin
+  var allTabsClosed:= true;
   for i:= 0 to High(VisTabs) do begin
-    PyIDEMainForm.TabControlWidgets.Pages[IndexItemsToPages(i)].TabVisible:= VisTabs[i];
-    if VisTabs[i] then allTabsClosed:= false;
+    allTabsClosed:= alltabsClosed and not VisTabs[i];
     j:= IndexItemsToPages(i);
-    Toolbar:= TToolbar(PyIDEMainForm.TabControlWidgets.Pages[j].Controls[0]);
-    for j:= 0 to Toolbar.ControlCount - 1 do begin
-      Toolbutton:= TToolbutton(Toolbar.Controls[j]);
-      Toolbutton.Visible:= vis1[i, j];
-    end;
+    PyIDEMainForm.TabControlWidgets.Pages[j].TabVisible:= VisTabs[i];
+    var Toolbar:= TToolbar(PyIDEMainForm.TabControlWidgets.Pages[j].Controls[0]);
+    for j:= 0 to Toolbar.ButtonCount - 1 do
+      Toolbar.Buttons[j].Visible:= vis1[i, j];
   end;
   PyIDEMainForm.TabControlWidgets.Visible:= not allTabsClosed;
 

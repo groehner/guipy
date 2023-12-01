@@ -231,7 +231,7 @@ begin
     LockRefresh:= false;
     LockCreateTV:= false;
     MainModul.AddToProject(Filename);
-    PyIDEMainForm.RunFile(fFile);
+    //PyIDEMainForm.RunFile(fFile);
   finally
     UnlockFormUpdate(Self);
   end;

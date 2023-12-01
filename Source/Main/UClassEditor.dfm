@@ -1,11 +1,11 @@
 object FClassEditor: TFClassEditor
-  Left = 284
+  Left = 280
   Top = 181
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'UML class editor'
-  ClientHeight = 447
-  ClientWidth = 686
+  ClientHeight = 453
+  ClientWidth = 708
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,7 +13,7 @@ object FClassEditor: TFClassEditor
   Font.Name = 'Segoe UI'
   Font.Style = []
   FormStyle = fsStayOnTop
-  Position = poOwnerFormCenter
+  Position = poDesigned
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow

@@ -9,7 +9,7 @@ object ResourcesDataModule: TResourcesDataModule
     Top = 22
   end
   object dlgFileSave: TSaveDialog
-    Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofNoReadOnlyReturn, ofEnableSizing]
+    Options = [ofHideReadOnly, ofPathMustExist, ofNoReadOnlyReturn, ofEnableSizing]
     Left = 103
     Top = 22
   end

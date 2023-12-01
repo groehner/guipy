@@ -1468,7 +1468,6 @@ type
     procedure mnSpellingPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure actEditorZoomResetExecute(Sender: TObject);
     procedure DdeServerConvExecuteMacro(Sender: TObject; Msg: TStrings);
-//    procedure DpiChanged(var Msg: TMessage); message WM_DPICHANGED;
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
       NewDPI: Integer);
   private
@@ -1553,6 +1552,7 @@ type
     procedure MRUAddFile(aFile: IFile);
     procedure ChangeStyle;
     procedure DeleteObjectsInUMLForms;
+    function GetCachedPycFilename(Filename: string): string;
   public
     ActiveTabControlIndex : integer;
     PythonKeywordHelpRequested : Boolean;
@@ -1624,7 +1624,7 @@ type
     procedure RunEditor(ActiveEditor: IEditor);
     procedure ImportModule(pathname: string);
     function IsAValidClass(const Pathname: String): boolean;
-    procedure RunExecuteUMLWindows(const Pathname: String);
+    procedure CreatePycFilesForUMLWindows;
     procedure RefreshUMLWindows;
     procedure SetLayoutMenus(Predefined: boolean);
     procedure DropFiles(Sender: TObject; X, Y: Integer; AFiles: TStrings);
@@ -2273,7 +2273,6 @@ begin
 
   //SkinManager.AddSkinNotification(Self);
   //SkinManager.BroadcastSkinNotification;
-  FConfiguration.InitVisibility;
   FConfiguration.PatchConfiguration;
   ChangeStyle;
 end;
@@ -2287,7 +2286,6 @@ begin
   EditorViewsMenu.Remove(ViewMenuItem);
   ToolsMenu.Insert(2, ViewMenuItem);
   ViewMenuItem.Tag:= 0;
-  FConfiguration.SetVisibility;
 end;
 
 procedure TPyIDEMainForm.SetLayoutMenus(Predefined: boolean);
@@ -3053,32 +3051,54 @@ end;
 procedure TPyIDEMainForm.RunFile(aFile: IFile);
 begin
   if Assigned(aFile) then begin
-    LockFormUpdate(Self);
-    var ActiveFilename:= '';
-    if aFile.FileKind = fkEditor then begin
-      runEditor(aFile as IEditor);
-      ActiveFilename:= aFile.Filename;
-    end else
-      actPythonReinitializeExecute(nil);
-    RunExecuteUMLWindows(ActiveFilename);
-    UnLockFormUpdate(Self);
+    if aFile.FileKind = fkEditor then
+      runEditor(aFile as IEditor)   // without import, starts a thread
+    else begin
+      if PyIDEOptions.ReinitializeBeforeRun then
+        actPythonReinitializeExecute(nil);
+      if PyIDEOptions.SaveFilesBeforeRun then begin
+        GI_PyIDEServices.SaveFileModules;
+        Application.MainForm.Refresh;   // To update save flags
+      end;
+    end;
+
+    // runEditor thread finished
+    TThread.ForceQueue(nil, procedure
+      begin
+        CreatePycFilesForUMLWindows;
+        for var i:= 0 to GI_FileFactory.Count - 1 do
+          if GI_FileFactory.FactoryFile[i].FileKind = fkUML then
+           (GI_FileFactory.FactoryFile[i].Form as TFUMLForm).Refresh;
+      end);
   end;
 end;
 
-procedure TPyIDEMainForm.RunExecuteUMLWindows(const Pathname: string);
+procedure TPyIDEMainForm.CreatePycFilesForUMLWindows;
   var i: integer;
 begin
   DeleteObjectsInUMLForms;
   if not GI_PyControl.Running then begin
     var SL:= TStringList.Create(dupIgnore, true, false);
-    for i:= 0 to GI_FileFactory.Count - 1 do
-      if GI_FileFactory.FactoryFile[i].FileKind = fkUML then
-        SL.AddStrings((GI_FileFactory.FactoryFile[i].Form as TFUMLForm).MainModul.getFiles);
-    for i:= 0 to SL.Count - 1 do
-      if FileExists(SL[i]) and (SL[i] <> Pathname) then
-         ImportModule(SL[i]);
-    FreeAndNil(SL);
+    try
+      for i:= 0 to GI_FileFactory.Count - 1 do
+        if GI_FileFactory.FactoryFile[i].FileKind = fkUML then
+          SL.AddStrings((GI_FileFactory.FactoryFile[i].Form as TFUMLForm).MainModul.getFiles);
+      for i:= 0 to SL.Count - 1 do
+        if FileExists(SL[i]) then
+          importModule(SL[i]); // creates the .pyc file
+    finally
+      FreeAndNil(SL);
+    end;
   end;
+end;
+
+function TPyIDEMainForm.GetCachedPycFilename(Filename: string): string;
+begin
+  Result:= TPath.Combine(ExtractFilePath(Filename),
+             TPath.Combine('__pycache__',
+               TPath.getFileNameWithoutExtension(Filename) +
+                 '.cpython-' + myStringReplace(PyControl.PythonVersion.SysVersion, '.', '') +
+                   '.pyc'));
 end;
 
 procedure TPyIDEMainForm.ImportModule(pathname: string);
@@ -3103,16 +3123,11 @@ begin
   Modified:= assigned(Editor) and Editor.Modified;
   if Modified then
     exit(false);
-  CachedFile:=
-    TPath.Combine(ExtractFilePath(Pathname),
-      TPath.Combine('__pycache__',
-        TPath.getFileNameWithoutExtension(Pathname) +
-          '.cpython-' + myStringReplace(PyControl.PythonVersion.SysVersion, '.', '') +
-          '.pyc'));
+  CachedFile:= GetCachedPycFilename(Pathname);
   Result:= false;
   if FileExists(CachedFile) and
-     FileAge(CachedFile, FDCached) and FileAge(Pathname, FDPath) then
-    Result:= (FDCached >= FDPath)
+    FileAge(CachedFile, FDCached) and FileAge(Pathname, FDPath) then
+      Result:= (FDCached >= FDPath)
 end;
 
 procedure TPyIDEMainForm.RunEditor(ActiveEditor: IEditor);
@@ -3552,6 +3567,7 @@ end;
 
 procedure TPyIDEMainForm.SpTBXItem3Click(Sender: TObject);
 begin
+FConfiguration.SetVisibility;
   ShowMessage('Statusbar Fontsize : ' + IntToStr(Statusbar.Font.Size));
 end;
 
@@ -4978,7 +4994,6 @@ begin
 
   mnTools.Add(TSpTBXSeparatorItem.Create(Self));
   mnTools.Add(mnConfigureTools);
-  FConfiguration.SetVisibility;
 end;
 
 procedure TPyIDEMainForm.SetupLanguageMenu;

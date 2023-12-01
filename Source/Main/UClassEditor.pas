@@ -1358,7 +1358,7 @@ begin
       s:= Ident1 + 'def ' + _(LNGSet) + '_' + aName + '(self, ' + aName;
       if datatype <> '' then
         s:= s + ': ' + datatype;
-      s:= s + '):' + CrLf + Ident2 + 'self.' + Attribute.VisName + ' = value' + CrLf;
+      s:= s + '):' + CrLf + Ident2 + 'self.' + Attribute.VisName + ' = ' + aName + CrLf;
     end;
   end;
   Result:= s;

@@ -2,8 +2,8 @@ object FUMLForm: TFUMLForm
   Left = 394
   Top = 229
   Caption = 'UML'
-  ClientHeight = 609
-  ClientWidth = 705
+  ClientHeight = 608
+  ClientWidth = 701
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,27 +20,24 @@ object FUMLForm: TFUMLForm
   object PUML: TPanel
     Left = 0
     Top = 0
-    Width = 705
-    Height = 609
+    Width = 701
+    Height = 608
     Align = alClient
     Caption = 'PUML'
     TabOrder = 0
     OnResize = PUMLResize
-    ExplicitWidth = 701
-    ExplicitHeight = 608
     object PDiagram: TPanel
       Left = 1
       Top = 1
-      Width = 703
+      Width = 699
       Height = 420
       Align = alTop
       Constraints.MinHeight = 100
       TabOrder = 0
-      ExplicitWidth = 699
       object PDiagramPanel: TPanel
         Left = 1
         Top = 26
-        Width = 701
+        Width = 697
         Height = 393
         Align = alClient
         BevelEdges = [beLeft, beTop]
@@ -57,16 +54,14 @@ object FUMLForm: TFUMLForm
         ParentFont = False
         TabOrder = 0
         OnResize = PDiagramPanelResize
-        ExplicitWidth = 697
       end
       object PUMLPanel: TPanel
         Left = 1
         Top = 1
-        Width = 701
+        Width = 697
         Height = 25
         Align = alTop
         TabOrder = 1
-        ExplicitWidth = 697
         object UMLToolbar: TToolBar
           Left = 1
           Top = 1
@@ -186,13 +181,13 @@ object FUMLForm: TFUMLForm
     object PInteractive: TPanel
       Left = 1
       Top = 424
-      Width = 703
-      Height = 184
+      Width = 699
+      Height = 183
       Align = alClient
       PopupMenu = PMInteractive
       TabOrder = 1
-      ExplicitWidth = 699
-      ExplicitHeight = 183
+      ExplicitWidth = 703
+      ExplicitHeight = 184
       object TBInteractiveToolbar: TToolBar
         Left = 1
         Top = 1
@@ -202,7 +197,6 @@ object FUMLForm: TFUMLForm
         Images = DMImages.ILInteractive
         ParentColor = False
         TabOrder = 0
-        ExplicitWidth = 697
         object TBInteractiveClose: TToolButton
           Left = 0
           Top = 0
@@ -292,12 +286,11 @@ object FUMLForm: TFUMLForm
     object SpTBXSplitter1: TSpTBXSplitter
       Left = 1
       Top = 421
-      Width = 703
+      Width = 699
       Height = 3
       Cursor = crSizeNS
       Align = alTop
       ParentColor = False
-      ExplicitWidth = 699
     end
   end
   object PMInteractive: TSpTBXPopupMenu

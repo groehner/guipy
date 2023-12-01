@@ -120,7 +120,8 @@ uses
   uCommonFunctions,
   cPyScripterSettings,
   cParameters,
-  UConfiguration;
+  UConfiguration,
+  UUtils;
 
 {$R *.dfm}
 
@@ -179,6 +180,8 @@ end;
 
 function TResourcesDataModule.GetSaveFileName(var ANewName: string;
   AHighlighter: TSynCustomHighlighter; DefaultExtension: string): boolean;
+  var aFile: IFile;
+
 begin
   with dlgFileSave do begin
     if ANewName <> '' then begin
@@ -203,11 +206,23 @@ begin
       DefaultExt := ExtractFileExt(ANewName);
 
     if Execute then begin
+      aFile:= GI_FileFactory.GetFileByName(Filename);
+      if Assigned(aFile) then begin
+        MessageDlg(_(SFileAlreadyOpen), mtError, [mbAbort], 0);
+        Exit(false);
+      end;
+      if IsWriteProtected(Filename) then begin
+        MessageDlg(Format(_(SWriteProtected), [FileName]), mtError, [mbAbort], 0);
+        Exit(false);
+      end;
+      if FileExists(Filename) and (MessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
+                         mtConfirmation, mbYesNoCancel, 0) <> mrYes)
+        then Exit(false);
       ANewName := FileName;
       GuiPyOptions.Sourcepath:= ExtractFilePath(aNewName);
-      Result := TRUE;
+      Result := true;
     end else
-      Result := FALSE;
+      Result := false;
   end;
 end;
 
