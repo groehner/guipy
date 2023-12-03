@@ -19,8 +19,8 @@
 
 unit UUMLForm;
 
-// UMLForm -> MainModul -> Diagram -> RTFDiagram -> TessConnectPanel
-//        |-> Model
+// UMLForm -> MainModul -> Diagram -> RtfdDiagram -> TessConnectPanel
+//                      -> Model                  -> TAFrameDiagram
 // contextmenus in UDiagramFrame
 
 interface
@@ -179,7 +179,6 @@ begin
   SynEdit.Font.Assign(EditorOptions.Font);
   ChangeStyle;
   SetOptions;
-  //TBInteractiveClick(Self);
 end;
 
 procedure TFUMLForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -525,7 +524,7 @@ end;
 
 procedure TFUMLForm.TBCommentClick(Sender: TObject);
 begin
-  if assigned(MainModul) and assigned(MainModul.Diagram) then 
+  if assigned(MainModul) and assigned(MainModul.Diagram) then
     Mainmodul.Diagram.AddCommentBoxTo(nil);
 end;
 

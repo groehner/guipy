@@ -25,7 +25,6 @@ object PyIDEMainForm: TPyIDEMainForm
     Width = 1007
     Height = 25
     SizeGrip = False
-    ExplicitTop = 658
     object lbStatusMessage: TSpTBXLabelItem
       Wrapping = twEndEllipsis
       Options = [tboNoAutoHint]

@@ -233,80 +233,42 @@ inherited AboutBox: TAboutBox
           ExplicitHeight = 153
         end
         object SVGIconImage1: TSVGIconImage
-          Left = 9
+          Left = 17
           Top = 0
           Width = 144
           Height = 214
           AutoSize = False
           SVGText = 
-            '<svg'#13#10'   viewBox="0 0 148 210"'#13#10'   id="svg974"'#13#10'   >'#13#10'<svg'#10'   wi' +
-            'dth="148mm"'#10'   height="210mm"'#10'   viewBox="0 0 148 210"'#10'   versio' +
-            'n="1.1"'#10'   id="svg974"'#10'   inkscape:version="1.1 (c68e22c387, 202' +
-            '1-05-23)"'#10'   sodipodi:docname="Guipy11.svg"'#10'   xmlns:inkscape="h' +
-            'ttp://www.inkscape.org/namespaces/inkscape"'#10'   xmlns:sodipodi="h' +
-            'ttp://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"'#10'   xmlns:xlin' +
-            'k="http://www.w3.org/1999/xlink"'#10'   xmlns="http://www.w3.org/200' +
-            '0/svg"'#10'   xmlns:svg="http://www.w3.org/2000/svg">'#10'  <sodipodi:na' +
-            'medview'#10'     id="namedview976"'#10'     pagecolor="#ffffff"'#10'     bor' +
-            'dercolor="#666666"'#10'     borderopacity="1.0"'#10'     inkscape:pagesh' +
-            'adow="2"'#10'     inkscape:pageopacity="0.0"'#10'     inkscape:pagecheck' +
-            'erboard="0"'#10'     inkscape:document-units="mm"'#10'     showgrid="tru' +
-            'e"'#10'     inkscape:zoom="1"'#10'     inkscape:cx="362.5"'#10'     inkscape' +
-            ':cy="382.5"'#10'     inkscape:window-width="1600"'#10'     inkscape:wind' +
-            'ow-height="1137"'#10'     inkscape:window-x="-8"'#10'     inkscape:windo' +
-            'w-y="-8"'#10'     inkscape:window-maximized="1"'#10'     inkscape:curren' +
-            't-layer="layer1"'#10'     showguides="true"'#10'     inkscape:guide-bbox' +
-            '="true"'#10'     showborder="true"'#10'     gridtolerance="10" />'#10'  <def' +
-            's'#10'     id="defs971">'#10'    <inkscape:path-effect'#10'       effect="fi' +
-            'llet_chamfer"'#10'       id="path-effect1233"'#10'       is_visible="tru' +
-            'e"'#10'       lpeversion="1"'#10'       satellites_param="F,0,0,1,0,40.0' +
-            '00011,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,40.000' +
-            '008,0,1 @ F,0,0,1,0,39.99999,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0' +
-            ',0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,60.000009,0,1 @ F,0,0,1,0,0,0' +
-            ',1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0' +
-            ',1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,39.99999,0,1"'#10'       un' +
-            'it="px"'#10'       method="auto"'#10'       mode="F"'#10'       radius="0"'#10' ' +
-            '      chamfer_steps="1"'#10'       flexible="false"'#10'       use_knot_' +
-            'distance="true"'#10'       apply_no_radius="true"'#10'       apply_with_' +
-            'radius="true"'#10'       only_selected="false"'#10'       hide_knots="fa' +
-            'lse" />'#10'    <inkscape:path-effect'#10'       effect="fillet_chamfer"' +
-            #10'       id="path-effect6450"'#10'       is_visible="true"'#10'       lpe' +
-            'version="1"'#10'       satellites_param="F,0,0,1,0,40.000011,0,1 @ F' +
-            ',0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,40.000008,0,1 @ F,0' +
-            ',0,1,0,39.99999,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,' +
-            '1,0,0,0,1 @ F,0,0,1,0,60.000009,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,' +
-            '0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ ' +
-            'F,0,0,1,0,39.99999,0,1 @ F,0,0,1,0,0,0,1"'#10'       unit="px"'#10'     ' +
-            '  method="auto"'#10'       mode="F"'#10'       radius="0"'#10'       chamfer' +
-            '_steps="1"'#10'       flexible="false"'#10'       use_knot_distance="tru' +
-            'e"'#10'       apply_no_radius="true"'#10'       apply_with_radius="true"' +
-            #10'       only_selected="false"'#10'       hide_knots="false" />'#10'    <' +
-            'linearGradient'#10'       xlink:href="#linearGradient2179"'#10'       id' +
-            '="linearGradient2181"'#10'       x1="780"'#10'       y1="1100"'#10'       x2' +
-            '="600"'#10'       y2="900"'#10'       gradientUnits="userSpaceOnUse" />'#10 +
-            '    <linearGradient'#10'       id="linearGradient2179">'#10'      <stop'#10 +
-            '         style="stop-color:#00ff00;stop-opacity:1;"'#10'         off' +
-            'set="0"'#10'         id="stop2175" />'#10'      <stop'#10'         style="st' +
-            'op-color:#0082ff;stop-opacity:1"'#10'         offset="1"'#10'         id' +
-            '="stop2177" />'#10'    </linearGradient>'#10'  </defs>'#10'  <g'#10'     inkscap' +
-            'e:label="Ebene 1"'#10'     inkscape:groupmode="layer"'#10'     id="layer' +
-            '1">'#10'    <g'#10'       id="g1258"'#10'       transform="matrix(1.6607143,' +
-            '0,0,1.6607143,1.6509052,-29.880262)">'#10'      <g'#10'         id="g190' +
-            '0-6"'#10'         transform="translate(-139.85317,-187.92379)">'#10'    ' +
-            '    <path'#10'           id="rect1239-5"'#10'           style="fill:url(' +
-            '#linearGradient2181);fill-opacity:1"'#10'           d="M 560,900.000' +
-            '01 V 940 1100 a 40.000004,40.000004 44.999994 0 0 40.00001,40 h ' +
-            '180 A 39.99999,39.99999 135 0 0 820,1100 V 1060 960 H 740 720.00' +
-            '001 A 60.000009,60.000009 135 0 0 660,1020 v 20 h 80 v 20 H 640 ' +
-            'V 940 H 820 V 899.99999 A 39.99999,39.99999 45 0 0 780.00001,860' +
-            ' h -180 A 40.000011,40.000011 135 0 0 560,900.00001 Z"'#10'         ' +
-            '  transform="scale(0.26458333)"'#10'           inkscape:path-effect=' +
-            '"#path-effect1233"'#10'           inkscape:original-d="m 560,860 v 8' +
-            '0 160 40 h 260 v -80 -100 h -80 -80 v 80 h 80 v 20 H 640 V 940 h' +
-            ' 180 v -80 z" />'#10'      </g>'#10'      <circle'#10'         style="fill:#' +
-            'd40000;fill-opacity:1"'#10'         id="path8672"'#10'         cx="46.40' +
-            '7757"'#10'         cy="76.297531"'#10'         r="4.3299999" />'#10'    </g>' +
-            #10'  </g>'#10'</svg>'#10
+            '<?xml version="1.0" encoding="UTF-8"?>'#13#10'<svg xmlns:inkscape="htt' +
+            'p://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http:/' +
+            '/sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:xlink="http:' +
+            '//www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmln' +
+            's:svg="http://www.w3.org/2000/svg" width="148mm" height="210mm" ' +
+            'viewBox="0 0 148 210" version="1.1" id="svg974" inkscape:version' +
+            '="1.1 (c68e22c387, 2021-05-23)" sodipodi:docname="Guipy11.svg">'#13 +
+            #10'  <defs id="defs971">'#13#10'    <linearGradient xlink:href="#linearG' +
+            'radient2179" id="linearGradient2181" x1="780" y1="1100" x2="600"' +
+            ' y2="900" gradientUnits="userSpaceOnUse"></linearGradient>'#13#10'    ' +
+            '<linearGradient id="linearGradient2179">'#13#10'      <stop style="sto' +
+            'p-color:#00ff00;stop-opacity:1;" offset="0" id="stop2175"></stop' +
+            '>'#13#10'      <stop style="stop-color:#0082ff;stop-opacity:1" offset=' +
+            '"1" id="stop2177"></stop>'#13#10'    </linearGradient>'#13#10'  </defs>'#13#10'  <' +
+            'g inkscape:label="Ebene 1" inkscape:groupmode="layer" id="layer1' +
+            '">'#13#10'    <g id="g1258" transform="matrix(1.6607143,0,0,1.6607143,' +
+            '1.6509052,-29.880262)">'#13#10'      <g id="g1900-6" transform="transl' +
+            'ate(-139.85317,-187.92379)">'#13#10'        <path id="rect1239-5" styl' +
+            'e="fill:url(#linearGradient2181);fill-opacity:1" d="M 560,900.00' +
+            '001 V 940 1100 a 40.000004,40.000004 44.999994 0 0 40.00001,40 h' +
+            ' 180 A 39.99999,39.99999 135 0 0 820,1100 V 1060 960 H 740 720.0' +
+            '0001 A 60.000009,60.000009 135 0 0 660,1020 v 20 h 80 v 20 H 640' +
+            ' V 940 H 820 V 899.99999 A 39.99999,39.99999 45 0 0 780.00001,86' +
+            '0 h -180 A 40.000011,40.000011 135 0 0 560,900.00001 Z" transfor' +
+            'm="scale(0.26458333)" inkscape:path-effect="#path-effect1233" in' +
+            'kscape:original-d="m 560,860 v 80 160 40 h 260 v -80 -100 h -80 ' +
+            '-80 v 80 h 80 v 20 H 640 V 940 h 180 v -80 z"></path>'#13#10'      </g' +
+            '>'#13#10'      <circle style="fill:#d40000;fill-opacity:1" id="path867' +
+            '2" cx="46.407757" cy="76.297531" r="4.3299999"></circle>'#13#10'    </' +
+            'g>'#13#10'  </g>'#13#10'</svg>'
           Anchors = [akLeft, akTop, akRight, akBottom]
         end
       end

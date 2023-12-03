@@ -1192,7 +1192,7 @@ class constructor TPyScripterSettings.CreateSettings;
   procedure HandlePortable;
     var s: string; IniFile: TMemIniFile;
   begin
-    // you can call GuiPy with an ini-file as parameter
+    // you can call GuiPy with an ini file as parameter
     s:= ParamStr(1);
     if (s = '') or (UpperCase(ExtractFileExt(s)) <> '.ini')
       then s:= TPath.Combine(ExtractFilePath(Application.ExeName), 'GuiPyMachine.ini')

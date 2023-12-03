@@ -408,6 +408,7 @@ var
   function InCreateBox(E: TModelEntity; BoxT: TRtfdBoxClass): TRtfdBox;
   begin
     Result:= BoxT.Create(Panel, E, Frame, viPrivate);
+    Result.Font.Assign(Panel.Font);
     BoxNames.AddObject(E.Name, Result);
   end;
 
@@ -447,7 +448,7 @@ begin
   end
   else if E is TObjekt then begin
     if GetBox(E.FullName) = nil then
-      Panel.AddManagedObject(InCreateBox(E, TRtfdObject))
+      Panel.AddManagedObject(InCreateBox(E, TRtfdObject));
   end;
 end;
 
@@ -1531,9 +1532,11 @@ begin
   if Assigned(B1) and Assigned(B2) then begin
     B2.Top := B1.Top + B1.Height + 50 + random(30)-30;
     B2.Left:= max(B1.Left + (B1.Width - B2.Width) div 2 + random(200) - 100, 0);
+    B2.Font.Assign(B1.Font);
   end else if Assigned(B2) then begin
     B2.Top := B2.Top  + random(30) - 30;
     B2.Left:= B2.Left + random(30) - 30;
+    B2.Font.Assign(Font);
   end;
   ShowAttributes(Objectname, aClass, aModelObject);
   if (B2 = nil) and assigned(aModelObject) then

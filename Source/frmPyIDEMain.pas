@@ -3629,7 +3629,6 @@ begin
   mnSpellCheckIgnoreOnce.Visible := HaveError;
   mnSpellCheckDelete.Visible := HaveError;
 
-
   if HaveError then
   begin
     Error.Get_CorrectiveAction(CorrectiveAction);
@@ -4489,7 +4488,6 @@ begin
     MachineStorage.ReadPersistent('GuiPy Language Options\' + curlang,
       GuiPyLanguageOptions);
   end;
-  FConfiguration.RestoreApplicationData;
 
   var TempStringList := TSmartPtr.Make(TStringList.Create)();
   TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides']);
@@ -4962,7 +4960,6 @@ Var
   MenuItem : TSpTBXItem;
   Action : TAction;
   Tool : TExternalTool;
-
 begin
   if ToolsMenu.IndexOf(mnConfigureTools) > 0 then // first run
     ToolsMenu.Remove(mnConfigureTools)
@@ -6230,6 +6227,8 @@ begin
 
     // Update External Tools
     SetupToolsMenu;  // After creating internal interpreter
+    FConfiguration.RestoreApplicationData; // After last change of main menu
+
     SetupCustomizer; // After setting up the Tools menu
     // Load Toolbar Items after setting up the Tools menu
     if FileExists(AppStorage.IniFile.FileName) then

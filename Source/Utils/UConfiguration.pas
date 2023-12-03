@@ -1175,26 +1175,23 @@ type
     procedure actFileDefaultItemExecute(Sender: TObject);
     procedure actFileDefaultAllExecute(Sender: TObject);
     procedure BVisDefaultClick(Sender: TObject);
-    procedure LVVisibilityTabsChange(Sender: TObject; Item: TListItem;
-      Change: TItemChange);
-    procedure LVVisibilityToolbarsChange(Sender: TObject; Item: TListItem;
-      Change: TItemChange);
-    procedure LVVisibilityMenusChange(Sender: TObject; Item: TListItem;
-      Change: TItemChange);
-    procedure LVVisibilityChanging(Sender: TObject; Item: TListItem;
-      Change: TItemChange; var AllowChange: Boolean);
+    procedure LVVisibilityElementsItemChecked(Sender: TObject; Item: TListItem);
+    procedure LVVisibilityMenusClick(Sender: TObject);
+    procedure LVVisibilityTabsClick(Sender: TObject);
+    procedure LVVisibilityToolbarsClick(Sender: TObject);
   private
     const
-      DefaultVisFileMenu   = '11100111011101011';      // len = 17
-      DefaultVisEditMenu   = '111110011110001';        // len = 15
-      DefaultVisSearchMenu = '100101111111011';        // len = 15
-      DefaultVisViewMenu   = '1100110001111111111111'; // len = 22
-      DefaultVisProjectMenu = '111111';                // len = 6
-      DefaultVisRunMenu     = '01111011111111111';     // len = 17
-      DefaultVisUMLMenu     = '111111111';             // len = 9
-      DefaultVisToolsMenu   = '11101111111110001';     // len = 17
-      DefaultVisHelpMenu    = '11111';                 // len = 5
+      DefaultVisFileMenu    = '11100111011101011';      // len = 17
+      DefaultVisEditMenu    = '111110011110001';        // len = 15
+      DefaultVisSearchMenu  = '100101111111011';        // len = 15
+      DefaultVisViewMenu    = '1100110001111111111111'; // len = 22
+      DefaultVisProjectMenu = '111111';                 // len = 6
+      DefaultVisRunMenu     = '01111011111111111';      // len = 17
+      DefaultVisUMLMenu     = '111111111';              // len = 9
+      DefaultVisToolsMenu   = '11101111111110001';      // len = 17
+      DefaultVisHelpMenu    = '11111';                  // len = 5
     var
+    VisSelectedTabMenuToolbar: integer;
     fHighlighters : TList;
     fColorThemeHighlighter : TSynCustomHighlighter;
     HighlighterFileDir: string;
@@ -1454,6 +1451,7 @@ begin
     SetElevationRequiredState(BFileExtensions);
     SetElevationRequiredState(BJEAssociation);
   end;
+  VisSelectedTabMenuToolbar:= 0;
   vtPythonVersions.DefaultText := '';
   vtPythonVersions.RootNodeCount := 2;
   fHighlighters := TList.create;
@@ -1475,7 +1473,6 @@ begin
   Indent1:= StringOfChar(' ', 1*IndentWidth);
   Indent2:= StringOfChar(' ', 2*IndentWidth);
   Indent3:= StringOfChar(' ', 3*IndentWidth);
-  PrepareVisibilityPage;
 end;
 
 procedure TFConfiguration.FormDestroy(Sender: TObject);
@@ -1529,6 +1526,7 @@ begin
   CustomShortcutsShow;
   PageSetupShow;
   StyleSelectorFormShow;
+  onShow:= nil;
 end;
 
 procedure TFConfiguration.PageSetupShow;
@@ -2076,6 +2074,8 @@ end;
 
 procedure TFConfiguration.PrepareShow;
 begin
+  if LVVisibilityTabs.Items.Count = 0 then
+    PrepareVisibilityPage;
   ModelToView;
   CheckAllFilesAndFolders;
 end;
@@ -5420,47 +5420,39 @@ begin
   TC:= PyIDEMainForm.TabControlWidgets;
   for i:= 0 to TC.Items.Count - 1 do begin
     anItem:= LVVisibilityTabs.Items.Add;
-    anItem.Caption:= TC.Items[i].Caption;
+    anItem.Caption:= _(TC.Items[i].Caption);
   end;
   LVVisibilityTabs.Items.EndUpdate;
   LVVisibilityMenus.Items.BeginUpdate;
   for i:= 0 to high(VisMenus) do begin
     anItem:= LVVisibilityMenus.Items.Add;
-    anItem.Caption:= ReplaceStr(PyIDEMainForm.MainMenu.Items[i].Caption, '&', '');
+    anItem.Caption:= ReplaceStr(_(PyIDEMainForm.MainMenu.Items[i].Caption), '&', '');
   end;
   LVVisibilityMenus.Items.EndUpdate;
   LVVisibilityToolbars.Items.BeginUpdate;
   for i:= 0 to high(VisToolbars) do
     LVVisibilityToolbars.Items.Add;
-  LVVisibilityToolbars.Items[0].Caption:= ReplaceStr(PyIDEMainForm.MainMenu.Items[0].Caption, '&', '');
-  LVVisibilityToolbars.Items[1].Caption:= ReplaceStr(PyIDEMainForm.MainMenu.Items[5].Caption, '&', '');
+  LVVisibilityToolbars.Items[0].Caption:= ReplaceStr(_(PyIDEMainForm.MainMenu.Items[0].Caption), '&', '');
+  LVVisibilityToolbars.Items[1].Caption:= ReplaceStr(_(PyIDEMainForm.MainMenu.Items[5].Caption), '&', '');
   LVVisibilityToolbars.Items[2].Caption:= _('Editor');
   LVVisibilityToolbars.Items[3].Caption:= _('UML');
   LVVisibilityToolbars.Items[4].Caption:= _('Structogram');
   LVVisibilityToolbars.Items[5].Caption:= _('Sequence diagram');
   LVVisibilityToolbars.Items.EndUpdate;
+  LVVisibilityTabsClick(Self);
   ActivateOnChangings(true);
-  VisibilityModelToView;
-  LVVisibilityTabs.ItemIndex:= 0;
-  LVVisibilityTabsChange(nil, nil, ctState);
 end;
 
 procedure TFConfiguration.ActivateOnChangings(active: boolean);
 begin
   if active then begin
-    LVVisibilityTabs.OnChange:= LVVisibilityTabsChange;
-    LVVisibilityTabs.OnChanging:= LVVisibilityChanging;
-    LVVisibilityMenus.OnChange:= LVVisibilityMenusChange;
-    LVVisibilityMenus.OnChanging:= LVVisibilityChanging;
-    LVVisibilityToolbars.OnChange:= LVVisibilityToolbarsChange;
-    LVVisibilityToolbars.OnChanging:= LVVisibilityChanging;
+    LVVisibilityTabs.OnClick:= LVVisibilityTabsClick;
+    LVVisibilityMenus.OnClick:= LVVisibilityMenusClick;
+    LVVisibilityToolbars.OnClick:= LVVisibilityToolbarsClick;
   end else begin
     LVVisibilityTabs.OnChange:= nil;
-    LVVisibilityTabs.OnChanging:= nil;
     LVVisibilityMenus.OnChange:= nil;
-    LVVisibilityMenus.OnChanging:= nil;
     LVVisibilityToolbars.OnChange:= nil;
-    LVVisibilityToolbars.OnChanging:= nil;
   end;
 end;
 
@@ -5471,7 +5463,7 @@ begin
   for i:= 0 to LVVisibilityTabs.Items.Count - 1 do
     LVVisibilityTabs.Items[i].Checked:= VisTabs[i];
 
-  for i:= 0 to LVVisibilityMenus.Items.Count -1 do
+  for i:= 0 to LVVisibilityMenus.Items.Count - 1 do
     LVVisibilityMenus.Items[i].Checked:= VisMenus[i];
 
   for i:= 0 to LVVisibilityToolbars.Items.Count - 1 do
@@ -5483,8 +5475,10 @@ begin
     for j:= 0 to MaxTabItem - 1 do
       vis2[i, j]:= vis1[i, j];
 
-  var ac:= true;
-  LVVisibilityChanging(self, nil, ctState, ac);
+  LVVisibilityElements.onItemChecked:= nil;
+  for i:= 0 to LVVisibilityElements.Items.Count - 1 do
+    LVVisibilityElements.Items[i].Checked:= vis2[VisSelectedTabMenuToolbar, i];
+  LVVisibilityElements.onItemChecked:= LVVisibilityElementsItemChecked;
 end;
 
 procedure TFConfiguration.VisibilityViewToModel;
@@ -5501,22 +5495,18 @@ begin
     for i:= 0 to high(VisToolbars) do
       VisToolbars[i]:= LVVisibilityToolbars.Items[i].Checked;
 
-  var ac:= true;
-  LVVisibilityChanging(self, nil, ctState, ac);
-
-  // tab Visibility   view to model
+  // tab Visibility - view to model
   for i:= 0 to MaxVisLen - 1 do
     for j:= 0 to MaxTabItem - 1 do
       vis1[i, j]:= vis2[i, j];
 end;
 
-procedure TFConfiguration.LVVisibilityTabsChange(Sender: TObject;
-  Item: TListItem; Change: TItemChange);
+procedure TFConfiguration.LVVisibilityTabsClick(Sender: TObject);
   var s: string; i, p, Tab: integer;
       TB: TToolBar; anItem: TListItem;
 begin
   TabsMenusToolbars:= 1;
-  Tab:= LVVisibilityTabs.ItemIndex;
+  Tab:= max(LVVisibilityTabs.ItemIndex, 0);
   LVVisibilityElements.Clear;
   case Tab of
     0: begin
@@ -5542,6 +5532,8 @@ begin
     else
       exit;
   end;
+
+  LVVisibilityElements.onItemChecked:= nil;
   if assigned(TB) then begin
     for i:= 0 to TB.ButtonCount - 1 do begin
       s:= TB.Buttons[i].Hint;
@@ -5555,10 +5547,11 @@ begin
       anItem.ImageIndex:= i;
     end;
   end;
+  VisSelectedTabMenuToolbar:= Tab;
+  LVVisibilityElements.onItemChecked:= LVVisibilityElementsItemChecked;
 end;
 
-procedure TFConfiguration.LVVisibilityMenusChange(Sender: TObject;
-  Item: TListItem; Change: TItemChange);
+procedure TFConfiguration.LVVisibilityMenusClick(Sender: TObject);
   var s: string; i, Tab: integer;
       Menu: TTBCustomItem; anItem: TListItem;
 begin
@@ -5569,21 +5562,23 @@ begin
   LVVisibilityElements.SmallImages:= PyIDEMainForm.vilimages;
   Menu:= PyIDEMainForm.MainMenu.Items[Tab];
   var k:= 0;
+  LVVisibilityElements.onItemChecked:= nil;
   for i:= 0 to Menu.Count - 1 do begin
     s:= Menu.Items[i].Caption;
     if Menu.Items[i].Tag = 0 then begin
       s:= ReplaceStr(s, '&', '');
       anItem:= LVVisibilityElements.Items.Add;
-      anItem.Caption:= ' ' + s;
+      anItem.Caption:= ' ' + _(s);
       anItem.Checked:= vis2[VisTabsLen + Tab, k];
       anItem.ImageIndex:= Menu.Items[i].ImageIndex;
       inc(k);
     end;
   end;
+  VisSelectedTabMenuToolbar:= VisTabsLen + Tab;
+  LVVisibilityElements.onItemChecked:= LVVisibilityElementsItemChecked;
 end;
 
-procedure TFConfiguration.LVVisibilityToolbarsChange(Sender: TObject;
-  Item: TListItem; Change: TItemChange);
+procedure TFConfiguration.LVVisibilityToolbarsClick(Sender: TObject);
   var s: string; i, p, Tab: integer;
       TSpB: TSpTBXToolBar; TB: TToolbar;
       anItem: TListItem;
@@ -5640,13 +5635,14 @@ begin
       else
         exit;
     end;
+    LVVisibilityElements.onItemChecked:= nil;
     if Tab <= 1 then begin
       for i:= 0 to TSpB.Items.Count - 1 do begin
         s:= TSpB.Items[i].Hint;
         p:= Pos('|', s);
         if p > 0 then s:= copy(s, 1, p-1);
         anItem:= LVVisibilityElements.Items.Add;
-        anItem.Caption:= ' ' + s;
+        anItem.Caption:= ' ' + _(s);
         anItem.Checked:= vis2[VisTabsLen + VisMenusLen + Tab, i];
         anItem.ImageIndex:= TSpB.Items[i].ImageIndex;
       end;
@@ -5657,11 +5653,13 @@ begin
         p:= Pos('|', s);
         if p > 0 then s:= copy(s, 1, p-1);
         anItem:= LVVisibilityElements.Items.Add;
-        anItem.Caption:= ' ' + s;
+        anItem.Caption:= ' ' + _(s);
         anItem.Checked:= vis2[VisTabsLen + VisMenusLen + Tab, i];
         anItem.ImageIndex:= i;
       end;
     end;
+    VisSelectedTabMenuToolbar:= VisTabsLen + VisMenusLen + Tab;
+    LVVisibilityElements.onItemChecked:= LVVisibilityElementsItemChecked;
   finally
     FreeAndNil(UMLForm);
     FreeAndNil(EditForm);
@@ -5670,17 +5668,10 @@ begin
   end;
 end;
 
-procedure TFConfiguration.LVVisibilityChanging(Sender: TObject;
-  Item: TListItem; Change: TItemChange; var AllowChange: Boolean);
-  var i: integer;
+procedure TFConfiguration.LVVisibilityElementsItemChecked(Sender: TObject;
+  Item: TListItem);
 begin
-  case TabsMenusToolbars of
-    1: i:= max(LVVisibilityTabs.ItemIndex, 0);
-    2: i:= VisTabsLen + max(LVVisibilityMenus.ItemIndex, 0);
-  else i:= VisTabsLen + VisMenusLen + max(LVVisibilityToolbars.ItemIndex, 0);
-  end;
-  for var j:= 0 to LVVisibilityElements.Items.Count - 1 do
-    vis2[i, j]:= LVVisibilityElements.Items[j].Checked;
+  vis2[VisSelectedTabMenuToolbar, Item.Index]:= Item.Checked;
 end;
 
 procedure TFConfiguration.BVisDefaultClick(Sender: TObject);
@@ -5699,9 +5690,11 @@ procedure TFConfiguration.BVisDefaultClick(Sender: TObject);
   end;
 
 begin
+  ActivateOnChangings(false);
   DefaultVis(VisTabs);
   DefaultVis(VisMenus);
   DefaultVis(VisToolbars);
+
   for i:= 0 to high(VisTabs) do
     LVVisibilityTabs.Items[i].Checked:= true;
   for i:= 0 to high(VisMenus) do
@@ -5734,13 +5727,9 @@ begin
   n:= Length(DefaultVisHelpMenu);
   StringVisibilityToArr2(DefaultVisHelpMenu, n, 13);
 
-  case TabsMenusToolbars of
-    1: i:= max(LVVisibilityTabs.ItemIndex, 0);
-    2: i:= VisTabsLen + max(LVVisibilityMenus.ItemIndex, 0);
-  else i:= VisTabsLen + VisMenusLen + max(LVVisibilityToolbars.ItemIndex, 0);
-  end;
   for j:= 0 to LVVisibilityElements.Items.Count - 1 do
-    LVVisibilityElements.Items[j].Checked:= vis2[i, j];
+    LVVisibilityElements.Items[j].Checked:= vis2[VisSelectedTabMenuToolbar, j];
+  ActivateOnChangings(true);
 end;
 
 procedure TFConfiguration.setToolbarVisibility(Toolbar: TToolbar; Nr: integer);

@@ -280,7 +280,6 @@ begin
   inherited;
 end;
 
-
 procedure TAFrameDiagram.OnUpdateToolbar(Sender: TObject);
 begin
 end;
