@@ -36,8 +36,8 @@ uses
 procedure TPyIDEDlgBase.FormCreate(Sender: TObject);
 begin
   { I have problems to load dfm forms correctly.
-    The ParentFont property ofetn changes it's valud during loading from th stream.
-    Therefore I here a ParentFont:= false
+    The ParentFont property often changes it's value during loading from the stream.
+    Therefore I here set ParentFont:= false
 
     Debugging in these two methods
       procedure TControl.ChangeScale(M, D: Integer; isDpiChange: Boolean);

@@ -2,8 +2,8 @@ object FBrowser: TFBrowser
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 336
-  ClientWidth = 527
+  ClientHeight = 335
+  ClientWidth = 523
   Color = clBtnFace
   ParentFont = True
   OnClose = FormClose
@@ -15,8 +15,8 @@ object FBrowser: TFBrowser
   object WebBrowser: TWebBrowser
     Left = 0
     Top = 25
-    Width = 527
-    Height = 311
+    Width = 523
+    Height = 310
     Align = alClient
     TabOrder = 0
     SelectedEngine = EdgeIfAvailable
@@ -24,21 +24,22 @@ object FBrowser: TFBrowser
     OnDownloadBegin = WebBrowserDownloadBegin
     OnDownloadComplete = WebBrowserDownloadComplete
     OnBeforeNavigate2 = WebBrowserBeforeNavigate2
+    ExplicitWidth = 527
+    ExplicitHeight = 311
     ControlData = {
-      4C00000078360000252000000000000000000000000000000000000000000000
-      000000004C000000000000000000000001000000E0D057007335CF11AE690800
-      2B2E126208000000000000004C0000000114020000000000C000000000000046
+      4C0000000E3600000A2000000000000000000000000000000000000000000000
+      000000004C000000000000000000000000000000000000000000000000000000
+      0000000000000000000000004C0000000114020000000000C000000000000046
       8000000000000000000000000000000000000000000000000000000000000000
       00000000000000000100000000000000000000000000000000000000}
   end
   object PBrowser: TPanel
     Left = 0
     Top = 0
-    Width = 527
+    Width = 523
     Height = 25
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 523
     object PTop: TPanel
       Left = 188
       Top = 1
@@ -84,12 +85,11 @@ object FBrowser: TFBrowser
       object PRight: TPanel
         Left = 160
         Top = 0
-        Width = 178
+        Width = 174
         Height = 23
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 174
       end
     end
     object ToolBar: TToolBar

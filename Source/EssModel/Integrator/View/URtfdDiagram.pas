@@ -41,6 +41,7 @@ type
     BoxNames, FullParameters, MenuClassFiles: TStringList;
     FLivingObjects: TLivingObjects;
     UMLForm: TFUMLForm;
+    PPIControl: TControl;
 
     CreateObjectObjectname: string;
     CreateObjectParameter: string;
@@ -69,7 +70,8 @@ type
   private
     procedure CreateObjectExecuted(Sender: TObject);
     procedure CallMethodExecuted(Sender: TObject);
-
+    function PPIScale(ASize: integer): integer;
+    function PPIUnScale(ASize: integer): integer;
   protected
     procedure SetVisibilityFilter(const Value: TVisibility); override;
     procedure SetShowParameter(const Value: integer); override;
@@ -201,7 +203,7 @@ type
 
 implementation
 
-uses Menus, Forms, Math, SysUtils, UITypes, Dialogs, Contnrs,
+uses Windows, Menus, Forms, Math, SysUtils, UITypes, Dialogs, Contnrs,
   IniFiles, Clipbrd, JvGnugettext, TB2Item, SpTBXItem,
   uIterators, uRtfdDiagramFrame, USugiyamaLayout, uIntegrator, UConfiguration,
   SynEdit, UUMLModule, UImages, UObjectGenerator, dmResources,
@@ -216,6 +218,7 @@ begin
   Frame:= TAFrameRtfdDiagram.Create(Parent, Self);
   Frame.Parent:= Parent;  // assigment to the gui
   UMLForm:= (Parent.Parent.Parent.Parent as TFUMLForm);
+  PPIControl:= UMLForm.TBClose;
   FLivingObjects:= TLivingObjects.Create;
 
   // Panel is ActiveControl in MainForm
@@ -353,10 +356,15 @@ begin
   end else
     // selection-markers should not be visible in the saved picture
     Panel.ClearSelection;
-  Panel.PaintTo(Canvas.Handle, X, Y);
-  Panel.TextTo(Canvas);
-  Panel.SelectedOnly := False;
-  Panel.BackBitmap := OldBit;
+  Canvas.Lock;
+  try
+    Panel.PaintTo(Canvas.Handle, X, Y);
+    Panel.TextTo(Canvas);
+  finally
+    Canvas.Unlock;
+    Panel.SelectedOnly := False;
+    Panel.BackBitmap := OldBit;
+  end;
 end;
 
 function TRtfdDiagram.getSVG: string;
@@ -668,8 +676,8 @@ begin
           // Objects
           Box:= BoxNames.Objects[i] as TRtfdObject;
           S:= 'Object: ' + Box.Entity.FullName;
-          Ini.WriteInteger(S, 'X', Box.Left);
-          Ini.WriteInteger(S, 'Y', Box.Top);
+          Ini.WriteInteger(S, 'X', PPIUnScale(Box.Left));
+          Ini.WriteInteger(S, 'Y', PPIUnScale(Box.Top));
           Ini.WriteString(S, 'Name', Box.Entity.Name);
           if FLivingObjects.ObjectExists(Box.Entity.Name)
             then Ini.WriteString(S, 'Typ', FLivingObjects.getClassnameOfObject(Box.Entity.Name))
@@ -678,11 +686,11 @@ begin
           // Comments
           Box:= BoxNames.Objects[i] as TRtfdBox;
           S:= Box.Entity.FullName;
-          Ini.WriteInteger(S, 'X', Box.Left);
-          Ini.WriteInteger(S, 'Y', Box.Top);
-          Ini.WriteInteger(S, 'W', Box.Width);
-          Ini.WriteInteger(S, 'H', Box.Height);
-          Ini.WriteInteger(S, 'FontSize', Box.Font.Size);
+          Ini.WriteInteger(S, 'X', PPIUnScale(Box.Left));
+          Ini.WriteInteger(S, 'Y', PPIUnScale(Box.Top));
+          Ini.WriteInteger(S, 'W', PPIUnScale(Box.Width));
+          Ini.WriteInteger(S, 'H', PPIUnScale(Box.Height));
+          Ini.WriteInteger(S, 'FontSize', PPIUnScale(Box.Font.Size));
           Ini.WriteString(S, 'FontName', Box.Font.Name);
           s1:= (Box as TRtfdCommentBox).TrMemo.Text;
           Ini.WriteString(S, 'Comment', myStringReplace(s1, #13#10, '_;_'));
@@ -693,13 +701,13 @@ begin
             S:= 'Box: ' + Box.Entity.FullName;
             fName:= RemovePortableDrive((Box.Entity as TClassifier).Pathname, path);
             Ini.WriteString(S, 'File', fName);
-            Ini.WriteInteger(S, 'X', Box.Left);
-            Ini.WriteInteger(S, 'Y', Box.Top);
+            Ini.WriteInteger(S, 'X', PPIUnScale(Box.Left));
+            Ini.WriteInteger(S, 'Y', PPIUnScale(Box.Top));
             Ini.WriteInteger(S, 'MinVis', Integer(Box.MinVisibility));
             Ini.WriteInteger(S, 'ShowParameter', Box.ShowParameter);
             Ini.WriteInteger(S, 'SortOrder', Box.SortOrder);
             Ini.WriteInteger(S, 'ShowIcons', Box.ShowIcons);
-            Ini.WriteInteger(S, 'FontSize', Box.Font.Size);
+            Ini.WriteInteger(S, 'FontSize', PPIUnScale(Box.Font.Size));
             Ini.WriteString(S, 'FontName', Box.Font.Name);
             if Box.TypeBinding <> '' then
               Ini.WriteString(S, 'TypeBinding', Box.TypeBinding);
@@ -719,12 +727,12 @@ begin
       Ini.WriteInteger(S, 'ShowIcons', ShowIcons);
       Ini.WriteInteger(S, 'ShowConnections', ShowConnections);
       Ini.WriteString (S, 'Fontname', Font.Name);
-      Ini.WriteInteger(S, 'Fontsize', Font.Size);
+      Ini.WriteInteger(S, 'Fontsize', PPIUnScale(Font.Size));
       Ini.WriteBool   (S, 'ShowObjectDiagram', ShowObjectDiagram);
       Ini.WriteBool   (S, 'InteractiveClosed', UMLForm.InteractiveClosed);
       Ini.WriteInteger(S, 'InteractiveHeight', UMLForm.InteractiveHeight);
       Ini.WriteString (S, 'SynEditFontname', UMLForm.SynEdit.Font.Name);
-      Ini.WriteInteger(S, 'SynEditFontsize', UMLForm.SynEdit.Font.Size);
+      Ini.WriteInteger(S, 'SynEditFontsize', PPIUnScale(UMLForm.SynEdit.Font.Size));
 
       // Connections
       s:= 'Connections';
@@ -811,10 +819,10 @@ begin
     ShowIcons:= Ini.ReadInteger(S, 'ShowIcons', ShowIcons);
     ShowObjectDiagram:= Ini.ReadBool(S, 'ShowObjectDiagram', false);
     Font.Name:= Ini.ReadString(S, 'Fontname', 'Segoe UI');
-    Font.Size:= Ini.ReadInteger(S, 'Fontsize', 11);
+    Font.Size:= PPIScale(Ini.ReadInteger(S, 'Fontsize', 11));
     setFont(Font);
     UMLForm.SynEdit.Font.Name:= Ini.ReadString (S, 'SynEditFontname', 'Consolas');
-    UMLForm.SynEdit.Font.Size:= Ini.ReadInteger(S, 'SynEditFontsize', 11);
+    UMLForm.SynEdit.Font.Size:= PPIScale(Ini.ReadInteger(S, 'SynEditFontsize', 11));
     UMLForm.InteractiveClosed:= Ini.ReadBool(S, 'InteractiveClosed', true);
     UMLForm.InteractiveHeight:= Ini.ReadInteger(S, 'InteractiveHeight', 100);
 
@@ -844,17 +852,17 @@ begin
       if BoxNames.Objects[i] is TRtfdClass then begin
         S:= 'Box: ' + Box.Entity.FullName;
         if Ini.SectionExists(S) then begin
-          Box.Left:= Ini.ReadInteger(S, 'X', Box.Left);
-          Box.Top := Ini.ReadInteger(S, 'Y', Box.Top);
+          Box.Left:= PPIScale(Ini.ReadInteger(S, 'X', Box.Left));
+          Box.Top := PPIScale(Ini.ReadInteger(S, 'Y', Box.Top));
           Box.MinVisibility:= TVisibility(Ini.ReadInteger(S, 'MinVis', VisibilityFilterAsInteger));
           BoxShowParameter:= Ini.ReadInteger(S, 'ShowParameter', ShowParameter);
           BoxSortOrder:= Ini.ReadInteger(S, 'SortOrder', SortOrder);
           BoxShowIcons:= Ini.ReadInteger(S, 'ShowIcons', ShowIcons);
-          BoxFontsize:= Ini.ReadInteger(S, 'FontSize', Font.Size);
+          BoxFontsize:= PPIScale(Ini.ReadInteger(S, 'FontSize', Font.Size));
           BoxFontname:= Ini.ReadString(S, 'FontName', Font.Name);
           BoxTypeBinding:= Ini.ReadString(S, 'TypeBinding', '');
           Box.SetParameters(BoxShowParameter, BoxSortOrder, BoxShowIcons, BoxFontSize,
-                            BoxFontname, inherited GetFont, BoxTypeBinding);
+                            BoxFontname, Font, BoxTypeBinding);
         end else
           TManagedObject(Panel.FindManagedControl(Box)).Selected:= true;
       end;
@@ -871,6 +879,7 @@ begin
           UnitPackage:= Model.ModelRoot.AddUnit('Default');
         theClassname := Ini.ReadString(S, 'Typ', '');
         theObjectname:= Ini.ReadString(S, 'Name', '');
+
         aClass:= nil;
         if FLivingObjects.ObjectExists(theObjectname) then begin
           j:= BoxNames.IndexOf(theClassname);
@@ -892,7 +901,6 @@ begin
         if theObjectname <> '' then begin
           aModelObject:= UnitPackage.AddObject(theObjectname, aClass);
           ShowAttributes(theObjectname, aClass, aModelObject);
-
           j:= BoxNames.IndexOf(theObjectname);
           if j = -1 then begin
             AddBox(aModelObject);
@@ -901,11 +909,18 @@ begin
 
           if j > -1 then begin
             Box:= BoxNames.Objects[j] as TRtfdBox;
-            Box.Left:= Ini.ReadInteger(S, 'X', Box.Left);
-            Box.Top := Ini.ReadInteger(S, 'Y', Box.Top);
+            Box.Left:= PPIScale(Ini.ReadInteger(S, 'X', Box.Left));
+            Box.Top := PPIScale(Ini.ReadInteger(S, 'Y', Box.Top));
             Box.Font.Assign(Font);
+            p:= BoxNames.IndexOf(theClassname);
+            if p > 0 then begin
+              Box1:= BoxNames.Objects[p] as TRtfdBox;
+              Box.Font.Size:= Box1.Font.Size;
+            end else
+              Box.Font.Size:= PPIScale(Font.Size);
           end;
           inc(CountObjects);
+
         end;
       end;
     end;
@@ -925,12 +940,12 @@ begin
 
         if j > -1 then begin
           Box:= BoxNames.Objects[j] as TRtfdBox;
-          Box.Left:= Ini.ReadInteger(S, 'X', Box.Left);
-          Box.Top := Ini.ReadInteger(S, 'Y', Box.Top);
-          Box.Width:= Ini.ReadInteger(S, 'W', Box.Width);
-          Box.Height:= Ini.ReadInteger(S, 'H', Box.Height);
+          Box.Left:= PPIScale(Ini.ReadInteger(S, 'X', Box.Left));
+          Box.Top := PPIScale(Ini.ReadInteger(S, 'Y', Box.Top));
+          Box.Width:= PPIScale(Ini.ReadInteger(S, 'W', Box.Width));
+          Box.Height:= PPIScale(Ini.ReadInteger(S, 'H', Box.Height));
           Box.Font.Assign(Font);
-          Box.Font.Size:= Ini.ReadInteger(S, 'FontSize', Font.Size);
+          Box.Font.Size:= PPIScale(Ini.ReadInteger(S, 'FontSize', Font.Size));
           Box.Font.Name:= Ini.ReadString(S, 'FontName', Font.Name);
 
           s:= Ini.ReadString(S, 'Comment', '');
@@ -1012,13 +1027,10 @@ begin
 end;
 
 procedure TRtfdDiagram.DoLayout;
-var
-  Layout : TSugiyamaLayout;
 begin
   if BoxNames.Count > 0 then begin
-    //Panel.ClearSelection;
     Panel.Hide;
-    Layout:= TSugiyamaLayout.Create(Panel.GetManagedObjects, Panel.GetConnections);
+    var Layout:= TSugiyamaLayout.Create(Panel.GetManagedObjects, Panel.GetConnections);
     try
       Layout.Execute;
     finally
@@ -2029,6 +2041,16 @@ begin
     C.Pathname:= FLivingObjects.getPathOf(Typ);
     Result:= C;
   end;
+end;
+
+function TRtfdDiagram.PPIScale(ASize: integer): integer;
+begin
+  Result := MulDiv(ASize, PPIControl.CurrentPPI, 96);
+end;
+
+function TRtfdDiagram.PPIUnScale(ASize: integer): integer;
+begin
+  Result := MulDiv(ASize, 96, PPIControl.CurrentPPI);
 end;
 
 function TRtfdDiagram.FindClassifier(const CName: string): TClassifier;

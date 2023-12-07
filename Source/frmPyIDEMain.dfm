@@ -3,8 +3,8 @@ object PyIDEMainForm: TPyIDEMainForm
   Top = 115
   HelpContext = 100
   Caption = 'GuiPy'
-  ClientHeight = 668
-  ClientWidth = 1007
+  ClientHeight = 693
+  ClientWidth = 1015
   Color = clWindow
   Ctl3D = False
   ParentFont = True
@@ -21,17 +21,19 @@ object PyIDEMainForm: TPyIDEMainForm
   TextHeight = 15
   object StatusBar: TSpTBXStatusBar
     Left = 0
-    Top = 643
-    Width = 1007
+    Top = 668
+    Width = 1015
     Height = 25
     SizeGrip = False
+    ExplicitTop = 658
+    ExplicitWidth = 1007
     object lbStatusMessage: TSpTBXLabelItem
       Wrapping = twEndEllipsis
       Options = [tboNoAutoHint]
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 373
+      CustomWidth = 0
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -113,13 +115,15 @@ object PyIDEMainForm: TPyIDEMainForm
   object BGPanel: TPanel
     Left = 9
     Top = 113
-    Width = 989
-    Height = 521
+    Width = 997
+    Height = 546
     Align = alClient
     BevelEdges = []
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
+    ExplicitWidth = 606
+    ExplicitHeight = 294
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -239,7 +243,7 @@ object PyIDEMainForm: TPyIDEMainForm
   object TBXDockTop: TSpTBXDockablePanel
     Left = 0
     Top = 0
-    Width = 1007
+    Width = 1015
     Height = 113
     Align = alTop
     DockMode = dmCannotFloatOrChangeDocks
@@ -252,6 +256,7 @@ object PyIDEMainForm: TPyIDEMainForm
     Options.TitleBarMaxSize = 0
     ShowCaption = False
     ShowCaptionWhenDocked = False
+    ExplicitWidth = 1007
     object TBControlItem3: TTBControlItem
     end
     object TBControlItem1: TTBControlItem
@@ -259,10 +264,11 @@ object PyIDEMainForm: TPyIDEMainForm
     object DockTopPanel: TPanel
       Left = 0
       Top = 0
-      Width = 1007
+      Width = 1015
       Height = 113
       Align = alClient
       TabOrder = 1
+      ExplicitWidth = 624
       object DebugToolbar: TSpTBXToolbar
         Left = 2
         Top = 23
@@ -2646,28 +2652,33 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 0
     Top = 113
     Width = 9
-    Height = 521
+    Height = 546
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpLeft
+    ExplicitHeight = 521
   end
   object TBXDockRight: TSpTBXDock
-    Left = 998
+    Left = 1006
     Top = 113
     Width = 9
-    Height = 521
+    Height = 546
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpRight
+    ExplicitLeft = 998
+    ExplicitHeight = 521
   end
   object TBXDockBottom: TSpTBXDock
     Left = 0
-    Top = 634
-    Width = 1007
+    Top = 659
+    Width = 1015
     Height = 9
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpBottom
+    ExplicitTop = 634
+    ExplicitWidth = 1007
   end
   object DockServer: TJvDockServer
     LeftSplitterStyle.Cursor = crHSplit

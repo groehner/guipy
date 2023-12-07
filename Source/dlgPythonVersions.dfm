@@ -2,21 +2,18 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
   HelpContext = 880
   BorderStyle = bsSizeToolWin
   Caption = 'Python Versions'
-  ClientHeight = 315
-  ClientWidth = 630
-  ParentFont = False
+  ClientHeight = 303
+  ClientWidth = 622
   ExplicitWidth = 638
   ExplicitHeight = 342
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 30
-    Width = 630
-    Height = 285
+    Width = 622
+    Height = 273
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 622
-    ExplicitHeight = 273
     object vtPythonVersions: TVirtualStringTree
       Left = 1
       Top = 1
@@ -55,9 +52,8 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
   object SpTBXDock: TSpTBXDock
     Left = 0
     Top = 0
-    Width = 630
+    Width = 622
     Height = 30
-    ExplicitWidth = 622
     object SpTBXToolbar: TSpTBXToolbar
       Left = 0
       Top = 0

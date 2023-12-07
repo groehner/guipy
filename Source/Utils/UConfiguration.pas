@@ -1303,11 +1303,11 @@ type
 
     procedure LoadVisibility;
     procedure SaveVisibility;
+    procedure SetVisibility;
+    procedure PrepareVisibilityPage;
     procedure VisibilityViewToModel;
     procedure VisibilityModelToView;
     function CountMenuItems(Menu: TTBCustomItem): integer;
-    procedure PrepareVisibilityPage;
-    procedure ActivateOnChangings(active: boolean);
     procedure setSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Nr: integer);
   public
     ShowAlways: boolean;
@@ -1325,7 +1325,6 @@ type
     procedure Changed;
     procedure RestoreApplicationData;
     procedure setToolbarVisibility(Toolbar: TToolbar; Nr: integer);
-    procedure SetVisibility;
     function getEncoding(const Pathname: string): TEncoding;
     procedure PrepareShow;
     function getMultiLineComment(Indent: string): string;
@@ -1452,8 +1451,6 @@ begin
     SetElevationRequiredState(BJEAssociation);
   end;
   VisSelectedTabMenuToolbar:= 0;
-  vtPythonVersions.DefaultText := '';
-  vtPythonVersions.RootNodeCount := 2;
   fHighlighters := TList.create;
   PrepareHighlighters;
   FSynEdit:= TSynEditorOptionsContainer.Create(Self);
@@ -1520,6 +1517,8 @@ procedure TFConfiguration.FormShow(Sender: TObject);
 begin
   for var i:= 0 to PageList.PageCount - 1 do
     TVConfiguration.Items[i].Text:= PageList.Pages[i].Caption;
+  vtPythonVersions.DefaultText := '';
+  vtPythonVersions.RootNodeCount := 2;
   vtPythonVersions.Header.Columns.Items[1].Text:= _('Folder');
 
   SynEditOptionsShow;
@@ -2809,13 +2808,14 @@ begin
       PyControl.CustomPythonVersions[Length(PyControl.CustomPythonVersions)-1] := PythonVersion;
       vtPythonVersions.ReinitChildren(nil, True);
       vtPythonVersions.Selected[vtPythonVersions.GetLast] := True;
-    end else
+    end else begin
       {$IFDEF WIN32}
       err:= Format(_(SPythonFindError32), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
       {$ELSE}
       err:= Format(_(SPythonFindError64), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
       {$ENDIF}
       StyledMessageDlg(_(err), mtError, [mbOK], 0);
+    end;
   end;
 end;
 
@@ -2958,10 +2958,8 @@ end;
 
 procedure TFConfiguration.vtPythonVersionsInitChildren(Sender: TBaseVirtualTree;
   Node: PVirtualNode; var ChildCount: Cardinal);
-Var
-  Level : integer;
 begin
-  Level := vtPythonVersions.GetNodeLevel(Node);
+  var Level := vtPythonVersions.GetNodeLevel(Node);
   if Level = 0 then begin
     if Node.Index = 0 then
       ChildCount := Length(PyControl.RegPythonVersions)
@@ -2972,10 +2970,8 @@ end;
 
 procedure TFConfiguration.vtPythonVersionsInitNode(Sender: TBaseVirtualTree;
   ParentNode, Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
-Var
-  Level : integer;
 begin
-  Level := vtPythonVersions.GetNodeLevel(Node);
+  var Level := vtPythonVersions.GetNodeLevel(Node);
   if Level = 0 then begin
     if (Node.Index = 0) and (Length(PyControl.RegPythonVersions) > 0) then
       InitialStates := [ivsHasChildren, ivsExpanded]
@@ -5415,7 +5411,6 @@ procedure TFConfiguration.PrepareVisibilityPage;
       TC: TSpTBXTabControl;
       anItem: TListItem;
 begin
-  ActivateOnChangings(false);
   LVVisibilityTabs.Items.BeginUpdate;
   TC:= PyIDEMainForm.TabControlWidgets;
   for i:= 0 to TC.Items.Count - 1 do begin
@@ -5440,26 +5435,11 @@ begin
   LVVisibilityToolbars.Items[5].Caption:= _('Sequence diagram');
   LVVisibilityToolbars.Items.EndUpdate;
   LVVisibilityTabsClick(Self);
-  ActivateOnChangings(true);
-end;
-
-procedure TFConfiguration.ActivateOnChangings(active: boolean);
-begin
-  if active then begin
-    LVVisibilityTabs.OnClick:= LVVisibilityTabsClick;
-    LVVisibilityMenus.OnClick:= LVVisibilityMenusClick;
-    LVVisibilityToolbars.OnClick:= LVVisibilityToolbarsClick;
-  end else begin
-    LVVisibilityTabs.OnChange:= nil;
-    LVVisibilityMenus.OnChange:= nil;
-    LVVisibilityToolbars.OnChange:= nil;
-  end;
 end;
 
 procedure TFConfiguration.VisibilityModelToView;
   var i, j: integer;
 begin
-  ActivateOnChangings(false);
   for i:= 0 to LVVisibilityTabs.Items.Count - 1 do
     LVVisibilityTabs.Items[i].Checked:= VisTabs[i];
 
@@ -5468,7 +5448,6 @@ begin
 
   for i:= 0 to LVVisibilityToolbars.Items.Count - 1 do
     LVVisibilityToolbars.Items[i].Checked:= VisToolbars[i];
-  ActivateOnChangings(true);
 
   // save visibility settings in vis2 for changing
   for i:= 0 to MaxVisLen - 1 do
@@ -5690,7 +5669,6 @@ procedure TFConfiguration.BVisDefaultClick(Sender: TObject);
   end;
 
 begin
-  ActivateOnChangings(false);
   DefaultVis(VisTabs);
   DefaultVis(VisMenus);
   DefaultVis(VisToolbars);
@@ -5729,7 +5707,6 @@ begin
 
   for j:= 0 to LVVisibilityElements.Items.Count - 1 do
     LVVisibilityElements.Items[j].Checked:= vis2[VisSelectedTabMenuToolbar, j];
-  ActivateOnChangings(true);
 end;
 
 procedure TFConfiguration.setToolbarVisibility(Toolbar: TToolbar; Nr: integer);

@@ -87,7 +87,6 @@ type
     procedure ChangeTo(Formular: TFGUIForm);
     function GetEditForm: TEditorForm;
     procedure UpdateState(Modified: boolean);
-    procedure SetGridOptions;
     function getPath: string;
     function getControlWidthHeigth: TPoint;
   end;
@@ -165,7 +164,6 @@ begin
     OnDblClick       := ELDesignerDblClick;
   end;
   ELDesigner.GuiDesignerHints:= GuiPyOptions.GuiDesignerHints;
-  //SetGridOptions;
 end;
 
 procedure TFGUIDesigner.ChangeTo(Formular: TFGUIForm);
@@ -789,13 +787,6 @@ begin
   if Assigned(ELDesigner) and Assigned(ELDesigner.DesignControl)
     then Result:= TEditorForm(TFGUIForm(ELDesigner.DesignControl).Partner)
     else Result:= nil;
-end;
-
-procedure TFGUIDesigner.SetGridOptions;
-begin
-  ELDesigner.SnapToGrid:= GuiPyOptions.SnapToGrid;
-  ELDesigner.Grid.XStep:= PPIScale(GuiPyOptions.GridSize);
-  ELDesigner.Grid.YStep:= PPIScale(GuiPyOptions.GridSize);
 end;
 
 function TFGUIDesigner.getPath: string;

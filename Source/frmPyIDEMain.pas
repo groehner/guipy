@@ -1463,7 +1463,6 @@ type
     procedure ToolButtonMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure ToolButtonStartDrag(Sender: TObject; var DragObject: TDragObject);
-    procedure SpTBXItem3Click(Sender: TObject);
     procedure TBQtApplicationClick(Sender: TObject);
     procedure mnSpellingPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure actEditorZoomResetExecute(Sender: TObject);
@@ -3563,12 +3562,6 @@ procedure TPyIDEMainForm.SpTBXCustomizerGetCustomizeForm(Sender: TObject;
   var CustomizeFormClass: TSpTBXCustomizeFormClass);
 begin
   CustomizeFormClass := TSpTBXCustomizeFormMod;
-end;
-
-procedure TPyIDEMainForm.SpTBXItem3Click(Sender: TObject);
-begin
-FConfiguration.SetVisibility;
-  ShowMessage('Statusbar Fontsize : ' + IntToStr(Statusbar.Font.Size));
 end;
 
 procedure TPyIDEMainForm.mnSpellingPopup(Sender: TTBCustomItem;
