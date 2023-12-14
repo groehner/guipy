@@ -2190,8 +2190,10 @@ begin
   // Read Settings from GuiPy.ini
   if FileExists(AppStorage.IniFile.FileName) then
     RestoreApplicationData
-  else
+  else begin
     PyIDEOptions.Changed;
+    FConfiguration.ApplyColorTheme;
+  end;
 
   // Read Settings from GuiPy.local.ini
   if FileExists(LocalAppStorage.IniFile.FileName) then
@@ -5583,7 +5585,7 @@ begin
     ecFillColor, GradColor) or (GradColor = clNone)
   then
     GradColor := StyleServices.GetSystemColor(clBtnFace);
-  Gutter.Font.Color :=  StyleServices.GetSystemColor(clGrayText);;
+  Gutter.Font.Color := StyleServices.GetSystemColor(clGrayText);
 
   with Gutter do begin
     BorderStyle := gbsNone;

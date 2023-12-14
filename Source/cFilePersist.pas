@@ -295,8 +295,8 @@ begin
     InteractiveClosed:= (aFile.Form as TFUMLForm).InteractiveClosed;
     InteractiveHeight:= (aFile.Form as TFUMLForm).InteractiveHeight;
   end;
-  //if FileKind = fkEditor then
-  //  CreateFromEditor(aFile as IEditor);
+  if FileKind = fkEditor then
+    CreateFromEditor(aFile as IEditor);
   if aFile.FileName <> '' then
     FileName := aFile.FileName
   else

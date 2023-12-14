@@ -3,8 +3,8 @@ inherited PythonIIForm: TPythonIIForm
   Top = 201
   HelpContext = 410
   Caption = 'Python Interpreter'
-  ClientHeight = 355
-  ClientWidth = 637
+  ClientHeight = 343
+  ClientWidth = 629
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -43,25 +43,25 @@ inherited PythonIIForm: TPythonIIForm
     9C41F00F9C41F00F9C41F00F9C4180019C4100009C4100009C4100009C410000
     9C4100009C4100009C4180019C41F00F9C41F00F9C41F00F9C41F81F9C41}
   OnHelp = FormHelp
-  ExplicitWidth = 653
-  ExplicitHeight = 394
+  ExplicitWidth = 645
+  ExplicitHeight = 382
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 637
-    Height = 355
-    ExplicitWidth = 661
-    ExplicitHeight = 391
+    Width = 629
+    Height = 343
+    ExplicitWidth = 629
+    ExplicitHeight = 343
     inherited FGPanel: TPanel
-      Width = 641
-      Height = 363
+      Width = 633
+      Height = 351
       Color = clInactiveBorder
-      ExplicitWidth = 657
-      ExplicitHeight = 387
+      ExplicitWidth = 625
+      ExplicitHeight = 339
       object SynEdit: TSynEdit
         Left = 0
         Top = 0
-        Width = 641
-        Height = 363
+        Width = 633
+        Height = 351
         HelpContext = 410
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
@@ -113,8 +113,8 @@ inherited PythonIIForm: TPythonIIForm
         OnCommandProcessed = SynEditCommandProcessed
         OnProcessCommand = SynEditProcessCommand
         OnProcessUserCommand = SynEditProcessUserCommand
-        ExplicitWidth = 657
-        ExplicitHeight = 387
+        ExplicitWidth = 625
+        ExplicitHeight = 339
       end
     end
   end

@@ -3094,16 +3094,6 @@ end;
 procedure TEditorForm.WMSpSkinChange(var Message: TMessage);
 begin
   StyledBorderColors(BorderNormal, BorderHighlight);
-
-  PyIDEMainForm.ThemeEditorGutter(SynEdit.Gutter);
-  SynEdit.InvalidateGutter;
-  SynEdit.CodeFolding.FolderBarLinesColor := SynEdit.Gutter.Font.Color;
-
-  PyIDEMainForm.ThemeEditorGutter(SynEdit2.Gutter);
-  SynEdit2.CodeFolding.FolderBarLinesColor := SynEdit2.Gutter.Font.Color;
-  SynEdit2.InvalidateGutter;
-  Invalidate;
-
   ChangeStyle;
 end;
 
@@ -3582,7 +3572,9 @@ end;
 
 procedure TEditorForm.TBNumbersClick(Sender: TObject);
 begin
-  ActiveSynEdit.Gutter.ShowLineNumbers:= not ActiveSynEdit.Gutter.ShowLineNumbers;
+  //ActiveSynEdit.Gutter.ShowLineNumbers:= not ActiveSynEdit.Gutter.ShowLineNumbers;
+  ActiveSynEdit.Gutter.AutoSize:= not ActiveSynEdit.Gutter.AutoSize;
+
 end;
 
 procedure TEditorForm.TBParagraphClick(Sender: TObject);

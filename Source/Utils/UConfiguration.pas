@@ -563,7 +563,7 @@ type
     PEditor: TTabSheet;
     PDisplay: TTabSheet;
     gbGutter: TGroupBox;
-    Label1: TLabel;
+    lGutterColor: TLabel;
     pnlGutterFontDisplay: TPanel;
     lblGutterFont: TLabel;
     cbGutterColor: TSpTBXColorEdit;
@@ -588,7 +588,7 @@ type
     gbBookmarks: TGroupBox;
     ckBookmarkKeys: TCheckBox;
     ckBookmarkVisible: TCheckBox;
-    GroupBox2: TGroupBox;
+    gbActiveLineColor: TGroupBox;
     cbActiveLineColor: TSpTBXColorEdit;
     gbEditorFont: TGroupBox;
     Panel3: TPanel;
@@ -1062,6 +1062,8 @@ type
     UDIDEFontSize: TUpDown;
     LIDEFontSize: TLabel;
     EIDEFontSize: TEdit;
+    lDigits: TLabel;
+    EDigits: TEdit;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1179,6 +1181,7 @@ type
     procedure LVVisibilityMenusClick(Sender: TObject);
     procedure LVVisibilityTabsClick(Sender: TObject);
     procedure LVVisibilityToolbarsClick(Sender: TObject);
+    procedure ckGutterAutosizeClick(Sender: TObject);
   private
     const
       DefaultVisFileMenu    = '11100111011101011';      // len = 17
@@ -1281,7 +1284,6 @@ type
     procedure StyleSelectorFormCreate;
     procedure StyleSelectorFormShow;
     procedure FillVclStylesList;
-    procedure ApplyColorTheme;
 
     procedure ModelToView;
     procedure ViewToModel;
@@ -1341,6 +1343,7 @@ type
     function getClassesAndFilename(Pathname: string): TStringList;
     procedure SetStyle(StyleName: string);
     class function isDark: boolean;
+    procedure ApplyColorTheme;
 
     property GetUserCommandNames: TSynEditorOptionsUserCommand read FUserCommand
       write FUserCommand;
@@ -1364,7 +1367,7 @@ uses SynUnicode, StringResources, JvGnugettext, FileCtrl, Forms, Math,
      PythonVersions, uCommonFunctions, cPySupportTypes, frmPyIDEMain, SpTBXTabs,
      IOUtils, JvAppStorage, JvAppIniStorage, SynEditKeyConst, JvJCLUtils,
      frmFile, frmEditor, UUMLForm, UStructogram, USequenceform, UImages, UGit,
-     USubversion;
+     USubversion, frmPythonII;
 
 const
   MaxPages = 34;
@@ -1470,6 +1473,8 @@ begin
   Indent1:= StringOfChar(' ', 1*IndentWidth);
   Indent2:= StringOfChar(' ', 2*IndentWidth);
   Indent3:= StringOfChar(' ', 3*IndentWidth);
+  ckGutterGradient.Left:= 24;
+  cbGutterFont.Left:= 24;
 end;
 
 procedure TFConfiguration.FormDestroy(Sender: TObject);
@@ -1762,6 +1767,9 @@ begin
   lblGutterFont.Font.Assign(FSynEdit.Gutter.Font);
   lblGutterFont.Caption:= lblGutterFont.Font.Name + ' ' + IntToStr(lblGutterFont.Font.Size) + 'pt';
   ckGutterGradient.Checked := FSynEdit.Gutter.Gradient;
+  EDigits.Text:= IntToStr(FSynEdit.Gutter.DigitCount);
+  EDigits.Enabled:= not ckGutterAutosize.Checked;
+
   //Right Edge
   eRightEdge.Text:= IntToStr(FSynEdit.RightEdge);
   cbRightEdgeColor.SelectedColor:= FSynEdit.RightEdgeColor;
@@ -1770,8 +1778,6 @@ begin
   //Line Spacing
   eLineSpacing.Text:= IntToStr(FSynEdit.ExtraLineSpacing);
   eTabWidth.Text:= IntToStr(FSynEdit.TabWidth);
-  //Break Chars
-  //!!  eBreakchars.Text:= FSynEdit.WordBreakChars;
   //Bookmarks
   ckBookmarkKeys.Checked:= FSynEdit.BookMarkOptions.EnableKeys;
   ckBookmarkVisible.Checked:= FSynEdit.BookMarkOptions.GlyphsVisible;
@@ -2082,6 +2088,7 @@ end;
 procedure TFConfiguration.ViewToModel;
   var LanguageNr: Integer;
       vOptions: TSynEditorOptions;
+      Digits: integer;
 
   procedure SetFlag(aOption: TSynEditorOption; aValue: Boolean);
   begin
@@ -2111,10 +2118,14 @@ begin
   FSynEdit.Gutter.ShowLineNumbers:= ckGutterShowLineNumbers.Checked;
   FSynEdit.Gutter.LeadingZeros:= ckGutterShowLeaderZeros.Checked;
   FSynEdit.Gutter.ZeroStart:= ckGutterStartAtZero.Checked;
-  //FSynEdit.Gutter.Color:= cbGutterColor.SelectedColor;
+  FSynEdit.Gutter.Color:= cbGutterColor.SelectedColor;
   FSynEdit.Gutter.UseFontStyle := cbGutterFont.Checked;
   FSynEdit.Gutter.Font.Assign(lblGutterFont.Font);
   FSynEdit.Gutter.Gradient := ckGutterGradient.Checked;
+  if not ckGutterAutosize.Checked and
+    TryStrToInt(EDigits.Text, Digits) and (2 <= Digits) and (Digits <= 10) then
+    FSynEdit.Gutter.DigitCount:= Digits;
+
   //Right Edge
   FSynEdit.RightEdge:= StrToIntDef(eRightEdge.Text, 80);
   FSynEdit.RightEdgeColor:= cbRightEdgeColor.SelectedColor;
@@ -2123,8 +2134,6 @@ begin
   //Line Spacing
   FSynEdit.ExtraLineSpacing:= StrToIntDef(eLineSpacing.Text, 0);
   FSynEdit.TabWidth:= StrToIntDef(eTabWidth.Text, 8);
-  //Break Chars
-//!!  FSynEdit.WordBreakChars:= eBreakchars.Text;
   //Bookmarks
   FSynEdit.BookMarkOptions.EnableKeys:= ckBookmarkKeys.Checked;
   FSynEdit.BookMarkOptions.GlyphsVisible:= ckBookmarkVisible.Checked;
@@ -2366,42 +2375,43 @@ begin
   ActionProxyCollection.ApplyShortCuts;
   FileTemplatesGetItems;
   CodeTemplatesGetItems;
-  EditorOptions.assign(FSynEdit);  // doesn't really work
-
-  // get gutter.color after possible StyleChange
-  if assigned(GI_EditorFactory) then
-    GI_EditorFactory.ApplyToEditors(procedure(Editor: IEditor)
-    begin
-      EditorOptions.Gutter.Color:= Editor.SynEdit.Gutter.Color;
-    end);
-
+  EditorOptions.assign(FSynEdit);
   for var i := 0 to cbHighlighters.Items.Count-1 do
-     CommandsDataModule.SynEditOptionsDialogSetHighlighter(
+    CommandsDataModule.SynEditOptionsDialogSetHighlighter(
       self, i, TSynCustomHighlighter(cbHighlighters.Items.Objects[i]));
 
   CommandsDataModule.ApplyEditorOptions;
+  PythonIIForm.ApplyEditorOptions;
 end;
 
 procedure TFConfiguration.BTempFolderClick(Sender: TObject);
   var s: string;
 begin
-  s:= GetTempDir;
-  {$WARN SYMBOL_PLATFORM OFF}
-  s:= IncludeTrailingPathDelimiter(GetLongPathName(s));
-  {$WARN SYMBOL_PLATFORM ON}
-  Sysutils.ForceDirectories(s);
+  if TPyScripterSettings.IsPortable then
+    s:= TPath.Combine(ExtractFilepath(Application.ExeName), 'Temp')
+  else begin
+    s:= GetTempDir;
+    {$WARN SYMBOL_PLATFORM OFF}
+    s:= IncludeTrailingPathDelimiter(GetLongPathName(s));
+    {$WARN SYMBOL_PLATFORM ON}
+  end;
+  SysUtils.ForceDirectories(s);
   ShortenPath(ETempFolder, s);
 end;
 
 procedure TFConfiguration.SBTempSelectClick(Sender: TObject);
   var s: string;
 begin
-  s:= GetTempDir;
-  {$WARN SYMBOL_PLATFORM OFF}
-  s:= IncludeTrailingPathDelimiter(GetLongPathName(s));
-  {$WARN SYMBOL_PLATFORM ON}
+  if TPyScripterSettings.IsPortable then
+    s:= TPath.Combine(ExtractFilepath(Application.ExeName), 'Temp')
+  else begin
+    s:= GetTempDir;
+    {$WARN SYMBOL_PLATFORM OFF}
+    s:= IncludeTrailingPathDelimiter(GetLongPathName(s));
+    {$WARN SYMBOL_PLATFORM ON}
+  end;
   FolderSelect(ETempFolder, s);
-  Sysutils.ForceDirectories(s);
+  SysUtils.ForceDirectories(s);
   ShortenPath(ETempFolder, s);
 end;
 
@@ -3134,6 +3144,11 @@ procedure TFConfiguration.cKeyCommandKeyUp(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
   if Key = SYNEDIT_RETURN then btnUpdateKey.Click;
+end;
+
+procedure TFConfiguration.ckGutterAutosizeClick(Sender: TObject);
+begin
+  EDigits.Enabled:= not ckGutterAutosize.Checked;
 end;
 
 procedure TFConfiguration.UpdateKey(AKey: TSynEditKeystroke);
@@ -4337,15 +4352,22 @@ var
 begin
   if CompareText(StyleName, TStyleManager.ActiveStyle.Name) = 0 then
     Exit;
-
   if CompareText(StyleName, 'Windows') = 0 then
-  begin
-    TStyleManager.SetStyle(TStyleManager.SystemStyle);
-    CurrentSkinName := 'Windows';
-    Exit;
-  end;
-
-  for SName in TStyleManager.StyleNames do
+    begin
+      TStyleManager.SetStyle(TStyleManager.SystemStyle);
+      CurrentSkinName := 'Windows';
+    end
+  else if FileExists(StyleName) and TStyleManager.IsValidStyle(StyleName, StyleInfo) then
+    begin
+      if not TStyleManager.TrySetStyle(StyleInfo.Name, False) then
+      begin
+        TStyleManager.LoadFromFile(StyleName);
+        LoadedStylesDict.Add(StyleInfo.Name, StyleName);
+      end;
+      TStyleManager.SetStyle(StyleInfo.Name);
+      CurrentSkinName := StyleName;
+    end
+  else for SName in TStyleManager.StyleNames do
     if SName = StyleName then
     begin
        // Resource style
@@ -4354,20 +4376,11 @@ begin
         CurrentSkinName := LoadedStylesDict[StyleName]
       else
         CurrentSkinName := StyleName;
-      Exit;
+      break;
     end;
-
-  // FileName
-  if FileExists(StyleName) and TStyleManager.IsValidStyle(StyleName, StyleInfo) then
-  begin
-    if not TStyleManager.TrySetStyle(StyleInfo.Name, False) then
-    begin
-      TStyleManager.LoadFromFile(StyleName);
-      LoadedStylesDict.Add(StyleInfo.Name, StyleName);
-    end;
-    TStyleManager.SetStyle(StyleInfo.Name);
-    CurrentSkinName := StyleName;
-  end;
+  PyIDEMainForm.ThemeEditorGutter(FSynEdit.Gutter);
+  cbGutterColor.SelectedColor:= FSynEdit.Gutter.Color;
+  lblGutterFont.Font.Color:= FSynEdit.Gutter.Font.Color;
 end;
 
 procedure TFConfiguration.StyleSelectorFormCreate;

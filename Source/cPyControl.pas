@@ -856,7 +856,7 @@ begin
       if Name = '' then
         Path := CustomVersions[Index]
       else
-         Path := CustomVersions.ValueFromIndex[Index];
+        Path := CustomVersions.ValueFromIndex[Index];
 
       Path:= AddPortableDrive(Path);
       if PythonVersionFromPath(Path, Version, True, MinPyVersion, MaxPyVersion) then begin
@@ -874,7 +874,7 @@ begin
   if SysVersion = '' then
     SysVersion:= AppStorage.ReadString(PythonVersionsKey+'\SysVerion');  // until GuiPY version 4.3
 
-  InstallPath := AppStorage.ReadString(PythonVersionsKey+'\InstallPath');
+  InstallPath := AddPortableDrive(AppStorage.ReadString(PythonVersionsKey+'\InstallPath'));
 
   ActiveSSHServerName  := AppStorage.ReadString('SSHServer');
 end;
@@ -911,7 +911,7 @@ begin
     if fPythonVersionIndex >= 0 then
       AppStorage.WriteString(PythonVersionsKey+'\SysVersion', PythonVersion.SysVersion)
     else
-      AppStorage.WriteString(PythonVersionsKey+'\InstallPath', PythonVersion.InstallPath);
+      AppStorage.WriteString(PythonVersionsKey+'\InstallPath', RemovePortableDrive(PythonVersion.InstallPath));
   end;
 
   AppStorage.WriteString('SSHServer', ActiveSSHServerName);

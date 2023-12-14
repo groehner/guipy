@@ -1235,8 +1235,6 @@ begin
     LspServerPath :=  TPath.Combine(PublicPath, 'Lsp');
     UserDebugInspectorsDir :=  TPath.Combine(UserDataPath, 'Variable Inspectors');
     AppDebugInspectorsDir := TPath.Combine(PublicPath, 'Variable Inspectors');
-    // First use setup
-    CopyFileIfNeeded(TPath.Combine(PublicPath, 'GuiPy.ini'), OptionsFileName);
   end;
   ForceDirectories(UserDebugInspectorsDir);
 

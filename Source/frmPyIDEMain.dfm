@@ -127,8 +127,8 @@ object PyIDEMainForm: TPyIDEMainForm
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
-      Width = 985
-      Height = 521
+      Width = 993
+      Height = 546
       Align = alClient
       PopupMenu = TabControlPopupMenu
       OnContextPopup = TabContolContextPopup
@@ -139,7 +139,7 @@ object PyIDEMainForm: TPyIDEMainForm
       OnActiveTabChange = TabControlActiveTabChange
       HiddenItems = <>
       object tbiRightAlign: TSpTBXRightAlignSpacerItem
-        CustomWidth = 859
+        CustomWidth = 867
       end
       object tbiTabSep: TSpTBXSeparatorItem
       end
@@ -177,10 +177,10 @@ object PyIDEMainForm: TPyIDEMainForm
       end
     end
     object TabControl2: TSpTBXTabControl
-      Left = 985
+      Left = 993
       Top = 0
       Width = 0
-      Height = 521
+      Height = 546
       Align = alRight
       PopupMenu = TabControlPopupMenu
       Visible = False
@@ -230,14 +230,16 @@ object PyIDEMainForm: TPyIDEMainForm
       end
     end
     object TabSplitter: TSpTBXSplitter
-      Left = 985
+      Left = 993
       Top = 0
       Width = 4
-      Height = 521
+      Height = 546
       Cursor = crSizeWE
       Align = alRight
       ParentColor = False
       Visible = False
+      ExplicitLeft = 985
+      ExplicitHeight = 521
     end
   end
   object TBXDockTop: TSpTBXDockablePanel
