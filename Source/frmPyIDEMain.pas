@@ -4866,13 +4866,14 @@ begin
     end);
 
     RetranslateComponent(FConfiguration);
+    FConfiguration.Retranslate;
     RetranslateComponent(FGUIDesigner);
     RetranslateComponent(FClassEditor);
     RetranslateComponent(FObjectInspector);
     RetranslateComponent(FFileStructure);
     RetranslateComponent(FObjectGenerator);
-    if FConfiguration.GitOK and (FGit = nil) then RetranslateComponent(FGit);
-    if FConfiguration.SubversionOK and (FSubversion = nil) then RetranslateComponent(FSubversion);
+    if FConfiguration.GitOK and (FGit <> nil) then RetranslateComponent(FGit);
+    if FConfiguration.SubversionOK and (FSubversion <> nil) then RetranslateComponent(FSubversion);
   end;
 end;
 

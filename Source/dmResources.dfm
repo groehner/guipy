@@ -5526,6 +5526,7 @@ object ResourcesDataModule: TResourcesDataModule
           'M 6,12 6,11 7,11 7,12 z" fill="#accdea" fill-opacity="1.0" id="x' +
           'accdea_r172_g205_b234_a1.0_shape1"/>'#13#10'  </g>'#13#10'</svg>'#13#10
       end>
+    ApplyFixedColorToRootOnly = True
     Left = 24
     Top = 152
   end

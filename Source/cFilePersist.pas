@@ -449,16 +449,32 @@ begin
 end;
 
 procedure TPersistFileInfo.GetFileInfo;
-begin
-  GI_FileFactory.ApplyToFiles(procedure(aFile: IFile)
+
+  procedure ProcessTabControl(TabControl : TSpTBXCustomTabControl);
+  var
+    I: Integer;
+    IV: TTBItemViewer;
+    aFile : IFile;
+    FilePersistInfo : TFilePersistInfo;
   begin
-    if Assigned(aFile) and ((aFile.FileName <> '') or (aFile.RemoteFileName <> '')) then begin
-      var FilePersistInfo := TFilePersistInfo.CreateFromFile(aFile);
-      fFileInfoList.Add(FilePersistInfo);
-      // We need to do it here before we call StoreApplicationData
-      GI_PyIDEServices.MRUAddFile(aFile);
+    // Note that the Pages property may have a different order than the
+    // physical order of the tabs
+    for I := 0 to TabControl.View.ViewerCount - 1 do begin
+      IV := TabControl.View.Viewers[I];
+      if IV.Item is TSpTBXTabItem then begin
+        aFile := PyIDEMainForm.FileFromTab(TSpTBXTabItem(IV.Item));
+        if Assigned(aFile) and ((aFile.FileName <> '') or (aFile.RemoteFileName <> '')) then begin
+          FilePersistInfo := TFilePersistInfo.CreateFromFile(aFile);
+          fFileInfoList.Add(FilePersistInfo);
+          // We need to do it here before we call SaveEnvironement
+          GI_PyIDEServices.MRUAddFile(aFile);
+        end;
+      end;
     end;
-  end);
+  end;
+begin
+  ProcessTabControl(PyIDEMainForm.TabControl1);
+  ProcessTabControl(PyIDEMainForm.TabControl2);
 end;
 
 { TTabsPersistInfo }

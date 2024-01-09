@@ -2220,8 +2220,6 @@ var
   OpenBracketPos: Integer;
   Line: string;
   CharRight, CharLeft: WideChar;
-  Attr: TSynHighlighterAttributes;
-  DummyToken: string;
   Caret, BC: TBufferCoord;
 begin
   ASynEdit := Sender as TSynEdit;
@@ -2320,7 +2318,7 @@ begin
           //  ( // (attr = ASynEdit.Highlighter.StringAttribute) or
           //  (Attr = ASynEdit.Highlighter.CommentAttribute) or
           //    (Attr = TSynPythonSyn(ASynEdit.Highlighter).CodeCommentAttri) { or
-          //    (attr = CommandsDataModule.SynPythonSyn.DocStringAttri) } ) then
+          //    (attr = ResourcesDataModule.SynPythonSyn.DocStringAttri) } ) then
           //begin
           if TPyRegExpr.IsBlockOpener(iPrevLine) then
             ASynEdit.ExecuteCommand(ecTab, #0, nil)
@@ -2389,27 +2387,8 @@ begin
                 //fCloseBracketChar := #0;
                 OpenBracketPos := Pos(AChar, OpenBrackets);
 
-                BC := CaretXY;
-                Dec(BC.Char, 2);
-                if (BC.Char >= 1) and GetHighlighterAttriAtRowCol(BC, DummyToken,
-                  Attr) and ((Attr = Highlighter.StringAttribute) or
-                    (Attr = Highlighter.CommentAttribute) or
-                    ((Highlighter is TSynPythonSyn) and
-                      (Attr = TSynPythonSyn(Highlighter).CodeCommentAttri) or
-                      (Attr = TSynPythonSyn(Highlighter).MultiLineStringAttri) or
-                      (Attr = TSynPythonSyn(Highlighter).DocStringAttri))) then
-                  OpenBracketPos := 0; // Do not auto complete brakets inside strings or comments
-
                 if (OpenBracketPos > 0) then
                 begin
-                  CharRight := WideNull;
-                  Position := CaretX;
-                  while (Position <= Len) and Highlighter.IsWhiteChar
-                    (LineText[Position]) do
-                    Inc(Position);
-                  if Position <= Len then
-                    CharRight := Line[Position];
-
                   CharLeft := WideNull;
                   Position := CaretX - 2;
                   while (Position >= 1) and Highlighter.IsWhiteChar
@@ -2418,12 +2397,9 @@ begin
                   if Position >= 1 then
                     CharLeft := Line[Position];
 
-                  if CharInSet(CharRight, [WideNull, ')', ']', '}', ',']) and not
-                    (CharInSet(AChar, ['"', '''']) and
-                      (Highlighter.IsIdentChar(CharLeft) or (CharLeft = AChar)))
-                  then
+                  if not (CharInSet(AChar, ['"', '''']) and (CharLeft = AChar)) then
                   begin
-                    SelText := CloseBrackets[OpenBracketPos];
+                    ExecuteCommand(ecChar, CloseBrackets[OpenBracketPos], nil);
                     CaretX := CaretX - 1;
                     if not CharInSet(AChar, [')', ']', '}']) then
                       fCloseBracketChar := CloseBrackets[OpenBracketPos];
@@ -2431,7 +2407,7 @@ begin
                 end;
               end;
             end;
-          end;
+        end;
       ecSelWord:
         if ASynEdit.SelAvail and PyIDEOptions.HighlightSelectedWord then
           CommandsDataModule.HighlightWordInActiveEditor(ASynEdit.SelText);

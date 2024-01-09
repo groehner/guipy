@@ -11,19 +11,19 @@ const
   {$IFDEF WIN32}
   Zipfile = 'GuiPy.zip';   // update portable version
   Setupfile = 'GuiPy-%s-x86-Setup.exe';   // update default version
-  Version = '4.5, 32 Bit';
+  Version = '4.6, 32 Bit';
   Bits = '32';
   {$ENDIF}
   {$IFDEF WIN64}
   Zipfile = 'GuiPy64.zip';
   Setupfile = 'GuiPy-%s-x64-Setup.exe';
-  Version = '4.5, 64 Bit';
+  Version = '4.6, 64 Bit';
   Bits = '64';
   {$ENDIF}
 
-  Day   = 14;
-  Month = 12;
-  Year  = 2023;
+  Day   = 9;
+  Month = 1;
+  Year  = 2024;
 
 type
   TFUpdate = class(TPyIDEDlgBase)

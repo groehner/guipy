@@ -10,15 +10,15 @@ unit UConfiguration;
 {
 
 We have configuration-values
-a) in ini-files
+a) in ini files
      AppStorage.FileName := ChangeFileExt(Application.ExeName, '.ini');
      MachineStorage.FileName:= ExtractFilePath(Application.ExeName) + 'GuiPyMachine.INI';
 b) in variables (Model)
 c) in form (View)
 
            RestoreApplicationData              ModelToView
-INI-Files  ----------------------->  model   -------------> view
-INI-files <----------------------- variables <------------- gui-elements
+INI files  ----------------------->  model   -------------> view
+INI files <----------------------- variables <------------- gui-elements
            StoreApplicationData                ViewToModel
 
 
@@ -1344,6 +1344,7 @@ type
     procedure SetStyle(StyleName: string);
     class function isDark: boolean;
     procedure ApplyColorTheme;
+    procedure Retranslate;
 
     property GetUserCommandNames: TSynEditorOptionsUserCommand read FUserCommand
       write FUserCommand;
@@ -1370,7 +1371,7 @@ uses SynUnicode, StringResources, JvGnugettext, FileCtrl, Forms, Math,
      USubversion, frmPythonII;
 
 const
-  MaxPages = 34;
+  MaxPages = 31;
 
   machine = 0;
   allusers = 1;
@@ -1520,8 +1521,6 @@ end;
 
 procedure TFConfiguration.FormShow(Sender: TObject);
 begin
-  for var i:= 0 to PageList.PageCount - 1 do
-    TVConfiguration.Items[i].Text:= PageList.Pages[i].Caption;
   vtPythonVersions.DefaultText := '';
   vtPythonVersions.RootNodeCount := 2;
   vtPythonVersions.Header.Columns.Items[1].Text:= _('Folder');
@@ -1531,6 +1530,12 @@ begin
   PageSetupShow;
   StyleSelectorFormShow;
   onShow:= nil;
+end;
+
+procedure TFConfiguration.Retranslate;
+begin
+  for var i:= 0 to PageList.PageCount - 1 do
+    TVConfiguration.Items[i].Text:= PageList.Pages[i].Caption;
 end;
 
 procedure TFConfiguration.PageSetupShow;
@@ -2424,17 +2429,19 @@ end;
 
 var
   en: array[0..MaxPages] of string =
-      ('python', 'interpreter', 'compiler', 'programs', 'applets', 'disassembler', 'jar',
-       'editor', 'options', 'code', 'colors', 'comment', 'templates', 'keyboard',
-       'structogram', 'sequencediagram', 'browser', 'documentation', 'printer', 'mindstorms', 'android',
-       'language', 'options', 'restrictions', 'associations', 'uml', 'uml2', 'visibility',
-       'protocols', 'tools', 'git', 'junit', 'checkstyle', 'jalopy', 'subversion');
+      ('python', 'interpreter', 'editor', 'display', 'options_1', 'options_2', 'code_completion',
+       'keystrokes', 'syntax_colors', 'color_themes', 'code_templates', 'file_templates',
+       'class_modeler', 'gui_designer', 'structogram', 'sequence_diagram', 'uml_design',
+       'uml_options', 'ide_shortcuts',  'browser', 'language', 'options', 'styles',
+       'printer', 'header_footer', 'restrictions', 'associations', 'visibility',
+       'ssh', 'tools', 'git', 'subversion');
   de: array[0..MaxPages] of string =
-      ('python', 'interpreter', 'compiler', 'programme', 'applets', 'disassembler', 'jar',
-       'editor', 'optionen', 'code', 'farben', 'kommentar', 'vorlagen', 'tastatur',
-       'struktogramm', 'sequenzdiagramm', 'browser', 'dokumentation', 'drucker', 'mindstorms', 'android',
-       'sprache', 'optionen', 'restriktionen', 'verknüpfungen', 'uml', 'uml2', 'sichtbarkeit',
-       'protokolle', 'tools', 'git', 'junit', 'checkstyle', 'jalopy', 'subversion');
+      ('python', 'interpreter', 'editor', 'anzeige', 'optionen_1', 'optionen_2', 'codevervollstaendigung',
+       'tastenkuerzel', 'syntaxfarben', 'farbschemen', 'codevorlagen', 'dateivorlagen',
+       'klassenmodellierer', 'gui_designer', 'struktogramm', 'sequenzdiagramm',
+       'uml_design', 'uml_optionen', 'ide_tastenkuerzel', 'browser', 'sprache_language',
+       'optionen', 'stile', 'drucker', 'kopf-_und_fusszeile', 'beschraenkungen',
+       'verknuepfungen', 'sichtbarkeit', 'ssh', 'tools', 'git', 'subversion');
 
 procedure TFConfiguration.BHelpClick(Sender: TObject);
   var count: integer; aNode: TTreeNode;

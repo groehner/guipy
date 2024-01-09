@@ -1310,7 +1310,8 @@ end;
 
 procedure TFClassEditor.ActionCloseExecute(Sender: TObject);
 begin
-  myEditor.DoSave;
+  if assigned(myEditor) then
+    myEditor.DoSave;
  // if assigned(myUMLForm) then
  //   myUMLForm.Refresh;
 end;
