@@ -34,6 +34,7 @@ object FObjectInspector: TFObjectInspector
     TabIndex = 0
     OnChange = TCAttributesEventsChange
     OnMouseDown = TCAttributesEventsMouseDown
+    ExplicitWidth = 239
   end
   object PNewDel: TPanel
     Left = 0
@@ -43,6 +44,8 @@ object FObjectInspector: TFObjectInspector
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 400
+    ExplicitWidth = 239
     DesignSize = (
       247
       25)
@@ -65,7 +68,7 @@ object FObjectInspector: TFObjectInspector
       Caption = 'More'
       TabOrder = 1
       OnClick = BMoreClick
-      ExplicitLeft = 132
+      ExplicitLeft = 116
     end
   end
   object CBObjects: TComboBox
@@ -78,6 +81,7 @@ object FObjectInspector: TFObjectInspector
     Sorted = True
     TabOrder = 2
     OnChange = CBObjectsChange
+    ExplicitWidth = 239
   end
   object PMObjectInspector: TSpTBXPopupMenu
     Left = 32

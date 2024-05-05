@@ -3373,22 +3373,24 @@ var
   wSynAttr : TSynHighlighterAttributes;
 
 begin
-  if lbElements.ItemIndex <> -1 then
+  if 0 <= lbElements.ItemIndex then
   begin
-    EnableColorItems(True);
     wSynH := SelectedHighlighter;
-    wSynAttr := wSynH.Attribute[lbElements.ItemIndex];
+    if lbElements.ItemIndex < wSynH.AttrCount then begin
+      EnableColorItems(True);
+      wSynAttr := wSynH.Attribute[lbElements.ItemIndex];
 
-    FHandleChanges := False;
-    try
-      cbxElementBold.Checked := (fsBold in wSynAttr.Style);
-      cbxElementItalic.Checked := (fsItalic in wSynAttr.Style);
-      cbxElementUnderline.Checked := (fsUnderline in wSynAttr.Style);
-      cbxElementStrikeout.Checked := (fsStrikeOut in wSynAttr.Style);
-      cbElementForeground.SelectedColor := wSynAttr.Foreground;
-      cbElementBackground.SelectedColor := wSynAttr.Background;
-    finally
-      FHandleChanges := True;
+      FHandleChanges := False;
+      try
+        cbxElementBold.Checked := (fsBold in wSynAttr.Style);
+        cbxElementItalic.Checked := (fsItalic in wSynAttr.Style);
+        cbxElementUnderline.Checked := (fsUnderline in wSynAttr.Style);
+        cbxElementStrikeout.Checked := (fsStrikeOut in wSynAttr.Style);
+        cbElementForeground.SelectedColor := wSynAttr.Foreground;
+        cbElementBackground.SelectedColor := wSynAttr.Background;
+      finally
+        FHandleChanges := True;
+      end;
     end;
   end
   else
@@ -5963,7 +5965,7 @@ begin
   fInput:= _('Input:');
   fOutput:= _('Output:');
   fWhile:= _('repeat while');
-  fFor:= _('for item in list');
+  fFor:= _('repeat for item in list');
   fYes:= _('yes');
   fNo:= _('no');
   fOther:= _('else');

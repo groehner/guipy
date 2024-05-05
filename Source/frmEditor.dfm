@@ -301,6 +301,7 @@ object EditorForm: TEditorForm
             Hint = 'Indent structured'
             ImageIndex = 8
             Wrap = True
+            OnClick = TBStructureIndentClick
           end
           object TBIfStatement: TToolButton
             Tag = 1

@@ -201,7 +201,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 653
         Height = 449
-        ActivePage = PDisplay
+        ActivePage = PSyntaxColors
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -458,6 +458,8 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akRight, akBottom]
             Caption = 'Gutter'
             TabOrder = 0
+            ExplicitTop = 219
+            ExplicitWidth = 537
             DesignSize = (
               541
               193)
@@ -484,6 +486,7 @@ object FConfiguration: TFConfiguration
               Height = 27
               Anchors = [akTop, akRight]
               TabOrder = 6
+              ExplicitLeft = 345
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
@@ -563,6 +566,7 @@ object FConfiguration: TFConfiguration
               Caption = 'Use Gutter Font'
               TabOrder = 4
               OnClick = cbGutterFontClick
+              ExplicitLeft = 16
             end
             object ckGutterGradient: TCheckBox
               Left = 20
@@ -573,6 +577,7 @@ object FConfiguration: TFConfiguration
               Anchors = [akTop, akRight]
               Caption = 'Gutter Gradient'
               TabOrder = 9
+              ExplicitLeft = 16
             end
             object btnGutterFont: TButton
               Left = 258
@@ -600,6 +605,7 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop]
             Caption = 'Line spacing / Tab spacing'
             TabOrder = 1
+            ExplicitLeft = 6
             DesignSize = (
               265
               88)
@@ -644,6 +650,7 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop, akRight]
             Caption = 'Right Edge'
             TabOrder = 2
+            ExplicitLeft = 274
             DesignSize = (
               271
               88)
@@ -689,6 +696,7 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop, akRight]
             Caption = 'Bookmarks'
             TabOrder = 3
+            ExplicitLeft = 274
             object ckBookmarkKeys: TCheckBox
               Left = 23
               Top = 16
@@ -714,6 +722,7 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop, akRight]
             Caption = 'Active Line Color'
             TabOrder = 4
+            ExplicitLeft = 274
             DesignSize = (
               271
               43)

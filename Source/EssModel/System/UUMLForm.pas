@@ -482,9 +482,8 @@ procedure TFUMLForm.TBClassDefinitionClick(Sender: TObject);
   var NewName: string; Editor: IEditor;
       FileTemplate : TFileTemplate;
 begin
-  NewName:= Pathname;
-  if ResourcesDataModule.GetSaveFileName(NewName,
-      ResourcesDataModule.SynPythonSyn, 'py')
+  NewName:= ExtractFilepath(Pathname);
+  if ResourcesDataModule.GetSaveFileName(NewName, ResourcesDataModule.SynPythonSyn, 'py')
   then begin
     FileTemplate := FileTemplates.TemplateByName(SClassTemplateName);
     if FileTemplate = nil then begin

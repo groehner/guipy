@@ -215,12 +215,11 @@ begin
 end;
 
 procedure TBaseQtWidget.SetPositionAndSize;
-  var R: TRect; key: string;
 begin
-  R:= ClientRect;
-  key:= 'self.' + Name + '.setGeometry';
-  setAttributValue(key, key + '(' + IntToStr(Left) + ', ' + IntToStr(Top) +
-    ', ' + IntToStr(R.Right) + ', ' + IntToStr(R.Bottom) + ')');
+  var R:= ClientRect;
+  var key:= 'self.' + Name + '.setGeometry';
+  setAttributValue(key, key + '(' + IntToStr(PPIUnScale(Left)) + ', ' + IntToStr(PPIUnScale(Top)) +
+    ', ' + IntToStr(PPIUnScale(R.Right)) + ', ' + IntToStr(PPIUnScale(R.Bottom)) + ')');
 end;
 
 procedure setFontSize;

@@ -1449,7 +1449,8 @@ var
             if p < SourceSL.Count then
               SourceSL.Delete(p);
             p:= getSourceIndex('def __init__');
-            SourceSL.Insert(p+1, s2 + ')');
+            if p < SourceSL.Count then
+              SourceSL.Insert(p+1, s2 + ')');
             break;
           end;
         end;
@@ -1500,7 +1501,7 @@ begin // makeConstructor
             Parameter.TypeClassifier.asType + ' = ' + Parameter.Name
       else
         s:= Indent + 'self.' + vis + Parameter.Name + ' = ' + Parameter.Name;
-      if p > -1 then begin
+      if p < SourceSL.Count then begin
         SourceSL.Delete(p);
         SourceSL.Insert(p, s);
       end else
@@ -1512,13 +1513,13 @@ begin // makeConstructor
       s:= Attribute.toPython(false, false);
       key:= 'self.' + vis + Node.Text;
       p:= getSourceIndex(key);
-      if p > -1 then begin
+      if p < SourceSL.Count then begin
         SourceSL.Delete(p);
         SourceSL.Insert(p, s);
       end else begin
         key:= 'self.' + vis + Node.Text;
         p:= getSourceIndex(key);
-        if p = -1 then
+        if p < SourceSL.Count then
           SourceSL.Add(s);
       end;
     end;

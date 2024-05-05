@@ -2645,6 +2645,18 @@ procedure TELPropertyInspectorItem.UpdateParams;
     LExpandables: array[Boolean] of TELPropsPageItemExpandable = (mieNo, mieYes);
   var
     LPropAttrs: TELPropAttrs; LStr, s: string;
+
+  function Scale(s: String): string;
+  begin
+    if (Caption = 'X') or (Caption = 'Y') or (Caption = 'Width') or (Caption ='Height')
+    then begin
+      var i:= StrToInt(s);
+
+    end;
+
+
+  end;
+
 begin
   if FEditor <> nil then begin
     Owner.BeginUpdate;

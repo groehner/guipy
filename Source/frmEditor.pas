@@ -255,6 +255,7 @@ type
     procedure TBValidateClick(Sender: TObject);
     procedure mnFontClick(Sender: TObject);
     procedure mnEditAddImportsClick(Sender: TObject);
+    procedure TBStructureIndentClick(Sender: TObject);
   private
     const HotIdentIndicatorSpec: TGUID = '{8715589E-C990-4423-978F-F00F26041AEF}';
   private
@@ -587,7 +588,8 @@ uses
   UPythonScanner,
   UImages,
   UGit,
-  cFileSearch;
+  cFileSearch,
+  cTools;
 
 const
   WM_DELETETHIS = WM_USER + 42;
@@ -3530,6 +3532,25 @@ end;
 procedure TEditorForm.TBStatementClick(Sender: TObject);
 begin
   TBControlStructures((Sender as TToolButton).Tag)
+end;
+
+procedure TEditorForm.TBStructureIndentClick(Sender: TObject);
+begin
+  //(self as TFileForm).ExecSave;
+  var ExternalTool:= TExternalTool.create;
+  with ExternalTool do begin
+    ApplicationName := '$[PythonExe-Short]';
+    Parameters := '$[PythonDir-Short]Tools\Scripts\reindent.py -n ';
+    SaveFiles := sfActive;
+    ProcessInput := piActiveFile; // piNone;
+    ProcessOutput := poActiveFile; // poNone;
+    Context:= tcActiveFile;
+    ParseMessages := False;
+    CaptureOutput := False;
+    ConsoleHidden := True;
+  end;
+  ExternalTool.Execute;
+  FreeAndNil(ExternalTool);
 end;
 
 procedure TEditorForm.TBZoomMinusClick(Sender: TObject);

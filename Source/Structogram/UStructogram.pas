@@ -1505,6 +1505,19 @@ var
     Result:= trim(s);
   end;
 
+  function ElementInList(s: string): string;
+    var i, j: integer;
+  begin
+    s:= trim(s);
+    i:= Length(s);
+    for j:= 1 to 3 do begin
+      while (i > 0) and (s[i] <> ' ') do
+        dec(i);
+      dec(i);
+    end;
+    Result:= copy(s, i+2, length(s));
+  end;
+
   function withoutCrLf(const s: string): string;
   begin
     Result:= myStringReplace(s, CrLf, ' ');
@@ -1547,7 +1560,7 @@ begin
         StrElementToPython(TStrIf(element).else_elem.next, pList, VariablesList, indent + indent1);
       end;
     end else if element is TStrFor then begin
-      condition:= stripLNG(GuiPyLanguageOptions._For, withoutCrLf(element.text));
+      condition:= ElementInList(withoutCrLf(element.text));
       pList.Add(indent + 'for ' + condition + ':');
       StrElementToPython(TStrWhile(element).do_elem.next, pList, VariablesList, indent + indent1);
     end else if element is TStrWhile then begin

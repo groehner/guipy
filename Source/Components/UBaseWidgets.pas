@@ -84,6 +84,8 @@ type
     procedure SizeToText; virtual;
     procedure MakeFont; virtual; abstract;
     procedure Zoom(_in: boolean);
+    function PPIScale(ASize: integer): integer;
+    function PPIUnScale(ASize: integer): integer;
   end;
 
 implementation
@@ -98,6 +100,7 @@ const CrLf = #13#10;
 constructor TBaseWidget.create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
+  ParentFont:= false;
 end;
 
 procedure TBaseWidget.setAttributValue(key, s: string);
@@ -361,6 +364,17 @@ begin
     SetPositionAndSize;
   MakeFont;
   Invalidate;
+end;
+
+function TBaseWidget.PPIScale(ASize: integer): integer;
+begin
+  Result := myMulDiv(ASize, FCurrentPPI, 96);
+  // MulDiv needs Windows, but then we get a strange error with BitmapFromRelativePath
+end;
+
+function TBaseWidget.PPIUnScale(ASize: integer): integer;
+begin
+  Result := myMulDiv(ASize, 96, FCurrentPPI);
 end;
 
 end.

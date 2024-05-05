@@ -6385,8 +6385,6 @@ begin
   end;
 end;
 
-
-
 procedure TPyIDEMainForm.mnFilesClick(Sender: TObject);
 //Fill in the Files submenu of the Tabs popup menu
 Var

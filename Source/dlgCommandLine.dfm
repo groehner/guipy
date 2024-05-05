@@ -2,29 +2,24 @@ inherited CommandLineDlg: TCommandLineDlg
   HelpContext = 910
   ActiveControl = SynParameters
   Caption = 'Command Line Parameters'
-  ClientHeight = 171
-  ClientWidth = 524
-  ParentFont = False
+  ClientHeight = 172
+  ClientWidth = 528
   OnDestroy = FormDestroy
-  ExplicitWidth = 536
-  ExplicitHeight = 209
   TextHeight = 15
   object Panel: TPanel
     Left = 0
     Top = 0
-    Width = 524
-    Height = 171
+    Width = 528
+    Height = 172
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 520
-    ExplicitHeight = 170
     DesignSize = (
-      524
-      171)
+      528
+      172)
     object Label1: TLabel
       Left = 13
-      Top = 42
-      Width = 444
+      Top = 43
+      Width = 460
       Height = 35
       Anchors = [akLeft, akRight, akBottom]
       AutoSize = False
@@ -34,12 +29,10 @@ inherited CommandLineDlg: TCommandLineDlg
         'gument.'
       Color = clNone
       ParentColor = False
-      ExplicitTop = 43
-      ExplicitWidth = 460
     end
     object Label3: TLabel
       Left = 13
-      Top = 107
+      Top = 108
       Width = 272
       Height = 15
       Anchors = [akLeft, akBottom]
@@ -47,12 +40,11 @@ inherited CommandLineDlg: TCommandLineDlg
       Color = clNone
       Enabled = False
       ParentColor = False
-      ExplicitTop = 108
     end
     object SynParameters: TSynEdit
       Left = 11
-      Top = 83
-      Width = 468
+      Top = 84
+      Width = 484
       Height = 18
       Anchors = [akLeft, akRight, akBottom]
       Font.Charset = DEFAULT_CHARSET
@@ -64,6 +56,7 @@ inherited CommandLineDlg: TCommandLineDlg
       TabOrder = 0
       OnEnter = SynParametersEnter
       UseCodeFolding = False
+      ExtraLineSpacing = 0
       Gutter.Font.Charset = DEFAULT_CHARSET
       Gutter.Font.Color = clWindowText
       Gutter.Font.Height = -11
@@ -74,7 +67,7 @@ inherited CommandLineDlg: TCommandLineDlg
       Gutter.Bands = <
         item
           Kind = gbkMarks
-          Width = 13
+          Width = 15
         end
         item
           Kind = gbkLineNumbers
@@ -84,20 +77,19 @@ inherited CommandLineDlg: TCommandLineDlg
         end
         item
           Kind = gbkMargin
-          Width = 3
+          Width = 2
         end>
       HideSelection = True
       Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
+      RightEdge = 0
       ScrollBars = ssNone
       SelectedColor.Alpha = 0.400000005960464500
       WantReturns = False
-      ExplicitTop = 82
-      ExplicitWidth = 464
     end
     object TBXButton1: TSpTBXButton
-      Left = 485
-      Top = 82
-      Width = 17
+      Left = 501
+      Top = 83
+      Width = 19
       Height = 19
       Hint = 'History'
       Anchors = [akRight, akBottom]
@@ -105,8 +97,6 @@ inherited CommandLineDlg: TCommandLineDlg
       ShowHint = True
       TabOrder = 5
       DropDownMenu = TBXPopupHistory
-      ExplicitLeft = 481
-      ExplicitTop = 81
     end
     object cbUseCommandLine: TCheckBox
       Left = 13
@@ -117,8 +107,8 @@ inherited CommandLineDlg: TCommandLineDlg
       TabOrder = 4
     end
     object OKButton: TButton
-      Left = 128
-      Top = 136
+      Left = 144
+      Top = 137
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -127,12 +117,10 @@ inherited CommandLineDlg: TCommandLineDlg
       ModalResult = 1
       TabOrder = 1
       OnClick = OKButtonClick
-      ExplicitLeft = 124
-      ExplicitTop = 135
     end
     object btnCancel: TButton
-      Left = 222
-      Top = 136
+      Left = 238
+      Top = 137
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -140,20 +128,16 @@ inherited CommandLineDlg: TCommandLineDlg
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 2
-      ExplicitLeft = 218
-      ExplicitTop = 135
     end
     object btnHelp: TButton
-      Left = 317
-      Top = 136
+      Left = 333
+      Top = 137
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
       Caption = '&Help'
       TabOrder = 3
       OnClick = btnHelpClick
-      ExplicitLeft = 313
-      ExplicitTop = 135
     end
   end
   object TBXPopupHistory: TSpTBXPopupMenu

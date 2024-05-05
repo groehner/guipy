@@ -84,10 +84,8 @@ begin
 end;
 
 procedure TESHintWindow.Paint;
-var
-  R: TRect;
 begin
-  R := ClientRect;
+  var R := ClientRect;
   Inc(R.Left, 2);
   Inc(R.Top, 2);
   Canvas.Font.Color := Screen.HintFont.Color;

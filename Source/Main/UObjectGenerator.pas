@@ -31,6 +31,8 @@ type
     procedure ValueListEditorKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure MIFontClick(Sender: TObject);
     function Indent2: string;
+    function PPIScale(ASize: integer): integer;
+    function PPIUnScale(ASize: integer; PPI: Integer): integer;
   private
     Defaults: array[1..50] of string;
     jfmDefaults: array[1..50] of jfmrec;
@@ -136,10 +138,10 @@ procedure TFObjectGenerator.SetBoundsForFormular(Form: TForm);
 begin
   if Partner.FrameType = 2 then begin
     s1:= 'self.root.geometry(';
-    s2:= Indent2 + s1 + '''' + IntToStr(Form.ClientWidth) + 'x' + IntToStr(Form.ClientHeight) + ''')';
+    s2:= Indent2 + s1 + '''' + IntToStr(PPIUnScale(Form.ClientWidth, Form.CurrentPPI)) + 'x' + IntToStr(PPIUnScale(Form.ClientHeight, Form.CurrentPPI)) + ''')';
   end else begin
     s1:= 'self.resize(';
-    s2:= Indent2 + s1 + IntToStr(Form.ClientWidth) + ', ' + IntToStr(Form.ClientHeight) + ')';
+    s2:= Indent2 + s1 + IntToStr(PPIUnScale(Form.ClientWidth, Form.CurrentPPI)) + ', ' + IntToStr(PPIUnScale(Form.ClientHeight, Form.CurrentPPI)) + ')';
   end;
   Partner.ReplaceLine(s1, s2);
 end;
@@ -149,8 +151,8 @@ procedure TFObjectGenerator.MoveOrSizeComponent(aPartner: TEditorForm; Control: 
 begin
   if (aPartner = nil) or (Control is TFGUIForm) then exit;
   if not (Control as TBaseWidget).Sizeable then begin
-    Control.Width:= 33;
-    Control.Height:= 28;
+    Control.Width:= PPIUnScale(33, Control.CurrentPPI);
+    Control.Height:= PPIUnScale(28, Control.CurrentPPI);
     exit;
   end;
   Widget:= Control as TBaseWidget;
@@ -483,6 +485,17 @@ end;
 function TFObjectGenerator.Indent2: string;
 begin
   Result:= Fconfiguration.Indent2;
+end;
+
+function TFObjectGenerator.PPIScale(ASize: integer): integer;
+begin
+  Result := myMulDiv(ASize, FCurrentPPI, 96);
+  // MulDiv needs Windows, but then we get a strange error with BitmapFromRelativePath
+end;
+
+function TFObjectGenerator.PPIUnScale(ASize: integer; PPI: Integer): integer;
+begin
+  Result := myMulDiv(ASize, 96, PPI);
 end;
 
 end.

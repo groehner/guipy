@@ -32,15 +32,15 @@ object CommandsDataModule: TCommandsDataModule
     Font.Style = []
     TabWidth = 8
     Color = clWhite
-    Left = 252
-    Top = 108
+    Left = 260
+    Top = 100
   end
   object SynEditSearch: TSynEditSearch
-    Left = 155
-    Top = 107
+    Left = 163
+    Top = 99
   end
   object SynEditRegexSearch: TSynEditRegexSearch
-    Left = 41
+    Left = 57
     Top = 100
   end
   object ProgramVersionCheck: TJvProgramVersionCheck
@@ -65,7 +65,7 @@ object CommandsDataModule: TCommandsDataModule
     VersionHistoryFileOptions.XMLOptions.UseOldItemNameFormat = False
     VersionHistoryFileOptions.XMLOptions.WhiteSpaceReplacement = '_'
     VersionHistoryFileOptions.XMLOptions.InvalidCharReplacement = '_'
-    Left = 43
+    Left = 67
     Top = 23
   end
   object ProgramVersionHTTPLocation: TJvProgramVersionHTTPLocation
@@ -73,7 +73,7 @@ object CommandsDataModule: TCommandsDataModule
     VersionInfoLocationPathList.Strings = (
       'https://raw.githubusercontent.com/pyscripter/pyscripter/master')
     VersionInfoFileName = 'PyScripterVersionInfo.ini'
-    Left = 206
+    Left = 246
     Top = 24
   end
   object actlMain: TActionList

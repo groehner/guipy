@@ -142,6 +142,7 @@ function myColorToRGB(Color: TColor): string;
 function XYToVal(x, y: integer): string;
 function CalcIndent(S : string; TabWidth : integer = 4): integer;
 function encodeQuotationMark(const s: string): string;
+function myMulDiv(nNumber, nNumerator, nDenominator: Integer): Integer;
 
 implementation
 
@@ -1738,6 +1739,11 @@ end;
 function encodeQuotationMark(const s: string): string;
 begin
   Result:= ReplaceStr(s, '"', '&quot;');
+end;
+
+function myMulDiv(nNumber, nNumerator, nDenominator: Integer): Integer;
+begin
+  Result:= MulDiv(nNumber, nNumerator, nDenominator);
 end;
 
 end.

@@ -259,8 +259,8 @@ begin
   Widget.Partner:= Partner;
   {$WARNINGS ON}
   setAnimation(false);
-  ClientWidth:= WidthHeight.X;
-  ClientHeight:= WidthHeight.Y;
+  ClientWidth:= PPIScale(WidthHeight.X);
+  ClientHeight:= PPIScale(WidthHeight.Y);
   Name:= UUtils.GetUniqueName(PyIDEMainForm, ChangeFileext(ExtractFileName(Pathname), ''));
   Modified:= false;
   SetWidgetPartners;

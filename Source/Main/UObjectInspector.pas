@@ -139,7 +139,6 @@ begin
     OnGetSelectStrings:= MyOnGetSelectStrings;
   end;
   OnDeactivate:= ELObjectInspectorDeactivate;
-  //CBObjects.Autosize:= true;
   CBObjects.Align:= alTop;
   TranslateComponent(Self);
   ChangeStyle;
@@ -153,7 +152,7 @@ end;
 procedure TFObjectInspector.OnMouseDownEvent(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  // due to wrong determination auf parent form if form is docked
+  // due to wrong determination of parent form if form is docked
   if CanFocus then
     SetFocus;
 end;

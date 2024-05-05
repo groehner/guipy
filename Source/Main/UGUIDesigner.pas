@@ -288,13 +288,11 @@ begin
   if Accept and assigned(ComponentToInsert) then begin
     LInsertingControl := ComponentToInsert.Create(Designform);
     try
-      with LInsertingControl do begin
-        SetBounds(AX-LInsertingControl.Width, AY-LInsertingControl.Height, LInsertingControl.Width, LInsertingControl.Height);
-        Tag:= ULink.ComponentNrToInsert;
-        ELDesigner.getUniqueName(Tag2PythonType(Tag), LName);
-        Name  := LName; // <-- Here may be exception
-        Parent:= ATarget as TWinControl;
-      end;
+      LInsertingControl.SetBounds(AX-LInsertingControl.Width, AY-LInsertingControl.Height, LInsertingControl.Width, LInsertingControl.Height);
+      LInsertingControl.Tag:= ULink.ComponentNrToInsert;
+      ELDesigner.getUniqueName(Tag2PythonType(LInsertingControl.Tag), LName);
+      LInsertingControl.Name:= LName; // <-- Here may be exception
+      LInsertingControl.Parent:= ATarget as TWinControl;
     except
       FreeAndNil(LInsertingControl);
       raise;

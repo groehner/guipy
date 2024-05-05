@@ -806,7 +806,7 @@ begin
       Inc(PParam, Length(StartMask));
       // reads parameter value
       PText:= PParam;
-      AValue:= ReadParameters(PText);
+      AValue:= ReadParameters(PText);   // ###
       // invalid parameter
       if PText^ = #0 then begin
         Dec(PParam, Length(StartMask));

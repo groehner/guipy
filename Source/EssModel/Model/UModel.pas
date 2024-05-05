@@ -243,6 +243,7 @@ type
     function GetImplements : IModelIterator;
     function GetDescendants : IModelIterator;
     function FindOperation(O : TOperation) : TOperation;
+    function OperationIsProperty(Name: string): boolean;
     function FindAttribute(const NewName: string; TypeClass: TClassifier): TAttribute;
     function GetTyp: string;
     function getAncestorName(index: integer): String; override;
@@ -1231,6 +1232,21 @@ begin
   Skip:
   end;
 end;
+
+function TClass.OperationIsProperty(Name: string): boolean;
+var
+  Mi: IModelIterator;
+  O : TOperation;
+begin
+  Result := false;
+  Mi := GetOperations;
+  while Mi.HasNext do begin
+    O := Mi.Next as TOperation;
+    if O.isPropertyMethod and (CompareText(O.Name, Name) = 0) then
+      exit(true);
+  end;
+end;
+
 
 {
   Finds an attribute with same name and type.

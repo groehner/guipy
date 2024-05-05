@@ -1935,7 +1935,11 @@ begin
           CallMethodFrom:= CallMethodObjectname;
           if (CallMethodFrom = '') and assigned(aModelClass) then
             CallMethodFrom:= aModelClass.Name;
-          Methodcall:= CallMethodObjectname + '.' + CallMethodMethodname + '(' + ParameterAsString + ')';
+          if aModelClass.OperationIsProperty(CallMethodMethodname) then
+            if Parameter.Count = 0
+              then Methodcall:= CallMethodObjectname + '.' + CallMethodMethodname
+              else Methodcall:= CallMethodObjectname + '.' + CallMethodMethodname + ' = ' + ParameterAsString
+            else Methodcall:= CallMethodObjectname + '.' + CallMethodMethodname + '(' + ParameterAsString + ')';
           AddToInteractive(MethodCall);
           ShowMethodEntered(CallMethodMethodName, 'Actor', CallMethodObjectname, ParameterAsString);
           PythonIIForm.OnExecuted:= CallMethodExecuted;

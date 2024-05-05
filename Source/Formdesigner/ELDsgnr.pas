@@ -429,7 +429,7 @@ procedure Register;
 implementation
 
 uses Windows, RTLConsts, Math, Clipbrd, ExtCtrls, Types,
-     JvGnugettext, ELHintWindow, ELSConsts, ULink;
+     JvGnugettext, ELHintWindow, ELSConsts, uCommonFunctions, ULink;
 
 procedure Register;
 begin
@@ -839,7 +839,7 @@ end;
 
 procedure TDEng.PaintMenu;
 begin
-  // sonst beklagt sich der Compiler!
+  // otherwise the compiler will complain!
 end;
 
 function TDEng.GetCustomForm: TCustomForm;
@@ -1235,6 +1235,7 @@ var
   LControls: TList;
   Tag: Integer;
   Typ: string;
+  aControl: TControl;
 
 begin
   Result := FIsInDrawMode or (Message.Msg = DESIGNER_SIZING);
@@ -1387,12 +1388,13 @@ begin
             if htControl in FDesigner.ShowingHints then
             begin
               Tag := (Sender as TComponent).Tag;
+              aControl:= (Sender as TControl);
               Typ := Tag2PythonType(Tag);
               LS := Sender.Name + ': ' + Typ + #13#10;
-              LS := LS + _('Position') + ': ' + IntToStr(Sender.Left) + ', ' +
-                IntToStr(Sender.Top) + #13#10;
-              LS := LS + _('Size') + ': ' + IntToStr(Sender.Width) + ', ' +
-                IntToStr(Sender.Height);
+              LS := LS + _('Position') + ': ' + IntToStr(aControl.PPIUnScale(Sender.Left)) + ', ' +
+                IntToStr(aControl.PPIUnScale(Sender.Top)) + #13#10;
+              LS := LS + _('Size') + ': ' + IntToStr(aControl.PPIUnScale(Sender.Width)) + ', ' +
+                IntToStr(aControl.PPIUnScale(Sender.Height));
               if assigned(FDesigner) then
                 FDesigner.ControlHint(Sender, LS);
               if LS <> '' then
