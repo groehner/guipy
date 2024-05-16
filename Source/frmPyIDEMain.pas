@@ -1469,6 +1469,8 @@ type
     procedure DdeServerConvExecuteMacro(Sender: TObject; Msg: TStrings);
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
       NewDPI: Integer);
+    procedure FormBeforeMonitorDpiChanged(Sender: TObject; OldDPI,
+      NewDPI: Integer);
   private
     DSAAppStorage: TDSAAppStorage;
     ShellExtensionFiles : TStringList;
@@ -1628,6 +1630,8 @@ type
     procedure SetLayoutMenus(Predefined: boolean);
     procedure DropFiles(Sender: TObject; X, Y: Integer; AFiles: TStrings);
     procedure RunFile(aFile: IFile);
+    procedure AdjustImageListsToDPI(OldDPI, NewDPI: integer);
+    procedure ResizeImageListImagesforHighDPI(const imgList: TImageList; OldDPI, NewDPI: integer);
 
     property ActiveTabControl : TSpTBXCustomTabControl read GetActiveTabControl
       write SetActiveTabControl;
@@ -1644,6 +1648,7 @@ implementation
 uses
   WinApi.ActiveX,
   Winapi.ShellAPI,
+  Winapi.CommCtrl,
   System.SysUtils,
   System.Contnrs,
   System.Math,
@@ -2149,6 +2154,10 @@ begin
   FConfiguration:= TFConfiguration.Create(Self);
   FConfiguration.PopupParent:= Self;
   DMImages:= TDMImages.Create(Self);
+
+  if FCurrentPPI <> 96 then
+    AdjustImageListsToDPI(96, FCurrentPPI);
+
   FGUIDesigner:= TFGUIDesigner.Create(Self);
   FObjectInspector:= TFObjectInspector.Create(Self);
   FObjectInspector.PopupParent:= Self;
@@ -2299,23 +2308,35 @@ begin
     else LocalAppStorage.ReadStringList('Layouts', Layouts, True);
 end;
 
+procedure TPyIDEMainForm.FormBeforeMonitorDpiChanged(Sender: TObject; OldDPI,
+  NewDPI: Integer);
+begin
+  // https://stackoverflow.com/questions/47719647/i-would-like-some-guidance-on-sizing-toolbars-on-hi-res-screens
+  if NewDPI < OldDPI then
+    AdjustImageListsToDPI(OldDPI, NewDPI);
+end;
+
 procedure TPyIDEMainForm.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
   var Files: Array[0..10] of string;
       FilesCount: integer;
       aFile: IFile;
       ActiveFilename: String;
 begin
+  OutputDebugString('TPyIDEMainForm.FormAfterMonitorDpiChanged');
   SetDockTopPanel;
   FilesCount:= 0;
 
   TThread.ForceQueue(nil, procedure
   begin
+    if NewDPI > OldDPI then
+      AdjustImageListsToDPI(OldDPI, NewDPI);
     Invalidate;
     MainMenu.Invalidate;
     MainToolbar.Invalidate;
     DebugToolbar.Invalidate;
     TabControlWidgets.Invalidate;
     FFileStructure.Invalidate; // not necessary with ParentFont = false
+    FClassEditor.DPIChange;
 
     // a structogram form loses it's components during dpi switching!
     // workaround: save, close and reopen
@@ -2323,12 +2344,13 @@ begin
     if assigned(aFile)
       then ActiveFilename:= (aFile.Form as TFileForm).Pathname
       else ActiveFilename:= '';
-    for var i := 0 to GI_FileFactory.Count -1 do begin
-      aFile := GI_FileFactory.FactoryFile[i];
+    for var i:= 0 to GI_FileFactory.Count -1 do begin
+      aFile:= GI_FileFactory.FactoryFile[i];
       if aFile.FileKind = fkStructogram then begin
         Files[FilesCount]:= (aFile.Form as TFStructogram).Pathname;
         inc(FilesCount);
       end;
+      (aFile.Form as TFileForm).DPIChanged;
     end;
     for var i:= 0 to FilesCount - 1 do begin
       var Pathname:= Files[i];
@@ -6640,6 +6662,75 @@ begin
   finally
     UnlockFormUpdate(Self);
   end;
+end;
+
+procedure TPyIDEMainForm.AdjustImageListsToDPI(OldDPI, NewDPI: integer);
+begin
+  for var i:= 0 to ComponentCount - 1 do
+    if Components[i] is TImageList then
+      ResizeImageListImagesforHighDPI(TImageList(Components[i]), OldDPI, NewDPI);
+  DMImages.AdjustImageListsToDPI(OldDPI, NewDPI);
+end;
+
+// http://zarko-gajic.iz.hr/resizing-delphis-timagelist-bitmaps-to-fit-high-dpi-scaling-size-for-menus-toolbars-trees-etc/
+procedure TPyIDEMainForm.ResizeImageListImagesforHighDPI(const imgList: TImageList; OldDPI, NewDPI: integer);
+  var i, OldW, OldH, NewW, NewH: integer;
+      mb, ib, sib, smb: TBitmap; IL: TImageList;
+begin
+  if imgList.Name = 'ILEditorToolbarDark' then
+    OldW:=0;
+
+
+  OldW:= imgList.Width;
+  OldH:= imgList.Height;
+
+  IL:= TImageList.Create(Self);
+  IL.SetSize(OldW, OldH);
+  for i:= 0 to imgList.Count - 1 do
+    IL.AddImage(imgList, i);
+
+  //set size to match DPI size (like 250% of 16px = 40px)
+  imgList.SetSize(MulDiv(OldW, NewDPI, OldDPI), MulDiv(OldH, NewDPI, OldDPI));
+  NewW:= imgList.Width;
+  NewH:= imgList.Height;
+
+  //add stretched images back to original ImageList
+  for i := 0 to IL.Count - 1 do begin
+    sib := TBitmap.Create; //stretched image
+    smb := TBitmap.Create; //stretched mask
+    try
+      sib.Width := newW;
+      sib.Height := newH;
+      sib.Canvas.FillRect(sib.Canvas.ClipRect);
+      smb.Width := newW;
+      smb.Height := newH;
+      smb.Canvas.FillRect(smb.Canvas.ClipRect);
+      ib := TBitmap.Create;
+      mb := TBitmap.Create;
+      try
+        ib.Width := OldW;
+        ib.Height := OldH;
+        ib.Canvas.FillRect(ib.Canvas.ClipRect);
+        mb.Width := OldW;
+        mb.Height := OldH;
+        mb.Canvas.FillRect(mb.Canvas.ClipRect);
+        ImageList_DrawEx(IL.Handle, i, ib.Canvas.Handle,
+                         0, 0, ib.Width, ib.Height, CLR_NONE, CLR_NONE, ILD_NORMAL);
+        ImageList_DrawEx(IL.Handle, i, mb.Canvas.Handle,
+                         0, 0, mb.Width, mb.Height, CLR_NONE, CLR_NONE, ILD_MASK);
+        sib.Canvas.StretchDraw(Rect(0, 0, sib.Width, sib.Height), ib);
+        smb.Canvas.StretchDraw(Rect(0, 0, smb.Width, smb.Height), mb);
+      finally
+        ib.Free;
+        mb.Free;
+      end;
+      imgList.Add(sib, smb);
+    finally
+      sib.Free;
+      smb.Free;
+    end;
+  end;
+  IL.Free;
 end;
 
 { TTSpTBXTabControl }

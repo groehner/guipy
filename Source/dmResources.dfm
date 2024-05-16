@@ -1,8 +1,8 @@
 object ResourcesDataModule: TResourcesDataModule
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Height = 376
-  Width = 746
+  Height = 377
+  Width = 786
   object dlgFileOpen: TOpenDialog
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     Left = 20
@@ -465,12 +465,12 @@ object ResourcesDataModule: TResourcesDataModule
           '            prompt = ""'
           '        else:'
           '            sys.stdout.write(prompt)'
-          '            sys.stdout.flush'
+          '            sys.stdout.flush()'
           '        ret = debugIDE.InputBox('#39'Python input'#39', str(prompt),"")'
           '        if ret is not None:'
           '            sys.stdout.write(ret)'
           '        sys.stdout.write("\n")'
-          '        sys.stdout.flush'
+          '        sys.stdout.flush()'
           '        if ret is None:'
           '            raise KeyboardInterrupt("Operation cancelled")'
           '        return ret'
@@ -548,8 +548,7 @@ object ResourcesDataModule: TResourcesDataModule
           'del PythonInteractiveInterpreter'
           'del sys'
           'del os'
-          'del warnings'
-          '')
+          'del warnings')
       end
       item
         Name = 'RpyC_Init'
@@ -610,23 +609,19 @@ object ResourcesDataModule: TResourcesDataModule
             'me, self.debug_manager.thrdRunning)'
           ''
           
-            '            self.debugger = self.debug_manager.main_debugger.__c' +
-            'lass__()'
-          '            self.debugger.reset()'
-          
-            '            self.debugger._sys.settrace(self.debugger.trace_disp' +
-            'atch)'
+            '            debugger = self.debug_manager.main_debugger.__class_' +
+            '_()'
+          '            debugger.reset()'
+          '            debugger._sys.settrace(debugger.trace_dispatch)'
           ''
           '            try:'
           '                super().run()'
           '            finally:'
-          '                self.debugger._sys.settrace(None)'
+          '                debugger._sys.settrace(None)'
+          '                if self.debug_manager:'
           
-            '                self.debug_manager.thread_status(self.ident, sel' +
-            'f.name, self.debug_manager.thrdFinished)'
-          '                self.debugger = None'
-          ''
-          '    ThreadWrapper.debug_manager = DebugManager'
+            '                  self.debug_manager.thread_status(self.ident, s' +
+            'elf.name, self.debug_manager.thrdFinished)'
           ''
           '    class IDEDebugger(__import__('#39'bdb'#39').Bdb):'
           '        def __init__(self):'
@@ -799,6 +794,9 @@ object ResourcesDataModule: TResourcesDataModule
           '                cmd = cmd+'#39'\n'#39
           ''
           '            old_thread_class = threading.Thread'
+          
+            '            self.thread_wrapper.debug_manager = self.debug_manag' +
+            'er'
           '            threading.Thread = self.thread_wrapper'
           ''
           '            self.exc_info = None'
@@ -810,7 +808,7 @@ object ResourcesDataModule: TResourcesDataModule
             '                        if (t != threading.main_thread()) and no' +
             't t.daemon:'
           '                            try:'
-          '                                t.join()'
+          '                                t.join(1)'
           '                            except:'
           '                                pass'
           ''
@@ -837,6 +835,7 @@ object ResourcesDataModule: TResourcesDataModule
           '                    del globals['#39'__file__'#39']'
           '                __import__("gc").collect()'
           '                threading.Thread = old_thread_class'
+          '                self.thread_wrapper.debug_manager = None'
           '                try:'
           '                    sys.stdout.flush()'
           '                    sys.stderr.flush()'
@@ -1208,7 +1207,7 @@ object ResourcesDataModule: TResourcesDataModule
             '                    if (t != threading.main_thread()) and not t.' +
             'daemon:'
           '                        try:'
-          '                            t.join()'
+          '                            t.join(1)'
           '                        except:'
           '                            pass'
           '            except SystemExit as e:'
@@ -1323,7 +1322,7 @@ object ResourcesDataModule: TResourcesDataModule
           '        else:'
           '            if not quiet:'
           '                sys.stdout.write(prompt)'
-          '                sys.stdout.flush'
+          '                sys.stdout.flush()'
           '        with self.DebugManager.user_lock:'
           
             '            ret = self.DebugManager.debugIDE.InputBox('#39'Python in' +
@@ -1333,7 +1332,7 @@ object ResourcesDataModule: TResourcesDataModule
           '            if ret is not None:'
           '                sys.stdout.write(ret)'
           '            sys.stdout.write("\n")'
-          '            sys.stdout.flush'
+          '            sys.stdout.flush()'
           '        if ret is None:'
           '            raise KeyboardInterrupt("Operation cancelled")'
           '        return ret'
@@ -1408,8 +1407,7 @@ object ResourcesDataModule: TResourcesDataModule
           'del sys'
           'del os'
           'del threading'
-          'del builtins'
-          '')
+          'del builtins')
       end
       item
         Name = 'SimpleServer'
@@ -1510,8 +1508,7 @@ object ResourcesDataModule: TResourcesDataModule
           '        t.start()'
           ''
           'if __name__ == "__main__":'
-          '    main()'
-          '')
+          '    main()')
       end
       item
         Name = 'TkServer'
@@ -1685,8 +1682,7 @@ object ResourcesDataModule: TResourcesDataModule
           '    root.oldmainloop()'
           ''
           'if __name__ == "__main__":'
-          '    main()'
-          '')
+          '    main()')
       end
       item
         Name = 'WxServer'
@@ -1868,8 +1864,7 @@ object ResourcesDataModule: TResourcesDataModule
           '    app.OldMainLoop(app)'
           ''
           'if __name__ == "__main__":'
-          '    main()'
-          '')
+          '    main()')
       end>
     Left = 23
     Top = 82
@@ -2190,6 +2185,16 @@ object ResourcesDataModule: TResourcesDataModule
           '.8-0.8,2.2-0.8,3.1,0l8.8,8.8'#13#10#9#9'c0.8,0.8,0.8,2.2,0,3.1L15.2,28.7' +
           'C14.7,29.1,14.2,29.3,13.6,29.3z M7.9,18.4l5.7,5.7l10.4-10.4l-5.7' +
           '-5.7L7.9,18.4z"/>'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'Inspect'
+        SVGText = 
+          '<svg viewBox="0 0 24 24">'#13#10'    <path fill="#4488FF"'#13#10'        d="' +
+          'M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.' +
+          '71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41' +
+          ' 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7' +
+          ',5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5' +
+          'Z" />'#13#10'</svg>'
       end>
     ApplyFixedColorToRootOnly = True
     Left = 141
@@ -4879,6 +4884,7 @@ object ResourcesDataModule: TResourcesDataModule
           'ed6"/>'#10'    <path d="M10 9h1v1h-1z" fill="#96c0e4"/>'#10'    <path d=' +
           '"M6 12v-1h1v1z" fill="#accdea"/>'#10'</svg>'#10
       end>
+    ApplyFixedColorToRootOnly = True
     Left = 40
     Top = 152
   end

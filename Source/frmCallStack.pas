@@ -496,9 +496,9 @@ procedure TCallStackWindow.StoreSettings(AppStorage: TJvCustomAppStorage);
 begin
   inherited;
   AppStorage.WriteInteger(FBasePath+'\Threads Width',
-   PPIUnScale(ThreadView.Width));
+    PPIUnScale(ThreadView.Width));
   AppStorage.WriteInteger(FBasePath+'\Function Width',
-   PPIUnScale(CallStackView.Header.Columns[0].Width));
+    PPIUnScale(CallStackView.Header.Columns[0].Width));
   AppStorage.WriteInteger(FBasePath+'\Line Width',
     PPIUnScale(CallStackView.Header.Columns[2].Width));
 end;

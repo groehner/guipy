@@ -35,7 +35,6 @@ type
     TBZoomIn: TToolButton;
     TBPuzzleMode: TToolButton;
     TrashImage: TImage;
-    ILStructogram: TImageList;
     StructoPopupMenu: TSpTBXPopupMenu;
     MIConfiguration: TSpTBXItem;
     MIFont: TSpTBXItem;
@@ -55,7 +54,6 @@ type
     MIFloat: TSpTBXItem;
     MIBoolean: TSpTBXItem;
     MILong: TSpTBXItem;
-    ILStructogramDark: TImageList;
 
     procedure FormCreate(Sender: TObject); override;
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -174,7 +172,7 @@ type
     procedure DoExport; override;
     procedure debug(const s: String);
     procedure SetOptions; override;
-    procedure DPIChanged;
+    procedure DPIChanged; override;
 end;
 
 implementation
@@ -830,20 +828,6 @@ begin
     end;
     UpdateState;
   end;
-end;
-
-procedure TFStructogram.DPIChanged;
-begin
-  for var i:= 0 to ScrollBox.ControlCount -1 do begin
-    var aList:= TListImage(Scrollbox.Controls[i]).StrList;
-    aList.Paint;
-  end;
-  PanelLeft.Show;
-  PanelLeft.Invalidate;
-  ScrollBox.Show;
-  ScrollBox.Invalidate;
-  //ControlCanvas.Show;
-
 end;
 
 procedure TFStructogram.MIAddCaseClick(Sender: TObject);
@@ -1923,10 +1907,10 @@ procedure TFStructogram.ChangeStyle;
 begin
   if IsStyledWindowsColorDark then begin
     StructogramToolbar.Images:= DMImages.ILStructogramToolbarDark;
-    StructoPopupMenu.Images:= ILStructogramDark;
+    StructoPopupMenu.Images:= DMImages.ILStructogramDark;
   end else begin
     StructogramToolbar.Images:= DMImages.ILStructogramToolbar;
-    StructoPopupMenu.Images:= ILStructogram;
+    StructoPopupMenu.Images:= DMImages.ILStructogramLight;
   end;
 
   BitMap:= TBitmap.Create;
@@ -1946,6 +1930,11 @@ procedure TFStructogram.DoActivateFile(Primary: boolean = True);
 begin
   inherited;
   Enter(Self);
+end;
+
+procedure TFStructogram.DPIChanged;
+begin
+  setFontSize(0);
 end;
 
 end.

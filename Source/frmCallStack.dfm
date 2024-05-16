@@ -3,9 +3,8 @@ inherited CallStackWindow: TCallStackWindow
   Top = 397
   HelpContext = 470
   Caption = 'Call Stack'
-  ClientHeight = 168
-  ClientWidth = 604
-  ParentFont = False
+  ClientHeight = 156
+  ClientWidth = 596
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -45,8 +44,8 @@ inherited CallStackWindow: TCallStackWindow
   ExplicitHeight = 195
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 604
-    Height = 168
+    Width = 596
+    Height = 156
     ExplicitWidth = 596
     ExplicitHeight = 156
     inherited FGPanel: TPanel

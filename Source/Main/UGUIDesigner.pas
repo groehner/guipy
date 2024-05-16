@@ -25,7 +25,6 @@ type
     MIForeground: TSpTBXItem;
     MIToSource: TSpTBXItem;
     MIClose: TSpTBXItem;
-    ILGUIDesigner: TImageList;
     MISameDistanceVert: TSpTBXItem;
     MIAlignCenteredInWindowVert: TSpTBXItem;
     MIAlignBottom: TSpTBXItem;
@@ -112,7 +111,7 @@ uses System.Types, TypInfo, SysUtils, Graphics,
      UTTKButtonBase, UTTKTextBase, UTTKMiscBase,
      UQtButtonBase, UQtWidgetDescendants, UQtFrameBased, UQtScrollable,
      UQtItemViews, UQtSpinboxes,
-     uCommonFunctions, uEditAppIntfs;
+     uCommonFunctions, uEditAppIntfs, UImages;
 
 {$R *.dfm}
 

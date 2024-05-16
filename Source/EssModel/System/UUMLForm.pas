@@ -28,14 +28,14 @@ interface
 uses
   Messages, Classes, Graphics, Forms, ToolWin, Controls, ExtCtrls, ComCtrls,
   Menus, System.ImageList, Vcl.ImgList,
-  SpTBXDkPanels, SpTBXSkins, UUMLModule, frmFile, SynEdit, SpTBXItem, TB2Item;
+  SpTBXDkPanels, SpTBXSkins, UUMLModule, frmFile, SynEdit, SpTBXItem, TB2Item,
+  Vcl.StdCtrls;
 
 type
 
   TFUMLForm = class(TFileForm)
     PDiagramPanel: TPanel;
     PDiagram: TPanel;
-    PUMLPanel: TPanel;
     UMLToolbar: TToolBar;
     TBClose: TToolButton;
     TBShowConnections: TToolButton;
@@ -58,7 +58,6 @@ type
     TBInteractive: TToolButton;
     TBInteractiveClose: TToolButton;
     TBReInitialize: TToolButton;
-    TVFileStructure: TTreeView;
     PMInteractive: TSpTBXPopupMenu;
     MIFont: TSpTBXItem;
     SpTBXSeparatorItem1: TSpTBXSeparatorItem;
@@ -73,6 +72,7 @@ type
     EmptyPopupMenu: TPopupMenu;
     SpTBXSplitter1: TSpTBXSplitter;
     PUML: TPanel;
+    TVFileStructure: TTreeView;
     procedure FormCreate(Sender: TObject); override;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormClose(Sender: TObject; var aAction: TCloseAction); override;
@@ -150,6 +150,7 @@ type
     procedure BeginUpdate;
     procedure EndUpdate;
     procedure DeleteObjects;
+    procedure DPIChanged; override;
 
     property InteractiveHeight: integer read FInteractiveHeight write setInteractiveHeight;
     property InteractiveClosed: boolean read FInteractiveClosed write setInteractiveClosed;
@@ -157,7 +158,7 @@ type
 
 implementation
 
-uses SysUtils, Types, IniFiles, Math, Clipbrd, Dialogs,
+uses Windows, SysUtils, Types, IniFiles, Math, Clipbrd, Dialogs,
      frmPyIDEMain, dmResources, uEditAppIntfs, uCommonFunctions,
      JvGnugettext, StringResources, cPyScripterSettings, UFileStructure,
      UConfiguration, UUtils, UModelEntity, UModel, URtfdDiagram, UViewIntegrator,
@@ -303,8 +304,8 @@ begin
   LockEnter:= true;
   inherited;
   if Visible then begin  // due to bug, else ActiveForm doesn't change
-    if PUMLPanel.Visible and PUMLPanel.CanFocus then
-      PUMLPanel.SetFocus;
+    //if PUMLPanel.Visible and PUMLPanel.CanFocus then
+    //  PUMLPanel.SetFocus;
     if assigned(MainModul) and assigned(MainModul.Diagram) then begin
       aPanel:= MainModul.Diagram.GetPanel;
       if assigned(aPanel) and aPanel.CanFocus then
@@ -549,10 +550,10 @@ end;
 
 procedure TFUMLForm.SetFont(aFont: TFont);
 begin
-  if (AFont.Name <> Font.Name) or (AFont.Size <> Font.Size) then begin
+  //if (aFont.Name <> Font.Name) or (aFont.Size <> Font.Size) then begin
     MainModul.Diagram.SetFont(aFont);
     MainModul.RefreshDiagram;
-  end;
+  //end;
 end;
 
 function TFUMLForm.GetFont: TFont;
@@ -565,6 +566,7 @@ begin
   var aFont:= GetFont;
   aFont.Size:= aFont.Size + Delta;
   if aFont.Size < 6 then aFont.Size:= 6;
+  Font.Size:= aFont.Size;
   SetFont(aFont);
 end;
 
@@ -774,6 +776,11 @@ end;
 procedure TFUMLForm.DeleteObjects;
 begin
   (MainModul.Diagram as TRtfdDiagram).DeleteObjects;
+end;
+
+procedure TFUMLForm.DPIChanged;
+begin
+  setFontSize(Font.Size - GetFont.Size);
 end;
 
 end.

@@ -369,6 +369,7 @@ initialization
     Description := 'Install Python packages';
     ApplicationName := '$[PythonDir-Short]Scripts\pip.exe';
     Parameters := 'install -U $[Package?Package Name]';
+    ParseTraceback := False;
     ParseMessages := False;
     CaptureOutput := True;
     ConsoleHidden := True;

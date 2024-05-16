@@ -13,6 +13,7 @@ interface
 
 Uses
   System.SysUtils,
+  System.Classes,
   PythonEngine,
   PythonVersions,
   WrapDelphi,
@@ -65,21 +66,15 @@ type
     property PythonEngine : TPythonEngine read fPythonEngine;
   end;
 
-{ Access the PythonEngine with thread safety}
-function InternalSafePyEngine: IPyEngineAndGIL;
-
-{ Executes Python code in a Delphi thread }
-procedure InternalThreadPythonExec(ExecuteProc : TProc; TerminateProc : TProc = nil;
-  WaitToFinish: Boolean = False; ThreadExecMode : TThreadExecMode = emNewState);
-
 implementation
 
 uses
   WinApi.Windows,
-  System.Classes,
+  System.UITypes,
   System.StrUtils,
   Vcl.Dialogs,
   VarPyth,
+  SynHighlighterPython,
   cPyScripterSettings,
   uCommonFunctions;
 
@@ -179,7 +174,6 @@ begin
   fPythonEngine.FatalMsgDlg := False;
   fPythonEngine.UseLastKnownVersion := False;
   fPythonEngine.AutoFinalize := False;
-  fPythonEngine.InitThreads := True;
   fPythonEngine.IO := GI_PyInterpreter.PythonIO;
   fPythonEngine.PyFlags := [pfInteractive];
   fPythonEngine.OnAfterInit := PythonEngineAfterInit;
@@ -264,15 +258,15 @@ end;
 procedure TInternalPython.InputBoxExecute(Sender: TObject; PSelf,
   Args: PPyObject; var Result: PPyObject);
 Var
-  PCaption, PPrompt, PDefault : PWideChar;
+  PCaption, PPrompt, PDefault : PAnsiChar;
   WideS : string;
   Res : Boolean;
 begin
   with PythonEngine do
-    if PyArg_ParseTuple( args, 'uuu:InputBox', @PCaption, @PPrompt, @PDefault) <> 0 then begin
-      WideS := PDefault;
+    if PyArg_ParseTuple( args, 'sss:InputBox', @PCaption, @PPrompt, @PDefault) <> 0 then begin
+      WideS := UTF8ToUnicodeString(PDefault);
 
-      Res := SyncWideInputQuery(PCaption, PPrompt, WideS);
+      Res := SyncWideInputQuery(UTF8ToUnicodeString(PCaption), UTF8ToUnicodeString(PPrompt), WideS);
       if Res then
         Result := PyUnicode_FromWideChar(PWideChar(WideS), Length(WideS))
       else
@@ -344,10 +338,10 @@ begin
   with PythonEngine do
     if PyArg_ParseTuple( args, 's|sii:messageWrite', @Msg, @FName, @LineNo, @Offset) <> 0 then begin
       if Assigned(FName) then
-        S := string(FName)
+        S := UTF8ToUnicodeString(FName)
       else
         S := '';
-      GI_PyIDEServices.Messages.AddMessage(string(Msg), S, LineNo, Offset);
+      GI_PyIDEServices.Messages.AddMessage(UTF8ToUnicodeString(Msg), S, LineNo, Offset);
       Result := ReturnNone;
     end else
       Result := nil;
@@ -369,7 +363,7 @@ Var
 begin
   with PythonEngine do
     if PyArg_ParseTuple( args, 's:statusWrite', @Msg) <> 0 then begin
-      GI_PyIDEServices.WriteStatusMsg(string(Msg));
+      GI_PyIDEServices.WriteStatusMsg(UTF8ToUnicodeString(Msg));
       Result := ReturnNone;
     end else
       Result := nil;
@@ -418,117 +412,6 @@ begin
   MaskFPUExceptions(False);
   PyIDEOptions.MaskFPUExceptions := False;
   Result := PythonEngine.ReturnNone;
-end;
-
-type
-  TPyEngineAndGIL = class(TInterfacedObject, IPyEngineAndGIL)
-  fPythonEngine: TPythonEngine;
-  fThreadState: PPyThreadState;
-  fGILState: PyGILstate_STATE;
-  private
-    function GetPyEngine: TPythonEngine;
-    function GetThreadState: PPyThreadState;
-  public
-    constructor Create;
-    destructor Destroy; override;
-  end;
-
-{ TPyEngineAndGIL }
-
-constructor TPyEngineAndGIL.Create;
-begin
-  inherited Create;
-  fPythonEngine := GetPythonEngine;
-  fGILState := fPythonEngine.PyGILState_Ensure;
-  fThreadState := fPythonEngine.PyThreadState_Get;
-end;
-
-destructor TPyEngineAndGIL.Destroy;
-begin
-  fPythonEngine.PyGILState_Release(fGILState);
-  inherited;
-end;
-
-function TPyEngineAndGIL.GetPyEngine: TPythonEngine;
-begin
-  Result := fPythonEngine;
-end;
-
-function TPyEngineAndGIL.GetThreadState: PPyThreadState;
-begin
-  Result := fThreadState;
-end;
-
-{ Access the PythonEngine with thread safety}
-function InternalSafePyEngine: IPyEngineAndGIL;
-begin
-  Result := TPyEngineAndGIL.Create
-end;
-
-{ TAnonymousPythonThread }
-type
-TAnonymousPythonThread = class(TPythonThread)
-private
-  fTerminateProc : TProc;
-  fExecuteProc : TProc;
-  procedure DoTerminate; override;
-public
-  procedure ExecuteWithPython; override;
-  constructor Create(ExecuteProc : TProc; TerminateProc : TProc = nil;
-    Suspended: Boolean = False; AThreadExecMode : TThreadExecMode = emNewState);
-end;
-
-constructor TAnonymousPythonThread.Create(ExecuteProc : TProc; TerminateProc : TProc;
-    Suspended: Boolean; AThreadExecMode : TThreadExecMode);
-begin
-  inherited Create(Suspended);
-  fExecuteProc := ExecuteProc;
-  fTerminateProc := TerminateProc;
-  FreeOnTerminate := True;
-  ThreadExecMode := AThreadExecMode;
-end;
-
-procedure TAnonymousPythonThread.ExecuteWithPython;
-begin
-  if Assigned(fExecuteProc) then
-    try
-        fExecuteProc();
-    except
-    end;
-end;
-
-procedure TAnonymousPythonThread.DoTerminate;
-// Use Thread.Queue to run the TerminateProc in the main thread
-// Could use Synchronize instead, but such calls better be avoided
-var
-  TerminateProc: TProc;
-begin
-  TerminateProc := fTerminateProc;  // to keep fTerminateProc alive at destruction
-  if Assigned(TerminateProc) then
-    TThread.Queue(nil, procedure
-    begin
-        TerminateProc();
-    end);
-end;
-
-
-{ InternalThreadPythonExec }
-
-procedure InternalThreadPythonExec(ExecuteProc : TProc; TerminateProc : TProc;
-  WaitToFinish: Boolean; ThreadExecMode : TThreadExecMode);
-var
-  Thread: TAnonymousPythonThread;
-begin
-  if GetCurrentThreadId <> MainThreadID then
-    raise Exception.Create('ThreadPythonExec should only be called from the main thread');
-  Thread := TAnonymousPythonThread.Create(ExecuteProc, TerminateProc, WaitToFinish, ThreadExecMode);
-  if WaitToFinish then
-  begin
-    Thread.FreeOnTerminate := False;
-    Thread.Start;
-    Thread.WaitFor; // Note that it calls CheckSyncrhonize
-    Thread.Free;
-  end;
 end;
 
 end.

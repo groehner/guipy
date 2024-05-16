@@ -76,6 +76,7 @@ uses
   cParameters,
   cProjectClasses,
   cPyControl,
+  dlgCommandLine,
   UConfiguration;
 
 function GetActiveDoc: string;
@@ -515,10 +516,7 @@ end;
 
 function GetCmdLineArgs: string;
 begin
-  if PyIDEOptions.UseCommandLine then
-    Result := PyIDEOptions.CommandLine
-  else
-    Result := '';
+  Result := Parameters.ReplaceInText(CommandLineParams);
 end;
 
 function GetEnvironmentVariable(const Name: string): string;
@@ -636,14 +634,12 @@ begin
 
     (* parameters, valid for current Windows configuration *)
     // Python Paths etc.
-    RegisterParameter('Python37Dir', GetPythonDir('3.7'), nil);
     RegisterParameter('Python38Dir', GetPythonDir('3.8'), nil);
     RegisterParameter('Python39Dir', GetPythonDir('3.9'), nil);
     RegisterParameter('Python310Dir', GetPythonDir('3.10'), nil);
     RegisterParameter('Python311Dir', GetPythonDir('3.11'), nil);
     RegisterParameter('Python312Dir', GetPythonDir('3.12'), nil);
     RegisterParameter('Python313Dir', GetPythonDir('3.13'), nil);
-    RegisterParameter('Python37Exe', '$[PYTHON37DIR]python.exe', nil);
     RegisterParameter('Python38Exe', '$[PYTHON38DIR]python.exe', nil);
     RegisterParameter('Python39Exe', '$[PYTHON39DIR]python.exe', nil);
     RegisterParameter('Python310Exe', '$[PYTHON310DIR]python.exe', nil);
@@ -744,14 +740,12 @@ begin
   with Parameters do begin
     (* parameters, valid for current Windows configuration *)
     // Python Paths etc.
-    UnRegisterParameter('Python37Dir');
     UnRegisterParameter('Python38Dir');
     UnRegisterParameter('Python39Dir');
     UnRegisterParameter('Python310Dir');
     UnRegisterParameter('Python311Dir');
     UnRegisterParameter('Python312Dir');
     UnRegisterParameter('Python313Dir');
-    UnRegisterParameter('Python37Exe');
     UnRegisterParameter('Python38Exe');
     UnRegisterParameter('Python39Exe');
     UnRegisterParameter('Python310Exe');

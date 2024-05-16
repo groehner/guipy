@@ -5,7 +5,7 @@ interface
 uses
   Classes, Controls, Forms, StdCtrls, ComCtrls, ImgList, ExtCtrls, Buttons,
   ActnList, System.ImageList, JvAppStorage, dlgPyIDEBase,
-  UModel, UUMLForm, frmEditor, System.Actions;
+  UModel, UUMLForm, frmEditor, System.Actions, Vcl.ToolWin;
 
 type
   TFClassEditor = class(TPyIDEDlgBase, IJvAppStorageHandler)
@@ -69,7 +69,6 @@ type
     BAttributeApply: TButton;
     BMethodApply: TButton;
     BClassApply: TButton;
-    ILSpeedButton: TImageList;
     BClassNew: TButton;
     CBClassInner: TCheckBox;
     CBAttributeValue: TComboBox;
@@ -144,6 +143,8 @@ type
     procedure CBAttributeValueSelect(Sender: TObject);
     procedure ActionCloseExecute(Sender: TObject);
     procedure CBComboBoxEnter(Sender: TObject);
+    procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
+      NewDPI: Integer);
   private
     myEditor: TEditorForm;
     myUMLForm: TFUMLForm;
@@ -216,6 +217,7 @@ type
     function CreateTreeView(EditForm: TEditorForm; UMLForm: TFUMLForm): Boolean;
     procedure UpdateTreeView;
     procedure ChangeStyle;
+    procedure DPIChange;
   end;
 
 var
@@ -228,7 +230,7 @@ implementation
 uses Windows, Math, Graphics, Messages, SysUtils, Dialogs, UITypes, Character,
      System.IOUtils, SynEdit, JvGnugettext,
      uCommonFunctions, UFileStructure, uModelEntity,
-     UConfiguration, UUtils, uEditAppIntfs, frmFile;
+     frmPyIDEMain, UConfiguration, UUtils, UImages, uEditAppIntfs, frmFile;
 
 const
   CrLf = #13#10;
@@ -2702,14 +2704,37 @@ begin
   var Bitmap:= TBitmap.create;
   Bitmap.Transparent:= true;
   if IsStyledWindowsColorDark then begin
-    ILSpeedButton.GetBitmap(1, Bitmap);
+    DMImages.ILClassEditor.GetBitmap(1, Bitmap);
     TreeView.Images:= FFileStructure.ILFileStructureDark;
   end else begin
-    ILSpeedButton.GetBitmap(0, Bitmap);
+    DMImages.ILClassEditor.GetBitmap(0, Bitmap);
     TreeView.Images:= FFileStructure.ILFileStructureLight;
   end;
   SBDelete.Glyph:= Bitmap;
   FreeAndNil(Bitmap);
+end;
+
+procedure TFClassEditor.DPIChange;
+begin
+  ChangeStyle;
+  var Bitmap:= TBitmap.create;
+  Bitmap.Transparent:= true;
+  DMImages.ILClassEditor.GetBitmap(2, Bitmap);
+  SBLeft.Glyph:= Bitmap;
+  DMImages.ILClassEditor.GetBitmap(3, Bitmap);
+  SBRight.Glyph:= Bitmap;
+  DMImages.ILClassEditor.GetBitmap(4, Bitmap);
+  SBUp.Glyph:= Bitmap;
+  DMImages.ILClassEditor.GetBitmap(5, Bitmap);
+  SBDown.Glyph:= Bitmap;
+  FreeAndNil(Bitmap);
+end;
+
+procedure TFClassEditor.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
+  NewDPI: Integer);
+begin
+  PyIDEMainForm.ResizeImageListImagesforHighDPI(DMImages.ILClassEditor, OldDPI, NewDPI);
+  ChangeStyle;
 end;
 
 end.

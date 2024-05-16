@@ -1,6 +1,6 @@
 {-----------------------------------------------------------------------------
  Unit Name: cPyControl
- Author:    PyScripter
+ Author:    PyScripter, Gerhard Röhner
  Date:      09-Feb-2018
  Purpose:   PyControl is the main interface between Python classes
             and PyScripter GUI
@@ -82,11 +82,10 @@ type
     function GetPythonVersion: TPythonVersion;
     function GetOnPythonVersionChange: TJclNotifyEventBroadcast;
     function AddPathToInternalPythonPath(const Path: string): IInterface;
-    function SafePyEngine: IPyEngineAndGIL;
     procedure Pickle(AValue: Variant; FileName: string);
   public
-    const MinPyVersion = '3.7';
-    const MaxPyVersion = '3.13'; //PYTHON313
+    const MinPyVersion = '3.8';
+    const MaxPyVersion = '3.13';
   public
     // ActiveInterpreter and ActiveDebugger are created
     // and destroyed in frmPythonII
@@ -160,6 +159,7 @@ implementation
 uses
   WinApi.Windows,
   System.Contnrs,
+  System.UITypes,
   System.Math,
   Vcl.Forms,
   Vcl.Dialogs,
@@ -293,9 +293,7 @@ begin
   // first find an optional parameter specifying the expected Python version in the form of -PYTHONXY
   expectedVersion := '';
 
-  if CmdLineReader.readFlag('PYTHON37') then
-    expectedVersion := '3.7'
-  else if CmdLineReader.readFlag('PYTHON38') then
+  if CmdLineReader.readFlag('PYTHON38') then
     expectedVersion := '3.8'
   else if CmdLineReader.readFlag('PYTHON39') then
     expectedVersion := '3.9'
@@ -428,11 +426,6 @@ begin
     end;
     DoOnBreakpointChanged(Editor, ALine);
   end;
-end;
-
-function TPythonControl.SafePyEngine: IPyEngineAndGIL;
-begin
-  Result := InternalSafePyEngine;
 end;
 
 procedure TPythonControl.SetActiveDebugger(const Value: TPyBaseDebugger);
@@ -697,7 +690,6 @@ begin
   ActiveInterpreter.Pickle(AValue, FileName);
 end;
 
-
 procedure TPythonControl.PrepareRun;
 Var
   Server, FName: string;
@@ -824,7 +816,6 @@ begin
   end;
 end;
 
-// IJvAppStorageHandler implementation
 function PythonVersionsKey: string;
 begin
   {$IFDEF CPUX64}
@@ -856,10 +847,12 @@ begin
       if Name = '' then
         Path := CustomVersions[Index]
       else
-        Path := CustomVersions.ValueFromIndex[Index];
-
+         Path := CustomVersions.ValueFromIndex[Index];
       Path:= AddPortableDrive(Path);
-      if PythonVersionFromPath(Path, Version, True, MinPyVersion, MaxPyVersion) then begin
+      if PythonVersionFromPath(Path, Version, True,
+        MinPyVersion, MaxPyVersion)
+      then
+      begin
         CustomPythonVersions[Count] := Version;
         if Name <> '' then
           CustomPythonVersions[Count].DisplayName := Name;
@@ -873,7 +866,6 @@ begin
   SysVersion := AppStorage.ReadString(PythonVersionsKey+'\SysVersion');
   if SysVersion = '' then
     SysVersion:= AppStorage.ReadString(PythonVersionsKey+'\SysVerion');  // until GuiPY version 4.3
-
   InstallPath := AddPortableDrive(AppStorage.ReadString(PythonVersionsKey+'\InstallPath'));
 
   ActiveSSHServerName  := AppStorage.ReadString('SSHServer');

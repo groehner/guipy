@@ -12,6 +12,7 @@ object PyIDEMainForm: TPyIDEMainForm
   ShowHint = True
   StyleElements = [seFont, seClient]
   OnAfterMonitorDpiChanged = FormAfterMonitorDpiChanged
+  OnBeforeMonitorDpiChanged = FormBeforeMonitorDpiChanged
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -31,7 +32,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 381
+      CustomWidth = 0
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -120,6 +121,8 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
+    ExplicitWidth = 606
+    ExplicitHeight = 294
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -263,6 +266,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Height = 113
       Align = alClient
       TabOrder = 1
+      ExplicitWidth = 624
       object DebugToolbar: TSpTBXToolbar
         Left = 2
         Top = 52
@@ -1512,13 +1516,12 @@ object PyIDEMainForm: TPyIDEMainForm
         Top = 23
         Width = 763
         Height = 57
-        ActiveTabIndex = 0
+        ActiveTabIndex = 4
         TabAutofit = True
         TabAutofitMaxSize = 80
         HiddenItems = <>
         object SpTBXTabItem1: TSpTBXTabItem
           Caption = 'Program'
-          Checked = True
           CustomWidth = 80
         end
         object SpTBXTabItem2: TSpTBXTabItem
@@ -1535,17 +1538,18 @@ object PyIDEMainForm: TPyIDEMainForm
         end
         object SpTBXTabItem5: TSpTBXTabItem
           Caption = 'Qt Controls'
+          Checked = True
           CustomWidth = 80
         end
-        object SpTBXTabSheetTTK: TSpTBXTabSheet
+        object SpTBXTabSheetProgram: TSpTBXTabSheet
           Left = 0
           Top = 25
           Width = 763
           Height = 32
-          Caption = 'TTK'
+          Caption = 'Program'
           ImageIndex = -1
-          TabItem = 'SpTBXTabItem3'
-          object ToolbarTTK: TToolBar
+          TabItem = 'SpTBXTabItem1'
+          object ToolbarProgram: TToolBar
             Left = 2
             Top = 0
             Width = 757
@@ -1553,775 +1557,65 @@ object PyIDEMainForm: TPyIDEMainForm
             Align = alClient
             AutoSize = True
             ButtonHeight = 27
-            ButtonWidth = 28
+            ButtonWidth = 30
             Color = clBtnFace
-            EdgeInner = esNone
-            EdgeOuter = esNone
-            Images = ILTTK
+            Images = ILProgram
             ParentColor = False
             TabOrder = 0
-            Wrapable = False
-            object TBTTKLabel: TToolButton
-              Tag = 31
+            object TBClass: TToolButton
               Left = 0
               Top = 0
-              Hint = 'TTK Label'
+              Hint = 'New class'
               ImageIndex = 0
               ParentShowHint = False
               ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
+              OnClick = actUMLNewClassExecute
             end
-            object TBTTKEntry: TToolButton
-              Tag = 32
-              Left = 28
+            object TBStructogram: TToolButton
+              Left = 30
               Top = 0
-              Hint = 'TTK Entry'
+              Hint = 'New structogram'
               ImageIndex = 1
               ParentShowHint = False
               ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
+              OnClick = actFileNewStructogramExecute
             end
-            object TBTTKText: TToolButton
-              Tag = 3
-              Left = 56
+            object TBSequence: TToolButton
+              Left = 60
               Top = 0
-              Hint = 'Tk Text'
+              Hint = 'New sequence diagram'
               ImageIndex = 2
               ParentShowHint = False
               ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
+              OnClick = actFileNewSequencediagramExecute
             end
-            object TBTTKButton: TToolButton
-              Tag = 34
-              Left = 84
+            object TBConsole: TToolButton
+              Tag = 1
+              Left = 90
               Top = 0
-              Hint = 'TTK Button'
+              Action = actFileNewModule
               ImageIndex = 3
               ParentShowHint = False
               ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
             end
-            object TBTTKCheckbutton: TToolButton
-              Tag = 35
-              Left = 112
+            object TBTkApplication: TToolButton
+              Left = 120
               Top = 0
-              Hint = 'TTK Checkbutton'
+              Hint = 'New Tk/TTK-Application'
               ImageIndex = 4
               ParentShowHint = False
               ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
+              OnClick = actFileNewTkinterExecute
             end
-            object TBTTKRadiogroup: TToolButton
-              Tag = 37
-              Left = 140
+            object TBQtApplication: TToolButton
+              Left = 150
               Top = 0
-              Hint = 'TTK RadiobuttonGroup'
+              Hint = 'New Qt Application'
+              Caption = 'Qt-Application'
               ImageIndex = 5
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKListbox: TToolButton
-              Tag = 8
-              Left = 168
-              Top = 0
-              Hint = 'Tk Listbox'
-              ImageIndex = 6
               ParentShowHint = False
               ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKCombobox: TToolButton
-              Tag = 38
-              Left = 196
-              Top = 0
-              Hint = 'TTK Combobox'
-              ImageIndex = 7
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKSpinbox: TToolButton
-              Tag = 39
-              Left = 224
-              Top = 0
-              Hint = 'TTK Spinbox'
-              ImageIndex = 8
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKScrollbar: TToolButton
-              Tag = 42
-              Left = 252
-              Top = 0
-              Hint = 'TTK Scrollbar'
-              ImageIndex = 9
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKMessage: TToolButton
-              Tag = 10
-              Left = 280
-              Top = 0
-              Hint = 'TTK Message'
-              ImageIndex = 10
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKCanvas: TToolButton
-              Tag = 11
-              Left = 308
-              Top = 0
-              Hint = 'Tk Canvas'
-              ImageIndex = 11
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKFrame: TToolButton
-              Tag = 43
-              Left = 336
-              Top = 0
-              Hint = 'TTK Frame'
-              ImageIndex = 12
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKLabelFrame: TToolButton
-              Tag = 44
-              Left = 364
-              Top = 0
-              Hint = 'TTK LabelFrame'
-              ImageIndex = 13
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKScale: TToolButton
-              Tag = 45
-              Left = 392
-              Top = 0
-              Hint = 'TTK Scale'
-              ImageIndex = 14
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKLabeldScale: TToolButton
-              Tag = 46
-              Left = 420
-              Top = 0
-              Hint = 'TTK LabeldScale'
-              ImageIndex = 15
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKPanedWindow: TToolButton
-              Tag = 47
-              Left = 448
-              Top = 0
-              Hint = 'TTK PanedWindow'
-              ImageIndex = 16
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKMenu: TToolButton
-              Tag = 19
-              Left = 476
-              Top = 0
-              Hint = 'Tk Menu'
-              ImageIndex = 17
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKPopupMenu: TToolButton
-              Tag = 20
-              Left = 504
-              Top = 0
-              Hint = 'Tk PopupMenu'
-              ImageIndex = 18
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKMenuButton: TToolButton
-              Tag = 48
-              Left = 532
-              Top = 0
-              Hint = 'TTK Menubutton'
-              ImageIndex = 19
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKOptionMenu: TToolButton
-              Tag = 49
-              Left = 560
-              Top = 0
-              Hint = 'TTK OptionMenu'
-              ImageIndex = 20
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKNotebook: TToolButton
-              Tag = 50
-              Left = 588
-              Top = 0
-              Hint = 'TTK Notebook'
-              ImageIndex = 21
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKTreeview: TToolButton
-              Tag = 51
-              Left = 616
-              Top = 0
-              Hint = 'TTK Treeview'
-              ImageIndex = 22
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKProgressbar: TToolButton
-              Tag = 52
-              Left = 644
-              Top = 0
-              Hint = 'TTK Progressbar'
-              ImageIndex = 23
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKSeparator: TToolButton
-              Tag = 53
-              Left = 672
-              Top = 0
-              Hint = 'TTK Separator'
-              ImageIndex = 24
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBTTKSizegrip: TToolButton
-              Tag = 54
-              Left = 700
-              Top = 0
-              Hint = 'TTK Sizegrip'
-              ImageIndex = 25
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-          end
-        end
-        object SpTBXTabSheetQtBase: TSpTBXTabSheet
-          Left = 0
-          Top = 25
-          Width = 763
-          Height = 32
-          Caption = 'Qt Base'
-          ImageIndex = -1
-          TabItem = 'SpTBXTabItem4'
-          object ToolBarQtBase: TToolBar
-            Left = 2
-            Top = 0
-            Width = 757
-            Height = 28
-            Align = alClient
-            AutoSize = True
-            ButtonHeight = 27
-            ButtonWidth = 28
-            Color = clBtnFace
-            EdgeInner = esNone
-            EdgeOuter = esNone
-            Images = ILQTBase
-            ParentColor = False
-            TabOrder = 0
-            Wrapable = False
-            object TBQtLabel: TToolButton
-              Tag = 71
-              Left = 0
-              Top = 0
-              Hint = 'QLabel'
-              ImageIndex = 0
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtLineEdit: TToolButton
-              Tag = 72
-              Left = 28
-              Top = 0
-              Hint = 'QLineEdit'
-              ImageIndex = 1
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtPlainTextEdit: TToolButton
-              Tag = 73
-              Left = 56
-              Top = 0
-              Hint = 'QPlainTextEdit'
-              ImageIndex = 2
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtPushButton: TToolButton
-              Tag = 74
-              Left = 84
-              Top = 0
-              Hint = 'QPushButton'
-              ImageIndex = 3
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtCheckBox: TToolButton
-              Tag = 75
-              Left = 112
-              Top = 0
-              Hint = 'QCheckBox'
-              ImageIndex = 4
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtButtonGroup: TToolButton
-              Tag = 76
-              Left = 140
-              Top = 0
-              Hint = 'QButtonGroup'
-              ImageIndex = 5
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtListWidget: TToolButton
-              Tag = 77
-              Left = 168
-              Top = 0
-              Hint = 'QListWidget'
-              ImageIndex = 6
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtComboBox: TToolButton
-              Tag = 78
-              Left = 196
-              Top = 0
-              Hint = 'QComboBox'
-              ImageIndex = 7
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtSpinBox: TToolButton
-              Tag = 79
-              Left = 224
-              Top = 0
-              Hint = 'QSpinBox'
-              ImageIndex = 8
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtScrollbar: TToolButton
-              Tag = 80
-              Left = 252
-              Top = 0
-              Hint = 'QScrollbar'
-              ImageIndex = 9
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtCanvas: TToolButton
-              Tag = 81
-              Left = 280
-              Top = 0
-              Hint = 'QCanvas'
-              ImageIndex = 10
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtFrame: TToolButton
-              Tag = 82
-              Left = 308
-              Top = 0
-              Hint = 'QFrame'
-              ImageIndex = 11
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtGroupBox: TToolButton
-              Tag = 83
-              Left = 336
-              Top = 0
-              Hint = 'QGroupBox'
-              ImageIndex = 12
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtSlider: TToolButton
-              Tag = 84
-              Left = 364
-              Top = 0
-              Hint = 'QSlider'
-              ImageIndex = 13
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQMenuBar: TToolButton
-              Tag = 85
-              Left = 392
-              Top = 0
-              Hint = 'QMenuBar'
-              ImageIndex = 14
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtContextMenu: TToolButton
-              Tag = 86
-              Left = 420
-              Top = 0
-              Hint = 'QContextMenu'
-              ImageIndex = 15
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtTabWidget: TToolButton
-              Tag = 87
-              Left = 448
-              Top = 0
-              Hint = 'QTabWidget'
-              ImageIndex = 16
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtTreeWidget: TToolButton
-              Tag = 88
-              Left = 476
-              Top = 0
-              Hint = 'QTreeWidget'
-              ImageIndex = 17
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtTableWidget: TToolButton
-              Tag = 89
-              Left = 504
-              Top = 0
-              Hint = 'QTableWidget'
-              ImageIndex = 18
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtProgressBar: TToolButton
-              Tag = 90
-              Left = 532
-              Top = 0
-              Hint = 'QProgressBar'
-              ImageIndex = 19
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtStatusBar: TToolButton
-              Tag = 91
-              Left = 560
-              Top = 0
-              Hint = 'QStatusBar'
-              ImageIndex = 20
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-          end
-        end
-        object SpTBXTabSheetQtControls: TSpTBXTabSheet
-          Left = 0
-          Top = 25
-          Width = 763
-          Height = 32
-          Caption = 'Qt Controls'
-          ImageIndex = -1
-          TabItem = 'SpTBXTabItem5'
-          object ToolBarQtControls: TToolBar
-            Left = 2
-            Top = 0
-            Width = 757
-            Height = 28
-            Align = alClient
-            ButtonHeight = 27
-            ButtonWidth = 28
-            Color = clBtnFace
-            EdgeInner = esNone
-            EdgeOuter = esNone
-            Images = ILQtControls
-            ParentColor = False
-            TabOrder = 0
-            object TBQtTextedit: TToolButton
-              Tag = 101
-              Left = 0
-              Top = 0
-              Hint = 'QTextEdit'
-              ImageIndex = 0
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtTextBrowser: TToolButton
-              Tag = 102
-              Left = 28
-              Top = 0
-              Hint = 'QTextBrowser'
-              ImageIndex = 1
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtToolButton: TToolButton
-              Tag = 103
-              Left = 56
-              Top = 0
-              Hint = 'QToolButton'
-              ImageIndex = 2
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtCommandLinkButton: TToolButton
-              Tag = 104
-              Left = 84
-              Top = 0
-              Hint = 'QCommandLinkButton'
-              ImageIndex = 3
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtFontComboBox: TToolButton
-              Tag = 105
-              Left = 112
-              Top = 0
-              Hint = 'QFontComboBox'
-              ImageIndex = 4
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtDoubleSpinBox: TToolButton
-              Tag = 106
-              Left = 140
-              Top = 0
-              Hint = 'QDoubleSpinBox'
-              ImageIndex = 5
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtLCDNumber: TToolButton
-              Tag = 107
-              Left = 168
-              Top = 0
-              Hint = 'QLCDNumber'
-              ImageIndex = 6
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtDateTimeEdit: TToolButton
-              Tag = 108
-              Left = 196
-              Top = 0
-              Hint = 'QDateTimeEdit'
-              ImageIndex = 7
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtDateEdit: TToolButton
-              Tag = 109
-              Left = 224
-              Top = 0
-              Hint = 'QDateEdit'
-              ImageIndex = 8
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtTimeEdit: TToolButton
-              Tag = 110
-              Left = 252
-              Top = 0
-              Hint = 'QTimeEdit'
-              ImageIndex = 9
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtDial: TToolButton
-              Tag = 111
-              Left = 280
-              Top = 0
-              Hint = 'QDial'
-              ImageIndex = 10
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtLine: TToolButton
-              Tag = 112
-              Left = 308
-              Top = 0
-              Hint = 'QLine'
-              ImageIndex = 11
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtScrollArea: TToolButton
-              Tag = 113
-              Left = 336
-              Top = 0
-              Hint = 'QScrollArea'
-              ImageIndex = 12
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtToolBox: TToolButton
-              Tag = 114
-              Left = 364
-              Top = 0
-              Hint = 'QToolBox'
-              ImageIndex = 13
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtStackWidget: TToolButton
-              Tag = 115
-              Left = 392
-              Top = 0
-              Hint = 'QStackWidget'
-              ImageIndex = 14
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtListView: TToolButton
-              Tag = 116
-              Left = 420
-              Top = 0
-              Hint = 'QListView'
-              ImageIndex = 15
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtColumnView: TToolButton
-              Tag = 117
-              Left = 448
-              Top = 0
-              Hint = 'QColumnView'
-              ImageIndex = 16
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtTreeView: TToolButton
-              Tag = 118
-              Left = 476
-              Top = 0
-              Hint = 'QTreeWidget'
-              ImageIndex = 17
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtTableView: TToolButton
-              Tag = 119
-              Left = 504
-              Top = 0
-              Hint = 'QTableView'
-              ImageIndex = 18
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
-            end
-            object TBQtGraphicsView: TToolButton
-              Tag = 120
-              Left = 532
-              Top = 0
-              Hint = 'QGraphicsView'
-              ImageIndex = 19
-              OnClick = ToolButtonClick
-              OnMouseDown = ToolButtonMouseDown
-              OnStartDrag = ToolButtonStartDrag
+              OnClick = TBQtApplicationClick
             end
           end
         end
@@ -2418,6 +1712,8 @@ object PyIDEMainForm: TPyIDEMainForm
               Top = 0
               Hint = 'Tk RadiobuttonGroup'
               ImageIndex = 5
+              ParentShowHint = False
+              ShowHint = True
               OnClick = ToolButtonClick
               OnMouseDown = ToolButtonMouseDown
               OnStartDrag = ToolButtonStartDrag
@@ -2442,6 +1738,8 @@ object PyIDEMainForm: TPyIDEMainForm
               Hint = 'Tk SpinBox'
               Grouped = True
               ImageIndex = 7
+              ParentShowHint = False
+              ShowHint = True
               OnClick = ToolButtonClick
               OnMouseDown = ToolButtonMouseDown
               OnStartDrag = ToolButtonStartDrag
@@ -2465,6 +1763,8 @@ object PyIDEMainForm: TPyIDEMainForm
               Top = 0
               Hint = 'Tk Message'
               ImageIndex = 9
+              ParentShowHint = False
+              ShowHint = True
               OnClick = ToolButtonClick
               OnMouseDown = ToolButtonMouseDown
               OnStartDrag = ToolButtonStartDrag
@@ -2476,6 +1776,8 @@ object PyIDEMainForm: TPyIDEMainForm
               Hint = 'Tk Canvas'
               Grouped = True
               ImageIndex = 10
+              ParentShowHint = False
+              ShowHint = True
               OnClick = ToolButtonClick
               OnMouseDown = ToolButtonMouseDown
               OnStartDrag = ToolButtonStartDrag
@@ -2512,6 +1814,8 @@ object PyIDEMainForm: TPyIDEMainForm
               Top = 0
               Hint = 'Tk Scale'
               ImageIndex = 13
+              ParentShowHint = False
+              ShowHint = True
               OnClick = ToolButtonClick
               OnMouseDown = ToolButtonMouseDown
               OnStartDrag = ToolButtonStartDrag
@@ -2522,6 +1826,8 @@ object PyIDEMainForm: TPyIDEMainForm
               Top = 0
               Hint = 'Tk PanedWindow'
               ImageIndex = 14
+              ParentShowHint = False
+              ShowHint = True
               OnClick = ToolButtonClick
               OnMouseDown = ToolButtonMouseDown
               OnStartDrag = ToolButtonStartDrag
@@ -2558,6 +1864,8 @@ object PyIDEMainForm: TPyIDEMainForm
               Top = 0
               Hint = 'Tk Menubutton'
               ImageIndex = 17
+              ParentShowHint = False
+              ShowHint = True
               OnClick = ToolButtonClick
               OnMouseDown = ToolButtonMouseDown
               OnStartDrag = ToolButtonStartDrag
@@ -2568,74 +1876,891 @@ object PyIDEMainForm: TPyIDEMainForm
               Top = 0
               Hint = 'Tk Optionmenu'
               ImageIndex = 18
+              ParentShowHint = False
+              ShowHint = True
               OnClick = ToolButtonClick
               OnMouseDown = ToolButtonMouseDown
               OnStartDrag = ToolButtonStartDrag
             end
           end
         end
-        object SpTBXTabSheetProgram: TSpTBXTabSheet
+        object SpTBXTabSheetTTK: TSpTBXTabSheet
           Left = 0
           Top = 25
           Width = 763
           Height = 32
-          Caption = 'Program'
+          Caption = 'TTK'
           ImageIndex = -1
-          TabItem = 'SpTBXTabItem1'
-          object ToolbarProgram: TToolBar
+          TabItem = 'SpTBXTabItem3'
+          object ToolbarTTK: TToolBar
+            Left = 2
+            Top = 0
+            Width = 757
+            Height = 28
+            Align = alClient
+            AutoSize = True
+            ButtonHeight = 27
+            ButtonWidth = 28
+            Color = clBtnFace
+            EdgeInner = esNone
+            EdgeOuter = esNone
+            Images = ILTTK
+            ParentColor = False
+            TabOrder = 0
+            Wrapable = False
+            object TBTTKLabel: TToolButton
+              Tag = 31
+              Left = 0
+              Top = 0
+              Hint = 'TTK Label'
+              ImageIndex = 0
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKEntry: TToolButton
+              Tag = 32
+              Left = 28
+              Top = 0
+              Hint = 'TTK Entry'
+              ImageIndex = 1
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKText: TToolButton
+              Tag = 3
+              Left = 56
+              Top = 0
+              Hint = 'Tk Text'
+              ImageIndex = 2
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKButton: TToolButton
+              Tag = 34
+              Left = 84
+              Top = 0
+              Hint = 'TTK Button'
+              ImageIndex = 3
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKCheckbutton: TToolButton
+              Tag = 35
+              Left = 112
+              Top = 0
+              Hint = 'TTK Checkbutton'
+              ImageIndex = 4
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKRadiogroup: TToolButton
+              Tag = 37
+              Left = 140
+              Top = 0
+              Hint = 'TTK RadiobuttonGroup'
+              ImageIndex = 5
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKListbox: TToolButton
+              Tag = 8
+              Left = 168
+              Top = 0
+              Hint = 'Tk Listbox'
+              ImageIndex = 6
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKCombobox: TToolButton
+              Tag = 38
+              Left = 196
+              Top = 0
+              Hint = 'TTK Combobox'
+              ImageIndex = 7
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKSpinbox: TToolButton
+              Tag = 39
+              Left = 224
+              Top = 0
+              Hint = 'TTK Spinbox'
+              ImageIndex = 8
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKScrollbar: TToolButton
+              Tag = 42
+              Left = 252
+              Top = 0
+              Hint = 'TTK Scrollbar'
+              ImageIndex = 9
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKMessage: TToolButton
+              Tag = 10
+              Left = 280
+              Top = 0
+              Hint = 'TTK Message'
+              ImageIndex = 10
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKCanvas: TToolButton
+              Tag = 11
+              Left = 308
+              Top = 0
+              Hint = 'Tk Canvas'
+              ImageIndex = 11
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKFrame: TToolButton
+              Tag = 43
+              Left = 336
+              Top = 0
+              Hint = 'TTK Frame'
+              ImageIndex = 12
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKLabelFrame: TToolButton
+              Tag = 44
+              Left = 364
+              Top = 0
+              Hint = 'TTK LabelFrame'
+              ImageIndex = 13
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKScale: TToolButton
+              Tag = 45
+              Left = 392
+              Top = 0
+              Hint = 'TTK Scale'
+              ImageIndex = 14
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKLabeldScale: TToolButton
+              Tag = 46
+              Left = 420
+              Top = 0
+              Hint = 'TTK LabeldScale'
+              ImageIndex = 15
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKPanedWindow: TToolButton
+              Tag = 47
+              Left = 448
+              Top = 0
+              Hint = 'TTK PanedWindow'
+              ImageIndex = 16
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKMenu: TToolButton
+              Tag = 19
+              Left = 476
+              Top = 0
+              Hint = 'Tk Menu'
+              ImageIndex = 17
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKPopupMenu: TToolButton
+              Tag = 20
+              Left = 504
+              Top = 0
+              Hint = 'Tk PopupMenu'
+              ImageIndex = 18
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKMenuButton: TToolButton
+              Tag = 48
+              Left = 532
+              Top = 0
+              Hint = 'TTK Menubutton'
+              ImageIndex = 19
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKOptionMenu: TToolButton
+              Tag = 49
+              Left = 560
+              Top = 0
+              Hint = 'TTK OptionMenu'
+              ImageIndex = 20
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKNotebook: TToolButton
+              Tag = 50
+              Left = 588
+              Top = 0
+              Hint = 'TTK Notebook'
+              ImageIndex = 21
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKTreeview: TToolButton
+              Tag = 51
+              Left = 616
+              Top = 0
+              Hint = 'TTK Treeview'
+              ImageIndex = 22
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKProgressbar: TToolButton
+              Tag = 52
+              Left = 644
+              Top = 0
+              Hint = 'TTK Progressbar'
+              ImageIndex = 23
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKSeparator: TToolButton
+              Tag = 53
+              Left = 672
+              Top = 0
+              Hint = 'TTK Separator'
+              ImageIndex = 24
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBTTKSizegrip: TToolButton
+              Tag = 54
+              Left = 700
+              Top = 0
+              Hint = 'TTK Sizegrip'
+              ImageIndex = 25
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+          end
+        end
+        object SpTBXTabSheetQtBase: TSpTBXTabSheet
+          Left = 0
+          Top = 25
+          Width = 763
+          Height = 32
+          Caption = 'Qt Base'
+          ImageIndex = -1
+          TabItem = 'SpTBXTabItem4'
+          object ToolBarQtBase: TToolBar
+            Left = 2
+            Top = 0
+            Width = 757
+            Height = 28
+            Align = alClient
+            AutoSize = True
+            ButtonHeight = 27
+            ButtonWidth = 28
+            Color = clBtnFace
+            EdgeInner = esNone
+            EdgeOuter = esNone
+            Images = ILQTBase
+            ParentColor = False
+            TabOrder = 0
+            Wrapable = False
+            object TBQtLabel: TToolButton
+              Tag = 71
+              Left = 0
+              Top = 0
+              Hint = 'QLabel'
+              ImageIndex = 0
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtLineEdit: TToolButton
+              Tag = 72
+              Left = 28
+              Top = 0
+              Hint = 'QLineEdit'
+              ImageIndex = 1
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtPlainTextEdit: TToolButton
+              Tag = 73
+              Left = 56
+              Top = 0
+              Hint = 'QPlainTextEdit'
+              ImageIndex = 2
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtPushButton: TToolButton
+              Tag = 74
+              Left = 84
+              Top = 0
+              Hint = 'QPushButton'
+              ImageIndex = 3
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtCheckBox: TToolButton
+              Tag = 75
+              Left = 112
+              Top = 0
+              Hint = 'QCheckBox'
+              ImageIndex = 4
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtButtonGroup: TToolButton
+              Tag = 76
+              Left = 140
+              Top = 0
+              Hint = 'QButtonGroup'
+              ImageIndex = 5
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtListWidget: TToolButton
+              Tag = 77
+              Left = 168
+              Top = 0
+              Hint = 'QListWidget'
+              ImageIndex = 6
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtComboBox: TToolButton
+              Tag = 78
+              Left = 196
+              Top = 0
+              Hint = 'QComboBox'
+              ImageIndex = 7
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtSpinBox: TToolButton
+              Tag = 79
+              Left = 224
+              Top = 0
+              Hint = 'QSpinBox'
+              ImageIndex = 8
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtScrollbar: TToolButton
+              Tag = 80
+              Left = 252
+              Top = 0
+              Hint = 'QScrollbar'
+              ImageIndex = 9
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtCanvas: TToolButton
+              Tag = 81
+              Left = 280
+              Top = 0
+              Hint = 'QCanvas'
+              ImageIndex = 10
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtFrame: TToolButton
+              Tag = 82
+              Left = 308
+              Top = 0
+              Hint = 'QFrame'
+              ImageIndex = 11
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtGroupBox: TToolButton
+              Tag = 83
+              Left = 336
+              Top = 0
+              Hint = 'QGroupBox'
+              ImageIndex = 12
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtSlider: TToolButton
+              Tag = 84
+              Left = 364
+              Top = 0
+              Hint = 'QSlider'
+              ImageIndex = 13
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQMenuBar: TToolButton
+              Tag = 85
+              Left = 392
+              Top = 0
+              Hint = 'QMenuBar'
+              ImageIndex = 14
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtContextMenu: TToolButton
+              Tag = 86
+              Left = 420
+              Top = 0
+              Hint = 'QContextMenu'
+              ImageIndex = 15
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTabWidget: TToolButton
+              Tag = 87
+              Left = 448
+              Top = 0
+              Hint = 'QTabWidget'
+              ImageIndex = 16
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTreeWidget: TToolButton
+              Tag = 88
+              Left = 476
+              Top = 0
+              Hint = 'QTreeWidget'
+              ImageIndex = 17
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTableWidget: TToolButton
+              Tag = 89
+              Left = 504
+              Top = 0
+              Hint = 'QTableWidget'
+              ImageIndex = 18
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtProgressBar: TToolButton
+              Tag = 90
+              Left = 532
+              Top = 0
+              Hint = 'QProgressBar'
+              ImageIndex = 19
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtStatusBar: TToolButton
+              Tag = 91
+              Left = 560
+              Top = 0
+              Hint = 'QStatusBar'
+              ImageIndex = 20
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+          end
+        end
+        object SpTBXTabSheetQtControls: TSpTBXTabSheet
+          Left = 0
+          Top = 25
+          Width = 763
+          Height = 32
+          Caption = 'Qt Controls'
+          ImageIndex = -1
+          TabItem = 'SpTBXTabItem5'
+          object ToolBarQtControls: TToolBar
             Left = 2
             Top = 0
             Width = 757
             Height = 28
             Align = alClient
             ButtonHeight = 27
-            ButtonWidth = 30
+            ButtonWidth = 28
             Color = clBtnFace
-            Images = ILProgram
+            EdgeInner = esNone
+            EdgeOuter = esNone
+            Images = ILQtControls
             ParentColor = False
             TabOrder = 0
-            object TBClass: TToolButton
+            object TBQtTextedit: TToolButton
+              Tag = 101
               Left = 0
               Top = 0
-              Hint = 'New class'
+              Hint = 'QTextEdit'
               ImageIndex = 0
-              OnClick = actUMLNewClassExecute
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
             end
-            object TBStructogram: TToolButton
-              Left = 30
+            object TBQtTextBrowser: TToolButton
+              Tag = 102
+              Left = 28
               Top = 0
-              Hint = 'New structogram'
+              Hint = 'QTextBrowser'
               ImageIndex = 1
-              OnClick = actFileNewStructogramExecute
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
             end
-            object TBSequence: TToolButton
-              Left = 60
+            object TBQtToolButton: TToolButton
+              Tag = 103
+              Left = 56
               Top = 0
-              Hint = 'New sequence diagram'
+              Hint = 'QToolButton'
               ImageIndex = 2
-              OnClick = actFileNewSequencediagramExecute
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
             end
-            object TBConsole: TToolButton
-              Tag = 1
-              Left = 90
+            object TBQtCommandLinkButton: TToolButton
+              Tag = 104
+              Left = 84
               Top = 0
-              Action = actFileNewModule
+              Hint = 'QCommandLinkButton'
               ImageIndex = 3
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
             end
-            object TBTkApplication: TToolButton
-              Left = 120
+            object TBQtFontComboBox: TToolButton
+              Tag = 105
+              Left = 112
               Top = 0
-              Hint = 'New Tk/TTK-Application'
+              Hint = 'QFontComboBox'
               ImageIndex = 4
-              OnClick = actFileNewTkinterExecute
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
             end
-            object TBQtApplication: TToolButton
-              Left = 150
+            object TBQtDoubleSpinBox: TToolButton
+              Tag = 106
+              Left = 140
               Top = 0
-              Hint = 'New Qt Application'
-              Caption = 'Qt-Application'
+              Hint = 'QDoubleSpinBox'
               ImageIndex = 5
-              OnClick = TBQtApplicationClick
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtLCDNumber: TToolButton
+              Tag = 107
+              Left = 168
+              Top = 0
+              Hint = 'QLCDNumber'
+              ImageIndex = 6
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtDateTimeEdit: TToolButton
+              Tag = 108
+              Left = 196
+              Top = 0
+              Hint = 'QDateTimeEdit'
+              ImageIndex = 7
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtDateEdit: TToolButton
+              Tag = 109
+              Left = 224
+              Top = 0
+              Hint = 'QDateEdit'
+              ImageIndex = 8
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTimeEdit: TToolButton
+              Tag = 110
+              Left = 252
+              Top = 0
+              Hint = 'QTimeEdit'
+              ImageIndex = 9
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtDial: TToolButton
+              Tag = 111
+              Left = 280
+              Top = 0
+              Hint = 'QDial'
+              ImageIndex = 10
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtLine: TToolButton
+              Tag = 112
+              Left = 308
+              Top = 0
+              Hint = 'QLine'
+              ImageIndex = 11
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtScrollArea: TToolButton
+              Tag = 113
+              Left = 336
+              Top = 0
+              Hint = 'QScrollArea'
+              ImageIndex = 12
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtToolBox: TToolButton
+              Tag = 114
+              Left = 364
+              Top = 0
+              Hint = 'QToolBox'
+              ImageIndex = 13
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtStackWidget: TToolButton
+              Tag = 115
+              Left = 392
+              Top = 0
+              Hint = 'QStackWidget'
+              ImageIndex = 14
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtListView: TToolButton
+              Tag = 116
+              Left = 420
+              Top = 0
+              Hint = 'QListView'
+              ImageIndex = 15
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtColumnView: TToolButton
+              Tag = 117
+              Left = 448
+              Top = 0
+              Hint = 'QColumnView'
+              ImageIndex = 16
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTreeView: TToolButton
+              Tag = 118
+              Left = 476
+              Top = 0
+              Hint = 'QTreeWidget'
+              ImageIndex = 17
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtTableView: TToolButton
+              Tag = 119
+              Left = 504
+              Top = 0
+              Hint = 'QTableView'
+              ImageIndex = 18
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
+            end
+            object TBQtGraphicsView: TToolButton
+              Tag = 120
+              Left = 532
+              Top = 0
+              Hint = 'QGraphicsView'
+              ImageIndex = 19
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = ToolButtonClick
+              OnMouseDown = ToolButtonMouseDown
+              OnStartDrag = ToolButtonStartDrag
             end
           end
         end
@@ -7571,7 +7696,7 @@ object PyIDEMainForm: TPyIDEMainForm
   object ILQtControls: TImageList
     Height = 21
     Width = 21
-    Left = 400
+    Left = 408
     Top = 561
     Bitmap = {
       494C010114005801040015001500FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600

@@ -24,8 +24,6 @@ type
     BCancel: TButton;
     LMessage: TLabel;
     ERelation: TEdit;
-    ILSequencediagramLight: TImageList;
-    ILSequencediagramDark: TImageList;
 
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -36,7 +34,6 @@ type
   private
     isTurned: boolean;
     ILSequenceDiagram: TImageList;
-    procedure ChangeStyle;
   public
     LNGClose: string;
     procedure init(IsConnecting: boolean; conn: TConnection; SelectedControls: integer);
@@ -45,7 +42,7 @@ type
 
 implementation
 
-uses SysUtils, Graphics, Forms, Themes, uCommonFunctions;
+uses SysUtils, Graphics, Forms, Themes, uCommonFunctions, UImages;
 
 {$R *.dfm}
 
@@ -53,8 +50,11 @@ procedure TFConnectForm.FormCreate(Sender: TObject);
 begin
   inherited;
   LBConnections.ItemHeight:= LBConnections.Height div LBConnections.Items.Count;
-  ILSequenceDiagram:= ILSequenceDiagramLight;
-  ChangeStyle;
+  ILSequenceDiagram:= DMImages.ILSequenceConnectLight;
+  if IsStyledWindowsColorDark
+    then ILSequenceDiagram:= DMImages.ILSequenceConnectDark
+    else ILSequenceDiagram:= DMImages.ILSequenceConnectLight;
+  LBConnections.Color:= StyleServices.GetSystemColor(clWindow);
 end;
 
 procedure TFConnectForm.FormShow(Sender: TObject);
@@ -131,14 +131,6 @@ begin
     ERelation.Text:= s;
   end;
   Result.aMessage:= ERelation.Text;
-end;
-
-procedure TFConnectForm.ChangeStyle;
-begin
-  if IsStyledWindowsColorDark
-    then ILSequenceDiagram:= ILSequenceDiagramDark
-    else ILSequenceDiagram:= ILSequenceDiagramLight;
-  LBConnections.Color:= StyleServices.GetSystemColor(clWindow);
 end;
 
 end.

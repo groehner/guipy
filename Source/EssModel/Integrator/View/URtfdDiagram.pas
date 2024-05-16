@@ -3430,14 +3430,14 @@ end;
 procedure TRtfdDiagram.ChangeStyle;
 begin
   if IsStyledWindowsColorDark then begin
-    Frame.PopMenuClass.Images:= Frame.ILUMLDark;
-    Frame.PopMenuObject.Images:= Frame.ILUMLDark;
-    Frame.PopMenuConnection.Images:= Frame.ILAssoziationenDark;
+    Frame.PopMenuClass.Images:= DMImages.ILUMLDark;
+    Frame.PopMenuObject.Images:= DMImages.ILUMLDark;
+    Frame.PopMenuConnection.Images:= DMImages.ILAssoziationenDark;
     Frame.PopupMenuWindow.Images:= DMImages.ILUMLToolbarDark;
   end else begin
-    Frame.PopMenuClass.Images:= Frame.ILUMLLight;
-    Frame.PopMenuObject.Images:= Frame.ILUMLLight;
-    Frame.PopMenuConnection.Images:= Frame.ILAssoziationenLight;
+    Frame.PopMenuClass.Images:= DMImages.ILUMLLight;
+    Frame.PopMenuObject.Images:= DMImages.ILUMLLight;
+    Frame.PopMenuConnection.Images:= DMImages.ILAssoziationenLight;
     Frame.PopupMenuWindow.Images:= DMImages.ILUMLToolbarLight;
   end;
   Panel.ChangeStyle;

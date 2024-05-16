@@ -1,6 +1,6 @@
 {-----------------------------------------------------------------------------
  Unit Name: uEditAppIntfs
- Author:    Kiriakos Vlahos
+ Author:    Kiriakos Vlahos, Gerhard Röhner
  Date:      09-Mar-2005
  Purpose:   Editor and IDE interfaces
  History:

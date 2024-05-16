@@ -24,7 +24,6 @@ type
     TBRefresh: TToolButton;
     TBFavoritesAdd: TToolButton;
     TBFavoritesDelete: TToolButton;
-    ILBrowser: TImageList;
     procedure FormCreate(Sender: TObject); override;
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction); override;
@@ -64,6 +63,7 @@ type
     procedure OpenWindow(Sender: TObject); override;
     function getAsStringList: TStringList; override;
     procedure UploadFilesHttpPost(const URLstring: string; names, values, nFiles, vFiles: array of string);
+    procedure DPIChanged; override;
   end;
 
 implementation
@@ -71,7 +71,7 @@ implementation
 uses Winapi.Windows, System.SysUtils, System.Variants, Vcl.Dialogs,
      Clipbrd, ActiveX, MSHTML, JvGnugettext,
      uEditAppIntfs, uCommonFunctions, frmPyIDEMain,
-     frmFileExplorer, UUtils, UConfiguration;
+     frmFileExplorer, UUtils, UImages, UConfiguration;
 
 {$R *.dfm}
 
@@ -482,6 +482,11 @@ begin
   PyIDEMainForm.UpdateCaption;
   DoUpdateCaption;
   if not FConfiguration.visible then ActivateBrowser;
+end;
+
+procedure TFBrowser.DPIChanged;
+begin
+  CBUrls.Height:= Toolbar.Height;
 end;
 
 end.

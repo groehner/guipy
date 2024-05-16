@@ -2,8 +2,8 @@ object FUMLForm: TFUMLForm
   Left = 394
   Top = 229
   Caption = 'UML'
-  ClientHeight = 605
-  ClientWidth = 689
+  ClientHeight = 604
+  ClientWidth = 685
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,28 +20,28 @@ object FUMLForm: TFUMLForm
   object PUML: TPanel
     Left = 0
     Top = 0
-    Width = 689
-    Height = 605
+    Width = 685
+    Height = 604
     Align = alClient
     Caption = 'PUML'
     TabOrder = 0
     OnResize = PUMLResize
-    ExplicitWidth = 685
-    ExplicitHeight = 604
+    ExplicitWidth = 681
+    ExplicitHeight = 603
     object PDiagram: TPanel
       Left = 1
       Top = 1
-      Width = 687
+      Width = 683
       Height = 420
       Align = alTop
       Constraints.MinHeight = 100
       TabOrder = 0
-      ExplicitWidth = 683
+      ExplicitWidth = 679
       object PDiagramPanel: TPanel
         Left = 1
-        Top = 26
-        Width = 685
-        Height = 393
+        Top = 23
+        Width = 681
+        Height = 396
         Align = alClient
         BevelEdges = [beLeft, beTop]
         BevelOuter = bvNone
@@ -57,152 +57,145 @@ object FUMLForm: TFUMLForm
         ParentFont = False
         TabOrder = 0
         OnResize = PDiagramPanelResize
-        ExplicitWidth = 681
-      end
-      object PUMLPanel: TPanel
-        Left = 1
-        Top = 1
-        Width = 685
-        Height = 25
-        Align = alTop
-        TabOrder = 1
-        ExplicitWidth = 681
-        object UMLToolbar: TToolBar
-          Left = 1
-          Top = 1
-          Width = 352
-          Height = 23
-          Align = alLeft
-          ButtonWidth = 24
-          Color = clBtnFace
-          EdgeInner = esNone
-          EdgeOuter = esNone
-          Images = DMImages.ILUMLToolbarLight
-          ParentColor = False
-          TabOrder = 0
-          object TBClose: TToolButton
-            Left = 0
-            Top = 0
-            Hint = 'Close'
-            ImageIndex = 0
-            OnClick = SBCloseClick
-          end
-          object TBClassDefinition: TToolButton
-            Left = 24
-            Top = 0
-            Hint = 'New class'
-            ImageIndex = 1
-            OnClick = TBClassDefinitionClick
-          end
-          object TBClassOpen: TToolButton
-            Left = 48
-            Top = 0
-            Hint = 'Open class'
-            ImageIndex = 2
-            OnClick = TBClassOpenClick
-          end
-          object TBShowConnections: TToolButton
-            Left = 72
-            Top = 0
-            Hint = 'Connections: none, classes and objects, all'
-            ImageIndex = 3
-            OnClick = TBShowConnectionsClick
-          end
-          object TBObjectDiagram: TToolButton
-            Left = 96
-            Top = 0
-            Hint = 'Class diagram on/off'
-            ImageIndex = 4
-            OnClick = TBObjectDiagramClick
-          end
-          object TBView: TToolButton
-            Left = 120
-            Top = 0
-            Hint = 'View'
-            ImageIndex = 5
-            OnClick = TBViewClick
-          end
-          object TBZoomOut: TToolButton
-            Left = 144
-            Top = 0
-            Hint = 'Zoom out'
-            ImageIndex = 6
-            OnClick = TBZoomOutClick
-          end
-          object TBZoomIn: TToolButton
-            Left = 168
-            Top = 0
-            Hint = 'Zoom in'
-            ImageIndex = 7
-            OnClick = TBZoomInClick
-          end
-          object TBComment: TToolButton
-            Left = 192
-            Top = 0
-            Hint = 'Comment'
-            ImageIndex = 8
-            OnClick = TBCommentClick
-          end
-          object TBNewLayout: TToolButton
-            Left = 216
-            Top = 0
-            Hint = 'New layout'
-            ImageIndex = 9
-            OnClick = TBNewLayoutClick
-          end
-          object TBRefresh: TToolButton
-            Left = 240
-            Top = 0
-            Hint = 'Refresh'
-            ImageIndex = 10
-            OnClick = TBRefreshClick
-          end
-          object TBInteractive: TToolButton
-            Left = 264
-            Top = 0
-            Hint = 'Show/hide interactive'
-            ImageIndex = 11
-            OnClick = TBInteractiveClick
-          end
-          object TBReInitialize: TToolButton
-            Left = 288
-            Top = 0
-            Hint = 'Reinitialize Python engine'
-            ImageIndex = 12
-            OnClick = TBReInitializeClick
-          end
-        end
+        ExplicitWidth = 677
         object TVFileStructure: TTreeView
-          Left = 520
-          Top = 1
+          Left = 536
+          Top = 18
           Width = 121
           Height = 18
           Indent = 19
-          TabOrder = 1
+          TabOrder = 0
           Visible = False
+        end
+      end
+      object UMLToolbar: TToolBar
+        Left = 1
+        Top = 1
+        Width = 681
+        Height = 22
+        AutoSize = True
+        ButtonWidth = 24
+        Color = clBtnFace
+        EdgeInner = esNone
+        EdgeOuter = esNone
+        Images = DMImages.ILUMLToolbarLight
+        ParentColor = False
+        TabOrder = 1
+        ExplicitWidth = 677
+        object TBClose: TToolButton
+          Left = 0
+          Top = 0
+          Hint = 'Close'
+          ImageIndex = 0
+          OnClick = SBCloseClick
+        end
+        object TBClassDefinition: TToolButton
+          Left = 24
+          Top = 0
+          Hint = 'New class'
+          ImageIndex = 1
+          OnClick = TBClassDefinitionClick
+        end
+        object TBClassOpen: TToolButton
+          Left = 48
+          Top = 0
+          Hint = 'Open class'
+          ImageIndex = 2
+          OnClick = TBClassOpenClick
+        end
+        object TBShowConnections: TToolButton
+          Left = 72
+          Top = 0
+          Hint = 'Connections: none, classes and objects, all'
+          ImageIndex = 3
+          OnClick = TBShowConnectionsClick
+        end
+        object TBObjectDiagram: TToolButton
+          Left = 96
+          Top = 0
+          Hint = 'Class diagram on/off'
+          ImageIndex = 4
+          OnClick = TBObjectDiagramClick
+        end
+        object TBView: TToolButton
+          Left = 120
+          Top = 0
+          Hint = 'View'
+          ImageIndex = 5
+          OnClick = TBViewClick
+        end
+        object TBZoomOut: TToolButton
+          Left = 144
+          Top = 0
+          Hint = 'Zoom out'
+          ImageIndex = 6
+          OnClick = TBZoomOutClick
+        end
+        object TBZoomIn: TToolButton
+          Left = 168
+          Top = 0
+          Hint = 'Zoom in'
+          ImageIndex = 7
+          OnClick = TBZoomInClick
+        end
+        object TBComment: TToolButton
+          Left = 192
+          Top = 0
+          Hint = 'Comment'
+          ImageIndex = 8
+          OnClick = TBCommentClick
+        end
+        object TBNewLayout: TToolButton
+          Left = 216
+          Top = 0
+          Hint = 'New layout'
+          ImageIndex = 9
+          OnClick = TBNewLayoutClick
+        end
+        object TBRefresh: TToolButton
+          Left = 240
+          Top = 0
+          Hint = 'Refresh'
+          ImageIndex = 10
+          OnClick = TBRefreshClick
+        end
+        object TBInteractive: TToolButton
+          Left = 264
+          Top = 0
+          Hint = 'Show/hide interactive'
+          ImageIndex = 11
+          OnClick = TBInteractiveClick
+        end
+        object TBReInitialize: TToolButton
+          Left = 288
+          Top = 0
+          Hint = 'Reinitialize Python engine'
+          ImageIndex = 12
+          OnClick = TBReInitializeClick
         end
       end
     end
     object PInteractive: TPanel
       Left = 1
       Top = 424
-      Width = 687
-      Height = 180
+      Width = 683
+      Height = 179
       Align = alClient
       PopupMenu = PMInteractive
       TabOrder = 1
-      ExplicitWidth = 683
-      ExplicitHeight = 179
+      ExplicitWidth = 679
+      ExplicitHeight = 178
       object TBInteractiveToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 685
+        Width = 681
         Height = 22
+        AutoSize = True
         Color = clBtnFace
         Images = DMImages.ILInteractive
         ParentColor = False
         TabOrder = 0
-        ExplicitWidth = 681
+        ExplicitWidth = 677
         object TBInteractiveClose: TToolButton
           Left = 0
           Top = 0
@@ -246,8 +239,8 @@ object FUMLForm: TFUMLForm
       object SynEdit: TSynEdit
         Left = 1
         Top = 23
-        Width = 685
-        Height = 156
+        Width = 681
+        Height = 155
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -285,19 +278,19 @@ object FUMLForm: TFUMLForm
         RightEdge = 0
         SelectedColor.Alpha = 0.400000005960464500
         OnChange = SynEditChange
-        ExplicitWidth = 681
-        ExplicitHeight = 155
+        ExplicitWidth = 677
+        ExplicitHeight = 154
       end
     end
     object SpTBXSplitter1: TSpTBXSplitter
       Left = 1
       Top = 421
-      Width = 687
+      Width = 683
       Height = 3
       Cursor = crSizeNS
       Align = alTop
       ParentColor = False
-      ExplicitWidth = 683
+      ExplicitWidth = 679
     end
   end
   object PMInteractive: TSpTBXPopupMenu

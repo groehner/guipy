@@ -45,8 +45,6 @@ type
     TBIgnoreBlanks: TToolButton;
     TBParagraph: TToolButton;
     StatusBar: TStatusBar;
-    ILTextDiffLight: TImageList;
-    ILTextDiffDark: TImageList;
     PopUpEditor: TSpTBXPopupMenu;
     MIClose: TSpTBXItem;
     MIPaste: TSpTBXItem;
@@ -139,6 +137,7 @@ type
     procedure ShowDiffState;
     procedure Save;
     procedure SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
+    procedure DPIChanged;
   end;
 
 implementation
@@ -154,6 +153,7 @@ uses SysUtils,
      StringResources,
      dmCommands,
      dmResources,
+     UImages,
      UConfiguration,
      UUtils,
      UHashUnit;
@@ -926,13 +926,13 @@ begin
     modClr:= $16A231;
     delClr:= $621EA6;
     DefaultClr:= StyleServices.GetSystemColor(clWindow);
-    TBTextDiff.Images:= ILTextDiffDark;
+    TBTextDiff.Images:= DMImages.ILTextDiffDark;
   end else begin
     addClr:= $F0CCA8;
     modClr:= $6FFB8A;
     delClr:= $BB77FF;
     DefaultClr:= clWindow;
-    TBTextDiff.Images:= ILTextDiffLight;
+    TBTextDiff.Images:= DMImages.ILTextDiffLight;
   end;
   PyIDEMainForm.ThemeEditorGutter(CodeEdit1.Gutter);
   CodeEdit1.InvalidateGutter;
@@ -1038,6 +1038,11 @@ end;
 function TFTextDiff.GetSearchTarget: TSynEdit;
 begin
   Result := fActiveSynEdit;
+end;
+
+procedure TFTextDiff.DPIChanged;
+begin
+  setFontsize(0);
 end;
 
 end.

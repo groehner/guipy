@@ -1,8 +1,6 @@
 inherited ProjectExplorerWindow: TProjectExplorerWindow
   HelpContext = 435
   Caption = 'Project Explorer'
-  ClientHeight = 93
-  ClientWidth = 471
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -41,34 +39,22 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     9C41FC039C41F8019C41F0009C4100009C4100009C4100009C4100009C410000
     9C4100019C4100039C4100079C4100079C4100079C4100079C4100079C41}
   OnShow = FormShow
-  ExplicitWidth = 487
-  ExplicitHeight = 132
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 471
-    Height = 93
-    ExplicitWidth = 631
-    ExplicitHeight = 333
     inherited FGPanel: TPanel
-      Width = 635
-      Height = 341
-      ExplicitWidth = 627
-      ExplicitHeight = 329
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 635
-        Height = 341
+        Width = 223
+        Height = 394
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 627
-        ExplicitHeight = 329
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 30
-          Width = 635
-          Height = 311
+          Width = 223
+          Height = 364
           Align = alClient
           BorderStyle = bsNone
           Header.AutoSizeIndex = -1
@@ -104,11 +90,10 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
         object SpTBXDock1: TSpTBXDock
           Left = 0
           Top = 0
-          Width = 635
+          Width = 223
           Height = 30
           AllowDrag = False
           DoubleBuffered = True
-          ExplicitWidth = 627
           object SpTBXToolbar1: TSpTBXToolbar
             Left = 0
             Top = 0
@@ -158,8 +143,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ProjectActionList: TActionList [1]
     Images = vilImages
-    Left = 201
-    Top = 36
+    Left = 41
+    Top = 76
     object actProjectNew: TAction
       Category = 'Project'
       Caption = '&New Project'
@@ -248,8 +233,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ImmutableProjectActionList: TActionList [2]
     Images = vilImages
-    Left = 376
-    Top = 44
+    Left = 8
+    Top = 76
     object actProjectAddFiles: TAction
       Category = 'Project'
       Caption = '&Add File(s)...'
@@ -372,14 +357,13 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     end
   end
   inherited DockClient: TJvDockClient
-    Left = 72
-    Top = 38
+    Top = 46
   end
   object ProjectMainPopUpMenu: TSpTBXPopupMenu
     Images = vilImages
     OnPopup = ProjectMainPopUpMenuPopup
-    Left = 200
-    Top = 116
+    Left = 8
+    Top = 108
     object mnProjectNew: TSpTBXItem
       Action = actProjectNew
     end
@@ -416,8 +400,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ProjectFolderPopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 360
-    Top = 117
+    Left = 40
+    Top = 109
     object mnAddFiles: TSpTBXItem
       Action = actProjectAddFiles
     end
@@ -446,8 +430,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ProjectFilePopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 208
-    Top = 196
+    Left = 72
+    Top = 108
     object mnFileEdit: TSpTBXItem
       Action = actProjectFileEdit
     end
@@ -464,16 +448,16 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ProjectRunSettingsPopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 608
-    Top = 197
+    Left = 104
+    Top = 109
     object mnAddRunConfig: TSpTBXItem
       Action = actProjectAddRunConfig
     end
   end
   object ProjectRunConfigPopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 391
-    Top = 197
+    Left = 135
+    Top = 109
     object mnRun: TSpTBXItem
       Action = actProjectRun
     end
@@ -525,8 +509,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     PreserveItems = True
     Width = 18
     Height = 18
-    Left = 128
-    Top = 272
+    Left = 56
+    Top = 160
   end
   object vilImages: TVirtualImageList
     Images = <
@@ -634,8 +618,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     PreserveItems = True
     Width = 20
     Height = 20
-    Left = 226
-    Top = 272
+    Left = 106
+    Top = 160
   end
   object icProjects: TSVGIconImageCollection
     SVGIconItems = <
@@ -686,7 +670,7 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           '4V28.8z"/>'#13#10'<path d="M18.4,18h-7.6v3.6h7.6l-2.9,2.9L18,27l7.2-7.' +
           '2L18,12.6l-2.5,2.5L18.4,18z"/>'#13#10'</svg>'
       end>
-    Left = 34
-    Top = 272
+    Left = 10
+    Top = 160
   end
 end

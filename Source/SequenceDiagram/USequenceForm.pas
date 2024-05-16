@@ -27,7 +27,6 @@ uses
 type
   TFSequenceForm = class(TFileForm)
     SequenceScrollbox: TScrollBox;
-    PToolbar: TPanel;
     SequenceToolbar: TToolBar;
     TBClose: TToolButton;
     TBLifeLine: TToolButton;
@@ -37,8 +36,6 @@ type
     TBNewLayout: TToolButton;
     TBRefresh: TToolButton;
     EMessage: TEdit;
-    ILSequencediagram: TImageList;
-    ILSequencediagramDark: TImageList;
     PopupMenuConnection: TSpTBXPopupMenu;
     MISynchron: TSpTBXItem;
     MIAsynchron: TSpTBXItem;
@@ -160,6 +157,7 @@ type
     function getAsStringList: TStringList; override;
     procedure DoExport; override;
     procedure SetOptions; override;
+    procedure DPIChanged; override;
   end;
 
 implementation
@@ -511,7 +509,8 @@ end;
 procedure TFSequenceForm.MIPopupRefreshClick(Sender: TObject);
 begin
   SequencePanel.isLocked:= true;
-  DoSave;
+  if assigned(fFile) then
+    DoSave;
   SequencePanel.ClearManagedObjects;
   LifeLines.Clear;
   LoadFromFile(Pathname);
@@ -524,10 +523,9 @@ begin
 end;
 
 procedure TFSequenceForm.PopupMenuConnectionPopup(Sender: TObject);
-  var Pt: TPoint;
 begin
   inherited;
-  Pt:= SequencePanel.ScreenToClient(Mouse.CursorPos);
+  var Pt:= SequencePanel.ScreenToClient(Mouse.CursorPos);
   PopupAtYPos:= Pt.Y;
 end;
 
@@ -894,7 +892,8 @@ begin
   if Assigned(LifeLine) and not ReadOnly then begin
     EditMemoElement:= LifeLine;
     EditMemo.Text:= LifeLine.Participant;
-    EditMemo.SetBounds(LifeLine.Left+2, PToolbar.Height + LifeLine.Top +2, LifeLine.Width, LifeLine.HeadHeight);
+    EditMemo.SetBounds(LifeLine.Left+2, SequenceToolbar.Height + LifeLine.Top +2,
+                       LifeLine.Width, LifeLine.HeadHeight);
     setLeftBorderForEditMemo;
     EditMemo.Visible:= true;
     if EditMemo.canFocus then EditMemo.SetFocus;
@@ -1222,11 +1221,11 @@ begin
   if IsStyledWindowsColorDark then begin
     SequenceToolbar.Images:= DMImages.ILSequenceToolbarDark;
     PopupMenuLifeLineAndSequencePanel.Images:= DMImages.ILSequenceToolbarDark;
-    PopupMenuConnection.Images:= ILSequencediagramDark;
+    PopupMenuConnection.Images:= DMImages.ILSequencediagramDark;
   end else begin
     SequenceToolbar.Images:= DMImages.ILSequenceToolbar;
     PopupMenuLifeLineAndSequencePanel.Images:= DMImages.ILSequenceToolbar;
-    PopupMenuConnection.Images:= ILSequencediagram;
+    PopupMenuConnection.Images:= DMImages.ILSequencediagramLight;
   end;
 end;
 
@@ -1256,5 +1255,9 @@ begin
   FConfiguration.setToolbarVisibility(SequenceToolbar, 5);
 end;
 
+procedure TFSequenceForm.DPIChanged;
+begin
+  setFontSize(0);
+end;
 
 end.

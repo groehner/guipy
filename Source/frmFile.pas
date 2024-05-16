@@ -12,18 +12,23 @@ type
 
   { // class(TFileForm) - working windows of GuiPy
     ChangeStyle with notifications
-    TEditorForm
-    TFUMLForm
-    TFTextDiff
-    TFBrowser
-    TFStructogram
-    TFSequenceForm
+    TEditorForm                        -             symbolleiste zu groß falls mit 200% gestartet wird
+                                                     belibt unklar nach langer Suche
+    TFUMLForm                          DPIChanged    geprüft, Protokollfenster?
+    TFTextDiff                         -             geprüft
+    TFBrowser                          -             geprüft, CBUrl ändert Größe nicht
+    TFStructogram                      DPIChanged    geprüft
+    TFSequenceForm                     DPIChanged    geprüft, zu starke Vergrößerung
 
-    TFGUIForm = class (TForm)
+    TFGUIForm = class (TForm)          FormAfterMonitorDpiChanged
+
+    // class(TIDEDockWindow) - dockable windows
+    TFFileStructure      ChangeStyle                 geprüft
+    TFObjectInspector    ChangeStyle
 
     // class(TPyIDEDlgBase) - dialog windows
-    TFAssociation        ChangeStyle - temporary window
-    TFClassEditor        ChangeStyle
+    TFAssociation        no need create/release on need
+    TFClassEditor        ChangeStyle   FormAfterMonitorDpiChanged
     TFDownload           no need
     TFGit                no need
     TFGUIDesigner        no need
@@ -31,12 +36,8 @@ type
     TFOpenFolderForm     no need - temporary window
     TFSubversion         no need
     TFUpdate             no need
-    TFConnectForm        ChangeStyle - temporary window
+    TFConnectForm        no need create/release on need
     TFConfiguration      no need
-
-    // class(TIDEDockWindow) - dockable windows
-    TFFileStructure      ChangeStyle
-    TFObjectInspector    ChangeStyle
 
 }
 
@@ -94,6 +95,7 @@ type
     procedure CollectClasses(SL: TStringList); virtual;
     procedure DoUpdateCaption; virtual;
     procedure SetOptions; virtual;
+    procedure DPIChanged; virtual;
     procedure SetActiveControl(aControl: TWinControl);
 
     property Modified: boolean read GetModified write SetModified;
@@ -291,6 +293,10 @@ begin
 end;
 
 procedure TFileform.SetOptions;
+begin
+end;
+
+procedure TFileform.DPIChanged;
 begin
 end;
 
@@ -507,7 +513,7 @@ procedure TFileForm.SetFontSize(Delta: integer);
 begin
   Font.Size:= Font.Size + Delta;
   if Font.Size < 6 then Font.Size:= 6;
-  SetFont(Font);
+  setFont(Font);
 end;
 
 function TFileForm.CanPaste: boolean;

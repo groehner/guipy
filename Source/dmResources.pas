@@ -283,6 +283,8 @@ begin
   except
   end;
 
+  icSVGImages.ApplyFixedColorToRootOnly:= true;
+
   // SpTBXLib Font
   ToolbarFont.Size := 10;
 
@@ -492,5 +494,6 @@ begin
   ProcessImageCollection(icGutterGlyphs, TextColor);
   ProcessImageCollection(icSVGImages, TextColor);
 end;
+
 
 end.

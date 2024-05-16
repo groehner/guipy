@@ -168,8 +168,6 @@ type
     mnGitCommit: TSpTBXItem;
     mnGitAdd: TSpTBXItem;
     mnGitStatus: TSpTBXItem;
-    ILContextMenuLight: TImageList;
-    ILContextMenuDark: TImageList;
     TVFileStructure: TTreeView;
     mnFont: TSpTBXItem;
     mnEditAddImports: TSpTBXItem;
@@ -264,7 +262,7 @@ type
     fHotIdentInfo: THotIdentInfo;
     fNeedToSyncCodeExplorer: boolean;
     fCloseBracketChar: WideChar;
-    fOldCaretY : Integer;
+    fOldCaretY: Integer;
     // Hints
     FHintFuture: IFuture<string>;
     FHintCursorRect: TRect;
@@ -2523,11 +2521,8 @@ begin
   // Register Kernel Notification
   ChangeNotifier.RegisterKernelChangeNotify(Self, [vkneFileName, vkneDirName,
     vkneLastWrite, vkneCreation]);
-
   SkinManager.AddSkinNotification(Self);
-
   PyIDEMainForm.ThemeEditorGutter(SynEdit.Gutter);
-
   TranslateComponent(Self);
 
   // GuiPy
@@ -3079,11 +3074,11 @@ procedure TEditorForm.ChangeStyle;
 begin
   if IsStyledWindowsColorDark then begin
     EditFormToolbar.Images:= DMIMages.ILEditorToolbarDark;
-    pmnuEditor.Images:= ILContextMenuDark;
+    pmnuEditor.Images:= DMImages.ILContextMenuDark;
     SynEdit.BookMarkOptions.BookmarkImages:= DMImages.ILBookmarksDark;
   end else begin
     EditFormToolbar.Images:= DMImages.ILEditorToolbar;
-    pmnuEditor.Images:= ILContextMenuLight;
+    pmnuEditor.Images:= DMImages.ILContextMenuLight;
     SynEdit.BookMarkOptions.BookmarkImages:= DMImages.ILBookmarksLight;
   end;
 
@@ -5417,7 +5412,6 @@ begin
   end;
 
 end;
-
 
 initialization
   GI_EditorFactory := TEditorFactory.Create;

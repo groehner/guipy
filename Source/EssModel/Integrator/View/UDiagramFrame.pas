@@ -36,12 +36,6 @@ type
   // permanent menu items have Tag=1
 
   TAFrameDiagram = class(TFrame, IBeforeObjectModelListener, IAfterObjectModelListener)
-
-    ILUMLLight: TImageList;
-    ILUMLDark: TImageList;
-    ILAssoziationenLight: TImageList;
-    ILAssoziationenDark: TImageList;
-    ILAlign: TImageList;
     PopupMenuAlign: TSpTBXPopupMenu;
     MIPopupBottom: TSpTBXItem;
     MIPopupMiddle: TSpTBXItem;
@@ -218,7 +212,7 @@ type
 
 implementation
 
-uses JvGnugettext, uUtils, UConfiguration;
+uses JvGnugettext, uUtils, UImages, UConfiguration;
 
 {$R *.DFM}
 

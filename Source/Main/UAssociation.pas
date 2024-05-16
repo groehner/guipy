@@ -8,8 +8,6 @@ uses
 
 type
   TFAssociation = class(TPyIDEDlgBase)
-    ILAssociationsLight: TImageList;
-    ILAssociationsDark: TImageList;
     LBAssociations: TListBox;
     LSelect: TLabel;
     BOK: TButton;
@@ -44,13 +42,12 @@ type
     function getCorner: integer;
     procedure setCorner(i: integer);
     function getConnectionAttributes: TConnectionAttributes;
-    procedure ChangeStyle;
   end;
 
 implementation
 
 uses SysUtils, Graphics, Forms,
-     uCommonFunctions;
+     uCommonFunctions, UImages, frmPyIDEMain;
 
 {$R *.dfm}
 
@@ -60,7 +57,9 @@ begin
   LBAssociations.ItemHeight:= LBAssociations.Height div LBAssociations.Items.Count;
   CBReadingOrderA.Caption:= #$25C0 + ' ';
   CBReadingOrderB.Caption:= #$25B6 + ' ';
-  ChangeStyle;
+  if IsStyledWindowsColorDark
+    then ILAssociations:= DMImages.ILAssociationsDark
+    else ILAssociations:= DMImages.ILAssociationsLight;
 end;
 
 procedure TFAssociation.FormShow(Sender: TObject);
@@ -207,13 +206,6 @@ begin
   A.isEdited:= true;
   A.Visible:= true;
   Result:= A;
-end;
-
-procedure TFAssociation.ChangeStyle;
-begin
-  if IsStyledWindowsColorDark
-    then ILAssociations:= ILAssociationsDark
-    else ILAssociations:= ILAssociationsLight;
 end;
 
 end.

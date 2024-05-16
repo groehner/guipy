@@ -44,7 +44,8 @@ type
   end;
 
   //Class to show/edit a model in a powerpointy view
-  TDiagramIntegrator = class(TViewIntegrator)    // TRtfdDiagram is a descendet of this class
+  // TRtfdDiagram is a descendet of this class
+  TDiagramIntegrator = class(TViewIntegrator)
   private
     FShowConnections: integer;
     FShowParameter: integer;

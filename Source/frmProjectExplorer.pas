@@ -16,9 +16,14 @@ uses
   WinApi.Windows,
   WinApi.Messages,
   WinApi.ActiveX,
+  System.UITypes,
+  System.SysUtils,
+  System.Contnrs,
+  System.Variants,
   System.Classes,
   System.Actions,
   System.ImageList,
+  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
   Vcl.Dialogs,
@@ -174,7 +179,7 @@ type
       Shift: TShiftState; State: TDragState; Pt: TPoint; Mode: TDropMode;
       var Effect: Integer; var Accept: Boolean);
     procedure ExplorerTreeDragDrop(Sender: TBaseVirtualTree; Source: TObject;
-      DataObject: IDataObject; Formats: TFormatArray; Shift: TShiftState;
+      DataObject: TVTDragDataObject; Formats: TFormatArray; Shift: TShiftState;
       Pt: TPoint; var Effect: Integer; Mode: TDropMode);
     procedure actProjectExpandAllExecute(Sender: TObject);
     procedure actProjectCollapseAllExecute(Sender: TObject);
@@ -192,13 +197,14 @@ type
     procedure ExplorerTreeNodeDblClick(Sender: TBaseVirtualTree; const HitInfo:
         THitInfo);
   private
+    FileImageList: TStringList;
+    FShellImages: TCustomImageList;
     procedure ProjectFileNodeEdit(Node: PVirtualNode);
     procedure UpdatePopupActions(Node : PVirtualNode);
   protected
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
     { Public declarations }
-    FileImageList: TStringList;
     procedure DoOpenProjectFile(FileName : string);
     function DoSave: boolean;
     function DoSaveFile: boolean;
@@ -206,15 +212,18 @@ type
     function CanClose: boolean;
   end;
 
+resourcestring
+  ProjectFilter = 'PyScripter project files (*.%s)|*.%0:s';
+
+const
+  ProjectDefaultExtension = 'psproj';
 var
   ProjectExplorerWindow: TProjectExplorerWindow;
 
 implementation
 
 uses
-  System.SysUtils,
-  System.Contnrs,
-  Vcl.Graphics,
+  System.IOUtils,
   Vcl.Themes,
   MPDataObject,
   JclShell,
@@ -232,18 +241,13 @@ uses
   dlgDirectoryList,
   uEditAppIntfs,
   uHighlighterProcs,
+  cPyBaseDebugger,
   cPyScripterSettings,
   cPyControl,
   cSSHSupport,
   dlgRemoteFile;
 
 {$R *.dfm}
-
-resourcestring
-  ProjectFilter = 'PyScripter project files (*.%s)|*.%0:s';
-
-const
-  ProjectDefaultExtension = 'psproj';
 
 Type
   PNodeDataRec = ^TNodeDataRec;
@@ -330,9 +334,9 @@ begin
         Filter := ResourcesDataModule.Highlighters.FileFilters + _(SFilterAllFiles);
         Editor := GI_PyIDEServices.ActiveEditor;
         if Assigned(Editor) and (Editor.FileName <> '') and
-          (ExtractFileDir(Editor.FileName) <> '')
+          (TPath.GetDirectoryName(Editor.FileName) <> '')
         then
-          InitialDir := ExtractFileDir(Editor.FileName);
+          InitialDir := TPath.GetDirectoryName(Editor.FileName);
 
         Options := Options + [ofAllowMultiSelect];
         if Execute then begin
@@ -562,9 +566,9 @@ begin
       Filter := Format(ProjectFilter, [ProjectDefaultExtension]);
       Editor := GI_PyIDEServices.ActiveEditor;
       if Assigned(Editor) and (Editor.FileName <> '') and
-        (ExtractFileDir(Editor.FileName) <> '')
+        (TPath.GetDirectoryName(Editor.FileName) <> '')
       then
-        InitialDir := ExtractFileDir(Editor.FileName);
+        InitialDir := TPath.GetDirectoryName(Editor.FileName);
 
       if Execute then
         DoOpenProjectFile(FileName);
@@ -756,8 +760,8 @@ begin
 
   with ResourcesDataModule.dlgFileSave do begin
     if NewName <> '' then begin
-      InitialDir := ExtractFileDir(NewName);
-      FileName := ExtractFileName(NewName);
+      InitialDir := TPath.GetDirectoryName(NewName);
+      FileName := TPath.GetFileName(NewName);
       Title := Format(_(SSaveProjectFileAs), [FileName]);
     end else begin
       InitialDir := '';
@@ -945,7 +949,7 @@ begin
 end;
 
 procedure TProjectExplorerWindow.ExplorerTreeDragDrop(Sender: TBaseVirtualTree;
-  Source: TObject; DataObject: IDataObject; Formats: TFormatArray;
+  Source: TObject; DataObject: TVTDragDataObject; Formats: TFormatArray;
   Shift: TShiftState; Pt: TPoint; var Effect: Integer; Mode: TDropMode);
 Var
   HitInfo : THitInfo;
@@ -1133,7 +1137,7 @@ begin
       end else
         ImageIndex := Integer(FileImageList.Objects[Index]);
       if ImageIndex >= 0 then
-        ImageList := SmallSysImages;
+        ImageList := FShellImages;
     end;
   end else if Data.ProjectNode is TProjectRunConfiguationsNode then
     ImageIndex := 2;
@@ -1267,6 +1271,12 @@ begin
   FileImageList := TStringList.Create;
   FileImageList.Sorted := True;
   FileImageList.Duplicates := dupError;
+
+  // Shell Images
+  FShellImages := TCommonVirtualImageList.Create(Self);
+  TCommonVirtualImageList(FShellImages).SourceImageList := SmallSysImages;
+  FShellImages.SetSize(MulDiv(FShellImages.Width, FCurrentPPI, Screen.PixelsPerInch),
+    MulDiv(FShellImages.Height, FCurrentPPI, Screen.PixelsPerInch));
 
   // Wierd translation bug
   TP_Ignore(self, 'mnProjectNew');

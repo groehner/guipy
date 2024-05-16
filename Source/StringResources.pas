@@ -363,6 +363,7 @@ Const
   SCommandLineOptions = 'GuiPy Command Line Options';
 
   // Command Window
+  SProcessSuccessfull        = 'Process "%s" ended successfully.';
   SProcessTerminated         = 'Process "%s" terminated, ExitCode: %.8x';
   SDirNotFound               = 'Directory "%s" does not exists';
   SProcessRunning            = 'One process is still running, stop it first.';

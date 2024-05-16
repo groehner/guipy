@@ -16,12 +16,12 @@ type
 
   TFFileStructure = class(TIDEDockWindow, IJvAppStorageHandler)
     TVFileStructure: TTreeView;
-    ILFileStructureDark: TImageList;
-    ILFileStructureLight: TImageList;
     PMFileStructure: TSpTBXPopupMenu;
     MIClose: TSpTBXItem;
     MIDefaultLayout: TSpTBXItem;
     MIFont: TSpTBXItem;
+    ILFileStructureLight: TImageList;
+    ILFileStructureDark: TImageList;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -64,7 +64,7 @@ implementation
 uses Math, Windows, Messages, SysUtils, Graphics, Dialogs,
      frmPyIDEMAin, frmEditor, JvDockControlForm, dmResources, uEditAppIntfs,
      JvGnugettext, SynEdit, uCommonFunctions,
-     UUMLForm, UUtils, UGUIDesigner;
+     UUMLForm, UUtils, UImages, UGUIDesigner;
 
 constructor TInteger.create(aI: Integer);
 begin
