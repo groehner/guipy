@@ -167,7 +167,7 @@ implementation
 
 uses Math, Controls, SysUtils, UITypes,
      UGuiForm, UTKMiscBase, UTTKMiscBase,
-     UGUIDesigner, UObjectInspector, UUtils, ULink, frmEditor;
+     UGUIDesigner, UObjectInspector, UUtils, ULink, UConfiguration, frmEditor;
 
 const CrLf = #13#10;
 
@@ -187,7 +187,7 @@ begin
   FUnderline:= -1;
   FWrapLength:= '0';
   Font.Name:= 'Segoe UI';   // TkDefaultFont and TkTextFont
-  Font.Size:= 9;
+  Font.Size:= GuiPyOptions.FontSize;
   Font.Style:= [];
   HelpType:= htContext;
   Sizeable:= true;
@@ -253,33 +253,39 @@ begin
 end;
 
 procedure TBaseTkWidget.PaintScrollbar(R: TRect; horizontal: boolean; ttk: boolean = false);
-  var i, mid: integer;
+  var i, mid, i3, i4, i6, i9, i10, i18: integer;
 begin
   Canvas.Brush.Color:= clBtnFace;
   Canvas.FillRect(R);
   Canvas.Brush.Color:= $CDCDCD;
   Canvas.Pen.Color:= clWhite;
+  i3:= PPIScale(3);
+  i4:= PPIScale(4);
+  i6:= PPIScale(6);
+  i9:= PPIScale(9);
+  i10:= PPIScale(10);
+  i18:= PPIScale(18);
   if horizontal then begin
     Canvas.MoveTo(R.Left, R.Top);
     Canvas.LineTo(R.Right, R.Top);
     Canvas.Pen.Color:= $606060;
     mid:= (R.Top + R.Bottom) div 2;
     for i:= 0 to 2 do begin
-      Canvas.MoveTo(R.Left +  9 + i, mid - 3);
-      Canvas.LineTo(R.Left +  6 + i, mid);
-      Canvas.LineTo(R.Left + 10 + i, mid + 4);
+      Canvas.MoveTo(R.Left +  i9 + i, mid - i3);
+      Canvas.LineTo(R.Left +  i6 + i, mid);
+      Canvas.LineTo(R.Left + i10 + i, mid + i4);
     end;
     for i:= 0 to 2 do begin
-      Canvas.MoveTo(R.Right -  9 + i, mid - 3);
-      Canvas.LineTo(R.Right -  6 + i, mid);
-      Canvas.LineTo(R.Right - 10 + i, mid + 4);
+      Canvas.MoveTo(R.Right -  i9 + i, mid - i3);
+      Canvas.LineTo(R.Right -  i6 + i, mid);
+      Canvas.LineTo(R.Right - i10 + i, mid + i4);
     end;
     if ttk then begin
-      R.Left:= R.Left + 18;
-      R.Right:= R.Right - 18;
+      R.Left:= R.Left + i18;
+      R.Right:= R.Right - i18;
     end else begin
-      R.Left:= R.Left + 18;
-      R.Right:= R.Left + 18;
+      R.Left:= R.Left + i18;
+      R.Right:= R.Left + i18;
     end;
   end else begin
     Canvas.MoveTo(R.Left, R.Top);
@@ -287,21 +293,21 @@ begin
     Canvas.Pen.Color:= $606060;
     mid:= (R.Left + r.Right) div 2;
     for i:= 0 to 2 do begin
-      Canvas.MoveTo(mid - 3, R.Top +  9 + i);
-      Canvas.LineTo(mid    , R.Top +  6 + i);
-      Canvas.LineTo(mid + 4, R.Top + 10 + i);
+      Canvas.MoveTo(mid - i3, R.Top +  i9 + i);
+      Canvas.LineTo(mid     , R.Top +  i6 + i);
+      Canvas.LineTo(mid + i4, R.Top + i10 + i);
     end;
     for i:= 0 to 2 do begin
-      Canvas.MoveTo(mid - 3, R.Bottom -  9 + i);
-      Canvas.LineTo(mid    , R.Bottom -  6 + i);
-      Canvas.LineTo(mid + 4, R.Bottom - 10 + i);
+      Canvas.MoveTo(mid - i3, R.Bottom -  i9 + i);
+      Canvas.LineTo(mid     , R.Bottom -  i6 + i);
+      Canvas.LineTo(mid + i4, R.Bottom - i10 + i);
     end;
     if ttk then begin
-      R.Top:= R.Top + 18;
-      R.Bottom:= R.Bottom - 18;
+      R.Top:= R.Top + i18;
+      R.Bottom:= R.Bottom - i18;
     end else begin
-      R.Top:= R.Top + 18;
-      R.Bottom:= R.Top + 18;
+      R.Top:= R.Top + i18;
+      R.Bottom:= R.Top + i18;
     end;
   end;
   R.Inflate(-1, -1);
@@ -358,9 +364,9 @@ begin
       tw:= 0;
       th:= 0;
     end;
-    if LeftSpace <> 21 then
+    if LeftSpace <> PPIScale(21) then
       LeftSpace:= 0;
-    if RightSpace <> 21 then
+    if RightSpace <> PPIScale(21) then
       RightSpace:= 0;
 
     pathname:= FGuiDesigner.getPath + 'images\' + copy(Image, 8, length(Image));
@@ -381,7 +387,7 @@ begin
       end;
 
       ShowText(Rect(x, y, x + tw, y + th));
-      LeftSpace:= x - 21;  // for use in Checkbutton and Radiobutton
+      LeftSpace:= x - PPIScale(21);  // for use in Checkbutton and Radiobutton
       TopSpace:= y;
     end else begin
       // with graphic
@@ -515,8 +521,8 @@ begin
       // Canvas.DrawFocusRect(r);
 
       // for use in Checkbutton and Radiobutton
-      LeftSpace:= bx - 21;
-      TopSpace:= by + maxh div 2 - 10;
+      LeftSpace:= bx - PPIScale(21);
+      TopSpace:= by + maxh div 2 - PPIScale(10);
       FreeAndNil(bmp);
     end;
   finally
@@ -531,19 +537,19 @@ begin
   if not (Parent is TKPanedWindow) then
     setAttributValue('self.' + Name + '.place',
       'self.' + Name +
-      '.place(x=' + IntToStr(Left) + ', y=' + IntToStr(Top) +
-      ', width=' + IntToStr(R.Right) + ', height=' + IntToStr(R.Bottom) +')');
+      '.place(x=' + IntToStr(PPIUnScale(Left)) + ', y=' + IntToStr(PPIUnScale(Top)) +
+      ', width=' + IntToStr(PPIUnScale(R.Right)) + ', height=' + IntToStr(PPIUnScale(R.Bottom)) +')');
   if Scrollbars in [_TB_both, _TB_vertical] then begin
     key:= 'self.' + Name + 'ScrollbarV.place';
     setAttributValue(key,
-      key + '(x=' + IntToStr(x + R.Right - 2) + ', y=' + IntToStr(y) +
-            ', width=20, height='+ IntToStr(R.Bottom) + ')');
+      key + '(x=' + IntToStr(PPIUnScale(x + R.Right - 2)) + ', y=' + IntToStr(PPIUnScale(y)) +
+            ', width=' + IntToStr(PPIUnScale(20))+ ', height='+ IntToStr(PPIUnScale(R.Bottom)) + ')');
   end;
   if (Scrollbars in [_TB_both, _TB_horizontal]) or Scrollbar then begin
     key:= 'self.' + Name + 'ScrollbarH.place';
     setAttributValue(key,
-      key + '(x=' + IntToStr(x) + ', y=' + IntToStr(y + R.Bottom - 2) +
-            ', width=' + IntToStr(R.Right) + ', height=20)');
+      key + '(x=' + IntToStr(PPIUnScale(x)) + ', y=' + IntToStr(PPIUnScale(y + R.Bottom - 2)) +
+            ', width=' + IntToStr(PPIUnScale(R.Right)) + ', height=' + IntToStr(PPIUnScale(20)) + ')');
   end;
 end;
 
@@ -1015,6 +1021,7 @@ begin
   Partner.ActiveSynEdit.BeginUpdate;
   InsertValue('self.' + Name + ' = ' + Widget + '(' + getContainer + ')');
   setPositionAndSize;
+  MakeFont;
   if Parent is TKPanedWindow then
     InsertValue('self.' + Parent.Name + '.add(self.' + Name + ')')
   else if Parent is TTKPanedwindow then

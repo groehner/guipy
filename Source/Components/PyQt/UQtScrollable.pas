@@ -1377,8 +1377,10 @@ begin
       Tick1:= Round(Height/3.0);
     end;
     R.Bottom:= R.Top + 3;
-    SliderWidth := 10;
-    SliderHeight:= 21;
+    if FTickPosition = NoTicks
+      then SliderHeight:= Height
+      else SliderHeight:= 2*(Round(Height/4.0)-2);
+    SliderWidth := PPIScale(10);
     UsablePixels := Width - 2 - SliderWidth;
   end else begin
     R.Top := 1;
@@ -1395,8 +1397,10 @@ begin
       Tick1:= Round(Width/3.0);
     end;
     R.Right := R.Left + 3;
-    SliderWidth := 21;
-    SliderHeight:= 10;
+    if FTickPosition = NoTicks
+      then SliderWidth:= Width
+      else SliderWidth:= 2*(Round(Width/4.0)-2);
+    SliderHeight:= PPIScale(10);
     UsablePixels := Height - 2 - SliderHeight;
   end;
   Canvas.Rectangle(R);

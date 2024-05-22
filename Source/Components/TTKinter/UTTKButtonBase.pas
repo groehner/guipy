@@ -64,6 +64,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     procedure NewWidget(Widget: String = ''); override;
+    procedure MakeFont; override;
     function getAttributes(ShowAttributes: integer): string; override;
   published
     property Anchor;
@@ -85,6 +86,7 @@ type
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure NewWidget(Widget: String = ''); override;
+    procedure MakeFont; override;
     procedure Paint; override;
   published
     property Command;
@@ -99,11 +101,11 @@ type
     FOnValue: String;
   protected
     procedure Paint; override;
-    procedure setText(aValue: string); override;
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure NewWidget(Widget: String = ''); override;
+    procedure MakeFont; override;
     procedure SizeToText; override;
   published
     property Command;
@@ -121,6 +123,7 @@ type
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure NewWidget(Widget: String = ''); override;
+    procedure MakeFont; override;
     procedure Paint; override;
   published
     property Direction: TDirection read FDirection write FDirection default below;
@@ -237,7 +240,7 @@ constructor TTKLabel.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 31;
-  Text:= 'Text';
+  Text:= 'Label';
   Anchor:= _TA_w;
   Justify:= _TJ_left;
 end;
@@ -256,7 +259,12 @@ procedure TTKLabel.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('ttk.Label');
   InsertValue('self.' + Name + '[' + asString('anchor') + '] = ' + asString('w'));
-  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString('Text'));
+  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
+end;
+
+procedure TTKLabel.MakeFont;
+begin
+  // no font
 end;
 
 procedure TTKLabel.Paint;
@@ -271,6 +279,7 @@ constructor TTKButton.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 34;
+  Text:= 'Button';
   FDefault:= false;
   Relief:= _TR_solid;
   Background:= $E1E1E1;
@@ -297,8 +306,14 @@ end;
 procedure TTKButton.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('ttk.Button');
+  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
   Command:= true;
   ChangeCommand('Command', Name + '_Command');
+end;
+
+procedure TTKButton.MakeFont;
+begin
+  // no font
 end;
 
 procedure TTKButton.setDefault(aValue: boolean);
@@ -329,6 +344,7 @@ begin
   inherited Create(AOwner);
   Tag:= 35;
   Anchor:= _TA_w;
+  Text:= 'Checkbutton';
   FOffValue:= '0';
   FOnValue:= '1';
 end;
@@ -341,26 +357,21 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TTKCheckbutton.setText(aValue: string);
-  var w: integer;
-begin
-  w:= 17 + Canvas.TextWidth(aValue + '    ');
-  if Width < w then begin
-    Width:= w;
-    SetPositionAndSize;
-  end;
-  inherited;
-end;
-
 procedure TTKCheckbutton.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('ttk.Checkbutton');
+  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
   MakeControlVar('variable', Name + 'CV', '0', 'Int');
+end;
+
+procedure TTKCheckbutton.MakeFont;
+begin
+  // no font
 end;
 
 procedure TTKCheckbutton.Paint;
 begin
-  LeftSpace:= 21;
+  LeftSpace:= PPIScale(21);
   inherited;
   DrawBitmap(LeftSpace, TopSpace, 2, Canvas, DMImages.ILPythonControls)
 end;
@@ -395,7 +406,7 @@ procedure TTKMenubutton.setAttribute(Attr, Value, Typ: string);
   var w: integer;
 begin
   if Attr = 'Text' then begin
-    w:= 17 + Canvas.TextWidth(Value + '    ');
+    w:= PPIScale(17) + Canvas.TextWidth(Value + '    ');
     if Width < w then begin
       Width:= w;
       SetPositionAndSize;
@@ -407,21 +418,28 @@ end;
 procedure TTKMenubutton.NewWidget(Widget: String = '');
 begin
   // because TKOptionMenu inherits from TTKMenubutton
-  if Widget = ''
-    then inherited NewWidget('ttk.Menubutton')
-    else inherited NewWidget('ttk.OptionMenu');
+  if Widget = '' then begin
+    inherited NewWidget('ttk.Menubutton');
+    InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
+  end else
+    inherited NewWidget('ttk.OptionMenu');
+end;
+
+procedure TTKMenuButton.MakeFont;
+begin
+  // no font
 end;
 
 procedure TTKMenubutton.Paint;
   var PArray: array[0..2] of TPoint;
 begin
-  RightSpace:= 21;
+  RightSpace:= PPIScale(21);
   inherited;
-  PArray[0].x:= Width - 12;
-  PArray[0].y:= Height div 2 - 2;
-  PArray[1].x:= Width - 6;
-  PArray[1].y:= Height div 2 - 2;
-  PArray[2].x:= Width - 9;
+  PArray[0].x:= Width - PPIScale(12);
+  PArray[0].y:= Height div 2 - PPIScale(2);
+  PArray[1].x:= Width - PPIScale(6);
+  PArray[1].y:= Height div 2 - PPIScale(2);
+  PArray[2].x:= Width - PPIScale(9);
   PArray[2].y:= PArray[0].y + 3;
   Canvas.Pen.Color:= $282828;
   Canvas.Brush.Color:= $282828;

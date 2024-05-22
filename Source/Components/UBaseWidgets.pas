@@ -84,6 +84,8 @@ type
     procedure SizeToText; virtual;
     procedure MakeFont; virtual; abstract;
     procedure Zoom(_in: boolean);
+    procedure SetFontSize(Size: integer);
+    procedure UnScaleFontSize;
     function PPIScale(ASize: integer): integer;
     function PPIUnScale(ASize: integer): integer;
   end;
@@ -364,6 +366,16 @@ begin
     SetPositionAndSize;
   MakeFont;
   Invalidate;
+end;
+
+procedure TBaseWidget.SetFontSize(Size: integer);
+begin
+  Font.Size:= Size;
+end;
+
+procedure TBaseWidget.UnScaleFontSize;
+begin
+  Font.Size:= PPIUnScale(Font.Size);
 end;
 
 function TBaseWidget.PPIScale(ASize: integer): integer;

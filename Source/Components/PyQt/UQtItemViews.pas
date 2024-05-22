@@ -1614,7 +1614,7 @@ begin
 end;
 
 procedure TQtTreeWidget.Paint;
-  var s: String; R1, R2: TRect; i, j, y, x, RowHeight: integer;
+  var s: String; R1, R2: TRect; i, i2, i4, j, y, x, RowHeight: integer;
       ShowVerticalScrollbar, ShowHorizontalScrollbar: boolean;
       SL: TStringList;
 begin
@@ -1624,6 +1624,7 @@ begin
   RowHeight:= HalfX + Canvas.TextHeight('A') + HalfX;
   ShowHorizontalScrollbar:= false;
   ShowVerticalScrollbar:= false;
+
   // horizontal header
   R1:= Rect(1 + HalfX, 1, FColumnWidth - 1, 1 + RowHeight);
   for x:= 1 to max(FColumnCount, Header.Count) do begin
@@ -1668,9 +1669,11 @@ begin
         Canvas.Pen.Width:= 2;
         x:= FIndentation div 2;
         y:= R1.Top + RowHeight div 2 - 2;
-        Canvas.MoveTo(x - 2, y - 4);
-        Canvas.LineTo(X + 2, y);
-        Canvas.LineTo(x - 2, y + 4);
+        i2:= PPIScale(2);
+        i4:= PPIScale(4);
+        Canvas.MoveTo(x - i2, y - i4);
+        Canvas.LineTo(X + i2, y);
+        Canvas.LineTo(x - i2, y + i4);
         Canvas.Brush.Color:= clWhite;
       end;
       R1.Offset(0, RowHeight);

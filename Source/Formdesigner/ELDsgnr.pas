@@ -203,7 +203,7 @@ type
     const AName: string; var AIsValidName: Boolean) of object;
   TELDesignerOnControlInsertingEvent = procedure(Sender: TObject;
     var AControlClass: TControlClass) of object;
-  TELDesignerOnControlDeletingEvent = procedure (Sender: TObject;
+  TELDesignerOnControlDeletingEvent = procedure(Sender: TObject;
     SelectedControls: TELDesignerSelectedControls) of object;
   TELDesignerOnControlHintEvent = procedure(Sender: TObject; AControl: TControl;
     var AHint: string) of object;
@@ -218,12 +218,12 @@ type
 
   TELCustomDesigner = class(TComponent)
   private
-    FEng: Pointer;
+    FEng: Pointer; // TDEng;
     FSnapToGrid: Boolean;
     FActive: Boolean;
     FOnControlInserted: TNotifyEvent;
     FOnControlInserting: TELDesignerOnControlInsertingEvent;
-    FOnControlDeleting:  TELDesignerOnControlDeletingEvent;
+    FOnControlDeleting: TELDesignerOnControlDeletingEvent;
     FGrid: TELDesignerGrid;
     FSelectedControls: TELDesignerSelectedControls;
     FDesignPanel: TELCustomDesignPanel;
@@ -255,7 +255,7 @@ type
     FOnDblClick: TNotifyEvent;
     FOnDragDrop: TELDesignerDragDropEvent;
     FOnDragOver: TELDesignerDragOverEvent;
-    FGuiDesignerHints: boolean;
+    FGuiDesignerHints: Boolean;
     procedure SetActive(const Value: Boolean);
     procedure SetDesignControl(const Value: TWinControl);
     procedure SetDesignPanel(const Value: TELCustomDesignPanel);
@@ -287,7 +287,8 @@ type
       var AIsValidName: Boolean); virtual;
     procedure ChangeSelection; virtual;
     procedure ControlInserting(var AControlClass: TControlClass); virtual;
-    procedure ControlDeleting (SelectedControls: TELDesignerSelectedControls); virtual;
+    procedure ControlDeleting(SelectedControls
+      : TELDesignerSelectedControls); virtual;
     procedure ControlInserted; virtual;
     procedure DoNotification(AnObject: TPersistent;
       Operation: TOperation); virtual;
@@ -359,20 +360,20 @@ type
       write FOnDragDrop;
     property OnDragOver: TELDesignerDragOverEvent read FOnDragOver
       write FOnDragOver;
-    property GuiDesignerHints: boolean read FGuiDesignerHints
+    property GuiDesignerHints: Boolean read FGuiDesignerHints
       write FGuiDesignerHints;
-
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure DragDrop(ASource, ATarget: TObject; AX, AY: Integer); dynamic;
     procedure Modified;
     procedure DeleteSelectedControls;
-    procedure SelectControl(const aName: string);
+    procedure SelectControl(const AName: string);
     procedure LockControl(AControl: TControl; ALockMode: TELDesignerLockMode);
     procedure LockAll(ALockMode: TELDesignerLockMode);
     function GetLockMode(AControl: TControl): TELDesignerLockMode;
-    procedure GetUniqueName (const ABaseName: string; var AUniqueName: string); virtual;
+    procedure GetUniqueName(const ABaseName: string;
+      var AUniqueName: string); virtual;
     function IsUniqueName(const AName: string): Boolean;
     function CanCopy: Boolean;
     function CanCut: Boolean;
@@ -429,7 +430,7 @@ procedure Register;
 implementation
 
 uses Windows, RTLConsts, Math, Clipbrd, ExtCtrls, Types,
-     JvGnugettext, ELHintWindow, ELSConsts, uCommonFunctions, ULink;
+     JvGnugettext, ELHintWindow, ELSConsts, uCommonFunctions, ULink, UBaseQtWidgets;
 
 procedure Register;
 begin
@@ -437,7 +438,6 @@ begin
 end;
 
 const
-  HANDLESIZE = 5;
   DESIGNER_BASE = CM_BASE + $B00;
   DESIGNER_SIZING = DESIGNER_BASE + $002;
   DESIGNER_CANCEL = DESIGNER_BASE + $003;
@@ -598,11 +598,10 @@ type
       const CurName, NewName: string);
     function UniqueName(const BaseName: string): string;
     function GetRoot: TComponent;
-    procedure UpdateCaption(AVisible: boolean; AUpdateFrame: boolean);
+    procedure UpdateCaption(AVisible: Boolean; AUpdateFrame: Boolean);
     procedure UpdateDesigner;
-    function DesignPPI(AControl: TWinControl): integer;
+    function DesignPPI(AControl: TWinControl): Integer;
     function GetDesignerHighDPIMode: TVCLDesignerHighDPIMode;
-
     { Other }
     function IsUniqueName(const AName: string): Boolean;
     function IsDesignControl(AControl: TControl): Boolean;
@@ -642,6 +641,7 @@ type
     FSelCtrl: TDSelCtrlItem;
     FPos: TDSelCtrlItemPointPos;
     FBorderColor: TColor;
+    FHandleSize: integer;
   protected
     procedure Paint; override;
     procedure WndProc(var Message: TMessage); override;
@@ -794,7 +794,7 @@ begin
     FRoot.Top := 0;
   end;
   FForm.Designer := Self;
-  TCustomFormAccess(FForm).SetDesigning(True, False); // <===
+  TCustomFormAccess(FForm).SetDesigning(True, False);
   TWinControlAccess(FRoot).SetDesigning(True);
   FRoot.UpdateControlState;
   RecursionRefresh(FRoot);
@@ -860,7 +860,7 @@ begin
   Result := FRoot;
 end;
 
-procedure TDEng.UpdateCaption(AVisible: boolean; AUpdateFrame: boolean);
+procedure TDEng.UpdateCaption(AVisible: Boolean; AUpdateFrame: Boolean);
 begin
 end;
 
@@ -868,7 +868,7 @@ procedure TDEng.UpdateDesigner;
 begin
 end;
 
-function TDEng.DesignPPI(AControl: TWinControl): integer;
+function TDEng.DesignPPI(AControl: TWinControl): Integer;
 begin
   Result:= 0;
 end;
@@ -1288,7 +1288,7 @@ begin
         end;
         if not LInsertingControl then
         begin
-         Sender := GetDesignControl(Sender);
+          Sender := GetDesignControl(Sender);
           if ssShift in KeysToShiftState(TWMMouse(Message).Keys) then
           begin
             FSelCtrls.BeginUpdate;
@@ -1391,10 +1391,11 @@ begin
               aControl:= (Sender as TControl);
               Typ := Tag2PythonType(Tag);
               LS := Sender.Name + ': ' + Typ + #13#10;
-              LS := LS + _('Position') + ': ' + IntToStr(aControl.PPIUnScale(Sender.Left)) + ', ' +
-                IntToStr(aControl.PPIUnScale(Sender.Top)) + #13#10;
-              LS := LS + _('Size') + ': ' + IntToStr(aControl.PPIUnScale(Sender.Width)) + ', ' +
-                IntToStr(aControl.PPIUnScale(Sender.Height));
+              LS := LS + _('Position') + ': ' + IntToStr(aControl.PPIUnScale(Sender.Left)) +
+                                         ', ' + IntToStr(aControl.PPIUnScale(Sender.Top)) + #13#10;
+              LS := LS + _('Size') + ': ' + IntToStr(aControl.PPIUnScale(Sender.Width)) +
+                                     ', ' + IntToStr(aControl.PPIUnScale(Sender.Height));
+        LS:= LS + #13#10+'Fontsize: ' + IntToStr(TBaseQtWidget(Sender).Font.Size) ;  // Unit mit löschen!
               if assigned(FDesigner) then
                 FDesigner.ControlHint(Sender, LS);
               if LS <> '' then
@@ -1597,7 +1598,11 @@ type
   begin
     if htMove in FDesigner.ShowingHints then
     begin
-      FHint.Caption := IntToStr(P.x) + ', ' + IntToStr(P.y);
+      if Assigned(FHintControl) then
+        FHint.Caption := IntToStr(FHintControl.PPIUnScale(P.x)) + ', ' +
+                         IntToStr(FHintControl.PPIUnScale(P.y))
+      else
+        FHint.Caption := IntToStr(P.x) + ', ' + IntToStr(P.y);
       FHint.Show(False, False, False, nil);
     end;
   end;
@@ -1726,8 +1731,11 @@ type
   begin
     if htSize in FDesigner.ShowingHints then
     begin
-      FHint.Caption := IntToStr(R.Right - R.Left) + ' x ' +
-        IntToStr(R.Bottom - R.Top);
+      if assigned(FHintControl) then
+        FHint.Caption := IntToStr(FHintControl.PPIUnScale(R.Right - R.Left)) + ' x ' +
+                         IntToStr(FHintControl.PPIUnScale(R.Bottom - R.Top))
+      else
+        FHint.Caption := IntToStr(R.Right - R.Left) + ' x ' + IntToStr(R.Bottom - R.Top);
       FHint.Show(False, False, False, nil);
     end;
   end;
@@ -2148,8 +2156,11 @@ type
   begin
     if htInsert in FDesigner.ShowingHints then
     begin
-      FHint.Caption := IntToStr(R.Right - R.Left) + ' x ' +
-        IntToStr(R.Bottom - R.Top);
+      if assigned(FHintControl) then
+        FHint.Caption := IntToStr(FHintControl.PPIUnScale(R.Right - R.Left)) + ' x ' +
+                         IntToStr(FHintControl.PPIUnScale(R.Bottom - R.Top))
+      else
+        FHint.Caption := IntToStr(R.Right - R.Left) + ' x ' + IntToStr(R.Bottom - R.Top);
       FHint.Show(False, False, False, nil);
     end;
   end;
@@ -2204,16 +2215,16 @@ begin
         try
           with LInsertingControl do
           begin
+            Tag := ComponentNrToInsert;
+            LName := UniqueName(Tag2PythonType(Tag));
+            Name := LName; // <-- Here may be exception
+            Parent := FCanvas.WinControl; // <-- Here may be exception
             with LDrawRect do
               if (Right - Left > 1) or (Bottom - Top > 1) then
                 SetBounds(Left, Top, Right - Left, Bottom - Top)
               else
                 SetBounds(Left, Top, LInsertingControl.Width,
                   LInsertingControl.Height);
-            Tag := ComponentNrToInsert;
-            LName := UniqueName(Tag2PythonType(Tag));
-            Name := LName; // <-- Here may be exception
-            Parent := FCanvas.WinControl; // <-- Here may be exception
           end;
         except
           FreeAndNil(LInsertingControl);
@@ -2928,12 +2939,14 @@ end;
 
 constructor TDSelCtrlItemPoint.Create(AOwnerSelCtrl: TDSelCtrlItem;
   APos: TDSelCtrlItemPointPos);
+  const HANDLESIZE = 5;
 begin
   inherited Create(nil);
   FSelCtrl := AOwnerSelCtrl;
   FPos := APos;
-  Width := HANDLESIZE;
-  Height := HANDLESIZE;
+  FHandleSize:= AOwnerSelCtrl.Control.PPIScale(HANDLESIZE);
+  Width := FHandleSize;
+  Height := FHandleSize;
   Visible := False;
   Update;
 end;
@@ -2965,25 +2978,25 @@ begin
     Exit;
   case FPos of
     ppTopLeft, ppTop, ppTopRight:
-      Top := FSelCtrl.Control.Top - (HANDLESIZE div 2) *
+      Top := FSelCtrl.Control.Top - (FHandleSize div 2) *
         Ord(FSelCtrl.Mode = imSizeable);
     ppRight, ppLeft:
       Top := FSelCtrl.Control.Top + FSelCtrl.Control.Height div 2 -
-        (HANDLESIZE div 2);
+        (FHandleSize div 2);
     ppBottomRight, ppBottom, ppBottomLeft:
-      Top := FSelCtrl.Control.Top + FSelCtrl.Control.Height - HANDLESIZE +
-        (HANDLESIZE div 2) * Ord(FSelCtrl.Mode = imSizeable);
+      Top := FSelCtrl.Control.Top + FSelCtrl.Control.Height - FHandleSize +
+        (FHandleSize div 2) * Ord(FSelCtrl.Mode = imSizeable);
   end;
   case FPos of
     ppTopLeft, ppLeft, ppBottomLeft:
-      Left := FSelCtrl.Control.Left - (HANDLESIZE div 2) *
+      Left := FSelCtrl.Control.Left - (FHandleSize div 2) *
         Ord(FSelCtrl.Mode = imSizeable);
     ppTop, ppBottom:
       Left := FSelCtrl.Control.Left + FSelCtrl.Control.Width div 2 -
-        (HANDLESIZE div 2);
+        (FHandleSize div 2);
     ppTopRight, ppRight, ppBottomRight:
-      Left := FSelCtrl.Control.Left + FSelCtrl.Control.Width - HANDLESIZE +
-        (HANDLESIZE div 2) * Ord(FSelCtrl.Mode = imSizeable);
+      Left := FSelCtrl.Control.Left + FSelCtrl.Control.Width - FHandleSize +
+        (FHandleSize div 2) * Ord(FSelCtrl.Mode = imSizeable);
   end;
   LDesigner := FSelCtrl.FSelCtrls.FDesigner;
   LLockMode := TDEng.GetLockMode(FSelCtrl.Control);
@@ -3519,6 +3532,7 @@ begin
       SelectedControls.Clear;
       SelectedControls.SetRootWinControl(nil);
       FreeAndNil(TObject(FEng));
+      FEng := nil;
     finally
       FActivating := False;
     end;

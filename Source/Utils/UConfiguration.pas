@@ -82,6 +82,7 @@ type
     fSnapToGrid: boolean;
     fAlignToGrid: Boolean;
     fGridSize: Integer;
+    fFontSize: Integer;
     fFrameWidth: Integer;
     fFrameHeight: Integer;
 
@@ -255,6 +256,8 @@ type
       write fAlignToGrid;
     property GridSize : Integer read fGridSize
       write fGridSize;
+    property FontSize : Integer read fFontSize
+      write fFontSize;
     property FrameWidth : Integer read fFrameWidth
       write fFrameWidth;
     property FrameHeight : Integer read fFrameHeight
@@ -1064,6 +1067,9 @@ type
     EIDEFontSize: TEdit;
     lDigits: TLabel;
     EDigits: TEdit;
+    EFontsize: TEdit;
+    UDFontsize: TUpDown;
+    LFontsize: TLabel;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1915,6 +1921,7 @@ begin
     CBNameFromText.Checked:= NameFromText;
     CBGuiDesignerHints.Checked:= GuiDesignerHints;
     UDGridSize.Position:= GridSize;
+    UDFontSize.Position:= FontSize;
     CBSnapToGrid.Checked:= SnapToGrid;
     CBAlignToGrid.Checked:= AlignToGrid;
     EFrameWidth.Text:= IntToStr(FrameWidth);
@@ -2271,6 +2278,7 @@ begin
     NameFromText:= CBNameFromText.Checked;
     GuiDesignerHints:= CBGuiDesignerHints.Checked;
     GridSize:= UDGridSize.Position;
+    FontSize:= UDFontSize.Position;
     SnapToGrid:= CBSnapToGrid.Checked;
     AlignToGrid:= CBAlignToGrid.Checked;
     FrameWidth:= StrToInt(EFrameWidth.Text);
@@ -5769,6 +5777,7 @@ begin
   fSnapToGrid:= true;
   fAlignToGrid:= true;
   fGridSize:= 8;
+  fFontSize:= 9;
   fFrameWidth:= 300;
   fFrameHeight:= 300;
 

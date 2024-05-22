@@ -1247,7 +1247,7 @@ type
     TBQtFrame: TToolButton;
     TBQtSlider: TToolButton;
     TBQMenuBar: TToolButton;
-    TBQtContextMenu: TToolButton;
+    TBQtMenu: TToolButton;
     TBQtTabWidget: TToolButton;
     TBQtTreeWidget: TToolButton;
     TBQtProgressBar: TToolButton;
@@ -2577,8 +2577,8 @@ procedure TPyIDEMainForm.CloseTextDiffsAndFromTemplate;
 begin
   for i:= GI_FileFactory.Count - 1 downto 0 do begin
     aFile:= GI_FileFactory.GetFile(i);
-    if (aFile.FileKind = fkTextDiff) or
-       aFile.FromTemplate and not aFile.Modified then
+    if (aFile.FileKind = fkTextDiff) {or
+       aFile.FromTemplate and not aFile.Modified} then
      (aFile as IFileCommands).ExecClose;
   end;
 end;
@@ -4815,7 +4815,7 @@ begin
   actViewSplitEditorHor.Enabled := Assigned(GI_ActiveEditor);
   actViewSplitEditorVer.Enabled := Assigned(GI_ActiveEditor);
   actViewHideSecondEditor.Enabled := Assigned(GI_ActiveEditor)
-    and GI_ActiveEditor.SynEdit2.Visible;
+    {and GI_ActiveEditor.SynEdit2.Visible};
   actViewHideSecondaryWorkspace.Enabled := TabControl2.Visible;
 
   actWatchesWin.Checked := WatchesWindow.Visible;
@@ -5577,8 +5577,8 @@ begin
     DragRectangle.Parent:= FGuiDesigner;
   end;
   aPoint:= FGuiDesigner.getControlWidthHeigth;
-  DragRectangle.Width:= aPoint.X;
-  DragRectangle.Height:= aPoint.Y;
+  DragRectangle.Width:= PPIScale(aPoint.X);
+  DragRectangle.Height:= PPIScale(aPoint.Y);
   DragObject:= TMyDragObject.Create(DragRectangle);
 end;
 
@@ -6031,7 +6031,6 @@ begin
   TabCtrl.Toolbar.BeginUpdate;
   try
     Result := GI_EditorFactory.NewEditor(TabControlIndex);
-
     if Result <> nil then begin
       try
         Result.FromTemplate:= true;
@@ -6677,9 +6676,8 @@ procedure TPyIDEMainForm.ResizeImageListImagesforHighDPI(const imgList: TImageLi
   var i, OldW, OldH, NewW, NewH: integer;
       mb, ib, sib, smb: TBitmap; IL: TImageList;
 begin
-  if imgList.Name = 'ILEditorToolbarDark' then
-    OldW:=0;
-
+  //if imgList.Name = 'ILEditorToolbarDark' then
+  //  OldW:=0;
 
   OldW:= imgList.Width;
   OldH:= imgList.Height;

@@ -54,6 +54,7 @@ type
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
     function getEvents(ShowEvents: integer): string; override;
+    procedure MakeFont; override;
 
     property Background;
     property Orient: TOrient read FOrient write setOrient;
@@ -334,6 +335,11 @@ begin
   Result:= getMouseEvents(ShowEvents);
 end;
 
+procedure TTKMiscBaseWidget.MakeFont;
+begin
+  // no font
+end;
+
 procedure TTKMiscBaseWidget.setOrient(Value: TOrient);
   var h: integer;
 begin
@@ -533,17 +539,17 @@ begin
     R.Left  := 1;
     R.Right := Width - 1;
     R.Top   := Height div 2 - 1;
-    R.Bottom:= R.Top + 3;
-    SliderWidth := 12;
-    SliderHeight:= 23;
+    R.Bottom:= R.Top + PPIScale(3);
+    SliderWidth := PPIScale(12);
+    SliderHeight:= PPIScale(23);
     UsablePixels := Width - 2 - SliderWidth;
   end else begin
     R.Top := 1;
     R.Bottom := Height - 1;
     R.Left := Width div 2 - 1;
-    R.Right := R.Left + 3;
-    SliderWidth := 23;
-    SliderHeight:= 12;
+    R.Right := R.Left + PPIScale(3);
+    SliderWidth := PPIScale(23);
+    SliderHeight:= PPIScale(12);
     UsablePixels := Height - 2 - SliderHeight;
   end;
   Canvas.Pen.Color:= $D6D6D6;
@@ -651,11 +657,11 @@ begin
   R.Left  := 1;
   R.Right := Width - 1;
   if FCompound = _TC_top
-    then R.Top:= Height - 15
-    else R.Top:= 12;
-  R.Bottom:= R.Top + 3;
-  SliderWidth := 12;
-  SliderHeight:= 23;
+    then R.Top:= Height - PPIScale(15)
+    else R.Top:= PPIScale(12);
+  R.Bottom:= R.Top + PPIScale(3);
+  SliderWidth := PPIScale(12);
+  SliderHeight:= PPIScale(23);
   UsablePixels := Width - 2 - SliderWidth;
   Canvas.Pen.Color:= $D6D6D6;
   Canvas.Rectangle(R);
@@ -674,8 +680,8 @@ begin
   th:= Canvas.TextHeight(s);
   x:= R.Left + (R.Right - R.left - tw) div 2;
   if FCompound = _TC_top
-    then y:= R.Top - th - 3
-    else y:= R.Bottom + 3;
+    then y:= R.Top - th - PPIScale(3)
+    else y:= R.Bottom + PPIScale(3);
   Canvas.Brush.Color:= clBtnFace;
   Canvas.TextOut(x, y, s);
 end;
@@ -953,8 +959,8 @@ begin
           else y:= yold + RowHeightI;
         dec(RowHeightRest);
         key:= RBName(line) + '.place';
-        setAttributValue(key, key + '(x=' + IntToStr(x) + ', y=' + IntToStr(y) +
-          ', width=' + IntToStr(ColWidthI) + ', height=' + IntToStr(RowHeightI) + ')');
+        setAttributValue(key, key + '(x=' + IntToStr(PPIUnScale(x)) + ', y=' + IntToStr(PPIUnScale(y)) +
+          ', width=' + IntToStr(PPIUnScale(ColWidthI)) + ', height=' + IntToStr(PPIUnScale(RowHeightI)) + ')');
         inc(line);
         yold:= y;
       end;
@@ -1076,13 +1082,14 @@ begin
 end;
 
 procedure TTKRadiobuttonGroup.Paint;
-  const Radius = 5;
+  const cRadius = 5;
   var ColumnWidth, RowWidth, RadioHeight, LabelHeight,
-      col, row, yc, ItemsInCol, line, x, y, th: integer;
+      col, row, yc, ItemsInCol, line, x, y, th, Radius: integer;
       R: TRect; s: string;
 begin
   FOldItems.Text:= FItems.Text;
   inherited;
+  Radius:= PPIScale(cRadius);
   Canvas.FillRect(ClientRect);
   th:= Canvas.TextHeight('Hg');
   LabelHeight:= 0;
@@ -1093,7 +1100,7 @@ begin
     LabelHeight:= th;
     RadioHeight:= Height - th;
     Canvas.Rectangle(R);
-    Canvas.Textout(10, 0, FLabel);
+    Canvas.Textout(PPIScale(10), 0, FLabel);
   end;
 
   if FItems.Count > 0 then begin
@@ -1103,20 +1110,19 @@ begin
     for col:= 1 to FColumns do begin
       ItemsInCol:= ItemsInColumn(col);
       for row:= 1 to ItemsInCol do begin
-        x:= 4 + (col - 1)*ColumnWidth;
+        x:= PPIScale(4) + (col - 1)*ColumnWidth;
         y:= LabelHeight + 2 + (row - 1)*RowWidth;
         Canvas.Brush.Color:= clWhite;
         if FCheckboxes then begin
-          R:= Rect(x, y + 6, x + 13, y + 19);
+          R:= Rect(x, y + PPIScale(6), x + PPIScale(13), y + PPIScale(19));
           Canvas.Rectangle(R);
         end else begin
           yc:= y + RowWidth div 2 - Radius;
           Canvas.Ellipse(x, yc, x + 2*Radius, yc + 2*Radius);
         end;
         Canvas.Brush.Color:= clBtnFace;
-
         yc:= y + RowWidth div 2 - th div 2;
-        R:= Rect(x + 19, yc, col*ColumnWidth, yc + RowWidth);
+        R:= Rect(x + PPIScale(15), yc, col*ColumnWidth, yc + RowWidth);
         s:= FItems[line];
         Canvas.TextRect(R, s);
         inc(line);

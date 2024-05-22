@@ -116,7 +116,6 @@ type
     FOnValue: String;
   protected
     procedure Paint; override;
-    procedure setText(aValue: string); override;
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
@@ -298,7 +297,7 @@ constructor TKLabel.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 1;
-  Text:= 'Text';
+  Text:= 'Label';
   Anchor:= _TA_w;
   HighlightThickness:= '0';
 end;
@@ -307,7 +306,7 @@ procedure TKLabel.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('tk.Label');
   InsertValue('self.' + Name + '[' + asString('anchor') + '] = ' + asString('w'));
-  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString('Text'));
+  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
 end;
 
 {--- TKButton -----------------------------------------------------------------}
@@ -316,6 +315,7 @@ constructor TKButton.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
   Tag:= 4;
+  Text:= 'Button';
   FDefault:= false;
   FRepeatDelay:= 0;
   FRepeatInterval:= 0;
@@ -333,6 +333,7 @@ end;
 procedure TKButton.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('tk.Button');
+  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
   Command:= true;
   ChangeCommand('Command', Name + '_Command');
 end;
@@ -343,6 +344,7 @@ constructor TKCheckbutton.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 5;
+  Text:= 'Checkbutton';
   FActiveForeground:= clWindowText;
   FOffValue:= '0';
   FOnValue:= '1';
@@ -360,30 +362,20 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TKCheckbutton.setText(aValue: string);
-  var w: integer;
-begin
-  w:= 17 + Canvas.TextWidth(aValue + '    ');
-  if Width < w then begin
-    Width:= w;
-    SetPositionAndSize;
-  end;
-  inherited;
-end;
-
 procedure TKCheckbutton.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('tk.Checkbutton');
   MakeControlVar('variable', Name + 'CV', '0', 'Int');
   Anchor:= _TA_w;
   InsertValue('self.' + Name + '[' + asString('anchor') + '] = ' + asString('w'));
+  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
 end;
 
 procedure TKCheckbutton.Paint;
   var R: TRect;
 begin
   if FIndicatorOn
-    then LeftSpace:= 21
+    then LeftSpace:= PPIScale(21)
     else LeftSpace:= 0;
   inherited;
   if FIndicatorOn then
@@ -454,16 +446,16 @@ procedure TKMenubutton.Paint;
   var R: TRect; x, y: integer;
 begin
   if FIndicatorOn
-    then RightSpace:= 21
+    then RightSpace:= PPIScale(21)
     else RightSpace:= 0;
   inherited;
   if FIndicatorOn then begin
     R:= ClientRect;
     R.Inflate(-BorderWidthInt, -BorderWidthInt);
 
-    x:= Width - BorderWidthInt - 21;
+    x:= Width - BorderWidthInt - PPIScale(21);
     y:= (Height - 6) div 2;
-    R:= Rect(x, y, x + 15, y + 6);
+    R:= Rect(x, y, x + PPIScale(15), y + PPIScale(6));
     Canvas.FillRect(R);
     PaintBorder(R, _TR_raised, 1);
   end;

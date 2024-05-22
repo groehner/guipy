@@ -358,35 +358,37 @@ begin
   if Scrollbar
     then newHeight:= Height - 20
     else newHeight:= Height;
-  ShowText(s, Width - 16, newHeight);
+  ShowText(s, Width - PPIScale(16), newHeight);
 
   // paint up/down
   Canvas.Brush.Color:= $F0F0F0;
   Canvas.Pen.Color:= $ACACAC;
 
-  R:= Rect(Width - 19, 2, Width - 2, 11);
+  R:= Rect(Width - PPIScale(19), 2, Width - 2, PPIScale(11));
   Canvas.FillRect(R);
   R.Inflate(-1, -1);
   Canvas.Rectangle(R);
 
-  R:= Rect(Width - 19, newHeight - 11, Width - 2, newHeight - 2);
+  R:= Rect(Width - PPIScale(19), newHeight - PPIScale(11), Width - 2, newHeight - 2);
   Canvas.FillRect(R);
   R.Inflate(-1, -1);
   Canvas.Rectangle(R);
 
   Canvas.Brush.Color:= clBlack;
   Canvas.Pen.Color:= clBlack;
-  x:= Width - 13;
+  x:= Width - PPIScale(13);
   y:= 7;
+  var i2:= PPIScale(2);
+  var i4:= PPIScale(4);
   Points[0]:= Point(x, y);
-  Points[1]:= Point(x + 4, y);
-  Points[2]:= Point(x + 2, y - 2);
+  Points[1]:= Point(x + i4, y);
+  Points[2]:= Point(x + i2, y - i2);
   Canvas.Polygon(Points);
 
   y:= newHeight - 8;
   Points[0]:= Point(x, y);
-  Points[1]:= Point(x + 4, y);
-  Points[2]:= Point(x + 2, y + 2);
+  Points[1]:= Point(x + i4, y);
+  Points[2]:= Point(x + i2, y + i2);
   Canvas.Polygon(Points);
   PaintAScrollbar(Scrollbar);
 end;
@@ -470,10 +472,15 @@ begin
 end;
 
 procedure TTKCombobox.Paint;
-  var s: string; x, y, newHeight: integer;
+  var s: string; x, y, newHeight, i3, i4, i5, i8, i10: integer;
 begin
   Canvas.Pen.Color:= $7A7A7A;
   inherited;
+  i3:= PPIScale(3);
+  i4:= PPIScale(4);
+  i5:= PPIScale(5);
+  i8:= PPIScale(8);
+  i10:= PPIScale(10);
   if FValue <> ''
     then s:= FValue
     else if FValues.Count > 0
@@ -482,29 +489,29 @@ begin
   if Scrollbar
     then newHeight:= Height - 20
     else newHeight:= Height;
-  ShowText(s, Width - 16, newHeight);
+  ShowText(s, Width - PPIScale(16), newHeight);
 
-  x:= Width - 14;
+  x:= Width - PPIScale(14);
   y:= newHeight div 2 - 2;
   Canvas.Pen.Color:= $F1F1F1;
   Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + 4, y + 4);
-  Canvas.LineTo(x + 5, y + 4);
-  Canvas.LineTo(x + 10, y -1);
+  Canvas.LineTo(x + i4, y + i4);
+  Canvas.LineTo(x + i5, y + i4);
+  Canvas.LineTo(x + i10, y -1);
 
   Canvas.Pen.Color:= $5C5C5C;
   x:= x + 1;
   Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + 3, y + 3);
-  Canvas.LineTo(x + 4, y + 3);
-  Canvas.LineTo(x + 8, y - 1);
+  Canvas.LineTo(x + i3, y + i3);
+  Canvas.LineTo(x + i4, y + i3);
+  Canvas.LineTo(x + i8, y - 1);
 
   y:= y - 1;
   Canvas.Pen.Color:= $ADADAD;
   Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + 3, y + 3);
-  Canvas.LineTo(x + 4, y + 3);
-  Canvas.LineTo(x + 8, y - 1);
+  Canvas.LineTo(x + i3, y + i3);
+  Canvas.LineTo(x + i4, y + i3);
+  Canvas.LineTo(x + i8, y - 1);
   PaintAScrollbar(Scrollbar);
 end;
 

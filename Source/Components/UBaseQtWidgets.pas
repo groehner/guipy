@@ -29,8 +29,6 @@ type
 
   TOrientation = (Vertical, Horizontal);
 
-
-
   TBaseQtWidget = class(TBaseWidget)
   private
     FEnabled: boolean;
@@ -115,7 +113,7 @@ type
 implementation
 
 uses Math, Controls, Graphics, SysUtils, UITypes,
-     frmEditor, UGuiForm, UUtils;
+     frmEditor, UGuiForm, UUtils, UConfiguration;
 
 constructor TBaseQtWidget.create(aOwner: TComponent);
 begin
@@ -127,10 +125,8 @@ begin
   FocusPolicy:= NoFocus;
   LayoutDirection:= LeftToRight;
   ContextMenuPolicy:= DefaultContextMenu;
-  //Canvas.Font.PixelsPerInch:= 96; // 72;
-  //Font.PixelsPerInch:= 96; // 72;
   Font.Name:= 'Segoe UI';
-  Font.Size:= 9;
+  Font.Size:= GuiPyOptions.FontSize;
   Font.Style:= [];
   HelpType:= htContext;
   Sizeable:= true;
@@ -222,11 +218,6 @@ begin
     ', ' + IntToStr(PPIUnScale(R.Right)) + ', ' + IntToStr(PPIUnScale(R.Bottom)) + ')');
 end;
 
-procedure setFontSize;
-begin
-
-end;
-
 function TBaseQtWidget.getAttrAsKey(Attr: string): string;
 begin
   Result:= 'self.' + Name + '.set' + Attr;
@@ -284,7 +275,6 @@ end;
 procedure TBaseQtWidget.Paint;
 begin
   Canvas.Font.Assign(Font);
-  //Canvas.Font.Size:= Font.Size;
   Canvas.Font.Color:= clWindowText;
   FHalfX:= Canvas.TextWidth('x') div 2;
 end;
@@ -346,6 +336,7 @@ procedure TBaseQtWidget.NewWidget(Widget: String = '');
 begin
   setAttributValue('self.' + Name, 'self.' + Name + ' = ' + Widget + '(' + getContainer + ')');
   setPositionAndSize;
+  MakeFont;
 end;
 
 function TBaseQtWidget.getType;
@@ -408,46 +399,52 @@ begin
 end;
 
 procedure TBaseQtWidget.PaintScrollbar(R: TRect; horizontal: boolean);
-  var i, mid: integer;
+  var i, i3, i4, i6, i9, i10, i18, mid: integer;
 begin
   Canvas.Brush.Color:= clBtnFace;
   Canvas.FillRect(R);
   Canvas.Brush.Color:= $CDCDCD;
   Canvas.Pen.Color:= clWhite;
+  i3:= PPIScale(3);
+  i4:= PPIScale(4);
+  i6:= PPIScale(6);
+  i9:= PPIScale(9);
+  i10:= PPIScale(10);
+  i18:= PPIScale(18);
   if horizontal then begin
     Canvas.MoveTo(R.Left, R.Top);
     Canvas.LineTo(R.Right, R.Top);
     Canvas.Pen.Color:= $606060;
     mid:= (R.Top + R.Bottom) div 2;
     for i:= 0 to 2 do begin
-      Canvas.MoveTo(R.Left +  9 + i, mid - 3);
-      Canvas.LineTo(R.Left +  6 + i, mid);
-      Canvas.LineTo(R.Left + 10 + i, mid + 4);
+      Canvas.MoveTo(R.Left +  i9 + i, mid - i3);
+      Canvas.LineTo(R.Left +  i6 + i, mid);
+      Canvas.LineTo(R.Left + i10 + i, mid + i4);
     end;
     for i:= 0 to 2 do begin
-      Canvas.MoveTo(R.Right -  9 + i, mid - 3);
-      Canvas.LineTo(R.Right -  6 + i, mid);
-      Canvas.LineTo(R.Right - 10 + i, mid + 4);
+      Canvas.MoveTo(R.Right -  i9 + i, mid - i3);
+      Canvas.LineTo(R.Right -  i6 + i, mid);
+      Canvas.LineTo(R.Right - i10 + i, mid + i4);
     end;
-    R.Left:= R.Left + 18;
-    R.Right:= R.Left + 18;
+    R.Left:= R.Left + i18;
+    R.Right:= R.Left + i18;
   end else begin
     Canvas.MoveTo(R.Left, R.Top);
     Canvas.LineTo(R.Left, R.Bottom);
     Canvas.Pen.Color:= $606060;
     mid:= (R.Left + r.Right) div 2;
     for i:= 0 to 2 do begin
-      Canvas.MoveTo(mid - 3, R.Top +  9 + i);
-      Canvas.LineTo(mid    , R.Top +  6 + i);
-      Canvas.LineTo(mid + 4, R.Top + 10 + i);
+      Canvas.MoveTo(mid - i3, R.Top +  i9 + i);
+      Canvas.LineTo(mid     , R.Top +  i6 + i);
+      Canvas.LineTo(mid + i4, R.Top + i10 + i);
     end;
     for i:= 0 to 2 do begin
-      Canvas.MoveTo(mid - 3, R.Bottom -  9 + i);
-      Canvas.LineTo(mid    , R.Bottom -  6 + i);
-      Canvas.LineTo(mid + 4, R.Bottom - 10 + i);
+      Canvas.MoveTo(mid - i3, R.Bottom -  i9 + i);
+      Canvas.LineTo(mid     , R.Bottom -  i6 + i);
+      Canvas.LineTo(mid + i4, R.Bottom - i10 + i);
     end;
-    R.Top:= R.Top + 18;
-    R.Bottom:= R.Top + 18;
+    R.Top:= R.Top + i18;
+    R.Bottom:= R.Top + i18;
   end;
   R.Inflate(-1, -1);
   Canvas.FillRect(R);

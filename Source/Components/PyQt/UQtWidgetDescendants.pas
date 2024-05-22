@@ -694,38 +694,43 @@ begin
 
   if FCurrentText <> ''
     then s:= FCurrentText
-    else if FListItems.Count > 0 then
-      s:= FListItems[0];
+  else if FListItems.Count > 0 then
+    s:= FListItems[0];
   if s = '' then
     s:= FPlaceholderText;
 
   R:= InnerRect;
   R.Top:= (R.Bottom - R.Top - Canvas.TextHeight('A')) div 2;
   R.Left:= R.Left + HalfX;
-  R.Right:= R.Right - 18;
+  R.Right:= R.Right - PPIScale(18);
   DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_LEFT);
 
-  x:= Width - 14;
+  x:= Width - PPIScale(14);
   y:= Height div 2 - 2;
+  var i3:= PPIScale(3);
+  var i4:= PPIScale(4);
+  var i5:= PPIScale(5);
+  var i8:= PPIScale(8);
+  var i10:= PPIScale(10);
   Canvas.Pen.Color:= $F1F1F1;
   Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + 4, y + 4);
-  Canvas.LineTo(x + 5, y + 4);
-  Canvas.LineTo(x + 10, y -1);
+  Canvas.LineTo(x + i4, y + i4);
+  Canvas.LineTo(x + i5, y + i4);
+  Canvas.LineTo(x + i10, y - 1);
 
   Canvas.Pen.Color:= $5C5C5C;
   x:= x + 1;
   Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + 3, y + 3);
-  Canvas.LineTo(x + 4, y + 3);
-  Canvas.LineTo(x + 8, y - 1);
+  Canvas.LineTo(x + i3, y + i3);
+  Canvas.LineTo(x + i4, y + i3);
+  Canvas.LineTo(x + i8, y - 1);
 
   y:= y - 1;
   Canvas.Pen.Color:= $ADADAD;
   Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + 3, y + 3);
-  Canvas.LineTo(x + 4, y + 3);
-  Canvas.LineTo(x + 8, y - 1);
+  Canvas.LineTo(x + i3, y + i3);
+  Canvas.LineTo(x + i4, y + i3);
+  Canvas.LineTo(x + i8, y - 1);
 end;
 
 procedure TQtComboBox.setListItems(Values: TStrings);
@@ -1797,7 +1802,7 @@ end;
 procedure TQtMenuBar.Paint;
   var s, item: String; i: integer;
 begin
-  setBounds(0, 0, Parent.ClientWidth, 21);
+  setBounds(0, 0, Parent.ClientWidth, PPIScale(21));
   inherited;
   Canvas.Brush.Color:= clWhite;
   Canvas.FillRect(Rect(0, 0, Width, Height));
@@ -1807,7 +1812,7 @@ begin
     if (item <> '') and (item[1] <> '-') and (item[1] <> ' ') then
       s:= s + item + '     ';
   end;
-  Canvas.TextOut(3, 3, s);
+  Canvas.TextOut(PPIScale(3), PPIScale(3), s);
 end;
 
 {--- TQtMenu -----------------------------------------------------------}
@@ -1979,12 +1984,12 @@ begin
   th:= Canvas.TextHeight('Hg');
   if FTitle = '' then begin
     RadioWidth:= Width;
-    RadioHeight:= Height - 4;
-    dy:= 2;
+    RadioHeight:= Height - PPIScale(4);
+    dy:= PPIScale(2);
   end else begin
-    RadioWidth:= Width - 4;
-    RadioHeight:= Height - th - 4;
-    dy:= 2 + th;
+    RadioWidth:= Width - PPIScale(4);
+    RadioHeight:= Height - th - PPIScale(4);
+    dy:= PPIScale(2) + th;
   end;
   dx:= Canvas.TextWidth('x');
 
@@ -2015,13 +2020,12 @@ begin
           else y:= yold + RowHeightI;
         dec(RowHeightRest);
         key:= RBName(line) + '.setGeometry';
-        setAttributValue(key, key + '(' + IntToStr(x) + ', ' + IntToStr(y) +
-          ', ' + IntToStr(ColWidthI) + ', ' + IntToStr(RowHeightI) + ')');
+        setAttributValue(key, key + '(' + IntToStr(PPIUnScale(x)) + ', ' + IntToStr(PPIUnScale(y)) +
+          ', ' + IntToStr(PPIUnScale(ColWidthI)) + ', ' + IntToStr(PPIUnScale(RowHeightI)) + ')');
         if Pos(', ' + _('selected'), FItems[line]) > 0 then begin
           key:= RBName(line) + '.setChecked';
           setAttributValue(key, key + '(True)');
         end;
-
         inc(line);
         yold:= y;
       end;
@@ -2097,9 +2101,9 @@ begin
 end;
 
 procedure TQtButtonGroup.Paint;
-  const Radius = 7;
+  const cRadius = 7;
   var ColumnWidth, RowHeight, RadioHeight, LabelHeight,
-      col, row, yc, ItemsInCol, line, x, y, th, p: integer;
+      col, row, yc, ItemsInCol, line, x, y, th, p, Radius: integer;
       R: TRect; s: string;
 begin
   FOldItems.Text:= FItems.Text;
@@ -2107,6 +2111,7 @@ begin
   Canvas.Brush.Color:= clBtnFace;
   Canvas.FillRect(ClientRect);
   th:= Canvas.TextHeight('Hg');
+  Radius:= PPIScale(cRadius);
   LabelHeight:= 0;
   RadioHeight:= Height;
   R:= ClientRect;
@@ -2160,7 +2165,7 @@ begin
         end;
         Canvas.Brush.Color:= clBtnFace;
         yc:= y + RowHeight div 2 - th div 2;
-        R:= Rect(x + 19, yc, col*ColumnWidth, yc + RowHeight);
+        R:= Rect(x + PPIScale(19), yc, col*ColumnWidth, yc + RowHeight);
         Canvas.TextRect(R, s);
         inc(line);
       end;

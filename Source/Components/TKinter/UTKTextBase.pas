@@ -204,6 +204,7 @@ type
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure NewWidget(Widget: String = ''); override;
+    procedure MakeFont; override;
     procedure Paint; override;
   published
     property CloseEnough: real read FCloseEnough write FCloseEnough;
@@ -576,11 +577,11 @@ begin
   if Scrollbar
     then newHeight:= Height - 20
     else newHeight:= Height;
-  ShowText(s, Width - 14, newHeight);
+  ShowText(s, Width - PPIScale(14), newHeight);
 
   // paint up/down
-  w:= Width - BorderWidthInt - 11;
-  R:= Rect(w, BorderWidthInt + 1, w + 11, newHeight - BorderWidthInt);
+  w:= Width - BorderWidthInt - PPIScale(11);
+  R:= Rect(w, BorderWidthInt + 1, w + PPIScale(11), newHeight - BorderWidthInt);
   Canvas.Brush.Color:= FButtonBackground;
   Canvas.FillRect(R);
   Canvas.Pen.Color:= clWhite;
@@ -588,23 +589,27 @@ begin
   Canvas.LineTo(w, newHeight - BorderWidthInt);
   Canvas.Pen.Color:= clBlack;
   Canvas.MoveTo(w, newHeight div 2);
-  Canvas.LineTo(w+12, newHeight div 2);
-  w:= w + 11;
+  Canvas.LineTo(w + PPIScale(12), newHeight div 2);
+  w:= w + PPIScale(11);
   Canvas.MoveTo(w, BorderWidthInt);
   Canvas.LineTo(w, newHeight - BorderWidthInt);
 
   Canvas.Brush.Color:= RGB(122, 138, 153);
   Canvas.Pen.Color:= clBlack;
-  x:= Width - BorderWidthInt - 10;
+  x:= Width - BorderWidthInt - PPIScale(10);
   y:= BorderWidthInt + (newHeight - BorderWidthInt) div 4;
-  Points[0]:= Point(x + 2, y + 2);
-  Points[1]:= Point(x + 6, y + 2);
-  Points[2]:= Point(x + 4, y);
+  var i2:= PPIScale(2);
+  var i4:= PPIScale(4);
+  var i6:= PPIScale(6);
+
+  Points[0]:= Point(x + i2, y + i2);
+  Points[1]:= Point(x + i6, y + i2);
+  Points[2]:= Point(x + i4, y);
   Canvas.Polygon(Points);
   y:= newHeight - BorderWidthInt - (newHeight - BorderWidthInt) div 4;
-  Points[0]:= Point(x + 2, y - 2);
-  Points[1]:= Point(x + 6, y - 2);
-  Points[2]:= Point(x + 4, y);
+  Points[0]:= Point(x + i2, y - i2);
+  Points[1]:= Point(x + i6, y - i2);
+  Points[2]:= Point(x + i4, y);
   Canvas.Polygon(Points);
   PaintAScrollbar(Scrollbar);
 end;
@@ -672,6 +677,11 @@ end;
 procedure TKCanvas.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('tk.Canvas');
+end;
+
+procedure TKCanvas.MakeFont;
+begin
+  // no font
 end;
 
 procedure TKCanvas.Paint;

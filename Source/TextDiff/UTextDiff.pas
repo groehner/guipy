@@ -137,7 +137,7 @@ type
     procedure ShowDiffState;
     procedure Save;
     procedure SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
-    procedure DPIChanged;
+    procedure DPIChanged; override;
   end;
 
 implementation

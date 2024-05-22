@@ -254,14 +254,13 @@ begin
     Canvas.Brush.Color:= $E1E1E1;
     Canvas.Pen.Color:= $ADADAD;
   end;
-//  Canvas.FillRect(ClientRect);
   Canvas.Rectangle(ClientRect);
 
   h:= Height;
   w:= Width;
   SL:= TStringList.Create;
   CalculateText(FText, tw, th, SL);
-  if LeftSpace <> 18 then
+  if LeftSpace <> PPIScale(18) then
     LeftSpace:= 0;
   try
     pathname:= FGuiDesigner.getPath + 'images\' + copy(Icon, 8, length(Icon));
@@ -269,7 +268,7 @@ begin
       // without graphic
       if PaintStyle = 3 then begin // Radio- or CheckButton
         x:= LeftSpace;
-        TopSpace:= (h - 15) div 2;
+        TopSpace:= (h - PPIScale(15)) div 2;
       end else
         x:= (w - tw - LeftSpace) div 2 + LeftSpace;
       y:= (h - th) div 2;
@@ -308,8 +307,7 @@ begin
         ty:= h div 2 + 3;
       end;
 
-      if (PaintStyle = 0) and (FText <> '') or
-         (PaintStyle in [3, 4]) then
+      if (PaintStyle = 0) and (FText <> '') or (PaintStyle in [3, 4]) then
         ShowText(Rect(tx, ty, tx+tw, ty+th));
       Canvas.Draw(gx, gy, bmp);
 
@@ -318,7 +316,7 @@ begin
       // Canvas.DrawFocusRect(r);
 
       // for use in Checkbutton and Radiobutton
-      TopSpace:= by + maxh div 2 - 10;
+      TopSpace:= by + maxh div 2 - PPIScale(10);
       FreeAndNil(bmp);
     end;
   finally
@@ -657,7 +655,7 @@ procedure TQtRadioButton.Paint;
 begin
   PaintFlat:= true;
   PaintStyle:= 3;
-  LeftSpace:= 18;
+  LeftSpace:= PPIScale(18);
   inherited;
   if FChecked
     then DrawBitmap(0, TopSpace, 3, Canvas, DMImages.ILQtControls)
@@ -713,7 +711,7 @@ procedure TQtCheckBox.Paint;
 begin
   PaintFlat:= true;
   PaintStyle:= 3;
-  LeftSpace:= 18;
+  LeftSpace:= PPIScale(18);
   inherited;
   if FChecked
     then DrawBitmap(0, TopSpace, 1, Canvas, DMImages.ILQtControls)
@@ -724,9 +722,9 @@ end;
 
 procedure TQtCheckBox.SizeToText;
 begin
-  var d:= Canvas.TextWidth(Text) + + 18 + 3*HalfX - Width;
+  var d:= Canvas.TextWidth(Text) + PPIScale(18) + 3*HalfX - Width;
   if d > 0 then Width:= Width + d;
-  d:= Canvas.TextHeight(Text)+ 4 - Height;
+  d:= Canvas.TextHeight(Text)+ PPIScale(4) - Height;
   if d > 0 then Height:= Height + d;
 end;
 
@@ -739,8 +737,6 @@ begin
   Width:= 184;
   Height:= 40;
   FText:= 'CommandLinkButton';
-  Font.Name:= 'Segoe UI';
-  Font.Size:= 12;
   PaintFlat:= true;
   PaintArrow:= 5;
   PaintStyle:= 3;

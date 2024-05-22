@@ -27,6 +27,8 @@ object FConfiguration: TFConfiguration
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 828
+    ExplicitHeight = 508
     object TVConfiguration: TTreeView
       Left = 0
       Top = 0
@@ -101,6 +103,8 @@ object FConfiguration: TFConfiguration
       Height = 509
       Align = alClient
       TabOrder = 1
+      ExplicitWidth = 639
+      ExplicitHeight = 508
       object PButtons: TPanel
         Left = 1
         Top = 467
@@ -108,8 +112,8 @@ object FConfiguration: TFConfiguration
         Height = 41
         Align = alBottom
         TabOrder = 0
-        ExplicitTop = 469
-        ExplicitWidth = 649
+        ExplicitTop = 466
+        ExplicitWidth = 637
         object BSave: TButton
           Left = 546
           Top = 9
@@ -177,7 +181,7 @@ object FConfiguration: TFConfiguration
         Align = alTop
         BevelOuter = bvSpace
         TabOrder = 1
-        ExplicitWidth = 649
+        ExplicitWidth = 637
         object LTitle: TLabel
           Left = 8
           Top = 4
@@ -196,10 +200,12 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 641
         Height = 446
-        ActivePage = PSyntaxColors
+        ActivePage = PGUIDesigner
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
+        ExplicitWidth = 637
+        ExplicitHeight = 445
         object PPython: TTabSheet
           Caption = 'Python'
           object vtPythonVersions: TVirtualStringTree
@@ -477,12 +483,11 @@ object FConfiguration: TFConfiguration
               Height = 27
               Anchors = [akTop, akRight]
               TabOrder = 6
-              ExplicitLeft = 345
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 72
-                Height = 8
+                Width = 179
+                Height = 25
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -492,6 +497,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 72
+                ExplicitHeight = 8
               end
             end
             object cbGutterColor: TSpTBXColorEdit
@@ -555,7 +562,6 @@ object FConfiguration: TFConfiguration
               Caption = 'Use Gutter Font'
               TabOrder = 4
               OnClick = cbGutterFontClick
-              ExplicitLeft = 16
             end
             object ckGutterGradient: TCheckBox
               Left = -2
@@ -566,7 +572,6 @@ object FConfiguration: TFConfiguration
               Anchors = [akTop, akRight]
               Caption = 'Gutter Gradient'
               TabOrder = 9
-              ExplicitLeft = 16
             end
             object btnGutterFont: TButton
               Left = 258
@@ -683,7 +688,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop, akRight]
             Caption = 'Bookmarks'
             TabOrder = 3
-            ExplicitLeft = 274
             object ckBookmarkKeys: TCheckBox
               Left = 23
               Top = 16
@@ -739,8 +743,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 128
-                Height = 16
+                Width = 188
+                Height = 28
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Courier New 10pt'
@@ -750,6 +754,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Courier New'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 128
+                ExplicitHeight = 16
               end
             end
             object btnFont: TButton
@@ -1049,12 +1055,11 @@ object FConfiguration: TFConfiguration
                 Padding.Left = 4
                 Spacing = 7
                 TabOrder = 0
-                ExplicitWidth = 318
                 object ckAutoIndent: TCheckBox
                   AlignWithMargins = True
                   Left = 7
                   Top = 0
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 
                     'Will indent the caret on new lines with the same amount of leadi' +
@@ -1068,7 +1073,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 24
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 
                     'When clicking with the right mouse for a popup menu, move the cu' +
@@ -1082,7 +1087,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 48
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 
                     'Allows you to select a block of text and drag it within the docu' +
@@ -1096,7 +1101,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 72
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 'Enhances end key similar to JDeveloper'
                   Margins.Top = 0
@@ -1108,7 +1113,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 96
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 'Allows the editor accept OLE file drops'
                   Margins.Top = 0
@@ -1120,7 +1125,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 120
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 'enhances home key positioning, similar to visual studio'
                   Margins.Top = 0
@@ -1132,7 +1137,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 144
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 
                     'Holding down the Alt Key will put the selection mode into column' +
@@ -1146,7 +1151,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 168
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 'Converts a tab character to the number of spaces in Tab Width'
                   Margins.Top = 0
@@ -1158,7 +1163,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 192
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 
                     'When moving through lines the X position will always stay the sa' +
@@ -1172,7 +1177,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 216
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 'similar to Smart Tabs, but when you delete characters'
                   Margins.Top = 0
@@ -1184,7 +1189,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 240
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 'Tab indents and Shift-Tab unindents'
                   Margins.Top = 0
@@ -1196,7 +1201,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 264
-                  Width = 308
+                  Width = 302
                   Height = 17
                   Hint = 
                     'When tabbing, the cursor will go to the next non-white space cha' +
@@ -1628,7 +1633,6 @@ object FConfiguration: TFConfiguration
             Height = 169
             Align = alTop
             TabOrder = 4
-            ExplicitWidth = 645
             object KeyList: TListView
               Left = 1
               Top = 1
@@ -1647,6 +1651,7 @@ object FConfiguration: TFConfiguration
               ColumnClick = False
               FlatScrollBars = True
               HideSelection = False
+              Items.ItemData = {}
               ReadOnly = True
               RowSelect = True
               SortType = stText
@@ -1714,6 +1719,7 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 0
             OnChange = cbHighlightersChange
+            ExplicitWidth = 438
           end
           object GroupBox1: TGroupBox
             Left = 8
@@ -1830,7 +1836,7 @@ object FConfiguration: TFConfiguration
               end>
             RightEdge = 0
             SelectedColor.Alpha = 0.400000005960464500
-            ExplicitWidth = 256
+            ExplicitWidth = 230
           end
           object lbElements: TSpTBXListBox
             Left = 8
@@ -1913,7 +1919,6 @@ object FConfiguration: TFConfiguration
               end>
             RightEdge = 0
             SelectedColor.Alpha = 0.400000005960464500
-            ExplicitWidth = 402
           end
         end
         object PCodeTemplates: TTabSheet
@@ -2023,7 +2028,6 @@ object FConfiguration: TFConfiguration
                 end>
               SelectedColor.Alpha = 0.400000005960464500
               TabWidth = 4
-              ExplicitWidth = 444
             end
             object edDescription: TEdit
               Left = 115
@@ -2032,7 +2036,6 @@ object FConfiguration: TFConfiguration
               Height = 23
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 2
-              ExplicitWidth = 338
             end
             object edShortcut: TEdit
               Left = 115
@@ -2059,6 +2062,7 @@ object FConfiguration: TFConfiguration
               end>
             ColumnClick = False
             HideSelection = False
+            Items.ItemData = {}
             ReadOnly = True
             RowSelect = True
             TabOrder = 1
@@ -2129,6 +2133,7 @@ object FConfiguration: TFConfiguration
               end>
             ColumnClick = False
             HideSelection = False
+            Items.ItemData = {}
             ReadOnly = True
             RowSelect = True
             TabOrder = 0
@@ -2242,7 +2247,6 @@ object FConfiguration: TFConfiguration
                 end>
               SelectedColor.Alpha = 0.400000005960464500
               TabWidth = 4
-              ExplicitWidth = 444
             end
             object CBFileTemplatesHighlighter: TComboBox
               Left = 400
@@ -2268,7 +2272,6 @@ object FConfiguration: TFConfiguration
               Height = 23
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 2
-              ExplicitWidth = 50
             end
             object edExtension: TEdit
               Left = 204
@@ -2423,17 +2426,24 @@ object FConfiguration: TFConfiguration
           end
           object LFrameheight: TLabel
             Left = 16
-            Top = 196
+            Top = 228
             Width = 70
             Height = 15
             Caption = 'Frame height'
           end
           object LFrameWidth: TLabel
             Left = 16
-            Top = 164
+            Top = 196
             Width = 66
             Height = 15
             Caption = 'Frame width'
+          end
+          object LFontsize: TLabel
+            Left = 57
+            Top = 150
+            Width = 129
+            Height = 15
+            Caption = 'Font size in GUI designer'
           end
           object CBNameFromText: TCheckBox
             Left = 16
@@ -2484,7 +2494,7 @@ object FConfiguration: TFConfiguration
           end
           object EFrameheight: TEdit
             Left = 88
-            Top = 193
+            Top = 225
             Width = 41
             Height = 23
             TabOrder = 5
@@ -2492,7 +2502,7 @@ object FConfiguration: TFConfiguration
           end
           object EFrameWidth: TEdit
             Left = 88
-            Top = 161
+            Top = 193
             Width = 41
             Height = 23
             TabOrder = 6
@@ -2507,6 +2517,25 @@ object FConfiguration: TFConfiguration
             Checked = True
             State = cbChecked
             TabOrder = 7
+          end
+          object EFontsize: TEdit
+            Left = 16
+            Top = 146
+            Width = 21
+            Height = 23
+            TabOrder = 8
+            Text = '9'
+          end
+          object UDFontsize: TUpDown
+            Left = 37
+            Top = 146
+            Width = 16
+            Height = 23
+            Associate = EFontsize
+            Min = 8
+            Max = 13
+            Position = 9
+            TabOrder = 9
           end
         end
         object PStructogram: TTabSheet
@@ -3373,11 +3402,10 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akTop, akRight]
             Caption = 'Description'
             TabOrder = 5
-            ExplicitWidth = 367
             object lblDescription: TLabel
               Left = 2
               Top = 17
-              Width = 363
+              Width = 341
               Height = 42
               Align = alClient
               AutoSize = False
@@ -5399,7 +5427,6 @@ object FConfiguration: TFConfiguration
             Height = 26
             AllowDrag = False
             LimitToOneRow = True
-            ExplicitWidth = 645
             object Toolbar: TSpTBXToolbar
               Left = 0
               Top = 0
@@ -5695,6 +5722,7 @@ object FConfiguration: TFConfiguration
                 AutoSize = True
               end>
             HideSelection = False
+            Items.ItemData = {}
             ReadOnly = True
             ShowColumnHeaders = False
             TabOrder = 0
@@ -5712,6 +5740,7 @@ object FConfiguration: TFConfiguration
                 AutoSize = True
               end>
             HideSelection = False
+            Items.ItemData = {}
             ReadOnly = True
             ShowColumnHeaders = False
             TabOrder = 3
@@ -5728,6 +5757,7 @@ object FConfiguration: TFConfiguration
                 AutoSize = True
               end>
             HideSelection = False
+            Items.ItemData = {}
             ReadOnly = True
             ShowColumnHeaders = False
             TabOrder = 1
@@ -5745,6 +5775,7 @@ object FConfiguration: TFConfiguration
                 AutoSize = True
               end>
             HideSelection = False
+            Items.ItemData = {}
             ReadOnly = True
             ShowColumnHeaders = False
             TabOrder = 2
@@ -6378,8 +6409,8 @@ object FConfiguration: TFConfiguration
   end
   object ActionListPageSetup: TActionList
     Images = vilPageSetup
-    Left = 259
-    Top = 116
+    Left = 555
+    Top = 60
     object PageNumCmd: TAction
       Caption = 'Page number'
       Hint = 'Page number'

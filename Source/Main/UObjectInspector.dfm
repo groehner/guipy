@@ -3,8 +3,8 @@ object FObjectInspector: TFObjectInspector
   Top = 270
   BorderStyle = bsSizeToolWin
   Caption = 'Object Inspector'
-  ClientHeight = 437
-  ClientWidth = 247
+  ClientHeight = 425
+  ClientWidth = 239
   Color = clBtnFace
   Constraints.MinHeight = 150
   DragKind = dkDock
@@ -24,7 +24,7 @@ object FObjectInspector: TFObjectInspector
   object TCAttributesEvents: TTabControl
     Left = 0
     Top = 23
-    Width = 247
+    Width = 239
     Height = 25
     Align = alTop
     TabOrder = 0
@@ -34,20 +34,17 @@ object FObjectInspector: TFObjectInspector
     TabIndex = 0
     OnChange = TCAttributesEventsChange
     OnMouseDown = TCAttributesEventsMouseDown
-    ExplicitWidth = 239
   end
   object PNewDel: TPanel
     Left = 0
-    Top = 412
-    Width = 247
+    Top = 400
+    Width = 239
     Height = 25
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 400
-    ExplicitWidth = 239
     DesignSize = (
-      247
+      239
       25)
     object BNewDelete: TButton
       Left = 0
@@ -60,7 +57,7 @@ object FObjectInspector: TFObjectInspector
       OnClick = BNewDeleteClick
     end
     object BMore: TButton
-      Left = 124
+      Left = 108
       Top = 0
       Width = 75
       Height = 25
@@ -74,14 +71,13 @@ object FObjectInspector: TFObjectInspector
   object CBObjects: TComboBox
     Left = 0
     Top = 0
-    Width = 247
+    Width = 239
     Height = 23
     Align = alTop
     Style = csDropDownList
     Sorted = True
     TabOrder = 2
     OnChange = CBObjectsChange
-    ExplicitWidth = 239
   end
   object PMObjectInspector: TSpTBXPopupMenu
     Left = 32

@@ -296,7 +296,7 @@ begin
   if FButtonSymbols <> NoButtons then begin
     // paint boxes
     R:= inherited InnerRect;
-    R.Left:= R.Right - 16;
+    R.Left:= R.Right - PPIScale(16);
     R.Inflate(-1, -1);
     Canvas.Pen.Color:= $ACACAC;
     Canvas.Brush.Color:= $E7E7E7;
@@ -306,25 +306,29 @@ begin
 
     Canvas.Brush.Color:= clBlack;
     Canvas.Pen.Color:= clBlack;
-    x:= R.Left + 4;
+    var i2:= PPIScale(2);
+    var i3:= PPIScale(3);
+    var i4:= PPIScale(4);
+    var i5:= PPIScale(5);
+    x:= R.Left + i4;
     if FButtonSymbols = UpDownArrows then begin
       // paint up/down
       y:= (R.Top + Height div 2) div 2 + 1;
       Points[0]:= Point(x, y);
-      Points[1]:= Point(x + 4, y);
-      Points[2]:= Point(x + 2, y - 2);
+      Points[1]:= Point(x + i4, y);
+      Points[2]:= Point(x + i2, y - i2);
       Canvas.Polygon(Points);
       y:= (Height div 2 + R.Bottom) div 2 - 1;
       Points[0]:= Point(x, y);
-      Points[1]:= Point(x + 4, y);
-      Points[2]:= Point(x + 2, y + 2);
+      Points[1]:= Point(x + i4, y);
+      Points[2]:= Point(x + i2, y + i2);
       Canvas.Polygon(Points);
     end else begin
       y:= (R.Top + Height div 2) div 2;
       Canvas.MoveTo(x, y);
-      Canvas.LineTo(x + 5, y);
-      Canvas.MoveTo(x + 2, y - 2);
-      Canvas.LineTo(x + 2, y + 3);
+      Canvas.LineTo(x + i5, y);
+      Canvas.MoveTo(x + i2, y - i2);
+      Canvas.LineTo(x + i2, y + i3);
       y:= (Height div 2 + R.Bottom) div 2;
       Canvas.MoveTo(x, y);
       Canvas.LineTo(x + 5, y);

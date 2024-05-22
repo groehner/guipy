@@ -285,13 +285,15 @@ procedure TFGUIDesigner.ELDragDrop(Sender, ASource, ATarget: TObject; AX, AY: In
 begin
   Accept:= csAcceptsControls in (ATarget as TControl).ControlStyle;
   if Accept and assigned(ComponentToInsert) then begin
-    LInsertingControl := ComponentToInsert.Create(Designform);
+    LInsertingControl:= ComponentToInsert.Create(Designform);
     try
-      LInsertingControl.SetBounds(AX-LInsertingControl.Width, AY-LInsertingControl.Height, LInsertingControl.Width, LInsertingControl.Height);
       LInsertingControl.Tag:= ULink.ComponentNrToInsert;
       ELDesigner.getUniqueName(Tag2PythonType(LInsertingControl.Tag), LName);
-      LInsertingControl.Name:= LName; // <-- Here may be exception
+      LInsertingControl.Name:= LName; // <-- here may be exception
       LInsertingControl.Parent:= ATarget as TWinControl;
+      LInsertingControl.SetBounds(AX-LInsertingControl.Width, AY-LInsertingControl.Height,
+                                     LInsertingControl.Width, LInsertingControl.Height);
+      (LInsertingControl as TBaseWidget).UnScaleFontSize;
     except
       FreeAndNil(LInsertingControl);
       raise;
@@ -433,7 +435,6 @@ begin
   ComponentToInsert:= nil;
   FObjectGenerator.InsertComponent(GetEditForm, Control, false);
   UpdateState(Modified);
-  //PyIDEMainForm.ResetToolbars;
 end;
 
 procedure TFGUIDesigner.Save(const Filename: string; Formular: TFGUIForm);

@@ -4,7 +4,7 @@
 {       Property Inspector and                          }
 {       Standard property editors Unit                  }
 {                                                       }
-{       (c) 2002, Balabuyev Yevgeny,                    }
+{       (c) 2002, Balabuyev Yevgeny                     }
 {       E-mail: stalcer@rambler.ru                      }
 {       Licence: Freeware                               }
 {       https://torry.net/authorsmore.php?id=3588       }
@@ -1291,16 +1291,25 @@ end;
 procedure TELCustomPropsPage.DrawCell(ACol, ARow: Integer; ARect: TRect;
     AState: TGridDrawState);
 
+  function PPIScale(ASize: integer): integer;
+  begin
+    // FCurrentPPI is a TELCustomPropsPage, not the actual widget
+    // so gui form and object inspector must have same dpi
+    Result := MulDiv(ASize, FCurrentPPI, 96);
+  end;
+
     procedure _DrawExpandButton(AX, AY: Integer; AExpanded: Boolean);
     begin
         with FCellBitmap.Canvas do
             begin
                 Pen.Color := clBlack;
                 Brush.Color := clWhite;
-                Rectangle(AX, AY, AX + 9, AY + 9);
-                Polyline([Point(AX + 2, AY + 4), Point(AX + 7, AY + 4)]);
+                var Size:= PPIScale(9);
+                var Mid:= Size div 2;
+                Rectangle(AX, AY, AX + Size, AY + Size);
+                Polyline([Point(AX + 2, AY + Mid), Point(AX + Size - 2, AY + Mid)]);
                 if not AExpanded then
-                    Polyline([Point(AX + 4, AY + 2), Point(AX + 4, AY + 7)]);
+                    Polyline([Point(AX + Mid, AY + 2), Point(AX + Mid, AY + Size - 2)]);
             end;
     end;
 
@@ -1348,12 +1357,12 @@ begin
                         Font.Color := ValuesColor;
                     TextRect(
                         Rect(0, 0, FCellBitmap.Width, FCellBitmap.Height),
-                        1 + (12 + LIdent) * Ord(ACol = 0),
+                        1 + (PPIScale(12) + LIdent) * Ord(ACol = 0),
                         1,
                         LS
                         );
                     if LExpandButton and (ACol = 0) then
-                        _DrawExpandButton(2 + LIdent, 3, LExpanded);
+                        _DrawExpandButton(2 + LIdent, (FCellBitmap.Height - PPIScale(9)) div 2 , LExpanded);
 
                     if ACol = 0 then
                         begin
@@ -2644,24 +2653,31 @@ procedure TELPropertyInspectorItem.UpdateParams;
   const
     LExpandables: array[Boolean] of TELPropsPageItemExpandable = (mieNo, mieYes);
   var
-    LPropAttrs: TELPropAttrs; LStr, s: string;
+    LPropAttrs: TELPropAttrs; LStr: string;
 
-  function Scale(s: String): string;
+  function PPIUnScale(ASize: integer): integer;
+  begin
+    // self.owner is a TELPropertyInspector, not the actual widget
+    // so gui form and object inspector must have same dpi
+    Result := MulDiv(ASize, 96, Self.Owner.CurrentPPI);
+  end;
+
+  function UnScale(s: String): string;
   begin
     if (Caption = 'X') or (Caption = 'Y') or (Caption = 'Width') or (Caption ='Height')
     then begin
       var i:= StrToInt(s);
-
+      i:= PPIUnscale(i);
+      s:= IntToStr(i);
     end;
-
-
+    Result:= s;
   end;
 
 begin
   if FEditor <> nil then begin
     Owner.BeginUpdate;
     try
-      // the property-inspector can hold more than one component with a common item to change for all components
+      // the property inspector can hold more than one component with a common item to change for all components
       if Assigned(Parent) then FClassname:= Parent.Caption;
       Caption := ULink.Delphi2PythonValues(FEditor.PropName);
       LPropAttrs := FEditor.GetAttrs;
@@ -2677,11 +2693,12 @@ begin
       ReadOnly := (praReadOnly in LPropAttrs) or TELCustomPropertyInspector(Owner).ReadOnly;
       AutoUpdate := praAutoUpdate in LPropAttrs;
       OwnerDrawPickList := praOwnerDrawValues in LPropAttrs;
-      // for DEBUG-purpose
-      s:= FEditor.PropName;
+      // for debug purpose
+      // var s:= Self.Owner.ClassName;
+      // s:= Self.FEditor.PropName;
       LStr := FEditor.Value;
       if FDisplayValue <> LStr then begin
-        FDisplayValue:= LStr;
+        FDisplayValue:= UnScale(LStr);
         Change;
       end;
     finally
@@ -3268,7 +3285,6 @@ begin
       break;
     end;
 end;
-
 
 { TELPropEditor }
 

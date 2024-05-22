@@ -10,7 +10,7 @@ uses
 type
 
   TFObjectInspector = class(TIDEDockWindow, IJvAppStorageHandler)
-      CBObjects: TComboBox;
+    CBObjects: TComboBox;
     TCAttributesEvents: TTabControl;
     PNewDel: TPanel;
       BNewDelete: TButton;
@@ -99,7 +99,7 @@ var
 
 implementation
 
-uses SysUtils, Dialogs, Clipbrd, Math, Themes, Forms, JvGnugettext,
+uses Windows, SysUtils, Dialogs, Clipbrd, Math, Themes, Forms, JvGnugettext,
      UGUIForm, UGUIDesigner, ULink, UObjectGenerator,
      UConfiguration, UUtils, UBaseWidgets, UBaseQtWidgets, ELEvents,
      frmEditor, frmPyIDEMain, dmResources, uCommonFunctions;
@@ -360,6 +360,13 @@ begin
   end;
 end;
 
+// DPI awareness for object inspector
+// width, height, x, y are scaled to fit the real widget values
+// setPositionAndSize must unscale for correct values in the source code
+//
+// width, height, x, y must be shown unscaled
+// this is done in TELPropertyInspectorItem.UpdateParams;
+
 procedure TFObjectInspector.ELPropertyInspectorModified(Sender: TObject);
   var i, iValue: integer; Partner: TEditorForm;
       OldName, NewName, Caption: string;
@@ -377,6 +384,11 @@ procedure TFObjectInspector.ELPropertyInspectorModified(Sender: TObject);
     ELEventInspector.Add(Widget);
   end;
 
+  function PPIScale(ASize: integer): integer;
+  begin
+    Result := MulDiv(ASize, FCurrentPPI, 96);
+  end;
+
 begin
   PropertyItem:= TELPropertyInspectorItem(ELPropertyInspector.ActiveItem);
   if PropertyItem = nil then exit;
@@ -384,17 +396,17 @@ begin
   with FGUIDesigner.ELDesigner do begin
     TFGUIForm(DesignControl).Modified:= true;
     Partner:= TEditorForm(TFGUIForm(DesignControl).Partner);
-    if ((Caption = 'Width') or (Caption = 'Height') or  (Caption = 'X') or (Caption = 'Y')) and
+    if ((Caption = 'Width') or (Caption = 'Height') or (Caption = 'X') or (Caption = 'Y')) and
       TryStrToInt(PropertyItem.Editor.Value, iValue) then
-        for i:= 0 to SelectedControls.Count-1 do begin
+        for i:= 0 to SelectedControls.Count - 1 do begin
           if Caption = 'Width' then
-            SelectedControls.Items[i].Width:= iValue
+            SelectedControls.Items[i].Width:= PPIScale(iValue)
           else if Caption = 'Height' then
-            SelectedControls.Items[i].Height:= iValue
+            SelectedControls.Items[i].Height:= PPIScale(iValue)
           else if Caption = 'X' then
-            SelectedControls.Items[i].Left:= iValue
+            SelectedControls.Items[i].Left:= PPIScale(iValue)
           else if Caption = 'Y' then
-            SelectedControls.Items[i].Top:= iValue;
+            SelectedControls.Items[i].Top:= PPIScale(iValue);
           FObjectGenerator.MoveOrSizeComponent(Partner, SelectedControls.Items[i])
         end
     else if (Caption = 'Name') and (PropertyItem.Level = 0) then begin
@@ -431,6 +443,12 @@ begin
             end;
           end;
         end;
+
+        {if Caption = 'Size' then begin  // of font
+          Widget:= TBaseWidget(SelectedControls.Items[0]);
+          TryStrToInt(PropertyItem.Editor.Value, iValue);
+          Widget.SetFontSize(PPIScale(iValue));
+        end;}
 
         FObjectGenerator.SetAttributForComponent(PropertyItem.Caption,
           PropertyItem.Editor.Value,

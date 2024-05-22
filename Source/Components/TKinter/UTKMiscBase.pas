@@ -68,6 +68,7 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure NewWidget(Widget: String = ''); override;
     function getAttributes(ShowAttributes: integer): string; override;
+    procedure MakeFont; override;
   published
     property Font;
     property HighlightBackground;
@@ -196,6 +197,7 @@ type
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure NewWidget(Widget: String = ''); override;
+    procedure MakeFont; override;
     procedure Paint; override;
   published
     property ActiveBackground;
@@ -294,6 +296,7 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure NewWidget(Widget: String = ''); override;
     function getAttributes(ShowAttributes: integer): string; override;
+    procedure MakeFont; override;
     procedure Resize; override;
     procedure Paint; override;
   published
@@ -419,6 +422,11 @@ begin
   if ShowAttributes >= 3 then
     Result:= Result + '|HighlightBackground|HighlightColor|HighlightThickness';
   Result:= Result + inherited getAttributes(ShowAttributes);
+end;
+
+procedure TKFrame.MakeFont;
+begin
+  // no font
 end;
 
 {--- TKLabelframe ------------------------------------------------------------------}
@@ -983,6 +991,11 @@ begin
   inherited NewWidget('tk.Scrollbar');
 end;
 
+procedure TKScrollbar.MakeFont;
+begin
+  // no font
+end;
+
 procedure TKScrollbar.Paint;
 begin
   PaintScrollbar(ClientRect, FOrient = horizontal);
@@ -1236,7 +1249,7 @@ end;
 procedure TKMenu.Paint;
   var s, item: String; i: integer;
 begin
-  setBounds(0, 0, Parent.ClientWidth, 19);
+  setBounds(0, 0, Parent.ClientWidth, PPIScale(19));
   inherited;
   Canvas.Brush.Color:= clWhite;
   Canvas.FillRect(Rect(0, 0, Width, Height));
@@ -1246,7 +1259,7 @@ begin
     if (item <> '') and (item[1] <> '-') and (item[1] <> ' ') then
       s:= s + item + '     ';
   end;
-  Canvas.TextOut(3, 3, s);
+  Canvas.TextOut(PPIScale(3), PPIScale(3), s);
 end;
 
 {--- PanedWindow --------------------------------------------------------------}
@@ -1284,6 +1297,11 @@ begin
   if ShowAttributes >= 3 then
     Result:= Result + '';
   Result:= Result + inherited getAttributes(ShowAttributes);
+end;
+
+procedure TKPanedWindow.MakeFont;
+begin
+  // no font
 end;
 
 procedure TKPanedWindow.setHandlePad(Value: integer);
@@ -1563,8 +1581,8 @@ begin
           else y:= yold + RowHeightI;
         dec(RowHeightRest);
         key:= RBName(line) + '.place';
-        setAttributValue(key, key + '(x=' + IntToStr(x) + ', y=' + IntToStr(y) +
-          ', width=' + IntToStr(ColWidthI) + ', height=' + IntToStr(RowHeightI) + ')');
+        setAttributValue(key, key + '(x=' + IntToStr(PPIUnScale(x)) + ', y=' + IntToStr(PPIUnScale(y)) +
+          ', width=' + IntToStr(PPIUnScale(ColWidthI)) + ', height=' + IntToStr(PPIUnScale(RowHeightI)) + ')');
         inc(line);
         yold:= y;
       end;
@@ -1688,13 +1706,14 @@ begin
 end;
 
 procedure TKRadiobuttonGroup.Paint;
-  const Radius = 5;
+  const cRadius = 5;
   var ColumnWidth, RowWidth, RadioHeight, LabelHeight,
-      col, row, yc, ItemsInCol, line, x, y, th: integer;
+      col, row, yc, ItemsInCol, line, x, y, th, Radius: integer;
       R: TRect; s: string;
 begin
   FOldItems.Text:= FItems.Text;
   inherited;
+  Radius:= PPIScale(cRadius);
   Canvas.FillRect(ClientRect);
   th:= Canvas.TextHeight('Hg');
   LabelHeight:= 0;
@@ -1705,7 +1724,7 @@ begin
     LabelHeight:= th;
     RadioHeight:= Height - th;
     Canvas.Rectangle(R);
-    Canvas.Textout(10, 0, FLabel);
+    Canvas.Textout(PPIScale(10), 0, FLabel);
   end;
 
   if FItems.Count > 0 then begin
@@ -1715,11 +1734,11 @@ begin
     for col:= 1 to FColumns do begin
       ItemsInCol:= ItemsInColumn(col);
       for row:= 1 to ItemsInCol do begin
-        x:= 4 + (col - 1)*ColumnWidth;
+        x:= PPIScale(4) + (col - 1)*ColumnWidth;
         y:= LabelHeight + 2 + (row - 1)*RowWidth;
         Canvas.Brush.Color:= clWhite;
         if FCheckboxes then begin
-          R:= Rect(x, y + 6, x + 13, y + 19);
+          R:= Rect(x, y + PPIScale(6), x + PPIScale(13), y + PPIScale(19));
           Canvas.Rectangle(R);
         end else begin
           yc:= y + RowWidth div 2 - Radius;
@@ -1728,7 +1747,7 @@ begin
         Canvas.Brush.Color:= clBtnFace;
 
         yc:= y + RowWidth div 2 - th div 2;
-        R:= Rect(x + 19, yc, col*ColumnWidth, yc + RowWidth);
+        R:= Rect(x + PPIScale(19), yc, col*ColumnWidth, yc + RowWidth);
         s:= FItems[line];
         Canvas.TextRect(R, s);
         inc(line);

@@ -1057,15 +1057,4 @@ object CommandsDataModule: TCommandsDataModule
     Left = 484
     Top = 25
   end
-  object SynSpellCheck: TSynSpellCheck
-    AttributesChecked.Strings = (
-      'Comment'
-      'Text'
-      'String'
-      'Documentation')
-    CheckAsYouType = False
-    OnChange = SynSpellCheckChange
-    Left = 480
-    Top = 176
-  end
 end

@@ -150,13 +150,12 @@ procedure TFObjectGenerator.MoveOrSizeComponent(aPartner: TEditorForm; Control: 
   var Widget: TBaseWidget;
 begin
   if (aPartner = nil) or (Control is TFGUIForm) then exit;
-  if not (Control as TBaseWidget).Sizeable then begin
-    Control.Width:= PPIUnScale(33, Control.CurrentPPI);
-    Control.Height:= PPIUnScale(28, Control.CurrentPPI);
-    exit;
-  end;
   Widget:= Control as TBaseWidget;
-  Widget.SetPositionAndSize;
+  if not Widget.Sizeable then begin
+    Widget.Width:= Widget.PPIScale(33);
+    Widget.Height:= Widget.PPIScale(28);
+  end else
+    Widget.SetPositionAndSize;
 end;
 
 procedure TFObjectGenerator.ComponentToForeground(aPartner: TEditorForm; Control: TControl);
