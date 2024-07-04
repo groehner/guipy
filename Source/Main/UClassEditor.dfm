@@ -52,7 +52,7 @@ object FClassEditor: TFClassEditor
     Top = 10
     Width = 364
     Height = 435
-    ActivePage = TSMethods
+    ActivePage = TSAttributes
     TabOrder = 0
     OnChange = PageControlChange
     object TSClass: TTabSheet
@@ -461,21 +461,9 @@ object FClassEditor: TFClassEditor
           Top = 33
           Width = 18
           Height = 18
-          Glyph.Data = {
-            9E010000424D9E0100000000000036000000280000000B0000000A0000000100
-            18000000000068010000C40E0000C40E000000000000000000001C1CFF1C1CFF
-            1C1CFFE08050A050309048209048209048201C1CFF1C1CFF1C1CFF1CFFFF1C1C
-            FF1C1CFF1C1CFFE08050E08860D08050C070409048201C1CFF1C1CFF1C1CFF80
-            50FF1C1CFF1C1CFF1C1CFFE08050F0A880E08860D07850A048201C1CFF1C1CFF
-            1C1CFF9860FF1C1CFF1C1CFF1C1CFFE08050FFC0A0F09860E08860A050201C1C
-            FF1C1CFF1C1CFF5830FF1C1CFFE09870D07040D06830FFB090F09860F09860B0
-            5830A050209048201C1CFFC5BFFF1C1CFFE6D2C7E09870FFC0A0FFB090FFA070
-            F09060D07840A05030CEC5BF1C1CFF1CFFFF1C1CFF1C1CFFE6D1C6F0A070FFC0
-            A0FFB090E08860A05030D0C6C01C1CFF1C1CFFD1C6FF1C1CFF1C1CFF1C1CFFE4
-            D0C5F0A070FFC0A0A05830D1C8C21C1CFF1C1CFF1C1CFFA070FF1C1CFF1C1CFF
-            1C1CFF1C1CFFE3CFC4E09870D4C9C31C1CFF1C1CFF1C1CFF1C1CFFC9C3FF1C1C
-            FF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C
-            FFFF}
+          ImageIndex = 4
+          ImageName = '04'
+          Images = ILClassEditor
           OnClick = SBUpClick
         end
         object SBDelete: TSpeedButton
@@ -483,30 +471,9 @@ object FClassEditor: TFClassEditor
           Top = 60
           Width = 18
           Height = 19
-          Glyph.Data = {
-            DA020000424DDA0200000000000036000000280000000D0000000D0000000100
-            200000000000A402000000000000000000000000000000000000CC33FF00FFFF
-            FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33
-            FF00CC33FF00CC33FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00CC33FF00CC33
-            FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33
-            FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00CC33FF00CC33FF00CC33FF00CC33
-            FF00CC33FF00CC33FF00CC33FF00FFFFFF00CC33FF00CC33FF00FFFFFF00FFFF
-            FF00FFFFFF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00FFFF
-            FF00CC33FF00CC33FF00CC33FF00CC33FF00FFFFFF00FFFFFF00FFFFFF00CC33
-            FF00CC33FF00CC33FF00CC33FF00FFFFFF00FFFFFF00CC33FF00CC33FF00CC33
-            FF00CC33FF00CC33FF00FFFFFF00FFFFFF00FFFFFF00CC33FF00CC33FF00FFFF
-            FF00FFFFFF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33
-            FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00CC33FF00CC33FF00CC33
-            FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00FFFFFF00FFFF
-            FF00FFFFFF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33
-            FF00CC33FF00CC33FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00CC33
-            FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00FFFFFF00FFFF
-            FF00FFFFFF00CC33FF00CC33FF00FFFFFF00FFFFFF00CC33FF00CC33FF00CC33
-            FF00CC33FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00CC33FF00CC33FF00CC33
-            FF00CC33FF00FFFFFF00FFFFFF00CC33FF00CC33FF00FFFFFF00FFFFFF00FFFF
-            FF00FFFFFF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00FFFF
-            FF00FFFFFF00CC33FF00FFFFFF00FFFFFF00FFFFFF00CC33FF00CC33FF00CC33
-            FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00CC33FF00FFFFFF00}
+          ImageIndex = 1
+          ImageName = '01'
+          Images = ILClassEditor
           OnClick = SBDeleteClick
         end
         object SBDown: TSpeedButton
@@ -514,19 +481,9 @@ object FClassEditor: TFClassEditor
           Top = 90
           Width = 18
           Height = 18
-          Glyph.Data = {
-            7A010000424D7A0100000000000036000000280000000B000000090000000100
-            18000000000044010000C40E0000C40E000000000000000000001C1CFF1C1CFF
-            1C1CFF1C1CFFDED6D3B05830D4C9C31C1CFF1C1CFF1C1CFF1C1CFFD7D4FF1C1C
-            FF1C1CFF1C1CFFE0D7D4B05830C06840A05830D1C8C21C1CFF1C1CFF1C1CFF78
-            50FF1C1CFF1C1CFF1C1CFFB05830E08050E07850C06840A05030D0C6C01C1CFF
-            1C1CFF6840FF1C1CFF1C1CFFC07850F09870FFA070E08850D07850C06840A050
-            30CEC5BF1C1CFF6840FF1C1CFFF0A070E09870E09070FFA880F09060E08050A0
-            5030B06040B068401C1CFF1CFFFF1C1CFF1C1CFF1C1CFFD08860FFB080FF9060
-            F08850B060401C1CFF1C1CFF1C1CFF1CFFFF1C1CFF1C1CFF1C1CFFE09070FFC0
-            A0FFA880F09060B068401C1CFF1C1CFF1C1CFFC0A0FF1C1CFF1C1CFF1C1CFFE0
-            9870FFC0A0FFB890FFB090C070501C1CFF1C1CFF1C1CFFB090FF1C1CFF1C1CFF
-            1C1CFFF0A070E09870E09070D08860D088601C1CFF1C1CFF1C1CFF1CFFFF}
+          ImageIndex = 5
+          ImageName = '05'
+          Images = ILClassEditor
           OnClick = SBDownClick
         end
         object SBRight: TSpeedButton
@@ -534,24 +491,9 @@ object FClassEditor: TFClassEditor
           Top = 48
           Width = 18
           Height = 18
-          Glyph.Data = {
-            0A020000424D0A0200000000000036000000280000000B0000000D0000000100
-            180000000000D4010000C40E0000C40E000000000000000000001C1CFF1C1CFF
-            1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF9880FF1C1C
-            FF1C1CFF1C1CFF1C1CFF1C1CFF90B8A0CEDBD21C1CFF1C1CFF1C1CFF1C1CFFD0
-            CBFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF90A890809880C2D1CC1C1CFF1C1CFF
-            1C1CFF1CFFFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF80A090A0E0C0809880C1D0
-            CB1C1CFF1C1CFFC0A0FF1C1CFF90C0A090B8A090A89080A090809880B0E8C080
-            C890809880C0CFCA1C1CFFF0C0FF1C1CFF90B8A0B0F0D0B0F0C0B0E8C0A0E8C0
-            A0E0B070C09070B080809880BECDC9D0A0FF1C1CFF90A890B0F0C090E0B090D8
-            A080D0A070C09070B88060A870509060607860A870FF1C1CFF80A090B0E8C070
-            B08070A88060A07060987060A870407850202020A5ADAAAFABFF1C1CFF809880
-            202820303830304030404840509060407850202020A6AFAB1C1CFF1CFFFF1C1C
-            FF1C1CFF1C1CFF1C1CFF1C1CFF809080407850202020A8B0AC1C1CFF1C1CFF1C
-            FFFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF809080202020A4ACA91C1CFF1C1CFF
-            1C1CFF1CFFFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF809080C2C6C61C1CFF1C1C
-            FF1C1CFF1C1CFFC6C6FF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C
-            1CFF1C1CFF1C1CFF1C1CFF1CFFFF}
+          ImageIndex = 3
+          ImageName = '03'
+          Images = ILClassEditor
           OnClick = SBRightClick
         end
         object SBLeft: TSpeedButton
@@ -559,24 +501,9 @@ object FClassEditor: TFClassEditor
           Top = 80
           Width = 18
           Height = 18
-          Glyph.Data = {
-            0A020000424D0A0200000000000036000000280000000B0000000D0000000100
-            180000000000D4010000C40E0000C40E000000000000000000001C1CFF1C1CFF
-            1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF4030FF1C1C
-            FF1C1CFF1C1CFF1C1CFF1C1CFFC2C6C63038301C1CFF1C1CFF1C1CFF1C1CFF1C
-            FFFF1C1CFF1C1CFF1C1CFF1C1CFFC2C7C73040303040301C1CFF1C1CFF1C1CFF
-            1C1CFF2020FF1C1CFF1C1CFF1C1CFFC7CECE6078605080603040301C1CFF1C1C
-            FF1C1CFF1C1CFF1CFFFF1C1CFF1C1CFFC9D0D050605060987070A88040484030
-            4030303830202820202020A880FF1C1CFFBFC7C350685070A88090D8A070C090
-            60A880609870509060408050303830D8A0FF1C1CFF90B8A0C0F0D0B0F0C090E0
-            B090D8A080C89070B88060B070508860304030D8B0FF1C1CFFD2DED6A0D0B0C0
-            F8D0B0E8C090E0B0A0E0C0A0D8B090C8A090C090404840A090FF1C1CFF1C1CFF
-            D2DED5A0C8B0C0F8D0B0E8C040584090A89080A09080A0908098801CFFFF1C1C
-            FF1C1CFF1C1CFFD0DCD4A0C8B0C0F0D05058501C1CFF1C1CFF1C1CFF1C1CFF1C
-            FFFF1C1CFF1C1CFF1C1CFF1C1CFFCFDCD3A0C0A05070601C1CFF1C1CFF1C1CFF
-            1C1CFFDCD3FF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFFCEDAD2A0C0A01C1CFF1C1C
-            FF1C1CFF1C1CFFC0A0FF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C1CFF1C
-            1CFF1C1CFF1C1CFF1C1CFF1CFFFF}
+          ImageIndex = 2
+          ImageName = '02'
+          Images = ILClassEditor
           OnClick = SBLeftClick
         end
         object LParameterValue: TLabel
@@ -724,8 +651,8 @@ object FClassEditor: TFClassEditor
   end
   object ActionList: TActionList
     OnUpdate = ActionListUpdate
-    Left = 40
-    Top = 272
+    Left = 48
+    Top = 48
     object ActionNew: TAction
       Caption = '&New'
       ShortCut = 16462
@@ -746,5 +673,459 @@ object FClassEditor: TFClassEditor
       ShortCut = 16469
       OnExecute = ActionApplyExecute
     end
+  end
+  object ILClassEditor: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 0
+        CollectionName = '00'
+        Name = '00'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = '01'
+        Name = '01'
+      end
+      item
+        CollectionIndex = 2
+        CollectionName = '02'
+        Name = '02'
+      end
+      item
+        CollectionIndex = 3
+        CollectionName = '03'
+        Name = '03'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = '04'
+        Name = '04'
+      end
+      item
+        CollectionIndex = 5
+        CollectionName = '05'
+        Name = '05'
+      end>
+    ImageCollection = icClassEditor
+    Width = 18
+    Height = 18
+    Left = 144
+    Top = 48
+  end
+  object icClassEditor: TSVGIconImageCollection
+    SVGIconItems = <
+      item
+        IconName = '00'
+        SVGText = 
+          '<svg viewBox="0 -0.5 13 13" >'#13#10'<path stroke="#1e1e1e" d="M0 0h3M' +
+          '12 0h1M0 1h4M10 1h2M1 2h4M9 2h2M3 3h3M8 3h2M4 4h5M5 5h3M4 6h5M3 ' +
+          '7h3M8 7h2M2 8h3M9 8h2M1 9h3M10 9h1M0 10h4M11 10h1M0 11h3M1 12h1M' +
+          '12 12h1" />'#13#10'</svg>'
+      end
+      item
+        IconName = '01'
+        SVGText = 
+          '<svg viewBox="0 -0.5 13 13">'#13#10'<path stroke="#e1e1e1" d="M0 0h3M1' +
+          '2 0h1M0 1h4M10 1h2M1 2h4M9 2h2M3 3h3M8 3h2M4 4h5M5 5h3M4 6h5M3 7' +
+          'h3M8 7h2M2 8h3M9 8h2M1 9h3M10 9h1M0 10h4M11 10h1M0 11h3M1 12h1M1' +
+          '2 12h1" />'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = '02'
+        SVGText = 
+          '<svg viewBox="0 -0.5 13 13">'#13#10'<path stroke="#d0d8cc" d="M6 1h1" ' +
+          '/>'#13#10'<path stroke="#9ebe9e" d="M7 1h1M6 2h1" />'#13#10'<path stroke="#d' +
+          '1dbcd" d="M5 2h1" />'#13#10'<path stroke="#606f50" d="M7 2h1" />'#13#10'<pat' +
+          'h stroke="#d2dbce" d="M4 3h1" />'#13#10'<path stroke="#aec69e" d="M5 3' +
+          'h1M4 4h1" />'#13#10'<path stroke="#ceefbe" d="M6 3h1M3 6h1" />'#13#10'<path ' +
+          'stroke="#515850" d="M7 3h1" />'#13#10'<path stroke="#d3ddd0" d="M3 4h1' +
+          '" />'#13#10'<path stroke="#cef7be" d="M5 4h1M4 5h1" />'#13#10'<path stroke="' +
+          '#bee7ae" d="M6 4h1M5 5h1" />'#13#10'<path stroke="#425842" d="M7 4h1" ' +
+          '/>'#13#10'<path stroke="#8ea68e" d="M8 4h1" />'#13#10'<path stroke="#8e9e7e"' +
+          ' d="M9 4h2" />'#13#10'<path stroke="#7f967e" d="M11 4h1" />'#13#10'<path str' +
+          'oke="#d4ddd0" d="M2 5h1" />'#13#10'<path stroke="#aece9e" d="M3 5h1" /' +
+          '>'#13#10'<path stroke="#aedf8e" d="M6 5h1M5 6h1" />'#13#10'<path stroke="#be' +
+          'df9e" d="M7 5h1" />'#13#10'<path stroke="#aed69e" d="M8 5h1" />'#13#10'<path' +
+          ' stroke="#9ec68e" d="M9 5h1" />'#13#10'<path stroke="#8ebe8e" d="M10 5' +
+          'h1" />'#13#10'<path stroke="#424942" d="M11 5h1M7 8h1" />'#13#10'<path strok' +
+          'e="#9eb68e" d="M2 6h1" />'#13#10'<path stroke="#beefae" d="M4 6h1" />'#13 +
+          #10'<path stroke="#9ed68e" d="M6 6h1M5 7h1" />'#13#10'<path stroke="#8ec6' +
+          '7e" d="M7 6h1" />'#13#10'<path stroke="#7fb66f" d="M8 6h1" />'#13#10'<path s' +
+          'troke="#6fae60" d="M9 6h1" />'#13#10'<path stroke="#608650" d="M10 6h1' +
+          '" />'#13#10'<path stroke="#334233" d="M11 6h1M8 8h1M7 9h1M6 10h2" />'#13#10 +
+          '<path stroke="#c1c5bd" d="M2 7h1" />'#13#10'<path stroke="#516750" d="' +
+          'M3 7h1" />'#13#10'<path stroke="#7fa66f" d="M4 7h1M6 8h1" />'#13#10'<path st' +
+          'roke="#8ebe6f" d="M6 7h1" />'#13#10'<path stroke="#7fa660" d="M7 7h1" ' +
+          '/>'#13#10'<path stroke="#6f9660" d="M8 7h1M5 8h1" />'#13#10'<path stroke="#6' +
+          '08e50" d="M9 7h1" />'#13#10'<path stroke="#517e42" d="M10 7h1" />'#13#10'<pa' +
+          'th stroke="#333a33" d="M11 7h1M9 8h1M7 11h1" />'#13#10'<path stroke="#' +
+          'cecec7" d="M3 8h1" />'#13#10'<path stroke="#516050" d="M4 8h1" />'#13#10'<pa' +
+          'th stroke="#252c25" d="M10 8h1" />'#13#10'<path stroke="#252525" d="M1' +
+          '1 8h1" />'#13#10'<path stroke="#ccccc5" d="M4 9h1" />'#13#10'<path stroke="#' +
+          '607760" d="M5 9h1" />'#13#10'<path stroke="#607e50" d="M6 9h1" />'#13#10'<pa' +
+          'th stroke="#c5c5c0" d="M5 10h1" />'#13#10'<path stroke="#c4c4c0" d="M6' +
+          ' 11h1" />'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = '03'
+        SVGText = 
+          '<svg viewBox="0 -0.5 13 13">'#13#10'<path stroke="#7f8e7e" d="M6 1h1M6' +
+          ' 2h1M6 3h1" />'#13#10'<path stroke="#c4c4c0" d="M7 1h1" />'#13#10'<path stro' +
+          'ke="#252525" d="M7 2h1M8 3h1M9 4h1M10 5h1" />'#13#10'<path stroke="#a7' +
+          'aaa2" d="M8 2h1" />'#13#10'<path stroke="#517742" d="M7 3h1M8 4h1M9 5h' +
+          '1" />'#13#10'<path stroke="#aaaea6" d="M9 3h1" />'#13#10'<path stroke="#7f96' +
+          '7e" d="M2 4h1M10 7h1M6 8h1M9 8h1M8 9h1M7 10h1" />'#13#10'<path stroke=' +
+          '"#252c25" d="M3 4h1" />'#13#10'<path stroke="#333a33" d="M4 4h1" />'#13#10'<' +
+          'path stroke="#334233" d="M5 4h1" />'#13#10'<path stroke="#424942" d="M' +
+          '6 4h1" />'#13#10'<path stroke="#608e50" d="M7 4h1M10 6h1" />'#13#10'<path st' +
+          'roke="#a9ada4" d="M10 4h1" />'#13#10'<path stroke="#8e9e7e" d="M2 5h1M' +
+          '5 8h1M6 9h1" />'#13#10'<path stroke="#bee7ae" d="M3 5h1M5 7h1M7 8h1" /' +
+          '>'#13#10'<path stroke="#7fae6f" d="M4 5h1M9 7h1" />'#13#10'<path stroke="#7f' +
+          'a66f" d="M5 5h1" />'#13#10'<path stroke="#6f9e60" d="M6 5h1" />'#13#10'<path' +
+          ' stroke="#6f9660" d="M7 5h1" />'#13#10'<path stroke="#6fa660" d="M8 5h' +
+          '1M9 6h1" />'#13#10'<path stroke="#a8aba3" d="M11 5h1" />'#13#10'<path stroke' +
+          '="#8ea68e" d="M2 6h1M4 8h1M6 10h1" />'#13#10'<path stroke="#beefae" d=' +
+          '"M3 6h1M4 7h1" />'#13#10'<path stroke="#aedf8e" d="M4 6h1" />'#13#10'<path s' +
+          'troke="#9ed68e" d="M5 6h1" />'#13#10'<path stroke="#9ece7e" d="M6 6h1"' +
+          ' />'#13#10'<path stroke="#8ebe6f" d="M7 6h1M8 7h1" />'#13#10'<path stroke="#' +
+          '7fb66f" d="M8 6h1" />'#13#10'<path stroke="#607760" d="M11 6h1" />'#13#10'<p' +
+          'ath stroke="#9eb68e" d="M2 7h1M3 8h1M6 11h1" />'#13#10'<path stroke="#' +
+          'ceefae" d="M3 7h1" />'#13#10'<path stroke="#bee79e" d="M6 7h1" />'#13#10'<pa' +
+          'th stroke="#aedf9e" d="M7 7h1" />'#13#10'<path stroke="#c7cbbc" d="M11' +
+          ' 7h1" />'#13#10'<path stroke="#9ebe8e" d="M2 8h1" />'#13#10'<path stroke="#8' +
+          'ec67e" d="M8 8h1" />'#13#10'<path stroke="#c8cdbe" d="M10 8h1" />'#13#10'<pa' +
+          'th stroke="#bedf9e" d="M7 9h1" />'#13#10'<path stroke="#c9cebf" d="M9 ' +
+          '9h1" />'#13#10'<path stroke="#cacfc0" d="M8 10h1" />'#13#10'<path stroke="#d' +
+          '0d9cc" d="M7 11h1" />'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = '04'
+        SVGText = 
+          '<svg viewBox="0 -0.5 13 13">'#13#10'<path stroke="#c2cde2" d="M5 2h1" ' +
+          '/>'#13#10'<path stroke="#6f96df" d="M6 2h1M3 5h1M2 6h1" />'#13#10'<path stro' +
+          'ke="#c1c7d2" d="M7 2h1" />'#13#10'<path stroke="#c3cee3" d="M4 3h1" />' +
+          #13#10'<path stroke="#6f9eef" d="M5 3h1M4 4h1" />'#13#10'<path stroke="#9eb' +
+          'eff" d="M6 3h1M5 4h1M4 5h1M5 7h1" />'#13#10'<path stroke="#33589e" d="' +
+          'M7 3h1" />'#13#10'<path stroke="#c0c6cf" d="M8 3h1" />'#13#10'<path stroke="' +
+          '#c4cfe5" d="M3 4h1" />'#13#10'<path stroke="#8eaeff" d="M6 4h1M5 5h1M5' +
+          ' 6h1" />'#13#10'<path stroke="#6086df" d="M7 4h1M7 7h1M6 8h1M5 9h1" />' +
+          #13#10'<path stroke="#33509e" d="M8 4h1M9 5h1M5 10h1" />'#13#10'<path strok' +
+          'e="#bec4ce" d="M9 4h1" />'#13#10'<path stroke="#c5d0e5" d="M2 5h1" />'#13 +
+          #10'<path stroke="#6f9eff" d="M6 5h1" />'#13#10'<path stroke="#608eef" d=' +
+          '"M7 5h1" />'#13#10'<path stroke="#4277ce" d="M8 5h1" />'#13#10'<path stroke=' +
+          '"#bdc3cc" d="M10 5h1" />'#13#10'<path stroke="#426fce" d="M3 6h1" />'#13#10 +
+          '<path stroke="#3367ce" d="M4 6h1" />'#13#10'<path stroke="#6096ef" d="' +
+          'M6 6h2M6 7h1" />'#13#10'<path stroke="#3358ae" d="M8 6h1" />'#13#10'<path st' +
+          'roke="#25509e" d="M9 6h1M8 7h1" />'#13#10'<path stroke="#25498e" d="M1' +
+          '0 6h1M8 9h1M6 10h3" />'#13#10'<path stroke="#517edf" d="M4 7h1M4 8h1M4' +
+          ' 9h1M4 10h1" />'#13#10'<path stroke="#7fa6ef" d="M5 8h1" />'#13#10'<path str' +
+          'oke="#5177ce" d="M7 8h1" />'#13#10'<path stroke="#25499e" d="M8 8h1" /' +
+          '>'#13#10'<path stroke="#517ece" d="M6 9h1" />'#13#10'<path stroke="#426fbe" ' +
+          'd="M7 9h1" />'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = '05'
+        SVGText = 
+          '<svg viewBox="0 -0.5 13 13">'#13#10'<path stroke="#6f9eef" d="M4 2h1M2' +
+          ' 6h1" />'#13#10'<path stroke="#6f96df" d="M5 2h1M4 3h1M3 6h1" />'#13#10'<pat' +
+          'h stroke="#6f8edf" d="M6 2h1M4 4h1M4 6h1" />'#13#10'<path stroke="#608' +
+          '6ce" d="M7 2h2M4 5h1" />'#13#10'<path stroke="#9ebeff" d="M5 3h1M5 4h1' +
+          '" />'#13#10'<path stroke="#8eb6ff" d="M6 3h1" />'#13#10'<path stroke="#8eaef' +
+          'f" d="M7 3h1" />'#13#10'<path stroke="#516fbe" d="M8 3h1" />'#13#10'<path st' +
+          'roke="#7fa6ff" d="M6 4h1M5 6h1" />'#13#10'<path stroke="#608eef" d="M7' +
+          ' 4h1M6 6h1" />'#13#10'<path stroke="#4267ae" d="M8 4h1M10 6h1" />'#13#10'<pa' +
+          'th stroke="#7faeff" d="M5 5h1" />'#13#10'<path stroke="#608eff" d="M6 ' +
+          '5h1" />'#13#10'<path stroke="#5186ef" d="M7 5h1" />'#13#10'<path stroke="#42' +
+          '60ae" d="M8 5h1M9 6h1" />'#13#10'<path stroke="#517edf" d="M7 6h1M5 8h' +
+          '1" />'#13#10'<path stroke="#33509e" d="M8 6h1M9 7h1M8 8h1" />'#13#10'<path s' +
+          'troke="#5177be" d="M3 7h1" />'#13#10'<path stroke="#6f96ef" d="M4 7h1"' +
+          ' />'#13#10'<path stroke="#6f9eff" d="M5 7h1" />'#13#10'<path stroke="#5186df' +
+          '" d="M6 7h1" />'#13#10'<path stroke="#5177ce" d="M7 7h1" />'#13#10'<path str' +
+          'oke="#4267be" d="M8 7h1M7 8h1M6 9h1" />'#13#10'<path stroke="#bdc3cc" ' +
+          'd="M10 7h1" />'#13#10'<path stroke="#3358ae" d="M4 8h1M5 9h1M6 10h1" /' +
+          '>'#13#10'<path stroke="#5177df" d="M6 8h1" />'#13#10'<path stroke="#bec4ce" ' +
+          'd="M9 8h1" />'#13#10'<path stroke="#d2d5df" d="M4 9h1" />'#13#10'<path strok' +
+          'e="#33589e" d="M7 9h1" />'#13#10'<path stroke="#c0c6cf" d="M8 9h1" />'#13 +
+          #10'<path stroke="#d1d4dd" d="M5 10h1" />'#13#10'<path stroke="#c1c7d2" d' +
+          '="M7 10h1" />'#13#10'</svg>'#13#10
+      end>
+    Left = 240
+    Top = 48
+  end
+  object icClassTreeView: TSVGIconImageCollection
+    SVGIconItems = <
+      item
+        IconName = 'EditClass'
+        SVGText = 
+          '<svg viewBox="0 -0.5 16 16">'#10'<path stroke="#e1e1e1e1" d="M2 1h11' +
+          'M1 2h1M13 2h1M1 3h1M13 3h1M1 4h1M13 4h1M1 5h1M13 5h1M1 6h1M13 6h' +
+          '1M1 7h1M13 7h1M1 8h1M13 8h1M1 9h1M13 9h1M1 10h1M13 10h1M1 11h1M1' +
+          '3 11h1M1 12h1M13 12h1M2 13h12" />'#10'<path stroke="#8eb3dd" d="M2 2' +
+          'h11M2 3h1M2 4h1M2 5h1M2 6h1M2 7h1M2 8h1M2 9h1M2 10h1M2 11h1M2 12' +
+          'h1" />'#10'<path stroke="#408acc" d="M3 3h10M3 4h2M11 4h2M3 5h2M8 5h' +
+          '1M12 5h1M3 6h1M7 6h3M12 6h1M3 7h1M6 7h7M3 8h1M6 8h7M3 9h1M7 9h3M' +
+          '12 9h1M3 10h2M8 10h1M12 10h1M3 11h2M11 11h2M3 12h10" />'#10'<path st' +
+          'roke="#468dcd" d="M5 4h1M5 11h1" />'#10'<path stroke="#a0c5e6" d="M6' +
+          ' 4h1" />'#10'<path stroke="#f2f7fb" d="M7 4h2" />'#10'<path stroke="#cde' +
+          '1f1" d="M9 4h1M9 11h1" />'#10'<path stroke="#5497d1" d="M10 4h1M10 1' +
+          '1h1" />'#10'<path stroke="#c1d9ee" d="M5 5h1M5 10h1" />'#10'<path stroke' +
+          '="#b2d0ea" d="M6 5h1M6 10h1" />'#10'<path stroke="#488fce" d="M7 5h1' +
+          'M7 10h1" />'#10'<path stroke="#73aada" d="M9 5h1" />'#10'<path stroke="#' +
+          'e8f0f8" d="M10 5h1M10 10h1" />'#10'<path stroke="#438bcc" d="M11 5h1' +
+          '" />'#10'<path stroke="#609ed4" d="M4 6h1" />'#10'<path stroke="#f8fafc"' +
+          ' d="M5 6h1M5 9h1M7 11h2" />'#10'<path stroke="#4990ce" d="M6 6h1M6 9' +
+          'h1M11 10h1" />'#10'<path stroke="#70a8da" d="M10 6h1" />'#10'<path strok' +
+          'e="#5094d0" d="M11 6h1" />'#10'<path stroke="#7eb1dd" d="M4 7h1" />'#10 +
+          '<path stroke="#d0e3f2" d="M5 7h1M5 8h1" />'#10'<path stroke="#77acdb' +
+          '" d="M4 8h1" />'#10'<path stroke="#5d9cd4" d="M4 9h1" />'#10'<path strok' +
+          'e="#94bee3" d="M10 9h1" />'#10'<path stroke="#6da6d8" d="M11 9h1M9 1' +
+          '0h1" />'#10'<path stroke="#aacbe9" d="M6 11h1" />'#10'</svg>'
+      end
+      item
+        IconName = 'PrivateAttribute'
+        SVGText = 
+          '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#ca3636" d="M3 3h9M3' +
+          ' 4h1M3 5h1M3 6h1M3 7h1M3 8h1M3 9h1M3 10h1M3 11h1M3 12h1" />'#13#10'<pa' +
+          'th stroke="#973636" d="M12 3h1M12 4h1M12 5h1M12 6h1M12 7h1M12 8h' +
+          '1M12 9h1M12 10h1M12 11h1M4 12h9" />'#13#10'<path stroke="#fe6536" d="M' +
+          '4 4h8M4 5h8M4 6h8M4 7h1M11 7h1M4 8h1M11 8h1M4 9h8M4 10h8M4 11h8"' +
+          ' />'#13#10'<path stroke="#ffffff" d="M5 7h6M5 8h6" />'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'ProtectedAttribute'
+        SVGText = 
+          '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#ca3636" d="M3 3h9M3' +
+          ' 4h1M3 5h1M3 6h1M3 7h1M3 8h1M3 9h1M3 10h1M3 11h1M3 12h1" />'#13#10'<pa' +
+          'th stroke="#973636" d="M12 3h1M12 4h1M12 5h1M12 6h1M12 7h1M12 8h' +
+          '1M12 9h1M12 10h1M12 11h1M4 12h9" />'#13#10'<path stroke="#fe6536" d="M' +
+          '4 4h8M4 5h2M7 5h2M10 5h2M4 6h1M11 6h1M4 7h2M7 7h2M10 7h2M4 8h2M7' +
+          ' 8h2M10 8h2M4 9h1M11 9h1M4 10h2M7 10h2M10 10h2M4 11h8" />'#13#10'<path' +
+          ' stroke="#ffffff" d="M6 5h1M9 5h1M5 6h6M6 7h1M9 7h1M6 8h1M9 8h1M' +
+          '5 9h6M6 10h1M9 10h1" />'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'PublicAttribute'
+        SVGText = 
+          '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#ca3636" d="M3 3h9M3' +
+          ' 4h1M3 5h1M3 6h1M3 7h1M3 8h1M3 9h1M3 10h1M3 11h1M3 12h1" />'#13#10'<pa' +
+          'th stroke="#973636" d="M12 3h1M12 4h1M12 5h1M12 6h1M12 7h1M12 8h' +
+          '1M12 9h1M12 10h1M12 11h1M4 12h9" />'#13#10'<path stroke="#fe6536" d="M' +
+          '4 4h8M4 5h3M9 5h3M4 6h3M9 6h3M4 7h1M11 7h1M4 8h1M11 8h1M4 9h3M9 ' +
+          '9h3M4 10h3M9 10h3M4 11h8" />'#13#10'<path stroke="#ffffff" d="M7 5h2M7' +
+          ' 6h2M5 7h6M5 8h6M7 9h2M7 10h2" />'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'Class1'
+        SVGText = 
+          '<svg viewBox="0 0 16 16">'#13#10'  <circle cx="8" cy="8" r="7" fill="#' +
+          '3a7758"/>'#13#10'  <circle cx="8" cy="8" r="5.5" fill="#3b963a"/>'#13#10'  <' +
+          'path d="M 10.5, 5 C 8.5, 3, 4.5, 4, 4.5, 8 C 4.5, 12, 8.5, 13, 1' +
+          '0.5, 11" fill="none" stroke="white" stroke-width="1.5"/>'#13#10'</svg>' +
+          #13#10
+      end
+      item
+        IconName = 'PrivateMethod'
+        SVGText = 
+          '<svg viewBox="0 0 16 16">'#13#10'<circle cx="8" cy="8" r="7" fill="#3a' +
+          '7758"/>'#13#10'<circle cx="8" cy="8" r="5.5" fill="#3b963a"/> '#13#10'    <p' +
+          'olygon points="5,7.5 11,7.5 11,8.5 5,8.5 " fill="none" stroke="w' +
+          'hite" />'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'ProtectedMethod'
+        SVGText = 
+          '<svg viewBox="0 0 16 16">'#13#10'<circle cx="8" cy="8" r="7" fill="#3a' +
+          '7758"/>'#13#10'<circle cx="8" cy="8" r="5.5" fill="#3b963a"/> '#13#10'<path ' +
+          'stroke="white" d="M4.5 6 h7 M4.5 10 h7 M6 4.5 v7 M10 4.5 v7" />'#13 +
+          #10'</svg>'
+      end
+      item
+        IconName = 'PublicMethod'
+        SVGText = 
+          '<svg viewBox="0 0 16 16">'#13#10'<circle cx="8" cy="8" r="7" fill="#3a' +
+          '7758"/>'#13#10'<circle cx="8" cy="8" r="5.5" fill="#3b963a"/> '#13#10'    <p' +
+          'olygon points="5,7.5 11,7.5 11,8.5 5,8.5 " fill="none" stroke="w' +
+          'hite" />'#13#10'    <polygon points="7.5,5 8.5,5 8.5,11 7.5,11 " fill=' +
+          '"none" stroke="white" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'Attribute1'
+        SVGText = 
+          '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#d63a3a" d="M2 2h11M' +
+          '2 3h1M2 4h1M2 5h1M2 6h1M2 7h1M2 8h1M2 9h1M2 10h1M2 11h1M2 12h1M2' +
+          ' 13h1" />'#13#10'<path stroke="#963a3a" d="M13 2h1M13 3h1M13 4h1M13 5h' +
+          '1M13 6h1M13 7h1M13 8h1M13 9h1M13 10h1M13 11h1M13 12h1M3 13h11" /' +
+          '>'#13#10'<path stroke="#d6583a" d="M3 3h1M5 3h1M7 3h1M9 3h1M11 3h1M4 4' +
+          'h1M6 4h1M8 4h1M10 4h1M12 4h1M3 5h1M5 5h1M7 5h1M9 5h1M11 5h1M4 6h' +
+          '1M6 6h1M8 6h1M10 6h1M12 6h1M3 7h1M5 7h1M7 7h1M9 7h1M11 7h1M4 8h1' +
+          'M6 8h1M8 8h1M10 8h1M12 8h1M3 9h1M5 9h1M7 9h1M9 9h1M11 9h1M4 10h1' +
+          'M6 10h1M8 10h1M10 10h1M12 10h1M3 11h1M5 11h1M7 11h1M9 11h1M11 11' +
+          'h1M4 12h1M6 12h1M8 12h1M10 12h1M12 12h1" />'#13#10'<path stroke="#fe77' +
+          '3a" d="M4 3h1M6 3h1M8 3h1M10 3h1M12 3h1M3 4h1M5 4h1M7 4h1M9 4h1M' +
+          '11 4h1M4 5h1M6 5h1M8 5h1M10 5h1M12 5h1M3 6h1M5 6h1M7 6h1M9 6h1M1' +
+          '1 6h1M4 7h1M6 7h1M8 7h1M10 7h1M12 7h1M3 8h1M5 8h1M7 8h1M9 8h1M11' +
+          ' 8h1M4 9h1M6 9h1M8 9h1M10 9h1M12 9h1M3 10h1M5 10h1M7 10h1M9 10h1' +
+          'M11 10h1M4 11h1M6 11h1M8 11h1M10 11h1M12 11h1M3 12h1M5 12h1M7 12' +
+          'h1M9 12h1M11 12h1" />'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'Method'
+        SVGText = 
+          '<svg viewBox="0 0 16 16">'#13#10'<circle cx="8" cy="8" r="7" fill="#3a' +
+          '7758"/>'#13#10'<circle cx="8" cy="8" r="5.5" fill="#3b963a"/> '#13#10'</svg>' +
+          #13#10
+      end
+      item
+        IconName = 'ClassEdit'
+        SVGText = 
+          '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#95fff8" d="M2 1h11M' +
+          '1 2h1M13 2h1M1 3h1M13 3h1M1 4h1M13 4h1M1 5h1M13 5h1M1 6h1M13 6h1' +
+          'M1 7h1M13 7h1M1 8h1M13 8h1M1 9h1M13 9h1M1 10h1M13 10h1M1 11h1M13' +
+          ' 11h1M1 12h1M13 12h1M2 13h12" />'#13#10'<path stroke="#8eb3dd" d="M2 2' +
+          'h11M2 3h1M2 4h1M2 5h1M2 6h1M2 7h1M2 8h1M2 9h1M2 10h1M2 11h1M2 12' +
+          'h1" />'#13#10'<path stroke="#408acc" d="M3 3h10M3 4h2M11 4h2M3 5h2M8 5' +
+          'h1M12 5h1M3 6h1M7 6h3M12 6h1M3 7h1M6 7h7M3 8h1M6 8h7M3 9h1M7 9h3' +
+          'M12 9h1M3 10h2M8 10h1M12 10h1M3 11h2M11 11h2M3 12h10" />'#13#10'<path ' +
+          'stroke="#468dcd" d="M5 4h1M5 11h1" />'#13#10'<path stroke="#a0c5e6" d=' +
+          '"M6 4h1" />'#13#10'<path stroke="#f2f7fb" d="M7 4h1" />'#13#10'<path stroke=' +
+          '"#cde1f1" d="M8 4h2M8 11h2" />'#13#10'<path stroke="#5497d1" d="M10 4h' +
+          '1M10 11h1" />'#13#10'<path stroke="#c1d9ee" d="M5 5h1M5 10h1" />'#13#10'<pat' +
+          'h stroke="#b2d0ea" d="M6 5h1M6 10h1" />'#13#10'<path stroke="#488fce" ' +
+          'd="M7 5h1M7 10h1" />'#13#10'<path stroke="#73aada" d="M9 5h1" />'#13#10'<pat' +
+          'h stroke="#e8f0f8" d="M10 5h1M10 10h1" />'#13#10'<path stroke="#438bcc' +
+          '" d="M11 5h1" />'#13#10'<path stroke="#609ed4" d="M4 6h1" />'#13#10'<path st' +
+          'roke="#f8fafc" d="M5 6h1M5 9h1M7 11h1" />'#13#10'<path stroke="#4990ce' +
+          '" d="M6 6h1M6 9h1M11 10h1" />'#13#10'<path stroke="#70a8da" d="M10 6h1' +
+          '" />'#13#10'<path stroke="#5094d0" d="M11 6h1" />'#13#10'<path stroke="#7eb1' +
+          'dd" d="M4 7h1" />'#13#10'<path stroke="#d0e3f2" d="M5 7h1M5 8h1" />'#13#10'<' +
+          'path stroke="#77acdb" d="M4 8h1" />'#13#10'<path stroke="#5d9cd4" d="M' +
+          '4 9h1" />'#13#10'<path stroke="#94bee3" d="M10 9h1" />'#13#10'<path stroke="' +
+          '#6da6d8" d="M11 9h1M9 10h1" />'#13#10'<path stroke="#aacbe9" d="M6 11h' +
+          '1" />'#13#10'</svg>'#13#10
+      end>
+    Left = 256
+    Top = 136
+  end
+  object vilTreeViewLight: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 0
+        CollectionName = 'EditClass'
+        Name = 'ClassEdit'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = 'PrivateAttribute'
+        Name = 'PrivateAttribute'
+      end
+      item
+        CollectionIndex = 2
+        CollectionName = 'ProtectedAttribute'
+        Name = 'ProtectedAttribute'
+      end
+      item
+        CollectionIndex = 3
+        CollectionName = 'PublicAttribute'
+        Name = 'PublicAttribute'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = 'Class1'
+        Name = 'Class1'
+      end
+      item
+        CollectionIndex = 5
+        CollectionName = 'PrivateMethod'
+        Name = 'PrivateMethod'
+      end
+      item
+        CollectionIndex = 6
+        CollectionName = 'ProtectedMethod'
+        Name = 'ProtectedMethod'
+      end
+      item
+        CollectionIndex = 7
+        CollectionName = 'PublicMethod'
+        Name = 'PublicMethod'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = 'Attribute1'
+        Name = 'Attribute1'
+      end
+      item
+        CollectionIndex = 9
+        CollectionName = 'Method'
+        Name = 'Method'
+      end
+      item
+        CollectionIndex = 10
+        CollectionName = 'ClassEdit'
+        Name = 'Local'
+      end>
+    ImageCollection = icClassTreeView
+    Left = 48
+    Top = 136
+  end
+  object vilTreeViewDark: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 10
+        CollectionName = 'ClassEdit'
+        Name = 'ClassEdit'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = 'PrivateAttribute'
+        Name = 'PrivateAttribute'
+      end
+      item
+        CollectionIndex = 2
+        CollectionName = 'ProtectedAttribute'
+        Name = 'ProtectedAttribute'
+      end
+      item
+        CollectionIndex = 3
+        CollectionName = 'PublicAttribute'
+        Name = 'PublicAttribute'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = 'Class1'
+        Name = 'Class1'
+      end
+      item
+        CollectionIndex = 5
+        CollectionName = 'PrivateMethod'
+        Name = 'PrivateMethod'
+      end
+      item
+        CollectionIndex = 6
+        CollectionName = 'ProtectedMethod'
+        Name = 'ProtectedMethod'
+      end
+      item
+        CollectionIndex = 7
+        CollectionName = 'PublicMethod'
+        Name = 'PublicMethod'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = 'Attribute1'
+        Name = 'Attribute1'
+      end
+      item
+        CollectionIndex = 9
+        CollectionName = 'Method'
+        Name = 'Method'
+      end
+      item
+        CollectionIndex = 10
+        CollectionName = 'ClassEdit'
+        Name = 'Local'
+      end>
+    ImageCollection = icClassTreeView
+    Left = 152
+    Top = 136
   end
 end

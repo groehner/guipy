@@ -5,7 +5,10 @@ interface
 uses
   System.Classes, System.ImageList, Vcl.ImgList,  Vcl.Menus, Controls, Forms,
   ComCtrls, JvAppStorage,
-  frmIDEDockWin, frmFile, TB2Item, SpTBXItem, Vcl.ExtCtrls;
+  frmIDEDockWin, frmFile, TB2Item, SpTBXItem, Vcl.ExtCtrls,
+  Vcl.VirtualImageList, Vcl.BaseImageCollection, SVGIconImageCollection,
+  VirtualTrees.BaseAncestorVCL, VirtualTrees.BaseTree, VirtualTrees.AncestorVCL,
+  VirtualTrees;
 
 type
   TInteger = class
@@ -15,13 +18,14 @@ type
   end;
 
   TFFileStructure = class(TIDEDockWindow, IJvAppStorageHandler)
-    TVFileStructure: TTreeView;
     PMFileStructure: TSpTBXPopupMenu;
     MIClose: TSpTBXItem;
     MIDefaultLayout: TSpTBXItem;
     MIFont: TSpTBXItem;
-    ILFileStructureLight: TImageList;
-    ILFileStructureDark: TImageList;
+    icFileStructure: TSVGIconImageCollection;
+    vilFileStructureLight: TVirtualImageList;
+    vilFileStructureDark: TVirtualImageList;
+    vilFileStructure: TVirtualStringTree;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -29,29 +33,33 @@ type
     procedure MIFontClick(Sender: TObject);
     procedure MIDefaulLayoutClick(Sender: TObject);
     procedure MICloseClick(Sender: TObject);
-    procedure TVFileStructureClick(Sender: TObject);
-    procedure TVFileStructureMouseDown(Sender: TObject; Button: TMouseButton;
+    procedure vilFileStructureGetText(Sender: TBaseVirtualTree;
+      Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
+      var CellText: string);
+    procedure vilFileStructureGetImageIndex(Sender: TBaseVirtualTree;
+      Node: PVirtualNode; Kind: TVTImageKind; Column: TColumnIndex;
+      var Ghosted: Boolean; var ImageIndex: TImageIndex);
+    procedure vilFileStructureFreeNode(Sender: TBaseVirtualTree;
+      Node: PVirtualNode);
+    procedure vilFileStructureClick(Sender: TObject);
+    procedure vilFileStructureMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure TVFileStructureKeyPress(Sender: TObject; var Key: Char);
+    procedure vilFileStructureKeyPress(Sender: TObject; var Key: Char);
   private
     locked: boolean;
     LockShowSelected: boolean;
     function DifferentItems(Items: TTreeNodes): boolean;
+    procedure NavigateToVilNode(Node: PVirtualNode;
+                ForceToMiddle : Boolean = True; Activate : Boolean = True);
   protected
-    // IJvAppStorageHandler implementation
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
     procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
   public
     myForm: TFileForm;
     procedure Init(Items: TTreeNodes; Form: TFileForm);
-    procedure Clear;
-    procedure ShowEditorCodeElement;
-    procedure NavigateToNodeElement(Node: TTreeNode;
-                ForceToMiddle : Boolean = True; Activate : Boolean = True);
-    procedure ShowSelected;
+    procedure ShowEditorCodeElement(Line: integer);
+    procedure Clear(Form: TFileForm);
     procedure ChangeStyle;
-   // procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;  ??
-   // procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
   end;
 
 var
@@ -63,8 +71,16 @@ implementation
 
 uses Math, Windows, Messages, SysUtils, Graphics, Dialogs,
      frmPyIDEMAin, frmEditor, JvDockControlForm, dmResources, uEditAppIntfs,
-     JvGnugettext, SynEdit, uCommonFunctions,
-     UUMLForm, UUtils, UImages, UGUIDesigner;
+     JvGnugettext, SynEdit, uCommonFunctions, VirtualTrees.Types,
+     UUMLForm, UUtils, UGUIDesigner;
+
+type
+  PMyRec = ^TMyRec;
+  TMyRec = record
+    LineNumber: Integer;
+    ImageIndex: Integer;
+    Caption: string;
+  end;
 
 constructor TInteger.create(aI: Integer);
 begin
@@ -87,9 +103,13 @@ begin
   visible:= false;
   locked:= false;
   LockShowSelected:= false;
-  myForm:= nil;
   TranslateComponent(Self);
+  myForm:= nil;
   ChangeStyle;
+
+  // Let the tree know how much data space we need.
+  vilFileStructure.NodeDataSize := SizeOf(TMyRec);
+  // used options: toShowTreeLines, toShowRoot
 end;
 
 procedure TFFileStructure.FormShow(Sender: TObject);
@@ -103,53 +123,105 @@ begin
   Action:= caHide;
 end;
 
+procedure TFFileStructure.Clear(Form: TFileForm);
+begin
+  if assigned(myForm) and (Form.Pathname = myForm.Pathname) then begin
+    vilFileStructure.Clear;
+    myForm:= nil;
+  end;
+end;
+
 procedure TFFileStructure.FormDestroy(Sender: TObject);
 begin
-  Clear;
+  vilFileStructure.Clear;
 end;
 
 procedure TFFileStructure.Init(items: TTreeNodes; Form: TFileForm);
-  var i: Integer;
+  var vilChildNode, vilClassNode: PVirtualNode;
+      ClassNode, MethodNode: TTreeNode;
+      Data: PMyRec;
 begin
   myForm:= Form;
   if DifferentItems(Items) then begin
-    TVFileStructure.Items.BeginUpdate;
-    for i:= 0 to TVFileStructure.Items.Count - 1 do
-      FreeAndNil(TVFileStructure.Items[i].Data);
-    TVFileStructure.Items.Clear;
-    TVFileStructure.Items.Assign(Items);
-    for i:= 0 to TVFileStructure.Items.Count - 1 do
-      TVFileStructure.Items[i].Data:= TInteger.create(TInteger(Items[i].Data).i);
-    TVFileStructure.FullExpand;
-    TVFileStructure.HideSelection:= false;
-    TVFileStructure.Items.EndUpdate;
-    Form.SetFocus;
+    vilFileStructure.BeginUpdate;
+    vilFileStructure.Clear;
+    ClassNode:= Items.GetFirstNode;
+    while assigned(ClassNode) do begin
+      vilClassNode:= vilFileStructure.AddChild(vilFileStructure.RootNode);
+      Data:= vilFileStructure.GetNodeData(vilClassNode);
+      Data.LineNumber:= TInteger(ClassNode.Data).i;
+      Data.ImageIndex:= ClassNode.ImageIndex;
+      Data.Caption:= ClassNode.Text;
+      vilFileStructure.ValidateNode(vilClassNode, False);
+      MethodNode:= ClassNode.getFirstChild;
+      while assigned(MethodNode)  do begin
+        vilChildNode := vilFileStructure.AddChild(vilClassNode);
+        Data := vilFileStructure.GetNodeData(vilChildNode);
+        Data.LineNumber:= TInteger(MethodNode.Data).i;
+        Data.ImageIndex:= MethodNode.ImageIndex;
+        Data.Caption:= MethodNode.Text;
+        vilFileStructure.ValidateNode(vilChildNode, False);
+        MethodNode:= MethodNode.getNextSibling;
+      end;
+      ClassNode:= ClassNode.getNextSibling;
+    end;
+    vilFileStructure.EndUpdate;
+    vilFileStructure.FullExpand;
   end;
+end;
+
+procedure TFFileStructure.vilFileStructureFreeNode(Sender: TBaseVirtualTree;
+  Node: PVirtualNode);
+  var Data: PMyRec;
+begin
+  Data := Sender.GetNodeData(Node);
+  Finalize(Data^);
+end;
+
+procedure TFFileStructure.vilFileStructureGetImageIndex(
+  Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
+  Column: TColumnIndex; var Ghosted: Boolean; var ImageIndex: TImageIndex);
+  var Data: PMyRec;
+begin
+  if Kind in [ikNormal, ikSelected] then begin
+    Data := Sender.GetNodeData(Node);
+    ImageIndex:= Data.ImageIndex;
+  end else
+    ImageIndex:= -1;
+end;
+
+procedure TFFileStructure.vilFileStructureGetText(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
+  var CellText: string);
+  var Data: PMyRec;
+begin
+  if TextType = ttNormal then begin
+    Data := Sender.GetNodeData(Node);
+    Celltext:= Data.Caption;
+  end;
+end;
+
+procedure TFFileStructure.vilFileStructureMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if Button = mbRight then
+    PMFileStructure.Popup(X + (Sender as TVirtualStringTree).ClientOrigin.X - 40,
+                          Y + (Sender as TVirtualStringTree).ClientOrigin.Y - 5);
 end;
 
 function TFFileStructure.DifferentItems(Items: TTreeNodes): boolean;
-  var i: integer;
+  var i: integer; Data: PMyRec;
 begin
-  if TVFileStructure.Items.Count <> Items.Count then
+  if vilFileStructure.TotalCount <> Items.Count then
     Exit(true);
-  for i:= 0 to TVFileStructure.Items.Count - 1 do
-    if TVFileStructure.Items[i].Text <> Items[i].Text then
+  i:= -1;
+  for var Node in vilFileStructure.Nodes() do begin
+    inc(i);
+    Data := vilFileStructure.GetNodeData(Node);
+    if Data.Caption <> Items[i].Text then
       Exit(true);
-  for i:= 0 to TVFileStructure.Items.Count - 1 do
-    TInteger(TVFileStructure.Items[i].Data).i:=
-      TInteger(Items[i].Data).i;
-  Result:= false;
-end;
-
-procedure TFFileStructure.Clear;
-begin
-  if assigned(TVFileStructure) then begin
-    TVFileStructure.Items.BeginUpdate;
-    for var i:= TVFileStructure.Items.Count - 1 downto 0 do
-      FreeAndNil(TVFileStructure.Items[i].Data);
-    TVFileStructure.Items.Clear;
-    TVFileStructure.Items.EndUpdate;
   end;
+  Result:= false;
 end;
 
 procedure TFFileStructure.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
@@ -165,14 +237,14 @@ procedure TFFileStructure.ReadFromAppStorage(
   AppStorage: TJvCustomAppStorage; const BasePath: string);
 begin
   AppStorage.ReadPersistent(BasePath + '\Font', Font);
-  TVFilestructure.Font.Size:= PPIScale(Font.Size);
+  vilFilestructure.Font.Size:= PPIScale(Font.Size);
 end;
 
 procedure TFFileStructure.MIFontClick(Sender: TObject);
 begin
-  ResourcesDataModule.dlgFontDialog.Font.Assign(TVFilestructure.Font);
+  ResourcesDataModule.dlgFontDialog.Font.Assign(vilFilestructure.Font);
   if ResourcesDataModule.dlgFontDialog.Execute then
-    TVFilestructure.Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
+    vilFilestructure.Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
 end;
 
 procedure TFFileStructure.MIDefaulLayoutClick(Sender: TObject);
@@ -185,63 +257,53 @@ begin
   HideDockForm(Self);
 end;
 
-procedure TFFileStructure.TVFileStructureClick(Sender: TObject);
-  var attri: string;
-      Node: TTreeNode;
+procedure TFFileStructure.vilFileStructureClick(Sender: TObject);
+  var Data: PMyRec;
 begin
   if locked then begin
     locked:= false;
     exit;
   end;
-  with TVFileStructure.ScreenToClient(Mouse.CursorPos) do
-    Node := TVFileStructure.GetNodeAt(X, Y);
+  var Node:= vilFileStructure.GetFirstSelected();
   if Node = nil then
     Exit;
-  NavigateToNodeElement(TVFileStructure.Selected);
-  SendMessage(TVFileStructure.Handle, WM_HSCROLL, SB_PAGELEFT, 0);
-  Delete(attri, 1, Pos(' ', attri));
+  NavigateToVilNode(Node);
 
+  Data := vilFileStructure.GetNodeData(Node);
+  var attri:= Data.Caption;
+  Delete(attri, 1, Pos(' ', attri));
   if (Pos('(', attri) = 0) and assigned(FGuiDesigner.ELDesigner) then // methods can't be selected
     FGuiDesigner.ELDesigner.SelectControl(attri);
 end;
 
-procedure TFFileStructure.TVFileStructureKeyPress(Sender: TObject;
+procedure TFFileStructure.vilFileStructureKeyPress(Sender: TObject;
   var Key: Char);
 begin
   if Key = Char(VK_Return) then
-    NavigateToNodeElement(TVFileStructure.Selected);
+    NavigateToVilNode(vilFileStructure.GetFirstSelected());
 end;
 
-procedure TFFileStructure.ShowEditorCodeElement;
-  var Line, i, Nr, PrevIndex: integer; aInteger: TInteger;
+procedure TFFileStructure.ShowEditorCodeElement(Line: integer);
+  var Data: PMyRec; Node, FoundNode: PVirtualNode;
 begin
-  PrevIndex:= 0;
-  if Assigned(myForm) and (myForm is TEditorForm) then begin
-    Line:= (myForm as TEditorForm).ActiveSynEdit.CaretY;
-    Nr:= -1;
-    for i:= 0 to TVFileStructure.Items.Count - 1 do begin
-      aInteger:= TInteger(TVFileStructure.Items[i].Data);
-      if aInteger.i = Line then
-        Nr:= i
-      else if TVFileStructure.Items[i].ImageIndex in [2..5] then
-        continue
-      else if aInteger.i > Line then
-        Nr:= PrevIndex
-      else
-        PrevIndex:= i;
-      if Nr > - 1 then
-        break;
-    end;
-    if Nr = -1 then
-      Nr:= TVFileStructure.Items.Count - 1;
-    if (Nr > -1) and (Nr < TVFileStructure.Items.Count) and
-      not TVFileStructure.Items[Nr].Selected then
-        TVFileStructure.Items[Nr].Selected:= true;
-    ShowSelected;
+  FoundNode:= nil;
+  for Node in vilFileStructure.Nodes() do begin
+    Data := vilFileStructure.GetNodeData(Node);
+    if Data.LineNumber = Line then begin
+      FoundNode:= Node;
+      break;
+    end else if Data.ImageIndex in [1..3] then
+      continue
+    else if Data.LineNumber > Line then
+      break
+    else
+      FoundNode:= Node;
   end;
+  if Assigned(FoundNode) then
+    vilFileStructure.Selected[FoundNode]:= true;
 end;
 
-procedure TFFileStructure.NavigateToNodeElement(Node: TTreeNode;
+procedure TFFileStructure.NavigateToVilNode(Node: PVirtualNode;
             ForceToMiddle : Boolean = True; Activate : Boolean = True);
 var
   i, aNodeLine: integer;
@@ -250,6 +312,7 @@ var
   aEditor: IEditor;
   isWrapping: boolean;
   Files: TStringList;
+  Data: PMyRec;
 
   function BufferCoord(AChar, ALine: Integer): TBufferCoord;
   begin
@@ -258,13 +321,12 @@ var
   end;
 
 begin
+  if Node = nil then exit;
+  Data:= vilFileStructure.GetNodeData(Node);
+  aNodeLine:= Data.LineNumber;
+  aNodeText:= Data.Caption;
   EditForm:= nil;
   isWrapping:= false;
-  if Assigned(Node) then begin
-    aNodeLine:= TInteger(Node.Data).i;
-    aNodeText:= Node.Text;
-  end else
-    exit;
 
   if Assigned(myForm) then begin
     if myForm.fFile.GetFileKind = fkEditor then
@@ -272,9 +334,10 @@ begin
     else if myForm.fFile.GetFileKind = fkUML then begin
       locked:= true;
       Files:= (myForm as TFUMLForm).MainModul.Model.ModelRoot.Files;
-      while Node.Parent <> nil do
-        Node:= Node.Parent;
-      aClassname:= WithoutGeneric(Node.Text);
+      while vilFileStructure.NodeParent[Node] <> nil do
+        Node:= vilFileStructure.NodeParent[Node];
+      Data:= vilFileStructure.GetNodeData(Node);
+      aClassname:= WithoutGeneric(Data.Caption);
       i:= 0;
       while i < Files.Count do begin
         aEditor:= GI_EditorFactory.GetEditorByFileId(Files[i]);
@@ -308,30 +371,11 @@ begin
   end;
 end;
 
-procedure TFFileStructure.TVFileStructureMouseDown(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-  if Button = mbRight then
-    PMFileStructure.Popup(X+(Sender as TTreeView).ClientOrigin.X-40, Y+(Sender as TTreeView).ClientOrigin.Y-5);
-end;
-
 procedure TFFileStructure.ChangeStyle;
 begin
   if IsStyledWindowsColorDark
-    then TVFileStructure.Images:= ILFileStructureDark
-    else TVFileStructure.Images:= ILFileStructureLight;
-end;
-
-procedure TFFileStructure.ShowSelected;
-begin
-  if assigned(TVFileStructure.Selected) and not TVFileStructure.Selected.isVisible
-    and not LockShowSelected
-  then begin
-    LockFormUpdate(Self);
-    TVFileStructure.Selected.MakeVisible;
-    SendMessage(TVFileStructure.Handle, WM_HSCROLL, SB_PAGELEFT, 0);
-    UnLockFormUpdate(Self);
-  end;
+    then vilFileStructure.Images:= vilFileStructureDark
+    else vilFileStructure.Images:= vilFileStructureLight;
 end;
 
 end.

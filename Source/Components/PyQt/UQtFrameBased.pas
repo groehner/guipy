@@ -1126,8 +1126,9 @@ procedure TQtLCDNumber.Paint;
 begin
   inherited;
   // SegmentStyle
+  Canvas.Pen.Color:= $7A7A7A;
   Canvas.Brush.Color:= clBtnFace;
-  Canvas.FillRect(ClientRect);
+  Canvas.Rectangle(ClientRect);
   case FSegmentStyle of
     Flat: begin
             Canvas.Pen.Color:= clLtGray;

@@ -40,13 +40,19 @@ inherited WatchesWindow: TWatchesWindow
     72FFCF9971FFCE986FFFCB956EFFC9936BFFC39679F4A670516B000000000000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
+  ExplicitWidth = 768
+  ExplicitHeight = 256
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 760
     Height = 229
+    ExplicitWidth = 752
+    ExplicitHeight = 217
     inherited FGPanel: TPanel
       Width = 756
       Height = 225
+      ExplicitWidth = 748
+      ExplicitHeight = 213
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -54,6 +60,8 @@ inherited WatchesWindow: TWatchesWindow
         Height = 225
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 748
+        ExplicitHeight = 213
         object WatchesView: TVirtualStringTree
           Left = 1
           Top = 1

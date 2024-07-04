@@ -131,6 +131,7 @@ type
     procedure EndOfResizeMoveDetected(var Msg: Tmessage); message WM_EXITSIZEMOVE;
     procedure Paint; override;
     procedure Zoom(_in: boolean);
+    procedure Scale(NewPPI, OldPPI: integer);
   published
     property AlwaysOnTop: boolean read FAlwaysOnTop write FAlwaysOnTop;
     property Background: TColor read getBackground write setBackground;
@@ -373,6 +374,7 @@ end;
 procedure TFGUIForm.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
   NewDPI: Integer);
 begin
+  FGUIDesigner.ScaleImages;
   Invalidate;
   SetGridOptions;
 end;
@@ -627,6 +629,31 @@ begin
   for var i:= 0 to ComponentCount - 1 do
     if Components[i] is TBaseWidget then
       (Components[i] as TBaseWidget).Zoom(_in);
+end;
+
+type
+  TControlClass = class(TControl);
+
+procedure TFGuiForm.Scale(NewPPI, OldPPI: integer);
+begin
+  if NewPPI = OldPPI then
+    exit;
+  FIScaling := True;
+  try
+    // Gui files are stored for 96 dpi
+    ScaleScrollBars(NewPPI, OldPPI);
+    ScaleConstraints(NewPPI, OldPPI);
+    ClientWidth := MulDiv(ClientWidth, NewPPI, OldPPI);
+    ClientHeight := MulDiv(ClientHeight, NewPPI, OldPPI);
+    for var I := 0 to ComponentCount - 1 do
+      if Components[I] is TControl then
+        TControlClass(Components[I]).ChangeScale(NewPPI, OldPPI, True);
+    if not ParentFont then
+      Font.Height := MulDiv(Font.Height, NewPPI, OldPPI);
+    Realign;
+  finally
+    FIScaling := False;
+  end;
 end;
 
 end.

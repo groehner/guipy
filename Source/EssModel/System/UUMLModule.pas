@@ -33,14 +33,12 @@ type
     procedure SaveDiagramActionExecute(Sender: TObject);
     function OpenFolderActionExecute(Sender: TObject): boolean;
   private
-    { Private declarations }
     FModel   : TObjectModel;
     FDiagram : TDiagramIntegrator;  // TRtfdDiagram is descendent of TDiagramIntegrator
     Feedback : IEldeanFeedback;
     SD: TSaveDialog;
     OD: TOpenDialog;
   public
-    { Public declarations }
     property Diagram: TDiagramIntegrator read FDiagram;
     property Model: TObjectModel read FModel;
 
@@ -169,6 +167,7 @@ begin
        assigned(FModel.ModelRoot.Files) and (FModel.ModelRoot.Files.Text = '') then begin
       LoadProject(Filename);
       FDiagram.ResolveAssociations;
+      FDiagram.ResolveObjectAssociations;
       exit;
     end;
   except
@@ -193,6 +192,7 @@ begin
       try
         Imp.AddFileToModel(FileName);
         FDiagram.ResolveAssociations;
+        FDiagram.ResolveObjectAssociations;
       finally
         FreeAndNil(Imp);
       end;

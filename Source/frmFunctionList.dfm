@@ -7,9 +7,8 @@ inherited FunctionListWindow: TFunctionListWindow
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSizeable
   Caption = 'Function List'
-  ClientHeight = 316
-  ClientWidth = 532
-  ParentFont = False
+  ClientHeight = 315
+  ClientWidth = 528
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000040040000000000000000000000000000000000000000
@@ -58,12 +57,10 @@ inherited FunctionListWindow: TFunctionListWindow
   object pnHolder: TPanel
     Left = 0
     Top = 73
-    Width = 532
-    Height = 218
+    Width = 528
+    Height = 217
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 528
-    ExplicitHeight = 217
     object lvProcs: TListView
       Left = 1
       Top = 1
@@ -98,14 +95,13 @@ inherited FunctionListWindow: TFunctionListWindow
   object pnlHeader: TPanel
     Left = 0
     Top = 30
-    Width = 532
+    Width = 528
     Height = 43
     Align = alTop
     ParentShowHint = False
     ShowHint = True
     TabOrder = 1
     OnResize = pnlHeaderResize
-    ExplicitWidth = 528
     object pnlHeaderLeft: TPanel
       AlignWithMargins = True
       Left = 4
@@ -169,11 +165,10 @@ inherited FunctionListWindow: TFunctionListWindow
   object ToolBarDock: TSpTBXDock
     Left = 0
     Top = 0
-    Width = 532
+    Width = 528
     Height = 30
     AllowDrag = False
     LimitToOneRow = True
-    ExplicitWidth = 528
     object Toolbar: TSpTBXToolbar
       Left = 0
       Top = 0
@@ -214,14 +209,12 @@ inherited FunctionListWindow: TFunctionListWindow
   end
   object StatusBar: TSpTBXStatusBar
     Left = 0
-    Top = 291
-    Width = 532
+    Top = 290
+    Width = 528
     Height = 25
     ParentShowHint = False
     ShowHint = True
     SizeGrip = False
-    ExplicitTop = 290
-    ExplicitWidth = 528
     object LeftStatusLabel: TSpTBXLabelItem
       Wrapping = twEndEllipsis
       Options = [tboShowHint]
@@ -229,7 +222,7 @@ inherited FunctionListWindow: TFunctionListWindow
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 510
+      CustomWidth = 0
     end
     object SpTBXSeparatorItem5: TSpTBXSeparatorItem
     end

@@ -206,7 +206,7 @@ end;
 procedure TKWidget.Paint;
 begin
   if (Relief <> _TR_flat) and not TryStrToInt(BorderWidth, BorderWidthInt) then
-    BorderWidthInt:= 2;
+    BorderWidthInt:= PPIScale(2);
   inherited;
 end;
 

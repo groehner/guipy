@@ -9,7 +9,7 @@
 // Author:          Angus Johnson - angusj-AT-myrealbox-DOT-com
 // Lizenz:          Freeware - http://www.angusj.com/delphi/textdiff.html
 // Copyright:       © 2003-2004 Angus Johnson
-//                  © 2006-2022 Gerhard Röhner                                  .
+//                  © 2006-2024 Gerhard Röhner                                  .
 // -----------------------------------------------------------------------------
 
 interface
@@ -18,7 +18,8 @@ uses
   Windows, Messages, Graphics, Controls, Forms, ExtCtrls, ComCtrls,
   frmFile, UDiff, USynEditExDiff, SynEditTextBuffer,
   ToolWin, SpTBXSkins, SynEdit, uEditAppIntfs, frmEditor,
-  TB2Item, SpTBXItem, Vcl.Menus, System.ImageList, Vcl.ImgList, System.Classes;
+  TB2Item, SpTBXItem, Vcl.Menus, System.ImageList, Vcl.ImgList, System.Classes,
+  Vcl.BaseImageCollection, SVGIconImageCollection, Vcl.VirtualImageList;
 
 type
 
@@ -44,7 +45,6 @@ type
     TBIgnoreCase: TToolButton;
     TBIgnoreBlanks: TToolButton;
     TBParagraph: TToolButton;
-    StatusBar: TStatusBar;
     PopUpEditor: TSpTBXPopupMenu;
     MIClose: TSpTBXItem;
     MIPaste: TSpTBXItem;
@@ -53,6 +53,20 @@ type
     SpTBXSeparatorItem1: TSpTBXSeparatorItem;
     MIRedo: TSpTBXItem;
     MIUndo: TSpTBXItem;
+    StatusBar: TSpTBXStatusBar;
+    liLineColumn: TSpTBXLabelItem;
+    liModifiedProtected: TSpTBXLabelItem;
+    liInsOvr: TSpTBXLabelItem;
+    liEncoding: TSpTBXLabelItem;
+    liAdded: TSpTBXLabelItem;
+    liModified: TSpTBXLabelItem;
+    liDeleted: TSpTBXLabelItem;
+    liDifferences: TSpTBXLabelItem;
+    vilTextDiffLight: TVirtualImageList;
+    vilTextDiffDark: TVirtualImageList;
+    icTextDiff: TSVGIconImageCollection;
+    TBZoomOut: TToolButton;
+    TBZoomIn: TToolButton;
     procedure FormCreate(Sender: TObject); override;
     procedure FormResize(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -77,28 +91,28 @@ type
     procedure MICloseClick(Sender: TObject);
     procedure MIUndoClick(Sender: TObject);
     procedure MIRedoClick(Sender: TObject);
-    procedure StatusBarDrawPanel(aStatusBar: TStatusBar; Panel: TStatusPanel;
-      const Rect: TRect);
+    procedure liDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRect;
+      ItemInfo: TSpTBXMenuItemInfo; const PaintStage: TSpTBXPaintStage;
+      var PaintDefault: Boolean);
+    procedure TBZoomOutClick(Sender: TObject);
+    procedure TBZoomInClick(Sender: TObject);
   private
     Diff: TDiff;
     fActiveSynEdit: TSynEdit;
     Lines1, Lines2: TSynEditStringList;
+    addClr, delClr, modClr, DefaultClr: TColor;
     CodeEdit1: TSynEditExDiff;
     CodeEdit2: TSynEditExDiff;
     OnlyDifferences: boolean;
-    addClr, delClr, modClr, DefaultClr: TColor;
     IgnoreBlanks: boolean;
     IgnoreCase: boolean;
-
     procedure DoCompare;
-    procedure DoLoadFile(const Filename: string; Nr: integer);
     procedure DoSaveFile(Nr: integer); reintroduce;
+    procedure DoLoadFile(const Filename: string; Nr: integer);
     procedure ChooseFiles(F1: TEditorForm);
+    procedure DisplayDiffs;
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
-    procedure DisplayDiffs;
-    procedure CalculateStatusBar;
-    procedure SetCurrentFontSize;
     procedure LinkScroll(IsLinked: boolean);
 
     procedure Undo;
@@ -153,7 +167,6 @@ uses SysUtils,
      StringResources,
      dmCommands,
      dmResources,
-     UImages,
      UConfiguration,
      UUtils,
      UHashUnit;
@@ -243,6 +256,20 @@ begin
   CanClose:= true;
 end;
 
+procedure TFTextDiff.New(F1, F2: TEditorForm);
+begin
+  Pathname:= Caption;
+  if assigned(F1) and assigned(F2) then
+    Open(F1.Pathname, F2.Pathname)
+  else begin
+    if assigned(F1) then
+      Open(F1.Pathname);
+    ChooseFiles(F1);
+  end;
+  DoCompare;
+  DoActivateFile;
+end;
+
 procedure TFTextDiff.SynEditEnter(Sender: TObject);
 begin
   inherited;
@@ -263,35 +290,6 @@ begin
   PyIDEMainForm.mnEditCopy.Action:= CommandsDataModule.actEditCopy;
   PyIDEMainForm.mnEditPaste.Action:= CommandsDataModule.actEditPaste;
   DoAssignInterfacePointer(False);
-end;
-
-procedure TFTextDiff.New(F1, F2: TEditorForm);
-begin
-  Pathname:= Caption;
-  if assigned(F1) and assigned(F2) then
-    Open(F1.Pathname, F2.Pathname)
-  else begin
-    if assigned(F1) then
-      Open(F1.Pathname);
-    ChooseFiles(F1);
-  end;
-  DoCompare;
-  DoActivateFile;
-end;
-
-procedure TFTextDiff.StatusBarDrawPanel(aStatusBar: TStatusBar;
-  Panel: TStatusPanel; const Rect: TRect);
-begin
-  inherited;
-  case Panel.Index of
-    4: aStatusBar.Canvas.Brush.Color := addClr;
-    5: aStatusBar.Canvas.Brush.Color := modClr;
-    6: aStatusBar.Canvas.Brush.Color := delClr;
-  else aStatusBar.Canvas.Brush.Color := clBtnFace;
-  end;
-  aStatusBar.Canvas.FillRect(Rect);
-  var h:= Canvas.TextHeight(Text);
-  aStatusBar.Canvas.TextOut(Rect.Left + 8, Rect.Top + (Rect.Height-h) div 2,Panel.Text);
 end;
 
 procedure TFTextDiff.TBDiffsOnlyClick(Sender: TObject);
@@ -349,7 +347,6 @@ begin
   if Nr = 1
     then CodeEdit1.Load(Lines1, Filename)
     else CodeEdit2.Load(Lines2, Filename);
-  CalculateStatusBar;
 end;
 
 procedure TFTextDiff.Open(const Filename1, Filename2: string);
@@ -360,7 +357,6 @@ begin
   LinkScroll(false);
   CodeEdit1.Load(Lines1, Filename1);
   CodeEdit2.Load(Lines2, Filename2);
-  CalculateStatusBar;
 end;
 
 procedure TFTextDiff.HorzSplitClick(Sender: TObject);
@@ -516,22 +512,14 @@ begin
 end;
 
 procedure TFTextDiff.ShowDiffState;
-  var s: string;
 begin
-  SetCurrentFontSize;
-  s:= format(_('%d lines added'), [Diff.DiffStats.adds]);
-  StatusBar.Panels[4].Width:= Canvas.TextWidth(s) + 20;
-  StatusBar.Panels[4].Text:= s;
-  s:= format(_('%d lines modified'), [Diff.DiffStats.modifies]);
-  StatusBar.Panels[5].Width:= Canvas.TextWidth(s) + 20;
-  StatusBar.Panels[5].Text:= s;
-  s:= format(_('%d lines deleted'), [Diff.DiffStats.deletes]);
-  StatusBar.Panels[6].Width:= Canvas.TextWidth(s) + 20;
-  StatusBar.Panels[6].Text:= s;
+  liAdded.Caption:= Format(' ' + _('%d lines added') + ' ', [Diff.DiffStats.adds]);
+  liModified.Caption:= Format(' ' + _('%d lines modified') + ' ', [Diff.DiffStats.modifies]);;
+  liDeleted.Caption:= Format(' ' + _('%d lines deleted') + ' ', [Diff.DiffStats.deletes]);
   with Diff.DiffStats do
-  if adds + modifies + deletes = 0
-    then StatusBar.Panels[7].Text:= _('No differences.')
-    else StatusBar.Panels[7].Text:= '';
+    if adds + modifies + deletes = 0
+      then liDifferences.Caption:= _('No differences.')
+      else liDifferences.Caption:= '';
 end;
 
 //Syncronise scrolling of both CodeEdits (once files are compared)...
@@ -758,9 +746,9 @@ end;
 
 procedure TFTextDiff.SetFont(aFont: TFont);
 begin
-  SetCurrentFontSize;
   CodeEdit1.Font.Assign(aFont);
   CodeEdit2.Font.Assign(aFont);
+  SetFontSize(0);
 end;
 
 procedure TFTextDiff.SetFontSize(Delta: integer);
@@ -768,8 +756,6 @@ procedure TFTextDiff.SetFontSize(Delta: integer);
 begin
   Size:= CodeEdit1.Font.Size + Delta;
   if Size < 6 then Size:= 6;
-  PCaptionLeft.Font.Size:= Size;
-  PCaptionRight.Font.Size:= Size;
   CodeEdit1.Font.Size:= Size;
   CodeEdit2.Font.Size:= Size;
   CodeEdit1.Gutter.Font.Size:= Size;
@@ -824,6 +810,16 @@ begin
   SyncScroll(GetCodeEdit, sbVertical);
 end;
 
+procedure TFTextDiff.TBZoomInClick(Sender: TObject);
+begin
+  SetFontSize(+1);
+end;
+
+procedure TFTextDiff.TBZoomOutClick(Sender: TObject);
+begin
+  SetFontSize(-1);
+end;
+
 procedure TFTextDiff.SetFilesCompared(Value: boolean);
 begin
   FilesCompared:= Value;
@@ -876,43 +872,6 @@ begin
   TBParagraph.Down:= (eoShowSpecialChars in Options);
 end;
 
-procedure TFTextDiff.SetCurrentFontSize; // after DPI change
-begin
-  StatusBar.Font.Assign(PyIDEMainForm.StatusBar.Font);
-  StatusBar.Font.Size:= PPIScale(StatusBar.Font.Size);
-  StatusBar.Canvas.Font.Assign(StatusBar.Font);
-  Canvas.Font.Assign(StatusBar.Font);
-  PCaptionLeft.Font.Assign(StatusBar.Font);
-  PCaptionRight.Font.Assign(StatusBar.Font);
-end;
-
-procedure TFTextDiff.CalculateStatusBar;
-  var s: string; w: integer;
-begin
-  SetCurrentFontSize;
-  with StatusBar do begin
-    StatusBar.Constraints.MinHeight:= Canvas.TextHeight('Ag') + 4;
-    w:= Canvas.TextWidth('_' + _('Line') + ':_9999_' + _('Column') + ':_999_');
-    if w >= Panels[1].Width then
-      Panels[0].Width:= w + 10;
-
-    if GetCodeEdit.ReadOnly
-      then w:= Canvas.TextWidth('_' + _(SReadOnly) + '_')
-      else w:= Canvas.TextWidth('_' + _(SModified) + '_');
-    if w >= Panels[1].Width then
-      Panels[1].Width:= w + 10;
-
-    if Length(_('Over')) > Length(_('Ins'))
-      then s:= _('Over')
-      else s:= _('Ins');
-    w:= Canvas.TextWidth('_' + s + '_');
-    if w >= Panels[2].Width then
-      Panels[2].Width:= w + 10;
-    s:= '_' + GetCodeEdit.Encoding + '/' + GetCodeEdit.LinebreakAsString + '__';
-    Panels[3].Width:= Canvas.TextWidth(s);
-  end;
-end;
-
 procedure TFTextDiff.WMSpSkinChange(var Message: TMessage);
 begin
   inherited;
@@ -926,13 +885,13 @@ begin
     modClr:= $16A231;
     delClr:= $621EA6;
     DefaultClr:= StyleServices.GetSystemColor(clWindow);
-    TBTextDiff.Images:= DMImages.ILTextDiffDark;
+    TBTextDiff.Images:= vilTextDiffDark;
   end else begin
     addClr:= $F0CCA8;
     modClr:= $6FFB8A;
     delClr:= $BB77FF;
     DefaultClr:= clWindow;
-    TBTextDiff.Images:= DMImages.ILTextDiffLight;
+    TBTextDiff.Images:= vilTextDiffLight;
   end;
   PyIDEMainForm.ThemeEditorGutter(CodeEdit1.Gutter);
   CodeEdit1.InvalidateGutter;
@@ -997,6 +956,24 @@ function TFTextDiff.IsEmpty : Boolean;
 begin
   Result := (fActiveSynEdit.Lines.Count  = 0) or
     ((fActiveSynEdit.Lines.Count  = 1) and (fActiveSynEdit.Lines[0] = ''));
+end;
+
+procedure TFTextDiff.liDrawItem(Sender: TObject; ACanvas: TCanvas;
+  ARect: TRect; ItemInfo: TSpTBXMenuItemInfo;
+  const PaintStage: TSpTBXPaintStage; var PaintDefault: Boolean);
+begin
+  if PaintStage = pstPrePaint then begin
+    PaintDefault:= False;
+    var aColor:= clBtnFace;
+    case (Sender as TSpTBXLabelItem).Tag of
+      1: aColor:= addClr;
+      2: aColor:= modClr;
+      3: aColor:= delClr;
+    end;
+    ACanvas.Brush.Color:= aColor;
+    ACanvas.Pen.Color:= aColor;
+    ACanvas.Rectangle(ARect);
+  end;
 end;
 
 function TFTextDiff.CanFind: boolean;

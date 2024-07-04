@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Controls, StdCtrls, ComCtrls, ImgList, ExtCtrls, ImageList,
-  System.Classes, UConnection, dlgPyIDEBase;
+  System.Classes, UConnection, dlgPyIDEBase, Vcl.BaseImageCollection,
+  SVGIconImageCollection, Vcl.VirtualImageList;
 
 type
   TFAssociation = class(TPyIDEDlgBase)
@@ -27,6 +28,9 @@ type
     MRoleB: TMemo;
     MMultiplicityA: TMemo;
     MMultiplicityB: TMemo;
+    vilConnectionsLight: TVirtualImageList;
+    vilConnectionsDark: TVirtualImageList;
+    icMenuConnection: TSVGIconImageCollection;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure LBAssociationsDrawItem(Control: TWinControl; Index: Integer;
@@ -35,7 +39,7 @@ type
     procedure CBReadingOrderAClick(Sender: TObject);
     procedure CBReadingOrderBClick(Sender: TObject);
   private
-    ILAssociations: TImageList;
+    ILAssociations: TVirtualImageList;
   public
     isTurned: boolean;
     procedure init(IsConnecting: boolean; conn: TConnection; SelectedControls: integer);
@@ -47,7 +51,7 @@ type
 implementation
 
 uses SysUtils, Graphics, Forms,
-     uCommonFunctions, UImages, frmPyIDEMain;
+     uCommonFunctions, frmPyIDEMain;
 
 {$R *.dfm}
 
@@ -58,8 +62,8 @@ begin
   CBReadingOrderA.Caption:= #$25C0 + ' ';
   CBReadingOrderB.Caption:= #$25B6 + ' ';
   if IsStyledWindowsColorDark
-    then ILAssociations:= DMImages.ILAssociationsDark
-    else ILAssociations:= DMImages.ILAssociationsLight;
+    then ILAssociations:= vilConnectionsDark
+    else ILAssociations:= vilConnectionsLight;
 end;
 
 procedure TFAssociation.FormShow(Sender: TObject);
@@ -79,18 +83,12 @@ end;
 
 procedure TFAssociation.LBAssociationsDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
-  var Bitmap: TBitmap; aCaption: string;
 begin
-  aCaption:=  (Control as TListBox).Items[Index];
-  BitMap:= TBitmap.Create;
-  Bitmap.Transparent:= true;
-  with (Control as TListBox).Canvas do begin
-    FillRect(Rect);
-    ILAssociations.GetBitmap(Index, Bitmap);
-    Draw(0,  Rect.Top, BitMap);
-    TextOut(Bitmap.Width + 8, Rect.Top + 3, aCaption)
-  end;
-  FreeAndNil(Bitmap);
+  var aCaption:=  (Control as TListBox).Items[Index];
+  var aCanvas:= (Control as TListBox).Canvas;
+  aCanvas.FillRect(Rect);
+  ILAssociations.Draw(aCanvas, 4, Rect.Top + (Rect.Height - ILAssociations.Height) div 2, Index);
+  aCanvas.TextOut(4 + ILAssociations.Width + 8, Rect.Top + 2, aCaption);
 end;
 
 function TFAssociation.getCorner: integer;

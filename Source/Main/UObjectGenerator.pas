@@ -31,8 +31,6 @@ type
     procedure ValueListEditorKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure MIFontClick(Sender: TObject);
     function Indent2: string;
-    function PPIScale(ASize: integer): integer;
-    function PPIUnScale(ASize: integer; PPI: Integer): integer;
   private
     Defaults: array[1..50] of string;
     jfmDefaults: array[1..50] of jfmrec;
@@ -75,8 +73,9 @@ implementation
 
 uses
   Windows, Graphics, SysUtils, Math, SynEdit, TypInfo, UITypes, Types,
-  JvGnugettext, cPyScripterSettings, ULink, UUtils, UObjectInspector, UGUIDesigner,
-  UConfiguration, UBaseWidgets, ELEvents, ELPropInsp, dmResources;
+  JvGnugettext, cPyScripterSettings, uCommonFunctions, ULink, UUtils,
+  UObjectInspector, UGUIDesigner, UConfiguration, UBaseWidgets, ELEvents,
+  ELPropInsp, dmResources;
 
 const
   FrameKonsole = 1;
@@ -128,7 +127,7 @@ begin
   (Control as TBaseWidget).NewWidget;
   if PyIDEOptions.CodeFoldingForGuiElements and Collapsed then
     EditForm.CollapseGUICreation;
-  if GuiPyOptions.AlignToGrid then
+  if GuiPyOptions.SnapToGrid then
     FGuiDesigner.ELDesigner.SelectedControls.AlignToGrid;
   UnlockFormUpdate(EditForm);
 end;
@@ -138,10 +137,11 @@ procedure TFObjectGenerator.SetBoundsForFormular(Form: TForm);
 begin
   if Partner.FrameType = 2 then begin
     s1:= 'self.root.geometry(';
-    s2:= Indent2 + s1 + '''' + IntToStr(PPIUnScale(Form.ClientWidth, Form.CurrentPPI)) + 'x' + IntToStr(PPIUnScale(Form.ClientHeight, Form.CurrentPPI)) + ''')';
+//    s2:= Indent2 + s1 + '''' + IntToStr(PPIUnScale(Form.ClientWidth)) + 'x' + IntToStr(PPIUnScale(Form.ClientHeight, Form.CurrentPPI)) + ''')';
+    s2:= Indent2 + s1 + '''' + IntToStr(PPIUnScale(Form.ClientWidth)) + 'x' + IntToStr(PPIUnScale(Form.ClientHeight)) + ''')';
   end else begin
     s1:= 'self.resize(';
-    s2:= Indent2 + s1 + IntToStr(PPIUnScale(Form.ClientWidth, Form.CurrentPPI)) + ', ' + IntToStr(PPIUnScale(Form.ClientHeight, Form.CurrentPPI)) + ')';
+    s2:= Indent2 + s1 + IntToStr(PPIUnScale(Form.ClientWidth)) + ', ' + IntToStr(PPIUnScale(Form.ClientHeight)) + ')';
   end;
   Partner.ReplaceLine(s1, s2);
 end;
@@ -232,30 +232,37 @@ end;
 procedure TFObjectGenerator.ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
   var L, T, W, H, C: integer;
 begin
-  L:= AppStorage.ReadInteger(BasePath + '\Left', 300);
-  T:= AppStorage.ReadInteger(BasePath + '\Top', 200);
-  W:= AppStorage.ReadInteger(BasePath + '\Width', 100);
-  H:= AppStorage.ReadInteger(BasePath + '\Height', 200);
+  L:= PPIScale(AppStorage.ReadInteger(BasePath + '\Left', 300));
+  T:= PPIScale(AppStorage.ReadInteger(BasePath + '\Top', 200));
+  W:= PPIScale(AppStorage.ReadInteger(BasePath + '\Width', 100));
+  H:= PPIScale(AppStorage.ReadInteger(BasePath + '\Height', 200));
   L:= min(L, Screen.Width - 100);
   T:= min(T, Screen.Height - 100);
+  W:= min(W, Screen.Width div 2);
+  H:= min(H, Screen.Height div 2);
   SetBounds(L, T, W, H);
   W:= ValueListEditor.Width;
-  C:= AppStorage.ReadInteger(BasePath + '\ValueListEditor.ColWidth', w div 2);
+  C:= PPIScale(AppStorage.ReadInteger(BasePath + '\ValueListEditor.ColWidth', w div 2));
   if C < W * 2 div 10 then C:= W * 2 div 10;
   if C > W * 8 div 10 then C:= W * 8 div 10;
   ValueListEditor.ColWidths[0]:= C;
   AppStorage.ReadPersistent(BasePath + '\Font', Font);
+  if Font.Size > 30 then Font.Size:= 30;
+  Font.Size:= PPIScale(Font.Size);
 end;
 
 procedure TFObjectGenerator.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
 begin
-  AppStorage.WriteInteger(BasePath + '\Left', Left);
-  AppStorage.WriteInteger(BasePath + '\Top', Top);
-  AppStorage.WriteInteger(BasePath + '\Width', Width);
-  AppStorage.WriteInteger(BasePath + '\Height', Height);
-  AppStorage.WriteInteger(BasePath + '\ValueListEditor.ColWidth', ValueListEditor.ColWidths[0]);
+  AppStorage.WriteInteger(BasePath + '\Left', PPIUnScale(Left));
+  AppStorage.WriteInteger(BasePath + '\Top', PPIUnScale(Top));
+  AppStorage.WriteInteger(BasePath + '\Width', PPIUnScale(Width));
+  AppStorage.WriteInteger(BasePath + '\Height', PPIUnScale(Height));
+  AppStorage.WriteInteger(BasePath + '\ValueListEditor.ColWidth', PPIUnScale(ValueListEditor.ColWidths[0]));
+  var s:= Font.Size;
+  Font.Size:= PPIUnScale(Font.Size);
   AppStorage.WritePersistent(BasePath+'\Font', Font);
+  Font.Size:= s;
 end;
 
 procedure TFObjectGenerator.MIFontClick(Sender: TObject);
@@ -433,36 +440,19 @@ begin
 end;
 
 procedure TFObjectGenerator.SetColWidths;
-  var i, max1, max2, h, w: integer;
+  var i, max1, max2: integer;
       s: string;
-      //SInfo: TScrollBarInfo;
 begin
   max1:= 0;
   max2:= 0;
   for i:= 0 to ValueListEditor.RowCount - 1 do begin
     s:= ValueListEditor.Cells[0, i];
-    max1:= Math.Max(length(s), max1);
+    max1:= Math.Max(Canvas.TextWidth(s), max1);
     s:= ValueListEditor.Cells[1, i];
-    max2:= Math.max(length(s), max2);
+    max2:= Math.max(Canvas.TextWidth(s), max2);
   end;
-  max1:= max1*(Font.Size-2);
-  max2:= max2*(Font.Size-2);
   max1:= max1 + 10;
   max2:= max2 + 10;
-
-  // vertical scrollbar?
-  {SInfo.cbSize:= SizeOf(TScrollBarInfo);
-  //  $ WARN BOUNDS_ERROR OFF
-  try
-    GetScrollBarInfo(ValueListEditor.Handle, OBJID_VSCROLL , SInfo);
-  except
-  end;
-  // $ WARN BOUNDS_ERROR ON
-
-  if (SInfo.rgstate[0] and STATE_SYSTEM_INVISIBLE <> STATE_SYSTEM_INVISIBLE) then
-    max2:= max2 + SInfo.rcScrollBar.Right - SInfo.rcScrollBar.Left;
-  }
-
   if Width < max1 + 1 + max2 then
     Width:= max1 + 3 + max2;
   if Width < BCancel.Left + BCancel.Width then
@@ -471,30 +461,14 @@ begin
      ValueListEditor.ColWidths[0]:= max1;
   if ValueListEditor.ColWidths[1] < max2 then
      ValueListEditor.ColWidths[1]:= max2;
-
   // very strange interaction with Themes/Styles
-  h:= Height;
-  w:= Width;
   Show;
   Hide;
-  Height:= h;
-  Width:= w;
 end;
 
 function TFObjectGenerator.Indent2: string;
 begin
   Result:= Fconfiguration.Indent2;
-end;
-
-function TFObjectGenerator.PPIScale(ASize: integer): integer;
-begin
-  Result := myMulDiv(ASize, FCurrentPPI, 96);
-  // MulDiv needs Windows, but then we get a strange error with BitmapFromRelativePath
-end;
-
-function TFObjectGenerator.PPIUnScale(ASize: integer; PPI: Integer): integer;
-begin
-  Result := myMulDiv(ASize, 96, PPI);
 end;
 
 end.

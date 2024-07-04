@@ -1085,10 +1085,6 @@ type
     TBSequence: TToolButton;
     TBConsole: TToolButton;
     TBTkApplication: TToolButton;
-    ILProgramDark: TImageList;
-    ILProgram: TImageList;
-    ILTKinterDark: TImageList;
-    ILTKinter: TImageList;
     ToolbarTkinter: TToolBar;
     TBLabel: TToolButton;
     TBEntry: TToolButton;
@@ -1261,7 +1257,6 @@ type
     TBQtTextedit: TToolButton;
     TBQtTextBrowser: TToolButton;
     TBQtToolButton: TToolButton;
-    ILQtControls: TImageList;
     TBQtCommandLinkButton: TToolButton;
     TBQtFontComboBox: TToolButton;
     TBQtDoubleSpinBox: TToolButton;
@@ -1303,11 +1298,16 @@ type
     SpTBXSeparatorItem30: TSpTBXSeparatorItem;
     mnToolsRestartLS: TSpTBXItem;
     DdeServerConv: TDdeServerConv;
-    ILTTK: TImageList;
-    ILTTKDark: TImageList;
-    ILQTBase: TImageList;
-    ILQTBaseDark: TImageList;
     DockTopPanel: TPanel;
+    vilTkInterLight: TVirtualImageList;
+    vilTkInterDark: TVirtualImageList;
+    vilTTKLight: TVirtualImageList;
+    vilTTKDark: TVirtualImageList;
+    vilQtBaseLight: TVirtualImageList;
+    vilQtBaseDark: TVirtualImageList;
+    vilQtControls: TVirtualImageList;
+    vilProgramLight: TVirtualImageList;
+    vilProgramDark: TVirtualImageList;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1469,8 +1469,6 @@ type
     procedure DdeServerConvExecuteMacro(Sender: TObject; Msg: TStrings);
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
       NewDPI: Integer);
-    procedure FormBeforeMonitorDpiChanged(Sender: TObject; OldDPI,
-      NewDPI: Integer);
   private
     DSAAppStorage: TDSAAppStorage;
     ShellExtensionFiles : TStringList;
@@ -1626,12 +1624,9 @@ type
     procedure ImportModule(pathname: string);
     function IsAValidClass(const Pathname: String): boolean;
     procedure CreatePycFilesForUMLWindows;
-    procedure RefreshUMLWindows;
     procedure SetLayoutMenus(Predefined: boolean);
     procedure DropFiles(Sender: TObject; X, Y: Integer; AFiles: TStrings);
     procedure RunFile(aFile: IFile);
-    procedure AdjustImageListsToDPI(OldDPI, NewDPI: integer);
-    procedure ResizeImageListImagesforHighDPI(const imgList: TImageList; OldDPI, NewDPI: integer);
 
     property ActiveTabControl : TSpTBXCustomTabControl read GetActiveTabControl
       write SetActiveTabControl;
@@ -2155,9 +2150,6 @@ begin
   FConfiguration.PopupParent:= Self;
   DMImages:= TDMImages.Create(Self);
 
-  if FCurrentPPI <> 96 then
-    AdjustImageListsToDPI(96, FCurrentPPI);
-
   FGUIDesigner:= TFGUIDesigner.Create(Self);
   FObjectInspector:= TFObjectInspector.Create(Self);
   FObjectInspector.PopupParent:= Self;
@@ -2308,35 +2300,23 @@ begin
     else LocalAppStorage.ReadStringList('Layouts', Layouts, True);
 end;
 
-procedure TPyIDEMainForm.FormBeforeMonitorDpiChanged(Sender: TObject; OldDPI,
-  NewDPI: Integer);
-begin
-  // https://stackoverflow.com/questions/47719647/i-would-like-some-guidance-on-sizing-toolbars-on-hi-res-screens
-  if NewDPI < OldDPI then
-    AdjustImageListsToDPI(OldDPI, NewDPI);
-end;
-
 procedure TPyIDEMainForm.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
   var Files: Array[0..10] of string;
       FilesCount: integer;
       aFile: IFile;
       ActiveFilename: String;
 begin
-  OutputDebugString('TPyIDEMainForm.FormAfterMonitorDpiChanged');
   SetDockTopPanel;
   FilesCount:= 0;
 
   TThread.ForceQueue(nil, procedure
   begin
-    if NewDPI > OldDPI then
-      AdjustImageListsToDPI(OldDPI, NewDPI);
     Invalidate;
     MainMenu.Invalidate;
     MainToolbar.Invalidate;
     DebugToolbar.Invalidate;
     TabControlWidgets.Invalidate;
     FFileStructure.Invalidate; // not necessary with ParentFont = false
-    FClassEditor.DPIChange;
 
     // a structogram form loses it's components during dpi switching!
     // workaround: save, close and reopen
@@ -2760,7 +2740,7 @@ begin
         if UMLForm.fFile.DefaultFilename
           then UMLForm.Modified:= true
           else UMLForm.Save(false);    // ToDo
-        UMLForm.Refresh;
+        UMLForm.SaveAndReload;
         UMLForm.MainModul.Diagram.ResolveAssociations;
         UMLForm.MainModul.DoLayout;
         UMLForm.CreateTVFileStructure;
@@ -2899,15 +2879,6 @@ begin
       mtWarning, [mbYes, mbNo], 0) = idNo then Exit;
   end;
   PyControl.ActiveInterpreter.ReInitialize;
-end;
-
-procedure TPyIDEMainForm.RefreshUMLWindows;
-begin
-  GI_FileFactory.ApplyToFiles(procedure(Fi: IFile)
-    begin
-      if (Fi as TFile).GetFileKind = fkUML then
-        ((Fi as TFile).fForm as TFUmlForm).Refresh;
-    end);
 end;
 
 procedure TPyIDEMainForm.actPythonSetupExecute(Sender: TObject);
@@ -3091,7 +3062,7 @@ begin
         CreatePycFilesForUMLWindows;
         for var i:= 0 to GI_FileFactory.Count - 1 do
           if GI_FileFactory.FactoryFile[i].FileKind = fkUML then
-           (GI_FileFactory.FactoryFile[i].Form as TFUMLForm).Refresh;
+           (GI_FileFactory.FactoryFile[i].Form as TFUMLForm).MainModul.Diagram.RefreshDiagram;
       end);
   end;
 end;
@@ -3350,8 +3321,6 @@ begin
 
   CallStackWindow.actPreviousFrame.Enabled := (DebuggerState = dsPaused);
   CallStackWindow.actNextFrame.Enabled := (DebuggerState = dsPaused);
-
-  //Refresh;
 end;
 
 procedure TPyIDEMainForm.SetActiveTabControl(const Value: TSpTBXCustomTabControl);
@@ -4233,7 +4202,7 @@ begin
     Title := _(SOpenFile);
     FileName := '';
     // doesn't support structogram, sequence diagram...
-    //Filter := GetHighlightersFilter(CommandsDataModule.Highlighters) + _(SFilterAllFiles);
+    // Filter := GetHighlightersFilter(CommandsDataModule.Highlighters) + _(SFilterAllFiles);
     Filter:= FConfiguration.GetFileFilters;
     aFile := GetActiveFile;
     if Assigned(aFile) and (aFile.FileName <> '') and
@@ -4359,7 +4328,9 @@ begin
 
     // GuiPyOptions
     AppStorage.DeleteSubTree('GuiPy Options');
+    GuiPyOptions.RemovePortableDrives;
     AppStorage.WritePersistent('GuiPy Options', GuiPyOptions);
+    GuiPyOptions.AddPortableDrives;
     AppStorage.WritePersistent('GuiPy Language Options\' + GetCurrentLanguage,
       GuiPyLanguageoptions);
 
@@ -4496,12 +4467,14 @@ begin
 
   if AppStorage.PathExists('GuiPy Options') then begin
     AppStorage.ReadPersistent('GuiPy Options', GuiPyOptions);
+    GuiPyOptions.AddPortableDrives;
     GuiPyLanguageOptions.getInLanguage(curLang);
     AppStorage.ReadPersistent('GuiPy Language Options\' + curLang,
       GuiPyLanguageOptions);
   end;
   if MachineStorage.PathExists('GuiPy Options') then begin
     MachineStorage.ReadPersistent('GuiPy Options', GuiPyOptions);
+    GuiPyOptions.AddPortableDrives;
     MachineStorage.ReadPersistent('GuiPy Language Options\' + curlang,
       GuiPyLanguageOptions);
   end;
@@ -5570,15 +5543,11 @@ begin
 end;
 
 procedure TPyIDEMainForm.ToolButtonStartDrag(Sender: TObject; var DragObject: TDragObject);
-  var aPoint: TPoint;
 begin
-  if not assigned(DragRectangle) then begin
-    DragRectangle:= TButton.Create(Self);
-    DragRectangle.Parent:= FGuiDesigner;
-  end;
-  aPoint:= FGuiDesigner.getControlWidthHeigth;
-  DragRectangle.Width:= PPIScale(aPoint.X);
-  DragRectangle.Height:= PPIScale(aPoint.Y);
+  var ControlClass:= FGUIDesigner.Tag2Class((Sender as TToolButton).Tag);
+  var DragRectangle:= ControlClass.Create(FGUIDesigner.DesignForm);
+  DragRectangle.Parent:= FGuiDesigner;
+  DragRectangle.ScaleForPPI(FGUIDesigner.DesignForm.PixelsPerInch);
   DragObject:= TMyDragObject.Create(DragRectangle);
 end;
 
@@ -5898,6 +5867,7 @@ begin
   FFileStructure.ChangeStyle;
   FObjectInspector.ChangeStyle;
   FClassEditor.ChangeStyle;
+  FGUIDesigner.ChangeStyle;
   ChangeStyle;
 end;
 
@@ -6636,17 +6606,17 @@ end;
 procedure TPyIDEMainForm.ChangeStyle;
 begin
   if IsStyledWindowsColorDark then begin
-    ToolbarProgram.Images   := ILProgramDark;
-    ToolbarTkinter.Images   := ILTKinterDark;
-    ToolbarTTK.Images       := ILTTKDark;
-    ToolbarQtBase.Images    := ILQtBaseDark;
-    ToolbarQtControls.Images:= ILQtControls;
+    ToolbarProgram.Images   := vilProgramDark;
+    ToolbarTkinter.Images   := vilTkInterDark;
+    ToolbarTTK.Images       := vilTTKDark;
+    ToolbarQtBase.Images    := vilQtBaseDark;
+    ToolbarQtControls.Images:= vilQtControls;
   end else begin
-    ToolbarProgram.images   := ILProgram;
-    ToolbarTkinter.Images   := ILTKinter;
-    ToolbarTTK.Images       := ILTTK;
-    ToolbarQtBase.Images    := ILQtBase;
-    ToolbarQtControls.Images:= ILQtControls;
+    ToolbarProgram.images   := vilProgramLight;
+    ToolbarTkinter.Images   := vilTkInterLight;
+    ToolbarTTK.Images       := vilTTKLight;
+    ToolbarQtBase.Images    := vilQtBaseLight;
+    ToolbarQtControls.Images:= vilQtControls;
   end;
 end;
 
@@ -6661,74 +6631,6 @@ begin
   finally
     UnlockFormUpdate(Self);
   end;
-end;
-
-procedure TPyIDEMainForm.AdjustImageListsToDPI(OldDPI, NewDPI: integer);
-begin
-  for var i:= 0 to ComponentCount - 1 do
-    if Components[i] is TImageList then
-      ResizeImageListImagesforHighDPI(TImageList(Components[i]), OldDPI, NewDPI);
-  DMImages.AdjustImageListsToDPI(OldDPI, NewDPI);
-end;
-
-// http://zarko-gajic.iz.hr/resizing-delphis-timagelist-bitmaps-to-fit-high-dpi-scaling-size-for-menus-toolbars-trees-etc/
-procedure TPyIDEMainForm.ResizeImageListImagesforHighDPI(const imgList: TImageList; OldDPI, NewDPI: integer);
-  var i, OldW, OldH, NewW, NewH: integer;
-      mb, ib, sib, smb: TBitmap; IL: TImageList;
-begin
-  //if imgList.Name = 'ILEditorToolbarDark' then
-  //  OldW:=0;
-
-  OldW:= imgList.Width;
-  OldH:= imgList.Height;
-
-  IL:= TImageList.Create(Self);
-  IL.SetSize(OldW, OldH);
-  for i:= 0 to imgList.Count - 1 do
-    IL.AddImage(imgList, i);
-
-  //set size to match DPI size (like 250% of 16px = 40px)
-  imgList.SetSize(MulDiv(OldW, NewDPI, OldDPI), MulDiv(OldH, NewDPI, OldDPI));
-  NewW:= imgList.Width;
-  NewH:= imgList.Height;
-
-  //add stretched images back to original ImageList
-  for i := 0 to IL.Count - 1 do begin
-    sib := TBitmap.Create; //stretched image
-    smb := TBitmap.Create; //stretched mask
-    try
-      sib.Width := newW;
-      sib.Height := newH;
-      sib.Canvas.FillRect(sib.Canvas.ClipRect);
-      smb.Width := newW;
-      smb.Height := newH;
-      smb.Canvas.FillRect(smb.Canvas.ClipRect);
-      ib := TBitmap.Create;
-      mb := TBitmap.Create;
-      try
-        ib.Width := OldW;
-        ib.Height := OldH;
-        ib.Canvas.FillRect(ib.Canvas.ClipRect);
-        mb.Width := OldW;
-        mb.Height := OldH;
-        mb.Canvas.FillRect(mb.Canvas.ClipRect);
-        ImageList_DrawEx(IL.Handle, i, ib.Canvas.Handle,
-                         0, 0, ib.Width, ib.Height, CLR_NONE, CLR_NONE, ILD_NORMAL);
-        ImageList_DrawEx(IL.Handle, i, mb.Canvas.Handle,
-                         0, 0, mb.Width, mb.Height, CLR_NONE, CLR_NONE, ILD_MASK);
-        sib.Canvas.StretchDraw(Rect(0, 0, sib.Width, sib.Height), ib);
-        smb.Canvas.StretchDraw(Rect(0, 0, smb.Width, smb.Height), mb);
-      finally
-        ib.Free;
-        mb.Free;
-      end;
-      imgList.Add(sib, smb);
-    finally
-      sib.Free;
-      smb.Free;
-    end;
-  end;
-  IL.Free;
 end;
 
 { TTSpTBXTabControl }

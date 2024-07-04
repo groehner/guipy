@@ -7,7 +7,7 @@
 
 unit UTTKTextBase;
 
-{ class hierarchie
+{ class hierarchy
 
   TKTextBaseWidget
     TTKEntry
@@ -356,7 +356,7 @@ begin
       then s:= FValues[0]
       else s:= FFrom;
   if Scrollbar
-    then newHeight:= Height - 20
+    then newHeight:= Height - PPIScale(20)
     else newHeight:= Height;
   ShowText(s, Width - PPIScale(16), newHeight);
 
@@ -377,7 +377,7 @@ begin
   Canvas.Brush.Color:= clBlack;
   Canvas.Pen.Color:= clBlack;
   x:= Width - PPIScale(13);
-  y:= 7;
+  y:= PPIScale(7);
   var i2:= PPIScale(2);
   var i4:= PPIScale(4);
   Points[0]:= Point(x, y);
@@ -385,7 +385,7 @@ begin
   Points[2]:= Point(x + i2, y - i2);
   Canvas.Polygon(Points);
 
-  y:= newHeight - 8;
+  y:= newHeight - PPIScale(8);
   Points[0]:= Point(x, y);
   Points[1]:= Point(x + i4, y);
   Points[2]:= Point(x + i2, y + i2);

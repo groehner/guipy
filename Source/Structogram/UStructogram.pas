@@ -13,7 +13,9 @@ interface
 uses
   Windows, Messages, Classes, Controls, ExtCtrls, Forms, Graphics,
   ComCtrls, StdCtrls, Vcl.ToolWin, System.ImageList, Vcl.ImgList,
-  SpTBXSkins, frmFile, UTypes, SpTBXItem, TB2Item, Vcl.Menus;
+  SpTBXSkins, frmFile, UTypes, SpTBXItem, TB2Item, Vcl.Menus,
+  Vcl.VirtualImageList, Vcl.BaseImageCollection, SVGIconImageCollection,
+  Vcl.VirtualImage;
 
 type
 
@@ -34,7 +36,6 @@ type
     TBZoomOut: TToolButton;
     TBZoomIn: TToolButton;
     TBPuzzleMode: TToolButton;
-    TrashImage: TImage;
     StructoPopupMenu: TSpTBXPopupMenu;
     MIConfiguration: TSpTBXItem;
     MIFont: TSpTBXItem;
@@ -54,6 +55,12 @@ type
     MIFloat: TSpTBXItem;
     MIBoolean: TSpTBXItem;
     MILong: TSpTBXItem;
+    icStructogram: TSVGIconImageCollection;
+    vilToolbarDark: TVirtualImageList;
+    vilToolbarLight: TVirtualImageList;
+    vilPopupMenuLight: TVirtualImageList;
+    vilPopupMenuDark: TVirtualImageList;
+    TrashImage: TVirtualImage;
 
     procedure FormCreate(Sender: TObject); override;
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -173,6 +180,7 @@ type
     procedure debug(const s: String);
     procedure SetOptions; override;
     procedure DPIChanged; override;
+    class function ToolbarCount: integer;
 end;
 
 implementation
@@ -181,7 +189,7 @@ implementation
 
 uses SysUtils, Math, Clipbrd, Dialogs, Themes, Types, UITypes, Buttons,
      JvGnugettext, StringResources, IOUtils, UUtils, UConfiguration,
-     frmPyIDEMain, uEditAppIntfs, uCommonFunctions, UImages,
+     frmPyIDEMain, uEditAppIntfs, uCommonFunctions,
      cPyScripterSettings, frmMessages, UGenerateStructogram;
 
 procedure TFStructogram.FormCreate(Sender: TObject);
@@ -230,7 +238,7 @@ begin
   //setActiveControl(SBClose);
   if Pathname = '' then Pathname:= PyIDEMainForm.getFilename('.psg');
   Caption:= Pathname;
-  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font, TBClose);
+  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font);
   StrList.text:= GuiPyLanguageOptions.Algorithm + ' ' + ChangeFileExt(ExtractFilename(Pathname), '');
   elem:= TStrStatement.create(StrList);
   StrList.insert(StrList, elem);
@@ -247,7 +255,7 @@ procedure TFStructogram.FromText(const s: string);
       StrList: TStrAlgorithm;
 begin
   if Pathname = '' then Pathname:= PyIDEMainForm.getFilename('.psg');
-  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font, TBClose);
+  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font);
   StrList.Text:= GuiPyLanguageOptions.Algorithm + ' ';
   Generator:= TGenerateStructogram.Create(true);
   try
@@ -275,7 +283,7 @@ begin
     FreeAndNil(Strlist);
   end;
 
-  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font, TBClose);
+  StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font);
   StrList.Text:= Alg;
   setEvents(StrList.Image);
   StrList.Text:= GuiPyLanguageOptions.Algorithm + ' ';
@@ -351,8 +359,8 @@ begin
 
       while (Reader.key = '- Kind') and Result do begin
         if Reader.val = 'Algorithm'
-          then StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font, TBClose)
-          else StrList:= TStrList.Create(Scrollbox, PuzzleMode, Font, TBClose);
+          then StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font)
+          else StrList:= TStrList.Create(Scrollbox, PuzzleMode, Font);
         Reader.ReadLine;
         if Reader.key = 'SwitchWithCaseLine'
           then SwitchWithCaseLine:= (Reader.val = 'true')
@@ -472,8 +480,8 @@ begin
   if Button = mbLeft then begin
     CloseEdit(true);
     if TSpeedButton(Sender).Tag = 0
-      then StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font, TBClose)
-      else StrList:= TStrList.create(Scrollbox, PuzzleMode, Font, TBClose);
+      then StrList:= TStrAlgorithm.create(ScrollBox, PuzzleMode, Font)
+      else StrList:= TStrList.create(Scrollbox, PuzzleMode, Font);
     elem:= nil;
     case TSpeedButton(Sender).Tag of
       ord(nsAlgorithm):  begin
@@ -603,7 +611,7 @@ begin
         curList.Paint;
 
         // create new list
-        StrList:= TStrList.create(ScrollBox, PuzzleMode, Font, TBClose);
+        StrList:= TStrList.create(ScrollBox, PuzzleMode, Font);
         StrList.setFont(Font);
         StrList.insert(StrList, curElement);
         StrList.setList(StrList);
@@ -894,8 +902,8 @@ begin
     try
       curList.SaveToStream(Stream);
       if curList is TStrAlgorithm
-        then StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font, TBClose)
-        else StrList:= TStrList.create(Scrollbox, PuzzleMode, Font, TBClose);
+        then StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font)
+        else StrList:= TStrList.create(Scrollbox, PuzzleMode, Font);
       Stream.Position:= 0;
       StrList.LoadFromStream(stream, Version);
       StrList.setFont(Font);
@@ -1901,27 +1909,20 @@ begin
 end;
 
 procedure TFStructogram.ChangeStyle;
-  var Bitmap: TBitmap;
-      StrList: TStrList;
-      i: integer;
 begin
   if IsStyledWindowsColorDark then begin
-    StructogramToolbar.Images:= DMImages.ILStructogramToolbarDark;
-    StructoPopupMenu.Images:= DMImages.ILStructogramDark;
+    StructogramToolbar.Images:= vilToolbarDark;
+    TrashImage.ImageIndex:= 29;
+    StructoPopupMenu.Images:= vilPopupMenuDark;
   end else begin
-    StructogramToolbar.Images:= DMImages.ILStructogramToolbar;
-    StructoPopupMenu.Images:= DMImages.ILStructogramLight;
+    StructogramToolbar.Images:= vilToolbarLight;
+    TrashImage.ImageIndex:= 14;
+    StructoPopupMenu.Images:= vilPopupMenuLight;
   end;
 
-  BitMap:= TBitmap.Create;
-  Bitmap.Transparent:= true;
-  StructogramToolbar.Images.GetBitmap(13, Bitmap);
-  TrashImage.Picture.Bitmap.Transparent:= true;
-  TrashImage.Picture.Bitmap:= Bitmap;
-  FreeAndNil(Bitmap);
-  for i:= 0 to ScrollBox.ControlCount -1 do
+  for var i:= 0 to ScrollBox.ControlCount -1 do
     if Scrollbox.Controls[i] is TListImage then begin
-      StrList:= TListImage(Scrollbox.Controls[i]).StrList;
+      var StrList:= TListImage(Scrollbox.Controls[i]).StrList;
       StrList.Paint;
     end;
 end;
@@ -1935,6 +1936,13 @@ end;
 procedure TFStructogram.DPIChanged;
 begin
   setFontSize(0);
+  Hide;
+  Show;
+end;
+
+class function TFStructogram.ToolbarCount: integer;
+begin
+  Result:= 13;
 end;
 
 end.

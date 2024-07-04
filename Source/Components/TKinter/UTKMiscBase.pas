@@ -728,6 +728,7 @@ end;
 procedure TKScale.Paint;
 begin
   inherited;
+  Canvas.Font.Assign(Font);
   UpdateTrackData;
   UpdateTrack;
   UpdateTicks;
@@ -738,13 +739,15 @@ end;
 procedure TKScale.UpdateTrackData;
   var s1, s2: String;
 begin
+  FTrackSize:= PPIScale(15);
+  FSliderLength:= PPIScale(30);
   if FResolution <> 0 then
     if FResolution >= 1
       then FDecimals:= 0
       else FDecimals:= Round(ln(1/FResolution)/ln(10));
 
   if FOrient = horizontal then begin
-    FTickSpace:= Canvas.TextHeight('0') + 4;
+    FTickSpace:= Canvas.TextHeight('0') + PPIScale(4);
     FUsablePixels := Width - 4*BorderWidthInt - FSliderLength;
     FTrackRect.Left := 2*BorderWidthInt;
     FTrackRect.Right := Width - 2*BorderWidthInt;
@@ -757,10 +760,10 @@ begin
   end else begin
     s1:= FloatToStrF(FFrom, ffFixed, 8, FDecimals);
     s2:= FloatToStrF(FTo, ffFixed, 8, FDecimals);
-    FTickSpace:= max(Canvas.TextWidth(s1), Canvas.TextWidth(s2)) + 4;
+    FTickSpace:= max(Canvas.TextWidth(s1), Canvas.TextWidth(s2)) + PPIScale(4);
     FUsablePixels := Height - 4*BorderWidthInt - FSliderLength;
     FTrackRect.Top := 2*BorderWidthInt;
-    FTrackRect.Bottom := Height - 2*BorderWidthInt -1;
+    FTrackRect.Bottom := Height - 2*BorderWidthInt - 1;
     FTrackRect.Left := 2*BorderWidthInt;
     if FShowValue then
       FTrackRect.Left := FTrackRect.Left + FTickSpace;
@@ -771,9 +774,8 @@ begin
 end;
 
 procedure TKScale.UpdateTrack;
-  var R: TRect;
 begin
-  R:= FTrackRect;
+  var R:= FTrackRect;
   R.Inflate(BorderWidthInt, BorderWidthInt);
   PaintBorder(R, _TR_sunken, BorderWidthInt);
   Canvas.Brush.Color := FTroughColor;
@@ -804,7 +806,7 @@ begin
         end;
         s:= FloatToStrF(XVal, ffFixed, 8, FDecimals);
         tw:= Canvas.TextWidth(s);
-        y:= FTrackRect.Bottom + BorderWidthInt + 4;
+        y:= FTrackRect.Bottom + BorderWidthInt + PPIScale(4);
         Canvas.TextOut(XNew - tw div 2, Y, s);
         XOld:= XNew;
         XVal:= XVal + FTickInterval;
@@ -819,7 +821,7 @@ begin
         end;
         s:= FloatToStrF(YVal, ffFixed, 8, FDecimals);
         tw:= Canvas.TextWidth(s);
-        X := BorderWidthInt + FTickSpace - tw - 2;
+        X := BorderWidthInt + FTickSpace - tw - PPIScale(2);
         Canvas.TextOut(X, YNew - th div 2, s);
         YOld:= YNew;
         YVal:= YVal + FTickInterval;
@@ -882,10 +884,10 @@ procedure TKScale.UpdateLabel;
 begin
   if FLabel <> '' then begin
     if FOrient = horizontal then
-      R:= Rect(BorderWidthInt + 6, BorderWidthInt + 3,
-               Width-BorderWidthInt, BorderWidthInt + 6 + FTickSpace)
+      R:= Rect(BorderWidthInt + PPIScale(6), BorderWidthInt + PPIScale(3),
+               Width-BorderWidthInt, BorderWidthInt + PPIScale(6) + FTickSpace)
     else
-      R:= Rect(FTrackRect.Right + BorderWidthInt + 6, BorderWidthInt + 6,
+      R:= Rect(FTrackRect.Right + BorderWidthInt + PPIScale(6), BorderWidthInt + PPIScale(6),
                Width-BorderWidthInt, FTrackRect.Height-BorderWidthInt);
     DrawText(Canvas.handle, PChar(FLabel), System.Length(FLabel), R, DT_Left);
   end;
@@ -965,14 +967,15 @@ constructor TKScrollbar.create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 12;
-  Width:= 16;
-  Height:= 160;
+  Width:= 160;
+  Height:= 16;
   FActiveRelief:= _TR_raised;
   FElementBorderWidth:= -1;
   HighlightThickness:= '0';
   FJump:= false;
   BorderWidth:= '0';
   Relief:= _TR_sunken;
+  FOrient:= horizontal;
 end;
 
 function TKScrollbar.getAttributes(ShowAttributes: integer): string;
@@ -989,6 +992,7 @@ end;
 procedure TKScrollbar.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('tk.Scrollbar');
+  InsertValue('self.' + Name + '[''orient''] = ' + asString('horizontal'));
 end;
 
 procedure TKScrollbar.MakeFont;
@@ -1222,7 +1226,7 @@ procedure TKPopupMenu.Paint;
 begin
   inherited;
   Canvas.Rectangle(Rect(0, 0, Width, Height));
-  DrawBitmap(7, 4, 16, Canvas, PyIDEMainForm.ILTkinter);
+  PyIDEMainForm.vilTkinterLight.Draw(Canvas, 7, 4, 16);
 end;
 
 {--- TKMenu -------------------------------------------------------------------}
@@ -1511,8 +1515,8 @@ begin
   CommonOptions:= 'self.' + Name + ', ';
   if Background <> clBtnFace then
     CommonOptions:= CommonOptions + 'background=''' + TColorToString(Background) + ''', ';
-  if (Font.Name <> 'Segoe UI') or (Font.Size <> 9) then
-    CommonOptions:= CommonOptions + 'font = (' + asString(Font.Name) + ', ' + IntToStr(Font.Size) + '), ';
+  if (Font.Name <> 'Segoe UI') or (PPIUnScale(Font.Size) <> 9) then
+    CommonOptions:= CommonOptions + 'font = (' + asString(Font.Name) + ', ' + IntToStr(PPIUnScale(Font.Size)) + '), ';
   CommonOptions:= CommonOptions + 'anchor=''w'', ';
   s:= '';
   for var i:= 0 to FItems.Count - 1 do begin
@@ -1544,14 +1548,14 @@ procedure TKRadiobuttonGroup.SetPositionAndSize;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited;
-
+  Canvas.Font.Assign(Font);
   th:= Canvas.TextHeight('Hg');
   if FLabel = '' then begin
     RadioWidth:= Width;
     RadioHeight:= Height;
   end else begin
-    RadioWidth:= Width - 4;
-    RadioHeight:= Height - th - 4;
+    RadioWidth:= Width - PPIScale(4);
+    RadioHeight:= Height - th - PPIScale(4);
   end;
 
   if FItems.Count > 0 then begin

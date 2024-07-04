@@ -184,24 +184,15 @@ begin
 end;
 
 procedure TSynEditExDiff.EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
-  var LineColumn: string;
-
-  procedure setPanel(i: integer; s: string);
-  begin
-    if (MyOwner as TFTextDiff).StatusBar.Panels[i].Text <> s then
-      (MyOwner as TFTextDiff).StatusBar.Panels[i].Text:= s;
-    (MyOwner as TFTextDiff).Nr:= Nr;
- end;
-
 begin
-  LineColumn:= _('Line') + ': %4d  ' + _('Column') + ': %3d';
-  setPanel(0, Format(LineColumn, [CaretY, CaretX]));
+  (MyOwner as TFTextDiff).Nr:= Nr;
+  (MyOwner as TFTextDiff).liLineColumn.Caption:= Format(' %4d : %3d ', [CaretY, CaretX]);
   if Changes * [scModified] <> [] then begin
-    setPanel(1, ModifiedStrs[Modified]);
+    (MyOwner as TFTextDiff).liModified.Caption:= ModifiedStrs[Modified];
     ShowFilename;
   end;
-  setPanel(2, InsertModeStrs[InsertMode]);
-  setPanel(3, ' ' + Encoding + '/' + LinebreakAsString + ' ');
+  (MyOwner as TFTextDiff).liInsOvr.Caption:= InsertModeStrs[InsertMode];
+  (MyOwner as TFTextDiff).liEncoding.Caption:= ' ' + Encoding + '/' + LinebreakAsString + ' ';
 end;
 
 procedure TSynEditExDiff.GutterTextEvent(Sender: TObject; aLine: Integer;

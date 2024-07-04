@@ -72,6 +72,7 @@ type
     procedure CallMethodExecuted(Sender: TObject);
     function PPIScale(ASize: integer): integer;
     function PPIUnScale(ASize: integer): integer;
+    procedure ShowUnnamed(Objectname: string);
   protected
     procedure SetVisibilityFilter(const Value: TVisibility); override;
     procedure SetShowParameter(const Value: integer); override;
@@ -103,7 +104,6 @@ type
     function GetSelectedRect: TRect; override;
     procedure ScreenCenterEntity(E : TModelEntity); override;
     procedure SetFont(const aFont: TFont); override;
-    function GetFont: TFont; override;
 
     procedure StoreDiagram(filename: string); override;
     procedure FetchDiagram(filename: string); override;
@@ -203,7 +203,7 @@ type
 
 implementation
 
-uses Windows, Menus, Forms, Math, SysUtils, UITypes, Dialogs, Contnrs,
+uses Windows, Menus, Forms, Math, SysUtils, UITypes, Dialogs, Contnrs, IOUtils,
   IniFiles, Clipbrd, JvGnugettext, TB2Item, SpTBXItem,
   uIterators, uRtfdDiagramFrame, USugiyamaLayout, uIntegrator, UConfiguration,
   SynEdit, UUMLModule, UImages, UObjectGenerator, dmResources,
@@ -416,7 +416,7 @@ var
   function InCreateBox(E: TModelEntity; BoxT: TRtfdBoxClass): TRtfdBox;
   begin
     Result:= BoxT.Create(Panel, E, Frame, viPrivate);
-    Result.Font.Assign(Panel.Font);
+    Result.Font.Assign(Font);
     BoxNames.AddObject(E.Name, Result);
   end;
 
@@ -601,6 +601,10 @@ begin
             Panel.ConnectObjects(OBox, DestBox, asAssociation2);
         end;
         FreeAndNil(SLObjectAttributes);
+
+        DestBox:= GetBox(FLivingObjects.getClassnameOfObject(OBox.Entity.Name));
+        if Assigned(DestBox) and (Panel.HaveConnection(OBox, DestBox) = -1) then
+          Panel.ConnectObjects(OBox, DestBox, asInstanceOf);
       end;
     end;
   end;
@@ -690,8 +694,6 @@ begin
           Ini.WriteInteger(S, 'Y', PPIUnScale(Box.Top));
           Ini.WriteInteger(S, 'W', PPIUnScale(Box.Width));
           Ini.WriteInteger(S, 'H', PPIUnScale(Box.Height));
-          Ini.WriteInteger(S, 'FontSize', PPIUnScale(Box.Font.Size));
-          Ini.WriteString(S, 'FontName', Box.Font.Name);
           s1:= (Box as TRtfdCommentBox).TrMemo.Text;
           Ini.WriteString(S, 'Comment', myStringReplace(s1, #13#10, '_;_'));
         end else begin
@@ -707,8 +709,6 @@ begin
             Ini.WriteInteger(S, 'ShowParameter', Box.ShowParameter);
             Ini.WriteInteger(S, 'SortOrder', Box.SortOrder);
             Ini.WriteInteger(S, 'ShowIcons', Box.ShowIcons);
-            Ini.WriteInteger(S, 'FontSize', PPIUnScale(Box.Font.Size));
-            Ini.WriteString(S, 'FontName', Box.Font.Name);
             if Box.TypeBinding <> '' then
               Ini.WriteString(S, 'TypeBinding', Box.TypeBinding);
           end;
@@ -858,8 +858,8 @@ begin
           BoxShowParameter:= Ini.ReadInteger(S, 'ShowParameter', ShowParameter);
           BoxSortOrder:= Ini.ReadInteger(S, 'SortOrder', SortOrder);
           BoxShowIcons:= Ini.ReadInteger(S, 'ShowIcons', ShowIcons);
-          BoxFontsize:= PPIScale(Ini.ReadInteger(S, 'FontSize', Font.Size));
-          BoxFontname:= Ini.ReadString(S, 'FontName', Font.Name);
+          BoxFontsize:= Font.Size;
+          BoxFontname:= Font.Name;
           BoxTypeBinding:= Ini.ReadString(S, 'TypeBinding', '');
           Box.SetParameters(BoxShowParameter, BoxSortOrder, BoxShowIcons, BoxFontSize,
                             BoxFontname, Font, BoxTypeBinding);
@@ -937,7 +937,6 @@ begin
           Panel.AddManagedObject(CommentBox);
           j:= BoxNames.IndexOf(S);
         end;
-
         if j > -1 then begin
           Box:= BoxNames.Objects[j] as TRtfdBox;
           Box.Left:= PPIScale(Ini.ReadInteger(S, 'X', Box.Left));
@@ -945,9 +944,6 @@ begin
           Box.Width:= PPIScale(Ini.ReadInteger(S, 'W', Box.Width));
           Box.Height:= PPIScale(Ini.ReadInteger(S, 'H', Box.Height));
           Box.Font.Assign(Font);
-          Box.Font.Size:= PPIScale(Ini.ReadInteger(S, 'FontSize', Font.Size));
-          Box.Font.Name:= Ini.ReadString(S, 'FontName', Font.Name);
-
           s:= Ini.ReadString(S, 'Comment', '');
           (Box as TRtfdCommentBox).TrMemo.Text:= myStringReplace(s, '_;_', #13#10);
         end;
@@ -967,23 +963,16 @@ begin
         b1:= trim(SL[0]);
         b2:= trim(SL[1]);
         Attributes.ArrowStyle:= StringToArrowStyle(SL[2]);
-        if SL.Count > 7 then begin // new format
-          Attributes.MultiplicityA:= UnhideCrLf(SL[3]);
-          Attributes.Relation:= SL[4];
-          Attributes.MultiplicityB:= UnhideCrLf(SL[5]);
-          Attributes.RecursivCorner:= StrToInt(SL[6]);
-          Attributes.isTurned:= StrToBool(SL[7]);
-        end;
-        if (SL.Count > 8) and (SL[8] <> '')
-          then Attributes.isEdited:= StrToBool(SL[8])
-          else Attributes.isEdited:= false;
-        if (SL.Count > 12) and (SL[12] <> '') then begin
-          Attributes.RoleA:= UnhideCrLf(SL[9]);
-          Attributes.RoleB:= UnhideCrLf(SL[10]);
-          Attributes.ReadingOrderA:= StrToBool(SL[11]);
-          Attributes.ReadingOrderB:= StrToBool(SL[12]);
-        end;
-
+        Attributes.MultiplicityA:= UnhideCrLf(SL[3]);
+        Attributes.Relation:= SL[4];
+        Attributes.MultiplicityB:= UnhideCrLf(SL[5]);
+        Attributes.RecursivCorner:= StrToInt(SL[6]);
+        Attributes.isTurned:= StrToBool(SL[7]);
+        Attributes.isEdited:= StrToBool(SL[8]);
+        Attributes.RoleA:= UnhideCrLf(SL[9]);
+        Attributes.RoleB:= UnhideCrLf(SL[10]);
+        Attributes.ReadingOrderA:= StrToBool(SL[11]);
+        Attributes.ReadingOrderB:= StrToBool(SL[12]);
         for j:= 0 to AlleBoxen.Count-1 do begin
           Box:= TRtfdBox(AlleBoxen[j]);
           if Box.Entity.FullName = b1 then Box1:= Box;
@@ -1000,7 +989,7 @@ begin
       then SetShowObjectDiagram(false)
       else SetShowObjectDiagram(ShowObjectDiagram);
     FLivingObjects.makeAllObjects;
-    UpdateAllObjects;
+    //UpdateAllObjects;
 
     UMLForm.SynEdit.BeginUpdate;
     UMLForm.SynEdit.Lines.Clear;
@@ -1189,11 +1178,9 @@ procedure TRtfdDiagram.SetFont(const aFont: TFont);
   var i: integer; L: TList; B: TRtfdBox;
 begin
   inherited;
-  if Panel.hasSelectedControls
-    then L:= Panel.GetSelectedControls
-    else L:= Panel.GetManagedObjects;
+  L:= Panel.GetManagedObjects;
   try
-    for i:= 0 to L.Count-1 do begin
+    for i:= 0 to L.Count - 1 do begin
       B:= TObject(L[i]) as TRtfdBox;
       if assigned(B) and assigned(b.Font) then
         B.Font.Assign(aFont);
@@ -1202,16 +1189,6 @@ begin
     FreeAndNil(L);
   end;
   Panel.Font.Assign(aFont);
-end;
-
-function TRtfdDiagram.GetFont: TFont;
-  var Control: TControl;
-begin
-  if Panel.hasSelectedControls then begin
-    Control:= Panel.GetFirstSelected;
-    Result:= (Control as TRtfdBox).Font;
-  end else
-    Result:= inherited getFont;
 end;
 
 procedure TRtfdDiagram.GetDiagramSize(var W, H: integer);
@@ -1371,7 +1348,7 @@ procedure TRtfdDiagram.DeleteSelectedControlsAndRefresh;
 begin
   LockFormUpdate(UMLForm);
   DeleteSelectedControls(nil);
-  UMLForm.Refresh;
+  UMLForm.SaveAndReload;
   UMLForm.CreateTVFileStructure;
   UnlockFormUpdate(UMLForm);
 end;
@@ -1429,8 +1406,6 @@ end;
 
 procedure TRtfdDiagram.RefreshDiagram;
 begin
-  ResolveAssociations;
-  ResolveObjectAssociations;
   if not PanelIsLocked then
     for var i:= 0 to BoxNames.Count - 1 do
       (BoxNames.Objects[I] as TRtfdBox).RefreshEntities;
@@ -1544,7 +1519,8 @@ begin
   if Assigned(B1) and Assigned(B2) then begin
     B2.Top := B1.Top + B1.Height + 50 + random(30)-30;
     B2.Left:= max(B1.Left + (B1.Width - B2.Width) div 2 + random(200) - 100, 0);
-    B2.Font.Assign(B1.Font);
+    B2.Font.Assign(Font);
+    Panel.ConnectObjects(B2, B1, asInstanceOf);
   end else if Assigned(B2) then begin
     B2.Top := B2.Top  + random(30) - 30;
     B2.Left:= B2.Left + random(30) - 30;
@@ -1553,8 +1529,6 @@ begin
   ShowAttributes(Objectname, aClass, aModelObject);
   if (B2 = nil) and assigned(aModelObject) then
     AddBox(aModelObject);
-  UpdateAllObjects;
-  Panel.RecalcSize;
 end;
 
 procedure TRtfdDiagram.CreateObjectForSelectedClass(Sender: TObject);
@@ -1651,6 +1625,8 @@ begin
       if GuiPyOptions.ShowAllNewObjects then
         ShowAllNewObjectsString(CreateObjectObjectname);
       UpdateAllObjects;
+      ResolveObjectAssociations;
+      Panel.RecalcSize;
     end;
     ShowAll;
   finally
@@ -1943,7 +1919,7 @@ begin
           AddToInteractive(MethodCall);
           ShowMethodEntered(CallMethodMethodName, 'Actor', CallMethodObjectname, ParameterAsString);
           PythonIIForm.OnExecuted:= CallMethodExecuted;
-          GI_PyInterpreter.StartOutputMirror(GuiPyOptions.TempDir + 'output.txt', false);
+          GI_PyInterpreter.StartOutputMirror(TPath.Combine(GuiPyOptions.TempDir, 'output.txt'), false);
           // execute within a thread
           FLivingObjects.Execute(Methodcall);
         end;
@@ -1971,7 +1947,7 @@ begin
   UpdateAllObjects;
   SL:= TStringList.Create;
   try
-    SL.LoadFromFile(GuiPyOptions.TempDir + 'output.txt');
+    SL.LoadFromFile(TPath.Combine(GuiPyOptions.TempDir, 'output.txt'));
     if SL.Count > 0
       then ShowMethodExited(CallMethodMethodName, CallMethodObjectname, 'Actor', SL[0])
       else ShowMethodExited(CallMethodMethodName, CallMethodObjectname, 'Actor', '');
@@ -2346,24 +2322,27 @@ procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
 
   procedure MakeMenuItem(const s1, s2: string; ImageIndex: integer);
   begin
-    var aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
-    aMenuItem.Caption:= myStringReplace(s1, chr(4), ' = '); // Copy(Caption, 1, 50);
-    aMenuItem.Tag:= InheritedLevel;
-    if s1 <> '-' then begin
-      if ImageIndex >= 7
-        then aMenuItem.OnClick:= CallMethodForClass
-        else aMenuItem.OnClick:= CreateObjectForSelectedClass;
-      aMenuItem.ImageIndex:= ImageIndex;
-      FullParameters.Add(s1 + '=' + s2);   // that's why chr(4) is used
-    end;
-
-    if (InheritedLevel = 0) and (0 <= MenuIndex) and
-       (MenuIndex < Frame.PopMenuClass.Items.Count) then begin
+    if s1 = '' then begin
+      var aSeparator:= TSpTBXSeparatorItem.Create(Frame.PopMenuClass);
+      Frame.PopMenuClass.Items.Insert(MenuIndex, aSeparator);
+      Inc(MenuIndex);
+    end else begin
+      var aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
+      aMenuItem.Caption:= s1; // Copy(Caption, 1, 50);
+      aMenuItem.Tag:= InheritedLevel;
+      if s1 <> '' then begin
+        if ImageIndex >= 7
+          then aMenuItem.OnClick:= CallMethodForClass
+          else aMenuItem.OnClick:= CreateObjectForSelectedClass;
+        aMenuItem.ImageIndex:= ImageIndex;
+        FullParameters.Add(s1 + '=' + s2);
+      end;
+      if (InheritedLevel = 0) and (0 <= MenuIndex) and (MenuIndex < Frame.PopMenuClass.Items.Count) then begin
         Frame.PopMenuClass.Items.Insert(MenuIndex, aMenuItem);
         Inc(MenuIndex);
-      end
-    else
-      aInheritedMenu.Add(aMenuItem);
+      end else
+        aInheritedMenu.Add(aMenuItem);
+    end;
   end;
 
   function MakeTestMenuItem(const s1, s2: string): TSpTBXItem;
@@ -2608,21 +2587,24 @@ procedure TRtfdDiagram.PopMenuObjectPopup(Sender: TOBject);
       aInheritedMenu: TSpTBXItem;
 
   procedure MakeMenuItem(const s1, s2: string; ImageIndex: integer);
-    var aMenuItem: TSpTBXItem;
   begin
-    aMenuItem:= TSpTBXItem.Create(Frame.PopMenuObject);
-    aMenuItem.Caption:= myStringReplace(s1, chr(4), ' = '); // Copy(Caption, 1, 50);
-    if s1 <> '-' then begin
-      aMenuItem.OnClick:=CallMethodForObject;
-      aMenuItem.ImageIndex:= ImageIndex;
-      FullParameters.Add(s1 + '=' + s2);
-    end;
-    if InheritedLevel = 0 then begin
-      Frame.PopMenuObject.Items.Insert(MenuIndex, aMenuItem);
+    if s1 = '' then begin
+      var aSeparator:= TSpTBXSeparatorItem.Create(Frame.PopMenuObject);
+      Frame.PopMenuObject.Items.Insert(MenuIndex, aSeparator);
       Inc(MenuIndex);
     end else begin
-      aMenuItem.Tag:= InheritedLevel;
-      aInheritedMenu.Add(aMenuItem);
+      var aMenuItem:= TSpTBXItem.Create(Frame.PopMenuObject);
+      aMenuItem.Caption:= s1;
+      aMenuItem.OnClick:= CallMethodForObject;
+      aMenuItem.ImageIndex:= ImageIndex;
+      FullParameters.Add(s1 + '=' + s2);
+      if InheritedLevel = 0 then begin
+        Frame.PopMenuObject.Items.Insert(MenuIndex, aMenuItem);
+        Inc(MenuIndex);
+      end else begin
+        aMenuItem.Tag:= InheritedLevel;
+        aInheritedMenu.Add(aMenuItem);
+      end;
     end;
   end;
 
@@ -2975,29 +2957,34 @@ begin
   UpdateAllObjects;
 end;
 
+procedure TRtfdDiagram.ShowUnnamed(Objectname: string);
+  var address: String; p: integer;
+begin
+  p:= Pos(' ', Objectname);
+  while p > 0 do begin
+    delete(Objectname, 1, p);
+    p:= Pos(' ', Objectname);
+  end;
+  if FLivingObjects.ObjectExists(Objectname) then begin
+    // ToDo is this necessary?
+    PyControl.ActiveInterpreter.RunSource('import ctypes', '<interactive input>');
+    address:= FLivingObjects.getRealAddressFromName(Objectname);
+    PyControl.ActiveInterpreter.RunSource(
+      Objectname + ' = ctypes.cast(' + address + ', ctypes.py_object).value',
+      '<interactive input>');
+    FLivingObjects.SimplifyPath(Objectname);
+    ShowNewObject(Objectname);
+  end;
+end;
+
 procedure TRtfdDiagram.ShowUnnamedObject(Sender: TObject);
-  var address, Objectname: String; p: integer;
 begin
   try
     LockFormUpdate(UMLForm);
-    Objectname:= (Sender as TSpTBXItem).Caption;
-    p:= Pos(' ', Objectname);
-    while p > 0 do begin
-      delete(Objectname, 1, p);
-      p:= Pos(' ', Objectname);
-    end;
-    if FLivingObjects.ObjectExists(Objectname) then begin
-      // ToDo is this necessary?
-      PyControl.ActiveInterpreter.RunSource('import ctypes', '<interactive input>');
-      address:= FLivingObjects.getRealAddressFromName(Objectname);
-      PyControl.ActiveInterpreter.RunSource(
-        Objectname + ' = ctypes.cast(' + address + ', ctypes.py_object).value',
-        '<interactive input>');
-      FLivingObjects.SimplifyPath(Objectname);
-      ShowNewObject(Objectname);
-      ResolveAssociations;
-      ResolveObjectAssociations;
-    end;
+    ShowUnnamed((Sender as TSpTBXItem).Caption);
+    ResolveObjectAssociations;
+    UpdateAllObjects;
+    Panel.RecalcSize;
   finally
     UnlockFormUpdate(UMLForm);
   end;
@@ -3011,19 +2998,19 @@ begin
     Screen.Cursor:= crHourglass;
     if Frame.MIObjectPopupShowNewObject.Visible then
       for i:= 0 to Frame.MIObjectPopupShowNewObject.Count - 1 do
-        ShowUnnamedObject(Frame.MIObjectPopupShowNewObject.Items[i])
+        ShowUnnamed(Frame.MIObjectPopupShowNewObject.Items[i].Caption)
     else begin
-      //i:= Frame.MIObjectPopUpShowAllNewObjects.MenuIndex+2;
       i:= 0;
       while (i < Frame.PopMenuObject.Items.count) and
             (Frame.PopMenuObject.Items[i].Tag <> -2)  do
         inc(i);
       while (i < Frame.PopMenuObject.Items.count) and
             (Frame.PopMenuObject.Items[i].Tag = -2) do begin
-        ShowUnnamedObject(Frame.PopMenuObject.Items[i]);
+        ShowUnnamed(Frame.PopMenuObject.Items[i].Caption);
         inc(i);
       end;
     end;
+    ResolveObjectAssociations;
   finally
     UnLockFormUpdate(UMLForm);
     Screen.Cursor:= crDefault;
@@ -3053,6 +3040,9 @@ begin
       ShowMethodEntered('<init>', From, newObject, '');
     end;
   end;
+  ResolveObjectAssociations;
+  UpdateAllObjects;
+  Panel.RecalcSize;
 end;
 
 procedure TRtfdDiagram.ConnectBoxes(Sender: TObject);
@@ -3272,7 +3262,7 @@ begin
     aControl:= Panel.GetFirstSelected;
   if assigned(aControl) and (aControl is TRtfdClass) then begin
     aClass:= (aControl as TRtfdClass);
-    CommentBox.Font.Assign(Panel.Font);
+    CommentBox.Font.Assign(Font);
     CommentBox.Top:= aClass.Top + random(50);
     CommentBox.Left:= aClass.Left + aClass.Width + 100 + random(50);
     Panel.ConnectObjects(aClass, CommentBox, asComment);
@@ -3430,15 +3420,17 @@ end;
 procedure TRtfdDiagram.ChangeStyle;
 begin
   if IsStyledWindowsColorDark then begin
-    Frame.PopMenuClass.Images:= DMImages.ILUMLDark;
-    Frame.PopMenuObject.Images:= DMImages.ILUMLDark;
-    Frame.PopMenuConnection.Images:= DMImages.ILAssoziationenDark;
-    Frame.PopupMenuWindow.Images:= DMImages.ILUMLToolbarDark;
+    Frame.PopMenuClass.Images:= Frame.vilClassObjectDark;
+    Frame.PopMenuObject.Images:= Frame.vilClassObjectDark;
+    Frame.PopMenuConnection.Images:= Frame.vilAssociationsDark;
+    Frame.PopupMenuWindow.Images:= Frame.vilWindowDark;
+    Frame.PopupMenuAlign.Images:= Frame.vilAlignDark;
   end else begin
-    Frame.PopMenuClass.Images:= DMImages.ILUMLLight;
-    Frame.PopMenuObject.Images:= DMImages.ILUMLLight;
-    Frame.PopMenuConnection.Images:= DMImages.ILAssoziationenLight;
-    Frame.PopupMenuWindow.Images:= DMImages.ILUMLToolbarLight;
+    Frame.PopMenuClass.Images:= Frame.vilClassObjectLight;
+    Frame.PopMenuObject.Images:= Frame.vilClassObjectLight;
+    Frame.PopMenuConnection.Images:= Frame.vilAssociationsLight;
+    Frame.PopupMenuWindow.Images:= Frame.vilWindowLight;
+    Frame.PopupMenuAlign.Images:= Frame.vilAlignLight;
   end;
   Panel.ChangeStyle;
 end;
@@ -3551,6 +3543,5 @@ begin
     RefreshDiagram;
   end;
 end;
-
 
 end.

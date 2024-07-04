@@ -4346,40 +4346,37 @@ object ResourcesDataModule: TResourcesDataModule
       item
         IconName = 'UMLNew'
         SVGText = 
-          '<svg width="114mm" height="110mm" viewBox="0 0 114 110" xmlns="h' +
-          'ttp://www.w3.org/2000/svg">'#10'    <g stroke="#000">'#10'        <g str' +
-          'oke-width="2.646">'#10'            <path style="fill:none;stroke-wid' +
-          'th:8;stroke-miterlimit:4;stroke-dasharray:none" fill="#fff" d="M' +
-          '27.774 32.448h79.409v67.238H27.774z" transform="translate(2.367 ' +
-          '5.127)"/>'#10'            <path fill="none" style="stroke-width:8;st' +
-          'roke-miterlimit:4;stroke-dasharray:none" d="M30.122 50.257h74.31' +
-          '9M31.565 74.459l72.091.265" transform="translate(2.367 5.127)"/>' +
-          #10'        </g>'#10'        <path fill="#ff0" stroke-width="6" transfo' +
-          'rm="matrix(.51317 0 0 .4885 -3.115 -.567)" style="fill:#ff0;stro' +
-          'ke:#060603;stroke-opacity:1;stroke-width:3.99455172;stroke-miter' +
-          'limit:4.0999999;stroke-dasharray:none" d="M53.009 54.872 64 13.9' +
-          'l10.991 40.97L64 13.902l10.991 40.97 42.362-2.207L81.784 75.78l1' +
-          '5.19 39.606L64 88.7l-32.974 26.685 15.19-39.606-35.57-23.115z"/>' +
-          #10'    </g>'#10'</svg>'
+          '<svg viewBox="0 0 114 110" >'#13#10'    <g stroke="#000000">'#13#10'        ' +
+          '<g stroke-width="2.646">'#13#10'            <path style="fill:none;str' +
+          'oke-width:8;stroke-miterlimit:4;stroke-dasharray:none" fill="#ff' +
+          'f" d="M27.774 32.448h79.409v67.238H27.774z" transform="translate' +
+          '(2.367 5.127)"/>'#13#10'            <path fill="none" style="stroke-wi' +
+          'dth:8;stroke-miterlimit:4;stroke-dasharray:none" d="M30.122 50.2' +
+          '57h74.319M31.565 74.459l72.091.265" transform="translate(2.367 5' +
+          '.127)"/>'#13#10'        </g>'#13#10'        <path fill="#ff0" stroke-width="' +
+          '6" transform="matrix(.51317 0 0 .4885 -3.115 -.567)" style="fill' +
+          ':#ff0;stroke:#060603;stroke-opacity:1;stroke-width:3.99455172;st' +
+          'roke-miterlimit:4.0999999;stroke-dasharray:none" d="M53.009 54.8' +
+          '72 64 13.9l10.991 40.97L64 13.902l10.991 40.97 42.362-2.207L81.7' +
+          '84 75.78l15.19 39.606L64 88.7l-32.974 26.685 15.19-39.606-35.57-' +
+          '23.115z"/>'#13#10'    </g>'#13#10'</svg>'
       end
       item
         IconName = 'UMLOpen'
         SVGText = 
-          '<svg width="114mm" height="110mm" viewBox="0 0 114 110" xmlns="h' +
-          'ttp://www.w3.org/2000/svg">'#10'    <g style="display:inline">'#10'     ' +
-          '   <path style="fill:none;stroke:#000;stroke-width:8" d="M30.14 ' +
-          '37.576h79.41v67.238H30.14ZM32.489 55.385h74.318"/>'#10'        <path' +
-          ' style="display:inline;fill:none;stroke:#000;stroke-width:8" d="' +
-          'm33.932 79.587 72.09.264"/>'#10'        <path style="fill:none;fill-' +
-          'opacity:1;stroke:#038e05;stroke-width:6;stroke-linecap:butt;stro' +
-          'ke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stro' +
-          'ke-opacity:1" d="M2.68 29.524c10.218-7.66 20.435-15.318 30.098-1' +
-          '5.67 9.662-.353 18.769 6.6 27.875 13.553"/>'#10'        <path style=' +
-          '"fill:#038e05;fill-opacity:1;stroke:#038e05;stroke-width:22.6772' +
-          ';stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" tra' +
-          'nsform="matrix(.26127 -.04174 .04174 .26127 134.04 -40.35)" d="m' +
-          '-275.486 252.808-29.178-8.35-29.178-8.351 21.821-21.094 21.821-2' +
-          '1.094 7.357 29.445z"/>'#10'    </g>'#10'</svg>'#10
+          '<svg viewBox="0 0 114 110">'#13#10'  <path fill="none" stroke="#000000' +
+          '" stroke-width="8" d="M30.14 37.576h79.41v67.238H30.14ZM32.489 5' +
+          '5.385h74.318"/>'#13#10'  <path fill="none" stroke="#000000" stroke-wid' +
+          'th="8" d="m33.932 79.587 72.09.264"/>'#13#10'  <path style="fill:none;' +
+          'fill-opacity:1;stroke:#038e05;stroke-width:6;stroke-linecap:butt' +
+          ';stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none' +
+          ';stroke-opacity:1" d="M2.68 29.524c10.218-7.66 20.435-15.318 30.' +
+          '098-15.67 9.662-.353 18.769 6.6 27.875 13.553"/>'#10'  <path style="' +
+          'fill:#038e05;fill-opacity:1;stroke:#038e05;stroke-width:22.6772;' +
+          'stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" tran' +
+          'sform="matrix(.26127 -.04174 .04174 .26127 134.04 -40.35)" d="m-' +
+          '275.486 252.808-29.178-8.35-29.178-8.351 21.821-21.094 21.821-21' +
+          '.094 7.357 29.445z"/>'#13#10'</svg>'#13#10
       end
       item
         IconName = 'ClassEdit'
@@ -4884,7 +4881,6 @@ object ResourcesDataModule: TResourcesDataModule
           'ed6"/>'#10'    <path d="M10 9h1v1h-1z" fill="#96c0e4"/>'#10'    <path d=' +
           '"M6 12v-1h1v1z" fill="#accdea"/>'#10'</svg>'#10
       end>
-    ApplyFixedColorToRootOnly = True
     Left = 40
     Top = 152
   end

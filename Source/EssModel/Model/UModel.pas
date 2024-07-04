@@ -655,7 +655,7 @@ begin
     cent:= TClassifier(Ci.Next);
     inc(i);
     SL.Add('#' + IntTostr(i) + ' ' + Cent.Name + ' - ' + Cent.Importname + ' - ' + Cent.Pathname);
-    if (Cent is TClass) and assigned((Cent as TClass).Ancestor[0]) then
+    if (Cent is TClass) and ((Cent as TClass).AncestorsCount > 0) then
       SL.Add('Ancestor: ' + (Cent as TClass).Ancestor[0].Name);
     SL.Add('--- Attributes ---');
     Ai:= Cent.GetAllAttributes;

@@ -186,8 +186,8 @@ begin
   FTakeFocus:= true;
   FUnderline:= -1;
   FWrapLength:= '0';
-  Font.Name:= 'Segoe UI';   // TkDefaultFont and TkTextFont
-  Font.Size:= GuiPyOptions.FontSize;
+  Font.Name:= GuiPyOptions.GuiFontName; // 'Segoe UI';   // TkDefaultFont and TkTextFont
+  Font.Size:= GuiPyOptions.GuiFontSize;
   Font.Style:= [];
   HelpType:= htContext;
   Sizeable:= true;
@@ -385,7 +385,7 @@ begin
         _TA_SE:     begin x:= w - 3 - tw - pr - RightSpace; y:= h - 1 - th - pb; end;
         else        begin x:= 0;                            y:= 0; end;
       end;
-
+      tw:= min(tw, Width - RightSpace);
       ShowText(Rect(x, y, x + tw, y + th));
       LeftSpace:= x - PPIScale(21);  // for use in Checkbutton and Radiobutton
       TopSpace:= y;
@@ -1097,7 +1097,7 @@ procedure TBaseTkWidget.MakeFont;
   var s1, s2: string;
 begin
   s1:= 'self.' + Name + '[''font'']';
-  s2:= ' = (' + asString(Font.Name) + ', ' + IntToStr(Font.Size);
+  s2:= ' = (' + asString(Font.Name) + ', ' + IntToStr(PPIUnScale(Font.Size));
   if fsBold   in Font.Style then s2:= s2 + ', ' + asString('bold');
   if fsItalic in Font.Style then s2:= s2 + ', ' + asString('italic');
   if fsStrikeout in Font.Style then s2:= s2 + ', ' + asString('overstrike');

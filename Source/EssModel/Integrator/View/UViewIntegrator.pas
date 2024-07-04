@@ -43,7 +43,7 @@ type
     property CurrentEntity : TModelEntity read GetCurrentEntity write SetCurrentEntity;
   end;
 
-  //Class to show/edit a model in a powerpointy view
+  // Class to show/edit a model in a powerpointy view
   // TRtfdDiagram is a descendet of this class
   TDiagramIntegrator = class(TViewIntegrator)
   private

@@ -3,8 +3,9 @@ unit UBrowser;
 interface
 
 uses
-  Classes, Controls, OleCtrls, Forms, SHDocVw, ComCtrls, ToolWin, StdCtrls, ExtCtrls,
-  ImageList, ImgList, frmFile;
+  Classes, Controls, OleCtrls, Forms, SHDocVw, ComCtrls, ToolWin, StdCtrls,
+  ExtCtrls, Messages, ImageList, ImgList, SpTBXSkins, frmFile,
+  Vcl.VirtualImageList, Vcl.BaseImageCollection, SVGIconImageCollection;
 
 type
   TFBrowser = class(TFileForm)
@@ -24,6 +25,9 @@ type
     TBRefresh: TToolButton;
     TBFavoritesAdd: TToolButton;
     TBFavoritesDelete: TToolButton;
+    icBrowser: TSVGIconImageCollection;
+    vilBrowserLight: TVirtualImageList;
+    vilBrowserDark: TVirtualImageList;
     procedure FormCreate(Sender: TObject); override;
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction); override;
@@ -58,20 +62,22 @@ type
     procedure CopyToClipboard; override;
     procedure PasteFromClipboard; override;
     procedure SetFontSize(Delta: integer); override;
+    procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
     function OpenFile(const aFilename: String): boolean; override;
     procedure OpenWindow(Sender: TObject); override;
     function getAsStringList: TStringList; override;
     procedure UploadFilesHttpPost(const URLstring: string; names, values, nFiles, vFiles: array of string);
+    procedure ChangeStyle;
     procedure DPIChanged; override;
   end;
 
 implementation
 
-uses Winapi.Windows, System.SysUtils, System.Variants, Vcl.Dialogs,
+uses Winapi.Windows, System.SysUtils, System.Variants, Vcl.Dialogs, IOUtils,
      Clipbrd, ActiveX, MSHTML, JvGnugettext,
      uEditAppIntfs, uCommonFunctions, frmPyIDEMain,
-     frmFileExplorer, UUtils, UImages, UConfiguration;
+     frmFileExplorer, UUtils, UConfiguration;
 
 {$R *.dfm}
 
@@ -83,6 +89,7 @@ begin
     PLeft.Width:= ReadInteger('Browser\CBwidth', 200);
     ReadStringList('Browser\Favoriten', CBUrls.Items);
   end;
+  ChangeStyle;
 end;
 
 procedure TFBrowser.FormShow(Sender: TObject);
@@ -188,8 +195,8 @@ begin
     if not IsHTML(s) then s:= ChangeFileExt(s, '.html');
     try
       Screen.Cursor:= crHourglass;
-      if DownloadURL(CBUrls.Text, GuiPyOptions.TempDir + s)
-        then PyIDEMainForm.DoOpenAsEditor(GuiPyOptions.TempDir + s)
+      if DownloadURL(CBUrls.Text, TPath.Combine(GuiPyOptions.TempDir, s))
+        then PyIDEMainForm.DoOpenAsEditor(TPath.Combine(GuiPyOptions.TempDir, s))
         else StyledMessageDlg(_('Download failed!'), mtError, [mbOK], 0);
     finally
       Screen.Cursor:= crDefault;
@@ -311,7 +318,7 @@ begin
   if not FileExists(filename) then begin
     Screen.Cursor:= crHourglass;
     try
-      filename:= GuiPyOptions.TempDir + 'download.html';
+      filename:= TPath.Combine(GuiPyOptions.TempDir, 'download.html');
       if not DownloadURL(CBUrls.Text, filename) then
         StyledMessageDlg(_('Download failed!'), mtError, [mbOK], 0);
     finally
@@ -471,17 +478,30 @@ end;
 
 procedure TFBrowser.WebBrowserDownloadBegin(Sender: TObject);
 begin
-  TBStop.ImageIndex:= 5;
+  TBStop.ImageName:= 'AbortOn';
 end;
 
 procedure TFBrowser.WebBrowserDownloadComplete(Sender: TObject);
 begin
-  TBStop.ImageIndex:= 4;
+  TBStop.ImageName:= 'AbortOff';
   Pathname:= getProtocolAndDomain(CBUrls.Text);
   fFile.fFileName:= Pathname;
   PyIDEMainForm.UpdateCaption;
   DoUpdateCaption;
   if not FConfiguration.visible then ActivateBrowser;
+end;
+
+procedure TFBrowser.WMSpSkinChange(var Message: TMessage);
+begin
+  inherited;
+  ChangeStyle;
+end;
+
+procedure TFBrowser.ChangeStyle;
+begin
+  if FConfiguration.isDark
+    then ToolBar.Images:= vilBrowserDark
+    else ToolBar.Images:= vilBrowserLight;
 end;
 
 procedure TFBrowser.DPIChanged;

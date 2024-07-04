@@ -3,8 +3,8 @@ inherited ToDoWindow: TToDoWindow
   Top = 226
   HelpContext = 465
   Caption = 'To Do List'
-  ClientHeight = 293
-  ClientWidth = 492
+  ClientHeight = 281
+  ClientWidth = 484
   Icon.Data = {
     0000010001001010000001002000280400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -40,27 +40,27 @@ inherited ToDoWindow: TToDoWindow
     A3FF000000000000000000000000000000000000000000000000000000000000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 500
-  ExplicitHeight = 320
+  ExplicitWidth = 492
+  ExplicitHeight = 308
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 492
-    Height = 293
-    ExplicitWidth = 484
-    ExplicitHeight = 281
+    Width = 484
+    Height = 281
+    ExplicitWidth = 476
+    ExplicitHeight = 269
     inherited FGPanel: TPanel
-      Width = 488
-      Height = 289
-      ExplicitWidth = 480
-      ExplicitHeight = 277
+      Width = 480
+      Height = 277
+      ExplicitWidth = 472
+      ExplicitHeight = 265
       object TBXDock1: TSpTBXDock
         Left = 0
         Top = 0
-        Width = 488
+        Width = 480
         Height = 30
         AllowDrag = False
         DoubleBuffered = True
-        ExplicitWidth = 480
+        ExplicitWidth = 472
         object Toolbar: TSpTBXToolbar
           Left = 0
           Top = 0
@@ -100,8 +100,8 @@ inherited ToDoWindow: TToDoWindow
       object ToDoView: TVirtualStringTree
         Left = 0
         Top = 30
-        Width = 488
-        Height = 259
+        Width = 480
+        Height = 247
         Align = alClient
         Alignment = taRightJustify
         BevelInner = bvNone
@@ -146,7 +146,7 @@ inherited ToDoWindow: TToDoWindow
             MinWidth = 100
             Position = 1
             Text = 'Description'
-            Width = 203
+            Width = 195
           end
           item
             Layout = blGlyphRight

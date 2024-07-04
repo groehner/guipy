@@ -29,7 +29,8 @@ uses
   Messages, Classes, Graphics, Forms, ToolWin, Controls, ExtCtrls, ComCtrls,
   Menus, System.ImageList, Vcl.ImgList,
   SpTBXDkPanels, SpTBXSkins, UUMLModule, frmFile, SynEdit, SpTBXItem, TB2Item,
-  Vcl.StdCtrls;
+  Vcl.StdCtrls, Vcl.BaseImageCollection, SVGIconImageCollection,
+  Vcl.VirtualImageList;
 
 type
 
@@ -73,6 +74,15 @@ type
     SpTBXSplitter1: TSpTBXSplitter;
     PUML: TPanel;
     TVFileStructure: TTreeView;
+    vilToolbarLight: TVirtualImageList;
+    vilToolbarDark: TVirtualImageList;
+    icUML: TSVGIconImageCollection;
+    vilInteractiveLight: TVirtualImageList;
+    vilInteractiveDark: TVirtualImageList;
+    icInteractive: TSVGIconImageCollection;
+    vilPMInteractiveLight: TVirtualImageList;
+    vilPMInteractiveDark: TVirtualImageList;
+    icPMInteractive: TSVGIconImageCollection;
     procedure FormCreate(Sender: TObject); override;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormClose(Sender: TObject; var aAction: TCloseAction); override;
@@ -138,7 +148,7 @@ type
     procedure Enter(Sender: TObject); override;
     procedure SetOnlyModified(aModified: boolean);
     procedure CollectClasses(SL: TStringList); override;
-    procedure Refresh;
+    procedure SaveAndReload;
     procedure OnPanelModified(aValue: Boolean);
     procedure OnInteractiveModified(Sender: TObject);
     procedure AddToProject(const Filename: string);
@@ -151,6 +161,7 @@ type
     procedure EndUpdate;
     procedure DeleteObjects;
     procedure DPIChanged; override;
+    class function ToolbarCount: integer;
 
     property InteractiveHeight: integer read FInteractiveHeight write setInteractiveHeight;
     property InteractiveClosed: boolean read FInteractiveClosed write setInteractiveClosed;
@@ -162,7 +173,7 @@ uses Windows, SysUtils, Types, IniFiles, Math, Clipbrd, Dialogs,
      frmPyIDEMain, dmResources, uEditAppIntfs, uCommonFunctions,
      JvGnugettext, StringResources, cPyScripterSettings, UFileStructure,
      UConfiguration, UUtils, UModelEntity, UModel, URtfdDiagram, UViewIntegrator,
-     UImages, cPyControl, cFileTemplates;
+     cPyControl, cFileTemplates;
 
 {$R *.DFM}
 
@@ -170,6 +181,7 @@ procedure TFUMLForm.FormCreate(Sender: TObject);
 begin
   inherited;
   MainModul:= TDMUMLModule.Create(Self, PDiagramPanel);
+  TRtfdDiagram (MainModul.Diagram).Frame.onFocus:= Enter;
   SetFont(GuiPyOptions.UMLFont);  // ToDo makes a RefreshDiagramm
   DefaultExtension:= 'uml';
   Modified:= false;
@@ -180,6 +192,7 @@ begin
   SynEdit.Font.Assign(EditorOptions.Font);
   ChangeStyle;
   SetOptions;
+  LockEnter:= true;
 end;
 
 procedure TFUMLForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -188,7 +201,7 @@ begin
     DoSaveFile;
     AlreadySavedAs:= true;
   end;
-  FFileStructure.Clear;
+  FFileStructure.Clear(Self);
   CanClose:= true;
 end;
 
@@ -199,7 +212,6 @@ begin
   LockRefresh:= true;
   LockCreateTV:= true;
   aAction:= caFree;
-  FFileStructure.Clear;
   for var i:= TVFileStructure.Items.Count - 1 downto 0 do
     FreeAndNil(TVFileStructure.Items[i].Data);
 end;
@@ -209,6 +221,8 @@ begin
   FreeAndNil(MainModul);
   inherited;
 end;
+
+
 
 procedure TFUMLForm.OnFormMouseDown(Sender: TObject);
 begin
@@ -247,11 +261,11 @@ end;
 
 procedure TFUMLForm.DoActivateFile(Primary: boolean = True);
 begin
-  inherited;
+  inherited;    {
   TThread.ForceQueue(nil, procedure
     begin
       Refresh;
-    end);
+    end);   }
 end;
 
 procedure TFUMLForm.MICloseClick(Sender: TObject);
@@ -313,6 +327,10 @@ begin
     end;
   end;
   DoActivateFile;
+  if assigned(TVFileStructure) and (FFileStructure.myForm <> self) then begin
+    CreateTVFileStructure;
+    FFileStructure.init(TVFileStructure.Items, Self);
+  end;
   LockEnter:= false;
 end;
 
@@ -369,6 +387,7 @@ procedure TFUMLForm.TBZoomOutClick(Sender: TObject);
 begin
   SetFontSize(-1);
 end;
+
 
 procedure TFUMLForm.TBNewLayoutClick(Sender: TObject);
 begin
@@ -460,7 +479,7 @@ begin
   FInteractiveHeight:= ClientHeight - 4 - PDiagram.Height;
 end;
 
-procedure TFUMLForm.Refresh;
+procedure TFUMLForm.SaveAndReload;
 begin
   if LockRefresh then exit;
   LockRefresh:= true;
@@ -550,10 +569,8 @@ end;
 
 procedure TFUMLForm.SetFont(aFont: TFont);
 begin
-  //if (aFont.Name <> Font.Name) or (aFont.Size <> Font.Size) then begin
-    MainModul.Diagram.SetFont(aFont);
-    MainModul.RefreshDiagram;
-  //end;
+  MainModul.Diagram.SetFont(aFont);
+  MainModul.RefreshDiagram;
 end;
 
 function TFUMLForm.GetFont: TFont;
@@ -673,10 +690,6 @@ begin
     while Pos('.', CName) > 0 do
       delete(CName, 1, Pos('.', CName));
 
-    if (cent is TClass)
-      then PictureNr:= 1
-      else PictureNr:= 11;
-
     if Indent = 0 then
       ClassNode:= TVFileStructure.Items.AddObject(nil, CName, TInteger.create(cent.LineS))
     else if Indent > IndentOld then
@@ -689,14 +702,14 @@ begin
       ClassNode:= TVFileStructure.Items.AddChildObject(ClassNode, CName, TInteger.create(cent.LineS));
     end;
 
-    ClassNode.ImageIndex:= PictureNr;
-    ClassNode.SelectedIndex:= PictureNr;
+    ClassNode.ImageIndex:= 0;
+    ClassNode.SelectedIndex:= 0;
     ClassNode.HasChildren:= true;
 
     it:= cent.GetAttributes;
     while It.HasNext do begin
       Attribut:= It.Next as TAttribute;
-      PictureNr:= Integer(Attribut.Visibility) + 2;
+      PictureNr:= 1 + Integer(Attribut.Visibility);
       Node:= TVFileStructure.Items.AddChildObject(ClassNode, Attribut.toShortStringNode, TInteger.create(Attribut.LineS));
       Node.ImageIndex:= PictureNr;
       Node.SelectedIndex:= PictureNr;
@@ -706,8 +719,8 @@ begin
     while It.HasNext do begin
       Methode:= It.Next as TOperation;
       if Methode.OperationType = otConstructor
-        then PictureNr:= 6
-        else PictureNr:= Integer(Methode.Visibility) + 7;
+        then PictureNr:= 4
+        else PictureNr:= 5 + Integer(Methode.Visibility);
       Node:= TVFileStructure.Items.AddChildObject(ClassNode, Methode.toShortStringNode, TInteger.create(Methode.LineS));
       Node.ImageIndex:= PictureNr;
       Node.SelectedIndex:= PictureNr;
@@ -728,13 +741,13 @@ end;
 procedure TFUMLForm.ChangeStyle;
 begin
   if IsStyledWindowsColorDark then begin
-    UMLToolbar.Images:= DMImages.ILUMLToolbarDark;
-    TBInteractiveToolbar.Images:= DMImages.ILInteractiveDark;
-    PMInteractive.Images:= DMImages.ILInteractiveDark;
+    UMLToolbar.Images:= vilToolbarDark;
+    TBInteractiveToolbar.Images:= vilInteractiveDark;
+    PMInteractive.Images:= vilPMInteractiveDark;
   end else begin
-    UMLToolbar.Images:= DMImages.ILUMLToolbarLight;
-    TBInteractiveToolbar.Images:= DMImages.ILInteractive;
-    PMInteractive.Images:= DMImages.ILInteractive
+    UMLToolbar.Images:= vilToolbarLight;
+    TBInteractiveToolbar.Images:= vilInteractiveLight;
+    PMInteractive.Images:= vilPMInteractiveLight;
   end;
   SynEdit.Highlighter:= ResourcesDataModule.Highlighters.HighlighterFromFileExt('py');
   MainModul.Diagram.ChangeStyle;
@@ -781,6 +794,12 @@ end;
 procedure TFUMLForm.DPIChanged;
 begin
   setFontSize(Font.Size - GetFont.Size);
+  MainModul.Diagram.RefreshDiagram;
+end;
+
+class function TFUMLForm.ToolbarCount: integer;
+begin
+  Result:= 13;
 end;
 
 end.

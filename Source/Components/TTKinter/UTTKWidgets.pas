@@ -195,7 +195,7 @@ end;
 procedure TTKWidget.Paint;
 begin
   if Relief <> _TR_flat
-    then BorderWidthInt:= 2
+    then BorderWidthInt:= PPIScale(2)
     else BorderWidthInt:= 0;
   inherited;
 end;

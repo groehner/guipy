@@ -35,7 +35,7 @@ var
 
 implementation
 
-uses Forms, Dialogs, SysUtils, JvGnugettext,
+uses Forms, Dialogs, SysUtils, IOUtils, JvGnugettext,
      frmCommandOutput, cTools, UConfiguration, UUtils, frmPyIDEMain;
 
 {$R *.dfm}
@@ -213,7 +213,7 @@ begin
     OutputWindow.lsbConsole.Items.Delete(0);
     s2:= Filename;
     System.insert('[R' + rev + ']', s2, Pos('.', s2));
-    s2:= GuiPyOptions.TempDir + s2;
+    s2:= TPath.Combine(GuiPyOptions.TempDir, s2);
 
     aFile:= PyIDEMainForm.DoOpenAsEditor(s2);
     if Assigned(aFile) then begin

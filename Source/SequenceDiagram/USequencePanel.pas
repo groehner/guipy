@@ -39,8 +39,6 @@ type
 
   // Specifies a connection between two managed objects.
   TConnection = class(TConnectionAttributes)
-  private
-    function PPIScale(ASize: integer): integer;
   public
     Selected: Boolean;
     FFrom, FTo: TControl; // from --> to Lifeline
@@ -284,11 +282,6 @@ type
   TCrackControl = class(TControl)
   end;
 
-function TConnection.PPIScale(ASize: integer): integer;
-begin
-  Result:= FFrom.PPIScale(ASize);
-end;
-
 procedure TConnection.SetPenBrushArrow(Canvas: TCanvas);
 begin
   case ConnectStyle of
@@ -443,7 +436,7 @@ begin  // of draw
   Canvas.Pen.Color:= FGColor;
   ConRect:= Rect(min(x1, x2), min(y1, y2) - abs(dy),
                  max(x1, x2), max(y1, y2) + abs(dy));
-  ConRect.Inflate(PPIScale(2), PPIScale(2));
+  ConRect.Inflate(FFrom.PPIScale(2), FFrom.PPIScale(2));
   DrawMessage;
 
   // debug
@@ -602,8 +595,8 @@ begin
   aMessage    := Attributes.aMessage;
   isRecursiv  := (FFrom = FTo);
   YPos        := 0;
-  FromP       := Point(PPIScale(FFrom.Left + FFrom.Width div 2), PPIScale(FFrom.Top + YPos));
-  ToP         := Point(PPIScale(FTo.Left + FTo.Width div 2), PPIScale(FFrom.Top + YPos));
+  FromP       := Point(FFrom.Left + FFrom.Width div 2, FFrom.Top + YPos);
+  ToP         := Point(FTo.Left + FTo.Width div 2, FFrom.Top + YPos);
   Self.OnConnectionChanged:= aOnConnectionChanged;
   ConRect     := Rect(0, 0, 0, 0);
   CalcPolyline;
@@ -709,10 +702,10 @@ end;
 
 procedure TConnection.setFont(aFont: TFont);
 begin
-  DistX:= PPIScale(Round(cDistX*aFont.Size/12.0));
-  DistY:= PPIScale(Round(cDistY*aFont.Size/12.0));
-  ActivationWidth:= PPIScale(Round(cActivationWidth*aFont.Size/12.0));
-  HeadLength:= PPIScale(Round(cHeadLength*aFont.Size/12.0));
+  DistX:= Round(cDistX*aFont.Size/12.0);
+  DistY:= Round(cDistY*aFont.Size/12.0);
+  ActivationWidth:= Round(cActivationWidth*aFont.Size/12.0);
+  HeadLength:= Round(cHeadLength*aFont.Size/12.0);
 end;
 
 {--- TSequencePanel -----------------------------------------------------------}

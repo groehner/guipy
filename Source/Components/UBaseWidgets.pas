@@ -57,6 +57,7 @@ type
     property Cursor;
     property Height;
     property Width;
+    property Font;
     property x: integer read getX write setX;
     property y: integer read getY write setY;
   public

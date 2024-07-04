@@ -634,10 +634,8 @@ end;
 
 procedure TEssConnectPanel.DeleteObjectConnections;
 begin
-  for var i := FConnections.Count - 1 downto 0 do
-  begin
-    var
-    conn := TConnection(FConnections[i]);
+  for var i := FConnections.Count - 1 downto 0 do begin
+    var conn := TConnection(FConnections[i]);
     if (conn.FFrom is TRtfdObject) and (conn.FTo is TRtfdObject) then
       FConnections.Delete(i);
   end;

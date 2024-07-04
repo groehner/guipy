@@ -174,7 +174,7 @@ type
 implementation
 
 uses
-  Controls, Math, Types, SysUtils, UGUIDesigner, UImages, UUtils;
+  Controls, Math, Types, SysUtils, UGUIDesigner, UUtils;
 
 {--- TQtAbstractButton ---------------------------------------------------------}
 
@@ -658,8 +658,8 @@ begin
   LeftSpace:= PPIScale(18);
   inherited;
   if FChecked
-    then DrawBitmap(0, TopSpace, 3, Canvas, DMImages.ILQtControls)
-    else DrawBitmap(0, TopSpace, 2, Canvas, DMImages.ILQtControls);
+    then FGUIDesigner.vilQtControls1616.Draw(Canvas, 0, TopSpace, 3)
+    else FGUIDesigner.vilQtControls1616.Draw(Canvas, 0, TopSpace, 2);
   PaintFlat:= false;
   PaintStyle:= 0;
 end;
@@ -714,8 +714,8 @@ begin
   LeftSpace:= PPIScale(18);
   inherited;
   if FChecked
-    then DrawBitmap(0, TopSpace, 1, Canvas, DMImages.ILQtControls)
-    else DrawBitmap(0, TopSpace, 0, Canvas, DMImages.ILQtControls);
+    then FGUIDesigner.vilQtControls1616.Draw(Canvas, 0, TopSpace, 1)
+    else FGUIDesigner.vilQtControls1616.Draw(Canvas, 0, TopSpace, 0);
   PaintFlat:= false;
   PaintStyle:= 0;
 end;

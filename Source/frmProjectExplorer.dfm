@@ -1,6 +1,7 @@
 inherited ProjectExplorerWindow: TProjectExplorerWindow
   HelpContext = 435
   Caption = 'Project Explorer'
+  ClientHeight = 165
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000000000000000000000000000000000000000000000000
@@ -41,6 +42,7 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   OnShow = FormShow
   TextHeight = 15
   inherited BGPanel: TPanel
+    Height = 165
     inherited FGPanel: TPanel
       object Panel1: TPanel
         Left = 0
@@ -72,7 +74,6 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           OnContextPopup = ExplorerTreeContextPopup
           OnDragAllowed = ExplorerTreeDragAllowed
           OnDragOver = ExplorerTreeDragOver
-          OnDragDrop = ExplorerTreeDragDrop
           OnEditing = ExplorerTreeEditing
           OnGetCellText = ExplorerTreeGetCellText
           OnGetImageIndexEx = ExplorerTreeGetImageIndexEx

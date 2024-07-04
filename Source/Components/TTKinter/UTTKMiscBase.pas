@@ -542,7 +542,7 @@ begin
     R.Bottom:= R.Top + PPIScale(3);
     SliderWidth := PPIScale(12);
     SliderHeight:= PPIScale(23);
-    UsablePixels := Width - 2 - SliderWidth;
+    UsablePixels := Width - PPIScale(2) - SliderWidth;
   end else begin
     R.Top := 1;
     R.Bottom := Height - 1;
@@ -550,7 +550,7 @@ begin
     R.Right := R.Left + PPIScale(3);
     SliderWidth := PPIScale(23);
     SliderHeight:= PPIScale(12);
-    UsablePixels := Height - 2 - SliderHeight;
+    UsablePixels := Height - PPIScale(2) - SliderHeight;
   end;
   Canvas.Pen.Color:= $D6D6D6;
   Canvas.Rectangle(R);
@@ -710,8 +710,9 @@ constructor TTKScrollbar.create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 42;
-  Width:= 20;
-  Height:= 120;
+  Width:= 120;
+  Height:= 20;
+  FOrient:= horizontal;
 end;
 
 function TTKScrollbar.getAttributes(ShowAttributes: integer): string;
@@ -729,6 +730,7 @@ end;
 procedure TTKScrollbar.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('ttk.Scrollbar');
+  InsertValue('self.' + Name + '[''orient''] = ' + asString('horizontal'));
 end;
 
 function TTKScrollbar.getWidgetStylename: String;
@@ -923,13 +925,14 @@ procedure TTKRadiobuttonGroup.SetPositionAndSize;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited;
+  Canvas.Font.Assign(Font);
   th:= Canvas.TextHeight('Hg');
   if FLabel = '' then begin
     RadioWidth:= Width;
     RadioHeight:= Height;
   end else begin
-    RadioWidth:= Width - 4;
-    RadioHeight:= Height - th - 4;
+    RadioWidth:= Width - PPIScale(4);
+    RadioHeight:= Height - th - PPIScale(4);
   end;
 
   if FItems.Count > 0 then begin
@@ -1466,39 +1469,39 @@ begin
       for i:= 1 to Count - 1 do begin
         x:= pl + i*ColWidth;
         Canvas.MoveTo(x, 1);
-        Canvas.LineTo(x, 24);
+        Canvas.LineTo(x, PPIScale(24));
       end;
     end;
     for i:= 0 to Count - 1 do begin
       x:= pl + i*ColWidth + 1;
-      R:= Rect(x, 4, x + ColWidth, 23);
+      R:= Rect(x, PPIScale(4), x + ColWidth, PPIScale(23));
       s:= FColumns[i];
       DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_CENTER);
     end;
-    y:= 26;
+    y:= PPIScale(26);
   end else
-    y:= 2;
+    y:= PPIScale(2);
   // nodes
   x:= 1;
   i:= 0;
   while i < FItems.Count do begin
     if LeftSpaces(FItems[i], 2) = 0 then begin
       if hasSubNodes(i) then begin
-        R:= Rect(x + 5, y + 6, x + 14, y + 15);
+        R:= Rect(x + PPIScale(5), y + PPIScale(6), x + PPIScale(14), y + PPIScale(15));
         Canvas.Pen.Color:= $919191;
         Canvas.Rectangle(R);
         Canvas.Pen.Color:= $724229;
-        Canvas.MoveTo(x + 9, y + 8);
-        Canvas.LineTo(x + 9, y + 13);
+        Canvas.MoveTo(x + PPIScale(9), y + PPIScale(8));
+        Canvas.LineTo(x + PPIScale(9), y + PPIScale(13));
         Canvas.Pen.Color:= $A7634B;
-        Canvas.MoveTo(x +  7, y + 10);
-        Canvas.LineTo(x + 12, y + 10);
+        Canvas.MoveTo(x +  PPIScale(7), y + PPIScale(10));
+        Canvas.LineTo(x + PPIScale(12), y + PPIScale(10));
       end;
       s:= FItems[i];
-      R:= Rect(x + 20, y + 2, x + ColWidth - 1, y + 22);
+      R:= Rect(x + PPIScale(20), y + PPIScale(2), x + ColWidth - 1, y + PPIScale(22));
       DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_LEFT);
-      y:= y + 20;
-      if y + 20 > Height - pb then
+      y:= y + PPIScale(20);
+      if y + PPIScale(20) > Height - pb then
         i:= FItems.Count;
     end;
     inc(i);
@@ -1643,25 +1646,27 @@ begin
 end;
 
 procedure TTKSizeGrip.Paint;
-  var pw, ph: Integer; R: TRect;
+  var pw, ph, p3, p14: Integer; R: TRect;
 begin
-  setBounds(Parent.ClientWidth-14, Parent.ClientHeight-14, 14, 14);
+  p14:= PPIScale(14);
+  p3:= PPIScale(3);
+  setBounds(Parent.ClientWidth-p14, Parent.ClientHeight-p14, p14, p14);
   inherited;
   pw:= ClientWidth;
   ph:= ClientHeight;
 
   Canvas.Brush.Color:= $BFBFBF;
-  R:= Rect(pw - 11, ph - 5, pw - 9, ph - 3);
+  R:= Rect(pw - PPIScale(11), ph - PPIScale(5), pw - PPIScale(9), ph - p3);
   Canvas.FillRect(R);
-  R.Offset(3, 0);
+  R.Offset(p3, 0);
   Canvas.FillRect(R);
-  R.Offset(3, 0);
+  R.Offset(p3, 0);
   Canvas.FillRect(R);
-  R.Offset(0, -3);
+  R.Offset(0, -p3);
   Canvas.FillRect(R);
-  R.Offset(0, -3);
+  R.Offset(0, -p3);
   Canvas.FillRect(R);
-  R.Offset(-3, +3);
+  R.Offset(-p3, +p3);
   Canvas.FillRect(R);
 end;
 

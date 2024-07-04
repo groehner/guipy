@@ -22,7 +22,7 @@ uses
   Windows, Messages, Classes, Graphics, Controls, Forms, ComCtrls,
   ExtCtrls, StdCtrls, Toolwin, ImgList, ImageList,
   uEditAppIntfs, SpTBXSkins, frmFile, USequencePanel, ULifeLine, TB2Item,
-  SpTBXItem, Vcl.Menus;
+  SpTBXItem, Vcl.Menus, Vcl.VirtualImageList;
 
 type
   TFSequenceForm = class(TFileForm)
@@ -57,6 +57,10 @@ type
     MIPopupNewActor: TSpTBXItem;
     MIPopupNewLifeLine: TSpTBXItem;
     MIPopupConnectWith: TSpTBXSubmenuItem;
+    vilPopupDark: TVirtualImageList;
+    vilPopupLight: TVirtualImageList;
+    vilToolbarDark: TVirtualImageList;
+    vilToolbarLight: TVirtualImageList;
     procedure FormCreate(Sender: TObject); override;
     procedure FormClose(Sender: TObject; var aAction: TCloseAction); override;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -141,6 +145,7 @@ type
     FromParticipant: string;
     ToParticipant: string;
     aResult: string;
+    class function ToolbarCount: integer;
     procedure MethodEntered(const aMethod: String);
     procedure MethodExited(aMethod: String);
     procedure addParameter(const parameter: string);
@@ -165,7 +170,7 @@ implementation
 {$R *.dfm}
 
 uses SysUtils, Printers, IniFiles, Math, Clipbrd, Themes, Dialogs,
-     UITypes, uCommonFunctions, UImages, UConfiguration, UUtils,
+     UITypes, uCommonFunctions, UConfiguration, UUtils,
      frmPyIDEMain;
 
 const cMinDist = 20;
@@ -242,7 +247,7 @@ begin
       for i := 0 to SL.Count - 1 do
         AddConnection(SL[i]);
       Font.Name:= Ini.ReadString('Diagram', 'FontName', 'Segoe UI');
-      Font.Size:= Ini.ReadInteger('Diagram', 'FontSize', 12);
+      Font.Size:= PPIScale(Ini.ReadInteger('Diagram', 'FontSize', 12));
       setFont(Font);
       Result:= true;
     except on e: exception do
@@ -297,7 +302,7 @@ begin
     then SL.Add('Top=' + IntToStr(PPIUnScale(LifeLinesTop)))
     else SL.Add('Top=' + IntToStr(PPIUnScale(TLifeLine(LifeLines.Items[0]).Top)));
   SL.add('FontName=' + Font.Name);
-  SL.add('FontSize=' + IntToStr(Font.Size));
+  SL.add('FontSize=' + IntToStr(PPIUnScale(Font.Size)));
   Result:= SL;
 end;
 
@@ -633,19 +638,18 @@ procedure TFSequenceForm.SetFont(aFont: TFont);
 begin
   inherited;
   Font.Assign(aFont);
-  DistY:= PPIScale(Round(cDistY*Font.Size/12.0));
-  ActivationWidth:= PPIScale(Round(cActivationWidth*Font.Size/12.0));
-  MinWidth:= PPIScale(Round(cMinWidth*Font.Size/12.0));
-  MinHeight:= PPIScale(Round(cMinHeight*Font.Size/12.0));
-  LifeLinesTop:= PPIScale(Round(cLifeLinesTop*Font.Size/12.0));
-  minDist:= PPIScale(Round(cMinDist*Font.Size/12.0));
+  DistY:= Round(cDistY*Font.Size/12.0);
+  ActivationWidth:= Round(cActivationWidth*Font.Size/12.0);
+  MinWidth:= Round(cMinWidth*Font.Size/12.0);
+  MinHeight:= Round(cMinHeight*Font.Size/12.0);
+  LifeLinesTop:= Round(cLifeLinesTop*Font.Size/12.0);
+  minDist:= Round(cMinDist*Font.Size/12.0);
   Canvas.Font.Assign(aFont);
-
   setPanelFont(aFont);
   SortLifeLines;
   CalculateDiagram;
   GuiPyOptions.SequenceFont.Assign(aFont);
-  Paint;
+  Invalidate;
 end;
 
 procedure TFSequenceForm.SetFontSize(Delta: integer);
@@ -1219,13 +1223,13 @@ begin
     SequencePanel.Color:= Color;
   end;
   if IsStyledWindowsColorDark then begin
-    SequenceToolbar.Images:= DMImages.ILSequenceToolbarDark;
-    PopupMenuLifeLineAndSequencePanel.Images:= DMImages.ILSequenceToolbarDark;
-    PopupMenuConnection.Images:= DMImages.ILSequencediagramDark;
+    SequenceToolbar.Images:= vilToolbarDark;
+    PopupMenuLifeLineAndSequencePanel.Images:= vilToolbarDark;
+    PopupMenuConnection.Images:= vilPopupDark;
   end else begin
-    SequenceToolbar.Images:= DMImages.ILSequenceToolbar;
-    PopupMenuLifeLineAndSequencePanel.Images:= DMImages.ILSequenceToolbar;
-    PopupMenuConnection.Images:= DMImages.ILSequencediagramLight;
+    SequenceToolbar.Images:= vilToolbarLight;
+    PopupMenuLifeLineAndSequencePanel.Images:= vilToolbarLight;
+    PopupMenuConnection.Images:= vilPopupLight;
   end;
 end;
 
@@ -1258,6 +1262,11 @@ end;
 procedure TFSequenceForm.DPIChanged;
 begin
   setFontSize(0);
+end;
+
+class function TFSequenceForm.ToolbarCount: integer;
+begin
+  Result:= 7;
 end;
 
 end.

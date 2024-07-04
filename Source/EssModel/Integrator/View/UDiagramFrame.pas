@@ -26,7 +26,8 @@ uses
   Messages, Classes, Controls, Forms,
   Vcl.ImgList, System.ImageList,
   uViewIntegrator, uListeners, uModelEntity, uModel, SpTBXItem, TB2Item,
-  Vcl.Menus;
+  Vcl.Menus, Vcl.VirtualImageList, Vcl.BaseImageCollection,
+  SVGIconImageCollection;
 
 const
   WM_ChangePackage = WM_USER + 1;
@@ -142,6 +143,21 @@ type
     MIClassPopupParameterDisplay4: TSpTBXItem;
     MIWindowPopupCopyAsPicture: TSpTBXItem;
     MIWindowPopupFont: TSpTBXItem;
+    scMenuAlign: TSVGIconImageCollection;
+    vilAlignLight: TVirtualImageList;
+    vilAlignDark: TVirtualImageList;
+    icMenuWindow: TSVGIconImageCollection;
+    vilWindowLight: TVirtualImageList;
+    vilWindowDark: TVirtualImageList;
+    icMenuClassObject: TSVGIconImageCollection;
+    vilClassObjectLight: TVirtualImageList;
+    vilClassObjectDark: TVirtualImageList;
+    icMenuConnection: TSVGIconImageCollection;
+    vilAssociationsLight: TVirtualImageList;
+    vilAssociationsDark: TVirtualImageList;
+    icUMLRtfdComponents: TSVGIconImageCollection;
+    vilUMLRtfdComponentsLight: TVirtualImageList;
+    vilUMLRtfdComponentsDark: TVirtualImageList;
 
     procedure PopMenuClassPopup(Sender: TObject);
       procedure MIClassPopupClassEditClick(Sender: TObject);
@@ -202,12 +218,14 @@ type
     Diagram : TDiagramIntegrator;
     Model : TObjectModel;
     ScrollBox : TScrollBox;
+    onFocus: TNotifyEvent;
     constructor Create(AOwner: TComponent; aModel: TObjectModel); reintroduce;
     destructor Destroy; override;
     procedure OnUpdateToolbar(Sender : TObject);
     procedure Retranslate;
     function getPopMenuClass: TControl;
     function getPopMenuObject: TControl;
+    procedure SetFocus; override;
   end;
 
 implementation
@@ -583,6 +601,14 @@ end;
 function TAFrameDiagram.getPopMenuObject: TControl;
 begin
   Result:= FindVCLWindow(PopMenuObject.PopupPoint);
+end;
+
+procedure TAFrameDiagram.SetFocus;
+begin
+  // if a tab is closed and an uml form is activated
+  // the next tab sets focus on TAFrameRtfdDiagram
+  if assigned(onFocus) then
+    onFocus(Self);
 end;
 
 end.

@@ -1074,7 +1074,7 @@ begin
       BorderStyle := bsNone;
       Parent := Sheet;
       Align := alClient;
-      Visible := True;
+      DPIChanged;
     end;
     if Result <> nil then
       fFiles.Add(Result);

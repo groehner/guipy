@@ -40,28 +40,30 @@ inherited VariablesWindow: TVariablesWindow
     3EE0D9983EE0D9983EE0D9983EE0D9983EE0D9983EE0D3953FCDC28A455C0000
     0000000000000000000000000000000000000000000000000000000000000000
     000000000000000000000000000000000000000000000000000000000000}
-  ExplicitWidth = 579
-  ExplicitHeight = 262
+  ExplicitWidth = 571
+  ExplicitHeight = 250
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 563
     Height = 223
-    ExplicitWidth = 571
-    ExplicitHeight = 235
+    ExplicitWidth = 555
+    ExplicitHeight = 211
     inherited FGPanel: TPanel
-      Width = 567
-      Height = 231
-      ExplicitWidth = 567
-      ExplicitHeight = 231
+      Width = 559
+      Height = 219
+      ExplicitWidth = 551
+      ExplicitHeight = 207
       object DocPanel: TSpTBXPageScroller
-        Left = 192
+        Left = 184
         Top = 0
         Width = 375
-        Height = 231
+        Height = 219
         Align = alRight
         Color = clNone
         ParentColor = False
         TabOrder = 0
+        ExplicitLeft = 176
+        ExplicitHeight = 207
         object synInfo: TSynEdit
           Left = 0
           Top = 0
@@ -111,26 +113,30 @@ inherited VariablesWindow: TVariablesWindow
         end
       end
       object SpTBXSplitter: TSpTBXSplitter
-        Left = 187
+        Left = 179
         Top = 0
-        Height = 231
+        Height = 219
         Cursor = crSizeWE
         Align = alRight
         ParentColor = False
         MinSize = 3
+        ExplicitLeft = 171
+        ExplicitHeight = 207
       end
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 187
-        Height = 231
+        Width = 179
+        Height = 219
         Align = alClient
         TabOrder = 2
+        ExplicitWidth = 171
+        ExplicitHeight = 207
         object VariablesTree: TVirtualStringTree
           Left = 1
           Top = 1
-          Width = 193
-          Height = 241
+          Width = 177
+          Height = 217
           Align = alClient
           Alignment = taRightJustify
           Anchors = [akLeft, akTop, akBottom]
@@ -250,6 +256,7 @@ inherited VariablesWindow: TVariablesWindow
         Name = 'Keyword'
       end
       item
+        CollectionIndex = 10
         CollectionName = 'Inspect'
         Name = 'Inspect'
       end>

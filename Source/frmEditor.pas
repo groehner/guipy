@@ -58,7 +58,7 @@ uses
   uModel,
   uPythonIntegrator,
   Vcl.ComCtrls,
-  Vcl.ToolWin;
+  Vcl.ToolWin, Vcl.BaseImageCollection, SVGIconImageCollection;
 
 type
   TEditor = class;
@@ -171,9 +171,13 @@ type
     TVFileStructure: TTreeView;
     mnFont: TSpTBXItem;
     mnEditAddImports: TSpTBXItem;
-    class procedure SynParamCompletionExecute(Kind: SynCompletionType;
-      Sender: TObject; var CurrentInput: string; var X, Y: Integer;
-      var CanExecute: boolean);
+    vilEditorToolbarLight: TVirtualImageList;
+    vilEditorToolbarDark: TVirtualImageList;
+    vilBookmarksDark: TVirtualImageList;
+    vilBookmarksLight: TVirtualImageList;
+
+    vilContextMenuDark: TVirtualImageList;
+    vilContextMenuLight: TVirtualImageList;
     procedure SynEditChange(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
@@ -254,6 +258,9 @@ type
     procedure mnFontClick(Sender: TObject);
     procedure mnEditAddImportsClick(Sender: TObject);
     procedure TBStructureIndentClick(Sender: TObject);
+    class procedure SynParamCompletionExecute(Kind: SynCompletionType;
+      Sender: TObject; var CurrentInput: string; var X, Y: Integer;
+      var CanExecute: boolean);
   private
     const HotIdentIndicatorSpec: TGUID = '{8715589E-C990-4423-978F-F00F26041AEF}';
   private
@@ -352,7 +359,7 @@ type
     function getGeometry: TPoint;
     function getIndent: String;
 
-    function  CBSucheKlasseOderMethode(Stop: Boolean; line: Integer): String;
+    function  CBSearchClassOrMethod(Stop: Boolean; line: Integer): String;
     procedure DeleteBreakpointMark(Mark: TSynEditMark);
     procedure CreateTVFileStructure;
 
@@ -432,6 +439,7 @@ type
     function isGUICreationCollapsed: boolean;
     procedure DoUpdateHighlighter(HighlighterName: string = '');
     function GetFileFormat: string;
+    class function ToolbarCount: integer;
 
     property Partner: TForm read fPartner write fPartner;
     property NeedsParsing: boolean read fNeedToParseModule write setNeedsParsing;
@@ -701,12 +709,16 @@ end;
 
 function TEditor.GetSynEdit: TSynEdit;
 begin
-  Result := fForm.SynEdit;
+  if assigned(fForm)
+    then Result:= fForm.SynEdit
+    else Result:= nil;
 end;
 
 function TEditor.GetSynEdit2: TSynEdit;
 begin
-  Result := fForm.SynEdit2;
+  if assigned(fForm)
+    then Result:= fForm.SynEdit2
+    else Result:= nil;
 end;
 
 function TEditor.GetTabControlIndex: Integer;
@@ -1040,7 +1052,10 @@ end;
 
 function TEditor.HasPythonFile: boolean;
 begin
-  Result := GetSynEdit.Highlighter is TSynPythonSyn;
+  var edit:= GetSynEdit;
+  if assigned(edit)
+    then Result:= GetSynEdit.Highlighter is TSynPythonSyn
+    else Result:= false;
 end;
 
 function TEditor.GetForm: TForm;
@@ -1831,7 +1846,7 @@ begin
   if scTopLine in Changes then
     Application.CancelHint;
 
-  FFileStructure.ShowSelected;
+  //FFileStructure.ShowSelected;
 end;
 
 procedure TEditorForm.DoActivate;
@@ -2434,7 +2449,7 @@ end;
 procedure TEditorForm.SyncFileStructure;
 begin
   if fNeedToSyncFileStructure and IsPython then begin
-    FFileStructure.ShowEditorCodeElement;
+    FFileStructure.ShowEditorCodeElement(ActiveSynEdit.CaretY);
     fNeedToSyncFileStructure := False;
   end;
 end;
@@ -2478,6 +2493,7 @@ begin
     var aInteger:= TInteger(TVFileStructure.Items[i].Data);
     FreeAndNil(aInteger);
   end;
+  FFileStructure.Clear(Self);
 end;
 
 procedure TEditorForm.FormCreate(Sender: TObject);
@@ -3073,13 +3089,13 @@ end;
 procedure TEditorForm.ChangeStyle;
 begin
   if IsStyledWindowsColorDark then begin
-    EditFormToolbar.Images:= DMIMages.ILEditorToolbarDark;
-    pmnuEditor.Images:= DMImages.ILContextMenuDark;
-    SynEdit.BookMarkOptions.BookmarkImages:= DMImages.ILBookmarksDark;
+    EditFormToolbar.Images:= vilEditorToolbarDark;
+    pmnuEditor.Images:= vilContextMenuDark;
+    SynEdit.BookMarkOptions.BookmarkImages:= vilBookmarksDark;
   end else begin
-    EditFormToolbar.Images:= DMImages.ILEditorToolbar;
-    pmnuEditor.Images:= DMImages.ILContextMenuLight;
-    SynEdit.BookMarkOptions.BookmarkImages:= DMImages.ILBookmarksLight;
+    EditFormToolbar.Images:= vilEditorToolbarLight;
+    pmnuEditor.Images:= vilContextMenuLight;
+    SynEdit.BookMarkOptions.BookmarkImages:= vilBookmarksLight;
   end;
 
   if HasFocus
@@ -3550,23 +3566,28 @@ end;
 
 procedure TEditorForm.TBZoomMinusClick(Sender: TObject);
 begin
-  SynEdit.Font.Size:= max(SynEdit.Font.Size -1, 6);
-  SynEdit2.Font.Size:= SynEdit.Font.Size;
-  EditorOptions.Font.Size:= SynEdit.Font.Size;
+  var fs:= max(SynEdit.Font.Size - 1, 6);
+  SynEdit.Font.Size:= fs;
+  SynEdit.Gutter.Font.Size:= fs - 2;
+  SynEdit2.Font.Size:= fs;
+  SynEdit2.Gutter.Font.Size:= fs - 2;
+  EditorOptions.Font.Size:= fs;
 end;
 
 procedure TEditorForm.TBZoomPlusClick(Sender: TObject);
 begin
-  SynEdit.Font.Size:= SynEdit.Font.Size + 1;
-  SynEdit2.Font.Size:= SynEdit.Font.Size;
-  EditorOptions.Font.Size:= SynEdit.Font.Size;
+  var fs:= SynEdit.Font.Size + 1;
+  SynEdit.Font.Size:= fs;
+  SynEdit.Gutter.Font.Size:= fs - 2;
+  SynEdit2.Font.Size:= fs;
+  SynEdit2.Gutter.Font.Size:= fs - 2;
+  EditorOptions.Font.Size:= fs;
 end;
 
 procedure TEditorForm.TBNumbersClick(Sender: TObject);
 begin
-  //ActiveSynEdit.Gutter.ShowLineNumbers:= not ActiveSynEdit.Gutter.ShowLineNumbers;
+  ActiveSynEdit.Gutter.ShowLineNumbers:= not ActiveSynEdit.Gutter.ShowLineNumbers;
   ActiveSynEdit.Gutter.AutoSize:= not ActiveSynEdit.Gutter.AutoSize;
-
 end;
 
 procedure TEditorForm.TBParagraphClick(Sender: TObject);
@@ -4475,7 +4496,7 @@ begin
   Result:= TRegEx.IsMatch(ActiveSynEdit.Lines[line], RegEx);
 end;
 
-function TEditorForm.CBSucheKlasseOderMethode(Stop: Boolean; line: Integer): String;
+function TEditorForm.CBSearchClassOrMethod(Stop: Boolean; line: Integer): String;
   var aClassname, aMethodname: String;
       Ci, it: IModelIterator;
       cent: TClassifier;
@@ -4526,7 +4547,7 @@ procedure TEditorForm.DeleteBreakpointMark(Mark: TSynEditMark);
   const StopInAt = True;
   var s: String;
 begin
-  s:= CBSucheKlasseOderMethode(not StopInAt, Mark.Line);
+  s:= CBSearchClassOrMethod(not StopInAt, Mark.Line);
   {if myDebugger.Running and (s <> '') then      ToDo
     myDebugger.NewCommand(2, s);}
   ActiveSynEdit.InvalidateLine(Mark.Line);
@@ -5124,8 +5145,8 @@ procedure TEditorForm.CreateTVFileStructure;
   begin
     Node:= TVFileStructure.Items.AddObject(nil,
       Operation.toShortStringNode, TInteger.create(Operation.LineS));
-    Node.ImageIndex:= 18;
-    Node.SelectedIndex:= 18;
+    Node.ImageIndex:= 15;
+    Node.SelectedIndex:= 15;
     Node.HasChildren:= false;
   end;
 
@@ -5147,6 +5168,7 @@ begin
   Operation:= nil;
   if not isPython then exit;
   TVFileStructure.Items.BeginUpdate;
+  TVFileStructure.Images:= FFileStructure.vilFileStructureLight;
   try
     for i:= TVFileStructure.Items.Count - 1 downto 0 do begin
       aInteger:= TInteger(TVFileStructure.Items[i].Data);
@@ -5174,10 +5196,6 @@ begin
         delete(CName, 1, Pos('.', CName));
       end;
 
-      if (cent is TClass)
-        then ImageNr:= 1
-        else ImageNr:= 11;
-
       if indented = 0 then
         ClassNode:= TVFileStructure.Items.AddObject(nil, CName, TInteger.create(cent.LineS))
       else if indented > indentedOld then
@@ -5190,14 +5208,14 @@ begin
         ClassNode:= TVFileStructure.Items.AddChildObject(ClassNode, CName, TInteger.create(cent.LineS));
       end;
 
-      ClassNode.ImageIndex:= ImageNr;
-      ClassNode.SelectedIndex:= ImageNr;
+      ClassNode.ImageIndex:= 0;
+      ClassNode.SelectedIndex:= 0;
       ClassNode.HasChildren:= true;
 
       it:= cent.GetAttributes;
       while It.HasNext do begin
         Attribute:= It.Next as TAttribute;
-        ImageNr:= Integer(Attribute.Visibility) + 2;
+        ImageNr:= 1 + Integer(Attribute.Visibility);
         Node:= TVFileStructure.Items.AddChildObject(ClassNode,
           Attribute.toShortStringNode, TInteger.create(Attribute.LineS));
         Node.ImageIndex:= ImageNr;
@@ -5208,8 +5226,8 @@ begin
       while It.HasNext do begin
         Method:= It.Next as TOperation;
         if Method.OperationType = otConstructor
-          then ImageNr:= 6
-          else ImageNr:= Integer(Method.Visibility) + 7;
+          then ImageNr:= 4
+          else ImageNr:= 5 + Integer(Method.Visibility);
         Node:= TVFileStructure.Items.AddChildObject(ClassNode,
           Method.toShortStringNode, TInteger.create(Method.LineS));
         Node.ImageIndex:= ImageNr;
@@ -5222,7 +5240,7 @@ begin
     TVFileStructure.Items.EndUpdate;
     FFileStructure.init(TVFileStructure.Items, Self);
   end;
-  //FJava.Memo1.lines.AddStrings(Model.ModelRoot.Debug);
+  // PyIDEMainForm.Memo1.lines.AddStrings(Model.ModelRoot.Debug);
 end;
 
 procedure TEditorForm.CollectClasses(SL: TStringList);
@@ -5411,6 +5429,11 @@ begin
     FHintFuture := nil;
   end;
 
+end;
+
+class function TEditorForm.ToolbarCount: integer;
+begin
+  Result:= 28;
 end;
 
 initialization

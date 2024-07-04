@@ -170,7 +170,7 @@ type
 
 implementation
 
-uses Math, Controls, SysUtils, System.Types, UUtils, UImages;
+uses Math, Controls, SysUtils, System.Types, UUtils, UGUIDesigner;
 
 {--- TButtonBaseWidget --------------------------------------------------------}
 
@@ -350,6 +350,7 @@ begin
   FOnValue:= '1';
   Foreground:= clWindowText;
   TakeFocus:= true;
+  Width:= 120;
 end;
 
 function TKCheckbutton.getAttributes(ShowAttributes: integer): string;
@@ -379,7 +380,7 @@ begin
     else LeftSpace:= 0;
   inherited;
   if FIndicatorOn then
-    DrawBitmap(LeftSpace, TopSpace, 2, Canvas, DMImages.ILPythonControls)
+    FGUIDesigner.vilPythonControls.Draw(Canvas, LeftSpace, TopSpace, 2)
   else begin
     R:= ClientRect;
     PaintBorder(R, FOffRelief, BorderWidthInt);

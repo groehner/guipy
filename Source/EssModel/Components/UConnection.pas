@@ -54,7 +54,7 @@ type
   TessConnectionArrowStyle = (asAssociation1, asAssociation2, asAssociation3,
                               asAggregation1, asAggregation2,
                               asComposition1, asComposition2,
-                              asInheritends,  asInstanceOf,   asComment);
+                              asInheritends,  asInstanceOf, asComment);
 
   TConnectionAttributes = class
   public
@@ -131,7 +131,7 @@ type
 
 implementation
 
-uses Types, Math, Themes, UITypes, SysUtils, UUtils;
+uses Types, Math, Themes, UITypes, SysUtils, uCommonFunctions, UUtils;
 
 const rec_dx = 30;  // recursive connections
       rec_dy = 23;
@@ -402,8 +402,8 @@ end;
 
 procedure TConnection.Draw(aCanvas: TCanvas; show: boolean);
   var
-    x1,x2: Integer;
-    y1,y2: Integer;
+    x1, x2: Integer;
+    y1, y2: Integer;
     xbase: Integer;
     ybase: Integer;
     xLineDelta: Integer;
@@ -415,7 +415,7 @@ procedure TConnection.Draw(aCanvas: TCanvas; show: boolean);
     yNormalDelta: Integer;
     yNormalUnitDelta: Double;
     Tmp1: double;
-    dx, dy, d2x, d2y, d1x, d1y, d3x, d3y, xr, yr: Integer;
+    dx, dy, d2x, d2y, d1x, d1y, d3x, d3y, xr, yr, hl: Integer;
     absXLineDelta, absYLineDelta: Integer;
     R2: TRect;
     MyRgn: HRGN;
@@ -662,14 +662,16 @@ begin  // of draw
   aCanvas.Pen.Width := 1;
   aCanvas.Pen.Style := psSolid;
 
-  dx := Round(HeadLength*xNormalUnitDelta);
-  dy := Round(HeadLength*yNormalUnitDelta);
-  d1x:= Round(HeadLength*xLineUnitDelta);
-  d1y:= Round(HeadLength*yLineUnitDelta);
-  d2x:= Round(HeadLength*xLineUnitDelta*2.0);
-  d2y:= Round(HeadLength*yLineUnitDelta*2.0);
-  d3x:= Round(HeadLength*xLineUnitDelta*3.0);
-  d3y:= Round(HeadLength*yLineUnitDelta*3.0);
+  hl:= FFrom.PPIScale(HeadLength);
+
+  dx := Round(hl*xNormalUnitDelta);
+  dy := Round(hl*yNormalUnitDelta);
+  d1x:= Round(hl*xLineUnitDelta);
+  d1y:= Round(hl*yLineUnitDelta);
+  d2x:= Round(hl*xLineUnitDelta*2.0);
+  d2y:= Round(hl*yLineUnitDelta*2.0);
+  d3x:= Round(hl*xLineUnitDelta*3.0);
+  d3y:= Round(hl*yLineUnitDelta*3.0);
 
   case ArrowStyle of
     asAggregation1, asAggregation2: aCanvas.Brush.Color:= BGColor;
@@ -680,8 +682,8 @@ begin  // of draw
   end;
 
   // (xBase, yBase) is where arrow line is perpendicular to base of triangle.
-  xBase:= x1 + Round(HeadLength * xLineUnitDelta);
-  yBase:= y1 + Round(HeadLength * yLineUnitDelta);
+  xBase:= x1 + Round(hl * xLineUnitDelta);
+  yBase:= y1 + Round(hl * yLineUnitDelta);
   if ArrowStyle in [asAggregation1, asAggregation2, asComposition1, asComposition2, asAssociation3] then
       case FromPStart of
         1, 3: begin
@@ -720,8 +722,8 @@ begin  // of draw
 
   // draw  arrow head
   aCanvas.Brush.Color:= BGColor;
-  xBase:= x2 - Round(HeadLength * xLineUnitDelta);
-  yBase:= y2 - Round(HeadLength * yLineUnitDelta);
+  xBase:= x2 - Round(hl * xLineUnitDelta);
+  yBase:= y2 - Round(hl * yLineUnitDelta);
   if ArrowStyle in [asInheritends, asAssociation2, asAssociation3,
                     asAggregation2, asComposition2, asInstanceOf] then
       case ToPEnd of
@@ -807,6 +809,7 @@ end;
 procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: boolean);
 
   var PointArray: array of TPoint;
+      hl: integer;
 
   procedure DrawArrowStart(P1, P2: TPoint);
     var P3, P4: TPoint; dx, dy: integer;
@@ -823,16 +826,16 @@ procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: boolean);
     dx:= P2.x - P1.x;
     dy:= P2.Y - P1.y;
     if dy = 0 then begin
-      P2.X:= P1.X + Headlength*2*sign(dx);
-      P3.X:= P1.X + Headlength*sign(dx);
-      P3.Y:= P1.Y - Headlength;
+      P2.X:= P1.X + hl*2*sign(dx);
+      P3.X:= P1.X + hl*sign(dx);
+      P3.Y:= P1.Y - hl;
       P4.X:= P3.X;
-      P4.y:= P1.Y + Headlength;
+      P4.y:= P1.Y + hl;
     end else begin
-      P2.Y:= P1.Y + Headlength*2*sign(dy);
-      P3.X:= P1.X + Headlength;
-      P3.Y:= P1.Y + Headlength*sign(dy);
-      P4.X:= P1.X - Headlength;
+      P2.Y:= P1.Y + hl*2*sign(dy);
+      P3.X:= P1.X + hl;
+      P3.Y:= P1.Y + hl*sign(dy);
+      P4.X:= P1.X - hl;
       P4.Y:= P3.Y;
     end;
     if ArrowStyle = asAssociation3 then begin
@@ -856,14 +859,14 @@ procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: boolean);
     dx:= P2.x - P1.x;
     dy:= P2.Y - P1.y;
     if dy = 0 then begin
-      P3.X:= P1.X + Headlength*sign(dx);
-      P3.Y:= P1.Y - Headlength;
+      P3.X:= P1.X + hl*sign(dx);
+      P3.Y:= P1.Y - hl;
       P4.X:= P3.X;
-      P4.y:= P1.Y + Headlength;
+      P4.y:= P1.Y + hl;
     end else begin
-      P3.X:= P1.X + Headlength;
-      P3.Y:= P1.Y + Headlength*sign(dy);
-      P4.X:= P1.X - Headlength;
+      P3.X:= P1.X + hl;
+      P3.Y:= P1.Y + hl*sign(dy);
+      P4.X:= P1.X - hl;
       P4.Y:= P3.Y;
     end;
     case ArrowStyle of
@@ -897,6 +900,7 @@ procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: boolean);
   end;
 
 begin
+  hl:= FFrom.PPIScale(HeadLength);
   CalcPolyline;
   if show
     then aCanvas.Pen.Color:= FGColor
@@ -1131,11 +1135,11 @@ begin
     sl:= ArrowHeadLength(ArrowStyle);
     hl:= ArrowStartLength(ArrowStyle);
     sw:= sl;
-    if hl > 0 then hw:= HeadLength else hw:= 0;
+    if hl > 0 then hw:= FFrom.PPIScale(HeadLength) else hw:= 0;
   end else begin
     sl:= ArrowStartLength(ArrowStyle);
     hl:= ArrowHeadLength(ArrowStyle);
-    if sl > 0 then sw:= HeadLength else sw:= 0;
+    if sl > 0 then sw:= FFrom.PPIScale(HeadLength) else sw:= 0;
     hw:= hl;
   end;
 
@@ -1300,16 +1304,16 @@ function TConnection.ArrowHeadLength(Arrow: TessConnectionArrowStyle): integer;
 begin
   if arrow in [asAssociation2, asAssociation3, asAggregation2, asComposition2,
                asInheritends, asInstanceOf]
-    then Result:= HeadLength
+    then Result:= FFrom.PPIScale(HeadLength)
     else Result:= 0;
 end;
 
 function TConnection.ArrowStartLength(Arrow: TessConnectionArrowStyle): integer;
 begin
   if arrow in [asAggregation1, asAggregation2, asComposition1, asComposition2]
-    then Result:= HeadLength*2
+    then Result:= FFrom.PPIScale(HeadLength)*2
   else if arrow = asAssociation3
-    then Result:= HeadLength
+    then Result:= FFrom.PPIScale(HeadLength)
     else Result:= 0
 end;
 
@@ -1456,7 +1460,7 @@ begin
 end;
 
 procedure TConnection.parallelCorrection;
-  var dx, dy, xLineDelta, yLineDelta: integer;
+  var dx, dy, xLineDelta, yLineDelta, hl: integer;
       xLineunitDelta, yLineUnitDelta, Tmp: double;
       A, B: TPoint;
 begin
@@ -1476,13 +1480,14 @@ begin
     yLineUnitDelta:= yLineDelta / Tmp;
   end;
 
+  hl:= fFrom.PPIScale(HeadLength);
   if parallelcount > 0 then
     if abs(xLineUnitDelta) > abs(yLineUnitDelta) then begin
-      dy:= -2*(HeadLength+2)*Parallelcount div 2 + 2*(HeadLength+2)*Parallelindex;
+      dy:= -2*(hl+2)*Parallelcount div 2 + 2*(hl+2)*Parallelindex;
       A.y:= A.y + dy;
       B.y:= B.y + dy;
     end else begin
-      dx:= -2*(HeadLength+2)*Parallelcount div 2 + 2*(HeadLength+2)*Parallelindex;
+      dx:= -2*(hl+2)*Parallelcount div 2 + 2*(hl+2)*Parallelindex;
       A.x:= A.x + dx;
       B.x:= B.x + dx;
     end;

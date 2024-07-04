@@ -430,7 +430,7 @@ procedure Register;
 implementation
 
 uses Windows, RTLConsts, Math, Clipbrd, ExtCtrls, Types,
-     JvGnugettext, ELHintWindow, ELSConsts, uCommonFunctions, ULink, UBaseQtWidgets;
+     JvGnugettext, ELHintWindow, ELSConsts, uCommonFunctions, ULink, UBaseWidgets;
 
 procedure Register;
 begin
@@ -842,6 +842,11 @@ begin
   // otherwise the compiler will complain!
 end;
 
+procedure TDEng.CanInsertComponent(AComponent: TComponent);
+begin
+  // otherwise the compiler will complain!
+end;
+
 function TDEng.GetCustomForm: TCustomForm;
 begin
   if FRoot is TCustomForm then
@@ -1044,11 +1049,6 @@ begin
   FDesigner.DoNotification(AnObject, Operation);
 end;
 
-procedure TDEng.CanInsertComponent(AComponent: TComponent);
-begin
-
-end;
-
 procedure TDEng.PaintGrid;
 begin
   if FGrid.Visible then
@@ -1233,10 +1233,7 @@ var
   LInsertingControl: Boolean;
   LNeedMove: Boolean;
   LControls: TList;
-  Tag: Integer;
   Typ: string;
-  aControl: TControl;
-
 begin
   Result := FIsInDrawMode or (Message.Msg = DESIGNER_SIZING);
   if not Result then
@@ -1251,20 +1248,27 @@ begin
         Sender := GetDesignControl(Sender);
         FSelCtrls.SetVisible(False);
         FSelCtrls.ClearExcept(Sender);
-        if FDesigner.FSnapToGrid then begin
-         if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppTopLeft, ppTop, ppTopRight] then
-            Sender.Top:= Round(Sender.Top / FGrid.FYStep)* FGrid.FYStep;
-         if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppBottomLeft, ppBottom, ppBottomRight] then
-            Sender.Height:= Round((Sender.Top + Sender.Height)/ FGrid.FYStep)* FGrid.FYStep - Sender.Top;
-         if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppTopLeft, ppLeft, ppBottomLeft] then
-            Sender.Left:= Round(Sender.Left / FGrid.FXStep)* FGrid.FXStep;
-         if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppTopright, ppRight, ppBottomright] then
-            Sender.Width:= Round((Sender.Left + Sender.Width)/ FGrid.FXStep)* FGrid.FXStep - Sender.Left;
+        if FDesigner.FSnapToGrid then
+        begin
+          if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos
+            in [ppTopLeft, ppTop, ppTopRight] then
+            Sender.Top := Round(Sender.Top / FGrid.FYStep) * FGrid.FYStep;
+          if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos
+            in [ppBottomLeft, ppBottom, ppBottomRight] then
+            Sender.Height := Round((Sender.Top + Sender.Height) / FGrid.FYStep)
+              * FGrid.FYStep - Sender.Top;
+          if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos
+            in [ppTopLeft, ppLeft, ppBottomLeft] then
+            Sender.Left := Round(Sender.Left / FGrid.FXStep) * FGrid.FXStep;
+          if TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos
+            in [ppTopRight, ppRight, ppBottomRight] then
+            Sender.Width := Round((Sender.Left + Sender.Width) / FGrid.FXStep) *
+              FGrid.FXStep - Sender.Left;
         end;
         _InitDrawMode(Sender.Parent, SizeControlProc, True,
           TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppTop, ppBottom],
-          TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppLeft, ppRight],
-          False);
+          TDSelCtrlItem(FSelCtrls.FItems[0]).FActivePos in [ppLeft,
+          ppRight], False);
       end;
     WM_LBUTTONDOWN, WM_RBUTTONDOWN:
       if not((Sender = FForm) and (FRoot <> FForm)) then
@@ -1387,15 +1391,13 @@ begin
           begin
             if htControl in FDesigner.ShowingHints then
             begin
-              Tag := (Sender as TComponent).Tag;
-              aControl:= (Sender as TControl);
-              Typ := Tag2PythonType(Tag);
+              Typ := Tag2PythonType((Sender as TBaseWidget).Tag);
               LS := Sender.Name + ': ' + Typ + #13#10;
-              LS := LS + _('Position') + ': ' + IntToStr(aControl.PPIUnScale(Sender.Left)) +
-                                         ', ' + IntToStr(aControl.PPIUnScale(Sender.Top)) + #13#10;
-              LS := LS + _('Size') + ': ' + IntToStr(aControl.PPIUnScale(Sender.Width)) +
-                                     ', ' + IntToStr(aControl.PPIUnScale(Sender.Height));
-        LS:= LS + #13#10+'Fontsize: ' + IntToStr(TBaseQtWidget(Sender).Font.Size) ;  // Unit mit löschen!
+              LS := LS + _('Position') + ': ' + IntToStr(Sender.PPIUnScale(Sender.Left)) +
+                                         ', ' + IntToStr(Sender.PPIUnScale(Sender.Top)) + #13#10;
+              LS := LS + _('Size') + ': ' + IntToStr(Sender.PPIUnScale(Sender.Width)) +
+                                     ', ' + IntToStr(Sender.PPIUnScale(Sender.Height));
+              LS:= LS + #13#10 + _('Font size') + ': ' + IntToStr((Sender as TBaseWidget).Font.Size);
               if assigned(FDesigner) then
                 FDesigner.ControlHint(Sender, LS);
               if LS <> '' then
@@ -2180,7 +2182,6 @@ var
   LDrawRect: TRect;
   LDataRec: TDataRec;
   LInsertingControl: TControl;
-  LName: string;
 
 begin
   Result := nil;
@@ -2215,9 +2216,7 @@ begin
         try
           with LInsertingControl do
           begin
-            Tag := ComponentNrToInsert;
-            LName := UniqueName(Tag2PythonType(Tag));
-            Name := LName; // <-- Here may be exception
+            Name := UniqueName(Tag2PythonType(Tag));
             Parent := FCanvas.WinControl; // <-- Here may be exception
             with LDrawRect do
               if (Right - Left > 1) or (Bottom - Top > 1) then
@@ -2944,7 +2943,7 @@ begin
   inherited Create(nil);
   FSelCtrl := AOwnerSelCtrl;
   FPos := APos;
-  FHandleSize:= AOwnerSelCtrl.Control.PPIScale(HANDLESIZE);
+  FHandleSize := PPIScale(HANDLESIZE);
   Width := FHandleSize;
   Height := FHandleSize;
   Visible := False;
@@ -2978,25 +2977,33 @@ begin
     Exit;
   case FPos of
     ppTopLeft, ppTop, ppTopRight:
-      Top := FSelCtrl.Control.Top - (FHandleSize div 2) *
-        Ord(FSelCtrl.Mode = imSizeable);
+      if FSelCtrl.Mode = imSizeable then
+        Top:= FSelCtrl.Control.Top - FHandleSize div 2
+      else
+        Top:= FSelCtrl.Control.Top - FHandleSize;
     ppRight, ppLeft:
       Top := FSelCtrl.Control.Top + FSelCtrl.Control.Height div 2 -
-        (FHandleSize div 2);
+        FHandleSize div 2;
     ppBottomRight, ppBottom, ppBottomLeft:
-      Top := FSelCtrl.Control.Top + FSelCtrl.Control.Height - FHandleSize +
-        (FHandleSize div 2) * Ord(FSelCtrl.Mode = imSizeable);
+      if FSelCtrl.Mode = imSizeable then
+        Top := FSelCtrl.Control.Top + FSelCtrl.Control.Height - FHandleSize div 2
+      else
+        Top := FSelCtrl.Control.Top + FSelCtrl.Control.Height;
   end;
   case FPos of
     ppTopLeft, ppLeft, ppBottomLeft:
-      Left := FSelCtrl.Control.Left - (FHandleSize div 2) *
-        Ord(FSelCtrl.Mode = imSizeable);
+      if FSelCtrl.Mode = imSizeable then
+        Left := FSelCtrl.Control.Left - FHandleSize div 2
+      else
+        Left := FSelCtrl.Control.Left - FHandleSize;
     ppTop, ppBottom:
       Left := FSelCtrl.Control.Left + FSelCtrl.Control.Width div 2 -
-        (FHandleSize div 2);
+        FHandleSize div 2;
     ppTopRight, ppRight, ppBottomRight:
-      Left := FSelCtrl.Control.Left + FSelCtrl.Control.Width - FHandleSize +
-        (FHandleSize div 2) * Ord(FSelCtrl.Mode = imSizeable);
+      if FSelCtrl.Mode = imSizeable then
+        Left := FSelCtrl.Control.Left + FSelCtrl.Control.Width - FHandleSize div 2
+      else
+        Left := FSelCtrl.Control.Left + FSelCtrl.Control.Width;
   end;
   LDesigner := FSelCtrl.FSelCtrls.FDesigner;
   LLockMode := TDEng.GetLockMode(FSelCtrl.Control);

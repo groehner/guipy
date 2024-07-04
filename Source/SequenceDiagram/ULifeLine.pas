@@ -31,7 +31,6 @@ type
     PPIControl: TControl;
     procedure SetCreated(const Value: boolean);
     procedure ShowHead;
-    function PPIScale(ASize: integer): integer;
   protected
     procedure Paint; override;
   public
@@ -75,11 +74,11 @@ procedure TLifeLine.SetFont(aFont: TFont);
   const cPadding: Integer = 20;
 begin
   Canvas.Font.Assign(aFont);
-  DistY:= PPIScale(Round(cDistY*Font.Size/12.0));
-  ActivationWidth:= PPIScale(Round(cActivationWidth*Font.Size/12.0));
-  MinWidth:= PPIScale(Round(cMinWidth*Font.Size/12.0));
-  MinHeight:= PPIScale(Round(cMinHeight*Font.Size/12.0));
-  Padding:= PPIScale(Round(cPadding*Font.Size/12.0));
+  DistY:= Round(cDistY*Font.Size/12.0);
+  ActivationWidth:= Round(cActivationWidth*Font.Size/12.0);
+  MinWidth:= Round(cMinWidth*Font.Size/12.0);
+  MinHeight:= Round(cMinHeight*Font.Size/12.0);
+  Padding:= Round(cPadding*Font.Size/12.0);
   CalcWidthHeight;
 end;
 
@@ -198,11 +197,6 @@ begin
     DrawText(Canvas.Handle, PChar(Participant), Length(Participant), R, DT_CENTER);
   end;
   Canvas.Brush.Color:= BGColor;
-end;
-
-function TLifeLine.PPIScale(ASize: integer): integer;
-begin
-  Result := MulDiv(ASize, PPIControl.CurrentPPI, 96);
 end;
 
 procedure TLifeLine.CalcWidthHeight;

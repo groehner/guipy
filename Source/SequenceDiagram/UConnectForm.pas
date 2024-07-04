@@ -11,7 +11,7 @@ interface
 
 uses
   Windows, Classes, Controls, StdCtrls, ComCtrls, ImgList, ImageList,
-  dlgPyIDEBase, USequencePanel;
+  dlgPyIDEBase, USequencePanel, Vcl.VirtualImageList;
 
 type
 
@@ -24,6 +24,8 @@ type
     BCancel: TButton;
     LMessage: TLabel;
     ERelation: TEdit;
+    vilConnectionsLight: TVirtualImageList;
+    vilConnectionsDark: TVirtualImageList;
 
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -32,8 +34,8 @@ type
     procedure LBConnectionsDblClick(Sender: TObject);
     procedure LBConnectionsClick(Sender: TObject);
   private
+    ILConnections: TVirtualImageList;
     isTurned: boolean;
-    ILSequenceDiagram: TImageList;
   public
     LNGClose: string;
     procedure init(IsConnecting: boolean; conn: TConnection; SelectedControls: integer);
@@ -42,19 +44,18 @@ type
 
 implementation
 
-uses SysUtils, Graphics, Forms, Themes, uCommonFunctions, UImages;
+uses SysUtils, Graphics, Forms, Themes, uCommonFunctions, UConfiguration;
 
 {$R *.dfm}
 
 procedure TFConnectForm.FormCreate(Sender: TObject);
 begin
   inherited;
-  LBConnections.ItemHeight:= LBConnections.Height div LBConnections.Items.Count;
-  ILSequenceDiagram:= DMImages.ILSequenceConnectLight;
-  if IsStyledWindowsColorDark
-    then ILSequenceDiagram:= DMImages.ILSequenceConnectDark
-    else ILSequenceDiagram:= DMImages.ILSequenceConnectLight;
   LBConnections.Color:= StyleServices.GetSystemColor(clWindow);
+  LBConnections.ItemHeight:= LBConnections.Height div LBConnections.Items.Count;
+  if TFConfiguration.isDark
+    then ILConnections:= vilConnectionsDark
+    else ILConnections:= vilConnectionsLight;
 end;
 
 procedure TFConnectForm.FormShow(Sender: TObject);
@@ -71,18 +72,13 @@ end;
 
 procedure TFConnectForm.LBConnectionsDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
-  var Bitmap: TBitmap; aCaption: String;
 begin
-  aCaption:= (Control as TListBox).Items[Index];
-  BitMap:= TBitmap.Create;
-  Bitmap.Transparent:= true;
-  with (Control as TListBox).Canvas do begin
-    FillRect(Rect);
-    ILSequencediagram.GetBitmap(Index, Bitmap);
-    Draw(0, Rect.Top, Bitmap);
-    TextOut(Bitmap.Width + 8, Rect.Top + 3, aCaption);
-  end;
-  FreeAndNil(Bitmap);
+  var aCaption:= (Control as TListBox).Items[Index];
+  var aCanvas:= (Control as TListBox).Canvas;
+  aCanvas.FillRect(Rect);
+  ILConnections.SetSize(Rect.Height, Rect.Height);
+  ILConnections.Draw(aCanvas, 4, Rect.Top, 12 + Index);
+  aCanvas.TextOut(4 + ILConnections.Width + 8, Rect.Top + 2, aCaption);
 end;
 
 procedure TFConnectForm.LBConnectionsClick(Sender: TObject);

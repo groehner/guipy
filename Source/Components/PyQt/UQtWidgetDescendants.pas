@@ -448,7 +448,7 @@ type
 implementation
 
 uses Controls, SysUtils, Math, Types, UITypes, JvGnugettext,
-     frmPyIDEMain, UImages, UUtils;
+     frmPyIDEMain, UGUIDesigner, UUtils;
 
 {--- TQtLineEdit --------------------------------------------------------------}
 
@@ -537,7 +537,7 @@ begin
   R.Left:= 2;
   R.Right:= R.Right - 2;
   if FClearButtonEnabled then
-    R.Right:= R.Right - 28;
+    R.Right:= R.Right - PPIScale(28);
   R.Top:= (Height - Canvas.TextHeight('Hg')) div 2;
 
   if FText <> '' then begin
@@ -554,7 +554,7 @@ begin
   if s <> '' then
     DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_LEFT);
   if FClearButtonEnabled then
-    DrawBitmap(R.Right + 8, R.Top -2, 4, Canvas, DMImages.ILQtControls);
+    FGUIDesigner.vilQtControls1616.Draw(Canvas, R.Right + 8, (R.Height - FGUIDesigner.vilQtControls1616.Height) div 2, 4);
 end;
 
 procedure TQtLineEdit.setText(Value: String);
@@ -1147,22 +1147,23 @@ begin
 end;
 
 procedure TQtStatusBar.Paint;
-  var R: TRect;
+  var R: TRect; p3: integer;
 begin
-  setBounds(0, Parent.ClientHeight-21, Parent.ClientWidth, 21);
+  setBounds(0, Parent.ClientHeight-PPIScale(21), Parent.ClientWidth, PPIScale(21));
   inherited;
-  R:= Rect(Width - 12, Height - 5, Width - 10, Height - 3);
+  R:= Rect(Width - PPIScale(12), Height - PPIScale(5), Width - PPIScale(10), Height - PPIScale(3));
   Canvas.Brush.Color:= $BFBFBF;
   Canvas.FillRect(R);
-  R.Offset(3, 0);
+  p3:= PPIScale(3);
+  R.Offset(p3, 0);
   Canvas.FillRect(R);
-  R.Offset(3, 0);
+  R.Offset(p3, 0);
   Canvas.FillRect(R);
-  R.Offset(0, -3);
+  R.Offset(0, -p3);
   Canvas.FillRect(R);
-  R.Offset(0, -3);
+  R.Offset(0, -p3);
   Canvas.FillRect(R);
-  R.Offset(-3, 3);
+  R.Offset(-p3, p3);
   Canvas.FillRect(R);
 end;
 
@@ -1223,6 +1224,7 @@ end;
 procedure TQtGroupBox.NewWidget(Widget: String = '');
 begin
   inherited NewWidget('QGroupBox');
+  setAttribute('Title', 'GroupBox', 'Text');
 end;
 
 procedure TQtGroupBox.Paint;
@@ -1848,7 +1850,7 @@ end;
 procedure TQtMenu.Paint;
 begin
   Canvas.Rectangle(Rect(0, 0, Width, Height));
-  DrawBitmap(7, 4, 16, Canvas, PyIDEMainForm.ILTkinter);
+  PyIDEMainForm.vilTkinterLight.Draw(Canvas, 7, 4, 16);
 end;
 
 {--- TQtButtonGroup -----------------------------------------------------------}
@@ -1856,7 +1858,7 @@ end;
 constructor TQtButtonGroup.Create(AOwner: TComponent);
 begin
   inherited create(AOwner);
-  Tag:= 67;
+  Tag:= 76;
   Width:= 120;
   Height:= 80;
   FColumns:= 1;
@@ -1950,7 +1952,7 @@ begin
     else s2:= s2 + surround('self.' + Name + 'BG.setExclusive(True)');
   for i:= 0 to FItems.Count - 1 do begin
     s:= FItems[i];
-    p:= Pos(', selected', s);
+    p:= Pos(', ' + _('selected'), s);
     if p > 0
       then s:= asString(copy(s, 1, p-1))
       else s:= asString(s);
@@ -1980,7 +1982,7 @@ procedure TQtButtonGroup.setPositionAndSize;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited;
-
+  Canvas.Font.Assign(Font);
   th:= Canvas.TextHeight('Hg');
   if FTitle = '' then begin
     RadioWidth:= Width;
@@ -2125,7 +2127,7 @@ begin
     LabelHeight:= th;
     RadioHeight:= Height - th;
     Canvas.Rectangle(R);
-    Canvas.Textout(10, 0, FTitle);
+    Canvas.Textout(PPIScale(10), 0, FTitle);
   end;
 
   if FItems.Count > 0 then begin
@@ -2137,21 +2139,21 @@ begin
       ItemsInCol:= ItemsInColumn(col);
       for row:= 1 to ItemsInCol do begin
         s:= FItems[line];
-        p:= Pos(', selected', s);
+        p:= Pos(', ' + _('selected'), s);
         if p > 0 then
           s:= copy(s, 1, p-1);
-        x:= 4 + (col - 1)*ColumnWidth;
-        y:= LabelHeight + 2 + (row - 1)*RowHeight;
+        x:= PPIScale(4) + (col - 1)*ColumnWidth;
+        y:= LabelHeight + PPIScale(2) + (row - 1)*RowHeight;
         Canvas.Brush.Color:= clWhite;
         yc:= y + RowHeight div 2 - th div 2;
         if FCheckboxes then begin
-          R:= Rect(x, y + 6, x + 13, y + 19);
+          R:= Rect(x, y + PPIScale(3), x + PPIScale(13), y + PPIScale(16));
           Canvas.Rectangle(R);
           if p > 0 then begin
-            Canvas.Pen.Width:= 2;
-            Canvas.MoveTo(x + 3, yc + 6);
-            Canvas.LineTo(x + 4, yc + 9);
-            Canvas.LineTo(x + 9, yc + 3);
+            Canvas.Pen.Width:= PPIScale(2);
+            Canvas.MoveTo(x + PPIScale(3), yc + PPIScale(6));
+            Canvas.LineTo(x + PPIScale(4), yc + PPIScale(9));
+            Canvas.LineTo(x + PPIScale(9), yc + PPIScale(3));
             Canvas.Pen.Width:= 1;
           end;
         end else begin
@@ -2159,7 +2161,7 @@ begin
           Canvas.Ellipse(x, yc, x + 2*Radius, yc + 2*Radius);
           if p > 0 then begin
             Canvas.Brush.Color:= clBlack;
-            Canvas.Ellipse(x+3, yc+3, x + 2*Radius-3, yc + 2*Radius-3);
+            Canvas.Ellipse(x + PPIScale(3), yc + PPIScale(3), x + 2*Radius-PPIScale(3), yc + 2*Radius-PPIScale(3));
             Canvas.Brush.Color:= clWhite;
           end;
         end;

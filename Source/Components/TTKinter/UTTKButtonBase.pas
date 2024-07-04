@@ -151,7 +151,7 @@ type
 
 implementation
 
-uses Controls, Graphics, SysUtils, System.Types, UUtils, UImages;
+uses Controls, Graphics, SysUtils, System.Types, UUtils, UGUIDesigner;
 
 {--- TButtonBaseWidget --------------------------------------------------------}
 
@@ -343,6 +343,7 @@ constructor TTKCheckbutton.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 35;
+  Width:= 120;
   Anchor:= _TA_w;
   Text:= 'Checkbutton';
   FOffValue:= '0';
@@ -373,7 +374,7 @@ procedure TTKCheckbutton.Paint;
 begin
   LeftSpace:= PPIScale(21);
   inherited;
-  DrawBitmap(LeftSpace, TopSpace, 2, Canvas, DMImages.ILPythonControls)
+  FGUIDesigner.vilPythonControls.Draw(Canvas, LeftSpace, TopSpace, 2);
 end;
 
 procedure TTKCheckbutton.SizeToText;
@@ -391,6 +392,8 @@ begin
   inherited Create (AOwner);
   Tag:= 48;
   FDirection:= below;
+  Anchor:= _TA_w;
+  Justify:= _TJ_left;
   Text:= 'Menubutton';
 end;
 
@@ -440,7 +443,7 @@ begin
   PArray[1].x:= Width - PPIScale(6);
   PArray[1].y:= Height div 2 - PPIScale(2);
   PArray[2].x:= Width - PPIScale(9);
-  PArray[2].y:= PArray[0].y + 3;
+  PArray[2].y:= PArray[0].y + PPIScale(3);
   Canvas.Pen.Color:= $282828;
   Canvas.Brush.Color:= $282828;
   Canvas.Polygon(PArray);

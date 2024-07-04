@@ -657,8 +657,10 @@ procedure TFObjectInspector.CutToClipboard;
 begin
   if TCAttributesEvents.TabIndex = 0 then begin
     PropertyItem:= TELPropertyInspectorItem(ELPropertyInspector.ActiveItem);
-    Clipboard.AsText:= PropertyItem.DisplayValue;
-    PropertyItem.DisplayValue:= '';
+    if assigned(PropertyItem) then begin
+      Clipboard.AsText:= PropertyItem.DisplayValue;
+      PropertyItem.DisplayValue:= '';
+    end;
   end;
 end;
 
@@ -667,7 +669,8 @@ procedure TFObjectInspector.CopyToClipboard;
 begin
   if TCAttributesEvents.TabIndex = 0 then begin
     PropertyItem:= TELPropertyInspectorItem(ELPropertyInspector.ActiveItem);
-    Clipboard.AsText:= PropertyItem.DisplayValue;
+    if assigned(PropertyItem) then
+      Clipboard.AsText:= PropertyItem.DisplayValue;
   end;
 end;
 
@@ -676,7 +679,8 @@ procedure TFObjectInspector.PasteFromClipboard;
 begin
   if TCAttributesEvents.TabIndex = 0 then begin
     PropertyItem:= TELPropertyInspectorItem(ELPropertyInspector.ActiveItem);
-    PropertyItem.DisplayValue:= Clipboard.AsText;
+    if assigned(PropertyItem) then
+      PropertyItem.DisplayValue:= Clipboard.AsText;
   end;
 end;
 

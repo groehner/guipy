@@ -71,6 +71,8 @@ type
     // Class modeler
     fShowGetSetMethods: boolean;
     fGetSetMethodsAsProperty: boolean;
+    fGetMethodChecked: boolean;
+    fSetMethodChecked: boolean;
     fShowTypeSelection: boolean;
     fShowKindProcedure: boolean;
     fShowParameterTypeSelection: boolean;
@@ -80,9 +82,9 @@ type
     fNameFromText: boolean;
     fGuiDesignerHints: Boolean;
     fSnapToGrid: boolean;
-    fAlignToGrid: Boolean;
     fGridSize: Integer;
-    fFontSize: Integer;
+    fGUIFontSize: Integer;
+    fGUIFontName: String;
     fFrameWidth: Integer;
     fFrameHeight: Integer;
 
@@ -210,23 +212,11 @@ type
     procedure setUMLFont(Value: TFont);
     procedure setStructogramFont(Value: TFont);
     procedure setSequenceFont(Value: TFont);
-    function getGitFolder: string;
-    procedure setGitFolder(aValue: string);
-    function getGitLocalRepository: string;
-    procedure setGitLocalRepository(aValue: string);
-
-    function getSVNFolder: string;
-    procedure setSVNFolder(aValue: string);
-    function getSVNRepository: string;
-    procedure setSVNRepository(aValue: string);
-
-    function getSourcePath: string;
-    procedure setSourcePath(aValue: string);
-    function getTempDir: string;
-    procedure setTempDir(aValue: string);
   public
     constructor create;
     destructor Destroy; override;
+    procedure RemovePortableDrives;
+    procedure AddPortableDrives;
   published
     // Color themes
     property ColorTheme: string read fColorTheme write fColorTheme;
@@ -236,6 +226,10 @@ type
       write FShowGetSetMethods;
     property GetSetMethodsAsProperty: boolean read FGetSetMethodsAsProperty
       write FGetSetMethodsAsProperty;
+    property SetMethodChecked: boolean read FSetMethodChecked
+      write FSetMethodChecked;
+    property GetMethodChecked: boolean read FGetMethodChecked
+      write FGetMethodChecked;
     property ShowTypeSelection: boolean read FShowTypeSelection
       write FShowTypeSelection;
     property ShowKindProcedure: boolean read FShowKindProcedure
@@ -252,12 +246,12 @@ type
       write fGuiDesignerHints;
     property SnapToGrid : boolean read fSnapToGrid
       write fSnapToGrid;
-    property AlignToGrid : boolean read fAlignToGrid
-      write fAlignToGrid;
     property GridSize : Integer read fGridSize
       write fGridSize;
-    property FontSize : Integer read fFontSize
-      write fFontSize;
+    property GuiFontSize : Integer read fGUIFontSize
+      write fGUIFontSize;
+    property GuiFontName : String read fGUIFontName
+      write fGUIFontName;
     property FrameWidth : Integer read fFrameWidth
       write fFrameWidth;
     property FrameHeight : Integer read fFrameHeight
@@ -395,10 +389,10 @@ type
     property VisSequenceToolbar: string read fVisSequenceToolbar write fVisSequenceToolbar;
 
     // Git
-    property GitFolder: string read getGitFolder
-      write setGitFolder;
-    property GitLocalRepository: string read getGitLocalRepository
-      write setGitLocalRepository;
+    property GitFolder: string read fGitFolder
+      write fGitFolder;
+    property GitLocalRepository: string read fGitLocalRepository
+      write fGitLocalRepository;
     property GitRemoteRepository: string read fGitRemoteRepository
       write fGitRemoteRepository;
     property GitUserName: string read fGitUserName
@@ -407,10 +401,8 @@ type
       write fGitUserEMail;
 
     // Subversion
-    property SVNFolder: string read getSVNFolder
-      write setSVNFolder;
-    property SVNRepository: string read getSVNRepository
-      write setSVNRepository;
+    property SVNFolder: string read fSVNFolder write fSVNFolder;
+    property SVNRepository: string read fSVNRepository write fSVNRepository;
 
     // TextDiff
     property TextDiffState: string read fTextDiffState
@@ -439,10 +431,8 @@ type
       write fLicence;
 
     // Others
-    property SourcePath: string read getSourcePath
-      write setSourcePath;
-    property TempDir: string read getTempDir
-      write setTempDir;
+    property SourcePath: string read fSourcePath write fSourcePath;
+    property TempDir: string read fTempDir write fTempDir;
 
     // Fonts
     property UMLFont: TFont read fUMLFont write setUMLFont;
@@ -1042,7 +1032,6 @@ type
     GBMethodsOptions: TGroupBox;
     CBShowKindProcedure: TCheckBox;
     CBShowParameterTypeSelection: TCheckBox;
-    CBAlignToGrid: TCheckBox;
     btnResetKeys: TButton;
     LLicence: TLabel;
     ELicence: TEdit;
@@ -1067,9 +1056,9 @@ type
     EIDEFontSize: TEdit;
     lDigits: TLabel;
     EDigits: TEdit;
-    EFontsize: TEdit;
-    UDFontsize: TUpDown;
-    LFontsize: TLabel;
+    BGuiFont: TButton;
+    CBGetMethodChecked: TCheckBox;
+    CBSetMethodChecked: TCheckBox;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1188,6 +1177,7 @@ type
     procedure LVVisibilityTabsClick(Sender: TObject);
     procedure LVVisibilityToolbarsClick(Sender: TObject);
     procedure ckGutterAutosizeClick(Sender: TObject);
+    procedure BGuiFontClick(Sender: TObject);
   private
     const
       DefaultVisFileMenu    = '11100111011101011';      // len = 17
@@ -1732,13 +1722,13 @@ begin
   MakeControlStructureTemplates;
 
   // tab Git
-  GitOK := FileExists(GuiPyOptions.GitFolder + '\bin\git.exe');
+  GitOK := FileExists(TPath.Combine(GuiPyOptions.GitFolder, '\bin\git.exe'));
   PyIDEMainForm.mnToolsGit.Visible:= GitOK and vis1[VisTabsLen + 7, 4];
   if GitOK and (FGit = nil) then
     FGit:= TFGit.Create(Self);
 
   // tab Subversion
-  SubversionOK := FileExists(GuiPyOptions.SVNFolder + '\svn.exe');
+  SubversionOK := FileExists(TPath.Combine(GuiPyOptions.SVNFolder, '\svn.exe'));
   PyIDEMainForm.mnToolsSVN.Visible:= SubversionOK  and vis1[VisTabsLen + 7, 5];
   if SubversionOK and (FSubversion = nil) then
     FSubversion:= TFSubversion.Create(Self);
@@ -1894,7 +1884,6 @@ begin
     UDIDEFontSize.Position:= UIContentFontSize;
     RGEditorTabPosition.ItemIndex:= Ord(EditorsTabPosition);
     RGFileChangeNotification.ItemIndex:= Ord(FileChangeNotification);
-    ShortenPath(ETempFolder, GuiPyOptions.TempDir);
 
     // tab ssh
     EScpCommand.text:= ScpCommand;
@@ -1912,6 +1901,8 @@ begin
     // Class modeler
     CBShowGetSetMethods.Checked:= ShowGetSetMethods;
     CBGetSetMethodsAsProperty.Checked:= GetSetMethodsAsProperty;
+    CBGetMethodChecked.Checked:= GetMethodChecked;
+    CBSetMethodChecked.Checked:= setMethodChecked;
     CBShowTypeSelection.Checked:= ShowTypeSelection;
     CBShowKindProcedure.Checked:= ShowKindProcedure;
     CBShowParameterTypeSelection.Checked:= ShowParameterTypeSelection;
@@ -1921,9 +1912,7 @@ begin
     CBNameFromText.Checked:= NameFromText;
     CBGuiDesignerHints.Checked:= GuiDesignerHints;
     UDGridSize.Position:= GridSize;
-    UDFontSize.Position:= FontSize;
     CBSnapToGrid.Checked:= SnapToGrid;
-    CBAlignToGrid.Checked:= AlignToGrid;
     EFrameWidth.Text:= IntToStr(FrameWidth);
     EFrameHeight.Text:= IntToStr(FrameHeight);
 
@@ -2008,8 +1997,8 @@ begin
     VisibilityModelToView;
 
     // tab Git
-    ShortenPath(EGitFolder, AddPortableDrive(GitFolder));
-    ShortenPath(CBLocalRepository, AddPortableDrive(GitLocalRepository));
+    ShortenPath(EGitFolder, GitFolder);
+    ShortenPath(CBLocalRepository, GitLocalRepository);
     ShortenPath(CBRemoteRepository, GitRemoteRepository);
     EUserName.Text:= GitUserName;
     EUserEMail.Text:= GitUserEMail;
@@ -2028,7 +2017,7 @@ begin
     // others
     EAuthor.Text:= Author;
     ELicence.Text:= Licence;
-    ETempFolder.Text:= TempDir;
+    ShortenPath(ETempFolder, TempDir);
   end;
   LanguageOptionsToView;
   CurrentLanguage:= getCurrentLanguage;
@@ -2269,6 +2258,8 @@ begin
     // Class modeler
     ShowGetSetMethods:= CBShowGetSetMethods.Checked;
     GetSetMethodsAsProperty:= CBGetSetMethodsAsProperty.Checked;
+    GetMethodChecked:= CBGetMethodChecked.Checked;
+    SetMethodChecked:= CBSetmethodChecked.Checked;
     ShowTypeSelection:= CBShowTypeSelection.Checked;
     ShowKindProcedure:= CBShowKindProcedure.Checked;
     ShowParameterTypeSelection:= CBShowParameterTypeSelection.Checked;
@@ -2278,9 +2269,7 @@ begin
     NameFromText:= CBNameFromText.Checked;
     GuiDesignerHints:= CBGuiDesignerHints.Checked;
     GridSize:= UDGridSize.Position;
-    FontSize:= UDFontSize.Position;
     SnapToGrid:= CBSnapToGrid.Checked;
-    AlignToGrid:= CBAlignToGrid.Checked;
     FrameWidth:= StrToInt(EFrameWidth.Text);
     FrameHeight:= strToInt(EFrameHeight.Text);
 
@@ -5067,6 +5056,18 @@ begin
   CheckFolderCB(CBLocalRepository);
 end;
 
+procedure TFConfiguration.BGuiFontClick(Sender: TObject);
+begin
+  var FontDialog:= TFontDialog.Create(Self);
+  FontDialog.Font.Size:= GuiPyOptions.GUIFontSize;
+  FontDialog.Font.Name:= GuiPyOptions.GUIFontName;
+  if FontDialog.Execute then begin
+    GuiPyOptions.GUIFontSize:= max(FontDialog.Font.Size, 4);
+    GuiPyOptions.GUIFontName:= FontDialog.Font.Name;
+  end;
+  FreeAndNil(FontDialog);
+end;
+
 procedure TFConfiguration.BGitCloneClick(Sender: TObject);
   var Dir, Remote, aName: String;
 begin
@@ -5294,22 +5295,22 @@ begin
     GuiPyOptions.VisDebugToolbar:= StringOfChar('1', n);
   StringVisibilityToArr2(GuiPyOptions.VisDebugToolbar, n, 15);
 
-  n:= DMImages.ILEditorToolbar.Count;
+  n:= TEditorForm.ToolbarCount;
   if Length(GuiPyOptions.VisEditToolbar) <> n then
     GuiPyOptions.VisEditToolbar:= StringOfChar('1', n);
   StringVisibilityToArr2(GuiPyOptions.VisEditToolbar, n, 16);
 
-  n:= DMImages.ILUMLToolbarLight.Count;
+  n:= TFUMLForm.ToolbarCount;
   if Length(GuiPyOptions.VisUMLToolbar) <> n then
     GuiPyOptions.VisUMLToolbar:= StringOfChar('1', n);
   StringVisibilityToArr2(GuiPyOptions.VisUMLToolbar, n, 17);
 
-  n:= DMImages.ILStructogramToolbar.Count;
+  n:= TFStructogram.ToolbarCount;
   if Length(GuiPyOptions.VisStructoToolbar) <> n then
     GuiPyOptions.VisStructoToolbar:= StringOfChar('1', n);
   StringVisibilityToArr2(GuiPyOptions.VisStructoToolbar, n, 18);
 
-  n:= DMImages.ILSequenceToolbar.Count;
+  n:= TFSequenceForm.ToolbarCount;
   if Length(GuiPyOptions.VisSequenceToolbar) <> n then
     GuiPyOptions.VisSequenceToolbar:= StringOfChar('1', n);
   StringVisibilityToArr2(GuiPyOptions.VisSequenceToolbar, n, 19);
@@ -5360,10 +5361,10 @@ begin
 
   GuiPyOptions.VisMainToolbar    := ArrVisibilityToString2(14, PyIDEMainForm.MainToolbar.Items.Count);
   GuiPyOptions.VisDebugToolbar   := ArrVisibilityToString2(15, PyIDEMainForm.DebugToolbar.Items.Count);
-  GuiPyOptions.VisEditToolbar    := ArrVisibilityToString2(16, DMImages.ILEditorToolbar.Count);
-  GuiPyOptions.VisUMLToolbar     := ArrVisibilityToString2(17, DMImages.ILUMLToolbarLight.Count);
-  GuiPyOptions.VisStructoToolbar := ArrVisibilityToString2(18, DMImages.ILStructogramToolbar.Count);
-  GuiPyOptions.VisSequenceToolbar:= ArrVisibilityToString2(19, DMImages.ILSequenceToolbar.Count);
+  GuiPyOptions.VisEditToolbar    := ArrVisibilityToString2(16, TEditorForm.ToolbarCount);
+  GuiPyOptions.VisUMLToolbar     := ArrVisibilityToString2(17, TFUMLForm.ToolbarCount);
+  GuiPyOptions.VisStructoToolbar := ArrVisibilityToString2(18, TFStructogram.ToolbarCount);
+  GuiPyOptions.VisSequenceToolbar:= ArrVisibilityToString2(19, TFSequenceForm.ToolbarCount);
 end;
 
 procedure TFConfiguration.SetVisibility;
@@ -5519,23 +5520,23 @@ begin
   LVVisibilityElements.Clear;
   case Tab of
     0: begin
-         LVVisibilityElements.SmallImages:= PyIDEMainForm.ILProgram;
+         LVVisibilityElements.SmallImages:= PyIDEMainForm.vilProgramLight;
          TB:= PyIDEMainForm.ToolbarProgram;
     end;
     1: begin
-         LVVisibilityElements.SmallImages:= PyIDEMainForm.ILTKinter;
+         LVVisibilityElements.SmallImages:= PyIDEMainForm.vilTKinterLight;
          TB:= PyIDEMainForm.ToolbarTkinter;
     end;
     2: begin
-         LVVisibilityElements.SmallImages:= PyIDEMainForm.ILTTK;
+         LVVisibilityElements.SmallImages:= PyIDEMainForm.vilTTKLight;
          TB:= PyIDEMainForm.ToolbarTTK;
     end;
     3: begin
-         LVVisibilityElements.SmallImages:= PyIDEMainForm.ILQtBase;
+         LVVisibilityElements.SmallImages:= PyIDEMainForm.vilQtBaseLight;
          TB:= PyIDEMainForm.ToolbarQtBase;
     end;
     4: begin
-         LVVisibilityElements.SmallImages:= PyIDEMainForm.ILQtControls;
+         LVVisibilityElements.SmallImages:= PyIDEMainForm.vilQtControls;
          TB:= PyIDEMainForm.ToolbarQtControls;
     end;
     else
@@ -5616,29 +5617,29 @@ begin
       2: begin
            EditForm:= TEditorForm.Create(nil);
            if IsDark
-             then LVVisibilityElements.SmallImages:= DMImages.ILEditorToolbarDark
-             else LVVisibilityElements.SmallImages:= DMImages.ILEditorToolbar;
+             then LVVisibilityElements.SmallImages:= EditForm.vilEditorToolbarDark
+             else LVVisibilityElements.SmallImages:= EditForm.vilEditorToolbarLight;
            TB:= EditForm.EditformToolbar;
       end;
       3: begin
            UMLForm:= TFUMLForm.Create(nil);
            if IsDark
-             then LVVisibilityElements.SmallImages:= DMImages.ILUMLToolbarDark
-             else LVVisibilityElements.SmallImages:= DMImages.ILUMLToolbarLight;
+             then LVVisibilityElements.SmallImages:= UMLForm.vilToolbarDark
+             else LVVisibilityElements.SmallImages:= UMLForm.vilToolbarLight;
            TB:= UMLForm.UMLToolbar;
       end;
       4: begin
            StructogramForm:= TFStructogram.Create(nil);
            if IsDark
-             then LVVisibilityElements.SmallImages:= DMImages.ILStructogramToolbarDark
-             else LVVisibilityElements.SmallImages:= DMImages.ILStructogramToolbar;
+             then LVVisibilityElements.SmallImages:= StructogramForm.vilToolbarDark
+             else LVVisibilityElements.SmallImages:= StructogramForm.vilToolbarLight;
            TB:= StructogramForm.StructogramToolbar;
       end;
       5: begin
            SequencediagramForm:= TFSequenceForm.Create(nil);
            if IsDark
-             then LVVisibilityElements.SmallImages:= DMImages.ILSequenceToolbarDark
-             else LVVisibilityElements.SmallImages:= DMImages.ILSequenceToolbar;
+             then LVVisibilityElements.SmallImages:= SequencediagramForm.vilToolbarDark
+             else LVVisibilityElements.SmallImages:= SequencediagramForm.vilToolbarLight;
            TB:= SequencediagramForm.SequenceToolbar;
       end;
       else
@@ -5766,6 +5767,8 @@ begin
   // Class modeler
   fShowGetSetMethods:= true;
   fGetSetMethodsAsProperty:= true;
+  fGetMethodChecked:= true;
+  fSetMethodChecked:= false;
   fShowTypeSelection:= true;
   fShowKindProcedure:= true;
   fShowParameterTypeSelection:= true;
@@ -5775,9 +5778,9 @@ begin
   fNameFromText:= true;
   fGuiDesignerHints:= true;
   fSnapToGrid:= true;
-  fAlignToGrid:= true;
   fGridSize:= 8;
-  fFontSize:= 9;
+  fGUIFontSize:= 9;
+  fGUIFontName:= 'Segoe UI';
   fFrameWidth:= 300;
   fFrameHeight:= 300;
 
@@ -5899,67 +5902,28 @@ begin
   fSequenceFont.assign(Value);
 end;
 
-function TGuiPyOptions.getGitFolder: string;
+procedure TGuiPyOptions.AddPortableDrives;
 begin
-  Result:= AddPortableDrive(fGitFolder);
-end;
-
-procedure TGuiPyOptions.setGitFolder(aValue: string);
-begin
-  fGitFolder:= RemovePortableDrive(aValue);
-end;
-
-function TGuiPyOptions.getGitLocalRepository: string;
-begin
-  Result:= AddPortableDrive(fGitLocalRepository);
-end;
-
-procedure TGuiPyOptions.setGitLocalRepository(aValue: string);
-begin
-  fGitLocalRepository:= RemovePortableDrive(aValue);
-end;
-
-function TGuiPyOptions.getSVNFolder: string;
-begin
-  Result:= AddPortableDrive(fSVNFolder);
-end;
-
-procedure TGuiPyOptions.setSVNFolder(aValue: string);
-begin
-  fSVNFolder:= AddPortableDrive(aValue);
-end;
-
-function TGuiPyOptions.getSVNRepository: string;
-begin
-  Result:= RemovePortableDrive(fSVNRepository);
-end;
-
-procedure TGuiPyOptions.setSVNRepository(aValue: string);
-begin
-  fSVNRepository:= AddPortableDrive(aValue);
-end;
-
-function TGuiPyOptions.getSourcePath: string;
-begin
-  Result:= AddPortableDrive(fSourcePath);
-end;
-
-procedure TGuiPyOptions.setSourcePath(aValue: string);
-begin
-  fSourcePath:= RemovePortableDrive(aValue);
+  fTempDir:= AddPortableDrive(fTempDir);
+  fGitFolder:= AddPortableDrive(fGitFolder);
+  fGitLocalRepository:= AddPortableDrive(fGitLocalRepository);
+  fSVNFolder:= AddPortableDrive(fSVNFolder);
+  fSVNRepository:= AddPortableDrive(fSVNRepository);
+  fSourcePath:= AddPortableDrive(fSourcePath);
   if not SysUtils.DirectoryExists(fSourcePath) then
     fSourcePath:= GetDocumentsPath;
 end;
 
-function TGuiPyOptions.getTempDir: string;
+procedure TGuiPyOptions.RemovePortableDrives;
 begin
-  Result:= AddPortableDrive(fTempDir);
+  fTempDir:= RemovePortableDrive(fTempDir);
+  fGitFolder:= RemovePortableDrive(fGitFolder);
+  fGitLocalRepository:= RemovePortableDrive(fGitLocalRepository);
+  fSVNFolder:= RemovePortableDrive(fSVNFolder);
+  fSVNRepository:= RemovePortableDrive(fSVNRepository);
+  fSourcePath:= RemovePortableDrive(fSourcePath);
 end;
 
-procedure TGuiPyOptions.setTempDir(aValue: string);
-begin
-  fTempDir:= RemovePortableDrive(aValue);
-end;
 
 {--- TGuiPyLanguageOptions ----------------------------------------------------}
 

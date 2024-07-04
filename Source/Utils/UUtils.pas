@@ -96,9 +96,6 @@ function StringTimesN(s: string; n: integer): string;
 function GetUniqueName(Control: TControl; Basename: string): string;
 function OnlyCharsAndDigits(const s: string): string;
 function ToWeb(const Browser: string; s: String): String;
-procedure DrawBitmap(x, y, i: integer; aCanvas: TCanvas; aImagelist: TImageList);
-procedure RotateBitmap(Bmp: TBitmap; Rads: Single; AdjustSize: Boolean;
-  BkColor: TColor = clNone);
 function StartsWith(const Str, Substr: String): boolean;
 function LowerUpper(const s: string): string;
 function isLower(c: char): boolean;
@@ -167,7 +164,7 @@ end;
 
 function myStringReplace(ImString: string; const DenString, DurchString: string): String;
 begin
-  Result:= StringReplace(Imstring, DenString, DurchString, [rfReplaceAll, rfIgnoreCase]);
+  Result:= StringReplace(ImString, DenString, DurchString, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 procedure ErrorMsg(const s: string);
@@ -1159,63 +1156,6 @@ begin
   if isLaufwerk then
     s:= 'file:///' + s;
   Result:= s;
-end;
-
-procedure DrawBitmap(x, y, i: integer; aCanvas: TCanvas; aImagelist: TImageList);
-begin
-  if i >= 0 then begin
-    var aBitmap:= TBitmap.Create;
-    aImagelist.GetBitmap(i, aBitmap);
-    aBitmap.Transparent:= true;
-    aCanvas.Draw(x, y, aBitmap);
-    FreeAndNil(aBitmap);
-  end;
-end;
-
-procedure RotateBitmap(Bmp: TBitmap; Rads: Single; AdjustSize: Boolean;
-  BkColor: TColor = clNone);
-var
-  C: Single;
-  S: Single;
-  Tmp: TBitmap;
-  OffsetX: Single;
-  OffsetY: Single;
-  Points: array[0..2] of TPoint;
-begin
-  C := Cos(Rads);
-  S := Sin(Rads);
-  Tmp := TBitmap.Create;
-  try
-    Tmp.TransparentColor := Bmp.TransparentColor;
-    Tmp.TransparentMode := Bmp.TransparentMode;
-    Tmp.Transparent := Bmp.Transparent;
-    Tmp.Canvas.Brush.Color := BkColor;
-    if AdjustSize then
-    begin
-      Tmp.Width := Round(Bmp.Width * Abs(C) + Bmp.Height * Abs(S));
-      Tmp.Height := Round(Bmp.Width * Abs(S) + Bmp.Height * Abs(C));
-      OffsetX := (Tmp.Width - Bmp.Width * C + Bmp.Height * S) / 2;
-      OffsetY := (Tmp.Height - Bmp.Width * S - Bmp.Height * C) / 2;
-    end
-    else
-    begin
-      Tmp.Width := Bmp.Width;
-      Tmp.Height := Bmp.Height;
-      OffsetX := (Bmp.Width - Bmp.Width * C + Bmp.Height * S) / 2;
-      OffsetY := (Bmp.Height - Bmp.Width * S - Bmp.Height * C) / 2;
-    end;
-    Points[0].X := Round(OffsetX);
-    Points[0].Y := Round(OffsetY);
-    Points[1].X := Round(OffsetX + Bmp.Width * C);
-    Points[1].Y := Round(OffsetY + Bmp.Width * S);
-    Points[2].X := Round(OffsetX - Bmp.Height * S);
-    Points[2].Y := Round(OffsetY + Bmp.Height * C);
-    PlgBlt(Tmp.Canvas.Handle, Points, Bmp.Canvas.Handle, 0, 0, Bmp.Width,
-      Bmp.Height, 0, 0, 0);
-    Bmp.Assign(Tmp);
-  finally
-    FreeAndNil(Tmp);
-  end;
 end;
 
 function StartsWith(const Str, Substr: String): boolean;

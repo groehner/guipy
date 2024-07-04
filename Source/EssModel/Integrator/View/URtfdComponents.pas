@@ -312,8 +312,8 @@ type
 
 implementation
 
-uses SysUtils, Forms, Themes, UITypes, Types, Math, ExtCtrls,
-  StrUtils, uIterators, uConfiguration, uViewIntegrator, UImages, frmPyIDEMain;
+uses SysUtils, Forms, Themes, UITypes, Types, Math, ExtCtrls, VirtualImageList,
+  StrUtils, uIterators, uConfiguration, uViewIntegrator, UCommonFunctions, frmPyIDEMain;
 
 const
   cDefaultWidth = 150;
@@ -1552,16 +1552,13 @@ end;
 
 { TVisibilityLabel }
 
-const
-  IconW = 12;
-
 procedure TVisibilityLabel.Paint;
 var
   R: TRect;
   S: string;
-  Bitmap: Graphics.TBitmap;
   PictureNr, Distance: integer;
   Style: TFontStyles;
+  vil: TVirtualImageList;
 begin
   // for debugging
   // Canvas.Brush.Color:= clRed;
@@ -1588,34 +1585,23 @@ begin
     Canvas.Font.Style := Canvas.Font.Style + [fsBold];
 
   case (Owner as TRtfdBox).ShowIcons of
-    0:
-      begin
-        Bitmap := TBitmap.Create;
-        Bitmap.TransparentMode := tmFixed;
-        Bitmap.Transparent := true;
-        Bitmap.TransparentColor := clWhite;
-        if StyleServices.IsSystemStyle then
-          DMImages.ILUMLRtfdComponentsLight.GetBitmap(PictureNr, Bitmap)
-        else
-          DMImages.ILUMLRtfdComponentsDark.GetBitmap(PictureNr, Bitmap);
-        Canvas.Draw(R.Left + 4, R.Bottom div 2 - 5, Bitmap);
-        R.Left := R.Left + IconW + 8;
+    0:begin
+        if StyleServices.IsSystemStyle
+          then vil:= (Owner as TRtfdBox).Frame.vilUMLRtfdComponentsLight
+          else vil:= (Owner as TRtfdBox).Frame.vilUMLRtfdComponentsDark;
+        vil.SetSize(r.Height, r.Height);
+        vil.Draw(Canvas, 4, 0, PictureNr);
+        R.Left := R.Left + vil.Width + 8;
         Canvas.TextOut(R.Left, R.Top, Caption);
-        FreeAndNil(Bitmap);
       end;
-    1:
-      begin
+    1:begin
         Style := Canvas.Font.Style;
         Canvas.Font.Style := [];
         case Entity.Visibility of
-          viPrivate:
-            S := '- ';
-          viPackage:
-            S := '~ ';
-          viProtected:
-            S := '# ';
-          viPublic:
-            S := '+ ';
+          viPrivate:   S := '- ';
+          viPackage:   S := '~ ';
+          viProtected: S := '# ';
+          viPublic:    S := '+ ';
         end;
         if PictureNr = 8 then
           S := 'c ';
@@ -1625,8 +1611,7 @@ begin
         Canvas.Font.Style := Style;
         Canvas.TextOut(R.Left + 4 + Distance, R.Top, Caption);
       end;
-    2:
-      Canvas.TextOut(R.Left + 4, R.Top, Caption);
+    2:Canvas.TextOut(R.Left + 4, R.Top, Caption);
   end;
 end;
 
@@ -2510,10 +2495,8 @@ var
   S: string;
   aRect: TRect;
   AAlignment: TAlignment;
-
 begin
-  if not(csReading in ComponentState) then
-  begin
+  if not (csReading in ComponentState) then begin
     aRect := Rect(0, 0, 0, 0);
     DC := GetDC(0);
     Canvas.Handle := DC;
@@ -2529,12 +2512,9 @@ begin
     DrawText(Canvas.Handle, PChar(S), length(S), aRect, DT_CALCRECT);
     FTextWidth := 8 + aRect.Right + 8;
     case (Owner as TRtfdBox).ShowIcons of
-      0:
-        FTextWidth := FTextWidth + IconW + 4;
-      1:
-        FTextWidth := FTextWidth + Canvas.TextWidth('+ ');
-      2:
-        FTextWidth := FTextWidth + 0;
+      0: FTextWidth := FTextWidth + (Owner as TRtfdBox).Frame.vilUMLRtfdComponentsLight.width + 4;
+      1: FTextWidth := FTextWidth + Canvas.TextWidth('+ ');
+      2: FTextWidth := FTextWidth + 0;
     end;
     DoDrawText(aRect, DT_EXPANDTABS or DT_CALCRECT);
     Canvas.Handle := 0;

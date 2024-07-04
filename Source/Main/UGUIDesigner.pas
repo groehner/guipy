@@ -5,7 +5,8 @@ interface
 uses
   Windows, Classes, Controls, Forms, ExtCtrls, ImgList, ActnList,
   System.ImageList, Vcl.Menus,
-  dlgPyIDEBase, ELDsgnr, UGUIForm, frmEditor, SpTBXItem, TB2Item;
+  dlgPyIDEBase, ELDsgnr, UGUIForm, frmEditor, SpTBXItem, TB2Item,
+  Vcl.VirtualImageList, Vcl.BaseImageCollection, SVGIconImageCollection;
 
 type
   TFGUIDesigner = class (TPyIDEDlgBase)
@@ -16,7 +17,6 @@ type
     MICut: TSpTBXItem;
     MIDelete: TSpTBXItem;
     SpTBXSeparatorItem1: TSpTBXSeparatorItem;
-    MIAlignToGrid: TSpTBXItem;
     MISnapToGrid: TSpTBXItem;
     SpTBXSeparatorItem2: TSpTBXSeparatorItem;
     MIAlign: TSpTBXSubmenuItem;
@@ -39,6 +39,14 @@ type
     MIZoomIn: TSpTBXItem;
     MIZoomOut: TSpTBXItem;
     SpTBXSeparatorItem5: TSpTBXSeparatorItem;
+    scGuiDesignerLight: TSVGIconImageCollection;
+    vilGuiDesignerLight: TVirtualImageList;
+    scGUIDesignerDark: TSVGIconImageCollection;
+    vilGUIDesignerDark: TVirtualImageList;
+    icPythonControls: TSVGIconImageCollection;
+    vilPythonControls: TVirtualImageList;
+    icQtControls: TSVGIconImageCollection;
+    vilQtControls1616: TVirtualImageList;
     procedure FormCreate(Sender: TObject);
     procedure ELDesignerControlInserting(Sender: TObject;
       var AControlClass: TControlClass);
@@ -56,7 +64,6 @@ type
     procedure ELDragOver(Sender, ASource, ATarget: TObject; AX, AY: Integer;
       AState: TDragState; var Accept: Boolean);
     procedure MIDeleteClick(Sender: TObject);
-    procedure MIAlignToGridClick(Sender: TObject);
     procedure MICloseClick(Sender: TObject);
     procedure MIToSourceClick(Sender: TObject);
     procedure MISnapToGridClick(Sender: TObject);
@@ -71,8 +78,9 @@ type
     procedure MIZoomInClick(Sender: TObject);
     procedure MIZoomOutClick(Sender: TObject);
   private
-    function Tag2Class(Tag: integer): TControlClass;
     procedure SetEnabledMI(MenuItem: TSpTBXItem; Enabled: boolean);
+    function GetPixelsPerInchOfFile(Filename: string): integer;
+    procedure RemovePixelsPerInch0(Filename: string);
   public
     ComponentToInsert: TControlClass;
     ELDesigner: TELDesigner;
@@ -82,12 +90,15 @@ type
     procedure FindMethod(Reader: TReader; const MethodName: string;
                          var Address: Pointer; var Error: Boolean);
     procedure ErrorMethod(Reader: TReader; const Message: string; var Handled: Boolean);
+    function Tag2Class(Tag: integer): TControlClass;
     procedure SetToolButton(Tag: Integer);
     procedure ChangeTo(Formular: TFGUIForm);
     function GetEditForm: TEditorForm;
     procedure UpdateState(Modified: boolean);
     function getPath: string;
     function getControlWidthHeigth: TPoint;
+    procedure ScaleImages;
+    procedure ChangeStyle;
   end;
 
   TMyDragObject = class(TDragControlObjectEx)
@@ -111,7 +122,7 @@ uses System.Types, TypInfo, SysUtils, Graphics,
      UTTKButtonBase, UTTKTextBase, UTTKMiscBase,
      UQtButtonBase, UQtWidgetDescendants, UQtFrameBased, UQtScrollable,
      UQtItemViews, UQtSpinboxes,
-     uCommonFunctions, uEditAppIntfs, UImages;
+     uCommonFunctions, uEditAppIntfs;
 
 {$R *.dfm}
 
@@ -163,6 +174,7 @@ begin
     OnDblClick       := ELDesignerDblClick;
   end;
   ELDesigner.GuiDesignerHints:= GuiPyOptions.GuiDesignerHints;
+  ChangeStyle;
 end;
 
 procedure TFGUIDesigner.ChangeTo(Formular: TFGUIForm);
@@ -215,9 +227,7 @@ begin
   MISnapToGrid.Checked:= ELDesigner.SnapToGrid;
   en:= (ELDesigner.SelectedControls.Count > 0) and
        (ELDesigner.SelectedControls[0].ClassName <> 'TFGUIForm');
-  SetEnabledMI(MIAlignToGrid, en);
   SetEnabledMI(MIDelete, en);
-
   en:= assigned(DesignForm.Partner);
   SetEnabledMI(MIForeground, en);
   SetEnabledMI(MIBackground, en);
@@ -265,12 +275,6 @@ begin
   ELDesigner.SelectedControls.Align(AHorzAlign, AVertAlign);
 end;
 
-procedure TFGUIDesigner.MIAlignToGridClick(Sender: TObject);
-begin
-  ELDesigner.SelectedControls.AlignToGrid;
-  UpdateState(Modified);
-end;
-
 procedure TFGUIDesigner.ELDesignerControlInserting(Sender: TObject;
   var AControlClass: TControlClass);
 begin
@@ -287,20 +291,19 @@ begin
   if Accept and assigned(ComponentToInsert) then begin
     LInsertingControl:= ComponentToInsert.Create(Designform);
     try
-      LInsertingControl.Tag:= ULink.ComponentNrToInsert;
       ELDesigner.getUniqueName(Tag2PythonType(LInsertingControl.Tag), LName);
-      LInsertingControl.Name:= LName; // <-- here may be exception
+      LInsertingControl.Name:= LName; // <-- here may be an exception
       LInsertingControl.Parent:= ATarget as TWinControl;
       LInsertingControl.SetBounds(AX-LInsertingControl.Width, AY-LInsertingControl.Height,
                                      LInsertingControl.Width, LInsertingControl.Height);
-      (LInsertingControl as TBaseWidget).UnScaleFontSize;
+      //(LInsertingControl as TBaseWidget).UnScaleFontSize;
+      ELDesigner.SelectedControls.ClearExcept(LInsertingControl);
+      ELDesignerControlInserted(nil);
+      UpdateState(Modified);
     except
       FreeAndNil(LInsertingControl);
       raise;
     end;
-    ELDesigner.SelectedControls.ClearExcept(LInsertingControl);
-    ELDesignerControlInserted(nil);
-    UpdateState(Modified);;
   end;
 end;
 
@@ -408,6 +411,7 @@ begin
   if assigned(EditorForm) then begin
     ULink.ComponentNrToInsert:= Tag;
     ComponentToInsert:= Tag2Class(Tag);
+    ScaleImages;
   end;
 end;
 
@@ -464,155 +468,92 @@ begin
     TFGUIForm(ELDesigner.DesignControl).Modified:= false;
 end;
 
+procedure TFGUIDesigner.RemovePixelsPerInch0(Filename: string);
+begin
+  var SL:= TStringList.Create;
+  try
+    SL.LoadFromFile(Filename);
+    for var i:= 0 to SL.Count -1 do begin
+      var s:= SL[i];
+      var p:= Pos('PixelsPerInch', s);
+      if p > 0 then begin
+        p:= Pos('=', s);
+        delete(s, 1, p);
+        p:= StrToInt(trim(s));
+        if p = 0 then begin
+          SL.Delete(i);
+          SL.SaveToFile(Filename);
+          break;
+        end
+      end else if Pos('  object', s) > 0 then
+        break;
+    end;
+  finally
+    FreeAndNil(SL);
+  end;
+end;
+
+function TFGUIDesigner.GetPixelsPerInchOfFile(Filename: string): integer;
+begin
+  Result:= 96;
+  var SL:= TStringList.Create;
+  try
+    SL.LoadFromFile(Filename);
+    for var i:= 0 to SL.Count -1 do begin
+      var s:= SL[i];
+      var p:= Pos('PixelsPerInch', s);
+      if p > 0 then begin
+        p:= Pos('=', s);
+        delete(s, 1, p);
+        Exit(StrToInt(trim(s)));
+      end else if Pos('  object', s) > 0 then
+        break;
+    end;
+  finally
+    FreeAndNil(SL);
+  end;
+end;
+
 function TFGUIDesigner.Open(const Filename: string): TFGUIForm;
 var
    FilStream: TFileStream;
    BinStream: TMemoryStream;
-   Reader          : TReader;
-   bWriteProperty  : boolean;
-   sPropertyName   : string;
-   SL                  : TStringList;
+   Reader   : TReader;
    PythonFilename: string;
-
-   procedure WriteStr(const S: string);
-   begin
-       SL.Add(S);
-   end;
-
-   procedure ConvertValue; forward;
-
-   procedure ConvertHeader;
-   var
-       sClassName,
-       sObjectName : string;
-       Flags       : TFilerFlags;
-       Position    : Integer;
-   begin
-       Reader.ReadPrefix(Flags, Position);
-       sClassName := Reader.ReadStr;
-       sObjectName := Reader.ReadStr;
-   end;
-
-   procedure ConvertBinary;
-   var
-       lCount      : Longint;
-       pBuffer     : PChar;
-   begin
-       Reader.ReadValue;
-       Reader.Read(lCount, SizeOf(lCount));
-
-       GetMem(pBuffer, lCount+1);
-       Reader.Read(pBuffer^, lCount);
-       FreeMem(pBuffer);
-   end;
-
-   procedure ConvertProperty; forward;
-
-   procedure ConvertValue;
-   begin
-       case Reader.NextValue of
-           vaList:
-            begin
-               Reader.ReadValue;
-               while not Reader.EndOfList do
-                   ConvertValue;
-               Reader.ReadListEnd;
-            end;
-           vaInt8,
-           vaInt16,
-           vaInt32:
-               Reader.ReadInteger;
-           vaExtended:
-               Reader.ReadFloat;
-           vaString,
-           vaLString:
-               if bWriteProperty then
-                   WriteStr(Reader.ReadString)
-               else
-                   Reader.ReadString;
-           vaIdent,
-           vaFalse,
-           vaTrue,
-           vaNil:
-               Reader.ReadIdent;
-           vaBinary:
-               ConvertBinary;
-           vaSet:
-            begin
-               Reader.ReadValue;
-               while Reader.ReadStr <> '' do
-                begin
-                end;
-            end;
-           vaCollection:
-            begin
-               Reader.ReadValue;
-               while not Reader.EndOfList do
-                begin
-                   if Reader.NextValue in [vaInt8, vaInt16, vaInt32] then
-                       ConvertValue;
-                   Reader.ReadValue;
-                   while not Reader.EndOfList do
-                       ConvertProperty;
-                   Reader.ReadListEnd;
-                end;
-               Reader.ReadListEnd;
-            end;
-       end;
-   end;
-
-   procedure ConvertProperty;
-   begin
-       sPropertyName := Reader.ReadStr;
-//       bWriteProperty := WriteProperty(sPropertyName);
-       ConvertValue;
-   end;
-
-   procedure ConvertObject;
-   begin
-       ConvertHeader;
-       while not Reader.EndOfList do
-           ConvertProperty;
-       Reader.ReadListEnd;
-       while not Reader.EndOfList do
-           ConvertObject;
-       Reader.ReadListEnd;
-   end;
-
-var
-   WH: TPoint;
-   Modified: boolean;
    aForm: TEditorForm;
+   PPI: Integer;
 begin
   Result:= nil;
-  if not FileExists(Filename) then exit;
+  if not FileExists(Filename) then
+    Exit;
+  PPI:= GetPixelsPerInchOfFile(Filename);
+  if PPI = 0 then
+    RemovePixelsPerInch0(Filename);
   PythonFilename:= ChangeFileExt(Filename, '.pyw');
   aForm:= TEditorForm(GI_EditorFactory.GetEditorByName(PythonFilename).Form);
-  WH:= aForm.getGeometry;
+  FObjectGenerator.Partner:= aForm;
   BinStream:= TMemoryStream.Create;
   FilStream:= TFileStream.Create(Filename, fmOpenRead or fmShareDenyNone);
+  Reader:= TReader.Create(BinStream, 4096);
+  Reader.OnFindMethod:= FindMethod;
+  Reader.OnError:= ErrorMethod;
   try
     try
-      SL:= TStringList.Create;
       ObjectTextToResource(FilStream, BinStream);
       BinStream.Seek(0, soFromBeginning);
-      Modified:= aForm.ActiveSynEdit.Modified;
-      DesignForm:= TFGuiForm.Create(self);
-      FObjectGenerator.Partner:= aForm;
-
       BinStream.ReadResHeader;
-      Reader:= TReader.Create(BinStream, 4096);
-      Reader.OnFindMethod:= FindMethod;
-      Reader.OnError:= ErrorMethod;
+      DesignForm:= TFGuiForm.Create(self);
+      DesignForm.Partner:= aForm;
       Reader.ReadRootComponent(DesignForm);
-      DesignForm.FormStyle:= fsStayOnTop;
-
-      DesignForm.Open(Filename, '', WH, aForm);
-      ChangeTo(DesignForm);  // <== !
-      if not Modified and not DesignForm.Modified then
-        TEditorForm(DesignForm.Partner).Modified:= false;
-      DesignForm.Tag:= 0;
+      DesignForm.Open(Filename, '', aForm.getGeometry, aForm);
+      if PPI <  DesignForm.PixelsPerInch then
+        DesignForm.Scale(DesignForm.PixelsPerInch, PPI);
+      ScaleImages;
+      DesignForm.Invalidate; // to paint correct image sizes
       DesignForm.EnsureOnDesktop;
+      ChangeTo(DesignForm);
+      if not aForm.ActiveSynEdit.Modified and not DesignForm.Modified then
+        TEditorForm(DesignForm.Partner).Modified:= false;
       Result:= DesignForm;
     except
       on e: exception do
@@ -622,7 +563,7 @@ begin
     FreeAndNil(Reader);
     FreeAndNil(FilStream);
     FreeAndNil(BinStream);
-    FreeAndNil(SL);
+    FObjectInspector.RefreshCBObjects;
   end;
   if assigned(DesignForm) and DesignForm.ReadOnly then
      ELDesigner.LockAll([lmNoMove, lmNoResize, lmNoDelete, lmNoInsertIn, lmNoCopy]);
@@ -678,6 +619,8 @@ end;
 
 procedure TFGUIDesigner.MISnapToGridClick(Sender: TObject);
 begin
+  ELDesigner.SelectedControls.AlignToGrid;
+  UpdateState(Modified);
   MISnapToGrid.Checked:= not MISnapToGrid.Checked;
   ELDesigner.SnapToGrid:= MISnapToGrid.Checked;
 end;
@@ -809,6 +752,19 @@ procedure TFGUIDesigner.SetEnabledMI(MenuItem: TSpTBXItem; Enabled: boolean);
 begin
   if assigned(MenuItem) and (MenuItem.Enabled <> Enabled) then
     MenuItem.Enabled:= Enabled;
+end;
+
+procedure TFGUIDesigner.ScaleImages;
+begin
+  vilPythonControls.SetSize(DesignForm.PPIScale(16), DesignForm.PPIScale(16));
+  vilQtControls1616.SetSize(DesignForm.PPIScale(15), DesignForm.PPIScale(15));
+end;
+
+procedure TFGUIDesigner.ChangeStyle;
+begin
+  if IsStyledWindowsColorDark
+    then PopupMenu.Images:= vilGuiDesignerDark
+    else PopupMenu.Images:= vilGuiDesignerLight;
 end;
 
 { TMyDragObject }

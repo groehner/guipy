@@ -103,7 +103,6 @@ type
     property LayoutDirection: TLayoutDirection read FLayoutDirection write FLayoutDirection;
     property AutoFillBackground: boolean read FAutoFillBackground write FAutoFillBackground;
     property StyleSheet: string read FStyleSheet write FStyleSheet;
-    property Font;
     // signals
     property customContextMenuRequested: string read FcustomContextMenuRequested write FcustomContextMenuRequested;
     property windowIconChanged: string read FWindowIconChanged write FWindowIconChanged;
@@ -126,7 +125,7 @@ begin
   LayoutDirection:= LeftToRight;
   ContextMenuPolicy:= DefaultContextMenu;
   Font.Name:= 'Segoe UI';
-  Font.Size:= GuiPyOptions.FontSize;
+  Font.Size:= GuiPyOptions.GuiFontSize;
   Font.Style:= [];
   HelpType:= htContext;
   Sizeable:= true;
@@ -360,7 +359,7 @@ procedure TBaseQtWidget.MakeFont;
   var s1, s2: string;
 begin
   s1:= 'self.' + Name + '.setFont';
-  s2:= '(QFont(' + asString(Font.Name) + ', ' + IntToStr(Font.Size);
+  s2:= '(QFont(' + asString(Font.Name) + ', ' + IntToStr(PPIUnScale(Font.Size));
   if fsBold in Font.Style then
     s2:= s2 + ', QFont.Weight.Bold';
   if fsItalic in Font.Style then

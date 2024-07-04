@@ -2,8 +2,8 @@ object EditorForm: TEditorForm
   Left = 304
   Top = 173
   BorderStyle = bsNone
-  ClientHeight = 696
-  ClientWidth = 582
+  ClientHeight = 701
+  ClientWidth = 600
   Color = clWindow
   Ctl3D = False
   ParentFont = True
@@ -14,8 +14,8 @@ object EditorForm: TEditorForm
   object BGPanel: TPanel
     Left = 0
     Top = 0
-    Width = 582
-    Height = 696
+    Width = 600
+    Height = 701
     Align = alClient
     BevelOuter = bvNone
     Padding.Left = 2
@@ -27,8 +27,8 @@ object EditorForm: TEditorForm
     object ViewsTabControl: TSpTBXTabControl
       Left = 2
       Top = 2
-      Width = 578
-      Height = 692
+      Width = 596
+      Height = 697
       Align = alClient
       OnContextPopup = ViewsTabControlContextPopup
       OnEnter = FGPanelEnter
@@ -42,7 +42,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 470
+        CustomWidth = 558
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -60,17 +60,19 @@ object EditorForm: TEditorForm
       end
       object tbshSource: TSpTBXTabSheet
         Left = 0
-        Top = 30
-        Width = 578
-        Height = 662
+        Top = 25
+        Width = 596
+        Height = 672
         Caption = 'Source'
         ImageIndex = -1
+        ExplicitTop = 30
+        ExplicitHeight = 667
         TabItem = 'tabSource'
         object SynEdit: TSynEdit
           Left = 25
           Top = 0
-          Width = 344
-          Height = 658
+          Width = 545
+          Height = 668
           HelpContext = 510
           Align = alClient
           Ctl3D = False
@@ -144,12 +146,13 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
+          ExplicitHeight = 663
         end
         object SynEdit2: TSynEdit
-          Left = 374
+          Left = 570
           Top = 0
-          Width = 200
-          Height = 658
+          Width = 17
+          Height = 668
           Align = alRight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -210,32 +213,36 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
+          ExplicitHeight = 663
         end
         object EditorSplitter: TSpTBXSplitter
-          Left = 369
+          Left = 587
           Top = 0
-          Height = 658
+          Height = 668
           Cursor = crSizeWE
           Align = alRight
           ParentColor = False
           Visible = False
           GripSize = 80
+          ExplicitHeight = 663
         end
         object EditformToolbar: TToolBar
           Left = 2
           Top = 0
           Width = 23
-          Height = 658
+          Height = 668
           Align = alLeft
           AutoSize = True
-          Images = DMImages.ILEditorToolbarDark
+          Images = vilEditorToolbarLight
           TabOrder = 3
+          ExplicitHeight = 663
           object TBClose: TToolButton
             Left = 0
             Top = 0
             Hint = 'Close|Close active file'
             Caption = '&Close'
             ImageIndex = 0
+            ImageName = 'Close'
             Wrap = True
             OnClick = TBCloseClick
           end
@@ -244,6 +251,7 @@ object EditorForm: TEditorForm
             Top = 22
             Hint = 'Open explorer for current file'
             ImageIndex = 1
+            ImageName = 'Explorer'
             Wrap = True
             OnClick = TBExplorerClick
           end
@@ -252,6 +260,7 @@ object EditorForm: TEditorForm
             Top = 44
             Hint = 'Show in browser'
             ImageIndex = 2
+            ImageName = 'Browser'
             Wrap = True
             OnClick = TBBrowserClick
           end
@@ -260,6 +269,7 @@ object EditorForm: TEditorForm
             Top = 66
             Hint = 'Open associated design form'
             ImageIndex = 3
+            ImageName = 'Designform'
             Wrap = True
             OnClick = TBDesignformClick
           end
@@ -268,6 +278,7 @@ object EditorForm: TEditorForm
             Top = 88
             Hint = 'Open class in the UML window'
             ImageIndex = 4
+            ImageName = 'ClassOpen'
             Wrap = True
             OnClick = TBClassOpenClick
           end
@@ -276,6 +287,7 @@ object EditorForm: TEditorForm
             Top = 110
             Hint = 'Check Syntax'
             ImageIndex = 5
+            ImageName = 'Check'
             Wrap = True
             OnClick = TBCheckClick
           end
@@ -284,6 +296,7 @@ object EditorForm: TEditorForm
             Top = 132
             Hint = 'Match bracket'
             ImageIndex = 6
+            ImageName = 'MatchBracket'
             Wrap = True
             OnClick = TBMatchBracketClick
           end
@@ -292,6 +305,7 @@ object EditorForm: TEditorForm
             Top = 154
             Hint = 'Edit class'
             ImageIndex = 7
+            ImageName = 'ClassEdit'
             Wrap = True
             OnClick = TBClassEditClick
           end
@@ -300,6 +314,7 @@ object EditorForm: TEditorForm
             Top = 176
             Hint = 'Indent structured'
             ImageIndex = 8
+            ImageName = 'StructureIndent'
             Wrap = True
             OnClick = TBStructureIndentClick
           end
@@ -309,6 +324,7 @@ object EditorForm: TEditorForm
             Top = 198
             Hint = 'If-Statement'
             ImageIndex = 9
+            ImageName = 'IfStatement'
             Wrap = True
             OnClick = TBStatementClick
           end
@@ -318,6 +334,7 @@ object EditorForm: TEditorForm
             Top = 220
             Hint = 'If-Else-Statement'
             ImageIndex = 10
+            ImageName = 'IfElseStatement'
             Wrap = True
             OnClick = TBStatementClick
           end
@@ -327,6 +344,7 @@ object EditorForm: TEditorForm
             Top = 242
             Hint = 'while-Statement'
             ImageIndex = 11
+            ImageName = 'WhileStatement'
             Wrap = True
             OnClick = TBStatementClick
           end
@@ -336,6 +354,7 @@ object EditorForm: TEditorForm
             Top = 264
             Hint = 'for-Statement'
             ImageIndex = 12
+            ImageName = 'ForStatement'
             Wrap = True
             OnClick = TBStatementClick
           end
@@ -345,6 +364,7 @@ object EditorForm: TEditorForm
             Top = 286
             Hint = 'if-elif-Statement'
             ImageIndex = 13
+            ImageName = 'SwitchStatement'
             Wrap = True
             OnClick = TBStatementClick
           end
@@ -354,6 +374,7 @@ object EditorForm: TEditorForm
             Top = 308
             Hint = 'try-Statement'
             ImageIndex = 14
+            ImageName = 'TryStatement'
             Wrap = True
             OnClick = TBStatementClick
           end
@@ -362,6 +383,7 @@ object EditorForm: TEditorForm
             Top = 330
             Hint = 'Comment on/off'
             ImageIndex = 15
+            ImageName = 'Comment'
             Wrap = True
             OnClick = TBCommentClick
           end
@@ -369,7 +391,8 @@ object EditorForm: TEditorForm
             Left = 0
             Top = 352
             Hint = 'Wordwrap'
-            ImageIndex = 16
+            ImageIndex = 17
+            ImageName = 'WordWrap'
             Wrap = True
             OnClick = TBWordWrapClick
           end
@@ -377,7 +400,8 @@ object EditorForm: TEditorForm
             Left = 0
             Top = 374
             Hint = 'Indent'
-            ImageIndex = 17
+            ImageIndex = 18
+            ImageName = 'Indent'
             Wrap = True
             OnClick = TBIndentClick
           end
@@ -385,7 +409,8 @@ object EditorForm: TEditorForm
             Left = 0
             Top = 396
             Hint = 'Unindent'
-            ImageIndex = 18
+            ImageIndex = 19
+            ImageName = 'Unindent'
             Wrap = True
             OnClick = TBUnindentClick
           end
@@ -393,7 +418,8 @@ object EditorForm: TEditorForm
             Left = 0
             Top = 418
             Hint = 'Breakpoint on/off'
-            ImageIndex = 19
+            ImageIndex = 20
+            ImageName = 'Breakpoint'
             Wrap = True
             OnClick = TBBreakpointClick
           end
@@ -401,7 +427,8 @@ object EditorForm: TEditorForm
             Left = 0
             Top = 440
             Hint = 'Delete all breakpoints'
-            ImageIndex = 20
+            ImageIndex = 21
+            ImageName = 'BreakpointsClear'
             Wrap = True
             OnClick = TBBreakpointsClearClick
           end
@@ -409,7 +436,8 @@ object EditorForm: TEditorForm
             Left = 0
             Top = 462
             Hint = 'Set bookmark'
-            ImageIndex = 21
+            ImageIndex = 22
+            ImageName = 'Bookmark'
             Wrap = True
             OnClick = TBBookmarkClick
           end
@@ -417,7 +445,8 @@ object EditorForm: TEditorForm
             Left = 0
             Top = 484
             Hint = 'Goto bookmark'
-            ImageIndex = 22
+            ImageIndex = 23
+            ImageName = 'GotoBookmark'
             Wrap = True
             OnClick = TBGotoBookmarkClick
           end
@@ -425,7 +454,8 @@ object EditorForm: TEditorForm
             Left = 0
             Top = 506
             Hint = 'Paragraph marks on/off'
-            ImageIndex = 23
+            ImageIndex = 24
+            ImageName = 'Paragraph'
             Wrap = True
             OnClick = TBParagraphClick
           end
@@ -433,31 +463,35 @@ object EditorForm: TEditorForm
             Left = 0
             Top = 528
             Hint = 'Line numbers on/off'
-            ImageIndex = 24
+            ImageIndex = 25
+            ImageName = 'Numbers'
             Wrap = True
             OnClick = TBNumbersClick
           end
-          object TBZoomPlus: TToolButton
-            Left = 0
-            Top = 550
-            Hint = 'Zoom in'
-            ImageIndex = 25
-            Wrap = True
-            OnClick = TBZoomPlusClick
-          end
           object TBZoomMinus: TToolButton
             Left = 0
-            Top = 572
+            Top = 550
             Hint = 'Zoom out'
             ImageIndex = 26
+            ImageName = 'ZoomOut'
             Wrap = True
             OnClick = TBZoomMinusClick
+          end
+          object TBZoomPlus: TToolButton
+            Left = 0
+            Top = 572
+            Hint = 'Zoom in'
+            ImageIndex = 27
+            ImageName = 'ZoomIn'
+            Wrap = True
+            OnClick = TBZoomPlusClick
           end
           object TBValidate: TToolButton
             Left = 0
             Top = 594
             Hint = 'Validate'
-            ImageIndex = 27
+            ImageIndex = 28
+            ImageName = 'Validate'
             OnClick = TBValidateClick
           end
         end
@@ -474,29 +508,29 @@ object EditorForm: TEditorForm
     end
   end
   object pmnuEditor: TSpTBXPopupMenu
-    Images = DMImages.ILContextMenuDark
+    Images = vilContextMenuLight
     OnPopup = pmnuEditorPopup
     Left = 112
     Top = 40
     object mnEditOpenClass: TSpTBXItem
       Caption = 'Open class'
-      ImageIndex = 103
-      ImageName = 'UMLOpen'
+      ImageIndex = 12
+      ImageName = 'OpenClass'
       OnClick = TBClassOpenClick
     end
     object mnEditClassEditor: TSpTBXItem
       Caption = 'Class editor'
-      ImageIndex = 14
+      ImageIndex = 13
       ImageName = 'ClassEdit'
       OnClick = TBClassEditClick
     end
     object mnEditCreateStructogram: TSpTBXItem
       Action = CommandsDataModule.actEditCreateStructogram
-      ImageIndex = 15
+      ImageIndex = 14
+      ImageName = 'CreateStructogram'
     end
     object mnEditAddImports: TSpTBXItem
       Caption = 'Add imports'
-      ImageIndex = 17
       OnClick = mnEditAddImportsClick
     end
     object mnEditCopyPathname: TSpTBXItem
@@ -505,7 +539,7 @@ object EditorForm: TEditorForm
     end
     object mnEditConfiguration: TSpTBXItem
       Caption = 'Configuration'
-      ImageIndex = 111
+      ImageIndex = 17
       ImageName = 'Configuration'
       OnClick = mnEditConfigurationClick
     end
@@ -513,6 +547,7 @@ object EditorForm: TEditorForm
       Caption = 'Git'
       ImageIndex = 16
       ImageName = 'git'
+      OnClick = mnGitExecute
       object mnGitStatus: TSpTBXItem
         Tag = 1
         Caption = 'Status'
@@ -589,26 +624,26 @@ object EditorForm: TEditorForm
     end
     object mnEditCut: TSpTBXItem
       Action = CommandsDataModule.actEditCut
-      ImageIndex = 2
-    end
-    object mnEditPaste: TSpTBXItem
-      Action = CommandsDataModule.actEditPaste
-      ImageIndex = 3
+      ImageName = 'Redo'
     end
     object mnEditCopy: TSpTBXItem
       Action = CommandsDataModule.actEditCopy
-      ImageIndex = 4
+      ImageName = 'APIHelp'
+    end
+    object mnEditPaste: TSpTBXItem
+      Action = CommandsDataModule.actEditPaste
+      ImageName = 'ResetJava'
     end
     object mnEditDelete: TSpTBXItem
       Action = CommandsDataModule.actEditDelete
-      ImageIndex = 5
+      ImageName = 'OpenClass'
     end
     object mnEditSelectAll: TSpTBXItem
       Action = CommandsDataModule.actEditSelectAll
     end
     object mnExecuteSelection: TSpTBXItem
       Action = PyIDEMainForm.actExecSelection
-      ImageIndex = 13
+      ImageIndex = 15
     end
     object TBXSeparatorItem9: TSpTBXSeparatorItem
     end
@@ -682,6 +717,7 @@ object EditorForm: TEditorForm
     object mnFont: TSpTBXItem
       Caption = 'Font'
       ImageIndex = 0
+      ImageName = 'Font'
       OnClick = mnFontClick
     end
     object mnMaximizeEditor2: TSpTBXItem
@@ -692,7 +728,7 @@ object EditorForm: TEditorForm
   end
   object pmnuViewsTab: TSpTBXPopupMenu
     Images = PyIDEMainForm.vilImages
-    Left = 208
+    Left = 232
     Top = 40
     object mnUpdateView: TSpTBXItem
       Caption = 'Update View'
@@ -745,8 +781,8 @@ object EditorForm: TEditorForm
     PreserveItems = True
     Width = 11
     Height = 14
-    Left = 200
-    Top = 176
+    Left = 256
+    Top = 424
   end
   object vilCodeImages: TVirtualImageList
     Images = <
@@ -802,7 +838,663 @@ object EditorForm: TEditorForm
       end>
     ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True
-    Left = 92
-    Top = 177
+    Left = 100
+    Top = 417
+  end
+  object vilEditorToolbarLight: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 0
+        CollectionName = 'Close'
+        Name = 'Close'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = 'Explorer'
+        Name = 'Explorer'
+      end
+      item
+        CollectionIndex = 2
+        CollectionName = 'Browser'
+        Name = 'Browser'
+      end
+      item
+        CollectionIndex = 3
+        CollectionName = 'Designform'
+        Name = 'Designform'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = 'ClassOpen'
+        Name = 'ClassOpen'
+      end
+      item
+        CollectionIndex = 5
+        CollectionName = 'Check'
+        Name = 'Check'
+      end
+      item
+        CollectionIndex = 6
+        CollectionName = 'MatchBracket'
+        Name = 'MatchBracket'
+      end
+      item
+        CollectionIndex = 7
+        CollectionName = 'Classedit'
+        Name = 'Classedit'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = 'StructureIndent'
+        Name = 'StructureIndent'
+      end
+      item
+        CollectionIndex = 9
+        CollectionName = 'IfStatement'
+        Name = 'IfStatement'
+      end
+      item
+        CollectionIndex = 10
+        CollectionName = 'IfElseStatement'
+        Name = 'IfElseStatement'
+      end
+      item
+        CollectionIndex = 11
+        CollectionName = 'WhileStatement'
+        Name = 'WhileStatement'
+      end
+      item
+        CollectionIndex = 12
+        CollectionName = 'ForStatement'
+        Name = 'ForStatement'
+      end
+      item
+        CollectionIndex = 13
+        CollectionName = 'SwitchStatement'
+        Name = 'SwitchStatement'
+      end
+      item
+        CollectionIndex = 14
+        CollectionName = 'TryStatement'
+        Name = 'TryStatement'
+      end
+      item
+        CollectionIndex = 15
+        CollectionName = 'Comment'
+        Name = 'Comment'
+      end
+      item
+        CollectionIndex = 16
+        CollectionName = 'Comment'
+        Name = 'Comment'
+      end
+      item
+        CollectionIndex = 17
+        CollectionName = 'WordWrap'
+        Name = 'WordWrap'
+      end
+      item
+        CollectionIndex = 18
+        CollectionName = 'Indent'
+        Name = 'Indent'
+      end
+      item
+        CollectionIndex = 19
+        CollectionName = 'Unindent'
+        Name = 'Unindent'
+      end
+      item
+        CollectionIndex = 20
+        CollectionName = 'Breakpoint'
+        Name = 'Breakpoint'
+      end
+      item
+        CollectionIndex = 21
+        CollectionName = 'BreakpointsClear'
+        Name = 'BreakpointsClear'
+      end
+      item
+        CollectionIndex = 22
+        CollectionName = 'Bookmark'
+        Name = 'Bookmark'
+      end
+      item
+        CollectionIndex = 23
+        CollectionName = 'GotoBookmark'
+        Name = 'GotoBookmark'
+      end
+      item
+        CollectionIndex = 24
+        CollectionName = 'Paragraph'
+        Name = 'Paragraph'
+      end
+      item
+        CollectionIndex = 25
+        CollectionName = 'Numbers'
+        Name = 'Numbers'
+      end
+      item
+        CollectionIndex = 26
+        CollectionName = 'ZoomOut'
+        Name = 'ZoomOut'
+      end
+      item
+        CollectionIndex = 27
+        CollectionName = 'ZoomIn'
+        Name = 'ZoomIn'
+      end
+      item
+        CollectionIndex = 28
+        CollectionName = 'Validate'
+        Name = 'Validate'
+      end>
+    ImageCollection = DMImages.icEditorToolbar
+    Left = 104
+    Top = 255
+  end
+  object vilEditorToolbarDark: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 29
+        CollectionName = 'Close'
+        Name = 'Close'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = 'Explorer'
+        Name = 'Explorer'
+      end
+      item
+        CollectionIndex = 2
+        CollectionName = 'Browser'
+        Name = 'Browser'
+      end
+      item
+        CollectionIndex = 30
+        CollectionName = 'Designform'
+        Name = 'Designform'
+      end
+      item
+        CollectionIndex = 32
+        CollectionName = 'ClassOpen'
+        Name = 'ClassOpen'
+      end
+      item
+        CollectionIndex = 5
+        CollectionName = 'Check'
+        Name = 'Check'
+      end
+      item
+        CollectionIndex = 33
+        CollectionName = 'MatchBracket'
+        Name = 'MatchBracket'
+      end
+      item
+        CollectionIndex = 31
+        CollectionName = 'ClassEdit'
+        Name = 'ClassEdit'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = 'StructureIndent'
+        Name = 'StructureIndent'
+      end
+      item
+        CollectionIndex = 34
+        CollectionName = 'IfStatement'
+        Name = 'IfStatement'
+      end
+      item
+        CollectionIndex = 35
+        CollectionName = 'IfElseStatement'
+        Name = 'IfElseStatement'
+      end
+      item
+        CollectionIndex = 36
+        CollectionName = 'WhileStatement'
+        Name = 'WhileStatement'
+      end
+      item
+        CollectionIndex = 37
+        CollectionName = 'ForStatement'
+        Name = 'ForStatement'
+      end
+      item
+        CollectionIndex = 38
+        CollectionName = 'SwitchStatement'
+        Name = 'SwitchStatement'
+      end
+      item
+        CollectionIndex = 39
+        CollectionName = 'TryStatement'
+        Name = 'TryStatement'
+      end
+      item
+        CollectionIndex = 40
+        CollectionName = 'Comment'
+        Name = 'Comment'
+      end
+      item
+        CollectionIndex = 41
+        CollectionName = 'WordWrap'
+        Name = 'WordWrap'
+      end
+      item
+        CollectionIndex = 42
+        CollectionName = 'Indent'
+        Name = 'Indent'
+      end
+      item
+        CollectionIndex = 43
+        CollectionName = 'Unindent'
+        Name = 'Unindent'
+      end
+      item
+        CollectionIndex = 20
+        CollectionName = 'Breakpoint'
+        Name = 'Breakpoint'
+      end
+      item
+        CollectionIndex = 21
+        CollectionName = 'BreakpointsClear'
+        Name = 'BreakpointsClear'
+      end
+      item
+        CollectionIndex = 22
+        CollectionName = 'Bookmark'
+        Name = 'Bookmark'
+      end
+      item
+        CollectionIndex = 23
+        CollectionName = 'GotoBookmark'
+        Name = 'GotoBookmark'
+      end
+      item
+        CollectionIndex = 44
+        CollectionName = 'Paragraph'
+        Name = 'Paragraph'
+      end
+      item
+        CollectionIndex = 45
+        CollectionName = 'Numbers'
+        Name = 'Numbers'
+      end
+      item
+        CollectionIndex = 46
+        CollectionName = 'ZoomOut'
+        Name = 'ZoomOut'
+      end
+      item
+        CollectionIndex = 47
+        CollectionName = 'ZoomIn'
+        Name = 'ZoomIn'
+      end
+      item
+        CollectionIndex = 28
+        CollectionName = 'Validate'
+        Name = 'Validate'
+      end>
+    ImageCollection = DMImages.icEditorToolbar
+    Left = 256
+    Top = 247
+  end
+  object vilBookmarksDark: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 15
+        CollectionName = 'Bookmark0'
+        Name = 'Bookmark0'
+      end
+      item
+        CollectionIndex = 16
+        CollectionName = 'Bookmark1'
+        Name = 'Bookmark1'
+      end
+      item
+        CollectionIndex = 17
+        CollectionName = 'Bookmark2'
+        Name = 'Bookmark2'
+      end
+      item
+        CollectionIndex = 18
+        CollectionName = 'Bookmark3'
+        Name = 'Bookmark3'
+      end
+      item
+        CollectionIndex = 19
+        CollectionName = 'Bookmark4'
+        Name = 'Bookmark4'
+      end
+      item
+        CollectionIndex = 20
+        CollectionName = 'Bookmark5'
+        Name = 'Bookmark5'
+      end
+      item
+        CollectionIndex = 21
+        CollectionName = 'Bookmark6'
+        Name = 'Bookmark6'
+      end
+      item
+        CollectionIndex = 22
+        CollectionName = 'Bookmark7'
+        Name = 'Bookmark7'
+      end
+      item
+        CollectionIndex = 23
+        CollectionName = 'Bookmark8'
+        Name = 'Bookmark8'
+      end
+      item
+        CollectionIndex = 24
+        CollectionName = 'Bookmark9'
+        Name = 'Bookmark9'
+      end
+      item
+        CollectionIndex = 25
+        CollectionName = 'Warning'
+        Name = 'Warning'
+      end
+      item
+        CollectionIndex = 26
+        CollectionName = 'Question'
+        Name = 'Question'
+      end
+      item
+        CollectionIndex = 27
+        CollectionName = 'Debugline'
+        Name = 'Debugline'
+      end
+      item
+        CollectionIndex = 28
+        CollectionName = 'Breakpoint'
+        Name = 'Breakpoint'
+      end
+      item
+        CollectionIndex = 29
+        CollectionName = 'BreakpointsDelete'
+        Name = 'BreakpointsDelete'
+      end>
+    ImageCollection = DMImages.icEditorBookmarks
+    Left = 256
+    Top = 343
+  end
+  object vilBookmarksLight: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 0
+        CollectionName = 'Bookmark0'
+        Name = 'Bookmark0'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = 'Bookmark1'
+        Name = 'Bookmark1'
+      end
+      item
+        CollectionIndex = 2
+        CollectionName = 'Bookmark2'
+        Name = 'Bookmark2'
+      end
+      item
+        CollectionIndex = 3
+        CollectionName = 'Bookmark3'
+        Name = 'Bookmark3'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = 'Bookmark4'
+        Name = 'Bookmark4'
+      end
+      item
+        CollectionIndex = 5
+        CollectionName = 'Bookmark5'
+        Name = 'Bookmark5'
+      end
+      item
+        CollectionIndex = 6
+        CollectionName = 'Bookmark6'
+        Name = 'Bookmark6'
+      end
+      item
+        CollectionIndex = 7
+        CollectionName = 'Bookmark7'
+        Name = 'Bookmark7'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = 'Bookmark8'
+        Name = 'Bookmark8'
+      end
+      item
+        CollectionIndex = 9
+        CollectionName = 'Bookmark9'
+        Name = 'Bookmark9'
+      end
+      item
+        CollectionIndex = 10
+        CollectionName = 'Warning'
+        Name = 'Warning'
+      end
+      item
+        CollectionIndex = 11
+        CollectionName = 'Question'
+        Name = 'Question'
+      end
+      item
+        CollectionIndex = 12
+        CollectionName = 'Debugline'
+        Name = 'Debugline'
+      end
+      item
+        CollectionIndex = 13
+        CollectionName = 'Breakpoint'
+        Name = 'Breakpoint'
+      end
+      item
+        CollectionIndex = 14
+        CollectionName = 'BreakpointsDelete'
+        Name = 'BreakpointsDelete'
+      end>
+    ImageCollection = DMImages.icEditorBookmarks
+    Left = 104
+    Top = 343
+  end
+  object vilContextMenuDark: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 18
+        CollectionName = 'Font'
+        Name = 'Font'
+      end
+      item
+        CollectionIndex = 19
+        CollectionName = 'Close'
+        Name = 'Close'
+      end
+      item
+        CollectionIndex = 28
+        CollectionName = 'Cut1'
+        Name = 'Cut1'
+      end
+      item
+        CollectionIndex = 3
+        CollectionName = 'Copy1'
+        Name = 'Copy1'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = 'Paste1'
+        Name = 'Paste1'
+      end
+      item
+        CollectionIndex = 20
+        CollectionName = 'Delete1'
+        Name = 'Delete1'
+      end
+      item
+        CollectionIndex = 21
+        CollectionName = 'Indent'
+        Name = 'Indent'
+      end
+      item
+        CollectionIndex = 22
+        CollectionName = 'UnIndent'
+        Name = 'UnIndent'
+      end
+      item
+        CollectionIndex = 29
+        CollectionName = 'Undo'
+        Name = 'Undo'
+      end
+      item
+        CollectionIndex = 30
+        CollectionName = 'Redo'
+        Name = 'Redo'
+      end
+      item
+        CollectionIndex = 10
+        CollectionName = 'APIHelp'
+        Name = 'APIHelp'
+      end
+      item
+        CollectionIndex = 23
+        CollectionName = 'ResetJava'
+        Name = 'ResetJava'
+      end
+      item
+        CollectionIndex = 24
+        CollectionName = 'OpenClass'
+        Name = 'OpenClass'
+      end
+      item
+        CollectionIndex = 25
+        CollectionName = 'ClassEdit'
+        Name = 'ClassEdit'
+      end
+      item
+        CollectionIndex = 26
+        CollectionName = 'CreateStructogram'
+        Name = 'CreateStructogram'
+      end
+      item
+        CollectionIndex = 27
+        CollectionName = 'Execute'
+        Name = 'Execute'
+      end
+      item
+        CollectionIndex = 16
+        CollectionName = 'Git'
+        Name = 'Git'
+      end
+      item
+        CollectionIndex = 17
+        CollectionName = 'Configuration'
+        Name = 'Configuration'
+      end
+      item
+        CollectionIndex = 32
+        CollectionName = 'Search'
+        Name = 'Search'
+      end>
+    ImageCollection = DMImages.icEditorContextMenu
+    Left = 232
+    Top = 127
+  end
+  object vilContextMenuLight: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 0
+        CollectionName = 'Font'
+        Name = 'Font'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = 'Close'
+        Name = 'Close'
+      end
+      item
+        CollectionIndex = 2
+        CollectionName = 'Cut1'
+        Name = 'Cut1'
+      end
+      item
+        CollectionIndex = 3
+        CollectionName = 'Copy1'
+        Name = 'Copy1'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = 'Paste1'
+        Name = 'Paste1'
+      end
+      item
+        CollectionIndex = 5
+        CollectionName = 'Delete1'
+        Name = 'Delete1'
+      end
+      item
+        CollectionIndex = 6
+        CollectionName = 'Indent'
+        Name = 'Indent'
+      end
+      item
+        CollectionIndex = 7
+        CollectionName = 'Unindent'
+        Name = 'Unindent'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = 'Undo'
+        Name = 'Undo'
+      end
+      item
+        CollectionIndex = 9
+        CollectionName = 'Redo'
+        Name = 'Redo'
+      end
+      item
+        CollectionIndex = 10
+        CollectionName = 'APIHelp'
+        Name = 'APIHelp'
+      end
+      item
+        CollectionIndex = 11
+        CollectionName = 'ResetJava'
+        Name = 'ResetJava'
+      end
+      item
+        CollectionIndex = 12
+        CollectionName = 'OpenClass'
+        Name = 'OpenClass'
+      end
+      item
+        CollectionIndex = 13
+        CollectionName = 'ClassEdit'
+        Name = 'ClassEdit'
+      end
+      item
+        CollectionIndex = 14
+        CollectionName = 'CreateStructogram'
+        Name = 'CreateStructogram'
+      end
+      item
+        CollectionIndex = 15
+        CollectionName = 'Execute'
+        Name = 'Execute'
+      end
+      item
+        CollectionIndex = 16
+        CollectionName = 'Git'
+        Name = 'Git'
+      end
+      item
+        CollectionIndex = 17
+        CollectionName = 'Configuration'
+        Name = 'Configuration'
+      end>
+    ImageCollection = DMImages.icEditorContextMenu
+    Left = 112
+    Top = 127
   end
 end

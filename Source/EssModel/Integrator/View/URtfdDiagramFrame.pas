@@ -24,7 +24,8 @@ interface
 
 uses
   Messages, Classes, Controls, Forms, Vcl.Menus, System.ImageList, ImgList,
-  uListeners, uDiagramFrame, uRtfdDiagram, SpTBXItem, TB2Item;
+  uListeners, uDiagramFrame, uRtfdDiagram, SpTBXItem, TB2Item,
+  Vcl.VirtualImageList, Vcl.BaseImageCollection, SVGIconImageCollection;
 
 type
   TAFrameRtfdDiagram = class(TAFrameDiagram)

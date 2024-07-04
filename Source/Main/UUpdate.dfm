@@ -4,8 +4,8 @@ object FUpdate: TFUpdate
   BorderIcons = [biSystemMenu, biMaximize]
   BorderStyle = bsDialog
   Caption = 'Update'
-  ClientHeight = 266
-  ClientWidth = 330
+  ClientHeight = 265
+  ClientWidth = 326
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
