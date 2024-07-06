@@ -117,6 +117,7 @@ type
     procedure DeleteSelectedControlsAndRefresh; override;
 
     procedure DeleteObjects; override;
+    function hasObjects: boolean; override;
     function hasSelectedConnection: boolean; override;
     function GetPanel: TCustomPanel; override;
     procedure SetInteractive(OnInteractiveModified: TNotifyEvent); override;
@@ -989,7 +990,7 @@ begin
       then SetShowObjectDiagram(false)
       else SetShowObjectDiagram(ShowObjectDiagram);
     FLivingObjects.makeAllObjects;
-    //UpdateAllObjects;
+    UpdateAllObjects;
 
     UMLForm.SynEdit.BeginUpdate;
     UMLForm.SynEdit.Lines.Clear;
@@ -1406,6 +1407,7 @@ end;
 
 procedure TRtfdDiagram.RefreshDiagram;
 begin
+  //InitFromModel;
   if not PanelIsLocked then
     for var i:= 0 to BoxNames.Count - 1 do
       (BoxNames.Objects[I] as TRtfdBox).RefreshEntities;
@@ -3147,6 +3149,14 @@ begin
       end;
     end;
   DeleteSelectedControls(nil);
+end;
+
+function TRtfdDiagram.hasObjects: boolean;
+begin
+  for var i:= 0 to BoxNames.Count - 1 do
+    if (BoxNames.Objects[i] is TRtfdObject) then
+      exit(true);
+  Result:= false;
 end;
 
 procedure TRtfdDiagram.Reinitalize;

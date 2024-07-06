@@ -5168,7 +5168,7 @@ begin
   Operation:= nil;
   if not isPython then exit;
   TVFileStructure.Items.BeginUpdate;
-  TVFileStructure.Images:= FFileStructure.vilFileStructureLight;
+  //TVFileStructure.Images:= FFileStructure.vilFileStructureLight;
   try
     for i:= TVFileStructure.Items.Count - 1 downto 0 do begin
       aInteger:= TInteger(TVFileStructure.Items[i].Data);

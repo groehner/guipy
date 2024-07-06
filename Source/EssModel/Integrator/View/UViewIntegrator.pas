@@ -80,6 +80,7 @@ type
 
     procedure DeleteSelectedControlsAndRefresh; virtual; abstract;
     procedure DeleteObjects; virtual; abstract;
+    function hasObjects: boolean; virtual; abstract;
     procedure ClassEditSelectedDiagramElements; virtual; abstract;
     procedure ClassEditSelectedDiagramElementsControl(Sender: TObject); virtual; abstract;
     procedure SourceEditSelectedDiagramElements(C: TControl); virtual; abstract;

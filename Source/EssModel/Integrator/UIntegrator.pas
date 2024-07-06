@@ -61,10 +61,8 @@ type
   }
   TImportIntegrator = class(TIntegrator)
   protected
-
     // List of files that have been read in this Lista importsession
     FilesRead : TStringList;
-
     procedure ImportOneFile(const FileName: string; withoutNeedSource: boolean = false); virtual; abstract;
   public
     CodeProvider: TCodeProvider;

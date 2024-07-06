@@ -2351,54 +2351,61 @@ begin
   case Method.OperationType of
     otConstructor: s:= s + comment + makeConstructor(Method, Source);
     otFunction: begin
-        if assigned(Method.ReturnValue)
-          then s2:= Typ2Value(Method.ReturnValue.getShortType)
-          else s2:= 'None';
-        if Pos(' return ', Source) > 0 then begin
-          AdjustReturnValue;
-          s:= s + Source;
-        end else begin
-          if Source = ''
-            then s:= s + comment + Indent2 + _(LNGTODO) + CrLf
-            else s:= s + Source;
-          s:= s + Indent2 + 'return ' + s2 + CrLf;
-        end;
+        if Method.IsAbstract then
+          s:= s + Indent2 + comment + 'pass'
+        else begin
+          if assigned(Method.ReturnValue)
+            then s2:= Typ2Value(Method.ReturnValue.getShortType)
+            else s2:= 'None';
+          if Pos(' return ', Source) > 0 then begin
+            AdjustReturnValue;
+            s:= s + Source;
+          end else begin
+            if (Source = '') or (Source = Indent2 + 'pass' + CrLf)
+              then s:= s + comment + Indent2 + _(LNGTODO) + CrLf
+              else s:= s + Source;
+            s:= s + Indent2 + 'return ' + s2 + CrLf;
+          end;
 
-        SL.Text:= s;
-        for i:= SL.Count - 1 downto 0 do
-          if trim(SL[i]) = 'pass' then
-            SL.Delete(i);
-        s:= SL.Text;
+          SL.Text:= s;
+          for i:= SL.Count - 1 downto 0 do
+            if trim(SL[i]) = 'pass' then
+              SL.Delete(i);
+          s:= SL.Text;
+        end;
       end;
     otProcedure: begin
-        if Source <> '' then begin
-          count:= 0;
-          SL.Text:= Source;
-          for i:= 0 to SL.Count - 1 do begin
-            if trim(SL[i]) = 'pass' then
-              inc(count);
-            if Pos(' return ', SL[i]) >  0 then begin
-              Sl[i]:= Indent2 + 'pass';
-              inc(count);
+        if Method.IsAbstract then
+          s:= s + Indent2 + comment + 'pass'
+        else begin
+          if (Source <> '') and (Source <> Indent2 + 'pass' + CrLf) then begin
+            count:= 0;
+            SL.Text:= Source;
+            for i:= 0 to SL.Count - 1 do begin
+              if trim(SL[i]) = 'pass' then
+                inc(count);
+              if Pos(' return ', SL[i]) >  0 then begin
+                Sl[i]:= Indent2 + 'pass';
+                inc(count);
+              end;
             end;
-          end;
-          i:= 0;
-          while Count > 1 do begin
-            if trim(SL[i]) = 'pass' then begin
-              SL.delete(i);
-              dec(Count);
-            end else
-              inc(i);
-          end;
-          if Count = 0 then
-            SL.Add(Indent2 + 'pass');
-          s:= s + SL.Text;
-        end else
-          s:= s + comment + Indent2 + _(LNGTODO) + CrLf
-                 + Indent2 + 'pass' + CrLf;
+            i:= 0;
+            while Count > 1 do begin
+              if trim(SL[i]) = 'pass' then begin
+                SL.delete(i);
+                dec(Count);
+              end else
+                inc(i);
+            end;
+            if Count = 0 then
+              SL.Add(Indent2 + 'pass');
+            s:= s + SL.Text;
+          end else
+            s:= s + comment + Indent2 + _(LNGTODO) + CrLf
+                   + Indent2 + 'pass' + CrLf;
+        end;
       end;
   end;
-  LBParams.Items.Clear;
   if not Method.hasComment then
     Method.hasComment:= (comment <> '');
   Result:= s;
@@ -2454,8 +2461,6 @@ begin
       if IsClass and (RGMethodKind.ItemIndex = 0)
         then myEditor.InsertConstructor(New, Classnumber)
         else myEditor.InsertProcedure(New, ClassNumber);
-      if Method.IsAbstract then
-        myEditor.InsertImport('from abc import abstractmethod');
     end else if (Sender = BMethodApply) then
       ErrorMsg(Format(_('%s already exists'), [Method.toShortStringNode]));
     FreeAndNil(Method);
@@ -2468,7 +2473,7 @@ begin
         if Method.isClassMethod then inc(from);
         if Method.IsAbstract then inc(from);
         if Method.isPropertyMethod then inc(from);
-        Source:= myEditor.getSource(from, Method.LineE - 1)
+        Source:= myEditor.getSource(from, Method.LineE - 1);
       end else
         Source:= '';
       ChangeMethod(Method);
@@ -2476,11 +2481,10 @@ begin
         then New:= makeConstructor(Method, Source)
         else New:= MethodToPython(Method, Source);
       ReplaceMethod(Method, New);
-      if Method.IsAbstract then
-        myEditor.InsertImport('from abc import abstractmethod');
     end;
   end;
-
+  if assigned(Method) and Method.IsAbstract then
+    myEditor.InsertImport('from abc import abstractmethod');
   myEditor.Modified:= true;
   UpdateTreeView;
   BMethodApply.Enabled:= false;

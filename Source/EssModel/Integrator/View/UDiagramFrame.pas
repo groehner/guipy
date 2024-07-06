@@ -218,14 +218,12 @@ type
     Diagram : TDiagramIntegrator;
     Model : TObjectModel;
     ScrollBox : TScrollBox;
-    onFocus: TNotifyEvent;
     constructor Create(AOwner: TComponent; aModel: TObjectModel); reintroduce;
     destructor Destroy; override;
     procedure OnUpdateToolbar(Sender : TObject);
     procedure Retranslate;
     function getPopMenuClass: TControl;
     function getPopMenuObject: TControl;
-    procedure SetFocus; override;
   end;
 
 implementation
@@ -601,14 +599,6 @@ end;
 function TAFrameDiagram.getPopMenuObject: TControl;
 begin
   Result:= FindVCLWindow(PopMenuObject.PopupPoint);
-end;
-
-procedure TAFrameDiagram.SetFocus;
-begin
-  // if a tab is closed and an uml form is activated
-  // the next tab sets focus on TAFrameRtfdDiagram
-  if assigned(onFocus) then
-    onFocus(Self);
 end;
 
 end.

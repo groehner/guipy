@@ -1308,6 +1308,7 @@ type
     vilQtControls: TVirtualImageList;
     vilProgramLight: TVirtualImageList;
     vilProgramDark: TVirtualImageList;
+    ActionList1: TActionList;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1826,8 +1827,9 @@ begin
     end;
   finally
     TabCtrl.Toolbar.EndUpdate;
-    if Assigned(TabCtrl.ActiveTab) then
+    if Assigned(TabCtrl.ActiveTab) then begin
       TabCtrl.MakeVisible(TabCtrl.ActiveTab);
+    end;
   end;
 end;
 
@@ -2522,8 +2524,7 @@ begin
           try
             LockFormUpdate(UML);
             UML.MainModul.AddToProject(Editor.Filename);
-            (UML.MainModul.Diagram as TRtfdDiagram).Reinitalize;
-            UML.Modified:= true;
+            UML.SaveAndReload;
             RunFile(UML.fFile);
           finally
             UnlockFormUpdate(UML);
@@ -4223,13 +4224,13 @@ begin
           then (aFile.Form as TFTextDiff).Open(Files[0], Files[1])
           else (aFile.Form as TFTextDiff).Open(Filename)
       else
-      for i := 0 to Files.Count - 1 do begin
-        DoOpenFile(Files[i], '', TabControlIndex(ActiveTabControl));
-        if (TPath.GetExtension(Files[i]) = '.pyw') then begin
-          var pfmFile:= TPath.ChangeExtension(Files[i], '.pfm');
-          DoOpenFile(pfmFile, '', TabControlIndex(ActiveTabControl));
+        for i := 0 to Files.Count - 1 do begin
+          DoOpenFile(Files[i], '', TabControlIndex(ActiveTabControl));
+          if (TPath.GetExtension(Files[i]) = '.pyw') then begin
+            var pfmFile:= TPath.ChangeExtension(Files[i], '.pfm');
+            DoOpenFile(pfmFile, '', TabControlIndex(ActiveTabControl));
+          end;
         end;
-      end;
     end;
     Options := Options - [ofAllowMultiSelect];
   end;
@@ -4688,6 +4689,9 @@ begin
           zOrder.Move(Index, 0);
         zOrderPos := 0;
       end;
+  var aFile:= GI_PyIDEServices.getActiveFile;
+  if assigned(aFile) and (aFile.FileKind = fkUML) then
+    TFUMLForm(aFile.Form).Enter(Self);
 end;
 
 procedure TPyIDEMainForm.TabControlMouseDown(Sender: TObject; Button: TMouseButton;
@@ -4706,8 +4710,6 @@ begin
     aFile := FileFromTab(TabItem);
     if aFile.FileKind = fkEditor then
       TEditorForm(aFile.Form).Enter(Self)
-    else if aFile.FileKind = fkUML then
-      TFUMLForm(aFile.Form).Enter(Self)
   end;
 
   if Assigned(TabItem) and (Button = mbMiddle) then begin

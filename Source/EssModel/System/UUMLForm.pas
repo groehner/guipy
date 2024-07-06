@@ -130,7 +130,6 @@ type
   protected
     procedure Retranslate; override;
     function LoadFromFile(const FileName: string): boolean; override;
-    procedure DoActivateFile(Primary: boolean = True); override;
     function CanCopy: boolean; override;
     procedure CopyToClipboard; override;
     procedure SetFont(aFont: TFont); override;
@@ -181,7 +180,6 @@ procedure TFUMLForm.FormCreate(Sender: TObject);
 begin
   inherited;
   MainModul:= TDMUMLModule.Create(Self, PDiagramPanel);
-  TRtfdDiagram (MainModul.Diagram).Frame.onFocus:= Enter;
   SetFont(GuiPyOptions.UMLFont);  // ToDo makes a RefreshDiagramm
   DefaultExtension:= 'uml';
   Modified:= false;
@@ -222,8 +220,6 @@ begin
   inherited;
 end;
 
-
-
 procedure TFUMLForm.OnFormMouseDown(Sender: TObject);
 begin
   PyIDEMainForm.ActiveTabControl := ParentTabControl;
@@ -245,7 +241,6 @@ begin
     LockRefresh:= false;
     LockCreateTV:= false;
     MainModul.AddToProject(Filename);
-    //PyIDEMainForm.RunFile(fFile);
   finally
     UnlockFormUpdate(Self);
   end;
@@ -255,17 +250,6 @@ function TFUMLForm.LoadFromFile(const FileName: string): boolean;
 begin
   Open(Filename, '');
   Result:= true;
-end;
-
-//function OpenFile(const aFilename: String): boolean; virtual;
-
-procedure TFUMLForm.DoActivateFile(Primary: boolean = True);
-begin
-  inherited;    {
-  TThread.ForceQueue(nil, procedure
-    begin
-      Refresh;
-    end);   }
 end;
 
 procedure TFUMLForm.MICloseClick(Sender: TObject);
@@ -318,19 +302,15 @@ begin
   LockEnter:= true;
   inherited;
   if Visible then begin  // due to bug, else ActiveForm doesn't change
-    //if PUMLPanel.Visible and PUMLPanel.CanFocus then
-    //  PUMLPanel.SetFocus;
     if assigned(MainModul) and assigned(MainModul.Diagram) then begin
       aPanel:= MainModul.Diagram.GetPanel;
       if assigned(aPanel) and aPanel.CanFocus then
         aPanel.SetFocus;
     end;
   end;
-  DoActivateFile;
-  if assigned(TVFileStructure) and (FFileStructure.myForm <> self) then begin
-    CreateTVFileStructure;
-    FFileStructure.init(TVFileStructure.Items, Self);
-  end;
+  SaveAndReload;
+  if not MainModul.Diagram.hasObjects then
+    PyIDEMainForm.RunFile(fFile);
   LockEnter:= false;
 end;
 
@@ -387,7 +367,6 @@ procedure TFUMLForm.TBZoomOutClick(Sender: TObject);
 begin
   SetFontSize(-1);
 end;
-
 
 procedure TFUMLForm.TBNewLayoutClick(Sender: TObject);
 begin
@@ -486,7 +465,7 @@ begin
   if Pathname <> '' then begin
     LockFormUpdate(Self);
     DoSave;
-    MainModul.LoadUML(Pathname);
+    MainModul.Diagram.FetchDiagram(Pathname);
     CreateTVFileStructure;
     UnLockFormUpdate(Self);
   end;
@@ -495,7 +474,7 @@ end;
 
 procedure TFUMLForm.TBRefreshClick(Sender: TObject);
 begin
-  Refresh;
+  SaveAndReload;
 end;
 
 procedure TFUMLForm.TBClassDefinitionClick(Sender: TObject);
@@ -659,10 +638,9 @@ procedure TFUMLForm.CreateTVFileStructure;
     aInteger: TInteger;
 
   function CalculateIndentation(const Klassenname: string): integer;
-    var i: integer;
   begin
     Result:= 0;
-    for i:= 1 to length(Klassenname) do
+    for var i:= 1 to length(Klassenname) do
       if Klassenname[i] = '.' then inc(Result);
   end;
 
