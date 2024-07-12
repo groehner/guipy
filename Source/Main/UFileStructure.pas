@@ -212,7 +212,7 @@ end;
 function TFFileStructure.DifferentItems(Items: TTreeNodes): boolean;
   var i: integer; Data: PMyRec;
 begin
-  if vilFileStructure.TotalCount <> Items.Count then
+  if vilFileStructure.TotalCount <> Cardinal(Items.Count) then
     Exit(true);
   i:= -1;
   for var Node in vilFileStructure.Nodes() do begin

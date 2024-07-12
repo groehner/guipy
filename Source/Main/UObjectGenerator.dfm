@@ -4,8 +4,8 @@ object FObjectGenerator: TFObjectGenerator
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSizeToolWin
   Caption = 'Object generator'
-  ClientHeight = 543
-  ClientWidth = 227
+  ClientHeight = 519
+  ClientWidth = 211
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,14 +20,12 @@ object FObjectGenerator: TFObjectGenerator
   TextHeight = 15
   object StatusBar: TStatusBar
     Left = 0
-    Top = 512
-    Width = 227
+    Top = 488
+    Width = 211
     Height = 31
     Panels = <>
-    ExplicitTop = 500
-    ExplicitWidth = 219
     DesignSize = (
-      227
+      211
       31)
     object BCancel: TButton
       Left = 160
@@ -63,8 +61,8 @@ object FObjectGenerator: TFObjectGenerator
   object ValueListEditor: TValueListEditor
     Left = 0
     Top = 0
-    Width = 227
-    Height = 512
+    Width = 211
+    Height = 488
     Align = alClient
     Constraints.MinWidth = 219
     TabOrder = 0

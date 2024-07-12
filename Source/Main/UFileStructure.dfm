@@ -3,8 +3,8 @@ object FFileStructure: TFFileStructure
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Structure'
-  ClientHeight = 477
-  ClientWidth = 336
+  ClientHeight = 476
+  ClientWidth = 332
   Color = clBtnFace
   UseDockManager = True
   DragKind = dkDock
@@ -24,8 +24,8 @@ object FFileStructure: TFFileStructure
   object vilFileStructure: TVirtualStringTree
     Left = 0
     Top = 0
-    Width = 336
-    Height = 477
+    Width = 332
+    Height = 476
     Align = alClient
     Header.AutoSizeIndex = 0
     Header.MainColumn = -1
@@ -40,6 +40,8 @@ object FFileStructure: TFFileStructure
     OnMouseDown = vilFileStructureMouseDown
     Touch.InteractiveGestures = [igPan, igPressAndTap]
     Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
+    ExplicitWidth = 336
+    ExplicitHeight = 477
     Columns = <>
   end
   object PMFileStructure: TSpTBXPopupMenu

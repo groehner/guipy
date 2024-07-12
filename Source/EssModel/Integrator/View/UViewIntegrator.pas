@@ -136,6 +136,7 @@ type
     procedure Reinitalize; virtual; abstract;
     function PanelIsLocked: boolean; virtual; abstract;
     procedure SetUMLFont; virtual; abstract;
+    function HasAInvalidClass: boolean; virtual; abstract;
 
     //Current package
     property Package: TAbstractPackage read FPackage write SetPackage;
@@ -236,7 +237,7 @@ end;
 procedure TDiagramIntegrator.SetFont(const aFont: TFont);
 begin
   FFont.Assign(aFont);
-  GuiPyOptions.UMLFont.Assign(aFont);
+  //GuiPyOptions.UMLFont.Assign(aFont);
 end;
 
 function TDiagramIntegrator.GetFont: TFont;

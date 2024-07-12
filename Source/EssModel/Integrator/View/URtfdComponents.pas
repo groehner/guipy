@@ -319,11 +319,11 @@ const
   cDefaultWidth = 150;
 
 function getSVGRect(X, Y, w, h: real; color: string;
-  attribut: string = ''): string;
+  attribute: string = ''): string;
 begin
   Result := '  <rect x=' + FloatToVal(X) + ' y=' + FloatToVal(Y) + ' width=' +
     FloatToVal(w) + ' height=' + FloatToVal(h) + ' fill="' + color +
-    '" stroke="black"' + attribut + ' />'#13#10;
+    '" stroke="black"' + attribute + ' />'#13#10;
 end;
 
 function getSVGCircle(X, Y, R: real): string;
@@ -332,7 +332,7 @@ begin
     FloatToVal(R) + ' fill="none" stroke="black" />'#13#10;
 end;
 
-function getSVGText(X, Y: real; attribut, text: string): string;
+function getSVGText(X, Y: real; attribute, text: string): string;
 var
   SL: TStringList;
   i: integer;
@@ -351,7 +351,7 @@ begin
   SL := TStringList.Create;
   SL.text := ConvertLtGt(text);
   Result := '  <text x=' + FloatToVal(X) + ' y=' + FloatToVal(Y) +
-    attribut + '>';
+    attribute + '>';
   if SL.Count > 1 then
   begin
     Result := Result + #13#10'    <tspan' + getPreserve(SL.Strings[0]) + '>' +
@@ -1017,7 +1017,7 @@ var
   Omi, Ami: IModelIterator;
   aClassname: TRtfdClassName;
   CustomLabel: TRtfdCustomLabel;
-  attribut: TRtfdAttribute;
+  attribute: TRtfdAttribute;
   Operation: TRtfdOperation;
   Separator: TRtfdSeparator;
   Stereotype: TRtfdStereotype;
@@ -1069,8 +1069,8 @@ begin
   // Attributes
   while Ami.HasNext do
   begin
-    attribut := TRtfdAttribute.Create(Self, Ami.Next);
-    inc(NeedH, attribut.Height);
+    attribute := TRtfdAttribute.Create(Self, Ami.Next);
+    inc(NeedH, attribute.Height);
   end;
 
   // Separator
@@ -1207,7 +1207,7 @@ var
   Ami, Omi: IModelIterator;
   aModelEntity: TModelEntity;
   CustomLabel: TRtfdCustomLabel;
-  attribut: TRtfdAttribute;
+  attribute: TRtfdAttribute;
   Separator: TRtfdSeparator;
 begin
   Locked := true;
@@ -1245,8 +1245,8 @@ begin
     aModelEntity := Ami.Next;
     if not aModelEntity.Static or FShowStatic then
     begin
-      attribut := TRtfdAttribute.Create(Self, aModelEntity);
-      inc(NeedH, attribut.Height);
+      attribute := TRtfdAttribute.Create(Self, aModelEntity);
+      inc(NeedH, attribute.Height);
     end;
   end;
 
@@ -1618,7 +1618,7 @@ end;
 function TVisibilityLabel.getSVG(OwnerRect: TRect): string;
 var
   PictureNr: integer;
-  S, fontstyle, Icon, attribut, span: string;
+  S, fontstyle, Icon, attribute, span: string;
   C: char;
   bx, by: real;
 
@@ -1697,13 +1697,13 @@ begin
         end;
         case C of
           '#':
-            attribut := ' font-size=' + FloatToVal(Font.Size);
+            attribute := ' font-size=' + FloatToVal(Font.Size);
           '-':
-            attribut := ' font-size=' + FloatToVal(Font.Size * 1.5);
+            attribute := ' font-size=' + FloatToVal(Font.Size * 1.5);
         else
-          attribut := '';
+          attribute := '';
         end;
-        Icon := Icon + getSVGText(bx, by, attribut, C);
+        Icon := Icon + getSVGText(bx, by, attribute, C);
         Result := Icon + getSVGText(Left + Font.Size + 4,
           Top + Round(0.65 * Height) + 1, fontstyle, text);
       end;
@@ -1883,11 +1883,11 @@ end;
 function TRtfdClassName.getSVG(OwnerRect: TRect): string;
 var
   X, Y, P: integer;
-  S, attribut: string;
+  S, attribute: string;
 begin
-  attribut := ' font-weight="bold" text-anchor="middle"';
+  attribute := ' font-weight="bold" text-anchor="middle"';
   if Entity.IsAbstract then
-    attribut := attribut + ' font-style="italic"';
+    attribute := attribute + ' font-style="italic"';
   X := OwnerRect.Width div 2;
   Y := Top + 2 * FExtentY + Round(0.65 * SingleLineHeight) + 1;
   P := Pos(#13#10'{abstract}', Caption);
@@ -1895,12 +1895,12 @@ begin
     S := copy(Caption, 1, P - 1)
   else
     S := Caption;
-  Result := getSVGText(X, Y, attribut, S);
+  Result := getSVGText(X, Y, attribute, S);
   if P > 0 then
   begin
-    attribut := ' text-anchor="middle" font-style="italic"';
+    attribute := ' text-anchor="middle" font-style="italic"';
     Y := Y + SingleLineHeight;
-    Result := Result + getSVGText(X, Y, attribut, '{abstract}');
+    Result := Result + getSVGText(X, Y, attribute, '{abstract}');
   end;
 end;
 
@@ -1994,13 +1994,13 @@ end;
 function TRtfdObjectName.getSVG(OwnerRect: TRect): string;
 var
   X: integer;
-  attribut: string;
+  attribute: string;
 begin
-  attribut := ' font-weight="bold" text-anchor="middle"';
+  attribute := ' font-weight="bold" text-anchor="middle"';
   if fsUnderline in Font.Style then
-    attribut := attribut + ' text-decoration="underline"';
+    attribute := attribute + ' text-decoration="underline"';
   X := OwnerRect.Width div 2;
-  Result := getSVGText(X, Top + Height - 4, attribut, text);
+  Result := getSVGText(X, Top + Height - 4, attribute, text);
 end;
 
 { TRtfdInterfaceName }
@@ -2035,15 +2035,15 @@ end;
 function TRtfdInterfaceName.getSVG(OwnerRect: TRect): string;
 var
   X, Y: integer;
-  attribut: string;
+  attribute: string;
 begin
-  attribut := ' text-anchor="middle"';
+  attribute := ' text-anchor="middle"';
   X := OwnerRect.Width div 2;
   Y := Top + Round(0.65 * SingleLineHeight) + 1 - SingleLineHeight;
-  Result := getSVGText(X, Y, attribut, '<<interface>>');
-  attribut := ' font-weight="bold" text-anchor="middle"';
+  Result := getSVGText(X, Y, attribute, '<<interface>>');
+  attribute := ' font-weight="bold" text-anchor="middle"';
   Y := Y + SingleLineHeight;
-  Result := Result + getSVGText(X, Y, attribut, text);
+  Result := Result + getSVGText(X, Y, attribute, text);
 end;
 
 { TRtfdSeparator }

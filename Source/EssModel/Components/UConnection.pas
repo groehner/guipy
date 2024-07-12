@@ -79,7 +79,6 @@ type
     FromPStart: integer; // start is on right, top, left, bottom side
     ToPEnd: integer;     // end is on right, top, left, bottom side
     isRecursiv: boolean;
-    // isEdited: boolean;
     pl: TFivePoints;
     XEnlarge: integer;
     YEnlarge: integer;

@@ -2,8 +2,8 @@ object FUMLForm: TFUMLForm
   Left = 394
   Top = 229
   Caption = 'UML'
-  ClientHeight = 603
-  ClientWidth = 681
+  ClientHeight = 600
+  ClientWidth = 669
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,27 +21,24 @@ object FUMLForm: TFUMLForm
   object PUML: TPanel
     Left = 0
     Top = 0
-    Width = 681
-    Height = 603
+    Width = 669
+    Height = 600
     Align = alClient
     Caption = 'PUML'
     TabOrder = 0
     OnResize = PUMLResize
-    ExplicitWidth = 677
-    ExplicitHeight = 602
     object PDiagram: TPanel
       Left = 1
       Top = 1
-      Width = 679
+      Width = 667
       Height = 420
       Align = alTop
       Constraints.MinHeight = 100
       TabOrder = 0
-      ExplicitWidth = 675
       object PDiagramPanel: TPanel
         Left = 1
         Top = 23
-        Width = 677
+        Width = 665
         Height = 396
         Align = alClient
         BevelEdges = [beLeft, beTop]
@@ -58,7 +55,6 @@ object FUMLForm: TFUMLForm
         ParentFont = False
         TabOrder = 0
         OnResize = PDiagramPanelResize
-        ExplicitWidth = 673
         object TVFileStructure: TTreeView
           Left = 536
           Top = 18
@@ -72,7 +68,7 @@ object FUMLForm: TFUMLForm
       object UMLToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 677
+        Width = 665
         Height = 22
         AutoSize = True
         ButtonWidth = 24
@@ -171,8 +167,16 @@ object FUMLForm: TFUMLForm
           ImageName = 'Refresh'
           OnClick = TBRefreshClick
         end
-        object TBInteractive: TToolButton
+        object TBRecognizeAssociations: TToolButton
           Left = 264
+          Top = 0
+          Hint = 'Recognize associations'
+          Caption = 'Recognize associations'
+          ImageIndex = 13
+          OnClick = TBRecognizeAssociationsClick
+        end
+        object TBInteractive: TToolButton
+          Left = 288
           Top = 0
           Hint = 'Show/hide interactive'
           ImageIndex = 11
@@ -180,7 +184,7 @@ object FUMLForm: TFUMLForm
           OnClick = TBInteractiveClick
         end
         object TBReInitialize: TToolButton
-          Left = 288
+          Left = 312
           Top = 0
           Hint = 'Reinitialize Python engine'
           ImageIndex = 12
@@ -192,8 +196,8 @@ object FUMLForm: TFUMLForm
     object PInteractive: TPanel
       Left = 1
       Top = 424
-      Width = 679
-      Height = 178
+      Width = 667
+      Height = 175
       Align = alClient
       PopupMenu = PMInteractive
       TabOrder = 1
@@ -304,7 +308,7 @@ object FUMLForm: TFUMLForm
     object SpTBXSplitter1: TSpTBXSplitter
       Left = 1
       Top = 421
-      Width = 679
+      Width = 667
       Height = 3
       Cursor = crSizeNS
       Align = alTop
@@ -438,6 +442,9 @@ object FUMLForm: TFUMLForm
         CollectionIndex = 13
         CollectionName = 'Light\ResetPython'
         Name = 'ResetPython'
+      end
+      item
+        CollectionIndex = 28
       end>
     ImageCollection = icUML
     Left = 49
@@ -509,6 +516,9 @@ object FUMLForm: TFUMLForm
         CollectionIndex = 27
         CollectionName = 'Dark\ResetPython'
         Name = 'ResetPython'
+      end
+      item
+        CollectionIndex = 29
       end>
     ImageCollection = icUML
     Left = 169
@@ -883,6 +893,28 @@ object FUMLForm: TFUMLForm
           '3" d="M13 12h1" />'#10'<path stroke="#80ea55" d="M14 12h1" />'#10'<path ' +
           'stroke="#45de06" d="M11 13h1M11 14h1" />'#10'<path stroke="#46de08" ' +
           'd="M11 15h1" />'#10'</svg>'
+      end
+      item
+        SVGText = 
+          '<svg viewBox="0 0 114 110" >'#13#10#13#10'<path stroke="#000000" stroke-wi' +
+          'dth="10" d="M8 80 h101.5'#13#10'  M70 60 l39 20  M70 100 l 39 -20'#13#10'  "' +
+          '/>  '#13#10#13#10'<path stroke="#000000" fill="#ff0" transform="matrix(.51' +
+          '317 0 0 .4885 -3.115 -.567)" style="fill:#ff0;stroke:#060603;str' +
+          'oke-opacity:1;stroke-width:10;stroke-miterlimit:4.0999999;stroke' +
+          '-dasharray:none" d="M53.009 54.872 64 13.9l10.991 40.97L64 13.90' +
+          '2l10.991 40.97 42.362-2.207L81.784 75.78l15.19 39.606L64 88.7l-3' +
+          '2.974 26.685 15.19-39.606-35.57-23.115z"/>'#13#10#13#10'</svg>'
+      end
+      item
+        SVGText = 
+          '<svg viewBox="0 0 114 110" >'#13#10#13#10'<path stroke="#f0f0f0" stroke-wi' +
+          'dth="10" d="M8 80 h101.5'#13#10'  M70 60 l39 20  M70 100 l 39 -20'#13#10'  "' +
+          '/>  '#13#10#13#10'<path stroke="#eoeoeo" fill="#ff0" transform="matrix(.51' +
+          '317 0 0 .4885 -3.115 -.567)" style="fill:#ff0;stroke:#f0f0f0;str' +
+          'oke-opacity:1;stroke-width:10;stroke-miterlimit:4.0999999;stroke' +
+          '-dasharray:none" d="M53.009 54.872 64 13.9l10.991 40.97L64 13.90' +
+          '2l10.991 40.97 42.362-2.207L81.784 75.78l15.19 39.606L64 88.7l-3' +
+          '2.974 26.685 15.19-39.606-35.57-23.115z"/>'#13#10#13#10'</svg>'
       end>
     Left = 312
     Top = 136

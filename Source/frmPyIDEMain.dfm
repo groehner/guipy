@@ -1059,12 +1059,10 @@ object PyIDEMainForm: TPyIDEMainForm
           Caption = '&Project'
           object mnProjectNew: TSpTBXItem
             Action = ProjectExplorerWindow.actProjectNew
-            ImageName = 'Print'
             Images = ProjectExplorerWindow.vilImages
           end
           object mnProjectOpen: TSpTBXItem
             Action = ProjectExplorerWindow.actProjectOpen
-            ImageName = 'Undo'
             Images = ProjectExplorerWindow.vilImages
           end
           object SpTBXSubmenuItem1: TSpTBXSubmenuItem
@@ -1080,7 +1078,6 @@ object PyIDEMainForm: TPyIDEMainForm
           end
           object mnProjectSave: TSpTBXItem
             Action = ProjectExplorerWindow.actProjectSave
-            ImageName = 'Delete'
             Images = ProjectExplorerWindow.vilImages
           end
           object mnProjectSaveAs: TSpTBXItem
@@ -1228,9 +1225,15 @@ object PyIDEMainForm: TPyIDEMainForm
             Hint = 'Refresh'
             Action = actUMLRefresh
           end
+          object mnRecognizeAssociations: TSpTBXItem
+            Action = actUMLRecognizeAssociations
+          end
           object mnDiagramFromOpenFiles: TSpTBXItem
             Hint = 'Diagram from open files'
             Action = actUMLDiagramFromOpenFiles
+          end
+          object mnOpenFolder: TSpTBXItem
+            Action = actUMLOpenFolder
           end
           object mnSaveAsPicture: TSpTBXItem
             Hint = 'Save as picture'
@@ -3385,6 +3388,15 @@ object PyIDEMainForm: TPyIDEMainForm
       ShortCut = 49222
       OnExecute = actViewFindResultsExecute
     end
+    object actViewUnitTests: TAction
+      Category = 'View'
+      Caption = '&Unit Tests'
+      HelpType = htContext
+      Hint = 'View/Hide Unit Tests Window'
+      ImageIndex = 68
+      ImageName = 'UnitTestWin'
+      OnExecute = actViewUnitTestsExecute
+    end
     object actViewOutput: TAction
       Category = 'View'
       Caption = '&Output Window'
@@ -3394,15 +3406,6 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 62
       ImageName = 'CmdOuputWin'
       OnExecute = actViewOutputExecute
-    end
-    object actViewUnitTests: TAction
-      Category = 'View'
-      Caption = '&Unit Tests'
-      HelpType = htContext
-      Hint = 'View/Hide Unit Tests Window'
-      ImageIndex = 68
-      ImageName = 'UnitTestWin'
-      OnExecute = actViewUnitTestsExecute
     end
     object actFindDefinition: TAction
       Category = 'Refactoring'
@@ -3899,6 +3902,12 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageName = 'DiagramFromFiles'
       OnExecute = actUMLDiagramFromOpenFilesExecute
     end
+    object actUMLOpenFolder: TAction
+      Category = 'UML'
+      Caption = 'Open folder'
+      ImageIndex = 116
+      OnExecute = actUMLOpenFolderExecute
+    end
     object actUMLSaveAsPicture: TAction
       Category = 'UML'
       Caption = 'Save as picture'
@@ -3953,6 +3962,12 @@ object PyIDEMainForm: TPyIDEMainForm
       Caption = '&Reset Zoom'
       Hint = 'Reset the font size of the editor to its default'
       OnExecute = actEditorZoomResetExecute
+    end
+    object actUMLRecognizeAssociations: TAction
+      Category = 'UML'
+      Caption = 'Recognize associations'
+      ImageIndex = 117
+      OnExecute = actUMLRecognizeAssociationsExecute
     end
   end
   object LocalAppStorage: TJvAppIniFileStorage
@@ -4546,6 +4561,12 @@ object PyIDEMainForm: TPyIDEMainForm
         CollectionIndex = 155
         CollectionName = 'EditClass'
         Name = 'EditClass'
+      end
+      item
+        CollectionIndex = 156
+      end
+      item
+        CollectionIndex = 157
       end>
     ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
@@ -5538,9 +5559,5 @@ object PyIDEMainForm: TPyIDEMainForm
     Height = 17
     Left = 136
     Top = 312
-  end
-  object ActionList1: TActionList
-    Left = 512
-    Top = 376
   end
 end

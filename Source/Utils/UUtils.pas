@@ -145,7 +145,8 @@ procedure SmoothResize(abmp:TBitmap; NuWidth,NuHeight:integer);
 implementation
 
 uses Dialogs, UITypes, WinInet, Winapi.SHFolder, Registry, Printers, Math, Messages,
-     ShellAPI, IOUtils, SHDocVw, URLMon, StrUtils, cPyScripterSettings, uCommonFunctions;
+     ShellAPI, IOUtils, SHDocVw, URLMon, StrUtils,
+     cPyScripterSettings, uCommonFunctions;
 
 function CtrlPressed: boolean;
 begin

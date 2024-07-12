@@ -1308,7 +1308,10 @@ type
     vilQtControls: TVirtualImageList;
     vilProgramLight: TVirtualImageList;
     vilProgramDark: TVirtualImageList;
-    ActionList1: TActionList;
+    mnOpenFolder: TSpTBXItem;
+    actUMLOpenFolder: TAction;
+    mnRecognizeAssociations: TSpTBXItem;
+    actUMLRecognizeAssociations: TAction;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1470,6 +1473,8 @@ type
     procedure DdeServerConvExecuteMacro(Sender: TObject; Msg: TStrings);
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
       NewDPI: Integer);
+    procedure actUMLOpenFolderExecute(Sender: TObject);
+    procedure actUMLRecognizeAssociationsExecute(Sender: TObject);
   private
     DSAAppStorage: TDSAAppStorage;
     ShellExtensionFiles : TStringList;
@@ -1612,7 +1617,7 @@ type
     procedure DoOpenInUMLWindow(const Filename: string);
     procedure ActivateFile(Filename: String);
     function CreateUMLForm(Filename: String): TFUMLForm;
-    function getFilename(const Extension: string): string;
+    function getFilename(const Extension: string; path: string = ''): string;
     procedure PrepareClassEdit(Editor: IEditor; const Status: String; UML: TFUMLForm);
     procedure ConnectGUIandPyWindow(GUIForm: TFGUIForm);
     procedure StructogramFromText(sourcecode, pathname: string);
@@ -1909,8 +1914,8 @@ begin
   end;
 end;
 
-function TPyIDEMainForm.getFilename(const Extension: string): string;
-  var path1, s: string; i: integer; aFile: IFile;
+function TPyIDEMainForm.getFilename(const Extension: string; path: string = ''): string;
+  var s: string; i: integer; aFile: IFile;
 
   function isOpened(Pathname: string): boolean;
     var i: integer; aFile: IFile;
@@ -1924,20 +1929,22 @@ function TPyIDEMainForm.getFilename(const Extension: string): string;
   end;
 
 begin
-  path1:= '';
-  for i := 0 to GI_FileFactory.Count -1 do begin
-    aFile := GI_FileFactory.FactoryFile[i];
-    path1:= ExtractFilepath(aFile.Filename);
-    if path1 <> '' then
-      break;
+  if path = '' then begin
+    for i := 0 to GI_FileFactory.Count -1 do begin
+      aFile := GI_FileFactory.FactoryFile[i];
+      path:= ExtractFilepath(aFile.Filename);
+      if path <> '' then
+        break;
+    end;
+    if path = '' then
+      path:= GuiPyOptions.Sourcepath;
   end;
-  if path1 = '' then
-    path1:= withTrailingSlash(GuiPyOptions.Sourcepath);
+  path:= withTrailingSlash(path);
   i:= 1;
-  s:= path1 + _('File') + IntToStr(i) + Extension;
+  s:= path + _('File') + IntToStr(i) + Extension;
   while isOpened(s) or FileExists(s) do begin
     inc(i);
-    s:= path1 + _('File') + IntToStr(i) + Extension;
+    s:= path + _('File') + IntToStr(i) + Extension;
   end;
   Result:= s;
 end;
@@ -2664,6 +2671,18 @@ begin
     TabItem := TabCtrl.Pages[0].Item;
   if Assigned(TabItem) then
     TabItem.Checked := True;
+end;
+
+procedure TPyIDEMainForm.actUMLOpenFolderExecute(Sender: TObject);
+begin
+  var aFile:= DoOpenFile(getFilename('.puml'));
+  if assigned(aFile) then begin
+    var UMLForm:= aFile.Form as TFUMLForm;
+    if UMLForm.MainModul.OpenFolderActionExecute(Sender) then begin
+      UMLForm.Pathname:= getFilename('.puml', UMLForm.MainModul.OpendFolder);
+      UMLForm.Save(false);
+    end;
+  end
 end;
 
 procedure TPyIDEMainForm.actUMLNewCommentExecute(Sender: TObject);
@@ -4690,8 +4709,12 @@ begin
         zOrderPos := 0;
       end;
   var aFile:= GI_PyIDEServices.getActiveFile;
-  if assigned(aFile) and (aFile.FileKind = fkUML) then
-    TFUMLForm(aFile.Form).Enter(Self);
+  if assigned(aFile) then begin
+    if aFile.FileKind = fkUML then
+      TFUMLForm(aFile.Form).Enter(Self)
+    else if aFile.FileKind = fkEditor then
+      TEditorForm(aFile.Form).Enter(Self);
+  end;
 end;
 
 procedure TPyIDEMainForm.TabControlMouseDown(Sender: TObject; Button: TMouseButton;
@@ -4705,12 +4728,6 @@ begin
   IV := (Sender as TSpTBXTabToolbar).View.ViewerFromPoint(Point(X,Y));
   if Assigned(IV) and (IV.Item is TSpTBXTabItem) then
     TabItem := TSpTBXTabItem(IV.Item);
-
-  if Assigned(TabItem) then begin
-    aFile := FileFromTab(TabItem);
-    if aFile.FileKind = fkEditor then
-      TEditorForm(aFile.Form).Enter(Self)
-  end;
 
   if Assigned(TabItem) and (Button = mbMiddle) then begin
     if Assigned(aFile) then
@@ -6330,6 +6347,13 @@ begin
             Panel.DockClients[Panel.DockClientCount-1] as TWinControl);
     end;
   end;
+end;
+
+procedure TPyIDEMainForm.actUMLRecognizeAssociationsExecute(Sender: TObject);
+begin
+  var aFile:= GI_PyIDEServices.getActiveFile;
+  if assigned(aFile) and (aFile.FileKind = fkUML) then
+    TFUMLForm(aFile.Form).TBRecognizeAssociationsClick(self);
 end;
 
 procedure TPyIDEMainForm.actRemoteFileOpenExecute(Sender: TObject);

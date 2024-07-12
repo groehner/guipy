@@ -50,7 +50,7 @@ type
     procedure setAttributForComponent(Attr, Value: string; Typ: string; Control: TControl);
     procedure SetSlotForComponent(Attr, Value: string; Control: TControl);
 
-    procedure addRow(Attribut: string; const Value: string);
+    procedure addRow(Attribute: string; const Value: string);
 
     // new component
     procedure InsertComponent(EditForm: TEditorForm; Control: TControl; Pasting: boolean);
@@ -221,10 +221,10 @@ begin
       ModalResult:= mrOK;
 end;
 
-procedure TFObjectGenerator.AddRow(Attribut: string; const Value: string);
+procedure TFObjectGenerator.AddRow(Attribute: string; const Value: string);
   var i: integer;
 begin
-  ValueListEditor.InsertRow(Attribut, Value, true);
+  ValueListEditor.InsertRow(Attribute, Value, true);
   i:= ValueListEditor.RowCount - 1;
   Defaults[i]:= Value;
 end;

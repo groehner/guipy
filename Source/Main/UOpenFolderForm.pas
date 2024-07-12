@@ -15,6 +15,7 @@ type
     BCancel: TButton;
     CBFiletype: TComboBox;
     CBWithSubFolder: TCheckBox;
+    CBPath: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   public
@@ -24,7 +25,7 @@ type
 
 implementation
 
-uses SysUtils;
+uses SysUtils, UConfiguration;
 
 {$R *.dfm}
 
@@ -32,13 +33,16 @@ procedure TFOpenFolderForm.FormCreate(Sender: TObject);
 begin
   inherited;
   PathTreeView:= TShellTreeView.Create(self);
+  CBPath.Items.CommaText:= GuiPyOptions.OpenFolderFormItems;
+  if (CBPath.Items.Count > 0) and DirectoryExists(CBPath.Items[0])
+    then CBPath.Text:= CBPath.Items[0]
+    else CBPath.Text:= GuiPyOptions.Sourcepath;
   with PathTreeView do begin
     Parent:= Self;
-    SetBounds(8, 8, 380, 250);
+    SetBounds(8, 8, 380, 270);
     HideSelection:= False;
-    {$IFDEF LCL}
-    PopulateWithBaseFiles;
-    {$ENDIF}
+    Path:= CBPath.Text;
+    AutoRefresh:= true;
   end;
 end;
 
@@ -46,6 +50,7 @@ procedure TFOpenFolderForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   inherited;
   Action:= caFree;
+  GuiPyOptions.OpenFolderFormItems:= CBPath.Items.CommaText;
 end;
 
 destructor TFOpenFolderForm.Destroy;

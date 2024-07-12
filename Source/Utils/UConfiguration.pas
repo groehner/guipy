@@ -135,6 +135,7 @@ type
     fShowAllNewObjects: boolean;
     fObjectsWithoutVisibility: boolean;
     fPrivateAttributEditable: Boolean;
+    fOpenFolderFormItems: String;
 
     // Restrictions
     fLockedDOSWindow: Boolean;
@@ -343,6 +344,8 @@ type
       write fObjectsWithoutVisibility;
     property PrivateAttributEditable : boolean read fPrivateAttributEditable
       write fPrivateAttributEditable;
+    property OpenFolderFormItems: string read fOpenFolderFormItems
+      write fOpenFolderFormItems;
 
     // restrictions
     property LockedDOSWindow : boolean read fLockedDOSWindow
@@ -1186,7 +1189,7 @@ type
       DefaultVisViewMenu    = '1100110001111111111111'; // len = 22
       DefaultVisProjectMenu = '111111';                 // len = 6
       DefaultVisRunMenu     = '01111011111111111';      // len = 17
-      DefaultVisUMLMenu     = '111111111';              // len = 9
+      DefaultVisUMLMenu     = '11111111111';            // len = 11
       DefaultVisToolsMenu   = '11101111111110001';      // len = 17
       DefaultVisHelpMenu    = '11111';                  // len = 5
     var
@@ -5830,6 +5833,7 @@ begin
   fShowAllNewObjects:= true;
   fObjectsWithoutVisibility:= true;
   fPrivateAttributEditable:= true;
+  fOpenFolderFormItems:= '';
 
    // restrictions
   fLockedDOSWindow:= false;

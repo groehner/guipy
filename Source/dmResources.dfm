@@ -4880,6 +4880,30 @@ object ResourcesDataModule: TResourcesDataModule
           ' 9V8h1v1z" fill="#78aedc"/>'#10'    <path d="M5 9v1H4V9z" fill="#5d9' +
           'ed6"/>'#10'    <path d="M10 9h1v1h-1z" fill="#96c0e4"/>'#10'    <path d=' +
           '"M6 12v-1h1v1z" fill="#accdea"/>'#10'</svg>'#10
+      end
+      item
+        SVGText = 
+          '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#000000" d="M11 2h1M' +
+          '11 3h2M8 4h6M7 5h2M11 5h2M3 6h3M7 6h2M11 6h1M2 7h1M6 7h4M2 8h4M7' +
+          ' 8h2M10 8h1M2 9h1M10 9h1M2 10h1M10 10h1M2 11h1M10 11h1M2 12h1M10' +
+          ' 12h1M3 13h7" />'#13#10'<path stroke="#7e7e7e" d="M7 4h1M9 5h1" />'#13#10'<p' +
+          'ath stroke="#cecec6" d="M2 6h1M6 6h1M9 6h2M10 7h1M2 13h1M10 13h1' +
+          '" />'#13#10'<path stroke="#ffff00" d="M3 7h1M5 7h1M6 8h1M3 9h1M5 9h1M7' +
+          ' 9h1M9 9h1M4 10h1M6 10h1M8 10h1M3 11h1M5 11h1M7 11h1M9 11h1M4 12' +
+          'h1M6 12h1M8 12h1" />'#13#10'<path stroke="#ffffff" d="M4 7h1M9 8h1M4 9' +
+          'h1M6 9h1M8 9h1M3 10h1M5 10h1M7 10h1M9 10h1M4 11h1M6 11h1M8 11h1M' +
+          '3 12h1M5 12h1M7 12h1M9 12h1" />'#13#10'</svg>'
+      end
+      item
+        SVGText = 
+          '<svg viewBox="0 0 114 110" >'#13#10#13#10'<path stroke="#f0f0f0" stroke-wi' +
+          'dth="10" d="M8 80 h101.5'#13#10'  M70 60 l39 20  M70 100 l 39 -20'#13#10'  "' +
+          '/>  '#13#10#13#10'<path stroke="#eoeoeo" fill="#ff0" transform="matrix(.51' +
+          '317 0 0 .4885 -3.115 -.567)" style="fill:#ff0;stroke:#f0f0f0;str' +
+          'oke-opacity:1;stroke-width:10;stroke-miterlimit:4.0999999;stroke' +
+          '-dasharray:none" d="M53.009 54.872 64 13.9l10.991 40.97L64 13.90' +
+          '2l10.991 40.97 42.362-2.207L81.784 75.78l15.19 39.606L64 88.7l-3' +
+          '2.974 26.685 15.19-39.606-35.57-23.115z"/>'#13#10#13#10'</svg>'
       end>
     Left = 40
     Top = 152

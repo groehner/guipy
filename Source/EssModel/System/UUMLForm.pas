@@ -83,6 +83,7 @@ type
     vilPMInteractiveLight: TVirtualImageList;
     vilPMInteractiveDark: TVirtualImageList;
     icPMInteractive: TSVGIconImageCollection;
+    TBRecognizeAssociations: TToolButton;
     procedure FormCreate(Sender: TObject); override;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormClose(Sender: TObject; var aAction: TCloseAction); override;
@@ -117,6 +118,7 @@ type
     procedure PUMLResize(Sender: TObject);
     procedure PDiagramPanelResize(Sender: TObject);
     procedure TBInteractiveCloseClick(Sender: TObject);
+    procedure TBRecognizeAssociationsClick(Sender: TObject);
   private
     LockEnter: boolean;
     LockRefresh: boolean;
@@ -181,9 +183,12 @@ begin
   inherited;
   MainModul:= TDMUMLModule.Create(Self, PDiagramPanel);
   SetFont(GuiPyOptions.UMLFont);  // ToDo makes a RefreshDiagramm
-  DefaultExtension:= 'uml';
+  DefaultExtension:= 'puml';
   Modified:= false;
   FInteractiveClosed:= true;
+  MainModul.Diagram.SetOnModified(OnPanelModified);
+  MainModul.Diagram.SetInteractive(OnInteractiveModified);
+  MainModul.Diagram.SetFormMouseDown(OnFormMouseDown);
   // to avoid popup of PopupMenuWindow on Classes
   PDiagramPanel.PopupMenu:= EmptyPopupMenu;
   SynEdit.PopupMenu:= PMInteractive;
@@ -231,12 +236,9 @@ begin
   LockFormUpdate(Self);
   try
     MainModul.LoadUML(Filename);
-    MainModul.Diagram.SetInteractive(OnInteractiveModified);
-    MainModul.Diagram.SetFormMouseDown(OnFormMouseDown);
     Pathname:= Filename;
     Caption:= Filename;
     SetState(State);
-    MainModul.Diagram.SetOnModified(OnPanelModified);
     LockEnter:= false;
     LockRefresh:= false;
     LockCreateTV:= false;
@@ -309,7 +311,7 @@ begin
     end;
   end;
   SaveAndReload;
-  if not MainModul.Diagram.hasObjects then
+  if not MainModul.Diagram.hasObjects and MainModul.Diagram.HasAInvalidClass then
     PyIDEMainForm.RunFile(fFile);
   LockEnter:= false;
 end;
@@ -472,6 +474,11 @@ begin
   LockRefresh:= false;
 end;
 
+procedure TFUMLForm.TBRecognizeAssociationsClick(Sender: TObject);
+begin
+  MainModul.Diagram.ResolveAssociations;
+end;
+
 procedure TFUMLForm.TBRefreshClick(Sender: TObject);
 begin
   SaveAndReload;
@@ -548,8 +555,11 @@ end;
 
 procedure TFUMLForm.SetFont(aFont: TFont);
 begin
-  MainModul.Diagram.SetFont(aFont);
-  MainModul.RefreshDiagram;
+  if (AFont.Name <> Font.Name) or (AFont.Size <> Font.Size) then begin
+    Font.Assign(aFont);
+    MainModul.Diagram.SetFont(aFont);
+    MainModul.RefreshDiagram;
+  end;
 end;
 
 function TFUMLForm.GetFont: TFont;
@@ -559,11 +569,13 @@ end;
 
 procedure TFUMLForm.SetFontSize(Delta: integer);
 begin
-  var aFont:= GetFont;
-  aFont.Size:= aFont.Size + Delta;
-  if aFont.Size < 6 then aFont.Size:= 6;
-  Font.Size:= aFont.Size;
-  SetFont(aFont);
+  if Delta <> 0 then begin
+    var aFont:= GetFont;
+    aFont.Size:= aFont.Size + Delta;
+    if aFont.Size < 6 then aFont.Size:= 6;
+    Font.Size:= aFont.Size;
+    SetFont(aFont);
+  end;
 end;
 
 procedure TFUMLForm.SetOptions;
@@ -629,8 +641,8 @@ procedure TFUMLForm.CreateTVFileStructure;
   var
     Ci, it: IModelIterator;
     cent: TClassifier;
-    Attribut: TAttribute;
-    Methode: TOperation;
+    Attribute: TAttribute;
+    Method: TOperation;
     PictureNr, i, Indent, IndentOld: Integer;
     CName: string;
     Node: TTreeNode;
@@ -686,20 +698,21 @@ begin
 
     it:= cent.GetAttributes;
     while It.HasNext do begin
-      Attribut:= It.Next as TAttribute;
-      PictureNr:= 1 + Integer(Attribut.Visibility);
-      Node:= TVFileStructure.Items.AddChildObject(ClassNode, Attribut.toShortStringNode, TInteger.create(Attribut.LineS));
+      Attribute:= It.Next as TAttribute;
+      PictureNr:= 1 + Integer(Attribute.Visibility);
+      Node:= TVFileStructure.Items.AddChildObject(ClassNode,
+                 Attribute.toShortStringNode, TInteger.create(Attribute.LineS));
       Node.ImageIndex:= PictureNr;
       Node.SelectedIndex:= PictureNr;
       Node.HasChildren:= false;
     end;
     It:= cent.GetOperations;
     while It.HasNext do begin
-      Methode:= It.Next as TOperation;
-      if Methode.OperationType = otConstructor
+      Method:= It.Next as TOperation;
+      if Method.OperationType = otConstructor
         then PictureNr:= 4
-        else PictureNr:= 5 + Integer(Methode.Visibility);
-      Node:= TVFileStructure.Items.AddChildObject(ClassNode, Methode.toShortStringNode, TInteger.create(Methode.LineS));
+        else PictureNr:= 5 + Integer(Method.Visibility);
+      Node:= TVFileStructure.Items.AddChildObject(ClassNode, Method.toShortStringNode, TInteger.create(Method.LineS));
       Node.ImageIndex:= PictureNr;
       Node.SelectedIndex:= PictureNr;
       Node.HasChildren:= false;

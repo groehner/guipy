@@ -4,7 +4,7 @@ object FOpenFolderForm: TFOpenFolderForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Open folder'
-  ClientHeight = 336
+  ClientHeight = 387
   ClientWidth = 394
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,20 +17,19 @@ object FOpenFolderForm: TFOpenFolderForm
   OnCreate = FormCreate
   DesignSize = (
     394
-    336)
+    387)
   TextHeight = 15
   object LFiletype: TLabel
-    Left = 14
-    Top = 278
+    Left = 8
+    Top = 336
     Width = 79
     Height = 15
     Anchors = [akLeft, akBottom]
     Caption = 'Select file type:'
-    ExplicitTop = 279
   end
   object BOK: TButton
-    Left = 211
-    Top = 306
+    Left = 212
+    Top = 354
     Width = 75
     Height = 25
     Caption = '&OK'
@@ -40,7 +39,7 @@ object FOpenFolderForm: TFOpenFolderForm
   end
   object BCancel: TButton
     Left = 293
-    Top = 306
+    Top = 354
     Width = 75
     Height = 25
     Caption = '&Cancel'
@@ -48,8 +47,8 @@ object FOpenFolderForm: TFOpenFolderForm
     TabOrder = 1
   end
   object CBFiletype: TComboBox
-    Left = 108
-    Top = 274
+    Left = 100
+    Top = 333
     Width = 69
     Height = 23
     Style = csDropDownList
@@ -58,8 +57,8 @@ object FOpenFolderForm: TFOpenFolderForm
     TabStop = False
   end
   object CBWithSubFolder: TCheckBox
-    Left = -7
-    Top = 309
+    Left = 8
+    Top = 362
     Width = 161
     Height = 17
     Anchors = [akRight, akBottom]
@@ -67,6 +66,12 @@ object FOpenFolderForm: TFOpenFolderForm
     Checked = True
     State = cbChecked
     TabOrder = 3
-    ExplicitLeft = -3
+  end
+  object CBPath: TComboBox
+    Left = 8
+    Top = 300
+    Width = 376
+    Height = 23
+    TabOrder = 4
   end
 end

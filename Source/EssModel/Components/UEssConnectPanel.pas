@@ -1019,10 +1019,8 @@ end;
 
 procedure TEssConnectPanel.DeleteNotEditedConnections;
 begin
-  for var i := FConnections.Count - 1 downto 0 do
-  begin
-    var
-    conn := TConnection(FConnections[i]);
+  for var i := FConnections.Count - 1 downto 0 do begin
+    var conn := TConnection(FConnections[i]);
     if not conn.isEdited then
       FConnections.Delete(i);
   end;

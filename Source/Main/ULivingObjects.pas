@@ -737,6 +737,8 @@ begin
   SLObjectsNamePath.Clear;
   Py := SafePyEngine;
   var NS := VariablesWindow.GlobalsNameSpace;
+  if NS = nil then exit;
+
   // collect objects with direct access first
   for i:= 0 to NS.ChildCount -1 do begin
     NSi:= NS.ChildNode[i];

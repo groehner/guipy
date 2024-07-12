@@ -6,7 +6,8 @@ uses
   Classes, Controls, Forms, StdCtrls, ComCtrls, ImgList, ExtCtrls, Buttons,
   ActnList, System.ImageList, JvAppStorage, dlgPyIDEBase,
   UModel, UUMLForm, frmEditor, System.Actions, Vcl.ToolWin,
-  Vcl.BaseImageCollection, SVGIconImageCollection, Vcl.VirtualImageList;
+  Vcl.BaseImageCollection, SVGIconImageCollection, Vcl.VirtualImageList,
+  SpTBXEditors;
 
 type
   TFClassEditor = class(TPyIDEDlgBase, IJvAppStorageHandler)
@@ -172,7 +173,7 @@ type
     procedure TVAttribute(const Attribute: TAttribute);
     procedure TVMethod(Method: TOperation);
     procedure ChangeAttribute(var A: TAttribute; CName: string);
-    procedure ChangeGetSet(Attribut: TAttribute; ClassNumber: Integer; cName: string);
+    procedure ChangeGetSet(Attribute: TAttribute; ClassNumber: Integer; cName: string);
     function MakeAttribute(CName: String): TAttribute;
     function MakeType(CB: TComboBox): TClassifier; overload;
     function MakeType(const s: string): TClassifier; overload;
@@ -216,7 +217,6 @@ type
     function getConstructorHead(Superclass: string): string;
     function PrepareParameter(head: string): string;
   protected
-    // IJvAppStorageHandler implementation
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
     procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
   public
@@ -743,8 +743,8 @@ end;
 procedure TFClassEditor.TreeViewChange(Sender: TObject; Node: TTreeNode);
 var
   aClassifier: TClassifier;
-  Attribut: TAttribute;
-  Methode: TOperation;
+  Attribute: TAttribute;
+  Method: TOperation;
   Line, p, q, l: Integer;
   it: IModelIterator;
   s, s1: string;
@@ -796,32 +796,32 @@ begin
     PageControl.ActivePageIndex:= 1;
     BAttributeApply.Enabled:= false;
     if IsAttributesNodeLeaf(Node) then begin
-      Attribut:= TAttribute(Node.Data);
-      if Attribut = nil then
+      Attribute:= TAttribute(Node.Data);
+      if Attribute = nil then
         exit;
-      SetEditText(EAttributeName, Attribut.Name);
-      if Assigned(Attribut.TypeClassifier)
-        then CBAttributeType.Text:= Attribut.TypeClassifier.asUMLType
+      SetEditText(EAttributeName, Attribute.Name);
+      if Assigned(Attribute.TypeClassifier)
+        then CBAttributeType.Text:= Attribute.TypeClassifier.asUMLType
         else CBAttributeType.Text:= '';
       {
-      if Attribut.Value <> Attribut.Name
-        then SetComboBoxValue(CBAttributeValue, Attribut.Value)
+      if Attribute.Value <> Attribute.Name
+        then SetComboBoxValue(CBAttributeValue, Attribute.Value)
         else CBAttributeValue.Text:= '';
       }
 
-      SetComboBoxValue(CBAttributeValue, Attribut.Value);
+      SetComboBoxValue(CBAttributeValue, Attribute.Value);
       if IsClass then
-        RGAttributeAccess.ItemIndex:= Integer(Attribut.Visibility)
-      else if Attribut.Visibility = viPackage then
+        RGAttributeAccess.ItemIndex:= Integer(Attribute.Visibility)
+      else if Attribute.Visibility = viPackage then
         RGAttributeAccess.ItemIndex:= 0
       else
         RGAttributeAccess.ItemIndex:= 1;
       if CBgetMethod.Visible then
-        CBgetMethod.Checked:= HasMethod(_(LNGGet), Attribut.Name, Methode);
+        CBgetMethod.Checked:= HasMethod(_(LNGGet), Attribute.Name, Method);
       if CBsetMethod.Visible then
-        CBsetMethod.Checked:= HasMethod(_(LNGSet), Attribut.Name, Methode);
-      CBAttributeStatic.Checked:= Attribut.Static;
-      CBAttributeFinal.Checked:= Attribut.IsFinal;
+        CBsetMethod.Checked:= HasMethod(_(LNGSet), Attribute.Name, Method);
+      CBAttributeStatic.Checked:= Attribute.Static;
+      CBAttributeFinal.Checked:= Attribute.IsFinal;
     end else begin
       CBAttributeType.Text:= '';
       CBAttributeType.ItemIndex:= -1;
@@ -837,26 +837,26 @@ begin
     AllAttributesAsParameters(Node);
     if IsMethodsNodeLeaf(Node) then begin
       EClass.Text:= Node.Parent.Parent.Text; // wg. constructor
-      Methode:= TOperation(Node.Data);
-      if Methode = nil then
+      Method:= TOperation(Node.Data);
+      if Method = nil then
         exit;
-      CBMethodName.Text:= Methode.Name;
-      if Assigned(Methode.ReturnValue)
-        then CBMethodType.Text:= Methode.ReturnValue.asUMLType
+      CBMethodName.Text:= Method.Name;
+      if Assigned(Method.ReturnValue)
+        then CBMethodType.Text:= Method.ReturnValue.asUMLType
         else CBMethodType.Text:= '';
       if IsClass then begin
-        RGMethodKind.ItemIndex:= Integer(Methode.OperationType);
-        RGMethodAccess.ItemIndex:= Integer(Methode.Visibility);
+        RGMethodKind.ItemIndex:= Integer(Method.OperationType);
+        RGMethodAccess.ItemIndex:= Integer(Method.Visibility);
       end else begin
-        RGMethodKind.ItemIndex:= Integer(Methode.OperationType) - 1;
-        if Methode.Visibility = viPackage
+        RGMethodKind.ItemIndex:= Integer(Method.OperationType) - 1;
+        if Method.Visibility = viPackage
           then RGMethodAccess.ItemIndex:= 0
           else RGMethodAccess.ItemIndex:= 1;
       end;
-      CBMethodStatic.Checked:= Methode.isStaticMethod;
-      CBMethodClass.Checked:= Methode.isClassMethod;
-      CBMethodAbstract.Checked:= Methode.IsAbstract;
-      GetParameter(LBParams, Methode);
+      CBMethodStatic.Checked:= Method.isStaticMethod;
+      CBMethodClass.Checked:= Method.isClassMethod;
+      CBMethodAbstract.Checked:= Method.IsAbstract;
+      GetParameter(LBParams, Method);
     end else begin
       if Assigned(Node)
         then EClass.Text:= Node.Parent.Text // wg. constructor
@@ -1038,7 +1038,7 @@ begin
   myEditor.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TFClassEditor.ChangeGetSet(Attribut: TAttribute; ClassNumber: Integer; CName: string);
+procedure TFClassEditor.ChangeGetSet(Attribute: TAttribute; ClassNumber: Integer; CName: string);
 var
   NewGet, NewSet, datatype: string;
   Method1, Method2: TOperation;
@@ -1066,20 +1066,20 @@ var
 
 begin
   // replace get/set-methods, names could be changed
-  HasMethod(_(LNGGet), Attribut.Name, Method1);
-  HasMethod(_(LNGSet), Attribut.Name, Method2);
+  HasMethod(_(LNGGet), Attribute.Name, Method1);
+  HasMethod(_(LNGSet), Attribute.Name, Method2);
   getIsFirst:= true;
   if Assigned(Method1) and Assigned(Method2) and
     (Method1.LineS > Method2.LineS) then
     getIsFirst:= false;
-  ChangeAttribute(Attribut, CName);
+  ChangeAttribute(Attribute, CName);
   if IsClass then begin
-    if Assigned(Attribut.TypeClassifier)
-      then datatype:= Attribut.TypeClassifier.asType
+    if Assigned(Attribute.TypeClassifier)
+      then datatype:= Attribute.TypeClassifier.asType
       else datatype:= '';
 
-    NewGet:= CreateMethod(_(LNGGet), datatype, Attribut);
-    NewSet:= CreateMethod(_(LNGSet), datatype, Attribut);
+    NewGet:= CreateMethod(_(LNGGet), datatype, Attribute);
+    NewSet:= CreateMethod(_(LNGSet), datatype, Attribute);
     if getIsFirst then begin
       DoSet;
       DoGet;
@@ -1248,7 +1248,7 @@ end;
 procedure TFClassEditor.BAttributeDeleteClick(Sender: TObject);
 var
   Attribute: TAttribute;
-  Methode1, Methode2: TOperation;
+  Method1, Method2: TOperation;
   p1, p2, p3, ClassNumber: Integer;
   Node: TTreeNode;
 begin
@@ -1257,21 +1257,21 @@ begin
     LockFormUpdate(myEditor);
     myEditor.ActiveSynEdit.BeginUpdate;
     Attribute:= TAttribute(Node.Data);
-    HasMethod(_(LNGGet), Attribute.Name, Methode1);
-    HasMethod(_(LNGSet), Attribute.Name, Methode2);
-    if Assigned(Methode1) and Assigned(Methode2) then begin
-      if Methode1.LineS < Methode2.LineS then begin
-        DeleteMethod(Methode2);
-        DeleteMethod(Methode1)
+    HasMethod(_(LNGGet), Attribute.Name, Method1);
+    HasMethod(_(LNGSet), Attribute.Name, Method2);
+    if Assigned(Method1) and Assigned(Method2) then begin
+      if Method1.LineS < Method2.LineS then begin
+        DeleteMethod(Method2);
+        DeleteMethod(Method1)
       end else begin
-        DeleteMethod(Methode1);
-        DeleteMethod(Methode2)
+        DeleteMethod(Method1);
+        DeleteMethod(Method2)
       end;
     end else begin
-      if Assigned(Methode1) then
-        DeleteMethod(Methode1);
-      if Assigned(Methode2) then
-        DeleteMethod(Methode2);
+      if Assigned(Method1) then
+        DeleteMethod(Method1);
+      if Assigned(Method2) then
+        DeleteMethod(Method2);
     end;
     ClassNumber:= GetClassNumber(Node);
     myEditor.DeleteAttributeCE('self.' + Attribute.VisName, ClassNumber);
@@ -1411,7 +1411,6 @@ function TFClassEditor.Typ2Value(const typ: string): string;
 const
   typs: array [1 .. 8] of String = ('int', 'integer', 'float', 'bool', 'boolean',
     'String', 'str', 'None');
-const
   vals: array [1 .. 8] of String = ('0', '0', '0', 'false', 'false',
     '""', '""', 'None');
 begin
@@ -1798,8 +1797,8 @@ procedure TFClassEditor.UpdateTreeView;
 var
   Ci, it: IModelIterator;
   cent: TClassifier;
-  Attribut: TAttribute;
-  Methode: TOperation;
+  Attribute: TAttribute;
+  Method: TOperation;
   IsFirstClass: Boolean;
 begin
   if TreeViewUpdating then exit;
@@ -1822,13 +1821,13 @@ begin
       TVClassOrInterface(cent);
       it:= cent.GetAttributes;
       while it.HasNext do begin
-        Attribut:= it.Next as TAttribute;
-        TVAttribute(Attribut);
+        Attribute:= it.Next as TAttribute;
+        TVAttribute(Attribute);
       end;
       it:= cent.GetOperations;
       while it.HasNext do begin
-        Methode:= it.Next as TOperation;
-        TVMethod(Methode);
+        Method:= it.Next as TOperation;
+        TVMethod(Method);
       end;
     end;
     TreeView.FullExpand;
@@ -2057,19 +2056,14 @@ begin
 end;
 
 procedure TFClassEditor.CBAttributeTypeSelect(Sender: TObject);
-  var s: string; p: Integer;
 begin
   if not ComboBoxInvalid then begin
-    p:= CBAttributeType.ItemIndex;
-    if (p = -1) or (CBAttributeType.Text <> CBAttributeType.Items[p])
-      then s:= CBAttributeType.Text
-      else s:= CBAttributeType.Items[p];
-    CBAttributeType.Text:= s;
-    CBAttributeType.AutoComplete:= true;
+    var p:= CBAttributeType.ItemIndex;
+    if not ((p = -1) or (CBAttributeType.Text <> CBAttributeType.Items[p])) then
+      CBAttributeType.Text:= CBAttributeType.Items[p];
     if NameTypeValueChanged then
       TThread.ForceQueue(nil, procedure
         begin
-          Application.ProcessMessages;
           BAttributeChangeClick(Self);
         end);
   end;
@@ -2142,8 +2136,7 @@ end;
 
 procedure TFClassEditor.CBMethodnameKeyPress(Sender: TObject; var Key: Char);
 begin
-  if Key = #13 then
-  begin
+  if Key = #13 then begin
     BMethodChangeClick(Self);
     if CBMethodType.CanFocus then
       CBMethodType.SetFocus;

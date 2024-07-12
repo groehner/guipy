@@ -39,6 +39,7 @@ type
     SD: TSaveDialog;
     OD: TOpenDialog;
   public
+    OpendFolder: string;
     property Diagram: TDiagramIntegrator read FDiagram;
     property Model: TObjectModel read FModel;
 
@@ -382,8 +383,10 @@ begin
       if SL.Count > 0 then begin
         LoadProject(SL);
         FDiagram.ResolveAssociations;
+        DoLayout;
       end else
         ShowMessage('No files found.');
+      OpendFolder:= OpenFolderForm.PathTreeView.Path;
     end;
   finally
     FreeAndNil(SL);

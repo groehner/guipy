@@ -332,7 +332,7 @@ begin
   if Result then begin
     Self.Pathname:= aFilename;
     Modified:= false;
-    Enter(Self); // must stay! DoUpdateCaption
+    //Enter(Self); //  DoUpdateCaption??
     SetFocus;
     ReadOnly:= IsWriteProtected(aFilename);
     PyIDEMainForm.ActiveTabControl := ParentTabControl;

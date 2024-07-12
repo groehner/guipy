@@ -200,6 +200,7 @@ type
     procedure Retranslate; override;
     function PanelIsLocked: boolean; override;
     procedure SetUMLFont; override;
+    function HasAInvalidClass: boolean; override;
   end;
 
 implementation
@@ -478,7 +479,6 @@ var
   DestBox: TRtfdBox;
   s, Agg, Ass, Generic: string;
   AttributeConnected: boolean;
-  //Boxname: string;
 
 begin
   Panel.DeleteNotEditedConnections;
@@ -785,7 +785,7 @@ var
   Box, Box1, Box2: TRtfdBox;
   s, c, aFile, b1, b2, path: string;
   Files, Sections, SL: TStringList;
-  AlleBoxen: TList;
+  AllBoxes: TList;
 
   UnitPackage: TUnitPackage;
   theClassname: string;
@@ -951,7 +951,7 @@ begin
       end;
     end;
     Panel.DeleteConnections;
-    AlleBoxen:= Panel.GetManagedObjects;
+    AllBoxes:= Panel.GetManagedObjects;
 
     S:= 'Connections';
     i:= 0;
@@ -974,8 +974,8 @@ begin
         Attributes.RoleB:= UnhideCrLf(SL[10]);
         Attributes.ReadingOrderA:= StrToBool(SL[11]);
         Attributes.ReadingOrderB:= StrToBool(SL[12]);
-        for j:= 0 to AlleBoxen.Count-1 do begin
-          Box:= TRtfdBox(AlleBoxen[j]);
+        for j:= 0 to AllBoxes.Count-1 do begin
+          Box:= TRtfdBox(AllBoxes[j]);
           if Box.Entity.FullName = b1 then Box1:= Box;
           if Box.Entity.FullName = b2 then Box2:= Box;
         end;
@@ -984,7 +984,7 @@ begin
       end;
       inc(i);
     until c = '';
-    FreeAndNil(AlleBoxen);
+    FreeAndNil(AllBoxes);
     Panel.SetConnections(ShowConnections);
     if CountObjects = 0
       then SetShowObjectDiagram(false)
@@ -1407,13 +1407,22 @@ end;
 
 procedure TRtfdDiagram.RefreshDiagram;
 begin
-  //InitFromModel;
   if not PanelIsLocked then
     for var i:= 0 to BoxNames.Count - 1 do
       (BoxNames.Objects[I] as TRtfdBox).RefreshEntities;
   Panel.RecalcSize;
   Panel.ShowAll;
   Panel.IsModified:= true;
+end;
+
+function TRtfdDiagram.HasAInvalidClass: boolean;
+begin
+  for var i:= 0 to BoxNames.Count - 1 do
+    if (BoxNames.Objects[i] is TRtfdClass) then begin
+      var path:= (BoxNames.Objects[i] as TRtfdClass).getPathname;
+      if not PyIDEMainForm.IsAValidClass(path) then exit(true);
+    end;
+   Result:= false;
 end;
 
 procedure TRtfdDiagram.RecalcPanelSize;
@@ -3149,6 +3158,7 @@ begin
       end;
     end;
   DeleteSelectedControls(nil);
+  Panel.Invalidate;
 end;
 
 function TRtfdDiagram.hasObjects: boolean;
