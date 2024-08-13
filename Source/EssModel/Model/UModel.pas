@@ -126,8 +126,9 @@ type
     property TypeClassifier: TClassifier read FTypeClassifier write SetTypeClassifier;
     property Value: string read FValue write SetValue;
     property Connected: boolean read FConnected write SetConnected;
-    function toPython(ValueChanged, TypeChanged: boolean): string;
-    function toShortStringNode: string;
+    function toPython(TypeChanged: boolean): string;
+    function toNameType: string;
+    function toNameTypeUML: string;
     function VisName: string;
   end;
 
@@ -154,6 +155,7 @@ type
     destructor Destroy; override;
     procedure NewParameters;
     function AddParameter(const NewName: string): TParameter;
+    procedure DelParameter(const NewName: string);
     property OperationType: TOperationType read FOperationType write SetOperationType;
     property ReturnValue: TClassifier read FReturnValue write SetReturnValue;
     function GetParameters : IModelIterator;
@@ -661,7 +663,7 @@ begin
     Ai:= Cent.GetAllAttributes;
     while Ai.HasNext do begin
       Attribute:= ai.Next as TAttribute;
-      SL.Add(Attribute.toPython(false, false));
+      SL.Add(Attribute.toPython(false));
     end;
     SL.Add('--- Operations ---');
     oi:= cent.GetOperations;
@@ -1003,7 +1005,7 @@ begin
     Ai:= Cent.GetAllAttributes;
     while Ai.HasNext do begin
       Attribute:= ai.Next as TAttribute;
-      SL.Add(Attribute.toPython(false, false));
+      SL.Add(Attribute.toPython(false));
     end;
     SL.Add('--- Operations ---');
     oi:= cent.GetOperations;
@@ -1457,6 +1459,15 @@ begin
   Fire(mtAfterAddChild, Result);
 end;
 
+procedure TOperation.DelParameter(const NewName: string);
+begin
+  for var i:= 0 to FParameters.Count - 1 do
+    if TParameter(FParameters.Items[i]).FName = NewName then begin
+      FParameters.Delete(i);
+      break;
+    end;
+end;
+
 class function TOperation.GetAfterListener: TGUID;
 begin
   Result := IAfterOperationListener;
@@ -1529,9 +1540,9 @@ begin
 end;
 
 function TOperation.HeadToPython: string;
-  var s, ident: string; It2: IModelIterator; Parameter: TParameter;
+  var s, indent: string; It2: IModelIterator; Parameter: TParameter;
 begin
-  ident:= StringTimesN(FConfiguration.Indent1, Level + 1);
+  indent:= StringTimesN(FConfiguration.Indent1, Level + 1);
   if isClassMethod then s:= '(cls, '
   else if isStaticMethod then s:= '('
   else s:= '(self, ';
@@ -1552,15 +1563,15 @@ begin
                      then s:= VisName + s + ' -> ' + ReturnValue.asType
                      else s:= VisName + s;
   end;
-  s:= Ident + 'def ' + s + ':';
+  s:= Indent + 'def ' + s + ':';
   if isStaticMethod then
-    s:= Ident + '@staticmethod' + CrLf + s;
+    s:= Indent + '@staticmethod' + CrLf + s;
   if isClassMethod then
-    s:= Ident + '@classmethod' + CrLf + s;
+    s:= Indent + '@classmethod' + CrLf + s;
   if isAbstract then
-    s:= Ident + '@abstractmethod' + CrLf + s;
+    s:= Indent + '@abstractmethod' + CrLf + s;
   if isPropertyMethod then
-    s:= Ident + '@property' + CrLf + s;
+    s:= Indent + '@property' + CrLf + s;
   Result:= s;
 end;
 
@@ -1707,13 +1718,6 @@ begin
   Fire(mtAfterEntityChange)
 end;
 
-function TAttribute.toShortStringNode: string;
-begin
-  if assigned(TypeClassifier)
-    then result:= Name + ': ' + TypeClassifier.asUMLType
-    else result:= Name;
-end;
-
 function TAttribute.VisName: string;
   var s: string;
 begin
@@ -1727,31 +1731,21 @@ begin
   Result:= s;
 end;
 
-function TAttribute.toPython(ValueChanged, TypeChanged: boolean): string;
-  const
-    Values = '0|0.0|''''''|True|False|None|[]|()|{}';
-    Types  = 'int|integer|float|boolean|str|String|string|list|tuple|dict|set';
+function TAttribute.toPython(TypeChanged: boolean): string;
+  const Values = '|0|0.0|''''|True|False|None|[]|()|{}|';
   var s: string; count: integer;
-
 begin
   s:= VisName;
   if not Static then
     s:= 'self.' + s;
-  if assigned(TypeClassifier) or IsFinal then begin
-    s:= s + ': ';
-    if IsFinal then begin
-      s:= s + 'Final';
-      if assigned(TypeClassifier) then
-        s:= s + '[' + TypeClassifier.asType + ']';
-    end else begin
-      if ValueChanged and (Pos(Value, Values) > 0) and
-        (Pos(TypeClassifier.asType, Types) > 0)
-        then s:= s + TypeClassifier.ValueToType(Value)
-        else s:= s + TypeClassifier.asType;
-      if TypeChanged and (Pos(Value, Values) > 0) then
-        Value:= TypeClassifier.asValue;
-    end;
-
+  if IsFinal then begin
+    s:= s + ': Final';
+    if assigned(TypeClassifier) then
+      s:= s + '[' + TypeClassifier.asType + ']';
+  end else if assigned(TypeClassifier) then begin
+    s:= s + ': ' + TypeClassifier.asType;
+    if TypeChanged and (Pos('|' + Value + '|', Values) > 0) then
+      Value:= TypeClassifier.asValue;  // Value of attribute is changed
   end;
   s:= s + ' = ';
   if Value <> '' then
@@ -1764,6 +1758,20 @@ begin
     then count:= Level + 1
     else count:= Level + 2;
   Result:= StringTimesN(FConfiguration.Indent1, count) + s;
+end;
+
+function TAttribute.toNameType: string;
+begin
+  if assigned(TypeClassifier)
+    then Result:= Name + ': ' + TypeClassifier.asType
+    else Result:= Name;
+end;
+
+function TAttribute.toNameTypeUML: string;
+begin
+  if assigned(TypeClassifier)
+    then Result:= Name + ': ' + TypeClassifier.asUMLType
+    else Result:= Name;
 end;
 
 { TProperty }
@@ -1830,12 +1838,6 @@ begin
   Result:= Name;
 end;
 
-{function TClassifier.isReference: boolean;
-begin
-  Result:= not IsSimpleTypeOrString(Name);
-end;
-}
-
 function TClassifier.getAncestorName(index: integer): string;
 begin
   Result:= '';
@@ -1847,7 +1849,7 @@ begin
     Result:= '0'
   else if Name = 'float' then
     Result:= '0.0'
-  else if Name = 'boolean' then
+  else if (Name = 'bool') or (Name = 'boolean') then
     Result:= 'False'
   else if (Name = 'str') or (Name = 'String')  or (Name = 'string') then
     Result:= ''''''
@@ -1868,7 +1870,7 @@ begin
   else if Value = '0.0' then
     Result:= 'float'
   else if (Value = 'True') or (Value = 'False') then
-    Result:= 'boolean'
+    Result:= 'bool'
   else if Value = '''''' then
     Result:= 'str'
   else if Value = '[]' then
@@ -1876,7 +1878,11 @@ begin
   else if Value = '()' then
     Result:= 'tuple'
   else if Value = '{}' then
+    Result:= 'dict'
+  else if Value = 'set()' then
     Result:= 'set'
+  else if Value = 'None' then
+    Result:= ''
   else
     Result:= asType;
 end;

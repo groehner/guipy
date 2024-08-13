@@ -4,8 +4,8 @@ object FClassEditor: TFClassEditor
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'UML class editor'
-  ClientHeight = 449
-  ClientWidth = 692
+  ClientHeight = 447
+  ClientWidth = 705
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -25,6 +25,12 @@ object FClassEditor: TFClassEditor
     Width = 27
     Height = 15
     Caption = 'Class'
+  end
+  object Label1: TLabel
+    Left = 336
+    Top = 240
+    Width = 3
+    Height = 15
   end
   object TreeView: TTreeView
     Left = 13
@@ -52,7 +58,7 @@ object FClassEditor: TFClassEditor
     Top = 10
     Width = 364
     Height = 435
-    ActivePage = TSAttributes
+    ActivePage = TSMethods
     TabOrder = 0
     OnChange = PageControlChange
     object TSClass: TTabSheet
@@ -99,7 +105,7 @@ object FClassEditor: TFClassEditor
         OnKeyPress = EClassKeyPress
       end
       object BClassApply: TButton
-        Left = 94
+        Left = 96
         Top = 375
         Width = 80
         Height = 25
@@ -138,14 +144,14 @@ object FClassEditor: TFClassEditor
       end
       object LAttributeType: TLabel
         Left = 8
-        Top = 220
+        Top = 187
         Width = 24
         Height = 15
         Caption = 'Type'
       end
       object LAttributeValue: TLabel
         Left = 8
-        Top = 187
+        Top = 223
         Width = 28
         Height = 15
         Caption = 'Value'
@@ -165,7 +171,7 @@ object FClassEditor: TFClassEditor
       end
       object CBAttributeType: TComboBox
         Left = 64
-        Top = 217
+        Top = 184
         Width = 225
         Height = 23
         AutoDropDown = True
@@ -185,7 +191,6 @@ object FClassEditor: TFClassEditor
           'integer'
           'list'
           'set'
-          'str'
           'String'
           'tuple')
       end
@@ -290,7 +295,7 @@ object FClassEditor: TFClassEditor
       end
       object CBAttributeValue: TComboBox
         Left = 64
-        Top = 184
+        Top = 220
         Width = 225
         Height = 23
         TabOrder = 3
@@ -451,7 +456,7 @@ object FClassEditor: TFClassEditor
         end
         object LParameterType: TLabel
           Left = 13
-          Top = 96
+          Top = 64
           Width = 24
           Height = 15
           Caption = 'Type'
@@ -508,14 +513,14 @@ object FClassEditor: TFClassEditor
         end
         object LParameterValue: TLabel
           Left = 13
-          Top = 64
+          Top = 96
           Width = 28
           Height = 15
           Caption = 'Value'
         end
         object CBParamType: TComboBox
           Left = 57
-          Top = 93
+          Top = 61
           Width = 113
           Height = 23
           AutoDropDown = True
@@ -535,7 +540,6 @@ object FClassEditor: TFClassEditor
             'integer'
             'list'
             'set'
-            'str'
             'String'
             'tuple')
         end
@@ -559,8 +563,8 @@ object FClassEditor: TFClassEditor
           OnKeyUp = LBParamsKeyUp
         end
         object CBParamName: TComboBox
-          Left = 57
-          Top = 29
+          Left = 56
+          Top = 32
           Width = 113
           Height = 23
           Sorted = True
@@ -594,7 +598,7 @@ object FClassEditor: TFClassEditor
         end
         object CBParamValue: TComboBox
           Left = 57
-          Top = 61
+          Top = 93
           Width = 113
           Height = 23
           TabOrder = 2

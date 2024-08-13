@@ -162,6 +162,8 @@ type
     procedure EndUpdate;
     procedure DeleteObjects;
     procedure DPIChanged; override;
+    procedure OpenFolder;
+    procedure OpenFiles;
     class function ToolbarCount: integer;
 
     property InteractiveHeight: integer read FInteractiveHeight write setInteractiveHeight;
@@ -555,11 +557,11 @@ end;
 
 procedure TFUMLForm.SetFont(aFont: TFont);
 begin
-  if (AFont.Name <> Font.Name) or (AFont.Size <> Font.Size) then begin
+//  if (AFont.Name <> Font.Name) or (AFont.Size <> Font.Size) then begin
     Font.Assign(aFont);
     MainModul.Diagram.SetFont(aFont);
     MainModul.RefreshDiagram;
-  end;
+//  end;
 end;
 
 function TFUMLForm.GetFont: TFont;
@@ -621,10 +623,8 @@ end;
 
 procedure TFUMLForm.AddToProject(const Filename: string);
 begin
-  FConfiguration.ShowAlways:= false;
   if Filename <> '' then
     MainModul.AddToProject(Filename);
-  FConfiguration.ShowAlways:= true;
 end;
 
 procedure TFUMLForm.OnInteractiveModified(Sender: TObject);
@@ -701,7 +701,7 @@ begin
       Attribute:= It.Next as TAttribute;
       PictureNr:= 1 + Integer(Attribute.Visibility);
       Node:= TVFileStructure.Items.AddChildObject(ClassNode,
-                 Attribute.toShortStringNode, TInteger.create(Attribute.LineS));
+                 Attribute.toNameTypeUML, TInteger.create(Attribute.LineS));
       Node.ImageIndex:= PictureNr;
       Node.SelectedIndex:= PictureNr;
       Node.HasChildren:= false;
@@ -786,6 +786,28 @@ procedure TFUMLForm.DPIChanged;
 begin
   setFontSize(Font.Size - GetFont.Size);
   MainModul.Diagram.RefreshDiagram;
+end;
+
+procedure TFUMLForm.OpenFolder;
+begin
+  if MainModul.OpenFolderActionExecute(Self) then begin
+    Pathname:= PyIDEMainForm.getFilename('.puml', MainModul.OpendFolder);
+    MainModul.Diagram.ShowParameter:= 4;
+    SaveAndReload;
+    MainModul.Diagram.ResolveAssociations;
+    MainModul.DoLayout;
+    PyIDEMainForm.RunFile(fFile);
+  end;
+end;
+
+procedure TFUMLForm.OpenFiles;
+begin
+  MainModul.ShowAllOpenedFiles;
+  MainModul.Diagram.ShowParameter:= 4;
+  SaveAndReload;
+  MainModul.Diagram.ResolveAssociations;
+  MainModul.DoLayout;
+  PyIDEMainForm.RunFile(fFile);
 end;
 
 class function TFUMLForm.ToolbarCount: integer;

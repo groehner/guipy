@@ -272,9 +272,8 @@ procedure TDiagramIntegrator.SaveAsPicture(const FileName: string);
   end;
 
   procedure InToSVG;
-    var SL: TStringList;
   begin
-    SL:= TStringList.Create;
+    var SL:= TStringList.Create;
     SL.Text:= getSVG;
     SL.SaveToFile(Filename, TEncoding.UTF8);
     FreeAndNil(SL);

@@ -2116,12 +2116,9 @@ end;
 
 function TEssConnectPanel.getSVGConnections: string;
 begin
-  var
-  s := '';
-  for var i := 0 to FConnections.Count - 1 do
-  begin
-    var
-    conn := (FConnections[i] as TConnection);
+  var s := '';
+  for var i:= 0 to FConnections.Count - 1 do begin
+    var conn:= (FConnections[i] as TConnection);
     if conn.FFrom.Visible and conn.FTo.Visible then
       s := s + conn.getSVG;
   end;

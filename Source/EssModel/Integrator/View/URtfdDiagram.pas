@@ -482,7 +482,7 @@ var
 
 begin
   Panel.DeleteNotEditedConnections;
-  Panel.DeleteObjectConnections;
+  Panel.DeleteObjectConnections;    // why?
   for i:= 0 to BoxNames.Count - 1 do
     if (BoxNames.Objects[I] is TRtfdClass) then begin //Class
       CBox:= (BoxNames.Objects[I] as TRtfdClass);

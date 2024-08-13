@@ -213,6 +213,7 @@ object FStructogram: TFStructogram
         ImageName = 'PuzzleMode'
         ParentShowHint = False
         ShowHint = True
+        Visible = False
         OnClick = BBPuzzleClick
       end
     end
@@ -287,9 +288,12 @@ object FStructogram: TFStructogram
     end
     object MIPuzzle: TSpTBXItem
       Caption = 'Puzzle mode'
-      ImageIndex = 3
-      ImageName = 'PuzzleMode'
       OnClick = MIPuzzleClick
+    end
+    object MISavePuzzleFiles: TSpTBXItem
+      Caption = 'Save puzzle files'
+      Visible = False
+      OnClick = MISavePuzzleFilesClick
     end
     object MIFont: TSpTBXItem
       Caption = 'Font'

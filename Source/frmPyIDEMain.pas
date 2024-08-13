@@ -1852,7 +1852,6 @@ procedure TPyIDEMainForm.DoOpenInUMLWindow(const Filename: string);
   var UMLForm: TFUMLForm; aFile: IFile; s: string;
 begin
   if not hasPythonExtension(Filename) then exit;
-  FConfiguration.ShowAlways:= false;
   aFile:= GI_PyIDEServices.GetActiveFile;
   if assigned(aFile) and (aFile.FileKind = fkUML) then begin
     UMLForm:= TFUMLForm(aFile.Form);
@@ -1876,7 +1875,6 @@ begin
   end;
   UMLForm.setActiveControl(UMLForm.MainModul.Diagram.GetPanel);
   UMLForm.CreateTVFileStructure;
-  FConfiguration.ShowAlways:= true;
 end;
 
 function TPyIDEMainForm.CreateUMLForm(Filename: String): TFUMLForm;
@@ -2117,12 +2115,11 @@ begin
 
   // LocalAppStorage
   LocalOptionsFileName := ChangeFileExt(TPath.GetFileName(Application.ExeName), '.local.ini');
-  LocalAppStorage.FileName :=
-    TPyScripterSettings.UserDataPath + LocalOptionsFileName;
+  LocalAppStorage.FileName := TPath.Combine(TPyScripterSettings.UserDataPath, LocalOptionsFileName);
 
   // Machine Storage
   MachineStorage.Encoding := TEncoding.UTF8;
-  MachineStorage.FileName:= ExtractFilePath(Application.ExeName) + 'GuiPyMachine.ini';
+  MachineStorage.FileName:= TPath.Combine(ExtractFilePath(Application.ExeName), 'GuiPyMachine.ini');
 
   //OutputDebugString(PWideChar(Format('%s ElapsedTime %d ms', ['Before All Forms', StopWatch.ElapsedMilliseconds])));
   // Create and layout IDE windows
@@ -2675,14 +2672,7 @@ end;
 
 procedure TPyIDEMainForm.actUMLOpenFolderExecute(Sender: TObject);
 begin
-  var aFile:= DoOpenFile(getFilename('.puml'));
-  if assigned(aFile) then begin
-    var UMLForm:= aFile.Form as TFUMLForm;
-    if UMLForm.MainModul.OpenFolderActionExecute(Sender) then begin
-      UMLForm.Pathname:= getFilename('.puml', UMLForm.MainModul.OpendFolder);
-      UMLForm.Save(false);
-    end;
-  end
+  CreateUMLForm(getFilename('.puml')).OpenFolder;
 end;
 
 procedure TPyIDEMainForm.actUMLNewCommentExecute(Sender: TObject);
@@ -2710,16 +2700,15 @@ begin
 end;
 
 procedure TPyIDEMainForm.actUMLSaveAsPictureExecute(Sender: TObject);
-  var aFile: IFile;
 begin
-  aFile:= GI_PyIDEServices.getActiveFile;
+  var aFile:= GI_PyIDEServices.getActiveFile;
   if assigned(aFile) and (aFile.FileKind = fkUML) then
     TFUMLForm(aFile.Form).MainModul.SaveDiagramActionExecute(Self);
 end;
 
 procedure TPyIDEMainForm.actUMLDiagramFromOpenFilesExecute(Sender: TObject);
   var i, mr: integer; Filename, path: string;
-      UMLForm: TFUMLForm; SL: TStringList; aFile: IFile;
+      SL: TStringList; aFile: IFile;
 begin
   SL:= TStringList.Create;
   SL.Sorted:= true;
@@ -2751,20 +2740,8 @@ begin
           (aFile as IFileCommands).ExecClose;
         Application.ProcessMessages;
       end;
-      if mr in [mrYes, mrNone] then begin
-        UMLForm:= CreateUMLForm(Filename);
-        FConfiguration.ShowAlways:= false;
-        UMLForm.MainModul.ShowAllOpenedFiles;
-        UMLForm.MainModul.Diagram.ShowParameter:= 4;
-        FConfiguration.ShowAlways:= true;
-        if UMLForm.fFile.DefaultFilename
-          then UMLForm.Modified:= true
-          else UMLForm.Save(false);    // ToDo
-        UMLForm.SaveAndReload;
-        UMLForm.MainModul.Diagram.ResolveAssociations;
-        UMLForm.MainModul.DoLayout;
-        UMLForm.CreateTVFileStructure;
-      end;
+      if mr in [mrYes, mrNone] then
+        CreateUMLForm(Filename).OpenFiles;
     end;
   finally
     FreeAndNil(SL);
@@ -4694,6 +4671,7 @@ Var
   Index : integer;
   TabCtrl : TSpTBXTabControl;
 begin
+  LockWindow(Handle);
   EditorSearchOptions.InitSearch;
   UpdateCaption;
   TabCtrl := Sender as TSpTBXTabControl;
@@ -4715,6 +4693,7 @@ begin
     else if aFile.FileKind = fkEditor then
       TEditorForm(aFile.Form).Enter(Self);
   end;
+  UnlockWindow;
 end;
 
 procedure TPyIDEMainForm.TabControlMouseDown(Sender: TObject; Button: TMouseButton;
@@ -5120,6 +5099,8 @@ begin
       except
       end;
   end;
+    // Now Restore the toolbars
+    LoadToolbarLayout(Layout);
 end;
 
 procedure TPyIDEMainForm.mnViewDebugLayoutClick(Sender: TObject);
@@ -5376,40 +5357,13 @@ begin
 end;
 
 procedure TPyIDEMainForm.LoadLayout(const Layout: string);
-Var
-  Path : string;
-  i : integer;
-  SaveActiveControl : TWinControl;
-  TempCursor : IInterface;
 begin
   if GuiPyOptions.UsePredefinedLayouts then begin
     if Layout = 'Debug'
       then mnViewDebugLayoutClick(self)
       else mnViewDefaultLayoutClick(self)
-  end else begin
-    Path := 'Layouts\'+ Layout;
-    if LocalAppStorage.PathExists(Path + '\Forms') then begin
-      TempCursor := WaitCursor;
-      SaveActiveControl := ActiveControl;
-      try
-        // Now Load the DockTree
-        LoadDockTreeFromAppStorage(LocalAppStorage, Path);
-      finally
-        for i := 0 to Screen.FormCount - 1 do begin
-          if Screen.Forms[i] is TIDEDockWindow then
-            TIDEDockWindow(Screen.Forms[i]).FormDeactivate(Self);
-        end;
-      end;
-      if CanActuallyFocus(SaveActiveControl)
-      then
-        try
-          SaveActiveControl.SetFocus;
-        except
-        end;
-    end;
-    // Now Restore the toolbars
-    LoadToolbarLayout(Layout);
-  end;
+  end else
+    LoadDefaultLayout(LocalAppStorage, Layout);
 end;
 
 procedure TPyIDEMainForm.SaveLayout(const Layout: string);

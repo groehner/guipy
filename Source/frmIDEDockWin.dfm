@@ -3,8 +3,8 @@ object IDEDockWindow: TIDEDockWindow
   Top = 263
   BorderStyle = bsSizeToolWin
   Caption = 'IDE Dock Window'
-  ClientHeight = 105
-  ClientWidth = 360
+  ClientHeight = 45
+  ClientWidth = 320
   Color = clBtnFace
   DefaultMonitor = dmDesktop
   DockSite = True
@@ -26,8 +26,8 @@ object IDEDockWindow: TIDEDockWindow
   object BGPanel: TPanel
     Left = 0
     Top = 0
-    Width = 360
-    Height = 105
+    Width = 320
+    Height = 45
     Align = alClient
     BevelOuter = bvNone
     Padding.Left = 2

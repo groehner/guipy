@@ -1185,7 +1185,7 @@ class constructor TPyScripterSettings.CreateSettings;
   end;
 
   procedure HandlePortable;
-    var s: string; IniFile: TMemIniFile;
+    var s, HomeDir: string; IniFile: TMemIniFile;
   begin
     // you can call GuiPy with an ini file as parameter
     s:= ParamStr(1);
@@ -1195,42 +1195,41 @@ class constructor TPyScripterSettings.CreateSettings;
     if FileExists(s) then begin
       IniFile:= TMemIniFile.Create(s);
       IsPortable:= IniFile.ReadBool('GuiPy', 'PortableApplication', false);
-      UserDataPath:= IniFile.ReadString('User', 'HomeDir', '');
-      if UserDataPath <> '' then begin
-        if isPortable then
-          UserDataPath:= AddPortableDrive(UserDataPath);
-        UserDataPath:= dissolveUsername(UserDataPath);
-      end;
+      HomeDir:= IniFile.ReadString('User', 'HomeDir', '');
+      if isPortable then
+        HomeDir:= AddPortableDrive(HomeDir);
+      HomeDir:= dissolveUsername(HomeDir);
+      if DirectoryExists(HomeDir) then
+        UserDataPath:= HomeDir;
       FreeAndNil(IniFile);
     end else
       IsPortable:= false;
   end;
 
-var
-  PublicPath: string;
+  var Publicpath: string;
 begin
-  OptionsFileName := ChangeFileExt(Application.ExeName, '.ini');
+  UserDataPath:= '';
   HandlePortable;
   if IsPortable then begin
     // Portable version - nothing is stored in other directories
-    UserDataPath := ExtractFilePath(Application.ExeName);
+    if UserDataPath = '' then
+      UserDataPath := ExtractFilePath(Application.ExeName);
     ColorThemesFilesDir := TPath.Combine(UserDataPath, 'Highlighters');
     StylesFilesDir := TPath.Combine(UserDataPath, 'Styles');
     LspServerPath :=  TPath.Combine(UserDataPath, 'Lsp');
-    UserDebugInspectorsDir :=  TPath.Combine(UserDataPath, 'Variable Inspectors');
   end else begin
-    UserDataPath := TPath.Combine(GetHomePath,  'GuiPy\');
-    OptionsFileName := TPath.Combine(UserDataPath, 'GuiPy.ini');
+    if UserDataPath = '' then
+      UserDataPath := TPath.Combine(GetHomePath,  'GuiPy\');
     if not ForceDirectories(UserDataPath) then
-      StyledMessageDlg(Format(SAccessAppDataDir, [UserDataPath]),
-      mtWarning, [mbOK], 0);
+      StyledMessageDlg(Format(SAccessAppDataDir, [UserDataPath]), mtWarning, [mbOK], 0);
     PublicPath := TPath.Combine(TPath.GetPublicPath, 'GuiPy\');
     ColorThemesFilesDir := TPath.Combine(PublicPath, 'Highlighters');
     StylesFilesDir := TPath.Combine(PublicPath, 'Styles');
     LspServerPath :=  TPath.Combine(PublicPath, 'Lsp');
-    UserDebugInspectorsDir :=  TPath.Combine(UserDataPath, 'Variable Inspectors');
     AppDebugInspectorsDir := TPath.Combine(PublicPath, 'Variable Inspectors');
   end;
+  OptionsFileName := TPath.Combine(UserDataPath, 'GuiPy.ini');
+  UserDebugInspectorsDir :=  TPath.Combine(UserDataPath, 'Variable Inspectors');
   ForceDirectories(UserDebugInspectorsDir);
 
   EngineInitFile := TPath.Combine(UserDataPath, 'python_init.py');

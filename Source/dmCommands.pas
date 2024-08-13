@@ -1482,7 +1482,7 @@ begin
   if Assigned(GI_ActiveEditor) then begin
     actEditLineNumbers.Checked := GI_ActiveEditor.ActiveSynEdit.Gutter.ShowLineNumbers;
     actEditWordWrap.Checked := GI_ActiveEditor.ActiveSynEdit.WordWrap;
-    actEditShowSpecialChars.Checked := eoShowSpecialChars in GI_ActiveEditor.ActiveSynEdit.Options;
+    actEditShowSpecialChars.Checked := not (GI_ActiveEditor.ActiveSynEdit.VisibleSpecialChars = []);
   end else begin
     actEditLineNumbers.Checked := False;
     actEditWordWrap.Checked := False;
@@ -1780,10 +1780,21 @@ procedure TCommandsDataModule.actEditShowSpecialCharsExecute(
   Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
-    if eoShowSpecialChars in GI_ActiveEditor.ActiveSynEdit.Options then
-      GI_ActiveEditor.ActiveSynEdit.Options := GI_ActiveEditor.ActiveSynEdit.Options - [eoShowSpecialChars]
+  begin
+    var VisibleSpecialChars := GI_ActiveEditor.ActiveSynEdit.VisibleSpecialChars;
+    if VisibleSpecialChars = [] then
+      GI_ActiveEditor.ActiveSynEdit.VisibleSpecialChars := [scWhitespace, scControlChars, scEOL]
     else
-      GI_ActiveEditor.ActiveSynEdit.Options := GI_ActiveEditor.ActiveSynEdit.Options + [eoShowSpecialChars]
+      GI_ActiveEditor.ActiveSynEdit.VisibleSpecialChars := [];
+  end
+  else if GI_PyInterpreter.Editor.Focused then
+  begin
+    var VisibleSpecialChars := GI_PyInterpreter.Editor.Options;
+    if VisibleSpecialChars = [] then
+      GI_PyInterpreter.Editor.VisibleSpecialChars := [scWhitespace, scControlChars, scEOL]
+    else
+      GI_PyInterpreter.Editor.VisibleSpecialChars := [];
+  end;
 end;
 
 procedure TCommandsDataModule.actFindNextReferenceExecute(

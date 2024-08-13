@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2024-07-12 19:25\n"
-"PO-Revision-Date: 2024-07-12 19:26+0200\n"
+"PO-Revision-Date: 2024-08-05 09:20+0200\n"
 "Last-Translator: Somebody <your.email@address.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -5280,7 +5280,7 @@ msgstr "Standard-Layout"
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnViewDebugLayout..Caption
 #: frmPyIDEMain.dfm:846
 msgid "Debug Layout"
-msgstr "Debuglayout"
+msgstr "Debug-Layout"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..Hint
@@ -5316,7 +5316,7 @@ msgstr "Löscht das aktuelle Layout"
 #. PyIDEMainForm..actlStandard..actLayoutDebug..Caption
 #: frmPyIDEMain.dfm:867 frmPyIDEMain.dfm:3475
 msgid "Set Debug Layout"
-msgstr "Setze Fehlerbehebungslayout"
+msgstr "Setze Debug-Layout"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem49..Hint
 #. PyIDEMainForm..actlStandard..actLayoutDebug..Hint

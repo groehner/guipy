@@ -1311,7 +1311,6 @@ type
     function CountMenuItems(Menu: TTBCustomItem): integer;
     procedure setSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Nr: integer);
   public
-    ShowAlways: boolean;
     class var CurrentSkinName : string;
     Indent1, Indent2, Indent3: string;
     ControlStructureTemplates: array[1..21] of TStringList;
@@ -1713,7 +1712,6 @@ end;
 
 procedure TFConfiguration.Changed;
 begin
-  ShowAlways:= true;
   ResourcesDataModule.dlgFileOpen.Filter:= getFileFilters;
   SetVisibility;
 
@@ -1806,7 +1804,7 @@ begin
   ckHalfPageScroll.Checked:= eoHalfPageScroll in FSynEdit.Options;
   ckTrimTrailingSpaces.Checked:= eoTrimTrailingSpaces in FSynEdit.Options;
   ckScrollByOneLess.Checked:= eoScrollByOneLess in FSynEdit.Options;
-  ckShowSpecialChars.Checked := eoShowSpecialChars in FSynEdit.Options;
+  ckShowSpecialChars.Checked := FSynEdit.VisibleSpecialChars <> [];
   ckScrollPastEOF.Checked:= eoScrollPastEof in FSynEdit.Options;
   ckDisableScrollArrows.Checked := eoDisableScrollArrows in FSynEdit.Options;
   ckScrollPastEOL.Checked:= eoScrollPastEol in FSynEdit.Options;
@@ -2168,9 +2166,12 @@ begin
   SetFlag(eoScrollHintFollows, ckScrollHintFollows.Checked);
   SetFlag(eoDisableScrollArrows, ckDisableScrollArrows.Checked);
   SetFlag(eoHideShowScrollbars, ckHideShowScrollbars.Checked);
-  SetFlag(eoShowSpecialChars, ckShowSpecialChars.Checked);
   SetFlag(eoShowLigatures, ckShowLigatures.Checked);
   FSynEdit.Options := vOptions;
+  if ckShowSpecialChars.Checked then
+    FSynEdit.VisibleSpecialChars := [scWhitespace, scControlChars, scEOL]
+  else
+    FSynEdit.VisibleSpecialChars := [];
 
   with PyIDEOptions do begin
     // tab interpreter

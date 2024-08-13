@@ -81,6 +81,7 @@ type
     icClassTreeView: TSVGIconImageCollection;
     vilTreeViewLight: TVirtualImageList;
     vilTreeViewDark: TVirtualImageList;
+    Label1: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var aAction: TCloseAction);
@@ -184,6 +185,7 @@ type
     procedure DeleteMethod(Method: TOperation);
     procedure ChangeMethod(var M: TOperation);
     procedure ReplaceMethod(var Method: TOperation; const New: string);
+    procedure ReplaceParameter(ClassNumber: integer; const s1, s2: string);
     function MakeMethod(Level: integer): TOperation;
     function CreateMethod(const getset, datatype: string; const Attribute: TAttribute): string;
     function makeConstructor(Method: TOperation; Source: string): string;
@@ -216,6 +218,9 @@ type
     function StrToPythonValue(s: String): String;
     function getConstructorHead(Superclass: string): string;
     function PrepareParameter(head: string): string;
+    procedure DeleteAttributeFromConstructorParameters(Node: TTreeNode;
+            Attribute: TAttribute);
+
   protected
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
     procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
@@ -233,7 +238,7 @@ implementation
 {$R *.dfm}
 
 uses Windows, Math, Graphics, Messages, SysUtils, Dialogs, UITypes, Character,
-     System.IOUtils, SynEdit, JvGnugettext,
+     System.IOUtils, SynEdit, JvGnugettext, RegularExpressions,
      uCommonFunctions, uModelEntity,
      frmPyIDEMain, UConfiguration, UUtils, uEditAppIntfs, frmFile;
 
@@ -293,11 +298,33 @@ begin
   CBSetMethod.Visible:= GuiPyOptions.ShowGetSetMethods;
   CBAttributeType.Visible:= GuiPyOptions.ShowTypeSelection;
   LAttributeType.Visible:= GuiPyOptions.ShowTypeSelection;
+  if CBAttributeType.Visible then begin
+    CBAttributeValue.Top:= PPIScale(220);
+    LAttributeValue.Top:= PPIScale(223);
+  end else begin
+    CBAttributeValue.Top:= PPIScale(184);
+    LAttributeValue.Top:= PPIScale(187);
+  end;
+
+  CBParamType.Visible:= GuiPyOptions.ShowParameterTypeSelection;
+  LParameterType.Visible:= GuiPyOptions.ShowParameterTypeSelection;
+  if CBParamType.Visible then begin
+    LParameterName.Top:= PPIScale(32);
+    LParameterType.Top:= PPIScale(64);
+    LParameterValue.Top:= PPISCale(96);
+    CBParamName.Top:= PPIScale(29);
+    CBParamType.Top:= PPIScale(61);
+    CBParamValue.Top:= PPIScale(93);
+  end else begin
+    LParameterName.Top:= PPIScale(48);
+    LParameterValue.Top:= PPISCale(80);
+    CBParamName.Top:= PPIScale(45);
+    CBParamValue.Top:= PPIScale(77);
+  end;
   if GuiPyOptions.ShowKindProcedure
     then RGMethodKind.Items.Text:= _('Constructor') + #13#10 + _('Function') + #13#10 + _('Procedure')
     else RGMethodKind.Items.Text:= _('Constructor') + #13#10 + _('Function');
-  CBParamType.Visible:= GuiPyOptions.ShowParameterTypeSelection;
-  LParameterType.Visible:= GuiPyOptions.ShowParameterTypeSelection;
+
 end;
 
 procedure TFClassEditor.FormClose(Sender: TObject; var aAction: TCloseAction);
@@ -370,7 +397,7 @@ end;
 
 procedure TFClassEditor.TVAttribute(const Attribute: TAttribute);
 begin
-  var Node:= TreeView.Items.AddChildObject(AttributeNode, Attribute.toShortStringNode,
+  var Node:= TreeView.Items.AddChildObject(AttributeNode, Attribute.toNameTypeUML,
     Attribute);
   Node.ImageIndex:= 1 + Integer(Attribute.Visibility);
   Node.SelectedIndex:= 1 + Integer(Attribute.Visibility);
@@ -1030,7 +1057,7 @@ begin
     then datatype:= Attribute.TypeClassifier.asType
     else datatype:= '';
   myEditor.ActiveSynEdit.BeginUpdate;
-  myEditor.InsertLinesAt(Line, Attribute.toPython(false, false));
+  myEditor.InsertLinesAt(Line, Attribute.toPython(false));
   if IsClass and CBgetMethod.Checked and not HasMethod(_(LNGGet), Attribute.Name, Method) then
     myEditor.InsertProcedure(CrLf + CreateMethod(_(LNGGet), datatype, Attribute), ClassNumber);
   if IsClass and CBsetMethod.Checked and not HasMethod(_(LNGSet), Attribute.Name, Method) then
@@ -1115,13 +1142,28 @@ begin
 end;
 
 procedure TFClassEditor.BAttributeChangeClick(Sender: TObject);
-var
-  Old, New, OldName, NewName, OldVisName, NewVisName, OldType, NewType, Source, s1, s2: string;
-  ClassNumber, NodeIndex, TopItemIndex, Line, From, p: Integer;
-  Attribute: TAttribute; Method: TOperation;
-  Node: TTreeNode;
-  OldStatic, ValueChanged, TypeChanged: Boolean;
-  SL: TStringList;
+  const
+    Values = '|0|0.0|''''|True|False|None|[]|()|{}|set()|';
+    Types  = '|int|integer|float|boolean|bool|str|String|string|list|tuple|dict|set|';
+
+  var
+    Old, New, OldName, NewNameTypeUML, OldVisName, OldNameType, newType: string;
+    ClassNumber, NodeIndex, TopItemIndex, Line: Integer;
+    Attribute: TAttribute;
+    Node: TTreeNode;
+    OldStatic, ValueChanged, TypeChanged: Boolean;
+
+  function asUMLType(s: string): string;
+  begin
+    Result:= s;
+    if Result = 'bool' then
+      Result:= 'boolean'
+    else if Result = 'str' then
+      Result:= 'String'
+    else if Result = 'int' then
+      Result:= 'integer';
+  end;
+
 begin
   if not MakeIdentifier(EAttributeName) or (EAttributeName.Text = '') then
     exit;
@@ -1137,7 +1179,7 @@ begin
   if IsAttributesNode(Node) then begin
     NodeIndex:= NodeIndex + Node.Count + 1;
     Attribute:= MakeAttribute(Node.Parent.Text);
-    NewName:= Attribute.Name;
+    NewNameTypeUML:= Attribute.Name;
     if AttributeAlreadyExists(Attribute.Name) then
       ErrorMsg(Format(_('%s already exists'), [Attribute.Name]))
     else begin
@@ -1147,25 +1189,28 @@ begin
     end;
     FreeAndNil(Attribute);
   end else begin
-    ValueChanged:= CBAttributeValue.Focused;
-    TypeChanged:= CBAttributeType.Focused;
     Attribute:= TAttribute(Node.Data);
+    ValueChanged:= CBAttributeValue.Text <> Attribute.Value;
+    TypeChanged:= assigned(Attribute.TypeClassifier) and
+                  (asUMLType(CBAttributeType.Text) <> Attribute.TypeClassifier.asUMLType);
     OldName:= Attribute.Name;
     OldVisName:= Attribute.VisName;
-    OldType:= '';
-    if assigned(Attribute.TypeClassifier) then
-      OldType:= ': ' + Attribute.TypeClassifier.asType;
+    OldNameType:= Attribute.toNameType;
     OldStatic:= Attribute.Static;
-    Old:= Attribute.toPython(false, false);
+    Old:= Attribute.toPython(false);
+    // changed to a value of another standard type then change type too
+    if ValueChanged and assigned(Attribute.TypeClassifier) and
+       (Pos('|' + Attribute.TypeClassifier.asType + '|', Types) > 0) then begin
+      newType:= Attribute.TypeClassifier.ValueToType(CBAttributeValue.Text);
+      if newType = ''
+        then Attribute.TypeClassifier:= nil
+        else Attribute.TypeClassifier:= MakeType(newType);
+      CBAttributeType.Text:= newType;
+      TypeChanged:= true;
+    end;
     ChangeGetSet(Attribute, ClassNumber, Node.Parent.Parent.Text);
-
-    New:= Attribute.toPython(ValueChanged, TypeChanged);
-    NewName:= Attribute.Name;
-    NewVisName:= Attribute.VisName;
-    NewType:= '';
-    if assigned(Attribute.TypeClassifier) then
-      NewType:= ': ' + Attribute.TypeClassifier.asType;
-
+    New:= Attribute.toPython(TypeChanged);
+    NewNameTypeUML:= Attribute.toNameTypeUML;
     if CBAttributeValue.Text <> '' then
       CBAttributeValue.Text:= Attribute.Value;
     if CBAttributeType.Text <> '' then
@@ -1181,35 +1226,8 @@ begin
         myEditor.DeleteLine(Attribute.LineS - 1);
       end;
       myEditor.ReplaceWord(OldName, Attribute.Name, true);
-      myEditor.ReplaceWord('self.' + OldVisName, 'self.' + NewVisName, true);
-
-      // change constructor
-      Node:= GetMethodNode;
-      if Assigned(Node) then
-        Node:= Node.getFirstChild;
-      if Assigned(Node) and Assigned(Node.Data) then begin
-        Method:= TOperation(Node.Data);
-        from:= Method.LineS-1;
-        if Method.isStaticMethod then inc(from);
-        if Method.isClassMethod then inc(from);
-        if Method.IsAbstract then inc(from);
-        if Method.isPropertyMethod then inc(from);
-        Source:= myEditor.getSource(from, Method.LineE - 1);
-        SL:= TStringList.Create;
-        SL.Text:= Source;
-        s1:= SL[0];
-        s2:= myStringReplace(s1, ' ' + OldName + OldType, ' ' + NewName + NewType);
-        myEditor.ReplaceLine(s1, s2);
-        for var i:= 1 to SL.Count - 1 do begin
-          s1:= SL[i];
-          p:= Pos(NewName + NewType, s1);
-          if p > 0 then begin
-            s2:= copy(s1, 1, p-1) + NewName + NewType + ' = ' + NewName;
-            myEditor.ReplaceLine(s1, s2);
-          end;
-        end;
-        FreeAndNil(SL);
-      end;
+      myEditor.ReplaceWord('self.' + OldVisName, 'self.' + Attribute.VisName, true);
+      ReplaceParameter(ClassNumber, OldNameType, Attribute.toNameType);
     end;
   end;
 
@@ -1217,7 +1235,7 @@ begin
   Node:= GetClassNode(ClassNumber);
   if assigned(Node) then begin
     Node:= Node.getFirstChild.getFirstChild;
-    while assigned(Node) and (Node.Text <> NewName) do
+    while assigned(Node) and (Node.Text <> NewNameTypeUML) do
       Node:= Node.GetNext;
     if assigned(Node) then
       NodeIndex:= Node.AbsoluteIndex;
@@ -1230,6 +1248,54 @@ begin
   BAttributeApply.Enabled:= false;
   myEditor.ActiveSynEdit.EndUpdate;
   UnLockFormUpdate(myEditor);
+end;
+
+procedure TFClassEditor.ReplaceParameter(ClassNumber: integer; const s1, s2: string);
+  var Node: TTreeNode; Methodname, s: string; aClass: TClass; LineNr: integer;
+
+  function ReplaceWord(s, s1, s2: string): string;
+    var ws1, RegExExpr: String;
+        RegEx: TRegEx; Matches: TMatchCollection; Group: TGroup;
+  begin
+    RegExExpr:= '\b(' + TRegEx.Escape(s1) + ')';
+    if not isWordBreakChar(s1[length(s1)]) then
+      RegExExpr:= RegExExpr + '\b';
+    RegEx := CompiledRegEx(RegExExpr);
+
+    ws1:= s;
+    Matches:= RegEx.Matches(ws1);
+    for var i:= Matches.count - 1 downto 0 do begin
+      Group:= Matches.Item[i].Groups[1];
+      delete(ws1, Group.Index, Group.Length);
+      insert(s2, ws1, Group.Index);
+    end;
+    Result:= ws1;
+  end;
+
+begin
+  aClass:= myEditor.getClass(ClassNumber);
+  if aClass = nil then exit;
+  Node:= GetClassNode(ClassNumber);
+  if Node = nil then exit;
+  Node:= Node.getFirstChild.getNextSibling.getFirstChild;  // first method
+  while assigned(Node) do begin
+    case Node.ImageIndex of
+      5   : Methodname:= '__';
+      6   : Methodname:= '_';
+      4, 7: Methodname:= '';
+    end;
+    Methodname:= Methodname + copy(Node.Text, 1, Pos('(', Node.Text) - 1);
+    LineNr:= myEditor.getLineNumberWithWordFromTill(MethodName, aClass.LineS, aClass.LineE);
+    if LineNr > -1 then begin
+      s:= myEditor.ActiveSynEdit.Lines[LineNr];
+      if (Pos(s2, s) = 0) or (Pos(': ', s2) = 0) then begin
+        // setter already done or change to None/no type
+        myEditor.ActiveSynEdit.Lines[LineNr]:= ReplaceWord(s, s1, s2);
+        myEditor.Modified:= true;
+      end;
+    end;
+    Node:= Node.getNextSibling;
+  end;
 end;
 
 procedure TFClassEditor.DeleteMethod(Method: TOperation);
@@ -1275,7 +1341,7 @@ begin
     end;
     ClassNumber:= GetClassNumber(Node);
     myEditor.DeleteAttributeCE('self.' + Attribute.VisName, ClassNumber);
-    myEditor.Modified:= true;
+    DeleteAttributeFromConstructorParameters(Node, Attribute);
     p1:= TreeView.Selected.AbsoluteIndex;
     p2:= TreeView.FindNextToSelect.AbsoluteIndex;
     p3:= TreeView.TopItem.AbsoluteIndex;
@@ -1287,7 +1353,32 @@ begin
       TreeView.Selected:= TreeView.Items[p1];
     BAttributeApply.Enabled:= false;
     myEditor.ActiveSynEdit.EndUpdate;
-    UnLockFormUpdate(myEditor);;
+    UnLockFormUpdate(myEditor);
+  end;
+end;
+
+procedure TFClassEditor.DeleteAttributeFromConstructorParameters(Node: TTreeNode;
+            Attribute: TAttribute);
+begin
+  var Parameter:= Attribute.Name;
+  if assigned(Attribute.TypeClassifier) then
+    Parameter:= Parameter + ': ' + Attribute.TypeClassifier.asUMLType;
+  while assigned(Node) and (Pos('__init__', Node.Text) = 0) do
+    Node:= Node.getNext;
+  if assigned(Node) then begin
+    var p:= Pos(', ' + Parameter + ',', Node.Text) + Pos(', ' + Parameter + ')', Node.Text);
+    if p > 0 then begin
+      var s:= Node.Text;
+      delete(s, p, 2 + length(Parameter));
+      Node.Text:= s;
+      var Operation:= TOperation(Node.Data);
+      if assigned(Operation) then begin
+        var oldHead:= Operation.HeadToPython;
+        Operation.DelParameter(Attribute.Name);
+        var newHead:= Operation.HeadToPython;
+        myEditor.ReplaceLine(oldHead, newHead);
+      end;
+    end;
   end;
 end;
 
@@ -1424,7 +1515,7 @@ end;
 
 function TFClassEditor.makeConstructor(Method: TOperation; Source: string): string;
 var
-  Indent, vis, s, key, head: string;
+  Indent, vis, s, head: string;
   it: IModelIterator;
   Parameter: TParameter;
   Attribute: TAttribute;
@@ -1536,34 +1627,23 @@ begin // makeConstructor
         found:= true;
     end;
     if found then begin // corresponding parameter exists or
-      p:= getSourceIndex('self.' + vis + Parameter.Name);
+      s:= Indent + 'self.' + vis + Parameter.Name;
       if assigned(Parameter.TypeClassifier) then
-        s:= Indent + 'self.' + vis + Parameter.Name + ': ' +
-            Parameter.TypeClassifier.asType + ' = ' + Parameter.Name
-      else
-        s:= Indent + 'self.' + vis + Parameter.Name + ' = ' + Parameter.Name;
-      if p < SourceSL.Count then begin
-        SourceSL.Delete(p);
-        SourceSL.Insert(p, s);
-      end else
-        SourceSL.Add(s);
+        s:= s + ': ' + Parameter.TypeClassifier.asType;
+      s:= s + ' = ' + Parameter.Name;
+      p:= getSourceIndex('self.' + vis + Parameter.Name);
       Parameter.UsedForAttribute:= true;
     end else begin
       Attribute:= TAttribute(Node.Data);
       Attribute.Value:= '';
-      s:= Attribute.toPython(false, false);
-      key:= 'self.' + vis + Node.Text;
-      p:= getSourceIndex(key);
-      if p < SourceSL.Count then begin
-        SourceSL.Delete(p);
-        SourceSL.Insert(p, s);
-      end else begin
-        key:= 'self.' + vis + Node.Text;
-        p:= getSourceIndex(key);
-        if p < SourceSL.Count then
-          SourceSL.Add(s);
-      end;
+      s:= Attribute.toPython(false);
+      p:= getSourceIndex('self.' + vis + Attribute.Name);
     end;
+    if p < SourceSL.Count then begin
+      SourceSL.Delete(p);
+      SourceSL.Insert(p, s);
+    end else
+      SourceSL.Add(s);
     Node:= Node.getNextSibling;
   end;
   CallInheritedConstructor;
@@ -1938,7 +2018,7 @@ var
     var it:= cent.GetAttributes;
     while it.HasNext do begin
       Attribute:= it.Next as TAttribute;
-      s:= Attribute.toShortStringNode;
+      s:= Attribute.toNameTypeUML;
       if CBParameter.Items.IndexOf(s) = -1 then
         CBParameter.Items.Add(s);
     end;

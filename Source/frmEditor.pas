@@ -958,7 +958,6 @@ begin
   end
   else
   begin
-    //fForm.SynEdit.Lines.Clear;
     if AFileName = '' then
     begin
       // Default settings for new files
@@ -967,14 +966,9 @@ begin
           PyIDEOptions.NewFileLineBreaks;
     end;
   end;
-
   fForm.DoUpdateHighlighter(HighlighterName);
-  fForm.DoUpdateCaption;
-
-  fForm.SynEdit.Modified := False;
   if PyIDEOptions.CodeFoldingForGuiElements then
     fForm.CollapseGUICreation;
-
   if HasPythonFile then
     FSynLsp.FileOpened(GetFileId, lidPython)
   else
@@ -1733,7 +1727,7 @@ begin
   ASynEdit := Sender as TSynEdit;
   fOldCaretY := ASynEdit.CaretY;
   PyIDEMainForm.ActiveTabControl := ParentTabControl;
-  Enter(Self);
+  //Enter(Self);
   DoAssignInterfacePointer(True);
   with ResourcesDataModule.CodeTemplatesCompletion do
   begin
@@ -1947,12 +1941,8 @@ procedure TEditorForm.Enter(Sender: TObject);
 begin
   DoUpdateCaption;
   fOldEditorForm:= Self;
-  Synedit.UseCodeFolding := PyIDEOptions.CodeFoldingEnabled;
-  Synedit2.UseCodeFolding := Synedit.UseCodeFolding;
-  DefaultExtension:= copy(LowerCase(TPath.getExtension(Pathname)), 2, 20);
   SetOptions;
   ShowTkOrQt;
-
   if Assigned(Partner) then
     FGUIDesigner.ChangeTo(TFGUIForm(Partner));
   if assigned(TVFileStructure) and (FFileStructure.myForm <> self) and
@@ -2161,9 +2151,12 @@ begin
 
   // Set DefaultExtension
   if SynEdit.Highlighter <> nil then
-    DefaultExtension := DefaultExtensionFromFilter(SynEdit.Highlighter.DefaultFilter)
+    //DefaultExtension := DefaultExtensionFromFilter(SynEdit.Highlighter.DefaultFilter)
+    DefaultExtension:= copy(LowerCase(TPath.getExtension(Pathname)), 2, 20)
   else
     DefaultExtension := '';
+  SynEdit.UseCodeFolding := PyIDEOptions.CodeFoldingEnabled;
+  SynEdit2.UseCodeFolding := SynEdit.UseCodeFolding;
 end;
 
 function TEditorForm.GetFileFormat: string;
@@ -3506,7 +3499,6 @@ begin
       if FileExists(s) then
         PyIDEMainForm.DoOpenFile(s, '', PyIDEMainForm.ActiveTabControlIndex)
       else begin
-        FConfiguration.ShowAlways:= false;
         var UMLForm:= PyIDEMainForm.CreateUMLForm(s);
         UMLForm.Visible:= false;
         UMLForm.MainModul.AddToProject(Pathname);
@@ -3515,7 +3507,6 @@ begin
         UMLForm.DoSave;
         PyIDEMainForm.RunFile(UMLForm.fFile);
         UMLForm.Visible:= true;
-        FConfiguration.ShowAlways:= true;
       end;
     except on e: Exception do
       ErrorMsg(e.Message);
@@ -3547,14 +3538,13 @@ end;
 
 procedure TEditorForm.TBStructureIndentClick(Sender: TObject);
 begin
-  //(self as TFileForm).ExecSave;
   var ExternalTool:= TExternalTool.create;
   with ExternalTool do begin
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '$[PythonDir-Short]Tools\Scripts\reindent.py -n ';
     SaveFiles := sfActive;
-    ProcessInput := piActiveFile; // piNone;
-    ProcessOutput := poActiveFile; // poNone;
+    ProcessInput := piActiveFile;
+    ProcessOutput := poActiveFile;
     Context:= tcActiveFile;
     ParseMessages := False;
     CaptureOutput := False;
@@ -3591,15 +3581,13 @@ begin
 end;
 
 procedure TEditorForm.TBParagraphClick(Sender: TObject);
-  var Options: TSynEditorOptions;
-  // only works in comments in Lazarus
 begin
-  Options:= ActiveSynEdit.Options;
-  if eoShowSpecialChars in Options
-    then Exclude(Options, eoShowSpecialChars)
-    else Include(Options, eoShowSpecialChars);
-  ActiveSynEdit.Options:= Options;
-  TBParagraph.Down:= (eoShowSpecialChars in Options);
+  var VisibleSpecialChars := SynEdit.VisibleSpecialChars;
+  if VisibleSpecialChars = [] then
+    SynEdit.VisibleSpecialChars := [scWhitespace, scControlChars, scEOL]
+  else
+    SynEdit.VisibleSpecialChars := [];
+  TBParagraph.Down:= not (SynEdit.VisibleSpecialChars = []);
 end;
 
 procedure TEditorForm.TBGotoBookmarkClick(Sender: TObject);
@@ -3934,8 +3922,8 @@ begin
   ReparseIfNeeded;
   SyncCodeExplorer;
   SyncFileStructure;
-  if PyIDEOptions.CheckSyntaxAsYouType and FEditor.HasPythonFile then
-    FEditor.FSynLsp.ApplyNewDiagnostics;
+  //if PyIDEOptions.CheckSyntaxAsYouType and FEditor.HasPythonFile then
+  //  FEditor.FSynLsp.ApplyNewDiagnostics;
 
   if SynEdit.ReadOnly then
     ParentTabItem.ImageIndex := PyIDEMainForm.vilTabDecorators.GetIndexByName('Lock')
@@ -4168,10 +4156,8 @@ end;
 procedure TEditorForm.DeleteEmptyLine(line: integer);
 begin
   ActiveSynEdit.BeginUpdate;
-  if trim(ActiveSynEdit.Lines[line]) = '' then begin
+  if trim(ActiveSynEdit.Lines[line]) = '' then
     deleteLine(line);
-    Modified:= true;
-  end;
   ActiveSynEdit.EndUpdate;
 end;
 
@@ -4188,6 +4174,7 @@ begin
   ActiveSynEdit.CaretY:= Line+1;
   ActiveSynEdit.CommandProcessor(ecDeleteLine, #0, nil);
   if collapsed then ActiveSynEdit.Collapse(1);
+  Modified:= true;
 end;
 
 procedure TEditorForm.DeleteLine(s: string);
@@ -4698,10 +4685,8 @@ function TEditorForm.getLastConstructorLine(ClassNumber: integer): integer;
   var cent: TClassifier; Operation: TOperation; Ident, s: string;
 begin
   Operation:= getConstructor(ClassNumber);
-  if assigned(Operation) then begin
-    //RemovePass(Operation);
+  if assigned(Operation) then
     Exit(Operation.LineE);
-  end;
   cent:= GetClass(ClassNumber);
   Ident:= StringTimesN(FConfiguration.Indent1, cent.Level + 1);
   s:= Ident + 'def __init__(self):' + CrLf;
@@ -4825,20 +4810,20 @@ begin
 end;
 
 function TEditorForm.getSource(LineS, LineE: integer): string;
-  var i: integer;
 begin
   Result:= '';
-  for i:= LineS to LineE do
+  for var i:= LineS to LineE do
     Result:= Result + ActiveSynEdit.Lines[i] + #13#10;
 end;
 
 procedure TEditorForm.ReplaceLine(const s1, s2: string);
-  var line: integer;
 begin
-  line:= getLineNumberWith(s1);
-  if line >= 0 then begin
-    ActiveSynEdit.Lines[line]:= s2;
-    Modified:= true;
+  if s1 <> s2 then begin
+    var line:= getLineNumberWith(s1);
+    if line >= 0 then begin
+      ActiveSynEdit.Lines[line]:= s2;
+      Modified:= true;
+    end;
   end;
 end;
 
@@ -5217,7 +5202,7 @@ begin
         Attribute:= It.Next as TAttribute;
         ImageNr:= 1 + Integer(Attribute.Visibility);
         Node:= TVFileStructure.Items.AddChildObject(ClassNode,
-          Attribute.toShortStringNode, TInteger.create(Attribute.LineS));
+          Attribute.toNameTypeUML, TInteger.create(Attribute.LineS));
         Node.ImageIndex:= ImageNr;
         Node.SelectedIndex:= ImageNr;
         Node.HasChildren:= false;

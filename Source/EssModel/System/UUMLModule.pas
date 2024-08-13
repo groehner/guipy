@@ -66,7 +66,7 @@ type
 implementation
 
 uses Windows, SysUtils, Graphics, Controls, Forms, Clipbrd, Printers, Contnrs,
-     INIFiles, uIntegrator, uFileProvider, uEditAppIntfs,
+     INIFiles, uIntegrator, uFileProvider, uEditAppIntfs, JvGnugettext,
      uOpenFolderForm, UUtils, UUMLForm, URtfdDiagram;
 
 {$R *.DFM}
@@ -362,8 +362,8 @@ function TDMUMLModule.OpenFolderActionExecute(Sender: TObject): boolean;
 begin
   Result:= false;
   var SL := TStringList.Create;
-  var OpenFolderForm:= TFOpenFolderForm.Create(nil);
   var Ints := Integrators.Get(TImportIntegrator);
+  var OpenFolderForm:= TFOpenFolderForm.Create(nil);
   try
     for var i := 0 to Ints.Count - 1 do begin
       var Exts := TImportIntegratorClass(Ints[i]).GetFileExtensions;
@@ -374,20 +374,17 @@ begin
       end;
     end;
     OpenFolderForm.CBFiletype.ItemIndex:= 0;
-
     if OpenFolderForm.ShowModal = mrOk then begin
       Result:= true;
       _AddFileNames(SL, OpenFolderForm.PathTreeView.Path,
                     Copy(OpenFolderForm.CBFiletype.Items[OpenFolderForm.CBFiletype.ItemIndex], 2, 10),
                     OpenFolderForm.CBWithSubFolder.Checked);
-      if SL.Count > 0 then begin
-        LoadProject(SL);
-        FDiagram.ResolveAssociations;
-        DoLayout;
-      end else
-        ShowMessage('No files found.');
+      if SL.Count > 0
+        then LoadProject(SL)
+        else ShowMessage(_('No files found.'));
       OpendFolder:= OpenFolderForm.PathTreeView.Path;
-    end;
+    end else
+      OpendFolder:= '';
   finally
     FreeAndNil(SL);
     FreeAndNil(Ints);

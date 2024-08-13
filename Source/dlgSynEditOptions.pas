@@ -302,6 +302,7 @@ type
     FWordBreakChars: string;
     FColor: TColor;
     FActiveLineColor : TColor;
+    FVisibleSpecialChars: TSynVisibleSpecialChars;
     procedure SetBookMarks(const Value: TSynBookMarkOpt);
     procedure SetFont(const Value: TFont);
     procedure SetKeystrokes(const Value: TSynEditKeyStrokes);
@@ -333,6 +334,8 @@ type
     property WordBreakChars : string read FWordBreakChars write FWordBreakChars;
     property Keystrokes : TSynEditKeyStrokes read FKeystrokes write SetKeystrokes;
     property ActiveLineColor : TColor read FActiveLineColor write FActiveLineColor;
+    property VisibleSpecialChars: TSynVisibleSpecialChars
+      read FVisibleSpecialChars write FVisibleSpecialChars;
   end;
 
 implementation
@@ -742,7 +745,7 @@ begin
   ckGroupUndo.Checked := eoGroupUndo in FSynEdit.Options;
   ckDisableScrollArrows.Checked := eoDisableScrollArrows in FSynEdit.Options;
   ckHideShowScrollbars.Checked := eoHideShowScrollbars in FSynEdit.Options;
-  ckShowSpecialChars.Checked := eoShowSpecialChars in FSynEdit.Options;
+  ckShowSpecialChars.Checked := FSynEdit.VisibleSpecialChars <> [];
   ckShowLigatures.Checked := eoShowLigatures in FSynEdit.Options;
   //Caret
   cInsertCaret.ItemIndex:= ord(FSynEdit.InsertCaret);
@@ -821,9 +824,12 @@ begin
   SetFlag(eoScrollHintFollows, ckScrollHintFollows.Checked);
   SetFlag(eoDisableScrollArrows, ckDisableScrollArrows.Checked);
   SetFlag(eoHideShowScrollbars, ckHideShowScrollbars.Checked);
-  SetFlag(eoShowSpecialChars, ckShowSpecialChars.Checked);
   SetFlag(eoShowLigatures, ckShowLigatures.Checked);
   FSynEdit.Options := vOptions;
+  if ckShowSpecialChars.Checked then
+    FSynEdit.VisibleSpecialChars := [scWhitespace, scControlChars, scEOL]
+  else
+    FSynEdit.VisibleSpecialChars := [];
   //Caret
   FSynEdit.InsertCaret:= TSynEditCaretType(cInsertCaret.ItemIndex);
   FSynEdit.OverwriteCaret:= TSynEditCaretType(cOverwriteCaret.ItemIndex);

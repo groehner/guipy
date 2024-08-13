@@ -61,6 +61,7 @@ type
     vilPopupMenuLight: TVirtualImageList;
     vilPopupMenuDark: TVirtualImageList;
     TrashImage: TVirtualImage;
+    MISavePuzzleFiles: TSpTBXItem;
 
     procedure FormCreate(Sender: TObject); override;
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -100,6 +101,7 @@ type
     procedure BBZoomInClick(Sender: TObject);
     procedure BBPuzzleClick(Sender: TObject);
     procedure MIConfigurationClick(Sender: TObject);
+    procedure MISavePuzzleFilesClick(Sender: TObject);
   private
     EditMemo: TMemo;
     oldShape: TRect;
@@ -136,7 +138,7 @@ type
     procedure CalculateInsertionShape(DestList, InsertList: TStrList; x, y: integer);
     procedure InsertElement(DestList, InsertList: TStrList; aCurElement: TStrElement);
 
-    procedure Save(MitBackup: boolean);
+    procedure Save;
     procedure CutToClipboard;
     procedure UpdateState;
 
@@ -209,8 +211,6 @@ begin
   Font.assign(GuiPyOptions.StructogramFont);
   ScrollBox.DoubleBuffered:= true;
   Separating:= 0;
-  PuzzleMode:= 0;
-  TBPuzzlemode.Visible:= false;
   StructogramToolbar.Height:= 308 - 22;
   Version:= $0E;
   curList:= nil;
@@ -219,6 +219,7 @@ begin
   UpdateState;
   ChangeStyle;
   setOptions;
+  setPuzzleMode(0);
 end;
 
 procedure TFStructogram.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -267,7 +268,7 @@ begin
   StrList.ResizeAll;
   StrList.Paint;
   FFile.ExecSave;
-  Save(false);
+  Save;
   Enter(Self); // must stay!
   SetFocus;
 end;
@@ -295,7 +296,7 @@ begin
   end;
   StrList.ResizeAll;
   StrList.Paint;
-  Save(false);
+  Save;
   Enter(Self); // must stay!
   SetFocus;
 end;
@@ -371,6 +372,7 @@ begin
         Reader.ReadLine;
       end;
       GuiPyOptions.StructogramFont.assign(Font);
+      SetPuzzleMode(PuzzleMode);
     finally
       FreeAndNil(Reader);
     end
@@ -796,18 +798,17 @@ begin
 end;
 
 procedure TFStructogram.MIPuzzleClick(Sender: TObject);
-  var StrList: TStrList;
 begin
   if PuzzleMode > 0 then begin
     setPuzzleMode(0);
     Solution:= '';
   end else begin
     if not ((ScrollBox.ControlCount = 1) and (TListImage(Scrollbox.Controls[0]).StrList is TStrAlgorithm)) then begin
-      ShowMessage(_('Switch to puzzle mode with the finished solution from a single algorithm structure diagram.'));
+      ShowMessage(_('Switch to puzzle mode with the finished solution from a single algorithm structogram.'));
       exit;
     end;
     setPuzzleMode(1);
-    StrList:= TListImage(ScrollBox.Controls[0]).StrList;
+    var StrList:= TListImage(ScrollBox.Controls[0]).StrList;
     StrList.setPuzzleMode(1);
     Solution:= StrList.asString;
   end;
@@ -819,10 +820,18 @@ begin
   if PuzzleMode = 0 then begin
     MIPuzzle.Checked:= false;
     TBPuzzlemode.Visible:= false;
+    MISavePuzzleFiles.Visible:= false;
   end else begin
     MIPuzzle.Checked:= true;
-    TBPuzzlemode.Visible:= true and TBPuzzleMode.Visible;
+    TBPuzzleMode.Visible:= true;
+    MISavePuzzleFiles.Visible:= true;
   end;
+end;
+
+procedure TFStructogram.MISavePuzzleFilesClick(Sender: TObject);
+begin
+  if PuzzleMode = 1 then
+    Save;
 end;
 
 procedure TFStructogram.MISwitchWithCaseLineClick(Sender: TObject);
@@ -1101,55 +1110,44 @@ begin
 end;
 
 {$WARNINGS OFF}
-procedure TFStructogram.Save(MitBackup: boolean);
-  var BackupName, Filename, aPathname, Filepath, Ext: String;
+procedure TFStructogram.Save;
+  var Filename, aPathname, Filepath: String;
       FStructogram: TFileForm; aFile: IFile;
 begin
   CloseEdit(True);
   try
-    if (PuzzleMode = 1) and (Pos('Easy', Pathname) = 0) then begin
+    if (PuzzleMode = 1) and (Pos(_('Easy'), Pathname) = 0) then begin
       Filename:= ChangeFileExt(ExtractFilename(Pathname), '');
       Filepath:= ExtractFilepath(Pathname);
 
       PuzzleMode:= 2;
-      aPathname:= Filepath + Filename + 'Medium.psg';
+      aPathname:= Filepath + Filename + _('Medium') + '.psg';
       SaveToFile(aPathname);
       PyIDEMainForm.DoOpenFile(aPathname);
 
       PuzzleMode:= 3;
-      aPathname:= Filepath + Filename + 'Hard.psg';
+      aPathname:= Filepath + Filename + _('Hard') + '.psg';
       SaveToFile(aPathname);
       PyIDEMainForm.DoOpenFile(aPathname);
 
       PuzzleMode:= 4;
-      aPathname:= Filepath + Filename + 'VeryHard.psg';
+      aPathname:= Filepath + Filename + _('VeryHard') + '.psg';
       SaveToFile(aPathname);
       PyIDEMainForm.DoOpenFile(aPathname);
+
       aFile:= GI_FileFactory.GetFileByNameAndType(aPathname, fkStructogram);
       if assigned(aFile) then begin
         FStructogram:= TFStructogram(aFile.Form);
         (FStructogram as TFStructogram).MakeVeryHard;
-        (FStructogram as TFStructogram).Save(false);
+        (FStructogram as TFStructogram).Save;
       end;
+
       PuzzleMode:= 1;
-      Pathname:= Filepath + Filename + 'Easy.psg';
+      Pathname:= Filepath + Filename + _('Easy') + '.psg';
       SaveToFile(Pathname);
-      Caption:= Pathname;
-      PyIDEMainForm.DoOpenFile(Pathname);
+      DoUpdateCaption;
     end else begin
       if ReadOnly then exit;
-      if MitBackup then begin
-        BackupName:= Pathname;
-        Ext:= ExtractFileExt(Pathname);
-        if length(ext) >= 2
-          then Ext[2]:= '~'
-          else Ext:= '.~';
-        BackupName:= ChangeFileExt(BackupName, Ext);
-        if FileExists(BackupName) then
-          DeleteFile(PChar(BackupName));
-        if FileExists(Pathname) then
-          RenameFile(Pathname, BackupName);
-      end;
       SaveToFile(Pathname);
     end;
     Modified:= false;
@@ -1159,15 +1157,14 @@ begin
     end;
   end;
 
-   // debugging
-
+  // debugging
+  {
   for var i:= 0 to ScrollBox.ControlCount - 1 do begin
     var aList:= (ScrollBox.Controls[i] as TListImage).StrList;
     aList.debug;
     aList.Paint;
   end;
-
-
+  }
 end;
 {$WARNINGS ON}
 

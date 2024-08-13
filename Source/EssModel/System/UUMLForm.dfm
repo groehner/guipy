@@ -2,8 +2,8 @@ object FUMLForm: TFUMLForm
   Left = 394
   Top = 229
   Caption = 'UML'
-  ClientHeight = 600
-  ClientWidth = 669
+  ClientHeight = 598
+  ClientWidth = 661
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,8 +21,8 @@ object FUMLForm: TFUMLForm
   object PUML: TPanel
     Left = 0
     Top = 0
-    Width = 669
-    Height = 600
+    Width = 661
+    Height = 598
     Align = alClient
     Caption = 'PUML'
     TabOrder = 0
@@ -30,7 +30,7 @@ object FUMLForm: TFUMLForm
     object PDiagram: TPanel
       Left = 1
       Top = 1
-      Width = 667
+      Width = 659
       Height = 420
       Align = alTop
       Constraints.MinHeight = 100
@@ -38,7 +38,7 @@ object FUMLForm: TFUMLForm
       object PDiagramPanel: TPanel
         Left = 1
         Top = 23
-        Width = 665
+        Width = 657
         Height = 396
         Align = alClient
         BevelEdges = [beLeft, beTop]
@@ -68,7 +68,7 @@ object FUMLForm: TFUMLForm
       object UMLToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 665
+        Width = 657
         Height = 22
         AutoSize = True
         ButtonWidth = 24
@@ -78,7 +78,7 @@ object FUMLForm: TFUMLForm
         Images = vilToolbarDark
         ParentColor = False
         TabOrder = 1
-        ExplicitWidth = 673
+        ExplicitWidth = 661
         object TBClose: TToolButton
           Left = 0
           Top = 0
@@ -196,24 +196,24 @@ object FUMLForm: TFUMLForm
     object PInteractive: TPanel
       Left = 1
       Top = 424
-      Width = 667
-      Height = 175
+      Width = 659
+      Height = 173
       Align = alClient
       PopupMenu = PMInteractive
       TabOrder = 1
-      ExplicitWidth = 675
-      ExplicitHeight = 177
+      ExplicitWidth = 663
+      ExplicitHeight = 174
       object TBInteractiveToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 677
+        Width = 665
         Height = 22
         AutoSize = True
         Color = clBtnFace
         Images = vilInteractiveDark
         ParentColor = False
         TabOrder = 0
-        ExplicitWidth = 673
+        ExplicitWidth = 661
         object TBInteractiveClose: TToolButton
           Left = 0
           Top = 0
@@ -262,8 +262,8 @@ object FUMLForm: TFUMLForm
       object SynEdit: TSynEdit
         Left = 1
         Top = 23
-        Width = 677
-        Height = 154
+        Width = 665
+        Height = 151
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -301,19 +301,19 @@ object FUMLForm: TFUMLForm
         RightEdge = 0
         SelectedColor.Alpha = 0.400000005960464500
         OnChange = SynEditChange
-        ExplicitWidth = 673
-        ExplicitHeight = 153
+        ExplicitWidth = 661
+        ExplicitHeight = 150
       end
     end
     object SpTBXSplitter1: TSpTBXSplitter
       Left = 1
       Top = 421
-      Width = 667
+      Width = 659
       Height = 3
       Cursor = crSizeNS
       Align = alTop
       ParentColor = False
-      ExplicitWidth = 675
+      ExplicitWidth = 663
     end
   end
   object PMInteractive: TSpTBXPopupMenu

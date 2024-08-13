@@ -857,19 +857,18 @@ begin
 end;
 
 procedure TFTextDiff.TBParagraphClick(Sender: TObject);
-  var Options: TSynEditorOptions;
 begin
-  Options:= CodeEdit1.Options;
-  if eoShowSpecialChars in Options
-    then Exclude(Options, eoShowSpecialChars)
-    else Include(Options, eoShowSpecialChars);
-  CodeEdit1.Options:= Options;
-  Options:= CodeEdit2.Options;
-  if eoShowSpecialChars in Options
-    then Exclude(Options, eoShowSpecialChars)
-    else Include(Options, eoShowSpecialChars);
-  CodeEdit2.Options:= Options;
-  TBParagraph.Down:= (eoShowSpecialChars in Options);
+  var VisibleSpecialChars := CodeEdit1.VisibleSpecialChars;
+  if VisibleSpecialChars = [] then
+    CodeEdit1.VisibleSpecialChars := [scWhitespace, scControlChars, scEOL]
+  else
+    CodeEdit1.VisibleSpecialChars := [];
+  VisibleSpecialChars := CodeEdit2.VisibleSpecialChars;
+  if VisibleSpecialChars = [] then
+    CodeEdit2.VisibleSpecialChars := [scWhitespace, scControlChars, scEOL]
+  else
+    CodeEdit2.VisibleSpecialChars := [];
+  TBParagraph.Down:= not (CodeEdit1.VisibleSpecialChars = []);
 end;
 
 procedure TFTextDiff.WMSpSkinChange(var Message: TMessage);

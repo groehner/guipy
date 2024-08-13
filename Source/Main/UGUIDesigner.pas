@@ -527,8 +527,10 @@ begin
   if not FileExists(Filename) then
     Exit;
   PPI:= GetPixelsPerInchOfFile(Filename);
-  if PPI = 0 then
+  if PPI = 0 then begin
     RemovePixelsPerInch0(Filename);
+    PPI:= 96;
+  end;
   PythonFilename:= ChangeFileExt(Filename, '.pyw');
   aForm:= TEditorForm(GI_EditorFactory.GetEditorByName(PythonFilename).Form);
   FObjectGenerator.Partner:= aForm;
@@ -546,7 +548,7 @@ begin
       DesignForm.Partner:= aForm;
       Reader.ReadRootComponent(DesignForm);
       DesignForm.Open(Filename, '', aForm.getGeometry, aForm);
-      if PPI <  DesignForm.PixelsPerInch then
+      if DesignForm.PixelsPerInch > PPI then
         DesignForm.Scale(DesignForm.PixelsPerInch, PPI);
       ScaleImages;
       DesignForm.Invalidate; // to paint correct image sizes
