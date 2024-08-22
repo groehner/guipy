@@ -1191,7 +1191,7 @@ class constructor TPyScripterSettings.CreateSettings;
     s:= ParamStr(1);
     if (s = '') or (UpperCase(ExtractFileExt(s)) <> '.ini')
       then s:= TPath.Combine(ExtractFilePath(Application.ExeName), 'GuiPyMachine.ini')
-      else s:= ExpandUNCFileName(s);
+      else s:= ExpandFileName(s);
     if FileExists(s) then begin
       IniFile:= TMemIniFile.Create(s);
       IsPortable:= IniFile.ReadBool('GuiPy', 'PortableApplication', false);

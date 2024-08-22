@@ -2,8 +2,8 @@ object PyIDEDlgBase: TPyIDEDlgBase
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  ClientHeight = 188
-  ClientWidth = 184
+  ClientHeight = 187
+  ClientWidth = 180
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

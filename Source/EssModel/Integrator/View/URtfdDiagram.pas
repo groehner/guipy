@@ -837,7 +837,7 @@ begin
       if Pos('Box: ', Sections[i]) > 0 then begin
         aFile:= Ini.ReadString(Sections[i], 'File', '');
         if aFile <> '' then begin
-          aFile:= ExpandUNCFileName(AddPortableDrive(aFile, path));
+          aFile:= ExpandFileName(AddPortableDrive(aFile, path));
           if not FileExistsCaseSensitive(aFile) then
             aFile:= ExtractFilePath(Filename) + extractFilename(aFile);
           if FileExistsCaseSensitive(aFile) and (Files.IndexOf(aFile) = -1) then

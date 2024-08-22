@@ -1888,7 +1888,6 @@ begin
       Result:= TFUMLForm(aFile.Form);
       Result.Pathname:= Filename;
       Result.DoUpdateCaption;
-      Result.Enter(Self);
       aFile.Activate;
     end;
   finally

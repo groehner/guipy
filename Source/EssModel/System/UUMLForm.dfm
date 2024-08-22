@@ -27,6 +27,8 @@ object FUMLForm: TFUMLForm
     Caption = 'PUML'
     TabOrder = 0
     OnResize = PUMLResize
+    ExplicitWidth = 657
+    ExplicitHeight = 597
     object PDiagram: TPanel
       Left = 1
       Top = 1
@@ -35,6 +37,7 @@ object FUMLForm: TFUMLForm
       Align = alTop
       Constraints.MinHeight = 100
       TabOrder = 0
+      ExplicitWidth = 655
       object PDiagramPanel: TPanel
         Left = 1
         Top = 23
@@ -55,6 +58,7 @@ object FUMLForm: TFUMLForm
         ParentFont = False
         TabOrder = 0
         OnResize = PDiagramPanelResize
+        ExplicitWidth = 653
         object TVFileStructure: TTreeView
           Left = 536
           Top = 18
@@ -78,7 +82,7 @@ object FUMLForm: TFUMLForm
         Images = vilToolbarDark
         ParentColor = False
         TabOrder = 1
-        ExplicitWidth = 661
+        ExplicitWidth = 653
         object TBClose: TToolButton
           Left = 0
           Top = 0
@@ -201,19 +205,19 @@ object FUMLForm: TFUMLForm
       Align = alClient
       PopupMenu = PMInteractive
       TabOrder = 1
-      ExplicitWidth = 663
-      ExplicitHeight = 174
+      ExplicitWidth = 655
+      ExplicitHeight = 172
       object TBInteractiveToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 665
+        Width = 657
         Height = 22
         AutoSize = True
         Color = clBtnFace
         Images = vilInteractiveDark
         ParentColor = False
         TabOrder = 0
-        ExplicitWidth = 661
+        ExplicitWidth = 653
         object TBInteractiveClose: TToolButton
           Left = 0
           Top = 0
@@ -262,8 +266,8 @@ object FUMLForm: TFUMLForm
       object SynEdit: TSynEdit
         Left = 1
         Top = 23
-        Width = 665
-        Height = 151
+        Width = 657
+        Height = 149
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -301,8 +305,8 @@ object FUMLForm: TFUMLForm
         RightEdge = 0
         SelectedColor.Alpha = 0.400000005960464500
         OnChange = SynEditChange
-        ExplicitWidth = 661
-        ExplicitHeight = 150
+        ExplicitWidth = 653
+        ExplicitHeight = 148
       end
     end
     object SpTBXSplitter1: TSpTBXSplitter
@@ -313,7 +317,7 @@ object FUMLForm: TFUMLForm
       Cursor = crSizeNS
       Align = alTop
       ParentColor = False
-      ExplicitWidth = 663
+      ExplicitWidth = 655
     end
   end
   object PMInteractive: TSpTBXPopupMenu

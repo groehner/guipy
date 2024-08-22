@@ -197,7 +197,9 @@ begin
   SynEdit.Font.Assign(EditorOptions.Font);
   ChangeStyle;
   SetOptions;
-  LockEnter:= true;
+  LockEnter:= false;
+  LockRefresh:= false;
+  LockCreateTV:= false;
 end;
 
 procedure TFUMLForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -241,9 +243,6 @@ begin
     Pathname:= Filename;
     Caption:= Filename;
     SetState(State);
-    LockEnter:= false;
-    LockRefresh:= false;
-    LockCreateTV:= false;
     MainModul.AddToProject(Filename);
   finally
     UnlockFormUpdate(Self);
