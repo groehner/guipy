@@ -201,7 +201,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 645
         Height = 440
-        ActivePage = POptions2
+        ActivePage = PVisibility
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -453,16 +453,16 @@ object FConfiguration: TFConfiguration
             AlignWithMargins = True
             Left = 8
             Top = 211
-            Width = 573
+            Width = 565
             Height = 193
             Anchors = [akLeft, akRight, akBottom]
             Caption = 'Gutter'
             TabOrder = 0
             DesignSize = (
-              573
+              565
               193)
             object lGutterColor: TLabel
-              Left = 302
+              Left = 294
               Top = 118
               Width = 66
               Height = 15
@@ -478,7 +478,7 @@ object FConfiguration: TFConfiguration
               Caption = 'Digits'
             end
             object pnlGutterFontDisplay: TPanel
-              Left = 381
+              Left = 373
               Top = 148
               Width = 181
               Height = 27
@@ -555,7 +555,7 @@ object FConfiguration: TFConfiguration
               TabOrder = 8
             end
             object cbGutterFont: TCheckBox
-              Left = 52
+              Left = 44
               Top = 162
               Width = 196
               Height = 21
@@ -565,7 +565,7 @@ object FConfiguration: TFConfiguration
               OnClick = cbGutterFontClick
             end
             object ckGutterGradient: TCheckBox
-              Left = 52
+              Left = 44
               Top = 138
               Width = 137
               Height = 21
@@ -593,7 +593,7 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbLineSpacing: TGroupBox
-            Left = 14
+            Left = 12
             Top = 125
             Width = 265
             Height = 88
@@ -637,7 +637,7 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbRightEdge: TGroupBox
-            Left = 307
+            Left = 299
             Top = 125
             Width = 271
             Height = 88
@@ -682,7 +682,7 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbBookmarks: TGroupBox
-            Left = 307
+            Left = 299
             Top = 57
             Width = 271
             Height = 62
@@ -707,7 +707,7 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbActiveLineColor: TGroupBox
-            Left = 307
+            Left = 299
             Top = 8
             Width = 271
             Height = 43
@@ -1713,7 +1713,7 @@ object FConfiguration: TFConfiguration
           object cbHighlighters: TComboBox
             Left = 8
             Top = 23
-            Width = 176
+            Width = 168
             Height = 23
             Style = csDropDownList
             Anchors = [akLeft, akTop, akRight]
@@ -1796,7 +1796,7 @@ object FConfiguration: TFConfiguration
           object SynSyntaxSample: TSynEdit
             Left = 217
             Top = 80
-            Width = 364
+            Width = 356
             Height = 281
             Anchors = [akLeft, akTop, akRight]
             Font.Charset = DEFAULT_CHARSET
@@ -1879,7 +1879,7 @@ object FConfiguration: TFConfiguration
           object SynThemeSample: TSynEdit
             Left = 199
             Top = 22
-            Width = 382
+            Width = 374
             Height = 387
             Anchors = [akLeft, akTop, akRight]
             Font.Charset = DEFAULT_CHARSET
@@ -1928,13 +1928,13 @@ object FConfiguration: TFConfiguration
             AlignWithMargins = True
             Left = 8
             Top = 160
-            Width = 597
+            Width = 589
             Height = 240
             Anchors = [akLeft, akTop, akRight]
             Caption = 'Code Template:'
             TabOrder = 0
             DesignSize = (
-              597
+              589
               240)
             object Label2: TLabel
               Left = 14
@@ -1988,7 +1988,7 @@ object FConfiguration: TFConfiguration
             object CodeSynTemplate: TSynEdit
               Left = 14
               Top = 84
-              Width = 581
+              Width = 573
               Height = 116
               Anchors = [akLeft, akTop, akRight]
               Font.Charset = DEFAULT_CHARSET
@@ -2030,7 +2030,7 @@ object FConfiguration: TFConfiguration
             object edDescription: TEdit
               Left = 115
               Top = 43
-              Width = 475
+              Width = 467
               Height = 23
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 2
@@ -2139,13 +2139,13 @@ object FConfiguration: TFConfiguration
           object GroupBox3: TGroupBox
             Left = 8
             Top = 160
-            Width = 626
+            Width = 618
             Height = 240
             Anchors = [akLeft, akTop, akRight]
             Caption = 'File Template:'
             TabOrder = 1
             DesignSize = (
-              626
+              618
               240)
             object Label19: TLabel
               Left = 14
@@ -2206,7 +2206,7 @@ object FConfiguration: TFConfiguration
             object FileSynTemplate: TSynEdit
               Left = 14
               Top = 84
-              Width = 610
+              Width = 602
               Height = 116
               Anchors = [akLeft, akTop, akRight]
               Font.Charset = DEFAULT_CHARSET
@@ -2247,7 +2247,7 @@ object FConfiguration: TFConfiguration
             object CBFileTemplatesHighlighter: TComboBox
               Left = 400
               Top = 44
-              Width = 161
+              Width = 153
               Height = 23
               Style = csDropDownList
               Anchors = [akLeft, akTop, akRight]
@@ -3353,7 +3353,7 @@ object FConfiguration: TFConfiguration
           object lbCurrentKeys: TListBox
             Left = 224
             Top = 226
-            Width = 285
+            Width = 277
             Height = 57
             Anchors = [akLeft, akTop, akRight]
             ItemHeight = 15
@@ -3371,7 +3371,7 @@ object FConfiguration: TFConfiguration
           object lbCommands: TListBox
             Left = 224
             Top = 28
-            Width = 285
+            Width = 277
             Height = 97
             Anchors = [akLeft, akTop, akRight]
             ItemHeight = 15
@@ -3382,7 +3382,7 @@ object FConfiguration: TFConfiguration
           object gbDescription: TGroupBox
             Left = 3
             Top = 131
-            Width = 506
+            Width = 498
             Height = 61
             Anchors = [akLeft, akTop, akRight]
             Caption = 'Description'
@@ -3390,7 +3390,7 @@ object FConfiguration: TFConfiguration
             object lblDescription: TLabel
               Left = 2
               Top = 17
-              Width = 502
+              Width = 494
               Height = 42
               Align = alClient
               AutoSize = False
@@ -5697,7 +5697,7 @@ object FConfiguration: TFConfiguration
             Caption = 'Toolbars'
           end
           object LVVisibilityTabs: TListView
-            Left = 66
+            Left = 90
             Top = 3
             Width = 140
             Height = 102
@@ -5714,7 +5714,7 @@ object FConfiguration: TFConfiguration
             OnClick = LVVisibilityTabsClick
           end
           object LVVisibilityElements: TListView
-            Left = 212
+            Left = 244
             Top = 3
             Width = 292
             Height = 430
@@ -5730,7 +5730,7 @@ object FConfiguration: TFConfiguration
             ViewStyle = vsReport
           end
           object LVVisibilityMenus: TListView
-            Left = 66
+            Left = 90
             Top = 120
             Width = 140
             Height = 176
@@ -5747,7 +5747,7 @@ object FConfiguration: TFConfiguration
             OnClick = LVVisibilityMenusClick
           end
           object LVVisibilityToolbars: TListView
-            Left = 66
+            Left = 90
             Top = 313
             Width = 140
             Height = 120
@@ -5764,7 +5764,7 @@ object FConfiguration: TFConfiguration
             OnClick = LVVisibilityToolbarsClick
           end
           object BVisDefault: TButton
-            Left = 532
+            Left = 549
             Top = 206
             Width = 85
             Height = 25

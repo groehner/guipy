@@ -556,11 +556,9 @@ end;
 
 procedure TFUMLForm.SetFont(aFont: TFont);
 begin
-//  if (AFont.Name <> Font.Name) or (AFont.Size <> Font.Size) then begin
-    Font.Assign(aFont);
-    MainModul.Diagram.SetFont(aFont);
-    MainModul.RefreshDiagram;
-//  end;
+  Font.Assign(aFont);
+  MainModul.Diagram.SetFont(aFont);
+  MainModul.RefreshDiagram;
 end;
 
 function TFUMLForm.GetFont: TFont;
@@ -811,7 +809,7 @@ end;
 
 class function TFUMLForm.ToolbarCount: integer;
 begin
-  Result:= 13;
+  Result:= 14;
 end;
 
 end.

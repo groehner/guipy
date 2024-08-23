@@ -96,6 +96,7 @@ type
     function GetPanel: TCustomPanel; virtual; abstract;
     procedure ResolveAssociations; virtual; abstract;
     procedure ResolveObjectAssociations; virtual; abstract;
+    procedure ShowRelationshipAttributesBold; virtual; abstract;
     function hasSelectedConnection: boolean; virtual; abstract;
     procedure SetInteractive(OnInteractiveModified: TNotifyEvent); virtual; abstract;
     procedure SetFormMouseDown(OnFormMouseDown: TNotifyEvent); virtual; abstract;
@@ -237,7 +238,6 @@ end;
 procedure TDiagramIntegrator.SetFont(const aFont: TFont);
 begin
   FFont.Assign(aFont);
-  //GuiPyOptions.UMLFont.Assign(aFont);
 end;
 
 function TDiagramIntegrator.GetFont: TFont;

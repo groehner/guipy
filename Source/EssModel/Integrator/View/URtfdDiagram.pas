@@ -90,6 +90,7 @@ type
     procedure ClearDiagram; override;
     procedure ResolveAssociations; override;
     procedure ResolveObjectAssociations; override;
+    procedure ShowRelationshipAttributesBold; override;
     procedure InitFromModel; override;
     procedure PaintTo(Canvas: TCanvas; X, Y: integer; SelectedOnly : boolean); override;
     procedure GetDiagramSize(var W, H : integer); override;
@@ -484,8 +485,8 @@ begin
   Panel.DeleteNotEditedConnections;
   Panel.DeleteObjectConnections;    // why?
   for i:= 0 to BoxNames.Count - 1 do
-    if (BoxNames.Objects[I] is TRtfdClass) then begin //Class
-      CBox:= (BoxNames.Objects[I] as TRtfdClass);
+    if (BoxNames.Objects[i] is TRtfdClass) then begin //Class
+      CBox:= (BoxNames.Objects[i] as TRtfdClass);
       //Ancestors
       for j:= 0 to (CBox.Entity as TClass).AncestorsCount - 1 do begin
         aClass:= CBox.Entity as TClass;
@@ -580,6 +581,46 @@ begin
       end;
     end;
   Panel.ShowAll;
+end;
+
+//Make arrows between boxes
+procedure TRtfdDiagram.ShowRelationshipAttributesBold;
+var
+  i, j: integer;
+  CBox: TRtfdClass;
+  aClass: TClass;
+  A : TAttribute;
+  Mi : IModelIterator;
+  DestBox: TRtfdBox;
+  Ass: string;
+begin
+  for i:= 0 to BoxNames.Count - 1 do begin
+    if (BoxNames.Objects[i] is TRtfdClass) then begin //Class
+      CBox:= (BoxNames.Objects[i] as TRtfdClass);
+      aClass:= CBox.Entity as TClass;
+      Mi := aClass.GetAttributes;
+      while Mi.HasNext do begin
+        A := TAttribute(Mi.Next);
+        if Assigned(A.TypeClassifier) then begin
+          for j:= 0 to aClass.AncestorsCount - 1 do
+            if (A.TypeClassifier = aClass.Ancestor[j]) and assigned(getBox(A.TypeClassifier.Name)) then
+              A.Connected:= true;
+          Ass:= A.TypeClassifier.Fullname;
+          if IsPythonType(Ass) then
+            continue
+          else begin
+            DestBox:= GetBox(Ass);
+            if not assigned(DestBox) and (Pos('.', Ass) = 0) and (CBox.Entity.Package <> '') then begin
+              Ass:= CBox.Entity.Package + '.' + Ass;
+              DestBox:= GetBox(Ass);
+            end;
+          end;
+          if assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) > -1) and DestBox.Entity.IsVisible then
+            A.Connected:= true;
+        end;
+      end;
+    end;
+  end;
 end;
 
 // make arrows between Objects
@@ -796,9 +837,8 @@ var
   aClass: TClass;
   aClassifier: TClassifier;
 
-  BoxShowParameter, BoxSortorder,
-  BoxShowIcons, BoxFontSize: integer;
-  BoxFontName, BoxTypeBinding: string;
+  BoxShowParameter, BoxSortorder, BoxShowIcons: integer;
+  BoxTypeBinding: string;
   CommentBox: TRtfdCommentBox;
   VisibilityFilterAsInteger: integer;
 begin
@@ -859,11 +899,8 @@ begin
           BoxShowParameter:= Ini.ReadInteger(S, 'ShowParameter', ShowParameter);
           BoxSortOrder:= Ini.ReadInteger(S, 'SortOrder', SortOrder);
           BoxShowIcons:= Ini.ReadInteger(S, 'ShowIcons', ShowIcons);
-          BoxFontsize:= Font.Size;
-          BoxFontname:= Font.Name;
           BoxTypeBinding:= Ini.ReadString(S, 'TypeBinding', '');
-          Box.SetParameters(BoxShowParameter, BoxSortOrder, BoxShowIcons, BoxFontSize,
-                            BoxFontname, Font, BoxTypeBinding);
+          Box.SetParameters(BoxShowParameter, BoxSortOrder, BoxShowIcons, Font, BoxTypeBinding);
         end else
           TManagedObject(Panel.FindManagedControl(Box)).Selected:= true;
       end;
@@ -985,6 +1022,9 @@ begin
       inc(i);
     until c = '';
     FreeAndNil(AllBoxes);
+    if GuiPyOptions.RelationshipAttributesBold then
+      ShowRelationshipAttributesBold;
+
     Panel.SetConnections(ShowConnections);
     if CountObjects = 0
       then SetShowObjectDiagram(false)
@@ -1530,13 +1570,12 @@ begin
   if Assigned(B1) and Assigned(B2) then begin
     B2.Top := B1.Top + B1.Height + 50 + random(30)-30;
     B2.Left:= max(B1.Left + (B1.Width - B2.Width) div 2 + random(200) - 100, 0);
-    B2.Font.Assign(Font);
     Panel.ConnectObjects(B2, B1, asInstanceOf);
   end else if Assigned(B2) then begin
     B2.Top := B2.Top  + random(30) - 30;
     B2.Left:= B2.Left + random(30) - 30;
-    B2.Font.Assign(Font);
   end;
+  B2.Font.Assign(Font);
   ShowAttributes(Objectname, aClass, aModelObject);
   if (B2 = nil) and assigned(aModelObject) then
     AddBox(aModelObject);

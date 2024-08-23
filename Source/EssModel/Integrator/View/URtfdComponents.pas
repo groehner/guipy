@@ -87,9 +87,8 @@ type
     procedure AddChild(Sender: TModelEntity; NewChild: TModelEntity); virtual;
     procedure Remove(Sender: TModelEntity); virtual;
     procedure EntityChange(Sender: TModelEntity); virtual;
-    procedure SetParameters(ShowParameter, SortOrder, ShowIcons,
-      FontSize: integer; const Fontname: string; aFont: TFont;
-      const TypeBinding: string);
+    procedure SetParameters(ShowParameter, SortOrder, ShowIcons: integer;
+      aFont: TFont; const TypeBinding: string);
     function isJUnitTestclass: boolean;
     procedure CloseEdit;
     procedure makeBitmap;
@@ -434,7 +433,6 @@ end;
 procedure TRtfdBox.RefreshEntities;
 begin
   Frame.Diagram.ClearMarkerAndConnections(Self);
-  // Hide;
   DestroyComponents;
   FreeAndNil(FBitmap);
   FBitmapOK := false;
@@ -505,6 +503,7 @@ var
   IsObject, IsClass, IsValid: boolean;
   Pathname, SVGColor: String;
 begin
+  Canvas.Font.Assign(Font);
   if assigned(FBitmap) and FBitmapOK then
   begin
     Canvas.Draw(0, 0, FBitmap);
@@ -842,13 +841,11 @@ begin
   end;
 end;
 
-procedure TRtfdBox.SetParameters(ShowParameter, SortOrder, ShowIcons,
-  FontSize: integer; const Fontname: string; aFont: TFont;
-  const TypeBinding: string);
+procedure TRtfdBox.SetParameters(ShowParameter, SortOrder, ShowIcons: integer;
+  aFont: TFont; const TypeBinding: string);
 begin
   Self.Font.assign(aFont);
-  Self.Font.Size := FontSize;
-  Self.Font.Name := Fontname;
+  Canvas.Font.Assign(aFont);
   Self.FShowParameter := ShowParameter;
   Self.FSortOrder := SortOrder;
   Self.FShowIcons := ShowIcons;
@@ -1825,6 +1822,7 @@ var
 begin
   if TypeAndBinding <> '' then
   begin
+    Canvas.Font.Assign(Font);
     SetColors;
     // draw classname
     if FTransparent then
@@ -2379,7 +2377,7 @@ constructor TRtfdCustomLabel.Create(aOwner: TComponent; aEntity: TModelEntity);
 begin
   inherited Create(aOwner);
   Parent := aOwner as TWinControl;
-  Font.assign((aOwner as TRtfdBox).Font);
+  Canvas.Font.assign(Font);
   Self.Entity := aEntity;
   Height := abs(Font.Height);
   FAlignment := taLeftJustify;
@@ -2426,6 +2424,7 @@ var
   R: TRect;
   S: string;
 begin
+  Canvas.Font.Assign(Font);
   SetColors;
   if FTransparent then
     Canvas.Brush.Style := bsClear
@@ -2530,28 +2529,24 @@ begin
 end;
 
 procedure TRtfdCustomLabel.DoDrawText(var Rect: TRect; Flags: Longint);
-var
-  aText: string;
 begin
-  aText := Caption;
+  var aText:= Caption;
   if aText = '' then
-    aText := '  ';
+    aText:= '  ';
   if (Flags and DT_CALCRECT <> 0) and ((aText = '') and (aText[1] = '&') and
     (aText[2] = #0)) then
     aText := aText + ' ';
-  Flags := Flags or DT_NOPREFIX;
-  Flags := DrawTextBiDiModeFlags(Flags);
+  Flags:= Flags or DT_NOPREFIX;
+  Flags:= DrawTextBiDiModeFlags(Flags);
   Canvas.Font.assign(Font);
-  if not Enabled then
-  begin
+  if not Enabled then begin
     OffsetRect(Rect, 1, 1);
     Canvas.Font.color := clBtnHighlight;
     DrawText(Canvas.Handle, PChar(text), length(aText), Rect, Flags);
     OffsetRect(Rect, -1, -1);
-    Canvas.Font.color := clBtnShadow;
+    Canvas.Font.color:= clBtnShadow;
     DrawText(Canvas.Handle, PChar(aText), length(aText), Rect, Flags);
-  end
-  else
+  end else
     DrawText(Canvas.Handle, PChar(aText), length(aText), Rect, Flags);
 end;
 
