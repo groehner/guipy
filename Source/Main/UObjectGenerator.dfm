@@ -24,6 +24,8 @@ object FObjectGenerator: TFObjectGenerator
     Width = 211
     Height = 31
     Panels = <>
+    ExplicitTop = 476
+    ExplicitWidth = 203
     DesignSize = (
       211
       31)
@@ -64,17 +66,17 @@ object FObjectGenerator: TFObjectGenerator
     Width = 211
     Height = 488
     Align = alClient
-    Constraints.MinWidth = 219
+    Constraints.MinWidth = 203
     TabOrder = 0
     TitleCaptions.Strings = (
       'Attribute'
       'Value')
     OnKeyUp = ValueListEditorKeyUp
-    ExplicitWidth = 219
-    ExplicitHeight = 500
+    ExplicitWidth = 203
+    ExplicitHeight = 476
     ColWidths = (
       111
-      110)
+      94)
   end
   object PictureDialog: TOpenDialog
     Filter = 

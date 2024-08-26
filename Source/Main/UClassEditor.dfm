@@ -176,7 +176,7 @@ object FClassEditor: TFClassEditor
         Height = 23
         AutoDropDown = True
         Sorted = True
-        TabOrder = 4
+        TabOrder = 3
         OnCloseUp = ComboBoxCloseUp
         OnDropDown = CBAttributeTypeDropDown
         OnEnter = CBComboBoxEnter
@@ -298,7 +298,7 @@ object FClassEditor: TFClassEditor
         Top = 220
         Width = 225
         Height = 23
-        TabOrder = 3
+        TabOrder = 4
         OnCloseUp = ComboBoxCloseUp
         OnDropDown = CBAttributeValueDropDown
         OnEnter = CBComboBoxEnter

@@ -137,7 +137,6 @@ procedure TFObjectGenerator.SetBoundsForFormular(Form: TForm);
 begin
   if Partner.FrameType = 2 then begin
     s1:= 'self.root.geometry(';
-//    s2:= Indent2 + s1 + '''' + IntToStr(PPIUnScale(Form.ClientWidth)) + 'x' + IntToStr(PPIUnScale(Form.ClientHeight, Form.CurrentPPI)) + ''')';
     s2:= Indent2 + s1 + '''' + IntToStr(PPIUnScale(Form.ClientWidth)) + 'x' + IntToStr(PPIUnScale(Form.ClientHeight)) + ''')';
   end else begin
     s1:= 'self.resize(';
@@ -440,19 +439,23 @@ begin
 end;
 
 procedure TFObjectGenerator.SetColWidths;
-  var i, max1, max2: integer;
+  var i, max1, max2, w, h: integer;
       s: string;
 begin
+  w:= Width;
+  h:= Height;
   max1:= 0;
   max2:= 0;
   for i:= 0 to ValueListEditor.RowCount - 1 do begin
     s:= ValueListEditor.Cells[0, i];
-    max1:= Math.Max(Canvas.TextWidth(s), max1);
+    max1:= Math.Max(Canvas.TextWidth(s), max1);   // changes Width !?!?!?!?!?
     s:= ValueListEditor.Cells[1, i];
     max2:= Math.max(Canvas.TextWidth(s), max2);
   end;
   max1:= max1 + 10;
   max2:= max2 + 10;
+  Width:= w;
+  Height:= h;
   if Width < max1 + 1 + max2 then
     Width:= max1 + 3 + max2;
   if Width < BCancel.Left + BCancel.Width then

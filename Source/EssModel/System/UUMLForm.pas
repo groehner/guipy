@@ -312,7 +312,7 @@ begin
     end;
   end;
   SaveAndReload;
-  if not MainModul.Diagram.hasObjects and MainModul.Diagram.HasAInvalidClass then
+  if {not MainModul.Diagram.hasObjects and } MainModul.Diagram.HasAInvalidClass then
     PyIDEMainForm.RunFile(fFile);
   LockEnter:= false;
 end;

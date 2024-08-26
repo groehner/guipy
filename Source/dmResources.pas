@@ -181,7 +181,6 @@ end;
 function TResourcesDataModule.GetSaveFileName(var ANewName: string;
   AHighlighter: TSynCustomHighlighter; DefaultExtension: string): boolean;
   var aFile: IFile;
-
 begin
   with dlgFileSave do begin
     if ANewName <> '' then begin
@@ -215,9 +214,14 @@ begin
         MessageDlg(Format(_(SWriteProtected), [FileName]), mtError, [mbAbort], 0);
         Exit(false);
       end;
-      if FileExists(Filename) and (MessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
+      if FileExists(Filename) then
+        if (MessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
                          mtConfirmation, mbYesNoCancel, 0) <> mrYes)
-        then Exit(false);
+          then Exit(false)
+          else begin
+            var s:= ChangeFileExt(Filename, '.puml');
+            if FileExists(s) then DeleteFile(s);
+          end;
       ANewName := FileName;
       GuiPyOptions.Sourcepath:= ExtractFilePath(aNewName);
       Result := true;

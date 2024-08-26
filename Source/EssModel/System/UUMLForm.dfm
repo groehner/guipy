@@ -2,8 +2,8 @@ object FUMLForm: TFUMLForm
   Left = 394
   Top = 229
   Caption = 'UML'
-  ClientHeight = 597
-  ClientWidth = 657
+  ClientHeight = 596
+  ClientWidth = 653
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,8 +21,8 @@ object FUMLForm: TFUMLForm
   object PUML: TPanel
     Left = 0
     Top = 0
-    Width = 657
-    Height = 597
+    Width = 653
+    Height = 596
     Align = alClient
     Caption = 'PUML'
     TabOrder = 0
@@ -30,16 +30,16 @@ object FUMLForm: TFUMLForm
     object PDiagram: TPanel
       Left = 1
       Top = 1
-      Width = 659
+      Width = 655
       Height = 420
       Align = alTop
       Constraints.MinHeight = 100
       TabOrder = 0
-      ExplicitWidth = 655
+      ExplicitWidth = 651
       object PDiagramPanel: TPanel
         Left = 1
         Top = 23
-        Width = 657
+        Width = 653
         Height = 396
         Align = alClient
         BevelEdges = [beLeft, beTop]
@@ -56,7 +56,7 @@ object FUMLForm: TFUMLForm
         ParentFont = False
         TabOrder = 0
         OnResize = PDiagramPanelResize
-        ExplicitWidth = 653
+        ExplicitWidth = 649
         object TVFileStructure: TTreeView
           Left = 536
           Top = 18
@@ -70,7 +70,7 @@ object FUMLForm: TFUMLForm
       object UMLToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 653
+        Width = 649
         Height = 22
         AutoSize = True
         ButtonWidth = 24
@@ -197,22 +197,22 @@ object FUMLForm: TFUMLForm
     object PInteractive: TPanel
       Left = 1
       Top = 424
-      Width = 655
-      Height = 172
+      Width = 651
+      Height = 171
       Align = alClient
       PopupMenu = PMInteractive
       TabOrder = 1
       object TBInteractiveToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 657
+        Width = 653
         Height = 22
         AutoSize = True
         Color = clBtnFace
         Images = vilInteractiveDark
         ParentColor = False
         TabOrder = 0
-        ExplicitWidth = 653
+        ExplicitWidth = 649
         object TBInteractiveClose: TToolButton
           Left = 0
           Top = 0
@@ -261,8 +261,8 @@ object FUMLForm: TFUMLForm
       object SynEdit: TSynEdit
         Left = 1
         Top = 23
-        Width = 657
-        Height = 149
+        Width = 653
+        Height = 148
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -300,14 +300,14 @@ object FUMLForm: TFUMLForm
         RightEdge = 0
         SelectedColor.Alpha = 0.400000005960464500
         OnChange = SynEditChange
-        ExplicitWidth = 653
-        ExplicitHeight = 148
+        ExplicitWidth = 649
+        ExplicitHeight = 147
       end
     end
     object SpTBXSplitter1: TSpTBXSplitter
       Left = 1
       Top = 421
-      Width = 655
+      Width = 651
       Height = 3
       Cursor = crSizeNS
       Align = alTop
@@ -434,7 +434,7 @@ object FUMLForm: TFUMLForm
       item
         CollectionIndex = 12
         CollectionName = 'Light\Interactive'
-        Name = 'ResetJava'
+        Name = 'Interactive'
       end
       item
         CollectionIndex = 13
