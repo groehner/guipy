@@ -845,6 +845,8 @@ end;
 procedure TQtFontComboBox.MakeFont;
   var s1, s2: string;
 begin
+  if Name = '' then exit;
+
   s1:= 'self.' + Name + '.setCurrentFont';
   s2:= '(QFont(' + asString(FCurrentFont.Name) + ', ' + IntToStr(FCurrentFont.Size);
   if fsBold   in FCurrentFont.Style then

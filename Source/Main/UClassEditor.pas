@@ -641,8 +641,9 @@ begin
   if Assigned(Node) then
     Node:= Node.getFirstChild;
   while Assigned(Node) and Assigned(Node.Data) do begin
-    sNode:= TOperation(Node.Data).toShortStringWithoutParameterNames;
-    if Pos(s, sNode) = 1 then
+    //sNode:= TOperation(Node.Data).toShortStringWithoutParameterNames; Problem bei Peter Ehrlich
+    sNode:= TOperation(Node.Data).Name + '(';
+    if Pos(sNode, s) = 1 then
       break;
     Node:= Node.getNextSibling;
   end;
@@ -1413,7 +1414,7 @@ begin
     end;
 
     if not hasSourceCode or
-      (MessageDlg(Format(_('Method %s contains source code.'), [Method.Name]) + #13 +
+      (StyledMessageDlg(Format(_('Method %s contains source code.'), [Method.Name]) + #13 +
        _('Delete method with source code?'), mtConfirmation, mbYesNoCancel, 0) = mrYes) then begin
       DeleteMethod(Method);
       myEditor.Modified:= true;

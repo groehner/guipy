@@ -358,6 +358,7 @@ end;
 procedure TBaseQtWidget.MakeFont;
   var s1, s2: string;
 begin
+  if Name = '' then exit;
   s1:= 'self.' + Name + '.setFont';
   s2:= '(QFont(' + asString(Font.Name) + ', ' + IntToStr(PPIUnScale(Font.Size));
   if fsBold in Font.Style then

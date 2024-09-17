@@ -4,8 +4,8 @@ object FClassEditor: TFClassEditor
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'UML class editor'
-  ClientHeight = 447
-  ClientWidth = 705
+  ClientHeight = 446
+  ClientWidth = 701
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -58,7 +58,7 @@ object FClassEditor: TFClassEditor
     Top = 10
     Width = 364
     Height = 435
-    ActivePage = TSMethods
+    ActivePage = TSAttributes
     TabOrder = 0
     OnChange = PageControlChange
     object TSClass: TTabSheet
@@ -190,7 +190,9 @@ object FClassEditor: TFClassEditor
           'float'
           'integer'
           'list'
+          'None'
           'set'
+          'str'
           'String'
           'tuple')
       end
@@ -539,7 +541,9 @@ object FClassEditor: TFClassEditor
             'float'
             'integer'
             'list'
+            'None'
             'set'
+            'str'
             'String'
             'tuple')
         end

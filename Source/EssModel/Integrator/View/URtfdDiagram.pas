@@ -1053,7 +1053,8 @@ begin
   Panel.RecalcSize;
   Panel.IsModified := False;
   Panel.ShowAll;
-  Panel.SetFocus;
+  if Panel.CanFocus then
+    Panel.SetFocus;
 end;
 
 procedure TRtfdDiagram.DoLayout;
@@ -1223,7 +1224,7 @@ begin
   try
     for i:= 0 to L.Count - 1 do begin
       B:= TObject(L[i]) as TRtfdBox;
-      if assigned(B) and assigned(b.Font) then
+      if assigned(B) and assigned(B.Font) then
         B.Font.Assign(aFont);
     end;
   finally
@@ -1673,12 +1674,13 @@ begin
       ShowMethodEntered('<init>', 'Actor', CreateObjectObjectname, CreateObjectParameter);
       ShowNewObject(CreateObjectObjectname, CreateObjectClass);
       if GuiPyOptions.ShowAllNewObjects then
-        ShowAllNewObjectsString(CreateObjectObjectname);
-      UpdateAllObjects;
-      ResolveObjectAssociations;
-      Panel.RecalcSize;
+        ShowAllNewObjectsString(CreateObjectObjectname)
+      else begin
+        UpdateAllObjects;
+        ResolveObjectAssociations;
+        Panel.RecalcSize;
+      end;
     end;
-    ShowAll;
   finally
     Screen.Cursor := crDefault;
     UnLockFormUpdate(UMLForm);
@@ -1993,8 +1995,9 @@ begin
   FLivingObjects.makeAllObjects;
 
   if GuiPyOptions.ShowAllNewObjects then
-    ShowAllNewObjectsString(CallMethodFrom);
-  UpdateAllObjects;
+    ShowAllNewObjectsString(CallMethodFrom)
+  else
+    UpdateAllObjects;
   SL:= TStringList.Create;
   try
     SL.LoadFromFile(TPath.Combine(GuiPyOptions.TempDir, 'output.txt'));
@@ -3090,8 +3093,8 @@ begin
       ShowMethodEntered('<init>', From, newObject, '');
     end;
   end;
-  ResolveObjectAssociations;
   UpdateAllObjects;
+  ResolveObjectAssociations;
   Panel.RecalcSize;
 end;
 
@@ -3392,7 +3395,7 @@ begin
     aClassname:= aClass.Entity.Name + 'Test';
     Filename:= ExtractFilepath(aClass.getPathname) + WithoutGeneric(aClassname) + '.py';
     if FileExists(Filename) and
-                 (MessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
+                 (StyledMessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
                             mtConfirmation, mbYesNoCancel, 0) = mrYes) or
                  not FileExists(Filename)
     then begin
@@ -3595,6 +3598,7 @@ end;
 procedure TRtfdDiagram.SetUMLFont;
 begin
   ResourcesDataModule.dlgFontDialog.Font.Assign(Font);
+  ResourcesDataModule.dlgFontDialog.Options:= [];
   if ResourcesDataModule.dlgFontDialog.Execute then begin
     Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
     GuiPyOptions.UMLFont.Assign(Font);

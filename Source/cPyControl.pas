@@ -272,8 +272,8 @@ begin
     Result := fRegPythonVersions[fPythonVersionIndex]
   else if (fPythonVersionIndex < 0) and (-fPythonVersionIndex <= Length(CustomPythonVersions)) then
     Result := CustomPythonVersions[-fPythonVersionIndex -1]
-  else
-    //Assert(False, 'Invalid PythonVersionIndex');
+  //else
+  //  Assert(False, 'Invalid PythonVersionIndex');
 end;
 
 function TPythonControl.Inactive: boolean;

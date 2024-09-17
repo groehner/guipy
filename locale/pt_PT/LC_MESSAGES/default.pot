@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2024-07-12 19:25\n"
-"PO-Revision-Date: 2024-07-12 19:25\n"
+"POT-Creation-Date: 2024-09-17 08:24\n"
+"PO-Revision-Date: 2024-09-17 08:24\n"
 "Last-Translator: Somebody <your.email@address.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -117,7 +117,7 @@ msgstr ""
 #. ELStringsEditorDlg..btnOk..Caption
 #: Formdesigner/ELStringsEdit.dfm:35
 #. FObjectGenerator..StatusBar..BOK..Caption
-#: Main/UObjectGenerator.dfm:55
+#: Main/UObjectGenerator.dfm:57
 #. FOpenFolderForm..BOK..Caption
 #: Main/UOpenFolderForm.dfm:35
 #: Main/UDownload.pas:169
@@ -220,7 +220,7 @@ msgstr ""
 #. FunctionListWindow..Actions..actHelpHelp..Caption
 #: frmFunctionList.dfm:291
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..HelpMenu..Caption
-#: frmPyIDEMain.dfm:1444
+#: frmPyIDEMain.dfm:1447
 #. ToDoWindow..Actions..actHelpHelp..Caption
 #: frmToDo.dfm:243
 #. Programmer's name for it: SDlgHelp
@@ -231,7 +231,7 @@ msgstr ""
 #. CodeTemplates..Panel..GroupBox..Caption
 #: dlgCodeTemplates.dfm:117
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Caption
-#: Utils/UConfiguration.dfm:1937
+#: Utils/UConfiguration.dfm:1934
 msgid "Code Template:"
 msgstr ""
 
@@ -246,9 +246,9 @@ msgstr ""
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox1..Label1..Caption
 #: dlgToolProperties.dfm:223
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label2..Caption
-#: Utils/UConfiguration.dfm:1948
+#: Utils/UConfiguration.dfm:1944
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label19..Caption
-#: Utils/UConfiguration.dfm:2162
+#: Utils/UConfiguration.dfm:2155
 msgid "&Name:"
 msgstr ""
 
@@ -257,16 +257,16 @@ msgstr ""
 #. FileTemplatesDialog..Panel..GroupBox..Label2..Caption
 #: dlgFileTemplates.dfm:51
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label4..Caption
-#: Utils/UConfiguration.dfm:1955
+#: Utils/UConfiguration.dfm:1951
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label20..Caption
-#: Utils/UConfiguration.dfm:2170
+#: Utils/UConfiguration.dfm:2163
 msgid "&Template:"
 msgstr ""
 
 #. CodeTemplates..Panel..GroupBox..Label5..Caption
 #: dlgCodeTemplates.dfm:142
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label16..Caption
-#: Utils/UConfiguration.dfm:1962
+#: Utils/UConfiguration.dfm:1958
 msgid "&Description:"
 msgstr ""
 
@@ -277,9 +277,9 @@ msgstr ""
 #. FileTemplatesDialog..Panel..GroupBox..Label4..Caption
 #: dlgFileTemplates.dfm:67
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label17..Caption
-#: Utils/UConfiguration.dfm:1969
+#: Utils/UConfiguration.dfm:1965
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label22..Caption
-#: Utils/UConfiguration.dfm:2186
+#: Utils/UConfiguration.dfm:2179
 msgid "Press Shift+Ctrl+M for Modifier completion"
 msgstr ""
 
@@ -290,9 +290,9 @@ msgstr ""
 #. FileTemplatesDialog..Panel..GroupBox..Label3..Caption
 #: dlgFileTemplates.dfm:75
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label18..Caption
-#: Utils/UConfiguration.dfm:1983
+#: Utils/UConfiguration.dfm:1979
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label23..Caption
-#: Utils/UConfiguration.dfm:2194
+#: Utils/UConfiguration.dfm:2187
 msgid "Press Shift+Ctrl+P for Parameter completion"
 msgstr ""
 
@@ -311,19 +311,19 @@ msgstr ""
 #. VariablesWindow..BGPanel..FGPanel..Panel1..VariablesTree......Text
 #: frmVariables.dfm:171
 #. FClassEditor..PageControl..TSClass..LClassName..Caption
-#: Main/UClassEditor.dfm:65
+#: Main/UClassEditor.dfm:71
 #. FClassEditor..PageControl..TSAttributes..LAttributeName..Caption
-#: Main/UClassEditor.dfm:137
+#: Main/UClassEditor.dfm:143
 #. FClassEditor..PageControl..TSMethods..LMethodName..Caption
-#: Main/UClassEditor.dfm:325
+#: Main/UClassEditor.dfm:332
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..LParameterName..Caption
-#: Main/UClassEditor.dfm:450
+#: Main/UClassEditor.dfm:457
 #. FConfiguration..PMain..PanelRight..PageList..PPython..vtPythonVersions......Text
-#: Utils/UConfiguration.dfm:228
+#: Utils/UConfiguration.dfm:233
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..CodeTemplatesLvItems......Caption
-#: Utils/UConfiguration.dfm:2060
+#: Utils/UConfiguration.dfm:2054
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..FileTemplatesLvItems......Caption
-#: Utils/UConfiguration.dfm:2130
+#: Utils/UConfiguration.dfm:2124
 #: frmVariables.pas:556
 msgid "Name"
 msgstr ""
@@ -333,9 +333,9 @@ msgstr ""
 #. ToDoWindow..BGPanel..FGPanel..ToDoView......Text
 #: frmToDo.dfm:148
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..CodeTemplatesLvItems......Caption
-#: Utils/UConfiguration.dfm:2064
+#: Utils/UConfiguration.dfm:2058
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..gbDescription..Caption
-#: Utils/UConfiguration.dfm:3397
+#: Utils/UConfiguration.dfm:3388
 msgid "Description"
 msgstr ""
 
@@ -352,9 +352,9 @@ msgstr ""
 #. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..btnAddKey..Caption
 #: Utils/UConfiguration.dfm:1617
 #. FConfiguration..PTemplatesActionList..actCodeAddItem..Caption
-#: Utils/UConfiguration.dfm:6082
+#: Utils/UConfiguration.dfm:6071
 #. FConfiguration..PTemplatesActionList..actFileAddItem..Caption
-#: Utils/UConfiguration.dfm:6117
+#: Utils/UConfiguration.dfm:6106
 msgid "&Add"
 msgstr ""
 
@@ -367,9 +367,9 @@ msgstr ""
 #. ToolProperties..ActionList..actAddItem..Hint
 #: dlgToolProperties.dfm:738
 #. FConfiguration..PTemplatesActionList..actCodeAddItem..Hint
-#: Utils/UConfiguration.dfm:6083
+#: Utils/UConfiguration.dfm:6072
 #. FConfiguration..PTemplatesActionList..actFileAddItem..Hint
-#: Utils/UConfiguration.dfm:6118
+#: Utils/UConfiguration.dfm:6107
 msgid "Add item"
 msgstr ""
 
@@ -384,11 +384,11 @@ msgstr ""
 #. ToolProperties..ActionList..actDeleteItem..Caption
 #: dlgToolProperties.dfm:744
 #. FClassEditor..ActionList..ActionDelete..Caption
-#: Main/UClassEditor.dfm:662
+#: Main/UClassEditor.dfm:670
 #. FConfiguration..PTemplatesActionList..actCodeDeleteItem..Caption
-#: Utils/UConfiguration.dfm:6089
+#: Utils/UConfiguration.dfm:6078
 #. FConfiguration..PTemplatesActionList..actFileDeleteItem..Caption
-#: Utils/UConfiguration.dfm:6124
+#: Utils/UConfiguration.dfm:6113
 msgid "&Delete"
 msgstr ""
 
@@ -401,9 +401,9 @@ msgstr ""
 #. ToolProperties..ActionList..actDeleteItem..Hint
 #: dlgToolProperties.dfm:745
 #. FConfiguration..PTemplatesActionList..actCodeDeleteItem..Hint
-#: Utils/UConfiguration.dfm:6090
+#: Utils/UConfiguration.dfm:6079
 #. FConfiguration..PTemplatesActionList..actFileDeleteItem..Hint
-#: Utils/UConfiguration.dfm:6125
+#: Utils/UConfiguration.dfm:6114
 msgid "Delete item"
 msgstr ""
 
@@ -418,9 +418,9 @@ msgstr ""
 #. FileExplorerWindow..FileExplorerActions..actGoUp..Caption
 #: frmFileExplorer.dfm:326
 #. FConfiguration..PTemplatesActionList..actCodeMoveUp..Caption
-#: Utils/UConfiguration.dfm:6096
+#: Utils/UConfiguration.dfm:6085
 #. FConfiguration..PTemplatesActionList..actFileMoveUp..Caption
-#: Utils/UConfiguration.dfm:6131
+#: Utils/UConfiguration.dfm:6120
 msgid "&Up"
 msgstr ""
 
@@ -431,9 +431,9 @@ msgstr ""
 #. FileTemplatesDialog..ActionList..actMoveUp..Hint
 #: dlgFileTemplates.dfm:299
 #. FConfiguration..PTemplatesActionList..actCodeMoveUp..Hint
-#: Utils/UConfiguration.dfm:6097
+#: Utils/UConfiguration.dfm:6086
 #. FConfiguration..PTemplatesActionList..actFileMoveUp..Hint
-#: Utils/UConfiguration.dfm:6132
+#: Utils/UConfiguration.dfm:6121
 msgid "Move item up"
 msgstr ""
 
@@ -446,9 +446,9 @@ msgstr ""
 #. FileTemplatesDialog..ActionList..actMoveDown..Caption
 #: dlgFileTemplates.dfm:305
 #. FConfiguration..PTemplatesActionList..actCodeMoveDown..Caption
-#: Utils/UConfiguration.dfm:6103
+#: Utils/UConfiguration.dfm:6092
 #. FConfiguration..PTemplatesActionList..actFileMoveDown..Caption
-#: Utils/UConfiguration.dfm:6138
+#: Utils/UConfiguration.dfm:6127
 msgid "&Down"
 msgstr ""
 
@@ -459,9 +459,9 @@ msgstr ""
 #. FileTemplatesDialog..ActionList..actMoveDown..Hint
 #: dlgFileTemplates.dfm:306
 #. FConfiguration..PTemplatesActionList..actCodeMoveDown..Hint
-#: Utils/UConfiguration.dfm:6104
+#: Utils/UConfiguration.dfm:6093
 #. FConfiguration..PTemplatesActionList..actFileMoveDown..Hint
-#: Utils/UConfiguration.dfm:6139
+#: Utils/UConfiguration.dfm:6128
 msgid "Move item down"
 msgstr ""
 
@@ -478,9 +478,9 @@ msgstr ""
 #. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..btnUpdateKey..Caption
 #: Utils/UConfiguration.dfm:1626
 #. FConfiguration..PTemplatesActionList..actCodeUpdateItem..Caption
-#: Utils/UConfiguration.dfm:6110
+#: Utils/UConfiguration.dfm:6099
 #. FConfiguration..PTemplatesActionList..actFileUpdateItem..Caption
-#: Utils/UConfiguration.dfm:6145
+#: Utils/UConfiguration.dfm:6134
 msgid "&Update"
 msgstr ""
 
@@ -493,9 +493,9 @@ msgstr ""
 #. ToolProperties..ActionList..actUpdateItem..Hint
 #: dlgToolProperties.dfm:752
 #. FConfiguration..PTemplatesActionList..actCodeUpdateItem..Hint
-#: Utils/UConfiguration.dfm:6111
+#: Utils/UConfiguration.dfm:6100
 #. FConfiguration..PTemplatesActionList..actFileUpdateItem..Hint
-#: Utils/UConfiguration.dfm:6146
+#: Utils/UConfiguration.dfm:6135
 msgid "Update item"
 msgstr ""
 
@@ -519,7 +519,7 @@ msgstr ""
 #. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..btnRemKey..Caption
 #: Utils/UConfiguration.dfm:1608
 #. FConfiguration..IDEShortcutsActionList1..actRemoveShortcut..Caption
-#: Utils/UConfiguration.dfm:6070
+#: Utils/UConfiguration.dfm:6059
 msgid "&Remove"
 msgstr ""
 
@@ -620,16 +620,16 @@ msgstr ""
 #. WatchesWindow..BGPanel..FGPanel..Panel1..WatchesView......Text
 #: frmWatches.dfm:114
 #. FClassEditor..PageControl..TSAttributes..LAttributeValue..Caption
-#: Main/UClassEditor.dfm:151
+#: Main/UClassEditor.dfm:157
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..LParameterValue..Caption
-#: Main/UClassEditor.dfm:514
+#: Main/UClassEditor.dfm:521
 #. FObjectGenerator..ValueListEditor....TitleCaptions.Strings
-#: Main/UObjectGenerator.dfm:71
+#: Main/UObjectGenerator.dfm:73
 #: frmVariables.pas:561
-#: EssModel/Integrator/View/URtfdDiagram.pas:1596
-#: EssModel/Integrator/View/URtfdDiagram.pas:1599
-#: EssModel/Integrator/View/URtfdDiagram.pas:1895
-#: EssModel/Integrator/View/URtfdDiagram.pas:2156
+#: EssModel/Integrator/View/URtfdDiagram.pas:1636
+#: EssModel/Integrator/View/URtfdDiagram.pas:1639
+#: EssModel/Integrator/View/URtfdDiagram.pas:1936
+#: EssModel/Integrator/View/URtfdDiagram.pas:2198
 msgid "Value"
 msgstr ""
 
@@ -641,35 +641,35 @@ msgstr ""
 #. frmCustomKeyboard..Panel1..lblNewShortcutKey..Caption
 #: dlgCustomShortcuts.dfm:45
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblNewShortcutKey..Caption
-#: Utils/UConfiguration.dfm:3324
+#: Utils/UConfiguration.dfm:3315
 msgid "Press &new shortcut key:"
 msgstr ""
 
 #. frmCustomKeyboard..Panel1..lblCategories..Caption
 #: dlgCustomShortcuts.dfm:54
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCategories..Caption
-#: Utils/UConfiguration.dfm:3342
+#: Utils/UConfiguration.dfm:3333
 msgid "&Categories:"
 msgstr ""
 
 #. frmCustomKeyboard..Panel1..lblCommands..Caption
 #: dlgCustomShortcuts.dfm:63
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCommands..Caption
-#: Utils/UConfiguration.dfm:3333
+#: Utils/UConfiguration.dfm:3324
 msgid "C&ommands:"
 msgstr ""
 
 #. frmCustomKeyboard..Panel1..lblCurrent..Caption
 #: dlgCustomShortcuts.dfm:72
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCurrent..Caption
-#: Utils/UConfiguration.dfm:3305
+#: Utils/UConfiguration.dfm:3296
 msgid "Currently assigned to:"
 msgstr ""
 
 #. frmCustomKeyboard..Panel1..lblCurrentKeys..Caption
 #: dlgCustomShortcuts.dfm:92
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblCurrentKeys..Caption
-#: Utils/UConfiguration.dfm:3315
+#: Utils/UConfiguration.dfm:3306
 msgid "C&urrent Keys:"
 msgstr ""
 
@@ -681,21 +681,21 @@ msgstr ""
 #. frmCustomKeyboard..ActionList1..actAssignShortcut..Caption
 #: dlgCustomShortcuts.dfm:209
 #. FConfiguration..IDEShortcutsActionList1..actAssignShortcut..Caption
-#: Utils/UConfiguration.dfm:6064
+#: Utils/UConfiguration.dfm:6053
 msgid "&Assign"
 msgstr ""
 
 #. frmCustomKeyboard..ActionList1..actAssignShortcut..Hint
 #: dlgCustomShortcuts.dfm:210
 #. FConfiguration..IDEShortcutsActionList1..actAssignShortcut..Hint
-#: Utils/UConfiguration.dfm:6065
+#: Utils/UConfiguration.dfm:6054
 msgid "Assign shortcut to command"
 msgstr ""
 
 #. frmCustomKeyboard..ActionList1..actRemoveShortcut..Hint
 #: dlgCustomShortcuts.dfm:216
 #. FConfiguration..IDEShortcutsActionList1..actRemoveShortcut..Hint
-#: Utils/UConfiguration.dfm:6071
+#: Utils/UConfiguration.dfm:6060
 msgid "Remove shortcut"
 msgstr ""
 
@@ -778,35 +778,35 @@ msgstr ""
 #. FileTemplatesDialog..Panel..GroupBox..Caption
 #: dlgFileTemplates.dfm:32
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Caption
-#: Utils/UConfiguration.dfm:2151
+#: Utils/UConfiguration.dfm:2145
 msgid "File Template:"
 msgstr ""
 
 #. FileTemplatesDialog..Panel..GroupBox..Label5..Caption
 #: dlgFileTemplates.dfm:59
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label21..Caption
-#: Utils/UConfiguration.dfm:2178
+#: Utils/UConfiguration.dfm:2171
 msgid "&Category:"
 msgstr ""
 
 #. FileTemplatesDialog..Panel..GroupBox..Label6..Caption
 #: dlgFileTemplates.dfm:83
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label24..Caption
-#: Utils/UConfiguration.dfm:2202
+#: Utils/UConfiguration.dfm:2195
 msgid "&Default Extension:"
 msgstr ""
 
 #. FileTemplatesDialog..Panel..GroupBox..Label7..Caption
 #: dlgFileTemplates.dfm:91
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..GroupBox3..Label25..Caption
-#: Utils/UConfiguration.dfm:2210
+#: Utils/UConfiguration.dfm:2203
 msgid "&Highlighter:"
 msgstr ""
 
 #. FileTemplatesDialog..Panel..lvItems......Caption
 #: dlgFileTemplates.dfm:265
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..FileTemplatesLvItems......Caption
-#: Utils/UConfiguration.dfm:2134
+#: Utils/UConfiguration.dfm:2128
 msgid "Category"
 msgstr ""
 
@@ -831,17 +831,17 @@ msgstr ""
 #. fmToDoOptions..pnlBG..gbxOptions..Caption
 #: dlgToDoOptions.dfm:125
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..Caption
-#: frmPyIDEMain.dfm:399
+#: frmPyIDEMain.dfm:402
 #. RegExpTesterWindow..BGPanel..FGPanel..TBXDock..RegExpTesterToolbar..TBXSubmenuItem2..Caption
 #: frmRegExpTester.dfm:92
 #. FClassEditor..PageControl..TSAttributes..GBAttributeOptions..Caption
-#: Main/UClassEditor.dfm:217
+#: Main/UClassEditor.dfm:224
 #. FClassEditor..PageControl..TSMethods..GBMethodOptions..Caption
-#: Main/UClassEditor.dfm:379
+#: Main/UClassEditor.dfm:386
 #. FConfiguration..PMain..PanelRight..PageList..POptions2..gbOptions..Caption
 #: Utils/UConfiguration.dfm:977
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..Caption
-#: Utils/UConfiguration.dfm:3508
+#: Utils/UConfiguration.dfm:3498
 msgid "Options"
 msgstr ""
 
@@ -1057,7 +1057,7 @@ msgstr ""
 #. PythonVersionsDialog..Caption
 #: dlgPythonVersions.dfm:4
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..RunMenu..mnPythonVersions..Caption
-#: frmPyIDEMain.dfm:1163
+#: frmPyIDEMain.dfm:1166
 #. PythonIIForm..InterpreterPopUp..mnPythonVersions..Caption
 #: frmPythonII.dfm:136
 msgid "Python Versions"
@@ -1066,26 +1066,26 @@ msgstr ""
 #. PythonVersionsDialog..Panel1..vtPythonVersions......Text
 #: dlgPythonVersions.dfm:47
 #. FConfiguration..PMain..PanelRight..PageList..PPython..vtPythonVersions......Text
-#: Utils/UConfiguration.dfm:235
-#: Utils/UConfiguration.pas:1525
+#: Utils/UConfiguration.dfm:240
+#: Utils/UConfiguration.pas:1524
 msgid "Folder"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVActivate..Caption
 #: dlgPythonVersions.dfm:109
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonActivate..Caption
-#: Utils/UConfiguration.dfm:246
+#: Utils/UConfiguration.dfm:251
 #. FConfiguration..actlPythonVersions..actPVActivate..Caption
-#: Utils/UConfiguration.dfm:6201
+#: Utils/UConfiguration.dfm:6190
 msgid "Activate"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVActivate..Hint
 #: dlgPythonVersions.dfm:111
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonActivate..Hint
-#: Utils/UConfiguration.dfm:244
+#: Utils/UConfiguration.dfm:249
 #. FConfiguration..actlPythonVersions..actPVActivate..Hint
-#: Utils/UConfiguration.dfm:6203
+#: Utils/UConfiguration.dfm:6192
 msgid "Activate selected Python version"
 msgstr ""
 
@@ -1094,88 +1094,88 @@ msgstr ""
 #. CommandsDataModule..actlMain..actSynSpellErrorAdd..Caption
 #: dmCommands.dfm:939
 #. EditorForm..pmnuEditor..mnGit..mnGitAdd..Caption
-#: frmEditor.dfm:552
+#: frmEditor.dfm:558
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitAdd..Caption
-#: frmPyIDEMain.dfm:1268
+#: frmPyIDEMain.dfm:1271
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonAdd..Caption
-#: Utils/UConfiguration.dfm:258
+#: Utils/UConfiguration.dfm:263
 #. FConfiguration..actlPythonVersions..actPVAdd..Caption
-#: Utils/UConfiguration.dfm:6208
+#: Utils/UConfiguration.dfm:6197
 msgid "Add"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVAdd..Hint
 #: dlgPythonVersions.dfm:119
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonAdd..Hint
-#: Utils/UConfiguration.dfm:256
+#: Utils/UConfiguration.dfm:261
 #. FConfiguration..actlPythonVersions..actPVAdd..Hint
-#: Utils/UConfiguration.dfm:6210
+#: Utils/UConfiguration.dfm:6199
 msgid "Add a new Python version"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVRemove..Caption
 #: dlgPythonVersions.dfm:125
 #. EditorForm..pmnuEditor..mnGit..mnGitRemove..Caption
-#: frmEditor.dfm:579
+#: frmEditor.dfm:585
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitRemove..Caption
-#: frmPyIDEMain.dfm:1295
+#: frmPyIDEMain.dfm:1298
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonRemove..Caption
-#: Utils/UConfiguration.dfm:270
+#: Utils/UConfiguration.dfm:275
 #. FConfiguration..actlPythonVersions..actPVRemove..Caption
-#: Utils/UConfiguration.dfm:6215
+#: Utils/UConfiguration.dfm:6204
 msgid "Remove"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVRemove..Hint
 #: dlgPythonVersions.dfm:127
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonRemove..Hint
-#: Utils/UConfiguration.dfm:268
+#: Utils/UConfiguration.dfm:273
 #. FConfiguration..actlPythonVersions..actPVRemove..Hint
-#: Utils/UConfiguration.dfm:6217
+#: Utils/UConfiguration.dfm:6206
 msgid "Remove selected Python version"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVTest..Caption
 #: dlgPythonVersions.dfm:133
 #. FConfiguration..actlPythonVersions..actPVTest..Caption
-#: Utils/UConfiguration.dfm:6222
+#: Utils/UConfiguration.dfm:6211
 msgid "Test"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVTest..Hint
 #: dlgPythonVersions.dfm:135
 #. FConfiguration..actlPythonVersions..actPVTest..Hint
-#: Utils/UConfiguration.dfm:6224
+#: Utils/UConfiguration.dfm:6213
 msgid "Test selected Python version"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVShow..Caption
 #: dlgPythonVersions.dfm:141
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay..Caption
-#: Utils/UConfiguration.dfm:3075
+#: Utils/UConfiguration.dfm:3066
 #. FConfiguration..actlPythonVersions..actPVShow..Caption
-#: Utils/UConfiguration.dfm:6229
+#: Utils/UConfiguration.dfm:6218
 msgid "Show"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVShow..Hint
 #: dlgPythonVersions.dfm:143
 #. FConfiguration..actlPythonVersions..actPVShow..Hint
-#: Utils/UConfiguration.dfm:6231
+#: Utils/UConfiguration.dfm:6220
 msgid "Show selected Python version in Explorer"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVCommandShell..Caption
 #: dlgPythonVersions.dfm:149
 #. FConfiguration..actlPythonVersions..actPVCommandShell..Caption
-#: Utils/UConfiguration.dfm:6236
+#: Utils/UConfiguration.dfm:6225
 msgid "Shell"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVCommandShell..Hint
 #: dlgPythonVersions.dfm:151
 #. FConfiguration..actlPythonVersions..actPVCommandShell..Hint
-#: Utils/UConfiguration.dfm:6238
+#: Utils/UConfiguration.dfm:6227
 msgid "Open command prompt for the selected Python "
 "version"
 msgstr ""
@@ -1195,9 +1195,9 @@ msgstr ""
 #. ToDoWindow..Actions..actHelpHelp..Hint
 #: frmToDo.dfm:244
 #. FConfiguration..PMain..PanelRight..PButtons..BHelp..Caption
-#: Utils/UConfiguration.dfm:167
+#: Utils/UConfiguration.dfm:172
 #. FConfiguration..actlPythonVersions..actPVHelp..Caption
-#: Utils/UConfiguration.dfm:6243
+#: Utils/UConfiguration.dfm:6232
 #. Programmer's name for it: SDlgHelpHelp
 #: StringResources.pas:152
 msgid "Help"
@@ -1206,21 +1206,21 @@ msgstr ""
 #. PythonVersionsDialog..actlPythonVersions..actPVHelp..Hint
 #: dlgPythonVersions.dfm:159
 #. FConfiguration..actlPythonVersions..actPVHelp..Hint
-#: Utils/UConfiguration.dfm:6245
+#: Utils/UConfiguration.dfm:6234
 msgid "Show Help"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVRename..Caption
 #: dlgPythonVersions.dfm:165
 #. FConfiguration..actlPythonVersions..actPVRename..Caption
-#: Utils/UConfiguration.dfm:6250
+#: Utils/UConfiguration.dfm:6239
 msgid "Rename"
 msgstr ""
 
 #. PythonVersionsDialog..actlPythonVersions..actPVRename..Hint
 #: dlgPythonVersions.dfm:167
 #. FConfiguration..actlPythonVersions..actPVRename..Hint
-#: Utils/UConfiguration.dfm:6252
+#: Utils/UConfiguration.dfm:6241
 msgid "Rename selected Python version"
 msgstr ""
 
@@ -1307,11 +1307,11 @@ msgstr ""
 #. RunConfigurationForm..Panel1..gbRemoteEngine..Caption
 #: dlgRunConfiguration.dfm:284
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..RunMenu..mnPythonEngines..Caption
-#: frmPyIDEMain.dfm:1176
+#: frmPyIDEMain.dfm:1179
 #. PythonIIForm..InterpreterPopUp..TBXPythonEngines..Caption
 #: frmPythonII.dfm:142
 #. FConfiguration..PMain..PanelRight..PageList..PPython..RGEngineTypes..Caption
-#: Utils/UConfiguration.dfm:280
+#: Utils/UConfiguration.dfm:285
 msgid "Python Engine"
 msgstr ""
 
@@ -1330,11 +1330,11 @@ msgstr ""
 #. RunConfigurationForm..Panel1..gbRemoteEngine..cbEngineType....Items.Strings
 #: dlgRunConfiguration.dfm:328
 #. EditorForm..pmnuEditor..mnGit..mnGitRemote..Caption
-#: frmEditor.dfm:586
+#: frmEditor.dfm:592
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitRemote..Caption
-#: frmPyIDEMain.dfm:1302
+#: frmPyIDEMain.dfm:1305
 #. FConfiguration..PMain..PanelRight..PageList..PPython..RGEngineTypes....Items.Strings
-#: Utils/UConfiguration.dfm:284
+#: Utils/UConfiguration.dfm:289
 #: cPyControl.pas:570
 msgid "Remote"
 msgstr ""
@@ -1348,7 +1348,7 @@ msgstr ""
 #. RunConfigurationForm..Panel1..gbRemoteEngine..cbEngineType....Items.Strings
 #: dlgRunConfiguration.dfm:329
 #. FConfiguration..PMain..PanelRight..PageList..PPython..RGEngineTypes....Items.Strings
-#: Utils/UConfiguration.dfm:285
+#: Utils/UConfiguration.dfm:290
 #: cPyControl.pas:571
 msgid "Remote (Tk)"
 msgstr ""
@@ -1356,16 +1356,16 @@ msgstr ""
 #. RunConfigurationForm..Panel1..gbRemoteEngine..cbEngineType....Items.Strings
 #: dlgRunConfiguration.dfm:330
 #. FConfiguration..PMain..PanelRight..PageList..PPython..RGEngineTypes....Items.Strings
-#: Utils/UConfiguration.dfm:286
+#: Utils/UConfiguration.dfm:291
 msgid "Remote (Wx)"
 msgstr ""
 
 #. RunConfigurationForm..Panel1..gbRemoteEngine..cbEngineType....Items.Strings
 #: dlgRunConfiguration.dfm:331
 #. FConfiguration..PMain..PanelRight..PageList..PPython..RGEngineTypes....Items.Strings
-#: Utils/UConfiguration.dfm:287
+#: Utils/UConfiguration.dfm:292
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..Caption
-#: Utils/UConfiguration.dfm:5788
+#: Utils/UConfiguration.dfm:5777
 msgid "SSH"
 msgstr ""
 
@@ -1384,7 +1384,7 @@ msgstr ""
 #. OutputWindow..Caption
 #: frmCommandOutput.dfm:5
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LOutput..Caption
-#: Utils/UConfiguration.dfm:2549
+#: Utils/UConfiguration.dfm:2540
 #. Programmer's name for it: SYNS_AttrOutput
 #: SynHighlighterPython.pas:1551
 #. Programmer's name for it: SYNS_FriendlyAttrOutput
@@ -1410,21 +1410,21 @@ msgstr ""
 #. StyleSelectorForm..Caption
 #: dlgStyleSelector.dfm:5
 #. PyIDEMainForm..actlStandard..actSelectStyle..Hint
-#: frmPyIDEMain.dfm:3827
+#: frmPyIDEMain.dfm:3830
 msgid "Select Style"
 msgstr ""
 
 #. StyleSelectorForm..Label1..Caption
 #: dlgStyleSelector.dfm:1866
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..Label44..Caption
-#: Utils/UConfiguration.dfm:3824
+#: Utils/UConfiguration.dfm:3814
 msgid "Available Styles"
 msgstr ""
 
 #. StyleSelectorForm..Label2..Caption
 #: dlgStyleSelector.dfm:1873
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..Label43..Caption
-#: Utils/UConfiguration.dfm:3817
+#: Utils/UConfiguration.dfm:3807
 msgid "Preview"
 msgstr ""
 
@@ -1448,7 +1448,7 @@ msgstr ""
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..Caption
 #: dlgSynEditOptions.dfm:953
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..Caption
-#: Utils/UConfiguration.dfm:442
+#: Utils/UConfiguration.dfm:447
 msgid "Display"
 msgstr ""
 
@@ -1901,14 +1901,14 @@ msgstr ""
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox2..Caption
 #: dlgToolProperties.dfm:272
 #. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..Panel2..KeyList......Caption
-#: Utils/UConfiguration.dfm:1646
+#: Utils/UConfiguration.dfm:1645
 msgid "Command"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..KeyStrokes..Panel2..KeyList......Caption
 #: dlgSynEditOptions.dfm:669
 #. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..Panel2..KeyList......Caption
-#: Utils/UConfiguration.dfm:1650
+#: Utils/UConfiguration.dfm:1649
 msgid "Keystroke"
 msgstr ""
 
@@ -1917,16 +1917,16 @@ msgstr ""
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label14..Caption
 #: dlgSynEditOptions.dfm:805
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label14..Caption
-#: Utils/UConfiguration.dfm:1698
+#: Utils/UConfiguration.dfm:1697
 #. FConfiguration..PMain..PanelRight..PageList..PColorTheme..SpTBXLabel1..Caption
-#: Utils/UConfiguration.dfm:1863
+#: Utils/UConfiguration.dfm:1861
 msgid "Code Sample"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..ColorThemes..SpTBXLabel2..Caption
 #: dlgSynEditOptions.dfm:707
 #. FConfiguration..PMain..PanelRight..PageList..PColorTheme..SpTBXLabel2..Caption
-#: Utils/UConfiguration.dfm:1870
+#: Utils/UConfiguration.dfm:1868
 msgid "Available Themes"
 msgstr ""
 
@@ -1938,28 +1938,28 @@ msgstr ""
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label11..Caption
 #: dlgSynEditOptions.dfm:784
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label11..Caption
-#: Utils/UConfiguration.dfm:1705
+#: Utils/UConfiguration.dfm:1704
 msgid "&Element:"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label12..Caption
 #: dlgSynEditOptions.dfm:791
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label12..Caption
-#: Utils/UConfiguration.dfm:1691
+#: Utils/UConfiguration.dfm:1690
 msgid "&Foreground Color:"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label13..Caption
 #: dlgSynEditOptions.dfm:798
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label13..Caption
-#: Utils/UConfiguration.dfm:1684
+#: Utils/UConfiguration.dfm:1683
 msgid "B&ackground Color:"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..Label15..Caption
 #: dlgSynEditOptions.dfm:812
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Label15..Caption
-#: Utils/UConfiguration.dfm:1712
+#: Utils/UConfiguration.dfm:1711
 msgid "Editor Syntax Language"
 msgstr ""
 
@@ -1971,35 +1971,35 @@ msgstr ""
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementBold..Caption
 #: dlgSynEditOptions.dfm:829
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementBold..Caption
-#: Utils/UConfiguration.dfm:1739
+#: Utils/UConfiguration.dfm:1738
 msgid "&Bold"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementItalic..Caption
 #: dlgSynEditOptions.dfm:839
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementItalic..Caption
-#: Utils/UConfiguration.dfm:1749
+#: Utils/UConfiguration.dfm:1748
 msgid "&Italic"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementUnderline..Caption
 #: dlgSynEditOptions.dfm:850
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementUnderline..Caption
-#: Utils/UConfiguration.dfm:1760
+#: Utils/UConfiguration.dfm:1759
 msgid "&Underline"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Color..GroupBox1..cbxElementStrikeout..Caption
 #: dlgSynEditOptions.dfm:861
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..cbxElementStrikeout..Caption
-#: Utils/UConfiguration.dfm:1771
+#: Utils/UConfiguration.dfm:1770
 msgid "&Strike Out"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbRightEdge..Caption
 #: dlgSynEditOptions.dfm:965
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbRightEdge..Caption
-#: Utils/UConfiguration.dfm:644
+#: Utils/UConfiguration.dfm:645
 msgid "Right Edge"
 msgstr ""
 
@@ -2020,72 +2020,72 @@ msgstr ""
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbGutter..Caption
 #: dlgSynEditOptions.dfm:1011
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..Caption
-#: Utils/UConfiguration.dfm:454
+#: Utils/UConfiguration.dfm:459
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label31..Caption
-#: Utils/UConfiguration.dfm:4936
+#: Utils/UConfiguration.dfm:4926
 msgid "Gutter"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbGutter..Label1..Caption
 #: dlgSynEditOptions.dfm:1022
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..lGutterColor..Caption
-#: Utils/UConfiguration.dfm:467
+#: Utils/UConfiguration.dfm:470
 msgid "Gutter color:"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbGutter..ckGutterAutosize..Caption
 #: dlgSynEditOptions.dfm:1062
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..ckGutterAutosize..Caption
-#: Utils/UConfiguration.dfm:515
+#: Utils/UConfiguration.dfm:519
 msgid "Autosize"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbGutter..ckGutterShowLineNumbers..Caption
 #: dlgSynEditOptions.dfm:1070
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..ckGutterShowLineNumbers..Caption
-#: Utils/UConfiguration.dfm:524
+#: Utils/UConfiguration.dfm:528
 msgid "Show line numbers"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbGutter..ckGutterShowLeaderZeros..Caption
 #: dlgSynEditOptions.dfm:1078
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..ckGutterShowLeaderZeros..Caption
-#: Utils/UConfiguration.dfm:532
+#: Utils/UConfiguration.dfm:536
 msgid "Show leading zeros"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbGutter..ckGutterVisible..Caption
 #: dlgSynEditOptions.dfm:1086
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..ckGutterVisible..Caption
-#: Utils/UConfiguration.dfm:540
+#: Utils/UConfiguration.dfm:544
 msgid "Visible"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbGutter..ckGutterStartAtZero..Caption
 #: dlgSynEditOptions.dfm:1096
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..ckGutterStartAtZero..Caption
-#: Utils/UConfiguration.dfm:550
+#: Utils/UConfiguration.dfm:554
 msgid "Start at zero"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbGutter..cbGutterFont..Caption
 #: dlgSynEditOptions.dfm:1105
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..cbGutterFont..Caption
-#: Utils/UConfiguration.dfm:559
+#: Utils/UConfiguration.dfm:563
 msgid "Use Gutter Font"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbGutter..ckGutterGradient..Hint
 #: dlgSynEditOptions.dfm:1114
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..ckGutterGradient..Hint
-#: Utils/UConfiguration.dfm:569
+#: Utils/UConfiguration.dfm:572
 msgid "Gutter gradient visible"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbGutter..ckGutterGradient..Caption
 #: dlgSynEditOptions.dfm:1116
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..ckGutterGradient..Caption
-#: Utils/UConfiguration.dfm:571
+#: Utils/UConfiguration.dfm:574
 msgid "Gutter Gradient"
 msgstr ""
 
@@ -2098,33 +2098,33 @@ msgstr ""
 #. PageSetupDlg..ActionList1..FontCmd..Hint
 #: dlgSynPageSetup.dfm:1736
 #. EditorForm..pmnuEditor..mnFont..Caption
-#: frmEditor.dfm:712
+#: frmEditor.dfm:718
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupFont..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:289
 #. FUMLForm..PMInteractive..MIFont..Caption
-#: EssModel/System/UUMLForm.dfm:371
+#: EssModel/System/UUMLForm.dfm:373
 #. FFileStructure..PMFileStructure..MIFont..Caption
-#: Main/UFileStructure.dfm:56
+#: Main/UFileStructure.dfm:58
 #. FObjectGenerator..StatusBar..BFont..Caption
-#: Main/UObjectGenerator.dfm:45
+#: Main/UObjectGenerator.dfm:47
 #. FObjectInspector..PMObjectInspector..MIFont..Caption
 #: Main/UObjectInspector.dfm:114
 #. FSequenceForm..PopupMenuLifeLineAndSequencePanel..MIFont..Caption
 #: SequenceDiagram/USequenceForm.dfm:228
 #. FStructogram..StructoPopupMenu..MIFont..Caption
-#: Structogram/UStructogram.dfm:295
+#: Structogram/UStructogram.dfm:299
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..btnGutterFont..Caption
-#: Utils/UConfiguration.dfm:580
+#: Utils/UConfiguration.dfm:582
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbEditorFont..btnFont..Caption
 #: Utils/UConfiguration.dfm:767
 #. FConfiguration..PMain..PanelRight..PageList..PCodeCompletion..BCodeCompletionFont..Caption
 #: Utils/UConfiguration.dfm:1547
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..BGuiFont..Caption
-#: Utils/UConfiguration.dfm:2530
+#: Utils/UConfiguration.dfm:2521
 #. FConfiguration..ActionListPageSetup..FontCmd..Caption
-#: Utils/UConfiguration.dfm:6442
+#: Utils/UConfiguration.dfm:6431
 #. FConfiguration..ActionListPageSetup..FontCmd..Hint
-#: Utils/UConfiguration.dfm:6443
+#: Utils/UConfiguration.dfm:6432
 msgid "Font"
 msgstr ""
 
@@ -2138,28 +2138,28 @@ msgstr ""
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbBookmarks..ckBookmarkKeys..Caption
 #: dlgSynEditOptions.dfm:1142
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbBookmarks..ckBookmarkKeys..Caption
-#: Utils/UConfiguration.dfm:698
+#: Utils/UConfiguration.dfm:697
 msgid "Bookmark keys"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbBookmarks..ckBookmarkVisible..Caption
 #: dlgSynEditOptions.dfm:1150
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbBookmarks..ckBookmarkVisible..Caption
-#: Utils/UConfiguration.dfm:706
+#: Utils/UConfiguration.dfm:705
 msgid "Bookmarks visible"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbEditorFont..Caption
 #: dlgSynEditOptions.dfm:1159
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbEditorFont..Caption
-#: Utils/UConfiguration.dfm:738
+#: Utils/UConfiguration.dfm:736
 msgid "Editor Font"
 msgstr ""
 
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbLineSpacing..Caption
 #: dlgSynEditOptions.dfm:1199
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbLineSpacing..Caption
-#: Utils/UConfiguration.dfm:599
+#: Utils/UConfiguration.dfm:601
 msgid "Line spacing / Tab spacing"
 msgstr ""
 
@@ -2176,7 +2176,7 @@ msgstr ""
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..GroupBox2..Caption
 #: dlgSynEditOptions.dfm:1243
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbActiveLineColor..Caption
-#: Utils/UConfiguration.dfm:716
+#: Utils/UConfiguration.dfm:715
 msgid "Active Line Color"
 msgstr ""
 
@@ -2207,7 +2207,7 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox1..Caption
 #: dlgSynPageSetup.dfm:96
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..Caption
-#: Utils/UConfiguration.dfm:5115
+#: Utils/UConfiguration.dfm:5105
 msgid "Header"
 msgstr ""
 
@@ -2220,9 +2220,9 @@ msgstr ""
 #. FGUIDesigner..PopupMenu..MIAlign..MIAlignLeft..Caption
 #: Main/UGUIDesigner.dfm:61
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..Label37..Caption
-#: Utils/UConfiguration.dfm:5122
+#: Utils/UConfiguration.dfm:5112
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..Label40..Caption
-#: Utils/UConfiguration.dfm:5276
+#: Utils/UConfiguration.dfm:5266
 #. Programmer's name for it: SEdCmdLeft
 #: StringResources.pas:68
 msgid "Left"
@@ -2239,9 +2239,9 @@ msgstr ""
 #. FGUIDesigner..PopupMenu..MIAlign..MIAlignMiddle..Caption
 #: Main/UGUIDesigner.dfm:99
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..Label38..Caption
-#: Utils/UConfiguration.dfm:5129
+#: Utils/UConfiguration.dfm:5119
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..Label41..Caption
-#: Utils/UConfiguration.dfm:5283
+#: Utils/UConfiguration.dfm:5273
 msgid "Center"
 msgstr ""
 
@@ -2254,9 +2254,9 @@ msgstr ""
 #. FGUIDesigner..PopupMenu..MIAlign..MIAlignRight..Caption
 #: Main/UGUIDesigner.dfm:73
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..Label39..Caption
-#: Utils/UConfiguration.dfm:5136
+#: Utils/UConfiguration.dfm:5126
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..Label42..Caption
-#: Utils/UConfiguration.dfm:5290
+#: Utils/UConfiguration.dfm:5280
 #. Programmer's name for it: SEdCmdRight
 #: StringResources.pas:87
 msgid "Right"
@@ -2267,9 +2267,9 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..Caption
 #: dlgSynPageSetup.dfm:278
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..Caption
-#: Utils/UConfiguration.dfm:5143
+#: Utils/UConfiguration.dfm:5133
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..Caption
-#: Utils/UConfiguration.dfm:5297
+#: Utils/UConfiguration.dfm:5287
 msgid "Appearance"
 msgstr ""
 
@@ -2278,9 +2278,9 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..FooterLineColorBtn..Caption
 #: dlgSynPageSetup.dfm:299
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..HeaderLineColorBtn..Caption
-#: Utils/UConfiguration.dfm:5164
+#: Utils/UConfiguration.dfm:5154
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..FooterLineColorBtn..Caption
-#: Utils/UConfiguration.dfm:5318
+#: Utils/UConfiguration.dfm:5308
 msgid "Line color"
 msgstr ""
 
@@ -2289,16 +2289,16 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..FooterShadowColorBtn..Caption
 #: dlgSynPageSetup.dfm:308
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..HeaderShadowColorBtn..Caption
-#: Utils/UConfiguration.dfm:5173
+#: Utils/UConfiguration.dfm:5163
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..FooterShadowColorBtn..Caption
-#: Utils/UConfiguration.dfm:5327
+#: Utils/UConfiguration.dfm:5317
 msgid "Shadow color"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox1..GroupBox2..CBHeaderLine..Caption
 #: dlgSynPageSetup.dfm:163
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..CBHeaderLine..Caption
-#: Utils/UConfiguration.dfm:5182
+#: Utils/UConfiguration.dfm:5172
 msgid "Line under"
 msgstr ""
 
@@ -2307,9 +2307,9 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..CBFooterBox..Caption
 #: dlgSynPageSetup.dfm:325
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..CBHeaderBox..Caption
-#: Utils/UConfiguration.dfm:5190
+#: Utils/UConfiguration.dfm:5180
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..CBFooterBox..Caption
-#: Utils/UConfiguration.dfm:5344
+#: Utils/UConfiguration.dfm:5334
 msgid "Box"
 msgstr ""
 
@@ -2318,13 +2318,13 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..CBFooterShadow..Caption
 #: dlgSynPageSetup.dfm:333
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LStructogramShadow..Caption
-#: Utils/UConfiguration.dfm:2612
+#: Utils/UConfiguration.dfm:2603
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LShadow..Caption
-#: Utils/UConfiguration.dfm:2921
+#: Utils/UConfiguration.dfm:2912
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..GroupBox5..CBHeaderShadow..Caption
-#: Utils/UConfiguration.dfm:5198
+#: Utils/UConfiguration.dfm:5188
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..CBFooterShadow..Caption
-#: Utils/UConfiguration.dfm:5352
+#: Utils/UConfiguration.dfm:5342
 msgid "Shadow"
 msgstr ""
 
@@ -2333,93 +2333,93 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..CBFooterMirror..Caption
 #: dlgSynPageSetup.dfm:342
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..CBHeaderMirror..Caption
-#: Utils/UConfiguration.dfm:5207
+#: Utils/UConfiguration.dfm:5197
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..CBFooterMirror..Caption
-#: Utils/UConfiguration.dfm:5361
+#: Utils/UConfiguration.dfm:5351
 msgid "Mirror position"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..Caption
 #: dlgSynPageSetup.dfm:250
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..Caption
-#: Utils/UConfiguration.dfm:5269
+#: Utils/UConfiguration.dfm:5259
 msgid "Footer"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..GroupBox4..CBFooterLine..Caption
 #: dlgSynPageSetup.dfm:317
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..GroupBox7..CBFooterLine..Caption
-#: Utils/UConfiguration.dfm:5336
+#: Utils/UConfiguration.dfm:5326
 msgid "Line above"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..Label1..Caption
 #: dlgSynPageSetup.dfm:1455
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label35..Caption
-#: Utils/UConfiguration.dfm:4964
+#: Utils/UConfiguration.dfm:4954
 msgid "Left:"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..Label2..Caption
 #: dlgSynPageSetup.dfm:1462
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label34..Caption
-#: Utils/UConfiguration.dfm:4957
+#: Utils/UConfiguration.dfm:4947
 msgid "Right:"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..Label3..Caption
 #: dlgSynPageSetup.dfm:1469
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label33..Caption
-#: Utils/UConfiguration.dfm:4950
+#: Utils/UConfiguration.dfm:4940
 msgid "Top:"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..Label4..Caption
 #: dlgSynPageSetup.dfm:1476
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label32..Caption
-#: Utils/UConfiguration.dfm:4943
+#: Utils/UConfiguration.dfm:4933
 msgid "Bottom:"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..Label5..Caption
 #: dlgSynPageSetup.dfm:1483
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label36..Caption
-#: Utils/UConfiguration.dfm:4971
+#: Utils/UConfiguration.dfm:4961
 msgid "Units:"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..Label6..Caption
 #: dlgSynPageSetup.dfm:1490
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label30..Caption
-#: Utils/UConfiguration.dfm:4929
+#: Utils/UConfiguration.dfm:4919
 msgid "Header:"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..Label7..Caption
 #: dlgSynPageSetup.dfm:1497
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label29..Caption
-#: Utils/UConfiguration.dfm:4922
+#: Utils/UConfiguration.dfm:4912
 msgid "Footer:"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..Label8..Caption
 #: dlgSynPageSetup.dfm:1504
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label28..Caption
-#: Utils/UConfiguration.dfm:4915
+#: Utils/UConfiguration.dfm:4905
 msgid "Internal Margin:"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..Label9..Caption
 #: dlgSynPageSetup.dfm:1511
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label27..Caption
-#: Utils/UConfiguration.dfm:4908
+#: Utils/UConfiguration.dfm:4898
 msgid "Left Text Indent:"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..Label10..Caption
 #: dlgSynPageSetup.dfm:1518
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Label26..Caption
-#: Utils/UConfiguration.dfm:4901
+#: Utils/UConfiguration.dfm:4891
 msgid "Right Text Indent:"
 msgstr ""
 
@@ -2431,56 +2431,56 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbMargins..CBMirrorMargins..Caption
 #: dlgSynPageSetup.dfm:1532
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBMirrorMargins..Caption
-#: Utils/UConfiguration.dfm:5103
+#: Utils/UConfiguration.dfm:5093
 msgid "Mirror margins"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..CBLineNumbers..Caption
 #: dlgSynPageSetup.dfm:1540
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBLineNumbers..Caption
-#: Utils/UConfiguration.dfm:5095
+#: Utils/UConfiguration.dfm:5085
 msgid "Line numbers"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..CBLineNumbersInMargin..Caption
 #: dlgSynPageSetup.dfm:1548
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBLineNumbersInMargin..Caption
-#: Utils/UConfiguration.dfm:5087
+#: Utils/UConfiguration.dfm:5077
 msgid "Print line numbers in margin"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..CBHighlight..Caption
 #: dlgSynPageSetup.dfm:1556
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBHighlight..Caption
-#: Utils/UConfiguration.dfm:5079
+#: Utils/UConfiguration.dfm:5069
 msgid "Syntax print"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..CBColors..Caption
 #: dlgSynPageSetup.dfm:1564
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBColors..Caption
-#: Utils/UConfiguration.dfm:5071
+#: Utils/UConfiguration.dfm:5061
 msgid "Use colors"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..CBWrap..Caption
 #: dlgSynPageSetup.dfm:1572
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBWrap..Caption
-#: Utils/UConfiguration.dfm:5063
+#: Utils/UConfiguration.dfm:5053
 msgid "Wrap lines"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
 #: dlgSynPageSetup.dfm:1657
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
-#: Utils/UConfiguration.dfm:4985
+#: Utils/UConfiguration.dfm:4975
 msgid "Inches"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
 #: dlgSynPageSetup.dfm:1658
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
-#: Utils/UConfiguration.dfm:4986
+#: Utils/UConfiguration.dfm:4976
 msgid "(1/1000) Inches"
 msgstr ""
 
@@ -2489,9 +2489,9 @@ msgstr ""
 #. PageSetupDlg..ActionList1..PageNumCmd..Hint
 #: dlgSynPageSetup.dfm:1701
 #. FConfiguration..ActionListPageSetup..PageNumCmd..Caption
-#: Utils/UConfiguration.dfm:6407
+#: Utils/UConfiguration.dfm:6396
 #. FConfiguration..ActionListPageSetup..PageNumCmd..Hint
-#: Utils/UConfiguration.dfm:6408
+#: Utils/UConfiguration.dfm:6397
 msgid "Page number"
 msgstr ""
 
@@ -2500,9 +2500,9 @@ msgstr ""
 #. PageSetupDlg..ActionList1..PagesCmd..Hint
 #: dlgSynPageSetup.dfm:1708
 #. FConfiguration..ActionListPageSetup..PagesCmd..Caption
-#: Utils/UConfiguration.dfm:6414
+#: Utils/UConfiguration.dfm:6403
 #. FConfiguration..ActionListPageSetup..PagesCmd..Hint
-#: Utils/UConfiguration.dfm:6415
+#: Utils/UConfiguration.dfm:6404
 msgid "Num. pages"
 msgstr ""
 
@@ -2511,9 +2511,9 @@ msgstr ""
 #. PageSetupDlg..ActionList1..TimeCmd..Hint
 #: dlgSynPageSetup.dfm:1715
 #. FConfiguration..ActionListPageSetup..TimeCmd..Caption
-#: Utils/UConfiguration.dfm:6421
+#: Utils/UConfiguration.dfm:6410
 #. FConfiguration..ActionListPageSetup..TimeCmd..Hint
-#: Utils/UConfiguration.dfm:6422
+#: Utils/UConfiguration.dfm:6411
 msgid "Time"
 msgstr ""
 
@@ -2526,9 +2526,9 @@ msgstr ""
 #. FSubversion..LVRevisions......Caption
 #: Main/USubversion.dfm:33
 #. FConfiguration..ActionListPageSetup..DateCmd..Caption
-#: Utils/UConfiguration.dfm:6428
+#: Utils/UConfiguration.dfm:6417
 #. FConfiguration..ActionListPageSetup..DateCmd..Hint
-#: Utils/UConfiguration.dfm:6429
+#: Utils/UConfiguration.dfm:6418
 #: Main/UGit.pas:40
 #: Main/USubversion.pas:48
 msgid "Date"
@@ -2539,9 +2539,9 @@ msgstr ""
 #. PageSetupDlg..ActionList1..TitleCmd..Hint
 #: dlgSynPageSetup.dfm:1729
 #. FConfiguration..ActionListPageSetup..TitleCmd..Caption
-#: Utils/UConfiguration.dfm:6435
+#: Utils/UConfiguration.dfm:6424
 #. FConfiguration..ActionListPageSetup..TitleCmd..Hint
-#: Utils/UConfiguration.dfm:6436
+#: Utils/UConfiguration.dfm:6425
 msgid "Title"
 msgstr ""
 
@@ -2550,9 +2550,9 @@ msgstr ""
 #. PageSetupDlg..ActionList1..BoldCmd..Hint
 #: dlgSynPageSetup.dfm:1743
 #. FConfiguration..ActionListPageSetup..BoldCmd..Caption
-#: Utils/UConfiguration.dfm:6449
+#: Utils/UConfiguration.dfm:6438
 #. FConfiguration..ActionListPageSetup..BoldCmd..Hint
-#: Utils/UConfiguration.dfm:6450
+#: Utils/UConfiguration.dfm:6439
 msgid "Bold"
 msgstr ""
 
@@ -2561,9 +2561,9 @@ msgstr ""
 #. PageSetupDlg..ActionList1..ItalicCmd..Hint
 #: dlgSynPageSetup.dfm:1750
 #. FConfiguration..ActionListPageSetup..ItalicCmd..Caption
-#: Utils/UConfiguration.dfm:6456
+#: Utils/UConfiguration.dfm:6445
 #. FConfiguration..ActionListPageSetup..ItalicCmd..Hint
-#: Utils/UConfiguration.dfm:6457
+#: Utils/UConfiguration.dfm:6446
 msgid "Italic"
 msgstr ""
 
@@ -2572,9 +2572,9 @@ msgstr ""
 #. PageSetupDlg..ActionList1..UnderlineCmd..Hint
 #: dlgSynPageSetup.dfm:1757
 #. FConfiguration..ActionListPageSetup..UnderlineCmd..Caption
-#: Utils/UConfiguration.dfm:6463
+#: Utils/UConfiguration.dfm:6452
 #. FConfiguration..ActionListPageSetup..UnderlineCmd..Hint
-#: Utils/UConfiguration.dfm:6464
+#: Utils/UConfiguration.dfm:6453
 msgid "Underline"
 msgstr ""
 
@@ -2697,19 +2697,19 @@ msgstr ""
 #. PrintPreviewDlg..ActionList..CloseCmd..Caption
 #: dlgSynPrintPreview.dfm:189
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiFindClose..Caption
-#: frmPyIDEMain.dfm:362
+#: frmPyIDEMain.dfm:365
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiFindClose..Hint
-#: frmPyIDEMain.dfm:363
+#: frmPyIDEMain.dfm:366
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBClose..Hint
-#: EssModel/System/UUMLForm.dfm:87
+#: EssModel/System/UUMLForm.dfm:89
 #. FUMLForm..PUML..PInteractive..TBInteractiveToolbar..TBInteractiveClose..Hint
-#: EssModel/System/UUMLForm.dfm:222
+#: EssModel/System/UUMLForm.dfm:224
 #. FUMLForm..PMInteractive..MIClose..Caption
-#: EssModel/System/UUMLForm.dfm:326
+#: EssModel/System/UUMLForm.dfm:328
 #. FBrowser..PBrowser..ToolBar..TBClose..Hint
 #: Main/UBrowser.dfm:106
 #. FFileStructure..PMFileStructure..MIClose..Caption
-#: Main/UFileStructure.dfm:62
+#: Main/UFileStructure.dfm:64
 #. FGUIDesigner..PopupMenu..MIClose..Caption
 #: Main/UGUIDesigner.dfm:30
 #. FObjectInspector..PMObjectInspector..MIClose..Caption
@@ -2733,7 +2733,7 @@ msgstr ""
 #. FTextDiff..PopUpEditor..MIClose..Caption
 #: TextDiff/UTextDiff.dfm:283
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..LSDClose..Caption
-#: Utils/UConfiguration.dfm:2798
+#: Utils/UConfiguration.dfm:2789
 msgid "Close"
 msgstr ""
 
@@ -2791,7 +2791,7 @@ msgstr ""
 #. fmToDoOptions..pnlBG..gbxTokens..btnApply..Caption
 #: dlgToDoOptions.dfm:106
 #. FClassEditor..ActionList..ActionApply..Caption
-#: Main/UClassEditor.dfm:672
+#: Main/UClassEditor.dfm:680
 msgid "&Apply"
 msgstr ""
 
@@ -3016,16 +3016,16 @@ msgstr ""
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox3..cbStandardOutput....Items.Strings
 #: dlgToolProperties.dfm:672
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..Hint
-#: frmPyIDEMain.dfm:489
+#: frmPyIDEMain.dfm:492
 msgid "New file"
 msgstr ""
 
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox5..Caption
 #: dlgToolProperties.dfm:681
 #. EditorForm..pmnuEditor..mnGit..mnGitConsole..Caption
-#: frmEditor.dfm:613
+#: frmEditor.dfm:619
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitConsole..Caption
-#: frmPyIDEMain.dfm:1329
+#: frmPyIDEMain.dfm:1332
 msgid "Console"
 msgstr ""
 
@@ -3142,9 +3142,9 @@ msgstr ""
 #. CommandsDataModule..actlMain..actFileClose..Caption
 #: dmCommands.dfm:104
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBClose..Caption
-#: frmEditor.dfm:237
+#: frmEditor.dfm:243
 #. FClassEditor..ActionList..ActionClose..Caption
-#: Main/UClassEditor.dfm:667
+#: Main/UClassEditor.dfm:675
 #. Programmer's name for it: SDlgClose
 #: StringResources.pas:159
 msgid "&Close"
@@ -3153,7 +3153,7 @@ msgstr ""
 #. CommandsDataModule..actlMain..actFileClose..Hint
 #: dmCommands.dfm:107
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBClose..Hint
-#: frmEditor.dfm:236
+#: frmEditor.dfm:242
 msgid "Close|Close active file"
 msgstr ""
 
@@ -3192,7 +3192,7 @@ msgstr ""
 #. FindResultsWindow..Actions..actFileCopy..Caption
 #: frmFindResults.dfm:406
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..mnCopyMenu..Caption
-#: frmPyIDEMain.dfm:609
+#: frmPyIDEMain.dfm:612
 msgid "&Copy"
 msgstr ""
 
@@ -3916,7 +3916,7 @@ msgstr ""
 #: dmCommands.dfm:784
 #. CommandsDataModule..actlMain..actUnfoldAll..Caption
 #: dmCommands.dfm:792
-#: Utils/UConfiguration.pas:2646
+#: Utils/UConfiguration.pas:2647
 msgid "All"
 msgstr ""
 
@@ -4164,13 +4164,13 @@ msgstr ""
 #. AFrameDiagram..PopupMenuComment..PopupMenuCommentDelete..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:177
 #. FUMLForm..PMInteractive..MIDelete..Caption
-#: EssModel/System/UUMLForm.dfm:348
+#: EssModel/System/UUMLForm.dfm:350
 #. FIconEditor..BLoeschen..Caption
 #: Formdesigner/ELImage.dfm:25
 #. FAssociation..BDelete..Caption
 #: Main/UAssociation.dfm:107
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..BParameterDelete..Caption
-#: Main/UClassEditor.dfm:591
+#: Main/UClassEditor.dfm:599
 #. FGUIDesigner..PopupMenu..MIDelete..Caption
 #: Main/UGUIDesigner.dfm:131
 #. FConnectForm..BDelete..Caption
@@ -4180,7 +4180,7 @@ msgstr ""
 #. FStructogram..PanelLeft..TrashImage..ImageName
 #: Structogram/UStructogram.dfm:57
 #. FStructogram..StructoPopupMenu..MIDelete..Caption
-#: Structogram/UStructogram.dfm:226
+#: Structogram/UStructogram.dfm:227
 #: Main/UObjectInspector.pas:612
 #. Programmer's name for it: LNGDelete
 #: Setup/UStringRessources.pas:18
@@ -4221,7 +4221,7 @@ msgstr ""
 #. CommandsDataModule..SynSpellCheck....AttributesChecked.Strings
 #: dmCommands.dfm:1062
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBComment..Hint
-#: EssModel/System/UUMLForm.dfm:151
+#: EssModel/System/UUMLForm.dfm:153
 #. FAssociation..LBAssociations....Items.Strings
 #: Main/UAssociation.dfm:78
 msgid "Comment"
@@ -4236,19 +4236,19 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupVisibility..MIClassPopupVisibilityText..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:550
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGVisibilityDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3118
-#: Utils/UConfiguration.pas:2644
+#: Utils/UConfiguration.dfm:3109
+#: Utils/UConfiguration.pas:2645
 msgid "Text"
 msgstr ""
 
 #. CommandsDataModule..SynSpellCheck....AttributesChecked.Strings
 #: dmCommands.dfm:1064
 #. FClassEditor..PageControl..TSAttributes..CBAttributeType....Items.Strings
-#: Main/UClassEditor.dfm:189
+#: Main/UClassEditor.dfm:196
 #. FClassEditor..PageControl..TSMethods..CBMethodType....Items.Strings
-#: Main/UClassEditor.dfm:358
+#: Main/UClassEditor.dfm:365
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamType....Items.Strings
-#: Main/UClassEditor.dfm:539
+#: Main/UClassEditor.dfm:547
 msgid "String"
 msgstr ""
 
@@ -4534,7 +4534,7 @@ msgstr ""
 #. WebPreviewForm..TBXDock1..TBXToolbar1..TBXItem7..Hint
 #: frmWebPreview.dfm:60
 #. FConfiguration..PMain..PanelRight..PButtons..BSave..Caption
-#: Utils/UConfiguration.dfm:119
+#: Utils/UConfiguration.dfm:124
 msgid "Save"
 msgstr ""
 
@@ -4550,163 +4550,163 @@ msgstr ""
 #. EditorForm..BGPanel..ViewsTabControl..tbiUpdateView..Caption
 #: frmEditor.dfm:48
 #. EditorForm..pmnuViewsTab..mnUpdateView..Caption
-#: frmEditor.dfm:728
+#: frmEditor.dfm:734
 msgid "Update View"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbiUpdateView..Hint
 #: frmEditor.dfm:49
 #. EditorForm..pmnuViewsTab..mnUpdateView..Hint
-#: frmEditor.dfm:729
+#: frmEditor.dfm:735
 msgid "Update View|Update the selected view"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbiCloseTab..Caption
 #: frmEditor.dfm:55
 #. EditorForm..pmnuViewsTab..mnCloseTab..Caption
-#: frmEditor.dfm:735
+#: frmEditor.dfm:741
 msgid "Close Tab"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbiCloseTab..Hint
 #: frmEditor.dfm:56
 #. EditorForm..pmnuViewsTab..mnCloseTab..Hint
-#: frmEditor.dfm:736
+#: frmEditor.dfm:742
 msgid "Close active tab"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBExplorer..Hint
-#: frmEditor.dfm:246
+#: frmEditor.dfm:252
 msgid "Open explorer for current file"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBBrowser..Hint
-#: frmEditor.dfm:255
+#: frmEditor.dfm:261
 msgid "Show in browser"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBDesignform..Hint
-#: frmEditor.dfm:264
+#: frmEditor.dfm:270
 msgid "Open associated design form"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBClassOpen..Hint
-#: frmEditor.dfm:273
+#: frmEditor.dfm:279
 msgid "Open class in the UML window"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBCheck..Hint
-#: frmEditor.dfm:282
+#: frmEditor.dfm:288
 msgid "Check Syntax"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBMatchBracket..Hint
-#: frmEditor.dfm:291
+#: frmEditor.dfm:297
 msgid "Match bracket"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBClassEdit..Hint
-#: frmEditor.dfm:300
+#: frmEditor.dfm:306
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..mnEditClass..Hint
-#: frmPyIDEMain.dfm:1213
+#: frmPyIDEMain.dfm:1216
 #. PyIDEMainForm..actlStandard..actUMLEditClass..Caption
-#: frmPyIDEMain.dfm:3872
+#: frmPyIDEMain.dfm:3875
 #. AFrameDiagram..PopMenuClass..MIClassPopupClassEdit..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:422
 msgid "Edit class"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBStructureIndent..Hint
-#: frmEditor.dfm:309
+#: frmEditor.dfm:315
 msgid "Indent structured"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBIfStatement..Hint
-#: frmEditor.dfm:319
+#: frmEditor.dfm:325
 msgid "If-Statement"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBIfElseStatement..Hint
-#: frmEditor.dfm:329
+#: frmEditor.dfm:335
 msgid "If-Else-Statement"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBWhileStatement..Hint
-#: frmEditor.dfm:339
+#: frmEditor.dfm:345
 msgid "while-Statement"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBForStatement..Hint
-#: frmEditor.dfm:349
+#: frmEditor.dfm:355
 msgid "for-Statement"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBIfElifStatement..Hint
-#: frmEditor.dfm:359
+#: frmEditor.dfm:365
 msgid "if-elif-Statement"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBTryStatement..Hint
-#: frmEditor.dfm:369
+#: frmEditor.dfm:375
 msgid "try-Statement"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBComment..Hint
-#: frmEditor.dfm:378
+#: frmEditor.dfm:384
 msgid "Comment on/off"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBWordWrap..Hint
-#: frmEditor.dfm:387
+#: frmEditor.dfm:393
 msgid "Wordwrap"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBIndent..Hint
-#: frmEditor.dfm:396
+#: frmEditor.dfm:402
 msgid "Indent"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBUnindent..Hint
-#: frmEditor.dfm:405
+#: frmEditor.dfm:411
 msgid "Unindent"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBBreakpoint..Hint
-#: frmEditor.dfm:414
+#: frmEditor.dfm:420
 msgid "Breakpoint on/off"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBBreakpointsClear..Hint
-#: frmEditor.dfm:423
+#: frmEditor.dfm:429
 msgid "Delete all breakpoints"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBBookmark..Hint
-#: frmEditor.dfm:432
+#: frmEditor.dfm:438
 msgid "Set bookmark"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBGotoBookmark..Hint
-#: frmEditor.dfm:441
+#: frmEditor.dfm:447
 msgid "Goto bookmark"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBParagraph..Hint
-#: frmEditor.dfm:450
+#: frmEditor.dfm:456
 msgid "Paragraph marks on/off"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBNumbers..Hint
-#: frmEditor.dfm:459
+#: frmEditor.dfm:465
 msgid "Line numbers on/off"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBZoomMinus..Hint
-#: frmEditor.dfm:468
+#: frmEditor.dfm:474
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBZoomOut..Hint
-#: EssModel/System/UUMLForm.dfm:135
+#: EssModel/System/UUMLForm.dfm:137
 #. FUMLForm..PUML..PInteractive..TBInteractiveToolbar..TBSynEditZoomMinus..Hint
-#: EssModel/System/UUMLForm.dfm:240
+#: EssModel/System/UUMLForm.dfm:242
 #. FGUIDesigner..PopupMenu..MIZoomOut..Caption
 #: Main/UGUIDesigner.dfm:166
 #. FSequenceForm..SequenceToolbar..TBZoomOut..Hint
@@ -4719,11 +4719,11 @@ msgid "Zoom out"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBZoomPlus..Hint
-#: frmEditor.dfm:477
+#: frmEditor.dfm:483
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBZoomIn..Hint
-#: EssModel/System/UUMLForm.dfm:143
+#: EssModel/System/UUMLForm.dfm:145
 #. FUMLForm..PUML..PInteractive..TBInteractiveToolbar..TBSynEditZoomPlus..Hint
-#: EssModel/System/UUMLForm.dfm:248
+#: EssModel/System/UUMLForm.dfm:250
 #. FGUIDesigner..PopupMenu..MIZoomIn..Caption
 #: Main/UGUIDesigner.dfm:160
 #. FSequenceForm..SequenceToolbar..TBZoomIn..Hint
@@ -4736,113 +4736,113 @@ msgid "Zoom in"
 msgstr ""
 
 #. EditorForm..BGPanel..ViewsTabControl..tbshSource..EditformToolbar..TBValidate..Hint
-#: frmEditor.dfm:486
+#: frmEditor.dfm:492
 msgid "Validate"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnEditOpenClass..Caption
-#: frmEditor.dfm:510
+#: frmEditor.dfm:516
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..mnOpenClass..Hint
-#: frmPyIDEMain.dfm:1209
+#: frmPyIDEMain.dfm:1212
 #. PyIDEMainForm..actlStandard..actUMLOpenClass..Caption
-#: frmPyIDEMain.dfm:3865
+#: frmPyIDEMain.dfm:3868
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupOpenClass..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:193
 #. AFrameDiagram..PopMenuClass..MIClassPopupOpenClass..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:456
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBClassOpen..Hint
-#: EssModel/System/UUMLForm.dfm:103
+#: EssModel/System/UUMLForm.dfm:105
 msgid "Open class"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnEditClassEditor..Caption
-#: frmEditor.dfm:516
+#: frmEditor.dfm:522
 msgid "Class editor"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnEditAddImports..Caption
-#: frmEditor.dfm:527
+#: frmEditor.dfm:533
 msgid "Add imports"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnEditCopyPathname..Caption
-#: frmEditor.dfm:531
+#: frmEditor.dfm:537
 msgid "Copy pathname"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnEditConfiguration..Caption
-#: frmEditor.dfm:535
+#: frmEditor.dfm:541
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsConfiguration..Caption
-#: frmPyIDEMain.dfm:1246
+#: frmPyIDEMain.dfm:1249
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsConfiguration..Hint
-#: frmPyIDEMain.dfm:1247
+#: frmPyIDEMain.dfm:1250
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupConfiguration..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:302
 #. FSequenceForm..PopupMenuLifeLineAndSequencePanel..MIPopupConfiguration..Caption
 #: SequenceDiagram/USequenceForm.dfm:234
 #. FStructogram..StructoPopupMenu..MIConfiguration..Caption
-#: Structogram/UStructogram.dfm:301
+#: Structogram/UStructogram.dfm:305
 #. FConfiguration..Caption
 #: Utils/UConfiguration.dfm:6
 msgid "Configuration"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnGit..mnGitStatus..Caption
-#: frmEditor.dfm:547
+#: frmEditor.dfm:553
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitStatus..Caption
-#: frmPyIDEMain.dfm:1263
+#: frmPyIDEMain.dfm:1266
 msgid "Status"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnGit..mnGitCommit..Caption
-#: frmEditor.dfm:557
+#: frmEditor.dfm:563
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitCommit..Caption
-#: frmPyIDEMain.dfm:1273
+#: frmPyIDEMain.dfm:1276
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNCommit..Caption
-#: frmPyIDEMain.dfm:1339
+#: frmPyIDEMain.dfm:1342
 msgid "Commit"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnGit..mnGitLog..Caption
-#: frmEditor.dfm:562
+#: frmEditor.dfm:568
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitLog..Caption
-#: frmPyIDEMain.dfm:1278
+#: frmPyIDEMain.dfm:1281
 msgid "Log"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnGit..mnGitCheckout..Caption
-#: frmEditor.dfm:574
+#: frmEditor.dfm:580
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitCheckout..Caption
-#: frmPyIDEMain.dfm:1290
+#: frmPyIDEMain.dfm:1293
 msgid "Checkout"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnGit..mnGitViewer..Caption
-#: frmEditor.dfm:608
+#: frmEditor.dfm:614
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitViewer..Caption
-#: frmPyIDEMain.dfm:1324
+#: frmPyIDEMain.dfm:1327
 msgid "Viewer"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnFold..Caption
-#: frmEditor.dfm:648
+#: frmEditor.dfm:654
 msgid "Fold"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnUnfold..Caption
-#: frmEditor.dfm:679
+#: frmEditor.dfm:685
 msgid "Unfold"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnMaximizeEditor2..Caption
-#: frmEditor.dfm:718
+#: frmEditor.dfm:724
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnMaximizeEditor..Caption
-#: frmPyIDEMain.dfm:882
+#: frmPyIDEMain.dfm:885
 msgid "&Maximize/Restore Editor"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnMaximizeEditor2..Hint
-#: frmEditor.dfm:719
+#: frmEditor.dfm:725
 msgid "Maximize/Restore editor window"
 msgstr ""
 
@@ -5179,16 +5179,16 @@ msgstr ""
 #. FunctionListWindow..pnHolder..lvProcs......Caption
 #: frmFunctionList.dfm:75
 #. FClassEditor..PageControl..TSMethods..RGMethodKind....Items.Strings
-#: Main/UClassEditor.dfm:434
-#: Main/UClassEditor.pas:297
-#: Main/UClassEditor.pas:298
+#: Main/UClassEditor.dfm:441
+#: Main/UClassEditor.pas:325
+#: Main/UClassEditor.pas:326
 msgid "Function"
 msgstr ""
 
 #. FunctionListWindow..pnlHeader..pnlHeaderLeft..lblMethods..Caption
 #: frmFunctionList.dfm:119
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..SearchMenu..Caption
-#: frmPyIDEMain.dfm:778
+#: frmPyIDEMain.dfm:781
 msgid "&Search"
 msgstr ""
 
@@ -5202,7 +5202,7 @@ msgstr ""
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectFileEdit..Caption
 #: frmProjectExplorer.dfm:281
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..Caption
-#: frmPyIDEMain.dfm:595
+#: frmPyIDEMain.dfm:598
 msgid "&Edit"
 msgstr ""
 
@@ -5499,9 +5499,9 @@ msgstr ""
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectRun..Caption
 #: frmProjectExplorer.dfm:331
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..RunMenu..Caption
-#: frmPyIDEMain.dfm:1094
+#: frmPyIDEMain.dfm:1097
 #. PyIDEMainForm..actlStandard..actRun..Caption
-#: frmPyIDEMain.dfm:3065
+#: frmPyIDEMain.dfm:3068
 #. UnitTestWindow..DialogActions..actRun..Caption
 #: frmUnitTests.dfm:336
 msgid "&Run"
@@ -5515,7 +5515,7 @@ msgstr ""
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectExternalRun..Caption
 #: frmProjectExplorer.dfm:340
 #. PyIDEMainForm..actlStandard..actExternalRun..Caption
-#: frmPyIDEMain.dfm:3147
+#: frmPyIDEMain.dfm:3150
 msgid "E&xternal Run"
 msgstr ""
 
@@ -5528,7 +5528,7 @@ msgstr ""
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectDebug..Caption
 #: frmProjectExplorer.dfm:349
 #. PyIDEMainForm..actlStandard..actDebug..Caption
-#: frmPyIDEMain.dfm:3178
+#: frmPyIDEMain.dfm:3181
 msgid "&Debug"
 msgstr ""
 
@@ -5562,7 +5562,7 @@ msgstr ""
 #. PyIDEMainForm..StatusBar..lbFileFormat..Hint
 #: frmPyIDEMain.dfm:55
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..TBXSubmenuItem3..Hint
-#: frmPyIDEMain.dfm:742
+#: frmPyIDEMain.dfm:745
 msgid "File format"
 msgstr ""
 
@@ -5575,8 +5575,8 @@ msgstr ""
 #: frmPyIDEMain.dfm:94
 #. PyIDEMainForm..StatusBar..spiLspLed..Hint
 #: frmPyIDEMain.dfm:100
-#: frmPyIDEMain.pas:3429
-#: frmPyIDEMain.pas:4084
+#: frmPyIDEMain.pas:3405
+#: frmPyIDEMain.pas:4060
 msgid "Ready"
 msgstr ""
 
@@ -5586,180 +5586,180 @@ msgid "External Tool Running"
 msgstr ""
 
 #. PyIDEMainForm..BGPanel..TabControl1..tbiTabFiles..Hint
-#: frmPyIDEMain.dfm:144
+#: frmPyIDEMain.dfm:146
 #. PyIDEMainForm..BGPanel..TabControl2..tbiTabFiles2..Hint
-#: frmPyIDEMain.dfm:197
+#: frmPyIDEMain.dfm:199
 msgid "Select File"
 msgstr ""
 
 #. PyIDEMainForm..BGPanel..TabControl1..tbiScrollLeft..Hint
-#: frmPyIDEMain.dfm:152
+#: frmPyIDEMain.dfm:154
 #. PyIDEMainForm..BGPanel..TabControl2..tbiScrollLeft2..Hint
-#: frmPyIDEMain.dfm:205
+#: frmPyIDEMain.dfm:207
 msgid "Scroll left"
 msgstr ""
 
 #. PyIDEMainForm..BGPanel..TabControl1..tbiScrollRight..Hint
-#: frmPyIDEMain.dfm:161
+#: frmPyIDEMain.dfm:163
 #. PyIDEMainForm..BGPanel..TabControl2..tbiScrollRight2..Hint
-#: frmPyIDEMain.dfm:214
+#: frmPyIDEMain.dfm:216
 msgid "Scroll right"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..DebugToolbar..Caption
-#: frmPyIDEMain.dfm:276
+#: frmPyIDEMain.dfm:279
 msgid "Debug Toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..EditorToolbar..Caption
-#: frmPyIDEMain.dfm:306
+#: frmPyIDEMain.dfm:309
 msgid "Editor Toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..Caption
-#: frmPyIDEMain.dfm:359
+#: frmPyIDEMain.dfm:362
 msgid "Find Toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiFindLabel..Caption
-#: frmPyIDEMain.dfm:368
+#: frmPyIDEMain.dfm:371
 msgid "Find:"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiReplaceLabel..Caption
-#: frmPyIDEMain.dfm:387
+#: frmPyIDEMain.dfm:390
 msgid "Replace with:"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiSearchFromCaret..Caption
-#: frmPyIDEMain.dfm:404
+#: frmPyIDEMain.dfm:407
 msgid "Search From C&aret"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiAutoCaseSensitive..Caption
-#: frmPyIDEMain.dfm:411
+#: frmPyIDEMain.dfm:414
 msgid "&Auto Case Sensitive"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiAutoCaseSensitive..Hint
-#: frmPyIDEMain.dfm:412
+#: frmPyIDEMain.dfm:415
 msgid "Case Sensitive when search text contains upper case "
 "characters"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiCaseSensitive..Caption
-#: frmPyIDEMain.dfm:418
+#: frmPyIDEMain.dfm:421
 msgid "&Case Sensitive"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiWholeWords..Caption
-#: frmPyIDEMain.dfm:423
+#: frmPyIDEMain.dfm:426
 msgid "&Whole Words Only"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiSearchInSelection..Caption
-#: frmPyIDEMain.dfm:428
+#: frmPyIDEMain.dfm:431
 msgid "Search in &Selection"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiRegExp..Caption
-#: frmPyIDEMain.dfm:433
+#: frmPyIDEMain.dfm:436
 msgid "&Regular Expressions"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiIncrementalSearch..Caption
-#: frmPyIDEMain.dfm:440
+#: frmPyIDEMain.dfm:443
 msgid "&Incremental Search"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..Caption
-#: frmPyIDEMain.dfm:486
+#: frmPyIDEMain.dfm:489
 msgid "&File"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..Caption
-#: frmPyIDEMain.dfm:488
+#: frmPyIDEMain.dfm:491
 #. FClassEditor..ActionList..ActionNew..Caption
-#: Main/UClassEditor.dfm:657
+#: Main/UClassEditor.dfm:665
 msgid "&New"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnNewModule..Caption
-#: frmPyIDEMain.dfm:491
+#: frmPyIDEMain.dfm:494
 msgid "&Python module"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnNewFile..Caption
-#: frmPyIDEMain.dfm:495
+#: frmPyIDEMain.dfm:498
 msgid "&File..."
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewTkApplication..Caption
-#: frmPyIDEMain.dfm:499
+#: frmPyIDEMain.dfm:502
 msgid "&Tk/Tkk Application"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewTkApplication..Hint
-#: frmPyIDEMain.dfm:500
+#: frmPyIDEMain.dfm:503
 #. PyIDEMainForm..actlStandard..actFileNewTkApp..Hint
-#: frmPyIDEMain.dfm:3952
+#: frmPyIDEMain.dfm:3955
 msgid "New Tk/TKK Application"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewQtApplication..Caption
-#: frmPyIDEMain.dfm:504
+#: frmPyIDEMain.dfm:507
 msgid "&Qt-Application"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewQtApplication..Hint
-#: frmPyIDEMain.dfm:505
+#: frmPyIDEMain.dfm:508
 #. PyIDEMainForm..actlStandard..actFileNewQtApp..Hint
-#: frmPyIDEMain.dfm:3958
+#: frmPyIDEMain.dfm:3961
 msgid "New QT Application"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewClass..Caption
-#: frmPyIDEMain.dfm:511
+#: frmPyIDEMain.dfm:514
 #. FClassEditor..PageControl..TSClass..Caption
-#: Main/UClassEditor.dfm:59
+#: Main/UClassEditor.dfm:65
 msgid "&Class"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewStrutogram..Caption
-#: frmPyIDEMain.dfm:515
+#: frmPyIDEMain.dfm:518
 msgid "&Structogram"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewSequencediagram..Caption
-#: frmPyIDEMain.dfm:519
+#: frmPyIDEMain.dfm:522
 msgid "Sequence &diagram"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..RecentSubmenu..Caption
-#: frmPyIDEMain.dfm:527
+#: frmPyIDEMain.dfm:530
 msgid "&Recent Files"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..RecentSubmenu..Hint
-#: frmPyIDEMain.dfm:528
+#: frmPyIDEMain.dfm:531
 msgid "Recent files"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..mnFileExport..Caption
-#: frmPyIDEMain.dfm:554
+#: frmPyIDEMain.dfm:557
 msgid "Expor&t"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..mnCopyMenu..Hint
-#: frmPyIDEMain.dfm:610
+#: frmPyIDEMain.dfm:613
 #. FUMLForm..PMInteractive..MICopy..Caption
-#: EssModel/System/UUMLForm.dfm:341
+#: EssModel/System/UUMLForm.dfm:343
 #. FGUIDesigner..PopupMenu..MICopy..Caption
 #: Main/UGUIDesigner.dfm:144
 #. FObjectInspector..PMObjectInspector..MICopy..Caption
 #: Main/UObjectInspector.dfm:96
 #. FStructogram..StructoPopupMenu..MICopy..Caption
-#: Structogram/UStructogram.dfm:232
+#: Structogram/UStructogram.dfm:233
 #. FTextDiff..PopUpEditor..MICopy..Caption
 #: TextDiff/UTextDiff.dfm:273
 #. Programmer's name for it: SEdCmdCopy
@@ -5768,222 +5768,222 @@ msgid "Copy"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..mnSourceCode..Caption
-#: frmPyIDEMain.dfm:665
+#: frmPyIDEMain.dfm:668
 msgid "&Source Code"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..mnSpelling..Caption
-#: frmPyIDEMain.dfm:678
+#: frmPyIDEMain.dfm:681
 msgid "Spelling"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..mnEditParameters1..Caption
-#: frmPyIDEMain.dfm:724
-#: dmResources.pas:391
+#: frmPyIDEMain.dfm:727
+#: dmResources.pas:395
 msgid "Parameters"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..TBXSubmenuItem3..Caption
-#: frmPyIDEMain.dfm:741
+#: frmPyIDEMain.dfm:744
 msgid "File Format"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..Caption
-#: frmPyIDEMain.dfm:838
+#: frmPyIDEMain.dfm:841
 msgid "&View"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnViewDefaultLayout..Caption
-#: frmPyIDEMain.dfm:841
+#: frmPyIDEMain.dfm:844
 msgid "Default Layout"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnViewDebugLayout..Caption
-#: frmPyIDEMain.dfm:846
+#: frmPyIDEMain.dfm:849
 msgid "Debug Layout"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..Caption
-#: frmPyIDEMain.dfm:850
+#: frmPyIDEMain.dfm:853
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..Hint
-#: frmPyIDEMain.dfm:851
+#: frmPyIDEMain.dfm:854
 msgid "Layouts"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem47..Caption
-#: frmPyIDEMain.dfm:857
+#: frmPyIDEMain.dfm:860
 #. PyIDEMainForm..actlStandard..actLayoutSave..Caption
-#: frmPyIDEMain.dfm:3461
+#: frmPyIDEMain.dfm:3464
 msgid "Save Layout..."
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem47..Hint
-#: frmPyIDEMain.dfm:858
+#: frmPyIDEMain.dfm:861
 #. PyIDEMainForm..actlStandard..actLayoutSave..Hint
-#: frmPyIDEMain.dfm:3463
+#: frmPyIDEMain.dfm:3466
 msgid "Save Current Layout"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem48..Caption
-#: frmPyIDEMain.dfm:862
+#: frmPyIDEMain.dfm:865
 #. PyIDEMainForm..actlStandard..actLayoutsDelete..Caption
-#: frmPyIDEMain.dfm:3468
+#: frmPyIDEMain.dfm:3471
 msgid "Delete Layouts..."
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem48..Hint
-#: frmPyIDEMain.dfm:863
+#: frmPyIDEMain.dfm:866
 #. PyIDEMainForm..actlStandard..actLayoutsDelete..Hint
-#: frmPyIDEMain.dfm:3470
+#: frmPyIDEMain.dfm:3473
 msgid "Delete a layout"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem49..Caption
-#: frmPyIDEMain.dfm:867
+#: frmPyIDEMain.dfm:870
 #. PyIDEMainForm..actlStandard..actLayoutDebug..Caption
-#: frmPyIDEMain.dfm:3475
+#: frmPyIDEMain.dfm:3478
 msgid "Set Debug Layout"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem49..Hint
-#: frmPyIDEMain.dfm:868
+#: frmPyIDEMain.dfm:871
 #. PyIDEMainForm..actlStandard..actLayoutDebug..Hint
-#: frmPyIDEMain.dfm:3477
+#: frmPyIDEMain.dfm:3480
 msgid "Set the current layout as the debug "
 "layout"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSplitEditors..Caption
-#: frmPyIDEMain.dfm:892
+#: frmPyIDEMain.dfm:895
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSplitEditors..Hint
-#: frmPyIDEMain.dfm:893
+#: frmPyIDEMain.dfm:896
 msgid "Split Editor"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSplitWorkspace..Caption
-#: frmPyIDEMain.dfm:907
+#: frmPyIDEMain.dfm:910
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSplitWorkspace..Hint
-#: frmPyIDEMain.dfm:908
+#: frmPyIDEMain.dfm:911
 msgid "Split Workspace"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..Caption
-#: frmPyIDEMain.dfm:935
+#: frmPyIDEMain.dfm:938
 msgid "&Toolbars"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnMainToolbarVisibilityToggle..Caption
-#: frmPyIDEMain.dfm:940
+#: frmPyIDEMain.dfm:943
 msgid "&Main Toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnMainToolbarVisibilityToggle..Hint
-#: frmPyIDEMain.dfm:941
+#: frmPyIDEMain.dfm:944
 msgid "Main toolbar|Show/Hide the Main toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnDebugtoolbarVisibilityToggle..Caption
-#: frmPyIDEMain.dfm:946
+#: frmPyIDEMain.dfm:949
 msgid "&Debug Toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnDebugtoolbarVisibilityToggle..Hint
-#: frmPyIDEMain.dfm:947
+#: frmPyIDEMain.dfm:950
 msgid "Debug toolbar|Show/Hide the Debug toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnEditorToolbarVisibilityToggle..Caption
-#: frmPyIDEMain.dfm:952
+#: frmPyIDEMain.dfm:955
 msgid "&Editor Toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnEditorToolbarVisibilityToggle..Hint
-#: frmPyIDEMain.dfm:953
+#: frmPyIDEMain.dfm:956
 msgid "Editor toolbar|Show/Hide the Editor "
 "toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnViewToolbarVisibilityToggle..Caption
-#: frmPyIDEMain.dfm:958
+#: frmPyIDEMain.dfm:961
 msgid "&View Toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnViewToolbarVisibilityToggle..Hint
-#: frmPyIDEMain.dfm:959
+#: frmPyIDEMain.dfm:962
 msgid "View toolbar|Show/Hide the View toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnuUserToolbarVisibilityToggle..Caption
-#: frmPyIDEMain.dfm:963
+#: frmPyIDEMain.dfm:966
 msgid "Use&r Toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnuUserToolbarVisibilityToggle..Hint
-#: frmPyIDEMain.dfm:964
+#: frmPyIDEMain.dfm:967
 msgid "User toolbar|Show/Hide the User toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSyntax..Caption
-#: frmPyIDEMain.dfm:981
+#: frmPyIDEMain.dfm:984
 msgid "&Syntax"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSyntax..mnNoSyntax..Caption
-#: frmPyIDEMain.dfm:986
+#: frmPyIDEMain.dfm:989
 msgid "&No Syntax"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSyntax..mnNoSyntax..Hint
-#: frmPyIDEMain.dfm:987
+#: frmPyIDEMain.dfm:990
 msgid "Do not use syntax highlighting"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLanguage..Caption
-#: frmPyIDEMain.dfm:996
+#: frmPyIDEMain.dfm:999
 #. FConfiguration..PMain..PanelRight..PageList..PLanguage..Caption
-#: Utils/UConfiguration.dfm:3497
+#: Utils/UConfiguration.dfm:3487
 msgid "Language"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnObjectInspector..Caption
-#: frmPyIDEMain.dfm:1007
+#: frmPyIDEMain.dfm:1010
 #. FObjectInspector..Caption
 #: Main/UObjectInspector.dfm:5
 msgid "Object Inspector"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnObjectInspector..Hint
-#: frmPyIDEMain.dfm:1008
+#: frmPyIDEMain.dfm:1011
 msgid "Object inspector"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ProjectMenu..Caption
-#: frmPyIDEMain.dfm:1059
+#: frmPyIDEMain.dfm:1062
 msgid "&Project"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ProjectMenu..SpTBXSubmenuItem1..Caption
-#: frmPyIDEMain.dfm:1069
+#: frmPyIDEMain.dfm:1072
 msgid "&Recent Projects"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..mnNewClass..Hint
-#: frmPyIDEMain.dfm:1205
+#: frmPyIDEMain.dfm:1208
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBClass..Hint
-#: frmPyIDEMain.dfm:2801
+#: frmPyIDEMain.dfm:2505
 #. PyIDEMainForm..actlStandard..actUMLNewClass..Caption
-#: frmPyIDEMain.dfm:3858
+#: frmPyIDEMain.dfm:3861
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupNewClass..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:187
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBClassDefinition..Hint
-#: EssModel/System/UUMLForm.dfm:95
+#: EssModel/System/UUMLForm.dfm:97
 msgid "New class"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..mnNewComment..Hint
-#: frmPyIDEMain.dfm:1217
+#: frmPyIDEMain.dfm:1220
 #. PyIDEMainForm..actlStandard..actUMLNewComment..Caption
-#: frmPyIDEMain.dfm:3879
+#: frmPyIDEMain.dfm:3882
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupNewComment..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:199
 #. AFrameDiagram..PopMenuClass..MIClassPopupNewComment..Caption
@@ -5992,13 +5992,13 @@ msgid "New comment"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..mnNewLayout..Hint
-#: frmPyIDEMain.dfm:1221
+#: frmPyIDEMain.dfm:1224
 #. PyIDEMainForm..actlStandard..actUMLNewLayout..Caption
-#: frmPyIDEMain.dfm:3886
+#: frmPyIDEMain.dfm:3889
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupNewLayout..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:205
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBNewLayout..Hint
-#: EssModel/System/UUMLForm.dfm:159
+#: EssModel/System/UUMLForm.dfm:161
 #. FSequenceForm..SequenceToolbar..TBNewLayout..Hint
 #: SequenceDiagram/USequenceForm.dfm:96
 #. FSequenceForm..PopupMenuLifeLineAndSequencePanel..MIPopupNewLayout..Caption
@@ -6007,13 +6007,13 @@ msgid "New layout"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..mnRefresh..Hint
-#: frmPyIDEMain.dfm:1225
+#: frmPyIDEMain.dfm:1228
 #. PyIDEMainForm..actlStandard..actUMLRefresh..Caption
-#: frmPyIDEMain.dfm:3893
+#: frmPyIDEMain.dfm:3896
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupRefresh..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:211
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBRefresh..Hint
-#: EssModel/System/UUMLForm.dfm:167
+#: EssModel/System/UUMLForm.dfm:169
 #. FSequenceForm..SequenceToolbar..TBRefresh..Hint
 #: SequenceDiagram/USequenceForm.dfm:106
 #. FSequenceForm..PopupMenuLifeLineAndSequencePanel..MIPopupRefresh..Caption
@@ -6022,947 +6022,947 @@ msgid "Refresh"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..mnDiagramFromOpenFiles..Hint
-#: frmPyIDEMain.dfm:1232
+#: frmPyIDEMain.dfm:1235
 #. PyIDEMainForm..actlStandard..actUMLDiagramFromOpenFiles..Caption
-#: frmPyIDEMain.dfm:3900
+#: frmPyIDEMain.dfm:3903
 msgid "Diagram from open files"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..mnSaveAsPicture..Hint
-#: frmPyIDEMain.dfm:1239
+#: frmPyIDEMain.dfm:1242
 #. PyIDEMainForm..actlStandard..actUMLSaveAsPicture..Caption
-#: frmPyIDEMain.dfm:3913
+#: frmPyIDEMain.dfm:3916
 msgid "Save as picture"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..Caption
-#: frmPyIDEMain.dfm:1244
+#: frmPyIDEMain.dfm:1247
 msgid "&Tools"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsTextCompare..Hint
-#: frmPyIDEMain.dfm:1251
+#: frmPyIDEMain.dfm:1254
 #. PyIDEMainForm..actlStandard..actToolsTextDiff..Caption
-#: frmPyIDEMain.dfm:3920
+#: frmPyIDEMain.dfm:3923
 msgid "Textdiff"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNAdd..Caption
-#: frmPyIDEMain.dfm:1344
+#: frmPyIDEMain.dfm:1347
 msgid "Add file"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNLog..Caption
-#: frmPyIDEMain.dfm:1349
+#: frmPyIDEMain.dfm:1352
 msgid "Log of file"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNCompare..Caption
-#: frmPyIDEMain.dfm:1354
+#: frmPyIDEMain.dfm:1357
 msgid "Compare file"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNStatus..Caption
-#: frmPyIDEMain.dfm:1361
+#: frmPyIDEMain.dfm:1364
 msgid "Status of folder"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNTree..Caption
-#: frmPyIDEMain.dfm:1366
+#: frmPyIDEMain.dfm:1369
 msgid "Tree of repository"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNUpdate..Caption
-#: frmPyIDEMain.dfm:1371
+#: frmPyIDEMain.dfm:1374
 msgid "Update from repository"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..EditorViewsMenu..Caption
-#: frmPyIDEMain.dfm:1384
+#: frmPyIDEMain.dfm:1387
 msgid "Source Code Views"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsBrowser..Caption
-#: frmPyIDEMain.dfm:1391
+#: frmPyIDEMain.dfm:1394
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..Caption
-#: Utils/UConfiguration.dfm:3417
+#: Utils/UConfiguration.dfm:3407
 #. Programmer's name for it: SWebPreviewTab
 #: StringResources.pas:307
 msgid "Browser"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsBrowser..Hint
-#: frmPyIDEMain.dfm:1392
+#: frmPyIDEMain.dfm:1395
 msgid "Opens a browser window"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnTools..Caption
-#: frmPyIDEMain.dfm:1399
+#: frmPyIDEMain.dfm:1402
 #. FConfiguration..PMain..PanelRight..PageList..PTools..Caption
-#: Utils/UConfiguration.dfm:5860
+#: Utils/UConfiguration.dfm:5849
 msgid "Tools"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnTools..Hint
-#: frmPyIDEMain.dfm:1400
+#: frmPyIDEMain.dfm:1403
 msgid "External Tools"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..OptionsMenu..Caption
-#: frmPyIDEMain.dfm:1411
+#: frmPyIDEMain.dfm:1414
 msgid "&Options"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainToolBar..Caption
-#: frmPyIDEMain.dfm:1494
+#: frmPyIDEMain.dfm:1497
 msgid "Main Toolbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainToolBar..tbiFileOpen..Hint
-#: frmPyIDEMain.dfm:1496
+#: frmPyIDEMain.dfm:1499
 msgid "Open|Select a file to open"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainToolBar..tbitbiDiagramFromOpenFiles..Hint
-#: frmPyIDEMain.dfm:1512
+#: frmPyIDEMain.dfm:1515
 msgid "UML-Diagram from open files"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabItem1..Caption
-#: frmPyIDEMain.dfm:1526
+#: frmPyIDEMain.dfm:1529
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..Caption
-#: frmPyIDEMain.dfm:2782
+#: frmPyIDEMain.dfm:2486
 #. Programmer's name for it: LNGProgram
 #: Setup/UStringRessources.pas:23
 msgid "Program"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabItem2..Caption
-#: frmPyIDEMain.dfm:1531
+#: frmPyIDEMain.dfm:1533
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..Caption
-#: frmPyIDEMain.dfm:1551
+#: frmPyIDEMain.dfm:1554
 msgid "Tkinter"
 msgstr ""
 
-#. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtMenu..Hint
-#: frmPyIDEMain.dfm:2417
-msgid "QMenu"
-msgstr ""
-
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBStructogram..Hint
-#: frmPyIDEMain.dfm:2811
+#: frmPyIDEMain.dfm:2515
 msgid "New structogram"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBSequence..Hint
-#: frmPyIDEMain.dfm:2821
+#: frmPyIDEMain.dfm:2525
 msgid "New sequence diagram"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBTkApplication..Hint
-#: frmPyIDEMain.dfm:2841
+#: frmPyIDEMain.dfm:2545
 msgid "New Tk/TTK-Application"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBQtApplication..Hint
-#: frmPyIDEMain.dfm:2851
+#: frmPyIDEMain.dfm:2555
 msgid "New Qt Application"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBQtApplication..Caption
-#: frmPyIDEMain.dfm:2852
+#: frmPyIDEMain.dfm:2556
 #. PyIDEMainForm..actlStandard..actFileNewQtApp..Caption
-#: frmPyIDEMain.dfm:3957
+#: frmPyIDEMain.dfm:3960
 msgid "Qt-Application"
 msgstr ""
 
+#. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtMenu..Hint
+#: frmPyIDEMain.dfm:2788
+msgid "QMenu"
+msgstr ""
+
 #. PyIDEMainForm..TabControlPopupMenu..mnMaximizeEditor2..Caption
-#: frmPyIDEMain.dfm:2959
+#: frmPyIDEMain.dfm:2962
 msgid "&MaximizeRestore Editor"
 msgstr ""
 
 #. PyIDEMainForm..TabControlPopupMenu..mnFiles..Caption
-#: frmPyIDEMain.dfm:2965
+#: frmPyIDEMain.dfm:2968
 msgid "&Files"
 msgstr ""
 
 #. PyIDEMainForm..TabControlPopupMenu..mnFiles..Hint
-#: frmPyIDEMain.dfm:2966
+#: frmPyIDEMain.dfm:2969
 msgid "Open Files"
 msgstr ""
 
 #. PyIDEMainForm..actlImmutable..actViewNextEditor..Caption
-#: frmPyIDEMain.dfm:2999
+#: frmPyIDEMain.dfm:3002
 msgid "&Next Editor"
 msgstr ""
 
 #. PyIDEMainForm..actlImmutable..actViewNextEditor..Hint
-#: frmPyIDEMain.dfm:3001
+#: frmPyIDEMain.dfm:3004
 msgid "Next Editor|Move to the next editor"
 msgstr ""
 
 #. PyIDEMainForm..actlImmutable..actViewPreviousEditor..Caption
-#: frmPyIDEMain.dfm:3009
+#: frmPyIDEMain.dfm:3012
 msgid "&Previous Editor"
 msgstr ""
 
 #. PyIDEMainForm..actlImmutable..actViewPreviousEditor..Hint
-#: frmPyIDEMain.dfm:3011
+#: frmPyIDEMain.dfm:3014
 msgid "Previous editor|Move to the previous "
 "editor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewMainMenu..Caption
-#: frmPyIDEMain.dfm:3024
+#: frmPyIDEMain.dfm:3027
 msgid "Main Men&u"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewMainMenu..Hint
-#: frmPyIDEMain.dfm:3027
+#: frmPyIDEMain.dfm:3030
 msgid "View/Hide main menu"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actCallStackWin..Caption
-#: frmPyIDEMain.dfm:3033
+#: frmPyIDEMain.dfm:3036
 #. PyIDEMainForm..actlStandard..actNavCallStack..Caption
-#: frmPyIDEMain.dfm:3635
+#: frmPyIDEMain.dfm:3638
 msgid "&Call Stack"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actCallStackWin..Hint
-#: frmPyIDEMain.dfm:3037
+#: frmPyIDEMain.dfm:3040
 msgid "Show/Hide Call Stack window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actVariablesWin..Caption
-#: frmPyIDEMain.dfm:3044
+#: frmPyIDEMain.dfm:3047
 #. PyIDEMainForm..actlStandard..actNavVariables..Caption
-#: frmPyIDEMain.dfm:3625
+#: frmPyIDEMain.dfm:3628
 msgid "&Variables"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actVariablesWin..Hint
-#: frmPyIDEMain.dfm:3048
+#: frmPyIDEMain.dfm:3051
 msgid "Show/Hide Variables window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actSyntaxCheck..Caption
-#: frmPyIDEMain.dfm:3055
+#: frmPyIDEMain.dfm:3058
 msgid "&Syntax Check"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actSyntaxCheck..Hint
-#: frmPyIDEMain.dfm:3058
+#: frmPyIDEMain.dfm:3061
 msgid "Syntax Check|Perform syntax check and load "
 "scripts"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRun..Hint
-#: frmPyIDEMain.dfm:3068
+#: frmPyIDEMain.dfm:3071
 msgid "Run|Run active module"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actCommandLine..Caption
-#: frmPyIDEMain.dfm:3076
+#: frmPyIDEMain.dfm:3079
 msgid "Command Line &Parameters..."
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actCommandLine..Hint
-#: frmPyIDEMain.dfm:3079
+#: frmPyIDEMain.dfm:3082
 msgid "Set command line parameters"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actImportModule..Caption
-#: frmPyIDEMain.dfm:3084
+#: frmPyIDEMain.dfm:3087
 msgid "Import &Module"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actImportModule..Hint
-#: frmPyIDEMain.dfm:3087
+#: frmPyIDEMain.dfm:3090
 msgid "Import module"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFileNewModule..Caption
-#: frmPyIDEMain.dfm:3094
+#: frmPyIDEMain.dfm:3097
 msgid "&New Python module"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFileNewModule..Hint
-#: frmPyIDEMain.dfm:3097
+#: frmPyIDEMain.dfm:3100
 msgid "New Python module"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFileOpen..Caption
-#: frmPyIDEMain.dfm:3105
+#: frmPyIDEMain.dfm:3108
 msgid "&Open..."
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFileOpen..Hint
-#: frmPyIDEMain.dfm:3108
+#: frmPyIDEMain.dfm:3111
 msgid "Select a file to open"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFileCloseAll..Caption
-#: frmPyIDEMain.dfm:3116
+#: frmPyIDEMain.dfm:3119
 msgid "Close A&ll"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFileCloseAll..Hint
-#: frmPyIDEMain.dfm:3120
+#: frmPyIDEMain.dfm:3123
 msgid "Close all files"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFileExit..Caption
-#: frmPyIDEMain.dfm:3128
+#: frmPyIDEMain.dfm:3131
 msgid "E&xit"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFileExit..Hint
-#: frmPyIDEMain.dfm:3131
+#: frmPyIDEMain.dfm:3134
 msgid "Exit"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewStatusBar..Caption
-#: frmPyIDEMain.dfm:3139
+#: frmPyIDEMain.dfm:3142
 msgid "Status &Bar"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewStatusBar..Hint
-#: frmPyIDEMain.dfm:3142
+#: frmPyIDEMain.dfm:3145
 msgid "View/Hide status bar"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actExternalRun..Hint
-#: frmPyIDEMain.dfm:3150
+#: frmPyIDEMain.dfm:3153
 msgid "External Run|Run active module in external Python "
 "interpreter"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actExternalRunConfigure..Caption
-#: frmPyIDEMain.dfm:3158
+#: frmPyIDEMain.dfm:3161
 msgid "Configure &External Run..."
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actExternalRunConfigure..Hint
-#: frmPyIDEMain.dfm:3161
+#: frmPyIDEMain.dfm:3164
 msgid "Configure External Run"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRunDebugLastScript..Caption
-#: frmPyIDEMain.dfm:3168
+#: frmPyIDEMain.dfm:3171
 msgid "Debug Last Script"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRunDebugLastScript..Hint
-#: frmPyIDEMain.dfm:3170
+#: frmPyIDEMain.dfm:3173
 #. Programmer's name for it: SHintDebug
 #: StringResources.pas:269
 msgid "Debug last script"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actDebug..Hint
-#: frmPyIDEMain.dfm:3181
+#: frmPyIDEMain.dfm:3184
 #. Programmer's name for it: SDebugHint
 #: StringResources.pas:267
 msgid "Debug|Debug active script"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRestoreEditor..Caption
-#: frmPyIDEMain.dfm:3189
+#: frmPyIDEMain.dfm:3192
 msgid "&Restore Editor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRestoreEditor..Hint
-#: frmPyIDEMain.dfm:3192
+#: frmPyIDEMain.dfm:3195
 msgid "Restore editor window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRunToCursor..Caption
-#: frmPyIDEMain.dfm:3200
+#: frmPyIDEMain.dfm:3203
 msgid "Run To &Cursor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRunToCursor..Hint
-#: frmPyIDEMain.dfm:3203
+#: frmPyIDEMain.dfm:3206
 msgid "Run to cursor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actStepInto..Caption
-#: frmPyIDEMain.dfm:3211
+#: frmPyIDEMain.dfm:3214
 msgid "Step &Into"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actStepInto..Hint
-#: frmPyIDEMain.dfm:3214
+#: frmPyIDEMain.dfm:3217
 msgid "Step into subroutine "
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actStepOver..Caption
-#: frmPyIDEMain.dfm:3222
+#: frmPyIDEMain.dfm:3225
 msgid "Step &Over"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actStepOver..Hint
-#: frmPyIDEMain.dfm:3225
+#: frmPyIDEMain.dfm:3228
 msgid "Step over next function call"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actStepOut..Caption
-#: frmPyIDEMain.dfm:3233
+#: frmPyIDEMain.dfm:3236
 msgid "Step O&ut"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actStepOut..Hint
-#: frmPyIDEMain.dfm:3236
+#: frmPyIDEMain.dfm:3239
 msgid "Step out of the current subroutine"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actDebugPause..Caption
-#: frmPyIDEMain.dfm:3244
+#: frmPyIDEMain.dfm:3247
 msgid "&Pause"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actDebugPause..Hint
-#: frmPyIDEMain.dfm:3247
+#: frmPyIDEMain.dfm:3250
 msgid "Pause running program"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actDebugAbort..Caption
-#: frmPyIDEMain.dfm:3254
+#: frmPyIDEMain.dfm:3257
 msgid "&Abort Debugging"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actDebugAbort..Hint
-#: frmPyIDEMain.dfm:3257
+#: frmPyIDEMain.dfm:3260
 msgid "Abort debugging"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRunLastScriptExternal..Caption
-#: frmPyIDEMain.dfm:3265
+#: frmPyIDEMain.dfm:3268
 msgid "Run Last Script Externally"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRunLastScriptExternal..Hint
-#: frmPyIDEMain.dfm:3267
+#: frmPyIDEMain.dfm:3270
 #. Programmer's name for it: SHintExternalRun
 #: StringResources.pas:270
 msgid "Run last script externally"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRunLastScript..Caption
-#: frmPyIDEMain.dfm:3275
+#: frmPyIDEMain.dfm:3278
 msgid "Run Last Script"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRunLastScript..Hint
-#: frmPyIDEMain.dfm:3277
+#: frmPyIDEMain.dfm:3280
 #. Programmer's name for it: SHintRun
 #: StringResources.pas:268
 msgid "Run last script"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actToggleBreakPoint..Caption
-#: frmPyIDEMain.dfm:3285
+#: frmPyIDEMain.dfm:3288
 msgid "Toggle &breakpoint"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actToggleBreakPoint..Hint
-#: frmPyIDEMain.dfm:3288
+#: frmPyIDEMain.dfm:3291
 msgid "Toggle breakpoint"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actClearAllBreakpoints..Caption
-#: frmPyIDEMain.dfm:3296
+#: frmPyIDEMain.dfm:3299
 msgid "Clear A&ll Breakpoints"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actClearAllBreakpoints..Hint
-#: frmPyIDEMain.dfm:3299
+#: frmPyIDEMain.dfm:3302
 msgid "Clear all breakpoints"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actBreakPointsWin..Caption
-#: frmPyIDEMain.dfm:3306
+#: frmPyIDEMain.dfm:3309
 msgid "&Breakpoints"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actBreakPointsWin..Hint
-#: frmPyIDEMain.dfm:3310
+#: frmPyIDEMain.dfm:3313
 msgid "Show/Hide Breakpoints window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actWatchesWin..Caption
-#: frmPyIDEMain.dfm:3317
+#: frmPyIDEMain.dfm:3320
 #. PyIDEMainForm..actlStandard..actNavWatches..Caption
-#: frmPyIDEMain.dfm:3595
+#: frmPyIDEMain.dfm:3598
 msgid "&Watches"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actWatchesWin..Hint
-#: frmPyIDEMain.dfm:3321
+#: frmPyIDEMain.dfm:3324
 msgid "Show/Hide Watches window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actMessagesWin..Caption
-#: frmPyIDEMain.dfm:3328
+#: frmPyIDEMain.dfm:3331
 msgid "&Messages"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actMessagesWin..Hint
-#: frmPyIDEMain.dfm:3332
+#: frmPyIDEMain.dfm:3335
 msgid "Show/Hide Messages window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewII..Caption
-#: frmPyIDEMain.dfm:3339
+#: frmPyIDEMain.dfm:3342
 msgid "&Interactive Interpreter"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewII..Hint
-#: frmPyIDEMain.dfm:3343
+#: frmPyIDEMain.dfm:3346
 msgid "View/Hide Interactive Interpreter"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewCodeExplorer..Caption
-#: frmPyIDEMain.dfm:3350
+#: frmPyIDEMain.dfm:3353
 #. PyIDEMainForm..actlStandard..actNavCodeExplorer..Caption
-#: frmPyIDEMain.dfm:3665
+#: frmPyIDEMain.dfm:3668
 msgid "&Code Explorer"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewCodeExplorer..Hint
-#: frmPyIDEMain.dfm:3354
+#: frmPyIDEMain.dfm:3357
 msgid "View/Hide Code Explorer"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewFileExplorer..Caption
-#: frmPyIDEMain.dfm:3361
+#: frmPyIDEMain.dfm:3364
 msgid "&File Explorer"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewFileExplorer..Hint
-#: frmPyIDEMain.dfm:3365
+#: frmPyIDEMain.dfm:3368
 msgid "View/Hide File Explorer"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewToDoList..Caption
-#: frmPyIDEMain.dfm:3372
+#: frmPyIDEMain.dfm:3375
 msgid "&To-Do List"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewToDoList..Hint
-#: frmPyIDEMain.dfm:3375
+#: frmPyIDEMain.dfm:3378
 msgid "View/Hide To Do List"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewFindResults..Caption
-#: frmPyIDEMain.dfm:3382
+#: frmPyIDEMain.dfm:3385
 msgid "Find &in Files Results"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewFindResults..Hint
-#: frmPyIDEMain.dfm:3385
+#: frmPyIDEMain.dfm:3388
 msgid "View/Hide Find in Files Results"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewUnitTests..Caption
-#: frmPyIDEMain.dfm:3393
+#: frmPyIDEMain.dfm:3396
 #. PyIDEMainForm..actlStandard..actNavUnitTests..Caption
-#: frmPyIDEMain.dfm:3685
+#: frmPyIDEMain.dfm:3688
 msgid "&Unit Tests"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewUnitTests..Hint
-#: frmPyIDEMain.dfm:3395
+#: frmPyIDEMain.dfm:3398
 msgid "View/Hide Unit Tests Window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewOutput..Caption
-#: frmPyIDEMain.dfm:3402
+#: frmPyIDEMain.dfm:3405
 msgid "&Output Window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewOutput..Hint
-#: frmPyIDEMain.dfm:3405
+#: frmPyIDEMain.dfm:3408
 msgid "View/Hide Output Window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFindDefinition..Caption
-#: frmPyIDEMain.dfm:3412
+#: frmPyIDEMain.dfm:3415
 msgid "Find &Definition"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFindDefinition..Hint
-#: frmPyIDEMain.dfm:3415
+#: frmPyIDEMain.dfm:3418
 msgid "Find definition of an Identifier"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFindReferences..Caption
-#: frmPyIDEMain.dfm:3421
+#: frmPyIDEMain.dfm:3424
 msgid "Find R&eferences"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFindReferences..Hint
-#: frmPyIDEMain.dfm:3424
+#: frmPyIDEMain.dfm:3427
 msgid "Find references of an Identifier"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actBrowseBack..Caption
-#: frmPyIDEMain.dfm:3429
+#: frmPyIDEMain.dfm:3432
 msgid "Browse &Back"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actBrowseBack..Hint
-#: frmPyIDEMain.dfm:3432
+#: frmPyIDEMain.dfm:3435
 msgid "Browse back"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actBrowseForward..Caption
-#: frmPyIDEMain.dfm:3440
+#: frmPyIDEMain.dfm:3443
 msgid "Browse &Forward"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actBrowseForward..Hint
-#: frmPyIDEMain.dfm:3443
+#: frmPyIDEMain.dfm:3446
 msgid "Browse forward"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewRegExpTester..Caption
-#: frmPyIDEMain.dfm:3451
+#: frmPyIDEMain.dfm:3454
 msgid "&Regular Expression Tester"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewRegExpTester..Hint
-#: frmPyIDEMain.dfm:3454
+#: frmPyIDEMain.dfm:3457
 msgid "View/Hide Regular Expression Tester"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actMaximizeEditor..Caption
-#: frmPyIDEMain.dfm:3482
+#: frmPyIDEMain.dfm:3485
 msgid "&Maximize Editor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actMaximizeEditor..Hint
-#: frmPyIDEMain.dfm:3485
+#: frmPyIDEMain.dfm:3488
 msgid "Maximize editor window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actEditorZoomIn..Caption
-#: frmPyIDEMain.dfm:3493
+#: frmPyIDEMain.dfm:3496
 msgid "Zoom &In"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actEditorZoomIn..Hint
-#: frmPyIDEMain.dfm:3495
+#: frmPyIDEMain.dfm:3498
 msgid "Increase the font size of the editor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actEditorZoomOut..Caption
-#: frmPyIDEMain.dfm:3503
+#: frmPyIDEMain.dfm:3506
 msgid "Zoom &Out"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actEditorZoomOut..Hint
-#: frmPyIDEMain.dfm:3505
+#: frmPyIDEMain.dfm:3508
 msgid "Decrease the font size of the editor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorVer..Caption
-#: frmPyIDEMain.dfm:3513
+#: frmPyIDEMain.dfm:3516
 msgid "Split Editor Vertically"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorVer..Hint
-#: frmPyIDEMain.dfm:3516
+#: frmPyIDEMain.dfm:3519
 msgid "Split the editor Windows vertically"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actAddWatchAtCursor..Caption
-#: frmPyIDEMain.dfm:3523
+#: frmPyIDEMain.dfm:3526
 msgid "Add &Watch At Cursor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actAddWatchAtCursor..Hint
-#: frmPyIDEMain.dfm:3526
+#: frmPyIDEMain.dfm:3529
 msgid "Add the expression at the editor current position as a "
 "watch"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonReinitialize..Caption
-#: frmPyIDEMain.dfm:3534
+#: frmPyIDEMain.dfm:3537
 msgid "Reinitiali&ze Python engine"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonInternal..Caption
-#: frmPyIDEMain.dfm:3543
+#: frmPyIDEMain.dfm:3546
 msgid "&Internal"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonInternal..Hint
-#: frmPyIDEMain.dfm:3548
+#: frmPyIDEMain.dfm:3551
 msgid "Use internal Python Engine"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonRemote..Caption
-#: frmPyIDEMain.dfm:3555
+#: frmPyIDEMain.dfm:3558
 msgid "&Remote"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonRemote..Hint
-#: frmPyIDEMain.dfm:3559
+#: frmPyIDEMain.dfm:3562
 msgid "Use a remote Python engine"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteTk..Caption
-#: frmPyIDEMain.dfm:3566
+#: frmPyIDEMain.dfm:3569
 msgid "Remote (&Tk)"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteTk..Hint
-#: frmPyIDEMain.dfm:3570
+#: frmPyIDEMain.dfm:3573
 msgid "Use a remote Python engine for Tkinter "
 "applications"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteWx..Caption
-#: frmPyIDEMain.dfm:3577
+#: frmPyIDEMain.dfm:3580
 msgid "Remote (&Wx)"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteWx..Hint
-#: frmPyIDEMain.dfm:3581
+#: frmPyIDEMain.dfm:3584
 msgid "Use a remote Python engine for wxPython "
 "applications"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFileNewFile..Caption
-#: frmPyIDEMain.dfm:3586
+#: frmPyIDEMain.dfm:3589
 msgid "New File..."
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFileNewFile..Hint
-#: frmPyIDEMain.dfm:3588
+#: frmPyIDEMain.dfm:3591
 msgid "New file from template"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavWatches..Hint
-#: frmPyIDEMain.dfm:3597
+#: frmPyIDEMain.dfm:3600
 msgid "Activate the Watches window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavBreakpoints..Caption
-#: frmPyIDEMain.dfm:3605
+#: frmPyIDEMain.dfm:3608
 msgid "&BreakPoints"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavBreakpoints..Hint
-#: frmPyIDEMain.dfm:3607
+#: frmPyIDEMain.dfm:3610
 msgid "Activate the Breakpoints window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavInterpreter..Caption
-#: frmPyIDEMain.dfm:3615
+#: frmPyIDEMain.dfm:3618
 msgid "&Interpreter"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavInterpreter..Hint
-#: frmPyIDEMain.dfm:3617
+#: frmPyIDEMain.dfm:3620
 msgid "Activate the Interpreter window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavVariables..Hint
-#: frmPyIDEMain.dfm:3627
+#: frmPyIDEMain.dfm:3630
 msgid "Activate the Variables window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavCallStack..Hint
-#: frmPyIDEMain.dfm:3637
+#: frmPyIDEMain.dfm:3640
 msgid "Activate the Call Stack window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavMessages..Caption
-#: frmPyIDEMain.dfm:3645
+#: frmPyIDEMain.dfm:3648
 msgid "&Messages "
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavMessages..Hint
-#: frmPyIDEMain.dfm:3647
+#: frmPyIDEMain.dfm:3650
 msgid "Activate the Messages window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavFileExplorer..Caption
-#: frmPyIDEMain.dfm:3655
+#: frmPyIDEMain.dfm:3658
 msgid "File E&xplorer"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavFileExplorer..Hint
-#: frmPyIDEMain.dfm:3657
+#: frmPyIDEMain.dfm:3660
 msgid "Activate the File Explorer window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavCodeExplorer..Hint
-#: frmPyIDEMain.dfm:3667
+#: frmPyIDEMain.dfm:3670
 msgid "Activate the Code Explorer window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavTodo..Caption
-#: frmPyIDEMain.dfm:3675
+#: frmPyIDEMain.dfm:3678
 msgid "&Todo List"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavTodo..Hint
-#: frmPyIDEMain.dfm:3677
+#: frmPyIDEMain.dfm:3680
 #. PyIDEMainForm..actlStandard..actNavUnitTests..Hint
-#: frmPyIDEMain.dfm:3687
+#: frmPyIDEMain.dfm:3690
 msgid "Activate the Todo List window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavOutput..Caption
-#: frmPyIDEMain.dfm:3695
+#: frmPyIDEMain.dfm:3698
 msgid "Command &Output"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavOutput..Hint
-#: frmPyIDEMain.dfm:3697
+#: frmPyIDEMain.dfm:3700
 msgid "Activate the Command Output window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavEditor..Caption
-#: frmPyIDEMain.dfm:3705
+#: frmPyIDEMain.dfm:3708
 msgid "&Editor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavEditor..Hint
-#: frmPyIDEMain.dfm:3707
+#: frmPyIDEMain.dfm:3710
 msgid "Activate the Editor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonSSH..Caption
-#: frmPyIDEMain.dfm:3717
+#: frmPyIDEMain.dfm:3720
 msgid "&SSH"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonSSH..Hint
-#: frmPyIDEMain.dfm:3721
+#: frmPyIDEMain.dfm:3724
 msgid "Use an SSH remote Python engine"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actExecSelection..Caption
-#: frmPyIDEMain.dfm:3726
+#: frmPyIDEMain.dfm:3729
 msgid "E&xecute selection"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actExecSelection..Hint
-#: frmPyIDEMain.dfm:3729
+#: frmPyIDEMain.dfm:3732
 msgid "Execute the editor selection"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorHor..Caption
-#: frmPyIDEMain.dfm:3737
+#: frmPyIDEMain.dfm:3740
 msgid "Split Editor Horizontally"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorHor..Hint
-#: frmPyIDEMain.dfm:3740
+#: frmPyIDEMain.dfm:3743
 msgid "Split the editor Windows horizontally"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondEditor..Caption
-#: frmPyIDEMain.dfm:3747
+#: frmPyIDEMain.dfm:3750
 msgid "Hide Second Editor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondEditor..Hint
-#: frmPyIDEMain.dfm:3750
+#: frmPyIDEMain.dfm:3753
 msgid "Clear the editor"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPostMortem..Caption
-#: frmPyIDEMain.dfm:3755
+#: frmPyIDEMain.dfm:3758
 msgid "&Post Mortem"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPostMortem..Hint
-#: frmPyIDEMain.dfm:3758
+#: frmPyIDEMain.dfm:3761
 msgid "Enter post mortem analysis"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewCustomizeToolbars..Caption
-#: frmPyIDEMain.dfm:3765
+#: frmPyIDEMain.dfm:3768
 msgid "Customize..."
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewCustomizeToolbars..Hint
-#: frmPyIDEMain.dfm:3768
+#: frmPyIDEMain.dfm:3771
 msgid "Customize the toolbars"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewProjectExplorer..Caption
-#: frmPyIDEMain.dfm:3773
+#: frmPyIDEMain.dfm:3776
 #. PyIDEMainForm..actlStandard..actNavProjectExplorer..Caption
-#: frmPyIDEMain.dfm:3783
+#: frmPyIDEMain.dfm:3786
 msgid "&Project Explorer"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewProjectExplorer..Hint
-#: frmPyIDEMain.dfm:3776
+#: frmPyIDEMain.dfm:3779
 msgid "View/Hide Project Explorer"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavProjectExplorer..Hint
-#: frmPyIDEMain.dfm:3786
+#: frmPyIDEMain.dfm:3789
 msgid "Activate the Project Explorer window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceVer..Caption
-#: frmPyIDEMain.dfm:3794
+#: frmPyIDEMain.dfm:3797
 msgid "Split Workspace Vertically"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceVer....Hint
-#: frmPyIDEMain.dfm:3799
+#: frmPyIDEMain.dfm:3802
 msgid "Split workspace vertically|Show secondary editor tabset vertically "
 "aligned"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceHor..Caption
-#: frmPyIDEMain.dfm:3806
+#: frmPyIDEMain.dfm:3809
 msgid "Split Workspace Horizontally"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceHor....Hint
-#: frmPyIDEMain.dfm:3811
+#: frmPyIDEMain.dfm:3814
 msgid "Split workspace horizontally|Show secondary workspace horizontally "
 "aligned"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondaryWorkspace..Caption
-#: frmPyIDEMain.dfm:3818
+#: frmPyIDEMain.dfm:3821
 msgid "Hide Secondary Workspace"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondaryWorkspace..Hint
-#: frmPyIDEMain.dfm:3821
+#: frmPyIDEMain.dfm:3824
 msgid "Hide secondary workspace"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actSelectStyle..Caption
-#: frmPyIDEMain.dfm:3826
+#: frmPyIDEMain.dfm:3829
 msgid "Styles..."
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonSetup..Caption
-#: frmPyIDEMain.dfm:3834
+#: frmPyIDEMain.dfm:3837
 msgid "Setup Python Versions..."
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonSetup..Hint
-#: frmPyIDEMain.dfm:3835
+#: frmPyIDEMain.dfm:3838
 msgid "Setup Python engine"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRemoteFileOpen..Caption
-#: frmPyIDEMain.dfm:3842
+#: frmPyIDEMain.dfm:3845
 #. SSH File and Remote engine
 #. Programmer's name for it: SRemoteFileOpen
 #: StringResources.pas:444
@@ -6970,80 +6970,80 @@ msgid "Open Remote File"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actRemoteFileOpen..Hint
-#: frmPyIDEMain.dfm:3843
+#: frmPyIDEMain.dfm:3846
 msgid "Open Remote File with SSH"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actUMLNewUML..Caption
-#: frmPyIDEMain.dfm:3850
+#: frmPyIDEMain.dfm:3853
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..BParameterNew..Caption
-#: Main/UClassEditor.dfm:547
+#: Main/UClassEditor.dfm:555
 #. FObjectInspector..PNewDel..BNewDelete..Caption
 #: Main/UObjectInspector.dfm:57
 #. FSequenceForm..PopupMenuConnection..MINew..Caption
 #: SequenceDiagram/USequenceForm.dfm:141
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..LSDNew..Caption
-#: Utils/UConfiguration.dfm:2791
+#: Utils/UConfiguration.dfm:2782
 #: Main/UObjectInspector.pas:611
 msgid "New"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actUMLNewUML..Hint
-#: frmPyIDEMain.dfm:3851
+#: frmPyIDEMain.dfm:3854
 msgid "New UML window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actUMLOpenFolder..Caption
-#: frmPyIDEMain.dfm:3907
+#: frmPyIDEMain.dfm:3910
 #. FOpenFolderForm..Caption
 #: Main/UOpenFolderForm.dfm:6
 msgid "Open folder"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actToolsConfiguration..Caption
-#: frmPyIDEMain.dfm:3927
+#: frmPyIDEMain.dfm:3930
 msgid "Tools configuration"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actViewObjectinspector..Caption
-#: frmPyIDEMain.dfm:3940
+#: frmPyIDEMain.dfm:3943
 msgid "actViewObjectinspector"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavStructure..Caption
-#: frmPyIDEMain.dfm:3945
+#: frmPyIDEMain.dfm:3948
 #. FFileStructure..Caption
 #: Main/UFileStructure.dfm:5
 msgid "Structure"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actNavStructure..Hint
-#: frmPyIDEMain.dfm:3946
+#: frmPyIDEMain.dfm:3949
 msgid "Activate the Structure window"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actFileNewTkApp..Caption
-#: frmPyIDEMain.dfm:3951
+#: frmPyIDEMain.dfm:3954
 msgid "Tk/Tkk Application"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actEditorZoomReset..Caption
-#: frmPyIDEMain.dfm:3962
+#: frmPyIDEMain.dfm:3965
 msgid "&Reset Zoom"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actEditorZoomReset..Hint
-#: frmPyIDEMain.dfm:3963
+#: frmPyIDEMain.dfm:3966
 msgid "Reset the font size of the editor to its "
 "default"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actUMLRecognizeAssociations..Caption
-#: frmPyIDEMain.dfm:3968
+#: frmPyIDEMain.dfm:3971
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBRecognizeAssociations..Hint
-#: EssModel/System/UUMLForm.dfm:175
+#: EssModel/System/UUMLForm.dfm:177
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBRecognizeAssociations..Caption
-#: EssModel/System/UUMLForm.dfm:176
+#: EssModel/System/UUMLForm.dfm:178
 msgid "Recognize associations"
 msgstr ""
 
@@ -7253,7 +7253,7 @@ msgstr ""
 #. ToDoWindow..Actions..actEditCopy..Hint
 #: frmToDo.dfm:252
 #. FUMLForm..PMInteractive..MICopyAll..Caption
-#: EssModel/System/UUMLForm.dfm:357
+#: EssModel/System/UUMLForm.dfm:359
 msgid "Copy all"
 msgstr ""
 
@@ -7373,11 +7373,11 @@ msgstr ""
 #. WatchesWindow..BGPanel..FGPanel..Panel1..WatchesView......Text
 #: frmWatches.dfm:108
 #. FClassEditor..PageControl..TSAttributes..LAttributeType..Caption
-#: Main/UClassEditor.dfm:144
+#: Main/UClassEditor.dfm:150
 #. FClassEditor..PageControl..TSMethods..LMethodType..Caption
-#: Main/UClassEditor.dfm:332
+#: Main/UClassEditor.dfm:339
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..LParameterType..Caption
-#: Main/UClassEditor.dfm:457
+#: Main/UClassEditor.dfm:464
 #: frmVariables.pas:558
 msgid "Type"
 msgstr ""
@@ -7417,14 +7417,14 @@ msgstr ""
 #. AFrameDiagram..PopupMenuAlign..MIPopupTop..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:38
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGEditorTabPosition....Items.Strings
-#: Utils/UConfiguration.dfm:3727
+#: Utils/UConfiguration.dfm:3717
 msgid "Top"
 msgstr ""
 
 #. AFrameDiagram..PopupMenuAlign..MIPopupBottom..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:52
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGEditorTabPosition....Items.Strings
-#: Utils/UConfiguration.dfm:3728
+#: Utils/UConfiguration.dfm:3718
 msgid "Bottom"
 msgstr ""
 
@@ -7542,7 +7542,7 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupDisplay..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:481
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LAttributesAndMethods..Caption
-#: Utils/UConfiguration.dfm:2942
+#: Utils/UConfiguration.dfm:2933
 msgid "Attributes and Methods"
 msgstr ""
 
@@ -7563,7 +7563,9 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupVisibility..MIClassPopupVisibilityNone..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:545
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3102
+#: Utils/UConfiguration.dfm:3093
+#. Programmer's name for it: LNGNone
+#: StringResources.pas:465
 msgid "none"
 msgstr ""
 
@@ -7574,7 +7576,9 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupDisplay..MIClassPopupDisplay3..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:498
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3080
+#: Utils/UConfiguration.dfm:3071
+#. Programmer's name for it: LNGAll
+#: StringResources.pas:464
 msgid "all"
 msgstr ""
 
@@ -7583,9 +7587,9 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:504
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay..Caption
-#: Utils/UConfiguration.dfm:3100
-#: EssModel/Integrator/View/URtfdDiagram.pas:1599
-#: EssModel/Integrator/View/URtfdDiagram.pas:1895
+#: Utils/UConfiguration.dfm:3091
+#: EssModel/Integrator/View/URtfdDiagram.pas:1639
+#: EssModel/Integrator/View/URtfdDiagram.pas:1936
 msgid "Parameter"
 msgstr ""
 
@@ -7594,7 +7598,7 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay1..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:511
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3103
+#: Utils/UConfiguration.dfm:3094
 msgid ": type"
 msgstr ""
 
@@ -7603,7 +7607,7 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay2..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:516
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3104
+#: Utils/UConfiguration.dfm:3095
 msgid "(...): type"
 msgstr ""
 
@@ -7612,7 +7616,7 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay3..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:521
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3105
+#: Utils/UConfiguration.dfm:3096
 msgid "(name): type"
 msgstr ""
 
@@ -7621,7 +7625,7 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay5..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:531
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3106
+#: Utils/UConfiguration.dfm:3097
 msgid "(name = value): type"
 msgstr ""
 
@@ -7630,7 +7634,7 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupParameter..MIClassPopupParameterDisplay6..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:536
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGParameterDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3107
+#: Utils/UConfiguration.dfm:3098
 msgid "(name: type = value): type"
 msgstr ""
 
@@ -7641,15 +7645,15 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupVisibility..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:542
 #. FClassEditor..PageControl..TSAttributes..RGAttributeAccess..Caption
-#: Main/UClassEditor.dfm:158
+#: Main/UClassEditor.dfm:164
 #. FClassEditor..PageControl..TSMethods..RGMethodAccess..Caption
-#: Main/UClassEditor.dfm:366
+#: Main/UClassEditor.dfm:373
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGSequenceAttributsMethods....Items.Strings
-#: Utils/UConfiguration.dfm:3091
+#: Utils/UConfiguration.dfm:3082
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGVisibilityDisplay..Caption
-#: Utils/UConfiguration.dfm:3115
+#: Utils/UConfiguration.dfm:3106
 #. FConfiguration..PMain..PanelRight..PageList..PVisibility..Caption
-#: Utils/UConfiguration.dfm:5687
+#: Utils/UConfiguration.dfm:5676
 msgid "Visibility"
 msgstr ""
 
@@ -7669,7 +7673,7 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupCopyAsPicture..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:567
 #. FStructogram..StructoPopupMenu..MICopyAsPicture..Caption
-#: Structogram/UStructogram.dfm:283
+#: Structogram/UStructogram.dfm:284
 msgid "Copy as picture"
 msgstr ""
 
@@ -7702,7 +7706,7 @@ msgstr ""
 #. FObjectInspector..TCAttributesEvents....Tabs.Strings
 #: Main/UObjectInspector.dfm:32
 #: frmCodeExplorer.pas:1021
-#: Main/UClassEditor.pas:358
+#: Main/UClassEditor.pas:385
 msgid "Attributes"
 msgstr ""
 
@@ -7751,7 +7755,7 @@ msgstr ""
 #. AFrameDiagram..PopMenuClass..MIClassPopupDelete..Caption
 #: EssModel/Integrator/View/UDiagramFrame.dfm:560
 #. in Arbeit
-#: EssModel/Integrator/View/URtfdDiagram.pas:2556
+#: EssModel/Integrator/View/URtfdDiagram.pas:2598
 msgid "Delete class"
 msgstr ""
 
@@ -7761,43 +7765,43 @@ msgid "Create test class"
 msgstr ""
 
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBShowConnections..Hint
-#: EssModel/System/UUMLForm.dfm:111
+#: EssModel/System/UUMLForm.dfm:113
 msgid "Connections: none, classes and objects, "
 "all"
 msgstr ""
 
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBObjectDiagram..Hint
-#: EssModel/System/UUMLForm.dfm:119
+#: EssModel/System/UUMLForm.dfm:121
 msgid "Class diagram on/off"
 msgstr ""
 
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBView..Hint
-#: EssModel/System/UUMLForm.dfm:127
+#: EssModel/System/UUMLForm.dfm:129
 msgid "View"
 msgstr ""
 
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBInteractive..Hint
-#: EssModel/System/UUMLForm.dfm:183
+#: EssModel/System/UUMLForm.dfm:185
 msgid "Show/hide interactive"
 msgstr ""
 
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBReInitialize..Hint
-#: EssModel/System/UUMLForm.dfm:191
+#: EssModel/System/UUMLForm.dfm:193
 msgid "Reinitialize Python engine"
 msgstr ""
 
 #. FUMLForm..PUML..PInteractive..TBInteractiveToolbar..TBExecute..Hint
-#: EssModel/System/UUMLForm.dfm:230
+#: EssModel/System/UUMLForm.dfm:232
 msgid "Execute selected/current line"
 msgstr ""
 
 #. FUMLForm..PUML..PInteractive..TBInteractiveToolbar..TBDelete..Hint
-#: EssModel/System/UUMLForm.dfm:256
+#: EssModel/System/UUMLForm.dfm:258
 msgid "Delete selected/all"
 msgstr ""
 
 #. FUMLForm..PMInteractive..MIPaste..Caption
-#: EssModel/System/UUMLForm.dfm:334
+#: EssModel/System/UUMLForm.dfm:336
 #. FGUIDesigner..PopupMenu..MIPaste..Caption
 #: Main/UGUIDesigner.dfm:151
 #. FObjectInspector..PMObjectInspector..MIPaste..Caption
@@ -7810,7 +7814,7 @@ msgid "Paste"
 msgstr ""
 
 #. FUMLForm..PMInteractive..MIDeleteAll..Caption
-#: EssModel/System/UUMLForm.dfm:363
+#: EssModel/System/UUMLForm.dfm:365
 msgid "Delete all"
 msgstr ""
 
@@ -7822,15 +7826,15 @@ msgstr ""
 #. FIconEditor..BSelect..Caption
 #: Formdesigner/ELImage.dfm:16
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..BSelectBrowser..Caption
-#: Utils/UConfiguration.dfm:3482
+#: Utils/UConfiguration.dfm:3472
 #. FConfiguration..PMain..PanelRight..PageList..PGit..BGitFolder..Caption
-#: Utils/UConfiguration.dfm:5927
+#: Utils/UConfiguration.dfm:5916
 #. FConfiguration..PMain..PanelRight..PageList..PGit..BGitRepository..Caption
-#: Utils/UConfiguration.dfm:5936
+#: Utils/UConfiguration.dfm:5925
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..BRepository..Caption
-#: Utils/UConfiguration.dfm:6008
+#: Utils/UConfiguration.dfm:5997
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..BSVN..Caption
-#: Utils/UConfiguration.dfm:6017
+#: Utils/UConfiguration.dfm:6006
 msgid "Select"
 msgstr ""
 
@@ -7874,7 +7878,7 @@ msgstr ""
 #. FGit..BCancel..Caption
 #: Main/UGit.dfm:60
 #. FObjectGenerator..StatusBar..BCancel..Caption
-#: Main/UObjectGenerator.dfm:36
+#: Main/UObjectGenerator.dfm:38
 #. FStringEditor..BCancel..Caption
 #: Main/UStrings.dfm:37
 #. FSubversion..BCancel..Caption
@@ -7882,7 +7886,7 @@ msgstr ""
 #. FConnectForm..BCancel..Caption
 #: SequenceDiagram/UConnectForm.dfm:80
 #. FConfiguration..PMain..PanelRight..PButtons..BCancel..Caption
-#: Utils/UConfiguration.dfm:131
+#: Utils/UConfiguration.dfm:136
 #. Programmer's name for it: SDlgCancel
 #: StringResources.pas:150
 msgid "Cancel"
@@ -7977,74 +7981,74 @@ msgstr ""
 
 #. FClassEditor..LClass..Caption
 #: Main/UClassEditor.dfm:27
-#: Main/UClassEditor.pas:1767
-#: Main/UClassEditor.pas:1768
+#: Main/UClassEditor.pas:1847
+#: Main/UClassEditor.pas:1848
 msgid "Class"
 msgstr ""
 
 #. FClassEditor..PageControl..TSClass..LExtends..Caption
-#: Main/UClassEditor.dfm:72
+#: Main/UClassEditor.dfm:78
 msgid "Extends"
 msgstr ""
 
 #. FClassEditor..PageControl..TSAttributes..Caption
-#: Main/UClassEditor.dfm:130
+#: Main/UClassEditor.dfm:136
 msgid "&Attributes"
 msgstr ""
 
 #. FClassEditor..PageControl..TSAttributes..CBAttributeType....Items.Strings
-#: Main/UClassEditor.dfm:187
+#: Main/UClassEditor.dfm:194
 #. FClassEditor..PageControl..TSMethods..CBMethodType....Items.Strings
-#: Main/UClassEditor.dfm:356
+#: Main/UClassEditor.dfm:363
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamType....Items.Strings
-#: Main/UClassEditor.dfm:537
-#: Main/UClassEditor.pas:265
+#: Main/UClassEditor.dfm:545
+#: Main/UClassEditor.pas:270
 msgid "set"
 msgstr ""
 
 #. FClassEditor..PageControl..TSAttributes..GBAttributeOptions..CBsetMethod..Caption
-#: Main/UClassEditor.dfm:224
+#: Main/UClassEditor.dfm:231
 msgid "set method"
 msgstr ""
 
 #. FClassEditor..PageControl..TSAttributes..GBAttributeOptions..CBgetMethod..Caption
-#: Main/UClassEditor.dfm:234
+#: Main/UClassEditor.dfm:241
 msgid "get method"
 msgstr ""
 
 #. FClassEditor..PageControl..TSMethods..Caption
-#: Main/UClassEditor.dfm:318
+#: Main/UClassEditor.dfm:325
 msgid "&Methods"
 msgstr ""
 
 #. FClassEditor..PageControl..TSMethods..RGMethodKind..Caption
-#: Main/UClassEditor.dfm:431
+#: Main/UClassEditor.dfm:438
 msgid "Kind"
 msgstr ""
 
 #. FClassEditor..PageControl..TSMethods..RGMethodKind....Items.Strings
-#: Main/UClassEditor.dfm:433
-#: Main/UClassEditor.pas:297
-#: Main/UClassEditor.pas:298
+#: Main/UClassEditor.dfm:440
+#: Main/UClassEditor.pas:325
+#: Main/UClassEditor.pas:326
 msgid "Constructor"
 msgstr ""
 
 #. FClassEditor..PageControl..TSMethods..RGMethodKind....Items.Strings
-#: Main/UClassEditor.dfm:435
-#: Main/UClassEditor.pas:297
+#: Main/UClassEditor.dfm:442
+#: Main/UClassEditor.pas:325
 msgid "Procedure"
 msgstr ""
 
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..Caption
-#: Main/UClassEditor.dfm:443
+#: Main/UClassEditor.dfm:450
 msgid "formal parameters"
 msgstr ""
 
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParameter..Text
-#: Main/UClassEditor.dfm:580
-#: Main/UClassEditor.pas:1004
-#: Main/UClassEditor.pas:1998
-#: Main/UClassEditor.pas:2214
+#: Main/UClassEditor.dfm:588
+#: Main/UClassEditor.pas:1031
+#: Main/UClassEditor.pas:2078
+#: Main/UClassEditor.pas:2294
 msgid "Select attribute"
 msgstr ""
 
@@ -8058,13 +8062,13 @@ msgstr ""
 #. FDownload..LFile..Caption
 #: Main/UDownload.dfm:28
 #: frmFile.pas:781
+#: frmPyIDEMain.pas:1941
 #: frmPyIDEMain.pas:1944
-#: frmPyIDEMain.pas:1947
 msgid "File"
 msgstr ""
 
 #. FFileStructure..PMFileStructure..MIDefaultLayout..Caption
-#: Main/UFileStructure.dfm:50
+#: Main/UFileStructure.dfm:52
 #. FObjectInspector..PMObjectInspector..MIDefaultLayout..Caption
 #: Main/UObjectInspector.dfm:110
 msgid "Default layout"
@@ -8157,7 +8161,7 @@ msgstr ""
 #. FGUIDesigner..PopupMenu..MISnapToGrid..Caption
 #: Main/UGUIDesigner.dfm:125
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..CBSnapToGrid..Caption
-#: Utils/UConfiguration.dfm:2485
+#: Utils/UConfiguration.dfm:2476
 msgid "Snap to grid"
 msgstr ""
 
@@ -8183,14 +8187,14 @@ msgid "Object generator"
 msgstr ""
 
 #. FObjectGenerator..ValueListEditor....TitleCaptions.Strings
-#: Main/UObjectGenerator.dfm:70
-#: EssModel/Integrator/View/URtfdDiagram.pas:1596
-#: EssModel/Integrator/View/URtfdDiagram.pas:2156
+#: Main/UObjectGenerator.dfm:72
+#: EssModel/Integrator/View/URtfdDiagram.pas:1636
+#: EssModel/Integrator/View/URtfdDiagram.pas:2198
 msgid "Attribute"
 msgstr ""
 
 #. FObjectGenerator..PictureDialog....Filter
-#: Main/UObjectGenerator.dfm:80
+#: Main/UObjectGenerator.dfm:84
 msgid "jpg and gif files|*.jpg;*.jpeg;*.gif|jpg files (*.jpg, "
 "*.jpeg)|*.jpg;*.jpeg|gif files (*.gif)|*.gif|All "
 "(*.*)|*.*"
@@ -8307,9 +8311,9 @@ msgstr ""
 #. FSequenceForm..Caption
 #: SequenceDiagram/USequenceForm.dfm:5
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..Caption
-#: Utils/UConfiguration.dfm:2778
-#: Utils/UConfiguration.pas:2641
-#: Utils/UConfiguration.pas:5469
+#: Utils/UConfiguration.dfm:2769
+#: Utils/UConfiguration.pas:2642
+#: Utils/UConfiguration.pas:5470
 msgid "Sequence diagram"
 msgstr ""
 
@@ -8437,12 +8441,12 @@ msgstr ""
 
 #. FStructogram..PanelLeft..StructogramToolbar..TBStatement..Hint
 #: Structogram/UStructogram.dfm:86
-#: frmEditor.pas:2481
-#: frmEditor.pas:2482
-#: frmEditor.pas:2483
-#: frmEditor.pas:2484
-#: frmEditor.pas:2485
-#: frmEditor.pas:2486
+#: frmEditor.pas:2474
+#: frmEditor.pas:2475
+#: frmEditor.pas:2476
+#: frmEditor.pas:2477
+#: frmEditor.pas:2478
+#: frmEditor.pas:2479
 msgid "Statement"
 msgstr ""
 
@@ -8464,53 +8468,58 @@ msgstr ""
 #. FStructogram..PanelLeft..StructogramToolbar..TBAlgorithm..Hint
 #: Structogram/UStructogram.dfm:167
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LAlgorithm..Caption
-#: Utils/UConfiguration.dfm:2556
+#: Utils/UConfiguration.dfm:2547
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EAlgorithm..Text
-#: Utils/UConfiguration.dfm:2657
+#: Utils/UConfiguration.dfm:2648
 #. Structogram
-#: Utils/UConfiguration.pas:5941
+#: Utils/UConfiguration.pas:5942
 msgid "Algorithm"
 msgstr ""
 
 #. FStructogram..PanelLeft..StructogramToolbar..TBCreatePythonCode..Hint
 #: Structogram/UStructogram.dfm:178
 #. FStructogram..StructoPopupMenu..MIGenerateFunction..Caption
-#: Structogram/UStructogram.dfm:252
+#: Structogram/UStructogram.dfm:253
 msgid "Create Python code"
 msgstr ""
 
 #. FStructogram..PanelLeft..StructogramToolbar..TBPuzzleMode..Hint
 #: Structogram/UStructogram.dfm:211
 #. FStructogram..StructoPopupMenu..MIPuzzle..Caption
-#: Structogram/UStructogram.dfm:289
+#: Structogram/UStructogram.dfm:290
 msgid "Puzzle mode"
 msgstr ""
 
 #. FStructogram..StructoPopupMenu..MISwitchWithCaseLine..Caption
-#: Structogram/UStructogram.dfm:238
+#: Structogram/UStructogram.dfm:239
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBSwitchWithCaseLine..Caption
-#: Utils/UConfiguration.dfm:2713
+#: Utils/UConfiguration.dfm:2704
 msgid "Selection with case line"
 msgstr ""
 
 #. FStructogram..StructoPopupMenu..MIAddCase..Caption
-#: Structogram/UStructogram.dfm:242
+#: Structogram/UStructogram.dfm:243
 msgid "Add case"
 msgstr ""
 
 #. FStructogram..StructoPopupMenu..MIDeleteCase..Caption
-#: Structogram/UStructogram.dfm:246
+#: Structogram/UStructogram.dfm:247
 msgid "Delete case"
 msgstr ""
 
 #. FStructogram..StructoPopupMenu..MIDatatype..Caption
-#: Structogram/UStructogram.dfm:258
+#: Structogram/UStructogram.dfm:259
 msgid "Data type"
+msgstr ""
+
+#. FStructogram..StructoPopupMenu..MISavePuzzleFiles..Caption
+#: Structogram/UStructogram.dfm:294
+msgid "Save puzzle files"
 msgstr ""
 
 #. FTextDiff..Caption
 #: TextDiff/UTextDiff.dfm:4
-#: frmPyIDEMain.pas:5184
+#: frmPyIDEMain.pas:5164
 msgid "Compare text"
 msgstr ""
 
@@ -8625,128 +8634,128 @@ msgid "Redo"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PButtons..BSave..Hint
-#: Utils/UConfiguration.dfm:118
+#: Utils/UConfiguration.dfm:123
 msgid "Saves the current settings "
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PButtons..BDump..Hint
-#: Utils/UConfiguration.dfm:141
+#: Utils/UConfiguration.dfm:146
 msgid "Outputs the entire configuration as a text file. "
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PButtons..BDump..Caption
-#: Utils/UConfiguration.dfm:142
+#: Utils/UConfiguration.dfm:147
 msgid "Dump"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PButtons..BCheck..Hint
-#: Utils/UConfiguration.dfm:154
+#: Utils/UConfiguration.dfm:159
 msgid "Checks the set paths and files"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PButtons..BCheck..Caption
-#: Utils/UConfiguration.dfm:155
+#: Utils/UConfiguration.dfm:160
 msgid "Check"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PPython..Caption
-#: Utils/UConfiguration.dfm:206
+#: Utils/UConfiguration.dfm:211
 msgid "Python"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..Caption
-#: Utils/UConfiguration.dfm:292
+#: Utils/UConfiguration.dfm:297
 msgid "Interpreter"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..LInterpreterHistorySize..Caption
-#: Utils/UConfiguration.dfm:299
+#: Utils/UConfiguration.dfm:304
 msgid "Interpreter history size"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..LTimeOut..Caption
-#: Utils/UConfiguration.dfm:306
+#: Utils/UConfiguration.dfm:311
 msgid "Timeout for running scripts in ms"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBAlwaysUseSockets..Caption
-#: Utils/UConfiguration.dfm:313
+#: Utils/UConfiguration.dfm:318
 msgid "Always use sockets"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBClearOutputBeforeRun..Caption
-#: Utils/UConfiguration.dfm:321
+#: Utils/UConfiguration.dfm:326
 msgid "Clear output before run"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBInternalInterpreterHidden..Caption
-#: Utils/UConfiguration.dfm:329
+#: Utils/UConfiguration.dfm:334
 msgid "Internal Interpreter hidden"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBJumpToErrorOnException..Caption
-#: Utils/UConfiguration.dfm:337
+#: Utils/UConfiguration.dfm:342
 msgid "Jump to error on exception"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBMaskFPUExceptions..Caption
-#: Utils/UConfiguration.dfm:345
+#: Utils/UConfiguration.dfm:350
 msgid "Mask FPU exceptions"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBPostMortemOnException..Caption
-#: Utils/UConfiguration.dfm:353
+#: Utils/UConfiguration.dfm:358
 msgid "Post mortem on exception"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBPrettyPrintOutput..Caption
-#: Utils/UConfiguration.dfm:361
+#: Utils/UConfiguration.dfm:366
 msgid "Pretty print output"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBReinitializeBeforeRun..Caption
-#: Utils/UConfiguration.dfm:369
+#: Utils/UConfiguration.dfm:374
 msgid "Reinitialize before run"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBSaveEnvironmentBeforeRun..Caption
-#: Utils/UConfiguration.dfm:377
+#: Utils/UConfiguration.dfm:382
 msgid "Save environment before run"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBSaveFilesBeforeRun..Caption
-#: Utils/UConfiguration.dfm:385
+#: Utils/UConfiguration.dfm:390
 msgid "Save files before run"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBSaveInterpreterHistory..Caption
-#: Utils/UConfiguration.dfm:393
+#: Utils/UConfiguration.dfm:398
 msgid "Save interpreter history"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PInterpreter..CBTraceOnlyIntoOpenFiles..Caption
-#: Utils/UConfiguration.dfm:401
+#: Utils/UConfiguration.dfm:406
 msgid "Step into open files only"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PEditor..Caption
-#: Utils/UConfiguration.dfm:439
-#: Utils/UConfiguration.pas:5466
+#: Utils/UConfiguration.dfm:444
+#: Utils/UConfiguration.pas:5467
 msgid "Editor"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..lDigits..Caption
-#: Utils/UConfiguration.dfm:475
+#: Utils/UConfiguration.dfm:478
 msgid "Digits"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbLineSpacing..Label8..Caption
-#: Utils/UConfiguration.dfm:610
+#: Utils/UConfiguration.dfm:611
 msgid "Extra lines spacing in pixels"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbLineSpacing..Label9..Caption
-#: Utils/UConfiguration.dfm:617
+#: Utils/UConfiguration.dfm:618
 msgid "Tab width in spaces"
 msgstr ""
 
@@ -8939,804 +8948,804 @@ msgid "Interpreter code completion"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..btnResetKeys..Hint
-#: Utils/UConfiguration.dfm:1668
+#: Utils/UConfiguration.dfm:1667
 msgid "Restart GuiPy"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..Caption
-#: Utils/UConfiguration.dfm:1675
+#: Utils/UConfiguration.dfm:1674
 msgid "Syntax colors"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSyntaxColors..GroupBox1..Caption
-#: Utils/UConfiguration.dfm:1729
+#: Utils/UConfiguration.dfm:1728
 msgid "Text attributes"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PColorTheme..Caption
-#: Utils/UConfiguration.dfm:1853
+#: Utils/UConfiguration.dfm:1851
 msgid "Color themes"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..Caption
-#: Utils/UConfiguration.dfm:1926
-#: Utils/UConfiguration.pas:2599
+#: Utils/UConfiguration.dfm:1923
+#: Utils/UConfiguration.pas:2600
 msgid "Code templates"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PFileTemplates..Caption
-#: Utils/UConfiguration.dfm:2118
-#: Utils/UConfiguration.pas:2594
+#: Utils/UConfiguration.dfm:2112
+#: Utils/UConfiguration.pas:2595
 msgid "File templates"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..Caption
-#: Utils/UConfiguration.dfm:2347
+#: Utils/UConfiguration.dfm:2338
 msgid "Class modeler"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..Caption
-#: Utils/UConfiguration.dfm:2354
+#: Utils/UConfiguration.dfm:2345
 msgid "Attributes options"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..CBShowGetSetMethods..Caption
-#: Utils/UConfiguration.dfm:2361
+#: Utils/UConfiguration.dfm:2352
 msgid "Show get/set methods"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..CBShowTypeSelection..Caption
-#: Utils/UConfiguration.dfm:2369
+#: Utils/UConfiguration.dfm:2360
 msgid "Show type selection"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..CBGetSetMethodsAsProperty..Caption
-#: Utils/UConfiguration.dfm:2377
+#: Utils/UConfiguration.dfm:2368
 msgid "get/set methods as property"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..CBGetMethodChecked..Caption
-#: Utils/UConfiguration.dfm:2385
+#: Utils/UConfiguration.dfm:2376
 msgid "get method checked"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBAttribuesOptions..CBSetMethodChecked..Caption
-#: Utils/UConfiguration.dfm:2393
+#: Utils/UConfiguration.dfm:2384
 msgid "set method checked"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBMethodsOptions..Caption
-#: Utils/UConfiguration.dfm:2402
+#: Utils/UConfiguration.dfm:2393
 msgid "Methods options"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBMethodsOptions..CBShowKindProcedure..Caption
-#: Utils/UConfiguration.dfm:2409
+#: Utils/UConfiguration.dfm:2400
 msgid "Show kind procedure"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBMethodsOptions..CBShowParameterTypeSelection..Caption
-#: Utils/UConfiguration.dfm:2417
+#: Utils/UConfiguration.dfm:2408
 msgid "Show parameter type selection"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBClassOptions..Caption
-#: Utils/UConfiguration.dfm:2426
+#: Utils/UConfiguration.dfm:2417
 msgid "Class options"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PClassModeler..GBClassOptions..CBFromFutureImport..Caption
-#: Utils/UConfiguration.dfm:2433
+#: Utils/UConfiguration.dfm:2424
 msgid "Use \"from __future__ import annotations\""
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..Caption
-#: Utils/UConfiguration.dfm:2439
+#: Utils/UConfiguration.dfm:2430
 msgid "GUI Designer"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..LGridSize..Caption
-#: Utils/UConfiguration.dfm:2446
+#: Utils/UConfiguration.dfm:2437
 msgid "Grid size in GUI designer"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..LFrameheight..Caption
-#: Utils/UConfiguration.dfm:2453
+#: Utils/UConfiguration.dfm:2444
 msgid "Frame height"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..LFrameWidth..Caption
-#: Utils/UConfiguration.dfm:2460
+#: Utils/UConfiguration.dfm:2451
 msgid "Frame width"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..CBNameFromText..Caption
-#: Utils/UConfiguration.dfm:2467
+#: Utils/UConfiguration.dfm:2458
 msgid "Name GUI components after attribute "
 "Text"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..CBGuiDesignerHints..Caption
-#: Utils/UConfiguration.dfm:2475
+#: Utils/UConfiguration.dfm:2466
 msgid "Show hints permanently in GUI designer"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..Caption
-#: Utils/UConfiguration.dfm:2536
-#: Utils/UConfiguration.pas:2640
-#: Utils/UConfiguration.pas:5468
+#: Utils/UConfiguration.dfm:2527
+#: Utils/UConfiguration.pas:2641
+#: Utils/UConfiguration.pas:5469
 msgid "Structogram"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LInput..Caption
-#: Utils/UConfiguration.dfm:2542
+#: Utils/UConfiguration.dfm:2533
 msgid "Input"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LYes..Caption
-#: Utils/UConfiguration.dfm:2577
+#: Utils/UConfiguration.dfm:2568
 msgid "Yes"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LNo..Caption
-#: Utils/UConfiguration.dfm:2584
+#: Utils/UConfiguration.dfm:2575
 msgid "No"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LDatatype..Caption
-#: Utils/UConfiguration.dfm:2591
+#: Utils/UConfiguration.dfm:2582
 msgid "Datatype"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LCaseCount..Caption
-#: Utils/UConfiguration.dfm:2598
+#: Utils/UConfiguration.dfm:2589
 msgid "Number of cases"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LOther..Caption
-#: Utils/UConfiguration.dfm:2605
+#: Utils/UConfiguration.dfm:2596
 msgid "Else"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LStructogramShadowWidth..Caption
-#: Utils/UConfiguration.dfm:2619
+#: Utils/UConfiguration.dfm:2610
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LShadowWidth..Caption
-#: Utils/UConfiguration.dfm:2900
+#: Utils/UConfiguration.dfm:2891
 msgid "Width"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LStructogramShadowIntensity..Caption
-#: Utils/UConfiguration.dfm:2626
+#: Utils/UConfiguration.dfm:2617
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LShadowIntensity..Caption
-#: Utils/UConfiguration.dfm:2907
+#: Utils/UConfiguration.dfm:2898
 msgid "Intensity"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EInput..Text
-#: Utils/UConfiguration.dfm:2641
-#: Utils/UConfiguration.pas:5942
+#: Utils/UConfiguration.dfm:2632
+#: Utils/UConfiguration.pas:5943
 msgid "Input:"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EOutput..Text
-#: Utils/UConfiguration.dfm:2649
-#: Utils/UConfiguration.pas:5943
+#: Utils/UConfiguration.dfm:2640
+#: Utils/UConfiguration.pas:5944
 msgid "Output:"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EWhile..Text
-#: Utils/UConfiguration.dfm:2665
-#: Utils/UConfiguration.pas:5944
+#: Utils/UConfiguration.dfm:2656
+#: Utils/UConfiguration.pas:5945
 msgid "repeat while"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EFor..Text
-#: Utils/UConfiguration.dfm:2673
+#: Utils/UConfiguration.dfm:2664
 msgid "for item in list"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EYes..Text
-#: Utils/UConfiguration.dfm:2681
-#: Utils/UConfiguration.pas:5946
+#: Utils/UConfiguration.dfm:2672
+#: Utils/UConfiguration.pas:5947
 msgid "yes"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..ENo..Text
-#: Utils/UConfiguration.dfm:2689
+#: Utils/UConfiguration.dfm:2680
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDNoFilling..Caption
-#: Utils/UConfiguration.dfm:2868
+#: Utils/UConfiguration.dfm:2859
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGVisibilityDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3117
-#: Utils/UConfiguration.pas:5947
+#: Utils/UConfiguration.dfm:3108
+#: Utils/UConfiguration.pas:5948
 msgid "no"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..EOther..Text
-#: Utils/UConfiguration.dfm:2740
-#: Utils/UConfiguration.pas:5948
+#: Utils/UConfiguration.dfm:2731
+#: Utils/UConfiguration.pas:5949
 msgid "else"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..LSDObject..Caption
-#: Utils/UConfiguration.dfm:2784
+#: Utils/UConfiguration.dfm:2775
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..ESDObject..Text
-#: Utils/UConfiguration.dfm:2813
+#: Utils/UConfiguration.dfm:2804
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption....Items.Strings
-#: Utils/UConfiguration.dfm:2973
+#: Utils/UConfiguration.dfm:2964
 #. Sequencediagram
-#: Utils/UConfiguration.pas:5951
+#: Utils/UConfiguration.pas:5952
 msgid "Object"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..LSDFilling..Caption
-#: Utils/UConfiguration.dfm:2805
+#: Utils/UConfiguration.dfm:2796
 msgid "Filling"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..ESDNew..Text
-#: Utils/UConfiguration.dfm:2821
-#: Utils/UConfiguration.pas:5952
+#: Utils/UConfiguration.dfm:2812
+#: Utils/UConfiguration.pas:5953
 msgid "new"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..ESDClose..Text
-#: Utils/UConfiguration.dfm:2829
-#: Utils/UConfiguration.pas:5953
+#: Utils/UConfiguration.dfm:2820
+#: Utils/UConfiguration.pas:5954
 msgid "close"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDShowMainCall..Caption
-#: Utils/UConfiguration.dfm:2844
+#: Utils/UConfiguration.dfm:2835
 msgid "Show main call"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDShowParameter..Caption
-#: Utils/UConfiguration.dfm:2852
+#: Utils/UConfiguration.dfm:2843
 msgid "Show parameter"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..CBSDShowReturn..Caption
-#: Utils/UConfiguration.dfm:2860
+#: Utils/UConfiguration.dfm:2851
 msgid "Show return"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..Caption
-#: Utils/UConfiguration.dfm:2873
+#: Utils/UConfiguration.dfm:2864
 msgid "UML Design"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LObjectDesign..Caption
-#: Utils/UConfiguration.dfm:2879
+#: Utils/UConfiguration.dfm:2870
 msgid "Design of Objects"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LClassDesign..Caption
-#: Utils/UConfiguration.dfm:2886
+#: Utils/UConfiguration.dfm:2877
 msgid "Design of Classes"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LValidClassColor..Caption
-#: Utils/UConfiguration.dfm:2893
+#: Utils/UConfiguration.dfm:2884
 msgid "valid class"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LInvalidClassColor..Caption
-#: Utils/UConfiguration.dfm:2914
+#: Utils/UConfiguration.dfm:2905
 msgid "invalid class"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LObjectColor..Caption
-#: Utils/UConfiguration.dfm:2928
+#: Utils/UConfiguration.dfm:2919
 msgid "Color"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..LCommentDesign..Caption
-#: Utils/UConfiguration.dfm:2935
+#: Utils/UConfiguration.dfm:2926
 msgid "Design of Comments"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectHead..Caption
-#: Utils/UConfiguration.dfm:2949
+#: Utils/UConfiguration.dfm:2940
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGClassHead..Caption
-#: Utils/UConfiguration.dfm:2993
+#: Utils/UConfiguration.dfm:2984
 msgid "Head"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectHead....Items.Strings
-#: Utils/UConfiguration.dfm:2952
+#: Utils/UConfiguration.dfm:2943
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGClassHead....Items.Strings
-#: Utils/UConfiguration.dfm:2996
+#: Utils/UConfiguration.dfm:2987
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectFooter....Items.Strings
-#: Utils/UConfiguration.dfm:3058
+#: Utils/UConfiguration.dfm:3049
 msgid "rectangular"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectHead....Items.Strings
-#: Utils/UConfiguration.dfm:2953
+#: Utils/UConfiguration.dfm:2944
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGClassHead....Items.Strings
-#: Utils/UConfiguration.dfm:2997
+#: Utils/UConfiguration.dfm:2988
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectFooter....Items.Strings
-#: Utils/UConfiguration.dfm:3059
+#: Utils/UConfiguration.dfm:3050
 msgid "rounded"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption..Caption
-#: Utils/UConfiguration.dfm:2969
+#: Utils/UConfiguration.dfm:2960
 msgid "Labeling"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption....Items.Strings
-#: Utils/UConfiguration.dfm:2972
+#: Utils/UConfiguration.dfm:2963
 msgid "Object: Class"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectCaption....Items.Strings
-#: Utils/UConfiguration.dfm:2974
+#: Utils/UConfiguration.dfm:2965
 msgid ": Class"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..CBObjectUnderline..Caption
-#: Utils/UConfiguration.dfm:2983
+#: Utils/UConfiguration.dfm:2974
 msgid "Underlined"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGObjectFooter..Caption
-#: Utils/UConfiguration.dfm:3055
+#: Utils/UConfiguration.dfm:3046
 msgid "Foot"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3077
+#: Utils/UConfiguration.dfm:3068
 msgid "not any"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGSequenceAttributsMethods..Caption
-#: Utils/UConfiguration.dfm:3088
+#: Utils/UConfiguration.dfm:3079
 msgid "Order"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGSequenceAttributsMethods....Items.Strings
-#: Utils/UConfiguration.dfm:3090
+#: Utils/UConfiguration.dfm:3081
 msgid "Sourcecode"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGSequenceAttributsMethods....Items.Strings
-#: Utils/UConfiguration.dfm:3092
+#: Utils/UConfiguration.dfm:3083
 msgid "Alphabetical"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGVisibilityDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3119
+#: Utils/UConfiguration.dfm:3110
 msgid "Icons"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..Caption
-#: Utils/UConfiguration.dfm:3124
+#: Utils/UConfiguration.dfm:3115
 msgid "UML Options"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..Caption
-#: Utils/UConfiguration.dfm:3130
+#: Utils/UConfiguration.dfm:3121
 msgid "Class representation"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBShowEmptyRects..Caption
-#: Utils/UConfiguration.dfm:3137
+#: Utils/UConfiguration.dfm:3128
 msgid "show empty attribute and method rectangles"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBIntegerInsteadofInt..Caption
-#: Utils/UConfiguration.dfm:3147
+#: Utils/UConfiguration.dfm:3138
 msgid "Integer instead of int"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBShowClassparameterSeparately..Caption
-#: Utils/UConfiguration.dfm:3155
+#: Utils/UConfiguration.dfm:3146
 msgid "Display class parameters separately"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBRoleHidesAttribute..Caption
-#: Utils/UConfiguration.dfm:3163
+#: Utils/UConfiguration.dfm:3154
 msgid "Role hides attribute"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBConstructorWithVisibility..Caption
-#: Utils/UConfiguration.dfm:3171
+#: Utils/UConfiguration.dfm:3162
 msgid "Show constructor with visibility"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBRelationshipAttributesBold..Caption
-#: Utils/UConfiguration.dfm:3179
+#: Utils/UConfiguration.dfm:3170
 msgid "Relationship attributes in bold"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassPresentation..CBClassnameInUppercase..Caption
-#: Utils/UConfiguration.dfm:3187
+#: Utils/UConfiguration.dfm:3178
 msgid "Class name in uppercase"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..Caption
-#: Utils/UConfiguration.dfm:3196
+#: Utils/UConfiguration.dfm:3187
 msgid "Object representation"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBShowObjectsWithMethods..Caption
-#: Utils/UConfiguration.dfm:3203
+#: Utils/UConfiguration.dfm:3194
 msgid "show with methods"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBShowObjectsWithInheritedPrivateAttributes..Caption
-#: Utils/UConfiguration.dfm:3211
+#: Utils/UConfiguration.dfm:3202
 msgid "show with inherited private attributes"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBShowAllNewObjects..Caption
-#: Utils/UConfiguration.dfm:3219
+#: Utils/UConfiguration.dfm:3210
 msgid "show all new objects"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBLowerCaseLetter..Caption
-#: Utils/UConfiguration.dfm:3227
+#: Utils/UConfiguration.dfm:3218
 msgid "start names with lowercase letters"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectPresentation..CBObjectsWithoutVisibility..Caption
-#: Utils/UConfiguration.dfm:3235
+#: Utils/UConfiguration.dfm:3226
 msgid "without visibility"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassEditing..Caption
-#: Utils/UConfiguration.dfm:3244
+#: Utils/UConfiguration.dfm:3235
 msgid "Class editing"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassEditing..CBOpenPublicClasses..Caption
-#: Utils/UConfiguration.dfm:3251
+#: Utils/UConfiguration.dfm:3242
 msgid "only open public classes"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBClassEditing..CBDefaultModifiers..Caption
-#: Utils/UConfiguration.dfm:3259
+#: Utils/UConfiguration.dfm:3250
 msgid "Standard modifiers for attributes and "
 "methods"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectEditing..Caption
-#: Utils/UConfiguration.dfm:3270
+#: Utils/UConfiguration.dfm:3261
 msgid "Object editing"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PUML2..GBObjectEditing..CBUMLEdit..Caption
-#: Utils/UConfiguration.dfm:3277
+#: Utils/UConfiguration.dfm:3268
 msgid "private attributes editable"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..Caption
-#: Utils/UConfiguration.dfm:3285
+#: Utils/UConfiguration.dfm:3276
 msgid "IDE Shortcuts"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..LBrowser..Caption
-#: Utils/UConfiguration.dfm:3424
+#: Utils/UConfiguration.dfm:3414
 msgid "External browser"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..LBrowserTitle..Caption
-#: Utils/UConfiguration.dfm:3431
+#: Utils/UConfiguration.dfm:3421
 msgid "Browser title"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..LAltKeysBrowser..Caption
-#: Utils/UConfiguration.dfm:3438
+#: Utils/UConfiguration.dfm:3428
 msgid "Keystrokes for \"Open address\" in the "
 "browser"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..CBUseIEinternForDocuments..Caption
-#: Utils/UConfiguration.dfm:3445
+#: Utils/UConfiguration.dfm:3435
 msgid "use Internet Explorer internally for "
 "documents"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..CBOnlyOneBrowserWindow..Caption
-#: Utils/UConfiguration.dfm:3453
+#: Utils/UConfiguration.dfm:3443
 msgid "only use one browser window"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..BBrowserTitle..Caption
-#: Utils/UConfiguration.dfm:3491
+#: Utils/UConfiguration.dfm:3481
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..BTempFolder..Caption
-#: Utils/UConfiguration.dfm:3602
+#: Utils/UConfiguration.dfm:3592
 #. FConfiguration..PMain..PanelRight..PageList..PVisibility..BVisDefault..Caption
-#: Utils/UConfiguration.dfm:5782
+#: Utils/UConfiguration.dfm:5771
 #. FConfiguration..PTemplatesActionList..actFileDefaultItem..Caption
-#: Utils/UConfiguration.dfm:6152
+#: Utils/UConfiguration.dfm:6141
 #: Main/UObjectInspector.pas:603
 msgid "Default"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PLanguage..RGLanguages..Caption
-#: Utils/UConfiguration.dfm:3503
+#: Utils/UConfiguration.dfm:3493
 msgid "Languages"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LTempFolder..Caption
-#: Utils/UConfiguration.dfm:3514
+#: Utils/UConfiguration.dfm:3504
 msgid "Folder for temporary files"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LNoOfRecentFiles..Caption
-#: Utils/UConfiguration.dfm:3560
+#: Utils/UConfiguration.dfm:3550
 msgid "Number of recent files"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LDaysBetweenUpdateChecks..Caption
-#: Utils/UConfiguration.dfm:3567
+#: Utils/UConfiguration.dfm:3557
 msgid "Days between update checks"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LDockAnimationInterval..Caption
-#: Utils/UConfiguration.dfm:3574
+#: Utils/UConfiguration.dfm:3564
 msgid "Dock animation interval"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LDockAnimationMoveWidth..Caption
-#: Utils/UConfiguration.dfm:3581
+#: Utils/UConfiguration.dfm:3571
 msgid "Dock animation move width"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..LIDEFontSize..Caption
-#: Utils/UConfiguration.dfm:3588
+#: Utils/UConfiguration.dfm:3578
 msgid "IDE font size"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBRestoreOpenFiles..Caption
-#: Utils/UConfiguration.dfm:3629
+#: Utils/UConfiguration.dfm:3619
 msgid "Restore open files"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBRestoreOpenProject..Caption
-#: Utils/UConfiguration.dfm:3637
+#: Utils/UConfiguration.dfm:3627
 msgid "Restore open project"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBShowTabCloseButton..Caption
-#: Utils/UConfiguration.dfm:3645
+#: Utils/UConfiguration.dfm:3635
 msgid "Show tab close button"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBSmartNextPrevPage..Caption
-#: Utils/UConfiguration.dfm:3653
+#: Utils/UConfiguration.dfm:3643
 msgid "Smart next prev page"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBStyleMainWindowBorder..Caption
-#: Utils/UConfiguration.dfm:3661
+#: Utils/UConfiguration.dfm:3651
 msgid "Style main window border"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBAutoCheckForUpdates..Caption
-#: Utils/UConfiguration.dfm:3669
+#: Utils/UConfiguration.dfm:3659
 msgid "Check for updates automaticallly"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGEditorTabPosition..Caption
-#: Utils/UConfiguration.dfm:3725
+#: Utils/UConfiguration.dfm:3715
 msgid "Editor tab position"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBExporerInitiallyExpanded..Caption
-#: Utils/UConfiguration.dfm:3736
+#: Utils/UConfiguration.dfm:3726
 msgid "File explorer initially expanded"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBProjectExporerInitiallyExpanded..Caption
-#: Utils/UConfiguration.dfm:3744
+#: Utils/UConfiguration.dfm:3734
 msgid "Project explorer initially expanded"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBFileExplorerContextMenu..Caption
-#: Utils/UConfiguration.dfm:3752
+#: Utils/UConfiguration.dfm:3742
 msgid "File explorer context menu"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBFileExplorerBackgroundProcessing..Caption
-#: Utils/UConfiguration.dfm:3760
+#: Utils/UConfiguration.dfm:3750
 msgid "File explorer background processing"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification..Caption
-#: Utils/UConfiguration.dfm:3768
+#: Utils/UConfiguration.dfm:3758
 msgid "File change notification"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification....Items.Strings
-#: Utils/UConfiguration.dfm:3770
+#: Utils/UConfiguration.dfm:3760
 #: Main/UObjectInspector.pas:602
 msgid "Full"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification....Items.Strings
-#: Utils/UConfiguration.dfm:3771
+#: Utils/UConfiguration.dfm:3761
 msgid "No mapped files"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..RGFileChangeNotification....Items.Strings
-#: Utils/UConfiguration.dfm:3772
+#: Utils/UConfiguration.dfm:3762
 msgid "Disabled"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBMethodsWithComment..Caption
-#: Utils/UConfiguration.dfm:3780
+#: Utils/UConfiguration.dfm:3770
 msgid "Methods with comment"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..CBSaveFilesAutomatically..Caption
-#: Utils/UConfiguration.dfm:3788
+#: Utils/UConfiguration.dfm:3778
 msgid "Save files automatically when closing"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..Caption
-#: Utils/UConfiguration.dfm:3810
+#: Utils/UConfiguration.dfm:3800
 msgid "Styles"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStyles..BApplyStyle..Caption
-#: Utils/UConfiguration.dfm:3848
+#: Utils/UConfiguration.dfm:3838
 msgid "Apply Style"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..Caption
-#: Utils/UConfiguration.dfm:3854
+#: Utils/UConfiguration.dfm:3844
 msgid "Printer"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..Caption
-#: Utils/UConfiguration.dfm:5108
+#: Utils/UConfiguration.dfm:5098
 msgid "Header/Footer"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..Caption
-#: Utils/UConfiguration.dfm:5470
+#: Utils/UConfiguration.dfm:5459
 msgid "Restrictions"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..LRestrictions..Caption
-#: Utils/UConfiguration.dfm:5476
+#: Utils/UConfiguration.dfm:5465
 msgid "Restrictions can only be modified with administrator "
 "rights."
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedInternet..Caption
-#: Utils/UConfiguration.dfm:5489
+#: Utils/UConfiguration.dfm:5478
 msgid "Lock internet access"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedPaths..Caption
-#: Utils/UConfiguration.dfm:5497
+#: Utils/UConfiguration.dfm:5486
 msgid "Lock paths"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedDosWindow..Caption
-#: Utils/UConfiguration.dfm:5505
+#: Utils/UConfiguration.dfm:5494
 msgid "Deactivate DOS-Window"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBLockedStructogram..Caption
-#: Utils/UConfiguration.dfm:5513
+#: Utils/UConfiguration.dfm:5502
 msgid "Lock conversion structogram <-> program"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..CBUsePredefinedLayouts..Caption
-#: Utils/UConfiguration.dfm:5521
+#: Utils/UConfiguration.dfm:5510
 msgid "Use predefined default and debug layouts"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..Caption
-#: Utils/UConfiguration.dfm:5526
+#: Utils/UConfiguration.dfm:5515
 msgid "Associations"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LAssociations..Caption
-#: Utils/UConfiguration.dfm:5532
+#: Utils/UConfiguration.dfm:5521
 msgid "Associate these file extensions with "
 "GuiPy"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LAdditionalAssociations..Caption
-#: Utils/UConfiguration.dfm:5539
+#: Utils/UConfiguration.dfm:5528
 msgid "Additional file extensions"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LJEAssociation..Caption
-#: Utils/UConfiguration.dfm:5553
+#: Utils/UConfiguration.dfm:5542
 msgid "Association of GuiPy"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..BFileExtensions..Caption
-#: Utils/UConfiguration.dfm:5641
+#: Utils/UConfiguration.dfm:5630
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..BJEAssociation..Caption
-#: Utils/UConfiguration.dfm:5657
+#: Utils/UConfiguration.dfm:5646
 msgid "Change"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PVisibility..LVisTabs..Caption
-#: Utils/UConfiguration.dfm:5694
+#: Utils/UConfiguration.dfm:5683
 msgid "Tabs"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PVisibility..LVisMenus..Caption
-#: Utils/UConfiguration.dfm:5701
+#: Utils/UConfiguration.dfm:5690
 msgid "Menus"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PVisibility..LVisToolbars..Caption
-#: Utils/UConfiguration.dfm:5708
+#: Utils/UConfiguration.dfm:5697
 msgid "Toolbars"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LScpCommand..Caption
-#: Utils/UConfiguration.dfm:5795
+#: Utils/UConfiguration.dfm:5784
 msgid "SCP command"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LScpOptions..Caption
-#: Utils/UConfiguration.dfm:5802
+#: Utils/UConfiguration.dfm:5791
 msgid "SCP options"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LSSHCommand..Caption
-#: Utils/UConfiguration.dfm:5809
+#: Utils/UConfiguration.dfm:5798
 msgid "SSH command"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..LSSHOptions..Caption
-#: Utils/UConfiguration.dfm:5816
+#: Utils/UConfiguration.dfm:5805
 msgid "SSH options"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..CBSSHDisableVariablesWin..Caption
-#: Utils/UConfiguration.dfm:5823
+#: Utils/UConfiguration.dfm:5812
 msgid "Disable Variables Window with SSH"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LGitFolder..Caption
-#: Utils/UConfiguration.dfm:5869
+#: Utils/UConfiguration.dfm:5858
 msgid "Git folder"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LLocalRepository..Caption
-#: Utils/UConfiguration.dfm:5885
+#: Utils/UConfiguration.dfm:5874
 msgid "Repository local"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LUserName..Caption
-#: Utils/UConfiguration.dfm:5892
+#: Utils/UConfiguration.dfm:5881
 msgid "user.name"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LRemoteRepository..Caption
-#: Utils/UConfiguration.dfm:5899
+#: Utils/UConfiguration.dfm:5888
 msgid "Repository remote"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..BGitClone..Caption
-#: Utils/UConfiguration.dfm:5966
+#: Utils/UConfiguration.dfm:5955
 msgid "Clone"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..LRepository..Caption
-#: Utils/UConfiguration.dfm:5978
+#: Utils/UConfiguration.dfm:5967
 msgid "Repository"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..LSVN..Caption
-#: Utils/UConfiguration.dfm:5985
+#: Utils/UConfiguration.dfm:5974
 msgid "SVN folder"
 msgstr ""
 
 #. FConfiguration..PTemplatesActionList..actFileDefaultAll..Caption
-#: Utils/UConfiguration.dfm:6157
+#: Utils/UConfiguration.dfm:6146
 msgid "Default all"
 msgstr ""
 
@@ -9879,7 +9888,7 @@ msgid "Replace this occurrence of \"%s\"?"
 msgstr ""
 
 #: dlgCustomShortcuts.pas:161
-#: Utils/UConfiguration.pas:4108
+#: Utils/UConfiguration.pas:4109
 msgid "Unassigned"
 msgstr ""
 
@@ -9898,18 +9907,18 @@ msgid "Directory To Search:"
 msgstr ""
 
 #: dlgPythonVersions.pas:144
-#: Utils/UConfiguration.pas:2818
+#: Utils/UConfiguration.pas:2819
 msgid "Select folder with Python installation (inlcuding virtualenv and "
 "venv)"
 msgstr ""
 
 #: dlgPythonVersions.pas:219
-#: Utils/UConfiguration.pas:2921
+#: Utils/UConfiguration.pas:2922
 msgid "Rename Python Version"
 msgstr ""
 
 #: dlgPythonVersions.pas:219
-#: Utils/UConfiguration.pas:2921
+#: Utils/UConfiguration.pas:2922
 msgid "New name:"
 msgstr ""
 
@@ -9951,11 +9960,11 @@ msgstr ""
 msgid "Configure Tools"
 msgstr ""
 
-#: dmCommands.pas:2199
+#: dmCommands.pas:2210
 msgid "File download failed"
 msgstr ""
 
-#: dmResources.pas:358
+#: dmResources.pas:362
 msgid "Modifiers"
 msgstr ""
 
@@ -9990,8 +9999,8 @@ msgid "Class attribute \"%s\" defined at line "
 "%d"
 msgstr ""
 
-#: frmEditor.pas:5090
-#: frmPyIDEMain.pas:2046
+#: frmEditor.pas:5075
+#: frmPyIDEMain.pas:2043
 msgid "Export to"
 msgstr ""
 
@@ -10046,59 +10055,59 @@ msgstr ""
 msgid "PyScripter project files (*.%s)|*.%0:s"
 msgstr ""
 
-#: frmPyIDEMain.pas:1962
+#: frmPyIDEMain.pas:1959
 msgid "Associated python file %s not found."
 msgstr ""
 
-#: frmPyIDEMain.pas:2547
+#: frmPyIDEMain.pas:2543
 msgid "Class not found %s"
 msgstr ""
 
-#: frmPyIDEMain.pas:2989
+#: frmPyIDEMain.pas:2965
 #: Main/UBrowser.pas:164
-#: Utils/UConfiguration.pas:2426
+#: Utils/UConfiguration.pas:2427
 msgid "Internet locked!"
 msgstr ""
 
-#: frmPyIDEMain.pas:3335
+#: frmPyIDEMain.pas:3311
 msgid "Debug"
 msgstr ""
 
-#: frmPyIDEMain.pas:3421
+#: frmPyIDEMain.pas:3397
 msgid "Running"
 msgstr ""
 
-#: frmPyIDEMain.pas:3425
+#: frmPyIDEMain.pas:3401
 msgid "Paused"
 msgstr ""
 
-#: frmPyIDEMain.pas:3433
+#: frmPyIDEMain.pas:3409
 msgid "Post mortem"
 msgstr ""
 
-#: frmPyIDEMain.pas:3439
+#: frmPyIDEMain.pas:3415
 msgid "Python not available"
 msgstr ""
 
-#: frmPyIDEMain.pas:3442
+#: frmPyIDEMain.pas:3418
 msgid "Debugger state: "
 msgstr ""
 
-#: frmPyIDEMain.pas:4079
+#: frmPyIDEMain.pas:4055
 msgid "Python Not Available"
 msgstr ""
 
-#: frmPyIDEMain.pas:4084
-#: frmPyIDEMain.pas:4087
+#: frmPyIDEMain.pas:4060
+#: frmPyIDEMain.pas:4063
 msgid "Language Server"
 msgstr ""
 
-#: frmPyIDEMain.pas:4087
+#: frmPyIDEMain.pas:4063
 msgid "Not available"
 msgstr ""
 
-#: frmPyIDEMain.pas:5548
-#: Utils/UConfiguration.pas:2555
+#: frmPyIDEMain.pas:5501
+#: Utils/UConfiguration.pas:2556
 msgid "File \\\"%s\\\" not found."
 msgstr ""
 
@@ -11898,6 +11907,11 @@ msgid "Local Python version is %s and remote Python version is %s. To use "
 "%1:s."
 msgstr ""
 
+#. Programmer's name for it: LNGFileAlreadyExists
+#: StringResources.pas:466
+msgid "%s already exists. Overwrite?"
+msgstr ""
+
 #. Programmer's name for it: SYNS_FriendlyCommentedCode
 #: SynHighlighterPython.pas:252
 msgid "Commented Code"
@@ -12239,8 +12253,8 @@ msgstr ""
 msgid "invalid time format"
 msgstr ""
 
-#: Components/PyQt/UQtWidgetDescendants.pas:1867
-#: Components/PyQt/UQtWidgetDescendants.pas:2050
+#: Components/PyQt/UQtWidgetDescendants.pas:1869
+#: Components/PyQt/UQtWidgetDescendants.pas:2052
 #: Components/TKinter/UTKMiscBase.pas:1463
 #: Components/TKinter/UTKMiscBase.pas:1653
 #: Components/TTKinter/UTTKMiscBase.pas:843
@@ -12249,33 +12263,37 @@ msgid "Continent"
 msgstr ""
 
 #. don't delete handlers
-#: Components/PyQt/UQtWidgetDescendants.pas:1955
-#: Components/PyQt/UQtWidgetDescendants.pas:2027
-#: Components/PyQt/UQtWidgetDescendants.pas:2052
-#: Components/PyQt/UQtWidgetDescendants.pas:2142
+#: Components/PyQt/UQtWidgetDescendants.pas:1957
+#: Components/PyQt/UQtWidgetDescendants.pas:2029
+#: Components/PyQt/UQtWidgetDescendants.pas:2054
+#: Components/PyQt/UQtWidgetDescendants.pas:2144
 msgid "selected"
 msgstr ""
 
-#: EssModel/Integrator/View/URtfdDiagram.pas:1597
-#: Main/UObjectGenerator.pas:314
+#: EssModel/Integrator/View/URtfdDiagram.pas:1637
+#: Main/UObjectGenerator.pas:313
 msgid "Name of object"
 msgstr ""
 
-#: EssModel/Integrator/View/URtfdDiagram.pas:1600
+#: EssModel/Integrator/View/URtfdDiagram.pas:1640
 msgid "Parameter for constructor"
 msgstr ""
 
-#: EssModel/Integrator/View/URtfdDiagram.pas:1894
+#: EssModel/Integrator/View/URtfdDiagram.pas:1935
 msgid "Parameter for method call"
 msgstr ""
 
-#: EssModel/Integrator/View/URtfdDiagram.pas:2155
+#: EssModel/Integrator/View/URtfdDiagram.pas:2197
 msgid "Edit object"
 msgstr ""
 
 #. empty inherited methods menu
-#: EssModel/Integrator/View/URtfdDiagram.pas:2771
+#: EssModel/Integrator/View/URtfdDiagram.pas:2813
 msgid "Inherited from"
+msgstr ""
+
+#: EssModel/System/UUMLModule.pas:384
+msgid "No files found."
 msgstr ""
 
 #: Formdesigner/ELDsgnr.pas:1398
@@ -12307,28 +12325,28 @@ msgstr ""
 msgid "Download failed!"
 msgstr ""
 
-#: Main/UClassEditor.pas:264
+#: Main/UClassEditor.pas:269
 msgid "# TODO add your code here"
 msgstr ""
 
-#: Main/UClassEditor.pas:266
+#: Main/UClassEditor.pas:271
 msgid "get"
 msgstr ""
 
-#: Main/UClassEditor.pas:362
+#: Main/UClassEditor.pas:389
 msgid "Methods"
 msgstr ""
 
-#: Main/UClassEditor.pas:1142
-#: Main/UClassEditor.pas:2458
+#: Main/UClassEditor.pas:1184
+#: Main/UClassEditor.pas:2538
 msgid "%s already exists"
 msgstr ""
 
-#: Main/UClassEditor.pas:1325
+#: Main/UClassEditor.pas:1416
 msgid "Method %s contains source code."
 msgstr ""
 
-#: Main/UClassEditor.pas:1326
+#: Main/UClassEditor.pas:1417
 msgid "Delete method with source code?"
 msgstr ""
 
@@ -12370,15 +12388,15 @@ msgstr ""
 msgid "directory already exists: "
 msgstr ""
 
-#: Setup/USetup.pas:337
+#: Setup/USetup.pas:327
 msgid "finished"
 msgstr ""
 
-#: Setup/USetup.pas:630
+#: Setup/USetup.pas:641
 msgid "Can't delete directory: "
 msgstr ""
 
-#: Setup/USetup.pas:632
+#: Setup/USetup.pas:643
 msgid "Directory deleted: "
 msgstr ""
 
@@ -12466,17 +12484,34 @@ msgstr ""
 msgid "Error during copying to \"%s\""
 msgstr ""
 
-#: Structogram/UStructogram.pas:806
+#: Structogram/UStructogram.pas:807
 msgid "Switch to puzzle mode with the finished solution from a single "
-"algorithm structure diagram."
+"algorithm structogram."
 msgstr ""
 
-#: Structogram/UStructogram.pas:1086
+#: Structogram/UStructogram.pas:1095
 msgid "Great, solved!"
 msgstr ""
 
-#: Structogram/UStructogram.pas:1087
+#: Structogram/UStructogram.pas:1096
 msgid "Try again!"
+msgstr ""
+
+#: Structogram/UStructogram.pas:1119
+#: Structogram/UStructogram.pas:1146
+msgid "Easy"
+msgstr ""
+
+#: Structogram/UStructogram.pas:1124
+msgid "Medium"
+msgstr ""
+
+#: Structogram/UStructogram.pas:1129
+msgid "Hard"
+msgstr ""
+
+#: Structogram/UStructogram.pas:1134
+msgid "VeryHard"
 msgstr ""
 
 #: TextDiff/USynEditExDiff.pas:89
@@ -12511,11 +12546,11 @@ msgstr ""
 msgid "No differences."
 msgstr ""
 
-#: Utils/UConfiguration.pas:2638
+#: Utils/UConfiguration.pas:2639
 msgid "Form"
 msgstr ""
 
-#: Utils/UConfiguration.pas:5945
+#: Utils/UConfiguration.pas:5946
 msgid "repeat for item in list"
 msgstr ""
 

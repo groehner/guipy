@@ -207,7 +207,7 @@ begin
       begin
         // Likely to be a binary file
          // Just ingnore Issue 74
-        //MessageDlg(E.Message, mtWarning, [mbOK], 0);
+        //StyledMessageDlg(E.Message, mtWarning, [mbOK], 0);
         Exit;
       end;
 

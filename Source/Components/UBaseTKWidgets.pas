@@ -1096,6 +1096,7 @@ end;
 procedure TBaseTkWidget.MakeFont;
   var s1, s2: string;
 begin
+  if Name = '' then exit;
   s1:= 'self.' + Name + '[''font'']';
   s2:= ' = (' + asString(Font.Name) + ', ' + IntToStr(PPIUnScale(Font.Size));
   if fsBold   in Font.Style then s2:= s2 + ', ' + asString('bold');

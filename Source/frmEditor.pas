@@ -5088,7 +5088,7 @@ begin
         end;
       if not FileExists(Filename) or
          FileExists(Filename) and
-         (MessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
+         (StyledMessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
                        mtConfirmation, mbYesNoCancel,0) = mrYes)
       then begin
         if LowerCase(ExtractFileExt(Filename)) = '.rtf'

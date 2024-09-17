@@ -461,6 +461,10 @@ Const
   SSHVersionMismatch = 'Local Python version is %s and remote Python version is %s. '+
     'To use this SSH server please switch to Python version %1:s.';
 
+  LNGAll= 'all';
+  LNGNone= 'none';
+  LNGFileAlreadyExists= '%s already exists. Overwrite?';
+
   // do not localize further
 
 {gnugettext: reset }
@@ -640,10 +644,6 @@ Const
     ' "nbformat": 4,' + SLineBreak +
     ' "nbformat_minor": 2' + SLineBreak+
     '}';
-
-  LNGAll= 'all';
-  LNGNone= 'none';
-  LNGFileAlreadyExists= '%s already exists. Overwrite?';
 
 implementation
 

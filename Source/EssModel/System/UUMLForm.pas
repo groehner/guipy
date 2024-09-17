@@ -155,7 +155,6 @@ type
     procedure AddToProject(const Filename: string);
     procedure CreateTVFileStructure;
     function getAsStringList: TStringList; override;
-    procedure ShowAll;
     procedure ClassEdit;
     procedure OnFormMouseDown(Sender: TObject);
     procedure BeginUpdate;
@@ -746,11 +745,6 @@ begin
   Save(false);
   Result:= TStringList.Create;
   Result.LoadFromFile(Pathname);
-end;
-
-procedure TFUMLForm.ShowAll;
-begin
-  (MainModul.Diagram as TRtfdDiagram).ShowAll;
 end;
 
 procedure TFUMLForm.SynEditChange(Sender: TObject);

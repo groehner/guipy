@@ -207,15 +207,15 @@ begin
     if Execute then begin
       aFile:= GI_FileFactory.GetFileByName(Filename);
       if Assigned(aFile) then begin
-        MessageDlg(_(SFileAlreadyOpen), mtError, [mbAbort], 0);
+        StyledMessageDlg(_(SFileAlreadyOpen), mtError, [mbAbort], 0);
         Exit(false);
       end;
       if IsWriteProtected(Filename) then begin
-        MessageDlg(Format(_(SWriteProtected), [FileName]), mtError, [mbAbort], 0);
+        StyledMessageDlg(Format(_(SWriteProtected), [FileName]), mtError, [mbAbort], 0);
         Exit(false);
       end;
       if FileExists(Filename) then
-        if (MessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
+        if (StyledMessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
                          mtConfirmation, mbYesNoCancel, 0) <> mrYes)
           then Exit(false)
           else begin

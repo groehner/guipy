@@ -439,7 +439,7 @@ begin
     aFile := GI_FileFactory.GetFileByName(NewName);
     if Assigned(aFile) and (aFile <> Self.fFile as IFile) then
     begin
-      MessageDlg(_(SFileAlreadyOpen), mtError, [mbAbort], 0);
+      StyledMessageDlg(_(SFileAlreadyOpen), mtError, [mbAbort], 0);
       Result := False;
       Exit;
     end;

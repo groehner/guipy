@@ -546,6 +546,7 @@ begin
       BinStream.ReadResHeader;
       DesignForm:= TFGuiForm.Create(self);
       DesignForm.Partner:= aForm;
+      DesignForm.Name:= ''; // don't change to name_1
       Reader.ReadRootComponent(DesignForm);
       DesignForm.Open(Filename, '', aForm.getGeometry, aForm);
       if DesignForm.PixelsPerInch > PPI then
@@ -650,7 +651,8 @@ begin
   if assigned(EditForm) then begin
     EditForm.BringToFront;
     EditForm.Enter(Self);
-    if EditForm.CanFocus then EditForm.SetFocus;
+    if EditForm.CanFocus then
+      EditForm.SetFocus;
   end;
 end;
 

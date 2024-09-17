@@ -460,7 +460,7 @@ begin
       Result:= True;
       Inc(AText);
       while CharInSet(AText^, WhiteSpaces) do Inc(AText);
-      case MessageDlg(ALeft, mtConfirmation, mbYesNoCancel, 0) of
+      case StyledMessageDlg(ALeft, mtConfirmation, mbYesNoCancel, 0) of
         mrYes:  Result:= True;
         mrNo:   Result:= False;
         else    Abort;
