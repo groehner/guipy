@@ -218,7 +218,7 @@ begin
     aFile:= PyIDEMainForm.DoOpenAsEditor(s2);
     if Assigned(aFile) then begin
       aForm:= TEditorForm(aFile.Form);
-      aForm.PutText(OutputWindow.lsbConsole.Items.Text);
+      aForm.PutText(OutputWindow.lsbConsole.Items.Text, false);
       aForm.DoSave;
     end;
     OutputWindow.lsbConsole.Items.Text:= s1;

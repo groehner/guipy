@@ -1,8 +1,8 @@
 object FileForm: TFileForm
   Left = 0
   Top = 0
-  ClientHeight = 220
-  ClientWidth = 289
+  ClientHeight = 219
+  ClientWidth = 285
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

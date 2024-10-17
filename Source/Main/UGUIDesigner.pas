@@ -516,12 +516,35 @@ end;
 
 function TFGUIDesigner.Open(const Filename: string): TFGUIForm;
 var
-   FilStream: TFileStream;
-   BinStream: TMemoryStream;
-   Reader   : TReader;
-   PythonFilename: string;
-   aForm: TEditorForm;
-   PPI: Integer;
+  FilStream: TFileStream;
+  BinStream: TMemoryStream;
+  Reader   : TReader;
+  PythonFilename: string;
+  aForm: TEditorForm;
+  PPI: Integer;
+  NewName: string;
+
+  function getName: string;
+    var SL: TStringList; i, index, Nr: integer; s: string;
+  begin
+    SL:= TStringList.Create;
+    try
+      SL.Sorted:= true;
+      for i:= 0 to screen.FormCount -1 do
+         if startsWith(Screen.Forms[I].Name, 'FGUIForm') then
+           SL.Add(Screen.Forms[i].Name);
+      if not SL.Find('FGUIForm', index) then exit('FGUIForm');
+      Nr:= 1;
+      repeat
+        s:= 'FGUIForm_' + IntToStr(Nr);
+        if not SL.Find(s, index) then exit(s);
+        Inc(Nr);
+      until false;
+    finally
+      FreeAndNil(SL);
+    end;
+  end;
+
 begin
   Result:= nil;
   if not FileExists(Filename) then
@@ -541,14 +564,15 @@ begin
   Reader.OnError:= ErrorMethod;
   try
     try
+      NewName:= getName;
       ObjectTextToResource(FilStream, BinStream);
       BinStream.Seek(0, soFromBeginning);
       BinStream.ReadResHeader;
       DesignForm:= TFGuiForm.Create(self);
       DesignForm.Partner:= aForm;
-      DesignForm.Name:= ''; // don't change to name_1
       Reader.ReadRootComponent(DesignForm);
       DesignForm.Open(Filename, '', aForm.getGeometry, aForm);
+      DesignForm.Name:= NewName;
       if DesignForm.PixelsPerInch > PPI then
         DesignForm.Scale(DesignForm.PixelsPerInch, PPI);
       ScaleImages;

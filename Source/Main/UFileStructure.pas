@@ -137,34 +137,40 @@ begin
 end;
 
 procedure TFFileStructure.Init(items: TTreeNodes; Form: TFileForm);
-  var vilChildNode, vilClassNode: PVirtualNode;
-      ClassNode, MethodNode: TTreeNode;
-      Data: PMyRec;
+
+  function addNode(Node: TTreeNode; Anchor: PVirtualNode): PVirtualNode;
+    var Data: PMyRec;
+  begin
+    Result:= vilFileStructure.AddChild(Anchor);
+    Data:= vilFileStructure.GetNodeData(Result);
+    Data.LineNumber:= TInteger(Node.Data).i;
+    Data.ImageIndex:= Node.ImageIndex;
+    Data.Caption:= Node.Text;
+    vilFileStructure.ValidateNode(Result, False);
+  end;
+
+  procedure AddClasses(ClassNode: TTreeNode; Anchor: PVirtualNode);
+    var Node: TTreeNode; vilClassNode: PVirtualNode;
+  begin
+    while assigned(ClassNode) do begin
+      vilClassNode:= addNode(ClassNode, Anchor);
+      Node:= ClassNode.getFirstChild;
+      while assigned(Node) do begin
+        if Node.ImageIndex = 0 // is node an inner class
+          then AddClasses(Node, vilClassNode)
+          else addNode(Node, vilClassNode);
+        Node:= Node.getNextSibling;
+      end;
+      ClassNode:= ClassNode.getNextSibling;
+    end;
+  end;
+
 begin
   myForm:= Form;
   if DifferentItems(Items) then begin
     vilFileStructure.BeginUpdate;
     vilFileStructure.Clear;
-    ClassNode:= Items.GetFirstNode;
-    while assigned(ClassNode) do begin
-      vilClassNode:= vilFileStructure.AddChild(vilFileStructure.RootNode);
-      Data:= vilFileStructure.GetNodeData(vilClassNode);
-      Data.LineNumber:= TInteger(ClassNode.Data).i;
-      Data.ImageIndex:= ClassNode.ImageIndex;
-      Data.Caption:= ClassNode.Text;
-      vilFileStructure.ValidateNode(vilClassNode, False);
-      MethodNode:= ClassNode.getFirstChild;
-      while assigned(MethodNode)  do begin
-        vilChildNode := vilFileStructure.AddChild(vilClassNode);
-        Data := vilFileStructure.GetNodeData(vilChildNode);
-        Data.LineNumber:= TInteger(MethodNode.Data).i;
-        Data.ImageIndex:= MethodNode.ImageIndex;
-        Data.Caption:= MethodNode.Text;
-        vilFileStructure.ValidateNode(vilChildNode, False);
-        MethodNode:= MethodNode.getNextSibling;
-      end;
-      ClassNode:= ClassNode.getNextSibling;
-    end;
+    AddClasses(Items.GetFirstNode, vilFileStructure.RootNode);
     vilFileStructure.EndUpdate;
     vilFileStructure.FullExpand;
   end;

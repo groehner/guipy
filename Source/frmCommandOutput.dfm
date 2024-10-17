@@ -3,7 +3,8 @@ inherited OutputWindow: TOutputWindow
   Top = 173
   HelpContext = 450
   Caption = 'Output'
-  ClientWidth = 408
+  ClientHeight = 453
+  ClientWidth = 400
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000040040000000000000000000000000000000000000000
@@ -41,22 +42,23 @@ inherited OutputWindow: TOutputWindow
     000000000000000000000000000000000000000000000000000000000000FFFF
     0000FFFF00000000000000000000000000000000000000000000000000000000
     0000000000000000000000000000000000000000000000000000FFFF0000}
-  ExplicitWidth = 424
+  ExplicitWidth = 408
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 408
-    ExplicitWidth = 408
-    ExplicitHeight = 9
+    Width = 400
+    Height = 453
+    ExplicitWidth = 400
+    ExplicitHeight = 441
     inherited FGPanel: TPanel
-      Width = 404
-      Height = 5
-      ExplicitWidth = 404
-      ExplicitHeight = 5
+      Width = 396
+      Height = 437
+      ExplicitWidth = 396
+      ExplicitHeight = 449
       object lsbConsole: TListBox
         Left = 0
         Top = 0
-        Width = 404
-        Height = 5
+        Width = 396
+        Height = 437
         TabStop = False
         Align = alClient
         BevelInner = bvNone

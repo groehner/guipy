@@ -26,12 +26,6 @@ object FClassEditor: TFClassEditor
     Height = 15
     Caption = 'Class'
   end
-  object Label1: TLabel
-    Left = 336
-    Top = 240
-    Width = 3
-    Height = 15
-  end
   object TreeView: TTreeView
     Left = 13
     Top = 27
@@ -58,7 +52,7 @@ object FClassEditor: TFClassEditor
     Top = 10
     Width = 364
     Height = 435
-    ActivePage = TSAttributes
+    ActivePage = TSMethods
     TabOrder = 0
     OnChange = PageControlChange
     object TSClass: TTabSheet

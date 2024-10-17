@@ -355,7 +355,7 @@ type
     function isCSS: boolean;
     procedure GotoLine(i: integer);
     procedure GotoWord(const s: string);
-    procedure PutText(s: String);
+    procedure PutText(s: String; withCursor: boolean = true);
     function getGeometry: TPoint;
     function getIndent: String;
 
@@ -2459,8 +2459,6 @@ begin
       Sleep(50);
     CreateModel;
     CreateTVFileStructure;
-    if FClassEditor.Visible then
-      FClassEditor.UpdateTreeView;
     Result:= true; // due to recursive call of ReparseIfNeeded
   end else begin
     SourceScanner:= nil;
@@ -2692,7 +2690,7 @@ begin
   end;
 end;
 
-procedure TEditorForm.PutText(s: String);
+procedure TEditorForm.PutText(s: String; withCursor: boolean = true);
   var p, OffX, OffY, x, y: Integer; s1: string;
       TmpOptions, OrigOptions: TSynEditorOptions;
       ChangedIndent, ChangedTrailing: boolean;
@@ -2708,9 +2706,12 @@ begin
   if ChangedIndent or ChangedTrailing then
     ActiveSynEdit.Options := TmpOptions;
 
-  try
+  p:= Pos('|', s);
+  if p = 0 then
+    withCursor:= false;
+
+  if withCursor then begin
     OffY:= 0;
-    p:= Pos('|', s);
     s1:= copy(s, 1, p-1);
     delete(s, p, 1);
     p:= Pos(#13#10, s1);
@@ -2733,10 +2734,10 @@ begin
       if OffY = 0
         then CaretX:= x + OffX - 1
         else CaretX:= OffX;
-      EnsureCursorPosVisible;
     end;
-  except
-  end;
+  end else
+    ActiveSynEdit.SelText:= s;
+  ActiveSynEdit.EnsureCursorPosVisible;
   if ChangedIndent or ChangedTrailing then ActiveSynEdit.Options := OrigOptions;
 end;
 
@@ -4027,7 +4028,7 @@ begin
 
     CaretY:= line+1;
     CaretX:= 1;
-    PutText(s);
+    PutText(s, false);
     if cy > line + 1 then begin
       cl:= CountChar(#13, s);
       if cl = 0 then cl:= 1;
@@ -4356,9 +4357,13 @@ procedure TEditorForm.DeleteAttributeCE(const s: string; ClassNumber: integer);
 begin
   Operation:= getConstructor(ClassNumber);
   if assigned(Operation) then begin
-    Line:= getLineNumberWithWordFromTill(s, Operation.LineSE);
-    if Line > -1 then
-      DeleteLine(Line);
+    if Operation.LineE = Operation.LineSE + 1 then // last attribute
+      ReplaceAttribute(s, StringTimesN(FConfiguration.Indent1, Operation.Level + 2) + 'pass')
+    else begin
+      Line:= getLineNumberWithWordFromTill(s, Operation.LineSE);
+      if Line > -1 then
+        DeleteLine(Line);
+    end;
   end;
 end;
 
@@ -5175,7 +5180,7 @@ begin
 
       CName:= cent.ShortName;
       indentedOld:= indented;
-      indented:= CalculateIndented(CName);
+      indented:= cent.Level;
       while Pos('$', CName) + Pos('.', CName) > 0 do begin
         delete(CName, 1, Pos('$', CName));
         delete(CName, 1, Pos('.', CName));
