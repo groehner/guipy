@@ -47,14 +47,13 @@ begin
 
   ParentFont:= false;
   TranslateComponent(Self);
-  var LFont := TFont.Create;
-  try
-    SetDefaultUIFont(LFont);
-    LFont.Height := MulDiv(LFont.Height, FCurrentPPI, Font.PixelsPerInch);
-    Font.Assign(LFont);
-  finally
-    LFont.Free;
-  end;
+  Font.PixelsPerInch := FCurrentPPI;
+  SetDefaultUIFont(Font);
+  {$IF CompilerVersion >= 36}
+  Font.IsDPIRelated := True;
+  {$ELSE}
+  Font.PixelsPerInch := Screen.PixelsPerInch;
+  {$ENDIF}
 end;
 
 end.

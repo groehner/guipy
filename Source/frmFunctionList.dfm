@@ -51,6 +51,8 @@ inherited FunctionListWindow: TFunctionListWindow
   OnClose = FormClose
   OnKeyPress = edtMethodsKeyPress
   OnResize = FormResize
+  ExplicitWidth = 548
+  ExplicitHeight = 355
   TextHeight = 15
   object pnHolder: TPanel
     Left = 0
@@ -59,6 +61,8 @@ inherited FunctionListWindow: TFunctionListWindow
     Height = 219
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 532
+    ExplicitHeight = 218
     object lvProcs: TListView
       Left = 1
       Top = 1
@@ -92,6 +96,8 @@ inherited FunctionListWindow: TFunctionListWindow
       OnChange = lvProcsChange
       OnColumnClick = lvProcsColumnClick
       OnDblClick = actViewGotoExecute
+      ExplicitWidth = 530
+      ExplicitHeight = 216
     end
   end
   object pnlHeader: TPanel
@@ -104,6 +110,7 @@ inherited FunctionListWindow: TFunctionListWindow
     ShowHint = True
     TabOrder = 1
     OnResize = pnlHeaderResize
+    ExplicitWidth = 532
     object pnlHeaderLeft: TPanel
       AlignWithMargins = True
       Left = 4
@@ -140,6 +147,7 @@ inherited FunctionListWindow: TFunctionListWindow
       Height = 35
       Align = alClient
       TabOrder = 1
+      ExplicitWidth = 258
       object lblObjects: TLabel
         Left = 13
         Top = 8
@@ -170,6 +178,7 @@ inherited FunctionListWindow: TFunctionListWindow
     Height = 30
     AllowDrag = False
     LimitToOneRow = True
+    ExplicitWidth = 532
     object Toolbar: TSpTBXToolbar
       Left = 0
       Top = 0
@@ -216,6 +225,8 @@ inherited FunctionListWindow: TFunctionListWindow
     ParentShowHint = False
     ShowHint = True
     SizeGrip = False
+    ExplicitTop = 291
+    ExplicitWidth = 532
     object LeftStatusLabel: TSpTBXLabelItem
       Wrapping = twEndEllipsis
       Options = [tboShowHint]
@@ -223,7 +234,7 @@ inherited FunctionListWindow: TFunctionListWindow
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 514
     end
     object SpTBXSeparatorItem5: TSpTBXSeparatorItem
     end

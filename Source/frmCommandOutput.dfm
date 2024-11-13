@@ -3,26 +3,26 @@ inherited OutputWindow: TOutputWindow
   Top = 173
   HelpContext = 450
   Caption = 'Output'
-  ClientHeight = 374
-  ClientWidth = 344
-  ExplicitWidth = 360
-  ExplicitHeight = 413
+  ClientHeight = 362
+  ClientWidth = 336
+  ExplicitWidth = 352
+  ExplicitHeight = 401
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 344
-    Height = 374
-    ExplicitWidth = 344
-    ExplicitHeight = 374
+    Width = 336
+    Height = 362
+    ExplicitWidth = 336
+    ExplicitHeight = 362
     inherited FGPanel: TPanel
-      Width = 340
-      Height = 370
-      ExplicitWidth = 340
-      ExplicitHeight = 370
+      Width = 332
+      Height = 358
+      ExplicitWidth = 332
+      ExplicitHeight = 358
       object lsbConsole: TListBox
         Left = 0
         Top = 0
-        Width = 340
-        Height = 370
+        Width = 332
+        Height = 358
         TabStop = False
         Align = alClient
         BevelInner = bvNone

@@ -6,11 +6,7 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
   Caption = 'Find in Files Options'
   ClientHeight = 307
   ClientWidth = 307
-  ParentFont = False
   Position = poScreenCenter
-  OnShow = FormShow
-  ExplicitWidth = 319
-  ExplicitHeight = 345
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
@@ -19,8 +15,6 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
     Height = 307
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 303
-    ExplicitHeight = 306
     DesignSize = (
       307
       307)
@@ -33,12 +27,15 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       Align = alTop
       Caption = 'Match Results List'
       TabOrder = 0
-      ExplicitWidth = 295
+      DesignSize = (
+        299
+        103)
       object pnlListFont: TPanel
         Left = 28
         Top = 61
         Width = 243
         Height = 33
+        Anchors = [akLeft, akTop, akRight]
         Caption = 'Match List Font...'
         Color = clWindow
         UseDockManager = False
@@ -69,14 +66,17 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       end
     end
     object gbxMatchContext: TGroupBox
+      AlignWithMargins = True
       Left = 5
       Top = 114
-      Width = 289
+      Width = 298
       Height = 153
       Anchors = [akLeft, akTop, akRight]
       Caption = 'Match Context Display'
       TabOrder = 1
-      ExplicitWidth = 285
+      DesignSize = (
+        298
+        153)
       object lblContextLines: TLabel
         Left = 28
         Top = 101
@@ -89,8 +89,9 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       object pnlContextFont: TPanel
         Left = 28
         Top = 19
-        Width = 243
+        Width = 244
         Height = 33
+        Anchors = [akLeft, akTop, akRight]
         Caption = 'Context Font...'
         Color = clWindow
         UseDockManager = False
@@ -100,8 +101,9 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       object pnlMatchLineColor: TPanel
         Left = 28
         Top = 58
-        Width = 243
+        Width = 244
         Height = 33
+        Anchors = [akLeft, akTop, akRight]
         Caption = 'Match Font Color...'
         Color = clWindow
         UseDockManager = False
@@ -121,42 +123,36 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       end
     end
     object btnOK: TButton
-      Left = 22
+      Left = 32
       Top = 274
       Width = 75
       Height = 25
-      Anchors = [akRight, akBottom]
+      Anchors = [akLeft, akBottom]
       Caption = '&OK'
       Default = True
       ModalResult = 1
       TabOrder = 2
-      ExplicitLeft = 18
-      ExplicitTop = 273
     end
     object btnCancel: TButton
-      Left = 106
+      Left = 116
       Top = 274
       Width = 75
       Height = 25
-      Anchors = [akRight, akBottom]
+      Anchors = [akLeft, akBottom]
       Cancel = True
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 3
-      ExplicitLeft = 102
-      ExplicitTop = 273
     end
     object btnHelp: TButton
-      Left = 190
+      Left = 200
       Top = 274
       Width = 75
       Height = 25
-      Anchors = [akRight, akBottom]
+      Anchors = [akLeft, akBottom]
       Caption = '&Help'
       TabOrder = 4
       OnClick = btnHelpClick
-      ExplicitLeft = 186
-      ExplicitTop = 273
     end
   end
   object dlgGrepListFont: TFontDialog
