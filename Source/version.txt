@@ -1,0 +1,196 @@
+5.11, 2024.11.11
+Multi-caret and multi-selection editing
+Annotated scrollbars
+Colored code structure highlight
+Display of program flow control symbols
+
+5.10, 2024.10.17
+support for inner classes in class editor
+
+5.09, 2024.09.27
+bug fix for class editor
+support for Python 3.12.x
+
+5.08, 2024.08.26
+improvements for uml window
+
+5.07, 2024.08.23
+bug fix for bold connection attributes in uml window
+
+5.06, 2024.08.22
+bug fix for network drive and uml window
+
+5.05, 2024.08.11
+improvement for class editor
+
+5.04, 2024.07.12
+improvement for uml window
+
+5.03, 2024.07.06
+improvement for uml window and class editor
+
+5.02, 2024.07.04
+bug fix for uml window
+
+5.01, 2024.07.04
+high-dpi ready
+change from bmp to svg icons
+
+4.10, 2024.05.22
+bug fix for selecting multiple widgets in the GUI designer
+
+4.9, 2024.05.16
+DPI awareness for gui designer and object inspector
+
+4.8, 2024.12.05
+enlarged toolbar icons for high dpi/scaling bigger than 100 %
+
+4.7, 2024.05.05
+Support for using properties of objects in the UML window.
+bug fix for loop in structogram editor
+
+4.6, 2024.01.09
+documentation of configuration in homepage guiy.de
+some smaller improvements
+
+4.5, 2023.12.14
+bug fix for left gutter area of an editor window
+switch to another stlye and back to get and save the right gutter color
+
+4.4, 2023.12.07
+improvement for portable version
+improvement for dpi awareness of uml window
+
+4.3, 2023.12.03
+improvement font size of objects in uml window
+improvement installation of portable version
+bug fix visibility
+bug fix about dialog
+
+4.2, 2023.12.01
+bug fix configuration of visibility
+improvement handling invalid classes in uml window
+
+4.1, 2023.11.27
+DPI Awareness - supports screen setting in Windows for scale and layout of text on high resolution displays with more than 100%
+resulting in bug fix of to small configuration window
+
+4.0, 2023.11.05
+bug fix style configuration
+bug fix visibility change of attributs in class modeler
+code completion of functions and methods with bracket pair ()
+configuration page for visibility of tabs, menus and toolbars
+extended support for special version, use of GuiPyMachine.ini as default for configuration settings
+
+3.8, 2023.10.26
+improved display in the UML window
+
+3.7, 2023.10.24
+bug fix saving configuration values
+new option "from __future__ import annotations" for class modeler
+new option "get/set methods as property" for class modeler
+"from abc import abstractmethod" for abstract methods
+bug fix TextDiff
+bug fix Registry
+
+3.6, 2023.10.12
+inherited methods for objects in uml window
+
+3.5, 2023.10.04
+improved scrolling in uml window
+constructor call in uml window with class name instead of __init__
+bug fix for class representation in uml window
+
+3.4, 2023.09.17
+new uml option "Classname in uppercase"
+bug fix for method call in uml window
+corrected display of function return type in uml window
+bug fix for calling methods of objects in uml window
+
+3.3, 2023.09.07
+reactivation of the display of breakpoints
+corrected overwriting of files
+corrected calling of inherited constructors
+improved handling of aggregations in uml window
+
+3.2, 2023.08.02
+code completion for portable version
+add imports in context menu of editor
+bug fix for long names in uml window
+improved constructor code in class editor
+
+3.1, 2023.07.09
+automatic switch to debug layout 
+
+3.0, 2023.06.05
+support for lists, sets, tuples and dictionarys as attributes of objects in the uml window
+
+2.0.10, 2023.05.11
+improvement for file templates
+improvement for lists in object diagrams
+
+2.0.9, 2023.04.21
+bug fix for missing cursor in editor
+
+2.0.8, 2023.04.15
+bug fix for error in class editor
+"Tools/Check for updates" in version 2.0.7 shows update dialog for pyScripter
+so update manually to 2.0.8 by downloading from guipy.de and installing over the existing version
+
+2.0.7, 2023.04.12
+Editor with track changes bar as in Visual Studio
+Fixed jumping between editor windows
+Upload of exception errors fixed
+improved coordination between editor and UML window
+improved class editor
+
+2.0.6, 2023.02.18
+support for python 3.11
+
+2.0.5, 2022.12.07
+improved coordination between editor and UML window
+improved class editor
+
+2.0.4, 2022.11.21
+some smaller bugfixes
+improved handling of objects in uml window
+
+2.0.3, 2022.11.12
+some smaller bugfixes
+improved object inspector
+
+2.0.2, 2022.09.21
+change font size in GUI window 
+reset for shortcuts
+FAQ on guipy.de
+more bugfixes for Qt
+
+2.0.1, 2022.08.25
+some smaller bugfixes for Qt
+
+2.0.0, 2022.08.21
+Added support for GUI creation with Qt
+
+1.0.6, 2022.07.10
+bug fix resizing gui form in styled mode
+bug fix textdiff tool in 64 bit version
+
+1.0.5, 2022.04.23
+bug fix for UML window
+
+1.0.4, 2022.04.20
+bug fix for objects im UML window with long names in 64-Bit version
+configuration page for class modeler
+
+1.0.3, 2022.03.21
+bug fix for opening files and sequence diagram
+
+1.0.2, 2022.03.16
+bug fix for opening files
+
+1.0.1, 2022.03.10
+bug fix TextDiff, language change and update
+
+1.0.0, 2022.03.07
+first release of GuiPy
+

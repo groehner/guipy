@@ -188,7 +188,7 @@ end;
 procedure TInternalPython.DestroyPythonComponents;
 
   procedure UnloadPythonDLL(DLL: PWideChar);
-  Var
+  var
     Module : HMODULE;
   begin
     MODULE := GetModuleHandle(DLL);
@@ -242,7 +242,7 @@ end;
 
 function TInternalPython.GetLoaded: Boolean;
 begin
-  Result := Assigned(PythonEngine) and PythonEngine.IsHandleValid;
+  Result := Assigned(PythonEngine) and PythonEngine.Initialized;
 end;
 
 procedure TInternalPython.Initialize;
@@ -304,14 +304,14 @@ begin
 
     PythonEngine.LoadDll;
     Result := PythonEngine.IsHandleValid;
-    if Result then begin
-      Initialize;
-    end else
+    if Result then
+      Initialize
+    else
       DestroyPythonComponents;
   except
     on E: Exception do begin
-      DestroyPythonComponents;
       StyledMessageDlg(E.Message, mtError, [mbOK], 0);
+      DestroyPythonComponents;
       Result := False;
     end;
   end;

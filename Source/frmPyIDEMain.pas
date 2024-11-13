@@ -1535,6 +1535,7 @@ type
     function LayoutExists(const Layout: string): Boolean;
     procedure LoadLayout(const Layout : string);
     procedure SaveLayout(const Layout : string);
+    procedure LoadStandardLayout;
    // IPyIDEServices implementation
     function ReplaceParams(const AText: string): string;
     function GetActiveEditor : IEditor;
@@ -1559,7 +1560,7 @@ type
     procedure ChangeStyle;
     procedure DeleteObjectsInUMLForms;
     function GetCachedPycFilename(Filename: string): string;
-    procedure RemoveEoAltSetsColumnMode;
+    procedure RemoveDefunctEditorOptions;
   public
     ActiveTabControlIndex : integer;
     PythonKeywordHelpRequested : Boolean;
@@ -2080,7 +2081,6 @@ type
 
 procedure TPyIDEMainForm.FormCreate(Sender: TObject);
 Var
-  TabHost : TJvDockTabHostForm;
   LocalOptionsFileName: string;
 begin
   // Shell Images
@@ -2109,10 +2109,6 @@ begin
 
   // GI_PyIDEServices
   GI_PyIDEServices := Self;
-
-  // since 5.11: remove eoAltSetsColumnMode to avoid an exception
-  if FileExists(TPyScripterSettings.OptionsFileName) then
-    RemoveEoAltSetsColumnMode;
 
   // Application Storage
   AppStorage.Encoding := TEncoding.UTF8;
@@ -2228,7 +2224,7 @@ begin
     SaveToolbarItems(FactoryToolbarItems);
 
   if (OldMonitorProfile = MonitorProfile) and
-     LocalAppStorage.PathExists('Layouts\Current\Forms') then
+     LocalAppStorage.PathExists('Layouts\Current\Forms') and not GuiPyOptions.UsePredefinedLayouts then
   begin
     try
       //OutputDebugString(PWideChar(Format('%s ElapsedTime %d ms', ['Before LoadLayout', StopWatch.ElapsedMilliseconds])));
@@ -2244,18 +2240,8 @@ begin
     LocalAppStorage.DeleteSubTree('Layouts\Current');
   end
   else
-  begin
-    // default layout
-    ManualConjoinDock(DockServer.RightDockPanel, FObjectInspector, FFileStructure);
-    DockServer.RightDockPanel.Width := PPIScale(250);
+    LoadStandardLayout;
 
-    TabHost := ManualTabDock(DockServer.BottomDockPanel, PythonIIForm, MessagesWindow);
-    DockServer.BottomDockPanel.Height := PPIScale(200);
-    ManualTabDockAddPage(TabHost, OutputWindow);
-    ManualTabDockAddPage(TabHost, VariablesWindow);
-    ShowDockForm(PythonIIForm);
-    Application.ProcessMessages;
-  end;
 
   Application.OnIdle := ApplicationOnIdle;
   Application.OnHint := ApplicationOnHint;
@@ -4446,6 +4432,10 @@ Const
 begin
   // user specific options can be overwritten by admin controlled options from GuiPyMachine.ini
 
+  // since 5.11
+  RemoveDefunctEditorOptions;
+  AppStorage.Reload;
+
   // Remove since it is now stored in PyScripter.local.ini
   if AppStorage.PathExists('Layouts') then
     AppStorage.DeleteSubTree('Layouts');
@@ -5117,13 +5107,23 @@ end;
 
 procedure TPyIDEMainForm.mnViewDefaultLayoutClick(Sender: TObject);
 begin
-  var LayoutAppStorage:= TJvAppIniFileStorage.Create(self);
-  LayoutAppStorage.FileName:=
-    TPath.Combine(ExtractFilePath(Application.ExeName), 'DefaultLayout.ini');
-  LoadDefaultLayout(LayoutAppStorage, 'Default');
-  mnViewDebugLayout.Checked:= false;
-  mnViewDefaultLayout.Checked:= true;
-  FreeAndNil(LayoutAppStorage);
+  if GuiPyOptions.UsePredefinedLayouts then begin
+    CallStackWindow.Hide;
+    DoFloatForm(CallStackWindow);
+    Watcheswindow.Hide;
+    DoFloatForm(WatchesWindow);
+    BreakPointsWindow.Hide;
+    DoFloatForm(BreakPointsWindow);
+    LoadStandardLayout;
+  end else begin
+    var LayoutAppStorage:= TJvAppIniFileStorage.Create(self);
+    LayoutAppStorage.FileName:=
+      TPath.Combine(ExtractFilePath(Application.ExeName), 'DefaultLayout.ini');
+    LoadDefaultLayout(LayoutAppStorage, 'Default');
+    mnViewDebugLayout.Checked:= false;
+    mnViewDefaultLayout.Checked:= true;
+    FreeAndNil(LayoutAppStorage);
+  end;
 end;
 
 procedure TPyIDEMainForm.MoveTab(Tab: TSpTBXTabItem;
@@ -5362,9 +5362,23 @@ begin
   if GuiPyOptions.UsePredefinedLayouts then begin
     if Layout = 'Debug'
       then mnViewDebugLayoutClick(self)
-      else mnViewDefaultLayoutClick(self)
+      else LoadStandardLayout // mnViewDefaultLayoutClick(self)
   end else
     LoadDefaultLayout(LocalAppStorage, Layout);
+end;
+
+procedure TPyIDEMainForm.LoadStandardLayout;
+begin
+  ManualConjoinDock(DockServer.RightDockPanel, FObjectInspector, FFileStructure);
+  DockServer.RightDockPanel.Width := PPIScale(250);
+  var TabHost := ManualTabDock(DockServer.BottomDockPanel, PythonIIForm, MessagesWindow);
+  DockServer.BottomDockPanel.Height := PPIScale(200);
+  ManualTabDockAddPage(TabHost, OutputWindow);
+  ManualTabDockAddPage(TabHost, VariablesWindow);
+  ShowDockForm(PythonIIForm);
+  Application.ProcessMessages;
+  mnViewDebugLayout.Checked:= false;
+  mnViewDefaultLayout.Checked:= true;
 end;
 
 procedure TPyIDEMainForm.SaveLayout(const Layout: string);
@@ -6616,16 +6630,15 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.RemoveEoAltSetsColumnMode;
-  // since 5.11 to avoid an exception
+procedure TPyIDEMainForm.RemoveDefunctEditorOptions;
+// since 5.11 to avoid an exception
 begin
-  var SL:= TStringList.Create;
+  var SL:= TSmartPtr.Make(TStringList.Create)();
   SL.LoadFromFile(TPyScripterSettings.OptionsFileName);
   var s:= SL.Text;
   s:= myStringReplace(s, 'eoAltSetsColumnMode, ', '');
   SL.Text:= s;
   SL.SaveToFile(TPyScripterSettings.OptionsFileName);
-  FreeAndNil(SL);
 end;
 
 { TTSpTBXTabControl }

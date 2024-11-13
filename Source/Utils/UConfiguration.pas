@@ -2547,10 +2547,12 @@ procedure TFConfiguration.BDumpClick(Sender: TObject);
 begin
   SL:= TStringList.Create;
   SL.Text:= getDumpText;
-  Pathname:= TPath.Combine(GuiPyOptions.TempDir, 'Configuration.ini');
-  SL.SaveToFile(Pathname);
+  if SysUtils.ForceDirectories(GuiPyOptions.TempDir) then begin
+    Pathname:= TPath.Combine(GuiPyOptions.TempDir, 'Configuration.ini');
+    SL.SaveToFile(Pathname);
+    PyIDEMainForm.DoOpenFile(Pathname);
+  end;
   FreeAndNil(SL);
-  PyIDEMainForm.DoOpenFile(Pathname);
 end;
 
 procedure TFConfiguration.LMouseEnter(Sender: TObject);
