@@ -11,8 +11,10 @@ unit cPySupportTypes;
 interface
 
 Uses
+  System.SysUtils,
   System.Classes,
   System.RegularExpressions,
+  PythonEngine,
   uEditAppIntfs,
   cTools;
 
@@ -113,7 +115,6 @@ implementation
 
 Uses
   Winapi.Windows,
-  System.SysUtils,
   uCommonFunctions;
 
 { TRunConfiguration }

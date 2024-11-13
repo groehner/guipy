@@ -11,10 +11,19 @@ unit frmDisassemlyView;
 interface                          
 
 uses
+  WinApi.Windows,
+  WinApi.Messages,
+  System.SysUtils,
+  System.Variants,
   System.Classes,
-  Vcl.Forms,
+  Vcl.Graphics,
   Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  SynEditHighlighter,
+  SynHighlighterPython,
   SynEdit,
+  SynEditCodeFolding,
   uEditAppIntfs;
 
 type
@@ -44,12 +53,11 @@ type
 implementation
 
 uses
-  SysUtils,
   JvJVCLUtils,
   JvGnugettext,
+  PythonEngine,
   StringResources,
   dmResources,
-  PythonEngine,
   cPyScripterSettings,
   cPyControl;
 
@@ -71,10 +79,10 @@ var
 Const
   Code =
   'def GetDis(m):'#10 +
-       #9'import dis'#10 +
-       #9'import sys'#10 +
+	     #9'import dis'#10 +
+	     #9'import sys'#10 +
        #9'StringIO = __import__("io").StringIO'#10 +
-       #9'sio = StringIO()'#10 +
+	     #9'sio = StringIO()'#10 +
        #9'dis.dis(m, file = sio)'#10 +
        #9'return sio.getvalue()'#10;
   Header = ''''''''#13#10#9+'Disassembly of %s'#13#10+''''''''#13#10#13#10;

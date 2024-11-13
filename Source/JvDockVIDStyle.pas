@@ -1,4 +1,4 @@
-{-----------------------------------------------------------------------------
+﻿{-----------------------------------------------------------------------------
 The contents of this file are subject to the Mozilla Public License
 Version 1.1 (the "License"); you may not use this file except in compliance
 with the License. You may obtain a copy of the License at
@@ -34,7 +34,7 @@ uses
   JclUnitVersioning,
   {$ENDIF UNITVERSIONING}
   Windows, Messages, Classes, Graphics, Controls, ComCtrls, ImgList,
-  JvDockControlForm, JvDockSupportControl, JvDockTree,
+  JvConsts, JvDockControlForm, JvDockSupportControl, JvDockTree,
   JvDockAdvTree, JvDockGlobals;
 
 type
@@ -3948,6 +3948,7 @@ begin
     // Scale Font
     TabPanel.Canvas.Font.Height := MulDiv(TabPanel.Canvas.Font.Height,
       FCurrentPPI, TabPanel.Canvas.Font.PixelsPerInch);
+
     TempWidth := TabPanel.Canvas.TextWidth(
       CaptionStr) + TabPanel.CaptionLeftOffset + TabPanel.CaptionRightOffset;
     if TempWidth <> FTabWidth then

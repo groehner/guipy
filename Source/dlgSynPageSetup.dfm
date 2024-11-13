@@ -4,12 +4,9 @@ inherited PageSetupDlg: TPageSetupDlg
   Caption = 'Page Setup'
   ClientHeight = 397
   ClientWidth = 632
-  ParentFont = False
   Position = poScreenCenter
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ExplicitWidth = 644
-  ExplicitHeight = 435
   TextHeight = 15
   object TabControl: TSpTBXTabControl
     Left = 0
@@ -19,8 +16,6 @@ inherited PageSetupDlg: TPageSetupDlg
     Align = alClient
     ActiveTabIndex = 0
     OnActiveTabChange = TabControlActiveTabChange
-    ExplicitWidth = 628
-    ExplicitHeight = 396
     HiddenItems = <>
     object SpTBXTabItem1: TSpTBXTabItem
       Caption = 'Margins && Options'
@@ -36,8 +31,6 @@ inherited PageSetupDlg: TPageSetupDlg
       Height = 372
       Caption = 'Header && Footer'
       ImageIndex = -1
-      ExplicitWidth = 628
-      ExplicitHeight = 371
       TabItem = 'SpTBXTabItem2'
       object ToolbarDock: TSpTBXDock
         Left = 2
@@ -46,7 +39,6 @@ inherited PageSetupDlg: TPageSetupDlg
         Height = 26
         AllowDrag = False
         LimitToOneRow = True
-        ExplicitWidth = 622
         object Toolbar: TSpTBXToolbar
           Left = 0
           Top = 0
@@ -404,8 +396,6 @@ inherited PageSetupDlg: TPageSetupDlg
       Height = 372
       Caption = 'Margins && Options'
       ImageIndex = -1
-      ExplicitWidth = 628
-      ExplicitHeight = 371
       DesignSize = (
         632
         372)

@@ -3,8 +3,8 @@ object WebPreviewForm: TWebPreviewForm
   Top = 88
   HelpContext = 850
   Caption = 'Web Preview'
-  ClientHeight = 446
-  ClientWidth = 463
+  ClientHeight = 381
+  ClientWidth = 439
   Color = clBtnFace
   ParentFont = True
   OnCreate = FormCreate
@@ -13,10 +13,10 @@ object WebPreviewForm: TWebPreviewForm
   object TBXDock1: TSpTBXDock
     Left = 0
     Top = 0
-    Width = 463
+    Width = 439
     Height = 30
     AllowDrag = False
-    ExplicitWidth = 459
+    DoubleBuffered = True
     object TBXToolbar1: TSpTBXToolbar
       Left = 0
       Top = 0
@@ -28,12 +28,14 @@ object WebPreviewForm: TWebPreviewForm
       Customizable = False
       object ToolButtonBack: TSpTBXItem
         Hint = 'Go Back'
+        Enabled = False
         ImageIndex = 0
         ImageName = 'Back'
         OnClick = ToolButtonBackClick
       end
       object ToolButtonForward: TSpTBXItem
         Hint = 'Go Forward'
+        Enabled = False
         ImageIndex = 1
         ImageName = 'Forward'
         OnClick = ToolButtonForwardClick
@@ -67,8 +69,8 @@ object WebPreviewForm: TWebPreviewForm
   object WebBrowser: TEdgeBrowser
     Left = 0
     Top = 30
-    Width = 463
-    Height = 416
+    Width = 439
+    Height = 351
     HelpContext = 850
     Align = alClient
     TabOrder = 0
@@ -77,8 +79,6 @@ object WebPreviewForm: TWebPreviewForm
     OnCreateWebViewCompleted = WebBrowserCreateWebViewCompleted
     OnExecuteScript = WebBrowserExecuteScript
     OnHistoryChanged = WebBrowserHistoryChanged
-    ExplicitWidth = 459
-    ExplicitHeight = 415
   end
   object BrowserImages: TVirtualImageList
     Images = <

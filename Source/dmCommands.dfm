@@ -48,6 +48,7 @@ object CommandsDataModule: TCommandsDataModule
     AppStoragePath = 'Check for Updates'
     CheckFrequency = 0
     LocalDirectory = 'Updates'
+    LocalInstallerFileName = 'PyScripter-Setup.exe'
     LocalVersionInfoFileName = 'versioninfo.ini'
     LocationHTTP = ProgramVersionHTTPLocation
     LocationType = pvltHTTP
@@ -217,7 +218,7 @@ object CommandsDataModule: TCommandsDataModule
     end
     object actEditSelectAll: TEditSelectAll
       Category = 'Edit'
-      Caption = 'Select &all'
+      Caption = 'Select &All'
       HelpContext = 320
       HelpType = htContext
       Hint = 'Select All|Selects the entire document'
@@ -385,6 +386,15 @@ object CommandsDataModule: TCommandsDataModule
       ShortCut = 41182
       OnExecute = actEditUntabifyExecute
     end
+    object actPythonPath: TAction
+      Category = 'Tools'
+      Caption = 'Python &Path...'
+      HelpContext = 870
+      Hint = 'Python Path|View or edit the Python path'
+      ImageIndex = 20
+      ImageName = 'Folders'
+      OnExecute = actPythonPathExecute
+    end
     object actHelpContents: THelpContents
       Category = 'Help'
       Caption = '&Contents'
@@ -410,6 +420,7 @@ object CommandsDataModule: TCommandsDataModule
       Category = 'Help'
       Caption = 'About...'
       HelpContext = 370
+      HelpType = htContext
       Hint = 'About|Info about the application'
       ImageIndex = 25
       ImageName = 'Info'
@@ -473,6 +484,7 @@ object CommandsDataModule: TCommandsDataModule
       Category = 'Help'
       Caption = '&Parameters'
       HelpContext = 370
+      HelpType = htContext
       Hint = 'Help on custom parameters'
       OnExecute = actHelpParametersExecute
     end
@@ -497,6 +509,7 @@ object CommandsDataModule: TCommandsDataModule
       Category = 'Help'
       Caption = 'External &Tools'
       HelpContext = 370
+      HelpType = htContext
       Hint = 'Help on External Tools'
       OnExecute = actHelpExternalToolsExecute
     end
@@ -581,6 +594,7 @@ object CommandsDataModule: TCommandsDataModule
       Category = 'Help'
       Caption = 'Editor &Shortcuts'
       HelpContext = 370
+      HelpType = htContext
       Hint = 'Help on editor shortcuts'
       OnExecute = actHelpEditorShortcutsExecute
     end
@@ -599,6 +613,15 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 68
       ImageName = 'UnitTestWin'
       OnExecute = actUnitTestWizardExecute
+    end
+    object actInterpreterEditorOptions: TAction
+      Category = 'Options'
+      Caption = '&Interpreter Editor Options...'
+      HelpContext = 620
+      Hint = 'Set Interpreter Editor Options'
+      ImageIndex = 18
+      ImageName = 'EditOptions'
+      OnExecute = actInterpreterEditorOptionsExecute
     end
     object actEditToggleComment: TAction
       Category = 'Source Code'
@@ -701,7 +724,7 @@ object CommandsDataModule: TCommandsDataModule
       Category = 'Edit'
       Caption = 'Word &Wrap'
       HelpContext = 320
-      Hint = 'Turn word wrap on/off'
+      Hint = 'Turn word wrap on/off (incompatible with code folding)'
       ImageIndex = 79
       ImageName = 'WordWrap'
       OnExecute = actEditWordWrapExecute
@@ -713,23 +736,25 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Go to the current position of the debugger'
       OnExecute = actSearchGoToDebugLineExecute
     end
-    object actHelpWebProjectHome: TAction
+    object actHelpWebProjectHome: TBrowseURL
       Category = 'Help'
       Caption = '&Project Home'
       HelpContext = 370
+      HelpType = htContext
       Hint = 'Go to the project home page'
       ImageIndex = 90
       ImageName = 'Link'
-      OnExecute = actHelpWebProjectHomeExecute
+      URL = 'https://guipy.de'
     end
-    object actHelpWebGroupSupport: TAction
+    object actHelpWebGroupSupport: TBrowseURL
       Category = 'Help'
       Caption = '&Group Support'
       HelpContext = 370
+      HelpType = htContext
       Hint = 'Go to the PyScripter Internet group'
       ImageIndex = 90
       ImageName = 'Link'
-      OnExecute = actHelpWebGroupSupportExecute
+      URL = 'http://groups.google.com/group/PyScripter'
     end
     object actFileCloseAllOther: TAction
       Tag = 1
@@ -763,15 +788,6 @@ object CommandsDataModule: TCommandsDataModule
       HelpType = htContext
       Hint = 'Edit PyScripter initialization files'
       OnExecute = actToolsEditStartupScriptsExecute
-    end
-    object actHelpWebBlog: TAction
-      Category = 'Help'
-      Caption = '&Blog'
-      HelpContext = 370
-      Hint = 'Go to the PyScripter Blog'
-      ImageIndex = 90
-      ImageName = 'Link'
-      OnExecute = actHelpWebBlogExecute
     end
     object actFoldVisible: TAction
       Category = 'Code Folding'
@@ -887,15 +903,6 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'Upload'
       OnExecute = actFileSaveToRemoteExecute
     end
-    object actDonate: TAction
-      Category = 'Help'
-      Caption = '&Donate'
-      HelpContext = 370
-      Hint = 'Donate to the PyScripter project'
-      ImageIndex = 90
-      ImageName = 'Link'
-      OnExecute = actDonateExecute
-    end
     object actEditCreateStructogram: TAction
       Category = 'Edit'
       Caption = 'Create structogram'
@@ -950,29 +957,53 @@ object CommandsDataModule: TCommandsDataModule
       Category = 'Spell Checking'
       Caption = 'Delete'
     end
+    object actAssistantSuggest: TAction
+      Category = 'Assistant'
+      Caption = 'Suggest'
+      Hint = 'Provide a suggestion for code completion'
+      ShortCut = 49184
+      OnExecute = actAssistantSuggestExecute
+    end
+    object actAssistantCancel: TAction
+      Category = 'Assistant'
+      Caption = 'Cancel'
+      Hint = 'Cancel Assistant action'
+      ImageName = 'Cancel'
+      OnExecute = actAssistantCancelExecute
+    end
+    object actAssistantOptimize: TAction
+      Category = 'Assistant'
+      Caption = 'Optimize'
+      Hint = 'Optimize the selected code'
+      OnExecute = actAssistantOptimizeExecute
+    end
+    object actAssistantFixBugs: TAction
+      Category = 'Assistant'
+      Caption = 'Fix Bugs'
+      Hint = 'Fix bugs in the selected code'
+      OnExecute = actAssistantFixBugsExecute
+    end
+    object actAssistantComments: TAction
+      Category = 'Assistant'
+      Caption = 'Add Comments'
+      Hint = 'Add comments explaining the selected code'
+      OnExecute = actAssistantCommentsExecute
+    end
+    object actDonate: TBrowseURL
+      Category = 'Help'
+      Caption = '&Donate'
+      HelpContext = 370
+      HelpType = htContext
+      Hint = 'Donate to the GuiPy project'
+      ImageIndex = 90
+      ImageName = 'Link'
+      URL = 'https://www.paypal.com/donate?hosted_button_id=6RTJT5GMUN3LG'
+    end
     object actFileExport: TAction
       Category = 'File'
       Caption = 'Export'
       Hint = 'Export to RTF or HTML file'
       OnExecute = actFileExportExecute
-    end
-    object actInterpreterEditorOptions: TAction
-      Category = 'Options'
-      Caption = '&Interpreter Editor Options...'
-      HelpContext = 620
-      Hint = 'Set Interpreter Editor Options'
-      ImageIndex = 18
-      ImageName = 'EditOptions'
-      OnExecute = actInterpreterEditorOptionsExecute
-    end
-    object actPythonPath: TAction
-      Category = 'Tools'
-      Caption = 'Python &Path...'
-      HelpContext = 870
-      Hint = 'Python Path|View or edit the Python path'
-      ImageIndex = 20
-      ImageName = 'Folders'
-      OnExecute = actPythonPathExecute
     end
   end
   object SynWebCompletion: TSynCompletionProposal

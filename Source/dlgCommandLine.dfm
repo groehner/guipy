@@ -60,7 +60,7 @@ inherited CommandLineDlg: TCommandLineDlg
       Gutter.Font.Charset = DEFAULT_CHARSET
       Gutter.Font.Color = clWindowText
       Gutter.Font.Height = -11
-      Gutter.Font.Name = 'Courier New'
+      Gutter.Font.Name = 'Consolas'
       Gutter.Font.Style = []
       Gutter.Font.Quality = fqClearTypeNatural
       Gutter.Visible = False

@@ -10,6 +10,8 @@ unit cCodeCompletion;
 interface
 Uses
   Winapi.Windows,
+  System.Types,
+  System.Classes,
   System.Contnrs,
   System.SyncObjs,
   SynEdit,
@@ -90,12 +92,12 @@ type
 implementation
 
 uses
-  System.Classes,
   System.SysUtils,
   System.Character,
   System.Threading,
   System.RegularExpressions,
   System.JSON,
+  VarPyth,
   JvGnugettext,
   dmResources,
   SynHighlighterPython,
@@ -103,11 +105,14 @@ uses
   uEditAppIntfs,
   uCommonFunctions,
   cPyBaseDebugger,
+  cPyDebugger,
+  PythonEngine,
   cPyScripterSettings,
   cPySupportTypes,
   cPyControl,
-  PythonEngine,
+  cSSHSupport,
   LspUtils,
+  SynEditLsp,
   JediLspClient;
 
 { TRegExpressions }
@@ -250,7 +255,8 @@ function TLiveNamespaceCompletionHandler.HandleCodeCompletion(const Line,
     else
       Result := Name;
   end;
-Var
+
+var
   I, TmpX, Index, ImageIndex : Integer;
   lookup : string;
   NameSpaceItem : TBaseNameSpaceItem;

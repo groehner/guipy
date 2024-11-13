@@ -206,6 +206,7 @@ type
     function GetAttribute(AttributeLeafNode: TTreeNode): TAttribute;
     function GetMethod(MethodLeafNode: TTreeNode): TOperation;
     function GetLevel(Node: TTreeNode): integer;
+    function GetIndent(Level: integer): string;
     function IsClassNode(Node: TTreeNode): Boolean;
     function IsAttributesNode(Node: TTreeNode): Boolean;
     function IsAttributesNodeLeaf(Node: TTreeNode): Boolean;
@@ -483,8 +484,12 @@ var
 
 begin
   MakeNewClass:= false;
-  Indent1:= FConfiguration.Indent1;
-  Indent2:= FConfiguration.Indent2;
+  Indent1:= GetIndent(0);
+  Indent2:= GetIndent(1);
+  if CBClassInner.Checked then begin
+    Indent1:= GetIndent(1);
+    Indent2:= GetIndent(2);
+  end;
   s:= FConfiguration.getClassCodeTemplate;
   p1:= Pos('class ', s);
   p2:= Pos(':', s);
@@ -526,7 +531,7 @@ end;
 procedure TFClassEditor.BClassChangeClick(Sender: TObject);
 var
   s, Searchtext, ReplaceText, tail,
-  newClassname, oldClassname: String;
+  newClassname, oldClassname, Indent: String;
   SkipUpdate: Boolean;
   p, NodeIndex, i: Integer;
   Node: TTreeNode;
@@ -540,6 +545,9 @@ begin
     Node:= TreeView.Selected;
     if not Assigned(Node) then
       exit;
+    Indent:= GetIndent(2);
+    if CBClassInner.Checked then
+      Indent:= GetIndent(3);
     LockFormUpdate(myEditor);
     myEditor.ActiveSynEdit.BeginUpdate;
     oldClassname:= Node.Text;
@@ -598,6 +606,8 @@ begin
             s:= myEditor.ActiveSynEdit.Lines[Line + 1];
             if Pos('super().__init__', s) = 0 then begin
               head:= PrepareParameter(head);
+
+              s:= Indent + 'super().__init__(' + head + ')';
               s:= FConfiguration.Indent2 + 'super().__init__(' + head + ')';
               myEditor.ActiveSynEdit.Lines.Insert(Line+1, s);
             end;
@@ -821,6 +831,11 @@ begin
     Result:= Result + 1;
     ClassNode:= ClassNode.Parent;
   end;
+end;
+
+function TFClassEditor.GetIndent(Level: Integer): string;
+begin
+  Result:= StringTimesN(FConfiguration.Indent1, Level);
 end;
 
 procedure TFClassEditor.TreeViewChange(Sender: TObject; Node: TTreeNode);
@@ -1157,11 +1172,10 @@ begin
   Node:= TreeView.Selected;
   if (Node = nil) or (EAttributeName.Text = '') or not MakeIdentifier(EAttributeName) then
     exit;
-  NodeIndex:= Node.AbsoluteIndex;
-  TopItemIndex:= TreeView.TopItem.AbsoluteIndex;
   ClassNumber:= GetClassNumber(Node);
+  TopItemIndex:= TreeView.TopItem.AbsoluteIndex;
+  NodeIndex:= Node.AbsoluteIndex;
 
-  LockFormUpdate(myEditor);
   myEditor.ActiveSynEdit.BeginUpdate;
   if IsAttributesNode(Node) then begin
     NodeIndex:= NodeIndex + Node.Count + 1;
@@ -1178,47 +1192,53 @@ begin
     FreeAndNil(Attribute);
   end else begin
     Attribute:= GetAttribute(Node);
-    ValueChanged:= CBAttributeValue.Text <> Attribute.Value;
-    TypeChanged:= assigned(Attribute.TypeClassifier) and
-                  (asUMLType(CBAttributeType.Text) <> Attribute.TypeClassifier.asUMLType);
-    OldName:= Attribute.Name;
-    OldVisName:= Attribute.VisName;
-    OldNameType:= Attribute.toNameType;
-    OldStatic:= Attribute.Static;
-    Old:= Attribute.toPython(false);
-    // changed to a value of another standard type then change type too
-    if ValueChanged and assigned(Attribute.TypeClassifier) and
-       (Pos('|' + Attribute.TypeClassifier.asType + '|', Types) > 0) then begin
-      newType:= Attribute.TypeClassifier.ValueToType(CBAttributeValue.Text);
-      if newType = ''
-        then Attribute.TypeClassifier:= nil
-        else Attribute.TypeClassifier:= MakeType(newType);
-      CBAttributeType.Text:= newType;
-      TypeChanged:= true;
-    end;
-    ChangeGetSet(Attribute, ClassNumber, Node.Parent.Parent.Text);
-    New:= Attribute.toPython(TypeChanged);
-    NewNameTypeUML:= Attribute.toNameTypeUML;
-    if CBAttributeValue.Text <> '' then
-      CBAttributeValue.Text:= Attribute.Value;
-    if CBAttributeType.Text <> '' then
-      CBAttributeType.Text:= Attribute.TypeClassifier.Name;
-    if New <> Old then begin
-      if OldStatic = Attribute.Static then
-        myEditor.ReplaceLineInLine(Attribute.LineS - 1, Old, New)
-      else if Attribute.Static then begin
-        myEditor.DeleteLine(Attribute.LineS - 1);
-        myEditor.InsertLinesAt(TClassifier(Attribute.Owner).LineS, New)
-      end else if OldStatic then begin
-        myEditor.InsertAttributeCE(New, ClassNumber);
-        myEditor.DeleteLine(Attribute.LineS - 1);
+    if assigned(Attribute) then begin
+      ValueChanged:= CBAttributeValue.Text <> Attribute.Value;
+      TypeChanged:= assigned(Attribute.TypeClassifier) and
+                    (asUMLType(CBAttributeType.Text) <> Attribute.TypeClassifier.asUMLType);
+      OldName:= Attribute.Name;
+      OldVisName:= Attribute.VisName;
+      OldNameType:= Attribute.toNameType;
+      OldStatic:= Attribute.Static;
+      Old:= Attribute.toPython(false);
+      // changed to a value of another standard type then change type too
+      if ValueChanged and assigned(Attribute.TypeClassifier) and
+         (Pos('|' + Attribute.TypeClassifier.asType + '|', Types) > 0) then begin
+        newType:= Attribute.TypeClassifier.ValueToType(CBAttributeValue.Text);
+        if newType = ''
+          then Attribute.TypeClassifier:= nil
+          else Attribute.TypeClassifier:= MakeType(newType);
+        CBAttributeType.Text:= newType;
+        TypeChanged:= true;
       end;
-      myEditor.ReplaceWord(OldName, Attribute.Name, true);
-      myEditor.ReplaceWord('self.' + OldVisName, 'self.' + Attribute.VisName, true);
-      ReplaceParameter(ClassNumber, OldNameType, Attribute.toNameType);
+      ChangeGetSet(Attribute, ClassNumber, Node.Parent.Parent.Text);
+      if (Attribute.Name <> OldName) and AttributeAlreadyExists(Attribute.Name) then
+        ErrorMsg(Format(_('%s already exists'), [Attribute.Name]))
+      else begin
+        New:= Attribute.toPython(TypeChanged);
+        NewNameTypeUML:= Attribute.toNameTypeUML;
+        if CBAttributeValue.Text <> '' then
+          CBAttributeValue.Text:= Attribute.Value;
+        if CBAttributeType.Text <> '' then
+          CBAttributeType.Text:= Attribute.TypeClassifier.Name;
+        if New <> Old then begin
+          if OldStatic = Attribute.Static then
+            myEditor.ReplaceLineInLine(Attribute.LineS - 1, Old, New)
+          else if Attribute.Static then begin
+            myEditor.DeleteLine(Attribute.LineS - 1);
+            myEditor.InsertLinesAt(TClassifier(Attribute.Owner).LineS, New)
+          end else if OldStatic then begin
+            myEditor.InsertAttributeCE(New, ClassNumber);
+            myEditor.DeleteLine(Attribute.LineS - 1);
+          end;
+          myEditor.ReplaceWord(OldName, Attribute.Name, true);
+          myEditor.ReplaceWord('self.' + OldVisName, 'self.' + Attribute.VisName, true);
+          ReplaceParameter(ClassNumber, OldNameType, Attribute.toNameType);
+        end;
+      end;
     end;
   end;
-
+  myEditor.ActiveSynEdit.EndUpdate;
   UpdateTreeView;
   Node:= GetClassNode(ClassNumber);
   if assigned(Node) then begin
@@ -1228,14 +1248,11 @@ begin
     if assigned(Node) then
       NodeIndex:= Node.AbsoluteIndex;
   end;
-
   if (0 <= TopItemIndex) and (TopItemIndex < TreeView.Items.Count) then
     TreeView.TopItem:= TreeView.Items[TopItemIndex];
   if (0 <= NodeIndex) and (NodeIndex < TreeView.Items.Count) then
     TreeView.Selected:= TreeView.Items[NodeIndex];
   BAttributeApply.Enabled:= false;
-  myEditor.ActiveSynEdit.EndUpdate;
-  UnLockFormUpdate(myEditor);
 end;
 
 procedure TFClassEditor.ReplaceParameter(ClassNumber: integer; const s1, s2: string);
@@ -1452,8 +1469,8 @@ function TFClassEditor.CreateMethod(const getset, datatype: string;
 var
   s, Indent1, Indent2, aName: string;
 begin
-  Indent1:= StringTimesN(FConfiguration.Indent1, Attribute.Level + 1);
-  Indent2:= StringTimesN(FConfiguration.Indent1, Attribute.Level + 2);
+  Indent1:= GetIndent(Attribute.Level + 1);
+  Indent2:= GetIndent(Attribute.Level + 2);
   aName:= Attribute.Name;
 
   if GuiPyOptions.GetSetMethodsAsProperty then begin
@@ -1583,7 +1600,7 @@ var
 
 begin // makeConstructor
   Parameter:= nil;
-  Indent:= StringTimesN(FConfiguration.Indent1, Method.Level + 2);
+  Indent:= GetIndent(Method.Level + 2);
   SourceSL:= TStringList.Create;
   SourceSL.Text:= Source;
   head:= Method.HeadToPython;
@@ -2332,8 +2349,8 @@ var
   end;
 
 begin
-  Indent1:= StringTimesN(FConfiguration.Indent1, Method.Level + 1);
-  Indent2:= StringTimesN(FConfiguration.Indent1, Method.Level + 2);
+  Indent1:= GetIndent(Method.Level + 1);
+  Indent2:= GetIndent(Method.Level + 2);
   if Pos('"""', Source) = 0
     then comment:= FConfiguration.getMultiLineComment(Indent2)
     else comment:= '';
@@ -2410,25 +2427,20 @@ var
   ClassNumber, NodeIndex, TopItemIndex, from: Integer;
   Node: TTreeNode;
 begin
+  Node:= TreeView.Selected;
   CBMethodType.Enabled:= (RGMethodKind.ItemIndex = 1);
   if (not (MakeIdentifier(CBMethodName) and MakeIdentifier(CBMethodType) and
     MakeIdentifier(CBParamName) and MakeIdentifier(CBParamType)) or
-    (CBMethodName.Text = '')) and (RGMethodKind.ItemIndex > 0) then
+    (CBMethodName.Text = '')) and (RGMethodKind.ItemIndex > 0) or (Node = nil) then
     exit;
-  Node:= TreeView.Selected;
-  if Assigned(Node)
-    then NodeIndex:= Node.AbsoluteIndex
-    else exit;
-  if Assigned(TreeView.TopItem)
-    then TopItemIndex:= TreeView.TopItem.AbsoluteIndex
-    else exit;
 
-  TakeParameter;
   ClassNumber:= GetClassNumber(Node);
+  NodeIndex:= Node.AbsoluteIndex;
+  TopItemIndex:= TreeView.TopItem.AbsoluteIndex;
+  TakeParameter;
   if RGMethodKindHasChanged then
     exit;
 
-  LockFormUpdate(myEditor);
   myEditor.ActiveSynEdit.BeginUpdate;
   if IsMethodsNode(Node) then begin
     if RGMethodKind.ItemIndex = 0 then begin
@@ -2474,14 +2486,13 @@ begin
     end;
   end;
   myEditor.Modified:= true;
-  UpdateTreeView;
-  BMethodApply.Enabled:= false;
-  if TopItemIndex < TreeView.Items.Count then
-    TreeView.TopItem:= TreeView.Items[TopItemIndex];
-  if NodeIndex < TreeView.Items.Count then
-    TreeView.Selected:= TreeView.Items[NodeIndex];
   myEditor.ActiveSynEdit.EndUpdate;
-  UnLockFormUpdate(myEditor);
+  UpdateTreeView;
+  if (0 <= TopItemIndex) and (TopItemIndex < TreeView.Items.Count) then
+    TreeView.TopItem:= TreeView.Items[TopItemIndex];
+  if (0 <= NodeIndex) and (NodeIndex < TreeView.Items.Count) then
+    TreeView.Selected:= TreeView.Items[NodeIndex];
+  BMethodApply.Enabled:= false;
 end;
 
 procedure TFClassEditor.ReplaceMethod(var Method: TOperation; const New: string);

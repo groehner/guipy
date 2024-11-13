@@ -4,19 +4,49 @@ interface
 {gnugettext: scan-all}
 
 Const
-
   // File Filters
-  sPythonFileFilter = 'Python (*.py;*.pyw;*.pyi)|*.py;*.pyw;*.pyi';
-  sCythonFileFilter = 'Cython (*.pyx*.pxd;*.pxi)|*.pyx;*.pxd;*.pxi';
-  sHTMLFileFilter = 'HTML (*.htm;*.html)|*.htm;*.html';
-  sXMLFileFilter = 'XML (*.xml;*.xsd;*.xsl;*.xslt;*.dtd)|*.xml;*.xsd;*.xsl;*.xslt;*.dtd';
-  sCSSFileFilter = 'CSS (*.css)|*.css';
-  sCPPFileFilter = 'C/C++ (*.c;*.cpp;*.cc;*.h;*.hpp;*.hh;*.cxx;*.hxx;*.cu)|*.c;*.cpp;*.cc;*.h;*.hpp;*.hh;*.cxx;*.hxx;*.cu';
-  sYAMLFileFilter = 'YAML (*.yaml)|*.yaml';
-  sJSFileFilter = 'Javascript (*.js)|*.js';
-  sPHPFileFilter = 'PHP (*.php;*.php3;*.phtml;*.inc)|*.php;*.php3;*.phtml;*.inc';
-  sJSONFileFilter = 'JSON (*.json;*.ipynb)|*.json;*.ipynb';
-  sGeneralFileFilter = 'Text (*.txt,*.*)|*.txt;*.*';
+  sPythonFileFilter = 'Python Files (*.py;*.pyw;*.pyi)|*.py;*.pyw;*.pyi';
+  sCythonFileFilter = 'Cython Files (*.pyx*.pxd;*.pxi)|*.pyx;*.pxd;*.pxi';
+  sHTMLFileFilter = 'HTML Documents (*.htm;*.html)|*.htm;*.html';
+  sXMLFileFilter = 'XML Files (*.xml;*.xsd;*.xsl;*.xslt;*.dtd)|*.xml;*.xsd;*.xsl;*.xslt;*.dtd';
+  sCSSFileFilter = 'Cascading Stylesheets (*.css)|*.css';
+  sCPPFileFilter = 'C/C++ Files (*.c;*.cpp;*.cc;*.h;*.hpp;*.hh;*.cxx;*.hxx;*.cu)|*.c;*.cpp;*.cc;*.h;*.hpp;*.hh;*.cxx;*.hxx;*.cu';
+  sYAMLFileFilter = 'YAML files (*.yaml)|*.yaml';
+  sJSFileFilter = 'Javascript Files (*.js)|*.js';
+  sPHPFileFilter = 'PHP Files (*.php;*.php3;*.phtml;*.inc)|*.php;*.php3;*.phtml;*.inc';
+  sJSONFileFilter = 'JSON Files (*.json;*.ipynb)|*.json;*.ipynb';
+  sGeneralFileFilter = 'Text Files(*.txt,*.*)|*.txt;*.*';
+
+  // Syntax element friendly names
+  SyntaxElementFriendlyName_Anchor               =  'Anchor';
+  SyntaxElementFriendlyName_Assembler            =  'Assembler';
+  SyntaxElementFriendlyName_Attribute            =  'Attribute';
+  SyntaxElementFriendlyName_Brackets             =  'Brackets';
+  SyntaxElementFriendlyName_Character            =  'Character';
+  SyntaxElementFriendlyName_Directive            =  'Directive';
+  SyntaxElementFriendlyName_Documentation        =  'Documentation';
+  SyntaxElementFriendlyName_DocumentDelimiter    =  'Document Delimiter';
+  SyntaxElementFriendlyName_Float                =  'Float';
+  SyntaxElementFriendlyName_Hexadecimal          =  'Hexadecimal';
+  SyntaxElementFriendlyName_Identifier           =  'Identifier';
+  SyntaxElementFriendlyName_IllegalChar          =  'Illegal Char';
+  SyntaxElementFriendlyName_Key                  =  'Key';
+  SyntaxElementFriendlyName_NonReservedKeyword   =  'Non-reserved Keyword';
+  SyntaxElementFriendlyName_Number               =  'Number';
+  SyntaxElementFriendlyName_NumericValue         =  'Numeric Value';
+  SyntaxElementFriendlyName_Octal                =  'Octal';
+  SyntaxElementFriendlyName_Preprocessor         =  'Preprocessor';
+  SyntaxElementFriendlyName_ReservedWord         =  'Reserved Word';
+  SyntaxElementFriendlyName_Section              =  'Section';
+  SyntaxElementFriendlyName_Space                =  'Space';
+  SyntaxElementFriendlyName_String               =  'String';
+  SyntaxElementFriendlyName_Symbol               =  'Symbol';
+  SyntaxElementFriendlyName_SyntaxError          =  'Syntax Error';
+  SyntaxElementFriendlyName_System               =  'System Functions and Variables';
+  SyntaxElementFriendlyName_Tag                  =  'Tag';
+  SyntaxElementFriendlyName_Text                 =  'Text';
+  SyntaxElementFriendlyName_TextValue            =  'Text Value';
+  SyntaxElementFriendlyName_Value                =  'Value';
 
   sPythonFormFileFilter = 'Python form (*.pfm)|*.pfm';
   sUMLFileFilter = 'UML (*.puml)|*.puml';
@@ -24,13 +54,16 @@ Const
   sSequencediagramfileFilter = 'Sequence diagram (*.psd)|*.psd';
   sAllFileFilter = 'All (*.*)|*.*';
 
+  // Editor scroll hints
+  sEditorScrollInfo         =  'Top Line: %d';
+  sPrintPreviewScrollInfo   =  'Page: %d';
+
   // Editor commands
   //Needs to be manually updated as new editor commands are added
   SEdCmdAutoCompletion = 'Auto Completion';
   SEdCmdBlockIndent = 'Block Indent';
   SEdCmdBlockUnindent = 'Block Unindent';
   SEdCmdClearAll = 'Clear All';
-  SEdCmdColumnSelect = 'Column Select';
   SEdCmdCommentBlock = 'Comment Block';
   SEdCmdContextHelp = 'Context Help';
   SEdCmdCopy = 'Copy';
@@ -68,13 +101,11 @@ Const
   SEdCmdLeft = 'Left';
   SEdCmdLineBreak = 'Line Break';
   SEdCmdLineEnd = 'Line End';
-  SEdCmdLineSelect = 'Line Select';
   SEdCmdLineStart = 'Line Start';
   SEdCmdLowerCase = 'Lower Case';
   SEdCmdMatchBracket = 'Match Bracket';
   SEdCmdMoveLineDown = 'Move Line Down';
   SEdCmdMoveLineUp = 'Move Line Up';
-  SEdCmdNormalSelect = 'Normal Select';
   SEdCmdOverwriteMode = 'Overwrite Mode';
   SEdCmdPageBottom = 'Page Bottom';
   SEdCmdPageDown = 'Page Down';
@@ -117,6 +148,9 @@ Const
   SEdCmdSetBookmark7 = 'Set Bookmark 7';
   SEdCmdSetBookmark8 = 'Set Bookmark 8';
   SEdCmdSetBookmark9 = 'Set Bookmark 9';
+  SEdCmdZoomIn = 'Zoom In';
+  SEdCmdZoomOut = 'Zoom Out';
+  SEdCmdZoomReset = 'Zoom Reset';
   SEdCmdShiftTab = 'Shift Tab';
   SEdCmdTab = 'Tab';
   SEdCmdTitleCase = 'Title Case';
@@ -133,6 +167,17 @@ Const
   SEdCmdUpperCase = 'Upper Case';
   SEdCmdWordLeft = 'Word Left';
   SEdCmdWordRight = 'Word Right';
+  // Multi-caret
+  SEdCmdCancelSelections = 'Cancel Selections';
+  SEdCmdSelColumnLeft = 'Selelct Column Left';
+  SEdCmdSelColumnRight = 'Select Column Right';
+  SEdCmdSelColumnUp = 'Select Column Up';
+  SEdCmdSelColumnDown = 'Select Column Down';
+  SEdCmdSelColumnPageUp = 'Select Column Page Up';
+  SEdCmdSelColumnPageDown = 'Select Column Page Down';
+  SEdCmdSelMatchingText = 'Select Matching Text';
+  SEdCmdCaretsAtLineEnds = 'Carets At Line Ends';
+
   // User editor commands
   SEdCmdCodeCompletion = 'Code Completion';
   SEdCmdParameterCompletion = 'Parameter Completion';
@@ -199,8 +244,8 @@ Const
   SFileEncodingWarning = 'Encoding file "%s" using "%s" encoding will ' +
                         'result in information loss.' + SLineBreak + 'Do you want to proceed?';
   SDecodingError = 'Error in decoding file "%s" from "%s" encoding';
-  SFileOpenError = 'Error in opening file: "%s".' + sLineBreak + '%s';
-  SFileSaveError = 'Error in saving file: "%s".' + sLineBreak +'%s';
+  SFileOpenError = 'Error in opening file: "%s".' + sLineBreak + 'Error: %s';
+  SFileSaveError = 'Error in saving file: "%s".' + sLineBreak +'Error: %s';
   SErrorGettingNamespace = 'Error in getting the namespace of %s';
   SCouldNotSetDirectory = 'Could not set the current directory to the script path';
   SCannotCompileWhileRunning = 'You cannot compile, import or run modules while debugging or running programs';
@@ -254,12 +299,12 @@ Const
   StrScriptRunOK = 'Script run OK';
   SDebuggingAborted = 'Debugging Aborted';
   SSyntaxError = 'Syntax Error';
-  StrCertainty = 'Certainty %s%%';
-  SReferencesNotFound = 'References not found';
+  StrCertainty = ' Certainty %s%%';
+  SReferencesNotFound = ' References not found';
   SReferencesOf = 'References of "';
   SDefinitionsOf = 'Definition(s) of "';
-  SDefinitionFound = 'Definition found';
-  SDefinitionNotFound = 'Definition not found';
+  SDefinitionFound = ' Definition found';
+  SDefinitionNotFound = ' Definition not found';
   SSyntaxIsOK = 'Syntax of %s is OK!';
   SModuleImportedOK = 'Module %s was imported successfully!';
   SResumeCaption = 'Resume';
@@ -386,8 +431,8 @@ Const
   SCloseWithoutSaving = 'The text in the "%s" file has changed.'#13#10#13#10 + 'Do you want to close the file without saving?';
 
   // Parameters
-  SEnterParameterCaption = 'Parameter replacement';
-  SEnterParameterText = 'Enter parameter value';
+  SEnterParameterCaption = 'Enter parameter value';
+  SEnterParameterText = 'Parameter value';
   SParamCircularReference = 'Parameter "%s" is referenced circularly';
   SParameterNotFound = 'Parameter with name "%s" is not found';
   SModifierNotFound = 'Modifier with name "%s" is not found';
@@ -434,6 +479,7 @@ Const
   SYAMLTemplateName = 'YAML File';
   SJSTemplateName = 'JavaScript Code';
   SPHPTemplateName = 'PHP Code';
+  STOMLTemplateName = 'TOML document';
   SJupyterTemplateName = 'Jupyter Notebook';
 
   // Python Versions
@@ -465,6 +511,15 @@ Const
   LNGNone= 'none';
   LNGFileAlreadyExists= '%s already exists. Overwrite?';
 
+  // Missing action categories
+  SActionCategoryFile = 'File';
+  SActionCategoryView = 'View';
+  SActionCategoryRun = 'Run';
+  SActionCategoryProject = 'Project';
+  SActionCategoryDebugWindows = 'Debug Windows';
+  SActionCategoryIDENavigation = 'IDE Navigation';
+  SActionCategoryRefactoring = 'Refactoring';
+  SActionCategoryInterpreter = 'Interpreter';
   // do not localize further
 
 {gnugettext: reset }

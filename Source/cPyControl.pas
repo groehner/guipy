@@ -80,6 +80,7 @@ type
     function Running: boolean;
     function Inactive: boolean;
     function GetPythonVersion: TPythonVersion;
+    function GetActiveSSHServerName: string;
     function GetOnPythonVersionChange: TJclNotifyEventBroadcast;
     function AddPathToInternalPythonPath(const Path: string): IInterface;
     procedure Pickle(AValue: Variant; FileName: string);
@@ -222,6 +223,11 @@ begin
   inherited;
 end;
 
+function TPythonControl.GetActiveSSHServerName: string;
+begin
+  Result := fActiveSSHServerName;
+end;
+
 function TPythonControl.GetInternalInterpreter: TPyBaseInterpreter;
 begin
   Result := fInternalInterpreter;
@@ -272,8 +278,8 @@ begin
     Result := fRegPythonVersions[fPythonVersionIndex]
   else if (fPythonVersionIndex < 0) and (-fPythonVersionIndex <= Length(CustomPythonVersions)) then
     Result := CustomPythonVersions[-fPythonVersionIndex -1]
-  //else
-  //  Assert(False, 'Invalid PythonVersionIndex');
+  else
+    Assert(False, 'Invalid PythonVersionIndex');
 end;
 
 function TPythonControl.Inactive: boolean;

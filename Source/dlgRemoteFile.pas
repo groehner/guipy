@@ -49,7 +49,8 @@ Uses
   cSSHSupport,
   JvGnugettext,
   uCommonFunctions,
-  dmResources;
+  dmResources,
+  uEditAppIntfs;
 
 {$R *.dfm}
 
@@ -61,7 +62,9 @@ begin
     edFileName.Text := FileName;
     FillSSHConfigNames(cbSSHConfigs.Items);
     if SSHServerName <> '' then
-      cbSSHConfigs.ItemIndex := cbSSHConfigs.Items.IndexOf(SSHServerName);
+      cbSSHConfigs.ItemIndex := cbSSHConfigs.Items.IndexOf(SSHServerName)
+    else if GI_PyControl.ActiveSSHServerName <> '' then
+      cbSSHConfigs.ItemIndex := cbSSHConfigs.Items.IndexOf(GI_PyControl.ActiveSSHServerName);
     case DialogType of
       rfdOpen: Caption := _(SRemoteFileOpen);
       rfdSave: Caption := _(SRemoteFileSave);

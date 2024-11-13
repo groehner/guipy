@@ -12,8 +12,11 @@ interface
 
 uses
   Winapi.Windows,
+  System.SysUtils,
   System.Classes,
   Vcl.Controls,
+  Vcl.Forms,
+  Vcl.ExtCtrls,
   Vcl.Graphics,
   JvHTControls,
   JvTypes;
@@ -42,9 +45,9 @@ type
 implementation
 
 uses
+  Winapi.Messages,
   System.Types,
   System.Math,
-  Vcl.Forms,
   Vcl.Themes,
   uCommonFunctions;
 

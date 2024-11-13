@@ -1098,7 +1098,7 @@ procedure TBaseTkWidget.MakeFont;
 begin
   if Name = '' then exit;
   s1:= 'self.' + Name + '[''font'']';
-  s2:= ' = (' + asString(Font.Name) + ', ' + IntToStr(PPIUnScale(Font.Size));
+  s2:= ' = (' + asString(Font.Name) + ', ' + IntToStr(Font.Size);
   if fsBold   in Font.Style then s2:= s2 + ', ' + asString('bold');
   if fsItalic in Font.Style then s2:= s2 + ', ' + asString('italic');
   if fsStrikeout in Font.Style then s2:= s2 + ', ' + asString('overstrike');

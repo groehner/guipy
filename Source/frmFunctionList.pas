@@ -176,18 +176,20 @@ implementation
 {$R *.dfm}
 
 uses
+  System.Generics.Collections,
   System.SysUtils,
   System.StrUtils,
+  System.Math,
   System.IOUtils,
   System.JSON,
-  System.Math,
-  System.Generics.Collections,
   Vcl.Clipbrd,
   JvJVCLUtils,
   JvGnuGetText,
-  frmPyIDEMain,
+  SynEditTypes,
   dmResources,
   uEditAppIntfs,
+  SynEditLsp,
+  LspClient,
   LspUtils,
   JediLspClient,
   uCommonFunctions;
@@ -207,6 +209,7 @@ begin
   FFileName := FileName;
 
   LoadTime := GetTickCount;
+
   InitializeForm;
   LoadTime := GetTickCount - LoadTime;
   RightStatusLabel.Caption := Format(_(SParseStatistics), [LoadTime / 1000]);
@@ -396,8 +399,8 @@ begin
 
     var StoredFont := TSmartPtr.Make(TStoredFont.Create)();
     StoredFont.Assign(lvProcs.Font);
-    StoredFont.Height := MulDiv(StoredFont.Height, StoredFont.PixelsPerInch,
-      FCurrentPPI);
+    StoredFont.PixelsPerInch := FCurrentPPI;
+    StoredFont.Height := lvProcs.Font.Height;
     WritePersistent('Function List\Font', StoredFont);
   end;
 end;
@@ -412,9 +415,17 @@ begin
       Height := MulDiv(ReadInteger('Function List\Height', Height), FCurrentPPI, 96);
 
     FSortOnColumn := ReadInteger('Function List\SortColumn', FSortOnColumn);
+
+    {$IF CompilerVersion >= 36}
+    lvProcs.Font.IsDPIRelated := True;
+    lvProcs.Font.PixelsPerInch := FCurrentPPI;
+    {$ENDIF}
     ReadPersistent('Function List\Font', lvProcs.Font);
+    {$IF CompilerVersion < 36}
     lvProcs.Font.Height := MulDiv(lvProcs.Font.Height, FCurrentPPI,
-      lvProcs.Font.PixelsPerInch);
+      Screen.PixelsPerInch);
+    {$ENDIF}
+
     FSearchAll := ReadBoolean('Function List\SearchAll', True);
     ResizeCols;
   end;
@@ -603,9 +614,12 @@ end;
 procedure TFunctionListWindow.actOptionsFontExecute(Sender: TObject);
 begin
   lvProcs.Font.PixelsPerInch := FCurrentPPI;
-  dlgProcFont.Font.Assign(lvProcs.Font);
+  dlgProcFont.Font := lvProcs.Font;
   if dlgProcFont.Execute then
     lvProcs.Font.Assign(dlgProcFont.Font);
+  {$IF CompilerVersion < 36}
+  lvProcs.Font.PixelsPerInch := Screen.PixelsPerInch;
+  {$ENDIF}
 end;
 
 procedure TFunctionListWindow.actViewStartExecute(Sender: TObject);

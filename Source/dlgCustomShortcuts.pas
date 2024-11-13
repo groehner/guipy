@@ -10,7 +10,8 @@ unit dlgCustomShortcuts;
 interface
 
 uses
-  Classes, Controls, StdCtrls, System.Actions, ActnList, dlgPyIDEBase,
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, Menus, System.Actions, ActnList, Buttons, dlgPyIDEBase,
   ExtCtrls, SynEditMiscClasses, System.Generics.Collections;
 
 type
@@ -20,6 +21,7 @@ type
     FShortCut: TShortCut;
     fActionListName: string;
     fActionName: string;
+    function IsSecondaryShortCutsStored: Boolean;
     procedure SetSecondaryShortCuts(const Value: TCustomShortCutList);
     function GetSecondaryShortCuts: TCustomShortCutList;
   protected
@@ -29,7 +31,6 @@ type
     Caption : string;
     Hint : string;
     destructor Destroy; override;
-    function IsSecondaryShortCutsStored: Boolean;
   published
     property ActionListName : string read fActionListName write fActionListName;
     property ActionName : string read fActionName write fActionName;
@@ -111,13 +112,7 @@ var
   frmCustomKeyboard: TfrmCustomKeyboard;
 
 implementation
-
 uses
-  Windows,
-  SysUtils,
-  Graphics,
-  Menus,
-  Forms,
   Vcl.Themes,
   JvGnugettext,
   uCommonFunctions;

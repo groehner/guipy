@@ -12,6 +12,7 @@ interface
 
 uses
   System.Classes,
+  Generics.Defaults,
   Generics.Collections,
   SynEditHighlighter;
 
@@ -36,7 +37,6 @@ implementation
 uses
   System.SysUtils,
   System.IOUtils,
-  Generics.Defaults,
   JvGNUGetText;
 
 function FileMaskFromFileFilter(const Filter : string) : string;

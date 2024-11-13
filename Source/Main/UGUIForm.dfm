@@ -15,6 +15,7 @@ object FGUIForm: TFGUIForm
   Position = poDefault
   Visible = True
   OnAfterMonitorDpiChanged = FormAfterMonitorDpiChanged
+  OnBeforeMonitorDpiChanged = FormBeforeMonitorDpiChanged
   OnCanResize = FormCanResize
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery

@@ -359,12 +359,10 @@ end;
 procedure TBaseWidget.Zoom(_in: boolean);
 begin
   if _in
-    then Font.Size:= Font.Size + 1
-    else Font.Size:= max(Font.Size -1, 6);
+    then Font.Size:= Font.Size + GuiPyOptions.ZoomSteps
+    else Font.Size:= max(Font.Size - GuiPyOptions.ZoomSteps, 6);
   Canvas.Font.Assign(Font);
   MakeFont;
-  if Sizeable then
-    SetPositionAndSize;
   Invalidate;
 end;
 

@@ -42,7 +42,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 558
+        CustomWidth = 476
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -65,8 +65,6 @@ object EditorForm: TEditorForm
         Height = 672
         Caption = 'Source'
         ImageIndex = -1
-        ExplicitTop = 30
-        ExplicitHeight = 667
         TabItem = 'tabSource'
         object SynEdit: TSynEdit
           Left = 25
@@ -80,7 +78,7 @@ object EditorForm: TEditorForm
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Courier New'
+          Font.Name = 'Consolas'
           Font.Style = []
           Font.Quality = fqClearTypeNatural
           ParentShowHint = False
@@ -93,15 +91,13 @@ object EditorForm: TEditorForm
           OnKeyDown = SynEditKeyDown
           OnKeyUp = SynEditKeyUp
           OnMouseDown = SynEditMouseDown
-          OnMouseWheelDown = SynEditMouseWheelDown
-          OnMouseWheelUp = SynEditMouseWheelUp
           UseCodeFolding = False
           BorderStyle = bsNone
           Gutter.BorderStyle = gbsNone
           Gutter.Font.Charset = DEFAULT_CHARSET
           Gutter.Font.Color = clWindowText
           Gutter.Font.Height = -11
-          Gutter.Font.Name = 'Courier New'
+          Gutter.Font.Name = 'Consolas'
           Gutter.Font.Style = []
           Gutter.Font.Quality = fqClearTypeNatural
           Gutter.Gradient = True
@@ -157,7 +153,7 @@ object EditorForm: TEditorForm
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Courier New'
+          Font.Name = 'Consolas'
           Font.Style = []
           Font.Quality = fqClearTypeNatural
           ParentShowHint = False
@@ -171,14 +167,12 @@ object EditorForm: TEditorForm
           OnKeyDown = SynEditKeyDown
           OnKeyUp = SynEditKeyUp
           OnMouseDown = SynEditMouseDown
-          OnMouseWheelDown = SynEditMouseWheelDown
-          OnMouseWheelUp = SynEditMouseWheelUp
           UseCodeFolding = False
           BorderStyle = bsNone
           Gutter.Font.Charset = DEFAULT_CHARSET
           Gutter.Font.Color = clWindowText
           Gutter.Font.Height = -11
-          Gutter.Font.Name = 'Courier New'
+          Gutter.Font.Name = 'Consolas'
           Gutter.Font.Style = []
           Gutter.Font.Quality = fqClearTypeNatural
           Gutter.Bands = <

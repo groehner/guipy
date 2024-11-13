@@ -2,9 +2,9 @@ object DisForm: TDisForm
   Left = 281
   Top = 152
   HelpContext = 860
-  Caption = 'Disassembly View'
-  ClientHeight = 379
-  ClientWidth = 587
+  Caption = 'Disassembly'
+  ClientHeight = 382
+  ClientWidth = 599
   Color = clBtnFace
   ParentFont = True
   OnCreate = FormCreate
@@ -12,13 +12,13 @@ object DisForm: TDisForm
   object DisSynEdit: TSynEdit
     Left = 0
     Top = 0
-    Width = 587
-    Height = 379
+    Width = 599
+    Height = 382
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Courier New'
+    Font.Name = 'Consolas'
     Font.Style = []
     Font.Quality = fqClearTypeNatural
     TabOrder = 0
@@ -26,7 +26,7 @@ object DisForm: TDisForm
     Gutter.Font.Charset = DEFAULT_CHARSET
     Gutter.Font.Color = clWindowText
     Gutter.Font.Height = -11
-    Gutter.Font.Name = 'Courier New'
+    Gutter.Font.Name = 'Consolas'
     Gutter.Font.Style = []
     Gutter.Font.Quality = fqClearTypeNatural
     Gutter.ShowLineNumbers = True
@@ -46,7 +46,5 @@ object DisForm: TDisForm
         Width = 3
       end>
     SelectedColor.Alpha = 0.400000005960464500
-    ExplicitWidth = 591
-    ExplicitHeight = 380
   end
 end

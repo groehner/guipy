@@ -667,21 +667,31 @@ end;
 
 procedure TFile.DoSetFileName(AFileName: string);
 begin
+  if ((AFileName <> '') or (fRemoteFileName <> '')) and (fUntitledNumber <> -1) then
+  begin
+    UntitledNumbers[fUntitledNumber] := False;
+    fUntitledNumber := -1;
+  end;
+
   if AFileName <> fFileName then
   begin
     fFileName := AFileName;
-    fRemoteFileName := '';
-    fSSHServer := '';
-    if ((AFileName <> '') or (fRemoteFileName <> '')) and (fUntitledNumber <> -1) then
+    if AFileName <> '' then
     begin
-      UntitledNumbers[fUntitledNumber] := False;
-      fUntitledNumber := -1;
+      fRemoteFileName := '';
+      fSSHServer := '';
     end;
     // Kernel change notification
     if (fFileName <> '') and FileExists(fFileName) then
-      ChangeNotifier.NotifyWatchFolder(fForm, ExtractFileDir(fFileName))
+    begin
+      // Register Kernel Notification
+      ChangeNotifier.RegisterKernelChangeNotify(fForm, [vkneFileName, vkneDirName,
+        vkneLastWrite, vkneCreation]);
+
+      ChangeNotifier.NotifyWatchFolder(fForm, TPath.GetDirectoryName(fFileName))
+    end
     else
-      ChangeNotifier.NotifyWatchFolder(fForm, '');
+      ChangeNotifier.UnRegisterKernelChangeNotify(fForm);  // just in case it was registered
   end;
 end;
 

@@ -200,7 +200,7 @@ begin
   lsbConsole.Font.PixelsPerInch := FCurrentPPI;
   with TFontDialog.Create(Application) do
   try
-    Font.Assign(lsbConsole.Font);
+    Font := lsbConsole.Font;
     if Execute then
     begin
       lsbConsole.Font.Assign(Font);
@@ -209,6 +209,9 @@ begin
   finally
     Free;
   end;
+  {$IF CompilerVersion < 36}
+  lsbConsole.Font.PixelsPerInch := Screen.PixelsPerInch;
+  {$ENDIF}
 end;
 
 procedure TOutputWindow.actClearOutputExecute(Sender: TObject);
@@ -281,7 +284,7 @@ begin
   end;
 
   if FCmdOptions.ExitCode = 0 then
-    ErrorMsg := Format(_(SProcessSuccessfull), [fTool.Caption.Replace('&', '')])
+    ErrorMsg := Format(_(sProcessSuccessfull), [fTool.Caption.Replace('&', '')])
   else
     ErrorMsg := Format(_(sProcessTerminated), [fTool.Caption.Replace('&', ''), FCmdOptions.ExitCode]);
   AddNewLine('');
@@ -449,10 +452,16 @@ end;
 
 procedure TOutputWindow.RestoreSettings(Storage: TJvCustomAppStorage);
 begin
-  if not Storage.PathExists(FBasePath) then exit;
   inherited;
+  {$IF CompilerVersion >= 36}
+  lsbConsole.Font.IsDPIRelated := True;
   lsbConsole.Font.PixelsPerInch := FCurrentPPI;
+  {$ENDIF}
   Storage.ReadPersistent(FBasePath, lsbConsole.Font);
+  {$IF CompilerVersion < 36}
+  lsbConsole.Font.Height := MulDiv(lsbConsole.Font.Height, FCurrentPPI,
+    Screen.PixelsPerInch);
+  {$ENDIF}
   FontOrColorUpdated;
 end;
 
@@ -460,9 +469,9 @@ procedure TOutputWindow.StoreSettings(Storage: TJvCustomAppStorage);
 begin
   inherited;
   var StoredFont := TSmartPtr.Make(TStoredFont.Create)();
-  lsbConsole.Font.PixelsPerInch := FCurrentPPI;
-  StoredFont.PixelsPerInch := FCurrentPPI;
   StoredFont.Assign(lsbConsole.Font);
+  StoredFont.PixelsPerInch := FCurrentPPI;
+  StoredFont.Height := lsbConsole.Font.Height;
   Storage.DeleteSubTree(FBasePath);
   Storage.WritePersistent(FBasePath, StoredFont);
 end;

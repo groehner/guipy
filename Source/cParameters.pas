@@ -460,7 +460,7 @@ begin
       Result:= True;
       Inc(AText);
       while CharInSet(AText^, WhiteSpaces) do Inc(AText);
-      case StyledMessageDlg(ALeft, mtConfirmation, mbYesNoCancel, 0) of
+      case MessageDlg(ALeft, mtConfirmation, mbYesNoCancel, 0) of
         mrYes:  Result:= True;
         mrNo:   Result:= False;
         else    Abort;
@@ -806,7 +806,7 @@ begin
       Inc(PParam, Length(StartMask));
       // reads parameter value
       PText:= PParam;
-      AValue:= ReadParameters(PText);   // ###
+      AValue:= ReadParameters(PText);
       // invalid parameter
       if PText^ = #0 then begin
         Dec(PParam, Length(StartMask));

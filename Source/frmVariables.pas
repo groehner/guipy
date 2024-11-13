@@ -296,7 +296,6 @@ begin
     PPIUnScale(VariablesTree.Header.Columns[1].Width));
 end;
 
-
 procedure TVariablesWindow.VariablesTreeGetImageIndex(
   Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
   Column: TColumnIndex; var Ghosted: Boolean; var ImageIndex: TImageIndex);
@@ -335,7 +334,7 @@ begin
 end;
 
 procedure TVariablesWindow.UpdateWindow;
-Var
+var
   Py: IPyEngineAndGIL;
   CurrentFrame : TBaseFrameInfo;
   SameFrame : boolean;
@@ -573,8 +572,8 @@ end;
 
 procedure TVariablesWindow.VariablesTreeFreeNode(Sender: TBaseVirtualTree;
   Node: PVirtualNode);
-Var
-  Data : PNodeData;
+var
+  Data: PNodeData;
 begin
   Data := Node.GetData;
   Finalize(Data^);
@@ -612,7 +611,6 @@ begin
     end;
   end;
 end;
-
 
 end.
 

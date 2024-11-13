@@ -31,6 +31,7 @@ uses
   Vcl.Menus,
   Vcl.ActnList,
   Vcl.ImgList,
+  Vcl.Forms,
   Vcl.VirtualImageList,
   JvComponentBase,
   JvDockControlForm,
@@ -85,7 +86,7 @@ type
     procedure SynCodeCompletionExecute(Kind: SynCompletionType;
       Sender: TObject; var CurrentInput: string; var x, y: Integer;
       var CanExecute: Boolean);
-    function FormHelp(Command: Word; Data: NativeInt;
+    function FormHelp(Command: Word; Data: THelpEventData;
       var CallHelp: Boolean): Boolean;
     procedure FormActivate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -104,10 +105,6 @@ type
     procedure actPasteAndExecuteExecute(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
-    procedure SynEditMouseWheelDown(Sender: TObject; Shift: TShiftState;
-      MousePos: TPoint; var Handled: Boolean);
-    procedure SynEditMouseWheelUp(Sender: TObject; Shift: TShiftState;
-      MousePos: TPoint; var Handled: Boolean);
     procedure SynCodeCompletionAfterCodeCompletion(Sender: TObject;
       const Value: string; Shift: TShiftState; Index: Integer; EndToken: Char);
   private
@@ -164,7 +161,6 @@ type
     procedure SetShowOutput(const Value: boolean);
   protected
     procedure PythonIOReceiveData(Sender: TObject; var Data: string);
-    procedure EditorMouseWheel(theDirection: Integer; Shift: TShiftState );
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
     procedure WMREINITINTERPRETER(var Message: TMessage); message WM_REINITINTERPRETER;
   public
@@ -200,7 +196,6 @@ Uses
   System.SysUtils,
   System.SyncObjs,
   System.Contnrs,
-  Vcl.Forms,
   Vcl.Clipbrd,
   Vcl.Dialogs,
   VarPyth,
@@ -263,9 +258,9 @@ Var
   Res : Boolean;
 begin
   with GetPythonEngine do begin
-    Res := SyncWideInputQuery('PyScripter - Input requested', 'Input:', Data);
+    Res := SyncWideInputQuery('GuiPy - Input requested', _('Input:'), Data);
     if not Res then
-      PyErr_SetString(PyExc_KeyboardInterrupt^, 'Operation cancelled')
+      PyErr_SetString(PyExc_KeyboardInterrupt^, PAnsiChar(EncodeString(_('Operation cancelled'))))
     else
       Data := Data + #10;
   end;
@@ -296,15 +291,10 @@ begin
       if not IsPending then
         TThread.ForceQueue(nil, procedure
         begin
+          Sleep(100);
           WritePendingMessages;
-        end, 100);
-//      Queue a call to WritePendingMessages now if buffer becomes big enough
-//      else if fOutputStream.Size > 1000 then
-//        TThread.ForceQueue(nil, procedure
-//        begin
-//          WritePendingMessages;
-//        end);
-
+        end);
+        WakeMainThread(nil);
     finally
       fCriticalSection.Leave;
     end;
@@ -526,6 +516,7 @@ begin
   SynEdit.OnReplaceText := CommandsDataModule.SynEditReplaceText;
   SynEdit.Highlighter := TSynPythonInterpreterSyn.Create(Self);
   SynEdit.Highlighter.Assign(ResourcesDataModule.SynPythonSyn);
+  SynEdit.ScrollbarAnnotations.Clear;
 
   ApplyEditorOptions;
 
@@ -732,10 +723,16 @@ Var
 begin
   if (Command <> ecLostFocus) and (Command <> ecGotFocus) then
     EditorSearchOptions.InitSearch;
+
+  if SynEdit.Selections.Count > 1 then
+    SynEdit.Selections.Clear;
+
   case Command of
     ecLineBreak :
       begin
         Command := ecNone;  // do not processed it further
+
+        SynEdit.Selections.Clear;
 
         fCommandHistoryPrefix := '';
 
@@ -787,24 +784,29 @@ begin
       end;
     ecDeleteLastChar, ecDeleteLastWord :
       begin
+        SynEdit.Selections.Clear;
         Line := SynEdit.Lines[SynEdit.CaretY - 1];
         if ((Pos(PS1, Line) = 1) and (SynEdit.CaretX <= Length(PS1)+1)) or
            ((Pos(PS2, Line) = 1) and (SynEdit.CaretX <= Length(PS2)+1)) then
           Command := ecNone;  // do not processed it further
       end;
-    ecLineStart :
+    ecLineStart, ecSelLineStart:
       begin
-        Line := SynEdit.Lines[SynEdit.CaretY - 1];
-        if Pos(PS1, Line) = 1 then begin
-          Command := ecNone;  // do not processed it further
-          SynEdit.CaretX := Length(PS1) + 1;
-        end else if Pos(PS2, Line) = 1 then begin
-          Command := ecNone;  // do not processed it further
-          SynEdit.CaretX := Length(PS2) + 1;
-        end;
+        SynEdit.Selections.Clear;
+        var DC := SynEdit.DisplayXY;
+        Line := SynEdit.Rows[DC.Row];
+        if Pos(PS1, Line) = 1 then
+          DC.Column := Length(PS1) + 1
+        else if Pos(PS2, Line) = 1 then
+          DC.Column := Length(PS2) + 1
+        else
+          Exit;
+        SynEdit.MoveDisplayPosAndSelection(DC, Command = ecSelLineStart);
+        Command := ecNone;  // do not processed it further
       end;
     ecChar, ecDeleteChar, ecDeleteWord, ecCut, ecPaste:
       begin
+        SynEdit.Selections.Clear;
         Line := SynEdit.Lines[SynEdit.CaretY - 1];
         if ((Pos(PS1, Line) = 1) and (SynEdit.CaretX <= Length(PS1))) or
              ((Pos(PS2, Line) = 1) and (SynEdit.CaretX <= Length(PS2)))
@@ -813,6 +815,7 @@ begin
       end;
     ecUp, ecDown :
       begin
+        SynEdit.Selections.Clear;
         LineN := SynEdit.CaretY - 1;  // Caret is 1 based
         GetBlockBoundary(LineN, StartLineN, EndLineN, IsCode);
         if IsCode and (EndLineN = SynEdit.Lines.Count - 1) and
@@ -826,16 +829,6 @@ begin
           SynEditProcessUserCommand(Self, NewCommand, WChar, nil);
           Command := ecNone;  // do not processed it further
         end;
-      end;
-    ecLeft :  // Implement Visual Studio like behaviour when selection is available
-      if SynEdit.SelAvail then with SynEdit do begin
-        CaretXY := BlockBegin;
-        Command := ecNone;  // do not processed it further
-      end;
-    ecRight :  // Implement Visual Studio like behaviour when selection is available
-      if SynEdit.SelAvail then with SynEdit do begin
-        CaretXY := BlockEnd;
-        Command := ecNone;  // do not processed it further
       end;
     ecLostFocus:
       if not (CommandsDataModule.SynCodeCompletion.Form.Visible or SynEdit.Focused) then
@@ -859,7 +852,9 @@ Var
   Caret, BC : TBufferCoord;
 begin
   // Should AutoCompletion be trigerred?
-  if (Command = ecChar) and  PyIDEOptions.InterpreterCodeCompletion then
+  if (Command = ecChar) and  PyIDEOptions.InterpreterCodeCompletion and
+    (SynEdit.Selections.Count = 1)
+  then
   begin
     if (TIDECompletion.InterpreterCodeCompletion.CompletionInfo.Editor = nil)
       and (Pos(AChar, CommandsDataModule.SynCodeCompletion.TriggerChars) > 0)
@@ -874,7 +869,9 @@ begin
     end;
   end;
 
-  if (Command = ecChar) and PyIDEOptions.AutoCompleteBrackets then
+  if (Command = ecChar) and PyIDEOptions.AutoCompleteBrackets and
+    (SynEdit.Selections.Count = 1)
+  then
   with SynEdit do begin
     Line := LineText;
     Len := Length(LineText);
@@ -960,6 +957,7 @@ end;
 procedure TPythonIIForm.SynEditEnter(Sender: TObject);
 begin
   inherited;
+  EditorSearchOptions.InitSearch;
   EditorSearchOptions.InterpreterIsSearchTarget := True;
   GI_SearchCmds := Self;
   // SynCodeCompletion
@@ -988,29 +986,18 @@ begin
     CommandsDataModule.SynParamCompletion.CancelCompletion;
 end;
 
-procedure TPythonIIForm.SynEditMouseWheelDown(Sender: TObject;
-  Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
-begin
-  EditorMouseWheel(+1, Shift );
-  Handled := True;
-end;
-
-procedure TPythonIIForm.SynEditMouseWheelUp(Sender: TObject; Shift: TShiftState;
-  MousePos: TPoint; var Handled: Boolean);
-begin
-  EditorMouseWheel(-1, Shift );
-  Handled := True;
-end;
-
 procedure TPythonIIForm.SynEditProcessUserCommand(Sender: TObject;
   var Command: TSynEditorCommand; var AChar: WideChar; Data: Pointer);
 Var
   LineN, StartLineN, EndLineN, i: integer;
   IsCode: Boolean;
   Source, BlockSource : string;
-  Buffer : array of string;
-  P1, P2 : PWideChar;
+  Buffer: array of string;
+  P1, P2: PWideChar;
 begin
+  if SynEdit.Selections.Count > 1 then
+    SynEdit.Selections.Clear;
+
   case Command of
     ecCodeCompletion :
       begin
@@ -1027,7 +1014,7 @@ begin
       end;
     ecRecallCommandPrev,
     ecRecallCommandNext,
-    ecRecallCommandEsc :
+    ecRecallCommandEsc:
       begin
         if (Command = ecRecallCommandEsc) and CommandsDataModule.SynParamCompletion.Form.Visible then
           CommandsDataModule.SynParamCompletion.CancelCompletion
@@ -1130,11 +1117,13 @@ begin
             SynEdit.EndUpdate;
           end;
         end;
+
+        if Command = ecRecallCommandEsc then
+          SynEdit.ExecuteCommand(ecCancelSelections, ' ', nil);
       end;
   end;
   Command := ecNone;  // do not processed it further
 end;
-
 
 procedure TPythonIIForm.SetCommandHistorySize(const Value: integer);
 Var
@@ -1418,7 +1407,7 @@ begin
   end;
 end;
 
-function TPythonIIForm.FormHelp(Command: Word; Data: NativeInt;
+function TPythonIIForm.FormHelp(Command: Word; Data: THelpEventData;
   var CallHelp: Boolean): Boolean;
 Var
   KeyWord : string;
@@ -1559,36 +1548,6 @@ end;
 function TPythonIIForm.CanReplace: boolean;
 begin
   Result := not IsEmpty;
-end;
-
-procedure TPythonIIForm.EditorMouseWheel(theDirection: Integer;
-  Shift: TShiftState);
-
-  function OwnScroll(Shift: TShiftState; LinesInWindow: Integer): Integer;
-  begin
-    if (ssShift in Shift) or (Mouse.WheelScrollLines = -1)
-    then
-      Result := LinesInWindow shr Ord(eoHalfPageScroll in SynEdit.Options)
-    else
-      Result := Mouse.WheelScrollLines;
-  end;
-//
-begin
-{*
-  Manage Zoom in and out, Page up and down, Line scroll - with the Mouse Wheel
-*}
-  if ssCtrl in Shift then
-  begin
-    if not ( (theDirection > 1) and (SynEdit.Font.Size <= 2) ) then begin
-      SynEdit.Font.Size := SynEdit.Font.Size  - theDirection;
-      SynEdit.Gutter.Font.Size := Max(SynEdit.Font.Size -2, 1);
-    end;
-  end
-  else
-  begin
-    SynEdit.TopLine := SynEdit.TopLine +
-     (theDirection * OwnScroll( Shift, SynEdit.LinesInWindow ) );
-  end;
 end;
 
 procedure TPythonIIForm.ExecFind;

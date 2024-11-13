@@ -276,7 +276,7 @@ end;
 
 procedure TFUMLForm.MIDeleteClick(Sender: TObject);
 begin
-  SynEdit.ClearSelection;
+  SynEdit.DeleteSelections;
 end;
 
 procedure TFUMLForm.MIFontClick(Sender: TObject);
@@ -379,7 +379,7 @@ end;
 procedure TFUMLForm.TBDeleteClick(Sender: TObject);
 begin
   if SynEdit.SelAvail
-    then SynEdit.ClearSelection
+    then SynEdit.DeleteSelections
     else SynEdit.Clear;
 end;
 

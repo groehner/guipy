@@ -11,12 +11,18 @@ unit frmWebPreview;
 interface
 
 uses
-  Winapi.WebView2,
+  Winapi.Windows,
+  Winapi.Messages,
   Winapi.ActiveX,
+  Winapi.WebView2,
+  System.SysUtils,
+  System.Variants,
   System.Classes,
   System.ImageList,
-  Vcl.Forms,
+  Vcl.Graphics,
   Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
   Vcl.OleCtrls,
   Vcl.VirtualImageList,
   Vcl.BaseImageCollection,
@@ -88,14 +94,13 @@ Var
 implementation
 
 uses
-  Winapi.Windows,
+  System.UITypes,
   System.IOUtils,
   System.NetEncoding,
-  System.SysUtils,
-  Vcl.Dialogs,
   JvGnugettext,
   uCommonFunctions,
   StringResources,
+  VarPyth,
   dmResources,
   frmCommandOutput,
   cPyScripterSettings;

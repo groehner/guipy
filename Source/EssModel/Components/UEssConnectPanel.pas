@@ -689,7 +689,7 @@ begin
     FindManagedControl(found);
     if found <> Self then
       TCrackControl(found).DblClick;
-    if (GetClickedConnectionNr <> -1) then
+    if GetClickedConnectionNr <> -1 then
       SelectAssociation;
   end
 end;

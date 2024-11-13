@@ -13,15 +13,21 @@ interface
 uses
   Winapi.Windows,
   Winapi.Messages,
+  System.UITypes,
+  System.SysUtils,
+  System.Variants,
   System.Classes,
+  System.Contnrs,
   System.ImageList,
   System.Generics.Defaults,
   System.Generics.Collections,
   System.JSON,
-  Vcl.Menus,
-  Vcl.Controls,
   Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
   Vcl.ExtCtrls,
+  Vcl.Menus,
   Vcl.ImgList,
   Vcl.VirtualImageList,
   JvComponentBase,
@@ -218,7 +224,7 @@ type
     procedure ExplorerTreeExpanded(Sender: TBaseVirtualTree;
       Node: PVirtualNode);
     procedure ExplorerTreeScroll(Sender: TBaseVirtualTree; DeltaX,
-      DeltaY: Integer);
+      DeltaY: TDimension);
     procedure mnFollowEditorClick(Sender: TObject);
     procedure ExplorerTreeGetCellText(Sender: TCustomVirtualStringTree;
       var E: TVSTGetCellTextEventArgs);
@@ -232,6 +238,7 @@ type
     procedure UpdateTree(const FileId: string;
       UpdateReason: TCEUpdateReason; NewModuleNode: TModuleCENode);
   public
+    // AppStorage
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
 
@@ -249,8 +256,6 @@ uses
   System.Math,
   System.IOUtils,
   System.Threading,
-  System.SysUtils,
-  Vcl.Forms,
   JvGNUGetText,
   SynEdit,
   dmResources,
@@ -403,7 +408,7 @@ begin
 end;
 
 procedure TCodeExplorerWindow.ExplorerTreeScroll(Sender: TBaseVirtualTree;
-  DeltaX, DeltaY: Integer);
+  DeltaX, DeltaY: TDimension);
 begin
   if Assigned(FModuleNode) then
     TModuleCENode(FModuleNode).OffsetXY := ExplorerTree.OffsetXY;
@@ -722,7 +727,6 @@ end;
 
 procedure TCodeExplorerWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  if not AppStorage.PathExists(FBasePath) then exit;
   inherited;
   mnAlphaSort.Checked := AppStorage.ReadBoolean(FBasePath+'\AlphaSort', False);
   mnShowSelection.Checked := AppStorage.ReadBoolean(FBasePath+'\Show Selection', True);

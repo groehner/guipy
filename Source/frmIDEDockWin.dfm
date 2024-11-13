@@ -3,8 +3,8 @@ object IDEDockWindow: TIDEDockWindow
   Top = 263
   BorderStyle = bsSizeToolWin
   Caption = 'IDE Dock Window'
-  ClientHeight = 0
-  ClientWidth = 288
+  ClientHeight = 374
+  ClientWidth = 211
   Color = clBtnFace
   DefaultMonitor = dmDesktop
   DockSite = True
@@ -26,8 +26,8 @@ object IDEDockWindow: TIDEDockWindow
   object BGPanel: TPanel
     Left = 0
     Top = 0
-    Width = 288
-    Height = 0
+    Width = 211
+    Height = 374
     Align = alClient
     BevelOuter = bvNone
     Padding.Left = 2
@@ -36,21 +36,19 @@ object IDEDockWindow: TIDEDockWindow
     Padding.Bottom = 2
     TabOrder = 0
     StyleElements = [seFont]
-    ExplicitWidth = 608
-    ExplicitHeight = 36
+    ExplicitWidth = 227
+    ExplicitHeight = 398
     object FGPanel: TPanel
       Left = 2
       Top = 2
-      Width = 612
-      Height = 44
+      Width = 223
+      Height = 394
       Align = alClient
       BevelOuter = bvNone
       Ctl3D = False
       FullRepaint = False
       ParentCtl3D = False
       TabOrder = 0
-      ExplicitWidth = 604
-      ExplicitHeight = 32
     end
   end
   object DockClient: TJvDockClient

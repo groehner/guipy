@@ -49,6 +49,7 @@ uses
   System.Classes,
   Vcl.Controls,
   Vcl.StdCtrls,
+  Vcl.Forms,
   Vcl.ComCtrls,
   Vcl.ExtCtrls,
   dlgPyIDEBase;
@@ -98,10 +99,10 @@ implementation
 {$R *.dfm}
 
 uses
+  System.UITypes,
   System.SysUtils,
   Vcl.Dialogs,
   Vcl.Graphics,
-  Vcl.Forms,
   JvGnugettext,
   uCommonFunctions,
   frmToDo,

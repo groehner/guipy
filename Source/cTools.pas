@@ -1,6 +1,6 @@
 {-----------------------------------------------------------------------------
  Unit Name: cTools
- Author:    Kiriakos Vlahos
+ Author:    Kiriakos Vlahos, Gerhard Röhner
  Date:      02-Jun-2005
  Purpose:   Class definitions for Command Line Tools
  History:

@@ -46,15 +46,23 @@ unit frmToDo;
 interface
 
 uses
+  Winapi.Windows,
   Winapi.Messages,
+  System.UITypes,
+  System.SysUtils,
+  System.Variants,
   System.Classes,
   System.ImageList,
   System.Contnrs,
   System.Actions,
+  Vcl.Graphics,
   Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.ActnList,
   Vcl.ImgList,
+  Vcl.ComCtrls,
   Vcl.Menus,
   Vcl.VirtualImageList,
   Vcl.BaseImageCollection,
@@ -73,6 +81,7 @@ uses
   VirtualTrees.AncestorVCL,
   VirtualTrees.BaseTree,
   VirtualTrees,
+  SynUnicode,
   uCommonFunctions,
   frmIDEDockWin;
 
@@ -186,7 +195,7 @@ type
     procedure actFileAbortExecute(Sender: TObject);
     procedure ToDoViewShortenString(Sender: TBaseVirtualTree;
       TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
-      const S: string; TextSpace: Integer; var Result: string;
+      const S: string; TextSpace: TDimension; var Result: string;
       var Done: Boolean);
     procedure ToDoViewHeaderClick(Sender: TVTHeader; HitInfo: TVTHeaderHitInfo);
   private
@@ -206,8 +215,10 @@ type
   protected
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
+    // AppStorage
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
+
     procedure RefreshTodoList;
     property AbortSignalled: Boolean read FAbortSignalled write FAbortSignalled;
   end;
@@ -218,13 +229,8 @@ var
 implementation
 
 uses
-  Winapi.Windows,
   System.Math,
   System.IOUtils,
-  System.SysUtils,
-  Vcl.Graphics,
-  Vcl.Forms,
-  Vcl.ComCtrls,
   Vcl.Themes,
   Vcl.Clipbrd,
   MPCommonUtilities,
@@ -826,7 +832,6 @@ end;
 
 procedure TToDoWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  if not AppStorage.PathExists('ToDo Options') then exit;
   inherited;
   AppStorage.ReadPersistent('ToDo Options', FToDoExpert);
 end;
@@ -912,7 +917,7 @@ end;
 
 procedure TToDoWindow.ToDoViewShortenString(Sender: TBaseVirtualTree;
   TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
-  const S: string; TextSpace: Integer; var Result: string;
+  const S: string; TextSpace: TDimension; var Result: string;
   var Done: Boolean);
 begin
   if Column = 2 then begin

@@ -33,9 +33,6 @@ Type
     function CreateListItem(Sender: TJvCustomAppStorage; const Path: string;
       Index: Integer): TPersistent;
     procedure AddPythonTemplate;
-    procedure AddTkinterTemplate;
-    procedure AddQtTemplate;
-    procedure AddClassTemplate;
     procedure AddCythonTemplate;
     procedure AddHTMLTemplate;
     procedure AddCSSTemplate;
@@ -45,7 +42,11 @@ Type
     procedure AddJSTemplate;
     procedure AddJupyterTemplate;
     procedure AddPHPTemplate;
+    procedure AddTOMLTemplate;
     procedure AddPlainTextTemplate;
+    procedure AddTkinterTemplate;
+    procedure AddQtTemplate;
+    procedure AddClassTemplate;
     procedure Assign(Source: TFileTemplates);
     function TemplateByName(const Name : string) : TFileTemplate;
     function TemplateByExt(const Ext : string) : TFileTemplate;
@@ -76,12 +77,14 @@ end;
 
 procedure TFileTemplate.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
+Var
+  SL : TStringList;
 begin
   Name := AppStorage.ReadString(BasePath+'\Name', '');
   Highlighter := AppStorage.ReadString(BasePath+'\Highlighter', '');
   Extension := AppStorage.ReadString(BasePath+'\Extension', '');
   Category := AppStorage.ReadString(BasePath+'\Category', '');
-  var SL := TStringList.Create;
+  SL := TStringList.Create;
   try
     AppStorage.ReadStringList(BasePath+'\Template', SL);
     Template := SL.Text;
@@ -92,12 +95,14 @@ end;
 
 procedure TFileTemplate.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
+Var
+  SL : TStringList;
 begin
   AppStorage.WriteString(BasePath+'\Name', Name);
   AppStorage.WriteString(BasePath+'\Highlighter', Highlighter);
   AppStorage.WriteString(BasePath+'\Extension', Extension);
   AppStorage.WriteString(BasePath+'\Category', Category);
-  var SL := TStringList.Create;
+  SL := TStringList.Create;
   try
     SL.Text := Template;
     AppStorage.WriteStringList(BasePath+'\Template', SL);
@@ -107,6 +112,32 @@ begin
 end;
 
 { TFileTemplates }
+
+procedure TFileTemplates.AddCSSTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SCSSFileTemplateName;
+  FileTemplate.Extension := 'css';
+  FileTemplate.Category := _(SFileTemplateCategoryInternet);
+  FileTemplate.Highlighter := 'CSS';
+  FileTemplate.Template := SCSSFileTemplate;
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddCythonTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SCythonTemplateName;
+  FileTemplate.Extension := 'pyx';
+  FileTemplate.Category := 'Python';
+  FileTemplate.Highlighter := 'Cython';
+  FileTemplate.Template := SPythonFileTemplate;
+  Add(FileTemplate);
+end;
 
 procedure TFileTemplates.AddDefaultTemplates(NoCheck: Boolean = false);
 begin
@@ -123,7 +154,173 @@ begin
   if NoCheck or not Assigned(TemplateByExt('js')) then AddJSTemplate;
   if NoCheck or not Assigned(TemplateByExt('php')) then AddPHPTemplate;
   if NoCheck or not Assigned(TemplateByExt('ipynb')) then AddJupyterTemplate;
+  if NoCheck or not Assigned(TemplateByExt('toml')) then AddTOMLTemplate;
   if NoCheck or not Assigned(TemplateByExt('txt')) then AddPlainTextTemplate;
+end;
+
+procedure TFileTemplates.AddHTMLTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SHTMLFileTemplateName;
+  FileTemplate.Extension := 'htm';
+  FileTemplate.Category := _(SFileTemplateCategoryInternet);
+  FileTemplate.Highlighter := 'HTML';
+  FileTemplate.Template := SHTMLFileTemplate;
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddJSTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SJSTemplateName;
+  FileTemplate.Extension := 'js';
+  FileTemplate.Category := _(SFileTemplateCategoryOther);
+  FileTemplate.Highlighter := 'JavaScript';
+  FileTemplate.Template := '';
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddJupyterTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SJupyterTemplateName;
+  FileTemplate.Extension := 'ipynb';
+  FileTemplate.Category := 'Python';
+  FileTemplate.Highlighter := 'JSON';
+  FileTemplate.Template := SJupyterFileTemplate;
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddPHPTemplate;
+var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SPHPTemplateName;
+  FileTemplate.Extension := 'php';
+  FileTemplate.Category := _(SFileTemplateCategoryOther);
+  FileTemplate.Highlighter := 'PHP';
+  FileTemplate.Template := '';
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddTOMLTemplate;
+var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := STOMLTemplateName;
+  FileTemplate.Extension := 'toml';
+  FileTemplate.Category := _(SFileTemplateCategoryOther);
+  FileTemplate.Highlighter := 'INI';
+  FileTemplate.Template := '';
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddPlainTextTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := STextFileTemplateName;
+  FileTemplate.Extension := 'txt';
+  FileTemplate.Category := _(SFileTemplateCategoryOther);
+  FileTemplate.Highlighter := 'General';
+  FileTemplate.Template := '';
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddPythonTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SPythonTemplateName;
+  FileTemplate.Extension := 'py';
+  FileTemplate.Category := 'Python';
+  FileTemplate.Highlighter := 'Python';
+  FileTemplate.Template := SPythonFileTemplate;
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddXMLTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SXMLTemplateName;
+  FileTemplate.Extension := 'xml';
+  FileTemplate.Category := _(SFileTemplateCategoryInternet);
+  FileTemplate.Highlighter := 'XML';
+  FileTemplate.Template := SXMLFileTemplate;
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddJSONTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SJSONTemplateName;
+  FileTemplate.Extension := 'json';
+  FileTemplate.Category := _(SFileTemplateCategoryOther);
+  FileTemplate.Highlighter := 'JSON';
+  FileTemplate.Template := SJSONFileTemplate;
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddYAMLTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SYAMLTemplateName;
+  FileTemplate.Extension := 'yaml';
+  FileTemplate.Category := _(SFileTemplateCategoryOther);
+  FileTemplate.Highlighter := 'YAML';
+  FileTemplate.Template := SYAMLFileTemplate;
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddTkinterTemplate;
+begin
+  var FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := STkinterTemplateName;
+  FileTemplate.Extension := 'pyw';
+  FileTemplate.Category := 'Python';
+  FileTemplate.Highlighter := 'Python';
+  FileTemplate.Template := STkinterFileTemplate;
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddQtTemplate;
+begin
+  var FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SQtTemplateName;
+  FileTemplate.Extension := 'pyw';
+  FileTemplate.Category := 'Python';
+  FileTemplate.Highlighter := 'Python';
+  FileTemplate.Template := SQtFileTemplate;
+  Add(FileTemplate);
+end;
+
+procedure TFileTemplates.AddClassTemplate;
+Var
+  FileTemplate : TFileTemplate;
+begin
+  FileTemplate := TFileTemplate.Create;
+  FileTemplate.Name := SClassTemplateName;
+  FileTemplate.Extension := 'py';
+  FileTemplate.Category := 'Python';
+  FileTemplate.Highlighter := 'Python';
+  FileTemplate.Template := SClassFileTemplate;
+  Add(FileTemplate);
 end;
 
 function TFileTemplates.getDefaultByName(Templatename: string): TFileTemplate;
@@ -165,159 +362,6 @@ begin
     else Result:= nil;
 end;
 
-procedure TFileTemplates.AddPythonTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SPythonTemplateName;
-  FileTemplate.Extension := 'py';
-  FileTemplate.Category := 'Python';
-  FileTemplate.Highlighter := 'Python';
-  FileTemplate.Template := SPythonFileTemplate;
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddTkinterTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := STkinterTemplateName;
-  FileTemplate.Extension := 'pyw';
-  FileTemplate.Category := 'Python';
-  FileTemplate.Highlighter := 'Python';
-  FileTemplate.Template := STkinterFileTemplate;
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddQtTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SQtTemplateName;
-  FileTemplate.Extension := 'pyw';
-  FileTemplate.Category := 'Python';
-  FileTemplate.Highlighter := 'Python';
-  FileTemplate.Template := SQtFileTemplate;
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddClassTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SClassTemplateName;
-  FileTemplate.Extension := 'py';
-  FileTemplate.Category := 'Python';
-  FileTemplate.Highlighter := 'Python';
-  FileTemplate.Template := SClassFileTemplate;
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddCythonTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SCythonTemplateName;
-  FileTemplate.Extension := 'pyx';
-  FileTemplate.Category := 'Python';
-  FileTemplate.Highlighter := 'Cython';
-  FileTemplate.Template := SPythonFileTemplate;
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddHTMLTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SHTMLFileTemplateName;
-  FileTemplate.Extension := 'htm';
-  FileTemplate.Category := _(SFileTemplateCategoryInternet);
-  FileTemplate.Highlighter := 'HTML';
-  FileTemplate.Template := SHTMLFileTemplate;
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddXMLTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SXMLTemplateName;
-  FileTemplate.Extension := 'xml';
-  FileTemplate.Category := _(SFileTemplateCategoryInternet);
-  FileTemplate.Highlighter := 'XML';
-  FileTemplate.Template := SXMLFileTemplate;
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddJSONTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SJSONTemplateName;
-  FileTemplate.Extension := 'json';
-  FileTemplate.Category := _(SFileTemplateCategoryOther);
-  FileTemplate.Highlighter := 'JSON';
-  FileTemplate.Template := SJSONFileTemplate;
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddYAMLTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SYAMLTemplateName;
-  FileTemplate.Extension := 'yaml';
-  FileTemplate.Category := _(SFileTemplateCategoryOther);
-  FileTemplate.Highlighter := 'YAML';
-  FileTemplate.Template := SYAMLFileTemplate;
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddCSSTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SCSSFileTemplateName;
-  FileTemplate.Extension := 'css';
-  FileTemplate.Category := _(SFileTemplateCategoryInternet);
-  FileTemplate.Highlighter := 'CSS';
-  FileTemplate.Template := SCSSFileTemplate;
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddJSTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SJSTemplateName;
-  FileTemplate.Extension := 'js';
-  FileTemplate.Category := _(SFileTemplateCategoryOther);
-  FileTemplate.Highlighter := 'JavaScript';
-  FileTemplate.Template := '';
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddPHPTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SPHPTemplateName;
-  FileTemplate.Extension := 'php';
-  FileTemplate.Category := _(SFileTemplateCategoryOther);
-  FileTemplate.Highlighter := 'PHP';
-  FileTemplate.Template := '';
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddJupyterTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := SJupyterTemplateName;
-  FileTemplate.Extension := 'ipynb';
-  FileTemplate.Category := 'Python';
-  FileTemplate.Highlighter := 'JSON';
-  FileTemplate.Template := SJupyterFileTemplate;
-  Add(FileTemplate);
-end;
-
-procedure TFileTemplates.AddPlainTextTemplate;
-begin
-  var FileTemplate := TFileTemplate.Create;
-  FileTemplate.Name := STextFileTemplateName;
-  FileTemplate.Extension := 'txt';
-  FileTemplate.Category := _(SFileTemplateCategoryOther);
-  FileTemplate.Highlighter := 'General';
-  FileTemplate.Template := '';
-  Add(FileTemplate);
-end;
 
 procedure TFileTemplates.Assign(Source: TFileTemplates);
 var

@@ -4,8 +4,8 @@ object FConfiguration: TFConfiguration
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Configuration'
-  ClientHeight = 503
-  ClientWidth = 836
+  ClientHeight = 502
+  ClientWidth = 848
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,18 +22,18 @@ object FConfiguration: TFConfiguration
   object PMain: TPanel
     Left = 0
     Top = 0
-    Width = 836
-    Height = 503
+    Width = 848
+    Height = 502
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 832
-    ExplicitHeight = 502
+    ExplicitWidth = 844
+    ExplicitHeight = 501
     object TVConfiguration: TTreeView
       Left = 0
       Top = 0
       Width = 189
-      Height = 503
+      Height = 502
       Align = alLeft
       AutoExpand = True
       HideSelection = False
@@ -95,26 +95,26 @@ object FConfiguration: TFConfiguration
         000000000000000000FFFFFFFFFFFFFFFF000000000000000000000000010347
         0069007400320000000000000000000000FFFFFFFFFFFFFFFF00000000000000
         0000000000010A530075006200760065007200730069006F006E00}
-      ExplicitHeight = 502
+      ExplicitHeight = 501
     end
     object PanelRight: TPanel
       Left = 189
       Top = 0
-      Width = 647
-      Height = 503
+      Width = 659
+      Height = 502
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 643
-      ExplicitHeight = 502
+      ExplicitWidth = 655
+      ExplicitHeight = 501
       object PButtons: TPanel
         Left = 1
-        Top = 461
-        Width = 645
+        Top = 460
+        Width = 657
         Height = 41
         Align = alBottom
         TabOrder = 0
-        ExplicitTop = 460
-        ExplicitWidth = 641
+        ExplicitTop = 459
+        ExplicitWidth = 653
         object BSave: TButton
           Left = 546
           Top = 9
@@ -177,12 +177,12 @@ object FConfiguration: TFConfiguration
       object PTitle: TPanel
         Left = 1
         Top = 1
-        Width = 645
+        Width = 657
         Height = 20
         Align = alTop
         BevelOuter = bvSpace
         TabOrder = 1
-        ExplicitWidth = 641
+        ExplicitWidth = 653
         object LTitle: TLabel
           Left = 8
           Top = 4
@@ -199,14 +199,14 @@ object FConfiguration: TFConfiguration
       object PageList: TPageControl
         Left = 1
         Top = 21
-        Width = 645
-        Height = 440
-        ActivePage = PVisibility
+        Width = 657
+        Height = 439
+        ActivePage = PGUIDesigner
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
-        ExplicitWidth = 641
-        ExplicitHeight = 439
+        ExplicitWidth = 653
+        ExplicitHeight = 438
         object PPython: TTabSheet
           Caption = 'Python'
           object vtPythonVersions: TVirtualStringTree
@@ -447,22 +447,22 @@ object FConfiguration: TFConfiguration
           Caption = 'Display'
           ImageIndex = 27
           DesignSize = (
-            637
-            407)
+            649
+            406)
           object gbGutter: TGroupBox
             AlignWithMargins = True
             Left = 8
-            Top = 211
-            Width = 565
+            Top = 210
+            Width = 573
             Height = 193
             Anchors = [akLeft, akRight, akBottom]
             Caption = 'Gutter'
             TabOrder = 0
             DesignSize = (
-              565
+              573
               193)
             object lGutterColor: TLabel
-              Left = 294
+              Left = 302
               Top = 118
               Width = 66
               Height = 15
@@ -478,7 +478,7 @@ object FConfiguration: TFConfiguration
               Caption = 'Digits'
             end
             object pnlGutterFontDisplay: TPanel
-              Left = 373
+              Left = 381
               Top = 148
               Width = 181
               Height = 27
@@ -555,7 +555,7 @@ object FConfiguration: TFConfiguration
               TabOrder = 8
             end
             object cbGutterFont: TCheckBox
-              Left = 44
+              Left = 52
               Top = 162
               Width = 196
               Height = 21
@@ -565,7 +565,7 @@ object FConfiguration: TFConfiguration
               OnClick = cbGutterFontClick
             end
             object ckGutterGradient: TCheckBox
-              Left = 44
+              Left = 52
               Top = 138
               Width = 137
               Height = 21
@@ -593,7 +593,7 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbLineSpacing: TGroupBox
-            Left = 12
+            Left = 13
             Top = 125
             Width = 265
             Height = 88
@@ -637,7 +637,7 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbRightEdge: TGroupBox
-            Left = 299
+            Left = 307
             Top = 125
             Width = 271
             Height = 88
@@ -682,7 +682,7 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbBookmarks: TGroupBox
-            Left = 299
+            Left = 307
             Top = 57
             Width = 271
             Height = 62
@@ -707,7 +707,7 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbActiveLineColor: TGroupBox
-            Left = 299
+            Left = 307
             Top = 8
             Width = 271
             Height = 43
@@ -748,15 +748,15 @@ object FConfiguration: TFConfiguration
                 Height = 28
                 Align = alClient
                 Alignment = taCenter
-                Caption = 'Courier New 10pt'
+                Caption = 'Consolas 10pt'
                 Font.Charset = DEFAULT_CHARSET
                 Font.Color = clWindowText
                 Font.Height = -13
-                Font.Name = 'Courier New'
+                Font.Name = 'Consolas'
                 Font.Style = []
                 ParentFont = False
-                ExplicitWidth = 128
-                ExplicitHeight = 16
+                ExplicitWidth = 91
+                ExplicitHeight = 15
               end
             end
             object btnFont: TButton
@@ -772,13 +772,6 @@ object FConfiguration: TFConfiguration
         end
         object POptions1: TTabSheet
           Caption = 'Options 1'
-          object LHighlightSelectedWordColor: TLabel
-            Left = 229
-            Top = 19
-            Width = 104
-            Height = 15
-            Caption = 'Selected word color'
-          end
           object CBAutoCompleteBrackets: TCheckBox
             Left = 16
             Top = 64
@@ -852,9 +845,9 @@ object FConfiguration: TFConfiguration
             TabOrder = 8
           end
           object CBHighlightSelectedWord: TCheckBox
-            Left = 16
-            Top = 40
-            Width = 260
+            Left = 354
+            Top = 39
+            Width = 200
             Height = 17
             Caption = 'Highlight selected word'
             TabOrder = 9
@@ -885,7 +878,7 @@ object FConfiguration: TFConfiguration
           end
           object CBShowDebuggerHints: TCheckBox
             Left = 16
-            Top = 397
+            Top = 40
             Width = 260
             Height = 17
             Caption = 'Show debugger hints'
@@ -908,10 +901,11 @@ object FConfiguration: TFConfiguration
             TabOrder = 15
           end
           object CBHighlightSelectedWordColor: TColorBox
-            Left = 229
-            Top = 38
-            Width = 102
+            Left = 560
+            Top = 41
+            Width = 86
             Height = 22
+            Style = [cbStandardColors, cbCustomColor, cbPrettyNames]
             TabOrder = 16
           end
           object RGNewFileEncoding: TRadioGroup
@@ -949,6 +943,30 @@ object FConfiguration: TFConfiguration
             Caption = 'Code folding for gui components'
             TabOrder = 19
           end
+          object cbDisplayFlowControl: TCheckBox
+            Left = 354
+            Top = 16
+            Width = 200
+            Height = 17
+            Caption = 'Program flow control symbols'
+            TabOrder = 20
+          end
+          object cbDisplayFlowControlColor: TColorBox
+            Left = 560
+            Top = 16
+            Width = 86
+            Height = 22
+            Style = [cbStandardColors, cbCustomColor, cbPrettyNames]
+            TabOrder = 21
+          end
+          object CBIndentationGuide: TCheckBox
+            Left = 354
+            Top = 64
+            Width = 200
+            Height = 17
+            Caption = 'Indentation lines'
+            TabOrder = 22
+          end
         end
         object POptions2: TTabSheet
           Caption = 'Options 2'
@@ -971,7 +989,7 @@ object FConfiguration: TFConfiguration
             AlignWithMargins = True
             Left = 3
             Top = 3
-            Width = 631
+            Width = 643
             Height = 310
             Align = alTop
             Caption = 'Options'
@@ -981,7 +999,7 @@ object FConfiguration: TFConfiguration
             object GridPanel1: TGridPanel
               Left = 2
               Top = 17
-              Width = 627
+              Width = 639
               Height = 291
               Align = alClient
               BevelOuter = bvNone
@@ -1011,7 +1029,7 @@ object FConfiguration: TFConfiguration
               object StackPanel1: TStackPanel
                 Left = 0
                 Top = 0
-                Width = 314
+                Width = 320
                 Height = 291
                 Align = alClient
                 BevelOuter = bvNone
@@ -1020,28 +1038,25 @@ object FConfiguration: TFConfiguration
                     Control = ckAutoIndent
                   end
                   item
-                    Control = ckRightMouseMoves
-                  end
-                  item
                     Control = ckDragAndDropEditing
                   end
                   item
                     Control = ckEnhanceEndKey
                   end
                   item
-                    Control = ckWordWrap
-                  end
-                  item
                     Control = ckEnhanceHomeKey
                   end
                   item
-                    Control = ckAltSetsColumnMode
-                  end
-                  item
-                    Control = ckTabsToSpaces
+                    Control = ckGroupUndo
                   end
                   item
                     Control = ckKeepCaretX
+                  end
+                  item
+                    Control = ckRightMouseMoves
+                  end
+                  item
+                    Control = ckSmartTabs
                   end
                   item
                     Control = ckSmartTabDelete
@@ -1050,17 +1065,23 @@ object FConfiguration: TFConfiguration
                     Control = ckTabIndent
                   end
                   item
-                    Control = ckSmartTabs
+                    Control = ckTabsToSpaces
+                  end
+                  item
+                    Control = ckTrimTrailingSpaces
                   end>
                 HorizontalPositioning = sphpFill
                 Padding.Left = 4
                 Spacing = 7
                 TabOrder = 0
+                DesignSize = (
+                  320
+                  291)
                 object ckAutoIndent: TCheckBox
                   AlignWithMargins = True
                   Left = 7
                   Top = 0
-                  Width = 304
+                  Width = 310
                   Height = 17
                   Hint = 
                     'Will indent the caret on new lines with the same amount of leadi' +
@@ -1068,27 +1089,13 @@ object FConfiguration: TFConfiguration
                   Margins.Top = 0
                   Margins.Bottom = 0
                   Caption = 'Auto indent'
-                  TabOrder = 11
-                end
-                object ckRightMouseMoves: TCheckBox
-                  AlignWithMargins = True
-                  Left = 7
-                  Top = 24
-                  Width = 304
-                  Height = 17
-                  Hint = 
-                    'When clicking with the right mouse for a popup menu, move the cu' +
-                    'rsor to that location'
-                  Margins.Top = 0
-                  Margins.Bottom = 0
-                  Caption = 'Right mouse moves cursor'
-                  TabOrder = 0
+                  TabOrder = 9
                 end
                 object ckDragAndDropEditing: TCheckBox
                   AlignWithMargins = True
                   Left = 7
-                  Top = 48
-                  Width = 304
+                  Top = 24
+                  Width = 310
                   Height = 17
                   Hint = 
                     'Allows you to select a block of text and drag it within the docu' +
@@ -1096,13 +1103,13 @@ object FConfiguration: TFConfiguration
                   Margins.Top = 0
                   Margins.Bottom = 0
                   Caption = 'Drag and drop editing'
-                  TabOrder = 10
+                  TabOrder = 8
                 end
                 object ckEnhanceEndKey: TCheckBox
                   AlignWithMargins = True
                   Left = 7
-                  Top = 72
-                  Width = 304
+                  Top = 48
+                  Width = 310
                   Height = 17
                   Hint = 'Enhances end key similar to JDeveloper'
                   Margins.Top = 0
@@ -1110,23 +1117,11 @@ object FConfiguration: TFConfiguration
                   Caption = 'Enhance End Key'
                   TabOrder = 1
                 end
-                object ckWordWrap: TCheckBox
-                  AlignWithMargins = True
-                  Left = 7
-                  Top = 96
-                  Width = 304
-                  Height = 17
-                  Hint = 'Allows the editor accept OLE file drops'
-                  Margins.Top = 0
-                  Margins.Bottom = 0
-                  Caption = 'Word wrap'
-                  TabOrder = 9
-                end
                 object ckEnhanceHomeKey: TCheckBox
                   AlignWithMargins = True
                   Left = 7
-                  Top = 120
-                  Width = 304
+                  Top = 72
+                  Width = 310
                   Height = 17
                   Hint = 'enhances home key positioning, similar to visual studio'
                   Margins.Top = 0
@@ -1134,37 +1129,27 @@ object FConfiguration: TFConfiguration
                   Caption = 'Enhance Home Key'
                   TabOrder = 2
                 end
-                object ckAltSetsColumnMode: TCheckBox
+                object ckGroupUndo: TCheckBox
                   AlignWithMargins = True
                   Left = 7
-                  Top = 144
-                  Width = 304
+                  Top = 96
+                  Width = 310
                   Height = 17
                   Hint = 
-                    'Holding down the Alt Key will put the selection mode into column' +
-                    'ar format'
+                    'When undoing/redoing actions, handle all continuous changes of t' +
+                    'he same kind in one call instead undoing/redoing each command se' +
+                    'parately'
                   Margins.Top = 0
                   Margins.Bottom = 0
-                  Caption = 'Alt sets column mode'
-                  TabOrder = 8
-                end
-                object ckTabsToSpaces: TCheckBox
-                  AlignWithMargins = True
-                  Left = 7
-                  Top = 168
-                  Width = 304
-                  Height = 17
-                  Hint = 'Converts a tab character to the number of spaces in Tab Width'
-                  Margins.Top = 0
-                  Margins.Bottom = 0
-                  Caption = 'Tabs to spaces'
-                  TabOrder = 3
+                  Anchors = [akTop, akRight]
+                  Caption = 'Group undo'
+                  TabOrder = 11
                 end
                 object ckKeepCaretX: TCheckBox
                   AlignWithMargins = True
                   Left = 7
-                  Top = 192
-                  Width = 304
+                  Top = 120
+                  Width = 310
                   Height = 17
                   Hint = 
                     'When moving through lines the X position will always stay the sa' +
@@ -1174,11 +1159,39 @@ object FConfiguration: TFConfiguration
                   Caption = 'Maintain caret column'
                   TabOrder = 7
                 end
+                object ckRightMouseMoves: TCheckBox
+                  AlignWithMargins = True
+                  Left = 7
+                  Top = 144
+                  Width = 310
+                  Height = 17
+                  Hint = 
+                    'When clicking with the right mouse for a popup menu, move the cu' +
+                    'rsor to that location'
+                  Margins.Top = 0
+                  Margins.Bottom = 0
+                  Caption = 'Right mouse moves cursor'
+                  TabOrder = 0
+                end
+                object ckSmartTabs: TCheckBox
+                  AlignWithMargins = True
+                  Left = 7
+                  Top = 168
+                  Width = 310
+                  Height = 17
+                  Hint = 
+                    'When tabbing, the cursor will go to the next non-white space cha' +
+                    'racter of the previous line'
+                  Margins.Top = 0
+                  Margins.Bottom = 0
+                  Caption = 'Smart tabs'
+                  TabOrder = 5
+                end
                 object ckSmartTabDelete: TCheckBox
                   AlignWithMargins = True
                   Left = 7
-                  Top = 216
-                  Width = 304
+                  Top = 192
+                  Width = 310
                   Height = 17
                   Hint = 'similar to Smart Tabs, but when you delete characters'
                   Margins.Top = 0
@@ -1189,8 +1202,8 @@ object FConfiguration: TFConfiguration
                 object ckTabIndent: TCheckBox
                   AlignWithMargins = True
                   Left = 7
-                  Top = 240
-                  Width = 304
+                  Top = 216
+                  Width = 310
                   Height = 17
                   Hint = 'Tab indents and Shift-Tab unindents'
                   Margins.Top = 0
@@ -1198,143 +1211,87 @@ object FConfiguration: TFConfiguration
                   Caption = 'Tab Indent'
                   TabOrder = 6
                 end
-                object ckSmartTabs: TCheckBox
+                object ckTabsToSpaces: TCheckBox
                   AlignWithMargins = True
                   Left = 7
-                  Top = 264
-                  Width = 304
+                  Top = 240
+                  Width = 310
                   Height = 17
-                  Hint = 
-                    'When tabbing, the cursor will go to the next non-white space cha' +
-                    'racter of the previous line'
+                  Hint = 'Converts a tab character to the number of spaces in Tab Width'
                   Margins.Top = 0
                   Margins.Bottom = 0
-                  Caption = 'Smart tabs'
-                  TabOrder = 5
-                end
-              end
-              object StackPanel2: TStackPanel
-                Left = 314
-                Top = 0
-                Width = 313
-                Height = 291
-                Align = alClient
-                BevelOuter = bvNone
-                ControlCollection = <
-                  item
-                    Control = ckHalfPageScroll
-                  end
-                  item
-                    Control = ckTrimTrailingSpaces
-                  end
-                  item
-                    Control = ckScrollByOneLess
-                  end
-                  item
-                    Control = ckShowSpecialChars
-                  end
-                  item
-                    Control = ckScrollPastEOF
-                  end
-                  item
-                    Control = ckDisableScrollArrows
-                  end
-                  item
-                    Control = ckScrollPastEOL
-                  end
-                  item
-                    Control = ckGroupUndo
-                  end
-                  item
-                    Control = ckShowScrollHint
-                  end
-                  item
-                    Control = ckHideShowScrollbars
-                  end
-                  item
-                    Control = ckScrollHintFollows
-                  end
-                  item
-                    Control = ckShowLigatures
-                  end>
-                HorizontalPositioning = sphpFill
-                Spacing = 7
-                TabOrder = 1
-                DesignSize = (
-                  313
-                  291)
-                object ckHalfPageScroll: TCheckBox
-                  AlignWithMargins = True
-                  Left = 3
-                  Top = 0
-                  Width = 307
-                  Height = 17
-                  Hint = 
-                    'When scrolling with page-up and page-down commands, only scroll ' +
-                    'a half page at a time'
-                  Margins.Top = 0
-                  Margins.Bottom = 0
-                  Anchors = [akTop, akRight]
-                  Caption = 'Half page scroll'
-                  TabOrder = 10
+                  Caption = 'Tabs to spaces'
+                  TabOrder = 3
                 end
                 object ckTrimTrailingSpaces: TCheckBox
                   AlignWithMargins = True
-                  Left = 3
-                  Top = 24
-                  Width = 307
+                  Left = 7
+                  Top = 264
+                  Width = 310
                   Height = 17
                   Hint = 'Spaces at the end of lines will be trimmed and not saved'
                   Margins.Top = 0
                   Margins.Bottom = 0
                   Anchors = [akTop, akRight]
                   Caption = 'Trim trailing spaces'
-                  TabOrder = 0
+                  TabOrder = 10
                 end
-                object ckScrollByOneLess: TCheckBox
-                  AlignWithMargins = True
-                  Left = 3
-                  Top = 48
-                  Width = 307
-                  Height = 17
-                  Hint = 'Forces scrolling to be one less'
-                  Margins.Top = 0
-                  Margins.Bottom = 0
-                  Anchors = [akTop, akRight]
-                  Caption = 'Scroll by one less'
-                  TabOrder = 9
-                end
-                object ckShowSpecialChars: TCheckBox
-                  AlignWithMargins = True
-                  Left = 3
-                  Top = 72
-                  Width = 307
-                  Height = 17
-                  Hint = 'Shows line breaks, spaces and tabs using special symbols'
-                  Margins.Top = 0
-                  Margins.Bottom = 0
-                  Anchors = [akTop, akRight]
-                  Caption = 'Show special chars'
-                  TabOrder = 1
-                end
-                object ckScrollPastEOF: TCheckBox
-                  AlignWithMargins = True
-                  Left = 3
-                  Top = 96
-                  Width = 307
-                  Height = 17
-                  Hint = 'Allows the cursor to go past the end of file marker'
-                  Margins.Top = 0
-                  Margins.Bottom = 0
-                  Anchors = [akTop, akRight]
-                  Caption = 'Scroll past end of file'
-                  TabOrder = 8
-                end
+              end
+              object StackPanel2: TStackPanel
+                Left = 320
+                Top = 0
+                Width = 319
+                Height = 291
+                Align = alClient
+                BevelOuter = bvNone
+                ControlCollection = <
+                  item
+                    Control = ckDisableScrollArrows
+                  end
+                  item
+                    Control = ckHalfPageScroll
+                  end
+                  item
+                    Control = ckHideShowScrollbars
+                  end
+                  item
+                    Control = ckScrollByOneLess
+                  end
+                  item
+                    Control = ckScrollPastEOF
+                  end
+                  item
+                    Control = ckScrollPastEOL
+                  end
+                  item
+                    Control = ckShowScrollHint
+                  end
+                  item
+                    Control = ckShowLigatures
+                  end
+                  item
+                    Control = ckScrollHintFollows
+                  end
+                  item
+                    Control = ckShowSpecialChars
+                  end
+                  item
+                    Control = ckScrollbarAnnotation
+                  end
+                  item
+                    Control = ckWordWrap
+                  end>
+                HorizontalPositioning = sphpFill
+                Spacing = 7
+                TabOrder = 1
+                DesignSize = (
+                  319
+                  291)
                 object ckDisableScrollArrows: TCheckBox
                   AlignWithMargins = True
                   Left = 3
-                  Top = 120
-                  Width = 307
+                  Top = 0
+                  Width = 313
                   Height = 17
                   Hint = 
                     'Disables the scroll bar arrow buttons when you can'#39't scroll in t' +
@@ -1345,57 +1302,26 @@ object FConfiguration: TFConfiguration
                   Caption = 'Disable scroll arrows'
                   TabOrder = 2
                 end
-                object ckScrollPastEOL: TCheckBox
+                object ckHalfPageScroll: TCheckBox
                   AlignWithMargins = True
                   Left = 3
-                  Top = 144
-                  Width = 307
+                  Top = 24
+                  Width = 313
                   Height = 17
                   Hint = 
-                    'Allows the cursor to go past the last character into the white s' +
-                    'pace at the end of a line'
+                    'When scrolling with page-up and page-down commands, only scroll ' +
+                    'a half page at a time'
                   Margins.Top = 0
                   Margins.Bottom = 0
                   Anchors = [akTop, akRight]
-                  Caption = 'Scroll past end of line'
-                  TabOrder = 7
-                end
-                object ckGroupUndo: TCheckBox
-                  AlignWithMargins = True
-                  Left = 3
-                  Top = 168
-                  Width = 307
-                  Height = 17
-                  Hint = 
-                    'When undoing/redoing actions, handle all continuous changes of t' +
-                    'he same kind in one call instead undoing/redoing each command se' +
-                    'parately'
-                  Margins.Top = 0
-                  Margins.Bottom = 0
-                  Anchors = [akTop, akRight]
-                  Caption = 'Group undo'
-                  TabOrder = 3
-                end
-                object ckShowScrollHint: TCheckBox
-                  AlignWithMargins = True
-                  Left = 3
-                  Top = 192
-                  Width = 307
-                  Height = 17
-                  Hint = 
-                    'Shows a hint of the visible line numbers when scrolling vertical' +
-                    'ly'
-                  Margins.Top = 0
-                  Margins.Bottom = 0
-                  Anchors = [akTop, akRight]
-                  Caption = 'Show scroll hint'
-                  TabOrder = 6
+                  Caption = 'Half page scroll'
+                  TabOrder = 9
                 end
                 object ckHideShowScrollbars: TCheckBox
                   AlignWithMargins = True
                   Left = 3
-                  Top = 216
-                  Width = 307
+                  Top = 48
+                  Width = 313
                   Height = 17
                   Hint = 
                     'If enabled, then the scrollbars will only show when necessary.  ' +
@@ -1405,32 +1331,128 @@ object FConfiguration: TFConfiguration
                   Margins.Bottom = 0
                   Anchors = [akTop, akRight]
                   Caption = 'Hide scrollbars as necessary'
-                  TabOrder = 4
+                  TabOrder = 3
                 end
-                object ckScrollHintFollows: TCheckBox
+                object ckScrollByOneLess: TCheckBox
                   AlignWithMargins = True
                   Left = 3
-                  Top = 240
-                  Width = 307
+                  Top = 72
+                  Width = 313
                   Height = 17
-                  Hint = 'The scroll hint follows the mouse when scrolling vertically'
+                  Hint = 'Forces scrolling to be one less'
                   Margins.Top = 0
                   Margins.Bottom = 0
                   Anchors = [akTop, akRight]
-                  Caption = 'Scroll hint follows mouse'
+                  Caption = 'Scroll by one less'
+                  TabOrder = 8
+                end
+                object ckScrollPastEOF: TCheckBox
+                  AlignWithMargins = True
+                  Left = 3
+                  Top = 96
+                  Width = 313
+                  Height = 17
+                  Hint = 'Allows the cursor to go past the end of file marker'
+                  Margins.Top = 0
+                  Margins.Bottom = 0
+                  Anchors = [akTop, akRight]
+                  Caption = 'Scroll past end of file'
+                  TabOrder = 7
+                end
+                object ckScrollPastEOL: TCheckBox
+                  AlignWithMargins = True
+                  Left = 3
+                  Top = 120
+                  Width = 313
+                  Height = 17
+                  Hint = 
+                    'Allows the cursor to go past the last character into the white s' +
+                    'pace at the end of a line'
+                  Margins.Top = 0
+                  Margins.Bottom = 0
+                  Anchors = [akTop, akRight]
+                  Caption = 'Scroll past end of line'
+                  TabOrder = 6
+                end
+                object ckShowScrollHint: TCheckBox
+                  AlignWithMargins = True
+                  Left = 3
+                  Top = 144
+                  Width = 313
+                  Height = 17
+                  Hint = 
+                    'Shows a hint of the visible line numbers when scrolling vertical' +
+                    'ly'
+                  Margins.Top = 0
+                  Margins.Bottom = 0
+                  Anchors = [akTop, akRight]
+                  Caption = 'Show scroll hint'
                   TabOrder = 5
                 end
                 object ckShowLigatures: TCheckBox
                   AlignWithMargins = True
                   Left = 3
-                  Top = 264
-                  Width = 307
+                  Top = 168
+                  Width = 313
                   Height = 17
                   Hint = 'Show font ligatures'
                   Margins.Top = 0
                   Margins.Bottom = 0
                   Anchors = [akTop, akRight]
                   Caption = 'Show font ligatures'
+                  TabOrder = 10
+                end
+                object ckScrollHintFollows: TCheckBox
+                  AlignWithMargins = True
+                  Left = 3
+                  Top = 192
+                  Width = 313
+                  Height = 17
+                  Hint = 'The scroll hint follows the mouse when scrolling vertically'
+                  Margins.Top = 0
+                  Margins.Bottom = 0
+                  Anchors = [akTop, akRight]
+                  Caption = 'Scroll hint follows mouse'
+                  TabOrder = 4
+                end
+                object ckShowSpecialChars: TCheckBox
+                  AlignWithMargins = True
+                  Left = 3
+                  Top = 216
+                  Width = 313
+                  Height = 17
+                  Hint = 'Shows line breaks, spaces and tabs using special symbols'
+                  Margins.Top = 0
+                  Margins.Bottom = 0
+                  Anchors = [akTop, akRight]
+                  Caption = 'Show special chars'
+                  TabOrder = 1
+                end
+                object ckScrollbarAnnotation: TCheckBox
+                  AlignWithMargins = True
+                  Left = 3
+                  Top = 240
+                  Width = 313
+                  Height = 17
+                  Hint = 
+                    'Shows errors, bookmarks, modifications and carets in the scrollb' +
+                    'ar'
+                  Margins.Top = 0
+                  Margins.Bottom = 0
+                  Anchors = [akTop, akRight]
+                  Caption = 'Scrollbar annotation'
+                  TabOrder = 0
+                end
+                object ckWordWrap: TCheckBox
+                  AlignWithMargins = True
+                  Left = 3
+                  Top = 264
+                  Width = 313
+                  Height = 17
+                  Hint = 'Allows the editor accept OLE file drops'
+                  Margins.Top = 0
+                  Margins.Bottom = 0
+                  Caption = 'Word wrap'
                   TabOrder = 11
                 end
               end
@@ -1630,7 +1652,7 @@ object FConfiguration: TFConfiguration
           object Panel2: TPanel
             Left = 0
             Top = 0
-            Width = 637
+            Width = 649
             Height = 169
             Align = alTop
             TabOrder = 4
@@ -1673,8 +1695,8 @@ object FConfiguration: TFConfiguration
         object PSyntaxColors: TTabSheet
           Caption = 'Syntax colors'
           DesignSize = (
-            637
-            407)
+            649
+            406)
           object Label13: TLabel
             Left = 8
             Top = 240
@@ -1713,7 +1735,7 @@ object FConfiguration: TFConfiguration
           object cbHighlighters: TComboBox
             Left = 8
             Top = 23
-            Width = 168
+            Width = 176
             Height = 23
             Style = csDropDownList
             Anchors = [akLeft, akTop, akRight]
@@ -1796,7 +1818,7 @@ object FConfiguration: TFConfiguration
           object SynSyntaxSample: TSynEdit
             Left = 217
             Top = 80
-            Width = 356
+            Width = 364
             Height = 281
             Anchors = [akLeft, akTop, akRight]
             Font.Charset = DEFAULT_CHARSET
@@ -1811,7 +1833,7 @@ object FConfiguration: TFConfiguration
             Gutter.Font.Charset = DEFAULT_CHARSET
             Gutter.Font.Color = clWindowText
             Gutter.Font.Height = -11
-            Gutter.Font.Name = 'Courier New'
+            Gutter.Font.Name = 'Consolas'
             Gutter.Font.Style = []
             Gutter.Font.Quality = fqClearTypeNatural
             Gutter.Visible = False
@@ -1851,8 +1873,8 @@ object FConfiguration: TFConfiguration
           Caption = 'Color themes'
           ImageIndex = 24
           DesignSize = (
-            637
-            407)
+            649
+            406)
           object SpTBXLabel1: TLabel
             Left = 199
             Top = 3
@@ -1879,7 +1901,7 @@ object FConfiguration: TFConfiguration
           object SynThemeSample: TSynEdit
             Left = 199
             Top = 22
-            Width = 374
+            Width = 382
             Height = 387
             Anchors = [akLeft, akTop, akRight]
             Font.Charset = DEFAULT_CHARSET
@@ -1893,7 +1915,7 @@ object FConfiguration: TFConfiguration
             Gutter.Font.Charset = DEFAULT_CHARSET
             Gutter.Font.Color = clWindowText
             Gutter.Font.Height = -11
-            Gutter.Font.Name = 'Courier New'
+            Gutter.Font.Name = 'Consolas'
             Gutter.Font.Style = []
             Gutter.Font.Quality = fqClearTypeNatural
             Gutter.Visible = False
@@ -1922,19 +1944,19 @@ object FConfiguration: TFConfiguration
         object PCodeTemplates: TTabSheet
           Caption = 'Code templates'
           DesignSize = (
-            637
-            407)
+            649
+            406)
           object GroupBox: TGroupBox
             AlignWithMargins = True
             Left = 8
             Top = 160
-            Width = 589
+            Width = 597
             Height = 240
             Anchors = [akLeft, akTop, akRight]
             Caption = 'Code Template:'
             TabOrder = 0
             DesignSize = (
-              589
+              597
               240)
             object Label2: TLabel
               Left = 14
@@ -1988,13 +2010,13 @@ object FConfiguration: TFConfiguration
             object CodeSynTemplate: TSynEdit
               Left = 14
               Top = 84
-              Width = 573
+              Width = 581
               Height = 116
               Anchors = [akLeft, akTop, akRight]
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
               Font.Height = -12
-              Font.Name = 'Courier New'
+              Font.Name = 'Consolas'
               Font.Pitch = fpFixed
               Font.Style = []
               Font.Quality = fqClearTypeNatural
@@ -2003,7 +2025,7 @@ object FConfiguration: TFConfiguration
               Gutter.Font.Charset = DEFAULT_CHARSET
               Gutter.Font.Color = clWindowText
               Gutter.Font.Height = -11
-              Gutter.Font.Name = 'Courier New'
+              Gutter.Font.Name = 'Consolas'
               Gutter.Font.Style = []
               Gutter.Font.Quality = fqClearTypeNatural
               Gutter.Bands = <
@@ -2030,7 +2052,7 @@ object FConfiguration: TFConfiguration
             object edDescription: TEdit
               Left = 115
               Top = 43
-              Width = 467
+              Width = 475
               Height = 23
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 2
@@ -2112,8 +2134,8 @@ object FConfiguration: TFConfiguration
           Caption = 'File templates'
           ImageIndex = 28
           DesignSize = (
-            637
-            407)
+            649
+            406)
           object FileTemplatesLvItems: TListView
             Left = 14
             Top = 3
@@ -2139,13 +2161,13 @@ object FConfiguration: TFConfiguration
           object GroupBox3: TGroupBox
             Left = 8
             Top = 160
-            Width = 618
+            Width = 626
             Height = 240
             Anchors = [akLeft, akTop, akRight]
             Caption = 'File Template:'
             TabOrder = 1
             DesignSize = (
-              618
+              626
               240)
             object Label19: TLabel
               Left = 14
@@ -2206,13 +2228,13 @@ object FConfiguration: TFConfiguration
             object FileSynTemplate: TSynEdit
               Left = 14
               Top = 84
-              Width = 602
+              Width = 610
               Height = 116
               Anchors = [akLeft, akTop, akRight]
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
               Font.Height = -12
-              Font.Name = 'Courier New'
+              Font.Name = 'Consolas'
               Font.Style = []
               Font.Quality = fqClearTypeNatural
               TabOrder = 1
@@ -2220,7 +2242,7 @@ object FConfiguration: TFConfiguration
               Gutter.Font.Charset = DEFAULT_CHARSET
               Gutter.Font.Color = clWindowText
               Gutter.Font.Height = -11
-              Gutter.Font.Name = 'Courier New'
+              Gutter.Font.Name = 'Consolas'
               Gutter.Font.Style = []
               Gutter.Font.Quality = fqClearTypeNatural
               Gutter.Bands = <
@@ -2247,7 +2269,7 @@ object FConfiguration: TFConfiguration
             object CBFileTemplatesHighlighter: TComboBox
               Left = 400
               Top = 44
-              Width = 153
+              Width = 161
               Height = 23
               Style = csDropDownList
               Anchors = [akLeft, akTop, akRight]
@@ -2438,17 +2460,31 @@ object FConfiguration: TFConfiguration
           end
           object LFrameheight: TLabel
             Left = 16
-            Top = 228
+            Top = 316
             Width = 70
             Height = 15
             Caption = 'Frame height'
           end
           object LFrameWidth: TLabel
             Left = 16
-            Top = 196
+            Top = 284
             Width = 66
             Height = 15
             Caption = 'Frame width'
+          end
+          object LZoomsteps: TLabel
+            Left = 59
+            Top = 127
+            Width = 87
+            Height = 15
+            Caption = 'Font zoom steps'
+          end
+          object LDefault: TLabel
+            Left = 178
+            Top = 169
+            Width = 66
+            Height = 15
+            Caption = 'Segoe UI 9pt'
           end
           object CBNameFromText: TCheckBox
             Left = 16
@@ -2499,7 +2535,7 @@ object FConfiguration: TFConfiguration
           end
           object EFrameheight: TEdit
             Left = 88
-            Top = 225
+            Top = 313
             Width = 41
             Height = 23
             TabOrder = 5
@@ -2507,7 +2543,7 @@ object FConfiguration: TFConfiguration
           end
           object EFrameWidth: TEdit
             Left = 88
-            Top = 193
+            Top = 281
             Width = 41
             Height = 23
             TabOrder = 6
@@ -2515,12 +2551,40 @@ object FConfiguration: TFConfiguration
           end
           object BGuiFont: TButton
             Left = 16
-            Top = 128
+            Top = 165
             Width = 75
             Height = 25
             Caption = 'Font'
             TabOrder = 7
             OnClick = BGuiFontClick
+          end
+          object EZoomSteps: TEdit
+            Left = 16
+            Top = 124
+            Width = 21
+            Height = 23
+            TabOrder = 8
+            Text = '1'
+          end
+          object UDZoomSteps: TUpDown
+            Left = 37
+            Top = 124
+            Width = 16
+            Height = 23
+            Associate = EZoomSteps
+            Min = 1
+            Max = 5
+            Position = 1
+            TabOrder = 9
+          end
+          object BGuiFontDefault: TButton
+            Left = 97
+            Top = 165
+            Width = 75
+            Height = 25
+            Caption = 'Default'
+            TabOrder = 10
+            OnClick = BGuiFontDefaultClick
           end
         end
         object PStructogram: TTabSheet
@@ -3276,8 +3340,8 @@ object FConfiguration: TFConfiguration
           Caption = 'IDE Shortcuts'
           ImageIndex = 27
           DesignSize = (
-            637
-            407)
+            649
+            406)
           object lblAssignedTo: TLabel
             Left = 10
             Top = 270
@@ -3353,7 +3417,7 @@ object FConfiguration: TFConfiguration
           object lbCurrentKeys: TListBox
             Left = 224
             Top = 226
-            Width = 277
+            Width = 285
             Height = 57
             Anchors = [akLeft, akTop, akRight]
             ItemHeight = 15
@@ -3371,7 +3435,7 @@ object FConfiguration: TFConfiguration
           object lbCommands: TListBox
             Left = 224
             Top = 28
-            Width = 277
+            Width = 285
             Height = 97
             Anchors = [akLeft, akTop, akRight]
             ItemHeight = 15
@@ -3382,7 +3446,7 @@ object FConfiguration: TFConfiguration
           object gbDescription: TGroupBox
             Left = 3
             Top = 131
-            Width = 498
+            Width = 506
             Height = 61
             Anchors = [akLeft, akTop, akRight]
             Caption = 'Description'
@@ -3390,7 +3454,7 @@ object FConfiguration: TFConfiguration
             object lblDescription: TLabel
               Left = 2
               Top = 17
-              Width = 494
+              Width = 502
               Height = 42
               Align = alClient
               AutoSize = False
@@ -3843,13 +3907,13 @@ object FConfiguration: TFConfiguration
         object PPrinter: TTabSheet
           Caption = 'Printer'
           DesignSize = (
-            637
-            407)
+            649
+            406)
           object Image1: TImage
             Left = 300
             Top = 10
             Width = 223
-            Height = 303
+            Height = 302
             Anchors = [akLeft, akTop, akBottom]
             Picture.Data = {
               07544269746D617036800000424D36800000000000007600000028000000DF00
@@ -5408,7 +5472,7 @@ object FConfiguration: TFConfiguration
           object ToolbarDock: TSpTBXDock
             Left = 0
             Top = 0
-            Width = 637
+            Width = 649
             Height = 26
             AllowDrag = False
             LimitToOneRow = True
@@ -6022,8 +6086,8 @@ object FConfiguration: TFConfiguration
     FavoriteLinks = <>
     FileTypes = <>
     Options = [fdoPickFolders]
-    Left = 592
-    Top = 256
+    Left = 712
+    Top = 216
   end
   object vilTreeImages: TVirtualImageList
     Images = <
@@ -6043,12 +6107,12 @@ object FConfiguration: TFConfiguration
     Font.Name = 'MS Shell Dlg 2'
     Font.Style = []
     Options = [fdEffects, fdFixedPitchOnly, fdScalableOnly]
-    Left = 594
-    Top = 189
+    Left = 682
+    Top = 141
   end
   object IDEShortcutsActionList1: TActionList
-    Left = 672
-    Top = 112
+    Left = 648
+    Top = 384
     object actAssignShortcut: TAction
       Caption = '&Assign'
       Hint = 'Assign shortcut to command'
@@ -6179,8 +6243,8 @@ object FConfiguration: TFConfiguration
     Top = 368
   end
   object ColorDialog: TColorDialog
-    Left = 767
-    Top = 28
+    Left = 487
+    Top = 380
   end
   object actlPythonVersions: TActionList
     OnUpdate = actlPythonVersionsUpdate
@@ -6390,8 +6454,8 @@ object FConfiguration: TFConfiguration
   end
   object ActionListPageSetup: TActionList
     Images = vilPageSetup
-    Left = 643
-    Top = 60
+    Left = 659
+    Top = 332
     object PageNumCmd: TAction
       Caption = 'Page number'
       Hint = 'Page number'

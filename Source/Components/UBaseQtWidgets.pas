@@ -360,7 +360,7 @@ procedure TBaseQtWidget.MakeFont;
 begin
   if Name = '' then exit;
   s1:= 'self.' + Name + '.setFont';
-  s2:= '(QFont(' + asString(Font.Name) + ', ' + IntToStr(PPIUnScale(Font.Size));
+  s2:= '(QFont(' + asString(Font.Name) + ', ' + IntToStr(Font.Size);
   if fsBold in Font.Style then
     s2:= s2 + ', QFont.Weight.Bold';
   if fsItalic in Font.Style then

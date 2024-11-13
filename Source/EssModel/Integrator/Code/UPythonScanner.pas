@@ -12,7 +12,7 @@ interface
   const
     NEWLINE = Chr($0A);
     INDENT = Chr($03);
-    DEDENT = Chr($04);
+    DEDENT_ = Chr($04);
 
   type
 
@@ -189,7 +189,7 @@ begin
       inc(IndentIndex);
       Indents[IndentIndex]:= Spaces;
     end else while (IndentIndex > 1) and (Spaces < Indents[IndentIndex]) do begin
-      PushToken:= DEDENT + PushToken;
+      PushToken:= DEDENT_ + PushToken;
       Indents[IndentIndex]:= 0;
       dec(IndentIndex);
     end;

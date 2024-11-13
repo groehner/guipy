@@ -30,16 +30,12 @@
   If you do not delete the provisions above, a recipient may use your version
   of this file under either the MPL or the GPL.
 
-  You may retrieve the latest version of this file at the  home page,
-  located at http://syn.sourceforge.net
-
- $Id: uParams.pas,v 1.12 2004/06/07 23:03:48 neum Exp $
  }
 unit uParams;
-
 interface
 
 Uses
+  System.UITypes,
   System.Classes;
 
 
@@ -74,6 +70,7 @@ uses
   uCommonFunctions,
   cPyScripterSettings,
   cParameters,
+  cPyBaseDebugger,
   cProjectClasses,
   cPyControl,
   dlgCommandLine,
@@ -172,7 +169,8 @@ begin
   Result:= '';
   if (AFileName = '') or SameText('ActiveDoc', AFileName) then
     AEditor:= GI_ActiveEditor
-  else AEditor:= GI_EditorFactory.GetEditorByName(AFileName);
+  else
+    AEditor:= GI_EditorFactory.GetEditorByName(AFileName);
   if Assigned(AEditor) then
     Result:= AEditor.GetSynEdit.SelText;
 end;
@@ -537,20 +535,9 @@ begin
   end;
 end;
 
-function ExpandUNCFileName(const FileName: string): string;
-begin
-  { In the absense of a better solution use the ANSI function }
-  Result := ExpandUNCFileName(FileName);
-end;
-
 function StripExtension(const AFileName: string): string;
 begin
   Result := ChangeFileExt(AFileName, '');
-end;
-
-function ExtractFilenameNoExt(const AFileName: string): string;
-begin
-  Result := ChangeFileExt(ExtractFilename(AFileName), '');
 end;
 
 function GetUserName: string;
@@ -590,6 +577,17 @@ end;
 function GetQtGeometry(const Geometry: string): string;
 begin
   Result:= '''' + StringReplace(Geometry, ',', 'x', [rfReplaceAll]) + '''';
+end;
+
+function ExpandUNCFileName(const FileName: string): string;
+begin
+  { In the absense of a better solution use the ANSI function }
+  Result := ExpandUNCFileName(FileName);
+end;
+
+function ExtractFilenameNoExt(const AFileName: string): string;
+begin
+  Result := ChangeFileExt(ExtractFilename(AFileName), '');
 end;
 
 function GetPhysicalDesktopFolder : string;

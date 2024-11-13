@@ -55,7 +55,7 @@ object ELStringsEditorDlg: TELStringsEditorDlg
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Courier New'
+    Font.Name = 'Consolas'
     Font.Style = []
     ParentFont = False
     ScrollBars = ssBoth

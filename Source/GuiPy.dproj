@@ -221,7 +221,6 @@
         <DCCReference Include="frmWebPreview.pas">
             <Form>WebPreviewForm</Form>
         </DCCReference>
-        <DCCReference Include="SynHighlighterPython.pas"/>
         <DCCReference Include="frmToDo.pas">
             <Form>ToDoWindow</Form>
         </DCCReference>
@@ -482,12 +481,16 @@
         </DCCReference>
         <DCCReference Include="uSysUtils.pas"/>
         <DCCReference Include="Utils\Vcl.Consts.pas"/>
-        <DCCReference Include="cCustomShortcuts.pas"/>
         <DCCReference Include="dlgSynEditOptions.pas">
             <Form>fmEditorOptionsDialog</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Utils\UZOrderControl.pas"/>
+        <DCCReference Include="dlgCustomShortcuts.pas">
+            <Form>frmCustomKeyboard</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="SynHighlighterPython.pas"/>
         <None Include="GuiPy.todo"/>
         <None Include="ModelSupport_PyScripter\default.txaPackage"/>
         <None Include="Main\_done.txt"/>

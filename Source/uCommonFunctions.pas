@@ -14,12 +14,16 @@ Uses
   System.Classes,
   System.SysUtils,
   System.Diagnostics,
+  System.RegularExpressionsAPI,
+  System.RegularExpressionsCore,
   System.RegularExpressions,
   Vcl.Controls,
   Vcl.ComCtrls,
   Vcl.Graphics,
+  Vcl.Forms,
   Vcl.Dialogs,
   SynEditTypes,
+  SynUnicode,
   SynEdit;
 
 const
@@ -322,6 +326,7 @@ type
     class function Make<T: class>(AValue: T): TFunc<T>; static;
   end;
 
+
 (* Font that persists Size instead of Height to be used for DPI awareness *)
   TStoredFont = class(Vcl.Graphics.TFont)
   published
@@ -336,6 +341,8 @@ Var
 implementation
 Uses
   Winapi.UrlMon,
+  Winapi.CommCtrl,
+  Winapi.TlHelp32,
   Winapi.Wincodec,
   WinApi.WinInet,
   Winapi.ShLwApi,
@@ -346,18 +353,19 @@ Uses
   System.Character,
   System.Math,
   System.Win.ComObj,
-  System.RegularExpressionsAPI,
-  System.RegularExpressionsCore,
-  Vcl.Forms,
+  System.NetEncoding,
   Vcl.ExtCtrls,
   Vcl.Themes,
   JclFileUtils,
   JclPeImage,
   JvGnugettext,
+  MPCommonUtilities,
+  MPCommonObjects,
   MPShellUtilities,
   SynEditMiscProcs,
+  SynEditMiscClasses,
   SynEditTextBuffer,
-  SynUnicode,
+  SynEditHighlighter,
   VarPyth,
   PythonEngine,
   StringResources,
@@ -1935,9 +1943,10 @@ end;
 
 function URIToFilePath(URI: string): string;
 begin
+  var DecodedURI := TURLEncoding.URL.Decode(URI);
   var BufferLen: DWORD := MAX_PATH;
   SetLength(Result, BufferLen);
-  OleCheck(PathCreateFromUrl(PChar(URI), PChar(Result), @BufferLen, 0));
+  OleCheck(PathCreateFromUrl(PChar(DecodedURI), PChar(Result), @BufferLen, 0));
   SetLength(Result, BufferLen);
 end;
 

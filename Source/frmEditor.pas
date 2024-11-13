@@ -13,6 +13,7 @@ interface
 uses
   WinApi.Windows,
   WinApi.Messages,
+  Winapi.D2D1,
   System.Types,
   System.UITypes,
   System.SysUtils,
@@ -53,7 +54,6 @@ uses
   cCodeCompletion,
   cPyBaseDebugger,
   cPySupportTypes,
-  Winapi.D2D1,
   frmFile,
   uModel,
   uPythonIntegrator,
@@ -200,10 +200,6 @@ type
     procedure SynCodeCompletionExecute(Kind: SynCompletionType;
       Sender: TObject; var CurrentInput: string; var X, Y: Integer;
       var CanExecute: boolean);
-    procedure SynEditMouseWheelDown(Sender: TObject; Shift: TShiftState;
-      MousePos: TPoint; var Handled: boolean);
-    procedure SynEditMouseWheelUp(Sender: TObject; Shift: TShiftState;
-      MousePos: TPoint; var Handled: boolean);
     procedure SynCodeCompletionClose(Sender: TObject);
     procedure SynWebCompletionExecute(Kind: SynCompletionType; Sender: TObject;
       var CurrentInput: string; var X, Y: Integer; var CanExecute: boolean);
@@ -265,6 +261,7 @@ type
     const HotIdentIndicatorSpec: TGUID = '{8715589E-C990-4423-978F-F00F26041AEF}';
   private
     fEditor: TEditor;
+    fActiveSynEdit: TSynEdit;
     fAutoCompleteActive: boolean;
     fHotIdentInfo: THotIdentInfo;
     fNeedToSyncCodeExplorer: boolean;
@@ -304,6 +301,8 @@ type
     function getFrameType: Integer;
     function getActiveSynEdit: TSynEdit;
     procedure ApplyPyIDEOptions;
+    procedure ScrollbarAnnotationGetInfo(Sender: TObject; AnnType:
+      TSynScrollbarAnnType; var Rows: TArray<Integer>; var Colors: TArray<TColor>);
     class procedure DoCodeCompletion(Editor: TSynEdit; Caret: TBufferCoord);
     class procedure SymbolsChanged(Sender: TObject);
     class var fOldEditorForm: TEditorForm;
@@ -311,8 +310,6 @@ type
   protected
     procedure Retranslate; override;
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
-    procedure EditorZoom(theZoom: Integer);
-    procedure EditorMouseWheel(theDirection: Integer; Shift: TShiftState);
     function DoSaveFile: boolean; override;
     function DoSaveAs: boolean; override;
     function DoSaveAsRemote: boolean; override;
@@ -496,7 +493,6 @@ type
     procedure ExecReplace;
   private
     fForm: TEditorForm;
-    fHasSelection: boolean;
     FSynLsp: TLspSynEditPlugin;
     FGUIFormOpen: boolean;
     //fCodeExplorerData: ICodeExplorerData;
@@ -728,7 +724,7 @@ end;
 
 function TEditor.GetActiveSynEdit: TSynEdit;
 begin
-  if fForm.SynEdit2.Visible and (fForm.ActiveSynEdit = fForm.SynEdit2) then
+  if fForm.SynEdit2.Visible and (fForm.fActiveSynEdit = fForm.SynEdit2) then
     Result := fForm.SynEdit2
   else
     Result := fForm.SynEdit;
@@ -1066,7 +1062,7 @@ end;
 
 function TEditor.CanCopy: boolean;
 begin
-  Result := GetActiveSynEdit.SelAvail or (GetActiveSynEdit.LineText <> '');
+  Result := not GetActiveSynEdit.Selections.IsEmpty or (GetActiveSynEdit.LineText <> '');
 end;
 
 function TEditor.CanCut: boolean;
@@ -1152,7 +1148,6 @@ end;
 
 procedure TEditor.ExecuteSelection;
 var
-  EncodedSource: AnsiString;
   ExecType: string;
   Source: string;
   Editor: TSynEdit;
@@ -1170,15 +1165,7 @@ begin
   ExecType := 'exec';
 
   // If nothing is selected then try to eval the word at cursor
-  if not fHasSelection then
-  begin
-    Source := Editor.WordAtCursor;
-    if Source <> '' then
-      ExecType := 'single'
-    else
-      Exit;
-  end
-  else
+  if Editor.SelAvail then
   begin
     Source := Editor.SelText;
     // if a single line or part of a line is selected then eval the selection
@@ -1186,32 +1173,41 @@ begin
       ExecType := 'single'
     else
       Source := Source + sLineBreak; // issue 291
+  end
+  else
+  begin
+    Source := Editor.WordAtCursor;
+    if Source <> '' then
+      ExecType := 'single'
+    else
+      Exit;
   end;
 
   // Dedent the selection
-  Source := uCommonFunctions.Dedent(Source);
+  Source := Dedent(Source);
 
   GI_PyInterpreter.ShowWindow;
   GI_PyInterpreter.AppendText(sLineBreak);
   PythonIIForm.SynEdit.ExecuteCommand(ecEditorBottom, ' ', nil);
   Source := CleanEOLs(Source);
-  EncodedSource := UTF8BOMString + Utf8Encode(Source);
 
-  if ExecType = 'exec' then
-    EncodedSource := EncodedSource + #10;
-  // RunSource
-  case PyControl.DebuggerState of
-    dsInactive:
-      PyControl.ActiveInterpreter.RunSource(Source, '<editor selection>',
-        ExecType);
-    dsPaused, dsPostMortem:
-      PyControl.ActiveDebugger.RunSource(Source, '<editor selection>',
-        ExecType);
-  end;
-
-  GI_PyInterpreter.WritePendingMessages;
-  GI_PyInterpreter.AppendPrompt;
-  Activate(False);
+  ThreadPythonExec(procedure
+  begin
+    // RunSource
+    case PyControl.DebuggerState of
+      dsInactive:
+        PyControl.ActiveInterpreter.RunSource(Source, '<editor selection>',
+          ExecType);
+      dsPaused, dsPostMortem:
+        PyControl.ActiveDebugger.RunSource(Source, '<editor selection>',
+          ExecType);
+    end;
+  end,
+  procedure
+  begin
+    GI_PyInterpreter.AppendPrompt;
+    Activate(False);
+  end);
 end;
 
 // IFileCommands implementation
@@ -1694,6 +1690,7 @@ end;
 procedure TEditorForm.ShowTkOrQt;
 begin
   var PC:= PyIDEMainForm.TabControlWidgets;
+  PC.TabClick(TSpTBXTabItem(PC.Items[0]));
   if FrameType in [0, 1] then begin
     PC.items[1].Visible:= FConfiguration.VisTabs[1];
     PC.items[2].Visible:= FConfiguration.VisTabs[2];
@@ -1704,15 +1701,13 @@ begin
     PC.items[2].Visible:= FConfiguration.VisTabs[2];
     PC.items[3].Visible:= false;
     PC.items[4].Visible:= false;
-    if PC.ActiveTabIndex = 3 then
-      PC.TabClick(TSpTBXTabItem(PC.Items[1]));
+    PC.TabClick(TSpTBXTabItem(PC.Items[1]));
   end else if FrameType = 3 then begin
     PC.items[1].Visible:= false;
     PC.items[2].Visible:= false;
     PC.items[3].Visible:= FConfiguration.VisTabs[3];
     PC.items[4].Visible:= FConfiguration.VisTabs[4];
-    if PC.ActiveTabIndex < 3 then
-      PC.TabClick(TSpTBXTabItem(PC.Items[3]));
+    PC.TabClick(TSpTBXTabItem(PC.Items[3]));
   end;
   case FrameType of
     2: CreateTkCursors;
@@ -1724,7 +1719,9 @@ procedure TEditorForm.SynEditEnter(Sender: TObject);
 Var
   ASynEdit: TSynEdit;
 begin
+  EditorSearchOptions.InitSearch;
   ASynEdit := Sender as TSynEdit;
+  fActiveSynEdit := ASynEdit;
   fOldCaretY := ASynEdit.CaretY;
   PyIDEMainForm.ActiveTabControl := ParentTabControl;
   //Enter(Self);
@@ -1815,8 +1812,6 @@ Var
 begin
   ASynEdit := Sender as TSynEdit;
   Assert(fEditor <> nil);
-  if Changes * [scAll, scSelection] <> [] then
-    fEditor.fHasSelection := ASynEdit.SelAvail;
   if scModified in Changes then
   begin
     PyIDEMainForm.UpdateCaption;
@@ -1839,8 +1834,6 @@ begin
   end;
   if scTopLine in Changes then
     Application.CancelHint;
-
-  //FFileStructure.ShowSelected;
 end;
 
 procedure TEditorForm.DoActivate;
@@ -2081,6 +2074,10 @@ Var
   Edit : IEditor;
 begin
   Assert(fEditor <> nil);
+  if fEditor.fFileName <> '' then
+    FileName := TPath.GetFileName(fEditor.fFileName)
+  else if fEditor.fRemoteFileName <> '' then
+    FileName := fEditor.fRemoteFileName;
   if ExecuteRemoteFileDialog(FileName, Server, rfdSave) then
   begin
     Edit := GI_EditorFactory.GetEditorByName(TSSHFileName.Format(Server, FileName));
@@ -2090,11 +2087,10 @@ begin
       Result := False;
       Exit;
     end;
-    fEditor.DoSetFileName('');
     fEditor.fRemoteFileName := FileName;
     fEditor.fSSHServer := Server;
+    fEditor.DoSetFileName('');
     DoUpdateHighlighter;
-    DoUpdateCaption; // Do it twice in case the following statement fails
     Result := DoSaveFile;
     DoUpdateCaption;
 
@@ -2176,46 +2172,6 @@ begin
   Result:= Encoding + '/' + LineBreak;
 end;
 
-procedure TEditorForm.EditorMouseWheel(theDirection: Integer;
-  Shift: TShiftState);
-Var
-  ASynEdit: TSynEdit;
-
-  function OwnScroll(Shift: TShiftState; LinesInWindow: Integer): Integer;
-  begin
-    if (ssShift in Shift) or (Mouse.WheelScrollLines = -1) then
-      Result := LinesInWindow shr Ord(eoHalfPageScroll in ASynEdit.Options)
-    else
-      Result := Mouse.WheelScrollLines;
-  end;
-
-//
-begin
-  { *
-    Manage Zoom in and out, Page up and down, Line scroll - with the Mouse Wheel
-    * }
-  if ssCtrl in Shift then
-    EditorZoom(theDirection)
-  else
-  begin
-    ASynEdit := ActiveSynEdit;
-
-    ASynEdit.TopLine := ASynEdit.TopLine + (theDirection * OwnScroll(Shift,
-        ASynEdit.LinesInWindow));
-  end;
-end;
-
-procedure TEditorForm.EditorZoom(theZoom: Integer);
-begin
-  if not((theZoom > 1) and (SynEdit.Font.Size <= 2)) then
-  begin
-    SynEdit.Font.Size := SynEdit.Font.Size - theZoom;
-    SynEdit.Gutter.Font.Size := Max(SynEdit.Font.Size - 2, 1);
-    SynEdit2.Font.Size := SynEdit.Font.Size;
-    SynEdit2.Gutter.Font.Size := SynEdit2.Gutter.Font.Size;
-  end;
-end;
-
 procedure TEditorForm.EditorCommandHandler(Sender: TObject;
   AfterProcessing: boolean; var Handled: boolean;
   var Command: TSynEditorCommand; var AChar: WideChar;
@@ -2228,7 +2184,7 @@ var
   OpenBracketPos: Integer;
   Line: string;
   CharRight, CharLeft: WideChar;
-  Caret, BC: TBufferCoord;
+  Caret: TBufferCoord;
 begin
   ASynEdit := Sender as TSynEdit;
   if (Command <> ecLostFocus) and (Command <> ecGotFocus) then
@@ -2238,43 +2194,10 @@ begin
 
   if not AfterProcessing then
   begin
+    if (Command <> ecCancelSelections) and (ASynEdit.Selections.Count > 1) then
+      Exit;
+
     case Command of
-      ecCut:
-        if not ASynEdit.SelAvail then
-          with ASynEdit do
-          begin
-            // Cut the current line to the Clipboard
-            BeginUpdate;
-            try
-              ExecuteCommand(ecLineStart, AChar, Data);
-              ExecuteCommand(ecSelLineEnd, AChar, Data);
-              ActiveSelectionMode := smLine;
-              ExecuteCommand(ecCut, AChar, Data);
-              ActiveSelectionMode := SelectionMode;
-            finally
-              EndUpdate;
-            end;
-            Handled := True;
-          end;
-      ecCopy:
-        if not ASynEdit.SelAvail then
-          with ASynEdit do
-          begin
-            // Copy the current line to the Clipboard
-            BC := ASynEdit.CaretXY;
-            BeginUpdate;
-            try
-              ExecuteCommand(ecLineStart, AChar, Data);
-              ExecuteCommand(ecSelLineEnd, AChar, Data);
-              ActiveSelectionMode := smLine;
-              ExecuteCommand(ecCopy, AChar, Data);
-              SetCaretAndSelection(BC, BC, BC);
-              ActiveSelectionMode := SelectionMode;
-            finally
-              EndUpdate;
-            end;
-            Handled := True;
-          end;
       ecCodeCompletion:
         if ASynEdit.Highlighter is TSynPythonSyn then
         begin
@@ -2292,31 +2215,21 @@ begin
           CommandsDataModule.SynParamCompletion.ActivateCompletion;
           Handled := True;
         end;
-      ecLeft: // Implement Visual Studio like behaviour when selection is available
-        if ASynEdit.SelAvail then
-          with ASynEdit do
-          begin
-            CaretXY := BlockBegin;
-            Handled := True;
-          end;
-      ecRight: // Implement Visual Studio like behaviour when selection is available
-        if ASynEdit.SelAvail then
-          with ASynEdit do
-          begin
-            CaretXY := BlockEnd;
-            Handled := True;
-          end;
+      ecCancelSelections:
+        ClearSearchHighlight(FEditor);
     end;
   end
   else
   begin // AfterProcessing
     case Command of
       ecLineBreak: // Python Mode
-        if ASynEdit.InsertMode and (eoAutoIndent in ASynEdit.Options) and
-          (ASynEdit.Highlighter is TSynPythonSyn)
-          and not fAutoCompleteActive then
+        if ASynEdit.InsertMode and (eoAutoIndent in ASynEdit.Options)
+          and (ASynEdit.Highlighter is TSynPythonSyn)
+          and (ASynEdit.Selections.Count = 1)
+          and not fAutoCompleteActive
+        then
         begin
-          { CaretY should never be lesser than 2 right after ecLineBreak, so there's
+          { CaretY should never be less than 2 right after ecLineBreak, so there's
             no need for a check }
           iPrevLine := TrimRight(ASynEdit.Lines[ASynEdit.CaretY - 2]);
 
@@ -2334,9 +2247,10 @@ begin
             ASynEdit.ExecuteCommand(ecShiftTab, #0, nil);
           //end;
         end;
-      ecChar: // Autocomplete brackets
+      ecChar:
+        // Trigger auto-complection on completion trigger chars
         begin
-          if PyIDEOptions.EditorCodeCompletion then
+          if PyIDEOptions.EditorCodeCompletion and (ASynEdit.Selections.Count = 1) then
           begin
             if (TIDECompletion.EditorCodeCompletion.CompletionInfo.Editor = nil)
               and (Pos(AChar, CommandsDataModule.SynCodeCompletion.TriggerChars) > 0)
@@ -2351,7 +2265,10 @@ begin
             end;
           end;
 
-          if not fAutoCompleteActive and PyIDEOptions.AutoCompleteBrackets then
+          // Autocomplete brackets
+          if not fAutoCompleteActive and PyIDEOptions.AutoCompleteBrackets and
+             (ASynEdit.Selections.Count = 1)
+          then
             with ASynEdit do
             begin
               if ASynEdit.Highlighter is TSynPythonSyn then
@@ -2422,6 +2339,23 @@ begin
       ecLostFocus:
         if not (CommandsDataModule.SynCodeCompletion.Form.Visible or SynEdit.Focused or SynEdit2.Focused) then
           CommandsDataModule.SynParamCompletion.CancelCompletion;
+    end;
+  end;
+end;
+
+procedure TEditorForm.ScrollbarAnnotationGetInfo(Sender: TObject;
+  AnnType: TSynScrollbarAnnType; var Rows: TArray<Integer>;
+  var Colors: TArray<TColor>);
+begin
+  Rows := [];
+  Colors := [];
+  if HasSyntaxError then
+  begin
+    var List := FEditor.FSynLsp.Diagnostics;
+    if List.Count > 0 then
+    begin
+      Rows := [fActiveSynEdit.BufferToDisplayPos(List[0].BlockBegin).Row];
+      Colors := [$3C14DC];
     end;
   end;
 end;
@@ -2806,20 +2740,6 @@ begin
   end;
 end;
 
-procedure TEditorForm.SynEditMouseWheelDown(Sender: TObject;
-  Shift: TShiftState; MousePos: TPoint; var Handled: boolean);
-begin
-  EditorMouseWheel(+1, Shift);
-  Handled := True;
-end;
-
-procedure TEditorForm.SynEditMouseWheelUp(Sender: TObject; Shift: TShiftState;
-  MousePos: TPoint; var Handled: boolean);
-begin
-  EditorMouseWheel(-1, Shift);
-  Handled := True;
-end;
-
 procedure TEditorForm.SynEditMouseCursor(Sender: TObject;
   const aLineCharPos: TBufferCoord; var aCursor: TCursor);
 var
@@ -2836,8 +2756,9 @@ begin
 
   fHotIdentInfo.HaveHotIdent := False;
   if ASynEdit.Focused and (HiWord(GetAsyncKeyState(VK_CONTROL)) > 0)
-    and fEditor.HasPythonFile and not ASynEdit.IsPointInSelection
-    (aLineCharPos) then
+    and fEditor.HasPythonFile and
+    not ASynEdit.IsPointInSelection(aLineCharPos)
+  then
     with ASynEdit do
     begin
       GetHighlighterAttriAtRowColEx(aLineCharPos, Token, TokenType, Start,
@@ -2953,10 +2874,11 @@ end;
 
 procedure TEditorForm.WMFolderChangeNotify(var Msg: TMessage);
 begin
+  if fEditor.fFileName <> '' then
     TThread.ForceQueue(nil, procedure
-  begin
-    CommandsDataModule.ProcessFolderChange(ExtractFileDir(fEditor.fFileName));
-  end, 200);
+    begin
+      CommandsDataModule.ProcessFolderChange(TPath.GetDirectoryName(fEditor.fFileName));
+    end, 200);
 end;
 
 procedure TEditorForm.AddWatchAtCursor;
@@ -3027,39 +2949,46 @@ begin
 end;
 
 procedure TEditorForm.ApplyPyIDEOptions;
-begin
-  Synedit.CodeFolding.Assign(PyIDEOptions.CodeFolding);
-  Synedit2.CodeFolding.Assign(PyIDEOptions.CodeFolding);
-
-  Synedit.SelectedColor.Assign(PyIDEOptions.SelectionColor);
-  Synedit2.SelectedColor.Assign(PyIDEOptions.SelectionColor);
-
-  Synedit.IndentGuides.Assign(PyIDEOptions.IndentGuides);
-  Synedit2.IndentGuides.Assign(PyIDEOptions.IndentGuides);
-
-  SynEdit.Gutter.TrackChanges.Assign(PyIDEOptions.TrackChanges);
-  SynEdit2.Gutter.TrackChanges.Assign(PyIDEOptions.TrackChanges);
-
-  RegisterSearchHighlightIndicatorSpec(fEditor);
-
-  if PyIDEOptions.CompactLineNumbers then
+  procedure  ApplyOptionsToEditor(Editor: TCustomSynEdit);
   begin
-    SynEdit.OnGutterGetText := SynEditGutterGetText;
-    SynEdit2.OnGutterGetText := SynEditGutterGetText;
-  end
-  else
-  begin
-    SynEdit.OnGutterGetText := nil;
-    SynEdit2.OnGutterGetText := nil;
+    Editor.CodeFolding.Assign(PyIDEOptions.CodeFolding);
+    Editor.SelectedColor.Assign(PyIDEOptions.SelectionColor);
+    Editor.IndentGuides.Assign(PyIDEOptions.IndentGuides);
+    Editor.DisplayFlowControl.Assign(PyIDEOptions.DisplayFlowControl);
+    Editor.Gutter.TrackChanges.Assign(PyIDEOptions.TrackChanges);
+
+    if PyIDEOptions.CompactLineNumbers then
+      Editor.OnGutterGetText := SynEditGutterGetText
+    else
+      Editor.OnGutterGetText := nil;
+    Editor.InvalidateGutter;
+
+    if PyIDEOptions.ScrollbarAnnotation then
+    begin
+      Editor.ScrollbarAnnotations.SetDefaultAnnotations;
+      with Editor.ScrollbarAnnotations.Add as TSynScrollbarAnnItem do
+      begin
+        AnnType := sbaCustom1;
+        AnnPos := sbpFullWidth;
+        FullRow := True;
+        OnGetInfo := ScrollbarAnnotationGetInfo;
+      end;
+    end
+    else
+      Editor.ScrollbarAnnotations.Clear;
   end;
-  SynEdit.InvalidateGutter;
-  SynEdit2.InvalidateGutter;
+
+begin
+  RegisterSearchHighlightIndicatorSpec(fEditor);
 
   // Tab position
   if PyIDEOptions.EditorsTabPosition = ttpTop then
     ViewsTabControl.TabPosition := ttpBottom
   else  //ttpBottom:
     ViewsTabControl.TabPosition := ttpTop;
+
+  ApplyOptionsToEditor(SynEdit);
+  ApplyOptionsToEditor(SynEdit2);
 end;
 
 procedure TEditorForm.AutoCompleteAfterExecute(Sender: TObject);
@@ -3111,7 +3040,7 @@ procedure TEditorForm.SynCodeCompletionAfterCodeCompletion(Sender: TObject;
 var
   Editor: TSynEdit;
 begin
-  Editor := ActiveSynEdit;
+  Editor := fActiveSynEdit;
   if Value.EndsWith('()') then begin
     Editor.CaretX:= Editor.CaretX - 1;
     EndToken:= '(';
@@ -5328,7 +5257,7 @@ begin
     BC1 := BufferCoord(Indicator.CharStart, BC.Line);
     BC2 := BufferCoord(Indicator.CharEnd, BC.Line);
     // Setting HintInfo.CursorRect is important.  Otherwise no other hint
-    // will be shown unless mouse leaves and reenters the control
+    // will be shown unlessmouse leaves and reenters the control
     HintInfo.CursorRect := CursorRect(SynEd, BC1, BC2, HintInfo.HintPos);
     HintStr := FEditor.FSynLsp.Diagnostics[Indicator.Tag].Msg;
   end

@@ -35,7 +35,7 @@ uses
   SVGIconImageCollection, Vcl.ActnList, System.ImageList, Vcl.ImgList,
   Vcl.VirtualImageList, TB2Item, SpTBXItem, TB2Dock, TB2Toolbar, SpTBXEditors,
   SynEdit, Vcl.WinXPanels, SpTBXExtEditors,
-  cPyScripterSettings, dlgSynEditOptions, cCustomShortcuts, SynEditKeyCmds,
+  cPyScripterSettings, dlgSynEditOptions, dlgCustomShortcuts, SynEditKeyCmds,
   SynEditMiscClasses, SynEditPrintMargins, cFileTemplates, dlgPyIDEBase,
   VirtualTrees.Types, VirtualTrees.BaseAncestorVCL, VirtualTrees.BaseTree,
   VirtualTrees.AncestorVCL;
@@ -83,6 +83,7 @@ type
     fGuiDesignerHints: Boolean;
     fSnapToGrid: boolean;
     fGridSize: Integer;
+    fZoomSteps: Integer;
     fGUIFontSize: Integer;
     fGUIFontName: String;
     fFrameWidth: Integer;
@@ -249,6 +250,8 @@ type
       write fSnapToGrid;
     property GridSize : Integer read fGridSize
       write fGridSize;
+    property ZoomSteps : Integer read fZoomSteps
+      write fZoomSteps;
     property GuiFontSize : Integer read fGUIFontSize
       write fGUIFontSize;
     property GuiFontName : String read fGUIFontName
@@ -591,7 +594,6 @@ type
     labFont: TLabel;
     btnFont: TButton;
     POptions1: TTabSheet;
-    LHighlightSelectedWordColor: TLabel;
     CBAutoCompleteBrackets: TCheckBox;
     CBAutoHideFindToolbar: TCheckBox;
     CBAutoReloadChangedFiles: TCheckBox;
@@ -620,9 +622,7 @@ type
     ckRightMouseMoves: TCheckBox;
     ckDragAndDropEditing: TCheckBox;
     ckEnhanceEndKey: TCheckBox;
-    ckWordWrap: TCheckBox;
     ckEnhanceHomeKey: TCheckBox;
-    ckAltSetsColumnMode: TCheckBox;
     ckTabsToSpaces: TCheckBox;
     ckKeepCaretX: TCheckBox;
     ckSmartTabDelete: TCheckBox;
@@ -630,13 +630,11 @@ type
     ckSmartTabs: TCheckBox;
     StackPanel2: TStackPanel;
     ckHalfPageScroll: TCheckBox;
-    ckTrimTrailingSpaces: TCheckBox;
     ckScrollByOneLess: TCheckBox;
     ckShowSpecialChars: TCheckBox;
     ckScrollPastEOF: TCheckBox;
     ckDisableScrollArrows: TCheckBox;
     ckScrollPastEOL: TCheckBox;
-    ckGroupUndo: TCheckBox;
     ckShowScrollHint: TCheckBox;
     ckHideShowScrollbars: TCheckBox;
     ckScrollHintFollows: TCheckBox;
@@ -1062,6 +1060,18 @@ type
     BGuiFont: TButton;
     CBGetMethodChecked: TCheckBox;
     CBSetMethodChecked: TCheckBox;
+    cbDisplayFlowControl: TCheckBox;
+    cbDisplayFlowControlColor: TColorBox;
+    ckScrollbarAnnotation: TCheckBox;
+    ckTrimTrailingSpaces: TCheckBox;
+    CBIndentationGuide: TCheckBox;
+    ckGroupUndo: TCheckBox;
+    ckWordWrap: TCheckBox;
+    EZoomSteps: TEdit;
+    UDZoomSteps: TUpDown;
+    LZoomsteps: TLabel;
+    BGuiFontDefault: TButton;
+    LDefault: TLabel;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1181,6 +1191,7 @@ type
     procedure LVVisibilityToolbarsClick(Sender: TObject);
     procedure ckGutterAutosizeClick(Sender: TObject);
     procedure BGuiFontClick(Sender: TObject);
+    procedure BGuiFontDefaultClick(Sender: TObject);
   private
     const
       DefaultVisFileMenu    = '11100111011101011';      // len = 17
@@ -1434,6 +1445,7 @@ procedure TFConfiguration.FormCreate(Sender: TObject);
 begin
   inherited;
   Width:= PPIScale(860);
+  Height:= PPIScale(540);
   TempFileTemplates := TFileTemplates.Create;
   GuiPyOptions:= TGuiPyOptions.Create;
   GuiPyLanguageOptions:= TGuiPyLanguageOptions.Create;
@@ -1474,6 +1486,7 @@ begin
   Indent3:= StringOfChar(' ', 3*IndentWidth);
   ckGutterGradient.Left:= 24;
   cbGutterFont.Left:= 24;
+  CBDisplayFlowControlColor.DefaultColorColor:= $0045FF;
 end;
 
 procedure TFConfiguration.FormDestroy(Sender: TObject);
@@ -1794,7 +1807,6 @@ begin
   ckEnhanceEndKey.Checked := eoEnhanceEndKey in FSynEdit.Options;
   ckWordWrap.Checked := FSynEdit.WordWrap;
   ckEnhanceHomeKey.Checked := eoEnhanceHomeKey in FSynEdit.Options;
-  ckAltSetsColumnMode.Checked:= eoAltSetsColumnMode in FSynEdit.Options;
   ckTabsToSpaces.Checked:= eoTabsToSpaces in FSynEdit.Options;
   ckKeepCaretX.Checked:= eoKeepCaretX in FSynEdit.Options;
   ckSmartTabDelete.Checked := eoSmartTabDelete in FSynEdit.Options;
@@ -1831,9 +1843,12 @@ begin
     UDTimeOut.Position:= TimeOut;
     UDInterpreterHistorySize.Position:= InterpreterHistorySize;
 
-    // tab editor
+    // tab editor, Options 1
     CBCheckSyntaxAsYouType.Checked:= CheckSyntaxAsYouType;
     CBHighlightSelectedWord.Checked:= HighlightSelectedWord;
+    CBDisplayFlowControl.Checked:= DisplayFlowControl.Enabled;
+    CBDisplayFlowControlColor.Selected:= DisplayFlowControl.Color;
+    CBIndentationGuide.Checked:= IndentGuides.Visible;
     CBAutoCompleteBrackets.Checked:= AutoCompleteBrackets;
     CBAutoHideFindToolbar.Checked:= AutoHideFindToolbar;
     CBAutoReloadChangedFiles.Checked:= AutoReloadChangedFiles;
@@ -1852,6 +1867,9 @@ begin
     CBHighlightSelectedWordColor.Color:= HighlightSelectedWordColor;
     RGNewFileEncoding.ItemIndex:= Ord(NewFileEncoding);
     RGNewFileLineBreaks.ItemIndex:= ord(NewFileLineBreaks);
+
+    // tab options 2
+    ckScrollbarAnnotation.Checked:= ScrollbarAnnotation;
 
     // tab code completion
     CBCompletionCaseSensitive.Checked := CodeCompletionCaseSensitive;
@@ -1913,6 +1931,7 @@ begin
     CBNameFromText.Checked:= NameFromText;
     CBGuiDesignerHints.Checked:= GuiDesignerHints;
     UDGridSize.Position:= GridSize;
+    UDZoomSteps.Position:= ZoomSteps;
     CBSnapToGrid.Checked:= SnapToGrid;
     EFrameWidth.Text:= IntToStr(FrameWidth);
     EFrameHeight.Text:= IntToStr(FrameHeight);
@@ -2149,7 +2168,6 @@ begin
   SetFlag(eoDragDropEditing, ckDragAndDropEditing.Checked);
   SetFlag(eoTabIndent, ckTabIndent.Checked);
   SetFlag(eoSmartTabs, ckSmartTabs.Checked);
-  SetFlag(eoAltSetsColumnMode, ckAltSetsColumnMode.Checked);
   SetFlag(eoHalfPageScroll, ckHalfPageScroll.Checked);
   SetFlag(eoScrollByOneLess, ckScrollByOneLess.Checked);
   SetFlag(eoScrollPastEof, ckScrollPastEOF.Checked);
@@ -2193,6 +2211,9 @@ begin
     // tab editor
     CheckSyntaxAsYouType:= CBCheckSyntaxAsYouType.Checked;
     HighlightSelectedWord:= CBHighlightSelectedWord.Checked;
+    DisplayFlowControl.Enabled:= CBDisplayFlowControl.Checked;
+    DisplayFlowControl.Color:= CBDisplayFlowControlColor.Selected;
+    IndentGuides.Visible:= CBIndentationGuide.Checked;
     AutoCompleteBrackets:= CBAutoCompleteBrackets.Checked;
     AutoHideFindToolbar:= CBAutoHideFindToolbar.Checked;
     AutoReloadChangedFiles:= CBAutoReloadChangedFiles.Checked;
@@ -2210,6 +2231,9 @@ begin
     HighlightSelectedWordColor:= CBHighlightSelectedWordColor.Color;
     NewFileEncoding:= TFileSaveFormat(RGNewFileEncoding.ItemIndex);
     NewFileLineBreaks:= TSynEditFileFormat(RGNewFileLineBreaks.ItemIndex);
+
+    // tab options 2
+    ScrollbarAnnotation:= ckScrollbarAnnotation.Checked;
 
     // tab code completion
     CodeCompletionCaseSensitive:= CBCompletionCaseSensitive.Checked;
@@ -2273,6 +2297,7 @@ begin
     NameFromText:= CBNameFromText.Checked;
     GuiDesignerHints:= CBGuiDesignerHints.Checked;
     GridSize:= UDGridSize.Position;
+    ZoomSteps:= UDZoomSteps.Position;
     SnapToGrid:= CBSnapToGrid.Checked;
     FrameWidth:= StrToInt(EFrameWidth.Text);
     FrameHeight:= strToInt(EFrameHeight.Text);
@@ -4264,7 +4289,7 @@ begin
       IDEKeyList.Add(ShortCutToText(A.ShortCut) + '=' + A.DisplayName);
     end;
     { Deal with secondary shortcuts }
-    if A.IsSecondaryShortCutsStored then
+    if Assigned(A.SecondaryShortCuts) and (A.SecondaryShortCuts.Count > 0) then
       for j := 0 to A.SecondaryShortCuts.Count - 1 do
         IDEKeyList.Add(ShortCutToText(A.SecondaryShortCuts.ShortCuts[j]) + '=' + A.DisplayName);
   end;
@@ -5072,6 +5097,12 @@ begin
   FreeAndNil(FontDialog);
 end;
 
+procedure TFConfiguration.BGuiFontDefaultClick(Sender: TObject);
+begin
+  GuiPyOptions.GUIFontSize:= 9;
+  GuiPyOptions.GUIFontName:= 'Segoe UI';
+end;
+
 procedure TFConfiguration.BGitCloneClick(Sender: TObject);
   var Dir, Remote, aName: String;
 begin
@@ -5783,6 +5814,7 @@ begin
   fGuiDesignerHints:= true;
   fSnapToGrid:= true;
   fGridSize:= 8;
+  fZoomSteps:= 1;
   fGUIFontSize:= 9;
   fGUIFontName:= 'Segoe UI';
   fFrameWidth:= 300;

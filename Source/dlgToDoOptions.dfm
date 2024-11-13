@@ -5,12 +5,13 @@ inherited fmToDoOptions: TfmToDoOptions
   Caption = 'To Do Options'
   ClientHeight = 283
   ClientWidth = 512
-  ParentFont = False
+  OldCreateOrder = True
   Position = poScreenCenter
   OnShow = FormShow
-  ExplicitWidth = 524
-  ExplicitHeight = 321
-  TextHeight = 15
+  ExplicitWidth = 518
+  ExplicitHeight = 312
+  PixelsPerInch = 96
+  TextHeight = 13
   object pnlBG: TPanel
     Left = 0
     Top = 0
@@ -18,8 +19,6 @@ inherited fmToDoOptions: TfmToDoOptions
     Height = 283
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 508
-    ExplicitHeight = 282
     DesignSize = (
       512
       283)
@@ -36,8 +35,8 @@ inherited fmToDoOptions: TfmToDoOptions
       object lblPriority: TLabel
         Left = 131
         Top = 202
-        Width = 38
-        Height = 15
+        Width = 34
+        Height = 13
         Anchors = [akRight, akBottom]
         Caption = '&Priority'
         Color = clNone
@@ -47,8 +46,8 @@ inherited fmToDoOptions: TfmToDoOptions
       object lblToken: TLabel
         Left = 131
         Top = 149
-        Width = 31
-        Height = 15
+        Width = 29
+        Height = 13
         Anchors = [akRight, akBottom]
         Caption = 'To&ken'
         Color = clNone
@@ -59,7 +58,7 @@ inherited fmToDoOptions: TfmToDoOptions
         Left = 131
         Top = 168
         Width = 96
-        Height = 23
+        Height = 21
         Anchors = [akRight, akBottom]
         TabOrder = 4
         OnChange = edTokenChange
@@ -68,7 +67,7 @@ inherited fmToDoOptions: TfmToDoOptions
         Left = 131
         Top = 221
         Width = 96
-        Height = 23
+        Height = 21
         Style = csDropDownList
         Anchors = [akRight, akBottom]
         TabOrder = 5
@@ -84,7 +83,7 @@ inherited fmToDoOptions: TfmToDoOptions
         Width = 118
         Height = 243
         Anchors = [akLeft, akTop, akRight, akBottom]
-        ItemHeight = 15
+        ItemHeight = 13
         Sorted = True
         TabOrder = 0
         OnClick = lstTokensClick
@@ -158,6 +157,7 @@ inherited fmToDoOptions: TfmToDoOptions
         ScrollBars = ssBoth
         TabOrder = 4
         WordWrap = False
+        Zoom = 100
       end
       object chkInclude: TCheckBox
         Left = 10
@@ -212,7 +212,7 @@ inherited fmToDoOptions: TfmToDoOptions
       end
     end
     object btnOK: TButton
-      Left = 242
+      Left = 254
       Top = 251
       Width = 80
       Height = 26
@@ -221,11 +221,9 @@ inherited fmToDoOptions: TfmToDoOptions
       Default = True
       ModalResult = 1
       TabOrder = 3
-      ExplicitLeft = 238
-      ExplicitTop = 250
     end
     object btnCancel: TButton
-      Left = 330
+      Left = 342
       Top = 251
       Width = 80
       Height = 26
@@ -234,11 +232,9 @@ inherited fmToDoOptions: TfmToDoOptions
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 4
-      ExplicitLeft = 326
-      ExplicitTop = 250
     end
     object btnHelp: TButton
-      Left = 418
+      Left = 430
       Top = 252
       Width = 75
       Height = 25
@@ -246,8 +242,6 @@ inherited fmToDoOptions: TfmToDoOptions
       Caption = '&Help'
       TabOrder = 5
       OnClick = btnHelpClick
-      ExplicitLeft = 414
-      ExplicitTop = 251
     end
   end
 end

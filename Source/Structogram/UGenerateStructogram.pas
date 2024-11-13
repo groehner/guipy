@@ -284,8 +284,8 @@ begin
       repeat
         GenerateStatement;
         SkipNewLines;
-      until (Scanner.Token = DEDENT) or (Scanner.Token = '');
-      GetNextToken;  // skip DEDENT
+      until (Scanner.Token = DEDENT_) or (Scanner.Token = '');
+      GetNextToken;  // skip DEDENT_
     end;
   end else begin
     GenerateSimpleStatement;

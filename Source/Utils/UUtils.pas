@@ -1068,8 +1068,6 @@ begin
            (Copy(Name, Length(Name) - 1, 2) = '__');
 end;
 
-
-
 function StringTimesN(s: string; n: integer): string;
   var i: integer;
 begin

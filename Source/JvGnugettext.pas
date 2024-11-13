@@ -22,15 +22,15 @@ unit JvGnugettext;
 (**************************************************************)
 {*------------------------------------------------------------------------------
   NOTE ON JVCL INTEGRATION:
-
-  The original file name is "gnugexttext.pas" but has been renamed to
+  
+  The original file name is "gnugexttext.pas" but has been renamed to 
   JvGnugettext.pas so as to not conflict with other packages that might
   use the gnugettext.pas file directly
-  In order to ease the synchronization with the public version of
+  In order to ease the synchronization with the public version of 
   gnugettext.pas the style guide for the JVCL is not enforced here.
 ------------------------------------------------------------------------------*}
 // Information about this file:
-// $--LastChangedDate: 2010-08-25 15:40:17 +0200 (mer., 25 aoÃ»t 2010) $
+// $--LastChangedDate: 2010-08-25 15:40:17 +0200 (mer., 25 août 2010) $
 // $--LastChangedRevision: 220 $
 // $--HeadURL: http://svn.berlios.de/svnroot/repos/dxgettext/trunk/dxgettext/sample/gnugettext.pas $
 // Redistribution and use in source and binary forms, with or without
@@ -324,7 +324,7 @@ type
   IGnuGettextInstanceWhenNewLanguageListener = interface
     procedure WhenNewLanguage (const LanguageID:LanguageString);
   end;
-
+    
 {*------------------------------------------------------------------------------
   The main translation engine.
 -------------------------------------------------------------------------------}
@@ -523,7 +523,7 @@ type
 var
   // System information
   Win32PlatformIsUnicode:boolean=False;
-
+  
   // Information about files embedded inside .exe file
   FileLocator:TFileLocator;
   // Hooks into runtime library functions
@@ -1061,7 +1061,7 @@ var
   s:string;
 begin
   Propertyname:=uppercase(Propertyname)+': ';
-  sl:=TStringList.Create;
+  sl:=TStringList.Create;    
   try
     sl.Text:=utf8decode(gettext(''));
     for i:=0 to sl.Count-1 do begin
@@ -1201,7 +1201,7 @@ begin
   Number:=abs(Number);
   n1:=Number mod 10;
   n2:=Number mod 100;
-  if Number=1 then Result:=0
+  if Number=1 then Result:=0 
   else if (n1>=2) and (n1<=4) and ((n2<10) or (n2>=20)) then Result:=1
   else Result:=2;
 end;
@@ -2284,7 +2284,7 @@ begin
     end else begin
       Result := '';
       Len := 0;
-      While Length(Result)<=Len+1 do begin
+      While Length(Result)<=Len+1 do begin     
         if Length(Result) = 0 then
           SetLength(Result, 1024)
         else
@@ -2490,7 +2490,7 @@ begin
   SetLength (a, bufsize);
   SetLength (b, bufsize);
   str.Read(a[1],bufsize);
-
+  
   while true do begin
     rd:=str.Read(b[1],bufsize);
     p:=pos(signature,a+b);
@@ -2568,7 +2568,7 @@ begin
         tableoffset := headerbeginpos + ReadInt64(fs);
         // go to beginning of embedded block
         fs.Seek(headerbeginpos, soFromBeginning);
-
+        
         offset := tableoffset;
         Assert(sizeof(offset)=8);
         while (true) and (fs.Position<headerendpos) do begin
@@ -2698,7 +2698,7 @@ var
   i:integer;
 begin
   Assert (mofile<>nil);
-
+  
   MoFilesCS.BeginWrite;
   try
     dec (mofile.Users);
@@ -2745,7 +2745,7 @@ begin
     if item.obj is TComponent then begin
       comp:=TComponent(item.obj).FindComponent('GNUgettextMarker') as TGnuGettextComponentMarker;
       if Assigned(comp) and (self<>comp.Retranslator) then begin
-        comp.Retranslator.Execute;
+        comp.Retranslator.Execute; 
         Continue;
       end;
     end;
@@ -3046,7 +3046,7 @@ begin
       inc (a);
       inc (b);
     end;
-    if CompareResult=0 then
+    if CompareResult=0 then 
       CompareResult:=msgidsize-size;
     if CompareResult=0 then begin  // msgid=s
       // Found the msgid

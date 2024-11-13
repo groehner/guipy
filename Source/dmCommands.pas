@@ -18,6 +18,7 @@ uses
   System.ImageList,
   Vcl.ActnList,
   Vcl.StdActns,
+  Vcl.ExtActns,
   Vcl.ImgList,
   Vcl.BaseImageCollection,
   SynEdit,
@@ -59,8 +60,7 @@ type
     actEditCopy: TEditCopy;
     actEditCut: TEditCut;
     actFileCloseAllOther: TAction;
-    actHelpWebGroupSupport: TAction;
-    actHelpWebProjectHome: TAction;
+    actHelpWebGroupSupport: TBrowseURL;
     actSearchGoToDebugLine: TAction;
     actEditWordWrap: TAction;
     actSearchHighlight: TAction;
@@ -120,7 +120,6 @@ type
     actFileSave: TAction;
     actEditCopyFileName: TAction;
     actToolsEditStartupScripts: TAction;
-    actHelpWebBlog: TAction;
     actFoldVisible: TAction;
     actFoldAll: TAction;
     actUnfoldAll: TAction;
@@ -141,7 +140,6 @@ type
     actFileCloseAllToTheRight: TAction;
     actEditReadOnly: TAction;
     actFileSaveToRemote: TAction;
-    actDonate: TAction;
     SynWebCompletion: TSynCompletionProposal;
     SynParamCompletion: TSynCompletionProposal;
     SynCodeCompletion: TSynCompletionProposal;
@@ -166,6 +164,8 @@ type
     actFileExport: TAction;
     actInterpreterEditorOptions: TAction;
     actPythonPath: TAction;
+    actHelpWebProjectHome: TBrowseURL;
+    actDonate: TBrowseURL;
     function ProgramVersionHTTPLocationLoadFileFromRemote(
       AProgramVersionLocation: TJvProgramVersionHTTPLocation; const ARemotePath,
       ARemoteFileName, ALocalPath, ALocalFileName: string): string;
@@ -201,6 +201,11 @@ type
     procedure actEditUntabifyExecute(Sender: TObject);
     procedure actIDEOptionsExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
+    procedure actAssistantCommentsExecute(Sender: TObject);
+    procedure actAssistantCancelExecute(Sender: TObject);
+    procedure actAssistantFixBugsExecute(Sender: TObject);
+    procedure actAssistantOptimizeExecute(Sender: TObject);
+    procedure actAssistantSuggestExecute(Sender: TObject);
     procedure actPythonManualsExecute(Sender: TObject);
     procedure UpdateMainActions;
     procedure actSearchGoToLineExecute(Sender: TObject);
@@ -234,12 +239,9 @@ type
     procedure actSearchHighlightExecute(Sender: TObject);
     procedure actEditWordWrapExecute(Sender: TObject);
     procedure actSearchGoToDebugLineExecute(Sender: TObject);
-    procedure actHelpWebProjectHomeExecute(Sender: TObject);
-    procedure actHelpWebGroupSupportExecute(Sender: TObject);
     procedure actFileCloseWorkspaceTabsExecute(Sender: TObject);
     procedure actEditCopyFileNameExecute(Sender: TObject);
     procedure actToolsEditStartupScriptsExecute(Sender: TObject);
-    procedure actHelpWebBlogExecute(Sender: TObject);
     procedure actFoldVisibleExecute(Sender: TObject);
     procedure actFoldAllExecute(Sender: TObject);
     procedure actUnfoldAllExecute(Sender: TObject);
@@ -259,7 +261,6 @@ type
     procedure actUnfoldFunctionsExecute(Sender: TObject);
     procedure actEditReadOnlyExecute(Sender: TObject);
     procedure actFileSaveToRemoteExecute(Sender: TObject);
-    procedure actDonateExecute(Sender: TObject);
     procedure actToolsRestartLSExecute(Sender: TObject);
     procedure actEditCreateStructogramExecute(Sender: TObject);
     procedure actEditCopyRTFExecute(Sender: TObject);
@@ -354,7 +355,7 @@ uses
   dlgDirectoryList,
   dlgAboutPyScripter,
   dlgConfirmReplace,
-  cCustomShortcuts,
+  dlgCustomShortcuts,
   dlgUnitTestWizard,
   dlgPickList,
   dlgCollectionEditor,
@@ -712,7 +713,7 @@ begin
   SearchCmds := FindSearchTarget;
   if Assigned(SearchCmds) then with SearchCmds do begin
     EditorSearchOptions.InitSearch;
-    DoSearchReplaceText(SearchTarget, True, EditorSearchOptions.SearchBackwards);
+    DoSearchReplaceText(SearchTarget, True, False);
   end;
 end;
 
@@ -871,16 +872,39 @@ begin
   end);
 end;
 
+
+procedure TCommandsDataModule.actInterpreterEditorOptionsExecute(Sender: TObject);
+begin
+  var TempEditorOptions := TSmartPtr.Make(TSynEditorOptionsContainer.Create(Self))();
+  with TSynEditOptionsDialog.Create(Self) do begin
+    TempEditorOptions.Assign(GI_PyInterpreter.Editor);
+    Form.cbApplyToAll.Checked := False;
+    Form.cbApplyToAll.Enabled := False;
+    Form.Caption := 'Interpreter Editor Options';
+    OnGetHighlighterCount := SynInterpreterOptionsDialogGetHighlighterCount;
+    OnGetHighlighter := SynInterpreterOptionsDialogGetHighlighter;
+    OnSetHighlighter := SynInterpreterOptionsDialogSetHighlighter;
+    VisiblePages := [soDisplay, soOptions, soColor];
+    TSynEditOptionsDialog.HighlighterFileDir := TPyScripterSettings.ColorThemesFilesDir;
+    if Execute(TempEditorOptions) then begin
+      UpdateHighlighters;
+      PythonIIForm.ValidateEditorOptions(TempEditorOptions);
+      GI_PyInterpreter.Editor.Assign(TempEditorOptions);
+    end;
+    Free;
+  end;
+end;
+
 procedure TCommandsDataModule.actEditIndentExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
-    GI_ActiveEditor.ActiveSynEdit.ExecuteCommand(ecBlockIndent, ' ', nil);
+    GI_ActiveEditor.ActiveSynEdit.CommandProcessor(ecBlockIndent, ' ', nil);
 end;
 
 procedure TCommandsDataModule.actEditDedentExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
-    GI_ActiveEditor.ActiveSynEdit.ExecuteCommand(ecBlockUnIndent, ' ', nil);
+    GI_ActiveEditor.ActiveSynEdit.CommandProcessor(ecBlockUnIndent, ' ', nil);
 end;
 
 procedure TCommandsDataModule.actEditToggleCommentExecute(Sender: TObject);
@@ -922,7 +946,8 @@ var
   Offset: integer;
   OldBlockBegin, OldBlockEnd : TBufferCoord;
 begin
-  if Assigned(GI_ActiveEditor) then with GI_ActiveEditor.ActiveSynEdit do begin
+  if Assigned(GI_ActiveEditor) then with GI_ActiveEditor.ActiveSynEdit do
+  begin
     OldBlockBegin := BlockBegin;
     OldBlockEnd := BlockEnd;
     if SelAvail then begin // has selection
@@ -951,14 +976,15 @@ begin
         Inc(OldBlockEnd.Char, 2);
       BlockEnd := BufferCoord(OldBlockEnd.Char, OldBlockEnd.Line);
     end
-    else  begin // no selection; easy stuff ;)
+    else
+    begin // no selection; easy stuff ;)
       // Do with selection to be able to undo
       //LineText:='##'+LineText;
       CaretXY := BufferCoord(1, CaretY);
       SelText := '##';
       CaretXY := BufferCoord(OldBlockEnd.Char + 2, OldBlockEnd.Line);
     end;
-    UpdateCaret;
+    UpdateCarets;
   end;
 end;
 
@@ -984,7 +1010,7 @@ begin
       SelText := TPyRegExpr.CodeCommentLineRE.Replace(SelText, '$1');
       CaretXY := BufferCoord(OldBlockEnd.Char - 2, OldBlockEnd.Line);
     end;
-    UpdateCaret;
+    UpdateCarets;
   end;
 end;
 
@@ -995,7 +1021,7 @@ begin
     begin
        SelText :=  StringReplace(SelText,
          StringOfChar(' ',GI_ActiveEditor.SynEdit.TabWidth), #9, [rfReplaceAll]);
-       UpdateCaret;
+       UpdateCarets;
     end;
   end;
 end;
@@ -1007,7 +1033,7 @@ begin
     begin
        SelText :=  StringReplace(SelText, #9,
          StringOfChar(' ',GI_ActiveEditor.SynEdit.TabWidth), [rfReplaceAll]);
-       UpdateCaret;
+       UpdateCarets;
     end;
   end;
 end;
@@ -1112,77 +1138,6 @@ begin
     GI_ActiveEditor.ActiveSynEdit.CommandProcessor(ecMatchBracket, #0, nil);
 end;
 
-procedure GetMatchingBrackets(SynEdit : TSynEdit;
-  var BracketPos : TBufferCoord; out MatchingBracketPos : TBufferCoord;
-  out IsBracket, HasMatchingBracket : Boolean; out BracketCh, MatchCh : Char;
-  out Attri: TSynHighlighterAttributes);
-
-  procedure GetMatchingBracketsInt(const P : TBufferCoord);
-  const
-    Brackets: array[0..5] of char = ('(', ')', '[', ']', '{', '}');
-
-  var
-    S: string;
-    I: Integer;
-  begin
-    IsBracket := False;
-    HasMatchingBracket := False;
-    SynEdit.GetHighlighterAttriAtRowCol(P, S, Attri);
-    if Assigned(Attri) and (SynEdit.Highlighter.SymbolAttribute = Attri) and
-        (SynEdit.CaretX<=length(SynEdit.LineText) + 1) then begin
-      for i := Low(Brackets) to High(Brackets) do
-        if S = Brackets[i] then begin
-          BracketCh := Brackets[i];
-          IsBracket := True;
-          MatchingBracketPos := SynEdit.GetMatchingBracketEx(P);
-          if (MatchingBracketPos.Char > 0) then begin
-            HasMatchingBracket := True;
-            MatchCh := Brackets[i xor 1];
-          end;
-          break;
-        end;
-    end;
-  end;
-
-begin
-  MatchingBracketPos := BufferCoord(0,0);
-  BracketPos := SynEdit.CaretXY;
-
-  // First Look at the previous character like Site
-  if BracketPos.Char > 1 then Dec(BracketPos.Char);
-  GetMatchingBracketsInt(BracketPos);
-
-  //if it is not a bracket then look at the next character;
-  if not IsBracket and (SynEdit.CaretX > 1) then begin
-    Inc(BracketPos.Char);
-    GetMatchingBracketsInt(BracketPos);
-  end;
-end;
-
-function GetMatchingBracket(SynEdit : TSynEdit) : TBufferCoord;
-var
-  BracketPos : TBufferCoord;
-  BracketCh, MatchCh : Char;
-  IsBracket, HasMatchingBracket : Boolean;
-  Attri: TSynHighlighterAttributes;
-  IsOutside : Boolean;
-Const
-  OpenChars = ['(', '{', '['];
-begin
-  GetMatchingBrackets(SynEdit, BracketPos, Result, IsBracket, HasMatchingBracket,
-    BracketCh, MatchCh, Attri);
-  if HasMatchingBracket then begin
-    IsOutside := (CharInSet(BracketCh, OpenChars) and
-                  (BracketPos.Char = SynEdit.CaretXY.Char)) or
-                 not (CharInSet(BracketCh, OpenChars) or
-                  (BracketPos.Char = SynEdit.CaretXY.Char));
-   if (IsOutSide and not CharInSet(MatchCh, OpenChars)) or
-      (not IsOutSide and CharInSet(MatchCh, OpenChars))
-   then
-     Inc(Result.Char);
-  end;
-end;
-
 procedure TCommandsDataModule.ProcessFolderChange(const FolderName: string);
 var
   I : integer;
@@ -1282,11 +1237,83 @@ begin
   end, 200);
 end;
 
+procedure GetMatchingBrackets(SynEdit : TSynEdit;
+  var BracketPos : TBufferCoord; out MatchingBracketPos : TBufferCoord;
+  out IsBracket, HasMatchingBracket : Boolean; out BracketCh, MatchCh : Char;
+  out Attri: TSynHighlighterAttributes);
+
+  procedure GetMatchingBracketsInt(const P : TBufferCoord);
+  const
+    Brackets: array[0..5] of char = ('(', ')', '[', ']', '{', '}');
+
+  var
+    S: string;
+    I: Integer;
+  begin
+    IsBracket := False;
+    HasMatchingBracket := False;
+    SynEdit.GetHighlighterAttriAtRowCol(P, S, Attri);
+    if Assigned(Attri) and (SynEdit.Highlighter.SymbolAttribute = Attri) and
+        (SynEdit.CaretX<=length(SynEdit.LineText) + 1) then begin
+      for i := Low(Brackets) to High(Brackets) do
+        if S = Brackets[i] then begin
+          BracketCh := Brackets[i];
+          IsBracket := True;
+          MatchingBracketPos := SynEdit.GetMatchingBracketEx(P);
+          if (MatchingBracketPos.Char > 0) then begin
+            HasMatchingBracket := True;
+            MatchCh := Brackets[i xor 1];
+          end;
+          break;
+        end;
+    end;
+  end;
+
+begin
+  MatchingBracketPos := BufferCoord(0,0);
+  BracketPos := SynEdit.CaretXY;
+
+  // First Look at the previous character like Site
+  if BracketPos.Char > 1 then Dec(BracketPos.Char);
+  GetMatchingBracketsInt(BracketPos);
+
+  //if it is not a bracket then look at the next character;
+  if not IsBracket and (SynEdit.CaretX > 1) then begin
+    Inc(BracketPos.Char);
+    GetMatchingBracketsInt(BracketPos);
+  end;
+end;
+
+function GetMatchingBracket(SynEdit : TSynEdit) : TBufferCoord;
+var
+  BracketPos : TBufferCoord;
+  BracketCh, MatchCh : Char;
+  IsBracket, HasMatchingBracket : Boolean;
+  Attri: TSynHighlighterAttributes;
+  IsOutside : Boolean;
+Const
+  OpenChars = ['(', '{', '['];
+begin
+  GetMatchingBrackets(SynEdit, BracketPos, Result, IsBracket, HasMatchingBracket,
+    BracketCh, MatchCh, Attri);
+  if HasMatchingBracket then begin
+    IsOutside := (CharInSet(BracketCh, OpenChars) and
+                  (BracketPos.Char = SynEdit.CaretXY.Char)) or
+                 not (CharInSet(BracketCh, OpenChars) or
+                  (BracketPos.Char = SynEdit.CaretXY.Char));
+   if (IsOutSide and not CharInSet(MatchCh, OpenChars)) or
+      (not IsOutSide and CharInSet(MatchCh, OpenChars))
+   then
+     Inc(Result.Char);
+  end;
+end;
+
 procedure TCommandsDataModule.actIDEOptionsExecute(Sender: TObject);
 Var
   Reg : TRegistry;
   IsRegistered : Boolean;
   Key : string;
+  IgnoredProperties: TArray<string>;
 begin
 
   // Shell Integration
@@ -1304,29 +1331,59 @@ begin
 
   PyIDEOptions.SearchTextAtCaret := EditorSearchOptions.SearchTextAtCaret;
 
-    PyIDEOptions.Changed;
-    PyIDEMainForm.StoreApplicationData;
-    if PyIDEOptions.FileExplorerContextMenu <> IsRegistered then begin
-      Reg := TRegistry.Create;
-      try
-        Reg.RootKey := HKEY_CLASSES_ROOT;
-        if IsRegistered then begin
-          Reg.DeleteKey(Key)
-        end else begin
-          Reg.OpenKey(Key, True);
-          Reg.CloseKey;
-          Reg.OpenKey(Key + '\command', True);
-          Reg.WriteString('', '"'+ Application.ExeName + ' "%1"');
-          Reg.CloseKey;
-        end;
+  IgnoredProperties := ['StructureColors', 'UseStructureColors'];
 
-        SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nil, nil);
-      except
-        StyledMessageDlg(_(SRegistryAccessDenied), mtError, [mbOK], 0);
+  var AdditionalFriendlyNames := TSmartPtr.Make(TStringList.Create)();
+  AdditionalFriendlyNames.AddPair('StructureHighlight', _('Highlight structure'));
+  AdditionalFriendlyNames.AddPair('ShowHintMark', _('Show hint mark'));
+  AdditionalFriendlyNames.AddPair('GutterShapeSize', _('Gutter shape size'));
+  AdditionalFriendlyNames.AddPair('ShowCollapsedLine', _('Show collapsed line'));
+  AdditionalFriendlyNames.AddPair('CollapsedLineColor', _('Collapsed line color'));
+  AdditionalFriendlyNames.AddPair('FolderBarLinesColor', _('Folder bar lines color'));
+  AdditionalFriendlyNames.AddPair('FillWholeLines', _('Fill whole lines'));
+  AdditionalFriendlyNames.AddPair('ModifiedColor', _('Modified color'));
+  AdditionalFriendlyNames.AddPair('OriginalColor', _('Original color'));
+  AdditionalFriendlyNames.AddPair('SavedColor', _('Saved color'));
+  AdditionalFriendlyNames.AddPair('SavedModifiedColor', _('Saved and modified color'));
+
+  PyIDEOptions.Changed;
+  PyIDEMainForm.StoreApplicationData;
+  if PyIDEOptions.FileExplorerContextMenu <> IsRegistered then begin
+    Reg := TRegistry.Create;
+    try
+      Reg.RootKey := HKEY_CLASSES_ROOT;
+      if IsRegistered then begin
+        Reg.DeleteKey(Key)
+      end else begin
+        Reg.OpenKey(Key, True);
+        Reg.CloseKey;
+        Reg.OpenKey(Key + '\command', True);
+        Reg.WriteString('', '"'+ Application.ExeName + ' "%1"');
+        Reg.CloseKey;
       end;
-      FreeAndNil(Reg);
-    end;
 
+      SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nil, nil);
+    except
+      StyledMessageDlg(_(SRegistryAccessDenied), mtError, [mbOK], 0);
+    end;
+    FreeAndNil(Reg);
+  end;
+end;
+
+procedure TCommandsDataModule.actPythonPathExecute(Sender: TObject);
+Var
+  Paths : TStringList;
+begin
+  if not GI_PyControl.PythonLoaded then Exit;
+
+  Paths := TStringList.Create;
+  try
+    PyControl.ActiveInterpreter.SysPathToStrings(Paths);
+    if EditFolderList(Paths, _('Python Path'), 870) then
+      PyControl.ActiveInterpreter.StringsToSysPath(Paths);
+  finally
+    Paths.Free;
+  end;
 end;
 
 procedure TCommandsDataModule.actAboutExecute(Sender: TObject);
@@ -1335,6 +1392,37 @@ begin
     ShowModal;
     Release;
   end;
+end;
+
+procedure TCommandsDataModule.actAssistantCommentsExecute(Sender: TObject);
+begin
+   //LLMAssistant.AddComments;
+end;
+
+procedure TCommandsDataModule.actAssistantCancelExecute(Sender: TObject);
+begin
+  //if LLMAssistant.IsBusy then
+  //  LLMAssistant.CancelRequest;
+end;
+
+procedure TCommandsDataModule.actAssistantFixBugsExecute(Sender: TObject);
+begin
+  //LLMAssistant.FixBugs;
+end;
+
+procedure TCommandsDataModule.actAssistantOptimizeExecute(Sender: TObject);
+begin
+  //LLMAssistant.Optimize;
+end;
+
+procedure TCommandsDataModule.actAssistantSuggestExecute(Sender: TObject);
+begin  {
+  if Assigned(GI_ActiveEditor) then
+  begin
+    SynCodeCompletion.CancelCompletion;
+    SynParamCompletion.CancelCompletion;
+    LLMAssistant.Suggest;
+  end;  }
 end;
 
 procedure TCommandsDataModule.actPythonManualsExecute(Sender: TObject);
@@ -1354,22 +1442,6 @@ begin
     end;
   end else if ExtractFileExt(PythonHelpFile) = '.html' then  // python 11
     ShellExecute(0, 'open', PChar(FilePathToURI(PythonHelpFile)), '', '', SW_SHOWNORMAL);
-end;
-
-procedure TCommandsDataModule.actPythonPathExecute(Sender: TObject);
-Var
-  Paths : TStringList;
-begin
-  if not GI_PyControl.PythonLoaded then Exit;
-
-  Paths := TStringList.Create;
-  try
-    PyControl.ActiveInterpreter.SysPathToStrings(Paths);
-    if EditFolderList(Paths, _('Python Path'), 870) then
-      PyControl.ActiveInterpreter.StringsToSysPath(Paths);
-  finally
-    Paths.Free;
-  end;
 end;
 
 function TCommandsDataModule.ShowPythonKeywordHelp(KeyWord : string): Boolean;
@@ -1420,7 +1492,7 @@ begin
   actEditCopyFileName.Enabled := Assigned(Editor);
 
   actFoldVisible.Enabled := Assigned(GI_ActiveEditor);
-  actFoldVisible.Checked := Assigned(GI_ActiveEditor) and
+  actFoldVisible.Checked := Assigned(GI_ActiveEditor) and assigned(GI_ActiveEditor.SynEdit) and
     GI_ActiveEditor.SynEdit.UseCodeFolding;
   actFoldAll.Enabled := actFoldVisible.Checked;
   actUnfoldAll.Enabled := actFoldVisible.Checked;
@@ -1440,28 +1512,28 @@ begin
   actUnfoldFunctions.Enabled := actFoldVisible.Checked;
 
   actEditLBDos.Enabled := Assigned(GI_ActiveEditor);
-  actEditLBDos.Checked := Assigned(GI_ActiveEditor) and
+  actEditLBDos.Checked := Assigned(GI_ActiveEditor) and Assigned(GI_ActiveEditor.SynEdit) and
     ((GI_ActiveEditor.SynEdit.Lines as TSynEditStringList).FileFormat = sffDos);
   actEditLBUnix.Enabled := Assigned(GI_ActiveEditor);
-  actEditLBUnix.Checked := Assigned(GI_ActiveEditor) and
+  actEditLBUnix.Checked := Assigned(GI_ActiveEditor) and Assigned(GI_ActiveEditor.SynEdit) and
     ((GI_ActiveEditor.SynEdit.Lines as TSynEditStringList).FileFormat = sffUnix);
   actEditLBMac.Enabled := Assigned(GI_ActiveEditor);
-  actEditLBMac.Checked := Assigned(GI_ActiveEditor) and
+  actEditLBMac.Checked := Assigned(GI_ActiveEditor) and Assigned(GI_ActiveEditor.SynEdit) and
     ((GI_ActiveEditor.SynEdit.Lines as TSynEditStringList).FileFormat = sffMac);
   actEditAnsi.Enabled := Assigned(GI_ActiveEditor);
-  actEditAnsi.Checked := Assigned(GI_ActiveEditor) and
+  actEditAnsi.Checked := Assigned(GI_ActiveEditor) and Assigned(GI_ActiveEditor.SynEdit) and
     (GI_ActiveEditor.FileEncoding = sf_Ansi);
   actEditUTF8.Enabled := Assigned(GI_ActiveEditor);
-  actEditUTF8.Checked := Assigned(GI_ActiveEditor) and
+  actEditUTF8.Checked := Assigned(GI_ActiveEditor) and Assigned(GI_ActiveEditor.SynEdit) and
     (GI_ActiveEditor.FileEncoding = sf_UTF8);
   actEditUTF8NoBOM.Enabled := Assigned(GI_ActiveEditor);
-  actEditUTF8NoBOM.Checked := Assigned(GI_ActiveEditor) and
+  actEditUTF8NoBOM.Checked := Assigned(GI_ActiveEditor) and Assigned(GI_ActiveEditor.SynEdit) and
     (GI_ActiveEditor.FileEncoding = sf_UTF8_NoBOM);
   actEditUTF16LE.Enabled := Assigned(GI_ActiveEditor);
-  actEditUTF16LE.Checked := Assigned(GI_ActiveEditor) and
+  actEditUTF16LE.Checked := Assigned(GI_ActiveEditor) and Assigned(GI_ActiveEditor.SynEdit) and
     (GI_ActiveEditor.FileEncoding = sf_UTF16LE);
   actEditUTF16BE.Enabled := Assigned(GI_ActiveEditor);
-  actEditUTF16BE.Checked := Assigned(GI_ActiveEditor) and
+  actEditUTF16BE.Checked := Assigned(GI_ActiveEditor) and Assigned(GI_ActiveEditor.SynEdit) and
     (GI_ActiveEditor.FileEncoding = sf_UTF16BE);
 
   SelAvail := Assigned(GI_ActiveEditor) and GI_ActiveEditor.ActiveSynEdit.SelAvail;
@@ -1548,6 +1620,17 @@ begin
     actReplaceParameters.Enabled := False;
     actInsertTemplate.Enabled := False;
   end;
+  {
+  // Assistant actions
+  var HasPythonFile := Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile;
+  actAssistantSuggest.Enabled := HasPythonFile and not SelAvail and not LLMAssistant.IsBusy;
+  actAssistantOptimize.Enabled := HasPythonFile and SelAvail and not LLMAssistant.IsBusy;
+  actAssistantFixBugs.Enabled := HasPythonFile and SelAvail and not LLMAssistant.IsBusy;
+  actAssistantComments.Enabled := HasPythonFile and SelAvail and not LLMAssistant.IsBusy;
+  actAssistantCancel.Enabled := LLMAssistant.IsBusy;
+  }
+  // Other actions
+  actPythonPath.Enabled := GI_PyControl.PythonLoaded;
 end;
 
 procedure TCommandsDataModule.actHelpContentsExecute(Sender: TObject);
@@ -1634,54 +1717,11 @@ begin
   end;
 end;
 
-procedure TCommandsDataModule.actInterpreterEditorOptionsExecute(Sender: TObject);
-begin
-  var TempEditorOptions := TSmartPtr.Make(TSynEditorOptionsContainer.Create(Self))();
-  with TSynEditOptionsDialog.Create(Self) do begin
-    TempEditorOptions.Assign(GI_PyInterpreter.Editor);
-    Form.cbApplyToAll.Checked := False;
-    Form.cbApplyToAll.Enabled := False;
-    Form.Caption := 'Interpreter Editor Options';
-    OnGetHighlighterCount := SynInterpreterOptionsDialogGetHighlighterCount;
-    OnGetHighlighter := SynInterpreterOptionsDialogGetHighlighter;
-    OnSetHighlighter := SynInterpreterOptionsDialogSetHighlighter;
-    VisiblePages := [soDisplay, soOptions, soColor];
-    TSynEditOptionsDialog.HighlighterFileDir := TPyScripterSettings.ColorThemesFilesDir;
-    if Execute(TempEditorOptions) then begin
-      UpdateHighlighters;
-      PythonIIForm.ValidateEditorOptions(TempEditorOptions);
-      GI_PyInterpreter.Editor.Assign(TempEditorOptions);
-    end;
-    Free;
-  end;
-end;
-
 procedure TCommandsDataModule.actHelpParametersExecute(Sender: TObject);
 begin
   PyIDEMainForm.MenuHelpRequested := True;
   Application.HelpJump('parameters');
   PyIDEMainForm.MenuHelpRequested := False;
-end;
-
-procedure TCommandsDataModule.actHelpWebBlogExecute(Sender: TObject);
-begin
-  OpenObject('https://guipy.blogspot.com/');
-end;
-
-procedure TCommandsDataModule.actHelpWebGroupSupportExecute(Sender: TObject);
-begin
-  OpenObject('https://groups.google.com/g/guipy');
-end;
-
-procedure TCommandsDataModule.actHelpWebProjectHomeExecute(Sender: TObject);
-begin
-  OpenObject('https://guipy.de/');
-//  OpenObject('https://github.com/groehner/guipy');
-end;
-
-procedure TCommandsDataModule.actDonateExecute(Sender: TObject);
-begin
-  OpenObject('https://www.paypal.com/donate?hosted_button_id=6RTJT5GMUN3LG');
 end;
 
 procedure TCommandsDataModule.actHelpExternalToolsExecute(Sender: TObject);
@@ -1773,7 +1813,9 @@ end;
 procedure TCommandsDataModule.actEditWordWrapExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
-    GI_ActiveEditor.ActiveSynEdit.WordWrap := not GI_ActiveEditor.ActiveSynEdit.WordWrap;
+    GI_ActiveEditor.ActiveSynEdit.WordWrap := not GI_ActiveEditor.ActiveSynEdit.WordWrap
+  else if GI_PyInterpreter.Editor.Focused then
+    GI_PyInterpreter.Editor.WordWrap := not GI_PyInterpreter.Editor.WordWrap;
 end;
 
 procedure TCommandsDataModule.actEditShowSpecialCharsExecute(
@@ -1923,17 +1965,17 @@ function TCommandsDataModule.DoSearchReplaceText(SynEdit : TSynEdit;
   begin
     if ABackwards then
       Result := Format(_(SReachedTheStart),
-              [iif(SelectionOnly, _(SOfTheSelection), _(SOfTheDocument))])
+              [IfThen(SelectionOnly, _(SOfTheSelection), _(SOfTheDocument))])
     else
       Result := Format(_(SReachedTheEnd),
-              [iif(SelectionOnly, _(SOfTheSelection), _(SOfTheDocument))]);
+              [IfThen(SelectionOnly, _(SOfTheSelection), _(SOfTheDocument))]);
   end;
 
 var
   Options: TSynSearchOptions;
   IsNewSearch : Boolean;
   MsgText : string;
-  OldCaretXY, OldBlockBegin, OldBlockEnd : TBufferCoord;
+  BB, BE: TBufferCoord;
   dlgID : integer;
   OldNoReplaceCount : integer;
 begin
@@ -1949,7 +1991,7 @@ begin
   else
     SynEdit.SearchEngine := SynEditSearch;
 
-  IsNewSearch := (EditorSearchOptions.InitBlockBegin.Char = 0) or
+  IsNewSearch := (not EditorSearchOptions.InitCaretXY.IsValid) or
                  (EditorSearchOptions.BackwardSearch <> ABackwards);
   if IsNewSearch then
     EditorSearchOptions.NewSearch(SynEdit, ABackwards);
@@ -1967,55 +2009,62 @@ begin
         Include(Options, ssoMatchCase);
     scsCaseSensitive : Include(Options, ssoMatchCase);
   end;
-  if not EditorSearchOptions.TempSearchFromCaret then
-    Include(Options, ssoEntireScope);
   if EditorSearchOptions.SearchWholeWords then
     Include(Options, ssoWholeWord);
 
-  if EditorSearchOptions.TempSelectionOnly then with EditorSearchOptions do begin
-    Options := Options + [ssoSelectedOnly, ssoEntireScope];
-    // we need to restrict the scope of search within the orginal selection
-    if not IsNewSearch then begin
-      OldCaretXY := SynEdit.CaretXY;
-      OldBlockBegin := SynEdit.BlockBegin;
-      OldBlockEnd := SynEdit.BlockEnd;
-      if ABackwards then
-        SynEdit.SetCaretAndSelection(SynEdit.BlockBegin, InitBlockBegin, SynEdit.BlockBegin)
+  with EditorSearchOptions do
+    if EditorSearchOptions.TempSelectionOnly then
+    begin
+      Options := Options + [ssoSelectedOnly] - [ssoEntireScope];
+      BE := TBufferCoord.Invalid;
+      if IsNewSearch then
+        BB := TBufferCoord.Invalid
       else
-        SynEdit.SetCaretAndSelection(SynEdit.CaretXY, SynEdit.CaretXY, InitBlockEnd);
-    end;
-  end;
-
-  with EditorSearchOptions do begin
-    if WrappedSearch and CanWrapSearch then begin
-      // we need to restrict the scope of search within the remaining space
-      CanWrapSearch := False;  //Only do this block once
-      TempSelectionOnly := True;
-      Options := Options + [ssoSelectedOnly, ssoEntireScope];
-      if ABackwards then begin
-        InitBlockBegin := InitCaretXY;
-        InitCaretXY := InitBlockEnd;
-      end else begin
-        InitBlockEnd := InitCaretXY;
-        InitCaretXY := InitBlockBegin;
+      begin
+        BB := SynEdit.CaretXY;
+        SynEdit.Selections.Restore(SelStorage);
       end;
-      SynEdit.SetCaretAndSelection(InitCaretXY, InitBlockBegin, InitBlockEnd);
-      if (ssoReplace in Options) and (LastReplaceAction = raReplaceAll) then
-        Options := Options - [ssoPrompt];
+    end
+    else if WrappedSearch then
+    begin
+      if ABackwards then begin
+        BB := InitCaretXY;
+        if CanWrapSearch then
+          BE := BufferCoord(Length(SynEdit.Lines[SynEdit.Lines.Count - 1]) + 1,
+            SynEdit.Lines.Count)
+        else
+          BE := SynEdit.CaretXY;
+      end else begin
+        BE := InitCaretXY;
+        if CanWrapSearch then
+          BB := BufferCoord(1,1)
+        else
+          BB := SynEdit.CaretXY;
+      end;
+      CanWrapSearch := False;  //Do not wrap again!
+    end
+    else
+    begin
+      BB := BufferCoord(1,1);
+      BE := BufferCoord(Length(SynEdit.Lines[SynEdit.Lines.Count - 1]) + 1,
+        SynEdit.Lines.Count);
+      if TempSearchFromCaret then
+      begin
+        if ABackwards then
+          BE := SynEdit.CaretXY
+        else
+          BB := SynEdit.CaretXY;
+      end;
     end;
-  end;
 
   GI_PyIDEServices.WriteStatusMsg('');
 
-  if (EditorSearchOptions.TempSelectionOnly and
-     (SynEdit.BlockBegin.Char = Synedit.BlockEnd.Char) and
-     (SynEdit.BlockBegin.Line = Synedit.BlockEnd.Line))
-  then
+  if EditorSearchOptions.TempSelectionOnly and SynEdit.Selections.IsEmpty then
     Result := 0
   else
     try
         Result := SynEdit.SearchReplace(EditorSearchOptions.SearchText,
-         EditorSearchOptions.ReplaceText, Options);
+         EditorSearchOptions.ReplaceText, Options, BB, BE);
     except
       on E: ESynRegEx do begin
         Result := 0;
@@ -2025,57 +2074,70 @@ begin
       end;
     end;
 
-  if (Result = 0) or (ssoReplace in Options) then with EditorSearchOptions do begin
-    MessageBeep(MB_ICONASTERISK);
-    TempSearchFromCaret := False;
-    if TempSelectionOnly and not WrappedSearch then
-      // Restore the original selection
-      SynEdit.SetCaretAndSelection(InitCaretXY, InitBlockBegin, InitBlockEnd)
-    else if TempSelectionOnly and WrappedSearch and not (ssoReplace in Options) then
-      SynEdit.SetCaretAndSelection(OldCaretXY, OldBlockBegin, OldBlockEnd);
+  with EditorSearchOptions do
+  begin
+    // Further searches will be from caret. Only applies if not SelectionOnly
+    TempSearchFromCaret := True;
 
-    if WrappedSearch then begin
-      MsgText := _(SStartReached);
-      GI_PyIDEServices.WriteStatusMsg(MsgText);
-      DSAMessageDlg(dsaSearchStartReached, 'PyScripter', MsgText,
-         mtInformation, [mbOK], 0, dckActiveForm, 0, mbOK);
-      InitSearch;
-    end else begin
-      MsgText := EndReached(ABackwards, TempSelectionOnly);
-      if Result = 0 then
-        GI_PyIDEServices.WriteStatusMsg(Format(_(SNotFound), [SearchText]))
-      else
-        GI_PyIDEServices.WriteStatusMsg(MsgText);
-      if CanWrapSearch and (LastReplaceAction <> raCancel) then begin
-        dlgID := IfThen(ssoReplace in Options, dsaReplaceFromStart, dsaSearchFromStart);
-        MsgText :=  Format(MsgText + sLineBreak + _(SContinueSearch),
-          [IfThen(ssoReplace in Options, _(STheSearchAndReplace), _(STheSearch)),
-           IfThen(ABackwards, _(SFromTheEnd), _(SFromTheStart))]);
+    if (Result = 0) or (ssoReplace in Options) then
+    // We have reached the end of the search range
+    begin
+      MessageBeep(MB_ICONASTERISK);
+      if TempSelectionOnly and not AReplace then
+        // All done - Restore the original selection
+        SynEdit.Selections.Restore(SelStorage);
 
-        if  IsIncremental or (DSAMessageDlg(dlgID, 'GuiPy', MsgText,
-           mtConfirmation, [mbYes, mbNo], 0, dckActiveForm, 0, mbYes, mbNo) = mrYes) then
-        begin
-          WrappedSearch := True;
-          OldNoReplaceCount := NoReplaceCount;
-          Result := Result + DoSearchReplaceText(SynEdit,  AReplace, ABackwards, IsIncremental);
-        end;
-      end else begin
+      if WrappedSearch then begin
         MsgText := _(SStartReached);
-        if (Result = 0) and not (ssoReplace in Options) then
+        GI_PyIDEServices.WriteStatusMsg(MsgText);
+        DSAMessageDlg(dsaSearchStartReached, 'GuiPy', MsgText,
+           mtInformation, [mbOK], 0, dckActiveForm, 0, mbOK);
+        InitSearch;
+      end
+      else
+      begin
+        MsgText := EndReached(ABackwards, TempSelectionOnly);
+        if Result = 0 then
           GI_PyIDEServices.WriteStatusMsg(Format(_(SNotFound), [SearchText]))
         else
           GI_PyIDEServices.WriteStatusMsg(MsgText);
-        InitSearch;
-      end;
-      if (ssoReplace in Options) and (Result > 0) then begin
-        MsgText := Format(_(SItemsReplaced), [Result, Result - NoReplaceCount - OldNoReplaceCount]);
-        GI_PyIDEServices.WriteStatusMsg(MsgText);
-        DSAMessageDlg(dsaReplaceNumber, 'GuiPy', MsgText,
-           mtInformation, [mbOK], 0, dckActiveForm, 0, mbOK);
+        if CanWrapSearch and (LastReplaceAction <> raCancel) then
+        begin
+          dlgID := IfThen(ssoReplace in Options, dsaReplaceFromStart, dsaSearchFromStart);
+          MsgText :=  Format(MsgText + sLineBreak + _(SContinueSearch),
+            [IfThen(ssoReplace in Options, _(STheSearchAndReplace), _(STheSearch)),
+             IfThen(ABackwards, _(SFromTheEnd), _(SFromTheStart))]);
+
+          if  IsIncremental or (DSAMessageDlg(dlgID, 'GuiPy', MsgText,
+             mtConfirmation, [mbYes, mbNo], 0, dckActiveForm, 0, mbYes, mbNo) = mrYes) then
+          begin
+            WrappedSearch := True;
+            OldNoReplaceCount := NoReplaceCount;
+            Result := Result + DoSearchReplaceText(SynEdit,  AReplace, ABackwards, IsIncremental);
+            WrappedSearch := False;
+          end;
+        end
+        else
+        begin
+          MsgText := _(SStartReached);
+          if (Result = 0) and not (ssoReplace in Options) then
+            GI_PyIDEServices.WriteStatusMsg(Format(_(SNotFound), [SearchText]))
+          else
+            GI_PyIDEServices.WriteStatusMsg(MsgText);
+          InitSearch;
+        end;
       end;
     end;
-  end else
-    EditorSearchOptions.TempSearchFromCaret := True;
+
+    if (ssoReplace in Options) and (Result > 0) and not WrappedSearch then
+    begin
+      MsgText := Format(_(SItemsReplaced),
+        [Result + NoReplaceCount + OldNoReplaceCount, Result]);
+      GI_PyIDEServices.WriteStatusMsg(MsgText);
+      DSAMessageDlg(dsaReplaceNumber, 'GuiPy', MsgText,
+         mtInformation, [mbOK], 0, dckActiveForm, 0, mbOK);
+    end;
+  end;
 
   if ConfirmReplaceDialog <> nil then
     ConfirmReplaceDialog.Free;
@@ -2178,7 +2240,7 @@ begin
   end;
   EditorSearchOptions.LastReplaceAction := Action;
   if Action in [raSkip, raCancel] then
-    EditorSearchOptions.NoReplaceCount := EditorSearchOptions.NoReplaceCount + 1;
+    Inc(EditorSearchOptions.NoReplaceCount);
 end;
 
 function TCommandsDataModule.ProgramVersionHTTPLocationLoadFileFromRemote(
@@ -2296,6 +2358,7 @@ initialization
   TP_GlobalIgnoreClassProperty(TObject,'ImageName');
   TP_GlobalIgnoreClassProperty(TControl,'HelpKeyword');
   TP_GlobalIgnoreClassProperty(TControl,'StyleName');
+  TP_GlobalIgnoreClassProperty(TBrowseURL,'URL');
 
   //JCL Debug
   AddIgnoredException(EClipboardException);

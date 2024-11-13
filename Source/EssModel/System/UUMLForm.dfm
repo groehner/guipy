@@ -2,8 +2,8 @@ object FUMLForm: TFUMLForm
   Left = 394
   Top = 229
   Caption = 'UML'
-  ClientHeight = 596
-  ClientWidth = 653
+  ClientHeight = 593
+  ClientWidth = 641
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,27 +21,27 @@ object FUMLForm: TFUMLForm
   object PUML: TPanel
     Left = 0
     Top = 0
-    Width = 653
-    Height = 596
+    Width = 641
+    Height = 593
     Align = alClient
     Caption = 'PUML'
     TabOrder = 0
     OnResize = PUMLResize
-    ExplicitWidth = 649
-    ExplicitHeight = 595
+    ExplicitWidth = 637
+    ExplicitHeight = 592
     object PDiagram: TPanel
       Left = 1
       Top = 1
-      Width = 651
+      Width = 639
       Height = 420
       Align = alTop
       Constraints.MinHeight = 100
       TabOrder = 0
-      ExplicitWidth = 647
+      ExplicitWidth = 635
       object PDiagramPanel: TPanel
         Left = 1
         Top = 23
-        Width = 649
+        Width = 637
         Height = 396
         Align = alClient
         BevelEdges = [beLeft, beTop]
@@ -58,7 +58,7 @@ object FUMLForm: TFUMLForm
         ParentFont = False
         TabOrder = 0
         OnResize = PDiagramPanelResize
-        ExplicitWidth = 645
+        ExplicitWidth = 633
         object TVFileStructure: TTreeView
           Left = 536
           Top = 18
@@ -72,7 +72,7 @@ object FUMLForm: TFUMLForm
       object UMLToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 649
+        Width = 637
         Height = 22
         AutoSize = True
         ButtonWidth = 24
@@ -200,8 +200,8 @@ object FUMLForm: TFUMLForm
     object PInteractive: TPanel
       Left = 1
       Top = 424
-      Width = 651
-      Height = 171
+      Width = 639
+      Height = 168
       Align = alClient
       PopupMenu = PMInteractive
       TabOrder = 1
@@ -312,7 +312,7 @@ object FUMLForm: TFUMLForm
     object SpTBXSplitter1: TSpTBXSplitter
       Left = 1
       Top = 421
-      Width = 651
+      Width = 639
       Height = 3
       Cursor = crSizeNS
       Align = alTop

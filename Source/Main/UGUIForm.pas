@@ -36,6 +36,8 @@ type
       var Resize: Boolean);
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
       NewDPI: Integer);
+    procedure FormBeforeMonitorDpiChanged(Sender: TObject; OldDPI,
+      NewDPI: Integer);
   private
     // Tk
     FAlwaysOnTop: boolean;
@@ -50,6 +52,7 @@ type
     FTheme: TTheme;
     FTransparency: real;
     FTitle: string;
+    FFontSize: integer;
     Indent1: String;
     Indent2: String;
 
@@ -92,6 +95,7 @@ type
     function Without_(s: String): String;
     procedure setWidgetPartners;
     procedure SetGridOptions;
+    procedure getFontSize;
   public
     ReadOnly: boolean;
     Pathname: String;
@@ -146,6 +150,7 @@ type
     property Theme: TTheme read FTheme write FTheme;
     property Transparency: real read FTransparency write setTransparency;
     property Undecorated: boolean read FUndecorated write FUndecorated;
+    property FontSize: integer read FFontSize write FFontSize;
     property Height;
     property Width;
     // events
@@ -187,8 +192,8 @@ type
 
 implementation
 
-uses Clipbrd, Themes, SysUtils, Controls, frmFile,
-     jvDockControlForm, frmPyIDEMain, cPyScripterSettings,
+uses Clipbrd, Themes, SysUtils, Controls, Math, System.Generics.Collections,
+     frmFile, jvDockControlForm, frmPyIDEMain, cPyScripterSettings,
      UGUIDesigner, UObjectGenerator, UObjectInspector, UUtils,
      UConfiguration, UXTheme, UQtWidgetDescendants, UBaseTKWidgets,
      uCommonFunctions;
@@ -270,6 +275,8 @@ begin
   EnterForm(Self); // must stay!
   SetAnimation(true);
   ReadOnly:= IsWriteProtected(Pathname);
+  if FontSize = 0 then
+    GetFontSize;
 end;
 
 procedure TFGUIForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -278,19 +285,19 @@ begin
   FGUIDesigner.ELDesigner.DesignControl:= nil;
   FGUIDesigner.DesignForm:= nil;
   FObjectInspector.RefreshCBObjects;
+  if PyIDEOptions.SaveFilesAutomatically then
+    Save(PyIDEOptions.CreateBackupFiles);
   CanClose:= true;
 end;
 
 procedure TFGUIForm.FormClose(Sender: TObject; var aAction: TCloseAction);
 begin
-  if PyIDEOptions.SaveFilesAutomatically then
-    Save(PyIDEOptions.CreateBackupFiles);
   if Assigned(Partner) then begin
     Partner.Partner:= nil;
     (Partner as TEditorForm).getEditor.GUIFormOpen:= false;
   end;
   for var i:= 1 to 4 do
-    PyIDEMainForm.TabControlWidgets.Items[i].Visible:= true;
+    PyIDEMainForm.TabControlWidgets.Items[i].Visible:= FConfiguration.vistabs[i];
   aAction:= caFree;
 end;
 
@@ -367,8 +374,8 @@ begin
     FGUIDesigner.ChangeTo(Self);
   Partner.SynEditEnter(Partner.ActiveSynEdit);
   // show TKinter or TTK or Qt
-  if PyIDEMainForm.TabControlWidgets.ActiveTabIndex = 0 then
-    PyIDEMainForm.TabControlWidgets.ActiveTabIndex:= 1;
+  //if PyIDEMainForm.TabControlWidgets.ActiveTabIndex = 0 then
+  //  PyIDEMainForm.TabControlWidgets.ActiveTabIndex:= 1;
 end;
 
 procedure TFGUIForm.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
@@ -377,6 +384,13 @@ begin
   FGUIDesigner.ScaleImages;
   Invalidate;
   SetGridOptions;
+  OnResize:= FormResize;
+end;
+
+procedure TFGUIForm.FormBeforeMonitorDpiChanged(Sender: TObject; OldDPI,
+  NewDPI: Integer);
+begin
+  OnResize:= nil;
 end;
 
 procedure TFGUIForm.SetGridOptions;
@@ -629,6 +643,9 @@ begin
   for var i:= 0 to ComponentCount - 1 do
     if Components[i] is TBaseWidget then
       (Components[i] as TBaseWidget).Zoom(_in);
+  if _in
+    then FontSize:= FontSize + GuiPyOptions.ZoomSteps
+    else FontSize:= max(FontSize - GuiPyOptions.ZoomSteps, 6);
 end;
 
 type
@@ -640,7 +657,6 @@ begin
     exit;
   FIScaling := True;
   try
-    // Gui files are stored for 96 dpi
     ScaleScrollBars(NewPPI, OldPPI);
     ScaleConstraints(NewPPI, OldPPI);
     ClientWidth := MulDiv(ClientWidth, NewPPI, OldPPI);
@@ -654,6 +670,32 @@ begin
   finally
     FIScaling := False;
   end;
+end;
+
+procedure TFGuiForm.getFontSize;
+  var CompFontSize, Value, Key, MaxFontCount, MaxFontKey: integer;
+      FontSizeDictionary: TDictionary<Integer, Integer>;
+begin
+  FontSizeDictionary := TDictionary<Integer, Integer>.Create(20);
+  for var i:= 0 to ComponentCount - 1 do
+    if Components[i] is TBaseWidget then begin
+      CompFontSize:= (Components[i] as TBaseWidget).Font.Size;
+      if FontSizeDictionary.TryGetValue(CompFontSize, Value) then
+        FontSizeDictionary.AddOrSetValue(CompFontSize, Value +1)
+      else
+        FontSizeDictionary.AddOrSetValue(CompFontSize, 1);
+    end;
+  MaxFontCount:= 0;
+  MaxFontKey:= 0;
+  for Key in FontSizeDictionary.Keys do
+    if FontSizeDictionary.Items[Key] > MaxFontCount then begin
+      MaxFontCount:= FontSizeDictionary.Items[Key];
+      MaxFontKey:= Key;
+    end;
+  if MaxFontKey > 0
+    then FontSize:= MaxFontKey
+    else FontSize:= GuiPyOptions.GUIFontSize;
+  FontSizeDictionary.Free;
 end;
 
 end.

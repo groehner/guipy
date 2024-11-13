@@ -28,11 +28,6 @@ under the MPL, indicate your decision by deleting the provisions above and
 replace them with the notice and other provisions required by the GPL.
 If you do not delete the provisions above, a recipient may use your version
 of this file under either the MPL or the GPL.
-
-You may retrieve the latest version of this file at the SynEdit home page,
-located at http://SynEdit.SourceForge.net
-
-Known Issues:
 -------------------------------------------------------------------------------}
 {
 @abstract(A Python language highlighter for SynEdit)
@@ -52,7 +47,8 @@ uses
   Vcl.Graphics,
   SynEditHighlighter,
   SynEditCodeFolding,
-  StringResources;
+  StringResources,
+  SynEditTypes;
 
 type
   TtkTokenKind = (tkComment, tkIdentifier, tkKey, tkNull, tkNumber, tkSpace,
@@ -68,7 +64,8 @@ type
                  rsTraceback  // used in the interpreter
                 );
 
-type
+  TPyFoldType = (pftCodeBlock, pftMultiLineStringFoldType, pftClassDefType, pftFunctionDefType);
+
   TSynPythonSyn = class(TSynCustomCodeFoldingHighlighter)
   private
     fStringStarter: WideChar;  // used only for rsMultilineString3 stuff
@@ -121,13 +118,13 @@ type
     property TokenID: TtkTokenKind read FTokenID;
     procedure DispatchProc; virtual;
   public
-    function IsIdentChar(AChar: WideChar): Boolean; override;
-    property Keywords: TStringList read FKeywords;
+    class function GetCapabilities: TSynHighlighterCapabilities; override;
     class function GetLanguageName: string; override;
     class function GetFriendlyLanguageName: UnicodeString; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    function IsIdentChar(AChar: WideChar): Boolean; override;
     function GetDefaultAttribute(Index: integer): TSynHighlighterAttributes;
       override;
     function GetEol: Boolean; override;
@@ -142,6 +139,10 @@ type
     procedure InitFoldRanges(FoldRanges : TSynFoldRanges); override;
     procedure ScanForFoldRanges(FoldRanges: TSynFoldRanges;
       LinesToScan: TStrings; FromLine: Integer; ToLine: Integer); override;
+    procedure AdjustFoldRanges(FoldRanges: TSynFoldRanges;
+      LinesToScan: TStrings); override;
+    function FlowControlAtLine(Lines: TStrings; Line: Integer): TSynFlowControl; override;
+    property Keywords: TStringList read FKeywords;
   published
     property CommentAttri: TSynHighlighterAttributes read fCommentAttri
       write fCommentAttri;
@@ -630,6 +631,18 @@ begin
   end;
 end;
 
+procedure TSynPythonSyn.AdjustFoldRanges(FoldRanges: TSynFoldRanges;
+  LinesToScan: TStrings);
+var
+  I: Integer;
+begin
+  inherited;
+  for I := 0 to FoldRanges.Count - 1 do
+    with FoldRanges.Ranges.List[I] do
+      if FoldType <> Integer(pftCodeBlock) then
+        Indent := 0;
+end;
+
 procedure TSynPythonSyn.CommentProc;
 begin
   inc(Run);
@@ -692,26 +705,14 @@ begin
 end;
 
 procedure TSynPythonSyn.NumberProc;
-const
-  INTCHARS = [WideChar('0')..WideChar('9')];
-  HEXCHARS = [WideChar('a') .. WideChar('f'), WideChar('A') .. WideChar('F')] + INTCHARS;
-  OCTCHARS = [WideChar('0')..WideChar('7')];
-  HEXINDICATOR = [WideChar('x'), WideChar('X')];
-  LONGINDICATOR = [WideChar('l'), WideChar('L')];
-  IMAGINARYINDICATOR = [WideChar('j'), WideChar('J')];
-  EXPONENTINDICATOR = [WideChar('e'), WideChar('E')];
-  EXPONENTSIGN = [WideChar('+'), WideChar('-')];
-  DOT = WideChar('.');
-  ZERO = WideChar('0');
-
 type
   TNumberState =
     (
     nsStart,
     nsDotFound,
-    nsFloatNeeded,
     nsHex,
     nsOct,
+    nsBinary,
     nsExpFound
     );
 
@@ -723,18 +724,18 @@ var
   begin
     case temp of
       // Look for dot (.)
-      DOT: begin
+      '.': begin
         // .45
-        if CharInSet(FLine[Run], INTCHARS) then
+        if CharInSet(FLine[Run], ['0'..'9']) then
         begin
-          Inc (Run);
+          Inc(Run);
           fTokenID := tkFloat;
           State := nsDotFound;
 
         // Non-number dot
         end else begin
           // Ellipsis
-          if (FLine[Run] = DOT) and (FLine[Run+1] = DOT) then
+          if (FLine[Run] = '.') and (FLine[Run+1] = '.') then
             Inc (Run, 2);
           fTokenID := tkSymbol;
           Result := False;
@@ -743,29 +744,28 @@ var
       end; // DOT
 
       // Look for zero (0)
-      ZERO: begin
+      '0': begin
         temp := FLine[Run];
         // 0x123ABC
-        if CharInSet(temp, HEXINDICATOR) then begin
+        if CharInSet(temp, ['x', 'X']) then begin
           Inc (Run);
           fTokenID := tkHex;
           State := nsHex;
+        // 0o123
+        end else if CharInSet(temp, ['o', 'O']) then begin
+          Inc (Run);
+          fTokenID := tkOct;
+          State := nsOct;
+        // 0b1010
+        end else if CharInSet(temp, ['b', 'B']) then begin
+          Inc (Run);
+          fTokenID := tkOct; //paint same as octal
+          State := nsBinary;
         // 0.45
-        end else if temp = DOT then begin
+        end else if temp = '.' then begin
           Inc (Run);
           State := nsDotFound;
           fTokenID := tkFloat;
-        end else if CharInSet(temp, INTCHARS) then begin
-          Inc (Run);
-          // 0123 or 0123.45
-          if CharInSet(temp, OCTCHARS) then begin
-            fTokenID := tkOct;
-            State := nsOct;
-          // 0899.45
-          end else begin
-            fTokenID := tkFloat;
-            State := nsFloatNeeded;
-          end; // if
         end; // if
       end; // ZERO
     end; // case
@@ -778,7 +778,7 @@ var
     Result := False;
     fTokenID := tkUnknown;
     // Ignore all tokens till end of "number"
-    while IsIdentChar(FLine[Run]) or (FLine[Run] = DOT) do
+    while IsIdentChar(FLine[Run]) or (FLine[Run] = '.') do
       Inc (Run);
   end; // HandleBadNumber
 
@@ -787,10 +787,10 @@ var
     State := nsExpFound;
     fTokenID := tkFloat;
     // Skip e[+/-]
-    if CharInSet(FLine[Run+1], EXPONENTSIGN) then
+    if CharInSet(FLine[Run+1], ['+', '-']) then
       Inc (Run);
     // Invalid token : 1.0e
-    if not CharInSet(FLine[Run+1], INTCHARS) then begin
+    if not CharInSet(FLine[Run+1], ['0'..'9']) then begin
       Inc (Run);
       Result := HandleBadNumber;
       Exit;
@@ -802,7 +802,7 @@ var
   function HandleDot: Boolean;
   begin
     // Check for ellipsis
-    Result := (FLine[Run+1] <> DOT) or (FLine[Run+2] <> DOT);
+    Result := (FLine[Run+1] <> '.') or (FLine[Run+2] <> '.');
     if Result then begin
       State := nsDotFound;
       fTokenID := tkFloat;
@@ -811,23 +811,27 @@ var
 
   function CheckStart: Boolean;
   begin
+    // Allow underscores inside the number
+    if temp = '_' then begin
+      if CharInSet(FLine[Run + 1], ['0'..'9']) then
+        Result := True
+      else
+        Result := HandleBadNumber;
     // 1234
-    if CharInSet(temp, INTCHARS) then begin
+    end else if CharInSet(temp, ['0'..'9']) then begin
       Result := True;
     //123e4
-    end else if CharInSet(temp, EXPONENTINDICATOR) then begin
+    end else if CharInSet(temp, ['e', 'E']) then begin
       Result := HandleExponent;
     // 123.45j
-    end else if CharInSet(temp, IMAGINARYINDICATOR) then begin
+    end else if CharInSet(temp, ['j', 'J']) then begin
       Inc (Run);
       fTokenID := tkFloat;
       Result := False;
     // 123.45
-    end else if temp = DOT then begin
+    end else if temp = '.' then begin
       Result := HandleDot;
     // Error!
-    end else if CharInSet(temp, LONGINDICATOR) then begin
-      Result := False;
     end else if IsIdentChar(temp) then begin
       Result := HandleBadNumber;
     // End of number
@@ -838,18 +842,26 @@ var
 
   function CheckDotFound: Boolean;
   begin
+    // Allow underscores inside the number
+    if temp = '_' then begin
+      if CharInSet(FLine[Run - 1], ['0'..'9']) and
+        CharInSet(FLine[Run + 1], ['0'..'9'])
+      then
+        Result := True
+      else
+        Result := HandleBadNumber;
     // 1.0e4
-    if CharInSet(temp, EXPONENTINDICATOR) then begin
+    end else if CharInSet(temp, ['e', 'E']) then begin
       Result := HandleExponent;
     // 123.45
-    end else if CharInSet(temp, INTCHARS) then begin
+    end else if CharInSet(temp, ['0'..'9']) then begin
       Result := True;
     // 123.45j
-    end else if CharInSet(temp, IMAGINARYINDICATOR) then begin
+    end else if CharInSet(temp, ['j', 'J']) then begin
       Inc (Run);
       Result := False;
     // 123.45.45: Error!
-    end else if temp = DOT then begin
+    end else if temp = '.' then begin
       Result := False;
       if HandleDot then
         HandleBadNumber;
@@ -862,95 +874,52 @@ var
     end; // if
   end; // CheckDotFound
 
-  function CheckFloatNeeded: Boolean;
+  function CheckSpecialInt(ValidChars: TSysCharSet): Boolean;
   begin
-    // 091.0e4
-    if CharInSet(temp, EXPONENTINDICATOR) then begin
-      Result := HandleExponent;
-    // 0912345
-    end else if CharInSet(temp, INTCHARS) then begin
-      Result := True;
-    // 09123.45
-    end else if temp = DOT then begin
-      Result := HandleDot or HandleBadNumber; // Bad octal
-    // 09123.45j
-    end else if CharInSet(temp, IMAGINARYINDICATOR) then begin
-      Inc (Run);
-      Result := False;
-    // End of number (error: Bad oct number) 0912345
-    end else begin
-      Result := HandleBadNumber;
-    end;
-  end; // CheckFloatNeeded
-
-  function CheckHex: Boolean;
-  begin
-    // 0x123ABC
-    if CharInSet(temp, HEXCHARS) then begin
-      Result := True;
-    // 0x123ABCL
-    end else if CharInSet(temp, LONGINDICATOR) then
+    // Allow underscores inside the number
+    if temp = '_' then begin
+      if CharInSet(FLine[Run - 1], ValidChars) and
+        CharInSet(FLine[Run + 1], ValidChars)
+      then
+        Result := True
+      else
+        Result := HandleBadNumber;
+    end else if CharInSet(temp, ValidChars) then
     begin
+      Result := True;
+    end else if CharInSet(temp, ['l', 'L']) then begin
       Inc (Run);
       Result := False;
-    // 0x123.45: Error!
-    end else if temp = DOT then begin
+    end else if temp = '.' then begin
       Result := False;
       if HandleDot then
         HandleBadNumber;
-    // Error!
     end else if IsIdentChar(temp) then begin
       Result := HandleBadNumber;
-    // End of number
     end else begin
       Result := False;
     end; // if
   end; // CheckHex
 
-  function CheckOct: Boolean;
-  begin
-    // 012345
-    if CharInSet(temp, INTCHARS) then begin
-      if not CharInSet(temp, OCTCHARS) then begin
-        State := nsFloatNeeded;
-        fTokenID := tkFloat;
-      end; // if
-      Result := True;
-    // 012345L
-    end else if CharInSet(temp, LONGINDICATOR) then begin
-      Inc (Run);
-      Result := False;
-    // 0123e4
-    end else if CharInSet(temp, EXPONENTINDICATOR) then begin
-      Result := HandleExponent;
-    // 0123j
-    end else if CharInSet(temp, IMAGINARYINDICATOR) then begin
-      Inc (Run);
-      fTokenID := tkFloat;
-      Result := False;
-    // 0123.45
-    end else if temp = DOT then begin
-      Result := HandleDot;
-    // Error!
-    end else if IsIdentChar(temp) then begin
-      Result := HandleBadNumber;
-    // End of number
-    end else begin
-      Result := False;
-    end; // if
-  end; // CheckOct
-
   function CheckExpFound: Boolean;
   begin
+    // Allow underscores inside the number
+    if temp = '_' then begin
+      if CharInSet(FLine[Run - 1], ['0'..'9']) and
+        CharInSet(FLine[Run + 1], ['0'..'9'])
+      then
+        Result := True
+      else
+        Result := HandleBadNumber;
     // 1e+123
-    if CharInSet(temp, INTCHARS) then begin
+    end else if CharInSet(temp, ['0'..'9']) then begin
       Result := True;
     // 1e+123j
-    end else if CharInSet(temp, IMAGINARYINDICATOR) then begin
+    end else if CharInSet(temp, ['j', 'J']) then begin
       Inc (Run);
       Result := False;
     // 1e4.5: Error!
-    end else if temp = DOT then begin
+    end else if temp = '.' then begin
       Result := False;
       if HandleDot then
         HandleBadNumber;
@@ -983,12 +952,12 @@ begin
         if not CheckStart then Exit;
       nsDotFound:
         if not CheckDotFound then Exit;
-      nsFloatNeeded:
-        if not CheckFloatNeeded then Exit;
       nsHex:
-        if not CheckHex then Exit;
+        if not CheckSpecialInt(['a'..'f', 'A'..'F', '0'..'9']) then Exit;
       nsOct:
-        if not CheckOct then Exit;
+        if not CheckSpecialInt(['0'..'7']) then Exit;
+      nsBinary:
+        if not CheckSpecialInt(['0'..'1']) then Exit;
       nsExpFound:
         if not CheckExpFound then Exit;
     end; // case
@@ -1317,11 +1286,55 @@ begin
   end;
 end;
 
+function TSynPythonSyn.FlowControlAtLine(Lines: TStrings;
+  Line: Integer): TSynFlowControl;
+var
+  SLine: string;
+  Index: Integer;
+begin
+  Result := fcNone;
+
+  SLine := Lines[Line - 1];
+
+  Index :=  SLine.IndexOf('continue');
+  if Index >= 0 then
+    Result := fcContinue
+  else
+  begin
+    Index :=  SLine.IndexOf('break');
+    if Index >= 0 then
+      Result := fcBreak
+    else
+    begin
+      Index :=  SLine.IndexOf('return');
+      if Index >= 0 then
+        Result := fcExit
+      else
+      begin
+        Index :=  SLine.IndexOf('yield');
+        if Index >= 0 then
+          Result := fcExit
+      end;
+    end;
+  end;
+
+  // Index is 0-based
+  if (Index >= 0) and
+    not (GetHighlighterAttriAtRowCol(Lines, Line - 1, Index + 1) = KeyAttri)
+  then
+    Result := fcNone;
+end;
+
 procedure TSynPythonSyn.Next;
 begin
   fTokenPos := Run;
   DispatchProc;
   inherited;
+end;
+
+class function TSynPythonSyn.GetCapabilities: TSynHighlighterCapabilities;
+begin
+  Result := inherited GetCapabilities + [hcStructureHighlight];
 end;
 
 function TSynPythonSyn.GetDefaultAttribute(Index: integer): TSynHighlighterAttributes;
@@ -1407,11 +1420,6 @@ var
   Indent : Integer;
   TabW : integer;
   FoldType : integer;
-const
-  MultiLineStringFoldType = 2;
-  ClassDefType = 3;
-  FunctionDefType = 4;
-
 
   function IsMultiLineString(Line : integer; Range : TRangeState; Fold : Boolean): Boolean;
   begin
@@ -1419,13 +1427,13 @@ const
     if TRangeState(GetLineRange(LinesToScan, Line)) = Range then
     begin
       if (TRangeState(GetLineRange(LinesToScan, Line - 1)) <> Range) and Fold then
-        FoldRanges.StartFoldRange(Line + 1, MultiLineStringFoldType)
+        FoldRanges.StartFoldRange(Line + 1, Integer(pftMultiLineStringFoldType))
       else
         FoldRanges.NoFoldInfo(Line + 1);
     end
     else if (TRangeState(GetLineRange(LinesToScan, Line - 1)) = Range) and Fold then
     begin
-      FoldRanges.StopFoldRange(Line + 1, MultiLineStringFoldType);
+      FoldRanges.StopFoldRange(Line + 1, Integer(pftMultiLineStringFoldType));
     end else
       Result := False;
   end;
@@ -1482,11 +1490,11 @@ begin
       if Success then
       begin
         if Groups[1].Value = 'class' then
-          FoldType := ClassDefType
+          FoldType := Integer(pftClassDefType)
         else if Pos('def', Groups[1].Value) >= 1 then
-          FoldType := FunctionDefType
+          FoldType := Integer(pftFunctionDefType)
         else
-          FoldType := 1;
+          FoldType := Integer(pftCodeBlock);
 
         FoldRanges.StartFoldRange(Line + 1, FoldType, Indent);
         Continue;

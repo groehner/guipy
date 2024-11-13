@@ -11,10 +11,10 @@ Uses
   Winapi.Windows,
   System.SysUtils,
   System.Classes,
+  System.SyncObjs,
   System.JSON,
   System.Generics.Collections,
   System.RegularExpressions,
-  System.SyncObjs,
   uSysUtils,
   JclSynch;
 
@@ -106,6 +106,8 @@ type
 implementation
 
 Uses
+  System.Diagnostics,
+  System.Variants,
   LspUtils;
 
 const

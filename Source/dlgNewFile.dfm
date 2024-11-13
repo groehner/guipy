@@ -57,6 +57,7 @@ inherited NewFileDialog: TNewFileDialog
           BevelOuter = bvNone
           BevelKind = bkFlat
           Header.AutoSizeIndex = 0
+
           Header.MainColumn = -1
           Header.Options = [hoColumnResize, hoDrag]
           NodeDataSize = 0

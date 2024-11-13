@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 397
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -120,8 +120,6 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
-    ExplicitWidth = 606
-    ExplicitHeight = 294
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -265,7 +263,6 @@ object PyIDEMainForm: TPyIDEMainForm
       Height = 113
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 624
       object DebugToolbar: TSpTBXToolbar
         Left = 2
         Top = 52
@@ -464,16 +461,18 @@ object PyIDEMainForm: TPyIDEMainForm
           Width = 160
           Height = 23
           AutoDropDownWidth = True
+          AutoCloseUp = True
           ItemHeight = 15
           TabOrder = 1
           Visible = False
           OnChange = tbiReplaceTextChange
+          OnExit = tbiReplaceTextExit
           OnKeyPress = tbiReplaceTextKeyPress
         end
       end
       object MainMenu: TSpTBXToolbar
         Left = 2
-        Top = 0
+        Top = -4
         Width = 377
         Height = 21
         DockMode = dmCannotFloatOrChangeDocks
@@ -1521,12 +1520,13 @@ object PyIDEMainForm: TPyIDEMainForm
         Top = 23
         Width = 763
         Height = 57
-        ActiveTabIndex = 3
+        ActiveTabIndex = 0
         TabAutofit = True
         TabAutofitMaxSize = 80
         HiddenItems = <>
         object SpTBXTabItem1: TSpTBXTabItem
           Caption = 'Program'
+          Checked = True
           CustomWidth = 80
         end
         object SpTBXTabItem2: TSpTBXTabItem
@@ -1539,7 +1539,6 @@ object PyIDEMainForm: TPyIDEMainForm
         end
         object SpTBXTabItem4: TSpTBXTabItem
           Caption = 'Qt Base'
-          Checked = True
           CustomWidth = 80
         end
         object SpTBXTabItem5: TSpTBXTabItem
@@ -2478,90 +2477,6 @@ object PyIDEMainForm: TPyIDEMainForm
             end
           end
         end
-        object SpTBXTabSheetProgram: TSpTBXTabSheet
-          Left = 0
-          Top = 25
-          Width = 763
-          Height = 32
-          Caption = 'Program'
-          ImageIndex = -1
-          TabItem = 'SpTBXTabItem1'
-          object ToolbarProgram: TToolBar
-            Left = 2
-            Top = 0
-            Width = 757
-            Height = 28
-            Align = alClient
-            AutoSize = True
-            ButtonHeight = 27
-            ButtonWidth = 30
-            Color = clBtnFace
-            Images = vilProgramLight
-            ParentColor = False
-            TabOrder = 0
-            object TBClass: TToolButton
-              Left = 0
-              Top = 0
-              Hint = 'New class'
-              ImageIndex = 0
-              ImageName = '00'
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = actUMLNewClassExecute
-            end
-            object TBStructogram: TToolButton
-              Left = 30
-              Top = 0
-              Hint = 'New structogram'
-              ImageIndex = 1
-              ImageName = '01'
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = actFileNewStructogramExecute
-            end
-            object TBSequence: TToolButton
-              Left = 60
-              Top = 0
-              Hint = 'New sequence diagram'
-              ImageIndex = 2
-              ImageName = '02'
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = actFileNewSequencediagramExecute
-            end
-            object TBConsole: TToolButton
-              Tag = 1
-              Left = 90
-              Top = 0
-              Action = actFileNewModule
-              ImageIndex = 3
-              ImageName = '03'
-              ParentShowHint = False
-              ShowHint = True
-            end
-            object TBTkApplication: TToolButton
-              Left = 120
-              Top = 0
-              Hint = 'New Tk/TTK-Application'
-              ImageIndex = 4
-              ImageName = '04'
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = actFileNewTkinterExecute
-            end
-            object TBQtApplication: TToolButton
-              Left = 150
-              Top = 0
-              Hint = 'New Qt Application'
-              Caption = 'Qt-Application'
-              ImageIndex = 5
-              ImageName = '05'
-              ParentShowHint = False
-              ShowHint = True
-              OnClick = TBQtApplicationClick
-            end
-          end
-        end
         object SpTBXTabSheetQtBase: TSpTBXTabSheet
           Left = 0
           Top = 25
@@ -2858,6 +2773,90 @@ object PyIDEMainForm: TPyIDEMainForm
               OnClick = ToolButtonClick
               OnMouseDown = ToolButtonMouseDown
               OnStartDrag = ToolButtonStartDrag
+            end
+          end
+        end
+        object SpTBXTabSheetProgram: TSpTBXTabSheet
+          Left = 0
+          Top = 25
+          Width = 763
+          Height = 32
+          Caption = 'Program'
+          ImageIndex = -1
+          TabItem = 'SpTBXTabItem1'
+          object ToolbarProgram: TToolBar
+            Left = 2
+            Top = 0
+            Width = 757
+            Height = 28
+            Align = alClient
+            AutoSize = True
+            ButtonHeight = 27
+            ButtonWidth = 30
+            Color = clBtnFace
+            Images = vilProgramLight
+            ParentColor = False
+            TabOrder = 0
+            object TBClass: TToolButton
+              Left = 0
+              Top = 0
+              Hint = 'New class'
+              ImageIndex = 0
+              ImageName = '00'
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = actUMLNewClassExecute
+            end
+            object TBStructogram: TToolButton
+              Left = 30
+              Top = 0
+              Hint = 'New structogram'
+              ImageIndex = 1
+              ImageName = '01'
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = actFileNewStructogramExecute
+            end
+            object TBSequence: TToolButton
+              Left = 60
+              Top = 0
+              Hint = 'New sequence diagram'
+              ImageIndex = 2
+              ImageName = '02'
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = actFileNewSequencediagramExecute
+            end
+            object TBConsole: TToolButton
+              Tag = 1
+              Left = 90
+              Top = 0
+              Action = actFileNewModule
+              ImageIndex = 3
+              ImageName = '03'
+              ParentShowHint = False
+              ShowHint = True
+            end
+            object TBTkApplication: TToolButton
+              Left = 120
+              Top = 0
+              Hint = 'New Tk/TTK-Application'
+              ImageIndex = 4
+              ImageName = '04'
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = actFileNewTkinterExecute
+            end
+            object TBQtApplication: TToolButton
+              Left = 150
+              Top = 0
+              Hint = 'New Qt Application'
+              Caption = 'Qt-Application'
+              ImageIndex = 5
+              ImageName = '05'
+              ParentShowHint = False
+              ShowHint = True
+              OnClick = TBQtApplicationClick
             end
           end
         end

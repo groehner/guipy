@@ -51,8 +51,10 @@ uses
   {$IFDEF RTL330_UP}
   System.Messaging,
   {$ENDIF RTL330_UP}
-  Windows, Messages, Classes, Graphics, Controls, Forms, Menus, ExtCtrls,
-  JvComponentBase, JvAppStorage, JvDockTree, JvDockSupportControl;
+  Windows, Messages, Classes, Graphics, Controls, Forms, Menus,
+  ExtCtrls, ComCtrls,
+  JvComponentBase, JvComponent, JvAppStorage, JvConsts,
+  JvDockTree, JvDockSupportClass, JvDockSupportControl, JvDockAdvTree;
 
 const
   JvDockPositionCount = 5;
@@ -891,8 +893,9 @@ const
 implementation
 
 uses
-  Types, SysUtils, ComCtrls,
-  JclSysInfo, JvAppRegistryStorage, JvAppIniStorage, JvTypes,
+  Types, SysUtils,
+  JclSysInfo,
+  JvAppRegistryStorage, JvAppIniStorage, JvTypes,
   JvDockSupportProc, JvDockGlobals, JvDockInfo, JvDockVSNetStyle, JvJVCLUtils;
 
 {$R JvDockableForm.dfm}
@@ -1115,19 +1118,19 @@ var
 begin
   if not (csDestroying in DockForm.ComponentState) then
   if DockForm is TForm then begin
-     allow := true;
-     if Assigned(TForm(DockForm).OnUnDock) then
-       TForm(DockForm).OnUnDock(DockForm,DockForm,
-          TWinControl(nil),allow);
-     if allow then begin
-       dockClient := FindDockClient(DockForm);
-       if Assigned(dockclient) and (not dockClient.CanFloat) then begin
-          exit;
-       end;
-     end;
-     if not allow then begin
-       exit;
-     end;
+	allow := true;
+	if Assigned(TForm(DockForm).OnUnDock) then
+	  TForm(DockForm).OnUnDock(DockForm,DockForm,
+		TWinControl(nil),allow);
+	if allow then begin
+	  dockClient := FindDockClient(DockForm);
+	  if Assigned(dockclient) and (not dockClient.CanFloat) then begin
+		exit;
+	  end;
+	end;
+	if not allow then begin
+	  exit;
+	end;
   end;
 
   if DockForm is TJvDockableForm then
@@ -1592,7 +1595,7 @@ begin
 
     This is the same call used when you drag something with your mouse, so it
     is much more reliable, and consistent, and updates the DOckManager state
-     which prevents all manner of weird problems. }
+	which prevents all manner of weird problems. }
 
 	if oldTechnique then begin
 	  HostForm :=  dockPanel.FindTabHostForm as TForm;

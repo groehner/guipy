@@ -3,8 +3,8 @@ object DocForm: TDocForm
   Top = 88
   HelpContext = 850
   Caption = 'Documentation'
-  ClientHeight = 445
-  ClientWidth = 459
+  ClientHeight = 446
+  ClientWidth = 463
   Color = clBtnFace
   ParentFont = True
   OnCreate = FormCreate
@@ -12,10 +12,10 @@ object DocForm: TDocForm
   object TBXDock1: TSpTBXDock
     Left = 0
     Top = 0
-    Width = 459
+    Width = 463
     Height = 30
     AllowDrag = False
-    ExplicitWidth = 455
+    DoubleBuffered = True
     object TBXToolbar1: TSpTBXToolbar
       Left = 0
       Top = 0
@@ -27,12 +27,14 @@ object DocForm: TDocForm
       Customizable = False
       object ToolButtonBack: TSpTBXItem
         Hint = 'Go Back'
+        Enabled = False
         ImageIndex = 0
         ImageName = 'Back'
         OnClick = ToolButtonBackClick
       end
       object ToolButtonForward: TSpTBXItem
         Hint = 'Go Forward'
+        Enabled = False
         ImageIndex = 1
         ImageName = 'Forward'
         OnClick = ToolButtonForwardClick
@@ -66,8 +68,8 @@ object DocForm: TDocForm
   object WebBrowser: TEdgeBrowser
     Left = 0
     Top = 30
-    Width = 459
-    Height = 415
+    Width = 463
+    Height = 416
     HelpContext = 850
     Align = alClient
     TabOrder = 0
@@ -76,8 +78,6 @@ object DocForm: TDocForm
     OnCreateWebViewCompleted = WebBrowserCreateWebViewCompleted
     OnExecuteScript = WebBrowserExecuteScript
     OnHistoryChanged = WebBrowserHistoryChanged
-    ExplicitWidth = 455
-    ExplicitHeight = 414
   end
   object BrowserImages: TVirtualImageList
     Images = <

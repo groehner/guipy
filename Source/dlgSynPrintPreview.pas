@@ -41,12 +41,19 @@ unit dlgSynPrintPreview;
 interface
 
 uses
+  Winapi.Windows,
+  System.SysUtils,
   System.Classes,
   System.Actions,
   System.ImageList,
+  Vcl.Graphics,
+  Vcl.Forms,
   Vcl.Controls,
+  Vcl.Buttons,
   Vcl.ActnList,
   Vcl.ImgList,
+  Vcl.Dialogs,
+  Vcl.Printers,
   Vcl.VirtualImageList,
   Vcl.BaseImageCollection,
   SVGIconImageCollection,
@@ -123,10 +130,7 @@ var
 implementation
 
 uses
-  System.SysUtils,
-  Vcl.Graphics,
-  Vcl.Forms,
-  Vcl.Printers,
+  Vcl.Themes,
   uCommonFunctions;
 
 {$R *.DFM}

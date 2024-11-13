@@ -3,19 +3,27 @@ unit frmModSpTBXCustomize;
 interface
 
 uses
-  WinApi.Windows,
-  System.Classes,
-  Vcl.Graphics,
-  Vcl.StdCtrls,
-  Vcl.ComCtrls,
+  WinApi.Windows, 
+  WinApi.Messages,
+  System.UITypes,
+  System.SysUtils, 
+  System.Variants, 
+  System.Classes, 
+  Vcl.Graphics, 
+  Vcl.Controls, 
+  Vcl.Forms,
+  Vcl.Dialogs, 
+  Vcl.StdCtrls, 
+  Vcl.ComCtrls, 
   Vcl.ExtCtrls,
-  TB2Item,
+  Vcl.CheckLst, 
+  TB2Item, 
   SpTBXCustomizer,
-  SpTBXCustomizerForm,
+  SpTBXCustomizerForm, 
   SpTBXEditors,
   SpTBXControls,
-  SpTBXItem,
-  SpTBXSkins,
+  SpTBXItem, 
+  SpTBXSkins, 
   SpTBXTabs;
 
 type
@@ -53,9 +61,7 @@ implementation
 {$R *.dfm}
 
 Uses
-  Vcl.ActnList,
-  Vcl.Controls,
-  Vcl.Dialogs,
+  Vcl.ActnList, 
   JvGnugettext,
   uCommonFunctions,
   frmPyIDEMain;

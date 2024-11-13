@@ -10,8 +10,13 @@ unit dlgCollectionEditor;
 interface
 
 uses
+  WinApi.Windows,
+  System.Types,
+  System.UITypes,
+  System.SysUtils,
   System.Classes,
   Vcl.Controls,
+  Vcl.Forms,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   dlgPyIDEBase;
@@ -68,9 +73,7 @@ implementation
 
 uses
   System.Math,
-  System.Types,
   Vcl.Dialogs,
-  Vcl.Forms,
   JVBoxProcs,
   JvGnugettext,
   uCommonFunctions;

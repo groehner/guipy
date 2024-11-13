@@ -47,6 +47,8 @@ type
     vilPythonControls: TVirtualImageList;
     icQtControls: TSVGIconImageCollection;
     vilQtControls1616: TVirtualImageList;
+    SpTBXSeparatorItem6: TSpTBXSeparatorItem;
+    MIConfiguration: TSpTBXItem;
     procedure FormCreate(Sender: TObject);
     procedure ELDesignerControlInserting(Sender: TObject;
       var AControlClass: TControlClass);
@@ -77,12 +79,13 @@ type
     procedure MIAlignClick(Sender: TObject);
     procedure MIZoomInClick(Sender: TObject);
     procedure MIZoomOutClick(Sender: TObject);
+    procedure MIConfigurationClick(Sender: TObject);
   private
+    ComponentToInsert: TControlClass;
     procedure SetEnabledMI(MenuItem: TSpTBXItem; Enabled: boolean);
     function GetPixelsPerInchOfFile(Filename: string): integer;
     procedure RemovePixelsPerInch0(Filename: string);
   public
-    ComponentToInsert: TControlClass;
     ELDesigner: TELDesigner;
     DesignForm: TFGuiForm;
     procedure Save(const Filename: string; Formular: TFGUIForm);
@@ -96,7 +99,6 @@ type
     function GetEditForm: TEditorForm;
     procedure UpdateState(Modified: boolean);
     function getPath: string;
-    function getControlWidthHeigth: TPoint;
     procedure ScaleImages;
     procedure ChangeStyle;
   end;
@@ -282,28 +284,27 @@ begin
     AControlClass:= ComponentToInsert;
 end;
 
+type
+  TControlEx = class(TControl)
+  protected
+    FFont: TFont;
+  end;
+
 procedure TFGUIDesigner.ELDragDrop(Sender, ASource, ATarget: TObject; AX, AY: Integer);
-  var accept: boolean;
-      LInsertingControl: TControl;
+  var LInsertingControl: TControl;
       LName: string;
 begin
-  Accept:= csAcceptsControls in (ATarget as TControl).ControlStyle;
-  if Accept and assigned(ComponentToInsert) then begin
-    LInsertingControl:= ComponentToInsert.Create(Designform);
-    try
-      ELDesigner.getUniqueName(Tag2PythonType(LInsertingControl.Tag), LName);
-      LInsertingControl.Name:= LName; // <-- here may be an exception
-      LInsertingControl.Parent:= ATarget as TWinControl;
-      LInsertingControl.SetBounds(AX-LInsertingControl.Width, AY-LInsertingControl.Height,
-                                     LInsertingControl.Width, LInsertingControl.Height);
-      //(LInsertingControl as TBaseWidget).UnScaleFontSize;
-      ELDesigner.SelectedControls.ClearExcept(LInsertingControl);
-      ELDesignerControlInserted(nil);
-      UpdateState(Modified);
-    except
-      FreeAndNil(LInsertingControl);
-      raise;
-    end;
+  if csAcceptsControls in (ATarget as TControl).ControlStyle then begin
+    LInsertingControl:= ASource as TControl;
+    ELDesigner.getUniqueName(Tag2PythonType(LInsertingControl.Tag), LName);
+    LInsertingControl.Name:= LName;
+    LInsertingControl.Parent:= ATarget as TWinControl;
+    LInsertingControl.SetBounds(AX-LInsertingControl.Width, AY-LInsertingControl.Height,
+                                   LInsertingControl.Width, LInsertingControl.Height);
+    TControlEx(LInsertingControl).Font.Size:= DesignForm.FontSize;
+    ELDesigner.SelectedControls.ClearExcept(LInsertingControl);
+    ELDesignerControlInserted(nil);
+    UpdateState(Modified);
   end;
 end;
 
@@ -411,7 +412,7 @@ begin
   if assigned(EditorForm) then begin
     ULink.ComponentNrToInsert:= Tag;
     ComponentToInsert:= Tag2Class(Tag);
-    ScaleImages;
+    //ScaleImages;
   end;
 end;
 
@@ -573,8 +574,8 @@ begin
       Reader.ReadRootComponent(DesignForm);
       DesignForm.Open(Filename, '', aForm.getGeometry, aForm);
       DesignForm.Name:= NewName;
-      if DesignForm.PixelsPerInch > PPI then
-        DesignForm.Scale(DesignForm.PixelsPerInch, PPI);
+      if DesignForm.Monitor.PixelsPerInch > PPI then
+        DesignForm.Scale(DesignForm.Monitor.PixelsPerInch, PPI);
       ScaleImages;
       DesignForm.Invalidate; // to paint correct image sizes
       DesignForm.EnsureOnDesktop;
@@ -612,6 +613,11 @@ end;
 procedure TFGUIDesigner.MICloseClick(Sender: TObject);
 begin
   TForm(ELDesigner.DesignControl).Close;
+end;
+
+procedure TFGUIDesigner.MIConfigurationClick(Sender: TObject);
+begin
+  FConfiguration.OpenAndShowPage('GUI designer');
 end;
 
 procedure TFGUIDesigner.ELDesignerDesignFormClose(Sender: TObject;
@@ -763,17 +769,6 @@ begin
   if assigned(TFGUIForm(ELDesigner.DesignControl))
     then Result:= ExtractFilepath(TFGuiForm(ELDesigner.DesignControl).Pathname)
     else Result:= '';
-end;
-
-function TFGUIDesigner.getControlWidthHeigth: TPoint;
-  var aControl: TControl;
-begin
-  if assigned(ComponentToInsert) then begin
-    aControl:= ComponentToInsert.Create(Designform);
-    Result:= Point(aControl.Width, aControl.height);
-    FreeAndNil(aControl);
-  end else
-    Result:= Point(100, 100);
 end;
 
 procedure TFGUIDesigner.SetEnabledMI(MenuItem: TSpTBXItem; Enabled: boolean);

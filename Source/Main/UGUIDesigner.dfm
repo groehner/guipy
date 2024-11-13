@@ -157,16 +157,24 @@ object FGUIDesigner: TFGUIDesigner
     object SpTBXSeparatorItem5: TSpTBXSeparatorItem
     end
     object MIZoomIn: TSpTBXItem
-      Caption = 'Zoom in'
+      Caption = 'Font zoom in'
       ImageIndex = 19
       ImageName = 'ZoomOut'
       OnClick = MIZoomInClick
     end
     object MIZoomOut: TSpTBXItem
-      Caption = 'Zoom out'
+      Caption = 'Font zoom out'
       ImageIndex = 20
       ImageName = 'ZoomIn'
       OnClick = MIZoomOutClick
+    end
+    object SpTBXSeparatorItem6: TSpTBXSeparatorItem
+    end
+    object MIConfiguration: TSpTBXItem
+      Caption = 'Configuration'
+      ImageIndex = 21
+      ImageName = 'Configuration'
+      OnClick = MIConfigurationClick
     end
   end
   object scGuiDesignerLight: TSVGIconImageCollection
@@ -726,6 +734,30 @@ object FGUIDesigner: TFGUIDesigner
           '52 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T38' +
           '0-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Zm-40-60v-' +
           '80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"/>'#13#10'</svg>'
+      end
+      item
+        IconName = 'Configuration'
+        SVGText = 
+          '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#828282" d="M0 1h15M' +
+          '0 2h1M0 3h1M0 4h1M0 5h1M0 6h1M0 7h1M0 8h1M0 9h1M0 10h1M0 11h1M0 ' +
+          '12h1M0 13h1" />'#13#10'<path stroke="#ffffff" d="M1 2h1M11 2h1M13 2h1M' +
+          '2 4h1M4 4h1M6 4h1M8 4h1M10 4h1M12 4h1M1 5h1M3 5h1M5 5h1M9 5h1M11' +
+          ' 5h1M13 5h1M2 6h1M4 6h1M8 6h1M10 6h1M12 6h1M1 7h1M7 7h1M9 7h1M11' +
+          ' 7h1M13 7h1M2 8h1M6 8h1M8 8h1M10 8h1M12 8h1M1 9h1M3 9h1M5 9h1M9 ' +
+          '9h1M11 9h1M13 9h1M2 10h1M4 10h1M8 10h1M10 10h1M12 10h1M1 11h1M7 ' +
+          '11h1M9 11h1M11 11h1M13 11h1M2 12h1M6 12h1M8 12h1M10 12h1M12 12h1' +
+          'M1 13h1M3 13h1M5 13h1M7 13h1M9 13h1M11 13h1M13 13h1" />'#13#10'<path s' +
+          'troke="#0000ff" d="M2 2h9M12 2h1" />'#13#10'<path stroke="#000000" d="' +
+          'M14 2h1M1 3h14M14 4h1M6 5h2M14 5h1M3 6h1M5 6h2M14 6h1M3 7h3M14 7' +
+          'h1M4 8h1M14 8h1M6 9h2M14 9h1M3 10h1M5 10h2M14 10h1M3 11h3M14 11h' +
+          '1M4 12h1M14 12h1M14 13h1M0 14h15" />'#13#10'<path stroke="#c4c4c4" d="' +
+          'M1 4h1M3 4h1M5 4h1M7 4h1M9 4h1M11 4h1M13 4h1M2 5h1M4 5h1M8 5h1M1' +
+          '0 5h1M12 5h1M1 6h1M7 6h1M9 6h1M11 6h1M13 6h1M2 7h1M6 7h1M8 7h1M1' +
+          '0 7h1M12 7h1M1 8h1M3 8h1M5 8h1M7 8h1M9 8h1M11 8h1M13 8h1M2 9h1M4' +
+          ' 9h1M8 9h1M10 9h1M12 9h1M1 10h1M7 10h1M9 10h1M11 10h1M13 10h1M2 ' +
+          '11h1M6 11h1M8 11h1M10 11h1M12 11h1M1 12h1M3 12h1M5 12h1M7 12h1M9' +
+          ' 12h1M11 12h1M13 12h1M2 13h1M4 13h1M6 13h1M8 13h1M10 13h1M12 13h' +
+          '1" />'#13#10'</svg>'
       end>
     Left = 144
     Top = 8
@@ -836,6 +868,11 @@ object FGUIDesigner: TFGUIDesigner
         CollectionIndex = 20
         CollectionName = 'ZoomIn'
         Name = 'ZoomIn'
+      end
+      item
+        CollectionIndex = 21
+        CollectionName = 'Configuration'
+        Name = 'Configuration'
       end>
     ImageCollection = scGuiDesignerLight
     Left = 272
@@ -1389,6 +1426,30 @@ object FGUIDesigner: TFGUIDesigner
           '52 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T38' +
           '0-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Zm-40-60v-' +
           '80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"/>'#13#10'</svg>'
+      end
+      item
+        IconName = 'Configuration\'
+        SVGText = 
+          '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#828282" d="M0 1h15M' +
+          '0 2h1M0 3h1M0 4h1M0 5h1M0 6h1M0 7h1M0 8h1M0 9h1M0 10h1M0 11h1M0 ' +
+          '12h1M0 13h1" />'#13#10'<path stroke="#ffffff" d="M1 2h1M11 2h1M13 2h1M' +
+          '2 4h1M4 4h1M6 4h1M8 4h1M10 4h1M12 4h1M1 5h1M3 5h1M5 5h1M9 5h1M11' +
+          ' 5h1M13 5h1M2 6h1M4 6h1M8 6h1M10 6h1M12 6h1M1 7h1M7 7h1M9 7h1M11' +
+          ' 7h1M13 7h1M2 8h1M6 8h1M8 8h1M10 8h1M12 8h1M1 9h1M3 9h1M5 9h1M9 ' +
+          '9h1M11 9h1M13 9h1M2 10h1M4 10h1M8 10h1M10 10h1M12 10h1M1 11h1M7 ' +
+          '11h1M9 11h1M11 11h1M13 11h1M2 12h1M6 12h1M8 12h1M10 12h1M12 12h1' +
+          'M1 13h1M3 13h1M5 13h1M7 13h1M9 13h1M11 13h1M13 13h1" />'#13#10'<path s' +
+          'troke="#0000ff" d="M2 2h9M12 2h1" />'#13#10'<path stroke="#000000" d="' +
+          'M14 2h1M1 3h14M14 4h1M6 5h2M14 5h1M3 6h1M5 6h2M14 6h1M3 7h3M14 7' +
+          'h1M4 8h1M14 8h1M6 9h2M14 9h1M3 10h1M5 10h2M14 10h1M3 11h3M14 11h' +
+          '1M4 12h1M14 12h1M14 13h1M0 14h15" />'#13#10'<path stroke="#c4c4c4" d="' +
+          'M1 4h1M3 4h1M5 4h1M7 4h1M9 4h1M11 4h1M13 4h1M2 5h1M4 5h1M8 5h1M1' +
+          '0 5h1M12 5h1M1 6h1M7 6h1M9 6h1M11 6h1M13 6h1M2 7h1M6 7h1M8 7h1M1' +
+          '0 7h1M12 7h1M1 8h1M3 8h1M5 8h1M7 8h1M9 8h1M11 8h1M13 8h1M2 9h1M4' +
+          ' 9h1M8 9h1M10 9h1M12 9h1M1 10h1M7 10h1M9 10h1M11 10h1M13 10h1M2 ' +
+          '11h1M6 11h1M8 11h1M10 11h1M12 11h1M1 12h1M3 12h1M5 12h1M7 12h1M9' +
+          ' 12h1M11 12h1M13 12h1M2 13h1M4 13h1M6 13h1M8 13h1M10 13h1M12 13h' +
+          '1" />'#13#10'</svg>'
       end>
     Left = 144
     Top = 88
@@ -1499,6 +1560,11 @@ object FGUIDesigner: TFGUIDesigner
         CollectionIndex = 20
         CollectionName = 'ZoomIn'
         Name = 'ZoomIn'
+      end
+      item
+        CollectionIndex = 21
+        CollectionName = 'Configuration\'
+        Name = 'Configuration\'
       end>
     ImageCollection = scGUIDesignerDark
     Left = 272

@@ -11,12 +11,18 @@ unit frmDocView;
 interface
 
 uses
+  WinApi.Windows,
+  WinApi.Messages,
+  WinApi.ActiveX,
   Winapi.WebView2,
-  Winapi.ActiveX,
+  System.SysUtils,
+  System.Variants,
   System.Classes,
   System.ImageList,
+  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
+  Vcl.Dialogs,
   Vcl.OleCtrls,
   Vcl.ImgList,
   Vcl.BaseImageCollection,
@@ -80,15 +86,13 @@ type
 implementation
 
 uses
-  System.SysUtils,
   System.IOUtils,
   System.NetEncoding,
-  Vcl.Dialogs,
   JvJVCLUtils,
   JvGnugettext,
+  PythonEngine,
   StringResources,
   uCommonFunctions,
-  PythonEngine,
   cPyControl,
   cPyScripterSettings,
   dmResources;

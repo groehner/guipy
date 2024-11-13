@@ -491,7 +491,7 @@ begin
           else
             GrepDirectories(FGrepSettings.Directories, FGrepSettings.Mask);
         end;
-    end;        // end case
+    end;	// end case
     finally
       FreeAndNil(FDupeFileList);
     end;
@@ -617,7 +617,9 @@ begin
     begin
       GrepMiddle := Dialog.chkGrepMiddle.Checked;
       GrepExpandAll := Dialog.chkGrepExpandAll.Checked;
+      Dialog.pnlListFont.Font.PixelsPerInch := Dialog.CurrentPPI; // correct size
       FListFont.Assign(Dialog.pnlListFont.Font);
+      Dialog.pnlContextFont.Font.PixelsPerInch := Dialog.CurrentPPI; // correct size
       FContextFont.Assign(Dialog.pnlContextFont.Font);
       ContextMatchColor := Dialog.pnlMatchLineColor.Font.Color;
       NumContextLines := Round(Dialog.spnContextLines.Value);
@@ -639,6 +641,10 @@ begin
   FContextFont := TStoredFont.Create;
   FContextFont.Name := 'Consolas';
   FContextFont.Size := 9;
+  {$IF CompilerVersion >= 36}
+  FListFont.IsScreenFont := True;
+  FContextFont.IsScreenFont := True;
+  {$ENDIF}
   FContextMatchColor := clHighlight;
   FNumContextLines := 2;
 

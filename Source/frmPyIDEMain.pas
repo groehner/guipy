@@ -1437,6 +1437,7 @@ type
     procedure actRemoteFileOpenExecute(Sender: TObject);
     procedure lbPythonVersionClick(Sender: TObject);
     procedure lbPythonEngineClick(Sender: TObject);
+    procedure tbiReplaceTextExit(Sender: TObject);
     procedure lbStatusCaretClick(Sender: TObject);
     procedure TabControl1Exit(Sender: TObject);
     procedure TabControl1Enter(Sender: TObject);
@@ -1558,6 +1559,7 @@ type
     procedure ChangeStyle;
     procedure DeleteObjectsInUMLForms;
     function GetCachedPycFilename(Filename: string): string;
+    procedure RemoveEoAltSetsColumnMode;
   public
     ActiveTabControlIndex : integer;
     PythonKeywordHelpRequested : Boolean;
@@ -1715,7 +1717,7 @@ uses
   cSSHSupport,
   LspUtils,
   JediLspClient,
-  cCustomShortcuts,
+  dlgCustomShortcuts,
   UStructogram,
   UUtils,
   UTextDiff,
@@ -2107,6 +2109,10 @@ begin
 
   // GI_PyIDEServices
   GI_PyIDEServices := Self;
+
+  // since 5.11: remove eoAltSetsColumnMode to avoid an exception
+  if FileExists(TPyScripterSettings.OptionsFileName) then
+    RemoveEoAltSetsColumnMode;
 
   // Application Storage
   AppStorage.Encoding := TEncoding.UTF8;
@@ -3533,12 +3539,17 @@ begin
           // sets the focus to the editor
           if (Editor <> GetActiveEditor) or FocusEditor then
             Editor.Activate(False);
-          if (Line > 0) then
-            with Editor.ActiveSynEdit do begin
-              CaretXY := BufferCoord(Offset,Line);
-              EnsureCursorPosVisibleEx(ForceToMiddle);
-              if SelLen > 0 then
-                 SelLength := SelLen;
+            if (Line > 0) then
+            begin
+              MouseCapture := True;
+              with Editor.ActiveSynEdit do
+              begin
+                var Caret := BufferCoord(Offset,Line);
+                SetCaretAndSelection(Caret, Caret, Caret, True, ForceToMiddle);
+                if SelLen > 0 then
+                   SelLength := SelLen;
+              end;
+              MouseCapture := False;
             end;
         end);
       end else
@@ -4013,36 +4024,28 @@ end;
 procedure TPyIDEMainForm.UpdateStatusBarPanels;
 var
   ptCaret: TPoint;
-  aFile : IFile;
-  Editor: IEditor;
-
-  procedure SetStatusModified(Modified: boolean);
-  begin
-    if Modified and (lbStatusModified.Caption <> _(SModified)) then
-      lbStatusModified.Caption := _(SModified)
-    else if not Modified and (lbStatusModified.Caption <> '') then
-      lbStatusModified.Caption := '';
-  end;
-
+  Editor : IEditor;
 begin
   Editor := GI_ActiveEditor;
   if Editor <> nil then begin
-    lbFileFormat.Caption:= Editor.GetFileFormat;
     ptCaret := Editor.GetCaretPos;
-    if (ptCaret.X > 0) and (ptCaret.Y > 0) then
+    if Editor.ActiveSynEdit.Selections.Count > 1 then
+      lbStatusCaret.Caption := IntToStr(Editor.ActiveSynEdit.Selections.Count) +
+      ' ' + _('carets')
+    else if (ptCaret.X > 0) and (ptCaret.Y > 0) then
       lbStatusCaret.Caption := Format('%d:%d', [ptCaret.Y, ptCaret.X])
     else
       lbStatusCaret.Caption := '';
-    setStatusModified(Editor.GetModified);
+    if GI_ActiveEditor.GetModified then
+      lbStatusModified.Caption := _(SModified)
+    else
+      lbStatusModified.Caption := ' ';
     lbStatusOverwrite.Caption := Editor.GetEditorState;
   end else begin
     lbStatusCaret.Caption := '';
+    lbStatusModified.Caption := '';
     lbStatusOverwrite.Caption := '';
-    aFile:= GI_ActiveFile;
-    if aFile <> nil then
-      SetStatusModified(aFile.GetModified);
   end;
-
   if GetCapsLockKeyState then
     lbStatusCAPS.Caption := 'CAPS'
   else
@@ -4132,16 +4135,6 @@ begin
   Close;
 end;
 
-procedure TPyIDEMainForm.actFileNewModuleExecute(Sender: TObject);
-begin
-  var FileTemplate := FileTemplates.TemplateByName(SPythonTemplateName);
-  if FileTemplate = nil then begin
-    FileTemplates.AddPythonTemplate;
-    FileTemplate:= FileTemplates.TemplateByName(SPythonTemplateName);
-  end;
-  NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl))
-end;
-
 procedure TPyIDEMainForm.actFileNewSequencediagramExecute(Sender: TObject);
 begin
   DoOpenFile(getFilename('.psd'));
@@ -4167,6 +4160,16 @@ begin
     aEditor.SynEdit.ClearUndo; // because GUIForm.Open changes geometry
   end;
   ShowDockForm(FObjectInspector);
+end;
+
+procedure TPyIDEMainForm.actFileNewModuleExecute(Sender: TObject);
+begin
+  var FileTemplate := FileTemplates.TemplateByName(SPythonTemplateName);
+  if FileTemplate = nil then begin
+    FileTemplates.AddPythonTemplate;
+    FileTemplate:= FileTemplates.TemplateByName(SPythonTemplateName);
+  end;
+  NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl))
 end;
 
 procedure TPyIDEMainForm.actFileNewTkinterExecute(Sender: TObject);
@@ -4309,6 +4312,7 @@ begin
 
   AppStorage.BeginUpdate;
   try
+    AppStorage.StorageOptions.SetAsString := True;
     AppStorage.StorageOptions.StoreDefaultValues := True;
     AppStorage.WritePersistent('IDE Options', PyIDEOptions);
     AppStorage.StorageOptions.StoreDefaultValues := False;
@@ -4316,10 +4320,9 @@ begin
     AppStorage.WriteString('GuiPy Version', ApplicationVersion);
     AppStorage.WriteString('Language', GetCurrentLanguage);
 
-    TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides']);
+    TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides', 'DisplayFlowControl']);
     AppStorage.DeleteSubTree('Editor Options');
     AppStorage.WritePersistent('Editor Options', EditorOptions, True, TempStringList);
-
     AppStorage.WritePersistent('Editor Search Options', EditorSearchOptions);
 
     // GuiPyOptions
@@ -4476,7 +4479,7 @@ begin
   end;
 
   var TempStringList := TSmartPtr.Make(TStringList.Create)();
-  TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides']);
+  TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides', 'DisplayFlowControl']);
   if AppStorage.PathExists('Editor Options') then
     AppStorage.ReadPersistent('Editor Options', EditorOptions, True, True, TempStringList);
   if MachineStorage.PathExists('Editor Options') then
@@ -4636,7 +4639,6 @@ begin
     if not FileExists(Filenames[i]) then
        tbiRecentProjects.MRURemove(Filenames[i]);
   FreeAndNil(Filenames);
-  FConfiguration.AddScriptsPath;
 end;
 
 procedure TPyIDEMainForm.RestoreLocalApplicationData;
@@ -5468,8 +5470,7 @@ end;
 
 procedure TPyIDEMainForm.actExecSelectionExecute(Sender: TObject);
 begin
-  if Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile and
-    GI_ActiveEditor.SynEdit.SelAvail
+  if Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile
   then
     GI_ActiveEditor.ExecuteSelection;
 end;
@@ -5514,12 +5515,19 @@ begin
     (Sender as TToolButton).BeginDrag(false, 10);
 end;
 
+type
+  TControlEx = class(TControl)
+  protected
+    FFont: TFont;
+  end;
+
 procedure TPyIDEMainForm.ToolButtonStartDrag(Sender: TObject; var DragObject: TDragObject);
 begin
   var ControlClass:= FGUIDesigner.Tag2Class((Sender as TToolButton).Tag);
   var DragRectangle:= ControlClass.Create(FGUIDesigner.DesignForm);
   DragRectangle.Parent:= FGuiDesigner;
   DragRectangle.ScaleForPPI(FGUIDesigner.DesignForm.PixelsPerInch);
+  TControlEx(DragRectangle).Font.Size:= FGUIDesigner.DesignForm.FontSize;
   DragObject:= TMyDragObject.Create(DragRectangle);
 end;
 
@@ -5979,13 +5987,12 @@ begin
         if Filename = '' then
           Filename:= getFilename('.' + FileTemplate.Extension);
         Result.OpenFile(Filename, FileTemplate.Highlighter);
-        Result.Activate;
       except
         Result.Close;
         raise
       end;
       Result.SynEdit.Text := Parameters.ReplaceInText(FileTemplate.Template);
-
+      Result.Activate;
       if (FileTemplate.Name = SClassTemplateName) and GuiPyOptions.FromFutureImport then
         TEditorForm(Result.Form).InsertImport('from __future__ import annotations');
 
@@ -6183,6 +6190,8 @@ begin
     // Load Python Engine and Assign Debugger Events
     PyControl.LoadPythonEngine;
     SetupPythonVersionsMenu;
+    if Length(PyControl.CustomPythonVersions) + Length(PyControl.RegPythonVersions) > 0 then
+      FConfiguration.AddScriptsPath;
 
     // Update External Tools
     SetupToolsMenu;  // After creating internal interpreter
@@ -6329,30 +6338,20 @@ end;
 
 procedure TPyIDEMainForm.actEditorZoomOutExecute(Sender: TObject);
 begin
-  if ActiveControl is TSynEdit then begin
-    TSynEdit(ActiveControl).Font.Size :=
-      Max(TSynEdit(ActiveControl).Font.Size - 1, 4);
-    TSynEdit(ActiveControl).Gutter.Font.Size :=
-      TSynEdit(ActiveControl).Font.Size - 2;
-  end;
+  if ActiveControl is TSynEdit then
+    TSynEdit(ActiveControl).Zoom(-1);
 end;
 
 procedure TPyIDEMainForm.actEditorZoomResetExecute(Sender: TObject);
 begin
-  if ActiveControl is TSynEdit then begin
-    TSynEdit(ActiveControl).Font.Size := EditorOptions.Font.Size;
-    TSynEdit(ActiveControl).Gutter.Font.Size := EditorOptions.Gutter.Font.Size;
-  end;
+  if ActiveControl is TSynEdit then
+    TSynEdit(ActiveControl).ZoomReset;
 end;
 
 procedure TPyIDEMainForm.actEditorZoomInExecute(Sender: TObject);
 begin
-  if ActiveControl is TSynEdit then begin
-    TSynEdit(ActiveControl).Font.Size :=
-      TSynEdit(ActiveControl).Font.Size + 1;
-    TSynEdit(ActiveControl).Gutter.Font.Size :=
-      TSynEdit(ActiveControl).Font.Size - 2;
-  end;
+  if ActiveControl is TSynEdit then
+    TSynEdit(ActiveControl).Zoom(1);
 end;
 
 procedure TPyIDEMainForm.mnFilesClick(Sender: TObject);
@@ -6541,6 +6540,11 @@ begin
   CommandsDataModule.UpdateMainActions;
 end;
 
+procedure TPyIDEMainForm.tbiReplaceTextExit(Sender: TObject);
+begin
+    tbiReplaceTextAcceptText(tbiReplaceText.Text);
+end;
+
 procedure TPyIDEMainForm.tbiReplaceTextKeyPress(Sender: TObject; var Key: Char);
 begin
   if (Key = Char(VK_ESCAPE)) and not tbiReplaceText.DroppedDown then begin
@@ -6610,6 +6614,18 @@ begin
   finally
     UnlockFormUpdate(Self);
   end;
+end;
+
+procedure TPyIDEMainForm.RemoveEoAltSetsColumnMode;
+  // since 5.11 to avoid an exception
+begin
+  var SL:= TStringList.Create;
+  SL.LoadFromFile(TPyScripterSettings.OptionsFileName);
+  var s:= SL.Text;
+  s:= myStringReplace(s, 'eoAltSetsColumnMode, ', '');
+  SL.Text:= s;
+  SL.SaveToFile(TPyScripterSettings.OptionsFileName);
+  FreeAndNil(SL);
 end;
 
 { TTSpTBXTabControl }

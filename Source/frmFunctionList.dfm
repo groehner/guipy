@@ -7,8 +7,8 @@ inherited FunctionListWindow: TFunctionListWindow
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSizeable
   Caption = 'Function List'
-  ClientHeight = 315
-  ClientWidth = 528
+  ClientHeight = 317
+  ClientWidth = 536
   Icon.Data = {
     0000010001001010000001002000680400001600000028000000100000002000
     0000010020000000000040040000000000000000000000000000000000000000
@@ -51,21 +51,19 @@ inherited FunctionListWindow: TFunctionListWindow
   OnClose = FormClose
   OnKeyPress = edtMethodsKeyPress
   OnResize = FormResize
-  ExplicitWidth = 544
-  ExplicitHeight = 354
   TextHeight = 15
   object pnHolder: TPanel
     Left = 0
     Top = 73
-    Width = 528
-    Height = 217
+    Width = 536
+    Height = 219
     Align = alClient
     TabOrder = 0
     object lvProcs: TListView
       Left = 1
       Top = 1
-      Width = 530
-      Height = 216
+      Width = 534
+      Height = 217
       Align = alClient
       Columns = <
         item
@@ -79,23 +77,27 @@ inherited FunctionListWindow: TFunctionListWindow
           Caption = 'Line'
           Width = 68
         end>
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
       HideSelection = False
       ReadOnly = True
       RowSelect = True
+      ParentFont = False
       SmallImages = vilCodeImages
       TabOrder = 0
       ViewStyle = vsReport
       OnChange = lvProcsChange
       OnColumnClick = lvProcsColumnClick
       OnDblClick = actViewGotoExecute
-      ExplicitWidth = 526
-      ExplicitHeight = 215
     end
   end
   object pnlHeader: TPanel
     Left = 0
     Top = 30
-    Width = 528
+    Width = 536
     Height = 43
     Align = alTop
     ParentShowHint = False
@@ -134,11 +136,10 @@ inherited FunctionListWindow: TFunctionListWindow
       AlignWithMargins = True
       Left = 270
       Top = 4
-      Width = 258
+      Width = 262
       Height = 35
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 254
       object lblObjects: TLabel
         Left = 13
         Top = 8
@@ -165,7 +166,7 @@ inherited FunctionListWindow: TFunctionListWindow
   object ToolBarDock: TSpTBXDock
     Left = 0
     Top = 0
-    Width = 528
+    Width = 536
     Height = 30
     AllowDrag = False
     LimitToOneRow = True
@@ -209,8 +210,8 @@ inherited FunctionListWindow: TFunctionListWindow
   end
   object StatusBar: TSpTBXStatusBar
     Left = 0
-    Top = 290
-    Width = 528
+    Top = 292
+    Width = 536
     Height = 25
     ParentShowHint = False
     ShowHint = True

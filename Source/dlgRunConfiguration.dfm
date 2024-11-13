@@ -1,34 +1,27 @@
 inherited RunConfigurationForm: TRunConfigurationForm
   HelpContext = 940
   Caption = 'Run Configuration'
-  ClientHeight = 435
-  ClientWidth = 395
-  ParentFont = False
+  ClientHeight = 436
+  ClientWidth = 399
   OnDestroy = FormDestroy
-  ExplicitWidth = 407
-  ExplicitHeight = 473
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 395
-    Height = 435
+    Width = 399
+    Height = 436
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 391
-    ExplicitHeight = 434
     DesignSize = (
-      395
-      435)
+      399
+      436)
     object Bevel1: TBevel
       Left = 3
-      Top = 391
-      Width = 376
+      Top = 392
+      Width = 396
       Height = 4
       Anchors = [akLeft, akRight, akBottom]
       Shape = bsBottomLine
-      ExplicitTop = 392
-      ExplicitWidth = 396
     end
     object GroupBox1: TGroupBox
       Left = 8
@@ -99,7 +92,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
       object Label3: TLabel
         Left = 8
-        Top = 85
+        Top = 87
         Width = 252
         Height = 13
         Caption = 'Parameters : Shift+Ctrl+P, Modifiers : Shift+Ctrl+M '
@@ -115,30 +108,29 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
       object SynFileName: TSynEdit
         Left = 105
-        Top = 16
+        Top = 17
         Width = 224
-        Height = 18
+        Height = 20
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Courier New'
+        Font.Height = -12
+        Font.Name = 'Consolas'
         Font.Style = []
         Font.Quality = fqClearTypeNatural
         TabOrder = 0
         OnEnter = SynEditEnter
         UseCodeFolding = False
-        ExtraLineSpacing = 0
         Gutter.Font.Charset = DEFAULT_CHARSET
         Gutter.Font.Color = clWindowText
         Gutter.Font.Height = -11
-        Gutter.Font.Name = 'Courier New'
+        Gutter.Font.Name = 'Consolas'
         Gutter.Font.Style = []
         Gutter.Font.Quality = fqClearTypeNatural
         Gutter.Visible = False
         Gutter.Bands = <
           item
             Kind = gbkMarks
-            Width = 13
+            Width = 15
           end
           item
             Kind = gbkLineNumbers
@@ -148,7 +140,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
           end
           item
             Kind = gbkMargin
-            Width = 3
+            Width = 2
           end>
         HideSelection = True
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
@@ -158,30 +150,29 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
       object SynParameters: TSynEdit
         Left = 105
-        Top = 40
+        Top = 42
         Width = 268
-        Height = 18
+        Height = 20
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Courier New'
+        Font.Height = -12
+        Font.Name = 'Consolas'
         Font.Style = []
         Font.Quality = fqClearTypeNatural
         TabOrder = 2
         OnEnter = SynEditEnter
         UseCodeFolding = False
-        ExtraLineSpacing = 0
         Gutter.Font.Charset = DEFAULT_CHARSET
         Gutter.Font.Color = clWindowText
         Gutter.Font.Height = -11
-        Gutter.Font.Name = 'Courier New'
+        Gutter.Font.Name = 'Consolas'
         Gutter.Font.Style = []
         Gutter.Font.Quality = fqClearTypeNatural
         Gutter.Visible = False
         Gutter.Bands = <
           item
             Kind = gbkMarks
-            Width = 13
+            Width = 15
           end
           item
             Kind = gbkLineNumbers
@@ -191,7 +182,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
           end
           item
             Kind = gbkMargin
-            Width = 3
+            Width = 2
           end>
         HideSelection = True
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
@@ -201,30 +192,29 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
       object SynWorkDir: TSynEdit
         Left = 120
-        Top = 64
+        Top = 66
         Width = 231
-        Height = 18
+        Height = 20
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Courier New'
+        Font.Height = -12
+        Font.Name = 'Consolas'
         Font.Style = []
         Font.Quality = fqClearTypeNatural
         TabOrder = 3
         OnEnter = SynEditEnter
         UseCodeFolding = False
-        ExtraLineSpacing = 0
         Gutter.Font.Charset = DEFAULT_CHARSET
         Gutter.Font.Color = clWindowText
         Gutter.Font.Height = -11
-        Gutter.Font.Name = 'Courier New'
+        Gutter.Font.Name = 'Consolas'
         Gutter.Font.Style = []
         Gutter.Font.Quality = fqClearTypeNatural
         Gutter.Visible = False
         Gutter.Bands = <
           item
             Kind = gbkMarks
-            Width = 13
+            Width = 15
           end
           item
             Kind = gbkLineNumbers
@@ -234,7 +224,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
           end
           item
             Kind = gbkMargin
-            Width = 3
+            Width = 2
           end>
         HideSelection = True
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
@@ -244,7 +234,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
       object btnFileName: TButton
         Left = 335
-        Top = 14
+        Top = 17
         Width = 19
         Height = 20
         ImageIndex = 0
@@ -255,7 +245,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
       object btnWorkDir: TButton
         Left = 357
-        Top = 62
+        Top = 66
         Width = 19
         Height = 20
         ImageIndex = 1
@@ -266,7 +256,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
       object btnRemoteFileName: TButton
         Left = 357
-        Top = 14
+        Top = 17
         Width = 19
         Height = 20
         ImageIndex = 2
@@ -367,13 +357,13 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
       object SynOutputFileName: TSynEdit
         Left = 105
-        Top = 45
+        Top = 42
         Width = 246
-        Height = 18
+        Height = 20
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Courier New'
+        Font.Height = -12
+        Font.Name = 'Consolas'
         Font.Style = []
         Font.Quality = fqClearTypeNatural
         TabOrder = 1
@@ -383,14 +373,14 @@ inherited RunConfigurationForm: TRunConfigurationForm
         Gutter.Font.Charset = DEFAULT_CHARSET
         Gutter.Font.Color = clWindowText
         Gutter.Font.Height = -11
-        Gutter.Font.Name = 'Courier New'
+        Gutter.Font.Name = 'Consolas'
         Gutter.Font.Style = []
         Gutter.Font.Quality = fqClearTypeNatural
         Gutter.Visible = False
         Gutter.Bands = <
           item
             Kind = gbkMarks
-            Width = 13
+            Width = 15
           end
           item
             Kind = gbkLineNumbers
@@ -400,7 +390,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
           end
           item
             Kind = gbkMargin
-            Width = 3
+            Width = 2
           end>
         HideSelection = True
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
@@ -410,7 +400,7 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
       object btnOutputFileName: TButton
         Left = 357
-        Top = 43
+        Top = 42
         Width = 19
         Height = 20
         ImageIndex = 0
@@ -442,8 +432,8 @@ inherited RunConfigurationForm: TRunConfigurationForm
       end
     end
     object btnOK: TButton
-      Left = 119
-      Top = 401
+      Left = 139
+      Top = 402
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -451,12 +441,10 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Default = True
       ModalResult = 1
       TabOrder = 5
-      ExplicitLeft = 115
-      ExplicitTop = 400
     end
     object btnCancel: TButton
-      Left = 203
-      Top = 401
+      Left = 223
+      Top = 402
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -464,20 +452,16 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 6
-      ExplicitLeft = 199
-      ExplicitTop = 400
     end
     object btnHelp: TButton
-      Left = 287
-      Top = 401
+      Left = 307
+      Top = 402
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
       Caption = '&Help'
       TabOrder = 7
       OnClick = btnHelpClick
-      ExplicitLeft = 283
-      ExplicitTop = 400
     end
   end
   object vilImages: TVirtualImageList

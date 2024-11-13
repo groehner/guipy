@@ -10,9 +10,12 @@ interface
 
 uses
   Winapi.Windows,
+  System.SysUtils,
   System.Classes,
   System.JSON,
+  System.SyncObjs,
   System.Generics.Collections,
+  SynEditTypes,
   SynEdit,
   LspUtils;
 
@@ -104,9 +107,7 @@ implementation
 uses
   System.UITypes,
   System.Threading,
-  System.SysUtils,
-  System.SyncObjs,
-  SynEditTypes,
+  System.Math,
   SynEditMiscProcs,
   SynEditMiscClasses,
   SynDWrite,

@@ -1032,7 +1032,7 @@ object ResourcesDataModule: TResourcesDataModule
           '        except:'
           '            return self.saferepr(value)'
           ''
-          '    def showsyntaxerror(self, filename=None):'
+          '    def showsyntaxerror(self, filename=None, **kwargs):'
           '        import sys, code'
           '        old_excepthook = sys.excepthook'
           '        sys.excepthook = sys.__excepthook__'
@@ -2275,79 +2275,6 @@ object ResourcesDataModule: TResourcesDataModule
     ApplyFixedColorToRootOnly = True
     Left = 40
     Top = 224
-  end
-  object SynWebEngine: TSynWebEngine
-    Options.HtmlVersion = shvHtml5
-    Left = 496
-    Top = 216
-  end
-  object SynWebEsSyn: TSynWebEsSyn
-    ActiveHighlighterSwitch = False
-    Engine = SynWebEngine
-    Left = 684
-    Top = 152
-  end
-  object SynWebPhpPlainSyn: TSynWebPhpPlainSyn
-    ActiveHighlighterSwitch = False
-    Engine = SynWebEngine
-    Left = 587
-    Top = 152
-  end
-  object SynWebCssSyn: TSynWebCssSyn
-    Brackets = '()[]{}<>'
-    ActiveHighlighterSwitch = False
-    Engine = SynWebEngine
-    Options.HtmlVersion = shvHtml401Transitional
-    Left = 496
-    Top = 152
-  end
-  object SynWebXmlSyn: TSynWebXmlSyn
-    Brackets = '()[]{}<>'
-    ActiveHighlighterSwitch = False
-    Engine = SynWebEngine
-    Left = 684
-    Top = 88
-  end
-  object SynYAMLSyn: TSynYAMLSyn
-    Left = 587
-    Top = 216
-  end
-  object SynWebHtmlSyn: TSynWebHtmlSyn
-    Brackets = '()[]{}<>'
-    ActiveHighlighterSwitch = False
-    Engine = SynWebEngine
-    Options.HtmlVersion = shvHtml5
-    Options.UseEngineOptions = True
-    Left = 587
-    Top = 88
-  end
-  object SynIniSyn: TSynIniSyn
-    Left = 496
-    Top = 88
-  end
-  object SynCppSyn: TSynCppSyn
-    Left = 684
-    Top = 24
-  end
-  object SynJSONSyn: TSynJSONSyn
-    Left = 587
-    Top = 24
-  end
-  object SynGeneralSyn: TSynGeneralSyn
-    DefaultFilter = 'Text Files(*.txt,*.*)|*.txt;*.*'
-    DetectPreprocessor = False
-    SpaceAttri.Foreground = clSilver
-    Left = 496
-    Top = 24
-  end
-  object dlgFontDialog: TFontDialog
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    Left = 120
-    Top = 88
   end
   object icSVGImages: TSVGIconImageCollection
     SVGIconItems = <
@@ -4907,5 +4834,78 @@ object ResourcesDataModule: TResourcesDataModule
       end>
     Left = 40
     Top = 152
+  end
+  object SynWebEngine: TSynWebEngine
+    Options.HtmlVersion = shvHtml5
+    Left = 496
+    Top = 216
+  end
+  object SynWebEsSyn: TSynWebEsSyn
+    ActiveHighlighterSwitch = False
+    Engine = SynWebEngine
+    Left = 684
+    Top = 152
+  end
+  object SynWebPhpPlainSyn: TSynWebPhpPlainSyn
+    ActiveHighlighterSwitch = False
+    Engine = SynWebEngine
+    Left = 587
+    Top = 152
+  end
+  object SynWebCssSyn: TSynWebCssSyn
+    Brackets = '()[]{}<>'
+    ActiveHighlighterSwitch = False
+    Engine = SynWebEngine
+    Options.HtmlVersion = shvHtml401Transitional
+    Left = 496
+    Top = 152
+  end
+  object SynWebXmlSyn: TSynWebXmlSyn
+    Brackets = '()[]{}<>'
+    ActiveHighlighterSwitch = False
+    Engine = SynWebEngine
+    Left = 684
+    Top = 88
+  end
+  object SynYAMLSyn: TSynYAMLSyn
+    Left = 587
+    Top = 216
+  end
+  object SynWebHtmlSyn: TSynWebHtmlSyn
+    Brackets = '()[]{}<>'
+    ActiveHighlighterSwitch = False
+    Engine = SynWebEngine
+    Options.HtmlVersion = shvHtml5
+    Options.UseEngineOptions = True
+    Left = 587
+    Top = 88
+  end
+  object SynIniSyn: TSynIniSyn
+    Left = 496
+    Top = 88
+  end
+  object SynCppSyn: TSynCppSyn
+    Left = 684
+    Top = 24
+  end
+  object SynJSONSyn: TSynJSONSyn
+    Left = 587
+    Top = 24
+  end
+  object SynGeneralSyn: TSynGeneralSyn
+    DefaultFilter = 'Text Files(*.txt,*.*)|*.txt;*.*'
+    DetectPreprocessor = False
+    SpaceAttri.Foreground = clSilver
+    Left = 496
+    Top = 24
+  end
+  object dlgFontDialog: TFontDialog
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    Left = 120
+    Top = 88
   end
 end

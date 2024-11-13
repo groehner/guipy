@@ -51,7 +51,6 @@ uses
   frmDisassemlyView in 'frmDisassemlyView.pas' {DisForm},
   frmDocView in 'frmDocView.pas' {DocForm},
   frmWebPreview in 'frmWebPreview.pas' {WebPreviewForm},
-  SynHighlighterPython in 'SynHighlighterPython.pas',
   frmToDo in 'frmToDo.pas' {ToDoWindow},
   dlgToDoOptions in 'dlgToDoOptions.pas' {fmToDoOptions},
   cFileSearch in 'cFileSearch.pas',
@@ -199,9 +198,10 @@ uses
   dmResources in 'dmResources.pas' {ResourcesDataModule: TDataModule},
   uSysUtils in 'uSysUtils.pas',
   Vcl.Consts in 'Utils\Vcl.Consts.pas',
-  cCustomShortcuts in 'cCustomShortcuts.pas',
   dlgSynEditOptions in 'dlgSynEditOptions.pas' {fmEditorOptionsDialog},
-  UZOrderControl in 'Utils\UZOrderControl.pas';
+  UZOrderControl in 'Utils\UZOrderControl.pas',
+  dlgCustomShortcuts in 'dlgCustomShortcuts.pas' {frmCustomKeyboard},
+  SynHighlighterPython in 'SynHighlighterPython.pas';
 
 {$R *.RES}
 {$R WebCopyAvi.RES}
