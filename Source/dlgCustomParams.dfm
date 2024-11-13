@@ -142,7 +142,7 @@ inherited CustomizeParams: TCustomizeParams
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
-        Font.Name = 'Courier New'
+        Font.Name = 'Consolas'
         Font.Pitch = fpFixed
         Font.Style = []
         Font.Quality = fqClearTypeNatural
@@ -152,7 +152,7 @@ inherited CustomizeParams: TCustomizeParams
         Gutter.Font.Charset = DEFAULT_CHARSET
         Gutter.Font.Color = clWindowText
         Gutter.Font.Height = -11
-        Gutter.Font.Name = 'Courier New'
+        Gutter.Font.Name = 'Consolas'
         Gutter.Font.Style = []
         Gutter.Font.Quality = fqClearTypeNatural
         Gutter.Visible = False

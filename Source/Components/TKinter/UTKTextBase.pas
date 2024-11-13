@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
  Unit:     UTKTextBase
- Author:   Gerhard Röhner
+ Author:   Gerhard RÃ¶hner
  Date:     May 2021
  Purpose:  tkinter text widgets
 -------------------------------------------------------------------------------}
@@ -712,7 +712,7 @@ begin
   FInactiveSelectBackground:= clBtnFace;
   FInsertUnfocussed:= none;
   HighlightThickness:= '0';
-  Font.Name:= 'Courier New';  // TkFixedFont
+  Font.Name:= 'Consolas';  // TkFixedFont
   Font.Size:= 10;
   FMaxUndo:= 0;
   Relief:= _TR_sunken;
