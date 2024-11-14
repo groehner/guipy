@@ -167,6 +167,7 @@ Const
   SEdCmdUpperCase = 'Upper Case';
   SEdCmdWordLeft = 'Word Left';
   SEdCmdWordRight = 'Word Right';
+
   // Multi-caret
   SEdCmdCancelSelections = 'Cancel Selections';
   SEdCmdSelColumnLeft = 'Selelct Column Left';

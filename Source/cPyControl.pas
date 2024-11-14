@@ -126,7 +126,7 @@ type
     property RegPythonVersions: TPythonVersions read fRegPythonVersions;
     property PythonEngineType: TPythonEngineType read GetPythonEngineType
       write SetPythonEngineType;
-    property ActiveSSHServerName: string read fActiveSSHServerName write fActiveSSHServerName;
+    property ActiveSSHServerName: string read GetActiveSSHServerName write fActiveSSHServerName;
     property InternalPython: TInternalPython read fInternalPython;
     property InternalInterpreter: TPyBaseInterpreter read GetInternalInterpreter;
     property ActiveInterpreter: TPyBaseInterpreter read fActiveInterpreter

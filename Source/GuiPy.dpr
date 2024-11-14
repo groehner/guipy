@@ -204,7 +204,6 @@ uses
   SynHighlighterPython in 'SynHighlighterPython.pas';
 
 {$R *.RES}
-{$R WebCopyAvi.RES}
 
 {$SetPEFlags IMAGE_FILE_RELOCS_STRIPPED
   or IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP

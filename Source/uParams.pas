@@ -678,7 +678,6 @@ begin
     RegisterModifier('NoExt', _('File name without extension'), StripExtension);
     RegisterModifier('Drive', _('File drive'), ExtractFileDrive);
     RegisterModifier('Full', _('Expanded file name'), ExpandFileName);
-    RegisterModifier('UNC', _('Expanded UNC file name'), ExpandUNCFileName);
     RegisterModifier('Long', _('Long file name'), GetLongFileName);
     RegisterModifier('Short', _('Short file name'), GetShortFileName);
     RegisterModifier('Sep', _('Path with final path delimiter added'), IncludeTrailingPathDelimiter);
@@ -781,7 +780,6 @@ begin
     UnRegisterModifier('NoExt');
     UnRegisterModifier('Drive');
     UnRegisterModifier('Full');
-    UnRegisterModifier('UNC');
     UnRegisterModifier('Long');
     UnRegisterModifier('Short');
     UnRegisterModifier('Sep');
