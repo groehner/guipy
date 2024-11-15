@@ -1,3 +1,7 @@
+5.12 2024.11.15
+constructor __init()__ now with visibility public in uml window
+file notifier fixed, prevents exceptions when exiting GuiPy
+
 5.11, 2024.11.11
 Multi-caret and multi-selection editing
 Annotated scrollbars
