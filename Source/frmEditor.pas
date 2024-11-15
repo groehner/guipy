@@ -1658,8 +1658,6 @@ begin
   end;
   BreakPoints.Free;
 
-  // Unregister kernel notification
-  ChangeNotifier.UnRegisterKernelChangeNotify(Self);
   GI_EditorFactory.RemoveFile(IEditor(fEditor));
   inherited;
 end;

@@ -197,7 +197,6 @@ uses
   UQtWidgetDescendants in 'Components\PyQt\UQtWidgetDescendants.pas',
   dmResources in 'dmResources.pas' {ResourcesDataModule: TDataModule},
   uSysUtils in 'uSysUtils.pas',
-  Vcl.Consts in 'Utils\Vcl.Consts.pas',
   dlgSynEditOptions in 'dlgSynEditOptions.pas' {fmEditorOptionsDialog},
   UZOrderControl in 'Utils\UZOrderControl.pas',
   dlgCustomShortcuts in 'dlgCustomShortcuts.pas' {frmCustomKeyboard},

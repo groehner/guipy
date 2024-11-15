@@ -218,6 +218,8 @@ end;
 
 procedure TFileForm.FormDestroy(Sender: TObject);
 begin
+  // Unregister kernel notification
+  ChangeNotifier.UnRegisterKernelChangeNotify(Self);
   if assigned(fFile) and assigned(GI_FileFactory) then begin
     fFile.fForm := nil;
     GI_FileFactory.RemoveFile(fFile);

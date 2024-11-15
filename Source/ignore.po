@@ -8,6 +8,12 @@ msgid ""
 msgstr ""
 
 #  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:216
+msgid "'"
+msgstr ""
+
+#  Doesn't have any letters
 #. FClassEditor..PageControl..TSAttributes..CBAttributeValue....Items.Strings
 #: Main/UClassEditor.dfm:308
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamValue....Items.Strings
@@ -51,9 +57,27 @@ msgstr ""
 msgid "!"
 msgstr ""
 
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:198
+msgid "\""
+msgstr ""
+
 #. RegExpTesterWindow..BGPanel..FGPanel..pnlBackground..dpGroupsView..GroupsView......Text
 #: frmRegExpTester.dfm:222
 msgid "#"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:200
+msgid "$"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:201
+msgid "%"
 msgstr ""
 
 #  Doesn't look like text
@@ -67,6 +91,12 @@ msgstr ""
 #. Programmer's name for it: RsAppError
 #: dlgExceptionMail.pas:103
 msgid "%s - application error"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:202
+msgid "&"
 msgstr ""
 
 #. CommandsDataModule..actlMain..actEditLBDos..Caption
@@ -87,6 +117,12 @@ msgstr ""
 #. CommandsDataModule..actlMain..actEditLBUnix..Caption
 #: dmCommands.dfm:572
 msgid "&UNIX"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:204
+msgid "("
 msgstr ""
 
 #  Doesn't have any letters
@@ -112,9 +148,33 @@ msgstr ""
 msgid "(no module version info)"
 msgstr ""
 
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:205
+msgid ")"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:214
+msgid "*"
+msgstr ""
+
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LAssociationsExample..Caption
 #: Utils/UConfiguration.dfm:5599
 msgid "*.pywd;*.pas"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:217
+msgid ","
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:218
+msgid "."
 msgstr ""
 
 # Other non-translatable stuff
@@ -203,6 +263,42 @@ msgid ".uml"
 msgstr ""
 
 #  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:203
+msgid "/"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:221
+msgid ":"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:220
+msgid ";"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:207
+msgid "? "
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:227
+msgid "@"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:208
+msgid "["
+msgstr ""
+
+#  Doesn't have any letters
 #. FClassEditor..PageControl..TSAttributes..CBAttributeValue....Items.Strings
 #: Main/UClassEditor.dfm:312
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamValue....Items.Strings
@@ -210,10 +306,46 @@ msgstr ""
 msgid "[]"
 msgstr ""
 
-#: cPyRemoteDebugger.pas:1079
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:226
+msgid "\\"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:209
+msgid "]"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:194
+msgid "^"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:222
+msgid "_"
+msgstr ""
+
+#: cPyRemoteDebugger.pas:1078
 #. pass a reference to the P4D module DebugIDE
-#: cPyRemoteDebugger.pas:1081
+#: cPyRemoteDebugger.pas:1080
 msgid "_RPI"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:197
+msgid "`"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:210
+msgid "{"
 msgstr ""
 
 #  Doesn't have any letters
@@ -224,9 +356,45 @@ msgstr ""
 msgid "{}"
 msgstr ""
 
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:225
+msgid "|"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:211
+msgid "}"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:213
+msgid "~"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:212
+msgid "+"
+msgstr ""
+
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox3..btnStdFormats..Caption
 #: dlgToolProperties.dfm:547
 msgid "<"
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:206
+msgid "="
+msgstr ""
+
+#  Doesn't have any letters
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:224
+msgid ">"
 msgstr ""
 
 #  Doesn't have any letters
@@ -454,17 +622,21 @@ msgid "class"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
-#: dlgSynPageSetup.dfm:1646
+#: dlgSynPageSetup.dfm:1655
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
 #: Utils/UConfiguration.dfm:5038
 msgid "cm"
 msgstr ""
 
 #  Seems like a Font.Name extract
+#. ExceptionDialogMail..DetailsMemo..Font.Name
+#: dlgExceptionMail.dfm:41
 #. fmEditorOptionsDialog..Panel1..TabControl..Display..gbEditorFont..Panel3..labFont..Font.Name
 #: dlgSynEditOptions.dfm:1204
 #. OutputWindow..BGPanel..FGPanel..lsbConsole..Font.Name
-#: frmCommandOutput.dfm:31
+#: frmCommandOutput.dfm:34
+#. OutputWindow..BGPanel..FGPanel..lsbConsole..Font.Name
+#: __recovery/frmCommandOutput.dfm:34
 #. ELStringsEditorDlg..memMain..Font.Name
 #: Formdesigner/ELStringsEdit.dfm:58
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbEditorFont..Panel3..labFont..Font.Name
@@ -579,17 +751,89 @@ msgstr ""
 msgid "Extension Library designer components"
 msgstr ""
 
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:181
+msgid "F1"
+msgstr ""
+
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:190
+msgid "F10"
+msgstr ""
+
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:191
+msgid "F11"
+msgstr ""
+
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:192
+msgid "F12"
+msgstr ""
+
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:182
+msgid "F2"
+msgstr ""
+
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:183
+msgid "F3"
+msgstr ""
+
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:184
+msgid "F4"
+msgstr ""
+
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:185
+msgid "F5"
+msgstr ""
+
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:186
+msgid "F6"
+msgstr ""
+
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:187
+msgid "F7"
+msgstr ""
+
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:188
+msgid "F8"
+msgstr ""
+
+#  Doesn't look like text
+#. ELEventEditorDlg..GBKey..CBKey....Items.Strings
+#: Formdesigner/ELEvents.dfm:189
+msgid "F9"
+msgstr ""
+
 #. FClassEditor..PageControl..TSAttributes..CBAttributeValue....Items.Strings
 #: Main/UClassEditor.dfm:310
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamValue....Items.Strings
 #: Main/UClassEditor.dfm:611
 #. Programmer's name for it: SFalseValue
-#: StringResources.pas:207
+#: StringResources.pas:208
 msgid "False"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnGit..mnGitFetch..Caption
-#: frmEditor.dfm:591
+#: frmEditor.dfm:587
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitFetch..Caption
 #: frmPyIDEMain.dfm:1309
 msgid "Fetch"
@@ -627,7 +871,7 @@ msgid "Form1"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnGit..Caption
-#: frmEditor.dfm:541
+#: frmEditor.dfm:537
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..Caption
 #: frmPyIDEMain.dfm:1260
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..Hint
@@ -640,7 +884,7 @@ msgid "Git"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnGit..mnGitGUI..Caption
-#: frmEditor.dfm:603
+#: frmEditor.dfm:599
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitGUI..Caption
 #: frmPyIDEMain.dfm:1321
 msgid "GUI"
@@ -670,6 +914,8 @@ msgstr ""
 
 #. IDEDockWindow..Caption
 #: frmIDEDockWin.dfm:5
+#. IDEDockWindow..Caption
+#: __recovery/frmIDEDockWin.dfm:5
 msgid "IDE Dock Window"
 msgstr ""
 
@@ -784,7 +1030,7 @@ msgid "Memory: %d; free %d"
 msgstr ""
 
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
-#: dlgSynPageSetup.dfm:1645
+#: dlgSynPageSetup.dfm:1654
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
 #: Utils/UConfiguration.dfm:5037
 msgid "mm"
@@ -796,10 +1042,6 @@ msgstr ""
 #: EssModel/System/UUMLForm.dfm:54
 #. FObjectGenerator..FontDialog..Font.Name
 #: Main/UObjectGenerator.dfm:93
-#. FMemo..Font.Name
-#: Setup/UMemo.dfm:12
-#. FSetup..Font.Name
-#: Setup/USetup.dfm:12
 #. FConfiguration..PMain..PanelRight..PTitle..LTitle..Font.Name
 #: Utils/UConfiguration.dfm:194
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LGitFolder..Font.Name
@@ -820,11 +1062,11 @@ msgstr ""
 #. CodeTemplates..Panel..GroupBox..Label3..Font.Name
 #: dlgCodeTemplates.dfm:168
 #. FindResultsOptionsDialog..Panel1..gbxMatchList..pnlListFont..Font.Name
-#: dlgFindResultsOptions.dfm:48
+#: dlgFindResultsOptions.dfm:45
 #. FindResultsOptionsDialog..dlgGrepListFont..Font.Name
-#: dlgFindResultsOptions.dfm:166
+#: dlgFindResultsOptions.dfm:162
 #. FindResultsOptionsDialog..dlgGrepContextFont..Font.Name
-#: dlgFindResultsOptions.dfm:175
+#: dlgFindResultsOptions.dfm:171
 #. ImportDirectoryForm..Panel1..ebMask..Font.Name
 #: dlgImportDirectory.dfm:49
 #. RunConfigurationForm..Panel1..GroupBox2..Label3..Font.Name
@@ -834,13 +1076,13 @@ msgstr ""
 #. fmEditorOptionsDialog..FontDialog..Font.Name
 #: dlgSynEditOptions.dfm:1347
 #. PageSetupDlg..FontDialog..Font.Name
-#: dlgSynPageSetup.dfm:1676
+#: dlgSynPageSetup.dfm:1685
 #. fmToDoOptions..pnlBG..gbxSearchFiles..meDirectories..Font.Name
 #: dlgToDoOptions.dfm:153
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox1..Label17..Font.Name
 #: dlgToolProperties.dfm:229
 #. FunctionListWindow..dlgProcFont..Font.Name
-#: frmFunctionList.dfm:239
+#: frmFunctionList.dfm:250
 #. SpTBXCustomizeFormMod..SpTBXTabControl1..SpTBXTabSheet3..SpTBXLabel2..Font.Name
 #: frmModSpTBXCustomize.dfm:64
 #. SpTBXCustomizeFormMod..SpTBXTabControl1..SpTBXTabSheet3..SpTBXLabel5..Font.Name
@@ -966,7 +1208,7 @@ msgid "PUML"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnGit..mnGitPush..Caption
-#: frmEditor.dfm:596
+#: frmEditor.dfm:592
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitPush..Caption
 #: frmPyIDEMain.dfm:1314
 msgid "Push"
@@ -1218,7 +1460,7 @@ msgid "QTreeWidget"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnGit..mnGitReset..Caption
-#: frmEditor.dfm:569
+#: frmEditor.dfm:565
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitReset..Caption
 #: frmPyIDEMain.dfm:1287
 #. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..btnResetKeys..Caption
@@ -1242,11 +1484,13 @@ msgstr ""
 #. ResourcesDataModule..dlgFontDialog..Font.Name
 #: dmResources.dfm:4906
 #. FunctionListWindow..pnHolder..lvProcs..Font.Name
-#: frmFunctionList.dfm:83
+#: frmFunctionList.dfm:87
 #. IDEDockWindow..Font.Name
 #: frmIDEDockWin.dfm:16
 #. SpTBXCustomizeFormMod..Font.Name
 #: frmModSpTBXCustomize.dfm:5
+#. IDEDockWindow..Font.Name
+#: __recovery/frmIDEDockWin.dfm:16
 #. FUMLForm..Font.Name
 #: EssModel/System/UUMLForm.dfm:11
 #. FAssociation..Font.Name
@@ -1347,7 +1591,7 @@ msgstr ""
 msgid "SVN"
 msgstr ""
 
-#: cPyRemoteDebugger.pas:1062
+#: cPyRemoteDebugger.pas:1061
 msgid "sync_request_timeout"
 msgstr ""
 
@@ -1364,17 +1608,17 @@ msgstr ""
 #. StyleSelectorForm..Font.Name
 #: dlgStyleSelector.dfm:12
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox1..REHeaderLeft..Font.Name
-#: dlgSynPageSetup.dfm:191
+#: dlgSynPageSetup.dfm:198
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox1..REHeaderCenter..Font.Name
-#: dlgSynPageSetup.dfm:209
+#: dlgSynPageSetup.dfm:216
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox1..REHeaderRight..Font.Name
-#: dlgSynPageSetup.dfm:227
+#: dlgSynPageSetup.dfm:234
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..REFooterLeft..Font.Name
-#: dlgSynPageSetup.dfm:345
+#: dlgSynPageSetup.dfm:352
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..REFooterCenter..Font.Name
-#: dlgSynPageSetup.dfm:363
+#: dlgSynPageSetup.dfm:370
 #. PageSetupDlg..TabControl..tbHeaderFooter..GroupBox3..REFooterRight..Font.Name
-#: dlgSynPageSetup.dfm:381
+#: dlgSynPageSetup.dfm:388
 #. FileForm..Font.Name
 #: frmFile.dfm:10
 #. FindResultsWindow..BGPanel..FGPanel..pnlMain..lbResults..Font.Name
@@ -1387,12 +1631,6 @@ msgstr ""
 #: frmUnitTests.dfm:184
 #. UnitTestWindow..BGPanel..FGPanel..Panel2..lblFailures..Font.Name
 #: frmUnitTests.dfm:199
-#. FUpdater..Font.Name
-#: Setup/UUpdater.dfm:12
-#. Fwait..Font.Name
-#: Setup/UWait.dfm:11
-#. Fwait..Label1..Font.Name
-#: Setup/UWait.dfm:26
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..REHeaderLeft..Font.Name
 #: Utils/UConfiguration.dfm:5272
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..REHeaderCenter..Font.Name
@@ -1622,7 +1860,7 @@ msgstr ""
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamValue....Items.Strings
 #: Main/UClassEditor.dfm:610
 #. Programmer's name for it: STrueValue
-#: StringResources.pas:206
+#: StringResources.pas:207
 msgid "True"
 msgstr ""
 
@@ -1763,7 +2001,7 @@ msgstr ""
 
 #. FUMLForm..Caption
 #: EssModel/System/UUMLForm.dfm:4
-#: Utils/UConfiguration.pas:5499
+#: Utils/UConfiguration.pas:5501
 msgid "UML"
 msgstr ""
 
