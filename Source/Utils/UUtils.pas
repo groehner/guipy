@@ -13,7 +13,7 @@ uses Windows, Classes, StdCtrls, Forms, SysUtils, Controls, Graphics,
      uEditAppIntfs;
 
 type
-  TVisibility = (viPrivate, viProtected, viPublic, viPackage, viPublished);
+  TVisibility = (viPrivate, viProtected, viPublic);
 
   TBoolEvent = procedure (Value: Boolean) of object;
 

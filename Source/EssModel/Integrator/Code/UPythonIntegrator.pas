@@ -350,7 +350,7 @@ end;
 procedure TPythonParser.SetOperationVisibility(M: TModelEntity);
 begin
   if isDunder(M.Name) then
-    M.Visibility:= viPrivate
+    M.Visibility:= viPublic
   else
     setAttributeVisibility(M);
 end;

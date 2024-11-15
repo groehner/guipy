@@ -1024,7 +1024,7 @@ begin
     exit;
   inherited;
 
-  NeedW := 0;
+  NeedW := cDefaultWidth;
   NeedH := 2 * BorderWidth + 2;
 
   if (Entity is TClass) and (Entity as TClass).isJUnitTestclass then
@@ -1562,16 +1562,13 @@ begin
   // Canvas.FillRect(ClientRect);
   SetColors;
   R := ClientRect;
-  if Entity.Visibility = viPublished then
-    Entity.Visibility := viPublic;
-
   if Entity is TAttribute then
     PictureNr := integer(Entity.Visibility)
   else
-    PictureNr := integer(Entity.Visibility) + 4;
+    PictureNr := integer(Entity.Visibility) + 3;
   if not GuiPyOptions.ConstructorWithVisibility and (Entity is TOperation) and
     ((Entity as TOperation).OperationType = otConstructor) then
-    PictureNr := 8;
+    PictureNr := 6;
   Font.color := FGColor;
   Canvas.Brush.color := BGColor;
   Canvas.Font.assign(Font);
@@ -1588,7 +1585,7 @@ begin
           else vil:= (Owner as TRtfdBox).Frame.vilUMLRtfdComponentsDark;
         vil.SetSize(r.Height, r.Height);
         vil.Draw(Canvas, 4, 0, PictureNr);
-        R.Left := R.Left + vil.Width + 8;
+        R.Left := R.Left + PPIScale(vil.Width + 8);
         Canvas.TextOut(R.Left, R.Top, Caption);
       end;
     1:begin
@@ -1596,11 +1593,10 @@ begin
         Canvas.Font.Style := [];
         case Entity.Visibility of
           viPrivate:   S := '- ';
-          viPackage:   S := '~ ';
           viProtected: S := '# ';
           viPublic:    S := '+ ';
         end;
-        if PictureNr = 8 then
+        if PictureNr = 6 then
           S := 'c ';
         Canvas.Font.Pitch := fpFixed;
         Canvas.TextOut(R.Left + 4, R.Top, S);
@@ -1633,10 +1629,10 @@ begin
   if (Entity is TAttribute) then
     PictureNr := integer(Entity.Visibility)
   else
-    PictureNr := integer(Entity.Visibility) + 4;
+    PictureNr := integer(Entity.Visibility) + 3;
   if not GuiPyOptions.ConstructorWithVisibility and (Entity is TOperation) and
     ((Entity as TOperation).OperationType = otConstructor) then
-    PictureNr := 8;
+    PictureNr:= 3;
   case (Owner as TRtfdBox).ShowIcons of
     0:
       begin
@@ -1651,14 +1647,12 @@ begin
         case Entity.Visibility of
           viPrivate:
             C := '-';
-          viPackage:
-            C := '~';
           viProtected:
             C := '#';
           viPublic:
             C := '+';
         end;
-        if PictureNr = 8 then
+        if PictureNr = 6 then
           C := 'c';
 
         bx := Left;
@@ -1714,14 +1708,12 @@ begin
               S := '-';
               bx := Left + 1
             end;
-          viPackage:
-            S := '~';
           viProtected:
             S := '#';
           viPublic:
             S := '+';
         end;
-        if PictureNr = 8 then
+        if PictureNr = 6 then
           S := 'c';
 
         Result := getSVGText(bx, by, '', S);
@@ -2511,7 +2503,7 @@ begin
     DrawText(Canvas.Handle, PChar(S), length(S), aRect, DT_CALCRECT);
     FTextWidth := 8 + aRect.Right + 8;
     case (Owner as TRtfdBox).ShowIcons of
-      0: FTextWidth := FTextWidth + (Owner as TRtfdBox).Frame.vilUMLRtfdComponentsLight.width + 4;
+      0: FTextWidth := FTextWidth + PPIScale(aRect.Height + 8);
       1: FTextWidth := FTextWidth + Canvas.TextWidth('+ ');
       2: FTextWidth := FTextWidth + 0;
     end;

@@ -201,7 +201,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 657
         Height = 439
-        ActivePage = PStructogram
+        ActivePage = PUML2
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
