@@ -6001,12 +6001,12 @@ begin
         if Filename = '' then
           Filename:= getFilename('.' + FileTemplate.Extension);
         Result.OpenFile(Filename, FileTemplate.Highlighter);
+        Result.Activate;
       except
         Result.Close;
         raise
       end;
       Result.SynEdit.Text := Parameters.ReplaceInText(FileTemplate.Template);
-      Result.Activate;
       if (FileTemplate.Name = SClassTemplateName) and GuiPyOptions.FromFutureImport then
         TEditorForm(Result.Form).InsertImport('from __future__ import annotations');
 
