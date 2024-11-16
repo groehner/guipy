@@ -1,4 +1,7 @@
-5.12 2024.11.15
+5.13, 2024.11.16
+bug fix for creating new classes in the class editor/uml window
+
+5.12, 2024.11.15
 constructor __init()__ now with visibility public in uml window
 file notifier fixed, prevents exceptions when exiting GuiPy
 
