@@ -36,7 +36,7 @@ uses
   VirtualExplorerTree,
   VirtualShellNotifier,
   uEditAppIntfs,
-  SynSpellCheck;
+  SynSpellCheck, SpTBXEditors, TB2Item, SpTBXItem, Vcl.Menus;
 
 type
   TSynGeneralSyn = class(SynHighlighterGeneral.TSynGeneralSyn)
@@ -166,6 +166,35 @@ type
     actPythonPath: TAction;
     actHelpWebProjectHome: TBrowseURL;
     actDonate: TBrowseURL;
+    pmSpelling: TSpTBXPopupMenu;
+    mnSpelling: TSpTBXSubmenuItem;
+    mnSpellCheckTopSeparator: TSpTBXSeparatorItem;
+    mnSpellCheckAdd: TSpTBXItem;
+    mnSpellCheckDelete: TSpTBXItem;
+    mnSpellCheckIgnore: TSpTBXItem;
+    mnSpellCheckIgnoreOnce: TSpTBXItem;
+    mnSpellCheckSecondSeparator: TSpTBXSeparatorItem;
+    SpTBXItem20: TSpTBXItem;
+    SpTBXItem21: TSpTBXItem;
+    SpTBXItem22: TSpTBXItem;
+    SpTBXItem23: TSpTBXItem;
+    SpTBXSeparatorItem24: TSpTBXSeparatorItem;
+    SpTBXItem24: TSpTBXItem;
+    SpTBXSeparatorItem25: TSpTBXSeparatorItem;
+    SpTBXItem25: TSpTBXItem;
+    pmAssistant: TSpTBXPopupMenu;
+    spiAssistant: TSpTBXSubmenuItem;
+    spiSuggest: TSpTBXItem;
+    spiAssistantComments: TSpTBXItem;
+    spiFixBugs: TSpTBXItem;
+    spiOptimize: TSpTBXItem;
+    SpTBXSeparatorItem4: TSpTBXSeparatorItem;
+    spiAssistantCancel: TSpTBXItem;
+    actAssistantSuggest: TAction;
+    actAssistantCancel: TAction;
+    actAssistantOptimize: TAction;
+    actAssistantFixBugs: TAction;
+    actAssistantComments: TAction;
     function ProgramVersionHTTPLocationLoadFileFromRemote(
       AProgramVersionLocation: TJvProgramVersionHTTPLocation; const ARemotePath,
       ARemoteFileName, ALocalPath, ALocalFileName: string): string;
@@ -269,9 +298,10 @@ type
     procedure actEditCopyHTMLasTextExecute(Sender: TObject);
     procedure actEditCopyNumberedExecute(Sender: TObject);
     procedure actFileExportExecute(Sender: TObject);
-    procedure SynSpellCheckChange(Sender: TObject);
     procedure actInterpreterEditorOptionsExecute(Sender: TObject);
     procedure actPythonPathExecute(Sender: TObject);
+    procedure mnSpellingPopup(Sender: TTBCustomItem; FromLink: Boolean);
+    procedure SynSpellCheckChange(Sender: TObject);
   private
     fConfirmReplaceDialogRect: TRect;
     procedure PyIDEOptionsChanged;
@@ -316,6 +346,7 @@ implementation
 uses
   WinApi.ShlObj,
   WinApi.ShellAPI,
+  WinApi.ActiveX,
   WinApi.Windows,
   System.UITypes,
   System.SysUtils,
@@ -333,7 +364,6 @@ uses
   MPShellUtilities,
   MPCommonUtilities,
   SpTBXMDIMRU,
-  SpTBXItem,
   SpTBXTabs,
   PythonEngine,
   SVGIconImage,
@@ -372,6 +402,7 @@ uses
   uCommonFunctions,
   uSearchHighlighter,
   SynHighlighterPython,
+  uLLMSupport,
   cTools,
   cPySupportTypes,
   cPyScripterSettings,
@@ -1395,33 +1426,33 @@ end;
 
 procedure TCommandsDataModule.actAssistantCommentsExecute(Sender: TObject);
 begin
-   //LLMAssistant.AddComments;
+   LLMAssistant.AddComments;
 end;
 
 procedure TCommandsDataModule.actAssistantCancelExecute(Sender: TObject);
 begin
-  //if LLMAssistant.IsBusy then
-  //  LLMAssistant.CancelRequest;
+  if LLMAssistant.IsBusy then
+    LLMAssistant.CancelRequest;
 end;
 
 procedure TCommandsDataModule.actAssistantFixBugsExecute(Sender: TObject);
 begin
-  //LLMAssistant.FixBugs;
+  LLMAssistant.FixBugs;
 end;
 
 procedure TCommandsDataModule.actAssistantOptimizeExecute(Sender: TObject);
 begin
-  //LLMAssistant.Optimize;
+  LLMAssistant.Optimize;
 end;
 
 procedure TCommandsDataModule.actAssistantSuggestExecute(Sender: TObject);
-begin  {
+begin
   if Assigned(GI_ActiveEditor) then
   begin
     SynCodeCompletion.CancelCompletion;
     SynParamCompletion.CancelCompletion;
     LLMAssistant.Suggest;
-  end;  }
+  end;
 end;
 
 procedure TCommandsDataModule.actPythonManualsExecute(Sender: TObject);
@@ -1609,7 +1640,7 @@ begin
   if Screen.ActiveControl is TCustomSynEdit then begin
     actParameterCompletion.Enabled := True;
     actModifierCompletion.Enabled := True;
-    actReplaceParameters.Enabled := Assigned(GI_ActiveEditor);
+    actReplaceParameters.Enabled := True;
     actInsertTemplate.Enabled := Assigned(GI_ActiveEditor);
   end else begin
     actParameterCompletion.Enabled := False;
@@ -1617,7 +1648,6 @@ begin
     actReplaceParameters.Enabled := False;
     actInsertTemplate.Enabled := False;
   end;
-  {
   // Assistant actions
   var HasPythonFile := Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile;
   actAssistantSuggest.Enabled := HasPythonFile and not SelAvail and not LLMAssistant.IsBusy;
@@ -1625,7 +1655,6 @@ begin
   actAssistantFixBugs.Enabled := HasPythonFile and SelAvail and not LLMAssistant.IsBusy;
   actAssistantComments.Enabled := HasPythonFile and SelAvail and not LLMAssistant.IsBusy;
   actAssistantCancel.Enabled := LLMAssistant.IsBusy;
-  }
   // Other actions
   actPythonPath.Enabled := GI_PyControl.PythonLoaded;
 end;
@@ -2158,6 +2187,96 @@ begin
   end;
 end;
 
+procedure TCommandsDataModule.mnSpellingPopup(Sender: TTBCustomItem; FromLink:
+    Boolean);
+var
+  Error: ISpellingError;
+  CorrectiveAction: CORRECTIVE_ACTION;
+  Replacement: PChar;
+  MenuItem: TTBCustomItem;
+  Action: TSynSpellErrorReplace;
+  Suggestions: IEnumString;
+  Suggestion: PWideChar;
+  Fetched: LongInt;
+  Indicator: TSynIndicator;
+  AWord: string;
+  HaveError: Boolean;
+  Editor: TCustomSynEdit;
+begin
+  Editor := SynSpellCheck.Editor;
+  if not Assigned(Editor) then
+    Exit;
+
+  // Remove replacement menu items and actions;
+  repeat
+    MenuItem := mnSpelling.Items[0];
+    if MenuItem.Action is TSynSpellErrorReplace then
+    begin
+      mnSpelling.Remove(MenuItem);
+      MenuItem.Action.Free;
+      MenuItem.Free;
+    end
+    else
+      Break;
+  until (False);
+
+  if not Assigned(SynSpellCheck.SpellChecker()) then
+  begin
+    mnSpelling.Visible := False;
+    Exit;
+  end;
+
+  if Editor.Indicators.IndicatorAtPos(Editor.CaretXY,
+   TSynSpellCheck.SpellErrorIndicatorId, Indicator)
+  then
+     AWord := Copy(Editor.Lines[Editor.CaretY - 1], Indicator.CharStart,
+       Indicator.CharEnd - Indicator.CharStart)
+  else
+    AWord := '';
+
+  //SynSpellCheck.Editor := Editor;
+  Error := SynSpellCheck.ErrorAtPos(Editor.CaretXY);
+  HaveError := Assigned(Error) and (AWord <> '');
+
+  mnSpellCheckTopSeparator.Visible := HaveError;
+  mnSpellCheckSecondSeparator.Visible := HaveError;
+  mnSpellCheckAdd.Visible := HaveError;
+  mnSpellCheckIgnore.Visible := HaveError;
+  mnSpellCheckIgnoreOnce.Visible := HaveError;
+  mnSpellCheckDelete.Visible := HaveError;
+
+
+  if HaveError then
+  begin
+    Error.Get_CorrectiveAction(CorrectiveAction);
+    case CorrectiveAction of
+      CORRECTIVE_ACTION_GET_SUGGESTIONS:
+        begin
+          CheckOSError(SynSpellCheck.SpellChecker.Suggest(
+            PChar(AWord), Suggestions));
+          while Suggestions.Next(1, Suggestion, @Fetched) = S_OK do
+          begin
+            Action := TSynSpellErrorReplace.Create(Self);
+            Action.Caption := Suggestion;
+            MenuItem := TSpTBXItem.Create(Self);
+            MenuItem.Action := Action;
+            mnSpelling.Insert(mnSpelling.IndexOf(mnSpellCheckTopSeparator), MenuItem);
+            CoTaskMemFree(Suggestion);
+          end;
+        end;
+      CORRECTIVE_ACTION_REPLACE:
+        begin
+          Error.Get_Replacement(Replacement);
+          Action := TSynSpellErrorReplace.Create(Self);
+          Action.Caption := Replacement;
+          MenuItem := TSpTBXItem.Create(Self);
+          MenuItem.Action := Action;
+          mnSpelling.Insert(0, MenuItem);
+        end;
+    end;
+  end;
+end;
+
 procedure TCommandsDataModule.ShowSearchReplaceDialog(SynEdit : TSynEdit; AReplace: boolean);
 Var
   S : string;
@@ -2260,15 +2379,19 @@ begin
   else
     URL := ARemotePath + ARemoteFileName;
 
-  if DownloadUrlToFile(URL, LocalFileName) and FileExists(LocalFileName) then
-    Result := LocalFileName
-  else
-  begin
-    if FileExists(LocalFileName) then
-      DeleteFile(LocalFileName);
-    ProgramVersionHTTPLocation.DownloadError := _('File download failed');
+  GI_PyIDEServices.SetActivityIndicator(True, _('Downloading...'));
+  try
+    if DownloadUrlToFile(URL, LocalFileName) and FileExists(LocalFileName) then
+      Result := LocalFileName
+    else
+    begin
+      if FileExists(LocalFileName) then
+        DeleteFile(LocalFileName);
+      ProgramVersionHTTPLocation.DownloadError := _('File download failed');
+    end;
+  finally
+    GI_PyIDEServices.SetActivityIndicator(False);
   end;
-  Result := LocalFileName;
 end;
 
 procedure TCommandsDataModule.PyIDEOptionsChanged;

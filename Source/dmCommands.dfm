@@ -968,6 +968,7 @@ object CommandsDataModule: TCommandsDataModule
       Category = 'Assistant'
       Caption = 'Cancel'
       Hint = 'Cancel Assistant action'
+      ImageIndex = 119
       ImageName = 'Cancel'
       OnExecute = actAssistantCancelExecute
     end
@@ -1098,5 +1099,78 @@ object CommandsDataModule: TCommandsDataModule
     OnChange = SynSpellCheckChange
     Left = 480
     Top = 176
+  end
+  object pmSpelling: TSpTBXPopupMenu
+    Left = 122
+    Top = 180
+    object mnSpelling: TSpTBXSubmenuItem
+      Caption = 'Spelling'
+      OnPopup = mnSpellingPopup
+      object mnSpellCheckTopSeparator: TSpTBXSeparatorItem
+      end
+      object mnSpellCheckAdd: TSpTBXItem
+        Action = actSynSpellErrorAdd
+      end
+      object mnSpellCheckDelete: TSpTBXItem
+        Action = actSynSpellErrorDelete
+      end
+      object mnSpellCheckIgnore: TSpTBXItem
+        Action = actSynSpellErrorIgnore
+      end
+      object mnSpellCheckIgnoreOnce: TSpTBXItem
+        Action = actSynSpellErrorIgnoreOnce
+      end
+      object mnSpellCheckSecondSeparator: TSpTBXSeparatorItem
+      end
+      object SpTBXItem20: TSpTBXItem
+        Action = actSynSpellCheckWord
+      end
+      object SpTBXItem21: TSpTBXItem
+        Action = actSynSpellCheckLine
+      end
+      object SpTBXItem22: TSpTBXItem
+        Action = actSynSpellCheckSelection
+      end
+      object SpTBXItem23: TSpTBXItem
+        Action = actSynSpellCheckFile
+      end
+      object SpTBXSeparatorItem24: TSpTBXSeparatorItem
+      end
+      object SpTBXItem24: TSpTBXItem
+        Action = actSynSpellClearErrors
+      end
+      object SpTBXSeparatorItem25: TSpTBXSeparatorItem
+      end
+      object SpTBXItem25: TSpTBXItem
+        Action = actSynSpellCheckAsYouType
+      end
+    end
+  end
+  object pmAssistant: TSpTBXPopupMenu
+    Images = EditorForm.vilContextMenuDark
+    Left = 248
+    Top = 180
+    object spiAssistant: TSpTBXSubmenuItem
+      Caption = 'Assistant'
+      object spiSuggest: TSpTBXItem
+        Action = actAssistantSuggest
+      end
+      object spiAssistantComments: TSpTBXItem
+        Caption = 'Explain'
+        Action = actAssistantComments
+      end
+      object spiFixBugs: TSpTBXItem
+        Action = actAssistantFixBugs
+      end
+      object spiOptimize: TSpTBXItem
+        Action = actAssistantOptimize
+      end
+      object SpTBXSeparatorItem4: TSpTBXSeparatorItem
+      end
+      object spiAssistantCancel: TSpTBXItem
+        Action = actAssistantCancel
+        ImageIndex = 20
+      end
+    end
   end
 end

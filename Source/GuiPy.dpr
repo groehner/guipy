@@ -200,7 +200,10 @@ uses
   dlgSynEditOptions in 'dlgSynEditOptions.pas' {fmEditorOptionsDialog},
   UZOrderControl in 'Utils\UZOrderControl.pas',
   dlgCustomShortcuts in 'dlgCustomShortcuts.pas' {frmCustomKeyboard},
-  SynHighlighterPython in 'SynHighlighterPython.pas';
+  SynHighlighterPython in 'SynHighlighterPython.pas',
+  frmLLMChat in 'frmLLMChat.pas' {LLMChatForm},
+  uLLMSupport in 'uLLMSupport.pas',
+  frmSuggest in 'frmSuggest.pas' {SuggestWindow};
 
 {$R *.RES}
 

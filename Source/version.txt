@@ -1,4 +1,7 @@
-5.12 2024.11.15
+6.00, 2024.11.19
+Usage of Large Language Models with LLM assistant and LLM chat
+
+5.12, 2024.11.15
 constructor __init()__ now with visibility public in uml window
 file notifier fixed, prevents exceptions when exiting GuiPy
 

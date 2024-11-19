@@ -168,7 +168,7 @@ var
 begin
   Result:= '';
   if (AFileName = '') or SameText('ActiveDoc', AFileName) then
-    AEditor:= GI_ActiveEditor
+    AEditor:= GI_PyIDEServices.ActiveEditor
   else
     AEditor:= GI_EditorFactory.GetEditorByName(AFileName);
   if Assigned(AEditor) then

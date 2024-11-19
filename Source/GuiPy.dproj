@@ -6,7 +6,7 @@
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>GuiPy.dpr</MainSource>
-        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <ProjectGuid>{FD7531E1-BDA2-4EF3-A3E8-074B952317EF}</ProjectGuid>
         <ProjectVersion>19.5</ProjectVersion>
         <TargetedPlatforms>3</TargetedPlatforms>
@@ -490,6 +490,15 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SynHighlighterPython.pas"/>
+        <DCCReference Include="frmLLMChat.pas">
+            <Form>LLMChatForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uLLMSupport.pas"/>
+        <DCCReference Include="frmSuggest.pas">
+            <Form>SuggestWindow</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="GuiPy.todo"/>
         <None Include="ModelSupport_PyScripter\default.txaPackage"/>
         <None Include="Main\_done.txt"/>
