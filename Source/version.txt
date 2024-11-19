@@ -1,3 +1,6 @@
+6.00, 2024.11.19
+Usage of Large Language Models with LLM assistant and LLM chat
+
 5.13, 2024.11.16
 bug fix for creating new classes in the class editor/uml window
 

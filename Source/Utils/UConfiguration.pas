@@ -38,7 +38,7 @@ uses
   cPyScripterSettings, dlgSynEditOptions, dlgCustomShortcuts, SynEditKeyCmds,
   SynEditMiscClasses, SynEditPrintMargins, cFileTemplates, dlgPyIDEBase,
   VirtualTrees.Types, VirtualTrees.BaseAncestorVCL, VirtualTrees.BaseTree,
-  VirtualTrees.AncestorVCL;
+  VirtualTrees.AncestorVCL, uLLMSupport;
 
 Const
   CrLf = #13#10;
@@ -147,6 +147,10 @@ type
 
     // Associations
     fAdditionalAssociations: string;
+
+    // LLM assistant & chat
+    fProviders: TLLMProvidersClass;
+    fChatProviders: TLLMProvidersClass;
 
     // Visibility
     fVisProgram: string;
@@ -365,6 +369,12 @@ type
     // Associations
     property AdditionalAssociations: string read fAdditionalAssociations
       write fAdditionalAssociations;
+
+    // Providers
+    property Providers: TLLMProvidersClass read fProviders
+      write fProviders;
+    property ChatProviders: TLLMProvidersClass read fChatProviders
+      write fChatProviders;
 
     // Visibility
     property VisTabs: string read fVisTabs write fVisTabs;
@@ -1072,6 +1082,36 @@ type
     LZoomsteps: TLabel;
     BGuiFontDefault: TButton;
     LDefault: TLabel;
+    PLLMAssistant: TTabSheet;
+    PLLMChat: TTabSheet;
+    LProvider: TLabel;
+    CBProvider: TComboBox;
+    LEndpoint: TLabel;
+    LModel: TLabel;
+    LLLMTimeout: TLabel;
+    LAPIKey: TLabel;
+    LMaxTokens: TLabel;
+    LSystemPrompt: TLabel;
+    EEndPoint: TEdit;
+    EModel: TEdit;
+    EAPIKey: TEdit;
+    ELLMTimeout: TEdit;
+    EMaxTokens: TEdit;
+    ESystemPrompt: TEdit;
+    LChatProvider: TLabel;
+    CBChatProvider: TComboBox;
+    LChatEndPoint: TLabel;
+    EChatEndPoint: TEdit;
+    LChatModel: TLabel;
+    EChatModel: TEdit;
+    LChatApiKey: TLabel;
+    EChatApiKey: TEdit;
+    LChatSystemPrompt: TLabel;
+    EChatSystemPrompt: TEdit;
+    LChatMaxTokens: TLabel;
+    EChatMaxTokens: TEdit;
+    LChatTimeout: TLabel;
+    EChatTimeout: TEdit;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1192,6 +1232,10 @@ type
     procedure ckGutterAutosizeClick(Sender: TObject);
     procedure BGuiFontClick(Sender: TObject);
     procedure BGuiFontDefaultClick(Sender: TObject);
+    procedure CBProviderSelect(Sender: TObject);
+    procedure CBProviderDropDown(Sender: TObject);
+    procedure CBChatProviderDropDown(Sender: TObject);
+    procedure CBChatProviderSelect(Sender: TObject);
   private
     const
       DefaultVisFileMenu    = '11100111011101011';      // len = 17
@@ -1236,6 +1280,10 @@ type
     FHandleChanges : Boolean;  //Normally true, can prevent unwanted execution of event handlers
     IndentWidth: Integer;
     CurrentLanguage: string;
+
+    // tab LLM assistant
+    TempProviders: TLLMProviders;
+    TempChatProviders: TLLMProviders;
 
     // tab Visibility
     vis1: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of boolean;
@@ -1321,6 +1369,10 @@ type
     procedure VisibilityModelToView;
     function CountMenuItems(Menu: TTBCustomItem): integer;
     procedure setSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Nr: integer);
+    procedure LLMAssistantModelToView;
+    procedure LLMAssistantViewToModel;
+    procedure LLMChatModelToView;
+    procedure LLMChatViewToModel;
   public
     class var CurrentSkinName : string;
     Indent1, Indent2, Indent3: string;
@@ -1377,10 +1429,10 @@ uses SynUnicode, StringResources, JvGnugettext, FileCtrl, Forms, Math,
      PythonVersions, uCommonFunctions, cPySupportTypes, frmPyIDEMain, SpTBXTabs,
      IOUtils, JvAppStorage, JvAppIniStorage, SynEditKeyConst, JvJCLUtils,
      frmFile, frmEditor, UUMLForm, UStructogram, USequenceform, UImages, UGit,
-     USubversion, frmPythonII;
+     USubversion, frmPythonII, frmLLMChat;
 
 const
-  MaxPages = 31;
+  MaxPages = 33;
 
   machine = 0;
   allusers = 1;
@@ -1735,6 +1787,10 @@ begin
   Indent3:= StringOfChar(' ', 3*IndentWidth);
   MakeControlStructureTemplates;
 
+  // tab LLM
+  GuiPyOptions.Providers.setToProviders(LLMAssistant.Providers);
+  GuiPyOptions.ChatProviders.setToProviders(LLMChatForm.LLMChat.Providers);
+
   // tab Git
   GitOK := FileExists(TPath.Combine(GuiPyOptions.GitFolder, '\bin\git.exe'));
   PyIDEMainForm.mnToolsGit.Visible:= GitOK and vis1[VisTabsLen + 7, 4];
@@ -2012,6 +2068,14 @@ begin
     CBAssociationJsd.Checked := HasAssociationWithGuiPy('.psd');
     EGuiPyAssociation.Text:= getRegisteredGuiPy;
     EAdditionalAssociations.Text:= AdditionalAssociations;
+
+    // tab LLM Assistant
+    Providers.setToProviders(TempProviders);
+    CBProvider.ItemIndex:= Integer(TempProviders.Provider);
+    LLMAssistantModelToView;
+    ChatProviders.setToProviders(TempChatProviders);
+    CBChatProvider.ItemIndex:= Integer(TempChatProviders.Provider);
+    LLMChatModelToView;
 
     // tab Visibility
     VisibilityModelToView;
@@ -2360,6 +2424,17 @@ begin
     // tab Associations
     AdditionalAssociations:= EAdditionalAssociations.Text;
 
+    // tab LLM Assistant
+    LLMAssistantViewToModel;
+    Providers.setFromProviders(TempProviders);
+    LLMAssistant.Providers:= TempProviders;
+    LLMAssistant.ClearContext;
+
+    LLMChatViewToModel;
+    ChatProviders.setFromProviders(TempChatProviders);
+    LLMChatForm.LLMChat.Providers:= TempChatProviders;
+    LLMChatForm.LLMChat.ClearContext;
+
     // Visibility
     VisibilityViewToModel;
 
@@ -2458,16 +2533,17 @@ var
       ('python', 'interpreter', 'editor', 'display', 'options_1', 'options_2', 'code_completion',
        'keystrokes', 'syntax_colors', 'color_themes', 'code_templates', 'file_templates',
        'class_modeler', 'gui_designer', 'structogram', 'sequence_diagram', 'uml_design',
-       'uml_options', 'ide_shortcuts',  'browser', 'language', 'options', 'styles',
-       'printer', 'header_footer', 'restrictions', 'associations', 'visibility',
-       'ssh', 'tools', 'git', 'subversion');
+       'uml_options', 'ide_shortcuts', 'browser', 'language', 'options', 'styles',
+       'printer', 'header_footer', 'restrictions', 'associations', 'llm_assistant', 'llm_chat',
+       'visibility', 'ssh', 'tools', 'git', 'subversion');
   de: array[0..MaxPages] of string =
       ('python', 'interpreter', 'editor', 'anzeige', 'optionen_1', 'optionen_2', 'codevervollstaendigung',
        'tastenkuerzel', 'syntaxfarben', 'farbschemen', 'codevorlagen', 'dateivorlagen',
        'klassenmodellierer', 'gui_designer', 'struktogramm', 'sequenzdiagramm',
        'uml_design', 'uml_optionen', 'ide_tastenkuerzel', 'browser', 'sprache_language',
        'optionen', 'stile', 'drucker', 'kopf-_und_fusszeile', 'beschraenkungen',
-       'verknuepfungen', 'sichtbarkeit', 'ssh', 'tools', 'git', 'subversion');
+       'verknuepfungen', 'llm_assistent', 'llm_chat', 'sichtbarkeit', 'ssh', 'tools',
+       'git', 'subversion');
 
 procedure TFConfiguration.BHelpClick(Sender: TObject);
   var count: integer; aNode: TTreeNode;
@@ -5792,6 +5868,100 @@ begin
       inc(Result);
 end;
 
+procedure TFConfiguration.CBProviderDropDown(Sender: TObject);
+begin
+  LLMAssistantViewToModel;
+end;
+
+procedure TFConfiguration.CBProviderSelect(Sender: TObject);
+begin
+  LLMAssistantModelToView;
+end;
+
+procedure TFConfiguration.CBChatProviderDropDown(Sender: TObject);
+begin
+  LLMChatViewToModel;
+end;
+
+procedure TFConfiguration.CBChatProviderSelect(Sender: TObject);
+begin
+  LLMChatModelToView;
+end;
+
+procedure TFConfiguration.LLMAssistantModelToView;
+  var Settings: TLLMSettings;
+begin
+  case CBProvider.ItemIndex of
+    0: Settings := TempProviders.OpenAI;
+    1: Settings := TempProviders.Gemini;
+    2: Settings := TempProviders.Ollama;
+  end;
+  EEndPoint.text:= Settings.EndPoint;
+  EModel.text:= Settings.Model;
+  EAPIKey.text:= Settings.ApiKey;
+  ESystemPrompt.text:= Settings.SystemPrompt;
+  EMaxTokens.text:= Settings.MaxTokens.toString;
+  ELLMTimeout.text:= (Settings.TimeOut div 1000).toString;
+end;
+
+procedure TFConfiguration.LLMAssistantViewToModel;
+  var Settings: TLLMSettings; value: integer;
+begin
+  TempProviders.Provider:= TLLMProvider(CBProvider.ItemIndex);
+  Settings.EndPoint:= EEndPoint.text;
+  Settings.Model:= EModel.text;
+  Settings.ApiKey:= EAPIKey.text;
+  Settings.SystemPrompt:= ESystemPrompt.text;
+  if not TryStrToInt(EMaxTokens.text, value) then
+    value:= 1000;
+  Settings.MaxTokens:= value;
+  if not TryStrToInt(ELLMTimeout.text, value) then
+    value:= 20;
+  Settings.Timeout:= value*1000;
+  case CBProvider.ItemIndex of
+    0: TempProviders.OpenAI:= Settings;
+    1: TempProviders.Gemini:= Settings;
+    2: TempProviders.Ollama:= Settings;
+  end;
+end;
+
+procedure TFConfiguration.LLMChatModelToView;
+  var Settings: TLLMSettings;
+begin
+  case CBChatProvider.ItemIndex of
+    0: Settings := TempChatProviders.OpenAI;
+    1: Settings := TempChatProviders.Gemini;
+    2: Settings := TempChatProviders.Ollama;
+  end;
+  EChatEndPoint.text:= Settings.EndPoint;
+  EChatModel.text:= Settings.Model;
+  EChatAPIKey.text:= Settings.ApiKey;
+  EChatSystemPrompt.text:= Settings.SystemPrompt;
+  EChatMaxTokens.text:= Settings.MaxTokens.toString;
+  EChatTimeout.text:= (Settings.TimeOut div 1000).toString;
+end;
+
+procedure TFConfiguration.LLMChatViewToModel;
+  var Settings: TLLMSettings; value: integer;
+begin
+  TempChatProviders.Provider:= TLLMProvider(CBChatProvider.ItemIndex);
+  Settings.EndPoint:= EChatEndPoint.text;
+  Settings.Model:= EChatModel.text;
+  Settings.ApiKey:= EChatAPIKey.text;
+  Settings.SystemPrompt:= EChatSystemPrompt.text;
+  if not TryStrToInt(EChatMaxTokens.text, value) then
+    value:= 1000;
+  Settings.MaxTokens:= value;
+  if not TryStrToInt(EChatTimeout.text, value) then
+    value:= 20;
+  Settings.Timeout:= value*1000;
+  case CBChatProvider.ItemIndex of
+    0: TempChatProviders.OpenAI:= Settings;
+    1: TempChatProviders.Gemini:= Settings;
+    2: TempChatProviders.Ollama:= Settings;
+  end;
+end;
+
 {--- end of Configuration -----------------------------------------------------}
 
 {--- TGuiPyOptions ---------------------------------------------------------}
@@ -5885,6 +6055,12 @@ begin
   // Associations
   fAdditionalAssociations:= '';
 
+  // LLMAssistant
+  fProviders:= TLLMProvidersClass.Create;
+  fProviders.setFromProviders(LLMAssistant.Providers);
+  fChatProviders:= TLLMProvidersClass.Create;
+  fChatProviders.setFromProviders(LLMChatForm.LLMChat.Providers);
+
   // Git
   fGitFolder:= '';
   fGitLocalRepository:= '';
@@ -5920,10 +6096,11 @@ end;
 
 destructor TGuiPyOptions.destroy;
 begin
-  inherited;
   FreeAndNil(fUMLFont);
   FreeAndNil(fStructogramFont);
   FreeAndNil(fSequenceFont);
+  FreeAndNil(fProviders);
+  FreeAndNil(FChatProviders);
 end;
 
 procedure TGuiPyOptions.setUMLFont(Value: TFont);
@@ -5962,7 +6139,6 @@ begin
   fSVNRepository:= RemovePortableDrive(fSVNRepository);
   fSourcePath:= RemovePortableDrive(fSourcePath);
 end;
-
 
 {--- TGuiPyLanguageOptions ----------------------------------------------------}
 

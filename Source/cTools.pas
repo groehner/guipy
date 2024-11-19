@@ -1,6 +1,6 @@
-{-----------------------------------------------------------------------------
+﻿{-----------------------------------------------------------------------------
  Unit Name: cTools
- Author:    Kiriakos Vlahos, Gerhard Röhner
+ Author:    Kiriakos Vlahos
  Date:      02-Jun-2005
  Purpose:   Class definitions for Command Line Tools
  History:
@@ -10,6 +10,7 @@ unit cTools;
 
 interface
 uses
+  System.SysUtils,
   System.Classes,
   Vcl.ActnList;
 
@@ -167,7 +168,6 @@ implementation
 
 uses
   Winapi.Windows,
-  System.SysUtils,
   Vcl.Menus,
   JclStrings,
   JvGnuGetText,
@@ -353,10 +353,9 @@ initialization
   ToolsCollection := TCollection.Create(TToolItem);
   // Add a few standard tools to the collection
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
-    Caption := 'Python &Interpreter';
-    Description := 'External Python Interpreter';
+    Caption := _('Python &Interpreter');
+    Description := _('External Python Interpreter');
     ApplicationName := '$[PythonExe-Short]';
-    Parameters := '';
     WorkingDirectory := '$[ActiveDoc-Dir]';
     SaveFiles := sfAll;
     ParseMessages := False;
@@ -365,18 +364,17 @@ initialization
   end;
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
-    Caption := 'Install Packages with pip';
-    Description := 'Install Python packages';
+    Caption := _('Install Packages with pip');
+    Description := _('Install Python packages');
     ApplicationName := '$[PythonDir-Short]Scripts\pip.exe';
     Parameters := 'install -U $[Package?Package Name]';
-    ParseTraceback := False;
     ParseMessages := False;
     CaptureOutput := True;
     ConsoleHidden := True;
   end;
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
-    Caption := 'Python&Win help';
+    Caption := _('Python&Win help');
     Description := _('Show PythonWin Help');
     ApplicationName := '$[PythonExe-Path-Short]Lib\site-packages\PyWin32.chm';
     ParseMessages := False;
@@ -385,8 +383,8 @@ initialization
   end;
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
-    Caption := 'Check &Indentation';
-    Description := 'Check the indentation of the Python program';
+    Caption := _('Check &Indentation');
+    Description := _('Check the indentation of the Python program');
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '-m tabnanny "$[ActiveDoc]"';
     WorkingDirectory := '$[ActiveDoc-Dir]';
@@ -401,8 +399,8 @@ initialization
   end;
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
-    Caption := 'Command Prompt';
-    Description := 'Start a console at the directory of the active file';
+    Caption := _('Command Prompt');
+    Description := _('Start a console at the directory of the active file');
     ApplicationName := '%COMSPEC%';
     WorkingDirectory := '$[ActiveDoc-Dir]';
     SaveFiles := sfAll;
@@ -412,8 +410,8 @@ initialization
   end;
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
-    Caption := 'Profile';
-    Description := 'Profile active file';
+    Caption := _('Profile');
+    Description := _('Profile active file');
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '-m profile "$[ActiveDoc]" $[CmdLineArgs]';
     WorkingDirectory := '$[ActiveDoc-Dir]';
@@ -426,7 +424,7 @@ initialization
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
     Caption := 'Py&lint';
-    Description := 'PyLint tool (www.pylint.org)';
+    Description := _('PyLint tool (www.pylint.org)');
     ApplicationName :=  '$[PythonDir-Short]Scripts\pylint.exe';
     Parameters := '-f parseable "$[ActiveDoc]"';
     ShortCut := Vcl.Menus.Shortcut(Ord('L'), [ssShift, ssCtrl]);
@@ -440,8 +438,8 @@ initialization
   end;
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
-    Caption := 'Advanced Replace';
-    Description := 'Advanced Search and replace';
+    Caption := _('Advanced Replace');
+    Description := _('Advanced Search and replace');
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '-c "import sys, re;l=sys.stdin.read();sys.stdout.write(re.sub(''$[st?Search Text:]'', ''$[rt?Replace Text:]'', l))"';
     Context := tcSelectionAvailable;
@@ -455,8 +453,8 @@ initialization
   end;
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
-    Caption := 'Format Selection';
-    Description := 'Format selected code using the "black" module';
+    Caption := _('Format Selection');
+    Description := _('Format selected code using the "black" module');
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '-m black -';
     ShortCut := Vcl.Menus.Shortcut(Ord('F'), [ssShift, ssAlt]);
@@ -471,8 +469,8 @@ initialization
   end;
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
-    Caption := 'Sort Selection';
-    Description := 'Sort the selected editor block ("one-liner" demo)';
+    Caption := _('Sort Selection');
+    Description := _('Sort the selected editor block ("one-liner" demo)');
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '-c "import sys;l=sys.stdin.readlines();l.sort();sys.stdout.writelines(l)"';
     ShortCut := Vcl.Menus.Shortcut(Ord('S'), [ssShift, ssCtrl]);
@@ -487,8 +485,8 @@ initialization
   end;
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
-    Caption := '&Re-indent';
-    Description := 'Re-indent the active file';
+    Caption := _('&Re-indent');
+    Description := _('Re-indent the active file');
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '$[PythonDir-Short]Tools\Scripts\reindent.py';
     Context := tcActivePythonFile;
@@ -503,8 +501,8 @@ initialization
   // Create a Python External Run tool which is used in the run menu
   ExternalPython := TExternalRun.Create;
   with ExternalPython do begin
-    Caption := 'Python Interpreter';
-    Description := 'External Python Interpreter';
+    Caption := _('Python Interpreter');
+    Description := _('External Python Interpreter');
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '$[ActiveDoc-Short] $[CmdLineArgs]';
     WorkingDirectory := '$[ActiveDoc-Dir]';

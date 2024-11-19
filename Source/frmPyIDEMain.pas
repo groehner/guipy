@@ -657,7 +657,7 @@ uses
   frmEditor,
   UUMLForm,
   UGUIForm,
-  UBrowser;
+  UBrowser, Vcl.WinXCtrls;
 
 const
   WM_FINDDEFINITION  = WM_USER + 100;
@@ -1219,7 +1219,7 @@ type
     mnConfigureTools: TSpTBXItem;
     mnHelpProjectHome: TSpTBXItem;
     mnHelpWebSupport: TSpTBXItem;
-    SpTBXItem2: TSpTBXItem;
+    mnViewStructure: TSpTBXItem;
     actNavStructure: TAction;
     TBControlItem1: TTBControlItem;
     TBControlItem3: TTBControlItem;
@@ -1279,20 +1279,6 @@ type
     TBQtTreeView: TToolButton;
     SpTBXSeparatorItem29: TSpTBXSeparatorItem;
     mnSpelling: TSpTBXSubmenuItem;
-    mnSpellCheckAdd: TSpTBXItem;
-    mnSpellCheckTopSeparator: TSpTBXSeparatorItem;
-    mnSpellCheckDelete: TSpTBXItem;
-    mnSpellCheckIgnore: TSpTBXItem;
-    mnSpellCheckIgnoreOnce: TSpTBXItem;
-    mnSpellCheckSecondSeparator: TSpTBXSeparatorItem;
-    SpTBXItem20: TSpTBXItem;
-    SpTBXItem21: TSpTBXItem;
-    SpTBXItem23: TSpTBXItem;
-    SpTBXItem22: TSpTBXItem;
-    SpTBXSeparatorItem31: TSpTBXSeparatorItem;
-    SpTBXItem25: TSpTBXItem;
-    SpTBXSeparatorItem32: TSpTBXSeparatorItem;
-    SpTBXItem24: TSpTBXItem;
     actEditorZoomReset: TAction;
     lbFileFormat: TSpTBXLabelItem;
     SpTBXSeparatorItem30: TSpTBXSeparatorItem;
@@ -1312,6 +1298,10 @@ type
     actUMLOpenFolder: TAction;
     mnRecognizeAssociations: TSpTBXItem;
     actUMLRecognizeAssociations: TAction;
+    ActivityIndicator: TActivityIndicator;
+    spiAssistant: TTBControlItem;
+    mnViewChat: TSpTBXItem;
+    actNavChat: TAction;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1469,13 +1459,13 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure ToolButtonStartDrag(Sender: TObject; var DragObject: TDragObject);
     procedure TBQtApplicationClick(Sender: TObject);
-    procedure mnSpellingPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure actEditorZoomResetExecute(Sender: TObject);
     procedure DdeServerConvExecuteMacro(Sender: TObject; Msg: TStrings);
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
       NewDPI: Integer);
     procedure actUMLOpenFolderExecute(Sender: TObject);
     procedure actUMLRecognizeAssociationsExecute(Sender: TObject);
+    procedure actNavChatExecute(Sender: TObject);
   private
     DSAAppStorage: TDSAAppStorage;
     ShellExtensionFiles : TStringList;
@@ -1549,6 +1539,7 @@ type
     procedure SaveEnvironment;
     procedure SaveFileModules;
     procedure SetRunLastScriptHints(const ScriptName : string);
+    procedure SetActivityIndicator(TurnOn: Boolean; Hint: string = ''; OnClick: TNotifyEvent = nil);
     function GetStoredScript(const Name: string): TStrings;
     function GetMessageServices: IMessageServices;
     function GetUnitTestServices: IUnitTestServices;
@@ -1674,7 +1665,6 @@ uses
   SynEditTypes,
   SynEditKeyCmds,
   SynCompletionProposal,
-  SynSpellCheck,
   PythonEngine,
   PythonVersions,
   JvGnugettext,
@@ -1703,6 +1693,7 @@ uses
   frmUnitTests,
   frmToDo,
   frmFindResults,
+  frmLLMChat,
   frmWebPreview,
   frmModSpTBXCustomize,
   cTools,
@@ -2110,6 +2101,9 @@ begin
   // GI_PyIDEServices
   GI_PyIDEServices := Self;
 
+  // Activity Indicator
+  SetActivityIndicator(False);
+
   // Application Storage
   AppStorage.Encoding := TEncoding.UTF8;
   AppStorage.FileName := TPyScripterSettings.OptionsFileName;
@@ -2152,6 +2146,8 @@ begin
   FindResultsWindow.PopupParent := Self;
   ProjectExplorerWindow := TProjectExplorerWindow.Create(Self);
   ProjectExplorerWindow.PopupParent := Self;
+  LLMChatForm := TLLMChatForm.Create(Self);
+  LLMChatForm.PopupParent := Self;
 
   FConfiguration:= TFConfiguration.Create(Self);
   FConfiguration.PopupParent:= Self;
@@ -2469,6 +2465,14 @@ begin
   CallStackWindow.FormActivate(Sender);
 end;
 
+procedure TPyIDEMainForm.actNavChatExecute(Sender: TObject);
+begin
+  if not LLMChatForm.Visible then
+    ShowDockForm(LLMChatForm)
+  else
+    HideDockForm(LLMChatForm);
+end;
+
 procedure TPyIDEMainForm.actNavCodeExplorerExecute(Sender: TObject);
 begin
   ShowDockForm(CodeExplorerWindow);
@@ -2478,10 +2482,8 @@ begin
 end;
 
 procedure TPyIDEMainForm.actNavEditorExecute(Sender: TObject);
-Var
-  Editor : IEditor;
 begin
-  Editor := GetActiveEditor;
+  var Editor := GetActiveEditor;
   if Assigned(Editor) then
     Editor.Activate;
 end;
@@ -3316,6 +3318,18 @@ begin
   ActiveTabControlIndex := TabControlIndex(Value);
 end;
 
+type
+  TCrackActivityIndicator = class(TActivityIndicator);
+
+procedure TPyIDEMainForm.SetActivityIndicator(TurnOn: Boolean; Hint: string;
+  OnClick: TNotifyEvent);
+begin
+  ActivityIndicator.Visible := TurnOn;
+  ActivityIndicator.Hint := Hint;
+  ActivityIndicator.Animate := TurnOn;
+  TCrackActivityIndicator(ActivityIndicator).OnClick := OnClick;
+end;
+
 procedure TPyIDEMainForm.SetRunLastScriptHints(const ScriptName: string);
 Var
   S : string;
@@ -3548,96 +3562,6 @@ procedure TPyIDEMainForm.SpTBXCustomizerGetCustomizeForm(Sender: TObject;
   var CustomizeFormClass: TSpTBXCustomizeFormClass);
 begin
   CustomizeFormClass := TSpTBXCustomizeFormMod;
-end;
-
-procedure TPyIDEMainForm.mnSpellingPopup(Sender: TTBCustomItem;
-  FromLink: Boolean);
-var
-  Error: ISpellingError;
-  CorrectiveAction: CORRECTIVE_ACTION;
-  Replacement: PChar;
-  MenuItem: TTBCustomItem;
-  Action: TSynSpellErrorReplace;
-  Suggestions: IEnumString;
-  Suggestion: PWideChar;
-  Fetched: LongInt;
-  Indicator: TSynIndicator;
-  AWord: string;
-  HaveError: Boolean;
-  Editor: TCustomSynEdit;
-begin
-  Editor := CommandsDataModule.SynSpellCheck.Editor;
-  if not Assigned(Editor) then
-    Exit;
-
-  // Remove replacement menu items and actions;
-  repeat
-    MenuItem := mnSpelling.Items[0];
-    if MenuItem.Action is TSynSpellErrorReplace then
-    begin
-      mnSpelling.Remove(MenuItem);
-      MenuItem.Action.Free;
-      MenuItem.Free;
-    end
-    else
-      Break;
-  until (False);
-
-  if not Assigned(CommandsDataModule.SynSpellCheck.SpellChecker()) then
-  begin
-    mnSpelling.Visible := False;
-    Exit;
-  end;
-
-  if Editor.Indicators.IndicatorAtPos(Editor.CaretXY,
-   TSynSpellCheck.SpellErrorIndicatorId, Indicator)
-  then
-     AWord := Copy(Editor.Lines[Editor.CaretY - 1], Indicator.CharStart,
-       Indicator.CharEnd - Indicator.CharStart)
-  else
-    AWord := '';
-
-  CommandsDataModule.SynSpellCheck.Editor := Editor;
-  Error := CommandsDataModule.SynSpellCheck.ErrorAtPos(Editor.CaretXY);
-  HaveError := Assigned(Error) and (AWord <> '');
-
-  mnSpellCheckTopSeparator.Visible := HaveError;
-  mnSpellCheckSecondSeparator.Visible := HaveError;
-  mnSpellCheckAdd.Visible := HaveError;
-  mnSpellCheckIgnore.Visible := HaveError;
-  mnSpellCheckIgnoreOnce.Visible := HaveError;
-  mnSpellCheckDelete.Visible := HaveError;
-
-  if HaveError then
-  begin
-    Error.Get_CorrectiveAction(CorrectiveAction);
-    case CorrectiveAction of
-      CORRECTIVE_ACTION_GET_SUGGESTIONS:
-        begin
-          CheckOSError(CommandsDataModule.SynSpellCheck.SpellChecker.Suggest(
-            PChar(AWord), Suggestions));
-          while Suggestions.Next(1, Suggestion, @Fetched) = S_OK do
-          begin
-            Action := TSynSpellErrorReplace.Create(Self);
-            Action.Caption := Suggestion;
-            MenuItem := TSpTBXItem.Create(Self);
-            MenuItem.Action := Action;
-            mnSpelling.Insert(mnSpelling.IndexOf(mnSpellCheckTopSeparator), MenuItem);
-            CoTaskMemFree(Suggestion);
-          end;
-        end;
-      CORRECTIVE_ACTION_REPLACE:
-        begin
-          Error.Get_Replacement(Replacement);
-          Action := TSynSpellErrorReplace.Create(Self);
-          Action.Caption := Replacement;
-          MenuItem := TSpTBXItem.Create(Self);
-          MenuItem.Action := Action;
-          mnSpelling.Insert(0, MenuItem);
-        end;
-    end;
-  end;
-
 end;
 
 procedure TPyIDEMainForm.actViewSplitEditorHorExecute(Sender: TObject);
@@ -4948,7 +4872,6 @@ begin
     ToolsMenu.Delete(12); // Python Interpreter
     ToolsMenu.Delete(11); // Command Prompt
   end;
-
   // delete actions and menus added in previous calls
   mnTools.Clear;
   for i := actlStandard.ActionCount - 1 downto 0 do
@@ -4960,12 +4883,12 @@ begin
       MenuItem := TSpTBXItem.Create(Self);
       Action := TExternalToolAction.CreateExtToolAction(Self, Tool);
       Action.ActionList := actlStandard;
-      MenuItem.Action := Action;
-      MenuItem.Images := FShellImages;
       if (Tool.ApplicationName = '$[PythonExe-Short]') and (Tool.Parameters = '') or
          (Tool.ApplicationName = '%COMSPEC%') and not GuiPyOptions.LockedDOSWindow
         then ToolsMenu.Insert(11, MenuItem)
         else mnTools.Add(MenuItem);
+      MenuItem.Action := Action;
+      MenuItem.Images := FShellImages;
     end;
   end;
 
@@ -5837,6 +5760,10 @@ begin
     EditorToolbar.EndUpdate;
     FindToolbar.EndUpdate;
   end;
+  {$IF CompilerVersion >= 36}
+  ActivityIndicator.IndicatorColor := aicCustom;
+  ActivityIndicator.IndicatorCustomColor := StyleServices.GetSystemColor(clWindowText);
+  {$ENDIF}
 //  BGPanel.Color := CurrentTheme.GetItemColor(GetItemInfo('inactive'));
 //  Application.HintColor := CurrentTheme.GetViewColor(VT_DOCKPANEL);
 end;

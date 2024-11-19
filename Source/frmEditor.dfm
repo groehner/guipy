@@ -42,7 +42,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 558
+        CustomWidth = 488
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -60,19 +60,17 @@ object EditorForm: TEditorForm
       end
       object tbshSource: TSpTBXTabSheet
         Left = 0
-        Top = 25
+        Top = 30
         Width = 596
-        Height = 672
+        Height = 667
         Caption = 'Source'
         ImageIndex = -1
-        ExplicitTop = 30
-        ExplicitHeight = 667
         TabItem = 'tabSource'
         object SynEdit: TSynEdit
           Left = 25
           Top = 0
           Width = 545
-          Height = 668
+          Height = 663
           HelpContext = 510
           Align = alClient
           Ctl3D = False
@@ -144,13 +142,12 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
-          ExplicitHeight = 663
         end
         object SynEdit2: TSynEdit
           Left = 570
           Top = 0
           Width = 17
-          Height = 668
+          Height = 663
           Align = alRight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -209,29 +206,26 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
-          ExplicitHeight = 663
         end
         object EditorSplitter: TSpTBXSplitter
           Left = 587
           Top = 0
-          Height = 668
+          Height = 663
           Cursor = crSizeWE
           Align = alRight
           ParentColor = False
           Visible = False
           GripSize = 80
-          ExplicitHeight = 663
         end
         object EditformToolbar: TToolBar
           Left = 2
           Top = 0
           Width = 23
-          Height = 668
+          Height = 663
           Align = alLeft
           AutoSize = True
           Images = vilEditorToolbarLight
           TabOrder = 3
-          ExplicitHeight = 663
           object TBClose: TToolButton
             Left = 0
             Top = 0
@@ -539,7 +533,13 @@ object EditorForm: TEditorForm
       ImageName = 'Configuration'
       OnClick = mnEditConfigurationClick
     end
-    object mnGit: TSpTBXSubmenuItem
+    object mnEditAssistant: TSpTBXSubmenuItem
+      Caption = 'Assistant'
+      ImageIndex = 18
+      ImageName = 'Assistant'
+      LinkSubitems = CommandsDataModule.spiAssistant
+    end
+    object mnEditGit: TSpTBXSubmenuItem
       Caption = 'Git'
       ImageIndex = 16
       ImageName = 'git'
@@ -1392,6 +1392,16 @@ object EditorForm: TEditorForm
         CollectionIndex = 32
         CollectionName = 'Search'
         Name = 'Search'
+      end
+      item
+        CollectionIndex = 35
+        CollectionName = 'Assistant'
+        Name = 'Assistant'
+      end
+      item
+        CollectionIndex = 36
+        CollectionName = 'Cancel'
+        Name = 'Cancel'
       end>
     ImageCollection = DMImages.icEditorContextMenu
     Left = 232
@@ -1488,6 +1498,16 @@ object EditorForm: TEditorForm
         CollectionIndex = 17
         CollectionName = 'Configuration'
         Name = 'Configuration'
+      end
+      item
+        CollectionIndex = 33
+        CollectionName = 'Assistant'
+        Name = 'Assistant'
+      end
+      item
+        CollectionIndex = 34
+        CollectionName = 'Cancel'
+        Name = 'Cancel'
       end>
     ImageCollection = DMImages.icEditorContextMenu
     Left = 112

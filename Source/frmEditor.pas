@@ -4,7 +4,7 @@
   Date:      23-Feb-2005
   Purpose:
   History:   Originally Based on SynEdit Demo
-  ----------------------------------------------------------------------------- }
+  -----------------------------------------------------------------------------}
 
 unit frmEditor;
 
@@ -152,7 +152,7 @@ type
     mnEditOpenClass: TSpTBXItem;
     mnEditCopyPathname: TSpTBXItem;
     mnEditConfiguration: TSpTBXItem;
-    mnGit: TSpTBXSubmenuItem;
+    mnEditGit: TSpTBXSubmenuItem;
     mnGitConsole: TSpTBXItem;
     mnGitViewer: TSpTBXItem;
     mnGitGUI: TSpTBXItem;
@@ -178,6 +178,7 @@ type
 
     vilContextMenuDark: TVirtualImageList;
     vilContextMenuLight: TVirtualImageList;
+    mnEditAssistant: TSpTBXSubmenuItem;
     procedure SynEditChange(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
@@ -4870,7 +4871,7 @@ end;
 
 procedure TEditorForm.pmnuEditorPopup(Sender: TObject);
 begin
-  mnGit.Visible:= FConfiguration.gitOK;
+  mnEditGit.Visible:= FConfiguration.gitOK;
   mnEditCut.ImageIndex:= -1;
   mnEditCopy.ImageIndex:= -1;
   mnEditPaste.ImageIndex:= -1;

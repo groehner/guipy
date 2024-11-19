@@ -21,9 +21,9 @@ object PyIDEMainForm: TPyIDEMainForm
   TextHeight = 15
   object StatusBar: TSpTBXStatusBar
     Left = 0
-    Top = 717
+    Top = 714
     Width = 1031
-    Height = 25
+    Height = 28
     SizeGrip = False
     object lbStatusMessage: TSpTBXLabelItem
       Wrapping = twEndEllipsis
@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 397
+      CustomWidth = 373
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -90,6 +90,9 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXSeparatorItem9: TSpTBXSeparatorItem
     end
+    object spiAssistant: TTBControlItem
+      Control = ActivityIndicator
+    end
     object spiStatusLED: TSpTBXItem
       Hint = 'Ready'
       ImageIndex = 0
@@ -109,12 +112,18 @@ object PyIDEMainForm: TPyIDEMainForm
       Images = vilIndicators
       Visible = False
     end
+    object ActivityIndicator: TActivityIndicator
+      Left = 965
+      Top = 0
+      FrameDelay = 150
+      IndicatorSize = aisSmall
+    end
   end
   object BGPanel: TPanel
     Left = 9
     Top = 113
     Width = 1013
-    Height = 595
+    Height = 592
     Align = alClient
     BevelEdges = []
     BevelOuter = bvNone
@@ -124,7 +133,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 0
       Top = 0
       Width = 1009
-      Height = 595
+      Height = 592
       Align = alClient
       PopupMenu = TabControlPopupMenu
       OnContextPopup = TabContolContextPopup
@@ -176,7 +185,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 1009
       Top = 0
       Width = 0
-      Height = 595
+      Height = 592
       Align = alRight
       PopupMenu = TabControlPopupMenu
       Visible = False
@@ -229,7 +238,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 1009
       Top = 0
       Width = 4
-      Height = 595
+      Height = 592
       Cursor = crSizeWE
       Align = alRight
       ParentColor = False
@@ -361,7 +370,8 @@ object PyIDEMainForm: TPyIDEMainForm
         object tbiFindClose: TSpTBXItem
           Caption = 'Close'
           Hint = 'Close'
-          ImageIndex = 114
+          ImageIndex = 108
+          ImageName = 'DiagramFromFiles'
           OnClick = tbiFindCloseClick
         end
         object tbiFindLabel: TSpTBXLabelItem
@@ -679,45 +689,7 @@ object PyIDEMainForm: TPyIDEMainForm
             Tag = -1
             Caption = 'Spelling'
             Visible = False
-            OnPopup = mnSpellingPopup
-            object mnSpellCheckTopSeparator: TSpTBXSeparatorItem
-            end
-            object mnSpellCheckAdd: TSpTBXItem
-              Action = CommandsDataModule.actSynSpellErrorAdd
-            end
-            object mnSpellCheckDelete: TSpTBXItem
-              Action = CommandsDataModule.actSynSpellErrorDelete
-            end
-            object mnSpellCheckIgnore: TSpTBXItem
-              Action = CommandsDataModule.actSynSpellErrorIgnore
-            end
-            object mnSpellCheckIgnoreOnce: TSpTBXItem
-              Action = CommandsDataModule.actSynSpellErrorIgnoreOnce
-            end
-            object mnSpellCheckSecondSeparator: TSpTBXSeparatorItem
-            end
-            object SpTBXItem20: TSpTBXItem
-              Action = CommandsDataModule.actSynSpellCheckWord
-            end
-            object SpTBXItem21: TSpTBXItem
-              Action = CommandsDataModule.actSynSpellCheckLine
-            end
-            object SpTBXItem22: TSpTBXItem
-              Action = CommandsDataModule.actSynSpellCheckSelection
-            end
-            object SpTBXItem23: TSpTBXItem
-              Action = CommandsDataModule.actSynSpellCheckFile
-            end
-            object SpTBXSeparatorItem31: TSpTBXSeparatorItem
-            end
-            object SpTBXItem24: TSpTBXItem
-              Action = CommandsDataModule.actSynSpellClearErrors
-            end
-            object SpTBXSeparatorItem32: TSpTBXSeparatorItem
-            end
-            object SpTBXItem25: TSpTBXItem
-              Action = CommandsDataModule.actSynSpellCheckAsYouType
-            end
+            LinkSubitems = CommandsDataModule.mnSpelling
           end
           object mnIsertCodeTemplate: TSpTBXItem
             Action = CommandsDataModule.actInsertTemplate
@@ -1001,6 +973,9 @@ object PyIDEMainForm: TPyIDEMainForm
             Tag = -1
             Action = actSelectStyle
           end
+          object mnViewChat: TSpTBXItem
+            Action = actNavChat
+          end
           object mnViewII: TSpTBXItem
             Action = actViewII
             ShortCut = 49225
@@ -1011,7 +986,7 @@ object PyIDEMainForm: TPyIDEMainForm
             Action = actViewObjectinspector
             ShortCut = 49226
           end
-          object SpTBXItem2: TSpTBXItem
+          object mnViewStructure: TSpTBXItem
             Action = actNavStructure
           end
           object mnViewFileExplorer: TSpTBXItem
@@ -2867,7 +2842,7 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 0
     Top = 113
     Width = 9
-    Height = 595
+    Height = 592
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpLeft
@@ -2876,14 +2851,14 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 1022
     Top = 113
     Width = 9
-    Height = 595
+    Height = 592
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpRight
   end
   object TBXDockBottom: TSpTBXDock
     Left = 0
-    Top = 708
+    Top = 705
     Width = 1031
     Height = 9
     FixAlign = True
@@ -3907,7 +3882,8 @@ object PyIDEMainForm: TPyIDEMainForm
     object actUMLOpenFolder: TAction
       Category = 'UML'
       Caption = 'Open folder'
-      ImageIndex = 116
+      ImageIndex = 110
+      ImageName = 'TextDiff'
       OnExecute = actUMLOpenFolderExecute
     end
     object actUMLSaveAsPicture: TAction
@@ -3968,8 +3944,18 @@ object PyIDEMainForm: TPyIDEMainForm
     object actUMLRecognizeAssociations: TAction
       Category = 'UML'
       Caption = 'Recognize associations'
-      ImageIndex = 117
+      ImageIndex = 111
+      ImageName = 'Configuration'
       OnExecute = actUMLRecognizeAssociationsExecute
+    end
+    object actNavChat: TAction
+      Category = 'IDE Navigation'
+      Caption = 'Chat'
+      Hint = 'Activate the Chat window'
+      ImageIndex = 118
+      ImageName = 'Chat'
+      ShortCut = 49217
+      OnExecute = actNavChatExecute
     end
   end
   object LocalAppStorage: TJvAppIniFileStorage
@@ -4497,78 +4483,94 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'Setup'
       end
       item
-        CollectionIndex = 142
+        CollectionIndex = 148
         CollectionName = 'UMLNew'
         Name = 'UMLNew'
       end
       item
-        CollectionIndex = 143
+        CollectionIndex = 149
         CollectionName = 'UMLOpen'
         Name = 'UMLOpen'
       end
       item
-        CollectionIndex = 144
+        CollectionIndex = 150
         CollectionName = 'ClassEdit'
         Name = 'ClassEdit'
       end
       item
-        CollectionIndex = 145
+        CollectionIndex = 151
         CollectionName = 'NewComment'
         Name = 'NewComment'
       end
       item
-        CollectionIndex = 146
+        CollectionIndex = 152
         CollectionName = 'Aktualisieren'
         Name = 'Aktualisieren'
       end
       item
-        CollectionIndex = 147
+        CollectionIndex = 153
         CollectionName = 'NewLayout'
         Name = 'NewLayout'
       end
       item
-        CollectionIndex = 148
+        CollectionIndex = 154
         CollectionName = 'DiagramFromFiles'
         Name = 'DiagramFromFiles'
       end
       item
-        CollectionIndex = 149
+        CollectionIndex = 155
         CollectionName = 'SaveAsPicture'
         Name = 'SaveAsPicture'
       end
       item
-        CollectionIndex = 150
+        CollectionIndex = 156
         CollectionName = 'TextDiff'
         Name = 'TextDiff'
       end
       item
-        CollectionIndex = 151
+        CollectionIndex = 157
         CollectionName = 'Configuration'
         Name = 'Configuration'
       end
       item
-        CollectionIndex = 152
+        CollectionIndex = 158
         CollectionName = 'git'
         Name = 'git'
       end
       item
-        CollectionIndex = 153
+        CollectionIndex = 159
         CollectionName = 'svn'
         Name = 'svn'
       end
       item
         CollectionIndex = 154
+        CollectionName = 'DiagramFromFiles'
+        Name = 'DiagramFromFiles'
       end
       item
-        CollectionIndex = 155
+        CollectionIndex = 161
         CollectionName = 'EditClass'
         Name = 'EditClass'
       end
       item
         CollectionIndex = 156
+        CollectionName = 'TextDiff'
+        Name = 'TextDiff'
       end
       item
         CollectionIndex = 157
+        CollectionName = 'Configuration'
+        Name = 'Configuration'
+      end
+      item
+        CollectionIndex = 142
+        CollectionName = 'Chat\Chat'
+        Name = 'Chat'
+      end
+      item
+        CollectionIndex = 165
+        CollectionName = 'Cancel'
+        Name = 'Cancel'
       end>
     ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True

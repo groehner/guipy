@@ -490,6 +490,15 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SynHighlighterPython.pas"/>
+        <DCCReference Include="frmLLMChat.pas">
+            <Form>LLMChatForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uLLMSupport.pas"/>
+        <DCCReference Include="frmSuggest.pas">
+            <Form>SuggestWindow</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="GuiPy.todo"/>
         <None Include="ModelSupport_PyScripter\default.txaPackage"/>
         <None Include="Main\_done.txt"/>

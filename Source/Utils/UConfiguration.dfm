@@ -4,8 +4,8 @@ object FConfiguration: TFConfiguration
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Configuration'
-  ClientHeight = 502
-  ClientWidth = 848
+  ClientHeight = 501
+  ClientWidth = 844
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,18 +22,18 @@ object FConfiguration: TFConfiguration
   object PMain: TPanel
     Left = 0
     Top = 0
-    Width = 848
-    Height = 502
+    Width = 844
+    Height = 501
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 844
-    ExplicitHeight = 501
+    ExplicitWidth = 840
+    ExplicitHeight = 500
     object TVConfiguration: TTreeView
       Left = 0
       Top = 0
       Width = 189
-      Height = 502
+      Height = 501
       Align = alLeft
       AutoExpand = True
       HideSelection = False
@@ -41,7 +41,7 @@ object FConfiguration: TFConfiguration
       TabOrder = 0
       OnChange = TVConfigurationChange
       Items.NodeData = {
-        03150000002A0000000000000000000000FFFFFFFFFFFFFFFF00000000000000
+        03180000002A0000000000000000000000FFFFFFFFFFFFFFFF00000000000000
         0000000000010650007900740068006F006E00340000000000000000000000FF
         FFFFFFFFFFFFFF000000000000000000000000010B49006E0074006500720070
         00720065007400650072002A0000000000000000000000FFFFFFFFFFFFFFFF00
@@ -87,34 +87,39 @@ object FConfiguration: TFConfiguration
         0000000000000000000000FFFFFFFFFFFFFFFF00000000000000000000000001
         0C5200650073007400720069006300740069006F006E00730036000000000000
         0000000000FFFFFFFFFFFFFFFF000000000000000000000000010C4100730073
-        006F00630069006100740069006F006E007300320000000000000000000000FF
-        FFFFFFFFFFFFFF000000000000000000000000010A5600690073006900620069
-        006C00690074007900240000000000000000000000FFFFFFFFFFFFFFFF000000
-        0000000000000000000103530053004800280000000000000000000000FFFFFF
-        FFFFFFFFFF000000000000000002000000010554006F006F006C007300240000
-        000000000000000000FFFFFFFFFFFFFFFF000000000000000000000000010347
-        0069007400320000000000000000000000FFFFFFFFFFFFFFFF00000000000000
-        0000000000010A530075006200760065007200730069006F006E00}
-      ExplicitHeight = 501
+        006F00630069006100740069006F006E007300380000000000000000000000FF
+        FFFFFFFFFFFFFF000000000000000000000000010D4C004C004D002000410073
+        00730069007300740061006E0074002E0000000000000000000000FFFFFFFFFF
+        FFFFFF00000000000000000000000001084C004C004D00200043006800610074
+        00320000000000000000000000FFFFFFFFFFFFFFFF0000000000000000000000
+        00010A5600690073006900620069006C00690074007900240000000000000000
+        000000FFFFFFFFFFFFFFFF000000000000000000000000010353005300480028
+        0000000000000000000000FFFFFFFFFFFFFFFF00000000000000000200000001
+        0554006F006F006C007300240000000000000000000000FFFFFFFFFFFFFFFF00
+        00000000000000000000000103470069007400320000000000000000000000FF
+        FFFFFFFFFFFFFF000000000000000000000000010A5300750062007600650072
+        00730069006F006E001E0000000000000000000000FFFFFFFFFFFFFFFF000000
+        0000000000000000000100}
+      ExplicitHeight = 500
     end
     object PanelRight: TPanel
       Left = 189
       Top = 0
-      Width = 659
-      Height = 502
+      Width = 655
+      Height = 501
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 655
-      ExplicitHeight = 501
+      ExplicitWidth = 651
+      ExplicitHeight = 500
       object PButtons: TPanel
         Left = 1
-        Top = 460
-        Width = 657
+        Top = 459
+        Width = 653
         Height = 41
         Align = alBottom
         TabOrder = 0
-        ExplicitTop = 459
-        ExplicitWidth = 653
+        ExplicitTop = 458
+        ExplicitWidth = 649
         object BSave: TButton
           Left = 546
           Top = 9
@@ -177,12 +182,12 @@ object FConfiguration: TFConfiguration
       object PTitle: TPanel
         Left = 1
         Top = 1
-        Width = 657
+        Width = 653
         Height = 20
         Align = alTop
         BevelOuter = bvSpace
         TabOrder = 1
-        ExplicitWidth = 653
+        ExplicitWidth = 649
         object LTitle: TLabel
           Left = 8
           Top = 4
@@ -199,14 +204,14 @@ object FConfiguration: TFConfiguration
       object PageList: TPageControl
         Left = 1
         Top = 21
-        Width = 657
-        Height = 439
-        ActivePage = PUML2
+        Width = 653
+        Height = 438
+        ActivePage = PLLMChat
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
-        ExplicitWidth = 653
-        ExplicitHeight = 438
+        ExplicitWidth = 649
+        ExplicitHeight = 437
         object PPython: TTabSheet
           Caption = 'Python'
           object vtPythonVersions: TVirtualStringTree
@@ -447,22 +452,24 @@ object FConfiguration: TFConfiguration
           Caption = 'Display'
           ImageIndex = 27
           DesignSize = (
-            649
-            406)
+            645
+            405)
           object gbGutter: TGroupBox
             AlignWithMargins = True
             Left = 8
-            Top = 210
-            Width = 569
+            Top = 209
+            Width = 557
             Height = 193
             Anchors = [akLeft, akRight, akBottom]
             Caption = 'Gutter'
             TabOrder = 0
+            ExplicitTop = 208
+            ExplicitWidth = 553
             DesignSize = (
-              569
+              557
               193)
             object lGutterColor: TLabel
-              Left = 298
+              Left = 286
               Top = 118
               Width = 66
               Height = 15
@@ -478,7 +485,7 @@ object FConfiguration: TFConfiguration
               Caption = 'Digits'
             end
             object pnlGutterFontDisplay: TPanel
-              Left = 377
+              Left = 365
               Top = 148
               Width = 181
               Height = 27
@@ -487,8 +494,8 @@ object FConfiguration: TFConfiguration
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 179
-                Height = 25
+                Width = 72
+                Height = 8
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -498,8 +505,6 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
-                ExplicitWidth = 72
-                ExplicitHeight = 8
               end
             end
             object cbGutterColor: TSpTBXColorEdit
@@ -555,7 +560,7 @@ object FConfiguration: TFConfiguration
               TabOrder = 8
             end
             object cbGutterFont: TCheckBox
-              Left = 48
+              Left = 36
               Top = 162
               Width = 196
               Height = 21
@@ -565,7 +570,7 @@ object FConfiguration: TFConfiguration
               OnClick = cbGutterFontClick
             end
             object ckGutterGradient: TCheckBox
-              Left = 48
+              Left = 36
               Top = 138
               Width = 137
               Height = 21
@@ -593,13 +598,14 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbLineSpacing: TGroupBox
-            Left = 12
+            Left = 9
             Top = 125
             Width = 265
             Height = 88
             Anchors = [akTop]
             Caption = 'Line spacing / Tab spacing'
             TabOrder = 1
+            ExplicitLeft = 8
             DesignSize = (
               265
               88)
@@ -637,13 +643,14 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbRightEdge: TGroupBox
-            Left = 303
+            Left = 291
             Top = 125
             Width = 271
             Height = 88
             Anchors = [akTop, akRight]
             Caption = 'Right Edge'
             TabOrder = 2
+            ExplicitLeft = 287
             DesignSize = (
               271
               88)
@@ -682,7 +689,7 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbBookmarks: TGroupBox
-            Left = 303
+            Left = 291
             Top = 57
             Width = 271
             Height = 62
@@ -707,13 +714,14 @@ object FConfiguration: TFConfiguration
             end
           end
           object gbActiveLineColor: TGroupBox
-            Left = 303
+            Left = 291
             Top = 8
             Width = 271
             Height = 43
             Anchors = [akTop, akRight]
             Caption = 'Active Line Color'
             TabOrder = 4
+            ExplicitLeft = 287
             DesignSize = (
               271
               43)
@@ -744,8 +752,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 188
-                Height = 28
+                Width = 91
+                Height = 15
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Consolas 10pt'
@@ -755,8 +763,6 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Consolas'
                 Font.Style = []
                 ParentFont = False
-                ExplicitWidth = 91
-                ExplicitHeight = 15
               end
             end
             object btnFont: TButton
@@ -989,7 +995,7 @@ object FConfiguration: TFConfiguration
             AlignWithMargins = True
             Left = 3
             Top = 3
-            Width = 643
+            Width = 635
             Height = 310
             Align = alTop
             Caption = 'Options'
@@ -999,7 +1005,7 @@ object FConfiguration: TFConfiguration
             object GridPanel1: TGridPanel
               Left = 2
               Top = 17
-              Width = 639
+              Width = 631
               Height = 291
               Align = alClient
               BevelOuter = bvNone
@@ -1029,7 +1035,7 @@ object FConfiguration: TFConfiguration
               object StackPanel1: TStackPanel
                 Left = 0
                 Top = 0
-                Width = 320
+                Width = 316
                 Height = 291
                 Align = alClient
                 BevelOuter = bvNone
@@ -1075,13 +1081,13 @@ object FConfiguration: TFConfiguration
                 Spacing = 7
                 TabOrder = 0
                 DesignSize = (
-                  320
+                  316
                   291)
                 object ckAutoIndent: TCheckBox
                   AlignWithMargins = True
                   Left = 7
                   Top = 0
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 
                     'Will indent the caret on new lines with the same amount of leadi' +
@@ -1095,7 +1101,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 24
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 
                     'Allows you to select a block of text and drag it within the docu' +
@@ -1109,7 +1115,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 48
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 'Enhances end key similar to JDeveloper'
                   Margins.Top = 0
@@ -1121,7 +1127,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 72
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 'enhances home key positioning, similar to visual studio'
                   Margins.Top = 0
@@ -1133,7 +1139,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 96
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 
                     'When undoing/redoing actions, handle all continuous changes of t' +
@@ -1149,7 +1155,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 120
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 
                     'When moving through lines the X position will always stay the sa' +
@@ -1163,7 +1169,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 144
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 
                     'When clicking with the right mouse for a popup menu, move the cu' +
@@ -1177,7 +1183,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 168
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 
                     'When tabbing, the cursor will go to the next non-white space cha' +
@@ -1191,7 +1197,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 192
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 'similar to Smart Tabs, but when you delete characters'
                   Margins.Top = 0
@@ -1203,7 +1209,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 216
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 'Tab indents and Shift-Tab unindents'
                   Margins.Top = 0
@@ -1215,7 +1221,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 240
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 'Converts a tab character to the number of spaces in Tab Width'
                   Margins.Top = 0
@@ -1227,7 +1233,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 7
                   Top = 264
-                  Width = 310
+                  Width = 306
                   Height = 17
                   Hint = 'Spaces at the end of lines will be trimmed and not saved'
                   Margins.Top = 0
@@ -1238,9 +1244,9 @@ object FConfiguration: TFConfiguration
                 end
               end
               object StackPanel2: TStackPanel
-                Left = 320
+                Left = 316
                 Top = 0
-                Width = 319
+                Width = 315
                 Height = 291
                 Align = alClient
                 BevelOuter = bvNone
@@ -1285,13 +1291,13 @@ object FConfiguration: TFConfiguration
                 Spacing = 7
                 TabOrder = 1
                 DesignSize = (
-                  319
+                  315
                   291)
                 object ckDisableScrollArrows: TCheckBox
                   AlignWithMargins = True
                   Left = 3
                   Top = 0
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 
                     'Disables the scroll bar arrow buttons when you can'#39't scroll in t' +
@@ -1306,7 +1312,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 3
                   Top = 24
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 
                     'When scrolling with page-up and page-down commands, only scroll ' +
@@ -1321,7 +1327,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 3
                   Top = 48
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 
                     'If enabled, then the scrollbars will only show when necessary.  ' +
@@ -1337,7 +1343,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 3
                   Top = 72
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 'Forces scrolling to be one less'
                   Margins.Top = 0
@@ -1350,7 +1356,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 3
                   Top = 96
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 'Allows the cursor to go past the end of file marker'
                   Margins.Top = 0
@@ -1363,7 +1369,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 3
                   Top = 120
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 
                     'Allows the cursor to go past the last character into the white s' +
@@ -1378,7 +1384,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 3
                   Top = 144
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 
                     'Shows a hint of the visible line numbers when scrolling vertical' +
@@ -1393,7 +1399,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 3
                   Top = 168
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 'Show font ligatures'
                   Margins.Top = 0
@@ -1406,7 +1412,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 3
                   Top = 192
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 'The scroll hint follows the mouse when scrolling vertically'
                   Margins.Top = 0
@@ -1419,7 +1425,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 3
                   Top = 216
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 'Shows line breaks, spaces and tabs using special symbols'
                   Margins.Top = 0
@@ -1432,7 +1438,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 3
                   Top = 240
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 
                     'Shows errors, bookmarks, modifications and carets in the scrollb' +
@@ -1447,7 +1453,7 @@ object FConfiguration: TFConfiguration
                   AlignWithMargins = True
                   Left = 3
                   Top = 264
-                  Width = 313
+                  Width = 309
                   Height = 17
                   Hint = 'Allows the editor accept OLE file drops'
                   Margins.Top = 0
@@ -1652,7 +1658,7 @@ object FConfiguration: TFConfiguration
           object Panel2: TPanel
             Left = 0
             Top = 0
-            Width = 649
+            Width = 645
             Height = 169
             Align = alTop
             TabOrder = 4
@@ -1695,8 +1701,8 @@ object FConfiguration: TFConfiguration
         object PSyntaxColors: TTabSheet
           Caption = 'Syntax colors'
           DesignSize = (
-            649
-            406)
+            645
+            405)
           object Label13: TLabel
             Left = 8
             Top = 240
@@ -1735,7 +1741,7 @@ object FConfiguration: TFConfiguration
           object cbHighlighters: TComboBox
             Left = 8
             Top = 23
-            Width = 172
+            Width = 160
             Height = 23
             Style = csDropDownList
             Anchors = [akLeft, akTop, akRight]
@@ -1818,7 +1824,7 @@ object FConfiguration: TFConfiguration
           object SynSyntaxSample: TSynEdit
             Left = 217
             Top = 80
-            Width = 360
+            Width = 348
             Height = 281
             Anchors = [akLeft, akTop, akRight]
             Font.Charset = DEFAULT_CHARSET
@@ -1873,8 +1879,8 @@ object FConfiguration: TFConfiguration
           Caption = 'Color themes'
           ImageIndex = 24
           DesignSize = (
-            649
-            406)
+            645
+            405)
           object SpTBXLabel1: TLabel
             Left = 199
             Top = 3
@@ -1901,7 +1907,7 @@ object FConfiguration: TFConfiguration
           object SynThemeSample: TSynEdit
             Left = 199
             Top = 22
-            Width = 378
+            Width = 366
             Height = 387
             Anchors = [akLeft, akTop, akRight]
             Font.Charset = DEFAULT_CHARSET
@@ -1944,19 +1950,20 @@ object FConfiguration: TFConfiguration
         object PCodeTemplates: TTabSheet
           Caption = 'Code templates'
           DesignSize = (
-            649
-            406)
+            645
+            405)
           object GroupBox: TGroupBox
             AlignWithMargins = True
             Left = 8
             Top = 160
-            Width = 593
+            Width = 581
             Height = 240
             Anchors = [akLeft, akTop, akRight]
             Caption = 'Code Template:'
             TabOrder = 0
+            ExplicitWidth = 577
             DesignSize = (
-              593
+              581
               240)
             object Label2: TLabel
               Left = 14
@@ -2010,7 +2017,7 @@ object FConfiguration: TFConfiguration
             object CodeSynTemplate: TSynEdit
               Left = 14
               Top = 84
-              Width = 577
+              Width = 565
               Height = 116
               Anchors = [akLeft, akTop, akRight]
               Font.Charset = DEFAULT_CHARSET
@@ -2052,7 +2059,7 @@ object FConfiguration: TFConfiguration
             object edDescription: TEdit
               Left = 115
               Top = 43
-              Width = 471
+              Width = 459
               Height = 23
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 2
@@ -2134,8 +2141,8 @@ object FConfiguration: TFConfiguration
           Caption = 'File templates'
           ImageIndex = 28
           DesignSize = (
-            649
-            406)
+            645
+            405)
           object FileTemplatesLvItems: TListView
             Left = 14
             Top = 3
@@ -2161,13 +2168,14 @@ object FConfiguration: TFConfiguration
           object GroupBox3: TGroupBox
             Left = 8
             Top = 160
-            Width = 622
+            Width = 610
             Height = 240
             Anchors = [akLeft, akTop, akRight]
             Caption = 'File Template:'
             TabOrder = 1
+            ExplicitWidth = 606
             DesignSize = (
-              622
+              610
               240)
             object Label19: TLabel
               Left = 14
@@ -2228,7 +2236,7 @@ object FConfiguration: TFConfiguration
             object FileSynTemplate: TSynEdit
               Left = 14
               Top = 84
-              Width = 606
+              Width = 594
               Height = 116
               Anchors = [akLeft, akTop, akRight]
               Font.Charset = DEFAULT_CHARSET
@@ -2269,7 +2277,7 @@ object FConfiguration: TFConfiguration
             object CBFileTemplatesHighlighter: TComboBox
               Left = 400
               Top = 44
-              Width = 157
+              Width = 145
               Height = 23
               Style = csDropDownList
               Anchors = [akLeft, akTop, akRight]
@@ -3340,8 +3348,8 @@ object FConfiguration: TFConfiguration
           Caption = 'IDE Shortcuts'
           ImageIndex = 27
           DesignSize = (
-            649
-            406)
+            645
+            405)
           object lblAssignedTo: TLabel
             Left = 10
             Top = 270
@@ -3417,7 +3425,7 @@ object FConfiguration: TFConfiguration
           object lbCurrentKeys: TListBox
             Left = 224
             Top = 226
-            Width = 281
+            Width = 269
             Height = 57
             Anchors = [akLeft, akTop, akRight]
             ItemHeight = 15
@@ -3435,7 +3443,7 @@ object FConfiguration: TFConfiguration
           object lbCommands: TListBox
             Left = 224
             Top = 28
-            Width = 281
+            Width = 269
             Height = 97
             Anchors = [akLeft, akTop, akRight]
             ItemHeight = 15
@@ -3446,7 +3454,7 @@ object FConfiguration: TFConfiguration
           object gbDescription: TGroupBox
             Left = 3
             Top = 131
-            Width = 502
+            Width = 490
             Height = 61
             Anchors = [akLeft, akTop, akRight]
             Caption = 'Description'
@@ -3454,7 +3462,7 @@ object FConfiguration: TFConfiguration
             object lblDescription: TLabel
               Left = 2
               Top = 17
-              Width = 498
+              Width = 486
               Height = 42
               Align = alClient
               AutoSize = False
@@ -3907,13 +3915,13 @@ object FConfiguration: TFConfiguration
         object PPrinter: TTabSheet
           Caption = 'Printer'
           DesignSize = (
-            649
-            406)
+            645
+            405)
           object Image1: TImage
             Left = 300
             Top = 10
             Width = 223
-            Height = 302
+            Height = 301
             Anchors = [akLeft, akTop, akBottom]
             Picture.Data = {
               07544269746D617036800000424D36800000000000007600000028000000DF00
@@ -5472,7 +5480,7 @@ object FConfiguration: TFConfiguration
           object ToolbarDock: TSpTBXDock
             Left = 0
             Top = 0
-            Width = 649
+            Width = 645
             Height = 26
             AllowDrag = False
             LimitToOneRow = True
@@ -5734,6 +5742,232 @@ object FConfiguration: TFConfiguration
             Height = 17
             Caption = '.pyw'
             TabOrder = 15
+          end
+        end
+        object PLLMAssistant: TTabSheet
+          Caption = 'LLM Assistant'
+          ImageIndex = 32
+          object LProvider: TLabel
+            Left = 16
+            Top = 16
+            Width = 44
+            Height = 15
+            Caption = 'Provider'
+          end
+          object LEndpoint: TLabel
+            Left = 32
+            Top = 48
+            Width = 48
+            Height = 15
+            Caption = 'Endpoint'
+          end
+          object LModel: TLabel
+            Left = 32
+            Top = 80
+            Width = 34
+            Height = 15
+            Caption = 'Model'
+          end
+          object LLLMTimeout: TLabel
+            Left = 32
+            Top = 208
+            Width = 103
+            Height = 15
+            Caption = 'Timeout in seconds'
+          end
+          object LAPIKey: TLabel
+            Left = 32
+            Top = 112
+            Width = 39
+            Height = 15
+            Caption = 'API key'
+          end
+          object LMaxTokens: TLabel
+            Left = 32
+            Top = 176
+            Width = 111
+            Height = 15
+            Caption = 'Max response tokens'
+          end
+          object LSystemPrompt: TLabel
+            Left = 32
+            Top = 144
+            Width = 81
+            Height = 15
+            Caption = 'System prompt'
+          end
+          object CBProvider: TComboBox
+            Left = 160
+            Top = 13
+            Width = 97
+            Height = 23
+            Style = csDropDownList
+            TabOrder = 0
+            OnDropDown = CBProviderDropDown
+            OnSelect = CBProviderSelect
+            Items.Strings = (
+              'OpenAI'
+              'Gemini'
+              'Ollama')
+          end
+          object EEndPoint: TEdit
+            Left = 160
+            Top = 45
+            Width = 400
+            Height = 23
+            TabOrder = 1
+          end
+          object EModel: TEdit
+            Left = 160
+            Top = 77
+            Width = 400
+            Height = 23
+            TabOrder = 2
+          end
+          object EAPIKey: TEdit
+            Left = 160
+            Top = 109
+            Width = 400
+            Height = 23
+            PasswordChar = #9679
+            TabOrder = 3
+          end
+          object ELLMTimeout: TEdit
+            Left = 160
+            Top = 206
+            Width = 60
+            Height = 23
+            TabOrder = 4
+            Text = '20'
+          end
+          object EMaxTokens: TEdit
+            Left = 160
+            Top = 173
+            Width = 60
+            Height = 23
+            TabOrder = 5
+            Text = '1000'
+          end
+          object ESystemPrompt: TEdit
+            Left = 160
+            Top = 141
+            Width = 400
+            Height = 23
+            TabOrder = 6
+            Text = 'You are my expert python coding assistant'
+          end
+        end
+        object PLLMChat: TTabSheet
+          Caption = 'LLM Chat'
+          ImageIndex = 33
+          object LChatProvider: TLabel
+            Left = 16
+            Top = 16
+            Width = 44
+            Height = 15
+            Caption = 'Provider'
+          end
+          object LChatEndPoint: TLabel
+            Left = 32
+            Top = 48
+            Width = 48
+            Height = 15
+            Caption = 'Endpoint'
+          end
+          object LChatModel: TLabel
+            Left = 32
+            Top = 80
+            Width = 34
+            Height = 15
+            Caption = 'Model'
+          end
+          object LChatApiKey: TLabel
+            Left = 32
+            Top = 112
+            Width = 39
+            Height = 15
+            Caption = 'API key'
+          end
+          object LChatSystemPrompt: TLabel
+            Left = 32
+            Top = 144
+            Width = 81
+            Height = 15
+            Caption = 'System prompt'
+          end
+          object LChatMaxTokens: TLabel
+            Left = 32
+            Top = 176
+            Width = 111
+            Height = 15
+            Caption = 'Max response tokens'
+          end
+          object LChatTimeout: TLabel
+            Left = 32
+            Top = 208
+            Width = 103
+            Height = 15
+            Caption = 'Timeout in seconds'
+          end
+          object CBChatProvider: TComboBox
+            Left = 160
+            Top = 13
+            Width = 97
+            Height = 23
+            Style = csDropDownList
+            TabOrder = 0
+            OnDropDown = CBChatProviderDropDown
+            OnSelect = CBChatProviderSelect
+            Items.Strings = (
+              'OpenAI'
+              'Gemini'
+              'Ollama')
+          end
+          object EChatEndPoint: TEdit
+            Left = 160
+            Top = 45
+            Width = 400
+            Height = 23
+            TabOrder = 1
+          end
+          object EChatModel: TEdit
+            Left = 160
+            Top = 77
+            Width = 400
+            Height = 23
+            TabOrder = 2
+          end
+          object EChatApiKey: TEdit
+            Left = 160
+            Top = 109
+            Width = 400
+            Height = 23
+            PasswordChar = #9679
+            TabOrder = 3
+          end
+          object EChatSystemPrompt: TEdit
+            Left = 160
+            Top = 141
+            Width = 400
+            Height = 23
+            TabOrder = 4
+            Text = 'You are my expert python coding assistant'
+          end
+          object EChatMaxTokens: TEdit
+            Left = 160
+            Top = 173
+            Width = 60
+            Height = 23
+            TabOrder = 5
+            Text = '1000'
+          end
+          object EChatTimeout: TEdit
+            Left = 160
+            Top = 206
+            Width = 60
+            Height = 23
+            TabOrder = 6
+            Text = '20'
           end
         end
         object PVisibility: TTabSheet
