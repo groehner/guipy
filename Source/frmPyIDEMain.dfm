@@ -1197,20 +1197,29 @@ object PyIDEMainForm: TPyIDEMainForm
           object mnNewLayout: TSpTBXItem
             Hint = 'New layout'
             Action = actUMLNewLayout
+            ImageIndex = 106
+            ImageName = 'NewLayout'
           end
           object mnRefresh: TSpTBXItem
             Hint = 'Refresh'
             Action = actUMLRefresh
+            ImageIndex = 107
+            ImageName = 'Refresh2'
           end
           object mnRecognizeAssociations: TSpTBXItem
             Action = actUMLRecognizeAssociations
+            ImageIndex = 116
+            ImageName = 'RecognizeAssociations'
           end
           object mnDiagramFromOpenFiles: TSpTBXItem
             Hint = 'Diagram from open files'
             Action = actUMLDiagramFromOpenFiles
           end
           object mnOpenFolder: TSpTBXItem
+            Hint = 'Open folder'
             Action = actUMLOpenFolder
+            ImageIndex = 115
+            ImageName = 'OpenFolder'
           end
           object mnSaveAsPicture: TSpTBXItem
             Hint = 'Save as picture'
@@ -3861,14 +3870,13 @@ object PyIDEMainForm: TPyIDEMainForm
     object actUMLNewLayout: TAction
       Category = 'UML'
       Caption = 'New layout'
-      ImageIndex = 106
       ImageName = 'Aktualisieren'
       OnExecute = actUMLNewLayoutExecute
     end
     object actUMLRefresh: TAction
       Category = 'UML'
       Caption = 'Refresh'
-      ImageIndex = 107
+      ImageIndex = 106
       ImageName = 'NewLayout'
       OnExecute = actUMLRefreshExecute
     end
@@ -3952,7 +3960,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Category = 'IDE Navigation'
       Caption = 'Chat'
       Hint = 'Activate the Chat window'
-      ImageIndex = 118
+      ImageIndex = 117
       ImageName = 'Chat'
       ShortCut = 49217
       OnExecute = actNavChatExecute
@@ -4505,12 +4513,12 @@ object PyIDEMainForm: TPyIDEMainForm
       item
         CollectionIndex = 152
         CollectionName = 'Aktualisieren'
-        Name = 'Aktualisieren'
+        Name = 'NewLayout'
       end
       item
         CollectionIndex = 153
         CollectionName = 'NewLayout'
-        Name = 'NewLayout'
+        Name = 'Refresh2'
       end
       item
         CollectionIndex = 154
@@ -4543,24 +4551,17 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'svn'
       end
       item
-        CollectionIndex = 154
-        CollectionName = 'DiagramFromFiles'
-        Name = 'DiagramFromFiles'
-      end
-      item
         CollectionIndex = 161
         CollectionName = 'EditClass'
         Name = 'EditClass'
       end
       item
-        CollectionIndex = 156
-        CollectionName = 'TextDiff'
-        Name = 'TextDiff'
+        CollectionIndex = 162
+        Name = 'OpenFolder'
       end
       item
-        CollectionIndex = 157
-        CollectionName = 'Configuration'
-        Name = 'Configuration'
+        CollectionIndex = 163
+        Name = 'RecognizeAssociations'
       end
       item
         CollectionIndex = 142
@@ -4571,6 +4572,16 @@ object PyIDEMainForm: TPyIDEMainForm
         CollectionIndex = 165
         CollectionName = 'Cancel'
         Name = 'Cancel'
+      end
+      item
+        CollectionIndex = 164
+        CollectionName = 'Assistant'
+        Name = 'Assistant'
+      end
+      item
+        CollectionIndex = 166
+        CollectionName = 'Title'
+        Name = 'Title'
       end>
     ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True

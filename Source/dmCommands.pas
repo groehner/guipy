@@ -185,7 +185,7 @@ type
     pmAssistant: TSpTBXPopupMenu;
     spiAssistant: TSpTBXSubmenuItem;
     spiSuggest: TSpTBXItem;
-    spiAssistantComments: TSpTBXItem;
+    spiAssistantExplain: TSpTBXItem;
     spiFixBugs: TSpTBXItem;
     spiOptimize: TSpTBXItem;
     SpTBXSeparatorItem4: TSpTBXSeparatorItem;
@@ -194,7 +194,7 @@ type
     actAssistantCancel: TAction;
     actAssistantOptimize: TAction;
     actAssistantFixBugs: TAction;
-    actAssistantComments: TAction;
+    actAssistantExplain: TAction;
     function ProgramVersionHTTPLocationLoadFileFromRemote(
       AProgramVersionLocation: TJvProgramVersionHTTPLocation; const ARemotePath,
       ARemoteFileName, ALocalPath, ALocalFileName: string): string;
@@ -230,7 +230,7 @@ type
     procedure actEditUntabifyExecute(Sender: TObject);
     procedure actIDEOptionsExecute(Sender: TObject);
     procedure actAboutExecute(Sender: TObject);
-    procedure actAssistantCommentsExecute(Sender: TObject);
+    procedure actAssistantExplainExecute(Sender: TObject);
     procedure actAssistantCancelExecute(Sender: TObject);
     procedure actAssistantFixBugsExecute(Sender: TObject);
     procedure actAssistantOptimizeExecute(Sender: TObject);
@@ -1424,9 +1424,9 @@ begin
   end;
 end;
 
-procedure TCommandsDataModule.actAssistantCommentsExecute(Sender: TObject);
+procedure TCommandsDataModule.actAssistantExplainExecute(Sender: TObject);
 begin
-   LLMAssistant.AddComments;
+   LLMAssistant.Explain;
 end;
 
 procedure TCommandsDataModule.actAssistantCancelExecute(Sender: TObject);
@@ -1653,7 +1653,7 @@ begin
   actAssistantSuggest.Enabled := HasPythonFile and not SelAvail and not LLMAssistant.IsBusy;
   actAssistantOptimize.Enabled := HasPythonFile and SelAvail and not LLMAssistant.IsBusy;
   actAssistantFixBugs.Enabled := HasPythonFile and SelAvail and not LLMAssistant.IsBusy;
-  actAssistantComments.Enabled := HasPythonFile and SelAvail and not LLMAssistant.IsBusy;
+  actAssistantExplain.Enabled := HasPythonFile and SelAvail and not LLMAssistant.IsBusy;
   actAssistantCancel.Enabled := LLMAssistant.IsBusy;
   // Other actions
   actPythonPath.Enabled := GI_PyControl.PythonLoaded;

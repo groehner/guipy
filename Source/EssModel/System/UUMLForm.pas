@@ -175,7 +175,7 @@ uses Windows, SysUtils, Types, IniFiles, Math, Clipbrd, Dialogs,
      frmPyIDEMain, dmResources, uEditAppIntfs, uCommonFunctions,
      JvGnugettext, StringResources, cPyScripterSettings, UFileStructure,
      UConfiguration, UUtils, UModelEntity, UModel, URtfdDiagram, UViewIntegrator,
-     cPyControl, cFileTemplates;
+     cPyControl, cFileTemplates, dmCommands;
 
 {$R *.DFM}
 
@@ -208,6 +208,8 @@ begin
     AlreadySavedAs:= true;
   end;
   FFileStructure.Clear(Self);
+  if MainModul.Diagram.hasObjects and PyIDEOptions.ReinitializeWhenClosing then
+    TBReInitializeClick(Self);
   CanClose:= true;
 end;
 
@@ -779,6 +781,16 @@ begin
   MainModul.Diagram.RefreshDiagram;
 end;
 
+procedure TFUMLForm.OpenFiles;
+begin
+  MainModul.ShowAllOpenedFiles;
+  MainModul.Diagram.ShowParameter:= 4;
+  SaveAndReload;
+  MainModul.Diagram.ResolveAssociations;
+  MainModul.DoLayout;
+  PyIDEMainForm.RunFile(fFile);
+end;
+
 procedure TFUMLForm.OpenFolder;
 begin
   if MainModul.OpenFolderActionExecute(Self) then begin
@@ -788,17 +800,8 @@ begin
     MainModul.Diagram.ResolveAssociations;
     MainModul.DoLayout;
     PyIDEMainForm.RunFile(fFile);
-  end;
-end;
-
-procedure TFUMLForm.OpenFiles;
-begin
-  MainModul.ShowAllOpenedFiles;
-  MainModul.Diagram.ShowParameter:= 4;
-  SaveAndReload;
-  MainModul.Diagram.ResolveAssociations;
-  MainModul.DoLayout;
-  PyIDEMainForm.RunFile(fFile);
+  end else
+    CommandsDataModule.actFileCloseExecute(Self);
 end;
 
 class function TFUMLForm.ToolbarCount: integer;

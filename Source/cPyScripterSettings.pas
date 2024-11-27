@@ -143,6 +143,7 @@ type
     fAlwaysUseSockets: Boolean;
     fTrimTrailingSpacesOnSave: Boolean;
     fTraceOnlyIntoOpenFiles: Boolean;
+    fReinitializeWhenClosing: Boolean;
     fLspDebug: Boolean;
     fMethodsWithComment: Boolean;
     fDictLanguage: string;
@@ -352,6 +353,8 @@ type
       write fTrimTrailingSpacesOnSave default True;
     property TraceOnlyIntoOpenFiles : Boolean read fTraceOnlyIntoOpenFiles
       write fTraceOnlyIntoOpenFiles default False;
+    property ReinitializeWhenClosing : Boolean read fReinitializeWhenClosing
+      write fReinitializeWhenClosing default True;
     property LspDebug: Boolean read fLspDebug write fLspDebug default false;
     property DictLanguage: string read fDictLanguage write fDictLanguage;
     property SpellCheckedTokens: string read fSpellCheckedTokens write fSpellCheckedTokens;
@@ -568,6 +571,7 @@ begin
       Self.fAlwaysUseSockets := AlwaysUseSockets;
       Self.fTrimTrailingSpacesOnSave := TrimTrailingSpacesOnSave;
       Self.fTraceOnlyIntoOpenFiles := TraceOnlyIntoOpenFiles;
+      Self.fReinitializeWhenClosing:= ReinitializeWhenClosing;
       Self.fLspDebug := LSpDebug;
       Self.fDictLanguage := DictLanguage;
       Self.fSpellCheckedTokens := SpellCheckedTokens;
@@ -678,6 +682,7 @@ begin
   fAlwaysUseSockets := True;
   fTrimTrailingSpacesOnSave := True;
   fTraceOnlyIntoOpenFiles := False;
+  fReinitializeWhenClosing:= True;
   fLspDebug := False;
   fDictLanguage := UserLocaleName;
   fSpellCheckedTokens := 'Comment, Text, String, Multi-Line String, Documentation';

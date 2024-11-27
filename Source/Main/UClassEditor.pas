@@ -821,6 +821,8 @@ end;
 function TFClassEditor.GetLevel(Node: TTreeNode): integer;
   var ClassNode: TTreeNode;
 begin
+  if Node = nil then
+    Exit(0);
   Result:= 0;
   if IsClassNode(Node) then
     ClassNode:= Node

@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2024-11-19 10:10\n"
-"PO-Revision-Date: 2024-11-19 11:31+0100\n"
+"POT-Creation-Date: 2024-11-25 20:44\n"
+"PO-Revision-Date: 2024-11-25 20:48+0100\n"
 "Last-Translator: Somebody <your.email@address.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -182,7 +182,7 @@ msgstr "Code Vorlagen"
 #: dlgReplaceInFiles.dfm:115 dlgRunConfiguration.dfm:462
 #: dlgSynEditOptions.dfm:1336 dlgToDoOptions.dfm:242 dlgToolProperties.dfm:51
 #: dlgUnitTestWizard.dfm:117 frmFindResults.dfm:331 frmFunctionList.dfm:303
-#: frmPyIDEMain.dfm:1424 frmToDo.dfm:201 StringResources.pas:197
+#: frmPyIDEMain.dfm:1421 frmToDo.dfm:201 StringResources.pas:197
 msgid "&Help"
 msgstr "&Hilfe"
 
@@ -411,7 +411,7 @@ msgstr "&Hinzufügen..."
 #. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..btnRemKey..Caption
 #. FConfiguration..IDEShortcutsActionList1..actRemoveShortcut..Caption
 #: dlgCollectionEditor.dfm:58 dlgCustomShortcuts.dfm:202
-#: dlgSynEditOptions.dfm:382 dlgToDoOptions.dfm:114 frmProjectExplorer.dfm:232
+#: dlgSynEditOptions.dfm:382 dlgToDoOptions.dfm:114 frmProjectExplorer.dfm:235
 #: Utils/UConfiguration.dfm:1636 Utils/UConfiguration.dfm:6357
 msgid "&Remove"
 msgstr "&Entfernen"
@@ -702,7 +702,7 @@ msgstr "&Suchtext:"
 #. FConfiguration..PMain..PanelRight..PageList..POptions2..gbOptions..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PGeneralOptions..Caption
 #: dlgFindInFiles.dfm:40 dlgSynEditOptions.dfm:39 dlgSynEditOptions.dfm:437
-#: dlgSynEditOptions.dfm:448 dlgToDoOptions.dfm:124 frmPyIDEMain.dfm:412
+#: dlgSynEditOptions.dfm:448 dlgToDoOptions.dfm:124 frmPyIDEMain.dfm:409
 #: frmRegExpTester.dfm:40 Main/UClassEditor.dfm:218 Main/UClassEditor.dfm:380
 #: Utils/UConfiguration.dfm:1001 Utils/UConfiguration.dfm:3570
 msgid "Options"
@@ -910,7 +910,7 @@ msgstr "Alle Einträge abwählen"
 #. PythonVersionsDialog..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..RunMenu..mnPythonVersions..Caption
 #. PythonIIForm..InterpreterPopUp..mnPythonVersions..Caption
-#: dlgPythonVersions.dfm:4 frmPyIDEMain.dfm:1143 frmPythonII.dfm:98
+#: dlgPythonVersions.dfm:4 frmPyIDEMain.dfm:1140 frmPythonII.dfm:98
 msgid "Python Versions"
 msgstr "Pythonversionen"
 
@@ -944,7 +944,7 @@ msgstr "Gewählte Pythonversion aktivieren"
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonAdd..Caption
 #. FConfiguration..actlPythonVersions..actPVAdd..Caption
 #: dlgPythonVersions.dfm:117 dmCommands.dfm:946 frmEditor.dfm:554
-#: frmPyIDEMain.dfm:1248 Utils/UConfiguration.dfm:268
+#: frmPyIDEMain.dfm:1245 Utils/UConfiguration.dfm:268
 #: Utils/UConfiguration.dfm:6495
 msgid "Add"
 msgstr "Hinzufügen"
@@ -962,7 +962,7 @@ msgstr "Eine neue Pythonversion hinzufügen"
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitRemove..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPython..BPythonRemove..Caption
 #. FConfiguration..actlPythonVersions..actPVRemove..Caption
-#: dlgPythonVersions.dfm:125 frmEditor.dfm:581 frmPyIDEMain.dfm:1275
+#: dlgPythonVersions.dfm:125 frmEditor.dfm:581 frmPyIDEMain.dfm:1272
 #: Utils/UConfiguration.dfm:280 Utils/UConfiguration.dfm:6502
 msgid "Remove"
 msgstr "Entfernen"
@@ -1131,7 +1131,7 @@ msgstr "&Arbeitsverzeichnis:"
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..RunMenu..mnPythonEngines..Caption
 #. PythonIIForm..InterpreterPopUp..TBXPythonEngines..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPython..RGEngineTypes..Caption
-#: dlgRunConfiguration.dfm:274 frmPyIDEMain.dfm:1156 frmPythonII.dfm:104
+#: dlgRunConfiguration.dfm:274 frmPyIDEMain.dfm:1153 frmPythonII.dfm:104
 #: Utils/UConfiguration.dfm:290
 msgid "Python Engine"
 msgstr "Python Compiler"
@@ -1152,7 +1152,7 @@ msgstr "Vor Start neu &initialisieren"
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitRemote..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PPython..RGEngineTypes....Items.Strings
 #: dlgRunConfiguration.dfm:314 dlgRunConfiguration.dfm:318 frmEditor.dfm:588
-#: frmPyIDEMain.dfm:1282 Utils/UConfiguration.dfm:294 cPyControl.pas:576
+#: frmPyIDEMain.dfm:1279 Utils/UConfiguration.dfm:294 cPyControl.pas:576
 msgid "Remote"
 msgstr "Externe"
 
@@ -1219,7 +1219,7 @@ msgstr "Ausgabe speichern"
 
 #. StyleSelectorForm..Caption
 #. PyIDEMainForm..actlStandard..actSelectStyle..Hint
-#: dlgStyleSelector.dfm:5 frmPyIDEMain.dfm:3807
+#: dlgStyleSelector.dfm:5 frmPyIDEMain.dfm:3804
 msgid "Select Style"
 msgstr "Stil wählen"
 
@@ -2370,17 +2370,20 @@ msgstr "Drucken|Dokument drucken"
 #. FConnectForm..LBConnections....Items.Strings
 #. FSequenceForm..SequenceToolbar..TBClose..Hint
 #. FSequenceForm..PopupMenuConnection..MIClose..Caption
+#. FMemo..BClose..Caption
+#. FSetup..BClose..Caption
 #. FStructogram..PanelLeft..StructogramToolbar..TBClose..Hint
 #. FTextDiff..TBTextDiff..TBClose..Hint
 #. FTextDiff..PopUpEditor..MIClose..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..LSDClose..Caption
-#: dlgSynPrintPreview.dfm:187 frmPyIDEMain.dfm:374 frmPyIDEMain.dfm:375
+#: dlgSynPrintPreview.dfm:187 frmPyIDEMain.dfm:371 frmPyIDEMain.dfm:372
 #: EssModel/System/UUMLForm.dfm:89 EssModel/System/UUMLForm.dfm:224
 #: EssModel/System/UUMLForm.dfm:328 Main/UBrowser.dfm:106
 #: Main/UFileStructure.dfm:64 Main/UGUIDesigner.dfm:30
 #: Main/UObjectInspector.dfm:119 Main/UUpdate.dfm:47
 #: SequenceDiagram/UConnectForm.dfm:41 SequenceDiagram/USequenceForm.dfm:46
-#: SequenceDiagram/USequenceForm.dfm:148 Structogram/UStructogram.dfm:74
+#: SequenceDiagram/USequenceForm.dfm:148 Setup/UMemo.dfm:34
+#: Setup/USetup.dfm:119 Structogram/UStructogram.dfm:74
 #: TextDiff/UTextDiff.dfm:32 TextDiff/UTextDiff.dfm:278
 #: Utils/UConfiguration.dfm:2861
 msgid "Close"
@@ -2474,7 +2477,7 @@ msgstr "Eigenschaften externe Werkzeuge"
 #. ToolProperties..Panel1..TabControl..tabProperties..Caption
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectFileProperties..Caption
 #: dlgToolProperties.dfm:64 dlgToolProperties.dfm:187
-#: frmProjectExplorer.dfm:289
+#: frmProjectExplorer.dfm:292
 msgid "&Properties"
 msgstr "&Eigenschaften"
 
@@ -2672,14 +2675,14 @@ msgstr "Aktive Datei"
 
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox3..cbStandardOutput....Items.Strings
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..Hint
-#: dlgToolProperties.dfm:638 frmPyIDEMain.dfm:504
+#: dlgToolProperties.dfm:638 frmPyIDEMain.dfm:501
 msgid "New file"
 msgstr "Neue Datei"
 
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox5..Caption
 #. EditorForm..pmnuEditor..mnEditGit..mnGitConsole..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitConsole..Caption
-#: dlgToolProperties.dfm:647 frmEditor.dfm:615 frmPyIDEMain.dfm:1309
+#: dlgToolProperties.dfm:647 frmEditor.dfm:615 frmPyIDEMain.dfm:1306
 msgid "Console"
 msgstr "Befehlszeile"
 
@@ -2834,7 +2837,7 @@ msgstr "Ausschneiden|Auswahl ausschneiden und in Zwischenablage einfügen"
 #. CommandsDataModule..actlMain..actEditCopy..Caption
 #. FindResultsWindow..Actions..actFileCopy..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..mnCopyMenu..Caption
-#: dmCommands.dfm:127 frmFindResults.dfm:355 frmPyIDEMain.dfm:624
+#: dmCommands.dfm:127 frmFindResults.dfm:355 frmPyIDEMain.dfm:621
 msgid "&Copy"
 msgstr "&Kopieren"
 
@@ -3774,6 +3777,7 @@ msgstr "Ignorieren"
 #. FSequenceForm..PopupMenuConnection..MIDelete..Caption
 #. FStructogram..PanelLeft..TrashImage..ImageName
 #. FStructogram..StructoPopupMenu..MIDelete..Caption
+#. Programmer's name for it: LNGDelete
 #: dmCommands.dfm:958 EssModel/Integrator/View/UDiagramFrame.dfm:167
 #: EssModel/Integrator/View/UDiagramFrame.dfm:177
 #: EssModel/System/UUMLForm.dfm:350 Formdesigner/ELImage.dfm:25
@@ -3781,6 +3785,7 @@ msgstr "Ignorieren"
 #: Main/UGUIDesigner.dfm:131 SequenceDiagram/UConnectForm.dfm:71
 #: SequenceDiagram/USequenceForm.dfm:171 Structogram/UStructogram.dfm:57
 #: Structogram/UStructogram.dfm:227 Main/UObjectInspector.pas:612
+#: Setup/UStringRessources.pas:18
 msgid "Delete"
 msgstr "Löschen"
 
@@ -3870,7 +3875,7 @@ msgstr "Exportieren in RTF- oder HTML-Datei"
 
 #. CommandsDataModule..pmSpelling..mnSpelling..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..mnSpelling..Caption
-#: dmCommands.dfm:1107 frmPyIDEMain.dfm:693
+#: dmCommands.dfm:1107 frmPyIDEMain.dfm:690
 msgid "Spelling"
 msgstr "Rechtschreibung"
 
@@ -3984,7 +3989,7 @@ msgstr "Codefenster"
 
 #. CodeExplorerWindow..CEPopupMenu..mnExpandAll..Caption
 #. ProjectExplorerWindow..ProjectActionList..actProjectExpandAll..Caption
-#: frmCodeExplorer.dfm:67 frmProjectExplorer.dfm:189
+#: frmCodeExplorer.dfm:67 frmProjectExplorer.dfm:192
 msgid "&Expand All"
 msgstr "Alle &Erweitern"
 
@@ -3996,7 +4001,7 @@ msgstr "Erweitert alle Knoten"
 #. CodeExplorerWindow..CEPopupMenu..nCollapseAll..Caption
 #. ProjectExplorerWindow..ProjectActionList..actProjectCollapseAll..Caption
 #. UnitTestWindow..DialogActions..actCollapseAll..Caption
-#: frmCodeExplorer.dfm:75 frmProjectExplorer.dfm:199 frmUnitTests.dfm:331
+#: frmCodeExplorer.dfm:75 frmProjectExplorer.dfm:202 frmUnitTests.dfm:331
 msgid "&Collapse All"
 msgstr "&Alle einklappen"
 
@@ -4058,49 +4063,49 @@ msgid "Highlight References"
 msgstr "Hebt Referenzen hervor"
 
 #. OutputWindow..OutputPopup..RunningProcess..Caption
-#: frmCommandOutput.dfm:46
+#: frmCommandOutput.dfm:49
 msgid "Running Process"
 msgstr "Laufender Prozess"
 
 #. OutputWindow..OutputActions..actCopy..Caption
-#: frmCommandOutput.dfm:71
+#: frmCommandOutput.dfm:74
 msgid "Co&py"
 msgstr "Ko&pieren"
 
 #. OutputWindow..OutputActions..actCopy..Hint
 #. MessagesWindow..MsgsActionList..actCopyToClipboard..Hint
-#: frmCommandOutput.dfm:72 frmMessages.dfm:178
+#: frmCommandOutput.dfm:75 frmMessages.dfm:178
 msgid "Copy contents to Clipboard"
 msgstr "Kopiert Inhalte in die Zwischenablage"
 
 #. OutputWindow..OutputActions..actOutputFont..Caption
-#: frmCommandOutput.dfm:78
+#: frmCommandOutput.dfm:81
 msgid "Font..."
 msgstr "Schriftart..."
 
 #. OutputWindow..OutputActions..actOutputFont..Hint
-#: frmCommandOutput.dfm:79
+#: frmCommandOutput.dfm:82
 msgid "Select font"
 msgstr "Schriftart auswählen"
 
 #. OutputWindow..OutputActions..actClearOutput..Caption
 #. RegExpTesterWindow..BGPanel..FGPanel..TBXDock..RegExpTesterToolbar..TiClear..Caption
-#: frmCommandOutput.dfm:85 frmRegExpTester.dfm:33
+#: frmCommandOutput.dfm:88 frmRegExpTester.dfm:33
 msgid "Clear"
 msgstr "Löschen"
 
 #. OutputWindow..OutputActions..actClearOutput..Hint
-#: frmCommandOutput.dfm:86
+#: frmCommandOutput.dfm:89
 msgid "Clear output"
 msgstr "Ausgabe leeren"
 
 #. OutputWindow..OutputActions..actToolTerminate..Caption
-#: frmCommandOutput.dfm:92
+#: frmCommandOutput.dfm:95
 msgid "&Terminate"
 msgstr "&Beenden"
 
 #. OutputWindow..OutputActions..actToolTerminate..Hint
-#: frmCommandOutput.dfm:93
+#: frmCommandOutput.dfm:96
 msgid "Terminate running tool (unsafe)"
 msgstr "Beendet das laufende Werkzeug (unsicher)"
 
@@ -4210,7 +4215,7 @@ msgstr "Zur zugehörigen Klammer"
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..mnEditClass..Hint
 #. PyIDEMainForm..actlStandard..actUMLEditClass..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupClassEdit..Caption
-#: frmEditor.dfm:296 frmPyIDEMain.dfm:1193 frmPyIDEMain.dfm:3852
+#: frmEditor.dfm:296 frmPyIDEMain.dfm:1190 frmPyIDEMain.dfm:3849
 #: EssModel/Integrator/View/UDiagramFrame.dfm:422
 msgid "Edit class"
 msgstr "Bearbeite Klasse"
@@ -4335,7 +4340,7 @@ msgstr "Validieren"
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupOpenClass..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupOpenClass..Caption
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBClassOpen..Hint
-#: frmEditor.dfm:506 frmPyIDEMain.dfm:1189 frmPyIDEMain.dfm:3845
+#: frmEditor.dfm:506 frmPyIDEMain.dfm:1186 frmPyIDEMain.dfm:3842
 #: EssModel/Integrator/View/UDiagramFrame.dfm:193
 #: EssModel/Integrator/View/UDiagramFrame.dfm:456
 #: EssModel/System/UUMLForm.dfm:105
@@ -4365,7 +4370,7 @@ msgstr "Pfadnamen kopieren"
 #. FSequenceForm..PopupMenuLifeLineAndSequencePanel..MIPopupConfiguration..Caption
 #. FStructogram..StructoPopupMenu..MIConfiguration..Caption
 #. FConfiguration..Caption
-#: frmEditor.dfm:531 frmPyIDEMain.dfm:1226 frmPyIDEMain.dfm:1227
+#: frmEditor.dfm:531 frmPyIDEMain.dfm:1223 frmPyIDEMain.dfm:1224
 #: EssModel/Integrator/View/UDiagramFrame.dfm:302 Main/UGUIDesigner.dfm:174
 #: SequenceDiagram/USequenceForm.dfm:234 Structogram/UStructogram.dfm:305
 #: Utils/UConfiguration.dfm:6
@@ -4374,32 +4379,32 @@ msgstr "Konfiguration"
 
 #. EditorForm..pmnuEditor..mnEditGit..mnGitStatus..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitStatus..Caption
-#: frmEditor.dfm:549 frmPyIDEMain.dfm:1243
+#: frmEditor.dfm:549 frmPyIDEMain.dfm:1240
 msgid "Status"
 msgstr "Status"
 
 #. EditorForm..pmnuEditor..mnEditGit..mnGitCommit..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitCommit..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNCommit..Caption
-#: frmEditor.dfm:559 frmPyIDEMain.dfm:1253 frmPyIDEMain.dfm:1319
+#: frmEditor.dfm:559 frmPyIDEMain.dfm:1250 frmPyIDEMain.dfm:1316
 msgid "Commit"
 msgstr "Commit"
 
 #. EditorForm..pmnuEditor..mnEditGit..mnGitLog..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitLog..Caption
-#: frmEditor.dfm:564 frmPyIDEMain.dfm:1258
+#: frmEditor.dfm:564 frmPyIDEMain.dfm:1255
 msgid "Log"
 msgstr "Protokoll"
 
 #. EditorForm..pmnuEditor..mnEditGit..mnGitCheckout..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitCheckout..Caption
-#: frmEditor.dfm:576 frmPyIDEMain.dfm:1270
+#: frmEditor.dfm:576 frmPyIDEMain.dfm:1267
 msgid "Checkout"
 msgstr "Checkout"
 
 #. EditorForm..pmnuEditor..mnEditGit..mnGitViewer..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitViewer..Caption
-#: frmEditor.dfm:610 frmPyIDEMain.dfm:1304
+#: frmEditor.dfm:610 frmPyIDEMain.dfm:1301
 msgid "Viewer"
 msgstr "Ansicht"
 
@@ -4415,7 +4420,7 @@ msgstr "Ausklappen"
 
 #. EditorForm..pmnuEditor..mnMaximizeEditor2..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnMaximizeEditor..Caption
-#: frmEditor.dfm:720 frmPyIDEMain.dfm:859
+#: frmEditor.dfm:720 frmPyIDEMain.dfm:856
 msgid "&Maximize/Restore Editor"
 msgstr "Editor maximieren/wiederherstellen"
 
@@ -4745,7 +4750,7 @@ msgstr "Funktion"
 
 #. FunctionListWindow..pnlHeader..pnlHeaderLeft..lblMethods..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..SearchMenu..Caption
-#: frmFunctionList.dfm:128 frmPyIDEMain.dfm:755
+#: frmFunctionList.dfm:128 frmPyIDEMain.dfm:752
 msgid "&Search"
 msgstr "&Suche"
 
@@ -4757,7 +4762,7 @@ msgstr "&Objekte"
 #. FunctionListWindow..Actions..actEditCopy..Caption
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectFileEdit..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..Caption
-#: frmFunctionList.dfm:262 frmProjectExplorer.dfm:248 frmPyIDEMain.dfm:610
+#: frmFunctionList.dfm:262 frmProjectExplorer.dfm:251 frmPyIDEMain.dfm:607
 msgid "&Edit"
 msgstr "&Bearbeiten"
 
@@ -4809,7 +4814,7 @@ msgstr "Gehe zur Implementation"
 
 #. LLMChatForm..Caption
 #. PyIDEMainForm..actlStandard..actNavChat..Caption
-#: frmLLMChat.dfm:5 frmPyIDEMain.dfm:3956 frmLLMChat.pas:278 frmLLMChat.pas:280
+#: frmLLMChat.dfm:5 frmPyIDEMain.dfm:3953 frmLLMChat.pas:278 frmLLMChat.pas:280
 msgid "Chat"
 msgstr "Chat"
 
@@ -4871,7 +4876,7 @@ msgstr "Nächstes Chatthema anzeigen"
 #. FStructogram..StructoPopupMenu..MICopy..Caption
 #. FTextDiff..PopUpEditor..MICopy..Caption
 #. Programmer's name for it: SEdCmdCopy
-#: frmLLMChat.dfm:342 frmPyIDEMain.dfm:625 EssModel/System/UUMLForm.dfm:343
+#: frmLLMChat.dfm:342 frmPyIDEMain.dfm:622 EssModel/System/UUMLForm.dfm:343
 #: Main/UGUIDesigner.dfm:144 Main/UObjectInspector.dfm:96
 #: Structogram/UStructogram.dfm:233 TextDiff/UTextDiff.dfm:268
 #: StringResources.pas:69
@@ -4994,169 +4999,169 @@ msgid "Project Explorer"
 msgstr "Projektmanager"
 
 #. ProjectExplorerWindow..BGPanel..FGPanel..Panel1..SpTBXDock1..SpTBXToolbar1..Caption
-#: frmProjectExplorer.dfm:80
+#: frmProjectExplorer.dfm:83
 msgid "Project Explorer Toolbar"
 msgstr "Projektmanager Werkzeugleiste"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectNew..Caption
-#: frmProjectExplorer.dfm:124
+#: frmProjectExplorer.dfm:127
 msgid "&New Project"
 msgstr "&Neues Projekt"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectNew..Hint
-#: frmProjectExplorer.dfm:127
+#: frmProjectExplorer.dfm:130
 msgid "Start a new project"
 msgstr "Beginnt ein neues Projekt"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectOpen..Caption
-#: frmProjectExplorer.dfm:134
+#: frmProjectExplorer.dfm:137
 msgid "&Open Project..."
 msgstr "&Öffne Projekt..."
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectOpen..Hint
-#: frmProjectExplorer.dfm:137
+#: frmProjectExplorer.dfm:140
 msgid "Open a project file"
 msgstr "Öffne eine Projektdatei"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectSave..Caption
-#: frmProjectExplorer.dfm:144
+#: frmProjectExplorer.dfm:147
 msgid "&Save Project"
 msgstr "Projekt &speichern"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectSave..Hint
-#: frmProjectExplorer.dfm:147
+#: frmProjectExplorer.dfm:150
 msgid "Save the project"
 msgstr "Projekt speichern"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectSaveAs..Caption
-#: frmProjectExplorer.dfm:154
+#: frmProjectExplorer.dfm:157
 msgid "Save Project &As..."
 msgstr "Projekt speichern &unter..."
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectSaveAs..Hint
-#: frmProjectExplorer.dfm:157
+#: frmProjectExplorer.dfm:160
 msgid "Save project with under a different name"
 msgstr "Speichert das Projekt unter einem anderen Namen"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectRelativePaths..Caption
-#: frmProjectExplorer.dfm:163
+#: frmProjectExplorer.dfm:166
 msgid "Store &Relative Paths"
 msgstr "&Relative Pfade speichern"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectRelativePaths..Hint
-#: frmProjectExplorer.dfm:166
+#: frmProjectExplorer.dfm:169
 msgid "Store file paths relative to the project directory"
 msgstr "Speichert Pfade relativ zum Projektpfad"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectShowFileExtensions..Caption
-#: frmProjectExplorer.dfm:172
+#: frmProjectExplorer.dfm:175
 msgid "Show File &Extensions"
 msgstr "Zeige Datei&erweiterungen"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectShowFileExtensions..Hint
-#: frmProjectExplorer.dfm:175
+#: frmProjectExplorer.dfm:178
 msgid "Display file extensions"
 msgstr "Zeigt Dateierweiterungen an"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectExtraPythonPath..Caption
-#: frmProjectExplorer.dfm:180
+#: frmProjectExplorer.dfm:183
 msgid "Extra Python &Path..."
 msgstr "Extra Python&pfade..."
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectExpandAll..Hint
-#: frmProjectExplorer.dfm:192
+#: frmProjectExplorer.dfm:195
 msgid "Expand all project nodes"
 msgstr "Alle Projektknoten ausklappen"
 
 #. ProjectExplorerWindow..ProjectActionList..actProjectCollapseAll..Hint
-#: frmProjectExplorer.dfm:202
+#: frmProjectExplorer.dfm:205
 msgid "Collapse all project nodes"
 msgstr "Alle Projektknoten einklappen"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectAddFiles..Caption
-#: frmProjectExplorer.dfm:214
+#: frmProjectExplorer.dfm:217
 msgid "&Add File(s)..."
 msgstr "D&atei(en) hinzufügen..."
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectAddFiles..Hint
-#: frmProjectExplorer.dfm:216
+#: frmProjectExplorer.dfm:219
 msgid "Add file(s) to a project folder"
 msgstr "Datei(en) zum Projektverzeichnis hinzufügen"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectAddFolder..Caption
-#: frmProjectExplorer.dfm:223
+#: frmProjectExplorer.dfm:226
 msgid "Add &Subfolder"
 msgstr "&Unterordner hinzufügen"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectAddFolder..Hint
-#: frmProjectExplorer.dfm:225
+#: frmProjectExplorer.dfm:228
 msgid "Add a new subfolder"
 msgstr "Fügt einen Unterordner hinzu"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectRemove..Hint
-#: frmProjectExplorer.dfm:234
+#: frmProjectExplorer.dfm:237
 msgid "Remove a file, folder or run configuration from the project"
 msgstr ""
 "Entfernen einer Datei, eines Ordners oder einer Ausführungskonfiguration aus "
 "dem Projekt"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectRename..Caption
-#: frmProjectExplorer.dfm:241
+#: frmProjectExplorer.dfm:244
 msgid "Re&name"
 msgstr "Umbe&nennen"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectRename..Hint
-#: frmProjectExplorer.dfm:243
+#: frmProjectExplorer.dfm:246
 msgid "Rename the selected folder or RunConfiguration"
 msgstr "Umbenennen eines Ordners oder einer Ausführen-Konfiguration"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectFileEdit..Hint
-#: frmProjectExplorer.dfm:250
+#: frmProjectExplorer.dfm:253
 msgid "Open the selected file in the editor"
 msgstr "Die gewählte Datei im Editor öffnen"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectAddActiveFile..Caption
-#: frmProjectExplorer.dfm:257
+#: frmProjectExplorer.dfm:260
 msgid "Add Active File"
 msgstr "Aktive Datei hinzufügen"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectAddActiveFile..Hint
-#: frmProjectExplorer.dfm:259
+#: frmProjectExplorer.dfm:262
 msgid "Add the active editor file to the folder"
 msgstr "Fügt die aktive Datei zum Projektordner hinzu"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectImportDirectory..Caption
-#: frmProjectExplorer.dfm:264
+#: frmProjectExplorer.dfm:267
 msgid "&Import Directory..."
 msgstr "Ordner &importieren..."
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectImportDirectory..Hint
-#: frmProjectExplorer.dfm:266
+#: frmProjectExplorer.dfm:269
 msgid "Import a directory into the selected folder"
 msgstr "Importiert einen Ordner in den gewählten Ordner"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectAddRunConfig..Caption
-#: frmProjectExplorer.dfm:271
+#: frmProjectExplorer.dfm:274
 msgid "Add Run Configuration"
 msgstr "Ausführen-Konfiguration hinzufügen"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectAddRunConfig..Hint
-#: frmProjectExplorer.dfm:273
+#: frmProjectExplorer.dfm:276
 msgid "Add run configuration"
 msgstr "Ausführen-Konfiguration hinzufügen"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectEditRunConfig..Caption
-#: frmProjectExplorer.dfm:280
+#: frmProjectExplorer.dfm:283
 msgid "&Edit Run Configuration"
 msgstr "Ausführen-Konfiguration &editieren"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectEditRunConfig..Hint
-#: frmProjectExplorer.dfm:282
+#: frmProjectExplorer.dfm:285
 msgid "Edit run configuration"
 msgstr "Ausführen-Konfiguration editieren"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectFileProperties..Hint
-#: frmProjectExplorer.dfm:291
+#: frmProjectExplorer.dfm:294
 msgid "Show file properties"
 msgstr "Dateieigenschaften anzeigen"
 
@@ -5164,47 +5169,47 @@ msgstr "Dateieigenschaften anzeigen"
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..RunMenu..Caption
 #. PyIDEMainForm..actlStandard..actRun..Caption
 #. UnitTestWindow..DialogActions..actRun..Caption
-#: frmProjectExplorer.dfm:298 frmPyIDEMain.dfm:1074 frmPyIDEMain.dfm:3045
+#: frmProjectExplorer.dfm:301 frmPyIDEMain.dfm:1071 frmPyIDEMain.dfm:3042
 #: frmUnitTests.dfm:283
 msgid "&Run"
 msgstr "&Ausführen"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectRun..Hint
-#: frmProjectExplorer.dfm:300
+#: frmProjectExplorer.dfm:303
 msgid "Run the selected configuration"
 msgstr "Ausführen der gewählten Konfiguration"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectExternalRun..Caption
 #. PyIDEMainForm..actlStandard..actExternalRun..Caption
-#: frmProjectExplorer.dfm:307 frmPyIDEMain.dfm:3127
+#: frmProjectExplorer.dfm:310 frmPyIDEMain.dfm:3124
 msgid "E&xternal Run"
 msgstr "E&xternes Ausführen"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectExternalRun..Hint
-#: frmProjectExplorer.dfm:309
+#: frmProjectExplorer.dfm:312
 msgid "Run configuration using an external Python interpreter"
 msgstr ""
 "Konfiguration ausführen unter Verwendung eines externen Pythoninterpreters"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectDebug..Caption
 #. PyIDEMainForm..actlStandard..actDebug..Caption
-#: frmProjectExplorer.dfm:316 frmPyIDEMain.dfm:3158
+#: frmProjectExplorer.dfm:319 frmPyIDEMain.dfm:3155
 msgid "&Debug"
 msgstr "&Fehlerbehandlung"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectDebug..Hint
-#: frmProjectExplorer.dfm:318
+#: frmProjectExplorer.dfm:321
 msgid "Debug the selected configuration"
 msgstr "Fehlerbehandlung der gewählten Konfiguration"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectAddRemoteFile..Caption
 #. Programmer's name for it: SRemoteFileAdd
-#: frmProjectExplorer.dfm:325 StringResources.pas:493
+#: frmProjectExplorer.dfm:328 StringResources.pas:493
 msgid "Add Remote File"
 msgstr "Entfernte Datei hinzufügen"
 
 #. ProjectExplorerWindow..ImmutableProjectActionList..actProjectAddRemoteFile..Hint
-#: frmProjectExplorer.dfm:327
+#: frmProjectExplorer.dfm:330
 msgid "Add a remote file to the folder"
 msgstr "Entfernte Datei zum Ordner hinzufügen"
 
@@ -5220,7 +5225,7 @@ msgstr "Typ der Pythonumgebung"
 
 #. PyIDEMainForm..StatusBar..lbFileFormat..Hint
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..TBXSubmenuItem3..Hint
-#: frmPyIDEMain.dfm:55 frmPyIDEMain.dfm:719
+#: frmPyIDEMain.dfm:55 frmPyIDEMain.dfm:716
 msgid "File format"
 msgstr "Dateiformat"
 
@@ -5243,341 +5248,341 @@ msgstr "Externes Werkzeug läuft"
 
 #. PyIDEMainForm..BGPanel..TabControl1..tbiTabFiles..Hint
 #. PyIDEMainForm..BGPanel..TabControl2..tbiTabFiles2..Hint
-#: frmPyIDEMain.dfm:155 frmPyIDEMain.dfm:208
+#: frmPyIDEMain.dfm:153 frmPyIDEMain.dfm:206
 msgid "Select File"
 msgstr "Datei auswählen"
 
 #. PyIDEMainForm..BGPanel..TabControl1..tbiScrollLeft..Hint
 #. PyIDEMainForm..BGPanel..TabControl2..tbiScrollLeft2..Hint
-#: frmPyIDEMain.dfm:163 frmPyIDEMain.dfm:216
+#: frmPyIDEMain.dfm:161 frmPyIDEMain.dfm:214
 msgid "Scroll left"
 msgstr "Links scrollen"
 
 #. PyIDEMainForm..BGPanel..TabControl1..tbiScrollRight..Hint
 #. PyIDEMainForm..BGPanel..TabControl2..tbiScrollRight2..Hint
-#: frmPyIDEMain.dfm:172 frmPyIDEMain.dfm:225
+#: frmPyIDEMain.dfm:170 frmPyIDEMain.dfm:223
 msgid "Scroll right"
 msgstr "Rechts scrollen"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..DebugToolbar..Caption
-#: frmPyIDEMain.dfm:288
+#: frmPyIDEMain.dfm:285
 msgid "Debug Toolbar"
 msgstr "Fehlerbehebungswerkzeugleiste"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..EditorToolbar..Caption
-#: frmPyIDEMain.dfm:318
+#: frmPyIDEMain.dfm:315
 msgid "Editor Toolbar"
 msgstr "Editor Werkzeugleiste"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..Caption
-#: frmPyIDEMain.dfm:371
+#: frmPyIDEMain.dfm:368
 msgid "Find Toolbar"
 msgstr "Suche Werkzeugleiste"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiFindLabel..Caption
-#: frmPyIDEMain.dfm:381
+#: frmPyIDEMain.dfm:378
 msgid "Find:"
 msgstr "Suche:"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiReplaceLabel..Caption
-#: frmPyIDEMain.dfm:400
+#: frmPyIDEMain.dfm:397
 msgid "Replace with:"
 msgstr "Ersetzen mit:"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiSearchFromCaret..Caption
-#: frmPyIDEMain.dfm:417
+#: frmPyIDEMain.dfm:414
 msgid "Search From C&aret"
 msgstr "Ab C&ursor suchen"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiAutoCaseSensitive..Caption
-#: frmPyIDEMain.dfm:424
+#: frmPyIDEMain.dfm:421
 msgid "&Auto Case Sensitive"
 msgstr "&Auto Groß-/Kleinschreibung beachten"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiAutoCaseSensitive..Hint
-#: frmPyIDEMain.dfm:425
+#: frmPyIDEMain.dfm:422
 msgid "Case Sensitive when search text contains upper case characters"
 msgstr "Groß-/Kleinschreibung beachten, wenn die Suche Großbuchstaben enthält"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiCaseSensitive..Caption
-#: frmPyIDEMain.dfm:431
+#: frmPyIDEMain.dfm:428
 msgid "&Case Sensitive"
 msgstr "Groß-/Kleins&chreibung beachten"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiWholeWords..Caption
-#: frmPyIDEMain.dfm:436
+#: frmPyIDEMain.dfm:433
 msgid "&Whole Words Only"
 msgstr "Nur ganze &Wörter"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiSearchInSelection..Caption
-#: frmPyIDEMain.dfm:441
+#: frmPyIDEMain.dfm:438
 msgid "Search in &Selection"
 msgstr "Suche in Au&swahl"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiRegExp..Caption
-#: frmPyIDEMain.dfm:446
+#: frmPyIDEMain.dfm:443
 msgid "&Regular Expressions"
 msgstr "&Reguläre Ausdrücke"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..FindToolbar..tbiSearchOptions..tbiIncrementalSearch..Caption
-#: frmPyIDEMain.dfm:453
+#: frmPyIDEMain.dfm:450
 msgid "&Incremental Search"
 msgstr "&Inkrementelle Suche"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..Caption
-#: frmPyIDEMain.dfm:501
+#: frmPyIDEMain.dfm:498
 msgid "&File"
 msgstr "&Datei"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..Caption
 #. FClassEditor..ActionList..ActionNew..Caption
-#: frmPyIDEMain.dfm:503 Main/UClassEditor.dfm:659
+#: frmPyIDEMain.dfm:500 Main/UClassEditor.dfm:659
 msgid "&New"
 msgstr "&Neu"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnNewModule..Caption
-#: frmPyIDEMain.dfm:506
+#: frmPyIDEMain.dfm:503
 msgid "&Python module"
 msgstr "&Pythonmodul"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnNewFile..Caption
-#: frmPyIDEMain.dfm:510
+#: frmPyIDEMain.dfm:507
 msgid "&File..."
 msgstr "&Datei..."
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewTkApplication..Caption
-#: frmPyIDEMain.dfm:514
+#: frmPyIDEMain.dfm:511
 msgid "&Tk/Tkk Application"
 msgstr "&Tk/TTK-Anwendung"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewTkApplication..Hint
 #. PyIDEMainForm..actlStandard..actFileNewTkApp..Hint
-#: frmPyIDEMain.dfm:515 frmPyIDEMain.dfm:3933
+#: frmPyIDEMain.dfm:512 frmPyIDEMain.dfm:3930
 msgid "New Tk/TKK Application"
 msgstr "Neue Tk/TTK-Anwendung"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewQtApplication..Caption
-#: frmPyIDEMain.dfm:519
+#: frmPyIDEMain.dfm:516
 msgid "&Qt-Application"
 msgstr "&Qt-Anwendung"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewQtApplication..Hint
 #. PyIDEMainForm..actlStandard..actFileNewQtApp..Hint
-#: frmPyIDEMain.dfm:520 frmPyIDEMain.dfm:3939
+#: frmPyIDEMain.dfm:517 frmPyIDEMain.dfm:3936
 msgid "New QT Application"
 msgstr "Neue Qt-Anwendung"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewClass..Caption
 #. FClassEditor..PageControl..TSClass..Caption
-#: frmPyIDEMain.dfm:526 Main/UClassEditor.dfm:59
+#: frmPyIDEMain.dfm:523 Main/UClassEditor.dfm:59
 msgid "&Class"
 msgstr "&Klasse"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewStrutogram..Caption
-#: frmPyIDEMain.dfm:530
+#: frmPyIDEMain.dfm:527
 msgid "&Structogram"
 msgstr "Struktogramm"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..TBXSubmenuItem5..mnFileNewSequencediagram..Caption
-#: frmPyIDEMain.dfm:534
+#: frmPyIDEMain.dfm:531
 msgid "Sequence &diagram"
 msgstr "Sequenzdiagramm"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..RecentSubmenu..Caption
-#: frmPyIDEMain.dfm:542
+#: frmPyIDEMain.dfm:539
 msgid "&Recent Files"
 msgstr "Zuletzt ve&rwendet"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..RecentSubmenu..Hint
-#: frmPyIDEMain.dfm:543
+#: frmPyIDEMain.dfm:540
 msgid "Recent files"
 msgstr "Zuletzt ve&rwendet"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..FileMenu..mnFileExport..Caption
-#: frmPyIDEMain.dfm:569
+#: frmPyIDEMain.dfm:566
 msgid "Expor&t"
 msgstr "Expor&tieren"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..mnSourceCode..Caption
-#: frmPyIDEMain.dfm:680
+#: frmPyIDEMain.dfm:677
 msgid "&Source Code"
 msgstr "&Quellcode"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..mnEditParameters1..Caption
-#: frmPyIDEMain.dfm:701 dmResources.pas:398
+#: frmPyIDEMain.dfm:698 dmResources.pas:398
 msgid "Parameters"
 msgstr "Parameter"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..EditMenu..TBXSubmenuItem3..Caption
-#: frmPyIDEMain.dfm:718
+#: frmPyIDEMain.dfm:715
 msgid "File Format"
 msgstr "Dateiformat"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..Caption
-#: frmPyIDEMain.dfm:815
+#: frmPyIDEMain.dfm:812
 msgid "&View"
 msgstr "&Ansicht"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnViewDefaultLayout..Caption
-#: frmPyIDEMain.dfm:818
+#: frmPyIDEMain.dfm:815
 msgid "Default Layout"
 msgstr "Standard-Layout"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnViewDebugLayout..Caption
-#: frmPyIDEMain.dfm:823
+#: frmPyIDEMain.dfm:820
 msgid "Debug Layout"
 msgstr "Debug-Layout"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..Hint
-#: frmPyIDEMain.dfm:827 frmPyIDEMain.dfm:828
+#: frmPyIDEMain.dfm:824 frmPyIDEMain.dfm:825
 msgid "Layouts"
 msgstr "Layouts"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem47..Caption
 #. PyIDEMainForm..actlStandard..actLayoutSave..Caption
-#: frmPyIDEMain.dfm:834 frmPyIDEMain.dfm:3441
+#: frmPyIDEMain.dfm:831 frmPyIDEMain.dfm:3438
 msgid "Save Layout..."
 msgstr "Speichere Layout..."
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem47..Hint
 #. PyIDEMainForm..actlStandard..actLayoutSave..Hint
-#: frmPyIDEMain.dfm:835 frmPyIDEMain.dfm:3443
+#: frmPyIDEMain.dfm:832 frmPyIDEMain.dfm:3440
 msgid "Save Current Layout"
 msgstr "Speichert das aktuelle Layout"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem48..Caption
 #. PyIDEMainForm..actlStandard..actLayoutsDelete..Caption
-#: frmPyIDEMain.dfm:839 frmPyIDEMain.dfm:3448
+#: frmPyIDEMain.dfm:836 frmPyIDEMain.dfm:3445
 msgid "Delete Layouts..."
 msgstr "Layout löschen..."
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem48..Hint
 #. PyIDEMainForm..actlStandard..actLayoutsDelete..Hint
-#: frmPyIDEMain.dfm:840 frmPyIDEMain.dfm:3450
+#: frmPyIDEMain.dfm:837 frmPyIDEMain.dfm:3447
 msgid "Delete a layout"
 msgstr "Löscht das aktuelle Layout"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem49..Caption
 #. PyIDEMainForm..actlStandard..actLayoutDebug..Caption
-#: frmPyIDEMain.dfm:844 frmPyIDEMain.dfm:3455
+#: frmPyIDEMain.dfm:841 frmPyIDEMain.dfm:3452
 msgid "Set Debug Layout"
 msgstr "Setze Debug-Layout"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLayouts..TBXItem49..Hint
 #. PyIDEMainForm..actlStandard..actLayoutDebug..Hint
-#: frmPyIDEMain.dfm:845 frmPyIDEMain.dfm:3457
+#: frmPyIDEMain.dfm:842 frmPyIDEMain.dfm:3454
 msgid "Set the current layout as the debug layout"
 msgstr "Setzt das aktuelle Layout als das Fehlerbehebungslayout"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSplitEditors..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSplitEditors..Hint
-#: frmPyIDEMain.dfm:869 frmPyIDEMain.dfm:870
+#: frmPyIDEMain.dfm:866 frmPyIDEMain.dfm:867
 msgid "Split Editor"
 msgstr "Editor teilen"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSplitWorkspace..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSplitWorkspace..Hint
-#: frmPyIDEMain.dfm:884 frmPyIDEMain.dfm:885
+#: frmPyIDEMain.dfm:881 frmPyIDEMain.dfm:882
 msgid "Split Workspace"
 msgstr "Arbeitsbereich teilen"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..Caption
-#: frmPyIDEMain.dfm:912
+#: frmPyIDEMain.dfm:909
 msgid "&Toolbars"
 msgstr "&Werkzeugleisten"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnMainToolbarVisibilityToggle..Caption
-#: frmPyIDEMain.dfm:917
+#: frmPyIDEMain.dfm:914
 msgid "&Main Toolbar"
 msgstr "&Hauptwerkzeugleiste"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnMainToolbarVisibilityToggle..Hint
-#: frmPyIDEMain.dfm:918
+#: frmPyIDEMain.dfm:915
 msgid "Main toolbar|Show/Hide the Main toolbar"
 msgstr "Hauptwerkzeugleiste|Hauptwerkzeugleiste anzeigen/verstecken"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnDebugtoolbarVisibilityToggle..Caption
-#: frmPyIDEMain.dfm:923
+#: frmPyIDEMain.dfm:920
 msgid "&Debug Toolbar"
 msgstr "Fehlerbehan&dlungs Werkzeugleiste"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnDebugtoolbarVisibilityToggle..Hint
-#: frmPyIDEMain.dfm:924
+#: frmPyIDEMain.dfm:921
 msgid "Debug toolbar|Show/Hide the Debug toolbar"
 msgstr ""
 "Fehlerbehandlungs Werkzeugleiste|Fehlerbehan&dlungs Werkzeugleiste anzeigen/"
 "verstecken"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnEditorToolbarVisibilityToggle..Caption
-#: frmPyIDEMain.dfm:929
+#: frmPyIDEMain.dfm:926
 msgid "&Editor Toolbar"
 msgstr "&Editor Werkzeugleiste"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnEditorToolbarVisibilityToggle..Hint
-#: frmPyIDEMain.dfm:930
+#: frmPyIDEMain.dfm:927
 msgid "Editor toolbar|Show/Hide the Editor toolbar"
 msgstr "Editor Werkzeugleiste|Editor Werkzeugleiste anzeigen/verstecken"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnViewToolbarVisibilityToggle..Caption
-#: frmPyIDEMain.dfm:935
+#: frmPyIDEMain.dfm:932
 msgid "&View Toolbar"
 msgstr "&Ansicht Werkzeugleiste"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnViewToolbarVisibilityToggle..Hint
-#: frmPyIDEMain.dfm:936
+#: frmPyIDEMain.dfm:933
 msgid "View toolbar|Show/Hide the View toolbar"
 msgstr "Ansicht Werkzeugleiste|Ansicht Werkzeugleiste anzeigen/verstecken"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnuUserToolbarVisibilityToggle..Caption
-#: frmPyIDEMain.dfm:940
+#: frmPyIDEMain.dfm:937
 msgid "Use&r Toolbar"
 msgstr "Nutze&r Werkzeugleiste"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnuToolbars..mnuUserToolbarVisibilityToggle..Hint
-#: frmPyIDEMain.dfm:941
+#: frmPyIDEMain.dfm:938
 msgid "User toolbar|Show/Hide the User toolbar"
 msgstr "Nutzer Werkzeugleiste|Nutzer Werkzeugleiste anzeigen/verstecken"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSyntax..Caption
-#: frmPyIDEMain.dfm:958
+#: frmPyIDEMain.dfm:955
 msgid "&Syntax"
 msgstr "&Syntax"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSyntax..mnNoSyntax..Caption
-#: frmPyIDEMain.dfm:963
+#: frmPyIDEMain.dfm:960
 msgid "&No Syntax"
 msgstr "&Kei&n Syntax"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnSyntax..mnNoSyntax..Hint
-#: frmPyIDEMain.dfm:964
+#: frmPyIDEMain.dfm:961
 msgid "Do not use syntax highlighting"
 msgstr "Keine Syntaxhervorhebung verwendet"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnLanguage..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PLanguage..Caption
-#: frmPyIDEMain.dfm:973 Utils/UConfiguration.dfm:3559
+#: frmPyIDEMain.dfm:970 Utils/UConfiguration.dfm:3559
 msgid "Language"
 msgstr "Sprache (Language)"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnObjectInspector..Caption
 #. FObjectInspector..Caption
-#: frmPyIDEMain.dfm:987 Main/UObjectInspector.dfm:5
+#: frmPyIDEMain.dfm:984 Main/UObjectInspector.dfm:5
 msgid "Object Inspector"
 msgstr "Objektinspektor"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ViewMenu..mnObjectInspector..Hint
-#: frmPyIDEMain.dfm:988
+#: frmPyIDEMain.dfm:985
 msgid "Object inspector"
 msgstr "Objektinspektor"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ProjectMenu..Caption
-#: frmPyIDEMain.dfm:1039
+#: frmPyIDEMain.dfm:1036
 msgid "&Project"
 msgstr "&Projekt"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ProjectMenu..SpTBXSubmenuItem1..Caption
-#: frmPyIDEMain.dfm:1049
+#: frmPyIDEMain.dfm:1046
 msgid "&Recent Projects"
 msgstr "&Letzte Projekte"
 
@@ -5586,7 +5591,7 @@ msgstr "&Letzte Projekte"
 #. PyIDEMainForm..actlStandard..actUMLNewClass..Caption
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupNewClass..Caption
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBClassDefinition..Hint
-#: frmPyIDEMain.dfm:1185 frmPyIDEMain.dfm:2781 frmPyIDEMain.dfm:3838
+#: frmPyIDEMain.dfm:1182 frmPyIDEMain.dfm:2778 frmPyIDEMain.dfm:3835
 #: EssModel/Integrator/View/UDiagramFrame.dfm:187
 #: EssModel/System/UUMLForm.dfm:97
 msgid "New class"
@@ -5596,7 +5601,7 @@ msgstr "Neue Klasse"
 #. PyIDEMainForm..actlStandard..actUMLNewComment..Caption
 #. AFrameDiagram..PopupMenuWindow..MIWindowPopupNewComment..Caption
 #. AFrameDiagram..PopMenuClass..MIClassPopupNewComment..Caption
-#: frmPyIDEMain.dfm:1197 frmPyIDEMain.dfm:3859
+#: frmPyIDEMain.dfm:1194 frmPyIDEMain.dfm:3856
 #: EssModel/Integrator/View/UDiagramFrame.dfm:199
 #: EssModel/Integrator/View/UDiagramFrame.dfm:462
 msgid "New comment"
@@ -5608,7 +5613,7 @@ msgstr "Neuer Kommentar"
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBNewLayout..Hint
 #. FSequenceForm..SequenceToolbar..TBNewLayout..Hint
 #. FSequenceForm..PopupMenuLifeLineAndSequencePanel..MIPopupNewLayout..Caption
-#: frmPyIDEMain.dfm:1201 frmPyIDEMain.dfm:3866
+#: frmPyIDEMain.dfm:1198 frmPyIDEMain.dfm:3863
 #: EssModel/Integrator/View/UDiagramFrame.dfm:205
 #: EssModel/System/UUMLForm.dfm:161 SequenceDiagram/USequenceForm.dfm:96
 #: SequenceDiagram/USequenceForm.dfm:210
@@ -5621,7 +5626,7 @@ msgstr "Neues Layout"
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBRefresh..Hint
 #. FSequenceForm..SequenceToolbar..TBRefresh..Hint
 #. FSequenceForm..PopupMenuLifeLineAndSequencePanel..MIPopupRefresh..Caption
-#: frmPyIDEMain.dfm:1205 frmPyIDEMain.dfm:3873
+#: frmPyIDEMain.dfm:1202 frmPyIDEMain.dfm:3870
 #: EssModel/Integrator/View/UDiagramFrame.dfm:211
 #: EssModel/System/UUMLForm.dfm:169 SequenceDiagram/USequenceForm.dfm:106
 #: SequenceDiagram/USequenceForm.dfm:216
@@ -5630,878 +5635,879 @@ msgstr "Aktualisieren"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..mnDiagramFromOpenFiles..Hint
 #. PyIDEMainForm..actlStandard..actUMLDiagramFromOpenFiles..Caption
-#: frmPyIDEMain.dfm:1212 frmPyIDEMain.dfm:3880
+#: frmPyIDEMain.dfm:1209 frmPyIDEMain.dfm:3877
 msgid "Diagram from open files"
 msgstr "Diagramm aus geöffneten Dateien"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..mnSaveAsPicture..Hint
 #. PyIDEMainForm..actlStandard..actUMLSaveAsPicture..Caption
-#: frmPyIDEMain.dfm:1219 frmPyIDEMain.dfm:3894
+#: frmPyIDEMain.dfm:1216 frmPyIDEMain.dfm:3891
 msgid "Save as picture"
 msgstr "Als Bild speichern"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..Caption
-#: frmPyIDEMain.dfm:1224
+#: frmPyIDEMain.dfm:1221
 msgid "&Tools"
 msgstr "&Werkzeuge"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsTextCompare..Hint
 #. PyIDEMainForm..actlStandard..actToolsTextDiff..Caption
-#: frmPyIDEMain.dfm:1231 frmPyIDEMain.dfm:3901
+#: frmPyIDEMain.dfm:1228 frmPyIDEMain.dfm:3898
 msgid "Textdiff"
 msgstr "Textvergleich"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNAdd..Caption
-#: frmPyIDEMain.dfm:1324
+#: frmPyIDEMain.dfm:1321
 msgid "Add file"
 msgstr "Datei hinzufügen"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNLog..Caption
-#: frmPyIDEMain.dfm:1329
+#: frmPyIDEMain.dfm:1326
 msgid "Log of file"
 msgstr "Protokoll der Datei"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNCompare..Caption
-#: frmPyIDEMain.dfm:1334
+#: frmPyIDEMain.dfm:1331
 msgid "Compare file"
 msgstr "Vergleiche Datei"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNStatus..Caption
-#: frmPyIDEMain.dfm:1341
+#: frmPyIDEMain.dfm:1338
 msgid "Status of folder"
 msgstr "Status des Ordners"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNTree..Caption
-#: frmPyIDEMain.dfm:1346
+#: frmPyIDEMain.dfm:1343
 msgid "Tree of repository"
 msgstr "Baum des Repositorys"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..mnToolsSVNUpdate..Caption
-#: frmPyIDEMain.dfm:1351
+#: frmPyIDEMain.dfm:1348
 msgid "Update from repository"
 msgstr "Update aus dem Repository"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..EditorViewsMenu..Caption
-#: frmPyIDEMain.dfm:1364
+#: frmPyIDEMain.dfm:1361
 msgid "Source Code Views"
 msgstr "Quellcodeansicht"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsBrowser..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PBrowser..Caption
 #. Programmer's name for it: SWebPreviewTab
-#: frmPyIDEMain.dfm:1371 Utils/UConfiguration.dfm:3479 StringResources.pas:353
+#: frmPyIDEMain.dfm:1368 Utils/UConfiguration.dfm:3479 StringResources.pas:353
 msgid "Browser"
 msgstr "Browser"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsBrowser..Hint
-#: frmPyIDEMain.dfm:1372
+#: frmPyIDEMain.dfm:1369
 msgid "Opens a browser window"
 msgstr "Öffnet ein Browserfenster"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnTools..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PTools..Caption
-#: frmPyIDEMain.dfm:1379 Utils/UConfiguration.dfm:6147
+#: frmPyIDEMain.dfm:1376 Utils/UConfiguration.dfm:6147
 msgid "Tools"
 msgstr "Werkzeuge"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnTools..Hint
-#: frmPyIDEMain.dfm:1380
+#: frmPyIDEMain.dfm:1377
 msgid "External Tools"
 msgstr "Externe Werkzeuge"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..OptionsMenu..Caption
-#: frmPyIDEMain.dfm:1391
+#: frmPyIDEMain.dfm:1388
 msgid "&Options"
 msgstr "&Optionen"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainToolBar..Caption
-#: frmPyIDEMain.dfm:1474
+#: frmPyIDEMain.dfm:1471
 msgid "Main Toolbar"
 msgstr "Haupwerkzeugleiste"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainToolBar..tbiFileOpen..Hint
-#: frmPyIDEMain.dfm:1476
+#: frmPyIDEMain.dfm:1473
 msgid "Open|Select a file to open"
 msgstr "Datei zum Öffnen auswählen"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainToolBar..tbitbiDiagramFromOpenFiles..Hint
-#: frmPyIDEMain.dfm:1492
+#: frmPyIDEMain.dfm:1489
 msgid "UML-Diagram from open files"
 msgstr "UML-Diagramm aus geöffneten Dateien"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabItem1..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..Caption
-#: frmPyIDEMain.dfm:1506 frmPyIDEMain.dfm:2762
+#. Programmer's name for it: LNGProgram
+#: frmPyIDEMain.dfm:1503 frmPyIDEMain.dfm:2759 Setup/UStringRessources.pas:23
 msgid "Program"
 msgstr "Programm"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabItem2..Caption
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..Caption
-#: frmPyIDEMain.dfm:1511 frmPyIDEMain.dfm:1531
+#: frmPyIDEMain.dfm:1508 frmPyIDEMain.dfm:1528
 msgid "Tkinter"
 msgstr "Tkinter"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtMenu..Hint
-#: frmPyIDEMain.dfm:2681
+#: frmPyIDEMain.dfm:2678
 msgid "QMenu"
 msgstr "QMenu"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBStructogram..Hint
-#: frmPyIDEMain.dfm:2791
+#: frmPyIDEMain.dfm:2788
 msgid "New structogram"
 msgstr "Neues Struktogramm"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBSequence..Hint
-#: frmPyIDEMain.dfm:2801
+#: frmPyIDEMain.dfm:2798
 msgid "New sequence diagram"
 msgstr "Neues Sequenzdiagramm"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBTkApplication..Hint
-#: frmPyIDEMain.dfm:2821
+#: frmPyIDEMain.dfm:2818
 msgid "New Tk/TTK-Application"
 msgstr "Neue Tk/TTK-Anwendung"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBQtApplication..Hint
-#: frmPyIDEMain.dfm:2831
+#: frmPyIDEMain.dfm:2828
 msgid "New Qt Application"
 msgstr "Neue Qt-Anwendung"
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetProgram..ToolbarProgram..TBQtApplication..Caption
 #. PyIDEMainForm..actlStandard..actFileNewQtApp..Caption
-#: frmPyIDEMain.dfm:2832 frmPyIDEMain.dfm:3938
+#: frmPyIDEMain.dfm:2829 frmPyIDEMain.dfm:3935
 msgid "Qt-Application"
 msgstr "Qt-Anwendung"
 
 #. PyIDEMainForm..TabControlPopupMenu..mnMaximizeEditor2..Caption
-#: frmPyIDEMain.dfm:2939
+#: frmPyIDEMain.dfm:2936
 msgid "&MaximizeRestore Editor"
 msgstr "Editor maximieren/wiederherstellen"
 
 #. PyIDEMainForm..TabControlPopupMenu..mnFiles..Caption
-#: frmPyIDEMain.dfm:2945
+#: frmPyIDEMain.dfm:2942
 msgid "&Files"
 msgstr "&Dateien"
 
 #. PyIDEMainForm..TabControlPopupMenu..mnFiles..Hint
-#: frmPyIDEMain.dfm:2946
+#: frmPyIDEMain.dfm:2943
 msgid "Open Files"
 msgstr "Offene Dateien"
 
 #. PyIDEMainForm..actlImmutable..actViewNextEditor..Caption
-#: frmPyIDEMain.dfm:2979
+#: frmPyIDEMain.dfm:2976
 msgid "&Next Editor"
 msgstr "&Nächster Editor"
 
 #. PyIDEMainForm..actlImmutable..actViewNextEditor..Hint
-#: frmPyIDEMain.dfm:2981
+#: frmPyIDEMain.dfm:2978
 msgid "Next Editor|Move to the next editor"
 msgstr "Nächster Editor|Zum nächsten Editorfenster gehen"
 
 #. PyIDEMainForm..actlImmutable..actViewPreviousEditor..Caption
-#: frmPyIDEMain.dfm:2989
+#: frmPyIDEMain.dfm:2986
 msgid "&Previous Editor"
 msgstr "&Vorgeriger Editor"
 
 #. PyIDEMainForm..actlImmutable..actViewPreviousEditor..Hint
-#: frmPyIDEMain.dfm:2991
+#: frmPyIDEMain.dfm:2988
 msgid "Previous editor|Move to the previous editor"
 msgstr "Vorgeriger Editor|Zum vorgerigem Editorfenster gehen"
 
 #. PyIDEMainForm..actlStandard..actViewMainMenu..Caption
-#: frmPyIDEMain.dfm:3004
+#: frmPyIDEMain.dfm:3001
 msgid "Main Men&u"
 msgstr "Ha&uptmenü"
 
 #. PyIDEMainForm..actlStandard..actViewMainMenu..Hint
-#: frmPyIDEMain.dfm:3007
+#: frmPyIDEMain.dfm:3004
 msgid "View/Hide main menu"
 msgstr "Zeige/Verstecke Hauptmenü"
 
 #. PyIDEMainForm..actlStandard..actCallStackWin..Caption
 #. PyIDEMainForm..actlStandard..actNavCallStack..Caption
-#: frmPyIDEMain.dfm:3013 frmPyIDEMain.dfm:3615
+#: frmPyIDEMain.dfm:3010 frmPyIDEMain.dfm:3612
 msgid "&Call Stack"
 msgstr "&Aufrufhistorie"
 
 #. PyIDEMainForm..actlStandard..actCallStackWin..Hint
-#: frmPyIDEMain.dfm:3017
+#: frmPyIDEMain.dfm:3014
 msgid "Show/Hide Call Stack window"
 msgstr "Anzeigen/Verstecken der Aufrufhistorie"
 
 #. PyIDEMainForm..actlStandard..actVariablesWin..Caption
 #. PyIDEMainForm..actlStandard..actNavVariables..Caption
-#: frmPyIDEMain.dfm:3024 frmPyIDEMain.dfm:3605
+#: frmPyIDEMain.dfm:3021 frmPyIDEMain.dfm:3602
 msgid "&Variables"
 msgstr "&Variablen"
 
 #. PyIDEMainForm..actlStandard..actVariablesWin..Hint
-#: frmPyIDEMain.dfm:3028
+#: frmPyIDEMain.dfm:3025
 msgid "Show/Hide Variables window"
 msgstr "Zeige/Verstecke Variablenfenster"
 
 #. PyIDEMainForm..actlStandard..actSyntaxCheck..Caption
-#: frmPyIDEMain.dfm:3035
+#: frmPyIDEMain.dfm:3032
 msgid "&Syntax Check"
 msgstr "&Syntaxkontrolle"
 
 #. PyIDEMainForm..actlStandard..actSyntaxCheck..Hint
-#: frmPyIDEMain.dfm:3038
+#: frmPyIDEMain.dfm:3035
 msgid "Syntax Check|Perform syntax check and load scripts"
 msgstr "Syntaxkontrolle|Führt Syntaxkontrolle aus und lädt Skripte"
 
 #. PyIDEMainForm..actlStandard..actRun..Hint
-#: frmPyIDEMain.dfm:3048
+#: frmPyIDEMain.dfm:3045
 msgid "Run|Run active module"
 msgstr "Ausführen|Führt das aktive Modul aus"
 
 #. PyIDEMainForm..actlStandard..actCommandLine..Caption
-#: frmPyIDEMain.dfm:3056
+#: frmPyIDEMain.dfm:3053
 msgid "Command Line &Parameters..."
 msgstr "Kommandozeilen&parameter..."
 
 #. PyIDEMainForm..actlStandard..actCommandLine..Hint
-#: frmPyIDEMain.dfm:3059
+#: frmPyIDEMain.dfm:3056
 msgid "Set command line parameters"
 msgstr "Setzen der Kommandozeilenparameter"
 
 #. PyIDEMainForm..actlStandard..actImportModule..Caption
-#: frmPyIDEMain.dfm:3064
+#: frmPyIDEMain.dfm:3061
 msgid "Import &Module"
 msgstr "Modul &Importieren"
 
 #. PyIDEMainForm..actlStandard..actImportModule..Hint
-#: frmPyIDEMain.dfm:3067
+#: frmPyIDEMain.dfm:3064
 msgid "Import module"
 msgstr "Modul Imortieren"
 
 #. PyIDEMainForm..actlStandard..actFileNewModule..Caption
-#: frmPyIDEMain.dfm:3074
+#: frmPyIDEMain.dfm:3071
 msgid "&New Python module"
 msgstr "&Neues Pythonmodul"
 
 #. PyIDEMainForm..actlStandard..actFileNewModule..Hint
-#: frmPyIDEMain.dfm:3077
+#: frmPyIDEMain.dfm:3074
 msgid "New Python module"
 msgstr "Neues Pythonmodul"
 
 #. PyIDEMainForm..actlStandard..actFileOpen..Caption
-#: frmPyIDEMain.dfm:3085
+#: frmPyIDEMain.dfm:3082
 msgid "&Open..."
 msgstr "&Öffnen..."
 
 #. PyIDEMainForm..actlStandard..actFileOpen..Hint
-#: frmPyIDEMain.dfm:3088
+#: frmPyIDEMain.dfm:3085
 msgid "Select a file to open"
 msgstr "Datei zum Öffnen auswählen"
 
 #. PyIDEMainForm..actlStandard..actFileCloseAll..Caption
-#: frmPyIDEMain.dfm:3096
+#: frmPyIDEMain.dfm:3093
 msgid "Close A&ll"
 msgstr "A&lle schließen"
 
 #. PyIDEMainForm..actlStandard..actFileCloseAll..Hint
-#: frmPyIDEMain.dfm:3100
+#: frmPyIDEMain.dfm:3097
 msgid "Close all files"
 msgstr "Schließt alle Dateien"
 
 #. PyIDEMainForm..actlStandard..actFileExit..Caption
-#: frmPyIDEMain.dfm:3108
+#: frmPyIDEMain.dfm:3105
 msgid "E&xit"
 msgstr "&Beenden"
 
 #. PyIDEMainForm..actlStandard..actFileExit..Hint
-#: frmPyIDEMain.dfm:3111
+#: frmPyIDEMain.dfm:3108
 msgid "Exit"
 msgstr "Beenden"
 
 #. PyIDEMainForm..actlStandard..actViewStatusBar..Caption
-#: frmPyIDEMain.dfm:3119
+#: frmPyIDEMain.dfm:3116
 msgid "Status &Bar"
 msgstr "&Statusleiste"
 
 #. PyIDEMainForm..actlStandard..actViewStatusBar..Hint
-#: frmPyIDEMain.dfm:3122
+#: frmPyIDEMain.dfm:3119
 msgid "View/Hide status bar"
 msgstr "Zeige/Verstecke Statusleiste"
 
 #. PyIDEMainForm..actlStandard..actExternalRun..Hint
-#: frmPyIDEMain.dfm:3130
+#: frmPyIDEMain.dfm:3127
 msgid "External Run|Run active module in external Python interpreter"
 msgstr ""
 "Externe Ausführung|Führt das aktive Modul in einem externen "
 "Pythoninterpreter aus"
 
 #. PyIDEMainForm..actlStandard..actExternalRunConfigure..Caption
-#: frmPyIDEMain.dfm:3138
+#: frmPyIDEMain.dfm:3135
 msgid "Configure &External Run..."
 msgstr "&Konfiguration der externen Ausführung..."
 
 #. PyIDEMainForm..actlStandard..actExternalRunConfigure..Hint
-#: frmPyIDEMain.dfm:3141
+#: frmPyIDEMain.dfm:3138
 msgid "Configure External Run"
 msgstr "Konfiguriere externe Ausführung"
 
 #. PyIDEMainForm..actlStandard..actRunDebugLastScript..Caption
-#: frmPyIDEMain.dfm:3148
+#: frmPyIDEMain.dfm:3145
 msgid "Debug Last Script"
 msgstr "Fehlerbehandlung letztes Skript"
 
 #. PyIDEMainForm..actlStandard..actRunDebugLastScript..Hint
 #. Programmer's name for it: SHintDebug
-#: frmPyIDEMain.dfm:3150 StringResources.pas:315
+#: frmPyIDEMain.dfm:3147 StringResources.pas:315
 msgid "Debug last script"
 msgstr "Fehlerbehandlung für das letzte Skript"
 
 #. PyIDEMainForm..actlStandard..actDebug..Hint
 #. Programmer's name for it: SDebugHint
-#: frmPyIDEMain.dfm:3161 StringResources.pas:313
+#: frmPyIDEMain.dfm:3158 StringResources.pas:313
 msgid "Debug|Debug active script"
 msgstr "Fehlerbehandlung|Fehlerbehandlung des aktiven Skripts"
 
 #. PyIDEMainForm..actlStandard..actRestoreEditor..Caption
-#: frmPyIDEMain.dfm:3169
+#: frmPyIDEMain.dfm:3166
 msgid "&Restore Editor"
 msgstr "Layout wiede&rherstellen"
 
 #. PyIDEMainForm..actlStandard..actRestoreEditor..Hint
-#: frmPyIDEMain.dfm:3172
+#: frmPyIDEMain.dfm:3169
 msgid "Restore editor window"
 msgstr "Stellt die geteilte Fensteransich wieder her"
 
 #. PyIDEMainForm..actlStandard..actRunToCursor..Caption
-#: frmPyIDEMain.dfm:3180
+#: frmPyIDEMain.dfm:3177
 msgid "Run To &Cursor"
 msgstr "Bis &Cursor ausführen"
 
 #. PyIDEMainForm..actlStandard..actRunToCursor..Hint
-#: frmPyIDEMain.dfm:3183
+#: frmPyIDEMain.dfm:3180
 msgid "Run to cursor"
 msgstr "Bis Cursor ausführen"
 
 #. PyIDEMainForm..actlStandard..actStepInto..Caption
-#: frmPyIDEMain.dfm:3191
+#: frmPyIDEMain.dfm:3188
 msgid "Step &Into"
 msgstr "Sprung &in Funktion"
 
 #. PyIDEMainForm..actlStandard..actStepInto..Hint
-#: frmPyIDEMain.dfm:3194
+#: frmPyIDEMain.dfm:3191
 msgid "Step into subroutine "
 msgstr "Springt in eine Subroutine "
 
 #. PyIDEMainForm..actlStandard..actStepOver..Caption
-#: frmPyIDEMain.dfm:3202
+#: frmPyIDEMain.dfm:3199
 msgid "Step &Over"
 msgstr "Funktion &Überspringen"
 
 #. PyIDEMainForm..actlStandard..actStepOver..Hint
-#: frmPyIDEMain.dfm:3205
+#: frmPyIDEMain.dfm:3202
 msgid "Step over next function call"
 msgstr "Überspringt den nächsten Funktionsaufruf"
 
 #. PyIDEMainForm..actlStandard..actStepOut..Caption
-#: frmPyIDEMain.dfm:3213
+#: frmPyIDEMain.dfm:3210
 msgid "Step O&ut"
 msgstr "Sprung a&us Funktion"
 
 #. PyIDEMainForm..actlStandard..actStepOut..Hint
-#: frmPyIDEMain.dfm:3216
+#: frmPyIDEMain.dfm:3213
 msgid "Step out of the current subroutine"
 msgstr "Springt aus der laufenden Subroutine"
 
 #. PyIDEMainForm..actlStandard..actDebugPause..Caption
-#: frmPyIDEMain.dfm:3224
+#: frmPyIDEMain.dfm:3221
 msgid "&Pause"
 msgstr "&Anhalten"
 
 #. PyIDEMainForm..actlStandard..actDebugPause..Hint
-#: frmPyIDEMain.dfm:3227
+#: frmPyIDEMain.dfm:3224
 msgid "Pause running program"
 msgstr "Hält das laufende Programm an"
 
 #. PyIDEMainForm..actlStandard..actDebugAbort..Caption
-#: frmPyIDEMain.dfm:3234
+#: frmPyIDEMain.dfm:3231
 msgid "&Abort Debugging"
 msgstr "Fehlerbehandlung &abbrechen"
 
 #. PyIDEMainForm..actlStandard..actDebugAbort..Hint
-#: frmPyIDEMain.dfm:3237
+#: frmPyIDEMain.dfm:3234
 msgid "Abort debugging"
 msgstr "Bricht die Fehlerbehandlung ab"
 
 #. PyIDEMainForm..actlStandard..actRunLastScriptExternal..Caption
-#: frmPyIDEMain.dfm:3245
+#: frmPyIDEMain.dfm:3242
 msgid "Run Last Script Externally"
 msgstr "Letztes Script extern ausführen"
 
 #. PyIDEMainForm..actlStandard..actRunLastScriptExternal..Hint
 #. Programmer's name for it: SHintExternalRun
-#: frmPyIDEMain.dfm:3247 StringResources.pas:316
+#: frmPyIDEMain.dfm:3244 StringResources.pas:316
 msgid "Run last script externally"
 msgstr "Letztes Script extern ausführen"
 
 #. PyIDEMainForm..actlStandard..actRunLastScript..Caption
-#: frmPyIDEMain.dfm:3255
+#: frmPyIDEMain.dfm:3252
 msgid "Run Last Script"
 msgstr "Letztes Script ausführen"
 
 #. PyIDEMainForm..actlStandard..actRunLastScript..Hint
 #. Programmer's name for it: SHintRun
-#: frmPyIDEMain.dfm:3257 StringResources.pas:314
+#: frmPyIDEMain.dfm:3254 StringResources.pas:314
 msgid "Run last script"
 msgstr "Letztes Script ausführen"
 
 #. PyIDEMainForm..actlStandard..actToggleBreakPoint..Caption
-#: frmPyIDEMain.dfm:3265
+#: frmPyIDEMain.dfm:3262
 msgid "Toggle &breakpoint"
 msgstr "&Haltepunkt setzten/löschen"
 
 #. PyIDEMainForm..actlStandard..actToggleBreakPoint..Hint
-#: frmPyIDEMain.dfm:3268
+#: frmPyIDEMain.dfm:3265
 msgid "Toggle breakpoint"
 msgstr "Haltepunkt setzten/löschen"
 
 #. PyIDEMainForm..actlStandard..actClearAllBreakpoints..Caption
-#: frmPyIDEMain.dfm:3276
+#: frmPyIDEMain.dfm:3273
 msgid "Clear A&ll Breakpoints"
 msgstr "Alle Haltepunkte lös&chen"
 
 #. PyIDEMainForm..actlStandard..actClearAllBreakpoints..Hint
-#: frmPyIDEMain.dfm:3279
+#: frmPyIDEMain.dfm:3276
 msgid "Clear all breakpoints"
 msgstr "Löscht alle Haltepunkte"
 
 #. PyIDEMainForm..actlStandard..actBreakPointsWin..Caption
-#: frmPyIDEMain.dfm:3286
+#: frmPyIDEMain.dfm:3283
 msgid "&Breakpoints"
 msgstr "&Haltepunkte"
 
 #. PyIDEMainForm..actlStandard..actBreakPointsWin..Hint
-#: frmPyIDEMain.dfm:3290
+#: frmPyIDEMain.dfm:3287
 msgid "Show/Hide Breakpoints window"
 msgstr "Anzeigen/Verstecken des Haltepunktfensters"
 
 #. PyIDEMainForm..actlStandard..actWatchesWin..Caption
 #. PyIDEMainForm..actlStandard..actNavWatches..Caption
-#: frmPyIDEMain.dfm:3297 frmPyIDEMain.dfm:3575
+#: frmPyIDEMain.dfm:3294 frmPyIDEMain.dfm:3572
 msgid "&Watches"
 msgstr "Über&wachung"
 
 #. PyIDEMainForm..actlStandard..actWatchesWin..Hint
-#: frmPyIDEMain.dfm:3301
+#: frmPyIDEMain.dfm:3298
 msgid "Show/Hide Watches window"
 msgstr "Anzeigen/Verstecken des Überwachungsfensters"
 
 #. PyIDEMainForm..actlStandard..actMessagesWin..Caption
-#: frmPyIDEMain.dfm:3308
+#: frmPyIDEMain.dfm:3305
 msgid "&Messages"
 msgstr "&Nachrichten"
 
 #. PyIDEMainForm..actlStandard..actMessagesWin..Hint
-#: frmPyIDEMain.dfm:3312
+#: frmPyIDEMain.dfm:3309
 msgid "Show/Hide Messages window"
 msgstr "Anzeigen/Verstecken des Nachrichtenfensters"
 
 #. PyIDEMainForm..actlStandard..actViewII..Caption
-#: frmPyIDEMain.dfm:3319
+#: frmPyIDEMain.dfm:3316
 msgid "&Interactive Interpreter"
 msgstr "&Interaktiver Interpreter"
 
 #. PyIDEMainForm..actlStandard..actViewII..Hint
-#: frmPyIDEMain.dfm:3323
+#: frmPyIDEMain.dfm:3320
 msgid "View/Hide Interactive Interpreter"
 msgstr "Zeige/Verstecke Interaktiven Interpreter"
 
 #. PyIDEMainForm..actlStandard..actViewCodeExplorer..Caption
 #. PyIDEMainForm..actlStandard..actNavCodeExplorer..Caption
-#: frmPyIDEMain.dfm:3330 frmPyIDEMain.dfm:3645
+#: frmPyIDEMain.dfm:3327 frmPyIDEMain.dfm:3642
 msgid "&Code Explorer"
 msgstr "&Quellcode"
 
 #. PyIDEMainForm..actlStandard..actViewCodeExplorer..Hint
-#: frmPyIDEMain.dfm:3334
+#: frmPyIDEMain.dfm:3331
 msgid "View/Hide Code Explorer"
 msgstr "Anzeigen/Verstecken des Quellcodes"
 
 #. PyIDEMainForm..actlStandard..actViewFileExplorer..Caption
-#: frmPyIDEMain.dfm:3341
+#: frmPyIDEMain.dfm:3338
 msgid "&File Explorer"
 msgstr "&Dateiexplorer"
 
 #. PyIDEMainForm..actlStandard..actViewFileExplorer..Hint
-#: frmPyIDEMain.dfm:3345
+#: frmPyIDEMain.dfm:3342
 msgid "View/Hide File Explorer"
 msgstr "Zeige/Verstecke Dateiexplorer"
 
 #. PyIDEMainForm..actlStandard..actViewToDoList..Caption
-#: frmPyIDEMain.dfm:3352
+#: frmPyIDEMain.dfm:3349
 msgid "&To-Do List"
 msgstr "&ToDo Liste"
 
 #. PyIDEMainForm..actlStandard..actViewToDoList..Hint
-#: frmPyIDEMain.dfm:3355
+#: frmPyIDEMain.dfm:3352
 msgid "View/Hide To Do List"
 msgstr "Anzeigen/Verstecken der ToDo Liste"
 
 #. PyIDEMainForm..actlStandard..actViewFindResults..Caption
-#: frmPyIDEMain.dfm:3362
+#: frmPyIDEMain.dfm:3359
 msgid "Find &in Files Results"
 msgstr "Suche in Dateien-Trefferliste"
 
 #. PyIDEMainForm..actlStandard..actViewFindResults..Hint
-#: frmPyIDEMain.dfm:3365
+#: frmPyIDEMain.dfm:3362
 msgid "View/Hide Find in Files Results"
 msgstr "Anzeigen/Verstecken der Suche in den Dateiergebnissen"
 
 #. PyIDEMainForm..actlStandard..actViewUnitTests..Caption
 #. PyIDEMainForm..actlStandard..actNavUnitTests..Caption
-#: frmPyIDEMain.dfm:3373 frmPyIDEMain.dfm:3665
+#: frmPyIDEMain.dfm:3370 frmPyIDEMain.dfm:3662
 msgid "&Unit Tests"
 msgstr "&Unit-Tests"
 
 #. PyIDEMainForm..actlStandard..actViewUnitTests..Hint
-#: frmPyIDEMain.dfm:3375
+#: frmPyIDEMain.dfm:3372
 msgid "View/Hide Unit Tests Window"
 msgstr "Anzeigen/Verstecken des Unit-Test Fensters"
 
 #. PyIDEMainForm..actlStandard..actViewOutput..Caption
-#: frmPyIDEMain.dfm:3382
+#: frmPyIDEMain.dfm:3379
 msgid "&Output Window"
 msgstr "&Ausgabefenster"
 
 #. PyIDEMainForm..actlStandard..actViewOutput..Hint
-#: frmPyIDEMain.dfm:3385
+#: frmPyIDEMain.dfm:3382
 msgid "View/Hide Output Window"
 msgstr "Anzeigen/Verstecken des Ausgabefensters"
 
 #. PyIDEMainForm..actlStandard..actFindDefinition..Caption
-#: frmPyIDEMain.dfm:3392
+#: frmPyIDEMain.dfm:3389
 msgid "Find &Definition"
 msgstr "Suche &Definition"
 
 #. PyIDEMainForm..actlStandard..actFindDefinition..Hint
-#: frmPyIDEMain.dfm:3395
+#: frmPyIDEMain.dfm:3392
 msgid "Find definition of an Identifier"
 msgstr "Sucht die Definition einer Variablen"
 
 #. PyIDEMainForm..actlStandard..actFindReferences..Caption
-#: frmPyIDEMain.dfm:3401
+#: frmPyIDEMain.dfm:3398
 msgid "Find R&eferences"
 msgstr "Suche Referenzen"
 
 #. PyIDEMainForm..actlStandard..actFindReferences..Hint
-#: frmPyIDEMain.dfm:3404
+#: frmPyIDEMain.dfm:3401
 msgid "Find references of an Identifier"
 msgstr "Sucht die Referenz einer Variablen"
 
 #. PyIDEMainForm..actlStandard..actBrowseBack..Caption
-#: frmPyIDEMain.dfm:3409
+#: frmPyIDEMain.dfm:3406
 msgid "Browse &Back"
 msgstr "Suche &rückwärts"
 
 #. PyIDEMainForm..actlStandard..actBrowseBack..Hint
-#: frmPyIDEMain.dfm:3412
+#: frmPyIDEMain.dfm:3409
 msgid "Browse back"
 msgstr "Suche rückwärts"
 
 #. PyIDEMainForm..actlStandard..actBrowseForward..Caption
-#: frmPyIDEMain.dfm:3420
+#: frmPyIDEMain.dfm:3417
 msgid "Browse &Forward"
 msgstr "Suche &vorwärts"
 
 #. PyIDEMainForm..actlStandard..actBrowseForward..Hint
-#: frmPyIDEMain.dfm:3423
+#: frmPyIDEMain.dfm:3420
 msgid "Browse forward"
 msgstr "Suche vorwärts"
 
 #. PyIDEMainForm..actlStandard..actViewRegExpTester..Caption
-#: frmPyIDEMain.dfm:3431
+#: frmPyIDEMain.dfm:3428
 msgid "&Regular Expression Tester"
 msgstr "&Reguläre Ausdrücke"
 
 #. PyIDEMainForm..actlStandard..actViewRegExpTester..Hint
-#: frmPyIDEMain.dfm:3434
+#: frmPyIDEMain.dfm:3431
 msgid "View/Hide Regular Expression Tester"
 msgstr "Reguläre Ausdrücke Tester Anzeigen/Verbergen"
 
 #. PyIDEMainForm..actlStandard..actMaximizeEditor..Caption
-#: frmPyIDEMain.dfm:3462
+#: frmPyIDEMain.dfm:3459
 msgid "&Maximize Editor"
 msgstr "&Maximiere Editor"
 
 #. PyIDEMainForm..actlStandard..actMaximizeEditor..Hint
-#: frmPyIDEMain.dfm:3465
+#: frmPyIDEMain.dfm:3462
 msgid "Maximize editor window"
 msgstr "Maximiert das Editorfenster"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomIn..Caption
-#: frmPyIDEMain.dfm:3473
+#: frmPyIDEMain.dfm:3470
 msgid "Zoom &In"
 msgstr "H&ineinzoomen"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomIn..Hint
-#: frmPyIDEMain.dfm:3475
+#: frmPyIDEMain.dfm:3472
 msgid "Increase the font size of the editor"
 msgstr "Vergrößert die Schriftgröße des Editorfensters"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomOut..Caption
-#: frmPyIDEMain.dfm:3483
+#: frmPyIDEMain.dfm:3480
 msgid "Zoom &Out"
 msgstr "Herausz&oomen"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomOut..Hint
-#: frmPyIDEMain.dfm:3485
+#: frmPyIDEMain.dfm:3482
 msgid "Decrease the font size of the editor"
 msgstr "Verkleinert die Schriftgröße des Editorfensters"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorVer..Caption
-#: frmPyIDEMain.dfm:3493
+#: frmPyIDEMain.dfm:3490
 msgid "Split Editor Vertically"
 msgstr "Teile Editorfenster vertikal"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorVer..Hint
-#: frmPyIDEMain.dfm:3496
+#: frmPyIDEMain.dfm:3493
 msgid "Split the editor Windows vertically"
 msgstr "Teilt das Editorfenster vertikal"
 
 #. PyIDEMainForm..actlStandard..actAddWatchAtCursor..Caption
-#: frmPyIDEMain.dfm:3503
+#: frmPyIDEMain.dfm:3500
 msgid "Add &Watch At Cursor"
 msgstr "Über&wachung am Cursor hinzufügen"
 
 #. PyIDEMainForm..actlStandard..actAddWatchAtCursor..Hint
-#: frmPyIDEMain.dfm:3506
+#: frmPyIDEMain.dfm:3503
 msgid "Add the expression at the editor current position as a watch"
 msgstr "Fügt den Ausdruck an der aktuellen Cursorposition als Überwachung ein"
 
 #. PyIDEMainForm..actlStandard..actPythonReinitialize..Caption
-#: frmPyIDEMain.dfm:3514
+#: frmPyIDEMain.dfm:3511
 msgid "Reinitiali&ze Python engine"
 msgstr "Neuinitialisierung der Pythonumgebung"
 
 #. PyIDEMainForm..actlStandard..actPythonInternal..Caption
-#: frmPyIDEMain.dfm:3523
+#: frmPyIDEMain.dfm:3520
 msgid "&Internal"
 msgstr "&Intern"
 
 #. PyIDEMainForm..actlStandard..actPythonInternal..Hint
-#: frmPyIDEMain.dfm:3528
+#: frmPyIDEMain.dfm:3525
 msgid "Use internal Python Engine"
 msgstr "Verwendet die intere Pythonumgebung"
 
 #. PyIDEMainForm..actlStandard..actPythonRemote..Caption
-#: frmPyIDEMain.dfm:3535
+#: frmPyIDEMain.dfm:3532
 msgid "&Remote"
 msgstr "&Externe"
 
 #. PyIDEMainForm..actlStandard..actPythonRemote..Hint
-#: frmPyIDEMain.dfm:3539
+#: frmPyIDEMain.dfm:3536
 msgid "Use a remote Python engine"
 msgstr "Verwendet eine externe Pythonumgebung"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteTk..Caption
-#: frmPyIDEMain.dfm:3546
+#: frmPyIDEMain.dfm:3543
 msgid "Remote (&Tk)"
 msgstr "Extern (Tk)"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteTk..Hint
-#: frmPyIDEMain.dfm:3550
+#: frmPyIDEMain.dfm:3547
 msgid "Use a remote Python engine for Tkinter applications"
 msgstr "Verwendet eine externe Pythonumgebung für Tkinter-Anwendungen"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteWx..Caption
-#: frmPyIDEMain.dfm:3557
+#: frmPyIDEMain.dfm:3554
 msgid "Remote (&Wx)"
 msgstr "Extern (&Wx)"
 
 #. PyIDEMainForm..actlStandard..actPythonRemoteWx..Hint
-#: frmPyIDEMain.dfm:3561
+#: frmPyIDEMain.dfm:3558
 msgid "Use a remote Python engine for wxPython applications"
 msgstr "Verwendet eine externe Pythonumgebung für wxPython-Anwendungen"
 
 #. PyIDEMainForm..actlStandard..actFileNewFile..Caption
-#: frmPyIDEMain.dfm:3566
+#: frmPyIDEMain.dfm:3563
 msgid "New File..."
 msgstr "Neue Datei..."
 
 #. PyIDEMainForm..actlStandard..actFileNewFile..Hint
-#: frmPyIDEMain.dfm:3568
+#: frmPyIDEMain.dfm:3565
 msgid "New file from template"
 msgstr "Neue Datei von Vorlage erstellen"
 
 #. PyIDEMainForm..actlStandard..actNavWatches..Hint
-#: frmPyIDEMain.dfm:3577
+#: frmPyIDEMain.dfm:3574
 msgid "Activate the Watches window"
 msgstr "Aktiviert das Überwachungsfenster"
 
 #. PyIDEMainForm..actlStandard..actNavBreakpoints..Caption
-#: frmPyIDEMain.dfm:3585
+#: frmPyIDEMain.dfm:3582
 msgid "&BreakPoints"
 msgstr "&Haltepunkte"
 
 #. PyIDEMainForm..actlStandard..actNavBreakpoints..Hint
-#: frmPyIDEMain.dfm:3587
+#: frmPyIDEMain.dfm:3584
 msgid "Activate the Breakpoints window"
 msgstr "Aktiviert das Haltepunktefenster"
 
 #. PyIDEMainForm..actlStandard..actNavInterpreter..Caption
-#: frmPyIDEMain.dfm:3595
+#: frmPyIDEMain.dfm:3592
 msgid "&Interpreter"
 msgstr "&Interpreter"
 
 #. PyIDEMainForm..actlStandard..actNavInterpreter..Hint
-#: frmPyIDEMain.dfm:3597
+#: frmPyIDEMain.dfm:3594
 msgid "Activate the Interpreter window"
 msgstr "Aktiviert das Interpreterfenster"
 
 #. PyIDEMainForm..actlStandard..actNavVariables..Hint
-#: frmPyIDEMain.dfm:3607
+#: frmPyIDEMain.dfm:3604
 msgid "Activate the Variables window"
 msgstr "Aktiviert das Variablenfenster"
 
 #. PyIDEMainForm..actlStandard..actNavCallStack..Hint
-#: frmPyIDEMain.dfm:3617
+#: frmPyIDEMain.dfm:3614
 msgid "Activate the Call Stack window"
 msgstr "Aktiviert das Aufrufhistorienfenster"
 
 #. PyIDEMainForm..actlStandard..actNavMessages..Caption
-#: frmPyIDEMain.dfm:3625
+#: frmPyIDEMain.dfm:3622
 msgid "&Messages "
 msgstr "&Nachrichten "
 
 #. PyIDEMainForm..actlStandard..actNavMessages..Hint
-#: frmPyIDEMain.dfm:3627
+#: frmPyIDEMain.dfm:3624
 msgid "Activate the Messages window"
 msgstr "Aktiviert das Nachrichtenfenster"
 
 #. PyIDEMainForm..actlStandard..actNavFileExplorer..Caption
-#: frmPyIDEMain.dfm:3635
+#: frmPyIDEMain.dfm:3632
 msgid "File E&xplorer"
 msgstr "&Dateimanager"
 
 #. PyIDEMainForm..actlStandard..actNavFileExplorer..Hint
-#: frmPyIDEMain.dfm:3637
+#: frmPyIDEMain.dfm:3634
 msgid "Activate the File Explorer window"
 msgstr "Aktivier das Dateimanagerfenster"
 
 #. PyIDEMainForm..actlStandard..actNavCodeExplorer..Hint
-#: frmPyIDEMain.dfm:3647
+#: frmPyIDEMain.dfm:3644
 msgid "Activate the Code Explorer window"
 msgstr "Aktiviert das Quellcodefenster"
 
 #. PyIDEMainForm..actlStandard..actNavTodo..Caption
-#: frmPyIDEMain.dfm:3655
+#: frmPyIDEMain.dfm:3652
 msgid "&Todo List"
 msgstr "&ToDo Liste"
 
 #. PyIDEMainForm..actlStandard..actNavTodo..Hint
 #. PyIDEMainForm..actlStandard..actNavUnitTests..Hint
-#: frmPyIDEMain.dfm:3657 frmPyIDEMain.dfm:3667
+#: frmPyIDEMain.dfm:3654 frmPyIDEMain.dfm:3664
 msgid "Activate the Todo List window"
 msgstr "Aktiviert die ToDo Liste"
 
 #. PyIDEMainForm..actlStandard..actNavOutput..Caption
-#: frmPyIDEMain.dfm:3675
+#: frmPyIDEMain.dfm:3672
 msgid "Command &Output"
 msgstr "Befehlszeilen&ausgabe"
 
 #. PyIDEMainForm..actlStandard..actNavOutput..Hint
-#: frmPyIDEMain.dfm:3677
+#: frmPyIDEMain.dfm:3674
 msgid "Activate the Command Output window"
 msgstr "Aktiviert das Befehlszeilenausgabefenster"
 
 #. PyIDEMainForm..actlStandard..actNavEditor..Caption
-#: frmPyIDEMain.dfm:3685
+#: frmPyIDEMain.dfm:3682
 msgid "&Editor"
 msgstr "&Editor"
 
 #. PyIDEMainForm..actlStandard..actNavEditor..Hint
-#: frmPyIDEMain.dfm:3687
+#: frmPyIDEMain.dfm:3684
 msgid "Activate the Editor"
 msgstr "Aktiviert das Editorfenster"
 
 #. PyIDEMainForm..actlStandard..actPythonSSH..Caption
-#: frmPyIDEMain.dfm:3697
+#: frmPyIDEMain.dfm:3694
 msgid "&SSH"
 msgstr "&SSH"
 
 #. PyIDEMainForm..actlStandard..actPythonSSH..Hint
-#: frmPyIDEMain.dfm:3701
+#: frmPyIDEMain.dfm:3698
 msgid "Use an SSH remote Python engine"
 msgstr "Per SSH eine entfernte Pythonengine verwenden"
 
 #. PyIDEMainForm..actlStandard..actExecSelection..Caption
-#: frmPyIDEMain.dfm:3706
+#: frmPyIDEMain.dfm:3703
 msgid "E&xecute selection"
 msgstr "Auswahl &ausführen"
 
 #. PyIDEMainForm..actlStandard..actExecSelection..Hint
-#: frmPyIDEMain.dfm:3709
+#: frmPyIDEMain.dfm:3706
 msgid "Execute the editor selection"
 msgstr "Führt im Editor gewähltes aus"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorHor..Caption
-#: frmPyIDEMain.dfm:3717
+#: frmPyIDEMain.dfm:3714
 msgid "Split Editor Horizontally"
 msgstr "Editorfenster horizontal teilen"
 
 #. PyIDEMainForm..actlStandard..actViewSplitEditorHor..Hint
-#: frmPyIDEMain.dfm:3720
+#: frmPyIDEMain.dfm:3717
 msgid "Split the editor Windows horizontally"
 msgstr "Teilt das Editorfenster horizontal"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondEditor..Caption
-#: frmPyIDEMain.dfm:3727
+#: frmPyIDEMain.dfm:3724
 msgid "Hide Second Editor"
 msgstr "Verstecke zweiten Editor"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondEditor..Hint
-#: frmPyIDEMain.dfm:3730
+#: frmPyIDEMain.dfm:3727
 msgid "Clear the editor"
 msgstr "Leere das Editorfenster"
 
 #. PyIDEMainForm..actlStandard..actPostMortem..Caption
-#: frmPyIDEMain.dfm:3735
+#: frmPyIDEMain.dfm:3732
 msgid "&Post Mortem"
 msgstr "&Post Mortem"
 
 #. PyIDEMainForm..actlStandard..actPostMortem..Hint
-#: frmPyIDEMain.dfm:3738
+#: frmPyIDEMain.dfm:3735
 msgid "Enter post mortem analysis"
 msgstr "&Post Mortem Analyse durchführen"
 
 #. PyIDEMainForm..actlStandard..actViewCustomizeToolbars..Caption
-#: frmPyIDEMain.dfm:3745
+#: frmPyIDEMain.dfm:3742
 msgid "Customize..."
 msgstr "Anpassen..."
 
 #. PyIDEMainForm..actlStandard..actViewCustomizeToolbars..Hint
-#: frmPyIDEMain.dfm:3748
+#: frmPyIDEMain.dfm:3745
 msgid "Customize the toolbars"
 msgstr "Individuelle Anpassung der Werkzeugleisten"
 
 #. PyIDEMainForm..actlStandard..actViewProjectExplorer..Caption
 #. PyIDEMainForm..actlStandard..actNavProjectExplorer..Caption
-#: frmPyIDEMain.dfm:3753 frmPyIDEMain.dfm:3763
+#: frmPyIDEMain.dfm:3750 frmPyIDEMain.dfm:3760
 msgid "&Project Explorer"
 msgstr "Projektmanager"
 
 #. PyIDEMainForm..actlStandard..actViewProjectExplorer..Hint
-#: frmPyIDEMain.dfm:3756
+#: frmPyIDEMain.dfm:3753
 msgid "View/Hide Project Explorer"
 msgstr "Anzeigen/verstecken des Projektmanagers"
 
 #. PyIDEMainForm..actlStandard..actNavProjectExplorer..Hint
-#: frmPyIDEMain.dfm:3766
+#: frmPyIDEMain.dfm:3763
 msgid "Activate the Project Explorer window"
 msgstr "Aktivert das Projektmanagerfenster"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceVer..Caption
-#: frmPyIDEMain.dfm:3774
+#: frmPyIDEMain.dfm:3771
 msgid "Split Workspace Vertically"
 msgstr "Arbeitsbereich vertikal teilen"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceVer....Hint
-#: frmPyIDEMain.dfm:3779
+#: frmPyIDEMain.dfm:3776
 msgid ""
 "Split workspace vertically|Show secondary editor tabset vertically aligned"
 msgstr ""
@@ -6509,12 +6515,12 @@ msgstr ""
 "ausrichten"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceHor..Caption
-#: frmPyIDEMain.dfm:3786
+#: frmPyIDEMain.dfm:3783
 msgid "Split Workspace Horizontally"
 msgstr "Arbeitsbereich horizontal teilen"
 
 #. PyIDEMainForm..actlStandard..actViewSplitWorkspaceHor....Hint
-#: frmPyIDEMain.dfm:3791
+#: frmPyIDEMain.dfm:3788
 msgid ""
 "Split workspace horizontally|Show secondary workspace horizontally aligned"
 msgstr ""
@@ -6522,39 +6528,39 @@ msgstr ""
 "ausrichten"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondaryWorkspace..Caption
-#: frmPyIDEMain.dfm:3798
+#: frmPyIDEMain.dfm:3795
 msgid "Hide Secondary Workspace"
 msgstr "Zweiten Arbeitsbereich ausblenden"
 
 #. PyIDEMainForm..actlStandard..actViewHideSecondaryWorkspace..Hint
-#: frmPyIDEMain.dfm:3801
+#: frmPyIDEMain.dfm:3798
 msgid "Hide secondary workspace"
 msgstr "Zweiten Arbeitsbereich ausblenden"
 
 #. PyIDEMainForm..actlStandard..actSelectStyle..Caption
-#: frmPyIDEMain.dfm:3806
+#: frmPyIDEMain.dfm:3803
 msgid "Styles..."
 msgstr "Stile..."
 
 #. PyIDEMainForm..actlStandard..actPythonSetup..Caption
-#: frmPyIDEMain.dfm:3814
+#: frmPyIDEMain.dfm:3811
 msgid "Setup Python Versions..."
 msgstr "Pythonversion einrichten..."
 
 #. PyIDEMainForm..actlStandard..actPythonSetup..Hint
-#: frmPyIDEMain.dfm:3815
+#: frmPyIDEMain.dfm:3812
 msgid "Setup Python engine"
 msgstr "Python Engine einrichten"
 
 #. PyIDEMainForm..actlStandard..actRemoteFileOpen..Caption
 #. SSH File and Remote engine
 #. Programmer's name for it: SRemoteFileOpen
-#: frmPyIDEMain.dfm:3822 StringResources.pas:491
+#: frmPyIDEMain.dfm:3819 StringResources.pas:491
 msgid "Open Remote File"
 msgstr "Entfernte Datei öffnen"
 
 #. PyIDEMainForm..actlStandard..actRemoteFileOpen..Hint
-#: frmPyIDEMain.dfm:3823
+#: frmPyIDEMain.dfm:3820
 msgid "Open Remote File with SSH"
 msgstr "Entfernte Datei per SSH öffnen"
 
@@ -6563,75 +6569,75 @@ msgstr "Entfernte Datei per SSH öffnen"
 #. FObjectInspector..PNewDel..BNewDelete..Caption
 #. FSequenceForm..PopupMenuConnection..MINew..Caption
 #. FConfiguration..PMain..PanelRight..PageList..PSequencediagram..LSDNew..Caption
-#: frmPyIDEMain.dfm:3830 Main/UClassEditor.dfm:549 Main/UObjectInspector.dfm:57
+#: frmPyIDEMain.dfm:3827 Main/UClassEditor.dfm:549 Main/UObjectInspector.dfm:57
 #: SequenceDiagram/USequenceForm.dfm:141 Utils/UConfiguration.dfm:2854
 #: Main/UObjectInspector.pas:611
 msgid "New"
 msgstr "Neu"
 
 #. PyIDEMainForm..actlStandard..actUMLNewUML..Hint
-#: frmPyIDEMain.dfm:3831
+#: frmPyIDEMain.dfm:3828
 msgid "New UML window"
 msgstr "Neues UML-Fenster"
 
 #. PyIDEMainForm..actlStandard..actUMLOpenFolder..Caption
 #. FOpenFolderForm..Caption
-#: frmPyIDEMain.dfm:3887 Main/UOpenFolderForm.dfm:6
+#: frmPyIDEMain.dfm:3884 Main/UOpenFolderForm.dfm:6
 msgid "Open folder"
 msgstr "Öffne Ordner"
 
 #. PyIDEMainForm..actlStandard..actToolsConfiguration..Caption
-#: frmPyIDEMain.dfm:3908
+#: frmPyIDEMain.dfm:3905
 msgid "Tools configuration"
 msgstr "Tools-Konfiguration"
 
 #. PyIDEMainForm..actlStandard..actViewObjectinspector..Caption
-#: frmPyIDEMain.dfm:3921
+#: frmPyIDEMain.dfm:3918
 msgid "actViewObjectinspector"
 msgstr "Objekt-Inspektor"
 
 #. PyIDEMainForm..actlStandard..actNavStructure..Caption
 #. FFileStructure..Caption
-#: frmPyIDEMain.dfm:3926 Main/UFileStructure.dfm:5
+#: frmPyIDEMain.dfm:3923 Main/UFileStructure.dfm:5
 msgid "Structure"
 msgstr "Struktur"
 
 #. PyIDEMainForm..actlStandard..actNavStructure..Hint
-#: frmPyIDEMain.dfm:3927
+#: frmPyIDEMain.dfm:3924
 msgid "Activate the Structure window"
 msgstr "Aktiviert das Strukturfenster"
 
 #. PyIDEMainForm..actlStandard..actFileNewTkApp..Caption
-#: frmPyIDEMain.dfm:3932
+#: frmPyIDEMain.dfm:3929
 msgid "Tk/Tkk Application"
 msgstr "Tk/TTK-Anwendung"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomReset..Caption
-#: frmPyIDEMain.dfm:3943
+#: frmPyIDEMain.dfm:3940
 msgid "&Reset Zoom"
 msgstr "&Zoom zurücksetzen"
 
 #. PyIDEMainForm..actlStandard..actEditorZoomReset..Hint
-#: frmPyIDEMain.dfm:3944
+#: frmPyIDEMain.dfm:3941
 msgid "Reset the font size of the editor to its default"
 msgstr "Zurücksetzen der Schriftgröße des Editors auf die Standardeinstellung"
 
 #. PyIDEMainForm..actlStandard..actUMLRecognizeAssociations..Caption
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBRecognizeAssociations..Hint
 #. FUMLForm..PUML..PDiagram..UMLToolbar..TBRecognizeAssociations..Caption
-#: frmPyIDEMain.dfm:3949 EssModel/System/UUMLForm.dfm:177
+#: frmPyIDEMain.dfm:3946 EssModel/System/UUMLForm.dfm:177
 #: EssModel/System/UUMLForm.dfm:178
 msgid "Recognize associations"
 msgstr "Erkenne Assoziationen"
 
 #. PyIDEMainForm..actlStandard..actNavChat..Hint
-#: frmPyIDEMain.dfm:3957
+#: frmPyIDEMain.dfm:3954
 msgid "Activate the Chat window"
 msgstr "Aktiviere das Chat-Fenster"
 
 #. PythonIIForm..Caption
 #. Create a Python External Run tool which is used in the run menu
-#: frmPythonII.dfm:5 cTools.pas:506
+#: frmPythonII.dfm:5 cTools.pas:504
 msgid "Python Interpreter"
 msgstr "Python Interpreter"
 
@@ -7429,10 +7435,12 @@ msgstr "Auswählen"
 #. FStringEditor..BOK..Caption
 #. FSubversion..BOK..Caption
 #. FConnectForm..BOK..Caption
+#. FUpdater..Panel1..BOK..Caption
 #. Programmer's name for it: SDlgOK
 #: Formdesigner/ELImage.dfm:34 Main/UAssociation.dfm:88 Main/UGit.dfm:50
 #: Main/UStrings.dfm:27 Main/USubversion.dfm:50
-#: SequenceDiagram/UConnectForm.dfm:52 StringResources.pas:195
+#: SequenceDiagram/UConnectForm.dfm:52 Setup/UUpdater.dfm:39
+#: StringResources.pas:195
 msgid "OK"
 msgstr "OK"
 
@@ -7848,7 +7856,8 @@ msgid "Return"
 msgstr "Return"
 
 #. FConnectForm..LBConnections....Items.Strings
-#: SequenceDiagram/UConnectForm.dfm:40
+#. Programmer's name for it: LNGCreate
+#: SequenceDiagram/UConnectForm.dfm:40 Setup/UStringRessources.pas:21
 msgid "Create"
 msgstr "Erzeugen"
 
@@ -7885,6 +7894,87 @@ msgstr "Lösche Lebenslinie"
 #: SequenceDiagram/USequenceForm.dfm:222
 msgid "As text"
 msgstr "Als Text"
+
+#. FMemo..Caption
+#. FMemo..MInstallation....Lines.Strings
+#: Setup/UMemo.dfm:5 Setup/UMemo.dfm:24
+msgid "Installation"
+msgstr "Installation"
+
+#. FMemo..SaveDialog..DefaultExt
+#: Setup/UMemo.dfm:39
+msgid "txt"
+msgstr "txt"
+
+#. FSetup..Caption
+#: Setup/USetup.dfm:5
+msgid "Setup für GuiPy"
+msgstr "Setup für GuiPy"
+
+#. FSetup..LHint1..Caption
+#: Setup/USetup.dfm:22
+msgid "Folder for storing user specific settings"
+msgstr "Ordner zum Speichern benutzerspezifischer Einstellungen"
+
+#. FSetup..LHint2....Caption
+#: Setup/USetup.dfm:31
+msgid "Permanent write access for users, %Username% possible in the path"
+msgstr "Permanenter Schreibzugriff für Benutzer, %Username% im Pfad möglich"
+
+#. FSetup..LFolder..Caption
+#: Setup/USetup.dfm:38
+msgid "Installation folder - local or LAN"
+msgstr "Installationsordner - lokal oder LAN"
+
+#. FSetup..BInstall..Caption
+#: Setup/USetup.dfm:101
+msgid "Install"
+msgstr "Installieren"
+
+#. FSetup..BDeinstall..Caption
+#: Setup/USetup.dfm:110
+msgid "Deinstall"
+msgstr "Deinstallieren"
+
+#. FSetup..CBDesktopSymbol..Caption
+#: Setup/USetup.dfm:128
+msgid "Create desktop symbol"
+msgstr "Desktopsymbol erstellen"
+
+#. FSetup..CBStartmenu..Caption
+#: Setup/USetup.dfm:138
+msgid "Create start menu entry"
+msgstr "Startmenueintrag anlegen"
+
+#. FSetup..BLanguage..Caption
+#: Setup/USetup.dfm:148
+msgid "English"
+msgstr "Englisch"
+
+#. FSetup..CBPortableApplication..Caption
+#: Setup/USetup.dfm:157
+msgid "Portable application / USB stick"
+msgstr "Portable Anwendung / USB-Stick"
+
+#. FSetup..BDeutsch..Caption
+#: Setup/USetup.dfm:166
+msgid "Deutsch"
+msgstr "Deutsch"
+
+#. FUpdater..Caption
+#: Setup/UUpdater.dfm:5
+msgid "Updater"
+msgstr "Updater"
+
+#. FUpdater..Panel1..BRetry..Caption
+#: Setup/UUpdater.dfm:49
+msgid "Retry"
+msgstr "Wiederholen"
+
+#. Fwait..Label1..Caption
+#: Setup/UWait.dfm:22
+msgid "Please wait!"
+msgstr "Bitte warten!"
 
 #. FStructogram..Caption
 #: Structogram/UStructogram.dfm:5
@@ -7965,7 +8055,7 @@ msgid "Save puzzle files"
 msgstr "&Speichere Puzzle-Dateien"
 
 #. FTextDiff..Caption
-#: TextDiff/UTextDiff.dfm:4 frmPyIDEMain.pas:5090
+#: TextDiff/UTextDiff.dfm:4 frmPyIDEMain.pas:5089
 msgid "Compare text"
 msgstr "Vergleiche Texte"
 
@@ -9283,79 +9373,83 @@ msgstr "Passwort:"
 msgid "Python &Interpreter"
 msgstr "Python-&Interpreter"
 
-#: cTools.pas:357 cTools.pas:507
+#: cTools.pas:357 cTools.pas:505
 msgid "External Python Interpreter"
 msgstr "Externer Python-Interpreter"
 
-#: cTools.pas:368
+#: cTools.pas:367
 msgid "Install Packages with pip"
 msgstr "Pakete mit PIP installieren"
 
-#: cTools.pas:369
+#: cTools.pas:368
 msgid "Install Python packages"
 msgstr "Pythonpakete installieren"
 
-#: cTools.pas:379
+#: cTools.pas:377
 msgid "Python&Win help"
 msgstr "Python&Win Hilfe"
 
-#: cTools.pas:380
+#: cTools.pas:378
 msgid "Show PythonWin Help"
 msgstr "PythonWin Hilfe anzeigen"
 
-#: cTools.pas:388
+#: cTools.pas:386
 msgid "Check &Indentation"
 msgstr "&Einrückung prüfen"
 
-#: cTools.pas:389
+#: cTools.pas:387
 msgid "Check the indentation of the Python program"
 msgstr "Die Einrückung des Pythonprogramms prüfen"
 
-#: cTools.pas:404
+#: cTools.pas:402
 msgid "Command Prompt"
 msgstr "Kommandozeile"
 
-#: cTools.pas:405
+#: cTools.pas:403
 msgid "Start a console at the directory of the active file"
 msgstr "Eine Konsole im Verzeichnis der aktiven Datei starten"
 
-#: cTools.pas:415
+#: cTools.pas:413
 msgid "Profile"
 msgstr "Profil"
 
-#: cTools.pas:416
+#: cTools.pas:414
 msgid "Profile active file"
 msgstr "Profil aktive Datei"
 
-#: cTools.pas:429
+#: cTools.pas:427
 msgid "PyLint tool (www.pylint.org)"
 msgstr "PyLint tool (www.pylint.org)"
 
-#: cTools.pas:443
+#: cTools.pas:441
 msgid "Advanced Replace"
 msgstr "Erweitertes Ersetzen"
 
-#: cTools.pas:444
+#: cTools.pas:442
 msgid "Advanced Search and replace"
 msgstr "Erweitertes Suchen und Ersetzen"
 
-#: cTools.pas:458
+#: cTools.pas:456
 msgid "Format Selection"
 msgstr "Auswahl formatieren"
 
-#: cTools.pas:459
+#: cTools.pas:457
 msgid "Format selected code using the \"black\" module"
 msgstr "Formatiere den ausgewählten Code mit dem Modul \"schwarz\""
 
-#: cTools.pas:474
+#: cTools.pas:472
 msgid "Sort Selection"
 msgstr "Auswahl sortieren"
 
-#: cTools.pas:490
+#: cTools.pas:473
+msgid "Sort the selected editor block (\"one-liner\" demo)"
+msgstr "Sortieren des ausgewählten Editorblocks (\"Einzeiler\"-Demo)"
+
+#: cTools.pas:488
 msgid "&Re-indent"
 msgstr "&Neu einrücken"
 
-#: cTools.pas:491
+#: cTools.pas:489
 msgid "Re-indent the active file"
 msgstr "Die aktive Datei neu einrücken"
 
@@ -9741,7 +9835,7 @@ msgstr "Sprachserver"
 msgid "Not available"
 msgstr "Nicht verfügbar"
 
-#: frmPyIDEMain.pas:5440 Utils/UConfiguration.pas:2659
+#: frmPyIDEMain.pas:5439 Utils/UConfiguration.pas:2659
 msgid "File \\\"%s\\\" not found."
 msgstr "Datei \"%s\" nicht gefunden."
 
@@ -12301,6 +12395,118 @@ msgstr "Fehler beim Entpacken"
 msgid "GuiPy is up to date."
 msgstr "GuiPy ist aktuell."
 
+#: Setup/UMemo.pas:33
+msgid "Text file|*.txt"
+msgstr "Textdatei|*.txt"
+
+#: Setup/USetup.pas:197
+msgid "directory created: "
+msgstr "Ordner erzeugt: "
+
+#: Setup/USetup.pas:199
+msgid "directory cannot be created: "
+msgstr "Ordner kann nicht erzeugt werden: "
+
+#: Setup/USetup.pas:201
+msgid "directory already exists: "
+msgstr "Ordner existiert schon: "
+
+#: Setup/USetup.pas:327
+msgid "finished"
+msgstr "Beendet"
+
+#: Setup/USetup.pas:641
+msgid "Can't delete directory: "
+msgstr "Kann Ordner nicht löschen: "
+
+#: Setup/USetup.pas:643
+msgid "Directory deleted: "
+msgstr "Ordner gelöscht: "
+
+#. Programmer's name for it: LNGCopyFromTo
+#: Setup/UStringRessources.pas:7
+msgid "Copy %s to %s"
+msgstr "Kopiere %s nach %s"
+
+#. Programmer's name for it: LNGCanNotDelete
+#: Setup/UStringRessources.pas:8
+msgid "Unable to delete \"%s\"."
+msgstr "\"%s\" kann nicht gelöscht werden."
+
+#. Programmer's name for it: LNGCreateConfigurationfile
+#: Setup/UStringRessources.pas:9
+msgid "Create preferences file"
+msgstr "Konfigurationsdatei erstellen"
+
+#. Programmer's name for it: LNGCanNotCreate
+#: Setup/UStringRessources.pas:10
+msgid "Couldn't create the preferences file %s!"
+msgstr "Die Konfigurationsdatei %s konnte nicht erstellt werden!"
+
+#. Programmer's name for it: LNGSpecifyInstallationfolder
+#: Setup/UStringRessources.pas:11
+msgid "Please select installation folder."
+msgstr "Bitte Installationsordner auswählen."
+
+#. Programmer's name for it: LNGInstallationFolderDoesnotExist
+#: Setup/UStringRessources.pas:12
+msgid "Installation folder %s doesn't exist."
+msgstr "Installationsordner %s existiert nicht."
+
+#. Programmer's name for it: LNGUserFolder
+#: Setup/UStringRessources.pas:13
+msgid "Please select folder for storage of user specific settings."
+msgstr ""
+"Bitte wählen Sie den Ordner zum Speichern der benutzerspezifischen "
+"Einstellungen."
+
+#. Programmer's name for it: LNGItemInProgramMenu
+#: Setup/UStringRessources.pas:14
+msgid "Entry in program menu"
+msgstr "Eintrag im Programmmenü"
+
+#. Programmer's name for it: LNGSaveTo
+#: Setup/UStringRessources.pas:15
+msgid "Save therein"
+msgstr "Darin speichern"
+
+#. Programmer's name for it: LNGCreateAdditionalLnk
+#: Setup/UStringRessources.pas:16
+msgid "Create additional desktop link for GuiPy in folder"
+msgstr "Zusätzlichen Desktop-Link für GuiPy erstellen im Ordner"
+
+#. Programmer's name for it: LNGSaveInstallation
+#: Setup/UStringRessources.pas:17
+msgid "Save installation process in"
+msgstr "Installationsvorgang speichern in"
+
+#. Programmer's name for it: LNGConfigurationfile
+#: Setup/UStringRessources.pas:19
+msgid "preferences file"
+msgstr "Einstellungsdatei"
+
+#. Programmer's name for it: LNGDesktopLink
+#: Setup/UStringRessources.pas:20
+msgid "Desktop link"
+msgstr "Desktop-Link"
+
+#. Programmer's name for it: LNGInstallationProcess
+#: Setup/UStringRessources.pas:22
+msgid "Installation process"
+msgstr "Installationsprozess"
+
+#. Programmer's name for it: LNGNoAdministrator
+#: Setup/UStringRessources.pas:24
+msgid ""
+"For installation respectively deinstallation you need administrator rights."
+msgstr ""
+"Für die Installation bzw. Deinstallation benötigen Sie Administratorrechte."
+
+#. Programmer's name for it: LNGCopyError
+#: Setup/UStringRessources.pas:25
+msgid "Error during copying to \"%s\""
+msgstr "Fehler beim Kopieren nach \"%s\""
+
 #: Structogram/UStructogram.pas:807
 msgid ""
 "Switch to puzzle mode with the finished solution from a single algorithm "
@@ -12393,131 +12599,8 @@ msgstr "wiederhole für Element in Liste"
 #~ msgid "Segoe UI 9pt"
 #~ msgstr "Segoe UI 9pt"
 
-#~ msgid "Installation"
-#~ msgstr "Installation"
-
-#~ msgid "txt"
-#~ msgstr "txt"
-
-#~ msgid "Setup für GuiPy"
-#~ msgstr "Setup für GuiPy"
-
-#~ msgid "Folder for storing user specific settings"
-#~ msgstr "Ordner zum Speichern benutzerspezifischer Einstellungen"
-
-#~ msgid "Permanent write access for users, %Username% possible in the path"
-#~ msgstr "Permanenter Schreibzugriff für Benutzer, %Username% im Pfad möglich"
-
-#~ msgid "Installation folder - local or LAN"
-#~ msgstr "Installationsordner - lokal oder LAN"
-
-#~ msgid "Install"
-#~ msgstr "Installieren"
-
-#~ msgid "Deinstall"
-#~ msgstr "Deinstallieren"
-
-#~ msgid "Create desktop symbol"
-#~ msgstr "Desktopsymbol erstellen"
-
-#~ msgid "Create start menu entry"
-#~ msgstr "Startmenueintrag anlegen"
-
-#~ msgid "English"
-#~ msgstr "Englisch"
-
-#~ msgid "Portable application / USB stick"
-#~ msgstr "Portable Anwendung / USB-Stick"
-
-#~ msgid "Deutsch"
-#~ msgstr "Deutsch"
-
-#~ msgid "Updater"
-#~ msgstr "Updater"
-
-#~ msgid "Retry"
-#~ msgstr "Wiederholen"
-
-#~ msgid "Please wait!"
-#~ msgstr "Bitte warten!"
-
 #~ msgid "Expanded UNC file name"
 #~ msgstr "Erweiterter UNC Dateiname"
-
-#~ msgid "Text file|*.txt"
-#~ msgstr "Textdatei|*.txt"
-
-#~ msgid "directory created: "
-#~ msgstr "Ordner erzeugt: "
-
-#~ msgid "directory cannot be created: "
-#~ msgstr "Ordner kann nicht erzeugt werden: "
-
-#~ msgid "directory already exists: "
-#~ msgstr "Ordner existiert schon: "
-
-#~ msgid "finished"
-#~ msgstr "Beendet"
-
-#~ msgid "Can't delete directory: "
-#~ msgstr "Kann Ordner nicht löschen: "
-
-#~ msgid "Directory deleted: "
-#~ msgstr "Ordner gelöscht: "
-
-#~ msgid "Copy %s to %s"
-#~ msgstr "Kopiere %s nach %s"
-
-#~ msgid "Unable to delete \"%s\"."
-#~ msgstr "\"%s\" kann nicht gelöscht werden."
-
-#~ msgid "Create preferences file"
-#~ msgstr "Konfigurationsdatei erstellen"
-
-#~ msgid "Couldn't create the preferences file %s!"
-#~ msgstr "Die Konfigurationsdatei %s konnte nicht erstellt werden!"
-
-#~ msgid "Please select installation folder."
-#~ msgstr "Bitte Installationsordner auswählen."
-
-#~ msgid "Installation folder %s doesn't exist."
-#~ msgstr "Installationsordner %s existiert nicht."
-
-#~ msgid "Please select folder for storage of user specific settings."
-#~ msgstr ""
-#~ "Bitte wählen Sie den Ordner zum Speichern der benutzerspezifischen "
-#~ "Einstellungen."
-
-#~ msgid "Entry in program menu"
-#~ msgstr "Eintrag im Programmmenü"
-
-#~ msgid "Save therein"
-#~ msgstr "Darin speichern"
-
-#~ msgid "Create additional desktop link for GuiPy in folder"
-#~ msgstr "Zusätzlichen Desktop-Link für GuiPy erstellen im Ordner"
-
-#~ msgid "Save installation process in"
-#~ msgstr "Installationsvorgang speichern in"
-
-#~ msgid "preferences file"
-#~ msgstr "Einstellungsdatei"
-
-#~ msgid "Desktop link"
-#~ msgstr "Desktop-Link"
-
-#~ msgid "Installation process"
-#~ msgstr "Installationsprozess"
-
-#~ msgid ""
-#~ "For installation respectively deinstallation you need administrator "
-#~ "rights."
-#~ msgstr ""
-#~ "Für die Installation bzw. Deinstallation benötigen Sie "
-#~ "Administratorrechte."
-
-#~ msgid "Error during copying to \"%s\""
-#~ msgstr "Fehler beim Kopieren nach \"%s\""
 
 #~ msgid ""
 #~ "Holding down the Alt Key will put the selection mode into columnar format"
@@ -12976,9 +13059,6 @@ msgstr "wiederhole für Element in Liste"
 
 #~ msgid "Spell Check"
 #~ msgstr "Rechtschreibprüfung"
-
-#~ msgid "Sort the selected editor block (\"one-liner\" demo)"
-#~ msgstr "Sortieren des ausgewählten Editorblocks (\"Einzeiler\"-Demo)"
 
 #~ msgid ""
 #~ "Select folder with Python installation (including virtualenv and venv)"

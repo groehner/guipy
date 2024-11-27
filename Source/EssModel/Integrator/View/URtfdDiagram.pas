@@ -73,6 +73,7 @@ type
     function PPIScale(ASize: integer): integer;
     function PPIUnScale(ASize: integer): integer;
     procedure ShowUnnamed(Objectname: string);
+    procedure ShowRelationshipAttributesBold;
   protected
     procedure SetVisibilityFilter(const Value: TVisibility); override;
     procedure SetShowParameter(const Value: integer); override;
@@ -90,7 +91,6 @@ type
     procedure ClearDiagram; override;
     procedure ResolveAssociations; override;
     procedure ResolveObjectAssociations; override;
-    procedure ShowRelationshipAttributesBold; override;
     procedure InitFromModel; override;
     procedure PaintTo(Canvas: TCanvas; X, Y: integer; SelectedOnly : boolean); override;
     procedure GetDiagramSize(var W, H : integer); override;
@@ -516,12 +516,7 @@ begin
             if (A.TypeClassifier = aClass.Ancestor[j]) and assigned(getBox(A.TypeClassifier.Name)) then
               A.Connected:= true;
           s:= A.TypeClassifier.Fullname;
-          Generic:= GenericOf(s);
-          if Generic <> '' then begin // Vector<E>, Stack<E>, ArrayList<E>,...
-            DestBox:= GetBox(Generic);
-            if Assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) = -1) and (DestBox.Entity.Name = Generic) then
-              Panel.ConnectObjects(CBox, DestBox, asAggregation1);
-          end else if (Pos('[', s) > 0) and (Pos(']', s) > 0) then begin // Typ[]
+          if (Pos('[', s) > 0) and (Pos(']', s) > 0) then begin // Typ[], i.e. list[aClass]
             Agg:= copy(s, Pos('[', s) + 1, length(s));
             Agg:= copy(Agg, 1, Pos(']', Agg) - 1);
             DestBox:= GetBox(Agg);
@@ -583,7 +578,6 @@ begin
   Panel.ShowAll;
 end;
 
-//Make arrows between boxes
 procedure TRtfdDiagram.ShowRelationshipAttributesBold;
 var
   i, j: integer;
@@ -592,7 +586,7 @@ var
   A : TAttribute;
   Mi : IModelIterator;
   DestBox: TRtfdBox;
-  Ass: string;
+  Ass, Agg, s: string;
 begin
   for i:= 0 to BoxNames.Count - 1 do begin
     if (BoxNames.Objects[i] is TRtfdClass) then begin //Class
@@ -605,10 +599,19 @@ begin
           for j:= 0 to aClass.AncestorsCount - 1 do
             if (A.TypeClassifier = aClass.Ancestor[j]) and assigned(getBox(A.TypeClassifier.Name)) then
               A.Connected:= true;
-          Ass:= A.TypeClassifier.Fullname;
-          if IsPythonType(Ass) then
-            continue
+          s:= A.TypeClassifier.Fullname;
+          if (Pos('[', s) > 0) and (Pos(']', s) > 0) then begin // Typ[], i.e. list[aClass]
+            Agg:= copy(s, Pos('[', s) + 1, length(s));
+            Agg:= copy(Agg, 1, Pos(']', Agg) - 1);
+            DestBox:= GetBox(Agg);
+            if not assigned(DestBox) and (Pos('.', Agg) = 0) and (CBox.Entity.Package <> '') then begin
+              Agg:= CBox.Entity.Package + '.' + Agg;
+              DestBox:= GetBox(Agg);
+            end;
+          end else if IsPythonType(s)
+            then continue
           else begin
+            Ass:= s;
             DestBox:= GetBox(Ass);
             if not assigned(DestBox) and (Pos('.', Ass) = 0) and (CBox.Entity.Package <> '') then begin
               Ass:= CBox.Entity.Package + '.' + Ass;
@@ -950,15 +953,8 @@ begin
             Box.Left:= PPIScale(Ini.ReadInteger(S, 'X', Box.Left));
             Box.Top := PPIScale(Ini.ReadInteger(S, 'Y', Box.Top));
             Box.Font.Assign(Font);
-            p:= BoxNames.IndexOf(theClassname);
-            if p > 0 then begin
-              Box1:= BoxNames.Objects[p] as TRtfdBox;
-              Box.Font.Size:= Box1.Font.Size;
-            end else
-              Box.Font.Size:= PPIScale(Font.Size);
           end;
           inc(CountObjects);
-
         end;
       end;
     end;

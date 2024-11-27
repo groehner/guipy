@@ -2,8 +2,8 @@ object FUMLForm: TFUMLForm
   Left = 394
   Top = 229
   Caption = 'UML'
-  ClientHeight = 593
-  ClientWidth = 641
+  ClientHeight = 559
+  ClientWidth = 623
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,27 +21,27 @@ object FUMLForm: TFUMLForm
   object PUML: TPanel
     Left = 0
     Top = 0
-    Width = 641
-    Height = 593
+    Width = 623
+    Height = 559
     Align = alClient
     Caption = 'PUML'
     TabOrder = 0
     OnResize = PUMLResize
-    ExplicitWidth = 637
-    ExplicitHeight = 592
+    ExplicitWidth = 619
+    ExplicitHeight = 558
     object PDiagram: TPanel
       Left = 1
       Top = 1
-      Width = 639
+      Width = 621
       Height = 420
       Align = alTop
       Constraints.MinHeight = 100
       TabOrder = 0
-      ExplicitWidth = 635
+      ExplicitWidth = 617
       object PDiagramPanel: TPanel
         Left = 1
         Top = 23
-        Width = 637
+        Width = 619
         Height = 396
         Align = alClient
         BevelEdges = [beLeft, beTop]
@@ -58,7 +58,7 @@ object FUMLForm: TFUMLForm
         ParentFont = False
         TabOrder = 0
         OnResize = PDiagramPanelResize
-        ExplicitWidth = 633
+        ExplicitWidth = 615
         object TVFileStructure: TTreeView
           Left = 536
           Top = 18
@@ -72,7 +72,7 @@ object FUMLForm: TFUMLForm
       object UMLToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 637
+        Width = 619
         Height = 22
         AutoSize = True
         ButtonWidth = 24
@@ -82,7 +82,7 @@ object FUMLForm: TFUMLForm
         Images = vilToolbarDark
         ParentColor = False
         TabOrder = 1
-        ExplicitWidth = 645
+        ExplicitWidth = 615
         object TBClose: TToolButton
           Left = 0
           Top = 0
@@ -200,24 +200,24 @@ object FUMLForm: TFUMLForm
     object PInteractive: TPanel
       Left = 1
       Top = 424
-      Width = 639
-      Height = 168
+      Width = 621
+      Height = 134
       Align = alClient
       PopupMenu = PMInteractive
       TabOrder = 1
-      ExplicitWidth = 647
-      ExplicitHeight = 170
+      ExplicitWidth = 617
+      ExplicitHeight = 133
       object TBInteractiveToolbar: TToolBar
         Left = 1
         Top = 1
-        Width = 649
+        Width = 619
         Height = 22
         AutoSize = True
         Color = clBtnFace
         Images = vilInteractiveDark
         ParentColor = False
         TabOrder = 0
-        ExplicitWidth = 645
+        ExplicitWidth = 615
         object TBInteractiveClose: TToolButton
           Left = 0
           Top = 0
@@ -266,8 +266,8 @@ object FUMLForm: TFUMLForm
       object SynEdit: TSynEdit
         Left = 1
         Top = 23
-        Width = 649
-        Height = 147
+        Width = 619
+        Height = 110
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -305,19 +305,19 @@ object FUMLForm: TFUMLForm
         RightEdge = 0
         SelectedColor.Alpha = 0.400000005960464500
         OnChange = SynEditChange
-        ExplicitWidth = 645
-        ExplicitHeight = 146
+        ExplicitWidth = 615
+        ExplicitHeight = 109
       end
     end
     object SpTBXSplitter1: TSpTBXSplitter
       Left = 1
       Top = 421
-      Width = 639
+      Width = 621
       Height = 3
       Cursor = crSizeNS
       Align = alTop
       ParentColor = False
-      ExplicitWidth = 647
+      ExplicitWidth = 617
     end
   end
   object PMInteractive: TSpTBXPopupMenu

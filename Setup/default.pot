@@ -1,0 +1,255 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2024-11-25 20:39\n"
+"PO-Revision-Date: 2024-11-25 20:39\n"
+"Last-Translator: Somebody <your.email@address.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: dxgettext 1.2.2\n"
+
+#. FMemo..Caption
+#: UMemo.dfm:5
+#. FMemo..MInstallation....Lines.Strings
+#: UMemo.dfm:24
+msgid "Installation"
+msgstr ""
+
+#. FMemo..Font.Name
+#: UMemo.dfm:12
+#. FSetup..Font.Name
+#: USetup.dfm:12
+msgid "MS Sans Serif"
+msgstr ""
+
+#. FMemo..BClose..Caption
+#: UMemo.dfm:34
+#. FSetup..BClose..Caption
+#: USetup.dfm:119
+msgid "Close"
+msgstr ""
+
+#. FMemo..SaveDialog..DefaultExt
+#: UMemo.dfm:39
+msgid "txt"
+msgstr ""
+
+#. FMemo..SaveDialog..FileName
+#: UMemo.dfm:40
+msgid "deinstall.txt"
+msgstr ""
+
+#. FSetup..LHint1..Caption
+#: USetup.dfm:22
+msgid "Folder for storing user specific settings"
+msgstr ""
+
+#. FSetup..LHint2....Caption
+#: USetup.dfm:31
+msgid "Permanent write access for users, %Username% possible in the "
+"path"
+msgstr ""
+
+#. FSetup..LFolder..Caption
+#: USetup.dfm:38
+msgid "Installation folder - local or LAN"
+msgstr ""
+
+#. FSetup..BInstall..Caption
+#: USetup.dfm:101
+msgid "Install"
+msgstr ""
+
+#. FSetup..BDeinstall..Caption
+#: USetup.dfm:110
+msgid "Deinstall"
+msgstr ""
+
+#. FSetup..CBDesktopSymbol..Caption
+#: USetup.dfm:128
+msgid "Create desktop symbol"
+msgstr ""
+
+#. FSetup..CBStartmenu..Caption
+#: USetup.dfm:138
+msgid "Create start menu entry"
+msgstr ""
+
+#. FSetup..BLanguage..Caption
+#: USetup.dfm:148
+msgid "English"
+msgstr ""
+
+#. FSetup..CBPortableApplication..Caption
+#: USetup.dfm:157
+msgid "Portable application / USB stick"
+msgstr ""
+
+#. FSetup..BDeutsch..Caption
+#: USetup.dfm:166
+msgid "Deutsch"
+msgstr ""
+
+#. FUpdater..Caption
+#: UUpdater.dfm:5
+msgid "Updater"
+msgstr ""
+
+#. FUpdater..Font.Name
+#: UUpdater.dfm:12
+#. Fwait..Font.Name
+#: UWait.dfm:11
+#. Fwait..Label1..Font.Name
+#: UWait.dfm:26
+msgid "Tahoma"
+msgstr ""
+
+#. FUpdater..Panel1..BOK..Caption
+#: UUpdater.dfm:39
+msgid "OK"
+msgstr ""
+
+#. FUpdater..Panel1..BRetry..Caption
+#: UUpdater.dfm:49
+msgid "Retry"
+msgstr ""
+
+#. Fwait..Label1..Caption
+#: UWait.dfm:22
+msgid "Please wait!"
+msgstr ""
+
+#: UMemo.pas:33
+msgid "Text file|*.txt"
+msgstr ""
+
+#: USetup.pas:197
+msgid "directory created: "
+msgstr ""
+
+#: USetup.pas:199
+msgid "directory cannot be created: "
+msgstr ""
+
+#: USetup.pas:201
+msgid "directory already exists: "
+msgstr ""
+
+#: USetup.pas:327
+msgid "finished"
+msgstr ""
+
+#: USetup.pas:641
+msgid "Can't delete directory: "
+msgstr ""
+
+#: USetup.pas:643
+msgid "Directory deleted: "
+msgstr ""
+
+#. Programmer's name for it: LNGCopyFromTo
+#: UStringRessources.pas:7
+msgid "Copy %s to %s"
+msgstr ""
+
+#. Programmer's name for it: LNGCanNotDelete
+#: UStringRessources.pas:8
+msgid "Unable to delete \"%s\"."
+msgstr ""
+
+#. Programmer's name for it: LNGCreateConfigurationfile
+#: UStringRessources.pas:9
+msgid "Create preferences file"
+msgstr ""
+
+#. Programmer's name for it: LNGCanNotCreate
+#: UStringRessources.pas:10
+msgid "Couldn't create the preferences file "
+"%s!"
+msgstr ""
+
+#. Programmer's name for it: LNGSpecifyInstallationfolder
+#: UStringRessources.pas:11
+msgid "Please select installation folder."
+msgstr ""
+
+#. Programmer's name for it: LNGInstallationFolderDoesnotExist
+#: UStringRessources.pas:12
+msgid "Installation folder %s doesn't exist."
+msgstr ""
+
+#. Programmer's name for it: LNGUserFolder
+#: UStringRessources.pas:13
+msgid "Please select folder for storage of user specific "
+"settings."
+msgstr ""
+
+#. Programmer's name for it: LNGItemInProgramMenu
+#: UStringRessources.pas:14
+msgid "Entry in program menu"
+msgstr ""
+
+#. Programmer's name for it: LNGSaveTo
+#: UStringRessources.pas:15
+msgid "Save therein"
+msgstr ""
+
+#. Programmer's name for it: LNGCreateAdditionalLnk
+#: UStringRessources.pas:16
+msgid "Create additional desktop link for GuiPy in "
+"folder"
+msgstr ""
+
+#. Programmer's name for it: LNGSaveInstallation
+#: UStringRessources.pas:17
+msgid "Save installation process in"
+msgstr ""
+
+#. Programmer's name for it: LNGDelete
+#: UStringRessources.pas:18
+msgid "Delete"
+msgstr ""
+
+#. Programmer's name for it: LNGConfigurationfile
+#: UStringRessources.pas:19
+msgid "preferences file"
+msgstr ""
+
+#. Programmer's name for it: LNGDesktopLink
+#: UStringRessources.pas:20
+msgid "Desktop link"
+msgstr ""
+
+#. Programmer's name for it: LNGCreate
+#: UStringRessources.pas:21
+msgid "Create"
+msgstr ""
+
+#. Programmer's name for it: LNGInstallationProcess
+#: UStringRessources.pas:22
+msgid "Installation process"
+msgstr ""
+
+#. Programmer's name for it: LNGProgram
+#: UStringRessources.pas:23
+msgid "Program"
+msgstr ""
+
+#. Programmer's name for it: LNGNoAdministrator
+#: UStringRessources.pas:24
+msgid "For installation respectively deinstallation you need administrator "
+"rights."
+msgstr ""
+
+#. Programmer's name for it: LNGCopyError
+#: UStringRessources.pas:25
+msgid "Error during copying to \"%s\""
+msgstr ""
+

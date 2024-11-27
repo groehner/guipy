@@ -194,7 +194,7 @@ type
     procedure Suggest;
     procedure Optimize;
     procedure FixBugs;
-    procedure AddComments;
+    procedure Explain;
   end;
 
 var
@@ -723,9 +723,9 @@ end;
 
 { TLLMAssistant }
 
-procedure TLLMAssistant.AddComments;
+procedure TLLMAssistant.Explain;
 const
-  CommentsPrompt: string =
+  ExplainPrompt: string =
      'Please analyze the following python code and add detailed python comments ' +
      'and docstrings explaining what each part of the code is doing. '  +
      'The comments should be comprehensive and should help users ' +
@@ -742,7 +742,7 @@ begin
 
   if FSelText = '' then Exit;
 
-  var Prompt := Format(CommentsPrompt, [FSelText]);
+  var Prompt := Format(ExplainPrompt, [FSelText]);
   Ask(Prompt);
 end;
 

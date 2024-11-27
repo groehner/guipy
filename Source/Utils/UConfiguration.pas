@@ -1112,6 +1112,7 @@ type
     EChatMaxTokens: TEdit;
     LChatTimeout: TLabel;
     EChatTimeout: TEdit;
+    CBReinitializeWhenClosing: TCheckBox;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1896,6 +1897,7 @@ begin
     CBSaveFilesBeforeRun.Checked:= SaveFilesBeforeRun;
     CBSaveInterpreterHistory.Checked:= SaveInterpreterHistory;
     CBTraceOnlyIntoOpenFiles.Checked:= TraceOnlyIntoOpenFiles;
+    CBReinitializeWhenClosing.Checked:= ReinitializeWhenClosing;
     UDTimeOut.Position:= TimeOut;
     UDInterpreterHistorySize.Position:= InterpreterHistorySize;
 
@@ -2269,6 +2271,7 @@ begin
     SaveFilesBeforeRun:= CBSaveFilesBeforeRun.Checked;
     SaveInterpreterHistory:= CBSaveInterpreterHistory.Checked;
     TraceOnlyIntoOpenFiles:= CBTraceOnlyIntoOpenFiles.Checked;
+    ReinitializeWhenClosing:= CBReinitializeWhenClosing.Checked;
     TimeOut:= UDTimeOut.Position;
     InterpreterHistorySize:= UDInterpreterHistorySize.Position;
 

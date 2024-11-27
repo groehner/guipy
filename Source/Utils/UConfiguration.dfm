@@ -206,7 +206,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 653
         Height = 438
-        ActivePage = PLLMChat
+        ActivePage = PInterpreter
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -444,6 +444,14 @@ object FConfiguration: TFConfiguration
             TabOrder = 15
             Text = '0'
           end
+          object CBReinitializeWhenClosing: TCheckBox
+            Left = 16
+            Top = 304
+            Width = 369
+            Height = 17
+            Caption = 'Reinitialize when closing a UML window with objects'
+            TabOrder = 16
+          end
         end
         object PEditor: TTabSheet
           Caption = 'Editor'
@@ -463,8 +471,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akRight, akBottom]
             Caption = 'Gutter'
             TabOrder = 0
-            ExplicitTop = 208
-            ExplicitWidth = 553
             DesignSize = (
               557
               193)
@@ -494,8 +500,8 @@ object FConfiguration: TFConfiguration
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 72
-                Height = 8
+                Width = 179
+                Height = 25
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -505,6 +511,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 72
+                ExplicitHeight = 8
               end
             end
             object cbGutterColor: TSpTBXColorEdit
@@ -605,7 +613,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop]
             Caption = 'Line spacing / Tab spacing'
             TabOrder = 1
-            ExplicitLeft = 8
             DesignSize = (
               265
               88)
@@ -650,7 +657,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop, akRight]
             Caption = 'Right Edge'
             TabOrder = 2
-            ExplicitLeft = 287
             DesignSize = (
               271
               88)
@@ -721,7 +727,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop, akRight]
             Caption = 'Active Line Color'
             TabOrder = 4
-            ExplicitLeft = 287
             DesignSize = (
               271
               43)
@@ -752,8 +757,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 91
-                Height = 15
+                Width = 188
+                Height = 28
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Consolas 10pt'
@@ -763,6 +768,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Consolas'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 91
+                ExplicitHeight = 15
               end
             end
             object btnFont: TButton
@@ -995,7 +1002,7 @@ object FConfiguration: TFConfiguration
             AlignWithMargins = True
             Left = 3
             Top = 3
-            Width = 635
+            Width = 639
             Height = 310
             Align = alTop
             Caption = 'Options'
@@ -1005,7 +1012,7 @@ object FConfiguration: TFConfiguration
             object GridPanel1: TGridPanel
               Left = 2
               Top = 17
-              Width = 631
+              Width = 635
               Height = 291
               Align = alClient
               BevelOuter = bvNone
@@ -1961,7 +1968,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akTop, akRight]
             Caption = 'Code Template:'
             TabOrder = 0
-            ExplicitWidth = 577
             DesignSize = (
               581
               240)
@@ -2173,7 +2179,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akTop, akRight]
             Caption = 'File Template:'
             TabOrder = 1
-            ExplicitWidth = 606
             DesignSize = (
               610
               240)
