@@ -4425,25 +4425,6 @@ object ResourcesDataModule: TResourcesDataModule
           '.094 7.357 29.445z"/>'#13#10'</svg>'#13#10
       end
       item
-        IconName = 'ClassEdit'
-        SVGText = 
-          '<svg width="114mm" height="110mm" viewBox="0 0 114 110" xmlns="h' +
-          'ttp://www.w3.org/2000/svg">'#10'    <rect style="fill:#37f6f1;fill-o' +
-          'pacity:1;stroke:#040905;stroke-width:4.27876;stroke-miterlimit:4' +
-          ';stroke-dasharray:none;stroke-opacity:1" width="94.805" height="' +
-          '95.283" x="11.194" y="6.841" ry="7.164"/>'#10'    <path d="M82.799 9' +
-          '0.147q-4.912 2.549-10.241 3.846-5.33 1.298-11.122 1.298-17.286 0' +
-          '-27.388-9.64-10.102-9.685-10.102-26.229 0-16.59 10.102-26.229 10' +
-          '.102-9.685 27.388-9.685 5.792 0 11.122 1.298 5.329 1.297 10.241 ' +
-          '3.846v14.32q-4.959-3.384-9.778-4.96-4.82-1.575-10.149-1.575-9.54' +
-          '6 0-15.014 6.117-5.469 6.117-5.469 16.868 0 10.705 5.469 16.822 ' +
-          '5.468 6.117 15.014 6.117 5.33 0 10.149-1.575 4.82-1.576 9.778-4.' +
-          '959z" transform="matrix(1.05737 0 0 .94575 .823 -2.603)" aria-la' +
-          'bel="C" style="font-weight:700;font-size:94.9069px;line-height:1' +
-          '.25;-inkscape-font-specification:'#39'sans-serif, Bold'#39';fill:#fff;st' +
-          'roke:#000;stroke-width:2.394;stroke-opacity:.98234"/>'#10'</svg>'#10
-      end
-      item
         IconName = 'NewComment'
         SVGText = 
           '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">'#10'   ' +
@@ -4459,7 +4440,7 @@ object ResourcesDataModule: TResourcesDataModule
           '7v-8.25h-7.182z"/>'#10'</svg>'#10
       end
       item
-        IconName = 'Aktualisieren'
+        IconName = 'NewLayout'
         SVGText = 
           '<svg width="114mm" height="110mm" viewBox="0 0 114 110" xmlns="h' +
           'ttp://www.w3.org/2000/svg">'#10'    <path style="fill:#fff;fill-opac' +
@@ -4472,28 +4453,19 @@ object ResourcesDataModule: TResourcesDataModule
           ' 20.661M83.345 35.656 65.322 66.804"/>'#10'</svg>'#10
       end
       item
-        IconName = 'NewLayout'
+        IconName = 'Update'
         SVGText = 
-          '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">'#10'   ' +
-          ' <path d="M18.503 1.4h-11.3c-1.6 0-2.9 1.3-2.8 2.9v23.4c0 1.6 1.' +
-          '2 2.9 2.8 2.9h17c1.6 0 2.9-1.3 2.8-2.9V10.1zm-11.3 26.4V4.4h9.9v' +
-          '7.3h7.1v16.1z"/>'#10'    <path style="fill:#0f0;stroke:#048c04;strok' +
-          'e-width:33.64351394;stroke-opacity:1;stroke-miterlimit:4;stroke-' +
-          'dasharray:none" transform="matrix(.08948 -.01159 -.0182 -.0571 1' +
-          '7.749 16.252)" d="m10.412 16.276-.332-1.678-.331-1.679 1.619.552' +
-          ' 1.62.552-1.289 1.127z"/>'#10'    <path style="fill:none;stroke:#048' +
-          'c04;stroke-width:1.9;stroke-linecap:butt;stroke-linejoin:miter;s' +
-          'troke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" d="M9' +
-          '.562 19.548c.779-1.387 1.558-2.776 2.862-3.484 1.303-.709 3.13-.' +
-          '737 4.957-.765"/>'#10'    <path style="fill:#0f0;stroke:#048c04;stro' +
-          'ke-width:33.64351322;stroke-opacity:1;stroke-miterlimit:4;stroke' +
-          '-dasharray:none" transform="matrix(-.08918 .01372 .01955 .05665 ' +
-          '13.917 22.224)" d="m10.412 16.276-.332-1.678-.331-1.679 1.619.55' +
-          '2 1.62.552-1.289 1.127z"/>'#10'    <path style="fill:none;stroke:#04' +
-          '8c04;stroke-width:1.9;stroke-linecap:butt;stroke-linejoin:miter;' +
-          'stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" d="M' +
-          '22.023 18.734c-.746 1.406-1.492 2.812-2.778 3.551-1.287.74-3.113' +
-          '.812-4.938.884"/>'#10'</svg>'#10
+          '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#4b4b4b" d="M1 0h10M' +
+          '1 1h1M10 1h2M1 2h1M10 2h1M12 2h1M1 3h1M10 3h4M1 4h1M13 4h1M1 5h1' +
+          'M13 5h1M1 6h1M13 6h1M1 7h1M13 7h1M1 8h1M13 8h1M1 9h1M13 9h1M1 10' +
+          'h1M13 10h1M1 11h1M13 11h1M1 12h1M13 12h1M1 13h1M13 13h1M1 14h1M1' +
+          '3 14h1M1 15h13" />'#13#10'<path stroke="#ffffff" d="M2 1h8M2 2h8M11 2h' +
+          '1M2 3h5M8 3h2M2 4h5M9 4h4M2 5h3M10 5h3M2 6h2M5 6h2M9 6h4M2 7h2M5' +
+          ' 7h2M8 7h5M2 8h2M5 8h5M11 8h2M2 9h5M8 9h2M11 9h2M2 10h4M8 10h2M1' +
+          '1 10h2M2 11h3M10 11h3M2 12h4M8 12h5M2 13h5M8 13h5M2 14h11" />'#13#10'<' +
+          'path stroke="#4ba34b" d="M7 3h1M7 4h2M5 5h5M4 6h1M7 6h2M4 7h1M7 ' +
+          '7h1M4 8h1M10 8h1M7 9h1M10 9h1M6 10h2M10 10h1M5 11h5M6 12h2M7 13h' +
+          '1" />'#13#10'</svg>'#13#10
       end
       item
         IconName = 'DiagramFromFiles'
@@ -4928,6 +4900,7 @@ object ResourcesDataModule: TResourcesDataModule
           '"M6 12v-1h1v1z" fill="#accdea"/>'#10'</svg>'#10
       end
       item
+        IconName = 'OpenFolder'
         SVGText = 
           '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#000000" d="M11 2h1M' +
           '11 3h2M8 4h6M7 5h2M11 5h2M3 6h3M7 6h2M11 6h1M2 7h1M6 7h4M2 8h4M7' +
@@ -4941,6 +4914,7 @@ object ResourcesDataModule: TResourcesDataModule
           '3 12h1M5 12h1M7 12h1M9 12h1" />'#13#10'</svg>'
       end
       item
+        IconName = 'RecognizeAssociations'
         SVGText = 
           '<svg viewBox="0 0 114 110" >'#13#10#13#10'<path stroke="#f0f0f0" stroke-wi' +
           'dth="10" d="M8 80 h101.5'#13#10'  M70 60 l39 20  M70 100 l 39 -20'#13#10'  "' +
@@ -4950,6 +4924,76 @@ object ResourcesDataModule: TResourcesDataModule
           '-dasharray:none" d="M53.009 54.872 64 13.9l10.991 40.97L64 13.90' +
           '2l10.991 40.97 42.362-2.207L81.784 75.78l15.19 39.606L64 88.7l-3' +
           '2.974 26.685 15.19-39.606-35.57-23.115z"/>'#13#10#13#10'</svg>'
+      end
+      item
+        IconName = 'Browser'
+        SVGText = 
+          '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#7fa6d6" d="M3 0h7M3' +
+          ' 1h1M3 2h1M3 3h1" />'#13#10'<path stroke="#7f9ece" d="M10 0h1" />'#13#10'<pa' +
+          'th stroke="#6f7eae" d="M11 0h1M11 1h1M11 2h1" />'#13#10'<path stroke="' +
+          '#d6d6d6" d="M12 0h1" />'#13#10'<path stroke="#ffffff" d="M4 1h7M4 2h2M' +
+          '9 3h1M9 4h1M10 5h1M2 6h1M6 6h1M1 7h1M2 12h1" />'#13#10'<path stroke="#' +
+          '6f9ec6" d="M12 1h1" />'#13#10'<path stroke="#bebebe" d="M13 1h1M14 2h1' +
+          '" />'#13#10'<path stroke="#efefef" d="M6 2h1" />'#13#10'<path stroke="#b6c6d' +
+          'f" d="M7 2h1M11 7h1M11 8h1" />'#13#10'<path stroke="#7faece" d="M8 2h2' +
+          '" />'#13#10'<path stroke="#aed6e7" d="M10 2h1" />'#13#10'<path stroke="#b6c6' +
+          'ff" d="M12 2h1M13 4h1M13 5h1M13 6h1" />'#13#10'<path stroke="#428edf" ' +
+          'd="M13 2h1" />'#13#10'<path stroke="#588eb6" d="M4 3h5M3 4h1M2 5h1M1 6' +
+          'h1M0 7h1" />'#13#10'<path stroke="#3bb6e7" d="M10 3h1M7 4h1" />'#13#10'<path' +
+          ' stroke="#606796" d="M11 3h1" />'#13#10'<path stroke="#676796" d="M12 ' +
+          '3h2M14 7h1" />'#13#10'<path stroke="#777ea6" d="M14 3h1" />'#13#10'<path str' +
+          'oke="#8e8e8e" d="M15 3h1M15 4h1M15 5h1M15 6h1M15 7h1M15 8h1M15 9' +
+          'h1M15 10h1M15 11h1M15 12h1M15 13h1M15 14h1M4 15h12" />'#13#10'<path st' +
+          'roke="#96bece" d="M2 4h1M1 5h1" />'#13#10'<path stroke="#8fe7ff" d="M4' +
+          ' 4h1" />'#13#10'<path stroke="#68efff" d="M5 4h1" />'#13#10'<path stroke="#3' +
+          'bc6ff" d="M6 4h1" />'#13#10'<path stroke="#518ebe" d="M8 4h1" />'#13#10'<pat' +
+          'h stroke="#68bee7" d="M10 4h1M7 11h2" />'#13#10'<path stroke="#dfe7ef"' +
+          ' d="M11 4h1" />'#13#10'<path stroke="#efffff" d="M12 4h1" />'#13#10'<path st' +
+          'roke="#6f779e" d="M14 4h1M14 5h1" />'#13#10'<path stroke="#c6e7ef" d="' +
+          'M3 5h1" />'#13#10'<path stroke="#34a6d6" d="M4 5h1" />'#13#10'<path stroke="' +
+          '#2586be" d="M5 5h2" />'#13#10'<path stroke="#2c8edf" d="M7 5h1M3 9h1" ' +
+          '/>'#13#10'<path stroke="#2d9ee7" d="M8 5h1" />'#13#10'<path stroke="#497ea6"' +
+          ' d="M9 5h1" />'#13#10'<path stroke="#e7efff" d="M11 5h2" />'#13#10'<path str' +
+          'oke="#77a6be" d="M3 6h1M2 7h1M1 8h1" />'#13#10'<path stroke="#1e6f96" ' +
+          'd="M4 6h1" />'#13#10'<path stroke="#9ebedf" d="M5 6h1M5 9h1M6 10h1" />' +
+          #13#10'<path stroke="#2c77be" d="M7 6h1" />'#13#10'<path stroke="#42a6ff" d' +
+          '="M8 6h1M9 7h1" />'#13#10'<path stroke="#3386d6" d="M9 6h1M7 7h1" />'#13#10 +
+          '<path stroke="#6f8eae" d="M10 6h1" />'#13#10'<path stroke="#d6e7ff" d=' +
+          '"M11 6h1M12 7h1M12 8h1" />'#13#10'<path stroke="#dfefff" d="M12 6h1" /' +
+          '>'#13#10'<path stroke="#676f96" d="M14 6h1" />'#13#10'<path stroke="#34a6ef"' +
+          ' d="M3 7h1M2 9h1" />'#13#10'<path stroke="#258ece" d="M4 7h1" />'#13#10'<pat' +
+          'h stroke="#499edf" d="M5 7h2" />'#13#10'<path stroke="#3396e7" d="M8 7' +
+          'h1M3 10h2M5 11h1" />'#13#10'<path stroke="#42779e" d="M10 7h1" />'#13#10'<pa' +
+          'th stroke="#aec6ff" d="M13 7h1M13 8h1M13 9h1" />'#13#10'<path stroke="' +
+          '#4abeff" d="M2 8h1" />'#13#10'<path stroke="#2696df" d="M3 8h1" />'#13#10'<p' +
+          'ath stroke="#1e6096" d="M4 8h6M4 9h1" />'#13#10'<path stroke="#426086"' +
+          ' d="M10 8h1" />'#13#10'<path stroke="#60608e" d="M14 8h1" />'#13#10'<path st' +
+          'roke="#9eb6c6" d="M0 9h1" />'#13#10'<path stroke="#77c6ff" d="M1 9h1M0' +
+          ' 12h1" />'#13#10'<path stroke="#c6dfff" d="M6 9h5M12 9h1M12 10h1" />'#13#10 +
+          '<path stroke="#a6bedf" d="M11 9h1" />'#13#10'<path stroke="#585886" d=' +
+          '"M14 9h1M3 14h12" />'#13#10'<path stroke="#4986ae" d="M0 10h1M0 11h1" ' +
+          '/>'#13#10'<path stroke="#3b9ed6" d="M1 10h1" />'#13#10'<path stroke="#3a77ae' +
+          '" d="M2 10h1" />'#13#10'<path stroke="#336fae" d="M5 10h1" />'#13#10'<path s' +
+          'troke="#3386c6" d="M7 10h3" />'#13#10'<path stroke="#496786" d="M10 10' +
+          'h1M8 12h1" />'#13#10'<path stroke="#aeceef" d="M11 10h1" />'#13#10'<path str' +
+          'oke="#a6c6ff" d="M13 10h1M13 11h1M13 12h1M13 13h1" />'#13#10'<path str' +
+          'oke="#50507e" d="M14 10h1M14 11h1M14 12h1M14 13h1" />'#13#10'<path str' +
+          'oke="#96a6be" d="M1 11h1" />'#13#10'<path stroke="#a6aebe" d="M2 11h1"' +
+          ' />'#13#10'<path stroke="#2c67a6" d="M3 11h1" />'#13#10'<path stroke="#3b96e' +
+          '7" d="M4 11h1" />'#13#10'<path stroke="#3ba6ef" d="M6 11h1" />'#13#10'<path ' +
+          'stroke="#2c3a58" d="M9 11h1M7 12h1" />'#13#10'<path stroke="#8eaece" d' +
+          '="M10 11h1" />'#13#10'<path stroke="#b6d6ff" d="M11 11h2" />'#13#10'<path st' +
+          'roke="#7f9ebe" d="M1 12h1" />'#13#10'<path stroke="#4986be" d="M3 12h1' +
+          '" />'#13#10'<path stroke="#335886" d="M4 12h1" />'#13#10'<path stroke="#2542' +
+          '67" d="M5 12h1" />'#13#10'<path stroke="#254260" d="M6 12h1" />'#13#10'<path' +
+          ' stroke="#96aed6" d="M9 12h1" />'#13#10'<path stroke="#beceef" d="M10 ' +
+          '12h1" />'#13#10'<path stroke="#c6ceff" d="M11 12h1M4 13h1" />'#13#10'<path s' +
+          'troke="#c6d6ff" d="M12 12h1M10 13h3" />'#13#10'<path stroke="#a6ceef" ' +
+          'd="M1 13h1" />'#13#10'<path stroke="#6faed6" d="M2 13h1" />'#13#10'<path str' +
+          'oke="#6fa6d6" d="M3 13h1" />'#13#10'<path stroke="#9eb6df" d="M5 13h1"' +
+          ' />'#13#10'<path stroke="#9eaed6" d="M6 13h1" />'#13#10'<path stroke="#aebee' +
+          '7" d="M7 13h1" />'#13#10'<path stroke="#beceff" d="M8 13h2" />'#13#10'</svg>' +
+          #13#10
       end
       item
         IconName = 'Assistant'
@@ -4975,12 +5019,6 @@ object ResourcesDataModule: TResourcesDataModule
           ' 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm' +
           '0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 ' +
           '227q0 134 93 227t227 93Zm0-320Z" />'#13#10'</svg>'
-      end
-      item
-        IconName = 'Title'
-        SVGText = 
-          '<svg viewBox="0 0 24 24">'#13#10'   <path d="M5,4V7H10.5V19H13.5V7H19V' +
-          '4H5Z" />'#13#10'</svg>'
       end>
     Left = 40
     Top = 152

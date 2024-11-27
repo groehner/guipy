@@ -370,7 +370,7 @@ object PyIDEMainForm: TPyIDEMainForm
         object tbiFindClose: TSpTBXItem
           Caption = 'Close'
           Hint = 'Close'
-          ImageIndex = 108
+          ImageIndex = 107
           ImageName = 'DiagramFromFiles'
           OnClick = tbiFindCloseClick
         end
@@ -1189,6 +1189,8 @@ object PyIDEMainForm: TPyIDEMainForm
           object mnEditClass: TSpTBXItem
             Hint = 'Edit class'
             Action = actUMLEditClass
+            ImageIndex = 113
+            ImageName = 'EditClass'
           end
           object mnNewComment: TSpTBXItem
             Hint = 'New comment'
@@ -1197,18 +1199,18 @@ object PyIDEMainForm: TPyIDEMainForm
           object mnNewLayout: TSpTBXItem
             Hint = 'New layout'
             Action = actUMLNewLayout
-            ImageIndex = 106
+            ImageIndex = 105
             ImageName = 'NewLayout'
           end
           object mnRefresh: TSpTBXItem
             Hint = 'Refresh'
             Action = actUMLRefresh
-            ImageIndex = 107
-            ImageName = 'Refresh2'
+            ImageIndex = 106
+            ImageName = 'Update'
           end
           object mnRecognizeAssociations: TSpTBXItem
             Action = actUMLRecognizeAssociations
-            ImageIndex = 116
+            ImageIndex = 115
             ImageName = 'RecognizeAssociations'
           end
           object mnDiagramFromOpenFiles: TSpTBXItem
@@ -1218,7 +1220,7 @@ object PyIDEMainForm: TPyIDEMainForm
           object mnOpenFolder: TSpTBXItem
             Hint = 'Open folder'
             Action = actUMLOpenFolder
-            ImageIndex = 115
+            ImageIndex = 114
             ImageName = 'OpenFolder'
           end
           object mnSaveAsPicture: TSpTBXItem
@@ -1376,6 +1378,8 @@ object PyIDEMainForm: TPyIDEMainForm
           object mnToolsBrowser: TSpTBXItem
             Caption = 'Browser'
             Hint = 'Opens a browser window'
+            ImageIndex = 116
+            ImageName = 'Browser'
             OnClick = mnToolsBrowserClick
           end
           object N13: TSpTBXSeparatorItem
@@ -3856,14 +3860,13 @@ object PyIDEMainForm: TPyIDEMainForm
     object actUMLEditClass: TAction
       Category = 'UML'
       Caption = 'Edit class'
-      ImageIndex = 104
       ImageName = 'ClassEdit'
       OnExecute = actUMLEditClassExecute
     end
     object actUMLNewComment: TAction
       Category = 'UML'
       Caption = 'New comment'
-      ImageIndex = 105
+      ImageIndex = 104
       ImageName = 'NewComment'
       OnExecute = actUMLNewCommentExecute
     end
@@ -3876,49 +3879,49 @@ object PyIDEMainForm: TPyIDEMainForm
     object actUMLRefresh: TAction
       Category = 'UML'
       Caption = 'Refresh'
-      ImageIndex = 106
+      ImageIndex = 105
       ImageName = 'NewLayout'
       OnExecute = actUMLRefreshExecute
     end
     object actUMLDiagramFromOpenFiles: TAction
       Category = 'UML'
       Caption = 'Diagram from open files'
-      ImageIndex = 108
+      ImageIndex = 107
       ImageName = 'DiagramFromFiles'
       OnExecute = actUMLDiagramFromOpenFilesExecute
     end
     object actUMLOpenFolder: TAction
       Category = 'UML'
       Caption = 'Open folder'
-      ImageIndex = 110
+      ImageIndex = 109
       ImageName = 'TextDiff'
       OnExecute = actUMLOpenFolderExecute
     end
     object actUMLSaveAsPicture: TAction
       Category = 'UML'
       Caption = 'Save as picture'
-      ImageIndex = 109
+      ImageIndex = 108
       ImageName = 'SaveAsPicture'
       OnExecute = actUMLSaveAsPictureExecute
     end
     object actToolsTextDiff: TAction
       Category = 'Tools'
       Caption = 'Textdiff'
-      ImageIndex = 110
+      ImageIndex = 109
       ImageName = 'TextDiff'
       OnExecute = actToolsTextDiffExecute
     end
     object actToolsConfiguration: TAction
       Category = 'Tools'
       Caption = 'Tools configuration'
-      ImageIndex = 111
+      ImageIndex = 110
       ImageName = 'Configuration'
       OnExecute = actToolsConfigurationExecute
     end
     object actToolsGit: TAction
       Category = 'Tools'
       Caption = 'Git'
-      ImageIndex = 110
+      ImageIndex = 109
       ImageName = 'TextDiff'
     end
     object actViewObjectinspector: TAction
@@ -3952,7 +3955,7 @@ object PyIDEMainForm: TPyIDEMainForm
     object actUMLRecognizeAssociations: TAction
       Category = 'UML'
       Caption = 'Recognize associations'
-      ImageIndex = 111
+      ImageIndex = 110
       ImageName = 'Configuration'
       OnExecute = actUMLRecognizeAssociationsExecute
     end
@@ -4502,66 +4505,68 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 150
-        CollectionName = 'ClassEdit'
-        Name = 'ClassEdit'
-      end
-      item
-        CollectionIndex = 151
         CollectionName = 'NewComment'
         Name = 'NewComment'
       end
       item
-        CollectionIndex = 152
-        CollectionName = 'Aktualisieren'
+        CollectionIndex = 151
+        CollectionName = 'NewLayout'
         Name = 'NewLayout'
       end
       item
-        CollectionIndex = 153
-        CollectionName = 'NewLayout'
-        Name = 'Refresh2'
+        CollectionIndex = 152
+        CollectionName = 'Update'
+        Name = 'Update'
       end
       item
-        CollectionIndex = 154
+        CollectionIndex = 153
         CollectionName = 'DiagramFromFiles'
         Name = 'DiagramFromFiles'
       end
       item
-        CollectionIndex = 155
+        CollectionIndex = 154
         CollectionName = 'SaveAsPicture'
         Name = 'SaveAsPicture'
       end
       item
-        CollectionIndex = 156
+        CollectionIndex = 155
         CollectionName = 'TextDiff'
         Name = 'TextDiff'
       end
       item
-        CollectionIndex = 157
+        CollectionIndex = 156
         CollectionName = 'Configuration'
         Name = 'Configuration'
       end
       item
-        CollectionIndex = 158
+        CollectionIndex = 157
         CollectionName = 'git'
         Name = 'git'
       end
       item
-        CollectionIndex = 159
+        CollectionIndex = 158
         CollectionName = 'svn'
         Name = 'svn'
       end
       item
-        CollectionIndex = 161
+        CollectionIndex = 160
         CollectionName = 'EditClass'
         Name = 'EditClass'
       end
       item
-        CollectionIndex = 162
+        CollectionIndex = 161
+        CollectionName = 'OpenFolder'
         Name = 'OpenFolder'
       end
       item
-        CollectionIndex = 163
+        CollectionIndex = 162
+        CollectionName = 'RecognizeAssociations'
         Name = 'RecognizeAssociations'
+      end
+      item
+        CollectionIndex = 163
+        CollectionName = 'Browser'
+        Name = 'Browser'
       end
       item
         CollectionIndex = 142
@@ -4577,11 +4582,6 @@ object PyIDEMainForm: TPyIDEMainForm
         CollectionIndex = 164
         CollectionName = 'Assistant'
         Name = 'Assistant'
-      end
-      item
-        CollectionIndex = 166
-        CollectionName = 'Title'
-        Name = 'Title'
       end>
     ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True

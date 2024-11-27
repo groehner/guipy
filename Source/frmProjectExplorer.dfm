@@ -1,15 +1,12 @@
 inherited ProjectExplorerWindow: TProjectExplorerWindow
   HelpContext = 435
   Caption = 'Project Explorer'
-  ClientHeight = 369
-  ClientWidth = 171
+  ClientHeight = 357
   OnShow = FormShow
-  ExplicitWidth = 187
-  ExplicitHeight = 408
+  ExplicitHeight = 396
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 171
-    Height = 369
+    Height = 357
     ExplicitWidth = 211
     ExplicitHeight = 441
     inherited FGPanel: TPanel
