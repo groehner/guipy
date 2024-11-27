@@ -478,7 +478,7 @@ var
 
   Mi : IModelIterator;
   DestBox: TRtfdBox;
-  s, Agg, Ass, Generic: string;
+  s, Agg, Ass: string;
   AttributeConnected: boolean;
 
 begin

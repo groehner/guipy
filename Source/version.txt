@@ -1,3 +1,7 @@
+6.01, 2024.11.27
+option to reinitialize the interpreter when closing an uml window with objects
+improvements for relationship attributes
+
 6.00, 2024.11.19
 Usage of Large Language Models with LLM assistant and LLM chat
 
