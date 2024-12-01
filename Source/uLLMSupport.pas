@@ -259,13 +259,13 @@ uses
   uCommonFunctions;
 
 resourcestring
-  sLLMBusy = 'The LLM client is busy';
-  sNoResponse = 'No response from the LLM Server';
-  sNoAPIKey = 'The LLM API key is missing';
-  sNoModel = 'The LLM model has not been set';
-  sUnsupportedEndpoint = 'The LLM endpoint is missing or not supported';
-  sUnsupportedModel = 'The LLM model is not supported';
-  sUnexpectedResponse = 'Unexpected response from the LLM Server';
+  sLLMBusy = 'The LLM client is busy.';
+  sNoResponse = 'No response from the LLM Server.';
+  sNoAPIKey = 'The LLM API key is missing.';
+  sNoModel = 'The LLM model has not been set.';
+  sUnsupportedEndpoint = 'The LLM endpoint is missing or not supported.';
+  sUnsupportedModel = 'The LLM model is not supported.';
+  sUnexpectedResponse = 'Unexpected response from the LLM Server.';
 
 function Obfuscate(const s: string): string;
 // Reversible string obfuscation using the ROT13 algorithm
@@ -743,6 +743,9 @@ begin
   if FSelText = '' then Exit;
 
   var Prompt := Format(ExplainPrompt, [FSelText]);
+  if GetCurrentLanguage = 'de' then
+    Prompt:= 'Answer in German. ' + Prompt;
+
   Ask(Prompt);
 end;
 
@@ -836,6 +839,8 @@ begin
   if FSelText = '' then Exit;
 
   var Prompt := Format(FixBugsPrompt, [FSelText]);
+  if GetCurrentLanguage = 'de' then
+    Prompt:= 'Answer in German. ' + Prompt;
   Ask(Prompt);
 end;
 
@@ -858,6 +863,8 @@ begin
   if FSelText = '' then Exit;
 
   var Prompt := Format(OptimizePrompt, [FSelText]);
+  if GetCurrentLanguage = 'de' then
+    Prompt:= 'Answer in German. ' + Prompt;
   Ask(Prompt);
 end;
 

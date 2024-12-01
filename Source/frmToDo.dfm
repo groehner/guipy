@@ -3,15 +3,21 @@ inherited ToDoWindow: TToDoWindow
   Top = 226
   HelpContext = 465
   Caption = 'To Do List'
-  ClientHeight = 293
-  ClientWidth = 492
+  ClientHeight = 269
+  ClientWidth = 476
+  ExplicitWidth = 492
+  ExplicitHeight = 308
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 492
-    Height = 293
+    Width = 476
+    Height = 269
+    ExplicitWidth = 492
+    ExplicitHeight = 293
     inherited FGPanel: TPanel
       Width = 488
       Height = 289
+      ExplicitWidth = 488
+      ExplicitHeight = 289
       object TBXDock1: TSpTBXDock
         Left = 0
         Top = 0

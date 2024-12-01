@@ -5019,6 +5019,12 @@ object ResourcesDataModule: TResourcesDataModule
           ' 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm' +
           '0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 ' +
           '227q0 134 93 227t227 93Zm0-320Z" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'Title'
+        SVGText = 
+          '<svg viewBox="0 0 24 24">'#13#10'   <path d="M5,4V7H10.5V19H13.5V7H19V' +
+          '4H5Z" />'#13#10'</svg>'
       end>
     Left = 40
     Top = 152

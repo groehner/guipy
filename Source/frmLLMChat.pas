@@ -1,12 +1,11 @@
-{ -----------------------------------------------------------------------------
+﻿{ -----------------------------------------------------------------------------
   Unit Name: frmLLMChat
-  Author:    Kiriakos Vlahos, Gerhard R�hner
+  Author:    Kiriakos Vlahos, Gerhard Röhner
   Date:      17-May-2024
   Purpose:   The Chat window serves the purpose of interacting with
              Large Language Models (LLMs) withoug leaving PyScripter.
   History:
   -----------------------------------------------------------------------------}
-
 
 unit frmLLMChat;
 
@@ -51,7 +50,7 @@ uses
   SpTBXEditors,
   SpTBXSkins,
   frmIDEDockWin,
-  uLLMSupport;
+  uLLMSupport, Vcl.BaseImageCollection, SVGIconImageCollection;
 
 type
 
@@ -75,7 +74,7 @@ type
     actChatNext: TAction;
     spiNextTopic: TSpTBXItem;
     spiPreviousTopic: TSpTBXItem;
-    SpTBXSeparatorItem2: TSpTBXSeparatorItem;
+    SpTBXSeparatorItem1: TSpTBXSeparatorItem;
     spiNewTopic: TSpTBXItem;
     spiRemoveTopic: TSpTBXItem;
     actCopyText: TAction;
@@ -89,17 +88,18 @@ type
     pmTextMenu: TSpTBXPopupMenu;
     mnCopyText: TSpTBXItem;
     actTopicTitle: TAction;
-    SpTBXSeparatorItem4: TSpTBXSeparatorItem;
+    SpTBXSeparatorItem2: TSpTBXSeparatorItem;
     spiTitle: TSpTBXItem;
     actCancelRequest: TAction;
     spiCancel: TTBItem;
     actCopyCode: TAction;
-    SpTBXItem1: TSpTBXItem;
+    mnCopyCode: TSpTBXItem;
     actCopyToNewEditor: TAction;
     SpTBXSeparatorItem5: TSpTBXSeparatorItem;
-    SpTBXItem2: TSpTBXItem;
+    mnCopyToNewEditor: TSpTBXItem;
+    icMenuAndToolbar: TSVGIconImageCollection;
     procedure actChatSaveExecute(Sender: TObject);
-    procedure AppEventsMessage(var Msg: TMsg; var Handled: Boolean);
+    procedure AppEventsMessage(var Msg: tagMsg; var Handled: Boolean);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -189,7 +189,7 @@ begin
     ResourcesDataModule.SynPythonSyn.WhitespaceAttribute.Foreground;
 end;
 
-procedure TLLMChatForm.AppEventsMessage(var Msg: TMsg; var Handled: Boolean);
+procedure TLLMChatForm.AppEventsMessage(var Msg: tagMsg; var Handled: Boolean);
 begin
   if Msg.message = WM_MOUSEWHEEL then
   begin
@@ -384,7 +384,10 @@ procedure TLLMChatForm.actAskQuestionExecute(Sender: TObject);
 begin
   if synQuestion.Text = '' then
     Exit;
-  LLMChat.Ask(Parameters.ReplaceInText(synQuestion.Text));
+  if GetCurrentLanguage = 'de' then
+    LLMChat.Ask('Answer in German. ' + Parameters.ReplaceInText(synQuestion.Text))
+  else
+    LLMChat.Ask(Parameters.ReplaceInText(synQuestion.Text));
 end;
 
 procedure TLLMChatForm.actCancelRequestExecute(Sender: TObject);

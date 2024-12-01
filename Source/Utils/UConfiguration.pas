@@ -1434,11 +1434,9 @@ uses SynUnicode, StringResources, JvGnugettext, FileCtrl, Forms, Math,
 
 const
   MaxPages = 33;
-
   machine = 0;
   allusers = 1;
   user = 2;
-
 
 {--- TEditStyleHook -----------------------------------------------------------}
 
