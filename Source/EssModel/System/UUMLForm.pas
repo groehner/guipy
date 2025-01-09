@@ -313,7 +313,7 @@ begin
     end;
   end;
   SaveAndReload;
-  if {not MainModul.Diagram.hasObjects and } MainModul.Diagram.HasAInvalidClass then
+  if MainModul.Diagram.HasAInvalidClass then
     PyIDEMainForm.RunFile(fFile);
   LockEnter:= false;
 end;
@@ -470,6 +470,7 @@ begin
     LockFormUpdate(Self);
     DoSave;
     MainModul.Diagram.FetchDiagram(Pathname);
+    MainModul.Diagram.ShowAll;
     CreateTVFileStructure;
     UnLockFormUpdate(Self);
   end;

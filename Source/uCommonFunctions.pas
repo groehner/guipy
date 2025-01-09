@@ -29,7 +29,7 @@ Uses
 const
   SFileExpr = '(([a-zA-Z]:)?[^\*\?="<>|:,;\+\^]+)'; // fwd slash (/) is allowed
   STracebackFilePosExpr =  '"\<?' + SFileExpr + '\>?", line (\d+)(, in ([\<\>\?\w]+))?';
-  SWarningFilePosExpr = '\<?' +SFileExpr + '\>?:(\d+):';
+  SWarningFilePosExpr = '\<?' + SFileExpr + '\>?:(\d+):';
   WideLF = WideChar(#10);
   WideNull = WideChar(#0);
   AnsiLineFeed       = AnsiChar(#10);

@@ -1695,7 +1695,8 @@ var
   OldValue: string;
 begin
   OldValue := FValue;
-  FValue := Value;
+  // 2D arrays rows from numpy are separated by #$A
+  FValue:= myStringReplace(Value, #$A, ', ');
   try
     Fire(mtBeforeEntityChange)
   except
