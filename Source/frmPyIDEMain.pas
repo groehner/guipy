@@ -3445,7 +3445,6 @@ end;
 
 procedure TPyIDEMainForm.ApplicationOnIdle(Sender: TObject; var Done: Boolean);
 var
-  Py: IPyEngineAndGIL;
   i : integer;
 begin
   UpdateStandardActions;
@@ -3466,7 +3465,7 @@ begin
       if Connected and (EngineType in [peRemoteTk, peRemoteWx]) then
       try
         // Ignore exceptions here
-        Py := SafePyEngine;
+        var Py := SafePyEngine;
         ServeConnection;
       except
       end;
