@@ -18,7 +18,7 @@
   Portions created by Danail Traichev are Copyright Γ‚Β© 2003-2004 Danail Traichev.
   All Rights Reserved.
 
-  Contributor(s): .
+  Contributor(s): Gerhard Röhner
 
   Alternatively, the contents of this file may be used under the terms of the
   GNU General Public License Version 2 or later (the "GPL"), in which case
@@ -30,14 +30,13 @@
   If you do not delete the provisions above, a recipient may use your version
   of this file under either the MPL or the GPL.
 
- }
+}
 unit uParams;
+
 interface
 
 Uses
-  System.UITypes,
   System.Classes;
-
 
 (* parameters, valid for current Windows configuration *)
 procedure RegisterStandardParametersAndModifiers;
@@ -47,7 +46,7 @@ procedure RegisterCustomParams;
 procedure UnRegisterCustomParams;
 
 Var
-  CustomParams : TStrings;
+  CustomParams: TStrings;
 
 implementation
 
@@ -69,7 +68,6 @@ uses
   uEditAppIntfs,
   uCommonFunctions,
   cPyScripterSettings,
-  cPySupportTypes,
   cParameters,
   cPyBaseDebugger,
   cProjectClasses,
@@ -79,30 +77,31 @@ uses
 
 function GetActiveDoc: string;
 Var
-  Editor : IEditor;
+  Editor: IEditor;
 begin
-  Result:= '';
+  Result := '';
   Editor := GI_PyIDEServices.ActiveEditor;
   if Assigned(Editor) then
-    Result:= Editor.FileId;
+    Result := Editor.FileId;
 end;
 
 function GetActiveScript: string;
 begin
-  Result:= PyControl.RunConfig.ScriptName;
+  Result := PyControl.RunConfig.ScriptName;
 end;
 
 function GetProjectFile: string;
 begin
-  Result:= ActiveProject.FileName;
+  Result := ActiveProject.FileName;
 end;
 
 function GetModFiles: string;
 var
   i: integer;
 begin
-  Result:= '';
-  if Assigned(GI_EditorFactory) then begin
+  Result := '';
+  if Assigned(GI_EditorFactory) then
+  begin
     with GI_EditorFactory do
       for i := 0 to GetEditorCount - 1 do
         with Editor[i] do
@@ -116,8 +115,9 @@ function GetOpenFiles: string;
 var
   i: integer;
 begin
-  Result:= '';
-  if Assigned(GI_EditorFactory) then begin
+  Result := '';
+  if Assigned(GI_EditorFactory) then
+  begin
     with GI_EditorFactory do
       for i := 0 to GetEditorCount - 1 do
         with Editor[i] do
@@ -131,103 +131,106 @@ function GetCurWord(const AFileName: string): string;
 var
   AEditor: IEditor;
 begin
-  Result:= '';
+  Result := '';
   if (AFileName = '') or SameText('ActiveDoc', AFileName) then
-    AEditor:= GI_ActiveEditor
-  else AEditor := GI_EditorFactory.GetEditorByName(AFileName);
+    AEditor := GI_ActiveEditor
+  else
+    AEditor := GI_EditorFactory.GetEditorByName(AFileName);
   if Assigned(AEditor) then
-    Result:= AEditor.GetSynEdit.WordAtCursor;
+    Result := AEditor.GetSynEdit.WordAtCursor;
 end;
 
 function GetCurLine(const AFileName: string): string;
 var
   AEditor: IEditor;
 begin
-  Result:= '';
+  Result := '';
   if (AFileName = '') or SameText('ActiveDoc', AFileName) then
-    AEditor:= GI_ActiveEditor
-  else AEditor:= GI_EditorFactory.GetEditorByFileId(AFileName);
+    AEditor := GI_ActiveEditor
+  else
+    AEditor := GI_EditorFactory.GetEditorByFileId(AFileName);
   if Assigned(AEditor) then
-    Result:= AEditor.GetSynEdit.LineText;
+    Result := AEditor.GetSynEdit.LineText;
 end;
 
 function GetCurLineNumber(const AFileName: string): string;
 var
   AEditor: IEditor;
 begin
-  Result:= '0';
+  Result := '0';
   if (AFileName = '') or SameText('ActiveDoc', AFileName) then
-    AEditor:= GI_ActiveEditor
-  else AEditor:= GI_EditorFactory.GetEditorByFileId(AFileName);
+    AEditor := GI_ActiveEditor
+  else
+    AEditor := GI_EditorFactory.GetEditorByFileId(AFileName);
   if Assigned(AEditor) then
-    Result:= AEditor.GetSynEdit.CaretY.ToString;
+    Result := AEditor.GetSynEdit.CaretY.ToString;
 end;
 
 function GetSelText(const AFileName: string): string;
 var
   AEditor: IEditor;
 begin
-  Result:= '';
+  Result := '';
   if (AFileName = '') or SameText('ActiveDoc', AFileName) then
-    AEditor:= GI_PyIDEServices.ActiveEditor
+    AEditor := GI_PyIDEServices.ActiveEditor
   else
-    AEditor:= GI_EditorFactory.GetEditorByName(AFileName);
+    AEditor := GI_EditorFactory.GetEditorByName(AFileName);
   if Assigned(AEditor) then
-    Result:= AEditor.GetSynEdit.SelText;
+    Result := AEditor.GetSynEdit.SelText;
 end;
 
 function SelectFile(const ATitle: string): string;
 var
   SaveTitle: string;
 begin
-  with ResourcesDataModule.dlgFileOpen do begin
+  with ResourcesDataModule.dlgFileOpen do
+  begin
     Filter := _(SFilterAllFiles);
     FileName := '';
-    SaveTitle:= Title;
+    SaveTitle := Title;
     if ATitle <> '' then
-      Title:= ATitle
+      Title := ATitle
     else
       Title := 'Select File';
-    if Execute then begin
-      Result:= FileName;
+    if Execute then
+    begin
+      Result := FileName;
       Parameters.ChangeParameter('SelectedFile', FileName);
     end;
-    Title:= SaveTitle;
+    Title := SaveTitle;
   end;
 end;
 
 function SelectDir(const ATitle: string): string;
 var
-  Directory : string;
+  Directories: TArray<string>;
 begin
-  if SelectDirectory(ATitle, '', Directory, [sdNewFolder, sdNewUI]) then
+  if SelectDirectory('', Directories, [], ATitle) then
   begin
-    Result := Directory;
+    Result := Directories[0];
     Parameters.ChangeParameter('SelectedDir', Result);
-  end
-  else
-    Abort;
+  end;
 end;
 
 function StrDefQuote(const AText: string): string;
 begin
-  Result:= AText.QuotedString('"');
+  Result := AText.QuotedString('"');
 end;
 
 function GetDateTime: string;
 begin
-  Result:= DateTimeToStr(Now);
+  Result := DateTimeToStr(Now);
 end;
 
 function GetDate(const AText: string): string;
 Var
-  V : Variant;
+  V: Variant;
 begin
   try
     V := AText;
     VarCast(V, V, varDate);
-//    Result:= DateToStr(StrToDateTime(AText));
-    Result:= DateToStr(V);
+    // Result:= DateToStr(StrToDateTime(AText));
+    Result := DateToStr(V);
   except
     Result := '';
   end;
@@ -235,35 +238,37 @@ end;
 
 function GetTime(const AText: string): string;
 Var
-  V : Variant;
+  V: Variant;
 begin
   try
     V := AText;
     VarCast(V, V, varDate);
-//    Result:= TimeToStr(StrToDateTime(AText));
-    Result:= TimeToStr(V);
+    // Result:= TimeToStr(StrToDateTime(AText));
+    Result := TimeToStr(V);
   except
     Result := '';
   end;
 end;
 
 function GetFileDate(const AFileName: string): string;
-  Var
-    DateTime : TDateTime;
+Var
+  DateTime: TDateTime;
 begin
-  Result:= '';
-  if FileExists(AFileName) then begin
+  Result := '';
+  if FileExists(AFileName) then
+  begin
     FileAge(AFileName, DateTime);
-    Result:= DateTimeToStr(DateTime);
+    Result := DateTimeToStr(DateTime);
   end;
 end;
 
 function GetFileDateCreate(const AFileName: string): string;
 Var
-  NameSpace : TNameSpace;
+  NameSpace: TNameSpace;
 begin
-  Result:= '';
-  if FileExists(AFileName) then begin
+  Result := '';
+  if FileExists(AFileName) then
+  begin
     NameSpace := TNameSpace.CreateFromFileName(AFileName);
     try
       Result := NameSpace.CreationTime;
@@ -275,10 +280,11 @@ end;
 
 function GetFileDateWrite(const AFileName: string): string;
 Var
-  NameSpace : TNameSpace;
+  NameSpace: TNameSpace;
 begin
-  Result:= '';
-  if FileExists(AFileName) then begin
+  Result := '';
+  if FileExists(AFileName) then
+  begin
     NameSpace := TNameSpace.CreateFromFileName(AFileName);
     try
       Result := NameSpace.LastWriteTime;
@@ -290,10 +296,11 @@ end;
 
 function GetFileDateAccess(const AFileName: string): string;
 Var
-  NameSpace : TNameSpace;
+  NameSpace: TNameSpace;
 begin
-  Result:= '';
-  if FileExists(AFileName) then begin
+  Result := '';
+  if FileExists(AFileName) then
+  begin
     NameSpace := TNameSpace.CreateFromFileName(AFileName);
     try
       Result := NameSpace.LastAccessTime;
@@ -305,10 +312,11 @@ end;
 
 function GetFileType(const AFileName: string): string;
 Var
-  NameSpace : TNameSpace;
+  NameSpace: TNameSpace;
 begin
-  Result:= '';
-  if FileExists(AFileName) then begin
+  Result := '';
+  if FileExists(AFileName) then
+  begin
     NameSpace := TNameSpace.CreateFromFileName(AFileName);
     try
       Result := NameSpace.FileType;
@@ -322,18 +330,19 @@ function GetDateFormated(const AText: string): string;
 // Delphi's string to date conversion fails when the date contains month names
 // so use variant conversion instead
 var
-  V : Variant;
+  V: Variant;
 begin
   with TRegEx.Match(AText, '([^'']+)-''([^'']+)''') do
     if Success then
       try
         V := GroupValue(1);
         VarCast(V, V, varDate);
-        Exit(FormatDateTime(GroupValue(2),  V));
+        Exit(FormatDateTime(GroupValue(2), V));
       except
         Exit('');
       end
-    else begin
+    else
+    begin
       StyledMessageDlg(Format(_(SInvalidParameterFormat),
         [Concat(AText, '-', 'DateFormat')]), mtError, [mbOK], 0);
       Abort;
@@ -342,7 +351,7 @@ end;
 
 function GetExe: string;
 begin
-  Result:= ParamStr(0);
+  Result := ParamStr(0);
 end;
 
 function GetParam(const AIndex: string): string;
@@ -351,7 +360,8 @@ var
   ix: integer;
 begin
   Result := '';
-  if TryStrToInt(AIndex, ix) then begin
+  if TryStrToInt(AIndex, ix) then
+  begin
     if ix <= ParamCount then
       Result := ParamStr(ix);
   end;
@@ -360,13 +370,13 @@ end;
 function GetClipboard: string;
 (* returns clipboard as text *)
 begin
-  Result:= Clipboard.AsText;
+  Result := Clipboard.AsText;
 end;
 
 function GetFileExt(const AFileName: string): string;
 (* returns extension without . *)
 begin
-  Result:= ExtractFileExt(AFileName);
+  Result := ExtractFileExt(AFileName);
   if Result <> '' then
     Delete(Result, 1, 1);
 end;
@@ -376,64 +386,67 @@ function GetReg(const ARegKey: string): string;
 var
   Info: TRegDataInfo;
   AName: string;
-  i: Integer;
+  i: integer;
   Buff: Pointer;
-  S : string;
+  S: string;
 begin
-  with TRegistry.Create(KEY_READ and not KEY_NOTIFY) do try
-    Result:= '';
-    if ARegKey = '' then Exit;
-    i:= Pos('\', ARegKey);
-    (* read root key *)
-    if i > 1 then begin
-      AName:= Copy(ARegKey, 1, i-1);
-      if (AName = 'HKCU') or (AName = 'HKEY_CURRENT_USER') then
-        RootKey:= HKEY_CURRENT_USER
-      else if (AName = 'HKLM') or (AName = 'HKEY_LOCAL_MACHINE') then
-        RootKey:= HKEY_LOCAL_MACHINE
-      else if (AName = 'HKCR') or (AName = 'HKEY_CLASSES_ROOT') then
-        RootKey:= HKEY_CLASSES_ROOT
-      else if (AName = 'HKU') or (AName = 'HKEY_USERS') then
-        RootKey:= HKEY_USERS
-      else if (AName = 'HKPD') or (AName = 'HKEY_PERFORMANCE_DATA') then
-        RootKey:= HKEY_PERFORMANCE_DATA
-      else if (AName = 'HKCC') or (AName = 'HKEY_CURRENT_CONFIG') then
-        RootKey:= HKEY_CURRENT_CONFIG
-      else if (AName = 'HKDD') or (AName = 'HKEY_DYN_DATA') then
-        RootKey:= HKEY_DYN_DATA;
-      AName:= Copy(ARegKey, i, MaxInt);
-    end
-    else AName:= ARegKey;
-    (* if key exists, read key data *)
-    if OpenKeyReadOnly(ExtractFilePath(AName)) then begin
-      AName:= TPath.GetFileName(ARegKey);
-      if not GetDataInfo(AName, Info) then
-        Info.RegData:= rdUnknown;
-      (* convert value to string *)
-      case Info.RegData of
-      rdString,
-      rdExpandString:
-        Result:= ReadString(AName);
-      rdInteger:
-        Result:= IntToStr(ReadInteger(AName));
-      rdUnknown,
-      rdBinary:
-        begin
-          GetMem(Buff, Info.DataSize);
-          try
-            ReadBinaryData(AName, Buff^, Info.DataSize);
-            SetLength(S, 2 * Info.DataSize);
-            BinToHex(Buff, PChar(S), Info.DataSize);
-            Result := S;
-          finally
-            FreeMem(Buff);
-          end;
+  with TRegistry.Create(KEY_READ and not KEY_NOTIFY) do
+    try
+      Result := '';
+      if ARegKey = '' then
+        Exit;
+      i := Pos('\', ARegKey);
+      (* read root key *)
+      if i > 1 then
+      begin
+        AName := Copy(ARegKey, 1, i - 1);
+        if (AName = 'HKCU') or (AName = 'HKEY_CURRENT_USER') then
+          RootKey := HKEY_CURRENT_USER
+        else if (AName = 'HKLM') or (AName = 'HKEY_LOCAL_MACHINE') then
+          RootKey := HKEY_LOCAL_MACHINE
+        else if (AName = 'HKCR') or (AName = 'HKEY_CLASSES_ROOT') then
+          RootKey := HKEY_CLASSES_ROOT
+        else if (AName = 'HKU') or (AName = 'HKEY_USERS') then
+          RootKey := HKEY_USERS
+        else if (AName = 'HKPD') or (AName = 'HKEY_PERFORMANCE_DATA') then
+          RootKey := HKEY_PERFORMANCE_DATA
+        else if (AName = 'HKCC') or (AName = 'HKEY_CURRENT_CONFIG') then
+          RootKey := HKEY_CURRENT_CONFIG
+        else if (AName = 'HKDD') or (AName = 'HKEY_DYN_DATA') then
+          RootKey := HKEY_DYN_DATA;
+        AName := Copy(ARegKey, i, MaxInt);
+      end
+      else
+        AName := ARegKey;
+      (* if key exists, read key data *)
+      if OpenKeyReadOnly(ExtractFilePath(AName)) then
+      begin
+        AName := TPath.GetFileName(ARegKey);
+        if not GetDataInfo(AName, Info) then
+          Info.RegData := rdUnknown;
+        (* convert value to string *)
+        case Info.RegData of
+          rdString, rdExpandString:
+            Result := ReadString(AName);
+          rdInteger:
+            Result := IntToStr(ReadInteger(AName));
+          rdUnknown, rdBinary:
+            begin
+              GetMem(Buff, Info.DataSize);
+              try
+                ReadBinaryData(AName, Buff^, Info.DataSize);
+                SetLength(S, 2 * Info.DataSize);
+                BinToHex(Buff, PChar(S), Info.DataSize);
+                Result := S;
+              finally
+                FreeMem(Buff);
+              end;
+            end;
         end;
       end;
+    finally
+      Free;
     end;
-  finally
-    Free;
-  end;
 end;
 
 function GetFileText(const AFileName: string): string;
@@ -441,33 +454,37 @@ function GetFileText(const AFileName: string): string;
 var
   AEditor: IEditor;
 begin
-  Result:= '';
+  Result := '';
   // look in open files
-  AEditor:= GI_EditorFactory.GetEditorByFileId(AFileName);
+  AEditor := GI_EditorFactory.GetEditorByFileId(AFileName);
   if Assigned(AEditor) then
-    Result:= AEditor.GetSynEdit.Text
-  else begin
+    Result := AEditor.GetSynEdit.Text
+  else
+  begin
     if FileExists(AFileName) then
-      Result:= FileToStr(AFileName);
+      Result := FileToStr(AFileName);
   end;
 end;
 
 function GetShortFileName(const APath: string): string;
 (* returns short file name even for nonexisting files *)
 begin
-  if APath = '' then Result:= ''
-  else begin
-    Result:= ExtractShortPathName(APath);
+  if APath = '' then
+    Result := ''
+  else
+  begin
+    Result := ExtractShortPathName(APath);
     // if different - function is working
-    if (Result = '') or
-       (Result = APath) and not FileExists(ExcludeTrailingPathDelimiter(APath)) then
+    if (Result = '') or (Result = APath) and
+      not FileExists(ExcludeTrailingPathDelimiter(APath)) then
     begin
-      Result:= ExtractFilePath(APath);
+      Result := ExtractFilePath(APath);
       // we are up to top level
       if (Result = '') or (Result[Length(Result)] = ':') then
-        Result:= APath
-      else Result:= GetShortFileName(ExcludeTrailingPathDelimiter(Result)) +
-                           PathDelim + TPath.GetFileName(APath);
+        Result := APath
+      else
+        Result := GetShortFileName(ExcludeTrailingPathDelimiter(Result)) +
+          PathDelim + TPath.GetFileName(APath);
     end;
   end;
 end;
@@ -482,27 +499,20 @@ end;
 function GetActivePythonExe: string;
 begin
   if GI_PyControl.PythonLoaded then
-  begin
-    if (PyIDEOptions.PythonEngineType = peRemote) and
-      PyIDEOptions.PreferFreeThreaded and
-      (PyControl.PythonVersion.PythonFreeThreadedExecutable <> '') then
-      Result := PyControl.PythonVersion.PythonFreeThreadedExecutable
-    else
-      Result := PyControl.PythonVersion.PythonExecutable;
-  end
+    Result := PyControl.PythonVersion.PythonExecutable
   else
     Result := 'python.exe';
 end;
 
-function GetActivePythonwExe : string;
+function GetActivePythonwExe: string;
 begin
-  Result :=  GetActivePythonExe;
-  Insert('w', Result, 6);
+  Result := GetActivePythonExe;
+  Result := Copy(Result, 1, Length(Result) - 4) + 'w.exe';
 end;
 
-function GetPythonDir (VersionString : string) : string;
+function GetPythonDir(VersionString: string): string;
 var
-  PythonVersion : TPythonVersion;
+  PythonVersion: TPythonVersion;
 begin
   for PythonVersion in PyControl.RegPythonVersions do
     if PythonVersion.SysVersion = VersionString then
@@ -531,8 +541,8 @@ function GetEnvironmentVariable(const Name: string): string;
 const
   BufSize = 1024;
 var
-  Len: Integer;
-  Buffer: array[0..BufSize - 1] of Char;
+  Len: integer;
+  Buffer: array [0 .. BufSize - 1] of Char;
 begin
   Result := '';
   Len := WinApi.Windows.GetEnvironmentVariable(PChar(Name), @Buffer, BufSize);
@@ -565,28 +575,28 @@ end;
 
 function GetAuthor: string;
 begin
-  Result:= GuiPyOptions.Author;
+  Result := GuiPyOptions.Author;
 end;
 
 function GetLicence: string;
 begin
-  Result:= GuiPyOptions.Licence;
+  Result := GuiPyOptions.Licence;
 end;
 
 function GetGeometry: string;
 begin
-  Result:= IntToStr(GuiPyOptions.FrameWidth) + ',' +
-           IntToStr(GuiPyOptions.FrameHeight);
+  Result := IntToStr(GuiPyOptions.FrameWidth) + ',' +
+    IntToStr(GuiPyOptions.FrameHeight);
 end;
 
 function GetTkGeometry(const Geometry: string): string;
 begin
-  Result:= '''' + StringReplace(Geometry, ',', 'x', [rfReplaceAll]) + '''';
+  Result := '''' + StringReplace(Geometry, ',', 'x', [rfReplaceAll]) + '''';
 end;
 
 function GetQtGeometry(const Geometry: string): string;
 begin
-  Result:= '''' + StringReplace(Geometry, ',', 'x', [rfReplaceAll]) + '''';
+  Result := '''' + StringReplace(Geometry, ',', 'x', [rfReplaceAll]) + '''';
 end;
 
 function ExpandUNCFileName(const FileName: string): string;
@@ -600,44 +610,47 @@ begin
   Result := ChangeFileExt(ExtractFilename(AFileName), '');
 end;
 
-function GetPhysicalDesktopFolder : string;
+function GetPhysicalDesktopFolder: string;
 begin
   Result := PhysicalDesktopFolder.NameForParsing;
 end;
 
-function GetProgramFilesFolder : string;
+function GetProgramFilesFolder: string;
 begin
-  Result := GetReg('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\ProgramFilesDir');
+  Result := GetReg
+    ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\ProgramFilesDir');
 end;
 
-function GetPersonalFolder : string;
+function GetPersonalFolder: string;
 begin
   Result := MyDocumentsFolder.NameForParsing;
 end;
 
-function GetCommonFilesFolder : string;
+function GetCommonFilesFolder: string;
 begin
-  Result := GetReg('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CommonFilesDir');
+  Result := GetReg
+    ('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CommonFilesDir');
 end;
 
-function WindowsDirectory : string;
+function WindowsDirectory: string;
 begin
   Result := GetWindowsFolder;
 end;
 
-function SystemDirectory : string;
+function SystemDirectory: string;
 begin
   Result := GetWindowsSystemFolder;
 end;
 
-function GetTempDir : string;
+function GetTempDir: string;
 begin
   Result := GetWindowsTempFolder;
 end;
 
 procedure RegisterStandardParametersAndModifiers;
 begin
-  with Parameters do begin
+  with Parameters do
+  begin
     Sorted := False;
 
     (* parameters, valid for current Windows configuration *)
@@ -648,27 +661,35 @@ begin
     RegisterParameter('Python311Dir', GetPythonDir('3.11'), nil);
     RegisterParameter('Python312Dir', GetPythonDir('3.12'), nil);
     RegisterParameter('Python313Dir', GetPythonDir('3.13'), nil);
-    RegisterParameter('Python314Dir', GetPythonDir('3.14'), nil);
     RegisterParameter('Python38Exe', '$[PYTHON38DIR]python.exe', nil);
     RegisterParameter('Python39Exe', '$[PYTHON39DIR]python.exe', nil);
     RegisterParameter('Python310Exe', '$[PYTHON310DIR]python.exe', nil);
     RegisterParameter('Python311Exe', '$[PYTHON311DIR]python.exe', nil);
     RegisterParameter('Python312Exe', '$[PYTHON312DIR]python.exe', nil);
     RegisterParameter('Python313Exe', '$[PYTHON313DIR]python.exe', nil);
-    RegisterParameter('Python314Exe', '$[PYTHON314DIR]python.exe', nil);
-    RegisterParameter('PythonDir', _('Directory of active Python version'), GetActivePythonDir);
-    RegisterParameter('PythonExe', _('Executable of active Python'), GetActivePythonExe);
-    RegisterParameter('PythonwExe', _('Executable of active Python'), GetActivePythonwExe);
-    RegisterParameter('PythonVersion', _('Version of active Python'), GetPythonVersion);
+    RegisterParameter('PythonDir', _('Directory of active Python version'),
+      GetActivePythonDir);
+    RegisterParameter('PythonExe', _('Executable of active Python'),
+      GetActivePythonExe);
+    RegisterParameter('PythonwExe', _('Executable of active Python'),
+      GetActivePythonwExe);
+    RegisterParameter('PythonVersion', _('Version of active Python'),
+      GetPythonVersion);
 
     // register system paths and parameters
-    RegisterParameter('ProgramFiles', _('Program Files directory'), GetProgramFilesFolder);
-    RegisterParameter('CommonFiles', _('Common Files directory'), GetCommonFilesFolder);
-    RegisterParameter('Windows', _('Windows installation directory'), WindowsDirectory);
-    RegisterParameter('WindowsSystem', _('Windows System directory'), SystemDirectory);
+    RegisterParameter('ProgramFiles', _('Program Files directory'),
+      GetProgramFilesFolder);
+    RegisterParameter('CommonFiles', _('Common Files directory'),
+      GetCommonFilesFolder);
+    RegisterParameter('Windows', _('Windows installation directory'),
+      WindowsDirectory);
+    RegisterParameter('WindowsSystem', _('Windows System directory'),
+      SystemDirectory);
     RegisterParameter('WindowsTemp', _('Windows Temp directory'), GetTempDir);
-    RegisterParameter('MyDocuments', _('MyDocuments directory'), GetPersonalFolder);
-    RegisterParameter('Desktop', _('Desktop directory'), GetPhysicalDesktopFolder);
+    RegisterParameter('MyDocuments', _('MyDocuments directory'),
+      GetPersonalFolder);
+    RegisterParameter('Desktop', _('Desktop directory'),
+      GetPhysicalDesktopFolder);
 
     // register parameters
     RegisterParameter('Paste', _('Clipboard as text'), GetClipboard);
@@ -678,13 +699,15 @@ begin
     RegisterParameter('Geometry', _('Geometry'), GetGeometry);
     RegisterParameter('CurrentDir', _('Current directory'), GetCurrentDir);
     RegisterParameter('Exe', _('Executable name'), GetExe);
-    RegisterParameter('CmdLineArgs', _('Python Command Line Arguments'), GetCmdLineArgs);
+    RegisterParameter('CmdLineArgs', _('Python Command Line Arguments'),
+      GetCmdLineArgs);
 
     // register parameter modifiers
     RegisterModifier('Path', _('Path of file'), ExtractFilePath);
     RegisterModifier('Dir', _('Path without delimeter'), ExtractFileDir);
     RegisterModifier('Name', _('File name'), TPath.GetFileName);
-    RegisterModifier('NameNoExt', _('File name without extension'), ExtractFileNameNoExt);
+    RegisterModifier('NameNoExt', _('File name without extension'),
+      ExtractFilenameNoExt);
     RegisterModifier('Ext', _('File extension'), ExtractFileExt);
     RegisterModifier('ExtOnly', _('File extension without "."'), GetFileExt);
     RegisterModifier('NoExt', _('File name without extension'), StripExtension);
@@ -692,21 +715,26 @@ begin
     RegisterModifier('Full', _('Expanded file name'), ExpandFileName);
     RegisterModifier('Long', _('Long file name'), GetLongFileName);
     RegisterModifier('Short', _('Short file name'), GetShortFileName);
-    RegisterModifier('Sep', _('Path with final path delimiter added'), IncludeTrailingPathDelimiter);
-    RegisterModifier('NoSep', _('Path with final path delimiter removed'), ExcludeTrailingPathDelimiter);
+    RegisterModifier('Sep', _('Path with final path delimiter added'),
+      IncludeTrailingPathDelimiter);
+    RegisterModifier('NoSep', _('Path with final path delimiter removed'),
+      ExcludeTrailingPathDelimiter);
     RegisterModifier('Type', _('File type'), GetFileType);
     RegisterModifier('Text', _('Contents of text file'), FileToStr);
     RegisterModifier('Param', _('Command line parameter'), GetParam);
     RegisterModifier('Reg', _('Value of registry key'), GetReg);
-    RegisterModifier('Env', _('Value of environment variable'), GetEnvironmentVariable);
-    RegisterModifier('UpperCase', _('Upper case of string'), System.SysUtils.AnsiUpperCase);
-    RegisterModifier('LowerCase', _('Lower case of string'), System.SysUtils.AnsiLowerCase);
+    RegisterModifier('Env', _('Value of environment variable'),
+      GetEnvironmentVariable);
+    RegisterModifier('UpperCase', _('Upper case of string'),
+      System.SysUtils.AnsiUpperCase);
+    RegisterModifier('LowerCase', _('Lower case of string'),
+      System.SysUtils.AnsiLowerCase);
     RegisterModifier('Quote', _('Quoted string'), StrDefQuote);
     RegisterModifier('UnQuote', _('Unquoted string'), StrUnquote);
-    RegisterModifier('Tk', 'Tk', getTkGeometry);
-    RegisterModifier('Qt', 'Qt', getQtGeometry);
+    RegisterModifier('Tk', 'Tk', GetTkGeometry);
+    RegisterModifier('Qt', 'Qt', GetQtGeometry);
 
-   (* parameters, specific for PyScripter *)
+    (* parameters, specific for PyScripter *)
     RegisterParameter('SelectFile', '$[-SelectFile]', nil);
     RegisterParameter('SelectedFile', '', nil);
     RegisterParameter('SelectDir', '$[-SelectDir]', nil);
@@ -717,15 +745,19 @@ begin
     RegisterModifier('Date', _('Date of a date-time value'), GetDate);
     RegisterModifier('Time', _('Time of a date-time value'), GetTime);
     RegisterModifier('FileDate', _('Date of a file'), GetFileDate);
-    RegisterModifier('DateCreate', _('Creation date of a file'), GetFileDateCreate);
-    RegisterModifier('DateWrite',  _('Last modification date of a file'), GetFileDateWrite);
-    RegisterModifier('DateAccess', _('Last access date of a file'), GetFileDateAccess);
+    RegisterModifier('DateCreate', _('Creation date of a file'),
+      GetFileDateCreate);
+    RegisterModifier('DateWrite', _('Last modification date of a file'),
+      GetFileDateWrite);
+    RegisterModifier('DateAccess', _('Last access date of a file'),
+      GetFileDateAccess);
     RegisterModifier('DateFormat', _('Formatted date'), GetDateFormated);
 
     (* parameters, that change often in one PyScripter session *)
     (* editor related *)
     RegisterParameter('ActiveDoc', _('Active document name'), GetActiveDoc);
-    RegisterParameter('ActiveScript', _('The name or last run script'), GetActiveScript);
+    RegisterParameter('ActiveScript', _('The name or last run script'),
+      GetActiveScript);
     RegisterParameter('Project', _('Project file name'), GetProjectFile);
     RegisterParameter('ModFiles', _('Modified files'), GetModFiles);
     RegisterParameter('OpenFiles', _('Open files'), GetOpenFiles);
@@ -733,11 +765,16 @@ begin
     RegisterParameter('CurLine', '$[-CurLine]', nil);
     RegisterParameter('CurLineNumber', '$[-CurLineNumber]', nil);
     RegisterParameter('SelText', '$[-SelText]', nil);
-    RegisterModifier('EdText', _('Text of the active document or a file'), GetFileText);
-    RegisterModifier('CurWord', _('Current word in the active document'), GetCurWord);
-    RegisterModifier('CurLine', _('Current line in the active document'), GetCurLine);
-    RegisterModifier('CurLineNumber', _('Current line number in the active document'), GetCurLineNumber);
-    RegisterModifier('SelText', _('Selected text in the active document'), GetSelText);
+    RegisterModifier('EdText', _('Text of the active document or a file'),
+      GetFileText);
+    RegisterModifier('CurWord', _('Current word in the active document'),
+      GetCurWord);
+    RegisterModifier('CurLine', _('Current line in the active document'),
+      GetCurLine);
+    RegisterModifier('CurLineNumber',
+      _('Current line number in the active document'), GetCurLineNumber);
+    RegisterModifier('SelText', _('Selected text in the active document'),
+      GetSelText);
 
     Sorted := True;
   end;
@@ -746,7 +783,8 @@ end;
 procedure UnRegisterStandardParametersAndModifiers;
 begin
   // unregister parameter modifiers
-  with Parameters do begin
+  with Parameters do
+  begin
     (* parameters, valid for current Windows configuration *)
     // Python Paths etc.
     UnRegisterParameter('Python38Dir');
@@ -755,14 +793,12 @@ begin
     UnRegisterParameter('Python311Dir');
     UnRegisterParameter('Python312Dir');
     UnRegisterParameter('Python313Dir');
-    UnRegisterParameter('Python314Dir');
     UnRegisterParameter('Python38Exe');
     UnRegisterParameter('Python39Exe');
     UnRegisterParameter('Python310Exe');
     UnRegisterParameter('Python311Exe');
     UnRegisterParameter('Python312Exe');
     UnRegisterParameter('Python313Exe');
-    UnRegisterParameter('Python314Exe');
     UnRegisterParameter('PythonDir');
     UnRegisterParameter('PythonExe');
     UnRegisterParameter('PythonwExe');
@@ -808,7 +844,7 @@ begin
     UnRegisterModifier('Quote');
     UnRegisterModifier('UnQuote');
 
-   (* parameters, specific for PyScripter *)
+    (* parameters, specific for PyScripter *)
     UnRegisterParameter('SelectFile');
     UnRegisterParameter('SelectedFile');
     UnRegisterParameter('SelectDir');
@@ -845,14 +881,16 @@ end;
 
 procedure RegisterCustomParams;
 Var
-  i : integer;
-  ParamName : string;
+  i: integer;
+  ParamName: string;
 begin
-  with Parameters do begin
+  with Parameters do
+  begin
     Clear;
     Modifiers.Clear;
     RegisterStandardParametersAndModifiers;
-    for i := 0 to CustomParams.Count - 1 do begin
+    for i := 0 to CustomParams.Count - 1 do
+    begin
       ParamName := CustomParams.Names[i];
       if ParamName <> '' then
         RegisterParameter(ParamName, CustomParams.Values[ParamName], nil);
@@ -867,11 +905,13 @@ begin
   RegisterStandardParametersAndModifiers;
 end;
 
-
 initialization
-  CustomParams := TStringList.Create;
-  RegisterStandardParametersAndModifiers;
+
+CustomParams := TStringList.Create;
+RegisterStandardParametersAndModifiers;
 
 finalization
-  FreeAndNil(CustomParams);
+
+FreeAndNil(CustomParams);
+
 end.
