@@ -2169,3 +2169,8 @@ msgstr ""
 msgid "YAML (*.yaml)|*.yaml"
 msgstr ""
 
+msgid "Free-Threaded"
+msgstr ""
+
+msgid "Use the free-trheaded version of Python"
+msgstr ""

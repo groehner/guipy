@@ -144,6 +144,7 @@ type
     procedure AppendPrompt;
     procedure RemovePrompt;
     procedure AppendText(const S: string);
+    procedure PrintEngineType;
     procedure PrintInterpreterBanner(AVersion: string = ''; APlatform: string = '');
     procedure WritePendingMessages;
     procedure ClearPendingMessages;
@@ -374,19 +375,35 @@ begin
   end);
 end;
 
+procedure TPythonIIForm.PrintEngineType;
+var
+  Msg: string;
+begin
+  case PyIDEOptions.PythonEngineType of
+    peInternal:  Msg := Format(_(SEngineActive), [_('Internal')]);
+    peRemote: Msg := Format(_(SEngineActive), [_('Remote')]);
+    peRemoteTk: Msg := Format(_(SEngineActive), [_('Remote (Tk)')]);
+    peRemoteWx: Msg := Format(_(SEngineActive), ['Remote (Wx)']);
+    peSSH: Msg := Format(_(SEngineActive),
+      [Format('"%s" SSH', [GI_PyControl.ActiveSSHServerName])]);
+  end;
+
+  GI_PyInterpreter.AppendText(sLineBreak + Msg);
+  GI_PyInterpreter.AppendPrompt;
+end;
+
 procedure TPythonIIForm.PrintInterpreterBanner(AVersion: string = ''; APlatform: string = '');
 var
   Py: IPyEngineAndGIL;
   S: string;
 begin
   Py := SafePyEngine;
-  if AVersion = '' then AVersion := SysModule.version;
-  if APlatform = '' then APlatform := SysModule.platform;
+  if AVersion = '' then AVersion := PyControl.ActiveInterpreter.PythonVersion;
+  if APlatform = '' then APlatform := PyControl.ActiveInterpreter.PythonPlatform;
   AVersion := AVersion.Replace(Char($A), ' ');
   S := Format('*** Python %s on %s. ***' + sLineBreak, [AVersion, APlatform]);
   if SynEdit.Lines.Count > 0 then AppendText(sLineBreak);
   AppendText(S);
-  AppendText(PS1);
 end;
 
 procedure TPythonIIForm.AppendPrompt;
@@ -412,6 +429,7 @@ procedure TPythonIIForm.ClearDisplay;
 begin
   Synedit.ClearAll;
   PrintInterpreterBanner;
+  AppendPrompt;
 end;
 
 procedure TPythonIIForm.ClearLastPrompt;
@@ -937,7 +955,9 @@ begin
   RegExTraceback := CompiledRegEx(STracebackFilePosExpr);
   RegExWarning := CompiledRegEx(SWarningFilePosExpr);
   LineNo:= Synedit.CaretY - 1;
-  while LineNo > 0 do begin
+  if Synedit.Lines[LineNo].StartsWith('Traceback') then
+    inc(LineNo);
+  while LineNo >= Synedit.CaretY - 4 do begin
     Match := RegExTraceback.Match(Synedit.Lines[LineNo]);
     if not Match.Success then
       Match := RegExWarning.Match(Synedit.Lines[LineNo]);
@@ -947,9 +967,9 @@ begin
       if Assigned(PyControl.ActiveInterpreter) then
         FileName := PyControl.ActiveInterpreter.FromPythonFileName(FileName);
       GI_PyIDEServices.ShowFilePosition(FileName, ErrLineNo, 1);
-      LineNo:= 0;
-    end else
-      Dec(LineNo);
+      break;
+    end;
+    dec(LineNo);
   end;
 end;
 

@@ -3968,6 +3968,12 @@ object PyIDEMainForm: TPyIDEMainForm
       ShortCut = 49217
       OnExecute = actNavChatExecute
     end
+    object actPythonFreeThreaded: TAction
+      Category = 'Run'
+      Caption = 'Free-Threaded'
+      Hint = 'Use the free-trheaded version of Python'
+      OnExecute = actPythonFreeThreadedExecute
+    end
   end
   object LocalAppStorage: TJvAppIniFileStorage
     StorageOptions.BooleanStringTrueValues = 'TRUE, YES, Y'

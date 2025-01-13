@@ -349,6 +349,7 @@ type
     procedure AppendPrompt;
     procedure RemovePrompt;
     procedure AppendText(const S: string);
+    procedure PrintEngineType;
     procedure PrintInterpreterBanner(AVersion: string = ''; APlatform: string = '');
     procedure WritePendingMessages;
     procedure ClearPendingMessages;

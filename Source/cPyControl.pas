@@ -500,7 +500,6 @@ Var
   Cursor : IInterface;
   RemoteInterpreter : TPyRemoteInterpreter;
   Connected : Boolean;
-  Msg : string;
   SSHServer: TSSHServer;
 begin
   if not InternalPython.Loaded or ((Value = PythonEngineType) and not
@@ -572,19 +571,6 @@ begin
         end;
       end;
   end;
-
-  case PyIDEOptions.PythonEngineType of
-    peInternal :  Msg := Format(_(SEngineActive), [_('Internal')]);
-    peRemote : Msg := Format(_(SEngineActive), [_('Remote')]);
-    peRemoteTk : Msg := Format(_(SEngineActive), [_('Remote (Tk)')]);
-    peRemoteWx : Msg := Format(_(SEngineActive), ['Remote (Wx)']);
-    peSSH : Msg := Format(_(SEngineActive), [Format('"%s" SSH', [ActiveSSHServerName])]);
-  end;
-  GI_PyInterpreter.ClearLastPrompt;
-  GI_PyInterpreter.AppendText(sLineBreak + Msg);
-  if PyIDEOptions.PythonEngineType = peSSH then with ActiveInterpreter as TPySSHInterpreter do
-    GI_PyInterpreter.PrintInterpreterBanner(PythonVersion, RemotePlatform);
-  GI_PyInterpreter.AppendPrompt;
 
   DebuggerState := dsInactive;
 end;
@@ -755,9 +741,7 @@ begin
     StyledMessageDlg(Format(_(SPythonLoadError), [MinPyVersion]), mtError, [mbOK], 0);
 end;
 
-procedure TPythonControl.LoadPythonEngine(const APythonVersion : TPythonVersion);
-Var
-  II : Variant;   // wrapping sys and code modules
+procedure TPythonControl.LoadPythonEngine(const APythonVersion: TPythonVersion);
 begin
   if InternalPython.Loaded then
     GI_PyIDEServices.ClearPythonWindows;
@@ -765,30 +749,29 @@ begin
   // Destroy Active debugger and interpreter
   PyControl.ActiveDebugger := nil;
   PyControl.ActiveInterpreter := nil;
-  FreeAndNil(fInternalInterpreter);
+  FreeAndNil(FInternalInterpreter);
 
   if InternalPython.LoadPython(APythonVersion) then
   begin
-    fPythonHelpFile := APythonVersion.HelpFile;
-    GI_PyInterpreter.PrintInterpreterBanner;
+    FPythonHelpFile := APythonVersion.HelpFile;
 
+    var II := VarPythonEval('_II'); // wrapping sys and code modules
     // Create internal Interpreter and Debugger
-    II := VarPythonEval('_II');
     InternalPython.PythonEngine.ExecString('del _II');
 
-    fInternalInterpreter := TPyInternalInterpreter.Create(II);
-    fActiveInterpreter := fInternalInterpreter;
-    fActiveDebugger := TPyInternalDebugger.Create;
+    FInternalInterpreter := TPyInternalInterpreter.Create(II);
+    FActiveInterpreter := FInternalInterpreter;
+    FActiveDebugger := TPyInternalDebugger.Create;
 
     // Allow threads
     TPythonThread.Py_Begin_Allow_Threads;
 
     // Execute python_init.py
-    fInternalInterpreter.Initialize;
+    FInternalInterpreter.Initialize;
 
     // Execute pyscripter_init.py
     try
-      fInternalInterpreter.RunScript(TPyScripterSettings.PyScripterInitFile);
+      FInternalInterpreter.RunScript(TPyScripterSettings.PyScripterInitFile);
     except
       on E: Exception do
         StyledMessageDlg(Format(_(SErrorInitScript),
@@ -796,11 +779,13 @@ begin
     end;
 
     // Notify Python Version Change
-    fOnPythonVersionChange.Notify(Self);
+    FOnPythonVersionChange.Notify(Self);
 
     //  Set the current PythonEngine
     PyControl.PythonEngineType := PyIDEOptions.PythonEngineType;
 
+    GI_PyInterpreter.PrintInterpreterBanner;
+    GI_PyInterpreter.PrintEngineType;
   end else
     StyledMessageDlg(Format(_(SPythonLoadError), [MinPyVersion]), mtError, [mbOK], 0);
 end;

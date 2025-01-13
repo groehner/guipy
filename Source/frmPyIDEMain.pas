@@ -1302,6 +1302,7 @@ type
     spiAssistant: TTBControlItem;
     mnViewChat: TSpTBXItem;
     actNavChat: TAction;
+    actPythonFreeThreaded: TAction;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1466,6 +1467,7 @@ type
     procedure actUMLOpenFolderExecute(Sender: TObject);
     procedure actUMLRecognizeAssociationsExecute(Sender: TObject);
     procedure actNavChatExecute(Sender: TObject);
+    procedure actPythonFreeThreadedExecute(Sender: TObject);
   private
     DSAAppStorage: TDSAAppStorage;
     ShellExtensionFiles : TStringList;
@@ -2860,6 +2862,13 @@ begin
       Exit;
   end;
   PyControl.PythonEngineType := EngineType;
+  GI_PyInterpreter.PrintEngineType;
+end;
+
+procedure TPyIDEMainForm.actPythonFreeThreadedExecute(Sender: TObject);
+begin
+  PyIDEOptions.PreferFreeThreaded := actPythonFreeThreaded.Checked;
+  actPythonReinitializeExecute(Sender);
 end;
 
 procedure TPyIDEMainForm.actPythonReinitializeExecute(Sender: TObject);
@@ -4742,6 +4751,12 @@ begin
     peRemoteWx : actPythonRemoteWx.Checked := True;
     peSSH : actPythonSSH.Checked := True;
   end;
+
+  actPythonFreeThreaded.Enabled :=
+    (PyIDEOptions.PythonEngineType = peRemote) and
+    (PyControl.PythonVersion.PythonFreeThreadedExecutable <> '');
+  actPythonFreeThreaded.Checked :=
+    PyIDEOptions.PreferFreeThreaded;
 
   // Scroll Buttons
   TabControl1.ScrollState(L, R);
