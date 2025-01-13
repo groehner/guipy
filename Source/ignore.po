@@ -2174,3 +2174,10 @@ msgstr ""
 
 msgid "Use the free-trheaded version of Python"
 msgstr ""
+
+msgid "Create Virtual Environment"
+msgstr ""
+
+msgid "Create virtual environment using the venv module"
+msgstr ""
+

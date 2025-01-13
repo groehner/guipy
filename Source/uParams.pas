@@ -204,7 +204,9 @@ begin
   begin
     Result := Directory;
     Parameters.ChangeParameter('SelectedDir', Result);
-  end;
+  end
+  else
+    Abort;
 end;
 
 function StrDefQuote(const AText: string): string;
