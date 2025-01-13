@@ -2250,6 +2250,7 @@ begin
           begin
             if (TIDECompletion.EditorCodeCompletion.CompletionInfo.Editor = nil)
               and (Pos(AChar, CommandsDataModule.SynCodeCompletion.TriggerChars) > 0)
+              and not ResourcesDataModule.CodeTemplatesCompletion.Executing
             then
             begin
               Caret := ASynEdit.CaretXY;
