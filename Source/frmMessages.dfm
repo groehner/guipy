@@ -6,13 +6,22 @@ inherited MessagesWindow: TMessagesWindow
   Caption = 'Messages'
   ClientHeight = 218
   ClientWidth = 741
+  ExplicitWidth = 749
+  ExplicitHeight = 245
+  DesignSize = (
+    741
+    218)
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 741
     Height = 218
+    ExplicitWidth = 733
+    ExplicitHeight = 206
     inherited FGPanel: TPanel
       Width = 737
       Height = 214
+      ExplicitWidth = 729
+      ExplicitHeight = 202
       object MessagesView: TVirtualStringTree
         Left = 0
         Top = 0
@@ -74,7 +83,7 @@ inherited MessagesWindow: TMessagesWindow
     end
   end
   object Panel1: TPanel [1]
-    Left = 702
+    Left = 686
     Top = 2
     Width = 39
     Height = 17
@@ -82,6 +91,7 @@ inherited MessagesWindow: TMessagesWindow
     AutoSize = True
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitLeft = 678
     DesignSize = (
       39
       17)
@@ -123,8 +133,8 @@ inherited MessagesWindow: TMessagesWindow
     end
   end
   inherited DockClient: TJvDockClient
-    Left = 6
-    Top = 12
+    Left = 278
+    Top = 60
   end
   object TBXPopupMenu: TSpTBXPopupMenu
     Images = vilImages
