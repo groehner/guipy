@@ -35,7 +35,7 @@ inherited LLMChatForm: TLLMChatForm
           582
           85)
         object sbAsk: TSpeedButton
-          Left = 516
+          Left = 508
           Top = 1
           Width = 32
           Height = 32
@@ -43,20 +43,21 @@ inherited LLMChatForm: TLLMChatForm
           Anchors = [akTop, akRight]
           Images = vilImages
           Flat = True
+          ExplicitLeft = 516
         end
         object aiBusy: TActivityIndicator
-          Left = 518
+          Left = 510
           Top = 44
           Anchors = [akRight, akBottom]
           FrameDelay = 150
           IndicatorType = aitRotatingSector
-          ExplicitLeft = 510
+          ExplicitLeft = 502
         end
         object synQuestion: TSynEdit
           AlignWithMargins = True
           Left = 4
           Top = 4
-          Width = 506
+          Width = 498
           Height = 77
           Cursor = crDefault
           Align = alLeft
@@ -101,9 +102,26 @@ inherited LLMChatForm: TLLMChatForm
           Highlighter = SynMultiSyn
           RightEdge = 0
           ScrollBars = ssVertical
+          ScrollbarAnnotations = <
+            item
+              AnnType = sbaCarets
+              AnnPos = sbpFullWidth
+              FullRow = False
+            end
+            item
+              AnnType = sbaBookmark
+              AnnPos = sbpLeft
+              FullRow = True
+            end
+            item
+              AnnType = sbaTrackChanges
+              AnnPos = sbpRight
+              FullRow = True
+            end>
           SelectedColor.Alpha = 0.400000005960464500
+          VisibleSpecialChars = []
           WordWrap = True
-          ExplicitWidth = 498
+          ExplicitWidth = 490
         end
       end
       object ScrollBox: TScrollBox

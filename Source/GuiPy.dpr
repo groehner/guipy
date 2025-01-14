@@ -203,7 +203,8 @@ uses
   SynHighlighterPython in 'SynHighlighterPython.pas',
   frmLLMChat in 'frmLLMChat.pas' {LLMChatForm},
   uLLMSupport in 'uLLMSupport.pas',
-  frmSuggest in 'frmSuggest.pas' {SuggestWindow};
+  frmSuggest in 'frmSuggest.pas' {SuggestWindow},
+  SynMarkdownViewer in 'SynMarkdownViewer.pas';
 
 {$R *.RES}
 
