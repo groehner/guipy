@@ -1115,6 +1115,7 @@ procedure TCommandsDataModule.actImportShortcutsExecute(Sender: TObject);
 Var
   AppStorage : TJvAppIniFileStorage;
   ActionProxyCollection: TActionProxyCollection;
+  TempKeyStrokes: TSynEditKeyStrokes;
 begin
   with ResourcesDataModule.dlgFileOpen do begin
     Title := _(SImportShortcuts);
@@ -1127,7 +1128,8 @@ begin
         AppStorage.FileName := FileName;
         AppStorage.ReadOnly := True;
 
-        if AppStorage.PathExists('IDE Shortcuts') then begin
+        if AppStorage.PathExists('IDE Shortcuts') then
+        begin
           ActionProxyCollection := TActionProxyCollection.Create(apcctEmpty);
           try
             AppStorage.ReadCollection('IDE Shortcuts', ActionProxyCollection, True, 'Action');
@@ -1136,8 +1138,16 @@ begin
             ActionProxyCollection.Free;
           end;
         end;
-        if AppStorage.PathExists('Editor Shortcuts') then begin
-          AppStorage.ReadCollection('Editor Shortcuts', EditorOptions.Keystrokes, True);
+        if AppStorage.PathExists('Editor Shortcuts') then
+        begin
+          TempKeyStrokes := TSmartPtr.Make(TSynEditKeyStrokes.Create(nil))();
+          try
+            AppStorage.ReadCollection('Editor Shortcuts', TempKeystrokes, True);
+            EditorOptions.Keystrokes.Assign(TempKeyStrokes);
+          except
+           on E: ESynKeyError do
+             StyledMessageDlg(E.Message, mtError, [TMsgDlgBtn.mbOK], 0);
+          end;
           GI_EditorFactory.ApplyToEditors(procedure(Editor: IEditor)
           begin
             Editor.SynEdit.Keystrokes.Assign(EditorOptions.Keystrokes);

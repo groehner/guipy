@@ -968,7 +968,7 @@ object CommandsDataModule: TCommandsDataModule
       Category = 'Assistant'
       Caption = 'Cancel'
       Hint = 'Cancel Assistant action'
-      ImageIndex = 119
+      ImageIndex = 118
       ImageName = 'Cancel'
       OnExecute = actAssistantCancelExecute
     end
