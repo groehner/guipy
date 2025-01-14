@@ -3696,40 +3696,13 @@ begin
 end;
 
 procedure TPyIDEMainForm.actViewHideSecondaryWorkspaceExecute(Sender: TObject);
-var
-  I: Integer;
-  IV: TTBItemViewer;
-  List : TObjectList;
 begin
-  // Move all tabs to TabControl1
-  // Note that the Pages property may have a different order than the
-  // physical order of the tabs
-  TabControl1.Toolbar.BeginUpdate;
-  TabControl2.Toolbar.BeginUpdate;
-  List := TObjectList.Create(False);
-  try
-    for I := 0 to TabControl2.View.ViewerCount - 1 do begin
-      IV := TabControl2.View.Viewers[I];
-      if IV.Item is TSpTBXTabItem then
-        List.Add(IV.Item)
-    end;
-
-    for i := 0 to List.Count - 1 do
-      MoveTab(TSpTBXTabItem(List[I]), TabControl1);
-  finally
-    TabControl1.Toolbar.EndUpdate;
-    TabControl2.Toolbar.EndUpdate;
-    List.Free;
-  end;
-
   SplitWorkspace(False);
 end;
 
 procedure TPyIDEMainForm.actViewHideSecondEditorExecute(Sender: TObject);
-Var
-  Editor : IEditor;
 begin
-  Editor := GetActiveEditor;
+  var Editor := GetActiveEditor;
   if Assigned(Editor) then with TEditorForm(Editor.Form) do begin
     EditorSplitter.Visible:= False;
     SynEdit2.Visible := False;
@@ -4278,8 +4251,6 @@ begin
       ResourcesDataModule.CodeTemplatesCompletion.AutoCompleteList);
     AppStorage.StorageOptions.PreserveLeadingTrailingBlanks := False;
 
-    AppStorage.WritePersistent('Secondary Tabs', TabsPersistsInfo);
-
     AppStorage.WritePersistent('Class Editor Options', FClassEditor);
     AppStorage.WritePersistent('Object Generator Options', FObjectGenerator);
     AppStorage.WritePersistent('Object Inspector Options', FObjectInspector);
@@ -4469,10 +4440,6 @@ begin
     ResourcesDataModule.CodeTemplatesCompletion.AutoCompleteList.assign(SL);
   FreeAndNil(SL);
   AppStorage.StorageOptions.PreserveLeadingTrailingBlanks := False;
-
-  if MachineStorage.PathExists('Secondary Tabs')
-    then MachineStorage.ReadPersistent('Secondary Tabs', TabsPersistsInfo)
-    else AppStorage.ReadPersistent('Secondary Tabs', TabsPersistsInfo);
 
   AppStorage.ReadStringList('Custom Params', CustomParams);
   if MachineStorage.PathExists('Custom Params') then
@@ -5024,7 +4991,10 @@ begin
       end;
   end;
     // Now Restore the toolbars
-    LoadToolbarLayout(Layout);
+  LoadToolbarLayout(Layout);
+  // Load secondary workspace info
+  LocalAppstorage.ReadPersistent('Layouts\'+ Layout + '\Second Workspace',
+    TabsPersistsInfo);
 end;
 
 procedure TPyIDEMainForm.mnViewDebugLayoutClick(Sender: TObject);
@@ -5206,9 +5176,42 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.SplitWorkspace(SecondTabsVisible : Boolean;
-      Alignment : TAlign; Size : integer);
+procedure TPyIDEMainForm.SplitWorkspace(SecondTabsVisible: Boolean;
+      Alignment: TAlign; Size: Integer);
+
+  procedure MoveTabs;
+  var
+    IV: TTBItemViewer;
+    List: TObjectList;
+  begin
+    // Move all tabs to TabControl1
+    // Note that the Pages property may have a different order than the
+    // physical order of the tabs
+    TabControl1.Toolbar.BeginUpdate;
+    TabControl2.Toolbar.BeginUpdate;
+    List := TObjectList.Create(False);
+    try
+      for var I := 0 to TabControl2.View.ViewerCount - 1 do begin
+        IV := TabControl2.View.Viewers[I];
+        if IV.Item is TSpTBXTabItem then
+          List.Add(IV.Item);
+      end;
+
+      for var TabItem in List do
+        MoveTab(TSpTBXTabItem(TabItem), TabControl1);
+    finally
+      TabControl1.Toolbar.EndUpdate;
+      TabControl2.Toolbar.EndUpdate;
+      List.Free;
+    end;
+  end;
+
 begin
+  if not TabControl2.Visible and not SecondTabsVisible then
+    Exit;
+  if TabControl2.Visible and not SecondTabsVisible then
+    MoveTabs;
+
   TabSplitter.Visible := False;
   TabControl2.Visible := False;
   ActiveTabControlIndex := 1;
@@ -5221,8 +5224,10 @@ begin
     TabSplitter.Align := Alignment;
     TabControl2.Visible := True;
     TabSplitter.Visible := True;
+    ActiveTabControlIndex := 2;
   end;
 end;
+
 
 procedure TPyIDEMainForm.SetupCustomizer;
 var
@@ -5314,6 +5319,9 @@ begin
   LocalAppstorage.DeleteSubTree('Layouts\'+Layout);
   SaveDockTreeToAppStorage(LocalAppStorage, 'Layouts\'+ Layout);
   SaveToolbarLayout(Layout);
+  // Save secondary workspace info
+  LocalAppstorage.WritePersistent('Layouts\'+ Layout + '\Second Workspace',
+    TabsPersistsInfo);
 end;
 
 procedure TPyIDEMainForm.LayoutClick(Sender: TObject);
