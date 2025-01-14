@@ -181,7 +181,7 @@ procedure TLLMChatForm.PanelQAResize(Sender: TObject);
 begin
   var pnlAnswer := Sender as TSpTBXPanel;
   var synAnswer := pnlAnswer.Controls[1] as TSynEdit;
-  var NewHeight := Max(MulDiv(30, CurrentPPI, 96), 2 * Margins.Bottom +
+  var NewHeight := Max(MulDiv(30, CurrentPPI, 96),
     synAnswer.DisplayRowCount * synAnswer.LineHeight);
   if NewHeight <> pnlAnswer.Height then
     pnlAnswer.Height := NewHeight;
@@ -217,10 +217,11 @@ end;
 
 procedure TLLMChatForm.DisplayQA(const QA, ImgName: string);
 begin
+  QAStackPanel.Color := StyleServices.GetSystemColor(clBtnFace);
   var PanelQA := TSpTBXPanel.Create(Self);
   with PanelQA do begin
     Name := 'PanelQA' + QAStackPanel.ControlCount.ToString;
-    Color := StyleServices.GetSystemColor(clWindow);
+    Color := clNone;
     Anchors := [akLeft,akTop,akRight];
     Width := 570;
     Height := 50;
@@ -252,8 +253,8 @@ begin
     Options := Options + [eoRightMouseMovesCursor];
     Highlighter := SynMultiSyn;
     Top := 0;
-    Left := 40;
-    Width := PanelQA.Width - 40;
+    Left := 30;
+    Width := PanelQA.Width - 30;
     Height := PanelQA.Height;
     Font.Name := 'Consolas';
     Font.Size := 10;
@@ -267,7 +268,10 @@ begin
   end;
   PanelQA.ScaleForPPI(CurrentPPI);
   PanelQA.Parent := QAStackPanel;
-  synQA.Markdown:= QA.trim;
+  if ImgName = 'Assistant' then
+    synQA.Markdown := QA.Trim
+  else
+    synQA.Text := QA.Trim;
   PanelQA.OnResize :=  PanelQAResize;
   // Resize twice! - The first time the Scrollbox scrollbar may be shown
   PanelQAResize(PanelQA);
@@ -287,11 +291,17 @@ procedure TLLMChatForm.DisplayActiveChatTopic;
 begin
   ClearConversation;
   DisplayTopicTitle(LLMChat.ActiveTopic.Title);
-  for var QAItem in LLMChat.ActiveTopic.QAItems do
-  begin
-    DisplayQA(QAItem.Prompt, 'UserQuestion');
-    DisplayQA(QAItem.Answer, 'Assistant');
+  QAStackPanel.LockDrawing;
+  try
+    for var QAItem in LLMChat.ActiveTopic.QAItems do
+    begin
+      DisplayQA(QAItem.Prompt, 'UserQuestion');
+      DisplayQA(QAItem.Answer, 'Assistant');
+    end;
+  finally
+    QAStackPanel.UnlockDrawing;
   end;
+
   if SynQuestion.HandleAllocated then
     synQuestion.SetFocus;
 end;
@@ -380,7 +390,10 @@ procedure TLLMChatForm.synQuestionKeyDown(Sender: TObject; var Key: Word; Shift:
     TShiftState);
 begin
   if (Shift * [ssShift, ssCtrl] <> []) and  (Key = vkReturn) then
+  begin
     actAskQuestion.Execute;
+    Key := 0;
+  end;
 end;
 
 procedure TLLMChatForm.actAskQuestionExecute(Sender: TObject);
@@ -516,7 +529,6 @@ begin
     synQuestion.TextHint := SQuestionHintValid
   else
     synQuestion.TextHint := SQuestionHintInvalid + ': ' + LLMChat.ValidationErrMsg(Validation);
-  synQuestion.Invalidate;
 end;
 
 procedure TLLMChatForm.synQuestionEnter(Sender: TObject);

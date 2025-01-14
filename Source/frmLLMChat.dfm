@@ -35,7 +35,7 @@ inherited LLMChatForm: TLLMChatForm
           582
           85)
         object sbAsk: TSpeedButton
-          Left = 508
+          Left = 492
           Top = 1
           Width = 32
           Height = 32
@@ -43,21 +43,21 @@ inherited LLMChatForm: TLLMChatForm
           Anchors = [akTop, akRight]
           Images = vilImages
           Flat = True
-          ExplicitLeft = 516
+          ExplicitLeft = 508
         end
         object aiBusy: TActivityIndicator
-          Left = 510
+          Left = 494
           Top = 44
           Anchors = [akRight, akBottom]
           FrameDelay = 150
           IndicatorType = aitRotatingSector
-          ExplicitLeft = 502
+          ExplicitLeft = 486
         end
         object synQuestion: TSynEdit
           AlignWithMargins = True
           Left = 4
           Top = 4
-          Width = 498
+          Width = 482
           Height = 77
           Cursor = crDefault
           Align = alLeft
@@ -107,21 +107,11 @@ inherited LLMChatForm: TLLMChatForm
               AnnType = sbaCarets
               AnnPos = sbpFullWidth
               FullRow = False
-            end
-            item
-              AnnType = sbaBookmark
-              AnnPos = sbpLeft
-              FullRow = True
-            end
-            item
-              AnnType = sbaTrackChanges
-              AnnPos = sbpRight
-              FullRow = True
             end>
           SelectedColor.Alpha = 0.400000005960464500
           VisibleSpecialChars = []
           WordWrap = True
-          ExplicitWidth = 490
+          ExplicitWidth = 474
         end
       end
       object ScrollBox: TScrollBox
@@ -134,24 +124,27 @@ inherited LLMChatForm: TLLMChatForm
         Align = alClient
         ParentBackground = True
         TabOrder = 1
+        StyleElements = [seFont, seBorder]
         ExplicitWidth = 574
         ExplicitHeight = 515
         object QAStackPanel: TStackPanel
-          AlignWithMargins = True
-          Left = 3
-          Top = 3
-          Width = 574
+          Left = 0
+          Top = 0
+          Width = 580
           Height = 23
           Align = alTop
           AutoSize = True
           BevelOuter = bvNone
           ControlCollection = <>
-          DoubleBuffered = True
+          DoubleBuffered = False
           HorizontalPositioning = sphpFill
+          ParentBackground = False
           ParentColor = True
           ParentDoubleBuffered = False
+          StyleElements = []
+          StyleName = 'Windows'
           TabOrder = 0
-          ExplicitWidth = 566
+          ExplicitWidth = 572
         end
       end
       object Splitter: TSpTBXSplitter
@@ -213,9 +206,13 @@ inherited LLMChatForm: TLLMChatForm
           end
           object spiPreviousTopic: TSpTBXItem
             Action = actChatPrevious
+            ImageIndex = 14
+            ImageName = 'ChatPrev'
           end
           object spiNextTopic: TSpTBXItem
             Action = actChatNext
+            ImageIndex = 13
+            ImageName = 'ChatNext'
           end
         end
       end
@@ -292,6 +289,16 @@ inherited LLMChatForm: TLLMChatForm
         CollectionIndex = 12
         CollectionName = 'Assistant'
         Name = 'Assistant'
+      end
+      item
+        CollectionIndex = 13
+        CollectionName = 'ChatNext'
+        Name = 'ChatNext'
+      end
+      item
+        CollectionIndex = 14
+        CollectionName = 'ChatPrev'
+        Name = 'ChatPrev'
       end>
     ImageCollection = icMenuAndToolbar
     Width = 24
@@ -567,6 +574,28 @@ inherited LLMChatForm: TLLMChatForm
           '    M240-200h480v-120H240v120Zm120-320h240q50 0 85-35t35-85q0-50' +
           '-35-85t-85-35H360'#13#10'        q-50 0-85 35t-35 85q0 50 35 85t85 35Z' +
           '" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'ChatNext'
+        SVGText = 
+          '<svg viewBox="0 0 24 24">'#13#10'      <path d="M12,3C6.5,3 2,6.58 2,1' +
+          '1C2.05,13.15 3.06,15.17 4.75,16.5C4.75,17.1 4.33,18.67 2,21C4.37' +
+          ',20.89 6.64,20 8.47,18.5C9.61,18.83 10.81,19 12,19C17.5,19 22,15' +
+          '.42 22,11C22,6.58 17.5,3 12,3M12,17C7.58,17 4,14.31 4,11C4,7.69 ' +
+          '7.58,5 12,5C16.42,5 20,7.69 20,11C20,14.31 16.42,17 12,17Z"/>'#13#10' ' +
+          '     <path d="M12 10V7l4 4-4 4v-3H8v-2h4z" transform="translate(' +
+          '0.5)"/>'#13#10'</svg>'
+      end
+      item
+        IconName = 'ChatPrev'
+        SVGText = 
+          '<svg viewBox="0 0 24 24">'#13#10'      <path d="M12,3C6.5,3 2,6.58 2,1' +
+          '1C2.05,13.15 3.06,15.17 4.75,16.5C4.75,17.1 4.33,18.67 2,21C4.37' +
+          ',20.89 6.64,20 8.47,18.5C9.61,18.83 10.81,19 12,19C17.5,19 22,15' +
+          '.42 22,11C22,6.58 17.5,3 12,3M12,17C7.58,17 4,14.31 4,11C4,7.69 ' +
+          '7.58,5 12,5C16.42,5 20,7.69 20,11C20,14.31 16.42,17 12,17Z"/>'#13#10' ' +
+          '     <path d="M12 10V7l4 4-4 4v-3H8v-2h4z" transform="translate(' +
+          '0, -2) rotate(180, 12, 12)"/>'#13#10'</svg>'
       end>
     Left = 264
     Top = 352
