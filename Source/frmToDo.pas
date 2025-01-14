@@ -454,13 +454,13 @@ end;
 
 procedure TToDoExpert.Configure;
 var
-  Dlg: TfmToDoOptions;
+  Dlg: TToDoOptionsDlg;
   TodoListOptionsUnchanged: Boolean;
   OldScanType: TToDoScanType;
 begin
   TodoListOptionsUnchanged := True;
 
-  Dlg := TfmToDoOptions.Create(nil);
+  Dlg := TToDoOptionsDlg.Create(nil);
   try
     Dlg.lstTokens.Items.Assign(FTokenList);
     Dlg.cbShowTokens.Checked := FShowTokens;

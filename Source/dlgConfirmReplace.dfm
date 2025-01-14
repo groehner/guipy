@@ -4,7 +4,6 @@ inherited ConfirmReplaceDialog: TConfirmReplaceDialog
   Caption = 'Confirm replace'
   ClientHeight = 98
   ClientWidth = 328
-  ParentFont = False
   Position = poDefaultSizeOnly
   OnDestroy = FormDestroy
   ExplicitWidth = 340

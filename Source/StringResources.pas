@@ -489,7 +489,7 @@ Const
 
   //  SSH File and Remote engine
   SRemoteFileOpen = 'Open Remote File';
-  SRemoteFIleSave = 'Save to Remote File';
+  SRemoteFileSave = 'Save to Remote File';
   SRemoteFileAdd = 'Add Remote File';
   SRemoteFileSelect = 'Select Remote File';
   SErrorEmptyPath = 'File Path cannot be empty';

@@ -10,7 +10,6 @@ unit dlgPickList;
 interface
 
 uses
-  Vcl.Forms,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.CheckLst,
@@ -37,10 +36,7 @@ type
     procedure mnDeselectAllClick(Sender: TObject);
     procedure mnSelectAllClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-  private
-    { Private declarations }
   public
-    { Public declarations }
     procedure SetScrollWidth;
   end;
 
@@ -51,31 +47,29 @@ implementation
 
 uses
   Winapi.Windows,
-  System.Math,
-  Vcl.Graphics,
-  dmResources;
+  System.Math;
 
 {$R *.dfm}
 
 procedure TPickListDialog.mnSelectAllClick(Sender: TObject);
 var
-  i : integer;
+  I: Integer;
 begin
-  for i := 0 to CheckListBox.Items.Count - 1 do
-    CheckListBox.Checked[i] := True;
+  for I:= 0 to CheckListBox.Items.Count - 1 do
+    CheckListBox.Checked[I]:= True;
 end;
 
 procedure TPickListDialog.SetScrollWidth;
 var
-  i: integer;
-  ItemMaxWidth: integer;
+  I: Integer;
+  ItemMaxWidth: Integer;
 begin
   ItemMaxWidth := 0;
   with CheckListBox do
   begin
     //  Calculate the Max Length
-    for i := 0 to CheckListBox.Items.Count - 1 do
-      ItemMaxWidth := Max(CheckListBox.Canvas.TextWidth(CheckListBox.Items[i]),
+    for I := 0 to CheckListBox.Items.Count - 1 do
+      ItemMaxWidth := Max(CheckListBox.Canvas.TextWidth(CheckListBox.Items[I]),
         ItemMaxWidth);
     ScrollWidth := ItemMaxWidth + 5;
   end;
@@ -89,10 +83,10 @@ end;
 
 procedure TPickListDialog.mnDeselectAllClick(Sender: TObject);
 var
-  i : integer;
+  I : integer;
 begin
-  for i := 0 to CheckListBox.Items.Count - 1 do
-    CheckListBox.Checked[i] := False;
+  for I := 0 to CheckListBox.Items.Count - 1 do
+    CheckListBox.Checked[I] := False;
 end;
 
 end.

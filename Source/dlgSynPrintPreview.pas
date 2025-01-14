@@ -41,18 +41,12 @@ unit dlgSynPrintPreview;
 interface
 
 uses
-  Winapi.Windows,
-  System.SysUtils,
   System.Classes,
   System.Actions,
   System.ImageList,
-  Vcl.Graphics,
-  Vcl.Forms,
   Vcl.Controls,
-  Vcl.Buttons,
   Vcl.ActnList,
   Vcl.ImgList,
-  Vcl.Dialogs,
   Vcl.Printers,
   Vcl.VirtualImageList,
   Vcl.BaseImageCollection,
@@ -118,10 +112,6 @@ type
     procedure SynEditPrintPreviewPreviewPage(Sender: TObject;
       PageNumber: Integer);
     procedure ProcessHint(var HintStr: string; var CanShow: Boolean);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
 var
@@ -130,8 +120,11 @@ var
 implementation
 
 uses
-  Vcl.Themes,
-  uCommonFunctions;
+  System.SysUtils,
+  Vcl.Graphics,
+  Vcl.Forms,
+  uCommonFunctions,
+  dmResources;
 
 {$R *.DFM}
 

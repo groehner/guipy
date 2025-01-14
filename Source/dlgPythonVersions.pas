@@ -63,10 +63,6 @@ type
     procedure actPVCommandShellExecute(Sender: TObject);
     procedure actPVHelpExecute(Sender: TObject);
     procedure actPVRenameExecute(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
 var
@@ -75,27 +71,26 @@ var
 implementation
 {$R *.dfm}
 
-Uses
+uses
   Winapi.Windows,
   Winapi.ShellAPI,
   Vcl.Forms,
   Vcl.Dialogs,
   System.SysUtils,
   Vcl.FileCtrl,
-  JvGnuGetText,
+  JvGnugettext,
   StringResources,
   uEditAppIntfs,
   uCommonFunctions,
   cPyControl,
   PythonVersions,
-  VirtualTrees.Types,
-  dmResources;
+  VirtualTrees.Types;
 
 procedure TPythonVersionsDialog.actlPythonVersionsUpdate(Action: TBasicAction;
   var Handled: Boolean);
-Var
+var
   Node : PVirtualNode;
-  Level : integer;
+  Level : Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   Level := -1;  // to avoid compiler warning
@@ -119,7 +114,7 @@ end;
 procedure TPythonVersionsDialog.actPVActivateExecute(Sender: TObject);
 var
   Node : PVirtualNode;
-  Level : integer;
+  Level : Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   if Assigned(Node) then begin
@@ -136,10 +131,10 @@ begin
 end;
 
 procedure TPythonVersionsDialog.actPVAddExecute(Sender: TObject);
-Var
+var
   PythonVersion: TPythonVersion;
   Directories: TArray<string>;
-  err: string;
+  Err: string;
 begin
   if SelectDirectory('', Directories, [], _('Select folder with Python installation (inlcuding virtualenv and venv)'))
   then begin
@@ -153,18 +148,18 @@ begin
       vtPythonVersions.Selected[vtPythonVersions.GetLast] := True;
     end else
       {$IFDEF WIN32}
-      err:= Format(_(SPythonFindError32), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
+      Err:= Format(_(SPythonFindError32), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
       {$ELSE}
-      err:= Format(_(SPythonFindError64), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
+      Err:= Format(_(SPythonFindError64), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
       {$ENDIF}
-      StyledMessageDlg(_(err), mtError, [mbOK], 0);
+      StyledMessageDlg(_(Err), mtError, [mbOK], 0);
   end;
 end;
 
 procedure TPythonVersionsDialog.actPVCommandShellExecute(Sender: TObject);
 var
   Node: PVirtualNode;
-  Level: integer;
+  Level: Integer;
   Version: TPythonVersion;
 begin
   Node := vtPythonVersions.GetFirstSelected;
@@ -190,7 +185,7 @@ end;
 procedure TPythonVersionsDialog.actPVRemoveExecute(Sender: TObject);
 var
   Node : PVirtualNode;
-  Level : integer;
+  Level : Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   if Assigned(Node) then begin
@@ -207,7 +202,7 @@ end;
 procedure TPythonVersionsDialog.actPVRenameExecute(Sender: TObject);
 var
   Node: PVirtualNode;
-  Level: integer;
+  Level: Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   if Assigned(Node) then begin
@@ -227,7 +222,7 @@ end;
 procedure TPythonVersionsDialog.actPVShowExecute(Sender: TObject);
 var
   Node: PVirtualNode;
-  Level: integer;
+  Level: Integer;
   Version: TPythonVersion;
 begin
   Node := vtPythonVersions.GetFirstSelected;
@@ -248,7 +243,7 @@ end;
 procedure TPythonVersionsDialog.actPVTestExecute(Sender: TObject);
 var
   Node: PVirtualNode;
-  Level: integer;
+  Level: Integer;
   Version: TPythonVersion;
 begin
   Node := vtPythonVersions.GetFirstSelected;
@@ -276,7 +271,7 @@ end;
 procedure TPythonVersionsDialog.vtPythonVersionsGetCellText(
   Sender: TCustomVirtualStringTree; var E: TVSTGetCellTextEventArgs);
 Var
-  Level : integer;
+  Level : Integer;
 begin
   Level := vtPythonVersions.GetNodeLevel(E.Node);
   case Level of
@@ -307,8 +302,8 @@ end;
 procedure TPythonVersionsDialog.vtPythonVersionsGetImageIndex(
   Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
   Column: TColumnIndex; var Ghosted: Boolean; var ImageIndex: TImageIndex);
-Var
-  Level : integer;
+var
+  Level : Integer;
 begin
   ImageIndex := -1;
   if not (Kind in [ikNormal, ikSelected]) or (Column <> 0) then Exit;
@@ -322,8 +317,8 @@ end;
 
 procedure TPythonVersionsDialog.vtPythonVersionsInitChildren(
   Sender: TBaseVirtualTree; Node: PVirtualNode; var ChildCount: Cardinal);
-Var
-  Level : integer;
+var
+  Level : Integer;
 begin
   Level := vtPythonVersions.GetNodeLevel(Node);
   if Level = 0 then begin
@@ -337,8 +332,8 @@ end;
 procedure TPythonVersionsDialog.vtPythonVersionsInitNode(
   Sender: TBaseVirtualTree; ParentNode, Node: PVirtualNode;
   var InitialStates: TVirtualNodeInitStates);
-Var
-  Level : integer;
+var
+  Level : Integer;
 begin
   Level := vtPythonVersions.GetNodeLevel(Node);
   if Level = 0 then begin

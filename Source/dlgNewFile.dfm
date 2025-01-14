@@ -3,7 +3,6 @@ inherited NewFileDialog: TNewFileDialog
   Caption = 'New File'
   ClientHeight = 297
   ClientWidth = 466
-  ParentFont = False
   OnDestroy = FormDestroy
   OnShow = FormShow
   ExplicitWidth = 478
@@ -57,7 +56,6 @@ inherited NewFileDialog: TNewFileDialog
           BevelOuter = bvNone
           BevelKind = bkFlat
           Header.AutoSizeIndex = 0
-
           Header.MainColumn = -1
           Header.Options = [hoColumnResize, hoDrag]
           NodeDataSize = 0

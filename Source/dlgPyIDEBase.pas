@@ -11,15 +11,11 @@ unit dlgPyIDEBase;
 interface
 
 uses
-  Windows, Graphics, Forms;
+  Forms;
 
 type
   TPyIDEDlgBase = class(TForm)
     procedure FormCreate(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
 var
@@ -45,7 +41,7 @@ begin
     was very helpful to understand the things during a dpi change.
   }
 
-  ParentFont:= false;
+  ParentFont:= False;
   TranslateComponent(Self);
   Font.PixelsPerInch := FCurrentPPI;
   SetDefaultUIFont(Font);

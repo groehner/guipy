@@ -7,8 +7,8 @@ inherited PageSetupDlg: TPageSetupDlg
   Position = poScreenCenter
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ExplicitWidth = 644
-  ExplicitHeight = 435
+  ExplicitWidth = 648
+  ExplicitHeight = 436
   TextHeight = 15
   object TabControl: TSpTBXTabControl
     Left = 0

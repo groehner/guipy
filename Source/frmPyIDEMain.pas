@@ -603,8 +603,8 @@ unit frmPyIDEMain;
 interface
 
 uses
-  WinAPI.Windows,
-  WinAPI.Messages,
+  Winapi.Windows,
+  Winapi.Messages,
   System.Types,
   System.UITypes,
   System.Classes,
@@ -627,30 +627,24 @@ uses
   JclSysUtils,
   JvAppInst,
   JvDockControlForm,
-  JvDockVSNetStyle,
   JvAppStorage,
   JvAppIniStorage,
-  JvFormPlacement,
   JvDSADialogs,
   JvComponentBase,
   TB2Dock,
   TB2Toolbar,
   TB2Item,
-  TB2ExtItems,
   SpTBXCustomizer,
-  SpTbxSkins,
+  SpTBXSkins,
   SpTBXItem,
   SpTBXEditors,
   SpTBXMDIMRU,
   SpTBXTabs,
   SpTBXDkPanels,
-  MPCommonObjects,
   SynEditMiscClasses,
   SynEdit,
-  dmResources,
-  dmCommands,
   uEditAppIntfs,
-  uHighlighterProcs,
+  JvDockVSNetStyle,
   cFileTemplates,
   cPySupportTypes,
   cPyControl,
@@ -1616,8 +1610,8 @@ type
     function getFilename(const Extension: string; path: string = ''): string;
     procedure PrepareClassEdit(Editor: IEditor; const Status: String; UML: TFUMLForm);
     procedure ConnectGUIandPyWindow(GUIForm: TFGUIForm);
-    procedure StructogramFromText(sourcecode, pathname: string);
-    procedure DoExport(const Pathname: String; Bitmap: TBitmap);
+    procedure StructogramFromText(Sourcecode, Pathname: string);
+    procedure DoExport(const Pathname: string; Bitmap: TBitmap);
     procedure NewTkOrQTFile(FileTemplate: TFileTemplate);
     procedure NewTextDiff(Form1, Form2: TEditorForm);
     function NewBrowser(Adresse: string): TFBrowser;
@@ -1661,14 +1655,17 @@ uses
   Vcl.Imaging.pngimage,
   JclSysInfo,
   JvJVCLUtils,
+  TB2ExtItems,
+  MPCommonObjects,
+  dmResources,
+  dmCommands,
+  uHighlighterProcs,
   VirtualTrees,
   SynHighlighterPython,
   SynEditHighlighter,
   SynEditTypes,
   SynEditKeyCmds,
-  SynCompletionProposal,
   PythonEngine,
-  PythonVersions,
   JvGnugettext,
   StringResources,
   uCmdLine,
@@ -1724,12 +1721,11 @@ uses
   UGUIDesigner,
   UGit,
   USubversion,
-  UUpdate,
-  URtfdDiagram;
+  UUpdate;
 
 {$R *.DFM}
 
-Const
+const
   ctkRemember : TDSACheckTextKind = 100;
 
 { TWorkbookMainForm }
@@ -1964,8 +1960,8 @@ begin
   end);
 end;
 
-procedure TPyIDEMainForm.StructogramFromText(sourcecode, pathname: string);
-  var aFile: IFile; s: String; mr: integer;
+procedure TPyIDEMainForm.StructogramFromText(Sourcecode, Pathname: string);
+  var aFile: IFile; s: string; mr: integer;
 begin
   aFile:= GI_FileFactory.getFileByName(Pathname);
   if assigned(aFile) then begin
@@ -1986,7 +1982,7 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.DoExport(const Pathname: String; Bitmap: TBitmap);
+procedure TPyIDEMainForm.DoExport(const Pathname: string; Bitmap: TBitmap);
   var folder, ext: string;
 
   procedure InToPng(Filename: string);
@@ -2027,7 +2023,7 @@ procedure TPyIDEMainForm.DoExport(const Pathname: String; Bitmap: TBitmap);
       finally
         FreeAndNil(MetafileCanvas);
       end;
-      Metafile.Enhanced:= false;
+      Metafile.Enhanced:= False;
       Metafile.SaveToFile(Filename);
     finally
       Metafile.Destroy;

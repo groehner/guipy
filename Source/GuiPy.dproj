@@ -225,7 +225,7 @@
             <Form>ToDoWindow</Form>
         </DCCReference>
         <DCCReference Include="dlgToDoOptions.pas">
-            <Form>fmToDoOptions</Form>
+            <Form>ToDoOptionsDlg</Form>
         </DCCReference>
         <DCCReference Include="cFileSearch.pas"/>
         <DCCReference Include="cFindInFiles.pas"/>
@@ -481,7 +481,7 @@
         </DCCReference>
         <DCCReference Include="uSysUtils.pas"/>
         <DCCReference Include="dlgSynEditOptions.pas">
-            <Form>fmEditorOptionsDialog</Form>
+            <Form>EditorOptionsDialog</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Utils\UZOrderControl.pas"/>

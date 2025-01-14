@@ -60,10 +60,7 @@ type
     procedure cbSaveOutputClick(Sender: TObject);
     procedure btnRemoteFileNameClick(Sender: TObject);
   private
-    { Private declarations }
-    fRunConfig : TRunConfiguration;
-  public
-    { Public declarations }
+    FRunConfig: TRunConfiguration;
   end;
 
 function EditRunConfiguration(ARunConfig : TRunConfiguration) : Boolean;
@@ -81,7 +78,6 @@ uses
   JvGnugettext,
   dlgToolProperties,
   dmResources,
-  uHighlighterProcs,
   cProjectClasses,
   StringResources,
   dlgRemoteFile,
@@ -98,8 +94,8 @@ begin
 
   with TRunConfigurationForm.Create(Application) do
   try
-    fRunConfig.Assign(ARunConfig);
-    with fRunConfig do begin
+    FRunConfig.Assign(ARunConfig);
+    with FRunConfig do begin
       edDescription.Text := Description;
       SynFileName.Text := ScriptName;
       SynParameters.Text := Parameters;
@@ -112,8 +108,8 @@ begin
       cbAppendToFile.Checked := AppendToFile;
       cbSaveOutputClick(nil);
     end;
-    Result := (ShowModal = mrOK);
-    if Result then with fRunConfig do begin
+    Result := (ShowModal = mrOk);
+    if Result then with FRunConfig do begin
       Description := edDescription.Text;
       ScriptName := SynFileName.Text;
       Parameters := SynParameters.Text;
@@ -124,7 +120,7 @@ begin
       OutputFileName := SynOutputFileName.Text;
       AppendToFile := cbAppendToFile.Checked;
 
-      ARunConfig.Assign(fRunConfig);
+      ARunConfig.Assign(FRunConfig);
     end;
   finally
     Release;
@@ -133,7 +129,7 @@ end;
 
 procedure TRunConfigurationForm.btnExternalRunClick(Sender: TObject);
 begin
-  EditTool(fRunConfig.ExternalRun, True);
+  EditTool(FRunConfig.ExternalRun, True);
 end;
 
 procedure TRunConfigurationForm.btnFileNameClick(Sender: TObject);
@@ -158,7 +154,7 @@ begin
 end;
 
 procedure TRunConfigurationForm.btnOutputFileNameClick(Sender: TObject);
-Var
+var
   OldOpenOptions : TOpenOptions;
 begin
   with ResourcesDataModule.dlgFileOpen do begin
@@ -182,7 +178,7 @@ begin
 end;
 
 procedure TRunConfigurationForm.btnRemoteFileNameClick(Sender: TObject);
-Var
+var
   Server, FileName: string;
 begin
   if ExecuteRemoteFileDialog(FileName, Server, rfdSelect) then begin
@@ -194,12 +190,12 @@ end;
 
 procedure TRunConfigurationForm.btnWorkDirClick(Sender: TObject);
 var
-  S: string;
+  DefaultDir: string;
   Directories : TArray<string>;
 begin
   if ActiveProject.FileName <> '' then
-    S := TPath.GetDirectoryName(ActiveProject.FileName);
-  if SelectDirectory(S, Directories, [], _('Select working directory:')) then
+    DefaultDir:= TPath.GetDirectoryName(ActiveProject.FileName);
+  if SelectDirectory(DefaultDir, Directories, [], _('Select working directory:')) then
   begin
     SynWorkDir.SelectAll;
     SynWorkDir.SelText := Directories[0];
@@ -220,12 +216,12 @@ begin
 end;
 
 procedure TRunConfigurationForm.FormCreate(Sender: TObject);
-Var
+var
   SynEditArray : TArray<TSynEdit>;
   SynEdit : TSynEdit;
 begin
   inherited;
-  fRunConfig := TRunConfiguration.Create;
+  FRunConfig := TRunConfiguration.Create;
 
   SynEditArray := [SynFileName, SynParameters, SynWorkDir, SynOutputFileName];
   for SynEdit in SynEditArray do
@@ -237,7 +233,7 @@ end;
 
 procedure TRunConfigurationForm.FormDestroy(Sender: TObject);
 begin
-  fRunConfig.Free;
+  FRunConfig.Free;
 end;
 
 procedure TRunConfigurationForm.SynEditEnter(Sender: TObject);

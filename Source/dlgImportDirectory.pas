@@ -21,10 +21,7 @@ type
     DirectoryEdit: TButtonedEdit;
     vilImages: TVirtualImageList;
     procedure DirectoryEditBtnClick(Sender: TObject);
-  private
-    { Private declarations }
   public
-    { Public declarations }
     class var FileMasks : string;
     class var Directory : string;
     class var Recursive : Boolean;
@@ -38,8 +35,7 @@ uses
   Winapi.ShLwApi,
   Vcl.Forms,
   Vcl.FileCtrl,
-  JvGnuGetText,
-  dmResources;
+  JvGnugettext;
 
 {$R *.dfm}
 
@@ -56,7 +52,7 @@ begin
 end;
 
 class function TImportDirectoryForm.Execute: Boolean;
-Var
+var
   Owner : TCustomForm;
 begin
   if Assigned(Screen.ActiveCustomForm) then
@@ -70,7 +66,7 @@ begin
     cbRecursive.Checked := Recursive;
     SHAutoComplete(DirectoryEdit.Handle, SHACF_FILESYSTEM or SHACF_AUTOAPPEND_FORCE_ON or
       SHACF_AUTOSUGGEST_FORCE_OFF);
-    if ShowModal = mrOK then begin
+    if ShowModal = mrOk then begin
       Result := True;
       FileMasks := ebMask.Text;
       Directory := DirectoryEdit.Text;

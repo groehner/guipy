@@ -3,9 +3,8 @@ inherited UnitTestWizard: TUnitTestWizard
   Caption = 'Unit Test Wizard'
   ClientHeight = 491
   ClientWidth = 436
-
-
-
+  ExplicitWidth = 452
+  ExplicitHeight = 530
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
@@ -14,6 +13,8 @@ inherited UnitTestWizard: TUnitTestWizard
     Height = 491
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 432
+    ExplicitHeight = 490
     DesignSize = (
       436
       491)
@@ -59,7 +60,7 @@ inherited UnitTestWizard: TUnitTestWizard
     object ExplorerTree: TVirtualStringTree
       Left = 5
       Top = 106
-      Width = 426
+      Width = 422
       Height = 338
       Anchors = [akLeft, akTop, akRight, akBottom]
       Header.AutoSizeIndex = -1
@@ -87,7 +88,7 @@ inherited UnitTestWizard: TUnitTestWizard
       Columns = <>
     end
     object OKButton: TButton
-      Left = 85
+      Left = 81
       Top = 454
       Width = 75
       Height = 25
@@ -96,9 +97,11 @@ inherited UnitTestWizard: TUnitTestWizard
       Default = True
       ModalResult = 1
       TabOrder = 1
+      ExplicitLeft = 77
+      ExplicitTop = 453
     end
     object BitBtn2: TButton
-      Left = 181
+      Left = 177
       Top = 454
       Width = 75
       Height = 25
@@ -107,9 +110,11 @@ inherited UnitTestWizard: TUnitTestWizard
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 2
+      ExplicitLeft = 173
+      ExplicitTop = 453
     end
     object HelpButton: TButton
-      Left = 277
+      Left = 273
       Top = 454
       Width = 75
       Height = 25
@@ -117,6 +122,8 @@ inherited UnitTestWizard: TUnitTestWizard
       Caption = '&Help'
       TabOrder = 3
       OnClick = HelpButtonClick
+      ExplicitLeft = 269
+      ExplicitTop = 453
     end
   end
   object PopupUnitTestWizard: TSpTBXPopupMenu

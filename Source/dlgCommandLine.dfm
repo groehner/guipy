@@ -5,6 +5,8 @@ inherited CommandLineDlg: TCommandLineDlg
   ClientHeight = 172
   ClientWidth = 528
   OnDestroy = FormDestroy
+  ExplicitWidth = 540
+  ExplicitHeight = 210
   TextHeight = 15
   object Panel: TPanel
     Left = 0
@@ -13,13 +15,15 @@ inherited CommandLineDlg: TCommandLineDlg
     Height = 172
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 524
+    ExplicitHeight = 171
     DesignSize = (
       528
       172)
     object Label1: TLabel
       Left = 13
       Top = 43
-      Width = 460
+      Width = 456
       Height = 35
       Anchors = [akLeft, akRight, akBottom]
       AutoSize = False
@@ -29,6 +33,7 @@ inherited CommandLineDlg: TCommandLineDlg
         'gument.'
       Color = clNone
       ParentColor = False
+      ExplicitWidth = 460
     end
     object Label3: TLabel
       Left = 13
@@ -44,7 +49,7 @@ inherited CommandLineDlg: TCommandLineDlg
     object SynParameters: TSynEdit
       Left = 11
       Top = 84
-      Width = 484
+      Width = 480
       Height = 18
       Anchors = [akLeft, akRight, akBottom]
       Font.Charset = DEFAULT_CHARSET
@@ -83,11 +88,30 @@ inherited CommandLineDlg: TCommandLineDlg
       Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
       RightEdge = 0
       ScrollBars = ssNone
+      ScrollbarAnnotations = <
+        item
+          AnnType = sbaCarets
+          AnnPos = sbpFullWidth
+          FullRow = False
+        end
+        item
+          AnnType = sbaBookmark
+          AnnPos = sbpLeft
+          FullRow = True
+        end
+        item
+          AnnType = sbaTrackChanges
+          AnnPos = sbpRight
+          FullRow = True
+        end>
       SelectedColor.Alpha = 0.400000005960464500
+      VisibleSpecialChars = []
       WantReturns = False
+      ExplicitTop = 83
+      ExplicitWidth = 476
     end
     object TBXButton1: TSpTBXButton
-      Left = 501
+      Left = 497
       Top = 83
       Width = 19
       Height = 19
@@ -97,6 +121,8 @@ inherited CommandLineDlg: TCommandLineDlg
       ShowHint = True
       TabOrder = 5
       DropDownMenu = TBXPopupHistory
+      ExplicitLeft = 493
+      ExplicitTop = 82
     end
     object cbUseCommandLine: TCheckBox
       Left = 13
@@ -107,7 +133,7 @@ inherited CommandLineDlg: TCommandLineDlg
       TabOrder = 4
     end
     object OKButton: TButton
-      Left = 144
+      Left = 140
       Top = 137
       Width = 75
       Height = 25
@@ -117,9 +143,11 @@ inherited CommandLineDlg: TCommandLineDlg
       ModalResult = 1
       TabOrder = 1
       OnClick = OKButtonClick
+      ExplicitLeft = 136
+      ExplicitTop = 136
     end
     object btnCancel: TButton
-      Left = 238
+      Left = 234
       Top = 137
       Width = 75
       Height = 25
@@ -128,9 +156,11 @@ inherited CommandLineDlg: TCommandLineDlg
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 2
+      ExplicitLeft = 230
+      ExplicitTop = 136
     end
     object btnHelp: TButton
-      Left = 333
+      Left = 329
       Top = 137
       Width = 75
       Height = 25
@@ -138,6 +168,8 @@ inherited CommandLineDlg: TCommandLineDlg
       Caption = '&Help'
       TabOrder = 3
       OnClick = btnHelpClick
+      ExplicitLeft = 325
+      ExplicitTop = 136
     end
   end
   object TBXPopupHistory: TSpTBXPopupMenu

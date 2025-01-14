@@ -42,18 +42,15 @@ interface
 
 uses
   Winapi.Windows,
-  System.UITypes,
-  System.SysUtils,
   System.Classes,
   System.Actions,
   System.ImageList,
-  Vcl.Graphics,
   Vcl.Forms,
   Vcl.Controls,
   Vcl.StdCtrls,
-  Vcl.Buttons,
   Vcl.ExtCtrls,
   Vcl.ComCtrls,
+  Vcl.Graphics,
   Vcl.ImgList,
   Vcl.ActnList,
   Vcl.Dialogs,
@@ -64,10 +61,8 @@ uses
   TB2Dock,
   TB2Toolbar,
   SpTBXItem,
-  SpTBXControls,
   SpTBXEditors,
   SpTBXTabs,
-  SynEditPrintTypes,
   SynEditPrint,
   SynEditPrintMargins,
   SynEditPrintHeaderFooter,
@@ -193,9 +188,9 @@ type
     procedure TabControlActiveTabChange(Sender: TObject; TabIndex: Integer);
   private
     { Private declarations }
-    Editor: TCustomRichEdit;
-    CharPos: TPoint;
-    OldStart: Integer;
+    FRichEdit: TCustomRichEdit;
+    FCharPos: TPoint;
+    FOldStart: Integer;
     FMargins: TSynEditPrintMargins;
     FInternalCall: Boolean;
     procedure SetOptions;
@@ -205,7 +200,7 @@ type
     procedure SetMargins(SynEditMargins: TSynEditPrintMargins);
     procedure GetMargins(SynEditMargins: TSynEditPrintMargins);
     procedure AddLines(HeadFoot: THeaderFooter; AEdit: TCustomRichEdit;
-      Al: TALignment);
+      Align: TALignment);
     procedure SelectNone;
   public
     { Public declarations }
@@ -221,16 +216,18 @@ implementation
 uses
   Winapi.RichEdit,
   Winapi.Messages,
-  Vcl.Themes,
+  System.UITypes,
+  System.SysUtils,
   JvGnugettext,
   StringResources,
+  SynEditPrintTypes,
   uCommonFunctions;
 
 {$R *.DFM}
 
 procedure TPageSetupDlg.FormCreate(Sender: TObject);
 begin
-  Editor := nil;
+  FRichEdit := nil;
   inherited;
   FMargins := TSynEditPrintMargins.Create;
   FInternalCall := False;
@@ -244,7 +241,7 @@ end;
 
 procedure TPageSetupDlg.FormShow(Sender: TObject);
 begin
-  Editor := REHeaderLeft;
+  FRichEdit := REHeaderLeft;
   TabControl.ActivePage := tbMargins;
   SetOptions;
   UpdateCursorPos;
@@ -252,20 +249,20 @@ end;
 
 procedure TPageSetupDlg.SetOptions;
 begin
-  PageNumCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  PagesCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  TimeCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  DateCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  TitleCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  FontCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  BoldCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  ItalicCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  UnderlineCmd.Enabled := Assigned(Editor) and Editor.Focused;
+  PageNumCmd.Enabled := Assigned(FRichEdit) and FRichEdit.Focused;
+  PagesCmd.Enabled := Assigned(FRichEdit) and FRichEdit.Focused;
+  TimeCmd.Enabled := Assigned(FRichEdit) and FRichEdit.Focused;
+  DateCmd.Enabled := Assigned(FRichEdit) and FRichEdit.Focused;
+  TitleCmd.Enabled := Assigned(FRichEdit) and FRichEdit.Focused;
+  FontCmd.Enabled := Assigned(FRichEdit) and FRichEdit.Focused;
+  BoldCmd.Enabled := Assigned(FRichEdit) and FRichEdit.Focused;
+  ItalicCmd.Enabled := Assigned(FRichEdit) and FRichEdit.Focused;
+  UnderlineCmd.Enabled := Assigned(FRichEdit) and FRichEdit.Focused;
 end;
 
 procedure TPageSetupDlg.REHeaderLeftEnter(Sender: TObject);
 begin
-  Editor := Sender as TCustomRichEdit;
+  FRichEdit := Sender as TCustomRichEdit;
   SetOptions;
 end;
 
@@ -276,45 +273,45 @@ end;
 
 procedure TPageSetupDlg.UpdateCursorPos;
 begin
-  if Assigned(Editor) and Editor.HandleAllocated then begin
-    CharPos.Y := SendMessage(Editor.Handle, EM_EXLINEFROMCHAR, 0, Editor.SelStart);
-    CharPos.X := (Editor.SelStart - SendMessage(Editor.Handle, EM_LINEINDEX, CharPos.Y, 0));
+  if Assigned(FRichEdit) and FRichEdit.HandleAllocated then begin
+    FCharPos.Y := SendMessage(FRichEdit.Handle, EM_EXLINEFROMCHAR, 0, FRichEdit.SelStart);
+    FCharPos.X := (FRichEdit.SelStart - SendMessage(FRichEdit.Handle, EM_LINEINDEX, FCharPos.Y, 0));
   end;
 end;
 
 procedure TPageSetupDlg.SelectLine(LineNum: Integer);
 begin
-  if Assigned(Editor) then begin
-    OldStart := Editor.SelStart;
-    Editor.SelStart := SendMessage(Editor.Handle, EM_LINEINDEX, LineNum, 0);
-    Editor.SelLength := Length(Editor.Lines[LineNum]);
+  if Assigned(FRichEdit) then begin
+    FOldStart := FRichEdit.SelStart;
+    FRichEdit.SelStart := SendMessage(FRichEdit.Handle, EM_LINEINDEX, LineNum, 0);
+    FRichEdit.SelLength := Length(FRichEdit.Lines[LineNum]);
   end;
 end;
 
 procedure TPageSetupDlg.SelectNone;
 begin
-  if Assigned(Editor) then begin
-    Editor.SelStart := OldStart;
-    Editor.SelLength := 0;
+  if Assigned(FRichEdit) then begin
+    FRichEdit.SelStart := FOldStart;
+    FRichEdit.SelLength := 0;
   end;
 end;
 
 function TPageSetupDlg.CurrText: TTextAttributes;
 begin
-  Assert(Assigned(Editor));
-  Result := Editor.SelAttributes;
+  Assert(Assigned(FRichEdit));
+  Result := FRichEdit.SelAttributes;
 end;
 
 procedure TPageSetupDlg.PageNumCmdExecute(Sender: TObject);
 begin
-  if Assigned(Editor) then
-    Editor.SelText := '$PAGENUM$';
+  if Assigned(FRichEdit) then
+    FRichEdit.SelText := '$PAGENUM$';
 end;
 
 procedure TPageSetupDlg.PagesCmdExecute(Sender: TObject);
 begin
-  if Assigned(Editor) then
-    Editor.SelText := '$PAGECOUNT$';
+  if Assigned(FRichEdit) then
+    FRichEdit.SelText := '$PAGECOUNT$';
 end;
 
 procedure TPageSetupDlg.TabControlActiveTabChange(Sender: TObject;
@@ -326,27 +323,27 @@ end;
 
 procedure TPageSetupDlg.TimeCmdExecute(Sender: TObject);
 begin
-  if Assigned(Editor) then
-    Editor.SelText := '$TIME$';
+  if Assigned(FRichEdit) then
+    FRichEdit.SelText := '$TIME$';
 end;
 
 procedure TPageSetupDlg.DateCmdExecute(Sender: TObject);
 begin
-  if Assigned(Editor) then
-    Editor.SelText := '$DATE$';
+  if Assigned(FRichEdit) then
+    FRichEdit.SelText := '$DATE$';
 end;
 
 procedure TPageSetupDlg.TitleCmdExecute(Sender: TObject);
 begin
-  if Assigned(Editor) then
-    Editor.SelText := '$TITLE$';
+  if Assigned(FRichEdit) then
+    FRichEdit.SelText := '$TITLE$';
 end;
 
 procedure TPageSetupDlg.FontCmdExecute(Sender: TObject);
 begin
-  if not Assigned(Editor) then Exit;
+  if not Assigned(FRichEdit) then Exit;
 
-  SelectLine(CharPos.y);
+  SelectLine(FCharPos.y);
   FontDialog.Font.Assign(CurrText);
   if FontDialog.Execute then
     CurrText.Assign(FontDialog.Font);
@@ -355,9 +352,9 @@ end;
 
 procedure TPageSetupDlg.BoldCmdExecute(Sender: TObject);
 begin
-  if not Assigned(Editor) then Exit;
+  if not Assigned(FRichEdit) then Exit;
 
-  SelectLine(CharPos.y);
+  SelectLine(FCharPos.y);
   if fsBold in CurrText.Style then
     CurrText.Style := CurrText.Style - [fsBold]
   else
@@ -367,9 +364,9 @@ end;
 
 procedure TPageSetupDlg.ItalicCmdExecute(Sender: TObject);
 begin
-  if not Assigned(Editor) then Exit;
+  if not Assigned(FRichEdit) then Exit;
 
-  SelectLine(CharPos.y);
+  SelectLine(FCharPos.y);
   if fsItalic in CurrText.Style then
     CurrText.Style := CurrText.Style - [fsItalic]
   else
@@ -379,13 +376,13 @@ end;
 
 procedure TPageSetupDlg.UnderlineCmdExecute(Sender: TObject);
 begin
-  if not Assigned(Editor) then Exit;
+  if not Assigned(FRichEdit) then Exit;
 
-  SelectLine(CharPos.y);
-  if fsUnderLine in CurrText.Style then
-    CurrText.Style := CurrText.Style - [fsUnderLine]
+  SelectLine(FCharPos.y);
+  if fsUnderline in CurrText.Style then
+    CurrText.Style := CurrText.Style - [fsUnderline]
   else
-    CurrText.Style := CurrText.Style + [fsUnderLine];
+    CurrText.Style := CurrText.Style + [fsUnderline];
   SelectNone;
 end;
 
@@ -452,7 +449,7 @@ begin
       RightHFTextIndent := StringToFloat(EditRightHFTextIndent);
       HFInternalMargin := StringToFloat(EditHFInternalMargin);
     except
-      StyledMessageDlg(_(SInvalidNumber), mtError, [mbOk], 0);
+      StyledMessageDlg(_(SInvalidNumber), mtError, [mbOK], 0);
       CurEdit.SetFocus;
     end;
     MirrorMargins := CBMirrorMargins.Checked;
@@ -487,22 +484,21 @@ begin
 end;
 
 procedure TPageSetupDlg.AddLines(HeadFoot: THeaderFooter; AEdit: TCustomRichEdit;
-  Al: TALignment);
+  Align: TALignment);
 var
-  i: Integer;
   AFont: TFont;
 begin
-  Editor := AEdit;
+  FRichEdit := AEdit;
   AFont := TFont.Create;
-  for i := 0 to Editor.Lines.Count - 1 do begin
-    SelectLine(i);
+  for var I := 0 to FRichEdit.Lines.Count - 1 do begin
+    SelectLine(I);
     AFont.Assign(CurrText);
     if not CBColors.Checked then
       AFont.Color := HeadFoot.DefaultFont.Color;
 
     // TrimRight is used to fix a long standing bug occurring because
     // TntRichEdit ads #$D at the end of the string!
-    HeadFoot.Add(TrimRight(Editor.Lines[i]), AFont, Al, i + 1);
+    HeadFoot.Add(TrimRight(FRichEdit.Lines[I]), AFont, Align, I + 1);
   end;
   AFont.Free;
 end;
@@ -551,7 +547,6 @@ end;
 
 procedure TPageSetupDlg.SetValues(SynEditPrint: TSynEditPrint);
 var
-  i: Integer;
   AItem: THeaderFooterItem;
   LNum: Integer;
 begin
@@ -590,28 +585,28 @@ begin
   CBFooterMirror.Checked := SynEditPrint.Footer.MirrorPosition;
 
   SynEditPrint.Header.FixLines;
-  for i := 0 to SynEditPrint.Header.Count - 1 do begin
-    AItem := SynEditPrint.Header.Get(i);
+  for var I:= 0 to SynEditPrint.Header.Count - 1 do begin
+    AItem := SynEditPrint.Header.Get(I);
     case AItem.Alignment of
-      taLeftJustify: Editor := REHeaderLeft;
-      taCenter: Editor := REHeaderCenter;
-      taRightJustify: Editor := REHeaderRight;
+      taLeftJustify: FRichEdit := REHeaderLeft;
+      taCenter: FRichEdit := REHeaderCenter;
+      taRightJustify: FRichEdit := REHeaderRight;
     end;
-    LNum := Editor.Lines.Add(AItem.Text);
+    LNum := FRichEdit.Lines.Add(AItem.Text);
     SelectLine(LNum);
     CurrText.Assign(AItem.Font);
     SelectNone;
   end;
 
   SynEditPrint.Footer.FixLines;
-  for i := 0 to SynEditPrint.Footer.Count - 1 do begin
-    AItem := SynEditPrint.Footer.Get(i);
+  for var I := 0 to SynEditPrint.Footer.Count - 1 do begin
+    AItem := SynEditPrint.Footer.Get(I);
     case AItem.Alignment of
-      taLeftJustify: Editor := REFooterLeft;
-      taCenter: Editor := REFooterCenter;
-      taRightJustify: Editor := REFooterRight;
+      taLeftJustify: FRichEdit := REFooterLeft;
+      taCenter: FRichEdit := REFooterCenter;
+      taRightJustify: FRichEdit := REFooterRight;
     end;
-    LNum := Editor.Lines.Add(AItem.Text);
+    LNum := FRichEdit.Lines.Add(AItem.Text);
     SelectLine(LNum);
     CurrText.Assign(AItem.Font);
     SelectNone;

@@ -8,7 +8,6 @@ inherited DirectoryListDialog: TDirectoryListDialog
   ClientWidth = 379
   Constraints.MinHeight = 208
   Constraints.MinWidth = 358
-  ParentFont = False
   OnShow = FormShow
   ExplicitWidth = 391
   ExplicitHeight = 380
@@ -35,7 +34,7 @@ inherited DirectoryListDialog: TDirectoryListDialog
       ParentColor = False
     end
     object btnMoveUp: TButton
-      Left = 333
+      Left = 329
       Top = 96
       Width = 28
       Height = 24
@@ -47,10 +46,10 @@ inherited DirectoryListDialog: TDirectoryListDialog
       Images = vilImages
       TabOrder = 1
       OnClick = btnMoveUpClick
-      ExplicitLeft = 329
+      ExplicitLeft = 325
     end
     object btnMoveDown: TButton
-      Left = 333
+      Left = 329
       Top = 126
       Width = 28
       Height = 24
@@ -62,12 +61,12 @@ inherited DirectoryListDialog: TDirectoryListDialog
       Images = vilImages
       TabOrder = 2
       OnClick = btnMoveDownClick
-      ExplicitLeft = 329
+      ExplicitLeft = 325
     end
     object DirectoryList: TListBox
       Left = 10
       Top = 34
-      Width = 320
+      Width = 316
       Height = 189
       Anchors = [akLeft, akTop, akRight, akBottom]
       DragMode = dmAutomatic
@@ -76,7 +75,7 @@ inherited DirectoryListDialog: TDirectoryListDialog
       OnClick = DirectoryListClick
       OnDragDrop = DirectoryListDragDrop
       OnDragOver = DirectoryListDragOver
-      ExplicitWidth = 316
+      ExplicitWidth = 312
       ExplicitHeight = 188
     end
   end
@@ -161,7 +160,7 @@ inherited DirectoryListDialog: TDirectoryListDialog
     object edPath: TButtonedEdit
       Left = 10
       Top = 6
-      Width = 320
+      Width = 316
       Height = 23
       Hint = 'Enter file path here'
       Anchors = [akLeft, akTop, akRight]
@@ -173,7 +172,7 @@ inherited DirectoryListDialog: TDirectoryListDialog
       TabOrder = 3
       OnChange = edPathChange
       OnRightButtonClick = BtnPathClick
-      ExplicitWidth = 316
+      ExplicitWidth = 312
     end
   end
   object vilImages: TVirtualImageList

@@ -64,8 +64,7 @@ uses
   Vcl.FileCtrl,
   System.Math,
   JvBoxProcs,
-  JvGnugettext,
-  dmResources;
+  JvGnugettext;
 
 {$R *.dfm}
 

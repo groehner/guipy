@@ -3,14 +3,14 @@ inherited OutputWindow: TOutputWindow
   Top = 173
   HelpContext = 450
   Caption = 'Output'
-  ClientHeight = 266
-  ClientWidth = 264
+  ClientHeight = 254
+  ClientWidth = 256
   ExplicitWidth = 272
   ExplicitHeight = 293
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 264
-    Height = 266
+    Width = 256
+    Height = 254
     ExplicitWidth = 256
     ExplicitHeight = 254
     inherited FGPanel: TPanel
@@ -38,8 +38,6 @@ inherited OutputWindow: TOutputWindow
         ParentFont = False
         PopupMenu = OutputPopup
         TabOrder = 0
-        ExplicitWidth = 252
-        ExplicitHeight = 250
       end
     end
   end

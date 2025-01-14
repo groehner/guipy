@@ -46,10 +46,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure reCreditsResizeRequest(Sender: TObject; Rect: TRect);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
 var
@@ -65,36 +61,36 @@ uses
 
 const
   SAboutBoxCredits =
-    'PyScripter (www.github.com/pyscripter/pyscripter)' + SLineBreak +
-    'Java-Editor (www.javaeditor.org)' + SLineBreak +
-    'ESS-Model (http://essmodel.sourceforge.net)' + SLineBreak +
-    'Extension Library (https://torry.net/authorsmore.php?id=3588)' + SLineBreak +
-    'TextDiff (http://www.angusj.com/delphi/textdiff.html)' + SLineBreak +
-    'Python for Delphi (www.github.com/pyscripter/python4delphi)'+ SLineBreak +
-    'Rpyc (www.github.com/tomerfiliba/rpyc)'+ SLineBreak +
-    'JVCL (www.github.com/project-jedi/jvcl)'+ SLineBreak +
-    'SynEdit (www.sourceforge.net/projects/synedit)'+ SLineBreak +
-    'VirtualTreeView (www.github.com/Virtual-TreeView/)'+ SLineBreak +
-    'VirtualShellTools (www.github.com/pyscripter/mustangpeakvirtualshelltools)'+ SLineBreak +
-    'GExperts (www.gexperts.org)'+ SLineBreak +
-    'Syn Editor (www.sourceforge.net/projects/syn)'+ SLineBreak +
-    'Syn Web highlighters (www.github.com/KrystianBigaj/synweb)' + SLineBreak +
-    'Toolbar2000 (www.jrsoftware.org/tb2k.php)'+ SLineBreak +
-    'SpTBXLib (www.silverpointdevelopment.com)' + SLineBreak +
-    'SVGIconImageList (https://github.com/EtheaDev/SVGIconImageList)' + SLineBreak +
-    'zControls/Detours library (https://github.com/MahdiSafsafi)' + SLineBreak +
+    'PyScripter (www.github.com/pyscripter/pyscripter)' + sLineBreak +
+    'Java-Editor (www.javaeditor.org)' + sLineBreak +
+    'ESS-Model (http://essmodel.sourceforge.net)' + sLineBreak +
+    'Extension Library (https://torry.net/authorsmore.php?id=3588)' + sLineBreak +
+    'TextDiff (http://www.angusj.com/delphi/textdiff.html)' + sLineBreak +
+    'Python for Delphi (www.github.com/pyscripter/python4delphi)'+ sLineBreak +
+    'Rpyc (www.github.com/tomerfiliba/rpyc)'+ sLineBreak +
+    'JVCL (www.github.com/project-jedi/jvcl)'+ sLineBreak +
+    'SynEdit (www.sourceforge.net/projects/synedit)'+ sLineBreak +
+    'VirtualTreeView (www.github.com/Virtual-TreeView/)'+ sLineBreak +
+    'VirtualShellTools (www.github.com/pyscripter/mustangpeakvirtualshelltools)'+ sLineBreak +
+    'GExperts (www.gexperts.org)'+ sLineBreak +
+    'Syn Editor (www.sourceforge.net/projects/syn)'+ sLineBreak +
+    'Syn Web highlighters (www.github.com/KrystianBigaj/synweb)' + sLineBreak +
+    'Toolbar2000 (www.jrsoftware.org/tb2k.php)'+ sLineBreak +
+    'SpTBXLib (www.silverpointdevelopment.com)' + sLineBreak +
+    'SVGIconImageList (https://github.com/EtheaDev/SVGIconImageList)' + sLineBreak +
+    'zControls/Detours library (https://github.com/MahdiSafsafi)' + sLineBreak +
     'TCommandLineReader (www.benibela.de)';
 
-  sComments =
-   'A free and open source Python IDE created to support' + SLineBreak +
-   'learning and teaching informatics with various modeling techniques.' + SLineBreak +
-   SLineBreak +
-   'GuiPy is based on PyScripter and extends it with a lot of graphical tools:' + SLineBreak +
-   '- Class designer for modeling classes' + SLineBreak +
-   '- UML window with class diagrams and interactive object creation' + SLineBreak +
-   '- sequence diagram editor' + SLineBreak +
-   '- structogram editor' + SLineBreak +
-   '- GUI designer for easy creation of Tkinter, TTK or Qt apps' + SLineBreak +
+  SComments =
+   'A free and open source Python IDE created to support' + sLineBreak +
+   'learning and teaching informatics with various modeling techniques.' + sLineBreak +
+   sLineBreak +
+   'GuiPy is based on PyScripter and extends it with a lot of graphical tools:' + sLineBreak +
+   '- Class designer for modeling classes' + sLineBreak +
+   '- UML window with class diagrams and interactive object creation' + sLineBreak +
+   '- sequence diagram editor' + sLineBreak +
+   '- structogram editor' + sLineBreak +
+   '- GUI designer for easy creation of Tkinter, TTK or Qt apps' + sLineBreak +
    '- diff text tool';
 
 resourcestring
@@ -118,18 +114,9 @@ resourcestring
   SAboutBoxCreditsTranslationSlovak  = 'Slovak: %s';
   SAboutBoxCreditsTranslationSpanish = 'Spanish: %s';
 
-{  SAboutBoxCreditsDonations = '';
-    'Donations from numerous users have provided a strong incentive to develop this project.' + SLineBreak +
-    'Financial and moral support from Embarcadero (https://www.embarcadero.com/) makers of Delphi, ' +
-    'the programming environment with which PyScripter is built, and generous support '+
-    'from Tranquil IT (https://www.tranquil.it) makers of WAPT (apt-get for Windows) '+
-    '(https://www.wapt.fr) is thankfully acknowledged.';
-}
   SAboutBoxLinks =
     'The project home, Issue Tracker and source code repository are hosted at Github (www.github.com/groehner/GuiPy)'+
-{  SLineBreak+
-    'Internet group support is available at https://groups.google.com/group/PyScripter'+
-}  SLineBreak +
+    sLineBreak +
     'Please submit bug reports and questions about GuiPy to groehner@t-online.de';
 
 const
@@ -139,10 +126,10 @@ const
 type
   // in alphabetical order of the full English languages names!!
   // not in order of the gettext abbreviations.
-  ECreditLanguages = (ar,zh,fr,de,el,it,ja,kab,pt_BR,pt_PT,ru,sk,es);
+  TCreditLanguages = (ar,zh,fr,de,el,it,ja,kab,pt_BR,pt_PT,ru,sk,es);
 
 const
-  cAboutLanguages : array[ECreditLanguages] of string = (
+  CAboutLanguages : array[TCreditLanguages] of string = (
     SAboutBoxCreditsTranslationArabic,
     SAboutBoxCreditsTranslationChinese,
     SAboutBoxCreditsTranslationFrench,
@@ -157,8 +144,8 @@ const
     SAboutBoxCreditsTranslationSlovak,
     SAboutBoxCreditsTranslationSpanish
   );
-  cAboutTranslationManager = 'Lübbe Onken';
-  cAboutTranslators : array[ECreditLanguages] of string = (
+  CAboutTranslationManager = 'Lübbe Onken';
+  CAboutTranslators : array[TCreditLanguages] of string = (
     'Mohammed Nasman, Raouf Rahiche',
     '"Love China"',
     'Groupe AmiensPython, Vincent Maille, Phil Prost',
@@ -174,18 +161,18 @@ const
     'Pedro Luis Larrosa, Victor Alberto Gil, Juan Carlos Cilleruelo'
   );
 
-  cAboutBoxCreditsThemeDesign =
-    'Adriana Díaz - Aumenta Software (https://aumenta.mx/)' + SLineBreak +
-    'Salim Saddaquzzaman (https://github.com/sk-Prime)'+ SLineBreak +
-    'Tanmaya Meher (www.github.com/tanmayameher)'+ SLineBreak +
+  CAboutBoxCreditsThemeDesign =
+    'Adriana Díaz - Aumenta Software (https://aumenta.mx/)' + sLineBreak +
+    'Salim Saddaquzzaman (https://github.com/sk-Prime)'+ sLineBreak +
+    'Tanmaya Meher (www.github.com/tanmayameher)'+ sLineBreak +
     'jprzywoski (www.github.com/jprzywoski)';
 
 procedure TRichEdit.CreateWnd;
 var
-  mask: LResult;
+  Mask: LResult;
 begin
   inherited;
-  mask := SendMessage(Handle, EM_GETEVENTMASK, 0, 0);
+  Mask := SendMessage(Handle, EM_GETEVENTMASK, 0, 0);
   SendMessage(Handle, EM_SETEVENTMASK, 0, mask or ENM_LINK);
   SendMessage(Handle, EM_AUTOURLDETECT, AURL_ENABLEURL, 0);
 end;
@@ -194,13 +181,13 @@ procedure TRichEdit.CNNotify(var Message: TWMNotify);
 type
   PENLink = ^TENLink;
 var
-  p: PENLink;
-  tr: TEXTRANGE;
-  url: array of Char;
+  PenLnk: PENLink;
+  TR: TEXTRANGE;
+  Url: array of Char;
 begin
   if (Message.NMHdr.code = EN_LINK) then begin
-    p := PENLink(Message.NMHdr);
-    if (p.Msg = WM_LBUTTONDOWN) then begin
+    PenLnk := PENLink(Message.NMHdr);
+    if (PenLnk.Msg = WM_LBUTTONDOWN) then begin
       { optionally, enable this:
       if CheckWin32Version(6, 2) then begin
         // on Windows 8+, returning EN_LINK_DO_DEFAULT directs
@@ -210,9 +197,9 @@ begin
       end;
       }
       try
-        SetLength(url, p.chrg.cpMax - p.chrg.cpMin + 1);
-        tr.chrg := p.chrg;
-        tr.lpstrText := PChar(url);
+        SetLength(url, PenLnk.chrg.cpMax - PenLnk.chrg.cpMin + 1);
+        TR.chrg := PenLnk.chrg;
+        TR.lpstrText := PChar(url);
         SendMessage(Handle, EM_GETTEXTRANGE, 0, LPARAM(@tr));
         ShellExecute(Handle, nil, PChar(url), nil, nil, SW_SHOWNORMAL);
       except
@@ -241,59 +228,44 @@ begin
 end;
 
 procedure TAboutBox.FormCreate(Sender: TObject);
-Var
-  winplatform : string;
+var
   AboutBoxCreditsTranslations : string;
-  Language : ECreditLanguages;
+  Language : TCreditLanguages;
 begin
-  {$IFDEF WIN64}
-  winplatform := 'x64';
-  {$ELSE}
-  winplatform := 'x86';
-  {$ENDIF}
   inherited;
   Copyright.Caption := #$00A9' Gerhard Röhner 2021-' + CurrentYear.ToString;
   Version.Caption:= 'Version ' + UUpdate.Version + sLineBreak + TFUpdate.GetVersionDate;
-  //Version.Caption := Format('Version %s %s', [ApplicationVersion, winplatform]);
   Comments.Caption:= sComments;
 
-  AddFormatText(reLinks, _('Links') + SLineBreak, [fsBold]);
+  AddFormatText(reLinks, _('Links') + sLineBreak, [fsBold]);
   reLinks.Paragraph.Numbering := nsBullet;
   AddFormatText(reLinks,SAboutBoxLinks);
   reLinks.ReadOnly := True;
 
-  AddFormatText(reCredits, _('Credits') + SLineBreak, [fsBold]);
-  AddFormatText(reCredits,SAboutBoxCreditsIntro + SLineBreak);
+  AddFormatText(reCredits, _('Credits') + sLineBreak, [fsBold]);
+  AddFormatText(reCredits,SAboutBoxCreditsIntro + sLineBreak);
   reCredits.Paragraph.Numbering := nsBullet;
-  AddFormatText(reCredits,SAboutBoxCredits + SLineBreak);
+  AddFormatText(reCredits,SAboutBoxCredits + sLineBreak);
 
   reCredits.Paragraph.Numbering := nsNone;
-  AddFormatText(reCredits, SLineBreak + _('Translation manager') + ':' + SLineBreak, [fsItalic]);
+  AddFormatText(reCredits, sLineBreak + _('Translation manager') + ':' + sLineBreak, [fsItalic]);
   reCredits.Paragraph.Numbering := nsBullet;
-  AddFormatText(reCredits,cAboutTranslationManager + SLineBreak);
+  AddFormatText(reCredits,cAboutTranslationManager + sLineBreak);
 
   reCredits.Paragraph.Numbering := nsNone;
-  AddFormatText(reCredits, SLineBreak + _('Translators') + ':' + SLineBreak, [fsItalic]);
+  AddFormatText(reCredits, sLineBreak + _('Translators') + ':' + sLineBreak, [fsItalic]);
 
-  for Language := Low(ECreditLanguages) to High(ECreditLanguages) do
+  for Language := Low(TCreditLanguages) to High(TCreditLanguages) do
     AboutBoxCreditsTranslations := AboutBoxCreditsTranslations +
       Format(cAboutLanguages[Language],[cAboutTranslators[Language]]) + sLineBreak;
   reCredits.Paragraph.Numbering := nsBullet;
   AddFormatText(reCredits,AboutBoxCreditsTranslations);
 
   reCredits.Paragraph.Numbering := nsNone;
-  AddFormatText(reCredits, SLineBreak + _('Artwork and theme design') + ':' + SLineBreak, [fsItalic]);
+  AddFormatText(reCredits, sLineBreak + _('Artwork and theme design') + ':' + sLineBreak, [fsItalic]);
   reCredits.Paragraph.Numbering := nsBullet;
-  AddFormatText(reCredits, cAboutBoxCreditsThemeDesign + SLineBreak);
+  AddFormatText(reCredits, cAboutBoxCreditsThemeDesign + sLineBreak);
   reCredits.Paragraph.Numbering := nsNone;
-
-{ Donations uncommented
-  reCredits.Paragraph.Numbering := nsNone;
-  AddFormatText(reCredits, SLineBreak + _('Donations') + ':' + SLineBreak, [fsItalic]);
-  reCredits.Paragraph.Numbering := nsBullet;
-  AddFormatText(reCredits,SAboutBoxCreditsDonations + SLineBreak);
-  reCredits.Paragraph.Numbering := nsNone;
-}
   reCredits.SelStart := 0;
   reCredits.SelLength := 0;
   reCredits.ReadOnly := True;

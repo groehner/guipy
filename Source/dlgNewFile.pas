@@ -24,21 +24,18 @@ type
     btnCancel: TButton;
     btnCreate: TButton;
     Splitter1: TSplitter;
-    lvTemplates: TListview;
+    lvTemplates: TListView;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure tvCategoriesGetText(Sender: TBaseVirtualTree; Node: PVirtualNode;
-      Column: TColumnIndex; TextType: TVSTTextType; var CellText: string);
+      Column: TColumnIndex; TextType: TVstTextType; var CellText: string);
     procedure FormShow(Sender: TObject);
     procedure tvCategoriesChange(Sender: TBaseVirtualTree; Node: PVirtualNode);
     procedure btnCreateClick(Sender: TObject);
     procedure lvTemplatesSelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
     procedure lvTemplatesDblClick(Sender: TObject);
-  private
-    { Private declarations }
   public
-    { Public declarations }
     Categories : TStringList;
     SelectedTemplate : TFileTemplate;
     procedure SetUp;
@@ -53,7 +50,6 @@ uses
   Vcl.Forms,
   VirtualTrees.Types,
   Winapi.ShellAPI,
-  dmCommands,
   MPCommonObjects;
 
 {$R *.dfm}
@@ -62,7 +58,7 @@ procedure TNewFileDialog.btnCreateClick(Sender: TObject);
 begin
   if Assigned(lvTemplates.Selected) then begin
     SelectedTemplate := TFileTemplate(lvTemplates.Selected.Data);
-    ModalResult := mrOK;
+    ModalResult := mrOk;
   end;
 end;
 
@@ -97,14 +93,14 @@ end;
 
 procedure TNewFileDialog.SetUp;
 var
-  i : integer;
+  I : Integer;
 begin
   Categories.Clear;
   tvCategories.Clear;
   lvTemplates.Items.Clear;
-  for i  := 0 to FileTemplates.Count - 1 do
-    if Categories.IndexOf(TFileTemplate(FileTemplates[i]).Category) < 0 then
-      Categories.Add(TFileTemplate(FileTemplates[i]).Category);
+  for I := 0 to FileTemplates.Count - 1 do
+    if Categories.IndexOf(TFileTemplate(FileTemplates[I]).Category) < 0 then
+      Categories.Add(TFileTemplate(FileTemplates[I]).Category);
   tvCategories.RootNodeCount := Categories.Count;
   if Categories.Count > 0 then
     tvCategories.Selected[tvCategories.RootNode.FirstChild] := True;
@@ -112,8 +108,8 @@ end;
 
 procedure TNewFileDialog.tvCategoriesChange(Sender: TBaseVirtualTree;
   Node: PVirtualNode);
-Var
-  i, Index : integer;
+var
+  I, Index : Integer;
   FileTemplate : TFileTemplate;
   FName : string;
   FileInfo: TSHFileInfo;
@@ -121,8 +117,8 @@ begin
   if Assigned(Node) and (vsSelected in Node.States) then begin
     lvTemplates.Items.Clear;
     Index := Node.Index;
-    for i := 0 to FileTemplates.Count - 1 do begin
-      FileTemplate := FileTemplates[i] as TFileTemplate;
+    for I := 0 to FileTemplates.Count - 1 do begin
+      FileTemplate := FileTemplates[I] as TFileTemplate;
       if CompareText(Categories[Index], FileTemplate.Category) = 0 then begin
         with lvTemplates.Items.Add do begin
           Caption := FileTemplate.Name;
@@ -151,7 +147,7 @@ procedure TNewFileDialog.tvCategoriesGetText(Sender: TBaseVirtualTree;
   var CellText: string);
 begin
   if TextType = ttNormal then
-    CellText := Categories[Node.Index]
+    CellText := Categories[Node.Index];
 end;
 
 end.

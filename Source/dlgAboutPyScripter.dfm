@@ -5,7 +5,6 @@ inherited AboutBox: TAboutBox
   Caption = 'About GuiPy'
   ClientHeight = 427
   ClientWidth = 530
-  ParentFont = False
   KeyPreview = True
   StyleElements = [seFont, seBorder]
   OnKeyPress = FormKeyPress

@@ -3,7 +3,6 @@ unit dlgRemoteFile;
 interface
 
 uses
-  System.UITypes,
   System.ImageList,
   System.Classes,
   Vcl.StdCtrls,
@@ -29,34 +28,29 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure btnSSHServersSetupClick(Sender: TObject);
     procedure HelpButtonClick(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
   TRemoteFileDialogType = (rfdOpen, rfdSave, rfdAdd, rfdSelect);
 
-  function ExecuteRemoteFileDialog(var FileName, SSHServerName: string;
-    DialogType: TRemoteFileDialogType): boolean;
+function ExecuteRemoteFileDialog(var FileName, SSHServerName: string;
+  DialogType: TRemoteFileDialogType): boolean;
 
 implementation
 
-Uses
+uses
   Vcl.Forms,
   Vcl.Dialogs,
   StringResources,
   cSSHSupport,
   JvGnugettext,
   uCommonFunctions,
-  dmResources,
   uEditAppIntfs;
 
 {$R *.dfm}
 
 
 function ExecuteRemoteFileDialog(var FileName, SSHServerName: string;
-  DialogType: TRemoteFileDialogType): boolean;
+  DialogType: TRemoteFileDialogType): Boolean;
 begin
   with TRemoteFileDialog.Create(Application.MainForm) do begin
     edFileName.Text := FileName;
@@ -72,7 +66,7 @@ begin
       rfdSelect: Caption := _(SRemoteFileSelect);
     end;
 
-    Result := ShowModal = mrOK;
+    Result := ShowModal = mrOk;
 
     if Result then begin
       FileName := edFileName.Text;
@@ -94,9 +88,9 @@ procedure TRemoteFileDialog.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
   CanClose := False;
-  if (ModalResult = mrOK) and (edFileName.Text = '') then
+  if (ModalResult = mrOk) and (edFileName.Text = '') then
     StyledMessageDlg(_(SErrorEmptyPath), mtError, [mbAbort], 0)
-  else if (ModalResult = mrOK) and (cbSSHConfigs.ItemIndex < 0) then
+  else if (ModalResult = mrOk) and (cbSSHConfigs.ItemIndex < 0) then
     StyledMessageDlg(_(SErrorEmptySSH), mtError, [mbAbort], 0)
   else
     CanClose := True;
