@@ -27,14 +27,11 @@ Uses
   SynEdit;
 
 const
-  SFileExpr = '(([a-zA-Z]:)?[^\*\?="<>|:,;\+\^]+)'; // fwd slash (/) is allowed
+  SFileExpr = '((?:[a-zA-Z]:)?[^:*?"<>|]+)'; // fwd slash (/) is allowed
   STracebackFilePosExpr =  '"\<?' + SFileExpr + '\>?", line (\d+)(, in ([\<\>\?\w]+))?';
-  SWarningFilePosExpr = '\<?' + SFileExpr + '\>?:(\d+):';
-  WideLF = WideChar(#10);
-  WideNull = WideChar(#0);
-  AnsiLineFeed       = AnsiChar(#10);
-  AnsiCarriageReturn = AnsiChar(#13);
-  AnsiCrLf           = AnsiString(#13#10);
+  SWarningFilePosExpr = '^<?' +SFileExpr + '>?:(\d+):';
+  WideLF = #$000A;
+  WideNull = #$0000;
   WordBreakString = ',.;:"�`�^!?&$@�%#~[](){}<>-=+*/\| ';
 
 (* returns the System ImageList index of the icon of a given file *)

@@ -1279,6 +1279,8 @@ begin
     TabWidth := 4;
     MaxUndo := 0;
 
+    SelectedColor.FillWholeLines := False;
+
     // Scale BookmarkOptions
     BookMarkOptions.ChangeScale(Screen.PixelsPerInch, 96);
 
