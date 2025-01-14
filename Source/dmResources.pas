@@ -244,6 +244,7 @@ begin
       AppStorage.FlushOnDestroy := False;
       AppStorage.Location := flCustom;
       AppStorage.FileName := FileName;
+      AppStorage.ReadOnly := True;
       AppStorage.StorageOptions.SetAsString :=
         AppStorage.ReadBoolean('PyScripter\SetAsString', False);
       for var Highlighter in FHighlighters do

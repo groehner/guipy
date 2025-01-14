@@ -76,7 +76,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
         object SynThemeSample: TSynEdit
           Left = 183
           Top = 41
-          Width = 384
+          Width = 380
           Height = 276
           Anchors = [akLeft, akTop, akRight]
           Font.Charset = DEFAULT_CHARSET
@@ -115,20 +115,10 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
               AnnType = sbaCarets
               AnnPos = sbpFullWidth
               FullRow = False
-            end
-            item
-              AnnType = sbaBookmark
-              AnnPos = sbpLeft
-              FullRow = True
-            end
-            item
-              AnnType = sbaTrackChanges
-              AnnPos = sbpRight
-              FullRow = True
             end>
           SelectedColor.Alpha = 0.400000005960464500
           VisibleSpecialChars = []
-          ExplicitWidth = 380
+          ExplicitWidth = 376
         end
         object lbColorThemes: TListBox
           Left = 3
@@ -253,7 +243,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
         object SynSyntaxSample: TSynEdit
           Left = 223
           Top = 64
-          Width = 332
+          Width = 328
           Height = 257
           Anchors = [akLeft, akTop, akRight]
           Font.Charset = DEFAULT_CHARSET
@@ -293,31 +283,21 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
               AnnType = sbaCarets
               AnnPos = sbpFullWidth
               FullRow = False
-            end
-            item
-              AnnType = sbaBookmark
-              AnnPos = sbpLeft
-              FullRow = True
-            end
-            item
-              AnnType = sbaTrackChanges
-              AnnPos = sbpRight
-              FullRow = True
             end>
           SelectedColor.Alpha = 0.400000005960464500
           VisibleSpecialChars = []
-          ExplicitWidth = 328
+          ExplicitWidth = 324
         end
         object cbHighlighters: TComboBox
           Left = 15
           Top = 23
-          Width = 540
+          Width = 536
           Height = 23
           Style = csDropDownList
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 0
           OnChange = cbHighlightersChange
-          ExplicitWidth = 536
+          ExplicitWidth = 532
         end
         object lbElements: TSpTBXListBox
           Left = 15
@@ -993,14 +973,14 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
           343)
         TabItem = 'SpTBXTabItem1'
         object gbRightEdge: TGroupBox
-          Left = 279
+          Left = 275
           Top = 116
           Width = 271
           Height = 80
           Anchors = [akTop, akRight]
           Caption = 'Right Edge'
           TabOrder = 5
-          ExplicitLeft = 275
+          ExplicitLeft = 271
           DesignSize = (
             271
             80)
@@ -1042,17 +1022,17 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
           AlignWithMargins = True
           Left = 15
           Top = 212
-          Width = 535
+          Width = 531
           Height = 124
           Anchors = [akLeft, akRight, akBottom]
           Caption = 'Gutter'
           TabOrder = 2
-          ExplicitWidth = 531
+          ExplicitWidth = 527
           DesignSize = (
-            535
+            531
             124)
           object Label1: TLabel
-            Left = 267
+            Left = 263
             Top = 78
             Width = 66
             Height = 15
@@ -1068,13 +1048,13 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
             Caption = 'Digits:'
           end
           object pnlGutterFontDisplay: TPanel
-            Left = 343
+            Left = 339
             Top = 44
             Width = 181
             Height = 27
             Anchors = [akTop, akRight]
             TabOrder = 8
-            ExplicitLeft = 339
+            ExplicitLeft = 335
             object lblGutterFont: TLabel
               Left = 1
               Top = 1
@@ -1146,7 +1126,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
             TabOrder = 3
           end
           object cbGutterFont: TCheckBox
-            Left = 267
+            Left = 263
             Top = 18
             Width = 156
             Height = 21
@@ -1154,10 +1134,10 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
             Caption = 'Use Gutter Font'
             TabOrder = 6
             OnClick = cbGutterFontClick
-            ExplicitLeft = 263
+            ExplicitLeft = 259
           end
           object ckGutterGradient: TCheckBox
-            Left = 267
+            Left = 263
             Top = 99
             Width = 230
             Height = 21
@@ -1165,7 +1145,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
             Anchors = [akTop, akRight]
             Caption = 'Gutter Gradient'
             TabOrder = 7
-            ExplicitLeft = 263
+            ExplicitLeft = 259
           end
           object btnGutterFont: TButton
             Left = 447
@@ -1186,14 +1166,14 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
           end
         end
         object gbBookmarks: TGroupBox
-          Left = 279
+          Left = 275
           Top = 50
           Width = 271
           Height = 62
           Anchors = [akTop, akRight]
           Caption = 'Bookmarks'
           TabOrder = 4
-          ExplicitLeft = 275
+          ExplicitLeft = 271
           object ckBookmarkKeys: TCheckBox
             Left = 23
             Top = 16
@@ -1253,14 +1233,14 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
           end
         end
         object gbLineSpacing: TGroupBox
-          Left = 10
+          Left = 9
           Top = 108
           Width = 272
           Height = 88
           Anchors = [akTop]
           Caption = 'Line spacing / Tab spacing'
           TabOrder = 1
-          ExplicitLeft = 9
+          ExplicitLeft = 8
           DesignSize = (
             272
             88)
@@ -1298,14 +1278,14 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
           end
         end
         object GroupBox2: TGroupBox
-          Left = 279
+          Left = 275
           Top = 7
           Width = 271
           Height = 43
           Anchors = [akTop, akRight]
           Caption = 'Active Line Color'
           TabOrder = 3
-          ExplicitLeft = 275
+          ExplicitLeft = 271
           DesignSize = (
             271
             43)
@@ -1335,7 +1315,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
       TabOrder = 0
     end
     object btnOk: TButton
-      Left = 261
+      Left = 257
       Top = 387
       Width = 94
       Height = 25
@@ -1345,11 +1325,11 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
       ModalResult = 1
       TabOrder = 1
       OnClick = btnOkClick
-      ExplicitLeft = 257
+      ExplicitLeft = 253
       ExplicitTop = 386
     end
     object btnCancel: TButton
-      Left = 365
+      Left = 361
       Top = 387
       Width = 94
       Height = 25
@@ -1358,11 +1338,11 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 3
-      ExplicitLeft = 361
+      ExplicitLeft = 357
       ExplicitTop = 386
     end
     object btnHelp: TButton
-      Left = 469
+      Left = 465
       Top = 387
       Width = 94
       Height = 25
@@ -1370,7 +1350,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
       Caption = '&Help'
       TabOrder = 4
       OnClick = btnHelpClick
-      ExplicitLeft = 465
+      ExplicitLeft = 461
       ExplicitTop = 386
     end
   end

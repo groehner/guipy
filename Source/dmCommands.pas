@@ -1125,6 +1125,7 @@ begin
       try
         AppStorage.Location := flCustom;
         AppStorage.FileName := FileName;
+        AppStorage.ReadOnly := True;
 
         if AppStorage.PathExists('IDE Shortcuts') then begin
           ActionProxyCollection := TActionProxyCollection.Create(apcctEmpty);

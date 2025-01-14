@@ -75,16 +75,6 @@ inherited PythonIIForm: TPythonIIForm
             AnnType = sbaCarets
             AnnPos = sbpFullWidth
             FullRow = False
-          end
-          item
-            AnnType = sbaBookmark
-            AnnPos = sbpLeft
-            FullRow = True
-          end
-          item
-            AnnType = sbaTrackChanges
-            AnnPos = sbpRight
-            FullRow = True
           end>
         SelectedColor.Alpha = 0.400000005960464500
         TabWidth = 4
