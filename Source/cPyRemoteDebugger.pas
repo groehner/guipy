@@ -23,7 +23,6 @@ uses
   cPyBaseDebugger,
   cPyDebugger;
 
-
 type
   TRemoteDebuggerClass = class of TPyRemDebugger;
 
