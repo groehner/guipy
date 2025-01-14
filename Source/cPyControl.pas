@@ -496,7 +496,7 @@ begin
 end;
 
 procedure TPythonControl.SetPythonEngineType(const Value: TPythonEngineType);
-Var
+var
   Cursor : IInterface;
   RemoteInterpreter : TPyRemoteInterpreter;
   Connected : Boolean;

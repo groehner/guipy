@@ -394,16 +394,12 @@ begin
 end;
 
 procedure TPythonIIForm.PrintInterpreterBanner(AVersion: string = ''; APlatform: string = '');
-var
-  Py: IPyEngineAndGIL;
-  S: string;
 begin
-  Py := SafePyEngine;
   if AVersion = '' then AVersion := PyControl.ActiveInterpreter.PythonVersion;
   if APlatform = '' then APlatform := PyControl.ActiveInterpreter.PythonPlatform;
   AVersion := AVersion.Replace(Char($A), ' ');
-  S := Format('*** Python %s on %s. ***' + sLineBreak, [AVersion, APlatform]);
   if SynEdit.Lines.Count > 0 then AppendText(sLineBreak);
+  var S := Format('*** Python %s on %s. ***' + sLineBreak, [AVersion, APlatform]);
   AppendText(S);
 end;
 
