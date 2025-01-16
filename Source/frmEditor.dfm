@@ -2,8 +2,8 @@ object EditorForm: TEditorForm
   Left = 304
   Top = 173
   BorderStyle = bsNone
-  ClientHeight = 701
-  ClientWidth = 600
+  ClientHeight = 575
+  ClientWidth = 503
   Color = clWindow
   Ctl3D = False
   ParentFont = True
@@ -14,8 +14,8 @@ object EditorForm: TEditorForm
   object BGPanel: TPanel
     Left = 0
     Top = 0
-    Width = 600
-    Height = 701
+    Width = 503
+    Height = 575
     Align = alClient
     BevelOuter = bvNone
     Padding.Left = 2
@@ -24,11 +24,12 @@ object EditorForm: TEditorForm
     Padding.Bottom = 2
     TabOrder = 0
     StyleElements = [seFont]
+    ExplicitHeight = 666
     object ViewsTabControl: TSpTBXTabControl
       Left = 2
       Top = 2
-      Width = 596
-      Height = 697
+      Width = 499
+      Height = 571
       Align = alClient
       OnContextPopup = ViewsTabControlContextPopup
       OnEnter = FGPanelEnter
@@ -36,13 +37,14 @@ object EditorForm: TEditorForm
       ActiveTabIndex = 0
       Images = PyIDEMainForm.vilImages
       OnActiveTabChange = ViewsTabControlActiveTabChange
+      ExplicitHeight = 223
       HiddenItems = <>
       object tabSource: TSpTBXTabItem
         Caption = 'Source'
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 516
+        CustomWidth = 391
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -60,17 +62,18 @@ object EditorForm: TEditorForm
       end
       object tbshSource: TSpTBXTabSheet
         Left = 0
-        Top = 25
-        Width = 596
-        Height = 672
+        Top = 30
+        Width = 499
+        Height = 541
         Caption = 'Source'
         ImageIndex = -1
+        ExplicitHeight = 632
         TabItem = 'tabSource'
         object SynEdit: TSynEdit
-          Left = 25
+          Left = 48
           Top = 0
-          Width = 545
-          Height = 668
+          Width = 442
+          Height = 537
           HelpContext = 510
           Align = alClient
           Ctl3D = False
@@ -159,13 +162,15 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
-          ExplicitHeight = 663
+          ExplicitLeft = 25
+          ExplicitWidth = 265
+          ExplicitHeight = 628
         end
         object SynEdit2: TSynEdit
-          Left = 570
+          Left = 490
           Top = 0
-          Width = 17
-          Height = 668
+          Width = 0
+          Height = 537
           Align = alRight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -196,13 +201,6 @@ object EditorForm: TEditorForm
             item
               Kind = gbkMarks
               Width = 13
-            end
-            item
-              Kind = gbkCustom
-              Width = 13
-              OnPaintLines = SynEditDebugInfoPaintLines
-              OnCLick = SynEditGutterDebugInfoCLick
-              OnMouseCursor = SynEditGutterDebugInfoMouseCursor
             end
             item
               Kind = gbkLineNumbers
@@ -241,29 +239,32 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
-          ExplicitHeight = 663
+          ExplicitLeft = 395
+          ExplicitHeight = 200
         end
         object EditorSplitter: TSpTBXSplitter
-          Left = 587
+          Left = 490
           Top = 0
-          Height = 668
+          Height = 537
           Cursor = crSizeWE
           Align = alRight
           ParentColor = False
           Visible = False
           GripSize = 80
-          ExplicitHeight = 663
+          ExplicitLeft = 391
+          ExplicitHeight = 200
         end
         object EditformToolbar: TToolBar
           Left = 2
           Top = 0
-          Width = 23
-          Height = 668
+          Width = 46
+          Height = 537
           Align = alLeft
           AutoSize = True
           Images = vilEditorToolbarLight
           TabOrder = 3
-          ExplicitHeight = 663
+          ExplicitWidth = 23
+          ExplicitHeight = 628
           object TBClose: TToolButton
             Left = 0
             Top = 0
@@ -271,12 +272,11 @@ object EditorForm: TEditorForm
             Caption = '&Close'
             ImageIndex = 0
             ImageName = 'Close'
-            Wrap = True
             OnClick = TBCloseClick
           end
           object TBExplorer: TToolButton
-            Left = 0
-            Top = 22
+            Left = 23
+            Top = 0
             Hint = 'Open explorer for current file'
             ImageIndex = 1
             ImageName = 'Explorer'
@@ -285,16 +285,15 @@ object EditorForm: TEditorForm
           end
           object TBBrowser: TToolButton
             Left = 0
-            Top = 44
+            Top = 22
             Hint = 'Show in browser'
             ImageIndex = 2
             ImageName = 'Browser'
-            Wrap = True
             OnClick = TBBrowserClick
           end
           object TBDesignform: TToolButton
-            Left = 0
-            Top = 66
+            Left = 23
+            Top = 22
             Hint = 'Open associated design form'
             ImageIndex = 3
             ImageName = 'Designform'
@@ -303,16 +302,15 @@ object EditorForm: TEditorForm
           end
           object TBClassOpen: TToolButton
             Left = 0
-            Top = 88
+            Top = 44
             Hint = 'Open class in the UML window'
             ImageIndex = 4
             ImageName = 'ClassOpen'
-            Wrap = True
             OnClick = TBClassOpenClick
           end
           object TBCheck: TToolButton
-            Left = 0
-            Top = 110
+            Left = 23
+            Top = 44
             Hint = 'Check Syntax'
             ImageIndex = 5
             ImageName = 'Check'
@@ -321,16 +319,15 @@ object EditorForm: TEditorForm
           end
           object TBMatchBracket: TToolButton
             Left = 0
-            Top = 132
+            Top = 66
             Hint = 'Match bracket'
             ImageIndex = 6
             ImageName = 'MatchBracket'
-            Wrap = True
             OnClick = TBMatchBracketClick
           end
           object TBClassEdit: TToolButton
-            Left = 0
-            Top = 154
+            Left = 23
+            Top = 66
             Hint = 'Edit class'
             ImageIndex = 7
             ImageName = 'ClassEdit'
@@ -339,17 +336,16 @@ object EditorForm: TEditorForm
           end
           object TBStructureIndent: TToolButton
             Left = 0
-            Top = 176
+            Top = 88
             Hint = 'Indent structured'
             ImageIndex = 8
             ImageName = 'StructureIndent'
-            Wrap = True
             OnClick = TBStructureIndentClick
           end
           object TBIfStatement: TToolButton
             Tag = 1
-            Left = 0
-            Top = 198
+            Left = 23
+            Top = 88
             Hint = 'If-Statement'
             ImageIndex = 9
             ImageName = 'IfStatement'
@@ -359,17 +355,16 @@ object EditorForm: TEditorForm
           object TBIfElseStatement: TToolButton
             Tag = 9
             Left = 0
-            Top = 220
+            Top = 110
             Hint = 'If-Else-Statement'
             ImageIndex = 10
             ImageName = 'IfElseStatement'
-            Wrap = True
             OnClick = TBStatementClick
           end
           object TBWhileStatement: TToolButton
             Tag = 2
-            Left = 0
-            Top = 242
+            Left = 23
+            Top = 110
             Hint = 'while-Statement'
             ImageIndex = 11
             ImageName = 'WhileStatement'
@@ -379,17 +374,16 @@ object EditorForm: TEditorForm
           object TBForStatement: TToolButton
             Tag = 3
             Left = 0
-            Top = 264
+            Top = 132
             Hint = 'for-Statement'
             ImageIndex = 12
             ImageName = 'ForStatement'
-            Wrap = True
             OnClick = TBStatementClick
           end
           object TBIfElifStatement: TToolButton
             Tag = 5
-            Left = 0
-            Top = 286
+            Left = 23
+            Top = 132
             Hint = 'if-elif-Statement'
             ImageIndex = 13
             ImageName = 'SwitchStatement'
@@ -399,16 +393,15 @@ object EditorForm: TEditorForm
           object TBTryStatement: TToolButton
             Tag = 6
             Left = 0
-            Top = 308
+            Top = 154
             Hint = 'try-Statement'
             ImageIndex = 14
             ImageName = 'TryStatement'
-            Wrap = True
             OnClick = TBStatementClick
           end
           object TBComment: TToolButton
-            Left = 0
-            Top = 330
+            Left = 23
+            Top = 154
             Hint = 'Comment on/off'
             ImageIndex = 15
             ImageName = 'Comment'
@@ -417,16 +410,15 @@ object EditorForm: TEditorForm
           end
           object TBWordWrap: TToolButton
             Left = 0
-            Top = 352
+            Top = 176
             Hint = 'Wordwrap'
             ImageIndex = 17
             ImageName = 'WordWrap'
-            Wrap = True
             OnClick = TBWordWrapClick
           end
           object TBIndent: TToolButton
-            Left = 0
-            Top = 374
+            Left = 23
+            Top = 176
             Hint = 'Indent'
             ImageIndex = 18
             ImageName = 'Indent'
@@ -435,16 +427,15 @@ object EditorForm: TEditorForm
           end
           object TBUnindent: TToolButton
             Left = 0
-            Top = 396
+            Top = 198
             Hint = 'Unindent'
             ImageIndex = 19
             ImageName = 'Unindent'
-            Wrap = True
             OnClick = TBUnindentClick
           end
           object TBBreakpoint: TToolButton
-            Left = 0
-            Top = 418
+            Left = 23
+            Top = 198
             Hint = 'Breakpoint on/off'
             ImageIndex = 20
             ImageName = 'Breakpoint'
@@ -453,16 +444,15 @@ object EditorForm: TEditorForm
           end
           object TBBreakpointsClear: TToolButton
             Left = 0
-            Top = 440
+            Top = 220
             Hint = 'Delete all breakpoints'
             ImageIndex = 21
             ImageName = 'BreakpointsClear'
-            Wrap = True
             OnClick = TBBreakpointsClearClick
           end
           object TBBookmark: TToolButton
-            Left = 0
-            Top = 462
+            Left = 23
+            Top = 220
             Hint = 'Set bookmark'
             ImageIndex = 22
             ImageName = 'Bookmark'
@@ -471,16 +461,15 @@ object EditorForm: TEditorForm
           end
           object TBGotoBookmark: TToolButton
             Left = 0
-            Top = 484
+            Top = 242
             Hint = 'Goto bookmark'
             ImageIndex = 23
             ImageName = 'GotoBookmark'
-            Wrap = True
             OnClick = TBGotoBookmarkClick
           end
           object TBParagraph: TToolButton
-            Left = 0
-            Top = 506
+            Left = 23
+            Top = 242
             Hint = 'Paragraph marks on/off'
             ImageIndex = 24
             ImageName = 'Paragraph'
@@ -489,16 +478,15 @@ object EditorForm: TEditorForm
           end
           object TBNumbers: TToolButton
             Left = 0
-            Top = 528
+            Top = 264
             Hint = 'Line numbers on/off'
             ImageIndex = 25
             ImageName = 'Numbers'
-            Wrap = True
             OnClick = TBNumbersClick
           end
           object TBZoomMinus: TToolButton
-            Left = 0
-            Top = 550
+            Left = 23
+            Top = 264
             Hint = 'Zoom out'
             ImageIndex = 26
             ImageName = 'ZoomOut'
@@ -507,16 +495,15 @@ object EditorForm: TEditorForm
           end
           object TBZoomPlus: TToolButton
             Left = 0
-            Top = 572
+            Top = 286
             Hint = 'Zoom in'
             ImageIndex = 27
             ImageName = 'ZoomIn'
-            Wrap = True
             OnClick = TBZoomPlusClick
           end
           object TBValidate: TToolButton
-            Left = 0
-            Top = 594
+            Left = 23
+            Top = 286
             Hint = 'Validate'
             ImageIndex = 28
             ImageName = 'Validate'

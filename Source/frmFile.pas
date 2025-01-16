@@ -14,7 +14,7 @@ type
     ChangeStyle with notifications
     TEditorForm                        -             symbolleiste zu groß falls mit 200% gestartet wird
                                                      belibt unklar nach langer Suche
-    TFUMLForm                          DPIChanged    geprüft, Protokollfenster?
+    TFUMLForm                          DPIChanged    geprüft
     TFTextDiff                         -             geprüft
     TFBrowser                          -             geprüft, CBUrl ändert Größe nicht
     TFStructogram                      DPIChanged    geprüft
@@ -25,6 +25,7 @@ type
     // class(TIDEDockWindow) - dockable windows
     TFFileStructure      ChangeStyle                 geprüft
     TFObjectInspector    ChangeStyle
+    TFUMLInteractive     ChangeStyle
 
     // class(TPyIDEDlgBase) - dialog windows
     TFAssociation        no need create/release on need

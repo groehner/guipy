@@ -897,6 +897,8 @@ procedure TEditor.SplitEditorHorizontally;
 begin
   with fForm do
   begin
+    if not SynEdit2.IsChained then
+      SynEdit2.SetLinesPointer(SynEdit);
     EditorSplitter.Visible := False;
     SynEdit2.Visible := False;
     SynEdit2.Align := alBottom;
@@ -911,6 +913,8 @@ procedure TEditor.SplitEditorVertrically;
 begin
   with fForm do
   begin
+    if not SynEdit2.IsChained then
+      SynEdit2.SetLinesPointer(SynEdit);
     EditorSplitter.Visible := False;
     SynEdit2.Visible := False;
     SynEdit2.Align := alRight;
@@ -1656,7 +1660,8 @@ begin
   // PyIDEOptions change notification
   PyIDEOptions.OnChange.RemoveHandler(ApplyPyIDEOptions);
 
-  SynEdit2.RemoveLinesPointer;
+  if SynEdit2.IsChained then
+    SynEdit2.RemoveLinesPointer;
 
   if BreakPoints.Count > 0 then
   begin
@@ -1675,7 +1680,7 @@ begin
     PyControl.ErrorPos := TEditorPos.EmptyPos;
 
   ClearSearchHighlight(FEditor);
-  fNeedToParseModule:= true; // at every change of th source code
+  fNeedToParseModule:= true; // at every change of the source code
 end;
 
 procedure TEditorForm.SynEditDblClick(Sender: TObject);
@@ -2943,6 +2948,7 @@ procedure TEditorForm.ApplyEditorOptions;
 begin
   SynEdit.Assign(EditorOptions);
   SynEdit2.Assign(EditorOptions);
+
   SynEdit.BracketsHighlight.SetFontColorsAndStyle(
     ResourcesDataModule.SynPythonSyn.MatchingBraceAttri.Foreground,
     ResourcesDataModule.SynPythonSyn.UnbalancedBraceAttri.Foreground, [fsBold]);
@@ -5184,7 +5190,7 @@ procedure TEditorForm.DoUpdateCaption;
 Var
   TabCaption : string;
 begin
-  Assert(fEditor <> nil);
+  Assert(fEditor <> nil, 'TEditorForm.DoUpdateCaption');
   if fEditor.fRemoteFileName <> '' then
     TabCaption := TPath.GetFileName(fEditor.fRemoteFileName)
   else

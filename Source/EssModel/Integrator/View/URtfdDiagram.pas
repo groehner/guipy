@@ -153,7 +153,7 @@ type
     procedure CallMethod(C: TControl; Sender: TObject);
     procedure CallMethodForObject(Sender: TObject);
     procedure CallMethodForClass(Sender: TObject);
-    function CollectClasses: boolean;
+    procedure CollectClasses;
 
     procedure EditObject(C: TControl); override;
     function HasAttributes(Objectname: string): boolean;
@@ -220,7 +220,7 @@ begin
   inherited Create(Om, Parent, aFeedback);
   Frame:= TAFrameRtfdDiagram.Create(Parent, Self);
   Frame.Parent:= Parent;  // assigment to the gui
-  UMLForm:= (Parent.Parent.Parent.Parent as TFUMLForm);
+  UMLForm:= (Parent.Parent.Parent as TFUMLForm);
   PPIControl:= UMLForm.TBClose;
   FLivingObjects:= TLivingObjects.Create;
 
@@ -694,10 +694,10 @@ end;
 procedure TRtfdDiagram.StoreDiagram(Filename: string);
 var
   Ini : TMemIniFile;
-  I, p, comments: integer;
+  p, comments: integer;
   Box: TRtfdBox;
   S, C, fname, s1, path: string;
-  Verbindungen: TList;
+  Connections: TList;
   Conn: TConnection;
   Values: TStrings;
 
@@ -720,10 +720,10 @@ begin
     try
       //Boxes
       comments:= 0;
-      for i:= 0 to BoxNames.Count - 1 do begin
-        if BoxNames.Objects[i] is TRtfdObject then begin
+      for var I:= 0 to BoxNames.Count - 1 do begin
+        if BoxNames.Objects[I] is TRtfdObject then begin
           // Objects
-          Box:= BoxNames.Objects[i] as TRtfdObject;
+          Box:= BoxNames.Objects[I] as TRtfdObject;
           S:= 'Object: ' + Box.Entity.FullName;
           Ini.WriteInteger(S, 'X', PPIUnScale(Box.Left));
           Ini.WriteInteger(S, 'Y', PPIUnScale(Box.Top));
@@ -731,9 +731,9 @@ begin
           if FLivingObjects.ObjectExists(Box.Entity.Name)
             then Ini.WriteString(S, 'Typ', FLivingObjects.getClassnameOfObject(Box.Entity.Name))
             else Ini.WriteString(S, 'Typ','unknown')
-        end else if BoxNames.Objects[i] is TRtfdCommentBox then begin
+        end else if BoxNames.Objects[I] is TRtfdCommentBox then begin
           // Comments
-          Box:= BoxNames.Objects[i] as TRtfdBox;
+          Box:= BoxNames.Objects[I] as TRtfdBox;
           S:= Box.Entity.FullName;
           Ini.WriteInteger(S, 'X', PPIUnScale(Box.Left));
           Ini.WriteInteger(S, 'Y', PPIUnScale(Box.Top));
@@ -743,7 +743,7 @@ begin
           Ini.WriteString(S, 'Comment', myStringReplace(s1, #13#10, '_;_'));
         end else begin
           // Class
-          Box:= BoxNames.Objects[i] as TRtfdBox;
+          Box:= BoxNames.Objects[I] as TRtfdBox;
           if Box.Entity.IsVisible then begin
             S:= 'Box: ' + Box.Entity.FullName;
             fName:= RemovePortableDrive((Box.Entity as TClassifier).Pathname, path);
@@ -774,16 +774,12 @@ begin
       Ini.WriteString (S, 'Fontname', Font.Name);
       Ini.WriteInteger(S, 'Fontsize', PPIUnScale(Font.Size));
       Ini.WriteBool   (S, 'ShowObjectDiagram', ShowObjectDiagram);
-      Ini.WriteBool   (S, 'InteractiveClosed', UMLForm.InteractiveClosed);
-      Ini.WriteInteger(S, 'InteractiveHeight', UMLForm.InteractiveHeight);
-      Ini.WriteString (S, 'SynEditFontname', UMLForm.SynEdit.Font.Name);
-      Ini.WriteInteger(S, 'SynEditFontsize', PPIUnScale(UMLForm.SynEdit.Font.Size));
 
       // Connections
       s:= 'Connections';
-      Verbindungen:= Panel.GetConnections;
-      for i:= 0 to Verbindungen.Count-1 do begin
-        Conn:= TConnection(Verbindungen[i]);
+      Connections:= Panel.GetConnections;
+      for var I:= 0 to Connections.Count - 1 do begin
+        Conn:= TConnection(Connections[I]);
         with conn do
           c:= (FFrom as TRtfdBox).Entity.FullName + '#' +
               (FTo as TRtfdBox).Entity.FullName + '#' +
@@ -793,19 +789,19 @@ begin
               BoolToStr(isEdited) + '#' +
               HideCrLf(RoleA) + '#' + HideCrLf(RoleB) + '#' +
               BoolToStr(ReadingOrderA) + '#' + BoolToStr(ReadingOrderB);
-         Ini.WriteString(S, 'V' + IntToStr(i), c);
+         Ini.WriteString(S, 'V' + IntToStr(I), c);
       end;
-      FreeAndNil(Verbindungen);
+      FreeAndNil(Connections);
 
       // Interactive
-      for i:= 0 to UMLForm.SynEdit.Lines.Count - 1 do
-        Ini.WriteString('Interactive', 'I' + IntToStr(i), UMLForm.SynEdit.Lines[i]);
+      for var I:= 0 to UMLForm.InteractiveLines.Count - 1 do
+        Ini.WriteString('Interactive', 'I' + IntToStr(I), UMLForm.InteractiveLines[I]);
 
       // Window
-      for i:= 0 to Values.Count-1 do begin
-        s:= Values[i];
+      for var I:= 0 to Values.Count - 1 do begin
+        s:= Values[I];
         p:= Pos('=', s);
-        Ini.WriteString('Window', copy(s, 1, p-1), copy(s, p+1, length(s)));
+        Ini.WriteString('Window', copy(s, 1, p - 1), copy(s, p + 1, length(s)));
       end;
 
       Ini.UpdateFile;
@@ -865,10 +861,6 @@ begin
     Font.Name:= Ini.ReadString(S, 'Fontname', 'Segoe UI');
     Font.Size:= PPIScale(Ini.ReadInteger(S, 'Fontsize', 11));
     setFont(Font);
-    UMLForm.SynEdit.Font.Name:= Ini.ReadString (S, 'SynEditFontname', 'Consolas');
-    UMLForm.SynEdit.Font.Size:= PPIScale(Ini.ReadInteger(S, 'SynEditFontsize', 11));
-    UMLForm.InteractiveClosed:= Ini.ReadBool(S, 'InteractiveClosed', true);
-    UMLForm.InteractiveHeight:= Ini.ReadInteger(S, 'InteractiveHeight', 100);
 
     // read files
     path:= ExtractFilePath(Filename);
@@ -1028,18 +1020,17 @@ begin
     FLivingObjects.makeAllObjects;
     UpdateAllObjects;
 
-    UMLForm.SynEdit.BeginUpdate;
-    UMLForm.SynEdit.Lines.Clear;
+    // read interactive lines
     SL:= TStringList.Create;
     Ini.ReadSectionValues('Interactive', SL);
     for i:= 0 to SL.Count - 1 do begin
       s:= SL[i];
       p:= Pos('=', s);
       delete(s, 1, p);
-      UMLForm.SynEdit.Lines.Add(s);
+      SL[i]:= s;
     end;
+    UMLForm.InteractiveLines:= SL;
     FreeAndNil(SL);
-    UMLForm.SynEdit.EndUpdate;
   finally
     FreeAndNil(Ini);
     FreeAndNil(Files);
@@ -1522,11 +1513,10 @@ begin
   Panel.ClearSelection;
 end;
 
-function TRtfdDiagram.CollectClasses: boolean;
+procedure TRtfdDiagram.CollectClasses;
   var Pathname, Boxname, aClassname: String;
       SLFiles: TStringList;
 begin
-  Result:= true;
   SLFiles:= TStringList.Create;
   for var i:= BoxNames.Count - 1 downto 0 do begin
     Boxname:= (BoxNames.Objects[i] as TRtfdBox).Entity.Name;
@@ -1598,9 +1588,7 @@ begin
     Pathname:= (C as TRtfdClass).GetPathname;
     aClass:= (C as TRtfdClass).Entity as TClass;
     theClassname:= aClass.Name;
-    if not CollectClasses then
-      exit;
-
+    CollectClasses;
     // get parameters for constructor
     Parameter:= TStringList.Create;
     ParamValues:= TStringList.Create;
@@ -1898,7 +1886,7 @@ procedure TRtfdDiagram.CallMethod(C: TControl; Sender: TObject);
 begin
   try
     if Assigned(C) and ((C is TRtfdObject) or (C is TRtfdClass)) then begin
-      if not CollectClasses then exit;
+      CollectClasses;
       LockFormUpdate(UMLForm);
       try
         Panel.ClearSelection;
@@ -3132,13 +3120,8 @@ begin
 end;
 
 procedure TRtfdDiagram.AddToInteractive(const s: string);
-  var line: integer;
 begin
-  UMLForm.SynEdit.Lines.Add(s);
-  line:= UMLForm.SynEdit.Lines.Count - 1;
-  if line < 1 then line:= 1;
-  UMLForm.SynEdit.TopLine:= line;
-  if Assigned(OnModified) then OnModified(nil);
+  UMLForm.AddInteractiveLine(s);
 end;
 
 function TRtfdDiagram.EditClass(const Caption, Title, ObjectNameOld: string;

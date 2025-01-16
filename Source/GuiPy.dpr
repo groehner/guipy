@@ -204,7 +204,8 @@ uses
   frmLLMChat in 'frmLLMChat.pas' {LLMChatForm},
   uLLMSupport in 'uLLMSupport.pas',
   frmSuggest in 'frmSuggest.pas' {SuggestWindow},
-  SynMarkdownViewer in 'SynMarkdownViewer.pas';
+  SynMarkdownViewer in 'SynMarkdownViewer.pas',
+  UUMLInteractive in 'Main\UUMLInteractive.pas' {FUMLInteractive};
 
 {$R *.RES}
 

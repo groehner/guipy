@@ -26,17 +26,28 @@ unit UUMLForm;
 interface
 
 uses
-  Messages, Classes, Graphics, Forms, ToolWin, Controls, ExtCtrls, ComCtrls,
-  Menus, System.ImageList, Vcl.ImgList,
-  SpTBXDkPanels, SpTBXSkins, UUMLModule, frmFile, SynEdit, SpTBXItem, TB2Item,
-  Vcl.StdCtrls, Vcl.BaseImageCollection, SVGIconImageCollection,
-  Vcl.VirtualImageList;
+  Messages,
+  Classes,
+  Graphics,
+  Forms,
+  ToolWin,
+  Controls,
+  ExtCtrls,
+  ComCtrls,
+  Menus,
+  System.ImageList,
+  Vcl.ImgList,
+  Vcl.BaseImageCollection,
+  Vcl.VirtualImageList,
+  SpTBXSkins,
+  UUMLModule,
+  frmFile,
+  SVGIconImageCollection;
 
 type
 
   TFUMLForm = class(TFileForm)
     PDiagramPanel: TPanel;
-    PDiagram: TPanel;
     UMLToolbar: TToolBar;
     TBClose: TToolButton;
     TBShowConnections: TToolButton;
@@ -49,44 +60,18 @@ type
     TBView: TToolButton;
     TBClassOpen: TToolButton;
     TBRefresh: TToolButton;
-    PInteractive: TPanel;
-    TBInteractiveToolbar: TToolBar;
-    TBExecute: TToolButton;
-    TBDelete: TToolButton;
-    SynEdit: TSynEdit;
-    TBSynEditZoomMinus: TToolButton;
-    TBSynEditZoomPlus: TToolButton;
     TBInteractive: TToolButton;
-    TBInteractiveClose: TToolButton;
     TBReInitialize: TToolButton;
-    PMInteractive: TSpTBXPopupMenu;
-    MIFont: TSpTBXItem;
-    SpTBXSeparatorItem1: TSpTBXSeparatorItem;
-    MIDeleteAll: TSpTBXItem;
-    MICopyAll: TSpTBXItem;
-    SpTBXSeparatorItem2: TSpTBXSeparatorItem;
-    MIDelete: TSpTBXItem;
-    MICopy: TSpTBXItem;
-    MIPaste: TSpTBXItem;
-    SpTBXSeparatorItem3: TSpTBXSeparatorItem;
-    MIClose: TSpTBXItem;
     EmptyPopupMenu: TPopupMenu;
-    SpTBXSplitter1: TSpTBXSplitter;
     PUML: TPanel;
     TVFileStructure: TTreeView;
     vilToolbarLight: TVirtualImageList;
     vilToolbarDark: TVirtualImageList;
     icUML: TSVGIconImageCollection;
-    vilInteractiveLight: TVirtualImageList;
-    vilInteractiveDark: TVirtualImageList;
-    icInteractive: TSVGIconImageCollection;
-    vilPMInteractiveLight: TVirtualImageList;
-    vilPMInteractiveDark: TVirtualImageList;
-    icPMInteractive: TSVGIconImageCollection;
     TBRecognizeAssociations: TToolButton;
     procedure FormCreate(Sender: TObject); override;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure FormClose(Sender: TObject; var aAction: TCloseAction); override;
+    procedure FormClose(Sender: TObject; var AAction: TCloseAction); override;
     procedure FormDestroy(Sender: TObject); override;
     procedure SBCloseClick(Sender: TObject);
     procedure TBShowConnectionsClick(Sender: TObject);
@@ -99,58 +84,42 @@ type
     procedure TBZoomOutClick(Sender: TObject);
     procedure TBZoomInClick(Sender: TObject);
     procedure TBViewClick(Sender: TObject);
-    procedure TBExecuteClick(Sender: TObject);
-    procedure TBDeleteClick(Sender: TObject);
-    procedure MIPasteClick(Sender: TObject);
-    procedure MICopyClick(Sender: TObject);
-    procedure MIDeleteClick(Sender: TObject);
-    procedure MICopyAllClick(Sender: TObject);
-    procedure MIDeleteAllClick(Sender: TObject);
-    procedure MIFontClick(Sender: TObject);
-    procedure TBSynEditZoomMinusClick(Sender: TObject);
-    procedure TBSynEditZoomPlusClick(Sender: TObject);
-    procedure MICloseClick(Sender: TObject);
     procedure TBInteractiveClick(Sender: TObject);
     procedure TBClassOpenClick(Sender: TObject);
-    procedure SynEditChange(Sender: TObject);
-    //procedure PDiagramPanelEnter(Sender: TObject);
     procedure TBReInitializeClick(Sender: TObject);
-    procedure PUMLResize(Sender: TObject);
     procedure PDiagramPanelResize(Sender: TObject);
-    procedure TBInteractiveCloseClick(Sender: TObject);
     procedure TBRecognizeAssociationsClick(Sender: TObject);
   private
-    LockEnter: boolean;
-    LockRefresh: boolean;
-    LockCreateTV: boolean;
-    FInteractiveHeight: integer;
-    FInteractiveClosed: boolean;
-    AlreadySavedAs: boolean;
+    FLockEnter: Boolean;
+    FLockRefresh: Boolean;
+    FLockCreateTV: Boolean;
+    FAlreadySavedAs: Boolean;
+    FInteractiveLines: TStrings;
+    FMainModul: TDMUMLModule;
     procedure ChangeStyle;
-    procedure setInteractiveClosed(value: boolean);
-    procedure setInteractiveHeight(value: integer);
+    procedure SetInteractiveLines(Value: TStrings);
   protected
     procedure Retranslate; override;
-    function LoadFromFile(const FileName: string): boolean; override;
-    function CanCopy: boolean; override;
+    function LoadFromFile(const FileName: string): Boolean; override;
+    function CanCopy: Boolean; override;
     procedure CopyToClipboard; override;
-    procedure SetFont(aFont: TFont); override;
-    procedure SetFontSize(Delta: integer); override;
+    procedure SetFont(AFont: TFont); override;
+    procedure SetFontSize(Delta: Integer); override;
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
     // IJvAppStorageHandler implementation
   public
-    MainModul: TDMUMLModule;
     procedure Open(const Filename: string; State: string);
+    procedure Save(MitBackup: Boolean);
+    procedure SetInteractive(Lines: TStrings);
     procedure ConfigureWindow(Sender: TObject);
-    procedure Save(MitBackup: boolean);
     procedure Print; override;
     function  GetFont: TFont;
     procedure SetOptions; override;
     procedure Enter(Sender: TObject); override;
-    procedure SetOnlyModified(aModified: boolean);
-    procedure CollectClasses(SL: TStringList); override;
+    procedure SetOnlyModified(AModified: Boolean);
+    procedure CollectClasses(TSL: TStringList); override;
     procedure SaveAndReload;
-    procedure OnPanelModified(aValue: Boolean);
+    procedure OnPanelModified(AValue: Boolean);
     procedure OnInteractiveModified(Sender: TObject);
     procedure AddToProject(const Filename: string);
     procedure CreateTVFileStructure;
@@ -163,70 +132,85 @@ type
     procedure DPIChanged; override;
     procedure OpenFolder;
     procedure OpenFiles;
-    class function ToolbarCount: integer;
+    procedure AddInteractiveLine(Line: string);
 
-    property InteractiveHeight: integer read FInteractiveHeight write setInteractiveHeight;
-    property InteractiveClosed: boolean read FInteractiveClosed write setInteractiveClosed;
+    class function ToolbarCount: Integer;
+    property InteractiveLines: TStrings read FInteractiveLines write SetInteractiveLines;
+    property MainModul: TDMUMLModule read FMainModul;
   end;
 
 implementation
 
-uses Windows, SysUtils, Types, IniFiles, Math, Clipbrd, Dialogs,
-     frmPyIDEMain, dmResources, uEditAppIntfs, uCommonFunctions,
-     JvGnugettext, StringResources, cPyScripterSettings, UFileStructure,
-     UConfiguration, UUtils, UModelEntity, UModel, URtfdDiagram, UViewIntegrator,
-     cPyControl, cFileTemplates, dmCommands;
+uses
+  SysUtils,
+  Types,
+  frmPyIDEMain,
+  dmCommands,
+  dmResources,
+  uEditAppIntfs,
+  uCommonFunctions,
+  JvGnugettext,
+  StringResources,
+  cPyScripterSettings,
+  cFileTemplates,
+  UModel,
+  UModelEntity,
+  URtfdDiagram,
+  UFileStructure,
+  UConfiguration,
+  UUtils,
+  UUMLInteractive;
 
 {$R *.DFM}
 
 procedure TFUMLForm.FormCreate(Sender: TObject);
 begin
   inherited;
-  MainModul:= TDMUMLModule.Create(Self, PDiagramPanel);
+  FMainModul:= TDMUMLModule.Create(Self, PDiagramPanel);
   SetFont(GuiPyOptions.UMLFont);  // ToDo makes a RefreshDiagramm
   DefaultExtension:= 'puml';
-  Modified:= false;
-  FInteractiveClosed:= true;
+  Modified:= False;
   MainModul.Diagram.SetOnModified(OnPanelModified);
   MainModul.Diagram.SetInteractive(OnInteractiveModified);
   MainModul.Diagram.SetFormMouseDown(OnFormMouseDown);
   // to avoid popup of PopupMenuWindow on Classes
   PDiagramPanel.PopupMenu:= EmptyPopupMenu;
-  SynEdit.PopupMenu:= PMInteractive;
-  SynEdit.Font.Assign(EditorOptions.Font);
   ChangeStyle;
   SetOptions;
-  LockEnter:= false;
-  LockRefresh:= false;
-  LockCreateTV:= false;
+  FLockEnter:= False;
+  FLockRefresh:= False;
+  FLockCreateTV:= False;
+  FInteractiveLines:= TStringList.Create;
 end;
 
 procedure TFUMLForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  if Modified and not AlreadySavedAs then begin
+  if Modified and not FAlreadySavedAs then begin
     DoSaveFile;
-    AlreadySavedAs:= true;
+    FAlreadySavedAs:= True;
   end;
   FFileStructure.Clear(Self);
+  FUMLInteractive.Clear;
   if MainModul.Diagram.hasObjects and PyIDEOptions.ReinitializeWhenClosing then
     TBReInitializeClick(Self);
-  CanClose:= true;
+  CanClose:= True;
 end;
 
-procedure TFUMLForm.FormClose(Sender: TObject; var aAction: TCloseAction);
+procedure TFUMLForm.FormClose(Sender: TObject; var AAction: TCloseAction);
 begin
   inherited;
-  LockEnter:= true;
-  LockRefresh:= true;
-  LockCreateTV:= true;
-  aAction:= caFree;
-  for var i:= TVFileStructure.Items.Count - 1 downto 0 do
-    FreeAndNil(TVFileStructure.Items[i].Data);
+  FLockEnter:= True;
+  FLockRefresh:= True;
+  FLockCreateTV:= True;
+  AAction:= caFree;
+  for var I:= TVFileStructure.Items.Count - 1 downto 0 do
+    FreeAndNil(TVFileStructure.Items[I].Data);
 end;
 
 procedure TFUMLForm.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(MainModul);
+  FreeAndNil(FInteractiveLines);
   inherited;
 end;
 
@@ -250,47 +234,10 @@ begin
   end;
 end;
 
-function TFUMLForm.LoadFromFile(const FileName: string): boolean;
+function TFUMLForm.LoadFromFile(const FileName: string): Boolean;
 begin
-  Open(Filename, '');
-  Result:= true;
-end;
-
-procedure TFUMLForm.MICloseClick(Sender: TObject);
-begin
-  TBInteractiveClick(Self);
-end;
-
-procedure TFUMLForm.MICopyAllClick(Sender: TObject);
-begin
-  Clipboard.AsText:= SynEdit.Text;
-end;
-
-procedure TFUMLForm.MICopyClick(Sender: TObject);
-begin
-  Clipboard.AsText:= SynEdit.SelText;
-end;
-
-procedure TFUMLForm.MIDeleteAllClick(Sender: TObject);
-begin
-  SynEdit.Clear;
-end;
-
-procedure TFUMLForm.MIDeleteClick(Sender: TObject);
-begin
-  SynEdit.DeleteSelections;
-end;
-
-procedure TFUMLForm.MIFontClick(Sender: TObject);
-begin
-  ResourcesDataModule.dlgFontDialog.Font.Assign(SynEdit.Font);
-  if ResourcesDataModule.dlgFontDialog.Execute then
-    SynEdit.Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
-end;
-
-procedure TFUMLForm.MIPasteClick(Sender: TObject);
-begin
-  SynEdit.PasteFromClipboard;
+  Open(FileName, '');
+  Result:= True;
 end;
 
 procedure TFUMLForm.Retranslate;
@@ -300,22 +247,25 @@ begin
 end;
 
 procedure TFUMLForm.Enter(Sender: TObject);
-  var aPanel: TCustomPanel;
+  var APanel: TCustomPanel;
 begin
-  if LockEnter then exit;
-  LockEnter:= true;
+  if FLockEnter then
+    Exit;
+  FLockEnter:= True;
   inherited;
+  FUMLInteractive.SaveInteractiveLines;
+  FUMLInteractive.Init(InteractiveLines, Self);
   if Visible then begin  // due to bug, else ActiveForm doesn't change
-    if assigned(MainModul) and assigned(MainModul.Diagram) then begin
-      aPanel:= MainModul.Diagram.GetPanel;
-      if assigned(aPanel) and aPanel.CanFocus then
-        aPanel.SetFocus;
+    if Assigned(MainModul) and Assigned(MainModul.Diagram) then begin
+      APanel:= MainModul.Diagram.GetPanel;
+      if Assigned(APanel) and APanel.CanFocus then
+        APanel.SetFocus;
     end;
   end;
   SaveAndReload;
   if MainModul.Diagram.HasAInvalidClass then
     PyIDEMainForm.RunFile(fFile);
-  LockEnter:= false;
+  FLockEnter:= False;
 end;
 
 procedure TFUMLForm.ConfigureWindow(Sender: TObject);
@@ -334,30 +284,20 @@ end;
 
 procedure TFUMLForm.TBShowConnectionsClick(Sender: TObject);
 begin
-  if assigned(MainModul) and assigned(MainModul.Diagram) then begin
-    var sa:= (Mainmodul.Diagram.ShowConnections + 1) mod 3;
-    MainModul.Diagram.ShowConnections:= sa;
-    Modified:= true;
+  if Assigned(MainModul) and Assigned(MainModul.Diagram) then begin
+    var Show:= (MainModul.Diagram.ShowConnections + 1) mod 3;
+    MainModul.Diagram.ShowConnections:= Show;
+    Modified:= True;
     MainModul.Diagram.GetPanel.Invalidate;
   end;
 end;
 
-procedure TFUMLForm.TBSynEditZoomMinusClick(Sender: TObject);
-begin
-  SynEdit.Font.Size:= max(SynEdit.Font.Size -1, 6);
-end;
-
-procedure TFUMLForm.TBSynEditZoomPlusClick(Sender: TObject);
-begin
-  SynEdit.Font.Size:= SynEdit.Font.Size + 1;
-end;
-
 procedure TFUMLForm.TBViewClick(Sender: TObject);
 begin
-  if assigned(MainModul) and assigned(MainModul.Diagram) then begin
-    var sv:= (Mainmodul.Diagram.ShowView + 1) mod 3;
-    MainModul.Diagram.ShowView:= sv;
-    Modified:= true;
+  if Assigned(MainModul) and Assigned(MainModul.Diagram) then begin
+    var Show:= (MainModul.Diagram.ShowView + 1) mod 3;
+    MainModul.Diagram.ShowView:= Show;
+    Modified:= True;
     MainModul.Diagram.GetPanel.Invalidate;
   end;
 end;
@@ -375,106 +315,40 @@ end;
 procedure TFUMLForm.TBNewLayoutClick(Sender: TObject);
 begin
   MainModul.DoLayout;
-  Modified:= true;
-end;
-
-procedure TFUMLForm.TBDeleteClick(Sender: TObject);
-begin
-  if SynEdit.SelAvail
-    then SynEdit.DeleteSelections
-    else SynEdit.Clear;
+  Modified:= True;
 end;
 
 procedure TFUMLForm.TBDiagramFromOpenWindowsClick(Sender: TObject);
 begin
   MainModul.ShowAllOpenedFiles;
-  Modified:= true;
-end;
-
-procedure TFUMLForm.TBExecuteClick(Sender: TObject);
-  var Text: string; SL: TStringList;
-begin
-  if SynEdit.SelAvail
-    then Text:= SynEdit.SelText
-    else Text:= SynEdit.LineText;
-  SynEdit.SelStart:= SynEdit.SelEnd;
-  if Text = '' then Exit;
-  Text:= StringReplace(Text, #9,
-     StringOfChar(' ', SynEdit.TabWidth), [rfReplaceAll]);
-  Text:= Dedent(Text);
-  CollectClasses(nil);
-  TBExecute.Enabled:= false;
-  Screen.Cursor:= crHourglass;
-  SL := TStringList.Create;
-  try
-    MainModul.Diagram.ExecutePython(Text);
-    if GuiPyOptions.ShowAllNewObjects then
-      MainModul.Diagram.ShowAllNewObjects(Self);
-    MainModul.Diagram.ShowAll;
-  finally
-    SL.Free;
-    Screen.Cursor:= crDefault;
-    TBExecute.Enabled:= true;
-  end;
+  Modified:= True;
 end;
 
 procedure TFUMLForm.TBInteractiveClick(Sender: TObject);
 begin
-  FInteractiveClosed:= not FInteractiveClosed;
-  PUMLResize(Self);
-end;
-
-procedure TFUMLForm.TBInteractiveCloseClick(Sender: TObject);
-begin
-  FInteractiveClosed:= true;
-  PUMLResize(Self);
-end;
-
-procedure TFUMLForm.PUMLResize(Sender: TObject);
-begin
-  Modified:= true;
-  FInteractiveHeight:= max(FInteractiveHeight, 100);
-  if FInteractiveClosed
-    then PDiagram.Height:= ClientHeight - 4
-    else PDiagram.Height:= ClientHeight - 4 - FInteractiveHeight;
-end;
-
-procedure TFUMLForm.setInteractiveClosed(value: boolean);
-begin
-  FInteractiveClosed:= value;
-  if FInteractiveClosed
-    then TBInteractiveCloseClick(self)
-    else PUMLResize(Self);
-end;
-
-procedure TFUMLForm.setInteractiveHeight(value: integer);
-begin
-  if FInteractiveHeight <> value then begin
-    FInteractiveHeight:= value;
-    PUMLResize(self);
-  end;
+  PyIDEMainForm.actViewUMLInteractiveExecute(Self);
 end;
 
 procedure TFUMLForm.PDiagramPanelResize(Sender: TObject);
 begin
   if Assigned(MainModul) then
     MainModul.Diagram.RecalcPanelSize;
-  FInteractiveHeight:= ClientHeight - 4 - PDiagram.Height;
 end;
 
 procedure TFUMLForm.SaveAndReload;
 begin
-  if LockRefresh then exit;
-  LockRefresh:= true;
+  if FLockRefresh then
+    Exit;
+  FLockRefresh:= True;
   if Pathname <> '' then begin
     LockFormUpdate(Self);
     DoSave;
     MainModul.Diagram.FetchDiagram(Pathname);
-    MainModul.Diagram.ShowAll;
+//    MainModul.Diagram.ShowAll;
     CreateTVFileStructure;
-    UnLockFormUpdate(Self);
+    UnlockFormUpdate(Self);
   end;
-  LockRefresh:= false;
+  FLockRefresh:= False;
 end;
 
 procedure TFUMLForm.TBRecognizeAssociationsClick(Sender: TObject);
@@ -491,11 +365,11 @@ procedure TFUMLForm.TBClassDefinitionClick(Sender: TObject);
   var NewName: string; Editor: IEditor;
       FileTemplate : TFileTemplate;
 begin
-  NewName:= ExtractFilepath(Pathname);
+  NewName:= ExtractFilePath(Pathname);
   if ResourcesDataModule.GetSaveFileName(NewName, ResourcesDataModule.SynPythonSyn, 'py')
   then begin
     FileTemplate := FileTemplates.TemplateByName(SClassTemplateName);
-    if FileTemplate = nil then begin
+    if not Assigned(FileTemplate) then begin
       FileTemplates.AddClassTemplate;
       FileTemplate:= FileTemplates.TemplateByName(SClassTemplateName);
     end;
@@ -504,15 +378,15 @@ begin
     (Editor as IFileCommands).ExecSave;
     PyIDEMainForm.PrepareClassEdit(Editor, 'New', Self);
     ConfigureWindow(Self);
-    Modified:= true;
+    Modified:= True;
   end;
 end;
 
-procedure TFUMLForm.Save(MitBackup: boolean);
+procedure TFUMLForm.Save(MitBackup: Boolean);
 begin
   MainModul.SaveUML(Pathname);
-  SynEdit.Modified:= false;
-  Modified:= false;
+  FUMLInteractive.SynEdit.Modified:= False;
+  Modified:= False;
 end;
 
 procedure TFUMLForm.Print;
@@ -522,33 +396,33 @@ end;
 
 procedure TFUMLForm.TBObjectDiagramClick(Sender: TObject);
 begin
-  if assigned(MainModul) and assigned(MainModul.Diagram) then begin
-    var b:= not Mainmodul.Diagram.ShowObjectDiagram;
-    Mainmodul.Diagram.ShowObjectDiagram:= b;
-    Modified:= true;
-    TBObjectDiagram.Down:= b;
+  if Assigned(MainModul) and Assigned(MainModul.Diagram) then begin
+    var Show:= not MainModul.Diagram.ShowObjectDiagram;
+    MainModul.Diagram.ShowObjectDiagram:= Show;
+    Modified:= True;
+    TBObjectDiagram.Down:= Show;
   end;
 end;
 
 procedure TFUMLForm.TBCommentClick(Sender: TObject);
 begin
-  if assigned(MainModul) and assigned(MainModul.Diagram) then
-    Mainmodul.Diagram.AddCommentBoxTo(nil);
+  if Assigned(MainModul) and Assigned(MainModul.Diagram) then
+    MainModul.Diagram.AddCommentBoxTo(nil);
 end;
 
 procedure TFUMLForm.TBClassOpenClick(Sender: TObject);
 begin
-  if Mainmodul.Diagram.ShowObjectDiagram then begin
-    Mainmodul.Diagram.ShowObjectDiagram:= false;
-    TBObjectDiagram.Down:= false;
+  if MainModul.Diagram.ShowObjectDiagram then begin
+    MainModul.Diagram.ShowObjectDiagram:= False;
+    TBObjectDiagram.Down:= False;
   end;
   PyIDEMainForm.actUMLOpenClassExecute(Self);
-  Modified:= true;
+  Modified:= True;
 end;
 
-function TFUMLForm.CanCopy: boolean;
+function TFUMLForm.CanCopy: Boolean;
 begin
-  Result:= true;
+  Result:= True;
 end;
 
 procedure TFUMLForm.CopyToClipboard;
@@ -556,10 +430,10 @@ begin
   MainModul.CopyDiagramClipboardActionExecute(Self);
 end;
 
-procedure TFUMLForm.SetFont(aFont: TFont);
+procedure TFUMLForm.SetFont(AFont: TFont);
 begin
-  Font.Assign(aFont);
-  MainModul.Diagram.SetFont(aFont);
+  Font.Assign(AFont);
+  MainModul.Diagram.SetFont(AFont);
   MainModul.RefreshDiagram;
 end;
 
@@ -568,15 +442,20 @@ begin
   Result:= MainModul.Diagram.Font;
 end;
 
-procedure TFUMLForm.SetFontSize(Delta: integer);
+procedure TFUMLForm.SetFontSize(Delta: Integer);
 begin
   if Delta <> 0 then begin
-    var aFont:= GetFont;
-    aFont.Size:= aFont.Size + Delta;
-    if aFont.Size < 6 then aFont.Size:= 6;
-    Font.Size:= aFont.Size;
-    SetFont(aFont);
+    var AFont:= GetFont;
+    AFont.Size:= AFont.Size + Delta;
+    if AFont.Size < 6 then AFont.Size:= 6;
+    Font.Size:= AFont.Size;
+    SetFont(AFont);
   end;
+end;
+
+procedure TFUMLForm.SetInteractive(Lines: TStrings);
+begin
+  InteractiveLines.Assign(Lines);
 end;
 
 procedure TFUMLForm.SetOptions;
@@ -584,39 +463,39 @@ begin
   FConfiguration.setToolbarVisibility(UMLToolbar, 3);
 end;
 
-procedure TFUMLForm.SetOnlyModified(aModified: boolean);
+procedure TFUMLForm.SetOnlyModified(AModified: Boolean);
 begin
-  inherited SetModified(aModified);
+  inherited SetModified(AModified);
 end;
 
-procedure TFUMLForm.OnPanelModified(aValue: Boolean);
+procedure TFUMLForm.OnPanelModified(AValue: Boolean);
 begin
-  setModified(aValue);
+  SetModified(AValue);
 end;
 
 procedure TFUMLForm.TBReInitializeClick(Sender: TObject);
-  var i, Loops: integer;
+  var Loops: Integer;
 begin
   BeginUpdate;
   // inhibit erasing of object background during delete
   LockFormUpdate(Self);
   DeleteObjects;
-  pyIDEMainform.actPythonReinitializeExecute(Sender);
+  PyIDEMainForm.actPythonReinitializeExecute(Sender);
   Loops:= 0;
   while GI_PyControl.Running and (Loops < 20) do begin
-    sleep(50);
-    inc(Loops);
+    Sleep(50);
+    Inc(Loops);
   end;
   if not GI_PyControl.Running then begin
-    var SL:= TStringList.Create(dupIgnore, true, false);
-    SL.AddStrings(MainModul.getFiles);
-    for i:= 0 to SL.Count - 1 do
-      if FileExists(SL[i]) then
-        pyIDEMainform.ImportModule(SL[i]);
+    var TSL:= TStringList.Create(dupIgnore, True, False);
+    TSL.AddStrings(MainModul.GetFiles);
+    for var I:= 0 to TSL.Count - 1 do
+      if FileExists(TSL[I]) then
+        PyIDEMainForm.ImportModule(TSL[I]);
     MainModul.RefreshDiagram;
-    FreeAndNil(SL);
+    FreeAndNil(TSL);
   end;
-  UnLockFormUpdate(Self);
+  UnlockFormUpdate(Self);
   EndUpdate;
 end;
 
@@ -628,98 +507,103 @@ end;
 
 procedure TFUMLForm.OnInteractiveModified(Sender: TObject);
 begin
-  Modified:= true;
+  Modified:= True;
 end;
 
-procedure TFUMLForm.CollectClasses(SL: TStringList);
+procedure TFUMLForm.CollectClasses(TSL: TStringList);
 begin
   (MainModul.Diagram as TRtfdDiagram).CollectClasses;
 end;
 
 procedure TFUMLForm.CreateTVFileStructure;
   var
-    Ci, it: IModelIterator;
-    cent: TClassifier;
+    Cmi, Imt: IModelIterator;
+    Cent: TClassifier;
     Attribute: TAttribute;
     Method: TOperation;
-    PictureNr, i, Indent, IndentOld: Integer;
+    PictureNr, Indent, IndentOld: Integer;
     CName: string;
     Node: TTreeNode;
     ClassNode: TTreeNode;
-    aInteger: TInteger;
+    AInteger: TInteger;
 
-  function CalculateIndentation(const Klassenname: string): integer;
+  function CalculateIndentation(const Klassenname: string): Integer;
   begin
     Result:= 0;
-    for var i:= 1 to length(Klassenname) do
-      if Klassenname[i] = '.' then inc(Result);
+    for var I:= 1 to Length(Klassenname) do
+      if Klassenname[I] = '.' then
+        Inc(Result);
   end;
 
 begin
-  if LockCreateTV then exit;
-  LockCreateTV:= true;
+  if FLockCreateTV then
+    Exit;
+  FLockCreateTV:= True;
   Indent:= 0;
-  Classnode:= nil;
+  ClassNode:= nil;
   TVFileStructure.Items.BeginUpdate;
-  for i:= TVFileStructure.Items.Count - 1 downto 0 do begin
-    aInteger:= TInteger(TVFileStructure.Items[i].Data);
-    FreeAndNil(aInteger);
+  for var I:= TVFileStructure.Items.Count - 1 downto 0 do begin
+    AInteger:= TInteger(TVFileStructure.Items[I].Data);
+    FreeAndNil(AInteger);
   end;
   TVFileStructure.Items.Clear;
-  Ci:= MainModul.Model.ModelRoot.GetAllClassifiers;
-  while Ci.HasNext do begin
-    cent := TClassifier(Ci.Next);
-    if (MainModul.Model.ModelRoot.Files.Indexof(Cent.Pathname) = -1) or
+  Cmi:= MainModul.Model.ModelRoot.GetAllClassifiers;
+  while Cmi.HasNext do begin
+    Cent := TClassifier(Cmi.Next);
+    if (MainModul.Model.ModelRoot.Files.IndexOf(Cent.Pathname) = -1) or
        not Cent.IsVisible or Cent.Name.EndsWith('[]') then
-      continue;
+      Continue;
 
-    CName:= cent.ShortName;
+    CName:= Cent.ShortName;
     IndentOld:= Indent;
     Indent:= CalculateIndentation(CName);
     while Pos('.', CName) > 0 do
-      delete(CName, 1, Pos('.', CName));
+      Delete(CName, 1, Pos('.', CName));
 
     if Indent = 0 then
-      ClassNode:= TVFileStructure.Items.AddObject(nil, CName, TInteger.create(cent.LineS))
+      ClassNode:= TVFileStructure.Items.AddObject(nil, CName,
+        TInteger.create(Cent.LineS))
     else if Indent > IndentOld then
-      ClassNode:= TVFileStructure.Items.AddChildObject(ClassNode, CName, TInteger.create(cent.LineS))
+      ClassNode:= TVFileStructure.Items.AddChildObject(ClassNode, CName,
+        TInteger.create(Cent.LineS))
     else begin
       while Indent < IndentOld do begin
-        dec(IndentOld);
+        Dec(IndentOld);
         ClassNode:= ClassNode.Parent;
       end;
-      ClassNode:= TVFileStructure.Items.AddChildObject(ClassNode, CName, TInteger.create(cent.LineS));
+      ClassNode:= TVFileStructure.Items.AddChildObject(ClassNode, CName,
+        TInteger.create(Cent.LineS));
     end;
 
     ClassNode.ImageIndex:= 0;
     ClassNode.SelectedIndex:= 0;
-    ClassNode.HasChildren:= true;
+    ClassNode.HasChildren:= True;
 
-    it:= cent.GetAttributes;
-    while It.HasNext do begin
-      Attribute:= It.Next as TAttribute;
+    Imt:= Cent.GetAttributes;
+    while Imt.HasNext do begin
+      Attribute:= Imt.Next as TAttribute;
       PictureNr:= 1 + Integer(Attribute.Visibility);
       Node:= TVFileStructure.Items.AddChildObject(ClassNode,
                  Attribute.toNameTypeUML, TInteger.create(Attribute.LineS));
       Node.ImageIndex:= PictureNr;
       Node.SelectedIndex:= PictureNr;
-      Node.HasChildren:= false;
+      Node.HasChildren:= False;
     end;
-    It:= cent.GetOperations;
-    while It.HasNext do begin
-      Method:= It.Next as TOperation;
+    Imt:= Cent.GetOperations;
+    while Imt.HasNext do begin
+      Method:= Imt.Next as TOperation;
       if Method.OperationType = otConstructor
         then PictureNr:= 4
         else PictureNr:= 5 + Integer(Method.Visibility);
       Node:= TVFileStructure.Items.AddChildObject(ClassNode, Method.toShortStringNode, TInteger.create(Method.LineS));
       Node.ImageIndex:= PictureNr;
       Node.SelectedIndex:= PictureNr;
-      Node.HasChildren:= false;
+      Node.HasChildren:= False;
     end;
   end;
   TVFileStructure.Items.EndUpdate;
-  FFileStructure.init(TVFileStructure.Items, Self);
-  LockCreateTV:= false;
+  FFileStructure.Init(TVFileStructure.Items, Self);
+  FLockCreateTV:= False;
 end;
 
 procedure TFUMLForm.WMSpSkinChange(var Message: TMessage);
@@ -730,35 +614,24 @@ end;
 
 procedure TFUMLForm.ChangeStyle;
 begin
-  if IsStyledWindowsColorDark then begin
-    UMLToolbar.Images:= vilToolbarDark;
-    TBInteractiveToolbar.Images:= vilInteractiveDark;
-    PMInteractive.Images:= vilPMInteractiveDark;
-  end else begin
+  if IsStyledWindowsColorDark then
+    UMLToolbar.Images:= vilToolbarDark
+  else
     UMLToolbar.Images:= vilToolbarLight;
-    TBInteractiveToolbar.Images:= vilInteractiveLight;
-    PMInteractive.Images:= vilPMInteractiveLight;
-  end;
-  SynEdit.Highlighter:= ResourcesDataModule.Highlighters.HighlighterFromFileExt('py');
   MainModul.Diagram.ChangeStyle;
 end;
 
 function TFUMLForm.getAsStringList: TStringList;
 begin
-  Save(false);
+  Save(False);
   Result:= TStringList.Create;
   Result.LoadFromFile(Pathname);
-end;
-
-procedure TFUMLForm.SynEditChange(Sender: TObject);
-begin
-  Modified:= true;
 end;
 
 procedure TFUMLForm.ClassEdit;
 begin
   MainModul.EditSelectedElement;
-  Modified:= true;
+  Modified:= True;
 end;
 
 procedure TFUMLForm.BeginUpdate;
@@ -778,7 +651,7 @@ end;
 
 procedure TFUMLForm.DPIChanged;
 begin
-  setFontSize(Font.Size - GetFont.Size);
+  SetFontSize(Font.Size - GetFont.Size);
   MainModul.Diagram.RefreshDiagram;
 end;
 
@@ -805,7 +678,19 @@ begin
     CommandsDataModule.actFileCloseExecute(Self);
 end;
 
-class function TFUMLForm.ToolbarCount: integer;
+procedure TFUMLForm.AddInteractiveLine(Line: string);
+begin
+  InteractiveLines.Add(Line);
+  FUMLInteractive.Add(Line);
+  Modified:= True;
+end;
+
+procedure TFUMLForm.SetInteractiveLines(Value: TStrings);
+begin
+  InteractiveLines.Assign(Value);
+end;
+
+class function TFUMLForm.ToolbarCount: Integer;
 begin
   Result:= 14;
 end;

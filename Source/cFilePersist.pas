@@ -32,8 +32,6 @@ Type
   private
     FileKind: TFileKind;
     TabControlIndex : integer;
-    InteractiveClosed: boolean;    // UMLForm
-    InteractiveHeight: integer;    // UMLForm
     Line, Char, TopLine : integer;
     BreakPoints : TObjectList;
     BookMarks : TObjectList;
@@ -155,10 +153,6 @@ begin
        IgnoreProperties.Free;
      end;
    end;
-   if FileKind = fkUML then begin
-     AppStorage.WriteBoolean(BasePath+'\InteractiveClosed', InteractiveClosed);
-     AppStorage.WriteInteger(BasePath+'\InteractiveHeight', InteractiveHeight);
-   end;
 end;
 
 procedure TFilePersistInfo.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
@@ -194,10 +188,6 @@ begin
        EditorOptions2.Assign(cPyScripterSettings.EditorOptions);
        AppStorage.ReadPersistent(BasePath+'\Second Editor Options', EditorOptions2, True, True);
      end;
-   end;
-   if FileKind = fkUML then begin
-     InteractiveClosed:= AppStorage.ReadBoolean(BasePath+'\InteractiveClosed');
-     InteractiveHeight:= AppStorage.ReadInteger(BasePath+'\InteractiveHeight');
    end;
 end;
 
@@ -291,10 +281,6 @@ constructor TFilePersistInfo.CreateFromFile(aFile: IFile);
 begin
   Create;
   FileKind:= aFile.FileKind;
-  if FileKind = fkUML then begin
-    InteractiveClosed:= (aFile.Form as TFUMLForm).InteractiveClosed;
-    InteractiveHeight:= (aFile.Form as TFUMLForm).InteractiveHeight;
-  end;
   if FileKind = fkEditor then
     CreateFromEditor(aFile as IEditor);
   if aFile.FileName <> '' then
@@ -379,11 +365,9 @@ begin
           RestoreFoldInfo(Editor.SynEdit, FilePersistInfo.UseCodeFolding, FilePersistInfo.FoldState);
           Editor.ReadOnly := FilePersistInfo.ReadOnly;
           if FilePersistInfo.SecondEditorVisible then begin
-            Editor.SynEdit2.Assign(FilePersistInfo.EditorOptions2);
             RestoreFoldInfo(Editor.SynEdit2, FilePersistInfo.SecondEditorUseCodeFolding,
               FilePersistInfo.FoldState2);
-
-            Editor.SynEdit2.UseCodeFolding := FilePersistInfo.SecondEditorUseCodeFolding;
+            Editor.SynEdit2.Assign(FilePersistInfo.EditorOptions2);
 
             if FilePersistInfo.SecondEditorAlign = alRight then begin
               Editor.SplitEditorVertrically;
@@ -396,10 +380,6 @@ begin
           if FilePersistInfo.GUIFormOpen then
             PyIDEMainForm.DoOpenFile(ChangeFileExt(FilePersistInfo.FileName, '.pfm'), '',
               FilePersistInfo.TabControlIndex);
-        end;
-        if aFile.FileKind = fkUML then begin
-          (aFile.Form as TFUMLForm).InteractiveClosed:= FilePersistInfo.InteractiveClosed;
-          (aFile.Form as TFUMLForm).InteractiveHeight:= FilePersistInfo.InteractiveHeight;
         end;
       end;
     end;

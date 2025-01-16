@@ -867,7 +867,7 @@ const
     JSON.AddPair('contents', GeminiMessage('user', Prompt));
 
     // now add parameters
-    var GenerationConfig := TJsonObject.Create();
+    var GenerationConfig := TJSONObject.Create;
     GenerationConfig.AddPair('maxOutputTokens', Settings.MaxTokens);
     GenerationConfig.AddPair('temperature', Temperature);
     if Length(FStopSequence) > 0 then
@@ -891,7 +891,7 @@ begin
   JSON.AddPair('stream', False);
   JSON.AddPair('prompt', Prompt);
   if Suffix <> '' then
-    JSON.AddPair('suffix', Suffix
+    JSON.AddPair('suffix', Suffix);
   case FEndPointType of
     etOllamaGenerate:
       begin

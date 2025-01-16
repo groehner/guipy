@@ -315,8 +315,8 @@ type
       write fDiVisibilityFilter;
     property DiSortOrder : integer read fDiSortOrder
       write fDiSortOrder;
-    property DIShowParameter : integer read fDIShowParameter
-      write fDIShowParameter;
+    property DiShowParameter : integer read fDiShowParameter
+      write fDiShowParameter;
     property DiShowIcons : integer read fDiShowIcons
       write fDiShowIcons;
 
@@ -2429,12 +2429,10 @@ begin
     LLMAssistantViewToModel;
     Providers.setFromProviders(TempProviders);
     LLMAssistant.Providers:= TempProviders;
-    LLMAssistant.ClearContext;
 
     LLMChatViewToModel;
     ChatProviders.setFromProviders(TempChatProviders);
     LLMChatForm.LLMChat.Providers:= TempChatProviders;
-    LLMChatForm.LLMChat.ClearContext;
 
     // Visibility
     VisibilityViewToModel;

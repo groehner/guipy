@@ -500,6 +500,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SynMarkdownViewer.pas"/>
+        <DCCReference Include="Main\UUMLInteractive.pas">
+            <Form>FUMLInteractive</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="GuiPy.todo"/>
         <None Include="ModelSupport_PyScripter\default.txaPackage"/>
         <None Include="Main\_done.txt"/>

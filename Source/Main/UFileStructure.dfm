@@ -3,8 +3,8 @@ object FFileStructure: TFFileStructure
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Structure'
-  ClientHeight = 475
-  ClientWidth = 328
+  ClientHeight = 474
+  ClientWidth = 324
   Color = clBtnFace
   UseDockManager = True
   DragKind = dkDock
@@ -24,8 +24,8 @@ object FFileStructure: TFFileStructure
   object vilFileStructure: TVirtualStringTree
     Left = 0
     Top = 0
-    Width = 328
-    Height = 475
+    Width = 324
+    Height = 474
     Align = alClient
     Header.AutoSizeIndex = 0
     Header.MainColumn = -1
