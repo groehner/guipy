@@ -3,14 +3,14 @@ inherited OutputWindow: TOutputWindow
   Top = 173
   HelpContext = 450
   Caption = 'Output'
-  ClientHeight = 230
-  ClientWidth = 240
-  ExplicitWidth = 256
-  ExplicitHeight = 269
+  ClientHeight = 218
+  ClientWidth = 232
+  ExplicitWidth = 248
+  ExplicitHeight = 257
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 240
-    Height = 230
+    Width = 232
+    Height = 218
     ExplicitWidth = 240
     ExplicitHeight = 230
     inherited FGPanel: TPanel

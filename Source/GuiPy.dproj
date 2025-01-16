@@ -131,12 +131,12 @@
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_Define>JVDOCK_DEBUG;madExcept;DROPWATCH;$(DCC_Define)</DCC_Define>
         <VerInfo_Build>0</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=6.2.0.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=6.3.0.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>GuiPy_Icon.ico</Icon_MainIcon>
         <DCC_ImportedDataReferences>false</DCC_ImportedDataReferences>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_MajorVer>6</VerInfo_MajorVer>
-        <VerInfo_MinorVer>2</VerInfo_MinorVer>
+        <VerInfo_MinorVer>3</VerInfo_MinorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <DCC_ExeOutput>.\$(Config)\$(Platform)</DCC_ExeOutput>
@@ -145,7 +145,7 @@
         <MapFile>3</MapFile>
         <DCC_DcuOutput>.\$(Config)\$(Platform)\DCUs</DCC_DcuOutput>
         <VerInfo_Build>0</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=6.2.0.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=6.3.0.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
         <DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -153,7 +153,7 @@
         <DCC_ImportedDataReferences>false</DCC_ImportedDataReferences>
         <DCC_Optimize>false</DCC_Optimize>
         <VerInfo_MajorVer>6</VerInfo_MajorVer>
-        <VerInfo_MinorVer>2</VerInfo_MinorVer>
+        <VerInfo_MinorVer>3</VerInfo_MinorVer>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">

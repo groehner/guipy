@@ -35,6 +35,7 @@ uses
   Vcl.WinXCtrls,
   Vcl.ActnList,
   Vcl.AppEvnts,
+  Vcl.BaseImageCollection,
   SynEdit,
   SynEditHighlighter,
   SynHighlighterMulti,
@@ -50,7 +51,8 @@ uses
   SpTBXEditors,
   SpTBXSkins,
   frmIDEDockWin,
-  uLLMSupport, Vcl.BaseImageCollection, SVGIconImageCollection;
+  uLLMSupport,
+  SVGIconImageCollection;
 
 type
   // Interposer class to prevent the auto-scrolling when clicking
@@ -61,7 +63,7 @@ type
 
   TLLMChatForm = class(TIDEDockWindow)
     pnlQuestion: TPanel;
-    vilImages: TVirtualImageList;
+    vilImagesLight: TVirtualImageList;
     ScrollBox: TScrollBox;
     QAStackPanel: TStackPanel;
     aiBusy: TActivityIndicator;
@@ -103,6 +105,7 @@ type
     SpTBXSeparatorItem5: TSpTBXSeparatorItem;
     mnCopyToNewEditor: TSpTBXItem;
     icMenuAndToolbar: TSVGIconImageCollection;
+    vilImagesDark: TVirtualImageList;
     procedure actChatSaveExecute(Sender: TObject);
     procedure AppEventsMessage(var Msg: tagMsg; var Handled: Boolean);
     procedure FormDestroy(Sender: TObject);
@@ -137,6 +140,7 @@ type
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
     LLMChat: TLLMChat;
+    procedure ChangeStyle;
   end;
 
 var
@@ -236,7 +240,10 @@ begin
     Width := 24;
     Height := 24;
     AutoSize := False;
-    ImageList := vilImages;
+    if IsStyledWindowsColorDark then
+      ImageList:= vilImagesDark
+    else
+      ImageList:= vilImagesLight;
     ImageName := ImgName;
     Anchors := [akLeft, akTop];
     FixedColor := StyleServices.GetSystemColor(clWindowText);
@@ -328,18 +335,24 @@ begin
   LLMChat.OnLLMError := OnLLMError;
   LLMChat.OnLLMResponse := OnLLMResponse;
 
-
   // Restore settings and history
   var FileName := TPath.Combine(TPyScripterSettings.UserDataPath,
     'Chat history.json');
-  LLMChat.LoadChat(FileName);
-  SetQuestionTextHint;
+  try
+    LLMChat.LoadChat(FileName);
+  except
+    StyledMessageDlg(_('Could read the Chat history'), TMsgDlgType.mtError,
+      [TMsgDlgBtn.mbOK], 0);
+    DeleteFile(FileName);
+  end;
+  ChangeStyle;
 end;
 
 procedure TLLMChatForm.FormShow(Sender: TObject);
 begin
   TThread.ForceQueue(nil, procedure
   begin
+    SetQuestionTextHint;
     DisplayActiveChatTopic;
   end);
 end;
@@ -400,10 +413,7 @@ procedure TLLMChatForm.actAskQuestionExecute(Sender: TObject);
 begin
   if synQuestion.Text = '' then
     Exit;
-  if GetCurrentLanguage = 'de' then
-    LLMChat.Ask('Answer in German. ' + Parameters.ReplaceInText(synQuestion.Text))
-  else
-    LLMChat.Ask(Parameters.ReplaceInText(synQuestion.Text));
+  LLMChat.Ask(Parameters.ReplaceInText(synQuestion.Text));
 end;
 
 procedure TLLMChatForm.actCancelRequestExecute(Sender: TObject);
@@ -549,11 +559,23 @@ begin
   DisplayActiveChatTopic;
 end;
 
+procedure TLLMChatForm.ChangeStyle;
+begin
+  if IsStyledWindowsColorDark then begin
+    SpTBXToolbar.Images:= vilImagesDark;
+    sbAsk.Images:= vilImagesDark;
+  end
+  else
+  begin
+    SpTBXToolbar.Images:= vilImagesLight;
+    sbAsk.Images:= vilImagesLight;
+  end;
+end;
+
 { TScrollBox }
 // To avoid the jumping of the cursor
 procedure TScrollBox.AutoScrollInView(AControl: TControl);
 begin
 end;
-
 
 end.

@@ -41,7 +41,7 @@ inherited LLMChatForm: TLLMChatForm
           Height = 32
           Action = actAskQuestion
           Anchors = [akTop, akRight]
-          Images = vilImages
+          Images = vilImagesLight
           Flat = True
           ExplicitLeft = 508
         end
@@ -175,7 +175,7 @@ inherited LLMChatForm: TLLMChatForm
           DockPos = 0
           DragHandleStyle = dhNone
           FullSize = True
-          Images = vilImages
+          Images = vilImagesLight
           ParentShowHint = False
           ShowHint = True
           ShrinkMode = tbsmNone
@@ -223,7 +223,7 @@ inherited LLMChatForm: TLLMChatForm
     Left = 32
     Top = 66
   end
-  object vilImages: TVirtualImageList
+  object vilImagesLight: TVirtualImageList
     Images = <
       item
         CollectionIndex = 0
@@ -303,11 +303,11 @@ inherited LLMChatForm: TLLMChatForm
     ImageCollection = icMenuAndToolbar
     Width = 24
     Height = 24
-    Left = 32
-    Top = 504
+    Left = 176
+    Top = 248
   end
   object ChatActionList: TActionList
-    Images = vilImages
+    Images = vilImagesLight
     OnUpdate = ChatActionListUpdate
     Left = 32
     Top = 392
@@ -411,7 +411,7 @@ inherited LLMChatForm: TLLMChatForm
     Top = 264
   end
   object pmAsk: TSpTBXPopupMenu
-    Images = vilImages
+    Images = vilImagesLight
     Left = 32
     Top = 208
     object mnCopy: TSpTBXItem
@@ -426,7 +426,7 @@ inherited LLMChatForm: TLLMChatForm
     end
   end
   object pmTextMenu: TSpTBXPopupMenu
-    Images = vilImages
+    Images = vilImagesLight
     OnPopup = pmTextMenuPopup
     Left = 32
     Top = 152
@@ -596,8 +596,196 @@ inherited LLMChatForm: TLLMChatForm
           '7.58,5 12,5C16.42,5 20,7.69 20,11C20,14.31 16.42,17 12,17Z"/>'#13#10' ' +
           '     <path d="M12 10V7l4 4-4 4v-3H8v-2h4z" transform="translate(' +
           '0, -2) rotate(180, 12, 12)"/>'#13#10'</svg>'
+      end
+      item
+        IconName = 'ChatPlus'
+        SVGText = 
+          '<svg viewBox="0 0 24 24" fill="#e6e6e6">'#13#10'  <path d="M12 3C17.5 ' +
+          '3 22 6.58 22 11C22 11.58 21.92 12.14 21.78 12.68C21.19 12.38 20.' +
+          '55 12.16 19.88 12.06C19.96 11.72 20 11.36 20 11C20 7.69 16.42 5 ' +
+          '12 5C7.58 5 4 7.69 4 11C4 14.31 7.58 17 12 17L13.09 16.95L13 18L' +
+          '13.08 18.95L12 19C10.81 19 9.62 18.83 8.47 18.5C6.64 20 4.37 20.' +
+          '89 2 21C4.33 18.67 4.75 17.1 4.75 16.5C3.06 15.17 2.05 13.15 2 1' +
+          '1C2 6.58 6.5 3 12 3M18 14H20V17H23V19H20V22H18V19H15V17H18V14Z"/' +
+          '>'#13#10'</svg>'
+      end
+      item
+        IconName = 'ChatRemove'
+        SVGText = 
+          '<svg viewBox="0 0 24 24" fill="#e6e6e6">'#13#10'  <path d="M15.46 15.8' +
+          '8L16.88 14.46L19 16.59L21.12 14.47L22.54 15.88L20.41 18L22.54 20' +
+          '.12L21.12 21.54L19 19.41L16.88 21.54L15.46 20.12L17.59 18L15.47 ' +
+          '15.88M12 3C17.5 3 22 6.58 22 11C22 11.58 21.92 12.14 21.78 12.68' +
+          'C21.19 12.38 20.55 12.16 19.88 12.06C19.96 11.72 20 11.36 20 11C' +
+          '20 7.69 16.42 5 12 5C7.58 5 4 7.69 4 11C4 14.31 7.58 17 12 17L13' +
+          '.09 16.95L13 18L13.08 18.95L12 19C10.81 19 9.62 18.83 8.47 18.5C' +
+          '6.64 20 4.37 20.89 2 21C4.33 18.67 4.75 17.1 4.75 16.5C3.06 15.1' +
+          '7 2.05 13.15 2 11C2 6.58 6.5 3 12 3Z"/>'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'ChatSave'
+        SVGText = 
+          '<svg viewBox="0 0 32 32" fill="#e6e6e6">'#13#10#9'<path d="M23.5,2.5h-1' +
+          '8c-1.7,0-3,1.4-3,3v21c0,1.6,1.3,3,3,3h21c1.6,0,3-1.4,3-3v-18L23.' +
+          '5,2.5z M26.5,26.5h-21v-21h16.8l4.2,4.2'#13#10#9#9'V26.5z M16,16c-2.5,0-4' +
+          '.5,1.9-4.5,4.5s2,4.5,4.5,4.5s4.5-1.9,4.5-4.5S18.6,16,16,16z M7,7' +
+          'h13.5v6H7V7z"/>'#13#10'</svg>'
+      end
+      item
+        IconName = 'ChatTitle'
+        SVGText = 
+          '<svg viewBox="0 0 24 24" fill="#e6e6e6">'#13#10'   <path d="M5,4V7H10.' +
+          '5V19H13.5V7H19V4H5Z" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'ChatNext'
+        SVGText = 
+          '<svg viewBox="0 0 24 24" fill="#e6e6e6">'#13#10'      <path d="M12,3C6' +
+          '.5,3 2,6.58 2,11C2.05,13.15 3.06,15.17 4.75,16.5C4.75,17.1 4.33,' +
+          '18.67 2,21C4.37,20.89 6.64,20 8.47,18.5C9.61,18.83 10.81,19 12,1' +
+          '9C17.5,19 22,15.42 22,11C22,6.58 17.5,3 12,3M12,17C7.58,17 4,14.' +
+          '31 4,11C4,7.69 7.58,5 12,5C16.42,5 20,7.69 20,11C20,14.31 16.42,' +
+          '17 12,17Z"/>'#13#10'      <path d="M12 10V7l4 4-4 4v-3H8v-2h4z" transf' +
+          'orm="translate(0.5)"/>'#13#10'</svg>'
+      end
+      item
+        IconName = 'ChatPrev'
+        SVGText = 
+          '<svg viewBox="0 0 24 24" fill="#e6e6e6">'#13#10'      <path d="M12,3C6' +
+          '.5,3 2,6.58 2,11C2.05,13.15 3.06,15.17 4.75,16.5C4.75,17.1 4.33,' +
+          '18.67 2,21C4.37,20.89 6.64,20 8.47,18.5C9.61,18.83 10.81,19 12,1' +
+          '9C17.5,19 22,15.42 22,11C22,6.58 17.5,3 12,3M12,17C7.58,17 4,14.' +
+          '31 4,11C4,7.69 7.58,5 12,5C16.42,5 20,7.69 20,11C20,14.31 16.42,' +
+          '17 12,17Z"/>'#13#10'      <path d="M12 10V7l4 4-4 4v-3H8v-2h4z" transf' +
+          'orm="translate(0, -2) rotate(180, 12, 12)"/>'#13#10'</svg>'
+      end
+      item
+        IconName = 'ChatQuestion'
+        SVGText = 
+          '<svg viewBox="0 0 24 24" fill="#e6e6e6">'#13#10'  <path d="M12 3C6.5 3' +
+          ' 2 6.6 2 11C2 13.2 3.1 15.2 4.8 16.5C4.8 17.1 4.4 18.7 2 21C4.4 ' +
+          '20.9 6.6 20 8.5 18.5C9.6 18.8 10.8 19 12 19C17.5 19 22 15.4 22 1' +
+          '1S17.5 3 12 3M12 17C7.6 17 4 14.3 4 11S7.6 5 12 5 20 7.7 20 11 1' +
+          '6.4 17 12 17M12.2 6.5C11.3 6.5 10.6 6.7 10.1 7C9.5 7.4 9.2 8 9.3' +
+          ' 8.7H11.3C11.3 8.4 11.4 8.2 11.6 8.1C11.8 8 12 7.9 12.3 7.9C12.6' +
+          ' 7.9 12.9 8 13.1 8.2C13.3 8.4 13.4 8.6 13.4 8.9C13.4 9.2 13.3 9.' +
+          '4 13.2 9.6C13 9.8 12.8 10 12.6 10.1C12.1 10.4 11.7 10.7 11.5 10.' +
+          '9C11.1 11.2 11 11.5 11 12H13C13 11.7 13.1 11.5 13.1 11.3C13.2 11' +
+          '.1 13.4 11 13.6 10.8C14.1 10.6 14.4 10.3 14.7 9.9C15 9.5 15.1 9.' +
+          '1 15.1 8.7C15.1 8 14.8 7.4 14.3 7C13.9 6.7 13.1 6.5 12.2 6.5M11 ' +
+          '13V15H13V13H11Z"/>'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'UserQuestion'
+        SVGText = 
+          '<svg viewBox="0 0 24 24" fill="#e6e6e6">'#13#10'  <path d="M20.5,14.5V' +
+          '16H19V14.5H20.5M18.5,9.5H17V9A3,3 0 0,1 20,6A3,3 0 0,1 23,9C23,9' +
+          '.97 22.5,10.88 21.71,11.41L21.41,11.6C20.84,12 20.5,12.61 20.5,1' +
+          '3.3V13.5H19V13.3C19,12.11 19.6,11 20.59,10.35L20.88,10.16C21.27,' +
+          '9.9 21.5,9.47 21.5,9A1.5,1.5 0 0,0 20,7.5A1.5,1.5 0 0,0 18.5,9V9' +
+          '.5M9,13C11.67,13 17,14.34 17,17V20H1V17C1,14.34 6.33,13 9,13M9,4' +
+          'A4,4 0 0,1 13,8A4,4 0 0,1 9,12A4,4 0 0,1 5,8A4,4 0 0,1 9,4M9,14.' +
+          '9C6.03,14.9 2.9,16.36 2.9,17V18.1H15.1V17C15.1,16.36 11.97,14.9 ' +
+          '9,14.9M9,5.9A2.1,2.1 0 0,0 6.9,8A2.1,2.1 0 0,0 9,10.1A2.1,2.1 0 ' +
+          '0,0 11.1,8A2.1,2.1 0 0,0 9,5.9Z"/>'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'Assistant'
+        SVGText = 
+          '<svg viewBox="0 -960 960 960" fill="#e6e6e6">'#13#10'    <circle r="70' +
+          '" cx="360" cy="-640" fill="#E24444" /> '#13#10'    <circle r="70" cx="' +
+          '600" cy="-640" fill="#E24444" /> '#13#10#13#10'    <path'#13#10'        d="M160-' +
+          '120v-200q0-33 23.5-56.5T240-400h480q33 0 56.5 23.5T800-320v200H1' +
+          '60Zm200-320'#13#10'        q-83 0-141.5-58.5T160-640q0-83 58.5-141.5T3' +
+          '60-840h240q83 0 141.5 58.5T800-640'#13#10'        q0 83-58.5 141.5T600' +
+          '-440H360Z'#13#10'        M240-200h480v-120H240v120Zm120-320h240q50 0 8' +
+          '5-35t35-85q0-50-35-85t-85-35H360'#13#10'        q-50 0-85 35t-35 85q0 ' +
+          '50 35 85t85 35Z" />'#13#10'</svg>'
       end>
-    Left = 264
-    Top = 352
+    Left = 184
+    Top = 144
+  end
+  object vilImagesDark: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 0
+        CollectionName = 'ArrowLeft'
+        Name = 'ArrowLeft'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = 'ArrowRight'
+        Name = 'ArrowRight'
+      end
+      item
+        CollectionIndex = 15
+        CollectionName = 'ChatPlus'
+        Name = 'ChatPlus'
+      end
+      item
+        CollectionIndex = 16
+        CollectionName = 'ChatRemove'
+        Name = 'ChatRemove'
+      end
+      item
+        CollectionIndex = 17
+        CollectionName = 'ChatSave'
+        Name = 'ChatSave'
+      end
+      item
+        CollectionIndex = 18
+        CollectionName = 'ChatTitle'
+        Name = 'ChatTitle'
+      end
+      item
+        CollectionIndex = 6
+        CollectionName = 'ChatCancel'
+        Name = 'ChatCancel'
+      end
+      item
+        CollectionIndex = 7
+        CollectionName = 'ChatCopy'
+        Name = 'ChatCopy'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = 'CopyNewEditor'
+        Name = 'CopyNewEditor'
+      end
+      item
+        CollectionIndex = 21
+        CollectionName = 'ChatQuestion'
+        Name = 'ChatQuestion'
+      end
+      item
+        CollectionIndex = 10
+        CollectionName = 'ChatPaste'
+        Name = 'ChatPaste'
+      end
+      item
+        CollectionIndex = 22
+        CollectionName = 'UserQuestion'
+        Name = 'UserQuestion'
+      end
+      item
+        CollectionIndex = 23
+        CollectionName = 'Assistant'
+        Name = 'Assistant'
+      end
+      item
+        CollectionIndex = 19
+        CollectionName = 'ChatNext'
+        Name = 'ChatNext'
+      end
+      item
+        CollectionIndex = 20
+        CollectionName = 'ChatPrev'
+        Name = 'ChatPrev'
+      end>
+    ImageCollection = icMenuAndToolbar
+    Width = 24
+    Height = 24
+    Left = 288
+    Top = 248
   end
 end

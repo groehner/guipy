@@ -3980,7 +3980,6 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object actViewUMLInteractive: TAction
       Category = 'View'
-      Caption = 'actViewUMLInteractive'
       OnExecute = actViewUMLInteractiveExecute
     end
   end

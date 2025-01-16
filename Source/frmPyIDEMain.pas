@@ -5824,6 +5824,7 @@ begin
   FObjectInspector.ChangeStyle;
   FClassEditor.ChangeStyle;
   FGUIDesigner.ChangeStyle;
+  FUMLInteractive.ChangeStyle;
   ChangeStyle;
 end;
 
