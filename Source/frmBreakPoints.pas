@@ -64,7 +64,6 @@ type
     const FBasePath = 'Breakpoints Window Options';
     var fBreakPointsList : TObjectList;
   public
-    { Public declarations }
     procedure UpdateWindow;
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
@@ -90,7 +89,7 @@ uses
 
 {$R *.dfm}
 
-Type
+type
   TBreakPointInfo = class
     FileName : string;
     Line : integer;

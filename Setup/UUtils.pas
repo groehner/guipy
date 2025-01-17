@@ -10,13 +10,13 @@ type
 
 function ExecuteFile(const FileName, Params, DefaultDir: string; ShowCmd: Integer): THandle;
 function IsAdmin: Boolean;
-function GetTempDir: String;
+function GetTempDir: string;
 function HideBlanks(s: string): string;
-function UnHideBlanks(s: String): String;
+function UnHideBlanks(s: string): string;
 function decodeQuotationMark(s: string): string;
-function myStringReplace(ImString: string; const DenString, DurchString: string): String;
+function myStringReplace(ImString: string; const DenString, DurchString: string): string;
 function Split(Delimiter: Char; Input: string): TStringList;
-function withoutTrailingSlash(s: String): string;
+function withoutTrailingSlash(s: string): string;
 function GetSpecialFolderPath(CSIDLFolder: Integer): string;
 function IsWebView2RuntimeNeeded(): boolean;
 
@@ -87,22 +87,22 @@ begin
   end;
 end; {Michael Winter}
 
-function GetTempDir: String;
+function GetTempDir: string;
   var P: PChar;
 begin
   P:= StrAlloc(255);
   GetTempPath(255, P);
-  Result:= String(P);
+  Result:= string(P);
 end;
 
-function HideBlanks(s: String): String;
+function HideBlanks(s: string): string;
 begin
   if (Pos(' ', s) > 0) and (Pos('"', s) <> 1)
     then Result:= '"' + s + '"'
     else Result:= s;
 end;
 
-function UnHideBlanks(s: String): String;
+function UnHideBlanks(s: string): string;
 begin
   if Pos('"', s) = 1
     then Result:= copy(s, 2, length(s) - 2)
@@ -114,7 +114,7 @@ begin
   Result:= myStringReplace(s, '&quot;', '"');
 end;
 
-function myStringReplace(ImString: string; const DenString, DurchString: string): String;
+function myStringReplace(ImString: string; const DenString, DurchString: string): string;
 begin
   Result:= StringReplace(Imstring, DenString, DurchString, [rfReplaceAll, rfIgnoreCase]);
 end;
@@ -133,7 +133,7 @@ begin
   Result:= SL;  
 end;
 
-function withoutTrailingSlash(s: String): string;
+function withoutTrailingSlash(s: string): string;
 begin
   if (copy(s, length(s), 1) = '/') or (copy(s, length(s), 1) = '\') then
     SetLength(s, Length(s)-1);
@@ -156,7 +156,7 @@ var
     VerifyRuntime: boolean;
 
   function ReadString(Root: HKEY; const key, aName, default: string): string;
-     Var Reg: TRegistry;
+     var Reg: TRegistry;
   begin
     Reg:= TRegistry.Create;
     with Reg do begin

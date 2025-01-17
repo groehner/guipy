@@ -21,16 +21,16 @@ type
     Version: string;
     MachineIniFile: TMemIniFile;
     PortableApplication: boolean;
-    PortAppDrive: String;
+    PortAppDrive: string;
 
     procedure CopyFromTo(const dir1, dir2, Filename: string);
     procedure RegisterApp(GuiPy: string);
     procedure ChangeRegistry(Dest, Source: string);
     procedure ChangeGuiPyRegistration(Source: string);
-    procedure WriteString(key, name, value: String);
-    function ReadString(key, name, default: String): String;
-    procedure WriteInteger(key, name: String; value: Integer);
-    function  ReadInteger(key, name: String; default: Integer): Integer;
+    procedure WriteString(key, name, value: string);
+    function ReadString(key, name, default: string): string;
+    procedure WriteInteger(key, name: string; value: Integer);
+    function  ReadInteger(key, name: string; default: Integer): Integer;
   public
     Error: boolean;
     Restart: boolean;
@@ -45,7 +45,7 @@ implementation
 
 {$R *.dfm}
 
-Uses ShellApi, UUtils, USetup, UWait, UITypes, IOUtils,
+uses ShellApi, UUtils, USetup, UWait, UITypes, IOUtils,
      JvGnugettext, UStringRessources;
 
 procedure TFUpdater.FormCreate(Sender: TObject);
@@ -86,7 +86,7 @@ end;
 procedure TFUpdater.RegisterApp(GuiPy: string);
   var Reg: TRegistry;
 
-  procedure WriteToRegistry(Key: String);
+  procedure WriteToRegistry(Key: string);
   begin
     with Reg do begin
       OpenKey(Key, true);
@@ -406,24 +406,24 @@ begin
 end;
 {$WARNINGS ON}
 
-procedure TFUpdater.WriteString(key, name, value: String);
+procedure TFUpdater.WriteString(key, name, value: string);
 begin
   if ReadString(key, name, '') = value then exit;
   MachineIniFile.WriteString(key, name, value);
 end;
 
-function TFUpdater.ReadString(key, name, default: String): String;
+function TFUpdater.ReadString(key, name, default: string): string;
 begin
   Result:= MachineIniFile.ReadString(key, name, default);
 end;
 
-procedure TFUpdater.WriteInteger(key, name: String; value: Integer);
+procedure TFUpdater.WriteInteger(key, name: string; value: Integer);
 begin
   if ReadInteger(key, name, 0) = value then exit;
   MachineIniFile.WriteInteger(key, name, value)
 end;
 
-function TFUpdater.ReadInteger(key, name: String; default: Integer): Integer;
+function TFUpdater.ReadInteger(key, name: string; default: Integer): Integer;
 begin
   Result:= MachineIniFile.ReadInteger(key, name, default)
 end;

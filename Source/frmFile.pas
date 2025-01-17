@@ -60,7 +60,7 @@ type
     function DoSaveAsRemote: boolean; virtual;
     function SaveToFile(const FileName: string): boolean;
     function LoadFromFile(const FileName: string): boolean; virtual;
-    function OpenFile(const aFilename: String): boolean; virtual;
+    function OpenFile(const aFilename: string): boolean; virtual;
     procedure Enter(Sender: TObject); virtual;
     function DoAskSaveChanges: boolean; virtual;
     procedure Print; virtual;
@@ -277,7 +277,7 @@ begin
 end;
 
 procedure TFileForm.DoUpdateCaption;
-Var
+var
   TabCaption : string;
 begin
   Assert(fFile <> nil);
@@ -304,7 +304,7 @@ begin
 end;
 
 function TFileForm.DoSaveAsRemote: boolean;
-Var
+var
   FileName, Server : string;
   aFile : IFile;
 begin
@@ -329,7 +329,7 @@ begin
     Result := False;
 end;
 
-function TFileForm.OpenFile(const aFilename: String): boolean;
+function TFileForm.OpenFile(const aFilename: string): boolean;
 begin
   Result:= LoadFromFile(aFilename);
   if Result then begin
@@ -633,7 +633,7 @@ end;
 
 procedure TFile.Close;
 // Closes without asking
-Var
+var
   TabSheet: TSpTBXTabSheet;
   TabControl: TSpTBXCustomTabControl;
 begin
@@ -786,7 +786,7 @@ begin
 end;
 
 function TFile.DefaultFilename: boolean;
- var i, p: Integer; s, Default: String;
+ var i, p: Integer; s, Default: string;
 begin
   Result:= false;
   if assigned(FConfiguration) then
@@ -914,7 +914,7 @@ begin
 end;
 
 procedure TFile.OpenRemoteFile(const FileName, ServerName: string);
-Var
+var
   TempFileName : string;
   ErrorMsg : string;
 begin
@@ -1097,7 +1097,7 @@ begin
 end;
 
 function TFileFactory.GetFileByName(const Name: string): IFile;
-Var
+var
   i: Integer;
   FullName: string;
 begin
@@ -1112,7 +1112,7 @@ begin
 end;
 
 function TFileFactory.GetFileByNameAndType(const Name: string; Kind: TFileKind): IFile;
-Var
+var
   i: Integer;
   FullName: string;
   aFile: IFile;
@@ -1130,7 +1130,7 @@ begin
 end;
 
 function TFileFactory.GetFileByType(Kind: TFileKind): IFile;
-Var
+var
   i: Integer;
   aFile: IFile;
 begin
@@ -1146,7 +1146,7 @@ begin
 end;
 
 function TFileFactory.GetFileByFileId(const Name: string): IFile;
-Var
+var
   i: Integer;
   aFile : IFile;
 begin
@@ -1193,7 +1193,7 @@ begin
 end;
 
 function TFileFactory.FirstFileCond(const Predicate: TPredicate<IFile>): IFile;
-Var
+var
   afile: IFile;
 begin
   fFiles.Lock;

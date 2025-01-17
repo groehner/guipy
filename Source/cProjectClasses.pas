@@ -147,7 +147,7 @@ type
     property RunConfig : TRunConfiguration read FRunConfig write SetRunConfig;
   end;
 
-Var
+var
   ActiveProject : TProjectRootNode;
 
 implementation
@@ -191,7 +191,7 @@ function TAbstractProjectNode.CreateListItem(Sender: TJvCustomAppStorage;
     raise Exception.Create('Error in reading project data');
   end;
 
-Var
+var
   ClassName : string;
   NodeClass : TAbstractProjectNodeClass;
 begin
@@ -429,7 +429,7 @@ begin
 end;
 
 function CompareFolderChildren(P1, P2: Pointer): integer;
-Var
+var
   Node1, Node2 : TAbstractProjectNode;
 begin
   Result := 0;  // to keep compiler happy...
@@ -479,7 +479,7 @@ end;
 
 procedure TProjectFilesNode.ImportDirectory(const Directory, Masks: string;
   Recursive: Boolean);
-Var
+var
   FileList: TStringList;
   i : integer;
   FileNode : TProjectFileNode;
@@ -567,7 +567,7 @@ end;
 
 procedure TProjectFileNode.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
-Var
+var
   BaseDir : string;
 begin
   inherited;

@@ -219,7 +219,7 @@ end;
 procedure TFunctionListWindow.LoadProcs;
 
   procedure ProcessSymbol(Symbol : TJsonValue; const ParentClass: string);
-  Var
+  var
     ProcInfo: TProcInfo;
     LineNo,
     Char,

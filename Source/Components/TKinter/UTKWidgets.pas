@@ -20,18 +20,18 @@ type
     FDisabledForeground: TColor;
     FHighlightBackground: TColor;
     FHighlightColor: TColor;
-    FHighlightThickness: String;
-    FPadX: String;
-    FPadY: String;
-    FText: String;
+    FHighlightThickness: string;
+    FPadX: string;
+    FPadY: string;
+    FText: string;
 
-    procedure setPadX(aValue: String);
-    procedure setPadY(aValue: String);
+    procedure setPadX(aValue: string);
+    procedure setPadY(aValue: string);
   protected
     procedure CalculateText(var tw, th: integer; var SL: TStringlist); override;
     procedure CalculatePadding(var pl, pt, pr, pb: integer); override;
     function getCompound: TUCompound; override;
-    function getText: String; virtual;
+    function getText: string; virtual;
     procedure setText(aValue: string); virtual;
     procedure Paint; override;
     procedure PaintBorder(R: TRect; Relief: TRelief; BorderWidth: integer); override;
@@ -43,10 +43,10 @@ type
     property DisabledForeground: TColor read FDisabledForeground write FDisabledForeground;
     property HighlightBackground: TColor read FHighlightBackground write FHighlightBackground;
     property HighlightColor: TColor read FHighlightColor write FHighlightColor;
-    property HighlightThickness: String read FHighlightThickness write FHighlightThickness;
-    property PadX: String read fPadX write setPadX;
-    property PadY: String read fPadY write setPadY;
-    property Text: String read FText write setText;
+    property HighlightThickness: string read FHighlightThickness write FHighlightThickness;
+    property PadX: string read fPadX write setPadX;
+    property PadY: string read fPadY write setPadY;
+    property Text: string read FText write setText;
   published
     property Background;
     property BorderWidth;
@@ -71,7 +71,7 @@ begin
   FPadY:= '1';
 end;
 
-procedure TKWidget.setPadX(aValue: String);
+procedure TKWidget.setPadX(aValue: string);
 begin
   if aValue <> fPadX then begin
     fPadX:= aValue;
@@ -79,7 +79,7 @@ begin
   end;
 end;
 
-procedure TKWidget.setPadY(aValue: String);
+procedure TKWidget.setPadY(aValue: string);
 begin
   if aValue <> fPadY then begin
     fPadY:= aValue;
@@ -198,7 +198,7 @@ begin
   Result:= _TU_none;
 end;
 
-function TKWidget.getText: String;
+function TKWidget.getText: string;
 begin
   Result:= FText;
 end;

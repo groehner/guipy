@@ -1,4 +1,4 @@
-﻿{-----------------------------------------------------------------------------
+{-----------------------------------------------------------------------------
  Unit Name: uCommonFunctions
  Author:    Kiriakos Vlahos
  Date:      23-Jun-2005
@@ -9,7 +9,7 @@
 unit uCommonFunctions;
 
 interface
-Uses
+uses
   Winapi.Windows,
   System.Classes,
   System.SysUtils,
@@ -329,11 +329,11 @@ type
     property Style default [];
   end;
 
-Var
+var
   StopWatch: TStopWatch;
 
 implementation
-Uses
+uses
   Winapi.UrlMon,
   Winapi.CommCtrl,
   Winapi.TlHelp32,
@@ -367,7 +367,7 @@ Uses
 
 function GetIconIndexFromFile(const AFileName: string;
   const ASmall: boolean): integer;
-Var
+var
   NameSpace : TNameSpace;
   IconSize : TIconSize;
 begin
@@ -610,11 +610,11 @@ function GetWordAtPos(const LineText: string; Start: Integer;
     Result := C.IsLetterOrDigit or (C = '_') or (AllowDot and (C = '.'));
   end;
 
-Var
+var
   i : integer;
   L, WordStart, WordEnd, ParenCounter, NewStart : integer;
   Bracket, MatchingBracket : WideChar;
-Const
+const
   AllBrackets = '()[]{}';
   CloseBrackets = [')', ']', '}'];
   OpenBrackets = ['(', '[', '{'];
@@ -723,20 +723,20 @@ begin
 end;
 
 function GetPackageRootDir(Dir : string): string;
-Var
+var
   S : string;
 begin
   if not DirIsPythonPackage(Dir) then
     raise Exception.CreateFmt('"%s" is not a Python package', [Dir]);
   S := Dir;
-  Repeat
+  repeat
     Result := S;
     S := TPath.GetDirectoryName(S);
-  Until (Result = S) or (not DirIsPythonPackage(S));
+  until (Result = S) or (not DirIsPythonPackage(S));
 end;
 
 function FileNameToModuleName(const FileName : string): string;
-Var
+var
   Path, Dir, Server : string;
 begin
   Result := ChangeFileExt(TPath.GetFileName(FileName), '');
@@ -947,7 +947,7 @@ begin
 end;
 
 function ComparePythonIdents(const S1, S2 : string): Integer; overload;
-Var
+var
   L1, L2 : integer;
 begin
   L1 := Length(S1);
@@ -963,7 +963,7 @@ begin
 end;
 
 function ComparePythonIdents(List: TStringList; Index1, Index2: Integer): Integer; overload;
-Var
+var
   S1, S2 : string;
 begin
   S1 := List[Index1];
@@ -985,7 +985,7 @@ begin
 end;
 
 procedure SetDefaultUIFont(const AFont: TFont);
-Const
+const
   UIFont = 'Segoe UI';
 begin
   if CheckWin32Version(6) and (Screen.Fonts.IndexOf(UIFont) >= 0) then
@@ -996,7 +996,7 @@ begin
 end;
 
 procedure SetContentFont(const AFont: TFont);
-Const
+const
   VistaContentFont = 'Calibri';
 begin
   if CheckWin32Version(6)
@@ -1009,7 +1009,7 @@ begin
 end;
 
 function GetBlockText(Strings : TStrings; BlockBegin, BlockEnd : TBufferCoord) : string;
-Var
+var
   Line :  integer;
 begin
   // preconditions start
@@ -1023,7 +1023,7 @@ begin
   // work backwards
   Line := BlockEnd.Line;
   Result := Copy(Strings[Line-1], 1, BlockEnd.Char - 1);
-  While (Line > BlockBegin.Line) and (Line > 1) do begin
+  while (Line > BlockBegin.Line) and (Line > 1) do begin
     Dec(Line);
     Result := Strings[Line-1] + WideCRLF + Result;
   end;
@@ -1135,11 +1135,11 @@ function LoadFileIntoWideStrings(const AFileName: string; Lines : TStrings): boo
       Lines.Text := S;
   end;
 
-Var
+var
   Reader : TStreamReader;
   FileStream: TFileStream;
   FileText, PyEncoding : AnsiString;
-  S: String;
+  S: string;
   Len : integer;
   PyWstr : PPyObject;
 begin
@@ -1230,7 +1230,7 @@ type
 (* Save WideStrings to file taking into account Python file encodings *)
 function SaveWideStringsToFile(const AFileName: string;
   Lines : TStrings;  DoBackup : Boolean = True) : boolean;
-Var
+var
   FileStream : TFileStream;
   S : AnsiString;
 begin
@@ -1306,7 +1306,7 @@ begin
 end;
 
 function FileToEncodedStr(const AFileName : string) : AnsiString;
-Var
+var
   SL : TStrings;
   Server, FName, TempFileName, ErrorMsg : string;
 begin
@@ -1334,7 +1334,7 @@ end;
 
 
 function FileToStr(const AFileName : string) : string;
-Var
+var
   SL : TStrings;
   Server, FName, TempFileName, ErrorMsg : string;
 begin
@@ -1434,7 +1434,7 @@ end;
 procedure WalkThroughDirectories(const Paths, Masks: string;
   const PreCallback: TDirectoryWalkProc;
   const Recursive: Boolean);
-Var
+var
   Path, PathName : string;
   PathList, MaskList : TArray<string>;
 begin
@@ -1449,7 +1449,7 @@ begin
 end;
 
 procedure GetFilesInPaths(Paths, Masks : string; FileList: TStrings; Recursive : Boolean = True);
-Var
+var
   PreCallback: TDirectoryWalkProc;
 begin
   PreCallback :=
@@ -1465,7 +1465,7 @@ begin
 end;
 
 procedure GetDirectoriesInPaths(Paths, Masks : string; DirList: TStrings; Recursive : Boolean = True);
-Var
+var
   PreCallback: TDirectoryWalkProc;
 begin
   PreCallback :=
@@ -1632,7 +1632,7 @@ begin
 end;
 
 procedure TXStringList.SaveToStream(Stream: TStream; Encoding: TEncoding);
-Var
+var
   Cancel: Boolean;
   S: string;
   Buffer, Preamble: TBytes;
@@ -1795,14 +1795,14 @@ function MonitorProfile: string;
   begin
     Result := Format('(%dx%d)', [Screen.DesktopWidth, Screen.DesktopHeight]);
   end;
-Const
+const
   strMask = '%d:%dDPI(%s,%d,%d,%d,%d)';
-Var
+var
   iMonitor: Integer;
   M: TMonitor;
-Begin
+begin
   Result := DesktopSizeString;
-  for iMonitor := 0 To Screen.MonitorCount - 1 Do
+  for iMonitor := 0 to Screen.MonitorCount - 1 do
     begin
         M := Screen.Monitors[iMonitor];
         Result := Result + Format(strMask, [
@@ -1815,7 +1815,7 @@ Begin
         M.Height
       ]);
     end;
-End;
+end;
 
 function DownloadUrlToFile(const URL, Filename: string): Boolean;
 begin

@@ -200,7 +200,7 @@ type
         procedure EnableEditing;
 
         property ActiveItem: TELPropsPageItem read GetActiveItem;
-        property SelText: String read getSelText write setSelText;
+        property SelText: string read getSelText write setSelText;
     end;
 
     TELPropsPage = class(TELCustomPropsPage)
@@ -622,7 +622,7 @@ type
         function GetAttrs: TELPropAttrs; override;
         procedure Edit; override;
     public
-        function getText: String;
+        function getText: string;
     end;
 
     TELEventPropEditor = class(TELClassPropEditor)
@@ -1193,7 +1193,7 @@ begin
                     LIndex := -1;
                     for LK := 0 to LPropLists[LI].Count - 1 do
                         if (LPropLists[LI].Props[LK].PropType^ = LIntersection[LJ][0].PropType^) and
-                            SameText(String(LPropLists[LI].Props[LK].Name), String(LIntersection[LJ][0].Name)) then
+                            SameText(string(LPropLists[LI].Props[LK].Name), string(LIntersection[LJ][0].Name)) then
                             begin
                                 LIndex := LK;
                                 Break;
@@ -2563,7 +2563,7 @@ procedure TELPropertyInspectorItem.SetDisplayValue(const Value: string);
 var
     LOldValue, LNewValue, s: string; // t: TPersistent;
 
-    function isValid(const s: String): boolean;
+    function isValid(const s: string): boolean;
       var i: integer;
     begin
       Result:= true;
@@ -2662,7 +2662,7 @@ procedure TELPropertyInspectorItem.UpdateParams;
     Result := MulDiv(ASize, 96, Self.Owner.CurrentPPI);
   end;
 
-  function UnScale(s: String): string;
+  function UnScale(s: string): string;
   begin
     if (Caption = 'X') or (Caption = 'Y') or (Caption = 'Width') or (Caption ='Height')
     then begin
@@ -2858,7 +2858,7 @@ begin
             ((LTypeInfo.Kind = tkClass) and (FEditors[LI].TypeInfo.Kind = tkClass) and
             GetTypeData(LTypeInfo).ClassType.InheritsFrom(GetTypeData(FEditors[LI].TypeInfo).ClassType)) then
             if ((FEditors[LI].ObjectClass = nil) or (LClass.InheritsFrom(FEditors[LI].ObjectClass))) and
-                ((FEditors[LI].PropName = '') or SameText(FEditors[LI].PropName, String(APropInfo.Name))) then
+                ((FEditors[LI].PropName = '') or SameText(FEditors[LI].PropName, string(APropInfo.Name))) then
                 if (LBest = -1) or ((FEditors[LBest].ObjectClass = nil) and (FEditors[LI].ObjectClass <> nil)) or
                     ((FEditors[LBest].PropName = '') and (FEditors[LI].PropName <> '')) or
                     ((FEditors[LBest].TypeInfo <> LTypeInfo) and (FEditors[LI].TypeInfo = LTypeInfo)) or
@@ -3227,7 +3227,7 @@ begin
 
 end;
 
-function TELCustomPropertyInspector.GetByCaption(const Caption: String): string;
+function TELCustomPropertyInspector.GetByCaption(const Caption: string): string;
   var i: integer;
 
   function SucheIn(Item: TELPropsPageItem): string;
@@ -3263,7 +3263,7 @@ begin
   end;
 end;
 
-procedure TELCustomPropertyInspector.SetByCaption(const Caption, Value: String);
+procedure TELCustomPropertyInspector.SetByCaption(const Caption, Value: string);
   var i: integer; ne: TNotifyEvent;
 begin
   ne:= OnModified;
@@ -3382,7 +3382,7 @@ end;
 
 function TELPropEditor.GetPropName: string;
 begin
-    Result := String(FPropList[0].PropInfo^.Name);
+    Result := string(FPropList[0].PropInfo^.Name);
    // if Result = 'Align' then Result:= 'AAAAALign';
 end;
 
@@ -3693,7 +3693,7 @@ procedure TELEnumPropEditor.GetValues(AValues: TStrings);
 var
     LI: Integer;
     LEnumType: PTypeInfo;
-    s: String;
+    s: string;
 begin
     LEnumType := PropTypeInfo;
     with GetTypeData(LEnumType)^ do
@@ -3949,7 +3949,7 @@ end;
 function TELClassPropEditor.GetValue: string;
   var s: string;
 begin
-   s:= Copy(String(PropTypeInfo^.Name), 2, 20);  // (Font), (Image), ...
+   s:= Copy(string(PropTypeInfo^.Name), 2, 20);  // (Font), (Image), ...
    FmtStr(Result, '(%s)', [s]);
 end;
 
@@ -4937,7 +4937,7 @@ begin
     Result := [praMultiSelect, praDialog, praReadOnly];
 end;
 
-function TELStringsPropeditor.getText: String;
+function TELStringsPropeditor.getText: string;
 begin
    Result:= TStrings(GetOrdValue(0)).Text;
 end;
@@ -4965,7 +4965,7 @@ begin
   Result := [praDialog, praReadOnly];
 end;
 
-function TELEventPropEditor.GetValue: String;
+function TELEventPropEditor.GetValue: string;
   var Event: TEvent;  Pers: TPersistent;
 begin
   GetEventProperties(GetInstance(0), PropName, Event);

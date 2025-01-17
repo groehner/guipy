@@ -98,7 +98,7 @@ type
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property AutoDefault: boolean read FAutoDefault write FAutoDefault;
@@ -123,7 +123,7 @@ type
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     function getEvents(ShowEvents: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property PopupMode: TPopopMode read FPopupMode write FPopupMode;
@@ -138,7 +138,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   end;
 
@@ -151,7 +151,7 @@ type
     function getAttributes(ShowAttributes: integer): string; override;
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
     procedure SizeToText; override;
   published
@@ -166,7 +166,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   published
     property Description: string read FDescription write FDescription;
   end;
@@ -233,7 +233,7 @@ end;
 procedure TQtAbstractButton.Paint;
   var tx, ty, tw, th, x, y, w, h, gw, gh, gx, gy, maxw, maxh,
       gtg, bx, by: integer;
-      pathname: String;
+      pathname: string;
       SL: TstringList;
       bmp: TBitmap;
 
@@ -502,7 +502,7 @@ begin
   inherited;
 end;
 
-procedure TQtPushButton.NewWidget(Widget: String = '');
+procedure TQtPushButton.NewWidget(Widget: string = '');
 begin
   if Widget = ''
     then inherited NewWidget('QPushButton')
@@ -602,7 +602,7 @@ begin
   PaintArrow:= 0;
 end;
 
-procedure TQtToolButton.NewWidget(Widget: String = '');
+procedure TQtToolButton.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QToolButton');
   setAttribute('Text', '...', 'Text');
@@ -664,7 +664,7 @@ begin
   PaintStyle:= 0;
 end;
 
-procedure TQtRadioButton.NewWidget(Widget: String = '');
+procedure TQtRadioButton.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QRadioButton');
   setAttribute('Text', 'RadioButton', 'Text');
@@ -701,7 +701,7 @@ begin
     Result:= inherited;
 end;
 
-procedure TQtCheckBox.NewWidget(Widget: String = '');
+procedure TQtCheckBox.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QCheckBox');
   setAttribute('Text', 'CheckBox', 'Text');
@@ -748,7 +748,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TQtCommandLinkButton.NewWidget(Widget: String = '');
+procedure TQtCommandLinkButton.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QCommandLinkButton');
   setAttribute('Text', 'CommandLinkButton', 'Text');

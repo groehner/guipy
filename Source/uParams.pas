@@ -35,7 +35,7 @@ unit uParams;
 
 interface
 
-Uses
+uses
   System.Classes;
 
 (* parameters, valid for current Windows configuration *)
@@ -45,7 +45,7 @@ procedure UnRegisterStandardParametersAndModifiers;
 procedure RegisterCustomParams;
 procedure UnRegisterCustomParams;
 
-Var
+var
   CustomParams: TStrings;
 
 implementation
@@ -76,7 +76,7 @@ uses
   UConfiguration;
 
 function GetActiveDoc: string;
-Var
+var
   Editor: IEditor;
 begin
   Result := '';
@@ -223,7 +223,7 @@ begin
 end;
 
 function GetDate(const AText: string): string;
-Var
+var
   V: Variant;
 begin
   try
@@ -237,7 +237,7 @@ begin
 end;
 
 function GetTime(const AText: string): string;
-Var
+var
   V: Variant;
 begin
   try
@@ -251,7 +251,7 @@ begin
 end;
 
 function GetFileDate(const AFileName: string): string;
-Var
+var
   DateTime: TDateTime;
 begin
   Result := '';
@@ -263,7 +263,7 @@ begin
 end;
 
 function GetFileDateCreate(const AFileName: string): string;
-Var
+var
   NameSpace: TNameSpace;
 begin
   Result := '';
@@ -279,7 +279,7 @@ begin
 end;
 
 function GetFileDateWrite(const AFileName: string): string;
-Var
+var
   NameSpace: TNameSpace;
 begin
   Result := '';
@@ -295,7 +295,7 @@ begin
 end;
 
 function GetFileDateAccess(const AFileName: string): string;
-Var
+var
   NameSpace: TNameSpace;
 begin
   Result := '';
@@ -311,7 +311,7 @@ begin
 end;
 
 function GetFileType(const AFileName: string): string;
-Var
+var
   NameSpace: TNameSpace;
 begin
   Result := '';
@@ -880,7 +880,7 @@ begin
 end;
 
 procedure RegisterCustomParams;
-Var
+var
   i: integer;
   ParamName: string;
 begin

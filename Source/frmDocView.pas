@@ -60,11 +60,8 @@ type
         const AResultObjectAsJson: string);
     procedure WebBrowserHistoryChanged(Sender: TCustomEdgeBrowser);
   private
-    { Private declarations }
     FSaveFileName: string;
     procedure UpdateView(Editor : IEditor);
-  public
-    { Public declarations }
   end;
 
 
@@ -80,7 +77,7 @@ type
     procedure GetContextHighlighters(List : TList);
   end;
 
-  Var
+  var
     DocForm : TDocForm;
 
 implementation

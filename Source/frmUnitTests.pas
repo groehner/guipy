@@ -110,7 +110,6 @@ type
     procedure actRefreshExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
   private
-    { Private declarations }
     TestClasses : TStringList;
     TestSuite, TestResult : Variant;
   // IUnitTestServices implementaton
@@ -123,7 +122,6 @@ type
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
     procedure UpdateActions; override;
   public
-    { Public declarations }
     Status : TUnitTestWindowStatus;
     TestsRun, TestsFailed, TestErrors : integer;
     ElapsedTime : double;
@@ -155,14 +153,14 @@ uses
 
 { Indexes of the color images used in the test tree and failure list }
 
-Type
+type
   TTestStatus = (tsNotRun, tsRunning, tsRun, tsFailed, tsError);
 
   PNodeDataRec = ^TNodeDataRec;
   TNodeDataRec = record
   end;
 
-Const
+const
   FoundTestsLabel = 'Found %d test%s';
   RunTestsLabel = 'Ran %d test%s%s';
   ElapsedTimeFormat = ' in %.3fs';
@@ -170,7 +168,7 @@ Const
 { TUnitTestWindow }
 
 procedure TUnitTestWindow.actRefreshExecute(Sender: TObject);
-Var
+var
   Py: IPyEngineAndGIL;
   i, j, Index : integer;
   Editor : IEditor;
@@ -401,7 +399,7 @@ begin
 end;
 
 procedure TUnitTestWindow.actSelectAllExecute(Sender: TObject);
-Var
+var
   Node : PVirtualNode;
 begin
    Node := UnitTests.RootNode^.FirstChild;
@@ -412,7 +410,7 @@ begin
 end;
 
 procedure TUnitTestWindow.actDeselectAllExecute(Sender: TObject);
-Var
+var
   Node : PVirtualNode;
 begin
    Node := UnitTests.RootNode^.FirstChild;
@@ -456,7 +454,7 @@ begin
 end;
 
 procedure TUnitTestWindow.actRunExecute(Sender: TObject);
-Var
+var
   Py: IPyEngineAndGIL;
   UnitTestModule, TempTestSuite : Variant;
   PyTestCase : PPyObject;
@@ -524,7 +522,7 @@ end;
 
 procedure TUnitTestWindow.AddFailure(Test, Err: Variant);
 // Called from IDETestResult
-Var
+var
   TestCaseNode : PVirtualNode;
 begin
   Test.testStatus := Ord(tsFailed);
@@ -541,7 +539,7 @@ end;
 
 procedure TUnitTestWindow.AddSuccess(Test: Variant);
 // Called from IDETestResult
-Var
+var
   TestCaseNode : PVirtualNode;
 begin
   Test.testStatus := Ord(tsRun);
@@ -563,7 +561,7 @@ end;
 
 procedure TUnitTestWindow.StartTest(Test: Variant);
 // Called from IDETestResult
-Var
+var
   TestCaseNode : PVirtualNode;
 begin
   Test.testStatus := Ord(tsRunning);
@@ -577,7 +575,7 @@ end;
 
 procedure TUnitTestWindow.AddError(Test, Err: Variant);
 // Called from IDETestResult
-Var
+var
   TestCaseNode : PVirtualNode;
 begin
   Test.testStatus := Ord(tsError);
@@ -593,7 +591,7 @@ begin
 end;
 
 function TUnitTestWindow.FindTestNode(Test: Variant): PVirtualNode;
-Var
+var
   PyTestCase : PPyObject;
   TestCase : Variant;
   ClassNode, TestCaseNode : PVirtualNode;
@@ -639,7 +637,7 @@ begin
 end;
 
 function TUnitTestWindow.SelectedTestCount: integer;
-Var
+var
   ClassNode, TestCaseNode : PVirtualNode;
 begin
   Result := 0;
@@ -656,7 +654,7 @@ begin
 end;
 
 procedure TUnitTestWindow.UpdateActions;
-Var
+var
   Count : integer;
 begin
   Count := SelectedTestCount;

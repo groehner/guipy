@@ -13,7 +13,7 @@ type
     BCancel: TButton;
     procedure FormShow(Sender: TObject);
     procedure LVRevisionsDblClick(Sender: TObject);
-    function ToRepository(const s: String): String;
+    function ToRepository(const s: string): string;
     procedure ForFile(const aFile: string);
     function GetRevision: string;
     function GetRepositoryURL(s: string): string;
@@ -105,7 +105,7 @@ begin
   end;
 end;
 
-function TFSubversion.ToRepository(const s: String): String;
+function TFSubversion.ToRepository(const s: string): string;
   var p: Integer;
 begin
   Result:= s;

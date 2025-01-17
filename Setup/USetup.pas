@@ -34,9 +34,9 @@ type
     procedure BLanguageClick(Sender: TObject);
     procedure BDeutschClick(Sender: TObject);
   private
-    Dir: String;
-    CommonStartmenu: String;
-    CommonDesktopdirectory: String;
+    Dir: string;
+    CommonStartmenu: string;
+    CommonDesktopdirectory: string;
     Error: boolean;
     Starting: boolean;
     FolderDialog: TFileOpenDialog;
@@ -46,18 +46,18 @@ type
     procedure CreateINIFile(Filename: string);
     procedure RegisterPythonFiles(Path: string);
 
-    function ReplaceUsername(s: String): String;
+    function ReplaceUsername(s: string): string;
     function AppDataFolder: string;
     function UnPortApp(s: string): string;
 
-    procedure DeleteFileWithComment(Comment, Pathname:String);
+    procedure DeleteFileWithComment(Comment, Pathname:string);
     procedure DeleteINIFiles(DestDir: string);
     procedure DeleteSetup;
     procedure DeleteRegistry;
     procedure RemoveDir(Path: string);
     procedure CopyFilesRecursive(SourceDir, DestDir: string);
   public
-    DestDir: String;
+    DestDir: string;
     function GetUsername: string;
   end;
 
@@ -122,14 +122,14 @@ end;
 
 function TFSetup.GetUsername: string;
 var
-  UserName, s1: String;
+  UserName, s1: string;
   i: Integer;
   Laenge: LongWord;
 
 begin
   Laenge:= 100;
   Username:= StringOfChar(' ', Laenge);
-  WNetGetUser(Nil, PChar(Username), Laenge);
+  WNetGetUser(nil, PChar(Username), Laenge);
   s1:= '';
   i:= 1;
   while (Username[i] <> #0) do begin
@@ -139,7 +139,7 @@ begin
   Result:= s1;
 end;
 
-function TFSetup.ReplaceUsername(s: String): String;
+function TFSetup.ReplaceUsername(s: string): string;
 begin
   var p:= Pos('%USERNAME%', UpperCase(s));
   if p > 0 then begin
@@ -155,7 +155,7 @@ begin
 end;
 
 procedure TFSetup.CopyFromToFile(const dir1, dir2, Filename: string);
-  var f1, f2, s: String;
+  var f1, f2, s: string;
 begin
   f1:= TPath.Combine(dir1, Filename);
   f2:= TPath.Combine(dir2, Filename);
@@ -176,7 +176,7 @@ begin
 end;
 
 procedure TFSetup.CreateINIFile(Filename: string);
-  var SL: TStringList; s: String;
+  var SL: TStringList; s: string;
 begin
   FMemo.Output(_(LNGCreateConfigurationfile) + ' ' + Filename);
   SL:= TStringList.Create;
@@ -416,7 +416,7 @@ begin
   end;
 end;
 
-procedure TFSetup.DeleteFileWithComment(Comment, Pathname: String);
+procedure TFSetup.DeleteFileWithComment(Comment, Pathname: string);
 begin
   if not FileExists(Pathname) then exit;
   TFile.Delete(Pathname);
@@ -560,7 +560,7 @@ end;
 procedure TFSetup.RegisterPythonFiles(Path: string);
   var Reg: TRegistry; Filename: string;
 
-  procedure WriteToRegistry(Key: String);
+  procedure WriteToRegistry(Key: string);
   begin
     with Reg do begin
       OpenKey(Key, true);
@@ -614,7 +614,7 @@ begin
 end;
 
 procedure TFSetup.DeleteSetup;
-  var Datei: TFileStream; Filename: String;
+  var Datei: TFileStream; Filename: string;
 
   procedure StreamWriteln(FS: TFileStream; s: string);
   begin

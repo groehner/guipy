@@ -53,10 +53,7 @@ type
     procedure actMoveDownExecute(Sender: TObject);
     procedure lvItemsSelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
-  private
-    { Private declarations }
   public
-    { Public declarations }
     procedure SetItems(List : TStrings);
     procedure GetItems(List : TStrings);
   end;
@@ -91,7 +88,7 @@ begin
 end;
 
 procedure TCustomizeParams.GetItems(List: TStrings);
-Var
+var
  i : integer;
 begin
   List.Clear;
@@ -105,7 +102,7 @@ begin
 end;
 
 procedure TCustomizeParams.SetItems(List: TStrings);
-Var
+var
  i : integer;
 begin
   lvItems.Items.Clear;
@@ -129,7 +126,7 @@ begin
 end;
 
 procedure TCustomizeParams.actAddItemExecute(Sender: TObject);
-Var
+var
   Item : TListItem;
   i : Integer;
 begin
@@ -160,7 +157,7 @@ begin
 end;
 
 procedure TCustomizeParams.actUpdateItemExecute(Sender: TObject);
-Var
+var
   i : integer;
 begin
   if (edName.Text <> '') and (lvItems.ItemIndex >= 0) then begin
@@ -191,7 +188,7 @@ begin
 end;
 
 procedure TCustomizeParams.actMoveUpExecute(Sender: TObject);
-Var
+var
   Name, Value : string;
   Index : integer;
 begin
@@ -210,7 +207,7 @@ begin
 end;
 
 procedure TCustomizeParams.actMoveDownExecute(Sender: TObject);
-Var
+var
   Name, Value : string;
   Index : integer;
 begin

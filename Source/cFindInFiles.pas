@@ -491,7 +491,7 @@ begin
           else
             GrepDirectories(FGrepSettings.Directories, FGrepSettings.Mask);
         end;
-    end;	// end case
+    end;  // end case
     finally
       FreeAndNil(FDupeFileList);
     end;

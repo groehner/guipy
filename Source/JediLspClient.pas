@@ -168,7 +168,7 @@ class procedure TJedi.Initialize;
 var
   ClientCapabilities: TJsonObject;     // Will be freed by Initialize
   InitializationOptions: TJsonObject;  // Will be freed by Initialize
-Const
+const
    ClientCapabilitiesJson =
     '{"textDocument":{"documentSymbol":{"hierarchicalDocumentSymbolSupport":true}}}';
 //    '{"textDocument":{"documentSymbol":{"hierarchicalDocumentSymbolSupport":true},"completion": {"completionItem": {"documentationFormat": ["markdown", "plaintext"]}}}}';
@@ -199,7 +199,7 @@ Const
     for var I := 0 to Length(Arr) - 1 do
       Arr[I] := '"' + Trim(Arr[I]) + '"';
 
-    Result := String.Join(',', Arr);
+    Result := string.Join(',', Arr);
   end;
 
 begin

@@ -108,7 +108,6 @@ type
     procedure SynCodeCompletionAfterCodeCompletion(Sender: TObject;
       const Value: string; Shift: TShiftState; Index: Integer; EndToken: Char);
   private
-    { Private declarations }
     fCommandHistory : TStringList;
     fCommandHistorySize : integer;
     fCommandHistoryPointer : integer;
@@ -165,9 +164,7 @@ type
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
     procedure WMREINITINTERPRETER(var Message: TMessage); message WM_REINITINTERPRETER;
   public
-    { Public declarations }
     PS1, PS2 : string;
-    // AppStorage
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure PythonIOSendData(Sender: TObject; const Data: string);
@@ -190,7 +187,7 @@ var
 
 implementation
 
-Uses
+uses
   System.Math,
   System.RegularExpressions,
   System.Threading,
@@ -256,7 +253,7 @@ end;
 
 procedure TPythonIIForm.PythonIOReceiveData(Sender: TObject;
   var Data: string);
-Var
+var
   Res : Boolean;
 begin
   with GetPythonEngine do begin
@@ -269,7 +266,7 @@ begin
 end;
 
 procedure TPythonIIForm.PythonIOSendData(Sender: TObject; const Data: string);
-Var
+var
   S : AnsiString;
   IsPending: Boolean;
 begin
@@ -314,7 +311,7 @@ begin
 end;
 
 procedure TPythonIIForm.actCopyWithoutPromptsExecute(Sender: TObject);
-Var
+var
   SelText : string;
 begin
   SelText := SynEdit.SelText;
@@ -327,7 +324,7 @@ begin
 end;
 
 procedure TPythonIIForm.actPasteAndExecuteExecute(Sender: TObject);
-Var
+var
   Buffer: TArray<string>;
   Buffers: TArray<TArray<string>>;
   Text : string;
@@ -365,7 +362,7 @@ begin
       if Length(Buffer) > 1 then
         Buffer := Buffer + [''];
       AppendToPrompt(Buffer);
-      var Code := String.Join(#10, Buffer);
+      var Code := string.Join(#10, Buffer);
       ExecuteStatement(Code, WaitToFinish);
     end;
 
@@ -534,7 +531,7 @@ begin
 end;
 
 procedure TPythonIIForm.AppendToPrompt(const Buffer: array of string);
-Var
+var
   LineCount, i : integer;
   Line : string;
 begin
@@ -648,7 +645,7 @@ procedure TPythonIIForm.GetBlockBoundary(LineN: integer; var StartLineN,
     and backward until a prompt _is_ found, and all lines in between without
     prompts are returned, and the IsCode is false.
 -----------------------------------------------------------------------------}
-Var
+var
   Line, Prefix : string;
   MaxLineNo : integer;
 begin
@@ -790,7 +787,7 @@ end;
 
 procedure TPythonIIForm.SynEditProcessCommand(Sender: TObject;
   var Command: TSynEditorCommand; var AChar: WideChar; Data: Pointer);
-Var
+var
   LineN, StartLineN, EndLineN: integer;
   IsCode : Boolean;
   Line, Source : string;
@@ -919,7 +916,7 @@ procedure TPythonIIForm.SynEditCommandProcessed(Sender: TObject;
 const
   OpenBrackets : string = '([{"''';
   CloseBrackets : string = ')]}"''';
-Var
+var
   OpenBracketPos : integer;
   Line: string;
   Len, Position : Integer;
@@ -1094,7 +1091,7 @@ end;
 
 procedure TPythonIIForm.SynEditProcessUserCommand(Sender: TObject;
   var Command: TSynEditorCommand; var AChar: WideChar; Data: Pointer);
-Var
+var
   LineN, StartLineN, EndLineN, i: integer;
   IsCode: Boolean;
   Source, BlockSource : string;
@@ -1152,13 +1149,13 @@ begin
            fCommandHistoryPointer := fCommandHistory.Count;
            fCommandHistoryPrefix := '';
           end else
-            Repeat
+            repeat
               if Command = ecRecallCommandPrev then
                 Dec(fCommandHistoryPointer)
               else if Command = ecRecallCommandNext then
                 Inc(fCommandHistoryPointer);
               fCommandHistoryPointer := EnsureRange(fCommandHistoryPointer, -1, fCommandHistory.Count);
-            Until not InRange(fCommandHistoryPointer, 0, fCommandHistory.Count-1) or
+            until not InRange(fCommandHistoryPointer, 0, fCommandHistory.Count-1) or
               (fCommandHistoryPrefix = '') or
               fCommandHistory[fCommandHistoryPointer].StartsWith(fCommandHistoryPrefix);
 
@@ -1232,7 +1229,7 @@ begin
 end;
 
 procedure TPythonIIForm.SetCommandHistorySize(const Value: integer);
-Var
+var
   i : integer;
 begin
   fCommandHistorySize := Value;
@@ -1493,7 +1490,7 @@ begin
     ParamString := ParamString + ' ';  // To deal with for instance '1,'
     ArgIndex := 0;
     GetParameter(ParamString);
-    While ParamString <> '' do begin
+    while ParamString <> '' do begin
       Inc(ArgIndex);
       GetParameter(ParamString);
     end;
@@ -1515,7 +1512,7 @@ end;
 
 function TPythonIIForm.FormHelp(Command: Word; Data: THelpEventData;
   var CallHelp: Boolean): Boolean;
-Var
+var
   KeyWord : string;
 begin
   Keyword := SynEdit.WordAtCursor;
@@ -1532,7 +1529,7 @@ end;
 
 procedure TPythonIIForm.StartOutputMirror(const AFileName: string;
   Append: Boolean);
-Var
+var
   Mode : integer;
 begin
   fCriticalSection.Enter;
@@ -1577,7 +1574,7 @@ begin
 end;
 
 procedure TPythonIIForm.UpdatePythonKeywords;
-Var
+var
   Keywords, Builtins, BuiltInMod : Variant;
   i : integer;
 begin

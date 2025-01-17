@@ -56,7 +56,7 @@ begin
 end;
 
 procedure TFDownload.BDownloadClick(Sender: TObject);
-  var dir: String;
+  var dir: string;
 begin
   BDownload.Enabled:= false;
   BCancel.Enabled:= false;

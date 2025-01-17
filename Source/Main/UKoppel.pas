@@ -4,7 +4,7 @@ interface
 
 uses Graphics, Classes;
 
-Const
+const
   PythonTkCursorText = 'default'#13#10'fleur'#13#10'hand2'#13#10'sb_h_double_arrow'#13#10'sb_v_double_arrow'#13#10 +
                        'sizing'#13#10'tcross'#13#10'watch'#13#10'xterm'#13#10'question_arrow'#13#10'center_ptr';
 
@@ -32,7 +32,7 @@ Const
 var
   ComponentNrToInsert: integer;
   PanelCanvasType: string;
-  LOldValue: String;
+  LOldValue: string;
   PythonCursorText:string;
 
   function Tag2PythonType(Tag: integer): string;
@@ -58,14 +58,14 @@ implementation
 uses SysUtils, System.Generics.Collections;
 
 var
-  Delphi2PythonColorTranslate: TDictionary<String, String>;
-  Python2DelphiColorTranslate: TDictionary<String, String>;
+  Delphi2PythonColorTranslate: TDictionary<string, string>;
+  Python2DelphiColorTranslate: TDictionary<string, string>;
 
-  Delphi2PythonCursorTranslate: TDictionary<String, String>;
-  Python2DelphiCursorTranslate: TDictionary<String, String>;
+  Delphi2PythonCursorTranslate: TDictionary<string, string>;
+  Python2DelphiCursorTranslate: TDictionary<string, string>;
 
-  Delphi2PythonValuesAndNamesTranslate: TDictionary<String, String>;
-  Python2DelphiValuesAndNamesTranslate: TDictionary<String, String>;
+  Delphi2PythonValuesAndNamesTranslate: TDictionary<string, string>;
+  Python2DelphiValuesAndNamesTranslate: TDictionary<string, string>;
 
 
 function Tag2PythonType(Tag: integer): string;
@@ -216,8 +216,8 @@ procedure CreateTKCursors;
 begin
   FreeAndNil(Python2DelphiCursorTranslate);
   FreeAndNil(Delphi2PythonCursorTranslate);
-  Python2DelphiCursorTranslate:= TDictionary<String, String>.Create;
-  Delphi2PythonCursorTranslate:= TDictionary<String, String>.Create;
+  Python2DelphiCursorTranslate:= TDictionary<string, string>.Create;
+  Delphi2PythonCursorTranslate:= TDictionary<string, string>.Create;
 
   AddTranslate('crDefault', 'default');
   AddTranslate('crCross', 'tcross');
@@ -244,8 +244,8 @@ procedure CreateQtCursors;
 begin
   FreeAndNil(Python2DelphiCursorTranslate);
   FreeAndNil(Delphi2PythonCursorTranslate);
-  Python2DelphiCursorTranslate:= TDictionary<String, String>.Create;
-  Delphi2PythonCursorTranslate:= TDictionary<String, String>.Create;
+  Python2DelphiCursorTranslate:= TDictionary<string, string>.Create;
+  Delphi2PythonCursorTranslate:= TDictionary<string, string>.Create;
 
   AddTranslate('crDefault', 'ArrowCursor');
   AddTranslate('crCross', 'CrossCursor');
@@ -343,21 +343,21 @@ begin      // Tk                   or  Qt
   Result:= (Pos(s, AllEvents) > 0) or (s <> '') and (CharInSet(s[1], ['a'..'z']));
 end;
 
-Initialization
-  Python2DelphiColorTranslate:= TDictionary<String, String>.Create;
-  Delphi2PythonColorTranslate:= TDictionary<String, String>.Create;
+initialization
+  Python2DelphiColorTranslate:= TDictionary<string, string>.Create;
+  Delphi2PythonColorTranslate:= TDictionary<string, string>.Create;
 
   Python2DelphiCursorTranslate:= nil;
   Delphi2PythonCursorTranslate:= nil;
 
-  Python2DelphiValuesAndNamesTranslate:= TDictionary<String, String>.Create;
-  Delphi2PythonValuesAndNamesTranslate:= TDictionary<String, String>.Create;
+  Python2DelphiValuesAndNamesTranslate:= TDictionary<string, string>.Create;
+  Delphi2PythonValuesAndNamesTranslate:= TDictionary<string, string>.Create;
 
   CreateColors;
   CreateTkCursors;
   CreateValuesAndNames;
 
-Finalization
+finalization
   FreeAndNil(Python2DelphiColorTranslate);
   FreeAndNil(Delphi2PythonColorTranslate);
 

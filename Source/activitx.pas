@@ -372,7 +372,7 @@ type
   ISSHServices = interface
   ['{255E5E08-DCFD-481A-B0C3-F0AB0C5A1571}']
     function FormatFileName(Server, FileName : string): string;
-    function ParseFileName(Const Unc : string; out Server, FileName : string): boolean;
+    function ParseFileName(const Unc : string; out Server, FileName : string): boolean;
 
     function Scp(const ScpCommand, FromFile, ToFile: string; out ErrorMsg: string;
        ScpOptions : string = ''): Boolean;

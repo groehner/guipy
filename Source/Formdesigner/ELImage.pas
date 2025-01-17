@@ -32,7 +32,7 @@ type
   private
     FValue: string;
   public
-    property Value: String read FValue write SetValue;
+    property Value: string read FValue write SetValue;
   end;
 
 implementation

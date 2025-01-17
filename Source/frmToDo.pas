@@ -242,7 +242,7 @@ uses
 
 {$R *.dfm}
 
-Type
+type
 
   PToDoRec = ^TToDoRec;
   TToDoRec = record
@@ -287,7 +287,7 @@ function TToDoWindow.GetPreCallback: TDirectoryWalkProc;
 begin
   Result :=
     function (const Path: string; const FileInfo: TSearchRec): Boolean
-    Var
+    var
       Name : string;
     begin
       Result := not FAbortSignalled;
@@ -303,7 +303,7 @@ begin
 end;
 
 function TToDoWindow.GetSelectedItem: TToDoInfo;
-Var
+var
   Node : PVirtualNode;
 begin
   Result := nil;
@@ -318,7 +318,7 @@ begin
 end;
 
 procedure TToDoWindow.actEditGotoExecute(Sender: TObject);
-Var
+var
   SelectedItem: TToDoInfo;
 begin
   SelectedItem := GetSelectedItem;
@@ -431,7 +431,7 @@ end;
 
 procedure TTokenList.AddToken(const Token: string;
   Priority: TToDoPriority);
-Var
+var
   TokenInfo: TTokenInfo;
 begin
   TokenInfo := TTokenInfo.Create;
@@ -540,7 +540,7 @@ end;
 
 procedure TToDoExpert.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
-Var
+var
   i : integer;
   NTokens : integer;
   Priority : TToDoPriority;
@@ -579,7 +579,7 @@ end;
 
 procedure TToDoExpert.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
-Var
+var
   i : integer;
   SL : TStringList;
 begin
@@ -744,7 +744,7 @@ begin
 end;
 
 procedure TToDoWindow.LoadFile(const FileName: string);
-Var
+var
   SourceCode : TStringList;
   Editor : IEditor;
   i, Index : integer;
@@ -1002,7 +1002,7 @@ end;
 
 procedure TToDoWindow.ToDoViewCompareNodes(Sender: TBaseVirtualTree; Node1,
   Node2: PVirtualNode; Column: TColumnIndex; var Result: Integer);
-Var
+var
   ToDoInfo1, ToDoInfo2 : TTodoInfo;
 begin
   Assert(Assigned(Node1) and Assigned(Node2));

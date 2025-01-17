@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
  Unit:     UTTKTextBase
- Author:   Gerhard Röhner
+ Author:   Gerhard RÃ¶hner
  Date:     May 2021
  Purpose:  TKKinter text widgets
 -------------------------------------------------------------------------------}
@@ -45,7 +45,7 @@ type
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
     function getEvents(ShowEvents: integer): string; override;
-    procedure MakeCommand(Attr, Value: String); override;
+    procedure MakeCommand(Attr, Value: string); override;
     procedure Paint; override;
   published
     property ExportSelection: boolean read FExportSelection write FExportSelection default true;
@@ -62,14 +62,14 @@ type
   TTKEntry = class (TTKTextBaseWidget)
   private
     FShow: boolean;
-    FText: String;
+    FText: string;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
     function getEvents(ShowEvents: integer): string; override;
-    procedure setText(Value: String); override;
+    procedure setText(Value: string); override;
     procedure Paint; override;
   published
     {$WARNINGS OFF}
@@ -81,53 +81,53 @@ type
 
   TTKSpinbox = class (TTKTextBaseWidget)
   private
-    FFormat: String;
-    FFrom: String;
-    FIncrement: String;
-    FTo: String;
-    FValue: String;
+    FFormat: string;
+    FFrom: string;
+    FIncrement: string;
+    FTo: string;
+    FValue: string;
     FValues: TStrings;
     procedure setValues(Values: TStrings);
-    procedure setRValue(aValue: String);
+    procedure setRValue(aValue: string);
     procedure MakeValues;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property Command;
-    property Format: String read FFormat write FFormat;
-    property From_: String read FFrom write FFrom;
-    property Increment: String read FIncrement write FIncrement;
+    property Format: string read FFormat write FFormat;
+    property From_: string read FFrom write FFrom;
+    property Increment: string read FIncrement write FIncrement;
     property TakeFocus;
-    property _To: String read FTo write FTo;
+    property _To: string read FTo write FTo;
     property Values: TStrings read FValues write setValues;
-    property Value: String read FValue write setRValue;
+    property Value: string read FValue write setRValue;
   end;
 
   TTKCombobox = class(TTKTextBaseWidget)
   private
     FPostCommand: boolean;
-    FValue: String;
+    FValue: string;
     FValues: TStrings;
     procedure setRValue(aValue: string);
     procedure setValues(Values: TStrings);
-    function getListItems: String;
+    function getListItems: string;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
   published
     property PostCommand: Boolean read FPostCommand write FPostCommand;
     property TakeFocus;
-    property Value: String read FValue write setRValue;
+    property Value: string read FValue write setRValue;
     property Values: TStrings read FValues write setValues;
   end;
 
@@ -180,7 +180,7 @@ begin
   Result:= getMouseEvents(ShowEvents);
 end;
 
-procedure TTKTextBaseWidget.MakeCommand(Attr, Value: String);
+procedure TTKTextBaseWidget.MakeCommand(Attr, Value: string);
 begin
   inherited;
   if Attr = 'ValidateCommand' then
@@ -214,7 +214,7 @@ begin
   FShow:= true;
 end;
 
-procedure TTKEntry.NewWidget(Widget: String = '');
+procedure TTKEntry.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('ttk.Entry');
@@ -242,7 +242,7 @@ begin
   Result:= getKeyboardEvents(ShowEvents);
 end;
 
-procedure TTKEntry.setText(Value: String);
+procedure TTKEntry.setText(Value: string);
 begin
   if Value <> FText then begin
     FText:= Value;
@@ -333,7 +333,7 @@ begin
   end;
 end;
 
-procedure TTKSpinbox.NewWidget(Widget: String = '');
+procedure TTKSpinbox.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('ttk.Spinbox');
@@ -344,7 +344,7 @@ end;
 procedure TTKSpinbox.Paint;
   var s: string;
       x, y, newHeight: integer;
-      Points: Array[0..2] of TPoint;
+      Points: array[0..2] of TPoint;
       R: TRect;
 begin
   Canvas.Pen.Color:= $7A7A7A;
@@ -420,8 +420,8 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-function TTKCombobox.getListItems: String;
-  var s: String; i: integer;
+function TTKCombobox.getListItems: string;
+  var s: string; i: integer;
 begin
   s:= '[';
   for i:= 0 to FValues.Count -1 do
@@ -456,7 +456,7 @@ begin
   Invalidate;
 end;
 
-procedure TTKCombobox.NewWidget(Widget: String = '');
+procedure TTKCombobox.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('ttk.Combobox');

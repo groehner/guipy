@@ -153,12 +153,12 @@ function AddQuotesUnless(const S: string): string;
 { Prepares an application name or the command line parameters for execution }
 function PrepareCommandLine(S: string): string;
 
-Const
+const
   GrepFileNameParam = '$[FileName]';
   GrepLineNumberParam = '$[LineNumber]';
   GrepColumnNumberParam = '$[ColumnNumber]';
 
-Var
+var
   { A persisted collection of user-defined tools }
   ToolsCollection : TCollection;
   { External Python Tool }

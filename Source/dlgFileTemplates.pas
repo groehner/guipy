@@ -75,9 +75,7 @@ type
     FOldIndex: Integer;
     procedure StoreFieldsToFileTemplate(FileTemplate: TFileTemplate);
     procedure AskToUpdate(Sender: TObject);
-    { Private declarations }
   public
-    { Public declarations }
     TempFileTemplates : TFileTemplates;
     procedure SetItems;
     procedure GetItems;
@@ -140,7 +138,7 @@ begin
 end;
 
 procedure TFileTemplatesDialog.SetItems;
-Var
+var
  i : integer;
 begin
   TempFileTemplates.Assign(FileTemplates);
@@ -171,7 +169,7 @@ begin
 end;
 
 procedure TFileTemplatesDialog.actAddItemExecute(Sender: TObject);
-Var
+var
   Item : TListItem;
   FileTemplate : TFileTemplate;
   i : Integer;
@@ -213,7 +211,7 @@ begin
 end;
 
 procedure TFileTemplatesDialog.actUpdateItemExecute(Sender: TObject);
-Var
+var
   i : integer;
 begin
   if (edName.Text <> '') and (FOldIndex >= 0) then begin
@@ -275,7 +273,7 @@ begin
 end;
 
 procedure TFileTemplatesDialog.actMoveUpExecute(Sender: TObject);
-Var
+var
   Name, Value : string;
   P : Pointer;
   Index : integer;
@@ -298,7 +296,7 @@ begin
 end;
 
 procedure TFileTemplatesDialog.actMoveDownExecute(Sender: TObject);
-Var
+var
   Name, Value : string;
   P : Pointer;
   Index : integer;

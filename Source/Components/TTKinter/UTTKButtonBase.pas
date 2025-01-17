@@ -39,7 +39,7 @@ type
     FState: TButtonState;
     procedure setCompound(aValue: TCompound);
     procedure setState(aValue: TButtonState);
-    procedure MakeDirection(Value: String);
+    procedure MakeDirection(Value: string);
   protected
     function getCompound: TUCompound; override;
   public
@@ -63,7 +63,7 @@ type
     procedure Paint; override;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure MakeFont; override;
     function getAttributes(ShowAttributes: integer): string; override;
   published
@@ -85,7 +85,7 @@ type
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure MakeFont; override;
     procedure Paint; override;
   published
@@ -97,37 +97,37 @@ type
 
   TTKCheckbutton = class (TTKButtonBaseWidget)
   private
-    FOffValue: String;
-    FOnValue: String;
+    FOffValue: string;
+    FOnValue: string;
   protected
     procedure Paint; override;
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure MakeFont; override;
     procedure SizeToText; override;
   published
     property Command;
-    property OffValue: String read fOffValue write fOffValue;
-    property OnValue: String read fOnValue write fOnValue;
+    property OffValue: string read fOffValue write fOffValue;
+    property OnValue: string read fOnValue write fOnValue;
     property TakeFocus;
   end;
 
   TTKMenubutton = class(TTKButtonBaseWidget)
   private
     FDirection: TDirection;
-    FMenu: String;
+    FMenu: string;
   public
     constructor Create (AOwner: TComponent); override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure MakeFont; override;
     procedure Paint; override;
   published
     property Direction: TDirection read FDirection write FDirection default below;
-    property Menu: String read FMenu write FMenu;
+    property Menu: string read FMenu write FMenu;
     property Padding;
   end;
 
@@ -142,9 +142,9 @@ type
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
-    function getText: String; override;
+    function getText: string; override;
   published
     property MenuItems: TStrings read FNewItems write setItems;
   end;
@@ -189,7 +189,7 @@ begin
   Result:= getMouseEvents(ShowEvents);
 end;
 
-procedure TTKButtonBaseWidget.MakeDirection(Value: String);
+procedure TTKButtonBaseWidget.MakeDirection(Value: string);
   var s: string;
 begin
   s:= 'self.' + Name + '[''direction'']';
@@ -255,7 +255,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TTKLabel.NewWidget(Widget: String = '');
+procedure TTKLabel.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('ttk.Label');
   InsertValue('self.' + Name + '[' + asString('anchor') + '] = ' + asString('w'));
@@ -292,7 +292,7 @@ begin
 end;
 
 procedure TTKButton.setAttribute(Attr, Value, Typ: string);
-  var s: String;
+  var s: string;
 begin
   if Attr = 'Default' then begin
     s:= getAttrAsKey(Attr);
@@ -303,7 +303,7 @@ begin
     inherited;
 end;
 
-procedure TTKButton.NewWidget(Widget: String = '');
+procedure TTKButton.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('ttk.Button');
   InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
@@ -358,7 +358,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TTKCheckbutton.NewWidget(Widget: String = '');
+procedure TTKCheckbutton.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('ttk.Checkbutton');
   InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
@@ -418,7 +418,7 @@ begin
   inherited;
 end;
 
-procedure TTKMenubutton.NewWidget(Widget: String = '');
+procedure TTKMenubutton.NewWidget(Widget: string = '');
 begin
   // because TKOptionMenu inherits from TTKMenubutton
   if Widget = '' then begin
@@ -486,7 +486,7 @@ begin
     inherited;
 end;
 
-procedure TTKOptionMenu.NewWidget(Widget: String = '');
+procedure TTKOptionMenu.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   InsertValue('self.' + Name + 'CV = tk.StringVar()');
@@ -516,8 +516,8 @@ begin
   setAttributValue(s, s + ' = ttk.OptionMenu(self.root, self.' + Name + 'CV' + MenuItems + ')');
 end;
 
-function TTKOptionMenu.getText: String;
-  var s: String;
+function TTKOptionMenu.getText: string;
+  var s: string;
 begin
   if FNewItems.Count > 0 then
     s:= trim(FNewItems[0]);

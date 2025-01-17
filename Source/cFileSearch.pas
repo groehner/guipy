@@ -287,7 +287,7 @@ begin
     Len := Length(Pattern);
     EndPos := 0;
     FoundPos := PWideChar(BLine);
-    Repeat
+    repeat
       FoundPos := StrPos(FoundPos, PWideChar(fPattern));
       Found := Assigned(FoundPos);
       if Found then begin
@@ -296,7 +296,7 @@ begin
         Inc(FoundPos,  Len);
         IsFound;
       end;
-    Until not Found;
+    until not Found;
   end;
 end;
 

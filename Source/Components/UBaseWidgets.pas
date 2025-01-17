@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
  Unit:     UBaseWidgets
- Author:   Gerhard Röhner
+ Author:   Gerhard RÃ¶hner
  Date:     May 2021
  Purpose:  base widget of Tkinter, TTKinter and PyQt
 -------------------------------------------------------------------------------}
@@ -36,8 +36,8 @@ type
     procedure setAttributValue(key, s: string);
     procedure insertValue(s: string);
     function surround(s: string): string;
-    procedure setValue(Variable, Value: String);
-    procedure MakeCommand(Attr, Value: String); virtual;
+    procedure setValue(Variable, Value: string);
+    procedure MakeCommand(Attr, Value: string); virtual;
     procedure FormatItems(Items: TStrings);
     function isFontAttribute(const s: string): boolean;
     function enumToString<T{: enum}>(AValue: T): string;
@@ -71,10 +71,10 @@ type
     function getEvents(ShowEvents: integer): string; virtual; abstract;
     procedure setAttribute(Attr, Value, Typ: string); virtual; abstract;
 
-    procedure NewWidget(Widget: String = ''); virtual; abstract;
+    procedure NewWidget(Widget: string = ''); virtual; abstract;
     procedure SetPositionAndSize; virtual; abstract;
-    function getNameAndType: String; virtual; abstract;
-    function getType: String; virtual; abstract;
+    function getNameAndType: string; virtual; abstract;
+    function getType: string; virtual; abstract;
     procedure DeleteEvents; virtual; abstract;
     procedure Resize; override; abstract;
     procedure DeleteWidget; virtual; abstract;
@@ -132,8 +132,8 @@ begin
   Result:= Pos(s, ' Font Name Size Bold Italic ') > 0;
 end;
 
-procedure TBaseWidget.setValue(Variable, Value: String);
-  var s: String;
+procedure TBaseWidget.setValue(Variable, Value: string);
+  var s: string;
 begin
   if Variable <> '' then begin
     s:= 'self.' + Variable + '.set';
@@ -141,7 +141,7 @@ begin
   end;
 end;
 
-procedure TBaseWidget.MakeCommand(Attr, Value: String);
+procedure TBaseWidget.MakeCommand(Attr, Value: string);
 begin
   var func:= CrLF +
          Indent1 + 'def ' + Value +'(self):' + CrLf +

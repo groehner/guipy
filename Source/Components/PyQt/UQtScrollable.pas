@@ -116,7 +116,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   published
     property WidgetResizable: boolean read FWidgetResizable write FWidgetResizable;
   end;
@@ -160,7 +160,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property TabChangesFocus: boolean read FTabChangesFocus write setTabChangesFocus;
@@ -229,7 +229,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property AutoFormatting: TAutoFormatting
@@ -282,7 +282,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   published
     property Source: string read FSource write FSource;
     property SearchPaths: TStrings read FSearchPaths write FSearchPaths;
@@ -325,7 +325,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property BackgroundColor: TColor read FBackgroundColor write FBackgroundColor;
@@ -397,7 +397,7 @@ type
   TQtScrollBar = class(TQtAbstractSlider)
   public
     constructor Create(AOwner: TComponent); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   end;
 
@@ -411,7 +411,7 @@ type
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property TickPosition: TTickPosition read FTickPosition write setTickPosition;
@@ -430,7 +430,7 @@ type
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property Wrapping: boolean read FWrapping write setWrapping;
@@ -572,7 +572,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TQtScrollArea.NewWidget(Widget: String = '');
+procedure TQtScrollArea.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QScrollArea');
 end;
@@ -680,7 +680,7 @@ begin
   MakeAttribut('PlainText', asString(myStringReplace(FPlainText.Text, sLineBreak, '\n')));
 end;
 
-procedure TQtPlainTextEdit.NewWidget(Widget: String = '');
+procedure TQtPlainTextEdit.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QPlainTextEdit');
 end;
@@ -873,7 +873,7 @@ begin
   MakeAttribut('Html', asString(myStringReplace(FHtml.Text, sLineBreak, '\n')));
 end;
 
-procedure TQtTextEdit.NewWidget(Widget: String = '');
+procedure TQtTextEdit.NewWidget(Widget: string = '');
 begin
   if Widget = ''then begin
     inherited NewWidget('QTextEdit');
@@ -1003,7 +1003,7 @@ begin
   inherited;
 end;
 
-procedure TQtTextBrowser.NewWidget(Widget: String = '');
+procedure TQtTextBrowser.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QTextBrowser');
 end;
@@ -1136,7 +1136,7 @@ begin
   MakeAttribut(Attr + 'Brush', 'QBrush(' + Color + ', ' + Style + ')')
 end;
 
-procedure TQtGraphicsView.NewWidget(Widget: String = '');
+procedure TQtGraphicsView.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QGraphicsView');
 end;
@@ -1242,7 +1242,7 @@ begin
   FInvertedControls:= true;
 end;
 
-procedure TQtScrollBar.NewWidget(Widget: String = '');
+procedure TQtScrollBar.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QScrollBar');
   InsertValue('self.' + Name + '.setOrientation(Qt.Orientation.Horizontal)');
@@ -1283,7 +1283,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TQtSlider.NewWidget(Widget: String = '');
+procedure TQtSlider.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QSlider');
   InsertValue('self.' + Name + '.setOrientation(Qt.Orientation.Horizontal)');
@@ -1501,7 +1501,7 @@ begin
   inherited;
 end;
 
-procedure TQtDial.NewWidget(Widget: String = '');
+procedure TQtDial.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QDial');
 end;

@@ -17,7 +17,7 @@ uses
   System.RegularExpressions,
   System.Threading;
 
-Type
+type
   TParsedModule = class;
 
   TCodePos = record
@@ -32,7 +32,7 @@ Type
   protected
     fIsProxy : boolean;
     fIsFinal : boolean;
-    fTyp: String;
+    fTyp: string;
     fCodePos : TCodePos;
   public
     Name : string;
@@ -249,7 +249,7 @@ Type
     function CreateAsynchSourceScanner(const FileName : string; const Source : string): IAsyncSourceScanner;
   end;
 
-  Var
+  var
     AsynchSourceScannerFactory : TAsynchSourceScannerFactory;
 
 implementation
@@ -263,10 +263,10 @@ uses
   cPySupportTypes,
   uUtils;
 
-Const
+const
   MaskChar = WideChar(#96);
 
-Var
+var
   DocStringRE : TRegEx;
 
 function CodeBlock(StartLine, EndLine : integer) : TCodeBlock;
@@ -310,8 +310,8 @@ begin
     else Result:= 0;
 end;
 
-function GetExpressionBuiltInType(Expr : string; Var IsBuiltIn : boolean) : string;
-Var
+function GetExpressionBuiltInType(Expr : string; var IsBuiltIn : boolean) : string;
+var
   i :  integer;
 begin
   Result := '';
@@ -349,7 +349,7 @@ begin
 end;
 
 function GetExpressionType(Expr: string; var VarAtts: TVariableAttributes): string;
-Var
+var
   IsBuiltInType : Boolean;
 begin
   if Expr.Length = 0 then Exit('');
@@ -430,7 +430,7 @@ begin
 end;
 
 procedure TCodeElement.GetSortedClasses(SortedClasses: TObjectList);
-Var
+var
   i : integer;
 begin
   if not Assigned(fChildren) then Exit;
@@ -441,7 +441,7 @@ begin
 end;
 
 procedure TCodeElement.GetSortedFunctions(SortedFunctions: TObjectList);
-Var
+var
   i : integer;
 begin
   if not Assigned(fChildren) then Exit;
@@ -452,7 +452,7 @@ begin
 end;
 
 procedure TCodeElement.GetNameSpace(SList: TStringList);
-Var
+var
   i : integer;
 begin
   //  Add from Children
@@ -462,7 +462,7 @@ begin
 end;
 
 function TCodeElement.GetScopeForLine(LineNo: integer): TCodeElement;
-Var
+var
   i : integer;
   CE : TCodeElement;
 begin
@@ -573,7 +573,7 @@ function TPythonScanner.ScanModule(Module : TParsedModule): boolean;
 // Expectes Module Source code in Module.Source
 // Parses the Python Source code and adds code elements as children of Module
 { TODO 2 : Optimize out calls to Trim }
-Var
+var
   UseModifiedSource : boolean;
   SourceLines : TFunc<TStringList>;
 
@@ -591,7 +591,7 @@ Var
   end;
 
   procedure GetLine(var P : PWideChar; var Line : string; var LineNo : integer);
-  Var
+  var
     Start : PWideChar;
   begin
     Inc(LineNo);
@@ -676,7 +676,7 @@ Var
 
   procedure ReplaceQuotedChars(var Source : string);
   //  replace quoted \ ' " with **
-  Var
+  var
     pRes, pSource : PWideChar;
   begin
     if Length(Source) = 0 then Exit;
@@ -699,10 +699,10 @@ Var
 
   procedure MaskStringsAndComments(var Source : string);
   // Replace all chars in strings and comments with *
-  Type
+  type
     TParseState = (psNormal, psInTripleSingleQuote, psInTripleDoubleQuote,
     psInSingleString, psInDoubleString, psInComment);
-  Var
+  var
     pRes, pSource : PWideChar;
     ParseState : TParseState;
   begin
@@ -899,7 +899,7 @@ begin
           CharOffset2 := CalcIndent(Param);
           Param := Trim(Param);
           Index := 0;
-          While Param <> '' do begin
+          while Param <> '' do begin
             Variable := TVariable.Create;
             Variable.Parent := CodeElement;
             CharOffsetToCodePos(CharOffset + CharOffset2, CodeStart, LineStarts, Variable.fCodePos);
@@ -1010,7 +1010,7 @@ begin
         CharOffset := getGroupOffset(ImportMatch, 1);
         LastLength := Length(S);
         Param := StrToken(S, ',');
-        While Param <> '' do begin
+        while Param <> '' do begin
           var AliasMatch:= fAliasRE.Match(Param);
           if AliasMatch.Success then begin
             if getGroup(AliasMatch, 3) <> '' then begin
@@ -1050,7 +1050,7 @@ begin
           end;
           LastLength := Length(S);
           Param := StrToken(S, ',');
-          While Param <> '' do begin
+          while Param <> '' do begin
             var AliasMatch:= fAliasRE.Match(Param);
             if AliasMatch.Success then begin
               if getGroup(AliasMatch, 3) <> '' then begin
@@ -1307,7 +1307,7 @@ begin
 end;
 
 procedure TParsedModule.GetUniqueSortedGlobals(GlobalsList: TObjectList);
-Var
+var
   i, j : integer;
   HasName : boolean;
 begin
@@ -1336,7 +1336,7 @@ begin
 end;
 
 procedure TParsedModule.GetSortedImports(ImportsList: TObjectList);
-Var
+var
   i : integer;
 begin
   for i := 0 to ImportedModules.Count - 1 do
@@ -1398,7 +1398,7 @@ function TParsedFunction.ArgumentsString: string;
       Result := Result + '=' + Variable.DefaultValue;
   end;
 
-Var
+var
   i : integer;
 begin
   Result:= '';
@@ -1424,7 +1424,7 @@ begin
 end;
 
 procedure TParsedFunction.GetNameSpace(SList: TStringList);
-Var
+var
   i : integer;
 begin
   inherited;

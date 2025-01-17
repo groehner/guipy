@@ -238,7 +238,7 @@ type
   end;
 
   TSynHighlighterCountEvent = procedure(Sender:TObject; var Count: Integer) of object;
-  TSynGetHighlighterEvent = procedure(Sender:TObject; Index: Integer; Var SynHighlighter:TSynCustomHighlighter) of object;
+  TSynGetHighlighterEvent = procedure(Sender:TObject; Index: Integer; var SynHighlighter:TSynCustomHighlighter) of object;
   TSynSetHighlighterEvent = procedure(Sender:TObject; Index: Integer; SynHighlighter:TSynCustomHighlighter) of object;
   TSynOptionPage = (soDisplay, soOptions, soKeystrokes, soColor);
   TSynOptionPages = set of TSynOptionPage;
@@ -1375,7 +1375,7 @@ end;
 procedure TEditorOptionsDialog.cmDialogChar(var msg: TCMDialogChar);
 //  To avoid invoking button accelerators without pressing the ALT button
 begin
-  If ((msg.keydata and $20000000) = 0) or FHotKeyEditor1.Focused or FHotKeyEditor2.Focused Then
+  if ((msg.keydata and $20000000) = 0) or FHotKeyEditor1.Focused or FHotKeyEditor2.Focused then
     msg.Result := 1 // alt not down, eat key
   else
     inherited;

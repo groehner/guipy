@@ -107,8 +107,8 @@ type
     property ExtentY: integer read FExtentY write FExtentY;
     property Selected: boolean read FSelected write SetSelected;
     property ShadowWidth: integer read FShadowWidth write SetShadowWidth;
-    property TypeParameter: String read FTypeParameter write FTypeParameter;
-    property TypeBinding: String read FTypeBinding write SetTypeBinding;
+    property TypeParameter: string read FTypeParameter write FTypeParameter;
+    property TypeBinding: string read FTypeBinding write SetTypeBinding;
     property FGColor: TColor read FFGColor write FFGColor;
     property BGColor: TColor read FBGColor write FBGColor;
   end;
@@ -123,7 +123,7 @@ type
     procedure RefreshEntities; override;
     procedure AddChild(Sender: TModelEntity; NewChild: TModelEntity); override;
     function GetPathname: string; override;
-    function Debug: String;
+    function Debug: string;
   end;
 
   TRtfdObject = class(TRtfdBox, IAfterObjektListener)
@@ -157,7 +157,7 @@ type
     function getPanelNr(P: TPoint): integer;
   public
     TrMemo: TStyledMemo;
-    constructor Create(aOwner: TComponent; const S: String;
+    constructor Create(aOwner: TComponent; const S: string;
       aFrame: TAFrameDiagram; aMinVisibility: TVisibility;
       aHandleSize: integer); reintroduce;
     destructor Destroy; override;
@@ -216,8 +216,8 @@ type
     FTextWidthParameter: integer;
     FExtentX: integer;
     FExtentY: integer;
-    TypeParameter: String;
-    TypeAndBinding: String;
+    TypeParameter: string;
+    TypeAndBinding: string;
   public
     constructor Create(aOwner: TComponent; aEntity: TModelEntity); override;
     destructor Destroy; override;
@@ -501,7 +501,7 @@ var
   R, R1: TRect;
   sw, Si, TopH, NeedH, i, Separator: integer;
   IsObject, IsClass, IsValid: boolean;
-  Pathname, SVGColor: String;
+  Pathname, SVGColor: string;
 begin
   Canvas.Font.Assign(Font);
   if assigned(FBitmap) and FBitmapOK then
@@ -1132,7 +1132,7 @@ begin
   // FMessages.OutputToTerminal(Debug);
 end;
 
-function TRtfdClass.Debug: String;
+function TRtfdClass.Debug: string;
 var
   S: string;
   CustomLabel: TRtfdCustomLabel;
@@ -1291,7 +1291,7 @@ end;
 type
   TMoveCracker = class(TControl);
 
-constructor TRtfdCommentBox.Create(aOwner: TComponent; const S: String;
+constructor TRtfdCommentBox.Create(aOwner: TComponent; const S: string;
   aFrame: TAFrameDiagram; aMinVisibility: TVisibility; aHandleSize: integer);
 var
   E: TModelEntity;
@@ -1334,7 +1334,7 @@ begin
   Invalidate;
 end;
 
-function TRtfdCommentBox.GetPathname: String;
+function TRtfdCommentBox.GetPathname: string;
 begin
   Result := '';
 end;

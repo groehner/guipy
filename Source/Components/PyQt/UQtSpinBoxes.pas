@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
  Unit:     UQtSpinBoxes
- Author:   Gerhard Röhner
+ Author:   Gerhard RÃ¶hner
  Date:     July 2022
  Purpose:  PyQt spin boxes
 -------------------------------------------------------------------------------}
@@ -100,7 +100,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property Prefix: string read FPrefix write setPrefix;
@@ -137,7 +137,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property Prefix: string read FPrefix write setPrefix;
@@ -190,7 +190,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property DateTime: string read FDateTime write setDateTime;
@@ -219,7 +219,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   end;
 
   TQtTimeEdit = class(TQtDateTimeEdit)
@@ -228,7 +228,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   end;
 
 
@@ -289,7 +289,7 @@ begin
 end;
 
 procedure TQtAbstractSpinBox.Paint;
-  var R: TRect; Points: Array[0..2] of TPoint; x, y: integer;
+  var R: TRect; Points: array[0..2] of TPoint; x, y: integer;
 begin
   inherited;
 
@@ -420,7 +420,7 @@ begin
   inherited;
 end;
 
-procedure TQtSpinBox.NewWidget(Widget: String = '');
+procedure TQtSpinBox.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QSpinBox');
 end;
@@ -533,7 +533,7 @@ begin
   inherited;
 end;
 
-procedure TQtDoubleSpinBox.NewWidget(Widget: String = '');
+procedure TQtDoubleSpinBox.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QDoubleSpinBox');
 end;
@@ -672,7 +672,7 @@ begin
   inherited;
 end;
 
-procedure TQtDateTimeEdit.NewWidget(Widget: String = '');
+procedure TQtDateTimeEdit.NewWidget(Widget: string = '');
 begin
   if Widget = '' then begin
     inherited NewWidget('QDateTimeEdit');
@@ -841,7 +841,7 @@ begin
   end;
 end;
 
-procedure TQtDateEdit.NewWidget(Widget: String = '');
+procedure TQtDateEdit.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QDateEdit');
   setAttribute('DisplayFormat', FDisplayFormat, 'string');
@@ -883,7 +883,7 @@ begin
   end;
 end;
 
-procedure TQtTimeEdit.NewWidget(Widget: String = '');
+procedure TQtTimeEdit.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QTimeEdit');
   setAttribute('DisplayFormat', FDisplayFormat, 'string');

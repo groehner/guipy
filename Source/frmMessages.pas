@@ -111,7 +111,7 @@ uses
   StringResources;
 
 {$R *.dfm}
-Type
+type
   TMsg = class
     Msg: string;
     FileName : string;
@@ -136,7 +136,7 @@ Type
 
 procedure TMessagesWindow.AddMessage(const Msg, FileName: string;
    Line, Offset, SelLen : integer);
-Var
+var
   NewMsg : TMsg;
 begin
   if fMessageHistory.Count = 0 then
@@ -196,7 +196,7 @@ begin
 end;
 
 procedure TMessagesWindow.ShowPythonTraceback(Traceback: TPythonTraceback; SkipFrames : integer; ShowWindow : Boolean);
-Var
+var
   i : integer;
 begin
   with TraceBack do begin
@@ -236,7 +236,7 @@ begin
 end;
 
 procedure TMessagesWindow.JumpToPosition(Node : PVirtualNode);
-Var
+var
   Msg : TMsg;
 begin
   if Assigned(Node) then begin
@@ -284,7 +284,7 @@ begin
 end;
 
 procedure TMessagesWindow.RestoreTopNodeIndex;
-Var
+var
   i, Index : Cardinal;
   Node : PVirtualNode;
 begin

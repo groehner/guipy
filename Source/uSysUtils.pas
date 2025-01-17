@@ -866,7 +866,7 @@ end;
 
 
 function ExecuteCmd(Command : string; out CmdOutput, CmdError: string): Cardinal; overload;
-Var
+var
   ProcessOptions : TJclExecuteCmdProcessOptions;
 begin
   ProcessOptions := TJclExecuteCmdProcessOptions.Create(Command);
@@ -888,7 +888,7 @@ begin
 end;
 
 function ExecuteCmd(Command : string; out CmdOutput: string): Cardinal; overload;
-Var
+var
   CmdError: string;
 begin
   Result := ExecuteCmd(Command, CmdOutput, CmdError);

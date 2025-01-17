@@ -81,7 +81,7 @@ end;
 
 procedure TStyleSelectorForm.FormShow(Sender: TObject);
 //  Todo Select active style
-Var
+var
   Index : integer;
 begin
    if (LBStyleNames.Items.Count> 0) then
@@ -203,7 +203,7 @@ end;
 
 
 class procedure TStyleSelectorForm.Execute;
-Var
+var
   Owner : TCustomForm;
 begin
   if Assigned(Screen.ActiveCustomForm) then
@@ -220,7 +220,7 @@ begin
 end;
 
 procedure TStyleSelectorForm.FillVclStylesList;
-Var
+var
   FileName : string;
   StyleInfo:  TStyleInfo;
 begin

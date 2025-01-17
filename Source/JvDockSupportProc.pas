@@ -545,8 +545,8 @@ begin
           end
           else //center if < 150%
           begin
-            sib.Canvas.Draw((sib.Width - ib.Width) DIV 2, (sib.Height - ib.Height) DIV 2, ib);
-            smb.Canvas.Draw((smb.Width - mb.Width) DIV 2, (smb.Height - mb.Height) DIV 2, mb);
+            sib.Canvas.Draw((sib.Width - ib.Width) div 2, (sib.Height - ib.Height) div 2, ib);
+            smb.Canvas.Draw((smb.Width - mb.Width) div 2, (smb.Height - mb.Height) div 2, mb);
           end;
           ImgList.Add(sib, smb);
         finally

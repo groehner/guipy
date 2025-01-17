@@ -1,7 +1,7 @@
 {-----------------------------------------------------------------------------
  Unit Name: frmVariables
  Author:    Kiriakos Vlahos
-            Gerhard Röhner
+            Gerhard RÃ¶hner
  Date:      09-Mar-2005
  Purpose:   Variables Window
  History:
@@ -78,7 +78,6 @@ type
         THitInfo);
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   private
-    { Private declarations }
     CurrentModule, CurrentFunction : string;
     FGlobalsNameSpace, LocalsNameSpace : TBaseNameSpaceItem;
     class var DebugInspectorsRegister: TDictionary<string, string>;
@@ -126,7 +125,7 @@ uses
   cPyScripterSettings;
 
 {$R *.dfm}
-Type
+type
   PNodeData = ^TNodeData;
   TNodeData = record
     Name : string;

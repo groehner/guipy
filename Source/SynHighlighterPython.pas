@@ -240,7 +240,7 @@ type
     class function GetFriendlyLanguageName: UnicodeString; override;
   end;
 
-Const
+const
   SYNS_CommentedCode = 'Commented Code';
   SYNS_FunctionName = 'Function Name';
   SYNS_ClassName = 'Class Name';
@@ -1566,7 +1566,7 @@ resourcestring
   SYNS_LangCython = 'Cython';
   SYNS_FriendlyLangCython = 'Cython';
 
-Const
+const
   // Do not localise
   SYNS_LangPythonInterpreter = 'Python Interpreter';
   SYNS_FriendlyLangPythonInterpreter = 'Python Interpreter';
@@ -1609,7 +1609,7 @@ begin
 end;
 
 procedure TSynPythonInterpreterSyn.DispatchProc;
-Var
+var
   Line, Prompt : string;
 begin
   Line := fLineStr;

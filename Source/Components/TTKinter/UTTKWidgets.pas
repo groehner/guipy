@@ -17,28 +17,28 @@ type
   TTKWidget = class (TBaseTKWidget)
   private
     FPadding: string;
-    FStyle: String;
-    FText: String;
-    procedure setPadding(aValue: String);
+    FStyle: string;
+    FText: string;
+    procedure setPadding(aValue: string);
   protected
     function getCompound: TUCompound; override;
     procedure Paint; override;
     procedure PaintBorder(R: TRect; Relief: TRelief; BorderWidth: integer); override;
     procedure CalculatePadding(var pl, pt, pr, pb: integer); override;
     procedure CalculateText(var tw, th: integer; var SL: TStringlist); override;
-    function getText: String; virtual;
+    function getText: string; virtual;
     procedure setText(aValue: string); virtual;
-    function getWidgetStylename: String; virtual;
-    procedure MakePadding(Value: String);
+    function getWidgetStylename: string; virtual;
+    procedure MakePadding(Value: string);
   public
     constructor Create(aOwner: TComponent); override;
     procedure Rename(const OldName, NewName, Events: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure DeleteWidget; override;
-    procedure MakeStyle(Value: String);
-    property Padding: String read FPadding write setPadding;
-    property Text: String read FText write setText;
+    procedure MakeStyle(Value: string);
+    property Padding: string read FPadding write setPadding;
+    property Text: string read FText write setText;
   published
     property Style: string read FStyle write FStyle;
   end;
@@ -55,7 +55,7 @@ begin
   BorderWidth:= '0';
 end;
 
-procedure TTKWidget.setPadding(aValue: String);
+procedure TTKWidget.setPadding(aValue: string);
 begin
   if aValue <> fPadding then begin
     fPadding:= aValue;
@@ -71,13 +71,13 @@ begin
   end;
 end;
 
-function TTKWidget.getText: String;
+function TTKWidget.getText: string;
 begin
   Result:= FText;
 end;
 
 procedure TTKWidget.CalculateText(var tw, th: integer; var SL: TStringlist);
-  var s: String; p: integer;
+  var s: string; p: integer;
 begin
   s:= getText;
   p:= Pos('\n', s);
@@ -99,7 +99,7 @@ f['padding'] = (5,10)      # 5 on left and right, 10 on top and bottom
 f['padding'] = (5,7,10,12) # left: 5, top: 7, right: 10, bottom: 12
 }
 procedure TTKWidget.CalculatePadding(var pl, pt, pr, pb: integer);
-  var s: String; SL: TStringList;
+  var s: string; SL: TStringList;
 begin
   s:= trim(FPadding);
   if s = '' then
@@ -218,7 +218,7 @@ begin
     inherited;
 end;
 
-function TTKWidget.getWidgetStylename: String;
+function TTKWidget.getWidgetStylename: string;
 begin
   Result:= Name + '.T' + copy(Classname, 4, length(Classname));
 end;
@@ -241,8 +241,8 @@ begin
   end;
 end;
 
-procedure TTKWidget.MakeStyle(Value: String);
-  var s: String;
+procedure TTKWidget.MakeStyle(Value: string);
+  var s: string;
 begin
   FStyle:= getWidgetStylename;
   s:= 'ttk.Style().configure(' + asString(FStyle) + ')';
@@ -252,7 +252,7 @@ begin
   UpdateObjectInspector;
 end;
 
-procedure TTKWidget.MakePadding(Value: String);
+procedure TTKWidget.MakePadding(Value: string);
   var key: string; i: integer;
 begin
   key:= 'self.' + Name + '[''padding'']';

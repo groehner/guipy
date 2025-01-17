@@ -32,8 +32,8 @@ type
     FButton: integer;
   public
     constructor Create(AOwner: TComponent); override;
-    function getModifiers(Eventname: String): string;
-    function getDetail(Eventname: String): string;
+    function getModifiers(Eventname: string): string;
+    function getDetail(Eventname: string): string;
     procedure Clear;
   published
     property Control: boolean read FControl write FControl default false;
@@ -71,7 +71,7 @@ type
     procedure getEvent(var Event: TEvent);
   end;
 
-procedure GetEventProperties(Obj: TObject; PropName: String; var Event: TEvent);
+procedure GetEventProperties(Obj: TObject; PropName: string; var Event: TEvent);
 procedure SetEventProperties(Obj: TObject; PropName: string; Event: TEvent);
 
 
@@ -85,7 +85,7 @@ uses
 
 {$R *.dfm}
 
-procedure GetEventProperties(Obj: TObject; PropName: String; var Event: TEvent);
+procedure GetEventProperties(Obj: TObject; PropName: string; var Event: TEvent);
 var
   FContext : TRttiContext;
   FType    : TRttiType;
@@ -136,7 +136,7 @@ begin
 end;
 
 function TEvent.getModifiers(Eventname: string): string;
-  var s: String;
+  var s: string;
 begin
   s:= '';
   if FControl then s:= s + 'Control-';
@@ -150,7 +150,7 @@ begin
   Result:= s;
 end;
 
-function TEvent.getDetail(Eventname: String): string;
+function TEvent.getDetail(Eventname: string): string;
 begin
   Result:= '';
   if (Pos('Button', Eventname) > 0) and (FButton > 0) then

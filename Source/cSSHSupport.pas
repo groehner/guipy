@@ -70,12 +70,12 @@ type
     class var UncRE: TRegEx;
     class constructor Create;
     class function Format(Server, FileName : string): string;
-    class function Parse(Const Unc : string; out Server, FileName : string): boolean;
+    class function Parse(const Unc : string; out Server, FileName : string): boolean;
   end;
 
   TSSHServices = class(TInterfacedObject, ISSHServices)
     function FormatFileName(Server, FileName : string): string;
-    function ParseFileName(Const Unc : string; out Server, FileName : string): boolean;
+    function ParseFileName(const Unc : string; out Server, FileName : string): boolean;
     // SCP
     function Scp(const ScpCommand, FromFile, ToFile: string; out ErrorMsg: string;
        ScpOptions : string = ''): Boolean;
@@ -146,7 +146,7 @@ begin
 end;
 
 function TSSHServer.ExtractHostKey(ErrorOutput: string): Boolean;
-Var
+var
   Match : TMatch;
 begin
   Match := TRegEx.Match(ErrorOutput, '[\w\d][\w\d](:[\w\d][\w\d])+');
@@ -237,7 +237,7 @@ begin
 end;
 
 procedure FillSSHConfigNames(Strings: TStrings);
-Var
+var
   Item : TCollectionItem;
 begin
    Strings.Clear;
@@ -246,7 +246,7 @@ begin
 end;
 
 function ServerFromName(ServerName: string): TSSHServer;
-Var
+var
   Item : TCollectionItem;
 begin
   Result := nil;
@@ -297,7 +297,7 @@ end;
 
 function TSSHServices.Scp(const ScpCommand, FromFile, ToFile: string;
   out ErrorMsg: string; ScpOptions: string): Boolean;
-Var
+var
   Task : ITask;
   Command, Output, Error: string;
   ExitCode : integer;
@@ -306,7 +306,7 @@ begin
 
   Task := TTask.Create(procedure
   {$IFDEF CPUX86}
-  Var
+  var
     IsWow64: LongBool;
   {$ENDIF CPUX86}
   begin
@@ -343,7 +343,7 @@ end;
 
 function TSSHServices.ScpDownload(const ServerName, RemoteFile,
   LocalFile: string; out ErrorMsg: string): boolean;
-Var
+var
   SSHServer : TSSHServer;
   SFormat : string;
 begin
@@ -361,7 +361,7 @@ end;
 
 function TSSHServices.ScpUpload(const ServerName, LocalFile, RemoteFile: string;
   out ErrorMsg: string): boolean;
-Var
+var
   SSHServer : TSSHServer;
   SFormat : string;
 begin

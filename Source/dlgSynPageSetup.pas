@@ -187,7 +187,6 @@ type
     procedure TitleCmdExecute(Sender: TObject);
     procedure TabControlActiveTabChange(Sender: TObject; TabIndex: Integer);
   private
-    { Private declarations }
     FRichEdit: TCustomRichEdit;
     FCharPos: TPoint;
     FOldStart: Integer;
@@ -203,7 +202,6 @@ type
       Align: TALignment);
     procedure SelectNone;
   public
-    { Public declarations }
     procedure SetValues(SynEditPrint: TSynEditPrint);
     procedure GetValues(SynEditPrint: TSynEditPrint);
   end;

@@ -9,7 +9,7 @@
 unit cPyScripterSettings;
 
 interface
-Uses
+uses
   WinApi.Windows,
   System.Classes,
   Vcl.ImgList,
@@ -26,7 +26,7 @@ Uses
   cPySupportTypes,
   dlgSynEditOptions;
 
-Const
+const
   dsaSearchFromStart = 1;
   dsaReplaceFromStart = 2;
   dsaReplaceNumber = 3;
@@ -921,7 +921,7 @@ procedure TJvAppStorageFontPropertyEngine.WriteProperty(
   AStorage: TJvCustomAppStorage; const APath: string; AObject,
   AProperty: TObject; const Recursive: Boolean;
   const IgnoreProperties: TStrings);
-Var
+var
   Index : Integer;
 begin
   // Do not save style if empty
@@ -975,7 +975,7 @@ procedure TJvAppStorageGutterPropertyEngine.ReadProperty(
   AStorage: TJvCustomAppStorage; const APath: string; AObject,
   AProperty: TObject; const Recursive, ClearFirst: Boolean;
   const IgnoreProperties: TStrings);
-Var
+var
   FontSize : Integer;
 begin
   AStorage.ReadPersistent(APath, AProperty as TSynGutter, Recursive, ClearFirst,
@@ -989,7 +989,7 @@ procedure TJvAppStorageGutterPropertyEngine.WriteProperty(
   AStorage: TJvCustomAppStorage; const APath: string; AObject,
   AProperty: TObject; const Recursive: Boolean;
   const IgnoreProperties: TStrings);
-Var
+var
   FontSize : Integer;
 begin
   FontSize := TSynGutter(AProperty).Font.Size;
@@ -1025,7 +1025,7 @@ procedure TJvAppStorageKeyStrokesPropertyEngine.WriteProperty(
   AStorage: TJvCustomAppStorage; const APath: string; AObject,
   AProperty: TObject; const Recursive: Boolean;
   const IgnoreProperties: TStrings);
-Var
+var
   KeyStrokes: TSynEditKeyStrokes;
 
   procedure WriteAddedKeystrokes;
@@ -1089,7 +1089,7 @@ procedure TJvAppStorageKeyStrokesPropertyEngine.ReadProperty(
   AStorage: TJvCustomAppStorage; const APath: string; AObject,
   AProperty: TObject; const Recursive, ClearFirst: Boolean;
   const IgnoreProperties: TStrings);
-Var
+var
   KeyStrokes: TSynEditKeyStrokes;
 
   procedure ReadAddedKeystrokes;

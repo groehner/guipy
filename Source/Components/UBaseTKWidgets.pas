@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
  Unit:     UBaseTkWidgets
- Author:   Gerhard Röhner
+ Author:   Gerhard RÃ¶hner
  Date:     May 2021
  Purpose:  base widget of Tkinter and TTKinter
 -------------------------------------------------------------------------------}
@@ -36,16 +36,16 @@ type
     FAnchor: TAnchor;
     FBackground: TColor;
     FForeground: TColor;
-    FBorderWidth: String;
+    FBorderWidth: string;
     FCommand: Boolean;
-    FImage: String;
+    FImage: string;
     FJustify: TJustify;
     FRelief: TRelief;
     FScrollbar: boolean;
     FScrollbars: TScrollbar;
     FTakeFocus: boolean;
     FUnderline: integer;
-    FWrapLength: String;
+    FWrapLength: string;
 
     // events
     FActivate: TEvent;
@@ -71,9 +71,9 @@ type
     procedure setJustify(aValue: TJustify);
     procedure setRelief(aValue: TRelief);
     procedure setUnderline(aValue: integer);
-    procedure setWrapLength(aValue: String);
-    procedure MakeBoolean(Attr, Value: String);
-    procedure MakeShow(Value: String);
+    procedure setWrapLength(aValue: string);
+    procedure MakeBoolean(Attr, Value: string);
+    procedure MakeShow(Value: string);
   protected
     FNameExtension: string; // used by LabeledScale
     BorderWidthInt: integer;
@@ -88,17 +88,17 @@ type
     procedure Calculate3DColors(var DarkColor, LightColor: TColor; Background: TColor);
     procedure CalculatePadding(var pl, pt, pr, pb: integer); virtual; abstract;
     procedure CalculateText(var tw, th: integer; var SL: TStringList); virtual; abstract;
-    procedure AddParameter(const Value, par: String);
-    procedure MakeControlVar(Variable, ControlVar: String; Value: String = '';  Typ: String = 'String');
+    procedure AddParameter(const Value, par: string);
+    procedure MakeControlVar(Variable, ControlVar: string; Value: string = '';  Typ: string = 'String');
     procedure MakeImage(const Value: string);
     procedure MakeValidateCommand(Attr, Value: string);
-    procedure MakeScrollbar(Value, TkTyp: String);
-    procedure MakeScrollbars(Value, TkTyp: String);
+    procedure MakeScrollbar(Value, TkTyp: string);
+    procedure MakeScrollbars(Value, TkTyp: string);
     procedure PaintAScrollbar(Value: boolean);
     procedure PaintScrollbars(Scrollbar: TScrollbar);
     procedure setScrollbar(Value: boolean);
     procedure setScrollbars(Value: TScrollbar);
-    procedure ShowText(s: String; newWidth, newHeight: integer);
+    procedure ShowText(s: string; newWidth, newHeight: integer);
     procedure Paint; override;
     procedure PaintBorder(R: TRect; Relief: TRelief; BorderWidth: integer); virtual; abstract;
     procedure PaintScrollbar(R: TRect; horizontal: boolean; ttk: boolean = false);
@@ -106,17 +106,17 @@ type
   public
     property Anchor: TAnchor read FAnchor write setAnchor default _TA_center;
     property Background: TColor read FBackground write setBackground default clBtnFace;
-    property BorderWidth: String read FBorderWidth write setBorderWidth;
+    property BorderWidth: string read FBorderWidth write setBorderWidth;
     property Command: Boolean read FCommand write FCommand;
     property Foreground: TColor read FForeground write setForeground default clWindowText;
-    property Image: String read fImage write setImage;
+    property Image: string read fImage write setImage;
     property Justify: TJustify read FJustify write setJustify default _TJ_center;
     property Relief: TRelief read FRelief write setRelief default _TR_flat;
     property Scrollbars: TScrollbar read FScrollbars write setScrollbars default _TB_none;
     property Scrollbar: boolean read FScrollbar write setScrollbar default false;
     property TakeFocus: boolean read FTakeFocus write fTakeFocus default true;
     property Underline: integer read FUnderline write setUnderline default -1;
-    property WrapLength: String read FWrapLength write setWrapLength;
+    property WrapLength: string read FWrapLength write setWrapLength;
 
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
@@ -126,14 +126,14 @@ type
     procedure DeleteEvents; override;
     procedure DeleteWidget; override;
     procedure DeleteEventHandler(const Event: string); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     function MakeBinding(Eventname: string): string; override;
     function MakeHandler(const event: string ): string; override;
     procedure Resize; override;
     procedure SetPositionAndSize; override;
     function ClientRectWithoutScrollbars: TRect;
-    function getType: String; override;
-    function getNameAndType: String; override;
+    function getType: string; override;
+    function getNameAndType: string; override;
     function getContainer: string;
     procedure MakeFont; override;
   published
@@ -323,7 +323,7 @@ procedure TBaseTkWidget.Paint;
       Compound: TUCompound;
 
   procedure ShowText(R: TRect);
-    var Format: integer; wraplen: double; s: String;
+    var Format: integer; wraplen: double; s: string;
   begin
     case Justify of
       _TJ_left:   Format:= DT_LEFT;
@@ -531,7 +531,7 @@ begin
 end;
 
 procedure TBaseTkWidget.SetPositionAndSize;
-  var key: String; R: TRect;
+  var key: string; R: TRect;
 begin
   R:= ClientRectWithoutScrollbars;
   if not (Parent is TKPanedWindow) then
@@ -622,7 +622,7 @@ begin
   Partner.InsertTkBinding(Name, Event, MakeBinding(Event));
 end;
 
-procedure TBaseTkWidget.MakeBoolean(Attr, Value: String);
+procedure TBaseTkWidget.MakeBoolean(Attr, Value: string);
   var s1, s2: string;
 begin
   s1:= getAttrAsKey(Attr);
@@ -632,7 +632,7 @@ begin
   setAttributValue(s1, s2)
 end;
 
-procedure TBaseTkWidget.MakeShow(Value: String);
+procedure TBaseTkWidget.MakeShow(Value: string);
   var s: string;
 begin
   s:= 'self.' + Name  + '[''show'']';
@@ -642,14 +642,14 @@ begin
 end;
 
 procedure TBaseTkWidget.AddParameter(const Value, par: string);
-  var old, new: String;
+  var old, new: string;
 begin
   old:= 'def ' + Value + '(self):';
   new:= 'def ' + Value + '(self, ' + par + '):';
   Partner.ReplaceWord(old, new, false);
 end;
 
-procedure TBaseTkWidget.MakeControlVar(Variable, ControlVar: String; Value: String = ''; Typ: String = 'String');
+procedure TBaseTkWidget.MakeControlVar(Variable, ControlVar: string; Value: string = ''; Typ: string = 'String');
   var s: string;
 begin
   s:= surround('self.' + ControlVar + ' = tk.' + Typ + 'Var()');
@@ -792,15 +792,15 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.MakeScrollbar(Value, TkTyp: String);
+procedure TBaseTkWidget.MakeScrollbar(Value, TkTyp: string);
 begin
   if Value = 'True'
     then MakeScrollbars('horizontal', TkTyp)
     else MakeScrollbars('none', TkTyp);
 end;
 
-procedure TBaseTkWidget.MakeScrollbars(Value, TkTyp: String);
-  var ScrollbarName, OldValue: String;
+procedure TBaseTkWidget.MakeScrollbars(Value, TkTyp: string);
+  var ScrollbarName, OldValue: string;
      WidthNoScrollbar, HeightNoScrollbar, WidthScrollbar, HeightScrollbar: integer;
 
   procedure DeleteVertical;
@@ -898,7 +898,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.ShowText(s: String; newWidth, newHeight: integer);
+procedure TBaseTkWidget.ShowText(s: string; newWidth, newHeight: integer);
   var th, tw, x, y: integer;
 begin
   th:= Canvas.TextHeight(s);
@@ -936,7 +936,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.setBorderWidth(aValue: String);
+procedure TBaseTkWidget.setBorderWidth(aValue: string);
 begin
   if aValue <> fBorderWidth then begin
     fBorderWidth:= aValue;
@@ -968,7 +968,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.setWrapLength(aValue: String);
+procedure TBaseTkWidget.setWrapLength(aValue: string);
 begin
   if aValue <> FWrapLength then begin
     FWrapLength:= aValue;
@@ -1016,7 +1016,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TBaseTkWidget.NewWidget(Widget: String = '');
+procedure TBaseTkWidget.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   InsertValue('self.' + Name + ' = ' + Widget + '(' + getContainer + ')');

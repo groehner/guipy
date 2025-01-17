@@ -3,7 +3,7 @@ unit StringResources;
 interface
 {gnugettext: scan-all}
 
-Const
+const
   // File Filters
   sPythonFileFilter = 'Python Files (*.py;*.pyw;*.pyi)|*.py;*.pyw;*.pyi';
   sCythonFileFilter = 'Cython Files (*.pyx*.pxd;*.pxi)|*.pyx;*.pxd;*.pxi';

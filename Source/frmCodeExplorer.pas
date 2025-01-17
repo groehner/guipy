@@ -525,7 +525,7 @@ end;
 
 procedure TCodeExplorerWindow.UpdateWindow(DocSymbols: TDocSymbols;
   UpdateReason: TCEUpdateReason);
-Var
+var
   Symbols: TJsonArray;
   LFileId: string;
 begin
@@ -586,7 +586,7 @@ begin
 end;
 
 procedure TCodeExplorerWindow.ShowEditorCodeElement;
-Var
+var
   Editor : IEditor;
   CodeElement : TCodeElementCENode;
 begin
@@ -680,7 +680,7 @@ begin
 end;
 
 procedure TCodeExplorerWindow.mnFindDefinitionClick(Sender: TObject);
-Var
+var
   Node : PVirtualNode;
 begin
   Node := ExplorerTree.GetFirstSelected();
@@ -805,7 +805,7 @@ begin
 end;
 
 procedure TAbstractCENode.Sort(ASortOrder: TCESortOrder);
-Var
+var
   Child : Pointer;
 begin
   SortOrder := ASortOrder;

@@ -482,7 +482,7 @@ begin
 end;
 
 procedure TCommandsDataModule.HighlightWordInActiveEditor(SearchWord: string);
-Var
+var
   OldWholeWords : Boolean;
   OldSearchText : string;
 begin
@@ -585,7 +585,7 @@ procedure TCommandsDataModule.actFileCloseWorkspaceTabsExecute(Sender: TObject);
     until not Assigned(NextTab);
   end;
 
-Var
+var
   aFile : IFile;
 begin
   aFile := GI_PyIDEServices.GetActiveFile;
@@ -663,7 +663,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actSearchFindExecute(Sender: TObject);
-Var
+var
   SearchCommands : ISearchCommands;
 begin
   SearchCommands := FindSearchTarget;
@@ -672,7 +672,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actSearchFindNextExecute(Sender: TObject);
-Var
+var
   SearchCommands : ISearchCommands;
 begin
   SearchCommands := FindSearchTarget;
@@ -681,7 +681,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actSearchFindPrevExecute(Sender: TObject);
-Var
+var
   SearchCommands : ISearchCommands;
 begin
   SearchCommands := FindSearchTarget;
@@ -690,7 +690,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actSearchReplaceExecute(Sender: TObject);
-Var
+var
   SearchCommands : ISearchCommands;
 begin
   SearchCommands := FindSearchTarget;
@@ -699,7 +699,7 @@ begin
 end;
 
 procedure TCommandsDataModule.IncrementalSearch;
-Var
+var
   SearchCmds : ISearchCommands;
 begin
   SearchCmds := FindSearchTarget;
@@ -737,7 +737,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actSearchReplaceNowExecute(Sender: TObject);
-Var
+var
   SearchCmds : ISearchCommands;
 begin
   SearchCmds := FindSearchTarget;
@@ -761,7 +761,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actSearchGoToLineExecute(Sender: TObject);
-Var
+var
   Line : string;
   LineNo : integer;
 begin
@@ -786,7 +786,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actSearchHighlightExecute(Sender: TObject);
-Var
+var
   SearchEngine : TSynEditSearchCustom;
   SearchOptions : TSynSearchOptions;
   Editor : IEditor;
@@ -879,7 +879,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actUnitTestWizardExecute(Sender: TObject);
-Var
+var
   Tests : string;
   Editor : IEditor;
 begin
@@ -1074,7 +1074,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actExportShortCutsExecute(Sender: TObject);
-Var
+var
   AppStorage : TJvAppIniFileStorage;
   ActionProxyCollection: TActionProxyCollection;
 begin
@@ -1112,7 +1112,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actImportShortcutsExecute(Sender: TObject);
-Var
+var
   AppStorage : TJvAppIniFileStorage;
   ActionProxyCollection: TActionProxyCollection;
   TempKeyStrokes: TSynEditKeyStrokes;
@@ -1332,7 +1332,7 @@ var
   IsBracket, HasMatchingBracket : Boolean;
   Attri: TSynHighlighterAttributes;
   IsOutside : Boolean;
-Const
+const
   OpenChars = ['(', '{', '['];
 begin
   GetMatchingBrackets(SynEdit, BracketPos, Result, IsBracket, HasMatchingBracket,
@@ -1350,7 +1350,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actIDEOptionsExecute(Sender: TObject);
-Var
+var
   Reg : TRegistry;
   IsRegistered : Boolean;
   Key : string;
@@ -1412,7 +1412,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actPythonPathExecute(Sender: TObject);
-Var
+var
   Paths : TStringList;
 begin
   if not GI_PyControl.PythonLoaded then Exit;
@@ -1514,7 +1514,7 @@ begin
 end;
 
 procedure TCommandsDataModule.UpdateMainActions;
-Var
+var
   SelAvail : Boolean;
   Editor : IEditor;
   aFile: IFile;
@@ -1744,7 +1744,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actInsertTemplateExecute(Sender: TObject);
-Var
+var
   SynEdit : TSynEdit;
 begin
   if (Screen.ActiveControl is TSynedit) and Assigned(GI_ActiveEditor) then begin
@@ -1786,7 +1786,7 @@ begin
 end;
 
 procedure TCommandsDataModule.actEditCopyFileNameExecute(Sender: TObject);
-Var
+var
   Editor : IEditor;
 begin
   Editor := GI_PyIDEServices.ActiveEditor;
@@ -2181,7 +2181,7 @@ begin
 end;
 
 function TCommandsDataModule.FindSearchTarget: ISearchCommands;
-Var
+var
   Editor : IEditor;
 begin
   Result := GI_SearchCmds;
@@ -2289,7 +2289,7 @@ begin
 end;
 
 procedure TCommandsDataModule.ShowSearchReplaceDialog(SynEdit : TSynEdit; AReplace: boolean);
-Var
+var
   S : string;
 begin
   EditorSearchOptions.InitSearch;
@@ -2329,7 +2329,7 @@ end;
 
 procedure TCommandsDataModule.SynEditReplaceText(Sender: TObject; const ASearch,
   AReplace: string; Line, Column: Integer; var Action: TSynReplaceAction);
-Var
+var
   APos: TPoint;
   EditRect: TRect;
   SynEdit : TSynEdit;

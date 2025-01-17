@@ -109,7 +109,7 @@ type
     procedure DoEditMessage(Conn: TConnection);
     procedure setLeftBorderForEditMemo;
     procedure CloseEdit(b: boolean);
-    function getLifeLine(const Participant: String): TLifeLine;
+    function getLifeLine(const Participant: string): TLifeLine;
     procedure OnBackgroundDblClick(Sender: TObject; Conn: TConnection);
     procedure onCreatedChanged(Sender: TObject);
     function getParticipantName: string;
@@ -117,15 +117,15 @@ type
   private
     SequencePanel: TSequencePanel;
     OnCloseNotify: TNotifyEvent; // future use for CreateSequencediagram
-    procedure AddLifeline(const Participant: String);
-    procedure AddConnection(const Connection: String);
+    procedure AddLifeline(const Participant: string);
+    procedure AddConnection(const Connection: string);
     procedure setPanelFont(aFont: TFont);
     procedure TranslateDiagram;
     procedure CalculateXPositions;
     procedure CalculateDiagram;
     procedure SortLifeLines;
-    procedure prepareMethod(const aMethod: String);
-    function prepareParticipant(const participant: String): String;
+    procedure prepareMethod(const aMethod: string);
+    function prepareParticipant(const participant: string): string;
     function getBitmap: TBitmap;
     procedure ChangeStyle;
     function getMaxLifelineHeight: integer;
@@ -146,13 +146,13 @@ type
     ToParticipant: string;
     aResult: string;
     class function ToolbarCount: integer;
-    procedure MethodEntered(const aMethod: String);
-    procedure MethodExited(aMethod: String);
+    procedure MethodEntered(const aMethod: string);
+    procedure MethodExited(aMethod: string);
     procedure addParameter(const parameter: string);
     procedure changeParameter(Parameter: TStringList);
     procedure changeLifeLineName(const value, aName: string);
-    procedure makeFromParticipant(const participant: String);
-    procedure makeToParticipant(const participant: String);
+    procedure makeFromParticipant(const participant: string);
+    procedure makeToParticipant(const participant: string);
     procedure makeConnection;
 
     // UML-diagram related
@@ -715,7 +715,7 @@ begin
   (fFile as IFileCommands).ExecClose;
 end;
 
-procedure TFSequenceForm.AddLifeline(const Participant: String);
+procedure TFSequenceForm.AddLifeline(const Participant: string);
   var LifeLine: TLifeLine; i, maxx, x1, lef: integer; SL: TStringList;
 begin
   if copy(Participant, 1, 1) = '#' then exit;
@@ -750,8 +750,8 @@ begin
   FreeAndNil(SL);
 end;
 
-procedure TFSequenceForm.AddConnection(const Connection: String);
-  var Participant1, Participant2, bMessage: String;
+procedure TFSequenceForm.AddConnection(const Connection: string);
+  var Participant1, Participant2, bMessage: string;
       p: integer;
       ArrowStyle: TArrowStyle;
       Attributes: TConnectionAttributes;
@@ -965,7 +965,7 @@ begin
   end;
 end;
 
-function TFSequenceForm.getLifeLine(const Participant: String): TLifeLine;
+function TFSequenceForm.getLifeLine(const Participant: string): TLifeLine;
   var i: integer;
 begin
   i:= 0;
@@ -1073,7 +1073,7 @@ end;
 
 // Sequencediagram from Debugger
 
-procedure TFSequenceForm.prepareMethod(const aMethod: String);
+procedure TFSequenceForm.prepareMethod(const aMethod: string);
   var p: integer;
 begin
   aMessage:= aMethod;
@@ -1117,7 +1117,7 @@ begin
   end;
 end;
 
-procedure TFSequenceForm.MethodEntered(const aMethod: String);
+procedure TFSequenceForm.MethodEntered(const aMethod: string);
 begin
   prepareMethod(aMethod);
   if aMessage = '<init>' then begin
@@ -1127,7 +1127,7 @@ begin
     MethodArrowStyle:= casSynchron;
 end;
 
-procedure TFSequenceForm.MethodExited(aMethod: String);
+procedure TFSequenceForm.MethodExited(aMethod: string);
   var p: integer;
 begin
   p:= Pos(', ', aMethod);
@@ -1147,19 +1147,19 @@ begin
   MethodArrowStyle:= casClose;
 end;
 
-function TFSequenceForm.prepareParticipant(const participant: String): String;
+function TFSequenceForm.prepareParticipant(const participant: string): string;
 begin
   if participant = 'main'
     then Result:= 'Actor'
     else Result:= participant;
 end;
 
-procedure TFSequenceForm.makeFromParticipant(const participant: String);
+procedure TFSequenceForm.makeFromParticipant(const participant: string);
 begin
   FromParticipant:= prepareParticipant(participant);
 end;
 
-procedure TFSequenceForm.makeToParticipant(const participant: String);
+procedure TFSequenceForm.makeToParticipant(const participant: string);
 begin
   ToParticipant:= prepareParticipant(Participant);
   if (FromParticipant = ToParticipant) {and (myDebugger.SequenceForm = self)} then

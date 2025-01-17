@@ -484,7 +484,7 @@ begin
   SetLength(result,p);
 end;
 
-Const
+const
   sSyntax = 'GuiPy command line syntax:';
   sOptions = 'Command line options:';
   sPyScripterCommandLine = 'guipy [options] [filename1, [filename2, ...]]';

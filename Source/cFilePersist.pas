@@ -9,7 +9,7 @@
 unit cFilePersist;
 
 interface
-Uses
+uses
   System.Classes,
   System.Contnrs,
   Vcl.Controls,
@@ -17,7 +17,7 @@ Uses
   uEditAppIntfs,
   dlgSynEditOptions;
 
-Type
+type
   TBookMarkInfo = class(TPersistent)
   private
     fLine, fChar, fBookmarkNumber : integer;
@@ -81,7 +81,7 @@ Type
     procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string); virtual;
   end;
 
-Var
+var
   TabsPersistsInfo : TTabsPersistInfo;   // Singleton
 
 implementation
@@ -214,7 +214,7 @@ end;
 constructor TFilePersistInfo.CreateFromEditor(Editor: IEditor);
 
   procedure GetFoldInfo(SynEdit: TSynEdit; var UseCodeFolding: Boolean; var FoldState: string);
-  Var
+  var
     Stream : TMemoryStream;
   begin
     UseCodeFolding := SynEdit.UseCodeFolding;
@@ -229,7 +229,7 @@ constructor TFilePersistInfo.CreateFromEditor(Editor: IEditor);
     end;
   end;
 
-Var
+var
   i : integer;
   BookMark : TBookMarkInfo;
   BreakPoint : TBreakPoint;
@@ -301,7 +301,7 @@ class procedure TPersistFileInfo.ReadFromAppStorage(
   AppStorage: TJvCustomAppStorage; Path : string);
 
   procedure RestoreFoldInfo(SynEdit: TSynEdit; UseCodeFolding: Boolean; FoldState: string);
-  Var
+  var
     Stream: TMemoryStream;
   begin
     SynEdit.UseCodeFolding := UseCodeFolding;
@@ -320,7 +320,7 @@ class procedure TPersistFileInfo.ReadFromAppStorage(
     end;
   end;
 
-Var
+var
   PersistFileInfo : TPersistFileInfo;
   FilePersistInfo : TFilePersistInfo;
   Editor : IEditor;
@@ -408,7 +408,7 @@ end;
 
 class procedure TPersistFileInfo.WriteToAppStorage(
   AppStorage: TJvCustomAppStorage; Path : string);
-Var
+var
   PersistFileInfo : TPersistFileInfo;
   ActiveFile : IFile;
   FName : string;
@@ -461,7 +461,7 @@ end;
 
 procedure TTabsPersistInfo.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
-Var
+var
   IsVisible : Boolean;
   Size : integer;
   Alignment : TAlign;

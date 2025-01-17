@@ -339,7 +339,7 @@ end;
 
 procedure TFObjectGenerator.setControlEvents(DesignForm: TFGUIForm; EditorForm: TEditorForm);
   var Comp: TControl; Event: TEvent;
-      Eventname: String;
+      Eventname: string;
       PropInfos: PPropList;
       Widget: TBaseWidget;
       Count, i, j: Integer;
@@ -355,7 +355,7 @@ begin
     try
       GetPropList(Comp.ClassInfo, tkAny, PropInfos);
       for j:= 0 to Count - 1 do begin
-        Eventname:= String(PropInfos[j].Name);
+        Eventname:= string(PropInfos[j].Name);
         if IsEvent('|' + Eventname + '|') then begin
           getEventProperties(comp, Eventname, Event);
           if Event.Active and not
@@ -381,7 +381,7 @@ end;
 
 procedure TFObjectGenerator.SetComponentValues(DesignForm: TFGUIForm; Control: TControl);
   var Comp1, Comp2: TControl; Widget: TBaseWidget;
-      s, Attr, ForbiddenAttributes, AllowedAttributes: String;
+      s, Attr, ForbiddenAttributes, AllowedAttributes: string;
       f1, f2: TFont;
       PropInfos1, PropInfos2: PPropList;
       Count, i: Integer;
@@ -405,7 +405,7 @@ begin
     GetPropList(Comp2.ClassInfo, tkAny, PropInfos2);
     aPropertyInspector:= TELCustomPropertyInspector.Create(nil);
     for i:= 0 to Count - 1 do begin
-      Attr:= String(PropInfos1[i].Name);
+      Attr:= string(PropInfos1[i].Name);
       if (Pos(' ' + Attr + ' ', ForbiddenAttributes) = 0) and (Pos('|' + Attr + '|', AllowedAttributes) > 0) then begin
         aEditorClass:= aPropertyInspector.GetEditorClass(Comp1, PropInfos1[i]);
         if assigned(aEditorClass) then begin
@@ -413,15 +413,15 @@ begin
           PropEditor2:= aEditorClass.Create2(Comp2, PropInfos2[i]);
           try
             if PropEditor2.Value <> PropEditor1.Value then
-              SetAttributForComponent(Attr, PropEditor1.Value, String(PropEditor1.PropTypeInfo.Name), Comp1)
+              SetAttributForComponent(Attr, PropEditor1.Value, string(PropEditor1.PropTypeInfo.Name), Comp1)
             else if (PropEditor1.PropTypeInfo.Name = 'TFont') then begin
               f1:= (PropEditor1 as TELFontPropEditor).getFont;
               f2:= (PropEditor2 as TELFontPropEditor).getFont;
               if (f1.Name <> f2.Name) or (f1.Size <> f2.Size) or (f1.Style <> f2.Style) then
-                 SetAttributForComponent(Attr, PropEditor1.Value, String(PropEditor1.PropTypeInfo.Name), Comp1);
+                 SetAttributForComponent(Attr, PropEditor1.Value, string(PropEditor1.PropTypeInfo.Name), Comp1);
             end else if PropEditor1.PropTypeInfo.Name = 'TStrings' then begin
               if (PropEditor1 as TELStringsPropEditor).getText <> (PropEditor2 as TELStringsPropEditor).getText then
-                 SetAttributForComponent(Attr, PropEditor1.Value, String(PropEditor1.PropTypeInfo.Name), Comp1);
+                 SetAttributForComponent(Attr, PropEditor1.Value, string(PropEditor1.PropTypeInfo.Name), Comp1);
             end;
           finally
             FreeAndNil(PropEditor1);

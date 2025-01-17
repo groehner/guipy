@@ -11,7 +11,7 @@ unit cInternalPython;
 
 interface
 
-Uses
+uses
   System.SysUtils,
   System.Classes,
   PythonEngine,
@@ -196,7 +196,7 @@ procedure TInternalPython.DestroyPythonComponents;
       FreeLibrary(Module);
   end;
 
-Var
+var
   WasLoaded: Boolean;
   RegVersion : string;
 begin
@@ -246,7 +246,7 @@ begin
 end;
 
 procedure TInternalPython.Initialize;
-Var
+var
   P : PPyObject;
 begin
   // Wrap IDE Options
@@ -257,7 +257,7 @@ end;
 
 procedure TInternalPython.InputBoxExecute(Sender: TObject; PSelf,
   Args: PPyObject; var Result: PPyObject);
-Var
+var
   PCaption, PPrompt, PDefault : PAnsiChar;
   WideS : string;
   Res : Boolean;
@@ -276,7 +276,7 @@ begin
 end;
 
 function TInternalPython.LoadPython(const Version: TPythonVersion): Boolean;
-Var
+var
   Path, NewPath : string;
 begin
   DestroyPythonComponents;
@@ -327,7 +327,7 @@ end;
 
 procedure TInternalPython.MessageWriteExecute(Sender: TObject; PSelf,
   Args: PPyObject; var Result: PPyObject);
-Var
+var
   Msg, FName : PAnsiChar;
   LineNo, Offset : integer;
   S : string;
@@ -358,7 +358,7 @@ end;
 
 procedure TInternalPython.StatusWriteExecute(Sender: TObject; PSelf,
   Args: PPyObject; var Result: PPyObject);
-Var
+var
   Msg : PAnsiChar;
 begin
   with PythonEngine do

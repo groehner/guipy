@@ -40,7 +40,7 @@ uses
   VirtualTrees.Types, VirtualTrees.BaseAncestorVCL, VirtualTrees.BaseTree,
   VirtualTrees.AncestorVCL, uLLMSupport;
 
-Const
+const
   CrLf = #13#10;
   Homepage = 'https://www.guipy.de';
   VisTabsLen = 5; // Program, Tkinter, TTK, QtBase, QtControls
@@ -85,7 +85,7 @@ type
     fGridSize: Integer;
     fZoomSteps: Integer;
     fGUIFontSize: Integer;
-    fGUIFontName: String;
+    fGUIFontName: string;
     fFrameWidth: Integer;
     fFrameHeight: Integer;
 
@@ -136,7 +136,7 @@ type
     fShowAllNewObjects: boolean;
     fObjectsWithoutVisibility: boolean;
     fPrivateAttributEditable: Boolean;
-    fOpenFolderFormItems: String;
+    fOpenFolderFormItems: string;
 
     // Restrictions
     fLockedDOSWindow: Boolean;
@@ -189,7 +189,7 @@ type
     fSVNRepository: string;
 
     // TextDiff
-    fTextDiffState: String;
+    fTextDiffState: string;
     fTextDiffIgnoreCase: boolean;
     fTextDiffIgnoreBlanks: boolean;
 
@@ -203,12 +203,12 @@ type
     fBrowserProgram: string;
 
     // comment
-    fLicence: String;
-    fAuthor: String;
+    fLicence: string;
+    fAuthor: string;
 
     // others
-    fSourcepath: String;
-    fTempDir: String;
+    fSourcepath: string;
+    fTempDir: string;
 
     // Fonts
     fUMLFont: TFont;
@@ -258,7 +258,7 @@ type
       write fZoomSteps;
     property GuiFontSize : Integer read fGUIFontSize
       write fGUIFontSize;
-    property GuiFontName : String read fGUIFontName
+    property GuiFontName : string read fGUIFontName
       write fGUIFontName;
     property FrameWidth : Integer read fFrameWidth
       write fFrameWidth;
@@ -1291,7 +1291,7 @@ type
     vis2: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of boolean;
     TabsMenusToolbars: integer;
 
-    function DirectoryFilesExists(s: String): boolean;
+    function DirectoryFilesExists(s: string): boolean;
     procedure CheckFolder(Edit: TEdit; emptyAllowed: boolean);
     procedure CheckFolderCB(ComboBox: TComboBox);
     procedure CheckUserFolder(Edit: TEdit);
@@ -1299,7 +1299,7 @@ type
     function getCheckColor(s: string; LeerErlaubt: boolean): TColor;
     procedure ShortenPath(WinControl: TWinControl; const s: string);
     function ExtendPath(WinControl: TWinControl): string;
-    function BrowserProgToName(const s: String): String;
+    function BrowserProgToName(const s: string): string;
 
     function SelectedHighlighter : TSynCustomHighlighter;
     procedure UpdateColorFontStyle;
@@ -1380,7 +1380,7 @@ type
     ControlStructureTemplates: array[1..21] of TStringList;
     GitOK: boolean;
     SubversionOK: boolean;
-    EditorFolder: String;
+    EditorFolder: string;
     KeyStrokesReset: boolean;
     VisTabs:     TBoolArray;
     VisMenus:    TBoolArray;
@@ -1394,7 +1394,7 @@ type
     function getMultiLineComment(Indent: string): string;
     function getClassCodeTemplate: string;
     function getTVConfigurationItem(text: string): TTreeNode;
-    function getFileFilters: String;
+    function getFileFilters: string;
     procedure OpenAndShowPage(Page: string);
     function RunAsAdmin(hWnd: HWND; const aFile, aParameters: string): THandle;
     procedure AddScriptsPath;
@@ -1607,7 +1607,7 @@ begin
   UpdateHeaderFooterCursorPos;
 end;
 
-function TFConfiguration.DirectoryFilesExists(s: String): boolean;
+function TFConfiguration.DirectoryFilesExists(s: string): boolean;
   var p: integer; dir: string;
 begin
   Result:= true;
@@ -1705,7 +1705,7 @@ begin
 end;
 
 procedure TFConfiguration.CheckFile(WinControl: TWinControl; emptyAllowed: boolean);
-  var s: String; E: TEdit;
+  var s: string; E: TEdit;
 begin
   s:= ExtendPath(WinControl);
   ShortenPath(WinControl, s);
@@ -1735,8 +1735,8 @@ begin
   FreeAndNil(ODSelect);
 end;
 
-function TFConfiguration.BrowserProgToName(const s: String): String;
-  var Browser: String;
+function TFConfiguration.BrowserProgToName(const s: string): string;
+  var Browser: string;
 begin
   Browser:= UpperCase(s);
   if Pos('NETSCAPE', Browser) > 0
@@ -2565,7 +2565,7 @@ end;
 
 {$WARNINGS OFF}
 function TFConfiguration.getDumpText: string;
-  var Pathname, fMachine, fApp, s, s1, winplatform: String;
+  var Pathname, fMachine, fApp, s, s1, winplatform: string;
       SL: TStringList; aFile: IFile;
 begin
   {$IFDEF WIN64}
@@ -2733,7 +2733,7 @@ begin
     end;
 end;
 
-function TFConfiguration.GetFileFilters: String;
+function TFConfiguration.GetFileFilters: string;
 begin
   Result:=
     'GuiPy|*.py;*.pyw;*.pyi;*.pfm;*.puml;*.psg;*.psd' +
@@ -2742,10 +2742,10 @@ begin
     '|UML (*.puml)|*.puml' +
     '|' + _('Structogram') + ' (*.psg)|*.psg' +
     '|' + _('Sequence diagram') + ' (*.psd)|*.psd' +
-  	'|Cython (*.pyx*.pxd;*.pxi)|*.pyx;*.pxd;*.pxi' +
+    '|Cython (*.pyx*.pxd;*.pxi)|*.pyx;*.pxd;*.pxi' +
     '|HTML (*.html)|*.html;*.htm' +
     '|XML (*.xml)|*.xml|' + _('Text') + ' (*.txt)|*.txt' +
-	  '|PHP (*.php;*.php3;*.phtml;*.inc)|*.php;*.php3;*.phtml;*.inc' +
+    '|PHP (*.php;*.php3;*.phtml;*.inc)|*.php;*.php3;*.phtml;*.inc' +
     '|' + _('All') + ' (*.*)|*.*';
 end;
 
@@ -2913,7 +2913,7 @@ begin
 end;
 
 procedure TFConfiguration.actPVAddExecute(Sender: TObject);
-Var
+var
   PythonVersion: TPythonVersion;
   Directories: TArray<string>;
   err: string;
@@ -3031,7 +3031,7 @@ end;
 
 procedure TFConfiguration.vtPythonVersionsGetCellText(
   Sender: TCustomVirtualStringTree; var E: TVSTGetCellTextEventArgs);
-Var
+var
   Level : integer;
 begin
   Level := vtPythonVersions.GetNodeLevel(E.Node);
@@ -3063,7 +3063,7 @@ end;
 procedure TFConfiguration.vtPythonVersionsGetImageIndex(
   Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
   Column: TColumnIndex; var Ghosted: Boolean; var ImageIndex: UITypes.TImageIndex);
-Var
+var
   Level : integer;
 begin
   ImageIndex := -1;
@@ -3595,7 +3595,7 @@ end;
 {--- Color Themes -------------------------------------------------------------}
 
 procedure TFConfiguration.lbColorThemesClick(Sender: TObject);
-Var
+var
   AppStorage : TJvAppIniFileStorage;
   FileName : string;
 begin
@@ -3623,7 +3623,7 @@ begin
 end;
 
 procedure TFConfiguration.ApplyColorTheme;
-Var
+var
   i : integer;
   AppStorage : TJvAppIniFileStorage;
   FileName : string;
@@ -3674,7 +3674,7 @@ begin
 end;
 
 procedure TFConfiguration.CodeTemplatesGetItems;
-Var
+var
  i, j : integer;
 begin
   CodeTemplateText := '';
@@ -3690,7 +3690,7 @@ begin
 end;
 
 procedure TFConfiguration.CodeTemplatesSetItems;
-Var
+var
  i, Count : integer;
  List : TStringList;
 begin
@@ -3727,7 +3727,7 @@ begin
 end;
 
 procedure TFConfiguration.actCodeAddItemExecute(Sender: TObject);
-Var
+var
   Item : TListItem;
   i : Integer;
 begin
@@ -3761,7 +3761,7 @@ begin
 end;
 
 procedure TFConfiguration.actCodeUpdateItemExecute(Sender: TObject);
-Var
+var
   i : integer;
 begin
   if (edShortCut.Text <> '') and (CodeTemplatesLvItems.ItemIndex >= 0) then begin
@@ -3782,7 +3782,7 @@ begin
 end;
 
 procedure TFConfiguration.actCodeMoveDownExecute(Sender: TObject);
-Var
+var
   Name, Value : string;
   P : Pointer;
   Index : integer;
@@ -3807,7 +3807,7 @@ begin
 end;
 
 procedure TFConfiguration.actCodeMoveUpExecute(Sender: TObject);
-Var
+var
   Name, Value : string;
   P : Pointer;
   Index : integer;
@@ -3961,7 +3961,7 @@ begin
 end;
 
 procedure TFConfiguration.actFileAddItemExecute(Sender: TObject);
-Var
+var
   Item : TListItem;
   FileTemplate : TFileTemplate;
   i : Integer;
@@ -4062,7 +4062,7 @@ begin
 end;
 
 procedure TFConfiguration.actFileMoveUpExecute(Sender: TObject);
-Var
+var
   Name, Value : string;
   P : Pointer;
   Index : integer;
@@ -4085,7 +4085,7 @@ begin
 end;
 
 procedure TFConfiguration.actFileMoveDownExecute(Sender: TObject);
-Var
+var
   Name, Value : string;
   P : Pointer;
   Index : integer;
@@ -4222,7 +4222,7 @@ end;
 
 procedure TFConfiguration.actlPythonVersionsUpdate(Action: TBasicAction;
   var Handled: Boolean);
-Var
+var
   Node : PVirtualNode;
   Level : integer;
 begin
@@ -4513,7 +4513,7 @@ end;
 
 procedure TFConfiguration.StyleSelectorFormShow;
 //  Todo Select active style
-Var
+var
   Index : integer;
 begin
   if LBStyleNames.Items.Count = 0 then
@@ -4530,7 +4530,7 @@ begin
 end;
 
 procedure TFConfiguration.FillVclStylesList;
-Var
+var
   FileName : string;
   StyleInfo:  TStyleInfo;
 begin
@@ -5051,9 +5051,9 @@ begin
 end;
 
 procedure TFConfiguration.RegisterGuiPy;
-  var GuiPy, Filename: String; Reg: TRegistry;
+  var GuiPy, Filename: string; Reg: TRegistry;
 
-  procedure WriteToRegistry(const Key: String);
+  procedure WriteToRegistry(const Key: string);
   begin
     with Reg do begin
       OpenKey(Key, true);
@@ -5132,7 +5132,7 @@ end;
 {--- Git ----------------------------------------------------------------------}
 
 procedure TFConfiguration.BGitFolderClick(Sender: TObject);
-  var Dir: String;
+  var Dir: string;
 begin
   Dir:= EGitFolder.Hint;
   if not Sysutils.DirectoryExists(Dir) then Dir:= GuiPyOptions.SourcePath;
@@ -5145,7 +5145,7 @@ begin
 end;
 
 procedure TFConfiguration.BGitRepositoryClick(Sender: TObject);
-  var Dir: String;
+  var Dir: string;
 begin
   Dir:= CBLocalRepository.Text;
   if not Sysutils.DirectoryExists(Dir) then Dir:= GuiPyOptions.SourcePath;
@@ -5181,7 +5181,7 @@ begin
 end;
 
 procedure TFConfiguration.BGitCloneClick(Sender: TObject);
-  var Dir, Remote, aName: String;
+  var Dir, Remote, aName: string;
 begin
   Screen.Cursor:= crHourGlass;
   try
@@ -5208,7 +5208,7 @@ end;
 {--- SVN ----------------------------------------------------------------------}
 
 procedure TFConfiguration.BSVNClick(Sender: TObject);
-  var Dir: String;
+  var Dir: string;
 begin
   Dir:= ESVNFolder.Hint;
   if not Sysutils.DirectoryExists(Dir) then Dir:= GuiPyOptions.SourcePath;
@@ -5221,7 +5221,7 @@ begin
 end;
 
 procedure TFConfiguration.BRepositoryClick(Sender: TObject);
-  var Dir: String;
+  var Dir: string;
 begin
   Dir:= CBRepository.Hint;
   if not Sysutils.DirectoryExists(Dir) then Dir:= GuiPyOptions.SourcePath;

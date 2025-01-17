@@ -30,7 +30,7 @@ type
     function getNodeFromPath(Path: string): TBaseNameSpaceItem;
     function isObject(Node: TBaseNameSpaceItem): boolean;
     function isAttribute(Node: TBaseNameSpaceItem): boolean;
-    function getNameFromValue(Value, Parentname: String; Node: TBaseNameSpaceItem = nil): string;
+    function getNameFromValue(Value, Parentname: string; Node: TBaseNameSpaceItem = nil): string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -43,24 +43,24 @@ type
     function getObjectMembers(const Objectname: string): TStringList;
     function getObjectObjectMembers(const Objectname: string): TStringList;
     function getObjectAttributeValues(const Objectname: string): TStringList;
-    function getNodeFromName(const Objectname: String): TBaseNameSpaceItem;
-    function getHexAddressFromName(Name: String): String;
-    function getRealAddressFromName(Name: String): String;
-    function getPathFromName(Name: String): String;
-    function getClassAttributes(const Classname: String): TStringList;
-    function getClassMethods(const Classname: String): TStringList;
+    function getNodeFromName(const Objectname: string): TBaseNameSpaceItem;
+    function getHexAddressFromName(Name: string): string;
+    function getRealAddressFromName(Name: string): string;
+    function getPathFromName(Name: string): string;
+    function getClassAttributes(const Classname: string): TStringList;
+    function getClassMethods(const Classname: string): TStringList;
     function getClassnameOfObject(const Objectname: string): string;
     function getClassnameFromAddress(Address: string): string;
-    procedure SimplifyPath(Objectname: String);
+    procedure SimplifyPath(Objectname: string);
 
     // access to python
-    procedure Execute(command: String);
+    procedure Execute(command: string);
     procedure ExecutePython(Source: string);
-    procedure LoadClassOfObject(Objectname, aClassname: String);
-    function getSignature(from: String): String;
-    function getHexAddress(from, value: String): string;
+    procedure LoadClassOfObject(Objectname, aClassname: string);
+    function getSignature(from: string): string;
+    function getHexAddress(from, value: string): string;
     function getMethods(from: string): TStringList;
-    function getPathOf(Classname: String): string;
+    function getPathOf(Classname: string): string;
 
     function getAllObjects: TStringList;
     procedure makeAllObjects;
@@ -92,7 +92,7 @@ begin
   inherited;
 end;
 
-procedure TLivingObjects.Execute(command: String);
+procedure TLivingObjects.Execute(command: string);
 var
   Buffer: TStringDynArray;
 begin
@@ -146,7 +146,7 @@ begin
   GI_PyInterpreter.AppendPrompt;
 end;
 
-function TLivingObjects.getSignature(from: String): String;
+function TLivingObjects.getSignature(from: string): string;
 var
   Cursor: IInterface;
   Py: IPyEngineAndGIL;
@@ -158,10 +158,10 @@ begin
   Cursor := WaitCursor;
   Application.ProcessMessages;
   v := PyControl.ActiveInterpreter.EvalCode('inspect.signature(' + from + ')');
-  Result := String(v);
+  Result := string(v);
 end;
 
-procedure TLivingObjects.LoadClassOfObject(Objectname, aClassname: String);
+procedure TLivingObjects.LoadClassOfObject(Objectname, aClassname: string);
 var
   Py: IPyEngineAndGIL;
   v: Variant;
@@ -169,11 +169,11 @@ var
 begin
   Py := SafePyEngine;
   v := PyControl.ActiveInterpreter.EvalCode(Objectname + '.__module__');
-  Filepath:= String(v);
+  Filepath:= string(v);
   PyControl.ActiveInterpreter.RunSource('from ' + Filepath + ' import ' + aClassname, '<interactive input>');
 end;
 
-function TLivingObjects.getPathOf(Classname: String): string;
+function TLivingObjects.getPathOf(Classname: string): string;
 var
   Py: IPyEngineAndGIL;
   v: Variant;
@@ -183,13 +183,13 @@ begin
   if not ClassExists('os') then
     PyControl.ActiveInterpreter.RunSource('import os', '<interactive input>');
   v:= PyControl.ActiveInterpreter.EvalCode('os.path.abspath(os.curdir)');
-  Path:= String(v);
+  Path:= string(v);
   v:= PyControl.ActiveInterpreter.EvalCode(Classname + '.__module__');
-  Filename:= String(v);
+  Filename:= string(v);
   Result:= Path + '\' + Filename + '.py';
 end;
 
-function TLivingObjects.getHexAddress(from, value: String): String;
+function TLivingObjects.getHexAddress(from, value: string): string;
   var Py: IPyEngineAndGIL; hex: Variant;
 begin
   Py := SafePyEngine;
@@ -204,7 +204,7 @@ begin
     else Result:= copy(value, 1, p) + 'object at ' + hex + '>';
 end;
 
-function TLivingObjects.getMethods(from: String): TStringList;
+function TLivingObjects.getMethods(from: string): TStringList;
 var
   Py: IPyEngineAndGIL; v: Variant;
   RegEx: TRegEx; Matches: TMatchCollection;
@@ -215,7 +215,7 @@ begin
   Py := SafePyEngine;
   v := PyControl.ActiveInterpreter.EvalCode('inspect.getmembers(' + from + ', inspect.ismethod)');
   Regex:= CompiledRegEx('''(\w+)''');
-  Matches:= RegEx.Matches(String(v));
+  Matches:= RegEx.Matches(string(v));
   for var i:= 0 to Matches.count - 1 do
     SL.Add(Matches.Item[i].Groups[1].Value);
   Result := SL;
@@ -237,7 +237,7 @@ var
   SL: TStringList;
   Py: IPyEngineAndGIL;
   NS: TBaseNameSpaceItem;
-  Name, Address: String;
+  Name, Address: string;
 begin
   Result := false;
   Py := SafePyEngine;
@@ -416,7 +416,7 @@ var
   end;
 
   procedure AddObjects(NS: TBaseNameSpaceItem);
-    var s: String; NSi: TBaseNameSpaceItem;
+    var s: string; NSi: TBaseNameSpaceItem;
   begin
     for var i:= 0 to NS.ChildCount - 1 do begin
       NSi:= NS.ChildNode[i];
@@ -450,7 +450,7 @@ end;
 function TLivingObjects.getNameFromValue(Value, Parentname: string; Node: TBaseNameSpaceItem): string;
 var
   i, p1, p2: integer;
-  Classname, Objectname: String;
+  Classname, Objectname: string;
 begin
   Result:= Value;
   i := SLObjectsAddressName.IndexOfName(Value);
@@ -487,7 +487,7 @@ begin
   end;
 end;
 
-function TLivingObjects.getHexAddressFromName(Name: String): String;
+function TLivingObjects.getHexAddressFromName(Name: string): string;
 begin
   Result:= '';
   for var i:= 0 to SLObjectsAddressName.Count - 1 do
@@ -495,7 +495,7 @@ begin
       Exit(SLObjectsAddressName.KeyNames[i]);
 end;
 
-function TLivingObjects.getRealAddressFromName(Name: String): String;
+function TLivingObjects.getRealAddressFromName(Name: string): string;
 begin
   var address:= getHexAddressFromName(Name);
   if address <> '' then begin
@@ -505,7 +505,7 @@ begin
   Result:= address;
 end;
 
-function TLivingObjects.getPathFromName(Name: String): String;
+function TLivingObjects.getPathFromName(Name: string): string;
 begin
   var i := SLObjectsNamePath.IndexOfName(Name);
   if i > -1 then
@@ -534,12 +534,12 @@ begin
   Result:= getClassnameFromAddress(getHexAddressFromName(Objectname));
 end;
 
-function TLivingObjects.getNodeFromName(const Objectname: String): TBaseNameSpaceItem;
+function TLivingObjects.getNodeFromName(const Objectname: string): TBaseNameSpaceItem;
 begin
   Result:= getNodeFromPath(getPathFromName(Objectname));
 end;
 
-function TLivingObjects.getClassAttributes(const Classname: String): TStringList;
+function TLivingObjects.getClassAttributes(const Classname: string): TStringList;
 var
   i: integer;
   SL: TStringList;
@@ -559,7 +559,7 @@ begin
   Result := SL;
 end;
 
-function TLivingObjects.getClassMethods(const Classname: String): TStringList;
+function TLivingObjects.getClassMethods(const Classname: string): TStringList;
 var
   i: integer;
   SL: TStringList;
@@ -772,7 +772,7 @@ begin
   SLObjectsNamePath.Clear;
 end;
 
-procedure TLivingObjects.SimplifyPath(Objectname: String);
+procedure TLivingObjects.SimplifyPath(Objectname: string);
 begin
   SLObjectsNamePath.Sorted:= false;
   var i:= SLObjectsNamePath.IndexOfName(Objectname);

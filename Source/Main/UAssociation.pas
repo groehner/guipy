@@ -3,9 +3,19 @@ unit UAssociation;
 interface
 
 uses
-  Windows, Controls, StdCtrls, ComCtrls, ImgList, ExtCtrls, ImageList,
-  System.Classes, UConnection, dlgPyIDEBase, Vcl.BaseImageCollection,
-  SVGIconImageCollection, Vcl.VirtualImageList;
+  Windows,
+  System.Classes,
+  Controls,
+  StdCtrls,
+  ComCtrls,
+  ImgList,
+  ExtCtrls,
+  ImageList,
+  Vcl.BaseImageCollection,
+  Vcl.VirtualImageList,
+  SVGIconImageCollection,
+  dlgPyIDEBase,
+  UConnection;
 
 type
   TFAssociation = class(TPyIDEDlgBase)
@@ -39,19 +49,21 @@ type
     procedure CBReadingOrderAClick(Sender: TObject);
     procedure CBReadingOrderBClick(Sender: TObject);
   private
-    ILAssociations: TVirtualImageList;
+    FILAssociations: TVirtualImageList;
   public
-    isTurned: boolean;
-    procedure init(IsConnecting: boolean; conn: TConnection; SelectedControls: integer);
-    function getCorner: integer;
-    procedure setCorner(i: integer);
-    function getConnectionAttributes: TConnectionAttributes;
+    isTurned: Boolean;
+    procedure Init(IsConnecting: Boolean; Conn: TConnection; SelectedControls: Integer);
+    function GetCorner: Integer;
+    procedure SetCorner(I: Integer);
+    function GetConnectionAttributes: TConnectionAttributes;
   end;
 
 implementation
 
-uses SysUtils, Graphics, Forms,
-     uCommonFunctions, frmPyIDEMain;
+uses
+  Forms,
+  uCommonFunctions;
+
 
 {$R *.dfm}
 
@@ -62,8 +74,8 @@ begin
   CBReadingOrderA.Caption:= #$25C0 + ' ';
   CBReadingOrderB.Caption:= #$25B6 + ' ';
   if IsStyledWindowsColorDark
-    then ILAssociations:= vilConnectionsDark
-    else ILAssociations:= vilConnectionsLight;
+    then FILAssociations:= vilConnectionsDark
+    else FILAssociations:= vilConnectionsLight;
 end;
 
 procedure TFAssociation.FormShow(Sender: TObject);
@@ -78,20 +90,20 @@ end;
 
 procedure TFAssociation.LBAssociationsDblClick(Sender: TObject);
 begin
-  ModalResult:= mrOK;
+  ModalResult:= mrOk;
 end;
 
 procedure TFAssociation.LBAssociationsDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 begin
-  var aCaption:=  (Control as TListBox).Items[Index];
-  var aCanvas:= (Control as TListBox).Canvas;
-  aCanvas.FillRect(Rect);
-  ILAssociations.Draw(aCanvas, 4, Rect.Top + (Rect.Height - ILAssociations.Height) div 2, Index);
-  aCanvas.TextOut(4 + ILAssociations.Width + 8, Rect.Top + 2, aCaption);
+  var ACaption:=  (Control as TListBox).Items[Index];
+  var ACanvas:= (Control as TListBox).Canvas;
+  ACanvas.FillRect(Rect);
+  FILAssociations.Draw(ACanvas, 4, Rect.Top + (Rect.Height - FILAssociations.Height) div 2, Index);
+  ACanvas.TextOut(4 + FILAssociations.Width + 8, Rect.Top + 2, ACaption);
 end;
 
-function TFAssociation.getCorner: integer;
+function TFAssociation.GetCorner: Integer;
 begin
   case RGRecursivCorner.ItemIndex of
     0: Result:= 2;
@@ -102,108 +114,104 @@ begin
   end;
 end;
 
-procedure TFAssociation.setCorner(i: integer);
-  var j: integer;
+procedure TFAssociation.SetCorner(I: Integer);
+  var Corner: Integer;
 begin
-  case i of
-    1: j:= 2;
-    2: j:= 0;
-    3: j:= 1;
-    4: j:= 3;
-    else j:= -1;
+  case I of
+    1: Corner:= 2;
+    2: Corner:= 0;
+    3: Corner:= 1;
+    4: Corner:= 3;
+    else Corner:= -1;
   end;
-  RGRecursivCorner.ItemIndex:= j;
+  RGRecursivCorner.ItemIndex:= Corner;
 end;
 
-procedure TFAssociation.init(IsConnecting: Boolean; conn: TConnection; SelectedControls: integer);
-  var h: integer;
+procedure TFAssociation.Init(IsConnecting: Boolean; Conn: TConnection; SelectedControls: Integer);
 begin
   ClientHeight:= 495;
-  h:= ((MMultiplicityA.Top + MMultiplicityA.Height) + RGRecursivCorner.Top) div 2 + 4;
+  var Height:= ((MMultiplicityA.Top + MMultiplicityA.Height) + RGRecursivCorner.Top) div 2 + 4;
   if IsConnecting then begin
-    BTurn.Enabled:= false;
-    BDelete.Enabled:= false;
-    ClientHeight:= h;
+    BTurn.Enabled:= False;
+    BDelete.Enabled:= False;
+    ClientHeight:= Height;
     end
   else begin
-    BTurn.Enabled:= true;
-    BDelete.Enabled:= true;
+    BTurn.Enabled:= True;
+    BDelete.Enabled:= True;
   end;
-  if assigned(conn) then begin
-    MRoleA.Lines.Text:= conn.RoleA;
-    MMultiplicityA.Lines.Text:= conn.MultiplicityA;
-    ERelation.Text:= conn.Relation;
-    CBReadingOrderA.Checked:= conn.ReadingOrderA;
-    CBReadingOrderB.Checked:= conn.ReadingOrderB;
-    MMultiplicityB.Lines.Text:= conn.MultiplicityB;
-    MRoleB.Lines.Text:= conn.RoleB;
-    LBAssociations.ItemIndex:= Ord(conn.ArrowStyle);
-    if conn.isRecursiv
-      then setCorner(conn.RecursivCorner)
-      else ClientHeight:= h;
-    IsTurned:= conn.IsTurned;
+  if Assigned(Conn) then begin
+    MRoleA.Lines.Text:= Conn.RoleA;
+    MMultiplicityA.Lines.Text:= Conn.MultiplicityA;
+    ERelation.Text:= Conn.Relation;
+    CBReadingOrderA.Checked:= Conn.ReadingOrderA;
+    CBReadingOrderB.Checked:= Conn.ReadingOrderB;
+    MMultiplicityB.Lines.Text:= Conn.MultiplicityB;
+    MRoleB.Lines.Text:= Conn.RoleB;
+    LBAssociations.ItemIndex:= Ord(Conn.ArrowStyle);
+    if Conn.isRecursiv
+      then SetCorner(Conn.RecursivCorner)
+      else ClientHeight:= Height;
+    isTurned:= Conn.isTurned;
   end else begin
     MRoleA.Lines.Text:= '';
     MMultiplicityA.Lines.Text:= '';
-    CBReadingOrderA.Checked:= false;
+    CBReadingOrderA.Checked:= False;
     ERelation.Text:= '';
-    CBReadingOrderB.Checked:= false;
+    CBReadingOrderB.Checked:= False;
     MMultiplicityB.Lines.Text:= '';
     MRoleB.Lines.Text:= '';
     LBAssociations.ItemIndex:= 0;
     if SelectedControls = 1
-      then setCorner(1)
-      else ClientHeight:= h;
+      then SetCorner(1)
+      else ClientHeight:= Height;
   end;
 end;
 
 procedure TFAssociation.CBReadingOrderAClick(Sender: TObject);
   const ArrowLeft : string = #$25C0 + ' ';
-  var s: String; p: integer;
 begin
-  p:= Pos(ArrowLeft, ERelation.Text);
+  var Pos:= Pos(ArrowLeft, ERelation.Text);
   if CBReadingOrderA.Checked then begin
-    if p = 0 then
-      ERelation.Text:= ArrowLeft + ERelation.Text
-  end else if p > 0 then begin
-    s:= ERelation.Text;
-    Delete(s, p, 2);
-    ERelation.Text:= s;
+    if Pos = 0 then
+      ERelation.Text:= ArrowLeft + ERelation.Text;
+  end else if Pos > 0 then begin
+    var Str:= ERelation.Text;
+    Delete(Str, Pos, 2);
+    ERelation.Text:= Str;
   end;
 end;
 
 procedure TFAssociation.CBReadingOrderBClick(Sender: TObject);
   const ArrowRight: string  = ' ' + #$25B6;
-  var s: String; p: integer;
 begin
-  p:= Pos(ArrowRight, ERelation.Text);
+  var Pos:= Pos(ArrowRight, ERelation.Text);
   if CBReadingOrderB.Checked then begin
-    if p = 0 then
-     ERelation.Text:= ERelation.Text + ArrowRight
-  end else if p > 0 then begin
-    s:= ERelation.Text;
-    Delete(s, p, 2);
-    ERelation.Text:= s;
+    if Pos = 0 then
+     ERelation.Text:= ERelation.Text + ArrowRight;
+  end else if Pos > 0 then begin
+    var Str:= ERelation.Text;
+    Delete(Str, Pos, 2);
+    ERelation.Text:= Str;
   end;
 end;
 
-function TFAssociation.getConnectionAttributes: TConnectionAttributes;
-  var A: TConnectionAttributes;
+function TFAssociation.GetConnectionAttributes: TConnectionAttributes;
 begin
-  A:= TConnectionAttributes.Create;
-  A.ArrowStyle:= TessConnectionArrowStyle(LBAssociations.ItemIndex);
-  A.RoleA:= MRoleA.Lines.Text;
-  A.MultiplicityA:= MMultiplicityA.Lines.Text;
-  A.ReadingOrderA:= CBReadingOrderA.Checked;
-  A.Relation:= ERelation.Text;
-  A.ReadingOrderB:= CBReadingOrderB.Checked;
-  A.MultiplicityB:= MMultiplicityB.Lines.Text;
-  A.RoleB:= MRoleB.Lines.Text;
-  A.RecursivCorner:= getCorner;
-  A.isTurned:= isTurned;
-  A.isEdited:= true;
-  A.Visible:= true;
-  Result:= A;
+  var Attr:= TConnectionAttributes.Create;
+  Attr.ArrowStyle:= TessConnectionArrowStyle(LBAssociations.ItemIndex);
+  Attr.RoleA:= MRoleA.Lines.Text;
+  Attr.MultiplicityA:= MMultiplicityA.Lines.Text;
+  Attr.ReadingOrderA:= CBReadingOrderA.Checked;
+  Attr.Relation:= ERelation.Text;
+  Attr.ReadingOrderB:= CBReadingOrderB.Checked;
+  Attr.MultiplicityB:= MMultiplicityB.Lines.Text;
+  Attr.RoleB:= MRoleB.Lines.Text;
+  Attr.RecursivCorner:= GetCorner;
+  Attr.isTurned:= isTurned;
+  Attr.isEdited:= True;
+  Attr.Visible:= True;
+  Result:= Attr;
 end;
 
 end.

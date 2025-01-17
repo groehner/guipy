@@ -148,13 +148,11 @@ type
     procedure FormActivate(Sender: TObject);
   private
     fFavorites: TStringList;
-    { Private declarations }
     procedure PathItemClick(Sender: TObject);
     function GetExplorerPath: string;
     procedure ApplyPyIDEOptions;
     procedure SetExplorerPath(const Value: string);
   public
-    { Public declarations }
     procedure UpdateWindow;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
@@ -194,7 +192,7 @@ end;
 procedure TFileExplorerWindow.FileExplorerTreeEnumFolder(
   Sender: TCustomVirtualExplorerTree; Namespace: TNamespace;
   var AllowAsChild: Boolean);
-Var
+var
   FileExt: string;
 begin
   AllowAsChild := True;
@@ -288,7 +286,7 @@ begin
 end;
 
 procedure TFileExplorerWindow.FileExplorerTreeDblClick(Sender: TObject);
-Var
+var
   NameSpace : TNameSpace;
 begin
   if FileExplorerTree.ValidateNamespace(FileExplorerTree.GetFirstSelected, NameSpace) and
@@ -298,7 +296,7 @@ begin
 end;
 
 procedure TFileExplorerWindow.ExploreHereClick(Sender: TObject);
-Var
+var
   NameSpace : TNameSpace;
 begin
   if FileExplorerTree.ValidateNamespace(FileExplorerTree.GetFirstSelected, NameSpace) and
@@ -311,7 +309,7 @@ begin
 end;
 
 procedure TFileExplorerWindow.actSearchPathExecute(Sender: TObject);
-Var
+var
   NameSpace : TNameSpace;
 begin
   if not Assigned(FindResultsWindow) then Exit;
@@ -386,7 +384,7 @@ begin
 end;
 
 procedure TFileExplorerWindow.actGoUpExecute(Sender: TObject);
-Var
+var
   PIDL: PItemIDList;
 begin
   if not Assigned(FileExplorerTree.RootFolderNamespace) or
@@ -402,7 +400,7 @@ begin
 end;
 
 procedure TFileExplorerWindow.actAddToFavoritesExecute(Sender: TObject);
-Var
+var
   NameSpace : TNameSpace;
   Path : string;
 begin
@@ -434,7 +432,7 @@ begin
 end;
 
 procedure TFileExplorerWindow.actNewFolderExecute(Sender: TObject);
-Var
+var
   SelectedNode : PVirtualNode;
 begin
   SelectedNode := FileExplorerTree.GetFirstSelected;
@@ -449,7 +447,7 @@ end;
 
 procedure TFileExplorerWindow.FileExplorerActionsUpdate(
   Action: TBasicAction; var Handled: Boolean);
-Var
+var
   NameSpace : TNameSpace;
 begin
   actSearchPath.Enabled :=

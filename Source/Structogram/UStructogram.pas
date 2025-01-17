@@ -122,19 +122,19 @@ type
     IgnoreNextMouseUp: boolean;
     Separating: integer;
     PuzzleMode: integer;
-    Solution: String;
+    Solution: string;
     Version: Byte;
     procedure ShowShape;
     procedure HideShape;
     procedure AddParameter(list: TStrList; paramList: TStringList);
-    procedure AddVariable(aText: String; list: TStringList);
-    procedure StrElementToPython(element: TStrElement; pList, VariablesList: TStringList; const indent: String);
+    procedure AddVariable(aText: string; list: TStringList);
+    procedure StrElementToPython(element: TStrElement; pList, VariablesList: TStringList; const indent: string);
     function FindElement(current: TStrElement; X, Y: Integer): TStrElement;
     function FindVisibleElement(current: TStrElement; X, Y: Integer): TStrElement;
     function BeforeOrAfter(current: TStrElement): boolean;
 
     function getParentElement(element: TStrElement): TStrElement;
-    function getToken(var S: String; var Token: String): Integer;
+    function getToken(var S: string; var Token: string): Integer;
     procedure CalculateInsertionShape(DestList, InsertList: TStrList; x, y: integer);
     procedure InsertElement(DestList, InsertList: TStrList; aCurElement: TStrElement);
 
@@ -179,7 +179,7 @@ type
     procedure FromText(const s: string);
     procedure RenewFromText(const s: string);
     procedure DoExport; override;
-    procedure debug(const s: String);
+    procedure debug(const s: string);
     procedure SetOptions; override;
     procedure DPIChanged; override;
     class function ToolbarCount: integer;
@@ -276,7 +276,7 @@ end;
 procedure TFStructogram.RenewFromText(const s: string);
   var Generator: TGenerateStructogram;
       StrList: TStrList; i: integer;
-      Alg: String;
+      Alg: string;
 begin
   for i:= ScrollBox.ControlCount - 1 downTo 0 do begin
     Strlist:= TListImage(ScrollBox.Controls[i]).StrList;
@@ -1111,7 +1111,7 @@ end;
 
 {$WARNINGS OFF}
 procedure TFStructogram.Save;
-  var Filename, aPathname, Filepath: String;
+  var Filename, aPathname, Filepath: string;
       FStructogram: TFileForm; aFile: IFile;
 begin
   CloseEdit(True);
@@ -1313,7 +1313,7 @@ begin
 end;
 
 procedure TFStructogram.StructoPopupMenuPopup(Sender: TObject);
-  var s: String; i: integer; found, aParent: TStrElement;
+  var s: string; i: integer; found, aParent: TStrElement;
 begin
   MIAddCase.Visible:= false;
   MIDeleteCase.Visible:= false;
@@ -1381,7 +1381,7 @@ end;
 
 procedure TFStructogram.AddParameter(list: TStrList; paramList: TStringList);
 var
-  aText, token, param: String;
+  aText, token, param: string;
   i, typ: Integer;
 begin
   i:= Pos('(', list.text);
@@ -1403,10 +1403,10 @@ begin
   end;
 end;
 
-procedure TFStructogram.AddVariable(aText: String; list: TStringList);
+procedure TFStructogram.AddVariable(aText: string; list: TStringList);
 var
   typ: Integer;
-  token, variable: String;
+  token, variable: string;
 begin
   if Pos('=', aText)  > 0 then begin
     aText:= trim(aText);
@@ -1447,7 +1447,7 @@ procedure TFStructogram.PythonProgram(list: TStrList; progList: TStringList; con
 var
   i, j, p: Integer;
   paramList, VariablesList: TStringList;
-  Indent, param, typ: String;
+  Indent, param, typ: string;
 begin
   Datatype:= GuiPyOptions.StructoDatatype;
   Variables:= '';
@@ -1480,13 +1480,13 @@ begin
   end;
 end;
 
-procedure TFStructogram.StrElementToPython(element: TStrElement; pList, VariablesList: TStringList; const indent: String);
+procedure TFStructogram.StrElementToPython(element: TStrElement; pList, VariablesList: TStringList; const indent: string);
 var
   i: Integer;
-  aText, s, condition, indent1: String;
+  aText, s, condition, indent1: string;
   SwitchElement: TStrSwitch;
 
-  function StripLNG(const LNG: string; s: String): string;
+  function StripLNG(const LNG: string; s: string): string;
     var p: integer;
   begin
     p:= Pos(LNG, s);
@@ -1667,7 +1667,7 @@ begin
     else Result:= nil;
 end;
 
-function TFStructogram.GetToken(var S: String; var Token: String): Integer;
+function TFStructogram.GetToken(var S: string; var Token: string): Integer;
 {  get next token in <S> and return in <Token>.
    Return type of token: -1=no token, 0=invalid, 1=name, 2=char, 3=boolean, 4=integer,
                          5=real, 6=hex number, 7=string, 8=special char.
@@ -1859,7 +1859,7 @@ begin
   end;
 end;
 
-procedure TFStructogram.debug(const s: String);
+procedure TFStructogram.debug(const s: string);
 begin
   MessagesWindow.AddMessage(s);
 end;

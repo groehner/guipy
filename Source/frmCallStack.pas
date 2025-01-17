@@ -212,7 +212,7 @@ begin
 end;
 
 procedure TCallStackWindow.actNextFrameExecute(Sender: TObject);
-Var
+var
   SelectedNode : PVirtualNode;
 begin
   SelectedNode := CallStackView.GetFirstSelected;
@@ -223,7 +223,7 @@ begin
 end;
 
 procedure TCallStackWindow.actPreviousFrameExecute(Sender: TObject);
-Var
+var
   SelectedNode : PVirtualNode;
 begin
   SelectedNode := CallStackView.GetFirstSelected;

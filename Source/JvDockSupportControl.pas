@@ -1834,7 +1834,7 @@ begin
 end;
 
 procedure TJvDockDragDockObject.DefaultDockImage(Erase: Boolean);
-Var
+var
   DrawRect: TRect;
   PenSize: Integer;
   ABrush: TBrush;

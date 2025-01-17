@@ -136,7 +136,7 @@ type
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getEvents(ShowEvents: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   published
     property Movement: TMovement read FMovement write FMovement;
     property Flow: TFlow read FFlow write setFlow;
@@ -172,7 +172,7 @@ type
     FItemPressed: string;
     FItemSelectionChanged: string;
     procedure setItems(Values: TStrings);
-    function getItems: String;
+    function getItems: string;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -181,7 +181,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property CurrentRow: integer read FCurrentRow write FCurrentRow;
@@ -218,7 +218,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     function InnerRect: TRect; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property ResizeGripsVisible: boolean
@@ -254,7 +254,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   published
     property AutoExpandDelay: integer read FAutoExpandDelay write FAutoExpandDelay;
     property Indentation: integer read FIndentation write setIndentation;
@@ -302,7 +302,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property Header: TStrings read FHeader write setHeader;
@@ -321,7 +321,7 @@ type
     property itemSelectionChanged: string read FItemSelectionChanged write FItemSelectionChanged;
   end;
 
-  TQtTableView = Class(TQtAbstractItemView)
+  TQtTableView = class(TQtAbstractItemView)
   private
     FShowGrid: boolean;
     FGridStyle: TGridStyle;
@@ -346,7 +346,7 @@ type
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   published
     property ShowGrid: boolean read FShowGrid write setShowGrid;
     property GridStyle: TGridStyle read FGridStyle write setGridStyle;
@@ -359,7 +359,7 @@ type
     property RowHeight: integer read FRowHeight write setRowHeight;
   end;
 
-  TQtTableWidget = Class(TQtTableView)
+  TQtTableWidget = class(TQtTableView)
   private
     FRowCount: integer;
     FColumnCount: integer;
@@ -397,7 +397,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property RowCount: integer read FRowCount write setRowCount;
@@ -541,7 +541,7 @@ begin
   Result:= Result + inherited getEvents(ShowEvents);
 end;
 
-procedure TQtListView.NewWidget(Widget: String = '');
+procedure TQtListView.NewWidget(Widget: string = '');
 begin
   if Widget = ''
     then inherited NewWidget('QListView')
@@ -631,7 +631,7 @@ begin
   inherited;
 end;
 
-procedure TQtListWidget.NewWidget(Widget: String = '');
+procedure TQtListWidget.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QListWidget');
   setAttribute('Items', getItems, '');
@@ -643,8 +643,8 @@ begin
   Invalidate;
 end;
 
-function TQtListWidget.getItems: String;
-  var s: String; i: integer;
+function TQtListWidget.getItems: string;
+  var s: string; i: integer;
 begin
   s:= '[';
   for i:= 0 to FItems.Count -1 do
@@ -654,7 +654,7 @@ begin
 end;
 
 procedure TQtListWidget.Paint;
-  var s: String; R1, R2: TRect; RowHeight, ColumnWidth, i: integer;
+  var s: string; R1, R2: TRect; RowHeight, ColumnWidth, i: integer;
 begin
   inherited;
   R1:= InnerRect;
@@ -773,7 +773,7 @@ begin
     Result:= inherited;
 end;
 
-procedure TQtColumnView.NewWidget(Widget: String = '');
+procedure TQtColumnView.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QColumnView');
   InsertValue('self.' + Name + '.setModel(QStandardItemModel())');
@@ -839,7 +839,7 @@ begin
 end;
 
 procedure TQtColumnView.Paint;
-  var s: String; R1, R2: TRect; th, i: integer;
+  var s: string; R1, R2: TRect; th, i: integer;
       Points: array[1..3] of TPoint;
 begin
   inherited;
@@ -968,7 +968,7 @@ begin
   inherited;
 end;
 
-procedure TQtTableView.NewWidget(Widget: String = '');
+procedure TQtTableView.NewWidget(Widget: string = '');
 begin
   if Widget = '' then begin
     inherited NewWidget('QTableView');
@@ -1189,7 +1189,7 @@ begin
   end;
 end;
 
-procedure TQtTableWidget.NewWidget(Widget: String = '');
+procedure TQtTableWidget.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QTableWidget');
   setAttribute('RowCount', '2', '');
@@ -1200,7 +1200,7 @@ begin
 end;
 
 procedure TQtTableWidget.Paint;
-  var s, s1: String; R1, R2: TRect; p, th, tw, y, x, MaxY, MaxX: integer;
+  var s, s1: string; R1, R2: TRect; p, th, tw, y, x, MaxY, MaxX: integer;
       ShowVerticalScrollbar, ShowHorizontalScrollbar: boolean;
 begin
   inherited;
@@ -1419,7 +1419,7 @@ begin
   inherited;
 end;
 
-procedure TQtTreeView.NewWidget(Widget: String = '');
+procedure TQtTreeView.NewWidget(Widget: string = '');
 begin
   if Widget = '' then begin
     inherited NewWidget('QTreeView');
@@ -1606,7 +1606,7 @@ begin
   end;
 end;
 
-procedure TQtTreeWidget.NewWidget(Widget: String = '');
+procedure TQtTreeWidget.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QTreeWidget');
   MakeHeader;
@@ -1614,7 +1614,7 @@ begin
 end;
 
 procedure TQtTreeWidget.Paint;
-  var s: String; R1, R2: TRect; i, i2, i4, j, y, x, RowHeight: integer;
+  var s: string; R1, R2: TRect; i, i2, i4, j, y, x, RowHeight: integer;
       ShowVerticalScrollbar, ShowHorizontalScrollbar: boolean;
       SL: TStringList;
 begin

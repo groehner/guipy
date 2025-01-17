@@ -36,7 +36,7 @@ type
       procedure SetHighlighter;
       procedure DeleteObjects(from, _to: integer);
       procedure CreateObjects(from, _to, aTag: integer); overload;
-      function EncodingAsString(const aEncoding: String): string;
+      function EncodingAsString(const aEncoding: string): string;
     public
       Encoding: string;   // ANSI, UTF-8, UTF-16
       LineBreak: string;  // Windows, Unix, Mac
@@ -53,11 +53,11 @@ type
       procedure LinesClearAll;
       procedure Save;
       procedure CreateObjects; overload;
-      function LinebreakAsString: String;
+      function LinebreakAsString: string;
       procedure SynEditorSpecialLineColors(Sender: TObject;
                   Line: Integer; var Special: Boolean; var FG, BG: TColor);
       procedure GutterTextEvent(Sender: TObject; aLine: Integer;
-                  var aText: String);
+                  var aText: string);
       function  GetLineObj(index: integer): TLineObj;
       procedure Load(Lines12: TSynEditStringList; const aPathname: string);
       procedure SetModified(Value: boolean);
@@ -196,7 +196,7 @@ begin
 end;
 
 procedure TSynEditExDiff.GutterTextEvent(Sender: TObject; aLine: Integer;
-           var aText: String);
+           var aText: string);
    var LineObject: TLineObj;
 begin
   if WithColoredLines then begin
@@ -304,7 +304,7 @@ begin
     OnPaintTransient:= nil;
 end;
 
-function TSynEditExDiff.EncodingAsString(const aEncoding: String): string;
+function TSynEditExDiff.EncodingAsString(const aEncoding: string): string;
 begin
   Result:= aEncoding;
   if Pos('ANSI', Result) > 0 then Result:= 'ANSI' else
@@ -314,7 +314,7 @@ begin
   if Pos('Unicode', Result) > 0 then Result:= 'UTF-16';
 end;
 
-function TSynEditExDiff.LinebreakAsString: String;
+function TSynEditExDiff.LinebreakAsString: string;
 begin
   if LineBreak = #13#10 then Result:= 'Windows' else
   if LineBreak = #10 then Result:= 'Unix'

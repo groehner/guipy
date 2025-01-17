@@ -11,7 +11,7 @@ unit RtlVclFixes;
 interface
 
 implementation
-Uses
+uses
   Winapi.Windows,
   Winapi.Messages,
   Winapi.Wincodec,

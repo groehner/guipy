@@ -1,7 +1,7 @@
 {
   ESS-Model
-  Copyright (C) 2002  Eldean AB, Peter Söderman, Ville Krumlinde
-  Gerhard Röhner
+  Copyright (C) 2002  Eldean AB, Peter SÃ¶derman, Ville Krumlinde
+  Gerhard RÃ¶hner
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -85,7 +85,6 @@ type
     procedure SetSelectedOnly(const Value: Boolean);
     procedure SetUpdateCounter(Value: Integer);
   protected
-    { Protected declarations }
     FManagedObjects: TList;
     FConnections: TObjectList;
     procedure CreateParams(var Params: TCreateParams); override;
@@ -1560,7 +1559,7 @@ begin // of MouseMove
               if curr.Top + curr.Height + 30 > Height then
               begin
                 Height := curr.Top + curr.Height + 30;
-                // ToDo wird nicht vergrößert
+                // ToDo wird nicht vergrÃ¶ÃŸert
                 resized := true;
               end;
 

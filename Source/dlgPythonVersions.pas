@@ -270,7 +270,7 @@ end;
 
 procedure TPythonVersionsDialog.vtPythonVersionsGetCellText(
   Sender: TCustomVirtualStringTree; var E: TVSTGetCellTextEventArgs);
-Var
+var
   Level : Integer;
 begin
   Level := vtPythonVersions.GetNodeLevel(E.Node);

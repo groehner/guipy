@@ -1,4 +1,4 @@
-﻿{-----------------------------------------------------------------------------
+{-----------------------------------------------------------------------------
  Unit Name: cFileTemplates
  Author:    Kiriakos Vlahos, Gerhard Röhner
  Date:      08-Aug-2006
@@ -10,10 +10,10 @@ unit cFileTemplates;
 
 interface
 
-Uses
+uses
   Classes, Contnrs, JvAppStorage;
 
-Type
+type
 
   TFileTemplate = class(TInterfacedPersistent, IJvAppStorageHandler)
   protected
@@ -77,7 +77,7 @@ end;
 
 procedure TFileTemplate.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
-Var
+var
   SL : TStringList;
 begin
   Name := AppStorage.ReadString(BasePath+'\Name', '');
@@ -95,7 +95,7 @@ end;
 
 procedure TFileTemplate.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
-Var
+var
   SL : TStringList;
 begin
   AppStorage.WriteString(BasePath+'\Name', Name);
@@ -114,7 +114,7 @@ end;
 { TFileTemplates }
 
 procedure TFileTemplates.AddCSSTemplate;
-Var
+var
   FileTemplate : TFileTemplate;
 begin
   FileTemplate := TFileTemplate.Create;
@@ -127,7 +127,7 @@ begin
 end;
 
 procedure TFileTemplates.AddCythonTemplate;
-Var
+var
   FileTemplate : TFileTemplate;
 begin
   FileTemplate := TFileTemplate.Create;
@@ -159,7 +159,7 @@ begin
 end;
 
 procedure TFileTemplates.AddHTMLTemplate;
-Var
+var
   FileTemplate : TFileTemplate;
 begin
   FileTemplate := TFileTemplate.Create;
@@ -172,7 +172,7 @@ begin
 end;
 
 procedure TFileTemplates.AddJSTemplate;
-Var
+var
   FileTemplate : TFileTemplate;
 begin
   FileTemplate := TFileTemplate.Create;
@@ -185,7 +185,7 @@ begin
 end;
 
 procedure TFileTemplates.AddJupyterTemplate;
-Var
+var
   FileTemplate : TFileTemplate;
 begin
   FileTemplate := TFileTemplate.Create;
@@ -224,7 +224,7 @@ begin
 end;
 
 procedure TFileTemplates.AddPlainTextTemplate;
-Var
+var
   FileTemplate : TFileTemplate;
 begin
   FileTemplate := TFileTemplate.Create;
@@ -237,7 +237,7 @@ begin
 end;
 
 procedure TFileTemplates.AddPythonTemplate;
-Var
+var
   FileTemplate : TFileTemplate;
 begin
   FileTemplate := TFileTemplate.Create;
@@ -250,7 +250,7 @@ begin
 end;
 
 procedure TFileTemplates.AddXMLTemplate;
-Var
+var
   FileTemplate : TFileTemplate;
 begin
   FileTemplate := TFileTemplate.Create;
@@ -263,7 +263,7 @@ begin
 end;
 
 procedure TFileTemplates.AddJSONTemplate;
-Var
+var
   FileTemplate : TFileTemplate;
 begin
   FileTemplate := TFileTemplate.Create;
@@ -276,7 +276,7 @@ begin
 end;
 
 procedure TFileTemplates.AddYAMLTemplate;
-Var
+var
   FileTemplate : TFileTemplate;
 begin
   FileTemplate := TFileTemplate.Create;
@@ -311,7 +311,7 @@ begin
 end;
 
 procedure TFileTemplates.AddClassTemplate;
-Var
+var
   FileTemplate : TFileTemplate;
 begin
   FileTemplate := TFileTemplate.Create;

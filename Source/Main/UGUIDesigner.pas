@@ -61,7 +61,7 @@ type
       SelectedControls: TELDesignerSelectedControls);
     procedure ELDesignerDblClick(Sender: TObject);
     procedure ELDesignerGetUniqueName(Sender: TObject;
-      const ABaseName: String; var AUniqueName: String);
+      const ABaseName: string; var AUniqueName: string);
     procedure ELDragDrop(Sender, ASource, ATarget: TObject; AX, AY: Integer);
     procedure ELDragOver(Sender, ASource, ATarget: TObject; AX, AY: Integer;
       AState: TDragState; var Accept: Boolean);
@@ -741,7 +741,7 @@ begin
 end;
 
 procedure TFGUIDesigner.ELDesignerGetUniqueName(Sender: TObject;
-           const ABaseName: String; var AUniqueName: String);
+           const ABaseName: string; var AUniqueName: string);
   var i: integer; s, b: string;
 begin
   b:= LowerUpper(aBaseName);

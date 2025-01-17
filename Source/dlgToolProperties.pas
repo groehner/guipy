@@ -113,7 +113,6 @@ type
       Selected: Boolean);
     procedure SynEditEnter(Sender: TObject);
   private
-    { Private declarations }
     FEnvStrings : TStrings;
     FHotKeyEditor: TSynHotKey;
   end;

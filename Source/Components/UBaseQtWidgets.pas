@@ -76,15 +76,15 @@ type
     procedure DeleteEvents; override;
     procedure DeleteWidget; override;
     procedure DeleteEventHandler(const Event: string); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     function MakeBinding(Eventname: string): string; override;
     function MakeHandler(const event: string ): string; override;
     procedure Paint; override;
     procedure Resize; override;
     procedure SetPositionAndSize; override;
-    function getNameAndType: String; override;
+    function getNameAndType: string; override;
     procedure MakeFont; override;
-    function getType: String; override;
+    function getType: string; override;
   published
     // common attribute for QWidget
     property Enabled: boolean read FEnabled write FEnabled;
@@ -262,7 +262,7 @@ begin
   end;
 end;
 
-procedure TBaseQtWidget.MakeAttribut(Attr, Value: String);
+procedure TBaseQtWidget.MakeAttribut(Attr, Value: string);
   var s: string;
 begin
   if Name = ''
@@ -331,7 +331,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TBaseQtWidget.NewWidget(Widget: String = '');
+procedure TBaseQtWidget.NewWidget(Widget: string = '');
 begin
   setAttributValue('self.' + Name, 'self.' + Name + ' = ' + Widget + '(' + getContainer + ')');
   setPositionAndSize;

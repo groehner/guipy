@@ -34,14 +34,14 @@ type
   protected
     procedure Paint; override;
   public
-    Participant: String;
-    InternalName: String;
+    Participant: string;
+    InternalName: string;
     Activation: integer;
     HeadHeight: Integer;
     Closed: boolean;
     First: boolean;
     onCreatedChanged: TNotifyEvent;
-    constructor CreateLL(aOwner: TComponent; const aParticipant: String;
+    constructor CreateLL(aOwner: TComponent; const aParticipant: string;
                          aFont: TFont; PPIControl: TControl);
     procedure SetFont(aFont: TFont);
     procedure getWidthHeigthOfText(const aText: string; var w, h: integer);
@@ -55,7 +55,7 @@ implementation
 uses
   Windows, Types, Math, SysUtils, UITypes, Themes, UConfiguration;
 
-constructor TLifeLine.CreateLL(aOwner: TComponent; const aParticipant: String; aFont: TFont; PPIControl: TControl);
+constructor TLifeLine.CreateLL(aOwner: TComponent; const aParticipant: string; aFont: TFont; PPIControl: TControl);
 begin
   inherited Create(aOwner);
   SequencePanel:= aOwner as TSequencePanel;
@@ -210,7 +210,7 @@ begin
 end;
 
 procedure TLifeLine.getWidthHeigthOfText(const aText: string; var w, h: integer);
-  var s, s1: String; p: integer;
+  var s, s1: string; p: integer;
 begin
   w:= minWidth;
   h:= LineHeight;

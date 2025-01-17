@@ -210,7 +210,7 @@ begin
 end;
 
 procedure TRegExpTesterWindow.StoreSettings(AppStorage: TJvCustomAppStorage);
-Var
+var
   SearchType : integer;
 begin
   inherited;
@@ -296,7 +296,7 @@ begin
 end;
 
 procedure TRegExpTesterWindow.SpinMatchesValueChanged(Sender: TObject);
-Var
+var
   Py: IPyEngineAndGIL;
   Index : Integer;
 begin
@@ -318,7 +318,7 @@ begin
 end;
 
 procedure TRegExpTesterWindow.TIExecuteClick(Sender: TObject);
-Var
+var
   Py: IPyEngineAndGIL;
   re: Variant;
   Flags: integer;
@@ -433,7 +433,7 @@ end;
 procedure TRegExpTesterWindow.GroupsViewGetText(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
   var CellText: string);
-Var
+var
   Py: IPyEngineAndGIL;
   GroupDict, Keys : Variant;
   i : integer;

@@ -21,20 +21,20 @@ type
     procedure SkipTo(ch: char);
     procedure SkipToChars(ch: string);
     procedure ParseDecorators;
-    function getNextToken: String;
+    function getNextToken: string;
     procedure SkipNewLines;
     procedure SkipMethod;
-    function getExpression(Token: char): String;
-    function getSimpleExpression: String;
+    function getExpression(Token: char): string;
+    function getSimpleExpression: string;
     function IsIdentifier(s: string): Boolean;
     function CleanUp(s: string): string;
     function withoutTypes(s: string): string;
-    function withoutLineJoining(s: String): string;
+    function withoutLineJoining(s: string): string;
     function withoutLinefeeds(s: string): string;
-    function withoutMultipleSpaces(s: String): string;
+    function withoutMultipleSpaces(s: string): string;
     function withoutComments(s: string): string;
     function withoutSelfAndVisibility(s: string): string;
-    function KnownStatement(s: String): boolean;
+    function KnownStatement(s: string): boolean;
 
     procedure GenerateStatement;
     procedure GenerateIfStatement;
@@ -88,7 +88,7 @@ begin
   FreeAndNil(Scanner);
 end;
 
-function TGenerateStructogram.getNextToken: String;
+function TGenerateStructogram.getNextToken: string;
 begin
   Result:= Scanner.GetNextToken;
 end;
@@ -162,7 +162,7 @@ begin
            withoutComments(s))))));
 end;
 
-function TGenerateStructogram.getExpression(Token: Char): String;
+function TGenerateStructogram.getExpression(Token: Char): string;
   var Start: PChar;
 begin
   Start:= Scanner.CurrPos;
@@ -171,7 +171,7 @@ begin
   Result:= CleanUp(Result);
 end;
 
-function TGenerateStructogram.getSimpleExpression: String;
+function TGenerateStructogram.getSimpleExpression: string;
   var Start: PChar;
 begin
   Start:= Scanner.LastCurrPos;
@@ -210,7 +210,7 @@ begin
   Result:= myStringReplace(myStringReplace(s, 'self.', ''), '_', '');
 end;
 
-function TGenerateStructogram.withoutLineJoining(s: String): string;
+function TGenerateStructogram.withoutLineJoining(s: string): string;
 begin
   Result:= myStringReplace(s, '\'#10, '');
 end;
@@ -227,7 +227,7 @@ begin
   Result:= s;
 end;
 
-function TGenerateStructogram.withoutMultipleSpaces(s: String): string;
+function TGenerateStructogram.withoutMultipleSpaces(s: string): string;
   var p, q: integer;
 begin
   p:= Pos('  ', s);
@@ -264,7 +264,7 @@ begin
 end;
 
 function TGenerateStructogram.KnownStatement(s: string): boolean;
-  const Statements: array[1..13] of String =
+  const Statements: array[1..13] of string =
          ('assert', 'break', 'pass', 'del', 'return', 'yield', 'raise',
           'continue', 'import', 'from', 'future', 'global', 'nonlocal');
   var i: integer;
@@ -324,7 +324,7 @@ procedure TGenerateStructogram.GenerateIfStatement;
 //             ("elif" assignment_expression ":" suite)*
 //             ["else" ":" suite]
   var elemIf: TStrIf; elemSwitch: TStrSwitch;
-      Expression: String; CaseCount: integer;
+      Expression: string; CaseCount: integer;
       SavedFCurrent, FTemp: TStrElement;
 
   procedure GenerateEmptyStatement;
@@ -403,7 +403,7 @@ procedure TGenerateStructogram.GenerateWhileStatement;
 // 8.2
 // "while" assignment_expression ":" suite ["else" ":" suite]
   var elem: TStrWhile;
-      Expression: String;
+      Expression: string;
 begin
   elem:= TStrWhile.createStructogram(FStructogram);
   FStructogram.insert(FCurrent, elem);
@@ -421,7 +421,7 @@ procedure TGenerateStructogram.GenerateForStatement;
 //              ["else" ":" suite]
 
   var elem: TStrFor;
-      Expression: String;
+      Expression: string;
 begin
   elem:= TStrFor.createStructogram(FStructogram);
   FStructogram.insert(FCurrent, elem);
@@ -438,7 +438,7 @@ procedure TGenerateStructogram.GenerateWithStatement;
 // with_stmt ::=  "with" with_item ("," with_item)* ":" suite
 // with_item ::=  expression ["as" target]
   var elem: TStrWhile;
-      Expression: String;
+      Expression: string;
 begin
   elem:= TStrWhile.createStructogram(FStructogram);
   FStructogram.insert(FCurrent, elem);

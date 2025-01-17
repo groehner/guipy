@@ -41,12 +41,10 @@ type
     function InspectorGetItemFriendlyName(Sender: TControl;
       PItem: PPropItem): string;
   private
-    { Private declarations }
     fOptionsObject,
     fTempOptionsObject : TPersistent;
     FriendlyNames : TDictionary<string, string>;
   public
-    { Public declarations }
     procedure Setup(OptionsObject : TBaseOptions; Categories : array of TOptionCategory);
   end;
 

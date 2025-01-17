@@ -40,7 +40,7 @@ uses
   JvGNUGetText;
 
 function FileMaskFromFileFilter(const Filter : string) : string;
-Var
+var
   j : integer;
 begin
   Result := '';

@@ -100,7 +100,6 @@ type
     function GetCurrentAction: TActionProxyItem;
     procedure FillFunctionList;
     procedure AssignKeysToActionProxy(var CurAction: TActionProxyItem);
-    { Private declarations }
   public
     Categories   : TStringList;
     FunctionList : TStringList;
@@ -112,8 +111,6 @@ type
 
     property CurrentAction : TActionProxyItem
       read GetCurrentAction;
-
-    { Public declarations }
   end;
 var
   frmCustomKeyboard: TfrmCustomKeyboard;

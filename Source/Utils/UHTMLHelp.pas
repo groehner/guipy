@@ -68,8 +68,8 @@ var
   StatStg: TStatStg;
   NumFetched: Longint;
   HR: HResult;
-  text: String;
-  filename: String;
+  text: string;
+  filename: string;
 begin
   Result:= '';
   filename:= s;
@@ -101,8 +101,8 @@ var
   Stream: IStream;
   BytesRead: Longint;
   TotalRead, p: Integer;
-  CHMDatei, Pfad, s: String;
-  ws: String;
+  CHMDatei, Pfad, s: string;
+  ws: string;
 begin
   Result:= '';
   try

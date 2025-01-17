@@ -46,10 +46,10 @@ type
     FDisabledBackground: TColor;
     FExportSelection: boolean;
     FInsertBackground: TColor;
-    FInsertBorderwidth: String;
+    FInsertBorderwidth: string;
     FInsertOffTime: integer;
     FInsertOnTime: integer;
-    FInsertWidth: String;
+    FInsertWidth: string;
     FInvalidCommand: boolean;
     FReadOnlyBackground: TColor;
     FSelectBackground: TColor;
@@ -68,10 +68,10 @@ type
     property DisabledBackground: TColor read FDisabledBackground write FDisabledBackground default clBtnFace;
     property ExportSelection: boolean read FExportSelection write FExportSelection default true;
     property InsertBackground: TColor read FInsertBackground write FInsertBackground default clWindowText;
-    property InsertBorderwidth: String read FInsertBorderwidth write FInsertBorderwidth;
+    property InsertBorderwidth: string read FInsertBorderwidth write FInsertBorderwidth;
     property InsertOffTime: integer read FInsertOffTime write FInsertOffTime default 300;
     property InsertOnTime: integer read FInsertOnTime write FInsertOnTime default 600;
-    property InsertWidth: String read FInsertWidth write FInsertWidth;
+    property InsertWidth: string read FInsertWidth write FInsertWidth;
     property InvalidCommand: boolean read FInvalidCommand write FInvalidCommand;
     property ReadOnlyBackground: TColor read FReadOnlyBackground write FReadOnlyBackground default clBtnFace;
     property SetGrid: boolean read FSetGrid write FSetGrid default false;
@@ -90,16 +90,16 @@ type
   private
     FShow: boolean;
     FState: TTextState3;
-    FText: String;
+    FText: string;
     procedure setState(Value: TTextState3);
   public
     constructor Create(AOwner: TComponent); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getEvents(ShowEvents: integer): string; override;
-    procedure setText(Value: String); override;
-    procedure MakeCommand(Attr, Value: String); override;
+    procedure setText(Value: string); override;
+    procedure MakeCommand(Attr, Value: string); override;
     procedure Paint; override;
   published
     property ExportSelection;
@@ -131,27 +131,27 @@ type
     FButtonCursor: TCursor;
     FButtonDownRelief: TRelief;
     FButtonUpRelief: TRelief;
-    FFormat: String;
-    FFrom: String;
-    FIncrement: String;
+    FFormat: string;
+    FFrom: string;
+    FIncrement: string;
     FRepeatDelay: integer;
     FRepeatInterval: integer;
     FState: TTextState3;
-    FTo: String;
-    FValue: String;
+    FTo: string;
+    FValue: string;
     FValues: TStrings;
     FWrap: boolean;
     procedure setItems(aItems: TStrings);
     procedure setState(Value: TTextState3);
-    procedure setRValue(aValue: String);
+    procedure setRValue(aValue: string);
     procedure MakeValues;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
-    procedure MakeCommand(Attr, Value: String); override;
+    procedure NewWidget(Widget: string = ''); override;
+    procedure MakeCommand(Attr, Value: string); override;
     procedure Paint; override;
   published
     property ActiveBackground;
@@ -165,9 +165,9 @@ type
     property ExportSelection;
     property Font;
     property Foreground;
-    property Format: String read FFormat write FFormat;
-    property From_: String read FFrom write FFrom;
-    property Increment: String read FIncrement write FIncrement;
+    property Format: string read FFormat write FFormat;
+    property From_: string read FFrom write FFrom;
+    property Increment: string read FIncrement write FIncrement;
     property InsertBackground;
     property InsertBorderwidth;
     property InsertOffTime;
@@ -181,11 +181,11 @@ type
     property Scrollbar;
     property State: TTextState3 read FState write setState default normal;
     property TakeFocus;
-    property _To: String read FTo write FTo;
+    property _To: string read FTo write FTo;
     property Validate;
     property ValidateCommand;
     property Values: TStrings read FValues write setItems;
-    property Value: String read FValue write setRValue;
+    property Value: string read FValue write setRValue;
     property Wrap: boolean read FWrap write FWrap default false;
   end;
 
@@ -193,17 +193,17 @@ type
   private
     FCloseEnough: real;
     FConfine: boolean;
-    FScrollregion: String;
+    FScrollregion: string;
     FState: TTextState2;
-    FXScrollIncrement: String;
-    FYScrollIncrement: String;
+    FXScrollIncrement: string;
+    FYScrollIncrement: string;
     procedure setState(Value: TTextState2);
-    procedure MakeScrollRegion(Value: String);
+    procedure MakeScrollRegion(Value: string);
   public
     constructor Create(AOwner: TComponent); override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure MakeFont; override;
     procedure Paint; override;
   published
@@ -215,10 +215,10 @@ type
     property InsertOnTime;
     property InsertWidth;
     property Scrollbars;
-    property ScrollRegion: String read FScrollRegion write FScrollRegion;
+    property ScrollRegion: string read FScrollRegion write FScrollRegion;
     property State: TTextState2 read FState write setState default _TS_normal;
-    property XScrollIncrement: String read FXScrollIncrement write FXScrollIncrement;
-    property YScrollIncrement: String read FYScrollIncrement write FYScrollIncrement;
+    property XScrollIncrement: string read FXScrollIncrement write FXScrollIncrement;
+    property YScrollIncrement: string read FYScrollIncrement write FYScrollIncrement;
   end;
 
   TKText = class (TKTextBaseWidget)
@@ -229,12 +229,12 @@ type
     FInactiveSelectBackground: TColor;
     FInsertUnfocussed: TInsert;
     FMaxUndo: integer;
-    FSpacing1: String;
-    FSpacing2: String;
-    FSpacing3: String;
+    FSpacing1: string;
+    FSpacing2: string;
+    FSpacing3: string;
     FStartline: integer;
     FState: TTextState2;
-    FTabs: String;
+    FTabs: string;
     FTabStyle: TTabStyle;
     FText: TStrings;
     FUndo: boolean;
@@ -249,7 +249,7 @@ type
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
     function getEvents(ShowEvents: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property AutoSeparators: boolean read FAutoSeparators write FAutoSeparators default true;
@@ -270,12 +270,12 @@ type
     property PadY;
     property Scrollbars;
     property SetGrid;
-    property Spacing1: String read FSpacing1 write FSpacing1;
-    property Spacing2: String read FSpacing2 write FSpacing2;
-    property Spacing3: String read FSpacing3 write FSpacing3;
+    property Spacing1: string read FSpacing1 write FSpacing1;
+    property Spacing2: string read FSpacing2 write FSpacing2;
+    property Spacing3: string read FSpacing3 write FSpacing3;
     property Startline: integer read FStartline write FStartline default 0;
     property State: TTextState2 read FState write setState default _TS_normal;
-    property Tabs: String read FTabs write FTabs;
+    property Tabs: string read FTabs write FTabs;
     property TabStyle: TTabStyle read FTabStyle write FTabStyle default tabular;
     property TakeFocus;
     property Text: TStrings read FText write setStrings;
@@ -290,14 +290,14 @@ type
     FSelectMode: TSelectMode;
     FState: TTextState2;
     procedure setListItems(Values: TStrings);
-    function getListItems: String;
+    function getListItems: string;
     procedure setState(Value: TTextState2);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property ActiveStyle: TActiveStyle read FActiveStyle write FActiveStyle default _TS_underline;
@@ -394,7 +394,7 @@ begin
   Relief:= _TR_sunken;
 end;
 
-procedure TKEntry.NewWidget(Widget: String = '');
+procedure TKEntry.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('tk.Entry');
@@ -427,7 +427,7 @@ begin
   Result:= getKeyboardEvents(ShowEvents);
 end;
 
-procedure TKEntry.setText(Value: String);
+procedure TKEntry.setText(Value: string);
 begin
   if Value <> FText then begin
     FText:= Value;
@@ -435,7 +435,7 @@ begin
   end;
 end;
 
-procedure TKEntry.MakeCommand(Attr, Value: String);
+procedure TKEntry.MakeCommand(Attr, Value: string);
 begin
   inherited;
   if Attr = 'ValidateCommand' then
@@ -537,7 +537,7 @@ begin
   Invalidate;
 end;
 
-procedure TKSpinbox.SetRValue(aValue: String);
+procedure TKSpinbox.SetRValue(aValue: string);
 begin
   if FValue <> aValue then begin
     FValue:= aValue;
@@ -545,7 +545,7 @@ begin
   end;
 end;
 
-procedure TKSpinbox.NewWidget(Widget: String = '');
+procedure TKSpinbox.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('tk.Spinbox');
@@ -555,7 +555,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TKSpinbox.MakeCommand(Attr, Value: String);
+procedure TKSpinbox.MakeCommand(Attr, Value: string);
 begin
   inherited;
   if Attr = 'ValidateCommand' then
@@ -565,7 +565,7 @@ end;
 procedure TKSpinbox.Paint;
   var s: string; R: TRect;
       x, y, w, newHeight: integer;
-      Points: Array[0..2] of TPoint;
+      Points: array[0..2] of TPoint;
 begin
   inherited;
   // paint number/value
@@ -649,8 +649,8 @@ begin
     inherited;
 end;
 
-procedure TKCanvas.MakeScrollRegion(Value: String);
-  var key: String;
+procedure TKCanvas.MakeScrollRegion(Value: string);
+  var key: string;
 begin
   key:= 'self.' + Name + '[''scrollregion'']';
   if Value = '' then
@@ -674,7 +674,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TKCanvas.NewWidget(Widget: String = '');
+procedure TKCanvas.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.Canvas');
 end;
@@ -768,7 +768,7 @@ begin
     inherited;
 end;
 
-procedure TKText.NewWidget(Widget: String = '');
+procedure TKText.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.Text');
 end;
@@ -776,7 +776,7 @@ end;
 procedure TKText.Paint;
   var th, taw, tah, px, py: integer;
       R: TRect;
-      SL: TStringList; s: String;
+      SL: TStringList; s: string;
 
   procedure split(const s: string; var s1, s2: string);
     var len, n: integer;
@@ -899,8 +899,8 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-function TKListbox.getListItems: String;
-  var s: String; i: integer;
+function TKListbox.getListItems: string;
+  var s: string; i: integer;
 begin
   s:= '[';
   for i:= 0 to FListItems.Count -1 do
@@ -923,7 +923,7 @@ begin
   Invalidate;
 end;
 
-procedure TKListbox.NewWidget(Widget: String = '');
+procedure TKListbox.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('tk.Listbox');
@@ -933,7 +933,7 @@ begin
 end;
 
 procedure TKListbox.Paint;
-  var s: String; R: TRect; format: integer;
+  var s: string; R: TRect; format: integer;
 begin
   inherited;
   case Justify of

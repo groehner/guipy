@@ -31,10 +31,7 @@ type
     DisSynEdit: TSynEdit;
     procedure FormCreate(Sender: TObject);
   private
-    { Private declarations }
     procedure UpdateView(Editor : IEditor);
-  public
-    { Public declarations }
   end;
 
   TDisView = class(TInterfacedObject, IEditorViewFactory)
@@ -76,13 +73,13 @@ var
   Py: IPyEngineAndGIL;
   getdis, module : Variant;
   Cursor : IInterface;
-Const
+const
   Code =
   'def GetDis(m):'#10 +
-	     #9'import dis'#10 +
-	     #9'import sys'#10 +
+       #9'import dis'#10 +
+       #9'import sys'#10 +
        #9'StringIO = __import__("io").StringIO'#10 +
-	     #9'sio = StringIO()'#10 +
+       #9'sio = StringIO()'#10 +
        #9'dis.dis(m, file = sio)'#10 +
        #9'return sio.getvalue()'#10;
   Header = ''''''''#13#10#9+'Disassembly of %s'#13#10+''''''''#13#10#13#10;

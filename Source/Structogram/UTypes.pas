@@ -23,7 +23,7 @@ type
     nr: integer;
     kind: Byte;
     IndentAsInt: integer;
-    Text: String;
+    Text: string;
     aRect: TRect;
     Point: TPoint;
     key: string;
@@ -32,7 +32,7 @@ type
     function nextLineIndent: integer;
     procedure ReadLine;
     procedure LineBack;
-    function getKind(Kind: String): byte;
+    function getKind(Kind: string): byte;
     destructor Destroy; override;
   end;
 
@@ -69,14 +69,14 @@ type
     procedure IntegerToStream(Stream: TStream; i: Integer);
     function IntegerFromStream(Stream: TStream): Integer;
     procedure StringToStream(Stream: TStream; const s: string);
-    function StringFromStream(Stream: TStream): String;
+    function StringFromStream(Stream: TStream): string;
     function AppendToClipboard: string; virtual;
-    procedure CreateFromClipboard(var ClipboardStr: String); virtual;
+    procedure CreateFromClipboard(var ClipboardStr: string); virtual;
     procedure SetRctList(X1, Y1, X2, Y2: integer); virtual;
     procedure setList(aList: TStrList); virtual;
   public
     Kind: byte;
-    text: String;
+    text: string;
     rct: TRect;
     next: TStrElement;
     prev: TStrElement;
@@ -92,7 +92,7 @@ type
     function getLineHeight: integer;
     function getDefaultRectWidth: integer;
     function getLines: integer;
-    function asString: String; virtual;
+    function asString: string; virtual;
     function getKind: string;
     function getMaxDelta: integer;
     procedure debug; virtual;
@@ -104,7 +104,7 @@ type
   TStrStatement = class(TStrElement)
     constructor create(aList: TStrList);
     destructor Destroy; override;
-    function asString: String; override;
+    function asString: string; override;
     procedure LoadFromReader(Reader: TStringListReader); override;
     procedure debug; override;
   end;
@@ -134,7 +134,7 @@ type
     constructor createStructogram(aList: TStrList; dummy: boolean = true);
     destructor Destroy; override;
     function getHeadHeight: integer; override;
-    function asString: String; override;
+    function asString: string; override;
     procedure debug; override;
     procedure Collapse; override;
   end;
@@ -160,7 +160,7 @@ type
     constructor createStructogram(aList: TStrList; dummy: boolean = true);
     destructor Destroy; override;
     function getHeadHeight: integer; override;
-    function asString: String; override;
+    function asString: string; override;
     procedure debug; override;
     procedure Collapse; override;
   end;
@@ -174,7 +174,7 @@ type
     constructor createStructogram(aList: TStrList; dummy: boolean = true);
     procedure setBottom(b: Integer); override;
     function getHeadHeight: integer; override;
-    function asString: String; override;
+    function asString: string; override;
     procedure debug; override;
   end;
 
@@ -183,7 +183,7 @@ type
   public
     constructor create(aList: TStrList);
     constructor createStructogram(aList: TStrList; dummy: boolean = true);
-    function asString: String; override;
+    function asString: string; override;
     procedure debug; override;
   end;
 
@@ -195,7 +195,7 @@ type
     function getText(Indent: string): string; override;
   public
     constructor create(aList: TStrList);
-    function asString: String; override;
+    function asString: string; override;
     procedure debug; override;
   end;
 
@@ -224,7 +224,7 @@ type
     constructor createStructogram(aList: TStrList; dummy: boolean = true);
     destructor Destroy; override;
     function getHeadHeight: integer; override;
-    function asString: String; override;
+    function asString: string; override;
     procedure debug; override;
     procedure Collapse; override;
   end;
@@ -271,7 +271,7 @@ type
   public
     constructor create(aList: TStrList);
     function getHeadHeight: integer; override;
-    function asString: String; override;
+    function asString: string; override;
     procedure debug; override;
   end;
 
@@ -284,7 +284,7 @@ type
   public
     constructor create(aList: TStrList);
     function getHeadHeight: integer; override;
-    function asString: String; override;
+    function asString: string; override;
     procedure debug; override;
   end;
 
@@ -299,7 +299,7 @@ type
     constructor createStructogram(aList: TStrList; aParent: TStrElement; Dummy: boolean = true);
     procedure Resize(x, y: integer); override;
     destructor Destroy; override;
-    function asString: String; override;
+    function asString: string; override;
     procedure debug; override;
     procedure Collapse; override;
     procedure CollapseCase; override;
@@ -346,7 +346,7 @@ type
     function getWidthOfOneLine(const aText: string): integer;
     function getWidthOfLines(const aText: string): integer;
     procedure setLineHeight;
-    function asString: String; override;
+    function asString: string; override;
     procedure debug; override;
     procedure setList(aList: TStrList); override;
     procedure setPuzzleMode(Mode: integer);
@@ -361,7 +361,7 @@ type
   public
     constructor create(ScrollBox: TScrollBox; Mode: integer; Font: TFont);
     function getAlgorithmName: string;
-    function asString: String; override;
+    function asString: string; override;
     procedure debug; override;
   end;
 
@@ -481,7 +481,7 @@ begin
       delete(Text, 1, 1);
 end;
 
-function TStringListReader.getKind(Kind: String): byte;
+function TStringListReader.getKind(Kind: string): byte;
 begin
   if Kind = 'Algorithm'  then Result:= Ord(nsAlgorithm) else
   if Kind = 'if'         then Result:= Ord(nsIf) else
@@ -774,7 +774,7 @@ begin
     Stream.Read(i, 1);
     setLength(s, i);
     Stream.Read(s[1], i);
-    Text:= String(s);
+    Text:= string(s);
   end;
 end;
 
@@ -852,7 +852,7 @@ begin
   stream.Write(Pointer(s)^, Size);
 end;
 
-function TStrElement.StringFromStream(Stream: TStream): String;
+function TStrElement.StringFromStream(Stream: TStream): string;
   var Size: LongInt;
 begin
   stream.read(Size, SizeOf(Size));
@@ -865,7 +865,7 @@ begin
   Result:= chr(kind) + text + SEP;
 end;
 
-procedure TStrElement.CreateFromClipboard(var ClipboardStr: String);
+procedure TStrElement.CreateFromClipboard(var ClipboardStr: string);
 var
   index: Byte;
 begin
@@ -929,7 +929,7 @@ begin
   end;
 end;
 
-function TStrElement.asString: String;
+function TStrElement.asString: string;
 begin
   Result:= Text;
 end;
@@ -958,7 +958,7 @@ begin
 end;
 
 procedure TStrElement.debug;
-  var s: String;
+  var s: string;
 begin
   s:= 'StrElement Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
@@ -970,7 +970,7 @@ begin
 end;
 
 procedure TStrElement.debug1;
-  var s: String;
+  var s: string;
 begin
   s:= 'StrElement Kind = ' + IntToStr(kind) + ' Text= ' + text;
   if assigned(prev) and (prev.next <> TStrElement(Self)) then
@@ -1003,13 +1003,13 @@ begin
   inherited;
 end;
 
-function TStrStatement.asString: String;
+function TStrStatement.asString: string;
 begin
   Result:= Text;
 end;
 
 procedure TStrStatement.debug;
-  var s: String;
+  var s: string;
 begin
   s:= 'StrStatement Kind=' + IntToStr(kind) + ' Text=' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
@@ -1395,13 +1395,13 @@ begin
   Delete(ClipboardStr, 1, index);
 end;
 
-function TStrIf.asString: String;
+function TStrIf.asString: string;
 begin
   Result:= 'If(' + text + ',' + then_elem.asString + ',' + else_elem.asString + ')';
 end;
 
 procedure TStrIf.debug;
-  var s: String;
+  var s: string;
 begin
   s:= 'TStrIf Kind=' + IntToStr(kind) + ' Text=' + text +
      ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
@@ -1625,13 +1625,13 @@ begin
   do_elem.setList(aList);
 end;
 
-function TStrWhile.asString: String;
+function TStrWhile.asString: string;
 begin
   Result:= 'While(' + text + ',' + do_elem.asString + ')';
 end;
 
 procedure TStrWhile.debug;
-  var s: String;
+  var s: string;
 begin
   s:= 'TStrWhile Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
@@ -1713,13 +1713,13 @@ begin
   //do_elem.setBottomList(b);
 end;
 
-function TStrDoWhile.asString: String;
+function TStrDoWhile.asString: string;
 begin
   Result:= 'DoWhile(' + do_elem.asString + ',' + text + ')';
 end;
 
 procedure TStrDoWhile.debug;
-  var s: String;
+  var s: string;
 begin
   s:= 'TStrDoWhile Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
@@ -1758,7 +1758,7 @@ begin
 end;
 
 procedure TStrFor.debug;
-  var s: String;
+  var s: string;
 begin
   s:= 'TStrFor Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
@@ -1825,7 +1825,7 @@ begin
 end;
 
 procedure TStrCase.debug;
-  var s: String;
+  var s: string;
 begin
   s:= 'TStrCase Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
@@ -2228,7 +2228,7 @@ begin
     FreeAndNil(case_elems[i]);
 end;
 
-function TStrSwitch.asString: String;
+function TStrSwitch.asString: string;
  var i: integer;
 begin
   Result:= 'Switch(';
@@ -2239,7 +2239,7 @@ begin
 end;
 
 procedure TStrSwitch.debug;
-  var s: String; i: integer;
+  var s: string; i: integer;
 begin
   s:= 'TStrSwitch Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
@@ -2298,7 +2298,7 @@ begin
   Result:= rct.bottom - rct.top;
 end;
 
-function TStrSubprogram.asString: String;
+function TStrSubprogram.asString: string;
 begin
   Result:= 'Sub(' + text + ')';
 end;
@@ -2314,7 +2314,7 @@ begin
 end;
 
 procedure TStrSubprogram.debug;
-  var s: String;
+  var s: string;
 begin
   s:= 'TStrSubprogram Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
@@ -2358,7 +2358,7 @@ begin
   Result:= rct.bottom - rct.top;
 end;
 
-function TStrBreak.asString: String;
+function TStrBreak.asString: string;
 begin
   Result:= 'Break';
 end;
@@ -2374,7 +2374,7 @@ begin
 end;
 
 procedure TStrBreak.debug;
-  var s: String;
+  var s: string;
 begin
   s:= 'TStrBreak Kind = ' + IntToStr(kind) + ' Text= ' + text +
      ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
@@ -2446,8 +2446,8 @@ begin
   setRct(x, y, x, y);
 end;
 
-function TStrListHead.asString: String;
-  var s: String; var tmp: TStrElement;
+function TStrListHead.asString: string;
+  var s: string; var tmp: TStrElement;
 begin
   s:= '';
   tmp:= next;
@@ -2459,7 +2459,7 @@ begin
 end;
 
 procedure TStrListHead.debug;
-  var s: String; var tmp: TStrElement;
+  var s: string; var tmp: TStrElement;
 begin
   s:= 'TStrListHead Kind=' + IntToStr(kind) + ' Text=' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
@@ -2800,7 +2800,7 @@ begin
 end;
 
 procedure TStrList.getWidthHeigthOfText(const aText: string; var w, h: integer);
-  var s, s1: String; p: integer;
+  var s, s1: string; p: integer;
 begin
   w:= getDefaultRectWidth;
   h:= LineHeight;
@@ -2834,7 +2834,7 @@ begin
 end;
 
 function TStrList.asString: string;
-  var s: String; tmp: TStrElement;
+  var s: string; tmp: TStrElement;
 begin
   s:= text + ',';
   tmp:= next;
@@ -2846,7 +2846,7 @@ begin
 end;
 
 procedure TStrList.debug;
-  var s: String; tmp: TStrElement;
+  var s: string; tmp: TStrElement;
 begin
   s:= 'TStrList Kind=' + IntToStr(kind) + ' Text=' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')' +
@@ -2936,8 +2936,8 @@ begin
   Result:= trim(s);
 end;
 
-function TStrAlgorithm.asString: String;
-  var s: String; tmp: TStrElement;
+function TStrAlgorithm.asString: string;
+  var s: string; tmp: TStrElement;
 begin
   s:=  text + '(';
   tmp:= next;
@@ -2949,7 +2949,7 @@ begin
 end;
 
 procedure TStrAlgorithm.debug;
-  var s: String; tmp: TStrElement;
+  var s: string; tmp: TStrElement;
 begin
   s:= 'TStrAlgorithm Kind=' + IntToStr(kind) + ' Text=' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')' +

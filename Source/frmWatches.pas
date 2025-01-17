@@ -124,7 +124,7 @@ uses
 
 {$R *.dfm}
 
-Type
+type
   TWatchInfo = class(TPersistent)
   private
     fWatch: string;

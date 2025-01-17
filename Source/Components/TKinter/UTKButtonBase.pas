@@ -36,20 +36,20 @@ type
   TKButtonBaseWidget = class(TKWidget)
   private
     FActiveForeground: TColor;
-    FBitmap: String;
+    FBitmap: string;
     FCompound: TCompound;
     FIndicatorOn: boolean;
     FOffRelief: TRelief;
     FOverRelief: TRelief;
     FSelectColor: TColor;
-    FSelectImage: String;
+    FSelectImage: string;
     FState: TButtonState;
     procedure setBitmap(aValue: string);
     procedure setCompound(aValue: TCompound);
     procedure setIndicatorOn(aValue: boolean);
     procedure setState(aValue: TButtonState);
   protected
-    procedure MakeDirection(Value: String);
+    procedure MakeDirection(Value: string);
     procedure CalculateText(var tw, th: integer; var SL: TStringlist); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -63,7 +63,7 @@ type
     property OverRelief: TRelief read fOverRelief write fOverRelief default _TR_raised;
     property IndicatorOn: boolean read FIndicatorOn write setIndicatorOn default true;
     property SelectColor: TColor read fSelectColor write fSelectColor default clWindow;
-    property SelectImage: String read fSelectImage write fSelectImage;
+    property SelectImage: string read fSelectImage write fSelectImage;
   published
     property ActiveBackground;
     property ActiveForeground: TColor read FActiveForeground write FActiveForeground default clBtnText;
@@ -89,7 +89,7 @@ type
   TKLabel = class (TKButtonBaseWidget)
   public
     constructor Create(AOwner: TComponent); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   end;
 
   TKButton = class (TKButtonBaseWidget)
@@ -100,7 +100,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   published
     property Command;
     property Default: boolean read FDefault write FDefault default false;
@@ -112,22 +112,22 @@ type
 
   TKCheckbutton = class (TKButtonBaseWidget)
   private
-    FOffValue: String;
-    FOnValue: String;
+    FOffValue: string;
+    FOnValue: string;
   protected
     procedure Paint; override;
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure SizeToText; override;
   published
     property Command;
     property IndicatorOn;
     property OffRelief;
     property OverRelief;
-    property OffValue: String read fOffValue write fOffValue;
-    property OnValue: String read fOnValue write fOnValue;
+    property OffValue: string read fOffValue write fOffValue;
+    property OnValue: string read fOnValue write fOnValue;
     property SelectColor;
     property SelectImage;
     property TakeFocus;
@@ -136,17 +136,17 @@ type
   TKMenubutton = class(TKButtonBaseWidget)
   private
     FDirection: TDirection;
-    FMenu: String;
+    FMenu: string;
   public
     constructor Create (AOwner: TComponent); override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property Direction: TDirection read FDirection write FDirection default below;
     property IndicatorOn;
-    property Menu: String read FMenu write FMenu;
+    property Menu: string read FMenu write FMenu;
   end;
 
   TKOptionMenu = class(TKMenubutton)
@@ -160,9 +160,9 @@ type
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
-    function getText: String; override;
+    function getText: string; override;
   published
     property IndicatorOn;
     property MenuItems: TStrings read FNewItems write setItems;
@@ -215,7 +215,7 @@ begin
   Result:= getMouseEvents(ShowEvents);
 end;
 
-procedure TKButtonBaseWidget.MakeDirection(Value: String);
+procedure TKButtonBaseWidget.MakeDirection(Value: string);
   var s: string;
 begin
   s:= 'self.' + Name + '[''direction'']';
@@ -235,7 +235,7 @@ begin
 end;
 
 procedure TKButtonBaseWidget.CalculateText(var tw, th: integer; var SL: TStringlist);
-  var s: String; p: integer;
+  var s: string; p: integer;
 begin
   s:= getText;
   p:= Pos('\n', s);
@@ -302,7 +302,7 @@ begin
   HighlightThickness:= '0';
 end;
 
-procedure TKLabel.NewWidget(Widget: String = '');
+procedure TKLabel.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.Label');
   InsertValue('self.' + Name + '[' + asString('anchor') + '] = ' + asString('w'));
@@ -330,7 +330,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TKButton.NewWidget(Widget: String = '');
+procedure TKButton.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.Button');
   InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
@@ -363,7 +363,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TKCheckbutton.NewWidget(Widget: String = '');
+procedure TKCheckbutton.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.Checkbutton');
   MakeControlVar('variable', Name + 'CV', '0', 'Int');
@@ -430,7 +430,7 @@ begin
   inherited;
 end;
 
-procedure TKMenubutton.NewWidget(Widget: String = '');
+procedure TKMenubutton.NewWidget(Widget: string = '');
   var s: string;
 begin
   // because TKOptionMenu inherits from TKMenubutton
@@ -506,7 +506,7 @@ begin
     inherited;
 end;
 
-procedure TKOptionMenu.NewWidget(Widget: String = '');
+procedure TKOptionMenu.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   insertValue('self.' + Name + 'CV = tk.StringVar()');
@@ -543,8 +543,8 @@ begin
   inherited;
 end;
 
-function TKOptionMenu.getText: String;
-  var s: String;
+function TKOptionMenu.getText: string;
+  var s: string;
 begin
   if FNewItems.Count > 0 then
     s:= trim(FNewItems[0]);

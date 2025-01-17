@@ -7,7 +7,7 @@ unit LspClient;
 
 interface
 
-Uses
+uses
   Winapi.Windows,
   System.SysUtils,
   System.Classes,
@@ -105,7 +105,7 @@ type
 
 implementation
 
-Uses
+uses
   System.Diagnostics,
   System.Variants,
   LspUtils;
@@ -372,7 +372,7 @@ begin
 end;
 
 procedure TLspClient.Notify(const Method, Params: string);
-Var
+var
   Header: string;
   Content: string;
   ContentBytes: TBytes;
@@ -386,7 +386,7 @@ begin
 end;
 
 function TLspClient.Request(const Method, Params: string; Handler: THandleResponse): NativeUInt;
-Var
+var
   Id: NativeUInt;
   Header: string;
   Content: string;

@@ -68,11 +68,9 @@ type
     procedure lvItemsSelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
   private
-    { Private declarations }
     FOldIndex: Integer;
     procedure AskToUpdate(Sender: TObject);
   public
-    { Public declarations }
     CodeTemplateText : string;
     procedure SetItems;
     procedure GetItems;
@@ -118,7 +116,7 @@ begin
 end;
 
 procedure TCodeTemplates.GetItems;
-Var
+var
  i, j : integer;
 begin
   CodeTemplateText := '';
@@ -142,7 +140,7 @@ begin
 end;
 
 procedure TCodeTemplates.SetItems;
-Var
+var
  i, Count : integer;
  List : TStringList;
 begin
@@ -191,7 +189,7 @@ begin
 end;
 
 procedure TCodeTemplates.actAddItemExecute(Sender: TObject);
-Var
+var
   Item : TListItem;
   i : Integer;
 begin
@@ -225,7 +223,7 @@ begin
 end;
 
 procedure TCodeTemplates.actUpdateItemExecute(Sender: TObject);
-Var
+var
   i : integer;
 begin
   if (edShortCut.Text <> '') and (FOldIndex >= 0) then begin
@@ -251,7 +249,7 @@ begin
 end;
 
 procedure TCodeTemplates.actMoveUpExecute(Sender: TObject);
-Var
+var
   Name, Value : string;
   P : Pointer;
   Index : integer;
@@ -275,7 +273,7 @@ begin
 end;
 
 procedure TCodeTemplates.actMoveDownExecute(Sender: TObject);
-Var
+var
   Name, Value : string;
   P : Pointer;
   Index : integer;

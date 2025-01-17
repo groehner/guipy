@@ -15,7 +15,7 @@ type
     procedure BCloseClick(Sender: TObject);
   public
     Installation: Integer;
-    procedure Output(s: String);
+    procedure Output(s: string);
   end;
 
 var
@@ -35,7 +35,7 @@ begin
   Installation:= 2
 end;
 
-procedure TFMemo.Output(s: String);
+procedure TFMemo.Output(s: string);
 begin
   MInstallation.Lines.Add(s);
 end;

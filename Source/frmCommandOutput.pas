@@ -243,7 +243,7 @@ procedure TOutputWindow.ProcessTerminate;
    Called when a proces created with WaitForTermination set to true is finished
    Can parse Traceback info and Messages (ParseTraceback and ParseMessages Tool options
 }
-Var
+var
  FilePos, LinePos, ColPos: Integer;
 
   function ReplacePos(var S : string; const FromText, ToText: string): integer;
@@ -267,7 +267,7 @@ Var
     end;
   end;
 
- Var
+ var
   LineNo, ErrLineNo, ColNo, Indx : integer;
   ErrorMsg, RE, FileName, OutStr, OldCurrentDir : string;
   ActiveEditor: IEditor;
@@ -477,7 +477,7 @@ begin
 end;
 
 procedure TOutputWindow.ExecuteTool(Tool : TExternalTool);
-Var
+var
   AppName, Arguments, WorkDir: string;
   WaitForTerminate: Boolean;
 

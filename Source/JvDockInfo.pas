@@ -980,7 +980,7 @@ type
   TControlAccessProtected = class(TControl);
 
 procedure TJvDockInfoZone.SetDockInfoFromControlToNode(Control: TControl);
-Var
+var
   ControlPPI: integer;
 begin
   ControlPPI := TControlAccessProtected(Control).FCurrentPPI;

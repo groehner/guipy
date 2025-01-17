@@ -70,8 +70,8 @@ type
     destructor Destroy; override;
     procedure BuildModelFrom(const FileName : string; ResetModel : boolean = True; Lock : boolean = true; withoutNeedSource: boolean = false); overload;
     procedure BuildModelFrom(FileNames : TStrings; withoutNeedSource: boolean = false); overload;
-    procedure AddFileToModel(const Filename: String);
-    procedure AddClasspath(Classpath: string; const Pathname: String);
+    procedure AddFileToModel(const Filename: string);
+    procedure AddClasspath(Classpath: string; const Pathname: string);
     class function GetFileExtensions : TStringList; virtual; abstract;
   end;
 
@@ -181,12 +181,12 @@ begin
   end;
 end;
 
-procedure TImportIntegrator.AddFileToModel(const Filename: String);
+procedure TImportIntegrator.AddFileToModel(const Filename: string);
 begin
   BuildModelFrom(FileName, false, false, true);
 end;
 
-procedure TImportIntegrator.AddClasspath(Classpath: string; const Pathname: String);
+procedure TImportIntegrator.AddClasspath(Classpath: string; const Pathname: string);
   var p: integer; s: string;
 begin
   Classpath:= Classpath + ';';

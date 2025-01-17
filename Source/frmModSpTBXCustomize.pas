@@ -41,16 +41,13 @@ type
     procedure lbCommandsEndDrag(Sender, Target: TObject; X, Y: Integer);
     procedure lbCategoriesClick(Sender: TObject);
     procedure ResetButtonClick(Sender: TObject);
-  private
-    { Private declarations }
   protected
     procedure DoFillCommands(ToolbarList, ItemList, ShortcutsList: TStringList); override;
   public
-    { Public declarations }
     procedure SortCommands;
   end;
 
-Const
+const
   CategoryOther = 'Other';
 
 var
@@ -60,7 +57,7 @@ implementation
 
 {$R *.dfm}
 
-Uses
+uses
   Vcl.ActnList, 
   JvGnugettext,
   uCommonFunctions,
@@ -101,7 +98,7 @@ begin
 end;
 
 procedure TSpTBXCustomizeFormMod.lbCategoriesClick(Sender: TObject);
-Var
+var
   Category : string;
   i: Integer;
   Item : TTBCustomItem;
@@ -222,7 +219,7 @@ begin
 end;
 
 procedure TSpTBXCustomizeFormMod.SortCommands;
-Var
+var
   WS : string;
   Item : TObject;
 begin

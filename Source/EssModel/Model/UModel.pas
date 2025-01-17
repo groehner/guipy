@@ -78,7 +78,7 @@ type
     constructor Create(aOwner: TModelEntity); override;
     destructor Destroy; override;
     function GetFeatures : IModelIterator;
-    function GetShortType: String;
+    function GetShortType: string;
     function GetAttributes : IModelIterator;
     function GetAllAttributes: IModelIterator;
     function GetOperations : IModelIterator;
@@ -149,8 +149,8 @@ type
     isStaticMethod: boolean;
     isClassMethod: boolean;
     isPropertyMethod: boolean;
-    Parentname: String;
-    Annotation: String;
+    Parentname: string;
+    Annotation: string;
     constructor Create(aOwner: TModelEntity); override;
     destructor Destroy; override;
     procedure NewParameters;
@@ -204,7 +204,7 @@ type
     property Ancestor: TInterface read FAncestor write SetAncestor;
     function GetExtends : IModelIterator;
     function GetImplementingClasses : IModelIterator;
-    function getAncestorName(index: integer): String; override;
+    function getAncestorName(index: integer): string; override;
   end;
 
   TClass = class(TClassifier, IBeforeClassListener)
@@ -234,7 +234,7 @@ type
     destructor Destroy; override;
     function MakeOperation(const NewName: string; TypeClass: TClassifier): TOperation;
     procedure AddOperation(Operation: TOperation);
-    function AddOperationWithoutType(Const NewName: string): TOperation;
+    function AddOperationWithoutType(const NewName: string): TOperation;
     function AddAttribute(const NewName: string; TypeClass: TClassifier): TAttribute;
     function AddProperty(const NewName: string): TProperty;
     function AddImplements(I: TInterface): TInterface;
@@ -248,7 +248,7 @@ type
     function OperationIsProperty(Name: string): boolean;
     function FindAttribute(const NewName: string; TypeClass: TClassifier): TAttribute;
     function GetTyp: string;
-    function getAncestorName(index: integer): String; override;
+    function getAncestorName(index: integer): string; override;
     function AncestorsCount: integer;
     function AncestorsAsString: string;
   end;
@@ -270,7 +270,7 @@ type
     function AddOperation(const NewName: string): TOperation;
     procedure RefreshEntities;
     function getTyp: TClass;
-    function GenericName: String;
+    function GenericName: string;
   end;
 
   TAbstractPackage = class(TModelEntity)
@@ -1067,7 +1067,7 @@ begin
   FFeatures.Add(Result);
 end;
 
-function TClass.AddOperationWithoutType(Const NewName: string): TOperation;
+function TClass.AddOperationWithoutType(const NewName: string): TOperation;
 begin
   Result := TOperation.Create(Self);
   Result.FName := NewName;
@@ -1365,7 +1365,7 @@ begin
   Result:= aClass;
 end;
 
-function TObjekt.GenericName: String;
+function TObjekt.GenericName: string;
 begin
   Result:= aClass.GenericName;
   if Result = '' then Result:= aClass.Name;
@@ -1811,7 +1811,7 @@ begin
   Result := TModelIterator.Create( FFeatures );
 end;
 
-function TClassifier.GetShortType: String;
+function TClassifier.GetShortType: string;
 begin
   try
     Result:= ShortName;

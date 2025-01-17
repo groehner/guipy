@@ -756,7 +756,7 @@ type
 
   TJclSimpleLog = class (TObject)
   private
-    FDateTimeFormatStr: String;
+    FDateTimeFormatStr: string;
     FLogFileHandle: TFileHandle;
     FLogFileName: string;
     FLoggingActive: Boolean;
@@ -777,7 +777,7 @@ type
     procedure TimeWrite(Strings: TStrings; Indent: Integer = 0; KeepOpen: Boolean = true); overload;
     procedure WriteStamp(SeparatorLen: Integer = 0; KeepOpen: Boolean = true);
     // DateTimeFormatStr property assumes the values described in "FormatDateTime Function" in Delphi Help
-    property DateTimeFormatStr: String read FDateTimeFormatStr write FDateTimeFormatStr;
+    property DateTimeFormatStr: string read FDateTimeFormatStr write FDateTimeFormatStr;
     property LogFileName: string read FLogFileName;
     //1 Property to activate / deactivate the logging
     property LoggingActive: Boolean read FLoggingActive write FLoggingActive default True;
@@ -4092,7 +4092,7 @@ begin
     Exit;
   FLogFileHandle := FileCreate(FLogFileName);
   FLogWasEmpty := True;
-  if Not WasOpen then
+  if not WasOpen then
     CloseLog;
 end;
 
@@ -4200,7 +4200,7 @@ begin
       finally
         SL.Free;
       end;
-      if Not WasOpen and Not KeepOpen then
+      if not WasOpen and not KeepOpen then
         CloseLog;
     end;
   end;
@@ -4235,7 +4235,7 @@ begin
       else
         Write(Format('= %-*s =', [SeparatorLen - 4, FormatDateTime( DateTimeFormatStr, Now)]), 0, True);
       Write(StrRepeat('=', SeparatorLen), 0, True);
-      if Not WasOpen and Not KeepOpen then
+      if not WasOpen and not KeepOpen then
         CloseLog;
     end;
   end;

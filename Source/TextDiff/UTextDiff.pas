@@ -905,7 +905,7 @@ begin
 end;
 
 procedure TFTextDiff.ChooseFiles(F1: TEditorForm);
-  var TempFilter: String;
+  var TempFilter: string;
 
   procedure InitDir;
   begin

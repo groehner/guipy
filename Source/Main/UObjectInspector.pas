@@ -452,7 +452,7 @@ begin
 
         FObjectGenerator.SetAttributForComponent(PropertyItem.Caption,
           PropertyItem.Editor.Value,
-          String(PropertyItem.Editor.PropTypeInfo.Name),
+          string(PropertyItem.Editor.PropTypeInfo.Name),
           SelectedControls.Items[i]);
       end
   end;
@@ -465,7 +465,7 @@ procedure TFObjectInspector.ELPropertyInspectorFilterProp(
 begin
   AIncludeProp:= false;
   if assigned(APropInfo) and assigned(AInstance)
-    then s:= String(APropInfo^.Name)
+    then s:= string(APropInfo^.Name)
     else exit;
   if not isEvent(s) then begin
     if AInstance is TFont then
@@ -479,7 +479,7 @@ end;
 procedure TFObjectInspector.ELEventInspectorFilterProp(
   Sender: TObject; AInstance: TPersistent; APropInfo: PPropInfo; var AIncludeProp: Boolean);
 begin
-  AIncludeProp:= Pos('|' + String(APropInfo.Name) + '|', Events) > 0;
+  AIncludeProp:= Pos('|' + string(APropInfo.Name) + '|', Events) > 0;
 end;
 
 procedure TFObjectInspector.ELEventInspectorModified(Sender: TObject);

@@ -47,7 +47,7 @@ type
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
     function InnerRect: TRect; override;
   published
@@ -61,7 +61,7 @@ type
   private
     FAlignmentHorizontal: TAlignmentHorizontal;
     FAlignmentVertical: TAlignmentVertical;
-    FText: String;
+    FText: string;
     FTextFormat: TTextFormat;
     FPixmap: string;
     FScaledContents: boolean;
@@ -75,8 +75,8 @@ type
     FLinkHovered: string;
     procedure setAlignmentHorizontal(Value: TAlignmentHorizontal);
     procedure setAlignmentVertical(Value: TAlignmentVertical);
-    procedure setText(value: String);
-    procedure setPixmap(value: String);
+    procedure setText(value: string);
+    procedure setPixmap(value: string);
     procedure setWordWrap(value: boolean);
     procedure setIndent(Value: integer);
     procedure setMargin(Value: integer);
@@ -90,7 +90,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure SizeToText; override;
     procedure Paint; override;
   published
@@ -114,7 +114,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
   end;
@@ -127,7 +127,7 @@ type
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   published
     property Orientation: TOrientation read FOrientation write setOrientation;
   end;
@@ -152,7 +152,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property CurrentIndex: integer read FCurrentIndex write setCurrentIndex;
@@ -174,7 +174,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
   published
     property CurrentIndex: integer read FCurrentIndex write FCurrentIndex;
     property CurrentPageName: string read FCurrentPageName write FCurrentPageName;
@@ -205,7 +205,7 @@ type
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getEvents(ShowEvents: integer): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property SmallDecimalPoint: boolean read FSmallDecimalPoint write setSmallDecimalPoint;
@@ -256,7 +256,7 @@ begin
     inherited;
 end;
 
-procedure TQtFrame.NewWidget(Widget: String = '');
+procedure TQtFrame.NewWidget(Widget: string = '');
 begin
   if Widget = ''
     then inherited NewWidget('QFrame')
@@ -478,7 +478,7 @@ begin
     inherited;
 end;
 
-Const LabelEvents = '|linkActivated|linkHovered';
+const LabelEvents = '|linkActivated|linkHovered';
 
 function TQtLabel.getEvents(ShowEvents: integer): string;
 begin
@@ -510,7 +510,7 @@ begin
   inherited;
 end;
 
-procedure TQtLabel.NewWidget(Widget: String = '');
+procedure TQtLabel.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QLabel');
   if Widget = '' then
@@ -526,7 +526,7 @@ begin
 end;
 
 procedure TQtLabel.Paint;
-  var w, h, format, indent, taw: integer; pathname: String;
+  var w, h, format, indent, taw: integer; pathname: string;
       SL: TStringList; R: TRect; bmp: TBitmap;
 begin
   inherited;
@@ -691,7 +691,7 @@ begin
   delete(Result, p, p + 17);
 end;
 
-procedure TQtCanvas.NewWidget(Widget: String = '');
+procedure TQtCanvas.NewWidget(Widget: string = '');
   var s: string;
 begin
   inherited NewWidget('QLabel');
@@ -750,7 +750,7 @@ begin
     inherited;
 end;
 
-procedure TQtLine.NewWidget(Widget: String = '');
+procedure TQtLine.NewWidget(Widget: string = '');
 begin
   inherited NewWidget(Widget);
   setAttribute('FrameShape', 'HLine', '');
@@ -862,7 +862,7 @@ begin
   setAttributValue(s, s + '().setSpacing(' + Value + ')');
 end;
 
-procedure TQtToolBox.NewWidget(Widget: String = '');
+procedure TQtToolBox.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QToolBox');
   MakePages;
@@ -974,7 +974,7 @@ begin
   inherited;
 end;
 
-procedure TQtStackedWidget.NewWidget(Widget: String = '');
+procedure TQtStackedWidget.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QStackedWidget');
 end;
@@ -1051,7 +1051,7 @@ begin
   Partner.DeleteAttribute(s);
 end;
 
-procedure TQtLCDNumber.NewWidget(Widget: String = '');
+procedure TQtLCDNumber.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QLCDNumber');
 end;

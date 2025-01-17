@@ -891,7 +891,7 @@ begin
 end;
 
 function GetFileAsText(const FileName: string; Lines: TStrings): Boolean;
-Var
+var
   Editor : IEditor;
 begin
   Editor := GI_EditorFactory.GetEditorByFileId(FileName);
@@ -960,7 +960,7 @@ begin
 end;
 
 procedure TFindResultsWindow.ResizeListBox;
-Const
+const
   SAllAlphaNumericChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
 begin
   lbResults.Canvas.Font.PixelsPerInch := FCurrentPPI;
@@ -1050,8 +1050,8 @@ var
 begin
   if GrepSettings.RegEx then begin
     Result := RegEx.Replace(CurrentLine.Line, GrepSettings.Replace);
-   	for i := CurrentLine.Matches.Count - 1 downto 0 do
-     	CurrentLine.Matches[i].ShowBold := False;
+    for i := CurrentLine.Matches.Count - 1 downto 0 do
+      CurrentLine.Matches[i].ShowBold := False;
   end else begin
     Result := CurrentLine.Line;
     for i := CurrentLine.Matches.Count - 1 downto 0 do

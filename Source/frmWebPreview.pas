@@ -62,7 +62,6 @@ type
         const AResultObjectAsJson: string);
     procedure WebBrowserHistoryChanged(Sender: TCustomEdgeBrowser);
   private
-    { Private declarations }
     fEditor: IEditor;
     procedure UpdateView(Editor : IEditor);
   private
@@ -71,7 +70,6 @@ type
     class constructor Create;
     class destructor Destroy;
   public
-    { Public declarations }
     const JupyterServerCaption = 'Jupyter Server';
     const JupyterServer = '$[PythonDir-Short]Scripts\Jupyter-notebook.exe';
   end;
@@ -88,7 +86,7 @@ type
     procedure GetContextHighlighters(List : TList);
   end;
 
-Var
+var
   WebPreviewFactoryIndex : integer;
 
 implementation

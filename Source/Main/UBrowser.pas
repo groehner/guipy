@@ -3,9 +3,23 @@ unit UBrowser;
 interface
 
 uses
-  Classes, Controls, OleCtrls, Forms, SHDocVw, ComCtrls, ToolWin, StdCtrls,
-  ExtCtrls, Messages, ImageList, ImgList, SpTBXSkins, frmFile,
-  Vcl.VirtualImageList, Vcl.BaseImageCollection, SVGIconImageCollection;
+  Classes,
+  Controls,
+  OleCtrls,
+  Forms,
+  SHDocVw,
+  ComCtrls,
+  ToolWin,
+  StdCtrls,
+  ExtCtrls,
+  Messages,
+  ImageList,
+  ImgList,
+  Vcl.VirtualImageList,
+  Vcl.BaseImageCollection,
+  SVGIconImageCollection,
+  SpTBXSkins,
+  frmFile;
 
 type
   TFBrowser = class(TFileForm)
@@ -45,14 +59,14 @@ type
     procedure TBFavoritesDeleteClick(Sender: TObject);
 
     procedure WebBrowserBeforeNavigate2(ASender: TObject;
-      const pDisp: IDispatch; const URL, Flags, TargetFrameName, PostData,
+      const PDisp: IDispatch; const URL, Flags, TargetFrameName, PostData,
       Headers: OleVariant; var Cancel: WordBool);
     procedure WebBrowserDownloadBegin(Sender: TObject);
     procedure WebBrowserDownloadComplete(Sender: TObject);
     procedure WebBrowserCommandStateChange(ASender: TObject; Command: Integer;
       Enable: WordBool);
   private
-    Zoom: OleVariant;
+    FZoom: OleVariant;
     procedure InvokeOleCMD (Value1, Value2: Integer);
     procedure ActivateBrowser;
     procedure NavigateTo(URL: string);
@@ -61,30 +75,42 @@ type
     procedure CutToClipboard;
     procedure CopyToClipboard; override;
     procedure PasteFromClipboard; override;
-    procedure SetFontSize(Delta: integer); override;
+    procedure SetFontSize(Delta: Integer); override;
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
-    function OpenFile(const aFilename: String): boolean; override;
+    function OpenFile(const AFilename: string): Boolean; override;
     procedure OpenWindow(Sender: TObject); override;
     function getAsStringList: TStringList; override;
-    procedure UploadFilesHttpPost(const URLstring: string; names, values, nFiles, vFiles: array of string);
+    procedure UploadFilesHttpPost(const URLstring: string; Names, Values, NFiles, VFiles: array of string);
     procedure ChangeStyle;
     procedure DPIChanged; override;
   end;
 
 implementation
 
-uses Winapi.Windows, System.SysUtils, System.Variants, Vcl.Dialogs, IOUtils,
-     Clipbrd, ActiveX, MSHTML, JvGnugettext,
-     uEditAppIntfs, uCommonFunctions, frmPyIDEMain,
-     frmFileExplorer, UUtils, UConfiguration;
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  System.Variants,
+  Vcl.Dialogs,
+  IOUtils,
+  Clipbrd,
+  ActiveX,
+  MSHTML,
+  JvGnugettext,
+  uEditAppIntfs,
+  uCommonFunctions,
+  frmPyIDEMain,
+  frmFileExplorer,
+  UUtils,
+  UConfiguration;
 
 {$R *.dfm}
 
 procedure TFBrowser.FormCreate(Sender: TObject);
 begin
   inherited;
-  WebBrowser.Silent:= true;
+  WebBrowser.Silent:= True;
   with PyIDEMainForm.AppStorage do begin
     PLeft.Width:= ReadInteger('Browser\CBwidth', 200);
     ReadStringList('Browser\Favoriten', CBUrls.Items);
@@ -104,7 +130,7 @@ begin
 end;
 
 procedure TFBrowser.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-  var aEditor: IEditor;
+  var AEditor: IEditor;
 begin
   { If you have used the search function in a browser window and you then
     close the browser window in the editor window the blinking caret isn't
@@ -115,13 +141,13 @@ begin
   WebBrowser.OnCommandStateChange:= nil;
   with PyIDEMainForm.AppStorage do
     WriteInteger('Browser\CBWidth', PLeft.Width);
-  CanClose:= true;
+  CanClose:= True;
 
   TThread.ForceQueue(nil, procedure
   begin
-    aEditor:= GI_PyIDEServices.getActiveEditor;
-    if assigned(aEditor) and aEditor.ActiveSynEdit.CanFocus then
-      aEditor.ActiveSynEdit.SetFocus;
+    AEditor:= GI_PyIDEServices.GetActiveEditor;
+    if Assigned(AEditor) and AEditor.ActiveSynEdit.CanFocus then
+      AEditor.ActiveSynEdit.SetFocus;
   end);
 end;
 
@@ -135,15 +161,15 @@ begin
       TBBack.Click;
 end;
 
-function TFBrowser.OpenFile(const aFilename: String): boolean;
+function TFBrowser.OpenFile(const AFilename: string): Boolean;
 begin
-  Pathname:= getProtocolAndDomain(aFilename);
+  Pathname:= getProtocolAndDomain(AFilename);
   fFile.fFileName:= Pathname;
   PyIDEMainForm.UpdateCaption;
   Enter(Self);
-  Webbrowser.OnCommandStateChange:= WebBrowserCommandStateChange;
-  NavigateTo(aFilename);
-  Result:= true;
+  WebBrowser.OnCommandStateChange:= WebBrowserCommandStateChange;
+  NavigateTo(AFilename);
+  Result:= True;
 end;
 
 procedure TFBrowser.NavigateTo(URL: string);
@@ -152,28 +178,27 @@ begin
 end;
 
 procedure TFBrowser.CBUrlsClick(Sender: TObject);
-  var s: string;
 begin
-  s:= CBUrls.Text;
-  if FileExists(s) then
-    NavigateTo(s)
-  else if DirectoryExists(ExtractFilePathEx(s)) then begin
-    PyIDEMainForm.actNavFileExplorerExecute(self);
-    FileExplorerWindow.ExplorerPath:= ExtractFilePathEx(s);
+  var Str:= CBUrls.Text;
+  if FileExists(Str) then
+    NavigateTo(Str)
+  else if DirectoryExists(ExtractFilePathEx(Str)) then begin
+    PyIDEMainForm.actNavFileExplorerExecute(Self);
+    FileExplorerWindow.ExplorerPath:= ExtractFilePathEx(Str);
   end else if GuiPyOptions.LockedInternet then
     NavigateTo('about:' + _('Internet locked!'))
   else begin
-    if Pos('://', s) = 0 then
-      s:= 'https://' + s;
-    NavigateTo(s);
+    if Pos('://', Str) = 0 then
+      Str:= 'https://' + Str;
+    NavigateTo(Str);
   end;
-  CBUrls.Text:= s;
+  CBUrls.Text:= Str;
 end;
 
 procedure TFBrowser.CBUrlsKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if Key = VK_Return then
+  if Key = VK_RETURN then
     CBUrlsClick(Self);
 end;
 
@@ -184,25 +209,24 @@ begin
 end;
 
 procedure TFBrowser.TBShowSourceClick(Sender: TObject);
-  var s: string;
 begin
-  TBShowSource.Enabled:= false;
-  s:= StripHttpParams(CBUrls.Text);
-  if FileExists(s) then
-    PyIDEMainForm.DoOpenAsEditor(s)
+  TBShowSource.Enabled:= False;
+  var Str:= StripHttpParams(CBUrls.Text);
+  if FileExists(Str) then
+    PyIDEMainForm.DoOpenAsEditor(Str)
   else begin
-    s:= ExtractFileNameEx(CBUrls.Text);
-    if not IsHTML(s) then s:= ChangeFileExt(s, '.html');
+    Str:= ExtractFileNameEx(CBUrls.Text);
+    if not IsHTML(Str) then Str:= ChangeFileExt(Str, '.html');
     try
-      Screen.Cursor:= crHourglass;
-      if DownloadURL(CBUrls.Text, TPath.Combine(GuiPyOptions.TempDir, s))
-        then PyIDEMainForm.DoOpenAsEditor(TPath.Combine(GuiPyOptions.TempDir, s))
+      Screen.Cursor:= crHourGlass;
+      if DownloadURL(CBUrls.Text, TPath.Combine(GuiPyOptions.TempDir, Str))
+        then PyIDEMainForm.DoOpenAsEditor(TPath.Combine(GuiPyOptions.TempDir, Str))
         else StyledMessageDlg(_('Download failed!'), mtError, [mbOK], 0);
     finally
       Screen.Cursor:= crDefault;
     end;
   end;
-  TBShowSource.Enabled:= true;
+  TBShowSource.Enabled:= True;
 end;
 
 procedure TFBrowser.TBBackClick(Sender: TObject);
@@ -241,14 +265,14 @@ begin
   CBUrls.Text:= '';
 end;
 
-procedure TFBrowser.SetFontSize(Delta: integer);
+procedure TFBrowser.SetFontSize(Delta: Integer);
   var Zoom1: OleVariant;
 begin
-  WebBrowser.ExecWB(OLECMDID_ZOOM, OLECMDEXECOPT_DONTPROMPTUSER, Zoom1, Zoom);
-  Zoom:= Zoom + Delta;
-  if Zoom < 0 then Zoom:= 0;
-  if Zoom > 4 then Zoom:= 4;
-  WebBrowser.ExecWB(OLECMDID_ZOOM, OLECMDEXECOPT_PROMPTUSER, Zoom);
+  WebBrowser.ExecWB(OLECMDID_ZOOM, OLECMDEXECOPT_DONTPROMPTUSER, Zoom1, FZoom);
+  FZoom:= FZoom + Delta;
+  if FZoom < 0 then FZoom:= 0;
+  if FZoom > 4 then FZoom:= 4;
+  WebBrowser.ExecWB(OLECMDID_ZOOM, OLECMDEXECOPT_PROMPTUSER, FZoom);
 end;
 
 procedure TFBrowser.Print;
@@ -268,7 +292,7 @@ procedure TFBrowser.CopyToClipboard;
 begin
   if CBUrls.Focused
     then Clipboard.AsText:= CBUrls.SelText
-    else InvokeOleCMD(OLECMDID_Copy, OLECMDEXECOPT_DODEFAULT);;
+    else InvokeOleCMD(OLECMDID_COPY, OLECMDEXECOPT_DODEFAULT);
 end;
 
 procedure TFBrowser.PasteFromClipboard;
@@ -280,14 +304,14 @@ end;
 procedure TFBrowser.InvokeOleCMD (Value1, Value2: Integer);
   // from Henri Fournier in Borland.Public.Delphi.Internet
 var CmdTarget:   IOleCommandTarget;
-    vaIn, vaOut: OleVariant;
+    VaIn, VaOut: OleVariant;
 begin
   if WebBrowser.Document <> nil then
     try
       WebBrowser.Document.QueryInterface (IOleCommandTarget, CmdTarget);
-      if CmdTarget <> nil then
+      if Assigned(CmdTarget) then
         try
-          CmdTarget.Exec(PGuid(nil), Value1, Value2, VaIn, VaOut);
+          CmdTarget.Exec(PGUID(nil), Value1, Value2, VaIn, VaOut);
         finally
           CmdTarget._Release;
         end;
@@ -305,166 +329,157 @@ end;
 
 procedure TFBrowser.ActivateBrowser;
 begin
-  if assigned(WebBrowser) and assigned(WebBrowser.Document) then
-    (WebBrowser.Document as IHTMLDocument2).ParentWindow.Focus;
+  if Assigned(WebBrowser) and Assigned(WebBrowser.Document) then
+    (WebBrowser.Document as IHTMLDocument2).parentWindow.focus;
 end;
 
 function TFBrowser.getAsStringList: TStringList;
-  var filename: string;
+  var Filename: string;
 begin
-  TBShowSource.Enabled:= false;
+  TBShowSource.Enabled:= False;
   Result:= TStringList.Create;
-  filename:= StripHttpParams(CBUrls.Text);
-  if not FileExists(filename) then begin
-    Screen.Cursor:= crHourglass;
+  Filename:= StripHttpParams(CBUrls.Text);
+  if not FileExists(Filename) then begin
+    Screen.Cursor:= crHourGlass;
     try
-      filename:= TPath.Combine(GuiPyOptions.TempDir, 'download.html');
-      if not DownloadURL(CBUrls.Text, filename) then
+      Filename:= TPath.Combine(GuiPyOptions.TempDir, 'download.html');
+      if not DownloadURL(CBUrls.Text, Filename) then
         StyledMessageDlg(_('Download failed!'), mtError, [mbOK], 0);
     finally
       Screen.Cursor:= crDefault;
     end;
   end;
-  if FileExists(filename) then
-    Result.LoadFromFile(filename);
-  TBShowSource.Enabled:= true;
+  if FileExists(Filename) then
+    Result.LoadFromFile(Filename);
+  TBShowSource.Enabled:= True;
 end;
 
-procedure TFBrowser.UploadFilesHttpPost(const URLstring: string; names, values, nFiles, vFiles: array of string) ;
+procedure TFBrowser.UploadFilesHttpPost(const URLstring: string; Names, Values, NFiles, VFiles: array of string);
  var
-   strData, n, v, boundary: string;
+   StrData, Name, Value, Boundary: string;
    URL: OleVariant;
    Flags: OleVariant;
    PostData: OleVariant;
    Headers: OleVariant;
-   idx: Integer;
+   Idx: Integer;
 
-   ms: TMemoryStream;
-   ss: TStringStream;
- begin
-   if Length(names) <> Length(values) then
-     raise Exception.Create('UploadFilesHttpPost: Names and Values must have the same length.') ;
-   if Length(nFiles) <> Length(vFiles) then
-     raise Exception.Create('UploadFilesHttpPost: FileNames and FileValues must have the same length.') ;
+   MemoryStream: TMemoryStream;
+   StringStream: TStringStream;
+begin
+  if Length(Names) <> Length(Values) then
+    raise Exception.Create('UploadFilesHttpPost: Names and Values must have the same length.') ;
+  if Length(NFiles) <> Length(VFiles) then
+    raise Exception.Create('UploadFilesHttpPost: FileNames and FileValues must have the same length.') ;
 
-   URL := 'about:blank';
-   Flags := NavNoHistory or NavNoReadFromCache or NavNoWriteToCache or NavAllowAutosearch;
-   WebBrowser.Navigate2(URL, Flags) ;
-   while WebBrowser.ReadyState < READYSTATE_INTERACTIVE do Application.ProcessMessages;
+  URL := 'about:blank';
+  Flags := navNoHistory or navNoReadFromCache or navNoWriteToCache or navAllowAutosearch;
+  WebBrowser.Navigate2(URL, Flags) ;
+  while WebBrowser.ReadyState < READYSTATE_INTERACTIVE do Application.ProcessMessages;
 
-   // anything random that WILL NOT occur in the data.
-   boundary := '---------------------------123456789';
+  // anything random that WILL NOT occur in the data.
+  Boundary := '---------------------------123456789';
 
-   strData := '';
-   for idx := Low(names) to High(names) do
-   begin
-     n := names[idx];
-     v := values[idx];
-     strData := strData + '--' + boundary + #13#10 + 'Content-Disposition: form-data; name="' + n + '"' + #13#10#13#10 + v + #13#10;
-   end;
+  StrData := '';
+  for Idx := Low(Names) to High(Names) do
+  begin
+    Name := Names[Idx];
+    Value := Values[Idx];
+    StrData := StrData + '--' + Boundary + #13#10 +
+      'Content-Disposition: form-data; name="' + Name + '"' + #13#10#13#10 + Value + #13#10;
+  end;
 
-   for idx := Low(nFiles) to High(nFiles) do
-   begin
-     n := nFiles[idx];
-     v := vFiles[idx];
+  for Idx := Low(NFiles) to High(NFiles) do
+  begin
+    Name := NFiles[Idx];
+    Value := VFiles[Idx];
+    StrData := StrData + '--' + Boundary + #13#10 +
+      'Content-Disposition: form-data; name="' + Name + '"; filename="' + Value + '"' + #13#10;
 
-     strData := strData + '--' + boundary + #13#10 + 'Content-Disposition: form-data; name="' + n + '"; filename="' + v + '"' + #13#10;
+    if Value = '' then
+      StrData := StrData + 'Content-Transfer-Encoding: binary'#13#10#13#10
+    else begin
+      if (CompareText(ExtractFileExt(Value), '.JPG') = 0) or
+         (CompareText(ExtractFileExt(Value), '.JPEG') = 0) then
+        StrData := StrData + 'Content-Type: image/pjpeg'#13#10#13#10
+      else if (CompareText(ExtractFileExt(Value), '.PNG') = 0) then
+        StrData := StrData + 'Content-Type: image/x-png'#13#10#13#10
+      else if (CompareText(ExtractFileExt(Value), '.PNG') = 0) then
+        StrData := StrData + 'Content-Type: image/x-png'#13#10#13#10
+      else if (CompareText(ExtractFileExt(Value), '.CSS') = 0) then
+        StrData := StrData + 'Content-Type: text/css'#13#10#13#10
+      else if (CompareText(ExtractFileExt(Value), '.HTML') = 0) then
+        StrData := StrData + 'Content-Type: text/html'#13#10#13#10;
 
-     if v = '' then
-     begin
-        strData := strData + 'Content-Transfer-Encoding: binary'#13#10#13#10;
-     end
-     else
-     begin
-       if (CompareText(ExtractFileExt(v), '.JPG') = 0) or (CompareText(ExtractFileExt(v), '.JPEG') = 0) then
-       begin
-         strData := strData + 'Content-Type: image/pjpeg'#13#10#13#10;
-       end
-       else if (CompareText(ExtractFileExt(v), '.PNG') = 0) then
-       begin
-         strData := strData + 'Content-Type: image/x-png'#13#10#13#10;
-       end
-       else if (CompareText(ExtractFileExt(v), '.PNG') = 0) then
-       begin
-         strData := strData + 'Content-Type: image/x-png'#13#10#13#10;
-       end
-       else if (CompareText(ExtractFileExt(v), '.CSS') = 0) then
-       begin
-         strData := strData + 'Content-Type: text/css'#13#10#13#10;
-       end
-       else if (CompareText(ExtractFileExt(v), '.HTML') = 0) then
-       begin
-       strData := strData + 'Content-Type: text/html'#13#10#13#10;
-       end;
+      MemoryStream := TMemoryStream.Create;
+      try
+        MemoryStream.LoadFromFile(Value) ;
+        StringStream := TStringStream.Create('');
+        try
+          StringStream.CopyFrom(MemoryStream, MemoryStream.Size);
 
-       ms := TMemoryStream.Create;
-       try
-         ms.LoadFromFile(v) ;
-         ss := TStringStream.Create('') ;
-         try
-           ss.CopyFrom(ms, ms.Size) ;
+          StrData := StrData + StringStream.DataString + #13#10;
+        finally
+          FreeAndNil(StringStream);
+        end;
+      finally
+        FreeAndNil(MemoryStream);
+      end;
+    end;
 
-           strData := strData + ss.DataString + #13#10;
-         finally
-           FreeAndNil(ss);
-         end;
-       finally
-         FreeAndNil(ms);
-       end;
-     end;
+    StrData := StrData + '--' + Boundary + '--'#13#10; // FOOTER
+  end;
 
-     strData := strData + '--' + boundary + '--'#13#10; // FOOTER
-   end;
+  StrData := StrData + #0;
 
-   strData := strData + #0;
+  {2. you must convert a String into variant array of bytes and every character from String is a value in array}
+  PostData := VarArrayCreate([0, Length(StrData) - 1], varByte) ;
 
-   {2. you must convert a string into variant array of bytes and every character from string is a value in array}
-   PostData := VarArrayCreate([0, Length(strData) - 1], varByte) ;
+  { copy the ordinal value of the character into the PostData array}
+  for Idx := 1 to Length(StrData) do PostData[Idx-1] := Ord(StrData[Idx]) ;
 
-   { copy the ordinal value of the character into the PostData array}
-   for idx := 1 to Length(strData) do PostData[idx-1] := Ord(strData[idx]) ;
+  {3. prepare headers which will be sent to remote web-server}
+  Headers := 'Content-Type: multipart/form-data; Boundary=' + Boundary + #13#10;
 
-   {3. prepare headers which will be sent to remote web-server}
-   Headers := 'Content-Type: multipart/form-data; boundary=' + boundary + #13#10;
-
-   {4. you must navigate to the URL with your script and send as parameters your array with POST-data and headers}
-   URL := URLstring;
-   WebBrowser.Navigate2(URL, Flags, EmptyParam, PostData, Headers) ;
-   while WebBrowser.ReadyState < READYSTATE_INTERACTIVE do Application.ProcessMessages;
- end;
+  {4. you must navigate to the URL with your script and send as parameters your array with POST-data and headers}
+  URL := URLstring;
+  WebBrowser.Navigate2(URL, Flags, EmptyParam, PostData, Headers) ;
+  while WebBrowser.ReadyState < READYSTATE_INTERACTIVE do Application.ProcessMessages;
+end;
 
 procedure TFBrowser.WebBrowserBeforeNavigate2(ASender: TObject;
-  const pDisp: IDispatch; const URL, Flags, TargetFrameName, PostData,
-  Headers: OleVariant; var Cancel: WordBool);
-var p: Integer; s, s1, nUrl: string;
+  const PDisp: IDispatch;
+  const URL, Flags, TargetFrameName, PostData, Headers: OleVariant;
+  var Cancel: WordBool);
+var
+  Posi: Integer; Str, Str1, NUrl: string;
 begin
   if URL = 'about:blank' then begin
-    Cancel:= true;
+    Cancel:= True;
     Exit;
   end;
-  nUrl:= URL;
-  s:= URL;
-  if Pos('file:///', s) = 1 then begin
-    delete(s, 1, 8);
-    p:= Pos('#', s);
-    if p > 0 then begin
-      s1:= copy(s, p, length(s));
-      delete(s, p, length(s));
-    end else s1:= '';
-    nURL:= ToWindows(s) + s1;
-  end else if Pos('file:', s) = 1 then begin // UNC-Namen
-    delete(s, 1, 5);
-    p:= Pos('#', s);
-    if p > 0 then begin
-      s1:= copy(s, p, length(s));
-      delete(s, p, length(s));
-    end else s1:= '';
-    nURL:= ToWindows(s) + s1;
+  NUrl:= URL;
+  Str:= URL;
+  if Pos('file:///', Str) = 1 then begin
+    Delete(Str, 1, 8);
+    Posi:= Pos('#', Str);
+    if Posi > 0 then begin
+      Str1:= Copy(Str, Posi, Length(Str));
+      Delete(Str, Posi, Length(Str));
+    end else Str1:= '';
+    NUrl:= ToWindows(Str) + Str1;
+  end else if Pos('file:', Str) = 1 then begin // UNC-Namen
+    Delete(Str, 1, 5);
+    Posi:= Pos('#', Str);
+    if Posi > 0 then begin
+      Str1:= Copy(Str,Posi, Length(Str));
+      Delete(Str, Posi, Length(Str));
+    end else Str1:= '';
+    NUrl:= ToWindows(Str) + Str1;
   end;
-  if not hasPythonExtension(nURL) then
-    CBURLs.Text:= nURL;
-  if isHttp(URL) and GuiPyOptions.LockedInternet then
-    Cancel:= true;
+  if not hasPythonExtension(NUrl) then
+    CBUrls.Text:= NUrl;
+  if IsHTTP(URL) and GuiPyOptions.LockedInternet then
+    Cancel:= True;
 end;
 
 procedure TFBrowser.WebBrowserCommandStateChange(ASender: TObject;
@@ -488,7 +503,8 @@ begin
   fFile.fFileName:= Pathname;
   PyIDEMainForm.UpdateCaption;
   DoUpdateCaption;
-  if not FConfiguration.visible then ActivateBrowser;
+  if not FConfiguration.Visible then
+    ActivateBrowser;
 end;
 
 procedure TFBrowser.WMSpSkinChange(var Message: TMessage);
@@ -506,7 +522,7 @@ end;
 
 procedure TFBrowser.DPIChanged;
 begin
-  CBUrls.Height:= Toolbar.Height;
+  CBUrls.Height:= ToolBar.Height;
 end;
 
 end.

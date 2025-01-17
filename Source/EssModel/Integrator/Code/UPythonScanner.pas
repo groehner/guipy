@@ -47,9 +47,9 @@ interface
     procedure SkipTo(ch: char);
     procedure SkipToChars(ch: string);
     procedure SkipPairTo(const open, close: string);
-    function LookAheadToken: String;
+    function LookAheadToken: string;
     function getExtends: string;
-    function getFilename: String;
+    function getFilename: string;
     function GetFrameType: integer;
   end;
 
@@ -323,7 +323,7 @@ begin
   Result:= Token;
 end;
 
-procedure TPythonScannerWithTokens.Init(const s: String);
+procedure TPythonScannerWithTokens.Init(const s: string);
 begin
   Token:= NEWLINE;
   PushToken:= '';
@@ -375,10 +375,10 @@ begin
   InhibitDetermineIndent:= false;
 end;
 
-function TPythonScannerWithTokens.LookAheadToken: String;
+function TPythonScannerWithTokens.LookAheadToken: string;
   var SaveCurrPos: PChar;
       SaveLastCurrPos: PChar;
-      SaveLastToken: String;
+      SaveLastToken: string;
       SaveToken: string;
       SaveLine: integer;
 begin

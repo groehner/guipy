@@ -30,7 +30,7 @@ unit JvGnugettext;
   gnugettext.pas the style guide for the JVCL is not enforced here.
 ------------------------------------------------------------------------------*}
 // Information about this file:
-// $--LastChangedDate: 2010-08-25 15:40:17 +0200 (mer., 25 août 2010) $
+// $--LastChangedDate: 2010-08-25 15:40:17 +0200 (mer., 25 aoÃ»t 2010) $
 // $--LastChangedRevision: 220 $
 // $--HeadURL: http://svn.berlios.de/svnroot/repos/dxgettext/trunk/dxgettext/sample/gnugettext.pas $
 // Redistribution and use in source and binary forms, with or without
@@ -250,7 +250,7 @@ procedure HookIntoResourceStrings (enabled:boolean=true; SupportPackages:boolean
 {$endif}
 {$endif}
 type
-  TOnDebugLine = Procedure (Sender: TObject; const Line: String; var Discard: Boolean) of Object;  // Set Discard to false if output should still go to ordinary debug log
+  TOnDebugLine = procedure (Sender: TObject; const Line: string; var Discard: Boolean) of object;  // Set Discard to false if output should still go to ordinary debug log
   TGetPluralForm=function (Number:Longint):Integer;
   TDebugLogger=procedure (line: ansistring) of object;
 {*------------------------------------------------------------------------------
@@ -895,7 +895,7 @@ type
   PStrData = ^TStrData;
   TStrData = record
     Ident: Integer;
-    Str: String;
+    Str: string;
   end;
 function SysUtilsEnumStringModules(Instance: {$IFDEF DELPHI2012OROLDER}NativeInt{$ELSE}Integer{$ENDIF DELPHI2012OROLDER}; Data: Pointer): Boolean;
 {$IFDEF MSWINDOWS}
@@ -2184,7 +2184,7 @@ begin
 end;
 {$ifdef DXGETTEXTDEBUG}
 procedure TGnuGettextInstance.DebugWriteln(line: ansistring);
-Var
+var
   Discard: Boolean;
 begin
   Assert (DebugLogCS<>nil);
@@ -2196,7 +2196,7 @@ begin
     if Assigned (fOnDebugLine) then begin
       Discard := True;
       fOnDebugLine (Self, Line, Discard);
-      If Discard then Exit;
+      if Discard then Exit;
     end;
     line:=line+sLineBreak;
     // Ensure that memory usage doesn't get too big.
@@ -2284,7 +2284,7 @@ begin
     end else begin
       Result := '';
       Len := 0;
-      While Length(Result)<=Len+1 do begin     
+      while Length(Result)<=Len+1 do begin     
         if Length(Result) = 0 then
           SetLength(Result, 1024)
         else
@@ -2624,7 +2624,7 @@ begin
   filelist.Sorted:=True;
 end;
 destructor TFileLocator.Destroy;
-Var
+var
   Idx:integer;
 begin
   for Idx := 0 to filelist.Count-1 do

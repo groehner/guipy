@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
  Unit:     UQtWidgetDescendants
- Author:   Gerhard Röhner
+ Author:   Gerhard RÃ¶hner
  Date:     July 2022
  Purpose:  PyQt simple widgets
 -------------------------------------------------------------------------------}
@@ -55,7 +55,7 @@ type
 
   TQtLineEdit = class(TBaseQtWidget)
   private
-    FInputMask: String;
+    FInputMask: string;
     FText: string;
     FMaxLength: integer;
     FFrame: boolean;
@@ -74,8 +74,8 @@ type
     FSelectionChanged: string;
     FTextChanged: string;
     FTextEdited: string;
-    procedure setText(Value: String);
-    procedure setPlaceholderText(Value: String);
+    procedure setText(Value: string);
+    procedure setPlaceholderText(Value: string);
     procedure setEchoMode(Value: TEchoMode);
     procedure setFrame(Value: boolean);
   public
@@ -85,16 +85,16 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property InputMask: String read FInputMask write FInputMask;
-    property Text: String read FText write setText;
+    property InputMask: string read FInputMask write FInputMask;
+    property Text: string read FText write setText;
     property MaxLength: integer read FMaxLength write FMaxLength;
     property Frame: boolean read FFrame write setFrame;
     property EchoMode: TEchoMode read FEchoMode write setEchoMode;
     property CursorPosition: integer read FCursorPosition write FCursorPosition;
-    property Aligment: String read FAligment write FAligment;
+    property Aligment: string read FAligment write FAligment;
     property DragEnabled: boolean read FDragEnabled write FDragEnabled;
     property ReadOnly: boolean read FReadOnly write FReadOnly;
     property PlaceholderText: string read FPlaceholderText write setPlaceholderText;
@@ -133,7 +133,7 @@ type
     FTextActivated: string;
     FTextHighlighted: string;
     procedure setListItems(Values: TStrings);
-    function getListItems: String;
+    function getListItems: string;
     procedure setCurrentText(Value: string);
     procedure setPlaceholderText(Value: string);
     procedure setEditable(Value: boolean);
@@ -146,7 +146,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property Editable: boolean read FEditable write setEditable;
@@ -188,7 +188,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
     procedure MakeFont; override;
   published
@@ -227,7 +227,7 @@ type
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     function InnerRect: TRect; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property Minimum: integer read FMinimum write setMinimum;
@@ -252,7 +252,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
@@ -281,7 +281,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property Title: string read FTitle write setTitle;
@@ -322,7 +322,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property TabPosition: TTabPosition read FTabPosition write setTabPosition;
@@ -356,7 +356,7 @@ type
     MenuItemsOld: TStrings;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getEvents(ShowEvents: integer): string; override;
@@ -378,7 +378,7 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure DeleteWidget; override;
     function getCreateMenu: string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   end;
 
@@ -404,7 +404,7 @@ type
     procedure MakeButtongroupItems;
     procedure MakeTitle(Title: string);
     function ItemsInColumn(i: integer): integer;
-    function RBName(i: integer): String;
+    function RBName(i: integer): string;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -414,7 +414,7 @@ type
     function getEvents(ShowEvents: integer): string; override;
     procedure setEvent(Attr: string); override;
     function HandlerInfo(const event: string): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
     function MakeBinding(Eventname: string): string; override;
@@ -518,7 +518,7 @@ begin
   inherited;
 end;
 
-procedure TQtLineEdit.NewWidget(Widget: String = '');
+procedure TQtLineEdit.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QLineEdit')
 end;
@@ -557,7 +557,7 @@ begin
     FGUIDesigner.vilQtControls1616.Draw(Canvas, R.Right + 8, (R.Height - FGUIDesigner.vilQtControls1616.Height) div 2, 4);
 end;
 
-procedure TQtLineEdit.setText(Value: String);
+procedure TQtLineEdit.setText(Value: string);
 begin
   if Value <> FText then begin
     FText:= Value;
@@ -565,7 +565,7 @@ begin
   end;
 end;
 
-procedure TQtLineEdit.setPlaceholderText(Value: String);
+procedure TQtLineEdit.setPlaceholderText(Value: string);
 begin
   if Value <> FPlaceholderText then begin
     FPlaceholderText:= Value;
@@ -671,7 +671,7 @@ begin
   inherited;
 end;
 
-procedure TQtComboBox.NewWidget(Widget: String = '');
+procedure TQtComboBox.NewWidget(Widget: string = '');
 begin
   if Widget = '' then begin
     inherited NewWidget('QComboBox');
@@ -739,8 +739,8 @@ begin
   Invalidate;
 end;
 
-function TQtComboBox.getListItems: String;
-  var s: String; i: integer;
+function TQtComboBox.getListItems: string;
+  var s: string; i: integer;
 begin
   s:= '[';
   for i:= 0 to FListItems.Count -1 do
@@ -749,7 +749,7 @@ begin
   Result:= s + ']';
 end;
 
-procedure TQtComboBox.setCurrentText(Value: String);
+procedure TQtComboBox.setCurrentText(Value: string);
 begin
   if Value <> FCurrentText then begin
     FCurrentText:= Value;
@@ -757,7 +757,7 @@ begin
   end;
 end;
 
-procedure TQtComboBox.setPlaceholderText(Value: String);
+procedure TQtComboBox.setPlaceholderText(Value: string);
 begin
   if Value <> FPlaceholderText then begin
     FPlaceholderText:= Value;
@@ -885,7 +885,7 @@ begin
   setAttribute('FontFilters', s, '');
 end;
 
-procedure TQtFontComboBox.NewWidget(Widget: String = '');
+procedure TQtFontComboBox.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QFontComboBox');
 end;
@@ -972,7 +972,7 @@ begin
     Result.Right:= Result.Right - Canvas.TextWidth(getText);
 end;
 
-procedure TQtProgressBar.NewWidget(Widget: String = '');
+procedure TQtProgressBar.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QProgressBar');
   setAttribute('Value', '24', '');
@@ -1138,7 +1138,7 @@ begin
   inherited;
 end;
 
-procedure TQtStatusBar.NewWidget(Widget: String = '');
+procedure TQtStatusBar.NewWidget(Widget: string = '');
 begin
   InsertValue('self.statusBar()');
 end;
@@ -1223,7 +1223,7 @@ begin
   inherited;
 end;
 
-procedure TQtGroupBox.NewWidget(Widget: String = '');
+procedure TQtGroupBox.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QGroupBox');
   setAttribute('Title', 'GroupBox', 'Text');
@@ -1363,7 +1363,7 @@ begin
   inherited;
 end;
 
-procedure TQtTabWidget.NewWidget(Widget: String = '');
+procedure TQtTabWidget.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QTabWidget');
   MakeTabs;
@@ -1389,7 +1389,7 @@ end;
 procedure TQtTabWidget.Paint;
   const paddingH = 12;
   var th, tw, i, x1, y1, RowHeight, x1Curr, x2Curr, y1Curr, y2Curr: integer;
-      Points: Array[0..3] of TPoint;
+      Points: array[0..3] of TPoint;
 
   function ShowHorTab(x1, y1: integer; const s: string; TopCorner: boolean): integer;
     var dx, dy: integer; R: TRect;
@@ -1635,7 +1635,7 @@ begin
   inherited;
 end;
 
-procedure TQtMenuBar.NewWidget(Widget: String = '');
+procedure TQtMenuBar.NewWidget(Widget: string = '');
 begin
   MenuItemsOld.Text:= '';
   MakeMenuItems;
@@ -1682,8 +1682,8 @@ end;
 procedure TQtMenuBar.CalculateMenus(MenuItems, PyMenu, PyMethods: TStrings);
   var i, MenuIndent, ls, p: integer;
       s, ts, Shortcut: string;
-      MenuName: array[-1..10] of String;
-      MenuText: array[-1..10] of String;
+      MenuName: array[-1..10] of string;
+      MenuText: array[-1..10] of string;
 
   procedure MakeCommand(Indent: integer);
     var Com: string;
@@ -1804,7 +1804,7 @@ begin
 end;
 
 procedure TQtMenuBar.Paint;
-  var s, item: String; i: integer;
+  var s, item: string; i: integer;
 begin
   setBounds(0, 0, Parent.ClientWidth, PPIScale(21));
   inherited;
@@ -1832,7 +1832,7 @@ begin
   Sizeable:= false;
 end;
 
-procedure TQtMenu.NewWidget(Widget: String = '');
+procedure TQtMenu.NewWidget(Widget: string = '');
 begin
   MenuItemsOld.Text:= '';
   MakeMenuItems;
@@ -1933,13 +1933,13 @@ begin
     Result:= inherited;
 end;
 
-function TQtButtonGroup.RBName(i: integer): String;
+function TQtButtonGroup.RBName(i: integer): string;
 begin
   Result:= 'self.' + Name + 'RB' + IntToStr(i);
 end;
 
 procedure TQtButtonGroup.MakeButtongroupItems;
-  var i, p: integer; s, s1, s2: String;
+  var i, p: integer; s, s1, s2: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   for i:= 0 to FOldItems.Count - 1 do
@@ -2046,7 +2046,7 @@ begin
   setPositionAndSize;
 end;
 
-procedure TQtButtonGroup.NewWidget(Widget: String = '');
+procedure TQtButtonGroup.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QGroupBox');
   MakeTitle(' ' + _('Continent') + ' ');
@@ -2072,7 +2072,7 @@ begin
   end;
 end;
 
-procedure TQtButtonGroup.setTitle(Value: String);
+procedure TQtButtonGroup.setTitle(Value: string);
 begin
   if FTitle <> Value then begin
     FTitle:= Value;

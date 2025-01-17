@@ -53,8 +53,8 @@ type
     FTransparency: real;
     FTitle: string;
     FFontSize: integer;
-    Indent1: String;
-    Indent2: String;
+    Indent1: string;
+    Indent2: string;
 
     // events
     // Tk
@@ -92,13 +92,13 @@ type
     function getBackground: TColor;
     procedure setBackground(aValue: TColor);
     procedure setTransparency(Value: real);
-    function Without_(s: String): String;
+    function Without_(s: string): string;
     procedure setWidgetPartners;
     procedure SetGridOptions;
     procedure getFontSize;
   public
     ReadOnly: boolean;
-    Pathname: String;
+    Pathname: string;
     Partner: TEditorForm;
     Modified: boolean;
     constructor Create(AOwner: TComponent); override;
@@ -340,7 +340,7 @@ end;
 
 {$WARNINGS OFF}
 procedure TFGUIForm.Save(MitBackup: boolean);
-  Var BackupName: String;
+  var BackupName: string;
 begin
   if ReadOnly then exit;
   if MitBackup then begin
@@ -470,7 +470,7 @@ begin
   Result:= Widget.GetEvents(ShowEvents) + '|';
 end;
 
-function TFGuiForm.Without_(s: String): String;
+function TFGuiForm.Without_(s: string): string;
 begin
   if s = 'Destroy_'
     then Result:= 'Destroy'

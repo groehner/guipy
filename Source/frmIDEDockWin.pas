@@ -41,12 +41,9 @@ type
     procedure FormDeactivate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure CMParentFontChanged(var Message: TCMParentFontChanged); message CM_PARENTFONTCHANGED;
-  private
-    { Private declarations }
   protected
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
-    { Public declarations }
     BorderHighlight : TColor;
     BorderNormal : TColor;
     HasFocus : Boolean;

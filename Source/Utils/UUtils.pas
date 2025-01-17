@@ -1,6 +1,6 @@
-{-------------------------------------------------------------------------------
+ï»¿{-------------------------------------------------------------------------------
  Unit:     UUtils
- Author:   Gerhard Röhner
+ Author:   Gerhard RÃ¶hner
  Date:     July 2000
  Purpose:  utility functions
 -------------------------------------------------------------------------------}
@@ -23,13 +23,13 @@ const
 
 function CtrlPressed: boolean;
 procedure ErrorMsg(const s: string);
-function myStringReplace(ImString: string; const DenString, DurchString: string): String;
+function myStringReplace(ImString: string; const DenString, DurchString: string): string;
 function HideCrLf(const s: string): string;
 function UnHideCrLf(const s: string): string;
 function Split(Delimiter: Char; Input: string): TStringList;
 function IsWriteProtected(const Filename: string): boolean;
-function dissolveUsername(const s: String): String;
-function IsHTTP(const Pathname: String): Boolean;
+function dissolveUsername(const s: string): string;
+function IsHTTP(const Pathname: string): Boolean;
 procedure ComboBoxAdd(ComboBox: TComboBox);
 procedure ComboBoxInsert(ComboBox: TComboBox);
 procedure ComboBoxInsert2(ComboBox: TComboBox; const s: string);
@@ -37,22 +37,22 @@ procedure ComboBoxDelete2(ComboBox: TComboBox; const s: string);
 function ComboBoxItemsSpeichern(s: string): string;
 function ComboBoxItemsLaden(s: string): string;
 
-function withoutTrailingSlash(const s: String): string;
-function withTrailingSlash(const s: String): string;
+function withoutTrailingSlash(const s: string): string;
+function withTrailingSlash(const s: string): string;
 function VistaOrBetter: boolean;
 function GetDocumentsPath: string;
 procedure ErweiterePath(const s: string);
 function  GetEnvironmentVar(const VarName: string): string;
 procedure SetEnvironmentVar(const VarName, VarValue: string);
-function GetTempDir: String;
+function GetTempDir: string;
 function ExtractFilePathEx(const s: string): string;
 function hasDefaultPrinter: boolean;
 procedure CreateMyFile(const Path: string);
 function IsAdministrator: Boolean;
 function HasAssociationWithGuiPy(const Extension: string): boolean;
 function getRegisteredGuiPy: string;
-function HideBlanks(const s: String): String;
-function UnHideBlanks(const s: String): String;
+function HideBlanks(const s: string): string;
+function UnHideBlanks(const s: string): string;
 function GetLongPathName(const PathName: string): string;
 function left(const s: string; p: integer): string;
 function right(const s: string; p: integer): string;
@@ -63,30 +63,30 @@ procedure PrintBitmap(FormBitmap: TBitmap; PixelsPerInch: integer; PrintScale: T
 function ExplorerTest: boolean;
 function UpperLower(const s: string): string;
 function IsWordBreakChar(C: Char): Boolean; overload;
-function IsWordInLine(Word, Line: String): boolean;
+function IsWordInLine(Word, Line: string): boolean;
 function IsDigit(c: char): boolean;
 function WindowStateToStr(W: TWindowState): string;
 function StrToWindowState(const s: string): TWindowState;
-function WithoutGeneric(s: String): String;
-function getShortType(s: String): String;
-function getShortTypeWith(s: String): String;
-function getShortMethod(s: String): String;
-function GenericOf(const s: String): String;
-function VisibilityAsString(vis: TVisibility) : String;
+function WithoutGeneric(s: string): string;
+function getShortType(s: string): string;
+function getShortTypeWith(s: string): string;
+function getShortMethod(s: string): string;
+function GenericOf(const s: string): string;
+function VisibilityAsString(vis: TVisibility) : string;
 function String2Visibility(const s: string): TVisibility;
 function isPythonType(aType: string): boolean;
-function hasClassExtension(const Pathname: String): Boolean;
-function hasPythonExtension(const Pathname: String): Boolean;
-function ValidFilename(s: String): boolean;
+function hasClassExtension(const Pathname: string): Boolean;
+function hasPythonExtension(const Pathname: string): Boolean;
+function ValidFilename(s: string): boolean;
 function max3(m1, m2, m3: integer): integer;
 function min3(m1, m2, m3: integer): integer;
 procedure LockFormUpdate(F: TForm);
 procedure UnlockFormUpdate(F: TForm);
-function WithoutArray(const s: String): String;
-function IsUNC(const Pathname: String): Boolean;
+function WithoutArray(const s: string): string;
+function IsUNC(const Pathname: string): Boolean;
 function ExtractFileNameEx(s: string): string;
 function StripHttpParams(const s: string): string;
-function ToWindows(s: String): String;
+function ToWindows(s: string): string;
 function FileExistsCaseSensitive(const Filename: TFileName): Boolean;
 function getFirstWord(s: string): string;
 procedure SetAnimation(Value: boolean);
@@ -95,8 +95,8 @@ function isDunder(Name: string): boolean;
 function StringTimesN(s: string; n: integer): string;
 function GetUniqueName(Control: TControl; Basename: string): string;
 function OnlyCharsAndDigits(const s: string): string;
-function ToWeb(const Browser: string; s: String): String;
-function StartsWith(const Str, Substr: String): boolean;
+function ToWeb(const Browser: string; s: string): string;
+function StartsWith(const Str, Substr: string): boolean;
 function LowerUpper(const s: string): string;
 function isLower(c: char): boolean;
 function WithoutSpaces(const s: string): string;
@@ -118,10 +118,10 @@ function ShellExecuteFile(const FileName, Params, DefaultDir: string; ShowCmd: I
 function FilenameToFileKind(const Filename: string): TFileKind;
 function RemovePortableDrive(const s: string; folder: string = ''): string;
 function AddPortableDrive(const s: string; folder: string = ''): string;
-function WriteLog(LogString: String): Integer;
+function WriteLog(LogString: string): Integer;
 function getProtocolAndDomain(url: string): string;
-function IsHTML(const Pathname: String): Boolean;
-function HttpToWeb(s: String): String;
+function IsHTML(const Pathname: string): Boolean;
+function HttpToWeb(s: string): string;
 function DownloadURL(const aUrl, aFile: string): boolean;
 procedure SetElevationRequiredState(aControl: TWinControl);
 function DownloadFile(const SourceFile, DestFile: string): Boolean;
@@ -129,7 +129,7 @@ function MakeValidIdentifier(s: string): string;
 function CanActuallyFocus(WinControl: TWinControl): Boolean;
 function isNumber(var s: string): boolean;
 function isBool(s: string): boolean;
-procedure ReplaceResourceString(RStringRec: PResStringRec; const AString: String);
+procedure ReplaceResourceString(RStringRec: PResStringRec; const AString: string);
 function DecToBase(nBase: integer; nDecValue: double): string;
 function ConvertLtGt(s: string): string;
 function FloatToVal(x: real): string;
@@ -164,7 +164,7 @@ begin
   Result:= StringReplace(s, '\r\n', #13#10, [rfReplaceAll, rfIgnoreCase]);
 end;
 
-function myStringReplace(ImString: string; const DenString, DurchString: string): String;
+function myStringReplace(ImString: string; const DenString, DurchString: string): string;
 begin
   Result:= StringReplace(ImString, DenString, DurchString, [rfReplaceAll, rfIgnoreCase]);
 end;
@@ -200,7 +200,7 @@ begin
   Result:= FileExists(Filename) and HasAttr(Filename, faReadOnly);
 end;
 
-procedure StrResetLength(var S: String);
+procedure StrResetLength(var S: string);
 var
   I: Integer;
 begin
@@ -225,8 +225,8 @@ begin
     Result := '';
 end;
 
-function dissolveUsername(const s: String): String;
-  var p: integer; Username: String;
+function dissolveUsername(const s: string): string;
+  var p: integer; Username: string;
 begin
   Result:= s;
   p:= Pos('%USERNAME%', Uppercase(Result));
@@ -237,8 +237,8 @@ begin
   end;
 end;
 
-function IsHTTP(const Pathname: String): Boolean;
-  var aPath: String;
+function IsHTTP(const Pathname: string): Boolean;
+  var aPath: string;
 begin
   aPath:= Uppercase(Pathname);
   Result:= (pos('HTTP://', aPath) + pos('RES://', aPath) + pos('HTTPS://', aPath) > 0);
@@ -281,7 +281,7 @@ begin
     ComboBox.Items.Delete(i);
 end;
 
-function withoutTrailingSlash(const s: String): string;
+function withoutTrailingSlash(const s: string): string;
 begin
   Result:= s;
   if (copy(Result, length(Result), 1) = '/') or (copy(Result, length(Result), 1) = '\') then
@@ -289,7 +289,7 @@ begin
 end;
 
 {$WARNINGS OFF}
-function withTrailingSlash(const s: String): string;
+function withTrailingSlash(const s: string): string;
 begin
   Result:= withoutTrailingSlash(s);
   if IsHttp(Result)
@@ -363,12 +363,12 @@ begin
   Result:= s;
 end;
 
-function GetTempDir: String;
+function GetTempDir: string;
   var P: PChar;
 begin
   P:= StrAlloc(255);
   GetTempPath(255, P);
-  Result:= String(P);
+  Result:= string(P);
   StrDispose(P);
 end;
 
@@ -449,7 +449,7 @@ function GetExeForExtension(const Ext: string): string;
  function hasDefaultPrinter: boolean;
 var
   ResStr: array[0..255] of Char;
-  DefaultPrinter: String;
+  DefaultPrinter: string;
 begin
   GetProfileString('Windows', 'device', '', ResStr, 255);
   DefaultPrinter:= StrPas(ResStr);
@@ -579,14 +579,14 @@ begin
   FreeAndNil(reg);
 end;
 
-function HideBlanks(const s: String): String;
+function HideBlanks(const s: string): string;
 begin
   if (Pos(' ', s) > 0) and (Pos('"', s) <> 1)
     then Result:= AnsiQuotedStr(s, '"')
     else Result:= s;
 end;
 
-function UnHideBlanks(const s: String): String;
+function UnHideBlanks(const s: string): string;
 begin
   Result:= AnsiDequotedStr(s, '"');
 end;
@@ -771,8 +771,21 @@ end;
 function IsWordBreakChar(C: Char): Boolean;  // fromSyneditSearch
 begin
   case C of
-    #0..#32, '.', ',', ';', ':', '"', '''', '´', '`', '°', '^', '!', '?', '&',
-    '$', '@', '§', '%', '#', '~', '[', ']', '(', ')', '{', '}', '<', '>',
+    #0..#32,
+    '.',
+    ',',
+    ';',
+    ':',
+    '"',
+    '''',
+    'Â´',
+    '`',
+    'Â°',
+    '^',
+    '!',
+    '?',
+    '&',
+    '$', '@', 'Â§', '%', '#', '~', '[', ']', '(', ')', '{', '}', '<', '>',
     '-', '=', '+', '*', '/', '\', '|':
       Result := True;
     else
@@ -780,7 +793,7 @@ begin
   end;
 end;
 
-function IsWordInLine(Word, Line: String): boolean;
+function IsWordInLine(Word, Line: string): boolean;
   var p, q: integer;
 begin
   Result:= false;
@@ -809,7 +822,7 @@ begin
                   Result:= wsMaximized;
 end;
 
-function WithoutGeneric(s: String): String;
+function WithoutGeneric(s: string): string;
   var p1, p2: integer;
 begin
   p1:= Pos('<', s);
@@ -824,7 +837,7 @@ begin
   Result:= s;
 end;
 
-function GetShortType(s: String): String;
+function GetShortType(s: string): string;
   var p: integer;
 begin
   p:= Pos('.', s);
@@ -836,7 +849,7 @@ begin
   Result:= s;
 end;
 
-function GetShortTypeWith(s: String): String;
+function GetShortTypeWith(s: string): string;
   var p: integer;
 begin
   p:= Pos('.', s);
@@ -845,7 +858,7 @@ begin
   Result:= s;
 end;
 
-function GetShortMethod(s: String): String;
+function GetShortMethod(s: string): string;
   var p: integer; s1: string;
 begin
   p:= Pos('throws ', s);
@@ -862,7 +875,7 @@ begin
   Result:= Left(s1, -2) + ')';
 end;
 
-function GenericOf(const s: String): String;
+function GenericOf(const s: string): string;
   var p: integer;
 begin
   Result:= '';
@@ -871,7 +884,7 @@ begin
     Result:= copy(s, p+1, length(s) - p - 1);
 end;
 
-function VisibilityAsString(vis: TVisibility) : String;
+function VisibilityAsString(vis: TVisibility) : string;
 begin
   case vis of
     viPrivate:   Result:= '__';
@@ -897,7 +910,7 @@ begin
 end;
 
 function isPythonType(aType: string): boolean;
-  const PythonTypes : array[0..39] of String =
+  const PythonTypes : array[0..39] of string =
      ('None', 'int', 'float', 'complex', 'str', 'bool', 'list', 'tuple', 'range',
       'set', 'dict', 'bytes', 'bytearray', 'memoryview', 'frozenset',
       'Optional', 'Callable', 'Type', 'Literal', 'ClassVar',
@@ -924,7 +937,7 @@ begin
   Result:= (pos('.py', Pathname) > 0);
 end;
 
-function ValidFilename(s: String): boolean;
+function ValidFilename(s: string): boolean;
 begin
   s:= Uppercase(ChangeFileExt(ExtractFilename(s), ''));
   Result:= (s <> 'CON') and (s <> 'PRN') and (s <> 'AUX') and (s <> 'NUL');
@@ -963,7 +976,7 @@ begin
   end;
 end;
 
-function WithoutArray(const s: String): String;
+function WithoutArray(const s: string): string;
   var i: integer;
 begin
   Result:= s;
@@ -972,12 +985,12 @@ begin
     then Result:= copy(Result, 1, i-1)
 end;
 
-function IsUNC(const Pathname: String): boolean;
+function IsUNC(const Pathname: string): boolean;
 begin
   Result:= (pos('\\', Pathname) = 1);
 end;
 
-function ExtractFileNameEx(s: String):String;
+function ExtractFileNameEx(s: string):string;
   var i: Integer;
 begin
   if Pos('file:///', s) > 0 then begin
@@ -1014,7 +1027,7 @@ begin
   Result:= ExtractFilePath(s) + fname;
 end;
 
-function ToWindows(s: String): String;
+function ToWindows(s: string): string;
   var p: Integer;
 begin
   p:= pos('/', s);
@@ -1077,7 +1090,7 @@ begin
 end;
 
 function changeVowels(const s: string): string;
-  const Vowels = 'ÄÖÜäöüß';
+  const Vowels = 'Ã„Ã–ÃœÃ¤Ã¶Ã¼ÃŸ';
   const Nowels = 'AOUaous';
   var i, p: integer;
 begin
@@ -1126,7 +1139,7 @@ begin
   end;
 end;
 
-function CodeSpaces(s: String): string;
+function CodeSpaces(s: string): string;
   var i: integer;
 begin
   for i:= Length(s) downto 1 do
@@ -1137,7 +1150,7 @@ begin
   Result:= s;
 end;
 
-function toWeb(const Browser: string; s: String): String;
+function toWeb(const Browser: string; s: string): string;
   var p: Integer;
       IsUNC, IsLaufwerk: boolean;
 begin
@@ -1158,7 +1171,7 @@ begin
   Result:= s;
 end;
 
-function StartsWith(const Str, Substr: String): boolean;
+function StartsWith(const Str, Substr: string): boolean;
 begin
   if Str <> ''
     then Result:= CompareStr(copy(Str, 1, Length(SubStr)), SubStr) = 0
@@ -1294,7 +1307,7 @@ begin
 end;
 
 function IsModifier(const s: string): boolean;
-  const Modifiers : Array[1..3] of string =
+  const Modifiers : array[1..3] of string =
     ('static', 'abstract', 'final');
   var i: integer;
 begin
@@ -1318,7 +1331,7 @@ begin
 end;
 
 function IsSimpleType(const s: string): boolean;
-  const simpleTypePython: array[1..4] of String =
+  const simpleTypePython: array[1..4] of string =
           ('integer', 'boolean', 'float', 'string');
   var i: integer;
 begin
@@ -1419,7 +1432,7 @@ begin
   end;
 end;
 
-function WriteLog(LogString: String): Integer;
+function WriteLog(LogString: string): Integer;
 const
  LOGFILE = 'LogFile.log';
 var
@@ -1457,12 +1470,12 @@ begin
     else Result:= protocol + url;
 end;
 
-function IsHTML(const Pathname: String): Boolean;
+function IsHTML(const Pathname: string): Boolean;
 begin
   Result:= (Pos('.HTM', UpperCase(ExtractFileExt(Pathname))) > 0);
 end;
 
-function HttpToWeb(s: String): String;
+function HttpToWeb(s: string): string;
   var p: Integer;
 begin
   p:= pos('\', s);
@@ -1473,7 +1486,7 @@ begin
   Result:= s;
 end;
 
-// benötigt WinInet
+// needs WinInet
 function DownloadURL(const aUrl, aFile: string): boolean;
 var
   hSession: HINTERNET;
@@ -1520,7 +1533,7 @@ begin
   SendMessage(aControl.Handle, BCM_SETSHIELD, 0, Integer(true));
 end;
 
-// benötigt URLMon
+// needs URLMon
 function DownloadFile(const SourceFile, DestFile: string): Boolean;
 begin
   try
@@ -1568,7 +1581,7 @@ begin
   Result:= (s = 'True') or (s = 'False');
 end;
 
-procedure ReplaceResourceString(RStringRec: PResStringRec; const AString: String);
+procedure ReplaceResourceString(RStringRec: PResStringRec; const AString: string);
   var OldProtect: Cardinal;
 begin
   if (RStringRec = nil) or (length(AString) = 0) then exit;
@@ -1663,7 +1676,7 @@ begin
 end;
 
 function CalcIndent(S : string; TabWidth : integer = 4): integer;
-Var
+var
   i : integer;
 begin
   Result := 0;
@@ -1695,8 +1708,6 @@ procedure UnlockWindow;
 begin
   LockWindowUpdate(0);
 end;
-
-
 
 end.
 

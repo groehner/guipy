@@ -359,7 +359,7 @@ end;
 
 function TLLMChatForm.GetCodeBlock(Editor: TSynEdit): string;
 var
-  Token: String;
+  Token: string;
   Attri: TSynHighlighterAttributes;
 begin
   Result := '';
@@ -514,7 +514,7 @@ end;
 
 procedure TLLMChatForm.pmTextMenuPopup(Sender: TObject);
 var
-  Token: String;
+  Token: string;
   Attri: TSynHighlighterAttributes;
 begin
   actCopyCode.Enabled := False;

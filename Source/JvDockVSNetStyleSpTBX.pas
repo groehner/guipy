@@ -26,7 +26,7 @@ uses
   JvDockSupportControl,
   JvDockVSNetStyle;
 
-Type
+type
   TJvDockVSNETSpTBXConjoinServerOption = class(TJvDockVSNETConjoinServerOption)
   protected
     procedure UpdateDefaultSystemCaptionInfo; override;
@@ -134,7 +134,7 @@ procedure Register;
 
 implementation
 
-Uses
+uses
   Winapi.CommCtrl,
   System.Math,
   System.Types,
@@ -230,7 +230,7 @@ begin
   SkinManager.AddSkinNotification(Self);
 end;
 
-Type
+type
   TCrackJvDockVSNETZone = class(TJvDockVSNETZone)
   end;
 
@@ -528,7 +528,7 @@ end;
 
 procedure TJvDockVSNetStyleSpTBX.SetDockBaseControl(IsCreate: Boolean;
   DockBaseControl: TJvDockBaseControl);
-Var
+var
   DP : TJvDockPosition;
 begin
   inherited;
@@ -612,7 +612,7 @@ end;
 
 { TJvDockVSNETTabPanelSpTBX }
 
-Type
+type
   TCrackJvDockVIDTabSheet = class(TJvDockVIDTabSheet)
   end;
 
@@ -846,7 +846,7 @@ begin
 end;
 
 procedure TJvDockVSNETPanelSpTBX.OnPaintSplitter(Sender: TObject);
-Var
+var
   R : TRect;
   IsVertical : Boolean;
 begin
@@ -1168,7 +1168,7 @@ end;
 procedure TJvDockVSNETSpTBXConjoinServerOption.Changed;
 // Hack to call the grandfather version
 // This is to avoid reseting the SystemInfo property.  Bad design...
-Var
+var
   GrandFatherChange : procedure of object;
 begin
   TMethod(GrandFatherChange).Code := @TJvDockBasicServerOption.Changed;

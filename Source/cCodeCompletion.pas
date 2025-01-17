@@ -8,7 +8,7 @@
 unit cCodeCompletion;
 
 interface
-Uses
+uses
   Winapi.Windows,
   System.Types,
   System.Classes,
@@ -225,7 +225,7 @@ begin
 end;
 
 function TLiveNamespaceCompletionHandler.GetInfo(CCItem: string): string;
-Var
+var
   Index: Integer;
   NameSpaceItem: TBaseNameSpaceItem;
 begin

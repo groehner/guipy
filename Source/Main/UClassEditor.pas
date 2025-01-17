@@ -1,4 +1,4 @@
-﻿unit UClassEditor;
+unit UClassEditor;
 
 interface
 
@@ -218,7 +218,7 @@ type
     procedure Init;
     function NameTypeValueChanged: Boolean;
     procedure TakeParameter;
-    function StrToPythonValue(s: String): String;
+    function StrToPythonValue(s: string): string;
     function getConstructorHead(Superclass: string): string;
     function PrepareParameter(head: string): string;
     procedure DeleteAttributeFromConstructorParameters(Node: TTreeNode;
@@ -531,7 +531,7 @@ end;
 procedure TFClassEditor.BClassChangeClick(Sender: TObject);
 var
   s, Searchtext, ReplaceText, tail,
-  newClassname, oldClassname, Indent: String;
+  newClassname, oldClassname, Indent: string;
   SkipUpdate: Boolean;
   p, NodeIndex, i: Integer;
   Node: TTreeNode;
@@ -1261,7 +1261,7 @@ procedure TFClassEditor.ReplaceParameter(ClassNumber: integer; const s1, s2: str
   var Node: TTreeNode; Methodname, s: string; aClass: TClass; LineNr: integer;
 
   function ReplaceWord(s, s1, s2: string): string;
-    var ws1, RegExExpr: String;
+    var ws1, RegExExpr: string;
         RegEx: TRegEx; Matches: TMatchCollection; Group: TGroup;
   begin
     RegExExpr:= '\b(' + TRegEx.Escape(s1) + ')';
@@ -1395,7 +1395,7 @@ var
   Method: TOperation;
   SL: TStringList;
   p: Integer;
-  s: String;
+  s: string;
   hasSourceCode: Boolean;
 begin
   Node:= TreeView.Selected;
@@ -1507,9 +1507,9 @@ end;
 
 function TFClassEditor.Typ2Value(const typ: string): string;
 const
-  typs: array [1 .. 8] of String = ('int', 'integer', 'float', 'bool', 'boolean',
+  typs: array [1 .. 8] of string = ('int', 'integer', 'float', 'bool', 'boolean',
     'String', 'str', 'None');
-  vals: array [1 .. 8] of String = ('0', '0', '0', 'false', 'false',
+  vals: array [1 .. 8] of string = ('0', '0', '0', 'false', 'false',
     '""', '""', 'None');
 begin
   Result:= 'None';
@@ -1733,7 +1733,7 @@ begin
     E.SelStart:= length(s);
 end;
 
-procedure TFClassEditor.ChangeAttribute(var A: TAttribute; CName: String);
+procedure TFClassEditor.ChangeAttribute(var A: TAttribute; CName: string);
 begin
   A.Name:= EAttributeName.Text;
   A.TypeClassifier:= MakeType(CBAttributeType);
@@ -2336,7 +2336,7 @@ var
   end;
 
   procedure AdjustReturnValue;
-    const ReturnValues: Array[1..5] of string = (' return 0', ' return ""',
+    const ReturnValues: array[1..5] of string = (' return 0', ' return ""',
        ' return false', ' return ''\0''', ' return None');
     var i, p: integer;
   begin
@@ -2583,7 +2583,7 @@ begin
   end;
 end;
 
-function TFClassEditor.StrToPythonValue(s: String): String;
+function TFClassEditor.StrToPythonValue(s: string): string;
 begin
   Result:= trim(s);
   if not (isNumber(Result) or isBool(Result) or (Result = 'None') or
@@ -2660,7 +2660,7 @@ end;
 procedure TFClassEditor.MoveNode(TargetNode, SourceNode: TTreeNode);
 var
   from, till, _to, totill, NodeIndex: Integer;
-  BlankLines: String;
+  BlankLines: string;
   SourceModelEntity, TargetModelEntity: TModelEntity;
 begin
   if IsClassNode(SourceNode) or IsAttributesNode(SourceNode) or

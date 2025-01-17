@@ -148,7 +148,7 @@ type
     procedure CreateObjectForSelectedClass(Sender: TObject);
     function CreateModelClass(const Typ: string): TClass;
     function FindClassifier(const CName: string): TClassifier;
-    procedure ShowNewObject(const Objectname: String; aClass: TClass = nil);
+    procedure ShowNewObject(const Objectname: string; aClass: TClass = nil);
 
     procedure CallMethod(C: TControl; Sender: TObject);
     procedure CallMethodForObject(Sender: TObject);
@@ -159,7 +159,7 @@ type
     function HasAttributes(Objectname: string): boolean;
     procedure UpdateAllObjects;
     procedure ShowAttributes(Objectname: string; aClass: TClass; aModelObject: TObjekt);
-    procedure SetAttributeValues(aModelClass: TClass; Objectname: String; Attributes: TStringList);
+    procedure SetAttributeValues(aModelClass: TClass; Objectname: string; Attributes: TStringList);
     function EditClass(const Caption, Title, ObjectNameOld: string; var ObjectNameNew: string; Attributes: TStringList): boolean;
     function EditObjectOrParams(const Caption, Title: string; Attributes: TStringList): boolean;
     function Edit(Attributes: TStringList; Row: integer): boolean;
@@ -167,7 +167,7 @@ type
     function getModelClass(const s: string): TClass;
     function StringToArrowStyle(s: string): TessConnectionArrowStyle;
     function ArrowStyleToString(ArrowStyle: TessConnectionArrowStyle): string;
-    function getCommentBoxName: String;
+    function getCommentBoxName: string;
     procedure AddCommentBoxTo(aControl: TControl); override;
     function insertParameterNames(s: string): string;
     function hasClass(aClassname: string): boolean;
@@ -177,9 +177,9 @@ type
     procedure CreateTestClass(aControl: TControl); override;
     procedure RunTests(aControl: TControl; const Method: string); override;
     procedure OnRunJunitTestMethod(Sender: TObject);
-    procedure ShowMethodEntered(const aMethodname, From, _To, Parameter: String);
-    procedure ShowMethodExited(const aMethodname, From, _To, _Result: String);
-    procedure ShowObjectDeleted(const From, _To: String);
+    procedure ShowMethodEntered(const aMethodname, From, _To, Parameter: string);
+    procedure ShowMethodExited(const aMethodname, From, _To, _Result: string);
+    procedure ShowObjectDeleted(const From, _To: string);
     procedure CloseNotify(Sender: TObject);
     procedure ClearSelection; override;
     procedure CopyDiagramToClipboard; override;
@@ -193,10 +193,10 @@ type
     function getDebug: TStringList;
     function getSVG: string; override;
     function getParameterAsString(Parameter, ParamValues: TStringList): string;
-    function getInternName(aClass: TClass; aName: String; aVisibility: TVisibility): String;
-    function StrToPythonValue(s: String): String;
-    function StrAndTypeToPythonValue(s, pValue: String): string;
-    procedure ExecutePython(s: String); override;
+    function getInternName(aClass: TClass; aName: string; aVisibility: TVisibility): string;
+    function StrToPythonValue(s: string): string;
+    function StrAndTypeToPythonValue(s, pValue: string): string;
+    procedure ExecutePython(s: string); override;
     procedure GetVisFromName(var Name: string; var vis: TVisibility);
     procedure Retranslate; override;
     function PanelIsLocked: boolean; override;
@@ -1294,7 +1294,7 @@ var
   key: string;
   aObject: TObject;
 
-  function CountClassesWith(const classname: String): integer;
+  function CountClassesWith(const classname: string): integer;
     var
       C: TControl;
       L: TList;
@@ -1514,7 +1514,7 @@ begin
 end;
 
 procedure TRtfdDiagram.CollectClasses;
-  var Pathname, Boxname, aClassname: String;
+  var Pathname, Boxname, aClassname: string;
       SLFiles: TStringList;
 begin
   SLFiles:= TStringList.Create;
@@ -1537,7 +1537,7 @@ begin
   Sleep(100);
 end;
 
-procedure TRtfdDiagram.ShowNewObject(const Objectname: String; aClass: TClass = nil);
+procedure TRtfdDiagram.ShowNewObject(const Objectname: string; aClass: TClass = nil);
   var U: TUnitPackage;
       aModelObject: TObjekt;
       B1, B2: TRtfdBox;
@@ -1671,9 +1671,9 @@ begin
   end;
 end;
 
-function TRtfdDiagram.getInternName(aClass: TClass; aName: String; aVisibility: TVisibility): String;
+function TRtfdDiagram.getInternName(aClass: TClass; aName: string; aVisibility: TVisibility): string;
 
-  function getAncestorInternName(aClass: TClass; aName: String): string;
+  function getAncestorInternName(aClass: TClass; aName: string): string;
   begin
     Result:= '';
     if aClass.AncestorsCount > 0 then
@@ -1798,7 +1798,7 @@ begin
   aModelObject.Locked:= false;
 end;
 
-function TRtfdDiagram.StrToPythonValue(s: String): String;
+function TRtfdDiagram.StrToPythonValue(s: string): string;
 begin
   Result:= trim(s);
   if not ((Result <> '') and (Pos(Result[1], '[({''') > 0) or
@@ -1808,7 +1808,7 @@ begin
     Result:= asString(Result);
 end;
 
-function TRtfdDiagram.StrAndTypeToPythonValue(s, pValue: String): string;
+function TRtfdDiagram.StrAndTypeToPythonValue(s, pValue: string): string;
 begin
   Result:= StrToPythonValue(s);
   if (Result = asString('')) and (pValue <> '') then
@@ -1816,7 +1816,7 @@ begin
 end;
 
 function TRtfdDiagram.getParameterAsString(Parameter, ParamValues: TStringList): string;
-  var s, s1, value: String; i: integer;
+  var s, s1, value: string; i: integer;
 begin
   s:= '';
   var AllParameters:= true;
@@ -1834,11 +1834,11 @@ begin
   Result:= copy(s, 1, length(s)-2);
 end;
 
-procedure TRtfdDiagram.SetAttributeValues(aModelClass: TClass; Objectname: String; Attributes: TStringList);
+procedure TRtfdDiagram.SetAttributeValues(aModelClass: TClass; Objectname: string; Attributes: TStringList);
   var OldAttributes: TStringList; i: integer;
 
   procedure DoSetAttributeValues(aClass: TClass);
-    var newValue: String; i: integer;
+    var newValue: string; i: integer;
   begin
     if aClass.AncestorsCount > 0 then
       DoSetAttributeValues(aClass.Ancestor[0]);
@@ -1999,7 +1999,7 @@ function TRtfdDiagram.CreateModelClass(const Typ: string): TClass;
       Operation: UModel.TOperation;
       SLMethods, SLParams: TStringList;
       i, p: integer;
-      Method, ParName, OpName, Params: String;
+      Method, ParName, OpName, Params: string;
       vis: TVisibility;
 begin
   Result:= nil;
@@ -2301,7 +2301,7 @@ procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
       aBox: TControl;
       hasInheritedSystemMethods: boolean;
 
-  procedure MakeOpenClassMenuItem(aClass: String; ImageIndex: integer);
+  procedure MakeOpenClassMenuItem(aClass: string; ImageIndex: integer);
   begin
     if (BoxNames.IndexOf(aClass) = -1) and FLivingObjects.ClassExists(aClass) and
        (MenuClassFiles.IndexOfName(aClass) = -1)
@@ -2963,7 +2963,7 @@ begin
 end;
 
 procedure TRtfdDiagram.OpenClassOrInterface(Sender: TObject);
-  var CName, Filename: String;
+  var CName, Filename: string;
 begin
   CName:= (Sender as TSpTBXItem).Caption;
   try
@@ -2995,7 +2995,7 @@ begin
 end;
 
 procedure TRtfdDiagram.ShowUnnamed(Objectname: string);
-  var address: String; p: integer;
+  var address: string; p: integer;
 begin
   p:= Pos(' ', Objectname);
   while p > 0 do begin
@@ -3083,7 +3083,7 @@ begin
 end;
 
 procedure TRtfdDiagram.ConnectBoxes(Sender: TObject);
-  var CName: String; Src: TControl; Dest: TRtfdBox; UMLForm: TFUMLForm;
+  var CName: string; Src: TControl; Dest: TRtfdBox; UMLForm: TFUMLForm;
 begin
   Src:= Panel.GetFirstSelected;
   if (Src <> nil) and (Src is TRtfdBox) then begin
@@ -3273,7 +3273,7 @@ end;
 
 function TRtfdDiagram.getCommentBoxName: string;
   var i, Nr, CommentNr: integer;
-      s: String;
+      s: string;
 begin
   CommentNr:= 0;
   for i:= 0 to BoxNames.Count - 1 do
@@ -3288,7 +3288,7 @@ end;
 procedure TRtfdDiagram.AddCommentBoxTo(aControl: TControl);
   var CommentBox: TRtfdCommentBox;
       aClass: TRtfdClass;
-      s: String;
+      s: string;
 begin
   s:= getCommentBoxName;
   CommentBox:= TRtfdCommentBox.Create(Panel, S, Frame, viPublic, HANDLESIZE);
@@ -3314,7 +3314,7 @@ begin
   CommentBox.SendToBack;
 end;
 
-function TRtfdDiagram.hasClass(aClassname: String): boolean;
+function TRtfdDiagram.hasClass(aClassname: string): boolean;
   var i: integer;
 begin
   Result:= false;
@@ -3415,7 +3415,7 @@ begin
     }
 end;
 
-procedure TRtfdDiagram.ShowMethodEntered(const aMethodname, From, _To, Parameter: String);
+procedure TRtfdDiagram.ShowMethodEntered(const aMethodname, From, _To, Parameter: string);
 begin
   if assigned(SequenceForm) then begin
     Sequenceform.MethodEntered(aMethodname);
@@ -3427,7 +3427,7 @@ begin
   end;
 end;
 
-procedure TRtfdDiagram.ShowMethodExited(const aMethodname, From, _To, _Result: String);
+procedure TRtfdDiagram.ShowMethodExited(const aMethodname, From, _To, _Result: string);
 begin
   if assigned(SequenceForm) then begin
     Sequenceform.MethodExited(aMethodname);
@@ -3438,7 +3438,7 @@ begin
   end;
 end;
 
-procedure TRtfdDiagram.ShowObjectDeleted(const From, _To: String);
+procedure TRtfdDiagram.ShowObjectDeleted(const From, _To: string);
 begin
   if assigned(SequenceForm) then begin
     Sequenceform.ObjectDelete;
@@ -3550,7 +3550,7 @@ begin
   end;
 end;
 
-procedure TRtfdDiagram.ExecutePython(s: String);
+procedure TRtfdDiagram.ExecutePython(s: string);
 begin
   FLivingObjects.ExecutePython(s);
 end;

@@ -1033,7 +1033,7 @@ function PrettyTextToFormattedString(const APrettyText: string;
 var
   i: Integer;
   Color: TColor;
-Begin
+begin
   Result := '';
   i := 1;
   while i <= Length(APrettyText) do
@@ -1190,7 +1190,7 @@ begin
   Result := '';
   i := 0;
   S := Params.Trim;
-  Repeat
+  repeat
     Param := GetParameter(S);
     TrimmedParam := Param.Trim;
     if (TrimmedParam = '*') or (TrimmedParam = '/') then
@@ -1207,7 +1207,7 @@ begin
     if S.Length > 0 then
       Result := Result + ',';
     Inc(i);
-  Until S.Length = 0;
+  until S.Length = 0;
 end;
 
 { TSynBaseCompletionProposalForm }
@@ -1890,7 +1890,7 @@ begin
 end;
 
 procedure TSynBaseCompletionProposalForm.SetPosition(const Value: Integer);
-Var
+var
   Info : string;
 begin
 //  if ((Value <= 0) and (FPosition = 0)) or (FPosition = Value) then
@@ -2217,7 +2217,7 @@ begin
 end;
 
 procedure TSynBaseCompletionProposalForm.ShowCodeItemInfo(const Info: string);
-Var
+var
   HintRect, WorkArea: TRect;
   Monitor: TMonitor;
 begin
@@ -2303,7 +2303,7 @@ begin
 end;
 
 procedure TSynBaseCompletionProposal.ExecuteEx(CurrentInput: string; x, y: integer; Kind : SynCompletionType);
-Var
+var
   WorkArea : TRect;
   Monitor: TMonitor;
 

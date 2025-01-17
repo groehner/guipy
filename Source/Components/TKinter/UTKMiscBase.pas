@@ -39,8 +39,8 @@ type
 
   TKMiscBaseWidget = class(TKWidget)
   private
-    FClass: String;
-    FColormap: String;
+    FClass: string;
+    FColormap: string;
     FContainer: boolean;
     FOrient: TOrient;
     FRepeatDelay: integer;
@@ -53,8 +53,8 @@ type
     function getAttributes(ShowAttributes: integer): string; override;
     function getEvents(ShowEvents: integer): string; override;
 
-    property Class_: String read FClass write FClass;
-    property Colormap: String read FColormap write FColormap;
+    property Class_: string read FClass write FClass;
+    property Colormap: string read FColormap write FColormap;
     property Container: boolean read FContainer write FContainer default false;
     property Orient: TOrient read FOrient write setOrient default vertical;
     property RepeatDelay: integer read FRepeatDelay write FRepeatDelay default 300;
@@ -66,7 +66,7 @@ type
   private
   public
     constructor Create(AOwner: TComponent); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure MakeFont; override;
   published
@@ -79,18 +79,18 @@ type
   TKLabelframe = class (TKFrame)
   private
     FLabelAnchor: TLabelAnchor;
-    FLabelWidget: String;
+    FLabelWidget: string;
     procedure setLabelAnchor(Value: TLabelAnchor);
   public
     constructor Create(AOwner: TComponent); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure Paint; override;
   published
     property Foreground;
     property LabelAnchor: TLabelAnchor read FLabelAnchor write setLabelAnchor default _TL_nw;
-    property LabelWidget: String read FLabelWidget write FLabelWidget;
+    property LabelWidget: string read FLabelWidget write FLabelWidget;
     property Text;
   end;
 
@@ -106,7 +106,7 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property Anchor: TAnchor read FAnchor write setAnchor default _TA_center;
@@ -124,7 +124,7 @@ type
     FBigIncrement: integer;
     FDigits: integer;
     FFrom: real;
-    FLabel: String;
+    FLabel: string;
     FLength: integer;
     FResolution: real;
     FShowValue: boolean;
@@ -140,7 +140,7 @@ type
     FTickSpace: integer;
     FDecimals: integer;
     procedure setFrom(Value: real);
-    procedure setLabel(Value: String);
+    procedure setLabel(Value: string);
     procedure setResolution(Value: real);
     procedure setShowValue(Value: boolean);
     procedure setSliderLength(Value: integer);
@@ -156,8 +156,8 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
-    procedure MakeCommand(Attr, Value: String); override;
+    procedure NewWidget(Widget: string = ''); override;
+    procedure MakeCommand(Attr, Value: string); override;
     procedure Paint; override;
   published
     property ActiveBackground;
@@ -170,7 +170,7 @@ type
     property HighlightBackground;
     property HighlightColor;
     property HighlightThickness;
-    property Label_: String read FLabel write SetLabel;
+    property Label_: string read FLabel write SetLabel;
     property Length: integer read FLength write FLength default 100;
     property Orient;
     property Relief;
@@ -196,7 +196,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function getAttributes(ShowAttributes: integer): string; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure MakeFont; override;
     procedure Paint; override;
   published
@@ -233,7 +233,7 @@ type
     MenuItemsOld: TStrings;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function getEvents(ShowEvents: integer): string; override;
@@ -269,48 +269,48 @@ type
   TKPanedWindow = class (TKMiscBaseWidget)
   private
     FHandlePad: integer;
-    FHandleSize: String;
+    FHandleSize: string;
     FOpaqueResize: boolean;
     FProxyBackground: TColor;
-    FProxyBorderWidth: String;
+    FProxyBorderWidth: string;
     FProxyRelief: TRelief;
     FSashCursor: TCursor;
-    FSashPad: String;
+    FSashPad: string;
     FSashRelief: TRelief;
-    FSashWidth: String;
+    FSashWidth: string;
     FShowHandle: boolean;
 
     HandleSizeInt: integer;
     SashPadInt: integer;
     SashWidthInt: integer;
     procedure setHandlePad(Value: integer);
-    procedure setHandleSize(Value: String);
-    procedure setSashPad(Value: String);
+    procedure setHandleSize(Value: string);
+    procedure setSashPad(Value: string);
     procedure setSashRelief(Value: TRelief);
-    procedure setSashWidth(Value: String);
+    procedure setSashWidth(Value: string);
     procedure setShowHandle(Value: boolean);
     procedure PaintSlashAt(Pos: integer);
     function getPos(i: integer): integer;
     procedure CalculateInts;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure MakeFont; override;
     procedure Resize; override;
     procedure Paint; override;
   published
     property HandlePad: integer read FHandlePad write setHandlePad default 8;
-    property HandleSize: String read FHandleSize write setHandleSize;
+    property HandleSize: string read FHandleSize write setHandleSize;
     property OpaqueResize: boolean read FOpaqueResize write FOpaqueResize default true;
     property Orient;
     property ProxyBackground: TColor read FProxyBackground write FProxyBackground default clBlack;
-    property ProxyBorderwidth: String read FProxyBorderwidth write FProxyBorderwidth;
+    property ProxyBorderwidth: string read FProxyBorderwidth write FProxyBorderwidth;
     property ProxyRelief: TRelief read FProxyRelief write FProxyRelief default _TR_flat;
     property SashCursor: TCursor read FSashCursor write FSashCursor;
-    property SashPad: String read FSashPad write setSashPad;
+    property SashPad: string read FSashPad write setSashPad;
     property SashRelief: TRelief read FSashRelief write setSashRelief default _TR_flat;
-    property SashWidth: String read FSashWidth write setSashWidth;
+    property SashWidth: string read FSashWidth write setSashWidth;
     property ShowHandle: boolean read FShowHandle write setShowHandle default false;
   end;
 
@@ -329,15 +329,15 @@ type
     procedure MakeButtongroupItems;
     procedure MakeLabel(aLabel: string);
     function ItemsInColumn(i: integer): integer;
-    function RBName(i: integer): String;
+    function RBName(i: integer): string;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     function getAttributes(ShowAttributes: integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: String = ''); override;
+    procedure NewWidget(Widget: string = ''); override;
     procedure DeleteWidget; override;
-    procedure MakeCommand(Attr, Value: String); override;
+    procedure MakeCommand(Attr, Value: string); override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
   published
@@ -409,7 +409,7 @@ begin
   Text:= '';
 end;
 
-procedure TKFrame.NewWidget(Widget: String = '');
+procedure TKFrame.NewWidget(Widget: string = '');
 begin
   if Widget = ''
     then inherited NewWidget('tk.Frame')
@@ -444,7 +444,7 @@ begin
   Text:= '';
 end;
 
-procedure TKLabelframe.NewWidget(Widget: String = '');
+procedure TKLabelframe.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.LabelFrame');
 end;
@@ -543,7 +543,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TKMessage.NewWidget(Widget: String = '');
+procedure TKMessage.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('tk.Message');
@@ -577,7 +577,7 @@ end;
 
 procedure TKMessage.Paint;
   var tw, th, h, w, x, y, taw, tah: integer;
-      s: String; R: TRect; jus: Integer;
+      s: string; R: TRect; jus: Integer;
       SL: TStringList;
 
   procedure split(const s: string; var s1, s2: string);
@@ -711,7 +711,7 @@ begin
     inherited;
 end;
 
-procedure TKScale.NewWidget(Widget: String = '');
+procedure TKScale.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('tk.Scale');
@@ -719,7 +719,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TKScale.MakeCommand(Attr, Value: String);
+procedure TKScale.MakeCommand(Attr, Value: string);
 begin
   inherited;
   AddParameter(Value, 'x');
@@ -737,7 +737,7 @@ begin
 end;
 
 procedure TKScale.UpdateTrackData;
-  var s1, s2: String;
+  var s1, s2: string;
 begin
   FTrackSize:= PPIScale(15);
   FSliderLength:= PPIScale(30);
@@ -909,7 +909,7 @@ begin
   end;
 end;
 
-procedure TKScale.setLabel(Value: String);
+procedure TKScale.setLabel(Value: string);
 begin
   if FLabel <> Value then begin
     FLabel := Value;
@@ -989,7 +989,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TKScrollbar.NewWidget(Widget: String = '');
+procedure TKScrollbar.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.Scrollbar');
   InsertValue('self.' + Name + '[''orient''] = ' + asString('horizontal'));
@@ -1042,7 +1042,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-procedure TKPopupMenu.NewWidget(Widget: String = '');
+procedure TKPopupMenu.NewWidget(Widget: string = '');
 begin
   InsertValue(Indent2 + 'self.' + Name + ' = tk.Menu(tearoff=0)');
   MenuItemsOld.Text:= '';
@@ -1095,8 +1095,8 @@ end;
 procedure TKPopupMenu.CalculateMenus(MenuItems, PyMenu, PyMethods: TStrings);
   var i, MenuIndent, ls: integer;
       s, ts: string;
-      MenuName: array[-1..10] of String;
-      MenuText: array[-1..10] of String;
+      MenuName: array[-1..10] of string;
+      MenuText: array[-1..10] of string;
 
   procedure MakeCommand(Indent: integer);
     var Com: string;
@@ -1251,7 +1251,7 @@ begin
 end;
 
 procedure TKMenu.Paint;
-  var s, item: String; i: integer;
+  var s, item: string; i: integer;
 begin
   setBounds(0, 0, Parent.ClientWidth, PPIScale(19));
   inherited;
@@ -1286,7 +1286,7 @@ begin
   FShowHandle:= false;
 end;
 
-procedure TKPanedWindow.NewWidget(Widget: String = '');
+procedure TKPanedWindow.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.PanedWindow');
   SashRelief:= _TR_groove;
@@ -1316,7 +1316,7 @@ begin
   end;
 end;
 
-procedure TKPanedWindow.setHandleSize(Value: String);
+procedure TKPanedWindow.setHandleSize(Value: string);
 begin
   if FHandleSize <> Value then begin
     FHandleSize := Value;
@@ -1325,7 +1325,7 @@ begin
   end;
 end;
 
-procedure TKPanedWindow.setSashPad(Value: String);
+procedure TKPanedWindow.setSashPad(Value: string);
 begin
   if FSashPad <> Value then begin
     FSashPad := Value;
@@ -1342,7 +1342,7 @@ begin
   end;
 end;
 
-procedure TKPanedWindow.setSashWidth(Value: String);
+procedure TKPanedWindow.setSashWidth(Value: string);
 begin
   if FSashWidth <> Value then begin
     FSashWidth := Value;
@@ -1497,7 +1497,7 @@ begin
     inherited;
 end;
 
-function TKRadiobuttonGroup.RBName(i: integer): String;
+function TKRadiobuttonGroup.RBName(i: integer): string;
 begin
   Result:= 'self.' + Name + 'RB' + IntToStr(i);
 end;
@@ -1596,7 +1596,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TKRadiobuttonGroup.MakeCommand(Attr, Value: String);
+procedure TKRadiobuttonGroup.MakeCommand(Attr, Value: string);
   var func, nam, s: string; i: integer;
 begin
   Command:= true;
@@ -1647,7 +1647,7 @@ begin
   setPositionAndSize;
 end;
 
-procedure TKRadiobuttonGroup.NewWidget(Widget: String = '');
+procedure TKRadiobuttonGroup.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.Frame');
   MakeLabel(' ' + _('Continent') + ' ');
@@ -1683,7 +1683,7 @@ begin
   end;
 end;
 
-procedure TKRadiobuttonGroup.setLabel(Value: String);
+procedure TKRadiobuttonGroup.setLabel(Value: string);
 begin
   if FLabel <> Value then begin
     FLabel:= Value;

@@ -11,10 +11,6 @@ type
     BOK: TButton;
     BCancel: TButton;
     procedure FormCreate(Sender: TObject);
-  private
-    { Private-Deklarationen }
-  public
-    { Public-Deklarationen }
   end;
 
 var

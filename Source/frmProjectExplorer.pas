@@ -204,7 +204,6 @@ type
   protected
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
-    { Public declarations }
     procedure DoOpenProjectFile(FileName : string);
     function DoSave: boolean;
     function DoSaveFile: boolean;
@@ -249,14 +248,14 @@ uses
 
 {$R *.dfm}
 
-Type
+type
   PNodeDataRec = ^TNodeDataRec;
   TNodeDataRec = record
     ProjectNode : TAbstractProjectNode;
   end;
 
 procedure TProjectExplorerWindow.actProjectAddRemoteFileExecute(Sender: TObject);
-Var
+var
   Data : PNodeDataRec;
   Node: PVirtualNode;
   ProjectNode : TProjectFileNode;
@@ -283,7 +282,7 @@ end;
 
 procedure TProjectExplorerWindow.actProjectAddActiveFileExecute(
   Sender: TObject);
-Var
+var
   Editor : IEditor;
   Data : PNodeDataRec;
   Node: PVirtualNode;
@@ -315,7 +314,7 @@ begin
 end;
 
 procedure TProjectExplorerWindow.actProjectAddFilesExecute(Sender: TObject);
-Var
+var
   i : integer;
   Editor : IEditor;
   Data : PNodeDataRec;
@@ -414,7 +413,7 @@ begin
 end;
 
 procedure TProjectExplorerWindow.actProjectCollapseAllExecute(Sender: TObject);
-Var
+var
   Node : PVirtualNode;
 begin
   Node := ExplorerTree.RootNode.FirstChild;
@@ -785,7 +784,7 @@ begin
 end;
 
 function TProjectExplorerWindow.DoSaveFile: boolean;
-Var
+var
   AppStorage : TJvAppIniFileStorage;
 begin
   // Create Backup
@@ -827,7 +826,7 @@ begin
 end;
 
 procedure TProjectExplorerWindow.UpdatePopupActions(Node : PVirtualNode);
-Var
+var
   Data : PNodeDataRec;
   SingleNodeSelected : Boolean;
 begin
@@ -951,7 +950,7 @@ end;
 procedure TProjectExplorerWindow.ExplorerTreeDragDrop(Sender: TBaseVirtualTree;
   Source: TObject; DataObject: TVTDragDataObject; Formats: TFormatArray;
   Shift: TShiftState; Pt: TPoint; var Effect: Integer; Mode: TDropMode);
-Var
+var
   HitInfo : THitInfo;
   Node, ParentNode: PVirtualNode;
   Data, SelectedData : PNodeDataRec;
@@ -1048,7 +1047,7 @@ end;
 procedure TProjectExplorerWindow.ExplorerTreeDragOver(Sender: TBaseVirtualTree;
   Source: TObject; Shift: TShiftState; State: TDragState; Pt: TPoint;
   Mode: TDropMode; var Effect: Integer; var Accept: Boolean);
-Var
+var
   HitInfo: THitInfo;
   Node: PVirtualNode;
   Data: PNodeDataRec;
@@ -1178,7 +1177,7 @@ end;
 
 procedure TProjectExplorerWindow.ExplorerTreeInitNode(Sender: TBaseVirtualTree;
   ParentNode, Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
-Var
+var
   Data, ParentData: PNodeDataRec;
 begin
   Data := ExplorerTree.GetNodeData(Node);

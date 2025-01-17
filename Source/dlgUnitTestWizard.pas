@@ -69,7 +69,6 @@ type
     function SymbolHint(Symbol: TJSONObject): string;
     function SymbolSignature(Symbol: TJSONObject): string;
   public
-    { Public declarations }
     class function GenerateTests(const ModuleFName: string) : string;
   end;
 

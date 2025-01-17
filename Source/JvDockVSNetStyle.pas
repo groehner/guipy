@@ -1150,7 +1150,7 @@ begin
 end;
 
 procedure TJvDockVSChannel.ChangeScale(M, D: Integer; isDpiChange: Boolean);
-Var
+var
   I, J : integer;
 begin
   inherited;
