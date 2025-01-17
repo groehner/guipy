@@ -82,22 +82,22 @@ type
     procedure MIConfigurationClick(Sender: TObject);
   private
     ComponentToInsert: TControlClass;
-    procedure SetEnabledMI(MenuItem: TSpTBXItem; Enabled: boolean);
-    function GetPixelsPerInchOfFile(Filename: string): integer;
-    procedure RemovePixelsPerInch0(Filename: string);
+    procedure SetEnabledMI(MenuItem: TSpTBXItem; Enabled: Boolean);
+    function GetPixelsPerInchOfFile(FileName: string): Integer;
+    procedure RemovePixelsPerInch0(FileName: string);
   public
     ELDesigner: TELDesigner;
     DesignForm: TFGuiForm;
-    procedure Save(const Filename: string; Formular: TFGUIForm);
-    function Open(const Filename: string): TFGUIForm;
+    procedure Save(const FileName: string; Formular: TFGUIForm);
+    function Open(const FileName: string): TFGUIForm;
     procedure FindMethod(Reader: TReader; const MethodName: string;
                          var Address: Pointer; var Error: Boolean);
     procedure ErrorMethod(Reader: TReader; const Message: string; var Handled: Boolean);
-    function Tag2Class(Tag: integer): TControlClass;
+    function Tag2Class(Tag: Integer): TControlClass;
     procedure SetToolButton(Tag: Integer);
     procedure ChangeTo(Formular: TFGUIForm);
     function GetEditForm: TEditorForm;
-    procedure UpdateState(Modified: boolean);
+    procedure UpdateState(Modified: Boolean);
     function getPath: string;
     procedure ScaleImages;
     procedure ChangeStyle;
@@ -132,7 +132,7 @@ type
   TClassArray = array [1..81] of TPersistentClass;
 
 const
-  Modified = true;
+  Modified = True;
 
   ClassArray: TClassArray = (
     TFGUIForm,
@@ -183,11 +183,11 @@ procedure TFGUIDesigner.ChangeTo(Formular: TFGUIForm);
 begin
   if Assigned(ELDesigner) then begin
     if (ELDesigner.DesignControl <> Formular) or not ELDesigner.Active then begin
-      ELDesigner.Active:= false;
+      ELDesigner.Active:= False;
       ELDesigner.DesignControl:= Formular;
       DesignForm:= Formular;
       if Assigned(Formular) then
-        ELDesigner.Active:= true;
+        ELDesigner.Active:= True;
       if FObjectInspector.Visible then
         FObjectInspector.RefreshCBObjects;
     end;
@@ -201,7 +201,7 @@ begin
 end;
 
 procedure TFGUIDesigner.ELDesignerModified(Sender: TObject);
-  var i: integer; aControl: TControl;
+  var i: Integer; aControl: TControl;
 begin
   FObjectInspector.ELPropertyInspector.Modified;
   for i:= 0 to ELDesigner.SelectedControls.Count - 1 do begin
@@ -213,14 +213,14 @@ begin
   UpdateState(Modified);
 end;
 
-procedure TFGUIDesigner.UpdateState(Modified: boolean);
+procedure TFGUIDesigner.UpdateState(Modified: Boolean);
 begin
   if Modified and Assigned(ELDesigner.DesignControl) then
-    TFGUIForm(ELDesigner.DesignControl).Modified:= true;
+    TFGUIForm(ELDesigner.DesignControl).Modified:= True;
 end;
 
 procedure TFGUIDesigner.PopupMenuPopup(Sender: TObject);
-  var en: boolean;
+  var en: Boolean;
 begin
   SetEnabledMI(MICut, ELDesigner.CanCut);
   SetEnabledMI(MICopy, ELDesigner.CanCopy);
@@ -230,7 +230,7 @@ begin
   en:= (ELDesigner.SelectedControls.Count > 0) and
        (ELDesigner.SelectedControls[0].ClassName <> 'TFGUIForm');
   SetEnabledMI(MIDelete, en);
-  en:= assigned(DesignForm.Partner);
+  en:= Assigned(DesignForm.Partner);
   SetEnabledMI(MIForeground, en);
   SetEnabledMI(MIBackground, en);
 end;
@@ -257,7 +257,7 @@ end;
 
 procedure TFGUIDesigner.MIAlignClick(Sender: TObject);
   var AHorzAlign, AVertAlign: TELDesignerAlignType;
-      Tag: integer;
+      Tag: Integer;
 begin
   Tag:= (Sender as TSpTBXItem).Tag;
   AHorzAlign:= atNoChanges;
@@ -314,7 +314,7 @@ begin
   Accept:= csAcceptsControls in (ATarget as TControl).ControlStyle;
 end;
 
-function TFGuiDesigner.Tag2Class(Tag: integer): TControlClass;
+function TFGuiDesigner.Tag2Class(Tag: Integer): TControlClass;
 begin
   case Tag of
      1: Result:= TKLabel;
@@ -409,7 +409,7 @@ procedure TFGUIDesigner.SetToolButton(Tag: Integer);
 begin
   ComponentToInsert:= nil;
   var EditorForm:= GetEditForm;
-  if assigned(EditorForm) then begin
+  if Assigned(EditorForm) then begin
     ULink.ComponentNrToInsert:= Tag;
     ComponentToInsert:= Tag2Class(Tag);
     //ScaleImages;
@@ -418,12 +418,12 @@ end;
 
 procedure TFGUIDesigner.MIZoomOutClick(Sender: TObject);
 begin
-  DesignForm.Zoom(false);
+  DesignForm.Zoom(False);
 end;
 
 procedure TFGUIDesigner.MIZoomInClick(Sender: TObject);
 begin
-  DesignForm.Zoom(true);
+  DesignForm.Zoom(True);
 end;
 
 procedure TFGUIDesigner.ELDesignerControlInserted(Sender: TObject);
@@ -434,15 +434,15 @@ begin
   Control.HelpType:= htContext;
   (Control as TBaseWidget).Resize;
   Control.Hint:= Control.Name;
-  Control.ShowHint:= true;
+  Control.ShowHint:= True;
   FObjectInspector.RefreshCBObjects;
   FObjectInspector.SetSelectedObject(Control);
   ComponentToInsert:= nil;
-  FObjectGenerator.InsertComponent(GetEditForm, Control, false);
+  FObjectGenerator.InsertComponent(GetEditForm, Control, False);
   UpdateState(Modified);
 end;
 
-procedure TFGUIDesigner.Save(const Filename: string; Formular: TFGUIForm);
+procedure TFGUIDesigner.Save(const FileName: string; Formular: TFGUIForm);
   var
     BinStream: TMemoryStream;
     FilStream: TFileStream;
@@ -450,7 +450,7 @@ begin
   BinStream := TMemoryStream.Create;
   try
     try
-      FilStream := TFileStream.Create(Filename, fmCreate or fmShareExclusive);
+      FilStream := TFileStream.Create(FileName, fmCreate or fmShareExclusive);
       try
         BinStream.WriteComponent(Formular);
         BinStream.Seek(0, soFromBeginning);
@@ -459,63 +459,63 @@ begin
         FreeAndNil(FilStream);
       end;
     except
-      on e: exception do
+      on e: Exception do
         ErrorMsg(e.Message);
     end;
   finally
     FreeAndNil(BinStream)
   end;
   if Assigned(ELDesigner.DesignControl) then
-    TFGUIForm(ELDesigner.DesignControl).Modified:= false;
+    TFGUIForm(ELDesigner.DesignControl).Modified:= False;
 end;
 
-procedure TFGUIDesigner.RemovePixelsPerInch0(Filename: string);
+procedure TFGUIDesigner.RemovePixelsPerInch0(FileName: string);
 begin
   var SL:= TStringList.Create;
   try
-    SL.LoadFromFile(Filename);
+    SL.LoadFromFile(FileName);
     for var i:= 0 to SL.Count -1 do begin
       var s:= SL[i];
       var p:= Pos('PixelsPerInch', s);
       if p > 0 then begin
         p:= Pos('=', s);
-        delete(s, 1, p);
-        p:= StrToInt(trim(s));
+        Delete(s, 1, p);
+        p:= StrToInt(Trim(s));
         if p = 0 then begin
           SL.Delete(i);
-          SL.SaveToFile(Filename);
-          break;
+          SL.SaveToFile(FileName);
+          Break;
         end
       end else if Pos('  object', s) > 0 then
-        break;
+        Break;
     end;
   finally
     FreeAndNil(SL);
   end;
 end;
 
-function TFGUIDesigner.GetPixelsPerInchOfFile(Filename: string): integer;
+function TFGUIDesigner.GetPixelsPerInchOfFile(FileName: string): Integer;
 begin
   Result:= 96;
   var SL:= TStringList.Create;
   try
-    SL.LoadFromFile(Filename);
+    SL.LoadFromFile(FileName);
     for var i:= 0 to SL.Count -1 do begin
       var s:= SL[i];
       var p:= Pos('PixelsPerInch', s);
       if p > 0 then begin
         p:= Pos('=', s);
-        delete(s, 1, p);
-        Exit(StrToInt(trim(s)));
+        Delete(s, 1, p);
+        Exit(StrToInt(Trim(s)));
       end else if Pos('  object', s) > 0 then
-        break;
+        Break;
     end;
   finally
     FreeAndNil(SL);
   end;
 end;
 
-function TFGUIDesigner.Open(const Filename: string): TFGUIForm;
+function TFGUIDesigner.Open(const FileName: string): TFGUIForm;
 var
   FilStream: TFileStream;
   BinStream: TMemoryStream;
@@ -526,21 +526,21 @@ var
   NewName: string;
 
   function getName: string;
-    var SL: TStringList; i, index, Nr: integer; s: string;
+    var SL: TStringList; i, index, Nr: Integer; s: string;
   begin
     SL:= TStringList.Create;
     try
-      SL.Sorted:= true;
-      for i:= 0 to screen.FormCount -1 do
+      SL.Sorted:= True;
+      for i:= 0 to Screen.FormCount -1 do
          if startsWith(Screen.Forms[I].Name, 'FGUIForm') then
            SL.Add(Screen.Forms[i].Name);
-      if not SL.Find('FGUIForm', index) then exit('FGUIForm');
+      if not SL.Find('FGUIForm', index) then Exit('FGUIForm');
       Nr:= 1;
       repeat
         s:= 'FGUIForm_' + IntToStr(Nr);
-        if not SL.Find(s, index) then exit(s);
+        if not SL.Find(s, index) then Exit(s);
         Inc(Nr);
-      until false;
+      until False;
     finally
       FreeAndNil(SL);
     end;
@@ -548,18 +548,18 @@ var
 
 begin
   Result:= nil;
-  if not FileExists(Filename) then
+  if not FileExists(FileName) then
     Exit;
-  PPI:= GetPixelsPerInchOfFile(Filename);
+  PPI:= GetPixelsPerInchOfFile(FileName);
   if PPI = 0 then begin
-    RemovePixelsPerInch0(Filename);
+    RemovePixelsPerInch0(FileName);
     PPI:= 96;
   end;
-  PythonFilename:= ChangeFileExt(Filename, '.pyw');
+  PythonFilename:= ChangeFileExt(FileName, '.pyw');
   aForm:= TEditorForm(GI_EditorFactory.GetEditorByName(PythonFilename).Form);
   FObjectGenerator.Partner:= aForm;
   BinStream:= TMemoryStream.Create;
-  FilStream:= TFileStream.Create(Filename, fmOpenRead or fmShareDenyNone);
+  FilStream:= TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
   Reader:= TReader.Create(BinStream, 4096);
   Reader.OnFindMethod:= FindMethod;
   Reader.OnError:= ErrorMethod;
@@ -569,10 +569,10 @@ begin
       ObjectTextToResource(FilStream, BinStream);
       BinStream.Seek(0, soFromBeginning);
       BinStream.ReadResHeader;
-      DesignForm:= TFGuiForm.Create(self);
+      DesignForm:= TFGuiForm.Create(Self);
       DesignForm.Partner:= aForm;
       Reader.ReadRootComponent(DesignForm);
-      DesignForm.Open(Filename, '', aForm.getGeometry, aForm);
+      DesignForm.Open(FileName, '', aForm.getGeometry, aForm);
       DesignForm.Name:= NewName;
       if DesignForm.Monitor.PixelsPerInch > PPI then
         DesignForm.Scale(DesignForm.Monitor.PixelsPerInch, PPI);
@@ -581,10 +581,10 @@ begin
       DesignForm.EnsureOnDesktop;
       ChangeTo(DesignForm);
       if not aForm.ActiveSynEdit.Modified and not DesignForm.Modified then
-        TEditorForm(DesignForm.Partner).Modified:= false;
+        TEditorForm(DesignForm.Partner).Modified:= False;
       Result:= DesignForm;
     except
-      on e: exception do
+      on e: Exception do
         ErrorMsg(E.Message);
     end;
   finally
@@ -593,7 +593,7 @@ begin
     FreeAndNil(BinStream);
     FObjectInspector.RefreshCBObjects;
   end;
-  if assigned(DesignForm) and DesignForm.ReadOnly then
+  if Assigned(DesignForm) and DesignForm.ReadOnly then
      ELDesigner.LockAll([lmNoMove, lmNoResize, lmNoDelete, lmNoInsertIn, lmNoCopy]);
 end;
 
@@ -607,7 +607,7 @@ end;
 procedure TFGuiDesigner.ErrorMethod(Reader: TReader; const Message: string; var Handled: Boolean);
 begin
   Handled:= (Pos('ShowName', Message) + Pos('Number', Message) > 0);
-  Handled:= true; // read form anyway
+  Handled:= True; // read form anyway
 end;
 
 procedure TFGUIDesigner.MICloseClick(Sender: TObject);
@@ -630,14 +630,14 @@ end;
 
 procedure TFGUIDesigner.ELDesignerControlDeleting(Sender: TObject;
   SelectedControls: TELDesignerSelectedControls);
-  var i: integer;
+  var i: Integer;
 begin
   FObjectGenerator.Partner:= GetEditForm;
   FObjectGenerator.Partner.ActiveSynEdit.BeginUpdate;
   i:= SelectedControls.Count - 1;
   while i > -1 do begin
     FObjectGenerator.DeleteComponent(SelectedControls.Items[i]);
-    dec(i);
+    Dec(i);
   end;
   FObjectInspector.SetSelectedObject(nil);
   UpdateState(Modified);
@@ -669,16 +669,16 @@ begin
     else
       s:= ELDesigner.SelectedControls[0].Name;
     GetEditForm.GoTo2(s);
-    GUIDesignerTimer.Enabled:= true;
+    GUIDesignerTimer.Enabled:= True;
   end;
   UpdateState(not Modified);
 end;
 
 procedure TFGUIDesigner.GUIDesignerTimerTimer(Sender: TObject);
 begin
-  GUIDesignerTimer.Enabled:= false;
+  GUIDesignerTimer.Enabled:= False;
   var EditForm:= GetEditForm;
-  if assigned(EditForm) then begin
+  if Assigned(EditForm) then begin
     EditForm.BringToFront;
     EditForm.Enter(Self);
     if EditForm.CanFocus then
@@ -699,8 +699,8 @@ begin
 end;
 
 procedure TFGUIDesigner.PasteClick(Sender: TObject);
-  var i, j: integer;
-      PasteInContainer: boolean;
+  var i, j: Integer;
+      PasteInContainer: Boolean;
       Container, Control: TControl;
       WinControl: TWinControl;
       EditForm: TEditorForm;
@@ -724,13 +724,13 @@ begin
     end;
     FObjectInspector.SetSelectedObject(Control);
     ComponentNrToInsert:= ELDesigner.SelectedControls.Items[i].Tag;
-    FObjectGenerator.InsertComponent(EditForm, Control, true);
+    FObjectGenerator.InsertComponent(EditForm, Control, True);
     FObjectGenerator.SetComponentValues(DesignForm, Control);
     WinControl:= TWinControl(Control);
     for j:= 0 to WinControl.ControlCount - 1 do begin
       FObjectInspector.SetSelectedObject(WinControl.Controls[j]);
       ComponentNrToInsert:= WinControl.Controls[j].Tag;
-      FObjectGenerator.InsertComponent(EditForm, WinControl.Controls[j], true);
+      FObjectGenerator.InsertComponent(EditForm, WinControl.Controls[j], True);
       FObjectGenerator.SetComponentValues(DesignForm, WinControl.Controls[j]);
     end;
   end;
@@ -742,7 +742,7 @@ end;
 
 procedure TFGUIDesigner.ELDesignerGetUniqueName(Sender: TObject;
            const ABaseName: string; var AUniqueName: string);
-  var i: integer; s, b: string;
+  var i: Integer; s, b: string;
 begin
   b:= LowerUpper(aBaseName);
   s:= UUtils.Right(b, -1);
@@ -753,7 +753,7 @@ begin
   i:= 1;
   repeat
     aUniqueName:= b + IntToStr(i);
-    inc(i);
+    Inc(i);
   until ELDesigner.IsUniqueName(AUniqueName);
 end;
 
@@ -766,14 +766,14 @@ end;
 
 function TFGUIDesigner.getPath: string;
 begin
-  if assigned(TFGUIForm(ELDesigner.DesignControl))
-    then Result:= ExtractFilepath(TFGuiForm(ELDesigner.DesignControl).Pathname)
+  if Assigned(TFGUIForm(ELDesigner.DesignControl))
+    then Result:= ExtractFilePath(TFGuiForm(ELDesigner.DesignControl).Pathname)
     else Result:= '';
 end;
 
-procedure TFGUIDesigner.SetEnabledMI(MenuItem: TSpTBXItem; Enabled: boolean);
+procedure TFGUIDesigner.SetEnabledMI(MenuItem: TSpTBXItem; Enabled: Boolean);
 begin
-  if assigned(MenuItem) and (MenuItem.Enabled <> Enabled) then
+  if Assigned(MenuItem) and (MenuItem.Enabled <> Enabled) then
     MenuItem.Enabled:= Enabled;
 end;
 

@@ -51,8 +51,8 @@ type
   TCEExpandState = (esUnknown, esExpanded, esCollapsed);
 
   TCodeBlock = record
-    StartLine : integer;
-    EndLine : integer;
+    StartLine : Integer;
+    EndLine : Integer;
   end;
 
   TAbstractCENodeClass = class of TAbstractCENode;
@@ -71,7 +71,7 @@ type
     FNode : PVirtualNode;
     function GetHint: string; virtual;
     function GetCaption: string; virtual;
-    function GetImageIndex : integer; virtual;
+    function GetImageIndex : Integer; virtual;
   public
     class constructor Create;
     constructor CreateFromSymbol(Symbol: TJsonObject); virtual;
@@ -82,9 +82,9 @@ type
     property CodePos: TBufferCoord read FCodePos;
     property Hint : string read GetHint;
     property Caption : string read GetCaption;
-    property ImageIndex : integer read GetImageIndex;
-    property ChildCount : integer read GetChildCount;
-    property Children[I : integer] : TAbstractCENode read GetChildren;
+    property ImageIndex : Integer read GetImageIndex;
+    property ChildCount : Integer read GetChildCount;
+    property Children[I : Integer] : TAbstractCENode read GetChildren;
     property Expanded : TCEExpandState read fExpanded write fExpanded;
   end;
 
@@ -98,14 +98,14 @@ type
     function GetHint: string; override;
   public
     constructor CreateFromSymbol(Symbol: TJsonObject); override;
-    function GetScopeForLine(LineNo: integer): TCodeElementCENode;
+    function GetScopeForLine(LineNo: Integer): TCodeElementCENode;
     property CodeBlock : TCodeBlock read FCodeBlock;
   end;
 
   TImportCENode = class(TAbstractCENode)
   protected
     function GetHint: string; override;
-    function GetImageIndex : integer; override;
+    function GetImageIndex : Integer; override;
   end;
 
   TImportsCENode = class(TGroupCENode)
@@ -126,7 +126,7 @@ type
     FGlobals: TGlobalsCENode;
   protected
     function GetHint: string; override;
-    function GetImageIndex : integer; override;
+    function GetImageIndex : Integer; override;
   public
     constructor CreateFromSymbols(const AFileName: string; Symbols: TJsonArray);
     property OffsetXY : TPoint read FOffsetXY write FOffsetXY;
@@ -140,7 +140,7 @@ type
   TGlobalCENode = class(TVariableCENode)
   protected
     function GetHint: string; override;
-    function GetImageIndex : integer; override;
+    function GetImageIndex : Integer; override;
   end;
 
   TAttributesCENode = class(TGroupCENode)
@@ -154,7 +154,7 @@ type
     FAttributes: TAttributesCENode;
   protected
     //function GetHint: string; override;
-    function GetImageIndex : integer; override;
+    function GetImageIndex : Integer; override;
   public
     constructor CreateFromSymbol(Symbol: TJsonObject); override;
   end;
@@ -162,19 +162,19 @@ type
   TAttributeCENode = class(TVariableCENode)
   protected
     function GetHint: string; override;
-    function GetImageIndex : integer; override;
+    function GetImageIndex : Integer; override;
   end;
 
   TFunctionCENode = class(TCodeElementCENode)
   protected
-    function GetImageIndex : integer; override;
+    function GetImageIndex : Integer; override;
   public
     constructor CreateFromSymbol(Symbol: TJsonObject); override;
   end;
 
   TMethodCENode = class(TFunctionCENode)
   protected
-    function GetImageIndex : integer; override;
+    function GetImageIndex : Integer; override;
   end;
 
   TCEUpdateReason = (ceuSymbolsChanged, ceuEditorEnter);
@@ -403,7 +403,7 @@ end;
 procedure TCodeExplorerWindow.ExplorerTreeKeyPress(Sender: TObject;
   var Key: Char);
 begin
-  if Key = Char(VK_Return) then
+  if Key = Char(VK_RETURN) then
     NavigateToNodeElement(ExplorerTree.GetFirstSelected);
 end;
 
@@ -621,7 +621,7 @@ procedure TCodeExplorerWindow.NavigateToNodeElement(Node: PVirtualNode;
 var
   CENode: TAbstractCENode;
   CodePos : TBufferCoord;
-  L : integer;
+  L : Integer;
   Editor : IEditor;
 begin
   CodePos.Line := - 1;
@@ -780,13 +780,13 @@ constructor TAbstractCENode.CreateFromSymbol(Symbol: TJsonObject);
 begin
   inherited Create;
   FName := Symbol.GetValue<string>('name', '');
-  FCodePos.Line := Symbol.GetValue<integer>('selectionRange.start.line', 0);
+  FCodePos.Line := Symbol.GetValue<Integer>('selectionRange.start.line', 0);
   Inc(FCodePos.Line);
-  FCodePos.Char := Symbol.GetValue<integer>('selectionRange.start.character', 0);
+  FCodePos.Char := Symbol.GetValue<Integer>('selectionRange.start.character', 0);
   Inc(FCodePos.Char);
 end;
 
-function TAbstractCENode.GetChildren(i: integer): TAbstractCENode;
+function TAbstractCENode.GetChildren(i: Integer): TAbstractCENode;
 begin
   if Assigned(fChildren) then
     Result := fChildren[i]
@@ -799,7 +799,7 @@ begin
   Result := '';
 end;
 
-function TAbstractCENode.GetImageIndex: integer;
+function TAbstractCENode.GetImageIndex: Integer;
 begin
   Result := -1;
 end;
@@ -828,7 +828,7 @@ begin
   Result := FName;
 end;
 
-function TAbstractCENode.GetChildCount: integer;
+function TAbstractCENode.GetChildCount: Integer;
 begin
   if Assigned(fChildren) then
     Result := fChildren.Count
@@ -838,7 +838,7 @@ end;
 
 { TModuleCENode }
 
-function TModuleCENode.GetImageIndex: integer;
+function TModuleCENode.GetImageIndex: Integer;
 begin
   Result := Integer(TCodeImages.Python);
 end;
@@ -859,7 +859,7 @@ begin
 
   for var Symbol in Symbols do
   begin
-    if not Symbol.TryGetValue<integer>('kind', Kind) then
+    if not Symbol.TryGetValue<Integer>('kind', Kind) then
       Continue;
 
     case TSymbolKind(Kind) of
@@ -922,7 +922,7 @@ end;
 
 { TImportCENode }
 
-function TImportCENode.GetImageIndex: integer;
+function TImportCENode.GetImageIndex: Integer;
 begin
   Result := Integer(TCodeImages.Module);
 end;
@@ -952,7 +952,7 @@ end;
 
 { TGlobalCENode }
 
-function TGlobalCENode.GetImageIndex: integer;
+function TGlobalCENode.GetImageIndex: Integer;
 begin
   Result := Integer(TCodeImages.Variable);
 end;
@@ -965,7 +965,7 @@ end;
 
 { TClassCENode }
 
-function TClassCENode.GetImageIndex: integer;
+function TClassCENode.GetImageIndex: Integer;
 begin
   Result := Integer(TCodeImages.Klass);
 end;
@@ -984,7 +984,7 @@ begin
 
   for var CE in TJsonArray(Symbols) do
   begin
-    if not CE.TryGetValue<integer>('kind', Kind) then
+    if not CE.TryGetValue<Integer>('kind', Kind) then
       Continue;
 
     case TSymbolKind(Kind) of
@@ -1032,7 +1032,7 @@ end;
 
 { TAttributeCENode }
 
-function TAttributeCENode.GetImageIndex: integer;
+function TAttributeCENode.GetImageIndex: Integer;
 begin
   Result := Integer(TCodeImages.Field);
 end;
@@ -1059,7 +1059,7 @@ begin
 
   for var CE in TJsonArray(Symbols) do
   begin
-    if not CE.TryGetValue<integer>('kind', Kind) then
+    if not CE.TryGetValue<Integer>('kind', Kind) then
       Continue;
 
     case TSymbolKind(Kind) of
@@ -1077,14 +1077,14 @@ begin
   end;
 end;
 
-function TFunctionCENode.GetImageIndex: integer;
+function TFunctionCENode.GetImageIndex: Integer;
 begin
   Result := Integer(TCodeImages.Func);
 end;
 
 { TMethodCENode }
 
-function TMethodCENode.GetImageIndex: integer;
+function TMethodCENode.GetImageIndex: Integer;
 begin
   Result := Integer(TCodeImages.Method);
 end;
@@ -1094,13 +1094,13 @@ end;
 constructor TCodeElementCENode.CreateFromSymbol(Symbol: TJsonObject);
 begin
   inherited CreateFromSymbol(Symbol);
-  FCodeBlock.StartLine := Symbol.GetValue<integer>('range.start.line', 0);
+  FCodeBlock.StartLine := Symbol.GetValue<Integer>('range.start.line', 0);
   Inc(FCodeBlock.StartLine);
-  FCodeBlock.EndLine := Symbol.GetValue<integer>('range.end.line', 0);
+  FCodeBlock.EndLine := Symbol.GetValue<Integer>('range.end.line', 0);
   Inc(FCodeBlock.EndLine);
 end;
 
-function TCodeElementCENode.GetScopeForLine(LineNo: integer): TCodeElementCENode;
+function TCodeElementCENode.GetScopeForLine(LineNo: Integer): TCodeElementCENode;
 begin
   if InRange(LineNo, CodeBlock.StartLine, CodeBlock.EndLine) then begin
     Result := Self;

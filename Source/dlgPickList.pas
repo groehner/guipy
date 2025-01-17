@@ -83,7 +83,7 @@ end;
 
 procedure TPickListDialog.mnDeselectAllClick(Sender: TObject);
 var
-  I : integer;
+  I : Integer;
 begin
   for I := 0 to CheckListBox.Items.Count - 1 do
     CheckListBox.Checked[I] := False;

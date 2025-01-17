@@ -36,14 +36,14 @@ type
 
   TNode = class
   private
-    Id : integer;     //Index in nodes-list, must be updated when node changes position (after re-sort)
+    Id : Integer;     //Index in nodes-list, must be updated when node changes position (after re-sort)
     InEdges,OutEdges : TEdgeList;
-    Rank : integer;
-    Order : integer;
-    COrder : integer;
+    Rank : Integer;
+    Order : Integer;
+    COrder : Integer;
     Weight : single;
-    IsDummy : boolean;
-    X,Y,H,W : integer;
+    IsDummy : Boolean;
+    X,Y,H,W : Integer;
     Control : TControl;
     //Name: String;      // handle UML-objects special
     //NameNr: integer;
@@ -68,7 +68,7 @@ type
   TNodeList = class(TObjectList)
   private
     function GetNode(Index: Integer): TNode;
-    function LastIndexOf(const P : pointer) : integer;
+    function LastIndexOf(const P : pointer) : Integer;
     property Nodes[Index: Integer]: TNode read GetNode; default;
   end;
 
@@ -83,8 +83,8 @@ type
   private
     LManagedObjects: TList;
     LConnections: TList;
-    HSpacing: integer;
-    VSpacing: integer;
+    HSpacing: Integer;
+    VSpacing: Integer;
     Nodes : TNodeList;
     Layers : TLayerList;
     procedure ExtractNodes;
@@ -101,8 +101,8 @@ type
 
     //Second phase
     procedure OrderingPhase;
-    function CalcCrossings : integer;
-    function CalcCrossingsTwoLayers(const Layer1,Layer2 : TNodeList) : integer;
+    function CalcCrossings : Integer;
+    function CalcCrossingsTwoLayers(const Layer1,Layer2 : TNodeList) : Integer;
 
     //Third phase
     procedure PositioningPhase;
@@ -135,7 +135,7 @@ begin
     ExtractNodes;
     DoPhases;
     ApplyNodes;
-  except on e: exception do
+  except on e: Exception do
     ErrorMsg('TSugiyamaLayout.Execute');
   end;
 end;
@@ -144,7 +144,7 @@ end;
 procedure TSugiyamaLayout.ExtractNodes;
 var
   L : TList;
-  I : integer;
+  I : Integer;
   C : TControl;
   Con : TConnection;
   Node,FromNode,ToNode : TNode;
@@ -219,7 +219,7 @@ end;
 //Writes back layout to essconnectpanel
 procedure TSugiyamaLayout.ApplyNodes;
 var
-  I : integer;
+  I : Integer;
   Node : TNode;
 begin
   for I:= 0 to Nodes.Count-1 do
@@ -252,7 +252,7 @@ const
   //Max nr of nodes in a layer, used when distributing 'zeronodes'.
   LayerMaxNodes = 16;
 var
-  I,J,MinC,MinI : integer;
+  I,J,MinC,MinI : Integer;
   Node : TNode;
   ZeroNodes : TNodeList;
 begin
@@ -335,19 +335,19 @@ procedure TSugiyamaLayout.MakeAcyclic;
 type
   TDfsStruct =
     record
-      Visited,Removed : boolean;
-      DfsNum,DfsLow : integer;
+      Visited,Removed : Boolean;
+      DfsNum,DfsLow : Integer;
     end;
 var
   DfsList : array of TDfsStruct;
-  CurDfs,CycCount : integer;
+  CurDfs,CycCount : Integer;
   Path : TObjectList;
-  I,Safety : integer;
+  I,Safety : Integer;
   SuperNode : TNode;
 
-  procedure InReverse(N : TNode; E : integer);
+  procedure InReverse(N : TNode; E : Integer);
   var
-    I : integer;
+    I : Integer;
     ToNode : TNode;
   begin
     ToNode:= N.OutEdges[E].ToNode;
@@ -363,7 +363,7 @@ var
 
   procedure InVisit(N : TNode);
   var
-    I,J,Score,BestScore,RevEdge : integer;
+    I,J,Score,BestScore,RevEdge : Integer;
     W,V,RevNode : TNode;
     Cyc : TObjectList;
   begin
@@ -457,7 +457,7 @@ end;
 
 var
   //Global temparray used by sortfunc
-  _Labels : array of integer;
+  _Labels : array of Integer;
 
 function TopoSortProc(Item1, Item2: Pointer): Integer;
 begin
@@ -482,9 +482,9 @@ end;
 
 procedure TSugiyamaLayout.TopoSort;
 var
-  Indeg : array of integer;
+  Indeg : array of Integer;
   S : TStack;
-  I,NextLabel : integer;
+  I,NextLabel : Integer;
   Node : TNode;
   Edge : TEdge;
 begin
@@ -551,7 +551,7 @@ procedure TSugiyamaLayout.InitialRanking;
         rank[index]=r
 }
 var
-  I,J,R,Temp : integer;
+  I,J,R,Temp : Integer;
 begin
   TopoSort;
   for I:= 0 to Nodes.Count-1 do
@@ -571,8 +571,8 @@ end;
 procedure TSugiyamaLayout.SetYPositions;
 var
   Node : TNode;
-  I,J : integer;
-  Highest,Y : integer;
+  I,J : Integer;
+  Highest,Y : Integer;
 begin
   Y:= VSpacing;
   for I:= 0 to Layers.Count-1 do
@@ -594,21 +594,21 @@ procedure TSugiyamaLayout.SetXPositions;
 const
   MaxIter = 20;
 var
-  I,J,X,Z,OldZ,BailOut,RegStart,RegCount,MaxAmount,Amount : integer;
+  I,J,X,Z,OldZ,BailOut,RegStart,RegCount,MaxAmount,Amount : Integer;
   Force,LastForce,RegForce : single;
   Layer : TNodeList;
   Node : TNode;
   Forces : array of single;
 
-  function InCenter(const Node : TNode) : integer;
+  function InCenter(const Node : TNode) : Integer;
   begin
     Result:= Node.X + Node.W div 2;
   end;
 
   function InForce(const Node : TNode) : single;
   var
-    Sum : integer;
-    I,Deg,CenterX : integer;
+    Sum : Integer;
+    I,Deg,CenterX : Integer;
   begin
     Deg:= Node.InEdges.Count + Node.OutEdges.Count;
     if Deg=0 then
@@ -717,16 +717,16 @@ begin
 end;
 
 procedure TSugiyamaLayout.XCorrection;
-  var i, j, minx, correction: integer;
+  var i, j, minx, correction: Integer;
     Layer : TNodeList;
 begin
   // search leftmost node
-  minx:= high(integer);
+  minx:= high(Integer);
   for I:= 0 to Layers.Count-1 do begin
     Layer:= Layers[I];
     // X:= HSpacing;
     for J:= 0 to Layer.Count-1 do
-      if assigned(Layer[j].Control) and (Layer[J].x < minx) then
+      if Assigned(Layer[j].Control) and (Layer[J].x < minx) then
         minx:= Layer[j].X;
   end;
   // left shift
@@ -762,7 +762,7 @@ procedure TSugiyamaLayout.MakeProper;
 const
   DummyWidth = 200;
 var
-  I,J,K,Diff : integer;
+  I,J,K,Diff : Integer;
   Node : TNode;
   Edge : TEdge;
 
@@ -852,18 +852,18 @@ procedure TSugiyamaLayout.OrderingPhase;
 const
   MaxIter = 20;
 var
-  I,J,BailOut,BestC : integer;
-  BestO : array of integer;
+  I,J,BailOut,BestC : Integer;
+  BestO : array of Integer;
   Layer : TNodeList;
   Node : TNode;
 
   function WeightPred(const Node : TNode) : single;
   var
-    Sum,I : integer;
+    Sum,I : Integer;
   begin
     Sum:= 0;
     for I:= 0 to Node.InEdges.Count-1 do
-      if assigned(Node.InEdges[I].FromNode.Control) then  // Rr
+      if Assigned(Node.InEdges[I].FromNode.Control) then  // Rr
         Inc(Sum,Node.InEdges[I].FromNode.Order);
     if Node.InEdges.Count = 0 then
       Result:= 0
@@ -873,11 +873,11 @@ var
 
   function WeightSucc(const Node : TNode) : single;
   var
-    Sum,I : integer;
+    Sum,I : Integer;
   begin
     Sum:= 0;
     for I:= 0 to Node.OutEdges.Count-1 do
-      if assigned(Node.OutEdges[I].FromNode.Control) then   // Rr
+      if Assigned(Node.OutEdges[I].FromNode.Control) then   // Rr
         Inc(Sum,Node.OutEdges[I].ToNode.Order);
     if Node.OutEdges.Count = 0 then
       Result:= 0
@@ -887,7 +887,7 @@ var
 
   procedure InCheckCrossings;
   var
-    I : integer;
+    I : Integer;
   begin
     I:= CalcCrossings;
     if I<BestC then
@@ -951,9 +951,9 @@ begin
     Layers[I].Sort( {$IFDEF LCL} @ {$ENDIF} OrderSortProc );
 end;
 
-function TSugiyamaLayout.CalcCrossings: integer;
+function TSugiyamaLayout.CalcCrossings: Integer;
 var
-  I : integer;
+  I : Integer;
 begin
   Result:= 0;
   if Layers.Count>1 then
@@ -981,10 +981,10 @@ begin
     Result:= 1;
 end;
 
-function TSugiyamaLayout.CalcCrossingsTwoLayers(const Layer1, Layer2: TNodeList): integer;
+function TSugiyamaLayout.CalcCrossingsTwoLayers(const Layer1, Layer2: TNodeList): Integer;
 var
-  COrder,I,J,K : integer;
-  K1,K2,K3 : integer;
+  COrder,I,J,K : Integer;
+  K1,K2,K3 : Integer;
   CNodes,UL,LL : TNodeList;
   Node : TNode;
 begin
@@ -1136,9 +1136,9 @@ begin
   Result:= TNode(Get(Index));
 end;
 
-function TNodeList.LastIndexOf(const P: pointer): integer;
+function TNodeList.LastIndexOf(const P: pointer): Integer;
 var
-  I : integer;
+  I : Integer;
 begin
   Result:= -1;
   for I:= Count-1 downto 0 do

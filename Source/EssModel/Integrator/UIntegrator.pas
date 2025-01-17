@@ -63,14 +63,14 @@ type
   protected
     // List of files that have been read in this Lista importsession
     FilesRead : TStringList;
-    procedure ImportOneFile(const FileName: string; withoutNeedSource: boolean = false); virtual; abstract;
+    procedure ImportOneFile(const FileName: string; withoutNeedSource: Boolean = False); virtual; abstract;
   public
     CodeProvider: TCodeProvider;
     constructor Create(om: TObjectModel; aCodeProvider: TCodeProvider); reintroduce;
     destructor Destroy; override;
-    procedure BuildModelFrom(const FileName : string; ResetModel : boolean = True; Lock : boolean = true; withoutNeedSource: boolean = false); overload;
-    procedure BuildModelFrom(FileNames : TStrings; withoutNeedSource: boolean = false); overload;
-    procedure AddFileToModel(const Filename: string);
+    procedure BuildModelFrom(const FileName : string; ResetModel : Boolean = True; Lock : Boolean = True; withoutNeedSource: Boolean = False); overload;
+    procedure BuildModelFrom(FileNames : TStrings; withoutNeedSource: Boolean = False); overload;
+    procedure AddFileToModel(const FileName: string);
     procedure AddClasspath(Classpath: string; const Pathname: string);
     class function GetFileExtensions : TStringList; virtual; abstract;
   end;
@@ -136,7 +136,7 @@ end;
 
 { TImportIntegrator }
 
-procedure TImportIntegrator.BuildModelFrom(const FileName: string; ResetModel: boolean; Lock: boolean; withoutNeedSource: boolean);
+procedure TImportIntegrator.BuildModelFrom(const FileName: string; ResetModel: Boolean; Lock: Boolean; withoutNeedSource: Boolean);
 begin
   CodeProvider.AddSearchPath(ExtractFilePath(FileName));
   if Lock then
@@ -150,9 +150,9 @@ begin
   FilesRead.Add(FileName);
   try
     try
-      if assigned(Model) and assigned(Model.ModelRoot) and
-        (Model.ModelRoot.Files.IndexOf(Filename) = -1) then
-        Model.ModelRoot.Files.Add(Filename);
+      if Assigned(Model) and Assigned(Model.ModelRoot) and
+        (Model.ModelRoot.Files.IndexOf(FileName) = -1) then
+        Model.ModelRoot.Files.Add(FileName);
       ImportOneFile(FileName, withoutNeedSource);
     except
       on E: Exception do
@@ -164,8 +164,8 @@ begin
   end;
 end;
 
-procedure TImportIntegrator.BuildModelFrom(FileNames: TStrings; withoutNeedSource: boolean = false);
-  var i: integer;
+procedure TImportIntegrator.BuildModelFrom(FileNames: TStrings; withoutNeedSource: Boolean = False);
+  var i: Integer;
 begin
   try
     Model.Lock;
@@ -175,26 +175,26 @@ begin
     Model.Clear;
     Model.ModelRoot.SetConfigFile(FileNames[0]);
     for i:= 0 to FileNames.Count - 1 do
-      BuildModelFrom(FileNames[i], false, true, withoutNeedSource);
+      BuildModelFrom(FileNames[i], False, True, withoutNeedSource);
   finally
      Model.UnLock;
   end;
 end;
 
-procedure TImportIntegrator.AddFileToModel(const Filename: string);
+procedure TImportIntegrator.AddFileToModel(const FileName: string);
 begin
-  BuildModelFrom(FileName, false, false, true);
+  BuildModelFrom(FileName, False, False, True);
 end;
 
 procedure TImportIntegrator.AddClasspath(Classpath: string; const Pathname: string);
-  var p: integer; s: string;
+  var p: Integer; s: string;
 begin
   Classpath:= Classpath + ';';
   repeat
     p:= Pos(';', Classpath);
-    s:= copy(Classpath, 1, p-1);
-    delete(Classpath, 1, p);
-    if s = '.' then s:= ExtractFilepath(Pathname);
+    s:= Copy(Classpath, 1, p-1);
+    Delete(Classpath, 1, p);
+    if s = '.' then s:= ExtractFilePath(Pathname);
     if DirectoryExists(s) then
       Codeprovider.AddSearchPath(s);
   until Classpath = '';
@@ -230,7 +230,7 @@ end;
 
 function TIntegrators.Get(Kind: TIntegratorClass): TClassList;
 var
-  I : integer;
+  I : Integer;
 begin
   Result := TClassList.Create;
   for I := 0 to List.Count - 1 do

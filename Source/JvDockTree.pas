@@ -75,14 +75,14 @@ type
     function GetDockClientLimit(Orient: TDockOrientation; IsMin: Boolean): Integer;
     function GetFrameRect(Control: TControl): TRect;
     function GetFrameRectEx(Control: TControl): TRect;
-    function GetCurrentPPI: integer;
-    procedure SetCurrentPPI(const Value: integer);
+    function GetCurrentPPI: Integer;
+    procedure SetCurrentPPI(const Value: Integer);
     {$IFDEF JVDOCK_QUERY}
     // Descends the Tree and Finds and return TWinControls docked to a particular parent.
     procedure ControlQuery(DockedTo: TWinControl; FoundItems: TList);
     {$ENDIF JVDOCK_QUERY}
     // backwards compatibility: Mantis 4100
-    property CurrentPPI: integer read GetCurrentPPI write SetCurrentPPI;
+    property CurrentPPI: Integer read GetCurrentPPI write SetCurrentPPI;
     property ActiveControl: TControl read GetActiveControl write SetActiveControl;
     property GrabberSize: Integer read GetGrabberSize write SetGrabberSize;
     property SplitterWidth: Integer read GetDockSplitterWidth write SetDockSplitterWidth;
@@ -302,10 +302,10 @@ type
     function HasZoneWithControl(Control: TControl): Boolean;
     procedure DockStyleChanged(Sender: TObject);
     function GetDockStyle: TJvDockObservableStyle;
-    function GetCurrentPPI: integer;
-    procedure SetCurrentPPI(const Value: integer);
+    function GetCurrentPPI: Integer;
+    procedure SetCurrentPPI(const Value: Integer);
   protected
-    FCurrentPPI : integer;
+    FCurrentPPI : Integer;
     function PPIScale(Value: Integer): Integer;
     procedure WindowProc(var Msg: TMessage); virtual;
     procedure BeginDrag(Control: TControl; Immediate: Boolean; Threshold: Integer = -1); virtual;
@@ -1904,7 +1904,7 @@ begin
       CtlBounds := Bounds(Left, Top, Width, Height);
 end;
 
-function TJvDockTree.GetCurrentPPI: integer;
+function TJvDockTree.GetCurrentPPI: Integer;
 begin
   Result := FCurrentPPI;
 end;
@@ -3307,7 +3307,7 @@ begin
   end;
 end;
 
-procedure TJvDockTree.SetCurrentPPI(const Value: integer);
+procedure TJvDockTree.SetCurrentPPI(const Value: Integer);
 begin
   FCurrentPPI := Value;
 end;

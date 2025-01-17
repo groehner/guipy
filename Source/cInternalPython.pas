@@ -69,7 +69,7 @@ type
 implementation
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   System.UITypes,
   System.StrUtils,
   Vcl.Dialogs,
@@ -329,7 +329,7 @@ procedure TInternalPython.MessageWriteExecute(Sender: TObject; PSelf,
   Args: PPyObject; var Result: PPyObject);
 var
   Msg, FName : PAnsiChar;
-  LineNo, Offset : integer;
+  LineNo, Offset : Integer;
   S : string;
 begin
   FName := nil;

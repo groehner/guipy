@@ -46,9 +46,9 @@ type
     NewVersion: string;
     LocalTempDir: string;
     procedure MakeUpdate;
-    function GetNewVersion: boolean;
+    function GetNewVersion: Boolean;
     function ShowVersionDate(s: string): string;
-    function ExtractZipToDir(const Filename, Dir: string): boolean;
+    function ExtractZipToDir(const FileName, Dir: string): Boolean;
   public
     class function GetVersionDate: string;
     procedure CheckAutomatically;
@@ -91,16 +91,16 @@ end;
 
 {$WARN SYMBOL_PLATFORM OFF}
 procedure TFUpdate.BUpdateClick(Sender: TObject);
-  var Filename, Filepath: string;
+  var FileName, Filepath: string;
 begin
-  Screen.Cursor:= crHourglass;
+  Screen.Cursor:= crHourGlass;
   try
     if TPyScripterSettings.IsPortable
-      then Filename:= ZipFile
-      else Filename:= Format(Setupfile, [NewVersion]);
-    Filepath:= TPath.Combine(LocalTempDir, Filename);
+      then FileName:= ZipFile
+      else FileName:= Format(Setupfile, [NewVersion]);
+    Filepath:= TPath.Combine(LocalTempDir, FileName);
     with TFDownload.Create(Self) do begin
-      if GetInetFile(Server + Filename, Filepath, ProgressBar) then begin
+      if GetInetFile(Server + FileName, Filepath, ProgressBar) then begin
         if TPyScripterSettings.IsPortable then begin
           if ExtractZipToDir(Filepath, LocalTempDir)
             then MakeUpdate
@@ -124,7 +124,7 @@ procedure TFUpdate.MakeUpdate;
   var Updater, Params, sVersion: string;
 begin
   Updater:= TPath.Combine(LocalTempDir, 'setup.exe');
-  sVersion:= copy(Version, 1, Pos(',', Version) -1 );
+  sVersion:= Copy(Version, 1, Pos(',', Version) -1 );
   Params:= '-Update ' + HideBlanks(FConfiguration.EditorFolder) +  ' ' +
                         HideBlanks(withTrailingSlash(LocalTempDir)) + ' ' + sVersion;
   if FConfiguration.RunAsAdmin(Handle, Updater, Params) = 33 then begin
@@ -136,15 +136,15 @@ begin
   end;
 end;
 
-function TFUpdate.ExtractZipToDir(const Filename, Dir: string): boolean;
+function TFUpdate.ExtractZipToDir(const FileName, Dir: string): Boolean;
 begin
-  Result:= false;
+  Result:= False;
   var ZipFile:= TZipFile.Create;
   try
     try
-      ZipFile.Open(Filename, zmRead);
+      ZipFile.Open(FileName, zmRead);
       ZipFile.ExtractAll(Dir);
-      Result:= true;
+      Result:= True;
     except on E: Exception do
       ErrorMsg(E.Message + ' ' + SysErrorMessage(GetLastError));
     end;
@@ -153,13 +153,13 @@ begin
   end;
 end;
 
-function TFUpdate.GetNewVersion: boolean;
+function TFUpdate.GetNewVersion: Boolean;
   var SL: TStringList; OldVersion, s, Pathname: string;
 begin
   EOldVersion.Text:= Version + ', ' + GetVersionDate;
   ENewVersion.Text:= '';
   Memo.Lines.Clear;
-  Screen.Cursor:= crHourglass;
+  Screen.Cursor:= crHourGlass;
   try
     Pathname:= TPath.Combine(LocalTempDir, 'version.txt');
     if DownloadURL(Inffile, Pathname) then begin
@@ -174,15 +174,15 @@ begin
         NewVersion:= Copy(ENewVersion.Text, 1, Pos(',', ENewVersion.text)-1);
         if OldVersion = NewVersion then begin
           ENewVersion.Text:= _('GuiPy is up to date.');
-          Result:= false;
+          Result:= False;
         end else
-          Result:= true;
+          Result:= True;
       finally
         FreeAndNil(SL);
       end;
     end else begin
       Memo.Lines.Add(_('No Internet connection'));
-      Result:= false;
+      Result:= False;
     end;
   finally
     Screen.Cursor:= crDefault;
@@ -196,9 +196,9 @@ procedure TFUpdate.CheckAutomatically;
 
   procedure NextMonth;
   begin
-    inc(AMonth);
+    Inc(AMonth);
     if AMonth = 13 then begin
-      inc(AYear);
+      Inc(AYear);
       AMonth:= 1;
     end;
     AWeekOfMonth:= 1;
@@ -208,24 +208,24 @@ procedure TFUpdate.CheckAutomatically;
   procedure NextWeek;
   begin
     ADayOfWeek:= 1;
-    inc(AWeekOfMonth);
+    Inc(AWeekOfMonth);
     if not IsValidDateMonthWeek(AYear, AMonth, AWeekOfMonth, ADayOfWeek)then
       NextMonth;
   end;
 
   procedure NextDay;
   begin
-    inc(ADayOfWeek);
+    Inc(ADayOfWeek);
     if ADayOfWeek = 8 then
       NextWeek;
   end;
 
 begin
   CBUpdate.ItemIndex:= PyIDEMainForm.AppStorage.ReadInteger('Program\Update', 0);
-  if CBUpdate.ItemIndex <= 0 then exit;
+  if CBUpdate.ItemIndex <= 0 then Exit;
   NextUpdate:= PyIDEMainForm.AppStorage.ReadInteger('Program\NextUpdate', -1);
   if (Date < NextUpdate) and (CBUpdate.ItemIndex < 4) then
-    exit;
+    Exit;
   DecodeDateMonthWeek(Date, AYear, AMonth, AWeekOfMonth, ADayOfWeek);
   case CBUpdate.ItemIndex of
     1: NextMonth;
@@ -239,19 +239,19 @@ begin
 end;
 
 function TFUpdate.ShowVersionDate(s: string): string;
-  var Day, Month, Year, p: integer;
+  var Day, Month, Year, p: Integer;
       Version: string;
 begin
   p:= Pos(',', s);
-  Version:= copy(s, 1, p);
-  delete(s, 1, p);
+  Version:= Copy(s, 1, p);
+  Delete(s, 1, p);
   p:= Pos('.', s);
   Result:= Version;
   if TryStrToInt(Copy(s, 1, p-1), Year) then begin
-    delete(s, 1, p);
+    Delete(s, 1, p);
     p:= pos('.', s);
     if TryStrToInt(Copy(s, 1, p-1), Month) then begin
-      delete(s, 1, p);
+      Delete(s, 1, p);
       if TryStrToInt(s, Day) then
         Result:= Version + ' ' + DateToStr(EncodeDate(Year, Month, Day));
     end;

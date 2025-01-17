@@ -41,10 +41,10 @@ type
     FImage: string;
     FJustify: TJustify;
     FRelief: TRelief;
-    FScrollbar: boolean;
+    FScrollbar: Boolean;
     FScrollbars: TScrollbar;
-    FTakeFocus: boolean;
-    FUnderline: integer;
+    FTakeFocus: Boolean;
+    FUnderline: Integer;
     FWrapLength: string;
 
     // events
@@ -70,38 +70,38 @@ type
     procedure setImage(aValue: string);
     procedure setJustify(aValue: TJustify);
     procedure setRelief(aValue: TRelief);
-    procedure setUnderline(aValue: integer);
+    procedure setUnderline(aValue: Integer);
     procedure setWrapLength(aValue: string);
     procedure MakeBoolean(Attr, Value: string);
     procedure MakeShow(Value: string);
   protected
     FNameExtension: string; // used by LabeledScale
-    BorderWidthInt: integer;
-    TopSpace: integer;
-    LeftSpace: integer;
-    RightSpace: integer;
+    BorderWidthInt: Integer;
+    TopSpace: Integer;
+    LeftSpace: Integer;
+    RightSpace: Integer;
 
-    function getMouseEvents(ShowEvents: integer): string; virtual;
-    function getKeyboardEvents(ShowEvents: integer): string; virtual;
+    function getMouseEvents(ShowEvents: Integer): string; virtual;
+    function getKeyboardEvents(ShowEvents: Integer): string; virtual;
     function getCompound: TUCompound; virtual; abstract;
     function getAttrAsKey(Attr: string): string;
     procedure Calculate3DColors(var DarkColor, LightColor: TColor; Background: TColor);
-    procedure CalculatePadding(var pl, pt, pr, pb: integer); virtual; abstract;
-    procedure CalculateText(var tw, th: integer; var SL: TStringList); virtual; abstract;
+    procedure CalculatePadding(var pl, pt, pr, pb: Integer); virtual; abstract;
+    procedure CalculateText(var tw, th: Integer; var SL: TStringList); virtual; abstract;
     procedure AddParameter(const Value, par: string);
     procedure MakeControlVar(Variable, ControlVar: string; Value: string = '';  Typ: string = 'String');
     procedure MakeImage(const Value: string);
     procedure MakeValidateCommand(Attr, Value: string);
     procedure MakeScrollbar(Value, TkTyp: string);
     procedure MakeScrollbars(Value, TkTyp: string);
-    procedure PaintAScrollbar(Value: boolean);
+    procedure PaintAScrollbar(Value: Boolean);
     procedure PaintScrollbars(Scrollbar: TScrollbar);
-    procedure setScrollbar(Value: boolean);
+    procedure setScrollbar(Value: Boolean);
     procedure setScrollbars(Value: TScrollbar);
-    procedure ShowText(s: string; newWidth, newHeight: integer);
+    procedure ShowText(s: string; newWidth, newHeight: Integer);
     procedure Paint; override;
-    procedure PaintBorder(R: TRect; Relief: TRelief; BorderWidth: integer); virtual; abstract;
-    procedure PaintScrollbar(R: TRect; horizontal: boolean; ttk: boolean = false);
+    procedure PaintBorder(R: TRect; Relief: TRelief; BorderWidth: Integer); virtual; abstract;
+    procedure PaintScrollbar(R: TRect; horizontal: Boolean; ttk: Boolean = False);
     procedure ChangeCommand(Attr, Value: string);
   public
     property Anchor: TAnchor read FAnchor write setAnchor default _TA_center;
@@ -113,16 +113,16 @@ type
     property Justify: TJustify read FJustify write setJustify default _TJ_center;
     property Relief: TRelief read FRelief write setRelief default _TR_flat;
     property Scrollbars: TScrollbar read FScrollbars write setScrollbars default _TB_none;
-    property Scrollbar: boolean read FScrollbar write setScrollbar default false;
-    property TakeFocus: boolean read FTakeFocus write fTakeFocus default true;
-    property Underline: integer read FUnderline write setUnderline default -1;
+    property Scrollbar: Boolean read FScrollbar write setScrollbar default False;
+    property TakeFocus: Boolean read FTakeFocus write fTakeFocus default True;
+    property Underline: Integer read FUnderline write setUnderline default -1;
     property WrapLength: string read FWrapLength write setWrapLength;
 
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure setEvent(Event: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure DeleteEvents; override;
     procedure DeleteWidget; override;
     procedure DeleteEventHandler(const Event: string); override;
@@ -156,9 +156,9 @@ type
   end;
 
   TKMainWindow = class(TBaseWidget)
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerParameter(const event: string): string; override;
     function HandlerName(const event: string): string; override;
   end;
@@ -171,7 +171,7 @@ uses Math, Controls, SysUtils, UITypes,
 
 const CrLf = #13#10;
 
-constructor TBaseTkWidget.create(aOwner: TComponent);
+constructor TBaseTkWidget.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
   Width:= 100;
@@ -183,14 +183,14 @@ begin
   FJustify:= _TJ_CENTER;
   FNameExtension:= '';
   FRelief:= _TR_flat;
-  FTakeFocus:= true;
+  FTakeFocus:= True;
   FUnderline:= -1;
   FWrapLength:= '0';
   Font.Name:= GuiPyOptions.GuiFontName; // 'Segoe UI';   // TkDefaultFont and TkTextFont
   Font.Size:= GuiPyOptions.GuiFontSize;
   Font.Style:= [];
   HelpType:= htContext;
-  Sizeable:= true;
+  Sizeable:= True;
 
   FButtonPress:= TEvent.Create(Self);
   FButtonRelease:= TEvent.Create(Self);
@@ -225,7 +225,7 @@ begin
   inherited;
 end;
 
-function TBaseTkWidget.getAttributes(ShowAttributes: integer): string;
+function TBaseTkWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Name|Font';
   if ShowAttributes >= 2 then
@@ -234,7 +234,7 @@ begin
     Result:= Result + '|Cursor|Left|Top|Height|Width|TakeFocus';
 end;
 
-function TBaseTkWidget.getMouseEvents(ShowEvents: integer): string;
+function TBaseTkWidget.getMouseEvents(ShowEvents: Integer): string;
 begin
   Result:= MouseEvents1;
   if ShowEvents >= 2 then
@@ -244,7 +244,7 @@ begin
   Result:= Result + '|';
 end;
 
-function TBaseTkWidget.getKeyboardEvents(ShowEvents: integer): string;
+function TBaseTkWidget.getKeyboardEvents(ShowEvents: Integer): string;
 begin
   Result:= KeyboardEvents1;
   if ShowEvents = 3 then
@@ -252,8 +252,8 @@ begin
   Result:= Result + '|';
 end;
 
-procedure TBaseTkWidget.PaintScrollbar(R: TRect; horizontal: boolean; ttk: boolean = false);
-  var i, mid, i3, i4, i6, i9, i10, i18: integer;
+procedure TBaseTkWidget.PaintScrollbar(R: TRect; horizontal: Boolean; ttk: Boolean = False);
+  var i, mid, i3, i4, i6, i9, i10, i18: Integer;
 begin
   Canvas.Brush.Color:= clBtnFace;
   Canvas.FillRect(R);
@@ -316,14 +316,14 @@ end;
 
 procedure TBaseTkWidget.Paint;
   var tx, ty, tw, th, x, y, w, h, gw, gh, gx, gy, maxw, maxh, mgw, mtw,
-      gtg, bx, by, pl, pt, pr, pb, center: integer;
+      gtg, bx, by, pl, pt, pr, pb, center: Integer;
       pathname: string;
       bmp: Graphics.TBitmap;
       SL: TStringList;
       Compound: TUCompound;
 
   procedure ShowText(R: TRect);
-    var Format: integer; wraplen: double; s: string;
+    var Format: Integer; wraplen: double; s: string;
   begin
     case Justify of
       _TJ_left:   Format:= DT_LEFT;
@@ -331,8 +331,8 @@ procedure TBaseTkWidget.Paint;
     else          Format:= DT_RIGHT;
     end;
     s:= SL.Text;
-    if trim(s) = '' then
-      exit;
+    if Trim(s) = '' then
+      Exit;
     if FUnderline >= 0 then
       insert('&', s, FUnderline + 1);
     if TryStrToFloat(FWrapLength, wraplen) and (wraplen > 0) and (wraplen < tw) then begin
@@ -369,7 +369,7 @@ begin
     if RightSpace <> PPIScale(21) then
       RightSpace:= 0;
 
-    pathname:= FGuiDesigner.getPath + 'images\' + copy(Image, 8, length(Image));
+    pathname:= FGuiDesigner.getPath + 'images\' + Copy(Image, 8, Length(Image));
     if (Image = '') or not FileExists(pathname) or (Compound = _TU_text) then begin
       // without graphic
       center:= (w - tw - LeftSpace - RightSpace) div 2 + LeftSpace;
@@ -385,7 +385,7 @@ begin
         _TA_SE:     begin x:= w - 3 - tw - pr - RightSpace; y:= h - 1 - th - pb; end;
         else        begin x:= 0;                            y:= 0; end;
       end;
-      tw:= min(tw, Width - RightSpace);
+      tw:= Min(tw, Width - RightSpace);
       ShowText(Rect(x, y, x + tw, y + th));
       LeftSpace:= x - PPIScale(21);  // for use in Checkbutton and Radiobutton
       TopSpace:= y;
@@ -400,12 +400,12 @@ begin
 
       case Compound of
         _TU_top, _TU_bottom: begin
-          maxw:= max(tw, gw);
+          maxw:= Max(tw, gw);
           maxh:= gh + gtg + th;
         end;
         _TU_center: begin
-          maxw:= max(tw, gw);
-          maxh:= max(gh, th);
+          maxw:= Max(tw, gw);
+          maxh:= Max(gh, th);
         end;
         _TU_none, _TU_image: begin
           maxw:= gw;
@@ -413,7 +413,7 @@ begin
         end;
         _TU_left, _TU_right: begin
           maxw:= gw + gtg + tw;
-          maxh:= max(th, gh);
+          maxh:= Max(th, gh);
         end;
       end;
       if maxw > w then begin
@@ -646,7 +646,7 @@ procedure TBaseTkWidget.AddParameter(const Value, par: string);
 begin
   old:= 'def ' + Value + '(self):';
   new:= 'def ' + Value + '(self, ' + par + '):';
-  Partner.ReplaceWord(old, new, false);
+  Partner.ReplaceWord(old, new, False);
 end;
 
 procedure TBaseTkWidget.MakeControlVar(Variable, ControlVar: string; Value: string = ''; Typ: string = 'String');
@@ -743,12 +743,12 @@ begin
   end else begin
     filename:= ExtractFileName(Value);
     if Pos('images/', filename) = 1 then
-      System.delete(filename, 1, 7);
+      System.Delete(filename, 1, 7);
     Path:= ExtractFilePath(Partner.Pathname);
     Dest:= Path + 'images\' + filename;
     ForceDirectories(Path + 'images\');
     if not FileExists(Dest) then
-      copyFile(PChar(Value), PChar(Dest), true);
+      copyFile(PChar(Value), PChar(Dest), True);
     FImage:= 'images/' + filename;
     key1:= 'self.' + Name + 'Image';
     s:= key1 + ' = tk.PhotoImage(file=' + asString(FImage) + ')';
@@ -784,7 +784,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.setScrollbar(Value: boolean);
+procedure TBaseTkWidget.setScrollbar(Value: Boolean);
 begin
   if FScrollbar <> Value then begin
     FScrollbar:= Value;
@@ -801,7 +801,7 @@ end;
 
 procedure TBaseTkWidget.MakeScrollbars(Value, TkTyp: string);
   var ScrollbarName, OldValue: string;
-     WidthNoScrollbar, HeightNoScrollbar, WidthScrollbar, HeightScrollbar: integer;
+     WidthNoScrollbar, HeightNoScrollbar, WidthScrollbar, HeightScrollbar: Integer;
 
   procedure DeleteVertical;
   begin
@@ -865,7 +865,7 @@ begin
   FObjectInspector.Invalidate;
 end;
 
-procedure TBaseTkWidget.PaintAScrollbar(Value: boolean);
+procedure TBaseTkWidget.PaintAScrollbar(Value: Boolean);
 begin
   if Value then
     PaintScrollbars(_TB_horizontal)
@@ -877,29 +877,29 @@ begin
   if Scrollbar = _TB_vertical then begin
     R:= ClientRect;
     R.Left:= R.Right - 20;
-    PaintScrollbar(R, false);
+    PaintScrollbar(R, False);
   end;
 
   if Scrollbar = _TB_horizontal then begin
     R:= ClientRect;
     R.Top:= R.Bottom - 20;
-    PaintScrollbar(R, true);
+    PaintScrollbar(R, True);
   end;
 
   if Scrollbar = _TB_both then begin
     R:= ClientRect;
     R.Left:= R.Right - 20;
     R.Bottom:= R.Bottom - 20;
-    PaintScrollbar(R, false);
+    PaintScrollbar(R, False);
     R:= ClientRect;
     R.Top:= R.Bottom - 20;
     R.Right:= R.Right - 20;
-    PaintScrollbar(R, true);
+    PaintScrollbar(R, True);
   end;
 end;
 
-procedure TBaseTkWidget.ShowText(s: string; newWidth, newHeight: integer);
-  var th, tw, x, y: integer;
+procedure TBaseTkWidget.ShowText(s: string; newWidth, newHeight: Integer);
+  var th, tw, x, y: Integer;
 begin
   th:= Canvas.TextHeight(s);
   tw:= Canvas.TextWidth(s);
@@ -960,7 +960,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.setUnderline(aValue: integer);
+procedure TBaseTkWidget.setUnderline(aValue: Integer);
 begin
   if aValue <> FUnderline then begin
     FUnderline:= aValue;
@@ -994,7 +994,7 @@ begin
 end;
 
 procedure TBaseTkWidget.DeleteEvents;
-  var p: integer; s, Event: string; SL1, SL2: TStringList;
+  var p: Integer; s, Event: string; SL1, SL2: TStringList;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   SL1:= TStringList.Create;
@@ -1007,7 +1007,7 @@ begin
       Partner.DeleteBinding(MakeBinding(Name));
       SL1.Add(HandlerNameAndParameter(Event));
     end;
-    delete(s, 1, p);
+    Delete(s, 1, p);
     p:= Pos('|', s);
   end;
   Partner.DeleteOldAddNewMethods(SL1, SL2);
@@ -1031,7 +1031,7 @@ end;
 
 procedure TBaseTkWidget.Calculate3DColors(var DarkColor, LightColor: TColor; Background: TColor);
   const MAX_INTENSITY = 255.0;
-  var r, g, b: integer; lr, lg, lb, dr, dg, db, tmp1, tmp2: real;  Color: TColor;
+  var r, g, b: Integer; lr, lg, lb, dr, dg, db, tmp1, tmp2: real;  Color: TColor;
 begin
   // from: https://github.com/tcltk/tk/blob/main/win/tkWin3d.c
   Color:= Graphics.ColorToRGB(Background);
@@ -1053,15 +1053,15 @@ begin
     lg:= (90 * g)/100;
     lb:= (90 * b)/100;
   end else begin
-       tmp1:= min((14 * r)/10, MAX_INTENSITY);
+       tmp1:= Min((14 * r)/10, MAX_INTENSITY);
     tmp2:= (MAX_INTENSITY + r)/2;
-    lr:= max(tmp1, tmp2);
-    tmp1:= min((14 * g)/10, MAX_INTENSITY);
+    lr:= Max(tmp1, tmp2);
+    tmp1:= Min((14 * g)/10, MAX_INTENSITY);
     tmp2:= (MAX_INTENSITY + g)/2;
-    lg:= max(tmp1, tmp2);
-    tmp1:= min((14 * b)/10, MAX_INTENSITY);
+    lg:= Max(tmp1, tmp2);
+    tmp1:= Min((14 * b)/10, MAX_INTENSITY);
     tmp2:= (MAX_INTENSITY + b)/2;
-    lb:= max(tmp1, tmp2);
+    lb:= Max(tmp1, tmp2);
   end;
   LightColor:= RGB2Color(Round(lr), Round(lg), Round(lb));
 end;
@@ -1077,8 +1077,8 @@ end;
 function TBaseTkWidget.getType;
 begin
   if Pos('TTK', Classname) = 1
-    then Result:= copy(Classname, 4, Length(Classname))
-    else Result:= copy(Classname, 3, Length(Classname));
+    then Result:= Copy(Classname, 4, Length(Classname))
+    else Result:= Copy(Classname, 3, Length(Classname));
 end;
 
 function TBaseTkWidget.getNameAndType;
@@ -1096,7 +1096,7 @@ end;
 procedure TBaseTkWidget.MakeFont;
   var s1, s2: string;
 begin
-  if Name = '' then exit;
+  if Name = '' then Exit;
   s1:= 'self.' + Name + '[''font'']';
   s2:= ' = (' + asString(Font.Name) + ', ' + IntToStr(Font.Size);
   if fsBold   in Font.Style then s2:= s2 + ', ' + asString('bold');
@@ -1110,7 +1110,7 @@ end;
 
 {--- TKMainWindow ------------------------------------------------------------}
 
-function TKMainWindow.getAttributes(ShowAttributes: integer): string;
+function TKMainWindow.getAttributes(ShowAttributes: Integer): string;
   const Attributes1 = '|Transparency|Resizable|Title|Background|Width|Height';
         Attributes2 = Attributes1 + '|Fullscreen|AlwaysOnTop|Iconified';
         Attributes3 = Attributes2 + '|MaxHeight|MaxWidth|MinHeight|MinWidth|Theme';
@@ -1177,7 +1177,7 @@ begin
   end;
 end;
 
-function TKMainWindow.getEvents(ShowEvents: integer): string;
+function TKMainWindow.getEvents(ShowEvents: Integer): string;
 begin
   Result:= MouseEvents1;
   if ShowEvents >= 2 then

@@ -42,7 +42,7 @@ type
     Listeners: TInterfaceList;
     FModelRoot: TLogicPackage;
     FUnknownPackage: TUnitPackage;
-    FLocked: integer;
+    FLocked: Integer;
     procedure CreatePackages;
   public
     NameCache: TStringList;
@@ -57,7 +57,7 @@ type
     procedure Unlock;
     function debug: string;
     property ModelRoot: TLogicPackage read FModelRoot;
-    property Locked: integer read FLocked write FLocked;
+    property Locked: Integer read FLocked write FLocked;
     property UnknownPackage: TUnitPackage read FUnknownPackage;
   end;
 
@@ -71,9 +71,9 @@ type
     Importname: string;
     aGeneric: string;
     GenericName: string;
-    Inner: boolean;
-    Anonym: boolean;
-    SourceRead: boolean;
+    Inner: Boolean;
+    Anonym: Boolean;
+    SourceRead: Boolean;
     //Recursive: boolean;
     constructor Create(aOwner: TModelEntity); override;
     destructor Destroy; override;
@@ -84,18 +84,18 @@ type
     function GetOperations : IModelIterator;
     function getName: string;
     //function isReference: boolean;
-    function getAncestorName(index: integer): string; virtual;
+    function getAncestorName(index: Integer): string; virtual;
     function asValue: string;
     function asType: string;
     function asUMLType: string;
     function ValueToType(Value: string): string;
-    procedure setCapacity(capacity: integer);
+    procedure setCapacity(capacity: Integer);
   end;
 
   TParameter = class(TModelEntity)
   private
     FTypeClassifier : TClassifier;
-    FUsedForAttribute: boolean;
+    FUsedForAttribute: Boolean;
     FValue: string;
   protected
     class function GetBeforeListener: TGUID; override;
@@ -103,7 +103,7 @@ type
   public
     constructor Create(aOwner: TModelEntity); override;
     function asPythonString: string;
-    function asUMLString(ShowParameter: integer): string;
+    function asUMLString(ShowParameter: Integer): string;
     function toShortStringNode: string;
     property TypeClassifier : TClassifier read FTypeClassifier write FTypeClassifier;
     property UsedForAttribute : Boolean read FUsedForAttribute write FUsedForAttribute;
@@ -114,10 +114,10 @@ type
   private
     FTypeClassifier: TClassifier;  // reference
     FValue: string;
-    FConnected: boolean;
+    FConnected: Boolean;
     procedure SetTypeClassifier(const Value: TClassifier);
     procedure SetValue(const Value: string);
-    procedure SetConnected(Value: boolean);
+    procedure SetConnected(Value: Boolean);
   protected
     class function GetBeforeListener: TGUID; override;
     class function GetAfterListener: TGUID; override;
@@ -125,8 +125,8 @@ type
     constructor Create(aOwner: TModelEntity); override;
     property TypeClassifier: TClassifier read FTypeClassifier write SetTypeClassifier;
     property Value: string read FValue write SetValue;
-    property Connected: boolean read FConnected write SetConnected;
-    function toPython(TypeChanged: boolean): string;
+    property Connected: Boolean read FConnected write SetConnected;
+    function toPython(TypeChanged: Boolean): string;
     function toNameType: string;
     function toNameTypeUML: string;
     function VisName: string;
@@ -144,11 +144,11 @@ type
     class function GetBeforeListener: TGUID; override;
     class function GetAfterListener: TGUID; override;
   public
-    hasSourceCode: boolean;
-    hasComment: boolean;
-    isStaticMethod: boolean;
-    isClassMethod: boolean;
-    isPropertyMethod: boolean;
+    hasSourceCode: Boolean;
+    hasComment: Boolean;
+    isStaticMethod: Boolean;
+    isClassMethod: Boolean;
+    isPropertyMethod: Boolean;
     Parentname: string;
     Annotation: string;
     constructor Create(aOwner: TModelEntity); override;
@@ -165,7 +165,7 @@ type
     function toShortStringNode: string;
     function VisName: string;
     function HeadToPython: string;
-    procedure setAttributeScope(aScopeDepth, aLineE: integer);
+    procedure setAttributeScope(aScopeDepth, aLineE: Integer);
     function getFormattedDescription: string;
   end;
 
@@ -204,7 +204,7 @@ type
     property Ancestor: TInterface read FAncestor write SetAncestor;
     function GetExtends : IModelIterator;
     function GetImplementingClasses : IModelIterator;
-    function getAncestorName(index: integer): string; override;
+    function getAncestorName(index: Integer): string; override;
   end;
 
   TClass = class(TClassifier, IBeforeClassListener)
@@ -212,9 +212,9 @@ type
     FAncestor: TClass;
     FAncestors: TObjectList;
     FImplements: TObjectList;
-    FisJUnitTestClass: boolean;
-    procedure SetAncestor(Index: integer; const Value: TClass);
-    function GetAncestor(Index: integer): TClass;
+    FisJUnitTestClass: Boolean;
+    procedure SetAncestor(Index: Integer; const Value: TClass);
+    function GetAncestor(Index: Integer): TClass;
     //Ancestorlisteners
     procedure AncestorChange(Sender: TModelEntity);
     procedure AncestorAddChild(Sender: TModelEntity; NewChild: TModelEntity);
@@ -240,16 +240,16 @@ type
     function AddImplements(I: TInterface): TInterface;
     function AddAncestors(C: TClass): TClass;
     procedure ViewImplements(I: TInterface);
-    property Ancestor[Index: integer]: TClass read GetAncestor write SetAncestor;
-    property isJUnitTestClass: boolean read FisJUnitTestClass write FisJUnitTestClass;
+    property Ancestor[Index: Integer]: TClass read GetAncestor write SetAncestor;
+    property isJUnitTestClass: Boolean read FisJUnitTestClass write FisJUnitTestClass;
     function GetImplements : IModelIterator;
     function GetDescendants : IModelIterator;
     function FindOperation(O : TOperation) : TOperation;
-    function OperationIsProperty(Name: string): boolean;
+    function OperationIsProperty(Name: string): Boolean;
     function FindAttribute(const NewName: string; TypeClass: TClassifier): TAttribute;
     function GetTyp: string;
-    function getAncestorName(index: integer): string; override;
-    function AncestorsCount: integer;
+    function getAncestorName(index: Integer): string; override;
+    function AncestorsCount: Integer;
     function AncestorsAsString: string;
   end;
 
@@ -296,14 +296,14 @@ type
     class function GetBeforeListener: TGUID; override;
     class function GetAfterListener: TGUID; override;
   public
-    ImportStartline: integer;
-    ImportEndline: integer;
+    ImportStartline: Integer;
+    ImportEndline: Integer;
     FullImports: TStringList;
     ClassImports: TStringList;
     constructor Create(aOwner: TModelEntity); override;
     destructor Destroy; override;
     procedure Clear;
-    function MakeClass(const NewName, Filename: string): TClass;
+    function MakeClass(const NewName, FileName: string): TClass;
     procedure AddClass(const aClass: TClass);
     procedure AddClassWithoutShowing(const aClass: TClass);
     function MakeInterface(const NewName, filename: string): TInterface;
@@ -316,7 +316,7 @@ type
     function GetObject(const aName: string): TObjekt;
     function AddUnitDependency(U : TUnitPackage; aVisibility : TVisibility): TUnitDependency;
     function FindClassifier(const CName: string; TheClass : TModelEntityClass = nil;
-              CaseSense : boolean = False): TClassifier;
+              CaseSense : Boolean = False): TClassifier;
     function FindClass(const Pathname: string): TClassifier;
     function GetClassifiers : IModelIterator;
     function GetUnitDependencies : IModelIterator;
@@ -340,7 +340,7 @@ type
     procedure Clear;
     function AddUnit(const NewUnitName: string): TUnitPackage;
     // might need a AddLogicPackage also
-    function FindUnitPackage(const PName: string; CaseSense : boolean = False): TUnitPackage;
+    function FindUnitPackage(const PName: string; CaseSense : Boolean = False): TUnitPackage;
     function GetPackages : IModelIterator;
     function GetAllUnitPackages : IModelIterator;
     function GetAllClassifiers : IModelIterator;
@@ -365,7 +365,7 @@ type
     Ancestor : TClass;
   public
     constructor Create(aAncestor : TClass);
-    function Accept(M : TModelEntity) : boolean; override;
+    function Accept(M : TModelEntity) : Boolean; override;
   end;
 
   //Used by Interface.GetImplementingClasses
@@ -374,13 +374,13 @@ type
     Int : TInterface;
   public
     constructor Create(I : TInterface);
-    function Accept(M : TModelEntity) : boolean; override;
+    function Accept(M : TModelEntity) : Boolean; override;
   end;
 
   TStrCompare = function(const S1, S2: string): Integer;
 
 const
-  CompareFunc : array[boolean] of TStrCompare = (CompareText, CompareStr);
+  CompareFunc : array[Boolean] of TStrCompare = (CompareText, CompareStr);
 
 { TObjectModel }
 
@@ -415,10 +415,10 @@ end;
 
 procedure TObjectModel.Fire(Method: TListenerMethodType; Info: TModelEntity = nil);
 var
-  I: integer;
+  I: Integer;
   L,Dum: IUnknown;
 begin
-  if (FLocked = 0) and assigned(Listeners) then
+  if (FLocked = 0) and Assigned(Listeners) then
     for I := 0 to Listeners.Count - 1 do
     begin
       L := Listeners[I];
@@ -438,13 +438,13 @@ end;
 procedure TObjectModel.Lock;
 begin
   Fire(mtBeforeChange);
-  inc(FLocked);
+  Inc(FLocked);
   ModelRoot.Locked := True;
 end;
 
 procedure TObjectModel.Unlock;
 begin
-  dec(FLocked);
+  Dec(FLocked);
   if FLocked = 0 then begin
     ModelRoot.Locked := False;
     Fire(mtAfterChange);
@@ -471,13 +471,13 @@ end;
 
 procedure TObjectModel.RemoveListener(Listener: IUnknown);
 begin
-  if assigned(Listeners) then
+  if Assigned(Listeners) then
     Listeners.Remove(Listener);
 end;
 
 procedure TObjectModel.ClearListeners;
 begin
-  if assigned(Listeners) then
+  if Assigned(Listeners) then
     Listeners.Clear;
 end;
 
@@ -489,7 +489,7 @@ begin
   FPackages := TObjectList.Create(True);
   Files:= TStringList.Create;
   Files.Duplicates:= dupIgnore;
-  Files.Sorted:= true;
+  Files.Sorted:= True;
 end;
 
 destructor TLogicPackage.Destroy;
@@ -529,9 +529,9 @@ begin
 end;
 
 //Searches in this and dependant logic packages after a unit with name PName.
-function TLogicPackage.FindUnitPackage(const PName: string; CaseSense : boolean = False): TUnitPackage;
+function TLogicPackage.FindUnitPackage(const PName: string; CaseSense : Boolean = False): TUnitPackage;
 var
-  I: integer;
+  I: Integer;
   P: TAbstractPackage;
   F : TStrCompare;
 begin
@@ -589,7 +589,7 @@ begin
       InAddNested(Self);
     except
     end;
-    Result := TModelIterator.Create(List, true);
+    Result := TModelIterator.Create(List, True);
   finally
     FreeAndNil(List);
   end;
@@ -609,7 +609,7 @@ begin
       while Cmi.HasNext do
         List.Add(Cmi.Next);
     end;
-    Result := TModelIterator.Create(List, true);
+    Result := TModelIterator.Create(List, True);
   finally
     FreeAndNil(List);
   end;
@@ -629,14 +629,14 @@ begin
       while Cmi.HasNext do
         List.Add(Cmi.Next);
     end;
-    Result := TModelIterator.Create(List, true);
+    Result := TModelIterator.Create(List, True);
   finally
     FreeAndNil(List);
   end;
 end;
 
 function TLogicPackage.Debug: string;
-  var SL: TStringList; i: integer;
+  var SL: TStringList; i: Integer;
       Ci, Ai, Oi, Pi: IModelIterator;
       cent: TClassifier;
       Attribute: TAttribute;
@@ -655,7 +655,7 @@ begin
   Ci:= GetAllClassifiers;
   while Ci.HasNext do begin
     cent:= TClassifier(Ci.Next);
-    inc(i);
+    Inc(i);
     SL.Add('#' + IntTostr(i) + ' ' + Cent.Name + ' - ' + Cent.Importname + ' - ' + Cent.Pathname);
     if (Cent is TClass) and ((Cent as TClass).AncestorsCount > 0) then
       SL.Add('Ancestor: ' + (Cent as TClass).Ancestor[0].Name);
@@ -663,7 +663,7 @@ begin
     Ai:= Cent.GetAllAttributes;
     while Ai.HasNext do begin
       Attribute:= ai.Next as TAttribute;
-      SL.Add(Attribute.toPython(false));
+      SL.Add(Attribute.toPython(False));
     end;
     SL.Add('--- Operations ---');
     oi:= cent.GetOperations;
@@ -714,23 +714,23 @@ begin
   FClassifiers.Clear;
 end;
 
-function TUnitPackage.MakeClass(const NewName, Filename: string): TClass;
+function TUnitPackage.MakeClass(const NewName, FileName: string): TClass;
   var aClass: TClassifier;
 begin
-  aClass:= FindClassifier(NewName, TClass, true);
+  aClass:= FindClassifier(NewName, TClass, True);
   if aClass = nil then begin
     aClass:= TClass.Create(Self);
     aClass.Name:= NewName;  // sets package too
   end;
   Result:= (aClass as TClass);
-  Result.Pathname:= Filename;
+  Result.Pathname:= FileName;
 end;
 
 procedure TUnitPackage.AddClass(const aClass: TClass);
   var aClass1: TClassifier;
 begin
-  aClass1:= FindClassifier(aClass.Name, TClass, true);
-  if assigned(aClass1) then begin
+  aClass1:= FindClassifier(aClass.Name, TClass, True);
+  if Assigned(aClass1) then begin
     Fire(mtBeforeAddChild, aClass1);
     Fire(mtAfterAddChild, aClass1);
   end else begin
@@ -743,16 +743,16 @@ end;
 procedure TUnitPackage.AddClassWithoutShowing(const aClass: TClass);
   var aClass1: TClassifier;
 begin
-  aClass1:= FindClassifier(aClass.Name, TClass, true);
-  if assigned(aClass1) then exit;
-  if assigned(FClassifiers) then FClassifiers.Add(aClass);
+  aClass1:= FindClassifier(aClass.Name, TClass, True);
+  if Assigned(aClass1) then Exit;
+  if Assigned(FClassifiers) then FClassifiers.Add(aClass);
 end;
 
-function TUnitPackage.MakeInterface(const NewName, Filename: string): TInterface;
+function TUnitPackage.MakeInterface(const NewName, FileName: string): TInterface;
 begin
   Result := TInterface.Create(Self);
   Result.FName := NewName;
-  Result.Pathname:= Filename;
+  Result.Pathname:= FileName;
 end;
 
 procedure TUnitPackage.AddInterface(const aInterface: TInterface);
@@ -790,12 +790,12 @@ begin
     Result:= GetObjekt(NewName, aClass.Name);
   except
     Result:= nil;
-    exit;
+    Exit;
   end;
   if Result = nil then begin
     Result:= TObjekt.Create(Self);
     Result.FName:= NewName;
-    Result.IsVisible:= true;
+    Result.IsVisible:= True;
     Result.aClass:= aClass;
     FClassifiers.Add(Result);
   end;
@@ -824,7 +824,7 @@ begin
         aObjekt:= (aClassifier as TObjekt);
         if (aClassifier.Name = aName) and (GetShortType(aObjekt.aClass.name) = Typ) then begin
           Result:= (aClassifier as TObjekt);
-          break;
+          Break;
         end;
       end;
     end;
@@ -871,14 +871,14 @@ end;
 procedure TUnitPackage.DeleteObject(aName: string);
   var aObject: TClassifier;
 begin
-  aObject:= FindClassifier(aName, nil, true);   // true wegen casesensitive
-  if assigned(aObject) then
+  aObject:= FindClassifier(aName, nil, True);   // true wegen casesensitive
+  if Assigned(aObject) then
     FClassifiers.Remove(aObject);
 end;
 
 function TUnitPackage.GetObject(const aName: string): TObjekt;
 begin
-  Result:= TObjekt(FindClassifier(aName, nil, false));
+  Result:= TObjekt(FindClassifier(aName, nil, False));
 end;
 
 class function TUnitPackage.GetAfterListener: TGUID;
@@ -896,7 +896,7 @@ end;
   Used by the parser to find ancestorclass within current scope.
 }
 function TUnitPackage.FindClassifier(const CName: string;
-  TheClass : TModelEntityClass = nil; CaseSense : boolean = False): TClassifier;
+  TheClass : TModelEntityClass = nil; CaseSense : Boolean = False): TClassifier;
 var
   C : TClassifier;
   Mi : IModelIterator;
@@ -907,12 +907,12 @@ var
     var Mi: IModelIterator;
   begin
     Result := nil;
-    if assigned(TheClass) then
+    if Assigned(TheClass) then
       Mi := TModelIterator.Create( P.GetClassifiers , TheClass )
-    else if assigned(P) then
+    else if Assigned(P) then
       Mi := P.GetClassifiers
     else
-      exit;
+      Exit;
     while Mi.HasNext do begin
       C := Mi.Next as TClassifier;
       if F(C.Name, CName) = 0 then begin
@@ -937,7 +937,7 @@ begin
           Break;
       end;
     end;
-  except on e: exception do
+  except on e: Exception do
     ErrorMsg(' TUnitPackage.FindClassifier');
   end;
 end;
@@ -1005,7 +1005,7 @@ begin
     Ai:= Cent.GetAllAttributes;
     while Ai.HasNext do begin
       Attribute:= ai.Next as TAttribute;
-      SL.Add(Attribute.toPython(false));
+      SL.Add(Attribute.toPython(False));
     end;
     SL.Add('--- Operations ---');
     oi:= cent.GetOperations;
@@ -1131,11 +1131,11 @@ begin
   Fire(mtAfterAddChild, I);
 end;
 
-procedure TClass.SetAncestor(Index: integer; const Value: TClass);
+procedure TClass.SetAncestor(Index: Integer; const Value: TClass);
 var
   Old: TClass;
 begin
-  if Value = Self then exit;
+  if Value = Self then Exit;
   if (0 <= Index) and (Index < FAncestors.Count) and (Value <> FAncestors[Index]) then
   begin
     Old := TClass(FAncestors[Index]);
@@ -1149,7 +1149,7 @@ begin
   end;
 end;
 
-function TClass.getAncestor(Index: integer): TClass;
+function TClass.getAncestor(Index: Integer): TClass;
 begin
   if (0 <= Index) and (Index <= FAncestors.Count) then
     Result:= TClass(FAncestors[Index])
@@ -1172,7 +1172,7 @@ begin
 end;
 
 procedure TClass.AncestorRemove(Sender: TModelEntity);
-  var i: integer;
+  var i: Integer;
 begin
   i:= FAncestors.IndexOf(Self);
   if (0 <= i) and (i < FAncestors.Count) then begin
@@ -1235,17 +1235,17 @@ begin
   end;
 end;
 
-function TClass.OperationIsProperty(Name: string): boolean;
+function TClass.OperationIsProperty(Name: string): Boolean;
 var
   Mi: IModelIterator;
   O : TOperation;
 begin
-  Result := false;
+  Result := False;
   Mi := GetOperations;
   while Mi.HasNext do begin
     O := Mi.Next as TOperation;
     if O.isPropertyMethod and (CompareText(O.Name, Name) = 0) then
-      exit(true);
+      Exit(True);
   end;
 end;
 
@@ -1264,7 +1264,7 @@ begin
     A := Mi.Next as TAttribute;
     if (CompareText(NewName, A.Name) = 0) and
        ((TypeClass = nil) or (CompareText(TypeClass.Name, A.TypeClassifier.Name) = 0)) then
-      exit(A);
+      Exit(A);
   end;
 end;
 
@@ -1275,20 +1275,20 @@ begin
     else Result:= ImportName;
 end;
 
-function TClass.getAncestorName(index: integer): string;
+function TClass.getAncestorName(index: Integer): string;
 begin
-  if assigned(Ancestor[index])
+  if Assigned(Ancestor[index])
     then Result:= Ancestor[index].Name
     else Result:= '';
 end;
 
-function TClass.AncestorsCount: integer;
+function TClass.AncestorsCount: Integer;
 begin
   Result:= fAncestors.Count;
 end;
 
 function TClass.AncestorsAsString: string;
-  var i: integer;
+  var i: Integer;
 begin
   if AncestorsCount = 0 then
     Result:= ''
@@ -1325,14 +1325,14 @@ begin
 end;
 
 function TObjekt.AddAttribute(const NewName: string): TAttribute;
-  var i: integer; aAttribute: TAttribute;
+  var i: Integer; aAttribute: TAttribute;
 begin
   Result:= nil;
   for i:= 0 to FFeatures.Count - 1 do begin
     aAttribute:= FFeatures.Items[i] as TAttribute;
     if aAttribute.Name = NewName then begin
       Result:= aAttribute;
-      break;
+      Break;
     end;
   end;
   if Result = nil then begin
@@ -1377,7 +1377,7 @@ constructor TParameter.Create(aOwner: TModelEntity);
 begin
   inherited Create(aOwner);
   FTypeClassifier:= nil;
-  FUsedForAttribute:= false;
+  FUsedForAttribute:= False;
   fValue:= '';
 end;
 
@@ -1394,20 +1394,20 @@ end;
 function TParameter.asPythonString: string;
 begin
   Result:= Name;
-  if assigned(TypeClassifier) then
+  if Assigned(TypeClassifier) then
     // pep 0484 forward references, shell be solved with python 3.11 but arn't,
     Result:= Result + ': ' + TypeClassifier.asType;
   if Value <> '' then
     Result:= Result + ' = ' + Value;
 end;
 
-function TParameter.asUMLString(ShowParameter: integer): string;
+function TParameter.asUMLString(ShowParameter: Integer): string;
   var s: string;
 begin
   s:= '';
   if ShowParameter >= 3 then begin
     s:= Name;
-    if assigned(TypeClassifier) and (ShowParameter in [4, 6]) then
+    if Assigned(TypeClassifier) and (ShowParameter in [4, 6]) then
       s:= s + ': ' + TypeClassifier.asUMLType;
     if (Value <> '') and (ShowParameter >= 5) then
       s:= s + ' = ' + Value;
@@ -1417,7 +1417,7 @@ end;
 
 function TParameter.toShortStringNode: string;
 begin
-  if assigned(TypeClassifier)
+  if Assigned(TypeClassifier)
     then result:= Name + ': ' + TypeClassifier.asUMLType
     else result:= Name;
 end;
@@ -1464,7 +1464,7 @@ begin
   for var i:= 0 to FParameters.Count - 1 do
     if TParameter(FParameters.Items[i]).FName = NewName then begin
       FParameters.Delete(i);
-      break;
+      Break;
     end;
 end;
 
@@ -1527,7 +1527,7 @@ begin
     FAttributes.Add(Result);
     Fire(mtBeforeAddChild, Result);
     Fire(mtAfterAddChild, Result);
-  except on e: exception do begin
+  except on e: Exception do begin
     // FAttributes.Remove(Result);
     ErrorMsg('TOperation.AddAttribute');
     end;
@@ -1549,17 +1549,17 @@ begin
 
   it2:= GetParameters;
   while it2.HasNext do begin
-    Parameter:= it2.next as TParameter;
+    Parameter:= it2.Next as TParameter;
     if (Parameter.Name <> 'cls') and (Parameter.Name <> 'self') then
       s:= s + Parameter.asPythonString + ', ';
   end;
-  if Copy(s, length(s) - 1, 2) = ', ' then
-    Delete(s, length(s) - 1, 2);
+  if Copy(s, Length(s) - 1, 2) = ', ' then
+    Delete(s, Length(s) - 1, 2);
   s:= s + ')';
   case OperationType of
     otConstructor: s:= '__init__' + s;
     otProcedure:   s:= VisName + s;
-    otFunction:    if assigned(ReturnValue)
+    otFunction:    if Assigned(ReturnValue)
                      then s:= VisName + s + ' -> ' + ReturnValue.asType
                      else s:= VisName + s;
   end;
@@ -1581,18 +1581,18 @@ begin
   s:= '(';
   it2:= GetParameters;
   while it2.HasNext do begin
-    Parameter:= it2.next as TParameter;
-    if assigned(Parameter.TypeClassifier)
+    Parameter:= it2.Next as TParameter;
+    if Assigned(Parameter.TypeClassifier)
       then s:= s + Parameter.TypeClassifier.asType + ', '
       else s:= s + ', ';
   end;
-  if Copy(s, length(s) - 1, 2) = ', ' then
-    Delete(s, length(s) - 1, 2);
+  if Copy(s, Length(s) - 1, 2) = ', ' then
+    Delete(s, Length(s) - 1, 2);
   s:= s + '):';
   case OperationType of
     otConstructor: Result:= '__init__' + s;
     otProcedure:   Result:= Name + s;
-    otFunction:    if assigned(ReturnValue)
+    otFunction:    if Assigned(ReturnValue)
                      then Result:= Name + s + ' ->' + ReturnValue.asType
                      else Result:= Name + s;
   end;
@@ -1604,17 +1604,17 @@ begin
   s:= '(';
   it2:= GetParameters;
   while it2.HasNext do begin
-    Parameter:= it2.next as TParameter;
+    Parameter:= it2.Next as TParameter;
     if (Parameter.Name <> 'self') and (Parameter.Name <> 'cls') then
       s:= s + Parameter.asUMLString(4) + ', ';
   end;
-  if Copy(s, length(s)-1, 2) = ', ' then
-    Delete(s, length(s)-1, 2); // delete last comma
+  if Copy(s, Length(s)-1, 2) = ', ' then
+    Delete(s, Length(s)-1, 2); // delete last comma
   s:= s + ')';
   case OperationType of
     otConstructor: Result:= Name + s;
     otProcedure:   Result:= Name + s;
-    otFunction:    if assigned(ReturnValue)
+    otFunction:    if Assigned(ReturnValue)
                      then Result:= Name + s + ': ' + ReturnValue.asUMLType
                      else Result:= Name + s;
   end;
@@ -1624,8 +1624,8 @@ function TOperation.VisName: string;
   var s: string;
 begin
   s:= Name;
-  while (length(s) > 0) and (s[1] = '_') do
-    delete(s, 1, 1);
+  while (Length(s) > 0) and (s[1] = '_') do
+    Delete(s, 1, 1);
   case Visibility of
     viPrivate: s:= '__' + s;
     viProtected: s:= '_' + s;
@@ -1633,13 +1633,13 @@ begin
   Result:= s;
 end;
 
-procedure TOperation.setAttributeScope(aScopeDepth, aLineE: integer);
+procedure TOperation.setAttributeScope(aScopeDepth, aLineE: Integer);
   var It: IModelIterator;
       Attribute: TAttribute;
 begin
   it:= GetAttributes;
   while it.HasNext do begin
-    Attribute:= it.next as TAttribute;
+    Attribute:= it.Next as TAttribute;
     if (Attribute.LineE = 0) and (Attribute.ScopeDepth = ScopeDepth) then
       Attribute.LineE:= LineE;
   end;
@@ -1659,7 +1659,7 @@ constructor TAttribute.Create(aOwner: TModelEntity);
 begin
   inherited Create(aOwner);
   FTypeClassifier:= nil;
-  FConnected:= false;
+  FConnected:= False;
   FValue:= '';
 end;
 
@@ -1705,9 +1705,9 @@ begin
   Fire(mtAfterEntityChange)
 end;
 
-procedure TAttribute.SetConnected(Value: boolean);
+procedure TAttribute.SetConnected(Value: Boolean);
 var
-  OldValue: boolean;
+  OldValue: Boolean;
 begin
   OldValue := FConnected;
   FConnected := Value;
@@ -1723,8 +1723,8 @@ function TAttribute.VisName: string;
   var s: string;
 begin
   s:= Name;
-  while (length(s) > 0) and (s[1] = '_') do
-    delete(s, 1, 1);
+  while (Length(s) > 0) and (s[1] = '_') do
+    Delete(s, 1, 1);
   case Visibility of
     viPrivate: s:= '__' + s;
     viProtected: s:= '_' + s;
@@ -1732,18 +1732,18 @@ begin
   Result:= s;
 end;
 
-function TAttribute.toPython(TypeChanged: boolean): string;
+function TAttribute.toPython(TypeChanged: Boolean): string;
   const Values = '|0|0.0|''''|True|False|None|[]|()|{}|';
-  var s: string; count: integer;
+  var s: string; Count: Integer;
 begin
   s:= VisName;
   if not Static then
     s:= 'self.' + s;
   if IsFinal then begin
     s:= s + ': Final';
-    if assigned(TypeClassifier) then
+    if Assigned(TypeClassifier) then
       s:= s + '[' + TypeClassifier.asType + ']';
-  end else if assigned(TypeClassifier) then begin
+  end else if Assigned(TypeClassifier) then begin
     s:= s + ': ' + TypeClassifier.asType;
     if TypeChanged and (Pos('|' + Value + '|', Values) > 0) then
       Value:= TypeClassifier.asValue;  // Value of attribute is changed
@@ -1751,26 +1751,26 @@ begin
   s:= s + ' = ';
   if Value <> '' then
     s:= s + Value
-  else if assigned(TypeClassifier) then
+  else if Assigned(TypeClassifier) then
     s:= s + TypeClassifier.asValue
   else
     s:= s + 'None';
   if Static
-    then count:= Level + 1
-    else count:= Level + 2;
-  Result:= StringTimesN(FConfiguration.Indent1, count) + s;
+    then Count:= Level + 1
+    else Count:= Level + 2;
+  Result:= StringTimesN(FConfiguration.Indent1, Count) + s;
 end;
 
 function TAttribute.toNameType: string;
 begin
-  if assigned(TypeClassifier)
+  if Assigned(TypeClassifier)
     then Result:= Name + ': ' + TypeClassifier.asType
     else Result:= Name;
 end;
 
 function TAttribute.toNameTypeUML: string;
 begin
-  if assigned(TypeClassifier)
+  if Assigned(TypeClassifier)
     then Result:= Name + ': ' + TypeClassifier.asUMLType
     else Result:= Name;
 end;
@@ -1794,8 +1794,8 @@ begin
   inherited Create(aOwner);
   FFeatures := TObjectList.Create(True);
   GenericName:= '';
-  Inner:= false;
-  SourceRead:= false;
+  Inner:= False;
+  SourceRead:= False;
   //Recursive:= false;
 end;
 
@@ -1826,7 +1826,7 @@ end;
 
 function TClassifier.GetAllAttributes: IModelIterator;
 begin
-  Result := TModelIterator.Create( GetFeatures , TAttribute, Low(TVisibility), ioNone, true);
+  Result := TModelIterator.Create( GetFeatures , TAttribute, Low(TVisibility), ioNone, True);
 end;
 
 function TClassifier.GetOperations: IModelIterator;
@@ -1839,7 +1839,7 @@ begin
   Result:= Name;
 end;
 
-function TClassifier.getAncestorName(index: integer): string;
+function TClassifier.getAncestorName(index: Integer): string;
 begin
   Result:= '';
 end;
@@ -1912,7 +1912,7 @@ begin
     Result:= 'integer';
 end;
 
-procedure TClassifier.setCapacity(capacity: integer);
+procedure TClassifier.setCapacity(capacity: Integer);
 begin
   FFeatures.Capacity:= capacity;
 end;
@@ -2006,9 +2006,9 @@ begin
   Fire(mtAfterAddChild, Result);
 end;
 
-function TInterface.getAncestorName(index: integer): string;
+function TInterface.getAncestorName(index: Integer): string;
 begin
-  if assigned(Ancestor)
+  if Assigned(Ancestor)
     then Result:= Ancestor.Name
     else Result:= '';
 end;
@@ -2050,8 +2050,8 @@ begin
 end;
 
 //Returns true if M inherits from ancestor
-function TClassDescendantFilter.Accept(M: TModelEntity): boolean;
-  var i: integer;
+function TClassDescendantFilter.Accept(M: TModelEntity): Boolean;
+  var i: Integer;
 begin
   i:= (M as TClass).fAncestors.IndexOf(Ancestor);
   Result := (M is TClass) and (i <> -1);
@@ -2066,7 +2066,7 @@ begin
 end;
 
 //Returns true if M implements interface Int
-function TInterfaceImplementsFilter.Accept(M: TModelEntity): boolean;
+function TInterfaceImplementsFilter.Accept(M: TModelEntity): Boolean;
 begin
   Result := (M is TClass) and ((M as TClass).FImplements.IndexOf(Int)<>-1);
 end;

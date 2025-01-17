@@ -40,19 +40,19 @@ type
       NewDPI: Integer);
   private
     // Tk
-    FAlwaysOnTop: boolean;
-    FFullscreen: boolean;
-    FIconified: boolean;
-    FMaxHeight: integer;
-    FMaxWidth: integer;
-    FMinHeight: integer;
-    FMinWidth: integer;
-    FResizable: boolean;
-    FUndecorated: boolean;
+    FAlwaysOnTop: Boolean;
+    FFullscreen: Boolean;
+    FIconified: Boolean;
+    FMaxHeight: Integer;
+    FMaxWidth: Integer;
+    FMinHeight: Integer;
+    FMinWidth: Integer;
+    FResizable: Boolean;
+    FUndecorated: Boolean;
     FTheme: TTheme;
     FTransparency: real;
     FTitle: string;
-    FFontSize: integer;
+    FFontSize: Integer;
     Indent1: string;
     Indent2: string;
 
@@ -75,9 +75,9 @@ type
     FMouseWheel: TEvent;
     FVisibility: TEvent;
     // Qt attributes
-    FAnimated: boolean;
-    FDockNestingEnabled: boolean;
-    FDocumentMode: boolean;
+    FAnimated: Boolean;
+    FDockNestingEnabled: Boolean;
+    FDocumentMode: Boolean;
     FTabShape: TTabShape;
     FToolButtonStyle: TToolButtonStyle;
     // Qt signals
@@ -97,34 +97,34 @@ type
     procedure SetGridOptions;
     procedure getFontSize;
   public
-    ReadOnly: boolean;
+    ReadOnly: Boolean;
     Pathname: string;
     Partner: TEditorForm;
-    Modified: boolean;
+    Modified: Boolean;
     constructor Create(AOwner: TComponent); override;
     procedure InitEvents;
     procedure Open(Pathname, State: string; WidthHeight: TPoint; Partner: TEditorForm);
     procedure EnterForm(Sender: TObject); //override;
-    procedure Save(MitBackup: boolean);
+    procedure Save(MitBackup: Boolean);
     procedure Print;
     procedure UpdateState;
     procedure EnsureOnDesktop;
     procedure setAttribute(Attr, Value, Typ: string);
-    function getAttributes(ShowAttributes: integer): string;
-    function getEvents(ShowEvents: integer): string;
+    function getAttributes(ShowAttributes: Integer): string;
+    function getEvents(ShowEvents: Integer): string;
     procedure setEvent(Event: string);
     function HandlerName(Event: string): string;
     function MakeHandler(event: string): string;
     procedure DeleteEventHandler(const Event: string);
     function MakeBinding(Eventname: string): string;
     // IEditCommands implementation
-    function CanCopy: boolean;
-    function CanCut: boolean;
+    function CanCopy: Boolean;
+    function CanCut: Boolean;
     function IEditCommands.CanDelete = CanCut;
-    function CanPaste: boolean;
-    function CanRedo: boolean;
-    function CanSelectAll: boolean;
-    function CanUndo: boolean;
+    function CanPaste: Boolean;
+    function CanRedo: Boolean;
+    function CanSelectAll: Boolean;
+    function CanUndo: Boolean;
     procedure ExecCopy;
     procedure ExecCut;
     procedure ExecDelete;
@@ -134,23 +134,23 @@ type
     procedure ExecUndo;
     procedure EndOfResizeMoveDetected(var Msg: Tmessage); message WM_EXITSIZEMOVE;
     procedure Paint; override;
-    procedure Zoom(_in: boolean);
-    procedure Scale(NewPPI, OldPPI: integer);
+    procedure Zoom(_in: Boolean);
+    procedure Scale(NewPPI, OldPPI: Integer);
   published
-    property AlwaysOnTop: boolean read FAlwaysOnTop write FAlwaysOnTop;
+    property AlwaysOnTop: Boolean read FAlwaysOnTop write FAlwaysOnTop;
     property Background: TColor read getBackground write setBackground;
-    property Fullscreen: boolean read FFullscreen write FFullscreen;
-    property Iconified: boolean read FIconified write FIconified;
-    property MaxHeight: integer read FMaxHeight write FMaxHeight;
-    property MaxWidth: integer read FMaxWidth write FMaxWidth;
-    property MinHeight: integer read FMinHeight write FMinHeight;
-    property MinWidth: integer read FMinWidth write FMinWidth;
-    property Resizable: boolean read FResizable write FResizable;
+    property Fullscreen: Boolean read FFullscreen write FFullscreen;
+    property Iconified: Boolean read FIconified write FIconified;
+    property MaxHeight: Integer read FMaxHeight write FMaxHeight;
+    property MaxWidth: Integer read FMaxWidth write FMaxWidth;
+    property MinHeight: Integer read FMinHeight write FMinHeight;
+    property MinWidth: Integer read FMinWidth write FMinWidth;
+    property Resizable: Boolean read FResizable write FResizable;
     property Title: string read FTitle write FTitle;
     property Theme: TTheme read FTheme write FTheme;
     property Transparency: real read FTransparency write setTransparency;
-    property Undecorated: boolean read FUndecorated write FUndecorated;
-    property FontSize: integer read FFontSize write FFontSize;
+    property Undecorated: Boolean read FUndecorated write FUndecorated;
+    property FontSize: Integer read FFontSize write FFontSize;
     property Height;
     property Width;
     // events
@@ -175,9 +175,9 @@ type
     {$WARNINGS ON}
     // Qt
     // attributes
-    property Animated: boolean read FAnimated write FAnimated;
-    property DockNestingEnabled: boolean read FDockNestingEnabled write FDockNestingEnabled;
-    property DocumentMode: boolean read FDocumentMode write FDocumentMode;
+    property Animated: Boolean read FAnimated write FAnimated;
+    property DockNestingEnabled: Boolean read FDockNestingEnabled write FDockNestingEnabled;
+    property DocumentMode: Boolean read FDocumentMode write FDocumentMode;
     property TabShape: TTabShape read FTabShape write FTabShape;
     property ToolButtonStyle: TToolButtonStyle read FToolButtonStyle write FToolButtonStyle;
     //  signals QWidget
@@ -203,10 +203,10 @@ uses Clipbrd, Themes, SysUtils, Controls, Math, System.Generics.Collections,
 constructor TFGUIForm.Create(AOwner: TComponent);
 begin
   inherited;
-  FAlwaysOnTop:= false;
-  FIconified:= false;
-  FFullscreen:= false;
-  FResizable:= true;
+  FAlwaysOnTop:= False;
+  FIconified:= False;
+  FFullscreen:= False;
+  FResizable:= True;
   FTransparency:= 1;
   FTheme:= vista;
   Indent1:= FConfiguration.Indent1;
@@ -214,7 +214,7 @@ begin
   // don't theme this window
   SetWindowTheme(Handle, nil, nil);
   SetGridOptions;
-  ParentFont:= false;
+  ParentFont:= False;
 end;
 
 procedure TFGUIForm.InitEvents;
@@ -256,24 +256,24 @@ end;
 
 procedure TFGUIForm.Open(Pathname, State: string; WidthHeight: TPoint; Partner: TEditorForm);
 begin
-  self.Pathname:= Pathname;
-  self.Partner:= Partner;
+  Self.Pathname:= Pathname;
+  Self.Partner:= Partner;
   {$WARNINGS OFF}
   if Partner.FrameType < 3
     then Widget:= TKMainWindow.Create(nil)
     else Widget:= TQtMainWindow.Create(nil);
   Widget.Partner:= Partner;
   {$WARNINGS ON}
-  setAnimation(false);
+  setAnimation(False);
   ClientWidth:= PPIScale(WidthHeight.X);
   ClientHeight:= PPIScale(WidthHeight.Y);
   Name:= UUtils.GetUniqueName(PyIDEMainForm, ChangeFileext(ExtractFileName(Pathname), ''));
-  Modified:= false;
+  Modified:= False;
   SetWidgetPartners;
   OnActivate:= EnterForm;
   PyIDEMainForm.ConnectGUIandPyWindow(Self);
   EnterForm(Self); // must stay!
-  SetAnimation(true);
+  SetAnimation(True);
   ReadOnly:= IsWriteProtected(Pathname);
   if FontSize = 0 then
     GetFontSize;
@@ -281,20 +281,20 @@ end;
 
 procedure TFGUIForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  FGUIDesigner.ELDesigner.Active:= false;
+  FGUIDesigner.ELDesigner.Active:= False;
   FGUIDesigner.ELDesigner.DesignControl:= nil;
   FGUIDesigner.DesignForm:= nil;
   FObjectInspector.RefreshCBObjects;
   if PyIDEOptions.SaveFilesAutomatically then
     Save(PyIDEOptions.CreateBackupFiles);
-  CanClose:= true;
+  CanClose:= True;
 end;
 
 procedure TFGUIForm.FormClose(Sender: TObject; var aAction: TCloseAction);
 begin
   if Assigned(Partner) then begin
     Partner.Partner:= nil;
-    (Partner as TEditorForm).getEditor.GUIFormOpen:= false;
+    (Partner as TEditorForm).getEditor.GUIFormOpen:= False;
   end;
   for var i:= 1 to 4 do
     PyIDEMainForm.TabControlWidgets.Items[i].Visible:= FConfiguration.vistabs[i];
@@ -339,10 +339,10 @@ begin
 end;
 
 {$WARNINGS OFF}
-procedure TFGUIForm.Save(MitBackup: boolean);
+procedure TFGUIForm.Save(MitBackup: Boolean);
   var BackupName: string;
 begin
-  if ReadOnly then exit;
+  if ReadOnly then Exit;
   if MitBackup then begin
     BackupName:= Pathname;
     BackupName:= ChangeFileExt(BackupName, '.~fm');
@@ -353,17 +353,17 @@ begin
   end;
   FGUIDesigner.Save(Pathname, Self);
   //FMessages.StatusMessage(Pathname + ' ' + frmEditor.LNGSaved);
-  Modified:= false;
+  Modified:= False;
 end;
 {$WARNINGS ON}
 
 procedure TFGUIForm.EnterForm(Sender: TObject);
 begin
-  if assigned(Partner) and not Partner.ParentTabItem.Checked then
+  if Assigned(Partner) and not Partner.ParentTabItem.Checked then
     // show connected partner
     TThread.ForceQueue(nil, procedure
       begin
-        Partner.ParentTabItem.Checked:= true;
+        Partner.ParentTabItem.Checked:= True;
       end);
   if not FObjectInspector.Visible then
     TThread.ForceQueue(nil, procedure
@@ -404,7 +404,7 @@ procedure TFGUIForm.FormCanResize(Sender: TObject; var NewWidth,
   NewHeight: Integer; var Resize: Boolean);
 begin
   if FGUIDesigner.ELDesigner.Active then
-    FGUIDesigner.ELDesigner.Active:= false;
+    FGUIDesigner.ELDesigner.Active:= False;
 end;
 
 procedure TFGUIForm.FormResize(Sender: TObject);
@@ -414,13 +414,13 @@ begin
     FObjectGenerator.Partner:= TEditorForm(Partner);
     FObjectGenerator.SetBoundsForFormular(Self);
   end;
-  Modified:= true;
+  Modified:= True;
   UpdateState;
 end;
 
 procedure TFGUIForm.EndOfResizeMoveDetected(var Msg: Tmessage);
 begin
-  FGUIDesigner.ELDesigner.Active:= true;
+  FGUIDesigner.ELDesigner.Active:= True;
 end;
 
 procedure TFGUIForm.Print;
@@ -430,11 +430,11 @@ end;
 
 procedure TFGUIForm.UpdateState;
 begin
-  FGuiDesigner.UpdateState(false);
+  FGuiDesigner.UpdateState(False);
 end;
 
 procedure TFGUIForm.EnsureOnDesktop;
-  var l, t, w, h: integer;
+  var l, t, w, h: Integer;
 begin
   w:= width;
   h:= Height;
@@ -460,12 +460,12 @@ begin
   Widget.setAttribute(Attr, Value, Typ);
 end;
 
-function TFGuiForm.getAttributes(ShowAttributes: integer): string;
+function TFGuiForm.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= Widget.GetAttributes(ShowAttributes);
 end;
 
-function TFGUIForm.getEvents(ShowEvents: integer): string;
+function TFGUIForm.getEvents(ShowEvents: Integer): string;
 begin
   Result:= Widget.GetEvents(ShowEvents) + '|';
 end;
@@ -555,34 +555,34 @@ end;
 
 {--- IEditorCommands implementation -------------------------------------------}
 
-function TFGuiForm.CanCopy: boolean;
+function TFGuiForm.CanCopy: Boolean;
 begin
-  Result:= true;
+  Result:= True;
 end;
 
-function TFGuiForm.CanCut: boolean;
+function TFGuiForm.CanCut: Boolean;
 begin
   Result:= FGUIDesigner.ELDesigner.CanCut;
 end;
 
-function TFGuiForm.CanPaste: boolean;
+function TFGuiForm.CanPaste: Boolean;
 begin
   Result:= FGUIDesigner.ELDesigner.CanPaste;
 end;
 
-function TFGuiForm.CanRedo: boolean;
+function TFGuiForm.CanRedo: Boolean;
 begin
-  Result:= false;
+  Result:= False;
 end;
 
-function TFGuiForm.CanSelectAll: boolean;
+function TFGuiForm.CanSelectAll: Boolean;
 begin
-  Result:= true;
+  Result:= True;
 end;
 
-function TFGuiForm.CanUndo: boolean;
+function TFGuiForm.CanUndo: Boolean;
 begin
-  Result:= false;
+  Result:= False;
 end;
 
 procedure TFGuiForm.ExecCopy;
@@ -638,23 +638,23 @@ begin
       (Components[i] as TBaseWidget).Partner:= Partner;
 end;
 
-procedure TFGuiForm.Zoom(_in: boolean);
+procedure TFGuiForm.Zoom(_in: Boolean);
 begin
   for var i:= 0 to ComponentCount - 1 do
     if Components[i] is TBaseWidget then
       (Components[i] as TBaseWidget).Zoom(_in);
   if _in
     then FontSize:= FontSize + GuiPyOptions.ZoomSteps
-    else FontSize:= max(FontSize - GuiPyOptions.ZoomSteps, 6);
+    else FontSize:= Max(FontSize - GuiPyOptions.ZoomSteps, 6);
 end;
 
 type
   TControlClass = class(TControl);
 
-procedure TFGuiForm.Scale(NewPPI, OldPPI: integer);
+procedure TFGuiForm.Scale(NewPPI, OldPPI: Integer);
 begin
   if NewPPI = OldPPI then
-    exit;
+    Exit;
   FIScaling := True;
   try
     ScaleScrollBars(NewPPI, OldPPI);
@@ -673,7 +673,7 @@ begin
 end;
 
 procedure TFGuiForm.getFontSize;
-  var CompFontSize, Value, Key, MaxFontCount, MaxFontKey: integer;
+  var CompFontSize, Value, Key, MaxFontCount, MaxFontKey: Integer;
       FontSizeDictionary: TDictionary<Integer, Integer>;
 begin
   FontSizeDictionary := TDictionary<Integer, Integer>.Create(20);

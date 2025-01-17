@@ -34,7 +34,7 @@ type
     function withoutMultipleSpaces(s: string): string;
     function withoutComments(s: string): string;
     function withoutSelfAndVisibility(s: string): string;
-    function KnownStatement(s: string): boolean;
+    function KnownStatement(s: string): Boolean;
 
     procedure GenerateStatement;
     procedure GenerateIfStatement;
@@ -78,7 +78,7 @@ begin
     while Scanner.Token <> '' do begin
       ParseDecorators;
       if (Scanner.Token = 'class') or (Scanner.Token = 'def')
-        then break // only one global function
+        then Break // only one global function
         else GenerateStatement;
     end;
 end;
@@ -130,16 +130,16 @@ begin
   Result := False;
   var I := Pos('<', s);
   if I > 0 then
-    Delete(s, I, length(s));
-  if length(s) = 0 then
-    exit;
+    Delete(s, I, Length(s));
+  if Length(s) = 0 then
+    Exit;
   if not (s[1].isLetter or (s[1] = '_')) then
-    exit;
-  for I := 2 to length(s) do
+    Exit;
+  for I := 2 to Length(s) do
     if not (s[i].IsLetterOrDigit or (Pos(s[i], '_,[]<>') > 0)) then
-      exit;
-  if s[length(s)] = '.' then
-    exit;
+      Exit;
+  if s[Length(s)] = '.' then
+    Exit;
   Result := not IsReservedWord(s);
 end;
 
@@ -154,7 +154,7 @@ end;
 
 function TGenerateStructogram.CleanUp(s: string): string;
 begin
-  Result:= trim(
+  Result:= Trim(
            withoutSelfAndVisibility(
            withoutMultipleSpaces(
            withoutLineFeeds(
@@ -181,7 +181,7 @@ begin
 end;
 
 function TGenerateStructogram.withoutTypes(s: string): string;
-  var i, p1, p2: integer;
+  var i, p1, p2: Integer;
 begin
   i:= 1;
   while i <= Length(s) do begin
@@ -190,17 +190,17 @@ begin
       p2:= i + 1;
       while p2 <= Length(s) do begin
         if s[p2] = ',' then begin
-          delete(s, p1, p2 - p1);
-          break;
+          Delete(s, p1, p2 - p1);
+          Break;
         end;
         if p2 = Length(s) then begin
-          delete(s, p1, p2 - p1 + 1);
-          break;
+          Delete(s, p1, p2 - p1 + 1);
+          Break;
         end;
-        inc(p2);
+        Inc(p2);
       end;
     end;
-    inc(i);
+    Inc(i);
   end;
   Result:= s;
 end;
@@ -216,36 +216,36 @@ begin
 end;
 
 function TGenerateStructogram.withoutLinefeeds(s: string): string;
-  var i: integer;
+  var i: Integer;
 begin
   i:= 1;
   while i <= Length(s) do begin
     if s[i] = #10
       then Delete(s, i, 1)
-      else inc(i);
+      else Inc(i);
   end;
   Result:= s;
 end;
 
 function TGenerateStructogram.withoutMultipleSpaces(s: string): string;
-  var p, q: integer;
+  var p, q: Integer;
 begin
   p:= Pos('  ', s);
   while p > 0 do begin
     q:= p + 1;
     while (q <= Length(s)) and (s[q] = ' ') do
-      inc(q);
-    delete(s, p, q - p - 1);
+      Inc(q);
+    Delete(s, p, q - p - 1);
     p:= Pos('  ', s);
   end;
   Result:= s;
 end;
 
 function TGenerateStructogram.withoutComments(s: string): string;
-  var p, q: integer; Double, Single: boolean;
+  var p, q: Integer; Double, Single: Boolean;
 begin
-  Double:= false;
-  Single:= false;
+  Double:= False;
+  Single:= False;
   p:= 1;
   while p <= Length(s) do begin
     if (s[p] = '"') and not Single then
@@ -255,24 +255,24 @@ begin
     else if (s[p] = '#') and not Double and not Single then begin
       q:= p + 1;
       while (q <= Length(s)) and (s[q] <> #10) do
-        inc(q);
-      delete(s, p, q - p);
+        Inc(q);
+      Delete(s, p, q - p);
    end;
-   inc(p);
+   Inc(p);
   end;
   Result:= s;
 end;
 
-function TGenerateStructogram.KnownStatement(s: string): boolean;
+function TGenerateStructogram.KnownStatement(s: string): Boolean;
   const Statements: array[1..13] of string =
          ('assert', 'break', 'pass', 'del', 'return', 'yield', 'raise',
           'continue', 'import', 'from', 'future', 'global', 'nonlocal');
-  var i: integer;
+  var i: Integer;
 begin
-  Result:= false;
+  Result:= False;
   for i:= 1 to 13 do
     if Statements[i] = s then
-      Result:= true;
+      Result:= True;
 end;
 
 procedure TGenerateStructogram.GenerateSuite;
@@ -299,7 +299,7 @@ end;
 procedure TGenerateStructogram.GenerateStatement;
 begin
   if Scanner.Token = '' then
-    exit;
+    Exit;
   if Scanner.Token = '@' then
     ParseDecorators;
   if Scanner.Token = 'async' then
@@ -324,13 +324,13 @@ procedure TGenerateStructogram.GenerateIfStatement;
 //             ("elif" assignment_expression ":" suite)*
 //             ["else" ":" suite]
   var elemIf: TStrIf; elemSwitch: TStrSwitch;
-      Expression: string; CaseCount: integer;
+      Expression: string; CaseCount: Integer;
       SavedFCurrent, FTemp: TStrElement;
 
   procedure GenerateEmptyStatement;
     var elem: TStrStatement;
   begin
-    elem:= TStrStatement.create(FStructogram);
+    elem:= TStrStatement.Create(FStructogram);
     FStructogram.insert(FCurrent, elem);
     elem.text:= '';
     FCurrent:= elem;
@@ -348,12 +348,12 @@ procedure TGenerateStructogram.GenerateIfStatement;
 
   procedure NewCase(text: string);
   begin
-    inc(CaseCount);
+    Inc(CaseCount);
     SetLength(elemSwitch.case_elems, CaseCount+1);
     elemSwitch.case_elems[CaseCount]:= TStrListHead.CreateStructogram(FStructogram, elemSwitch);
     elemSwitch.case_elems[CaseCount].text:= 'case ' + IntToStr(CaseCount) + ' head';
-    elemSwitch.case_elems[CaseCount].next.text:= text;
-    FCurrent:= elemSwitch.case_elems[CaseCount].next;
+    elemSwitch.case_elems[CaseCount].Next.text:= text;
+    FCurrent:= elemSwitch.case_elems[CaseCount].Next;
   end;
 
 begin
@@ -367,14 +367,14 @@ begin
     elemSwitch:= TStrSwitch.createStructogram(FStructogram);
     elemSwitch.text:= 'falls';  // ToDo falls?
     FStructogram.insert(SavedFCurrent, elemSwitch);
-    FTemp.next.prev:= nil;
+    FTemp.Next.prev:= nil;
     CaseCount:= 0;
     SetLength(elemSwitch.case_elems, CaseCount + 1);
 
     elemSwitch.case_elems[0]:= TStrListHead.CreateStructogram(FStructogram, elemSwitch);
     elemSwitch.case_elems[0].text:= 'case ' + IntToStr(CaseCount) + ' head';
-    elemSwitch.case_elems[0].next.text:= Expression;
-    FStructogram.insert(elemSwitch.case_elems[0].next, FTemp.next);
+    elemSwitch.case_elems[0].Next.text:= Expression;
+    FStructogram.insert(elemSwitch.case_elems[0].Next, FTemp.Next);
     FreeAndNil(FTemp);
     while Scanner.Token = 'elif' do begin
       Expression:= getExpression(':');
@@ -389,9 +389,9 @@ begin
     elemIf:= TStrIf.createStructogram(FStructogram);
     FStructogram.insert(SavedFCurrent, elemIf);
     elemIf.Text:= Expression;
-    if assigned(FTemp.next) then
-      FTemp.next.prev:= nil;
-    FStructogram.insert(elemIf.then_elem, FTemp.next);
+    if Assigned(FTemp.Next) then
+      FTemp.Next.prev:= nil;
+    FStructogram.insert(elemIf.then_elem, FTemp.Next);
     FreeAndNil(FTemp);
     FCurrent:= elemIf.else_elem;
     GenerateEnd;
@@ -469,8 +469,8 @@ procedure TGenerateStructogram.GenerateKnownSimpleStatement;
   var elem: TStrElement;
 begin
   if Scanner.Token = 'break'
-    then elem:= TStrBreak.create(FStructogram)
-    else elem:= TStrStatement.create(FStructogram);
+    then elem:= TStrBreak.Create(FStructogram)
+    else elem:= TStrStatement.Create(FStructogram);
   FStructogram.insert(FCurrent, elem);
   elem.text:= getSimpleExpression;
   FCurrent:= elem;
@@ -479,19 +479,19 @@ end;
 procedure TGenerateStructogram.GenerateMethodCall(const Method: string);
   var elem: TStrElement;
       Expression: string;
-      p: integer;
+      p: Integer;
 begin
   Expression:= getSimpleExpression;
   if Method = 'print' then begin
-    elem:= TStrStatement.create(FStructogram);
-    p:= Pos('(', Expression); delete(Expression, 1, p);
-    p:= length(Expression);
+    elem:= TStrStatement.Create(FStructogram);
+    p:= Pos('(', Expression); Delete(Expression, 1, p);
+    p:= Length(Expression);
     while (p > 0) and (Expression[p] <> ')') do
-      dec(p);
-    delete(Expression, p, length(Expression));
+      Dec(p);
+    Delete(Expression, p, Length(Expression));
     elem.text:= GuiPyLanguageOptions.Output + ' ' + Expression;
   end else begin
-    elem:= TStrSubprogram.create(FStructogram);
+    elem:= TStrSubprogram.Create(FStructogram);
     elem.text:= Expression;
   end;
   FStructogram.insert(FCurrent, elem);
@@ -501,9 +501,9 @@ end;
 procedure TGenerateStructogram.GenerateAssignmentOrExpression(const Ident: string);
   var elem: TStrElement;
       Expression: string;
-      p: integer;
+      p: Integer;
 begin
-  elem:= TStrStatement.create(FStructogram);
+  elem:= TStrStatement.Create(FStructogram);
   FStructogram.insert(FCurrent, elem);
   Expression:= getSimpleExpression;
   elem.text:= Expression;
@@ -522,7 +522,7 @@ begin
   GetNextToken;
   Expression:= getExpression(')');
   if Left(Expression, 6) = 'self, ' then
-    Expression:= copy(Expression, 7, length(Expression));
+    Expression:= Copy(Expression, 7, Length(Expression));
   Method:= Method + '(' + withoutTypes(Expression) + ')';
   FStructogram.text:= FStructogram.text + ' ' + Method;
   SkipTo(':');

@@ -86,7 +86,7 @@ type
 
   TLLMProvidersClass = class(TPersistent)
   private
-    fProvider: integer;
+    fProvider: Integer;
     fOpenAI: TLLMSettingsClass;
     fGemini: TLLMSettingsClass;
     fOllama: TLLMSettingsClass;
@@ -276,10 +276,10 @@ resourcestring
 function Obfuscate(const s: string): string;
 // Reversible string obfuscation using the ROT13 algorithm
 var
-  I: integer;
+  I: Integer;
 begin
   result := s;
-  for I := 1 to length(s) do
+  for I := 1 to Length(s) do
     case ord(s[I]) of
     ord('A')..ord('M'),ord('a')..ord('m'): result[I] := chr(ord(s[I])+13);
     ord('N')..ord('Z'),ord('n')..ord('z'): result[I] := chr(ord(s[I])-13);

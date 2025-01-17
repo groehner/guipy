@@ -416,7 +416,7 @@ end;
 
 procedure TGrepSearchRunner.GrepOpenFiles;
 begin
-  GI_EditorFactory.FirstEditorCond(function(Editor: IEditor):boolean
+  GI_EditorFactory.FirstEditorCond(function(Editor: IEditor):Boolean
   begin
       if FAbortSignalled then
         Exit(True)
@@ -428,7 +428,7 @@ begin
   end);
 end;
 
-function GrepProjectFile(Node: TAbstractProjectNode; Data : Pointer):boolean;
+function GrepProjectFile(Node: TAbstractProjectNode; Data : Pointer):Boolean;
 var
   FileName : string;
 begin

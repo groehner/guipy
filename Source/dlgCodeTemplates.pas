@@ -117,7 +117,7 @@ end;
 
 procedure TCodeTemplates.GetItems;
 var
- i, j : integer;
+ i, j : Integer;
 begin
   CodeTemplateText := '';
   for i := 0 to lvItems.Items.Count - 1 do begin
@@ -141,7 +141,7 @@ end;
 
 procedure TCodeTemplates.SetItems;
 var
- i, Count : integer;
+ i, Count : Integer;
  List : TStringList;
 begin
   lvItems.Items.Clear;
@@ -224,7 +224,7 @@ end;
 
 procedure TCodeTemplates.actUpdateItemExecute(Sender: TObject);
 var
-  i : integer;
+  i : Integer;
 begin
   if (edShortCut.Text <> '') and (FOldIndex >= 0) then begin
     for i := 0 to lvItems.Items.Count - 1 do
@@ -252,7 +252,7 @@ procedure TCodeTemplates.actMoveUpExecute(Sender: TObject);
 var
   Name, Value : string;
   P : Pointer;
-  Index : integer;
+  Index : Integer;
 begin
   if lvItems.ItemIndex > 0 then begin
     Index := lvItems.ItemIndex;
@@ -276,7 +276,7 @@ procedure TCodeTemplates.actMoveDownExecute(Sender: TObject);
 var
   Name, Value : string;
   P : Pointer;
-  Index : integer;
+  Index : Integer;
 begin
   if lvItems.ItemIndex < lvItems.Items.Count - 1 then
   begin

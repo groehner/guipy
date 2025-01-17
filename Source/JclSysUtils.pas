@@ -770,12 +770,12 @@ type
     procedure ClearLog;
     procedure CloseLog;
     procedure OpenLog;
-    procedure Write(const Text: string; Indent: Integer = 0; KeepOpen: Boolean = true); overload;
-    procedure Write(Strings: TStrings; Indent: Integer = 0; KeepOpen: Boolean = true); overload;
+    procedure Write(const Text: string; Indent: Integer = 0; KeepOpen: Boolean = True); overload;
+    procedure Write(Strings: TStrings; Indent: Integer = 0; KeepOpen: Boolean = True); overload;
     //Writes a line to the log file. The current timestamp is written before the line.
-    procedure TimeWrite(const Text: string; Indent: Integer = 0; KeepOpen: Boolean = true); overload;
-    procedure TimeWrite(Strings: TStrings; Indent: Integer = 0; KeepOpen: Boolean = true); overload;
-    procedure WriteStamp(SeparatorLen: Integer = 0; KeepOpen: Boolean = true);
+    procedure TimeWrite(const Text: string; Indent: Integer = 0; KeepOpen: Boolean = True); overload;
+    procedure TimeWrite(Strings: TStrings; Indent: Integer = 0; KeepOpen: Boolean = True); overload;
+    procedure WriteStamp(SeparatorLen: Integer = 0; KeepOpen: Boolean = True);
     // DateTimeFormatStr property assumes the values described in "FormatDateTime Function" in Delphi Help
     property DateTimeFormatStr: string read FDateTimeFormatStr write FDateTimeFormatStr;
     property LogFileName: string read FLogFileName;
@@ -858,7 +858,7 @@ var
   JclFormatSettings: TJclFormatSettings;
 
 // Procedure to initialize the SimpleLog Variable
-procedure InitSimpleLog(const ALogFileName: string = ''; AOpenLog: Boolean = true);
+procedure InitSimpleLog(const ALogFileName: string = ''; AOpenLog: Boolean = True);
 
 // Global Variable to make it easier for an application wide log handling.
 // Must be initialized with InitSimpleLog before using
@@ -3058,7 +3058,7 @@ begin
   for I := Length(List) - 1 downto 0 do
     if Result then
     begin
-      Handle := OpenProcess(PROCESS_TERMINATE, false, List[I]);
+      Handle := OpenProcess(PROCESS_TERMINATE, False, List[I]);
       Result := (Handle <> 0) and
         TerminateProcess(Handle, Cardinal(ABORT_EXIT_CODE)) and
         CloseHandle(Handle);
@@ -3786,11 +3786,11 @@ end;
 function TryStrToUInt(const Value: string; out Res: Cardinal): Boolean;
 var i6: Int64;
 begin
-  Result := false;
-  if not TryStrToInt64(Value, i6) then exit;
-  if ( i6 < Low(Res)) or ( i6 > High(Res)) then exit;
+  Result := False;
+  if not TryStrToInt64(Value, i6) then Exit;
+  if ( i6 < Low(Res)) or ( i6 > High(Res)) then Exit;
 
-  Result := true;
+  Result := True;
   Res := i6;
 end;
 
@@ -4130,7 +4130,7 @@ begin
     FLogWasEmpty := False;
 end;
 
-procedure TJclSimpleLog.Write(const Text: string; Indent: Integer = 0; KeepOpen: Boolean = true);
+procedure TJclSimpleLog.Write(const Text: string; Indent: Integer = 0; KeepOpen: Boolean = True);
 var
   S: string;
   UTF8S: TUTF8String;
@@ -4164,13 +4164,13 @@ begin
   end;
 end;
 
-procedure TJclSimpleLog.Write(Strings: TStrings; Indent: Integer = 0; KeepOpen: Boolean = true);
+procedure TJclSimpleLog.Write(Strings: TStrings; Indent: Integer = 0; KeepOpen: Boolean = True);
 begin
   if Assigned(Strings) then
     Write(Strings.Text, Indent, KeepOpen);
 end;
 
-procedure TJclSimpleLog.TimeWrite(const Text: string; Indent: Integer = 0; KeepOpen: Boolean = true);
+procedure TJclSimpleLog.TimeWrite(const Text: string; Indent: Integer = 0; KeepOpen: Boolean = True);
 var
   S: string;
   UTF8S: TUTF8String;
@@ -4206,13 +4206,13 @@ begin
   end;
 end;
 
-procedure TJclSimpleLog.TimeWrite(Strings: TStrings; Indent: Integer = 0; KeepOpen: Boolean = true);
+procedure TJclSimpleLog.TimeWrite(Strings: TStrings; Indent: Integer = 0; KeepOpen: Boolean = True);
 begin
   if Assigned(Strings) then
     TimeWrite(Strings.Text, Indent, KeepOpen);
 end;
 
-procedure TJclSimpleLog.WriteStamp(SeparatorLen: Integer = 0; KeepOpen: Boolean = true);
+procedure TJclSimpleLog.WriteStamp(SeparatorLen: Integer = 0; KeepOpen: Boolean = True);
 var
   WasOpen: Boolean;
 begin
@@ -4241,7 +4241,7 @@ begin
   end;
 end;
 
-procedure InitSimpleLog(const ALogFileName: string = ''; AOpenLog: Boolean = true);
+procedure InitSimpleLog(const ALogFileName: string = ''; AOpenLog: Boolean = True);
 begin
   if Assigned(SimpleLog) then
     FreeAndNil(SimpleLog);

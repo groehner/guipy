@@ -3,7 +3,7 @@ unit frmModSpTBXCustomize;
 interface
 
 uses
-  WinApi.Windows, 
+  Winapi.Windows, 
   WinApi.Messages,
   System.UITypes,
   System.SysUtils, 
@@ -203,7 +203,7 @@ begin
         for J := 0 to FItemList.Count - 1 do
           if fItemList.Objects[J] = lbCommands.Items.Objects[I] then begin
             fItemList.Delete(J);
-            break;
+            Break;
           end;
         lbCategoriesClick(Self);
       end;

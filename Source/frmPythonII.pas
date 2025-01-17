@@ -19,7 +19,7 @@ unit frmPythonII;
 interface
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   WinApi.Messages,
   System.Types,
   System.Classes,
@@ -109,8 +109,8 @@ type
       const Value: string; Shift: TShiftState; Index: Integer; EndToken: Char);
   private
     fCommandHistory : TStringList;
-    fCommandHistorySize : integer;
-    fCommandHistoryPointer : integer;
+    fCommandHistorySize : Integer;
+    fCommandHistoryPointer : Integer;
     fCommandHistoryPrefix : string;
     fShowOutput : Boolean;
     FCriticalSection : TRTLCriticalSection;
@@ -118,19 +118,19 @@ type
     fCloseBracketChar: WideChar;
     fOutputMirror : TFileStream;
     fOnExecuted: TNotifyEvent;
-    procedure GetBlockBoundary(LineN: integer; var StartLineN,
-              EndLineN: integer; var IsCode: Boolean);
+    procedure GetBlockBoundary(LineN: Integer; var StartLineN,
+              EndLineN: Integer; var IsCode: Boolean);
     function GetPromptPrefix(line: string): string;
-    procedure SetCommandHistorySize(const Value: integer);
+    procedure SetCommandHistorySize(const Value: Integer);
     procedure GetBlockCode(var Source: string;
       var Buffer: array of string; EndLineN: Integer; StartLineN: Integer);
     procedure DoCodeCompletion(Editor: TSynEdit; Caret: TBufferCoord);
     procedure ApplyPyIDEOptions;
     // ISearchCommands implementation
-    function CanFind: boolean;
-    function CanFindNext: boolean;
+    function CanFind: Boolean;
+    function CanFindNext: Boolean;
     function ISearchCommands.CanFindPrev = CanFindNext;
-    function CanReplace: boolean;
+    function CanReplace: Boolean;
     function GetSearchTarget : TSynEdit;
     procedure ExecFind;
     procedure ExecFindNext;
@@ -157,8 +157,8 @@ type
     procedure ReinitInterpreter;
     function GetEditor: TCustomSynEdit;
     function GetPythonIO: TPythonInputOutput;
-    function GetShowOutput: boolean;
-    procedure SetShowOutput(const Value: boolean);
+    function GetShowOutput: Boolean;
+    procedure SetShowOutput(const Value: Boolean);
   protected
     procedure PythonIOReceiveData(Sender: TObject; var Data: string);
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
@@ -175,10 +175,10 @@ type
     procedure ValidateEditorOptions(SynEditOptions: TSynEditorOptionsContainer);
     procedure ApplyEditorOptions;
     procedure ExecuteStatement(const SourceCode: string; WaitToFinish: Boolean = False);
-    property ShowOutput : boolean read GetShowOutput write SetShowOutput;
+    property ShowOutput : Boolean read GetShowOutput write SetShowOutput;
     property CommandHistory : TStringList read fCommandHistory;
-    property CommandHistoryPointer : integer read fCommandHistoryPointer write fCommandHistoryPointer;
-    property CommandHistorySize : integer read fCommandHistorySize write SetCommandHistorySize;
+    property CommandHistoryPointer : Integer read fCommandHistoryPointer write fCommandHistoryPointer;
+    property CommandHistorySize : Integer read fCommandHistorySize write SetCommandHistorySize;
     property OnExecuted: TNotifyEvent read fOnExecuted write fOnExecuted;
   end;
 
@@ -421,7 +421,7 @@ end;
 
 procedure TPythonIIForm.ClearDisplay;
 begin
-  Synedit.ClearAll;
+  SynEdit.ClearAll;
   PrintInterpreterBanner;
   AppendPrompt;
 end;
@@ -532,7 +532,7 @@ end;
 
 procedure TPythonIIForm.AppendToPrompt(const Buffer: array of string);
 var
-  LineCount, i : integer;
+  LineCount, i : Integer;
   Line : string;
 begin
   LineCount := SynEdit.Lines.Count;
@@ -633,8 +633,8 @@ begin
   inherited;
 end;
 
-procedure TPythonIIForm.GetBlockBoundary(LineN: integer; var StartLineN,
-  EndLineN: integer; var IsCode: Boolean);
+procedure TPythonIIForm.GetBlockBoundary(LineN: Integer; var StartLineN,
+  EndLineN: Integer; var IsCode: Boolean);
 {-----------------------------------------------------------------------------
     GetBlockBoundary takes a line number, and will return the
     start and end line numbers of the block, and a flag indicating if the
@@ -647,7 +647,7 @@ procedure TPythonIIForm.GetBlockBoundary(LineN: integer; var StartLineN,
 -----------------------------------------------------------------------------}
 var
   Line, Prefix : string;
-  MaxLineNo : integer;
+  MaxLineNo : Integer;
 begin
   Line := SynEdit.Lines[LineN];
   MaxLineNo := SynEdit.Lines.Count - 1;
@@ -656,12 +656,12 @@ begin
     IsCode := False;
     StartLineN := LineN;
     while StartLineN > 0 do begin
-      if GetPromptPrefix(SynEdit.Lines[StartLineN-1]) <> '' then break;
+      if GetPromptPrefix(SynEdit.Lines[StartLineN-1]) <> '' then Break;
       Dec(StartLineN);
     end;
     EndLineN := LineN;
     while EndLineN < MaxLineNo do begin
-      if GetPromptPrefix(SynEdit.Lines[EndLineN+1]) <> '' then break;
+      if GetPromptPrefix(SynEdit.Lines[EndLineN+1]) <> '' then Break;
       Inc(EndLineN);
     end;
   end else begin
@@ -669,13 +669,13 @@ begin
     StartLineN := LineN;
     while (StartLineN > 0) and (Prefix <> PS1) do begin
       Prefix := GetPromptPrefix(SynEdit.Lines[StartLineN-1]);
-      if Prefix = '' then break;
+      if Prefix = '' then Break;
       Dec(StartLineN);
     end;
     EndLineN := LineN;
     while EndLineN < MaxLineNo do begin
       Prefix := GetPromptPrefix(SynEdit.Lines[EndLineN+1]);
-      if (Prefix = PS1) or (Prefix = '') then break;
+      if (Prefix = PS1) or (Prefix = '') then Break;
       Inc(EndLineN);
     end;
   end;
@@ -701,7 +701,7 @@ begin
   Result := SynEdit;
 end;
 
-function TPythonIIForm.GetShowOutput: boolean;
+function TPythonIIForm.GetShowOutput: Boolean;
 begin
   Result := fShowOutput;
 end;
@@ -709,7 +709,7 @@ end;
 procedure TPythonIIForm.ExecuteStatement(const SourceCode: string; WaitToFinish: Boolean = False);
 { Execute a possibly incomplete python statement }
 var
-  NeedIndent : boolean;
+  NeedIndent : Boolean;
   LineN: Integer;
 begin
   NeedIndent := False;  // True denotes an incomplete statement
@@ -734,7 +734,7 @@ begin
     procedure
     var
       Buffer : array of string;
-      Index, Position: integer;
+      Index, Position: Integer;
       CurLine, Indent: string;
     begin
       if not NeedIndent then begin
@@ -780,7 +780,7 @@ begin
         SynEdit.SelText := PS2 + Indent;
       end;
       SynEdit.EnsureCursorPosVisible;
-      if assigned(fOnExecuted) then
+      if Assigned(fOnExecuted) then
         fOnExecuted(Self);
     end, WaitToFinish);
 end;
@@ -788,7 +788,7 @@ end;
 procedure TPythonIIForm.SynEditProcessCommand(Sender: TObject;
   var Command: TSynEditorCommand; var AChar: WideChar; Data: Pointer);
 var
-  LineN, StartLineN, EndLineN: integer;
+  LineN, StartLineN, EndLineN: Integer;
   IsCode : Boolean;
   Line, Source : string;
   Buffer : array of string;
@@ -917,7 +917,7 @@ const
   OpenBrackets : string = '([{"''';
   CloseBrackets : string = ')]}"''';
 var
-  OpenBracketPos : integer;
+  OpenBracketPos : Integer;
   Line: string;
   Len, Position : Integer;
   CharRight: WideChar;
@@ -1007,7 +1007,7 @@ procedure TPythonIIForm.SynEditDblClick(Sender: TObject);
 var
    RegExTraceback, RegExWarning : TRegEx;
    Match : TMatch;
-   ErrLineNo, LineNo : integer;
+   ErrLineNo, LineNo : Integer;
    FileName : string;
    Token: string;
    Attr: TSynHighlighterAttributes;
@@ -1025,13 +1025,13 @@ begin
   then
   begin
     RegExTraceback := CompiledRegEx(STracebackFilePosExpr);
-    LineNo:= Synedit.CaretY;
-    if Synedit.LineText.StartsWith('Traceback') then
+    LineNo:= SynEdit.CaretY;
+    if SynEdit.LineText.StartsWith('Traceback') then
       Inc(LineNo);
 
     while Attr = TSynPythonInterpreterSyn(SynEdit.Highlighter).TracebackAttri do
     begin
-      Match := RegExTraceback.Match(Synedit.Lines[LineNo - 1]);
+      Match := RegExTraceback.Match(SynEdit.Lines[LineNo - 1]);
       if Match.Success then
         Break
       else
@@ -1092,7 +1092,7 @@ end;
 procedure TPythonIIForm.SynEditProcessUserCommand(Sender: TObject;
   var Command: TSynEditorCommand; var AChar: WideChar; Data: Pointer);
 var
-  LineN, StartLineN, EndLineN, i: integer;
+  LineN, StartLineN, EndLineN, i: Integer;
   IsCode: Boolean;
   Source, BlockSource : string;
   Buffer: array of string;
@@ -1228,9 +1228,9 @@ begin
   Command := ecNone;  // do not processed it further
 end;
 
-procedure TPythonIIForm.SetCommandHistorySize(const Value: integer);
+procedure TPythonIIForm.SetCommandHistorySize(const Value: Integer);
 var
-  i : integer;
+  i : Integer;
 begin
   fCommandHistorySize := Value;
   if FCommandHistory.Count > Value then begin
@@ -1265,7 +1265,7 @@ begin
   end;
 end;
 
-procedure TPythonIIForm.SetShowOutput(const Value: boolean);
+procedure TPythonIIForm.SetShowOutput(const Value: Boolean);
 begin
   fShowOutput := Value;
 end;
@@ -1530,7 +1530,7 @@ end;
 procedure TPythonIIForm.StartOutputMirror(const AFileName: string;
   Append: Boolean);
 var
-  Mode : integer;
+  Mode : Integer;
 begin
   fCriticalSection.Enter;
   try
@@ -1576,7 +1576,7 @@ end;
 procedure TPythonIIForm.UpdatePythonKeywords;
 var
   Keywords, Builtins, BuiltInMod : Variant;
-  i : integer;
+  i : Integer;
 begin
   with ResourcesDataModule do begin
     SynPythonSyn.Keywords.Clear;
@@ -1613,7 +1613,7 @@ end;
 procedure TPythonIIForm.FormActivate(Sender: TObject);
 begin
   inherited;
-  if CanActuallyFocus(Synedit) then
+  if CanActuallyFocus(SynEdit) then
     SynEdit.SetFocus;
 end;
 
@@ -1637,18 +1637,18 @@ begin
     ((SynEdit.Lines.Count  = 1) and (SynEdit.Lines[0] = ''));
 end;
 
-function TPythonIIForm.CanFind: boolean;
+function TPythonIIForm.CanFind: Boolean;
 begin
   Result := not IsEmpty;
 end;
 
-function TPythonIIForm.CanFindNext: boolean;
+function TPythonIIForm.CanFindNext: Boolean;
 begin
   Result := not IsEmpty and
     (EditorSearchOptions.SearchText <> '');
 end;
 
-function TPythonIIForm.CanReplace: boolean;
+function TPythonIIForm.CanReplace: Boolean;
 begin
   Result := not IsEmpty;
 end;

@@ -74,7 +74,7 @@ class function TAskParamForm.AskForParameter(Sender: TObject; const AName: strin
 begin
   with TAskParamForm.Create(Application) do try
     ParamName:= AName;
-    Result:= ShowModal = mrOK;
+    Result:= ShowModal = mrOk;
     if Result then
       with Parameters do begin
         AValue:= ReplaceInText(txtParamValue.Text);

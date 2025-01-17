@@ -57,7 +57,7 @@ type
         TJsonValue);
   public
     class var LspClient: TLspClient;
-    class var SyncRequestTimeout: integer;
+    class var SyncRequestTimeout: Integer;
     class var ParamCompletionInfo: TParamCompletionInfo;
     class var OnInitialized: TJclNotifyEventBroadcast;
     class var OnShutDown: TJclNotifyEventBroadcast;
@@ -68,21 +68,21 @@ type
     class destructor Destroy;
     class procedure CreateServer;
     class procedure Initialize;
-    class function Ready: boolean;
+    class function Ready: Boolean;
     // Lsp functionality
-    class procedure FindDefinitionByCoordinates(const Filename: string;
+    class procedure FindDefinitionByCoordinates(const FileName: string;
       const BC: TBufferCoord; out DefFileName: string; out DefBC: TBufferCoord);
-    class function FindReferencesByCoordinates(Filename: string;
+    class function FindReferencesByCoordinates(FileName: string;
       const BC: TBufferCoord): TArray<TDocPosition>;
-    class function HandleCodeCompletion(const Filename: string;
-      const BC: TBufferCoord; out InsertText, DisplayText: string): boolean;
+    class function HandleCodeCompletion(const FileName: string;
+      const BC: TBufferCoord; out InsertText, DisplayText: string): Boolean;
     class function ResolveCompletionItem(CCItem: string): string;
     class procedure RequestParamCompletion(const AFileId: string; Editor:
         TCustomSynEdit);
     class function DocumentSymbols(const FileName: string): TJsonArray;
-    class function SimpleHintAtCoordinates(const Filename: string;
+    class function SimpleHintAtCoordinates(const FileName: string;
       const BC: TBufferCoord): string;
-    class function CodeHintAtCoordinates(const Filename: string;
+    class function CodeHintAtCoordinates(const FileName: string;
       const BC: TBufferCoord; const Ident: string): string;
   end;
 
@@ -139,7 +139,7 @@ begin
   if not FileExists(ServerPath) then Exit;
   CmdLine := Format('"%s" -u "%s"',
     [GI_PyControl.PythonVersion.PythonExecutable, ServerPath]);
-  if PyIDEOptions.LspDebug or true then  // or TRUE
+  if PyIDEOptions.LspDebug or True then  // or TRUE
   begin
     CmdLine := Format('%s -v --log-file "%s"', [CmdLine,
       TPath.Combine(TPyScripterSettings.UserDataPath, LspDebugFile)]);
@@ -238,7 +238,7 @@ begin
   CreateServer;
 end;
 
-class function TJedi.Ready: boolean;
+class function TJedi.Ready: Boolean;
 begin
   Result := Assigned(LspClient) and (LspClient.Status = lspInitialized);
 end;
@@ -246,13 +246,13 @@ end;
 
 {$Region 'Lsp functionality'}
 
-class procedure TJedi.FindDefinitionByCoordinates(const Filename: string;
+class procedure TJedi.FindDefinitionByCoordinates(const FileName: string;
   const BC: TBufferCoord; out DefFileName: string; out DefBC: TBufferCoord);
 var
   Param: TJsonObject;
   AResult, Error: TJsonValue;
   Uri: string;
-  Line, Char: integer;
+  Line, Char: Integer;
 begin
   DefFileName := '';
   if not Ready or (FileName = '') then Exit;
@@ -262,8 +262,8 @@ begin
     Error, SyncRequestTimeout);
 
   if Assigned(AResult) and AResult.TryGetValue<string>('[0].uri', Uri) and
-    AResult.TryGetValue<integer>('[0].range.start.line', Line) and
-    AResult.TryGetValue<integer>('[0].range.start.character', Char) then
+    AResult.TryGetValue<Integer>('[0].range.start.line', Line) and
+    AResult.TryGetValue<Integer>('[0].range.start.character', Char) then
   begin
     DefFileName := FileIdFromURI(Uri);
     DefBC := BufferCoord(Char + 1, Line + 1);
@@ -273,7 +273,7 @@ begin
   FreeAndNil(Error);
 end;
 
-class function TJedi.FindReferencesByCoordinates(Filename: string;
+class function TJedi.FindReferencesByCoordinates(FileName: string;
   const BC: TBufferCoord): TArray<TDocPosition>;
 var
   Param: TJsonObject;
@@ -311,10 +311,10 @@ begin
   FreeAndNil(Error);
 end;
 
-class function TJedi.HandleCodeCompletion(const Filename: string;
-  const BC: TBufferCoord; out InsertText, DisplayText: string): boolean;
+class function TJedi.HandleCodeCompletion(const FileName: string;
+  const BC: TBufferCoord; out InsertText, DisplayText: string): Boolean;
 
-  function KindToImageIndex(Kind: TLspCompletionItemKind): integer;
+  function KindToImageIndex(Kind: TLspCompletionItemKind): Integer;
   begin
     case Kind of
       TLspCompletionItemKind._Constructor,
@@ -411,7 +411,7 @@ begin
       ParamCompletionInfo.FDocString := '';
       Signature.TryGetValue<string>('label', ParamCompletionInfo.FDisplayString);
       Signature.TryGetValue<string>('documentation.value', ParamCompletionInfo.FDocString);
-      if not AResult.TryGetValue<integer>('activeParameter', ParamCompletionInfo.FActiveParameter) then
+      if not AResult.TryGetValue<Integer>('activeParameter', ParamCompletionInfo.FActiveParameter) then
         ParamCompletionInfo.FActiveParameter := 0;
       ParamCompletionInfo.FStartX := 1;
 
@@ -481,7 +481,7 @@ begin
   end;
 end;
 
-class function TJedi.SimpleHintAtCoordinates(const Filename: string;
+class function TJedi.SimpleHintAtCoordinates(const FileName: string;
   const BC: TBufferCoord): string;
 var
   Param: TJsonObject;
@@ -501,7 +501,7 @@ begin
   FreeAndNil(Error);
 end;
 
-class function TJedi.CodeHintAtCoordinates(const Filename: string;
+class function TJedi.CodeHintAtCoordinates(const FileName: string;
   const BC: TBufferCoord; const Ident: string): string;
 var
   Param: TJsonObject;

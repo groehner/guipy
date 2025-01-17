@@ -12,7 +12,7 @@ uses
   System.SysUtils,
   System.JSON,
   System.Generics.Collections,
-  WinApi.Windows;
+  Winapi.Windows;
 
 
 type
@@ -94,9 +94,9 @@ type
 
   TDocPosition = record
     FileId: string;
-    Line: integer;
-    Char: integer;
-    constructor Create(const AFileId: string; Line, Char: integer);
+    Line: Integer;
+    Char: Integer;
+    constructor Create(const AFileId: string; Line, Char: Integer);
   end;
 
 function FormatJSON(const json: string): string;
@@ -106,9 +106,9 @@ function LSPInitializeParams(const ClientName, ClientVersion: string;
   ClientCapabilities: TJsonObject;
   InitializationOptions: TJsonObject = nil): TJsonObject;
 function LspPosition(Line, Char: Integer): TJsonObject; overload;
-function LspDocPosition(const FileName: string; Line, Char: integer): TJsonObject; overload;
+function LspDocPosition(const FileName: string; Line, Char: Integer): TJsonObject; overload;
 function LspLocationToDocPosition(Location: TJsonValue; out DocPosition: TDocPosition): Boolean;
-function LspTextDocumentItem(const FileName, LanguageId, Text: string; Version: integer): TJsonObject;
+function LspTextDocumentItem(const FileName, LanguageId, Text: string; Version: Integer): TJsonObject;
 function LspTextDocumentIdentifier(const FileName: string): TJsonObject;
 function LspVersionedTextDocumentIdentifier(const FileName: string; Version: NativeUInt): TJsonObject;
 function LspCompletionItems(LspResult: TJsonValue): TCompletionItems;
@@ -128,7 +128,7 @@ uses
 
 { TDocPosition }
 
-constructor TDocPosition.Create(const AFileId: string; Line, Char: integer);
+constructor TDocPosition.Create(const AFileId: string; Line, Char: Integer);
 begin
   Self.FileId := AFileId;
   Self.Line := Line;
@@ -209,7 +209,7 @@ begin
   Result.AddPair('character', TJSONNumber.Create(Char));
 end;
 
-function LspDocPosition(const FileName: string; Line, Char: integer): TJsonObject;
+function LspDocPosition(const FileName: string; Line, Char: Integer): TJsonObject;
 begin
   Result := TJsonObject.Create;
   Result.AddPair('textDocument', LspTextDocumentIdentifier(FileName));
@@ -221,8 +221,8 @@ begin
   if not (Location is TJsonObject) then Exit(False);
 
   Result := Location.TryGetValue<string>('uri',  DocPosition.FileId) and
-      Location.TryGetValue<integer>('range.start.line',  DocPosition.Line) and
-      Location.TryGetValue<integer>('range.start.character', DocPosition.Char);
+      Location.TryGetValue<Integer>('range.start.line',  DocPosition.Line) and
+      Location.TryGetValue<Integer>('range.start.character', DocPosition.Char);
 
   if Result then
   begin
@@ -232,7 +232,7 @@ begin
   end;
 end;
 
-function LspTextDocumentItem(const FileName, LanguageId, Text: string; Version: integer): TJsonObject;
+function LspTextDocumentItem(const FileName, LanguageId, Text: string; Version: Integer): TJsonObject;
 begin
   Result := TJsonObject.Create;
   Result.AddPair('uri', TJSONString.Create(FileIdToURI(FileName)));
@@ -266,8 +266,8 @@ begin
     begin
       var Item := TJsonArray(Items).Items[I];
       Item.TryGetValue<string>('label', Result[I]._label);
-      var TempI: integer;
-      if Item.TryGetValue<integer>('kind', TempI) then
+      var TempI: Integer;
+      if Item.TryGetValue<Integer>('kind', TempI) then
         Result[I].kind := TLspCompletionItemKind(TempI);
     end;
   end;

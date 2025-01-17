@@ -67,7 +67,7 @@ type
         FAutoUpdate: Boolean;
         FOwnerDrawPickList: Boolean;
         FClassname: string;
-        FClassTag: integer;
+        FClassTag: Integer;
         function CanExpand: Boolean;
         function Ident: Integer;
         function IsOnExpandButton(AX: Integer): Boolean;
@@ -1291,7 +1291,7 @@ end;
 procedure TELCustomPropsPage.DrawCell(ACol, ARow: Integer; ARect: TRect;
     AState: TGridDrawState);
 
-  function PPIScale(ASize: integer): integer;
+  function PPIScale(ASize: Integer): Integer;
   begin
     // FCurrentPPI is a TELCustomPropsPage, not the actual widget
     // so gui form and object inspector must have same dpi
@@ -1350,7 +1350,7 @@ begin
                             LCaptionColor := Font.Color;
                         end;
                     Brush.Color := Color;
-                    FCellBitmap.Canvas.Font := self.Font;
+                    FCellBitmap.Canvas.Font := Self.Font;
                     if ACol = 0 then
                         Font.Color := LCaptionColor
                     else
@@ -1747,7 +1747,7 @@ var
     LGridCoord: TGridCoord;
     LCellRect: TRect;
     LItem: TELPropsPageItem;
-    i, New, Max: integer;
+    i, New, Max: Integer;
 begin
     inherited;
     LGridCoord := MouseCoord(Message.XPos, Message.YPos);
@@ -1923,13 +1923,13 @@ end;
 
 procedure TELCustomPropsPage.SetSelText(const SelText: string);
 begin
-  if assigned(Inplaceeditor) then
+  if Assigned(Inplaceeditor) then
     InplaceEditor.SelText:= SelText;
 end;
 
 function TELCustomPropsPage.getSelText: string;
 begin
-  if assigned(Inplaceeditor)
+  if Assigned(Inplaceeditor)
     then Result:= InplaceEditor.SelText
     else Result:= '';
 end;
@@ -2122,7 +2122,7 @@ var
 begin
     LM.Message := 0;
     if PeekMessage(LM, AWnd, AMsg, AMsg, pm_Remove) and (LM.Message = WM_QUIT) then
-        PostQuitMessage(LM.wparam);
+        PostQuitMessage(LM.WParam);
 end;
 
 procedure TELPropsPageInplaceEdit.KeyDown(var Key: Word; Shift: TShiftState);
@@ -2445,8 +2445,8 @@ begin
             try
                 // get slots for Qt events
                 if isLower(Caption[1]) and
-                   assigned(TelPropertyInspector(Owner).OnGetSelectStrings) then
-                  TelPropertyInspector(Owner).OnGetSelectStrings(self, Caption, LList)
+                   Assigned(TelPropertyInspector(Owner).OnGetSelectStrings) then
+                  TelPropertyInspector(Owner).OnGetSelectStrings(Self, Caption, LList)
                 else begin
                   FEditor.GetValues(LList);
                   if praSortList in FEditor.GetAttrs then
@@ -2563,24 +2563,24 @@ procedure TELPropertyInspectorItem.SetDisplayValue(const Value: string);
 var
     LOldValue, LNewValue, s: string; // t: TPersistent;
 
-    function isValid(const s: string): boolean;
-      var i: integer;
+    function isValid(const s: string): Boolean;
+      var i: Integer;
     begin
-      Result:= true;
+      Result:= True;
       for i:= 1 to Length(s) do
-        if not CharInSet(s[i], ['a'..'z','A'..'Z', '0'..'9', '_']) then Result:= false;
-      if (s = '') or CharInSet(s[1], ['0'..'9']) then Result:= false;
+        if not CharInSet(s[i], ['a'..'z','A'..'Z', '0'..'9', '_']) then Result:= False;
+      if (s = '') or CharInSet(s[1], ['0'..'9']) then Result:= False;
     end;
 
-    function NameAlreadyUsed(const s: string): boolean;
-      var SL: TStringList; i: integer;
+    function NameAlreadyUsed(const s: string): Boolean;
+      var SL: TStringList; i: Integer;
     begin
-      Result:= false;
+      Result:= False;
       SL:= TStringList.Create;
       TELPropertyInspector(Owner).GetComponentNames(nil, SL);
       for i:= 0 to SL.Count - 1 do
         if SL[i] = s then
-          Result:= true;
+          Result:= True;
       FreeAndNil(SL);
     end;
 
@@ -2592,11 +2592,11 @@ begin
     if (FCaption = 'Name') and (FEditor.classname = 'TELComponentNamePropEditor') then begin
       if not isValid(LNewValue) then begin
         ErrorMsg(_('In the name of a GUI component, only a-z, A-Z, 0-9, and _ may occur. It must not start with a digit.'));
-        exit;
+        Exit;
       end;
       if NameAlreadyUsed(LNewValue) then begin
         ErrorMsg(_('Another component already has the name: ') + LNewValue);
-        exit;
+        Exit;
       end;
     end;
     TELPropertyInspector(Owner).FObjectsLocked := True;
@@ -2655,7 +2655,7 @@ procedure TELPropertyInspectorItem.UpdateParams;
   var
     LPropAttrs: TELPropAttrs; LStr: string;
 
-  function PPIUnScale(ASize: integer): integer;
+  function PPIUnScale(ASize: Integer): Integer;
   begin
     // self.owner is a TELPropertyInspector, not the actual widget
     // so gui form and object inspector must have same dpi
@@ -2991,7 +2991,7 @@ begin
                         try
                             for LI := 0 to LSubProps.Count - 1 do  begin
                               s:= TELSetElemPropEditor(LSubProps[LI]).GetPropName;
-                              if (s = 'fsUnderline') or (s = 'fsStrikeOut') then continue;
+                              if (s = 'fsUnderline') or (s = 'fsStrikeOut') then Continue;
                               TELPropertyInspectorItem(AItem[AItem.Add]).Editor := LSubProps[LI];
                             end;
                         finally
@@ -3228,21 +3228,21 @@ begin
 end;
 
 function TELCustomPropertyInspector.GetByCaption(const Caption: string): string;
-  var i: integer;
+  var i: Integer;
 
   function SucheIn(Item: TELPropsPageItem): string;
-    var i: integer;
+    var i: Integer;
   begin
     Result:= '';
     i:= 0;
     while (i < Item.Count) do begin
       if Item.Items[i].Caption = Caption then begin
-        Result:= Item.Items[i].DisplayValue; break end;
+        Result:= Item.Items[i].DisplayValue; Break end;
       if Item.Items[i].Expanded then begin
         Result:= SucheIn(Item.Items[i]);
-        if Result <> '' then break
+        if Result <> '' then Break
       end;
-      inc(i);
+      Inc(i);
     end;
   end;
 
@@ -3253,36 +3253,36 @@ begin
     if Items[i].Caption = Caption then begin
       Result:= Items[i].DisplayValue;
       Result:= TELPropertyInspectorItem(Items[i]).Editor.Value;
-      break
+      Break
     end;
     if Items[i].Expanded then begin
       Result:= SucheIn(Items[i]);
-      if Result <> '' then break
+      if Result <> '' then Break
     end;
-    inc(i);
+    Inc(i);
   end;
 end;
 
 procedure TELCustomPropertyInspector.SetByCaption(const Caption, Value: string);
-  var i: integer; ne: TNotifyEvent;
+  var i: Integer; ne: TNotifyEvent;
 begin
   ne:= OnModified;
   OnModified:= nil;
   for i:= 0 to Items.Count - 1 do
     if Items[i].Caption = Caption then begin
       Items[i].DisplayValue:= Value;
-      break;
+      Break;
     end;
   OnModified:= ne;
 end;
 
 procedure TELCustomPropertyInspector.SelectByCaption(const s: string);
-  var i: integer;
+  var i: Integer;
 begin
   for i:= 0 to Items.Count - 1 do
     if Items[i].Caption = s then begin
       Row:= i;
-      break;
+      Break;
     end;
 end;
 
@@ -3302,7 +3302,7 @@ end;
 
 constructor TELPropEditor.Create2(AInstance: TPersistent; APropInfo: PPropInfo);
 begin
-  create(nil, 1);
+  Create(nil, 1);
   SetPropEntry(0, AInstance, APropInfo);
 end;
 
@@ -3686,7 +3686,7 @@ begin
     Result := GetEnumName(LEnumType, LI);
     // special handling of types: _TD_, _TR_, _TA_
     if (Length(Result) >= 4) and (Result[1] = '_') and (Result[4] = '_') then
-      delete(Result, 1, 4);
+      Delete(Result, 1, 4);
 end;
 
 procedure TELEnumPropEditor.GetValues(AValues: TStrings);
@@ -3707,7 +3707,7 @@ begin
                 for LI := MinValue to MaxValue do begin
                   s:= Delphi2PythonValues(GetEnumName(LEnumType, LI));
                   if (Length(s) >= 4) and (s[1] = '_') and (s[4] = '_') then
-                    delete(s, 1, 4);
+                    Delete(s, 1, 4);
                   AValues.Add(s);
                 end;
         end;
@@ -3769,7 +3769,7 @@ begin
 end;
 
 procedure TELFloatPropEditor.SetValue(const Value: string);
-  var p: integer; s: string; f: Extended;
+  var p: Integer; s: string; f: Extended;
 begin
   Formatsettings.DecimalSeparator:= '.';
   s:= Value;
@@ -4530,9 +4530,9 @@ end;
 
 procedure TELIconPropeditor.Edit;
 begin
-  with TFIconEditor.create(nil) do begin
+  with TFIconEditor.Create(nil) do begin
     setValue(GetValue);
-    if ShowModal = mrOK then
+    if ShowModal = mrOk then
       SetStrValue(Value);
     Free;
   end;
@@ -4558,9 +4558,9 @@ end;
 
 procedure TELGraphicPropeditor.Edit;
 begin
-  with TFIconEditor.create(nil) do begin
+  with TFIconEditor.Create(nil) do begin
     setValue(GetValue);
-    if ShowModal = mrOK then
+    if ShowModal = mrOk then
       SetStrValue(Value);
     Free;
   end;
@@ -4585,12 +4585,12 @@ begin
   LFileDialog := TOpenDialog.Create(Application);
   with LFileDialog do
     try
-      Filename:= '';
+      FileName:= '';
       Filter:= '*.txt;*.html;*.rtf;*.*|*.txt;*.html;*.rtf;*.*|*.txt;*.txt|*.html;*.html|*.rtf|*.rtf|*.*|*.*';
       FilterIndex:= 0;
       Options:= Options + [ofFileMustExist];
       if Execute then begin
-        SetStrValue(toWeb('', 'file:/' + Filename));
+        SetStrValue(toWeb('', 'file:/' + FileName));
       end;
     finally
       FreeAndNil(LFileDialog);
@@ -4952,7 +4952,7 @@ begin
     setEvent(Event);
     if Execute then begin
       getEvent(Event);
-      Event.Active:= true;
+      Event.Active:= True;
       SetEventProperties(GetInstance(0), PropName, Event);
       Modified;
     end;
@@ -4969,7 +4969,7 @@ function TELEventPropEditor.GetValue: string;
   var Event: TEvent;  Pers: TPersistent;
 begin
   GetEventProperties(GetInstance(0), PropName, Event);
-  if assigned(Event) and Event.Active then begin
+  if Assigned(Event) and Event.Active then begin
     Pers:= GetInstance(0);
     if Pers is TForm
       then Result:=  'root_' + PropName

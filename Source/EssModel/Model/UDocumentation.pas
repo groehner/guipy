@@ -28,8 +28,8 @@ type
     FDescription : string;
     procedure SetDescription(const Value: string);
   public
-    LineS: integer;
-    LineE: integer;
+    LineS: Integer;
+    LineE: Integer;
     property Description : string read FDescription write SetDescription;
   end;
 
@@ -41,7 +41,7 @@ uses SysUtils;
 
 procedure TDocumentation.SetDescription(const Value: string);
 var
-  I : integer;
+  I : Integer;
 begin
   I := 1;
   while (I<Length(Value)+1) and CharInset(Value[I], ['*','_','/',' ',#13,#10]) do Inc(I);

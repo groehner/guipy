@@ -44,10 +44,10 @@ uses SysUtils, Graphics, UGuiDesigner, UUtils;
 procedure TFIconEditor.SetValue(const Value: string);
   var pathname: string;
 begin
-  if assigned(Image.Picture) then
+  if Assigned(Image.Picture) then
     Image.Picture.Assign(nil);
   if pos('images/', Value) = 1
-    then pathname:= FGuiDesigner.getPath + 'images\' + copy(Value, 8, length(Value))
+    then pathname:= FGuiDesigner.getPath + 'images\' + Copy(Value, 8, Length(Value))
     else pathname:= Value;
   if FileExists(pathname) then
     Image.Picture.LoadFromFile(pathname);
@@ -63,14 +63,14 @@ end;
 procedure TFIconEditor.BSelectClick(Sender: TObject);
 begin
   with ODIconDialog do begin
-    Filename:= '';
+    FileName:= '';
     InitialDir:= FGuiDesigner.getPath + 'images';
     ForceDirectories(Initialdir);
     Filter:= '*.jpg;*.jpeg;*.png;*.gif|*.jpg;*.jpeg;*.png;*.gif|*.jpg;*.jpeg|*.jpg;*.jpeg|*.png|*.png|*.gif|*.gif|*.*|*.*';
     FilterIndex:= 0;
     try
       if Execute then
-        Value:= Filename;
+        Value:= FileName;
     except on e: Exception do
       ErrorMsg(e.Message);
     end;

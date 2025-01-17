@@ -78,12 +78,12 @@ type
   private
     const FBasePath = 'Messages Window Options'; // Used for storing settings
     var fMessageHistory : TObjectList;
-    fHistoryIndex : integer;
-    fHistorySize : integer;
+    fHistoryIndex : Integer;
+    fHistorySize : Integer;
     // IMessageServices implementation
     procedure ShowWindow;
     procedure ClearMessages;
-    procedure ShowPythonTraceback(Traceback: TPythonTraceback; SkipFrames : integer = 1; ShowWindow : Boolean = False);
+    procedure ShowPythonTraceback(Traceback: TPythonTraceback; SkipFrames : Integer = 1; ShowWindow : Boolean = False);
   protected
     procedure StoreTopNodeIndex;
     procedure RestoreTopNodeIndex;
@@ -93,7 +93,7 @@ type
     procedure ShowPythonSyntaxError(E: EPySyntaxError);
     procedure JumpToPosition(Node : PVirtualNode);
     procedure AddMessage(const Msg: string; const FileName : string = '';
-       Line : integer = 0; Offset : integer = 0; SelLen : integer = 0);
+       Line : Integer = 0; Offset : Integer = 0; SelLen : Integer = 0);
     procedure UpdateMsgActions;
   end;
 
@@ -115,9 +115,9 @@ type
   TMsg = class
     Msg: string;
     FileName : string;
-    Line : integer;
-    Offset : integer;
-    SelLen : integer;
+    Line : Integer;
+    Offset : Integer;
+    SelLen : Integer;
   end;
 
   PMsgRec = ^TMsgRec;
@@ -135,7 +135,7 @@ type
 { TMessagesWindow }
 
 procedure TMessagesWindow.AddMessage(const Msg, FileName: string;
-   Line, Offset, SelLen : integer);
+   Line, Offset, SelLen : Integer);
 var
   NewMsg : TMsg;
 begin
@@ -195,9 +195,9 @@ begin
   Clipboard.AsText := string(MessagesView.ContentToText(tstAll, #9));
 end;
 
-procedure TMessagesWindow.ShowPythonTraceback(Traceback: TPythonTraceback; SkipFrames : integer; ShowWindow : Boolean);
+procedure TMessagesWindow.ShowPythonTraceback(Traceback: TPythonTraceback; SkipFrames : Integer; ShowWindow : Boolean);
 var
-  i : integer;
+  i : Integer;
 begin
   with TraceBack do begin
     if ItemCount > 0 then begin
@@ -364,7 +364,7 @@ end;
 
 procedure TMessagesWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  if not AppStorage.PathExists(FBasePath) then exit;
+  if not AppStorage.PathExists(FBasePath) then Exit;
   inherited;
   MessagesView.Header.Columns[1].Width :=
     PPIScale(AppStorage.ReadInteger(FBasePath+'\FileName Width', 200));

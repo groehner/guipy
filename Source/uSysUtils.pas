@@ -186,7 +186,7 @@ begin
   for I := Length(List) - 1 downto 0 do
     if Result then
     begin
-      Handle := OpenProcess(PROCESS_TERMINATE, false, List[I]);
+      Handle := OpenProcess(PROCESS_TERMINATE, False, List[I]);
       Result := (Handle <> 0) and
         TerminateProcess(Handle, Cardinal(ABORT_EXIT_CODE)) and
         CloseHandle(Handle);

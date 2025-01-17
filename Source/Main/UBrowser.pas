@@ -334,23 +334,23 @@ begin
 end;
 
 function TFBrowser.getAsStringList: TStringList;
-  var Filename: string;
+  var FileName: string;
 begin
   TBShowSource.Enabled:= False;
   Result:= TStringList.Create;
-  Filename:= StripHttpParams(CBUrls.Text);
-  if not FileExists(Filename) then begin
+  FileName:= StripHttpParams(CBUrls.Text);
+  if not FileExists(FileName) then begin
     Screen.Cursor:= crHourGlass;
     try
-      Filename:= TPath.Combine(GuiPyOptions.TempDir, 'download.html');
-      if not DownloadURL(CBUrls.Text, Filename) then
+      FileName:= TPath.Combine(GuiPyOptions.TempDir, 'download.html');
+      if not DownloadURL(CBUrls.Text, FileName) then
         StyledMessageDlg(_('Download failed!'), mtError, [mbOK], 0);
     finally
       Screen.Cursor:= crDefault;
     end;
   end;
-  if FileExists(Filename) then
-    Result.LoadFromFile(Filename);
+  if FileExists(FileName) then
+    Result.LoadFromFile(FileName);
   TBShowSource.Enabled:= True;
 end;
 

@@ -211,7 +211,7 @@ end;
 
 procedure TRegExpTesterWindow.StoreSettings(AppStorage: TJvCustomAppStorage);
 var
-  SearchType : integer;
+  SearchType : Integer;
 begin
   inherited;
   if RI_findall.Checked then
@@ -246,7 +246,7 @@ end;
 
 procedure TRegExpTesterWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  if not AppStorage.PathExists(FBasePath) then exit;
+  if not AppStorage.PathExists(FBasePath) then Exit;
   inherited;
   var AppIniStorageOptions := TJvAppIniStorageOptions(AppStorage.StorageOptions);
   var OldReplaceCRLF := AppIniStorageOptions.ReplaceCRLF;
@@ -321,7 +321,7 @@ procedure TRegExpTesterWindow.TIExecuteClick(Sender: TObject);
 var
   Py: IPyEngineAndGIL;
   re: Variant;
-  Flags: integer;
+  Flags: Integer;
   FindIter: Variant;
   AdjSearchText: string;
   OutputSuppressor: IInterface;
@@ -436,7 +436,7 @@ procedure TRegExpTesterWindow.GroupsViewGetText(Sender: TBaseVirtualTree;
 var
   Py: IPyEngineAndGIL;
   GroupDict, Keys : Variant;
-  i : integer;
+  i : Integer;
 begin
   Py := SafePyEngine;
   Assert(VarIsPython(MatchObject) and not VarIsNone(MatchObject));
@@ -451,7 +451,7 @@ begin
           for i := 0 to len(Keys) - 1 do
             if Groupdict.__getitem__(Keys.__getitem__(i)) = Node.Index + 1 then begin
               CellText := Keys.__getitem__(i);
-              break;
+              Break;
             end;
         end;
     2:  if VarIsNone(MatchObject.groups(Node.Index+1)) then

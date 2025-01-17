@@ -18,15 +18,15 @@ interface
 
 function zzGetControlZOrder (
                   aControl   : TObject     // only Controls are processed, but you can throw anything you like at this
-                  ) : integer;
+                  ) : Integer;
   // return the Z order of the control within its parent
   // if not found or not applicable, return -1
   // the order is zero based, so the first control is # 0
 
 function zzSetControlZOrder (
                   aControl   : TObject;    // only Controls are processed, but you can throw anything you like at this
-                  aNewZorder : integer     // ignore if this is -1
-                  ) : boolean;
+                  aNewZorder : Integer     // ignore if this is -1
+                  ) : Boolean;
   // set the Z order of the control
   // if a control already exists at this Z Order, the aControl will be placed underneath it (pushing the other control up)
   // the order is zero based, so the first control is # 0
@@ -46,12 +46,12 @@ uses
 
 function zzGetControlZOrder (
                   aControl   : TObject        // only Controls are processed, but throw anything you like at this
-                  ) : integer;
+                  ) : Integer;
   // return the Z order of the control within its parent
   // if not found or not applicable, return -1
   // the order is zero based, so the first control is # 0
 var
-  i        : integer;
+  i        : Integer;
   vControl : TControl;
   vList    : TList;
   vParent  : TWinControl;
@@ -88,8 +88,8 @@ end;
 
 function zzSetControlZOrder (
                   aControl   : TObject;    // only Controls are processed, but you can throw anything you like at this
-                  aNewZorder : integer     // ignore if this is -1
-                  ) : boolean;
+                  aNewZorder : Integer     // ignore if this is -1
+                  ) : Boolean;
   // set the Z order of the control
   // if a control already exists at this Z Order, the control will be placed underneath it (pushing the other control up)
   // the order is zero based, so the first control is # 0
@@ -102,8 +102,8 @@ var
   vControl    : TControl;
   vZorderList : TList;         // list of controls to be raised
   vParent     : TWinControl;   // form, panel, button etc
-  vCurrentZ   : integer;
-  vFirstZ     : integer;
+  vCurrentZ   : Integer;
+  vFirstZ     : Integer;
 begin
   result := FALSE;
 
@@ -132,7 +132,7 @@ begin
                       vZorderList.Add (vParent.Controls[i]);     // other controls
 
                                                     // loop through controls and bring each one to the front
-              for i := 0 to vZorderList.count - 1 do
+              for i := 0 to vZorderList.Count - 1 do
                   TControl (vZorderList[i]).BringToFront;
 
               if  vParent is TControl then

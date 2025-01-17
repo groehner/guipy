@@ -38,31 +38,31 @@ type
     FIcon: string;
     // IconSize?
     FShortcut: string;
-    FCheckable: boolean;
-    FChecked: boolean;
-    FAutoRepeat: boolean;
-    FAutoExclusive: boolean;
-    FAutoRepeatDelay: integer;
-    FAutoRepeatInterval: integer;
+    FCheckable: Boolean;
+    FChecked: Boolean;
+    FAutoRepeat: Boolean;
+    FAutoExclusive: Boolean;
+    FAutoRepeatDelay: Integer;
+    FAutoRepeatInterval: Integer;
     FClicked: string;
     FPressed: string;
     FReleased: string;
     FToggled: string;
     procedure setText(Value: string);
     procedure setIcon(Value: string);
-    procedure setChecked(value: boolean);
+    procedure setChecked(value: Boolean);
     procedure setClicked(value: string);
     function GetIconAsBitmap: TBitmap;
   protected
-    PaintFlat: boolean;
-    PaintStyle: integer;
-    PaintArrow: integer;
+    PaintFlat: Boolean;
+    PaintStyle: Integer;
+    PaintArrow: Integer;
     procedure MakeClickEvent;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure Paint; override;
@@ -74,12 +74,12 @@ type
     property Text: string read FText write setText;
     property Icon: string read FIcon write setIcon;
     property Shortcut: string read FShortcut write FShortcut;
-    property Checkable: boolean read FCheckable write FCheckable;
-    property Checked: boolean read FChecked write setChecked;
-    property AutoRepeat: boolean read FAutoRepeat write FAutoRepeat;
-    property AutoExclusive: boolean read FAutoExclusive write FAutoExclusive;
-    property AutoRepeatDelay: integer read FAutoRepeatDelay write FAutoRepeatDelay;
-    property AutoRepeatInterval: integer read FAutoRepeatInterval write FAutoRepeatInterval;
+    property Checkable: Boolean read FCheckable write FCheckable;
+    property Checked: Boolean read FChecked write setChecked;
+    property AutoRepeat: Boolean read FAutoRepeat write FAutoRepeat;
+    property AutoExclusive: Boolean read FAutoExclusive write FAutoExclusive;
+    property AutoRepeatDelay: Integer read FAutoRepeatDelay write FAutoRepeatDelay;
+    property AutoRepeatInterval: Integer read FAutoRepeatInterval write FAutoRepeatInterval;
     //signals
     property clicked: string read FClicked write setClicked;
     property pressed: string read FPressed write FPressed;
@@ -89,46 +89,46 @@ type
 
   TQtPushButton = class(TQtAbstractButton)
   private
-    FAutoDefault: boolean;
-    FDefault: boolean;
-    FFlat: boolean;
-    procedure setFlat(Value: boolean);
+    FAutoDefault: Boolean;
+    FDefault: Boolean;
+    FFlat: Boolean;
+    procedure setFlat(Value: Boolean);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property AutoDefault: boolean read FAutoDefault write FAutoDefault;
-    property Default_: boolean read FDefault write FDefault;
-    property Flat: boolean read FFlat write setFlat;
+    property AutoDefault: Boolean read FAutoDefault write FAutoDefault;
+    property Default_: Boolean read FDefault write FDefault;
+    property Flat: Boolean read FFlat write setFlat;
   end;
 
   TQtToolButton = class(TQtAbstractButton)
   private
-    FAutoRaise: boolean;
+    FAutoRaise: Boolean;
     FArrowType: TArrowType;
     FPopupMode: TPopopMode;
     FToolButtonStyle: TToolButtonStyle;
     FTriggered: string;
     procedure setArrowType(Value: TArrowType);
-    procedure setAutoRaise(Value: boolean);
+    procedure setAutoRaise(Value: Boolean);
     procedure setToolButtonStyle(Value: TToolButtonStyle);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property PopupMode: TPopopMode read FPopupMode write FPopupMode;
     property ToolButtonStyle: TToolButtonStyle read FToolButtonStyle write setToolButtonStyle;
-    property AutoRaise: boolean read FAutoRaise write setAutoRaise;
+    property AutoRaise: Boolean read FAutoRaise write setAutoRaise;
     property ArrowType: TArrowType read FarrowType write setArrowType;
     // signals
     property triggered: string read FTriggered write FTriggered;
@@ -137,25 +137,25 @@ type
   TQtRadioButton = class(TQtAbstractButton)
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   end;
 
   TQtCheckBox = class(TQtAbstractButton)
   private
-    FTristate: boolean;
+    FTristate: Boolean;
     FStateChanged: string;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
     procedure SizeToText; override;
   published
-    property Tristate: boolean read FTristate write FTristate;
+    property Tristate: Boolean read FTristate write FTristate;
     // signals
     property stateChanged: string read FStateChanged write FStateChanged;
   end;
@@ -165,7 +165,7 @@ type
     FDescription: string;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
   published
     property Description: string read FDescription write FDescription;
@@ -180,20 +180,20 @@ uses
 
 constructor TQtAbstractButton.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   FText:= '';
   FIcon:= '';
   Height:= 24;
   Width:= 80;
   FShortcut:= '';
-  FCheckable:= false;
-  FChecked:= false;
-  FAutoRepeat:= false;
-  FAutoExclusive:= false;
+  FCheckable:= False;
+  FChecked:= False;
+  FAutoRepeat:= False;
+  FAutoExclusive:= False;
   FAutoRepeatDelay:= 300;
 end;
 
-function TQtAbstractButton.getAttributes(ShowAttributes: integer): string;
+function TQtAbstractButton.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Icon|Text|';
   if ShowAttributes >= 2 then
@@ -203,7 +203,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes)
 end;
 
-function TQtAbstractButton.getEvents(ShowEvents: integer): string;
+function TQtAbstractButton.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|clicked|pressed|released|toggled';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -232,7 +232,7 @@ end;
 
 procedure TQtAbstractButton.Paint;
   var tx, ty, tw, th, x, y, w, h, gw, gh, gx, gy, maxw, maxh,
-      gtg, bx, by: integer;
+      gtg, bx, by: Integer;
       pathname: string;
       SL: TstringList;
       bmp: TBitmap;
@@ -240,8 +240,8 @@ procedure TQtAbstractButton.Paint;
   procedure ShowText(R: TRect);
   begin
     var s:= SL.Text;
-    if trim(s) = '' then
-      exit;
+    if Trim(s) = '' then
+      Exit;
     DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_LEFT);
   end;
 
@@ -263,7 +263,7 @@ begin
   if LeftSpace <> PPIScale(18) then
     LeftSpace:= 0;
   try
-    pathname:= FGuiDesigner.getPath + 'images\' + copy(Icon, 8, length(Icon));
+    pathname:= FGuiDesigner.getPath + 'images\' + Copy(Icon, 8, Length(Icon));
     if not (FileExists(pathname) or (PaintArrow > 0)) or (PaintStyle = 2) then begin
       // without graphic
       if PaintStyle = 3 then begin // Radio- or CheckButton
@@ -282,7 +282,7 @@ begin
       gh:= bmp.Height;
       gtg:= 1; // GraphicTextGap
       maxw:= gw + gtg + tw;
-      maxh:= max(th, gh);
+      maxh:= Max(th, gh);
       if maxw > w then begin
         width:= maxw;
         w:= maxw;
@@ -390,7 +390,7 @@ begin
   end;
 end;
 
-procedure TQtAbstractButton.setChecked(Value: boolean);
+procedure TQtAbstractButton.setChecked(Value: Boolean);
 begin
   if Value <> FChecked then begin
     FChecked:= Value;
@@ -428,12 +428,12 @@ begin
   end else begin
     filename:= ExtractFileName(Value);
     if Pos('images/', filename) = 1 then
-      System.delete(filename, 1, 7);
+      System.Delete(filename, 1, 7);
     Path:= ExtractFilePath(Partner.Pathname);
     Dest:= Path + 'images\' + filename;
     ForceDirectories(Path + 'images\');
     if not FileExists(Dest) then
-      copyFile(PChar(Value), PChar(Dest), true);
+      copyFile(PChar(Value), PChar(Dest), True);
     FIcon:= 'images/' + filename;
     s:= key + '(QIcon(' + asString(FIcon) + '))';
     setAttributValue(key, s);
@@ -477,12 +477,12 @@ end;
 
 constructor TQtPushButton.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 74;
   FText:= 'PushButton';
 end;
 
-function TQtPushButton.getAttributes(ShowAttributes: integer): string;
+function TQtPushButton.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|AutoDefault|Default_|Flat';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -515,7 +515,7 @@ procedure TQtPushButton.Paint;
   var R: TRect;
 begin
   if FFlat then
-    PaintFlat:= true;
+    PaintFlat:= True;
   inherited;
   if Default_ and not FFlat then begin
     Canvas.Brush.Color:= $D77800;
@@ -524,10 +524,10 @@ begin
     R.Inflate(-1, -1);
     Canvas.FrameRect(R);
   end;
-  PaintFlat:= false;
+  PaintFlat:= False;
 end;
 
-procedure TQtPushButton.setFlat(Value: boolean);
+procedure TQtPushButton.setFlat(Value: Boolean);
 begin
   if Value <> FFlat then begin
     FFlat:= Value;
@@ -539,7 +539,7 @@ end;
 
 constructor TQtToolButton.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 103;
   Width:= 24;
   FText:= '...';
@@ -549,7 +549,7 @@ begin
   FArrowType:= NoArrow;
 end;
 
-function TQtToolButton.getAttributes(ShowAttributes: integer): string;
+function TQtToolButton.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|PopupMode|ToolButtonStyle|AutoRaise|ArrowType|';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -565,7 +565,7 @@ begin
     inherited;
 end;
 
-function TQtToolButton.getEvents(ShowEvents: integer): string;
+function TQtToolButton.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|triggered';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -593,11 +593,11 @@ end;
 procedure TQtToolButton.Paint;
 begin
   if FAutoRaise then
-    PaintFlat:= true;
+    PaintFlat:= True;
   PaintStyle:= ord(FToolButtonStyle) + 1;
   PaintArrow:= ord(FArrowType);
   inherited;
-  PaintFlat:= false;
+  PaintFlat:= False;
   PaintStyle:= 0;
   PaintArrow:= 0;
 end;
@@ -617,7 +617,7 @@ begin
   end;
 end;
 
-procedure TQtToolButton.setAutoRaise(Value: boolean);
+procedure TQtToolButton.setAutoRaise(Value: Boolean);
 begin
   if Value <> FAutoRaise then begin
     FAutoRaise:= Value;
@@ -637,15 +637,15 @@ end;
 
 constructor TQtRadioButton.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 76;
   FText:= 'RadioButton';
-  MouseTracking:= true;
-  FCheckable:= true;
-  FAutoExclusive:= true;
+  MouseTracking:= True;
+  FCheckable:= True;
+  FAutoExclusive:= True;
 end;
 
-function TQtRadioButton.getAttributes(ShowAttributes: integer): string;
+function TQtRadioButton.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Checked';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -653,14 +653,14 @@ end;
 
 procedure TQtRadioButton.Paint;
 begin
-  PaintFlat:= true;
+  PaintFlat:= True;
   PaintStyle:= 3;
   LeftSpace:= PPIScale(18);
   inherited;
   if FChecked
     then FGUIDesigner.vilQtControls1616.Draw(Canvas, 0, TopSpace, 3)
     else FGUIDesigner.vilQtControls1616.Draw(Canvas, 0, TopSpace, 2);
-  PaintFlat:= false;
+  PaintFlat:= False;
   PaintStyle:= 0;
 end;
 
@@ -674,20 +674,20 @@ end;
 
 constructor TQtCheckBox.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 77;
   FText:= 'CheckBox';
-  MouseTracking:= true;
-  FCheckable:= true;
+  MouseTracking:= True;
+  FCheckable:= True;
 end;
 
-function TQtCheckBox.getAttributes(ShowAttributes: integer): string;
+function TQtCheckBox.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Checked|Tristate';
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-function TQtCheckBox.getEvents(ShowEvents: integer): string;
+function TQtCheckBox.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|stateChanged';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -709,14 +709,14 @@ end;
 
 procedure TQtCheckBox.Paint;
 begin
-  PaintFlat:= true;
+  PaintFlat:= True;
   PaintStyle:= 3;
   LeftSpace:= PPIScale(18);
   inherited;
   if FChecked
     then FGUIDesigner.vilQtControls1616.Draw(Canvas, 0, TopSpace, 1)
     else FGUIDesigner.vilQtControls1616.Draw(Canvas, 0, TopSpace, 0);
-  PaintFlat:= false;
+  PaintFlat:= False;
   PaintStyle:= 0;
 end;
 
@@ -732,17 +732,17 @@ end;
 
 constructor TQtCommandLinkButton.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 104;
   Width:= 184;
   Height:= 40;
   FText:= 'CommandLinkButton';
-  PaintFlat:= true;
+  PaintFlat:= True;
   PaintArrow:= 5;
   PaintStyle:= 3;
 end;
 
-function TQtCommandLinkButton.getAttributes(ShowAttributes: integer): string;
+function TQtCommandLinkButton.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Description';
   Result:= Result + inherited getAttributes(ShowAttributes);

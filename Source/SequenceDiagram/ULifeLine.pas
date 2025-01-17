@@ -18,36 +18,36 @@ type
     SequencePanel: TSequencePanel;
     TextWidth: Integer;
     TextHeight: Integer;
-    DistY: integer;
-    ActivationWidth: integer;
+    DistY: Integer;
+    ActivationWidth: Integer;
     MinWidth: Integer;
     MinHeight: Integer;
     Padding: Integer;
-    FCreated: boolean;
+    FCreated: Boolean;
     BGColor: TColor;
     FGColor: TColor;
-    LineHeight: integer;
-    Renamed: boolean;
+    LineHeight: Integer;
+    Renamed: Boolean;
     PPIControl: TControl;
-    procedure SetCreated(const Value: boolean);
+    procedure SetCreated(const Value: Boolean);
     procedure ShowHead;
   protected
     procedure Paint; override;
   public
     Participant: string;
     InternalName: string;
-    Activation: integer;
+    Activation: Integer;
     HeadHeight: Integer;
-    Closed: boolean;
-    First: boolean;
+    Closed: Boolean;
+    First: Boolean;
     onCreatedChanged: TNotifyEvent;
     constructor CreateLL(aOwner: TComponent; const aParticipant: string;
                          aFont: TFont; PPIControl: TControl);
     procedure SetFont(aFont: TFont);
-    procedure getWidthHeigthOfText(const aText: string; var w, h: integer);
+    procedure getWidthHeigthOfText(const aText: string; var w, h: Integer);
     procedure CalcWidthHeight;
     procedure RenameParticipant(const Value: string);
-    property Created: boolean read FCreated write setCreated;
+    property Created: Boolean read FCreated write setCreated;
   end;
 
 implementation
@@ -63,10 +63,10 @@ begin
   if Pos('@', aParticipant) > 0
     then InternalName:= aParticipant
     else Self.Participant:= aParticipant;
-  Created:= false;
-  Closed:= false;
+  Created:= False;
+  Closed:= False;
   Renamed:= (aParticipant = 'Actor');
-  self.PPIControl:= PPIControl;
+  Self.PPIControl:= PPIControl;
   setFont(aFont);
 end;
 
@@ -85,10 +85,10 @@ end;
 procedure TLifeLine.Paint;
   var Connections: TList;
       Conn1, Conn2: TConnection;
-      i, j, y1, y2: integer;
+      i, j, y1, y2: Integer;
       HeadColor: TColor;
 
-  function isDark(Color: TColor): boolean;
+  function isDark(Color: TColor): Boolean;
     var ACol: Longint;
   begin
     ACol := ColorToRGB(Color) and $00FFFFFF;
@@ -154,9 +154,9 @@ begin
            (not Conn1.isRecursiv or (Conn2.FromActivation = Conn1.FromActivation + 1))
         then begin
           y2:= Conn2.FromP.y;
-          break;
+          Break;
         end;
-        inc(j);
+        Inc(j);
       end;
       if y2 > 0 then
         if Conn1.isRecursiv
@@ -169,7 +169,7 @@ begin
 end;
 
 procedure TLifeLine.ShowHead;
-  var R: TRect; mid, unity, base, delta: integer;
+  var R: TRect; mid, unity, base, delta: Integer;
 begin
   if Pos('Actor', Participant) = 1 then begin
     Canvas.Pen.Width:= 1;
@@ -203,30 +203,30 @@ procedure TLifeLine.CalcWidthHeight;
 begin
   LineHeight:= Canvas.TextHeight('A');
   getWidthHeigthOfText(Participant, TextWidth, TextHeight);
-  Width:= max(TextWidth + Padding, minWidth);
-  HeadHeight:= max(TextHeight + Padding, minHeight);
+  Width:= Max(TextWidth + Padding, minWidth);
+  HeadHeight:= Max(TextHeight + Padding, minHeight);
   if Pos('Actor', Participant) = 1 then
     HeadHeight:= Round(LineHeight*0.7*(0.935 + 2.21));
 end;
 
-procedure TLifeLine.getWidthHeigthOfText(const aText: string; var w, h: integer);
-  var s, s1: string; p: integer;
+procedure TLifeLine.getWidthHeigthOfText(const aText: string; var w, h: Integer);
+  var s, s1: string; p: Integer;
 begin
   w:= minWidth;
   h:= LineHeight;
   s:= aText;
   p:= Pos(#13#10, s);
   while p > 0 do begin
-    s1:= copy(s, 1, p-1);
-    System.delete(s, 1, p+1);
-    w:= max(Canvas.TextWidth(s1), w);
+    s1:= Copy(s, 1, p-1);
+    System.Delete(s, 1, p+1);
+    w:= Max(Canvas.TextWidth(s1), w);
     h:= h + LineHeight;
     p:= Pos(#13#10, s);
   end;
-  w:= max(Canvas.TextWidth(s), w);
+  w:= Max(Canvas.TextWidth(s), w);
 end;
 
-procedure TLifeLine.SetCreated(const Value : boolean);
+procedure TLifeLine.SetCreated(const Value : Boolean);
 begin
   if FCreated <> Value then begin
     FCreated:= Value;

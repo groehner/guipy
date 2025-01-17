@@ -12,7 +12,7 @@ unit frmVariables;
 interface
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   WinApi.Messages,
   System.UITypes,
   System.SysUtils,
@@ -263,7 +263,7 @@ end;
 
 procedure TVariablesWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  if not AppStorage.PathExists(FBasePath) then exit;
+  if not AppStorage.PathExists(FBasePath) then Exit;
   inherited;
   var TempWidth := PPIScale(AppStorage.ReadInteger(FBasePath+'\DocPanelWidth', DocPanel.Width));
   DocPanel.Width := Min(TempWidth,  Max(Width-PPIScale(100), PPIScale(3)));
@@ -336,7 +336,7 @@ procedure TVariablesWindow.UpdateWindow;
 var
   Py: IPyEngineAndGIL;
   CurrentFrame : TBaseFrameInfo;
-  SameFrame : boolean;
+  SameFrame : Boolean;
   RootNodeCount : Cardinal;
   OldGlobalsNameSpace, OldLocalsNamespace : TBaseNameSpaceItem;
 begin

@@ -36,7 +36,7 @@ type
     procedure OKButtonClick(Sender: TObject);
     procedure TBXPopupHistoryPopup(Sender: TObject);
     procedure mnCommandHistoryMRUClick(Sender: TObject;
-      const Filename: string);
+      const FileName: string);
   private
     const FBasePath = 'Command Line';
     class var FParameters: string;
@@ -109,9 +109,9 @@ begin
 end;
 
 procedure TCommandLineDlg.mnCommandHistoryMRUClick(Sender: TObject;
-  const Filename: string);
+  const FileName: string);
 begin
-  SynParameters.Text := Filename;
+  SynParameters.Text := FileName;
   SynParameters.SetFocus;
 end;
 

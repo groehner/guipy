@@ -11,7 +11,7 @@ unit frmWatches;
 interface
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   WinApi.Messages,
   WinApi.ActiveX,
   System.Types,
@@ -140,7 +140,7 @@ type
     Name : string;
     ObjectType : string;
     Value : string;
-    ImageIndex : integer;
+    ImageIndex : Integer;
     NS: TBaseNameSpaceItem;
   end;
 
@@ -199,7 +199,7 @@ procedure TWatchesWindow.WatchesViewInitNode(Sender: TBaseVirtualTree;
   var InitialStates: TVirtualNodeInitStates);
 var
   Data, ParentData: PWatchRec;
-  ChildCount : integer;
+  ChildCount : Integer;
 begin
   Data := Node.GetData;
   if not WatchesView.Enabled then
@@ -405,7 +405,7 @@ procedure TWatchesWindow.WatchesViewKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   inherited;
-  if Key = VK_Delete then
+  if Key = VK_DELETE then
   begin
     mnRemoveWatchClick(Sender);
     Key := 0;

@@ -344,7 +344,7 @@ type
   end align {$IFDEF CPUX64}16{$ELSE CPUX64}8{$ENDIF CPUX64};
 
 {$IFDEF Win64}
-function InterlockedCompareExchange128(Destination: Pointer; ExchangeHigh, ExchangeLow: Int64; ComparandResult: Pointer): boolean;
+function InterlockedCompareExchange128(Destination: Pointer; ExchangeHigh, ExchangeLow: Int64; ComparandResult: Pointer): Boolean;
 // The parameters are in the RCX, RDX, R8 and R9 registers per the MS x64 calling convention:
 //   RCX        Destination
 //   RDX        ExchangeHigh

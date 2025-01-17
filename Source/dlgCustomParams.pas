@@ -89,7 +89,7 @@ end;
 
 procedure TCustomizeParams.GetItems(List: TStrings);
 var
- i : integer;
+ i : Integer;
 begin
   List.Clear;
   List.BeginUpdate;
@@ -103,7 +103,7 @@ end;
 
 procedure TCustomizeParams.SetItems(List: TStrings);
 var
- i : integer;
+ i : Integer;
 begin
   lvItems.Items.Clear;
   for i := 0 to List.Count - 1 do
@@ -158,7 +158,7 @@ end;
 
 procedure TCustomizeParams.actUpdateItemExecute(Sender: TObject);
 var
-  i : integer;
+  i : Integer;
 begin
   if (edName.Text <> '') and (lvItems.ItemIndex >= 0) then begin
     for i := 0 to lvItems.Items.Count - 1 do
@@ -190,7 +190,7 @@ end;
 procedure TCustomizeParams.actMoveUpExecute(Sender: TObject);
 var
   Name, Value : string;
-  Index : integer;
+  Index : Integer;
 begin
   if lvItems.ItemIndex > 0 then begin
     Index := lvItems.ItemIndex;
@@ -209,7 +209,7 @@ end;
 procedure TCustomizeParams.actMoveDownExecute(Sender: TObject);
 var
   Name, Value : string;
-  Index : integer;
+  Index : Integer;
 begin
   if (lvItems.ItemIndex >= 0) and
     (lvItems.ItemIndex < lvItems.Items.Count - 1) then

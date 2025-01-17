@@ -862,7 +862,7 @@ procedure ResetDockClient(DockClient: TJvDockClient; NewTarget: TControl); overl
 { Quick way to do tabbed docking programmatically - Added by Warren. New implementation Jan 2010 }
 function ManualTabDock(DockSite: TWinControl; Form1, Form2: TForm): TJvDockTabHostForm;
 
-function _ManualTabDock(DockSite: TWinControl; Form1, Form2: TForm;oldTechnique:Boolean=false): TJvDockTabHostForm; {experimental}
+function _ManualTabDock(DockSite: TWinControl; Form1, Form2: TForm;oldTechnique:Boolean=False): TJvDockTabHostForm; {experimental}
 
 
 { Must create the initial tab dock with two pages, using ManualTabDock,
@@ -1118,18 +1118,18 @@ var
 begin
   if not (csDestroying in DockForm.ComponentState) then
   if DockForm is TForm then begin
-  allow := true;
+  allow := True;
   if Assigned(TForm(DockForm).OnUnDock) then
     TForm(DockForm).OnUnDock(DockForm,DockForm,
     TWinControl(nil),allow);
   if allow then begin
     dockClient := FindDockClient(DockForm);
     if Assigned(dockclient) and (not dockClient.CanFloat) then begin
-    exit;
+    Exit;
     end;
   end;
   if not allow then begin
-    exit;
+    Exit;
   end;
   end;
 
@@ -1337,7 +1337,7 @@ begin
   end;
   if ChildDockSite <> nil then
     TWinControlAccessProtected(ChildDockSite).SendDockNotification(CM_INVALIDATEDOCKHOST,
-      WPARAM(Control), LPARAM(FocusLost));
+      WParam(Control), LPARAM(FocusLost));
 end;
 {$ENDIF !COMPILER9_UP}
 
@@ -1603,7 +1603,7 @@ begin
     ManualTabDockAddPage( TJvDockTabHostForm(HostForm), Form1 );
     ManualTabDockAddPage( TJvDockTabHostForm(HostForm), Form2 );
     result := TJvDockTabHostForm(HostForm);
-    exit;
+    Exit;
     end;
     // This is the original way I had it in 2006: It had bugs.
     HostForm := DockClient.CreateTabHostAndDockControl(FOrm1,Form2);
@@ -2014,7 +2014,7 @@ var
   I: Integer;
 begin
   if not Assigned(DockableControl) then
-    exit;
+    Exit;
 
   if DockableControl.DockClientCount = 1 then
   begin
@@ -2190,7 +2190,7 @@ begin
     wc := Self.DockClients[n];
     if wc is TJvDockTabHostForm then begin
      result := wc as TWinControl;
-     exit;
+     Exit;
     end;
   end;
   result := nil;
@@ -3841,7 +3841,7 @@ end;
 
 procedure TJvDockConjoinPanel.DockDrop(Source: TDragDockObject; X, Y: Integer);
 begin
-  if Perform(CM_DOCKCLIENT, WPARAM(Source), {$IFDEF RTL230_UP}PointToLParam{$ELSE}LPARAM{$ENDIF RTL230_UP}(SmallPoint(X, Y))) >= 0 then
+  if Perform(CM_DOCKCLIENT, WParam(Source), {$IFDEF RTL230_UP}PointToLParam{$ELSE}LPARAM{$ENDIF RTL230_UP}(SmallPoint(X, Y))) >= 0 then
   begin
     if Source.Control is TForm then
     begin
@@ -3874,7 +3874,7 @@ begin
     { It's possible that 2 WM_CLOSE are send to the parent form  }
     PostMessage(Parent.Handle, WM_CLOSE, 0, 0);
   UpdateCaption(Client);
-  Result := Perform(CM_UNDOCKCLIENT, WPARAM(NewTarget), LPARAM(Client)) = 0;
+  Result := Perform(CM_UNDOCKCLIENT, WParam(NewTarget), LPARAM(Client)) = 0;
 end;
 
 function TJvDockConjoinPanel.GetDockClient: TJvDockClient;
@@ -4042,7 +4042,7 @@ end;
 
 procedure TJvDockPanel.DockDrop(Source: TDragDockObject; X, Y: Integer);
 begin
-  if Perform(CM_DOCKCLIENT, WPARAM(Source), {$IFDEF RTL230_UP}PointToLParam{$ELSE}LPARAM{$ENDIF RTL230_UP}(SmallPoint(X, Y))) >= 0 then
+  if Perform(CM_DOCKCLIENT, WParam(Source), {$IFDEF RTL230_UP}PointToLParam{$ELSE}LPARAM{$ENDIF RTL230_UP}(SmallPoint(X, Y))) >= 0 then
   begin
     if Source.Control is TForm then
     begin
@@ -4058,7 +4058,7 @@ function TJvDockPanel.DoUnDock(NewTarget: TWinControl; Client: TControl): Boolea
 begin
   Result := IsDockable(Self, Client);
   ShowDockPanel(False, nil);
-  Result := Result and (Perform(CM_UNDOCKCLIENT, WPARAM(NewTarget), LPARAM(Client)) = 0);
+  Result := Result and (Perform(CM_UNDOCKCLIENT, WParam(NewTarget), LPARAM(Client)) = 0);
   if Result then
     if not (Client is TJvDockableForm) then
       SetDockSite(TForm(Client), True);
@@ -4867,9 +4867,9 @@ var
 begin
   Assert(Assigned(AControl));
   if not Assigned(AControl.Parent) then
-    exit;
+    Exit;
   if not (AControl.Parent is TJvDockTabSheet) then
-    exit;
+    Exit;
   TabSheet := TJvDockTabSheet(AControl.Parent);
   // Now go through the pages and find it!
   for t := 0 to FPageControl.Count - 1 do
@@ -4880,7 +4880,7 @@ begin
       if AControl is TForm then
         TabSheet.Caption := TForm(AControl).Caption;
       Self.Caption := TabSheet.Caption;
-      exit;
+      Exit;
     end;
   end;
 end;
@@ -4898,9 +4898,9 @@ var
 begin
   Assert(Assigned(AControl));
   if not Assigned(AControl.Parent) then
-    exit;
+    Exit;
   if not (AControl.Parent is TJvDockTabSheet) then
-    exit;
+    Exit;
   TabSheet := TJvDockTabSheet(AControl.Parent);
   // Now go through the pages and find the one page that needs
   // its caption updated.
@@ -4912,7 +4912,7 @@ begin
         TabSheet.Caption := TForm(AControl).Caption;
       if FPageControl.ActivePage = TabSheet then
         Self.Caption := TabSheet.Caption; // tabhost's form caption needs updating.
-      exit;
+      Exit;
     end;
   end;
 end;
@@ -4981,7 +4981,7 @@ begin
     try
       DragDockObject.DockRect := Source.DockRect;
       DragDockObject.Control := Source.Control;
-      Perform(CM_DOCKCLIENT, WPARAM(DragDockObject), {$IFDEF RTL230_UP}PointToLParam{$ELSE}LPARAM{$ENDIF RTL230_UP}(SmallPoint(X, Y)));
+      Perform(CM_DOCKCLIENT, WParam(DragDockObject), {$IFDEF RTL230_UP}PointToLParam{$ELSE}LPARAM{$ENDIF RTL230_UP}(SmallPoint(X, Y)));
       UpdateCaption(nil);
     finally
       DragDockObject.Free;
@@ -5052,13 +5052,13 @@ begin
   if (VisibleDockClientCount = 1) or (DockClientCount <= 2) then
     PostMessage(Parent.Handle, WM_CLOSE, 0, 0);
   UpdateCaption(Client);
-  Result := Perform(CM_UNDOCKCLIENT, WPARAM(NewTarget), LPARAM(Client)) = 0;
+  Result := Perform(CM_UNDOCKCLIENT, WParam(NewTarget), LPARAM(Client)) = 0;
 end;
 
 procedure TJvDockTabPageControl.DockDrop(Source: TDragDockObject; X,
   Y: Integer);
 begin
-  if Perform(CM_DOCKCLIENT, WPARAM(Source), {$IFDEF RTL230_UP}PointToLParam{$ELSE}LPARAM{$ENDIF RTL230_UP}(SmallPoint(X, Y))) >= 0 then
+  if Perform(CM_DOCKCLIENT, WParam(Source), {$IFDEF RTL230_UP}PointToLParam{$ELSE}LPARAM{$ENDIF RTL230_UP}(SmallPoint(X, Y))) >= 0 then
   begin
     if Source.Control is TForm then
     begin
@@ -5085,7 +5085,7 @@ begin
     (DockClientCount <= 2) then
     PostMessage(Parent.Handle, WM_CLOSE, 0, 0);
   UpdateCaption(Client);
-  Result := Perform(CM_UNDOCKCLIENT, WPARAM(NewTarget), LPARAM(Client)) = 0;
+  Result := Perform(CM_UNDOCKCLIENT, WParam(NewTarget), LPARAM(Client)) = 0;
 end;
 
 function TJvDockTabPageControl.GetActiveDockForm: TCustomForm;
@@ -5221,7 +5221,7 @@ procedure TJvDockTabPageControl.ScaleForPPI(NewPPI: Integer);
 // This is to work around the fact that TForm.ScaleForPPIRect
 // does not scale parented forms with not allocated handle
 var
-  I: integer;
+  I: Integer;
   Form : TCustomForm;
 begin
   for I := 0 to Count - 1 do

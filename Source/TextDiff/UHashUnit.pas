@@ -13,7 +13,7 @@ unit UHashUnit;
 interface
 
 
-function HashLine(const line: string; IgnoreCase, IgnoreBlanks: boolean): integer;
+function HashLine(const line: string; IgnoreCase, IgnoreBlanks: Boolean): Integer;
 
 implementation
 
@@ -92,39 +92,39 @@ const
 
 //CRC algorithm courtesy of Earl F. Glynn ...
 //(http://www.efg2.com/Lab/Mathematics/CRC.htm)
-function CalcCRC32(p: pchar; length: integer): dword;
-  var i: integer;
+function CalcCRC32(p: pchar; Length: Integer): dword;
+  var i: Integer;
 begin
   result := $FFFFFFFF;
-  for i := 0 to length-1 do
+  for i := 0 to Length-1 do
   begin
     result := (result shr 8) xor table[ pbyte(p)^ xor (result and $000000ff) ];
-    inc(p);
+    Inc(p);
   end;
   result := not result;
 end;
 //--------------------------------------------------------------------------
 
-function HashLine(const line: string; IgnoreCase, IgnoreBlanks: boolean): integer;
-  var i, j, len: integer;
+function HashLine(const line: string; IgnoreCase, IgnoreBlanks: Boolean): Integer;
+  var i, j, len: Integer;
       s: string;
 begin
   s:= line;
   if IgnoreBlanks then begin
     i:= 1;
     j:= 1;
-    len := length(line);
+    len := Length(line);
     while i <= len do begin
       if not CharInSet(line[i], [#9, #32]) then begin
         s[j]:= line[i];
-        inc(j);
+        Inc(j);
       end;
-      inc(i);
+      Inc(i);
     end;
     setlength(s, j-1);
   end;
   if IgnoreCase then s:= AnsiLowerCase(s);
-  Result:= CalcCRC32(pchar(s), length(s));
+  Result:= CalcCRC32(pchar(s), Length(s));
 end;
 
 end.

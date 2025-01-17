@@ -139,7 +139,7 @@ begin
   Add(FileTemplate);
 end;
 
-procedure TFileTemplates.AddDefaultTemplates(NoCheck: Boolean = false);
+procedure TFileTemplates.AddDefaultTemplates(NoCheck: Boolean = False);
 begin
   if NoCheck or not Assigned(TemplateByExt('py')) then AddPythonTemplate;
   if NoCheck or not Assigned(TemplateByExt('pyw')) then AddTkinterTemplate;
@@ -324,9 +324,9 @@ begin
 end;
 
 function TFileTemplates.getDefaultByName(Templatename: string): TFileTemplate;
-  var found: boolean;
+  var found: Boolean;
 begin
-  found:= true;
+  found:= True;
   if Templatename = SPythonTemplateName then
     AddPythonTemplate
   else if Templatename = STkinterTemplateName then
@@ -356,7 +356,7 @@ begin
   else if Templatename = SJupyterTemplateName then
     AddJupyterTemplate
   else
-    found:= false;
+    found:= False;
   if found
     then Result:= TFileTemplate(FileTemplates.Extract(FileTemplates.Last))
     else Result:= nil;
@@ -390,7 +390,7 @@ begin
  for i := 0 to Count - 1 do
    if TFileTemplate(Items[i]).Extension = Ext then begin
      Result := TFileTemplate(Items[i]);
-     break;
+     Break;
    end;
 end;
 
@@ -402,7 +402,7 @@ begin
  for i := 0 to Count - 1 do
    if TFileTemplate(Items[i]).Name = Name then begin
      Result := TFileTemplate(Items[i]);
-     break;
+     Break;
    end;
 end;
 

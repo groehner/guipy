@@ -11,7 +11,7 @@ unit frmDisassemlyView;
 interface                          
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   WinApi.Messages,
   System.SysUtils,
   System.Variants,

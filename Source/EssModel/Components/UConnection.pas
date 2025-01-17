@@ -28,23 +28,23 @@ type
     // Points[1] and Points[2] belong to FromP
     // Points[3] and Points[4] belong to ToP
     Points: array[1..4] of TPoint;
-    constructor create;
+    constructor Create;
     procedure init;
-    procedure enlargeRight(von, bis: integer; dx, dy: integer); overload;
-    procedure enlargeLeft(von, bis: integer; dx, dy: integer); overload;
-    function prev(n: integer): integer;
-    procedure enlargeLeft(corner, dx: integer); overload;
-    procedure enlargeRight(corner, dx: integer); overload;
-    procedure enlargeTop(corner, dy: integer);
-    procedure enlargeBottom(corner, dy: integer);
+    procedure enlargeRight(von, bis: Integer; dx, dy: Integer); overload;
+    procedure enlargeLeft(von, bis: Integer; dx, dy: Integer); overload;
+    function prev(n: Integer): Integer;
+    procedure enlargeLeft(corner, dx: Integer); overload;
+    procedure enlargeRight(corner, dx: Integer); overload;
+    procedure enlargeTop(corner, dy: Integer);
+    procedure enlargeBottom(corner, dy: Integer);
     procedure term(FromP, ToP: TPoint); overload;
-    procedure term(corner: integer; pl: TFivePoints); overload;
+    procedure term(corner: Integer; pl: TFivePoints); overload;
     procedure draw(aCanvas: TCanvas);
-    function LineIntersectsLine(l1p1, l1p2, l2p1, l2p2: TPoint): boolean;
-    function intersects(P1, P2: TPoint; R: TRect): boolean; overload;
-    function intersects(P1, P2: TPoint; S: TSquare): boolean; overload;
-    function intersects(R: TRect): boolean; overload;
-    function intersects(S: TSquare): boolean; overload;
+    function LineIntersectsLine(l1p1, l1p2, l2p1, l2p2: TPoint): Boolean;
+    function intersects(P1, P2: TPoint; R: TRect): Boolean; overload;
+    function intersects(P1, P2: TPoint; S: TSquare): Boolean; overload;
+    function intersects(R: TRect): Boolean; overload;
+    function intersects(S: TSquare): Boolean; overload;
   end;
 
   // Available linestyles
@@ -62,11 +62,11 @@ type
     ArrowStyle : TessConnectionArrowStyle;
     RoleA, Relation, RoleB: string;
     MultiplicityA, MultiplicityB: string;
-    ReadingOrderA, ReadingOrderB: boolean;
-    RecursivCorner: integer;  // corner position of recursiv connection
-    isTurned: boolean;
-    Visible: boolean;
-    isEdited: boolean;
+    ReadingOrderA, ReadingOrderB: Boolean;
+    RecursivCorner: Integer;  // corner position of recursiv connection
+    isTurned: Boolean;
+    Visible: Boolean;
+    isEdited: Boolean;
   end;
 
   { Specifies a connection between two managed objects. }
@@ -76,50 +76,50 @@ type
     FFrom, FTo: TControl;
     FromCenter, ToCenter: TPoint;  // Center with parallel correction
     FromP, ToP: TPoint;  // start/ending on border of Control
-    FromPStart: integer; // start is on right, top, left, bottom side
-    ToPEnd: integer;     // end is on right, top, left, bottom side
-    isRecursiv: boolean;
+    FromPStart: Integer; // start is on right, top, left, bottom side
+    ToPEnd: Integer;     // end is on right, top, left, bottom side
+    isRecursiv: Boolean;
     pl: TFivePoints;
-    XEnlarge: integer;
-    YEnlarge: integer;
-    XDecrease: integer;
-    YDecrease: integer;
+    XEnlarge: Integer;
+    YEnlarge: Integer;
+    XDecrease: Integer;
+    YDecrease: Integer;
     // parallel connections
-    parallelindex: integer;    // index of parallel connection
-    parallelcount: integer;    // count of parallel connection
-    parallelvisited: boolean;  // avoid to compare
-    parallelvisiting: boolean;
+    parallelindex: Integer;    // index of parallel connection
+    parallelcount: Integer;    // count of parallel connection
+    parallelvisited: Boolean;  // avoid to compare
+    parallelvisiting: Boolean;
     Canvas: TCanvas;
     Square: TSquare;
-    Cutted: boolean;
+    Cutted: Boolean;
     BGColor: TColor;
     FGColor: TColor;
     svg: string;
-    constructor create(Src, Dst: TControl; Attributes: TConnectionAttributes; aCanvas: TCanvas);
+    constructor Create(Src, Dst: TControl; Attributes: TConnectionAttributes; aCanvas: TCanvas);
     destructor Destroy; override;
-    procedure Draw(aCanvas: TCanvas; show: boolean);
-    procedure DrawRecursiv(aCanvas: TCanvas; show: boolean);
+    procedure Draw(aCanvas: TCanvas; show: Boolean);
+    procedure DrawRecursiv(aCanvas: TCanvas; show: Boolean);
     procedure DrawRecursivAnnotations(aCanvas: TCanvas);
-    procedure DrawSelection(aCanvas: TCanvas; WithSelection: boolean = true);
+    procedure DrawSelection(aCanvas: TCanvas; WithSelection: Boolean = True);
     procedure SetPenBrushArrow(aCanvas: TCanvas);
     procedure CalcShortest;
     procedure CalcPolyline;
-    function ArrowStartLength(Arrow: TessConnectionArrowStyle): integer;
-    function ArrowHeadLength(Arrow: TessConnectionArrowStyle): integer;
+    function ArrowStartLength(Arrow: TessConnectionArrowStyle): Integer;
+    function ArrowHeadLength(Arrow: TessConnectionArrowStyle): Integer;
     procedure SetAttributes(Attributes: TConnectionAttributes);
     procedure SetArrow(Arrow: TessConnectionArrowStyle);
     procedure Turn;
-    function IsClicked(P: TPoint): boolean;
-    procedure setRecursivPosition(pos: integer);
+    function IsClicked(P: TPoint): Boolean;
+    procedure setRecursivPosition(pos: Integer);
     procedure parallelCorrection;
-    function getQuadrant(x, y: integer; R: TRect): integer;
+    function getQuadrant(x, y: Integer; R: TRect): Integer;
     function CalcRect(ACanvas: TCanvas; AMaxWidth: Integer; const AString: string): TRect;
     function getBoundsRect(arect: TRect): TRect; overload;
     function getBoundsRect(aControl: TControl): TRect; overload;
     function getCenter(R: TRect): TPoint;
     function ArrowToConnect(Arrow: TessConnectionArrowStyle): TessConnectionStyle;
-    procedure ChangeStyle(BlackAndWhite: boolean = false);
-    function calcSVGBaseLine(R: TRect): integer;
+    procedure ChangeStyle(BlackAndWhite: Boolean = False);
+    function calcSVGBaseLine(R: TRect): Integer;
     function getSVGText(R: TRect; s: string): string;
     function getSVGLine(x1, y1, x2, y2: real): string;
     function getSVGPolyline(Points: array of TPoint): string;
@@ -154,59 +154,59 @@ end;
 
 {--- TSquare ------------------------------------------------------------------}
 
-constructor TSquare.create;
+constructor TSquare.Create;
 begin
   init;
 end;
 
 procedure TSquare.init;
-  var i: integer;
+  var i: Integer;
 begin
   for i:= 1 to 4 do
     Points[i]:= Point(0, 0);
 end;
 
-procedure TSquare.enlargeRight(von, bis: integer; dx, dy: integer);
+procedure TSquare.enlargeRight(von, bis: Integer; dx, dy: Integer);
 begin
   case von of
-    1: Points[1].y := max(Points[1].y, +dy);
-    2: Points[1].x := max(Points[1].x, +dx);
-    3: Points[1].y := min(Points[1].y, -dy);
-    4: Points[1].x := min(Points[1].x, -dx);
+    1: Points[1].y := Max(Points[1].y, +dy);
+    2: Points[1].x := Max(Points[1].x, +dx);
+    3: Points[1].y := Min(Points[1].y, -dy);
+    4: Points[1].x := Min(Points[1].x, -dx);
   end;
   case bis of
-    1: Points[4].y := min(Points[4].y, -dy);
-    2: Points[4].x := min(Points[4].x, -dx);
-    3: Points[4].y := max(Points[4].y, +dy);
-    4: Points[4].x := max(Points[4].x, +dx);
+    1: Points[4].y := Min(Points[4].y, -dy);
+    2: Points[4].x := Min(Points[4].x, -dx);
+    3: Points[4].y := Max(Points[4].y, +dy);
+    4: Points[4].x := Max(Points[4].x, +dx);
   end;
 end;
 
-procedure TSquare.enlargeLeft(von, bis: integer; dx, dy: integer);
+procedure TSquare.enlargeLeft(von, bis: Integer; dx, dy: Integer);
 begin
   case von of
-    1: Points[2].y := min(Points[2].y, -dy);
-    2: Points[2].x := min(Points[2].x, -dx);
-    3: Points[2].y := max(Points[2].y, +dy);
-    4: Points[2].x := max(Points[2].x, +dx);
+    1: Points[2].y := Min(Points[2].y, -dy);
+    2: Points[2].x := Min(Points[2].x, -dx);
+    3: Points[2].y := Max(Points[2].y, +dy);
+    4: Points[2].x := Max(Points[2].x, +dx);
   end;
   case bis of
-    1: Points[3].y := max(Points[3].y, +dy);
-    2: Points[3].x := max(Points[3].x, +dx);
-    3: Points[3].y := min(Points[3].y, -dy);
-    4: Points[3].x := min(Points[3].x, -dx);
+    1: Points[3].y := Max(Points[3].y, +dy);
+    2: Points[3].x := Max(Points[3].x, +dx);
+    3: Points[3].y := Min(Points[3].y, -dy);
+    4: Points[3].x := Min(Points[3].x, -dx);
   end;
 end;
 
-function TSquare.prev(n: integer): integer;
+function TSquare.prev(n: Integer): Integer;
 begin
   Result:= n - 1;
   if Result = 0 then
     Result:= 4;
 end;
 
-procedure TSquare.enlargeLeft(corner, dx: integer);
-  var i, i1, i2: integer;
+procedure TSquare.enlargeLeft(corner, dx: Integer);
+  var i, i1, i2: Integer;
 begin
   i1:= 1;
   i2:= 4;
@@ -214,12 +214,12 @@ begin
     i1:= prev(i1);
     i2:= prev(i2);
   end;
-  Points[i1].x:= min(Points[i1].x, -dx);
-  Points[i2].x:= min(Points[i2].x, -dx);
+  Points[i1].x:= Min(Points[i1].x, -dx);
+  Points[i2].x:= Min(Points[i2].x, -dx);
 end;
 
-procedure TSquare.enlargeRight(corner, dx: integer);
-  var i, i1, i2: integer;
+procedure TSquare.enlargeRight(corner, dx: Integer);
+  var i, i1, i2: Integer;
 begin
   i1:= 2;
   i2:= 3;
@@ -227,12 +227,12 @@ begin
     i1:= prev(i1);
     i2:= prev(i2);
   end;
-  Points[i1].x:= max(Points[i1].x, dx);
-  Points[i2].x:= max(Points[i2].x, dx);
+  Points[i1].x:= Max(Points[i1].x, dx);
+  Points[i2].x:= Max(Points[i2].x, dx);
 end;
 
-procedure TSquare.enlargeTop(corner, dy: integer);
-  var i, i1, i2: integer;
+procedure TSquare.enlargeTop(corner, dy: Integer);
+  var i, i1, i2: Integer;
 begin
   i1:= 3;
   i2:= 4;
@@ -240,12 +240,12 @@ begin
     i1:= prev(i1);
     i2:= prev(i2);
   end;
-  Points[i1].y:= min(Points[i1].y, -dy);
-  Points[i2].y:= min(Points[i2].y, -dy);
+  Points[i1].y:= Min(Points[i1].y, -dy);
+  Points[i2].y:= Min(Points[i2].y, -dy);
 end;
 
-procedure TSquare.enlargeBottom(corner, dy: integer);
-  var i, i1, i2: integer;
+procedure TSquare.enlargeBottom(corner, dy: Integer);
+  var i, i1, i2: Integer;
 begin
   i1:= 1;
   i2:= 2;
@@ -253,8 +253,8 @@ begin
     i1:= prev(i1);
     i2:= prev(i2);
   end;
-  Points[i1].y:= max(Points[i1].y, dy);
-  Points[i2].y:= max(Points[i2].y, dy);
+  Points[i1].y:= Max(Points[i1].y, dy);
+  Points[i2].y:= Max(Points[i2].y, dy);
 end;
 
 procedure TSquare.Term(FromP, ToP: TPoint);
@@ -269,8 +269,8 @@ begin
   Points[4].y := ToP.y + Points[4].y;
 end;
 
-procedure TSquare.Term(corner: integer; Pl: TFivePoints);
-  var i: integer;
+procedure TSquare.Term(corner: Integer; Pl: TFivePoints);
+  var i: Integer;
 begin
   for i:= 2 to 4 do begin
     Points[i].x:= Pl[i].x + Points[i].x;
@@ -286,7 +286,7 @@ begin
 end;
 
 procedure TSquare.Draw(aCanvas: TCanvas);
-  var i: integer;
+  var i: Integer;
 begin
   aCanvas.Pen.Color:= clYellow;
 
@@ -302,18 +302,18 @@ begin
 
 end;
 
-function TSquare.LineIntersectsLine(l1p1, l1p2, l2p1, l2p2: TPoint): boolean;
+function TSquare.LineIntersectsLine(l1p1, l1p2, l2p1, l2p2: TPoint): Boolean;
   var q, d, r, s: double;
 begin
-  Result:= false;
+  Result:= False;
   q:= (l1p1.Y - l2p1.Y) * (l2p2.X - l2p1.X) - (l1p1.X - l2p1.X) * (l2p2.Y - l2p1.Y);
   d:= (l1p2.X - l1p1.X) * (l2p2.Y - l2p1.Y) - (l1p2.Y - l1p1.Y) * (l2p2.X - l2p1.X);
-  if d = 0 then exit;
+  if d = 0 then Exit;
   r:= q / d;
   q:= (l1p1.Y - l2p1.Y) * (l1p2.X - l1p1.X) - (l1p1.X - l2p1.X) * (l1p2.Y - l1p1.Y);
   s:= q / d;
   if not ((r <= 0) or (r >= 1) or (s <= 0) or (s >= 1))
-    then Result:= true;
+    then Result:= True;
 end;
 
 function TSquare.Intersects(P1, P2: TPoint; R: TRect): Boolean;
@@ -334,7 +334,7 @@ begin
     LineIntersectsLine(P1, P2, S.Points[4], S.Points[1]);
 end;
 
-function TSquare.intersects(R: TRect): boolean;
+function TSquare.intersects(R: TRect): Boolean;
 begin
   Result:=
     Intersects(Points[1], Points[2], R) or
@@ -343,7 +343,7 @@ begin
     Intersects(Points[4], Points[1], R);
 end;
 
-function TSquare.intersects(S: TSquare): boolean;
+function TSquare.intersects(S: TSquare): Boolean;
 begin
   Result:=
     Intersects(Points[1], Points[2], S) or
@@ -387,7 +387,7 @@ begin
   end;
 end;
 
-function TConnection.getQuadrant(x, y: integer; R: TREct): integer;
+function TConnection.getQuadrant(x, y: Integer; R: TREct): Integer;
 begin
   if y < (R.Top + R.Bottom) div 2 then
     if x < (R.Left + R.Right) div 2
@@ -399,7 +399,7 @@ begin
       else Result:= 4;
 end;
 
-procedure TConnection.Draw(aCanvas: TCanvas; show: boolean);
+procedure TConnection.Draw(aCanvas: TCanvas; show: Boolean);
   var
     x1, x2: Integer;
     y1, y2: Integer;
@@ -430,10 +430,10 @@ procedure TConnection.Draw(aCanvas: TCanvas; show: boolean);
     Result.Top:= 2;
   end;
 
-  procedure ShowMultiplicity(turned: boolean; xr, yr: integer; R2: TRect; const Multiplicity: string);
-    var th, tw, Quadrant: integer; Flags: longint; R: TRect;
+  procedure ShowMultiplicity(turned: Boolean; xr, yr: Integer; R2: TRect; const Multiplicity: string);
+    var th, tw, Quadrant: Integer; Flags: longint; R: TRect;
   begin
-    if Multiplicity = '' then exit;
+    if Multiplicity = '' then Exit;
     R:= aCalcRect(aCanvas, Multiplicity);
     th:= R.Bottom;
     tw:= R.Right;
@@ -495,10 +495,10 @@ procedure TConnection.Draw(aCanvas: TCanvas; show: boolean);
     svg:= svg + getSVGText(R, Multiplicity);
   end;
 
-  procedure ShowRole(turned: boolean; xr, yr: integer; R2: TRect; const Role: string);
-    var th, tw, Quadrant: integer; Flags: longint; R: TRect;
+  procedure ShowRole(turned: Boolean; xr, yr: Integer; R2: TRect; const Role: string);
+    var th, tw, Quadrant: Integer; Flags: longint; R: TRect;
   begin
-    if Role = '' then exit;
+    if Role = '' then Exit;
     R:= aCalcRect(aCanvas, Role);
     th:= R.Bottom;
     tw:= R.Right;
@@ -553,10 +553,10 @@ procedure TConnection.Draw(aCanvas: TCanvas; show: boolean);
     svg:= svg + getSVGText(R, Role);
   end;
 
-  procedure ShowRelation(R2: TRect; dx, dy: integer; Relation: string);
-    var R: TRect; tw, th, xBase, yBase, Quadrant: integer; alpha: double;
+  procedure ShowRelation(R2: TRect; dx, dy: Integer; Relation: string);
+    var R: TRect; tw, th, xBase, yBase, Quadrant: Integer; alpha: double;
   begin
-    if Relation = '' then exit;
+    if Relation = '' then Exit;
     yLineDelta:= - yLineDelta;
     th:= aCanvas.TextHeight(Relation);
     tw:= aCanvas.TextWidth(Relation);
@@ -586,7 +586,7 @@ procedure TConnection.Draw(aCanvas: TCanvas; show: boolean);
   end;
 
 begin  // of draw
-  if not visible then exit;
+  if not Visible then Exit;
   SetPenBrushArrow(aCanvas);
   if show then begin
     aCanvas.Pen.Color:= FGColor;
@@ -599,9 +599,9 @@ begin  // of draw
 
   if IsRecursiv then begin
     DrawRecursiv(aCanvas, show);
-    exit;
+    Exit;
   end;
-  if IntersectRect(getBoundsRect(FFrom), getBoundsRect(FTo)) then exit;
+  if IntersectRect(getBoundsRect(FFrom), getBoundsRect(FTo)) then Exit;
 
   parallelCorrection;  // use actual position, control might be moved
   CalcShortest;
@@ -611,7 +611,7 @@ begin  // of draw
   y1:= FromP.y;
   x2:= ToP.x; // second point with arrow
   y2:= ToP.y;
-  ConRect:= Rect(min(x1, x2),  min(y1, y2), max(x1, x2) + 1, max(y1, y2) + 1);
+  ConRect:= Rect(Min(x1, x2),  Min(y1, y2), Max(x1, x2) + 1, Max(y1, y2) + 1);
   dx:= abs(x2-x1); if dx < 3 then InflateRect(ConRect, 1, 0);
   dy:= abs(y2-y1); if dy < 3 then InflateRect(ConRect, 0, 1);
 
@@ -624,8 +624,8 @@ begin  // of draw
   if absXLineDelta = 0 then absXLineDelta:= 1;
   if absYLineDelta = 0 then absYLineDelta:= 1;
 
-  if (xLineDelta = 0) and (yLineDelta = 0) then exit; // Line has length 0
-  if (absXLineDelta > 20000) or (absYLineDelta > 20000) then exit; // Line is too long
+  if (xLineDelta = 0) and (yLineDelta = 0) then Exit; // Line has length 0
+  if (absXLineDelta > 20000) or (absYLineDelta > 20000) then Exit; // Line is too long
 
   Tmp1:= sqrt(sqr(xLineDelta) + sqr(yLineDelta));
   xLineUnitDelta:= xLineDelta / Tmp1;
@@ -762,56 +762,56 @@ begin  // of draw
 
   R2:= getBoundsRect(FFrom);
   if ArrowStyle in [asAggregation1, asAggregation2, asComposition1, asComposition2] then begin
-    inc(R2.Right, abs(d3x));
-    dec(R2.Top, abs(d3y));
-    dec(R2.Left, abs(d3x));
-    inc(R2.Bottom, abs(d3y));
+    Inc(R2.Right, abs(d3x));
+    Dec(R2.Top, abs(d3y));
+    Dec(R2.Left, abs(d3x));
+    Inc(R2.Bottom, abs(d3y));
     xr:= x1 + d3x;
     yr:= y1 + d3y;
   end else begin
-    inc(R2.Right, abs(d1x));
-    dec(R2.Top, abs(d1y));
-    dec(R2.Left, abs(d1x));
-    inc(R2.Bottom, abs(d1y));
+    Inc(R2.Right, abs(d1x));
+    Dec(R2.Top, abs(d1y));
+    Dec(R2.Left, abs(d1x));
+    Inc(R2.Bottom, abs(d1y));
     xr:= x1 + d1x;
     yr:= y1 + d1y;
   end;
-  ShowMultiplicity(false, xr, yr, R2, MultiplicityA);
-  ShowRole(false, xr, yr, R2, RoleA);
+  ShowMultiplicity(False, xr, yr, R2, MultiplicityA);
+  ShowRole(False, xr, yr, R2, RoleA);
 
   ShowRelation(R2, dx, dy, Relation);
 
   R2:= getBoundsRect(FTo);
   if ArrowStyle in [asAssociation2, asAssociation3, asAggregation2, asComposition2,
                     asInheritends,  asInstanceOf] then begin
-    inc(R2.Right, abs(d2x));
-    dec(R2.Top, abs(d2y));
-    dec(R2.Left, abs(d2x));
-    inc(R2.Bottom, abs(d2y));
+    Inc(R2.Right, abs(d2x));
+    Dec(R2.Top, abs(d2y));
+    Dec(R2.Left, abs(d2x));
+    Inc(R2.Bottom, abs(d2y));
     xr:= x2 - d2x;
     yr:= y2 - d2y;
   end else begin
-    inc(R2.Right, abs(d1x));
-    dec(R2.Top, abs(d1y));
-    dec(R2.Left, abs(d1x));
-    inc(R2.Bottom, abs(d1y));
+    Inc(R2.Right, abs(d1x));
+    Dec(R2.Top, abs(d1y));
+    Dec(R2.Left, abs(d1x));
+    Inc(R2.Bottom, abs(d1y));
     xr:= x2 - d1x;
     yr:= y2 - d1y;
   end;
-  ShowMultiplicity(true, xr, yr, R2, MultiplicityB);
-  ShowRole(true, xr, yr, R2, RoleB);
+  ShowMultiplicity(True, xr, yr, R2, MultiplicityB);
+  ShowRole(True, xr, yr, R2, RoleB);
   DrawSelection(aCanvas);
   square.term(FromP, ToP);
   //square.draw(aCanvas);
 end;
 
-procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: boolean);
+procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: Boolean);
 
   var PointArray: array of TPoint;
-      hl: integer;
+      hl: Integer;
 
   procedure DrawArrowStart(P1, P2: TPoint);
-    var P3, P4: TPoint; dx, dy: integer;
+    var P3, P4: TPoint; dx, dy: Integer;
   begin
     case ArrowStyle of
       asAssociation3:;
@@ -820,7 +820,7 @@ procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: boolean);
         if show
           then aCanvas.Brush.Color:= FGColor
           else aCanvas.Brush.Color:= BGColor;
-      else exit;
+      else Exit;
     end;
     dx:= P2.x - P1.x;
     dy:= P2.Y - P1.y;
@@ -852,7 +852,7 @@ procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: boolean);
   end;
 
   procedure DrawArrowHead(P1, P2: TPoint);
-    var P3, P4: TPoint; dx, dy: integer;
+    var P3, P4: TPoint; dx, dy: Integer;
   begin
     //if ArrowStyle in [asAssociation1, asAggregation1, asComposition1, asComment] then exit;
     dx:= P2.x - P1.x;
@@ -928,7 +928,7 @@ end;
 
 procedure TConnection.DrawRecursivAnnotations(aCanvas: TCanvas);
   var R: TRect;
-      x1, y1, th, tw, sl, hl: integer;
+      x1, y1, th, tw, sl, hl: Integer;
       ma, mb, ra, rb: string;
       Flags: longint;
 begin
@@ -1010,22 +1010,22 @@ begin
       1: begin
            x1:= (Pl[3].x + Pl[4].x) div 2 - tw div 2;
            y1:= Pl[3].Y - 5 - th;
-           inc(YDecrease, 5 + th);
+           Inc(YDecrease, 5 + th);
          end;
       2: begin
            x1:= (Pl[2].x + Pl[3].x) div 2 - tw div 2;
            y1:= Pl[2].Y - 5 - th;
-           inc(YDecrease, 5 + th);
+           Inc(YDecrease, 5 + th);
         end;
       3: begin
            x1:= (Pl[3].x + Pl[4].x) div 2 - tw div 2;
            y1:= Pl[3].Y + 5;
-           inc(YEnlarge, 5 + th);
+           Inc(YEnlarge, 5 + th);
         end;
       4: begin
            x1:= (Pl[2].x + Pl[3].x) div 2 - tw div 2;
            y1:= Pl[3].Y + 5;
-           inc(YEnlarge, 5 + th);
+           Inc(YEnlarge, 5 + th);
         end;
       else begin
          x1:= 0;
@@ -1088,9 +1088,9 @@ begin
   end;
 end;
 
-procedure TConnection.DrawSelection(aCanvas: TCanvas; withSelection: boolean = true);
+procedure TConnection.DrawSelection(aCanvas: TCanvas; withSelection: Boolean = True);
 
-  function getRect(P: TPoint; side: integer): TRect;
+  function getRect(P: TPoint; side: Integer): TRect;
     const w = 5;
   begin
     case side of
@@ -1120,7 +1120,7 @@ begin
 end;
 
 procedure TConnection.CalcPolyline;
-  var sl, hl, sw, hw, x1, y1, dy, l, w, t, h, tw, th, RRRb: integer;
+  var sl, hl, sw, hw, x1, y1, dy, l, w, t, h, tw, th, RRRb: Integer;
       RRA, RRB, RMA, RMB, RRR: TRect;
 begin
 {
@@ -1142,7 +1142,7 @@ begin
     hw:= hl;
   end;
 
-  dy:= min(FFrom.Height div 2, rec_dc);
+  dy:= Min(FFrom.Height div 2, rec_dc);
   l:= FFrom.Left;
   t:= FFrom.Top;
   w:= FFrom.Width;
@@ -1253,7 +1253,7 @@ procedure TConnection.CalcShortest;
           4
 }
 
-  function CalcPointPos(P: TPoint; R: TRect): integer;
+  function CalcPointPos(P: TPoint; R: TRect): Integer;
   begin
     if P.X = R.Left - 1 then Result:= 3 else
     if P.X = R.Right    then Result:= 1 else
@@ -1299,7 +1299,7 @@ begin
   ToPEnd:= CalcPointPos(ToP, getBoundsRect(FTo));
 end;
 
-function TConnection.ArrowHeadLength(Arrow: TessConnectionArrowStyle): integer;
+function TConnection.ArrowHeadLength(Arrow: TessConnectionArrowStyle): Integer;
 begin
   if arrow in [asAssociation2, asAssociation3, asAggregation2, asComposition2,
                asInheritends, asInstanceOf]
@@ -1307,7 +1307,7 @@ begin
     else Result:= 0;
 end;
 
-function TConnection.ArrowStartLength(Arrow: TessConnectionArrowStyle): integer;
+function TConnection.ArrowStartLength(Arrow: TessConnectionArrowStyle): Integer;
 begin
   if arrow in [asAggregation1, asAggregation2, asComposition1, asComposition2]
     then Result:= FFrom.PPIScale(HeadLength)*2
@@ -1316,7 +1316,7 @@ begin
     else Result:= 0
 end;
 
-constructor TConnection.create(Src, Dst: TControl; Attributes: TConnectionAttributes; aCanvas: TCanvas);
+constructor TConnection.Create(Src, Dst: TControl; Attributes: TConnectionAttributes; aCanvas: TCanvas);
 begin
   FFrom         := Src;
   FTo           := Dst;
@@ -1335,11 +1335,11 @@ begin
   isEdited      := Attributes.isEdited;
   FromCenter    := getCenter(getBoundsRect(FFrom));
   ToCenter      := getCenter(getBoundsRect(FTo));
-  Square        := TSquare.create;
+  Square        := TSquare.Create;
   isRecursiv    := (FFrom = FTo);
   Self.Canvas   := aCanvas;
-  Selected      := false;
-  Cutted        := false;
+  Selected      := False;
+  Cutted        := False;
   XEnlarge      := 0;
   YEnlarge      := 0;
   FromPStart    := -1;
@@ -1386,10 +1386,10 @@ begin
     Src:= FFrom; FFrom:= FTo; FTo:= Src;
     Point:= FromP; FromP:= ToP; ToP:= Point;
   end;
-  IsEdited:= true;
+  IsEdited:= True;
 end;
 
-function TConnection.IsClicked(P: TPoint): boolean;
+function TConnection.IsClicked(P: TPoint): Boolean;
   var A, B, VectorAB, VectorAP, Normale: TPoint;
       i, xlineDelta, yLineDelta: Integer;
       Distance, CosAlpha: real;
@@ -1406,7 +1406,7 @@ function TConnection.IsClicked(P: TPoint): boolean;
   end;
 
   function makeRect(P1, P2: TPoint): TRect;
-    var dx, dy: integer;
+    var dx, dy: Integer;
   begin
     dx:= P2.x - P1.x;
     dy:= P2.Y - P1.Y;
@@ -1421,21 +1421,21 @@ function TConnection.IsClicked(P: TPoint): boolean;
    end;
 
 begin
-  Result:= true;
+  Result:= True;
   if isRecursiv then begin
     for i:= 1 to 3 do begin
       R:= makeRect(Pl[i], Pl[i+1]);
-      if PtinRect(R, P) then exit;
+      if PtinRect(R, P) then Exit;
     end;
     R:= makeRect(Pl[5], Pl[4]);
-    if PtInRect(R, P) then exit;
+    if PtInRect(R, P) then Exit;
   end else begin
     A:= FromP;
     B:= ToP;
     xLineDelta:= B.x - A.x;
     yLineDelta:= B.y - A.y;
-    if (xLineDelta = 0) and (yLineDelta = 0) then begin Result:= false; exit; end;// Line is 0 length
-    if (abs(xLineDelta) > 20000) or (abs(yLineDelta) > 20000) then exit; // Line is too long
+    if (xLineDelta = 0) and (yLineDelta = 0) then begin Result:= False; Exit; end;// Line is 0 length
+    if (abs(xLineDelta) > 20000) or (abs(yLineDelta) > 20000) then Exit; // Line is too long
     VectorAB.X:= B.X - A.X;
     VectorAB.Y:= B.Y - A.Y;
     VectorAP.X:= P.X - A.X;
@@ -1447,19 +1447,19 @@ begin
       else Distance:= Abs(Scalarproduct(VectorAP, Normale)/Norm(Normale));
     CosAlpha:= Scalarproduct(VectorAB, VectorAP);
     if (CosAlpha > 0) and (Distance < 10) and (norm(VectorAP) <= norm(VectorAB) + 10) then
-      exit;
+      Exit;
   end;
-  Result:= false;
+  Result:= False;
 end;
 
-procedure TConnection.setRecursivPosition(pos: integer);
+procedure TConnection.setRecursivPosition(pos: Integer);
 begin
   RecursivCorner:= pos;
   CalcPolyline;
 end;
 
 procedure TConnection.parallelCorrection;
-  var dx, dy, xLineDelta, yLineDelta, hl: integer;
+  var dx, dy, xLineDelta, yLineDelta, hl: Integer;
       xLineunitDelta, yLineUnitDelta, Tmp: double;
       A, B: TPoint;
 begin
@@ -1467,8 +1467,8 @@ begin
   B:= getCenter(getBoundsRect(FTo));
   xLineDelta:= B.x - A.x;
   yLineDelta:= B.y - A.y;
-  if (xLineDelta = 0) and (yLineDelta = 0) then exit; // Line has length 0
-  if (abs(xLineDelta) > 20000) or (abs(yLineDelta) > 20000) then exit; // Line is too long
+  if (xLineDelta = 0) and (yLineDelta = 0) then Exit; // Line has length 0
+  if (abs(xLineDelta) > 20000) or (abs(yLineDelta) > 20000) then Exit; // Line is too long
 
   Tmp:= sqrt(sqr(xLineDelta) + sqr(yLineDelta));
   if Tmp = 0 then begin
@@ -1514,7 +1514,7 @@ begin
   Result:= aRect;
 end;
 
-procedure TConnection.ChangeStyle(BlackAndWhite: boolean = false);
+procedure TConnection.ChangeStyle(BlackAndWhite: Boolean = False);
 begin
   if StyleServices.IsSystemStyle or BlackandWhite then begin
     BGColor:= clWhite;
@@ -1525,7 +1525,7 @@ begin
   end;
 end;
 
-function TConnection.calcSVGBaseLine(R: TRect): integer;
+function TConnection.calcSVGBaseLine(R: TRect): Integer;
 begin
   Result:= R.Top + Round(1.0*abs(Canvas.Font.Height));
 end;
@@ -1544,22 +1544,22 @@ begin
 end;
 
 function TConnection.getSVGPolyline(Points: array of TPoint): string;
-  var i: integer;
+  var i: Integer;
 begin
   Result:= '  <polyline points="';
   for i:= 0 to High(Points) do
     Result:= Result + PointToVal(Points[i]);
-  Result[length(Result)]:= '"';
+  Result[Length(Result)]:= '"';
   Result:= Result + ' fill="none" stroke="black" />'#13#10;
 end;
 
 function TConnection.getSVGPolygon(Points: array of TPoint; color: string): string;
-  var i: integer;
+  var i: Integer;
 begin
   Result:= '  <polygon points="';
   for i:= 0 to High(Points) do
     Result:= Result + PointToVal(Points[i]);
-  Result[length(Result)]:= '"';
+  Result[Length(Result)]:= '"';
   Result:= Result + ' fill="' + color + '" stroke="black" />'#13#10;
 end;
 

@@ -1303,7 +1303,7 @@ begin
   Py := SafePyEngine;
   var SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
   try
-    f := BuiltinModule.open(Filename, 'wb');
+    f := BuiltinModule.open(FileName, 'wb');
   except
     raise Exception.CreateFmt(SCouldNotOpenOutputFile, [FileName]);
   end;

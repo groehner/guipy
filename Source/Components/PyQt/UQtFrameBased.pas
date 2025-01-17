@@ -36,16 +36,16 @@ type
   private
     FFrameShape: TFrameShape;
     FFrameShadow: TFrameShadow;
-    FLineWidth: integer;
-    FMidLineWidth: integer;
+    FLineWidth: Integer;
+    FMidLineWidth: Integer;
     procedure setFrameShape(Value: TFrameShape);
     procedure setFrameShadow(Value: TFrameShadow);
-    procedure setLineWidth(Value: integer);
-    procedure setMidLineWidth(Value: integer);
-    procedure PaintBorder(R: TRect; C1, C2: TColor; lWidth: integer = -1);
+    procedure setLineWidth(Value: Integer);
+    procedure setMidLineWidth(Value: Integer);
+    procedure PaintBorder(R: TRect; C1, C2: TColor; lWidth: Integer = -1);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
@@ -53,8 +53,8 @@ type
   published
     property FrameShape: TFrameShape read FFrameShape write setFrameShape;
     property FrameShadow: TFrameShadow read FFrameShadow write setFrameShadow;
-    property LineWidth: integer read FLineWidth write setLineWidth;
-    property MidLineWidth: integer read FMidLineWidth write setMidLineWidth;
+    property LineWidth: Integer read FLineWidth write setLineWidth;
+    property MidLineWidth: Integer read FMidLineWidth write setMidLineWidth;
   end;
 
   TQtLabel = class(TQtFrame)
@@ -64,11 +64,11 @@ type
     FText: string;
     FTextFormat: TTextFormat;
     FPixmap: string;
-    FScaledContents: boolean;
-    FWordWrap: boolean;
-    FMargin: integer;
-    FIndent: integer;
-    FOpenExternalLinks: boolean;
+    FScaledContents: Boolean;
+    FWordWrap: Boolean;
+    FMargin: Integer;
+    FIndent: Integer;
+    FOpenExternalLinks: Boolean;
     // FTextInteractionFlags: TTextInteractionFlags;
     FBuddy: string;
     FLinkActivated: string;
@@ -77,17 +77,17 @@ type
     procedure setAlignmentVertical(Value: TAlignmentVertical);
     procedure setText(value: string);
     procedure setPixmap(value: string);
-    procedure setWordWrap(value: boolean);
-    procedure setIndent(Value: integer);
-    procedure setMargin(Value: integer);
-    procedure setScaledContents(Value: boolean);
+    procedure setWordWrap(value: Boolean);
+    procedure setIndent(Value: Integer);
+    procedure setMargin(Value: Integer);
+    procedure setScaledContents(Value: Boolean);
     procedure MakePixmap(Value: string);
     procedure MakeAlignment(Attr, Value: string);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
@@ -99,11 +99,11 @@ type
     property Text: string read FText write setText;
     property TextFormat: TTextFormat read FTextFormat write FTextFormat;
     property Pixmap: string read FPixmap write setPixmap;
-    property ScaledContents: boolean read FScaledContents write setScaledContents;
-    property WordWrap: boolean read FWordWrap write setWordWrap;
-    property Margin: integer read FMargin write setMargin;
-    property Indent: integer read FIndent write setIndent;
-    property OpenExternalLinks: boolean read FOpenExternalLinks write FOpenExternalLinks;
+    property ScaledContents: Boolean read FScaledContents write setScaledContents;
+    property WordWrap: Boolean read FWordWrap write setWordWrap;
+    property Margin: Integer read FMargin write setMargin;
+    property Indent: Integer read FIndent write setIndent;
+    property OpenExternalLinks: Boolean read FOpenExternalLinks write FOpenExternalLinks;
     property Buddy: string read FBuddy write FBuddy;
     //signals
     property linkActivated: string read FLinkActivated write FLinkActivated;
@@ -113,7 +113,7 @@ type
   TQtCanvas = class(TQtLabel)
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
@@ -125,7 +125,7 @@ type
     procedure setOrientation(Value: TOrientation);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure NewWidget(Widget: string = ''); override;
   published
@@ -134,29 +134,29 @@ type
 
   TQtToolBox = class(TQtFrame)
   private
-    FCurrentIndex: integer;
-    FTabSpacing: integer;
+    FCurrentIndex: Integer;
+    FTabSpacing: Integer;
     FPages: TStrings;
     FCurrentChanged: string;
     procedure setPages(Value: TStrings);
-    procedure setCurrentIndex(Value: integer);
-    procedure setTabSpacing(Value: integer);
+    procedure setCurrentIndex(Value: Integer);
+    procedure setTabSpacing(Value: Integer);
     procedure MakePages;
     procedure MakeTabSpacing(Value: string);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure DeleteWidget; override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property CurrentIndex: integer read FCurrentIndex write setCurrentIndex;
-    property TabSpacing: integer read FTabSpacing write setTabSpacing;
+    property CurrentIndex: Integer read FCurrentIndex write setCurrentIndex;
+    property TabSpacing: Integer read FTabSpacing write setTabSpacing;
     property Pages: TStrings read FPages write setPages;
     // signals
     property currentChanged: string read FCurrentChanged write FCurrentChanged;
@@ -164,19 +164,19 @@ type
 
   TQtStackedWidget = class(TQtFrame)
   private
-    FCurrentIndex: integer;
+    FCurrentIndex: Integer;
     FCurrentPageName: string;
     FCurrentChanged: string;
     FWidgetRemoved: string;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
   published
-    property CurrentIndex: integer read FCurrentIndex write FCurrentIndex;
+    property CurrentIndex: Integer read FCurrentIndex write FCurrentIndex;
     property CurrentPageName: string read FCurrentPageName write FCurrentPageName;
     property CurrentChanged: string read FCurrentChanged write FCurrentChanged;
     property WidgetRemoved: string read FWidgetRemoved write FWidgetRemoved;
@@ -184,36 +184,36 @@ type
 
   TQtLCDNumber = class(TQtFrame)
   private
-    FSmallDecimalPoint: boolean;
-    FDigitCount: integer;
+    FSmallDecimalPoint: Boolean;
+    FDigitCount: Integer;
     FMode: TMode;
     FSegmentStyle: TSegmentStyle;
     FValue: double;
-    FIntValue: integer;
+    FIntValue: Integer;
     FOverflow: string;
     procedure setSegmentStyle(Value: TSegmentStyle);
     procedure setValue(Value: double);
-    procedure setIntValue(Value: integer);
-    procedure setDigitCount(Value: integer);
-    procedure setSmallDecimalPoint(Value: boolean);
+    procedure setIntValue(Value: Integer);
+    procedure setDigitCount(Value: Integer);
+    procedure setSmallDecimalPoint(Value: Boolean);
     procedure setMode(Value: TMode);
     procedure MakeValue(Value: string);
     procedure MakeIntValue(Value: string);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property SmallDecimalPoint: boolean read FSmallDecimalPoint write setSmallDecimalPoint;
-    property DigitCount: integer read FDigitCount write setDigitCount;
+    property SmallDecimalPoint: Boolean read FSmallDecimalPoint write setSmallDecimalPoint;
+    property DigitCount: Integer read FDigitCount write setDigitCount;
     property Mode: TMode read FMode write setMode;
     property SegmentStyle: TSegmentStyle read FSegmentStyle write setSegmentStyle;
     property Value: double read FValue write setValue;
-    property IntValue: integer read FIntValue write setIntValue;
+    property IntValue: Integer read FIntValue write setIntValue;
     // signals
     property overflow: string read FOverflow write FOverflow;
   end;
@@ -226,7 +226,7 @@ uses  Controls, SysUtils, Math, Types,  UUtils, UGuiDesigner;
 
 constructor TQtFrame.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 83;
   Width:= 120;
   Height:= 80;
@@ -236,7 +236,7 @@ begin
   ControlStyle := [csAcceptsControls];
 end;
 
-function TQtFrame.getAttributes(ShowAttributes: integer): string;
+function TQtFrame.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '';
   if classname = 'TQtFrame' then
@@ -364,7 +364,7 @@ begin
   Result:= R;
 end;
 
-procedure TQtFrame.PaintBorder(R: TRect; C1, C2: TColor; lWidth: integer = -1);
+procedure TQtFrame.PaintBorder(R: TRect; C1, C2: TColor; lWidth: Integer = -1);
 
   procedure PaintTopLeft;
   begin
@@ -423,7 +423,7 @@ begin
   end;
 end;
 
-procedure TQtFrame.setLineWidth(Value: integer);
+procedure TQtFrame.setLineWidth(Value: Integer);
 begin
   if Value <> FLineWidth then begin
     FLineWidth:= Value;
@@ -431,7 +431,7 @@ begin
   end;
 end;
 
-procedure TQtFrame.setMidLineWidth(Value: integer);
+procedure TQtFrame.setMidLineWidth(Value: Integer);
 begin
   if Value <> FMidLineWidth then begin
     FMidLineWidth:= Value;
@@ -443,7 +443,7 @@ end;
 
 constructor TQtLabel.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 71;
   Height:= 24; // synchron to buttons
   Width:= 80;
@@ -456,7 +456,7 @@ begin
   ControlStyle := [];
 end;
 
-function TQtLabel.getAttributes(ShowAttributes: integer): string;
+function TQtLabel.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Text|Pixmap|Buddy|Font';
   if ShowAttributes >= 2 then
@@ -480,7 +480,7 @@ end;
 
 const LabelEvents = '|linkActivated|linkHovered';
 
-function TQtLabel.getEvents(ShowEvents: integer): string;
+function TQtLabel.getEvents(ShowEvents: Integer): string;
 begin
   Result:= LabelEvents + inherited getEvents(ShowEvents);
 end;
@@ -526,14 +526,14 @@ begin
 end;
 
 procedure TQtLabel.Paint;
-  var w, h, format, indent, taw: integer; pathname: string;
+  var w, h, format, indent, taw: Integer; pathname: string;
       SL: TStringList; R: TRect; bmp: TBitmap;
 begin
   inherited;
   R:= ClientRect;
   if FMargin > 0 then
     R.inflate(-FMargin, -FMargin);
-  pathname:= FGuiDesigner.getPath + 'images\' + copy(FPixmap, 8, length(FPixmap));
+  pathname:= FGuiDesigner.getPath + 'images\' + Copy(FPixmap, 8, Length(FPixmap));
   if FileExists(pathname) then begin
     bmp:= BitmapFromRelativePath(FPixmap);
     if FScaledContents
@@ -585,12 +585,12 @@ begin
   end else begin
     filename:= ExtractFileName(Value);
     if Pos('images/', filename) = 1 then
-      System.delete(filename, 1, 7);
+      System.Delete(filename, 1, 7);
     Path:= ExtractFilePath(Partner.Pathname);
     Dest:= Path + 'images\' + filename;
     ForceDirectories(Path + 'images\');
     if not FileExists(Dest) then
-      copyFile(PChar(Value), PChar(Dest), true);
+      copyFile(PChar(Value), PChar(Dest), True);
     FPixmap:= 'images/' + filename;
     s:= key + '(QPixmap(' + asString(FPixmap) + '))';
     setAttributValue(key, s);
@@ -625,7 +625,7 @@ begin
   end;
 end;
 
-procedure TQtLabel.setWordWrap(Value: boolean);
+procedure TQtLabel.setWordWrap(Value: Boolean);
 begin
   if Value <> FWordWrap then begin
     FWordWrap:= Value;
@@ -633,7 +633,7 @@ begin
   end;
 end;
 
-procedure TQtLabel.setIndent(Value: integer);
+procedure TQtLabel.setIndent(Value: Integer);
 begin
   if Value <> FIndent then begin
     FIndent:= Value;
@@ -641,7 +641,7 @@ begin
   end;
 end;
 
-procedure TQtLabel.setMargin(Value: integer);
+procedure TQtLabel.setMargin(Value: Integer);
 begin
   if Value <> FMargin then begin
     FMargin:= Value;
@@ -649,7 +649,7 @@ begin
   end;
 end;
 
-procedure TQtLabel.setScaledContents(Value: boolean);
+procedure TQtLabel.setScaledContents(Value: Boolean);
 begin
   if Value <> FScaledContents then begin
     FScaledContents:= Value;
@@ -677,18 +677,18 @@ end;
 
 constructor TQtCanvas.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 81;
   Height:= 80;
   Width:= 120;
   ControlStyle := [];
 end;
 
-function TQtCanvas.getAttributes(ShowAttributes: integer): string;
+function TQtCanvas.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= Result + inherited getAttributes(ShowAttributes);
   var p:= Pos('|Text|Pixmap|Buddy', Result);
-  delete(Result, p, p + 17);
+  Delete(Result, p, p + 17);
 end;
 
 procedure TQtCanvas.NewWidget(Widget: string = '');
@@ -721,7 +721,7 @@ end;
 
 constructor TQtLine.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 112;
   Width:= 120;
   Height:= 3;
@@ -731,13 +731,13 @@ begin
   ControlStyle := [];
 end;
 
-function TQtLine.getAttributes(ShowAttributes: integer): string;
+function TQtLine.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Orientation';
   Result:= Result + inherited getAttributes(ShowAttributes);
   var p:= Pos('|FrameShape', Result);
   if p > 0 then
-    delete(Result, p, 11);
+    Delete(Result, p, 11);
 end;
 
 procedure TQtLine.setAttribute(Attr, Value, Typ: string);
@@ -776,7 +776,7 @@ end;
 
 constructor TQtToolBox.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 114;
   Width:= 176;
   Height:= 120;
@@ -800,7 +800,7 @@ begin
   Partner.DeleteItems(Name, 'Page');
 end;
 
-function TQtToolBox.getAttributes(ShowAttributes: integer): string;
+function TQtToolBox.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|CurrentIndex|Pages|TabSpacing';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -816,7 +816,7 @@ begin
     inherited;
 end;
 
-function TQtToolBox.getEvents(ShowEvents: integer): string;
+function TQtToolBox.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|currentChanged';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -840,7 +840,7 @@ begin
 end;
 
 procedure TQtToolBox.MakePages;
-  var i: integer; pagename, s: string;
+  var i: Integer; pagename, s: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   Partner.DeleteAttributeValues('self.' + Name + '.addItem');
@@ -869,7 +869,7 @@ begin
 end;
 
 procedure TQtToolBox.Paint;
-  var R, R2: TRect; i, RowHeight, AvailableHeight: integer;
+  var R, R2: TRect; i, RowHeight, AvailableHeight: Integer;
       s: string;
 
   procedure PaintPage(R: TRect; s: string);
@@ -890,7 +890,7 @@ begin
   R:= ClientRect;
   RowHeight:= Canvas.TextHeight('A') + 2*HalfX;
   AvailableHeight:= (Height - FPages.Count * FTabSpacing) div (FPages.Count + 1);
-  RowHeight:= min(RowHeight, AvailableHeight);
+  RowHeight:= Min(RowHeight, AvailableHeight);
 
   R.Bottom:= R.Top + RowHeight;
   for i:= 0 to FPages.Count - 1 do begin
@@ -915,7 +915,7 @@ begin
   end;
 end;
 
-procedure TQtToolBox.setCurrentIndex(Value: integer);
+procedure TQtToolBox.setCurrentIndex(Value: Integer);
 begin
   if Value <> FCurrentIndex then begin
     FCurrentIndex:= Value;
@@ -923,7 +923,7 @@ begin
   end;
 end;
 
-procedure TQtToolBox.setTabSpacing(Value: integer);
+procedure TQtToolBox.setTabSpacing(Value: Integer);
 begin
   if Value <> FTabSpacing then begin
     FTabSpacing:= Value;
@@ -935,7 +935,7 @@ end;
 
 constructor TQtStackedWidget.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 115;
   Height:= 80;
   Width:= 120;
@@ -944,7 +944,7 @@ begin
   ControlStyle := [];
 end;
 
-function TQtStackedWidget.getAttributes(ShowAttributes: integer): string;
+function TQtStackedWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|CurrentIndex|CurrentPageName';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -952,7 +952,7 @@ end;
 
 const StackEvents = '|currentChanged|widgetRemoved';
 
-function TQtStackedWidget.getEvents(ShowEvents: integer): string;
+function TQtStackedWidget.getEvents(ShowEvents: Integer): string;
 begin
   Result:= StackEvents + inherited getEvents(ShowEvents);
 end;
@@ -983,7 +983,7 @@ end;
 
 constructor TQtLCDNumber.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 107;
   Width:= 80;
   Height:= 24;
@@ -995,7 +995,7 @@ begin
   ControlStyle := [];
 end;
 
-function TQtLCDNumber.getAttributes(ShowAttributes: integer): string;
+function TQtLCDNumber.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|SmallDecimalPoint|DigitCount|Mode|SegmentStyle|Value|IntValue';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -1013,7 +1013,7 @@ begin
     inherited;
 end;
 
-function TQtLCDNumber.getEvents(ShowEvents: integer): string;
+function TQtLCDNumber.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|overflow';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -1058,7 +1058,7 @@ end;
 
 procedure TQtLCDNumber.Paint;
   const
-   digits: array[0..17, 0..6] of integer =
+   digits: array[0..17, 0..6] of Integer =
     ((1,1,1,1,1,1,0), // 0
      (0,1,1,0,0,0,0), // 1
      (1,1,0,1,1,0,1), // 2
@@ -1083,7 +1083,7 @@ procedure TQtLCDNumber.Paint;
 
   type TPointArray = array of TPoint;
 
-  var i, RightSpace, TopSpace, Base: integer;
+  var i, RightSpace, TopSpace, Base: Integer;
       x1, y1, yh, yw, padding, xhw, dx, dy: double;
       ValueInBase: string;
       TopSegment, RightTopSegment, RightBottomSegment, BottomSegment,
@@ -1091,7 +1091,7 @@ procedure TQtLCDNumber.Paint;
       Segment: TPointArray;
 
   procedure ShowDigit(cDigit: char; x, y: double);
-    var i, j, digit: integer;
+    var i, j, digit: Integer;
   begin
     if cDigit <= '9' then
       digit:= Ord(cDigit) - Ord('0')
@@ -1105,15 +1105,15 @@ procedure TQtLCDNumber.Paint;
     for i:= 0 to 6 do
       if digits[digit][i] = 1 then begin
         case i of
-          0: Segment:= copy(TopSegment);
-          1: Segment:= copy(RightTopSegment);
-          2: Segment:= copy(RightBottomSegment);
+          0: Segment:= Copy(TopSegment);
+          1: Segment:= Copy(RightTopSegment);
+          2: Segment:= Copy(RightBottomSegment);
           3: if digit = 16
-               then Segment:= copy(PointSegment)
-               else Segment:= copy(BottomSegment);
-          4: Segment:= copy(LeftBottomSegment);
-          5: Segment:= copy(LeftTopSegment);
-          6: Segment:= copy(MiddleSegment);
+               then Segment:= Copy(PointSegment)
+               else Segment:= Copy(BottomSegment);
+          4: Segment:= Copy(LeftBottomSegment);
+          5: Segment:= Copy(LeftTopSegment);
+          6: Segment:= Copy(MiddleSegment);
         end;
         for j:= 0 to Length(Segment) - 1 do begin
           Segment[j].x:= Round(Segment[j].x*dx + x);
@@ -1210,7 +1210,7 @@ begin
   end;
 end;
 
-procedure TQtLCDNumber.setIntValue(Value: integer);
+procedure TQtLCDNumber.setIntValue(Value: Integer);
 begin
   if Value <> FIntValue then begin
     FIntValue:= Value;
@@ -1219,7 +1219,7 @@ begin
   end;
 end;
 
-procedure TQtLCDNumber.setDigitCount(Value: integer);
+procedure TQtLCDNumber.setDigitCount(Value: Integer);
 begin
   if Value <> FDigitCount then begin
     FDigitCount:= Value;
@@ -1227,7 +1227,7 @@ begin
   end;
 end;
 
-procedure TQtLCDNumber.setSmallDecimalPoint(Value: boolean);
+procedure TQtLCDNumber.setSmallDecimalPoint(Value: Boolean);
 begin
   if Value <> FSmallDecimalPoint then begin
     FSmallDecimalPoint:= Value;

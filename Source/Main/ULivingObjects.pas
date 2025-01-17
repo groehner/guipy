@@ -28,15 +28,15 @@ type
     SLObjectsNamePath: TStringList;
 
     function getNodeFromPath(Path: string): TBaseNameSpaceItem;
-    function isObject(Node: TBaseNameSpaceItem): boolean;
-    function isAttribute(Node: TBaseNameSpaceItem): boolean;
+    function isObject(Node: TBaseNameSpaceItem): Boolean;
+    function isAttribute(Node: TBaseNameSpaceItem): Boolean;
     function getNameFromValue(Value, Parentname: string; Node: TBaseNameSpaceItem = nil): string;
   public
     constructor Create;
     destructor Destroy; override;
-    function ObjectExists(Objectname: string): boolean;
-    function ClassExists(Classname: string): boolean;
-    function InsertObject(const Objectname: string): boolean;
+    function ObjectExists(Objectname: string): Boolean;
+    function ClassExists(Classname: string): Boolean;
+    function InsertObject(const Objectname: string): Boolean;
     procedure DeleteObject(const Objectname: string);
 
     function getNewObjectName(aClassname: string): string;
@@ -77,10 +77,10 @@ uses
 constructor TLivingObjects.Create;
 begin
   SLObjectsAddressName := TStringList.Create;
-  SLObjectsAddressName.Sorted := true;
+  SLObjectsAddressName.Sorted := True;
   SLObjectsAddressName.Duplicates := dupIgnore;
   SLObjectsNamePath := TStringList.Create;
-  SLObjectsNamePath.Sorted := true;
+  SLObjectsNamePath.Sorted := True;
   SLObjectsNamePath.Duplicates := dupIgnore;
 end;
 
@@ -177,7 +177,7 @@ function TLivingObjects.getPathOf(Classname: string): string;
 var
   Py: IPyEngineAndGIL;
   v: Variant;
-  Path, Filename: string;
+  Path, FileName: string;
 begin
   Py:= SafePyEngine;
   if not ClassExists('os') then
@@ -185,8 +185,8 @@ begin
   v:= PyControl.ActiveInterpreter.EvalCode('os.path.abspath(os.curdir)');
   Path:= string(v);
   v:= PyControl.ActiveInterpreter.EvalCode(Classname + '.__module__');
-  Filename:= string(v);
-  Result:= Path + '\' + Filename + '.py';
+  FileName:= string(v);
+  Result:= Path + '\' + FileName + '.py';
 end;
 
 function TLivingObjects.getHexAddress(from, value: string): string;
@@ -201,7 +201,7 @@ begin
   var p:= pos(' ', value);
   if (p = -1) or (hex = '')
     then Result:= value
-    else Result:= copy(value, 1, p) + 'object at ' + hex + '>';
+    else Result:= Copy(value, 1, p) + 'object at ' + hex + '>';
 end;
 
 function TLivingObjects.getMethods(from: string): TStringList;
@@ -216,30 +216,30 @@ begin
   v := PyControl.ActiveInterpreter.EvalCode('inspect.getmembers(' + from + ', inspect.ismethod)');
   Regex:= CompiledRegEx('''(\w+)''');
   Matches:= RegEx.Matches(string(v));
-  for var i:= 0 to Matches.count - 1 do
+  for var i:= 0 to Matches.Count - 1 do
     SL.Add(Matches.Item[i].Groups[1].Value);
   Result := SL;
 end;
 
-function TLivingObjects.ObjectExists(Objectname: string): boolean;
+function TLivingObjects.ObjectExists(Objectname: string): Boolean;
 begin
-  Result := assigned(getNodeFromName(Objectname));
+  Result := Assigned(getNodeFromName(Objectname));
 end;
 
-function TLivingObjects.ClassExists(Classname: string): boolean;
+function TLivingObjects.ClassExists(Classname: string): Boolean;
 begin
-  Result := assigned(getNodeFromPath(Classname));
+  Result := Assigned(getNodeFromPath(Classname));
 end;
 
-function TLivingObjects.InsertObject(const Objectname: string): boolean;
+function TLivingObjects.InsertObject(const Objectname: string): Boolean;
 var
-  i, j: integer;
+  i, j: Integer;
   SL: TStringList;
   Py: IPyEngineAndGIL;
   NS: TBaseNameSpaceItem;
   Name, Address: string;
 begin
-  Result := false;
+  Result := False;
   Py := SafePyEngine;
   SL := Split('.', Objectname); // also find Class.SubClass
   NS := VariablesWindow.GlobalsNameSpace;
@@ -250,11 +250,11 @@ begin
         if i < SL.Count - 1 then
           NS := NS.ChildNode[j]
         else begin
-          Result := true;
+          Result := True;
           Address:= VarToStr(NS.ChildNode[j].PyObject);
           SLObjectsAddressName.Add(Address + '=' + Objectname);
         end;
-        break;
+        Break;
       end;
   end;
   FreeAndNil(SL);
@@ -265,18 +265,18 @@ begin
   for var i := 0 to SLObjectsAddressName.Count - 1 do
     if SLObjectsAddressName.ValueFromIndex[i] = Objectname then
     begin
-      SLObjectsAddressName.delete(i);
-      break;
+      SLObjectsAddressName.Delete(i);
+      Break;
     end;
   var
   i := SLObjectsNamePath.IndexOfName(Objectname);
   if i > -1 then
-    SLObjectsNamePath.delete(i);
+    SLObjectsNamePath.Delete(i);
 end;
 
 function TLivingObjects.getNodeFromPath(Path: string): TBaseNameSpaceItem;
 var
-  i, j: integer;
+  i, j: Integer;
   SL: TStringList;
   Py: IPyEngineAndGIL;
   NS: TBaseNameSpaceItem;
@@ -287,7 +287,7 @@ begin
   SL := Split('.', Path); // also find Class.SubClass
   try
     NS := VariablesWindow.GlobalsNameSpace;
-    if assigned(NS) then
+    if Assigned(NS) then
       for i := 0 to SL.Count - 1 do begin
         Name := SL[i];
         for j := 0 to NS.ChildCount - 1 do
@@ -295,7 +295,7 @@ begin
             NS := NS.ChildNode[j];
             if i = SL.Count - 1 then
               Exit(NS);
-            break;
+            Break;
           end;
       end;
   finally
@@ -305,7 +305,7 @@ end;
 
 function TLivingObjects.getNewObjectName(aClassname: string): string;
 var
-  i, j, k, Nr: integer;
+  i, j, k, Nr: Integer;
   s: string;
 begin
   aClassname := getShortType(aClassname);
@@ -315,14 +315,14 @@ begin
   for i := 0 to SLObjectsAddressName.Count - 1 do
   begin
     s := SLObjectsAddressName.ValueFromIndex[i];
-    j := length(s);
+    j := Length(s);
     // classnames can have digits too, example: Eval$5
-    while (j > length(aClassname)) and CharInSet(s[j], ['0' .. '9']) do
-      dec(j);
-    if j < length(s) then
+    while (j > Length(aClassname)) and CharInSet(s[j], ['0' .. '9']) do
+      Dec(j);
+    if j < Length(s) then
     begin
-      k := StrToInt(copy(s, j + 1, length(s)));
-      s := copy(s, 1, j);
+      k := StrToInt(Copy(s, j + 1, Length(s)));
+      s := Copy(s, 1, j);
       if (s = aClassname) and (Nr <= k) then
         Nr := k + 1;
     end;
@@ -332,7 +332,7 @@ end;
 
 function TLivingObjects.getObjectMembers(const Objectname: string): TStringList;
 var
-  i: integer;
+  i: Integer;
   SL: TStringList;
   Py: IPyEngineAndGIL;
   NS, NSi: TBaseNameSpaceItem;
@@ -340,11 +340,11 @@ begin
   SL := TStringList.Create;
   Py := SafePyEngine;
   NS := getNodeFromName(Objectname);
-  if assigned(NS) then
+  if Assigned(NS) then
     for i := 0 to NS.ChildCount - 1 do begin
       NSi:= NS.ChildNode[i];
       if isDunder(NSi.Name) then
-        break
+        Break
       else if isAttribute(NSi) then begin
         var s:= VarToStr(NSi.PyObject);
         s:= getNameFromValue(s, NS.Name, NSi);
@@ -357,7 +357,7 @@ end;
 function TLivingObjects.getObjectAttributeValues(const Objectname: string)
   : TStringList;
 var
-  i: integer;
+  i: Integer;
   SL: TStringList;
   Py: IPyEngineAndGIL;
   NS, NSi: TBaseNameSpaceItem;
@@ -368,7 +368,7 @@ begin
   for i := 0 to NS.ChildCount - 1 do begin
     NSi:= NS.ChildNode[i];
     if isDunder(NSi.Name) then
-      break
+      Break
     else if isAttribute(NSi) then begin
       var s:= VarToStr(NSi.PyObject);
       s:= getNameFromValue(s, NS.Name, NSi);
@@ -386,18 +386,18 @@ var
 
   procedure AddObjectsFromString(NS: TBaseNameSpaceItem; values: string);
     // set or dict names
-    var p, pa, pe: integer;
+    var p, pa, pe: Integer;
   begin
     p:= Pos('object at 0x', values);
     while p > 0 do begin
       pa:= p - 1;
       while values[pa] <> '<' do
-        dec(pa);
-      pe:= p + length('object at 0x');
+        Dec(pa);
+      pe:= p + Length('object at 0x');
       while values[pe] <> '>' do
-        inc(pe);
-      SL.Add(getNameFromValue(copy(values, pa, pe - pa +1), NS.Name, NS));
-      values:= copy(values, pe + 1, length(values));
+        Inc(pe);
+      SL.Add(getNameFromValue(Copy(values, pa, pe - pa +1), NS.Name, NS));
+      values:= Copy(values, pe + 1, Length(values));
       p:= Pos('object at 0x', values);
     end;
   end;
@@ -408,7 +408,7 @@ var
     for var i:= 0 to NS.ChildCount - 1 do begin
       NSi:= NS.ChildNode[i];
       var s:= NSi.Name;
-      if (s[1] = '(') and (s[length(s)] = ')') then  // a tuple
+      if (s[1] = '(') and (s[Length(s)] = ')') then  // a tuple
         AddObjectsFromString(NSi, s)
       else if Pos('object at 0x', s) > 0 then       // a object
         SL.Add(getNameFromValue(s, NS.Name, NSi))
@@ -434,7 +434,7 @@ var
         s:= getNameFromValue(s, NS.Name, NSi);
         SL.Add(s);
       end else if isDunder(NSi.Name) then
-        break;
+        Break;
     end;
   end;
 
@@ -442,14 +442,14 @@ begin
   SL := TStringList.Create;
   Py := SafePyEngine;
   NS := getNodeFromName(Objectname);
-  if assigned(NS) then
+  if Assigned(NS) then
     AddObjects(NS);
   Result := SL;
 end;
 
 function TLivingObjects.getNameFromValue(Value, Parentname: string; Node: TBaseNameSpaceItem): string;
 var
-  i, p1, p2: integer;
+  i, p1, p2: Integer;
   Classname, Objectname: string;
 begin
   Result:= Value;
@@ -457,7 +457,7 @@ begin
   if i > -1 then
     Result := SLObjectsAddressName.ValueFromIndex[i]
   else if Pos('<', Value) > 0 then begin
-    if copy(Value, 1, 1) = '<' then begin
+    if Copy(Value, 1, 1) = '<' then begin
       // for example: <TurtleIntern Sprite(in <xxx> groups)>
       Value:= getHexAddress(ParentName + '.' + Node.Name, Value);
       i := SLObjectsAddressName.IndexOfName(Value);
@@ -472,10 +472,10 @@ begin
       p1 := Pos('<', Value);
       p2 := Pos('>', Value);
       while (p1 > 0) and (p2 > p1) do begin
-        Objectname := copy(Value, p1, p2 - p1 + 1);
+        Objectname := Copy(Value, p1, p2 - p1 + 1);
         i := SLObjectsAddressName.IndexOfName(Objectname);
         if i > -1 then begin
-          delete(Value, p1, p2 - p1 + 1);
+          Delete(Value, p1, p2 - p1 + 1);
           insert(SLObjectsAddressName.ValueFromIndex[i], Value, p1);
           p1 := Pos('<', Value);
           p2 := Pos('>', Value);
@@ -500,7 +500,7 @@ begin
   var address:= getHexAddressFromName(Name);
   if address <> '' then begin
     var p:= Pos(' 0x', address);
-    address:= copy(address, p + 1, length(address) - p - 1);
+    address:= Copy(address, p + 1, Length(address) - p - 1);
   end;
   Result:= address;
 end;
@@ -514,9 +514,9 @@ begin
     Result := '';
 end;
 
-function TLivingObjects.isObject(Node: TBaseNameSpaceItem): boolean;
+function TLivingObjects.isObject(Node: TBaseNameSpaceItem): Boolean;
 begin
-  Result:= false;
+  Result:= False;
   if not (Node.isClass or Node.IsModule or Node.isFunction or Node.isMethod) and
           (Pos('object at', Node.Value) > 0) then
     Result := (Node.ObjectType <> 'Window') and
@@ -524,7 +524,7 @@ begin
               (Node.ObjectType <> 'QApplication');
 end;
 
-function TLivingObjects.isAttribute(Node: TBaseNameSpaceItem): boolean;
+function TLivingObjects.isAttribute(Node: TBaseNameSpaceItem): Boolean;
 begin
   Result:= not Node.IsMethod;
 end;
@@ -541,7 +541,7 @@ end;
 
 function TLivingObjects.getClassAttributes(const Classname: string): TStringList;
 var
-  i: integer;
+  i: Integer;
   SL: TStringList;
   Py: IPyEngineAndGIL;
   NS, NSi: TBaseNameSpaceItem;
@@ -552,7 +552,7 @@ begin
   for i := 0 to NS.ChildCount - 1 do begin
     NSi:= NS.ChildNode[i];
     if isDunder(NSi.Name) then
-      break
+      Break
     else if NSi.ObjectType <> 'function' then
       SL.Add(NSi.Name + '=' + NSi.ObjectType);
   end;
@@ -561,7 +561,7 @@ end;
 
 function TLivingObjects.getClassMethods(const Classname: string): TStringList;
 var
-  i: integer;
+  i: Integer;
   SL: TStringList;
   Py: IPyEngineAndGIL;
   NS, NSi: TBaseNameSpaceItem;
@@ -578,30 +578,30 @@ begin
 end;
 
 function TLivingObjects.getClassnameFromAddress(Address: string): string;
-  var p: integer;
+  var p: Integer;
 begin
   // examples: <__main__.Node object at 0x0306546DF9>
   // '<TurtleIntern Sprite(in 37 groups)>'
   p := Pos('.', Address);
-  delete(Address, 1, p);
+  Delete(Address, 1, p);
   p := Pos(' ', Address);
-  Address:= copy(Address, 1, p - 1);
-  if copy(Address, 1, 1) = '<' then
-    delete(Address, 1, 1);
+  Address:= Copy(Address, 1, p - 1);
+  if Copy(Address, 1, 1) = '<' then
+    Delete(Address, 1, 1);
   Result:= Address;
 end;
 
 procedure TLivingObjects.makeAllObjects;
   var Py: IPyEngineAndGIL;
       SLObjectsAddressNameDuplicat: TStringList;
-      i: integer; s, Name: string;
+      i: Integer; s, Name: string;
       NSi: TBaseNameSpaceItem;
 
   procedure Add(Prefixname: string; NS: TBaseNameSpaceItem);
 
     function getNameFromAddress(Address: string): string;
       var aClassname, Objectname, s: string; SL: TStringList;
-          i, j, k, Nr: integer;
+          i, j, k, Nr: Integer;
     begin
       SL:= TStringList.Create;
       SL.Assign(SLObjectsAddressNameDuplicat);
@@ -613,13 +613,13 @@ procedure TLivingObjects.makeAllObjects;
       Nr := 1;
       for i := 0 to SL.Count - 1 do begin
         s := SL.ValueFromIndex[i];
-        j := length(s);
+        j := Length(s);
         // classnames can have digits too, example: Eval$5
-        while (j > length(aClassname)) and CharInSet(s[j], ['0' .. '9']) do
-          dec(j);
-        if j < length(s) then begin
-          k := StrToInt(copy(s, j + 1, length(s)));
-          s := copy(s, 1, j);
+        while (j > Length(aClassname)) and CharInSet(s[j], ['0' .. '9']) do
+          Dec(j);
+        if j < Length(s) then begin
+          k := StrToInt(Copy(s, j + 1, Length(s)));
+          s := Copy(s, 1, j);
           if (s = aClassname) and (Nr <= k) then
             Nr := k + 1;
         end;
@@ -658,18 +658,18 @@ procedure TLivingObjects.makeAllObjects;
 
     procedure AddObjectsFromString(Prefixname, values: string);
       // set or dict names
-      var p, pa, pe: integer;
+      var p, pa, pe: Integer;
     begin
       p:= Pos('object at 0x', values);
       while p > 0 do begin
         pa:= p - 1;
         while values[pa] <> '<' do
-          dec(pa);
-        pe:= p + length('object at 0x');
+          Dec(pa);
+        pe:= p + Length('object at 0x');
         while values[pe] <> '>' do
-          inc(pe);
-        AddObject(Prefixname, copy(values, pa, pe - pa +1));
-        values:= copy(values, pe + 1, length(values));
+          Inc(pe);
+        AddObject(Prefixname, Copy(values, pa, pe - pa +1));
+        values:= Copy(values, pe + 1, Length(values));
         p:= Pos('object at 0x', values);
       end;
     end;
@@ -679,7 +679,7 @@ procedure TLivingObjects.makeAllObjects;
     begin
       for var i:= 0 to NS.ChildCount - 1 do begin
         var s:= NS.ChildNode[i].Name;
-        if (s[1] = '(') and (s[length(s)] = ')') then  // a tuple
+        if (s[1] = '(') and (s[Length(s)] = ')') then  // a tuple
           AddObjectsFromString(Prefixname, s)
         else if Pos('object at 0x', s) > 0 then       // a object
           AddObject(Prefixname + s, s);
@@ -696,9 +696,9 @@ procedure TLivingObjects.makeAllObjects;
     for var i:= 0 to NS.ChildCount - 1 do begin
       var NSi:= NS.ChildNode[i];
       if NSi.IsMethod or NSi.IsFunction or NSi.IsClass or NSi.IsModule then
-        continue
+        Continue
       else if isDunder(NSi.Name) then
-        break
+        Break
       else begin
         var OType:= NSi.ObjectType;
         if (OType = 'list') or (OType = 'tuple' ) then
@@ -719,7 +719,7 @@ procedure TLivingObjects.makeAllObjects;
           // object with modified string representation by __repr__
           // for example: <TurtleIntern Sprite(in 1039 groups)>
           s:= VarToStr(NSi.PyObject);
-          if copy(s, 1, 1) = '<' then begin
+          if Copy(s, 1, 1) = '<' then begin
             Name:= getHexAddress(Prefixname + '.' + NSi.Name, s);
             //  if SLObjectsNamePath.IndexOfName(Name) = -1 then
             //    SLObjectsNamePath.Add(Name + '=' + Prefixname);
@@ -737,7 +737,7 @@ begin
   SLObjectsNamePath.Clear;
   Py := SafePyEngine;
   var NS := VariablesWindow.GlobalsNameSpace;
-  if NS = nil then exit;
+  if NS = nil then Exit;
 
   // collect objects with direct access first
   for i:= 0 to NS.ChildCount -1 do begin
@@ -747,7 +747,7 @@ begin
       SLObjectsAddressName.Add(s + '=' + NSi.Name);
       SLObjectsNamePath.Add(NSi.Name + '=' + NSi.Name);
     end else if isDunder(NSi.Name) then
-      break;
+      Break;
   end;
 
   // collect objects with indirect access second
@@ -756,7 +756,7 @@ begin
     if isObject(NSi) then
       Add(NSi.Name, NSi)
     else if isDunder(NSi.Name) then
-      break;
+      Break;
   end;
   FreeAndNil(SLObjectsAddressNameDuplicat);
 end;
@@ -774,11 +774,11 @@ end;
 
 procedure TLivingObjects.SimplifyPath(Objectname: string);
 begin
-  SLObjectsNamePath.Sorted:= false;
+  SLObjectsNamePath.Sorted:= False;
   var i:= SLObjectsNamePath.IndexOfName(Objectname);
   if i > -1 then
     SLObjectsNamePath.Values[Objectname]:= Objectname;
-  SLObjectsNamePath.Sorted:= true;
+  SLObjectsNamePath.Sorted:= True;
 
 end;
 

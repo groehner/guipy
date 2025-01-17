@@ -48,7 +48,7 @@ interface
 
 uses
   WinApi.Messages,
-  WinApi.Windows,
+  Winapi.Windows,
   System.Classes,
   System.Actions,
   System.ImageList,
@@ -227,9 +227,9 @@ procedure TFunctionListWindow.LoadProcs;
     Name,
     KlassName: string;
   begin
-    if not (Symbol.TryGetValue<integer>('selectionRange.start.line', LineNo) and
-      Symbol.TryGetValue<integer>('selectionRange.start.character', Char) and
-      Symbol.TryGetValue<integer>('kind', Kind) and
+    if not (Symbol.TryGetValue<Integer>('selectionRange.start.line', LineNo) and
+      Symbol.TryGetValue<Integer>('selectionRange.start.character', Char) and
+      Symbol.TryGetValue<Integer>('kind', Kind) and
       Symbol.TryGetValue<string>('name', Name))
     then
       Exit;

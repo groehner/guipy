@@ -1151,7 +1151,7 @@ end;
 
 procedure TJvDockVSChannel.ChangeScale(M, D: Integer; isDpiChange: Boolean);
 var
-  I, J : integer;
+  I, J : Integer;
 begin
   inherited;
   for I := 0 to FBlocks.Count - 1 do

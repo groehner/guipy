@@ -26,9 +26,9 @@ type
   private
     fileURL: string;
     fileName: string;
-    Cancel: boolean;
+    Cancel: Boolean;
   public
-    function GetInetFile(const aFileURL, aFileName: string; const Progress: TProgressBar): boolean;
+    function GetInetFile(const aFileURL, aFileName: string; const Progress: TProgressBar): Boolean;
   end;
 
 implementation
@@ -39,9 +39,9 @@ uses Windows, SysUtils, Forms, WinINet, jvGnugettext, UUtils;
 
 procedure TFDownload.FormShow(Sender: TObject);
 begin
-  BCancel.Enabled:= false;
+  BCancel.Enabled:= False;
   ProgressBar.Position:= 0;
-  Cancel:= false;
+  Cancel:= False;
 end;
 
 procedure TFDownload.SPOpenClick(Sender: TObject);
@@ -49,7 +49,7 @@ begin
   SaveDialog.FileName:= ExtractFileName(EFile.Text);
   SaveDialog.InitialDir:= ExtractFilePath(EFile.Text);
   if SaveDialog.Execute then begin
-    Filename:= SaveDialog.FileName;
+    FileName:= SaveDialog.FileName;
     EFile.Text:= FileName;
     EFile.Hint:= FileName;
   end;
@@ -58,22 +58,22 @@ end;
 procedure TFDownload.BDownloadClick(Sender: TObject);
   var dir: string;
 begin
-  BDownload.Enabled:= false;
-  BCancel.Enabled:= false;
+  BDownload.Enabled:= False;
+  BCancel.Enabled:= False;
   FileUrl:= EUrl.Text;
   FileName:= EFile.Text;
-  dir:= ExtractFilePath(Filename);
+  dir:= ExtractFilePath(FileName);
   if not DirectoryExists(dir) then
     ForceDirectories(dir);
-  TimerDownload.Enabled:= true;
+  TimerDownload.Enabled:= True;
 end;
 
 procedure TFDownload.BCancelClick(Sender: TObject);
 begin
-  Cancel:= true;
+  Cancel:= True;
 end;
 
-function TFDownload.GetInetFile(const aFileURL, aFileName: string; const Progress: TProgressBar): boolean;
+function TFDownload.GetInetFile(const aFileURL, aFileName: string; const Progress: TProgressBar): Boolean;
 const
   BufferSize = 1024;
 var
@@ -81,13 +81,13 @@ var
   Buffer: array[0..BufferSize+1] of Byte;
   code : array[1..20] of Char;
   codes: string;
-  Value: integer;
+  Value: Integer;
   BufferLen,
   Index,
   CodeLen: DWord;
   sAppName: string;
   aFile: TFileStream;
-  KnowSize: boolean;
+  KnowSize: Boolean;
 
   function codeToString: string;
   begin
@@ -95,17 +95,17 @@ var
     var i:= 1;
     while (i <= 20) and (code[i] <> #0) do begin
       Result:= Result + code[i];
-      inc(i);
+      Inc(i);
     end;
   end;
 
 begin
-  result := false;
+  result := False;
   sAppName := ExtractFileName(Application.ExeName) ;
   hSession := InternetOpen(PChar(sAppName), INTERNET_OPEN_TYPE_PRECONFIG, nil, nil, 0) ;
   try
     hURL:= InternetOpenURL(hSession, PChar(aFileURL), nil, 0, INTERNET_FLAG_DONT_CACHE, 0);
-    if assigned(hURL) then begin
+    if Assigned(hURL) then begin
       try
         try
           // get HTTP status
@@ -113,22 +113,22 @@ begin
           CodeLen:= Length(code);
           if HttpQueryInfo(hURL, HTTP_QUERY_STATUS_CODE, @code, CodeLen, Index) then begin
             codes:= codeToString; // 200, 401, 404 or 500
-            if codes <> '200' then exit(false);
+            if codes <> '200' then Exit(False);
           end;
 
           // get file size
-          KnowSize:= false;
+          KnowSize:= False;
           if Progress <> nil then begin
-            KnowSize:= true;
+            KnowSize:= True;
             Index := 0;
             CodeLen := Length(Code);
             HttpQueryInfo(hURL, HTTP_QUERY_CONTENT_LENGTH, @code, CodeLen, Index);
             codes:= codeToString;
             if TryStrToInt(codes, Value)
               then Progress.Max:= Value
-              else KnowSize:= false;
+              else KnowSize:= False;
           end;
-          BCancel.Enabled:= true;
+          BCancel.Enabled:= True;
 
           // get file
           aFile:= TFileStream.Create(aFileName, fmCreate or fmShareExclusive);
@@ -152,22 +152,22 @@ begin
       ErrorMsg(_('No Internet connection') + ' ' + SysErrorMessage(GetLastError));
   finally
     InternetCloseHandle(hSession);
-    BCancel.Enabled:= true;
+    BCancel.Enabled:= True;
   end;
 end;
 
 procedure TFDownload.TimerDownloadTimer(Sender: TObject);
-  var DownloadIsOk: boolean;
+  var DownloadIsOk: Boolean;
 begin
-  TimerDownload.Enabled:= false;
-  Screen.Cursor:= crHourglass;
+  TimerDownload.Enabled:= False;
+  Screen.Cursor:= crHourGlass;
   try
     DownloadIsOK:= GetInetFile(fileUrl, fileName, ProgressBar);
   finally
     Screen.Cursor:= crDefault;
   end;
   if DownloadIsOK then BCancel.Caption:= _('&OK');
-  BDownload.Enabled:= true;
+  BDownload.Enabled:= True;
 end;
 
 end.

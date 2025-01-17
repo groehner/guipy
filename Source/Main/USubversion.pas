@@ -17,17 +17,17 @@ type
     procedure ForFile(const aFile: string);
     function GetRevision: string;
     function GetRepositoryURL(s: string): string;
-    function IsRepository(const Dir: string): boolean;
+    function IsRepository(const Dir: string): Boolean;
     procedure CallSVN(Programm: string; const call: string);
     procedure Commit;
     procedure Add;
     procedure Compare;
   private
     Pathname: string;
-    Filename: string;
+    FileName: string;
     Path: string;
   public
-    procedure Execute(Tag: integer; aEditor: IEditor);
+    procedure Execute(Tag: Integer; aEditor: IEditor);
   end;
 
 var
@@ -52,47 +52,47 @@ begin
 end;
 
 procedure TFSubversion.ForFile(const aFile: string);
-  var m, rev, aut, s: string; p, i: integer; ListItem: TListItem;
+  var m, rev, aut, s: string; p, i: Integer; ListItem: TListItem;
 begin
   LVRevisions.Items.Clear;
   CallSVN('\svn.exe', 'log ' + aFile);
   i:= 0;
   while OutputWindow.IsRunning and (i < 10) do begin
     Sleep(100);
-    inc(i);
+    Inc(i);
   end;
   i:= 2;
   while i < OutputWindow.lsbConsole.Items.Count - 1 do begin
     s:= OutputWindow.lsbConsole.Items[i];
     ListItem := LVRevisions.Items.Add;
     p:= Pos(' | ', s);
-    rev:= copy(s, 2, p-2);
+    rev:= Copy(s, 2, p-2);
     ListItem.Caption:= rev;
-    delete(s, 1, p + 2);
+    Delete(s, 1, p + 2);
     p:= Pos(' | ', s);
-    aut:= copy(s, 1, p-1);
+    aut:= Copy(s, 1, p-1);
     ListItem.SubItems.Add(aut);
-    delete(s, 1, p + 2);
+    Delete(s, 1, p + 2);
     p:= Pos(':', s);
-    delete(s, p+5, length(s));
+    Delete(s, p+5, Length(s));
     ListItem.SubItems.Add(s);
     m:= OutputWindow.lsbConsole.Items[i+2];
     ListItem.SubItems.Add(m);
-    inc(i, 4);
+    Inc(i, 4);
   end;
 end;
 
 function TFSubversion.GetRevision: string;
-  var i: integer;
+  var i: Integer;
 begin
   i:= LVRevisions.ItemIndex;
   Result:= LVRevisions.Items[i].Caption;
 end;
 
-function TFSubversion.IsRepository(const Dir: string): boolean;
+function TFSubversion.IsRepository(const Dir: string): Boolean;
   var s: string; Datei: TStringList;
 begin
-  Result:= false;
+  Result:= False;
   s:= withTrailingSlash(Dir) + 'README.txt';
   if FileExists(s) then begin
     Datei:= TStringList.Create;
@@ -111,7 +111,7 @@ begin
   Result:= s;
   p:= pos(':', Result);
   if p = 2 then
-    delete(Result, 2, 1);
+    Delete(Result, 2, 1);
 end;
 
 function TFSubversion.GetRepositoryURL(s: string): string;
@@ -122,7 +122,7 @@ end;
 
 procedure TFSubversion.LVRevisionsDblClick(Sender: TObject);
 begin
-  ModalResult := mrOK;
+  ModalResult := mrOk;
 end;
 
 procedure TFSubversion.CallSVN(Programm: string; const call: string);
@@ -134,18 +134,18 @@ begin
   ExternalTool.Parameters:= call;
   ExternalTool.WorkingDirectory:= Path;
   ExternalTool.SaveFiles:= sfActive;
-  ExternalTool.CaptureOutput:= true;
-  OutputWindow.actToolTerminateExecute(self);
+  ExternalTool.CaptureOutput:= True;
+  OutputWindow.actToolTerminateExecute(Self);
   ExternalTool.Execute;
   FreeAndNil(ExternalTool);
 end;
 
-procedure TFSubversion.Execute(Tag: integer; aEditor: IEditor);
+procedure TFSubversion.Execute(Tag: Integer; aEditor: IEditor);
 begin
-  if assigned(aEditor) then begin
-    Pathname:= aEditor.Filename;
-    Filename:= ExtractFileName(Pathname);
-    Path:= ExtractFilePath(aEditor.Filename);
+  if Assigned(aEditor) then begin
+    Pathname:= aEditor.FileName;
+    FileName:= ExtractFileName(Pathname);
+    Path:= ExtractFilePath(aEditor.FileName);
     case Tag of
       1: Commit;
       2: Add;
@@ -206,19 +206,19 @@ procedure TFSubversion.Compare;
       aForm: TEditorForm; aFile: IFile;
 begin
   ForFile(Pathname);
-  if (ShowModal = mrOK) and (LVRevisions.ItemIndex > -1) then begin
+  if (ShowModal = mrOk) and (LVRevisions.ItemIndex > -1) then begin
     rev:= GetRevision;
     CallSVN('\svn.exe', 'cat -r ' + rev + ' ' + Pathname);
     s1:= OutputWindow.lsbConsole.Items[0];
     OutputWindow.lsbConsole.Items.Delete(0);
-    s2:= Filename;
+    s2:= FileName;
     System.insert('[R' + rev + ']', s2, Pos('.', s2));
     s2:= TPath.Combine(GuiPyOptions.TempDir, s2);
 
     aFile:= PyIDEMainForm.DoOpenAsEditor(s2);
     if Assigned(aFile) then begin
       aForm:= TEditorForm(aFile.Form);
-      aForm.PutText(OutputWindow.lsbConsole.Items.Text, false);
+      aForm.PutText(OutputWindow.lsbConsole.Items.Text, False);
       aForm.DoSave;
     end;
     OutputWindow.lsbConsole.Items.Text:= s1;

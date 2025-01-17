@@ -103,32 +103,32 @@ type
     addClr, delClr, modClr, DefaultClr: TColor;
     CodeEdit1: TSynEditExDiff;
     CodeEdit2: TSynEditExDiff;
-    OnlyDifferences: boolean;
-    IgnoreBlanks: boolean;
-    IgnoreCase: boolean;
+    OnlyDifferences: Boolean;
+    IgnoreBlanks: Boolean;
+    IgnoreCase: Boolean;
     procedure DoCompare;
-    procedure DoSaveFile(Nr: integer); reintroduce;
-    procedure DoLoadFile(const Filename: string; Nr: integer);
+    procedure DoSaveFile(Nr: Integer); reintroduce;
+    procedure DoLoadFile(const FileName: string; Nr: Integer);
     procedure ChooseFiles(F1: TEditorForm);
     procedure DisplayDiffs;
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
-    procedure LinkScroll(IsLinked: boolean);
+    procedure LinkScroll(IsLinked: Boolean);
 
     procedure Undo;
     procedure Redo;
     procedure DoSaveBoth;
     procedure ShowFilenames;
-    procedure SetFilesCompared(Value: boolean);
+    procedure SetFilesCompared(Value: Boolean);
     function IsEmpty : Boolean;
     function GetCodeEdit: TSynEditExDiff;
     procedure ChangeStyle;
 
     // ISearchCommands implementation
-    function CanFind: boolean;
-    function CanFindNext: boolean;
+    function CanFind: Boolean;
+    function CanFindNext: Boolean;
     function ISearchCommands.CanFindPrev = CanFindNext;
-    function CanReplace: boolean;
+    function CanReplace: Boolean;
     function GetSearchTarget: TSynEdit;
     procedure ExecFind;
     procedure ExecFindNext;
@@ -136,17 +136,17 @@ type
     procedure ExecReplace;
   protected
     procedure SetFont(aFont: TFont); override;
-    procedure SetFontSize(Delta: integer); override;
+    procedure SetFontSize(Delta: Integer); override;
     procedure CutToClipboard;
     procedure CopyToClipboard; override;
     procedure PasteFromClipboard; override;
     procedure Retranslate; override;
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
-    Nr: integer;
-    FilesCompared: boolean;
+    Nr: Integer;
+    FilesCompared: Boolean;
     procedure New(F1, F2: TEditorForm);
-    procedure Open(const Filename: string); overload;
+    procedure Open(const FileName: string); overload;
     procedure Open(const Filename1, Filename2: string); overload;
     procedure ShowDiffState;
     procedure Save;
@@ -185,14 +185,14 @@ begin
   SetState(State);
 
   //the diff engine ...
-  Diff:= TDiff.create(self);
+  Diff:= TDiff.Create(Self);
 
   //lines1 & lines2 contain the unmodified files
   Lines1:= TSynEditStringList.Create(nil);
   Lines2:= TSynEditStringList.Create(nil);
 
   //edit windows where color highlighing of diffs and changes are displayed ...
-  CodeEdit1:= TSynEditExDiff.create(self);
+  CodeEdit1:= TSynEditExDiff.Create(Self);
   with CodeEdit1 do begin
     Nr:= 1;
     Parent:= PLeft;
@@ -203,13 +203,13 @@ begin
     onExit:= SynEditExit;
     Gutter.Font.Assign(FConfiguration.Font);
     Gutter.Font.Height:= Font.Height + 2;
-    Gutter.ShowLineNumbers:= true;
+    Gutter.ShowLineNumbers:= True;
     Gutter.DigitCount:= 0;
-    Gutter.Autosize:= true;
+    Gutter.Autosize:= True;
     Highlighter:= ResourcesDataModule.Highlighters.HighlighterFromFileExt('.py');
   end;
   CodeEdit1.Assign(EditorOptions);
-  CodeEdit2:= TSynEditExDiff.create(self);
+  CodeEdit2:= TSynEditExDiff.Create(Self);
   with CodeEdit2 do begin
     Nr:= 2;
     Parent:= PRight;
@@ -220,15 +220,15 @@ begin
     onExit:= SynEditExit;
     Gutter.Font.Assign(FConfiguration.Font);
     Gutter.Font.Height:= Font.Height + 2;
-    Gutter.ShowLineNumbers:= true;
+    Gutter.ShowLineNumbers:= True;
     Gutter.DigitCount:= 0;
-    Gutter.Autosize:= true;
+    Gutter.Autosize:= True;
     Highlighter:= ResourcesDataModule.Highlighters.HighlighterFromFileExt('.py');
   end;
   CodeEdit2.Assign(EditorOptions);
   Nr:= 1;
   OnClose:= FormClose;
-  OnlyDifferences:= false;
+  OnlyDifferences:= False;
   SetFont(EditorOptions.Font);
   TBCopyBlockLeft.Hint:= _('Copy block left');
   TBCopyBlockRight.Hint:= _('Copy block right');
@@ -253,16 +253,16 @@ begin
   GuiPyOptions.TextDiffIgnoreBlanks:= IgnoreBlanks;
   if OnlyDifferences then TBDiffsOnlyClick(Self);
   DoSaveBoth;
-  CanClose:= true;
+  CanClose:= True;
 end;
 
 procedure TFTextDiff.New(F1, F2: TEditorForm);
 begin
   Pathname:= Caption;
-  if assigned(F1) and assigned(F2) then
+  if Assigned(F1) and Assigned(F2) then
     Open(F1.Pathname, F2.Pathname)
   else begin
-    if assigned(F1) then
+    if Assigned(F1) then
       Open(F1.Pathname);
     ChooseFiles(F1);
   end;
@@ -297,13 +297,13 @@ procedure TFTextDiff.TBDiffsOnlyClick(Sender: TObject);
       Caret: TBufferCoord;
 begin
   if OnlyDifferences then begin
-    OnlyDifferences:= false;
-    CodeEdit1.ReadOnly:= false;
-    CodeEdit2.ReadOnly:= false;
-    CodeEdit1.Gutter.Autosize:= true;
-    CodeEdit2.Gutter.Autosize:= true;
-    TBCopyBlockLeft.Enabled:= true;
-    TBCopyBlockRight.Enabled:= true;
+    OnlyDifferences:= False;
+    CodeEdit1.ReadOnly:= False;
+    CodeEdit2.ReadOnly:= False;
+    CodeEdit1.Gutter.Autosize:= True;
+    CodeEdit2.Gutter.Autosize:= True;
+    TBCopyBlockLeft.Enabled:= True;
+    TBCopyBlockRight.Enabled:= True;
     CodeEdit:= GetCodeEdit;
     Caret:= CodeEdit.CaretXY;
     if Caret.Line - 1 > 0 then
@@ -316,14 +316,14 @@ begin
     DoSaveBoth;
     if not FilesCompared then DoCompare;
     if FilesCompared then begin
-      OnlyDifferences:= true;
-      CodeEdit1.Gutter.Autosize:= false;
-      CodeEdit2.Gutter.Autosize:= false;
+      OnlyDifferences:= True;
+      CodeEdit1.Gutter.Autosize:= False;
+      CodeEdit2.Gutter.Autosize:= False;
       DisplayDiffs;
-      CodeEdit1.ReadOnly:= true;
-      CodeEdit2.ReadOnly:= true;
-      TBCopyBlockLeft.Enabled:= false;
-      TBCopyBlockRight.Enabled:= false;
+      CodeEdit1.ReadOnly:= True;
+      CodeEdit2.ReadOnly:= True;
+      TBCopyBlockLeft.Enabled:= False;
+      TBCopyBlockRight.Enabled:= False;
     end;
   end;
 end;
@@ -333,28 +333,28 @@ begin
   DoSaveFile(GetCodeEdit.Nr);
 end;
 
-procedure TFTextDiff.Open(const Filename: string);
+procedure TFTextDiff.Open(const FileName: string);
 begin
-  DoLoadFile(Filename, Nr);
+  DoLoadFile(FileName, Nr);
 end;
 
-procedure TFTextDiff.DoLoadFile(const Filename: string; Nr: integer);
+procedure TFTextDiff.DoLoadFile(const FileName: string; Nr: Integer);
 begin
   if OnlyDifferences then
     TBDiffsOnlyClick(Self);
-  SetFilesCompared(false);
-  LinkScroll(false);
+  SetFilesCompared(False);
+  LinkScroll(False);
   if Nr = 1
-    then CodeEdit1.Load(Lines1, Filename)
-    else CodeEdit2.Load(Lines2, Filename);
+    then CodeEdit1.Load(Lines1, FileName)
+    else CodeEdit2.Load(Lines2, FileName);
 end;
 
 procedure TFTextDiff.Open(const Filename1, Filename2: string);
 begin
   if OnlyDifferences then
     TBDiffsOnlyClick(Self);
-  SetFilesCompared(false);
-  LinkScroll(false);
+  SetFilesCompared(False);
+  LinkScroll(False);
   CodeEdit1.Load(Lines1, Filename1);
   CodeEdit2.Load(Lines2, Filename2);
 end;
@@ -389,12 +389,12 @@ end;
 
 procedure TFTextDiff.DoCompare;
 var
-  i: integer;
+  i: Integer;
   HashArray1, HashArray2: TArrOfInteger;
   CodeEdit: TSynEditExDiff;
   Caret: TBufferCoord;
 begin
-  if (Lines1.Count = 0) or (Lines2.Count = 0) then exit;
+  if (Lines1.Count = 0) or (Lines2.Count = 0) then Exit;
 
   CodeEdit:= GetCodeEdit;
   Caret:= CodeEdit.CaretXY;
@@ -425,13 +425,13 @@ begin
     try
       //CALCULATE THE DIFFS HERE ...
        if not Diff.Execute(HashArray1, HashArray2,
-                           Lines1.Count, Lines2.Count) then exit;
+                           Lines1.Count, Lines2.Count) then Exit;
 
-      SetFilesCompared(true);
+      SetFilesCompared(True);
       DisplayDiffs;
     finally
     end;
-    LinkScroll(true);
+    LinkScroll(True);
     setActiveControl(CodeEdit);
     CodeEdit.CaretXY:= Caret;
     SyncScroll(GetCodeEdit, sbVertical);
@@ -442,18 +442,18 @@ begin
   end;
 end;
 
-function Log10(int: integer): integer;
+function Log10(int: Integer): Integer;
 begin
   result:= 1;
-  while int > 9 do begin inc(result); int:= int div 10; end;
+  while int > 9 do begin Inc(result); int:= int div 10; end;
 end;
 
 procedure TFTextDiff.DisplayDiffs;
-  var i: integer;
+  var i: Integer;
 
   procedure AddAndFormat(CodeEdit: TSynEditExDiff; const Text: string;
                          Color: TColor; Num: longint);
-    var i: integer; LineObject: TLineObj;
+    var i: Integer; LineObject: TLineObj;
   begin
     i:= CodeEdit.Lines.Count;
     LineObject:= TLineObj.Create;
@@ -491,20 +491,20 @@ begin
            AddAndFormat(CodeEdit1, lines1[oldindex1], defaultClr, oldindex1+1);
            AddAndFormat(CodeEdit2, lines2[oldindex2], defaultClr, oldindex2+1);
         end;
-    CodeEdit1.SetModified(false);
-    CodeEdit2.SetModified(false);
+    CodeEdit1.SetModified(False);
+    CodeEdit2.SetModified(False);
   finally
     CodeEdit1.Lines.EndUpdate;
     CodeEdit2.Lines.EndUpdate;
   end;
   with Diff.DiffStats do
     if adds + modifies + deletes = 0 then begin
-      CodeEdit1.WithColoredLines:= false;
-      CodeEdit2.WithColoredLines:= false;
+      CodeEdit1.WithColoredLines:= False;
+      CodeEdit2.WithColoredLines:= False;
       end
     else begin
-      CodeEdit1.WithColoredLines:= true;
-      CodeEdit2.WithColoredLines:= true;
+      CodeEdit1.WithColoredLines:= True;
+      CodeEdit2.WithColoredLines:= True;
     end;
   CodeEdit1.ClearUndo;
   CodeEdit2.ClearUndo;
@@ -523,14 +523,14 @@ begin
 end;
 
 //Syncronise scrolling of both CodeEdits (once files are compared)...
-var IsSyncing: boolean;
+var IsSyncing: Boolean;
 
 procedure TFTextDiff.SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
  var CurrMouse: TPoint;
 begin
   if IsSyncing or not (CodeEdit1.WithColoredLines and CodeEdit2.WithColoredLines)
-    then exit;
-  IsSyncing:= true; //stops recursion
+    then Exit;
+  IsSyncing:= True; //stops recursion
   try
     if (Sender as TSynEditExDiff) = CodeEdit1
       then CodeEdit2.TopLine:= CodeEdit1.TopLine
@@ -544,7 +544,7 @@ begin
       WM_MouseMove, 0, MAKELPARAM(CodeEdit2.Width - 10, CodeEdit2.Height div 2));
     Mouse.CursorPos:= CurrMouse;
   finally
-    IsSyncing:= false;
+    IsSyncing:= False;
   end;
 end;
 
@@ -554,7 +554,7 @@ begin
   CodeEdit2.ShowFilename;
 end;
 
-procedure TFTextDiff.LinkScroll(IsLinked: boolean);
+procedure TFTextDiff.LinkScroll(IsLinked: Boolean);
 begin
   if IsLinked then begin
     CodeEdit1.OnScroll:= CodeEdit1.SyncScroll;
@@ -568,31 +568,31 @@ end;
 
 //go to next color block (only enabled if files have been compared)
 procedure TFTextDiff.NextClick(Sender: TObject);
-  var i: integer; clr: TColor;
+  var i: Integer; clr: TColor;
 begin
   //get next colored block ...
   with GetCodeEdit do begin
-    if (lines.Count = 0) or not WithColoredLines then exit;
+    if (lines.Count = 0) or not WithColoredLines then Exit;
     i:= CaretY-1;
     clr:= GetLineObj(i).BackClr;
     repeat
-      inc(i);
+      Inc(i);
     until (i = Lines.Count) or (GetLineObj(i).BackClr <> clr);
     if (i = Lines.Count) then //do nothing here
     else if GetLineObj(i).BackClr = color then
     repeat
-      inc(i);
+      Inc(i);
     until (i = Lines.Count) or (GetLineObj(i).BackClr <> color);
     if (i = Lines.Count) then
     begin
       Beep;  //not found
-      exit;
+      Exit;
     end;
     CaretY:= i+1;
     //now make sure as much of the block as possible is visible ...
     clr:= GetLineObj(i).BackClr;
     repeat
-      inc(i);
+      Inc(i);
     until(i = Lines.Count) or (GetLineObj(i).BackClr <> clr);
     if i >= TopLine + LinesInWindow then begin
       TopLine:= CaretY;
@@ -603,26 +603,26 @@ end;
 
 //go to previous color block (only enabled if files have been compared)
 procedure TFTextDiff.PrevClick(Sender: TObject);
-  var i: integer; clr: TColor;
+  var i: Integer; clr: TColor;
 begin
   //get prev colored block ...
   with GetCodeEdit do begin
-    if not WithColoredLines then exit;
+    if not WithColoredLines then Exit;
     i:= CaretY-1;
-    if i = Lines.count then begin Beep; exit end;
+    if i = Lines.Count then begin Beep; Exit end;
     clr:= GetLineObj(i).BackClr;
     repeat
-      dec(i);
+      Dec(i);
     until (i < 0) or (GetLineObj(i).BackClr <> clr);
-    if i < 0 then begin Beep; exit end;;
+    if i < 0 then begin Beep; Exit end;;
     if GetLineObj(i).BackClr = Color then
     repeat
-      dec(i);
+      Dec(i);
     until (i < 0) or (GetLineObj(i).BackClr <> Color);
     if i < 0 then Beep
     else begin
       clr:= GetLineObj(i).BackClr;
-      while (i > 0) and (GetLineObj(i-1).BackClr = clr) do dec(i);
+      while (i > 0) and (GetLineObj(i-1).BackClr = clr) do Dec(i);
       //'i' now at the beginning of the previous color block.
       CaretY:= i+1;
       SyncScroll(GetCodeEdit, sbVertical);
@@ -631,25 +631,25 @@ begin
 end;
 
 procedure TFTextDiff.CopyBlockRightClick(Sender: TObject);
-  var von, bis: integer;
-      EmptyClipboard: boolean;
+  var von, bis: Integer;
+      EmptyClipboard: Boolean;
       clr: TColor; LinObj: TLineObj;
 begin
-  if (myActiveControl <> CodeEdit1) or OnlyDifferences or not FilesCompared then exit;
+  if (myActiveControl <> CodeEdit1) or OnlyDifferences or not FilesCompared then Exit;
   with CodeEdit1 do begin
-    if lines.Count = 0 then exit;
+    if lines.Count = 0 then Exit;
     von:= CaretY - 1;
     clr:= GetLineObj(von).BackClr;
-    if clr = color then exit; //we're not in a colored block !!!
+    if clr = color then Exit; //we're not in a colored block !!!
     bis:= von;
     while (von > 0) and
-      (GetLineObj(von-1).BackClr = clr) do dec(von);
+      (GetLineObj(von-1).BackClr = clr) do Dec(von);
     while (bis < Lines.Count-1) and
-      (GetLineObj(bis+1).BackClr = clr) do inc(bis);
+      (GetLineObj(bis+1).BackClr = clr) do Inc(bis);
     //make sure color blocks still match up ...
     if (bis > CodeEdit2.Lines.Count -1) or
       (CodeEdit2.GetLineObj(von).BackClr <> clr) or
-      (CodeEdit2.GetLineObj(bis).BackClr <> clr) then exit;
+      (CodeEdit2.GetLineObj(bis).BackClr <> clr) then Exit;
     EmptyClipboard:= CopyIntoClipboard(von, bis);
     LinObj:= GetLineObj(von);
   end;
@@ -659,25 +659,25 @@ begin
 end;
 
 procedure TFTextDiff.CopyBlockLeftClick(Sender: TObject);
-  var von, bis: integer;
-      EmptyClipboard: boolean;
+  var von, bis: Integer;
+      EmptyClipboard: Boolean;
       clr: TColor; LinObj: TLineObj;
 begin
-  if (myActiveControl <> CodeEdit2) or OnlyDifferences or not FilesCompared then exit;
+  if (myActiveControl <> CodeEdit2) or OnlyDifferences or not FilesCompared then Exit;
   with CodeEdit2 do begin
-    if lines.Count = 0 then exit;
+    if lines.Count = 0 then Exit;
     von:= CaretY - 1;
     clr:= GetLineObj(von).BackClr;
-    if clr = color then exit; //we're not in a colored block !!!
+    if clr = color then Exit; //we're not in a colored block !!!
     bis:= von;
     while (von > 0) and
-      (GetLineObj(von-1).BackClr = clr) do dec(von);
+      (GetLineObj(von-1).BackClr = clr) do Dec(von);
     while (bis < Lines.Count-1) and
-      (GetLineObj(bis+1).BackClr = clr) do inc(bis);
+      (GetLineObj(bis+1).BackClr = clr) do Inc(bis);
     //make sure color blocks still match up ...
     if (bis > CodeEdit1.Lines.Count -1) or
       (CodeEdit1.GetLineObj(von).BackClr <> clr) or
-      (CodeEdit1.GetLineObj(bis).BackClr <> clr) then exit;
+      (CodeEdit1.GetLineObj(bis).BackClr <> clr) then Exit;
     EmptyClipboard:= CopyIntoClipboard(von, bis);
     LinObj:= GetLineObj(von);
   end;
@@ -751,8 +751,8 @@ begin
   SetFontSize(0);
 end;
 
-procedure TFTextDiff.SetFontSize(Delta: integer);
-  var Size: integer;
+procedure TFTextDiff.SetFontSize(Delta: Integer);
+  var Size: Integer;
 begin
   Size:= CodeEdit1.Font.Size + Delta;
   if Size < 6 then Size:= 6;
@@ -776,18 +776,18 @@ begin
   DoCompare;
 end;
 
-procedure TFTextDiff.DoSaveFile(Nr: integer);
+procedure TFTextDiff.DoSaveFile(Nr: Integer);
   var CodeEdit: TSynEditExDiff;
 begin
   if Nr = 1
     then CodeEdit:= CodeEdit1
     else CodeEdit:= CodeEdit2;
-  if (CodeEdit.Pathname = '') or OnlyDifferences then exit;
+  if (CodeEdit.Pathname = '') or OnlyDifferences then Exit;
   CodeEdit.Save;
   if Nr = 1
     then Lines1.Assign(CodeEdit.Lines)
     else Lines2.Assign(CodeEdit.Lines);
-  SetFilesCompared(false);
+  SetFilesCompared(False);
 end;
 
 procedure TFTextDiff.DoSaveBoth;
@@ -820,7 +820,7 @@ begin
   SetFontSize(-1);
 end;
 
-procedure TFTextDiff.SetFilesCompared(Value: boolean);
+procedure TFTextDiff.SetFilesCompared(Value: Boolean);
 begin
   FilesCompared:= Value;
 end;
@@ -918,14 +918,14 @@ procedure TFTextDiff.ChooseFiles(F1: TEditorForm);
 
 begin
   with ResourcesDataModule.dlgFileOpen do begin
-    if assigned(F1)then begin
+    if Assigned(F1)then begin
       InitialDir:= ExtractFilePath(F1.Pathname);
       Nr:= 2;
     end else begin
       InitDir;
       Nr:= 1;
     end;
-    Filename:= '';
+    FileName:= '';
     TempFilter:= Filter;
     Filter:= 'Python (*.py;*.pyw)|*.py;*.pyw|HTML (*.html)|*.html;*.htm|Text (*.txt)|*.txt|' + _(LNGAll) + ' (*.*)|*.*';
     FilterIndex:= 1;
@@ -933,10 +933,10 @@ begin
     Options := Options + [ofAllowMultiSelect];
     try
       if Execute then begin
-        GuiPyOptions.Sourcepath:= ExtractFilePath(Filename);
+        GuiPyOptions.Sourcepath:= ExtractFilePath(FileName);
         if Files.Count >= 2
           then Open(Files[0], Files[1])
-          else Open(Filename);
+          else Open(FileName);
       end;
     finally
       Filter:= TempFilter;
@@ -975,18 +975,18 @@ begin
   end;
 end;
 
-function TFTextDiff.CanFind: boolean;
+function TFTextDiff.CanFind: Boolean;
 begin
   Result := not IsEmpty;
 end;
 
-function TFTextDiff.CanFindNext: boolean;
+function TFTextDiff.CanFindNext: Boolean;
 begin
   Result := not IsEmpty and
     (EditorSearchOptions.SearchText <> '');
 end;
 
-function TFTextDiff.CanReplace: boolean;
+function TFTextDiff.CanReplace: Boolean;
 begin
   Result := not IsEmpty;
 end;

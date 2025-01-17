@@ -13,8 +13,8 @@ uses
 type
   TInteger = class
   public
-    i: integer;
-    constructor create(aI: Integer);
+    i: Integer;
+    constructor Create(aI: Integer);
   end;
 
   TFFileStructure = class(TIDEDockWindow, IJvAppStorageHandler)
@@ -46,9 +46,9 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure vilFileStructureKeyPress(Sender: TObject; var Key: Char);
   private
-    locked: boolean;
-    LockShowSelected: boolean;
-    function DifferentItems(Items: TTreeNodes): boolean;
+    locked: Boolean;
+    LockShowSelected: Boolean;
+    function DifferentItems(Items: TTreeNodes): Boolean;
     procedure NavigateToVilNode(Node: PVirtualNode;
                 ForceToMiddle : Boolean = True; Activate : Boolean = True);
   protected
@@ -57,7 +57,7 @@ type
   public
     myForm: TFileForm;
     procedure Init(Items: TTreeNodes; Form: TFileForm);
-    procedure ShowEditorCodeElement(Line: integer);
+    procedure ShowEditorCodeElement(Line: Integer);
     procedure Clear(Form: TFileForm);
     procedure ChangeStyle;
   end;
@@ -82,10 +82,10 @@ type
     Caption: string;
   end;
 
-constructor TInteger.create(aI: Integer);
+constructor TInteger.Create(aI: Integer);
 begin
-  inherited create;
-  self.i:= aI;
+  inherited Create;
+  Self.i:= aI;
 end;
 
 {--- TFFileStructure ----------------------------------------------------------}
@@ -100,9 +100,9 @@ end;
 procedure TFFileStructure.FormCreate(Sender: TObject);
 begin
   inherited;
-  visible:= false;
-  locked:= false;
-  LockShowSelected:= false;
+  Visible:= False;
+  locked:= False;
+  LockShowSelected:= False;
   TranslateComponent(Self);
   myForm:= nil;
   ChangeStyle;
@@ -125,7 +125,7 @@ end;
 
 procedure TFFileStructure.Clear(Form: TFileForm);
 begin
-  if assigned(myForm) and (Form.Pathname = myForm.Pathname) then begin
+  if Assigned(myForm) and (Form.Pathname = myForm.Pathname) then begin
     vilFileStructure.Clear;
     myForm:= nil;
   end;
@@ -136,7 +136,7 @@ begin
   vilFileStructure.Clear;
 end;
 
-procedure TFFileStructure.Init(items: TTreeNodes; Form: TFileForm);
+procedure TFFileStructure.Init(Items: TTreeNodes; Form: TFileForm);
 
   function addNode(Node: TTreeNode; Anchor: PVirtualNode): PVirtualNode;
     var Data: PMyRec;
@@ -152,10 +152,10 @@ procedure TFFileStructure.Init(items: TTreeNodes; Form: TFileForm);
   procedure AddClasses(ClassNode: TTreeNode; Anchor: PVirtualNode);
     var Node: TTreeNode; vilClassNode: PVirtualNode;
   begin
-    while assigned(ClassNode) do begin
+    while Assigned(ClassNode) do begin
       vilClassNode:= addNode(ClassNode, Anchor);
       Node:= ClassNode.getFirstChild;
-      while assigned(Node) do begin
+      while Assigned(Node) do begin
         if Node.ImageIndex = 0 // is node an inner class
           then AddClasses(Node, vilClassNode)
           else addNode(Node, vilClassNode);
@@ -215,19 +215,19 @@ begin
                           Y + (Sender as TVirtualStringTree).ClientOrigin.Y - 5);
 end;
 
-function TFFileStructure.DifferentItems(Items: TTreeNodes): boolean;
-  var i: integer; Data: PMyRec;
+function TFFileStructure.DifferentItems(Items: TTreeNodes): Boolean;
+  var i: Integer; Data: PMyRec;
 begin
   if vilFileStructure.TotalCount <> Cardinal(Items.Count) then
-    Exit(true);
+    Exit(True);
   i:= -1;
   for var Node in vilFileStructure.Nodes() do begin
-    inc(i);
+    Inc(i);
     Data := vilFileStructure.GetNodeData(Node);
     if Data.Caption <> Items[i].Text then
-      Exit(true);
+      Exit(True);
   end;
-  Result:= false;
+  Result:= False;
 end;
 
 procedure TFFileStructure.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
@@ -267,8 +267,8 @@ procedure TFFileStructure.vilFileStructureClick(Sender: TObject);
   var Data: PMyRec;
 begin
   if locked then begin
-    locked:= false;
-    exit;
+    locked:= False;
+    Exit;
   end;
   var Node:= vilFileStructure.GetFirstSelected();
   if Node = nil then
@@ -278,18 +278,18 @@ begin
   Data := vilFileStructure.GetNodeData(Node);
   var attri:= Data.Caption;
   Delete(attri, 1, Pos(' ', attri));
-  if (Pos('(', attri) = 0) and assigned(FGuiDesigner.ELDesigner) then // methods can't be selected
+  if (Pos('(', attri) = 0) and Assigned(FGuiDesigner.ELDesigner) then // methods can't be selected
     FGuiDesigner.ELDesigner.SelectControl(attri);
 end;
 
 procedure TFFileStructure.vilFileStructureKeyPress(Sender: TObject;
   var Key: Char);
 begin
-  if Key = Char(VK_Return) then
+  if Key = Char(VK_RETURN) then
     NavigateToVilNode(vilFileStructure.GetFirstSelected());
 end;
 
-procedure TFFileStructure.ShowEditorCodeElement(Line: integer);
+procedure TFFileStructure.ShowEditorCodeElement(Line: Integer);
   var Data: PMyRec; Node, FoundNode: PVirtualNode;
 begin
   FoundNode:= nil;
@@ -297,26 +297,26 @@ begin
     Data := vilFileStructure.GetNodeData(Node);
     if Data.LineNumber = Line then begin
       FoundNode:= Node;
-      break;
+      Break;
     end else if Data.ImageIndex in [1..3] then
-      continue
+      Continue
     else if Data.LineNumber > Line then
-      break
+      Break
     else
       FoundNode:= Node;
   end;
   if Assigned(FoundNode) then
-    vilFileStructure.Selected[FoundNode]:= true;
+    vilFileStructure.Selected[FoundNode]:= True;
 end;
 
 procedure TFFileStructure.NavigateToVilNode(Node: PVirtualNode;
             ForceToMiddle : Boolean = True; Activate : Boolean = True);
 var
-  i, aNodeLine: integer;
+  i, aNodeLine: Integer;
   Line, aClassname, aNodeText: string;
   EditForm: TEditorForm;
   aEditor: IEditor;
-  isWrapping: boolean;
+  isWrapping: Boolean;
   Files: TStringList;
   Data: PMyRec;
 
@@ -327,18 +327,18 @@ var
   end;
 
 begin
-  if Node = nil then exit;
+  if Node = nil then Exit;
   Data:= vilFileStructure.GetNodeData(Node);
   aNodeLine:= Data.LineNumber;
   aNodeText:= Data.Caption;
   EditForm:= nil;
-  isWrapping:= false;
+  isWrapping:= False;
 
   if Assigned(myForm) then begin
     if myForm.fFile.GetFileKind = fkEditor then
       EditForm:= myForm as TEditorForm
     else if myForm.fFile.GetFileKind = fkUML then begin
-      locked:= true;
+      locked:= True;
       Files:= (myForm as TFUMLForm).MainModul.Model.ModelRoot.Files;
       while vilFileStructure.NodeParent[Node] <> nil do
         Node:= vilFileStructure.NodeParent[Node];
@@ -347,29 +347,29 @@ begin
       i:= 0;
       while i < Files.Count do begin
         aEditor:= GI_EditorFactory.GetEditorByFileId(Files[i]);
-        if assigned(aEditor) then begin
+        if Assigned(aEditor) then begin
           EditForm:= aEditor.Form as TEditorForm;
           if Pos('class ' + aClassname, EditForm.ActiveSynEdit.Lines.Text) > 0 then
-            break;
+            Break;
         end;
-        inc(i);
+        Inc(i);
       end;
     end;
-    if assigned(EditForm) then begin
+    if Assigned(EditForm) then begin
       isWrapping:= EditForm.ActiveSynEdit.WordWrap;
       with EditForm.ActiveSynEdit do begin
         // Changing TopLine/CaretXY calls indirect ShowSelected;
         if isWrapping then EditForm.TBWordWrapClick(nil);
         Line:= Lines[aNodeLine-1];
-        LockShowSelected:= true;
-        Topline:= aNodeLine;
-        LockShowSelected:= false;
-        CaretXY:= BufferCoord(max(1, Pos(aNodeText, Line)), aNodeLine);
+        LockShowSelected:= True;
+        TopLine:= aNodeLine;
+        LockShowSelected:= False;
+        CaretXY:= BufferCoord(Max(1, Pos(aNodeText, Line)), aNodeLine);
         if isWrapping then EditForm.TBWordWrapClick(nil);
       end;
     end;
   end;
-  if assigned(EditForm) then begin
+  if Assigned(EditForm) then begin
     if Activate and CanActuallyFocus(EditForm.ActiveSynEdit) then
       EditForm.ActiveSynEdit.SetFocus;
     if isWrapping then

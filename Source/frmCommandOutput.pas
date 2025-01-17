@@ -246,7 +246,7 @@ procedure TOutputWindow.ProcessTerminate;
 var
  FilePos, LinePos, ColPos: Integer;
 
-  function ReplacePos(var S : string; const FromText, ToText: string): integer;
+  function ReplacePos(var S : string; const FromText, ToText: string): Integer;
   begin
     Result:= Pos(UpperCase(FromText), UpperCase(S));
     if Result > 0 then
@@ -254,7 +254,7 @@ var
            Copy(S, Result + Length(FromText), MaxInt);
   end;
 
-  function MatchIndex(APos: integer): integer;
+  function MatchIndex(APos: Integer): Integer;
   // find pos of Match
   begin
     if APos = 0 then
@@ -268,7 +268,7 @@ var
   end;
 
  var
-  LineNo, ErrLineNo, ColNo, Indx : integer;
+  LineNo, ErrLineNo, ColNo, Indx : Integer;
   ErrorMsg, RE, FileName, OutStr, OldCurrentDir : string;
   ActiveEditor: IEditor;
 begin
@@ -423,7 +423,7 @@ begin
           if LineNo < Length(Strings) then
             GI_PyIDEServices.Messages.AddMessage(Strings[LineNo]);
           GI_PyIDEServices.Messages.ShowWindow;
-          break;  // finished processing traceback
+          Break;  // finished processing traceback
         end else if Strings[LineNo].StartsWith('SyntaxError:')
           and (LineNo > 2) then
         begin
@@ -442,7 +442,7 @@ begin
           end;
           GI_PyIDEServices.Messages.ShowWindow;
           MessageBeep(MB_ICONEXCLAMATION);
-          break;  // finished processing Syntax Error
+          Break;  // finished processing Syntax Error
         end;
         Inc(LineNo);
       end;

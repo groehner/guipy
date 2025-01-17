@@ -18,7 +18,7 @@ function myStringReplace(ImString: string; const DenString, DurchString: string)
 function Split(Delimiter: Char; Input: string): TStringList;
 function withoutTrailingSlash(s: string): string;
 function GetSpecialFolderPath(CSIDLFolder: Integer): string;
-function IsWebView2RuntimeNeeded(): boolean;
+function IsWebView2RuntimeNeeded(): Boolean;
 
 implementation
 
@@ -28,7 +28,7 @@ function ExecuteFile(const FileName, Params, DefaultDir: string;
   ShowCmd: Integer): THandle;
 begin
   Result := ShellExecute(0, nil,
-    PChar(Filename),PChar(Params), PChar(DefaultDir), ShowCmd);
+    PChar(FileName),PChar(Params), PChar(DefaultDir), ShowCmd);
 end;
 
 function IsAdmin: Boolean;
@@ -44,7 +44,7 @@ var
   psidAdministrators : PSID;
   x                  : Integer;
 begin
-  Result := false;
+  Result := False;
   if Win32Platform <> VER_PLATFORM_WIN32_NT then
     Exit;
   if not OpenThreadToken(GetCurrentThread, TOKEN_QUERY,
@@ -72,7 +72,7 @@ begin
       try
         for x := 0 to ptgGroups^.GroupCount - 1 do begin
           if EqualSid(psidAdministrators, ptgGroups^.Groups[x].Sid) then begin
-            Result := true;
+            Result := True;
             Break;
           end;
         end;
@@ -105,7 +105,7 @@ end;
 function UnHideBlanks(s: string): string;
 begin
   if Pos('"', s) = 1
-    then Result:= copy(s, 2, length(s) - 2)
+    then Result:= Copy(s, 2, Length(s) - 2)
     else Result:= s;
 end;
 
@@ -120,13 +120,13 @@ begin
 end;
 
 function Split(Delimiter: Char; Input: string): TStringList;
-  var p: integer; SL: TStringList;
+  var p: Integer; SL: TStringList;
 begin
   SL:= TStringList.Create;
   p:= Pos(Delimiter, Input);
   while p > 0 do begin
-    SL.Add(copy(Input, 1, p-1));
-    delete(Input, 1, p);
+    SL.Add(Copy(Input, 1, p-1));
+    Delete(Input, 1, p);
     p:= Pos(Delimiter, Input);
   end;
   SL.Add(Input);
@@ -135,7 +135,7 @@ end;
 
 function withoutTrailingSlash(s: string): string;
 begin
-  if (copy(s, length(s), 1) = '/') or (copy(s, length(s), 1) = '\') then
+  if (Copy(s, Length(s), 1) = '/') or (Copy(s, Length(s), 1) = '\') then
     SetLength(s, Length(s)-1);
   Result:= s;
 end;
@@ -148,12 +148,12 @@ begin
   Result := FilePath;
 end;
 
-function IsWebView2RuntimeNeeded(): boolean;
+function IsWebView2RuntimeNeeded(): Boolean;
 { See: https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution#detect-if-a-suitable-webview2-runtime-is-already-installed }
 var
     Version: string;
-    RuntimeNeeded: boolean;
-    VerifyRuntime: boolean;
+    RuntimeNeeded: Boolean;
+    VerifyRuntime: Boolean;
 
   function ReadString(Root: HKEY; const key, aName, default: string): string;
      var Reg: TRegistry;
@@ -163,7 +163,7 @@ var
       RootKey:= Root;
       Access:= KEY_READ;
       try
-        OpenKey(key, false);
+        OpenKey(key, False);
         if ValueExists(aName)
           then Result:= ReadString(aName)
           else Result:= Default;
@@ -175,8 +175,8 @@ var
   end;
 
 begin
-  RuntimeNeeded := true;
-  VerifyRuntime := false;
+  RuntimeNeeded := True;
+  VerifyRuntime := False;
   { Since we are using an elevated installer I am not checking HKCU }
   {$IFDEF WIN32}
     var key:= 'SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}';
@@ -186,7 +186,7 @@ begin
       Version:= ReadString(HKEY_CURRENT_USER, key, 'pv', '');
     end;
     if Version <> '' then
-      VerifyRuntime:= true;
+      VerifyRuntime:= True;
   {$ENDIF}
   {$IFDEF WIN64}
     var key:= 'SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}';
@@ -196,12 +196,12 @@ begin
       Version:= ReadString(HKEY_CURRENT_USER, key, 'pv', '');
     end;
     if Version <> '' then
-      VerifyRuntime:= true;
+      VerifyRuntime:= True;
   {$ENDIF}
 
   { Verify the version information }
   if VerifyRuntime and (Version <> '0.0.0.0') then
-    RuntimeNeeded := false;
+    RuntimeNeeded := False;
   Result := RuntimeNeeded;
 end;
 

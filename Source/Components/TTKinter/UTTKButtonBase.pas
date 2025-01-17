@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
  Unit:     UTTKButtonBase
- Author:   Gerhard Röhner
+ Author:   Gerhard RÃ¶hner
  Date:     May 2021
  Purpose:  TKKinter button widgets
 -------------------------------------------------------------------------------}
@@ -44,9 +44,9 @@ type
     function getCompound: TUCompound; override;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     procedure SizeToText; override;
   published
     property Compound: TCompound read FCompound write setCompound default _TC_none;
@@ -65,7 +65,7 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure MakeFont; override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
   published
     property Anchor;
     property Background;
@@ -79,18 +79,18 @@ type
 
   TTKButton = class (TTKButtonBaseWidget)
   private
-    FDefault: boolean;
-    procedure setDefault(aValue: boolean);
+    FDefault: Boolean;
+    procedure setDefault(aValue: Boolean);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure MakeFont; override;
     procedure Paint; override;
   published
     property Command;
-    property Default: boolean read FDefault write setDefault default false;
+    property Default: Boolean read FDefault write setDefault default False;
     property Padding;
     property TakeFocus;
   end;
@@ -103,7 +103,7 @@ type
     procedure Paint; override;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure MakeFont; override;
     procedure SizeToText; override;
@@ -121,7 +121,7 @@ type
   public
     constructor Create (AOwner: TComponent); override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure MakeFont; override;
     procedure Paint; override;
@@ -141,7 +141,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
     function getText: string; override;
@@ -157,7 +157,7 @@ uses Controls, Graphics, SysUtils, System.Types, UUtils, UGUIDesigner;
 
 constructor TTKButtonBaseWidget.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   FCompound:= _TC_none;
   FState:= active;
   Width:= 80;
@@ -174,7 +174,7 @@ begin
     inherited;
 end;
 
-function TTKButtonBaseWidget.getAttributes(ShowAttributes: integer): string;
+function TTKButtonBaseWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Text';
   if ShowAttributes >= 2 then
@@ -184,7 +184,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes)
 end;
 
-function TTKButtonBaseWidget.getEvents(ShowEvents: integer): string;
+function TTKButtonBaseWidget.getEvents(ShowEvents: Integer): string;
 begin
   Result:= getMouseEvents(ShowEvents);
 end;
@@ -238,14 +238,14 @@ end;
 
 constructor TTKLabel.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 31;
   Text:= 'Label';
   Anchor:= _TA_w;
   Justify:= _TJ_left;
 end;
 
-function TTKLabel.getAttributes(ShowAttributes: integer): string;
+function TTKLabel.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Anchor|Background';
   if ShowAttributes >= 2 then
@@ -277,15 +277,15 @@ end;
 
 constructor TTKButton.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 34;
   Text:= 'Button';
-  FDefault:= false;
+  FDefault:= False;
   Relief:= _TR_solid;
   Background:= $E1E1E1;
 end;
 
-function TTKButton.getAttributes(ShowAttributes: integer): string;
+function TTKButton.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Command|Default';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -307,7 +307,7 @@ procedure TTKButton.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('ttk.Button');
   InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
-  Command:= true;
+  Command:= True;
   ChangeCommand('Command', Name + '_Command');
 end;
 
@@ -316,7 +316,7 @@ begin
   // no font
 end;
 
-procedure TTKButton.setDefault(aValue: boolean);
+procedure TTKButton.setDefault(aValue: Boolean);
 begin
   if FDefault <> aValue then begin
     fDefault:= aValue;
@@ -350,7 +350,7 @@ begin
   FOnValue:= '1';
 end;
 
-function TTKCheckbutton.getAttributes(ShowAttributes: integer): string;
+function TTKCheckbutton.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Command';
   if ShowAttributes >= 2 then
@@ -397,7 +397,7 @@ begin
   Text:= 'Menubutton';
 end;
 
-function TTKMenubutton.getAttributes(ShowAttributes: integer): string;
+function TTKMenubutton.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Menu';
   if ShowAttributes >= 2 then
@@ -406,7 +406,7 @@ begin
 end;
 
 procedure TTKMenubutton.setAttribute(Attr, Value, Typ: string);
-  var w: integer;
+  var w: Integer;
 begin
   if Attr = 'Text' then begin
     w:= PPIScale(17) + Canvas.TextWidth(Value + '    ');
@@ -451,7 +451,7 @@ end;
 
 {--- TKOptionMenu -------------------------------------------------------------}
 
-constructor TTKOptionMenu.create(AOwner: TComponent);
+constructor TTKOptionMenu.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 49;
@@ -468,14 +468,14 @@ begin
   inherited;
 end;
 
-function TTKOptionMenu.getAttributes(ShowAttributes: integer): string;
-  var p: integer;
+function TTKOptionMenu.getAttributes(ShowAttributes: Integer): string;
+  var p: Integer;
 begin
   Result:= '|MenuItems';
   Result:= Result + inherited getAttributes(ShowAttributes);
   p:= Pos('|Style', Result);
   if p > 0 then
-    delete(Result, p, 6);
+    Delete(Result, p, 6);
 end;
 
 procedure TTKOptionMenu.setAttribute(Attr, Value, Typ: string);
@@ -503,13 +503,13 @@ begin
 end;
 
 procedure TTKOptionMenu.MakeMenuItems;
-  var i: integer;
+  var i: Integer;
       s, MenuItems, newMenuTitle: string;
 begin
   MenuItems:= '';
   for i := 0 to FNewItems.Count - 1 do begin
-    newMenuTitle:= trim(FNewItems[i]);
-    if newMenuTitle = '' then continue;
+    newMenuTitle:= Trim(FNewItems[i]);
+    if newMenuTitle = '' then Continue;
     MenuItems:= MenuItems + ', ' + asString(newMenuTitle);
   end;
   s:= 'self.' + Name;
@@ -520,7 +520,7 @@ function TTKOptionMenu.getText: string;
   var s: string;
 begin
   if FNewItems.Count > 0 then
-    s:= trim(FNewItems[0]);
+    s:= Trim(FNewItems[0]);
   if s <> ''
     then Result:= s
     else Result:= Text;

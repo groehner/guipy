@@ -36,35 +36,35 @@ type
   TRtfdBox = class(TPanelTransparent, IModelEntityListener)
   private
     FMinVisibility: TVisibility;
-    FShowParameter: integer;
-    FSortOrder: integer;
-    FShowIcons: integer;
-    FShowStatic: boolean;
-    FShowInherited: boolean;
-    FShowView: integer;
-    FExtentX: integer;
-    FExtentY: integer;
-    FShadowWidth: integer;
+    FShowParameter: Integer;
+    FSortOrder: Integer;
+    FShowIcons: Integer;
+    FShowStatic: Boolean;
+    FShowInherited: Boolean;
+    FShowView: Integer;
+    FExtentX: Integer;
+    FExtentY: Integer;
+    FShadowWidth: Integer;
     FTypeBinding: string;
-    FSelected: boolean;
+    FSelected: Boolean;
     FTypeParameter: string;
     FETypeBinding: TEdit;
     FBGColor: TColor;
     FFGColor: TColor;
     FBitmap: TBitmap;
-    FBitmapOK: boolean;
+    FBitmapOK: Boolean;
     SVGHead: string;
     SVGComment: string;
     procedure SetMinVisibility(const Value: TVisibility);
-    procedure SetShowParameter(const Value: integer);
-    procedure SetSortOrder(const Value: integer);
-    procedure SetShowIcons(const Value: integer);
-    procedure SetShowView(const Value: integer);
-    procedure SetSelected(const Value: boolean); virtual;
+    procedure SetShowParameter(const Value: Integer);
+    procedure SetSortOrder(const Value: Integer);
+    procedure SetShowIcons(const Value: Integer);
+    procedure SetShowView(const Value: Integer);
+    procedure SetSelected(const Value: Boolean); virtual;
     procedure SetTypeBinding(const Value: string);
-    procedure SetShadowWidth(const Value: integer);
+    procedure SetShadowWidth(const Value: Integer);
     procedure OnChildMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: integer);
+      Shift: TShiftState; X, Y: Integer);
     procedure OnChildMouseDblClick(Sender: TObject);
     procedure OnEditKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
   protected
@@ -77,7 +77,7 @@ type
     constructor Create(aOwner: TComponent; aEntity: TModelEntity;
       aFrame: TAFrameDiagram; MinVisibility: TVisibility); reintroduce; virtual;
     destructor Destroy; override;
-    procedure PaintShadow(rounded: boolean; sw: integer; C: TCanvas; R: TRect);
+    procedure PaintShadow(rounded: Boolean; sw: Integer; C: TCanvas; R: TRect);
     procedure RefreshEntities; virtual;
     function GetPathname: string; virtual; abstract;
     function GetBoundsRect: TRect; virtual;
@@ -87,26 +87,26 @@ type
     procedure AddChild(Sender: TModelEntity; NewChild: TModelEntity); virtual;
     procedure Remove(Sender: TModelEntity); virtual;
     procedure EntityChange(Sender: TModelEntity); virtual;
-    procedure SetParameters(ShowParameter, SortOrder, ShowIcons: integer;
+    procedure SetParameters(ShowParameter, SortOrder, ShowIcons: Integer;
       aFont: TFont; const TypeBinding: string);
-    function isJUnitTestclass: boolean;
+    function isJUnitTestclass: Boolean;
     procedure CloseEdit;
     procedure makeBitmap;
-    procedure ChangeStyle(BlackAndWhite: boolean = false);
+    procedure ChangeStyle(BlackAndWhite: Boolean = False);
     function getSVG: string; virtual;
-    function getTopH: integer;
+    function getTopH: Integer;
 
     property MinVisibility: TVisibility read FMinVisibility
       write SetMinVisibility;
-    property ShowParameter: integer read FShowParameter write SetShowParameter;
-    property SortOrder: integer read FSortOrder write SetSortOrder;
-    property ShowIcons: integer read FShowIcons write SetShowIcons;
-    property ShowView: integer read FShowView write SetShowView;
-    property ShowInherited: boolean read FShowInherited write FShowInherited;
-    property ExtentX: integer read FExtentX write FExtentX;
-    property ExtentY: integer read FExtentY write FExtentY;
-    property Selected: boolean read FSelected write SetSelected;
-    property ShadowWidth: integer read FShadowWidth write SetShadowWidth;
+    property ShowParameter: Integer read FShowParameter write SetShowParameter;
+    property SortOrder: Integer read FSortOrder write SetSortOrder;
+    property ShowIcons: Integer read FShowIcons write SetShowIcons;
+    property ShowView: Integer read FShowView write SetShowView;
+    property ShowInherited: Boolean read FShowInherited write FShowInherited;
+    property ExtentX: Integer read FExtentX write FExtentX;
+    property ExtentY: Integer read FExtentY write FExtentY;
+    property Selected: Boolean read FSelected write SetSelected;
+    property ShadowWidth: Integer read FShadowWidth write SetShadowWidth;
     property TypeParameter: string read FTypeParameter write FTypeParameter;
     property TypeBinding: string read FTypeBinding write SetTypeBinding;
     property FGColor: TColor read FFGColor write FFGColor;
@@ -150,16 +150,16 @@ type
 
   TRtfdCommentBox = class(TRtfdBox)
   private
-    HandleSize: integer;
+    HandleSize: Integer;
     panels: array [0 .. 7] of TRect;
-    procedure SetSelected(const Value: boolean); override;
-    function getPanelRect(i: integer): TRect;
-    function getPanelNr(P: TPoint): integer;
+    procedure SetSelected(const Value: Boolean); override;
+    function getPanelRect(i: Integer): TRect;
+    function getPanelNr(P: TPoint): Integer;
   public
     TrMemo: TStyledMemo;
     constructor Create(aOwner: TComponent; const S: string;
       aFrame: TAFrameDiagram; aMinVisibility: TVisibility;
-      aHandleSize: integer); reintroduce;
+      aHandleSize: Integer); reintroduce;
     destructor Destroy; override;
     procedure RefreshEntities; override;
     function GetPathname: string; override;
@@ -183,18 +183,18 @@ type
   TRtfdCustomLabel = class(TGraphicControl, IModelEntityListener)
   private
     FAlignment: TAlignment;
-    FTransparent: boolean;
+    FTransparent: Boolean;
     Entity: TModelEntity;
-    FTextWidth: integer;
+    FTextWidth: Integer;
     FGColor: TColor;
     BGColor: TColor;
-    SingleLineHeight: integer;
+    SingleLineHeight: Integer;
     function GetAlignment: TAlignment;
     procedure SetAlignment(const Value: TAlignment);
-    procedure SetTransparent(const Value: boolean);
+    procedure SetTransparent(const Value: Boolean);
     procedure CMTextChanged(var Message: TMessage); message CM_TEXTCHANGED;
     procedure AdjustBounds;
-    procedure DoDrawText(var Rect: TRect; Flags: integer);
+    procedure DoDrawText(var Rect: TRect; Flags: Integer);
   public
     constructor Create(aOwner: TComponent; aEntity: TModelEntity);
       reintroduce; virtual;
@@ -207,15 +207,15 @@ type
     function getSVG(OwnerRect: TRect): string; virtual;
     property Alignment: TAlignment read GetAlignment write SetAlignment
       default taLeftJustify;
-    property Transparent: boolean read FTransparent write SetTransparent;
-    property TextWidth: integer read FTextWidth;
+    property Transparent: Boolean read FTransparent write SetTransparent;
+    property TextWidth: Integer read FTextWidth;
   end;
 
   TRtfdClassName = class(TRtfdCustomLabel, IAfterClassListener)
   private
-    FTextWidthParameter: integer;
-    FExtentX: integer;
-    FExtentY: integer;
+    FTextWidthParameter: Integer;
+    FExtentX: Integer;
+    FExtentY: Integer;
     TypeParameter: string;
     TypeAndBinding: string;
   public
@@ -225,9 +225,9 @@ type
     procedure Paint; override;
     function getSVG(OwnerRect: TRect): string; override;
     function getSVGTypeAndBinding(R: TRect): string;
-    property TextWidthParameter: integer read FTextWidthParameter;
-    property ExtentX: integer read FExtentX write FExtentX;
-    property ExtentY: integer read FExtentY;
+    property TextWidthParameter: Integer read FTextWidthParameter;
+    property ExtentX: Integer read FExtentX write FExtentX;
+    property ExtentY: Integer read FExtentY;
   end;
 
   TRtfdObjectName = class(TRtfdCustomLabel, IAfterObjektListener)
@@ -334,13 +334,13 @@ end;
 function getSVGText(X, Y: real; attribute, text: string): string;
 var
   SL: TStringList;
-  i: integer;
+  i: Integer;
   dyr: real;
   dys: string;
 
   function getPreserve(S: string): string;
   begin
-    if (length(S) > 0) and (S[1] = ' ') then
+    if (Length(S) > 0) and (S[1] = ' ') then
       Result := ' xml:space="preserve"'
     else
       Result := '';
@@ -358,12 +358,12 @@ begin
     dyr := 1.3;
     for i := 1 to SL.Count - 1 do
     begin
-      if trim(SL.Strings[i]) = '' then
+      if Trim(SL.Strings[i]) = '' then
         dyr := dyr + 1.3
       else
       begin
         dys := FloatToVal(dyr);
-        insert('em', dys, length(dys));
+        insert('em', dys, Length(dys));
         Result := Result + '    <tspan' + getPreserve(SL.Strings[i]) + ' x=' +
           FloatToVal(X) + ' dy=' + dys + '>' + SL.Strings[i] + '</tspan>'#13#10;
         dyr := 1.3;
@@ -378,28 +378,28 @@ end;
 
 function getSVGPolyline(Points: array of TPoint; color: string): string;
 var
-  i: integer;
+  i: Integer;
 begin
   Result := '  <polyline points="';
   for i := 0 to High(Points) do
     Result := Result + PointToVal(Points[i]);
-  Result[length(Result)] := '"';
+  Result[Length(Result)] := '"';
   Result := Result + ' fill="none" stroke="' + color +
     '" stroke-width="2" />'#13#10;
 end;
 
 function getSVGPolygon(Points: array of TPoint; color: string): string;
 var
-  i: integer;
+  i: Integer;
 begin
   Result := '  <polygon points="';
   for i := 0 to High(Points) do
     Result := Result + PointToVal(Points[i]);
-  Result[length(Result)] := '"';
+  Result[Length(Result)] := '"';
   Result := Result + ' fill="' + color + '" stroke="black" />'#13#10;
 end;
 
-function calcSVGBaseLine(R: TRect; Font: TFont): integer;
+function calcSVGBaseLine(R: TRect; Font: TFont): Integer;
 begin
   Result := R.Top + Round(1.0 * abs(Font.Height));
 end;
@@ -416,8 +416,8 @@ begin
   Font.assign(aFrame.Diagram.Font);
   Top := (aFrame.ClientHeight - Self.Width) div 2 + Random(50) - 25;
   Left := (aFrame.ClientWidth - Self.Width) div 2 + Random(50) - 25;
-  ParentBackground := true;
-  DoubleBuffered := false; // bad for debugging
+  ParentBackground := True;
+  DoubleBuffered := False; // bad for debugging
   ShadowWidth := GuiPyOptions.ShadowWidth;
   FETypeBinding := nil;
   FBitmap := nil;
@@ -435,7 +435,7 @@ begin
   Frame.Diagram.ClearMarkerAndConnections(Self);
   DestroyComponents;
   FreeAndNil(FBitmap);
-  FBitmapOK := false;
+  FBitmapOK := False;
 end;
 
 function TRtfdBox.GetBoundsRect: TRect;
@@ -454,14 +454,14 @@ begin
   Result.Top := Result.Top;
 end;
 
-procedure TRtfdBox.PaintShadow(rounded: boolean; sw: integer; C: TCanvas;
+procedure TRtfdBox.PaintShadow(rounded: Boolean; sw: Integer; C: TCanvas;
   R: TRect);
 var
-  i, SCol, ECol, sr, sg, sb, er, eg, eb: integer;
+  i, SCol, ECol, sr, sg, sb, er, eg, eb: Integer;
 
-  function ColorGradient(i: integer): TColor;
+  function ColorGradient(i: Integer): TColor;
   var
-    R, g, b: integer;
+    R, g, b: Integer;
   begin
     R := sr + Round(((er - sr) * i) / sw);
     g := sg + Round(((eg - sg) * i) / sw);
@@ -471,7 +471,7 @@ var
 
 begin
   if sw = 0 then
-    exit;
+    Exit;
   C.Pen.Mode := pmCopy;
   SCol := ColorToRGB(BGColor);
   sr := GetRValue(SCol);
@@ -499,20 +499,20 @@ end;
 procedure TRtfdBox.Paint;
 var
   R, R1: TRect;
-  sw, Si, TopH, NeedH, i, Separator: integer;
-  IsObject, IsClass, IsValid: boolean;
+  sw, Si, TopH, NeedH, i, Separator: Integer;
+  IsObject, IsClass, IsValid: Boolean;
   Pathname, SVGColor: string;
 begin
   Canvas.Font.Assign(Font);
-  if assigned(FBitmap) and FBitmapOK then
+  if Assigned(FBitmap) and FBitmapOK then
   begin
     Canvas.Draw(0, 0, FBitmap);
     if Selected then
-      Frame.Diagram.DrawMarkers(GetBoundsRect, true);
-    exit;
+      Frame.Diagram.DrawMarkers(GetBoundsRect, True);
+    Exit;
   end;
 
-  IsValid := false;
+  IsValid := False;
   IsObject := (Self is TRtfdObject);
   IsClass := (Self is TRtfdClass);
   if IsClass then
@@ -547,7 +547,7 @@ begin
 
     // markers
     if Selected then
-      Frame.Diagram.DrawMarkers(GetBoundsRect, true);
+      Frame.Diagram.DrawMarkers(GetBoundsRect, True);
 
     // shadow-colors
     Brush.color := RGB(Si, Si, Si);
@@ -555,9 +555,9 @@ begin
 
     if (IsObject and (GuiPyOptions.ObjectHead = 1)) or
       (IsClass and (GuiPyOptions.ClassHead = 1)) then
-      PaintShadow(true, sw, Canvas, R1)
+      PaintShadow(True, sw, Canvas, R1)
     else
-      PaintShadow(false, sw, Canvas, R1);
+      PaintShadow(False, sw, Canvas, R1);
 
     // Background
     Pen.color := FGColor;
@@ -635,7 +635,7 @@ begin
     while (i < ComponentCount) and (Components[i] is TRtfdAttribute) do
     begin
       Separator := Separator + TGraphicControl(Components[i]).Height;
-      inc(i);
+      Inc(i);
     end;
     if (i < ComponentCount) and (Components[i] is TRtfdSeparator) then
     begin
@@ -649,16 +649,16 @@ begin
   // paintTo in makeBitmap calls Paint to create the bitmap
   // it doesn't copy the screen-pixels, because controls can be covered by others
   // or can be partially places outside the window
-  if not assigned(FBitmap) then
+  if not Assigned(FBitmap) then
     makeBitmap;
-  FBitmapOK := true;
+  FBitmapOK := True;
 end;
 
 function TRtfdBox.getSVG: string;
 var
   R: TRect;
-  TopH, sw, i: integer;
-  IsObject, IsClassOrInterface, IsComment: boolean;
+  TopH, sw, i: Integer;
+  IsObject, IsClassOrInterface, IsComment: Boolean;
   S, ShadowFilter: string;
   CustomLabel: TRtfdCustomLabel;
   Separator: TRtfdSeparator;
@@ -732,7 +732,7 @@ begin
   Result := Result + #13#10;
 end;
 
-function TRtfdBox.getTopH: integer;
+function TRtfdBox.getTopH: Integer;
 begin
   var
   NeedH := BorderWidth + ShadowWidth + 5;
@@ -778,7 +778,7 @@ begin
   end;
 end;
 
-procedure TRtfdBox.SetShowParameter(const Value: integer);
+procedure TRtfdBox.SetShowParameter(const Value: Integer);
 begin
   if Value <> FShowParameter then
   begin
@@ -787,7 +787,7 @@ begin
   end;
 end;
 
-procedure TRtfdBox.SetSortOrder(const Value: integer);
+procedure TRtfdBox.SetSortOrder(const Value: Integer);
 begin
   if Value <> FSortOrder then
   begin
@@ -796,7 +796,7 @@ begin
   end;
 end;
 
-procedure TRtfdBox.SetShowIcons(const Value: integer);
+procedure TRtfdBox.SetShowIcons(const Value: Integer);
 begin
   if Value <> FShowIcons then
   begin
@@ -805,7 +805,7 @@ begin
   end;
 end;
 
-procedure TRtfdBox.SetShowView(const Value: integer);
+procedure TRtfdBox.SetShowView(const Value: Integer);
 begin
   if Value <> FShowView then
   begin
@@ -814,7 +814,7 @@ begin
   end;
 end;
 
-procedure TRtfdBox.SetSelected(const Value: boolean);
+procedure TRtfdBox.SetSelected(const Value: Boolean);
 begin
   if Value <> FSelected then
   begin
@@ -832,7 +832,7 @@ begin
   end;
 end;
 
-procedure TRtfdBox.SetShadowWidth(const Value: integer);
+procedure TRtfdBox.SetShadowWidth(const Value: Integer);
 begin
   if Value <> FShadowWidth then
   begin
@@ -841,7 +841,7 @@ begin
   end;
 end;
 
-procedure TRtfdBox.SetParameters(ShowParameter, SortOrder, ShowIcons: integer;
+procedure TRtfdBox.SetParameters(ShowParameter, SortOrder, ShowIcons: Integer;
   aFont: TFont; const TypeBinding: string);
 begin
   Self.Font.assign(aFont);
@@ -874,7 +874,7 @@ begin
 end;
 
 procedure TRtfdBox.OnChildMouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: integer);
+  Shift: TShiftState; X, Y: Integer);
 var
   pt: TPoint;
 begin
@@ -893,16 +893,16 @@ begin
   if GuiPyOptions.ShowClassparameterSeparately and (TypeParameter <> '') and
     (pt.X > Width - 2 * ExtentX - 12) and (pt.Y < 2 * ExtentY + 4) then
   begin
-    Selected := false;
+    Selected := False;
     FETypeBinding := TEdit.Create(Owner);
     FETypeBinding.Parent := (Owner as TCustomPanel);
     FETypeBinding.OnKeyUp := OnEditKeyUp;
-    FETypeBinding.Visible := true;
+    FETypeBinding.Visible := True;
     FETypeBinding.text := FTypeParameter + ': ' + FTypeBinding;
     FETypeBinding.Font.assign(Font);
     FETypeBinding.SetBounds(Left + Width - 2 * ExtentX - 6, Top + 6,
       2 * ExtentX + 50, 2 * ExtentY - 4);
-    FETypeBinding.SelStart := length(FETypeBinding.text);
+    FETypeBinding.SelStart := Length(FETypeBinding.text);
     if FETypeBinding.CanFocus then
       FETypeBinding.SetFocus;
   end
@@ -913,37 +913,37 @@ end;
 procedure TRtfdBox.OnEditKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if Key = VK_Return then
+  if Key = VK_RETURN then
     CloseEdit;
 end;
 
 procedure TRtfdBox.CloseEdit;
 begin
-  if assigned(FETypeBinding) and FETypeBinding.Visible then
+  if Assigned(FETypeBinding) and FETypeBinding.Visible then
   begin
     var
     S := FETypeBinding.text;
-    Delete(S, 1, length(FTypeParameter) + 2);
+    Delete(S, 1, Length(FTypeParameter) + 2);
     TypeBinding := S;
-    Frame.Diagram.SetModified(true);
-    FETypeBinding.Visible := false;
+    Frame.Diagram.SetModified(True);
+    FETypeBinding.Visible := False;
     FreeAndNil(FETypeBinding);
   end;
 end;
 
-function TRtfdBox.isJUnitTestclass: boolean;
+function TRtfdBox.isJUnitTestclass: Boolean;
 begin
   if Entity is TClass then
     Result := (Entity as TClass).isJUnitTestclass
   else
-    Result := false;
+    Result := False;
 end;
 
 procedure TRtfdBox.makeBitmap;
 begin
   if FBitmap = nil then
   begin
-    FBitmapOK := false;
+    FBitmapOK := False;
     FBitmap := TBitmap.Create;
     FBitmap.Width := Width;
     FBitmap.Height := Height;
@@ -951,14 +951,14 @@ begin
     FBitmap.Canvas.Pen.color := FGColor;
     FBitmap.Canvas.Brush.color := clred;;
     FBitmap.TransparentColor := clred;
-    FBitmap.Transparent := true;
+    FBitmap.Transparent := True;
     FBitmap.Canvas.FillRect(Rect(0, 0, Width, Height));
     PaintTo(FBitmap.Canvas, 0, 0);
     FBitmap.Canvas.Unlock;
   end;
 end;
 
-procedure TRtfdBox.ChangeStyle(BlackAndWhite: boolean = false);
+procedure TRtfdBox.ChangeStyle(BlackAndWhite: Boolean = False);
 begin
   if StyleServices.IsSystemStyle or BlackAndWhite then
   begin
@@ -980,7 +980,7 @@ constructor TRtfdClass.Create(aOwner: TComponent; aEntity: TModelEntity;
   aFrame: TAFrameDiagram; aMinVisibility: TVisibility);
 begin
   inherited Create(aOwner, aEntity, aFrame, aMinVisibility);
-  Self.FShowStatic := true;
+  Self.FShowStatic := True;
   Pathname := (aEntity as TClass).Pathname;
   PopupMenu := aFrame.PopMenuClass;
   aEntity.AddListener(IAfterClassListener(Self));
@@ -1009,7 +1009,7 @@ end;
 
 procedure TRtfdClass.RefreshEntities;
 var
-  NeedH, NeedW, i, aTop: integer;
+  NeedH, NeedW, i, aTop: Integer;
   C: TClass;
   Omi, Ami: IModelIterator;
   aClassname: TRtfdClassName;
@@ -1021,7 +1021,7 @@ var
 
 begin
   if not Visible then
-    exit;
+    Exit;
   inherited;
 
   NeedW := cDefaultWidth;
@@ -1030,7 +1030,7 @@ begin
   if (Entity is TClass) and (Entity as TClass).isJUnitTestclass then
   begin
     Stereotype := TRtfdStereotype.Create(Self, nil, 'JUnit Testclass');
-    inc(NeedH, Stereotype.Height);
+    Inc(NeedH, Stereotype.Height);
   end;
 
   // Height depends on choosed font
@@ -1039,7 +1039,7 @@ begin
   ExtentX := aClassname.ExtentX;
   ExtentY := aClassname.ExtentY;
   TypeParameter := aClassname.TypeParameter;
-  inc(NeedH, aClassname.Height);
+  Inc(NeedH, aClassname.Height);
 
   // Get names in visibility order
   C := Entity as TClass;
@@ -1060,28 +1060,28 @@ begin
   if ((Ami.Count > 0) or (Omi.Count > 0)) or GuiPyOptions.ShowEmptyRects then
   begin
     Separator := TRtfdSeparator.Create(Self);
-    inc(NeedH, Separator.Height);
+    Inc(NeedH, Separator.Height);
   end;
 
   // Attributes
   while Ami.HasNext do
   begin
     attribute := TRtfdAttribute.Create(Self, Ami.Next);
-    inc(NeedH, attribute.Height);
+    Inc(NeedH, attribute.Height);
   end;
 
   // Separator
   if ((Ami.Count > 0) and (Omi.Count > 0)) or GuiPyOptions.ShowEmptyRects then
   begin
     Separator := TRtfdSeparator.Create(Self);
-    inc(NeedH, Separator.Height);
+    Inc(NeedH, Separator.Height);
   end;
 
   // Operations
   while Omi.HasNext do
   begin
     Operation := TRtfdOperation.Create(Self, Omi.Next);
-    inc(NeedH, Operation.Height);
+    Inc(NeedH, Operation.Height);
   end;
   Height := NeedH + ShadowWidth;
 
@@ -1124,7 +1124,7 @@ begin
     end;
 
   Width := Width + ExtentX + ShadowWidth;
-  Visible := true;
+  Visible := True;
 
   // debugging
   // Application.ProcessMessages;
@@ -1138,7 +1138,7 @@ var
   CustomLabel: TRtfdCustomLabel;
   Separator: TRtfdSeparator;
   R: TRect;
-  i: integer;
+  i: Integer;
 begin
   S := '';
   for i := 0 to ControlCount - 1 do
@@ -1167,7 +1167,7 @@ constructor TRtfdObject.Create(aOwner: TComponent; aEntity: TModelEntity;
   aFrame: TAFrameDiagram; aMinVisibility: TVisibility);
 begin
   inherited Create(aOwner, aEntity, aFrame, aMinVisibility);
-  Self.FShowStatic := false;
+  Self.FShowStatic := False;
   PopupMenu := aFrame.PopMenuObject;
   aEntity.AddListener(IAfterObjektListener(Self));
   FSortOrder := GuiPyOptions.DiSortOrder;
@@ -1198,7 +1198,7 @@ end;
 
 procedure TRtfdObject.RefreshEntities;
 var
-  NeedH, NeedW, i, aTop: integer;
+  NeedH, NeedW, i, aTop: Integer;
   O: TObjekt;
   C: TClass;
   Ami, Omi: IModelIterator;
@@ -1207,14 +1207,14 @@ var
   attribute: TRtfdAttribute;
   Separator: TRtfdSeparator;
 begin
-  Locked := true;
+  Locked := True;
   if not Visible then
-    exit;
+    Exit;
   inherited;
 
   NeedW := 0;
   NeedH := 2 * BorderWidth + 2;
-  inc(NeedH, TRtfdObjectName.Create(Self, Entity).Height);
+  Inc(NeedH, TRtfdObjectName.Create(Self, Entity).Height);
 
   // Get names in visibility order
   O := Entity as TObjekt;
@@ -1234,7 +1234,7 @@ begin
 
   // Separator
   if ((Ami.Count > 0) or (Omi.Count > 0)) or GuiPyOptions.ShowEmptyRects then
-    inc(NeedH, TRtfdSeparator.Create(Self).Height);
+    Inc(NeedH, TRtfdSeparator.Create(Self).Height);
 
   // Attributes
   while Ami.HasNext do
@@ -1243,7 +1243,7 @@ begin
     if not aModelEntity.Static or FShowStatic then
     begin
       attribute := TRtfdAttribute.Create(Self, aModelEntity);
-      inc(NeedH, attribute.Height);
+      Inc(NeedH, attribute.Height);
     end;
   end;
 
@@ -1251,10 +1251,10 @@ begin
   begin
     // Separator
     if (Ami.Count > 0) and (Omi.Count > 0) or GuiPyOptions.ShowEmptyRects then
-      inc(NeedH, TRtfdSeparator.Create(Self).Height);
+      Inc(NeedH, TRtfdSeparator.Create(Self).Height);
     // Operations
     while Omi.HasNext do
-      inc(NeedH, TRtfdOperation.Create(Self, Omi.Next).Height);
+      Inc(NeedH, TRtfdOperation.Create(Self, Omi.Next).Height);
   end;
   Height := NeedH + ShadowWidth;
 
@@ -1282,8 +1282,8 @@ begin
     end;
 
   Width := Width + ShadowWidth;
-  Locked := false;
-  Visible := true;
+  Locked := False;
+  Visible := True;
 end;
 
 { TRtfdComment }
@@ -1292,7 +1292,7 @@ type
   TMoveCracker = class(TControl);
 
 constructor TRtfdCommentBox.Create(aOwner: TComponent; const S: string;
-  aFrame: TAFrameDiagram; aMinVisibility: TVisibility; aHandleSize: integer);
+  aFrame: TAFrameDiagram; aMinVisibility: TVisibility; aHandleSize: Integer);
 var
   E: TModelEntity;
 begin
@@ -1307,7 +1307,7 @@ begin
   TrMemo.ControlStyle := TrMemo.ControlStyle + [csOpaque];
   TrMemo.onEnter := OnCommentBoxEnter;
   Cursor := crCross;
-  DoubleBuffered := false;
+  DoubleBuffered := False;
   PopupMenu := aFrame.PopupMenuComment;
 end;
 
@@ -1317,7 +1317,7 @@ begin
   inherited;
 end;
 
-procedure TRtfdCommentBox.SetSelected(const Value: boolean);
+procedure TRtfdCommentBox.SetSelected(const Value: Boolean);
 begin
   if FSelected <> Value then
     FSelected := Value;
@@ -1344,8 +1344,8 @@ const
   corner = 12;
 var
   R, R1: TRect;
-  i: integer;
-  sw: integer;
+  i: Integer;
+  sw: Integer;
   Points: array [0 .. 4] of TPoint;
 begin
   ResizeMemo; // relevant
@@ -1365,7 +1365,7 @@ begin
     FillRect(ClientRect);
     // shadow-colors
     R1 := Rect(R.Left + sw, R.Top + corner - 3 + sw, R.Right, R.Bottom);
-    PaintShadow(false, sw, Canvas, R1);
+    PaintShadow(False, sw, Canvas, R1);
 
     // background for Memo
     Pen.color := FGColor;
@@ -1410,7 +1410,7 @@ end;
 
 procedure TRtfdCommentBox.CommentMouseMove(PFrom, PTo: TPoint);
 var
-  nr, dx, dy, l, t, w, h: integer;
+  nr, dx, dy, l, t, w, h: Integer;
   P1, P2: TPoint;
 begin
   P1 := ScreenToClient(PFrom);
@@ -1472,9 +1472,9 @@ end;
 
 procedure TRtfdCommentBox.ResizeMemo;
 var
-  w2, h2, i: integer;
+  w2, h2, i: Integer;
   Rect: TRect;
-  HandleSizeH: integer;
+  HandleSizeH: Integer;
 begin
   HandleSizeH := HandleSize;
   TrMemo.Left := 2 * HandleSizeH;
@@ -1515,18 +1515,18 @@ begin
   end;
 end;
 
-function TRtfdCommentBox.getPanelRect(i: integer): TRect;
+function TRtfdCommentBox.getPanelRect(i: Integer): TRect;
 begin
   Result := Rect(panels[i].Left, panels[i].Top,
     panels[i].Left + panels[i].Width, panels[i].Top + panels[i].Height);
 end;
 
-function TRtfdCommentBox.getPanelNr(P: TPoint): integer;
+function TRtfdCommentBox.getPanelNr(P: TPoint): Integer;
 begin
   var
   i := 0;
   while (i < 8) and not ptInRect(getPanelRect(i), P) do
-    inc(i);
+    Inc(i);
   Result := i;
 end;
 
@@ -1553,7 +1553,7 @@ procedure TVisibilityLabel.Paint;
 var
   R: TRect;
   S: string;
-  PictureNr, Distance: integer;
+  PictureNr, Distance: Integer;
   Style: TFontStyles;
   vil: TVirtualImageList;
 begin
@@ -1563,9 +1563,9 @@ begin
   SetColors;
   R := ClientRect;
   if Entity is TAttribute then
-    PictureNr := integer(Entity.Visibility)
+    PictureNr := Integer(Entity.Visibility)
   else
-    PictureNr := integer(Entity.Visibility) + 3;
+    PictureNr := Integer(Entity.Visibility) + 3;
   if not GuiPyOptions.ConstructorWithVisibility and (Entity is TOperation) and
     ((Entity as TOperation).OperationType = otConstructor) then
     PictureNr := 6;
@@ -1610,7 +1610,7 @@ end;
 
 function TVisibilityLabel.getSVG(OwnerRect: TRect): string;
 var
-  PictureNr: integer;
+  PictureNr: Integer;
   S, fontstyle, Icon, attribute, span: string;
   C: char;
   bx, by: real;
@@ -1627,9 +1627,9 @@ begin
 
   // R:= ClientRect;
   if (Entity is TAttribute) then
-    PictureNr := integer(Entity.Visibility)
+    PictureNr := Integer(Entity.Visibility)
   else
-    PictureNr := integer(Entity.Visibility) + 3;
+    PictureNr := Integer(Entity.Visibility) + 3;
   if not GuiPyOptions.ConstructorWithVisibility and (Entity is TOperation) and
     ((Entity as TOperation).OperationType = otConstructor) then
     PictureNr:= 3;
@@ -1802,10 +1802,10 @@ procedure TRtfdClassName.Paint;
 var
   R: TRect;
   S: string;
-  P, NeedH: integer;
+  P, NeedH: Integer;
   HeadColor: TColor;
 
-  function isDark(color: TColor): boolean;
+  function isDark(color: TColor): Boolean;
   begin
     Result := (Max(GetRValue(color), Max(GetGValue(color), getBValue(color)
       )) <= 128);
@@ -1837,18 +1837,18 @@ begin
     R.Right := R.Right - FExtentX - GuiPyOptions.ShadowWidth;
     P := Pos(#13#10'{abstract}', Caption);
     if P > 0 then
-      S := copy(Caption, 1, P - 1)
+      S := Copy(Caption, 1, P - 1)
     else
       S := Caption;
     if GuiPyOptions.ClassnameInUppercase then
-      S := Uppercase(S);
-    DrawText(Canvas.Handle, PChar(S), length(S), R, DT_CENTER);
+      S := UpperCase(S);
+    DrawText(Canvas.Handle, PChar(S), Length(S), R, DT_CENTER);
     if P > 0 then
     begin
       Canvas.Font.Style := [fsItalic];
       R.Top := R.Top + SingleLineHeight;
       S := '{abstract}';
-      DrawText(Canvas.Handle, PChar(S), length(S), R, DT_CENTER);
+      DrawText(Canvas.Handle, PChar(S), Length(S), R, DT_CENTER);
     end;
 
     // draw parameter
@@ -1863,7 +1863,7 @@ begin
     Canvas.Rectangle(R.Right - TextWidthParameter - 12, 0, R.Right - 8, NeedH);
     R := Rect(R.Right - TextWidthParameter - 14, (NeedH - ExtentY) div 2 - 2,
       R.Right - 6, NeedH);
-    DrawText(Canvas.Handle, PChar(TypeAndBinding), length(TypeAndBinding), R,
+    DrawText(Canvas.Handle, PChar(TypeAndBinding), Length(TypeAndBinding), R,
       DT_CENTER);
   end
   else
@@ -1872,7 +1872,7 @@ end;
 
 function TRtfdClassName.getSVG(OwnerRect: TRect): string;
 var
-  X, Y, P: integer;
+  X, Y, P: Integer;
   S, attribute: string;
 begin
   attribute := ' font-weight="bold" text-anchor="middle"';
@@ -1882,7 +1882,7 @@ begin
   Y := Top + 2 * FExtentY + Round(0.65 * SingleLineHeight) + 1;
   P := Pos(#13#10'{abstract}', Caption);
   if P > 0 then
-    S := copy(Caption, 1, P - 1)
+    S := Copy(Caption, 1, P - 1)
   else
     S := Caption;
   Result := getSVGText(X, Y, attribute, S);
@@ -1930,7 +1930,7 @@ begin
   var
   classname := (Entity as TObjekt).GenericName;
   if GuiPyOptions.ClassnameInUppercase then
-    classname := Uppercase(classname);
+    classname := UpperCase(classname);
   case GuiPyOptions.ObjectCaption of
     0:
       Caption := Entity.Name + ': ' + classname;
@@ -1943,11 +1943,11 @@ end;
 
 procedure TRtfdObjectName.Paint;
 var
-  Alig: integer;
+  Alig: Integer;
   R: TRect;
   HeadColor: TColor;
 
-  function isDark(color: TColor): boolean;
+  function isDark(color: TColor): Boolean;
   begin
     var
     V := Max(GetRValue(color), Max(GetGValue(color), getBValue(color)));
@@ -1978,12 +1978,12 @@ begin
 
   R := ClientRect;
   R.Right := R.Right - GuiPyOptions.ShadowWidth;
-  DrawText(Canvas.Handle, PChar(Caption), length(Caption), R, Alig);
+  DrawText(Canvas.Handle, PChar(Caption), Length(Caption), R, Alig);
 end;
 
 function TRtfdObjectName.getSVG(OwnerRect: TRect): string;
 var
-  X: integer;
+  X: Integer;
   attribute: string;
 begin
   attribute := ' font-weight="bold" text-anchor="middle"';
@@ -2024,7 +2024,7 @@ end;
 
 function TRtfdInterfaceName.getSVG(OwnerRect: TRect): string;
 var
-  X, Y: integer;
+  X, Y: Integer;
   attribute: string;
 begin
   attribute := ' text-anchor="middle"';
@@ -2042,7 +2042,7 @@ constructor TRtfdSeparator.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
   Parent := aOwner as TWinControl;
-  AutoSize := false;
+  AutoSize := False;
   Height := 7;
 end;
 
@@ -2130,8 +2130,8 @@ var
   S: string;
   it: IModelIterator;
   Parameter: TParameter;
-  ParameterCount: integer;
-  ShowParameter: integer;
+  ParameterCount: Integer;
+  ShowParameter: Integer;
 begin
   // Default uml-syntax
   // visibility name ( parameter-list ) : return-type-expression { property-string }
@@ -2147,10 +2147,10 @@ begin
     begin
       Parameter := it.Next as TParameter;
       if Parameter.Name = 'self' then
-        continue;
+        Continue;
       case ShowParameter of
         2:
-          inc(ParameterCount);
+          Inc(ParameterCount);
         3:
           S := S + Parameter.asUMLString(3) + ', ';
         4:
@@ -2163,15 +2163,15 @@ begin
     end;
     if (ShowParameter = 2) and (ParameterCount > 0) then
       S := S + '...';
-    if copy(S, length(S) - 1, 2) = ', ' then
-      Delete(S, length(S) - 1, 2); // delete last comma
+    if Copy(S, Length(S) - 1, 2) = ', ' then
+      Delete(S, Length(S) - 1, 2); // delete last comma
     S := S + ')';
   end;
 
   if (ShowParameter > 0) and (O.OperationType = otFunction) then
   begin
     S := S + ':';
-    if assigned(O.ReturnValue) then
+    if Assigned(O.ReturnValue) then
       S := S + ' ' + O.ReturnValue.asUMLType;
   end;
   Caption := S;
@@ -2206,10 +2206,10 @@ begin
   // visibility name [ multiplicity ] : type-expression = initial-value { property-string }
   if Sender.Owner is TObjekt then
     Caption := A.Name + ' = ' + A.Value
-  else if assigned(A.TypeClassifier) then
+  else if Assigned(A.TypeClassifier) then
   begin
     S := A.Name;
-    if assigned(A.TypeClassifier) and ((Owner as TRtfdBox).ShowParameter >= 4)
+    if Assigned(A.TypeClassifier) and ((Owner as TRtfdBox).ShowParameter >= 4)
     then
       S := S + ': ' + A.TypeClassifier.asUMLType;
     if (A.Value <> '') and ((Owner as TRtfdBox).ShowParameter >= 5) then
@@ -2268,21 +2268,21 @@ end;
 
 procedure TRtfdInterface.RefreshEntities;
 var
-  NeedW, NeedH, i, aTop: integer;
+  NeedW, NeedH, i, aTop: Integer;
   Omi, Ami: IModelIterator;
   CustomLabel: TRtfdCustomLabel;
   Separator: TRtfdSeparator;
   Int: TInterface;
 begin
   if not Visible then
-    exit;
+    Exit;
   inherited;
 
   NeedW := 0;
   NeedH := 2 * BorderWidth + 2;
 
-  inc(NeedH, TRtfdStereotype.Create(Self, nil, 'interface').Height);
-  inc(NeedH, TRtfdInterfaceName.Create(Self, Entity).Height);
+  Inc(NeedH, TRtfdStereotype.Create(Self, nil, 'interface').Height);
+  Inc(NeedH, TRtfdInterfaceName.Create(Self, Entity).Height);
 
   // Get names in visibility order
   Int := Entity as TInterface;
@@ -2301,19 +2301,19 @@ begin
 
   // Separator
   if ((Ami.Count > 0) or (Omi.Count > 0)) or GuiPyOptions.ShowEmptyRects then
-    inc(NeedH, TRtfdSeparator.Create(Self).Height);
+    Inc(NeedH, TRtfdSeparator.Create(Self).Height);
 
   // Attributes
   while Ami.HasNext do
-    inc(NeedH, TRtfdAttribute.Create(Self, Ami.Next).Height);
+    Inc(NeedH, TRtfdAttribute.Create(Self, Ami.Next).Height);
 
   // Separator
   if ((Ami.Count > 0) and (Omi.Count > 0)) or GuiPyOptions.ShowEmptyRects then
-    inc(NeedH, TRtfdSeparator.Create(Self).Height);
+    Inc(NeedH, TRtfdSeparator.Create(Self).Height);
 
   // Operations
   while Omi.HasNext do
-    inc(NeedH, TRtfdOperation.Create(Self, Omi.Next).Height);
+    Inc(NeedH, TRtfdOperation.Create(Self, Omi.Next).Height);
   Height := NeedH + ShadowWidth;
 
   for i := 0 to ControlCount - 1 do
@@ -2340,7 +2340,7 @@ begin
     end;
 
   Width := Width + ShadowWidth;
-  Visible := true;
+  Visible := True;
 end;
 
 procedure TRtfdInterface.AddChild(Sender, NewChild: TModelEntity);
@@ -2373,7 +2373,7 @@ begin
   Self.Entity := aEntity;
   Height := abs(Font.Height);
   FAlignment := taLeftJustify;
-  FTransparent := true;
+  FTransparent := True;
 end;
 
 procedure TRtfdCustomLabel.EntityChange(Sender: TModelEntity);
@@ -2412,7 +2412,7 @@ end;
 
 procedure TRtfdCustomLabel.Paint;
 var
-  Alig, P: integer;
+  Alig, P: Integer;
   R: TRect;
   S: string;
 begin
@@ -2435,20 +2435,20 @@ begin
   P := Pos(#13#10'{abstract}', Caption);
   if P > 0 then
   begin
-    S := copy(Caption, 1, P - 1);
+    S := Copy(Caption, 1, P - 1);
     Canvas.Font.Style := [fsItalic, fsBold];
   end
   else
     S := Caption;
   if GuiPyOptions.ClassnameInUppercase then
-    S := Uppercase(S);
-  DrawText(Canvas.Handle, PChar(S), length(S), R, Alig);
+    S := UpperCase(S);
+  DrawText(Canvas.Handle, PChar(S), Length(S), R, Alig);
   if P > 0 then
   begin
     Canvas.Font.Style := [fsItalic];
     R.Top := R.Top + SingleLineHeight;
     S := '{abstract}';
-    DrawText(Canvas.Handle, PChar(S), length(S), R, Alig);
+    DrawText(Canvas.Handle, PChar(S), Length(S), R, Alig);
   end;
 end;
 
@@ -2464,7 +2464,7 @@ begin
   Canvas.Font.color := FGColor;
 end;
 
-procedure TRtfdCustomLabel.SetTransparent(const Value: boolean);
+procedure TRtfdCustomLabel.SetTransparent(const Value: Boolean);
 begin
   if FTransparent <> Value then
   begin
@@ -2482,7 +2482,7 @@ end;
 procedure TRtfdCustomLabel.AdjustBounds;
 var
   DC: HDC;
-  X: integer;
+  X: Integer;
   S: string;
   aRect: TRect;
   AAlignment: TAlignment;
@@ -2499,8 +2499,8 @@ begin
       Canvas.Font.Style := Canvas.Font.Style + [fsItalic];
     S := Caption;
     if (Self is TRtfdClassName) and GuiPyOptions.ClassnameInUppercase then
-      S := Uppercase(S);
-    DrawText(Canvas.Handle, PChar(S), length(S), aRect, DT_CALCRECT);
+      S := UpperCase(S);
+    DrawText(Canvas.Handle, PChar(S), Length(S), aRect, DT_CALCRECT);
     FTextWidth := 8 + aRect.Right + 8;
     case (Owner as TRtfdBox).ShowIcons of
       0: FTextWidth := FTextWidth + PPIScale(aRect.Height + 8);
@@ -2515,7 +2515,7 @@ begin
     if UseRightToLeftAlignment then
       ChangeBiDiModeAlignment(AAlignment);
     if AAlignment = taRightJustify then
-      inc(X, Width - aRect.Right);
+      Inc(X, Width - aRect.Right);
     SetBounds(X, Top, FTextWidth, aRect.Bottom);
   end;
 end;
@@ -2534,12 +2534,12 @@ begin
   if not Enabled then begin
     OffsetRect(Rect, 1, 1);
     Canvas.Font.color := clBtnHighlight;
-    DrawText(Canvas.Handle, PChar(text), length(aText), Rect, Flags);
+    DrawText(Canvas.Handle, PChar(text), Length(aText), Rect, Flags);
     OffsetRect(Rect, -1, -1);
     Canvas.Font.color:= clBtnShadow;
-    DrawText(Canvas.Handle, PChar(aText), length(aText), Rect, Flags);
+    DrawText(Canvas.Handle, PChar(aText), Length(aText), Rect, Flags);
   end else
-    DrawText(Canvas.Handle, PChar(aText), length(aText), Rect, Flags);
+    DrawText(Canvas.Handle, PChar(aText), Length(aText), Rect, Flags);
 end;
 
 end.

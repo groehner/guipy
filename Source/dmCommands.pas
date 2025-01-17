@@ -324,8 +324,8 @@ type
     procedure GetEditorUserCommand(AUserCommand: Integer; var ADescription: string);
     procedure GetEditorAllUserCommands(ACommands: TStrings);
     function DoSearchReplaceText(SynEdit : TSynEdit;
-      AReplace, ABackwards : Boolean ; IsIncremental : Boolean = False) : integer;
-    procedure ShowSearchReplaceDialog(SynEdit : TSynEdit; AReplace: boolean);
+      AReplace, ABackwards : Boolean ; IsIncremental : Boolean = False) : Integer;
+    procedure ShowSearchReplaceDialog(SynEdit : TSynEdit; AReplace: Boolean);
     procedure SynEditReplaceText(Sender: TObject; const ASearch,
       AReplace: string; Line, Column: Integer; var Action: TSynReplaceAction);
     procedure IncrementalSearch;
@@ -347,7 +347,7 @@ uses
   WinApi.ShlObj,
   WinApi.ShellAPI,
   WinApi.ActiveX,
-  WinApi.Windows,
+  Winapi.Windows,
   System.UITypes,
   System.SysUtils,
   System.Win.Registry,
@@ -580,7 +580,7 @@ procedure TCommandsDataModule.actFileCloseWorkspaceTabsExecute(Sender: TObject);
           if NextFile.AskSaveChanges then
             NextFile.Close
           else
-            break;
+            Break;
       end;
     until not Assigned(NextTab);
   end;
@@ -602,7 +602,7 @@ procedure TCommandsDataModule.actFileExportExecute(Sender: TObject);
   var aFile: IFile;
 begin
   aFile:= GI_PyIDEServices.GetActiveFile;
-  if assigned(aFile) then
+  if Assigned(aFile) then
     aFile.ExecExport;
 end;
 
@@ -610,7 +610,7 @@ procedure TCommandsDataModule.actFileCloseExecute(Sender: TObject);
   var aFile: IFile;
 begin
   aFile:= GI_PyIDEServices.GetActiveFile;
-  if assigned(aFile) then
+  if Assigned(aFile) then
     (aFile as IFileCommands).ExecClose;
 end;
 
@@ -763,7 +763,7 @@ end;
 procedure TCommandsDataModule.actSearchGoToLineExecute(Sender: TObject);
 var
   Line : string;
-  LineNo : integer;
+  LineNo : Integer;
 begin
   if Assigned(GI_ActiveEditor) then
     if InputQuery(_(SGoToLineNumber), _(SEnterLineNumber), Line) then begin
@@ -939,7 +939,7 @@ end;
 
 procedure TCommandsDataModule.actEditToggleCommentExecute(Sender: TObject);
 var
-  i, EndLine : integer;
+  i, EndLine : Integer;
   BlockIsCommented : Boolean;
 begin
   if Assigned(GI_ActiveEditor) then with GI_ActiveEditor.ActiveSynEdit do begin
@@ -973,7 +973,7 @@ end;
 procedure TCommandsDataModule.actEditCommentOutExecute(Sender: TObject);
 var
   S: string;
-  Offset: integer;
+  Offset: Integer;
   OldBlockBegin, OldBlockEnd : TBufferCoord;
 begin
   if Assigned(GI_ActiveEditor) then with GI_ActiveEditor.ActiveSynEdit do
@@ -1181,8 +1181,8 @@ end;
 
 procedure TCommandsDataModule.ProcessFolderChange(const FolderName: string);
 var
-  I : integer;
-  ModifiedCount : integer;
+  I : Integer;
+  ModifiedCount : Integer;
   aFile: IFile;
   ChangedFiles : TStringList;
   FTime : TDateTime;
@@ -1196,7 +1196,7 @@ begin
     if (Fi.FileName <> '') and (ExtractFileDir(Fi.FileName) = FolderName) then begin
       FileAge(Fi.FileName, FTime);
       if FTime > 0 then begin
-        if not FileExists(Fi.FileName) and assigned(Fi.Form) and
+        if not FileExists(Fi.FileName) and Assigned(Fi.Form) and
           (TFileForm(Fi.Form).FileTime <> 0) then begin
           // File or directory has been moved or deleted
           // Mark as modified so that we try to save it
@@ -1295,7 +1295,7 @@ procedure GetMatchingBrackets(SynEdit : TSynEdit;
     HasMatchingBracket := False;
     SynEdit.GetHighlighterAttriAtRowCol(P, S, Attri);
     if Assigned(Attri) and (SynEdit.Highlighter.SymbolAttribute = Attri) and
-        (SynEdit.CaretX<=length(SynEdit.LineText) + 1) then begin
+        (SynEdit.CaretX<=Length(SynEdit.LineText) + 1) then begin
       for i := Low(Brackets) to High(Brackets) do
         if S = Brackets[i] then begin
           BracketCh := Brackets[i];
@@ -1305,7 +1305,7 @@ procedure GetMatchingBrackets(SynEdit : TSynEdit;
             HasMatchingBracket := True;
             MatchCh := Brackets[i xor 1];
           end;
-          break;
+          Break;
         end;
     end;
   end;
@@ -1533,8 +1533,8 @@ begin
   actEditCopyFileName.Enabled := Assigned(Editor);
 
   var ActiveEditor := Assigned(GI_ActiveEditor);
-  var ActiveSynEdit:= Assigned(GI_ActiveEditor) and assigned(GI_ActiveEditor.SynEdit);
-  var ActiveActiveSynEdit:= Assigned(GI_ActiveEditor) and assigned(GI_ActiveEditor.ActiveSynEdit);
+  var ActiveSynEdit:= Assigned(GI_ActiveEditor) and Assigned(GI_ActiveEditor.SynEdit);
+  var ActiveActiveSynEdit:= Assigned(GI_ActiveEditor) and Assigned(GI_ActiveEditor.ActiveSynEdit);
 
   actFoldVisible.Enabled := ActiveEditor;
   actFoldVisible.Checked := ActiveSynEdit and GI_ActiveEditor.SynEdit.UseCodeFolding;
@@ -1811,7 +1811,7 @@ begin
   if Assigned(GI_ActiveEditor) then begin
     GI_ActiveEditor.GetActiveSynEdit.Options:=
       GI_ActiveEditor.GetActiveSynEdit.Options - [eoCopyPlainText];
-    actEditCopyExecute(self);
+    actEditCopyExecute(Self);
     GI_ActiveEditor.GetActiveSynEdit.Options:=
       GI_ActiveEditor.GetActiveSynEdit.Options + [eoCopyPlainText];
   end;
@@ -1820,7 +1820,7 @@ end;
 procedure TCommandsDataModule.actEditCopyHTMLasTextExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
-    TEditorForm(GI_ActiveEditor.Form).CopyHTML(true);
+    TEditorForm(GI_ActiveEditor.Form).CopyHTML(True);
 end;
 
 procedure TCommandsDataModule.actEditCopyNumberedExecute(Sender: TObject);
@@ -1996,7 +1996,7 @@ begin
 end;
 
 function TCommandsDataModule.DoSearchReplaceText(SynEdit : TSynEdit;
-      AReplace, ABackwards : Boolean ; IsIncremental : Boolean = False) : integer;
+      AReplace, ABackwards : Boolean ; IsIncremental : Boolean = False) : Integer;
 
   function EndReached(ABackWards, SelectionOnly : Boolean) : string;
   begin
@@ -2013,8 +2013,8 @@ var
   IsNewSearch : Boolean;
   MsgText : string;
   BB, BE: TBufferCoord;
-  dlgID : integer;
-  OldNoReplaceCount : integer;
+  dlgID : Integer;
+  OldNoReplaceCount : Integer;
 begin
   Result := 0;
   OldNoReplaceCount := 0;
@@ -2288,7 +2288,7 @@ begin
   end;
 end;
 
-procedure TCommandsDataModule.ShowSearchReplaceDialog(SynEdit : TSynEdit; AReplace: boolean);
+procedure TCommandsDataModule.ShowSearchReplaceDialog(SynEdit : TSynEdit; AReplace: Boolean);
 var
   S : string;
 begin

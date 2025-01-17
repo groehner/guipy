@@ -55,16 +55,16 @@ type
 
   TQtAbstractItemView = class(TQtAbstractScrollArea)
   private
-    FAutoScroll: boolean;
-    FAutoScrollMargin: integer;
+    FAutoScroll: Boolean;
+    FAutoScrollMargin: Integer;
     // editTriggers
-    FTabKeyNavigation: boolean;
-    FShowDropIndicator: boolean;
-    FDragEnabled: boolean;
-    FDragDropOverwriteMode: boolean;
+    FTabKeyNavigation: Boolean;
+    FShowDropIndicator: Boolean;
+    FDragEnabled: Boolean;
+    FDragDropOverwriteMode: Boolean;
     FDragDropMode: TDragDropMode;
     FDefaultDropAction: TDefaultDropAction;
-    FAlternatingRowColors: boolean;
+    FAlternatingRowColors: Boolean;
     FSelectionMode: TSelectionMode;
     FSelectionBehavior: TSelectionBehavior;
     // IconSize
@@ -78,24 +78,24 @@ type
     FIconSizeChanged: string;
     FPressed: string;
     FViewportEntered: string;
-    procedure setAlternatingRowColors(Value: boolean);
+    procedure setAlternatingRowColors(Value: Boolean);
   public
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
   published
-    property AutoScroll: boolean read FAutoScroll write FAutoScroll;
-    property AutoScrollMargin: integer read FAutoScrollMargin write FAutoScrollMargin;
+    property AutoScroll: Boolean read FAutoScroll write FAutoScroll;
+    property AutoScrollMargin: Integer read FAutoScrollMargin write FAutoScrollMargin;
     // editTriggers
-    property TabKeyNavigation: boolean read FTabKeyNavigation write FTabKeyNavigation;
-    property ShowDropIndicator: boolean read FShowDropIndicator write FShowDropIndicator;
-    property DragEnabled: boolean read FDragEnabled write FDragEnabled;
-    property DragDropOverwriteMode: boolean read FDragDropOverwriteMode write FDragDropOverwriteMode;
+    property TabKeyNavigation: Boolean read FTabKeyNavigation write FTabKeyNavigation;
+    property ShowDropIndicator: Boolean read FShowDropIndicator write FShowDropIndicator;
+    property DragEnabled: Boolean read FDragEnabled write FDragEnabled;
+    property DragDropOverwriteMode: Boolean read FDragDropOverwriteMode write FDragDropOverwriteMode;
     property DragDropMode: TDragDropMode read FDragDropMode write FDragDropMode;
     property DefaultDropAction: TDefaultDropAction read FDefaultDropAction write FDefaultDropAction;
-    property AlternatingRowColors: boolean read FAlternatingRowColors write setAlternatingRowColors;
+    property AlternatingRowColors: Boolean read FAlternatingRowColors write setAlternatingRowColors;
     property SelectionMode: TSelectionMode read FSelectionMode write FSelectionMode;
     property SelectionBehavior: TSelectionBehavior read FSelectionBehavior write FSelectionBehavior;
     // IconSize
@@ -116,41 +116,41 @@ type
   private
     FMovement: TMovement;
     FFlow: TFlow;
-    FIsWrapping: boolean;
+    FIsWrapping: Boolean;
     FResizeMode: TResizeMode;
     FLayoutMode: TLayoutMode;
-    FSpacing: integer;
+    FSpacing: Integer;
     // FGridSize
     FViewMode: TViewMode;
-    FModelColumn: integer;
-    FUninformItemsSizes: boolean;
-    FBatchSize: integer;
-    FWordWrap: boolean;
-    FSelectionRectVisible: boolean;
+    FModelColumn: Integer;
+    FUninformItemsSizes: Boolean;
+    FBatchSize: Integer;
+    FWordWrap: Boolean;
+    FSelectionRectVisible: Boolean;
     FItemAlignment: TAlignmentHorizontal;
     FIndexesMoved: string;
     procedure setFlow(Value: TFlow);
-    procedure setSpacing(Value: integer);
+    procedure setSpacing(Value: Integer);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
   published
     property Movement: TMovement read FMovement write FMovement;
     property Flow: TFlow read FFlow write setFlow;
-    property IsWrapping: boolean read FIsWrapping write FIsWrapping;
+    property IsWrapping: Boolean read FIsWrapping write FIsWrapping;
     property ResizeMode: TResizeMode read FResizeMode write FResizeMode;
     property LayoutMode: TLayoutMode read FLayoutMode write FLayoutMode;
-    property Spacing: integer read FSpacing write setSpacing;
+    property Spacing: Integer read FSpacing write setSpacing;
     // FGridSize
     property ViewMode: TViewMode read FViewMode write FViewMode;
-    property ModelColumn: integer read FModelColumn write FModelColumn;
-    property UninformItemsSizes: boolean read FUninformItemsSizes write FUninformItemsSizes;
-    property BatchSize: integer read FBatchSize write FBatchSize;
-    property WordWrap: boolean read FWordWrap write FWordWrap;
-    property SelectionRectVisible: boolean read FSelectionRectVisible write FSelectionRectVisible;
+    property ModelColumn: Integer read FModelColumn write FModelColumn;
+    property UninformItemsSizes: Boolean read FUninformItemsSizes write FUninformItemsSizes;
+    property BatchSize: Integer read FBatchSize write FBatchSize;
+    property WordWrap: Boolean read FWordWrap write FWordWrap;
+    property SelectionRectVisible: Boolean read FSelectionRectVisible write FSelectionRectVisible;
     property ItemAlignment: TAlignmentHorizontal read FItemAlignment write FItemAlignment;
     // signals
     property indexesMoved: string read FIndexesMoved write FIndexesMoved;
@@ -158,8 +158,8 @@ type
 
   TQtListWidget = class(TQtListView)
   private
-    FCurrentRow: integer;
-    FSortingEnabled: boolean;
+    FCurrentRow: Integer;
+    FSortingEnabled: Boolean;
     FItems: TStrings;
     FCurrentItemChanged: string;
     FCurrentRowChanged: string;
@@ -176,16 +176,16 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property CurrentRow: integer read FCurrentRow write FCurrentRow;
-    property SortingEnabled: boolean read FSortingEnabled write FSortingEnabled;
+    property CurrentRow: Integer read FCurrentRow write FCurrentRow;
+    property SortingEnabled: Boolean read FSortingEnabled write FSortingEnabled;
     property Items: TStrings read FItems write setItems;
 
     // signals
@@ -203,25 +203,25 @@ type
 
   TQtColumnView = class(TQtAbstractItemView)
   private
-    FResizeGripsVisible: boolean;
+    FResizeGripsVisible: Boolean;
     FItems: TStrings;
     FUpdatePreviewWidget: string;
-    procedure setResizeGripsVisible(Value: boolean);
+    procedure setResizeGripsVisible(Value: Boolean);
     procedure setItems(Value: TStrings);
     procedure MakeItems;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure DeleteWidget; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     function InnerRect: TRect; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property ResizeGripsVisible: boolean
+    property ResizeGripsVisible: Boolean
              read FResizeGripsVisible write setResizeGripsVisible;
     property Items: TStrings read FItems write setItems;
     property UpdatePreviewWidget: string read FUpdatePreviewWidget write FUpdatePreviewWidget;
@@ -229,45 +229,45 @@ type
 
   TQtTreeView = class(TQtAbstractItemView)
   private
-    FAutoExpandDelay: integer;
-    FIndentation: integer;
-    FRootIsDecorated: boolean;
-    FUniformRowHeights: boolean;
-    FItemsExpandable: boolean;
-    FSortingEnabled: boolean;
-    FAnimated: boolean;
-    FAllColumnsShowFocus: boolean;
-    FWordWrap: boolean;
-    FHeaderHidden: boolean;
-    FExpandsOnDoubleClick: boolean;
-    FColumnWidth: integer;
+    FAutoExpandDelay: Integer;
+    FIndentation: Integer;
+    FRootIsDecorated: Boolean;
+    FUniformRowHeights: Boolean;
+    FItemsExpandable: Boolean;
+    FSortingEnabled: Boolean;
+    FAnimated: Boolean;
+    FAllColumnsShowFocus: Boolean;
+    FWordWrap: Boolean;
+    FHeaderHidden: Boolean;
+    FExpandsOnDoubleClick: Boolean;
+    FColumnWidth: Integer;
     FCollapsed: string;
     FExpanded: string;
-    procedure setIndentation(Value: integer);
-    procedure setColumnWidth(Value: integer);
-    procedure setHeaderHidden(Value: boolean);
+    procedure setIndentation(Value: Integer);
+    procedure setColumnWidth(Value: Integer);
+    procedure setHeaderHidden(Value: Boolean);
     procedure MakeColumWidth(Value: string);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
   published
-    property AutoExpandDelay: integer read FAutoExpandDelay write FAutoExpandDelay;
-    property Indentation: integer read FIndentation write setIndentation;
-    property RootIsDecorated: boolean read FRootIsDecorated write FRootIsDecorated;
-    property UniformRowHeights: boolean read FUniformRowHeights write FUniformRowHeights;
-    property ItemsExpandable: boolean read FItemsExpandable write FItemsExpandable;
-    property SortingEnabled: boolean read FSortingEnabled write FSortingEnabled;
-    property Animated: boolean read FAnimated write FAnimated;
-    property AllColumnsShowFocus: boolean read FAllColumnsShowFocus write FAllColumnsShowFocus;
-    property WordWrap: boolean read FWordWrap write FWordWrap;
-    property HeaderHidden: boolean read FHeaderHidden write setHeaderHidden;
-    property ExpandsOnDoubleClick: boolean read FExpandsOnDoubleClick write FExpandsOnDoubleClick;
-    property ColumnWidth: integer read FColumnWidth write setColumnWidth;
+    property AutoExpandDelay: Integer read FAutoExpandDelay write FAutoExpandDelay;
+    property Indentation: Integer read FIndentation write setIndentation;
+    property RootIsDecorated: Boolean read FRootIsDecorated write FRootIsDecorated;
+    property UniformRowHeights: Boolean read FUniformRowHeights write FUniformRowHeights;
+    property ItemsExpandable: Boolean read FItemsExpandable write FItemsExpandable;
+    property SortingEnabled: Boolean read FSortingEnabled write FSortingEnabled;
+    property Animated: Boolean read FAnimated write FAnimated;
+    property AllColumnsShowFocus: Boolean read FAllColumnsShowFocus write FAllColumnsShowFocus;
+    property WordWrap: Boolean read FWordWrap write FWordWrap;
+    property HeaderHidden: Boolean read FHeaderHidden write setHeaderHidden;
+    property ExpandsOnDoubleClick: Boolean read FExpandsOnDoubleClick write FExpandsOnDoubleClick;
+    property ColumnWidth: Integer read FColumnWidth write setColumnWidth;
     // signals
     property collapsed: string read FCollapsed write FCollapsed;
     property expanded: string read FExpanded write FExpanded;
@@ -277,7 +277,7 @@ type
   private
     FItems: TStrings;
     FHeader: TStrings;
-    FColumnCount: integer;
+    FColumnCount: Integer;
     FCurrentItemChanged: string;
     FItemActivated: string;
     FItemChanged: string;
@@ -288,7 +288,7 @@ type
     FItemExpanded: string;
     FItemPressed: string;
     FItemSelectionChanged: string;
-    procedure setColumnCount(Value: integer);
+    procedure setColumnCount(Value: Integer);
     procedure setItems(Value: TStrings);
     procedure setHeader(Value: TStrings);
     procedure MakeItems;
@@ -296,10 +296,10 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure DeleteWidget; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
@@ -307,7 +307,7 @@ type
   published
     property Header: TStrings read FHeader write setHeader;
     property Items: TStrings read FItems write setItems;
-    property ColumnCount: integer read FColumnCount write setColumnCount;
+    property ColumnCount: Integer read FColumnCount write setColumnCount;
     // signals
     property currentItemChanged: string read FCurrentItemChanged write FCurrentItemChanged;
     property itemActivated: string read FItemActivated write FItemActivated;
@@ -323,46 +323,46 @@ type
 
   TQtTableView = class(TQtAbstractItemView)
   private
-    FShowGrid: boolean;
+    FShowGrid: Boolean;
     FGridStyle: TGridStyle;
-    FSortingEnabled: boolean;
-    FWordWrap: boolean;
-    FCornerButtonEnabled: boolean;
-    FHeaderHorzVisible: boolean;
-    FHeaderVertVisible: boolean;
-    FColumnWidth: integer;
-    FRowHeight: integer;
-    procedure setHeaderHorzVisible(Value: boolean);
-    procedure setHeaderVertVisible(Value: boolean);
-    procedure setColumnWidth(Value: integer);
-    procedure setRowHeight(Value: integer);
-    procedure setShowGrid(Value: boolean);
+    FSortingEnabled: Boolean;
+    FWordWrap: Boolean;
+    FCornerButtonEnabled: Boolean;
+    FHeaderHorzVisible: Boolean;
+    FHeaderVertVisible: Boolean;
+    FColumnWidth: Integer;
+    FRowHeight: Integer;
+    procedure setHeaderHorzVisible(Value: Boolean);
+    procedure setHeaderVertVisible(Value: Boolean);
+    procedure setColumnWidth(Value: Integer);
+    procedure setRowHeight(Value: Integer);
+    procedure setShowGrid(Value: Boolean);
     procedure setGridStyle(Value: TGridStyle);
     procedure MakeHeaderVisible(Attr, Value: string);
     procedure MakeColumWidth(Value: string);
     procedure MakeRowHeight(Value: string);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
   published
-    property ShowGrid: boolean read FShowGrid write setShowGrid;
+    property ShowGrid: Boolean read FShowGrid write setShowGrid;
     property GridStyle: TGridStyle read FGridStyle write setGridStyle;
-    property SortingEnabled: boolean read FSortingEnabled write FSortingEnabled;
-    property WordWrap: boolean read FWordWrap write FWordWrap;
-    property CornerButtonEnabled: boolean read FCornerButtonEnabled write FCornerButtonEnabled;
-    property HeaderHorzVisible: boolean read FHeaderHorzVisible write setHeaderHorzVisible;
-    property HeaderVertVisible: boolean read FHeaderVertVisible write setHeaderVertVisible;
-    property ColumnWidth: integer read FColumnWidth write setColumnWidth;
-    property RowHeight: integer read FRowHeight write setRowHeight;
+    property SortingEnabled: Boolean read FSortingEnabled write FSortingEnabled;
+    property WordWrap: Boolean read FWordWrap write FWordWrap;
+    property CornerButtonEnabled: Boolean read FCornerButtonEnabled write FCornerButtonEnabled;
+    property HeaderHorzVisible: Boolean read FHeaderHorzVisible write setHeaderHorzVisible;
+    property HeaderVertVisible: Boolean read FHeaderVertVisible write setHeaderVertVisible;
+    property ColumnWidth: Integer read FColumnWidth write setColumnWidth;
+    property RowHeight: Integer read FRowHeight write setRowHeight;
   end;
 
   TQtTableWidget = class(TQtTableView)
   private
-    FRowCount: integer;
-    FColumnCount: integer;
+    FRowCount: Integer;
+    FColumnCount: Integer;
     FItems: TStrings;
     FHeaderHorz: TStrings;
     FHeaderVert: TStrings;
@@ -381,8 +381,8 @@ type
     FItemEntered: string;
     FItemPressed: string;
     FItemSelectionChanged: string;
-    procedure setRowCount(Value: integer);
-    procedure setColumnCount(Value: integer);
+    procedure setRowCount(Value: Integer);
+    procedure setColumnCount(Value: Integer);
     procedure setItems(Value: TStrings);
     procedure setHeaderHorz(Value: TStrings);
     procedure setHeaderVert(Value: TStrings);
@@ -392,16 +392,16 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property RowCount: integer read FRowCount write setRowCount;
-    property ColumnCount: integer read FColumnCount write setColumnCount;
+    property RowCount: Integer read FRowCount write setRowCount;
+    property ColumnCount: Integer read FColumnCount write setColumnCount;
     property Items: TStrings read FItems write setItems;
     property HeaderHorz: TStrings read FHeaderHorz write setHeaderHorz;
     property HeaderVert: TStrings read FHeaderVert write setHeaderVert;
@@ -444,7 +444,7 @@ begin
     inherited;
 end;
 
-function TQtAbstractItemView.getAttributes(ShowAttributes: integer): string;
+function TQtAbstractItemView.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|AlternatingRowColors';
   if ShowAttributes = 3 then
@@ -460,7 +460,7 @@ const
   EventsWithIndex = '|activated|clicked|doubleClicked|entered|pressed';
   EventsOther = '|iconSizeChanged|viewportEntered';
 
-function TQtAbstractItemView.getEvents(ShowEvents: integer): string;
+function TQtAbstractItemView.getEvents(ShowEvents: Integer): string;
 begin
   Result:= EventsWithIndex +  EventsOther;
   Result:= Result + inherited getEvents(ShowEvents);
@@ -493,7 +493,7 @@ begin
   inherited;
 end;
 
-procedure TQtAbstractItemView.setAlternatingRowColors(Value: boolean);
+procedure TQtAbstractItemView.setAlternatingRowColors(Value: Boolean);
 begin
   if Value <> fAlternatingRowColors then begin
     FAlternatingRowColors:= Value;
@@ -505,14 +505,14 @@ end;
 
 constructor TQtListView.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 116;
   Width:= 120;
   Height:= 80;
   FrameShadow:= Sunken;
 end;
 
-function TQtListView.getAttributes(ShowAttributes: integer): string;
+function TQtListView.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '';
   if ShowAttributes >= 2 then
@@ -535,7 +535,7 @@ begin
     inherited;
 end;
 
-function TQtListView.getEvents(ShowEvents: integer): string;
+function TQtListView.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|indexesMoved';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -556,7 +556,7 @@ begin
   end;
 end;
 
-procedure TQtListView.setSpacing(Value: integer);
+procedure TQtListView.setSpacing(Value: Integer);
 begin
   if Value <> FSpacing then begin
     FSpacing:= Value;
@@ -568,7 +568,7 @@ end;
 
 constructor TQtListWidget.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 77;
   FrameShadow:= Sunken;
   FCurrentRow:= -1;
@@ -582,7 +582,7 @@ begin
   inherited;
 end;
 
-function TQtListWidget.getAttributes(ShowAttributes: integer): string;
+function TQtListWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Items|CurrentRow|SortingEnabled';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -601,7 +601,7 @@ const ItemEvents =
   '|itemActivated|itemChanged|itemClicked|itemDoubleClicked|' +
   '|itemEntered|itemPressed';
 
-function TQtListWidget.getEvents(ShowEvents: integer): string;
+function TQtListWidget.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|currentItemChanged|currentRowChanged|currentTextChanged' +
            ItemEvents + '|itemSelectionChanged';
@@ -644,17 +644,17 @@ begin
 end;
 
 function TQtListWidget.getItems: string;
-  var s: string; i: integer;
+  var s: string; i: Integer;
 begin
   s:= '[';
   for i:= 0 to FItems.Count -1 do
     s:= s + asString(FItems[i]) + ', ';
-  delete(s, length(s) - 1, 2);
+  Delete(s, Length(s) - 1, 2);
   Result:= s + ']';
 end;
 
 procedure TQtListWidget.Paint;
-  var s: string; R1, R2: TRect; RowHeight, ColumnWidth, i: integer;
+  var s: string; R1, R2: TRect; RowHeight, ColumnWidth, i: Integer;
 begin
   inherited;
   R1:= InnerRect;
@@ -680,13 +680,13 @@ begin
       DrawText(Canvas.Handle, PChar(s), Length(s), R2, DT_LEFT);
       R1.Offset(0, RowHeight + 2*FSpacing);
       if R1.Top > Height then begin
-        PaintAScrollbar(false);
+        PaintAScrollbar(False);
         if FSpacing > 0 then begin
           R1:= Rect(Width - 1 - 16 - FSpacing, 1, Width - 1 - 16, Height - 1);
           Canvas.Brush.Color:= clWhite;
           Canvas.FillRect(R1);
         end;
-        break;
+        Break;
       end;
     end;
   end else begin
@@ -708,13 +708,13 @@ begin
       DrawText(Canvas.Handle, PChar(s), Length(s), R2, DT_LEFT);
       R1.Offset(ColumnWidth + 2*FSpacing, 0);
       if R1.Left > Width then begin
-        PaintAScrollbar(true);
+        PaintAScrollbar(True);
         if FSpacing > 0 then begin
           R1:= Rect(1, Height - 1 - 16 - FSpacing, Width - 1, Height - 1 - 16);
           Canvas.Brush.Color:= clWhite;
           Canvas.FillRect(R1);
         end;
-        break;
+        Break;
       end;
     end;
   end;
@@ -724,7 +724,7 @@ end;
 
 constructor TQtColumnView.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 117;
   Width:= 256;
   Height:= 104;
@@ -739,7 +739,7 @@ begin
   inherited;
 end;
 
-function TQtColumnView.getAttributes(ShowAttributes: integer): string;
+function TQtColumnView.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|ResizeGripsVisible|Items';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -759,7 +759,7 @@ begin
   Partner.DeleteItems(Name, 'Item');
 end;
 
-function TQtColumnView.getEvents(ShowEvents: integer): string;
+function TQtColumnView.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|updatePreviewWidget';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -781,20 +781,20 @@ begin
 end;
 
 procedure TQtColumnView.MakeItems;
-  var i, ls, Indent: integer;
+  var i, ls, Indent: Integer;
       s: string;
 
-  function Itemname(Indent: integer): string;
+  function Itemname(Indent: Integer): string;
   begin
     Result:= 'self.' + Name + 'Item' + IntToStr(Indent);
   end;
 
-  function MakeNode(Indent: integer; value: string): string;
+  function MakeNode(Indent: Integer; value: string): string;
   begin
     Result:= surround(Itemname(Indent) + ' = QStandardItem(' + asString(value) + ')');
   end;
 
-  function AppendNode(Indent: integer): string;
+  function AppendNode(Indent: Integer): string;
   begin
     Result:= surround(Itemname(Indent-1) + '.appendRow(' + Itemname(Indent) + ')');
   end;
@@ -811,21 +811,21 @@ begin
     if ls < Indent then begin  // close open items
       while Indent > ls do begin
         s:= s + AppendNode(Indent);
-        dec(Indent);
+        Dec(Indent);
       end;
-      dec(i);
+      Dec(i);
     end else if ls > Indent then begin
-      inc(Indent);
-      s:= s + MakeNode(Indent, trim(Items[i]));
+      Inc(Indent);
+      s:= s + MakeNode(Indent, Trim(Items[i]));
     end else begin
       s:= s + AppendNode(Indent);
-      s:= s + MakeNode(Indent, trim(Items[i]));
+      s:= s + MakeNode(Indent, Trim(Items[i]));
     end;
-    inc(i);
+    Inc(i);
   end;
   while Indent > 0 do begin
     s:= s + AppendNode(Indent);
-    dec(Indent);
+    Dec(Indent);
   end;
   InsertValue(s);
   Partner.ActiveSynEdit.EndUpdate;
@@ -839,7 +839,7 @@ begin
 end;
 
 procedure TQtColumnView.Paint;
-  var s: string; R1, R2: TRect; th, i: integer;
+  var s: string; R1, R2: TRect; th, i: Integer;
       Points: array[1..3] of TPoint;
 begin
   inherited;
@@ -866,17 +866,17 @@ begin
       end;
       R2.Offset(0, th);
       if R2.Top > R1.Bottom then
-        break;
+        Break;
     end;
   end;
   // scrollbars
   if Width <= 256 then
-    PaintAScrollbar(true);
+    PaintAScrollbar(True);
   R2:= ClientRect;
   R2.Inflate(-1, -1);
   R2.Left:= R2.Right - 16;
   R2.Bottom:= R2.Bottom - 2*16;
-  PaintScrollbar(R2, false);
+  PaintScrollbar(R2, False);
   // mover
   R2.Bottom:= R2.Bottom + 16;
   R2.Top:= R2.Bottom - 16;
@@ -889,7 +889,7 @@ begin
   Canvas.LineTo(R2.Right + 4, R2.Bottom - 3);
 end;
 
-procedure TQtColumnView.setResizeGripsVisible(Value: boolean);
+procedure TQtColumnView.setResizeGripsVisible(Value: Boolean);
 begin
   if Value <> FResizeGripsVisible then begin
     fResizeGripsVisible:= Value;
@@ -909,22 +909,22 @@ end;
 
 constructor TQtTableView.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 119;
   Width:= 256;
   Height:= 104;
   FrameShadow:= Sunken;
-  FShowGrid:= true;
+  FShowGrid:= True;
   FGridStyle:= SolidLine;
-  FWordWrap:= true;
-  FCornerButtonEnabled:= true;
-  FHeaderHorzVisible:= true;
-  FHeaderVertVisible:= true;
+  FWordWrap:= True;
+  FCornerButtonEnabled:= True;
+  FHeaderHorzVisible:= True;
+  FHeaderVertVisible:= True;
   FColumnWidth:= 100;
   FRowHeight:= 30;
 end;
 
-function TQtTableView.getAttributes(ShowAttributes: integer): string;
+function TQtTableView.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|ShowGrid|GridStyle|SortingEnabled|WordWrap|CornerButtonEnabled' +
            '|HeaderHorzVisible|HeaderVertVisible' +
@@ -998,7 +998,7 @@ begin
   setAttributValue(key, key + '(' + Value + ')');
 end;
 
-procedure TQtTableView.setHeaderHorzVisible(Value: boolean);
+procedure TQtTableView.setHeaderHorzVisible(Value: Boolean);
 begin
   if Value <> FHeaderHorzVisible then begin
     FHeaderHorzVisible:= Value;
@@ -1006,7 +1006,7 @@ begin
   end;
 end;
 
-procedure TQtTableView.setHeaderVertVisible(Value: boolean);
+procedure TQtTableView.setHeaderVertVisible(Value: Boolean);
 begin
   if Value <> FHeaderVertVisible then begin
     FHeaderVertVisible:= Value;
@@ -1014,7 +1014,7 @@ begin
   end;
 end;
 
-procedure TQtTableView.setColumnWidth(Value: integer);
+procedure TQtTableView.setColumnWidth(Value: Integer);
 begin
   if Value <> FColumnWidth then begin
     fColumnWidth:= Value;
@@ -1022,7 +1022,7 @@ begin
   end;
 end;
 
-procedure TQtTableView.setRowHeight(Value: integer);
+procedure TQtTableView.setRowHeight(Value: Integer);
 begin
   if Value <> FRowHeight then begin
     FRowHeight:= Value;
@@ -1030,7 +1030,7 @@ begin
   end;
 end;
 
-procedure TQtTableView.setShowGrid(Value: boolean);
+procedure TQtTableView.setShowGrid(Value: Boolean);
 begin
   if Value <> FShowGrid then begin
     FShowGrid:= Value;
@@ -1050,7 +1050,7 @@ end;
 
 constructor TQtTableWidget.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 89;
   FRowCount:= 2;
   FColumnCount:= 4;
@@ -1070,7 +1070,7 @@ begin
   inherited;
 end;
 
-function TQtTableWidget.getAttributes(ShowAttributes: integer): string;
+function TQtTableWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|RowCount|ColumnCount|Items|HeaderHorz|HeaderVert';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -1095,7 +1095,7 @@ const
                  '|itemEntered|itemPressed';
   EventsTabOther = '|currentCellChanged|currentItemChanged|itemSelectionChanged';
 
-function TQtTableWidget.getEvents(ShowEvents: integer): string;
+function TQtTableWidget.getEvents(ShowEvents: Integer): string;
 begin
   Result:= EventsRowCol + EventsItems + EventsTabOther;
   Result:= Result + inherited getEvents(ShowEvents);
@@ -1131,7 +1131,7 @@ begin
 end;
 
 procedure TQtTableWidget.MakeItems;
-  var p, x, y: integer; s, s1: string;
+  var p, x, y: Integer; s, s1: string;
 
   function insertItem(s: string): string;
   begin
@@ -1141,14 +1141,14 @@ procedure TQtTableWidget.MakeItems;
 
 begin
   s1:= '';
-  for x:= 0 to FItems.count - 1 do begin
+  for x:= 0 to FItems.Count - 1 do begin
     y:= 0;
     s:= FItems[x];
     p:= Pos(' ', s);
     while p > 0 do begin
-      s1:= s1 + insertItem(copy(s, 1 , p-1));
-      delete(s, 1, p);
-      inc(y);
+      s1:= s1 + insertItem(Copy(s, 1 , p-1));
+      Delete(s, 1, p);
+      Inc(y);
       p:= Pos(' ', s);
     end;
     if s <> '' then
@@ -1158,13 +1158,13 @@ begin
 end;
 
 procedure TQtTableWidget.MakeHorizontalHeader;
-  var i: integer; key, s: string;
+  var i: Integer; key, s: string;
 begin
   s:= '';
   for i:= 0 to FHeaderHorz.Count - 1 do
-    if trim(FHeaderHorz[i]) <> '' then
+    if Trim(FHeaderHorz[i]) <> '' then
       s:= s + ', ' + asString(FHeaderHorz[i]);
-  delete(S, 1, 2);
+  Delete(S, 1, 2);
   if s = '' then
     Partner.DeleteAttribute('self.' + Name + '.setHorizontalHeaderLabels')
   else begin
@@ -1174,13 +1174,13 @@ begin
 end;
 
 procedure TQtTableWidget.MakeVerticalHeader;
-  var i: integer; key, s: string;
+  var i: Integer; key, s: string;
 begin
   s:= '';
   for i:= 0 to FHeaderVert.Count - 1 do
-    if trim(FHeaderVert[i]) <> '' then
+    if Trim(FHeaderVert[i]) <> '' then
       s:= s + ', ' + asString(FHeaderVert[i]);
-  delete(S, 1, 2);
+  Delete(S, 1, 2);
   if s = '' then
     Partner.DeleteAttribute('self.' + Name + '.setVerticalHeaderLabels')
   else begin
@@ -1200,12 +1200,12 @@ begin
 end;
 
 procedure TQtTableWidget.Paint;
-  var s, s1: string; R1, R2: TRect; p, th, tw, y, x, MaxY, MaxX: integer;
-      ShowVerticalScrollbar, ShowHorizontalScrollbar: boolean;
+  var s, s1: string; R1, R2: TRect; p, th, tw, y, x, MaxY, MaxX: Integer;
+      ShowVerticalScrollbar, ShowHorizontalScrollbar: Boolean;
 begin
   inherited;
-  ShowVerticalScrollBar:= false;
-  ShowHorizontalScrollBar:= false;
+  ShowVerticalScrollBar:= False;
+  ShowHorizontalScrollBar:= False;
   Canvas.Brush.Color:= clWhite;
   Canvas.FillRect(InnerRect);
   th:= HalfX + Canvas.TextHeight('A') + HalfX;
@@ -1215,9 +1215,9 @@ begin
   if HeaderVertVisible then begin
     for y:= 1 to RowCount do
       if y <= HeaderVert.Count then
-        tw:= max(tw, Canvas.TextWidth(HeaderVert[y-1]))
+        tw:= Max(tw, Canvas.TextWidth(HeaderVert[y-1]))
       else
-        tw:= max(tw, Canvas.Textwidth(IntToStr(y)));
+        tw:= Max(tw, Canvas.Textwidth(IntToStr(y)));
     tw:= tw + 4*HalfX;
   end else
     tw:= 0;
@@ -1227,16 +1227,16 @@ begin
   R1:= Rect(1, 1 + th, 1 + tw, 1 + th + FRowHeight);
   MaxY:= RowCount;
   for y:= 1 to RowCount do begin
-    if (y <= HeaderVert.Count) and (trim(HeaderVert[y-1]) <> '')
+    if (y <= HeaderVert.Count) and (Trim(HeaderVert[y-1]) <> '')
       then s:= HeaderVert[y-1]
       else s:= IntToStr(y);
     if HeaderVertVisible then
       DrawText(Canvas.Handle, PChar(s), Length(s), R1, DT_CENTER + DT_VCENTER + DT_SINGLELINE);
     R1.Offset(0, FRowHeight);
     if R1.Top > Height then begin
-      ShowVerticalScrollbar:= true;
+      ShowVerticalScrollbar:= True;
       MaxY:= y;
-      break;
+      Break;
     end;
   end;
 
@@ -1244,21 +1244,21 @@ begin
   R1:= Rect(1 + tw, 1, 1 + tw + FColumnWidth, 1 + th);
   MaxX:= ColumnCount;
   for x:= 1 to ColumnCount do begin
-    if (x <= HeaderHorz.Count) and (trim(HeaderHorz[x-1]) <> '')
+    if (x <= HeaderHorz.Count) and (Trim(HeaderHorz[x-1]) <> '')
       then s:= HeaderHorz[x-1]
       else s:= IntToStr(x);
     if HeaderHorzVisible then
       DrawText(Canvas.Handle, PChar(s), Length(s), R1, DT_CENTER + DT_VCENTER + DT_SINGLELINE);
     R1.Offset(FColumnWidth, 0);
     if R1.Left > Width then begin
-      ShowHorizontalScrollbar:= true;
+      ShowHorizontalScrollbar:= True;
       MaxX:= x;
-      break;
+      Break;
     end;
   end;
 
   // cells
-  R1:= Rect(1 + tw, 1 + th, min(1 + tw + MaxX*FColumnWidth, Width - 1), 1 + th + FRowHeight);
+  R1:= Rect(1 + tw, 1 + th, Min(1 + tw + MaxX*FColumnWidth, Width - 1), 1 + th + FRowHeight);
   for y:= 1 to MaxY do begin
     if AlternatingRowColors and (y mod 2 = 0) then begin
       Canvas.Brush.Color:= $F5F5F5;
@@ -1268,19 +1268,19 @@ begin
     end;
     if y <= FItems.Count
       then s:= FItems[y-1]
-      else break;
+      else Break;
     R2:= R1;
     R2.Right:= R2.Left + FColumnWidth;
     R2.Inflate(-HalfX, -HalfX);
     p:= Pos(' ', s);
     while p > 0 do begin
-      s1:= copy(s, 1, p - 1);
-      delete(s, 1, p);
+      s1:= Copy(s, 1, p - 1);
+      Delete(s, 1, p);
       p:= Pos(' ', s);
       DrawText(Canvas.Handle, PChar(s1), Length(s1), R2, DT_LEFT + DT_VCENTER + DT_SINGLELINE);
       R2.Offset(FColumnWidth, 0);
       if R2.Left > Width then
-        break;
+        Break;
     end;
     DrawText(Canvas.Handle, PChar(s), Length(s), R2, DT_LEFT + DT_VCENTER + DT_SINGLELINE);
     R1.Offset(0, FRowHeight);
@@ -1311,7 +1311,7 @@ begin
   PaintScrollbars(ShowHorizontalScrollbar, ShowVerticalScrollbar);
 end;
 
-procedure TQtTableWidget.setRowCount(Value: integer);
+procedure TQtTableWidget.setRowCount(Value: Integer);
 begin
   if Value <> FRowCount then begin
     FRowCount:= Value;
@@ -1319,7 +1319,7 @@ begin
   end;
 end;
 
-procedure TQtTableWidget.setColumnCount(Value: integer);
+procedure TQtTableWidget.setColumnCount(Value: Integer);
 begin
   if Value <> FColumnCount then begin
     FColumnCount:= Value;
@@ -1355,19 +1355,19 @@ end;
 
 constructor TQtTreeView.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 118;
   Width:= 256;
   Height:= 104;
   FrameShadow:= Sunken;
   FAutoExpandDelay:= -1;
   FIndentation:= 20;
-  FItemsExpandable:= true;
-  FExpandsOnDoubleClick:= true;
+  FItemsExpandable:= True;
+  FExpandsOnDoubleClick:= True;
   FColumnWidth:= 100;
 end;
 
-function TQtTreeView.getAttributes(ShowAttributes: integer): string;
+function TQtTreeView.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Indentation|SortingEnabled|HeaderHidden|ColumnWidth';
   if ShowAttributes >= 2 then
@@ -1386,7 +1386,7 @@ end;
 
 const TVEvents = '|collapsed|expanded';
 
-function TQtTreeView.getEvents(ShowEvents: integer): string;
+function TQtTreeView.getEvents(ShowEvents: Integer): string;
 begin
   Result:= TVEvents + inherited getEvents(ShowEvents);
 end;
@@ -1434,7 +1434,7 @@ begin
   setAttributValue(key, key + '(' + Value + ')');
 end;
 
-procedure TQtTreeView.setColumnWidth(Value: integer);
+procedure TQtTreeView.setColumnWidth(Value: Integer);
 begin
   if Value <> FColumnWidth then begin
     fColumnWidth:= Value;
@@ -1442,7 +1442,7 @@ begin
   end;
 end;
 
-procedure TQtTreeView.setHeaderHidden(Value: boolean);
+procedure TQtTreeView.setHeaderHidden(Value: Boolean);
 begin
   if Value <> FHeaderHidden then begin
     FHeaderHidden:= Value;
@@ -1450,7 +1450,7 @@ begin
   end;
 end;
 
-procedure TQtTreeView.setIndentation(Value: integer);
+procedure TQtTreeView.setIndentation(Value: Integer);
 begin
   if Value <> FIndentation then begin
     FIndentation:= Value;
@@ -1462,7 +1462,7 @@ end;
 
 constructor TQtTreeWidget.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 88;
   FColumnCount:= 3;
   FItems:= TStringList.Create;
@@ -1484,7 +1484,7 @@ begin
   Partner.DeleteItems(Name, 'Item');
 end;
 
-function TQtTreeWidget.getAttributes(ShowAttributes: integer): string;
+function TQtTreeWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|ColumnCount|Items|Header';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -1506,7 +1506,7 @@ const
   EventsTableItems = '|itemCollapsed|itemExpanded';
   EventsTableOther = '|currentItemChanged|itemSelectionChanged';
 
-function TQtTreeWidget.getEvents(ShowEvents: integer): string;
+function TQtTreeWidget.getEvents(ShowEvents: Integer): string;
 begin
   Result:= EventsItemCol + EventsTableItems + EventsTableOther;
   Result:= Result + inherited getEvents(ShowEvents);
@@ -1537,18 +1537,18 @@ begin
 end;
 
 procedure TQtTreeWidget.MakeItems;
-  var i, ls, Indent: integer;
+  var i, ls, Indent: Integer;
       s: string;
 
-  function Itemname(Indent: integer): string;
+  function Itemname(Indent: Integer): string;
   begin
     if Indent = -1
       then Result:= 'self.' + Name
       else Result:= 'self.' + Name + 'Item' + IntToStr(Indent);
   end;
 
-  function MakeNode(Indent: integer; value: string): string;
-    var p, col: integer;
+  function MakeNode(Indent: Integer; value: string): string;
+    var p, col: Integer;
   begin
     Result:= surround(Itemname(Indent) + ' = QTreeWidgetItem(' +
                       Itemname(Indent - 1) + ')');
@@ -1556,11 +1556,11 @@ procedure TQtTreeWidget.MakeItems;
     p:= Pos(',', value);
     while p > 0 do begin
       Result:= Result + surround(Itemname(Indent) + '.setText(' + IntToStr(col) + ', ' +
-                                 asString(copy(value, 1, p-1)) + ')');
-      delete(value, 1, p);
-      value:= trim(value);
+                                 asString(Copy(value, 1, p-1)) + ')');
+      Delete(value, 1, p);
+      value:= Trim(value);
       p:= Pos(',', value);
-      inc(col);
+      Inc(col);
     end;
     Result:= Result + surround(Itemname(Indent) + '.setText(' + IntToStr(col) +
                                ', ' + asString(value) + ')');
@@ -1577,27 +1577,27 @@ begin
     ls:= LeftSpaces(Items[i], 2) div 2;
     if ls < Indent then begin  // close open items
       while ls < Indent do
-        dec(Indent);
-      dec(i);
+        Dec(Indent);
+      Dec(i);
     end else if ls > Indent then begin
-      inc(Indent);
-      s:= s + MakeNode(Indent, trim(Items[i]));
+      Inc(Indent);
+      s:= s + MakeNode(Indent, Trim(Items[i]));
     end else
-      s:= s + MakeNode(Indent, trim(Items[i]));
-    inc(i);
+      s:= s + MakeNode(Indent, Trim(Items[i]));
+    Inc(i);
   end;
   InsertValue(s);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
 procedure TQtTreeWidget.MakeHeader;
-  var i: integer; key, s: string;
+  var i: Integer; key, s: string;
 begin
   s:= '';
   for i:= 0 to FHeader.Count - 1 do
-    if trim(FHeader[i]) <> '' then
+    if Trim(FHeader[i]) <> '' then
       s:= s + ', ' + asString(FHeader[i]);
-  delete(S, 1, 2);
+  Delete(S, 1, 2);
   if s = '' then
     Partner.DeleteAttribute('self.' + Name + '.setHeaderLabels')
   else begin
@@ -1614,21 +1614,21 @@ begin
 end;
 
 procedure TQtTreeWidget.Paint;
-  var s: string; R1, R2: TRect; i, i2, i4, j, y, x, RowHeight: integer;
-      ShowVerticalScrollbar, ShowHorizontalScrollbar: boolean;
+  var s: string; R1, R2: TRect; i, i2, i4, j, y, x, RowHeight: Integer;
+      ShowVerticalScrollbar, ShowHorizontalScrollbar: Boolean;
       SL: TStringList;
 begin
   inherited;
   Canvas.Brush.Color:= clWhite;
   Canvas.FillRect(InnerRect);
   RowHeight:= HalfX + Canvas.TextHeight('A') + HalfX;
-  ShowHorizontalScrollbar:= false;
-  ShowVerticalScrollbar:= false;
+  ShowHorizontalScrollbar:= False;
+  ShowVerticalScrollbar:= False;
 
   // horizontal header
   R1:= Rect(1 + HalfX, 1, FColumnWidth - 1, 1 + RowHeight);
-  for x:= 1 to max(FColumnCount, Header.Count) do begin
-    if (x <= Header.Count) and (trim(Header[x-1]) <> '')
+  for x:= 1 to Max(FColumnCount, Header.Count) do begin
+    if (x <= Header.Count) and (Trim(Header[x-1]) <> '')
       then s:= Header[x-1]
       else s:= IntToStr(x);
     if not HeaderHidden then
@@ -1636,8 +1636,8 @@ begin
     R1.Offset(FColumnWidth, 0);
     if R1.Left > Width then begin
       if HorizontalScrollBarPolicy <> ScrollBarAlwaysOff then
-        ShowHorizontalScrollbar:= true;
-      break;
+        ShowHorizontalScrollbar:= True;
+      Break;
     end;
   end;
 
@@ -1654,13 +1654,13 @@ begin
         Canvas.FillRect(R2);
       end;
       SL:= Split(',', s);
-      s:= trim(SL[0]);
+      s:= Trim(SL[0]);
       DrawText(Canvas.Handle, PChar(s), Length(s), R1, DT_LEFT);
       R2:= R1;
       R2.Left:= R2.Left - FIndentation;
       for j:= 1 to SL.Count - 1 do begin
         R2.Offset(FColumnWidth, 0);
-        s:= trim(SL[j]);
+        s:= Trim(SL[j]);
         DrawText(Canvas.Handle, PChar(s), Length(s), R2, DT_LEFT);
       end;
       FreeAndNil(SL);
@@ -1679,8 +1679,8 @@ begin
       R1.Offset(0, RowHeight);
       if R1.Top > Height then begin
         if VerticalScrollBarPolicy <> ScrollBarAlwaysOff then
-          ShowVerticalScrollbar:= true;
-        break;
+          ShowVerticalScrollbar:= True;
+        Break;
       end;
     end;
   end;
@@ -1690,7 +1690,7 @@ begin
   PaintScrollbars(ShowHorizontalScrollbar, ShowVerticalScrollbar);
 end;
 
-procedure TQtTreeWidget.setColumnCount(Value: integer);
+procedure TQtTreeWidget.setColumnCount(Value: Integer);
 begin
   if Value <> FColumnCount then begin
     FColumnCount:= Value;

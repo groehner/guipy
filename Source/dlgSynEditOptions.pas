@@ -223,7 +223,7 @@ type
     procedure FillInKeystrokeInfo(AKey: TSynEditKeyStroke; AItem: TListItem);
     procedure UpdateKey(AKey: TSynEditKeyStroke);
     function SelectedHighlighter:TSynCustomHighlighter;
-    procedure EnableColorItems(AEnable:boolean);
+    procedure EnableColorItems(AEnable:Boolean);
     procedure UpdateColorFontStyle;
     procedure cmDialogChar(var msg: TCMDialogChar); message CM_DIALOGCHAR;
   public
@@ -367,7 +367,7 @@ begin
   inherited;
   FForm:= TEditorOptionsDialog.Create(Self);
   FPages := [soDisplay, soOptions, soKeystrokes];
-  FHighlighters := TList.create;
+  FHighlighters := TList.Create;
 end;
 
 destructor TSynEditOptionsDialog.Destroy;
@@ -383,7 +383,7 @@ function TSynEditOptionsDialog.Execute(EditOptions : TSynEditorOptionsContainer)
 type
   TSynHClass = class of TSynCustomHighlighter;
 var
-   HCount: integer;
+   HCount: Integer;
    SynH: TSynCustomHighlighter;
    InternalSynH : TSynCustomHighlighter;
    SynHClass : TSynHClass;
@@ -406,13 +406,13 @@ begin
 
   if soColor in FPages then
   begin
-     if assigned(FHighlighterCountEvent) then
+     if Assigned(FHighlighterCountEvent) then
      begin
         HCount := 0;
-        FHighlighterCountEvent(self, HCount);
+        FHighlighterCountEvent(Self, HCount);
      end;
 
-     if (HCount > 0) and assigned(FGetHighlighterEvent) then
+     if (HCount > 0) and Assigned(FGetHighlighterEvent) then
      begin
         if FForm.cbHighlighters.Items.Count <> HCount then
         begin
@@ -420,7 +420,7 @@ begin
 
            for var I := 0 to HCount - 1 do
            begin
-              FGetHighlighterEvent(self, I, SynH);
+              FGetHighlighterEvent(Self, I, SynH);
               if Assigned(SynH) then
               begin
                  SynHClass := TSynHClass(SynH.Classtype);
@@ -508,7 +508,7 @@ procedure TSynEditOptionsDialog.ClearHighlighters;
 var
   SynH: TSynCustomHighlighter;
 begin
-  for var I := 0 to FHighlighters.count-1 do
+  for var I := 0 to FHighlighters.Count-1 do
   begin
      SynH := FHighlighters[I];
      FHighlighters[I] := nil;
@@ -522,7 +522,7 @@ procedure TSynEditOptionsDialog.UpdateHighlighters;
 begin
    if Assigned(FSetHighlighterEvent) then
       for var I:= 0 to FHighlighters.Count-1 do
-         fSetHighlighterEvent(self, I, FHighlighters[I]);
+         fSetHighlighterEvent(Self, I, FHighlighters[I]);
 end;
 
 { TSynEditorOptionsContainer }

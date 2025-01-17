@@ -41,7 +41,7 @@ type
     procedure SetActive(const Value: Boolean);
   protected
     Feedback : IEldeanFeedback;
-    LoadedCount : integer;
+    LoadedCount : Integer;
     procedure HookChanges; virtual; abstract;
     procedure UnhookChanges; virtual; abstract;
     procedure AddChangeWatch(const AName: string);

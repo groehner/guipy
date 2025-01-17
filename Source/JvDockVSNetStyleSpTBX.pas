@@ -106,8 +106,8 @@ type
   TJvDockVSNETSplitterSpTBX = class(TJvDockVSNETSplitter)
   private
    FMouseLoc: TMouseLoc;
-   FMouseOver: boolean;
-   FMouseDown: boolean;
+   FMouseOver: Boolean;
+   FMouseDown: Boolean;
   protected
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
     procedure CMMouseEnter(var Message: TMessage); message CM_MOUSEENTER;
@@ -157,7 +157,7 @@ end;
 const
   TabSheetBorderSize = 2;  // to match SpTBX TabSheet border size
 
-procedure ResizeBitmap(Bitmap: TBitmap; const NewWidth, NewHeight: integer);
+procedure ResizeBitmap(Bitmap: TBitmap; const NewWidth, NewHeight: Integer);
 var
   buffer: TBitmap;
 begin
@@ -1049,8 +1049,8 @@ begin
   ResizeStyle := rsUpdate;
   Width := 5;
   FMouseLoc := mlNone;
-  FMouseOver := false;
-  FMouseDown := false;
+  FMouseOver := False;
+  FMouseDown := False;
   ControlStyle := ControlStyle + [csOpaque];
   //DoubleBuffered := True;
   SkinManager.AddSkinNotification(Self);
@@ -1058,7 +1058,7 @@ end;
 
 procedure TJvDockVSNETSplitterSpTBX.CMMouseLeave(var Message: TMessage);
 begin
-  FMouseOver := false;
+  FMouseOver := False;
   if not FMouseDown then
   begin
     FMouseLoc := mlNone;
@@ -1069,7 +1069,7 @@ end;
 procedure TJvDockVSNETSplitterSpTBX.MouseUp(Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
-  FMouseDown := false;
+  FMouseDown := False;
   if FMouseOver then
     FMouseLoc := mlOver
   else
@@ -1082,7 +1082,7 @@ procedure TJvDockVSNETSplitterSpTBX.CMMouseEnter(var Message: TMessage);
 begin
   if not FMouseDown then
   begin
-    FMouseOver := true;
+    FMouseOver := True;
     FMouseLoc := mlOver;
     Invalidate;
   end;
@@ -1097,7 +1097,7 @@ end;
 procedure TJvDockVSNETSplitterSpTBX.MouseDown(Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
-  FMouseDown := true;
+  FMouseDown := True;
   FMouseLoc := mlDown;
   inherited;
   Invalidate;
@@ -1218,7 +1218,7 @@ var
   R: TRect;
   ACanvas: TCanvas;
 begin
-  if not DoubleBuffered or (Message.wParam = WPARAM(Message.lParam)) then begin
+  if not DoubleBuffered or (Message.WParam = WParam(Message.lParam)) then begin
     if not (csDestroying in ComponentState) then begin
       if Assigned(PageControl) and Visible then begin
         ACanvas := TCanvas.Create;

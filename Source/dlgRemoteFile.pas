@@ -33,7 +33,7 @@ type
   TRemoteFileDialogType = (rfdOpen, rfdSave, rfdAdd, rfdSelect);
 
 function ExecuteRemoteFileDialog(var FileName, SSHServerName: string;
-  DialogType: TRemoteFileDialogType): boolean;
+  DialogType: TRemoteFileDialogType): Boolean;
 
 implementation
 

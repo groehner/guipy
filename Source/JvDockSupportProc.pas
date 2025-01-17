@@ -494,12 +494,12 @@ begin
     else
       { !! Call DefWindowProc, so messages like WM_QUERYENDSESSION are
            processed correctly, see Mantis #3527 }
-      Result := DefWindowProc(FHandle, Msg, wParam, lParam);
+      Result := DefWindowProc(FHandle, Msg, WParam, lParam);
 end;
 
 procedure JvScaleImageList(const ImgList: TCustomImageList; M, D: Integer);
 var
-  {ScaleFactor, }ii : integer;
+  {ScaleFactor, }ii : Integer;
   mb, ib, sib, smb : TBitmap;
   TmpImgList : TImageList;
 begin

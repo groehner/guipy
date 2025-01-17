@@ -46,20 +46,20 @@ type
     FName: string;
     FShortName: string;
     FPackage: string;
-    FStatic: boolean;
-    FFinal: boolean;
-    FHasFinal: boolean;
-    FIsAbstract: boolean;
-    FIsVisible: boolean;
-    FIsObject: boolean;
-    FLocked: boolean;
-    FLineS: integer;
-    FLineSE: integer;
-    FLineE: integer;
-    FSpalte: integer;
-    FScopeDepth: integer;
-    FHidden: boolean;
-    FLevel: integer;
+    FStatic: Boolean;
+    FFinal: Boolean;
+    FHasFinal: Boolean;
+    FIsAbstract: Boolean;
+    FIsVisible: Boolean;
+    FIsObject: Boolean;
+    FLocked: Boolean;
+    FLineS: Integer;
+    FLineSE: Integer;
+    FLineE: Integer;
+    FSpalte: Integer;
+    FScopeDepth: Integer;
+    FHidden: Boolean;
+    FLevel: Integer;
     procedure SetName(const Value: string); virtual;
     function GetShortName: string;
     function getFullName: string; virtual;
@@ -67,8 +67,8 @@ type
     class function GetBeforeListener: TGUID; virtual;
     class function GetAfterListener: TGUID; virtual;
     procedure SetVisibility(const Value: TVisibility);
-    procedure SetIsAbstract(const Value: boolean);
-    function GetLocked: boolean;
+    procedure SetIsAbstract(const Value: Boolean);
+    function GetLocked: Boolean;
     procedure Fire(Method: TListenerMethodType; Info: TModelEntity = nil); virtual;
     { IUnknown, required for listener }
     function QueryInterface(const IID: TGUID; out Obj): HResult; stdcall;
@@ -80,27 +80,27 @@ type
     procedure AddListener(NewListener: IUnknown);
     procedure RemoveListener(Listener: IUnknown);
     function GetFullNameWithoutOuter: string;
-    property Level: integer read FLevel write FLevel;
+    property Level: Integer read FLevel write FLevel;
     property Name: string read FName write SetName;
     property Fullname: string read GetFullName;
     property ShortName: string read GetShortName;
     property Package: string read GetPackage;
     property Owner: TModelEntity read FOwner write FOwner;
     property Visibility: TVisibility read FVisibility write SetVisibility;
-    property Static: boolean read FStatic write FStatic;
-    property IsFinal: boolean read FFinal write FFinal;
-    property hasFinal: boolean read FhasFinal write FhasFinal;
-    property IsAbstract: boolean read FIsAbstract write SetIsAbstract;
-    property Locked: boolean read GetLocked write FLocked;
+    property Static: Boolean read FStatic write FStatic;
+    property IsFinal: Boolean read FFinal write FFinal;
+    property hasFinal: Boolean read FhasFinal write FhasFinal;
+    property IsAbstract: Boolean read FIsAbstract write SetIsAbstract;
+    property Locked: Boolean read GetLocked write FLocked;
     property Root : TModelEntity read GetRoot;
     property Documentation : TDocumentation read FDocumentation;
-    property IsVisible: boolean read FIsVisible write FIsVisible;
-    property LineS: integer read FLineS write FLineS;
-    property LineSE: integer read FLineSE write FLineSE;
-    property LineE: integer read FLineE write FLineE;
-    property Spalte: integer read FSpalte write FSpalte;
-    property ScopeDepth: integer read FScopeDepth write FScopeDepth;
-    property Hidden: boolean read FHidden write FHidden;
+    property IsVisible: Boolean read FIsVisible write FIsVisible;
+    property LineS: Integer read FLineS write FLineS;
+    property LineSE: Integer read FLineSE write FLineSE;
+    property LineE: Integer read FLineE write FLineE;
+    property Spalte: Integer read FSpalte write FSpalte;
+    property ScopeDepth: Integer read FScopeDepth write FScopeDepth;
+    property Hidden: Boolean read FHidden write FHidden;
   end;
 
   TModelEntityClass = class of TModelEntity;
@@ -111,16 +111,16 @@ type
   //Basinterface for iterators
   IModelIterator = interface(IUnknown)
     ['{42329900-029F-46AE-96ED-6D4ABBEAFD4F}']
-    function HasNext : boolean;
+    function HasNext : Boolean;
     function Next : TModelEntity;
     procedure Reset;
-    function Count : integer;
+    function Count : Integer;
   end;
 
   //Basinterface for iteratorfilters
   IIteratorFilter = interface(IUnknown)
     ['{FD77FD42-456C-4B8A-A917-A2555881E164}']
-    function Accept(M : TModelEntity) : boolean;
+    function Accept(M : TModelEntity) : Boolean;
   end;
 
 implementation
@@ -132,7 +132,7 @@ uses Sysutils, Windows, uListeners;
 constructor TModelEntity.Create(aOwner: TModelEntity);
 begin
   Self.Owner:= aOwner;
-  FIsObject:= false;
+  FIsObject:= False;
   Listeners:= TInterfaceList.Create;
   FDocumentation:= TDocumentation.Create;
   FName:= '';
@@ -157,7 +157,7 @@ begin
 end;
 
 function TModelEntity.GetShortName: string;
-  var p: integer; s, vararg: string;
+  var p: Integer; s, vararg: string;
 begin
   if FShortName = '' then begin
     s:= FName;
@@ -165,12 +165,12 @@ begin
       // remove all long package types
       s:= FName;
       if s.EndsWith('...') then begin
-        delete(s, length(s)-2, 3);
+        Delete(s, Length(s)-2, 3);
         vararg:= '...'
       end else
         vararg:= '';
       p:= LastDelimiter('.', s);
-      delete(s, 1, p);
+      Delete(s, 1, p);
       s:= s + vararg;
     end;
     FShortName:= s;
@@ -186,7 +186,7 @@ begin
 end;
 
 function TModelEntity.GetFullNameWithoutOuter: string;
-  var p: integer;
+  var p: Integer;
 begin
   Result:= GetFullName;
   p:= Pos('.', Result);
@@ -194,18 +194,18 @@ begin
 end;
 
 function TModelEntity.GetPackage: string;
-  var i: integer;
+  var i: Integer;
 begin
   if FPackage = ' ' then begin
     i:= LastDelimiter('.', FName);
     if i > 0
-      then Result:= copy(FName, 1, i-1)
+      then Result:= Copy(FName, 1, i-1)
       else Result:= '';
   end else
     Result:= FPackage;
 end;
 
-function TModelEntity.GetLocked: boolean;
+function TModelEntity.GetLocked: Boolean;
 begin
 // Sant ifall detta object eller något ovanför i ownerhierarkien är låst
 // Sant Wenn dieses Objekt oder eine der oben ownerhierarkien ist gesperrt
@@ -228,7 +228,7 @@ end;
 
 procedure TModelEntity.SetName(const Value: string);
 var
-  OldName: string; i: integer;
+  OldName: string; i: Integer;
 begin
   OldName := FName;
   FName:= Value;
@@ -237,7 +237,7 @@ begin
     FShortName:= getShortName;
     i:= LastDelimiter('.', withoutGeneric(Value));
     if i > 0
-      then FPackage:= copy(FName, 1, i-1)
+      then FPackage:= Copy(FName, 1, i-1)
       else FPackage:= '';
   except
     FName := OldName;
@@ -261,9 +261,9 @@ begin
   Fire(mtAfterEntityChange)
 end;
 
-procedure TModelEntity.SetIsAbstract(const Value: boolean);
+procedure TModelEntity.SetIsAbstract(const Value: Boolean);
 var
-  Old: boolean;
+  Old: Boolean;
 begin
   Old := FIsAbstract;
   if Old <> Value then
@@ -281,11 +281,11 @@ end;
 
 procedure TModelEntity.Fire(Method: TListenerMethodType; Info: TModelEntity = nil);
 var
-  I: integer;
+  I: Integer;
   IL: IModelEntityListener;
   L: IUnknown;
 begin
-  if not Locked and assigned(Listeners) then
+  if not Locked and Assigned(Listeners) then
     for I := 0 to Listeners.Count - 1 do begin
       L := Listeners[I];
       case Method of

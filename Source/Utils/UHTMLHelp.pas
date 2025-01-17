@@ -106,15 +106,15 @@ var
 begin
   Result:= '';
   try
-    p:= Pos('.CHM', Uppercase(afile));
+    p:= Pos('.CHM', UpperCase(afile));
     CHMDatei:= Copy(afile, 1, p + 3);
-    Pfad:= Copy(afile, p + 5, length(afile));
+    Pfad:= Copy(afile, p + 5, Length(afile));
     OleCheck(CoCreateInstance(CLSID_ITStorage, nil, CLSCTX_INPROC_SERVER, IID_ITStorage, ItsStorage));
     OleCheck(ItsStorage.StgOpenStorage(PChar(CHMDatei), nil, STGM_READ or STGM_SHARE_DENY_WRITE, nil, 0, Storage));
     p:= Pos('\', Pfad);
     while p > 0 do begin
       ws:= Copy(Pfad, 1, p-1);
-      delete(Pfad, 1, p);
+      Delete(Pfad, 1, p);
       OleCheck(Storage.OpenStorage(PWideChar(ws), nil, STGM_READ or STGM_SHARE_DENY_WRITE, nil, 0, SubStorage));
       Storage := SubStorage;
       p:= Pos('\', Pfad);

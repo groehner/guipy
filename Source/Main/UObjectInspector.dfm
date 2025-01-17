@@ -60,7 +60,7 @@ object FObjectInspector: TFObjectInspector
       OnClick = BNewDeleteClick
     end
     object BMore: TButton
-      Left = 100
+      Left = 92
       Top = 0
       Width = 75
       Height = 25
@@ -68,7 +68,7 @@ object FObjectInspector: TFObjectInspector
       Caption = 'More'
       TabOrder = 1
       OnClick = BMoreClick
-      ExplicitLeft = 92
+      ExplicitLeft = 84
     end
   end
   object CBObjects: TComboBox

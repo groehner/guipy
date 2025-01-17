@@ -97,7 +97,7 @@ end;
 
 constructor TActionProxyCollection.Create(CreateType : TActionProxyCollectionCreateType);
 var
-  i, j, Index : integer;
+  i, j, Index : Integer;
   Action : TCustomAction;
   ActionList : TActionList;
   ActionProxyItem : TActionProxyItem;
@@ -129,25 +129,25 @@ end;
 function FindActionListByName(Name : string;
   ActionListArray: TActionListArray) : TActionList;
 var
-  i : integer;
+  i : Integer;
 begin
   Result := nil;
   for i := Low(TActionProxyCollection.ActionLists) to High(TActionProxyCollection.ActionLists) do
     if ActionListArray[i].Name = Name then begin
       Result := ActionListArray[i];
-      break;
+      Break;
     end;
 end;
 
 function FindActionByName(Name : string; ActionList : TActionList): TCustomAction;
 var
-  i : integer;
+  i : Integer;
 begin
   Result := nil;
   for i := 0 to ActionList.ActionCount - 1 do
     if ActionList.Actions[i].Name = Name then begin
       Result := ActionList.Actions[i] as TCustomAction;
-      break;
+      Break;
     end;
 end;
 
@@ -160,8 +160,8 @@ end;
 
 procedure TActionProxyCollection.ApplyShortCuts();
 var
-  i : integer;
-  Index : integer;
+  i : Integer;
+  Index : Integer;
   ActionProxyItem : TActionProxyItem;
   ActionList : TActionList;
   Action : TCustomAction;
@@ -172,7 +172,7 @@ begin
     if Assigned(ActionList) then begin
       Action := FindActionByName(ActionProxyItem.ActionName, ActionList);
       if Assigned(Action) then begin
-        if SameShortcuts(Action, ActionProxyItem) then continue;
+        if SameShortcuts(Action, ActionProxyItem) then Continue;
 
         Action.ShortCut := ActionProxyItem.ShortCut;
         Action.SecondaryShortCuts.Clear;

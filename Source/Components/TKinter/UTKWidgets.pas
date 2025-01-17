@@ -28,16 +28,16 @@ type
     procedure setPadX(aValue: string);
     procedure setPadY(aValue: string);
   protected
-    procedure CalculateText(var tw, th: integer; var SL: TStringlist); override;
-    procedure CalculatePadding(var pl, pt, pr, pb: integer); override;
+    procedure CalculateText(var tw, th: Integer; var SL: TStringlist); override;
+    procedure CalculatePadding(var pl, pt, pr, pb: Integer); override;
     function getCompound: TUCompound; override;
     function getText: string; virtual;
     procedure setText(aValue: string); virtual;
     procedure Paint; override;
-    procedure PaintBorder(R: TRect; Relief: TRelief; BorderWidth: integer); override;
+    procedure PaintBorder(R: TRect; Relief: TRelief; BorderWidth: Integer); override;
  public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
 
     property ActiveBackground: TColor read FActiveBackground write FActiveBackground;
     property DisabledForeground: TColor read FDisabledForeground write FDisabledForeground;
@@ -95,11 +95,11 @@ begin
   end;
 end;
 
-procedure TKWidget.PaintBorder(R: TRect; Relief: TRelief; BorderWidth: integer);
+procedure TKWidget.PaintBorder(R: TRect; Relief: TRelief; BorderWidth: Integer);
   var LightBackground, DarkBackground: TColor;
 
   procedure PaintTopLeft(C1, C2: TColor);
-    var i: integer;
+    var i: Integer;
   begin
     Canvas.Pen.Color:= C1;
     for i:= 0 to BorderWidth div 2 do begin
@@ -116,7 +116,7 @@ procedure TKWidget.PaintBorder(R: TRect; Relief: TRelief; BorderWidth: integer);
   end;
 
   procedure PaintBottomRight(C1, C2: TColor);
-    var i: integer;
+    var i: Integer;
   begin
     Canvas.Pen.Color:= C1;
     for i:= BorderWidth div 2 + 1 to BorderWidth do begin
@@ -160,24 +160,24 @@ begin
   end;
 end;
 
-procedure TKWidget.CalculateText(var tw, th: integer; var SL: TStringlist);
-  var s: string; p: integer;
+procedure TKWidget.CalculateText(var tw, th: Integer; var SL: TStringlist);
+  var s: string; p: Integer;
 begin
   s:= getText;
   p:= Pos('\n', s);
   while p > 0 do begin
-    SL.Add(copy(s, 1, p-1));
-    delete(s, 1, p+1);
+    SL.Add(Copy(s, 1, p-1));
+    Delete(s, 1, p+1);
     p:= Pos('\n', s);
   end;
   SL.Add(s);
   tw:= 0;
   for p:= 0 to SL.Count - 1 do
-    tw:= max(tw, Canvas.TextWidth(SL[p]));
+    tw:= Max(tw, Canvas.TextWidth(SL[p]));
   th:= SL.Count * Canvas.TextHeight('Hg');
 end;
 
-procedure TKWidget.CalculatePadding(var pl, pt, pr, pb: integer);
+procedure TKWidget.CalculatePadding(var pl, pt, pr, pb: Integer);
 begin
   if not TryStrToInt(FPadX, pl) then pl:= 0;
   if not TryStrToInt(FPadY, pt) then pt:= 0;
@@ -210,7 +210,7 @@ begin
   inherited;
 end;
 
-function TKWidget.getAttributes(ShowAttributes: integer): string;
+function TKWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Background';
   if ShowAttributes >= 2 then

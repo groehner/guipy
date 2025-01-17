@@ -198,7 +198,7 @@ type
     procedure ShowConnections;
 
     // Unselect all selected objects
-    procedure ClearSelection(WithShowAll: Boolean = true);
+    procedure ClearSelection(WithShowAll: Boolean = True);
     function SelectionChangedOnClear: Boolean;
     procedure ClearMarkerAndConnections(AControl: TControl);
     procedure ShowAll;
@@ -217,7 +217,7 @@ type
     procedure CloseEdit;
     procedure EditBox(Control: TControl);
     procedure SetModified(const Value: Boolean);
-    procedure ChangeStyle(BlackAndWhite: Boolean = false);
+    procedure ChangeStyle(BlackAndWhite: Boolean = False);
     function getSVGConnections: string;
     procedure BeginUpdate;
     procedure EndUpdate;
@@ -238,7 +238,7 @@ type
     property BevelOuter;
     property BevelWidth;
     property BiDiMode;
-    property UseDockManager default true;
+    property UseDockManager default True;
     property DockSite;
     property DragCursor;
     property DragKind;
@@ -308,7 +308,7 @@ begin
     Height := Max(Height, AObject.Top + AObject.Height + 50);
 
   AObject.Parent := Self;
-  AObject.Visible := true;
+  AObject.Visible := True;
   if FindManagedControl(AObject) = nil then
   begin
     newObj := TManagedObject.Create;
@@ -337,7 +337,7 @@ end;
 procedure TEssConnectPanel.ClearManagedObjects;
 begin
   FConnections.Clear;
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
   begin
     for var i := 0 to FManagedObjects.Count - 1 do
     begin
@@ -348,56 +348,56 @@ begin
     FManagedObjects.Clear;
   end;
   SetBounds(0, 0, 0, 0);
-  FIsModified := false;
+  FIsModified := False;
 end;
 
 function TEssConnectPanel.SelectionChangedOnClear: Boolean;
 var
   i: Integer;
 begin
-  Result := false;
-  if assigned(FManagedObjects) then
+  Result := False;
+  if Assigned(FManagedObjects) then
   begin
     for i := 0 to FManagedObjects.Count - 1 do
       if TManagedObject(FManagedObjects[i]).Selected and
         TManagedObject(FManagedObjects[i]).Control.Visible then
       begin
-        TManagedObject(FManagedObjects[i]).Selected := false;
-        Result := true;
+        TManagedObject(FManagedObjects[i]).Selected := False;
+        Result := True;
       end;
   end;
   for i := 0 to FConnections.Count - 1 do
     if TConnection(FConnections[i]).Selected then
     begin
-      TConnection(FConnections[i]).Selected := false;
-      TConnection(FConnections[i]).DrawSelection(Canvas, false);
-      Result := true;
+      TConnection(FConnections[i]).Selected := False;
+      TConnection(FConnections[i]).DrawSelection(Canvas, False);
+      Result := True;
     end;
 end;
 
-procedure TEssConnectPanel.ClearSelection(WithShowAll: Boolean = true);
+procedure TEssConnectPanel.ClearSelection(WithShowAll: Boolean = True);
 var
   i: Integer;
 begin
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for i := 0 to FManagedObjects.Count - 1 do
-      TManagedObject(FManagedObjects[i]).Selected := false;
-  if assigned(FConnections) then
+      TManagedObject(FManagedObjects[i]).Selected := False;
+  if Assigned(FConnections) then
     for i := 0 to FConnections.Count - 1 do
-      TConnection(FConnections[i]).Selected := false;
+      TConnection(FConnections[i]).Selected := False;
   if WithShowAll then
     ShowAll;
 end;
 
 procedure TEssConnectPanel.ClearMarkerAndConnections(AControl: TControl);
 begin
-  DrawMarkers((AControl as TRtfdBox).GetBoundsRect, false);
+  DrawMarkers((AControl as TRtfdBox).GetBoundsRect, False);
   for var i := 0 to FConnections.Count - 1 do
   begin
     var
     conn := (FConnections[i] as TConnection);
     if conn.Visible and ((conn.FFrom = AControl) or (conn.FTo = AControl)) then
-      conn.Draw(Canvas, false);
+      conn.Draw(Canvas, False);
   end;
 end;
 
@@ -410,7 +410,7 @@ var
 begin
   HideConnections;
 
-  if assigned(FManagedObjects) and (UpdateCounter = 0) then
+  if Assigned(FManagedObjects) and (UpdateCounter = 0) then
   begin
     Anz := FManagedObjects.Count;
     SetLength(ZOrderArr, Anz);
@@ -432,21 +432,21 @@ begin
     begin
       for j := 0 to Anz - 1 do
         if ZOrderArr[j] = NextZ then
-          break;
+          Break;
       if (j <= Anz - 1) and TManagedObject(FManagedObjects[j]).FControl.Visible
       then
       begin
         aBox := TManagedObject(FManagedObjects[j]).FControl as TRtfdBox;
         aBox.Paint;
       end;
-      inc(NextZ);
+      Inc(NextZ);
     end;
   end;
 end;
 
 procedure TEssConnectPanel.CloseEdit;
 begin
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
   begin
     for var i := 0 to FManagedObjects.Count - 1 do
     begin
@@ -459,7 +459,7 @@ end;
 
 procedure TEssConnectPanel.EditBox(Control: TControl);
 begin
-  if assigned(OnClassEditSelectedDiagramElements) then
+  if Assigned(OnClassEditSelectedDiagramElements) then
     OnClassEditSelectedDiagramElements(Control);
 end;
 
@@ -474,7 +474,7 @@ procedure TEssConnectPanel.ShowAllIntersecting(R: TRect);
   end;
 
 begin
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for var i := 0 to FManagedObjects.Count - 1 do
     begin
       var
@@ -533,7 +533,7 @@ begin
   can := TCanvas.Create;
   try
     can.handle := message.DC;
-    if assigned(FBackBitmap) then
+    if Assigned(FBackBitmap) then
       can.Brush.Bitmap := FBackBitmap
     else
       can.Brush.Color := Color;
@@ -554,8 +554,8 @@ begin
     conn1 := TConnection(FConnections[i]);
     conn1.parallelindex := 0;
     conn1.parallelcount := 0;
-    conn1.parallelvisited := false;
-    conn1.parallelvisiting := false;
+    conn1.parallelvisited := False;
+    conn1.parallelvisiting := False;
   end;
   for i := 0 to FConnections.Count - 2 do
   begin
@@ -568,8 +568,8 @@ begin
         if (conn1.FFrom = conn2.FFrom) and (conn1.FTo = conn2.FTo) or
           (conn1.FFrom = conn2.FTo) and (conn1.FTo = conn2.FFrom) then
         begin
-          inc(conn1.parallelcount);
-          conn2.parallelvisiting := true; // simplify second search
+          Inc(conn1.parallelcount);
+          conn2.parallelvisiting := True; // simplify second search
         end;
       end;
       parallelindex := 0;
@@ -580,13 +580,13 @@ begin
           conn2 := TConnection(FConnections[j]);
           if not conn2.parallelvisited and conn2.parallelvisiting then
           begin
-            conn2.parallelvisited := true;
-            inc(parallelindex);
+            conn2.parallelvisited := True;
+            Inc(parallelindex);
             conn2.parallelindex := parallelindex;
             conn2.parallelcount := parallelcount;
           end;
         end;
-      conn1.parallelvisited := true;
+      conn1.parallelvisited := True;
     end;
   end;
   for i := 0 to FConnections.Count - 1 do
@@ -621,13 +621,13 @@ begin
       Attributes.Visible := (FShowConnections = 0) or
         ((FShowConnections = 1) and (Src.ClassType = Dst.ClassType));
       if Arrow = asComment then
-        Attributes.isEdited := true;
+        Attributes.isEdited := True;
 
       ConnectObjects(Src, Dst, Attributes);
     finally
       FreeAndNil(Attributes);
     end;
-    ClearSelection(false);
+    ClearSelection(False);
   end;
 end;
 
@@ -662,11 +662,11 @@ begin
   Name := 'TessConnectPanel';
   myForm := AOwner as TForm;
   FManagedObjects := TList.Create;
-  FConnections := TObjectList.Create(true);
+  FConnections := TObjectList.Create(True);
   FShowConnections := 0;
-  TempHidden := TObjectList.Create(false);
-  UseDockManager := true;
-  MouseDownOK := true;
+  TempHidden := TObjectList.Create(False);
+  UseDockManager := True;
+  MouseDownOK := True;
   FUpdateCounter := 0;
   ChangeStyle;
   SetFocus;
@@ -683,7 +683,7 @@ begin
   inherited;
   var
   found := FindVCLWindow(Mouse.CursorPos);
-  if assigned(found) then
+  if Assigned(found) then
   begin
     FindManagedControl(found);
     if found <> Self then
@@ -703,8 +703,8 @@ begin
     var
     conn := TConnection(FConnections[Result]);
     if conn.IsClicked(P) then
-      exit;
-    inc(Result);
+      Exit;
+    Inc(Result);
   end;
   Result := -1;
 end;
@@ -735,9 +735,9 @@ procedure TEssConnectPanel.DeleteConnection(i: Integer);
 begin
   var
   conn := TConnection(FConnections[i]);
-  conn.Selected := false;
-  conn.DrawSelection(Canvas, false);
-  conn.Draw(Canvas, false);
+  conn.Selected := False;
+  conn.DrawSelection(Canvas, False);
+  conn.Draw(Canvas, False);
   FConnections.Delete(i);
 end;
 
@@ -751,8 +751,8 @@ begin
     var
     conn := TConnection(FConnections[i]);
     if conn.IsClicked(P) then
-      break;
-    inc(i);
+      Break;
+    Inc(i);
   end;
   if (i < FConnections.Count) then
   begin
@@ -773,16 +773,16 @@ begin
     if conn = nil then
       case SelectedControls of
         1:
-          FAssociation.init(false, conn, 1);
+          FAssociation.init(False, conn, 1);
         2:
-          FAssociation.init(false, conn, 2)
+          FAssociation.init(False, conn, 2)
       else
-        exit;
+        Exit;
       end
     else
-      FAssociation.init(false, conn, SelectedControls);
+      FAssociation.init(False, conn, SelectedControls);
     case FAssociation.ShowModal of
-      mrOK:
+      mrOk:
         begin
           var
           Attributes := FAssociation.getConnectionAttributes;
@@ -813,7 +813,7 @@ begin
     end;
     Invalidate;
     ShowAll;
-    IsModified := true;
+    IsModified := True;
   finally
     FAssociation.Release;
   end;
@@ -828,11 +828,11 @@ begin
     SelectedControls := CountSelectedControls;
     case SelectedControls of
       1:
-        FAssociation.init(false, nil, 1);
+        FAssociation.init(False, nil, 1);
       2:
-        FAssociation.init(false, nil, 2)
+        FAssociation.init(False, nil, 2)
     else
-      exit;
+      Exit;
     end;
     if Dest is TRtfdCommentBox then
     begin
@@ -842,7 +842,7 @@ begin
       ConnectObjects(Src, Dest, Attributes);
       FreeAndNil(Attributes);
     end
-    else if FAssociation.ShowModal = mrOK then
+    else if FAssociation.ShowModal = mrOk then
     begin
       var
       Attributes := FAssociation.getConnectionAttributes;
@@ -854,9 +854,9 @@ begin
       end;
       FreeAndNil(Attributes);
     end;
-    ClearSelection(true);
+    ClearSelection(True);
     // Invalidate;
-    IsModified := true;
+    IsModified := True;
   finally
     FAssociation.Release;
   end;
@@ -885,7 +885,7 @@ begin
       end;
     end;
     ShowAll;
-    FIsModified := true;
+    FIsModified := True;
   end;
 end;
 
@@ -894,8 +894,8 @@ var
   i, aLeft, Right, aTop, Bottom, VMiddle, HMiddle: Integer;
   Control: TControl;
 begin
-  if not assigned(FManagedObjects) then
-    exit;
+  if not Assigned(FManagedObjects) then
+    Exit;
   aLeft := +MaxInt;
   Right := -MaxInt;
   aTop := +MaxInt;
@@ -952,7 +952,7 @@ function TEssConnectPanel.FindManagedControl(AControl: TControl)
   : TManagedObject;
 begin
   Result := nil;
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for var i := 0 to FManagedObjects.Count - 1 do
     begin
       var
@@ -960,7 +960,7 @@ begin
       if curr.FControl = AControl then
       begin
         Result := curr;
-        exit;
+        Exit;
       end;
     end;
 end;
@@ -1011,7 +1011,7 @@ begin
     if TConnection(FConnections[i]).Selected then
     begin
       DeleteConnection(i);
-      IsModified := true;
+      IsModified := True;
     end;
   EditParallelConnections;
 end;
@@ -1028,12 +1028,12 @@ end;
 
 function TEssConnectPanel.HasSelectedConnection: Boolean;
 begin
-  Result := false;
+  Result := False;
   for var i := FConnections.Count - 1 downto 0 do
     if TConnection(FConnections[i]).Selected then
     begin
-      Result := true;
-      break;
+      Result := True;
+      Break;
     end;
 end;
 
@@ -1044,7 +1044,7 @@ begin
     if TConnection(FConnections[i]).Selected then
     begin
       Result := TConnection(FConnections[i]);
-      exit;
+      Exit;
     end;
 end;
 
@@ -1058,7 +1058,7 @@ begin
       ((conn.FFrom = Dest) and (conn.FTo = Src)) then
     begin
       Result := i;
-      exit;
+      Exit;
     end;
   end;
   Result := -1;
@@ -1075,7 +1075,7 @@ begin
       (conn.ArrowStyle = ArrowStyle) then
     begin
       Result := i;
-      exit;
+      Exit;
     end;
   end;
   Result := -1;
@@ -1090,7 +1090,7 @@ begin
     conn := TConnection(FConnections[i]);
     if ((conn.FFrom = Src) and (conn.FTo = Dest)) or
       ((conn.FFrom = Dest) and (conn.FTo = Src)) then
-      inc(Result);
+      Inc(Result);
   end;
 end;
 
@@ -1136,7 +1136,7 @@ function TEssConnectPanel.getRecursivXDecrease(Control: TControl): Integer;
 begin
   var
   conn := getRecursivConnection(Control);
-  if assigned(conn) then
+  if Assigned(conn) then
     Result := conn.XDecrease
   else
     Result := 0;
@@ -1146,7 +1146,7 @@ function TEssConnectPanel.getRecursivYDecrease(Control: TControl): Integer;
 begin
   var
   conn := getRecursivConnection(Control);
-  if assigned(conn) then
+  if Assigned(conn) then
     Result := conn.YDecrease
   else
     Result := 0;
@@ -1163,7 +1163,7 @@ end;
 function TEssConnectPanel.GetManagedObjects: TList;
 begin
   Result := TList.Create;
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for var i := 0 to FManagedObjects.Count - 1 do
       Result.Add(TManagedObject(FManagedObjects[i]).FControl);
 end;
@@ -1172,35 +1172,35 @@ function TEssConnectPanel.CountSelectedControls: Integer;
 begin
   var
   n := 0;
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for var i := 0 to FManagedObjects.Count - 1 do
       if TManagedObject(FManagedObjects[i]).FSelected then
-        inc(n);
+        Inc(n);
   Result := n;
 end;
 
 function TEssConnectPanel.HasSelectedControls: Boolean;
 begin
-  Result := false;
-  if assigned(FManagedObjects) then
+  Result := False;
+  if Assigned(FManagedObjects) then
     for var i := 0 to FManagedObjects.Count - 1 do
       if TManagedObject(FManagedObjects[i]).FSelected then
-        exit(true);
+        Exit(True);
 end;
 
 function TEssConnectPanel.GetFirstSelected: TControl;
 begin
   Result := nil;
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for var i := 0 to FManagedObjects.Count - 1 do
       if TManagedObject(FManagedObjects[i]).FSelected then
-        exit(TManagedObject(FManagedObjects[i]).FControl);
+        Exit(TManagedObject(FManagedObjects[i]).FControl);
 end;
 
 function TEssConnectPanel.GetSelectedControls: TObjectList;
 begin
-  Result := TObjectList.Create(false);
-  if assigned(FManagedObjects) then
+  Result := TObjectList.Create(False);
+  if Assigned(FManagedObjects) then
     for var i := 0 to FManagedObjects.Count - 1 do
       if TManagedObject(FManagedObjects[i]).FSelected then
         Result.Add(TManagedObject(FManagedObjects[i]).FControl);
@@ -1213,7 +1213,7 @@ var
   conn: TConnection;
   ManagedObject: TManagedObject;
 begin
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for i := FManagedObjects.Count - 1 downto 0 do
       if TManagedObject(FManagedObjects[i]).FSelected then
       begin
@@ -1227,11 +1227,11 @@ begin
         end;
         FManagedObjects.Delete(i);
         FreeAndNil(ManagedObject);
-        IsModified := true;
+        IsModified := True;
       end;
   EditParallelConnections;
   RecalcSize;
-  ClearSelection(false);
+  ClearSelection(False);
 end;
 
 // central MouseDown routine for TessConnectPanel
@@ -1247,26 +1247,26 @@ var
 begin
   if not MouseDownOK then
   begin
-    MouseDownOK := true;
-    exit
+    MouseDownOK := True;
+    Exit
   end;
   if not(ssDouble in Shift) then
     CloseEdit;
   // repaint TrMemo
-  if assigned(Application.MainForm.ActiveControl) and
+  if Assigned(Application.MainForm.ActiveControl) and
     (Application.MainForm.ActiveControl is TMemo) then
     (Application.MainForm.ActiveControl as TMemo).Parent.Invalidate;
-  if not Focused and assigned(OnFormMouseDown) then
+  if not Focused and Assigned(OnFormMouseDown) then
     OnFormMouseDown(Self);
   SetFocus; // a TPanel can have the Focus
   if GetCaptureControl <> Self then
     SetCaptureControl(Self);
-  FIsRectSelecting := false;
-  FIsMoving := false;
-  FResized := false;
+  FIsRectSelecting := False;
+  FIsMoving := False;
+  FResized := False;
   FMemMousePos.X := X;
   FMemMousePos.Y := Y;
-  aChanged := false;
+  aChanged := False;
 
   if (Button = mbRight) and (CountSelectedControls > 1) then
     PopupMenuAlign.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y)
@@ -1275,10 +1275,10 @@ begin
     found := FindVCLWindow(Mouse.CursorPos);
     if found = Self then
       found := nil;
-    if assigned(found) then
+    if Assigned(found) then
     begin
       mcont := FindManagedControl(found);
-      if assigned(mcont) then
+      if Assigned(mcont) then
       begin
         if not mcont.Selected then
         begin
@@ -1292,37 +1292,37 @@ begin
             SelectionChangedOnClear;
           if mcont.Control.Visible then
           begin
-            mcont.Selected := true;
-            aChanged := true;
+            mcont.Selected := True;
+            aChanged := True;
           end;
         end
         else if CtrlPressed then
         begin
-          mcont.Selected := false;
-          aChanged := true;
+          mcont.Selected := False;
+          aChanged := True;
         end;
         if aChanged then
           ShowAll;
         if CountSelectedControls > 0 then
-          FIsMoving := true;
+          FIsMoving := True;
       end;
     end
     else
     begin
       cconn := GetClickedConnection;
-      if assigned(cconn) then
+      if Assigned(cconn) then
       begin
         if not cconn.Selected then
         begin
           if not CtrlPressed then
             SelectionChangedOnClear;
-          cconn.Selected := true;
-          aChanged := true;
+          cconn.Selected := True;
+          aChanged := True;
         end
         else if CtrlPressed then
         begin
-          cconn.Selected := false;
-          aChanged := true;
+          cconn.Selected := False;
+          aChanged := True;
         end;
         if aChanged then
           ShowAll;
@@ -1332,7 +1332,7 @@ begin
         if SelectionChangedOnClear then
           ShowAll;
         if Button = mbLeft then
-          FIsRectSelecting := true;
+          FIsRectSelecting := True;
       end;
     end;
   end;
@@ -1391,7 +1391,7 @@ var
       P.X := P.X + mdx;
       P.Y := P.Y + mdy;
       Mouse.CursorPos := P;
-      resized := true;
+      resized := True;
     end;
   end;
 
@@ -1437,7 +1437,7 @@ var
             aConnection := TConnection(FConnections[i]);
             if (i <> k) and aConnection.Visible and
               aConnection.square.intersects(Connect.square) then
-              aConnection.cutted := true;
+              aConnection.cutted := True;
           end;
       end;
     end;
@@ -1465,7 +1465,7 @@ var
           not((aConnection.FFrom = Src) or (aConnection.FTo = Src)) and
           aConnection.square.intersects(SrcRect) then
           // mark cutted connections of moved control
-          aConnection.cutted := true;
+          aConnection.cutted := True;
       end;
 
     if not(mcont.FControl is TRtfdCommentBox) then
@@ -1476,14 +1476,14 @@ begin // of MouseMove
   inherited;
 
   if Shift = [] then
-    exit;
+    Exit;
   pt1 := Mouse.CursorPos;
   pt.X := X;
   pt.Y := Y;
   dx := pt.X - FMemMousePos.X;
   dy := pt.Y - FMemMousePos.Y;
   if (dx = 0) and (dy = 0) then
-    exit;
+    Exit;
 
   IntersectRect(R, Parent.ClientRect, BoundsRect);
   R.TopLeft := Parent.ClientToScreen(R.TopLeft);
@@ -1510,18 +1510,18 @@ begin // of MouseMove
       // Move the selected boxes
       if (Abs(dx) + Abs(dy) > 5) or FIsMoving then
       begin
-        resized := false;
+        resized := False;
         MovedRect := Rect(MaxInt, 0, 0, 0);
         SelControls := CountSelectedControls;
         Handle_Shadow := Max(HANDLESIZE - GuiPyOptions.ShadowWidth, 0);
 
-        if assigned(FManagedObjects) then
+        if Assigned(FManagedObjects) then
           for i := 0 to FManagedObjects.Count - 1 do
           begin
             mcont := TManagedObject(FManagedObjects[i]);
             if mcont.Control.Visible and mcont.Selected then
             begin
-              ShowConnectionsAndMarkers(false);
+              ShowConnectionsAndMarkers(False);
               curr := TCrackControl(mcont.FControl);
               mRectDxDy := curr.BoundsRect;
               mRectDxDy.TopLeft.Offset(-HANDLESIZE, -HANDLESIZE);
@@ -1554,13 +1554,13 @@ begin // of MouseMove
               if curr.Left + curr.Width + 30 > Width then
               begin
                 Width := curr.Left + curr.Width + 30;
-                resized := true;
+                resized := True;
               end;
               if curr.Top + curr.Height + 30 > Height then
               begin
                 Height := curr.Top + curr.Height + 30;
                 // ToDo wird nicht vergrößert
-                resized := true;
+                resized := True;
               end;
 
               if MovedRect.Left = MaxInt then
@@ -1570,7 +1570,7 @@ begin // of MouseMove
               // debug
               // Canvas.Brush.Color:= clRed;
               // Canvas.FrameRect(MovedRect);
-              ShowConnectionsAndMarkers(true);
+              ShowConnectionsAndMarkers(True);
               ShowAll; // (mcont.FControl as TRtfdBox).Paint;
             end;
           end;
@@ -1582,9 +1582,9 @@ begin // of MouseMove
         // Canvas.Brush.Color:= clRed;
         // Canvas.FrameRect(MovedRect);
 
-        IsModified := true;
+        IsModified := True;
         FMemMousePos := pt;
-        FIsMoving := true;
+        FIsMoving := True;
 
         if MovedRect.Left <> MaxInt then
           InMakeVisible(MovedRect);
@@ -1598,9 +1598,9 @@ begin // of MouseMove
         else
           ShowCuttedConnections;
       end
-      else if assigned(found) then
+      else if Assigned(found) then
       begin
-        if assigned(TCrackControl(found).OnMouseMove) then
+        if Assigned(TCrackControl(found).OnMouseMove) then
         begin
           p2 := found.ScreenToClient(pt);
           TCrackControl(found).OnMouseMove(found, Shift, p2.X, p2.Y);
@@ -1618,7 +1618,7 @@ var
   found: TControl;
 begin
   inherited;
-  FIsMoving := false;
+  FIsMoving := False;
   pt.X := X;
   pt.Y := Y;
   IntersectRect(R, Parent.ClientRect, BoundsRect);
@@ -1647,16 +1647,16 @@ begin
     begin
       // if GetCaptureControl <> Self then     SetCaptureControl(Self);
       found := FindVCLWindow(Mouse.CursorPos);
-      if assigned(found) and (found <> Self) and found.Visible then
+      if Assigned(found) and (found <> Self) and found.Visible then
       begin
         if (found is TMemo) then
           found := (found as TMemo).Parent;
 
-        if assigned(TCrackControl(found).PopupMenu) and (Button = mbRight) then
+        if Assigned(TCrackControl(found).PopupMenu) and (Button = mbRight) then
           TCrackControl(found).PopupMenu.Popup(Mouse.CursorPos.X,
             Mouse.CursorPos.Y);
 
-        if assigned(TCrackControl(found).OnMouseUp) then
+        if Assigned(TCrackControl(found).OnMouseUp) then
         begin
           p2 := found.ScreenToClient(Mouse.CursorPos);
           TCrackControl(found).OnMouseUp(found, Button, Shift, p2.X, p2.Y);
@@ -1669,7 +1669,7 @@ begin
           PopupMenuWindow.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y)
     end;
   end;
-  FIsRectSelecting := false;
+  FIsRectSelecting := False;
 end;
 
 function TEssConnectPanel.DoMouseWheel(Shift: TShiftState; WheelDelta: Integer;
@@ -1682,14 +1682,14 @@ var
 begin
   mdy := TScrollBox(Parent).VertScrollBar.Position - WheelDelta;
   TScrollBox(Parent).VertScrollBar.Position := mdy;
-  Result := true;
+  Result := True;
 end;
 
 procedure TEssConnectPanel.OnManagedObjectClick(Sender: TObject);
 begin
   var
   inst := FindManagedControl(Sender as TControl);
-  if assigned(inst) and assigned(inst.FOnClick) then
+  if Assigned(inst) and Assigned(inst.FOnClick) then
     inst.FOnClick(Sender);
 end;
 
@@ -1697,9 +1697,9 @@ procedure TEssConnectPanel.OnManagedObjectDblClick(Sender: TObject);
 begin
   var
   inst := FindManagedControl(Sender as TControl);
-  if assigned(inst) and assigned(inst.FOnDblClick) then
+  if Assigned(inst) and Assigned(inst.FOnDblClick) then
   begin
-    MouseDownOK := false;
+    MouseDownOK := False;
     ClearSelection;
     inst.FOnDblClick(Sender);
   end;
@@ -1726,7 +1726,7 @@ procedure TEssConnectPanel.OnManagedObjectMouseMove(Sender: TObject;
 begin
   var
   inst := FindManagedControl(Sender as TControl);
-  if assigned(inst) and assigned(inst.FOnMouseMove) then
+  if Assigned(inst) and Assigned(inst.FOnMouseMove) then
     inst.FOnMouseMove(Sender, Shift, X, Y);
 end;
 
@@ -1735,14 +1735,14 @@ procedure TEssConnectPanel.OnManagedObjectMouseUp(Sender: TObject;
 begin
   var
   inst := FindManagedControl(Sender as TControl);
-  if assigned(inst) and assigned(inst.FOnMouseUp) then
+  if Assigned(inst) and Assigned(inst.FOnMouseUp) then
     inst.FOnMouseUp(Sender, Button, Shift, X, Y);
 end;
 
 procedure TEssConnectPanel.Paint;
 begin
   if IsMoving or (UpdateCounter > 0) then
-    exit; // this inhibits painting while moving
+    Exit; // this inhibits painting while moving
   Canvas.Pen.Mode := pmCopy;
   var
   Rect := ClientRect;
@@ -1772,14 +1772,14 @@ begin
     var
     conn := (FConnections[i] as TConnection);
     if conn.FFrom.Visible and conn.FTo.Visible then
-      conn.Draw(Canvas, true);
+      conn.Draw(Canvas, True);
   end;
 end;
 
 procedure TEssConnectPanel.HideConnections;
 begin
   for var i := 0 to FConnections.Count - 1 do
-    (FConnections[i] as TConnection).Draw(Canvas, false);
+    (FConnections[i] as TConnection).Draw(Canvas, False);
 end;
 
 procedure TEssConnectPanel.ShowCuttedConnections;
@@ -1793,7 +1793,7 @@ begin
     conn := (FConnections[i] as TConnection);
     if conn.cutted and conn.FFrom.Visible and conn.FTo.Visible then
     begin
-      conn.Draw(Canvas, true);
+      conn.Draw(Canvas, True);
       // invalidate controls, which are cutted
       for k := 0 to FManagedObjects.Count - 1 do
       begin
@@ -1801,7 +1801,7 @@ begin
         if AControl.Visible and conn.square.intersects(AControl.BoundsRect) then
           AControl.Invalidate;
       end;
-      conn.cutted := false;
+      conn.cutted := False;
     end;
   end;
 end;
@@ -1810,7 +1810,7 @@ procedure TEssConnectPanel.RecalcSize;
 var
   i, xmax, ymax: Integer;
 begin
-  if assigned(Parent) then
+  if Assigned(Parent) then
   begin
     xmax := Parent.Width - 4; // 300;
     ymax := Parent.Height - 4; // 150;
@@ -1831,7 +1831,7 @@ begin
     SetBounds(Left, Top, xmax, ymax);
   TScrollBox(Parent).HorzScrollBar.Visible := xmax >= Parent.Width;
   TScrollBox(Parent).VertScrollBar.Visible := ymax >= Parent.Height;
-  if assigned(OnContentChanged) then
+  if Assigned(OnContentChanged) then
     OnContentChanged(nil);
 end;
 
@@ -1859,7 +1859,7 @@ var
 begin
   Count := 0;
   Result := Rect(MaxInt, MaxInt, 0, 0);
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for i := 0 to FManagedObjects.Count - 1 do
       if TManagedObject(FManagedObjects[i]).FSelected then
       begin
@@ -1888,7 +1888,7 @@ begin
           Result.Bottom := R.Bottom + db;
         if R.Right + dr > Result.Right then
           Result.Right := R.Right + dr;
-        inc(Count);
+        Inc(Count);
       end;
   if Count = 0 then
     Result := Rect(0, 0, 0, 0)
@@ -1912,17 +1912,17 @@ begin
     SelRect.Right := R1.Left;
   end;
 
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for i := 0 to FManagedObjects.Count - 1 do
     begin
-      if assigned(TManagedObject(FManagedObjects[i]).FControl) then
+      if Assigned(TManagedObject(FManagedObjects[i]).FControl) then
       begin
         AControl := TManagedObject(FManagedObjects[i]).FControl;
         R1 := AControl.BoundsRect;
         IntersectRect(R2, SelRect, R1);
         if EqualRect(R1, R2) and TManagedObject(FManagedObjects[i]).FControl.Visible
         then
-          TManagedObject(FManagedObjects[i]).Selected := true;
+          TManagedObject(FManagedObjects[i]).Selected := True;
       end;
     end;
 end;
@@ -1932,7 +1932,7 @@ begin
   Anchors := [akTop, akLeft];
   // Try to see if we can call inherited, otherwise there is a risc of getting
   // 'Cannot focus' exception when starting from delphi-tools.
-  if CanFocus and assigned(myForm) then
+  if CanFocus and Assigned(myForm) then
   begin
     // To avoid having the scrollbox resetting its positions after a setfocus call.
     var
@@ -1951,7 +1951,7 @@ begin
   if FIsModified <> Value then
   begin
     FIsModified := Value;
-    if assigned(OnModified) then
+    if Assigned(OnModified) then
       OnModified(Value);
   end;
 end;
@@ -1970,14 +1970,14 @@ begin
         if (not TManagedObject(FManagedObjects[i]).Selected) and
           TManagedObject(FManagedObjects[i]).FControl.Visible then
         begin
-          TManagedObject(FManagedObjects[i]).FControl.Visible := false;
+          TManagedObject(FManagedObjects[i]).FControl.Visible := False;
           TempHidden.Add(TObject(FManagedObjects[i]));
         end;
     end
     else
     begin
       for i := 0 to TempHidden.Count - 1 do
-        TManagedObject(TempHidden[i]).FControl.Visible := true;
+        TManagedObject(TempHidden[i]).FControl.Visible := True;
       TempHidden.Clear;
     end;
   end;
@@ -1997,18 +1997,18 @@ begin
     conn := TConnection(FConnections[i]);
     case Value of
       0:
-        conn.Visible := true;
+        conn.Visible := True;
       1:
         conn.Visible := (conn.ArrowStyle <> asInstanceOf);
     else
-      conn.Visible := false;
+      conn.Visible := False;
     end;
   end;
 end;
 
 procedure TEssConnectPanel.SetShowObjectDiagram(b: Boolean);
 begin
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for var i := 0 to FManagedObjects.Count - 1 do
     begin
       var AControl := TManagedObject(FManagedObjects[i]).FControl;
@@ -2026,9 +2026,9 @@ end;
 
 procedure TEssConnectPanel.KeyUp(var Key: Word; Shift: TShiftState);
 begin
-  if Key = VK_Delete then
+  if Key = VK_DELETE then
   begin
-    if assigned(OnDeleteSelectedControls) then
+    if Assigned(OnDeleteSelectedControls) then
       OnDeleteSelectedControls(Self);
     DeleteSelectedConnection;
     Invalidate;
@@ -2044,7 +2044,7 @@ var
   R: TRect;
   s: string;
 begin
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for i := 0 to FManagedObjects.Count - 1 do
     begin
       aManagedObject := TManagedObject(FManagedObjects[i]);
@@ -2058,7 +2058,7 @@ begin
         firstchar := CommentBox.TrMemo.perform(EM_LINEINDEX,
           // TODO EM_GETFIRSTVISIBLELINE from MyMisc
           CommentBox.TrMemo.perform(em_getfirstvisibleline, 0, 0), 0);
-        s := copy(CommentBox.TrMemo.text, firstchar + 1, MaxInt);
+        s := Copy(CommentBox.TrMemo.text, firstchar + 1, MaxInt);
         aCanvas.TextOut(R.Left, R.Top, ' '); // ensures font is selected
         OffsetRect(R, CommentBox.Left + CommentBox.TrMemo.Left,
           CommentBox.Top + CommentBox.TrMemo.Top);
@@ -2076,7 +2076,7 @@ var
   curr: TCrackControl;
 begin
   MovedRect := Rect(MaxInt, 0, 0, 0);
-  if assigned(FManagedObjects) then
+  if Assigned(FManagedObjects) then
     for i := 0 to FManagedObjects.Count - 1 do
     begin
       mcont := TManagedObject(FManagedObjects[i]);
@@ -2089,7 +2089,7 @@ begin
   Result := MovedRect;
 end;
 
-procedure TEssConnectPanel.ChangeStyle(BlackAndWhite: Boolean = false);
+procedure TEssConnectPanel.ChangeStyle(BlackAndWhite: Boolean = False);
 var
   i: Integer;
 begin
@@ -2134,23 +2134,23 @@ var
 begin
   if conn.FTo is TRtfdClass then
   begin
-    HiddenChanged := false;
+    HiddenChanged := False;
     C := (conn.FTo as TRtfdClass).Entity as TClass;
     it := C.GetAllAttributes;
     while it.HasNext do
     begin
-      Attribute := it.next as TAttribute;
+      Attribute := it.Next as TAttribute;
       if not Attribute.Hidden and ((Attribute.Name = Attributes.RoleA) or
         (Attribute.Name + '[]' = Attributes.RoleA)) then
       begin
-        Attribute.Hidden := true;
-        HiddenChanged := true;
+        Attribute.Hidden := True;
+        HiddenChanged := True;
       end
       else if Attribute.Hidden and (Attribute.Name = WithoutArray(conn.RoleA))
         and (conn.RoleA <> Attributes.RoleA) then
       begin
-        Attribute.Hidden := false;
-        HiddenChanged := true;
+        Attribute.Hidden := False;
+        HiddenChanged := True;
       end;
     end;
     if HiddenChanged then
@@ -2158,23 +2158,23 @@ begin
   end;
   if conn.FFrom is TRtfdClass then
   begin
-    HiddenChanged := false;
+    HiddenChanged := False;
     C := (conn.FFrom as TRtfdClass).Entity as TClass;
     it := C.GetAllAttributes;
     while it.HasNext do
     begin
-      Attribute := it.next as TAttribute;
+      Attribute := it.Next as TAttribute;
       if not Attribute.Hidden and ((Attribute.Name = Attributes.RoleB) or
         (Attribute.Name + '[]' = Attributes.RoleB)) then
       begin
-        Attribute.Hidden := true;
-        HiddenChanged := true;
+        Attribute.Hidden := True;
+        HiddenChanged := True;
       end
       else if Attribute.Hidden and (Attribute.Name = WithoutArray(conn.RoleB))
         and (conn.RoleB <> Attributes.RoleB) then
       begin
-        Attribute.Hidden := false;
-        HiddenChanged := true;
+        Attribute.Hidden := False;
+        HiddenChanged := True;
       end;
     end;
     if HiddenChanged then

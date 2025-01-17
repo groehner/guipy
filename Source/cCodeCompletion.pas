@@ -66,7 +66,7 @@ type
   protected
     AllowFunctionCalls: Boolean;
    function CallTipFromExpression(const Expr, FileName : string;
-      const Line: integer; var DisplayString, DocString : string): Boolean; virtual; abstract;
+      const Line: Integer; var DisplayString, DocString : string): Boolean; virtual; abstract;
   public
     function HandleParamCompletion(const FileName : string;
       Editor: TSynEdit; out DisplayString, DocString : string;
@@ -76,7 +76,7 @@ type
   TInterpreterParamCompletion = class(TBaseParamCompletion)
   protected
     function CallTipFromExpression(const Expr, FileName : string;
-        const Line: integer; var DisplayString, DocString : string): Boolean; override;
+        const Line: Integer; var DisplayString, DocString : string): Boolean; override;
   public
     constructor Create;
   end;
@@ -263,9 +263,9 @@ var
 begin
   // Clean-up of FNameSpace and FNameSpaceDict takes place in the Close event
   TmpX := Caret.Char;
-  if TmpX > length(Line) then
-    TmpX := length(Line)
-  else dec(TmpX);
+  if TmpX > Length(Line) then
+    TmpX := Length(Line)
+  else Dec(TmpX);
 
   lookup := GetWordAtPos(Line, TmpX, True, True, False, True);
   Index := lookup.LastIndexOf('.');
@@ -566,11 +566,11 @@ begin
   //go back from the cursor and find the first open paren
   StartX := Caret.Char;
   TmpX := Caret.Char;
-  if TmpX > length(LocLine)
+  if TmpX > Length(LocLine)
   then
-    TmpX := length(LocLine)
+    TmpX := Length(LocLine)
   else
-    dec(TmpX);
+    Dec(TmpX);
 
   FoundMatch := False;
   while (TmpX > 0) and not(FoundMatch) do
@@ -583,12 +583,12 @@ begin
     begin
       //We found a close, go till it's opening paren
       ParenCounter := 1;
-      dec(TmpX);
+      Dec(TmpX);
       while (TmpX > 0) and (ParenCounter > 0) do
       begin
-        if LocLine[TmpX] = ')' then inc(ParenCounter)
-        else if LocLine[TmpX] = '(' then dec(ParenCounter);
-        dec(TmpX);
+        if LocLine[TmpX] = ')' then Inc(ParenCounter)
+        else if LocLine[TmpX] = '(' then Dec(ParenCounter);
+        Dec(TmpX);
       end;
     end else if LocLine[TmpX] = '(' then
     begin
@@ -649,12 +649,12 @@ begin
         if not(FoundMatch) then
         begin
           TmpX := StartX;
-          dec(TmpX);
+          Dec(TmpX);
         end;
       end;
     end
     else
-      dec(TmpX)
+      Dec(TmpX)
   end;
   Result := FoundMatch;
 end;
@@ -662,7 +662,7 @@ end;
 { TInterpreterParamCompletion }
 
 function TInterpreterParamCompletion.CallTipFromExpression(const Expr, FileName : string;
-  const Line: integer; var DisplayString, DocString : string): Boolean;
+  const Line: Integer; var DisplayString, DocString : string): Boolean;
 begin
   Result := PyControl.ActiveInterpreter.CallTipFromExpression(
     Expr, DisplayString, DocString);

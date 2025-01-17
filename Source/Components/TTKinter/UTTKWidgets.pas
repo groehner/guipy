@@ -23,9 +23,9 @@ type
   protected
     function getCompound: TUCompound; override;
     procedure Paint; override;
-    procedure PaintBorder(R: TRect; Relief: TRelief; BorderWidth: integer); override;
-    procedure CalculatePadding(var pl, pt, pr, pb: integer); override;
-    procedure CalculateText(var tw, th: integer; var SL: TStringlist); override;
+    procedure PaintBorder(R: TRect; Relief: TRelief; BorderWidth: Integer); override;
+    procedure CalculatePadding(var pl, pt, pr, pb: Integer); override;
+    procedure CalculateText(var tw, th: Integer; var SL: TStringlist); override;
     function getText: string; virtual;
     procedure setText(aValue: string); virtual;
     function getWidgetStylename: string; virtual;
@@ -33,7 +33,7 @@ type
   public
     constructor Create(aOwner: TComponent); override;
     procedure Rename(const OldName, NewName, Events: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
     procedure DeleteWidget; override;
     procedure MakeStyle(Value: string);
@@ -76,20 +76,20 @@ begin
   Result:= FText;
 end;
 
-procedure TTKWidget.CalculateText(var tw, th: integer; var SL: TStringlist);
-  var s: string; p: integer;
+procedure TTKWidget.CalculateText(var tw, th: Integer; var SL: TStringlist);
+  var s: string; p: Integer;
 begin
   s:= getText;
   p:= Pos('\n', s);
   while p > 0 do begin
-    SL.Add(copy(s, 1, p-1));
-    delete(s, 1, p+1);
+    SL.Add(Copy(s, 1, p-1));
+    Delete(s, 1, p+1);
     p:= Pos('\n', s);
   end;
   SL.Add(s);
   tw:= 0;
   for p:= 0 to SL.Count - 1 do
-    tw:= max(tw, Canvas.TextWidth(SL[p]));
+    tw:= Max(tw, Canvas.TextWidth(SL[p]));
   th:= SL.Count * Canvas.TextHeight('Hg');
 end;
 
@@ -98,14 +98,14 @@ f['padding'] = 5           # 5 pixels on all sides
 f['padding'] = (5,10)      # 5 on left and right, 10 on top and bottom
 f['padding'] = (5,7,10,12) # left: 5, top: 7, right: 10, bottom: 12
 }
-procedure TTKWidget.CalculatePadding(var pl, pt, pr, pb: integer);
+procedure TTKWidget.CalculatePadding(var pl, pt, pr, pb: Integer);
   var s: string; SL: TStringList;
 begin
-  s:= trim(FPadding);
+  s:= Trim(FPadding);
   if s = '' then
     s:= '0';
-  if (s[1] = '(') and (s[length(s)] = ')') then begin
-    s:= copy(s, 2, length(s) - 2);
+  if (s[1] = '(') and (s[Length(s)] = ')') then begin
+    s:= Copy(s, 2, Length(s) - 2);
     SL:= Split(',', s);
     if SL.Count = 2 then begin
       if not TryStrToInt(SL[0], pl) then pl:= 0;
@@ -140,7 +140,7 @@ begin
   Result:= _TU_none;
 end;
 
-procedure TTKWidget.PaintBorder(R: TRect; Relief: TRelief; BorderWidth: integer);
+procedure TTKWidget.PaintBorder(R: TRect; Relief: TRelief; BorderWidth: Integer);
 
   procedure PaintTopLeft(C1, C2: TColor);
   begin
@@ -200,7 +200,7 @@ begin
   inherited;
 end;
 
-function TTKWidget.getAttributes(ShowAttributes: integer): string;
+function TTKWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '';
   if ShowAttributes = 3 then
@@ -220,7 +220,7 @@ end;
 
 function TTKWidget.getWidgetStylename: string;
 begin
-  Result:= Name + '.T' + copy(Classname, 4, length(Classname));
+  Result:= Name + '.T' + Copy(Classname, 4, Length(Classname));
 end;
 
 procedure TTKWidget.DeleteWidget;
@@ -235,8 +235,8 @@ procedure TTKWidget.Rename(const OldName, NewName, Events: string);
 begin
   inherited;
   if FStyle <> '' then begin
-    WType:= copy(FStyle, Pos('.', FStyle), length(FStyle));
-    Partner.ReplaceWord(FStyle, NewName + WType, true);
+    WType:= Copy(FStyle, Pos('.', FStyle), Length(FStyle));
+    Partner.ReplaceWord(FStyle, NewName + WType, True);
     FStyle:= NewName + WType;
   end;
 end;
@@ -253,12 +253,12 @@ begin
 end;
 
 procedure TTKWidget.MakePadding(Value: string);
-  var key: string; i: integer;
+  var key: string; i: Integer;
 begin
   key:= 'self.' + Name + '[''padding'']';
   if Value = '' then
     Partner.DeleteAttribute(key)
-  else if (Value[1] = '(') and (Value[length(Value)] = ')') then
+  else if (Value[1] = '(') and (Value[Length(Value)] = ')') then
     setAttributValue(key, key + ' = ' + Value)
   else begin
     if TryStrToInt(Value, i)

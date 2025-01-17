@@ -42,8 +42,8 @@ type
     FDescription: string;
     FCaption: string;
     FShortCut: TShortCut;
-    FParseMessages : boolean;
-    FParseTraceback : boolean;
+    FParseMessages : Boolean;
+    FParseTraceback : Boolean;
     FMessagesFormat : string;
     FContext: TToolContext;
     FSaveFiles : TSaveFiles;
@@ -90,10 +90,10 @@ type
     property ProcessOutput : TProcessStdOutputOption read FProcessOutput
       write FProcessOutput default poNone;
     // Parse File Line LinePos info from output and put it in the Messages Window
-    property ParseMessages : boolean read FParseMessages write FParseMessages
+    property ParseMessages : Boolean read FParseMessages write FParseMessages
       default False;
     // Parse TraceBack and Syntax Errors from Python output and put it in the Messages Window
-    property ParseTraceback : boolean read FParseTraceback write FParseTraceback
+    property ParseTraceback : Boolean read FParseTraceback write FParseTraceback
       default False;
     // Grep Expression for the parsing output lines for file/Line/Pos information
     // Can use the parameters $[Filename], $[LineNumber], $[Line], $[Column]
@@ -105,7 +105,7 @@ type
     // Hide Console or External Tool window
     property ConsoleHidden : Boolean read FConsoleHidden write FConsoleHidden
       default True;
-    property UseCustomEnvironment : boolean read FUseCustomEnvironment
+    property UseCustomEnvironment : Boolean read FUseCustomEnvironment
       write FUseCustomEnvironment default False;
     // Custom Enviroment
     property Environment : TStrings read FEnvironment write SetEnvironment

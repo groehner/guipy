@@ -30,14 +30,14 @@ type
     fScpCommand : string;
     fScpOptions : string;
     fPassword : string;
-    fPasswordNeeded : boolean;
+    fPasswordNeeded : Boolean;
     procedure GetPassword;
   public
     HostKey : string;
     constructor Create; override;
     procedure Assign(Source: TPersistent); override;
     function Destination: string;
-    function IsClientPutty: boolean;
+    function IsClientPutty: Boolean;
     function SSHOptionsPW: string;
     function ScpOptionsPW: string;
     function ExtractHostKey(ErrorOutput: string): Boolean;
@@ -70,34 +70,34 @@ type
     class var UncRE: TRegEx;
     class constructor Create;
     class function Format(Server, FileName : string): string;
-    class function Parse(const Unc : string; out Server, FileName : string): boolean;
+    class function Parse(const Unc : string; out Server, FileName : string): Boolean;
   end;
 
   TSSHServices = class(TInterfacedObject, ISSHServices)
     function FormatFileName(Server, FileName : string): string;
-    function ParseFileName(const Unc : string; out Server, FileName : string): boolean;
+    function ParseFileName(const Unc : string; out Server, FileName : string): Boolean;
     // SCP
     function Scp(const ScpCommand, FromFile, ToFile: string; out ErrorMsg: string;
        ScpOptions : string = ''): Boolean;
-    function ScpUpload(const ServerName, LocalFile, RemoteFile: string; out ErrorMsg: string): boolean;
-    function ScpDownload(const ServerName, RemoteFile, LocalFile: string; out ErrorMsg: string): boolean;
+    function ScpUpload(const ServerName, LocalFile, RemoteFile: string; out ErrorMsg: string): Boolean;
+    function ScpDownload(const ServerName, RemoteFile, LocalFile: string; out ErrorMsg: string): Boolean;
   end;
 
   function ServerFromName(ServerName: string): TSSHServer;
-  function EditSSHServers : boolean;
+  function EditSSHServers : Boolean;
   function SelectSSHServer : string;
   // function EditSSHConfiguration(Item : TCollectionItem) : boolean;
   procedure FillSSHConfigNames(Strings: TStrings);
 
 var
-  SSHTimeout : integer = 10000; // 10 seconds
-  ScpTimeout : integer = 30000; // 30 seconds
+  SSHTimeout : Integer = 10000; // 10 seconds
+  ScpTimeout : Integer = 30000; // 30 seconds
   SSHServers : TCollection;
 
 implementation
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   System.Threading,
   System.StrUtils,
   Vcl.Forms,
@@ -162,7 +162,7 @@ begin
       #31+_('Password:'), '');
 end;
 
-function TSSHServer.IsClientPutty: boolean;
+function TSSHServer.IsClientPutty: Boolean;
 begin
   Result := fScpCommand.ToLower.Contains('pscp')
 end;
@@ -219,9 +219,9 @@ begin
     Result := SSHServer.Destination;
 end;
 
-function EditSSHServers : boolean;
+function EditSSHServers : Boolean;
 begin
-  Result := false;
+  Result := False;
   //EditCollection(SSHServers,
   //  TSSHServerItem, _('SSH Servers'), EditSSHConfiguration, 580);
 end;
@@ -268,7 +268,7 @@ begin
 end;
 
 class function TSSHFileName.Parse(const Unc: string; out Server,
-  FileName: string): boolean;
+  FileName: string): Boolean;
 begin
   Server := '';
   FileName := '';
@@ -290,7 +290,7 @@ begin
 end;
 
 function TSSHServices.ParseFileName(const Unc: string; out Server,
-  FileName: string): boolean;
+  FileName: string): Boolean;
 begin
   Result := TSSHFileName.Parse(Unc, Server, FileName);
 end;
@@ -300,7 +300,7 @@ function TSSHServices.Scp(const ScpCommand, FromFile, ToFile: string;
 var
   Task : ITask;
   Command, Output, Error: string;
-  ExitCode : integer;
+  ExitCode : Integer;
 begin
   Command := Format('"%s" %s %s %s', [ScpCommand, ScpOptions, FromFile, ToFile]);
 
@@ -342,7 +342,7 @@ end;
 
 
 function TSSHServices.ScpDownload(const ServerName, RemoteFile,
-  LocalFile: string; out ErrorMsg: string): boolean;
+  LocalFile: string; out ErrorMsg: string): Boolean;
 var
   SSHServer : TSSHServer;
   SFormat : string;
@@ -360,7 +360,7 @@ begin
 end;
 
 function TSSHServices.ScpUpload(const ServerName, LocalFile, RemoteFile: string;
-  out ErrorMsg: string): boolean;
+  out ErrorMsg: string): Boolean;
 var
   SSHServer : TSSHServer;
   SFormat : string;

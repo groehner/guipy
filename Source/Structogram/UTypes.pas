@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
  Unit:     UTypes
- Author:   Gerhard Röhner
+ Author:   Gerhard RÃ¶hner
  Based on: NSD-Editor by Marcel Kalt
  Date:     August 2013
  Purpose:  elements of a structogram
@@ -20,16 +20,16 @@ type
 
   TStringListReader = class
     SL: TStringList;
-    nr: integer;
+    nr: Integer;
     kind: Byte;
-    IndentAsInt: integer;
+    IndentAsInt: Integer;
     Text: string;
     aRect: TRect;
     Point: TPoint;
     key: string;
     val: string;
-    constructor create(Filename: string);
-    function nextLineIndent: integer;
+    constructor Create(FileName: string);
+    function nextLineIndent: Integer;
     procedure ReadLine;
     procedure LineBack;
     function getKind(Kind: string): byte;
@@ -46,19 +46,19 @@ type
     procedure Draw; virtual;
     procedure DrawRightBottom; virtual;
     procedure DrawLeftBottom; virtual;
-    procedure DrawCircle(x, y, h: integer);
-    procedure DrawLines(x, y, line_height: integer);
-    procedure DrawLinesRight(x, y, line_height: integer);
-    procedure DrawCenteredLines(center, y: integer; percent: real);
-    procedure DrawContent(x, y: integer); virtual;
+    procedure DrawCircle(x, y, h: Integer);
+    procedure DrawLines(x, y, line_height: Integer);
+    procedure DrawLinesRight(x, y, line_height: Integer);
+    procedure DrawCenteredLines(center, y: Integer; percent: real);
+    procedure DrawContent(x, y: Integer); virtual;
     procedure MoveRight(w: Integer); virtual;
-    procedure MoveRightList(b: integer); virtual;
+    procedure MoveRightList(b: Integer); virtual;
     procedure MoveDown(h: Integer); virtual;
-    procedure MoveDownList(h: integer); virtual;
-    procedure Resize(x, y: integer); virtual;
-    procedure setRight(Right: integer); virtual;
-    procedure setBottomList(b: integer); virtual;
-    procedure setBottom(b: integer); virtual;
+    procedure MoveDownList(h: Integer); virtual;
+    procedure Resize(x, y: Integer); virtual;
+    procedure setRight(Right: Integer); virtual;
+    procedure setBottomList(b: Integer); virtual;
+    procedure setBottom(b: Integer); virtual;
     procedure LoadFromStream(Stream: TStream; Version: byte); virtual;
     procedure LoadFromReader(Reader: TStringListReader); virtual;
     procedure SaveToStream(Stream: TStream); virtual;
@@ -72,29 +72,29 @@ type
     function StringFromStream(Stream: TStream): string;
     function AppendToClipboard: string; virtual;
     procedure CreateFromClipboard(var ClipboardStr: string); virtual;
-    procedure SetRctList(X1, Y1, X2, Y2: integer); virtual;
+    procedure SetRctList(X1, Y1, X2, Y2: Integer); virtual;
     procedure setList(aList: TStrList); virtual;
   public
     Kind: byte;
     text: string;
     rct: TRect;
-    next: TStrElement;
+    Next: TStrElement;
     prev: TStrElement;
     list: TStrList;
     textPos: TPoint;
-    constructor create(aList: TStrList);
-    function getHeadHeight: integer; virtual;
+    constructor Create(aList: TStrList);
+    function getHeadHeight: Integer; virtual;
     procedure SetRct(X1, Y1, X2, Y2: Integer);
-    procedure ResizeList(x, y: integer);
-    procedure setRightList(right: integer);
+    procedure ResizeList(x, y: Integer);
+    procedure setRightList(Right: Integer);
     function getStatementFromKind(aKind: byte; const aList: TStrList; aParent: TStrElement): TStrElement;
     function getStatementFromReader(Reader: TStringListReader; const aList: TStrList; aParent: TStrElement): TStrElement;
-    function getLineHeight: integer;
-    function getDefaultRectWidth: integer;
-    function getLines: integer;
+    function getLineHeight: Integer;
+    function getDefaultRectWidth: Integer;
+    function getLines: Integer;
     function asString: string; virtual;
     function getKind: string;
-    function getMaxDelta: integer;
+    function getMaxDelta: Integer;
     procedure debug; virtual;
     procedure debug1;
     procedure Collapse; virtual;
@@ -102,7 +102,7 @@ type
   end;
 
   TStrStatement = class(TStrElement)
-    constructor create(aList: TStrList);
+    constructor Create(aList: TStrList);
     destructor Destroy; override;
     function asString: string; override;
     procedure LoadFromReader(Reader: TStringListReader); override;
@@ -113,12 +113,12 @@ type
   private
     percent: real; // then-width to else-width
     procedure Draw; override;
-    procedure DrawContent(x, y: integer); override;
+    procedure DrawContent(x, y: Integer); override;
     procedure MoveRight(w: Integer); override;
     procedure MoveDown(h: Integer); override;
-    procedure Resize(x, y: integer); override;
-    procedure setRight(Right: integer); override;
-    procedure setBottom(b: integer); override;
+    procedure Resize(x, y: Integer); override;
+    procedure setRight(Right: Integer); override;
+    procedure setBottom(b: Integer); override;
     procedure LoadFromStream(Stream: TStream; Version: byte); override;
     procedure LoadFromReader(Reader: TStringListReader); override;
     procedure SaveToStream(Stream: TStream); override;
@@ -130,10 +130,10 @@ type
   public
     then_elem: TStrElement;
     else_elem: TStrElement;
-    constructor create(aList: TStrList);
-    constructor createStructogram(aList: TStrList; dummy: boolean = true);
+    constructor Create(aList: TStrList);
+    constructor createStructogram(aList: TStrList; dummy: Boolean = True);
     destructor Destroy; override;
-    function getHeadHeight: integer; override;
+    function getHeadHeight: Integer; override;
     function asString: string; override;
     procedure debug; override;
     procedure Collapse; override;
@@ -144,8 +144,8 @@ type
     procedure Draw; override;
     procedure MoveRight(w: Integer); override;
     procedure MoveDown(h: Integer); override;
-    procedure Resize(x, y: integer); override;
-    procedure setRight(Right: integer); override;
+    procedure Resize(x, y: Integer); override;
+    procedure setRight(Right: Integer); override;
     procedure setBottom(b: Integer); override;
     procedure LoadFromStream(Stream: TStream; Version: byte); override;
     procedure LoadFromReader(Reader: TStringListReader); override;
@@ -156,10 +156,10 @@ type
     procedure setList(aList: TStrList); override;
   public
     do_elem: TStrElement;
-    constructor create(aList: TStrList);
-    constructor createStructogram(aList: TStrList; dummy: boolean = true);
+    constructor Create(aList: TStrList);
+    constructor createStructogram(aList: TStrList; dummy: Boolean = True);
     destructor Destroy; override;
-    function getHeadHeight: integer; override;
+    function getHeadHeight: Integer; override;
     function asString: string; override;
     procedure debug; override;
     procedure Collapse; override;
@@ -168,12 +168,12 @@ type
   TStrDoWhile = class(TStrWhile)
   private
     procedure Draw; override;
-    procedure Resize(x, y: integer); override;
+    procedure Resize(x, y: Integer); override;
   public
-    constructor create(aList: TStrList);
-    constructor createStructogram(aList: TStrList; dummy: boolean = true);
+    constructor Create(aList: TStrList);
+    constructor createStructogram(aList: TStrList; dummy: Boolean = True);
     procedure setBottom(b: Integer); override;
-    function getHeadHeight: integer; override;
+    function getHeadHeight: Integer; override;
     function asString: string; override;
     procedure debug; override;
   end;
@@ -181,8 +181,8 @@ type
   TStrFor = class(TStrWhile)
   private
   public
-    constructor create(aList: TStrList);
-    constructor createStructogram(aList: TStrList; dummy: boolean = true);
+    constructor Create(aList: TStrList);
+    constructor createStructogram(aList: TStrList; dummy: Boolean = True);
     function asString: string; override;
     procedure debug; override;
   end;
@@ -194,7 +194,7 @@ type
     procedure DrawLeftBottom; override;
     function getText(Indent: string): string; override;
   public
-    constructor create(aList: TStrList);
+    constructor Create(aList: TStrList);
     function asString: string; override;
     procedure debug; override;
   end;
@@ -203,12 +203,12 @@ type
   private
     percent: real; // then-width to else-width
     procedure Draw; override;
-    procedure DrawContent(x, y: integer); override;
+    procedure DrawContent(x, y: Integer); override;
     procedure MoveRight(w: Integer); override;
-    procedure MoveDown(h: integer); override;
-    procedure Resize(x, y: integer); override;
-    procedure setRight(Right: integer); override;
-    procedure setBottom(b: integer); override;
+    procedure MoveDown(h: Integer); override;
+    procedure Resize(x, y: Integer); override;
+    procedure setRight(Right: Integer); override;
+    procedure setBottom(b: Integer); override;
     procedure LoadFromStream(Stream: TStream; Version: byte); override;
     procedure LoadFromReader(Reader: TStringListReader); override;
     procedure SaveToStream(Stream: TStream); override;
@@ -217,13 +217,13 @@ type
     procedure CreateFromClipboard(var ClipboardStr: string); override;
     procedure setTextPos;
     procedure setList(aList: TStrList); override;
-    procedure AdjustCaseElems(i: integer);
+    procedure AdjustCaseElems(i: Integer);
   public
     case_elems: array of TStrElement;  // SetLength, Length, High, Low
-    constructor create(aList: TStrList);
-    constructor createStructogram(aList: TStrList; dummy: boolean = true);
+    constructor Create(aList: TStrList);
+    constructor createStructogram(aList: TStrList; dummy: Boolean = True);
     destructor Destroy; override;
-    function getHeadHeight: integer; override;
+    function getHeadHeight: Integer; override;
     function asString: string; override;
     procedure debug; override;
     procedure Collapse; override;
@@ -265,12 +265,12 @@ type
   TStrSubprogram = class(TStrElement)
   private
     procedure Draw; override;
-    procedure Resize(x, y: integer); override;
+    procedure Resize(x, y: Integer); override;
     function getText(Indent: string): string; override;
     procedure LoadFromReader(Reader: TStringListReader); override;
   public
-    constructor create(aList: TStrList);
-    function getHeadHeight: integer; override;
+    constructor Create(aList: TStrList);
+    function getHeadHeight: Integer; override;
     function asString: string; override;
     procedure debug; override;
   end;
@@ -278,12 +278,12 @@ type
   TStrBreak = class(TStrElement)
   private
     procedure Draw; override;
-    procedure Resize(x, y: integer); override;
+    procedure Resize(x, y: Integer); override;
     procedure LoadFromReader(Reader: TStringListReader); override;
     function getText(Indent: string): string; override;
   public
-    constructor create(aList: TStrList);
-    function getHeadHeight: integer; override;
+    constructor Create(aList: TStrList);
+    function getHeadHeight: Integer; override;
     function asString: string; override;
     procedure debug; override;
   end;
@@ -291,13 +291,13 @@ type
   // head of a list of statements as part of a statement, used in in If/While/Do/Switch...
   TStrListHead = class(TStrElement)
   private
-    procedure SetRctList(X1, Y1, X2, Y2: integer); override;
+    procedure SetRctList(X1, Y1, X2, Y2: Integer); override;
     procedure setList(aList: TStrList); override;
   public
     Parent: TStrElement;
-    constructor create(aList: TStrList; aParent: TStrElement);
-    constructor createStructogram(aList: TStrList; aParent: TStrElement; Dummy: boolean = true);
-    procedure Resize(x, y: integer); override;
+    constructor Create(aList: TStrList; aParent: TStrElement);
+    constructor createStructogram(aList: TStrList; aParent: TStrElement; Dummy: Boolean = True);
+    procedure Resize(x, y: Integer); override;
     destructor Destroy; override;
     function asString: string; override;
     procedure debug; override;
@@ -311,21 +311,21 @@ type
   TStrList = class(TStrElement)
   private
     procedure Draw; override;
-    procedure Resize(x, y: integer); override;
-    procedure SetRctList(X1, Y1, X2, Y2: integer); override;
+    procedure Resize(x, y: Integer); override;
+    procedure SetRctList(X1, Y1, X2, Y2: Integer); override;
   public
-    LoadError: boolean;
-    SwitchWithCaseLine: boolean;
+    LoadError: Boolean;
+    SwitchWithCaseLine: Boolean;
     rctList: TRect;
-    LineHeight: integer;
+    LineHeight: Integer;
     Image: TListImage;
     Canvas: TCanvas;
-    PuzzleMode: integer;
-    DontMove: boolean;
+    PuzzleMode: Integer;
+    DontMove: Boolean;
     SL: TStringList;
-    nr: integer;
-    dirty: boolean;
-    constructor create(ScrollBox: TScrollBox; Mode: integer; Font: TFont);
+    nr: Integer;
+    dirty: Boolean;
+    constructor Create(ScrollBox: TScrollBox; Mode: Integer; Font: TFont);
     destructor Destroy; override;
     procedure PaintShadow;
     procedure Paint; virtual;
@@ -338,18 +338,18 @@ type
     function getText(indent: string): string; override;
     function getRectPos(Indent: string): string;
     procedure deleteElem(elem: TStrElement);
-    function getWidth: integer;
-    function getHeight: integer;
+    function getWidth: Integer;
+    function getHeight: Integer;
     procedure insert(at, elem: TStrElement);
 
-    procedure getWidthHeigthOfText(const aText: string; var w, h: integer);
-    function getWidthOfOneLine(const aText: string): integer;
-    function getWidthOfLines(const aText: string): integer;
+    procedure getWidthHeigthOfText(const aText: string; var w, h: Integer);
+    function getWidthOfOneLine(const aText: string): Integer;
+    function getWidthOfLines(const aText: string): Integer;
     procedure setLineHeight;
     function asString: string; override;
     procedure debug; override;
     procedure setList(aList: TStrList); override;
-    procedure setPuzzleMode(Mode: integer);
+    procedure setPuzzleMode(Mode: Integer);
     procedure setFont(Font: TFont);
     procedure Collapse; override;
   end;
@@ -357,9 +357,9 @@ type
   // a whole structure, inherited form TStrList
   TStrAlgorithm = class(TStrList)
   private
-    procedure Resize(x, y: integer); override;
+    procedure Resize(x, y: Integer); override;
   public
-    constructor create(ScrollBox: TScrollBox; Mode: integer; Font: TFont);
+    constructor Create(ScrollBox: TScrollBox; Mode: Integer; Font: TFont);
     function getAlgorithmName: string;
     function asString: string; override;
     procedure debug; override;
@@ -388,26 +388,26 @@ const
   RECT_WIDTH = 75;                { Minimal width of a rectangle }
   TOP_BOTTOM = 4;                 { Default top/bottom margin of element }
 
-constructor TStringListReader.create(Filename: string);
+constructor TStringListReader.Create(FileName: string);
 begin
   SL:= TStringList.Create;
   nr:= 0;
   try
-    SL.LoadFromFile(Filename);
+    SL.LoadFromFile(FileName);
   except on e: Exception do
     ErrorMsg(e.Message);
   end;
 end;
 
-function TStringListReader.nextLineIndent: integer;
-  var s: string; p: integer;
+function TStringListReader.nextLineIndent: Integer;
+  var s: string; p: Integer;
 begin
   if nr < SL.Count - 1 then begin
     s:= SL[nr+1];
     p:= 1;
     if s <> '' then
       while s[p] = ' ' do
-        inc(p);
+        Inc(p);
     Result:= p - 1;
   end else
     Result:= 0;
@@ -415,15 +415,15 @@ end;
 
 procedure TStringListReader.ReadLine;
   var line: string;
-      p, q: integer;
+      p, q: Integer;
 
-  function getInt: integer;
-    var p: integer;
+  function getInt: Integer;
+    var p: Integer;
   begin
     p:= pos(' ', val);
     if p > 1 then begin
-      Result:= StrToInt(copy(val, 1, p-1));
-      delete(val, 1, p)
+      Result:= StrToInt(Copy(val, 1, p-1));
+      Delete(val, 1, p)
     end else
       Result:= 0;
   end;
@@ -439,26 +439,26 @@ begin
   key:= '';
   val:= '';
 
-  inc(nr);
-  while (nr < SL.Count) and (trim(SL[nr]) = '') do
-    inc(nr);
+  Inc(nr);
+  while (nr < SL.Count) and (Trim(SL[nr]) = '') do
+    Inc(nr);
 
   if nr < SL.Count then begin
     line:= SL[nr];
     q:= 1;
     if line <> '' then
       while line[q] = ' ' do
-        inc(q);
+        Inc(q);
     IndentAsInt:= q - 1;
-    line:= UnhideCrLf(trim(line));
+    line:= UnhideCrLf(Trim(line));
     //dline:= line;
   end;
 
-  p:= length(line);
+  p:= Length(line);
   while (p > 0) and (line[p] <> '|') do
-    dec(p);
+    Dec(p);
   if p > 0 then begin
-    val:= copy(line, p + 1, length(line)) + ' ';
+    val:= Copy(line, p + 1, Length(line)) + ' ';
     aRect.Left:= getInt;
     aRect.Top:= getInt;
     aRect.Right:= getInt;
@@ -467,18 +467,18 @@ begin
     Point.y:= getInt;
   end;
 
-  Text:= copy(line, 1, p - 1);
+  Text:= Copy(line, 1, p - 1);
   if Text = '' then begin
     q:= Pos(':', Line);
     if q > 0 then begin
-      key:= copy(line, 1, q - 1);
-      val:= copy(line, q + 2, length(line));
+      key:= Copy(line, 1, q - 1);
+      val:= Copy(line, q + 2, Length(line));
       if (key <> '') and (val = '') then
         Kind:= getKind(key)
     end
   end else
     if Text[1] = '|' then
-      delete(Text, 1, 1);
+      Delete(Text, 1, 1);
 end;
 
 function TStringListReader.getKind(Kind: string): byte;
@@ -499,7 +499,7 @@ end;
 
 procedure TStringListReader.LineBack;
 begin
-  dec(nr);
+  Dec(nr);
 end;
 
 destructor TStringListReader.destroy;
@@ -511,16 +511,16 @@ end;
 (*                                      ELEMENT                                  *)
 (*********************************************************************************)
 
-constructor TStrElement.create(aList: TStrList);
+constructor TStrElement.Create(aList: TStrList);
 begin
   kind:= 0;
   text:= '';
-  next:= nil;
+  Next:= nil;
   prev:= nil;
   Self.list:= aList;
 end;
 
-procedure TStrElement.DrawCircle(x, y, h: integer);
+procedure TStrElement.DrawCircle(x, y, h: Integer);
 begin
   with list.Canvas do begin
     Ellipse(x - h, y - h, x + h, y + h);
@@ -529,16 +529,16 @@ begin
   end;
 end;
 
-procedure TStrElement.DrawLines(x, y, line_height: integer);
-  var s, s1: string; p: integer; BrushColor: TColor;
+procedure TStrElement.DrawLines(x, y, line_height: Integer);
+  var s, s1: string; p: Integer; BrushColor: TColor;
 begin
   BrushColor:= list.Canvas.Brush.Color;
   list.Canvas.Brush.Style:= bsClear;
   s:= text;
   p:= Pos(#13#10, s);
   while p > 0 do begin
-    s1:= copy(s, 1, p-1);
-    delete(s, 1, p+1);
+    s1:= Copy(s, 1, p-1);
+    Delete(s, 1, p+1);
     list.Canvas.TextOut(x, y, s1);
     y:= y + line_height;
     p:= Pos(#13#10, s);
@@ -548,16 +548,16 @@ begin
   list.Canvas.Brush.Color:= BrushColor;
 end;
 
-procedure TStrElement.DrawLinesRight(x, y, line_height: integer);
-  var s, s1: string; p: integer; BrushColor: TColor;
+procedure TStrElement.DrawLinesRight(x, y, line_height: Integer);
+  var s, s1: string; p: Integer; BrushColor: TColor;
 begin
   BrushColor:= list.Canvas.Brush.Color;
   list.Canvas.Brush.Style:= bsClear;
   s:= text;
   p:= Pos(#13#10, s);
   while p > 0 do begin
-    s1:= copy(s, 1, p-1);
-    delete(s, 1, p+1);
+    s1:= Copy(s, 1, p-1);
+    Delete(s, 1, p+1);
     x:= rct.Right - list.Canvas.TextWidth(s1) -  LEFT_RIGHT div 2;
     list.Canvas.TextOut(x, y, s1);
     y:= y + line_height;
@@ -571,18 +571,18 @@ begin
   list.Canvas.Brush.Color:= BrushColor;
 end;
 
-procedure TStrElement.DrawCenteredLines(center, y: integer; percent: real);
-  var s, s1: string; x, w, p: integer; BrushColor: TColor;
+procedure TStrElement.DrawCenteredLines(center, y: Integer; percent: real);
+  var s, s1: string; x, w, p: Integer; BrushColor: TColor;
 begin
-  list.Canvas.Rectangle(rct.left, rct.top, rct.right+1, rct.bottom+1);
+  list.Canvas.Rectangle(rct.Left, rct.top, rct.Right+1, rct.bottom+1);
   BrushColor:= list.Canvas.Brush.Color;
   list.Canvas.Brush.Style:= bsClear;
   s:= text;
   y:= textPos.Y;
   p:= Pos(#13#10, s);
   while p > 0 do begin
-    s1:= copy(s, 1, p-1);
-    delete(s, 1, p+1);
+    s1:= Copy(s, 1, p-1);
+    Delete(s, 1, p+1);
     w:= round(percent * list.getWidthOfOneLine(s1));
     x:= center - w;
     list.Canvas.TextOut(x, y, s1);
@@ -598,12 +598,12 @@ begin
   list.Canvas.Brush.Color:= BrushColor;
 end;
 
-procedure TStrElement.DrawContent(x, y: integer);
-  var h: integer;
+procedure TStrElement.DrawContent(x, y: Integer);
+  var h: Integer;
 begin
   with list.Canvas do
     if text = '' then begin
-      x:= (rct.left + rct.right + 1) div 2;
+      x:= (rct.Left + rct.Right + 1) div 2;
       y:= (rct.top + rct.bottom + 1) div 2;
       h:= (getLineHeight - 10) div 2;
       DrawCircle(x, y, h);
@@ -614,7 +614,7 @@ end;
 procedure TStrElement.Draw;
 begin
   with list.Canvas do begin
-    Rectangle(rct.left, rct.top, rct.right+1, rct.bottom+1);
+    Rectangle(rct.Left, rct.top, rct.Right+1, rct.bottom+1);
     DrawContent(textPos.X, textPos.Y);
   end;
 end;
@@ -629,8 +629,8 @@ end;
 
 procedure TStrElement.MoveRight(w: Integer);
 begin
-  rct.left:= rct.left + w;
-  rct.right:= rct.right + w;
+  rct.Left:= rct.Left + w;
+  rct.Right:= rct.Right + w;
   textPos.x:= textPos.x + w;
 end;
 
@@ -645,10 +645,10 @@ procedure TStrElement.MoveRightList(b: Integer);
   var tmp: TStrElement;
 begin
   MoveRight(b);
-  tmp:= next;
+  tmp:= Next;
   while tmp <> nil do begin
     tmp.MoveRight(b);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
 end;
 
@@ -656,14 +656,14 @@ procedure TStrElement.MoveDownList(h: Integer);
   var tmp: TStrElement;
 begin
   MoveDown(h);
-  tmp:= next;
+  tmp:= Next;
   while tmp <> nil do begin
     tmp.MoveDown(h);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
 end;
 
-procedure TStrElement.Resize(x, y: integer);
+procedure TStrElement.Resize(x, y: Integer);
   var w, h: Integer;
 begin
   list.getWidthHeigthOfText(text, w, h);
@@ -684,20 +684,20 @@ procedure TStrElement.setBottomList(b: Integer);
   var tmp: TStrElement;
 begin
   setBottom(b);
-  tmp:= next;
-  if assigned(tmp) then begin
-    while tmp.next <> nil do
-      tmp:= tmp.next;
+  tmp:= Next;
+  if Assigned(tmp) then begin
+    while tmp.Next <> nil do
+      tmp:= tmp.Next;
     tmp.setBottom(b);
   end;
 end;
 
-procedure TStrElement.setBottom(b: integer);
+procedure TStrElement.setBottom(b: Integer);
 begin
   rct.Bottom:= b;
 end;
 
-procedure TStrElement.ResizeList(x, y: integer);
+procedure TStrElement.ResizeList(x, y: Integer);
   var x1, y1: Integer; tmp: TStrElement; k1: byte;
 begin
   // calculate width
@@ -707,57 +707,57 @@ begin
     then x1:= getDefaultRectWidth + list.Canvas.Font.Size + 2*LEFT_RIGHT
     else x1:= Self.rct.Right;
   y1:= Self.rct.Bottom;
-  tmp:= next;
+  tmp:= Next;
   while tmp <> nil do begin
     tmp.Resize(x, y1);
-    x1:= max(x1, tmp.rct.Right);
+    x1:= Max(x1, tmp.rct.Right);
     y1:= tmp.rct.Bottom;
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   // set width
   setRightList(x1);
   SetRctList(x, y, x1, y1);
 end;
 
-procedure TStrElement.setRightList(right: integer);
+procedure TStrElement.setRightList(Right: Integer);
   var tmp: TStrElement;
 begin
-  setRight(right);
-  tmp:= next;
+  setRight(Right);
+  tmp:= Next;
   while tmp <> nil do begin
-    tmp.setRight(right);
-    tmp:= tmp.next
+    tmp.setRight(Right);
+    tmp:= tmp.Next
   end;
-  rct.Right:= right;
+  rct.Right:= Right;
 end;
 
-function TStrElement.getLineHeight: integer;
+function TStrElement.getLineHeight: Integer;
 begin
   Result:= list.LineHeight;
 end;
 
-function TStrElement.getDefaultRectWidth: integer;
+function TStrElement.getDefaultRectWidth: Integer;
 begin
   Result:= round(RECT_WIDTH*(list.Canvas.Font.Size/12.0));
 end;
 
-function TStrElement.getLines: integer;
-  var p, n: integer; s: string;
+function TStrElement.getLines: Integer;
+  var p, n: Integer; s: string;
 begin
   n:= 0;
   s:= text;
   p:= Pos(#13#10, s);
   while p > 0 do begin
-    delete(s, 1, p+1);
-    inc(n);
+    Delete(s, 1, p+1);
+    Inc(n);
     p:= Pos(#13#10, s);
   end;
-  if s <> '' then inc(n);
+  if s <> '' then Inc(n);
   if n = 0 then n:= 1;
   Result:= n;
 end;
 
-function TStrElement.getHeadHeight: integer;
+function TStrElement.getHeadHeight: Integer;
 begin
   Result:= getLineHeight;
 end;
@@ -874,17 +874,17 @@ begin
   Delete(ClipboardStr, 1, index);
 end;
 
-procedure TStrElement.SetRct(X1, Y1, X2, Y2: integer);
+procedure TStrElement.SetRct(X1, Y1, X2, Y2: Integer);
 begin
-  rct.left:= X1;
+  rct.Left:= X1;
   rct.top:= Y1;
-  rct.right:= X2;
+  rct.Right:= X2;
   rct.bottom:= Y2;
-  textPos.X:= rct.left + LEFT_RIGHT div 2;
+  textPos.X:= rct.Left + LEFT_RIGHT div 2;
   textPos.Y:= rct.top + TOP_BOTTOM div 2;
 end;
 
-procedure TStrElement.SetRctList(X1, Y1, X2, Y2: integer);
+procedure TStrElement.SetRctList(X1, Y1, X2, Y2: Integer);
 begin
 end;
 
@@ -904,13 +904,13 @@ begin
     ord(nsFor)        : Result:= TStrFor.Create(aList);
     ord(nsSwitch)     : Result:= TStrSwitch.Create(aList);
     ord(nsSubprogram) : Result:= TStrSubprogram.Create(aList);
-    ord(nsListhead)   : Result:= TStrListHead.create(aList, aParent);
+    ord(nsListhead)   : Result:= TStrListHead.Create(aList, aParent);
     ord(nsCase)       : Result:= nil; // TStrCase.create(aList);
-    ord(nsBreak)      : Result:= TStrBreak.create(aList);
+    ord(nsBreak)      : Result:= TStrBreak.Create(aList);
     else                Result:= nil;
   end;
   if Result = nil then
-    list.LoadError:= true;
+    list.LoadError:= True;
 end;
 
 function TStrElement.getStatementFromReader(Reader: TStringListReader; const aList: TStrList; aParent: TStrElement): TStrElement;
@@ -923,8 +923,8 @@ begin
     ord(nsFor)        : Result:= TStrFor.Create(aList);
     ord(nsSwitch)     : Result:= TStrSwitch.Create(aList);
     ord(nsSubprogram) : Result:= TStrSubprogram.Create(aList);
-    ord(nsListhead)   : Result:= TStrListHead.create(aList, aParent);
-    ord(nsBreak)      : Result:= TStrBreak.create(aList);
+    ord(nsListhead)   : Result:= TStrListHead.Create(aList, aParent);
+    ord(nsBreak)      : Result:= TStrBreak.Create(aList);
     else                Result:= TStrStatement.Create(aList);
   end;
 end;
@@ -952,9 +952,9 @@ begin
   end;
 end;
 
-function TStrElement.getMaxDelta: integer;
+function TStrElement.getMaxDelta: Integer;
 begin
-  Result:= min((rct.bottom - rct.top) div 2, getHeadHeight);
+  Result:= Min((rct.bottom - rct.top) div 2, getHeadHeight);
 end;
 
 procedure TStrElement.debug;
@@ -962,9 +962,9 @@ procedure TStrElement.debug;
 begin
   s:= 'StrElement Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
-  if assigned(prev) and (prev.next <> TStrElement(Self)) then
+  if Assigned(prev) and (prev.Next <> TStrElement(Self)) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> TStrElement(Self)) then
+  if Assigned(Next) and (Next.prev <> TStrElement(Self)) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
 end;
@@ -973,9 +973,9 @@ procedure TStrElement.debug1;
   var s: string;
 begin
   s:= 'StrElement Kind = ' + IntToStr(kind) + ' Text= ' + text;
-  if assigned(prev) and (prev.next <> TStrElement(Self)) then
+  if Assigned(prev) and (prev.Next <> TStrElement(Self)) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> TStrElement(Self)) then
+  if Assigned(Next) and (Next.prev <> TStrElement(Self)) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
 end;
@@ -992,9 +992,9 @@ end;
 (*                                      Statement                                *)
 (*********************************************************************************)
 
-constructor TStrStatement.create(aList: TStrList);
+constructor TStrStatement.Create(aList: TStrList);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= Ord(nsStatement);
 end;
 
@@ -1013,9 +1013,9 @@ procedure TStrStatement.debug;
 begin
   s:= 'StrStatement Kind=' + IntToStr(kind) + ' Text=' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
-  if assigned(prev) and (prev.next <> Self) then
+  if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
 end;
@@ -1031,9 +1031,9 @@ end;
 (*                                      IF                                       *)
 (*********************************************************************************)
 
-constructor TStrIf.create(aList: TStrList);
+constructor TStrIf.Create(aList: TStrList);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= ord(nsIf);
   then_elem:= TStrListHead.Create(aList, Self);
   then_elem.text:= 'then list head';
@@ -1041,9 +1041,9 @@ begin
   else_elem.text:= 'else list head';
 end;
 
-constructor TStrIf.createStructogram(aList: TStrList; dummy: boolean = true);
+constructor TStrIf.createStructogram(aList: TStrList; dummy: Boolean = True);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= ord(nsIf);
   then_elem:= TStrListHead.CreateStructogram(aList, Self);
   then_elem.text:= 'then list head';
@@ -1068,50 +1068,50 @@ begin
       then inherited Draw
       else drawCenteredLines(then_elem.rct.Right, textPos.Y, percent);
     uh:= then_elem.rct.Top - rct.Top;
-    MoveTo(rct.left, rct.top+1);
-    LineTo(then_elem.rct.right-1, rct.top + uh);
-    MoveTo(rct.right, rct.top+1);
-    LineTo(else_elem.rct.left+1, rct.top + uh);
+    MoveTo(rct.Left, rct.top+1);
+    LineTo(then_elem.rct.Right-1, rct.top + uh);
+    MoveTo(rct.Right, rct.top+1);
+    LineTo(else_elem.rct.Left+1, rct.top + uh);
 
     MoveTo(rct.Left, rct.top + uh);
     LineTo(rct.Right, rct.top + uh);
-    MoveTo(then_elem.rct.right, rct.top + uh + 1);
-    LineTo(then_elem.rct.right, rct.Bottom);
+    MoveTo(then_elem.rct.Right, rct.top + uh + 1);
+    LineTo(then_elem.rct.Right, rct.Bottom);
 
     Font.Size:= Font.Size - 2;
     BrushColor:= Brush.Color;
     Brush.Style:= bsClear;
     h:= then_elem.rct.Top - getLineHeight + TOP_BOTTOM;
     w:= TextWidth(GuiPyLanguageOptions.No);
-    TextOut(rct.left+4, h, GuiPyLanguageOptions.Yes);
-    TextOut(rct.right-w-2, h+2, GuiPyLanguageOptions.No);
+    TextOut(rct.Left+4, h, GuiPyLanguageOptions.Yes);
+    TextOut(rct.Right-w-2, h+2, GuiPyLanguageOptions.No);
     Brush.Style:= bsSolid;
     Brush.Color:= BrushColor;
     Font.Size:= Font.Size + 2;
 
-    tmp:= then_elem.next;
+    tmp:= then_elem.Next;
     while tmp <> nil do begin
       tmp.Draw;
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
     end;
 
-    tmp:= else_elem.next;
+    tmp:= else_elem.Next;
     while tmp <> nil do begin
       tmp.Draw;
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
     end;
   end;
 end;
 
-procedure TStrIf.DrawContent(x, y: integer);
-  var h: integer;
+procedure TStrIf.DrawContent(x, y: Integer);
+  var h: Integer;
 begin
   with list.Canvas do
     if text = '' then begin
       h:= getLineHeight;
       y:= rct.top + h div 2;
       h:= (h - 10) div 2;
-      x:= then_elem.rct.right;
+      x:= then_elem.rct.Right;
       DrawCircle(x, y, h);
     end else
       DrawLines(x, y, list.LineHeight);
@@ -1124,12 +1124,12 @@ begin
   tmp:= then_elem;
   while tmp <> nil do begin  { move all THEN-elements }
     tmp.MoveRight(w);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   tmp:= else_elem;
   while tmp <> nil do begin  { move all ELSE-elements }
     tmp.MoveRight(w);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
 end;
 
@@ -1140,32 +1140,32 @@ begin
   tmp:= then_elem;
   while tmp <> nil do begin  { move all THEN-elements }
     tmp.MoveDown(h);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   tmp:= else_elem;
   while tmp <> nil do begin  { move all ELSE-elements }
     tmp.MoveDown(h);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
 end;
 
-procedure TStrIf.Resize(x, y: integer);
-  var b, w, d, h, wcondition, wb: integer;
+procedure TStrIf.Resize(x, y: Integer);
+  var b, w, d, h, wcondition, wb: Integer;
 begin
   then_elem.ResizeList(x, y);
   else_elem.ResizeList(x, y);
 
   list.getWidthHeigthOfText(text, wcondition, h);
   // width of "if" is at least 1.5* witdh of condition
-  wb:= max(then_elem.rct.Right - then_elem.rct.Left +
+  wb:= Max(then_elem.rct.Right - then_elem.rct.Left +
            else_elem.rct.Right - else_elem.rct.Left, wcondition);
   if wb <= 1.5*wcondition then wb:= round(1.5*wcondition);
-  w:= max(wb, getDefaultRectWidth);
+  w:= Max(wb, getDefaultRectWidth);
 
   SetRct(x, y, x + w, y + h);
   then_elem.ResizeList(x, y + h);
   else_elem.ResizeList(then_elem.rct.Right, y + h);
-  b:= max(then_elem.rct.Bottom, else_elem.rct.Bottom);
+  b:= Max(then_elem.rct.Bottom, else_elem.rct.Bottom);
   if b > then_elem.rct.Bottom then
     then_elem.setBottomList(b);
   if b > else_elem.rct.Bottom then
@@ -1180,8 +1180,8 @@ begin
   setTextPos;
 end;
 
-procedure TStrIf.setRight(Right: integer);
-  var r1, dr: integer;
+procedure TStrIf.setRight(Right: Integer);
+  var r1, dr: Integer;
 begin
   dr:= Right - rct.Right;
   r1:= dr div 2;
@@ -1199,13 +1199,13 @@ begin
   else_elem.setBottomList(b);
 end;
 
-function TStrIf.getHeadHeight: integer;
+function TStrIf.getHeadHeight: Integer;
 begin
   Result:= then_elem.rct.top - rct.top;
 end;
 
 procedure TStrIf.setTextPos;
-  var w, h: integer;
+  var w, h: Integer;
       dthen, dif: real;
 begin
   dthen:= then_elem.rct.Right - then_elem.rct.Left;
@@ -1228,50 +1228,50 @@ end;
 
 procedure TStrIf.LoadFromStream(Stream: TStream; Version: byte);
   var current, elem: TStrElement;
-      aKind, count: Byte;
+      aKind, Count: Byte;
 begin
   inherited LoadFromStream(Stream, Version);
-  FreeAndNil(next); {necessary for corrupted files !}
+  FreeAndNil(Next); {necessary for corrupted files !}
   Stream.Read(aKind, 1);  {overread aKind}
   then_elem.LoadFromStream(Stream, Version);
-  FreeAndNil(then_elem.next);
+  FreeAndNil(then_elem.Next);
   current:= then_elem;
-  count:= Stream.Read(aKind, 1);
-  while (count = 1) and (aKind <> $FF) do begin
+  Count:= Stream.Read(aKind, 1);
+  while (Count = 1) and (aKind <> $FF) do begin
     elem:= getStatementFromKind(aKind, list, Self);
-    if elem = nil then exit;
+    if elem = nil then Exit;
     elem.LoadFromStream(Stream, Version);
-    FreeAndNil(elem.next);
+    FreeAndNil(elem.Next);
     list.Insert(current, elem);
     current:= elem;
-    count:= Stream.Read(aKind, 1);
+    Count:= Stream.Read(aKind, 1);
   end;
-  if count = 1 then begin
+  if Count = 1 then begin
     Stream.Read(akind, 1);  {overread kind}
     else_elem.LoadFromStream(Stream, Version);
-    FreeAndNil(else_elem.next);
+    FreeAndNil(else_elem.Next);
     current:= else_elem;
-    count:= Stream.Read(aKind, 1);
-    while (count = 1) and (aKind <> $FF) do begin
+    Count:= Stream.Read(aKind, 1);
+    while (Count = 1) and (aKind <> $FF) do begin
       elem:= getStatementFromKind(aKind, list, Self);
-      if elem = nil then exit;
+      if elem = nil then Exit;
       elem.LoadFromStream(Stream, Version);
-      FreeAndNil(elem.next);
+      FreeAndNil(elem.Next);
       list.Insert(current, elem);
       current:= elem;
-      count:= Stream.Read(aKind, 1);
+      Count:= Stream.Read(aKind, 1);
     end;
   end;
 end;
 
 procedure TStrIf.LoadFromReader(Reader: TStringListReader);
   var current, elem: TStrElement;
-      myIndent: integer;
+      myIndent: Integer;
 begin
   inherited LoadFromReader(Reader); // condition
   myIndent:= Reader.IndentAsInt;
   then_elem.LoadFromReader(Reader);
-  FreeAndNil(then_elem.next); // don't use empty statement
+  FreeAndNil(then_elem.Next); // don't use empty statement
   current:= then_elem;
   while Reader.nextLineIndent = myIndent do begin
     Reader.ReadLine;
@@ -1282,7 +1282,7 @@ begin
   end;
   Reader.ReadLine; // else
   else_elem.LoadFromReader(Reader);
-  FreeAndNil(else_elem.next); // don't use empty statement
+  FreeAndNil(else_elem.Next); // don't use empty statement
   current:= else_elem;
   while Reader.nextLineIndent = myIndent do begin
     Reader.ReadLine;
@@ -1302,14 +1302,14 @@ begin
   tmp:= then_elem;
   while tmp <> nil do begin
     tmp.SaveToStream(Stream);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   tag:= $FF;
   Stream.Write(tag, 1);      {write end tag}
   tmp:= else_elem;
   while tmp <> nil do begin
     tmp.SaveToStream(Stream);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   tag:= $FF;
   Stream.Write(tag, 1);      {write end tag}
@@ -1322,13 +1322,13 @@ begin
   tmp:= then_elem;
   while tmp <> nil do begin
     Result:= Result + tmp.getText(Indent + '  ');
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   Result:= Result + Indent + 'else:' + CrLf;
   tmp:= else_elem;
   while tmp <> nil do begin
     Result:= Result + tmp.getText(Indent + '  ');
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
 end;
 
@@ -1340,13 +1340,13 @@ begin
   tmp:= then_elem;
   while tmp <> nil do begin
     Result:= Result + tmp.AppendToClipboard;
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   Result:= Result + TERM + SEP;
   tmp:= else_elem;
   while tmp <> nil do begin
     Result:= Result + tmp.AppendToClipboard;
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   Result:= Result + TERM + SEP;
 end;
@@ -1362,12 +1362,12 @@ begin
   aKind:= ord(ClipboardStr[1]);
   while aKind <> $FF do begin
     elem:= getStatementFromKind(aKind, list, Self);
-    if elem = nil then exit;
+    if elem = nil then Exit;
     elem.CreateFromClipboard(ClipboardStr);
     if tmp = nil then
       then_elem:= elem
     else begin
-      tmp.next:= elem;
+      tmp.Next:= elem;
       elem.prev:= tmp;
     end;
     tmp:= elem;
@@ -1380,12 +1380,12 @@ begin
   aKind:= ord(ClipboardStr[1]);
   while aKind <> $FF do begin
     elem:= getStatementFromKind(aKind, list, Self);
-    if elem = nil then exit;
+    if elem = nil then Exit;
     elem.CreateFromClipboard(ClipboardStr);
     if tmp = nil then
       else_elem:= elem
     else begin
-      tmp.next:= elem;
+      tmp.Next:= elem;
       elem.prev:= tmp;
     end;
     tmp:= elem;
@@ -1405,9 +1405,9 @@ procedure TStrIf.debug;
 begin
   s:= 'TStrIf Kind=' + IntToStr(kind) + ' Text=' + text +
      ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
-   if assigned(prev) and (prev.next <> Self) then
+   if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
   MessagesWindow.AddMessage('THEN');
@@ -1427,17 +1427,17 @@ end;
 (*                                     WHILE                                     *)
 (*********************************************************************************)
 
-constructor TStrWhile.create(aList: TStrList);
+constructor TStrWhile.Create(aList: TStrList);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= ord(nsWhile);
-  do_elem:= TStrListHead.create(aList, Self);
+  do_elem:= TStrListHead.Create(aList, Self);
   do_elem.text:= 'while head';
 end;
 
-constructor TStrWhile.createStructogram(aList: TStrList; dummy: boolean = true);
+constructor TStrWhile.createStructogram(aList: TStrList; dummy: Boolean = True);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= ord(nsWhile);
   do_elem:= TStrListHead.CreateStructogram(aList, Self);
   do_elem.text:= 'while head';
@@ -1453,13 +1453,13 @@ procedure TStrWhile.Draw;
 begin
   with list.Canvas do begin
     inherited Draw;           { draw WHILE-rectangle and condition-text }
-    MoveTo(do_elem.rct.right, do_elem.rct.top);
-    LineTo(do_elem.rct.left, do_elem.rct.top);
-    LineTo(do_elem.rct.left, rct.bottom);
-    tmp:= do_elem.next;
+    MoveTo(do_elem.rct.Right, do_elem.rct.top);
+    LineTo(do_elem.rct.Left, do_elem.rct.top);
+    LineTo(do_elem.rct.Left, rct.bottom);
+    tmp:= do_elem.Next;
     while tmp <> nil do begin
       tmp.Draw;
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
     end;
   end;
 end;
@@ -1471,7 +1471,7 @@ begin
   tmp:= do_elem;
   while tmp <> nil do begin  { move all WHILE-elements }
     tmp.MoveRight(w);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
 end;
 
@@ -1482,23 +1482,23 @@ begin
   tmp:= do_elem;
   while tmp <> nil do begin  { move all WHILE-elements }
     tmp.MoveDown(h);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
 end;
 
-procedure TStrWhile.Resize(x, y: integer);
-  var w: integer;
+procedure TStrWhile.Resize(x, y: Integer);
+  var w: Integer;
 begin
   inherited Resize(x, y);
   do_elem.ResizeList(x + DO_LEFT, y + getLines*list.LineHeight);
-  w:= max(Self.rct.Right, do_elem.rct.Right);
+  w:= Max(Self.rct.Right, do_elem.rct.Right);
   SetRct(x, y, w, do_elem.rct.Bottom);
   do_elem.setRightList(rct.Right);
 end;
 
-procedure TStrWhile.setRight(Right: integer);
+procedure TStrWhile.setRight(Right: Integer);
 begin
-  rct.right:= Right;
+  rct.Right:= Right;
   do_elem.setRightList(Right);
 end;
 
@@ -1508,7 +1508,7 @@ begin
   do_elem.setBottomList(b);
 end;
 
-function TStrWhile.getHeadHeight: integer;
+function TStrWhile.getHeadHeight: Integer;
 begin
   Result:= do_elem.rct.top - rct.top;
 end;
@@ -1516,33 +1516,33 @@ end;
 procedure TStrWhile.LoadFromStream(Stream: TStream; Version: byte);
 var
   current, elem: TStrElement;
-  aKind, count: Byte;
+  aKind, Count: Byte;
 begin
   inherited LoadFromStream(Stream, Version);
-  FreeAndNil(next); {necessary for corrupted files !}
+  FreeAndNil(Next); {necessary for corrupted files !}
   Stream.Read(aKind, 1);  {overread aKind}
   do_elem.LoadFromStream(Stream, Version);
-  FreeAndNil(do_elem.next); {necessary for corrupted files !}
+  FreeAndNil(do_elem.Next); {necessary for corrupted files !}
   current:= do_elem;
-  count:= Stream.Read(aKind, 1);
-  while (count = 1) and (aKind <> $FF) do begin
+  Count:= Stream.Read(aKind, 1);
+  while (Count = 1) and (aKind <> $FF) do begin
     elem:= getStatementFromKind(aKind, list, Self);
-    if elem = nil then exit;
+    if elem = nil then Exit;
     elem.LoadFromStream(Stream, Version);
-    FreeAndNil(elem.next);
+    FreeAndNil(elem.Next);
     list.Insert(current, elem);
     current:= elem;
-    count:= Stream.Read(aKind, 1);
+    Count:= Stream.Read(aKind, 1);
   end;
 end;
 
 procedure TStrWhile.LoadFromReader(Reader: TStringListReader);
   var current, elem: TStrElement;
-      myIndent: integer;
+      myIndent: Integer;
 begin
   inherited LoadFromReader(Reader);
   do_elem.LoadFromReader(Reader);
-  FreeAndNil(do_elem.next); // don't use empty statement
+  FreeAndNil(do_elem.Next); // don't use empty statement
   current:= do_elem;
   myIndent:= Reader.IndentAsInt;
   while Reader.nextLineIndent = myIndent do begin
@@ -1563,7 +1563,7 @@ begin
   tmp:= do_elem;
   while tmp <> nil do begin
     tmp.SaveToStream(Stream);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   tag:= $FF;
   Stream.Write(tag, 1);      {write end tag}
@@ -1576,7 +1576,7 @@ begin
   tmp:= do_elem;
   while tmp <> nil do begin
     Result:= Result + tmp.getText(Indent + '  ');
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
 end;
 
@@ -1588,7 +1588,7 @@ begin
   tmp:= do_elem;
   while tmp <> nil do begin
     Result:= Result + tmp.AppendToClipboard;
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;                           // $FF
   Result:= Result + TERM + SEP;
 end;
@@ -1604,12 +1604,12 @@ begin
   aKind:= ord(ClipboardStr[1]);
   while aKind <> $FF do begin
     elem:= getStatementFromKind(aKind, list, Self);
-    if elem = nil then exit;
+    if elem = nil then Exit;
     elem.CreateFromClipboard(ClipboardStr);
     if tmp = nil then
       do_elem:= elem
     else begin
-      tmp.next:= elem;
+      tmp.Next:= elem;
       elem.prev:= tmp;
     end;
     tmp:= elem;
@@ -1635,9 +1635,9 @@ procedure TStrWhile.debug;
 begin
   s:= 'TStrWhile Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
-  if assigned(prev) and (prev.next <> Self) then
+  if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
   MessagesWindow.AddMessage('DO');
@@ -1654,14 +1654,14 @@ end;
 (*                                    Do-While                                   *)
 (*********************************************************************************)
 
-constructor TStrDoWhile.create(aList: TStrList);
+constructor TStrDoWhile.Create(aList: TStrList);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= ord(nsDoWhile);
   do_elem.text:= 'do-while head';
 end;
 
-constructor TStrDoWhile.createStructogram(aList: TStrList; dummy: boolean = true);
+constructor TStrDoWhile.createStructogram(aList: TStrList; dummy: Boolean = True);
 begin
   inherited createStructogram(aList);
   kind:= ord(nsDoWhile);
@@ -1672,37 +1672,37 @@ procedure TStrDoWhile.Draw;
   var tmp: TStrElement;
 begin
   with list.Canvas do begin
-    Rectangle(rct.left, rct.top, rct.right+1, rct.bottom+1);
+    Rectangle(rct.Left, rct.top, rct.Right+1, rct.bottom+1);
     DrawContent(textPos.x, textPos.y);
 
-    MoveTo(do_elem.rct.left, do_elem.rct.top);
-    LineTo(do_elem.rct.left, do_elem.rct.bottom);
-    LineTo(do_elem.rct.right,do_elem.rct.bottom);
-    tmp:= do_elem.next;
+    MoveTo(do_elem.rct.Left, do_elem.rct.top);
+    LineTo(do_elem.rct.Left, do_elem.rct.bottom);
+    LineTo(do_elem.rct.Right,do_elem.rct.bottom);
+    tmp:= do_elem.Next;
     while tmp <> nil do begin
       tmp.Draw;
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
     end;
   end;
 end;
 
-function TStrDoWhile.getHeadHeight: integer; 
+function TStrDoWhile.getHeadHeight: Integer; 
 begin
   Result:= rct.top - do_elem.rct.top;
 end;
 
-procedure TStrDoWhile.Resize(x, y: integer);
-  var x1, y1, w, h: integer;
+procedure TStrDoWhile.Resize(x, y: Integer);
+  var x1, y1, w, h: Integer;
 begin
   do_elem.ResizeList(x + DO_LEFT, y);
 
   y1:= do_elem.rct.Bottom;
   list.getWidthHeigthOfText(text, w, h);
-  x1:= max(w, do_elem.rct.Right - do_elem.rct.Left);
+  x1:= Max(w, do_elem.rct.Right - do_elem.rct.Left);
   SetRct(x, y, x + x1, y1 + h);
   TextPos.y:= y1 + TOP_BOTTOM div 2;
 
-  x1:= max(Self.rct.Right, do_elem.rct.Right);
+  x1:= Max(Self.rct.Right, do_elem.rct.Right);
   do_elem.setRightList(x1);
   rct.Right:= x1;
 end;
@@ -1723,9 +1723,9 @@ procedure TStrDoWhile.debug;
 begin
   s:= 'TStrDoWhile Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
-   if assigned(prev) and (prev.next <> Self) then
+   if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
   MessagesWindow.AddMessage('DO WHILE');
@@ -1738,14 +1738,14 @@ end;
 (*                                      FOR                                      *)
 (*********************************************************************************)
 
-constructor TStrFor.create(aList: TStrList);
+constructor TStrFor.Create(aList: TStrList);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= ord(nsFor);
   do_elem.text:= 'for head';
 end;
 
-constructor TStrFor.createStructogram(aList: TStrList; dummy: boolean = true);
+constructor TStrFor.createStructogram(aList: TStrList; dummy: Boolean = True);
 begin
   inherited createStructogram(aList);
   kind:= ord(nsFor);
@@ -1762,9 +1762,9 @@ procedure TStrFor.debug;
 begin
   s:= 'TStrFor Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
-   if assigned(prev) and (prev.next <> Self) then
+   if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
   MessagesWindow.AddMessage('FOR ');
@@ -1776,9 +1776,9 @@ end;
 (*                                      CASE                                     *)
 (*********************************************************************************)
 
-constructor TStrCase.create(aList: TStrList);
+constructor TStrCase.Create(aList: TStrList);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= ord(nsCase);
   text:= '';
 end;
@@ -1789,7 +1789,7 @@ begin
 end;
 
 procedure TStrCase.DrawRightBottom;
-  var h1, h2, w, y: integer;
+  var h1, h2, w, y: Integer;
 begin
   if text = ''
     then DrawContent(0,0)
@@ -1802,7 +1802,7 @@ begin
 end;
 
 procedure TStrCase.DrawLeftBottom;
-  var h1, h2, w, y: integer;
+  var h1, h2, w, y: Integer;
 begin
   if text = ''
     then DrawContent(0,0)
@@ -1829,9 +1829,9 @@ procedure TStrCase.debug;
 begin
   s:= 'TStrCase Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
-  if assigned(prev) and (prev.next <> Self) then
+  if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
 end;
@@ -1840,22 +1840,22 @@ end;
 (*                                      SWITCH                                   *)
 (*********************************************************************************)
 
-constructor TStrSwitch.create(aList: TStrList);
-  var i: integer;
+constructor TStrSwitch.Create(aList: TStrList);
+  var i: Integer;
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= ord(nsSwitch);
   SetLength(case_elems, GuiPyOptions.CaseCount);
   for i:= 0 to high(case_elems) do begin
     case_elems[i]:= TStrListHead.Create(aList, Self);
     case_elems[i].text:= 'case ' + IntToStr(i) + ' head';
   end;
-  case_elems[high(case_elems)].next.text:= GuiPyLanguageOptions.Other;
+  case_elems[high(case_elems)].Next.text:= GuiPyLanguageOptions.Other;
 end;
 
-constructor TStrSwitch.createStructogram(aList: TStrList; dummy: boolean = true);
+constructor TStrSwitch.createStructogram(aList: TStrList; dummy: Boolean = True);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= ord(nsSwitch);
 end;
 
@@ -1869,12 +1869,12 @@ begin
       else drawCenteredLines(case_elems[high(case_elems)].rct.Left, textPos.Y, percent);
 
     // draw diagonals
-    case_h:= case_elems[0].next.rct.Bottom - case_elems[0].next.rct.Top;
+    case_h:= case_elems[0].Next.rct.Bottom - case_elems[0].Next.rct.Top;
     uh:= case_elems[0].rct.Top - rct.Top + case_h;
     if list.SwitchWithCaseLine then uh:= uh - case_h;
-    MoveTo(rct.left, rct.top);
+    MoveTo(rct.Left, rct.top);
     LineTo(case_elems[high(case_elems)].rct.Left, rct.top + uh);
-    MoveTo(rct.right, rct.top);
+    MoveTo(rct.Right, rct.top);
     LineTo(case_elems[high(case_elems)].rct.Left, rct.top + uh);
 
     // draw verticals
@@ -1892,29 +1892,29 @@ begin
 
     // draw then elements
     for i:= 0 to high(case_elems) - 1  do begin
-      tmp:= case_elems[i].next;
+      tmp:= case_elems[i].Next;
       tmp.DrawLeftBottom;
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
       while tmp <> nil do begin
         tmp.Draw;
-        tmp:= tmp.next;
+        tmp:= tmp.Next;
       end;
     end;
 
     // draw else element right justified
     i:= high(case_elems);
-    tmp:= case_elems[i].next;
+    tmp:= case_elems[i].Next;
     tmp.DrawRightBottom;
     tmp:= tmp.Next;
     while tmp <> nil do begin
       tmp.Draw;
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
     end;
   end;
 end;
 
-procedure TStrSwitch.DrawContent(x, y: integer);
-  var h: integer;
+procedure TStrSwitch.DrawContent(x, y: Integer);
+  var h: Integer;
 begin
   with list.Canvas do
     if text = '' then begin
@@ -1927,33 +1927,33 @@ begin
 end;
 
 procedure TStrSwitch.MoveRight(w: Integer);
-  var tmp: TStrElement; i: integer;
+  var tmp: TStrElement; i: Integer;
 begin
   inherited MoveRight(w);    { move case-rectangle and condition-text }
   for i:= 0 to high(case_elems) do begin
     tmp:= case_elems[i];
     while tmp <> nil do begin  { move all case-elements }
       tmp.MoveRight(w);
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
     end;
   end;
 end;
 
 procedure TStrSwitch.MoveDown(h: Integer);
-  var tmp: TStrElement; i: integer;
+  var tmp: TStrElement; i: Integer;
 begin
   inherited MoveDown(h);    { move case-rectangle and condition-text }
   for i:= 0 to high(case_elems) do begin
     tmp:= case_elems[i];
     while tmp <> nil do begin  { move all case-elements }
       tmp.MoveDown(h);
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
     end;
   end;
 end;
 
-procedure TStrSwitch.Resize(x, y: integer);
-  var b, w, d, h, dh, wcondition, wb, i: integer;
+procedure TStrSwitch.Resize(x, y: Integer);
+  var b, w, d, h, dh, wcondition, wb, i: Integer;
 begin
   for i:= 0 to high(case_elems) do
     case_elems[i].ResizeList(x, y);
@@ -1967,9 +1967,9 @@ begin
   wb:= 0;
   for i:= 0 to high(case_elems) do
      wb:= wb + case_elems[i].rct.Right - case_elems[i].rct.Left;
-  wb:= max(wb, wcondition);
+  wb:= Max(wb, wcondition);
   if wb <= 1.5*wcondition then wb:= round(1.5*wcondition);
-  w:= max(wb, getDefaultRectWidth);
+  w:= Max(wb, getDefaultRectWidth);
 
   // position horizontal
   SetRct(x, y, x + w, y + h);
@@ -1980,13 +1980,13 @@ begin
   // set common case head
   h:= 0;
   for i:= 0 to high(case_elems) do
-    h:= max(h, case_elems[i].next.rct.Bottom);
+    h:= Max(h, case_elems[i].Next.rct.Bottom);
   for i:= 0 to high(case_elems) do begin
-    dh:= h - case_elems[i].next.rct.Bottom;
-    case_elems[i].next.rct.Bottom:= h;
+    dh:= h - case_elems[i].Next.rct.Bottom;
+    case_elems[i].Next.rct.Bottom:= h;
     if dh > 0 then begin
-      if assigned(case_elems[i].next) and assigned(case_elems[i].next.next) then
-        case_elems[i].next.next.MoveDownList(dh);
+      if Assigned(case_elems[i].Next) and Assigned(case_elems[i].Next.Next) then
+        case_elems[i].Next.Next.MoveDownList(dh);
       case_elems[i].rct.Bottom:= case_elems[i].rct.Bottom + dh;
     end;
   end;
@@ -1994,7 +1994,7 @@ begin
   // set common bottom
   b:= 0;
   for i:= 0 to high(case_elems) do
-    b:= max(b, case_elems[i].rct.Bottom);
+    b:= Max(b, case_elems[i].rct.Bottom);
   for i:= 0 to high(case_elems) do
     if b > case_elems[i].rct.Bottom then
       case_elems[i].setBottomList(b);
@@ -2008,8 +2008,8 @@ begin
   setTextPos;
 end;
 
-procedure TStrSwitch.setRight(Right: integer);
-  var dr, i: integer;
+procedure TStrSwitch.setRight(Right: Integer);
+  var dr, i: Integer;
 begin
   dr:= (Right - rct.Right) div Length(case_elems);
   for i:= 0 to high(case_elems) - 1 do begin
@@ -2023,7 +2023,7 @@ begin
 end;
 
 procedure TStrSwitch.setBottom(b: Integer);
-  var i: integer;
+  var i: Integer;
 begin
   inherited setBottom(b);
   for i:= 0 to high(case_elems) do
@@ -2031,7 +2031,7 @@ begin
 end;
 
 procedure TStrSwitch.setTextPos;
-  var w, h: integer;
+  var w, h: Integer;
       dthen, dcase: real;
 begin
   dthen:= case_elems[high(case_elems)].rct.Left - case_elems[0].rct.Left;
@@ -2046,15 +2046,15 @@ begin
 end;
 
 procedure TStrSwitch.setList(aList: TStrList);
-  var i: integer;
+  var i: Integer;
 begin
   inherited;
   for i:= 0 to high(case_elems) do
     case_elems[i].setList(aList);
 end;
 
-procedure TStrSwitch.AdjustCaseElems(i: integer);
-  var j: integer;
+procedure TStrSwitch.AdjustCaseElems(i: Integer);
+  var j: Integer;
 begin
   for j:= high(case_elems) downto i do
     FreeAndNil(case_elems[j]);
@@ -2062,7 +2062,7 @@ begin
     SetLength(case_elems, i);
 end;
 
-function TStrSwitch.getHeadHeight: integer;
+function TStrSwitch.getHeadHeight: Integer;
 begin
   Result:= case_elems[0].rct.top - rct.top;
 end;
@@ -2070,41 +2070,41 @@ end;
 procedure TStrSwitch.LoadFromStream(Stream: TStream; Version: byte);
 var
   current, elem: TStrElement;
-  aKind, count: Byte; i: integer;
+  aKind, Count: Byte; i: Integer;
 begin
   inherited LoadFromStream(Stream, Version);
   i:= 0;
-  FreeAndNil(next);  // necessary for corrupted files !
-  count:= Stream.Read(akind, 1);  // overread aKind
-  while (count = 1) and (aKind <> $FF) do begin
+  FreeAndNil(Next);  // necessary for corrupted files !
+  Count:= Stream.Read(akind, 1);  // overread aKind
+  while (Count = 1) and (aKind <> $FF) do begin
     if i > high(case_elems) then begin
       SetLength(case_elems, i+1);
       case_elems[i]:= TStrListHead.Create(list, Self);
       case_elems[i].text:= 'case ' + IntToStr(i) + ' head';
     end;
-    case_elems[i].next.LoadFromStream(Stream, Version);
-    current:= case_elems[i].next;
-    count:= Stream.Read(aKind, 1);
-    while (count = 1) and (aKind <> $FF) do begin
+    case_elems[i].Next.LoadFromStream(Stream, Version);
+    current:= case_elems[i].Next;
+    Count:= Stream.Read(aKind, 1);
+    while (Count = 1) and (aKind <> $FF) do begin
       elem:= getStatementFromKind(aKind, list, Self);
-      if elem = nil then exit;
+      if elem = nil then Exit;
       elem.LoadFromStream(Stream, Version);
-      FreeAndNil(elem.next);
+      FreeAndNil(elem.Next);
       list.Insert(current, elem);
       current:= elem;
-      count:= Stream.Read(aKind, 1);
+      Count:= Stream.Read(aKind, 1);
     end;
     // delete default statement from TStrListHead.create
-    list.deleteElem(current.next);
-    inc(i);
-    count:= Stream.Read(aKind, 1);
+    list.deleteElem(current.Next);
+    Inc(i);
+    Count:= Stream.Read(aKind, 1);
   end;
   AdjustCaseElems(i);
 end;
 
 procedure TStrSwitch.LoadFromReader(Reader: TStringListReader);
   var current, elem: TStrElement;
-      i, myIndent: integer;
+      i, myIndent: Integer;
 begin
   i:= 0;
   inherited LoadFromReader(Reader);
@@ -2117,8 +2117,8 @@ begin
       case_elems[i].text:= 'case ' + IntToStr(i) + ' head';
     end;
     case_elems[i].LoadFromReader(Reader);
-    case_elems[i].next.LoadFromReader(Reader);
-    current:= case_elems[i].next;
+    case_elems[i].Next.LoadFromReader(Reader);
+    current:= case_elems[i].Next;
 
     while Reader.nextLineIndent = myIndent + 2 do begin
       Reader.ReadLine;
@@ -2127,8 +2127,8 @@ begin
       list.Insert(current, elem);
       current:= elem;
     end;
-    list.deleteElem(current.next);
-    inc(i);
+    list.deleteElem(current.Next);
+    Inc(i);
   end;
   AdjustCaseElems(i);
 end;
@@ -2137,15 +2137,15 @@ procedure TStrSwitch.SaveToStream(Stream: TStream);
 var
   tmp: TStrElement;
   tag: Byte;
-  i: integer;
+  i: Integer;
 begin
   inherited SaveToStream(Stream); // save condition
   tag:= $FF;
   for i:= 0 to high(case_elems) do begin
-    tmp:= case_elems[i].next;
+    tmp:= case_elems[i].Next;
     while tmp <> nil do begin
       tmp.SaveToStream(Stream);
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
     end;
     Stream.Write(tag, 1);      // write end tag
   end;
@@ -2155,7 +2155,7 @@ end;
 function TStrSwitch.getText(Indent: string): string;
 var
   tmp: TStrElement;
-  i: integer;
+  i: Integer;
 begin
   Result:= Indent + 'switch: ' + CrLf + inherited getText(Indent + '  ');
   for i:= 0 to high(case_elems) do begin
@@ -2163,20 +2163,20 @@ begin
     Result:= Result + Indent + '  case:' + CrLf;
     while tmp <> nil do begin
       Result:= Result + tmp.getText(Indent + '    ');
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
     end;
   end;
 end;
 
 function TStrSwitch.AppendToClipboard: string;
-  var tmp: TStrElement; i: integer;
+  var tmp: TStrElement; i: Integer;
 begin
   Result:= inherited AppendToClipboard;
   for i:= 0 to high(case_elems) do begin
-    tmp:= case_elems[i].next;
+    tmp:= case_elems[i].Next;
     while tmp <> nil do begin
       Result:= Result + tmp.AppendToClipboard;
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
     end;
     Result:= Result + TERM + SEP;
   end;
@@ -2186,7 +2186,7 @@ end;
 procedure TStrSwitch.CreateFromClipboard(var ClipboardStr: string);
 var
   elem, current: TStrElement;
-  aKind, index: Byte; i: integer;
+  aKind, index: Byte; i: Integer;
 begin
   inherited CreateFromClipboard(ClipboardStr);
   i:= 0;
@@ -2197,14 +2197,14 @@ begin
       case_elems[i]:= TStrListHead.Create(list, Self);
       case_elems[i].text:= 'case ' + IntToStr(i) + ' head';
     end;
-    case_elems[i].next.CreateFromClipboard(ClipboardStr);
-    current:= case_elems[i].next;
+    case_elems[i].Next.CreateFromClipboard(ClipboardStr);
+    current:= case_elems[i].Next;
     aKind:= ord(ClipboardStr[1]);
     while akind <> $FF do begin
       elem:= getStatementFromKind(aKind, list, Self);
-      if elem = nil then exit;
+      if elem = nil then Exit;
       elem.CreateFromClipboard(ClipboardStr);
-      FreeAndNil(elem.next);
+      FreeAndNil(elem.Next);
       list.Insert(current, elem);
       current:= elem;
       aKind:= ord(ClipboardStr[1]);
@@ -2212,8 +2212,8 @@ begin
     index:= Pos(SEP, ClipboardStr);
     Delete(ClipboardStr, 1, index);
     // delete default statement from TStrListHead.create
-    list.deleteElem(current.next);
-    inc(i);
+    list.deleteElem(current.Next);
+    Inc(i);
     aKind:= ord(ClipboardStr[1]);
   end;
   index:= Pos(SEP, ClipboardStr);
@@ -2222,30 +2222,30 @@ begin
 end;
 
 destructor TStrSwitch.Destroy;
-  var i: integer;
+  var i: Integer;
 begin
   for i:= 0 to high(case_elems) do
     FreeAndNil(case_elems[i]);
 end;
 
 function TStrSwitch.asString: string;
- var i: integer;
+ var i: Integer;
 begin
   Result:= 'Switch(';
   for i:= 0 to high(case_elems) do
     Result:= Result + 'case(' + case_elems[i].asString + '),';
-  delete(Result, length(Result), 1);
+  Delete(Result, Length(Result), 1);
   Result:= Result + ')';
 end;
 
 procedure TStrSwitch.debug;
-  var s: string; i: integer;
+  var s: string; i: Integer;
 begin
   s:= 'TStrSwitch Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
-  if assigned(prev) and (prev.next <> Self) then
+  if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
   for i:= 0 to high(case_elems) do begin
@@ -2257,7 +2257,7 @@ begin
 end;
 
 procedure TStrSwitch.Collapse;
-  var i: integer;
+  var i: Integer;
 begin
   for i:= 0 to high(case_elems) do
     case_elems[i].CollapseCase;
@@ -2267,33 +2267,33 @@ end;
 (*                                  SUBPROGRAM                                   *)
 (*********************************************************************************)
 
-constructor TStrSubProgram.create(aList: TStrList);
+constructor TStrSubProgram.Create(aList: TStrList);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= ord(nsSubProgram);
 end;
 
 procedure TStrSubprogram.Draw;
-  var d: integer;
+  var d: Integer;
 begin
   inherited Draw;
   with list.Canvas do begin
     d:= DO_SUB div 2;
-    MoveTo(rct.left + d, rct.top+1);
-    LineTo(rct.left + d, rct.bottom);
-    MoveTo(rct.right - d, rct.top+1);
-    LineTo(rct.right - d, rct.bottom);
+    MoveTo(rct.Left + d, rct.top+1);
+    LineTo(rct.Left + d, rct.bottom);
+    MoveTo(rct.Right - d, rct.top+1);
+    LineTo(rct.Right - d, rct.bottom);
   end;
 end;
 
-procedure TStrSubprogram.Resize(x, y: integer);
+procedure TStrSubprogram.Resize(x, y: Integer);
 begin
   inherited Resize(x, y);
   textPos.x:= textPos.x + DO_SUB div 2;                { ... correct text position }
-  rct.right:= rct.right + DO_SUB;
+  rct.Right:= rct.Right + DO_SUB;
 end;
 
-function TStrSubprogram.getHeadHeight: integer;
+function TStrSubprogram.getHeadHeight: Integer;
 begin
   Result:= rct.bottom - rct.top;
 end;
@@ -2318,9 +2318,9 @@ procedure TStrSubprogram.debug;
 begin
   s:= 'TStrSubprogram Kind = ' + IntToStr(kind) + ' Text= ' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
-  if assigned(prev) and (prev.next <> Self) then
+  if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
 end;
@@ -2329,31 +2329,31 @@ end;
 (*                                  BREAK                                        *)
 (*********************************************************************************)
 
-constructor TStrBreak.create(aList: TStrList);
+constructor TStrBreak.Create(aList: TStrList);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= ord(nsBreak);
 end;
 
 procedure TStrBreak.Draw;
-  var d: integer;
+  var d: Integer;
 begin
   inherited Draw;
   with list.Canvas do begin
     d:= DO_BREAK;
-    MoveTo(rct.left + d, rct.top+1);
-    LineTo(rct.left, (rct.bottom + rct.top) div 2);
-    LineTo(rct.left + d, rct.bottom);
+    MoveTo(rct.Left + d, rct.top+1);
+    LineTo(rct.Left, (rct.bottom + rct.top) div 2);
+    LineTo(rct.Left + d, rct.bottom);
   end;
 end;
 
-procedure TStrBreak.Resize(x, y: integer);
+procedure TStrBreak.Resize(x, y: Integer);
 begin
   inherited Resize(x, y);
   textPos.x:= textPos.x + DO_BREAK;        { ... correct text position }
 end;
 
-function TStrBreak.getHeadHeight: integer;
+function TStrBreak.getHeadHeight: Integer;
 begin
   Result:= rct.bottom - rct.top;
 end;
@@ -2378,9 +2378,9 @@ procedure TStrBreak.debug;
 begin
   s:= 'TStrBreak Kind = ' + IntToStr(kind) + ' Text= ' + text +
      ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
-  if assigned(prev) and (prev.next <> Self) then
+  if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
 end;
@@ -2389,43 +2389,43 @@ end;
 (*                                      Listhead                                 *)
 (*********************************************************************************)
 
-constructor TStrListHead.create(aList: TStrList; aParent: TStrElement);
+constructor TStrListHead.Create(aList: TStrList; aParent: TStrElement);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= Ord(nsListHead);
   Self.Parent:= aParent;
-  Self.next:= TStrStatement.create(aList);
-  Self.next.prev:= Self;
+  Self.Next:= TStrStatement.Create(aList);
+  Self.Next.prev:= Self;
   if parent is TStrSwitch then
-    aList.insert(Self, TStrCase.create(aList));
+    aList.insert(Self, TStrCase.Create(aList));
 end;
 
-constructor TStrListHead.createStructogram(aList: TStrList; aParent: TStrElement; Dummy: boolean = true);
+constructor TStrListHead.createStructogram(aList: TStrList; aParent: TStrElement; Dummy: Boolean = True);
 begin
-  inherited create(aList);
+  inherited Create(aList);
   kind:= Ord(nsListHead);
   Self.Parent:= aParent;
   if parent is TStrSwitch then
-    aList.insert(Self, TStrCase.create(aList));
+    aList.insert(Self, TStrCase.Create(aList));
 end;
 
 destructor TStrListHead.Destroy;
   var cur, tmp: TStrElement;
 begin
   inherited;
-  cur:= next;
+  cur:= Next;
   while cur <> nil do begin
     tmp:= cur;
-    cur:= cur.next;
+    cur:= cur.Next;
     FreeAndNil(tmp);
   end;
 end;
 
-procedure TStrListHead.SetRctList(X1, Y1, X2, Y2: integer);
+procedure TStrListHead.SetRctList(X1, Y1, X2, Y2: Integer);
 begin
-  rct.left := X1;
+  rct.Left := X1;
   rct.top := Y1;
-  rct.right := X2;
+  rct.Right := X2;
   rct.bottom := Y2;
 end;
 
@@ -2433,14 +2433,14 @@ procedure TStrListHead.setList(aList: TStrList);
   var cur: TStrElement;
 begin
   inherited;
-  cur:= next;
+  cur:= Next;
   while cur <> nil do begin
     cur.setList(aList);
-    cur:= cur.next;
+    cur:= cur.Next;
   end;
 end;
 
-procedure TStrListHead.Resize(x, y: integer);
+procedure TStrListHead.Resize(x, y: Integer);
 begin
   inherited Resize(x, y);
   setRct(x, y, x, y);
@@ -2450,12 +2450,12 @@ function TStrListHead.asString: string;
   var s: string; var tmp: TStrElement;
 begin
   s:= '';
-  tmp:= next;
+  tmp:= Next;
   while tmp <> nil do begin
     s:= s + tmp.asString + ',';
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
-  Result:= copy(s, 1, length(s)-1);
+  Result:= Copy(s, 1, Length(s)-1);
 end;
 
 procedure TStrListHead.debug;
@@ -2464,61 +2464,61 @@ begin
   s:= 'TStrListHead Kind=' + IntToStr(kind) + ' Text=' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')';
 
-  if assigned(prev) and (prev.next <> Self) then
+  if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
-  tmp:= next;
+  tmp:= Next;
   while tmp <> nil do begin
     tmp.debug;
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
 end;
 
 procedure TStrListHead.collapse;
   var cur: TStrElement;
 begin
-  cur:= next;
-  while cur.next <> nil do
-    if cur.next.text = '' then
-      list.deleteElem(cur.next)
+  cur:= Next;
+  while cur.Next <> nil do
+    if cur.Next.text = '' then
+      list.deleteElem(cur.Next)
     else begin
-      cur.next.collapse;
-      cur:= cur.next;
+      cur.Next.collapse;
+      cur:= cur.Next;
     end;
-  if (next.text = '') and assigned(next.next)
-    then list.deleteElem(next)
-    else next.Collapse;
+  if (Next.text = '') and Assigned(Next.Next)
+    then list.deleteElem(Next)
+    else Next.Collapse;
 end;
 
 procedure TStrListHead.collapseCase;
   var cur: TStrElement;
 begin
-  cur:= next.next;
-  while cur.next <> nil do
-    if cur.next.text = '' then
-      list.deleteElem(cur.next)
+  cur:= Next.Next;
+  while cur.Next <> nil do
+    if cur.Next.text = '' then
+      list.deleteElem(cur.Next)
     else begin
-      cur.next.collapse;
-      cur:= cur.next;
+      cur.Next.collapse;
+      cur:= cur.Next;
     end;
-  next.Collapse;
+  Next.Collapse;
 end;
 
 (*******************************************************************************)
 (*                                      LIST                                   *)
 (*******************************************************************************)
 
-constructor TStrList.create(Scrollbox: TScrollBox; Mode: integer; Font: TFont);
+constructor TStrList.Create(Scrollbox: TScrollBox; Mode: Integer; Font: TFont);
 begin
   Kind:= Ord(nsList);
   text:= 'list head';
-  LoadError:= false;
+  LoadError:= False;
   list:= Self;
   Image:= TListImage.Create(ScrollBox, Self);
   Image.setBounds(100, 150, 400, 250);
-  Image.AutoSize:= true;
+  Image.AutoSize:= True;
   Image.Parent:= ScrollBox;
   Image.Canvas.Font.Assign(Font);
   Canvas:= Image.Canvas;
@@ -2531,9 +2531,9 @@ destructor TStrList.Destroy;
 var
   tmp: TStrElement;
 begin
-  while next <> nil do begin
-    tmp:= next;
-    next:= tmp.next;
+  while Next <> nil do begin
+    tmp:= Next;
+    Next:= tmp.Next;
     FreeAndNil(tmp);
   end;
   FreeAndNil(Image);
@@ -2554,10 +2554,10 @@ begin
       MoveTo(xm - h, ym + h);
       LineTo(xm + h, ym -h);
     end;
-    tmp:= next;
+    tmp:= Next;
     while tmp <> nil do begin  { paint all elements }
       tmp.Draw;
-      tmp:= tmp.next;
+      tmp:= tmp.Next;
     end;
   end;
 end;
@@ -2565,23 +2565,23 @@ end;
 procedure TStrList.LoadFromStream(Stream: TStream; Version: byte);
 var
   current, elem: TStrElement;
-  aKind, count: Byte;
+  aKind, Count: Byte;
 begin
   if Version >= $0E then
     rctList:= RectFromStream(Stream);
   Stream.Read(aKind, 1);  {overread StrList aKind }
   inherited LoadFromStream(Stream, Version); // read algorithm name
-  FreeAndNil(next);
+  FreeAndNil(Next);
   current:= Self;
-  count:= Stream.Read(aKind, 1);
-  while (count = 1) and (aKind <> $FF) do begin
+  Count:= Stream.Read(aKind, 1);
+  while (Count = 1) and (aKind <> $FF) do begin
     elem:= getStatementFromKind(aKind, Self, Self);
-    if elem = nil then exit;
+    if elem = nil then Exit;
     elem.LoadFromStream(Stream, Version);
-    FreeAndNil(elem.next); {necessary for corrupted files !}
+    FreeAndNil(elem.Next); {necessary for corrupted files !}
     list.Insert(current, elem);
     current:= elem;
-    count:= Stream.Read(aKind, 1);
+    Count:= Stream.Read(aKind, 1);
   end;
 end;
 
@@ -2615,10 +2615,10 @@ var
 begin
   RectToStream(Stream, rctList);
   inherited SaveToStream(Stream);
-  tmp:= next;
+  tmp:= Next;
   while tmp <> nil do begin
     tmp.SaveToStream(Stream);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   tag:= $FF;
   Stream.Write(tag, 1);      {write end tag}
@@ -2629,10 +2629,10 @@ var
   tmp: TStrElement;
 begin
   Result:= inherited getText(indent);
-  tmp:= next;
+  tmp:= Next;
   while tmp <> nil do begin
     Result:= Result + tmp.getText(indent + '  ');
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
 end;
 
@@ -2643,11 +2643,11 @@ begin
 end;
 
 procedure TStrList.PaintShadow;
-  var i, sw, t, b, d, SCol, ECol, sr, sg, sb, er, eg, eb: integer;
+  var i, sw, t, b, d, SCol, ECol, sr, sg, sb, er, eg, eb: Integer;
       R: TRect;
 
-  function ColorGradient(i: integer): TColor;
-    var r, g, b: integer;
+  function ColorGradient(i: Integer): TColor;
+    var r, g, b: Integer;
   begin
     r:= sr + round(((er - sr)*i)/Sw);
     g:= sg + round(((eg - sg)*i)/Sw);
@@ -2659,14 +2659,14 @@ begin
   if Kind = Byte(nsAlgorithm)
     then Sw:= GuiPyOptions.StructogramShadowWidth
     else Sw:= 0;
-  if (sw = 0) or (next = nil) then exit;
+  if (sw = 0) or (Next = nil) then Exit;
 
   t:= rct.Bottom + Sw;
   b:= getHeight + 1 + Sw;
   d:= 2*Sw - (b - t);
   if d > 0 then
     t:= t - d;
-  R:= Rect(Sw, t, next.rct.Right + Sw, b);
+  R:= Rect(Sw, t, Next.rct.Right + Sw, b);
 
   Canvas.Pen.Mode:= pmCopy;
   SetColors;
@@ -2690,7 +2690,7 @@ end;
 
 procedure TStrList.Paint;
   var Bitmap: TBitmap;
-      sw: integer;
+      sw: Integer;
 begin
   if Kind = Byte(nsAlgorithm)
     then Sw:= GuiPyOptions.StructogramShadowWidth
@@ -2736,33 +2736,33 @@ begin
   Draw;
 end;
 
-procedure TStrList.SetRctList(X1, Y1, X2, Y2: integer);
+procedure TStrList.SetRctList(X1, Y1, X2, Y2: Integer);
 begin
-  rctList.left := X1;
+  rctList.Left := X1;
   rctList.top := Y1;
-  rctList.right := X2;
+  rctList.Right := X2;
   rctList.bottom := Y2;
 end;
 
-procedure TStrList.Resize(x, y: integer);
+procedure TStrList.Resize(x, y: Integer);
   var w: Integer;
 begin
   w:= getWidthOfLines(text) + Canvas.Font.Size + 2*LEFT_RIGHT;
-  SetRct(x, y, x + max(w, getDefaultRectWidth), y); // h = 0
+  SetRct(x, y, x + Max(w, getDefaultRectWidth), y); // h = 0
 end;
 
 procedure TStrList.ResizeAll;
 begin
   ResizeList(0, 0);
-  setRct(0, 0, max(getWidthOfLines(text) + Canvas.Font.Size + 2*LEFT_RIGHT, rct.Right), rct.Bottom);
+  setRct(0, 0, Max(getWidthOfLines(text) + Canvas.Font.Size + 2*LEFT_RIGHT, rct.Right), rct.Bottom);
 end;
 
-function TStrList.getWidth: integer;
+function TStrList.getWidth: Integer;
 begin
   Result:= rct.Right - rct.Left;
 end;
 
-function TStrList.getHeight: integer;
+function TStrList.getHeight: Integer;
 begin
   Result:= Self.rctList.Bottom;
 end;
@@ -2771,58 +2771,58 @@ procedure TStrList.insert(at, elem: TStrElement);
   // insert one element or a list of elements
   var tmp: TStrElement;
 begin
-  tmp:= at.next;
-  at.next:= elem;
+  tmp:= at.Next;
+  at.Next:= elem;
   elem.prev:= at;
-  while (elem.next <> nil) and (elem.next <> elem) do
-    elem:= elem.next;
-  elem.next:= tmp;
-  if assigned(tmp) then
+  while (elem.Next <> nil) and (elem.Next <> elem) do
+    elem:= elem.Next;
+  elem.Next:= tmp;
+  if Assigned(tmp) then
     tmp.prev:= elem;
 end;
 
 procedure TStrList.deleteElem(elem: TStrElement);
   var p, n: TStrElement;
 begin
-  if elem = nil then exit;
+  if elem = nil then Exit;
   p:= elem.prev;
   if p = nil then begin
     FreeAndNil(elem);
-    exit;
+    Exit;
   end;
-  n:= elem.next;
-  p.next:= n;
+  n:= elem.Next;
+  p.Next:= n;
   if n <> nil then
     n.prev:= p
   else if (p is TStrListHead) or (p is TStrCase) then
-    insert(p, TStrStatement.create(list));
+    insert(p, TStrStatement.Create(list));
   elem.Destroy;
 end;
 
-procedure TStrList.getWidthHeigthOfText(const aText: string; var w, h: integer);
-  var s, s1: string; p: integer;
+procedure TStrList.getWidthHeigthOfText(const aText: string; var w, h: Integer);
+  var s, s1: string; p: Integer;
 begin
   w:= getDefaultRectWidth;
   h:= LineHeight;
   s:= aText;
   p:= Pos(#13#10, s);
   while p > 0 do begin
-    s1:= copy(s, 1, p-1);
-    delete(s, 1, p+1);
-    w:= max(Image.Canvas.TextWidth(s1) + LEFT_RIGHT, w);
+    s1:= Copy(s, 1, p-1);
+    Delete(s, 1, p+1);
+    w:= Max(Image.Canvas.TextWidth(s1) + LEFT_RIGHT, w);
     h:= h + LineHeight;
     p:= Pos(#13#10, s);
   end;
-  w:= max(Image.Canvas.TextWidth(s) + LEFT_RIGHT, w);
+  w:= Max(Image.Canvas.TextWidth(s) + LEFT_RIGHT, w);
 end;
 
-function TStrList.getWidthOfOneLine(const aText: string): integer;
+function TStrList.getWidthOfOneLine(const aText: string): Integer;
 begin
   Result:= Image.Canvas.TextWidth(aText) + LEFT_RIGHT;
 end;
 
-function TStrList.getWidthOfLines(const aText: string): integer;
-  var w, h: integer;
+function TStrList.getWidthOfLines(const aText: string): Integer;
+  var w, h: Integer;
 begin
   getWidthHeigthOfText(aText, w, h);
   Result:= w;
@@ -2837,12 +2837,12 @@ function TStrList.asString: string;
   var s: string; tmp: TStrElement;
 begin
   s:= text + ',';
-  tmp:= next;
-  while assigned(tmp) do begin
+  tmp:= Next;
+  while Assigned(tmp) do begin
     s:= s + tmp.asString + ',';
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
-  Result:= copy(s, 1, length(s)-1);
+  Result:= Copy(s, 1, Length(s)-1);
 end;
 
 procedure TStrList.debug;
@@ -2851,16 +2851,16 @@ begin
   s:= 'TStrList Kind=' + IntToStr(kind) + ' Text=' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')' +
       ' rctList(' + IntToStr(rctList.Left) + ', ' + IntToStr(rctList.Top) + ', ' + IntToStr(rctList.Width) + ', ' + IntToStr(rctList.Bottom) + ')';
-  if assigned(prev) and (prev.next <> Self) then
+  if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
 
-  tmp:= next;
-  while assigned(tmp) do begin
+  tmp:= Next;
+  while Assigned(tmp) do begin
     tmp.debug;
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   MessagesWindow.AddMessage('-----------------------');
 end;
@@ -2868,15 +2868,15 @@ end;
 procedure TStrList.setList(aList: TStrList);
   var tmp: TStrElement;
 begin
-  self.List:= aList;
-  tmp:= next;
-  while assigned(tmp) do begin
+  Self.List:= aList;
+  tmp:= Next;
+  while Assigned(tmp) do begin
     tmp.setList(aList);
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
 end;
 
-procedure TStrList.setPuzzleMode(Mode: integer);
+procedure TStrList.setPuzzleMode(Mode: Integer);
 begin
   PuzzleMode:= Mode;
 end;
@@ -2890,14 +2890,14 @@ end;
 procedure TStrList.Collapse;
   var cur: TStrElement;
 begin
-  cur:= next;
+  cur:= Next;
   while cur <> nil do begin
     if cur.text = '' then begin
       deleteElem(cur);
-      cur:= next;
+      cur:= Next;
     end else begin
       cur.collapse;
-      cur:= cur.next;
+      cur:= cur.Next;
     end;
   end;
 end;
@@ -2906,46 +2906,46 @@ end;
 (*                                TStrAlgorithm                               *)
 (******************************************************************************)
 
-constructor TStrAlgorithm.create(Scrollbox: TScrollBox; Mode: integer; Font: TFont);
+constructor TStrAlgorithm.Create(Scrollbox: TScrollBox; Mode: Integer; Font: TFont);
 begin
-  inherited create(Scrollbox, Mode, Font);
+  inherited Create(Scrollbox, Mode, Font);
   text:= '';
   Kind:= Ord(nsAlgorithm);
 end;
 
-procedure TStrAlgorithm.Resize(x, y: integer);
+procedure TStrAlgorithm.Resize(x, y: Integer);
 var
   w, h, h1: Integer;
 begin
   w:= getWidthOfLines(text) + Canvas.Font.Size + 2*LEFT_RIGHT;
   h:= getLines*(LineHeight - TOP_BOTTOM);
   h1:= Canvas.Font.Size div 2;             {height of bottom line}
-  SetRct(x, y, x + max(w, getDefaultRectWidth), y + h + h1);
+  SetRct(x, y, x + Max(w, getDefaultRectWidth), y + h + h1);
 end;
 
 function TStrAlgorithm.getAlgorithmName: string;
-  var i: integer; s: string;
+  var i: Integer; s: string;
 begin
   i:= Pos(GuiPyLanguageOptions.Algorithm + ' ', text);
   if i > 0
-    then s:= copy(list.text, i + Length(GuiPyLanguageOptions.Algorithm + ' '), 255)
+    then s:= Copy(list.text, i + Length(GuiPyLanguageOptions.Algorithm + ' '), 255)
     else s:= text;
   i:= Pos('(', s);
   if i > 0 then
-    delete(s, i, length(s));
-  Result:= trim(s);
+    Delete(s, i, Length(s));
+  Result:= Trim(s);
 end;
 
 function TStrAlgorithm.asString: string;
   var s: string; tmp: TStrElement;
 begin
   s:=  text + '(';
-  tmp:= next;
-  while assigned(tmp) do begin
+  tmp:= Next;
+  while Assigned(tmp) do begin
     s:= s + tmp.asString + ',';
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
-  Result:= copy(s, 1, length(s)-1);
+  Result:= Copy(s, 1, Length(s)-1);
 end;
 
 procedure TStrAlgorithm.debug;
@@ -2956,15 +2956,15 @@ begin
       ' rctList(' + IntToStr(rctList.Left) + ', ' + IntToStr(rctList.Top) + ', ' + IntToStr(rctList.Width) + ', ' + IntToStr(rctList.Bottom) + ')' +
       ' Image(' + IntTostr(Image.Left) + ', ' + IntToStr(Image.Top) + ')';
 
-  if assigned(prev) and (prev.next <> Self) then
+  if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';
-  if assigned(next) and (next.prev <> Self) then
+  if Assigned(Next) and (Next.prev <> Self) then
     s:= s + ' next.prev <> self';
   MessagesWindow.AddMessage(s);
-  tmp:= next;
-  while assigned(tmp) do begin
+  tmp:= Next;
+  while Assigned(tmp) do begin
     tmp.debug;
-    tmp:= tmp.next;
+    tmp:= tmp.Next;
   end;
   MessagesWindow.AddMessage('-----------------------');
 end;
@@ -2973,9 +2973,9 @@ end;
 (*                                 TListImage                                  *)
 (*******************************************************************************)
 
-constructor TListImage.create(Scrollbox: TScrollBox; List: TStrList);
+constructor TListImage.Create(Scrollbox: TScrollBox; List: TStrList);
 begin
-  inherited create(ScrollBox);
+  inherited Create(ScrollBox);
   StrList:= List;
 end;
 

@@ -662,7 +662,7 @@ type
   { Trick to add functionality to TTSpTBXTabControl}
   TSpTBXTabControl = class(SpTBXTabs.TSpTBXTabControl)
   private
-    zOrderPos: integer;
+    zOrderPos: Integer;
     zOrderProcessing: Boolean;
   public
     zOrder: TList;
@@ -1407,7 +1407,7 @@ type
     procedure actRunLastScriptExecute(Sender: TObject);
     procedure actRunDebugLastScriptExecute(Sender: TObject);
     procedure EditorViewsMenuClick(Sender: TObject);
-    procedure tbiRecentFileListClick(Sender: TObject; const Filename: string);
+    procedure tbiRecentFileListClick(Sender: TObject; const FileName: string);
     procedure tbiSearchTextExit(Sender: TObject);
     procedure tbiReplaceTextKeyPress(Sender: TObject; var Key: Char);
     procedure TabControlActiveTabChange(Sender: TObject; TabIndex: Integer);
@@ -1416,7 +1416,7 @@ type
     procedure actViewSplitWorkspaceVerExecute(Sender: TObject);
     procedure actViewSplitWorkspaceHorExecute(Sender: TObject);
     procedure actViewHideSecondaryWorkspaceExecute(Sender: TObject);
-    procedure tbiRecentProjectsClick(Sender: TObject; const Filename: string);
+    procedure tbiRecentProjectsClick(Sender: TObject; const FileName: string);
     procedure actSelectStyleExecute(Sender: TObject);
     procedure mnPythonVersionsPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure PythonVersionsClick(Sender: TObject);
@@ -1473,7 +1473,7 @@ type
 
 //    function FindAction(var Key: Word; Shift: TShiftState): TCustomAction;
     procedure DebugActiveScript(ActiveEditor: IEditor;
-      InitStepIn: Boolean = False; RunToCursorLine: integer = -1);
+      InitStepIn: Boolean = False; RunToCursorLine: Integer = -1);
     procedure SetupRunConfiguration(var RunConfig: TRunConfiguration; FileId: string);
     procedure tbiSearchTextAcceptText(const NewText: string);
     procedure tbiReplaceTextAcceptText(const NewText: string);
@@ -1484,9 +1484,9 @@ type
     procedure ClassEdit(Editor: IEditor; Status: string; UML: TFUMLForm);
   protected
     fCurrentBrowseInfo: string;
-    function CmdLineOpenFiles(): boolean;
+    function CmdLineOpenFiles(): Boolean;
     function OpenCmdLineFile(FileName: string): Boolean;
-    procedure DebuggerBreakpointChange(Sender: TObject; Editor: IEditor; ALine: integer);
+    procedure DebuggerBreakpointChange(Sender: TObject; Editor: IEditor; ALine: Integer);
     procedure DebuggerCurrentPosChange(Sender: TObject; const OldPos, NewPos: TEditorPos);
     procedure DebuggerErrorPosChange(Sender: TObject; const OldPos, NewPos: TEditorPos);
     procedure UpdateStandardActions;
@@ -1531,8 +1531,8 @@ type
     function GetIsClosing: Boolean;
     procedure WriteStatusMsg(const S: string);
     function FileIsPythonSource(const FileName: string): Boolean;
-    function ShowFilePosition(FileName: string; Line: integer = 0;
-      Offset: integer = 1; SelLen: integer = 0;
+    function ShowFilePosition(FileName: string; Line: Integer = 0;
+      Offset: Integer = 1; SelLen: Integer = 0;
       ForceToMiddle: Boolean = True; FocusEditor: Boolean = True): Boolean;
     procedure ClearPythonWindows;
     procedure SaveEnvironment;
@@ -1549,10 +1549,10 @@ type
     procedure MRUAddFile(aFile: IFile);
     procedure ChangeStyle;
     procedure DeleteObjectsInUMLForms;
-    function GetCachedPycFilename(Filename: string): string;
+    function GetCachedPycFilename(FileName: string): string;
     procedure RemoveDefunctEditorOptions;
   public
-    ActiveTabControlIndex: integer;
+    ActiveTabControlIndex: Integer;
     PythonKeywordHelpRequested: Boolean;
     MenuHelpRequested: Boolean;
     Layouts: TStringList;
@@ -1561,11 +1561,11 @@ type
     procedure StoreLocalApplicationData;
     procedure RestoreLocalApplicationData;
 
-    function DoCreateFile(FileKind: TFileKind; TabControlIndex: integer = 1): IFile;
+    function DoCreateFile(FileKind: TFileKind; TabControlIndex: Integer = 1): IFile;
     function DoOpenFile(AFileName: string; HighlighterName: string = '';
-       TabControlIndex: integer = 1; AsEditor: boolean = false): IFile;
+       TabControlIndex: Integer = 1; AsEditor: Boolean = False): IFile;
     function NewFileFromTemplate(FileTemplate: TFileTemplate;
-       TabControlIndex: integer = 1; Filename: string = ''): IEditor;
+       TabControlIndex: Integer = 1; FileName: string = ''): IEditor;
     procedure UpdateDebugCommands(DebuggerState: TDebuggerState);
     procedure DebuggerStateChange(Sender: TObject; OldState,
       NewState: TDebuggerState);
@@ -1583,7 +1583,7 @@ type
     procedure LoadToolbarItems(const Path: string);
     procedure SaveToolbarLayout(const Layout: string);
     procedure SaveToolbarItems(const Path: string);
-    function JumpToFilePosInfo(const FilePosInfo: string): boolean;
+    function JumpToFilePosInfo(const FilePosInfo: string): Boolean;
     procedure FindDefinition(Editor: IEditor; TextCoord: TBufferCoord;
       ShowMessages, Silent, JumpToFirstMatch: Boolean; var FilePosInfo: string);
     procedure AdjustBrowserLists(FileName: string; Line: Integer; Col: Integer;
@@ -1591,25 +1591,25 @@ type
     procedure ThemeEditorGutter(Gutter: TSynGutter);
     procedure UpdateCaption;
     procedure ChangeLanguage(LangCode: string);
-    function getLanguageCode(Index: integer): string;
+    function getLanguageCode(Index: Integer): string;
     function FileFromTab(Tab: TSpTBXTabItem): IFile;
     procedure SplitWorkspace(SecondTabsVisible: Boolean;
-      Alignment: TAlign = alRight; Size: integer = -1);
+      Alignment: TAlign = alRight; Size: Integer = -1);
     procedure MoveTab(Tab: TSpTBXTabItem; TabControl: TSpTBXTabControl;
-      Index: integer = -1);
-    function TabControl(TabControlIndex: integer = 1): TSpTBXTabControl;
-    function TabControlIndex(TabControl: TSpTBXCustomTabControl): integer;
+      Index: Integer = -1);
+    function TabControl(TabControlIndex: Integer = 1): TSpTBXTabControl;
+    function TabControlIndex(TabControl: TSpTBXCustomTabControl): Integer;
     procedure ShowIDEDockForm(Form: TForm);
     function GetActiveTextDiff: ISearchCommands;
     procedure CloseTextDiffsAndFromTemplate;
     function GetActiveFile: IFile;
-    function GuiDesignerOpen: boolean;
+    function GuiDesignerOpen: Boolean;
 
     function DoOpen(AFileName: string): IFile;
     function DoOpenAsEditor(AFileName: string): IEditor;
-    procedure DoOpenInUMLWindow(const Filename: string);
-    procedure ActivateFile(Filename: string);
-    function CreateUMLForm(Filename: string): TFUMLForm;
+    procedure DoOpenInUMLWindow(const FileName: string);
+    procedure ActivateFile(FileName: string);
+    function CreateUMLForm(FileName: string): TFUMLForm;
     function getFilename(const Extension: string; path: string = ''): string;
     procedure PrepareClassEdit(Editor: IEditor; const Status: string; UML: TFUMLForm);
     procedure ConnectGUIandPyWindow(GUIForm: TFGUIForm);
@@ -1621,9 +1621,9 @@ type
     procedure LoadDefaultLayout(LayoutAppStorage: TJvAppIniFileStorage; const Layout: string);
     procedure RunEditor(ActiveEditor: IEditor);
     procedure ImportModule(pathname: string);
-    function IsAValidClass(const Pathname: string): boolean;
+    function IsAValidClass(const Pathname: string): Boolean;
     procedure CreatePycFilesForUMLWindows;
-    procedure SetLayoutMenus(Predefined: boolean);
+    procedure SetLayoutMenus(Predefined: Boolean);
     procedure DropFiles(Sender: TObject; X, Y: Integer; AFiles: TStrings);
     procedure RunFile(aFile: IFile);
 
@@ -1734,7 +1734,7 @@ const
 
 { TWorkbookMainForm }
 
-function TPyIDEMainForm.DoCreateFile(FileKind: TFileKind; TabControlIndex: integer = 1): IFile;
+function TPyIDEMainForm.DoCreateFile(FileKind: TFileKind; TabControlIndex: Integer = 1): IFile;
 begin
   if (FileKind = fkEditor) and (GI_EditorFactory <> nil) then
     Result:= GI_EditorFactory.NewEditor(TabControlIndex)
@@ -1745,7 +1745,7 @@ begin
 end;
 
 function TPyIDEMainForm.DoOpenFile(AFileName: string; HighlighterName: string = '';
-       TabControlIndex: integer = 1; AsEditor: boolean = false): IFile;
+       TabControlIndex: Integer = 1; AsEditor: Boolean = False): IFile;
 var
   IsRemote: Boolean;
   Server, FName, GuiFormPath: string;
@@ -1761,7 +1761,7 @@ begin
     GuiFormPath:= aFileName;
     aFileName:= TPath.ChangeExtension(aFilename, '.pyw');
     Editor:= GI_EditorFactory.GetEditorByName(aFileName);
-    if (assigned(Editor) and assigned((Editor.Form as TEditorForm).Partner) or
+    if (Assigned(Editor) and Assigned((Editor.Form as TEditorForm).Partner) or
        not FileExists(GuiFormPath)) then
       GuiFormPath:= '';
   end;
@@ -1785,7 +1785,7 @@ begin
       if GuiFormPath <> '' then
         FGUIDesigner.Open(GuiFormPath);
       if not AsEditor then  // not AsEditor for Sequenceform as Text
-        exit;
+        Exit;
     end;
   end;
   // create a new editor, add it to the editor list, open the file
@@ -1803,7 +1803,7 @@ begin
       try
         if IsRemote then
           Result.OpenRemoteFile(FName, Server)
-        else if assigned(Editor) then
+        else if Assigned(Editor) then
           Editor.OpenFile(AFilename, HighlighterName)
         else
           Result.OpenFile(AFileName);
@@ -1841,31 +1841,31 @@ end;
 
 function TPyIDEMainForm.DoOpenAsEditor(AFileName: string): IEditor;
 begin
-  Result:= DoOpenFile(aFilename, '', TabControlIndex(ActiveTabControl), true) as IEditor;
+  Result:= DoOpenFile(aFilename, '', TabControlIndex(ActiveTabControl), True) as IEditor;
 end;
 
-procedure TPyIDEMainForm.DoOpenInUMLWindow(const Filename: string);
+procedure TPyIDEMainForm.DoOpenInUMLWindow(const FileName: string);
   var UMLForm: TFUMLForm; aFile: IFile; s: string;
 begin
-  if not hasPythonExtension(Filename) then exit;
+  if not hasPythonExtension(FileName) then Exit;
   aFile:= GI_PyIDEServices.GetActiveFile;
-  if assigned(aFile) and (aFile.FileKind = fkUML) then begin
+  if Assigned(aFile) and (aFile.FileKind = fkUML) then begin
     UMLForm:= TFUMLForm(aFile.Form);
     UMLForm.MainModul.UnSelectAllElements;
-    UMLForm.MainModul.AddToProject(Filename);
-    UMLForm.Modified:= true;
+    UMLForm.MainModul.AddToProject(FileName);
+    UMLForm.Modified:= True;
     if UMLForm.Mainmodul.Diagram.ShowObjectDiagram then begin
-      UMLForm.Mainmodul.Diagram.ShowObjectDiagram:= false;
-      UMLForm.TBObjectDiagram.Down:= false;
+      UMLForm.Mainmodul.Diagram.ShowObjectDiagram:= False;
+      UMLForm.TBObjectDiagram.Down:= False;
     end;
   end else begin
-    s:= ChangeFileExt(Filename, '.puml');
+    s:= ChangeFileExt(FileName, '.puml');
     if FileExists(s) then begin
       UMLForm:= TFUMLForm(DoOpen(s).Form);
-      UMLForm.MainModul.AddToProject(Filename);
+      UMLForm.MainModul.AddToProject(FileName);
     end else begin
       UMLForm:= CreateUMLForm(s);
-      UMLForm.MainModul.AddToProject(Filename);
+      UMLForm.MainModul.AddToProject(FileName);
       UMLForm.DoSave;
     end;
   end;
@@ -1873,7 +1873,7 @@ begin
   UMLForm.CreateTVFileStructure;
 end;
 
-function TPyIDEMainForm.CreateUMLForm(Filename: string): TFUMLForm;
+function TPyIDEMainForm.CreateUMLForm(FileName: string): TFUMLForm;
 begin
   Result:= nil;
   var TabCtrl := TSpTBXTabControl(GetActiveTabControl);
@@ -1882,7 +1882,7 @@ begin
     var aFile:= GI_FileFactory.NewFile(fkUML, ActiveTabControlIndex);
     if aFile <> nil then begin
       Result:= TFUMLForm(aFile.Form);
-      Result.Pathname:= Filename;
+      Result.Pathname:= FileName;
       Result.DoUpdateCaption;
       aFile.Activate;
     end;
@@ -1893,13 +1893,13 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.ActivateFile(Filename: string);
+procedure TPyIDEMainForm.ActivateFile(FileName: string);
   var aFile: IFile;  TabCtrl: TSpTBXTabControl;
 begin
   TabCtrl := TSpTBXTabControl(GetActiveTabControl);
   if Assigned(GI_FileFactory) then begin
-    aFile:= GI_FileFactory.GetFileByFileId(Filename);
-    if assigned(aFile) then begin
+    aFile:= GI_FileFactory.GetFileByFileId(FileName);
+    if Assigned(aFile) then begin
       aFile.Activate;
       if Assigned(TabCtrl.ActiveTab) then
         TabCtrl.MakeVisible(TabCtrl.ActiveTab);
@@ -1908,16 +1908,16 @@ begin
 end;
 
 function TPyIDEMainForm.getFilename(const Extension: string; path: string = ''): string;
-  var s: string; i: integer; aFile: IFile;
+  var s: string; i: Integer; aFile: IFile;
 
-  function isOpened(Pathname: string): boolean;
-    var i: integer; aFile: IFile;
+  function isOpened(Pathname: string): Boolean;
+    var i: Integer; aFile: IFile;
   begin
-    Result:= false;
+    Result:= False;
     for i := 0 to GI_FileFactory.Count -1 do begin
       aFile := GI_FileFactory.FactoryFile[i];
-      if CompareText(aFile.Filename, Pathname) = 0 then
-        Exit(true);
+      if CompareText(aFile.FileName, Pathname) = 0 then
+        Exit(True);
     end;
   end;
 
@@ -1925,9 +1925,9 @@ begin
   if path = '' then begin
     for i := 0 to GI_FileFactory.Count -1 do begin
       aFile := GI_FileFactory.FactoryFile[i];
-      path:= ExtractFilepath(aFile.Filename);
+      path:= ExtractFilePath(aFile.FileName);
       if path <> '' then
-        break;
+        Break;
     end;
     if path = '' then
       path:= GuiPyOptions.Sourcepath;
@@ -1936,7 +1936,7 @@ begin
   i:= 1;
   s:= path + _('File') + IntToStr(i) + Extension;
   while isOpened(s) or FileExists(s) do begin
-    inc(i);
+    Inc(i);
     s:= path + _('File') + IntToStr(i) + Extension;
   end;
   Result:= s;
@@ -1947,10 +1947,10 @@ procedure TPyIDEMainForm.ConnectGUIandPyWindow(GUIForm: TFGUIForm);
 begin
   filename:= ChangeFileExt(GUIForm.Pathname, '.pyw');
   aEditor:= GI_EditorFactory.GetEditorByName(filename);
-  if assigned(aEditor) then begin
+  if Assigned(aEditor) then begin
     (aEditor.Form as TEditorForm).Partner:= GUIForm;
     GUIForm.Partner:= aEditor.Form as TEditorForm;
-    aEditor.GUIFormOpen:= true;
+    aEditor.GUIFormOpen:= True;
   end else
     ErrorMsg(Format(_('Associated python file %s not found.'), [filename]));
 end;
@@ -1965,10 +1965,10 @@ begin
 end;
 
 procedure TPyIDEMainForm.StructogramFromText(Sourcecode, Pathname: string);
-  var aFile: IFile; s: string; mr: integer;
+  var aFile: IFile; s: string; mr: Integer;
 begin
   aFile:= GI_FileFactory.getFileByName(Pathname);
-  if assigned(aFile) then begin
+  if Assigned(aFile) then begin
     (aFile.Form as TFStructogram).RenewFromText(sourcecode);
     DoOpen(Pathname);
   end else begin
@@ -1978,7 +1978,7 @@ begin
        case mr of
          mrYes: System.IOUtils.TFile.Delete(Pathname);
          mrNo: Pathname:= getFileName('.psg');
-         else exit;
+         else Exit;
        end;
     end;
     aFile:= DoOpenFile(pathname);
@@ -1989,24 +1989,24 @@ end;
 procedure TPyIDEMainForm.DoExport(const Pathname: string; Bitmap: TBitmap);
   var folder, ext: string;
 
-  procedure InToPng(Filename: string);
+  procedure InToPng(FileName: string);
     var Png: TPngImage;
   begin
     Png:= TPngImage.Create;
     try
       Png.Assign(Bitmap);
-      Png.SaveToFile(Filename);
+      Png.SaveToFile(FileName);
     finally
       FreeAndNil(Png);
     end;
   end;
 
-  procedure InToBmp(Filename: string);
+  procedure InToBmp(FileName: string);
   begin
-    Bitmap.SaveToFile(Filename);
+    Bitmap.SaveToFile(FileName);
   end;
 
-  procedure InToWMF(Filename: string);
+  procedure InToWMF(FileName: string);
     var
       Metafile: TMetafile;
       MetafileCanvas: TMetafileCanvas;
@@ -2028,7 +2028,7 @@ procedure TPyIDEMainForm.DoExport(const Pathname: string; Bitmap: TBitmap);
         FreeAndNil(MetafileCanvas);
       end;
       Metafile.Enhanced:= False;
-      Metafile.SaveToFile(Filename);
+      Metafile.SaveToFile(FileName);
     finally
       Metafile.Destroy;
     end;
@@ -2042,24 +2042,24 @@ begin
     if folder <> ''
       then InitialDir:= folder
       else InitialDir:= GuiPyOptions.Sourcepath;
-    Filename:= ChangeFileExt(Pathname, '');
+    FileName:= ChangeFileExt(Pathname, '');
     if Execute then begin
-      if ExtractFileExt(Filename) = '' then
+      if ExtractFileExt(FileName) = '' then
         case FilterIndex of
-          1: Filename:= Filename + '.png';
-          2: Filename:= Filename + '.bmp';
-          3: Filename:= Filename + '.wmf';
+          1: FileName:= FileName + '.png';
+          2: FileName:= FileName + '.bmp';
+          3: FileName:= FileName + '.wmf';
         end;
-      if not FileExists(Filename) or FileExists(Filename) and
+      if not FileExists(FileName) or FileExists(FileName) and
         (StyledMessageDlg(Format(_(LNGFileAlreadyExists),
           [FileName]), mtError, [mbYes, mbNo, mbCancel], 0) = mrYes)
       then begin
         ext:= LowerCase(ExtractFileExt(FileName));
-        if ext = '.png' then InToPng(Filename) else
-        if ext = '.bmp' then InToBmp(Filename) else
-        if ext = '.wmf' then inToWmf(Filename);
+        if ext = '.png' then InToPng(FileName) else
+        if ext = '.bmp' then InToBmp(FileName) else
+        if ext = '.wmf' then inToWmf(FileName);
       end;
-      GuiPyOptions.Sourcepath:= ExtractFilePath(Filename);
+      GuiPyOptions.Sourcepath:= ExtractFilePath(FileName);
     end;
   end;
 end;
@@ -2120,7 +2120,7 @@ begin
 
   //OutputDebugString(PWideChar(Format('%s ElapsedTime %d ms', ['Before All Forms', StopWatch.ElapsedMilliseconds])));
   // Create and layout IDE windows
-  PythonIIForm := TPythonIIForm.Create(self);
+  PythonIIForm := TPythonIIForm.Create(Self);
   PythonIIForm.PopupParent := Self;
   CallStackWindow := TCallStackWindow.Create(Self);
   CallStackWindow.PopupParent := Self;
@@ -2279,15 +2279,15 @@ end;
 procedure TPyIDEMainForm.ChangeMenuSystem;
 begin
   setLayoutMenus(GuiPyOptions.UsePredefinedLayouts);
-  PythonIIForm.mnPythonVersions.Visible:= false;
-  PythonIIForm.TBXPythonEngines.Visible:= false;
+  PythonIIForm.mnPythonVersions.Visible:= False;
+  PythonIIForm.TBXPythonEngines.Visible:= False;
   var ViewMenuItem:= EditorViewsMenu.Items[2];
   EditorViewsMenu.Remove(ViewMenuItem);
   ToolsMenu.Insert(2, ViewMenuItem);
   ViewMenuItem.Tag:= 0;
 end;
 
-procedure TPyIDEMainForm.SetLayoutMenus(Predefined: boolean);
+procedure TPyIDEMainForm.SetLayoutMenus(Predefined: Boolean);
 begin
   mnLayouts.Visible:= not Predefined;
   mnViewDefaultLayout.Visible:= Predefined;
@@ -2299,7 +2299,7 @@ end;
 
 procedure TPyIDEMainForm.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
   var Files: array[0..10] of string;
-      FilesCount: integer;
+      FilesCount: Integer;
       aFile: IFile;
       ActiveFilename: string;
 begin
@@ -2318,14 +2318,14 @@ begin
     // a structogram form loses it's components during dpi switching!
     // workaround: save, close and reopen
     aFile:= GetActiveFile;
-    if assigned(aFile)
+    if Assigned(aFile)
       then ActiveFilename:= (aFile.Form as TFileForm).Pathname
       else ActiveFilename:= '';
     for var i:= 0 to GI_FileFactory.Count -1 do begin
       aFile:= GI_FileFactory.FactoryFile[i];
       if aFile.FileKind = fkStructogram then begin
         Files[FilesCount]:= (aFile.Form as TFStructogram).Pathname;
-        inc(FilesCount);
+        Inc(FilesCount);
       end;
       (aFile.Form as TFileForm).DPIChanged;
     end;
@@ -2518,13 +2518,13 @@ begin
     Editor.ActiveSynEdit.LockUndo;
     try
       Application.ProcessMessages;
-      if FClassEditor.ShowModal = mrOK then begin
-        Editform.mnEditAddImportsClick(self);
+      if FClassEditor.ShowModal = mrOk then begin
+        Editform.mnEditAddImportsClick(Self);
         Editform.DoSave;
         if Assigned(UML) then begin
           try
             LockFormUpdate(UML);
-            UML.MainModul.AddToProject(Editor.Filename);
+            UML.MainModul.AddToProject(Editor.FileName);
             UML.SaveAndReload;
             RunFile(UML.fFile);
           finally
@@ -2537,7 +2537,7 @@ begin
       Editor.ActiveSynEdit.UnlockUndo;
     end;
   end else begin
-    var s:= ChangeFileExt(ExtractFilename(Editor.Filename), '');
+    var s:= ChangeFileExt(ExtractFilename(Editor.FileName), '');
     ErrorMsg(Format(_('Class not found %s'), [s]));
   end;
   if Assigned(UML) then begin
@@ -2555,7 +2555,7 @@ begin
 end;
 
 procedure TPyIDEMainForm.CloseTextDiffsAndFromTemplate;
-  var i: integer; aFile: IFile;
+  var i: Integer; aFile: IFile;
 begin
   for i:= GI_FileFactory.Count - 1 downto 0 do begin
     aFile:= GI_FileFactory.GetFile(i);
@@ -2624,7 +2624,7 @@ end;
 procedure TPyIDEMainForm.actFileNewFileExecute(Sender: TObject);
 begin
   with TNewFileDialog.Create(Self) do begin
-    if ShowModal = mrOK then
+    if ShowModal = mrOk then
       NewFileFromTemplate(SelectedTemplate);
     Free;
   end;
@@ -2649,7 +2649,7 @@ begin
           zOrder.Delete(zOrderPos);
           TabItem := nil;
         end else
-          break;
+          Break;
       end;
     until Assigned(TabItem) or (ZOrder.Count = 0);
     KeyPreview := True;
@@ -2676,7 +2676,7 @@ procedure TPyIDEMainForm.actUMLNewCommentExecute(Sender: TObject);
   var aFile: IFile;
 begin
   aFile:= GI_PyIDEServices.getActiveFile;
-  if assigned(aFile) and (aFile.FileKind = fkUML) then
+  if Assigned(aFile) and (aFile.FileKind = fkUML) then
     TFUMLForm(aFile.Form).TBCommentClick(Self);
 end;
 
@@ -2684,7 +2684,7 @@ procedure TPyIDEMainForm.actUMLNewLayoutExecute(Sender: TObject);
   var aFile: IFile;
 begin
   aFile:= GI_PyIDEServices.getActiveFile;
-  if assigned(aFile) and (aFile.FileKind = fkUML) then
+  if Assigned(aFile) and (aFile.FileKind = fkUML) then
     TFUMLForm(aFile.Form).MainModul.DoLayout;
 end;
 
@@ -2692,53 +2692,53 @@ procedure TPyIDEMainForm.actUMLRefreshExecute(Sender: TObject);
   var aFile: IFile;
 begin
   aFile:= GI_PyIDEServices.getActiveFile;
-  if assigned(aFile) and (aFile.FileKind = fkUML) then
+  if Assigned(aFile) and (aFile.FileKind = fkUML) then
     TFUMLForm(aFile.Form).TBRefreshClick(Self);
 end;
 
 procedure TPyIDEMainForm.actUMLSaveAsPictureExecute(Sender: TObject);
 begin
   var aFile:= GI_PyIDEServices.getActiveFile;
-  if assigned(aFile) and (aFile.FileKind = fkUML) then
+  if Assigned(aFile) and (aFile.FileKind = fkUML) then
     TFUMLForm(aFile.Form).MainModul.SaveDiagramActionExecute(Self);
 end;
 
 procedure TPyIDEMainForm.actUMLDiagramFromOpenFilesExecute(Sender: TObject);
-  var i, mr: integer; Filename, path: string;
+  var i, mr: Integer; FileName, path: string;
       SL: TStringList; aFile: IFile;
 begin
   SL:= TStringList.Create;
-  SL.Sorted:= true;
+  SL.Sorted:= True;
   try
     path:= '';
     for i:= 0 to GI_EditorFactory.Count - 1 do begin
       if GI_EditorFactory.Editor[i].hasPythonFile then begin
-        Filename:= GI_EditorFactory.Editor[i].Filename;
-        if path = '' then path:= ExtractFilePath(Filename);
-        SL.Add(ChangeFileExt(ExtractFilename(Filename), ''));
+        FileName:= GI_EditorFactory.Editor[i].FileName;
+        if path = '' then path:= ExtractFilePath(FileName);
+        SL.Add(ChangeFileExt(ExtractFilename(FileName), ''));
       end;
     end;
     if SL.Count > 0 then begin
-      Filename:= path;
+      FileName:= path;
       for i:= 0 to SL.Count - 1 do
-        Filename:= Filename + SL[i];
-      Filename:= Filename + '.puml';
+        FileName:= FileName + SL[i];
+      FileName:= FileName + '.puml';
 
       mr:= mrNone;
-      if FileExists(Filename) then begin
+      if FileExists(FileName) then begin
         mr:= (StyledMessageDlg(Format(_(LNGFileAlreadyExists),
              [FileName]), mtError, [mbYes, mbNo, mbCancel], 0));
         if mr = mrNo then
-          DoOpenFile(Filename);
+          DoOpenFile(FileName);
       end;
       if mr = mrYes then begin
-        aFile:= GI_FileFactory.GetFileByName(Filename);
+        aFile:= GI_FileFactory.GetFileByName(FileName);
         if Assigned(aFile) then
           (aFile as IFileCommands).ExecClose;
         Application.ProcessMessages;
       end;
       if mr in [mrYes, mrNone] then
-        CreateUMLForm(Filename).OpenFiles;
+        CreateUMLForm(FileName).OpenFiles;
     end;
   finally
     FreeAndNil(SL);
@@ -2748,7 +2748,7 @@ end;
 procedure TPyIDEMainForm.actUMLEditClassExecute(Sender: TObject);
 begin
   var aFile:= GI_PyIDEServices.getActiveFile;
-  if assigned(aFile) and (aFile.FileKind = fkUML) then
+  if Assigned(aFile) and (aFile.FileKind = fkUML) then
     TFUMLForm(aFile.Form).ClassEdit
   else begin
     var aEditor:= GI_PyIDEServices.getActiveEditor;
@@ -2762,7 +2762,7 @@ procedure TPyIDEMainForm.actUMLNewClassExecute(Sender: TObject);
       FileTemplate: TFileTemplate; UML: TFUMLForm;
 begin
   var aFile:= GI_PyIDEServices.getActiveFile;
-  if assigned(aFile) and (aFile.FileKind = fkUML) then begin
+  if Assigned(aFile) and (aFile.FileKind = fkUML) then begin
     TFUMLForm(aFile.Form).MainModul.UnSelectAllElements;
     TFUMLForm(aFile.Form).TBClassDefinitionClick(Self);
   end else begin
@@ -2790,12 +2790,12 @@ procedure TPyIDEMainForm.actUMLOpenClassExecute(Sender: TObject);
 begin
   LockFormUpdate(Self);
   with ResourcesDataModule.dlgFileOpen do begin
-    if assigned(GI_PyIDEServices.getActiveFile)
+    if Assigned(GI_PyIDEServices.getActiveFile)
       then InitialDir:= ExtractFilePath(GI_PyIDEServices.getActiveFile.FileName)
       else InitialDir:= GuiPyOptions.SourcePath;
     if not DirectoryExists(InitialDir) then
       InitialDir:= GetDocumentsPath;
-    Filename:= '*.py';
+    FileName:= '*.py';
     FilterIndex:= 1;
     Options := Options + [ofAllowMultiSelect];
     if Execute then begin
@@ -2833,7 +2833,7 @@ begin
           zOrder.Delete(zOrderPos);
           TabItem := nil;
         end else
-          break;
+          Break;
       end;
     until Assigned(TabItem) or (ZOrder.Count = 0);
     KeyPreview := True;
@@ -2920,12 +2920,12 @@ begin
 end;
 
 procedure TPyIDEMainForm.actToolsTextDiffExecute(Sender: TObject);
-var Forms: array[0..1] of TEditorForm; i: integer;
+var Forms: array[0..1] of TEditorForm; i: Integer;
     Editor: IEditor;
 begin
   Forms[0]:= nil;
   Forms[1]:= nil;
-  for i:= 0 to min(2, GI_EditorFactory.Count) - 1 do begin
+  for i:= 0 to Min(2, GI_EditorFactory.Count) - 1 do begin
     Editor:= GI_EditorFactory.GetEditor(i);
     Forms[i]:= Editor.Form as TEditorForm;
     if Forms[i].Modified or Editor.FromTemplate then
@@ -2979,7 +2979,7 @@ begin
     aFile:= DoCreateFile(fkBrowser, ActiveTabControlIndex);
     TabCtrl.Toolbar.EndUpdate;
   end;
-  if assigned(aFile) then begin
+  if Assigned(aFile) then begin
     Result:= (aFile.Form as TFBrowser);
     Result.OpenFile(Adresse);
     aFile.Activate;
@@ -3069,11 +3069,11 @@ begin
 end;
 
 procedure TPyIDEMainForm.CreatePycFilesForUMLWindows;
-  var i: integer;
+  var i: Integer;
 begin
   DeleteObjectsInUMLForms;
   if not GI_PyControl.Running then begin
-    var SL:= TStringList.Create(dupIgnore, true, false);
+    var SL:= TStringList.Create(dupIgnore, True, False);
     try
       for i:= 0 to GI_FileFactory.Count - 1 do
         if GI_FileFactory.FactoryFile[i].FileKind = fkUML then
@@ -3087,11 +3087,11 @@ begin
   end;
 end;
 
-function TPyIDEMainForm.GetCachedPycFilename(Filename: string): string;
+function TPyIDEMainForm.GetCachedPycFilename(FileName: string): string;
 begin
-  Result:= TPath.Combine(ExtractFilePath(Filename),
+  Result:= TPath.Combine(ExtractFilePath(FileName),
              TPath.Combine('__pycache__',
-               TPath.getFileNameWithoutExtension(Filename) +
+               TPath.getFileNameWithoutExtension(FileName) +
                  '.cpython-' + myStringReplace(PyControl.PythonVersion.SysVersion, '.', '') +
                    '.pyc'));
 end;
@@ -3107,19 +3107,19 @@ begin
   PyControl.ActiveInterpreter.RunSource('from ' + Modul + ' import *', '<interactive input>');
 end;
 
-function TPyIDEMainForm.IsAValidClass(const Pathname: string): boolean;
-  var Editor: IEditor; Modified: boolean;
+function TPyIDEMainForm.IsAValidClass(const Pathname: string): Boolean;
+  var Editor: IEditor; Modified: Boolean;
       FDCached, FDPath: TDateTime;
       CachedFile: string;
 begin
   if (Pathname = '') or not FileExists(Pathname) then
-    exit(true);
+    Exit(True);
   Editor:= GI_EditorFactory.GetEditorByName(Pathname);
-  Modified:= assigned(Editor) and Editor.Modified;
+  Modified:= Assigned(Editor) and Editor.Modified;
   if Modified then
-    exit(false);
+    Exit(False);
   CachedFile:= GetCachedPycFilename(Pathname);
-  Result:= false;
+  Result:= False;
   if FileExists(CachedFile) and
     FileAge(CachedFile, FDCached) and FileAge(Pathname, FDPath) then
       Result:= (FDCached >= FDPath)
@@ -3218,7 +3218,7 @@ begin
 end;
 
 procedure TPyIDEMainForm.DebuggerBreakpointChange(Sender: TObject; Editor: IEditor;
-  ALine: integer);
+  ALine: Integer);
 begin
   if not Assigned(Editor) then Exit;
   if (ALine >= 1) and (ALine <= Editor.SynEdit.Lines.Count) then
@@ -3246,7 +3246,7 @@ begin
       var aFile := GetActiveFile;
       if Assigned(aFile) then
         Caption := Format('GuiPy - %s%s', [aFile.FileId,
-                             iff(aFile.Modified, '*', '')])
+                             Iff(aFile.Modified, '*', '')])
       else
         Caption := 'GuiPy';
     end);
@@ -3257,7 +3257,7 @@ procedure TPyIDEMainForm.SetupRunConfiguration(var RunConfig: TRunConfiguration;
 begin
   RunConfig.ScriptName := FileId;
   RunConfig.EngineType := PyControl.PythonEngineType;
-  RunConfig.Parameters := iff(PyIDEOptions.UseCommandLine, PyIDEOptions.CommandLine, '');
+  RunConfig.Parameters := Iff(PyIDEOptions.UseCommandLine, PyIDEOptions.CommandLine, '');
   RunConfig.ExternalRun.Assign(ExternalPython);
   RunConfig.ExternalRun.Parameters := Parameters.ReplaceInText(RunConfig.ExternalRun.Parameters);
   RunConfig.ReinitializeBeforeRun := PyIDEOptions.ReinitializeBeforeRun;
@@ -3265,7 +3265,7 @@ begin
 end;
 
 procedure TPyIDEMainForm.DebugActiveScript(ActiveEditor: IEditor;
-  InitStepIn: Boolean = False; RunToCursorLine: integer = -1);
+  InitStepIn: Boolean = False; RunToCursorLine: Integer = -1);
 var
   RunConfig: TRunConfiguration;
 begin
@@ -3282,7 +3282,7 @@ end;
 procedure TPyIDEMainForm.UpdateDebugCommands(DebuggerState: TDebuggerState);
 var
   Editor: IEditor; aFile: IFile;
-  PyFileActive: boolean;
+  PyFileActive: Boolean;
 begin
   Editor := GetActiveEditor;
   aFile:= GetActiveFile;
@@ -3456,7 +3456,7 @@ end;
 
 procedure TPyIDEMainForm.ApplicationOnIdle(Sender: TObject; var Done: Boolean);
 var
-  i: integer;
+  i: Integer;
 begin
   UpdateStandardActions;
   CommandsDataModule.UpdateMainActions;
@@ -3514,8 +3514,8 @@ begin
     HintInfo.HideTimeout := 5000;
 end;
 
-function TPyIDEMainForm.ShowFilePosition(FileName: string; Line: integer = 0;
-      Offset: integer = 1; SelLen: integer = 0;
+function TPyIDEMainForm.ShowFilePosition(FileName: string; Line: Integer = 0;
+      Offset: Integer = 1; SelLen: Integer = 0;
       ForceToMiddle: Boolean = True; FocusEditor: Boolean = True): Boolean;
 var
   Editor: IEditor;
@@ -3535,7 +3535,7 @@ begin
       aFile := GI_FileFactory.GetFileByFileId(FileName);
     end;
 
-    if assigned(aFile) then
+    if Assigned(aFile) then
       if aFile.FileKind= fkEditor then begin
         Editor:= aFile as IEditor;
         if GI_PyControl.PythonLoaded and
@@ -3889,7 +3889,7 @@ begin
   Result := UnitTestWindow;
 end;
 
-function TPyIDEMainForm.TabControl(TabControlIndex: integer): TSpTBXTabControl;
+function TPyIDEMainForm.TabControl(TabControlIndex: Integer): TSpTBXTabControl;
 begin
   if TabControlIndex = 2 then
     Result := TabControl2
@@ -3897,22 +3897,22 @@ begin
     Result := TabControl1;
 end;
 
-var i,j: integer;
+var i,j: Integer;
 
 procedure TPyIDEMainForm.TabControl1Enter(Sender: TObject);
 begin
 //  Label2.Caption:= IntToStr(j) + 'TabControl Enter';
-  inc(j);
+  Inc(j);
 end;
 
 procedure TPyIDEMainForm.TabControl1Exit(Sender: TObject);
 begin
   //Label1.Caption:= IntToStr(i) + 'TabControl Exit';
-  inc(i);
+  Inc(i);
 end;
 
 function TPyIDEMainForm.TabControlIndex(
-  TabControl: TSpTBXCustomTabControl): integer;
+  TabControl: TSpTBXCustomTabControl): Integer;
 begin
   if TabControl = TabControl2 then
     Result := 2
@@ -3969,7 +3969,7 @@ begin
   spiExternalToolsLED.Visible := OutputWindow.IsRunning;
 end;
 
-function TPyIDEMainForm.CmdLineOpenFiles(): boolean;
+function TPyIDEMainForm.CmdLineOpenFiles(): Boolean;
 begin
   Result := False;
   for var i := Low(CmdLineReader.readNamelessString) to High(CmdLineReader.readNamelessString) do
@@ -4093,7 +4093,7 @@ end;
 
 procedure TPyIDEMainForm.actFileOpenExecute(Sender: TObject);
 var
-  i: integer;
+  i: Integer;
   aFile: IFile;
 begin
   with ResourcesDataModule.dlgFileOpen do begin
@@ -4115,11 +4115,11 @@ begin
 
     Options := Options + [ofAllowMultiSelect];
     if Execute then begin
-      GuiPyOptions.Sourcepath:= ExtractFilePath(Filename);
-      if assigned(aFile) and (aFile.FileKind = fkTextDiff) then
+      GuiPyOptions.Sourcepath:= ExtractFilePath(FileName);
+      if Assigned(aFile) and (aFile.FileKind = fkTextDiff) then
         if Files.Count >= 2
           then (aFile.Form as TFTextDiff).Open(Files[0], Files[1])
-          else (aFile.Form as TFTextDiff).Open(Filename)
+          else (aFile.Form as TFTextDiff).Open(FileName)
       else
         for i := 0 to Files.Count - 1 do begin
           DoOpenFile(Files[i], '', TabControlIndex(ActiveTabControl));
@@ -4352,7 +4352,7 @@ begin
   if AppStorage.PathExists('Layouts') then
     AppStorage.DeleteSubTree('Layouts');
 
-  AppStorage.StorageOptions.SetAsString := true;
+  AppStorage.StorageOptions.SetAsString := True;
 
   var curLang:= AppStorage.ReadString('Language', GetCurrentLanguage);
   MachineStorage.DefaultSection:= 'Other Settings';
@@ -4522,10 +4522,10 @@ begin
   end;
 
   if MachineStorage.PathExists('Restricted') then begin
-    GuiPyOptions.LockedDOSWindow:= MachineStorage.ReadBoolean('Restricted\LockedDOSWindow', false);
-    GuiPyOptions.LockedInternet:= MachineStorage.ReadBoolean('Restricted\LockedInternet', false);
-    GuiPyOptions.LockedPaths:= MachineStorage.ReadBoolean('Restricted\LockedPaths', false);
-    GuiPyOptions.LockedStructogram:= MachineStorage.ReadBoolean('Restricted\LockedStructogram', false);
+    GuiPyOptions.LockedDOSWindow:= MachineStorage.ReadBoolean('Restricted\LockedDOSWindow', False);
+    GuiPyOptions.LockedInternet:= MachineStorage.ReadBoolean('Restricted\LockedInternet', False);
+    GuiPyOptions.LockedPaths:= MachineStorage.ReadBoolean('Restricted\LockedPaths', False);
+    GuiPyOptions.LockedStructogram:= MachineStorage.ReadBoolean('Restricted\LockedStructogram', False);
   end;
 
   // Load MRU Lists
@@ -4571,7 +4571,7 @@ end;
 procedure TPyIDEMainForm.TabControlActiveTabChange(Sender: TObject;
   TabIndex: Integer);
 var
-  Index: integer;
+  Index: Integer;
   TabCtrl: TSpTBXTabControl;
 begin
   LockWindow(Handle);
@@ -4590,7 +4590,7 @@ begin
         zOrderPos := 0;
       end;
   var aFile:= GI_PyIDEServices.getActiveFile;
-  if assigned(aFile) then begin
+  if Assigned(aFile) then begin
     if aFile.FileKind = fkUML then
       TFUMLForm(aFile.Form).Enter(Self)
     else if aFile.FileKind = fkEditor then
@@ -4639,7 +4639,7 @@ var
   Tab: TSpTBXTabItem;
   TargetTabControl: TSpTBXTabControl;
   IV: TTBItemViewer;
-  Index: integer;
+  Index: Integer;
 begin
   if (Source is TSpTBXTabItemDragObject) and
      (TSpTBXTabItemDragObject(Source).SouceItem is TSpTBXTabItem) and
@@ -4703,8 +4703,8 @@ begin
     and (GI_FileFactory.GetFileCount > 0);
 
   var aFile := GI_PyIDEServices.getActiveFile;
-  R:= assigned(aFile) and (aFile.FileKind = fkUML);
-  actUMLEditClass.Enabled:= R or assigned(aFile) and (aFile.FileKind = fkEditor);
+  R:= Assigned(aFile) and (aFile.FileKind = fkUML);
+  actUMLEditClass.Enabled:= R or Assigned(aFile) and (aFile.FileKind = fkEditor);
   actUMLNewComment.Enabled:= R;
   actUMLNewLayout.Enabled:= R;
   actUMLRefresh.Enabled:= R;
@@ -4781,7 +4781,7 @@ begin
   end;
 end;
 
-function TPyIDEMainForm.getLanguageCode(Index: integer): string;
+function TPyIDEMainForm.getLanguageCode(Index: Integer): string;
 begin
   Result:= fLanguageList[Index];
 end;
@@ -4856,7 +4856,7 @@ end;
 
 procedure TPyIDEMainForm.SetupToolsMenu;
 var
-  i: integer;
+  i: Integer;
   MenuItem: TSpTBXItem;
   Action: TAction;
   Tool: TExternalTool;
@@ -4895,9 +4895,9 @@ end;
 procedure TPyIDEMainForm.SetupLanguageMenu;
 var
   MenuItem: TSpTBXItem;
-  i: integer;
+  i: Integer;
   CurrentLanguage, English: string;
-  HaveLang: boolean;
+  HaveLang: Boolean;
 begin
   mnLanguage.Clear;
   FConfiguration.RGLanguages.Items.Clear;
@@ -4932,7 +4932,7 @@ end;
 
 procedure TPyIDEMainForm.SetupLayoutsMenu;
 var
-  i: integer;
+  i: Integer;
   MenuItem: TSpTBXItem;
 begin
   // delete previous Layouts
@@ -4952,15 +4952,15 @@ end;
 procedure TPyIDEMainForm.mnSyntaxPopup(Sender: TTBCustomItem;
   FromLink: Boolean);
 var
-  i: integer;
+  i: Integer;
   Editor: IEditor;
 begin
   Editor := GetActiveEditor;
   for i := 0 to mnSyntax.Count - 3 do begin
     mnSyntax.Items[i].Enabled :=  Assigned(Editor);
     mnSyntax.Items[i].Checked := Assigned(Editor) and
-      Assigned(Editor.Synedit.Highlighter) and
-        (Editor.Synedit.Highlighter.FriendlyLanguageName = mnSyntax.Items[i].Caption);
+      Assigned(Editor.SynEdit.Highlighter) and
+        (Editor.SynEdit.Highlighter.FriendlyLanguageName = mnSyntax.Items[i].Caption);
   end;
   mnNoSyntax.Enabled := Assigned(Editor);
   mnNoSyntax.Checked := Assigned(Editor) and
@@ -4986,7 +4986,7 @@ procedure TPyIDEMainForm.LoadDefaultLayout(LayoutAppStorage: TJvAppIniFileStorag
   const Layout: string);
 var
   Path: string;
-  i: integer;
+  i: Integer;
   SaveActiveControl: TWinControl;
   TempCursor: IInterface;
 begin
@@ -5018,12 +5018,12 @@ end;
 
 procedure TPyIDEMainForm.mnViewDebugLayoutClick(Sender: TObject);
 begin
-  var LayoutAppStorage:= TJvAppIniFileStorage.Create(self);
+  var LayoutAppStorage:= TJvAppIniFileStorage.Create(Self);
   LayoutAppStorage.FileName:=
     TPath.Combine(ExtractFilePath(Application.ExeName), 'DebugLayout.ini');
   LoadDefaultLayout(LayoutAppStorage, 'Debug');
-  mnViewDebugLayout.Checked:= true;
-  mnViewDefaultLayout.Checked:= false;
+  mnViewDebugLayout.Checked:= True;
+  mnViewDefaultLayout.Checked:= False;
   FreeAndNil(LayoutAppStorage);
 end;
 
@@ -5038,18 +5038,18 @@ begin
     DoFloatForm(BreakPointsWindow);
     LoadStandardLayout;
   end else begin
-    var LayoutAppStorage:= TJvAppIniFileStorage.Create(self);
+    var LayoutAppStorage:= TJvAppIniFileStorage.Create(Self);
     LayoutAppStorage.FileName:=
       TPath.Combine(ExtractFilePath(Application.ExeName), 'DefaultLayout.ini');
     LoadDefaultLayout(LayoutAppStorage, 'Default');
-    mnViewDebugLayout.Checked:= false;
-    mnViewDefaultLayout.Checked:= true;
+    mnViewDebugLayout.Checked:= False;
+    mnViewDefaultLayout.Checked:= True;
     FreeAndNil(LayoutAppStorage);
   end;
 end;
 
 procedure TPyIDEMainForm.MoveTab(Tab: TSpTBXTabItem;
-  TabControl: TSpTBXTabControl; Index: integer);
+  TabControl: TSpTBXTabControl; Index: Integer);
 var
   NewTab: TSpTBXTabItem;
   Sheet,
@@ -5085,7 +5085,7 @@ end;
 
 procedure TPyIDEMainForm.MRUAddFile(aFile: IFile);
 begin
-  if (aFile.FileName <> '') and (aFile.Filename <> _('Compare text')) then
+  if (aFile.FileName <> '') and (aFile.FileName <> _('Compare text')) then
     tbiRecentFileList.MRUAdd(aFile.FileName)
   else if (aFile.RemoteFileName <> '') then
     tbiRecentFileList.MRUAdd(TSSHFileName.Format(aFile.SSHServer, aFile.RemoteFileName));
@@ -5113,7 +5113,7 @@ begin
   for var i:= 0 to Msg.Count - 1 do begin
     filename:= Msg.Strings[i];
     if LeftStr(filename, 11) = '[FileOpen("' then begin
-      filename:= copy(filename, 12, length(filename) - 14);
+      filename:= Copy(filename, 12, Length(filename) - 14);
       DoOpenFile(filename, '', TabControlIndex(ActiveTabControl));
       if TPath.GetExtension(filename) = '.pyw' then begin
         var pfmFile:= TPath.ChangeExtension(filename, '.pfm');
@@ -5166,7 +5166,7 @@ begin
 end;
 
 procedure TPyIDEMainForm.SetupPythonVersionsMenu;
-  var MenuItem: TTBCustomItem; i: integer;
+  var MenuItem: TTBCustomItem; i: Integer;
 begin
   // remove previous versions
   while mnPythonVersions.Count > 2 do
@@ -5315,7 +5315,7 @@ procedure TPyIDEMainForm.LoadLayout(const Layout: string);
 begin
   if GuiPyOptions.UsePredefinedLayouts then begin
     if Layout = 'Debug'
-      then mnViewDebugLayoutClick(self)
+      then mnViewDebugLayoutClick(Self)
       else LoadStandardLayout // mnViewDefaultLayoutClick(self)
   end else
     LoadDefaultLayout(LocalAppStorage, Layout);
@@ -5331,8 +5331,8 @@ begin
   ManualTabDockAddPage(TabHost, VariablesWindow);
   ShowDockForm(PythonIIForm);
   Application.ProcessMessages;
-  mnViewDebugLayout.Checked:= false;
-  mnViewDefaultLayout.Checked:= true;
+  mnViewDebugLayout.Checked:= False;
+  mnViewDefaultLayout.Checked:= True;
 end;
 
 procedure TPyIDEMainForm.SaveLayout(const Layout: string);
@@ -5393,7 +5393,7 @@ end;
 procedure TPyIDEMainForm.actLayoutsDeleteExecute(Sender: TObject);
 var
   LayoutName: string;
-  i: integer;
+  i: Integer;
 begin
   with TPickListDialog.Create(Self) do begin
     Caption := _(SDeleteLayouts);
@@ -5456,34 +5456,34 @@ begin
   lbStatusMessage.Caption := S;
 end;
 
-function TPyIDEMainForm.GuiDesignerOpen: boolean;
+function TPyIDEMainForm.GuiDesignerOpen: Boolean;
   var EditorForm: TEditorForm; aEditor: IEditor;
 begin
-  Result:= true;
+  Result:= True;
   EditorForm:= nil;
   aEditor:= GI_PyIDEServices.GetActiveEditor;
-  if assigned(aEditor) then
+  if Assigned(aEditor) then
     EditorForm:= TEditorForm(aEditor.Form)
-  else if assigned(FGUIDesigner.DesignForm) then
+  else if Assigned(FGUIDesigner.DesignForm) then
     EditorForm:= FGUIDesigner.DesignForm.Partner;
-  if assigned(EditorForm) and EditorForm.isPython then begin
-    if not assigned(EditorForm.Partner) then begin
+  if Assigned(EditorForm) and EditorForm.isPython then begin
+    if not Assigned(EditorForm.Partner) then begin
       EditorForm.SBDesignformClick(nil);
-      if not assigned(EditorForm.Partner) then begin
+      if not Assigned(EditorForm.Partner) then begin
         ErrorMsg(Format(_('File \"%s\" not found.'),
                 [ChangeFileExt(EditorForm.Pathname, '.pfm')]));
-        Result:= false;
+        Result:= False;
       end
     end
   end else
-    Result:= false;
+    Result:= False;
 end;
 
 procedure TPyIDEMainForm.ToolButtonMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
-  if assigned(FGuiDesigner.DesignForm) and (Button = mbLeft) then
-    (Sender as TToolButton).BeginDrag(false, 10);
+  if Assigned(FGuiDesigner.DesignForm) and (Button = mbLeft) then
+    (Sender as TToolButton).BeginDrag(False, 10);
 end;
 
 type
@@ -5543,7 +5543,7 @@ procedure TPyIDEMainForm.FormKeyUp(Sender: TObject; var Key: Word;
 begin
   inherited;
   with ActiveTabControl as TSpTBXTabControl do
-    if (Key = VK_Control) and zOrderProcessing then
+    if (Key = VK_CONTROL) and zOrderProcessing then
     begin
       zOrderProcessing := False;
       KeyPreview := False;
@@ -5648,9 +5648,9 @@ begin
               ShowDockForm(MessagesWindow);
 
             if FileName  <> '' then begin
-              FilePosInfo := Format(FilePosInfoFormat, [Filename, BC.Line, BC.Char]);
+              FilePosInfo := Format(FilePosInfoFormat, [FileName, BC.Line, BC.Char]);
               if JumpToFirstMatch then
-                ShowFilePosition(Filename, BC.Line, BC.Char);
+                ShowFilePosition(FileName, BC.Line, BC.Char);
             end else begin
               if ShowMessages then
                 GI_PyIDEServices.Messages.AddMessage(_(SDefinitionNotFound));
@@ -5679,9 +5679,9 @@ begin
 end;
 
 procedure TPyIDEMainForm.SetDockTopPanel;
-  var aTopToolbars, aTopFindToolbar, aHeight: integer;
+  var aTopToolbars, aTopFindToolbar, aHeight: Integer;
 begin
-  var HasMenuBar:= false;
+  var HasMenuBar:= False;
   for var i:= 0 to VisMenusLen - 1 do
     HasMenuBar:= HasMenuBar or FConfiguration.VisMenus[i];
   if HasMenuBar then begin
@@ -5692,11 +5692,11 @@ begin
     aTopToolbars:= 0;
   end;
 
-  var allTabsClosed:= true;
+  var allTabsClosed:= True;
   for var i:= 0 to High(FConfiguration.VisTabs) do
-    if FConfiguration.VisTabs[i] then allTabsClosed:= false;
+    if FConfiguration.VisTabs[i] then allTabsClosed:= False;
   if allTabsClosed then
-    TabControlWidgets.Visible:= false;
+    TabControlWidgets.Visible:= False;
 
   if not allTabsClosed then
     aHeight:= aHeight + 57
@@ -5804,7 +5804,7 @@ end;
 
 procedure TPyIDEMainForm.WMWTSSessionChange(var Message: TMessage);
 begin
-  case Message.wParam of
+  case Message.WParam of
     WTS_SESSION_LOCK,
     WTS_REMOTE_DISCONNECT: Application.UpdateMetricSettings := False;
     WTS_REMOTE_CONNECT,
@@ -5832,7 +5832,7 @@ procedure TPyIDEMainForm.WMFindDefinition(var Msg: TMessage);
 var
   FilePosInfo: string;
   FileName: string;
-  Line, Col: integer;
+  Line, Col: Integer;
 begin
   if Assigned(GI_ActiveEditor) then begin
     FileName := GI_ActiveEditor.FileId;
@@ -5862,7 +5862,7 @@ end;
 function TPyIDEMainForm.JumpToFilePosInfo(const FilePosInfo: string): Boolean;
 var
   FileName: string;
-  Line, Col: integer;
+  Line, Col: Integer;
 begin
   Result := False;
   with TRegEx.Match(FilePosInfo, FilePosInfoRegExpr) do
@@ -5946,9 +5946,9 @@ begin
 end;
 
 function TPyIDEMainForm.NewFileFromTemplate(
-  FileTemplate: TFileTemplate; TabControlIndex: integer; Filename: string): IEditor;
+  FileTemplate: TFileTemplate; TabControlIndex: Integer; FileName: string): IEditor;
 var
-  i, j: integer;
+  i, j: Integer;
   TabCtrl: TSpTBXTabControl;
   Editor: IEditor;
   EditorView: IEditorView;
@@ -5960,10 +5960,10 @@ begin
     Result := GI_EditorFactory.NewEditor(TabControlIndex);
     if Result <> nil then begin
       try
-        Result.FromTemplate:= true;
-        if Filename = '' then
-          Filename:= getFilename('.' + FileTemplate.Extension);
-        Result.OpenFile(Filename, FileTemplate.Highlighter);
+        Result.FromTemplate:= True;
+        if FileName = '' then
+          FileName:= getFilename('.' + FileTemplate.Extension);
+        Result.OpenFile(FileName, FileTemplate.Highlighter);
         Result.Activate;
       except
         Result.Close;
@@ -5979,7 +5979,7 @@ begin
         if j >= 0 then begin
           Result.SynEdit.CaretXY := BufferCoord(j + 1, i + 1);
           Result.SynEdit.ExecuteCommand(ecDeleteChar, ' ', nil);
-          break;
+          Break;
         end;
       end;
 
@@ -6059,7 +6059,7 @@ var
   Msg: Cardinal;
 begin
   if (Action is TEditAction) and Assigned(Screen.ActiveControl) and
-    (Screen.ActiveControl is TCombobox) and
+    (Screen.ActiveControl is TComboBox) and
     not TComboBox(Screen.ActiveControl).DroppedDown
   then begin
     Msg := 0;
@@ -6081,7 +6081,7 @@ procedure TPyIDEMainForm.ApplicationActionUpdate(Action: TBasicAction;
 begin
   if (Action is TEditAction) then
   begin
-     if Assigned(Screen.ActiveControl) and (Screen.ActiveControl is TCombobox) and
+     if Assigned(Screen.ActiveControl) and (Screen.ActiveControl is TComboBox) and
       not TComboBox(Screen.ActiveControl).DroppedDown
     then begin
       TEditAction(Action).Enabled :=
@@ -6217,7 +6217,7 @@ end;
 procedure TPyIDEMainForm.JvAppInstancesCmdLineReceived(Sender: TObject;
   CmdLine: TStrings);
 var
-  i: integer;
+  i: Integer;
 begin
   if JvAppInstances.AppInstances.InstanceIndex[GetCurrentProcessID] <> 0 then Exit;
   for i := 0 to CmdLine.Count - 1 do
@@ -6280,7 +6280,7 @@ begin
     SaveLayout('BeforeZoom');
     for i := Low(TJvDockPosition) to High(TJvDockPosition) do begin
       Panel := DockServer.DockPanel[i];
-      if not (Panel is TJvDockVSNETPanel) then continue;
+      if not (Panel is TJvDockVSNETPanel) then Continue;
       while Panel.DockClientCount > 0 do
         TJvDockVSNETPanel(Panel).DoAutoHideControl(
             Panel.DockClients[Panel.DockClientCount-1] as TWinControl);
@@ -6291,8 +6291,8 @@ end;
 procedure TPyIDEMainForm.actUMLRecognizeAssociationsExecute(Sender: TObject);
 begin
   var aFile:= GI_PyIDEServices.getActiveFile;
-  if assigned(aFile) and (aFile.FileKind = fkUML) then
-    TFUMLForm(aFile.Form).TBRecognizeAssociationsClick(self);
+  if Assigned(aFile) and (aFile.FileKind = fkUML) then
+    TFUMLForm(aFile.Form).TBRecognizeAssociationsClick(Self);
 end;
 
 procedure TPyIDEMainForm.actRemoteFileOpenExecute(Sender: TObject);
@@ -6376,12 +6376,12 @@ end;
 
 procedure TPyIDEMainForm.tbiScrollLeftClick(Sender: TObject);
 begin
-  TabControl((Sender as TSPTBXItem).Tag).ScrollLeft;
+  TabControl((Sender as TSpTBXItem).Tag).ScrollLeft;
 end;
 
 procedure TPyIDEMainForm.tbiScrollRightClick(Sender: TObject);
 begin
-  TabControl((Sender as TSPTBXItem).Tag).ScrollRight;
+  TabControl((Sender as TSpTBXItem).Tag).ScrollRight;
 end;
 
 procedure TPyIDEMainForm.tbiSearchOptionsPopup(Sender: TTBCustomItem;
@@ -6402,7 +6402,7 @@ end;
 procedure TPyIDEMainForm.tbiSearchTextAcceptText(const NewText: string);
 var
   S: string;
-  i: integer;
+  i: Integer;
 begin
   if NewText <> '' then begin
     // update Items
@@ -6417,7 +6417,7 @@ begin
     S := '';
     for i := 0 to tbiSearchText.Items.Count - 1 do begin
       if i >= 10 then
-        break;
+        Break;
       if i > 0 then
         S :=  S + ',';
       S := S + AnsiQuotedStr(tbiSearchText.Items[i], '"');
@@ -6462,7 +6462,7 @@ begin
 end;
 
 procedure TPyIDEMainForm.tbiRecentFileListClick(Sender: TObject;
-  const Filename: string);
+  const FileName: string);
 var
   S: string;
 begin
@@ -6477,16 +6477,16 @@ begin
 end;
 
 procedure TPyIDEMainForm.tbiRecentProjectsClick(Sender: TObject;
-  const Filename: string);
+  const FileName: string);
 begin
   ProjectExplorerWindow.DoOpenProjectFile(FileName);
-  tbiRecentProjects.MRURemove(Filename);
+  tbiRecentProjects.MRURemove(FileName);
 end;
 
 procedure TPyIDEMainForm.tbiReplaceTextAcceptText(const NewText: string);
 var
   S: string;
-  i: integer;
+  i: Integer;
 begin
   if NewText <> '' then begin
     // update Items
@@ -6501,7 +6501,7 @@ begin
     S := '';
     for i := 0 to tbiReplaceText.Items.Count - 1 do begin
       if i >= 10 then
-        break;
+        Break;
       if i > 0 then
         S := S + ',';
       S := S + tbiReplaceText.Items[i].QuotedString('"');
@@ -6581,13 +6581,13 @@ begin
 end;
 
 procedure TPyIDEMainForm.DropFiles(Sender: TObject; X, Y: Integer; AFiles: TStrings);
-  var Filename: string;
+  var FileName: string;
 begin
   LockFormUpdate(Self);
   try
-    for Filename in AFiles do
+    for FileName in AFiles do
       DoOpenFile(FileName, '', ActiveTabControlIndex);
-    GuiPyOptions.Sourcepath:= ExtractFilepath(Filename);
+    GuiPyOptions.Sourcepath:= ExtractFilePath(FileName);
   finally
     UnlockFormUpdate(Self);
   end;
@@ -6612,17 +6612,17 @@ var
   FileName: array[0..MAX_PATH - 1] of Char;
 begin
   try
-    iNumberDropped := DragQueryFile(THandle(Msg.wParam), Cardinal(-1),
+    iNumberDropped := DragQueryFile(THandle(Msg.WParam), Cardinal(-1),
       nil, 0);
 
     for i := 0 to iNumberDropped - 1 do
     begin
-      DragQueryFile(THandle(Msg.wParam), i, FileName, MAX_PATH);
+      DragQueryFile(THandle(Msg.WParam), i, FileName, MAX_PATH);
       PyIDEMainForm.DoOpenFile(FileName, '', PyIDEMainForm.TabControlIndex(Self));
     end;
   finally
     Msg.Result := 0;
-    DragFinish(THandle(Msg.wParam));
+    DragFinish(THandle(Msg.WParam));
   end;
 end;
 

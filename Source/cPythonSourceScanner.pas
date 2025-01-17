@@ -21,8 +21,8 @@ type
   TParsedModule = class;
 
   TCodePos = record
-    LineNo : integer;
-    CharOffset : integer;
+    LineNo : Integer;
+    CharOffset : Integer;
   end;
 
   TBaseCodeElement = class
@@ -30,8 +30,8 @@ type
   private
     fParent : TBaseCodeElement;
   protected
-    fIsProxy : boolean;
-    fIsFinal : boolean;
+    fIsProxy : Boolean;
+    fIsFinal : Boolean;
     fTyp: string;
     fCodePos : TCodePos;
   public
@@ -42,28 +42,28 @@ type
     function GetModuleSource : string;
     property CodePos : TCodePos read fCodePos;
     property Parent : TBaseCodeElement read fParent write fParent;
-    property IsProxy : boolean read fIsProxy;  // true if derived from live Python object
+    property IsProxy : Boolean read fIsProxy;  // true if derived from live Python object
     property Typ: string read fTyp write fTyp;
-    property IsFinal: boolean read fIsFinal write fIsFinal;
+    property IsFinal: Boolean read fIsFinal write fIsFinal;
   end;
 
   TCodeBlock = record
-    StartLine : integer;
-    LastCommentLine: integer;
-    EndLine : integer;
+    StartLine : Integer;
+    LastCommentLine: Integer;
+    EndLine : Integer;
   end;
 
   TModuleImport = class(TBaseCodeElement)
   private
     fRealName : string; // used if name is an alias
-    fPrefixDotCount : integer; // for relative package imports
+    fPrefixDotCount : Integer; // for relative package imports
     fCodeBlock : TCodeBlock;
     function GetRealName: string;
   public
     ImportAll : Boolean;
     ImportedNames : TObjectList;
     property RealName : string read GetRealName;
-    property PrefixDotCount : integer read fPrefixDotCount;
+    property PrefixDotCount : Integer read fPrefixDotCount;
     property CodeBlock : TCodeBlock read fCodeBlock;
     constructor Create(AName : string; CB : TCodeBlock);
     destructor Destroy; override;
@@ -92,10 +92,10 @@ type
   private
     fCodeBlock : TCodeBlock;
     fDocString : string;
-    fIndent : integer;
-    fDocStringExtracted : boolean;
-    function GetChildCount: integer;
-    function GetChildren(i : integer): TCodeElement;
+    fIndent : Integer;
+    fDocStringExtracted : Boolean;
+    function GetChildCount: Integer;
+    function GetChildren(i : Integer): TCodeElement;
     procedure ExtractDocString;
   protected
     fChildren : TObjectList;
@@ -107,12 +107,12 @@ type
     procedure GetSortedClasses(SortedClasses : TObjectList);
     procedure GetSortedFunctions(SortedFunctions : TObjectList);
     procedure GetNameSpace(SList : TStringList); virtual;
-    function GetScopeForLine(LineNo : integer) : TCodeElement;
+    function GetScopeForLine(LineNo : Integer) : TCodeElement;
     function GetChildByName(ChildName : string): TCodeElement;
     property CodeBlock : TCodeBlock read fCodeBlock;
-    property Indent : integer read fIndent;
-    property ChildCount : integer read GetChildCount;
-    property Children[i : integer] : TCodeElement read GetChildren;
+    property Indent : Integer read fIndent;
+    property ChildCount : Integer read GetChildCount;
+    property Children[i : Integer] : TCodeElement read GetChildren;
     property DocString : string read GetDocString;
   end;
 
@@ -124,10 +124,10 @@ type
     ReturnType : string;
     ReturnValue: string;
     ReturnAttributes: TVariableAttributes;
-    isStaticMethod: boolean;
-    isClassMethod: boolean;
-    isAbstractMethod: boolean;
-    isPropertyMethod: boolean;
+    isStaticMethod: Boolean;
+    isClassMethod: Boolean;
+    isAbstractMethod: Boolean;
+    isPropertyMethod: Boolean;
     constructor Create;
     destructor Destroy; override;
     function ArgumentsString : string; virtual;
@@ -156,7 +156,7 @@ type
     fMaskedSource : string;
     fAllExportsVar : string;
     fFileAge : TDateTime;
-    function GetIsPackage: boolean;
+    function GetIsPackage: Boolean;
     procedure SetFileName(const Value: string);
   protected
     fGlobals : TObjectList;
@@ -174,12 +174,12 @@ type
     property Source : string read fSource write fSource;
     property FileName : string read fFileName write SetFileName;
     property MaskedSource : string read fMaskedSource;
-    property IsPackage : boolean read GetIsPackage;
+    property IsPackage : Boolean read GetIsPackage;
     property AllExportsVar : string read GetAllExportsVar;
     property FileAge : TDateTime read fFileAge write fFileAge;
   end;
 
-  TScannerProgressEvent = procedure(CharNo, NoOfChars : integer; var Stop : Boolean) of object;
+  TScannerProgressEvent = procedure(CharNo, NoOfChars : Integer; var Stop : Boolean) of object;
 
   TPythonScanner = class
   private
@@ -204,13 +204,13 @@ type
     fAbstractMethodRE : TRegEx;
     fPropertyMethodRE : TRegEx;
   protected
-    procedure DoScannerProgress(CharNo, NoOfChars : integer; var Stop : Boolean);
+    procedure DoScannerProgress(CharNo, NoOfChars : Integer; var Stop : Boolean);
   public
     property OnScannerProgress : TScannerProgressEvent
       read fOnScannerProgress write fOnScannerProgress;
 
     constructor Create;
-    function ScanModule(Module : TParsedModule) : boolean;
+    function ScanModule(Module : TParsedModule) : Boolean;
   end;
 
   IAsyncSourceScanner = interface
@@ -228,7 +228,7 @@ type
     fPythonScanner : TPythonScanner;
     fFuture : IFuture<TParsedModule>;
     function FutureTask(Sender : TObject) : TParsedModule;
-    procedure ScanProgress(CharNo, NoOfChars : integer; var Stop : Boolean);
+    procedure ScanProgress(CharNo, NoOfChars : Integer; var Stop : Boolean);
     // IAsyncSourceScanner implementation
     function Finished : Boolean;
     function GetParsedModule : TParsedModule;
@@ -255,7 +255,7 @@ type
 implementation
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   System.SysUtils,
   JclStrings,
   SynCompletionProposal,
@@ -269,13 +269,13 @@ const
 var
   DocStringRE : TRegEx;
 
-function CodeBlock(StartLine, EndLine : integer) : TCodeBlock;
+function CodeBlock(StartLine, EndLine : Integer) : TCodeBlock;
 begin
   Result.StartLine := StartLine;
   Result.EndLine := EndLine;
 end;
 
-function HaveImplicitContinuation(S : string; var BracesCount : integer) : Boolean;
+function HaveImplicitContinuation(S : string; var BracesCount : Integer) : Boolean;
 var
   I: Integer;
 begin
@@ -289,30 +289,30 @@ begin
   Result := BracesCount > 0;
 end;
 
-function GetGroup(Match: TMatch; i: integer): string;
+function GetGroup(Match: TMatch; i: Integer): string;
 begin
   if i < Match.Groups.Count
     then Result:= Match.Groups[i].Value
     else Result:= '';
 end;
 
-function GetGroupOffset(Match: TMatch; i: integer): integer;
+function GetGroupOffset(Match: TMatch; i: Integer): Integer;
 begin
   if i < Match.Groups.Count
     then Result:= Match.Groups[i].Index
     else Result:= 0;
 end;
 
-function GetGroupLength(Match: TMatch; i: integer): integer;
+function GetGroupLength(Match: TMatch; i: Integer): Integer;
 begin
   if i < Match.Groups.Count
     then Result:= Match.Groups[i].Length
     else Result:= 0;
 end;
 
-function GetExpressionBuiltInType(Expr : string; var IsBuiltIn : boolean) : string;
+function GetExpressionBuiltInType(Expr : string; var IsBuiltIn : Boolean) : string;
 var
-  i :  integer;
+  i :  Integer;
 begin
   Result := '';
   IsBuiltIn := False;
@@ -329,9 +329,9 @@ begin
         for i := 2 to Length(Expr) - 1 do begin
           if Expr[i] = '.' then begin
             Result := 'float';
-            break;
+            Break;
           end else if not CharInSet(Expr[i], ['0'..'9', '+', '-']) then
-            break;
+            Break;
         end;
       end;
     '{' :
@@ -390,7 +390,7 @@ begin
   fChildren.Add(CE);
 end;
 
-function TCodeElement.GetChildCount: integer;
+function TCodeElement.GetChildCount: Integer;
 begin
   if Assigned(fChildren) then
     Result := fChildren.Count
@@ -398,7 +398,7 @@ begin
     Result := 0;
 end;
 
-function TCodeElement.GetChildren(i : integer): TCodeElement;
+function TCodeElement.GetChildren(i : Integer): TCodeElement;
 begin
   if Assigned(fChildren) then begin
     Result := TCodeElement(fChildren[i]);
@@ -410,7 +410,7 @@ end;
 
 function TCodeElement.GetChildByName(ChildName: string): TCodeElement;
 var
-  i : integer;
+  i : Integer;
   CE : TCodeElement;
 begin
   Result := nil;
@@ -431,7 +431,7 @@ end;
 
 procedure TCodeElement.GetSortedClasses(SortedClasses: TObjectList);
 var
-  i : integer;
+  i : Integer;
 begin
   if not Assigned(fChildren) then Exit;
   for i := 0 to Self.fChildren.Count - 1 do
@@ -442,7 +442,7 @@ end;
 
 procedure TCodeElement.GetSortedFunctions(SortedFunctions: TObjectList);
 var
-  i : integer;
+  i : Integer;
 begin
   if not Assigned(fChildren) then Exit;
   for i := 0 to Self.fChildren.Count - 1 do
@@ -453,7 +453,7 @@ end;
 
 procedure TCodeElement.GetNameSpace(SList: TStringList);
 var
-  i : integer;
+  i : Integer;
 begin
   //  Add from Children
   if Assigned(fChildren) then
@@ -461,9 +461,9 @@ begin
       SList.AddObject(TCodeElement(fChildren[i]).Name, fChildren[i]);
 end;
 
-function TCodeElement.GetScopeForLine(LineNo: integer): TCodeElement;
+function TCodeElement.GetScopeForLine(LineNo: Integer): TCodeElement;
 var
-  i : integer;
+  i : Integer;
   CE : TCodeElement;
 begin
   if (LineNo >= fCodeBlock.StartLine) and (LineNo <= fCodeBlock.EndLine) then begin
@@ -473,13 +473,13 @@ begin
     for i := 0 to fChildren.Count - 1 do begin
       CE := Children[i];
       if LineNo < CE.CodeBlock.StartLine then
-        break
+        Break
       else if LineNo > CE.CodeBlock.EndLine then
-        continue
+        Continue
       else begin
         // recursive call
         Result := CE.GetScopeForLine(LineNo);
-        break;
+        Break;
       end;
     end;
   end else
@@ -562,22 +562,22 @@ begin
   fPropertyMethodRE := CompiledRegEx('^[ \t]*@(property|\w*\.setter)[ \t]*$');
 end;
 
-procedure TPythonScanner.DoScannerProgress(CharNo, NoOfChars : integer;
+procedure TPythonScanner.DoScannerProgress(CharNo, NoOfChars : Integer;
   var Stop: Boolean);
 begin
   if Assigned(fOnScannerProgress) then
     fOnScannerProgress(CharNo, NoOfChars, Stop);
 end;
 
-function TPythonScanner.ScanModule(Module : TParsedModule): boolean;
+function TPythonScanner.ScanModule(Module : TParsedModule): Boolean;
 // Expectes Module Source code in Module.Source
 // Parses the Python Source code and adds code elements as children of Module
 { TODO 2 : Optimize out calls to Trim }
 var
-  UseModifiedSource : boolean;
+  UseModifiedSource : Boolean;
   SourceLines : TFunc<TStringList>;
 
-  function GetNthSourceLine(LineNo : integer) : string;
+  function GetNthSourceLine(LineNo : Integer) : string;
   begin
     if not Assigned(SourceLines) then begin
       SourceLines := TSmartPtr.Make(TStringList.Create);
@@ -590,7 +590,7 @@ var
       Result := '';
   end;
 
-  procedure GetLine(var P : PWideChar; var Line : string; var LineNo : integer);
+  procedure GetLine(var P : PWideChar; var Line : string; var LineNo : Integer);
   var
     Start : PWideChar;
   begin
@@ -605,10 +605,10 @@ var
     if P^ = WideChar(#10) then Inc(P);
   end;
 
-  procedure CharOffsetToCodePos(CharOffset, FirstLine : integer; LineStarts : TList;
+  procedure CharOffsetToCodePos(CharOffset, FirstLine : Integer; LineStarts : TList;
     var CodePos: TCodePos);
   var
-    i : integer;
+    i : Integer;
   begin
     CodePos.LineNo := FirstLine;
     CodePos.CharOffset := CharOffset;
@@ -616,7 +616,7 @@ var
       if Integer(LineStarts[i]) <= CharOffset then begin
         CodePos.CharOffset := CharOffset - Integer(LineStarts[i]) + 1;
         CodePos.LineNo := FirstLine + i + 1;
-        break;
+        Break;
       end;
     end;
   end;
@@ -630,13 +630,13 @@ var
   end;
 
   function ProcessLineContinuation(var P : PWideChar; var Line : string;
-    var LineNo: integer; LineStarts : TList): boolean;
+    var LineNo: Integer; LineStarts : TList): Boolean;
   // Process continuation lines
   var
-    ExplicitContinuation, ImplicitContinuation : boolean;
+    ExplicitContinuation, ImplicitContinuation : Boolean;
     NewLine : string;
     TrimmedLine : string;
-    BracesCount : integer;
+    BracesCount : Integer;
   begin
     BracesCount := 0;
     LineStarts.Clear;
@@ -655,9 +655,9 @@ var
       GetLine(P, NewLine, LineNo);
       RemoveComment(NewLine);
       TrimmedLine := Trim(NewLine);
-      if ExplicitContinuation and (TrimmedLine='') then break;
+      if ExplicitContinuation and (TrimmedLine='') then Break;
       // issue 212
-      if StrIsLeft(PWideChar(TrimmedLine), 'class ') or StrIsLeft(PWideChar(TrimmedLine), 'def ') then break;
+      if StrIsLeft(PWideChar(TrimmedLine), 'class ') or StrIsLeft(PWideChar(TrimmedLine), 'def ') then Break;
 
       Line := Line + WideChar(' ') + NewLine;
       Match:= fLineContinueRE.Match(Line);
@@ -692,8 +692,8 @@ var
         end else
           Inc(pRes);
       end;
-      inc(pSource);
-      inc(pRes);
+      Inc(pSource);
+      Inc(pRes);
     end;
   end;
 
@@ -774,15 +774,15 @@ var
         if ParseState <> psNormal then
           pRes^ := MaskChar;
       end;
-      inc(pSource);
-      inc(pRes);
+      Inc(pSource);
+      Inc(pRes);
     end;
   end;
 
 var
   P, CodeStartP : PWideChar;
-  LineNo, Indent, Index, CharOffset, CharOffset2, LastLength, Semicolon : integer;
-  CodeStart : integer;
+  LineNo, Indent, Index, CharOffset, CharOffset2, LastLength, Semicolon : Integer;
+  CodeStart : Integer;
   Line, Param, AsgnTargetList, S, SourceLine, LeftS, RightS, Typ, CommentChars : string;
   Stop, IsFinal : Boolean;
   CodeElement, LastCodeElement, Parent : TCodeElement;
@@ -791,22 +791,22 @@ var
   Klass : TParsedClass;
   LineStarts: TList;
   GlobalList : TStringList;
-  AsgnTargetCount : integer;
-  isClassMethod: boolean;
-  isStaticMethod: boolean;
-  isAbstractMethod: boolean;
-  isPropertyMethod: boolean;
-  initialComment: boolean;
-  ClassStaticMethodStart: integer;
-  LastNotEmptyLine: integer;
+  AsgnTargetCount : Integer;
+  isClassMethod: Boolean;
+  isStaticMethod: Boolean;
+  isAbstractMethod: Boolean;
+  isPropertyMethod: Boolean;
+  initialComment: Boolean;
+  ClassStaticMethodStart: Integer;
+  LastNotEmptyLine: Integer;
 begin
   SourceLines := nil;
   ClassStaticMethodStart:= 0;
   LastNotEmptyLine:= 0;
-  isClassMethod:= false;
-  isStaticMethod:= false;
-  isAbstractMethod:= false;
-  isPropertyMethod:= false;
+  isClassMethod:= False;
+  isStaticMethod:= False;
+  isAbstractMethod:= False;
+  isPropertyMethod:= False;
 
   LineStarts := TSmartPtr.Make(TList.Create)();
   GlobalList := TSmartPtr.Make(TStringList.Create)();
@@ -833,7 +833,7 @@ begin
   Stop := False;
 
   LastCodeElement := Module;
-  initialComment:= true;
+  initialComment:= True;
   CommentChars:= '';
 
   while not Stop and (P^ <> #0) do begin
@@ -841,14 +841,14 @@ begin
 
     // skip blank lines and comment lines
     if Length(Line) = 0 then
-      continue;
+      Continue;
     var BLMatch:= fBlankLineRE.Match(Line);
     if BLMatch.Success then begin
       if CommentChars = '' then
         CommentChars:= getGroup(BLMatch, 1);
       if initialComment and (CommentChars <> '#') then
         LastCodeElement.fCodeBlock.LastCommentLine:= LineNo;
-      continue;
+      Continue;
     end;
 
     // skip comments
@@ -857,11 +857,11 @@ begin
         CommentChars:= '#';
       if initialComment and (CommentChars = '#') then
           LastCodeElement.fCodeBlock.LastCommentLine:= LineNo;
-      continue;
+      Continue;
     end;
     CommentChars:= '';
 
-    initialComment:= false;
+    initialComment:= False;
     CodeStartP := P;
     CodeStart := LineNo;
     // Process continuation lines
@@ -877,20 +877,20 @@ begin
         // class definition
         CodeElement := TParsedClass.Create;
         TParsedClass(CodeElement).fSuperClasses.CommaText := S;
-        initialComment:= true;
+        initialComment:= True;
       end else begin
         // function or method definition
         CodeElement := TParsedFunction.Create;
-        initialComment:= true;
+        initialComment:= True;
         TParsedFunction(CodeElement).ReturnType := getGroup(CodeMatch, 7);
         TParsedFunction(CodeElement).isStaticMethod:= isStaticMethod;
         TParsedFunction(CodeElement).isClassMethod:= isClassMethod;
         TParsedFunction(CodeElement).isAbstractMethod:= isAbstractMethod;
         TParsedFunction(CodeElement).isPropertyMethod:= isPropertyMethod;
-        isStaticMethod:= false;
-        isClassMethod:= false;
-        isAbstractMethod:= false;
-        isPropertyMethod:= false;
+        isStaticMethod:= False;
+        isClassMethod:= False;
+        isAbstractMethod:= False;
+        isPropertyMethod:= False;
 
         if S <> '' then begin
           CharOffset := getGroupOffset(CodeMatch, 5);
@@ -975,7 +975,7 @@ begin
           // Note that Module.Indent = -1
           if Parent.Indent < CodeElement.Indent then begin
             Parent.AddChild(CodeElement);
-            break;
+            Break;
           end else
             Parent.fCodeBlock.EndLine := Pred(CodeStart);
           Parent := Parent.Parent as TCodeElement;
@@ -1091,16 +1091,16 @@ begin
             Param := Trim(Param);
             // Typ and Final
             Typ:= '';
-            IsFinal:= false;
+            IsFinal:= False;
             Semicolon:= Pos(':', Param);
             if Semicolon > 0 then begin
-              Typ:= trim(copy(Param, Semicolon + 1, length(Param)));
-              Param:= trim(copy(Param, 1, Semicolon - 1));
+              Typ:= Trim(Copy(Param, Semicolon + 1, Length(Param)));
+              Param:= Trim(Copy(Param, 1, Semicolon - 1));
               if Typ = 'Final' then begin
-                IsFinal:= true;
+                IsFinal:= True;
                 Typ:= ''
               end else if StrIsLeft(PWideChar(Typ), 'Final[') then begin
-                IsFinal:= true;
+                IsFinal:= True;
                 Typ:= Copy(Typ, 7, Length(Typ) - 7);
               end;
             end;
@@ -1158,10 +1158,10 @@ begin
           end;
           // Variable Type if the assignment has a single target
           if Assigned(Variable) and (AsgnTargetCount = 1) then begin
-            Variable.DefaultValue:= trim(getGroup(AssignmentMatch, 9));
+            Variable.DefaultValue:= Trim(getGroup(AssignmentMatch, 9));
             if Left(Variable.DefaultValue, 2) = '''`' then begin // a masked string
               SourceLine:= GetNthSourceLine(LineNo);
-              Variable.DefaultValue:= trim(copy(SourceLine,
+              Variable.DefaultValue:= Trim(Copy(SourceLine,
                                             getGroupOffset(AssignmentMatch, 9),
                                             getGroupLength(AssignmentMatch, 9)));
             end;
@@ -1227,19 +1227,19 @@ begin
         while S <> '' do
           GlobalList.Add(Trim(StrToken(S, ',')));
       end else if fStaticMethodRE.IsMatch(Line) then begin
-        IsStaticMethod:= true;
+        IsStaticMethod:= True;
         if ClassStaticMethodStart = 0 then
           ClassStaticMethodStart:= LineNo;
       end else if fClassMethodRE.IsMatch(Line) then begin
-        isClassMethod:= true;
+        isClassMethod:= True;
         if ClassStaticMethodStart = 0 then
           ClassStaticMethodStart:= LineNo;
       end else if fAbstractMethodRE.IsMatch(Line) then begin
-        isAbstractMethod:= true;
+        isAbstractMethod:= True;
         if ClassStaticMethodStart = 0 then
           ClassStaticMethodStart:= LineNo;
       end else if fPropertyMethodRE.IsMatch(Line) then begin
-        isPropertyMethod:= true;
+        isPropertyMethod:= True;
         if ClassStaticMethodStart = 0 then
           ClassStaticMethodStart:= LineNo;
       end;
@@ -1308,15 +1308,15 @@ end;
 
 procedure TParsedModule.GetUniqueSortedGlobals(GlobalsList: TObjectList);
 var
-  i, j : integer;
-  HasName : boolean;
+  i, j : Integer;
+  HasName : Boolean;
 begin
   for i := 0 to fGlobals.Count - 1 do begin
     HasName := False;
     for j := 0 to GlobalsList.Count - 1 do
       if (TVariable(fGlobals[i]).Name = TVariable(GlobalsList[j]).Name) then begin
         HasName := True;
-        break;
+        Break;
       end;
     if not HasName then
       GlobalsList.Add(fGlobals[i]);
@@ -1337,7 +1337,7 @@ end;
 
 procedure TParsedModule.GetSortedImports(ImportsList: TObjectList);
 var
-  i : integer;
+  i : Integer;
 begin
   for i := 0 to ImportedModules.Count - 1 do
     ImportsList.Add(ImportedModules[i]);
@@ -1346,7 +1346,7 @@ end;
 
 
 
-function TParsedModule.GetIsPackage: boolean;
+function TParsedModule.GetIsPackage: Boolean;
 begin
   Result := FileIsPythonPackage(fFileName);
 end;
@@ -1399,7 +1399,7 @@ function TParsedFunction.ArgumentsString: string;
   end;
 
 var
-  i : integer;
+  i : Integer;
 begin
   Result:= '';
   if fArguments.Count > 0 then begin
@@ -1425,7 +1425,7 @@ end;
 
 procedure TParsedFunction.GetNameSpace(SList: TStringList);
 var
-  i : integer;
+  i : Integer;
 begin
   inherited;
   // Add Locals
@@ -1495,7 +1495,7 @@ end;
 
 function TBaseCodeElement.GetRoot: TBaseCodeElement;
 begin
-  Result := self;
+  Result := Self;
   while Assigned(Result.fParent) do
     Result := Result.fParent;
 end;
@@ -1539,7 +1539,7 @@ begin
   Result := fFuture.Value;
 end;
 
-procedure TAsynchSourceScanner.ScanProgress(CharNo, NoOfChars: integer;
+procedure TAsynchSourceScanner.ScanProgress(CharNo, NoOfChars: Integer;
   var Stop: Boolean);
 begin
   if fStopped then Stop := True;
@@ -1565,7 +1565,7 @@ end;
 
 procedure TAsynchSourceScannerFactory.ClearFinished;
 var
-  i : integer;
+  i : Integer;
   Scanner :  IAsyncSourceScanner;
 begin
   fIList.Lock;

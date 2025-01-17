@@ -20,19 +20,19 @@ uses
 type
   TBookMarkInfo = class(TPersistent)
   private
-    fLine, fChar, fBookmarkNumber : integer;
+    fLine, fChar, fBookmarkNumber : Integer;
   published
-    property Line : integer read fLine write fLine;
-    property Char : integer read fChar write fChar;
-    property BookmarkNumber : integer read fBookmarkNumber write fBookmarkNumber;
+    property Line : Integer read fLine write fLine;
+    property Char : Integer read fChar write fChar;
+    property BookmarkNumber : Integer read fBookmarkNumber write fBookmarkNumber;
   end;
 
   TFilePersistInfo = class (TInterfacedPersistent, IJvAppStorageHandler)
   //  For storage/loading of a file's persistent info
   private
     FileKind: TFileKind;
-    TabControlIndex : integer;
-    Line, Char, TopLine : integer;
+    TabControlIndex : Integer;
+    Line, Char, TopLine : Integer;
     BreakPoints : TObjectList;
     BookMarks : TObjectList;
     FileName : string;
@@ -42,7 +42,7 @@ type
     EditorOptions2 : TSynEditorOptionsContainer;
     SecondEditorVisible : Boolean;
     SecondEditorAlign : TAlign;
-    SecondEditorSize : integer;
+    SecondEditorSize : Integer;
     SecondEditorUseCodeFolding: Boolean;
     ReadOnly : Boolean;
     FoldState : string;
@@ -230,7 +230,7 @@ constructor TFilePersistInfo.CreateFromEditor(Editor: IEditor);
   end;
 
 var
-  i : integer;
+  i : Integer;
   BookMark : TBookMarkInfo;
   BreakPoint : TBreakPoint;
 begin
@@ -240,7 +240,7 @@ begin
   TabControlIndex := Editor.TabControlIndex;
   Char := Editor.SynEdit.CaretX;
   Line := Editor.SynEdit.CaretY;
-  TopLine := Editor.Synedit.TopLine;
+  TopLine := Editor.SynEdit.TopLine;
   if Assigned(Editor.SynEdit.Highlighter) then
     Highlighter := Editor.SynEdit.Highlighter.FriendlyLanguageName;
   if Assigned(Editor.SynEdit.Marks) then
@@ -325,7 +325,7 @@ var
   FilePersistInfo : TFilePersistInfo;
   Editor : IEditor;
   aFile: IFile;
-  i, j : integer;
+  i, j : Integer;
   FName : string;
 begin
   PersistFileInfo := TPersistFileInfo.Create;
@@ -343,7 +343,7 @@ begin
         end
       else
         Continue;
-      if assigned(aFile) then begin
+      if Assigned(aFile) then begin
         if aFile.FileKind = fkEditor then begin
           Editor:= aFile as IEditor;
           Editor.SynEdit.TopLine := FilePersistInfo.TopLine;
@@ -463,7 +463,7 @@ procedure TTabsPersistInfo.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
 var
   IsVisible : Boolean;
-  Size : integer;
+  Size : Integer;
   Alignment : TAlign;
 begin
   IsVisible := AppStorage.ReadBoolean(BasePath+'\Visible', False);

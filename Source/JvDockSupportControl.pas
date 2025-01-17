@@ -731,7 +731,7 @@ end;
 function TJvDockCustomControl.CustomUnDock(Source: TJvDockDragDockObject;
   NewTarget: TWinControl; Client: TControl): Boolean;
 begin
-  Result := (Perform(CM_UNDOCKCLIENT, WPARAM(NewTarget), LPARAM(Client)) = 0);
+  Result := (Perform(CM_UNDOCKCLIENT, WParam(NewTarget), LPARAM(Client)) = 0);
 end;
 
 function TJvDockCustomControl.PPIScale(Value: Integer): Integer;
@@ -2312,12 +2312,12 @@ begin
   if not (csDestroying in Client.ComponentState) then
   if Client is TForm then begin
       if Client is TForm then begin
-        allow := true;
+        allow := True;
         if Assigned(TForm(Client).OnUnDock) then
           TForm(Client).OnUnDock(Self,Client,TWinControl(nil),allow);
          if not allow then begin
-               result := false;
-               exit;
+               result := False;
+               Exit;
          end;
       end;
   end;
@@ -3009,7 +3009,7 @@ var
   Page: TJvDockTabSheet;
 begin
 {$ifdef RTL210_UP}
-  if (csDestroying in Self.ComponentState) then exit; // rather ugly workaround for Delphi 2010+ crash at shutdown.
+  if (csDestroying in Self.ComponentState) then Exit; // rather ugly workaround for Delphi 2010+ crash at shutdown.
 {$endif}
 
   Msg.Result := 0;
@@ -3643,7 +3643,7 @@ begin
   else
     TCItem.mask := TCIF_PARAM;
   TCItem.lParam := LPARAM(AObject);
-  if SendMessage(FTabControl.Handle, TCM_SETITEM, WPARAM(Index), LPARAM(@TCItem)) = 0 then
+  if SendMessage(FTabControl.Handle, TCM_SETITEM, WParam(Index), LPARAM(@TCItem)) = 0 then
     TabControlError(Format(sTabFailSetObject, [Index]));
 end;
 

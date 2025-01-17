@@ -30,12 +30,12 @@ const
   AllEvents       =  MouseEvents1 + MouseEvents2 + KeyboardEvents1 + MiscEvents + '|';
 
 var
-  ComponentNrToInsert: integer;
+  ComponentNrToInsert: Integer;
   PanelCanvasType: string;
   LOldValue: string;
   PythonCursorText:string;
 
-  function Tag2PythonType(Tag: integer): string;
+  function Tag2PythonType(Tag: Integer): string;
 
   function Python2DelphiColors(s: string): string;
   function Delphi2PythonColors(s: string): string;
@@ -48,7 +48,7 @@ var
 
   function turnRGB(const s: string): string;
   function TColorToString(Color: TColor): string;
-  function isEvent(s: string): boolean;
+  function isEvent(s: string): Boolean;
 
   procedure CreateTkCursors;
   procedure CreateQtCursors;
@@ -68,7 +68,7 @@ var
   Python2DelphiValuesAndNamesTranslate: TDictionary<string, string>;
 
 
-function Tag2PythonType(Tag: integer): string;
+function Tag2PythonType(Tag: Integer): string;
 begin
   Result:= '';
   case Tag of
@@ -287,8 +287,8 @@ end;
 function Delphi2PythonColors(s: string): string;
 begin
   if not Delphi2PythonColorTranslate.TryGetValue(s, Result) then begin
-    if copy(s, 1, 3) = '$00' then
-      s:= '#' + copy(s, 8, 2) + copy(s, 6, 2) + copy(s, 4, 2)
+    if Copy(s, 1, 3) = '$00' then
+      s:= '#' + Copy(s, 8, 2) + Copy(s, 6, 2) + Copy(s, 4, 2)
     else if s = '' then
       s:= 'SystemButtonFace';
     Result:= s;
@@ -322,8 +322,8 @@ end;
 function turnRGB(const s: string): string;
 begin
   Result:= s;
-  if copy(s, 1, 2) = '0x' then
-    Result:= '0x' + copy(s, 7, 2) + copy(s, 5, 2) + copy(s, 3, 2);
+  if Copy(s, 1, 2) = '0x' then
+    Result:= '0x' + Copy(s, 7, 2) + Copy(s, 5, 2) + Copy(s, 3, 2);
 end;
 
 function TColorToString(Color: TColor): string;
@@ -331,14 +331,14 @@ function TColorToString(Color: TColor): string;
 begin
   s:= ColorToString(Color);
   s:= Delphi2PythonColors(s);
-  if copy(s, 1, 2) = 'cl' then
+  if Copy(s, 1, 2) = 'cl' then
     FmtStr(s, '%s%.8x', [HexDisplayPrefix, Color]);
-  if copy(s, 1, 2) = '$0' then
-    s:= '#' + copy(s, 8, 2) + copy(s, 6, 2) + copy(s, 4, 2);
+  if Copy(s, 1, 2) = '$0' then
+    s:= '#' + Copy(s, 8, 2) + Copy(s, 6, 2) + Copy(s, 4, 2);
   Result:= s;
 end;
 
-function isEvent(s: string): boolean;
+function isEvent(s: string): Boolean;
 begin      // Tk                   or  Qt
   Result:= (Pos(s, AllEvents) > 0) or (s <> '') and (CharInSet(s[1], ['a'..'z']));
 end;

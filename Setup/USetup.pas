@@ -37,13 +37,13 @@ type
     Dir: string;
     CommonStartmenu: string;
     CommonDesktopdirectory: string;
-    Error: boolean;
-    Starting: boolean;
+    Error: Boolean;
+    Starting: Boolean;
     FolderDialog: TFileOpenDialog;
     ShellLink: TShellLink;
     procedure CreateDirectory(dir: string);
-    procedure CopyFromToFile(const dir1, dir2, Filename: string);
-    procedure CreateINIFile(Filename: string);
+    procedure CopyFromToFile(const dir1, dir2, FileName: string);
+    procedure CreateINIFile(FileName: string);
     procedure RegisterPythonFiles(Path: string);
 
     function ReplaceUsername(s: string): string;
@@ -78,8 +78,8 @@ begin
   FolderDialog.options:= [fdoPickFolders];
   ShellLink:= TShellLink.Create(Self);
 
-  Error:= false;
-  Starting:= true;
+  Error:= False;
+  Starting:= True;
 
   CommonStartmenu:= GetSpecialFolderPath(CSIDL_COMMON_STARTMENU);
   if CommonStartmenu = '' then
@@ -108,7 +108,7 @@ begin
     else FolderDialog.DefaultFolder:= ReplaceUsername(EUserfolder.Text);
 
   if FolderDialog.Execute then begin
-    Dir:= IncludeTrailingPathDelimiter(FolderDialog.Filename);
+    Dir:= IncludeTrailingPathDelimiter(FolderDialog.FileName);
     if Sender = SBFolder then begin
       if Pos('GuiPy', Dir) = 0 then
         Dir:= Dir + 'GuiPy\';
@@ -134,7 +134,7 @@ begin
   i:= 1;
   while (Username[i] <> #0) do begin
     s1:= s1 + Username[i];
-    inc(i);
+    Inc(i);
   end;
   Result:= s1;
 end;
@@ -154,36 +154,36 @@ begin
   Close;
 end;
 
-procedure TFSetup.CopyFromToFile(const dir1, dir2, Filename: string);
+procedure TFSetup.CopyFromToFile(const dir1, dir2, FileName: string);
   var f1, f2, s: string;
 begin
-  f1:= TPath.Combine(dir1, Filename);
-  f2:= TPath.Combine(dir2, Filename);
+  f1:= TPath.Combine(dir1, FileName);
+  f2:= TPath.Combine(dir2, FileName);
   if UpperCase(f1) = UpperCase(f2) then Exit;
   FMemo.Output(Format(_(LNGCopyFromTo), [f1, f2]));
   if FileExists(f2) and not DeleteFile(f2) then begin
     s:= Format(_(LNGCanNotDelete), [f2]);
     MessageDlg(s, mtError, [mbOK], 0);
     FMemo.Output(s);
-    Error:= true;
+    Error:= True;
     Exit;
   end;
-  if not CopyFile(PChar(f1), PChar(f2), false) then begin
+  if not CopyFile(PChar(f1), PChar(f2), False) then begin
     s:= Format(_(LNGCopyError), [f2]);
     FMemo.Output(s);
-    Error:= true;
+    Error:= True;
   end;
 end;
 
-procedure TFSetup.CreateINIFile(Filename: string);
+procedure TFSetup.CreateINIFile(FileName: string);
   var SL: TStringList; s: string;
 begin
-  FMemo.Output(_(LNGCreateConfigurationfile) + ' ' + Filename);
+  FMemo.Output(_(LNGCreateConfigurationfile) + ' ' + FileName);
   SL:= TStringList.Create;
   try
-    SL.SaveToFile(Filename);
+    SL.SaveToFile(FileName);
   except
-    s:= Format(_(LNGCanNotCreate), [Filename]);
+    s:= Format(_(LNGCanNotCreate), [FileName]);
     MessageDlg(s, mtError, [mbOk], 0);
     FMemo.Output(s);
   end;
@@ -207,10 +207,10 @@ procedure TFSetup.BInstallClick(Sender: TObject);
 begin
   if not (CBPortableApplication.Checked or IsAdmin) and
     (MessageDlg(_(LNGNoAdministrator), mtWarning, [mbNo, mbYes], 0) <> mrYes) then
-    exit;
+    Exit;
   if EFolder.Text = '' then begin
     MessageDlg(_(LNGSpecifyInstallationfolder), mtError, [mbOK], 0);
-    exit;
+    Exit;
   end;
 
   FromDir := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName));
@@ -229,14 +229,14 @@ begin
   end;
   if not SysUtils.DirectoryExists(UserDir) then begin
     MessageDlg(_(LNGUserFolder), mtError, [mbOK], 0);
-    exit;
+    Exit;
   end;
 
   CopyFromToFile(FromDir, DestDir, 'GuiPy.exe');
   if Error then begin
     MessageDlg(Format(_(LNGCopyError), [DestDir]), mtError, [mbOK], 0);
     FMemo.MInstallation.Clear;
-    exit;
+    Exit;
   end;
   CopyFromToFile(FromDir, DestDir, 'Setup.exe');
 
@@ -341,7 +341,7 @@ begin
     if FindFirst(TPath.Combine(SourceDir, '*.*'), faDirectory, SR) = 0 then
       repeat
         if (SR.Name = '.') or (SR.Name = '..') then
-          continue;
+          Continue;
         if SR.Attr and faDirectory = faDirectory then begin
           SysUtils.ForceDirectories(TPath.Combine(DestDir, SR.Name));
           CopyFilesRecursive(TPath.Combine(SourceDir, SR.Name),
@@ -373,17 +373,17 @@ procedure TFSetup.DeleteRegistry;
 
   procedure DeleteKeyRecursiv(Key: string);
     var Eintraege: TStringList;
-        i: integer;
+        i: Integer;
   begin
     Eintraege:= TStringList.Create;
     with Reg do begin
-      if OpenKey(Key, false) then begin
+      if OpenKey(Key, False) then begin
         GetKeyNames(Eintraege);
         for i:= 0 to Eintraege.Count-1 do
           DeleteKeyRecursiv(Key + '\' + Eintraege.strings[i]);
         Eintraege.Clear;
       end;
-      if OpenKey(Key, false) then begin
+      if OpenKey(Key, False) then begin
         GetValueNames(Eintraege);
         for i:= 0 to Eintraege.Count-1 do
           DeleteValue(Key + '\' + Eintraege.strings[i]);
@@ -405,9 +405,9 @@ begin
       DeleteKeyRecursiv('\Software\GuiPy');
 
       RootKey:= HKEY_CLASSES_ROOT;
-      if OpenKey('\.py', false) and (ReadString('') = 'GuiPy')
+      if OpenKey('\.py', False) and (ReadString('') = 'GuiPy')
         then WriteString('', '');
-      if OpenKey('\.pyw', false) and (ReadString('') = 'GuiPy')
+      if OpenKey('\.pyw', False) and (ReadString('') = 'GuiPy')
         then WriteString('', '');
       DeleteKeyRecursiv('\GuiPy');
     finally
@@ -418,7 +418,7 @@ end;
 
 procedure TFSetup.DeleteFileWithComment(Comment, Pathname: string);
 begin
-  if not FileExists(Pathname) then exit;
+  if not FileExists(Pathname) then Exit;
   TFile.Delete(Pathname);
   if TFile.Exists(Pathname) then
     FMemo.Output(Format(_(LNGCanNotDelete), [Pathname]))
@@ -438,7 +438,7 @@ begin
     UserDir:= IniDatei.ReadString('User', 'HomeDir', '<nix>');
     IniDatei.Free;
 
-    p:= Pos('%USERNAME%', Uppercase(UserDir));
+    p:= Pos('%USERNAME%', UpperCase(UserDir));
     if p > 0 then begin
       Delete(UserDir, p, 10);
       Insert(GetUserName, UserDir, p);
@@ -453,7 +453,7 @@ procedure TFSetup.BDeinstallClick(Sender: TObject);
 begin
   if not (CBPortableApplication.Checked or IsAdmin) and
     (MessageDlg(_(LNGNoAdministrator), mtWarning, [mbNo, mbYes], 0) <> mrYes) then
-    exit;
+    Exit;
 
   FMemo.Show;
   FMemo.Installation:= 1;
@@ -499,19 +499,19 @@ end;
 procedure TFSetup.CBPortableApplicationClick(Sender: TObject);
 begin
   if CBPortableApplication.Checked then begin
-    EUserfolder.Enabled := false;
+    EUserfolder.Enabled := False;
     EUserfolder.Color   := clMenu;
-    SBUserIni.Enabled   := false;
+    SBUserIni.Enabled   := False;
   end else begin
-    EUserfolder.Enabled := true;
+    EUserfolder.Enabled := True;
     EUserfolder.Color   := clWindow;
-    SBUserIni.Enabled   := true;
+    SBUserIni.Enabled   := True;
   end;
   EUserfolder.Text:= AppDataFolder;
 end;
 
 function TFSetup.AppDataFolder: string;
-  var s, user: string; p: integer;
+  var s, user: string; p: Integer;
 begin
   if CBPortableApplication.Checked then
     s:= EFolder.Text
@@ -529,27 +529,27 @@ end;
 
 function TFSetup.UnPortApp(s: string): string;
   var SL1, SL2: TStringList;
-      i, j: integer;
+      i, j: Integer;
 begin
   Result:= s;
   if CBPortableApplication.Checked and (s <> '') and
-     (Uppercase(copy(DestDir, 1, 2)) = Uppercase(copy(s, 1, 2)))  // same drive
+     (UpperCase(Copy(DestDir, 1, 2)) = UpperCase(Copy(s, 1, 2)))  // same drive
   then begin
     SL1:= Split('\', withoutTrailingSlash(DestDir));
     SL2:= Split('\', withoutTrailingSlash(s));
     i:= 0;
     while (i < SL1.Count) and (i < SL2.Count) and
-          (Uppercase(SL1.Strings[i]) = Uppercase(SL2.Strings[i])) do
-      inc(i);
+          (UpperCase(SL1.Strings[i]) = UpperCase(SL2.Strings[i])) do
+      Inc(i);
     Result:= '';
     j:= i;
     while i < SL1.Count do begin
       Result:= Result + '..\';
-      inc(i);
+      Inc(i);
     end;
     while j < SL2.Count do begin
       Result:= Result + SL2.Strings[j] + '\';
-      inc(j);
+      Inc(j);
     end;
     Result:= withoutTrailingSlash(Result);
     FreeAndNil(SL1);
@@ -558,28 +558,28 @@ begin
 end;
 
 procedure TFSetup.RegisterPythonFiles(Path: string);
-  var Reg: TRegistry; Filename: string;
+  var Reg: TRegistry; FileName: string;
 
   procedure WriteToRegistry(Key: string);
   begin
     with Reg do begin
-      OpenKey(Key, true);
+      OpenKey(Key, True);
       WriteString('', 'GuiPy');
       CloseKey;
-      OpenKey(Key + '\DefaultIcon', true);
+      OpenKey(Key + '\DefaultIcon', True);
       WriteString('', HideBlanks(Path) + ',0');
       CloseKey;
-      OpenKey(Key + '\Shell\Open\command', true);
+      OpenKey(Key + '\Shell\Open\command', True);
       WriteString('', HideBlanks(Path) + ' "%1"');
       CloseKey;
-      OpenKey(Key + '\Shell\Open\ddeexec', true);
+      OpenKey(Key + '\Shell\Open\ddeexec', True);
       WriteString('', '[FileOpen("%1")]');
-      OpenKey('Application', true);
+      OpenKey('Application', True);
       FileName := ExtractFileName(Path);
       FileName := Copy(FileName, 1, Length(FileName)-4);
-      WriteString('', Filename);
+      WriteString('', FileName);
       CloseKey;
-      OpenKey(Key + '\Shell\Open\ddeexec\topic', true);
+      OpenKey(Key + '\Shell\Open\ddeexec\topic', True);
       WriteString('', 'System');
       CloseKey;
     end;
@@ -595,17 +595,17 @@ begin
       RootKey:= HKEY_CURRENT_USER;
       WriteToRegistry('\Software\Classes\GuiPy');
 
-      OpenKey('\SOFTWARE\Classes\.py', true);
+      OpenKey('\SOFTWARE\Classes\.py', True);
       WriteString('', 'GuiPy');
-      OpenKey('\SOFTWARE\Classes\.pyw', true);
+      OpenKey('\SOFTWARE\Classes\.pyw', True);
       WriteString('', 'GuiPy');
-      OpenKey('\Software\Classes\.pfm', true);
+      OpenKey('\Software\Classes\.pfm', True);
       WriteString('', 'GuiPy');
-      OpenKey('\Software\Classes\.puml', true);
+      OpenKey('\Software\Classes\.puml', True);
       WriteString('', 'GuiPy');
-      OpenKey('\Software\Classes\.psg', true);
+      OpenKey('\Software\Classes\.psg', True);
       WriteString('', 'GuiPy');
-      OpenKey('\Software\Classes\.psd', true);
+      OpenKey('\Software\Classes\.psd', True);
       WriteString('', 'GuiPy');
     end;
   finally
@@ -614,21 +614,21 @@ begin
 end;
 
 procedure TFSetup.DeleteSetup;
-  var Datei: TFileStream; Filename: string;
+  var Datei: TFileStream; FileName: string;
 
   procedure StreamWriteln(FS: TFileStream; s: string);
   begin
     s:= s + #13#10;
-    FS.write(s[1], length(s));
+    FS.write(s[1], Length(s));
   end;
 
 begin
   Datei:= TFileStream.Create(GetTempDir + 'RunPy.bat', fmCreate or fmOpenWrite);
-  Filename:= HideBlanks(DestDir + 'Setup.exe');
+  FileName:= HideBlanks(DestDir + 'Setup.exe');
   StreamWriteln(Datei, 'echo on');
   StreamWriteln(Datei, ':1');
-  StreamWriteln(Datei, 'del ' + Filename);
-  StreamWriteln(Datei, 'if exist ' + Filename + ' goto 1');
+  StreamWriteln(Datei, 'del ' + FileName);
+  StreamWriteln(Datei, 'if exist ' + FileName + ' goto 1');
   StreamWriteln(Datei, 'rmdir -s ' + HideBlanks(DestDir));
   Datei.Free;
 end;
@@ -636,7 +636,7 @@ end;
 procedure TFSetup.RemoveDir(Path: string);
 begin
   if SysUtils.DirectoryExists(Path) then begin
-    TDirectory.Delete(Path, true);
+    TDirectory.Delete(Path, True);
     if SysUtils.DirectoryExists(Path) then
       FMemo.Output(_('Can''t delete directory: ') + Path)
     else

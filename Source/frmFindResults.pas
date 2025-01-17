@@ -1289,7 +1289,7 @@ end;
 
 procedure TFindResultsWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  if not AppStorage.PathExists(FBasePath) then exit;
+  if not AppStorage.PathExists(FBasePath) then Exit;
   inherited;
   lbResults.Height :=
     PPIScale(AppStorage.ReadInteger(FBasePath+'\ResultsHeight', lbResults.Height));

@@ -14,7 +14,7 @@ type
    jfmRec = record
       name: string;
       Default: string;
-      Tag: integer;
+      Tag: Integer;
    end;
 
   TFObjectGenerator = class(TPyIDEDlgBase, IJvAppStorageHandler)
@@ -34,7 +34,7 @@ type
   private
     Defaults: array[1..50] of string;
     jfmDefaults: array[1..50] of jfmrec;
-    MaxDefaults: integer;
+    MaxDefaults: Integer;
   protected
     // IJvAppStorageHandler implementation
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
@@ -53,7 +53,7 @@ type
     procedure addRow(Attribute: string; const Value: string);
 
     // new component
-    procedure InsertComponent(EditForm: TEditorForm; Control: TControl; Pasting: boolean);
+    procedure InsertComponent(EditForm: TEditorForm; Control: TControl; Pasting: Boolean);
     procedure setComponentValues(DesignForm: TFGUIForm; Control: TControl);
     procedure setControlEvents(DesignForm: TFGUIForm; EditorForm: TEditorForm);
 
@@ -62,7 +62,7 @@ type
     procedure PrepareEditClass(const aCaption, Title, ObjectNameOld: string);
     procedure PrepareEditObjectOrParams(const aCaption, Title: string);
     procedure DeleteRow;
-    procedure SetRow(i: integer);
+    procedure SetRow(i: Integer);
     procedure SetColWidths;
 end;
 
@@ -84,7 +84,7 @@ const
 
 procedure TFObjectGenerator.FormCreate(Sender: TObject);
 
-  procedure SetDefault(i: integer; const s1, s2: string; Tag: integer);
+  procedure SetDefault(i: Integer; const s1, s2: string; Tag: Integer);
   begin
     jfmDefaults[i].Name:= s1;
     jfmDefaults[i].Default:= s2;
@@ -118,7 +118,7 @@ begin
   Action:= caHide;
 end;
 
-procedure TFObjectGenerator.InsertComponent(EditForm: TEditorForm; Control: TControl; Pasting: boolean);
+procedure TFObjectGenerator.InsertComponent(EditForm: TEditorForm; Control: TControl; Pasting: Boolean);
 begin
   var Collapsed:= EditForm.isGUICreationCollapsed;
   Partner:= EditForm;
@@ -148,7 +148,7 @@ end;
 procedure TFObjectGenerator.MoveOrSizeComponent(aPartner: TEditorForm; Control: TControl);
   var Widget: TBaseWidget;
 begin
-  if (aPartner = nil) or (Control is TFGUIForm) then exit;
+  if (aPartner = nil) or (Control is TFGUIForm) then Exit;
   Widget:= Control as TBaseWidget;
   if not Widget.Sizeable then begin
     Widget.Width:= Widget.PPIScale(33);
@@ -159,7 +159,7 @@ end;
 
 procedure TFObjectGenerator.ComponentToForeground(aPartner: TEditorForm; Control: TControl);
 begin
-  if assigned(Control) then begin
+  if Assigned(Control) then begin
     Control.BringToFront;
     aPartner.ToForeground(Control);
   end;
@@ -167,7 +167,7 @@ end;
 
 procedure TFObjectGenerator.ComponentToBackground(aPartner: TEditorForm; Control: TControl);
 begin
-  if assigned(Control) then begin
+  if Assigned(Control) then begin
     Control.SendToBack;
     aPartner.ToBackground(Control);
   end;
@@ -213,32 +213,32 @@ end;
 procedure TFObjectGenerator.ValueListEditorKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if (Key = VK_Return) or (Key = VK_Tab) then
+  if (Key = VK_RETURN) or (Key = VK_TAB) then
     if ValueListEditor.Row < ValueListEditor.RowCount-1
       then ValueListEditor.Row:= ValueListEditor.Row + 1
-    else if Key = VK_Return then
-      ModalResult:= mrOK;
+    else if Key = VK_RETURN then
+      ModalResult:= mrOk;
 end;
 
 procedure TFObjectGenerator.AddRow(Attribute: string; const Value: string);
-  var i: integer;
+  var i: Integer;
 begin
-  ValueListEditor.InsertRow(Attribute, Value, true);
+  ValueListEditor.InsertRow(Attribute, Value, True);
   i:= ValueListEditor.RowCount - 1;
   Defaults[i]:= Value;
 end;
 
 procedure TFObjectGenerator.ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
-  var L, T, W, H, C: integer;
+  var L, T, W, H, C: Integer;
 begin
   L:= PPIScale(AppStorage.ReadInteger(BasePath + '\Left', 300));
   T:= PPIScale(AppStorage.ReadInteger(BasePath + '\Top', 200));
   W:= PPIScale(AppStorage.ReadInteger(BasePath + '\Width', 100));
   H:= PPIScale(AppStorage.ReadInteger(BasePath + '\Height', 200));
-  L:= min(L, Screen.Width - 100);
-  T:= min(T, Screen.Height - 100);
-  W:= min(W, Screen.Width div 2);
-  H:= min(H, Screen.Height div 2);
+  L:= Min(L, Screen.Width - 100);
+  T:= Min(T, Screen.Height - 100);
+  W:= Min(W, Screen.Width div 2);
+  H:= Min(H, Screen.Height div 2);
   SetBounds(L, T, W, H);
   W:= ValueListEditor.Width;
   C:= PPIScale(AppStorage.ReadInteger(BasePath + '\ValueListEditor.ColWidth', w div 2));
@@ -273,10 +273,10 @@ begin
 end;
 
 procedure TFObjectGenerator.DeleteComponent(Component: TControl);
-  var Collapsed: boolean;
+  var Collapsed: Boolean;
 
   procedure DeleteAComponent(Control: TControl);
-    var i: integer;
+    var i: Integer;
   begin
     if Control is TBaseWidget then
       (Control as TBaseWidget).DeleteWidget;
@@ -285,7 +285,7 @@ procedure TFObjectGenerator.DeleteComponent(Component: TControl);
   end;
 
   procedure DeleteAllComponents(Control: TControl);
-    var i: integer;
+    var i: Integer;
   begin
     if (Control is TWinControl) then
       for i:= 0 to (Control as TWinControl).ControlCount - 1 do
@@ -297,14 +297,14 @@ begin
   Collapsed:= Partner.isGUICreationCollapsed;
   LockFormUpdate(Partner);
   DeleteAllComponents(Component);
-  Partner.NeedsParsing:= true;
+  Partner.NeedsParsing:= True;
   if PyIDEOptions.CodeFoldingForGuiElements and Collapsed then
     Partner.CollapseGUICreation;
   UnlockFormUpdate(Partner);
 end;
 
 procedure TFObjectGenerator.PrepareEditClass(const aCaption, Title, ObjectNameOld: string);
-  var i: integer;
+  var i: Integer;
 begin
   Self.Caption:= aCaption;
   ValueListEditor.TitleCaptions.Text:= Title;
@@ -315,7 +315,7 @@ begin
 end;
 
 procedure TFObjectGenerator.PrepareEditObjectOrParams(const aCaption, Title: string);
-  var i: integer;
+  var i: Integer;
 begin
   Self.Caption:= aCaption;
   ValueListEditor.TitleCaptions.Text:= Title;
@@ -331,7 +331,7 @@ begin
     ValueListEditor.DeleteRow(1);
 end;
 
-procedure TFObjectGenerator.SetRow(i: integer);
+procedure TFObjectGenerator.SetRow(i: Integer);
 begin
   if i < ValueListEditor.RowCount then
     ValueListEditor.Row:= i;
@@ -408,7 +408,7 @@ begin
       Attr:= string(PropInfos1[i].Name);
       if (Pos(' ' + Attr + ' ', ForbiddenAttributes) = 0) and (Pos('|' + Attr + '|', AllowedAttributes) > 0) then begin
         aEditorClass:= aPropertyInspector.GetEditorClass(Comp1, PropInfos1[i]);
-        if assigned(aEditorClass) then begin
+        if Assigned(aEditorClass) then begin
           PropEditor1:= aEditorClass.Create2(Comp1, PropInfos1[i]);
           PropEditor2:= aEditorClass.Create2(Comp2, PropInfos2[i]);
           try
@@ -439,7 +439,7 @@ begin
 end;
 
 procedure TFObjectGenerator.SetColWidths;
-  var i, max1, max2, w, h: integer;
+  var i, max1, max2, w, h: Integer;
       s: string;
 begin
   w:= Width;
@@ -450,7 +450,7 @@ begin
     s:= ValueListEditor.Cells[0, i];
     max1:= Math.Max(Canvas.TextWidth(s), max1);   // changes Width !?!?!?!?!?
     s:= ValueListEditor.Cells[1, i];
-    max2:= Math.max(Canvas.TextWidth(s), max2);
+    max2:= Math.Max(Canvas.TextWidth(s), max2);
   end;
   max1:= max1 + 10;
   max2:= max2 + 10;

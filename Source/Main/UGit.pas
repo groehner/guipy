@@ -17,8 +17,8 @@ type
     procedure ShowConsole(const Path: string);
     procedure ShowViewer(const Path: string);
   public
-    procedure Execute(Tag: integer; aEditor: IEditor);
-    function IsRepository(const Dir: string): boolean;
+    procedure Execute(Tag: Integer; aEditor: IEditor);
+    function IsRepository(const Dir: string): Boolean;
   end;
 
 var
@@ -43,14 +43,14 @@ begin
   Caption:= _('Revisions');
 end;
 
-function TFGit.IsRepository(const Dir: string): boolean;
+function TFGit.IsRepository(const Dir: string): Boolean;
 begin
   Result:= DirectoryExists(withTrailingSlash(Dir) + '.git');
 end;
 
 procedure TFGit.LVRevisionsDblClick(Sender: TObject);
 begin
-  ModalResult := mrOK;
+  ModalResult := mrOk;
 end;
 
 procedure TFGit.ShowGUI(const Path: string);
@@ -69,7 +69,7 @@ begin
 end;
 
 procedure TFGit.GitCall(const call, folder: string);
-  var clone: boolean; ExternalTool: TExternalTool;
+  var clone: Boolean; ExternalTool: TExternalTool;
 begin
   if not OutputWindow.Visible then
     ShowDockForm(OutputWindow);
@@ -92,16 +92,16 @@ begin
   end;
 end;
 
-procedure TFGit.Execute(Tag: integer; aEditor: IEditor);
+procedure TFGit.Execute(Tag: Integer; aEditor: IEditor);
   var m, p, f: string;
 begin
   if (aEditor = nil) and (Tag in [1, 2, 5, 6, 7]) then
-    exit;
+    Exit;
 
   if aEditor.Modified then
     TEditorForm(aEditor.Form).DoSave;
-  f:= ExtractFileName(aEditor.Filename);
-  p:= ExtractFilePath(aEditor.Filename);
+  f:= ExtractFileName(aEditor.FileName);
+  p:= ExtractFilePath(aEditor.FileName);
 
   case Tag of
     1: GitCall('status', p);

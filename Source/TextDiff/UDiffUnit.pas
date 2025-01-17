@@ -63,7 +63,7 @@ const
   LOOK_FOR_EXIT = 200;
 type
   PDiagVectorArray = ^TDiagVectorArray;
-  TDiagVectorArray = array [-MAX_DIAGONAL .. +MAX_DIAGONAL] of integer;
+  TDiagVectorArray = array [-MAX_DIAGONAL .. +MAX_DIAGONAL] of Integer;
   TScriptKind = (skAddRange, skDelRange, skAddDel);
 
   //nb: the OnProgress event has only a small effect on overall performance
@@ -75,7 +75,7 @@ type
   TCharArray = array[1..(MAXINT div sizeof(Char))] of Char;
   PCharArray = ^TCharArray;
   {$ELSE}
-  TIntArray = array[1..(MAXINT div sizeof(integer))] of integer;
+  TIntArray = array[1..(MAXINT div sizeof(Integer))] of Integer;
   PIntArray = ^TIntArray;
   {$ENDIF}
 
@@ -84,16 +84,16 @@ type
   PChangeRec =^TChangeRec;
   TChangeRec = record
     Kind     : TChangeKind; //(ckAdd, ckDelete, ckModify)
-    x        : integer;     //Array1 offset (where to add, delete, modify)
-    y        : integer;     //Array2 offset (what to add, modify)
-    Range    : integer;     //range :-)
+    x        : Integer;     //Array1 offset (where to add, delete, modify)
+    y        : Integer;     //Array2 offset (what to add, modify)
+    Range    : Integer;     //range :-)
   end;
 
-  TProgressEvent = procedure (Sender: TObject; ProgressPercent: integer) of object;
+  TProgressEvent = procedure (Sender: TObject; ProgressPercent: Integer) of object;
 
   TDiff = class(TComponent)
   private
-    MaxD: integer;
+    MaxD: Integer;
     fChangeList: TList;
     fLastAdd, fLastDel, fLastMod: PChangeRec;
     diagVecB,
@@ -103,20 +103,20 @@ type
 
     {$IFDEF DIFF_PROGRESS}
     fQpc1, fQpc2, fQpc3: TLargeInteger;
-    fHpfcEnabled: boolean;
-    fMaxX: integer;
-    fForwardX: integer;
-    fBackwardX: integer;
+    fHpfcEnabled: Boolean;
+    fMaxX: Integer;
+    fForwardX: Integer;
+    fBackwardX: Integer;
     fProgressTimer: TTimer;
-    fProgressInterval: integer;
+    fProgressInterval: Integer;
     fOnProgress: TProgressEvent;
     procedure DoProgressTimer(Sender: TObject);
     {$ENDIF}
-    function RecursiveDiff(bottom1, bottom2, top1, top2: integer): boolean;
-    procedure AddToScript(bottom1, bottom2, top1, top2: integer; ScriptKind: TScriptKind);
+    function RecursiveDiff(bottom1, bottom2, top1, top2: Integer): Boolean;
+    procedure AddToScript(bottom1, bottom2, top1, top2: Integer; ScriptKind: TScriptKind);
     procedure ClearChanges;
-    function GetChangeCount: integer;
-    function GetChanges(index: integer): TChangeRec;
+    function GetChangeCount: Integer;
+    function GetChanges(index: Integer): TChangeRec;
     procedure PushAdd;
     procedure PushDel;
     procedure PushMod;
@@ -125,16 +125,16 @@ type
     destructor Destroy; override;
 
     {$IFDEF DIFF_CHARS}
-    function Execute(const Arr1, Arr2: PCharArray; ArrSize1, ArrSize2: integer): boolean;
+    function Execute(const Arr1, Arr2: PCharArray; ArrSize1, ArrSize2: Integer): Boolean;
     {$ELSE}
-    function Execute(const Arr1, Arr2: PIntArray; ArrSize1, ArrSize2: integer): boolean;
+    function Execute(const Arr1, Arr2: PIntArray; ArrSize1, ArrSize2: Integer): Boolean;
     {$ENDIF}
-    property ChangeCount: integer read GetChangeCount;
-    property Changes[index: integer]: TChangeRec read GetChanges; default;
+    property ChangeCount: Integer read GetChangeCount;
+    property Changes[index: Integer]: TChangeRec read GetChanges; default;
 
     {$IFDEF DIFF_PROGRESS}
     property OnProgress: TProgressEvent read fOnProgress write fOnProgress;
-    property ProgressInterval: integer read fProgressInterval
+    property ProgressInterval: Integer read fProgressInterval
       write fProgressInterval;
     {$ENDIF}
   end;
@@ -152,13 +152,13 @@ type
 // Miscellaneous Functions ...
 //------------------------------------------------------------------------------
 
-function min(a,b: integer): integer;
+function Min(a,b: Integer): Integer;
 begin
   if a < b then result := a else result := b;
 end;
 //------------------------------------------------------------------------------
 
-function max(a,b: integer): integer;
+function Max(a,b: Integer): Integer;
 begin
   if a > b then result := a else result := b;
 end;
@@ -170,11 +170,11 @@ end;
 constructor TDiff.Create(aOwner: TComponent);
 begin
   inherited;
-  fChangeList := TList.create;
+  fChangeList := TList.Create;
   //fPrecision := 5; //maximum precision
   {$IFDEF DIFF_PROGRESS}
-  fProgressTimer := TTimer.Create(self);
-  fProgressTimer.Enabled := false;
+  fProgressTimer := TTimer.Create(Self);
+  fProgressTimer.Enabled := False;
   fProgressTimer.OnTimer := {$IFDEF LCL} @ {$ENDIF} DoProgressTimer;
   fProgressInterval := 100; //1 second
   fHpfcEnabled := QueryPerformanceFrequency(fQpc1);
@@ -195,13 +195,13 @@ procedure TDiff.DoProgressTimer(Sender: TObject);
 const
   EmpiricalPC = 46;
 begin
-  if not fHpfcEnabled or not assigned(fOnProgress) then exit
+  if not fHpfcEnabled or not Assigned(fOnProgress) then Exit
   else if fBackwardX > fForwardX then
   begin
     //if fPrecision = 5 then EmpiricalPC := 46 else EmpiricalPC := 10;
     //still trying to find the midpoint of the whole editpath ...
     //empirically it takes about 46% of the time just to find the midpoint.
-    fOnProgress(self, (fMaxX - (fBackwardX - fForwardX))*EmpiricalPC div fMaxX)
+    fOnProgress(Self, (fMaxX - (fBackwardX - fForwardX))*EmpiricalPC div fMaxX)
   end else
   begin
     //if fPrecision = 5 then EmpiricalPC := 46 else EmpiricalPC := 10;
@@ -210,7 +210,7 @@ begin
     // TODO fHpfcEnabled set to false
     if fQpc2 = 0 then QueryPerformanceCounter(fQpc2);
     QueryPerformanceCounter(fQpc3);
-    fOnProgress(self, ((fQpc3-fQpc1)*EmpiricalPC div (fQpc2-fQpc1)) );
+    fOnProgress(Self, ((fQpc3-fQpc1)*EmpiricalPC div (fQpc2-fQpc1)) );
   end;
 end;
 {$ENDIF}
@@ -218,33 +218,33 @@ end;
 //------------------------------------------------------------------------------
 
 {$IFDEF DIFF_CHARS}
-function TDiff.Execute(const Arr1, Arr2: PCharArray; ArrSize1, ArrSize2: integer): boolean;
+function TDiff.Execute(const Arr1, Arr2: PCharArray; ArrSize1, ArrSize2: Integer): Boolean;
 {$ELSE}
-function TDiff.Execute(const Arr1, Arr2: PIntArray; ArrSize1, ArrSize2: integer): boolean;
+function TDiff.Execute(const Arr1, Arr2: PIntArray; ArrSize1, ArrSize2: Integer): Boolean;
 {$ENDIF}
 var
   IntArr_f, IntArr_b: PArray;
-  bottom1, bottom2, top1, top2: integer;
+  bottom1, bottom2, top1, top2: Integer;
 begin
-  result := false;
+  result := False;
   ClearChanges;
 
-  if not assigned(Arr1) or not assigned(Arr2) then exit;
+  if not Assigned(Arr1) or not Assigned(Arr2) then Exit;
   Array1 := Arr1;
   Array2 := Arr2;
 
   //MaxD == Maximum possible deviation from centre diagonal vector
   //which can't be more than the largest intArray (with upperlimit = MAX_DIAGONAL) ...
-  MaxD := min(max(ArrSize1, ArrSize2), MAX_DIAGONAL);
+  MaxD := Min(Max(ArrSize1, ArrSize2), MAX_DIAGONAL);
 
   //estimate the no. changes == 1/8 total size rounded to a 32bit boundary
-  fChangeList.Capacity := (max(MaxD,1024) div 32)*4;
+  fChangeList.Capacity := (Max(MaxD,1024) div 32)*4;
 
   {$IFDEF DIFF_PROGRESS}
   fMaxX := ArrSize1;
   fForwardX := 0;
   fBackwardX := fMaxX;
-  fProgressTimer.Enabled := true;
+  fProgressTimer.Enabled := True;
   fProgressTimer.Interval := fProgressInterval;
   QueryPerformanceCounter(fQpc1);
   fQpc2 := 0;
@@ -253,13 +253,13 @@ begin
   IntArr_f := nil; IntArr_b := nil;
   try
     //allocate the vector memory ...
-    GetMem(IntArr_f, sizeof(integer)*(MaxD*2+1));
-    GetMem(IntArr_b, sizeof(integer)*(MaxD*2+1));
+    GetMem(IntArr_f, sizeof(Integer)*(MaxD*2+1));
+    GetMem(IntArr_b, sizeof(Integer)*(MaxD*2+1));
     //Align the forward and backward diagonal vector arrays
     //with the memory which has just been allocated ...
 
-    PByte(diagVecF) := PByte(IntArr_f) - sizeof(integer)*(MAX_DIAGONAL-MaxD);
-    PByte(diagVecB) := PByte(IntArr_b) - sizeof(integer)*(MAX_DIAGONAL-MaxD);
+    PByte(diagVecF) := PByte(IntArr_f) - sizeof(Integer)*(MAX_DIAGONAL-MaxD);
+    PByte(diagVecB) := PByte(IntArr_b) - sizeof(Integer)*(MAX_DIAGONAL-MaxD);
 
     bottom1 := 1;
     bottom2 := 1;
@@ -271,17 +271,17 @@ begin
     while (bottom1 <= top1) and (bottom2 <= top2) and
       (Array1{$IFDEF LCL}^{$ENDIF}[bottom1] = Array2{$IFDEF LCL}^{$ENDIF}[bottom2]) do
     begin
-      inc(bottom1); inc(bottom2);
+      Inc(bottom1); Inc(bottom2);
     end;
     while (top1 >= bottom1) and (top2 >= bottom2) and //11-Mar-2005
       (Array1{$IFDEF LCL}^{$ENDIF}[top1] = Array2{$IFDEF LCL}^{$ENDIF}[top2]) do
     begin
-      dec(top1); dec(top2);
+      Dec(top1); Dec(top2);
     end;
 
     //NOW DO IT HERE...
     if (bottom1 > top1) and (bottom2 > top2) then //24-Jan-04
-      result := true else //ie identical arrays
+      result := True else //ie identical arrays
       result := RecursiveDiff(bottom1 -1, bottom2 -1, top1, top2);
 
     //add remaining range buffers onto ChangeList...
@@ -291,30 +291,30 @@ begin
     FreeMem(IntArr_f);
     FreeMem(IntArr_b);
     {$IFDEF DIFF_PROGRESS}
-    fProgressTimer.Enabled := false;
+    fProgressTimer.Enabled := False;
     {$ENDIF}
   end;
 end;
 //------------------------------------------------------------------------------
 
-function TDiff.RecursiveDiff(bottom1, bottom2, top1, top2: integer): boolean;
+function TDiff.RecursiveDiff(bottom1, bottom2, top1, top2: Integer): Boolean;
 var
   // Recursive functions should generally use the heap (rather than the stack)
   // for local vars. However, as the maximum depth of recursion here is
   // relatively small (<25), the risk of stack overflow is negligible.
-  i, curr1, curr2, Delta, D, k: integer;
+  i, curr1, curr2, Delta, D, k: Integer;
 begin
-    result := true;
+    result := True;
 
     //check if just all additions or all deletions...
     if (top1 = bottom1) then
     begin
       AddToScript(bottom1,bottom2,top1,top2,skAddRange);
-      exit;
+      Exit;
     end else if (top2 = bottom2) then
     begin
       AddToScript(bottom1,bottom2,top1,top2,skDelRange);
-      exit;
+      Exit;
     end;
 
     //Delta = offset of bottomright from topleft corner
@@ -357,9 +357,9 @@ begin
       //    will oscillate (in increasing swings) between -MaxD and MaxD
       k := -D;
       //stop going outside the grid ...
-      while k < -(top2 - bottom2) do inc(k, 2);
+      while k < -(top2 - bottom2) do Inc(k, 2);
 
-      i := min(D, top1 - bottom1 -1); //24-Jan-04
+      i := Min(D, top1 - bottom1 -1); //24-Jan-04
       while (k <= i) do
       begin
         //derive curr1 from the larger of adjacent vectors...
@@ -371,7 +371,7 @@ begin
         //while (curr1+1,curr2+1) match, increment them...
         while (curr1 < top1) and (curr2 < top2) and (Array1{$IFDEF LCL}^{$ENDIF}[curr1+1]= Array2{$IFDEF LCL}^{$ENDIF}[curr2+1]) do
         begin
-          inc(curr1); inc(curr2);
+          Inc(curr1); Inc(curr2);
         end;
         //update current vector ...
         diagVecF{$IFDEF LCL}^{$ENDIF}[k] := curr1;
@@ -392,16 +392,16 @@ begin
           //ignore trailing matches in lower block ...
           while (curr1 > bottom1) and (curr2 > bottom2) and (Array1{$IFDEF LCL}^{$ENDIF}[curr1]= Array2{$IFDEF LCL}^{$ENDIF}[curr2]) do
           begin
-            dec(curr1); dec(curr2);
+            Dec(curr1); Dec(curr2);
           end;
           result := RecursiveDiff(bottom1,bottom2,curr1,curr2);
           //do recursion with the upper block...
-          if not result then exit;
+          if not result then Exit;
           //and again with the lower block (nb: Delta & k are stored curr1 & curr2)...
           result := RecursiveDiff(Delta,k,top1,top2);
-          exit; //All done!!!
+          Exit; //All done!!!
         end;
-        inc(k,2);
+        Inc(k,2);
       end;
 
       //backward loop..............................................
@@ -410,9 +410,9 @@ begin
       //stop going outside grid and also ensure we remain within the diagVecB[]
       //and diagVecF[] array bounds.
       //nb: in the backward loop it is necessary to test the bottom left corner.
-      while k < -(top2 - bottom2) do inc(k, 2);
+      while k < -(top2 - bottom2) do Inc(k, 2);
 
-      i := min(D+Delta, top1 - bottom1 -1); //24-Jan-04
+      i := Min(D+Delta, top1 - bottom1 -1); //24-Jan-04
       while (k <= i) do
       begin
         //derive curr1 from the adjacent vectors...
@@ -426,7 +426,7 @@ begin
         //slide up and left if possible ...
         while (curr1 > bottom1) and (curr2 > bottom2) and (Array1{$IFDEF LCL}^{$ENDIF}[curr1]= Array2{$IFDEF LCL}^{$ENDIF}[curr2]) do
         begin
-          dec(curr1); dec(curr2);
+          Dec(curr1); Dec(curr2);
         end;
         //update current vector ...
         diagVecB{$IFDEF LCL}^{$ENDIF}[k] := curr1;
@@ -447,21 +447,21 @@ begin
           begin
             //otherwise process the lower block ...
             result := RecursiveDiff(bottom1, bottom2, curr1, curr2);
-            if not result then exit;
+            if not result then Exit;
             //strip leading matches in upper block ...
             while (curr1 < top1) and (curr2 < top2) and (Array1{$IFDEF LCL}^{$ENDIF}[curr1+1]= Array2{$IFDEF LCL}^{$ENDIF}[curr2+1]) do
             begin
-              inc(curr1); inc(curr2);
+              Inc(curr1); Inc(curr2);
             end;
             //and finally process the upper block ...
             result := RecursiveDiff(curr1, curr2, top1, top2);
           end;
-          exit; //All done!!!
+          Exit; //All done!!!
         end;
-        inc(k,2);
+        Inc(k,2);
       end;
     end;
-    result := false;
+    result := False;
 end;
 
 //------------------------------------------------------------------------------
@@ -469,7 +469,7 @@ end;
 procedure TDiff.PushAdd;
 begin
   PushMod;
-  if assigned(fLastAdd) then fChangeList.Add(fLastAdd);
+  if Assigned(fLastAdd) then fChangeList.Add(fLastAdd);
   fLastAdd := nil;
 end;
 
@@ -477,23 +477,23 @@ end;
 procedure TDiff.PushDel;
 begin
   PushMod;
-  if assigned(fLastDel) then fChangeList.Add(fLastDel);
+  if Assigned(fLastDel) then fChangeList.Add(fLastDel);
   fLastDel := nil;
 end;
 
 //------------------------------------------------------------------------------
 procedure TDiff.PushMod;
 begin
-  if assigned(fLastMod) then fChangeList.Add(fLastMod);
+  if Assigned(fLastMod) then fChangeList.Add(fLastMod);
   fLastMod := nil;
 end;
 //------------------------------------------------------------------------------
 
 //This is a bit UGLY but simply reduces many adds & deletes to many fewer
 //add, delete & modify ranges which are then stored in ChangeList...
-procedure TDiff.AddToScript(bottom1, bottom2, top1, top2: integer; ScriptKind: TScriptKind);
+procedure TDiff.AddToScript(bottom1, bottom2, top1, top2: Integer; ScriptKind: TScriptKind);
 var
-  i: integer;
+  i: Integer;
 
   procedure TrashAdd;
   begin
@@ -505,7 +505,7 @@ var
     Dispose(fLastDel); fLastDel := nil;
   end;
 
-  procedure NewAdd(bottom1,bottom2: integer);
+  procedure NewAdd(bottom1,bottom2: Integer);
   begin
     New(fLastAdd);
     fLastAdd{$IFDEF LCL}^{$ENDIF}.Kind := ckAdd;
@@ -514,7 +514,7 @@ var
     fLastAdd{$IFDEF LCL}^{$ENDIF}.Range := 1;
   end;
 
-  procedure NewMod(bottom1,bottom2: integer);
+  procedure NewMod(bottom1,bottom2: Integer);
   begin
     New(fLastMod);
     fLastMod{$IFDEF LCL}^{$ENDIF}.Kind := ckModify;
@@ -523,7 +523,7 @@ var
     fLastMod{$IFDEF LCL}^{$ENDIF}.Range := 1;
   end;
 
-  procedure NewDel(bottom1: integer);
+  procedure NewDel(bottom1: Integer);
   begin
     New(fLastDel);
     fLastDel{$IFDEF LCL}^{$ENDIF}.Kind := ckDelete;
@@ -535,26 +535,26 @@ var
   // 1. there can NEVER be concurrent fLastAdd and fLastDel record ranges.
   // 2. fLastMod is always pushed onto ChangeList before fLastAdd & fLastDel.
 
-  procedure Add(bottom1,bottom2: integer);
+  procedure Add(bottom1,bottom2: Integer);
   begin
-    if assigned(fLastAdd) then                  //OTHER ADDS PENDING
+    if Assigned(fLastAdd) then                  //OTHER ADDS PENDING
     begin
       if (fLastAdd{$IFDEF LCL}^{$ENDIF}.x = bottom1) and
         (fLastAdd{$IFDEF LCL}^{$ENDIF}.y + fLastAdd{$IFDEF LCL}^{$ENDIF}.Range = bottom2) then
-        inc(fLastAdd{$IFDEF LCL}^{$ENDIF}.Range)                     //add in series
+        Inc(fLastAdd{$IFDEF LCL}^{$ENDIF}.Range)                     //add in series
       else begin PushAdd; NewAdd(bottom1,bottom2); end;   //add NOT in series
     end
-    else if assigned(fLastDel) then             //NO ADDS BUT DELETES PENDING
+    else if Assigned(fLastDel) then             //NO ADDS BUT DELETES PENDING
     begin
       if bottom1 = fLastDel{$IFDEF LCL}^{$ENDIF}.x then                   //add matches pending del so modify ...
       begin
-        if assigned(fLastMod) and (fLastMod{$IFDEF LCL}^{$ENDIF}.x + fLastMod{$IFDEF LCL}^{$ENDIF}.Range -1 = bottom1) and
+        if Assigned(fLastMod) and (fLastMod{$IFDEF LCL}^{$ENDIF}.x + fLastMod{$IFDEF LCL}^{$ENDIF}.Range -1 = bottom1) and
           (fLastMod{$IFDEF LCL}^{$ENDIF}.y + fLastMod{$IFDEF LCL}^{$ENDIF}.Range -1 = bottom2) then
-          inc(fLastMod{$IFDEF LCL}^{$ENDIF}.Range)                   //modify in series
+          Inc(fLastMod{$IFDEF LCL}^{$ENDIF}.Range)                   //modify in series
         else begin PushMod; NewMod(bottom1,bottom2); end; //start NEW modify
 
         if fLastDel{$IFDEF LCL}^{$ENDIF}.Range = 1 then TrashDel     //decrement or remove existing del
-        else begin dec(fLastDel{$IFDEF LCL}^{$ENDIF}.Range); inc(fLastDel{$IFDEF LCL}^{$ENDIF}.x); end;
+        else begin Dec(fLastDel{$IFDEF LCL}^{$ENDIF}.Range); Inc(fLastDel{$IFDEF LCL}^{$ENDIF}.x); end;
       end
       else begin PushDel; NewAdd(bottom1,bottom2); end;   //add does NOT match pending del's
     end
@@ -562,23 +562,23 @@ var
       NewAdd(bottom1,bottom2);                            //NO ADDS OR DELETES PENDING
   end;
 
-  procedure Delete(bottom1: integer);
+  procedure Delete(bottom1: Integer);
   begin
-    if assigned(fLastDel) then                  //OTHER DELS PENDING
+    if Assigned(fLastDel) then                  //OTHER DELS PENDING
     begin
       if (fLastDel{$IFDEF LCL}^{$ENDIF}.x + fLastDel{$IFDEF LCL}^{$ENDIF}.Range = bottom1) then
-        inc(fLastDel{$IFDEF LCL}^{$ENDIF}.Range)                     //del in series
+        Inc(fLastDel{$IFDEF LCL}^{$ENDIF}.Range)                     //del in series
       else begin PushDel; NewDel(bottom1); end;      //del NOT in series
     end
-    else if assigned(fLastAdd) then             //NO DELS BUT ADDS PENDING
+    else if Assigned(fLastAdd) then             //NO DELS BUT ADDS PENDING
     begin
       if bottom1 = fLastAdd{$IFDEF LCL}^{$ENDIF}.x then                   //del matches pending add so modify ...
       begin
-        if assigned(fLastMod) and (fLastMod{$IFDEF LCL}^{$ENDIF}.x + fLastMod{$IFDEF LCL}^{$ENDIF}.Range = bottom1) then
-          inc(fLastMod{$IFDEF LCL}^{$ENDIF}.Range)                           //mod in series
+        if Assigned(fLastMod) and (fLastMod{$IFDEF LCL}^{$ENDIF}.x + fLastMod{$IFDEF LCL}^{$ENDIF}.Range = bottom1) then
+          Inc(fLastMod{$IFDEF LCL}^{$ENDIF}.Range)                           //mod in series
         else begin PushMod; NewMod(bottom1,fLastAdd{$IFDEF LCL}^{$ENDIF}.y); end; //start NEW modify ...
         if fLastAdd{$IFDEF LCL}^{$ENDIF}.Range = 1 then TrashAdd     //decrement or remove existing add
-        else begin dec(fLastAdd{$IFDEF LCL}^{$ENDIF}.Range); inc(fLastAdd{$IFDEF LCL}^{$ENDIF}.x); inc(fLastAdd{$IFDEF LCL}^{$ENDIF}.y); end;
+        else begin Dec(fLastAdd{$IFDEF LCL}^{$ENDIF}.Range); Inc(fLastAdd{$IFDEF LCL}^{$ENDIF}.x); Inc(fLastAdd{$IFDEF LCL}^{$ENDIF}.y); end;
       end
       else begin PushAdd; NewDel(bottom1); end;      //del does NOT match pending add's
     end
@@ -596,19 +596,19 @@ end;
 
 procedure TDiff.ClearChanges;
 var
-  i: integer;
+  i: Integer;
 begin
   for i := 0 to fChangeList.Count-1 do
     dispose(PChangeRec(fChangeList[i]));
   fChangeList.clear;
 end;
 
-function TDiff.GetChangeCount: integer;
+function TDiff.GetChangeCount: Integer;
 begin
-  result := fChangeList.count;
+  result := fChangeList.Count;
 end;
 
-function TDiff.GetChanges(index: integer): TChangeRec;
+function TDiff.GetChanges(index: Integer): TChangeRec;
 begin
   result := PChangeRec(fChangeList[index])^;
 end;

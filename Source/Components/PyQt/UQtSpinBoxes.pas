@@ -40,40 +40,40 @@ type
 
   TQtAbstractSpinBox = class(TBaseQTWidget)
   private
-    FWrapping: boolean;
-    FFrame: boolean;
+    FWrapping: Boolean;
+    FFrame: Boolean;
     FAlignment: TAlignment;
-    FReadOnly: boolean;
+    FReadOnly: Boolean;
     FButtonSymbols: TButtonSymbols;
     FSpecialValueText: string;
-    FAccelerated: boolean;
+    FAccelerated: Boolean;
     FCorrectionMode: TCorrectionMode;
-    FKeyboardTracking: boolean;
-    FShowGroupSeparator: boolean;
+    FKeyboardTracking: Boolean;
+    FShowGroupSeparator: Boolean;
     FEditingFinished: string;
-    procedure setFrame(Value: boolean);
+    procedure setFrame(Value: Boolean);
     procedure setButtonSymbols(Value: TButtonSymbols);
-    procedure setShowGroupSeparator(Value: boolean);
+    procedure setShowGroupSeparator(Value: Boolean);
     procedure setSpecialValueText(Value: string);
   public
     constructor Create(aOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure Paint; override;
     function InnerRect: TRect; override;
   published
-    property Wrapping: boolean read FWrapping write FWrapping;
-    property Frame: boolean read FFrame write setFrame;
+    property Wrapping: Boolean read FWrapping write FWrapping;
+    property Frame: Boolean read FFrame write setFrame;
     property Alignment: TAlignment read FAlignment write FAlignment;
-    property ReadOnly: boolean read FReadOnly write FReadOnly;
+    property ReadOnly: Boolean read FReadOnly write FReadOnly;
     property ButtonSymbols: TButtonSymbols read FButtonSymbols write setButtonSymbols;
     property SpecialValueText: string read FSpecialValueText write setSpecialValueText;
-    property Accelerated: boolean read FAccelerated write FAccelerated;
+    property Accelerated: Boolean read FAccelerated write FAccelerated;
     property CorrectionMode: TCorrectionMode read FCorrectionMode write FCorrectionMode;
-    property KeyboardTracking: boolean read FKeyboardTracking write FKeyboardTracking;
-    property ShowGroupSeparator: boolean read FShowGroupSeparator write setShowGroupSeparator;
+    property KeyboardTracking: Boolean read FKeyboardTracking write FKeyboardTracking;
+    property ShowGroupSeparator: Boolean read FShowGroupSeparator write setShowGroupSeparator;
     // signals
     property editingFinished: string read FEditingFinished write FEditingFinished;
   end;
@@ -82,22 +82,22 @@ type
   private
     FPrefix: string;
     FSuffix: string;
-    FMinimum: integer;
-    FMaximum: integer;
-    FSingleStep: integer;
+    FMinimum: Integer;
+    FMaximum: Integer;
+    FSingleStep: Integer;
     FStepType: TStepType;
-    FValue: integer;
-    FDisplayIntegerBase: integer;
+    FValue: Integer;
+    FDisplayIntegerBase: Integer;
     FTextChanged: string;
     FValueChanged: string;
     procedure setPrefix(Value: string);
     procedure setSuffix(Value: string);
-    procedure setValue(Value: integer);
-    procedure setDisplayIntegerBase(Value: integer);
+    procedure setValue(Value: Integer);
+    procedure setDisplayIntegerBase(Value: Integer);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
@@ -105,12 +105,12 @@ type
   published
     property Prefix: string read FPrefix write setPrefix;
     property Suffix: string read FSuffix write setSuffix;
-    property Minimum: integer read FMinimum write FMinimum;
-    property Maximum: integer read FMaximum write FMaximum;
-    property SingleStep: integer read FSingleStep write FSingleStep;
+    property Minimum: Integer read FMinimum write FMinimum;
+    property Maximum: Integer read FMaximum write FMaximum;
+    property SingleStep: Integer read FSingleStep write FSingleStep;
     property StepType: TStepType read FStepType write FStepType;
-    property Value: integer read FValue write setValue;
-    property DisplayIntegerBase: integer read FDisplayIntegerBase write setDisplayIntegerBase;
+    property Value: Integer read FValue write setValue;
+    property DisplayIntegerBase: Integer read FDisplayIntegerBase write setDisplayIntegerBase;
     // signals
     property textChanged: string read FTextChanged write FTextChanged;
     property valueChanged: string read FValueChanged write FValueChanged;
@@ -120,7 +120,7 @@ type
   private
     FPrefix: string;
     FSuffix: string;
-    FDecimals: integer;
+    FDecimals: Integer;
     FMinimum: double;
     FMaximum: double;
     FSingleStep: double;
@@ -133,8 +133,8 @@ type
     procedure setValue(Value: double);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
@@ -142,7 +142,7 @@ type
   published
     property Prefix: string read FPrefix write setPrefix;
     property Suffix: string read FSuffix write setSuffix;
-    property Decimals: integer read FDecimals write FDecimals;
+    property Decimals: Integer read FDecimals write FDecimals;
     property Minimum: double read FMinimum write FMinimum;
     property Maximum: double read FMaximum write FMaximum;
     property SingleStep: double read FSingleStep write FSingleStep;
@@ -166,8 +166,8 @@ type
     FMinimumTime: string;
     FCurrentSection: TCurrentSection;
     FDisplayFormat: string;
-    FCalendarPopup: boolean;
-    FCurrentSectionIndex: integer;
+    FCalendarPopup: Boolean;
+    FCurrentSectionIndex: Integer;
     FTimeSpec: TTimeSpec;
     format: string;
     FDateChanged: string;
@@ -185,9 +185,9 @@ type
     function DateTimeFromDisplayFormat: string; virtual;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
@@ -204,8 +204,8 @@ type
     property MinimumTime: string read FMinimumTime write FMinimumTime;
     property CurrentSection: TCurrentSection read FCurrentSection write FCurrentSection;
     property DisplayFormat: string read FDisplayFormat write setDisplayFormat;
-    property CalendarPopup: boolean read FCalendarPopup write FCalendarPopup;
-    property CurrentSectionIndex: integer read FCurrentSectionIndex write FCurrentSectionIndex;
+    property CalendarPopup: Boolean read FCalendarPopup write FCalendarPopup;
+    property CurrentSectionIndex: Integer read FCurrentSectionIndex write FCurrentSectionIndex;
     property TimeSpec: TTimeSpec read FTimeSpec write FTimeSpec;
     // signals
     property dateChanged: string read FDateChanged write FDateChanged;
@@ -218,7 +218,7 @@ type
     function DateTimeFromDisplayFormat: string; override;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
   end;
 
@@ -227,7 +227,7 @@ type
     function DateTimeFromDisplayFormat: string; override;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
   end;
 
@@ -239,15 +239,15 @@ uses Controls, Graphics, SysUtils, Types, DateUtils,
 
 {--- TQtAbstractSpinBox -------------------------------------------------------}
 
-constructor TQtAbstractSpinBox.create(aOwner: TComponent);
+constructor TQtAbstractSpinBox.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
-  FFrame:= true;
+  FFrame:= True;
   Height:= 24;
   Width:= 80;
 end;
 
-function TQtAbstractSpinBox.getAttributes(ShowAttributes: integer): string;
+function TQtAbstractSpinBox.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '';
   if ShowAttributes >= 2 then
@@ -271,7 +271,7 @@ begin
     inherited;
 end;
 
-function TQtAbstractSpinBox.getEvents(ShowEvents: integer): string;
+function TQtAbstractSpinBox.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|editingFinished';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -289,7 +289,7 @@ begin
 end;
 
 procedure TQtAbstractSpinBox.Paint;
-  var R: TRect; Points: array[0..2] of TPoint; x, y: integer;
+  var R: TRect; Points: array[0..2] of TPoint; x, y: Integer;
 begin
   inherited;
 
@@ -302,7 +302,7 @@ begin
     Canvas.Brush.Color:= $E7E7E7;
     Canvas.Rectangle(R);
     Canvas.MoveTo(R.Left, Height div 2);
-    Canvas.LineTo(R.right, Height div 2);
+    Canvas.LineTo(R.Right, Height div 2);
 
     Canvas.Brush.Color:= clBlack;
     Canvas.Pen.Color:= clBlack;
@@ -343,7 +343,7 @@ begin
     Result.Right:= Result.Right - 16;
 end;
 
-procedure TQtAbstractSpinBox.setFrame(Value: boolean);
+procedure TQtAbstractSpinBox.setFrame(Value: Boolean);
 begin
   if Value <> FFrame then begin
     FFrame:= Value;
@@ -359,7 +359,7 @@ begin
   end;
 end;
 
-procedure TQtAbstractSpinBox.setShowGroupSeparator(Value: boolean);
+procedure TQtAbstractSpinBox.setShowGroupSeparator(Value: Boolean);
 begin
   if Value <> FShowGroupSeparator then begin
     FShowGroupSeparator:= Value;
@@ -379,7 +379,7 @@ end;
 
 constructor TQtSpinBox.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 79;
   Width:= 40;
   FMaximum:= 99;
@@ -387,7 +387,7 @@ begin
   FDisplayIntegerBase:= 10;
 end;
 
-function TQtSpinBox.getAttributes(ShowAttributes: integer): string;
+function TQtSpinBox.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Minimum|Maximum|SingleStep|Value';
   if ShowAttributes >= 2 then
@@ -397,7 +397,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-function TQtSpinBox.getEvents(ShowEvents: integer): string;
+function TQtSpinBox.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|textChanged|valueChanged';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -426,7 +426,7 @@ begin
 end;
 
 procedure TQtSpinBox.Paint;
-  var align: integer; s: string; R: TRect;
+  var align: Integer; s: string; R: TRect;
 begin
   Canvas.Brush.Color:= clWhite;
   if FFrame
@@ -475,7 +475,7 @@ begin
   end;
 end;
 
-procedure TQtSpinBox.setValue(Value: integer);
+procedure TQtSpinBox.setValue(Value: Integer);
 begin
   if Value <> FValue then begin
     FValue:= Value;
@@ -483,7 +483,7 @@ begin
   end;
 end;
 
-procedure TQtSpinBox.setDisplayIntegerBase(Value: integer);
+procedure TQtSpinBox.setDisplayIntegerBase(Value: Integer);
 begin
   if Value <> FDisplayIntegerBase then begin
     FDisplayIntegerBase:= Value;
@@ -495,14 +495,14 @@ end;
 
 constructor TQtDoubleSpinBox.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 106;
   FDecimals:= 2;
   FMaximum:= 99.99;
   FSingleStep:= 1;
 end;
 
-function TQtDoubleSpinBox.getAttributes(ShowAttributes: integer): string;
+function TQtDoubleSpinBox.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Minimum|Maximum|SingleStep|Value|Decimals';
   if ShowAttributes >= 2 then
@@ -510,7 +510,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-function TQtDoubleSpinBox.getEvents(ShowEvents: integer): string;
+function TQtDoubleSpinBox.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|textChanged|valueChanged';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -539,7 +539,7 @@ begin
 end;
 
 procedure TQtDoubleSpinBox.Paint;
-  var align: integer; s: string; R: TRect;
+  var align: Integer; s: string; R: TRect;
 begin
   Canvas.Brush.Color:= clWhite;
   if FFrame
@@ -597,7 +597,7 @@ end;
 constructor TQtDateTimeEdit.Create(AOwner: TComponent);
   var FS: TFormatSettings; DateTime: TDateTime;
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 108;
   Width:= 128;
   FS:= TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
@@ -617,7 +617,7 @@ begin
   FTimeSpec:= LocalTime;
 end;
 
-function TQtDateTimeEdit.getAttributes(ShowAttributes: integer): string;
+function TQtDateTimeEdit.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|DateTime|MaximumDateTime|MinimumDateTime|DisplayFormat';
   if ShowAttributes >= 2 then
@@ -643,7 +643,7 @@ begin
     inherited;
 end;
 
-function TQtDateTimeEdit.getEvents(ShowEvents: integer): string;
+function TQtDateTimeEdit.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|dateChanged|dateTimeChanged|timeChanged';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -701,7 +701,7 @@ begin
 end;
 
 procedure TQtDateTimeEdit.MakeDate(Value: string);
-  var key, s: string; DateTime: TDateTime; p: integer;
+  var key, s: string; DateTime: TDateTime; p: Integer;
 begin
   try
     DateTime:= StrToDate(Value);
@@ -710,7 +710,7 @@ begin
   end;
   FDate:= DateToStr(DateTime);
   p:= Pos(' ', FDateTime);
-  FDateTime:= FDate + copy(FDateTime, p, length(FDateTime));
+  FDateTime:= FDate + Copy(FDateTime, p, Length(FDateTime));
   key:= 'self.' + Name + '.setDateTime';
   s:= key + '(QDateTime.fromString(' + asString(FDateTime) + ', ' + asString(format) + '))';
   setAttributValue(key, s);
@@ -718,7 +718,7 @@ begin
 end;
 
 procedure TQtDateTimeEdit.MakeTime(Value: string);
-  var key, s: string; DateTime: TDateTime; p: integer;
+  var key, s: string; DateTime: TDateTime; p: Integer;
 begin
   try
     DateTime:= StrToTime(Value);
@@ -727,7 +727,7 @@ begin
   end;
   FTime:= TimeToStr(DateTime);
   p:= Pos(' ', FDateTime);
-  FDateTime:= copy(FDateTime, 1, p) + FTime;
+  FDateTime:= Copy(FDateTime, 1, p) + FTime;
   key:= 'self.' + Name + '.setDateTime';
   s:= key + '(QDateTime.fromString(' + asString(FDateTime) + ', ' + asString(format) + '))';
   setAttributValue(key, s);
@@ -735,13 +735,13 @@ begin
 end;
 
 function TQtDateTimeEdit.DateTimeFromDisplayFormat: string;
-  var DateTime: TDateTime; FS: TFormatSettings; p: integer;
+  var DateTime: TDateTime; FS: TFormatSettings; p: Integer;
 begin
   FS:= TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
   p:= Pos(' ', FDisplayFormat);
   if p > 0 then begin
-    FS.ShortDateFormat:= copy(FDisplayFormat, 1, p-1);
-    FS.LongTimeFormat:= copy(FDisplayFormat, p+1, length(FDisplayFormat));
+    FS.ShortDateFormat:= Copy(FDisplayFormat, 1, p-1);
+    FS.LongTimeFormat:= Copy(FDisplayFormat, p+1, Length(FDisplayFormat));
   end;
   if TryStrToDateTime(FDateTime, DateTime, FS)
     then Result:= DateTimeToStr(DateTime, FS)
@@ -760,7 +760,7 @@ begin
 end;
 
 procedure TQtDateTimeEdit.ShowValue(Value: string);
-  var align: integer; R: TRect;
+  var align: Integer; R: TRect;
 begin
   Canvas.Brush.Color:= clWhite;
   R:= InnerRect;
@@ -776,14 +776,14 @@ begin
 end;
 
 procedure TQtDateTimeEdit.setDateTime(Value: string);
-  var p: integer;
+  var p: Integer;
 begin
   if Value <> FDateTime then begin
     FDateTime:= Value;
     p:= Pos(' ', FDateTime);
     if p > 0 then begin
-      FDate:= trim(copy(FDateTime, 1, p-1));
-      FTime:= trim(copy(FDateTime, p+1, length(FDateTime)));
+      FDate:= Trim(Copy(FDateTime, 1, p-1));
+      FTime:= Trim(Copy(FDateTime, p+1, Length(FDateTime)));
     end;
     Invalidate;
   end;
@@ -820,14 +820,14 @@ end;
 constructor TQtDateEdit.Create(AOwner: TComponent);
   var FS: TFormatSettings;
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 109;
   Width:= 80;
   FS:= TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
   FDisplayFormat:= myStringReplace(FS.ShortDateFormat, '/', FS.DateSeparator);;
 end;
 
-function TQtDateEdit.getAttributes(ShowAttributes: integer): string;
+function TQtDateEdit.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Date|MaximumDate|MinimumDate';
   if ShowAttributes >= 2 then
@@ -837,7 +837,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
   if ShowAttributes = 1 then begin
     var p:= Pos('|DateTime', Result);
-    delete(Result, p, 41);
+    Delete(Result, p, 41);
   end;
 end;
 
@@ -862,14 +862,14 @@ end;
 constructor TQtTimeEdit.Create(AOwner: TComponent);
   var FS: TFormatSettings;
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 110;
   Width:= 80;
   FS:= TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
   FDisplayFormat:= FS.LongTimeFormat;
 end;
 
-function TQtTimeEdit.getAttributes(ShowAttributes: integer): string;
+function TQtTimeEdit.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Time|MaximumTime|MinimumTime';
   if ShowAttributes >= 2 then
@@ -879,7 +879,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
   if ShowAttributes = 1 then begin
     var p:= Pos('|DateTime', Result);
-    delete(Result, p, 41);
+    Delete(Result, p, 41);
   end;
 end;
 
@@ -890,7 +890,7 @@ begin
 end;
 
 function TQtTimeEdit.DateTimeFromDisplayFormat: string;
-  var DateTime: TDateTime; FS: TFormatSettings; p: integer;
+  var DateTime: TDateTime; FS: TFormatSettings; p: Integer;
 begin
   FS:= TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
   FS.LongTimeFormat:= FDisplayFormat;
@@ -898,7 +898,7 @@ begin
     Result:= DateTimeToStr(DateTime, FS);
     p:= Pos(' ', Result);
     if p > 0 then
-      Result:= copy(Result, p + 1, length(Result));
+      Result:= Copy(Result, p + 1, Length(Result));
   end else
     Result:= _('invalid time format');
 end;

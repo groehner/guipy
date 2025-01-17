@@ -11,7 +11,7 @@ unit frmDocView;
 interface
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   WinApi.Messages,
   WinApi.ActiveX,
   Winapi.WebView2,

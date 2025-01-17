@@ -57,16 +57,16 @@ type
   private
     FInputMask: string;
     FText: string;
-    FMaxLength: integer;
-    FFrame: boolean;
+    FMaxLength: Integer;
+    FFrame: Boolean;
     FEchoMode: TEchoMode;
-    FCursorPosition: integer;
+    FCursorPosition: Integer;
     FAligment: string;
-    FDragEnabled: boolean;
-    FReadOnly: boolean;
+    FDragEnabled: Boolean;
+    FReadOnly: Boolean;
     FPlaceholderText: string;
     FCursorMoveStyle: TCursorMoveStyle;
-    FClearButtonEnabled: boolean;
+    FClearButtonEnabled: Boolean;
     FCursorPositionChanged: string;
     FEditingFinished: string;
     FInputRejected: string;
@@ -77,12 +77,12 @@ type
     procedure setText(Value: string);
     procedure setPlaceholderText(Value: string);
     procedure setEchoMode(Value: TEchoMode);
-    procedure setFrame(Value: boolean);
+    procedure setFrame(Value: Boolean);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
@@ -90,16 +90,16 @@ type
   published
     property InputMask: string read FInputMask write FInputMask;
     property Text: string read FText write setText;
-    property MaxLength: integer read FMaxLength write FMaxLength;
-    property Frame: boolean read FFrame write setFrame;
+    property MaxLength: Integer read FMaxLength write FMaxLength;
+    property Frame: Boolean read FFrame write setFrame;
     property EchoMode: TEchoMode read FEchoMode write setEchoMode;
-    property CursorPosition: integer read FCursorPosition write FCursorPosition;
+    property CursorPosition: Integer read FCursorPosition write FCursorPosition;
     property Aligment: string read FAligment write FAligment;
-    property DragEnabled: boolean read FDragEnabled write FDragEnabled;
-    property ReadOnly: boolean read FReadOnly write FReadOnly;
+    property DragEnabled: Boolean read FDragEnabled write FDragEnabled;
+    property ReadOnly: Boolean read FReadOnly write FReadOnly;
     property PlaceholderText: string read FPlaceholderText write setPlaceholderText;
     property CursorMoveStyle: TCursorMoveStyle read FCursorMoveStyle write FCursorMoveStyle;
-    property ClearButtonEnabled: boolean read FClearButtonEnabled write FClearButtonEnabled;
+    property ClearButtonEnabled: Boolean read FClearButtonEnabled write FClearButtonEnabled;
     // signals
     property cursorPositionChanged: string read FCursorPositionChanged write FCursorPositionChanged;
     property editingFinished: string read FEditingFinished write FEditingFinished;
@@ -112,18 +112,18 @@ type
 
   TQtComboBox = class(TBaseQtWidget)
   private
-    FEditable: boolean;
+    FEditable: Boolean;
     FCurrentText: string;
-    FCurrentIndex: integer;
-    FMaxVisibleItems: integer;
-    FMaxCount: integer;
+    FCurrentIndex: Integer;
+    FMaxVisibleItems: Integer;
+    FMaxCount: Integer;
     FInsertPolicy: TInsertPolicy;
     FSizeAdjustPolicy: TSizeAdjustPolicy;
-    FMinimumContentsLength: integer;
+    FMinimumContentsLength: Integer;
     FPlaceholderText: string;
-    FDuplicatesEnabled: boolean;
-    FFrame: boolean;
-    FModelColumn: integer;
+    FDuplicatesEnabled: Boolean;
+    FFrame: Boolean;
+    FModelColumn: Integer;
     FListItems: TStrings;
     FActivated: string;
     FCurrentIndexChanged: string;
@@ -136,31 +136,31 @@ type
     function getListItems: string;
     procedure setCurrentText(Value: string);
     procedure setPlaceholderText(Value: string);
-    procedure setEditable(Value: boolean);
-    procedure setFrame(Value: boolean);
+    procedure setEditable(Value: Boolean);
+    procedure setFrame(Value: Boolean);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property Editable: boolean read FEditable write setEditable;
+    property Editable: Boolean read FEditable write setEditable;
     property CurrentText: string read FCurrentText write setCurrentText;
-    property CurrentIndex: integer read FCurrentIndex write FCurrentIndex;
-    property MaxVisibleItems: integer read FMaxVisibleItems write FMaxVisibleItems;
-    property MaxCount: integer read FMaxCount write FMaxCount;
+    property CurrentIndex: Integer read FCurrentIndex write FCurrentIndex;
+    property MaxVisibleItems: Integer read FMaxVisibleItems write FMaxVisibleItems;
+    property MaxCount: Integer read FMaxCount write FMaxCount;
     property InsertPolicy: TInsertPolicy read FInsertPolicy write FInsertPolicy;
     property SizeAdjustPolicy: TSizeAdjustPolicy read FSizeAdjustPolicy write FSizeAdjustPolicy;
-    property MinimumContentsLength: integer read FMinimumContentsLength write FMinimumContentsLength;
+    property MinimumContentsLength: Integer read FMinimumContentsLength write FMinimumContentsLength;
     property PlaceholderText: string read FPlaceholderText write setPlaceholderText;
-    property DuplicatesEnabled: boolean read FDuplicatesEnabled write FDuplicatesEnabled;
-    property Frame: boolean read FFrame write setFrame;
-    property ModelColumn: integer read FModelColumn write FModelColumn;
+    property DuplicatesEnabled: Boolean read FDuplicatesEnabled write FDuplicatesEnabled;
+    property Frame: Boolean read FFrame write setFrame;
+    property ModelColumn: Integer read FModelColumn write FModelColumn;
     property ListItems: TStrings read FListItems write setListItems;
     // signals
     property activated: string read FActivated write FActivated;
@@ -183,9 +183,9 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
@@ -201,41 +201,41 @@ type
 
   TQtProgressbar = class(TBaseQtWidget)
   private
-    FMinimum: integer;
-    FMaximum: integer;
-    FValue: integer;
-    FTextVisible: boolean;
+    FMinimum: Integer;
+    FMaximum: Integer;
+    FValue: Integer;
+    FTextVisible: Boolean;
     FOrientation: TOrientation;
-    FInvertedAppearance: boolean;
+    FInvertedAppearance: Boolean;
     // FTextDirection: TTextDirection; no text for vertical progressbar for windows
     FFormat: string;
     // Signals
     FValueChanged: string;
-    procedure setMinimum(Value: integer);
-    procedure setMaximum(Value: integer);
-    procedure setValue(Value: integer);
-    procedure setTextVisible(Value: boolean);
+    procedure setMinimum(Value: Integer);
+    procedure setMaximum(Value: Integer);
+    procedure setValue(Value: Integer);
+    procedure setTextVisible(Value: Boolean);
     procedure setOrientation(Value: TOrientation);
-    procedure setInvertedAppearance(Value: boolean);
+    procedure setInvertedAppearance(Value: Boolean);
     procedure setFormat(Value: string);
     function getText: string;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     function InnerRect: TRect; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property Minimum: integer read FMinimum write setMinimum;
-    property Maximum: integer read FMaximum write setMaximum;
-    property Value: integer read FValue write setValue;
-    property TextVisible: boolean read FTextVisible write setTextVisible;
+    property Minimum: Integer read FMinimum write setMinimum;
+    property Maximum: Integer read FMaximum write setMaximum;
+    property Value: Integer read FValue write setValue;
+    property TextVisible: Boolean read FTextVisible write setTextVisible;
     property Orientation: TOrientation read FOrientation write setOrientation;
-    property InvertedAppearance: boolean read FInvertedAppearance write setInvertedAppearance;
+    property InvertedAppearance: Boolean read FInvertedAppearance write setInvertedAppearance;
     property Format: string read FFormat write setFormat;
     // signals
     property valueChanged: string read FValueChanged write FValueChanged;
@@ -243,13 +243,13 @@ type
 
   TQtStatusbar = class(TBaseQtWidget)
   private
-    FSizeGripEnabled: boolean;
+    FSizeGripEnabled: Boolean;
     FMessageChanged: string;
-    procedure setSizeGripEnabled(Value: boolean);
+    procedure setSizeGripEnabled(Value: Boolean);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
@@ -257,7 +257,7 @@ type
     procedure Paint; override;
     procedure SetPositionAndSize; override;
   published
-    property SizeGripEnabled: boolean read FSizeGripEnabled write setSizeGripEnabled;
+    property SizeGripEnabled: Boolean read FSizeGripEnabled write setSizeGripEnabled;
     // signals
     property messageChanged: string read FMessageChanged write FMessageChanged;
   end;
@@ -266,28 +266,28 @@ type
   private
     FTitle: string;
     //FAligmnent
-    FFlat: boolean;
-    FCheckable: boolean;
-    FChecked: boolean;
+    FFlat: Boolean;
+    FCheckable: Boolean;
+    FChecked: Boolean;
     FClicked: string;
     FToggled: string;
     procedure setTitle(Value: string);
-    procedure setFlat(Value: boolean);
-    procedure setCheckable(Value: boolean);
-    procedure setChecked(Value: boolean);
+    procedure setFlat(Value: Boolean);
+    procedure setCheckable(Value: Boolean);
+    procedure setChecked(Value: Boolean);
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property Title: string read FTitle write setTitle;
-    property Flat: boolean read FFlat write setFlat;
-    property Checkable: boolean read FCheckable write setCheckable;
-    property Checked: boolean read FChecked write setChecked;
+    property Flat: Boolean read FFlat write setFlat;
+    property Checkable: Boolean read FCheckable write setCheckable;
+    property Checked: Boolean read FChecked write setChecked;
     // signals
     property clicked: string read FClicked write FClicked;
     property toggled: string read FToggled write FToggled;
@@ -297,12 +297,12 @@ type
   private
     FTabPosition: TTabPosition;
     FTabShape: TTabShape;
-    FCurrentIndex: integer;
-    FUsesScrollButtons: boolean;
-    FDocumentMode: boolean;
-    FTabsClosable: boolean;
-    FMoveable: boolean;
-    FTabBarAutoHide: boolean;
+    FCurrentIndex: Integer;
+    FUsesScrollButtons: Boolean;
+    FDocumentMode: Boolean;
+    FTabsClosable: Boolean;
+    FMoveable: Boolean;
+    FTabBarAutoHide: Boolean;
     FTabs: TStrings;
     FCurrentChanged: string;
     FTabBarClicked: string;
@@ -310,16 +310,16 @@ type
     FTabCloseRequested: string;
     procedure setTabPosition(Value: TTabPosition);
     procedure setTabShape(Value: TTabShape);
-    procedure setCurrentIndex(Value: integer);
+    procedure setCurrentIndex(Value: Integer);
     procedure setTabs(Value: TStrings);
     procedure MakeTabs;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure DeleteWidget; override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
@@ -327,12 +327,12 @@ type
   published
     property TabPosition: TTabPosition read FTabPosition write setTabPosition;
     property TabShape: TTabShape read FTabShape write setTabShape;
-    property CurrentIndex: integer read FCurrentIndex write setCurrentIndex;
-    property UsesScrollButtons: boolean read FUsesScrollButtons write FUsesScrollButtons;
-    property DocumentMode: boolean read FDocumentMode write FDocumentMode;
-    property TabsClosable: boolean read FTabsClosable write FTabsClosable;
-    property Moveable: boolean read FMoveable write FMoveable;
-    property TabBarAutoHide: boolean read FTabBarAutoHide write FTabBarAutoHide;
+    property CurrentIndex: Integer read FCurrentIndex write setCurrentIndex;
+    property UsesScrollButtons: Boolean read FUsesScrollButtons write FUsesScrollButtons;
+    property DocumentMode: Boolean read FDocumentMode write FDocumentMode;
+    property TabsClosable: Boolean read FTabsClosable write FTabsClosable;
+    property Moveable: Boolean read FMoveable write FMoveable;
+    property TabBarAutoHide: Boolean read FTabBarAutoHide write FTabBarAutoHide;
     property Tabs: TStrings read FTabs write setTabs;
     // signals
     property currentChanged: string read FCurrentChanged write FCurrentChanged;
@@ -348,7 +348,7 @@ type
     FTriggered: string;
     procedure setItems(aItems: TStrings);
     procedure MakeMenuItems;
-    function hasSubMenu(MenuItems: TStrings; i: integer): boolean;
+    function hasSubMenu(MenuItems: TStrings; i: Integer): Boolean;
     function makeMenuName(m, s: string): string;
     procedure CalculateMenus(MenuItems, PyMenu, PyMethods: TStrings); virtual;
     function getCreateMenu: string; virtual;
@@ -357,9 +357,9 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure NewWidget(Widget: string = ''); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     procedure Rename(const OldName, NewName, Events: string); override;
@@ -384,11 +384,11 @@ type
 
   TQtButtonGroup = class (TBaseQtWidget)
   private
-    FColumns: integer;
+    FColumns: Integer;
     FTitle: string;
     FItems: TStrings;
     FOldItems: TStrings;
-    FCheckboxes: boolean;
+    FCheckboxes: Boolean;
     FbuttonClicked: string;
     FbuttonPressed: string;
     FbuttonReleased: string;
@@ -397,21 +397,21 @@ type
     FidPressed: string;
     FidReleased: string;
     FidToggled: string;
-    procedure setColumns(Value: integer);
+    procedure setColumns(Value: Integer);
     procedure setTitle(Value: string);
     procedure setItems(Value: TStrings);
-    procedure setCheckboxes(Value: boolean);
+    procedure setCheckboxes(Value: Boolean);
     procedure MakeButtongroupItems;
     procedure MakeTitle(Title: string);
-    function ItemsInColumn(i: integer): integer;
-    function RBName(i: integer): string;
+    function ItemsInColumn(i: Integer): Integer;
+    function RBName(i: Integer): string;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure DeleteWidget; override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     procedure setEvent(Attr: string); override;
     function HandlerInfo(const event: string): string; override;
     procedure NewWidget(Widget: string = ''); override;
@@ -421,9 +421,9 @@ type
     procedure Rename(const OldName, NewName, Events: string); override;
   published
     property Items: TStrings read fItems write setItems; // must stay before columns or label
-    property Columns: integer read FColumns write setColumns;
+    property Columns: Integer read FColumns write setColumns;
     property Title: string read FTitle write setTitle;
-    property Checkboxes: boolean read FCheckboxes write setCheckboxes;
+    property Checkboxes: Boolean read FCheckboxes write setCheckboxes;
     // signals
     property buttonClicked: string read FbuttonClicked write FbuttonClicked;
     property buttonPressed: string read FbuttonPressed write FbuttonPressed;
@@ -437,9 +437,9 @@ type
 
   TQtMainWindow = class (TBaseQtWidget)
   public
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; override;
     procedure getSlots(Parametertypes: string; Slots: TStrings); override;
     function HandlerName(const event: string): string; override;
@@ -454,19 +454,19 @@ uses Controls, SysUtils, Math, Types, UITypes, JvGnugettext,
 
 constructor TQtLineEdit.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 72;
   Width:= 80;
   Height:= 24;
   FocusPolicy:= StrongFocus;
   ContextMenuPolicy:= DefaultContextMenu;
   Cursor:= crIBeam;
-  MouseTracking:= true;
+  MouseTracking:= True;
   FMaxLength:= 32767;
-  FFrame:= true;
+  FFrame:= True;
 end;
 
-function TQtLineEdit.getAttributes(ShowAttributes: integer): string;
+function TQtLineEdit.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|EchoMode|InputMask|Text|PlaceholderText';
   if ShowAttributes >= 2 then
@@ -486,7 +486,7 @@ begin
     inherited;
 end;
 
-function TQtLineEdit.getEvents(ShowEvents: integer): string;
+function TQtLineEdit.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|cursorPositionChanged|editingFinished|inputRejected' +
            '|returnPressed|selectionChanged|textChanged|textEdited';
@@ -545,7 +545,7 @@ begin
       Normal: s:= FText;
       NoEcho: s:= '';
       Password,
-      PasswordEchoOnEdit: s:= StringOfChar('*', length(FText));
+      PasswordEchoOnEdit: s:= StringOfChar('*', Length(FText));
     end;
   end else if FPlaceholderText <> '' then begin
     Canvas.Font.Color:= $7F7F7F;
@@ -581,7 +581,7 @@ begin
   end;
 end;
 
-procedure TQtLineEdit.setFrame(Value: boolean);
+procedure TQtLineEdit.setFrame(Value: Boolean);
 begin
   if Value <> FFrame then begin
     FFrame:= Value;
@@ -593,7 +593,7 @@ end;
 
 constructor TQtComboBox.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 78;
   Width:= 80;
   Height:= 24;
@@ -603,7 +603,7 @@ begin
   FMaxCount:= 2147483647;
   FInsertPolicy:= InsertAtBottom;
   FSizeAdjustPolicy:= AdjustToContentsOnFirstShow;
-  FFrame:= true;
+  FFrame:= True;
   FCurrentIndex:= -1;
   FListItems:= TStringList.Create;
   FListItems.Text:= defaultItems;
@@ -615,7 +615,7 @@ begin
   inherited;
 end;
 
-function TQtComboBox.getAttributes(ShowAttributes: integer): string;
+function TQtComboBox.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|CurrentText|CurrentIndex|PlaceholderText|ListItems|Editable';
   if ShowAttributes >= 2 then
@@ -641,7 +641,7 @@ const
   EventsWithIndex = '|activated|currentIndexChanged|highlighted';
   EventsWithText = '|currentTextChanged|editTextChanged|textActivated|textHighlighted';
 
-function TQtComboBox.getEvents(ShowEvents: integer): string;
+function TQtComboBox.getEvents(ShowEvents: Integer): string;
 begin
   Result:= EventsWithIndex + EventsWithText;
   Result:= Result + inherited getEvents(ShowEvents);
@@ -681,7 +681,7 @@ begin
 end;
 
 procedure TQtComboBox.Paint;
-  var R: TRect; s: string; x, y: integer;
+  var R: TRect; s: string; x, y: Integer;
 begin
   inherited;
   if FFrame
@@ -740,12 +740,12 @@ begin
 end;
 
 function TQtComboBox.getListItems: string;
-  var s: string; i: integer;
+  var s: string; i: Integer;
 begin
   s:= '[';
   for i:= 0 to FListItems.Count -1 do
     s:= s + asString(FListItems[i]) + ', ';
-  delete(s, length(s) - 1, 2);
+  Delete(s, Length(s) - 1, 2);
   Result:= s + ']';
 end;
 
@@ -765,7 +765,7 @@ begin
   end;
 end;
 
-procedure TQtComboBox.setEditable(Value: boolean);
+procedure TQtComboBox.setEditable(Value: Boolean);
 begin
   if Value <> FEditable then begin
     FEditable:= Value;
@@ -773,7 +773,7 @@ begin
   end;
 end;
 
-procedure TQtComboBox.setFrame(Value: boolean);
+procedure TQtComboBox.setFrame(Value: Boolean);
 begin
   if Value <> FFrame then begin
     FFrame:= Value;
@@ -785,13 +785,13 @@ end;
 
 constructor TQtFontComboBox.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 105;
   Width:= 144;
   Height:= 24;
   FCurrentFont:= TFont.Create;
   FCurrentFont.Assign(Font);
-  Editable:= true;
+  Editable:= True;
   ListItems.Text:= '';
 end;
 
@@ -801,12 +801,12 @@ begin
   FreeAndNil(FCurrentFont);
 end;
 
-function TQtFontComboBox.getAttributes(ShowAttributes: integer): string;
+function TQtFontComboBox.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|WritingSystem|FontFilters|CurrentFont';
   Result:= Result + inherited getAttributes(ShowAttributes);
   var p:= Pos('|CurrentText|CurrentIndex|PlaceholderText|ListItems', Result);
-  if p > 0 then delete(Result, p, 51);
+  if p > 0 then Delete(Result, p, 51);
 end;
 
 procedure TQtFontComboBox.setAttribute(Attr, Value, Typ: string);
@@ -821,7 +821,7 @@ begin
     inherited;
 end;
 
-function TQtFontComboBox.getEvents(ShowEvents: integer): string;
+function TQtFontComboBox.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|currentFontChanged';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -845,7 +845,7 @@ end;
 procedure TQtFontComboBox.MakeFont;
   var s1, s2: string;
 begin
-  if Name = '' then exit;
+  if Name = '' then Exit;
 
   s1:= 'self.' + Name + '.setCurrentFont';
   s2:= '(QFont(' + asString(FCurrentFont.Name) + ', ' + IntToStr(FCurrentFont.Size);
@@ -881,7 +881,7 @@ begin
     s:= s + '|QFontComboBox.ProportionalFonts';
   if s = '' then
     s:= '|QFontComboBox.AllFonts';
-  delete(s, 1, 1);
+  Delete(s, 1, 1);
   setAttribute('FontFilters', s, '');
 end;
 
@@ -908,19 +908,19 @@ end;
 
 constructor TQtProgressBar.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 90;
   Width:= 120;
   Height:= 24;
   FMinimum:= 0;
   FMaximum:= 100;
   FValue:= 24;
-  FTextVisible:= true;
+  FTextVisible:= True;
   FOrientation:= Horizontal;
   FFormat:= '%p%';
 end;
 
-function TQtProgressBar.getAttributes(ShowAttributes: integer): string;
+function TQtProgressBar.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Minimum|Maximum|Value|';
   if ShowAttributes >= 2 then
@@ -938,7 +938,7 @@ begin
     inherited;
 end;
 
-function TQtProgressBar.getEvents(ShowEvents: integer): string;
+function TQtProgressBar.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|valueChanged';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -979,7 +979,7 @@ begin
 end;
 
 procedure TQtProgressBar.Paint;
-  var x, y: integer; R: TRect; s: string;
+  var x, y: Integer; R: TRect; s: string;
 begin
   inherited;
   Canvas.Pen.Color:= $BCBCBC;
@@ -988,7 +988,7 @@ begin
   Canvas.Rectangle(R);
 
   if (FValue < FMinimum) or (FValue > FMaximum) or (FMaximum <= FMinimum) then
-    exit;
+    Exit;
 
   // draw text
   if FTextVisible and (FOrientation = Horizontal) then begin
@@ -1017,28 +1017,28 @@ begin
 end;
 
 function TQtProgressBar.getText: string;
-  var s: string; p: integer;
+  var s: string; p: Integer;
 begin
   s:= FFormat;
   p:= Pos('%p', s);
   if p > 0 then begin
-    delete(s, p, 2);
+    Delete(s, p, 2);
     insert(IntToStr(Round(0.5 + (FValue - FMinimum)/(FMaximum - FMinimum)*100)), s, p);
   end;
   p:= Pos('%v', s);
   if p > 0 then begin
-    delete(s, p, 2);
+    Delete(s, p, 2);
     insert(IntToStr(FValue), s, p);
   end;
   p:= Pos('%m', s);
   if p > 0 then begin
-    delete(s, p, 2);
+    Delete(s, p, 2);
     insert(IntToStr(FMaximum - FMinimum), s, p);
   end;
   Result:= '  ' + s + '  ';
 end;
 
-procedure TQtProgressBar.setMinimum(Value: integer);
+procedure TQtProgressBar.setMinimum(Value: Integer);
 begin
   if Value <> FMinimum then begin
     FMinimum:= Value;
@@ -1046,7 +1046,7 @@ begin
   end;
 end;
 
-procedure TQtProgressBar.setMaximum(Value: integer);
+procedure TQtProgressBar.setMaximum(Value: Integer);
 begin
   if Value <> FMaximum then begin
     FMaximum:= Value;
@@ -1054,7 +1054,7 @@ begin
   end;
 end;
 
-procedure TQtProgressBar.setValue(Value: integer);
+procedure TQtProgressBar.setValue(Value: Integer);
 begin
   if Value <> FValue then begin
     FValue:= Value;
@@ -1062,7 +1062,7 @@ begin
   end;
 end;
 
-procedure TQtProgressBar.setTextVisible(Value: boolean);
+procedure TQtProgressBar.setTextVisible(Value: Boolean);
 begin
   if Value <> FTextVisible then begin
     FTextVisible:= Value;
@@ -1071,7 +1071,7 @@ begin
 end;
 
 procedure TQtProgressBar.setOrientation(Value: TOrientation);
-  var h: integer;
+  var h: Integer;
 begin
   if Value <> FOrientation then begin
     FOrientation:= Value;
@@ -1083,7 +1083,7 @@ begin
   end;
 end;
 
-procedure TQtProgressBar.setInvertedAppearance(Value: boolean);
+procedure TQtProgressBar.setInvertedAppearance(Value: Boolean);
 begin
   if Value <> FInvertedAppearance then begin
     FInvertedAppearance:= Value;
@@ -1109,13 +1109,13 @@ begin
   Height:= 20;
 end;
 
-function TQtStatusBar.getAttributes(ShowAttributes: integer): string;
+function TQtStatusBar.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|SizeGripEnabled';
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-function TQtStatusBar.getEvents(ShowEvents: integer): string;
+function TQtStatusBar.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|messageChanged';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -1149,7 +1149,7 @@ begin
 end;
 
 procedure TQtStatusBar.Paint;
-  var R: TRect; p3: integer;
+  var R: TRect; p3: Integer;
 begin
   setBounds(0, Parent.ClientHeight-PPIScale(21), Parent.ClientWidth, PPIScale(21));
   inherited;
@@ -1174,7 +1174,7 @@ begin
   // do nothing
 end;
 
-procedure TQtStatusBar.setSizeGripEnabled(Value: boolean);
+procedure TQtStatusBar.setSizeGripEnabled(Value: Boolean);
 begin
   if Value <> FSizeGripEnabled then begin
     FSizeGripEnabled:= Value;
@@ -1194,13 +1194,13 @@ begin
   ControlStyle := [csAcceptsControls];
 end;
 
-function TQtGroupBox.getAttributes(ShowAttributes: integer): string;
+function TQtGroupBox.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Title|Flat|Checkable|Checked';
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-function TQtGroupBox.getEvents(ShowEvents: integer): string;
+function TQtGroupBox.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|clicked|toggled';
   Result:= Result + inherited getEvents(ShowEvents);
@@ -1230,7 +1230,7 @@ begin
 end;
 
 procedure TQtGroupBox.Paint;
-  var R: TRect; x: integer;
+  var R: TRect; x: Integer;
 begin
   inherited;
   Canvas.Pen.Color:= $DCDCDC;
@@ -1269,7 +1269,7 @@ begin
   end;
 end;
 
-procedure TQtGroupBox.setFlat(Value: boolean);
+procedure TQtGroupBox.setFlat(Value: Boolean);
 begin
   if Value <> FFlat then begin
     FFlat:= Value;
@@ -1277,7 +1277,7 @@ begin
   end;
 end;
 
-procedure TQtGroupBox.setCheckable(Value: boolean);
+procedure TQtGroupBox.setCheckable(Value: Boolean);
 begin
   if Value <> FCheckable then begin
     FCheckable:= Value;
@@ -1285,7 +1285,7 @@ begin
   end;
 end;
 
-procedure TQtGroupBox.setChecked(Value: boolean);
+procedure TQtGroupBox.setChecked(Value: Boolean);
 begin
   if Value <> FChecked then begin
     FChecked:= Value;
@@ -1305,7 +1305,7 @@ begin
   FTabs.Text:= 'Tab 1'#13#10'Tab 2'#13#10'Tab 3'#13#10;
   FTabPosition:= North;
   FTabShape:= Rounded;
-  FUsesScrollButtons:= true;
+  FUsesScrollButtons:= True;
 end;
 
 destructor TQtTabWidget.Destroy;
@@ -1320,7 +1320,7 @@ begin
   Partner.DeleteItems(Name, 'Page');
 end;
 
-function TQtTabWidget.getAttributes(ShowAttributes: integer): string;
+function TQtTabWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|TabPosition|TabShape|CurrentIndex|Tabs';
   if ShowAttributes >= 2 then
@@ -1341,7 +1341,7 @@ end;
 const
   TabEvents = '|currentChanged|tabBarClicked|tabBarDoubleClicked|tabCloseRequested';
 
-function TQtTabWidget.getEvents(ShowEvents: integer): string;
+function TQtTabWidget.getEvents(ShowEvents: Integer): string;
 begin
   Result:= TabEvents + inherited getEvents(ShowEvents);
 end;
@@ -1370,7 +1370,7 @@ begin
 end;
 
 procedure TQtTabWidget.MakeTabs;
-  var i: integer; pagename, s: string;
+  var i: Integer; pagename, s: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   Partner.DeleteAttributeValues('self.' + Name + '.addTab');
@@ -1388,14 +1388,14 @@ end;
 
 procedure TQtTabWidget.Paint;
   const paddingH = 12;
-  var th, tw, i, x1, y1, RowHeight, x1Curr, x2Curr, y1Curr, y2Curr: integer;
+  var th, tw, i, x1, y1, RowHeight, x1Curr, x2Curr, y1Curr, y2Curr: Integer;
       Points: array[0..3] of TPoint;
 
-  function ShowHorTab(x1, y1: integer; const s: string; TopCorner: boolean): integer;
-    var dx, dy: integer; R: TRect;
+  function ShowHorTab(x1, y1: Integer; const s: string; TopCorner: Boolean): Integer;
+    var dx, dy: Integer; R: TRect;
   begin
     tw:= Canvas.TextWidth(s);
-    dx:= min(tw + 2*paddingH, Width-2);
+    dx:= Min(tw + 2*paddingH, Width-2);
     dy:= th + 2*HalfX;
 
     if (i = FCurrentIndex) or ((i = 0) and (FCurrentIndex = -1)) then begin
@@ -1427,11 +1427,11 @@ procedure TQtTabWidget.Paint;
     Result:= x1 + dx;
   end;
 
-  function ShowVerTab(x1, y1: integer; const s: string; LeftCorner: boolean): integer;
-    var dy, dx, tw: integer; R: TRect;
+  function ShowVerTab(x1, y1: Integer; const s: string; LeftCorner: Boolean): Integer;
+    var dy, dx, tw: Integer; R: TRect;
   begin
     tw:= Canvas.TextWidth(s);
-    dy:= min(tw + 2*paddingH, Height-2);
+    dy:= Min(tw + 2*paddingH, Height-2);
     dx:= th + 2*HalfX +2;
 
     if (i = FCurrentIndex) or ((i = 0) and (FCurrentIndex = -1)) then begin
@@ -1466,7 +1466,7 @@ procedure TQtTabWidget.Paint;
     Result:= y1 + dy;
   end;
 
-  procedure SetBrushColor(i: integer);
+  procedure SetBrushColor(i: Integer);
   begin
     if (i = FCurrentIndex) or ((i = 0) and (FCurrentIndex = -1))
       then Canvas.Brush.Color:= clWhite //SelectionColor
@@ -1488,7 +1488,7 @@ begin
         y1:= 2;
         for i:= 0 to FTabs.Count - 1 do begin
           SetBrushColor(i);
-          x1:= ShowHorTab(x1, y1, FTabs[i], true);
+          x1:= ShowHorTab(x1, y1, FTabs[i], True);
         end;
         Canvas.Pen.Color:= $A0A0A0;
         y1:= RowHeight + 1;
@@ -1503,7 +1503,7 @@ begin
         y1:= Height - RowHeight - 1;
         for i:= 0 to FTabs.Count - 1 do begin
           SetBrushColor(i);
-          x1:= ShowHorTab(x1, y1, FTabs[i], false);
+          x1:= ShowHorTab(x1, y1, FTabs[i], False);
         end;
         Canvas.Pen.Color:= $A0A0A0;
         y1:= Height - RowHeight - 1;
@@ -1519,7 +1519,7 @@ begin
         y1:= 2;
         for i:= 0 to FTabs.Count - 1 do begin
           SetBrushColor(i);
-          y1:= ShowVerTab(x1, y1, FTabs[i], true);
+          y1:= ShowVerTab(x1, y1, FTabs[i], True);
         end;
         Canvas.Pen.Color:= $A0A0A0;
         x1:= RowHeight + 3;
@@ -1536,7 +1536,7 @@ begin
         y1:= 2;
         for i:= 0 to FTabs.Count - 1 do begin
           SetBrushColor(i);
-          y1:= ShowVerTab(x1, y1, FTabs[i], false);
+          y1:= ShowVerTab(x1, y1, FTabs[i], False);
         end;
         Canvas.Pen.Color:= $A0A0A0;
         x1:= Width - RowHeight - 3;
@@ -1570,7 +1570,7 @@ begin
   end;
 end;
 
-procedure TQtTabWidget.setCurrentIndex(Value: integer);
+procedure TQtTabWidget.setCurrentIndex(Value: Integer);
 begin
   if Value <> FCurrentIndex then begin
     FCurrentIndex:= Value;
@@ -1588,7 +1588,7 @@ end;
 
 {--- TQtMenuBar ---------------------------------------------------------------}
 
-constructor TQtMenuBar.create(AOwner: TComponent);
+constructor TQtMenuBar.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 85;
@@ -1607,7 +1607,7 @@ begin
   inherited;
 end;
 
-function TQtMenuBar.getAttributes(ShowAttributes: integer): string;
+function TQtMenuBar.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|MenuItems|Name';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -1615,7 +1615,7 @@ end;
 
 const MenuBarEvents = '|hovered|triggered';
 
-function TQtMenuBar.getEvents(ShowEvents: integer): string;
+function TQtMenuBar.getEvents(ShowEvents: Integer): string;
 begin
   Result:= MenuBarEvents + inherited getEvents(ShowEvents);
 end;
@@ -1661,16 +1661,16 @@ begin
     inherited
 end;
 
-function TQtMenuBar.hasSubMenu(MenuItems: TStrings; i: integer): boolean;
+function TQtMenuBar.hasSubMenu(MenuItems: TStrings; i: Integer): Boolean;
 begin
-  Result:= (i < MenuItems.count - 1) and
+  Result:= (i < MenuItems.Count - 1) and
            (LeftSpaces(MenuItems[i], 2) < LeftSpaces(MenuItems[i+1], 2));
 end;
 
 function TQtMenuBar.makeMenuName(m, s: string): string;
 begin
   if Right(m, -4) = 'Menu' then
-    m:= copy(m, 1, Length(m) - 4);
+    m:= Copy(m, 1, Length(m) - 4);
   Result:= m + OnlyCharsAndDigits(s) + 'Menu';
 end;
 
@@ -1680,12 +1680,12 @@ begin
 end;
 
 procedure TQtMenuBar.CalculateMenus(MenuItems, PyMenu, PyMethods: TStrings);
-  var i, MenuIndent, ls, p: integer;
+  var i, MenuIndent, ls, p: Integer;
       s, ts, Shortcut: string;
       MenuName: array[-1..10] of string;
       MenuText: array[-1..10] of string;
 
-  procedure MakeCommand(Indent: integer);
+  procedure MakeCommand(Indent: Integer);
     var Com: string;
   begin
     if ts = '-' then
@@ -1708,29 +1708,29 @@ begin
     s:= MenuItems[i];
     p:= Pos(',', s);
     if p > 0 then begin
-      Shortcut:= ', QKeySequence(' + asString(trim(copy(s, p+1, length(s)))) + ')';
-      s:= copy(s, 1, p-1);
+      Shortcut:= ', QKeySequence(' + asString(Trim(Copy(s, p+1, Length(s)))) + ')';
+      s:= Copy(s, 1, p-1);
     end else
       Shortcut:= '';
-    ts:= trim(s);
+    ts:= Trim(s);
     ls:= LeftSpaces(s, 2) div 2;
     if ls < MenuIndent then
       MenuIndent:= ls;
     if ls > MenuIndent then begin
       MakeCommand(MenuIndent);
-      inc(MenuIndent);
+      Inc(MenuIndent);
     end else if hasSubMenu(MenuItems, i) then begin  // create new menu/submenu
       MenuText[MenuIndent]:= ts;
       MenuName[MenuIndent]:= makeMenuName(MenuName[MenuIndent-1], s);
       PyMenu.Add(Indent2 + 'self.' + MenuName[MenuIndent] + ' = self.' + MenuName[MenuIndent-1] + '.addMenu(' + asString(MenuText[MenuIndent]) + ')');
-      inc(MenuIndent);
+      Inc(MenuIndent);
     end else
       MakeCommand(MenuIndent);
   end;
 end;
 
 procedure TQtMenuBar.MakeMenuItems;
-  var i: integer;
+  var i: Integer;
       OldMenu: TStringList;
       OldMethods: TStringList;
       NewMenu: TStringList;
@@ -1762,7 +1762,7 @@ begin
 end;
 
 procedure TQtMenuBar.Rename(const OldName, NewName, Events: string);
-  var i: integer;
+  var i: Integer;
       OldMenu: TStringList;
       OldMethods: TStringList;
       NewMenu: TStringList;
@@ -1791,7 +1791,7 @@ begin
   FreeAndNil(OldMethods);
   FreeAndNil(NewMenu);
   FreeAndNil(NewMethods);
-  Partner.ReplaceWord(OldName, NewName, true);
+  Partner.ReplaceWord(OldName, NewName, True);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
@@ -1804,7 +1804,7 @@ begin
 end;
 
 procedure TQtMenuBar.Paint;
-  var s, item: string; i: integer;
+  var s, item: string; i: Integer;
 begin
   setBounds(0, 0, Parent.ClientWidth, PPIScale(21));
   inherited;
@@ -1821,7 +1821,7 @@ end;
 
 {--- TQtMenu -----------------------------------------------------------}
 
-constructor TQtMenu.create(AOwner: TComponent);
+constructor TQtMenu.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 86;
@@ -1829,7 +1829,7 @@ begin
   Height:= 28;
   FMenuItems.Text:= 'Cut, Ctrl+X'#13#10'Copy, Ctrl+C'#13#10'Paste, Ctrl+C'#13#10'-'#13#10+
                     'Delete'#13#10'  All'#13#10'  Selected';
-  Sizeable:= false;
+  Sizeable:= False;
 end;
 
 procedure TQtMenu.NewWidget(Widget: string = '');
@@ -1859,7 +1859,7 @@ end;
 
 constructor TQtButtonGroup.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 76;
   Width:= 120;
   Height:= 80;
@@ -1867,7 +1867,7 @@ begin
   FItems:= TStringList.Create;
   FOldItems:= TStringList.Create;
   FTitle:= ' ' + _('Continent') + ' ';
-  FCheckboxes:= false;
+  FCheckboxes:= False;
 end;
 
 destructor TQtButtonGroup.Destroy;
@@ -1885,7 +1885,7 @@ begin
   Partner.DeleteAttributeValues('self.' + Name + 'BG');
 end;
 
-function TQtButtonGroup.getAttributes(ShowAttributes: integer): string;
+function TQtButtonGroup.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Columns|Items|Title|Checkboxes';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -1906,7 +1906,7 @@ begin
     inherited;
 end;
 
-function TQtButtonGroup.getEvents(ShowEvents: integer): string;
+function TQtButtonGroup.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|buttonClicked|buttonPressed|buttonReleased|buttonToggled' +
            '|idClicked|idPressed|idReleased|idToggled';
@@ -1933,13 +1933,13 @@ begin
     Result:= inherited;
 end;
 
-function TQtButtonGroup.RBName(i: integer): string;
+function TQtButtonGroup.RBName(i: Integer): string;
 begin
   Result:= 'self.' + Name + 'RB' + IntToStr(i);
 end;
 
 procedure TQtButtonGroup.MakeButtongroupItems;
-  var i, p: integer; s, s1, s2: string;
+  var i, p: Integer; s, s1, s2: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   for i:= 0 to FOldItems.Count - 1 do
@@ -1956,7 +1956,7 @@ begin
     s:= FItems[i];
     p:= Pos(', ' + _('selected'), s);
     if p > 0
-      then s:= asString(copy(s, 1, p-1))
+      then s:= asString(Copy(s, 1, p-1))
       else s:= asString(s);
     if FCheckboxes
       then s1:= s1 + surround(RBName(i) + ' = QCheckBox(' + s + ', self.' + Name + ')')
@@ -1977,9 +1977,9 @@ begin
 end;
 
 procedure TQtButtonGroup.setPositionAndSize;
-  var col, row, ItemsInCol, line, x, y, dx, dy, th: integer;
-      RadioHeight, RadioWidth, ColWidth, RowHeight, ColWidthRest, RowHeightRest: integer;
-      xold, yold,ColWidthI, RowHeightI: integer;
+  var col, row, ItemsInCol, line, x, y, dx, dy, th: Integer;
+      RadioHeight, RadioWidth, ColWidth, RowHeight, ColWidthRest, RowHeightRest: Integer;
+      xold, yold,ColWidthI, RowHeightI: Integer;
       key: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
@@ -2010,7 +2010,7 @@ begin
       if col = 0
         then x:= dx
         else x:= xold + ColWidthI;
-      dec(ColWidthRest);
+      Dec(ColWidthRest);
 
       yold:= 0;
       ItemsInCol:= ItemsInColumn(col+1);
@@ -2022,7 +2022,7 @@ begin
         if row = 0
           then y:= dy
           else y:= yold + RowHeightI;
-        dec(RowHeightRest);
+        Dec(RowHeightRest);
         key:= RBName(line) + '.setGeometry';
         setAttributValue(key, key + '(' + IntToStr(PPIUnScale(x)) + ', ' + IntToStr(PPIUnScale(y)) +
           ', ' + IntToStr(PPIUnScale(ColWidthI)) + ', ' + IntToStr(PPIUnScale(RowHeightI)) + ')');
@@ -2030,7 +2030,7 @@ begin
           key:= RBName(line) + '.setChecked';
           setAttributValue(key, key + '(True)');
         end;
-        inc(line);
+        Inc(line);
         yold:= y;
       end;
       xold:= x;
@@ -2064,7 +2064,7 @@ begin
   end;
 end;
 
-procedure TQtButtonGroup.setColumns(Value: integer);
+procedure TQtButtonGroup.setColumns(Value: Integer);
 begin
   if (FColumns <> Value) and (Value > 0) then begin
     FColumns:= Value;
@@ -2080,7 +2080,7 @@ begin
   end;
 end;
 
-procedure TQtButtonGroup.setCheckboxes(Value: boolean);
+procedure TQtButtonGroup.setCheckboxes(Value: Boolean);
 begin
   if FCheckboxes <> Value then begin
     FCheckboxes:= Value;
@@ -2088,8 +2088,8 @@ begin
   end;
 end;
 
-function TQtButtonGroup.ItemsInColumn(i: integer): integer;
-  var quot, rest: integer;
+function TQtButtonGroup.ItemsInColumn(i: Integer): Integer;
+  var quot, rest: Integer;
 begin
   quot:= FItems.Count div FColumns;
   rest:= FItems.Count mod FColumns;
@@ -2101,13 +2101,13 @@ end;
 procedure TQtButtonGroup.Rename(const OldName, NewName, Events: string);
 begin
   inherited;
-  Partner.ReplaceWord('self.' + OldName + 'BG', 'self.' + NewName + 'BG', true);
+  Partner.ReplaceWord('self.' + OldName + 'BG', 'self.' + NewName + 'BG', True);
 end;
 
 procedure TQtButtonGroup.Paint;
   const cRadius = 7;
   var ColumnWidth, RowHeight, RadioHeight, LabelHeight,
-      col, row, yc, ItemsInCol, line, x, y, th, p, Radius: integer;
+      col, row, yc, ItemsInCol, line, x, y, th, p, Radius: Integer;
       R: TRect; s: string;
 begin
   FOldItems.Text:= FItems.Text;
@@ -2143,7 +2143,7 @@ begin
         s:= FItems[line];
         p:= Pos(', ' + _('selected'), s);
         if p > 0 then
-          s:= copy(s, 1, p-1);
+          s:= Copy(s, 1, p-1);
         x:= PPIScale(4) + (col - 1)*ColumnWidth;
         y:= LabelHeight + PPIScale(2) + (row - 1)*RowHeight;
         Canvas.Brush.Color:= clWhite;
@@ -2171,7 +2171,7 @@ begin
         yc:= y + RowHeight div 2 - th div 2;
         R:= Rect(x + PPIScale(19), yc, col*ColumnWidth, yc + RowHeight);
         Canvas.TextRect(R, s);
-        inc(line);
+        Inc(line);
       end;
     end;
   end;
@@ -2179,7 +2179,7 @@ end;
 
 {--- TQtMainWindow ------------------------------------------------------------}
 
-function TQtMainWindow.getAttributes(ShowAttributes: integer): string;
+function TQtMainWindow.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Title|Animated|DockNestingEnabled|DocumentMode|TabShape|ToolButtonStyle';
   Result:= Result + inherited getAttributes(ShowAttributes);
@@ -2198,7 +2198,7 @@ begin
     inherited;
 end;
 
-function TQtMainWindow.getEvents(ShowEvents: integer): string;
+function TQtMainWindow.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '|iconSizeChanged|tabifiedDockWidgetActivated|toolButtonStyleChanged'; // ToDo
   Result:= Result + inherited getEvents(ShowEvents);

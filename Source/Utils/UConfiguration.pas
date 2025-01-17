@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
  Unit:     UConfiguration
- Author:   Gerhard Röhner
+ Author:   Gerhard RÃ¶hner
  Date:     July 2000
  Purpose:  configuration
 -------------------------------------------------------------------------------}
@@ -50,7 +50,7 @@ const
   MaxTabItem = 28;
 
 type
-  TBoolArray = array of boolean;
+  TBoolArray = array of Boolean;
 
   TEditStyleHookColor = class(TEditStyleHook)  // TEditStyleHook in StdCtrls
   private
@@ -69,19 +69,19 @@ type
     fColorTheme: string;
 
     // Class modeler
-    fShowGetSetMethods: boolean;
-    fGetSetMethodsAsProperty: boolean;
-    fGetMethodChecked: boolean;
-    fSetMethodChecked: boolean;
-    fShowTypeSelection: boolean;
-    fShowKindProcedure: boolean;
-    fShowParameterTypeSelection: boolean;
-    fFromFutureImport: boolean;
+    fShowGetSetMethods: Boolean;
+    fGetSetMethodsAsProperty: Boolean;
+    fGetMethodChecked: Boolean;
+    fSetMethodChecked: Boolean;
+    fShowTypeSelection: Boolean;
+    fShowKindProcedure: Boolean;
+    fShowParameterTypeSelection: Boolean;
+    fFromFutureImport: Boolean;
 
     // GUI designer
-    fNameFromText: boolean;
+    fNameFromText: Boolean;
     fGuiDesignerHints: Boolean;
-    fSnapToGrid: boolean;
+    fSnapToGrid: Boolean;
     fGridSize: Integer;
     fZoomSteps: Integer;
     fGUIFontSize: Integer;
@@ -91,59 +91,59 @@ type
 
     // Structogram
     fStructoDatatype: string;
-    fSwitchWithCaseLine: boolean;
-    fCaseCount: integer;
-    fStructogramShadowWidth: integer;
-    fStructogramShadowIntensity: integer;
+    fSwitchWithCaseLine: Boolean;
+    fCaseCount: Integer;
+    fStructogramShadowWidth: Integer;
+    fStructogramShadowIntensity: Integer;
 
     // Sequencediagram
     fSDFillingcolor: TColor;
-    fSDNoFilling: boolean;
-    fSDShowMainCall: boolean;
-    fSDShowParameter: boolean;
-    fSDShowReturn: boolean;
+    fSDNoFilling: Boolean;
+    fSDShowMainCall: Boolean;
+    fSDShowParameter: Boolean;
+    fSDShowReturn: Boolean;
 
     // UML design
     fValidClassColor: TColor;
     fInvalidClassColor: TColor;
-    fClassHead: integer;
-    fShadowWidth: integer;
-    fShadowIntensity: integer;
+    fClassHead: Integer;
+    fShadowWidth: Integer;
+    fShadowIntensity: Integer;
     fObjectColor: TColor;
-    fObjectHead: integer;
-    fObjectFooter: integer;
-    fObjectCaption: integer;
-    fObjectUnderline: boolean;
+    fObjectHead: Integer;
+    fObjectFooter: Integer;
+    fObjectCaption: Integer;
+    fObjectUnderline: Boolean;
     fCommentColor: TColor;
-    fDiVisibilityFilter: integer;
-    fDiSortOrder: integer;
-    fDIShowParameter: integer;
-    fDiShowIcons: integer;
+    fDiVisibilityFilter: Integer;
+    fDiSortOrder: Integer;
+    fDIShowParameter: Integer;
+    fDiShowIcons: Integer;
 
     // UML options
     fShowEmptyRects: Boolean;
-    fIntegerInsteadofInt: boolean;
+    fIntegerInsteadofInt: Boolean;
     fConstructorWithVisibility: Boolean;
-    fRelationshipAttributesBold: boolean;
-    fShowClassparameterSeparately: boolean;
-    fRoleHidesAttribute: boolean;
-    fClassnameInUppercase: boolean;
-    fDefaultModifiers: boolean;
-    fShowPublicOnly: boolean;
-    fShowObjectsWithInheritedPrivateAttributes: boolean;
-    fShowObjectsWithMethods: boolean;
+    fRelationshipAttributesBold: Boolean;
+    fShowClassparameterSeparately: Boolean;
+    fRoleHidesAttribute: Boolean;
+    fClassnameInUppercase: Boolean;
+    fDefaultModifiers: Boolean;
+    fShowPublicOnly: Boolean;
+    fShowObjectsWithInheritedPrivateAttributes: Boolean;
+    fShowObjectsWithMethods: Boolean;
     fObjectLowerCaseLetter: Boolean;
-    fShowAllNewObjects: boolean;
-    fObjectsWithoutVisibility: boolean;
+    fShowAllNewObjects: Boolean;
+    fObjectsWithoutVisibility: Boolean;
     fPrivateAttributEditable: Boolean;
     fOpenFolderFormItems: string;
 
     // Restrictions
     fLockedDOSWindow: Boolean;
     fLockedInternet: Boolean;
-    fLockedPaths: boolean;
-    fLockedStructogram: boolean;
-    fUsePredefinedLayouts: boolean;
+    fLockedPaths: Boolean;
+    fLockedStructogram: Boolean;
+    fUsePredefinedLayouts: Boolean;
 
     // Associations
     fAdditionalAssociations: string;
@@ -190,14 +190,14 @@ type
 
     // TextDiff
     fTextDiffState: string;
-    fTextDiffIgnoreCase: boolean;
-    fTextDiffIgnoreBlanks: boolean;
+    fTextDiffIgnoreCase: Boolean;
+    fTextDiffIgnoreBlanks: Boolean;
 
     // Browser
     fBrowserURLs: string;
-    fCBWidth: integer;
-    fUseIEinternForDocuments: boolean;
-    fOnlyOneBrowserWindow: boolean;
+    fCBWidth: Integer;
+    fUseIEinternForDocuments: Boolean;
+    fOnlyOneBrowserWindow: Boolean;
     fBrowserTitle: string;
     fOpenBrowserShortcut: string;
     fBrowserProgram: string;
@@ -219,7 +219,7 @@ type
     procedure setStructogramFont(Value: TFont);
     procedure setSequenceFont(Value: TFont);
   public
-    constructor create;
+    constructor Create;
     destructor Destroy; override;
     procedure RemovePortableDrives;
     procedure AddPortableDrives;
@@ -228,29 +228,29 @@ type
     property ColorTheme: string read fColorTheme write fColorTheme;
 
     // Class modeler
-    property ShowGetSetMethods: boolean read FShowGetSetMethods
+    property ShowGetSetMethods: Boolean read FShowGetSetMethods
       write FShowGetSetMethods;
-    property GetSetMethodsAsProperty: boolean read FGetSetMethodsAsProperty
+    property GetSetMethodsAsProperty: Boolean read FGetSetMethodsAsProperty
       write FGetSetMethodsAsProperty;
-    property SetMethodChecked: boolean read FSetMethodChecked
+    property SetMethodChecked: Boolean read FSetMethodChecked
       write FSetMethodChecked;
-    property GetMethodChecked: boolean read FGetMethodChecked
+    property GetMethodChecked: Boolean read FGetMethodChecked
       write FGetMethodChecked;
-    property ShowTypeSelection: boolean read FShowTypeSelection
+    property ShowTypeSelection: Boolean read FShowTypeSelection
       write FShowTypeSelection;
-    property ShowKindProcedure: boolean read FShowKindProcedure
+    property ShowKindProcedure: Boolean read FShowKindProcedure
       write FShowKindProcedure;
-    property ShowParameterTypeSelection: boolean read FShowParameterTypeSelection
+    property ShowParameterTypeSelection: Boolean read FShowParameterTypeSelection
       write FShowParameterTypeSelection;
-    property FromFutureImport: boolean read FFromFutureImport
+    property FromFutureImport: Boolean read FFromFutureImport
       write FFromFutureImport;
 
     // GUI designer
-    property NameFromText : boolean read fNameFromText
+    property NameFromText : Boolean read fNameFromText
       write FNameFromText;
-    property GuiDesignerHints : boolean read fGuiDesignerHints
+    property GuiDesignerHints : Boolean read fGuiDesignerHints
       write fGuiDesignerHints;
-    property SnapToGrid : boolean read fSnapToGrid
+    property SnapToGrid : Boolean read fSnapToGrid
       write fSnapToGrid;
     property GridSize : Integer read fGridSize
       write fGridSize;
@@ -268,7 +268,7 @@ type
     // structogram
     property StructoDatatype : string read fStructoDatatype
       write fStructoDatatype;
-    property SwitchWithCaseLine : boolean read fSwitchWithCaseLine
+    property SwitchWithCaseLine : Boolean read fSwitchWithCaseLine
       write fSwitchWithCaseLine;
     property CaseCount : Integer read fCaseCount write fCaseCount;
     property StructogramShadowWidth : Integer read fStructogramShadowWidth
@@ -279,13 +279,13 @@ type
     // sequence diagram
     property SDFillingColor : TColor read fSDFillingcolor
       write fSDFillingColor;
-    property SDNoFilling : boolean read fSDNoFilling
+    property SDNoFilling : Boolean read fSDNoFilling
       write fSDNoFilling;
-    property SDShowMainCall : boolean read fSDShowMainCall
+    property SDShowMainCall : Boolean read fSDShowMainCall
       write fSDShowMainCall;
-    property SDShowParameter : boolean read fSDShowParameter
+    property SDShowParameter : Boolean read fSDShowParameter
       write fSDShowParameter;
-    property SDShowReturn : boolean read fSDShowReturn
+    property SDShowReturn : Boolean read fSDShowReturn
       write fSDShowReturn;
 
     // UML design
@@ -293,77 +293,77 @@ type
       write fValidClassColor;
     property InvalidClassColor : TColor read fInvalidClassColor
       write fInvalidClassColor;
-    property ClassHead : integer read fClassHead
+    property ClassHead : Integer read fClassHead
       write fClassHead;
-    property ShadowWidth : integer read fShadowWidth
+    property ShadowWidth : Integer read fShadowWidth
       write fShadowWidth;
-    property ShadowIntensity : integer read fShadowIntensity
+    property ShadowIntensity : Integer read fShadowIntensity
       write fShadowIntensity;
     property ObjectColor : TColor read fObjectColor
       write fObjectColor;
-    property ObjectHead : integer read fObjectHead
+    property ObjectHead : Integer read fObjectHead
       write fObjectHead;
-    property ObjectFooter : integer read fObjectFooter
+    property ObjectFooter : Integer read fObjectFooter
       write fObjectFooter;
-    property ObjectCaption : integer read fObjectCaption
+    property ObjectCaption : Integer read fObjectCaption
       write fObjectCaption;
-    property ObjectUnderline : boolean read fObjectUnderline
+    property ObjectUnderline : Boolean read fObjectUnderline
       write fObjectUnderline;
     property CommentColor : TColor read fCommentColor
       write fCommentColor;
-    property DiVisibilityFilter : integer read fDiVisibilityFilter
+    property DiVisibilityFilter : Integer read fDiVisibilityFilter
       write fDiVisibilityFilter;
-    property DiSortOrder : integer read fDiSortOrder
+    property DiSortOrder : Integer read fDiSortOrder
       write fDiSortOrder;
-    property DiShowParameter : integer read fDiShowParameter
+    property DiShowParameter : Integer read fDiShowParameter
       write fDiShowParameter;
-    property DiShowIcons : integer read fDiShowIcons
+    property DiShowIcons : Integer read fDiShowIcons
       write fDiShowIcons;
 
     // UML options
-    property ShowEmptyRects : boolean read fShowEmptyRects
+    property ShowEmptyRects : Boolean read fShowEmptyRects
       write fShowEmptyRects;
-    property IntegerInsteadofInt : boolean read fIntegerInsteadofInt
+    property IntegerInsteadofInt : Boolean read fIntegerInsteadofInt
       write fIntegerInsteadofInt;
-    property ConstructorWithVisibility : boolean read fConstructorWithVisibility
+    property ConstructorWithVisibility : Boolean read fConstructorWithVisibility
       write fConstructorWithVisibility;
-    property RelationshipAttributesBold : boolean read fRelationshipAttributesBold
+    property RelationshipAttributesBold : Boolean read fRelationshipAttributesBold
       write fRelationshipAttributesBold;
-    property ShowClassparameterSeparately : boolean read fShowClassparameterSeparately
+    property ShowClassparameterSeparately : Boolean read fShowClassparameterSeparately
       write fShowClassparameterSeparately ;
-    property RoleHidesAttribute : boolean read fRoleHidesAttribute
+    property RoleHidesAttribute : Boolean read fRoleHidesAttribute
       write fRoleHidesAttribute;
-    property ClassnameInUppercase : boolean read fClassnameInUppercase
+    property ClassnameInUppercase : Boolean read fClassnameInUppercase
       write fClassnameInUppercase;
-    property DefaultModifiers : boolean read fDefaultModifiers
+    property DefaultModifiers : Boolean read fDefaultModifiers
       write fDefaultModifiers;
-    property ShowPublicOnly : boolean read fShowPublicOnly
+    property ShowPublicOnly : Boolean read fShowPublicOnly
       write fShowPublicOnly;
-    property ShowObjectsWithInheritedPrivateAttributes : boolean read fShowObjectsWithInheritedPrivateAttributes
+    property ShowObjectsWithInheritedPrivateAttributes : Boolean read fShowObjectsWithInheritedPrivateAttributes
       write fShowObjectsWithInheritedPrivateAttributes;
-    property ShowObjectsWithMethods : boolean read fShowObjectsWithMethods
+    property ShowObjectsWithMethods : Boolean read fShowObjectsWithMethods
       write fShowObjectsWithMethods;
-    property ObjectLowerCaseLetter : boolean read fObjectLowerCaseLetter
+    property ObjectLowerCaseLetter : Boolean read fObjectLowerCaseLetter
       write fObjectLowerCaseLetter;
-    property ShowAllNewObjects : boolean read fShowAllNewObjects
+    property ShowAllNewObjects : Boolean read fShowAllNewObjects
       write fShowAllNewObjects;
-    property ObjectsWithoutVisibility : boolean read fObjectsWithoutVisibility
+    property ObjectsWithoutVisibility : Boolean read fObjectsWithoutVisibility
       write fObjectsWithoutVisibility;
-    property PrivateAttributEditable : boolean read fPrivateAttributEditable
+    property PrivateAttributEditable : Boolean read fPrivateAttributEditable
       write fPrivateAttributEditable;
     property OpenFolderFormItems: string read fOpenFolderFormItems
       write fOpenFolderFormItems;
 
     // restrictions
-    property LockedDOSWindow : boolean read fLockedDOSWindow
+    property LockedDOSWindow : Boolean read fLockedDOSWindow
       write fLockedDOSWindow;
-    property LockedInternet : boolean read fLockedInternet
+    property LockedInternet : Boolean read fLockedInternet
       write fLockedInternet;
-    property LockedPaths : boolean read fLockedPaths
+    property LockedPaths : Boolean read fLockedPaths
       write fLockedPaths;
-    property LockedStructogram : boolean read fLockedStructogram
+    property LockedStructogram : Boolean read fLockedStructogram
       write fLockedStructogram;
-    property UsePredefinedLayouts : boolean read FUsePredefinedLayouts
+    property UsePredefinedLayouts : Boolean read FUsePredefinedLayouts
       write fUsePredefinedLayouts;
 
     // Associations
@@ -423,15 +423,15 @@ type
     // TextDiff
     property TextDiffState: string read fTextDiffState
       write fTextDiffState;
-    property TextDiffIgnoreCase: boolean read fTextDiffIgnoreCase
+    property TextDiffIgnoreCase: Boolean read fTextDiffIgnoreCase
       write fTextDiffIgnoreCase;
-    property TextDiffIgnoreBlanks: boolean read fTextDiffIgnoreBlanks
+    property TextDiffIgnoreBlanks: Boolean read fTextDiffIgnoreBlanks
       write fTextDiffIgnoreBlanks;
 
     // Browser
-    property UseIEinternForDocuments: boolean read fUseIEinternForDocuments
+    property UseIEinternForDocuments: Boolean read fUseIEinternForDocuments
       write fUseIEinternForDocuments;
-    property OnlyOneBrowserWindow: boolean read fOnlyOneBrowserWindow
+    property OnlyOneBrowserWindow: Boolean read fOnlyOneBrowserWindow
       write fOnlyOneBrowserWindow;
     property BrowserTitle: string read fBrowserTitle
       write fBrowserTitle;
@@ -1249,7 +1249,7 @@ type
       DefaultVisToolsMenu   = '11101111111110001';      // len = 17
       DefaultVisHelpMenu    = '11111';                  // len = 5
     var
-    VisSelectedTabMenuToolbar: integer;
+    VisSelectedTabMenuToolbar: Integer;
     fHighlighters : TList;
     fColorThemeHighlighter : TSynCustomHighlighter;
     HighlighterFileDir: string;
@@ -1287,16 +1287,16 @@ type
     TempChatProviders: TLLMProviders;
 
     // tab Visibility
-    vis1: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of boolean;
-    vis2: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of boolean;
-    TabsMenusToolbars: integer;
+    vis1: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of Boolean;
+    vis2: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of Boolean;
+    TabsMenusToolbars: Integer;
 
-    function DirectoryFilesExists(s: string): boolean;
-    procedure CheckFolder(Edit: TEdit; emptyAllowed: boolean);
+    function DirectoryFilesExists(s: string): Boolean;
+    procedure CheckFolder(Edit: TEdit; emptyAllowed: Boolean);
     procedure CheckFolderCB(ComboBox: TComboBox);
     procedure CheckUserFolder(Edit: TEdit);
-    procedure CheckFile(WinControl: TWinControl; emptyAllowed: boolean);
-    function getCheckColor(s: string; LeerErlaubt: boolean): TColor;
+    procedure CheckFile(WinControl: TWinControl; emptyAllowed: Boolean);
+    function getCheckColor(s: string; LeerErlaubt: Boolean): TColor;
     procedure ShortenPath(WinControl: TWinControl; const s: string);
     function ExtendPath(WinControl: TWinControl): string;
     function BrowserProgToName(const s: string): string;
@@ -1351,7 +1351,7 @@ type
 
     procedure MakeAssociations;
     procedure RegisterGuiPy;
-    procedure ShowPage(i: integer);
+    procedure ShowPage(i: Integer);
     procedure FolderSelect(Edit: TEdit; const aFoldername: string);
     function GetConfigurationAddress(const s: string): string;
     function getDumpText: string;
@@ -1359,7 +1359,7 @@ type
     procedure CallUpdater(const Target, Source1: string; Source2: string); overload;
     procedure SetElevationRequiredState(aControl: TWinControl);
     procedure MakeControlStructureTemplates;
-    procedure EnableColorItems(aEnable:boolean);
+    procedure EnableColorItems(aEnable:Boolean);
     procedure StoreApplicationData;
 
     procedure LoadVisibility;
@@ -1368,8 +1368,8 @@ type
     procedure PrepareVisibilityPage;
     procedure VisibilityViewToModel;
     procedure VisibilityModelToView;
-    function CountMenuItems(Menu: TTBCustomItem): integer;
-    procedure setSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Nr: integer);
+    function CountMenuItems(Menu: TTBCustomItem): Integer;
+    procedure setSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Nr: Integer);
     procedure LLMAssistantModelToView;
     procedure LLMAssistantViewToModel;
     procedure LLMChatModelToView;
@@ -1378,17 +1378,17 @@ type
     class var CurrentSkinName : string;
     Indent1, Indent2, Indent3: string;
     ControlStructureTemplates: array[1..21] of TStringList;
-    GitOK: boolean;
-    SubversionOK: boolean;
+    GitOK: Boolean;
+    SubversionOK: Boolean;
     EditorFolder: string;
-    KeyStrokesReset: boolean;
+    KeyStrokesReset: Boolean;
     VisTabs:     TBoolArray;
     VisMenus:    TBoolArray;
     VisToolbars: TBoolArray;
 
     procedure Changed;
     procedure RestoreApplicationData;
-    procedure setToolbarVisibility(Toolbar: TToolbar; Nr: integer);
+    procedure setToolbarVisibility(Toolbar: TToolbar; Nr: Integer);
     function getEncoding(const Pathname: string): TEncoding;
     procedure PrepareShow;
     function getMultiLineComment(Indent: string): string;
@@ -1404,7 +1404,7 @@ type
     procedure DoHelp(Adresse: string);
     function getClassesAndFilename(Pathname: string): TStringList;
     procedure SetStyle(StyleName: string);
-    class function isDark: boolean;
+    class function isDark: Boolean;
     procedure ApplyColorTheme;
     procedure Retranslate;
 
@@ -1475,14 +1475,14 @@ begin
         SetTextColor(Message.WParam, ColorToRGB(FontColor));
         SetBkColor(Message.WParam, ColorToRGB(Brush.Color));
         Message.Result := LRESULT(Brush.Handle);
-        Handled:= true;
+        Handled:= True;
       end;
     CM_COLORCHANGED,
     CM_ENABLEDCHANGED:
       begin
         //get the colors
         UpdateColors;
-        Handled:= false;
+        Handled:= False;
       end
   else
     inherited WndProc(Message);
@@ -1492,7 +1492,7 @@ end;
 {--- Configuration ------------------------------------------------------------}
 
 procedure TFConfiguration.FormCreate(Sender: TObject);
-  var i: integer;
+  var i: Integer;
 begin
   inherited;
   Width:= PPIScale(860);
@@ -1507,7 +1507,7 @@ begin
   for i:= 1 to 21 do
     ControlStructureTemplates[i]:= nil;
   for i:= 0 to PageList.PageCount - 1 do
-    PageList.Pages[i].TabVisible := false;
+    PageList.Pages[i].TabVisible := False;
   TVConfiguration.FullExpand;
   ShowPage(0);
   TVConfiguration.TopItem:= TVConfiguration.Items[0];
@@ -1516,17 +1516,17 @@ begin
     SetElevationRequiredState(BJEAssociation);
   end;
   VisSelectedTabMenuToolbar:= 0;
-  fHighlighters := TList.create;
+  fHighlighters := TList.Create;
   PrepareHighlighters;
   FSynEdit:= TSynEditorOptionsContainer.Create(Self);
-  FInternalCall:= false;
+  FInternalCall:= False;
   CustomShortcutsCreate;
   FInternalCall := False;
   FMargins := TSynEditPrintMargins.Create;
   Editor := nil;
   EditorFolder:= ExtractFilePath(ParamStr(0));
   StyleSelectorFormCreate;
-  KeyStrokesReset:= false;
+  KeyStrokesReset:= False;
   setLength(VisTabs, VisTabsLen);
   setLength(VisMenus, VisMenusLen);
   setLength(VisToolbars, VisToolbarsLen);
@@ -1541,7 +1541,7 @@ begin
 end;
 
 procedure TFConfiguration.FormDestroy(Sender: TObject);
-  var i: integer;
+  var i: Integer;
 begin
   for i:= 1 to 21 do
     FreeAndNil(ControlStructureTemplates[i]);
@@ -1578,7 +1578,7 @@ end;
 
 procedure TFConfiguration.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  CanClose:= true;
+  CanClose:= True;
 end;
 
 procedure TFConfiguration.FormShow(Sender: TObject);
@@ -1607,26 +1607,26 @@ begin
   UpdateHeaderFooterCursorPos;
 end;
 
-function TFConfiguration.DirectoryFilesExists(s: string): boolean;
-  var p: integer; dir: string;
+function TFConfiguration.DirectoryFilesExists(s: string): Boolean;
+  var p: Integer; dir: string;
 begin
-  Result:= true;
+  Result:= True;
   if s <> '' then begin
     s:= s + ';';
     p:= Pos(';', s);
     while p > 0 do begin
       dir:= Trim(Copy(s, 1, p-1));
-      delete(s, 1, p);
-      if dir.endsWith('*') then delete(dir, length(dir), 1);
+      Delete(s, 1, p);
+      if dir.endsWith('*') then Delete(dir, Length(dir), 1);
       if ((Copy(dir, 2, 1) = ':') or (Copy(dir, 1, 2) = '\\')) and
          not (SysUtils.DirectoryExists(dir) or FileExists(dir)) then
-          Result:= false;
+          Result:= False;
       p:= Pos(';', s);
     end;
   end;
 end;
 
-procedure TFConfiguration.CheckFolder(Edit: TEdit; emptyAllowed: boolean);
+procedure TFConfiguration.CheckFolder(Edit: TEdit; emptyAllowed: Boolean);
   var s: string;
 begin
   s:= ExtendPath(Edit);
@@ -1661,10 +1661,10 @@ end;
 procedure TFConfiguration.CheckAllFilesAndFolders;
 begin
   CheckUserFolder(ETempFolder);
-  CheckFolder(ESVNFolder, true);
+  CheckFolder(ESVNFolder, True);
   CheckFolderCB(CBRepository);
-  CheckFolder(ETempFolder, false);
-  CheckFolder(EGitFolder, true);
+  CheckFolder(ETempFolder, False);
+  CheckFolder(EGitFolder, True);
   CheckFolderCB(CBLocalRepository);
   CheckFolderCB(CBRemoteRepository);
   LockButtons;
@@ -1693,7 +1693,7 @@ begin
   end;
 end;
 
-function TFConfiguration.getCheckColor(s: string; LeerErlaubt: boolean): TColor;
+function TFConfiguration.getCheckColor(s: string; LeerErlaubt: Boolean): TColor;
 begin
   Result:= clRed;
   if s = '' then
@@ -1704,7 +1704,7 @@ begin
     then Result:= StyleServices.getSystemColor(clWindow)
 end;
 
-procedure TFConfiguration.CheckFile(WinControl: TWinControl; emptyAllowed: boolean);
+procedure TFConfiguration.CheckFile(WinControl: TWinControl; emptyAllowed: Boolean);
   var s: string; E: TEdit;
 begin
   s:= ExtendPath(WinControl);
@@ -1725,12 +1725,12 @@ begin
   ODSelect.Options:= [ofPathMustExist, ofFileMustExist, ofEnableSizing];
   with ODSelect do begin
     InitialDir:= GetEnvironmentVariable('PROGRAMFILES');
-    Filename  := '*.exe';
+    FileName  := '*.exe';
     Filter:= '*.exe|*.exe';
     if not Sysutils.DirectoryExists(InitialDir) then InitialDir:= 'C:\';
     if Execute then
-      ShortenPath(EBrowserProgram, Filename);
-    CheckFile(EBrowserProgram, true);
+      ShortenPath(EBrowserProgram, FileName);
+    CheckFile(EBrowserProgram, True);
   end;
   FreeAndNil(ODSelect);
 end;
@@ -1768,7 +1768,7 @@ begin
   {$WARNINGS OFF}
   FolderDialog.DefaultFolder:= aFoldername;
   if FolderDialog.Execute then begin
-    s:= withoutTrailingSlash(FolderDialog.Filename);
+    s:= withoutTrailingSlash(FolderDialog.FileName);
     ShortenPath(Edit, s);
   end;
   {$WARNINGS ON}
@@ -2047,11 +2047,11 @@ begin
     CBLockedStructogram.Checked:= LockedStructogram;
     CBUsePredefinedLayouts.Checked:= UsePredefinedLayouts;
     if not IsAdministrator then begin
-      CBLockedDosWindow.Enabled:= false;
-      CBLockedInternet.Enabled:= false;
-      CBLockedPaths.Enabled:= false;
-      CBLockedStructogram.Enabled:= false;
-      CBUsePredefinedLayouts.Enabled:= false;
+      CBLockedDosWindow.Enabled:= False;
+      CBLockedInternet.Enabled:= False;
+      CBLockedPaths.Enabled:= False;
+      CBLockedStructogram.Enabled:= False;
+      CBUsePredefinedLayouts.Enabled:= False;
     end;
 
     // tab associations
@@ -2173,7 +2173,7 @@ end;
 procedure TFConfiguration.ViewToModel;
   var LanguageNr: Integer;
       vOptions: TSynEditorOptions;
-      Digits: integer;
+      Digits: Integer;
 
   procedure SetFlag(aOption: TSynEditorOption; aValue: Boolean);
   begin
@@ -2441,11 +2441,11 @@ begin
     GitFolder:= ExtendPath(EGitFolder);
     GitLocalRepository:= ExtendPath(CBLocalRepository);
     GitRemoteRepository:= ExtendPath(CBRemoteRepository);
-    if assigned(FGit) and (EUserName.Text <> GuiPyOptions.GitUserName) then begin
+    if Assigned(FGit) and (EUserName.Text <> GuiPyOptions.GitUserName) then begin
       FGit.GitCall('config --global user.name="' + EUserName.Text + '"', '.');
       GitUserName:= EUserName.Text;
     end;
-    if assigned(FGit) and (EUserEMail.Text <> GuiPyOptions.GitUserEMail) then begin
+    if Assigned(FGit) and (EUserEMail.Text <> GuiPyOptions.GitUserEMail) then begin
       FGit.GitCall('config --global user.email="' + EUserEMail.Text + '"', '.');
       GitUserEMail:= EUserEMail.Text;
     end;
@@ -2483,7 +2483,7 @@ begin
   EditorOptions.assign(FSynEdit);
   for var i := 0 to cbHighlighters.Items.Count-1 do
     CommandsDataModule.SynEditOptionsDialogSetHighlighter(
-      self, i, TSynCustomHighlighter(cbHighlighters.Items.Objects[i]));
+      Self, i, TSynCustomHighlighter(cbHighlighters.Items.Objects[i]));
 
   CommandsDataModule.ApplyEditorOptions;
   PythonIIForm.ApplyEditorOptions;
@@ -2493,7 +2493,7 @@ procedure TFConfiguration.BTempFolderClick(Sender: TObject);
   var s: string;
 begin
   if TPyScripterSettings.IsPortable then
-    s:= TPath.Combine(ExtractFilepath(Application.ExeName), 'Temp')
+    s:= TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
   else begin
     s:= GetTempDir;
     {$WARN SYMBOL_PLATFORM OFF}
@@ -2508,7 +2508,7 @@ procedure TFConfiguration.SBTempSelectClick(Sender: TObject);
   var s: string;
 begin
   if TPyScripterSettings.IsPortable then
-    s:= TPath.Combine(ExtractFilepath(Application.ExeName), 'Temp')
+    s:= TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
   else begin
     s:= GetTempDir;
     {$WARN SYMBOL_PLATFORM OFF}
@@ -2545,17 +2545,17 @@ var
        'git', 'subversion');
 
 procedure TFConfiguration.BHelpClick(Sender: TObject);
-  var count: integer; aNode: TTreeNode;
+  var Count: Integer; aNode: TTreeNode;
 begin
   aNode:= TVConfiguration.Items.GetFirstNode;
-  count:= 0;
-  while (count < TVConfiguration.Items.Count) and (aNode <> TVConfiguration.Selected) do begin
+  Count:= 0;
+  while (Count < TVConfiguration.Items.Count) and (aNode <> TVConfiguration.Selected) do begin
     aNode:= aNode.GetNext;
-    inc(count);
+    Inc(Count);
   end;
   if GetCurrentLanguage = 'de'
-    then DoHelp(GetConfigurationAddress(de[count]))
-    else DoHelp(GetConfigurationAddress(en[count]));
+    then DoHelp(GetConfigurationAddress(de[Count]))
+    else DoHelp(GetConfigurationAddress(en[Count]));
 end;
 
 procedure TFConfiguration.BCheckClick(Sender: TObject);
@@ -2580,7 +2580,7 @@ begin
     aFile.Close;
   Application.ProcessMessages;
   if FileExists(Pathname) then DeleteFile(Pathname);
-  fMachine:= PyIDEMainForm.MachineStorage.Filename;
+  fMachine:= PyIDEMainForm.MachineStorage.FileName;
   fApp:= PyIDEMainForm.AppStorage.FileName;
   try
     s:= 'Installation ' + CrLf;
@@ -2611,7 +2611,7 @@ begin
     FreeAndNil(SL);
     Result:= s + CrLf;
   except
-    on e: exception do
+    on e: Exception do
       ErrorMsg(e.Message + ' ' + 'The configuration could not be generated.');
   end;
 end;
@@ -2651,7 +2651,7 @@ begin
     try
       RunAsAdmin(Handle, Updater, s);
     except
-      on e: exception do
+      on e: Exception do
         ErrorMsg(e.Message);
     end
   else
@@ -2666,17 +2666,17 @@ begin
 end;
 
 procedure TFConfiguration.TVConfigurationChange(Sender: TObject; Node: TTreeNode);
-  var aNode: TTreeNode; count: integer;
+  var aNode: TTreeNode; Count: Integer;
 begin
   aNode:= TVConfiguration.Items.GetFirstNode;
-  count:= 0;
-  while (count < TVConfiguration.Items.Count) and (aNode <> Node) do begin
+  Count:= 0;
+  while (Count < TVConfiguration.Items.Count) and (aNode <> Node) do begin
     aNode:= aNode.GetNext;
-    inc(count);
+    Inc(Count);
   end;
-  if aNode.HasChildren then inc(count);
+  if aNode.HasChildren then Inc(Count);
 
-  ShowPage(count);
+  ShowPage(Count);
   CheckAllFilesAndFolders;
 end;
 
@@ -2684,11 +2684,11 @@ function TFConfiguration.getTVConfigurationItem(text: string): TTreeNode;
 begin
   for var i:= 0 to TVConfiguration.Items.Count - 1 do
     if TVConfiguration.Items[i].text = text then
-      exit(TVConfiguration.Items[i]);
+      Exit(TVConfiguration.Items[i]);
   Result:= TVConfiguration.Items[0];
 end;
 
-procedure TFConfiguration.ShowPage(i: integer);
+procedure TFConfiguration.ShowPage(i: Integer);
 begin
   PageList.ActivePageIndex:= i;
   TVConfiguration.Selected:= TVConfiguration.Items[i];
@@ -2716,7 +2716,7 @@ begin
 end;
 
 function TFConfiguration.GetEncoding(const Pathname: string): TEncoding;
-  var Stream: TStream; withBOM: boolean;
+  var Stream: TStream; withBOM: Boolean;
 begin
   Result:= TEncoding.Ansi;
   if FileExists(Pathname) then
@@ -2728,7 +2728,7 @@ begin
         FreeAndNil(Stream);
       end;
     except
-      on e: exception do
+      on e: Exception do
         ErrorMsg(e.Message);
     end;
 end;
@@ -2753,7 +2753,7 @@ procedure TFConfiguration.SetElevationRequiredState(aControl: TWinControl);
   const BCM_FIRST = $1600;
         BCM_SETSHIELD = BCM_FIRST + $000C;
 begin
-  SendMessage(aControl.Handle, BCM_SETSHIELD, 0, Integer(true));
+  SendMessage(aControl.Handle, BCM_SETSHIELD, 0, Integer(True));
 end;
 
 function TFConfiguration.RunAsAdmin(hWnd: HWND; const aFile, aParameters: string): THandle;
@@ -2780,7 +2780,7 @@ procedure TFConfiguration.MakeControlStructureTemplates;
   const
     ControlStructure: array[1..10] of string =
       ('#if', '#while', '#for', '#do', '#switch', '#try', 'else', '} else', '#ifelse', '{ }');
-  var i: integer;
+  var i: Integer;
 begin
   for i:= 1 to 21 do begin
     FreeAndNil(ControlStructureTemplates[i]);
@@ -2821,7 +2821,7 @@ begin
 end;
 {$WARN SYMBOL_PLATFORM OFF}
 
-class function TFConfiguration.isDark: boolean;
+class function TFConfiguration.isDark: Boolean;
   var BGColor, FGColor: TColor;
 begin
   if StyleServices.IsSystemStyle then begin
@@ -2833,8 +2833,8 @@ begin
   end;
   if GetRValue(BGColor) + GetGValue(BGColor) + GetBValue(BGColor) >
      GetRValue(FGColor) + GetGValue(FGColor) + GetBValue(FGColor)
-    then Result:= false
-    else Result:= true;
+    then Result:= False
+    else Result:= True;
 end;
 
 // style
@@ -2842,10 +2842,10 @@ end;
 // https://theroadtodelphi.com/2012/02/06/changing-the-color-of-edit-controls-with-vcl-styles-enabled/
 
 procedure TFConfiguration.ShortenPath(WinControl: TWinControl; const s: string);
-  var s1, s2, s3: string; p{, w}: integer;
+  var s1, s2, s3: string; p{, w}: Integer;
 begin
   WinControl.Hint:= s;
-  WinControl.ShowHint:= true;
+  WinControl.ShowHint:= True;
 {  if WinControl is TEdit
     then w:= WinControl.Width
     else w:= WinControl.Width - 16;
@@ -2857,24 +2857,24 @@ begin
   p:= Pos('...', s1);
   if p > 0 then begin
     s2:= s;
-    delete(s2, 1, p-1);
-    s3:= copy(s1, p+3, length(s1));
+    Delete(s2, 1, p-1);
+    s3:= Copy(s1, p+3, Length(s1));
     p:= Pos(s3, s2);
-    delete(s2, p, length(s1));
+    Delete(s2, p, Length(s1));
     WinControl.HelpKeyword:= s2;
   end else
     WinControl.HelpKeyword:= '';
 end;
 
 function TFConfiguration.ExtendPath(WinControl: TWinControl): string;
-  var s: string; p: integer;
+  var s: string; p: Integer;
 begin
   if WinControl is TEdit
     then s:= (WinControl as TEdit).Text
     else s:= (WinControl as TComboBox).Text;
   p:= Pos('...', s);
   if p > 0 then begin
-    delete(s, p, 3);
+    Delete(s, p, 3);
     insert(WinControl.HelpKeyword, s, p);
   end;
   Result:= s;
@@ -2895,7 +2895,7 @@ end;
 procedure TFConfiguration.actPVActivateExecute(Sender: TObject);
 var
   Node : PVirtualNode;
-  Level : integer;
+  Level : Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   if Assigned(Node) then begin
@@ -2942,7 +2942,7 @@ end;
 procedure TFConfiguration.actPVRemoveExecute(Sender: TObject);
 var
   Node : PVirtualNode;
-  Level : integer;
+  Level : Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   if Assigned(Node) then begin
@@ -2959,7 +2959,7 @@ end;
 procedure TFConfiguration.actPVTestExecute(Sender: TObject);
 var
   Node: PVirtualNode;
-  Level: integer;
+  Level: Integer;
   Version: TPythonVersion;
 begin
   Node := vtPythonVersions.GetFirstSelected;
@@ -2980,7 +2980,7 @@ end;
 procedure TFConfiguration.actPVShowExecute(Sender: TObject);
 var
   Node: PVirtualNode;
-  Level: integer;
+  Level: Integer;
   Version: TPythonVersion;
 begin
   Node := vtPythonVersions.GetFirstSelected;
@@ -3012,7 +3012,7 @@ end;
 procedure TFConfiguration.actPVRenameExecute(Sender: TObject);
 var
   Node: PVirtualNode;
-  Level: integer;
+  Level: Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   if Assigned(Node) then begin
@@ -3032,7 +3032,7 @@ end;
 procedure TFConfiguration.vtPythonVersionsGetCellText(
   Sender: TCustomVirtualStringTree; var E: TVSTGetCellTextEventArgs);
 var
-  Level : integer;
+  Level : Integer;
 begin
   Level := vtPythonVersions.GetNodeLevel(E.Node);
   case Level of
@@ -3064,13 +3064,13 @@ procedure TFConfiguration.vtPythonVersionsGetImageIndex(
   Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
   Column: TColumnIndex; var Ghosted: Boolean; var ImageIndex: UITypes.TImageIndex);
 var
-  Level : integer;
+  Level : Integer;
 begin
   ImageIndex := -1;
   if not (Kind in [ikNormal, ikSelected]) or (Column <> 0) then Exit;
   Level := vtPythonVersions.GetNodeLevel(Node);
   if (Level = 1) and GI_PyControl.PythonLoaded and
-     (((Node.Parent.Index = 0) and (PyControl.PythonVersionIndex = integer(Node.Index))) or
+     (((Node.Parent.Index = 0) and (PyControl.PythonVersionIndex = Integer(Node.Index))) or
       ((Node.Parent.Index = 1) and (PyControl.PythonVersionIndex = - (Node.Index + 1))))
   then
     ImageIndex := 0;
@@ -3217,7 +3217,7 @@ procedure TFConfiguration.btnResetKeysClick(Sender: TObject);
 begin
   FSynEdit.Keystrokes.ResetDefaults;
   PrepareKeyStrokes;
-  KeyStrokesReset:= true;
+  KeyStrokesReset:= True;
 end;
 
 procedure TFConfiguration.btnAddKeyClick(Sender: TObject);
@@ -3308,7 +3308,7 @@ var TmpString: string;      begin
 end;
 
 procedure TFConfiguration.PrepareKeyStrokes;
-  var i: integer;
+  var i: Integer;
       Item : TListItem;
 begin
   FHandleChanges := True;  //Normally true, can prevent unwanted execution of event handlers
@@ -3350,7 +3350,7 @@ begin
   StackPanel1.Spacing := MulDiv(StackPanel1.Spacing, FCurrentPPI, 96);
   StackPanel2.Spacing := MulDiv(StackPanel2.Spacing, FCurrentPPI, 96);
 
-  FExtended:= true;
+  FExtended:= True;
   KeyList.Items.BeginUpdate;
   try
     KeyList.Items.Clear;
@@ -3381,18 +3381,18 @@ procedure TFConfiguration.PrepareHighlighters;
 type
   TSynHClass = class of TSynCustomHighlighter;
 var
-   wCount : integer;
-   loop : integer;
+   wCount : Integer;
+   loop : Integer;
    wHighlighter : TSynCustomHighlighter;
    wInternalSynH : TSynCustomHighlighter;
    wSynHClass : TSynHClass;
    FileName : string;
 begin
   cbHighlighters.Items.Clear;
-  CommandsDataModule.SynEditOptionsDialogGetHighlighterCount(self, wCount);
+  CommandsDataModule.SynEditOptionsDialogGetHighlighterCount(Self, wCount);
   for loop := 0 to wCount - 1 do begin
-    CommandsDataModule.SynEditOptionsDialogGetHighlighter(self, loop, wHighlighter);
-    if assigned(wHighlighter) then begin
+    CommandsDataModule.SynEditOptionsDialogGetHighlighter(Self, loop, wHighlighter);
+    if Assigned(wHighlighter) then begin
        wSynHClass := TSynHClass(wHighlighter.classtype);
        wInternalSynH := wSynHClass.Create(nil);
        wInternalSynH.assign(wHighlighter);
@@ -3424,10 +3424,10 @@ begin
 end;
 
 procedure TFConfiguration.UpdateHighlighters;
-  var i: integer;
+  var i: Integer;
 begin
   for i:= 0 to fHighlighters.Count-1 do
-    CommandsDataModule.SynEditOptionsDialogSetHighlighter(self, i, fHighlighters[i]);
+    CommandsDataModule.SynEditOptionsDialogSetHighlighter(Self, i, fHighlighters[i]);
 
    {if assigned(fSetHighlighterEvent) then
       for i := 0 to fHighlighters.Count-1 do
@@ -3436,14 +3436,14 @@ end;
 
 procedure TFConfiguration.cbHighlightersChange(Sender: TObject);
 var
-  loop : integer;
+  loop : Integer;
   wSynH : TSynCustomHighlighter;
 begin
-  lbElements.items.BeginUpdate;
+  lbElements.Items.BeginUpdate;
   SynSyntaxSample.Lines.BeginUpdate;
   try
     lbElements.itemindex := -1;
-    lbElements.items.Clear;
+    lbElements.Items.Clear;
     SynSyntaxSample.lines.clear;
     if cbHighlighters.itemindex > -1 then
     begin
@@ -3465,7 +3465,7 @@ begin
       EnableColorItems(False);  //Else disable controls
 
   finally
-    lbElements.items.EndUpdate;
+    lbElements.Items.EndUpdate;
     SynSyntaxSample.Lines.EndUpdate;
   end;
 end;
@@ -3565,7 +3565,7 @@ begin
     if Assigned(Attri) and (lbElements.Items[i] = Attri.FriendlyName) then begin
       lbElements.ItemIndex := i;
       lbElementsClick(Self);
-      break;
+      Break;
     end;
 end;
 
@@ -3624,12 +3624,12 @@ end;
 
 procedure TFConfiguration.ApplyColorTheme;
 var
-  i : integer;
+  i : Integer;
   AppStorage : TJvAppIniFileStorage;
   FileName : string;
 begin
   FileName := TPath.Combine(HighlighterFileDir, GuiPyOptions.ColorTheme + '.ini');
-  if FileExists(Filename) then begin
+  if FileExists(FileName) then begin
     AppStorage := TJvAppIniFileStorage.Create(nil);
     try
       AppStorage.FlushOnDestroy := False;
@@ -3649,7 +3649,7 @@ begin
 
       for i := 0 to cbHighlighters.Items.Count-1 do
         CommandsDataModule.SynEditOptionsDialogSetHighlighter(
-          self, i, TSynCustomHighlighter(cbHighlighters.Items.Objects[i]));
+          Self, i, TSynCustomHighlighter(cbHighlighters.Items.Objects[i]));
 
     finally
         AppStorage.Free;
@@ -3675,7 +3675,7 @@ end;
 
 procedure TFConfiguration.CodeTemplatesGetItems;
 var
- i, j : integer;
+ i, j : Integer;
 begin
   CodeTemplateText := '';
   for i := 0 to CodeTemplatesLvItems.Items.Count - 1 do begin
@@ -3691,7 +3691,7 @@ end;
 
 procedure TFConfiguration.CodeTemplatesSetItems;
 var
- i, Count : integer;
+ i, Count : Integer;
  List : TStringList;
 begin
   CodeTemplatesLvItems.Items.Clear;
@@ -3762,7 +3762,7 @@ end;
 
 procedure TFConfiguration.actCodeUpdateItemExecute(Sender: TObject);
 var
-  i : integer;
+  i : Integer;
 begin
   if (edShortCut.Text <> '') and (CodeTemplatesLvItems.ItemIndex >= 0) then begin
     for i := 0 to CodeTemplatesLvItems.Items.Count - 1 do
@@ -3785,7 +3785,7 @@ procedure TFConfiguration.actCodeMoveDownExecute(Sender: TObject);
 var
   Name, Value : string;
   P : Pointer;
-  Index : integer;
+  Index : Integer;
 begin
   if CodeTemplatesLvItems.ItemIndex < CodeTemplatesLvItems.Items.Count - 1 then
   begin
@@ -3810,7 +3810,7 @@ procedure TFConfiguration.actCodeMoveUpExecute(Sender: TObject);
 var
   Name, Value : string;
   P : Pointer;
-  Index : integer;
+  Index : Integer;
 begin
   if CodeTemplatesLvItems.ItemIndex > 0 then begin
     Index := CodeTemplatesLvItems.ItemIndex;
@@ -3852,14 +3852,14 @@ begin
 end;
 
 function TFConfiguration.getClassCodeTemplate: string;
-  var i: integer;
+  var i: Integer;
 begin
   Result:= '';
   CodeTemplatesSetItems;
   for i := 0 to CodeTemplatesLvItems.Items.Count - 1 do
     if CodeTemplatesLvItems.Items[i].Caption = 'cls' then begin
       Result:= TStringList(CodeTemplatesLvItems.Items[i].Data).Text;
-      exit;
+      Exit;
     end;
 end;
 
@@ -3940,11 +3940,11 @@ begin
        (FileTemplate.Name = SQtTemplateName) or
        (FileTemplate.Name = SClassTemplateName)
     then begin
-      edName.Enabled:= false;
-      edExtension.Enabled:= false;
+      edName.Enabled:= False;
+      edExtension.Enabled:= False;
     end else begin
-      edName.Enabled:= true;
-      edExtension.Enabled:= true;
+      edName.Enabled:= True;
+      edExtension.Enabled:= True;
     end;
     edCategory.Text := FileTemplate.Category;
     edExtension.Text := FileTemplate.Extension;
@@ -3999,7 +3999,7 @@ begin
   var i:= FileTemplatesLvItems.ItemIndex;
   TempFileTemplates.Clear;
   FileTemplates.Clear;
-  FileTemplates.AddDefaultTemplates(true);
+  FileTemplates.AddDefaultTemplates(True);
   FileTemplatesInit;
   if i > -1 then
     FileTemplatesLvItems.ItemIndex:= i;
@@ -4011,7 +4011,7 @@ begin
     var Item := FileTemplatesLvItems.Items[FileTemplatesLvItems.ItemIndex];
     var FileTemplate := TFileTemplate(Item.Data);
     var DefaultFileTemplate:= FileTemplates.getDefaultByName(Filetemplate.name);
-    if assigned(DefaultFileTemplate) then begin
+    if Assigned(DefaultFileTemplate) then begin
       edName.Text:= DefaultFileTemplate.Name;
       edExtension.Text:= DefaultFileTemplate.Extension;
       edCategory.Text:= DefaultFileTemplate.Category;
@@ -4065,7 +4065,7 @@ procedure TFConfiguration.actFileMoveUpExecute(Sender: TObject);
 var
   Name, Value : string;
   P : Pointer;
-  Index : integer;
+  Index : Integer;
 begin
   if FileTemplatesLvItems.ItemIndex > 0 then begin
     Index := FileTemplatesLvItems.ItemIndex;
@@ -4088,7 +4088,7 @@ procedure TFConfiguration.actFileMoveDownExecute(Sender: TObject);
 var
   Name, Value : string;
   P : Pointer;
-  Index : integer;
+  Index : Integer;
 begin
   if FileTemplatesLvItems.ItemIndex < FileTemplatesLvItems.Items.Count - 1 then begin
     Index := FileTemplatesLvItems.ItemIndex;
@@ -4175,7 +4175,7 @@ end;
 procedure TFConfiguration.actRemoveShortcutExecute(Sender: TObject);
 var
   CurAction : TActionProxyItem;
-  Index : integer;
+  Index : Integer;
 begin
   if (lbCurrentKeys.ItemIndex < 0) or (lbCommands.ItemIndex < 0) then Exit;
   CurAction := CurrentAction;
@@ -4193,7 +4193,7 @@ end;
 
 procedure TFConfiguration.actAssignShortcutUpdate(Sender: TObject);
 var
-  Enabled : boolean;
+  Enabled : Boolean;
 begin
   Enabled := False;
   if edNewShortCut.HotKey = 0 then begin
@@ -4224,14 +4224,14 @@ procedure TFConfiguration.actlPythonVersionsUpdate(Action: TBasicAction;
   var Handled: Boolean);
 var
   Node : PVirtualNode;
-  Level : integer;
+  Level : Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   Level := -1;  // to avoid compiler warning
   if Assigned(Node) then
     Level := vtPythonVersions.GetNodeLevel(Node);
   actPVActivate.Enabled := Assigned(Node) and (Level = 1) and
-    not (((Node.Parent.Index = 0) and (PyControl.PythonVersionIndex = integer(Node.Index))) or
+    not (((Node.Parent.Index = 0) and (PyControl.PythonVersionIndex = Integer(Node.Index))) or
          ((Node.Parent.Index = 1) and (PyControl.PythonVersionIndex = -(Node.Index + 1))));
 
   actPVRemove.Enabled := Assigned(Node) and (Level = 1) and (Node.Parent.Index = 1) and
@@ -4321,14 +4321,14 @@ begin
 end;
 
 procedure TFConfiguration.DoneItems;
-  var i: integer;
+  var i: Integer;
 begin
   for i := Pred(FunctionList.Count) downto 0 do begin
     (FunctionList.Objects[i] as TStringList).Free;
     FunctionList.Delete(i);
   end;
   for i := 0 to CodeTemplatesLvItems.Items.Count - 1 do
-    if assigned(CodeTemplatesLvItems.Items[i].Data) then begin
+    if Assigned(CodeTemplatesLvItems.Items[i].Data) then begin
       var SL := TStringList(CodeTemplatesLvItems.Items[i].Data);
       FreeAndNil(SL);
       CodeTemplatesLvItems.Items[i].Data:= nil;
@@ -4441,7 +4441,7 @@ begin
   GI_FileFactory.ApplyToFiles(procedure(Fi: IFile)
   begin
     if Fi.GetFileKind = fkEditor then begin
-      if assigned(TEditorForm(Fi.Form).Partner) then
+      if Assigned(TEditorForm(Fi.Form).Partner) then
         TEditorForm(Fi.Form).Partner.Hide;
     end;
   end);
@@ -4449,7 +4449,7 @@ begin
   GI_FileFactory.ApplyToFiles(procedure(Fi: IFile)
   begin
     if Fi.GetFileKind = fkEditor then begin
-      if assigned(TEditorForm(Fi.Form).Partner) then begin
+      if Assigned(TEditorForm(Fi.Form).Partner) then begin
         TEditorForm(Fi.Form).Partner.Show;
       end;
     end;
@@ -4488,7 +4488,7 @@ begin
         CurrentSkinName := LoadedStylesDict[StyleName]
       else
         CurrentSkinName := StyleName;
-      break;
+      Break;
     end;
   PyIDEMainForm.ThemeEditorGutter(FSynEdit.Gutter);
   cbGutterColor.SelectedColor:= FSynEdit.Gutter.Color;
@@ -4514,7 +4514,7 @@ end;
 procedure TFConfiguration.StyleSelectorFormShow;
 //  Todo Select active style
 var
-  Index : integer;
+  Index : Integer;
 begin
   if LBStyleNames.Items.Count = 0 then
     FillVclStylesList;
@@ -4941,7 +4941,7 @@ end;
 {--- Associations -------------------------------------------------------------}
 
 procedure TFConfiguration.BFileExtensionsClick(Sender: TObject);
-  var s, s1, s2: string; p: integer; b: byte;
+  var s, s1, s2: string; p: Integer; b: byte;
 begin
   if VistaOrBetter then begin
     s2:=      CBAssociationPython.Caption + ' ' + BoolToStr(CBAssociationPython.Checked) + ' ';
@@ -4959,12 +4959,12 @@ begin
     s:= GuiPyOptions.AdditionalAssociations + ';';
     p:= Pos(';', s);
     while p > 0 do begin
-      s1:= copy(s, 1, p-1);
-      delete(s, 1, p);
+      s1:= Copy(s, 1, p-1);
+      Delete(s, 1, p);
       p:= Pos('.', s1);
-      if p > 0 then delete(s1, 1, p);
-      b:= length(s1);
-      if (s1 <> '') and (b in [2, 3, 4, 5]) then s2:= s2 + '.' + s1 + ' ' + BoolToStr(true)+ ' ';
+      if p > 0 then Delete(s1, 1, p);
+      b:= Length(s1);
+      if (s1 <> '') and (b in [2, 3, 4, 5]) then s2:= s2 + '.' + s1 + ' ' + BoolToStr(True)+ ' ';
       p:= Pos(';', s);
     end;
     CallUpdater(ParamStr(0), 'registry', s2);
@@ -4981,9 +4981,9 @@ begin
 end;
 
 procedure TFConfiguration.MakeAssociations;
-  var Reg: TRegistry; s, s1: string; p: integer;
+  var Reg: TRegistry; s, s1: string; p: Integer;
 
-  procedure EditAssociation(const Extension: string; docreate: boolean);
+  procedure EditAssociation(const Extension: string; docreate: Boolean);
   begin
     with Reg do begin
       try
@@ -4991,10 +4991,10 @@ procedure TFConfiguration.MakeAssociations;
         // HKEY_LOCAL_MACHINE\Software\Classes
         RootKey:= HKEY_LOCAL_MACHINE;
         if docreate then begin
-          if OpenKey('SOFTWARE\Classes\' + Extension, true) then
+          if OpenKey('SOFTWARE\Classes\' + Extension, True) then
             WriteString('', 'GuiPy')
         end else begin
-          if OpenKey('SOFTWARE\Classes\' + Extension, false) then
+          if OpenKey('SOFTWARE\Classes\' + Extension, False) then
             if ReadString('') = 'GuiPy' then
               WriteString('', '');
         end;
@@ -5003,10 +5003,10 @@ procedure TFConfiguration.MakeAssociations;
         // HKEY_CURRENT_USER\Software\Classes
         RootKey:= HKEY_CURRENT_USER;
         if docreate then begin
-          if OpenKey('SOFTWARE\Classes\' + Extension, true) then
+          if OpenKey('SOFTWARE\Classes\' + Extension, True) then
             WriteString('', 'GuiPy');
         end else begin
-          if OpenKey('SOFTWARE\Classes\' + Extension, false) then
+          if OpenKey('SOFTWARE\Classes\' + Extension, False) then
             if ReadString('') = 'GuiPy' then
               WriteString('', '');
         end;
@@ -5036,11 +5036,11 @@ begin
       s:= GuiPyOptions.AdditionalAssociations + ';';
       p:= Pos(';', s);
       while p > 0 do begin
-        s1:= copy(s, 1, p-1);
-        delete(s, 1, p);
+        s1:= Copy(s, 1, p-1);
+        Delete(s, 1, p);
         p:= Pos('.', s1);
-        if p > 0 then delete(s1, 1, p);
-        if (s1 <> '') and (Pos(' ', s1) = 0) then EditAssociation('.' + s1, true);
+        if p > 0 then Delete(s1, 1, p);
+        if (s1 <> '') and (Pos(' ', s1) = 0) then EditAssociation('.' + s1, True);
         p:= Pos(';', s);
       end;
     end;
@@ -5051,28 +5051,28 @@ begin
 end;
 
 procedure TFConfiguration.RegisterGuiPy;
-  var GuiPy, Filename: string; Reg: TRegistry;
+  var GuiPy, FileName: string; Reg: TRegistry;
 
   procedure WriteToRegistry(const Key: string);
   begin
     with Reg do begin
-      OpenKey(Key, true);
+      OpenKey(Key, True);
       WriteString('', 'GuiPy');
       CloseKey;
-      OpenKey(Key + '\DefaultIcon', true);
+      OpenKey(Key + '\DefaultIcon', True);
       WriteString('', GuiPy + ',0');
       CloseKey;
-      OpenKey(Key + '\Shell\Open\command', true);
+      OpenKey(Key + '\Shell\Open\command', True);
       WriteString('', GuiPy);
       CloseKey;
-      OpenKey(Key + '\Shell\Open\ddeexec', true);
+      OpenKey(Key + '\Shell\Open\ddeexec', True);
       WriteString('', '[FileOpen("%1")]');
-      OpenKey('Application', true);
+      OpenKey('Application', True);
       FileName := ExtractFileName(ParamStr(0));
       FileName := Copy(FileName, 1, Length(FileName)-4);
-      WriteString('', Filename);
+      WriteString('', FileName);
       CloseKey;
-      OpenKey(Key + '\Shell\Open\ddeexec\topic', true);
+      OpenKey(Key + '\Shell\Open\ddeexec\topic', True);
       WriteString('', 'DdeServerConv');
       CloseKey;
     end;
@@ -5103,10 +5103,10 @@ begin
     with Reg do begin
       Access:= KEY_ALL_ACCESS;
       RootKey:= HKEY_LOCAL_MACHINE;
-      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', false) then
+      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', False) then
         if readString('') = 'System' then
           writeString('', 'DdeServerConv');
-      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', false) then begin
+      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', False) then begin
         s:= readstring('');
         if Pos(' "%1"', s) = 0 then
           writeString('', s + ' "%1"');
@@ -5114,10 +5114,10 @@ begin
       CloseKey;
 
       RootKey:= HKEY_CURRENT_USER;
-      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', false) then
+      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', False) then
         if readString('') = 'System' then
           writeString('', 'DdeServerConv');
-      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', false) then begin
+      if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', False) then begin
         s:= readstring('');
         if Pos(' "%1"', s) = 0 then
           writeString('', s + ' "%1"');
@@ -5139,9 +5139,9 @@ begin
   {$WARNINGS OFF}
   FolderDialog.DefaultFolder:= Dir;
   if FolderDialog.Execute then
-    ShortenPath(EGitFolder, FolderDialog.Filename);
+    ShortenPath(EGitFolder, FolderDialog.FileName);
   {$WARNINGS ON}
-  CheckFolder(EGitFolder, true);
+  CheckFolder(EGitFolder, True);
 end;
 
 procedure TFConfiguration.BGitRepositoryClick(Sender: TObject);
@@ -5151,7 +5151,7 @@ begin
   if not Sysutils.DirectoryExists(Dir) then Dir:= GuiPyOptions.SourcePath;
   FolderDialog.DefaultFolder:= Dir;
   if FolderDialog.Execute then begin
-    Dir:= FolderDialog.Filename;
+    Dir:= FolderDialog.FileName;
     SysUtils.ForceDirectories(Dir);
     if not FGit.IsRepository(Dir) then
       FGit.GitCall('init', Dir);
@@ -5168,7 +5168,7 @@ begin
   FontDialog.Font.Size:= GuiPyOptions.GUIFontSize;
   FontDialog.Font.Name:= GuiPyOptions.GUIFontName;
   if FontDialog.Execute then begin
-    GuiPyOptions.GUIFontSize:= max(FontDialog.Font.Size, 4);
+    GuiPyOptions.GUIFontSize:= Max(FontDialog.Font.Size, 4);
     GuiPyOptions.GUIFontName:= FontDialog.Font.Name;
   end;
   FreeAndNil(FontDialog);
@@ -5215,9 +5215,9 @@ begin
   {$WARNINGS OFF}
   FolderDialog.DefaultFolder:= Dir;
   if FolderDialog.Execute then
-    ShortenPath(ESVNFolder, FolderDialog.Filename);
+    ShortenPath(ESVNFolder, FolderDialog.FileName);
   {$WARNINGS ON}
-  CheckFolder(ESVNFolder, true);
+  CheckFolder(ESVNFolder, True);
 end;
 
 procedure TFConfiguration.BRepositoryClick(Sender: TObject);
@@ -5228,7 +5228,7 @@ begin
   {$WARNINGS OFF}
   FolderDialog.DefaultFolder:= Dir;
   if FolderDialog.Execute then begin
-    Dir:= FolderDialog.Filename;
+    Dir:= FolderDialog.FileName;
     ShortenPath(CBRepository, Dir);
     Sysutils.ForceDirectories(Dir);
     if not FSubversion.IsRepository(Dir) then
@@ -5276,7 +5276,7 @@ begin
     // classes in the active source file
     SL.LoadFromFile(Pathname);
     var matches:= RegEx.Matches(SL.Text);
-    for var i:= 0 to matches.count - 1 do
+    for var i:= 0 to matches.Count - 1 do
        Result.Add(matches[i].groups[1].value + '=' + ExtractFilename(Pathname));
     // classes in other files of the active directory
     var path:= ExtractFilePath(Pathname);
@@ -5284,7 +5284,7 @@ begin
       repeat
         SL.LoadFromFile(Path + '\' + SR.Name);
         matches:= RegEx.Matches(SL.Text);
-        for var i:= 0 to matches.count - 1 do begin
+        for var i:= 0 to matches.Count - 1 do begin
           var key := matches[i].groups[1].value;
           if Result.IndexOfName(key) = -1 then
             Result.Add(key + '=' + SR.Name);
@@ -5297,7 +5297,7 @@ begin
 end;
 
 procedure TFConfiguration.LoadVisibility;
-  var n: integer;
+  var n: Integer;
 
   procedure StringVisibilityToArr1(s: string; var arr: TBoolArray);
   begin
@@ -5305,7 +5305,7 @@ procedure TFConfiguration.LoadVisibility;
       arr[i]:= (s[i+1] = '1');
   end;
 
-  procedure StringVisibilityToArr2(s: string; l, n: integer);
+  procedure StringVisibilityToArr2(s: string; l, n: Integer);
   begin
     for var i:= 0 to l - 1 do
       vis1[n, i]:= (s[i+1] = '1');
@@ -5430,7 +5430,7 @@ end;
 
 procedure TFConfiguration.SaveVisibility;
 
-  function ArrVisibilityToString1(arr: array of boolean): string;
+  function ArrVisibilityToString1(arr: array of Boolean): string;
   begin
     var s:= '';
     for var i:= 0 to High(arr) do
@@ -5440,7 +5440,7 @@ procedure TFConfiguration.SaveVisibility;
     Result:= s;
   end;
 
-  function ArrVisibilityToString2(Tab, n: integer): string;
+  function ArrVisibilityToString2(Tab, n: Integer): string;
   begin
     var s:= '';
     for var i:= 0 to n-1 do
@@ -5480,9 +5480,9 @@ begin
 end;
 
 procedure TFConfiguration.SetVisibility;
-  var i, j: integer; Menu: TTBCustomItem;
+  var i, j: Integer; Menu: TTBCustomItem;
 
-  function IndexItemsToPages(Index: integer): integer;
+  function IndexItemsToPages(Index: Integer): Integer;
   begin
     var Lookup:= PyIDEMainForm.TabControlWidgets.Items[Index].Caption;
     for var i := 0 to PyIDEMainForm.TabControlWidgets.Items.Count - 1 do
@@ -5492,7 +5492,7 @@ procedure TFConfiguration.SetVisibility;
   end;
 
 begin
-  var allTabsClosed:= true;
+  var allTabsClosed:= True;
   for i:= 0 to High(VisTabs) do begin
     allTabsClosed:= alltabsClosed and not VisTabs[i];
     j:= IndexItemsToPages(i);
@@ -5518,12 +5518,12 @@ begin
     var k:= 0;
     for j:= 0 to Menu.Count - 1 do
       if Menu.Items[j].Tag = -1 then  // invalid menu item
-        Menu.Items[j].Visible:= false
+        Menu.Items[j].Visible:= False
       else if Menu.Items[j].Tag = -2 then
-        Menu.Items[j].Visible:= true  // Separator
+        Menu.Items[j].Visible:= True  // Separator
       else begin                      // Tag = 0 means valid menu item
         Menu.Items[j].Visible:= vis1[VisTabsLen + i, k];
-        inc(k);
+        Inc(k);
       end;
   end;
   PyIDEMainForm.mnToolsGit.Visible:= PyIDEMainForm.mnToolsGit.Visible and GitOK;
@@ -5542,7 +5542,7 @@ begin
     end);
 end;
 
-procedure TFConfiguration.setSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Nr: integer);
+procedure TFConfiguration.setSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Nr: Integer);
 begin
   Toolbar.Visible:= VisToolbars[Nr];
   for var i:= 0 to Toolbar.Items.Count - 1 do
@@ -5550,7 +5550,7 @@ begin
 end;
 
 procedure TFConfiguration.PrepareVisibilityPage;
-  var i: integer;
+  var i: Integer;
       TC: TSpTBXTabControl;
       anItem: TListItem;
 begin
@@ -5581,7 +5581,7 @@ begin
 end;
 
 procedure TFConfiguration.VisibilityModelToView;
-  var i, j: integer;
+  var i, j: Integer;
 begin
   for i:= 0 to LVVisibilityTabs.Items.Count - 1 do
     LVVisibilityTabs.Items[i].Checked:= VisTabs[i];
@@ -5604,16 +5604,16 @@ begin
 end;
 
 procedure TFConfiguration.VisibilityViewToModel;
-  var i, j: integer;
+  var i, j: Integer;
 begin
   for i:= 0 to high(VisTabs) do
     VisTabs[i]:= LVVisibilityTabs.Items[i].Checked;
 
-  if assigned(LVVisibilityMenus.Items[0]) then // due to unknown problem
+  if Assigned(LVVisibilityMenus.Items[0]) then // due to unknown problem
     for i:= 0 to high(VisMenus) do
       VisMenus[i]:= LVVisibilityMenus.Items[i].Checked;
 
-  if assigned(LVVisibilityToolbars.Items[0]) then
+  if Assigned(LVVisibilityToolbars.Items[0]) then
     for i:= 0 to high(VisToolbars) do
       VisToolbars[i]:= LVVisibilityToolbars.Items[i].Checked;
 
@@ -5624,11 +5624,11 @@ begin
 end;
 
 procedure TFConfiguration.LVVisibilityTabsClick(Sender: TObject);
-  var s: string; i, p, Tab: integer;
+  var s: string; i, p, Tab: Integer;
       TB: TToolBar; anItem: TListItem;
 begin
   TabsMenusToolbars:= 1;
-  Tab:= max(LVVisibilityTabs.ItemIndex, 0);
+  Tab:= Max(LVVisibilityTabs.ItemIndex, 0);
   LVVisibilityElements.Clear;
   case Tab of
     0: begin
@@ -5652,17 +5652,17 @@ begin
          TB:= PyIDEMainForm.ToolbarQtControls;
     end;
     else
-      exit;
+      Exit;
   end;
 
   LVVisibilityElements.onItemChecked:= nil;
-  if assigned(TB) then begin
+  if Assigned(TB) then begin
     for i:= 0 to TB.ButtonCount - 1 do begin
       s:= TB.Buttons[i].Hint;
       p:= Pos('Tk ', s);
-      if p > 0 then s:= copy(s, p + 3, Length(s));
+      if p > 0 then s:= Copy(s, p + 3, Length(s));
       p:= Pos('TTK ', s);
-      if p > 0 then s:= copy(s, p + 4, Length(s));
+      if p > 0 then s:= Copy(s, p + 4, Length(s));
       anItem:= LVVisibilityElements.Items.Add;
       anItem.Caption:= ' ' + s;
       anItem.Checked:= vis2[Tab, i];
@@ -5674,12 +5674,12 @@ begin
 end;
 
 procedure TFConfiguration.LVVisibilityMenusClick(Sender: TObject);
-  var s: string; i, Tab: integer;
+  var s: string; i, Tab: Integer;
       Menu: TTBCustomItem; anItem: TListItem;
 begin
   TabsMenusToolbars:= 2;
   Tab:= LVVisibilityMenus.ItemIndex;
-  if Tab = -1 then exit;
+  if Tab = -1 then Exit;
   LVVisibilityElements.Clear;
   LVVisibilityElements.SmallImages:= PyIDEMainForm.vilimages;
   Menu:= PyIDEMainForm.MainMenu.Items[Tab];
@@ -5693,7 +5693,7 @@ begin
       anItem.Caption:= ' ' + _(s);
       anItem.Checked:= vis2[VisTabsLen + Tab, k];
       anItem.ImageIndex:= Menu.Items[i].ImageIndex;
-      inc(k);
+      Inc(k);
     end;
   end;
   VisSelectedTabMenuToolbar:= VisTabsLen + Tab;
@@ -5701,7 +5701,7 @@ begin
 end;
 
 procedure TFConfiguration.LVVisibilityToolbarsClick(Sender: TObject);
-  var s: string; i, p, Tab: integer;
+  var s: string; i, p, Tab: Integer;
       TSpB: TSpTBXToolBar; TB: TToolbar;
       anItem: TListItem;
       EditForm: TEditorForm; UMLForm: TFUMLform;
@@ -5755,14 +5755,14 @@ begin
            TB:= SequencediagramForm.SequenceToolbar;
       end;
       else
-        exit;
+        Exit;
     end;
     LVVisibilityElements.onItemChecked:= nil;
     if Tab <= 1 then begin
       for i:= 0 to TSpB.Items.Count - 1 do begin
         s:= TSpB.Items[i].Hint;
         p:= Pos('|', s);
-        if p > 0 then s:= copy(s, 1, p-1);
+        if p > 0 then s:= Copy(s, 1, p-1);
         anItem:= LVVisibilityElements.Items.Add;
         anItem.Caption:= ' ' + _(s);
         anItem.Checked:= vis2[VisTabsLen + VisMenusLen + Tab, i];
@@ -5773,7 +5773,7 @@ begin
       for i:= 0 to TB.ButtonCount - 1 do begin
         s:= TB.Buttons[i].Hint;
         p:= Pos('|', s);
-        if p > 0 then s:= copy(s, 1, p-1);
+        if p > 0 then s:= Copy(s, 1, p-1);
         anItem:= LVVisibilityElements.Items.Add;
         anItem.Caption:= ' ' + _(s);
         anItem.Checked:= vis2[VisTabsLen + VisMenusLen + Tab, i];
@@ -5797,15 +5797,15 @@ begin
 end;
 
 procedure TFConfiguration.BVisDefaultClick(Sender: TObject);
-  var i, j, n: integer;
+  var i, j, n: Integer;
 
-  procedure DefaultVis(var arr: array of boolean);
+  procedure DefaultVis(var arr: array of Boolean);
   begin
     for var i:= 0 to High(arr) do
-      arr[i]:= true;
+      arr[i]:= True;
   end;
 
-  procedure StringVisibilityToArr2(s: string; l, n: integer);
+  procedure StringVisibilityToArr2(s: string; l, n: Integer);
   begin
     for var i:= 0 to l - 1 do
       vis2[n, i]:= (s[i+1] = '1');
@@ -5817,16 +5817,16 @@ begin
   DefaultVis(VisToolbars);
 
   for i:= 0 to high(VisTabs) do
-    LVVisibilityTabs.Items[i].Checked:= true;
+    LVVisibilityTabs.Items[i].Checked:= True;
   for i:= 0 to high(VisMenus) do
-    LVVisibilityMenus.Items[i].Checked:= true;
+    LVVisibilityMenus.Items[i].Checked:= True;
   for i:= 0 to high(VisToolbars) do
-    LVVisibilityToolbars.Items[i].Checked:= true;
+    LVVisibilityToolbars.Items[i].Checked:= True;
 
   // details of tabs, menus and toolbars
   for i:= 0 to MaxVisLen - 1 do
     for j:= 0 to MaxTabItem - 1 do
-      vis2[i, j]:= true;
+      vis2[i, j]:= True;
 
   // --- default menu visibility
   n:= Length(DefaultVisFileMenu);
@@ -5852,19 +5852,19 @@ begin
     LVVisibilityElements.Items[j].Checked:= vis2[VisSelectedTabMenuToolbar, j];
 end;
 
-procedure TFConfiguration.setToolbarVisibility(Toolbar: TToolbar; Nr: integer);
+procedure TFConfiguration.setToolbarVisibility(Toolbar: TToolbar; Nr: Integer);
 begin
   Toolbar.Visible:= VisToolbars[Nr];
   for var i:= 0 to Toolbar.ButtonCount - 1 do
     Toolbar.Buttons[i].Visible:= vis1[VisTabsLen + VisMenusLen + Nr, i];
 end;
 
-function TFConfiguration.CountMenuItems(Menu: TTBCustomItem): integer;
+function TFConfiguration.CountMenuItems(Menu: TTBCustomItem): Integer;
 begin
   Result:= 0;
   for var i:= 0 to Menu.Count - 1 do
     if Menu.Items[i].Tag = 0 then
-      inc(Result);
+      Inc(Result);
 end;
 
 procedure TFConfiguration.CBProviderDropDown(Sender: TObject);
@@ -5904,7 +5904,7 @@ begin
 end;
 
 procedure TFConfiguration.LLMAssistantViewToModel;
-  var Settings: TLLMSettings; value: integer;
+  var Settings: TLLMSettings; value: Integer;
 begin
   TempProviders.Provider:= TLLMProvider(CBProvider.ItemIndex);
   Settings.EndPoint:= EEndPoint.text;
@@ -5941,7 +5941,7 @@ begin
 end;
 
 procedure TFConfiguration.LLMChatViewToModel;
-  var Settings: TLLMSettings; value: integer;
+  var Settings: TLLMSettings; value: Integer;
 begin
   TempChatProviders.Provider:= TLLMProvider(CBChatProvider.ItemIndex);
   Settings.EndPoint:= EChatEndPoint.text;
@@ -5971,19 +5971,19 @@ begin
   fColorTheme:= 'Obsidian';
 
   // Class modeler
-  fShowGetSetMethods:= true;
-  fGetSetMethodsAsProperty:= true;
-  fGetMethodChecked:= true;
-  fSetMethodChecked:= false;
-  fShowTypeSelection:= true;
-  fShowKindProcedure:= true;
-  fShowParameterTypeSelection:= true;
-  fFromFutureImport:= true;
+  fShowGetSetMethods:= True;
+  fGetSetMethodsAsProperty:= True;
+  fGetMethodChecked:= True;
+  fSetMethodChecked:= False;
+  fShowTypeSelection:= True;
+  fShowKindProcedure:= True;
+  fShowParameterTypeSelection:= True;
+  fFromFutureImport:= True;
 
   // GUI designer
-  fNameFromText:= true;
-  fGuiDesignerHints:= true;
-  fSnapToGrid:= true;
+  fNameFromText:= True;
+  fGuiDesignerHints:= True;
+  fSnapToGrid:= True;
   fGridSize:= 8;
   fZoomSteps:= 1;
   fGUIFontSize:= 9;
@@ -5993,17 +5993,17 @@ begin
 
   // Structogram
   fStructoDatatype:= 'int';
-  fSwitchWithCaseLine:= false;
+  fSwitchWithCaseLine:= False;
   fCaseCount:= 4;
   fStructogramShadowWidth:= 3;
   fStructogramShadowIntensity:= 8;
 
   // Sequence diagram
   fSDFillingcolor:= clYellow;
-  fSDNoFilling:= false;
-  fSDShowMainCall:= false;
-  fSDShowParameter:= true;
-  fSDShowReturn:= true;
+  fSDNoFilling:= False;
+  fSDShowMainCall:= False;
+  fSDShowParameter:= True;
+  fSDShowReturn:= True;
 
   // UML design
   fValidClassColor:= clWhite;
@@ -6015,7 +6015,7 @@ begin
   fObjectHead:= 1;
   fObjectFooter:= 1;
   fObjectCaption:= 0;
-  fObjectUnderline:= true;
+  fObjectUnderline:= True;
   fCommentColor:= clSkyBlue;
   fDiVisibilityFilter:= 0;
   fDiSortOrder:= 0;
@@ -6023,33 +6023,33 @@ begin
   fDiShowIcons:= 1;
 
   // uml options
-  fShowEmptyRects:= false;
-  fIntegerInsteadofInt:= false;
-  fConstructorWithVisibility:= false;
-  fRelationshipAttributesBold:= true;
-  fShowClassparameterSeparately:= false;
-  fRoleHidesAttribute:= false;
-  fDefaultModifiers:= true;
-  fShowPublicOnly:= false;
-  fShowObjectsWithInheritedPrivateAttributes:= true;
-  fShowObjectsWithMethods:= false;
-  fObjectLowerCaseLetter:= true;
-  fShowAllNewObjects:= true;
-  fObjectsWithoutVisibility:= true;
-  fPrivateAttributEditable:= true;
+  fShowEmptyRects:= False;
+  fIntegerInsteadofInt:= False;
+  fConstructorWithVisibility:= False;
+  fRelationshipAttributesBold:= True;
+  fShowClassparameterSeparately:= False;
+  fRoleHidesAttribute:= False;
+  fDefaultModifiers:= True;
+  fShowPublicOnly:= False;
+  fShowObjectsWithInheritedPrivateAttributes:= True;
+  fShowObjectsWithMethods:= False;
+  fObjectLowerCaseLetter:= True;
+  fShowAllNewObjects:= True;
+  fObjectsWithoutVisibility:= True;
+  fPrivateAttributEditable:= True;
   fOpenFolderFormItems:= '';
 
    // restrictions
-  fLockedDOSWindow:= false;
-  fLockedInternet:= false;
-  fLockedPaths:= false;
-  fLockedStructogram:= false;
-  fUsePredefinedLayouts:= false;
+  fLockedDOSWindow:= False;
+  fLockedInternet:= False;
+  fLockedPaths:= False;
+  fLockedStructogram:= False;
+  fUsePredefinedLayouts:= False;
 
   // Browser
   fBrowserURLs:= '';
   fCBWidth:= 200;
-  fUseIEinternForDocuments:= true;
+  fUseIEinternForDocuments:= True;
 
   // Associations
   fAdditionalAssociations:= '';
@@ -6077,8 +6077,8 @@ begin
 
   // Others
   fTextDiffState:= '';
-  fTextDiffIgnoreCase:= false;
-  fTextDiffIgnoreBlanks:= false;
+  fTextDiffIgnoreCase:= False;
+  fTextDiffIgnoreBlanks:= False;
   fSourcepath:= GetDocumentsPath;
   fTempDir:= IncludeTrailingPathDelimiter(GetEnvironmentVariable('TEMP'));
 

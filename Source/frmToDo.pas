@@ -541,8 +541,8 @@ end;
 procedure TToDoExpert.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
 var
-  i : integer;
-  NTokens : integer;
+  i : Integer;
+  NTokens : Integer;
   Priority : TToDoPriority;
   Token : string;
   SL : TStringList;
@@ -580,7 +580,7 @@ end;
 procedure TToDoExpert.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
 var
-  i : integer;
+  i : Integer;
   SL : TStringList;
 begin
   with AppStorage do begin
@@ -747,7 +747,7 @@ procedure TToDoWindow.LoadFile(const FileName: string);
 var
   SourceCode : TStringList;
   Editor : IEditor;
-  i, Index : integer;
+  i, Index : Integer;
   TokenString : string;
   Info, OldInfo : TToDoInfo;
   PStart : PWideChar;
@@ -870,7 +870,7 @@ begin
   end);
 end;
 
-function ProcessProjectFile(Node: TAbstractProjectNode; Data : Pointer):boolean;
+function ProcessProjectFile(Node: TAbstractProjectNode; Data : Pointer):Boolean;
 var
   FileName : string;
 begin

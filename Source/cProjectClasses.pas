@@ -22,7 +22,7 @@ type
   TAbstractProjectNode = class;
   TAbstractProjectNodeClass = class of TAbstractProjectNode;
 
-  TProjectNodeAction = function (Node: TAbstractProjectNode; Data : Pointer):boolean;
+  TProjectNodeAction = function (Node: TAbstractProjectNode; Data : Pointer):Boolean;
 
   TAbstractProjectNode = class(TInterfacedPersistent, IJvAppStorageHandler, IJvAppStoragePublishedProps)
   private
@@ -220,7 +220,7 @@ end;
 function TAbstractProjectNode.FirstThat(Proc: TProjectNodeAction;
   Data: Pointer): TAbstractProjectNode;
 var
-  i : integer;
+  i : Integer;
 begin
   Result := nil;
   if Proc(Self, Data) then
@@ -228,20 +228,20 @@ begin
   else
     for i := 0 to fChildren.Count-1 do begin
       Result := TAbstractProjectNode(fChildren[i]).FirstThat(Proc, Data);
-      if Result <> nil then exit;
+      if Result <> nil then Exit;
     end;
 end;
 
 procedure TAbstractProjectNode.ForEach(Proc: TProjectNodeAction; Data: Pointer);
 var
-  i : integer;
+  i : Integer;
 begin
   Proc(Self, Data);
   for i := 0 to fChildren.Count-1 do
     TAbstractProjectNode(Children[i]).ForEach(Proc, Data);
 end;
 
-function CheckModified(Node: TAbstractProjectNode; Data : Pointer):boolean;
+function CheckModified(Node: TAbstractProjectNode; Data : Pointer):Boolean;
 begin
   Result := Node.fModified;
 end;
@@ -268,7 +268,7 @@ end;
 procedure TAbstractProjectNode.ReadFromAppStorage(
   AppStorage: TJvCustomAppStorage; const BasePath: string);
 var
-  i : integer;
+  i : Integer;
 begin
   if AppStorage.PathExists(BasePath+'\ChildNodes') then begin
     ClearChildren;
@@ -289,7 +289,7 @@ begin
   fModified := True;
 end;
 
-function ReSetModified(Node: TAbstractProjectNode; Data : Pointer):boolean;
+function ReSetModified(Node: TAbstractProjectNode; Data : Pointer):Boolean;
 begin
   Node.fModified := False;
   Result := True;
@@ -370,7 +370,7 @@ begin
     Result := _('Untitled');
 end;
 
-function NodeHasFile(Node: TAbstractProjectNode; Data : Pointer):boolean;
+function NodeHasFile(Node: TAbstractProjectNode; Data : Pointer):Boolean;
 begin
   Result := False;
   if (Node is TProjectFileNode) and
@@ -428,7 +428,7 @@ begin
   Result := _('Files');
 end;
 
-function CompareFolderChildren(P1, P2: Pointer): integer;
+function CompareFolderChildren(P1, P2: Pointer): Integer;
 var
   Node1, Node2 : TAbstractProjectNode;
 begin
@@ -457,7 +457,7 @@ begin
        (AnsiCompareText(TProjectFileNode(fChildren[i]).fFileName, FileName) = 0) then
      begin
        Result := TProjectFileNode(fChildren[i]);
-       break;
+       Break;
      end;
   end;
 end;
@@ -472,7 +472,7 @@ begin
        (AnsiCompareText(TProjectFolderNode(fChildren[i]).fName, FolderName) = 0) then
      begin
        Result := TProjectFolderNode(fChildren[i]);
-       break;
+       Break;
      end;
   end;
 end;
@@ -481,7 +481,7 @@ procedure TProjectFilesNode.ImportDirectory(const Directory, Masks: string;
   Recursive: Boolean);
 var
   FileList: TStringList;
-  i : integer;
+  i : Integer;
   FileNode : TProjectFileNode;
   FolderNode : TProjectFolderNode;
   FolderName : string;
@@ -516,7 +516,7 @@ begin
       for i := 0 to FileList.Count - 1 do begin
         FolderName := FileList[i];
         if (FolderName = '.') or (FolderName = '..') then
-          continue;
+          Continue;
         FolderNode.ImportDirectory(FolderName, Masks, Recursive);
       end;
     end;

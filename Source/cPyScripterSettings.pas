@@ -10,7 +10,7 @@ unit cPyScripterSettings;
 
 interface
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   System.Classes,
   Vcl.ImgList,
   Vcl.Graphics,
@@ -54,7 +54,7 @@ type
   private
     fFreeNotifyImpl : IFreeNotification;
     fOnChange: TJclProcedureEventBroadcast;
-    fTimeOut : integer;
+    fTimeOut : Integer;
     fUndoAfterSave : Boolean;
     fSaveFilesBeforeRun : Boolean;
     fSaveFilesAutomatically: Boolean;
@@ -83,13 +83,13 @@ type
     fAllFileFilter: string;
     fFileExplorerFilter : string;
     fDateLastCheckedForUpdates : TDateTime;
-    fAutoCheckForUpdates : boolean;
-    fDaysBetweenChecks : integer;
-    fMaskFPUExceptions : boolean;
+    fAutoCheckForUpdates : Boolean;
+    fDaysBetweenChecks : Integer;
+    fMaskFPUExceptions : Boolean;
     fSpecialPackages : string;
-    fShowCodeHints : boolean;
-    fShowDebuggerHints : boolean;
-    fAutoCompleteBrackets : boolean;
+    fShowCodeHints : Boolean;
+    fShowDebuggerHints : Boolean;
+    fAutoCompleteBrackets : Boolean;
     fCommandLine : string;
     fUseCommandLine : Boolean;
     fMarkExecutableLines : Boolean;
@@ -105,14 +105,14 @@ type
     fAutoReloadChangedFiles : Boolean;
     fClearOutputBeforeRun : Boolean;
     fAutoHideFindToolbar : Boolean;
-    fCodeCompletionListSize : integer;
+    fCodeCompletionListSize : Integer;
     fEditorCodeCompletion : Boolean;
     fInterpreterCodeCompletion : Boolean;
     fShowTabCloseButton : Boolean;
     fPostMortemOnException : Boolean;
-    fDockAnimationInterval : integer;
-    fDockAnimationMoveWidth : integer;
-    fInterpreterHistorySize : integer;
+    fDockAnimationInterval : Integer;
+    fDockAnimationMoveWidth : Integer;
+    fInterpreterHistorySize : Integer;
     fSaveInterpreterHistory : Boolean;
     fReinitializeBeforeRun: Boolean;
     fJumpToErrorOnException : Boolean;
@@ -127,11 +127,11 @@ type
     fCompleteWithWordBreakChars: Boolean;
     fCompleteWithOneEntry:Boolean;
     fDisplayPackageNames:Boolean;
-    fNoOfRecentFiles : integer;
-    fCodeFoldingEnabled : boolean;
-    fCodeFoldingForGuiElements : boolean;
+    fNoOfRecentFiles : Integer;
+    fCodeFoldingEnabled : Boolean;
+    fCodeFoldingForGuiElements : Boolean;
     fCodeFolding : TSynCodeFolding;
-    fInternalInterpreterHidden : boolean;
+    fInternalInterpreterHidden : Boolean;
     fCompactLineNumbers : Boolean;
     fStyleMainWindowBorder : Boolean;
     fFileExplorerBackgroundProcessing : Boolean;
@@ -185,24 +185,24 @@ type
       write SetIndentGuides;
     property DisplayFlowControl: TSynDisplayFlowControl read fDisplayFlowControl
       write SetDisplayFlowControl;
-    property TimeOut : integer read fTimeOut write fTimeOut default 0;
-    property UndoAfterSave : boolean read fUndoAfterSave
+    property TimeOut : Integer read fTimeOut write fTimeOut default 0;
+    property UndoAfterSave : Boolean read fUndoAfterSave
       write fUndoAfterSave default True;
-    property SaveFilesBeforeRun : boolean read fSaveFilesBeforeRun
+    property SaveFilesBeforeRun : Boolean read fSaveFilesBeforeRun
       write fSaveFilesBeforeRun default True;
-    property SaveEnvironmentBeforeRun : boolean read fSaveEnvironmentBeforeRun
+    property SaveEnvironmentBeforeRun : Boolean read fSaveEnvironmentBeforeRun
       write fSaveEnvironmentBeforeRun default False;
-    property SaveFilesAutomatically : boolean read fSaveFilesAutomatically
+    property SaveFilesAutomatically : Boolean read fSaveFilesAutomatically
       write fSaveFilesAutomatically default True;
     property RestoreOpenFiles : Boolean read fRestoreOpenFiles
       write fRestoreOpenFiles default True;
     property RestoreOpenProject : Boolean read fRestoreOpenProject
       write fRestoreOpenProject default True;
-    property CreateBackupFiles : boolean read fCreateBackupFiles
+    property CreateBackupFiles : Boolean read fCreateBackupFiles
       write fCreateBackupFiles default False;
-    property ExplorerInitiallyExpanded : boolean read fExplorerInitiallyExpanded
+    property ExplorerInitiallyExpanded : Boolean read fExplorerInitiallyExpanded
       write fExplorerInitiallyExpanded default False;
-    property ProjectExplorerInitiallyExpanded : boolean read fProjectExplorerInitiallyExpanded
+    property ProjectExplorerInitiallyExpanded : Boolean read fProjectExplorerInitiallyExpanded
       write fProjectExplorerInitiallyExpanded default True;
     property SearchTextAtCaret : Boolean read fSearchTextAtCaret
       write fSearchTextAtCaret stored False;
@@ -242,18 +242,18 @@ type
       write fFileExplorerFilter;
     property DateLastCheckedForUpdates : TDateTime read fDateLastCheckedForUpdates
       write fDateLastCheckedForUpdates;
-    property AutoCheckForUpdates : boolean read fAutoCheckForUpdates
+    property AutoCheckForUpdates : Boolean read fAutoCheckForUpdates
       write fAutoCheckForUpdates default True;
-    property DaysBetweenChecks : integer read fDaysBetweenChecks
+    property DaysBetweenChecks : Integer read fDaysBetweenChecks
       write fDaysBetweenChecks default 7;
     property MaskFPUExceptions : Boolean read fMaskFPUExceptions
       write fMaskFPUExceptions default True;
     property SpecialPackages : string read fSpecialPackages write fSpecialPackages;
-    property ShowCodeHints : boolean read fShowCodeHints
+    property ShowCodeHints : Boolean read fShowCodeHints
       write fShowCodeHints default True;
-    property ShowDebuggerHints : boolean read fShowDebuggerHints
+    property ShowDebuggerHints : Boolean read fShowDebuggerHints
       write fShowDebuggerHints default True;
-    property AutoCompleteBrackets : boolean read fAutoCompleteBrackets
+    property AutoCompleteBrackets : Boolean read fAutoCompleteBrackets
       write fAutoCompleteBrackets default True;
     property CommandLine : string read fCommandLine write fCommandLine;
     property UseCommandLine : Boolean read fUseCommandLine
@@ -288,17 +288,17 @@ type
       write fEditorCodeCompletion default True;
     property InterpreterCodeCompletion : Boolean read fInterpreterCodeCompletion
       write fInterpreterCodeCompletion default True;
-    property CodeCompletionListSize : integer read fCodeCompletionListSize
+    property CodeCompletionListSize : Integer read fCodeCompletionListSize
       write fCodeCompletionListSize default 10;
     property ShowTabCloseButton : Boolean read fShowTabCloseButton
       write fShowTabCloseButton default True;
     property PostMortemOnException : Boolean read fPostMortemOnException
       write fPostMortemOnException default False;
-    property DockAnimationInterval : integer read fDockAnimationInterval
+    property DockAnimationInterval : Integer read fDockAnimationInterval
       write fDockAnimationInterval;
-    property DockAnimationMoveWidth : integer read fDockAnimationMoveWidth
+    property DockAnimationMoveWidth : Integer read fDockAnimationMoveWidth
       write fDockAnimationMoveWidth;
-    property InterpreterHistorySize : integer read fInterpreterHistorySize
+    property InterpreterHistorySize : Integer read fInterpreterHistorySize
       write fInterpreterHistorySize;
     property SaveInterpreterHistory : Boolean read fSaveInterpreterHistory
       write fSaveInterpreterHistory default True;
@@ -310,7 +310,7 @@ type
       write fFileTemplateForNewScripts;
     property AutoCompletionFont : TFont read fAutoCompletionFont
       write SetAutoCompletionFont;
-    property HighlightSelectedWord : boolean read fHighlightSelectedWord
+    property HighlightSelectedWord : Boolean read fHighlightSelectedWord
       write fHighlightSelectedWord default True;
     property HighlightSelectedWordColor : TColor read fHighlightSelectedWordColor
       write fHighlightSelectedWordColor default clOlive;
@@ -328,7 +328,7 @@ type
       write fCompleteWithOneEntry default False;
     property DisplayPackageNames : Boolean read fDisplayPackageNames
       write fDisplayPackageNames default True;
-    property NoOfRecentFiles : integer read fNoOfRecentFiles
+    property NoOfRecentFiles : Integer read fNoOfRecentFiles
       write fNoOfRecentFiles default 8;
     property CodeFoldingEnabled : Boolean read fCodeFoldingEnabled
       write fCodeFoldingEnabled default True;
@@ -346,7 +346,7 @@ type
     property SSHOptions : string read fSSHOptions write fSSHOptions;
     property ScpCommand : string read fScpCommand write fScpCommand;
      property ScpOptions : string read fScpOptions write fScpOptions;
-    property SSHDisableVariablesWin : boolean read fSSHDisableVariablesWin
+    property SSHDisableVariablesWin : Boolean read fSSHDisableVariablesWin
       write fSSHDisableVariablesWin default True;
     property AlwaysUseSockets : Boolean read fAlwaysUseSockets
       write fAlwaysUseSockets default False;
@@ -356,7 +356,7 @@ type
       write fTraceOnlyIntoOpenFiles default False;
     property ReinitializeWhenClosing : Boolean read fReinitializeWhenClosing
       write fReinitializeWhenClosing default True;
-    property LspDebug: Boolean read fLspDebug write fLspDebug default false;
+    property LspDebug: Boolean read fLspDebug write fLspDebug default False;
     property DictLanguage: string read fDictLanguage write fDictLanguage;
     property SpellCheckedTokens: string read fSpellCheckedTokens write fSpellCheckedTokens;
     property SpellCheckAsYouType: Boolean read fSpellCheckAsYouType
@@ -377,12 +377,12 @@ type
   TEditorSearchOptions = class(TPersistent)
   private
     fSearchCaseSensitiveType: TSearchCaseSensitiveType;
-    fSearchFromCaret: boolean;
-    fSearchSelectionOnly: boolean;
-    fSearchTextAtCaret: boolean;
-    fSearchWholeWords: boolean;
-    fUseRegExp: boolean;
-    fIncrementalSearch: boolean;
+    fSearchFromCaret: Boolean;
+    fSearchSelectionOnly: Boolean;
+    fSearchTextAtCaret: Boolean;
+    fSearchWholeWords: Boolean;
+    fUseRegExp: Boolean;
+    fIncrementalSearch: Boolean;
     fSearchTextHistory: string;
     fReplaceTextHistory: string;
   public
@@ -405,13 +405,13 @@ type
   published
     property SearchTextHistory: string read fSearchTextHistory write fSearchTextHistory;
     property ReplaceTextHistory: string read fReplaceTextHistory write fReplaceTextHistory;
-    property SearchSelectionOnly: boolean read fSearchSelectionOnly write fSearchSelectionOnly;
+    property SearchSelectionOnly: Boolean read fSearchSelectionOnly write fSearchSelectionOnly;
     property SearchCaseSensitiveType: TSearchCaseSensitiveType read fSearchCaseSensitiveType write fSearchCaseSensitiveType;
-    property SearchFromCaret: boolean read fSearchFromCaret write fSearchFromCaret;
-    property SearchTextAtCaret: boolean read fSearchTextAtCaret write fSearchTextAtCaret;
-    property SearchWholeWords: boolean read fSearchWholeWords write fSearchWholeWords;
-    property UseRegExp: boolean read fUseRegExp write fUseRegExp;
-    property IncrementalSearch: boolean read fIncrementalSearch write fIncrementalSearch;
+    property SearchFromCaret: Boolean read fSearchFromCaret write fSearchFromCaret;
+    property SearchTextAtCaret: Boolean read fSearchTextAtCaret write fSearchTextAtCaret;
+    property SearchWholeWords: Boolean read fSearchWholeWords write fSearchWholeWords;
+    property UseRegExp: Boolean read fUseRegExp write fUseRegExp;
+    property IncrementalSearch: Boolean read fIncrementalSearch write fIncrementalSearch;
   end;
 
   TPyScripterSettings = class
@@ -560,7 +560,7 @@ begin
       Self.fDisplayPackageNames := DisplayPackageNames;
       Self.fNoOfRecentFiles := NoOfRecentFiles;
       Self.fCodeFoldingEnabled := CodeFoldingEnabled;
-      self.fCodeFoldingForGuiElements:= CodeFoldingForGuiElements;
+      Self.fCodeFoldingForGuiElements:= CodeFoldingForGuiElements;
       Self.fInternalInterpreterHidden := InternalInterpreterHidden;
       Self.fCompactLineNumbers := CompactLineNumbers;
       Self.fStyleMainWindowBorder := StyleMainWindowBorder;
@@ -791,7 +791,7 @@ procedure TEditorSearchOptions.NewSearch(SynEdit: TCustomSynEdit; ABackwards:
 
   function FindTextInBlock(Strings : TStrings; BB, BE : TBufferCoord) : Boolean;
   var
-    StartChar, StopChar:  integer;
+    StartChar, StopChar:  Integer;
     S: string;
   begin
     Result := False;
@@ -1186,7 +1186,7 @@ class constructor TPyScripterSettings.CreateSettings;
       else s:= ExpandFileName(s);
     if FileExists(s) then begin
       IniFile:= TMemIniFile.Create(s);
-      IsPortable:= IniFile.ReadBool('GuiPy', 'PortableApplication', false);
+      IsPortable:= IniFile.ReadBool('GuiPy', 'PortableApplication', False);
       HomeDir:= IniFile.ReadString('User', 'HomeDir', '');
       if isPortable then
         HomeDir:= AddPortableDrive(HomeDir);
@@ -1195,7 +1195,7 @@ class constructor TPyScripterSettings.CreateSettings;
         UserDataPath:= HomeDir;
       FreeAndNil(IniFile);
     end else
-      IsPortable:= false;
+      IsPortable:= False;
   end;
 
   var Publicpath: string;

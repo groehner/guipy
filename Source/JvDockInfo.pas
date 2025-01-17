@@ -981,7 +981,7 @@ type
 
 procedure TJvDockInfoZone.SetDockInfoFromControlToNode(Control: TControl);
 var
-  ControlPPI: integer;
+  ControlPPI: Integer;
 begin
   ControlPPI := TControlAccessProtected(Control).FCurrentPPI;
   if (Control is TJvDockPanel) and (ControlPPI <> 96) and (ControlPPI <> 0) then

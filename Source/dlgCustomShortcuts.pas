@@ -416,7 +416,7 @@ end;
 
 constructor TActionProxyCollection.Create(CreateType : TActionProxyCollectionCreateType);
 var
-  I, j, Index : integer;
+  I, j, Index : Integer;
   Action : TCustomAction;
   ActionList : TActionList;
   ActionProxyItem : TActionProxyItem;
@@ -448,7 +448,7 @@ end;
 function FindActionListByName(Name : string;
   ActionListArray: TActionListArray) : TActionList;
 var
-  I : integer;
+  I : Integer;
 begin
   Result := nil;
   for I := Low(TActionProxyCollection.ActionLists) to High(TActionProxyCollection.ActionLists) do
@@ -460,7 +460,7 @@ end;
 
 function FindActionByName(Name : string; ActionList : TActionList): TCustomAction;
 var
-  I : integer;
+  I : Integer;
 begin
   Result := nil;
   for I := 0 to ActionList.ActionCount - 1 do
@@ -479,7 +479,7 @@ end;
 
 procedure TActionProxyCollection.ApplyShortCuts();
 var
-  I : integer;
+  I : Integer;
   Index : Integer;
   ActionProxyItem : TActionProxyItem;
   ActionList : TActionList;

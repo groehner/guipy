@@ -87,7 +87,7 @@ type
   end;
 
 var
-  WebPreviewFactoryIndex : integer;
+  WebPreviewFactoryIndex : Integer;
 
 implementation
 

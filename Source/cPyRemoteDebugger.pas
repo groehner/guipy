@@ -499,7 +499,7 @@ begin
   // Import Rpyc
   var SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
 
-  FOldsysmodules := SysModule.modules.copy();
+  FOldsysmodules := SysModule.modules.Copy();
   try
     FRpycPath := Format('%sLib\%s', [ExtractFilePath(Application.ExeName), RpycZipModule]);
     PyControl.InternalInterpreter.SysPathAdd(FRpycPath);

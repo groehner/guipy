@@ -50,7 +50,7 @@ type
 
 function InspectOptions(OptionsObject : TBaseOptions;
   Categories : array of TOptionCategory; FormCaption : string;
-  HelpCntxt : integer = 0; ShowCategories: boolean = True): boolean;
+  HelpCntxt : Integer = 0; ShowCategories: Boolean = True): Boolean;
 
 implementation
 
@@ -64,7 +64,7 @@ uses
 procedure TOptionsInspector.Setup(OptionsObject: TBaseOptions;
   Categories: array of TOptionCategory);
 var
-  i, j : integer;
+  i, j : Integer;
 begin
   fOptionsObject := OptionsObject;
   fTempOptionsObject := TBaseOptionsClass(OptionsObject.ClassType).Create;
@@ -100,14 +100,14 @@ end;
 
 function InspectOptions(OptionsObject : TBaseOptions;
   Categories : array of TOptionCategory; FormCaption : string;
-  HelpCntxt : integer = 0; ShowCategories: boolean = True): boolean;
+  HelpCntxt : Integer = 0; ShowCategories: Boolean = True): Boolean;
 begin
   with TOptionsInspector.Create(Application) do begin
     Caption := FormCaption;
     HelpContext := HelpCntxt;
     Inspector.SortByCategory := ShowCategories;
     Setup(OptionsObject, Categories);
-    Result := ShowModal = mrOK;
+    Result := ShowModal = mrOk;
     Release;
   end;
 end;

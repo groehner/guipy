@@ -11,7 +11,7 @@ unit frmFileExplorer;
 interface
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   WinApi.Messages,
   System.SysUtils,
   System.Classes,
@@ -345,7 +345,7 @@ end;
 procedure TFileExplorerWindow.mnFavoritesPopup(Sender: TTBCustomItem;
   FromLink: Boolean);
 var
-  i : integer;
+  i : Integer;
   Item : TSpTBXItem;
 begin
   while mnFavorites.Count > 3 do
@@ -501,7 +501,7 @@ end;
 procedure TFileExplorerWindow.BrowsePathPopup(Sender: TTBCustomItem;
   FromLink: Boolean);
 var
-  i : integer;
+  i : Integer;
   Item : TSpTBXItem;
   Paths : TStringList;
 begin
@@ -527,7 +527,7 @@ end;
 procedure TFileExplorerWindow.FileExplorerTreeKeyPress(Sender: TObject;
   var Key: Char);
 begin
-  if Key = Char(VK_Return) then
+  if Key = Char(VK_RETURN) then
     FileExplorerTreeDblClick(Sender);
 end;
 
@@ -535,7 +535,7 @@ procedure TFileExplorerWindow.VirtualShellHistoryChange(
   Sender: TBaseVirtualShellPersistent; ItemIndex: Integer;
   ChangeType: TVSHChangeType);
 begin
-  if not Assigned(VirtualShellHistory.VirtualExplorerTree) then exit;
+  if not Assigned(VirtualShellHistory.VirtualExplorerTree) then Exit;
   if ChangeType = hctSelected then begin
       if not ILIsParent(FileExplorerTree.RootFolderNamespace.AbsolutePIDL,
         VirtualShellHistory.Items[ItemIndex].AbsolutePIDL, False) then begin

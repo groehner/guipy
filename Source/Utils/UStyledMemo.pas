@@ -68,14 +68,14 @@ begin
         SetTextColor(Message.WParam, ColorToRGB(FontColor));
         SetBkColor(Message.WParam, ColorToRGB(Brush.Color));
         Message.Result := LRESULT(Brush.Handle);
-        Handled:= true;
+        Handled:= True;
       end;
     CM_COLORCHANGED,
     CM_ENABLEDCHANGED:
       begin
         //get the colors
         UpdateColors;
-        Handled:= false;
+        Handled:= False;
       end
   else
     inherited WndProc(Message);

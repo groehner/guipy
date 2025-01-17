@@ -92,7 +92,7 @@ uses
 type
   TBreakPointInfo = class
     FileName : string;
-    Line : integer;
+    Line : Integer;
     Disabled : Boolean;
     Condition : string;
   end;
@@ -124,7 +124,7 @@ end;
 
 procedure TBreakPointsWindow.RestoreSettings(AppStorage: TJvCustomAppStorage);
 begin
-  if not AppStorage.PathExists(FBasePath) then exit;
+  if not AppStorage.PathExists(FBasePath) then Exit;
   inherited;
   BreakPointsView.Header.Columns[0].Width :=
     PPIScale(AppStorage.ReadInteger(FBasePath+'\FileName Width', 200));
@@ -263,7 +263,7 @@ procedure TBreakPointsWindow.BreakPointsViewKeyDown(Sender: TObject; var Key:
     Word; Shift: TShiftState);
 begin
   inherited;
-  if Key = VK_Delete then
+  if Key = VK_DELETE then
   begin
     mnClearClick(Sender);
     Key := 0;

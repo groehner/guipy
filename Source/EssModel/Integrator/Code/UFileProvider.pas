@@ -65,7 +65,7 @@ begin
             Lines:= TXStringList.Create;
             fStream:= TFileStream.Create(AName, fmOpenRead or fmShareDenyWrite);
             Lines.LoadFromStream(fStream, TEncoding.ANSI);  // switches to UTF8 automatically
-            sStream:= TStringStream.Create(Lines.Text + #0, TEncoding.Unicode, true);
+            sStream:= TStringStream.Create(Lines.Text + #0, TEncoding.Unicode, True);
             Result:= sStream;
           except on e: Exception do
             ErrorMsg(e.Message);
@@ -82,7 +82,7 @@ begin
       AddSearchPath(ExtractFilePath(AName));
     end;
   except
-    on e: exception do begin
+    on e: Exception do begin
       ErrorMsg(E.Message);
       Result:= nil;
     end;
@@ -100,7 +100,7 @@ begin
     try
       fs.CopyFrom(AStream, 0);
     except
-      on e: exception do
+      on e: Exception do
         ErrorMsg(e.Message);
     end;
   finally

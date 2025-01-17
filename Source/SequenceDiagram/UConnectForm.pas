@@ -35,10 +35,10 @@ type
     procedure LBConnectionsClick(Sender: TObject);
   private
     ILConnections: TVirtualImageList;
-    isTurned: boolean;
+    isTurned: Boolean;
   public
     LNGClose: string;
-    procedure init(IsConnecting: boolean; conn: TConnection; SelectedControls: integer);
+    procedure init(IsConnecting: Boolean; conn: TConnection; SelectedControls: Integer);
     function getConnectionAttributes: TConnectionAttributes;
   end;
 
@@ -66,7 +66,7 @@ begin
   Left:= Mouse.CursorPos.X + 25;
   if Left + Width > Application.MainForm.Width then
     Left:= Application.MainForm.Width - Width - 25;
-  ShowScrollBar(LBConnections.Handle, SB_VERT, false);
+  ShowScrollBar(LBConnections.Handle, SB_VERT, False);
   ERelation.SetFocus;
 end;
 
@@ -88,26 +88,26 @@ end;
 
 procedure TFConnectForm.LBConnectionsDblClick(Sender: TObject);
 begin
-  ModalResult:= mrOK;
+  ModalResult:= mrOk;
 end;
 
-procedure TFConnectForm.init(IsConnecting: Boolean; conn: TConnection; SelectedControls: integer);
+procedure TFConnectForm.init(IsConnecting: Boolean; conn: TConnection; SelectedControls: Integer);
 begin
   if IsConnecting then begin
-    BTurn.Enabled:= false;
-    BDelete.Enabled:= false;
+    BTurn.Enabled:= False;
+    BDelete.Enabled:= False;
     end
   else begin
-    BTurn.Enabled:= true;
-    BDelete.Enabled:= true;
+    BTurn.Enabled:= True;
+    BDelete.Enabled:= True;
   end;
-  if assigned(conn) then begin
+  if Assigned(conn) then begin
     ERelation.Text:= conn.aMessage;
     LBConnections.ItemIndex:= Ord(conn.ArrowStyle);
-    IsTurned:= false;
+    IsTurned:= False;
     if conn.isRecursiv then begin
-      LBConnections.Items.delete(4);
-      LBConnections.items.delete(3);
+      LBConnections.Items.Delete(4);
+      LBConnections.Items.Delete(3);
     end;
   end else begin
     ERelation.Text:= '';
@@ -121,7 +121,7 @@ begin
   Result:= TConnectionAttributes.Create;
   Result.ArrowStyle:= TArrowStyle(LBConnections.ItemIndex);
   if Result.ArrowStyle = casClose then begin
-    s:= trim(ERelation.Text);
+    s:= Trim(ERelation.Text);
     if s = '' then
       s:= LNGClose;
     ERelation.Text:= s;

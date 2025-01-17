@@ -43,32 +43,32 @@ type
     Selected: Boolean;
     FFrom, FTo: TControl; // from --> to Lifeline
     FromP, ToP: TPoint;   // start/ending of connection
-    isRecursiv: boolean;
+    isRecursiv: Boolean;
     Pl: array[1..4] of TPoint;
     ConRect: TRect;
-    YPos: integer;
-    FromActivation: integer;
-    ToActivation: integer;
+    YPos: Integer;
+    FromActivation: Integer;
+    ToActivation: Integer;
     TextRect: TRect;
-    DistX: integer;
-    DistY: integer;
-    ActivationWidth: integer;
-    HeadLength: integer;
+    DistX: Integer;
+    DistY: Integer;
+    ActivationWidth: Integer;
+    HeadLength: Integer;
     OnConnectionChanged: TConnectionChanged;
     BGColor: TColor;
     FGColor: TColor;
-    constructor create(Src, Dst: TControl; Attributes: TConnectionAttributes; aOnConnectionChanged: TConnectionChanged);
+    constructor Create(Src, Dst: TControl; Attributes: TConnectionAttributes; aOnConnectionChanged: TConnectionChanged);
     procedure Draw(Canvas: TCanvas);
     procedure DrawRecursiv(Canvas: TCanvas);
     procedure DrawRecursivMessage(Canvas: TCanvas);
-    procedure DrawSelection(Canvas: TCanvas; WithSelection: boolean = true);
+    procedure DrawSelection(Canvas: TCanvas; WithSelection: Boolean = True);
     procedure UnDrawSelection(Canvas: TCanvas);
     procedure SetPenBrushArrow(Canvas: TCanvas);
     procedure CalcPolyline;
     procedure SetAttributes(Attributes: TConnectionAttributes);
     procedure SetArrow(aArrowStyle: TArrowStyle);
     procedure Turn;
-    function IsClicked(P: TPoint): boolean;
+    function IsClicked(P: TPoint): Boolean;
     function CalcRect(Canvas: TCanvas; AMaxWidth: Integer; const AString: string): TRect;
     function hasRect: TRect;
     function getArrowStyleAsString: string;
@@ -116,12 +116,12 @@ type
     SequenceForm: TForm;
     BGColor: TColor;
     FGColor: TColor;
-    FMoved: boolean;
+    FMoved: Boolean;
 
-    procedure SetSelectedOnly(const Value : boolean);
-    procedure SetModified(const Value: boolean);
-    procedure SetLocked(const Value: boolean);
-    procedure TurnConnection(i: integer);
+    procedure SetSelectedOnly(const Value : Boolean);
+    procedure SetModified(const Value: Boolean);
+    procedure SetLocked(const Value: Boolean);
+    procedure TurnConnection(i: Integer);
   protected
     FManagedObjects: TList;
     FConnections: TObjectList;
@@ -159,9 +159,9 @@ type
     FIsRectSelecting: Boolean;
     FSelectedOnly: Boolean;
     FIsLocked: Boolean;
-    MouseDownOK: boolean;
-    FResized: boolean;
-    FShowConnections: integer;
+    MouseDownOK: Boolean;
+    FResized: Boolean;
+    FShowConnections: Integer;
 
     // public declarations
     constructor Create(AOwner: TComponent); override;
@@ -177,7 +177,7 @@ type
     // The list should be freed by the caller.
     function GetSelectedControls : TObjectList;
     procedure DeleteSelectedControls;
-    function CountSelectedControls: integer;
+    function CountSelectedControls: Integer;
 
     // Returns a list with all interobject connections.
     // The list should be freed by the caller.
@@ -189,38 +189,38 @@ type
     function getConnectionOfClickedTextRect: TConnection;
     procedure DeleteConnections;
     procedure DeleteSelectedConnection;
-    function HasSelectedConnection: boolean;
-    function GetClickedConnectionNr: integer;
+    function HasSelectedConnection: Boolean;
+    function GetClickedConnectionNr: Integer;
     function GetClickedConnection: TConnection;
     function GetSelectedConnection: TConnection;
 
     // Add a connection from Src to Dst with the supplied style
     function ConnectObjects(Src, Dst: TControl; Attributes: TConnectionAttributes): TConnection;
-    function ConnectObjectsAt(Src, Dst: TControl; Attributes: TConnectionAttributes; i: integer): TConnection;
-    procedure DoConnection(Item: integer);
+    function ConnectObjectsAt(Src, Dst: TControl; Attributes: TConnectionAttributes; i: Integer): TConnection;
+    procedure DoConnection(Item: Integer);
 
     // Free all managed objects and the managed controls.
     procedure ClearManagedObjects;
 
     // Unselect all selected objects
-    procedure ClearSelection(WithShowAll: boolean = true);
-    function SelectionChangedOnClear: boolean;
+    procedure ClearSelection(WithShowAll: Boolean = True);
+    function SelectionChangedOnClear: Boolean;
     procedure ShowAll;
     procedure SetFocus; override;
     procedure SelectConnection;
     procedure SelectClickedConnection;
-    procedure ConnectBoxesAt(Src, Dest: TControl; at: integer);
-    procedure GetDiagramSize(var W, H: integer);
+    procedure ConnectBoxesAt(Src, Dest: TControl; at: Integer);
+    procedure GetDiagramSize(var W, H: Integer);
     procedure RecalcSize;
     procedure ShowConnections;
     procedure setFont(aFont: TFont);
     procedure Clear;
     property isLocked: Boolean read FIsLocked write SetLocked;
     property IsModified: Boolean read FIsModified write SetModified;
-    property IsMoving: boolean read FIsMoving write FIsMoving;
+    property IsMoving: Boolean read FIsMoving write FIsMoving;
     // Bitmap to be used as background for printing
     property BackBitmap : TBitmap read FBackBitmap write FBackBitmap;
-    property SelectedOnly: boolean read FSelectedOnly write SetSelectedOnly;
+    property SelectedOnly: Boolean read FSelectedOnly write SetSelectedOnly;
   published
     property Align;
     property Alignment;
@@ -346,7 +346,7 @@ begin  // of draw
 
   if IsRecursiv then begin
     DrawRecursiv(Canvas);
-    exit;
+    Exit;
   end;
 
   {--- draw connection line ---------------------------------------------------}
@@ -364,11 +364,11 @@ begin  // of draw
 
   xLineDelta:= x2 - x1;
   yLineDelta:= y2 - y1;
-  absXLineDelta:= max(abs(xLineDelta), 1);
-  absYLineDelta:= max(abs(yLineDelta), 1);
+  absXLineDelta:= Max(abs(xLineDelta), 1);
+  absYLineDelta:= Max(abs(yLineDelta), 1);
 
-  if (xLineDelta = 0) and (yLineDelta = 0) then exit; // Line has length 0
-  if (absXLineDelta > 20000) or (absYLineDelta > 20000) then exit; // Line is too long
+  if (xLineDelta = 0) and (yLineDelta = 0) then Exit; // Line has length 0
+  if (absXLineDelta > 20000) or (absYLineDelta > 20000) then Exit; // Line is too long
 
   Tmp1:= sqrt(sqr(xLineDelta) + sqr(yLineDelta));
   xLineUnitDelta:= xLineDelta / Tmp1;
@@ -434,8 +434,8 @@ begin  // of draw
     Canvas.LineTo(x2, y2 + HeadLength);
   end;
   Canvas.Pen.Color:= FGColor;
-  ConRect:= Rect(min(x1, x2), min(y1, y2) - abs(dy),
-                 max(x1, x2), max(y1, y2) + abs(dy));
+  ConRect:= Rect(Min(x1, x2), Min(y1, y2) - abs(dy),
+                 Max(x1, x2), Max(y1, y2) + abs(dy));
   ConRect.Inflate(FFrom.PPIScale(2), FFrom.PPIScale(2));
   DrawMessage;
 
@@ -447,7 +447,7 @@ end;
 procedure TConnection.DrawRecursiv(Canvas: TCanvas);
 
   procedure DrawArrowHead(P1, P2: TPoint);
-    var P3, P4: TPoint; dx: integer;
+    var P3, P4: TPoint; dx: Integer;
   begin
     dx:= P2.x - P1.x;
     P3.X:= P1.X + Round(Headlength)*sign(dx);
@@ -478,7 +478,7 @@ begin
 end;
 
 procedure TConnection.DrawRecursivMessage(Canvas: TCanvas);
-  var x1, y1: integer;
+  var x1, y1: Integer;
       Flags: longint;
 begin
   // Relationname
@@ -495,7 +495,7 @@ begin
 end;
 
 procedure TConnection.CalcPolyline;
-  var x1, y1: integer;
+  var x1, y1: Integer;
 begin
 {         DistX
       P1----------P2
@@ -518,15 +518,15 @@ begin
   Pl[4]:= ToP;
 
   if ArrowStyle = casReturn then begin
-    dec(Pl[2].x, ActivationWidth);
-    dec(Pl[3].x, ActivationWidth);
+    Dec(Pl[2].x, ActivationWidth);
+    Dec(Pl[3].x, ActivationWidth);
   end;
 
   ConRect:= Rect(Pl[1].X - 2, Pl[2].Y- 2, Pl[2].X + 2, Pl[4].Y + 2);
 end;
 
-procedure TConnection.DrawSelection(Canvas: TCanvas; withSelection: boolean = true);
-  var x1, y1, x2, y2, r, xLineDelta, yLineDelta: integer;
+procedure TConnection.DrawSelection(Canvas: TCanvas; withSelection: Boolean = True);
+  var x1, y1, x2, y2, r, xLineDelta, yLineDelta: Integer;
 begin
   {--- show selection marks ---------------------------------------------------}
   if Selected or not withSelection then begin
@@ -547,8 +547,8 @@ begin
     xLineDelta:= x2 - x1;
     yLineDelta:= y2 - y1;
 
-    if (xLineDelta = 0) and (yLineDelta = 0) then exit; // Line is 0 length
-    if (abs(xLineDelta) > 20000) or (abs(yLineDelta) > 20000) then exit; // Line is too long
+    if (xLineDelta = 0) and (yLineDelta = 0) then Exit; // Line is 0 length
+    if (abs(xLineDelta) > 20000) or (abs(yLineDelta) > 20000) then Exit; // Line is too long
 
     if FFrom.Left > FTo.Left then begin
       x1:= x1 - FromActivation*ActivationWidth;
@@ -576,7 +576,7 @@ end;
 
 procedure TConnection.UnDrawSelection(Canvas: TCanvas);
 begin
-  DrawSelection(Canvas, false);
+  DrawSelection(Canvas, False);
 end;
 
 function TConnection.CalcRect(Canvas: TCanvas; AMaxWidth: Integer; const AString: string): TRect;
@@ -585,11 +585,11 @@ begin
   DrawText(Canvas.Handle, PChar(AString), -1, Result, DT_CALCRECT or DT_LEFT or DT_WORDBREAK or DT_NOPREFIX);
 end;
 
-constructor TConnection.create(Src, Dst: TControl; Attributes: TConnectionAttributes; aOnConnectionChanged: TConnectionChanged);
+constructor TConnection.Create(Src, Dst: TControl; Attributes: TConnectionAttributes; aOnConnectionChanged: TConnectionChanged);
 begin
   FFrom       := Src;
   FTo         := Dst;
-  Selected    := false;
+  Selected    := False;
   ArrowStyle  := Attributes.ArrowStyle;
   ConnectStyle:= csThin;
   aMessage    := Attributes.aMessage;
@@ -631,13 +631,13 @@ begin
   end;
 end;
 
-function TConnection.IsClicked(P: TPoint): boolean;
+function TConnection.IsClicked(P: TPoint): Boolean;
   var i: Integer;
       R: TRect;
-      x1, x2, y1, y2, h: integer;
+      x1, x2, y1, y2, h: Integer;
 
   function makeRect(P1, P2: TPoint): TRect;
-    var dx, dy: integer;
+    var dx, dy: Integer;
   begin
     dx:= P2.x - P1.x;
     dy:= P2.Y - P1.Y;
@@ -652,14 +652,14 @@ function TConnection.IsClicked(P: TPoint): boolean;
    end;
 
 begin
-  Result:= true;
+  Result:= True;
   if isRecursiv then begin
     for i:= 1 to 3 do begin
       R:= makeRect(Pl[i], Pl[i+1]);
-      if PtinRect(R, P) then exit;
+      if PtinRect(R, P) then Exit;
     end;
     R:= makeRect(Pl[4], Pl[3]);
-    if PtInRect(R, P) then exit;
+    if PtInRect(R, P) then Exit;
   end else begin
     x1:= FromP.X;
     y1:= FromP.Y;
@@ -678,9 +678,9 @@ begin
       x1:= h;
     end;
     if (x1 <= P.X) and (P.X <= x2) and (y1 - 10 <= P.Y) and (P.Y <= y2 + 10) then
-      exit;
+      Exit;
   end;
-  Result:= false;
+  Result:= False;
 end;
 
 function TConnection.hasRect: TRect;
@@ -724,7 +724,7 @@ begin
   if FindManagedControl(AObject) = nil then begin
     newObj := TManagedObject.Create;
     newObj.FControl:= AObject;
-    newObj.Visible:= true;
+    newObj.Visible:= True;
     FManagedObjects.Add(newObj);
     crkObj := TCrackControl(AObject);
     newObj.FOnMouseDown:= crkObj.OnMouseDown;
@@ -753,7 +753,7 @@ begin
       FreeAndNil(aManagedObject.FControl);
       FreeAndNil(aManagedObject);
     end;
-  except on e: exception do
+  except on e: Exception do
     ErrorMsg(e.Message);
   end;
   FManagedObjects.Clear;
@@ -761,30 +761,30 @@ begin
   FIsModified := False;
 end;
 
-function TSequencePanel.SelectionChangedOnClear: boolean;
+function TSequencePanel.SelectionChangedOnClear: Boolean;
   var i: Integer;
 begin
-  Result:= false;
+  Result:= False;
   for i:= 0 to FManagedObjects.Count - 1 do
     if TManagedObject(FManagedObjects[i]).Selected then begin
-      TManagedObject(FManagedObjects[i]).Selected:= false;
-      Result:= true;
+      TManagedObject(FManagedObjects[i]).Selected:= False;
+      Result:= True;
     end;
   for i:= 0 to FConnections.Count - 1 do
     if TConnection(FConnections[i]).Selected then begin
-      TConnection(FConnections[i]).Selected:= false;
+      TConnection(FConnections[i]).Selected:= False;
       TConnection(FConnections[i]).UnDrawSelection(Canvas);
-      Result:= true;
+      Result:= True;
     end;
 end;
 
-procedure TSequencePanel.ClearSelection(WithShowAll: boolean = true);
+procedure TSequencePanel.ClearSelection(WithShowAll: Boolean = True);
   var i: Integer;
 begin
   for i:= 0 to FManagedObjects.Count - 1 do
-    TManagedObject(FManagedObjects[i]).Selected:= false;
+    TManagedObject(FManagedObjects[i]).Selected:= False;
   for i:= 0 to FConnections.Count - 1 do
-    TConnection(FConnections[i]).Selected:= false;
+    TConnection(FConnections[i]).Selected:= False;
   if withShowAll then
     ShowAll;
   if Assigned(OnSelectionChanged) then
@@ -794,9 +794,9 @@ end;
 procedure TSequencePanel.ShowAll;
   var i: Integer;
 begin
-  if assigned(OnShowAll) then
+  if Assigned(OnShowAll) then
     OnShowAll(nil);
-  if isLocked then exit;
+  if isLocked then Exit;
   ShowConnections;
   for i:= 0 to FManagedObjects.Count -1 do
     if TManagedObject(FManagedObjects[i]).FControl.Visible then
@@ -807,7 +807,7 @@ procedure TSequencePanel.WMEraseBkgnd(var Message: TWmEraseBkgnd);
 var
   can : Tcanvas;
 begin
-  can := tcanvas.create;
+  can := tcanvas.Create;
   try
     can.handle := message.DC;
     if Assigned(FBackBitmap) then
@@ -832,7 +832,7 @@ begin
   OnConnectionSet(Result);
 end;
 
-function TSequencePanel.ConnectObjectsAt(Src, Dst: TControl; Attributes: TConnectionAttributes; i: integer): TConnection;
+function TSequencePanel.ConnectObjectsAt(Src, Dst: TControl; Attributes: TConnectionAttributes; i: Integer): TConnection;
 begin
   Result:= nil;
   if (FindManagedControl(Src) <> nil) and (FindManagedControl(Dst) <> nil) then begin
@@ -845,7 +845,7 @@ begin
   OnConnectionSet(Result);
 end;
 
-function TSequencePanel.GetClickedConnectionNr: integer;
+function TSequencePanel.GetClickedConnectionNr: Integer;
   var P: TPoint; conn: TConnection;
 begin
   P:= Self.ScreenToClient(Mouse.CursorPos);
@@ -853,10 +853,10 @@ begin
   while Result < FConnections.Count do begin
     Conn:= TConnection(FConnections[Result]);
     if Conn.IsClicked(P) then begin
-      Conn.Selected:= true;
-      exit;
+      Conn.Selected:= True;
+      Exit;
     end;
-    inc(Result);
+    Inc(Result);
   end;
   Result:= -1;
 end;
@@ -892,13 +892,13 @@ begin
       TCrackControl(found).DblClick;
     if GetClickedConnectionNr <> -1 then
       SelectClickedConnection
-    else if assigned(OnBackgroundDblClicked) then
+    else if Assigned(OnBackgroundDblClicked) then
       OnBackgroundDblClicked(nil, getConnectionOfClickedTextRect);
   end
 end;
 
 function TSequencePanel.getConnectionOfClickedTextRect: TConnection;
-  var i: integer; P: TPoint; conn: TConnection;
+  var i: Integer; P: TPoint; conn: TConnection;
 begin
   Result:= nil;
   P:= Self.ScreenToClient(Mouse.CursorPos);
@@ -909,12 +909,12 @@ begin
       Result:= Conn;
       i:= FConnections.Count;
     end;
-    inc(i);
+    Inc(i);
   end;
 end;
 
 function TSequencePanel.GetClickedConnection: TConnection;
-  var Nr: integer;
+  var Nr: Integer;
 begin
   Nr:= GetClickedConnectionNr;
   if Nr <> -1
@@ -928,11 +928,11 @@ begin
 end;
 
 procedure TSequencePanel.SelectConnection;
-  var i: integer;
+  var i: Integer;
       Tmp : TObjectList;
       Attributes: TConnectionAttributes;
       conn: TConnection; 
-      SelectedControls: integer;
+      SelectedControls: Integer;
       FConnectForm: TFConnectForm;
 begin
   FConnectForm:= TFConnectForm.Create(Self);
@@ -940,15 +940,15 @@ begin
   SelectedControls:= CountSelectedControls;
   if conn = nil then
     case SelectedControls of
-      1: FConnectForm.init(false, conn, 1);
-      2: FConnectForm.init(false, conn, 2)
-      else exit;
+      1: FConnectForm.init(False, conn, 1);
+      2: FConnectForm.init(False, conn, 2)
+      else Exit;
     end
   else
-    FConnectForm.init(false, conn, SelectedControls);
+    FConnectForm.init(False, conn, SelectedControls);
 
   case FConnectForm.ShowModal of
-    mrOK: begin
+    mrOk: begin
       Attributes:= FConnectForm.getConnectionAttributes;
       if HasSelectedConnection then
         SetSelectedConnection(Attributes)
@@ -972,39 +972,39 @@ begin
   FConnectForm.Release;
   Invalidate;
   ShowAll;
-  IsModified:= true;
+  IsModified:= True;
 end;
 
 procedure TSequencePanel.SelectClickedConnection;
   var conn: TConnection;
 begin
   conn:= getClickedConnection;
-  if assigned(conn) then begin
-    conn.selected:= true;
+  if Assigned(conn) then begin
+    conn.selected:= True;
     SelectConnection;
   end;
 end;
 
-procedure TSequencePanel.ConnectBoxesAt(Src, Dest: TControl; at: integer);
+procedure TSequencePanel.ConnectBoxesAt(Src, Dest: TControl; at: Integer);
   var Attributes: TConnectionAttributes;
-      SelectedControls, i, pos: integer;
+      SelectedControls, i, pos: Integer;
       FConnectForm: TFConnectForm;
 begin
   FConnectForm:= TFConnectForm.Create(Self);
   SelectedControls:= CountSelectedControls;
   case SelectedControls of
-    1: FConnectForm.init(false, nil, 1);
-    2: FConnectForm.init(false, nil, 2)
-    else exit;
+    1: FConnectForm.init(False, nil, 1);
+    2: FConnectForm.init(False, nil, 2)
+    else Exit;
   end;
-  if FConnectForm.ShowModal =  mrOK then begin
+  if FConnectForm.ShowModal =  mrOk then begin
     Attributes:= FConnectForm.getConnectionAttributes;
     i:= 0;
     pos:= -1;
     while (i < FConnections.Count) and (pos = -1) do begin
       if TConnection(FConnections[i]).yPos >= at then
         pos:= i;
-      inc(i);
+      Inc(i);
     end;
     case SelectedControls of
       1: ConnectObjectsAt(Src, Src, Attributes, pos);
@@ -1012,15 +1012,15 @@ begin
     end;
     FreeAndNil(Attributes);
   end;
-  ClearSelection(false);
+  ClearSelection(False);
   Invalidate;
   ShowAll;
-  IsModified:= true;
+  IsModified:= True;
   FConnectForm.Release;
 end;
 
-procedure TSequencePanel.DoConnection(Item: integer);
-  var i, n: integer; conn: TConnection;
+procedure TSequencePanel.DoConnection(Item: Integer);
+  var i, n: Integer; conn: TConnection;
 begin
   conn:= nil;
   n:= -1;
@@ -1036,16 +1036,16 @@ begin
        6   : TurnConnection(n);
       else begin
         Canvas.FillRect(conn.ConRect);
-        FConnections.delete(n);
+        FConnections.Delete(n);
       end;
     end;
     if Item <= 6 then begin
-      conn.Selected:= false;
-      InvalidateRect(Handle, conn.ConRect, true);
+      conn.Selected:= False;
+      InvalidateRect(Handle, conn.ConRect, True);
 //      conn.Draw(Canvas);
     end else
       ShowAll;
-    isModified:= true;
+    isModified:= True;
   end;
 end;
 
@@ -1068,7 +1068,7 @@ begin
     curr := TManagedObject(FManagedObjects[i]);
     if curr.FControl = AControl then begin
       Result := curr;
-      exit;
+      Exit;
     end;
   end;
 end;
@@ -1089,7 +1089,7 @@ begin
 end;
 
 procedure TSequencePanel.SetSelectedConnection(Attributes: TConnectionAttributes);
-  var i: integer;
+  var i: Integer;
 begin
   for i:= 0 to FConnections.Count - 1 do
     if TConnection(FConnections[i]).Selected then
@@ -1101,30 +1101,30 @@ procedure TSequencePanel.DeleteSelectedConnection;
 begin
   for i:= FConnections.Count-1 downto 0 do
     if TConnection(FConnections[i]).Selected then begin
-      FConnections.delete(i);
-      IsModified:= true;
+      FConnections.Delete(i);
+      IsModified:= True;
     end;
 end;
 
-function TSequencePanel.HasSelectedConnection: boolean;
+function TSequencePanel.HasSelectedConnection: Boolean;
   var i: Integer;
 begin
-  Result:= false;
+  Result:= False;
   for i:= FConnections.Count-1 downto 0 do
     if TConnection(FConnections[i]).Selected then begin
-      Result:= true;
-      break;
+      Result:= True;
+      Break;
     end;
 end;
 
 function TSequencePanel.getSelectedConnection: TConnection;
-  var i: integer;
+  var i: Integer;
 begin
   Result:= nil;
   for i:= 0 to FConnections.Count - 1 do
     if TConnection(FConnections[i]).Selected then begin
       Result:= TConnection(FConnections[i]);
-      exit;
+      Exit;
     end;
 end;
 
@@ -1142,38 +1142,38 @@ begin
     else Result:= nil;
 end;
 
-function TSequencePanel.CountSelectedControls: integer;
+function TSequencePanel.CountSelectedControls: Integer;
   var i, n: Integer;
 begin
   n:= 0;
   for i:= 0 to FManagedObjects.Count-1 do
     if TManagedObject(FManagedObjects[I]).FSelected then
-      inc(n);
+      Inc(n);
   Result:= n;
 end;
 
 function TSequencePanel.GetFirstSelected: TControl;
-  var i: integer;
+  var i: Integer;
 begin
   Result:= nil;
   for i:= 0 to FManagedObjects.Count-1 do
     if TManagedObject(FManagedObjects[i]).FSelected then begin
       Result:= TManagedObject(FManagedObjects[i]).FControl;
-      exit;
+      Exit;
     end;
 end;
 
 function TSequencePanel.GetSelectedControls: TObjectList;
   var i: Integer;
 begin
-  Result:= TObjectList.Create(false);
+  Result:= TObjectList.Create(False);
   for i:= 0 to FManagedObjects.Count-1 do
     if TManagedObject(FManagedObjects[i]).FSelected then
       Result.Add(TManagedObject(FManagedObjects[i]).FControl);
 end;
 
 procedure TSequencePanel.DeleteSelectedControls;
-  var i, j: integer; Control: TControl; Conn: TConnection;  ManagedObject: TManagedObject;
+  var i, j: Integer; Control: TControl; Conn: TConnection;  ManagedObject: TManagedObject;
 begin
   for i:= FManagedObjects.Count - 1 downto 0 do
     if TManagedObject(FManagedObjects[i]).FSelected then begin
@@ -1200,22 +1200,22 @@ var
   found: TControl;
   mcont: TManagedObject;
   cconn: TConnection;
-  aChanged: boolean;
+  aChanged: Boolean;
   p2: TPoint;
   conn: TConnection;
 begin
-  FMoved:= false;
-  if not MouseDownOK then begin MouseDownOK:= true; exit end;
+  FMoved:= False;
+  if not MouseDownOK then begin MouseDownOK:= True; Exit end;
   inherited;
   SetFocus;  // a TPanel can have the Focus
   if GetCaptureControl <> Self then
     SetCaptureControl(Self);
   FIsRectSelecting := False;
   FIsMoving := False;
-  FResized:= false;
+  FResized:= False;
   FMemMousePos.x := X;
   FMemMousePos.y := Y;
-  aChanged:= false;
+  aChanged:= False;
 
   found:= FindVCLWindow(Mouse.CursorPos);
   if found = Self then
@@ -1226,17 +1226,17 @@ begin
       if not mcont.Selected then begin
         if not CtrlPressed then
           SelectionChangedOnClear;
-        mcont.Selected:= true;
+        mcont.Selected:= True;
         //TManagedObject(mcont).FControl.SendToBack;
-        aChanged:= true;
+        aChanged:= True;
       end else if CtrlPressed then begin
-        mcont.Selected:= false;
-        aChanged:= true;
+        mcont.Selected:= False;
+        aChanged:= True;
       end;
       if aChanged then
         ShowAll;
       if CountSelectedControls > 1 then
-        FIsMoving:= true;
+        FIsMoving:= True;
       if Assigned(OnSelectionChanged) then
         OnSelectionChanged(nil);
     end;
@@ -1246,9 +1246,9 @@ begin
       if not cconn.Selected then begin
         if not CtrlPressed then
           SelectionChangedOnClear;
-        cconn.Selected:= true;
+        cconn.Selected:= True;
       end else if CtrlPressed then
-        cconn.Selected:= false;
+        cconn.Selected:= False;
       if Assigned(OnSelectionChanged) then
         OnSelectionChanged(nil);
     end else begin
@@ -1271,17 +1271,17 @@ begin
       found:= FindVCLWindow(Mouse.CursorPos);
       if Button = mbRight then begin
         conn:= GetClickedConnection;
-        if assigned(conn) then begin
-          conn.Selected:= true;
+        if Assigned(conn) then begin
+          conn.Selected:= True;
           if conn.isRecursiv then begin
-            PopupMenuConnection.Items[3].Visible:= false;
-            PopupMenuConnection.Items[4].Visible:= false;
+            PopupMenuConnection.Items[3].Visible:= False;
+            PopupMenuConnection.Items[4].Visible:= False;
           end else begin
-            PopupMenuConnection.Items[3].Visible:= true;
-            PopupMenuConnection.Items[4].Visible:= true;
+            PopupMenuConnection.Items[3].Visible:= True;
+            PopupMenuConnection.Items[4].Visible:= True;
           end;
           PopupMenuConnection.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y)
-        end else if Assigned(found) and (found <> self) then begin
+        end else if Assigned(found) and (found <> Self) then begin
           if (found is TMemo) then
             found:= (found as TMemo).Parent;
           OnLifeLineSequencePanel(found);
@@ -1311,7 +1311,7 @@ var
   i, j, k, dx, dy, mdx, mdy: Integer;
   curr: TCrackControl;
   r, rt, MovedRect, MovedRectWithoutConnections, mRectDxDy: TRect;
-  resized: boolean;
+  resized: Boolean;
   connect: TConnection;
 
   procedure InMakeVisible(C : TRect);
@@ -1339,20 +1339,20 @@ var
       p2.X := p2.X + mdx;
       p2.Y := p2.Y + mdy;
       Mouse.CursorPos := p2;
-      Resized:= true;
+      Resized:= True;
     end;
   end;
 
 begin
   inherited;
-  if shift = [] then exit;
+  if shift = [] then Exit;
   pt1 := Mouse.CursorPos;
   pt.x := X;
   pt.Y := Y;
   dx := pt.x - FMemMousePos.x;
   dy := pt.y - FMemMousePos.y;
-  if (dx = 0) and (dy = 0) then exit;
-  FMoved:= true;
+  if (dx = 0) and (dy = 0) then Exit;
+  FMoved:= True;
   if abs(dy) > 3*abs(dx)
     then dx:= 0
     else dy:= 0;
@@ -1378,14 +1378,14 @@ begin
     else if ssLeft in Shift then begin
       //  Move the selected boxes
       if (Abs(dx) + Abs(dy) > 5) or FIsMoving then begin
-        Resized:= false;
+        Resized:= False;
         MovedRect:= Rect(MaxInt, 0, 0, 0);
         MovedRectWithoutConnections:= Rect(MaxInt, 0, 0, 0);
         for i:= 0 to FManagedObjects.Count -1 do // ResumeDrawing
           SendMessage((TManagedObject(FManagedObjects[i]).FControl as TWinControl).Handle , WM_SETREDRAW, 1, 0);
         for i:= 0 to FManagedObjects.Count -1 do begin
           mcont:= TManagedObject(FManagedObjects[i]);
-          if not mcont.Visible then continue;
+          if not mcont.Visible then Continue;
 
           curr:= TCrackControl(mcont.FControl);
           if TManagedObject(FManagedObjects[i]).Selected then begin
@@ -1400,18 +1400,18 @@ begin
             if dy <> 0 then
               for j:= 0 to FManagedObjects.Count -1 do
                 TManagedObject(FManagedObjects[j]).FControl.Top:=
-                  min(max(TManagedObject(FManagedObjects[j]).FControl.Top + dy, minTop), 500);
+                  Min(Max(TManagedObject(FManagedObjects[j]).FControl.Top + dy, minTop), 500);
             rt:= curr.BoundsRect;
             mRectDxDy.Union(rt);
 
             // scrolling
             if curr.Left + curr.Width + 50 > Width then begin
               Width:= curr.Left + curr.Width + 50;
-              Resized:= true;
+              Resized:= True;
             end;
             if curr.Top + curr.Height + 50 > Height then begin
               Height:= curr.Top + curr.Height + 50;
-              Resized:= true;
+              Resized:= True;
             end;
 
             if MovedRect.Left = MaxInt
@@ -1428,7 +1428,7 @@ begin
 
             Src:= mcont.FControl;
             for j:= 0 to FManagedObjects.Count-1 do begin
-              if not TManagedObject(FManagedObjects[j]).Visible then continue;
+              if not TManagedObject(FManagedObjects[j]).Visible then Continue;
               Dest:= TManagedObject(FManagedObjects[j]).FControl;
               for k:= 0 to FConnections.Count-1 do begin
                 Connect:= TConnection(FConnections[k]);
@@ -1495,14 +1495,14 @@ begin
   if FMoved then
     ShowAll;
   FIsRectSelecting:= False;
-  FMoved:= false;
+  FMoved:= False;
 end;
 
 function TSequencePanel.DoMouseWheel(Shift: TShiftState;
   WheelDelta: Integer; MousePos: TPoint): Boolean;
 
   const WHEEL_DIVISOR = 120; // Mouse Wheel standard
-  var mdy: integer;
+  var mdy: Integer;
 begin
   mdy := TScrollBox(Parent).VertScrollBar.Position - WheelDelta;
   TScrollBox(Parent).VertScrollBar.Position:= mdy;
@@ -1525,11 +1525,11 @@ var
 begin
   inst:= FindManagedControl(Sender as TControl);
   if Assigned(inst) and Assigned(inst.FOnDblClick) then begin
-    MouseDownOK:= false;
+    MouseDownOK:= False;
     ClearSelection;
     conn:= getClickedConnection;
-    if assigned(conn) then begin
-      conn.selected:= true;
+    if Assigned(conn) then begin
+      conn.selected:= True;
       SelectConnection;
     end else
       inst.FOnDblClick(Sender);
@@ -1595,7 +1595,7 @@ begin
 end;
 
 procedure TSequencePanel.ShowConnections;
-  var i: integer; Conn: TConnection;
+  var i: Integer; Conn: TConnection;
 begin
   for i:= 0 to FConnections.Count -1 do begin
     Conn:= (FConnections[i] as TConnection);
@@ -1607,7 +1607,7 @@ end;
 procedure TSequencePanel.RecalcSize;
   var i, xmax, ymax: Integer;
 begin
-  if assigned(Parent) then begin
+  if Assigned(Parent) then begin
     xmax:= Parent.Width - 4; // 300;
     ymax:= Parent.Height- 4; // 150;
   end else begin
@@ -1626,7 +1626,7 @@ begin
     OnContentChanged(nil);
 end;
 
-procedure TSequencePanel.GetDiagramSize(var W, H: integer);
+procedure TSequencePanel.GetDiagramSize(var W, H: Integer);
   var i: Integer;
 begin
   W:= 300;
@@ -1655,11 +1655,11 @@ begin
   end;
 
   for i:= 0 to FManagedObjects.Count - 1 do begin
-    if assigned(TManagedObject(FManagedObjects[i]).FControl) then begin
+    if Assigned(TManagedObject(FManagedObjects[i]).FControl) then begin
       r1 := TCrackControl(TManagedObject(FManagedObjects[i]).FControl).BoundsRect;
       IntersectRect(r2, SelRect, r1);
       if EqualRect(r1, r2) and TManagedObject(FManagedObjects[i]).FControl.Visible then
-        TManagedObject(FManagedObjects[i]).Selected := true;
+        TManagedObject(FManagedObjects[i]).Selected := True;
       if Assigned(OnSelectionChanged) then
         OnSelectionChanged(nil);
     end;
@@ -1669,7 +1669,7 @@ end;
 procedure TSequencePanel.SetFocus;
 var
   F : TCustomForm;
-  X,Y : integer;
+  X,Y : Integer;
 begin
   F := GetParentForm(Self);
 
@@ -1686,7 +1686,7 @@ begin
   end;
 end;
 
-procedure TSequencePanel.SetModified(const Value : boolean);
+procedure TSequencePanel.SetModified(const Value : Boolean);
 begin
   if FIsModified <> Value then begin
     FIsModified:= Value;
@@ -1695,7 +1695,7 @@ begin
   end;
 end;
 
-procedure TSequencePanel.SetLocked(const Value : boolean);
+procedure TSequencePanel.SetLocked(const Value : Boolean);
 begin
   if FIsLocked <> Value then begin
     FIsLocked:= Value;
@@ -1704,9 +1704,9 @@ begin
   end;
 end;
 
-procedure TSequencePanel.SetSelectedOnly(const Value : boolean);
+procedure TSequencePanel.SetSelectedOnly(const Value : Boolean);
 var
-  I : integer;
+  I : Integer;
 begin
   if FSelectedOnly <> Value then
   begin
@@ -1732,14 +1732,14 @@ end;
 
 procedure TSequencePanel.KeyUp(var Key: Word; Shift: TShiftState);
 begin
-  if Key = VK_Delete then begin
+  if Key = VK_DELETE then begin
     DeleteSelectedConnection;
     Invalidate;
   end;
 end;
 
 procedure TSequencePanel.setFont(aFont: TFont);
-  var i: integer;
+  var i: Integer;
 begin
   Self.Font.Assign(aFont);
   for i:= 0 to FConnections.Count - 1 do

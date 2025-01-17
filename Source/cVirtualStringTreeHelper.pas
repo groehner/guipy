@@ -67,7 +67,7 @@ begin
   begin
     // Remove dynamic styles.
     Node.States := Node.States - [vsChecking, vsCutOrCopy, vsDeleting, vsHeightMeasured];
-    TCrackedVirtualStringTree(self).InitNode(Node);
+    TCrackedVirtualStringTree(Self).InitNode(Node);
   end;
 
   if Recursive and (not Assigned(Node) or Assigned(Node) and (vsInitialized in Node.States)) then

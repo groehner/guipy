@@ -252,7 +252,7 @@ begin
   VertScrollBar.Tracking := True;
   Align := alClient;
   //Anchors:= [alLeft, alTop];
-  AutoScroll:= true;
+  AutoScroll:= True;
 end;
 
 procedure TScrollBoxWithNotify.WMHScroll(var Message: TWMHScroll);
@@ -356,233 +356,233 @@ end;
 
 procedure TAFrameDiagram.MIClassPopupClassEditClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.ClassEditSelectedDiagramElementsControl(getPopMenuClass);
 end;
 
 procedure TAFrameDiagram.MIClassPopupOpenSourceClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.SourceEditSelectedDiagramElements(getPopMenuClass);
 end;
 
 procedure TAFrameDiagram.MIClassPopupParameterDisplayClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.DoShowParameter(getPopMenuClass, (Sender as TSpTBXItem).Tag);
 end;
 
 procedure TAFrameDiagram.MIClassPopupVisibilityClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.DoShowVisibility(getPopMenuClass, (Sender as TSpTBXItem).Tag);
 end;
 
 procedure TAFrameDiagram.MIClassPopupSelectAssociationClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.SelectAssociation;
 end;
 
 procedure TAFrameDiagram.MIClassPopupShowInheritedClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
-    Diagram.ShowInheritedMethodsFromSystemClasses(getPopMenuClass, true);
+  if Assigned(Diagram) then
+    Diagram.ShowInheritedMethodsFromSystemClasses(getPopMenuClass, True);
   PopMenuClass.PopUp(PopMenuClass.PopupPoint.x, PopMenuClass.PopupPoint.y);
 end;
 
 procedure TAFrameDiagram.MIClassPopupHideInheritedClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
-    Diagram.ShowInheritedMethodsFromSystemClasses(getPopMenuClass, false);
+  if Assigned(Diagram) then
+    Diagram.ShowInheritedMethodsFromSystemClasses(getPopMenuClass, False);
   PopMenuClass.PopUp(PopMenuClass.PopupPoint.x, PopMenuClass.PopupPoint.y);
 end;
 
 procedure TAFrameDiagram.MIClassPopupNewCommentClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.AddCommentBoxTo(getPopMenuClass);
 end;
 
 procedure TAFrameDiagram.MIConnectionClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.DoConnection((Sender as TSpTBXItem).Tag);
 end;
 
 procedure TAFrameDiagram.MIClassPopupDeleteClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.DeleteSelectedControlsAndRefresh;
 end;
 
 procedure TAFrameDiagram.MIClassPopupDisplayClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.DoShowVisibilityFilter(getPopMenuClass, (Sender as TSpTBXItem).Tag);
 end;
 
 procedure TAFrameDiagram.MIClassPopupCopyAsPictureClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.CopyDiagramToClipboard;
 end;
 
 procedure TAFrameDiagram.MIClassPopupCreateTestClassClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.CreateTestClass(getPopMenuClass);
 end;
 
 procedure TAFrameDiagram.MIClassPopupRunAllTestsClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.RunTests(getPopMenuClass, 'Class');
 end;
 
 procedure TAFrameDiagram.PopMenuObjectPopup(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.PopMenuObjectPopup(Sender);
 end;
 
 procedure TAFrameDiagram.PopupMenuCommentDeleteClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.DeleteComment;
 end;
 
 procedure TAFrameDiagram.PopupMenuWindowPopup(Sender: TObject);
-  var i: integer;
+  var i: Integer;
 begin
   for i:= 0 to MIWindowPopupDisplay.Count - 1 do
-    MIWindowPopupDisplay.Items[i].Checked:= false;
-  MIWindowPopupDisplay.Items[3 - GuiPyOptions.DiVisibilityFilter].Checked:= true;
+    MIWindowPopupDisplay.Items[i].Checked:= False;
+  MIWindowPopupDisplay.Items[3 - GuiPyOptions.DiVisibilityFilter].Checked:= True;
   for i:= 0 to MIWindowPopupParameter.Count - 1 do
-    MIWindowPopupParameter.Items[i].Checked:= false;
-  MIWindowPopupParameter.Items[GuiPyOptions.DIShowParameter].Checked:= true;
+    MIWindowPopupParameter.Items[i].Checked:= False;
+  MIWindowPopupParameter.Items[GuiPyOptions.DIShowParameter].Checked:= True;
   for i:= 0 to MIWindowPopupVisibility.Count - 1 do
-    MIWindowPopupVisibility.Items[i].Checked:= false;
-  MIWindowPopupVisibility.Items[2-GuiPyOptions.DiShowIcons].Checked:= true;
+    MIWindowPopupVisibility.Items[i].Checked:= False;
+  MIWindowPopupVisibility.Items[2-GuiPyOptions.DiShowIcons].Checked:= True;
 end;
 
 procedure TAFrameDiagram.MIObjectPopupDisplayClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.DoShowVisibilityFilter(getPopMenuObject, (Sender as TSpTBXItem).Tag);
 end;
 
 procedure TAFrameDiagram.MIObjectPopupEditClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.EditObject(getPopMenuObject);
 end;
 
 procedure TAFrameDiagram.MIObjectPopupShowAllNewObjectsClick(
   Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.ShowAllNewObjects(Sender);
 end;
 
 procedure TAFrameDiagram.MIObjectPopupShowInheritedClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
-    Diagram.ShowInheritedMethodsFromSystemClasses(getPopMenuObject, true);
+  if Assigned(Diagram) then
+    Diagram.ShowInheritedMethodsFromSystemClasses(getPopMenuObject, True);
   PopMenuObject.PopUp(PopMenuObject.PopupPoint.x, PopMenuObject.PopupPoint.y);
 end;
 
 procedure TAFrameDiagram.MIObjectPopupHideInheritedClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
-    Diagram.ShowInheritedMethodsFromSystemClasses(getPopMenuObject, false);
+  if Assigned(Diagram) then
+    Diagram.ShowInheritedMethodsFromSystemClasses(getPopMenuObject, False);
   PopMenuObject.PopUp(PopMenuObject.PopupPoint.x, PopMenuObject.PopupPoint.y);
 end;
 
 procedure TAFrameDiagram.MIObjectPopUpShowUnnamedClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.ShowUnnamedObject(Sender);
 end;
 
 procedure TAFrameDiagram.MIObjectPopupVisibilityClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.DoShowVisibility(getPopMenuObject, (Sender as TSpTBXItem).Tag);
 end;
 
 procedure TAFrameDiagram.MIPopupAlignClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.DoAlign((Sender as TSpTBXItem).Tag);
 end;
 
 procedure TAFrameDiagram.MISetRecursiv(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.setRecursiv(PopMenuConnection.PopupPoint, (Sender as TSpTBXItem).Tag);
 end;
 
 procedure TAFrameDiagram.MIWindowPopupNewCommentClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.AddCommentBoxTo(nil);
 end;
 
 procedure TAFrameDiagram.MIWindowPopupNewLayoutClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.DoLayout;
 end;
 
 procedure TAFrameDiagram.MIWindowPopupNewClassClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.NewClass;
 end;
 
 procedure TAFrameDiagram.MIWindowPopupOpenClassClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.OpenClassWithDialog;
 end;
 
 procedure TAFrameDiagram.MIWindowPopupRefreshClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.RefreshDiagram;
 end;
 
 procedure TAFrameDiagram.MIWindowPopupCopyAsPictureClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.CopyDiagramToClipboard;
 end;
 
 procedure TAFrameDiagram.MIWindowPopupDisplayClick(Sender: TObject);
 begin
   GuiPyOptions.DIVisibilityFilter:= (Sender as TSpTBXItem).Tag;
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.VisibilityFilter:= TVisibility((Sender as TSpTBXItem).Tag);
 end;
 
 procedure TAFrameDiagram.MIWindowPopupFontClick(Sender: TObject);
 begin
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.SetUMLFont;
 end;
 
 procedure TAFrameDiagram.MIWindowPopupParameterDisplayClick(Sender: TObject);
 begin
   GuiPyOptions.DIShowParameter:= (Sender as TSpTBXItem).Tag;
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.ShowParameter:= (Sender as TSpTBXItem).Tag;
 end;
 
 procedure TAFrameDiagram.MIWindowPopupVisibilityClick(Sender: TObject);
 begin
   GuiPyOptions.DIShowIcons:= (Sender as TSpTBXItem).Tag;
-  if assigned(Diagram) then
+  if Assigned(Diagram) then
     Diagram.ShowIcons:= (Sender as TSpTBXItem).Tag;
 end;
 

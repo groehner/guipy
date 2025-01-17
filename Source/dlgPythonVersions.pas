@@ -98,7 +98,7 @@ begin
     Level := vtPythonVersions.GetNodeLevel(Node);
   actPVActivate.Enabled := Assigned(Node) and (Level = 1) and
    (not GI_PyControl.PythonLoaded or
-    not (((Node.Parent.Index = 0) and (PyControl.PythonVersionIndex = integer(Node.Index))) or
+    not (((Node.Parent.Index = 0) and (PyControl.PythonVersionIndex = Integer(Node.Index))) or
          ((Node.Parent.Index = 1) and (PyControl.PythonVersionIndex = -(Node.Index + 1)))));
 
   actPVRemove.Enabled := Assigned(Node) and (Level = 1) and (Node.Parent.Index = 1) and
@@ -309,7 +309,7 @@ begin
   if not (Kind in [ikNormal, ikSelected]) or (Column <> 0) then Exit;
   Level := vtPythonVersions.GetNodeLevel(Node);
   if (Level = 1) and GI_PyControl.PythonLoaded and
-     (((Node.Parent.Index = 0) and (PyControl.PythonVersionIndex = integer(Node.Index))) or
+     (((Node.Parent.Index = 0) and (PyControl.PythonVersionIndex = Integer(Node.Index))) or
       ((Node.Parent.Index = 1) and (PyControl.PythonVersionIndex = - (Node.Index + 1))))
   then
     ImageIndex := 0;

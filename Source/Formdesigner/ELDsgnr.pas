@@ -641,7 +641,7 @@ type
     FSelCtrl: TDSelCtrlItem;
     FPos: TDSelCtrlItemPointPos;
     FBorderColor: TColor;
-    FHandleSize: integer;
+    FHandleSize: Integer;
   protected
     procedure Paint; override;
     procedure WndProc(var Message: TMessage); override;
@@ -816,7 +816,7 @@ begin
   if not(csDestroying in FRoot.ComponentState) then
     TWinControlAccess(FRoot).SetDesigning(False);
   FForm.Designer := nil;
-  if not(csDestroying in FRoot.ComponentState) and assigned(FRoot) then
+  if not(csDestroying in FRoot.ComponentState) and Assigned(FRoot) then
   begin
     FRoot.UpdateControlState;
     RecursionRefresh(FRoot);
@@ -1398,7 +1398,7 @@ begin
               LS := LS + _('Size') + ': ' + IntToStr(Sender.PPIUnScale(Sender.Width)) +
                                      ', ' + IntToStr(Sender.PPIUnScale(Sender.Height));
               LS:= LS + #13#10 + _('Font size') + ': ' + IntToStr((Sender as TBaseWidget).Font.Size);
-              if assigned(FDesigner) then
+              if Assigned(FDesigner) then
                 FDesigner.ControlHint(Sender, LS);
               if LS <> '' then
               begin
@@ -1733,7 +1733,7 @@ type
   begin
     if htSize in FDesigner.ShowingHints then
     begin
-      if assigned(FHintControl) then
+      if Assigned(FHintControl) then
         FHint.Caption := IntToStr(FHintControl.PPIUnScale(R.Right - R.Left)) + ' x ' +
                          IntToStr(FHintControl.PPIUnScale(R.Bottom - R.Top))
       else
@@ -2158,7 +2158,7 @@ type
   begin
     if htInsert in FDesigner.ShowingHints then
     begin
-      if assigned(FHintControl) then
+      if Assigned(FHintControl) then
         FHint.Caption := IntToStr(FHintControl.PPIUnScale(R.Right - R.Left)) + ' x ' +
                          IntToStr(FHintControl.PPIUnScale(R.Bottom - R.Top))
       else
@@ -3349,7 +3349,7 @@ begin
 {$ENDIF}
 {$IFDEF WIN64}
     AMsg.Msg := LDMSng.Msg;
-    AMsg.WParam := WPARAM(LDMSng.MouseMessage);   // WPARAM instead of LongInt
+    AMsg.WParam := WParam(LDMSng.MouseMessage);   // WPARAM instead of LongInt
     AMsg.LParam := LDMSng.Unused;
     AMsg.Result := LDMSng.Result;
     LEng.IsDesignMsg(FSelCtrl.Control, AMsg);
@@ -3359,7 +3359,7 @@ end;
 
 procedure TELCustomDesigner.ChangeSelection;
 begin
-  if assigned(OnChangeSelection) then
+  if Assigned(OnChangeSelection) then
     OnChangeSelection(Self);
 end;
 
@@ -3377,26 +3377,26 @@ end;
 
 procedure TELCustomDesigner.ControlHint(AControl: TControl; var AHint: string);
 begin
-  if assigned(OnControlHint) then
+  if Assigned(OnControlHint) then
     OnControlHint(Self, AControl, AHint);
 end;
 
 procedure TELCustomDesigner.ControlInserted;
 begin
-  if assigned(OnControlInserted) then
+  if Assigned(OnControlInserted) then
     OnControlInserted(Self);
 end;
 
 procedure TELCustomDesigner.ControlInserting(var AControlClass: TControlClass);
 begin
-  if assigned(OnControlInserting) then
+  if Assigned(OnControlInserting) then
     OnControlInserting(Self, AControlClass);
 end;
 
 procedure TELCustomDesigner.ControlDeleting(SelectedControls
   : TELDesignerSelectedControls);
 begin
-  if assigned(OnControlDeleting) then
+  if Assigned(OnControlDeleting) then
     OnControlDeleting(Self, SelectedControls);
 end;
 
@@ -3454,7 +3454,7 @@ var
   I: Integer;
   AControl: TControl;
 begin
-  if not assigned(DesignControl) then
+  if not Assigned(DesignControl) then
     Exit;
   for I := 0 to DesignControl.ComponentCount - 1 do
     if (DesignControl.Components[I].Name = AName) and
@@ -3469,7 +3469,7 @@ end;
 
 procedure TELCustomDesigner.DoModified;
 begin
-  if assigned(OnModified) then
+  if Assigned(OnModified) then
     OnModified(Self);
 end;
 
@@ -3502,7 +3502,7 @@ end;
 
 procedure TELCustomDesigner.DesignFormClose(var Action: TCloseAction);
 begin
-  if assigned(OnDesignFormClose) then
+  if Assigned(OnDesignFormClose) then
     OnDesignFormClose(Self, Action);
 end;
 
@@ -3577,7 +3577,7 @@ end;
 procedure TELCustomDesigner.ValidateName(const AName: string;
   var AIsValidName: Boolean);
 begin
-  if assigned(OnValidateName) then
+  if Assigned(OnValidateName) then
     OnValidateName(Self, AName, AIsValidName);
 end;
 
@@ -3609,7 +3609,7 @@ var
 begin
   GetCursorPos(LPt);
   LHandled := False;
-  if assigned(OnContextPopup) then
+  if Assigned(OnContextPopup) then
     OnContextPopup(Self, LPt, LHandled);
   if LHandled then
     Exit;
@@ -3821,19 +3821,19 @@ end;
 
 procedure TELCustomDesigner.KeyDown(var Key: Word; Shift: TShiftState);
 begin
-  if assigned(OnKeyDown) then
+  if Assigned(OnKeyDown) then
     OnKeyDown(Self, Key, Shift);
 end;
 
 procedure TELCustomDesigner.KeyPress(var Key: Char);
 begin
-  if assigned(OnKeyPress) then
+  if Assigned(OnKeyPress) then
     OnKeyPress(Self, Key);
 end;
 
 procedure TELCustomDesigner.KeyUp(var Key: Word; Shift: TShiftState);
 begin
-  if assigned(OnKeyUp) then
+  if Assigned(OnKeyUp) then
     OnKeyUp(Self, Key, Shift);
 end;
 
@@ -3886,7 +3886,7 @@ end;
 procedure TELCustomDesigner.DoNotification(AnObject: TPersistent;
   Operation: TOperation);
 begin
-  if assigned(OnNotification) then
+  if Assigned(OnNotification) then
     OnNotification(Self, AnObject, Operation);
 end;
 
@@ -3914,13 +3914,13 @@ end;
 procedure TELCustomDesigner.GetUniqueName(const ABaseName: string;
   var AUniqueName: string);
 begin
-  if assigned(OnGetUniqueName) then
+  if Assigned(OnGetUniqueName) then
     OnGetUniqueName(Self, ABaseName, AUniqueName);
 end;
 
 procedure TELCustomDesigner.DblClick;
 begin
-  if assigned(OnDblClick) then
+  if Assigned(OnDblClick) then
     OnDblClick(Self);
 end;
 
@@ -4335,7 +4335,7 @@ procedure TELCustomDesigner.DragOver(ASource, ATarget: TObject; AX, AY: Integer;
   AState: TDragState; var AAccept: Boolean);
 begin
   AAccept := False;
-  if assigned(FOnDragOver) then
+  if Assigned(FOnDragOver) then
   begin
     AAccept := True;
     FOnDragOver(Self, ASource, ATarget, AX, AY, AState, AAccept);
@@ -4345,7 +4345,7 @@ end;
 procedure TELCustomDesigner.DragDrop(ASource, ATarget: TObject;
   AX, AY: Integer);
 begin
-  if assigned(FOnDragDrop) then
+  if Assigned(FOnDragDrop) then
     FOnDragDrop(Self, ASource, ATarget, AX, AY);
 end;
 

@@ -28,7 +28,7 @@ unit VCL.Styles.PyScripter;
 
 interface
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   Winapi.UxTheme,
   System.Types,
   System.Classes,

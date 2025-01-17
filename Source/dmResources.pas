@@ -78,7 +78,7 @@ type
     SynCythonSyn: TSynCythonSyn;
     DockStyle: TJvDockVSNetStyleSpTBX;
     function GetSaveFileName(var ANewName: string;
-      AHighlighter: TSynCustomHighlighter; DefaultExtension : string): boolean;
+      AHighlighter: TSynCustomHighlighter; DefaultExtension : string): Boolean;
     procedure UpdateImageCollections;
     procedure ExportHighlighters;
     procedure ImportHighlighters;
@@ -170,19 +170,19 @@ begin
   if aNewName <> '' then begin
     Extension:= '*' + LowerCase(TPath.GetExtension(aNewName));
     Result:= PyIDEOptions.PythonFormFileFilter + '|' + PyIDEOptions.AllFileFilter;
-    if Pos(Extension, Result) > 0 then exit;
+    if Pos(Extension, Result) > 0 then Exit;
     Result:= PyIDEOptions.UMLFileFilter + '|' + PyIDEOptions.AllFileFilter;
-    if Pos(Extension, Result) > 0 then exit;
+    if Pos(Extension, Result) > 0 then Exit;
     Result:= PyIDEOptions.StructogramFileFilter + '|' + PyIDEOptions.AllFileFilter;
-    if Pos(Extension, Result) > 0 then exit;
+    if Pos(Extension, Result) > 0 then Exit;
     Result:= PyIDEOptions.SequencediagramFileFilter + '|' + PyIDEOptions.AllFileFilter;
-    if Pos(Extension, Result) > 0 then exit;
+    if Pos(Extension, Result) > 0 then Exit;
   end;
   Result:= PyIDEOptions.AllFileFilter;
 end;
 
 function TResourcesDataModule.GetSaveFileName(var ANewName: string;
-  AHighlighter: TSynCustomHighlighter; DefaultExtension: string): boolean;
+  AHighlighter: TSynCustomHighlighter; DefaultExtension: string): Boolean;
   var aFile: IFile;
 begin
   with dlgFileSave do begin
@@ -208,28 +208,28 @@ begin
       DefaultExt := ExtractFileExt(ANewName);
 
     if Execute then begin
-      aFile:= GI_FileFactory.GetFileByName(Filename);
+      aFile:= GI_FileFactory.GetFileByName(FileName);
       if Assigned(aFile) then begin
         StyledMessageDlg(_(SFileAlreadyOpen), mtError, [mbAbort], 0);
-        Exit(false);
+        Exit(False);
       end;
-      if IsWriteProtected(Filename) then begin
+      if IsWriteProtected(FileName) then begin
         StyledMessageDlg(Format(_(SWriteProtected), [FileName]), mtError, [mbAbort], 0);
-        Exit(false);
+        Exit(False);
       end;
-      if FileExists(Filename) then
-        if (StyledMessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
+      if FileExists(FileName) then
+        if (StyledMessageDlg(Format(_(LNGFileAlreadyExists), [FileName]),
                          mtConfirmation, mbYesNoCancel, 0) <> mrYes)
-          then Exit(false)
+          then Exit(False)
           else begin
-            var s:= ChangeFileExt(Filename, '.puml');
+            var s:= ChangeFileExt(FileName, '.puml');
             if FileExists(s) then DeleteFile(s);
           end;
       ANewName := FileName;
       GuiPyOptions.Sourcepath:= ExtractFilePath(aNewName);
-      Result := true;
+      Result := True;
     end else
-      Result := false;
+      Result := False;
   end;
 end;
 
@@ -291,7 +291,7 @@ begin
   except
   end;
 
-  icSVGImages.ApplyFixedColorToRootOnly:= true;
+  icSVGImages.ApplyFixedColorToRootOnly:= True;
 
   // SpTBXLib Font
   ToolbarFont.Size := 10;

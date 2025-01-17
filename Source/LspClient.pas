@@ -340,10 +340,10 @@ begin
           end;
         end
         else
-          break;
+          Break;
       end
       else
-        break;
+        Break;
     end;
   finally
     FReadLock.Leave;

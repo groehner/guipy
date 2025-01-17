@@ -41,7 +41,7 @@ uses
 
 function FileMaskFromFileFilter(const Filter : string) : string;
 var
-  j : integer;
+  j : Integer;
 begin
   Result := '';
   j := Pos('|', Filter);

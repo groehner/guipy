@@ -139,7 +139,7 @@ end;
 
 procedure TFileTemplatesDialog.SetItems;
 var
- i : integer;
+ i : Integer;
 begin
   TempFileTemplates.Assign(FileTemplates);
   lvItems.Items.BeginUpdate;
@@ -212,7 +212,7 @@ end;
 
 procedure TFileTemplatesDialog.actUpdateItemExecute(Sender: TObject);
 var
-  i : integer;
+  i : Integer;
 begin
   if (edName.Text <> '') and (FOldIndex >= 0) then begin
     for i := 0 to lvItems.Items.Count - 1 do
@@ -276,7 +276,7 @@ procedure TFileTemplatesDialog.actMoveUpExecute(Sender: TObject);
 var
   Name, Value : string;
   P : Pointer;
-  Index : integer;
+  Index : Integer;
 begin
   if lvItems.ItemIndex > 0 then begin
     Index := lvItems.ItemIndex;
@@ -299,7 +299,7 @@ procedure TFileTemplatesDialog.actMoveDownExecute(Sender: TObject);
 var
   Name, Value : string;
   P : Pointer;
-  Index : integer;
+  Index : Integer;
 begin
   if lvItems.ItemIndex < lvItems.Items.Count - 1 then begin
     Index := lvItems.ItemIndex;

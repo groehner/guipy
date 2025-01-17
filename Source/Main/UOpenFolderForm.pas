@@ -32,7 +32,7 @@ uses SysUtils, UConfiguration;
 procedure TFOpenFolderForm.FormCreate(Sender: TObject);
 begin
   inherited;
-  PathTreeView:= TShellTreeView.Create(self);
+  PathTreeView:= TShellTreeView.Create(Self);
   CBPath.Items.CommaText:= GuiPyOptions.OpenFolderFormItems;
   if (CBPath.Items.Count > 0) and DirectoryExists(CBPath.Items[0])
     then CBPath.Text:= CBPath.Items[0]
@@ -42,7 +42,7 @@ begin
     SetBounds(8, 8, 380, 270);
     HideSelection:= False;
     Path:= CBPath.Text;
-    AutoRefresh:= true;
+    AutoRefresh:= True;
   end;
 end;
 

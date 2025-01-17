@@ -231,8 +231,8 @@ type
   EGGAnsi2WideConvError=class(EGnuGettext);
 // This function will turn resourcestring hooks on or off, eventually with BPL file support.
 // Please do not activate BPL file support when the package is in design mode.
-const AutoCreateHooks=true;
-procedure HookIntoResourceStrings (enabled:boolean=true; SupportPackages:boolean=false);
+const AutoCreateHooks=True;
+procedure HookIntoResourceStrings (enabled:Boolean=True; SupportPackages:Boolean=False);
 
 
 (*****************************************************************************)
@@ -260,18 +260,18 @@ type
   TMoFile=
     class /// Threadsafe. Only constructor and destructor are writing to memory
     private
-      doswap: boolean;
+      doswap: Boolean;
     public
       Users:Integer; /// Reference count. If it reaches zero, this object should be destroyed.
       constructor Create (const filename: FilenameString;
                           const Offset: int64; Size: int64;
                           const xUseMemoryMappedFiles: Boolean);
       destructor Destroy; override;
-      function gettext(const msgid: RawUtf8String;var found:boolean): RawUtf8String; // uses mo file and utf-8
-      property isSwappedArchitecture:boolean read doswap;
+      function gettext(const msgid: RawUtf8String;var found:Boolean): RawUtf8String; // uses mo file and utf-8
+      property isSwappedArchitecture:Boolean read doswap;
     private
       N, O, T: Cardinal; /// Values defined at http://www.linuxselfhelp.com/gnu/gettext/html_chapter/gettext_6.html
-      startindex,startstep:integer;
+      startindex,startstep:Integer;
       FUseMemoryMappedFiles: Boolean;
       mo: THandle;
       momapping: THandle;
@@ -287,7 +287,7 @@ type
   TDomain=
     class
     private
-      Enabled:boolean;
+      Enabled:Boolean;
       vDirectory: FilenameString;
       procedure setDirectory(const dir: FilenameString);
     public
@@ -307,7 +307,7 @@ type
       mofile:TMoFile;
       SpecificFilename:FilenameString;
       curlang: LanguageString;
-      OpenHasFailedBefore: boolean;
+      OpenHasFailedBefore: Boolean;
       procedure OpenMoFile;
       procedure CloseMoFile;
     end;
@@ -377,8 +377,8 @@ type
       // Windows API functions
       function LoadResString(ResStringRec: PResStringRec): UnicodeString;
       // Output all log info to this file. This may only be called once.
-      procedure DebugLogToFile (const filename:FilenameString; append:boolean=false);
-      procedure DebugLogPause (PauseEnabled:boolean);
+      procedure DebugLogToFile (const filename:FilenameString; append:Boolean=False);
+      procedure DebugLogPause (PauseEnabled:Boolean);
       property  OnDebugLine: TOnDebugLine read fOnDebugLine write fOnDebugLine; // If set, all debug output goes here
       {$ifndef UNICODE}
       // Conversion according to design-time character set
@@ -474,7 +474,7 @@ type
       destructor Destroy; override;
       function FindSignaturePos(const signature: RawByteString; str: TFileStream): Int64;
       procedure Analyze;  // List files embedded inside executable
-      function FileExists (filename:FilenameString):boolean;
+      function FileExists (filename:FilenameString):Boolean;
       function GetMoFile (filename:FilenameString;DebugLogger:TDebugLogger):TMoFile;
       procedure ReleaseMoFile (mofile:TMoFile);
     private
@@ -508,9 +508,9 @@ type
   THook=  // Replaces a runtime library procedure with a custom procedure
     class
     public
-      constructor Create (OldProcedure, NewProcedure: pointer; FollowJump:boolean=false);
+      constructor Create (OldProcedure, NewProcedure: pointer; FollowJump:Boolean=False);
       destructor Destroy; override;  // Restores unhooked state
-      procedure Reset (FollowJump:boolean=false); // Disables and picks up patch points again
+      procedure Reset (FollowJump:Boolean=False); // Disables and picks up patch points again
       procedure Disable;
       procedure Enable;
     private
@@ -522,7 +522,7 @@ type
     end;
 var
   // System information
-  Win32PlatformIsUnicode:boolean=False;
+  Win32PlatformIsUnicode:Boolean=False;
   
   // Information about files embedded inside .exe file
   FileLocator:TFileLocator;
@@ -536,7 +536,7 @@ var
   HookFmtLoadStr:THook;
 function GGGetEnvironmentVariable(const Name:widestring):widestring;
 var
-  Len: integer;
+  Len: Integer;
   W : WideString;
 begin
   Result := '';
@@ -549,29 +549,29 @@ begin
 end;
 function StripCRRawMsgId (s:RawUtf8String):RawUtf8String;
 var
-  i:integer;
+  i:Integer;
 begin
   i:=1;
-  while i<=length(s) do begin
-    if s[i]=#13 then delete (s,i,1) else inc (i);
+  while i<=Length(s) do begin
+    if s[i]=#13 then Delete (s,i,1) else Inc (i);
   end;
   Result:=s;
 end;
 function EnsureLineBreakInTranslatedString (s:RawUtf8String):RawUtf8String;
 {$ifdef MSWINDOWS}
 var
-  i:integer;
+  i:Integer;
 {$endif}
 begin
   {$ifdef MSWINDOWS}
   Assert (sLinebreak=ansistring(#13#10));
   i:=1;
-  while i<=length(s) do begin
+  while i<=Length(s) do begin
     if (s[i]=#10) and (Copy(s,i-1,1)<>#13) then begin
       insert (#13,s,i);
-      inc (i,2);
+      Inc (i,2);
     end else
-      inc (i);
+      Inc (i);
   end;
   {$endif}
   Result:=s;
@@ -582,20 +582,20 @@ begin
 end;
 function ResourceStringGettext(MsgId: MsgIdString): TranslatedUnicodeString;
 var
-  i:integer;
+  i:Integer;
 begin
   if (MsgID='') or (ResourceStringDomainListCS=nil) then begin
     // This only happens during very complicated program startups that fail,
     // or when Msgid=''
     Result:=MsgId;
-    exit;
+    Exit;
   end;
   ResourceStringDomainListCS.BeginRead;
   try
     for i:=0 to ResourceStringDomainList.Count-1 do begin
       Result:=dgettext(ResourceStringDomainList.Strings[i], MsgId);
       if Result<>MsgId then
-        break;
+        Break;
     end;
   finally
     ResourceStringDomainListCS.EndRead;
@@ -603,13 +603,13 @@ begin
 end;
 function ComponentGettext(MsgId: MsgIdString; Instance: TGnuGettextInstance = nil): TranslatedUnicodeString;
 var
-  i:integer;
+  i:Integer;
 begin
   if (MsgID='') or (ComponentDomainListCS=nil) then begin
     // This only happens during very complicated program startups that fail,
     // or when Msgid=''
     Result:=MsgId;
-    exit;
+    Exit;
   end;
   ComponentDomainListCS.BeginRead;
   try
@@ -619,7 +619,7 @@ begin
       else
         Result:=dgettext(ComponentDomainList.Strings[i], MsgId);
       if Result<>MsgId then
-        break;
+        Break;
     end;
   finally
     ComponentDomainListCS.EndRead;
@@ -692,7 +692,7 @@ procedure textdomain(const szDomain: Domainstring);
 begin
   DefaultInstance.textdomain(szDomain);
 end;
-procedure SetGettextEnabled (enabled:boolean);
+procedure SetGettextEnabled (enabled:Boolean);
 begin
   DefaultInstance.Enabled:=enabled;
 end;
@@ -832,7 +832,7 @@ var
   langcode: WideString;
   CountryName: array[0..4] of widechar;
   LanguageName: array[0..4] of widechar;
-  works: boolean;
+  works: Boolean;
 begin
   // The return value of GetLocaleInfo is compared with 3 = 2 characters and a zero
   works := 3 = GetLocaleInfoW(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME, LanguageName, SizeOf(LanguageName));
@@ -990,10 +990,10 @@ var
 begin
   // Check if it is already open
   if mofile<>nil then
-    exit;
+    Exit;
   // Check if it has been attempted to open the file before
   if OpenHasFailedBefore then
-    exit;
+    Exit;
   if SpecificFilename<>'' then begin
     filename:=SpecificFilename;
     {$ifdef DXGETTEXTDEBUG}
@@ -1023,7 +1023,7 @@ begin
     DebugLogger ('Domain '+domain+' failed to locate the file: '+filename);
     {$endif}
     OpenHasFailedBefore:=True;
-    exit;
+    Exit;
   end;
   {$ifdef DXGETTEXTDEBUG}
   DebugLogger ('Domain '+domain+' now accesses the file.');
@@ -1057,7 +1057,7 @@ function TDomain.GetTranslationProperty(
   Propertyname: ComponentNameString): TranslatedUnicodeString;
 var
   sl:TStringList;
-  i:integer;
+  i:Integer;
   s:string;
 begin
   Propertyname:=uppercase(Propertyname)+': ';
@@ -1066,12 +1066,12 @@ begin
     sl.Text:=utf8decode(gettext(''));
     for i:=0 to sl.Count-1 do begin
       s:=sl.Strings[i];
-      if uppercase(MidStr(s,1,length(Propertyname)))=Propertyname then begin
-        Result:=trim(MidStr(s,length(PropertyName)+1,maxint));
+      if uppercase(MidStr(s,1,Length(Propertyname)))=Propertyname then begin
+        Result:=Trim(MidStr(s,Length(PropertyName)+1,maxint));
         {$ifdef DXGETTEXTDEBUG}
         DebugLogger ('GetTranslationProperty('+PropertyName+') returns '''+Result+'''.');
         {$endif}
-        exit;
+        Exit;
       end;
     end;
   finally
@@ -1103,7 +1103,7 @@ begin
 end;
 procedure RemoveDomainForResourceString (const domain:DomainString);
 var
-  i:integer;
+  i:Integer;
 begin
   {$ifdef DXGETTEXTDEBUG}
   DefaultInstance.DebugWriteln ('Remove domain for resourcestring: '+domain);
@@ -1132,7 +1132,7 @@ begin
 end;
 procedure RemoveDomainForComponent (const domain:DomainString);
 var
-  i:integer;
+  i:Integer;
 begin
   {$ifdef DXGETTEXTDEBUG}
   DefaultInstance.DebugWriteln ('Remove domain for component: '+domain);
@@ -1242,10 +1242,10 @@ end;
 procedure TDomain.GetListOfLanguages(list: TStrings);
 var
   sr:TSearchRec;
-  more:boolean;
+  more:Boolean;
   filename, path:FilenameString;
   langcode:LanguageString;
-  i, j:integer;
+  i, j:Integer;
 begin
   list.Clear;
   // Iterate through filesystem
@@ -1273,14 +1273,14 @@ begin
     path:=uppercase(path);
     filename:=uppercase(filename);
     {$endif}
-    j:=length(path);
+    j:=Length(path);
     if MidStr(filename,1,j)=path then begin
       path:=PathDelim + 'LC_MESSAGES' + PathDelim + domain + '.mo';
       {$ifdef MSWINDOWS}
       path:=uppercase(path);
       {$endif}
-      if MidStr(filename,length(filename)-length(path)+1,length(path))=path then begin
-        langcode:=lowercase(MidStr(filename,j+1,length(filename)-length(path)-j));
+      if MidStr(filename,Length(filename)-Length(path)+1,Length(path))=path then begin
+        langcode:=lowercase(MidStr(filename,j+1,Length(filename)-Length(path)-j));
         langcode:=LeftStr(langcode,3)+uppercase(MidStr(langcode,4,maxint));
         if list.IndexOf(langcode)=-1 then
           list.Add(langcode);
@@ -1296,11 +1296,11 @@ begin
 end;
 function TDomain.gettext(const msgid: RawUtf8String): RawUtf8String;
 var
-  found:boolean;
+  found:Boolean;
 begin
   if not Enabled then begin
     Result:=msgid;
-    exit;
+    Exit;
   end;
   if (mofile=nil) and (not OpenHasFailedBefore) then
     OpenMoFile;
@@ -1481,7 +1481,7 @@ var
   ttpr:TTP_Retranslator;
 begin
   ttpr:=TTP_Retranslator.Create;
-  ttpr.Instance:=self;
+  ttpr.Instance:=Self;
   TP_Retranslator:=ttpr;
   Result:=ttpr;
   {$ifdef DXGETTEXTDEBUG}
@@ -1492,7 +1492,7 @@ procedure TGnuGettextInstance.TP_GlobalHandleClass(HClass: TClass;
   Handler: TTranslator);
 var
   cm:TClassMode;
-  i:integer;
+  i:Integer;
 begin
   for i:=0 to TP_GlobalClassHandling.Count-1 do begin
     cm:=TObject(TP_GlobalClassHandling.Items[i]) as TClassMode;
@@ -1507,7 +1507,7 @@ begin
       {$ifdef DXGETTEXTDEBUG}
       DebugWriteln ('A handler was set for class '+HClass.ClassName+'.');
       {$endif}
-      exit;
+      Exit;
     end;
   end;
   cm:=TClassMode.Create;
@@ -1521,7 +1521,7 @@ end;
 procedure TGnuGettextInstance.TP_GlobalIgnoreClass(IgnClass: TClass);
 var
   cm:TClassMode;
-  i:integer;
+  i:Integer;
 begin
   for i:=0 to TP_GlobalClassHandling.Count-1 do begin
     cm:=TObject(TP_GlobalClassHandling.Items[i]) as TClassMode;
@@ -1535,7 +1535,7 @@ begin
       {$ifdef DXGETTEXTDEBUG}
       DebugWriteln ('Globally, class '+IgnClass.ClassName+' is being ignored.');
       {$endif}
-      exit;
+      Exit;
     end;
   end;
   cm:=TClassMode.Create;
@@ -1549,7 +1549,7 @@ procedure TGnuGettextInstance.TP_GlobalIgnoreClassProperty(
   IgnClass: TClass; propertyname: ComponentNameString);
 var
   cm:TClassMode;
-  i,idx:integer;
+  i,idx:Integer;
 begin
   propertyname:=uppercase(propertyname);
   for i:=0 to TP_GlobalClassHandling.Count-1 do begin
@@ -1562,7 +1562,7 @@ begin
       {$ifdef DXGETTEXTDEBUG}
       DebugWriteln ('Globally, the '+propertyname+' property of class '+IgnClass.ClassName+' is being ignored.');
       {$endif}
-      exit;
+      Exit;
     end;
     if IgnClass.InheritsFrom(cm.HClass) then begin
       // This is the place to insert this class
@@ -1573,7 +1573,7 @@ begin
       {$ifdef DXGETTEXTDEBUG}
       DebugWriteln ('Globally, the '+propertyname+' property of class '+IgnClass.ClassName+' is being ignored.');
       {$endif}
-      exit;
+      Exit;
     end;
   end;
   cm:=TClassMode.Create;
@@ -1702,7 +1702,7 @@ begin
             if obj is TComponent then begin
               compmarker := TComponent(obj).FindComponent('GNUgettextMarker');
               if Assigned(compmarker) then
-                exit;
+                Exit;
             end;
             TodoList.AddObject ('',obj);
           end;
@@ -1739,7 +1739,7 @@ procedure TGnuGettextInstance.TranslateProperties(AnObject: TObject; textdomain:
 var
   TodoList:TStringList; // List of Name/TObject's that is to be processed
   DoneList:TStringList; // List of hex codes representing pointers to objects that have been done
-  i, j, Count: integer;
+  i, j, Count: Integer;
   PropList: PPropList;
   UPropName: ComponentNameString;
   PropInfo: PPropInfo;
@@ -1786,7 +1786,7 @@ begin
         Assert (sizeof({$IFDEF CPUx64}NativeInt{$ELSE}Integer{$ENDIF CPUx64})=sizeof(TObject));
         objid:=IntToHex({$IFDEF CPUx64}NativeInt{$ELSE}Integer{$ENDIF CPUx64}(AnObject),8);
         if DoneList.Find(objid,i) then begin
-          continue;
+          Continue;
         end else begin
           DoneList.Add(objid);
         end;
@@ -1802,7 +1802,7 @@ begin
             end else begin
               // Ignore the entire class
               currentcm:=cm;
-              break;
+              Break;
             end;
           end;
         end;
@@ -1816,7 +1816,7 @@ begin
             end else begin
               // Ignore the entire class
               currentcm:=cm;
-              break;
+              Break;
             end;
           end;
         end;
@@ -1833,7 +1833,7 @@ begin
             DebugWriteln ('Ignoring object '+AnObject.ClassName);
             {$endif}
           end;
-          continue;
+          Continue;
         end;
         Count := GetPropList(AnObject, PropList);
         try
@@ -1847,7 +1847,7 @@ begin
             {$ELSE}
             if not (PropInfo^.PropType^.Kind in [tkString, tkLString, tkWString, tkClass]) then
             {$ENDIF}
-              continue;
+              Continue;
             UPropName:=uppercase(string(PropInfo^.Name));
             // Ignore properties that are meant to be ignored
             if ((currentcm=nil) or (not currentcm.PropertiesToIgnore.Find(UPropName,i))) and
@@ -1908,7 +1908,7 @@ begin
 end;
 procedure TGnuGettextInstance.UseLanguage(LanguageCode: LanguageString);
 var
-  i,p:integer;
+  i,p:Integer;
   dom:TDomain;
   l2:string;
 begin
@@ -1964,7 +1964,7 @@ end;
 procedure TGnuGettextInstance.TranslateStrings(sl: TStrings;const TextDomain:DomainString);
 var
   line: string;
-  i: integer;
+  i: Integer;
   s:TStringList;
   slAsTStringList:TStringList;
   {$ifdef DELPHI2009OROLDER}
@@ -2051,8 +2051,8 @@ function TGnuGettextInstance.dngettext(const szDomain: DomainString; const singu
 var
   org:MsgIdString;
   trans:TranslatedUnicodeString;
-  idx:integer;
-  p:integer;
+  idx:Integer;
+  p:Integer;
 begin
   {$ifdef DXGETTEXTDEBUG}
   DebugWriteln ('dngettext translation (domain '+szDomain+', number is '+IntTostr(Number)+') of '+singular+'/'+plural);
@@ -2069,24 +2069,24 @@ begin
   {$ifdef DXGETTEXTDEBUG}
   DebugWriteln ('Index '+IntToStr(idx)+' will be used');
   {$endif}
-  while true do begin
+  while True do begin
     p:=pos(#0,trans);
     if p=0 then begin
       {$ifdef DXGETTEXTDEBUG}
       DebugWriteln ('Last translation used: '+utf8encode(trans));
       {$endif}
       Result:=trans;
-      exit;
+      Exit;
     end;
     if idx=0 then begin
       {$ifdef DXGETTEXTDEBUG}
       DebugWriteln ('Translation found: '+utf8encode(trans));
       {$endif}
       Result:=LeftStr(trans,p-1);
-      exit;
+      Exit;
     end;
-    delete (trans,1,p);
-    dec (idx);
+    Delete (trans,1,p);
+    Dec (idx);
   end;
 end;
 function TGnuGettextInstance.dngettext_NoExtract(const szDomain: DomainString;
@@ -2145,13 +2145,13 @@ begin
   {$endif}
   getdomain(szDomain,DefaultDomainDirectory,CurLang).SetFilename (filename);
 end;
-procedure TGnuGettextInstance.DebugLogPause(PauseEnabled: boolean);
+procedure TGnuGettextInstance.DebugLogPause(PauseEnabled: Boolean);
 begin
   {$ifdef DXGETTEXTDEBUG}
   DebugLogOutputPaused:=PauseEnabled;
   {$endif}
 end;
-procedure TGnuGettextInstance.DebugLogToFile(const filename: FilenameString; append:boolean=false);
+procedure TGnuGettextInstance.DebugLogToFile(const filename: FilenameString; append:Boolean=False);
 {$ifdef DXGETTEXTDEBUG}
 var
   fs:TFileStream;
@@ -2169,7 +2169,7 @@ begin
   // Write header if appending
   if fs.Position<>0 then begin
     marker:=sLineBreak+'==========================================================================='+sLineBreak;
-    fs.WriteBuffer(marker[1],length(marker));
+    fs.WriteBuffer(marker[1],Length(marker));
   end;
   // Copy the memorystream contents to the file
   if DebugLog <> nil then
@@ -2192,7 +2192,7 @@ begin
   DebugLogCS.BeginWrite;
   try
     if DebugLogOutputPaused then
-      exit;
+      Exit;
     if Assigned (fOnDebugLine) then begin
       Discard := True;
       fOnDebugLine (Self, Line, Discard);
@@ -2207,7 +2207,7 @@ begin
             sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak;
       DebugLogOutputPaused:=True;
     end;
-    DebugLog.WriteBuffer(line[1],length(line));
+    DebugLog.WriteBuffer(line[1],Length(line));
   finally
     DebugLogCS.EndWrite;
   end;
@@ -2217,7 +2217,7 @@ function TGnuGettextInstance.Getdomain(const domain:DomainString; const DefaultD
 // Retrieves the TDomain object for the specified domain.
 // Creates one, if none there, yet.
 var
-  idx: integer;
+  idx: Integer;
 begin
   idx := domainlist.IndexOf(Domain);
   if idx = -1 then begin
@@ -2256,13 +2256,13 @@ var
 {$endif }
 begin
   if ResStringRec=nil then
-    exit;
+    Exit;
   if ResStringRec.Identifier>=64*1024 then begin
     {$ifdef DXGETTEXTDEBUG}
     DebugWriteln ('LoadResString was given an invalid ResStringRec.Identifier');
     {$endif}
     Result:='ERROR';
-    exit;
+    Exit;
   end else begin
     {$ifdef LINUX}
     // This works with Unicode if the Linux has utf-8 character set
@@ -2351,7 +2351,7 @@ end;
 procedure TGnuGettextInstance.TP_IgnoreClass(IgnClass: TClass);
 var
   cm:TClassMode;
-  i:integer;
+  i:Integer;
 begin
   for i:=0 to TP_ClassHandling.Count-1 do begin
     cm:=TObject(TP_ClassHandling.Items[i]) as TClassMode;
@@ -2365,7 +2365,7 @@ begin
       {$ifdef DXGETTEXTDEBUG}
       DebugWriteln ('Locally, class '+IgnClass.ClassName+' is being ignored.');
       {$endif}
-      exit;
+      Exit;
     end;
   end;
   cm:=TClassMode.Create;
@@ -2379,7 +2379,7 @@ procedure TGnuGettextInstance.TP_IgnoreClassProperty(IgnClass: TClass;
   propertyname: ComponentNameString);
 var
   cm:TClassMode;
-  i:integer;
+  i:Integer;
 begin
   propertyname:=uppercase(propertyname);
   for i:=0 to TP_ClassHandling.Count-1 do begin
@@ -2391,7 +2391,7 @@ begin
       {$ifdef DXGETTEXTDEBUG}
       DebugWriteln ('Globally, the '+propertyname+' property of class '+IgnClass.ClassName+' is being ignored.');
       {$endif}
-      exit;
+      Exit;
     end;
     if IgnClass.InheritsFrom(cm.HClass) then begin
       // This is the place to insert this class
@@ -2402,7 +2402,7 @@ begin
       {$ifdef DXGETTEXTDEBUG}
       DebugWriteln ('Locally, the '+propertyname+' property of class '+IgnClass.ClassName+' is being ignored.');
       {$endif}
-      exit;
+      Exit;
     end;
   end;
   cm:=TClassMode.Create;
@@ -2424,7 +2424,7 @@ end;
 function TGnuGettextInstance.ansi2wideDTCP(const s: ansistring): MsgIdString;
 {$ifdef MSWindows}
 var
-  len:integer;
+  len:Integer;
 {$endif}
 begin
 {$ifdef MSWindows}
@@ -2434,7 +2434,7 @@ begin
     Result:=s;
 {$ifdef MSWindows}
   end else begin
-    len:=length(s);
+    len:=Length(s);
     if len=0 then
       Result:=''
     else begin
@@ -2477,7 +2477,7 @@ const
 var
   a:RawByteString;
   b:RawByteString;
-  offset:integer;
+  offset:Integer;
   rd,p:Integer;
 begin
   if signature='' then
@@ -2491,17 +2491,17 @@ begin
   SetLength (b, bufsize);
   str.Read(a[1],bufsize);
   
-  while true do begin
+  while True do begin
     rd:=str.Read(b[1],bufsize);
     p:=pos(signature,a+b);
     if (p<>0) then begin // do not check p < bufsize+100 here!
       Result:=offset+p-1;
-      exit;
+      Exit;
     end;
     if rd<>bufsize then begin
       // Prematurely ended without finding anything
       Result:=0;
-      exit;
+      Exit;
     end;
     a:=b;
     offset:=offset+bufsize;
@@ -2515,9 +2515,9 @@ var
   headerpre,
   headerbeg,
   headerend:RawByteString;
-  i:integer;
+  i:Integer;
   headerbeginpos,
-  headerendpos:integer;
+  headerendpos:Integer;
   offset,
   tableoffset:int64;
   fs:TFileStream;
@@ -2571,11 +2571,11 @@ begin
         
         offset := tableoffset;
         Assert(sizeof(offset)=8);
-        while (true) and (fs.Position<headerendpos) do begin
+        while (True) and (fs.Position<headerendpos) do begin
           fs.Seek(offset, soBeginning);
           offset:=ReadInt64(fs);
           if offset=0 then
-            exit;
+            Exit;
           offset:=headerbeginpos+offset;
           fi:=TEmbeddedFileInfo.Create;
           try
@@ -2584,7 +2584,7 @@ begin
             fi.Size:=ReadInt64(fs);
             SetLength (filename8bit, offset-fs.position);
             fs.ReadBuffer (filename8bit[1], offset-fs.position);
-            filename:=trim(utf8decode(filename8bit));
+            filename:=Trim(utf8decode(filename8bit));
             if PreferExternal and sysutils.fileexists(basedirectory+filename) then begin
               // Disregard the internal version and use the external version instead
               FreeAndNil (fi);
@@ -2625,7 +2625,7 @@ begin
 end;
 destructor TFileLocator.Destroy;
 var
-  Idx:integer;
+  Idx:Integer;
 begin
   for Idx := 0 to filelist.Count-1 do
     FileList.Objects[Idx].Free;
@@ -2634,20 +2634,20 @@ begin
   FreeAndNil (MoFilesCS);
   inherited;
 end;
-function TFileLocator.FileExists(filename: FilenameString): boolean;
+function TFileLocator.FileExists(filename: FilenameString): Boolean;
 var
-  idx:integer;
+  idx:Integer;
 begin
-  if LeftStr(filename,length(basedirectory))=basedirectory then begin
+  if LeftStr(filename,Length(basedirectory))=basedirectory then begin
     // Cut off basedirectory if the file is located beneath that base directory
-    filename:=MidStr(filename,length(basedirectory)+1,maxint);
+    filename:=MidStr(filename,Length(basedirectory)+1,maxint);
   end;
   Result:=filelist.Find(filename,idx);
 end;
 function TFileLocator.GetMoFile(filename: FilenameString; DebugLogger:TDebugLogger): TMoFile;
 var
   fi:TEmbeddedFileInfo;
-  idx:integer;
+  idx:Integer;
   idxname:FilenameString;
   Offset, Size: Int64;
   realfilename:FilenameString;
@@ -2656,8 +2656,8 @@ begin
   offset:=0;
   size:=0;
   realfilename:=filename;
-  if LeftStr(filename,length(basedirectory))=basedirectory then begin
-    filename:=MidStr(filename,length(basedirectory)+1,maxint);
+  if LeftStr(filename,Length(basedirectory))=basedirectory then begin
+    filename:=MidStr(filename,Length(basedirectory)+1,maxint);
     idx:=filelist.IndexOf(filename);
     if idx<>-1 then begin
       fi:=filelist.Objects[idx] as TEmbeddedFileInfo;
@@ -2695,22 +2695,22 @@ begin
 end;
 procedure TFileLocator.ReleaseMoFile(mofile: TMoFile);
 var
-  i:integer;
+  i:Integer;
 begin
   Assert (mofile<>nil);
   
   MoFilesCS.BeginWrite;
   try
-    dec (mofile.Users);
+    Dec (mofile.Users);
     if mofile.Users<=0 then begin
       i:=MoFiles.Count-1;
       while i>=0 do begin
         if MoFiles.Objects[i]=mofile then begin
           MoFiles.Delete(i);
           FreeAndNil (mofile);
-          break;
+          Break;
         end;
-        dec (i);
+        Dec (i);
       end;
     end;
   finally
@@ -2724,7 +2724,7 @@ begin
 end;
 destructor TTP_Retranslator.Destroy;
 var
-  i:integer;
+  i:Integer;
 begin
   for i:=0 to list.Count-1 do
     TObject(list.Items[i]).Free;
@@ -2733,7 +2733,7 @@ begin
 end;
 procedure TTP_Retranslator.Execute;
 var
-  i:integer;
+  i:Integer;
   sl:TStrings;
   item:TTP_RetranslatorItem;
   newvalue:TranslatedUnicodeString;
@@ -2741,10 +2741,10 @@ var
   ppi:PPropInfo;
 begin
   for i:=0 to list.Count-1 do begin
-    item:=TObject(list.items[i]) as TTP_RetranslatorItem;
+    item:=TObject(list.Items[i]) as TTP_RetranslatorItem;
     if item.obj is TComponent then begin
       comp:=TComponent(item.obj).FindComponent('GNUgettextMarker') as TGnuGettextComponentMarker;
-      if Assigned(comp) and (self<>comp.Retranslator) then begin
+      if Assigned(comp) and (Self<>comp.Retranslator) then begin
         comp.Retranslator.Execute; 
         Continue;
       end;
@@ -2802,7 +2802,7 @@ begin
   inherited;
 end;
 { THook }
-constructor THook.Create(OldProcedure, NewProcedure: pointer; FollowJump:boolean=false);
+constructor THook.Create(OldProcedure, NewProcedure: pointer; FollowJump:Boolean=False);
 { Idea and original code from Igor Siticov }
 { Modified by Jacques Garcia Vazquez and Lars Dybdahl }
 begin
@@ -2838,12 +2838,12 @@ begin
   PatchPosition[3]:=Patch[3];
   PatchPosition[4]:=Patch[4];
 end;
-procedure THook.Reset(FollowJump: boolean);
+procedure THook.Reset(FollowJump: Boolean);
 var
-  offset:integer;
+  offset:Integer;
   {$ifdef LINUX}
   p:pointer;
-  pagesize:integer;
+  pagesize:Integer;
   {$endif}
   {$ifdef MSWindows}
   ov: cardinal;
@@ -2890,7 +2890,7 @@ begin
   Disable;
   PatchPosition:=nil;
 end;
-procedure HookIntoResourceStrings (enabled:boolean=true; SupportPackages:boolean=false);
+procedure HookIntoResourceStrings (enabled:Boolean=True; SupportPackages:Boolean=False);
 begin
   HookLoadResString.Reset (SupportPackages);
   HookLoadStr.Reset (SupportPackages);
@@ -2906,7 +2906,7 @@ function TMoFile.autoswap32(i: cardinal): cardinal;
 var
   cnv1, cnv2:
     record
-      case integer of
+      case Integer of
         0: (arr: array[0..3] of byte);
         1: (int: cardinal);
     end;
@@ -2924,7 +2924,7 @@ end;
 function TMoFile.CardinalInMem(baseptr: PansiChar; Offset: Cardinal): Cardinal;
 var pc:^Cardinal;
 begin
-  inc (baseptr,offset);
+  Inc (baseptr,offset);
   pc:=Pointer(baseptr);
   Result:=pc^;
   if doswap then
@@ -2935,7 +2935,7 @@ constructor TMoFile.Create(const filename: FilenameString;
                            const xUseMemoryMappedFiles: Boolean);
 var
   i:cardinal;
-  nn:integer;
+  nn:Integer;
   mofile:TFileStream;
 begin
   if sizeof(i) <> 4 then
@@ -3012,22 +3012,22 @@ begin
   end;
   inherited;
 end;
-function TMoFile.gettext(const msgid: RawUtf8String;var found:boolean): RawUtf8String;
+function TMoFile.gettext(const msgid: RawUtf8String;var found:Boolean): RawUtf8String;
 var
   i, step: cardinal;
   offset, pos: cardinal;
-  CompareResult:integer;
+  CompareResult:Integer;
   msgidptr,a,b:PAnsiChar;
-  abidx:integer;
-  size, msgidsize:integer;
+  abidx:Integer;
+  size, msgidsize:Integer;
 begin
-  found:=false;
+  found:=False;
   msgidptr:=PAnsiChar(msgid);
-  msgidsize:=length(msgid);
+  msgidsize:=Length(msgid);
   // Do binary search
   i:=startindex;
   step:=startstep;
-  while true do begin
+  while True do begin
     // Get string for index i
     pos:=O+8*(i-1);
     offset:=CardinalInMem (momemory,pos+4);
@@ -3039,12 +3039,12 @@ begin
       abidx:=msgidsize;
     CompareResult:=0;
     while abidx<>0 do begin
-      CompareResult:=integer(byte(a^))-integer(byte(b^));
+      CompareResult:=Integer(byte(a^))-Integer(byte(b^));
       if CompareResult<>0 then
-        break;
-      dec (abidx);
-      inc (a);
-      inc (b);
+        Break;
+      Dec (abidx);
+      Inc (a);
+      Inc (b);
     end;
     if CompareResult=0 then 
       CompareResult:=msgidsize-size;
@@ -3055,12 +3055,12 @@ begin
       size:=CardinalInMem (momemory,pos);
       SetString (Result,momemory+offset,size);
       found:=True;
-      break;
+      Break;
     end;
     if step=0 then begin
       // Not found
       Result:=msgid;
-      break;
+      Break;
     end;
     if CompareResult<0 then begin  // msgid<s
       if i < 1+step then
@@ -3130,7 +3130,7 @@ initialization
   HookFmtLoadStr:=THook.Create (@sysutils.FmtLoadStr, @SysUtilsFmtLoadStr);
   param0:=lowercase(extractfilename(paramstr(0)));
   if (param0<>'delphi32.exe') and (param0<>'kylix') and (param0<>'bds.exe') then
-    HookIntoResourceStrings (AutoCreateHooks,false);
+    HookIntoResourceStrings (AutoCreateHooks,False);
   param0:='';
 finalization
   FreeAndNil (DefaultInstance);

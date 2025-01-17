@@ -51,7 +51,7 @@ var
 implementation
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   System.SysUtils,
   System.Win.Registry,
   System.RegularExpressions,
@@ -97,7 +97,7 @@ end;
 
 function GetModFiles: string;
 var
-  i: integer;
+  i: Integer;
 begin
   Result := '';
   if Assigned(GI_EditorFactory) then
@@ -113,7 +113,7 @@ end;
 
 function GetOpenFiles: string;
 var
-  i: integer;
+  i: Integer;
 begin
   Result := '';
   if Assigned(GI_EditorFactory) then
@@ -357,7 +357,7 @@ end;
 function GetParam(const AIndex: string): string;
 (* Returns the commandline argument *)
 var
-  ix: integer;
+  ix: Integer;
 begin
   Result := '';
   if TryStrToInt(AIndex, ix) then
@@ -386,7 +386,7 @@ function GetReg(const ARegKey: string): string;
 var
   Info: TRegDataInfo;
   AName: string;
-  i: integer;
+  i: Integer;
   Buff: Pointer;
   S: string;
 begin
@@ -518,7 +518,7 @@ begin
     if PythonVersion.SysVersion = VersionString then
     begin
       Result := PythonVersion.InstallPath;
-      break;
+      Break;
     end;
 
   if Result <> '' then
@@ -541,17 +541,17 @@ function GetEnvironmentVariable(const Name: string): string;
 const
   BufSize = 1024;
 var
-  Len: integer;
+  Len: Integer;
   Buffer: array [0 .. BufSize - 1] of Char;
 begin
   Result := '';
-  Len := WinApi.Windows.GetEnvironmentVariable(PChar(Name), @Buffer, BufSize);
+  Len := Winapi.Windows.GetEnvironmentVariable(PChar(Name), @Buffer, BufSize);
   if Len < BufSize then
     SetString(Result, PChar(@Buffer), Len)
   else
   begin
     SetLength(Result, Len - 1);
-    WinApi.Windows.GetEnvironmentVariable(PChar(Name), PChar(Result), Len);
+    Winapi.Windows.GetEnvironmentVariable(PChar(Name), PChar(Result), Len);
   end;
 end;
 
@@ -567,7 +567,7 @@ begin
   Count := 256 + 1; // UNLEN + 1
   // set buffer size to 256 + 2 characters
   SetLength(Result, Count);
-  if WinApi.Windows.GetUserName(PChar(Result), Count) then
+  if Winapi.Windows.GetUserName(PChar(Result), Count) then
     SetLength(Result, StrLen(PChar(Result)))
   else
     Result := '';
@@ -881,7 +881,7 @@ end;
 
 procedure RegisterCustomParams;
 var
-  i: integer;
+  i: Integer;
   ParamName: string;
 begin
   with Parameters do

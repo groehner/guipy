@@ -20,11 +20,11 @@ interface
   public
     Comment: string; // Accumulated comment string used for documentation of entities.
     Line: Integer;             // current line, calculated by GetNextToken
-    Column: integer;           // current column
-    LastTokenLine: integer;
-    LastTokenColumn: integer;
-    TokenLine: integer;
-    TokenColumn: integer;
+    Column: Integer;           // current column
+    LastTokenLine: Integer;
+    LastTokenColumn: Integer;
+    TokenLine: Integer;
+    TokenColumn: Integer;
     StartPos: PChar;
     CurrPos: PChar;
     LastCurrPos: PChar;
@@ -32,11 +32,11 @@ interface
     LastToken: string;
     Token: string;
     TokenTyp: string;
-    CompoundTokens: boolean;
-    IndentIndex: integer;
-    Indents: array[1..50] of integer;
+    CompoundTokens: Boolean;
+    IndentIndex: Integer;
+    Indents: array[1..50] of Integer;
     PushToken: string;
-    InhibitDetermineIndent: boolean;
+    InhibitDetermineIndent: Boolean;
     constructor Create;
     destructor Destroy; override;
     procedure Init(const s: string);   // simple scanning of a string
@@ -50,7 +50,7 @@ interface
     function LookAheadToken: string;
     function getExtends: string;
     function getFilename: string;
-    function GetFrameType: integer;
+    function GetFrameType: Integer;
   end;
 
 implementation
@@ -60,7 +60,7 @@ uses SysUtils, Character;
 {--- Scanner ------------------------------------------------------------------}
 
 constructor TPythonScannerWithTokens.Create;
-  var i: integer;
+  var i: Integer;
 begin
   inherited;
   Line:= 1;
@@ -81,12 +81,12 @@ function TPythonScannerWithTokens.GetChar: char;
 begin
   Result:= CurrPos^;
   if (CurrPos^ = #10) or ((CurrPos^ = #13) and ((CurrPos+1)^ <> #10)) then begin
-    inc(Line);
+    Inc(Line);
     Column:= 0;
   end;
   if Result <> #0 then begin
-    inc(CurrPos);
-    inc(Column);
+    Inc(CurrPos);
+    Inc(Column);
   end;
 end;
 
@@ -143,7 +143,7 @@ begin
     if not CharInSet(CurrPos^, [#0, #10, #13, #33..#255]) then
       State:= EatWhite;
     if CurrPos^ = '#' then begin
-      inComment:= true;
+      inComment:= True;
       Comment:= '';
       EatOne;
       State:= EatHashComment;
@@ -156,15 +156,15 @@ begin
       EatOne;
       EatOne;
       EatOne; // Skip the triple slashes
-      inComment:= true;
+      inComment:= True;
       State:= EatTripleComment;
-      inComment:= false;
+      inComment:= False;
     end;
   end;
 end;
 
 procedure TPythonScannerWithTokens.DetermineIndent;
-  var Spaces: integer;
+  var Spaces: Integer;
 begin
   if not InhibitDetermineIndent then begin
     Spaces:= 0;
@@ -176,28 +176,28 @@ begin
         GetChar;
     end;
     while CurrPos^ = ' ' do begin
-      inc(Spaces);
+      Inc(Spaces);
       GetChar;
     end;
     if (CurrPos^ = '#') or (CurrPos^ = '"') and ((CurrPos+1)^ = '"') and ((CurrPos+2)^ = '"') then
-      exit;
+      Exit;
     if IndentIndex = 0 then begin
-      inc(IndentIndex);
+      Inc(IndentIndex);
       Indents[IndentIndex]:= Spaces
     end else if Spaces > Indents[IndentIndex] then begin
       PushToken:= INDENT + PushToken;
-      inc(IndentIndex);
+      Inc(IndentIndex);
       Indents[IndentIndex]:= Spaces;
     end else while (IndentIndex > 1) and (Spaces < Indents[IndentIndex]) do begin
       PushToken:= DEDENT_ + PushToken;
       Indents[IndentIndex]:= 0;
-      dec(IndentIndex);
+      Dec(IndentIndex);
     end;
   end;
 end;
 
 function TPythonScannerWithTokens.GetNextToken: string;
-  var bracket: integer;
+  var bracket: Integer;
 
   procedure AddOne;
   begin
@@ -209,7 +209,7 @@ begin
   LastCurrPos:= CurrPos;
   if PushToken <> '' then begin
     Token:= PushToken[1];
-    delete(PushToken, 1, 1);
+    Delete(PushToken, 1, 1);
     Exit(Token);
   end;
   Token:= '';
@@ -261,7 +261,7 @@ begin
       while CurrPos^ = '_' do
         GetChar;
       AddOne;
-      while true do begin
+      while True do begin
         while CurrPos^.IsLetterOrDigit or (CurrPos^ = '_') do
           AddOne;
         if CompoundTokens and (CurrPos^ = '.') then begin
@@ -277,9 +277,9 @@ begin
         AddOne;
         while (bracket > 0) and (CurrPos^ <> #0) and (CurrPos^ <> '}') and (CurrPos^ <> ';') do begin
           if CurrPos^ = '['
-            then inc(bracket)
+            then Inc(bracket)
           else if CurrPos^ = ']'
-            then dec(bracket);
+            then Dec(bracket);
           AddOne;
         end;
       end;
@@ -330,7 +330,7 @@ begin
   ScanStr:= s;
   CurrPos := PChar(ScanStr);
   StartPos:= PChar(ScanStr);
-  CompoundTokens:= true;
+  CompoundTokens:= True;
   DetermineIndent;
 end;
 
@@ -361,10 +361,10 @@ begin
 end;
 
 procedure TPythonScannerWithTokens.SkipPairTo(const open, close: string);
-  var Count: integer;
+  var Count: Integer;
 begin
   Count:= 1;
-  InhibitDetermineIndent:= true;
+  InhibitDetermineIndent:= True;
   while (Count > 0) and (Token <> '') do begin
     GetNextToken;
     if Token = open
@@ -372,7 +372,7 @@ begin
     else if Token = close
       then Dec(Count);
   end;
-  InhibitDetermineIndent:= false;
+  InhibitDetermineIndent:= False;
 end;
 
 function TPythonScannerWithTokens.LookAheadToken: string;
@@ -380,7 +380,7 @@ function TPythonScannerWithTokens.LookAheadToken: string;
       SaveLastCurrPos: PChar;
       SaveLastToken: string;
       SaveToken: string;
-      SaveLine: integer;
+      SaveLine: Integer;
 begin
   SaveCurrPos:= CurrPos;
   SaveLastCurrPos:= LastCurrPos;
@@ -419,10 +419,10 @@ begin
   end;
 end;
 
-function TPythonScannerWithTokens.GetFrameType: integer;
+function TPythonScannerWithTokens.GetFrameType: Integer;
   var Typ: string;
 begin
-  CompoundTokens:= true;
+  CompoundTokens:= True;
   Typ:= getExtends;
   if ScanStr <> '' then
     if (Typ = 'QMainWindow') or (Typ = 'QWidget')

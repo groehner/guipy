@@ -33,36 +33,36 @@ type
   TModelIterator = class(TInterfacedObject, IModelIterator)
   private
     FItems : TObjectList;
-    OwnsItems : boolean;
-    NextI : integer;
+    OwnsItems : Boolean;
+    NextI : Integer;
     FNext : TModelEntity;
-    FHasNext : boolean;
+    FHasNext : Boolean;
   private
     procedure Init(List : IModelIterator; Filter : IIteratorFilter; Order : TIteratorOrder);
   protected
     procedure Advance; virtual;
   public
-    constructor Create(ObList: TObjectList; MakeCopy : boolean = False); overload;
+    constructor Create(ObList: TObjectList; MakeCopy : Boolean = False); overload;
     constructor Create(List: IModelIterator; Filter: IIteratorFilter; Order: TIteratorOrder = ioNone); overload;
     constructor Create(List: IModelIterator;
       OneClass: TModelEntityClass;
       MinVisibility: TVisibility = Low(TVisibility);
       Order: TIteratorOrder = ioNone;
-      All: boolean = false); overload;
+      All: Boolean = False); overload;
     constructor Create(List: IModelIterator; Order: TIteratorOrder = ioNone); overload;
     constructor Create(List: IModelIterator; MinVisibility: TVisibility); overload;
     destructor Destroy; override;
     //IModelIterator
-    function HasNext : boolean;
+    function HasNext : Boolean;
     function Next : TModelEntity;
     procedure Reset;
-    function Count : integer;
+    function Count : Integer;
   end;
 
   //Baseclass for filter used in iterators
   TIteratorFilter = class(TInterfacedObject, IIteratorFilter)
   public
-    function Accept(M : TModelEntity) : boolean; virtual; abstract;
+    function Accept(M : TModelEntity) : Boolean; virtual; abstract;
   end;
 
   //Filters on a class and a minimum visibilty
@@ -70,10 +70,10 @@ type
   private
     OneClass : TModelEntityClass;
     MinVisibility : TVisibility;
-    All: boolean;
+    All: Boolean;
   public
-    constructor Create(aOneClass : TModelEntityClass; aMinVisibility : TVisibility = Low(TVisibility); aAll: boolean = false);
-    function Accept(M : TModelEntity) : boolean; override;
+    constructor Create(aOneClass : TModelEntityClass; aMinVisibility : TVisibility = Low(TVisibility); aAll: Boolean = False);
+    function Accept(M : TModelEntity) : Boolean; override;
   end;
 
   //Excludes an entity
@@ -82,7 +82,7 @@ type
     SkipEntity : TModelEntity;
   public
     constructor Create(aSkipEntity : TModelEntity);
-    function Accept(M : TModelEntity) : boolean; override;
+    function Accept(M : TModelEntity) : Boolean; override;
   end;
 
 implementation
@@ -96,9 +96,9 @@ uses Classes, SysUtils;
 //Creates iterator as a direct copy of an objectlist.
 //If makecopy=false then reference oblist, else copy all items.
 
-constructor TModelIterator.Create(ObList: TObjectList; MakeCopy : boolean = False);
+constructor TModelIterator.Create(ObList: TObjectList; MakeCopy : Boolean = False);
 var
-  I : integer;
+  I : Integer;
 begin
   inherited Create;
   if MakeCopy then begin
@@ -130,7 +130,7 @@ constructor TModelIterator.Create(List: IModelIterator;
   OneClass: TModelEntityClass;
   MinVisibility : TVisibility = Low(TVisibility);
   Order : TIteratorOrder = ioNone;
-  All: boolean = false);
+  All: Boolean = False);
 begin
   inherited Create;
   Init(List, TClassAndVisibilityFilter.Create(OneClass, MinVisibility, All), Order);
@@ -209,9 +209,9 @@ end;
 
 procedure TModelIterator.Advance;
 begin
-  if assigned(FItems)
+  if Assigned(FItems)
     then FHasNext := NextI < FItems.Count
-    else FHasNext := false;
+    else FHasNext := False;
   if FHasNext then begin
     if FItems[NextI] is TModelEntity then
       FNext := FItems[NextI] as TModelEntity;
@@ -219,7 +219,7 @@ begin
   end;
 end;
 
-function TModelIterator.HasNext: boolean;
+function TModelIterator.HasNext: Boolean;
 begin
   Result := FHasNext;
 end;
@@ -241,7 +241,7 @@ end;
 {
   Returns nr of elements.
 }
-function TModelIterator.Count: integer;
+function TModelIterator.Count: Integer;
 begin
   Result := FItems.Count;
 end;
@@ -250,7 +250,7 @@ end;
 { TClassAndVisibilityFilter }
 
 constructor TClassAndVisibilityFilter.Create(aOneClass: TModelEntityClass;
-  aMinVisibility: TVisibility; aAll: boolean);
+  aMinVisibility: TVisibility; aAll: Boolean);
 begin
   inherited Create;
   Self.OneClass := aOneClass;
@@ -258,7 +258,7 @@ begin
   Self.All:= aAll;
 end;
 
-function TClassAndVisibilityFilter.Accept(M: TModelEntity): boolean;
+function TClassAndVisibilityFilter.Accept(M: TModelEntity): Boolean;
 begin
   if All
     then Result := (M is OneClass) and (M.Visibility >= MinVisibility)
@@ -273,7 +273,7 @@ begin
   Self.SkipEntity := aSkipEntity;
 end;
 
-function TEntitySkipFilter.Accept(M: TModelEntity): boolean;
+function TEntitySkipFilter.Accept(M: TModelEntity): Boolean;
 begin
   Result := M<>SkipEntity;
 end;

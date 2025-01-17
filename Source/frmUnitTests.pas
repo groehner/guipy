@@ -3,7 +3,7 @@ unit frmUnitTests;
 interface
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   WinApi.Messages,
   System.UITypes,
   System.ImageList,
@@ -123,10 +123,10 @@ type
     procedure UpdateActions; override;
   public
     Status : TUnitTestWindowStatus;
-    TestsRun, TestsFailed, TestErrors : integer;
+    TestsRun, TestsFailed, TestErrors : Integer;
     ElapsedTime : double;
     procedure ClearAll;
-    function SelectedTestCount : integer;
+    function SelectedTestCount : Integer;
     function FindTestNode(Test : Variant) : PVirtualNode;
   end;
 
@@ -170,7 +170,7 @@ const
 procedure TUnitTestWindow.actRefreshExecute(Sender: TObject);
 var
   Py: IPyEngineAndGIL;
-  i, j, Index : integer;
+  i, j, Index : Integer;
   Editor : IEditor;
   UnitTest, Module, InnerTestSuite,
   TestCase : Variant;
@@ -178,7 +178,7 @@ var
   SL : TStringList;
   Cursor : IInterface;
   PyTestCase : PPyObject;
-  TestCount : integer;
+  TestCount : Integer;
 begin
   Py := SafePyEngine;
   ClearAll;
@@ -267,7 +267,7 @@ end;
 procedure TUnitTestWindow.ClearAll;
 var
   Py: IPyEngineAndGIL;
-  i, j : integer;
+  i, j : Integer;
   SL : TStringList;
   PyTestCase : PPyObject;
 begin
@@ -345,7 +345,7 @@ procedure TUnitTestWindow.UnitTestsGetImageIndex(Sender: TBaseVirtualTree;
 var
   PyTestCase, PytestStatus : PPyObject;
 begin
-  if not (Kind in [ikNormal, ikSelected]) then exit;
+  if not (Kind in [ikNormal, ikSelected]) then Exit;
   if UnitTests.GetNodeLevel(Node) = 0 then begin
     if vsExpanded in Node.States then
       ImageIndex := 6
@@ -636,7 +636,7 @@ begin
   ClearAll;
 end;
 
-function TUnitTestWindow.SelectedTestCount: integer;
+function TUnitTestWindow.SelectedTestCount: Integer;
 var
   ClassNode, TestCaseNode : PVirtualNode;
 begin
@@ -655,7 +655,7 @@ end;
 
 procedure TUnitTestWindow.UpdateActions;
 var
-  Count : integer;
+  Count : Integer;
 begin
   Count := SelectedTestCount;
 
@@ -705,7 +705,7 @@ var
   PyTestCase : PPyObject;
   TestCase, PythonObject : Variant;
   FileName, TestName : string;
-  NodeLevel, LineNo : integer;
+  NodeLevel, LineNo : Integer;
 begin
   Node := UnitTests.HotNode;
   if Assigned(Node) then begin

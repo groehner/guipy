@@ -31,23 +31,23 @@ type
 
   TBaseQtWidget = class(TBaseWidget)
   private
-    FEnabled: boolean;
-    FMouseTracking: boolean;
-    FTabletTracking: boolean;
+    FEnabled: Boolean;
+    FMouseTracking: Boolean;
+    FTabletTracking: Boolean;
     FFocusPolicy: TFocusPolicy;
     FContextMenuPolicy: TContextMenuPolicy;
     FContextMenu: string;
-    FAcceptDrops: boolean;
+    FAcceptDrops: Boolean;
     FToolTip: string;
-    FToolTipDuration: integer;
+    FToolTipDuration: Integer;
     FStatusTip: string;
     FWhatsThis: string;
     FAccessibleName: string;
     FAccessibleDescription: string;
     FLayoutDirection: TLayoutDirection;
-    FAutoFillBackground: boolean;
+    FAutoFillBackground: Boolean;
     FStyleSheet: string;
-    FHalfX: integer;
+    FHalfX: Integer;
     FCustomContextMenuRequested: string;
     FWindowIconChanged: string;
     FWindowTitleChanged: string;
@@ -55,18 +55,18 @@ type
     function getContainer: string;
     function getAttrAsKey(Attr: string): string;
   protected
-    TopSpace: integer;
-    LeftSpace: integer;
-    function HalfX: integer;
+    TopSpace: Integer;
+    LeftSpace: Integer;
+    function HalfX: Integer;
     procedure MakeAttribut(Attr, Value: string);
-    procedure CalculateText(s: string; var tw, th: integer; var SL: TStringList);
+    procedure CalculateText(s: string; var tw, th: Integer; var SL: TStringList);
     function InnerRect: TRect; virtual;
-    procedure PaintScrollbar(R: TRect; horizontal: boolean);
-    procedure PaintScrollbars(horizontal, vertical: boolean);
+    procedure PaintScrollbar(R: TRect; horizontal: Boolean);
+    procedure PaintScrollbars(horizontal, vertical: Boolean);
   public
     constructor Create(aOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const event: string): string; virtual;
     function HandlerParameter(const event: string): string; override;
     function Parametertypes(const event: string): string;
@@ -87,21 +87,21 @@ type
     function getType: string; override;
   published
     // common attribute for QWidget
-    property Enabled: boolean read FEnabled write FEnabled;
-    property MouseTracking: boolean read FMouseTracking write FMouseTracking;
-    property TabletTracking: boolean read FTabletTracking write FTabletTracking;
+    property Enabled: Boolean read FEnabled write FEnabled;
+    property MouseTracking: Boolean read FMouseTracking write FMouseTracking;
+    property TabletTracking: Boolean read FTabletTracking write FTabletTracking;
     property FocusPolicy: TFocusPolicy read FFocusPolicy write FFocusPolicy;
     property ContextMenuPolicy: TContextMenuPolicy read FContextMenuPolicy write FContextMenuPolicy;
     property ContextMenu: string read FContextMenu write FContextMenu;
-    property AcceptDrops: boolean read FAcceptDrops write FAcceptDrops;
+    property AcceptDrops: Boolean read FAcceptDrops write FAcceptDrops;
     property ToolTip: string read FToolTip write FToolTip;
-    property ToolTipDuration: integer read FToolTipDuration write FToolTipDuration;
+    property ToolTipDuration: Integer read FToolTipDuration write FToolTipDuration;
     property StatusTip: string read FStatusTip write FStatusTip;
     property WhatsThis: string read FWhatsThis write FWhatsThis;
     property AccessibleName: string read FAccessibleName write FAccessibleName;
     property AccessibleDescription: string read FAccessibleDescription write FAccessibleDescription;
     property LayoutDirection: TLayoutDirection read FLayoutDirection write FLayoutDirection;
-    property AutoFillBackground: boolean read FAutoFillBackground write FAutoFillBackground;
+    property AutoFillBackground: Boolean read FAutoFillBackground write FAutoFillBackground;
     property StyleSheet: string read FStyleSheet write FStyleSheet;
     // signals
     property customContextMenuRequested: string read FcustomContextMenuRequested write FcustomContextMenuRequested;
@@ -114,12 +114,12 @@ implementation
 uses Math, Controls, Graphics, SysUtils, UITypes,
      frmEditor, UGuiForm, UUtils, UConfiguration;
 
-constructor TBaseQtWidget.create(aOwner: TComponent);
+constructor TBaseQtWidget.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
   Width:= 120;
   Height:= 80;
-  Enabled:= true;
+  Enabled:= True;
   ToolTipDuration:= -1;
   FocusPolicy:= NoFocus;
   LayoutDirection:= LeftToRight;
@@ -128,10 +128,10 @@ begin
   Font.Size:= GuiPyOptions.GuiFontSize;
   Font.Style:= [];
   HelpType:= htContext;
-  Sizeable:= true;
+  Sizeable:= True;
 end;
 
-function TBaseQtWidget.getAttributes(ShowAttributes: integer): string;
+function TBaseQtWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Name|';
   if ShowAttributes = 3 then
@@ -142,7 +142,7 @@ begin
              '|AutoFillBackground|StyleSheet|Cursor|Font|Enabled|';
 end;
 
-function TBaseQtWidget.getEvents(ShowEvents: integer): string;
+function TBaseQtWidget.getEvents(ShowEvents: Integer): string;
 begin
   Result:= '';
   if (ShowEvents = 3) or (Classname = 'TQtMainWindow') then
@@ -163,22 +163,22 @@ begin
 end;
 
 function TBaseQtWidget.HandlerParameter(const event: string): string;
-  var s: string; p: integer;
+  var s: string; p: Integer;
 begin
   s:= HandlerInfo(event);
   p:= Pos(';', s);
   if p > 0
-    then Result:= 'self, ' + copy(s, p+1, length(s))
+    then Result:= 'self, ' + Copy(s, p+1, Length(s))
     else Result:= 'self';
 end;
 
 function TBaseQtWidget.Parametertypes(const event: string): string;
-  var s: string; p: integer;
+  var s: string; p: Integer;
 begin
   s:= HandlerInfo(event);
   p:= Pos(';', s);
   if p > 0
-    then Result:= copy(s, 1, p-1)
+    then Result:= Copy(s, 1, p-1)
     else Result:= '';
 end;
 
@@ -234,7 +234,7 @@ begin
           (Attr = 'ContextMenuPolicy') or
           (Attr = 'LayoutDirection')  then
     MakeAttribut(Attr, 'Qt.' + Attr + '.' + Value)
-  else if (Typ = 'string') or (copy(Typ, 1, 1) = 'T') then  // enum type, TColor
+  else if (Typ = 'string') or (Copy(Typ, 1, 1) = 'T') then  // enum type, TColor
     if Value = ''
       then Partner.DeleteAttribute(getAttrAsKey(Attr))
       else MakeAttribut(Attr, asString(Value))
@@ -308,7 +308,7 @@ begin
 end;
 
 procedure TBaseQtWidget.DeleteEvents;
-  var p: integer; s, Event, Binding: string; SL1, SL2: TStringList;
+  var p: Integer; s, Event, Binding: string; SL1, SL2: TStringList;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   SL1:= TStringList.Create;
@@ -322,7 +322,7 @@ begin
       Partner.DeleteBinding(Copy(Binding, 1, Pos('(', Binding)));
       SL1.Add(HandlerNameAndParameter(Event));
     end;
-    delete(s, 1, p);
+    Delete(s, 1, p);
     p:= Pos('|', s);
   end;
   Partner.DeleteOldAddNewMethods(SL1, SL2);
@@ -340,7 +340,7 @@ end;
 
 function TBaseQtWidget.getType;
 begin
-  Result:= 'Q' + copy(Classname, 4, Length(Classname));
+  Result:= 'Q' + Copy(Classname, 4, Length(Classname));
 end;
 
 function TBaseQtWidget.getNameAndType;
@@ -358,7 +358,7 @@ end;
 procedure TBaseQtWidget.MakeFont;
   var s1, s2: string;
 begin
-  if Name = '' then exit;
+  if Name = '' then Exit;
   s1:= 'self.' + Name + '.setFont';
   s2:= '(QFont(' + asString(Font.Name) + ', ' + IntToStr(Font.Size);
   if fsBold in Font.Style then
@@ -378,12 +378,12 @@ begin
   Invalidate;
 end;
 
-procedure TBaseQtWidget.CalculateText(s: string; var tw, th: integer; var SL: TStringList);
+procedure TBaseQtWidget.CalculateText(s: string; var tw, th: Integer; var SL: TStringList);
 begin
   SL.Text:= myStringReplace(s, '\n', CrLf);
   tw:= 0;
   for var p:= 0 to SL.Count - 1 do
-    tw:= max(tw, Canvas.TextWidth(SL[p]));
+    tw:= Max(tw, Canvas.TextWidth(SL[p]));
   th:= SL.Count * Canvas.TextHeight('Hg');
 end;
 
@@ -393,13 +393,13 @@ begin
   Result.Inflate(-1, -1);
 end;
 
-function TBaseQtWidget.HalfX: integer;
+function TBaseQtWidget.HalfX: Integer;
 begin
   Result:= fHalfX;
 end;
 
-procedure TBaseQtWidget.PaintScrollbar(R: TRect; horizontal: boolean);
-  var i, i3, i4, i6, i9, i10, i18, mid: integer;
+procedure TBaseQtWidget.PaintScrollbar(R: TRect; horizontal: Boolean);
+  var i, i3, i4, i6, i9, i10, i18, mid: Integer;
 begin
   Canvas.Brush.Color:= clBtnFace;
   Canvas.FillRect(R);
@@ -450,7 +450,7 @@ begin
   Canvas.FillRect(R);
 end;
 
-procedure TBaseQtWidget.PaintScrollbars(horizontal, vertical: boolean);
+procedure TBaseQtWidget.PaintScrollbars(horizontal, vertical: Boolean);
 begin
   var R:= ClientRect;
   R.Inflate(-1, -1);
@@ -458,7 +458,7 @@ begin
     R.Top:= R.Bottom - 16;
     if vertical then
       R.Right:= R.Right - 16;
-    PaintScrollbar(R, true);
+    PaintScrollbar(R, True);
   end;
   R:= ClientRect;
   R.Inflate(-1, -1);
@@ -466,7 +466,7 @@ begin
     R.Left:= R.Right - 16;
     if horizontal then
       R.Bottom:= R.Bottom - 16;
-    PaintScrollbar(R, false);
+    PaintScrollbar(R, False);
   end;
   if horizontal and vertical then begin
     Canvas.Brush.Color:= clBtnFace;

@@ -66,7 +66,7 @@ uses
 
 {$R *.dfm}
 
-function SvgToIcon(SVG: ISVG; Size: integer; FixedColor: TColor): HIcon;
+function SvgToIcon(SVG: ISVG; Size: Integer; FixedColor: TColor): HIcon;
 begin
   var LBitmap := TSmartPtr.Make(TBitmap.Create)();
   LBitmap.PixelFormat := TPixelFormat.pf32bit;   // 32bit bitmap

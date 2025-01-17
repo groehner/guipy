@@ -44,37 +44,37 @@ type
   TKTextBaseWidget = class(TKWidget)
   private
     FDisabledBackground: TColor;
-    FExportSelection: boolean;
+    FExportSelection: Boolean;
     FInsertBackground: TColor;
     FInsertBorderwidth: string;
-    FInsertOffTime: integer;
-    FInsertOnTime: integer;
+    FInsertOffTime: Integer;
+    FInsertOnTime: Integer;
     FInsertWidth: string;
-    FInvalidCommand: boolean;
+    FInvalidCommand: Boolean;
     FReadOnlyBackground: TColor;
     FSelectBackground: TColor;
     FSelectForeground: TColor;
-    FSelectBorderWidth: integer;
-    FSetGrid: boolean;
+    FSelectBorderWidth: Integer;
+    FSetGrid: Boolean;
     FValidate: TValidate;
     FValidateCommand: Boolean;
   public
     constructor Create(AOwner: TComponent); override;
     procedure DeleteWidget; override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     
     property DisabledBackground: TColor read FDisabledBackground write FDisabledBackground default clBtnFace;
-    property ExportSelection: boolean read FExportSelection write FExportSelection default true;
+    property ExportSelection: Boolean read FExportSelection write FExportSelection default True;
     property InsertBackground: TColor read FInsertBackground write FInsertBackground default clWindowText;
     property InsertBorderwidth: string read FInsertBorderwidth write FInsertBorderwidth;
-    property InsertOffTime: integer read FInsertOffTime write FInsertOffTime default 300;
-    property InsertOnTime: integer read FInsertOnTime write FInsertOnTime default 600;
+    property InsertOffTime: Integer read FInsertOffTime write FInsertOffTime default 300;
+    property InsertOnTime: Integer read FInsertOnTime write FInsertOnTime default 600;
     property InsertWidth: string read FInsertWidth write FInsertWidth;
-    property InvalidCommand: boolean read FInvalidCommand write FInvalidCommand;
+    property InvalidCommand: Boolean read FInvalidCommand write FInvalidCommand;
     property ReadOnlyBackground: TColor read FReadOnlyBackground write FReadOnlyBackground default clBtnFace;
-    property SetGrid: boolean read FSetGrid write FSetGrid default false;
+    property SetGrid: Boolean read FSetGrid write FSetGrid default False;
     property Validate: TValidate read FValidate write FValidate default _TV_none;
     property ValidateCommand: Boolean read FValidateCommand write FValidateCommand;
   published
@@ -83,21 +83,21 @@ type
     property HighlightThickness;
     property SelectBackground: TColor read FSelectBackground write FSelectBackground default clHighlight;
     property SelectForeground: TColor read FSelectForeground write FSelectForeground default clHighlightText;
-    property SelectBorderWidth: integer read FSelectBorderWidth write FSelectBorderWidth default 0;
+    property SelectBorderWidth: Integer read FSelectBorderWidth write FSelectBorderWidth default 0;
   end;
 
   TKEntry = class (TKTextBaseWidget)
   private
-    FShow: boolean;
+    FShow: Boolean;
     FState: TTextState3;
     FText: string;
     procedure setState(Value: TTextState3);
   public
     constructor Create(AOwner: TComponent); override;
     procedure NewWidget(Widget: string = ''); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     procedure setText(Value: string); override;
     procedure MakeCommand(Attr, Value: string); override;
     procedure Paint; override;
@@ -115,7 +115,7 @@ type
     property ReadOnlyBackground;
     property Scrollbar;
     {$WARN HIDING_MEMBER OFF}
-    property Show: boolean read FShow write FShow default true;
+    property Show: Boolean read FShow write FShow default True;
     {$WARN HIDING_MEMBER ON}
     property State: TTextState3 read FState write setState default normal;
     property TakeFocus;
@@ -134,13 +134,13 @@ type
     FFormat: string;
     FFrom: string;
     FIncrement: string;
-    FRepeatDelay: integer;
-    FRepeatInterval: integer;
+    FRepeatDelay: Integer;
+    FRepeatInterval: Integer;
     FState: TTextState3;
     FTo: string;
     FValue: string;
     FValues: TStrings;
-    FWrap: boolean;
+    FWrap: Boolean;
     procedure setItems(aItems: TStrings);
     procedure setState(Value: TTextState3);
     procedure setRValue(aValue: string);
@@ -149,7 +149,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure MakeCommand(Attr, Value: string); override;
     procedure Paint; override;
@@ -176,8 +176,8 @@ type
     property InvalidCommand;
     property Justify;
     property ReadOnlyBackground;
-    property RepeatDelay: integer read FRepeatDelay write FRepeatDelay default 400;
-    property RepeatInterval: integer read FRepeatInterval write FRepeatInterval default 100;
+    property RepeatDelay: Integer read FRepeatDelay write FRepeatDelay default 400;
+    property RepeatInterval: Integer read FRepeatInterval write FRepeatInterval default 100;
     property Scrollbar;
     property State: TTextState3 read FState write setState default normal;
     property TakeFocus;
@@ -186,13 +186,13 @@ type
     property ValidateCommand;
     property Values: TStrings read FValues write setItems;
     property Value: string read FValue write setRValue;
-    property Wrap: boolean read FWrap write FWrap default false;
+    property Wrap: Boolean read FWrap write FWrap default False;
   end;
 
   TKCanvas = class (TKTextBaseWidget)
   private
     FCloseEnough: real;
-    FConfine: boolean;
+    FConfine: Boolean;
     FScrollregion: string;
     FState: TTextState2;
     FXScrollIncrement: string;
@@ -202,13 +202,13 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure MakeFont; override;
     procedure Paint; override;
   published
     property CloseEnough: real read FCloseEnough write FCloseEnough;
-    property Confine: boolean read FConfine write FConfine default true;
+    property Confine: Boolean read FConfine write FConfine default True;
     property InsertBackground;
     property InsertBorderwidth;
     property InsertOffTime;
@@ -223,21 +223,21 @@ type
 
   TKText = class (TKTextBaseWidget)
   private
-    FAutoSeparators: boolean;
-    FBlockCursor: boolean;
-    FEndline: integer;
+    FAutoSeparators: Boolean;
+    FBlockCursor: Boolean;
+    FEndline: Integer;
     FInactiveSelectBackground: TColor;
     FInsertUnfocussed: TInsert;
-    FMaxUndo: integer;
+    FMaxUndo: Integer;
     FSpacing1: string;
     FSpacing2: string;
     FSpacing3: string;
-    FStartline: integer;
+    FStartline: Integer;
     FState: TTextState2;
     FTabs: string;
     FTabStyle: TTabStyle;
     FText: TStrings;
-    FUndo: boolean;
+    FUndo: Boolean;
     FWrap: TWrap;
     procedure setState(Value: TTextState2);
     procedure setStrings(Value: TStrings);
@@ -247,14 +247,14 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property AutoSeparators: boolean read FAutoSeparators write FAutoSeparators default true;
-    property BlockCursor: boolean read FBlockCursor write FBlockCursor default false;
-    property Endline: integer read FEndline write FEndline default 0;
+    property AutoSeparators: Boolean read FAutoSeparators write FAutoSeparators default True;
+    property BlockCursor: Boolean read FBlockCursor write FBlockCursor default False;
+    property Endline: Integer read FEndline write FEndline default 0;
     property ExportSelection;
     property Font;
     property Foreground;
@@ -265,7 +265,7 @@ type
     property InsertOffTime;
     property InsertOnTime;
     property InsertWidth;
-    property MaxUndo: integer read FMaxUndo write FMaxUndo default 0;
+    property MaxUndo: Integer read FMaxUndo write FMaxUndo default 0;
     property PadX;
     property PadY;
     property Scrollbars;
@@ -273,13 +273,13 @@ type
     property Spacing1: string read FSpacing1 write FSpacing1;
     property Spacing2: string read FSpacing2 write FSpacing2;
     property Spacing3: string read FSpacing3 write FSpacing3;
-    property Startline: integer read FStartline write FStartline default 0;
+    property Startline: Integer read FStartline write FStartline default 0;
     property State: TTextState2 read FState write setState default _TS_normal;
     property Tabs: string read FTabs write FTabs;
     property TabStyle: TTabStyle read FTabStyle write FTabStyle default tabular;
     property TakeFocus;
     property Text: TStrings read FText write setStrings;
-    property Undo: boolean read FUndo write FUndo default false;
+    property Undo: Boolean read FUndo write FUndo default False;
     property Wrap: TWrap read FWrap write setWrap default _TW_char;
   end;
 
@@ -296,7 +296,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
@@ -322,13 +322,13 @@ uses System.Types, Windows, Math, SysUtils, UITypes, UUtils, UConfiguration;
 
 constructor TKTextBaseWidget.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Anchor:= _TA_W;
   BorderWidth:= '1';
   Background:= clWindow;
   Foreground:= clWindowText;
   FDisabledBackground:= clBtnFace;
-  FExportSelection:= true;
+  FExportSelection:= True;
   FInsertBackground:= clWindowText;
   FInsertBorderwidth:= '0';
   FInsertOffTime:= 300;
@@ -338,9 +338,9 @@ begin
   FSelectBackground:= clHighlight;
   FSelectForeground:= clHighlightText;
   FSelectBorderWidth:= 0;
-  FSetGrid:= false;
+  FSetGrid:= False;
   FValidate:= _TV_none;
-  TakeFocus:= true;
+  TakeFocus:= True;
 end;
 
 procedure TKTextBaseWidget.DeleteWidget;
@@ -350,7 +350,7 @@ begin
   if FValidateCommand then Partner.DeleteMethod(Name +  '_ValidateCommand');
 end;
 
-function TKTextBaseWidget.getAttributes(ShowAttributes: integer): string;
+function TKTextBaseWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '';
   if ShowAttributes >= 2 then
@@ -374,7 +374,7 @@ begin
     inherited;
 end;
 
-function TKTextBaseWidget.getEvents(ShowEvents: integer): string;
+function TKTextBaseWidget.getEvents(ShowEvents: Integer): string;
 begin
   Result:= getMouseEvents(ShowEvents);
 end;
@@ -383,13 +383,13 @@ end;
 
 constructor TKEntry.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 2;
   Width:= 80;
   Height:= 24;
   HighlightThickness:= '0';
   Cursor:= crIBeam;
-  FShow:= true;
+  FShow:= True;
   Justify:= _TJ_left;
   Relief:= _TR_sunken;
 end;
@@ -402,7 +402,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-function TKEntry.getAttributes(ShowAttributes: integer): string;
+function TKEntry.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Text';
   if ShowAttributes >= 2 then
@@ -422,7 +422,7 @@ begin
     inherited;
 end;
 
-function TKEntry.getEvents(ShowEvents: integer): string;
+function TKEntry.getEvents(ShowEvents: Integer): string;
 begin
   Result:= getKeyboardEvents(ShowEvents);
 end;
@@ -443,7 +443,7 @@ begin
 end;
 
 procedure TKEntry.Paint;
-  var newHeight: integer;
+  var newHeight: Integer;
 begin
   inherited; // shows no text, because FText of TKWidget is overridden
   if Scrollbar
@@ -465,7 +465,7 @@ end;
 
 constructor TKSpinbox.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 9;
   Width:= 40;
   Height:= 24;
@@ -480,7 +480,7 @@ begin
   FRepeatDelay:= 400;
   FRepeatInterval:= 100;
   FValues:= TStringList.Create;
-  FWrap:= false;
+  FWrap:= False;
   Justify:= _TJ_left;
   Cursor:= crIBeam;
 end;
@@ -492,17 +492,17 @@ begin
 end;
 
 procedure TKSpinbox.MakeValues;
-  var s1, Value, AllValues: string; i: integer;
+  var s1, Value, AllValues: string; i: Integer;
 begin
   s1:= 'self.' + Name + '[''values'']';
   AllValues:= '[';
   for i := 0 to FValues.Count - 1 do begin
-    Value:= trim(FValues[i]);
-    if Value = '' then continue;
+    Value:= Trim(FValues[i]);
+    if Value = '' then Continue;
     AllValues:= AllValues + asString(Value) + ', ';
   end;
-  if copy(AllValues, length(AllValues) -1, 2) = ', ' then
-    delete(AllValues, length(AllValues)-1, 2);
+  if Copy(AllValues, Length(AllValues) -1, 2) = ', ' then
+    Delete(AllValues, Length(AllValues)-1, 2);
   AllValues:= AllValues + ']';
   setAttributValue(s1, s1 + ' = ' + AllValues);
 end;
@@ -519,7 +519,7 @@ begin
     inherited;
 end;
 
-function TKSpinbox.getAttributes(ShowAttributes: integer): string;
+function TKSpinbox.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|From_|_To|Increment|Values|Value';
   if ShowAttributes >= 2 then
@@ -564,7 +564,7 @@ end;
 
 procedure TKSpinbox.Paint;
   var s: string; R: TRect;
-      x, y, w, newHeight: integer;
+      x, y, w, newHeight: Integer;
       Points: array[0..2] of TPoint;
 begin
   inherited;
@@ -635,7 +635,7 @@ begin
   HighlightThickness:= '2';
   FInsertBackground:= clBtnText;
   FCloseEnough:= 1.0;
-  FConfine:= true;
+  FConfine:= True;
   FSelectBorderWidth:= 1;
   FXScrollIncrement:= '0';
   FYScrollIncrement:= '0';
@@ -655,7 +655,7 @@ begin
   key:= 'self.' + Name + '[''scrollregion'']';
   if Value = '' then
     Partner.DeleteAttribute(key)
-  else if (Value[1] = '(') and (Value[length(Value)] = ')') then
+  else if (Value[1] = '(') and (Value[Length(Value)] = ')') then
     setAttributValue(key, key + ' = ' + Value)
   else begin
     ScrollRegion:= '(0, 0, 100, 100)';
@@ -664,7 +664,7 @@ begin
   end;
 end;
 
-function TKCanvas.getAttributes(ShowAttributes: integer): string;
+function TKCanvas.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Confine|Scrollbars|ScrollRegion|Rechteck';
   if ShowAttributes >= 2 then
@@ -702,12 +702,12 @@ end;
 
 constructor TKText.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 3;
   Width:= 120;
   Height:= 80;
-  FAutoSeparators:= true;
-  FBlockCursor:= false;
+  FAutoSeparators:= True;
+  FBlockCursor:= False;
   Cursor:= crIBeam;
   FInactiveSelectBackground:= clBtnFace;
   FInsertUnfocussed:= none;
@@ -721,7 +721,7 @@ begin
   FSpacing3:= '0';
   FTabStyle:= tabular;
   FText:= TStringList.Create;
-  FUndo:= false;
+  FUndo:= False;
   FWrap:= _TW_char;
 end;
 
@@ -731,7 +731,7 @@ begin
   inherited;
 end;
 
-function TKText.getAttributes(ShowAttributes: integer): string;
+function TKText.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Wrap|Text|Scrollbars';
   if ShowAttributes >= 2 then
@@ -743,13 +743,13 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-function TKText.getEvents(ShowEvents: integer): string;
+function TKText.getEvents(ShowEvents: Integer): string;
 begin
   Result:= getKeyboardEvents(ShowEvents);
 end;
 
 procedure TKText.MakeStrings;
-  var s1, s2: string; i: integer;
+  var s1, s2: string; i: Integer;
 begin
   if FText.Count > 0
     then s2:= FText[0]
@@ -774,36 +774,36 @@ begin
 end;
 
 procedure TKText.Paint;
-  var th, taw, tah, px, py: integer;
+  var th, taw, tah, px, py: Integer;
       R: TRect;
       SL: TStringList; s: string;
 
-  procedure split(const s: string; var s1, s2: string);
-    var len, n: integer;
+  procedure Split(const s: string; var s1, s2: string);
+    var len, n: Integer;
   begin
     len:= Canvas.TextWidth('abcdefghijklmnopqrstuvwxyz');
     n:= round(taw / (len / 26.0)) + 1;
-    s1:= copy(s, 1, n);
-    s2:= copy(s, n+1, length(s));
+    s1:= Copy(s, 1, n);
+    s2:= Copy(s, n+1, Length(s));
 
     while Canvas.Textwidth(s1) < taw do begin
       s1:= s1 + s2[1];
-      delete(s2, 1, 1);
+      Delete(s2, 1, 1);
     end;
     while Canvas.TextWidth(s1) > taw do begin
-      s2:= s1[length(s1)] + s2;
-      delete(s1, length(s1), 1);
+      s2:= s1[Length(s1)] + s2;
+      Delete(s1, Length(s1), 1);
     end;
   end;
 
   procedure makeSL;
-    var s, s1, s2: string; i: integer;
+    var s, s1, s2: string; i: Integer;
   begin
     SL.Clear;
     for i:= 0 to FText.Count - 1 do begin
       s:= FText[i]; s1:= ''; s2:= '';
       while Canvas.TextWidth(s) > taw do begin
-        split(s, s1, s2);
+        Split(s, s1, s2);
         SL.Add(s1);
         s:= s2;
       end;
@@ -817,8 +817,8 @@ begin
   // paint text
   if not TryStrToInt(PadX, px) then px:= 0;
   if not TryStrToInt(PadY, py) then py:= 0;
-  inc(px, BorderWidthInt);
-  inc(py, BorderWidthInt);
+  Inc(px, BorderWidthInt);
+  Inc(py, BorderWidthInt);
 
   if FText.Text <> CrLf then begin
     SL:= TStringList.Create;
@@ -831,7 +831,7 @@ begin
     if FWrap <> _TW_none then begin
       makeSL;
       if SL.Count * th > tah then begin
-        dec(taw, 16);
+        Dec(taw, 16);
         makeSL;
       end;
     end;
@@ -868,7 +868,7 @@ end;
 
 {--- TKListbox ----------------------------------------------------------------}
 
-constructor TKListbox.create(AOwner: TComponent);
+constructor TKListbox.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 8;
@@ -889,7 +889,7 @@ begin
   inherited;
 end;
 
-function TKListbox.getAttributes(ShowAttributes: integer): string;
+function TKListbox.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|ListItems|Scrollbars';
   if ShowAttributes >= 2 then
@@ -900,12 +900,12 @@ begin
 end;
 
 function TKListbox.getListItems: string;
-  var s: string; i: integer;
+  var s: string; i: Integer;
 begin
   s:= '[';
   for i:= 0 to FListItems.Count -1 do
     s:= s + asString(FListItems[i]) + ', ';
-  delete(s, length(s) - 1, 2);
+  Delete(s, Length(s) - 1, 2);
   Result:= s + ']';
 end;
 
@@ -933,7 +933,7 @@ begin
 end;
 
 procedure TKListbox.Paint;
-  var s: string; R: TRect; format: integer;
+  var s: string; R: TRect; format: Integer;
 begin
   inherited;
   case Justify of

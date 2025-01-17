@@ -20,10 +20,10 @@ type
     Dest: string;
     Version: string;
     MachineIniFile: TMemIniFile;
-    PortableApplication: boolean;
+    PortableApplication: Boolean;
     PortAppDrive: string;
 
-    procedure CopyFromTo(const dir1, dir2, Filename: string);
+    procedure CopyFromTo(const dir1, dir2, FileName: string);
     procedure RegisterApp(GuiPy: string);
     procedure ChangeRegistry(Dest, Source: string);
     procedure ChangeGuiPyRegistration(Source: string);
@@ -32,8 +32,8 @@ type
     procedure WriteInteger(key, name: string; value: Integer);
     function  ReadInteger(key, name: string; default: Integer): Integer;
   public
-    Error: boolean;
-    Restart: boolean;
+    Error: Boolean;
+    Restart: Boolean;
     procedure CopyFilesRecursive(SourceDir, DestDir: string);
     procedure MakeUpdate;
   end;
@@ -54,24 +54,24 @@ begin
 end;
 
 {$WARNINGS OFF}
-procedure TFUpdater.CopyFromTo(const dir1, dir2, Filename: string);
+procedure TFUpdater.CopyFromTo(const dir1, dir2, FileName: string);
   var Attribute: Integer; f1, f2: string;
 begin
-  f1:= TPath.Combine(dir1, Filename);
-  f2:= TPath.Combine(dir2, Filename);
+  f1:= TPath.Combine(dir1, FileName);
+  f2:= TPath.Combine(dir2, FileName);
   Attribute:= FileGetAttr(f2);
   if (Attribute <> -1) and (Attribute and faReadOnly <> 0) then
     FileSetAttr(f2, 0);
 
   if FileExists(f2) and not DeleteFile(PChar(f2)) then
     Memo.Lines.Add(Format(_(LNGCanNotDelete), [f2]));
-  TFile.Copy(f1, f2, true);
+  TFile.Copy(f1, f2, True);
   if FileExists(f2) then
     Memo.Lines.Add(Format(_(LNGCopyFromTo), [f1, f2]))
   else begin
     Memo.Lines.Add('Cannot copy ' + f1);
     Memo.Lines.Add('  to: ' + f2);
-    Error:= true;
+    Error:= True;
   end;
 end;
 {$WARNINGS ON}
@@ -89,21 +89,21 @@ procedure TFUpdater.RegisterApp(GuiPy: string);
   procedure WriteToRegistry(Key: string);
   begin
     with Reg do begin
-      OpenKey(Key, true);
+      OpenKey(Key, True);
       WriteString('', 'GuiPy');
       CloseKey;
-      OpenKey(Key + '\DefaultIcon', true);
+      OpenKey(Key + '\DefaultIcon', True);
       WriteString('', HideBlanks(GuiPy) + ',0');
       CloseKey;
-      OpenKey(Key + '\Shell\Open\command', true);
+      OpenKey(Key + '\Shell\Open\command', True);
       WriteString('', HideBlanks(GuiPy) + ' "%1"');
       CloseKey;
-      OpenKey(Key + '\Shell\Open\ddeexec', true);
+      OpenKey(Key + '\Shell\Open\ddeexec', True);
       WriteString('', '[FileOpen("%1")]');
-      OpenKey('Application', true);
+      OpenKey('Application', True);
       WriteString('', changeFileExt(ExtractFilename(GuiPy), ''));
       CloseKey;
-      OpenKey(Key + '\Shell\Open\ddeexec\topic', true);
+      OpenKey(Key + '\Shell\Open\ddeexec\topic', True);
       WriteString('', 'System');
       CloseKey;
     end;
@@ -135,10 +135,10 @@ begin
     with Reg do begin
       Access:= KEY_ALL_ACCESS;
       RootKey:= HKEY_LOCAL_MACHINE;
-      OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', true);
+      OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', True);
       WriteString('', Source);
       RootKey:= HKEY_CURRENT_USER;
-      OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', true);
+      OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', True);
       WriteString('', Source);
     end;
   finally
@@ -148,29 +148,29 @@ end;
 
 procedure TFUpdater.ChangeRegistry(Dest, Source: string);
 
-  var reg: TRegistry; s1, ext, b: string; p: integer;
+  var reg: TRegistry; s1, ext, b: string; p: Integer;
 
-  procedure EditAssociation(Extension: string; docreate: boolean);
+  procedure EditAssociation(Extension: string; docreate: Boolean);
   begin
     with Reg do begin
       Access:= KEY_ALL_ACCESS;
       RootKey:= HKEY_LOCAL_MACHINE;
       try
         if docreate then begin
-          OpenKey('\SOFTWARE\Classes\' + Extension, true);
+          OpenKey('\SOFTWARE\Classes\' + Extension, True);
           WriteString('', 'GuiPy')
         end else begin
-          OpenKey('\SOFTWARE\Classes\' + Extension, false);
+          OpenKey('\SOFTWARE\Classes\' + Extension, False);
           if ReadString('') = 'GuiPy' then
             WriteString('', '');
         end;
         CloseKey;
         RootKey:= HKEY_CURRENT_USER;
         if docreate then begin
-          OpenKey('\SOFTWARE\Classes\' + Extension, true);
+          OpenKey('\SOFTWARE\Classes\' + Extension, True);
           WriteString('', 'GuiPy');
         end else begin
-          OpenKey('\SOFTWARE\Classes\' + Extension, false);
+          OpenKey('\SOFTWARE\Classes\' + Extension, False);
           if ReadString('') = 'GuiPy' then
             WriteString('', '');
         end;
@@ -188,11 +188,11 @@ begin
   s1:= UnhideBlanks(Source);
   p:= Pos(' ', s1);
   while p > 0 do begin
-    ext:= copy(s1, 1, p-1);
-    delete(s1, 1, p);
+    ext:= Copy(s1, 1, p-1);
+    Delete(s1, 1, p);
     p:= Pos(' ', s1);
-    b:= copy(s1, 1, p-1);
-    delete(s1, 1, p);
+    b:= Copy(s1, 1, p-1);
+    Delete(s1, 1, p);
     EditAssociation(ext, StrToBool(b));
     Memo.Lines.Add(ext + ' ' + b);
     p:= Pos(' ', s1);
@@ -213,7 +213,7 @@ begin
     if FindFirst(TPath.Combine(SourceDir, '*.*'), faDirectory, SR) = 0 then
       repeat
         if (SR.Name = '.') or (SR.Name = '..') then
-          continue;
+          Continue;
         if SR.Attr and faDirectory = faDirectory then begin
           SysUtils.ForceDirectories(TPath.Combine(DestDir, SR.Name));
           CopyFilesRecursive(TPath.Combine(SourceDir, SR.Name),
@@ -230,20 +230,20 @@ end;
 procedure TFUpdater.MakeUpdate;
   var Source2, From, To1, Machine, s, Key, Name, Value, kind, p1,
       ProgData, WorkDir, Path, UserDir, Parameter: string;
-       i, p: integer; SL: TStringList;
+       i, p: Integer; SL: TStringList;
 
-  procedure FromTo(Filename: string);
+  procedure FromTo(FileName: string);
     var FDT1, FDT2: TDateTime;
   begin
-    From:= Source + Filename;
-    To1 := Dest + Filename;
+    From:= Source + FileName;
+    To1 := Dest + FileName;
     if not FileExists(To1) or (FileAge(From, FDT1) and FileAge(To1, FDT2) and (FDT1 > FDT2)) then
-      CopyFromTo(Source, Dest, Filename);
+      CopyFromTo(Source, Dest, FileName);
   end;
 
-  procedure del(Filename: string);
+  procedure del(FileName: string);
   begin
-    To1:= Dest + Filename;
+    To1:= Dest + FileName;
     if FileExists(To1) then begin
       if DeleteFile(To1)
         then Memo.Lines.Add(From + ' deleted.')
@@ -254,8 +254,8 @@ procedure TFUpdater.MakeUpdate;
 begin
   //Show;
   //Memo.Clear;
-  Restart:= false;
-  PortableApplication:= false;
+  Restart:= False;
+  PortableApplication:= False;
   UserDir:= '';
 
   Dest   := IncludeTrailingPathDelimiter(UnHideBlanks(ParamStr(2)));
@@ -265,25 +265,25 @@ begin
   p1:= ParamStr(1);
   i:= 1;
   while (i < ParamCount) and (ParamStr(i) <> '-INI') do
-    inc(i);
+    Inc(i);
   if i < ParamCount then begin
     Machine:= UnhideBlanks(ParamStr(i+1));
     MachineIniFile:= TMemIniFile.Create(Machine);
-    PortableApplication:= MachineIniFile.ReadBool('GuiPy', 'PortableApplication', false);
+    PortableApplication:= MachineIniFile.ReadBool('GuiPy', 'PortableApplication', False);
     UserDir:= MachineIniFile.ReadString('User', 'HomeDir', '');
     PortAppDrive:= ExtractFileDrive(Machine);   // with UNC we get \\Server\Freigabe
     if Pos(':', PortAppDrive) > 0 then
-      PortAppDrive:= copy(PortAppDrive, 1, 1);
+      PortAppDrive:= Copy(PortAppDrive, 1, 1);
   end else begin
     Machine:= Dest + 'GuiPyMachine.ini';
     if FileExists(Machine) then begin
       MachineIniFile:= TMemIniFile.Create(Machine);
-      PortableApplication:= MachineIniFile.ReadBool('GuiPy', 'PortableApplication', false);
+      PortableApplication:= MachineIniFile.ReadBool('GuiPy', 'PortableApplication', False);
       UserDir:= MachineIniFile.ReadString('User', 'HomeDir', '');
     end;
   end;
 
-  p:= Pos('%USERNAME%', Uppercase(UserDir));
+  p:= Pos('%USERNAME%', UpperCase(UserDir));
   if p > 0 then begin
     Delete(UserDir, p, 10);
     Insert(FSetup.GetUserName, UserDir, p);
@@ -297,16 +297,16 @@ begin
     SL:= Split('#', UnhideBlanks(ParamStr(2)));
     for i:= 0 to SL.Count - 1 do begin
       s:= SL.strings[i];
-      if s = '' then continue;
+      if s = '' then Continue;
       p:= Pos('|', s);
-      Key:= copy(s, 1, p-1);
-      delete(s, 1, p);
+      Key:= Copy(s, 1, p-1);
+      Delete(s, 1, p);
       p:= Pos('|', s);
-      Name:= copy(s, 1, p-1);
-      delete(s, 1, p);
+      Name:= Copy(s, 1, p-1);
+      Delete(s, 1, p);
       p:= Pos('|', s);
-      Value:= copy(s, 1, p-1);
-      delete(s, 1, p);
+      Value:= Copy(s, 1, p-1);
+      Delete(s, 1, p);
       Kind:= s;
       memo.lines.add('Key: ' + Key + ' name: ' + name + ' Value: ' + Value);
       case Kind[1] of
@@ -318,7 +318,7 @@ begin
   else if ParamStr(1) = '-Update' then begin
     // FixUpdate;
 
-    Error:= false;
+    Error:= False;
     if Source2 <> '' then
       Memo.Lines.Add('Old Version: ' + Source2);
     Memo.Lines.Add('Source     : ' + Source);
@@ -331,7 +331,7 @@ begin
     else if Pos('registry', source) > 0 then
       ChangeRegistry(Dest, Source2)
     else begin
-      Restart:= true;
+      Restart:= True;
       if Dest = '' then Exit;
       Sleep(2000); // let GuiPy terminate;
       Version:= Source2;
@@ -408,7 +408,7 @@ end;
 
 procedure TFUpdater.WriteString(key, name, value: string);
 begin
-  if ReadString(key, name, '') = value then exit;
+  if ReadString(key, name, '') = value then Exit;
   MachineIniFile.WriteString(key, name, value);
 end;
 
@@ -419,7 +419,7 @@ end;
 
 procedure TFUpdater.WriteInteger(key, name: string; value: Integer);
 begin
-  if ReadInteger(key, name, 0) = value then exit;
+  if ReadInteger(key, name, 0) = value then Exit;
   MachineIniFile.WriteInteger(key, name, value)
 end;
 

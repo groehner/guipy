@@ -36,7 +36,7 @@ const
 
 (* returns the System ImageList index of the icon of a given file *)
 function GetIconIndexFromFile(const AFileName: string;
-  const ASmall: boolean): integer;
+  const ASmall: Boolean): Integer;
 
 (* returns long file name even for nonexisting files *)
 function GetLongFileName(const APath: string): string;
@@ -53,37 +53,37 @@ function StrGetToken(var Content: PChar;
 function StrUnQuote(const AText: string): string;
 
 (* Lighten a given Color by a certain percentage *)
-function LightenColor(Color:TColor; Percentage:integer):TColor;
+function LightenColor(Color:TColor; Percentage:Integer):TColor;
 
 (* Darken a given Color by a certain percentage *)
-function DarkenColor(Color:TColor; Percentage:integer):TColor;
+function DarkenColor(Color:TColor; Percentage:Integer):TColor;
 
 (* Get Exe File Version string *)
 function ApplicationVersion : string;
 
 (* Checks whether we are connected to the Internet *)
-function ConnectedToInternet : boolean;
+function ConnectedToInternet : Boolean;
 
 (* Extracts the nth line from a string *)
-function GetNthLine(const S : string; LineNo : integer) : string;
+function GetNthLine(const S : string; LineNo : Integer) : string;
 
 (* Extracts a range of lines from a string *)
-function GetLineRange(const S : string; StartLine, EndLine : integer;
+function GetLineRange(const S : string; StartLine, EndLine : Integer;
   HtmlBreaks: Boolean = False) : string;
 
 (* Extracts a word from a string *)
 function GetWordAtPos(const LineText: string; Start: Integer;
-  AllowDot: boolean; ScanBackwards: boolean = True; ScanForward: boolean = True;
+  AllowDot: Boolean; ScanBackwards: Boolean = True; ScanForward: Boolean = True;
   HandleBrackets: Boolean = False) : string;
 
 (* Format a doc string by removing left space and blank lines at start and bottom *)
 function FormatDocString(const DocString : string) : string;
 
 (* check if a directory is a Python Package *)
-function DirIsPythonPackage(Dir : string): boolean;
+function DirIsPythonPackage(Dir : string): Boolean;
 
 (* check if a directory is a Python Package *)
-function FileIsPythonPackage(FileName : string): boolean;
+function FileIsPythonPackage(FileName : string): Boolean;
 
 (* Get Python Package Root directory *)
 function GetPackageRootDir(Dir : string): string;
@@ -133,11 +133,11 @@ function WideStringsToEncodedText(const AFileName: string;
 
 (* Load file into WideStrings taking into account Python file encodings *)
 function LoadFileIntoWideStrings(const AFileName: string;
-  Lines : TStrings): boolean;
+  Lines : TStrings): Boolean;
 
 (* Save WideStrings to file taking into account Python file encodings *)
 function SaveWideStringsToFile(const AFileName: string;
-  Lines : TStrings;  DoBackup : Boolean = True) : boolean;
+  Lines : TStrings;  DoBackup : Boolean = True) : Boolean;
 
 (* Read File contents. Allows reading of locked files *)
 function FileToAnsiStr(const FileName: string): AnsiString;
@@ -149,7 +149,7 @@ function FileToEncodedStr(const AFileName : string) : AnsiString;
 function FileToStr(const AFileName : string) : string;
 
 (* Get Nth Line of file *)
-function GetNthSourceLine(const AFileName : string; LineNo: integer): string;
+function GetNthSourceLine(const AFileName : string; LineNo: Integer): string;
 
 
 type
@@ -193,10 +193,10 @@ function IsDigits(S : string): Boolean;
 function Dedent (const S : string) : string;
 
 (* Returns true for dark colors *)
-function IsColorDark(AColor : TColor) : boolean;
+function IsColorDark(AColor : TColor) : Boolean;
 
 (* Returns true if the styled clWindows system oolor is dark *)
-function IsStyledWindowsColorDark : boolean;
+function IsStyledWindowsColorDark : Boolean;
 
 (* Calculates styled border colors *)
 procedure StyledBorderColors(out BorderNormal, BorderHighlight: TColor);
@@ -206,13 +206,13 @@ procedure AddFormatText(RE : TRichEdit; const S: string;  FontStyle: TFontStyles
  const FontColor: TColor = clDefault; FontSize: Integer = 0);
 
 (* Resize Bitmap *)
-procedure ResizeBitmap(Bitmap: TBitmap; const NewWidth, NewHeight: integer);
+procedure ResizeBitmap(Bitmap: TBitmap; const NewWidth, NewHeight: Integer);
 
 (* Returns string with Desktop size *)
 function MonitorProfile: string;
 
 (* Downlads a file from the Interent *)
-function DownloadUrlToFile(const URL, Filename: string): Boolean;
+function DownloadUrlToFile(const URL, FileName: string): Boolean;
 
 (* Simple routine to hook/detour a function *)
 procedure RedirectFunction(OrgProc, NewProc: Pointer);
@@ -245,18 +245,18 @@ procedure UnregisterApplicationRestart;
 type
   TMatchHelper = record helper for TMatch
   public
-    function GroupIndex(Index: integer): integer;
-    function GroupLength(Index: integer): integer;
-    function GroupValue(Index: integer): string;
+    function GroupIndex(Index: Integer): Integer;
+    function GroupLength(Index: Integer): Integer;
+    function GroupValue(Index: Integer): string;
   end;
 
   (*  Helper method for forms *)
   TControlHelper = class helper for TControl
   public
     (* Scale a value according to the FCurrentPPI *)
-    function PPIScale(ASize: integer): integer;
+    function PPIScale(ASize: Integer): Integer;
     (* Reverse PPI Scaling  *)
-    function PPIUnScale(ASize: integer): integer;
+    function PPIUnScale(ASize: Integer): Integer;
   end;
 
   (*
@@ -366,7 +366,7 @@ uses
   uEditAppIntfs;
 
 function GetIconIndexFromFile(const AFileName: string;
-  const ASmall: boolean): integer;
+  const ASmall: Boolean): Integer;
 var
   NameSpace : TNameSpace;
   IconSize : TIconSize;
@@ -470,7 +470,7 @@ end;
 
 (* from cStrings end *)
 
-function LightenColor(Color:TColor; Percentage:integer):TColor;
+function LightenColor(Color:TColor; Percentage:Integer):TColor;
 var
    wRGB, wR, wG, wB : longint;
 begin
@@ -481,7 +481,7 @@ begin
    result := RGB(wR, wG, wB);
 end;
 
-function DarkenColor(Color:TColor; Percentage:integer):TColor;
+function DarkenColor(Color:TColor; Percentage:Integer):TColor;
 var
    wRGB, wR, wG, wB : longint;
 begin
@@ -506,7 +506,7 @@ begin
     Result := '1.0.0';
 end;
 
-function ConnectedToInternet : boolean;
+function ConnectedToInternet : Boolean;
 {
 Call SHELL32.DLL for Win < Win98
 otherwise call URL.dll
@@ -559,7 +559,7 @@ begin
   end;
 end;
 
-function GetNthLine(const S : string; LineNo : integer) : string;
+function GetNthLine(const S : string; LineNo : Integer) : string;
 var
   SL : TStringList;
 begin
@@ -575,11 +575,11 @@ begin
   end;
 end;
 
-function GetLineRange(const S : string; StartLine, EndLine : integer;
+function GetLineRange(const S : string; StartLine, EndLine : Integer;
    HtmlBreaks: Boolean) : string;
 var
   SL : TStringList;
-  i, LastLine : integer;
+  i, LastLine : Integer;
   LB: string;
 begin
   Result := '';
@@ -602,17 +602,17 @@ begin
 end;
 
 function GetWordAtPos(const LineText: string; Start: Integer;
-  AllowDot: boolean; ScanBackwards: boolean = True; ScanForward: boolean = True;
+  AllowDot: Boolean; ScanBackwards: Boolean = True; ScanForward: Boolean = True;
   HandleBrackets: Boolean = False) : string;
 
-  function IsIdentChar(C: Char): boolean;
+  function IsIdentChar(C: Char): Boolean;
   begin
     Result := C.IsLetterOrDigit or (C = '_') or (AllowDot and (C = '.'));
   end;
 
 var
-  i : integer;
-  L, WordStart, WordEnd, ParenCounter, NewStart : integer;
+  i : Integer;
+  L, WordStart, WordEnd, ParenCounter, NewStart : Integer;
   Bracket, MatchingBracket : WideChar;
 const
   AllBrackets = '()[]{}';
@@ -659,8 +659,8 @@ begin
       i := NewStart - 1;
       while (i > 0) and (ParenCounter > 0) do
       begin
-        if Linetext[i] = Bracket then inc(ParenCounter)
-        else if Linetext[i] = MatchingBracket then dec(ParenCounter);
+        if Linetext[i] = Bracket then Inc(ParenCounter)
+        else if Linetext[i] = MatchingBracket then Dec(ParenCounter);
         Dec(i);
       end;
       WordStart := i+1;
@@ -676,7 +676,7 @@ end;
 function FormatDocString(const DocString : string) : string;
 var
   SL : TStringList;
-  i, Margin : integer;
+  i, Margin : Integer;
 begin
   Result := DocString;
   if Result = '' then Exit;
@@ -711,13 +711,13 @@ begin
   end;
 end;
 
-function DirIsPythonPackage(Dir : string): boolean;
+function DirIsPythonPackage(Dir : string): Boolean;
 begin
   Result :=  System.SysUtils.DirectoryExists(Dir) and
     FileExists(IncludeTrailingPathDelimiter(Dir) + '__init__.py');
 end;
 
-function FileIsPythonPackage(FileName : string): boolean;
+function FileIsPythonPackage(FileName : string): Boolean;
 begin
   Result := TPath.GetFileName(FileName) = '__init__.py';
 end;
@@ -935,20 +935,20 @@ begin
       else
         I := CompareText(Ident, SortedMap[k].Name);
       if I = 0 then begin
-          Result := true;
+          Result := True;
           Int := SortedMap[k].Value;
-          exit;
+          Exit;
       end else if I > 0 then
          m := k+1
       else
         n := k-1;
     end;
-  Result := false
+  Result := False
 end;
 
 function ComparePythonIdents(const S1, S2 : string): Integer; overload;
 var
-  L1, L2 : integer;
+  L1, L2 : Integer;
 begin
   L1 := Length(S1);
   L2 := Length(S2);
@@ -1010,7 +1010,7 @@ end;
 
 function GetBlockText(Strings : TStrings; BlockBegin, BlockEnd : TBufferCoord) : string;
 var
-  Line :  integer;
+  Line :  Integer;
 begin
   // preconditions start
   Assert(BlockBegin.Line <= Strings.Count);
@@ -1121,7 +1121,7 @@ begin
   end;
 end;
 
-function LoadFileIntoWideStrings(const AFileName: string; Lines : TStrings): boolean;
+function LoadFileIntoWideStrings(const AFileName: string; Lines : TStrings): Boolean;
 
   procedure LoadFromString(S: string);
   begin
@@ -1140,7 +1140,7 @@ var
   FileStream: TFileStream;
   FileText, PyEncoding : AnsiString;
   S: string;
-  Len : integer;
+  Len : Integer;
   PyWstr : PPyObject;
 begin
   Result := True;
@@ -1229,7 +1229,7 @@ type
 
 (* Save WideStrings to file taking into account Python file encodings *)
 function SaveWideStringsToFile(const AFileName: string;
-  Lines : TStrings;  DoBackup : Boolean = True) : boolean;
+  Lines : TStrings;  DoBackup : Boolean = True) : Boolean;
 var
   FileStream : TFileStream;
   S : AnsiString;
@@ -1361,7 +1361,7 @@ begin
 end;
 
 
-function GetNthSourceLine(const AFileName : string; LineNo: integer): string;
+function GetNthSourceLine(const AFileName : string; LineNo: Integer): string;
 var
   TempS: string;
 begin
@@ -1538,7 +1538,7 @@ begin
   for var I := 1 to S.Length do
     if not CharInSet(S[I], ['0'..'9']) then begin
       Result := False;
-      break;
+      Break;
     end;
 end;
 
@@ -1574,7 +1574,7 @@ begin
   end;
 end;
 
-function IsColorDark(AColor : TColor) : boolean;
+function IsColorDark(AColor : TColor) : Boolean;
 var
   ACol: Longint;
 begin
@@ -1583,7 +1583,7 @@ begin
                  1.14 * GetBValue(ACol)) < $400);
 end;
 
-function IsStyledWindowsColorDark : boolean;
+function IsStyledWindowsColorDark : Boolean;
 begin
   Result := IsColorDark(StyleServices.GetSystemColor(clWindow));
 end;
@@ -1763,7 +1763,7 @@ end;
 //  end;
 //end;
 
-procedure ResizeBitmap(Bitmap: TBitmap; const NewWidth, NewHeight: integer);
+procedure ResizeBitmap(Bitmap: TBitmap; const NewWidth, NewHeight: Integer);
 var
   Factory: IWICImagingFactory;
   Scaler: IWICBitmapScaler;
@@ -1817,9 +1817,9 @@ begin
     end;
 end;
 
-function DownloadUrlToFile(const URL, Filename: string): Boolean;
+function DownloadUrlToFile(const URL, FileName: string): Boolean;
 begin
-  Result := Succeeded(URLDownloadToFile(nil, PWideChar(URL), PWideChar(Filename), 0, nil));
+  Result := Succeeded(URLDownloadToFile(nil, PWideChar(URL), PWideChar(FileName), 0, nil));
 end;
 
 { ITimer implementation }
@@ -1971,7 +1971,7 @@ end;
 
 { TMatchHelper }
 
-function TMatchHelper.GroupIndex(Index: integer): integer;
+function TMatchHelper.GroupIndex(Index: Integer): Integer;
 begin
   if Index < Groups.Count then
     Result := Groups[Index].Index
@@ -1979,7 +1979,7 @@ begin
     Result := -1;
 end;
 
-function TMatchHelper.GroupLength(Index: integer): integer;
+function TMatchHelper.GroupLength(Index: Integer): Integer;
 begin
   if Index < Groups.Count then
     Result := Groups[Index].Length
@@ -1987,7 +1987,7 @@ begin
     Result := 0;
 end;
 
-function TMatchHelper.GroupValue(Index: integer): string;
+function TMatchHelper.GroupValue(Index: Integer): string;
 begin
   if Index < Groups.Count then
     Result := Groups[Index].Value
@@ -2048,12 +2048,12 @@ var
 
 { TFormHelper }
 
-function TControlHelper.PPIScale(ASize: integer): integer;
+function TControlHelper.PPIScale(ASize: Integer): Integer;
 begin
    Result := MulDiv(ASize, FCurrentPPI, 96);
 end;
 
-function TControlHelper.PPIUnScale(ASize: integer): integer;
+function TControlHelper.PPIUnScale(ASize: Integer): Integer;
 begin
    Result := MulDiv(ASize, 96, FCurrentPPI);
 end;

@@ -10,7 +10,7 @@ unit frmCallStack;
 interface
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   WinApi.Messages,
   System.SysUtils,
   System.Variants,
@@ -119,7 +119,7 @@ type
   TFrameData = record
     Func : string;
     FileName : string;
-    Line : integer;
+    Line : Integer;
   end;
 
 { TCallStackWindow }
@@ -384,13 +384,13 @@ procedure TCallStackWindow.ThreadChangeNotify(Thread: TThreadInfo;
       for N in ThreadView.Nodes do
         if Integer(N.Index) = I then begin
           Result := N;
-          break;
+          Break;
         end;
   end;
 
 var
   Py: IPyEngineAndGIL;
-  Index : integer;
+  Index : Integer;
   Node,
   Node1 : PVirtualNode;
   T : TThreadInfo;
@@ -424,7 +424,7 @@ begin
           for T in fThreads do
             if T.Status = thrdBroken then begin
               ActiveThread := T;
-              break;
+              Break;
             end;
         end;
         ThreadView.Invalidate;
@@ -440,7 +440,7 @@ begin
                 ActiveThread := T;
                 Node1 := NodeFromThread(fActiveThread);
                 ThreadView.InvalidateNode(Node1);
-                break;
+                Break;
               end;
           end
           else if Thread.Status = thrdBroken then

@@ -20,33 +20,33 @@ type
   TEvent = class(TComponent)
   private
     // modifier
-    FControl: boolean;
-    FShift: boolean;
-    FAlt: boolean;
-    FDouble: boolean;
-    FTriple: boolean;
-    FAny: boolean;
-    FActive: boolean;
+    FControl: Boolean;
+    FShift: Boolean;
+    FAlt: Boolean;
+    FDouble: Boolean;
+    FTriple: Boolean;
+    FAny: Boolean;
+    FActive: Boolean;
     // qualifier
     FKey: string;
-    FButton: integer;
+    FButton: Integer;
   public
     constructor Create(AOwner: TComponent); override;
     function getModifiers(Eventname: string): string;
     function getDetail(Eventname: string): string;
     procedure Clear;
   published
-    property Control: boolean read FControl write FControl default false;
-    property Shift: boolean read FShift write FShift default false;
+    property Control: Boolean read FControl write FControl default False;
+    property Shift: Boolean read FShift write FShift default False;
 
-    property Alt: boolean read FAlt write FAlt default false;
-    property Double: boolean read FDouble write FDouble default false;
-    property Triple: boolean read FTriple write FTriple default false;
-    property Any: boolean read FAny write FAny default false;
+    property Alt: Boolean read FAlt write FAlt default False;
+    property Double: Boolean read FDouble write FDouble default False;
+    property Triple: Boolean read FTriple write FTriple default False;
+    property Any: Boolean read FAny write FAny default False;
     // active events
-    property Active: boolean read FActive write FActive default false;
+    property Active: Boolean read FActive write FActive default False;
     property Key: string read FKey write FKey;
-    property Button: integer read FButton write FButton default 0;
+    property Button: Integer read FButton write FButton default 0;
   end;
 
   TELEventEditorDlg = class(TPyIDEDlgBase)
@@ -119,18 +119,18 @@ begin
   inherited Create(AOwner);
   Clear;
   if AOwner is TBaseWidget then
-    SetSubComponent(true);
+    SetSubComponent(True);
 end;
 
 procedure TEvent.Clear;
 begin
-  FControl:= false;
-  FShift:= false;
-  FAlt:= false;
-  FDouble:= false;
-  FTriple:= false;
-  FAny:= false;
-  FActive:= false;
+  FControl:= False;
+  FShift:= False;
+  FAlt:= False;
+  FDouble:= False;
+  FTriple:= False;
+  FAny:= False;
+  FActive:= False;
   FKey:= '';
   FButton:= 0;
 end;
@@ -198,7 +198,7 @@ end;
 
 procedure TELEventEditorDlg.CBKeySelect(Sender: TObject);
 begin
-  CBAny.Checked:= false;
+  CBAny.Checked:= False;
 end;
 
 function TELEventEditorDlg.Execute: Boolean;

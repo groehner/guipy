@@ -108,7 +108,7 @@ type
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
     // IJvAppStorageHandler implementation
   public
-    procedure Open(const Filename: string; State: string);
+    procedure Open(const FileName: string; State: string);
     procedure Save(MitBackup: Boolean);
     procedure SetInteractive(Lines: TStrings);
     procedure ConfigureWindow(Sender: TObject);
@@ -121,7 +121,7 @@ type
     procedure SaveAndReload;
     procedure OnPanelModified(AValue: Boolean);
     procedure OnInteractiveModified(Sender: TObject);
-    procedure AddToProject(const Filename: string);
+    procedure AddToProject(const FileName: string);
     procedure CreateTVFileStructure;
     function getAsStringList: TStringList; override;
     procedure ClassEdit;
@@ -220,15 +220,15 @@ begin
   CreateTVFileStructure;
 end;
 
-procedure TFUMLForm.Open(const Filename: string; State: string);
+procedure TFUMLForm.Open(const FileName: string; State: string);
 begin
   LockFormUpdate(Self);
   try
-    MainModul.LoadUML(Filename);
-    Pathname:= Filename;
-    Caption:= Filename;
+    MainModul.LoadUML(FileName);
+    Pathname:= FileName;
+    Caption:= FileName;
     SetState(State);
-    MainModul.AddToProject(Filename);
+    MainModul.AddToProject(FileName);
   finally
     UnlockFormUpdate(Self);
   end;
@@ -499,10 +499,10 @@ begin
   EndUpdate;
 end;
 
-procedure TFUMLForm.AddToProject(const Filename: string);
+procedure TFUMLForm.AddToProject(const FileName: string);
 begin
-  if Filename <> '' then
-    MainModul.AddToProject(Filename);
+  if FileName <> '' then
+    MainModul.AddToProject(FileName);
 end;
 
 procedure TFUMLForm.OnInteractiveModified(Sender: TObject);
@@ -562,17 +562,17 @@ begin
 
     if Indent = 0 then
       ClassNode:= TVFileStructure.Items.AddObject(nil, CName,
-        TInteger.create(Cent.LineS))
+        TInteger.Create(Cent.LineS))
     else if Indent > IndentOld then
       ClassNode:= TVFileStructure.Items.AddChildObject(ClassNode, CName,
-        TInteger.create(Cent.LineS))
+        TInteger.Create(Cent.LineS))
     else begin
       while Indent < IndentOld do begin
         Dec(IndentOld);
         ClassNode:= ClassNode.Parent;
       end;
       ClassNode:= TVFileStructure.Items.AddChildObject(ClassNode, CName,
-        TInteger.create(Cent.LineS));
+        TInteger.Create(Cent.LineS));
     end;
 
     ClassNode.ImageIndex:= 0;
@@ -584,7 +584,7 @@ begin
       Attribute:= Imt.Next as TAttribute;
       PictureNr:= 1 + Integer(Attribute.Visibility);
       Node:= TVFileStructure.Items.AddChildObject(ClassNode,
-                 Attribute.toNameTypeUML, TInteger.create(Attribute.LineS));
+                 Attribute.toNameTypeUML, TInteger.Create(Attribute.LineS));
       Node.ImageIndex:= PictureNr;
       Node.SelectedIndex:= PictureNr;
       Node.HasChildren:= False;
@@ -595,7 +595,7 @@ begin
       if Method.OperationType = otConstructor
         then PictureNr:= 4
         else PictureNr:= 5 + Integer(Method.Visibility);
-      Node:= TVFileStructure.Items.AddChildObject(ClassNode, Method.toShortStringNode, TInteger.create(Method.LineS));
+      Node:= TVFileStructure.Items.AddChildObject(ClassNode, Method.toShortStringNode, TInteger.Create(Method.LineS));
       Node.ImageIndex:= PictureNr;
       Node.SelectedIndex:= PictureNr;
       Node.HasChildren:= False;

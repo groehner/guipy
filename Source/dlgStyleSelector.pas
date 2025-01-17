@@ -82,7 +82,7 @@ end;
 procedure TStyleSelectorForm.FormShow(Sender: TObject);
 //  Todo Select active style
 var
-  Index : integer;
+  Index : Integer;
 begin
    if (LBStyleNames.Items.Count> 0) then
    begin

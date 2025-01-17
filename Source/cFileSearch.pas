@@ -194,7 +194,7 @@ begin
   for i := 0 to fSearchLines.Count - 1 do begin
     BLine := fSearchLines[i];
 
-    if BLine = '' then continue;
+    if BLine = '' then Continue;
 
     if FNoComments then begin
       PPos := StrScan(PWideChar(BLine), '#');
@@ -202,7 +202,7 @@ begin
         LPos := PPos - PWideChar(BLine) + 1;
         Delete(BLine, LPos, MaxInt);
       end;
-      if BLine = '' then continue;
+      if BLine = '' then Continue;
       if Length(BLine) > SearchLineSize then
       begin
         // Likely to be a binary file
@@ -243,9 +243,9 @@ var
   LinePos: Integer;
   Found : Boolean;
   Match : TMatch;
-  EndPos : integer;
+  EndPos : Integer;
   FoundPos : PWideChar;
-  Len : integer;
+  Len : Integer;
 
   procedure IsFound;
   //  Deals with soWholeWord Search option

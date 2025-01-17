@@ -13,7 +13,7 @@ unit frmProjectExplorer;
 interface
 
 uses
-  WinApi.Windows,
+  Winapi.Windows,
   WinApi.Messages,
   WinApi.ActiveX,
   System.UITypes,
@@ -205,10 +205,10 @@ type
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
     procedure DoOpenProjectFile(FileName : string);
-    function DoSave: boolean;
-    function DoSaveFile: boolean;
-    function DoSaveAs: boolean;
-    function CanClose: boolean;
+    function DoSave: Boolean;
+    function DoSaveFile: Boolean;
+    function DoSaveAs: Boolean;
+    function CanClose: Boolean;
   end;
 
 resourcestring
@@ -315,7 +315,7 @@ end;
 
 procedure TProjectExplorerWindow.actProjectAddFilesExecute(Sender: TObject);
 var
-  i : integer;
+  i : Integer;
   Editor : IEditor;
   Data : PNodeDataRec;
   Node: PVirtualNode;
@@ -375,7 +375,7 @@ begin
         if Data.ProjectNode = ProjectNode then begin
           ExplorerTree.EditNode(Node, -1);
           ExplorerTree.Selected[Node] := True;
-          break;
+          Break;
         end;
         Node := Node.NextSibling;
       end;
@@ -404,7 +404,7 @@ begin
         if Data.ProjectNode = ProjectNode then begin
           ExplorerTree.EditNode(Node, -1);
           ExplorerTree.Selected[Node] := True;
-          break;
+          Break;
         end;
         Node := Node.NextSibling;
       end;
@@ -490,7 +490,7 @@ end;
 procedure TProjectExplorerWindow.actProjectFileEditExecute(Sender: TObject);
 var
   Node: PVirtualNode;
-  i : integer;
+  i : Integer;
   SelectedNodes : TNodeArray;
 begin
   SelectedNodes := ExplorerTree.GetSortedSelection(False);
@@ -587,7 +587,7 @@ var
   Node, ParentNode: PVirtualNode;
   Data : PNodeDataRec;
   SelectedNodes : TNodeArray;
-  i : integer;
+  i : Integer;
   CanDelete : Boolean;
 begin
   SelectedNodes := ExplorerTree.GetSortedSelection(False);
@@ -672,7 +672,7 @@ begin
   ExplorerTree.Invalidate;
 end;
 
-function TProjectExplorerWindow.CanClose: boolean;
+function TProjectExplorerWindow.CanClose: Boolean;
 begin
   Result := not ActiveProject.Modified;
   if not Result then begin
@@ -738,7 +738,7 @@ begin
   end;
 end;
 
-function TProjectExplorerWindow.DoSave: boolean;
+function TProjectExplorerWindow.DoSave: Boolean;
 begin
   if ActiveProject.FileName <> '' then
     Result := DoSaveFile
@@ -746,7 +746,7 @@ begin
     Result := DoSaveAs;
 end;
 
-function TProjectExplorerWindow.DoSaveAs: boolean;
+function TProjectExplorerWindow.DoSaveAs: Boolean;
 var
   NewName: string;
 begin
@@ -783,7 +783,7 @@ begin
   end;
 end;
 
-function TProjectExplorerWindow.DoSaveFile: boolean;
+function TProjectExplorerWindow.DoSaveFile: Boolean;
 var
   AppStorage : TJvAppIniFileStorage;
 begin
@@ -1200,7 +1200,7 @@ end;
 procedure TProjectExplorerWindow.ExplorerTreeKeyPress(Sender: TObject;
   var Key: Char);
 begin
-  if Key = Char(VK_Return) then
+  if Key = Char(VK_RETURN) then
     ProjectFileNodeEdit(ExplorerTree.GetFirstSelected);
 end;
 
@@ -1278,10 +1278,10 @@ begin
     MulDiv(FShellImages.Height, FCurrentPPI, Screen.PixelsPerInch));
 
   // Wierd translation bug
-  TP_Ignore(self, 'mnProjectNew');
-  TP_Ignore(self, 'mnProjectOpen');
-  TP_Ignore(self, 'mnProjectSave');
-  TP_Ignore(self, 'mnProjectSaveAs');
+  TP_Ignore(Self, 'mnProjectNew');
+  TP_Ignore(Self, 'mnProjectOpen');
+  TP_Ignore(Self, 'mnProjectSave');
+  TP_Ignore(Self, 'mnProjectSaveAs');
 end;
 
 procedure TProjectExplorerWindow.FormDestroy(Sender: TObject);

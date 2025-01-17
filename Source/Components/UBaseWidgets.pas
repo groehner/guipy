@@ -25,12 +25,12 @@ type
 
   TBaseWidget = class(TCustomControl)
   private
-    FSizeable: boolean;
+    FSizeable: Boolean;
     FPartner: TEditorForm;
-    procedure setX(aValue: integer);
-    function  getX: integer;
-    procedure setY(aValue: integer);
-    function  getY: integer;
+    procedure setX(aValue: Integer);
+    function  getX: Integer;
+    procedure setY(aValue: Integer);
+    function  getY: Integer;
     function getPartner: TEditorForm;
   protected
     procedure setAttributValue(key, s: string);
@@ -39,18 +39,18 @@ type
     procedure setValue(Variable, Value: string);
     procedure MakeCommand(Attr, Value: string); virtual;
     procedure FormatItems(Items: TStrings);
-    function isFontAttribute(const s: string): boolean;
+    function isFontAttribute(const s: string): Boolean;
     function enumToString<T{: enum}>(AValue: T): string;
     function BitmapFromRelativePath(RelPath: string): TBitmap;
     procedure UpdateObjectInspector;
-    procedure WrapText(Text: string; Wrapwidth: integer;
-                       var tw, th: integer; var SL: TStringList);
+    procedure WrapText(Text: string; Wrapwidth: Integer;
+                       var tw, th: Integer; var SL: TStringList);
     function Indent1: string;
     function Indent2: string;
     function Indent3: string;
     function defaultItems: string;
   public
-    property Sizeable: boolean read FSizeable write FSizeable default true;
+    property Sizeable: Boolean read FSizeable write FSizeable default True;
     property Partner: TEditorForm read getPartner write FPartner;
   published
     // common attribute for tk, ttk and qt
@@ -58,8 +58,8 @@ type
     property Height;
     property Width;
     property Font;
-    property x: integer read getX write setX;
-    property y: integer read getY write setY;
+    property x: Integer read getX write setX;
+    property y: Integer read getY write setY;
   public
     constructor Create(aOwner: TComponent); override;
     procedure Rename(const OldName, NewName, Events: string); virtual;
@@ -67,8 +67,8 @@ type
     function HandlerParameter(const event: string): string; virtual;
     function HandlerNameAndParameter(const event: string): string;
     // all abstract, needed for object inspector/generator
-    function getAttributes(ShowAttributes: integer): string; virtual; abstract;
-    function getEvents(ShowEvents: integer): string; virtual; abstract;
+    function getAttributes(ShowAttributes: Integer): string; virtual; abstract;
+    function getEvents(ShowEvents: Integer): string; virtual; abstract;
     procedure setAttribute(Attr, Value, Typ: string); virtual; abstract;
 
     procedure NewWidget(Widget: string = ''); virtual; abstract;
@@ -84,11 +84,11 @@ type
     function MakeHandler(const event: string ): string; virtual; abstract;
     procedure SizeToText; virtual;
     procedure MakeFont; virtual; abstract;
-    procedure Zoom(_in: boolean);
-    procedure SetFontSize(Size: integer);
+    procedure Zoom(_in: Boolean);
+    procedure SetFontSize(Size: Integer);
     procedure UnScaleFontSize;
-    function PPIScale(ASize: integer): integer;
-    function PPIUnScale(ASize: integer): integer;
+    function PPIScale(ASize: Integer): Integer;
+    function PPIUnScale(ASize: Integer): Integer;
   end;
 
 implementation
@@ -100,10 +100,10 @@ uses SysUtils, TypInfo, Math, UITypes, RTTI,
 
 const CrLf = #13#10;
 
-constructor TBaseWidget.create(aOwner: TComponent);
+constructor TBaseWidget.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
-  ParentFont:= false;
+  ParentFont:= False;
 end;
 
 procedure TBaseWidget.setAttributValue(key, s: string);
@@ -127,7 +127,7 @@ begin
     else Result:= s + CrLf;
 end;
 
-function TBaseWidget.isFontAttribute(const s: string): boolean;
+function TBaseWidget.isFontAttribute(const s: string): Boolean;
 begin
   Result:= Pos(s, ' Font Name Size Bold Italic ') > 0;
 end;
@@ -156,20 +156,20 @@ begin
 end;
 
 procedure TBaseWidget.FormatItems(Items: TStrings);
-  var s, ts: string; i, ls, Indent: integer;
+  var s, ts: string; i, ls, Indent: Integer;
 begin
   i:= 0;
   Indent:= 0;
   while i < Items.Count do begin
     s:= Items[i];
-    ts:= trim(s);
+    ts:= Trim(s);
     if ts = '' then begin
       Items.Delete(i);
       Continue;
     end;
     ls:= LeftSpaces(s, 2);
     if ls > Indent then begin
-      inc(Indent, 2);
+      Inc(Indent, 2);
       if ls <> Indent then
         Items[i]:= StringOfChar(' ', Indent) + ts;
     end else if ls < Indent then begin
@@ -179,11 +179,11 @@ begin
       end else
         Indent:= ls;
     end;
-    inc(i);
+    Inc(i);
   end;
 end;
 
-procedure TBaseWidget.setX(aValue: integer);
+procedure TBaseWidget.setX(aValue: Integer);
 begin
   if aValue <> Top then begin
     Left:= aValue;
@@ -191,12 +191,12 @@ begin
   end;
 end;
 
-function TBaseWidget.getX: integer;
+function TBaseWidget.getX: Integer;
 begin
   Result:= Left;
 end;
 
-procedure TBaseWidget.setY(aValue: integer);
+procedure TBaseWidget.setY(aValue: Integer);
 begin
   if aValue <> Top then begin
     Top:= aValue;
@@ -204,7 +204,7 @@ begin
   end;
 end;
 
-function TBaseWidget.getY: integer;
+function TBaseWidget.getY: Integer;
 begin
   Result:= Top;
 end;
@@ -256,9 +256,9 @@ function TBaseWidget.BitmapFromRelativePath(RelPath: string): TBitmap;
       jpg: TJPEGImage;
 begin
   Result:= nil;
-  pathname:= FGuiDesigner.getPath + 'images\' + copy(RelPath, 8, length(RelPath));
+  pathname:= FGuiDesigner.getPath + 'images\' + Copy(RelPath, 8, Length(RelPath));
   if FileExists(pathname) then begin
-    ext:= Uppercase(ExtractFileExt(RelPath));
+    ext:= UpperCase(ExtractFileExt(RelPath));
     Result:= Graphics.TBitmap.Create;
     if ext = '.PNG' then begin
       png:= TPngImage.Create;
@@ -282,42 +282,42 @@ end;
 function TBaseWidget.enumToString<T{: enum}>(AValue: T): string;
 begin
   var s:= TRttiEnumerationType.GetName(AValue);
-  if (length(s) > 4) and (s[1] = '_') and (s[4] = '_') then
-    delete(s, 1, 4);
+  if (Length(s) > 4) and (s[1] = '_') and (s[4] = '_') then
+    Delete(s, 1, 4);
   Result:= s;
 end;
 
-procedure TBaseWidget.WrapText(Text: string; WrapWidth: integer;
-                               var tw, th: integer; var SL: TStringList);
-  var s, s1, s2: string; p: integer; SL1: TStringList;
+procedure TBaseWidget.WrapText(Text: string; WrapWidth: Integer;
+                               var tw, th: Integer; var SL: TStringList);
+  var s, s1, s2: string; p: Integer; SL1: TStringList;
 
-  procedure split(s: string; var s1, s2: string);
-    var p, m, n, x: integer;
+  procedure Split(s: string; var s1, s2: string);
+    var p, m, n, x: Integer;
   begin
     x:= Canvas.TextWidth('x');
     n:= 0;
     repeat
       m:= n - 1;
-      inc(n);
-      while (n <= length(s)) and (s[n] <> ' ') do
-        inc(n);
-    until Canvas.TextWidth(copy(s, 1, n-1)) > WrapWidth - x;
+      Inc(n);
+      while (n <= Length(s)) and (s[n] <> ' ') do
+        Inc(n);
+    until Canvas.TextWidth(Copy(s, 1, n-1)) > WrapWidth - x;
     if m > 0 then begin
-      s1:= copy(s, 1, m);
+      s1:= Copy(s, 1, m);
       p:= Pos(CrLf, s1);
       if p > 0 then begin
-        s1:= copy(s1, 1, p-1);
-        s2:= copy(s, p+2, length(s));
-        exit;
+        s1:= Copy(s1, 1, p-1);
+        s2:= Copy(s, p+2, Length(s));
+        Exit;
       end;
-      s2:= copy(s, m+1, length(s));
+      s2:= Copy(s, m+1, Length(s));
     end else begin
       n:= 1;
-      while (n <= length(s)) and
-            (Canvas.TextWidth(copy(s, 1, n-1)) <= WrapWidth - x) do
-        inc(n);
-      s1:= copy(s, 1, n-1);
-      s2:= copy(s, n, length(s));
+      while (n <= Length(s)) and
+            (Canvas.TextWidth(Copy(s, 1, n-1)) <= WrapWidth - x) do
+        Inc(n);
+      s1:= Copy(s, 1, n-1);
+      s2:= Copy(s, n, Length(s));
     end;
   end;
 
@@ -330,7 +330,7 @@ begin
     s1:= '';
     s2:= '';
     while Canvas.TextWidth(s) > WrapWidth do begin
-      split(s, s1, s2);
+      Split(s, s1, s2);
       SL.Add(s1);
       s:= s2;
     end;
@@ -340,13 +340,13 @@ begin
 
   tw:= 0;
   for p:= 0 to SL.Count - 1 do
-    tw:= max(tw, Canvas.TextWidth(SL[p]));
+    tw:= Max(tw, Canvas.TextWidth(SL[p]));
   th:= SL.Count * Canvas.TextHeight('Hg');
 end;
 
 function TBaseWidget.getPartner: TEditorForm;
 begin
-  if (FPartner = nil) and assigned(Owner) and assigned((Owner as TFGuiForm).Partner) then
+  if (FPartner = nil) and Assigned(Owner) and Assigned((Owner as TFGuiForm).Partner) then
     FPartner:= (Owner as TFGuiForm).Partner as TEditorForm;
   Result:= fPartner;
 end;
@@ -356,17 +356,17 @@ begin
   // do nothing
 end;
 
-procedure TBaseWidget.Zoom(_in: boolean);
+procedure TBaseWidget.Zoom(_in: Boolean);
 begin
   if _in
     then Font.Size:= Font.Size + GuiPyOptions.ZoomSteps
-    else Font.Size:= max(Font.Size - GuiPyOptions.ZoomSteps, 6);
+    else Font.Size:= Max(Font.Size - GuiPyOptions.ZoomSteps, 6);
   Canvas.Font.Assign(Font);
   MakeFont;
   Invalidate;
 end;
 
-procedure TBaseWidget.SetFontSize(Size: integer);
+procedure TBaseWidget.SetFontSize(Size: Integer);
 begin
   Font.Size:= Size;
 end;
@@ -376,13 +376,13 @@ begin
   Font.Size:= PPIUnScale(Font.Size);
 end;
 
-function TBaseWidget.PPIScale(ASize: integer): integer;
+function TBaseWidget.PPIScale(ASize: Integer): Integer;
 begin
   Result := myMulDiv(ASize, FCurrentPPI, 96);
   // MulDiv needs Windows, but then we get a strange error with BitmapFromRelativePath
 end;
 
-function TBaseWidget.PPIUnScale(ASize: integer): integer;
+function TBaseWidget.PPIUnScale(ASize: Integer): Integer;
 begin
   Result := myMulDiv(ASize, 96, FCurrentPPI);
 end;

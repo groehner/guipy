@@ -15,7 +15,7 @@ type
 
   TLineObj = class
   public
-    Spezial: boolean;
+    Spezial: Boolean;
     BackClr: TColor;
     Tag: longint;
   end;
@@ -23,27 +23,27 @@ type
   TSynEditExDiff = class (TSynEdit)
     private
       myOwner: TComponent;
-      fCurrLongestLineLen: integer; //needed for horizontal scrollbar
+      fCurrLongestLineLen: Integer; //needed for horizontal scrollbar
       fLineModClr: TColor;
       fYellowGray: TColor;
       fSilveryGray: TColor;
-      ModifiedStrs: array[boolean] of string;
-      InsertModeStrs: array[boolean] of string;
+      ModifiedStrs: array[Boolean] of string;
+      InsertModeStrs: array[Boolean] of string;
       procedure DoExit1(Sender: TObject);
       procedure CodeEditKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
       procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
-      function DoSaveFile: boolean;
+      function DoSaveFile: Boolean;
       procedure SetHighlighter;
-      procedure DeleteObjects(from, _to: integer);
-      procedure CreateObjects(from, _to, aTag: integer); overload;
+      procedure DeleteObjects(from, _to: Integer);
+      procedure CreateObjects(from, _to, aTag: Integer); overload;
       function EncodingAsString(const aEncoding: string): string;
     public
       Encoding: string;   // ANSI, UTF-8, UTF-16
       LineBreak: string;  // Windows, Unix, Mac
-      Nr: integer;
+      Nr: Integer;
       PCaption: TPanel;
       Pathname: string;
-      WithColoredLines: boolean;
+      WithColoredLines: Boolean;
 
       constructor Create(AOwner: TComponent); override;
       destructor Destroy; override;
@@ -58,13 +58,13 @@ type
                   Line: Integer; var Special: Boolean; var FG, BG: TColor);
       procedure GutterTextEvent(Sender: TObject; aLine: Integer;
                   var aText: string);
-      function  GetLineObj(index: integer): TLineObj;
+      function  GetLineObj(index: Integer): TLineObj;
       procedure Load(Lines12: TSynEditStringList; const aPathname: string);
-      procedure SetModified(Value: boolean);
+      procedure SetModified(Value: Boolean);
       procedure ShowFilename;
-      procedure InsertItem(index: integer; const s: string; LineObject: TLineObj);
-      function  CopyIntoClipboard(from, _to: integer): boolean;
-      procedure PasteClipboard(EmptyClipboard: boolean; from, _to, aNr: integer);
+      procedure InsertItem(index: Integer; const s: string; LineObject: TLineObj);
+      function  CopyIntoClipboard(from, _to: Integer): Boolean;
+      procedure PasteClipboard(EmptyClipboard: Boolean; from, _to, aNr: Integer);
       procedure ChangeStyle;
       procedure SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
     end;
@@ -81,13 +81,13 @@ begin
   inherited Create(AOwner);
   myOwner:= AOwner;
   fCurrLongestLineLen:= 60;
-  WithColoredLines:= false;
+  WithColoredLines:= False;
   Nr:= 0;
   Pathname:= '';
-  ModifiedStrs[false]:= '';
-  ModifiedStrs[true]:= _(SModified);
-  InsertModeStrs[false]:= _('Over');
-  InsertModeStrs[true]:= _('Ins');
+  ModifiedStrs[False]:= '';
+  ModifiedStrs[True]:= _(SModified);
+  InsertModeStrs[False]:= _('Over');
+  InsertModeStrs[True]:= _('Ins');
   MaxUndo:= 300;
   TabWidth:= 2;
   WantTabs:= True;
@@ -145,22 +145,22 @@ begin
   with myOwner as TFTextDiff do
     if FilesCompared and (Key in [VK_Up, VK_Down, VK_Prior, VK_Next]) then
       SyncScroll(Self, sbVertical) else
-    if (Key = VK_Return) or ([ssCtrl] = Shift) and (Key = Ord('V'))
+    if (Key = VK_RETURN) or ([ssCtrl] = Shift) and (Key = Ord('V'))
       then CreateObjects;
 end;
 
-function TSynEditExDiff.GetLineObj(index: integer): TLineObj;
+function TSynEditExDiff.GetLineObj(index: Integer): TLineObj;
 begin
-  if Lines.count = 0 then
+  if Lines.Count = 0 then
     result:= nil
   else begin
-    if (index < 0) or (index >= Lines.count) then
+    if (index < 0) or (index >= Lines.Count) then
       raise Exception.Create('TLines.GetLineObj() - index out of bounds.');
     result:= TLineObj(Lines.objects[index]);
   end;
 end;
 
-procedure TSynEditExDiff.InsertItem(index: integer; const s: string; LineObject: TLineObj);
+procedure TSynEditExDiff.InsertItem(index: Integer; const s: string; LineObject: TLineObj);
 begin
   inherited Lines.InsertObject(index, s, LineObject);
 end;
@@ -169,17 +169,17 @@ procedure TSynEditExDiff.SynEditorSpecialLineColors(Sender: TObject;
   Line: Integer; var Special: Boolean; var FG, BG: TColor);
    var Lo1: TLineObj;
 begin
-  if (Line > Lines.Count) or not WithColoredLines then exit;
+  if (Line > Lines.Count) or not WithColoredLines then Exit;
   Lo1:= GetLineObj(Line-1);
   if Lo1 = nil then begin
     // BG:= clRed;      good for debugging
     BG:= fLineModClr;
-    Special:= true;
+    Special:= True;
     end
   else with Lo1 do
     if Spezial then begin
       BG:= BackClr;
-      Special:= true;
+      Special:= True;
     end;
 end;
 
@@ -201,7 +201,7 @@ procedure TSynEditExDiff.GutterTextEvent(Sender: TObject; aLine: Integer;
 begin
   if WithColoredLines then begin
     LineObject:= GetLineObj(aLine-1);
-    if LineObject = nil then exit;
+    if LineObject = nil then Exit;
     with LineObject do
       if Tag = 0
         then aText:= ''
@@ -222,33 +222,33 @@ begin
   LinesClearAll;
   Lines.Assign(Lines12);
   Lines.EndUpdate;
-  self.Pathname:= aPathname;
+  Self.Pathname:= aPathname;
 
   Encoding:= EncodingAsString(Lines12.Encoding.EncodingName);
   Linebreak:= Lines12.LineBreak;
 
-  WithColoredLines:= false;
+  WithColoredLines:= False;
   SetHighlighter;
-  SetModified(false);
+  SetModified(False);
   (myOwner as TFTextDiff).setActiveControl(Self);
 end;
 
 procedure TSynEditExDiff.Save;
-  var i: integer;
+  var i: Integer;
       Line: TLineObj;
 begin
   if WithColoredLines then begin
     BeginUpdate;
     for i:= Lines.Count - 1 downto 0 do begin
       Line:= GetLineObj(i);
-      if assigned(Line) then
+      if Assigned(Line) then
         if Line.Tag = 0 then begin
           FreeAndNil(Line);
           Lines.Delete(i);
         end else
-          Line.Spezial:= false;
+          Line.Spezial:= False;
     end;
-    WithColoredLines:= false;
+    WithColoredLines:= False;
     EndUpdate;
     Invalidate;
   end;
@@ -256,7 +256,7 @@ begin
   if Modified then
     try
       DoSaveFile;
-      SetModified(false);
+      SetModified(False);
     except
       on E: Exception do
         ErrorMsg(E.Message);
@@ -264,11 +264,11 @@ begin
 end;
 
 
-function TSynEditExDiff.DoSaveFile: boolean;
+function TSynEditExDiff.DoSaveFile: Boolean;
 var
   i: Integer;
 begin
-  Result:= false;
+  Result:= False;
   // Trim all lines just in case (Issue 196)
   if (Lines.Count > 0) and ((eoTrimTrailingSpaces in Options) or
     PyIDEOptions.TrimTrailingSpacesOnSave)  then
@@ -329,13 +329,13 @@ begin
   OnGutterGetText:= nil;
 end;
 
-procedure TSynEditExDiff.DeleteObjects(from, _to: integer);
-  var i: integer;
+procedure TSynEditExDiff.DeleteObjects(from, _to: Integer);
+  var i: Integer;
       LineObject: TLineObj;
 begin
   for i:= from to _to do begin
     LineObject:= GetLineObj(i);
-    if assigned(LineObject) then begin
+    if Assigned(LineObject) then begin
       FreeAndNil(LineObject);
       Lines.objects[i]:= nil
     end;  
@@ -343,37 +343,37 @@ begin
 end;
 
 procedure TSynEditExDiff.CreateObjects;
-  var i: integer;
+  var i: Integer;
       LineObject: TLineObj;
 begin
-  if not WithColoredLines then exit;
+  if not WithColoredLines then Exit;
   Lines.BeginUpdate;
   i:= 0;
-  while (i < Lines.Count) and assigned(GetLineObj(i)) do
-    inc(i);
+  while (i < Lines.Count) and Assigned(GetLineObj(i)) do
+    Inc(i);
   while (i < Lines.Count) and (GetLineObj(i) = nil) do begin
     LineObject:= TLineObj.Create;
-    LineObject.Spezial:= true;
+    LineObject.Spezial:= True;
     LineObject.BackClr:= fLineModClr;
     LineObject.Tag:= i+1;
     Lines.Objects[i]:= LineObject;
-    inc(i);
+    Inc(i);
   end;
   Lines.EndUpdate;
   Invalidate;
 end;
 
-procedure TSynEditExDiff.CreateObjects(from, _to, aTag: integer);
-  var i: integer;
+procedure TSynEditExDiff.CreateObjects(from, _to, aTag: Integer);
+  var i: Integer;
       LineObject: TLineObj;
 begin
   for i:= from to _to do
     if GetLineObj(i) = nil then begin
       LineObject:= TLineObj.Create;
-      LineObject.Spezial:= true;
+      LineObject.Spezial:= True;
       LineObject.BackClr:= fLineModClr;
       LineObject.Tag:= aTag;
-      if aTag > 0 then inc(aTag);
+      if aTag > 0 then Inc(aTag);
       Lines.Objects[i]:= LineObject;
     end;
 end;
@@ -388,17 +388,17 @@ begin
   PCaption.Caption:= MinimizeName(s, aCanvas, PCaption.Width);
 end;
 
-procedure TSynEditExDiff.SetModified(Value: boolean);
+procedure TSynEditExDiff.SetModified(Value: Boolean);
 begin
   Modified:= Value;
   ShowFilename;
 end;
 
-function TSynEditExDiff.CopyIntoClipboard(from, _to: integer): boolean;
+function TSynEditExDiff.CopyIntoClipboard(from, _to: Integer): Boolean;
 begin
   SelStart:= RowColToCharIndex(BufferCoord(1, from + 1));
   if _to + 2 > Lines.Count
-    then SelEnd:= RowColToCharIndex(BufferCoord(length(Lines[Lines.count-1]) + 1, _to + 1))
+    then SelEnd:= RowColToCharIndex(BufferCoord(Length(Lines[Lines.Count-1]) + 1, _to + 1))
     else SelEnd:= RowColToCharIndex(BufferCoord(1, _to + 2)) - 2;
   Result:= (SelLength = 0);
   if Result
@@ -407,12 +407,12 @@ begin
   SelLength:= 0;
 end;
 
-procedure TSynEditExDiff.PasteClipboard(EmptyClipboard: boolean; from, _to, aNr: integer);
+procedure TSynEditExDiff.PasteClipboard(EmptyClipboard: Boolean; from, _to, aNr: Integer);
 begin
   DeleteObjects(from, _To);
   SelStart:= RowColToCharIndex(BufferCoord(1, from+1));
   if _to + 2 > Lines.Count
-    then SelEnd:= RowColToCharIndex(BufferCoord(length(Lines[Lines.count-1])+1, _to + 1))
+    then SelEnd:= RowColToCharIndex(BufferCoord(Length(Lines[Lines.Count-1])+1, _to + 1))
     else SelEnd:= RowColToCharIndex(BufferCoord(1, _To + 2)) - 2;
   try
     if EmptyClipboard then begin
@@ -424,7 +424,7 @@ begin
   except
   end;
   CreateObjects(from, _To, aNr);
-  SetModified(true);
+  SetModified(True);
   Invalidate;
 end;
 

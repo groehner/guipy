@@ -85,7 +85,7 @@ type
     procedure FileSavedAs(const FileId: string; LangId: TLangId);
     procedure ApplyNewDiagnostics;
     procedure ClearDiagnostics;
-    property TransmitChanges: boolean read fTransmitChanges
+    property TransmitChanges: Boolean read fTransmitChanges
       write fTransmitChanges;
     property Diagnostics: TList<TDiagnostic> read FDiagnostics;
     property NeedToRefreshSymbols: Boolean read FNeedToRefreshSymbols;
@@ -271,7 +271,7 @@ begin
       for var I := 0  to TJsonArray(Diagnostics).Count - 1 do
       begin
         Diag := TJsonArray(Diagnostics).Items[I];
-        DiagArray[I].Severity := TDiagnositicSeverity(Diag.GetValue<integer>('severity'));
+        DiagArray[I].Severity := TDiagnositicSeverity(Diag.GetValue<Integer>('severity'));
         DiagArray[I].Msg := Diag.GetValue<string>('message');
         DiagArray[I].Source := Diag.GetValue<string>('source');
         RangeFromJson(Diag as TJsonObject, DiagArray[I].BlockBegin, DiagArray[I].BlockEnd);
@@ -445,7 +445,7 @@ end;
 procedure TLspSynEditPlugin.LinePut(aIndex: Integer; const OldLine: string);
 var
   NewLine: string;
-  Start, OldLen, NewLen: integer;
+  Start, OldLen, NewLen: Integer;
 begin
   if not TJedi.Ready or (FFileId = '') or (FLangId <> lidPython) or
     not FTransmitChanges or

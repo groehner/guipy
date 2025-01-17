@@ -1,6 +1,6 @@
 {-------------------------------------------------------------------------------
  Unit:     UTKButtonBase
- Author:   Gerhard Röhner
+ Author:   Gerhard RÃ¶hner
  Date:     May 2021
  Purpose:  tkinter button widgets
 -------------------------------------------------------------------------------}
@@ -38,7 +38,7 @@ type
     FActiveForeground: TColor;
     FBitmap: string;
     FCompound: TCompound;
-    FIndicatorOn: boolean;
+    FIndicatorOn: Boolean;
     FOffRelief: TRelief;
     FOverRelief: TRelief;
     FSelectColor: TColor;
@@ -46,22 +46,22 @@ type
     FState: TButtonState;
     procedure setBitmap(aValue: string);
     procedure setCompound(aValue: TCompound);
-    procedure setIndicatorOn(aValue: boolean);
+    procedure setIndicatorOn(aValue: Boolean);
     procedure setState(aValue: TButtonState);
   protected
     procedure MakeDirection(Value: string);
-    procedure CalculateText(var tw, th: integer; var SL: TStringlist); override;
+    procedure CalculateText(var tw, th: Integer; var SL: TStringlist); override;
   public
     constructor Create(AOwner: TComponent); override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
-    function getEvents(ShowEvents: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
+    function getEvents(ShowEvents: Integer): string; override;
     function getCompound: TUCompound; override;
     procedure SizeToText; override;
 
     property OffRelief: TRelief read fOffRelief write fOffRelief default _TR_raised;
     property OverRelief: TRelief read fOverRelief write fOverRelief default _TR_raised;
-    property IndicatorOn: boolean read FIndicatorOn write setIndicatorOn default true;
+    property IndicatorOn: Boolean read FIndicatorOn write setIndicatorOn default True;
     property SelectColor: TColor read fSelectColor write fSelectColor default clWindow;
     property SelectImage: string read fSelectImage write fSelectImage;
   published
@@ -94,19 +94,19 @@ type
 
   TKButton = class (TKButtonBaseWidget)
   private
-    FDefault: boolean;
-    FRepeatDelay: integer;
-    FRepeatInterval: integer;
+    FDefault: Boolean;
+    FRepeatDelay: Integer;
+    FRepeatInterval: Integer;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
   published
     property Command;
-    property Default: boolean read FDefault write FDefault default false;
+    property Default: Boolean read FDefault write FDefault default False;
     property OverRelief;
-    property RepeatDelay: integer read FRepeatDelay write FRepeatDelay default 0;
-    property RepeatInterval: integer read FRepeatInterval write FRepeatInterval default 0;
+    property RepeatDelay: Integer read FRepeatDelay write FRepeatDelay default 0;
+    property RepeatInterval: Integer read FRepeatInterval write FRepeatInterval default 0;
     property TakeFocus;
   end;
 
@@ -118,7 +118,7 @@ type
     procedure Paint; override;
   public
     constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure SizeToText; override;
   published
@@ -140,7 +140,7 @@ type
   public
     constructor Create (AOwner: TComponent); override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
@@ -159,7 +159,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: integer): string; override;
+    function getAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
     function getText: string; override;
@@ -176,12 +176,12 @@ uses Math, Controls, SysUtils, System.Types, UUtils, UGUIDesigner;
 
 constructor TKButtonBaseWidget.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Width:= 80;
   Height:= 24;
   FActiveForeground:= clBtnText;
   FCompound:= _TC_none;
-  FIndicatorOn:= true;
+  FIndicatorOn:= True;
   FOffRelief:= _TR_raised;
   FOverRelief:= _TR_raised;
   FSelectColor:= clWindow;
@@ -198,7 +198,7 @@ begin
     inherited;
 end;
 
-function TKButtonBaseWidget.getAttributes(ShowAttributes: integer): string;
+function TKButtonBaseWidget.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Text|Anchor';
   if ShowAttributes >= 2 then
@@ -210,7 +210,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
 end;
 
-function TKButtonBaseWidget.getEvents(ShowEvents: integer): string;
+function TKButtonBaseWidget.getEvents(ShowEvents: Integer): string;
 begin
   Result:= getMouseEvents(ShowEvents);
 end;
@@ -234,20 +234,20 @@ begin
   end;
 end;
 
-procedure TKButtonBaseWidget.CalculateText(var tw, th: integer; var SL: TStringlist);
-  var s: string; p: integer;
+procedure TKButtonBaseWidget.CalculateText(var tw, th: Integer; var SL: TStringlist);
+  var s: string; p: Integer;
 begin
   s:= getText;
   p:= Pos('\n', s);
   while p > 0 do begin
-    SL.Add(copy(s, 1, p-1));
-    delete(s, 1, p+1);
+    SL.Add(Copy(s, 1, p-1));
+    Delete(s, 1, p+1);
     p:= Pos('\n', s);
   end;
   SL.Add(s);
   tw:= 0;
   for p:= 0 to SL.Count - 1 do
-    tw:= max(tw, Canvas.TextWidth(SL[p]));
+    tw:= Max(tw, Canvas.TextWidth(SL[p]));
   th:= SL.Count * Canvas.TextHeight('Hg');
 end;
 
@@ -275,7 +275,7 @@ begin
   end;
 end;
 
-procedure TKButtonBaseWidget.setIndicatorOn(aValue: boolean);
+procedure TKButtonBaseWidget.setIndicatorOn(aValue: Boolean);
 begin
   if aValue <> FIndicatorOn then begin
     FIndicatorOn:= aValue;
@@ -295,7 +295,7 @@ end;
 
 constructor TKLabel.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 1;
   Text:= 'Label';
   Anchor:= _TA_w;
@@ -313,17 +313,17 @@ end;
 
 constructor TKButton.Create(AOwner: TComponent);
 begin
-  inherited create(AOwner);
+  inherited Create(AOwner);
   Tag:= 4;
   Text:= 'Button';
-  FDefault:= false;
+  FDefault:= False;
   FRepeatDelay:= 0;
   FRepeatInterval:= 0;
   Relief:= _TR_raised;
-  TakeFocus:= true;
+  TakeFocus:= True;
 end;
 
-function TKButton.getAttributes(ShowAttributes: integer): string;
+function TKButton.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Command|Default';
   if ShowAttributes >= 3 then Result:= Result + '|OverRelief|RepeatDelay|RepeatInterval';
@@ -334,7 +334,7 @@ procedure TKButton.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.Button');
   InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
-  Command:= true;
+  Command:= True;
   ChangeCommand('Command', Name + '_Command');
 end;
 
@@ -349,11 +349,11 @@ begin
   FOffValue:= '0';
   FOnValue:= '1';
   Foreground:= clWindowText;
-  TakeFocus:= true;
+  TakeFocus:= True;
   Width:= 120;
 end;
 
-function TKCheckbutton.getAttributes(ShowAttributes: integer): string;
+function TKCheckbutton.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Command';
   if ShowAttributes >= 2 then
@@ -404,13 +404,13 @@ begin
   BorderWidth:= '1';
   HighlightThickness:= '0';
   FDirection:= below;
-  FIndicatorOn:= false;
+  FIndicatorOn:= False;
   PadX:= '5';
   PadY:= '4';
   Text:= 'Menubutton';
 end;
 
-function TKMenubutton.getAttributes(ShowAttributes: integer): string;
+function TKMenubutton.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|Menu';
   if ShowAttributes >= 2 then
@@ -421,7 +421,7 @@ begin
 end;
 
 procedure TKMenubutton.setAttribute(Attr, Value, Typ: string);
-  var w: integer;
+  var w: Integer;
 begin
   if Attr = 'Text' then begin
     w:= 17 + Canvas.TextWidth(Value + '    ');
@@ -444,7 +444,7 @@ begin
 end;
 
 procedure TKMenubutton.Paint;
-  var R: TRect; x, y: integer;
+  var R: TRect; x, y: Integer;
 begin
   if FIndicatorOn
     then RightSpace:= PPIScale(21)
@@ -464,7 +464,7 @@ end;
 
 {--- TKOptionMenu -------------------------------------------------------------}
 
-constructor TKOptionMenu.create(AOwner: TComponent);
+constructor TKOptionMenu.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Tag:= 18;
@@ -473,7 +473,7 @@ begin
   PadY:= '4';
   FDirection:= Below;
   Relief:= _TR_raised;
-  FIndicatorOn:= true;
+  FIndicatorOn:= True;
   FNewItems:= TStringList.Create;
   FNewItems.Text:= defaultItems;
   FOldItems:= TStringList.Create;
@@ -486,7 +486,7 @@ begin
   inherited;
 end;
 
-function TKOptionMenu.getAttributes(ShowAttributes: integer): string;
+function TKOptionMenu.getAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '|MenuItems';
   if ShowAttributes = 3 then
@@ -494,7 +494,7 @@ begin
   Result:= Result + inherited getAttributes(ShowAttributes);
   if ShowAttributes = 1 then begin
     var p:= Pos('|Menu|', Result);
-    delete(Result, p, 5);
+    Delete(Result, p, 5);
   end;
 end;
 
@@ -524,13 +524,13 @@ begin
 end;
 
 procedure TKOptionMenu.MakeMenuItems;
-  var i: integer;
+  var i: Integer;
       s, MenuItems, newMenuTitle: string;
 begin
   MenuItems:= '';
   for i := 0 to FNewItems.Count - 1 do begin
-    newMenuTitle:= trim(FNewItems[i]);
-    if newMenuTitle = '' then continue;
+    newMenuTitle:= Trim(FNewItems[i]);
+    if newMenuTitle = '' then Continue;
     MenuItems:= MenuItems + ', ' + asString(newMenuTitle);
   end;
   s:= 'self.' + Name;
@@ -547,7 +547,7 @@ function TKOptionMenu.getText: string;
   var s: string;
 begin
   if FNewItems.Count > 0 then
-    s:= trim(FNewItems[0]);
+    s:= Trim(FNewItems[0]);
   if s <> ''
     then Result:= s
     else Result:= Text;
