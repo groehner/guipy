@@ -631,57 +631,57 @@ begin
 end;
 
 procedure TFTextDiff.CopyBlockRightClick(Sender: TObject);
-  var von, bis: Integer;
+  var From, To_: Integer;
       EmptyClipboard: Boolean;
       clr: TColor; LinObj: TLineObj;
 begin
   if (myActiveControl <> CodeEdit1) or OnlyDifferences or not FilesCompared then Exit;
   with CodeEdit1 do begin
     if lines.Count = 0 then Exit;
-    von:= CaretY - 1;
-    clr:= GetLineObj(von).BackClr;
+    From:= CaretY - 1;
+    clr:= GetLineObj(From).BackClr;
     if clr = color then Exit; //we're not in a colored block !!!
-    bis:= von;
-    while (von > 0) and
-      (GetLineObj(von-1).BackClr = clr) do Dec(von);
-    while (bis < Lines.Count-1) and
-      (GetLineObj(bis+1).BackClr = clr) do Inc(bis);
+    To_:= From;
+    while (From > 0) and
+      (GetLineObj(From-1).BackClr = clr) do Dec(From);
+    while (To_ < Lines.Count-1) and
+      (GetLineObj(To_+1).BackClr = clr) do Inc(To_);
     //make sure color blocks still match up ...
-    if (bis > CodeEdit2.Lines.Count -1) or
-      (CodeEdit2.GetLineObj(von).BackClr <> clr) or
-      (CodeEdit2.GetLineObj(bis).BackClr <> clr) then Exit;
-    EmptyClipboard:= CopyIntoClipboard(von, bis);
-    LinObj:= GetLineObj(von);
+    if (To_ > CodeEdit2.Lines.Count -1) or
+      (CodeEdit2.GetLineObj(From).BackClr <> clr) or
+      (CodeEdit2.GetLineObj(To_).BackClr <> clr) then Exit;
+    EmptyClipboard:= CopyIntoClipboard(From, To_);
+    LinObj:= GetLineObj(From);
   end;
-  CodeEdit2.PasteClipboard(EmptyClipboard, von, bis, LinObj.Tag);
+  CodeEdit2.PasteClipboard(EmptyClipboard, From, To_, LinObj.Tag);
   SyncScroll(CodeEdit1, sbVertical);
   CodeEdit1.Enter(Self);
 end;
 
 procedure TFTextDiff.CopyBlockLeftClick(Sender: TObject);
-  var von, bis: Integer;
+  var From, To_: Integer;
       EmptyClipboard: Boolean;
       clr: TColor; LinObj: TLineObj;
 begin
   if (myActiveControl <> CodeEdit2) or OnlyDifferences or not FilesCompared then Exit;
   with CodeEdit2 do begin
     if lines.Count = 0 then Exit;
-    von:= CaretY - 1;
-    clr:= GetLineObj(von).BackClr;
+    From:= CaretY - 1;
+    clr:= GetLineObj(From).BackClr;
     if clr = color then Exit; //we're not in a colored block !!!
-    bis:= von;
-    while (von > 0) and
-      (GetLineObj(von-1).BackClr = clr) do Dec(von);
-    while (bis < Lines.Count-1) and
-      (GetLineObj(bis+1).BackClr = clr) do Inc(bis);
+    To_:= From;
+    while (From > 0) and
+      (GetLineObj(From-1).BackClr = clr) do Dec(From);
+    while (To_ < Lines.Count-1) and
+      (GetLineObj(To_+1).BackClr = clr) do Inc(To_);
     //make sure color blocks still match up ...
-    if (bis > CodeEdit1.Lines.Count -1) or
-      (CodeEdit1.GetLineObj(von).BackClr <> clr) or
-      (CodeEdit1.GetLineObj(bis).BackClr <> clr) then Exit;
-    EmptyClipboard:= CopyIntoClipboard(von, bis);
-    LinObj:= GetLineObj(von);
+    if (To_ > CodeEdit1.Lines.Count -1) or
+      (CodeEdit1.GetLineObj(From).BackClr <> clr) or
+      (CodeEdit1.GetLineObj(To_).BackClr <> clr) then Exit;
+    EmptyClipboard:= CopyIntoClipboard(From, To_);
+    LinObj:= GetLineObj(From);
   end;
-  CodeEdit1.PasteClipboard(EmptyClipboard, von, bis, LinObj.Tag);
+  CodeEdit1.PasteClipboard(EmptyClipboard, From, To_, LinObj.Tag);
   SyncScroll(CodeEdit2, sbVertical);
   CodeEdit2.Enter(Self);
 end;

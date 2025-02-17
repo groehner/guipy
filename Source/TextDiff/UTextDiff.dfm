@@ -2,8 +2,8 @@ object FTextDiff: TFTextDiff
   Left = 362
   Top = 211
   Caption = 'Compare text'
-  ClientHeight = 533
-  ClientWidth = 792
+  ClientHeight = 532
+  ClientWidth = 788
   Color = clBtnFace
   ParentFont = True
   KeyPreview = True
@@ -17,7 +17,7 @@ object FTextDiff: TFTextDiff
   object TBTextDiff: TToolBar
     Left = 0
     Top = 0
-    Width = 792
+    Width = 788
     Height = 26
     AutoSize = True
     EdgeBorders = [ebTop, ebBottom]
@@ -26,6 +26,7 @@ object FTextDiff: TFTextDiff
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
+    ExplicitWidth = 792
     object TBClose: TToolButton
       Left = 4
       Top = 0
@@ -146,11 +147,13 @@ object FTextDiff: TFTextDiff
   object PMain: TPanel
     Left = 0
     Top = 26
-    Width = 792
-    Height = 482
+    Width = 788
+    Height = 481
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 792
+    ExplicitHeight = 482
     object Splitter: TSplitter
       Left = 315
       Top = 0
@@ -203,9 +206,11 @@ object FTextDiff: TFTextDiff
   end
   object StatusBar: TSpTBXStatusBar
     Left = 0
-    Top = 508
-    Width = 792
+    Top = 507
+    Width = 788
     Height = 25
+    ExplicitTop = 508
+    ExplicitWidth = 792
     object liLineColumn: TSpTBXLabelItem
       Caption = '0000: 000'
       Alignment = taCenter

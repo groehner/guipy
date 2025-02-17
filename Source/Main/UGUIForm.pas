@@ -14,30 +14,37 @@ unit UGUIForm;
 }
 interface
 
-uses Messages, Windows, Classes, Graphics, Forms,
-     uEditAppIntfs, frmEditor, ELEvents, UBaseWidgets;
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Forms,
+  uEditAppIntfs,
+  ELEvents,
+  frmEditor,
+  UBaseWidgets;
 
 type
 
   TTheme = (alt, clam, default, classic, vista, winnative, xpnative);
 
   TToolButtonStyle = (ToolButtonIconOnly, ToolButtonTextOnly,
-                      ToolButtonTextBesideIcon, ToolButtonTextUnderIcon,
-                      ToolButtonFollowStyle);
+    ToolButtonTextBesideIcon, ToolButtonTextUnderIcon, ToolButtonFollowStyle);
 
   TTabShape = (Rounded, Triangular);
 
-  TFGUIForm = class (TForm, IEditCommands)
-    procedure FormClose(Sender: TObject; var aAction: TCloseAction);
+  TFGuiForm = class(TForm, IEditCommands)
+    procedure FormClose(Sender: TObject; var AAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormResize(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer;
       var Resize: Boolean);
-    procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
-      NewDPI: Integer);
-    procedure FormBeforeMonitorDpiChanged(Sender: TObject; OldDPI,
-      NewDPI: Integer);
+    procedure FormAfterMonitorDpiChanged(Sender: TObject;
+      OldDPI, NewDPI: Integer);
+    procedure FormBeforeMonitorDpiChanged(Sender: TObject;
+      OldDPI, NewDPI: Integer);
   private
     // Tk
     FAlwaysOnTop: Boolean;
@@ -50,11 +57,11 @@ type
     FResizable: Boolean;
     FUndecorated: Boolean;
     FTheme: TTheme;
-    FTransparency: real;
+    FTransparency: Real;
     FTitle: string;
     FFontSize: Integer;
-    Indent1: string;
-    Indent2: string;
+    FIndent1: string;
+    FIndent2: string;
 
     // events
     // Tk
@@ -88,14 +95,14 @@ type
     FTabifiedDockWidgetActivated: string;
     FToolButtonStyleChanged: string;
 
-    Widget: TBaseWidget;
-    function getBackground: TColor;
-    procedure setBackground(aValue: TColor);
-    procedure setTransparency(Value: real);
-    function Without_(s: string): string;
-    procedure setWidgetPartners;
+    FWidget: TBaseWidget;
+    function GetBackground: TColor;
+    procedure SetBackground(Value: TColor);
+    procedure SetTransparency(Value: Real);
+    function Without_(Str: string): string;
+    procedure SetWidgetPartners;
     procedure SetGridOptions;
-    procedure getFontSize;
+    procedure GetFontSize;
   public
     ReadOnly: Boolean;
     Pathname: string;
@@ -103,18 +110,19 @@ type
     Modified: Boolean;
     constructor Create(AOwner: TComponent); override;
     procedure InitEvents;
-    procedure Open(Pathname, State: string; WidthHeight: TPoint; Partner: TEditorForm);
-    procedure EnterForm(Sender: TObject); //override;
+    procedure Open(Pathname, State: string; WidthHeight: TPoint;
+      Partner: TEditorForm);
+    procedure EnterForm(Sender: TObject);
     procedure Save(MitBackup: Boolean);
     procedure Print;
     procedure UpdateState;
     procedure EnsureOnDesktop;
-    procedure setAttribute(Attr, Value, Typ: string);
-    function getAttributes(ShowAttributes: Integer): string;
-    function getEvents(ShowEvents: Integer): string;
-    procedure setEvent(Event: string);
+    procedure SetAttribute(Attr, Value, Typ: string);
+    function GetAttributes(ShowAttributes: Integer): string;
+    function GetEvents(ShowEvents: Integer): string;
+    procedure SetEvent(Event: string);
     function HandlerName(Event: string): string;
-    function MakeHandler(event: string): string;
+    function MakeHandler(Event: string): string;
     procedure DeleteEventHandler(const Event: string);
     function MakeBinding(Eventname: string): string;
     // IEditCommands implementation
@@ -132,13 +140,14 @@ type
     procedure ExecRedo;
     procedure ExecSelectAll;
     procedure ExecUndo;
-    procedure EndOfResizeMoveDetected(var Msg: Tmessage); message WM_EXITSIZEMOVE;
+    procedure EndOfResizeMoveDetected(var Msg: TMessage);
+      message WM_EXITSIZEMOVE;
     procedure Paint; override;
-    procedure Zoom(_in: Boolean);
+    procedure Zoom(In_: Boolean);
     procedure Scale(NewPPI, OldPPI: Integer);
   published
     property AlwaysOnTop: Boolean read FAlwaysOnTop write FAlwaysOnTop;
-    property Background: TColor read getBackground write setBackground;
+    property Background: TColor read GetBackground write SetBackground;
     property Fullscreen: Boolean read FFullscreen write FFullscreen;
     property Iconified: Boolean read FIconified write FIconified;
     property MaxHeight: Integer read FMaxHeight write FMaxHeight;
@@ -148,160 +157,186 @@ type
     property Resizable: Boolean read FResizable write FResizable;
     property Title: string read FTitle write FTitle;
     property Theme: TTheme read FTheme write FTheme;
-    property Transparency: real read FTransparency write setTransparency;
+    property Transparency: Real read FTransparency write SetTransparency;
     property Undecorated: Boolean read FUndecorated write FUndecorated;
     property FontSize: Integer read FFontSize write FFontSize;
     property Height;
     property Width;
     // events
     // Tk
-    {$WARNINGS OFF}
-    property Activate: TEvent read Factivate write Factivate;
-    property ButtonPress: TEvent read FbuttonPress write FbuttonPress;
-    property ButtonRelease: TEvent read FbuttonRelease write FbuttonRelease;
-    property Configure: TEvent read Fconfigure write Fconfigure;
-    property Deactivate: TEvent read Fdeactivate write Fdeactivate;
+{$WARNINGS OFF}
+    property Activate: TEvent read FActivate write FActivate;
+    property ButtonPress: TEvent read FButtonPress write FButtonPress;
+    property ButtonRelease: TEvent read FButtonRelease write FButtonRelease;
+    property Configure: TEvent read FConfigure write FConfigure;
+    property Deactivate: TEvent read FDeactivate write FDeactivate;
     property Destroy_: TEvent read FDestroy write FDestroy;
     property Enter: TEvent read FEnter write FEnter;
     property Expose: TEvent read FExpose write FExpose;
-    property FocusIn: TEvent read FfocusIn write FfocusIn;
-    property FocusOut: TEvent read FfocusOut write FfocusOut;
-    property KeyPress: TEvent read fkeyPress write fkeyPress;
-    property KeyRelease: TEvent read fkeyRelease write fkeyRelease;
-    property Leave: TEvent read fleave write fleave;
-    property Motion: TEvent read fMotion write fMotion;
-    property MouseWheel: TEvent read fmouseWheel write fmouseWheel;
+    property FocusIn: TEvent read FFocusIn write FFocusIn;
+    property FocusOut: TEvent read FFocusOut write FFocusOut;
+    property KeyPress: TEvent read FKeyPress write FKeyPress;
+    property KeyRelease: TEvent read FKeyRelease write FKeyRelease;
+    property Leave: TEvent read FLeave write FLeave;
+    property Motion: TEvent read FMotion write FMotion;
+    property MouseWheel: TEvent read FMouseWheel write FMouseWheel;
     property Visibility: TEvent read FVisibility write FVisibility;
-    {$WARNINGS ON}
+{$WARNINGS ON}
     // Qt
     // attributes
     property Animated: Boolean read FAnimated write FAnimated;
-    property DockNestingEnabled: Boolean read FDockNestingEnabled write FDockNestingEnabled;
+    property DockNestingEnabled: Boolean read FDockNestingEnabled
+      write FDockNestingEnabled;
     property DocumentMode: Boolean read FDocumentMode write FDocumentMode;
     property TabShape: TTabShape read FTabShape write FTabShape;
-    property ToolButtonStyle: TToolButtonStyle read FToolButtonStyle write FToolButtonStyle;
-    //  signals QWidget
-    property customContextMenuRequested: string read FCustomContextMenuRequested write FCustomContextMenuRequested;
-    property windowIconChanged: string read FWindowIconChanged write FWindowIconChanged;
-    property windowTitleChanged: string read FWindowTitleChanged write FwindowTitleChanged;
-    //  signals QMainWindow
-    property iconSizeChanged: string read FIconSizeChanged write FIconSizeChanged;
-    property tabifiedDockWidgetActivated: string read FTabifiedDockWidgetActivated write FTabifiedDockWidgetActivated;
-    property toolButtonStyleChanged: string read FToolButtonStyleChanged write FToolButtonStyleChanged;
+    property ToolButtonStyle: TToolButtonStyle read FToolButtonStyle
+      write FToolButtonStyle;
+    // signals QWidget
+    property customContextMenuRequested: string read FCustomContextMenuRequested
+      write FCustomContextMenuRequested;
+    property windowIconChanged: string read FWindowIconChanged
+      write FWindowIconChanged;
+    property windowTitleChanged: string read FWindowTitleChanged
+      write FWindowTitleChanged;
+    // signals QMainWindow
+    property iconSizeChanged: string read FIconSizeChanged
+      write FIconSizeChanged;
+    property tabifiedDockWidgetActivated: string
+      read FTabifiedDockWidgetActivated write FTabifiedDockWidgetActivated;
+    property toolButtonStyleChanged: string read FToolButtonStyleChanged
+      write FToolButtonStyleChanged;
   end;
 
 implementation
 
-uses Clipbrd, Themes, SysUtils, Controls, Math, System.Generics.Collections,
-     frmFile, jvDockControlForm, frmPyIDEMain, cPyScripterSettings,
-     UGUIDesigner, UObjectGenerator, UObjectInspector, UUtils,
-     UConfiguration, UXTheme, UQtWidgetDescendants, UBaseTKWidgets,
-     uCommonFunctions;
+uses
+  Clipbrd,
+  SysUtils,
+  Controls,
+  Math,
+  System.Generics.Collections,
+  JvDockControlForm,
+  frmPyIDEMain,
+  cPyScripterSettings,
+  UGUIDesigner,
+  UObjectGenerator,
+  UObjectInspector,
+  UUtils,
+  UConfiguration,
+  UxTheme,
+  UQtWidgetDescendants,
+  UBaseTKWidgets,
+  uCommonFunctions;
 
 {$R *.DFM}
 
-constructor TFGUIForm.Create(AOwner: TComponent);
+constructor TFGuiForm.Create(AOwner: TComponent);
 begin
   inherited;
-  FAlwaysOnTop:= False;
-  FIconified:= False;
-  FFullscreen:= False;
-  FResizable:= True;
-  FTransparency:= 1;
-  FTheme:= vista;
-  Indent1:= FConfiguration.Indent1;
-  Indent2:= FConfiguration.Indent2;
+  FAlwaysOnTop := False;
+  FIconified := False;
+  FFullscreen := False;
+  FResizable := True;
+  FTransparency := 1;
+  FTheme := vista;
+  FIndent1 := FConfiguration.Indent1;
+  FIndent2 := FConfiguration.Indent2;
   // don't theme this window
   SetWindowTheme(Handle, nil, nil);
   SetGridOptions;
-  ParentFont:= False;
+  ParentFont := False;
 end;
 
-procedure TFGUIForm.InitEvents;
+procedure TFGuiForm.InitEvents;
 begin
-  FButtonPress:= TEvent.Create(Self);
-  FButtonRelease:= TEvent.Create(Self);
-  FKeyPress:= TEvent.Create(Self);
-  FKeyRelease:= TEvent.Create(Self);
-  FActivate:= TEvent.Create(Self);
-  FConfigure:= TEvent.Create(Self);
-  FDeactivate:= TEvent.Create(Self);
-  FDestroy:= TEvent.Create(Self);
-  FEnter:= TEvent.Create(Self);
-  FExpose:= TEvent.Create(Self);
-  FFocusIn:= TEvent.Create(Self);
-  FFocusOut:= TEvent.Create(Self);
-  FLeave:= TEvent.Create(Self);
-  FMouseWheel:= TEvent.Create(Self);
-  FMotion:= TEvent.Create(Self);
-  FVisibility:= TEvent.Create(Self);
+  FButtonPress := TEvent.Create(Self);
+  FButtonRelease := TEvent.Create(Self);
+  FKeyPress := TEvent.Create(Self);
+  FKeyRelease := TEvent.Create(Self);
+  FActivate := TEvent.Create(Self);
+  FConfigure := TEvent.Create(Self);
+  FDeactivate := TEvent.Create(Self);
+  FDestroy := TEvent.Create(Self);
+  FEnter := TEvent.Create(Self);
+  FExpose := TEvent.Create(Self);
+  FFocusIn := TEvent.Create(Self);
+  FFocusOut := TEvent.Create(Self);
+  FLeave := TEvent.Create(Self);
+  FMouseWheel := TEvent.Create(Self);
+  FMotion := TEvent.Create(Self);
+  FVisibility := TEvent.Create(Self);
 
-  FButtonPress.Name:= 'ButtonPress';
+  FButtonPress.Name := 'ButtonPress';
   FButtonRelease.Name := 'ButtonRelease';
-  FKeyPress.Name:= 'KeyPressName';
-  FKeyRelease.Name:= 'KeyRelease';
-  FActivate.Name:= 'Activate';
-  FConfigure.Name:= 'Configure';
-  FDeactivate.Name:= 'Deactivate';
-  FDestroy.Name:= 'Destroy';
-  FEnter.Name:= 'Enter';
-  FExpose.Name:= 'Expose';
-  FFocusIn.Name:= 'FocusIn';
-  FFocusOut.Name:= 'FocusOut';
-  FLeave.Name:= 'Leave';
-  FMouseWheel.Name:= 'MouseWheel';
-  FMotion.Name:= 'Motion';
-  FVisibility.Name:= 'Visibility';
+  FKeyPress.Name := 'KeyPressName';
+  FKeyRelease.Name := 'KeyRelease';
+  FActivate.Name := 'Activate';
+  FConfigure.Name := 'Configure';
+  FDeactivate.Name := 'Deactivate';
+  FDestroy.Name := 'Destroy';
+  FEnter.Name := 'Enter';
+  FExpose.Name := 'Expose';
+  FFocusIn.Name := 'FocusIn';
+  FFocusOut.Name := 'FocusOut';
+  FLeave.Name := 'Leave';
+  FMouseWheel.Name := 'MouseWheel';
+  FMotion.Name := 'Motion';
+  FVisibility.Name := 'Visibility';
 end;
 
-procedure TFGUIForm.Open(Pathname, State: string; WidthHeight: TPoint; Partner: TEditorForm);
+procedure TFGuiForm.Open(Pathname, State: string; WidthHeight: TPoint;
+  Partner: TEditorForm);
 begin
-  Self.Pathname:= Pathname;
-  Self.Partner:= Partner;
-  {$WARNINGS OFF}
-  if Partner.FrameType < 3
-    then Widget:= TKMainWindow.Create(nil)
-    else Widget:= TQtMainWindow.Create(nil);
-  Widget.Partner:= Partner;
-  {$WARNINGS ON}
-  setAnimation(False);
-  ClientWidth:= PPIScale(WidthHeight.X);
-  ClientHeight:= PPIScale(WidthHeight.Y);
-  Name:= UUtils.GetUniqueName(PyIDEMainForm, ChangeFileext(ExtractFileName(Pathname), ''));
-  Modified:= False;
+  Self.Pathname := Pathname;
+  Self.Partner := Partner;
+{$WARNINGS OFF}
+  if Partner.FrameType < 3 then
+    FWidget := TKMainWindow.Create(nil)
+  else
+    FWidget := TQtMainWindow.Create(nil);
+  FWidget.Partner := Partner;
+{$WARNINGS ON}
+  SetAnimation(False);
+  ClientWidth := PPIScale(WidthHeight.X);
+  ClientHeight := PPIScale(WidthHeight.Y);
+  Name := UUtils.GetUniqueName(PyIDEMainForm,
+    ChangeFileExt(ExtractFileName(Pathname), ''));
+  Modified := False;
   SetWidgetPartners;
-  OnActivate:= EnterForm;
+  OnActivate := EnterForm;
   PyIDEMainForm.ConnectGUIandPyWindow(Self);
   EnterForm(Self); // must stay!
   SetAnimation(True);
-  ReadOnly:= IsWriteProtected(Pathname);
+  ReadOnly := IsWriteProtected(Pathname);
   if FontSize = 0 then
     GetFontSize;
 end;
 
-procedure TFGUIForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TFGuiForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  FGUIDesigner.ELDesigner.Active:= False;
-  FGUIDesigner.ELDesigner.DesignControl:= nil;
-  FGUIDesigner.DesignForm:= nil;
+  FGUIDesigner.ELDesigner.Active := False;
+  FGUIDesigner.ELDesigner.DesignControl := nil;
+  FGUIDesigner.DesignForm := nil;
   FObjectInspector.RefreshCBObjects;
   if PyIDEOptions.SaveFilesAutomatically then
     Save(PyIDEOptions.CreateBackupFiles);
-  CanClose:= True;
+  CanClose := True;
 end;
 
-procedure TFGUIForm.FormClose(Sender: TObject; var aAction: TCloseAction);
+procedure TFGuiForm.FormClose(Sender: TObject; var AAction: TCloseAction);
 begin
-  if Assigned(Partner) then begin
-    Partner.Partner:= nil;
-    (Partner as TEditorForm).getEditor.GUIFormOpen:= False;
+  if Assigned(Partner) then
+  begin
+    Partner.Partner := nil;
+    Partner.GetEditor.GUIFormOpen := False;
   end;
-  for var i:= 1 to 4 do
-    PyIDEMainForm.TabControlWidgets.Items[i].Visible:= FConfiguration.vistabs[i];
-  aAction:= caFree;
+  for var I := 1 to 4 do
+    PyIDEMainForm.TabControlWidgets.Items[I].Visible :=
+      FConfiguration.vistabs[I];
+  AAction := caFree;
 end;
 
-procedure TFGUIForm.FormDestroy(Sender: TObject);
+procedure TFGuiForm.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(FActivate);
   FreeAndNil(FButtonPress);
@@ -319,281 +354,297 @@ begin
   FreeAndNil(FMotion);
   FreeAndNil(FMouseWheel);
   FreeAndNil(FVisibility);
-  FreeAndNil(Widget);
+  FreeAndNil(FWidget);
 end;
 
-function TFGUIForm.getBackground: TColor;
+function TFGuiForm.GetBackground: TColor;
 begin
-  Result:= Color;
+  Result := Color;
 end;
 
-procedure TFGUIForm.setBackground(aValue: TColor);
+procedure TFGuiForm.SetBackground(Value: TColor);
 begin
-  Color:= aValue;
+  Color := Value;
 end;
 
-procedure TFGUIForm.setTransparency(Value: real);
+procedure TFGuiForm.SetTransparency(Value: Real);
 begin
   if (0 <= Value) and (Value <= 1) then
-    FTransparency:= Value;
+    FTransparency := Value;
 end;
 
 {$WARNINGS OFF}
-procedure TFGUIForm.Save(MitBackup: Boolean);
-  var BackupName: string;
+
+procedure TFGuiForm.Save(MitBackup: Boolean);
+var
+  BackupName: string;
 begin
-  if ReadOnly then Exit;
-  if MitBackup then begin
-    BackupName:= Pathname;
-    BackupName:= ChangeFileExt(BackupName, '.~fm');
+  if ReadOnly then
+    Exit;
+  if MitBackup then
+  begin
+    BackupName := Pathname;
+    BackupName := ChangeFileExt(BackupName, '.~fm');
     if FileExists(BackupName) then
       SysUtils.DeleteFile(BackupName);
     if FileExists(Pathname) then
       RenameFile(Pathname, BackupName);
   end;
   FGUIDesigner.Save(Pathname, Self);
-  //FMessages.StatusMessage(Pathname + ' ' + frmEditor.LNGSaved);
-  Modified:= False;
+  Modified := False;
 end;
 {$WARNINGS ON}
 
-procedure TFGUIForm.EnterForm(Sender: TObject);
+procedure TFGuiForm.EnterForm(Sender: TObject);
 begin
   if Assigned(Partner) and not Partner.ParentTabItem.Checked then
     // show connected partner
-    TThread.ForceQueue(nil, procedure
+    TThread.ForceQueue(nil,
+      procedure
       begin
-        Partner.ParentTabItem.Checked:= True;
+        Partner.ParentTabItem.Checked := True;
       end);
   if not FObjectInspector.Visible then
-    TThread.ForceQueue(nil, procedure
+    TThread.ForceQueue(nil,
+      procedure
       begin
         ShowDockForm(FObjectInspector);
       end);
-  if (FGUIDesigner.ELDesigner.DesignControl <> Self) or not FGUIDesigner.ELDesigner.Active then
+  if (FGUIDesigner.ELDesigner.DesignControl <> Self) or
+    not FGUIDesigner.ELDesigner.Active then
     FGUIDesigner.ChangeTo(Self);
   Partner.SynEditEnter(Partner.ActiveSynEdit);
-  // show TKinter or TTK or Qt
-  //if PyIDEMainForm.TabControlWidgets.ActiveTabIndex = 0 then
-  //  PyIDEMainForm.TabControlWidgets.ActiveTabIndex:= 1;
 end;
 
-procedure TFGUIForm.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
-  NewDPI: Integer);
+procedure TFGuiForm.FormAfterMonitorDpiChanged(Sender: TObject;
+OldDPI, NewDPI: Integer);
 begin
   FGUIDesigner.ScaleImages;
   Invalidate;
   SetGridOptions;
-  OnResize:= FormResize;
+  OnResize := FormResize;
 end;
 
-procedure TFGUIForm.FormBeforeMonitorDpiChanged(Sender: TObject; OldDPI,
-  NewDPI: Integer);
+procedure TFGuiForm.FormBeforeMonitorDpiChanged(Sender: TObject;
+OldDPI, NewDPI: Integer);
 begin
-  OnResize:= nil;
+  OnResize := nil;
 end;
 
-procedure TFGUIForm.SetGridOptions;
+procedure TFGuiForm.SetGridOptions;
 begin
-  FGUIDesigner.ELDesigner.SnapToGrid:= GuiPyOptions.SnapToGrid;
-  FGUIDesigner.ELDesigner.Grid.XStep:= PPIScale(GuiPyOptions.GridSize);
-  FGUIDesigner.ELDesigner.Grid.YStep:= PPIScale(GuiPyOptions.GridSize);
+  FGUIDesigner.ELDesigner.SnapToGrid := GuiPyOptions.SnapToGrid;
+  FGUIDesigner.ELDesigner.Grid.XStep := PPIScale(GuiPyOptions.GridSize);
+  FGUIDesigner.ELDesigner.Grid.YStep := PPIScale(GuiPyOptions.GridSize);
 end;
 
-procedure TFGUIForm.FormCanResize(Sender: TObject; var NewWidth,
-  NewHeight: Integer; var Resize: Boolean);
+procedure TFGuiForm.FormCanResize(Sender: TObject;
+var NewWidth, NewHeight: Integer; var Resize: Boolean);
 begin
   if FGUIDesigner.ELDesigner.Active then
-    FGUIDesigner.ELDesigner.Active:= False;
+    FGUIDesigner.ELDesigner.Active := False;
 end;
 
-procedure TFGUIForm.FormResize(Sender: TObject);
+procedure TFGuiForm.FormResize(Sender: TObject);
 begin
   FObjectInspector.ELPropertyInspector.Modified;
-  if Assigned(Partner) and not ReadOnly then begin
-    FObjectGenerator.Partner:= TEditorForm(Partner);
+  if Assigned(Partner) and not ReadOnly then
+  begin
+    FObjectGenerator.Partner := Partner;
     FObjectGenerator.SetBoundsForFormular(Self);
   end;
-  Modified:= True;
+  Modified := True;
   UpdateState;
 end;
 
-procedure TFGUIForm.EndOfResizeMoveDetected(var Msg: Tmessage);
+procedure TFGuiForm.EndOfResizeMoveDetected(var Msg: TMessage);
 begin
-  FGUIDesigner.ELDesigner.Active:= True;
+  FGUIDesigner.ELDesigner.Active := True;
 end;
 
-procedure TFGUIForm.Print;
+procedure TFGuiForm.Print;
 begin
   inherited Print;
 end;
 
-procedure TFGUIForm.UpdateState;
+procedure TFGuiForm.UpdateState;
 begin
-  FGuiDesigner.UpdateState(False);
+  FGUIDesigner.UpdateState(False);
 end;
 
-procedure TFGUIForm.EnsureOnDesktop;
-  var l, t, w, h: Integer;
+procedure TFGuiForm.EnsureOnDesktop;
+var
+  Lef, Top1: Integer;
 begin
-  w:= width;
-  h:= Height;
-  l:= Left;
-  if l < 0 then l:= 0;
-  if l + w > Screen.DesktopWidth then
-    l:= Screen.DesktopWidth - w;
-  t:= Top;
-  if t < 0 then t:= 0;
-  if t + h > Screen.DesktopHeight then
-    t:= Screen.DesktopHeight - h;
-  SetBounds(l, t, w, h);
+  Lef := Left;
+  if Lef < 0 then
+    Lef := 0;
+  if Lef + Width > Screen.DesktopWidth then
+    Lef := Screen.DesktopWidth - Width;
+  Top1 := Top;
+  if Top1 < 0 then
+    Top1 := 0;
+  if Top1 + Height > Screen.DesktopHeight then
+    Top1 := Screen.DesktopHeight - Height;
+  SetBounds(Lef, Top1, Width, Height);
 end;
 
-procedure TFGUIForm.setAttribute(Attr, Value, Typ: string);
+procedure TFGuiForm.SetAttribute(Attr, Value, Typ: string);
 begin
   if (Attr = 'MaxHeight') or (Attr = 'MaxWidth') then
-    Value:= IntToStr(FMaxWidth) + ', ' + IntToStr(FMaxHeight)
+    Value := IntToStr(FMaxWidth) + ', ' + IntToStr(FMaxHeight)
   else if (Attr = 'MinHeight') or (Attr = 'MinWidth') then
-    Value:= IntToStr(FMinWidth) + ', ' + IntToStr(FMinHeight)
+    Value := IntToStr(FMinWidth) + ', ' + IntToStr(FMinHeight)
   else if Attr = 'Title' then
-    Caption:= Value;
-  Widget.setAttribute(Attr, Value, Typ);
+    Caption := Value;
+  FWidget.SetAttribute(Attr, Value, Typ);
 end;
 
-function TFGuiForm.getAttributes(ShowAttributes: Integer): string;
+function TFGuiForm.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= Widget.GetAttributes(ShowAttributes);
+  Result := FWidget.GetAttributes(ShowAttributes);
 end;
 
-function TFGUIForm.getEvents(ShowEvents: Integer): string;
+function TFGuiForm.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= Widget.GetEvents(ShowEvents) + '|';
+  Result := FWidget.GetEvents(ShowEvents) + '|';
 end;
 
-function TFGuiForm.Without_(s: string): string;
+function TFGuiForm.Without_(Str: string): string;
 begin
-  if s = 'Destroy_'
-    then Result:= 'Destroy'
-    else Result:= s;
+  if Str = 'Destroy_' then
+    Result := 'Destroy'
+  else
+    Result := Str;
 end;
 
-function TFGuiForm.MakeHandler(event: string): string;
+function TFGuiForm.MakeHandler(Event: string): string;
 begin
-  Result:= Indent1 + 'def ' + Widget.HandlerNameAndParameter(Event) + CrLf +
-           Indent2 + '# ToDo insert source code here' + CrLf +
-           Indent2 + 'pass' + CrLf;
+  Result := FIndent1 + 'def ' + FWidget.HandlerNameAndParameter(Event) + CrLf +
+    FIndent2 + '# ToDo insert source code here' + CrLf + FIndent2 +
+    'pass' + CrLf;
 end;
 
-procedure TFGuiForm.setEvent(Event: string);
+procedure TFGuiForm.SetEvent(Event: string);
 begin
-  Event:= Without_(Event);
-  if not Partner.hasText('def ' + Widget.HandlerNameAndParameter(Event)) then
+  Event := Without_(Event);
+  if not Partner.hasText('def ' + FWidget.HandlerNameAndParameter(Event)) then
     Partner.InsertProcedure(CrLf + MakeHandler(Event));
-  if Partner.FrameType < 3
-    then Partner.InsertTkBinding('root', Event, MakeBinding(Event))
-    else Partner.InsertQtBinding(Indent2 + 'self.', MakeBinding(Event));
+  if Partner.FrameType < 3 then
+    Partner.InsertTkBinding('root', Event, MakeBinding(Event))
+  else
+    Partner.InsertQtBinding(FIndent2 + 'self.', MakeBinding(Event));
 end;
 
 function TFGuiForm.HandlerName(Event: string): string;
 begin
-  if Partner.FrameType < 3
-    then Result:= 'root_' + Without_(Event)
-    else Result:= 'MainWindow_' + Event;
+  if Partner.FrameType < 3 then
+    Result := 'root_' + Without_(Event)
+  else
+    Result := 'MainWindow_' + Event;
 end;
 
 function TFGuiForm.MakeBinding(Eventname: string): string;
-  var Event: TEvent;
+var
+  Event: TEvent;
 begin
-  if Partner.FrameType < 3 then begin
-    Eventname:= Without_(Eventname);
+  if Partner.FrameType < 3 then
+  begin
+    Eventname := Without_(Eventname);
     if Eventname = 'ButtonPress' then
-      Event:= FButtonPress
+      Event := FButtonPress
     else if Eventname = 'ButtonRelease' then
-      Event:= FButtonRelease
+      Event := FButtonRelease
     else if Eventname = 'KeyPress' then
-      Event:= FKeyPress
+      Event := FKeyPress
     else if Eventname = 'KeyRelease' then
-      Event:= FKeyRelease
+      Event := FKeyRelease
     else if Eventname = 'Activate' then
-      Event:= FActivate
+      Event := FActivate
     else if Eventname = 'Configure' then
-      Event:= FConfigure
+      Event := FConfigure
     else if Eventname = 'Deactivate' then
-      Event:= FDeactivate
+      Event := FDeactivate
     else if Eventname = 'Enter' then
-      Event:= FEnter
+      Event := FEnter
     else if Eventname = 'FocusIn' then
-      Event:= FFocusIn
+      Event := FFocusIn
     else if Eventname = 'FocusOut' then
-      Event:= FFocusOut
+      Event := FFocusOut
     else if Eventname = 'Leave' then
-      Event:= FLeave
+      Event := FLeave
     else if Eventname = 'Motion' then
-      Event:= FMotion
+      Event := FMotion
     else if Eventname = 'MouseWheel' then
-      Event:= FMouseWheel
+      Event := FMouseWheel
     else if Eventname = 'Destroy_' then
-      Event:= FDestroy
+      Event := FDestroy
     else if Eventname = 'Expose' then
-      Event:= FExpose
+      Event := FExpose
     else
-      Event:= FVisibility;
-    Result:= Indent2 + 'self.root.bind(''<' + Event.getModifiers(Eventname) +
-             Eventname + Event.getDetail(Eventname) + '>'', self.' + HandlerName(Eventname) + ')';
-  end else
-    Result:= Indent2 + 'self.' + Eventname + '.connect(self.' + HandlerName(Eventname) + ')';
+      Event := FVisibility;
+    Result := FIndent2 + 'self.root.bind(''<' + Event.getModifiers(Eventname) +
+      Eventname + Event.getDetail(Eventname) + '>'', self.' +
+      HandlerName(Eventname) + ')';
+  end
+  else
+    Result := FIndent2 + 'self.' + Eventname + '.connect(self.' +
+      HandlerName(Eventname) + ')';
 end;
 
 procedure TFGuiForm.DeleteEventHandler(const Event: string);
 begin
   Partner.DeleteMethod(HandlerName(Event));
-  var Binding:= MakeBinding(Event);
+  var
+  Binding := MakeBinding(Event);
   if Partner.FrameType >= 3 then
-    Binding:= Copy(Binding, 1, Pos('(', Binding));
-  Partner.DeleteBinding(Binding)
+    Binding := Copy(Binding, 1, Pos('(', Binding));
+  Partner.DeleteBinding(Binding);
 end;
 
-{--- IEditorCommands implementation -------------------------------------------}
+{ --- IEditorCommands implementation ------------------------------------------- }
 
 function TFGuiForm.CanCopy: Boolean;
 begin
-  Result:= True;
+  Result := True;
 end;
 
 function TFGuiForm.CanCut: Boolean;
 begin
-  Result:= FGUIDesigner.ELDesigner.CanCut;
+  Result := FGUIDesigner.ELDesigner.CanCut;
 end;
 
 function TFGuiForm.CanPaste: Boolean;
 begin
-  Result:= FGUIDesigner.ELDesigner.CanPaste;
+  Result := FGUIDesigner.ELDesigner.CanPaste;
 end;
 
 function TFGuiForm.CanRedo: Boolean;
 begin
-  Result:= False;
+  Result := False;
 end;
 
 function TFGuiForm.CanSelectAll: Boolean;
 begin
-  Result:= True;
+  Result := True;
 end;
 
 function TFGuiForm.CanUndo: Boolean;
 begin
-  Result:= False;
+  Result := False;
 end;
 
 procedure TFGuiForm.ExecCopy;
-  var BM: TBitmap;
+var
+  Bitmap: TBitmap;
 begin
   if FGUIDesigner.ELDesigner.CanCopy then
     FGUIDesigner.CopyClick(Self)
-  else begin
-    BM:= GetFormImage();
-    Clipboard.Assign(BM);
-    FreeAndNil(BM);
+  else
+  begin
+    Bitmap := GetFormImage;
+    Clipboard.Assign(Bitmap);
+    FreeAndNil(Bitmap);
   end;
 end;
 
@@ -625,27 +676,28 @@ procedure TFGuiForm.ExecUndo;
 begin
 end;
 
-procedure TFGUIForm.Paint;
+procedure TFGuiForm.Paint;
 begin
   inherited;
   Canvas.FillRect(ClientRect);
 end;
 
-procedure TFGuiForm.setWidgetPartners;
+procedure TFGuiForm.SetWidgetPartners;
 begin
-  for var i := 0 to ComponentCount - 1 do
-    if Components[i] is TBaseWidget then
-      (Components[i] as TBaseWidget).Partner:= Partner;
+  for var I := 0 to ComponentCount - 1 do
+    if Components[I] is TBaseWidget then
+      (Components[I] as TBaseWidget).Partner := Partner;
 end;
 
-procedure TFGuiForm.Zoom(_in: Boolean);
+procedure TFGuiForm.Zoom(In_: Boolean);
 begin
-  for var i:= 0 to ComponentCount - 1 do
-    if Components[i] is TBaseWidget then
-      (Components[i] as TBaseWidget).Zoom(_in);
-  if _in
-    then FontSize:= FontSize + GuiPyOptions.ZoomSteps
-    else FontSize:= Max(FontSize - GuiPyOptions.ZoomSteps, 6);
+  for var I := 0 to ComponentCount - 1 do
+    if Components[I] is TBaseWidget then
+      (Components[I] as TBaseWidget).Zoom(In_);
+  if In_ then
+    FontSize := FontSize + GuiPyOptions.ZoomSteps
+  else
+    FontSize := Max(FontSize - GuiPyOptions.ZoomSteps, 6);
 end;
 
 type
@@ -672,31 +724,34 @@ begin
   end;
 end;
 
-procedure TFGuiForm.getFontSize;
-  var CompFontSize, Value, Key, MaxFontCount, MaxFontKey: Integer;
-      FontSizeDictionary: TDictionary<Integer, Integer>;
+procedure TFGuiForm.GetFontSize;
+var
+  CompFontSize, Value, Key, MaxFontCount, MaxFontKey: Integer;
+  FontSizeDictionary: TDictionary<Integer, Integer>;
 begin
   FontSizeDictionary := TDictionary<Integer, Integer>.Create(20);
-  for var i:= 0 to ComponentCount - 1 do
-    if Components[i] is TBaseWidget then begin
-      CompFontSize:= (Components[i] as TBaseWidget).Font.Size;
+  for var I := 0 to ComponentCount - 1 do
+    if Components[I] is TBaseWidget then
+    begin
+      CompFontSize := (Components[I] as TBaseWidget).Font.Size;
       if FontSizeDictionary.TryGetValue(CompFontSize, Value) then
-        FontSizeDictionary.AddOrSetValue(CompFontSize, Value +1)
+        FontSizeDictionary.AddOrSetValue(CompFontSize, Value + 1)
       else
         FontSizeDictionary.AddOrSetValue(CompFontSize, 1);
     end;
-  MaxFontCount:= 0;
-  MaxFontKey:= 0;
+  MaxFontCount := 0;
+  MaxFontKey := 0;
   for Key in FontSizeDictionary.Keys do
-    if FontSizeDictionary.Items[Key] > MaxFontCount then begin
-      MaxFontCount:= FontSizeDictionary.Items[Key];
-      MaxFontKey:= Key;
+    if FontSizeDictionary[Key] > MaxFontCount then
+    begin
+      MaxFontCount := FontSizeDictionary[Key];
+      MaxFontKey := Key;
     end;
-  if MaxFontKey > 0
-    then FontSize:= MaxFontKey
-    else FontSize:= GuiPyOptions.GUIFontSize;
+  if MaxFontKey > 0 then
+    FontSize := MaxFontKey
+  else
+    FontSize := GuiPyOptions.GuiFontSize;
   FontSizeDictionary.Free;
 end;
 
 end.
-

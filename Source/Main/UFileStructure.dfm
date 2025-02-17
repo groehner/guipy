@@ -40,8 +40,6 @@ object FFileStructure: TFFileStructure
     OnMouseDown = vilFileStructureMouseDown
     Touch.InteractiveGestures = [igPan, igPressAndTap]
     Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
-    ExplicitWidth = 336
-    ExplicitHeight = 477
     Columns = <>
   end
   object PMFileStructure: TSpTBXPopupMenu

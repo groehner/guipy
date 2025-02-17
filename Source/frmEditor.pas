@@ -3569,22 +3569,22 @@ begin
 end;
 
 procedure TEditorForm.TBCommentClick(Sender: TObject);
-  var i, p, von, bis: Integer; s: string;
+  var i, p, From, To_: Integer; s: string;
       p1, p2: TBufferCoord;
 begin
   with ActiveSynEdit do begin
     BeginUpdate;
     if SelAvail then begin
-      Von:= BlockBegin.Line;
-      Bis:= BlockEnd.Line;
+      From:= BlockBegin.Line;
+      To_:= BlockEnd.Line;
       p1:= BlockBegin;
       p2:= BlockEnd;
       end
     else begin
-      Von:= CaretY; p1.Char:= CaretX; p1.Line:= CaretY;
-      Bis:= CaretY; p2.Char:= 0;
+      From:= CaretY; p1.Char:= CaretX; p1.Line:= CaretY;
+      To_:= CaretY; p2.Char:= 0;
     end;
-    for i:= von to bis do begin
+    for i:= From to To_ do begin
       s:= Lines[i-1];
       p:= Pos('#', s);
       if p = 1
@@ -3597,7 +3597,7 @@ begin
       BlockEnd:= p2;
     end;
     EndUpdate;
-    InvalidateLines(Von, Bis);
+    InvalidateLines(From, To_);
   end;
   Modified:= True;
 end;

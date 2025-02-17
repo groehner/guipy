@@ -24,7 +24,6 @@ object EditorForm: TEditorForm
     Padding.Bottom = 2
     TabOrder = 0
     StyleElements = [seFont]
-    ExplicitHeight = 666
     object ViewsTabControl: TSpTBXTabControl
       Left = 2
       Top = 2
@@ -37,14 +36,13 @@ object EditorForm: TEditorForm
       ActiveTabIndex = 0
       Images = PyIDEMainForm.vilImages
       OnActiveTabChange = ViewsTabControlActiveTabChange
-      ExplicitHeight = 223
       HiddenItems = <>
       object tabSource: TSpTBXTabItem
         Caption = 'Source'
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 516
+        CustomWidth = 379
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -67,8 +65,6 @@ object EditorForm: TEditorForm
         Height = 546
         Caption = 'Source'
         ImageIndex = -1
-        ExplicitTop = 30
-        ExplicitHeight = 632
         TabItem = 'tabSource'
         object SynEdit: TSynEdit
           Left = 48

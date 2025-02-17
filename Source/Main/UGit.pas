@@ -3,7 +3,12 @@ unit UGit;
 interface
 
 uses
-  System.Classes, Vcl.Controls, StdCtrls, ComCtrls, uEditAppIntfs, dlgPyIDEBase;
+  System.Classes,
+  Vcl.Controls,
+  Vcl.StdCtrls,
+  Vcl.ComCtrls,
+  uEditAppIntfs,
+  dlgPyIDEBase;
 
 type
   TFGit = class(TPyIDEDlgBase)
@@ -11,13 +16,13 @@ type
     BOK: TButton;
     BCancel: TButton;
     procedure FormShow(Sender: TObject);
-    procedure GitCall(const call, folder: string);
+    procedure GitCall(const Call, Folder: string);
     procedure LVRevisionsDblClick(Sender: TObject);
-    procedure ShowGUI(const Path: string);
+    procedure ShowGui(const Path: string);
     procedure ShowConsole(const Path: string);
     procedure ShowViewer(const Path: string);
   public
-    procedure Execute(Tag: Integer; aEditor: IEditor);
+    procedure Execute(Tag: Integer; AEditor: IEditor);
     function IsRepository(const Dir: string): Boolean;
   end;
 
@@ -26,26 +31,36 @@ var
 
 implementation
 
-uses Windows, SysUtils, Forms, Dialogs,
-     frmCommandOutput, cTools, JvDockControlForm, JvGnugettext,
-     UConfiguration, UUtils, frmEditor;
+uses
+  Winapi.Windows,
+  System.SysUtils,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  JvDockControlForm,
+  JvGnugettext,
+  cTools,
+  UUtils,
+  UConfiguration,
+  frmCommandOutput,
+  frmEditor;
 
 {$R *.dfm}
 
 procedure TFGit.FormShow(Sender: TObject);
 begin
-  with LVRevisions do begin
-    Columns.Items[0].Caption:= _('Revision');
-    Columns.Items[1].Caption:= _('Author');
-    Columns.Items[2].Caption:= _('Date');
-    Columns.Items[3].Caption:= _('Message');
+  with LVRevisions do
+  begin
+    Columns[0].Caption := _('Revision');
+    Columns[1].Caption := _('Author');
+    Columns[2].Caption := _('Date');
+    Columns[3].Caption := _('Message');
   end;
-  Caption:= _('Revisions');
+  Caption := _('Revisions');
 end;
 
 function TFGit.IsRepository(const Dir: string): Boolean;
 begin
-  Result:= DirectoryExists(withTrailingSlash(Dir) + '.git');
+  Result := DirectoryExists(withTrailingSlash(Dir) + '.git');
 end;
 
 procedure TFGit.LVRevisionsDblClick(Sender: TObject);
@@ -53,71 +68,92 @@ begin
   ModalResult := mrOk;
 end;
 
-procedure TFGit.ShowGUI(const Path: string);
+procedure TFGit.ShowGui(const Path: string);
 begin
-  ShellExecuteFile(GuiPyOptions.GitFolder + '\cmd\git-gui.exe', '', Path, SW_SHOWNORMAL)
+  ShellExecuteFile(GuiPyOptions.GitFolder + '\cmd\git-gui.exe', '', Path,
+    SW_SHOWNORMAL);
 end;
 
 procedure TFGit.ShowViewer(const Path: string);
 begin
-  ShellExecuteFile(GuiPyOptions.GitFolder + '\cmd\gitk.exe', '', Path, SW_SHOWNORMAL)
+  ShellExecuteFile(GuiPyOptions.GitFolder + '\cmd\gitk.exe', '', Path,
+    SW_SHOWNORMAL);
 end;
 
 procedure TFGit.ShowConsole(const Path: string);
 begin
-  ShellExecuteFile(GuiPyOptions.GitFolder + '\bin\bash.exe', '', Path, SW_SHOWNORMAL)
+  ShellExecuteFile(GuiPyOptions.GitFolder + '\bin\bash.exe', '', Path,
+    SW_SHOWNORMAL);
 end;
 
-procedure TFGit.GitCall(const call, folder: string);
-  var clone: Boolean; ExternalTool: TExternalTool;
+procedure TFGit.GitCall(const Call, Folder: string);
+var
+  Clone: Boolean;
+  ExternalTool: TExternalTool;
 begin
   if not OutputWindow.Visible then
     ShowDockForm(OutputWindow);
-  ExternalTool:= TExternalTool.Create;
-  ExternalTool.ApplicationName:= GuiPyOptions.GitFolder + '\bin\git.exe';
-  ExternalTool.Parameters:= call;
-  ExternalTool.WorkingDirectory:= folder;
-  OutputWindow.AddNewLine('git ' + call);
-  Screen.Cursor:= crHourGlass;
+  ExternalTool := TExternalTool.Create;
+  ExternalTool.ApplicationName := GuiPyOptions.GitFolder + '\bin\git.exe';
+  ExternalTool.Parameters := Call;
+  ExternalTool.WorkingDirectory := Folder;
+  OutputWindow.AddNewLine('git ' + Call);
+  Screen.Cursor := crHourGlass;
   try
-    clone:= (Pos('clone', call) > 0);
-    if clone then
+    Clone := (Pos('clone', Call) > 0);
+    if Clone then
       OutputWindow.AddNewLine('Please wait!');
     ExternalTool.Execute;
-    if clone then
+    if Clone then
       OutputWindow.AddNewLine('Done!');
   finally
     FreeAndNil(ExternalTool);
-    Screen.Cursor:= crDefault;
+    Screen.Cursor := crDefault;
   end;
 end;
 
-procedure TFGit.Execute(Tag: Integer; aEditor: IEditor);
-  var m, p, f: string;
+procedure TFGit.Execute(Tag: Integer; AEditor: IEditor);
+var
+  Message, PathName, FileName: string;
 begin
-  if (aEditor = nil) and (Tag in [1, 2, 5, 6, 7]) then
+  if not Assigned(AEditor) and (Tag in [1, 2, 5, 6, 7]) then
     Exit;
 
-  if aEditor.Modified then
-    TEditorForm(aEditor.Form).DoSave;
-  f:= ExtractFileName(aEditor.FileName);
-  p:= ExtractFilePath(aEditor.FileName);
+  if AEditor.Modified then
+    TEditorForm(AEditor.Form).DoSave;
+  FileName := ExtractFileName(AEditor.FileName);
+  PathName := ExtractFilePath(AEditor.FileName);
 
   case Tag of
-    1: GitCall('status', p);
-    2: GitCall('add ' + f, p);
-    3: if InputQuery('Commit', 'Message', m) then
-         FGit.GitCall('commit -m "' + m + '"', GuiPyOptions.GitLocalRepository);
-    4: GitCall('log --stat', GuiPyOptions.GitLocalRepository);
-    5: GitCall('reset HEAD ' + f, p);
-    6: GitCall('checkout -- ' + f, p);
-    7: GitCall('rm ' + f, p);
-    8: GitCall('remote -v', GuiPyOptions.GitLocalRepository);
-    9: GitCall('fetch ' + GuiPyOptions.GitRemoteRepository, GuiPyOptions.GitLocalRepository);
-   10: GitCall('push origin master', GuiPyOptions.GitLocalRepository);
-   11: ShowGui(GuiPyOptions.GitLocalRepository);
-   12: ShowViewer(GuiPyOptions.GitLocalRepository);
-   13: ShowConsole(GuiPyOptions.GitLocalRepository);
+    1:
+      GitCall('status', PathName);
+    2:
+      GitCall('add ' + FileName, PathName);
+    3:
+      if InputQuery('Commit', 'Message', Message) then
+        FGit.GitCall('commit -m "' + Message + '"',
+          GuiPyOptions.GitLocalRepository);
+    4:
+      GitCall('log --stat', GuiPyOptions.GitLocalRepository);
+    5:
+      GitCall('reset HEAD ' + FileName, PathName);
+    6:
+      GitCall('checkout -- ' + FileName, PathName);
+    7:
+      GitCall('rm ' + FileName, PathName);
+    8:
+      GitCall('remote -v', GuiPyOptions.GitLocalRepository);
+    9:
+      GitCall('fetch ' + GuiPyOptions.GitRemoteRepository,
+        GuiPyOptions.GitLocalRepository);
+    10:
+      GitCall('push origin master', GuiPyOptions.GitLocalRepository);
+    11:
+      ShowGui(GuiPyOptions.GitLocalRepository);
+    12:
+      ShowViewer(GuiPyOptions.GitLocalRepository);
+    13:
+      ShowConsole(GuiPyOptions.GitLocalRepository);
   end;
 end;
 

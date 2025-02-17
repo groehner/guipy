@@ -9,7 +9,7 @@ uses
   Vcl.VirtualImageList, Vcl.BaseImageCollection, SVGIconImageCollection;
 
 type
-  TFGUIDesigner = class (TPyIDEDlgBase)
+  TFGuiDesigner = class (TPyIDEDlgBase)
     GUIDesignerTimer: TTimer;
     PopupMenu: TSpTBXPopupMenu;
     MIPaste: TSpTBXItem;
@@ -114,7 +114,7 @@ type
   end;
 
 var
-  FGUIDesigner: TFGUIDesigner = nil;
+  FGUIDesigner: TFGuiDesigner = nil;
 
 implementation
 
@@ -156,7 +156,7 @@ const
     TQtTableView, TQtGraphicsView
   );
 
-procedure TFGUIDesigner.FormCreate(Sender: TObject);
+procedure TFGuiDesigner.FormCreate(Sender: TObject);
 begin
   inherited;
   ELDesigner:= TELDesigner.Create(Self);
@@ -179,7 +179,7 @@ begin
   ChangeStyle;
 end;
 
-procedure TFGUIDesigner.ChangeTo(Formular: TFGUIForm);
+procedure TFGuiDesigner.ChangeTo(Formular: TFGUIForm);
 begin
   if Assigned(ELDesigner) then begin
     if (ELDesigner.DesignControl <> Formular) or not ELDesigner.Active then begin
@@ -194,13 +194,13 @@ begin
   end;
 end;
 
-procedure TFGUIDesigner.ELDesignerChangeSelection(Sender: TObject);
+procedure TFGuiDesigner.ELDesignerChangeSelection(Sender: TObject);
 begin
   FObjectInspector.ChangeSelection(ELDesigner.SelectedControls);
   UpdateState(not Modified);
 end;
 
-procedure TFGUIDesigner.ELDesignerModified(Sender: TObject);
+procedure TFGuiDesigner.ELDesignerModified(Sender: TObject);
   var i: Integer; aControl: TControl;
 begin
   FObjectInspector.ELPropertyInspector.Modified;
@@ -213,13 +213,13 @@ begin
   UpdateState(Modified);
 end;
 
-procedure TFGUIDesigner.UpdateState(Modified: Boolean);
+procedure TFGuiDesigner.UpdateState(Modified: Boolean);
 begin
   if Modified and Assigned(ELDesigner.DesignControl) then
     TFGUIForm(ELDesigner.DesignControl).Modified:= True;
 end;
 
-procedure TFGUIDesigner.PopupMenuPopup(Sender: TObject);
+procedure TFGuiDesigner.PopupMenuPopup(Sender: TObject);
   var en: Boolean;
 begin
   SetEnabledMI(MICut, ELDesigner.CanCut);
@@ -235,7 +235,7 @@ begin
   SetEnabledMI(MIBackground, en);
 end;
 
-procedure TFGUIDesigner.MIDeleteClick(Sender: TObject);
+procedure TFGuiDesigner.MIDeleteClick(Sender: TObject);
 begin
   if not DesignForm.ReadOnly then begin
     ELDesigner.DeleteSelectedControls;
@@ -243,19 +243,19 @@ begin
   end;
 end;
 
-procedure TFGUIDesigner.MIForegroundClick(Sender: TObject);
+procedure TFGuiDesigner.MIForegroundClick(Sender: TObject);
 begin
   for var i:= 0 to ELDesigner.SelectedControls.Count - 1 do
     FObjectGenerator.ComponentToForeground(GetEditForm, ELDesigner.SelectedControls.Items[i]);
 end;
 
-procedure TFGUIDesigner.MIBackgroundClick(Sender: TObject);
+procedure TFGuiDesigner.MIBackgroundClick(Sender: TObject);
 begin
   for var i:= 0 to ELDesigner.SelectedControls.Count - 1 do
     FObjectGenerator.ComponentToBackground(GetEditForm, ELDesigner.SelectedControls.Items[i]);
 end;
 
-procedure TFGUIDesigner.MIAlignClick(Sender: TObject);
+procedure TFGuiDesigner.MIAlignClick(Sender: TObject);
   var AHorzAlign, AVertAlign: TELDesignerAlignType;
       Tag: Integer;
 begin
@@ -277,7 +277,7 @@ begin
   ELDesigner.SelectedControls.Align(AHorzAlign, AVertAlign);
 end;
 
-procedure TFGUIDesigner.ELDesignerControlInserting(Sender: TObject;
+procedure TFGuiDesigner.ELDesignerControlInserting(Sender: TObject;
   var AControlClass: TControlClass);
 begin
   if not DesignForm.ReadOnly then
@@ -290,7 +290,7 @@ type
     FFont: TFont;
   end;
 
-procedure TFGUIDesigner.ELDragDrop(Sender, ASource, ATarget: TObject; AX, AY: Integer);
+procedure TFGuiDesigner.ELDragDrop(Sender, ASource, ATarget: TObject; AX, AY: Integer);
   var LInsertingControl: TControl;
       LName: string;
 begin
@@ -308,7 +308,7 @@ begin
   end;
 end;
 
-procedure TFGUIDesigner.ELDragOver (Sender, ASource, ATarget: TObject; AX, AY: Integer;
+procedure TFGuiDesigner.ELDragOver (Sender, ASource, ATarget: TObject; AX, AY: Integer;
       AState: TDragState; var Accept: Boolean);
 begin
   Accept:= csAcceptsControls in (ATarget as TControl).ControlStyle;
@@ -405,7 +405,7 @@ begin
   end;
 end;
 
-procedure TFGUIDesigner.SetToolButton(Tag: Integer);
+procedure TFGuiDesigner.SetToolButton(Tag: Integer);
 begin
   ComponentToInsert:= nil;
   var EditorForm:= GetEditForm;
@@ -416,17 +416,17 @@ begin
   end;
 end;
 
-procedure TFGUIDesigner.MIZoomOutClick(Sender: TObject);
+procedure TFGuiDesigner.MIZoomOutClick(Sender: TObject);
 begin
   DesignForm.Zoom(False);
 end;
 
-procedure TFGUIDesigner.MIZoomInClick(Sender: TObject);
+procedure TFGuiDesigner.MIZoomInClick(Sender: TObject);
 begin
   DesignForm.Zoom(True);
 end;
 
-procedure TFGUIDesigner.ELDesignerControlInserted(Sender: TObject);
+procedure TFGuiDesigner.ELDesignerControlInserted(Sender: TObject);
   var Control: TControl;
 begin
   Control:= ELDesigner.SelectedControls[0];
@@ -442,7 +442,7 @@ begin
   UpdateState(Modified);
 end;
 
-procedure TFGUIDesigner.Save(const FileName: string; Formular: TFGUIForm);
+procedure TFGuiDesigner.Save(const FileName: string; Formular: TFGUIForm);
   var
     BinStream: TMemoryStream;
     FilStream: TFileStream;
@@ -469,7 +469,7 @@ begin
     TFGUIForm(ELDesigner.DesignControl).Modified:= False;
 end;
 
-procedure TFGUIDesigner.RemovePixelsPerInch0(FileName: string);
+procedure TFGuiDesigner.RemovePixelsPerInch0(FileName: string);
 begin
   var SL:= TStringList.Create;
   try
@@ -494,7 +494,7 @@ begin
   end;
 end;
 
-function TFGUIDesigner.GetPixelsPerInchOfFile(FileName: string): Integer;
+function TFGuiDesigner.GetPixelsPerInchOfFile(FileName: string): Integer;
 begin
   Result:= 96;
   var SL:= TStringList.Create;
@@ -515,7 +515,7 @@ begin
   end;
 end;
 
-function TFGUIDesigner.Open(const FileName: string): TFGUIForm;
+function TFGuiDesigner.Open(const FileName: string): TFGUIForm;
 var
   FilStream: TFileStream;
   BinStream: TMemoryStream;
@@ -597,7 +597,7 @@ begin
      ELDesigner.LockAll([lmNoMove, lmNoResize, lmNoDelete, lmNoInsertIn, lmNoCopy]);
 end;
 
-procedure TFGUIDesigner.FindMethod(Reader: TReader; const MethodName: string;
+procedure TFGuiDesigner.FindMethod(Reader: TReader; const MethodName: string;
     var Address: Pointer; var Error: Boolean);
 begin
   Address:= nil;
@@ -610,17 +610,17 @@ begin
   Handled:= True; // read form anyway
 end;
 
-procedure TFGUIDesigner.MICloseClick(Sender: TObject);
+procedure TFGuiDesigner.MICloseClick(Sender: TObject);
 begin
   TForm(ELDesigner.DesignControl).Close;
 end;
 
-procedure TFGUIDesigner.MIConfigurationClick(Sender: TObject);
+procedure TFGuiDesigner.MIConfigurationClick(Sender: TObject);
 begin
   FConfiguration.OpenAndShowPage('GUI designer');
 end;
 
-procedure TFGUIDesigner.ELDesignerDesignFormClose(Sender: TObject;
+procedure TFGuiDesigner.ELDesignerDesignFormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   Action:= caFree;
@@ -628,7 +628,7 @@ begin
     then TForm(ELDesigner.DesignControl).Close;
 end;
 
-procedure TFGUIDesigner.ELDesignerControlDeleting(Sender: TObject;
+procedure TFGuiDesigner.ELDesignerControlDeleting(Sender: TObject;
   SelectedControls: TELDesignerSelectedControls);
   var i: Integer;
 begin
@@ -644,13 +644,13 @@ begin
   FObjectGenerator.Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TFGUIDesigner.MIToSourceClick(Sender: TObject);
+procedure TFGuiDesigner.MIToSourceClick(Sender: TObject);
 begin
   TFGUIForm(ELDesigner.DesignControl).Partner.BringToFront;
   ELDesignerDblClick(Self);
 end;
 
-procedure TFGUIDesigner.MISnapToGridClick(Sender: TObject);
+procedure TFGuiDesigner.MISnapToGridClick(Sender: TObject);
 begin
   ELDesigner.SelectedControls.AlignToGrid;
   UpdateState(Modified);
@@ -658,7 +658,7 @@ begin
   ELDesigner.SnapToGrid:= MISnapToGrid.Checked;
 end;
 
-procedure TFGUIDesigner.ELDesignerDblClick(Sender: TObject);
+procedure TFGuiDesigner.ELDesignerDblClick(Sender: TObject);
   var s: string;
 begin
   if ELDesigner.SelectedControls.Count = 1 then begin
@@ -674,7 +674,7 @@ begin
   UpdateState(not Modified);
 end;
 
-procedure TFGUIDesigner.GUIDesignerTimerTimer(Sender: TObject);
+procedure TFGuiDesigner.GUIDesignerTimerTimer(Sender: TObject);
 begin
   GUIDesignerTimer.Enabled:= False;
   var EditForm:= GetEditForm;
@@ -686,19 +686,19 @@ begin
   end;
 end;
 
-procedure TFGUIDesigner.CutClick(Sender: TObject);
+procedure TFGuiDesigner.CutClick(Sender: TObject);
 begin
   ELDesigner.Cut;
   UpdateState(Modified);
 end;
 
-procedure TFGUIDesigner.CopyClick(Sender: TObject);
+procedure TFGuiDesigner.CopyClick(Sender: TObject);
 begin
   ELDesigner.Copy;
   UpdateState(not Modified);
 end;
 
-procedure TFGUIDesigner.PasteClick(Sender: TObject);
+procedure TFGuiDesigner.PasteClick(Sender: TObject);
   var i, j: Integer;
       PasteInContainer: Boolean;
       Container, Control: TControl;
@@ -740,7 +740,7 @@ begin
   UpdateState(Modified);
 end;
 
-procedure TFGUIDesigner.ELDesignerGetUniqueName(Sender: TObject;
+procedure TFGuiDesigner.ELDesignerGetUniqueName(Sender: TObject;
            const ABaseName: string; var AUniqueName: string);
   var i: Integer; s, b: string;
 begin
@@ -764,26 +764,26 @@ begin
     else Result:= nil;
 end;
 
-function TFGUIDesigner.getPath: string;
+function TFGuiDesigner.getPath: string;
 begin
   if Assigned(TFGUIForm(ELDesigner.DesignControl))
     then Result:= ExtractFilePath(TFGuiForm(ELDesigner.DesignControl).Pathname)
     else Result:= '';
 end;
 
-procedure TFGUIDesigner.SetEnabledMI(MenuItem: TSpTBXItem; Enabled: Boolean);
+procedure TFGuiDesigner.SetEnabledMI(MenuItem: TSpTBXItem; Enabled: Boolean);
 begin
   if Assigned(MenuItem) and (MenuItem.Enabled <> Enabled) then
     MenuItem.Enabled:= Enabled;
 end;
 
-procedure TFGUIDesigner.ScaleImages;
+procedure TFGuiDesigner.ScaleImages;
 begin
   vilPythonControls.SetSize(DesignForm.PPIScale(16), DesignForm.PPIScale(16));
   vilQtControls1616.SetSize(DesignForm.PPIScale(15), DesignForm.PPIScale(15));
 end;
 
-procedure TFGUIDesigner.ChangeStyle;
+procedure TFGuiDesigner.ChangeStyle;
 begin
   if IsStyledWindowsColorDark
     then PopupMenu.Images:= vilGuiDesignerDark

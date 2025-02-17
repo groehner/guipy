@@ -30,8 +30,8 @@ type
     Points: array[1..4] of TPoint;
     constructor Create;
     procedure init;
-    procedure enlargeRight(von, bis: Integer; dx, dy: Integer); overload;
-    procedure enlargeLeft(von, bis: Integer; dx, dy: Integer); overload;
+    procedure enlargeRight(From, To_: Integer; dx, dy: Integer); overload;
+    procedure enlargeLeft(From, To_: Integer; dx, dy: Integer); overload;
     function prev(n: Integer): Integer;
     procedure enlargeLeft(corner, dx: Integer); overload;
     procedure enlargeRight(corner, dx: Integer); overload;
@@ -166,15 +166,15 @@ begin
     Points[i]:= Point(0, 0);
 end;
 
-procedure TSquare.enlargeRight(von, bis: Integer; dx, dy: Integer);
+procedure TSquare.enlargeRight(From, To_: Integer; dx, dy: Integer);
 begin
-  case von of
+  case From of
     1: Points[1].y := Max(Points[1].y, +dy);
     2: Points[1].x := Max(Points[1].x, +dx);
     3: Points[1].y := Min(Points[1].y, -dy);
     4: Points[1].x := Min(Points[1].x, -dx);
   end;
-  case bis of
+  case To_ of
     1: Points[4].y := Min(Points[4].y, -dy);
     2: Points[4].x := Min(Points[4].x, -dx);
     3: Points[4].y := Max(Points[4].y, +dy);
@@ -182,15 +182,15 @@ begin
   end;
 end;
 
-procedure TSquare.enlargeLeft(von, bis: Integer; dx, dy: Integer);
+procedure TSquare.enlargeLeft(From, To_: Integer; dx, dy: Integer);
 begin
-  case von of
+  case From of
     1: Points[2].y := Min(Points[2].y, -dy);
     2: Points[2].x := Min(Points[2].x, -dx);
     3: Points[2].y := Max(Points[2].y, +dy);
     4: Points[2].x := Max(Points[2].x, +dx);
   end;
-  case bis of
+  case To_ of
     1: Points[3].y := Max(Points[3].y, +dy);
     2: Points[3].x := Max(Points[3].x, +dx);
     3: Points[3].y := Min(Points[3].y, -dy);
@@ -465,7 +465,7 @@ procedure TConnection.Draw(aCanvas: TCanvas; show: Boolean);
         yr:= yr + (R2.Left - xr)*absYLineDelta div absXLineDelta;
         xr:= R2.Left;
       end;
-      xr:= xr - tw; // links von der Verbindung
+      xr:= xr - tw; // left of connection
     end else if Quadrant = 3 then begin
       if yr < R2.Bottom then begin
         yr:= yr + tw*absYLineDelta div absXLineDelta;
@@ -484,7 +484,7 @@ procedure TConnection.Draw(aCanvas: TCanvas; show: Boolean);
          yr:= yr - ((xr -tw) - R2.Right)*absYLineDelta div absXLineDelta;
          xr:= R2.Right + tw;
       end;
-      xr:= xr - tw; // links von der Verbindung
+      xr:= xr - tw; // left of connection
     end;
     OffsetRect(R, xr, yr);
     Flags:= DT_EXPANDTABS or DT_WORDBREAK or DT_NOPREFIX;
