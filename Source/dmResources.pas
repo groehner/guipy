@@ -123,6 +123,7 @@ uses
   uCommonFunctions,
   cPyScripterSettings,
   cParameters,
+  cPySupportTypes,
   UConfiguration,
   UUtils;
 

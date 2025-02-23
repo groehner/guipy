@@ -449,7 +449,7 @@ end;
 procedure TFSequenceForm.MIPopupAsTextClick(Sender: TObject);
 begin
   DoSave;
-  PyIDEMainForm.DoOpenFile(Pathname, '', 1, True);
+  GI_EditorFactory.OpenFile(Pathname, '', 1, True);
 end;
 
 procedure TFSequenceForm.MIPopupConfigurationClick(Sender: TObject);

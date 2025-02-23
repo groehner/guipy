@@ -152,6 +152,7 @@ uses
   JvGnugettext,
   StringResources,
   cPyScripterSettings,
+  cPySupportTypes,
   cFileTemplates,
   UModel,
   UModelEntity,

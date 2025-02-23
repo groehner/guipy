@@ -80,8 +80,8 @@ uses
   Vcl.FileCtrl,
   JvGnugettext,
   StringResources,
-  uEditAppIntfs,
   uCommonFunctions,
+  cPySupportTypes,
   cPyControl,
   PythonVersions,
   VirtualTrees.Types;

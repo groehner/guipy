@@ -72,7 +72,7 @@ implementation
 uses
   Windows, Forms, SysUtils, Variants, Types, StrUtils, JvJVCLUtils, SynEditKeyCmds,
   cPyControl, PythonEngine, frmVariables, frmPythonII, uEditAppIntfs, uCommonFunctions,
-  System.RegularExpressions, UConfiguration, UUtils;
+  System.RegularExpressions, UConfiguration, UUtils, cPySupportTypes;
 
 constructor TLivingObjects.Create;
 begin

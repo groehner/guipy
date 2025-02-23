@@ -146,6 +146,7 @@ uses
   uCommonFunctions,
   cPyBaseDebugger,
   cPyDebugger,
+  cPySupportTypes,
   cPyControl,
   dmResources;
 

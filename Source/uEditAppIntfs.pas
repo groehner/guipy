@@ -18,7 +18,6 @@ uses
   Vcl.Forms,
   Vcl.ImgList,
   JvAppStorage,
-  JclNotify,
   JclSysUtils,
   PythonEngine,
   PythonVersions,
@@ -26,16 +25,6 @@ uses
   SpTBXItem;
 
 type
-  TBreakPoint = class(TPersistent)
-  private
-    fLineNo : Integer;
-    fDisabled : Boolean;
-    fCondition : string;
-  published
-    property LineNo : Integer read fLineNo write fLineNo;
-    property Disabled : Boolean read fDisabled write fDisabled;
-    property Condition : string read fCondition write fCondition;
-  end;
 
   IEditor = interface;
 
@@ -134,7 +123,7 @@ type
     procedure SetHasSearchHighlight(Value : Boolean);
     procedure SetFileEncoding(FileEncoding : TFileSaveFormat);
     procedure SetHighlighter(const HighlighterName: string);
-    procedure OpenFile(const AFileName: string; HighlighterName : string = '');
+    procedure OpenLocalFile(const AFileName: string; HighlighterName : string = '');
     procedure OpenRemoteFile(const FileName, ServerName: string);
     function SaveToRemoteFile(const FileName, ServerName: string) : Boolean;
     function HasPythonFile : Boolean;
@@ -167,15 +156,16 @@ type
   end;
 
   IFileFactory = interface
+    function CreateFile(FileKind: TFileKind; TabControlIndex: Integer = 1): IFile;
     function CanCloseAll: Boolean;
     procedure CloseAll;
-    function NewFile(FileKind: TFileKind; TabControlIndex: Integer = 1): IFile;
     function GetFileCount: Integer;
     function GetFile(Index: Integer): IFile;
     function GetFileByName(const Name : string): IFile;
     function GetFileByNameAndType(const Name: string; Kind: TFileKind): IFile;
     function GetFileByType(Kind: TFileKind): IFile;
     function GetFileByFileId(const Name : string): IFile;
+    function NewFile(FileKind: TFileKind; TabControlIndex: Integer = 1): IFile;
     procedure RemoveFile(aFile: IFile);
     procedure ApplyToFiles(const Proc: TProc<IFile>);
     function FirstFileCond(const Predicate: TPredicate<IFile>): IFile;
@@ -184,19 +174,25 @@ type
     property FactoryFile[Index: Integer]: IFile read GetFile;  default;
   end;
 
+  TInvalidationType = (itLine, itGutter, itBoth);
+
   IEditorFactory = interface(IFileFactory)
   ['{FDAE7FBD-4B61-4D7C-BEE6-DB7740A225E8}']
     function CanCloseAll: Boolean;
     procedure CloseAll;
-    function NewEditor(TabControlIndex:Integer = 1): IEditor;
+    function OpenFile(AFileName: string; HighlighterName: string = '';
+       TabControlIndex: Integer = 1; AsEditor: Boolean = False): IFile;
     function GetEditorCount: Integer;
     function GetEditor(Index: Integer): IEditor;
     function GetEditorByName(const Name : string): IEditor;
     function GetEditorByFileId(const Name : string): IEditor;
+    function NewEditor(TabControlIndex:Integer = 1): IEditor;
     procedure RemoveEditor(AEditor: IEditor);
     function RegisterViewFactory(ViewFactory : IEditorViewFactory): Integer;
     function GetViewFactoryCount: Integer;
     function GetViewFactory(Index: Integer): IEditorViewFactory;
+    procedure InvalidatePos(AFileName: string; ALine: Integer;
+      AType: TInvalidationType);
     procedure SetupEditorViewsMenu(ViewsMenu: TSpTBXItem; IL: TCustomImageList);
     procedure UpdateEditorViewsMenu(ViewsMenu: TSpTBXItem);
     procedure CreateRecoveryFiles;
@@ -267,7 +263,8 @@ type
     procedure AddMessage(const Msg: string; const FileName : string = '';
        Line : Integer = 0; Offset : Integer = 0; SelLen : Integer = 0);
     procedure ClearMessages;
-    procedure ShowPythonTraceback(Traceback: TPythonTraceback; SkipFrames : Integer = 1; ShowWindow : Boolean = False);
+    procedure ShowPythonTraceback(Traceback: TPythonTraceback;
+      SkipFrames : Integer = 1; ShowWindow : Boolean = False);
   end;
 
   IUnitTestServices = interface
@@ -299,7 +296,7 @@ type
     function GetActiveFile : IFile;
     procedure WriteStatusMsg(const S: string);
     function FileIsPythonSource(const FileName: string): Boolean;
-    function ShowFilePosition(FileName : string; Line: Integer = 0;
+    function ShowFilePosition(FileName : string; Line: Integer = 1;
       Offset : Integer = 1; SelLen : Integer = 0;
       ForceToMiddle : Boolean = True; FocusEditor : Boolean = True) : Boolean;
     procedure ClearPythonWindows;
@@ -326,50 +323,6 @@ type
     property Logger: TJclSimpleLog read GetLogger;
   end;
 
-  IPyControl = interface
-  ['{DE1C1145-DC0F-4829-B36B-74EC818E168E}']
-    function PythonLoaded: Boolean;
-    function Running: Boolean;
-    function Inactive: Boolean;
-    function GetPythonVersion: TPythonVersion;
-    function GetActiveSSHServerName: string;
-    function GetOnPythonVersionChange: TJclNotifyEventBroadcast;
-    function AddPathToInternalPythonPath(const Path: string): IInterface;
-    procedure Pickle(AValue: Variant; FileName: string);
-    property PythonVersion: TPythonVersion read GetPythonVersion;
-    property ActiveSSHServerName: string read GetActiveSSHServerName;
-    property OnPythonVersionChange: TJclNotifyEventBroadcast
-      read GetOnPythonVersionChange;
-  end;
-
-  TPyInterpreterPropmpt = (pipNormal, pipDebug, pipPostMortem);
-  IPyInterpreter = interface
-  ['{6BAAD187-B00E-4E2A-B01D-C47EED922E59}']
-    procedure ShowWindow;
-    procedure AppendPrompt;
-    procedure RemovePrompt;
-    procedure AppendText(const S: string);
-    procedure PrintEngineType;
-    procedure PrintInterpreterBanner(AVersion: string = ''; APlatform: string = '');
-    procedure WritePendingMessages;
-    procedure ClearPendingMessages;
-    procedure ClearDisplay;
-    procedure ClearLastPrompt;
-    function OutputSuppressor : IInterface;
-    procedure StartOutputMirror(const AFileName : string; Append : Boolean);
-    procedure StopFileMirror;
-    procedure UpdatePythonKeywords;
-    procedure SetPyInterpreterPrompt(Pip: TPyInterpreterPropmpt);
-    procedure ReinitInterpreter;
-    function GetPythonIO: TPythonInputOutput;
-    function GetEditor: TCustomSynEdit;
-    function GetShowOutput: Boolean;
-    procedure SetShowOutput(const Value: Boolean);
-    property Editor: TCustomSynEdit read GetEditor;
-    property PythonIO: TPythonInputOutput read GetPythonIO;
-    property ShowOutput: Boolean read GetShowOutput write SetShowOutput;
-  end;
-
   ISSHServices = interface
   ['{255E5E08-DCFD-481A-B0C3-F0AB0C5A1571}']
     function FormatFileName(Server, FileName : string): string;
@@ -392,8 +345,6 @@ var
   GI_SearchCmds: ISearchCommands;
 
   GI_PyIDEServices: IPyIDEServices;
-  GI_PyControl: IPyControl;
-  GI_PyInterpreter: IPyInterpreter;
   GI_SSHServices: ISSHServices;
 
 implementation

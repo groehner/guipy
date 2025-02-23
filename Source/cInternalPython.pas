@@ -76,6 +76,7 @@ uses
   VarPyth,
   SynHighlighterPython,
   cPyScripterSettings,
+  cPySupportTypes,
   uCommonFunctions;
 
 { TInternalPython }

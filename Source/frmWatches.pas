@@ -114,7 +114,6 @@ uses
   JvGnugettext,
   PythonEngine,
   StringResources,
-  uEditAppIntfs,
   uCommonFunctions,
   dmResources,
   frmPyIDEMain,

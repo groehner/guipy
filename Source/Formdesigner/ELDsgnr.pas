@@ -585,6 +585,7 @@ type
     procedure Modified;
     procedure Notification(AnObject: TPersistent; Operation: TOperation);
     procedure CanInsertComponent(AComponent: TComponent);
+    function GetExcludedStyleElements(AControl: TControl): TStyleElements;
     { IDEngDesigner }
     function GetCustomForm: TCustomForm;
     procedure SetCustomForm(Value: TCustomForm);
@@ -843,6 +844,11 @@ begin
 end;
 
 procedure TDEng.CanInsertComponent(AComponent: TComponent);
+begin
+  // otherwise the compiler will complain!
+end;
+
+function TDEng.GetExcludedStyleElements(AControl: TControl): TStyleElements;
 begin
   // otherwise the compiler will complain!
 end;

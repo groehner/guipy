@@ -1,4 +1,4 @@
-{-----------------------------------------------------------------------------
+﻿{-----------------------------------------------------------------------------
  Unit Name: uCommonFunctions
  Author:    Kiriakos Vlahos
  Date:      23-Jun-2005
@@ -241,6 +241,14 @@ function RegisterApplicationRestart(Flags: DWORD = 0): Boolean;
 {UnregisterApplicationRestart}
 procedure UnregisterApplicationRestart;
 
+{Checks whether a file downloaded from the Internet is blocked}
+function IsFileBlocked(const FileName: string): Boolean;
+
+{Unblock a file downloaded from the Internet}
+procedure UnblockFile(const FileName: string);
+
+(* Replaces <>"& with HTML entities *)
+function HTMLEncode(const Str: string): string;
 
 type
   TMatchHelper = record helper for TMatch
@@ -363,7 +371,8 @@ uses
   VarPyth,
   PythonEngine,
   StringResources,
-  uEditAppIntfs;
+  uEditAppIntfs,
+  cPySupportTypes;
 
 function GetIconIndexFromFile(const AFileName: string;
   const ASmall: Boolean): Integer;
@@ -471,25 +480,15 @@ end;
 (* from cStrings end *)
 
 function LightenColor(Color:TColor; Percentage:Integer):TColor;
-var
-   wRGB, wR, wG, wB : longint;
 begin
-   wRGB := ColorToRGB(Color);
-   wR := Min(round(GetRValue(wRGB) * (1+(percentage / 100))), 255);
-   wG := Min(round(GetGValue(wRGB) * (1+(percentage / 100))), 255);
-   wB := Min(round(GetBValue(wRGB) * (1+(percentage / 100))), 255);
-   result := RGB(wR, wG, wB);
+   Result := Winapi.ShLwApi.ColorAdjustLuma(ColorToRGB(Color),
+     Percentage * 10, True);
 end;
 
 function DarkenColor(Color:TColor; Percentage:Integer):TColor;
-var
-   wRGB, wR, wG, wB : longint;
 begin
-   wRGB := ColorToRGB(Color);
-   wR := round(GetRValue(wRGB) / (1+(percentage / 100)));
-   wG := round(GetGValue(wRGB) / (1+(percentage / 100)));
-   wB := round(GetBValue(wRGB) / (1+(percentage / 100)));
-   result := RGB(wR, wG, wB);
+   Result := Winapi.ShLwApi.ColorAdjustLuma(ColorToRGB(Color),
+      -Percentage * 10, True);
 end;
 
 function ApplicationVersion : string;
@@ -1967,6 +1966,59 @@ begin
   @UnregisterApplicationRestart := GetProcAddress(GetModuleHandle('kernel32.dll'), 'UnregisterApplicationRestart');
   if @UnregisterApplicationRestart <> nil then
     UnRegisterApplicationRestart();
+end;
+
+function IsFileBlocked(const FileName: string): Boolean;
+const
+  STREAM_NAME: PChar = ':Zone.Identifier';
+var
+  FileHandle: THandle;
+begin
+  FileHandle := CreateFile(PChar(FileName + STREAM_NAME), GENERIC_READ,
+    FILE_SHARE_READ, nil, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+  Result := FileHandle <> INVALID_HANDLE_VALUE;
+  if Result then
+    CloseHandle(FileHandle);
+end;
+
+procedure UnblockFile(const FileName: string);
+const
+  STREAM_NAME: PChar = ':Zone.Identifier';
+var
+  FileHandle: THandle;
+begin
+  FileHandle := CreateFile(PChar(FileName + STREAM_NAME), GENERIC_WRITE, 0, nil,
+    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+  if FileHandle <> INVALID_HANDLE_VALUE then
+  begin
+    CloseHandle(FileHandle);
+    DeleteFile(PChar(FileName + STREAM_NAME));
+  end;
+end;
+
+function HTMLEncode(const Str: string): string;
+var
+  Chr: Char;
+  SB: TStringBuilder;
+begin
+  if Str = '' then Exit('');
+
+  SB := TStringBuilder.Create(Length(Str) * 2); // Initial capacity estimate
+  try
+    for Chr in Str do
+    begin
+      case Chr of
+        '&': SB.Append('&amp;');
+        '"': SB.Append('&quot;');
+        '<': SB.Append('&lt;');
+        '>': SB.Append('&gt;');
+        else SB.Append(Chr);
+      end;
+    end;
+    Result := SB.ToString;
+  finally
+    SB.Free;
+  end;
 end;
 
 { TMatchHelper }

@@ -4,8 +4,8 @@ inherited RunConfigurationForm: TRunConfigurationForm
   ClientHeight = 436
   ClientWidth = 399
   OnDestroy = FormDestroy
-  ExplicitWidth = 411
-  ExplicitHeight = 474
+  ExplicitWidth = 415
+  ExplicitHeight = 475
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
@@ -14,8 +14,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
     Height = 436
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 395
-    ExplicitHeight = 435
     DesignSize = (
       399
       436)
@@ -148,7 +146,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
             Width = 2
           end>
         HideSelection = True
-        Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         ScrollBars = ssNone
         ScrollbarAnnotations = <
           item
@@ -166,8 +163,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
             AnnPos = sbpRight
             FullRow = True
           end>
-        SelectedColor.Alpha = 0.400000005960464500
-        VisibleSpecialChars = []
         WantReturns = False
       end
       object SynParameters: TSynEdit
@@ -207,7 +202,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
             Width = 2
           end>
         HideSelection = True
-        Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         ScrollBars = ssNone
         ScrollbarAnnotations = <
           item
@@ -225,8 +219,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
             AnnPos = sbpRight
             FullRow = True
           end>
-        SelectedColor.Alpha = 0.400000005960464500
-        VisibleSpecialChars = []
         WantReturns = False
       end
       object SynWorkDir: TSynEdit
@@ -266,7 +258,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
             Width = 2
           end>
         HideSelection = True
-        Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         ScrollBars = ssNone
         ScrollbarAnnotations = <
           item
@@ -284,8 +275,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
             AnnPos = sbpRight
             FullRow = True
           end>
-        SelectedColor.Alpha = 0.400000005960464500
-        VisibleSpecialChars = []
         WantReturns = False
       end
       object btnFileName: TButton
@@ -449,7 +438,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
             Width = 2
           end>
         HideSelection = True
-        Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         ScrollBars = ssNone
         ScrollbarAnnotations = <
           item
@@ -467,8 +455,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
             AnnPos = sbpRight
             FullRow = True
           end>
-        SelectedColor.Alpha = 0.400000005960464500
-        VisibleSpecialChars = []
         WantReturns = False
       end
       object btnOutputFileName: TButton
@@ -514,8 +500,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Default = True
       ModalResult = 1
       TabOrder = 5
-      ExplicitLeft = 131
-      ExplicitTop = 401
     end
     object btnCancel: TButton
       Left = 219
@@ -527,8 +511,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 6
-      ExplicitLeft = 215
-      ExplicitTop = 401
     end
     object btnHelp: TButton
       Left = 303
@@ -539,8 +521,6 @@ inherited RunConfigurationForm: TRunConfigurationForm
       Caption = '&Help'
       TabOrder = 7
       OnClick = btnHelpClick
-      ExplicitLeft = 299
-      ExplicitTop = 401
     end
   end
   object vilImages: TVirtualImageList

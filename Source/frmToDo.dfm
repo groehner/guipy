@@ -5,23 +5,25 @@ inherited ToDoWindow: TToDoWindow
   Caption = 'To Do List'
   ClientHeight = 257
   ClientWidth = 468
+  StyleElements = [seFont, seClient, seBorder]
   ExplicitWidth = 484
   ExplicitHeight = 296
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 468
     Height = 257
-    ExplicitWidth = 492
-    ExplicitHeight = 293
+    ExplicitWidth = 468
+    ExplicitHeight = 257
     inherited FGPanel: TPanel
-      Width = 488
-      Height = 289
-      ExplicitWidth = 488
-      ExplicitHeight = 289
+      Width = 464
+      Height = 253
+      StyleElements = [seFont, seClient, seBorder]
+      ExplicitWidth = 464
+      ExplicitHeight = 253
       object TBXDock1: TSpTBXDock
         Left = 0
         Top = 0
-        Width = 488
+        Width = 464
         Height = 30
         AllowDrag = False
         DoubleBuffered = True
@@ -64,13 +66,14 @@ inherited ToDoWindow: TToDoWindow
       object ToDoView: TVirtualStringTree
         Left = 0
         Top = 30
-        Width = 488
-        Height = 259
+        Width = 464
+        Height = 223
         Align = alClient
         Alignment = taRightJustify
         BevelInner = bvNone
         BevelOuter = bvNone
         BorderStyle = bsNone
+        DefaultNodeHeight = 19
         Header.AutoSizeIndex = 1
         Header.MainColumn = 1
         Header.Options = [hoAutoResize, hoColumnResize, hoHotTrack, hoOwnerDraw, hoShowSortGlyphs, hoVisible]
@@ -110,7 +113,7 @@ inherited ToDoWindow: TToDoWindow
             MinWidth = 100
             Position = 1
             Text = 'Description'
-            Width = 203
+            Width = 179
           end
           item
             Layout = blGlyphRight

@@ -5,13 +5,19 @@ inherited WatchesWindow: TWatchesWindow
   Caption = 'Watches'
   ClientHeight = 229
   ClientWidth = 760
+  ExplicitWidth = 776
+  ExplicitHeight = 268
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 760
     Height = 229
+    ExplicitWidth = 760
+    ExplicitHeight = 229
     inherited FGPanel: TPanel
       Width = 756
       Height = 225
+      ExplicitWidth = 756
+      ExplicitHeight = 225
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -29,6 +35,7 @@ inherited WatchesWindow: TWatchesWindow
           BevelInner = bvNone
           BevelOuter = bvNone
           BorderStyle = bsNone
+          DefaultNodeHeight = 19
           Header.AutoSizeIndex = -1
           Header.Options = [hoAutoResize, hoColumnResize, hoDblClickResize, hoHotTrack, hoOwnerDraw, hoVisible]
           HintMode = hmTooltip

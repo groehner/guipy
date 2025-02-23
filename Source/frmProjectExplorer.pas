@@ -242,6 +242,7 @@ uses
   uHighlighterProcs,
   cPyBaseDebugger,
   cPyScripterSettings,
+  cPySupportTypes,
   cPyControl,
   cSSHSupport,
   dlgRemoteFile;
@@ -315,11 +316,10 @@ end;
 
 procedure TProjectExplorerWindow.actProjectAddFilesExecute(Sender: TObject);
 var
-  i : Integer;
-  Editor : IEditor;
-  Data : PNodeDataRec;
+  Editor: IEditor;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
-  ProjectNode : TProjectFileNode;
+  ProjectNode: TProjectFileNode;
 begin
   Node := ExplorerTree.GetFirstSelected;
   if Assigned(Node) then begin
@@ -327,7 +327,8 @@ begin
     if Data.ProjectNode is TProjectFilesNode then
     begin
       Application.ProcessMessages;  // to update the display until the dialog appears
-      with ResourcesDataModule.dlgFileOpen do begin
+      with ResourcesDataModule.dlgFileOpen do
+      begin
         Title := _(SAddFilesToProject);
         FileName := '';
         Filter := ResourcesDataModule.Highlighters.FileFilters + _(SFilterAllFiles);
@@ -338,11 +339,14 @@ begin
           InitialDir := TPath.GetDirectoryName(Editor.FileName);
 
         Options := Options + [ofAllowMultiSelect];
-        if Execute then begin
-          for i := 0 to Files.Count - 1 do begin
-            if not ActiveProject.HasFile(Files[i]) then begin
+        if Execute then
+        begin
+          for var FName in Files do
+          begin
+            if not ActiveProject.HasFile(FName) then
+            begin
               ProjectNode := TProjectFileNode.Create;
-              ProjectNode.FileName := Files[i];
+              ProjectNode.FileName := FName;
               Data.ProjectNode.AddChild(ProjectNode);
             end;
           end;
@@ -692,8 +696,10 @@ begin
   begin
     Data := ExplorerTree.GetNodeData(Node);
     if Data.ProjectNode is TProjectFileNode and (TProjectFileNode(Data.ProjectNode).FileName <> '') then
-    with PyIDEMainForm do begin
-      DoOpenFile(GI_PyIDEServices.ReplaceParams(TProjectFileNode(Data.ProjectNode).FileName),
+    with PyIDEMainForm do
+    begin
+      GI_EditorFactory.OpenFile
+      (GI_PyIDEServices.ReplaceParams(TProjectFileNode(Data.ProjectNode).FileName),
         '', TabControlIndex(ActiveTabControl));
     end;
   end;

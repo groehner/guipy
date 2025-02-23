@@ -10,31 +10,31 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   inherited BGPanel: TPanel
     Width = 99
     Height = 249
-    ExplicitWidth = 147
-    ExplicitHeight = 333
+    ExplicitWidth = 99
+    ExplicitHeight = 249
     inherited FGPanel: TPanel
-      Width = 215
-      Height = 449
-      ExplicitWidth = 207
-      ExplicitHeight = 437
+      Width = 95
+      Height = 245
+      ExplicitWidth = 95
+      ExplicitHeight = 245
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 215
-        Height = 449
+        Width = 95
+        Height = 245
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 207
-        ExplicitHeight = 437
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 30
-          Width = 215
-          Height = 419
+          Width = 95
+          Height = 215
           Align = alClient
           BorderStyle = bsNone
+          DefaultNodeHeight = 19
           Header.AutoSizeIndex = -1
+          Header.Height = 15
           Header.MainColumn = -1
           Header.Options = [hoColumnResize, hoDrag]
           HintMode = hmHintAndDefault
@@ -66,11 +66,10 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
         object SpTBXDock1: TSpTBXDock
           Left = 0
           Top = 0
-          Width = 215
+          Width = 95
           Height = 30
           AllowDrag = False
           DoubleBuffered = True
-          ExplicitWidth = 207
           object SpTBXToolbar1: TSpTBXToolbar
             Left = 0
             Top = 0

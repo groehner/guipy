@@ -128,7 +128,6 @@ inherited FileTemplatesDialog: TFileTemplatesDialog
             Width = 2
           end>
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
-        SelectedColor.Alpha = 0.400000005960464500
         TabWidth = 4
         ExplicitWidth = 504
       end

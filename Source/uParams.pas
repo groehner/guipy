@@ -68,6 +68,7 @@ uses
   uEditAppIntfs,
   uCommonFunctions,
   cPyScripterSettings,
+  cPySupportTypes,
   cParameters,
   cPyBaseDebugger,
   cProjectClasses,

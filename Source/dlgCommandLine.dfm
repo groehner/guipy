@@ -2,11 +2,9 @@ inherited CommandLineDlg: TCommandLineDlg
   HelpContext = 910
   ActiveControl = SynParameters
   Caption = 'Command Line Parameters'
-  ClientHeight = 172
   ClientWidth = 528
   OnDestroy = FormDestroy
-  ExplicitWidth = 540
-  ExplicitHeight = 210
+  ExplicitWidth = 544
   TextHeight = 15
   object Panel: TPanel
     Left = 0
@@ -15,8 +13,6 @@ inherited CommandLineDlg: TCommandLineDlg
     Height = 172
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 524
-    ExplicitHeight = 171
     DesignSize = (
       528
       172)
@@ -85,7 +81,6 @@ inherited CommandLineDlg: TCommandLineDlg
           Width = 2
         end>
       HideSelection = True
-      Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
       RightEdge = 0
       ScrollBars = ssNone
       ScrollbarAnnotations = <
@@ -104,11 +99,7 @@ inherited CommandLineDlg: TCommandLineDlg
           AnnPos = sbpRight
           FullRow = True
         end>
-      SelectedColor.Alpha = 0.400000005960464500
-      VisibleSpecialChars = []
       WantReturns = False
-      ExplicitTop = 83
-      ExplicitWidth = 476
     end
     object TBXButton1: TSpTBXButton
       Left = 497
@@ -121,8 +112,6 @@ inherited CommandLineDlg: TCommandLineDlg
       ShowHint = True
       TabOrder = 5
       DropDownMenu = TBXPopupHistory
-      ExplicitLeft = 493
-      ExplicitTop = 82
     end
     object cbUseCommandLine: TCheckBox
       Left = 13
@@ -143,8 +132,6 @@ inherited CommandLineDlg: TCommandLineDlg
       ModalResult = 1
       TabOrder = 1
       OnClick = OKButtonClick
-      ExplicitLeft = 136
-      ExplicitTop = 136
     end
     object btnCancel: TButton
       Left = 234
@@ -156,8 +143,6 @@ inherited CommandLineDlg: TCommandLineDlg
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 2
-      ExplicitLeft = 230
-      ExplicitTop = 136
     end
     object btnHelp: TButton
       Left = 329
@@ -168,8 +153,6 @@ inherited CommandLineDlg: TCommandLineDlg
       Caption = '&Help'
       TabOrder = 3
       OnClick = btnHelpClick
-      ExplicitLeft = 325
-      ExplicitTop = 136
     end
   end
   object TBXPopupHistory: TSpTBXPopupMenu

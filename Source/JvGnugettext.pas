@@ -1,4 +1,4 @@
-{*------------------------------------------------------------------------------
+﻿{*------------------------------------------------------------------------------
   GNU gettext translation system for Delphi, Kylix, C++ Builder and others.
   All parts of the translation system are kept in this unit.
   @author Lars B. Dybdahl and others
@@ -50,7 +50,7 @@ unit JvGnugettext;
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 interface
-{$I jedi\jedi.inc}
+{$I D:\GitProjekte\jcl\jcl\source\include\jedi\jedi.inc}
 // If the conditional define DXGETTEXTDEBUG is defined, debugging log is activated.
 // Use DefaultInstance.DebugLogToFile() to write the log to a file.
 { $define DXGETTEXTDEBUG}

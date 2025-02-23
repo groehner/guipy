@@ -327,7 +327,6 @@ const
   SThemeHint = 'Set theme to "%s".';
   SSaveCurrentLayout = 'Save current Layout';
   SLayoutName = 'Layout Name:';
-  SEditBreakpointCond = 'Edit Breakpoint Condition';
   SEnterPythonExpression = 'Enter Python expression:';
   SDeleteLayouts = 'Delete Layouts';
   SSelectLayouts = 'Please select the layouts you want to delete and press the OK button:';
@@ -357,6 +356,7 @@ const
   SOnlyJupyterFiles  = 'Web preview is only available for Jupyter JSON files';
   SNoJupyter = 'The ''jupyter'' package is not available.' + SLineBreak + 'Please install ''jupyter'' first.';
   SWebView2Error = 'The WebView2 control creation failed.' + SLineBreak +  'Please install the WebView2 runtime.';
+  SWebNavigationError = 'Error in loading html in the browser';
   SExternalProcessRunning = 'An external process is still running.' + SLineBreak +
                             'Please terminate it first from the ''Output'' window.';
   SDictionaryNA = 'The dictionary for language code "%s" is not available.' + sLineBreak +
@@ -461,7 +461,6 @@ const
   SCouldNotFindIdentInScope = 'Could not find identifier "%s" in scope "%s"';
   SCouldNotInferType = 'Could not infer type from expresson "%s"';
   SCouldInferFunctionReturnType = 'Could not infer return type of function "%s"';
-  SRefactoryEngineBusy = 'Refactoring engine is busy';
   SPythonKeyword = 'Python keyword';
 
   // File Templates

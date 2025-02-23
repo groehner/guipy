@@ -4,8 +4,8 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
   Caption = 'Python Versions'
   ClientHeight = 303
   ClientWidth = 622
-  ExplicitWidth = 630
-  ExplicitHeight = 330
+  ExplicitWidth = 638
+  ExplicitHeight = 342
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
@@ -14,14 +14,13 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
     Height = 273
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 614
-    ExplicitHeight = 261
     object vtPythonVersions: TVirtualStringTree
       Left = 1
       Top = 1
       Width = 620
       Height = 271
       Align = alClient
+      DefaultNodeHeight = 19
       Header.AutoSizeIndex = 0
       Header.Options = [hoColumnResize, hoDrag, hoShowSortGlyphs, hoVisible]
       Images = vilTreeImages
@@ -56,7 +55,6 @@ inherited PythonVersionsDialog: TPythonVersionsDialog
     Top = 0
     Width = 622
     Height = 30
-    ExplicitWidth = 614
     object SpTBXToolbar: TSpTBXToolbar
       Left = 0
       Top = 0

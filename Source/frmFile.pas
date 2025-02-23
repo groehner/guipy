@@ -180,6 +180,7 @@ type
     fFiles: TInterfaceList;
     constructor Create;
     destructor Destroy; override;
+    function CreateFile(FileKind: TFileKind; TabControlIndex: Integer = 1): IFile;
     function NewFile(FileKind: TFileKind; TabControlIndex: Integer = 1): IFile; overload;
     function GetFileCount: Integer;
     function GetFile(Index: Integer): IFile;
@@ -650,7 +651,7 @@ begin
 
     TabSheet := (fForm.Parent as TSpTBXTabSheet);
     TabControl := TabSheet.TabControl;
-    TabControl.View.BeginUpdate;
+    TabControl.Toolbar.BeginUpdate;
     try
       (fForm.ParentTabControl as TSpTBXTabControl).zOrder.Remove(TabSheet.Item);
       fForm.Close;
@@ -663,7 +664,7 @@ begin
           aFile.Activate;
       end;
     finally
-      TabControl.View.EndUpdate;
+      TabControl.Toolbar.EndUpdate;
     end;
   end;
 end;
@@ -1003,6 +1004,16 @@ destructor TFileFactory.Destroy;
 begin
   FreeAndNil(fFiles);
   inherited;
+end;
+
+function TFileFactory.CreateFile(FileKind: TFileKind; TabControlIndex: Integer = 1): IFile;
+begin
+  if (FileKind = fkEditor) and (GI_EditorFactory <> nil) then
+    Result:= GI_EditorFactory.NewEditor(TabControlIndex)
+  else if (FileKind <> fkEditor) and (GI_FileFactory <> nil) then
+    Result := GI_FileFactory.NewFile(FileKind, TabControlIndex)
+  else
+    Result := nil;
 end;
 
 function TFileFactory.CanCloseAll: Boolean;

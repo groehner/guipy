@@ -13,7 +13,11 @@ interface
 uses
   System.Classes,
   System.RegularExpressions,
-  uEditAppIntfs,
+  System.Contnrs,
+  JclNotify,
+  SynEdit,
+  PythonEngine,
+  PythonVersions,
   cTools;
 
 type
@@ -38,27 +42,49 @@ const
   FilePosInfoFormat: string = '%s (%d:%d)';
   FilePosInfoRegExpr: string = '(.+) \((\d+):(\d+)\)$';
 
-
 type
   TEditorPos = record
   public
-    [Weak] Editor: IEditor;
+    FileName: string;
     Line: Integer;
     Char: Integer;
     IsSyntax: Boolean;
     ErrorMsg: string;
+    function PointsTo(AFileName: string; ALine: Integer): Boolean;
+    function IsValid: Boolean;
     procedure Clear;
-    procedure NewPos(AEditor: IEditor; ALine: Integer; AChar: Integer = -1;
-      IsSyntaxError: Boolean = False; AErrorMsg: string = '');
     class function EmptyPos: TEditorPos; static;
-    class function NPos(AEditor: IEditor; ALine: Integer; AChar: Integer = -1;
+    class function New(FName: string; ALine: Integer; AChar: Integer = -1;
       IsSyntaxError: Boolean = False; AErrorMsg: string = ''): TEditorPos; static;
   end;
 
-  {
-     Container of all info needed to run a given file
-     Projects can contain multiple run configurations
-  }
+  TBreakpoint = class(TPersistent)
+  private
+    FLineNo: Integer;
+    FDisabled: Boolean;
+    FCondition: string;
+    FIgnoreCount: Integer;
+  public
+    procedure Assign(Source: TPersistent); override;
+  published
+    constructor Create(ALineNo: Integer = 0);
+    property LineNo: Integer read FLineNo write FLineNo;
+    property Disabled: Boolean read FDisabled write FDisabled default False;
+    property Condition: string read FCondition write FCondition;
+    property IgnoreCount: Integer read FIgnoreCount write FIgnoreCount default 0;
+  end;
+
+  // list with TBreakpoints - is kept sorted
+  TBreakpointList = class(TObjectList)
+  public
+    function FindBreakpoint(ALine: Integer; out Breakpoint: TBreakpoint): Boolean;
+    procedure SetBreakpoint(ALine: Integer; ADisabled: Boolean;
+      ACondition: string = ''; AIgnoreCount: Integer = 0);
+    function HasBreakPoint(ALine: Integer): Boolean;
+  end;
+
+  {Container of all info needed to run a given file
+   Projects can contain multiple run configurations}
   TRunConfiguration = class(TPersistent)
   private
     FScriptName: string;
@@ -103,6 +129,90 @@ type
     class function IsBlockCloser(Line: string): Boolean;
     class function IsExecutableLine(Line: string): Boolean;
   end;
+
+{$REGION 'Python IDE Interfaces'}
+
+  IPyControl = interface
+  ['{DE1C1145-DC0F-4829-B36B-74EC818E168E}']
+    function PythonLoaded: Boolean;
+    function Running: Boolean;
+    function Inactive: Boolean;
+    function GetCurrentPos: TEditorPos;
+    function GetErrorPos: TEditorPos;
+    function GetPythonVersion: TPythonVersion;
+    function GetActiveSSHServerName: string;
+    function GetOnPythonVersionChange: TJclNotifyEventBroadcast;
+    procedure SetCurrentPos(const NewPos: TEditorPos);
+    procedure SetErrorPos(const NewPos: TEditorPos);
+    function AddPathToInternalPythonPath(const Path: string): IInterface;
+    procedure Pickle(AValue: Variant; FileName: string);
+    property CurrentPos: TEditorPos read GetCurrentPos write SetCurrentPos;
+    property ErrorPos: TEditorPos read GetErrorPos write SetErrorPos;
+    property PythonVersion: TPythonVersion read GetPythonVersion;
+    property ActiveSSHServerName: string read GetActiveSSHServerName;
+    property OnPythonVersionChange: TJclNotifyEventBroadcast
+      read GetOnPythonVersionChange;
+  end;
+
+  TPyInterpreterPropmpt = (pipNormal, pipDebug, pipPostMortem);
+  IPyInterpreter = interface
+  ['{6BAAD187-B00E-4E2A-B01D-C47EED922E59}']
+    procedure ShowWindow;
+    procedure AppendPrompt;
+    procedure RemovePrompt;
+    procedure AppendText(const Str: string);
+    procedure PrintEngineType;
+    procedure PrintInterpreterBanner(AVersion: string = ''; APlatform: string = '');
+    procedure WritePendingMessages;
+    procedure ClearPendingMessages;
+    procedure ClearDisplay;
+    procedure ClearLastPrompt;
+    function OutputSuppressor: IInterface;
+    procedure StartOutputMirror(const AFileName: string; Append: Boolean);
+    procedure StopFileMirror;
+    procedure UpdatePythonKeywords;
+    procedure SetPyInterpreterPrompt(Pip: TPyInterpreterPropmpt);
+    procedure ReinitInterpreter;
+    function GetPythonIO: TPythonInputOutput;
+    function GetEditor: TCustomSynEdit;
+    function GetShowOutput: Boolean;
+    procedure SetShowOutput(const Value: Boolean);
+    property Editor: TCustomSynEdit read GetEditor;
+    property PythonIO: TPythonInputOutput read GetPythonIO;
+    property ShowOutput: Boolean read GetShowOutput write SetShowOutput;
+  end;
+
+  TBreakpointInfo = record
+    FileName: string;
+    LineNo: Integer;
+    Disabled: Boolean;
+    Condition: string;
+    IgnoreCount: Integer;
+  end;
+
+  IBreakpointManager = interface
+  ['{2A3F48C2-06E0-455D-B2D1-73BEAD0CF8F7}']
+    function GetBreakpointsChanged: Boolean;
+    procedure SetBreakpointsChanged(Value: Boolean);
+    procedure ToggleBreakpoint(const FileName: string; ALine: Integer;
+      CtrlPressed: Boolean = False; UpdateUI: Boolean = True);
+    procedure SetBreakpoint(const FileName: string; ALine: Integer;
+      Disabled: Boolean; Condition: string = ''; IgnoreCount: Integer = 0;
+      UpdateUI: Boolean = True);
+    function AllBreakPoints: TArray<TBreakpointInfo>;
+    function EditProperties(var Condition: string; var IgnoreCount: Integer): Boolean;
+    procedure ClearAllBreakpoints;
+    property BreakpointsChanged: Boolean read GetBreakpointsChanged
+      write SetBreakpointsChanged;
+  end;
+
+  // Global Interfaces
+var
+  GI_PyControl: IPyControl;
+  GI_PyInterpreter: IPyInterpreter;
+  GI_BreakpointManager: IBreakpointManager;
+
+{$ENDREGION 'Python IDE Interfaces'}
 
 const
   IdentRE = '[_\p{L}]\w*';
@@ -199,7 +309,7 @@ end;
 class function TEditorPos.EmptyPos: TEditorPos;
 begin
   with Result do begin
-    Editor := nil;
+    FileName := '';
     Line := -1;
     Char := -1;
     IsSyntax := False;
@@ -207,21 +317,16 @@ begin
   end;
 end;
 
-procedure TEditorPos.NewPos(AEditor: IEditor; ALine: Integer;
-  AChar: Integer = -1; IsSyntaxError: Boolean = False; AErrorMsg: string = '');
+function TEditorPos.IsValid: Boolean;
 begin
-  Editor := AEditor;
-  Line := ALine;
-  Char := AChar;
-  IsSyntax := IsSyntaxError;
-  ErrorMsg := AErrorMsg;
+  Result := FileName <> '';
 end;
 
-class function TEditorPos.NPos(AEditor: IEditor; ALine, AChar: Integer;
-  IsSyntaxError: Boolean; AErrorMsg: string): TEditorPos;
+class function TEditorPos.New(FName: string; ALine: Integer; AChar: Integer =
+    -1; IsSyntaxError: Boolean = False; AErrorMsg: string = ''): TEditorPos;
 begin
   with Result do begin
-    Editor := AEditor;
+    FileName := FName;
     Line := ALine;
     Char := AChar;
     IsSyntax := IsSyntaxError;
@@ -229,14 +334,103 @@ begin
   end;
 end;
 
+function TEditorPos.PointsTo(AFileName: string; ALine: Integer): Boolean;
+begin
+  Result := (ALine = Line) and (AnsiCompareText(AFileName, FileName) = 0);
+end;
+
 procedure TEditorPos.Clear;
 begin
-  Editor := nil;
+  FileName := '';
   Line := -1;
   Char := -1;
   IsSyntax := False;
   ErrorMsg := '';
 end;
 
+
+{ TBreakpoint }
+
+procedure TBreakpoint.Assign(Source: TPersistent);
+var
+  Src: TBreakpoint;
+begin
+  if (Source <> nil) and (Source is TBreakpoint) then
+  begin
+    Src := TBreakpoint(Source);
+    FLineNo := Src.LineNo;
+    FDisabled := Src.Disabled;
+    FCondition := Src.Condition;
+    FIgnoreCount := Src.IgnoreCount;
+  end
+  else
+    inherited Assign(Source);
+end;
+
+constructor TBreakpoint.Create(ALineNo: Integer);
+begin
+  inherited Create;
+  LineNo := ALineNo;
+end;
+
+{ TBreakpointList }
+
+function TBreakpointList.FindBreakpoint(ALine: Integer;
+  out Breakpoint: TBreakpoint): Boolean;
+var
+  Index: NativeInt;
+begin
+  Result := False;
+  Breakpoint := nil;
+  Index := 0;
+  while Index < Count do
+  begin
+    if TBreakpoint(Items[Index]).LineNo = ALine then
+    begin
+      Result := True;
+      Breakpoint := TBreakpoint(Items[Index]);
+      Break;
+    end
+    else if TBreakpoint(Items[Index]).LineNo > ALine  then
+      Break;
+    Inc(Index);
+  end;
+end;
+
+function TBreakpointList.HasBreakPoint(ALine: Integer): Boolean;
+var
+  Breakpoint: TBreakpoint;
+begin
+  Result := FindBreakpoint(ALine, Breakpoint);
+end;
+
+procedure TBreakpointList.SetBreakpoint(ALine: Integer; ADisabled: Boolean;
+  ACondition: string; AIgnoreCount: Integer);
+var
+  Index: Integer;
+  BreakPoint: TBreakpoint;
+begin
+  Breakpoint := nil;
+  Index := 0;
+  while Index < Count do
+  begin
+    if TBreakpoint(Items[Index]).LineNo = ALine then
+    begin
+      Breakpoint := TBreakpoint(Items[Index]);
+      Break;
+    end
+    else if TBreakpoint(Items[Index]).LineNo > ALine  then
+      Break;
+    Inc(Index);
+  end;
+  if Breakpoint = nil then
+  begin
+    BreakPoint := TBreakpoint.Create(ALine);
+    Insert(Index, Breakpoint);
+  end;
+  BreakPoint.Disabled := ADisabled;
+  BreakPoint.Condition := ACondition;
+  BreakPoint.IgnoreCount := AIgnoreCount;
+end;
 
 end.

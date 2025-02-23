@@ -1,4 +1,4 @@
-{-------------------------------------------------------------------------------
+﻿{-------------------------------------------------------------------------------
  Unit:     UConfiguration
  Author:   Gerhard Röhner
  Date:     July 2000
@@ -1113,6 +1113,10 @@ type
     LChatTimeout: TLabel;
     EChatTimeout: TEdit;
     CBReinitializeWhenClosing: TCheckBox;
+    LLLMTemperature: TLabel;
+    ELLMTemperature: TEdit;
+    LChatTemperature: TLabel;
+    EChatTemperature: TEdit;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1868,17 +1872,18 @@ begin
   ckTabIndent.Checked:= eoTabIndent in FSynEdit.Options;
   ckSmartTabs.Checked:= eoSmartTabs in FSynEdit.Options;
 
-  ckHalfPageScroll.Checked:= eoHalfPageScroll in FSynEdit.Options;
+  ckHalfPageScroll.Checked:= eoHalfPageScroll in FSynEdit.ScrollOptions;
+  ckScrollByOneLess.Checked:= eoScrollByOneLess in FSynEdit.ScrollOptions;
+  ckScrollPastEOF.Checked:= eoScrollPastEof in FSynEdit.ScrollOptions;
+  ckDisableScrollArrows.Checked := eoDisableScrollArrows in FSynEdit.ScrollOptions;
+  ckScrollPastEOL.Checked:= eoScrollPastEol in FSynEdit.ScrollOptions;
+  ckShowScrollHint.Checked:= eoShowScrollHint in FSynEdit.ScrollOptions;
+  ckHideShowScrollbars.Checked := eoHideShowScrollbars in FSynEdit.ScrollOptions;
+  ckScrollHintFollows.Checked := eoScrollHintFollows in FSynEdit.ScrollOptions;
+
   ckTrimTrailingSpaces.Checked:= eoTrimTrailingSpaces in FSynEdit.Options;
-  ckScrollByOneLess.Checked:= eoScrollByOneLess in FSynEdit.Options;
   ckShowSpecialChars.Checked := FSynEdit.VisibleSpecialChars <> [];
-  ckScrollPastEOF.Checked:= eoScrollPastEof in FSynEdit.Options;
-  ckDisableScrollArrows.Checked := eoDisableScrollArrows in FSynEdit.Options;
-  ckScrollPastEOL.Checked:= eoScrollPastEol in FSynEdit.Options;
   ckGroupUndo.Checked := eoGroupUndo in FSynEdit.Options;
-  ckShowScrollHint.Checked:= eoShowScrollHint in FSynEdit.Options;
-  ckHideShowScrollbars.Checked := eoHideShowScrollbars in FSynEdit.Options;
-  ckScrollHintFollows.Checked := eoScrollHintFollows in FSynEdit.Options;
   ckShowLigatures.Checked := eoShowLigatures in FSynEdit.Options;
 
   with PyIDEOptions do begin
@@ -2173,6 +2178,7 @@ end;
 procedure TFConfiguration.ViewToModel;
   var LanguageNr: Integer;
       vOptions: TSynEditorOptions;
+      vScrollOptions: TSynEditorScrollOptions;
       Digits: Integer;
 
   procedure SetFlag(aOption: TSynEditorOption; aValue: Boolean);
@@ -2181,6 +2187,14 @@ procedure TFConfiguration.ViewToModel;
       Include(vOptions, aOption)
     else
       Exclude(vOptions, aOption);
+  end;
+
+  procedure SetScrollFlag(aOption: TSynEditorScrollOption; aValue: Boolean);
+  begin
+    if aValue then
+      Include(vScrollOptions, aOption)
+    else
+      Exclude(vScrollOptions, aOption);
   end;
 
 begin
@@ -2232,11 +2246,6 @@ begin
   SetFlag(eoDragDropEditing, ckDragAndDropEditing.Checked);
   SetFlag(eoTabIndent, ckTabIndent.Checked);
   SetFlag(eoSmartTabs, ckSmartTabs.Checked);
-  SetFlag(eoHalfPageScroll, ckHalfPageScroll.Checked);
-  SetFlag(eoScrollByOneLess, ckScrollByOneLess.Checked);
-  SetFlag(eoScrollPastEof, ckScrollPastEOF.Checked);
-  SetFlag(eoScrollPastEol, ckScrollPastEOL.Checked);
-  SetFlag(eoShowScrollHint, ckShowScrollHint.Checked);
   SetFlag(eoTabsToSpaces, ckTabsToSpaces.Checked);
   SetFlag(eoTrimTrailingSpaces, ckTrimTrailingSpaces.Checked);
   SetFlag(eoKeepCaretX, ckKeepCaretX.Checked);
@@ -2245,11 +2254,18 @@ begin
   SetFlag(eoEnhanceHomeKey, ckEnhanceHomeKey.Checked);
   SetFlag(eoEnhanceEndKey, ckEnhanceEndKey.Checked);
   SetFlag(eoGroupUndo, ckGroupUndo.Checked);
-  SetFlag(eoScrollHintFollows, ckScrollHintFollows.Checked);
-  SetFlag(eoDisableScrollArrows, ckDisableScrollArrows.Checked);
-  SetFlag(eoHideShowScrollbars, ckHideShowScrollbars.Checked);
   SetFlag(eoShowLigatures, ckShowLigatures.Checked);
   FSynEdit.Options := vOptions;
+
+  SetScrollFlag(eoHalfPageScroll, ckHalfPageScroll.Checked);
+  SetScrollFlag(eoScrollByOneLess, ckScrollByOneLess.Checked);
+  SetScrollFlag(eoScrollPastEof, ckScrollPastEOF.Checked);
+  SetScrollFlag(eoScrollPastEol, ckScrollPastEOL.Checked);
+  SetScrollFlag(eoShowScrollHint, ckShowScrollHint.Checked);
+  SetScrollFlag(eoScrollHintFollows, ckScrollHintFollows.Checked);
+  SetScrollFlag(eoDisableScrollArrows, ckDisableScrollArrows.Checked);
+  SetScrollFlag(eoHideShowScrollbars, ckHideShowScrollbars.Checked);
+  FSynedit.ScrollOptions:= vScrollOptions;
   if ckShowSpecialChars.Checked then
     FSynEdit.VisibleSpecialChars := [scWhitespace, scControlChars, scEOL]
   else
@@ -2625,7 +2641,7 @@ begin
   if SysUtils.ForceDirectories(GuiPyOptions.TempDir) then begin
     Pathname:= TPath.Combine(GuiPyOptions.TempDir, 'Configuration.ini');
     SL.SaveToFile(Pathname);
-    PyIDEMainForm.DoOpenFile(Pathname);
+    GI_EditorFactory.OpenFile(Pathname);
   end;
   FreeAndNil(SL);
 end;

@@ -133,6 +133,7 @@ procedure ReplaceResourceString(RStringRec: PResStringRec; const AString: string
 function DecToBase(nBase: Integer; nDecValue: double): string;
 function ConvertLtGt(s: string): string;
 function FloatToVal(x: real): string;
+function StringToSingle(S: string): Single;
 function PointToVal(P: TPoint): string;
 function IntToVal(x: Integer): string;
 function myColorToRGB(Color: TColor): string;
@@ -1707,6 +1708,21 @@ end;
 procedure UnlockWindow;
 begin
   LockWindowUpdate(0);
+end;
+
+function StringToSingle(S: string): Single;
+var
+  FS: TFormatSettings;
+begin
+  FS := TFormatSettings.Create;
+  FS.DecimalSeparator := '.';
+  S := StringReplace(S, ',', '.', [rfReplaceAll]);
+  try
+    Result := StrToFloat(S, FS);
+  except
+    on E: EConvertError do
+      Result := 0.0;
+  end;
 end;
 
 end.

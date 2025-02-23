@@ -104,6 +104,8 @@ end;
 
 procedure TIDEDockWindow.FormCreate(Sender: TObject);
 begin
+  PopupParent := Application.MainForm;
+
   DockClient.DockStyle := ResourcesDataModule.DockStyle;
   StyledBorderColors(BorderNormal, BorderHighlight);
 

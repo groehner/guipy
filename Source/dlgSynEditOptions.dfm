@@ -3,33 +3,30 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
   Top = 154
   HelpContext = 620
   Caption = 'Editor Options'
-  ClientHeight = 420
-  ClientWidth = 587
+  ClientHeight = 421
+  ClientWidth = 591
   ShowHint = True
   OnShow = FormShow
-  ExplicitWidth = 599
-  ExplicitHeight = 458
+  ExplicitWidth = 607
+  ExplicitHeight = 460
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 587
-    Height = 420
+    Width = 591
+    Height = 421
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 583
-    ExplicitHeight = 419
     DesignSize = (
-      587
-      420)
+      591
+      421)
     object TabControl: TSpTBXTabControl
       Left = 1
       Top = 1
-      Width = 585
+      Width = 589
       Height = 368
       Align = alTop
       ActiveTabIndex = 0
-      ExplicitWidth = 581
       HiddenItems = <>
       object SpTBXTabItem1: TSpTBXTabItem
         Caption = 'Display'
@@ -50,13 +47,12 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
       object ColorThemes: TSpTBXTabSheet
         Left = 0
         Top = 25
-        Width = 585
+        Width = 589
         Height = 343
         Caption = 'Color Theme'
         ImageIndex = -1
-        ExplicitWidth = 581
         DesignSize = (
-          585
+          589
           343)
         TabItem = 'SpTBXTabItem5'
         object SpTBXLabel1: TLabel
@@ -76,7 +72,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
         object SynThemeSample: TSynEdit
           Left = 183
           Top = 41
-          Width = 376
+          Width = 404
           Height = 276
           Anchors = [akLeft, akTop, akRight]
           Font.Charset = DEFAULT_CHARSET
@@ -110,15 +106,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
               Width = 2
             end>
           RightEdge = 0
-          ScrollbarAnnotations = <
-            item
-              AnnType = sbaCarets
-              AnnPos = sbpFullWidth
-              FullRow = False
-            end>
-          SelectedColor.Alpha = 0.400000005960464500
-          VisibleSpecialChars = []
-          ExplicitWidth = 372
+          ScrollbarAnnotations = <>
         end
         object lbColorThemes: TListBox
           Left = 3
@@ -143,13 +131,12 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
       object Color: TSpTBXTabSheet
         Left = 0
         Top = 25
-        Width = 585
+        Width = 589
         Height = 343
         Caption = 'Syntax Colors'
         ImageIndex = -1
-        ExplicitWidth = 581
         DesignSize = (
-          585
+          589
           343)
         TabItem = 'SpTBXTabItem4'
         object Label11: TLabel
@@ -243,7 +230,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
         object SynSyntaxSample: TSynEdit
           Left = 223
           Top = 64
-          Width = 324
+          Width = 352
           Height = 257
           Anchors = [akLeft, akTop, akRight]
           Font.Charset = DEFAULT_CHARSET
@@ -278,26 +265,17 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
               Width = 2
             end>
           RightEdge = 0
-          ScrollbarAnnotations = <
-            item
-              AnnType = sbaCarets
-              AnnPos = sbpFullWidth
-              FullRow = False
-            end>
-          SelectedColor.Alpha = 0.400000005960464500
-          VisibleSpecialChars = []
-          ExplicitWidth = 320
+          ScrollbarAnnotations = <>
         end
         object cbHighlighters: TComboBox
           Left = 15
           Top = 23
-          Width = 532
+          Width = 560
           Height = 23
           Style = csDropDownList
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 0
           OnChange = cbHighlightersChange
-          ExplicitWidth = 528
         end
         object lbElements: TSpTBXListBox
           Left = 15
@@ -333,11 +311,10 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
       object KeyStrokes: TSpTBXTabSheet
         Left = 0
         Top = 25
-        Width = 585
+        Width = 589
         Height = 343
         Caption = 'Keystrokes'
         ImageIndex = -1
-        ExplicitWidth = 581
         TabItem = 'SpTBXTabItem3'
         object gbKeyStrokes: TGroupBox
           AlignWithMargins = True
@@ -409,16 +386,15 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
         object Panel2: TPanel
           Left = 2
           Top = 0
-          Width = 579
+          Width = 583
           Height = 158
           Align = alTop
           TabOrder = 0
-          ExplicitWidth = 575
           object KeyList: TListView
             AlignWithMargins = True
             Left = 4
             Top = 4
-            Width = 571
+            Width = 575
             Height = 150
             Align = alClient
             BorderStyle = bsNone
@@ -439,35 +415,32 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
             SortType = stText
             TabOrder = 0
             ViewStyle = vsReport
-            ExplicitWidth = 567
           end
         end
       end
       object Options: TSpTBXTabSheet
         Left = 0
         Top = 25
-        Width = 585
+        Width = 589
         Height = 343
         Caption = 'Options'
         ImageIndex = -1
-        ExplicitWidth = 581
         TabItem = 'SpTBXTabItem2'
         object gbOptions: TGroupBox
           AlignWithMargins = True
           Left = 5
           Top = 3
-          Width = 573
+          Width = 577
           Height = 260
           Align = alTop
           Caption = 'Options'
           ParentShowHint = False
           ShowHint = True
           TabOrder = 0
-          ExplicitWidth = 569
           object GridPanel1: TGridPanel
             Left = 2
             Top = 17
-            Width = 569
+            Width = 573
             Height = 241
             Align = alClient
             BevelOuter = bvNone
@@ -494,11 +467,10 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 Value = 100.000000000000000000
               end>
             TabOrder = 0
-            ExplicitWidth = 565
             object StackPanel1: TStackPanel
               Left = 0
               Top = 0
-              Width = 284
+              Width = 286
               Height = 241
               Align = alClient
               BevelOuter = bvNone
@@ -542,13 +514,13 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
               HorizontalPositioning = sphpFill
               TabOrder = 0
               DesignSize = (
-                284
+                286
                 241)
               object ckAutoIndent: TCheckBox
                 AlignWithMargins = True
                 Left = 3
                 Top = 0
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 
                   'Will indent the caret on new lines with the same amount of leadi' +
@@ -562,7 +534,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 19
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 
                   'Allows you to select a block of text and drag it within the docu' +
@@ -576,7 +548,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 38
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 'Enhances end key similar to JDeveloper'
                 Margins.Top = 0
@@ -588,7 +560,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 57
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 'enhances home key positioning, similar to visual studio'
                 Margins.Top = 0
@@ -600,7 +572,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 76
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 
                   'When undoing/redoing actions, handle all continuous changes of t' +
@@ -616,7 +588,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 95
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 
                   'When moving through lines the X position will always stay the sa' +
@@ -630,7 +602,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 114
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 
                   'When clicking with the right mouse for a popup menu, move the cu' +
@@ -644,7 +616,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 133
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 
                   'When tabbing, the cursor will go to the next non-white space cha' +
@@ -658,7 +630,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 152
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 'similar to Smart Tabs, but when you delete characters'
                 Margins.Top = 0
@@ -670,7 +642,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 171
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 'Tab indents and Shift-Tab unindents'
                 Margins.Top = 0
@@ -682,7 +654,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 190
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 'Converts a tab character to the number of spaces in Tab Width'
                 Margins.Top = 0
@@ -694,7 +666,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 209
-                Width = 278
+                Width = 280
                 Height = 17
                 Hint = 'Spaces at the end of lines will be trimmed and not saved'
                 Margins.Top = 0
@@ -705,9 +677,9 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
               end
             end
             object StackPanel2: TStackPanel
-              Left = 284
+              Left = 286
               Top = 0
-              Width = 285
+              Width = 287
               Height = 241
               Align = alClient
               BevelOuter = bvNone
@@ -748,13 +720,13 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
               HorizontalPositioning = sphpFill
               TabOrder = 1
               DesignSize = (
-                285
+                287
                 241)
               object ckDisableScrollArrows: TCheckBox
                 AlignWithMargins = True
                 Left = 3
                 Top = 0
-                Width = 279
+                Width = 281
                 Height = 17
                 Hint = 
                   'Disables the scroll bar arrow buttons when you can'#39't scroll in t' +
@@ -769,7 +741,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 19
-                Width = 279
+                Width = 281
                 Height = 17
                 Hint = 
                   'When scrolling with page-up and page-down commands, only scroll ' +
@@ -784,7 +756,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 38
-                Width = 279
+                Width = 281
                 Height = 17
                 Hint = 
                   'if enabled, then the scrollbars will only show when necessary.  ' +
@@ -800,7 +772,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 57
-                Width = 279
+                Width = 281
                 Height = 17
                 Hint = 'Forces scrolling to be one less'
                 Margins.Top = 0
@@ -813,7 +785,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 76
-                Width = 279
+                Width = 281
                 Height = 17
                 Hint = 'Allows the cursor to go past the end of file marker'
                 Margins.Top = 0
@@ -826,7 +798,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 95
-                Width = 279
+                Width = 281
                 Height = 17
                 Hint = 
                   'Allows the cursor to go past the last character into the white s' +
@@ -841,7 +813,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 114
-                Width = 279
+                Width = 281
                 Height = 17
                 Hint = 
                   'Shows a hint of the visible line numbers when scrolling vertical' +
@@ -856,7 +828,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 133
-                Width = 279
+                Width = 281
                 Height = 17
                 Hint = 'The scroll hint follows the mouse when scrolling vertically'
                 Margins.Top = 0
@@ -869,7 +841,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 152
-                Width = 279
+                Width = 281
                 Height = 17
                 Hint = 
                   'Show ligatures (joined font glyphs) when supported by the used f' +
@@ -884,7 +856,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 171
-                Width = 279
+                Width = 281
                 Height = 17
                 Hint = 'Shows line breaks, spaces and tabs using special symbols'
                 Margins.Top = 0
@@ -897,7 +869,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
                 AlignWithMargins = True
                 Left = 3
                 Top = 190
-                Width = 279
+                Width = 281
                 Height = 17
                 Hint = 'Enable wrapping of long lines'
                 Margins.Top = 0
@@ -912,12 +884,11 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
           AlignWithMargins = True
           Left = 5
           Top = 267
-          Width = 573
+          Width = 577
           Height = 69
           Align = alBottom
           Caption = 'Caret'
           TabOrder = 1
-          ExplicitWidth = 569
           object Label2: TLabel
             Left = 60
             Top = 19
@@ -963,24 +934,22 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
       object Display: TSpTBXTabSheet
         Left = 0
         Top = 25
-        Width = 585
+        Width = 589
         Height = 343
         Caption = 'Display'
         ImageIndex = -1
-        ExplicitWidth = 581
         DesignSize = (
-          585
+          589
           343)
         TabItem = 'SpTBXTabItem1'
         object gbRightEdge: TGroupBox
-          Left = 271
+          Left = 299
           Top = 116
           Width = 271
           Height = 80
           Anchors = [akTop, akRight]
           Caption = 'Right Edge'
           TabOrder = 5
-          ExplicitLeft = 267
           DesignSize = (
             271
             80)
@@ -1022,23 +991,21 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
           AlignWithMargins = True
           Left = 15
           Top = 212
-          Width = 527
+          Width = 555
           Height = 124
           Anchors = [akLeft, akRight, akBottom]
           Caption = 'Gutter'
           TabOrder = 2
-          ExplicitWidth = 523
           DesignSize = (
-            527
+            555
             124)
           object Label1: TLabel
-            Left = 259
+            Left = 287
             Top = 78
             Width = 66
             Height = 15
             Anchors = [akTop, akRight]
             Caption = 'Gutter color:'
-            ExplicitLeft = 287
           end
           object lDigits: TLabel
             Left = 175
@@ -1048,13 +1015,12 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
             Caption = 'Digits:'
           end
           object pnlGutterFontDisplay: TPanel
-            Left = 335
+            Left = 363
             Top = 44
             Width = 181
             Height = 27
             Anchors = [akTop, akRight]
             TabOrder = 8
-            ExplicitLeft = 331
             object lblGutterFont: TLabel
               Left = 1
               Top = 1
@@ -1126,7 +1092,7 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
             TabOrder = 3
           end
           object cbGutterFont: TCheckBox
-            Left = 259
+            Left = 287
             Top = 18
             Width = 156
             Height = 21
@@ -1134,10 +1100,9 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
             Caption = 'Use Gutter Font'
             TabOrder = 6
             OnClick = cbGutterFontClick
-            ExplicitLeft = 255
           end
           object ckGutterGradient: TCheckBox
-            Left = 259
+            Left = 287
             Top = 99
             Width = 230
             Height = 21
@@ -1145,7 +1110,6 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
             Anchors = [akTop, akRight]
             Caption = 'Gutter Gradient'
             TabOrder = 7
-            ExplicitLeft = 255
           end
           object btnGutterFont: TButton
             Left = 447
@@ -1166,14 +1130,13 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
           end
         end
         object gbBookmarks: TGroupBox
-          Left = 271
+          Left = 299
           Top = 50
           Width = 271
           Height = 62
           Anchors = [akTop, akRight]
           Caption = 'Bookmarks'
           TabOrder = 4
-          ExplicitLeft = 267
           object ckBookmarkKeys: TCheckBox
             Left = 23
             Top = 16
@@ -1233,14 +1196,13 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
           end
         end
         object gbLineSpacing: TGroupBox
-          Left = 8
+          Left = 15
           Top = 108
           Width = 272
           Height = 88
           Anchors = [akTop]
           Caption = 'Line spacing / Tab spacing'
           TabOrder = 1
-          ExplicitLeft = 7
           DesignSize = (
             272
             88)
@@ -1278,14 +1240,13 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
           end
         end
         object GroupBox2: TGroupBox
-          Left = 271
+          Left = 299
           Top = 7
           Width = 271
           Height = 43
           Anchors = [akTop, akRight]
           Caption = 'Active Line Color'
           TabOrder = 3
-          ExplicitLeft = 267
           DesignSize = (
             271
             43)
@@ -1315,8 +1276,8 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
       TabOrder = 0
     end
     object btnOk: TButton
-      Left = 253
-      Top = 387
+      Left = 281
+      Top = 388
       Width = 94
       Height = 25
       Anchors = [akRight, akBottom]
@@ -1325,12 +1286,10 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
       ModalResult = 1
       TabOrder = 1
       OnClick = btnOkClick
-      ExplicitLeft = 249
-      ExplicitTop = 386
     end
     object btnCancel: TButton
-      Left = 357
-      Top = 387
+      Left = 385
+      Top = 388
       Width = 94
       Height = 25
       Anchors = [akRight, akBottom]
@@ -1338,20 +1297,16 @@ inherited EditorOptionsDialog: TEditorOptionsDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 3
-      ExplicitLeft = 353
-      ExplicitTop = 386
     end
     object btnHelp: TButton
-      Left = 461
-      Top = 387
+      Left = 489
+      Top = 388
       Width = 94
       Height = 25
       Anchors = [akRight, akBottom]
       Caption = '&Help'
       TabOrder = 4
       OnClick = btnHelpClick
-      ExplicitLeft = 457
-      ExplicitTop = 386
     end
   end
   object FontDialog: TFontDialog

@@ -3,13 +3,19 @@ inherited UnitTestWindow: TUnitTestWindow
   Caption = 'Unit Tests'
   ClientHeight = 451
   ClientWidth = 262
+  ExplicitWidth = 278
+  ExplicitHeight = 490
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 262
     Height = 451
+    ExplicitWidth = 262
+    ExplicitHeight = 451
     inherited FGPanel: TPanel
       Width = 258
       Height = 447
+      ExplicitWidth = 258
+      ExplicitHeight = 447
       object ExplorerDock: TSpTBXDock
         Left = 0
         Top = 0
@@ -87,6 +93,7 @@ inherited UnitTestWindow: TUnitTestWindow
           Height = 237
           Align = alClient
           BorderStyle = bsNone
+          DefaultNodeHeight = 19
           Header.AutoSizeIndex = -1
           Header.Height = 15
           Header.MainColumn = -1
@@ -255,7 +262,7 @@ inherited UnitTestWindow: TUnitTestWindow
             HideSelection = True
             ReadOnly = True
             RightEdge = 0
-            SelectedColor.Alpha = 0.400000005960464500
+            ScrollbarAnnotations = <>
           end
         end
       end

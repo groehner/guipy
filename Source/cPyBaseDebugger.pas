@@ -55,7 +55,6 @@ type
     FPyObject: Variant;
     FExpandCommonTypes: Boolean;
     FExpandSequences: Boolean;
-    FParent: TBaseNameSpaceItem;
     FGotChildNodes: Boolean;
     FGotBufferedValue: Boolean;
     FBufferedValue: string;
@@ -89,7 +88,6 @@ type
     property QualifiedObjectType: string read FQualifiedObjectType;
     property ExpandCommonTypes: Boolean read FExpandCommonTypes write FExpandCommonTypes;
     property ExpandSequences: Boolean read FExpandSequences write FExpandSequences;
-    property Parent: TBaseNameSpaceItem read FParent write FParent;
   end;
 
   TPyBaseDebugger = class;
@@ -120,7 +118,8 @@ type
     function CallTipFromExpression(const Expr: string;
       var DisplayString, DocString: string): Boolean; virtual; abstract;
     // Service routines
-    procedure HandlePyException(Traceback: TPythonTraceback; ErrorMsg: string; SkipFrames: Integer = 1); virtual;
+    procedure HandlePyException(Traceback: TPythonTraceback; ErrorMsg: string;
+      SkipFrames: Integer = 1); virtual;
     procedure SetCommandLine(ARunConfig: TRunConfiguration); virtual; abstract;
     procedure RestoreCommandLine; virtual; abstract;
     procedure ReInitialize; virtual;
@@ -130,7 +129,7 @@ type
     // Main interface
     function ImportModule(Editor: IEditor; AddToNameSpace: Boolean = False): Variant; virtual; abstract;
     procedure Run(ARunConfig: TRunConfiguration); virtual; abstract;
-    function RunSource(const Source, FileName: Variant; symbol: string = 'single'): Boolean; virtual; abstract;
+    function RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean; virtual; abstract;
     procedure RunScript(FileName: string); virtual;
     function EvalCode(const Expr: string): Variant; virtual; abstract;
     procedure SystemCommand(const Cmd: string); virtual; abstract;
@@ -172,7 +171,7 @@ type
     procedure Evaluate(const Expr: string; out ObjType, Value: string); overload; virtual; abstract;
     function Evaluate(const Expr: string): TBaseNameSpaceItem; overload; virtual; abstract;
     // Like the InteractiveInterpreter runsource but for the debugger frame
-    function RunSource(const Source, FileName: Variant; symbol: string = 'single'): Boolean; virtual; abstract;
+    function RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean; virtual; abstract;
     // functions to get TBaseNamespaceItems corresponding to a frame's gloabals and locals
     function GetFrameGlobals(Frame: TBaseFrameInfo): TBaseNameSpaceItem; virtual; abstract;
     function GetFrameLocals(Frame: TBaseFrameInfo): TBaseNameSpaceItem; virtual; abstract;
@@ -265,9 +264,8 @@ begin
     if DirIsPythonPackage(FPath) then begin
       var ParentDir := TPath.GetDirectoryName(GetPackageRootDir(FPath));
       if ParentDir <> FPath then
-        FPackageRootAdder :=
-          TPythonPathAdder.Create(SysPathAdd, SysPathRemove,
-            ParentDir, AutoRemove);
+        FPackageRootAdder := TPythonPathAdder.Create(SysPathAdd, SysPathRemove,
+          ParentDir, AutoRemove);
     end;
     FPathAdded := SysPathAdd(FPath);
   end;
@@ -292,11 +290,11 @@ begin
     Result := TPythonPathAdder.Create(SysPathAdd, SysPathRemove, Path, AutoRemove);
 end;
 
-procedure TPyBaseInterpreter.HandlePyException(Traceback: TPythonTraceback; ErrorMsg: string; SkipFrames: Integer = 1);
+procedure TPyBaseInterpreter.HandlePyException(Traceback: TPythonTraceback;
+  ErrorMsg: string; SkipFrames: Integer = 1);
 var
   TBItem: TTracebackItem;
   FileName: string;
-  Editor: IEditor;
 begin
   GI_PyIDEServices.Messages.ShowPythonTraceback(Traceback, SkipFrames);
   GI_PyIDEServices.Messages.AddMessage(ErrorMsg);
@@ -304,16 +302,12 @@ begin
     if ItemCount > 0 then begin
       TBItem := Items[ItemCount -1];
       FileName := FromPythonFileName(TBItem.FileName);
-      Editor := GI_EditorFactory.GetEditorByFileId(FileName);
       // Check whether the error occurred in the active editor
-      if (Assigned(Editor) and (Editor = GI_PyIDEServices.ActiveFile)) or
-        PyIDEOptions.JumpToErrorOnException then
-      begin
-        if GI_PyIDEServices.ShowFilePosition(TBItem.FileName, TBItem.LineNo, 1) and
-          Assigned(GI_ActiveEditor)
-        then
-          PyControl.ErrorPos := TEditorPos.NPos(GI_ActiveEditor, TBItem.LineNo);
-      end;
+      if (Assigned(GI_PyIDEServices.ActiveEditor) and
+        (GI_PyIDEServices.ActiveEditor.FileId = FileName)) or
+        PyIDEOptions.JumpToErrorOnException
+      then
+        GI_PyControl.ErrorPos := TEditorPos.New(FileName, TBItem.LineNo);
     end;
   end;
 end;
@@ -375,7 +369,7 @@ end;
 
 procedure TBaseNameSpaceItem.CompareToOldItem(OldItem: TBaseNameSpaceItem);
 var
-  I, Index: Integer;
+  Index: Integer;
   Child, OldChild: TBaseNameSpaceItem;
 begin
   if OldItem.FGotBufferedValue then begin
@@ -384,7 +378,7 @@ begin
   end;
   if OldItem.FGotChildNodes then begin
     GetChildNodes;
-    for I := 0 to ChildCount - 1 do begin
+    for var I := 0 to ChildCount - 1 do begin
       Child := ChildNode[I];
       if (ObjectType <> 'list') and (ObjectType <> 'tuple') then
         Index := OldItem.IndexOfChild(Child.Name)
@@ -420,6 +414,7 @@ begin
   Result := HaveTraceback;
 end;
 
+
 { TThreadInfo }
 
 constructor TThreadInfo.Create;
@@ -434,3 +429,4 @@ begin
 end;
 
 end.
+

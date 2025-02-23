@@ -42,7 +42,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 379
+        CustomWidth = 516
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -65,6 +65,8 @@ object EditorForm: TEditorForm
         Height = 546
         Caption = 'Source'
         ImageIndex = -1
+        ExplicitTop = 30
+        ExplicitHeight = 541
         TabItem = 'tabSource'
         object SynEdit: TSynEdit
           Left = 48
@@ -149,9 +151,7 @@ object EditorForm: TEditorForm
               FullRow = True
             end>
           SelectedColor.Background = clSkyBlue
-          SelectedColor.Alpha = 0.400000005960464500
           TabWidth = 4
-          VisibleSpecialChars = []
           WantTabs = True
           OnChange = SynEditChange
           OnGutterGetText = SynEditGutterGetText
@@ -159,9 +159,7 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
-          ExplicitLeft = 25
-          ExplicitWidth = 265
-          ExplicitHeight = 628
+          ExplicitHeight = 537
         end
         object SynEdit2: TSynEdit
           Left = 490
@@ -230,14 +228,11 @@ object EditorForm: TEditorForm
               AnnPos = sbpRight
               FullRow = True
             end>
-          SelectedColor.Alpha = 0.400000005960464500
-          VisibleSpecialChars = []
           OnMouseCursor = SynEditMouseCursor
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
-          ExplicitLeft = 395
-          ExplicitHeight = 200
+          ExplicitHeight = 537
         end
         object EditorSplitter: TSpTBXSplitter
           Left = 490
@@ -248,8 +243,7 @@ object EditorForm: TEditorForm
           ParentColor = False
           Visible = False
           GripSize = 80
-          ExplicitLeft = 391
-          ExplicitHeight = 200
+          ExplicitHeight = 537
         end
         object EditformToolbar: TToolBar
           Left = 2
@@ -260,8 +254,7 @@ object EditorForm: TEditorForm
           AutoSize = True
           Images = vilEditorToolbarLight
           TabOrder = 3
-          ExplicitWidth = 23
-          ExplicitHeight = 628
+          ExplicitHeight = 537
           object TBClose: TToolButton
             Left = 0
             Top = 0
@@ -508,8 +501,8 @@ object EditorForm: TEditorForm
           end
         end
         object TVFileStructure: TTreeView
-          Left = 400
-          Top = 3
+          Left = 352
+          Top = 112
           Width = 121
           Height = 20
           Indent = 19
@@ -1534,5 +1527,27 @@ object EditorForm: TEditorForm
     ImageCollection = DMImages.icEditorContextMenu
     Left = 112
     Top = 127
+  end
+  object pmnuBreakpoint: TSpTBXPopupMenu
+    Left = 336
+    Top = 48
+    object spiBreakpointEnabled: TSpTBXItem
+      Caption = 'Enabled'
+      Hint = 'Enable/Disable breakpoint'
+      AutoCheck = True
+      OnClick = spiBreakpointEnabledClick
+    end
+    object spiBreakpointProperties: TSpTBXItem
+      Caption = 'Breakpoint Properties...'
+      Hint = 'Edit breakpoint properties'
+      OnClick = spiBreakpointPropertiesClick
+    end
+    object spiSeparatorItem: TSpTBXSeparatorItem
+    end
+    object spiBreakpointClear: TSpTBXItem
+      Caption = 'Clear'
+      Hint = 'Clear breakpoint'
+      OnClick = spiBreakpointClearClick
+    end
   end
 end

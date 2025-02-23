@@ -211,7 +211,7 @@ uses Windows, Menus, Forms, Math, SysUtils, UITypes, Dialogs, Contnrs, IOUtils,
   uIterators, uRtfdDiagramFrame, USugiyamaLayout, uIntegrator, UConfiguration,
   SynEdit, UUMLModule, UImages, UObjectGenerator, dmResources,
   frmPyIDEMain, uEditAppIntfs, frmFile, frmPythonII, frmVariables,
-  cPyControl, cPyBaseDebugger, PythonEngine, uCommonFunctions;
+  cPyControl, cPySupportTypes, cPyBaseDebugger, PythonEngine, uCommonFunctions;
 
 { TRtfdDiagram }
 

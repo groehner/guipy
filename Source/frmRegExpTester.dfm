@@ -3,14 +3,20 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
   Caption = 'Regular Expressions'
   ClientHeight = 478
   ClientWidth = 384
+  ExplicitWidth = 400
+  ExplicitHeight = 517
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 384
     Height = 478
+    ExplicitWidth = 384
+    ExplicitHeight = 478
     inherited FGPanel: TPanel
       Width = 380
       Height = 474
       ParentBackground = False
+      ExplicitWidth = 380
+      ExplicitHeight = 474
       object TBXDock: TSpTBXDock
         Left = 0
         Top = 0
@@ -178,7 +184,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
             Left = 1
             Top = 1
             Width = 376
-            Height = 26
+            Height = 27
             Caption = 'Groups:'
             Align = alTop
             Font.Charset = DEFAULT_CHARSET
@@ -193,14 +199,15 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
           end
           object GroupsView: TVirtualStringTree
             Left = 1
-            Top = 27
+            Top = 28
             Width = 376
-            Height = 72
+            Height = 71
             Align = alClient
             BevelEdges = []
             BevelInner = bvNone
             BevelOuter = bvNone
             BorderStyle = bsNone
+            DefaultNodeHeight = 19
             Header.AutoSizeIndex = 2
             Header.Options = [hoAutoResize, hoColumnResize, hoDblClickResize, hoHotTrack, hoOwnerDraw, hoVisible]
             HintMode = hmTooltip
@@ -266,7 +273,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
               Left = 1
               Top = 1
               Width = 374
-              Height = 26
+              Height = 27
               Caption = 'Regular Expression'
               Align = alTop
               Font.Charset = DEFAULT_CHARSET
@@ -281,9 +288,9 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
             end
             object RegExpText: TSynEdit
               Left = 1
-              Top = 27
+              Top = 28
               Width = 374
-              Height = 70
+              Height = 69
               Cursor = crDefault
               Align = alClient
               Font.Charset = ANSI_CHARSET
@@ -323,7 +330,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
               HideSelection = True
               RightEdge = 0
               ScrollBars = ssVertical
-              SelectedColor.Alpha = 0.400000005960464500
+              ScrollbarAnnotations = <>
               WordWrap = True
               OnChange = RegExpTextChange
             end
@@ -367,7 +374,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 Left = 1
                 Top = 1
                 Width = 372
-                Height = 26
+                Height = 27
                 Caption = 'Search Text:'
                 Align = alTop
                 Font.Charset = DEFAULT_CHARSET
@@ -382,9 +389,9 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
               end
               object SearchText: TSynEdit
                 Left = 1
-                Top = 27
+                Top = 28
                 Width = 372
-                Height = 90
+                Height = 89
                 Cursor = crDefault
                 Align = alClient
                 Font.Charset = ANSI_CHARSET
@@ -424,7 +431,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 HideSelection = True
                 RightEdge = 0
                 ScrollBars = ssVertical
-                SelectedColor.Alpha = 0.400000005960464500
+                ScrollbarAnnotations = <>
                 WordWrap = True
                 OnChange = RegExpTextChange
               end
@@ -463,7 +470,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 Left = 1
                 Top = 1
                 Width = 372
-                Height = 26
+                Height = 27
                 Caption = 'Match:'
                 Align = alTop
                 Font.Charset = DEFAULT_CHARSET
@@ -503,9 +510,9 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
               end
               object MatchText: TSynEdit
                 Left = 1
-                Top = 27
+                Top = 28
                 Width = 372
-                Height = 45
+                Height = 44
                 Cursor = crDefault
                 Align = alClient
                 Font.Charset = ANSI_CHARSET
@@ -546,7 +553,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
                 ReadOnly = True
                 RightEdge = 0
                 ScrollBars = ssVertical
-                SelectedColor.Alpha = 0.400000005960464500
+                ScrollbarAnnotations = <>
                 WordWrap = True
               end
             end

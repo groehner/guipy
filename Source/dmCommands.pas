@@ -18,6 +18,7 @@ uses
   System.ImageList,
   Vcl.ActnList,
   Vcl.StdActns,
+  Vcl.Menus,
   Vcl.ExtActns,
   Vcl.ImgList,
   Vcl.BaseImageCollection,
@@ -33,10 +34,13 @@ uses
   JvProgramVersionCheck,
   JvStringHolder,
   JvPropertyStore,
+  TB2Item,
+  SpTBXItem,
+  SpTBXEditors,
   VirtualExplorerTree,
   VirtualShellNotifier,
   uEditAppIntfs,
-  SynSpellCheck, SpTBXEditors, TB2Item, SpTBXItem, Vcl.Menus;
+  SynSpellCheck;
 
 type
   TSynGeneralSyn = class(SynHighlighterGeneral.TSynGeneralSyn)
@@ -749,15 +753,15 @@ end;
 
 procedure TCommandsDataModule.actToolsEditStartupScriptsExecute(Sender: TObject);
 begin
-  PyIDEMainForm.DoOpenFile(TPyScripterSettings.PyScripterInitFile);
-  PyIDEMainForm.DoOpenFile(TPyScripterSettings.EngineInitFile);
+  GI_EditorFactory.OpenFile(TPyScripterSettings.PyScripterInitFile);
+  GI_EditorFactory.OpenFile(TPyScripterSettings.EngineInitFile);
 end;
 
 procedure TCommandsDataModule.actSearchGoToDebugLineExecute(Sender: TObject);
 begin
-  with PyControl.CurrentPos do
-    if (Line >= 1) and (PyControl.ActiveDebugger <> nil) and not GI_PyControl.Running then
-      GI_PyIDEServices.ShowFilePosition(Editor.FileId , Line, 1, 0, True, True);
+  with GI_PyControl.CurrentPos do
+    if (Line >= 1) and GI_PyControl.PythonLoaded and not GI_PyControl.Running then
+      GI_PyIDEServices.ShowFilePosition(FileName , Line, 1, 0, True, True);
 end;
 
 procedure TCommandsDataModule.actSearchGoToLineExecute(Sender: TObject);
@@ -886,7 +890,7 @@ begin
   if Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile then begin
     Tests := TUnitTestWizard.GenerateTests(GI_ActiveEditor.FileId);
     if Tests <> '' then begin
-      Editor := IEditor(PyIDEMainForm.DoOpenFile('', 'Python')); // ToDo IEditor ergÃ¤nzt
+      Editor := IEditor(GI_EditorFactory.OpenFile('', 'Python'));
       if Assigned(Editor) then
         Editor.SynEdit.SelText := Tests;
     end;
@@ -1635,8 +1639,8 @@ begin
   actSearchGoToLine.Enabled := ActiveEditor;
   actSearchGoToSyntaxError.Enabled := ActiveEditor and
     TEditorForm(GI_ActiveEditor.Form).HasSyntaxError;
-  actSearchGoToDebugLine.Enabled := (PyControl.CurrentPos.Line >= 1) and
-    (PyControl.ActiveDebugger <> nil) and not GI_PyControl.Running;
+  actSearchGoToDebugLine.Enabled := (GI_PyControl.CurrentPos.Line >= 1) and
+    GI_PyControl.PythonLoaded and not GI_PyControl.Running;
   actFindInFiles.Enabled := not FindResultsWindow.DoingSearchOrReplace;
 
   if ActiveEditor and GI_ActiveEditor.HasPythonFile then begin

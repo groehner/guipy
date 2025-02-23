@@ -27,8 +27,6 @@ object FConfiguration: TFConfiguration
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 828
-    ExplicitHeight = 497
     object TVConfiguration: TTreeView
       Left = 0
       Top = 0
@@ -41,66 +39,69 @@ object FConfiguration: TFConfiguration
       TabOrder = 0
       OnChange = TVConfigurationChange
       Items.NodeData = {
-        03180000002A0000000000000000000000FFFFFFFFFFFFFFFF00000000000000
-        0000000000010650007900740068006F006E00340000000000000000000000FF
-        FFFFFFFFFFFFFF000000000000000000000000010B49006E0074006500720070
-        00720065007400650072002A0000000000000000000000FFFFFFFFFFFFFFFF00
-        0000000000000009000000010645006400690074006F0072002C000000000000
-        0000000000FFFFFFFFFFFFFFFF00000000000000000000000001074400690073
-        0070006C00610079002E0000000000000000000000FFFFFFFFFFFFFFFF000000
-        00000000000000000001084F007000740069006F006E00730031002E00000000
-        00000000000000FFFFFFFFFFFFFFFF00000000000000000000000001084F0070
-        00740069006F006E00730032003C0000000000000000000000FFFFFFFFFFFFFF
-        FF000000000000000000000000010F43006F0064006500200043006F006D0070
-        006C006500740069006F006E00320000000000000000000000FFFFFFFFFFFFFF
-        FF000000000000000000000000010A4B00650079007300740072006F006B0065
-        007300380000000000000000000000FFFFFFFFFFFFFFFF000000000000000000
-        000000010D530079006E00740061007800200063006F006C006F007200730036
-        0000000000000000000000FFFFFFFFFFFFFFFF00000000000000000000000001
-        0C43006F006C006F00720020007400680065006D00650073003A000000000000
-        0000000000FFFFFFFFFFFFFFFF000000000000000000000000010E43006F0064
-        0065002000740065006D0070006C0061007400650073003A0000000000000000
-        000000FFFFFFFFFFFFFFFF000000000000000000000000010E460069006C0065
-        002000740065006D0070006C0061007400650073003800000000000000000000
-        00FFFFFFFFFFFFFFFF000000000000000000000000010D43006C006100730073
-        0020006D006F00640065006C0065007200360000000000000000000000FFFFFF
-        FFFFFFFFFF000000000000000000000000010C47005500490020006400650073
-        00690067006E0065007200340000000000000000000000FFFFFFFFFFFFFFFF00
-        0000000000000000000000010B5300740072007500630074006F006700720061
-        006D003E0000000000000000000000FFFFFFFFFFFFFFFF000000000000000000
-        0000000110530065007100750065006E00630065002000640069006100670072
-        0061006D00320000000000000000000000FFFFFFFFFFFFFFFF00000000000000
-        0000000000010A55004D004C002000440065007300690067006E003400000000
-        00000000000000FFFFFFFFFFFFFFFF000000000000000000000000010B55004D
-        004C0020004F007000740069006F006E007300380000000000000000000000FF
-        FFFFFFFFFFFFFF000000000000000000000000010D4900440045002000530068
-        006F007200740063007500740073002C0000000000000000000000FFFFFFFFFF
-        FFFFFF0000000000000000000000000107420072006F0077007300650072002E
-        0000000000000000000000FFFFFFFFFFFFFFFF00000000000000000000000001
-        084C0061006E00670075006100670065002C0000000000000000000000FFFFFF
-        FFFFFFFFFF00000000000000000000000001074F007000740069006F006E0073
-        002A0000000000000000000000FFFFFFFFFFFFFFFF0000000000000000000000
-        0001065300740079006C00650073002C0000000000000000000000FFFFFFFFFF
-        FFFFFF00000000000000000000000001075000720069006E007400650072003C
-        0000000000000000000000FFFFFFFFFFFFFFFF00000000000000000000000001
-        0F48006500610064006500720020002600200046006F006F0074006500720036
-        0000000000000000000000FFFFFFFFFFFFFFFF00000000000000000000000001
-        0C5200650073007400720069006300740069006F006E00730036000000000000
-        0000000000FFFFFFFFFFFFFFFF000000000000000000000000010C4100730073
-        006F00630069006100740069006F006E007300380000000000000000000000FF
-        FFFFFFFFFFFFFF000000000000000000000000010D4C004C004D002000410073
-        00730069007300740061006E0074002E0000000000000000000000FFFFFFFFFF
-        FFFFFF00000000000000000000000001084C004C004D00200043006800610074
-        00320000000000000000000000FFFFFFFFFFFFFFFF0000000000000000000000
-        00010A5600690073006900620069006C00690074007900240000000000000000
-        000000FFFFFFFFFFFFFFFF000000000000000000000000010353005300480028
-        0000000000000000000000FFFFFFFFFFFFFFFF00000000000000000200000001
-        0554006F006F006C007300240000000000000000000000FFFFFFFFFFFFFFFF00
-        00000000000000000000000103470069007400320000000000000000000000FF
-        FFFFFFFFFFFFFF000000000000000000000000010A5300750062007600650072
-        00730069006F006E001E0000000000000000000000FFFFFFFFFFFFFFFF000000
-        0000000000000000000100}
-      ExplicitHeight = 497
+        071800000009540054007200650065004E006F00640065002B00000000000000
+        00000000FFFFFFFFFFFFFFFF0000000000000000000000000001065000790074
+        0068006F006E000000350000000000000000000000FFFFFFFFFFFFFFFF000000
+        00000000000000000000010B49006E0074006500720070007200650074006500
+        720000002B0000000000000000000000FFFFFFFFFFFFFFFF0000000000000000
+        0009000000010645006400690074006F00720000002D00000000000000000000
+        00FFFFFFFFFFFFFFFF0000000000000000000000000001074400690073007000
+        6C006100790000002F0000000000000000000000FFFFFFFFFFFFFFFF00000000
+        00000000000000000001084F007000740069006F006E007300310000002F0000
+        000000000000000000FFFFFFFFFFFFFFFF000000000000000000000000000108
+        4F007000740069006F006E007300320000003D0000000000000000000000FFFF
+        FFFFFFFFFFFF00000000000000000000000000010F43006F0064006500200043
+        006F006D0070006C006500740069006F006E0000003300000000000000000000
+        00FFFFFFFFFFFFFFFF00000000000000000000000000010A4B00650079007300
+        740072006F006B00650073000000390000000000000000000000FFFFFFFFFFFF
+        FFFF00000000000000000000000000010D530079006E00740061007800200063
+        006F006C006F00720073000000370000000000000000000000FFFFFFFFFFFFFF
+        FF00000000000000000000000000010C43006F006C006F007200200074006800
+        65006D006500730000003B0000000000000000000000FFFFFFFFFFFFFFFF0000
+        0000000000000000000000010E43006F00640065002000740065006D0070006C
+        00610074006500730000003B0000000000000000000000FFFFFFFFFFFFFFFF00
+        000000000000000000000000010E460069006C0065002000740065006D007000
+        6C0061007400650073000000390000000000000000000000FFFFFFFFFFFFFFFF
+        00000000000000000000000000010D43006C0061007300730020006D006F0064
+        0065006C00650072000000370000000000000000000000FFFFFFFFFFFFFFFF00
+        000000000000000000000000010C470055004900200064006500730069006700
+        6E00650072000000350000000000000000000000FFFFFFFFFFFFFFFF00000000
+        000000000000000000010B5300740072007500630074006F006700720061006D
+        0000003F0000000000000000000000FFFFFFFFFFFFFFFF000000000000000000
+        000000000110530065007100750065006E006300650020006400690061006700
+        720061006D000000330000000000000000000000FFFFFFFFFFFFFFFF00000000
+        000000000000000000010A55004D004C002000440065007300690067006E0000
+        00350000000000000000000000FFFFFFFFFFFFFFFF0000000000000000000000
+        0000010B55004D004C0020004F007000740069006F006E007300000039000000
+        0000000000000000FFFFFFFFFFFFFFFF00000000000000000000000000010D49
+        00440045002000530068006F0072007400630075007400730000002D00000000
+        00000000000000FFFFFFFFFFFFFFFF0000000000000000000000000001074200
+        72006F00770073006500720000002F0000000000000000000000FFFFFFFFFFFF
+        FFFF0000000000000000000000000001084C0061006E00670075006100670065
+        0000002D0000000000000000000000FFFFFFFFFFFFFFFF000000000000000000
+        0000000001074F007000740069006F006E00730000002B000000000000000000
+        0000FFFFFFFFFFFFFFFF0000000000000000000000000001065300740079006C
+        006500730000002D0000000000000000000000FFFFFFFFFFFFFFFF0000000000
+        000000000000000001075000720069006E0074006500720000003D0000000000
+        000000000000FFFFFFFFFFFFFFFF00000000000000000000000000010F480065
+        00610064006500720020002600200046006F006F007400650072000000370000
+        000000000000000000FFFFFFFFFFFFFFFF00000000000000000000000000010C
+        5200650073007400720069006300740069006F006E0073000000370000000000
+        000000000000FFFFFFFFFFFFFFFF00000000000000000000000000010C410073
+        0073006F00630069006100740069006F006E0073000000390000000000000000
+        000000FFFFFFFFFFFFFFFF00000000000000000000000000010D4C004C004D00
+        200041007300730069007300740061006E00740000002F000000000000000000
+        0000FFFFFFFFFFFFFFFF0000000000000000000000000001084C004C004D0020
+        0043006800610074000000330000000000000000000000FFFFFFFFFFFFFFFF00
+        000000000000000000000000010A5600690073006900620069006C0069007400
+        79000000250000000000000000000000FFFFFFFFFFFFFFFF0000000000000000
+        000000000001035300530048000000290000000000000000000000FFFFFFFFFF
+        FFFFFF00000000000000000002000000010554006F006F006C00730000002500
+        00000000000000000000FFFFFFFFFFFFFFFF0000000000000000000000000001
+        034700690074000000330000000000000000000000FFFFFFFFFFFFFFFF000000
+        00000000000000000000010A530075006200760065007200730069006F006E00
+        00001F0000000000000000000000FFFFFFFFFFFFFFFF00000000000000000000
+        0000000100}
     end
     object PanelRight: TPanel
       Left = 189
@@ -109,8 +110,6 @@ object FConfiguration: TFConfiguration
       Height = 498
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 639
-      ExplicitHeight = 497
       object PButtons: TPanel
         Left = 1
         Top = 456
@@ -118,8 +117,6 @@ object FConfiguration: TFConfiguration
         Height = 41
         Align = alBottom
         TabOrder = 0
-        ExplicitTop = 455
-        ExplicitWidth = 637
         object BSave: TButton
           Left = 546
           Top = 9
@@ -187,7 +184,6 @@ object FConfiguration: TFConfiguration
         Align = alTop
         BevelOuter = bvSpace
         TabOrder = 1
-        ExplicitWidth = 637
         object LTitle: TLabel
           Left = 8
           Top = 4
@@ -206,12 +202,10 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 641
         Height = 435
-        ActivePage = PPython
+        ActivePage = PLLMAssistant
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
-        ExplicitWidth = 637
-        ExplicitHeight = 434
         object PPython: TTabSheet
           Caption = 'Python'
           object vtPythonVersions: TVirtualStringTree
@@ -219,6 +213,7 @@ object FConfiguration: TFConfiguration
             Top = 0
             Width = 561
             Height = 321
+            DefaultNodeHeight = 19
             Header.AutoSizeIndex = 0
             Header.Options = [hoColumnResize, hoDrag, hoShowSortGlyphs, hoVisible]
             Images = vilTreeImages
@@ -471,7 +466,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akRight, akBottom]
             Caption = 'Gutter'
             TabOrder = 0
-            ExplicitWidth = 537
             DesignSize = (
               533
               193)
@@ -498,12 +492,11 @@ object FConfiguration: TFConfiguration
               Height = 27
               Anchors = [akTop, akRight]
               TabOrder = 6
-              ExplicitLeft = 349
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 72
-                Height = 8
+                Width = 179
+                Height = 25
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -513,6 +506,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 72
+                ExplicitHeight = 8
               end
             end
             object cbGutterColor: TSpTBXColorEdit
@@ -576,7 +571,6 @@ object FConfiguration: TFConfiguration
               Caption = 'Use Gutter Font'
               TabOrder = 4
               OnClick = cbGutterFontClick
-              ExplicitLeft = 20
             end
             object ckGutterGradient: TCheckBox
               Left = 12
@@ -587,7 +581,6 @@ object FConfiguration: TFConfiguration
               Anchors = [akTop, akRight]
               Caption = 'Gutter Gradient'
               TabOrder = 9
-              ExplicitLeft = 20
             end
             object btnGutterFont: TButton
               Left = 258
@@ -615,7 +608,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop]
             Caption = 'Line spacing / Tab spacing'
             TabOrder = 1
-            ExplicitLeft = 4
             DesignSize = (
               265
               88)
@@ -660,7 +652,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop, akRight]
             Caption = 'Right Edge'
             TabOrder = 2
-            ExplicitLeft = 271
             DesignSize = (
               271
               88)
@@ -706,7 +697,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop, akRight]
             Caption = 'Bookmarks'
             TabOrder = 3
-            ExplicitLeft = 275
             object ckBookmarkKeys: TCheckBox
               Left = 23
               Top = 16
@@ -732,7 +722,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akTop, akRight]
             Caption = 'Active Line Color'
             TabOrder = 4
-            ExplicitLeft = 271
             DesignSize = (
               271
               43)
@@ -763,8 +752,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 91
-                Height = 15
+                Width = 188
+                Height = 28
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Consolas 10pt'
@@ -774,6 +763,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Consolas'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 91
+                ExplicitHeight = 15
               end
             end
             object btnFont: TButton
@@ -1673,7 +1664,6 @@ object FConfiguration: TFConfiguration
             Height = 169
             Align = alTop
             TabOrder = 4
-            ExplicitWidth = 637
             object KeyList: TListView
               Left = 1
               Top = 1
@@ -1890,9 +1880,6 @@ object FConfiguration: TFConfiguration
                 AnnPos = sbpRight
                 FullRow = True
               end>
-            SelectedColor.Alpha = 0.400000005960464500
-            VisibleSpecialChars = []
-            ExplicitWidth = 332
           end
           object lbElements: TSpTBXListBox
             Left = 8
@@ -1990,9 +1977,6 @@ object FConfiguration: TFConfiguration
                 AnnPos = sbpRight
                 FullRow = True
               end>
-            SelectedColor.Alpha = 0.400000005960464500
-            VisibleSpecialChars = []
-            ExplicitWidth = 350
           end
         end
         object PCodeTemplates: TTabSheet
@@ -2009,7 +1993,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akTop, akRight]
             Caption = 'Code Template:'
             TabOrder = 0
-            ExplicitWidth = 561
             DesignSize = (
               557
               240)
@@ -2117,10 +2100,7 @@ object FConfiguration: TFConfiguration
                   AnnPos = sbpRight
                   FullRow = True
                 end>
-              SelectedColor.Alpha = 0.400000005960464500
               TabWidth = 4
-              VisibleSpecialChars = []
-              ExplicitWidth = 549
             end
             object edDescription: TEdit
               Left = 115
@@ -2129,7 +2109,6 @@ object FConfiguration: TFConfiguration
               Height = 23
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 2
-              ExplicitWidth = 443
             end
             object edShortcut: TEdit
               Left = 115
@@ -2240,7 +2219,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akTop, akRight]
             Caption = 'File Template:'
             TabOrder = 1
-            ExplicitWidth = 590
             DesignSize = (
               586
               240)
@@ -2354,10 +2332,7 @@ object FConfiguration: TFConfiguration
                   AnnPos = sbpRight
                   FullRow = True
                 end>
-              SelectedColor.Alpha = 0.400000005960464500
               TabWidth = 4
-              VisibleSpecialChars = []
-              ExplicitWidth = 578
             end
             object CBFileTemplatesHighlighter: TComboBox
               Left = 400
@@ -3544,11 +3519,10 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akTop, akRight]
             Caption = 'Description'
             TabOrder = 5
-            ExplicitWidth = 474
             object lblDescription: TLabel
               Left = 2
               Top = 17
-              Width = 470
+              Width = 462
               Height = 42
               Align = alClient
               AutoSize = False
@@ -5570,7 +5544,6 @@ object FConfiguration: TFConfiguration
             Height = 26
             AllowDrag = False
             LimitToOneRow = True
-            ExplicitWidth = 637
             object Toolbar: TSpTBXToolbar
               Left = 0
               Top = 0
@@ -5883,6 +5856,13 @@ object FConfiguration: TFConfiguration
             Height = 15
             Caption = 'System prompt'
           end
+          object LLLMTemperature: TLabel
+            Left = 32
+            Top = 241
+            Width = 66
+            Height = 15
+            Caption = 'Temperature'
+          end
           object CBProvider: TComboBox
             Left = 160
             Top = 13
@@ -5895,7 +5875,8 @@ object FConfiguration: TFConfiguration
             Items.Strings = (
               'OpenAI'
               'Gemini'
-              'Ollama')
+              'Ollama'
+              'DeepSeek')
           end
           object EEndPoint: TEdit
             Left = 160
@@ -5942,6 +5923,14 @@ object FConfiguration: TFConfiguration
             Height = 23
             TabOrder = 6
             Text = 'You are my expert python coding assistant'
+          end
+          object ELLMTemperature: TEdit
+            Left = 160
+            Top = 239
+            Width = 60
+            Height = 23
+            TabOrder = 7
+            Text = '1.0'
           end
         end
         object PLLMChat: TTabSheet
@@ -5996,6 +5985,13 @@ object FConfiguration: TFConfiguration
             Height = 15
             Caption = 'Timeout in seconds'
           end
+          object LChatTemperature: TLabel
+            Left = 32
+            Top = 242
+            Width = 66
+            Height = 15
+            Caption = 'Temperature'
+          end
           object CBChatProvider: TComboBox
             Left = 160
             Top = 13
@@ -6008,7 +6004,8 @@ object FConfiguration: TFConfiguration
             Items.Strings = (
               'OpenAI'
               'Gemini'
-              'Ollama')
+              'Ollama'
+              'DeepSeek')
           end
           object EChatEndPoint: TEdit
             Left = 160
@@ -6055,6 +6052,14 @@ object FConfiguration: TFConfiguration
             Height = 23
             TabOrder = 6
             Text = '20'
+          end
+          object EChatTemperature: TEdit
+            Left = 160
+            Top = 239
+            Width = 60
+            Height = 23
+            TabOrder = 7
+            Text = '1.0'
           end
         end
         object PVisibility: TTabSheet

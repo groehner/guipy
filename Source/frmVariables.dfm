@@ -66,7 +66,6 @@ inherited VariablesWindow: TVariablesWindow
           ReadOnly = True
           RightEdge = 0
           ScrollBars = ssNone
-          SelectedColor.Alpha = 0.400000005960464500
           WordWrap = True
         end
       end

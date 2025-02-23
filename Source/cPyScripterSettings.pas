@@ -329,7 +329,7 @@ type
     property DisplayPackageNames : Boolean read fDisplayPackageNames
       write fDisplayPackageNames default True;
     property NoOfRecentFiles : Integer read fNoOfRecentFiles
-      write fNoOfRecentFiles default 8;
+      write fNoOfRecentFiles default 12;
     property CodeFoldingEnabled : Boolean read fCodeFoldingEnabled
       write fCodeFoldingEnabled default True;
     property CodeFoldingForGuiElements : Boolean read fCodeFoldingForGuiElements
@@ -662,7 +662,7 @@ begin
   fAutoCompletionFont := TFont.Create;
   SetDefaultUIFont(fAutoCompletionFont);
   fHighlightSelectedWord := True;
-  fHighlightSelectedWordColor := clOlive;
+  fHighlightSelectedWordColor := TColors.Dodgerblue;
   fFileChangeNotification := fcnDisabled;
   fCodeCompletionCaseSensitive := True;
   fCompleteKeywords := True;
@@ -670,7 +670,7 @@ begin
   fCompleteWithWordBreakChars := False;
   fCompleteWithOneEntry := False;
   fDisplayPackageNames := True;
-  fNoOfRecentFiles := 8;
+  fNoOfRecentFiles := 12;
   fCodeFoldingEnabled := True;
   fCodeFoldingForGuiElements := True;
   fInternalInterpreterHidden := True;
@@ -700,6 +700,8 @@ begin
   fTrackChanges.Visible := True;
   fTrackChanges.Width := 3;
   fSelectionColor := TSynSelectedColor.Create;
+  FSelectionColor.FillWholeLines := False;
+  FSelectionColor.Background := TColors.Dodgerblue;
   fIndentGuides := TSynIndentGuides.Create;
   fIndentGuides.Style := igsDotted;
   fDisplayFlowControl := TSynDisplayFlowControl.Create;
@@ -995,10 +997,8 @@ begin
   FontSize := TSynGutter(AProperty).Font.Size;
   TSynGutter(AProperty).ChangeScale(96, Screen.PixelsPerInch);
   TSynGutter(AProperty).Font.Size := FontSize;
-  AStorage.StorageOptions.StoreDefaultValues := True;
   AStorage.WritePersistent(APath, AProperty as TSynGutter, Recursive,
     FGutterIgnoreProperties);
-  AStorage.StorageOptions.StoreDefaultValues := False;
   TSynGutter(AProperty).ChangeScale(Screen.PixelsPerInch, 96);
   TSynGutter(AProperty).Font.Size := FontSize;
 end;
@@ -1271,15 +1271,16 @@ begin
     Gutter.BorderStyle := gbsNone;
 
     Options := [eoDragDropEditing, eoEnhanceHomeKey, eoShowLigatures,
-                eoEnhanceEndKey, eoGroupUndo, eoHideShowScrollbars, eoKeepCaretX,
-                eoShowScrollHint, eoSmartTabDelete, eoTabsToSpaces, eoTabIndent,
+                eoEnhanceEndKey, eoGroupUndo, eoKeepCaretX,
+                eoSmartTabDelete, eoTabsToSpaces, eoTabIndent,
                 eoTrimTrailingSpaces, eoAutoIndent, eoBracketsHighlight,
-                eoCopyPlainText, eoAccessibility];
+                eoAccessibility, eoCompleteBrackets, eoCompleteQuotes];
+    ScrollOptions := [eoHideShowScrollbars, eoShowScrollHint];
     WantTabs := True;
     TabWidth := 4;
     MaxUndo := 0;
 
-    SelectedColor.FillWholeLines := False;
+    ActiveLineColor := $303030;
 
     // Scale BookmarkOptions
     BookMarkOptions.ChangeScale(Screen.PixelsPerInch, 96);

@@ -104,7 +104,7 @@ uses
   cPyScripterSettings,
   StringResources,
   JvGnugettext,
-  uEditAppIntfs;
+  cPySupportTypes;
 
 { TJedi }
 

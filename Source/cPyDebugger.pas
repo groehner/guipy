@@ -99,7 +99,7 @@ type
     function ImportModule(Editor: IEditor; AddToNameSpace: Boolean = False): Variant; override;
     procedure Run(ARunConfig: TRunConfiguration); override;
     function SyntaxCheck(Editor: IEditor; out ErrorPos: TEditorPos; Quiet: Boolean = False): Boolean;
-    function RunSource(const Source, FileName: Variant; Symbol: string = 'single'): Boolean; override;
+    function RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean; override;
     function EvalCode(const Expr: string): Variant; override;
     procedure SystemCommand(const Cmd: string); override;
     function GetObjectType(Obj: Variant): string; override;
@@ -149,7 +149,7 @@ type
     procedure Evaluate(const Expr: string; out ObjType, Value: string); overload; override;
     function Evaluate(const Expr: string): TBaseNameSpaceItem; overload; override;
     // Like the InteractiveInterpreter runsource but for the debugger frame
-    function RunSource(const Source, FileName: Variant; Symbol: string = 'single'): Boolean; override;
+    function RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean; override;
     // functions to get TBaseNamespaceItems corresponding to a frame's gloabals and locals
     function GetFrameGlobals(Frame: TBaseFrameInfo): TBaseNameSpaceItem; override;
     function GetFrameLocals(Frame: TBaseFrameInfo): TBaseNameSpaceItem; override;
@@ -435,7 +435,6 @@ begin
   FMainThread.Status := thrdRunning;
 
   FDebuggerCommand := dcNone;
-  PyControl.BreakPointsChanged := True;
 end;
 
 destructor TPyInternalDebugger.Destroy;
@@ -603,7 +602,6 @@ procedure TPyInternalDebugger.Debug(ARunConfig: TRunConfiguration;
 var
   Code: Variant;
   Path, OldPath: string;
-  PythonPathAdder: IInterface;
   ReturnFocusToEditor: Boolean;
   [Weak] Editor: IEditor;
 begin
@@ -618,17 +616,9 @@ begin
   //Compile
   Code := InternalInterpreter.Compile(ARunConfig);
 
-  if VarIsPython(Code) then begin
-
-    // Add the path of the script to the Python Path - Will be automatically removed
-    Path := InternalInterpreter.ToPythonFileName(ARunConfig.ScriptName);
-    if Path.StartsWith('<') then
-      Path := ''
-    else
-      Path := TPath.GetDirectoryName(Path);
+  if VarIsPython(Code) then
+  begin
     InternalInterpreter.SysPathRemove('');
-    if Length(Path) > 1 then
-      PythonPathAdder := InternalInterpreter.AddPathToPythonPath(Path);
 
     // Set the Working directory
     if ARunConfig.WorkingDir <> '' then
@@ -680,9 +670,20 @@ begin
     SetDebuggerBreakpoints;
 
     ThreadPythonExec(procedure
+    var
+      PythonPathAdder: IInterface;
     begin
+      // Add the path of the script to the Python Path - Will be automatically removed
+      var Path := InternalInterpreter.ToPythonFileName(ARunConfig.ScriptName);
+      if Path.StartsWith('<') then
+        Path := ''
+      else
+        Path := TPath.GetDirectoryName(Path);
+      if Length(Path) > 1 then
+        PythonPathAdder := InternalInterpreter.AddPathToPythonPath(Path);
+
       if RunToCursorLine >= 0 then  // add temp breakpoint
-        InternalInterpreter.Debugger.set_break(Code.co_filename, RunToCursorLine, 1);
+        InternalInterpreter.Debugger.set_break(Code.co_filename, RunToCursorLine, True);
 
       InternalInterpreter.Debugger.InitStepIn := InitStepIn;
       try
@@ -730,18 +731,11 @@ begin
   end;
 end;
 
-function TPyInternalDebugger.RunSource(const Source, FileName: Variant; Symbol: string = 'single'): Boolean;
+function TPyInternalDebugger.RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean;
 // The internal interpreter RunSource calls II.runsource which differs
 // according to whether we debugging or not
-var
-  OldCurrentPos: TEditorPos;
 begin
-  OldCurrentPos := PyControl.CurrentPos;
-  try
-    Result := InternalInterpreter.RunSource(Source, FileName, Symbol);
-  finally
-    PyControl.CurrentPos := OldCurrentPos;
-  end;
+  Result := InternalInterpreter.RunSource(Source, FileName, Symbol);
 end;
 
 procedure TPyInternalDebugger.RunToCursor(Editor: IEditor; ALine: Integer);
@@ -751,10 +745,11 @@ var
 begin
   Assert(PyControl.DebuggerState = dsPaused, 'TPyInternalDebugger.RunToCursor');
   // Set Temporary breakpoint
-  SetDebuggerBreakpoints;  // So that this one is not cleared
+  if GI_BreakpointManager.BreakPointsChanged then
+    SetDebuggerBreakpoints;  // So that this one is not cleared
   FName := InternalInterpreter.ToPythonFileName(Editor.FileId);
   Py := SafePyEngine;
-  InternalInterpreter.Debugger.set_break(VarPythonCreate(FName), ALine, 1);
+  InternalInterpreter.Debugger.set_break(FName, ALine, True);
 
   FDebuggerCommand := dcRunToCursor;
   if PyControl.DebuggerState = dsPaused then FDebugEvent.SetEvent;
@@ -844,12 +839,14 @@ begin
     FDebuggerCommand := dcNone;
 
     TPythonThread.Py_Begin_Allow_Threads;
+    // Wait for a debugger command
     FDebugEvent.WaitFor(INFINITE);
     TPythonThread.Py_End_Allow_Threads;
 
     PyControl.DebuggerState := dsDebugging;
 
-    if PyControl.BreakPointsChanged then SetDebuggerBreakpoints;
+    if GI_BreakpointManager.BreakPointsChanged then
+      SetDebuggerBreakpoints;
 
     FMainThread.Status := thrdRunning;
 
@@ -911,54 +908,38 @@ procedure TPyInternalDebugger.SetDebuggerBreakpoints;
 var
   Py: IPyEngineAndGIL;
 begin
-  if not PyControl.BreakPointsChanged then Exit;
-
   Py := SafePyEngine;
   LoadLineCache;
   InternalInterpreter.Debugger.clear_all_breaks();
 
-  GI_EditorFactory.ApplyToEditors(procedure(Editor: IEditor)
-  var
-    FName: string;
-  begin
-    FName := InternalInterpreter.ToPythonFileName(Editor.FileId);
-    for var I := 0 to Editor.BreakPoints.Count - 1 do begin
-      var BreakPoint := TBreakPoint(Editor.BreakPoints[I]);
-      if not BreakPoint.Disabled then begin
-        if BreakPoint.Condition <> '' then begin
-          InternalInterpreter.Debugger.set_break(VarPythonCreate(FName),
-            BreakPoint.LineNo, 0, VarPythonCreate(BreakPoint.Condition));
-        end else begin
-          InternalInterpreter.Debugger.set_break(VarPythonCreate(FName),
-            BreakPoint.LineNo);
-        end;
-      end;
-    end;
-  end);
+  for var BPInfo in GI_BreakpointManager.AllBreakPoints do
+    if not BPInfo.Disabled then
+      InternalInterpreter.Debugger.set_break(
+        InternalInterpreter.ToPythonFileName(BPInfo.FileName),
+        BPInfo.LineNo, False, BPInfo.Condition, BPInfo.IgnoreCount);
 
-  PyControl.BreakPointsChanged := False;
+  GI_BreakpointManager.BreakPointsChanged := False;
 end;
 
 procedure TPyInternalDebugger.LoadLineCache;
 begin
-  // inject unsaved code into LineCache
+  // Inject unsaved code into LineCache
   FLineCache.cache.clear();
   GI_EditorFactory.ApplyToEditors(procedure(Editor: IEditor)
   var
-    FName, Source, LineList: Variant;
-    SFName: string;
+    LineList: Variant;
+    Source, SFName: string;
   begin
     with Editor do begin
       if not HasPythonFile then Exit;
       SFName := InternalInterpreter.ToPythonFileName(FileId);
       if SFName.StartsWith('<') then
       begin
-        FName := SFName;
         Source := CleanEOLs(SynEdit.Text)+WideLF;
         LineList := VarPythonCreate(Source);
         LineList := LineList.splitlines(True);
-        FLineCache.cache.SetItem(VarPythonCreate(FName),
-          VarPythonCreate([Length(Source), None, LineList, FName], stTuple));
+        FLineCache.cache.SetItem(SFName,
+          VarPythonCreate([Length(Source), None, LineList, SFName], stTuple));
       end;
     end;
   end);
@@ -1062,7 +1043,7 @@ begin
   Py := SafePyEngine;
 
   VarClear(Result);
-  PyControl.ErrorPos := TEditorPos.EmptyPos;
+  GI_PyControl.ErrorPos := TEditorPos.EmptyPos;
 
   GI_PyIDEServices.Messages.ClearMessages;
 
@@ -1089,20 +1070,19 @@ begin
       // Print and throw exception for the error
       Py.PythonEngine.CheckError;
     except
-      on E: EPySyntaxError do begin
-        if GI_PyIDEServices.ShowFilePosition(E.EFileName, E.ELineNumber, E.EOffset) and
-          Assigned(GI_ActiveEditor)
-        then
-          PyControl.ErrorPos :=
-            TEditorPos.NPos(GI_ActiveEditor, E.ELineNumber, E.EOffset, True);
+      on E: EPySyntaxError do
+        begin
+          var FileName := FromPythonFileName(E.EFileName);
+          GI_PyControl.ErrorPos := TEditorPos.New(FileName, E.ELineNumber, E.EOffset, True);
 
-        GI_PyInterpreter.AppendPrompt;
-        System.SysUtils.Abort;
-      end;
-      on E: EPythonError do begin  //may raise OverflowError or ValueError
-        HandlePyException(Py.PythonEngine.Traceback, E.Message);
-        System.SysUtils.Abort;
-      end;
+          GI_PyInterpreter.AppendPrompt;
+          System.SysUtils.Abort;
+        end;
+      on E: EPythonError do
+        begin  //may raise OverflowError or ValueError
+          HandlePyException(Py.PythonEngine.Traceback, E.Message);
+          System.SysUtils.Abort;
+        end;
     end;
   end else begin
     Result := VarPythonCreate(co);
@@ -1242,27 +1222,25 @@ procedure TPyInternalInterpreter.SetCommandLine(ARunConfig: TRunConfiguration);
 var
   Py: IPyEngineAndGIL;
   SysMod: Variant;
-  S, Param: string;
+  Params, Param: string;
   P: PChar;
 begin
   Py := SafePyEngine;
   SysMod := SysModule;
   FOldargv := SysMod.argv;
   SysMod.argv := NewPythonList;
-  // Workaround due to PREFER_UNICODE flag to make sure
-  // no conversion to Unicode and back will take place
-  S := ToPythonFileName(ARunConfig.ScriptName);
-  SysMod.argv.append(VarPythonCreate(S));
+  var ScriptName := ToPythonFileName(ARunConfig.ScriptName);
+  SysMod.argv.append(ScriptName);
 
-  S := Trim(ARunConfig.Parameters);
-  if S <> '' then begin
-    S := GI_PyIDEServices.ReplaceParams(S);
-    P := PChar(S);
+  Params := Trim(ARunConfig.Parameters);
+  if Params <> '' then begin
+    Params := GI_PyIDEServices.ReplaceParams(Params);
+    P := PChar(Params);
     while P[0] <> #0 do begin
       P := GetParamStr(P, Param);
-      SysMod.argv.append(VarPythonCreate(Param));
+      SysMod.argv.append(Param);
     end;
-    GI_PyInterpreter.AppendText(Format(_(SCommandLineMsg), [S]));
+    GI_PyInterpreter.AppendText(Format(_(SCommandLineMsg), [Params]));
   end;
 end;
 
@@ -1303,7 +1281,7 @@ begin
   Py := SafePyEngine;
   var SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
   try
-    f := BuiltinModule.open(FileName, 'wb');
+    f := BuiltinModule.open(Filename, 'wb');
   except
     raise Exception.CreateFmt(SCouldNotOpenOutputFile, [FileName]);
   end;
@@ -1427,27 +1405,20 @@ begin
   end;
 end;
 
-function TPyInternalInterpreter.RunSource(const Source, FileName: Variant; Symbol: string = 'single'): Boolean;
+function TPyInternalInterpreter.RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean;
 var
   Py: IPyEngineAndGIL;
   OldDebuggerState: TDebuggerState;
-  OldPos: TEditorPos;
 begin
   Assert(not GI_PyControl.Running, 'RunSource called while the Python engine is active');
 
   OldDebuggerState := PyControl.DebuggerState;
-  OldPos := PyControl.CurrentPos;
   PyControl.DebuggerState := dsRunning;
   try
     Py := SafePyEngine;
-    // Workaround due to PREFER_UNICODE flag to make sure
-    // no conversion to Unicode and back will take place
-    var PySource := VarPythonCreate(Source);
-    Result := FII.runsource(PySource, FileName, Symbol);
+    Result := FII.runsource(Source, FileName, Symbol);
   finally
     PyControl.DebuggerState := OldDebuggerState;
-    if OldDebuggerState = dsPaused then
-      PyControl.CurrentPos := OldPos;
   end;
 end;
 
@@ -1485,15 +1456,14 @@ begin
     except
       on E: EPySyntaxError do begin
         Result := False;
-        ErrorPos := TEditorPos.NPos(Editor, E.ELineNumber, E.EOffset, True);
+        ErrorPos := TEditorPos.New(Editor.FileId, E.ELineNumber, E.EOffset, True);
 
         if not Quiet then
         begin
           GI_PyIDEServices.Messages.ClearMessages;
           // New Line for output
           GI_PyInterpreter.AppendPrompt;
-          if GI_PyIDEServices.ShowFilePosition(E.EFileName, E.ELineNumber, E.EOffset) then
-            PyControl.ErrorPos := ErrorPos;
+          GI_PyControl.ErrorPos := ErrorPos;
         end;
       end;
     end;
@@ -1548,6 +1518,7 @@ begin
 end;
 
 end.
+
 
 
 

@@ -113,7 +113,6 @@ object FUMLInteractive: TFUMLInteractive
     Highlighter = ResourcesDataModule.SynCppSyn
     RightEdge = 0
     ScrollbarAnnotations = <>
-    SelectedColor.Alpha = 0.400000005960464500
     VisibleSpecialChars = []
     OnChange = SynEditChange
     ExplicitWidth = 620

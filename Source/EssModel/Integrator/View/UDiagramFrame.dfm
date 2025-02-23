@@ -2224,7 +2224,7 @@ object AFrameDiagram: TAFrameDiagram
         SVGText = 
           '<svg viewBox="0 -0.5 16 16">'#13#10'<polyline fill="none" stroke="#000' +
           '000" points="4,4 6,6 8,4" /> '#13#10'<polyline fill="none" stroke="#00' +
-          '0000" points="6,6 6,1 12,1 12,11 9,11" /> '#13#10'</svg>'#13#10#13#10
+          '0000" points="6,6 6,1 12,1 12,11 9,11" /> '#13#10'</svg>'#13#10#13#10'</svg>'
       end
       item
         IconName = 'Edit'
@@ -2338,7 +2338,7 @@ object AFrameDiagram: TAFrameDiagram
           '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#e1e1e1" d="M9 8h6"/' +
           '>'#13#10'<polygon fill="#e1e1e1" stroke="#e1e1e1" points="1,8 5,4 9,8 ' +
           '5,12" />'#13#10'  <polyline fill="none" stroke="#e1e1e1" points="10.5,' +
-          '3.5 15,8 10.5,12.5 " />   '#13#10'</svg>>'
+          '3.5 15,8 10.5,12.5 " />   '#13#10'</svg>'
       end
       item
         IconName = 'Inheritance'

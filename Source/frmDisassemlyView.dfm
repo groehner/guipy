@@ -45,6 +45,5 @@ object DisForm: TDisForm
         Kind = gbkMargin
         Width = 3
       end>
-    SelectedColor.Alpha = 0.400000005960464500
   end
 end

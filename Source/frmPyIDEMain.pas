@@ -623,6 +623,7 @@ uses
   Vcl.DdeMan,
   Vcl.ToolWin,
   Vcl.Menus,
+  Vcl.WinXCtrls,
   SVGIconImageCollection,
   JclSysUtils,
   JvAppInst,
@@ -651,7 +652,7 @@ uses
   frmEditor,
   UUMLForm,
   UGUIForm,
-  UBrowser, Vcl.WinXCtrls;
+  UBrowser;
 
 const
   WM_FINDDEFINITION  = WM_USER + 100;
@@ -659,7 +660,7 @@ const
   WM_SEARCHREPLACEACTION  = WM_USER + 130;
 
 type
-  { Trick to add functionality to TTSpTBXTabControl}
+  { Interposer class to add functionality to TTSpTBXTabControl}
   TSpTBXTabControl = class(SpTBXTabs.TSpTBXTabControl)
   private
     zOrderPos: Integer;
@@ -1486,9 +1487,6 @@ type
     fCurrentBrowseInfo: string;
     function CmdLineOpenFiles(): Boolean;
     function OpenCmdLineFile(FileName: string): Boolean;
-    procedure DebuggerBreakpointChange(Sender: TObject; Editor: IEditor; ALine: Integer);
-    procedure DebuggerCurrentPosChange(Sender: TObject; const OldPos, NewPos: TEditorPos);
-    procedure DebuggerErrorPosChange(Sender: TObject; const OldPos, NewPos: TEditorPos);
     procedure UpdateStandardActions;
     procedure UpdateStatusBarPanels;
     procedure ApplicationOnHint(Sender: TObject);
@@ -1531,7 +1529,7 @@ type
     function GetIsClosing: Boolean;
     procedure WriteStatusMsg(const S: string);
     function FileIsPythonSource(const FileName: string): Boolean;
-    function ShowFilePosition(FileName: string; Line: Integer = 0;
+    function ShowFilePosition(FileName: string; Line: Integer = 1;
       Offset: Integer = 1; SelLen: Integer = 0;
       ForceToMiddle: Boolean = True; FocusEditor: Boolean = True): Boolean;
     procedure ClearPythonWindows;
@@ -1561,9 +1559,7 @@ type
     procedure StoreLocalApplicationData;
     procedure RestoreLocalApplicationData;
 
-    function DoCreateFile(FileKind: TFileKind; TabControlIndex: Integer = 1): IFile;
-    function DoOpenFile(AFileName: string; HighlighterName: string = '';
-       TabControlIndex: Integer = 1; AsEditor: Boolean = False): IFile;
+
     function NewFileFromTemplate(FileTemplate: TFileTemplate;
        TabControlIndex: Integer = 1; FileName: string = ''): IEditor;
     procedure UpdateDebugCommands(DebuggerState: TDebuggerState);
@@ -1734,114 +1730,14 @@ const
 
 { TWorkbookMainForm }
 
-function TPyIDEMainForm.DoCreateFile(FileKind: TFileKind; TabControlIndex: Integer = 1): IFile;
-begin
-  if (FileKind = fkEditor) and (GI_EditorFactory <> nil) then
-    Result:= GI_EditorFactory.NewEditor(TabControlIndex)
-  else if (FileKind <> fkEditor) and (GI_FileFactory <> nil) then
-    Result := GI_FileFactory.NewFile(FileKind, TabControlIndex)
-  else
-    Result := nil;
-end;
-
-function TPyIDEMainForm.DoOpenFile(AFileName: string; HighlighterName: string = '';
-       TabControlIndex: Integer = 1; AsEditor: Boolean = False): IFile;
-var
-  IsRemote: Boolean;
-  Server, FName, GuiFormPath: string;
-  TabCtrl: TSpTBXTabControl;
-  Editor: IEditor;
-  FileKind: TFileKind;
-begin
-  Result := nil;
-  tbiRecentFileList.MRURemove(AFileName);
-  IsRemote := TSSHFileName.Parse(AFileName, Server, FName);
-  GuiFormPath:= '';
-  if TPath.GetExtension(aFileName) = '.pfm' then begin
-    GuiFormPath:= aFileName;
-    aFileName:= TPath.ChangeExtension(aFilename, '.pyw');
-    Editor:= GI_EditorFactory.GetEditorByName(aFileName);
-    if (Assigned(Editor) and Assigned((Editor.Form as TEditorForm).Partner) or
-       not FileExists(GuiFormPath)) then
-      GuiFormPath:= '';
-  end;
-
-  // activate the editor if already open
-  if IsRemote then
-  begin
-    Result :=  GI_FileFactory.GetFileByFileId(AFileName);
-    if Assigned(Result) and not AsEditor then begin
-      Result.Activate;
-      Exit;
-    end;
-  end
-  else if AFileName <> '' then
-  begin
-    if not IsHTTP(AFilename) then
-      AFileName := GetLongFileName(ExpandFileName(AFileName));
-    Result := GI_FileFactory.GetFileByName(AFileName);
-    if Assigned(Result) then begin
-      Result.Activate;
-      if GuiFormPath <> '' then
-        FGUIDesigner.Open(GuiFormPath);
-      if not AsEditor then  // not AsEditor for Sequenceform as Text
-        Exit;
-    end;
-  end;
-  // create a new editor, add it to the editor list, open the file
-  TabCtrl := TabControl(TabControlIndex);
-  TabCtrl.Toolbar.BeginUpdate;
-  try
-    if AsEditor
-      then FileKind:= fkEditor
-      else FileKind:= FilenameToFileKind(aFilename);
-    Result := DoCreateFile(FileKind, TabControlIndex);
-    if Result <> nil then begin
-      if Result.FileKind = fkEditor
-        then Editor:= Result as IEditor
-        else Editor:= nil;
-      try
-        if IsRemote then
-          Result.OpenRemoteFile(FName, Server)
-        else if Assigned(Editor) then
-          Editor.OpenFile(AFilename, HighlighterName)
-        else
-          Result.OpenFile(AFileName);
-        Result.Activate;  // necessary!
-
-        tbiRecentFileList.MRURemove(AFileName);
-        if GuiFormPath <> '' then
-          FGUIDesigner.Open(GuiFormPath);
-      except
-        Result.Close;
-        raise
-      end;
-
-      if (AFileName <> '') and (GI_FileFactory.Count = 2) and
-        (GI_FileFactory.getFile(0).FileName = '') and
-        (GI_FileFactory.getFile(0).RemoteFileName = '') and
-        not GI_FileFactory.getFile(0).Modified
-      then
-        GI_FileFactory.getFile(0).Close;
-      if (AFileName = '') and (HighlighterName = 'Python') then
-        TEditorForm(Result.Form).DefaultExtension := 'py';
-    end;
-  finally
-    TabCtrl.Toolbar.EndUpdate;
-    if Assigned(TabCtrl.ActiveTab) then begin
-      TabCtrl.MakeVisible(TabCtrl.ActiveTab);
-    end;
-  end;
-end;
-
 function TPyIDEMainForm.DoOpen(AFileName: string): IFile;
 begin
-  Result:= DoOpenFile(aFilename, '', TabControlIndex(ActiveTabControl));
+  Result:= GI_EditorFactory.OpenFile(aFilename, '', TabControlIndex(ActiveTabControl));
 end;
 
 function TPyIDEMainForm.DoOpenAsEditor(AFileName: string): IEditor;
 begin
-  Result:= DoOpenFile(aFilename, '', TabControlIndex(ActiveTabControl), True) as IEditor;
+  Result:= GI_EditorFactory.OpenFile(aFilename, '', TabControlIndex(ActiveTabControl), True) as IEditor;
 end;
 
 procedure TPyIDEMainForm.DoOpenInUMLWindow(const FileName: string);
@@ -1981,7 +1877,7 @@ begin
          else Exit;
        end;
     end;
-    aFile:= DoOpenFile(pathname);
+    aFile:= GI_EditorFactory.OpenFile(pathname);
     (aFile.Form as TFStructogram).FromText(sourcecode);
   end;
 end;
@@ -2121,37 +2017,21 @@ begin
   //OutputDebugString(PWideChar(Format('%s ElapsedTime %d ms', ['Before All Forms', StopWatch.ElapsedMilliseconds])));
   // Create and layout IDE windows
   PythonIIForm := TPythonIIForm.Create(Self);
-  PythonIIForm.PopupParent := Self;
   CallStackWindow := TCallStackWindow.Create(Self);
-  CallStackWindow.PopupParent := Self;
   VariablesWindow := TVariablesWindow.Create(Self);
-  VariablesWindow.PopupParent := Self;
   WatchesWindow := TWatchesWindow.Create(Self);
-  WatchesWindow.PopupParent := Self;
   BreakPointsWindow := TBreakPointsWindow.Create(Self);
-  BreakPointsWindow.PopupParent := Self;
   OutputWindow := TOutputWindow.Create(Self);
-  OutputWindow.PopupParent := Self;
   MessagesWindow := TMessagesWindow.Create(Self);
-  MessagesWindow.PopupParent := Self;
   CodeExplorerWindow := TCodeExplorerWindow.Create(Self);
-  CodeExplorerWindow.PopupParent := Self;
   FileExplorerWindow := TFileExplorerWindow.Create(Self);
-  FileExplorerWindow.PopupParent := Self;
   ToDoWindow := TToDoWindow.Create(Self);
-  ToDoWindow.PopupParent := Self;
   RegExpTesterWindow := TRegExpTesterWindow.Create(Self);
-  RegExpTesterWindow.PopupParent := Self;
   UnitTestWindow := TUnitTestWindow.Create(Self);
-  UnitTestWindow.PopupParent := Self;
   FindResultsWindow := TFindResultsWindow.Create(Self);
-  FindResultsWindow.PopupParent := Self;
   ProjectExplorerWindow := TProjectExplorerWindow.Create(Self);
-  ProjectExplorerWindow.PopupParent := Self;
   LLMChatForm := TLLMChatForm.Create(Self);
-  LLMChatForm.PopupParent := Self;
   FUMLInteractive := TFUMLInteractive.Create(Self);
-  FUMLInteractive.PopupParent := Self;
 
   FConfiguration:= TFConfiguration.Create(Self);
   FConfiguration.PopupParent:= Self;
@@ -2159,12 +2039,9 @@ begin
 
   FGUIDesigner:= TFGUIDesigner.Create(Self);
   FObjectInspector:= TFObjectInspector.Create(Self);
-  FObjectInspector.PopupParent:= Self;
   FObjectGenerator:= TFObjectGenerator.Create(Self);
   FFileStructure:= TFFileStructure.Create(Self);
-  FFileStructure.PopupParent := Self;
   FClassEditor:= TFClassEditor.Create(Self);
-  FClassEditor.PopupParent := Self;
   DragRectangle:= nil;
 
   // And now translate after all the docking forms have been created
@@ -2729,7 +2606,7 @@ begin
         mr:= (StyledMessageDlg(Format(_(LNGFileAlreadyExists),
              [FileName]), mtError, [mbYes, mbNo, mbCancel], 0));
         if mr = mrNo then
-          DoOpenFile(FileName);
+          GI_EditorFactory.OpenFile(FileName);
       end;
       if mr = mrYes then begin
         aFile:= GI_FileFactory.GetFileByName(FileName);
@@ -2775,7 +2652,7 @@ begin
         FileTemplate:= FileTemplates.TemplateByName(SClassTemplateName);
       end;
       Editor:= NewFileFromTemplate(FileTemplate, TabControlIndex(ActiveTabControl), NewName);
-      UML:= TFUMLForm(DoOpenFile(ChangeFileExt(NewName, '.puml')).Form);
+      UML:= TFUMLForm(GI_EditorFactory.OpenFile(ChangeFileExt(NewName, '.puml')).Form);
       PrepareClassEdit(Editor, 'New', UML);
     end;
   end;
@@ -2783,7 +2660,7 @@ end;
 
 procedure TPyIDEMainForm.actUMLNewUMLExecute(Sender: TObject);
 begin
-  DoOpenFile(getFilename('.puml'));
+  GI_EditorFactory.OpenFile(getFilename('.puml'));
 end;
 
 procedure TPyIDEMainForm.actUMLOpenClassExecute(Sender: TObject);
@@ -2942,7 +2819,7 @@ begin
   TabCtrl := TSpTBXTabControl(GetActiveTabControl);
   TabCtrl.Toolbar.BeginUpdate;
   try
-    aFile:= DoCreateFile(fkTextDiff, ActiveTabControlIndex);
+    aFile:= GI_FileFactory.CreateFile(fkTextDiff, ActiveTabControlIndex);
     if aFile <> nil then begin
       TextDiff:= TFTextDiff(aFile.Form);
       try
@@ -2976,7 +2853,7 @@ begin
   if aFile = nil then begin
     TabCtrl:= TSpTBXTabControl(GetActiveTabControl);
     TabCtrl.Toolbar.BeginUpdate;
-    aFile:= DoCreateFile(fkBrowser, ActiveTabControlIndex);
+    aFile:= GI_FileFactory.CreateFile(fkBrowser, ActiveTabControlIndex);
     TabCtrl.Toolbar.EndUpdate;
   end;
   if Assigned(aFile) then begin
@@ -3011,12 +2888,13 @@ var
 begin
   ActiveEditor := GetActiveEditor;
   if Assigned(ActiveEditor) and ActiveEditor.HasPythonFile then
-    PyControl.ToggleBreakpoint(ActiveEditor, ActiveEditor.SynEdit.CaretY);
+    GI_BreakpointManager.ToggleBreakpoint(ActiveEditor.FileId,
+      ActiveEditor.SynEdit.CaretY);
 end;
 
 procedure TPyIDEMainForm.actClearAllBreakpointsExecute(Sender: TObject);
 begin
-  PyControl.ClearAllBreakpoints;
+  GI_BreakpointManager.ClearAllBreakpoints;
 end;
 
 procedure TPyIDEMainForm.actCommandLineExecute(Sender: TObject);
@@ -3217,26 +3095,6 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.DebuggerBreakpointChange(Sender: TObject; Editor: IEditor;
-  ALine: Integer);
-begin
-  if not Assigned(Editor) then Exit;
-  if (ALine >= 1) and (ALine <= Editor.SynEdit.Lines.Count) then
-  begin
-    Editor.SynEdit.InvalidateGutterLine(ALine);
-    Editor.SynEdit.InvalidateLine(ALine);
-    Editor.SynEdit2.InvalidateGutterLine(ALine);
-    Editor.SynEdit2.InvalidateLine(ALine);
-  end
-  else
-    Editor.SynEdit.Invalidate;
-
-  TThread.ForceQueue(nil, procedure
-  begin
-    BreakPointsWindow.UpdateWindow;
-  end);
-end;
-
 procedure TPyIDEMainForm.UpdateCaption;
 begin
   if GetIsClosing then Exit;
@@ -3299,7 +3157,7 @@ begin
   actDebugAbort.Enabled := DebuggerState in [dsPaused, dsDebugging, dsRunning, dsPostMortem];
   actDebugPause.Enabled := DebuggerState = dsDebugging;
   actRunToCursor.Enabled := PyFileActive and (GI_PyControl.Inactive or (DebuggerState = dsPaused))
-    and PyControl.IsExecutableLine(Editor, Editor.SynEdit.CaretY);
+    and TPyRegExpr.IsExecutableLine(Editor.SynEdit.LineText);
   actToggleBreakPoint.Enabled := PyFileActive;
   actClearAllBreakPoints.Enabled := PyFileActive;
   actAddWatchAtCursor.Enabled := PyFileActive;
@@ -3351,53 +3209,6 @@ begin
    actRunLastScript.Hint := _(sHintRun) + S;
    actRunDebugLastScript.Hint := _(sHintDebug) + S;
    actRunLastScriptExternal.Hint := _(sHintExternalRun) + S;
-end;
-
-procedure TPyIDEMainForm.DebuggerErrorPosChange(Sender: TObject;
-  const OldPos, NewPos: TEditorPos);
-{  Invalidates old and/or new error line but does not Activate the Editor }
-begin
-  if GetIsClosing then Exit;
-
-  if Assigned(OldPos.Editor)  and (OldPos.Line > 0) then begin
-    // Remove possible error line
-    OldPos.Editor.SynEdit.InvalidateLine(OldPos.Line);
-    OldPos.Editor.SynEdit2.InvalidateLine(OldPos.Line);
-  end;
-  if Assigned(NewPos.Editor)  and (NewPos.Line > 0) then begin
-    NewPos.Editor.SynEdit.InvalidateLine(NewPos.Line);
-    NewPos.Editor.SynEdit2.InvalidateLine(NewPos.Line);
-  end;
-end;
-
-procedure TPyIDEMainForm.DebuggerCurrentPosChange(Sender: TObject;
-  const OldPos, NewPos: TEditorPos);
-begin
-  if GetIsClosing then Exit;
-
-  if Assigned(OldPos.Editor)  and (OldPos.Line > 0) then
-    // Remove possible current lines
-    with OldPos.Editor do begin
-      SynEdit.InvalidateGutterLine(OldPos.Line);
-      SynEdit.InvalidateLine(OldPos.Line);
-      SynEdit2.InvalidateGutterLine(OldPos.Line);
-      SynEdit2.InvalidateLine(OldPos.Line);
-    end;
-
-  if not Assigned(NewPos.Editor) then Exit;
-
-  if GetActiveEditor <> NewPos.Editor then
-    NewPos.Editor.Activate;
-  with NewPos.Editor.SynEdit do begin
-    if (NewPos.Line > 0) and (CaretY <> NewPos.Line) then begin
-      CaretXY := BufferCoord(1, NewPos.Line);
-      EnsureCursorPosVisible;
-    end;
-    InvalidateGutterLine(NewPos.Line);
-    InvalidateLine(NewPos.Line);
-  end;
-  NewPos.Editor.SynEdit2.InvalidateGutterLine(NewPos.Line);
-  NewPos.Editor.SynEdit2.InvalidateLine(NewPos.Line);
 end;
 
 procedure TPyIDEMainForm.DebuggerStateChange(Sender: TObject; OldState,
@@ -3514,7 +3325,7 @@ begin
     HintInfo.HideTimeout := 5000;
 end;
 
-function TPyIDEMainForm.ShowFilePosition(FileName: string; Line: Integer = 0;
+function TPyIDEMainForm.ShowFilePosition(FileName: string; Line: Integer = 1;
       Offset: Integer = 1; SelLen: Integer = 0;
       ForceToMiddle: Boolean = True; FocusEditor: Boolean = True): Boolean;
 var
@@ -3528,7 +3339,7 @@ begin
     aFile := GI_FileFactory.GetFileByFileId(FileName);
     if not Assigned(aFile) and (FileName.StartsWith('ssh') or FileExists(FileName)) then begin
       try
-        DoOpenFile(FileName, '', TabControlIndex(ActiveTabControl));
+        GI_EditorFactory.OpenFile(FileName, '', TabControlIndex(ActiveTabControl));
       except
         Exit;
       end;
@@ -3539,7 +3350,7 @@ begin
       if aFile.FileKind= fkEditor then begin
         Editor:= aFile as IEditor;
         if GI_PyControl.PythonLoaded and
-          Editor.FileName.StartsWith(PyControl.PythonVersion.InstallPath, True)
+          Editor.FileName.StartsWith(GI_PyControl.PythonVersion.InstallPath, True)
         then
           Editor.ReadOnly := True;
         Result := True;
@@ -3554,7 +3365,7 @@ begin
               MouseCapture := True;
               with Editor.ActiveSynEdit do
               begin
-                var Caret := BufferCoord(Offset,Line);
+                var Caret := BufferCoord(Offset, Line);
                 SetCaretAndSelection(Caret, Caret, Caret, True, ForceToMiddle);
                 if SelLen > 0 then
                    SelLength := SelLen;
@@ -4036,12 +3847,12 @@ end;
 
 procedure TPyIDEMainForm.actFileNewSequencediagramExecute(Sender: TObject);
 begin
-  DoOpenFile(getFilename('.psd'));
+  GI_EditorFactory.OpenFile(getFilename('.psd'));
 end;
 
 procedure TPyIDEMainForm.actFileNewStructogramExecute(Sender: TObject);
 begin
-  DoOpenFile(getFilename('.psg'));
+  GI_EditorFactory.OpenFile(getFilename('.psg'));
 end;
 
 procedure TPyIDEMainForm.NewTkOrQtFile(FileTemplate: TFileTemplate);
@@ -4122,10 +3933,10 @@ begin
           else (aFile.Form as TFTextDiff).Open(FileName)
       else
         for i := 0 to Files.Count - 1 do begin
-          DoOpenFile(Files[i], '', TabControlIndex(ActiveTabControl));
+          GI_EditorFactory.OpenFile(Files[i], '', TabControlIndex(ActiveTabControl));
           if (TPath.GetExtension(Files[i]) = '.pyw') then begin
             var pfmFile:= TPath.ChangeExtension(Files[i], '.pfm');
-            DoOpenFile(pfmFile, '', TabControlIndex(ActiveTabControl));
+            GI_EditorFactory.OpenFile(pfmFile, '', TabControlIndex(ActiveTabControl));
           end;
         end;
     end;
@@ -4498,9 +4309,9 @@ begin
   // end of GuiPy
 
   // Load Style Name
-  var Stylename:= AppStorage.ReadString('Style Name', 'Windows10 SlateGray');
+  var Stylename:= AppStorage.ReadString('Style Name', 'Windows11 MineShaft');
   if MachineStorage.ValueStored('Style Name') then
-    Stylename:= MachineStorage.ReadString('Style Name', 'Windows10 SlateGray');
+    Stylename:= MachineStorage.ReadString('Style Name', 'Windows11 MineShaft');
   FConfiguration.SetStyle(Stylename);
 
   // Load IDE Shortcuts
@@ -5114,10 +4925,10 @@ begin
     filename:= Msg.Strings[i];
     if LeftStr(filename, 11) = '[FileOpen("' then begin
       filename:= Copy(filename, 12, Length(filename) - 14);
-      DoOpenFile(filename, '', TabControlIndex(ActiveTabControl));
+      GI_EditorFactory.OpenFile(filename, '', TabControlIndex(ActiveTabControl));
       if TPath.GetExtension(filename) = '.pyw' then begin
         var pfmFile:= TPath.ChangeExtension(filename, '.pfm');
-        DoOpenFile(pfmFile, '', TabControlIndex(ActiveTabControl));
+        GI_EditorFactory.OpenFile(pfmFile, '', TabControlIndex(ActiveTabControl));
       end;
       GuiPyOptions.Sourcepath:= ExtractFilePath(filename);
     end;
@@ -5515,14 +5326,6 @@ procedure TPyIDEMainForm.ThemeEditorGutter(Gutter: TSynGutter);
 var
   GradColor: TColor;
 begin
-  Assert(SkinManager.GetSkinType(nil) <> sknSkin);
-  if SkinManager.GetSkinType(nil) in [sknNone, sknWindows] then begin
-    Gutter.GradientStartColor := clWindow;
-    Gutter.GradientEndColor := clBtnFace;
-    Gutter.Font.Color := clSilver;
-    Exit;
-  end;
-
   // Delphi Styles
   if not StyleServices.GetElementColor(StyleServices.GetElementDetails(ttTabItemNormal),
     ecFillColor, GradColor) or (GradColor = clNone)
@@ -5534,7 +5337,7 @@ begin
     BorderStyle := gbsNone;
     GradientStartColor := LightenColor(GradColor, 40);
     GradientEndColor := DarkenColor(GradColor, 20);
-    Color := GradColor;
+    Color := DarkenColor(GradColor, 4);
   end;
 end;
 
@@ -5576,7 +5379,8 @@ var
   CaretXY: TBufferCoord;
 begin
   Application.ProcessMessages;
-  if Assigned(GI_ActiveEditor) then begin
+  if Assigned(GI_ActiveEditor) then
+  begin
     FileName := GI_ActiveEditor.FileId;
     CaretXY := GI_ActiveEditor.ActiveSynEdit.CaretXY;
     FindDefinition(GI_ActiveEditor, CaretXY, True, False, True, FilePosInfo);
@@ -5963,7 +5767,7 @@ begin
         Result.FromTemplate:= True;
         if FileName = '' then
           FileName:= getFilename('.' + FileTemplate.Extension);
-        Result.OpenFile(FileName, FileTemplate.Highlighter);
+        Result.OpenLocalFile(FileName, FileTemplate.Highlighter);
         Result.Activate;
       except
         Result.Close;
@@ -6043,7 +5847,8 @@ begin
   // Try to see whether it contains line/char info
   Result := JumpToFilePosInfo(FileName);
   if not Result and FileExists(FileName) then
-    Result := Assigned(DoOpenFile(FileName, '', TabControlIndex(ActiveTabControl)));
+    Result := Assigned(GI_EditorFactory.OpenFile(FileName, '',
+      TabControlIndex(ActiveTabControl)));
 end;
 
 procedure TPyIDEMainForm.tbiBrowseNextClick(Sender: TObject);
@@ -6179,12 +5984,7 @@ begin
     if FileExists(AppStorage.IniFile.FileName) then
       LoadToolbarItems('Toolbar Items');
 
-    with PyControl do begin
-      OnBreakpointChange := DebuggerBreakpointChange;
-      OnCurrentPosChange := DebuggerCurrentPosChange;
-      OnErrorPosChange := DebuggerErrorPosChange;
-      OnStateChange := DebuggerStateChange;
-    end;
+    PyControl.OnStateChange := DebuggerStateChange;
 
     // This is needed to update the variables window
     PyControl.DebuggerState := dsInactive;
@@ -6216,14 +6016,11 @@ end;
 
 procedure TPyIDEMainForm.JvAppInstancesCmdLineReceived(Sender: TObject;
   CmdLine: TStrings);
-var
-  i: Integer;
 begin
   if JvAppInstances.AppInstances.InstanceIndex[GetCurrentProcessID] <> 0 then Exit;
-  for i := 0 to CmdLine.Count - 1 do
-    if (CmdLine[i][1] <> '-') then
-      //DoOpenFile(CmdLine[i]);
-      ShellExtensionFiles.Add(CmdLine[i])
+  for var FName in CmdLine do
+    if (FName[1] <> '-') then
+      ShellExtensionFiles.Add(FName);
 end;
 
 //function TPyIDEMainForm.FindAction(var Key: Word; Shift: TShiftState): TCustomAction;
@@ -6300,9 +6097,8 @@ var
   FileName, Server: string;
 begin
   if ExecuteRemoteFileDialog(FileName, Server, rfdOpen) then
-  begin
-    DoOpenFile(TSSHFileName.Format(Server, FileName), '', TabControlIndex(ActiveTabControl));
-  end;
+    GI_EditorFactory.OpenFile(TSSHFileName.Format(Server, FileName), '',
+      TabControlIndex(ActiveTabControl));
 end;
 
 procedure TPyIDEMainForm.actRestoreEditorExecute(Sender: TObject);
@@ -6463,16 +6259,16 @@ end;
 
 procedure TPyIDEMainForm.tbiRecentFileListClick(Sender: TObject;
   const FileName: string);
-var
-  S: string;
 begin
-  S := FileName;
-  DoOpenFile(S, '', TabControlIndex(ActiveTabControl));
-  // A bit problematic since it Frees the MRU Item which calls this click handler
-  tbiRecentFileList.MRURemove(S);
-  if ExtractFileExt(s) = '.pyw' then begin
-    s:= ChangeFileExt(s, '.pfm');
-    DoOpenFile(S, '', TabControlIndex(ActiveTabControl));
+  GI_EditorFactory.OpenFile(Filename, '', TabControlIndex(ActiveTabControl));
+  TThread.ForceQueue(nil, procedure
+  begin
+    tbiRecentFileList.MRURemove(Filename);
+  end);
+  if ExtractFileExt(Filename) = '.pyw' then begin
+    var sFilename := FileName;
+    sFilename:= ChangeFileExt(sFilename, '.pfm');
+    GI_EditorFactory.OpenFile(sFilename, '', TabControlIndex(ActiveTabControl));
   end;
 end;
 
@@ -6586,7 +6382,7 @@ begin
   LockFormUpdate(Self);
   try
     for FileName in AFiles do
-      DoOpenFile(FileName, '', ActiveTabControlIndex);
+      GI_EditorFactory.OpenFile(FileName, '', ActiveTabControlIndex);
     GuiPyOptions.Sourcepath:= ExtractFilePath(FileName);
   finally
     UnlockFormUpdate(Self);
@@ -6595,12 +6391,26 @@ end;
 
 procedure TPyIDEMainForm.RemoveDefunctEditorOptions;
 // since 5.11 to avoid an exception
+const
+  DefunctOptions: array[0..8] of string = (
+    'eoAltSetsColumnMode',
+    'eoDisableScrollArrows',
+    'eoHalfPageScroll',
+    'eoHideShowScrollbars',
+    'eoScrollByOneLess',
+    'eoScrollHintFollows',
+    'eoScrollPastEof',
+    'eoScrollPastEol',
+    'eoShowScrollHint'
+  );
 begin
   var SL:= TSmartPtr.Make(TStringList.Create)();
   SL.LoadFromFile(TPyScripterSettings.OptionsFileName);
-  var s:= SL.Text;
-  s:= myStringReplace(s, 'eoAltSetsColumnMode, ', '');
-  SL.Text:= s;
+  var Settings := SL.Text;
+  for var DefunctOption in DefunctOptions do
+    Settings := StringReplace(Settings, DefunctOption + ', ', '',
+    [rfReplaceAll, rfIgnoreCase]);
+  SL.Text := Settings;
   SL.SaveToFile(TPyScripterSettings.OptionsFileName);
 end;
 
@@ -6608,21 +6418,21 @@ end;
 
 procedure TSpTBXTabControl.WMDropFiles(var Msg: TMessage);
 var
-  i, iNumberDropped: Integer;
+  NumberDropped: Integer;
   FileName: array[0..MAX_PATH - 1] of Char;
 begin
   try
-    iNumberDropped := DragQueryFile(THandle(Msg.WParam), Cardinal(-1),
-      nil, 0);
+    NumberDropped := DragQueryFile(HDROP(Msg.WParam), Cardinal(-1), nil, 0);
 
-    for i := 0 to iNumberDropped - 1 do
+    for var I := 0 to NumberDropped - 1 do
     begin
-      DragQueryFile(THandle(Msg.WParam), i, FileName, MAX_PATH);
-      PyIDEMainForm.DoOpenFile(FileName, '', PyIDEMainForm.TabControlIndex(Self));
+      DragQueryFile(THandle(Msg.WParam), I, FileName, MAX_PATH);
+      GI_EditorFactory.OpenFile(FileName, '',
+        PyIDEMainForm.TabControlIndex(Self));
     end;
   finally
     Msg.Result := 0;
-    DragFinish(THandle(Msg.WParam));
+    DragFinish(HDROP(Msg.WParam));
   end;
 end;
 

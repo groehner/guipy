@@ -62,8 +62,6 @@ object SuggestWindow: TSuggestWindow
         AnnPos = sbpFullWidth
         FullRow = False
       end>
-    SelectedColor.Alpha = 0.400000005960464500
-    VisibleSpecialChars = []
   end
   object SpTBXDock: TSpTBXDock
     Left = 0
@@ -89,6 +87,7 @@ object SuggestWindow: TSuggestWindow
       Stretch = True
       SystemFont = False
       TabOrder = 0
+      Caption = 'SpTBXToolbar'
       Customizable = False
       object spiAccept: TSpTBXItem
         Caption = 'Accept (Tab)'

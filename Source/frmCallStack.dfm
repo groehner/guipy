@@ -5,13 +5,19 @@ inherited CallStackWindow: TCallStackWindow
   Caption = 'Call Stack'
   ClientHeight = 168
   ClientWidth = 604
+  ExplicitWidth = 620
+  ExplicitHeight = 207
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 604
     Height = 168
+    ExplicitWidth = 604
+    ExplicitHeight = 168
     inherited FGPanel: TPanel
       Width = 600
       Height = 164
+      ExplicitWidth = 600
+      ExplicitHeight = 164
       object Panel1: TPanel
         Left = 190
         Top = 0
@@ -33,6 +39,7 @@ inherited CallStackWindow: TCallStackWindow
           Colors.UnfocusedColor = clHighlightText
           Colors.UnfocusedSelectionColor = clGray
           Colors.UnfocusedSelectionBorderColor = clGray
+          DefaultNodeHeight = 19
           Header.AutoSizeIndex = 1
           Header.Options = [hoAutoResize, hoColumnResize, hoDblClickResize, hoHotTrack, hoVisible]
           HintMode = hmTooltip
@@ -91,6 +98,7 @@ inherited CallStackWindow: TCallStackWindow
           Colors.UnfocusedColor = clHighlightText
           Colors.UnfocusedSelectionColor = clGray
           Colors.UnfocusedSelectionBorderColor = clGray
+          DefaultNodeHeight = 19
           Header.AutoSizeIndex = 0
           Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowSortGlyphs, hoVisible, hoFullRepaintOnResize]
           Images = vilImages

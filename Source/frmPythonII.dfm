@@ -3,31 +3,30 @@ inherited PythonIIForm: TPythonIIForm
   Top = 201
   HelpContext = 410
   Caption = 'Python Interpreter'
-  ClientHeight = 343
-  ClientWidth = 629
-  StyleElements = []
+  ClientHeight = 451
+  ClientWidth = 701
+  StyleElements = [seFont, seClient, seBorder]
   OnHelp = FormHelp
-  ExplicitWidth = 645
-  ExplicitHeight = 382
+  ExplicitWidth = 717
+  ExplicitHeight = 490
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 629
-    Height = 343
-    StyleElements = []
-    ExplicitWidth = 629
-    ExplicitHeight = 343
+    Width = 701
+    Height = 451
+    ExplicitWidth = 701
+    ExplicitHeight = 451
     inherited FGPanel: TPanel
-      Width = 625
-      Height = 339
+      Width = 697
+      Height = 447
       Color = clInactiveBorder
-      StyleElements = []
-      ExplicitWidth = 625
-      ExplicitHeight = 339
+      StyleElements = [seFont, seClient, seBorder]
+      ExplicitWidth = 697
+      ExplicitHeight = 447
       object SynEdit: TSynEdit
         Left = 0
         Top = 0
-        Width = 625
-        Height = 339
+        Width = 697
+        Height = 447
         HelpContext = 410
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
@@ -68,7 +67,6 @@ inherited PythonIIForm: TPythonIIForm
             Kind = gbkMargin
             Width = 3
           end>
-        Options = [eoDragDropEditing, eoEnhanceHomeKey, eoGroupUndo, eoHideShowScrollbars, eoKeepCaretX, eoShowScrollHint, eoTabIndent, eoTabsToSpaces]
         RightEdge = 0
         ScrollbarAnnotations = <
           item
@@ -76,9 +74,7 @@ inherited PythonIIForm: TPythonIIForm
             AnnPos = sbpFullWidth
             FullRow = False
           end>
-        SelectedColor.Alpha = 0.400000005960464500
         TabWidth = 4
-        VisibleSpecialChars = []
         WantTabs = True
         WordWrap = True
         OnCommandProcessed = SynEditCommandProcessed
@@ -86,9 +82,6 @@ inherited PythonIIForm: TPythonIIForm
         OnProcessUserCommand = SynEditProcessUserCommand
       end
     end
-  end
-  inherited DockClient: TJvDockClient
-    Left = 40
   end
   object PythonIO: TPythonInputOutput
     UnicodeIO = False
@@ -145,9 +138,7 @@ inherited PythonIIForm: TPythonIIForm
     end
     object mnInterpreterEditorOptions: TSpTBXItem
       Action = CommandsDataModule.actInterpreterEditorOptions
-    end
-    object mnReinitialzePython: TSpTBXItem
-      Action = PyIDEMainForm.actPythonReinitialize
+      ImageIndex = 4
     end
   end
   object InterpreterActionList: TActionList
@@ -245,7 +236,6 @@ inherited PythonIIForm: TPythonIIForm
         CollectionName = 'CodeImages\Keyword'
         Name = 'Keyword'
       end>
-    ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True
     Left = 40
     Top = 160
@@ -253,41 +243,40 @@ inherited PythonIIForm: TPythonIIForm
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionIndex = 17
+        CollectionIndex = 26
         CollectionName = 'Cut'
         Name = 'Cut'
       end
       item
-        CollectionIndex = 16
+        CollectionIndex = 25
         CollectionName = 'Copy'
         Name = 'Copy'
       end
       item
-        CollectionIndex = 65
+        CollectionIndex = 74
         CollectionName = 'Paste'
         Name = 'Paste'
       end
       item
-        CollectionIndex = 21
+        CollectionIndex = 30
         CollectionName = 'Delete'
         Name = 'Delete'
       end
       item
-        CollectionIndex = 27
+        CollectionIndex = 36
         CollectionName = 'EditOptions'
         Name = 'EditOptions'
       end
       item
-        CollectionIndex = 84
+        CollectionIndex = 93
         CollectionName = 'Python'
         Name = 'Python'
       end
       item
-        CollectionIndex = 81
+        CollectionIndex = 90
         CollectionName = 'PySetup'
         Name = 'PySetup'
       end>
-    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20

@@ -27,7 +27,9 @@ object FFileStructure: TFFileStructure
     Width = 324
     Height = 474
     Align = alClient
+    DefaultNodeHeight = 19
     Header.AutoSizeIndex = 0
+    Header.Height = 15
     Header.MainColumn = -1
     Images = vilFileStructureLight
     TabOrder = 0

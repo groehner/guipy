@@ -48,15 +48,15 @@ inherited SpTBXCustomizeFormMod: TSpTBXCustomizeFormMod
       end
       inherited lbCommands: TSpTBXListBox
         Left = 208
-        Top = 25
+        Top = 28
         Width = 230
-        Height = 176
+        Height = 173
       end
       object SpTBXLabel2: TSpTBXLabel
-        Left = 191
+        Left = 208
         Top = 3
         Width = 72
-        Height = 19
+        Height = 23
         Caption = 'Commands:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -69,7 +69,7 @@ inherited SpTBXCustomizeFormMod: TSpTBXCustomizeFormMod
         Left = 10
         Top = 3
         Width = 70
-        Height = 19
+        Height = 23
         Caption = 'Categories:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -116,18 +116,17 @@ inherited SpTBXCustomizeFormMod: TSpTBXCustomizeFormMod
           Left = 11
           Top = 43
           Width = 72
-          Height = 21
+          Height = 25
         end
         inherited cbIconLabel: TSpTBXLabel
           Left = 14
           Width = 74
-          Height = 21
+          Height = 25
         end
         inherited checkVisible: TSpTBXCheckBox
           Left = 14
           Top = 20
-          Width = 58
-          Height = 23
+          Width = 62
         end
       end
       inherited SpTBXGroupBox2: TSpTBXGroupBox

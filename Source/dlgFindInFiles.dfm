@@ -7,8 +7,8 @@ inherited FindInFilesDialog: TFindInFilesDialog
   ClientWidth = 388
   Position = poScreenCenter
   OnShow = FormShow
-  ExplicitWidth = 400
-  ExplicitHeight = 339
+  ExplicitWidth = 404
+  ExplicitHeight = 340
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
@@ -181,7 +181,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
         Anchors = [akLeft, akTop, akRight]
         DropDownCount = 15
         TabOrder = 2
-        ExplicitWidth = 253
       end
       object cbDirectory: TComboBox
         Left = 96
@@ -192,7 +191,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
         DropDownCount = 15
         TabOrder = 0
         OnDropDown = cbDirectoryDropDown
-        ExplicitWidth = 231
       end
     end
     object btnOK: TButton
@@ -242,7 +240,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
       Anchors = [akLeft, akTop, akRight]
       DropDownCount = 15
       TabOrder = 0
-      ExplicitWidth = 352
     end
   end
   object vilImages: TVirtualImageList

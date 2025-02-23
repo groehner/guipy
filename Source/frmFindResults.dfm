@@ -172,7 +172,6 @@ inherited FindResultsWindow: TFindResultsWindow
           IndentGuides.Visible = False
           ReadOnly = True
           RightEdge = 0
-          SelectedColor.Alpha = 0.400000005960464500
           OnSpecialLineColors = reContextSpecialLineColors
         end
       end

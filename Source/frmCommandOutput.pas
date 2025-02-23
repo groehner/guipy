@@ -75,7 +75,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
   private
-    const FBasePath = 'Breakpoints Window Options'; // Used for storing settings
+    const FBasePath = 'Output Window Options'; // Used for storing settings
     var FTool : TExternalTool;
     FCmdOptions: TJclExecuteCmdProcessOptions;
     FAbortEvent: TJclEvent;
@@ -128,7 +128,6 @@ uses
   StringResources,
   dmResources,
   dmCommands,
-  frmPyIDEMain,
   uCommonFunctions;
 
 {$R *.dfm}
@@ -332,7 +331,7 @@ begin
         end;
       poNewFile :
         begin
-          PyIDEMainForm.DoOpenFile(''); // NewFile
+          GI_EditorFactory.OpenFile('');
           if Assigned(GI_ActiveEditor) then
             GI_ActiveEditor.SynEdit.SelText := OutStr;
         end;
@@ -412,9 +411,9 @@ begin
           while (LineNo < Length(Strings)) and (Strings[LineNo][1] = ' ') do begin
             with fRegEx.Match(Strings[LineNo]) do
               if Success then begin
-                ErrLineNo := StrToIntDef(GroupValue(3), 0);
+                ErrLineNo := StrToIntDef(GroupValue(2), 0);
                 // add traceback info (function name, filename, linenumber)
-                GI_PyIDEServices.Messages.AddMessage('    ' + GroupValue(5),
+                GI_PyIDEServices.Messages.AddMessage('    ' + GroupValue(4),
                   GetLongFileName(ExpandFileName(GroupValue(1))), ErrLineNo);
               end;
             Inc(LineNo);

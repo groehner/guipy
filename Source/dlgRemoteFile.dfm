@@ -3,8 +3,8 @@ inherited RemoteFileDialog: TRemoteFileDialog
   ClientHeight = 130
   ClientWidth = 434
   OnCloseQuery = FormCloseQuery
-  ExplicitWidth = 446
-  ExplicitHeight = 168
+  ExplicitWidth = 450
+  ExplicitHeight = 169
   TextHeight = 15
   object Panel1: TPanel
     Left = 0

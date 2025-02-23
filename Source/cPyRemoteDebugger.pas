@@ -23,6 +23,7 @@ uses
   cPyBaseDebugger,
   cPyDebugger;
 
+
 type
   TRemoteDebuggerClass = class of TPyRemDebugger;
 
@@ -82,7 +83,7 @@ type
     // Main interface
     function ImportModule(Editor: IEditor; AddToNameSpace: Boolean = False): Variant; override;
     procedure Run(ARunConfig: TRunConfiguration); override;
-    function RunSource(const Source, FileName: Variant; Symbol: string = 'single'): Boolean; override;
+    function RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean; override;
     function EvalCode(const Expr: string): Variant; override;
     procedure SystemCommand(const Cmd: string); override;
     function GetObjectType(Obj: Variant): string; override;
@@ -160,7 +161,7 @@ type
     procedure Evaluate(const Expr: string; out ObjType, Value: string); overload; override;
     function Evaluate(const Expr: string): TBaseNameSpaceItem; overload; override;
     // Like the InteractiveInterpreter runsource but for the debugger frame
-    function RunSource(const Source, FileName: Variant; Symbol: string = 'single'): Boolean; override;
+    function RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean; override;
     // functions to get TBaseNamespaceItems corresponding to a frame's gloabals and locals
     function GetFrameGlobals(Frame: TBaseFrameInfo): TBaseNameSpaceItem; override;
     function GetFrameLocals(Frame: TBaseFrameInfo): TBaseNameSpaceItem; override;
@@ -384,7 +385,7 @@ function TPyRemoteInterpreter.Compile(ARunConfig: TRunConfiguration): Variant;
 var
   Py: IPyEngineAndGIL;
   FName: string;
-  Source: Variant;
+  Source: string;
   FileName: string;
   LineNo, Offset: Integer;
   Editor: IEditor;
@@ -399,7 +400,7 @@ begin
   Py := SafePyEngine;
 
   VarClear(Result);
-  PyControl.ErrorPos := TEditorPos.EmptyPos;
+  GI_PyControl.ErrorPos := TEditorPos.EmptyPos;
 
   GI_PyIDEServices.Messages.ClearMessages;
 
@@ -410,16 +411,17 @@ begin
     try
       Source := CleanEOLs(FileToStr(ARunConfig.ScriptName)) + WideLF;
     except
-      on E: Exception do begin
-        StyledMessageDlg(Format(_(SFileOpenError), [ARunConfig.ScriptName, E.Message]), mtError, [mbOK], 0);
-        System.SysUtils.Abort;
-      end;
+      on E: Exception do
+        begin
+          StyledMessageDlg(Format(_(SFileOpenError),
+            [ARunConfig.ScriptName, E.Message]), mtError, [mbOK], 0);
+          System.SysUtils.Abort;
+        end;
     end;
   FName := ToPythonFileName(ARunConfig.ScriptName);
 
   try
-    // Source is a UnicodeString
-    Result := RPI.rem_compile(VarPythonCreate(Source), VarPythonCreate(FName));
+    Result := RPI.rem_compile(Source, FName);
 
     Py.PythonEngine.CheckError;
     var ExcInfo := RPI.traceback_exception;
@@ -430,12 +432,9 @@ begin
       begin
         ExtractPyErrorInfo(ExcInfo, FileName, LineNo, Offset);
         FileName := FromPythonFileName(FileName);
-        if GI_PyIDEServices.ShowFilePosition(FileName, LineNo, Offset) and
-          Assigned(GI_ActiveEditor)
-        then
-          PyControl.ErrorPos :=
-            TEditorPos.NPos(GI_ActiveEditor, LineNo, Offset, True);
-      end else
+        GI_PyControl.ErrorPos := TEditorPos.New(FileName, LineNo, Offset, True);
+      end
+      else
         HandleRemoteException(ExcInfo);
 
       GI_PyInterpreter.AppendPrompt;
@@ -499,7 +498,7 @@ begin
   // Import Rpyc
   var SuppressOutput := GI_PyInterpreter.OutputSuppressor; // Do not show errors
 
-  FOldsysmodules := SysModule.modules.Copy();
+  FOldsysmodules := SysModule.modules.copy();
   try
     FRpycPath := Format('%sLib\%s', [ExtractFilePath(Application.ExeName), RpycZipModule]);
     PyControl.InternalInterpreter.SysPathAdd(FRpycPath);
@@ -700,7 +699,7 @@ begin
       StyledMessageDlg(_(SErrorInImportingModule), mtError, [mbOK], 0);
       System.SysUtils.Abort;
     end else if AddToNameSpace then
-      RPI.locals.__setitem__(VarPythonCreate(NameOfModule), Result);
+      RPI.locals.__setitem__(NameOfModule, Result);
   finally
     //  Add again the empty path
     SysPathAdd('');
@@ -964,22 +963,21 @@ begin
     end);
 end;
 
-function TPyRemoteInterpreter.RunSource(const Source, FileName: Variant; Symbol: string = 'single'): Boolean;
+function TPyRemoteInterpreter.RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean;
 var
   Py: IPyEngineAndGIL;
   OldDebuggerState: TDebuggerState;
-  OldPos: TEditorPos;
+//  OldPos: TEditorPos;
 begin
   CheckConnected;
   Assert(not GI_PyControl.Running, 'RunSource called while the Python engine is active');
   OldDebuggerState := PyControl.DebuggerState;
-  OldPos := PyControl.CurrentPos;
 
   PyControl.DebuggerState := dsRunning;
   Py := SafePyEngine;
   try
     try
-      Result := RPI.runsource(VarPythonCreate(Source), VarPythonCreate(FileName), VarPythonCreate(symbol));
+      Result := RPI.runsource(Source, FileName, Symbol);
     except
       Result := False;
     end;
@@ -993,8 +991,6 @@ begin
     end;
   finally
     PyControl.DebuggerState := OldDebuggerState;
-    if OldDebuggerState = dsPaused then
-      PyControl.CurrentPos := OldPos;
   end;
 end;
 
@@ -1002,7 +998,6 @@ procedure TPyRemoteInterpreter.ConnectToServer;
 var
   Source: string;
   InitScriptName: string;
-  PySource: Variant;
 begin
   FConnected := False;
 
@@ -1015,7 +1010,7 @@ begin
       FUseNamedPipes := True;
     except
       with GetPythonEngine do
-        if PyErr_Occurred <> nil then
+        if PyErr_Occurred <> nil then 
           PyErr_Clear;
       FUseNamedPipes := False;
     end;
@@ -1045,8 +1040,7 @@ begin
     InitScriptName := 'Rpyc_Init';
 
     Source := CleanEOLs(GI_PyIDEServices.GetStoredScript(InitScriptName).Text)+#10;
-    PySource := VarPythonCreate(Source);
-    Conn.execute(PySource);
+    Conn.execute(Source);
     RPI := Conn.namespace.__getitem__('_RPI');
     //  pass a reference to the P4D module DebugIDE
     Conn.namespace.__delitem__('_RPI');
@@ -1111,10 +1105,8 @@ begin
   FOldargv := Conn.modules.sys.argv;
   Conn.execute('__import__("sys").argv = []');
   ArgV := Conn.modules.sys.argv;
-  // Workaround due to PREFER_UNICODE flag to make sure
-  // no conversion to Unicode and back will take place
   var ScriptName :=  ToPythonFileName(ARunConfig.ScriptName);
-  ArgV.append(VarPythonCreate(ScriptName));
+  ArgV.append(ScriptName);
 
   Params := Trim(ARunConfig.Parameters);
   if Params <> '' then begin
@@ -1122,7 +1114,7 @@ begin
     var P := PChar(Params);
     while P^ <> #0 do begin
       P := GetParamStr(P, Param);
-      ArgV.append(VarPythonCreate(Param));
+      ArgV.append(Param);
     end;
     GI_PyInterpreter.AppendText(Format(_(SCommandLineMsg), [Params]));
   end;
@@ -1308,7 +1300,6 @@ begin
 
   FLineCache := FRemotePython.Conn.modules.linecache;
   FDebuggerCommand := dcNone;
-  PyControl.BreakPointsChanged := True;
 end;
 
 destructor TPyRemDebugger.Destroy;
@@ -1466,7 +1457,7 @@ begin
    if (PyControl.DebuggerState <> dsPaused) or not FRemotePython.Connected then
      Exit;
 
-   if PyControl.BreakPointsChanged then SetDebuggerBreakpoints;
+   if GI_BreakpointManager.BreakpointsChanged then SetDebuggerBreakpoints;
 
 //   case FDebuggerCommand of
 //     dcRun         : FRemotePython.Debugger.set_continue();
@@ -1503,8 +1494,8 @@ begin
   FLineCache.cache.clear();
   GI_EditorFactory.ApplyToEditors(procedure(Editor: IEditor)
   var
-    FName, Source, LineList: Variant;
-    SFName: string;
+    LineList: Variant;
+    SFName, Source: string;
   begin
     with Editor do begin
       if not HasPythonFile then Exit;
@@ -1514,12 +1505,11 @@ begin
         (PyControl.RunConfig.ScriptName = FileId)
       then
       begin
-        FName := SFName;
         Source := CleanEOLs(SynEdit.Text)+WideLF;
         LineList := VarPythonCreate(Source);
         LineList := FRemotePython.Rpyc.classic.deliver(FRemotePython.Conn, LineList.splitlines(True));
-        FLineCache.cache.__setitem__(VarPythonCreate(FName),
-          VarPythonCreate([0, None, LineList, FName], stTuple));
+        FLineCache.cache.__setitem__(SFName,
+          VarPythonCreate([0, None, LineList, SFName], stTuple));
       end;
     end;
   end);
@@ -1649,7 +1639,7 @@ begin
   //set breakpoints
   SetDebuggerBreakpoints;
   if RunToCursorLine >= 0 then  // add temp breakpoint
-    FMainDebugger.set_break(Code.co_filename, RunToCursorLine, 1);
+    FMainDebugger.set_break(Code.co_filename, RunToCursorLine, True);
 
   // New Line for output
   GI_PyInterpreter.AppendText(sLineBreak);
@@ -1762,22 +1752,18 @@ begin
   ).Start;
 end;
 
-function TPyRemDebugger.RunSource(const Source, FileName: Variant; Symbol: string = 'single'): Boolean;
+function TPyRemDebugger.RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean;
 // The interpreter RunSource calls II.runsource which differs
 // according to whether we are debugging or not
-var
-  OldCurrentPos: TEditorPos;
 begin
   if not (PyControl.DebuggerState in [dsPaused, dsPostMortem]) then
     Exit(False);
 
-  OldCurrentPos := PyControl.CurrentPos;
   FExecPaused := True;
   try
     Result := FRemotePython.RunSource(Source, FileName, Symbol);
   finally
     FExecPaused := False;
-    PyControl.CurrentPos := OldCurrentPos;
   end;
 end;
 
@@ -1789,10 +1775,11 @@ begin
   Assert(PyControl.DebuggerState = dsPaused, 'TPyRemDebugger.RunToCursor');
   GI_PyInterpreter.RemovePrompt;
   // Set Temporary breakpoint
-  SetDebuggerBreakpoints;  // So that this one is not cleared
+  if GI_BreakpointManager.BreakpointsChanged then
+    SetDebuggerBreakpoints;  // So that the temp one is not cleared
   FName := FRemotePython.ToPythonFileName(Editor.FileId);
   Py := SafePyEngine;
-  FMainDebugger.set_break(VarPythonCreate(FName), ALine, 1);
+  FMainDebugger.set_break(FName, ALine, True);
 
   FDebuggerCommand := dcRunToCursor;
   DoDebuggerCommand;
@@ -1807,31 +1794,16 @@ procedure TPyRemDebugger.SetDebuggerBreakpoints;
 var
   Py: IPyEngineAndGIL;
 begin
-  if not PyControl.BreakPointsChanged then Exit;
-
   Py := SafePyEngine;
   LoadLineCache;
   FMainDebugger.clear_all_breaks();
 
-  GI_EditorFactory.ApplyToEditors(procedure(Editor: IEditor)
-  var
-    FName: string;
-  begin
-    FName := FRemotePython.ToPythonFileName(Editor.FileId);
-    for var I := 0 to Editor.BreakPoints.Count - 1 do begin
-      var BreakPoint := TBreakPoint(Editor.BreakPoints[I]);
-      if not BreakPoint.Disabled then begin
-        if BreakPoint.Condition <> '' then begin
-          FMainDebugger.set_break(VarPythonCreate(FName), BreakPoint.LineNo,
-            0, VarPythonCreate(BreakPoint.Condition));
-        end else
-          FMainDebugger.set_break(VarPythonCreate(FName),
-            BreakPoint.LineNo);
-      end;
-    end;
-  end);
+  for var BPInfo in GI_BreakpointManager.AllBreakPoints do
+    if not BPInfo.Disabled then
+      FMainDebugger.set_break(FRemotePython.ToPythonFileName(BPInfo.FileName),
+       BPInfo.LineNo, False, BPInfo.Condition, BPInfo.IgnoreCount);
 
-  PyControl.BreakPointsChanged := False;
+  GI_BreakpointManager.BreakpointsChanged := False;
 end;
 
 procedure TPyRemDebugger.StepInto;
@@ -2046,4 +2018,3 @@ begin
 end;
 
 end.
-

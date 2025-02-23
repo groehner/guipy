@@ -1123,17 +1123,17 @@ begin
       PuzzleMode:= 2;
       aPathname:= Filepath + FileName + _('Medium') + '.psg';
       SaveToFile(aPathname);
-      PyIDEMainForm.DoOpenFile(aPathname);
+      GI_EditorFactory.OpenFile(aPathname);
 
       PuzzleMode:= 3;
       aPathname:= Filepath + FileName + _('Hard') + '.psg';
       SaveToFile(aPathname);
-      PyIDEMainForm.DoOpenFile(aPathname);
+      GI_EditorFactory.OpenFile(aPathname);
 
       PuzzleMode:= 4;
       aPathname:= Filepath + FileName + _('VeryHard') + '.psg';
       SaveToFile(aPathname);
-      PyIDEMainForm.DoOpenFile(aPathname);
+      GI_EditorFactory.OpenFile(aPathname);
 
       aFile:= GI_FileFactory.GetFileByNameAndType(aPathname, fkStructogram);
       if Assigned(aFile) then begin

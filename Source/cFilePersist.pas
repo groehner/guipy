@@ -99,6 +99,7 @@ uses
   uHighlighterProcs,
   cPyControl,
   cPyScripterSettings,
+  cPySupportTypes,
   UUMLForm,
   frmEditor,
   UUtils;
@@ -215,7 +216,7 @@ constructor TFilePersistInfo.CreateFromEditor(Editor: IEditor);
 
   procedure GetFoldInfo(SynEdit: TSynEdit; var UseCodeFolding: Boolean; var FoldState: string);
   var
-    Stream : TMemoryStream;
+    Stream: TMemoryStream;
   begin
     UseCodeFolding := SynEdit.UseCodeFolding;
     if UseCodeFolding then begin
@@ -229,10 +230,6 @@ constructor TFilePersistInfo.CreateFromEditor(Editor: IEditor);
     end;
   end;
 
-var
-  i : Integer;
-  BookMark : TBookMarkInfo;
-  BreakPoint : TBreakPoint;
 begin
   Create;
   FileKind:= fkEditor;
@@ -243,25 +240,25 @@ begin
   TopLine := Editor.SynEdit.TopLine;
   if Assigned(Editor.SynEdit.Highlighter) then
     Highlighter := Editor.SynEdit.Highlighter.FriendlyLanguageName;
+
   if Assigned(Editor.SynEdit.Marks) then
-    for i := 0 to Editor.SynEdit.Marks.Count - 1 do
-      if Editor.SynEdit.Marks[i].IsBookmark then with Editor.SynEdit.Marks[i] do
+    for var Mark in Editor.SynEdit.Marks do
+      if Mark.IsBookmark then
       begin
-        BookMark := TBookMarkInfo.Create;
-        BookMark.fChar := Char;
-        BookMark.fLine := Line;
-        BookMark.fBookmarkNumber := BookmarkNumber;
+        var BookMark := TBookMarkInfo.Create;
+        BookMark.FChar := Mark.Char;
+        BookMark.FLine := Mark.Line;
+        BookMark.FBookmarkNumber := Mark.BookmarkNumber;
         BookMarks.Add(BookMark);
       end;
-  for i := 0 to Editor.BreakPoints.Count - 1 do begin
-    BreakPoint := TBreakPoint.Create;
-    with TBreakPoint(Editor.BreakPoints[i]) do begin
-      BreakPoint.LineNo := LineNo;
-      BreakPoint.Disabled := Disabled;
-      BreakPoint.Condition := Condition;
-      BreakPoints.Add(BreakPoint);
-    end;
+
+  for var BPoint in Editor.BreakPoints do
+  begin
+    var BreakPoint := TBreakpoint.Create;
+    BreakPoint.Assign(BPoint);
+    BreakPoints.Add(BreakPoint);
   end;
+
   EditorOptions.Assign(Editor.SynEdit);
   GetFoldInfo(Editor.SynEdit, UseCodeFolding, FoldState);
   ReadOnly := Editor.ReadOnly;
@@ -336,7 +333,7 @@ begin
       FilePersistInfo := TFilePersistInfo(PersistFileInfo.fFileInfoList[i]);
       if FileExists(FilePersistInfo.FileName) then
         try
-          aFile := PyIDEMainForm.DoOpenFile(FilePersistInfo.FileName, '',
+          aFile := GI_EditorFactory.OpenFile(FilePersistInfo.FileName, '',
             FilePersistInfo.TabControlIndex);
         except
           Continue; // to the next file
@@ -348,13 +345,16 @@ begin
           Editor:= aFile as IEditor;
           Editor.SynEdit.TopLine := FilePersistInfo.TopLine;
           Editor.SynEdit.CaretXY := BufferCoord(FilePersistInfo.Char, FilePersistInfo.Line);
-          for j := 0 to FilePersistInfo.BreakPoints.Count - 1 do
-            with TBreakPoint(FilePersistInfo.BreakPoints[j]) do
-              PyControl.SetBreakPoint(FilePersistInfo.FileName,
-                LineNo, Disabled, Condition);
-          for j := 0 to FilePersistInfo.BookMarks.Count - 1 do
-            with TBookMarkInfo(FilePersistInfo.BookMarks[j]) do
-              Editor.SynEdit.SetBookMark(BookMarkNumber, Char, Line);
+
+          for var BPoint in FilePersistInfo.BreakPoints do
+            with TBreakpoint(BPoint) do
+              GI_BreakpointManager.SetBreakpoint(FilePersistInfo.FileName,
+                LineNo, Disabled, Condition, IgnoreCount);
+
+          for var BookMark in FilePersistInfo.BookMarks do
+            with TBookMarkInfo(BookMark) do
+              Editor.SynEdit.SetBookMark(BookmarkNumber, Char, Line);
+
           if FilePersistInfo.Highlighter <> '' then begin
             Editor.SynEdit.Highlighter := ResourcesDataModule.Highlighters.
              HighlighterFromFriendlyName(FilePersistInfo.Highlighter);
@@ -378,7 +378,7 @@ begin
             end;
           end;
           if FilePersistInfo.GUIFormOpen then
-            PyIDEMainForm.DoOpenFile(ChangeFileExt(FilePersistInfo.FileName, '.pfm'), '',
+            GI_EditorFactory.OpenFile(ChangeFileExt(FilePersistInfo.FileName, '.pfm'), '',
               FilePersistInfo.TabControlIndex);
         end;
       end;

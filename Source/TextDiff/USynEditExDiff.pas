@@ -91,9 +91,10 @@ begin
   MaxUndo:= 300;
   TabWidth:= 2;
   WantTabs:= True;
-  Options:= [eoAutoIndent, eoDragDropEditing, eoScrollPastEol, eoShowScrollHint,
+  Options:= [eoAutoIndent, eoDragDropEditing,
              eoSmartTabs, eoTabIndent, eoTabsToSpaces, eoTrimTrailingSpaces,
              eoSmartTabDelete, eoGroupUndo, eoKeepCaretX, eoEnhanceHomeKey];
+  ScrollOptions := [eoScrollPastEol, eoShowScrollHint];
   Font.Assign(EditorOptions.Font);
   OnKeyUp:= CodeEditKeyUp;
   OnStatusChange:= EditorStatusChange;

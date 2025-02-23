@@ -174,7 +174,6 @@ inherited CustomizeParams: TCustomizeParams
         HideSelection = True
         Options = [eoAutoIndent, eoDragDropEditing, eoEnhanceEndKey, eoGroupUndo, eoShowScrollHint, eoSmartTabDelete, eoSmartTabs, eoTabsToSpaces]
         ScrollBars = ssNone
-        SelectedColor.Alpha = 0.400000005960464500
         WantReturns = False
       end
       object edName: TEdit

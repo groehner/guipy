@@ -205,7 +205,14 @@ uses
   uLLMSupport in 'uLLMSupport.pas',
   frmSuggest in 'frmSuggest.pas' {SuggestWindow},
   SynMarkdownViewer in 'SynMarkdownViewer.pas',
-  UUMLInteractive in 'Main\UUMLInteractive.pas' {FUMLInteractive};
+  UUMLInteractive in 'Main\UUMLInteractive.pas' {FUMLInteractive},
+  MarkdownCommonMark in '..\..\delphi-markdown\source\MarkdownCommonMark.pas',
+  MarkdownDaringFireball in '..\..\delphi-markdown\source\MarkdownDaringFireball.pas',
+  MarkdownMathCode in '..\..\delphi-markdown\source\MarkdownMathCode.pas',
+  MarkdownProcessor in '..\..\delphi-markdown\source\MarkdownProcessor.pas',
+  MarkdownTables in '..\..\delphi-markdown\source\MarkdownTables.pas',
+  MarkdownTxtMark in '..\..\delphi-markdown\source\MarkdownTxtMark.pas',
+  MarkdownUtils in '..\..\delphi-markdown\source\MarkdownUtils.pas';
 
 {$R *.RES}
 
@@ -223,8 +230,8 @@ begin
 
   Application.MainFormOnTaskbar := True;
 
-  if TStyleManager.TrySetStyle('Windows10 SlateGray') then
-    TFConfiguration.CurrentSkinName := 'Windows10 SlateGray';
+  if TStyleManager.TrySetStyle('Windows11 MineShaft') then
+    TFConfiguration.CurrentSkinName := 'Windows11 MineShaft';
 
   Application.Title := 'GuiPy';
   Application.CreateForm(TResourcesDataModule, ResourcesDataModule);
