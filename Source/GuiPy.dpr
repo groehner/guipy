@@ -204,7 +204,6 @@ uses
   frmLLMChat in 'frmLLMChat.pas' {LLMChatForm},
   uLLMSupport in 'uLLMSupport.pas',
   frmSuggest in 'frmSuggest.pas' {SuggestWindow},
-  SynMarkdownViewer in 'SynMarkdownViewer.pas',
   UUMLInteractive in 'Main\UUMLInteractive.pas' {FUMLInteractive},
   MarkdownCommonMark in '..\..\delphi-markdown\source\MarkdownCommonMark.pas',
   MarkdownDaringFireball in '..\..\delphi-markdown\source\MarkdownDaringFireball.pas',

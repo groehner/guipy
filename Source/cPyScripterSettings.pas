@@ -1280,11 +1280,6 @@ begin
     TabWidth := 4;
     MaxUndo := 0;
 
-    ActiveLineColor := $303030;
-
-    // Scale BookmarkOptions
-    BookMarkOptions.ChangeScale(Screen.PixelsPerInch, 96);
-
     RegisterEditorUserCommands(EditorOptions.Keystrokes);
   end;
 end;
