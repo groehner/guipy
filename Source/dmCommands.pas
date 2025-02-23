@@ -16,6 +16,7 @@ uses
   System.Classes,
   System.Actions,
   System.ImageList,
+  Vcl.Graphics,
   Vcl.ActnList,
   Vcl.StdActns,
   Vcl.Menus,
@@ -35,6 +36,7 @@ uses
   JvStringHolder,
   JvPropertyStore,
   TB2Item,
+  SpTBXSkins,
   SpTBXItem,
   SpTBXEditors,
   VirtualExplorerTree,
@@ -295,6 +297,11 @@ type
     procedure actEditReadOnlyExecute(Sender: TObject);
     procedure actFileSaveToRemoteExecute(Sender: TObject);
     procedure actToolsRestartLSExecute(Sender: TObject);
+    procedure HighlightCheckedImg(Sender: TObject; ACanvas: TCanvas; State:
+        TSpTBXSkinStatesType; const PaintStage: TSpTBXPaintStage; var AImageList:
+        TCustomImageList; var AImageIndex: Integer; var ARect: TRect; var
+        PaintDefault: Boolean);
+
     procedure actEditCreateStructogramExecute(Sender: TObject);
     procedure actEditCopyRTFExecute(Sender: TObject);
     procedure actEditCopyRTFNumberedExecute(Sender: TObject);
@@ -360,11 +367,11 @@ uses
   System.IOUtils,
   System.IniFiles,
   System.Math,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
   Vcl.Dialogs,
   Vcl.Clipbrd,
+  Vcl.Themes,
   MPShellUtilities,
   MPCommonUtilities,
   SpTBXMDIMRU,
@@ -2200,6 +2207,19 @@ begin
         Result := Editor as ISearchCommands
     end;
   end;
+end;
+
+procedure TCommandsDataModule.HighlightCheckedImg(Sender: TObject; ACanvas:
+    TCanvas; State: TSpTBXSkinStatesType; const PaintStage: TSpTBXPaintStage;
+    var AImageList: TCustomImageList; var AImageIndex: Integer; var ARect:
+    TRect; var PaintDefault: Boolean);
+begin
+  if (PaintStage = pstPrePaint) and (Sender as TSpTBXItem).Checked then
+  begin
+    ACanvas.Brush.Color := StyleServices.GetSystemColor(clHighlight);
+    ACanvas.FillRect(ARect);
+  end;
+  PaintDefault := True;
 end;
 
 procedure TCommandsDataModule.mnSpellingPopup(Sender: TTBCustomItem; FromLink:
