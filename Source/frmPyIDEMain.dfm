@@ -21,9 +21,9 @@ object PyIDEMainForm: TPyIDEMainForm
   TextHeight = 15
   object StatusBar: TSpTBXStatusBar
     Left = 0
-    Top = 732
+    Top = 714
     Width = 1031
-    Height = 10
+    Height = 28
     SizeGrip = False
     object lbStatusMessage: TSpTBXLabelItem
       Wrapping = twEndEllipsis
@@ -113,8 +113,8 @@ object PyIDEMainForm: TPyIDEMainForm
       Visible = False
     end
     object ActivityIndicator: TActivityIndicator
-      Left = 1027
-      Top = 6
+      Left = 965
+      Top = 0
       FrameDelay = 150
       IndicatorSize = aisSmall
     end
@@ -123,19 +123,19 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 9
     Top = 113
     Width = 1013
-    Height = 610
+    Height = 592
     Align = alClient
     BevelEdges = []
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
     ExplicitWidth = 606
-    ExplicitHeight = 309
+    ExplicitHeight = 291
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
       Width = 1009
-      Height = 610
+      Height = 592
       Align = alClient
       PopupMenu = TabControlPopupMenu
       OnContextPopup = TabContolContextPopup
@@ -187,7 +187,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 1009
       Top = 0
       Width = 0
-      Height = 610
+      Height = 592
       Align = alRight
       PopupMenu = TabControlPopupMenu
       Visible = False
@@ -240,7 +240,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 1009
       Top = 0
       Width = 4
-      Height = 610
+      Height = 592
       Cursor = crSizeWE
       Align = alRight
       ParentColor = False
@@ -2862,7 +2862,7 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 0
     Top = 113
     Width = 9
-    Height = 610
+    Height = 592
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpLeft
@@ -2871,14 +2871,14 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 1022
     Top = 113
     Width = 9
-    Height = 610
+    Height = 592
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpRight
   end
   object TBXDockBottom: TSpTBXDock
     Left = 0
-    Top = 723
+    Top = 705
     Width = 1031
     Height = 9
     FixAlign = True

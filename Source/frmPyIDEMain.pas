@@ -5136,11 +5136,15 @@ procedure TPyIDEMainForm.LoadStandardLayout;
 begin
   ManualConjoinDock(DockServer.RightDockPanel, FObjectInspector, FFileStructure);
   DockServer.RightDockPanel.Width := PPIScale(250);
+
   var TabHost := ManualTabDock(DockServer.BottomDockPanel, PythonIIForm, MessagesWindow);
   DockServer.BottomDockPanel.Height := PPIScale(200);
   ManualTabDockAddPage(TabHost, OutputWindow);
   ManualTabDockAddPage(TabHost, VariablesWindow);
   ShowDockForm(PythonIIForm);
+
+  ManualConjoinDock(DockServer.BottomDockPanel, TabHost, FUMLInteractive, alRight);
+
   Application.ProcessMessages;
   mnViewDebugLayout.Checked:= False;
   mnViewDefaultLayout.Checked:= True;

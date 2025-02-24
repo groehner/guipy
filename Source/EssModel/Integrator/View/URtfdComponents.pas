@@ -1034,7 +1034,6 @@ begin
   end;
 
   // Height depends on choosed font
-
   aClassname := TRtfdClassName.Create(Self, Entity);
   ExtentX := aClassname.ExtentX;
   ExtentY := aClassname.ExtentY;

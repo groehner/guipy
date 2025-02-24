@@ -442,6 +442,8 @@ begin
       EditForm.ActiveSynEdit.SetFocus;
     if IsWrapping then
       EditForm.TBWordWrapClick(nil);
+    with EditForm do
+      GI_PyIDEServices.ShowFilePosition(PathName, ActiveSynedit.CaretY, ActiveSynEdit.CaretX);
   end;
 end;
 

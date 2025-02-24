@@ -868,7 +868,7 @@ function _ManualTabDock(DockSite: TWinControl; Form1, Form2: TForm;oldTechnique:
 { Must create the initial tab dock with two pages, using ManualTabDock,
   then you can add more pages with this:}
 procedure ManualTabDockAddPage(TabHost: TJvDockTabHostForm; AForm: TForm);
-function ManualConjoinDock(DockSite: TWinControl; Form1, Form2: TForm): TJvDockConjoinHostForm;
+function ManualConjoinDock(DockSite: TWinControl; Form1, Form2: TForm; Align: TAlign = alTop): TJvDockConjoinHostForm;
 
 function DockStateStr(DockState: Integer): string; {return string for a dock state}
 
@@ -1509,7 +1509,7 @@ end;
 
 { Quick way to do conjoined docking programmatically - Added by Warren }
 
-function ManualConjoinDock(DockSite: TWinControl; Form1, Form2: TForm): TJvDockConjoinHostForm;
+function ManualConjoinDock(DockSite: TWinControl; Form1, Form2: TForm; Align: TAlign = alTop): TJvDockConjoinHostForm;
 var
   ConjoinHost: TJvDockConjoinHostForm;
   DockClient1, DockCLient2: TJvDockClient;
@@ -1520,7 +1520,7 @@ begin
   Assert(Assigned(DockClient1));
   DockClient2 := FindDockClient(Form2);
   Assert(Assigned(DockClient2));
-  ConjoinHost := DockClient1.CreateConjoinHostAndDockControl(DockClient1.ParentForm, Form2, alTop);
+  ConjoinHost := DockClient1.CreateConjoinHostAndDockControl(DockClient1.ParentForm, Form2, Align);
   ShowDockForm(Form2);
   ConjoinHost.ManualDock(DockSite);
   Result := ConjoinHost;
