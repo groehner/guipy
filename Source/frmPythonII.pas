@@ -260,7 +260,7 @@ var
   Res: Boolean;
 begin
   with GetPythonEngine do begin
-    Res := SyncWideInputQuery(_('PyScripter - Input requested'), _('Input:'), Data);
+    Res := SyncWideInputQuery(_('GuiPy - Input requested'), _('Input:'), Data);
     if not Res then
       PyErr_SetString(PyExc_KeyboardInterrupt^, PAnsiChar(EncodeString(_('Operation cancelled'))))
     else

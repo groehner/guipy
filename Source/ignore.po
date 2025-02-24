@@ -35,25 +35,25 @@ msgstr ""
 
 #  Doesn't have any letters
 #: Structogram/UStructogram.pas:411
-#: Structogram/UTypes.pas:1321
-#: Structogram/UTypes.pas:1324
-#: Structogram/UTypes.pas:1330
-#: Structogram/UTypes.pas:1575
-#: Structogram/UTypes.pas:1578
-#: Structogram/UTypes.pas:2160
-#: Structogram/UTypes.pas:2313
-#: Structogram/UTypes.pas:2373
-#: Structogram/UTypes.pas:2634
+#: Structogram/UTypes.pas:1323
+#: Structogram/UTypes.pas:1326
+#: Structogram/UTypes.pas:1332
+#: Structogram/UTypes.pas:1577
+#: Structogram/UTypes.pas:1580
+#: Structogram/UTypes.pas:2162
+#: Structogram/UTypes.pas:2315
+#: Structogram/UTypes.pas:2375
+#: Structogram/UTypes.pas:2637
 msgid "  "
 msgstr ""
 
 #  Doesn't have any letters
-#: Structogram/UTypes.pas:2165
+#: Structogram/UTypes.pas:2167
 msgid "    "
 msgstr ""
 
 #. ToDoWindow..BGPanel..FGPanel..ToDoView......Text
-#: frmToDo.dfm:105
+#: frmToDo.dfm:108
 msgid "!"
 msgstr ""
 
@@ -64,7 +64,7 @@ msgid "\""
 msgstr ""
 
 #. RegExpTesterWindow..BGPanel..FGPanel..pnlBackground..dpGroupsView..GroupsView......Text
-#: frmRegExpTester.dfm:222
+#: frmRegExpTester.dfm:229
 msgid "#"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgid "&Mac"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..Caption
-#: frmPyIDEMain.dfm:1181
+#: frmPyIDEMain.dfm:1185
 msgid "&UML"
 msgstr ""
 
@@ -135,11 +135,11 @@ msgstr ""
 
 #  Doesn't have any letters
 #. ResourcesDataModule..SynWebCssSyn..Brackets
-#: dmResources.dfm:5039
+#: dmResources.dfm:5812
 #. ResourcesDataModule..SynWebXmlSyn..Brackets
-#: dmResources.dfm:5047
+#: dmResources.dfm:5820
 #. ResourcesDataModule..SynWebHtmlSyn..Brackets
-#: dmResources.dfm:5058
+#: dmResources.dfm:5831
 msgid "()[]{}<>"
 msgstr ""
 
@@ -161,7 +161,7 @@ msgid "*"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LAssociationsExample..Caption
-#: Utils/UConfiguration.dfm:5694
+#: Utils/UConfiguration.dfm:5667
 msgid "*.pywd;*.pas"
 msgstr ""
 
@@ -181,78 +181,78 @@ msgstr ""
 #. ToDoOptionsDlg..pnlBG..gbxSearchFiles..btnBrowse..Caption
 #: dlgToDoOptions.dfm:206
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox2..btnAppDir..Caption
-#: dlgToolProperties.dfm:500
+#: dlgToolProperties.dfm:472
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox2..btnWorkDir..Caption
-#: dlgToolProperties.dfm:511
+#: dlgToolProperties.dfm:482
 msgid "..."
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationCss..Caption
-#: Utils/UConfiguration.dfm:5764
+#: Utils/UConfiguration.dfm:5737
 msgid ".css"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationHtml..Caption
-#: Utils/UConfiguration.dfm:5724
+#: Utils/UConfiguration.dfm:5697
 msgid ".html"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationInc..Caption
-#: Utils/UConfiguration.dfm:5781
+#: Utils/UConfiguration.dfm:5754
 msgid ".inc"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationJsp..Caption
-#: Utils/UConfiguration.dfm:5748
+#: Utils/UConfiguration.dfm:5721
 msgid ".jsp"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationJfm..Caption
-#: Utils/UConfiguration.dfm:5716
+#: Utils/UConfiguration.dfm:5689
 msgid ".pfm"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationPhp..Caption
-#: Utils/UConfiguration.dfm:5756
+#: Utils/UConfiguration.dfm:5729
 msgid ".php"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationJSD..Caption
-#: Utils/UConfiguration.dfm:5822
+#: Utils/UConfiguration.dfm:5795
 msgid ".psd"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationJsg..Caption
-#: Utils/UConfiguration.dfm:5814
+#: Utils/UConfiguration.dfm:5787
 msgid ".psg"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationUml..Caption
-#: Utils/UConfiguration.dfm:5732
+#: Utils/UConfiguration.dfm:5705
 msgid ".puml"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationPython..Caption
-#: Utils/UConfiguration.dfm:5708
+#: Utils/UConfiguration.dfm:5681
 msgid ".py"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CheckBox1..Caption
-#: Utils/UConfiguration.dfm:5830
+#: Utils/UConfiguration.dfm:5803
 msgid ".pyw"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationTxt..Caption
-#: Utils/UConfiguration.dfm:5740
+#: Utils/UConfiguration.dfm:5713
 msgid ".txt"
 msgstr ""
 
@@ -330,9 +330,9 @@ msgstr ""
 msgid "_"
 msgstr ""
 
-#: cPyRemoteDebugger.pas:1050
+#: cPyRemoteDebugger.pas:1044
 #. pass a reference to the P4D module DebugIDE
-#: cPyRemoteDebugger.pas:1052
+#: cPyRemoteDebugger.pas:1046
 msgid "_RPI"
 msgstr ""
 
@@ -381,7 +381,7 @@ msgid "+"
 msgstr ""
 
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox3..btnStdFormats..Caption
-#: dlgToolProperties.dfm:625
+#: dlgToolProperties.dfm:592
 msgid "<"
 msgstr ""
 
@@ -421,7 +421,7 @@ msgstr ""
 
 #  Doesn't have any letters
 #. FTextDiff..StatusBar..liLineColumn..Caption
-#: TextDiff/UTextDiff.dfm:210
+#: TextDiff/UTextDiff.dfm:215
 msgid "0000: 000"
 msgstr ""
 
@@ -503,6 +503,14 @@ msgstr ""
 msgid "09"
 msgstr ""
 
+#  Doesn't have any letters
+#. FConfiguration..PMain..PanelRight..PageList..PLLMAssistant..ELLMTemperature..Text
+#: Utils/UConfiguration.dfm:5933
+#. FConfiguration..PMain..PanelRight..PageList..PLLMChat..EChatTemperature..Text
+#: Utils/UConfiguration.dfm:6062
+msgid "1.0"
+msgstr ""
+
 #. PrintPreviewDlg..ToolbarDock..SpTBXToolbar1..tbiZoom..tbi100..Caption
 #: dlgSynPrintPreview.dfm:84
 msgid "100%"
@@ -550,7 +558,7 @@ msgstr ""
 #. CommandsDataModule..actlMain..actEditAnsi..Caption
 #: dmCommands.dfm:587
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileEncoding....Items.Strings
-#: Utils/UConfiguration.dfm:935
+#: Utils/UConfiguration.dfm:926
 msgid "ANSI"
 msgstr ""
 
@@ -569,9 +577,9 @@ msgid "Arial"
 msgstr ""
 
 #. FStructogram..StructoPopupMenu..MIDatatype..MIBoolean..Caption
-#: Structogram/UStructogram.dfm:261
+#: Structogram/UStructogram.dfm:258
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBDataType....Items.Strings
-#: Utils/UConfiguration.dfm:2850
+#: Utils/UConfiguration.dfm:2825
 msgid "bool"
 msgstr ""
 
@@ -585,7 +593,7 @@ msgid "boolean"
 msgstr ""
 
 #. FStructogram..PanelLeft..StructogramToolbar..TBBreak..Hint
-#: Structogram/UStructogram.dfm:156
+#: Structogram/UStructogram.dfm:153
 msgid "break"
 msgstr ""
 
@@ -624,7 +632,7 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
 #: dlgSynPageSetup.dfm:1655
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
-#: Utils/UConfiguration.dfm:5132
+#: Utils/UConfiguration.dfm:5106
 msgid "cm"
 msgstr ""
 
@@ -632,13 +640,13 @@ msgstr ""
 #. ExceptionDialogMail..DetailsMemo..Font.Name
 #: dlgExceptionMail.dfm:41
 #. EditorOptionsDialog..Panel1..TabControl..Display..gbEditorFont..Panel3..labFont..Font.Name
-#: dlgSynEditOptions.dfm:1218
+#: dlgSynEditOptions.dfm:1181
 #. OutputWindow..BGPanel..FGPanel..lsbConsole..Font.Name
 #: frmCommandOutput.dfm:34
 #. ELStringsEditorDlg..memMain..Font.Name
 #: Formdesigner/ELStringsEdit.dfm:58
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbEditorFont..Panel3..labFont..Font.Name
-#: Utils/UConfiguration.dfm:774
+#: Utils/UConfiguration.dfm:763
 msgid "Consolas"
 msgstr ""
 
@@ -719,12 +727,12 @@ msgid "Display  : %dx%d pixels, %d bpp"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileLineBreaks....Items.Strings
-#: Utils/UConfiguration.dfm:949
+#: Utils/UConfiguration.dfm:940
 msgid "DOS"
 msgstr ""
 
 #. RegExpTesterWindow..BGPanel..FGPanel..TBXDock..RegExpTesterToolbar..TBXSubmenuItem2..CI_DOTALL..Caption
-#: frmRegExpTester.dfm:44
+#: frmRegExpTester.dfm:50
 msgid "DOTALL"
 msgstr ""
 
@@ -752,7 +760,7 @@ msgstr ""
 #. FileExplorerWindow..BGPanel..FGPanel..ExplorerDock..ExplorerToolbar..Caption
 #: frmFileExplorer.dfm:74
 #. UnitTestWindow..BGPanel..FGPanel..ExplorerDock..ExplorerToolbar..Caption
-#: frmUnitTests.dfm:29
+#: frmUnitTests.dfm:35
 msgid "ExplorerToolbar"
 msgstr ""
 
@@ -838,14 +846,14 @@ msgstr ""
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamValue....Items.Strings
 #: Main/UClassEditor.dfm:611
 #. Programmer's name for it: SFalseValue
-#: StringResources.pas:208
+#: StringResources.pas:210
 msgid "False"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnEditGit..mnGitFetch..Caption
-#: frmEditor.dfm:618
+#: frmEditor.dfm:608
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitFetch..Caption
-#: frmPyIDEMain.dfm:1299
+#: frmPyIDEMain.dfm:1303
 msgid "Fetch"
 msgstr ""
 
@@ -861,16 +869,16 @@ msgstr ""
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamType....Items.Strings
 #: Main/UClassEditor.dfm:535
 #. FStructogram..StructoPopupMenu..MIDatatype..MIFloat..Caption
-#: Structogram/UStructogram.dfm:265
+#: Structogram/UStructogram.dfm:262
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBDataType....Items.Strings
-#: Utils/UConfiguration.dfm:2851
+#: Utils/UConfiguration.dfm:2826
 msgid "float"
 msgstr ""
 
 #. FStructogram..PanelLeft..StructogramToolbar..TBFor..Hint
-#: Structogram/UStructogram.dfm:132
+#: Structogram/UStructogram.dfm:129
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LFor..Caption
-#: Utils/UConfiguration.dfm:2718
+#: Utils/UConfiguration.dfm:2693
 msgid "for"
 msgstr ""
 
@@ -881,34 +889,34 @@ msgid "Form1"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonFreeThreaded..Caption
-#: frmPyIDEMain.dfm:3977
+#: frmPyIDEMain.dfm:3985
 msgid "Free-Threaded"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PLLMAssistant..CBProvider....Items.Strings
-#: Utils/UConfiguration.dfm:5897
+#: Utils/UConfiguration.dfm:5877
 #. FConfiguration..PMain..PanelRight..PageList..PLLMChat..CBChatProvider....Items.Strings
-#: Utils/UConfiguration.dfm:6010
+#: Utils/UConfiguration.dfm:6006
 msgid "Gemini"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnEditGit..Caption
-#: frmEditor.dfm:568
+#: frmEditor.dfm:558
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..Caption
-#: frmPyIDEMain.dfm:1250
+#: frmPyIDEMain.dfm:1254
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..Hint
-#: frmPyIDEMain.dfm:1251
+#: frmPyIDEMain.dfm:1255
 #. PyIDEMainForm..actlStandard..actToolsGit..Caption
-#: frmPyIDEMain.dfm:3927
+#: frmPyIDEMain.dfm:3935
 #. FConfiguration..PMain..PanelRight..PageList..PGit..Caption
-#: Utils/UConfiguration.dfm:6237
+#: Utils/UConfiguration.dfm:6242
 msgid "Git"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnEditGit..mnGitGUI..Caption
-#: frmEditor.dfm:630
+#: frmEditor.dfm:620
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitGUI..Caption
-#: frmPyIDEMain.dfm:1311
+#: frmPyIDEMain.dfm:1315
 msgid "GUI"
 msgstr ""
 
@@ -940,12 +948,12 @@ msgid "IDE Dock Window"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LIf..Caption
-#: Utils/UConfiguration.dfm:2781
+#: Utils/UConfiguration.dfm:2756
 msgid "if"
 msgstr ""
 
 #. RegExpTesterWindow..BGPanel..FGPanel..TBXDock..RegExpTesterToolbar..TBXSubmenuItem2..CI_IGNORECASE..Caption
-#: frmRegExpTester.dfm:52
+#: frmRegExpTester.dfm:58
 msgid "IGNORECASE"
 msgstr ""
 
@@ -955,9 +963,9 @@ msgid "inner"
 msgstr ""
 
 #. FStructogram..StructoPopupMenu..MIDatatype..MIInt..Caption
-#: Structogram/UStructogram.dfm:269
+#: Structogram/UStructogram.dfm:266
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBDataType....Items.Strings
-#: Utils/UConfiguration.dfm:2852
+#: Utils/UConfiguration.dfm:2827
 msgid "int"
 msgstr ""
 
@@ -998,7 +1006,7 @@ msgstr ""
 #. frmCustomKeyboard..Panel1..lblAssignedTo..Caption
 #: dlgCustomShortcuts.dfm:81
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblAssignedTo..Caption
-#: Utils/UConfiguration.dfm:3443
+#: Utils/UConfiguration.dfm:3418
 msgid "lblAssignedTo"
 msgstr ""
 
@@ -1026,14 +1034,14 @@ msgid "List of loaded modules:"
 msgstr ""
 
 #. RegExpTesterWindow..BGPanel..FGPanel..TBXDock..RegExpTesterToolbar..TBXSubmenuItem2..CI_LOCALE..Caption
-#: frmRegExpTester.dfm:60
+#: frmRegExpTester.dfm:66
 msgid "LOCALE"
 msgstr ""
 
 #. FStructogram..StructoPopupMenu..MIDatatype..MILong..Caption
-#: Structogram/UStructogram.dfm:273
+#: Structogram/UStructogram.dfm:270
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBDataType....Items.Strings
-#: Utils/UConfiguration.dfm:2853
+#: Utils/UConfiguration.dfm:2828
 msgid "long"
 msgstr ""
 
@@ -1052,7 +1060,7 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
 #: dlgSynPageSetup.dfm:1654
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
-#: Utils/UConfiguration.dfm:5131
+#: Utils/UConfiguration.dfm:5105
 msgid "mm"
 msgstr ""
 
@@ -1067,11 +1075,11 @@ msgstr ""
 #. FSetup..Font.Name
 #: Setup/USetup.dfm:12
 #. FConfiguration..PMain..PanelRight..PTitle..LTitle..Font.Name
-#: Utils/UConfiguration.dfm:199
+#: Utils/UConfiguration.dfm:195
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LGitFolder..Font.Name
-#: Utils/UConfiguration.dfm:6247
+#: Utils/UConfiguration.dfm:6252
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..LSVN..Font.Name
-#: Utils/UConfiguration.dfm:6363
+#: Utils/UConfiguration.dfm:6368
 msgid "MS Sans Serif"
 msgstr ""
 
@@ -1094,17 +1102,17 @@ msgstr ""
 #. ImportDirectoryForm..Panel1..ebMask..Font.Name
 #: dlgImportDirectory.dfm:48
 #. RunConfigurationForm..Panel1..GroupBox2..Label3..Font.Name
-#: dlgRunConfiguration.dfm:109
+#: dlgRunConfiguration.dfm:107
 #. RunConfigurationForm..Panel1..gbRemoteEngine..cbEngineType..Font.Name
-#: dlgRunConfiguration.dfm:365
+#: dlgRunConfiguration.dfm:354
 #. EditorOptionsDialog..FontDialog..Font.Name
-#: dlgSynEditOptions.dfm:1361
+#: dlgSynEditOptions.dfm:1316
 #. PageSetupDlg..FontDialog..Font.Name
 #: dlgSynPageSetup.dfm:1685
 #. ToDoOptionsDlg..pnlBG..gbxSearchFiles..meDirectories..Font.Name
 #: dlgToDoOptions.dfm:153
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox1..Label17..Font.Name
-#: dlgToolProperties.dfm:244
+#: dlgToolProperties.dfm:231
 #. FunctionListWindow..dlgProcFont..Font.Name
 #: frmFunctionList.dfm:250
 #. SpTBXCustomizeFormMod..SpTBXTabControl1..SpTBXTabSheet3..SpTBXLabel2..Font.Name
@@ -1112,33 +1120,33 @@ msgstr ""
 #. SpTBXCustomizeFormMod..SpTBXTabControl1..SpTBXTabSheet3..SpTBXLabel5..Font.Name
 #: frmModSpTBXCustomize.dfm:77
 #. RegExpTesterWindow..BGPanel..FGPanel..pnlBackground..dpGroupsView..TBXLabel1..Font.Name
-#: frmRegExpTester.dfm:187
+#: frmRegExpTester.dfm:193
 #. RegExpTesterWindow..BGPanel..FGPanel..pnlBackground..dpRegExpText..SpTBXPanel1..TBXLabel3..Font.Name
-#: frmRegExpTester.dfm:275
+#: frmRegExpTester.dfm:282
 #. RegExpTesterWindow..BGPanel..FGPanel..pnlBackground..pnlMiddle..dpSearchText..SpTBXPanel2..TBXLabel4..Font.Name
-#: frmRegExpTester.dfm:376
+#: frmRegExpTester.dfm:383
 #. RegExpTesterWindow..BGPanel..FGPanel..pnlBackground..pnlMiddle..dpMatchText..SpTBXPanel3..lblMatch..Font.Name
-#: frmRegExpTester.dfm:472
+#: frmRegExpTester.dfm:479
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label17..Font.Name
-#: Utils/UConfiguration.dfm:2047
+#: Utils/UConfiguration.dfm:2030
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label18..Font.Name
-#: Utils/UConfiguration.dfm:2061
+#: Utils/UConfiguration.dfm:2044
 #. FConfiguration..FontDialog..Font.Name
-#: Utils/UConfiguration.dfm:6428
+#: Utils/UConfiguration.dfm:6433
 msgid "MS Shell Dlg 2"
 msgstr ""
 
 #. RegExpTesterWindow..BGPanel..FGPanel..TBXDock..RegExpTesterToolbar..TBXSubmenuItem2..CI_MULTILINE..Caption
-#: frmRegExpTester.dfm:67
+#: frmRegExpTester.dfm:73
 msgid "MULTILINE"
 msgstr ""
 
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox4..cbSaveFiles....Items.Strings
-#: dlgToolProperties.dfm:577
+#: dlgToolProperties.dfm:546
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox3..cbStandardInput....Items.Strings
-#: dlgToolProperties.dfm:699
+#: dlgToolProperties.dfm:661
 #. ToolProperties..Panel1..TabControl..tabProperties..GroupBox3..cbStandardOutput....Items.Strings
-#: dlgToolProperties.dfm:716
+#: dlgToolProperties.dfm:678
 #. FClassEditor..PageControl..TSAttributes..CBAttributeType....Items.Strings
 #: Main/UClassEditor.dfm:187
 #. FClassEditor..PageControl..TSAttributes..CBAttributeValue....Items.Strings
@@ -1153,23 +1161,23 @@ msgid "None"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..EScpOptions..Text
-#: Utils/UConfiguration.dfm:6214
+#: Utils/UConfiguration.dfm:6219
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..ESSHOptions..Text
-#: Utils/UConfiguration.dfm:6230
+#: Utils/UConfiguration.dfm:6235
 msgid "-o PasswordAuthentication=no -o StrictHostKeyChecking=no"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PLLMAssistant..CBProvider....Items.Strings
-#: Utils/UConfiguration.dfm:5898
+#: Utils/UConfiguration.dfm:5878
 #. FConfiguration..PMain..PanelRight..PageList..PLLMChat..CBChatProvider....Items.Strings
-#: Utils/UConfiguration.dfm:6011
+#: Utils/UConfiguration.dfm:6007
 msgid "Ollama"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PLLMAssistant..CBProvider....Items.Strings
-#: Utils/UConfiguration.dfm:5896
+#: Utils/UConfiguration.dfm:5876
 #. FConfiguration..PMain..PanelRight..PageList..PLLMChat..CBChatProvider....Items.Strings
-#: Utils/UConfiguration.dfm:6009
+#: Utils/UConfiguration.dfm:6005
 msgid "OpenAI"
 msgstr ""
 
@@ -1182,7 +1190,7 @@ msgid "Options Inspector"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PCodeCompletion..ESpecialPackages..Text
-#: Utils/UConfiguration.dfm:1579
+#: Utils/UConfiguration.dfm:1570
 msgid "os"
 msgstr ""
 
@@ -1224,7 +1232,7 @@ msgstr ""
 #. FClassEditor..PageControl..TSMethods..RGMethodAccess....Items.Strings
 #: Main/UClassEditor.dfm:371
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3227
+#: Utils/UConfiguration.dfm:3202
 msgid "protected"
 msgstr ""
 
@@ -1239,7 +1247,7 @@ msgstr ""
 #. FClassEditor..PageControl..TSMethods..RGMethodAccess....Items.Strings
 #: Main/UClassEditor.dfm:372
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3226
+#: Utils/UConfiguration.dfm:3201
 msgid "public"
 msgstr ""
 
@@ -1249,9 +1257,9 @@ msgid "PUML"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnEditGit..mnGitPush..Caption
-#: frmEditor.dfm:623
+#: frmEditor.dfm:613
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitPush..Caption
-#: frmPyIDEMain.dfm:1304
+#: frmPyIDEMain.dfm:1308
 msgid "Push"
 msgstr ""
 
@@ -1265,7 +1273,7 @@ msgstr ""
 
 #  Doesn't look like text
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..HelpMenu..PyScripter1..Caption
-#: frmPyIDEMain.dfm:1447
+#: frmPyIDEMain.dfm:1451
 msgid "PyScripter1"
 msgstr ""
 
@@ -1285,32 +1293,32 @@ msgid "Python Scripter"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtButtonGroup..Hint
-#: frmPyIDEMain.dfm:2565
+#: frmPyIDEMain.dfm:2575
 msgid "QButtonGroup"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtCanvas..Hint
-#: frmPyIDEMain.dfm:2630
+#: frmPyIDEMain.dfm:2640
 msgid "QCanvas"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtCheckBox..Hint
-#: frmPyIDEMain.dfm:2552
+#: frmPyIDEMain.dfm:2562
 msgid "QCheckBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtColumnView..Hint
-#: frmPyIDEMain.dfm:2422
+#: frmPyIDEMain.dfm:2432
 msgid "QColumnView"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtComboBox..Hint
-#: frmPyIDEMain.dfm:2591
+#: frmPyIDEMain.dfm:2601
 msgid "QComboBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtCommandLinkButton..Hint
-#: frmPyIDEMain.dfm:2253
+#: frmPyIDEMain.dfm:2263
 msgid "QCommandLinkButton"
 msgstr ""
 
@@ -1320,192 +1328,192 @@ msgid "QContextMenu"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtDateEdit..Hint
-#: frmPyIDEMain.dfm:2318
+#: frmPyIDEMain.dfm:2328
 msgid "QDateEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtDateTimeEdit..Hint
-#: frmPyIDEMain.dfm:2305
+#: frmPyIDEMain.dfm:2315
 msgid "QDateTimeEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtDial..Hint
-#: frmPyIDEMain.dfm:2344
+#: frmPyIDEMain.dfm:2354
 msgid "QDial"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtDoubleSpinBox..Hint
-#: frmPyIDEMain.dfm:2279
+#: frmPyIDEMain.dfm:2289
 msgid "QDoubleSpinBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtFontComboBox..Hint
-#: frmPyIDEMain.dfm:2266
+#: frmPyIDEMain.dfm:2276
 msgid "QFontComboBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtFrame..Hint
-#: frmPyIDEMain.dfm:2643
+#: frmPyIDEMain.dfm:2653
 msgid "QFrame"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtGraphicsView..Hint
-#: frmPyIDEMain.dfm:2461
+#: frmPyIDEMain.dfm:2471
 msgid "QGraphicsView"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtGroupBox..Hint
-#: frmPyIDEMain.dfm:2656
+#: frmPyIDEMain.dfm:2666
 msgid "QGroupBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtLabel..Hint
-#: frmPyIDEMain.dfm:2500
+#: frmPyIDEMain.dfm:2510
 msgid "QLabel"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtLCDNumber..Hint
-#: frmPyIDEMain.dfm:2292
+#: frmPyIDEMain.dfm:2302
 msgid "QLCDNumber"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtLine..Hint
-#: frmPyIDEMain.dfm:2357
+#: frmPyIDEMain.dfm:2367
 msgid "QLine"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtLineEdit..Hint
-#: frmPyIDEMain.dfm:2513
+#: frmPyIDEMain.dfm:2523
 msgid "QLineEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtListView..Hint
-#: frmPyIDEMain.dfm:2409
+#: frmPyIDEMain.dfm:2419
 msgid "QListView"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtListWidget..Hint
-#: frmPyIDEMain.dfm:2578
+#: frmPyIDEMain.dfm:2588
 msgid "QListWidget"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQMenuBar..Hint
-#: frmPyIDEMain.dfm:2682
+#: frmPyIDEMain.dfm:2692
 msgid "QMenuBar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtPlainTextEdit..Hint
-#: frmPyIDEMain.dfm:2526
+#: frmPyIDEMain.dfm:2536
 msgid "QPlainTextEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtProgressBar..Hint
-#: frmPyIDEMain.dfm:2747
+#: frmPyIDEMain.dfm:2757
 msgid "QProgressBar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtPushButton..Hint
-#: frmPyIDEMain.dfm:2539
+#: frmPyIDEMain.dfm:2549
 msgid "QPushButton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtScrollArea..Hint
-#: frmPyIDEMain.dfm:2370
+#: frmPyIDEMain.dfm:2380
 msgid "QScrollArea"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtScrollbar..Hint
-#: frmPyIDEMain.dfm:2617
+#: frmPyIDEMain.dfm:2627
 msgid "QScrollbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtSlider..Hint
-#: frmPyIDEMain.dfm:2669
+#: frmPyIDEMain.dfm:2679
 msgid "QSlider"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtSpinBox..Hint
-#: frmPyIDEMain.dfm:2604
+#: frmPyIDEMain.dfm:2614
 msgid "QSpinBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtStackWidget..Hint
-#: frmPyIDEMain.dfm:2396
+#: frmPyIDEMain.dfm:2406
 msgid "QStackWidget"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtStatusBar..Hint
-#: frmPyIDEMain.dfm:2760
+#: frmPyIDEMain.dfm:2770
 msgid "QStatusBar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabItem4..Caption
-#: frmPyIDEMain.dfm:1533
+#: frmPyIDEMain.dfm:1543
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..Caption
-#: frmPyIDEMain.dfm:2477
+#: frmPyIDEMain.dfm:2487
 msgid "Qt Base"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabItem5..Caption
-#: frmPyIDEMain.dfm:1537
+#: frmPyIDEMain.dfm:1547
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..Caption
-#: frmPyIDEMain.dfm:2193
+#: frmPyIDEMain.dfm:2203
 msgid "Qt Controls"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtTableView..Hint
-#: frmPyIDEMain.dfm:2448
+#: frmPyIDEMain.dfm:2458
 msgid "QTableView"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtTableWidget..Hint
-#: frmPyIDEMain.dfm:2734
+#: frmPyIDEMain.dfm:2744
 msgid "QTableWidget"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtTabWidget..Hint
-#: frmPyIDEMain.dfm:2708
+#: frmPyIDEMain.dfm:2718
 msgid "QTabWidget"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtTextBrowser..Hint
-#: frmPyIDEMain.dfm:2227
+#: frmPyIDEMain.dfm:2237
 msgid "QTextBrowser"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtTextedit..Hint
-#: frmPyIDEMain.dfm:2214
+#: frmPyIDEMain.dfm:2224
 msgid "QTextEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtTimeEdit..Hint
-#: frmPyIDEMain.dfm:2331
+#: frmPyIDEMain.dfm:2341
 msgid "QTimeEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtToolBox..Hint
-#: frmPyIDEMain.dfm:2383
+#: frmPyIDEMain.dfm:2393
 msgid "QToolBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtToolButton..Hint
-#: frmPyIDEMain.dfm:2240
+#: frmPyIDEMain.dfm:2250
 msgid "QToolButton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtTreeView..Hint
-#: frmPyIDEMain.dfm:2435
+#: frmPyIDEMain.dfm:2445
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtTreeWidget..Hint
-#: frmPyIDEMain.dfm:2721
+#: frmPyIDEMain.dfm:2731
 msgid "QTreeWidget"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnEditGit..mnGitReset..Caption
-#: frmEditor.dfm:596
+#: frmEditor.dfm:586
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitReset..Caption
-#: frmPyIDEMain.dfm:1277
+#: frmPyIDEMain.dfm:1281
 #. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..btnResetKeys..Caption
-#: Utils/UConfiguration.dfm:1708
+#: Utils/UConfiguration.dfm:1698
 msgid "Reset"
 msgstr ""
 
@@ -1515,13 +1523,13 @@ msgid "RTF"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..EScpCommand..Text
-#: Utils/UConfiguration.dfm:6206
+#: Utils/UConfiguration.dfm:6211
 msgid "scp"
 msgstr ""
 
 #  Seems like a Font.Name extract
 #. ResourcesDataModule..dlgFontDialog..Font.Name
-#: dmResources.dfm:5089
+#: dmResources.dfm:5862
 #. FunctionListWindow..pnHolder..lvProcs..Font.Name
 #: frmFunctionList.dfm:87
 #. IDEDockWindow..Font.Name
@@ -1531,7 +1539,7 @@ msgstr ""
 #. SuggestWindow..Font.Name
 #: frmSuggest.dfm:13
 #. SuggestWindow..SpTBXDock..SpTBXToolbar..Font.Name
-#: frmSuggest.dfm:82
+#: frmSuggest.dfm:80
 #. FUMLForm..Font.Name
 #: EssModel/System/UUMLForm.dfm:11
 #. FAssociation..Font.Name
@@ -1574,7 +1582,7 @@ msgid "Segoe UI"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..LDefault..Caption
-#: Utils/UConfiguration.dfm:2580
+#: Utils/UConfiguration.dfm:2555
 msgid "Segoe UI 9pt"
 msgstr ""
 
@@ -1598,7 +1606,7 @@ msgid "SpTBXToolbar1"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..ESSHCommand..Text
-#: Utils/UConfiguration.dfm:6222
+#: Utils/UConfiguration.dfm:6227
 msgid "ssh"
 msgstr ""
 
@@ -1621,25 +1629,25 @@ msgstr ""
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamType....Items.Strings
 #: Main/UClassEditor.dfm:540
 #. FStructogram..StructoPopupMenu..MIDatatype..MIString..Caption
-#: Structogram/UStructogram.dfm:277
+#: Structogram/UStructogram.dfm:274
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBDataType....Items.Strings
-#: Utils/UConfiguration.dfm:2854
+#: Utils/UConfiguration.dfm:2829
 msgid "str"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..Caption
-#: Utils/UConfiguration.dfm:6346
+#: Utils/UConfiguration.dfm:6351
 msgid "Subversion"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..Caption
-#: frmPyIDEMain.dfm:1326
+#: frmPyIDEMain.dfm:1330
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..Hint
-#: frmPyIDEMain.dfm:1327
+#: frmPyIDEMain.dfm:1331
 msgid "SVN"
 msgstr ""
 
-#: cPyRemoteDebugger.pas:1042
+#: cPyRemoteDebugger.pas:1037
 msgid "sync_request_timeout"
 msgstr ""
 
@@ -1672,13 +1680,13 @@ msgstr ""
 #. FindResultsWindow..BGPanel..FGPanel..pnlMain..lbResults..Font.Name
 #: frmFindResults.dfm:118
 #. UnitTestWindow..BGPanel..FGPanel..Panel2..ModuleName..Font.Name
-#: frmUnitTests.dfm:154
+#: frmUnitTests.dfm:161
 #. UnitTestWindow..BGPanel..FGPanel..Panel2..lbFoundTests..Font.Name
-#: frmUnitTests.dfm:170
+#: frmUnitTests.dfm:177
 #. UnitTestWindow..BGPanel..FGPanel..Panel2..lblRunTests..Font.Name
-#: frmUnitTests.dfm:184
+#: frmUnitTests.dfm:191
 #. UnitTestWindow..BGPanel..FGPanel..Panel2..lblFailures..Font.Name
-#: frmUnitTests.dfm:199
+#: frmUnitTests.dfm:206
 #. FUpdater..Font.Name
 #: Setup/UUpdater.dfm:12
 #. Fwait..Font.Name
@@ -1686,19 +1694,19 @@ msgstr ""
 #. Fwait..Label1..Font.Name
 #: Setup/UWait.dfm:26
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..REHeaderLeft..Font.Name
-#: Utils/UConfiguration.dfm:5366
+#: Utils/UConfiguration.dfm:5340
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..REHeaderCenter..Font.Name
-#: Utils/UConfiguration.dfm:5384
+#: Utils/UConfiguration.dfm:5358
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..REHeaderRight..Font.Name
-#: Utils/UConfiguration.dfm:5402
+#: Utils/UConfiguration.dfm:5376
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..REFooterLeft..Font.Name
-#: Utils/UConfiguration.dfm:5520
+#: Utils/UConfiguration.dfm:5494
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..REFooterCenter..Font.Name
-#: Utils/UConfiguration.dfm:5538
+#: Utils/UConfiguration.dfm:5512
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..REFooterRight..Font.Name
-#: Utils/UConfiguration.dfm:5556
+#: Utils/UConfiguration.dfm:5530
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..LRestrictions..Font.Name
-#: Utils/UConfiguration.dfm:5628
+#: Utils/UConfiguration.dfm:5601
 msgid "Tahoma"
 msgstr ""
 
@@ -1761,16 +1769,16 @@ msgid "TBXToolbar1"
 msgstr ""
 
 #. EditorOptionsDialog..Panel1..TabControl..Display..gbGutter..pnlGutterFontDisplay..lblGutterFont..Font.Name
-#: dlgSynEditOptions.dfm:1069
+#: dlgSynEditOptions.dfm:1035
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..pnlGutterFontDisplay..lblGutterFont..Font.Name
-#: Utils/UConfiguration.dfm:513
+#: Utils/UConfiguration.dfm:506
 msgid "Terminal"
 msgstr ""
 
 #. EditorOptionsDialog..Panel1..TabControl..Display..gbGutter..pnlGutterFontDisplay..lblGutterFont..Caption
-#: dlgSynEditOptions.dfm:1065
+#: dlgSynEditOptions.dfm:1031
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbGutter..pnlGutterFontDisplay..lblGutterFont..Caption
-#: Utils/UConfiguration.dfm:509
+#: Utils/UConfiguration.dfm:502
 msgid "Terminal 8pt"
 msgstr ""
 
@@ -1788,7 +1796,7 @@ msgid "Text (*.txt,*.*)|*.txt;*.*"
 msgstr ""
 
 #. ResourcesDataModule..SynGeneralSyn..DefaultFilter
-#: dmResources.dfm:5079
+#: dmResources.dfm:5852
 #. Programmer's name for it: sGeneralFileFilter
 #: StringResources.pas:18
 msgid "Text Files(*.txt,*.*)|*.txt;*.*"
@@ -1800,80 +1808,80 @@ msgid "Thread: %s"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBButton..Hint
-#: frmPyIDEMain.dfm:1608
+#: frmPyIDEMain.dfm:1618
 msgid "Tk Button"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBCanvas..Hint
-#: frmPyIDEMain.dfm:1704
+#: frmPyIDEMain.dfm:1714
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKCanvas..Hint
-#: frmPyIDEMain.dfm:1995
+#: frmPyIDEMain.dfm:2005
 msgid "Tk Canvas"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBCheckbutton..Hint
-#: frmPyIDEMain.dfm:1622
+#: frmPyIDEMain.dfm:1632
 msgid "Tk Checkbutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBEntry..Hint
-#: frmPyIDEMain.dfm:1580
+#: frmPyIDEMain.dfm:1590
 msgid "Tk Entry"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBFrame..Hint
-#: frmPyIDEMain.dfm:1718
+#: frmPyIDEMain.dfm:1728
 msgid "Tk Frame"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBLabel..Hint
-#: frmPyIDEMain.dfm:1566
+#: frmPyIDEMain.dfm:1576
 msgid "Tk Label"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBLabelFrame..Hint
-#: frmPyIDEMain.dfm:1732
+#: frmPyIDEMain.dfm:1742
 msgid "Tk LabelFrame"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBListbox..Hint
-#: frmPyIDEMain.dfm:1649
+#: frmPyIDEMain.dfm:1659
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKListbox..Hint
-#: frmPyIDEMain.dfm:1930
+#: frmPyIDEMain.dfm:1940
 msgid "Tk Listbox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBMenu..Hint
-#: frmPyIDEMain.dfm:1772
+#: frmPyIDEMain.dfm:1782
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKMenu..Hint
-#: frmPyIDEMain.dfm:2073
+#: frmPyIDEMain.dfm:2083
 msgid "Tk Menu"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBMenubutton..Hint
-#: frmPyIDEMain.dfm:1800
+#: frmPyIDEMain.dfm:1810
 msgid "Tk Menubutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBTMessage..Hint
-#: frmPyIDEMain.dfm:1691
+#: frmPyIDEMain.dfm:1701
 msgid "Tk Message"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBOptionMenu..Hint
-#: frmPyIDEMain.dfm:1813
+#: frmPyIDEMain.dfm:1823
 msgid "Tk Optionmenu"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBPanedWindow..Hint
-#: frmPyIDEMain.dfm:1759
+#: frmPyIDEMain.dfm:1769
 msgid "Tk PanedWindow"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBPopupMenu..Hint
-#: frmPyIDEMain.dfm:1786
+#: frmPyIDEMain.dfm:1796
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKPopupMenu..Hint
-#: frmPyIDEMain.dfm:2086
+#: frmPyIDEMain.dfm:2096
 msgid "Tk PopupMenu"
 msgstr ""
 
@@ -1883,29 +1891,29 @@ msgid "Tk Radiobutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBRadiobuttonGroup..Hint
-#: frmPyIDEMain.dfm:1636
+#: frmPyIDEMain.dfm:1646
 msgid "Tk RadiobuttonGroup"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBScale..Hint
-#: frmPyIDEMain.dfm:1746
+#: frmPyIDEMain.dfm:1756
 msgid "Tk Scale"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBScrollbar..Hint
-#: frmPyIDEMain.dfm:1677
+#: frmPyIDEMain.dfm:1687
 msgid "Tk Scrollbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBSpinBox..Hint
-#: frmPyIDEMain.dfm:1663
+#: frmPyIDEMain.dfm:1673
 msgid "Tk SpinBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBText..Hint
-#: frmPyIDEMain.dfm:1594
+#: frmPyIDEMain.dfm:1604
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKText..Hint
-#: frmPyIDEMain.dfm:1878
+#: frmPyIDEMain.dfm:1888
 msgid "Tk Text"
 msgstr ""
 
@@ -1914,84 +1922,84 @@ msgstr ""
 #. FClassEditor..PageControl..TSMethods..GRFormalParameters..CBParamValue....Items.Strings
 #: Main/UClassEditor.dfm:610
 #. Programmer's name for it: STrueValue
-#: StringResources.pas:207
+#: StringResources.pas:209
 msgid "True"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabItem3..Caption
-#: frmPyIDEMain.dfm:1529
+#: frmPyIDEMain.dfm:1539
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..Caption
-#: frmPyIDEMain.dfm:1829
+#: frmPyIDEMain.dfm:1839
 msgid "TTK"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKButton..Hint
-#: frmPyIDEMain.dfm:1891
+#: frmPyIDEMain.dfm:1901
 msgid "TTK Button"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKCheckbutton..Hint
-#: frmPyIDEMain.dfm:1904
+#: frmPyIDEMain.dfm:1914
 msgid "TTK Checkbutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKCombobox..Hint
-#: frmPyIDEMain.dfm:1943
+#: frmPyIDEMain.dfm:1953
 msgid "TTK Combobox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKEntry..Hint
-#: frmPyIDEMain.dfm:1865
+#: frmPyIDEMain.dfm:1875
 msgid "TTK Entry"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKFrame..Hint
-#: frmPyIDEMain.dfm:2008
+#: frmPyIDEMain.dfm:2018
 msgid "TTK Frame"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKLabel..Hint
-#: frmPyIDEMain.dfm:1852
+#: frmPyIDEMain.dfm:1862
 msgid "TTK Label"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKLabeldScale..Hint
-#: frmPyIDEMain.dfm:2047
+#: frmPyIDEMain.dfm:2057
 msgid "TTK LabeldScale"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKLabelFrame..Hint
-#: frmPyIDEMain.dfm:2021
+#: frmPyIDEMain.dfm:2031
 msgid "TTK LabelFrame"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKMenuButton..Hint
-#: frmPyIDEMain.dfm:2099
+#: frmPyIDEMain.dfm:2109
 msgid "TTK Menubutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKMessage..Hint
-#: frmPyIDEMain.dfm:1982
+#: frmPyIDEMain.dfm:1992
 msgid "TTK Message"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKNotebook..Hint
-#: frmPyIDEMain.dfm:2125
+#: frmPyIDEMain.dfm:2135
 msgid "TTK Notebook"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKOptionMenu..Hint
-#: frmPyIDEMain.dfm:2112
+#: frmPyIDEMain.dfm:2122
 msgid "TTK OptionMenu"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKPanedWindow..Hint
-#: frmPyIDEMain.dfm:2060
+#: frmPyIDEMain.dfm:2070
 msgid "TTK PanedWindow"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKProgressbar..Hint
-#: frmPyIDEMain.dfm:2151
+#: frmPyIDEMain.dfm:2161
 msgid "TTK Progressbar"
 msgstr ""
 
@@ -2001,37 +2009,37 @@ msgid "TTK Radiobutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKRadiogroup..Hint
-#: frmPyIDEMain.dfm:1917
+#: frmPyIDEMain.dfm:1927
 msgid "TTK RadiobuttonGroup"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKScale..Hint
-#: frmPyIDEMain.dfm:2034
+#: frmPyIDEMain.dfm:2044
 msgid "TTK Scale"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKScrollbar..Hint
-#: frmPyIDEMain.dfm:1969
+#: frmPyIDEMain.dfm:1979
 msgid "TTK Scrollbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKSeparator..Hint
-#: frmPyIDEMain.dfm:2164
+#: frmPyIDEMain.dfm:2174
 msgid "TTK Separator"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKSizegrip..Hint
-#: frmPyIDEMain.dfm:2177
+#: frmPyIDEMain.dfm:2187
 msgid "TTK Sizegrip"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKSpinbox..Hint
-#: frmPyIDEMain.dfm:1956
+#: frmPyIDEMain.dfm:1966
 msgid "TTK Spinbox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKTreeview..Hint
-#: frmPyIDEMain.dfm:2138
+#: frmPyIDEMain.dfm:2148
 msgid "TTK Treeview"
 msgstr ""
 
@@ -2055,7 +2063,7 @@ msgstr ""
 
 #. FUMLForm..Caption
 #: EssModel/System/UUMLForm.dfm:4
-#: Utils/UConfiguration.pas:5576
+#: Utils/UConfiguration.pas:5592
 msgid "UML"
 msgstr ""
 
@@ -2065,12 +2073,12 @@ msgid "UML (*.puml)|*.puml"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileLineBreaks....Items.Strings
-#: Utils/UConfiguration.dfm:952
+#: Utils/UConfiguration.dfm:943
 msgid "Unicode"
 msgstr ""
 
 #. RegExpTesterWindow..BGPanel..FGPanel..TBXDock..RegExpTesterToolbar..TBXSubmenuItem2..CI_UNICODE..Caption
-#: frmRegExpTester.dfm:75
+#: frmRegExpTester.dfm:81
 msgid "UNICODE"
 msgstr ""
 
@@ -2080,7 +2088,7 @@ msgid "Unit versioning information:"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileLineBreaks....Items.Strings
-#: Utils/UConfiguration.dfm:950
+#: Utils/UConfiguration.dfm:941
 msgid "Unix"
 msgstr ""
 
@@ -2090,22 +2098,22 @@ msgid "URL"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonFreeThreaded..Hint
-#: frmPyIDEMain.dfm:3978
+#: frmPyIDEMain.dfm:3986
 msgid "Use the free-trheaded version of Python"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LUserEMail..Caption
-#: Utils/UConfiguration.dfm:6280
+#: Utils/UConfiguration.dfm:6285
 msgid "user.email"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileEncoding....Items.Strings
-#: Utils/UConfiguration.dfm:939
+#: Utils/UConfiguration.dfm:930
 msgid "UTF16 BE"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileEncoding....Items.Strings
-#: Utils/UConfiguration.dfm:938
+#: Utils/UConfiguration.dfm:929
 msgid "UTF16 LE"
 msgstr ""
 
@@ -2127,7 +2135,7 @@ msgstr ""
 
 #  Doesn't look like text
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileEncoding....Items.Strings
-#: Utils/UConfiguration.dfm:936
+#: Utils/UConfiguration.dfm:927
 msgid "UTF8"
 msgstr ""
 
@@ -2140,7 +2148,7 @@ msgid "UTF-8 (No BOM)"
 msgstr ""
 
 #. RegExpTesterWindow..BGPanel..FGPanel..TBXDock..RegExpTesterToolbar..TBXSubmenuItem2..CI_VERBOSE..Caption
-#: frmRegExpTester.dfm:83
+#: frmRegExpTester.dfm:89
 msgid "VERBOSE"
 msgstr ""
 
@@ -2163,9 +2171,9 @@ msgid "Webdings"
 msgstr ""
 
 #. FStructogram..PanelLeft..StructogramToolbar..TBWhile..Hint
-#: Structogram/UStructogram.dfm:122
+#: Structogram/UStructogram.dfm:119
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LWhile..Caption
-#: Utils/UConfiguration.dfm:2711
+#: Utils/UConfiguration.dfm:2686
 msgid "while"
 msgstr ""
 

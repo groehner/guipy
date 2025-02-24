@@ -21,9 +21,9 @@ object PyIDEMainForm: TPyIDEMainForm
   TextHeight = 15
   object StatusBar: TSpTBXStatusBar
     Left = 0
-    Top = 714
+    Top = 732
     Width = 1031
-    Height = 28
+    Height = 10
     SizeGrip = False
     object lbStatusMessage: TSpTBXLabelItem
       Wrapping = twEndEllipsis
@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 361
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -113,8 +113,8 @@ object PyIDEMainForm: TPyIDEMainForm
       Visible = False
     end
     object ActivityIndicator: TActivityIndicator
-      Left = 965
-      Top = 0
+      Left = 1027
+      Top = 6
       FrameDelay = 150
       IndicatorSize = aisSmall
     end
@@ -123,19 +123,17 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 9
     Top = 113
     Width = 1013
-    Height = 592
+    Height = 610
     Align = alClient
     BevelEdges = []
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
-    ExplicitWidth = 606
-    ExplicitHeight = 291
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
       Width = 1009
-      Height = 592
+      Height = 610
       Align = alClient
       PopupMenu = TabControlPopupMenu
       OnContextPopup = TabContolContextPopup
@@ -187,7 +185,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 1009
       Top = 0
       Width = 0
-      Height = 592
+      Height = 610
       Align = alRight
       PopupMenu = TabControlPopupMenu
       Visible = False
@@ -240,7 +238,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 1009
       Top = 0
       Width = 4
-      Height = 592
+      Height = 610
       Cursor = crSizeWE
       Align = alRight
       ParentColor = False
@@ -274,7 +272,6 @@ object PyIDEMainForm: TPyIDEMainForm
       Height = 113
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 624
       object DebugToolbar: TSpTBXToolbar
         Left = 2
         Top = 52
@@ -288,9 +285,13 @@ object PyIDEMainForm: TPyIDEMainForm
         Caption = 'Debug Toolbar'
         object tbiRunRun: TSpTBXItem
           Action = actRun
+          ImageIndex = 33
+          ImageName = 'Run1'
         end
         object tbiRunDebug: TSpTBXItem
           Action = actDebug
+          ImageIndex = 34
+          ImageName = 'Debug1'
         end
         object tbiRunRunToCursor: TSpTBXItem
           Action = actRunToCursor
@@ -1495,15 +1496,21 @@ object PyIDEMainForm: TPyIDEMainForm
         end
         object tbiFileSave: TSpTBXItem
           Action = CommandsDataModule.actFileSave
+          ImageIndex = 2
+          ImageName = 'Save1'
         end
         object tbiFileSaveAll: TSpTBXItem
           Action = CommandsDataModule.actFileSaveAll
         end
         object tbiEditUndo: TSpTBXItem
           Action = CommandsDataModule.actEditUndo
+          ImageIndex = 7
+          ImageName = 'Undo1'
         end
         object tbiEditRedo: TSpTBXItem
           Action = CommandsDataModule.actEditRedo
+          ImageIndex = 8
+          ImageName = 'Redo1'
         end
         object tbitbiDiagramFromOpenFiles: TSpTBXItem
           Hint = 'UML-Diagram from open files'
@@ -2862,7 +2869,7 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 0
     Top = 113
     Width = 9
-    Height = 592
+    Height = 610
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpLeft
@@ -2871,14 +2878,14 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 1022
     Top = 113
     Width = 9
-    Height = 592
+    Height = 610
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpRight
   end
   object TBXDockBottom: TSpTBXDock
     Left = 0
-    Top = 705
+    Top = 723
     Width = 1031
     Height = 9
     FixAlign = True
@@ -3063,7 +3070,6 @@ object PyIDEMainForm: TPyIDEMainForm
       HelpContext = 340
       HelpType = htContext
       Hint = 'Run|Run active module'
-      ImageIndex = 33
       ImageName = 'Run'
       ShortCut = 16504
       OnExecute = actRunExecute
@@ -3176,7 +3182,6 @@ object PyIDEMainForm: TPyIDEMainForm
       HelpContext = 340
       HelpType = htContext
       Hint = 'Debug|Debug active script'
-      ImageIndex = 34
       ImageName = 'Debug'
       ShortCut = 120
       OnExecute = actDebugExecute
@@ -4012,8 +4017,8 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 99
-        CollectionName = 'Save'
-        Name = 'Save'
+        CollectionName = 'Save1'
+        Name = 'Save1'
       end
       item
         CollectionIndex = 100
@@ -4036,14 +4041,10 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'Print'
       end
       item
-        CollectionIndex = 128
-        CollectionName = 'Undo'
-        Name = 'Undo'
+        Name = 'Undo1'
       end
       item
-        CollectionIndex = 87
-        CollectionName = 'Redo'
-        Name = 'Redo'
+        Name = 'Redo1'
       end
       item
         CollectionIndex = 17
@@ -4167,13 +4168,11 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 93
-        CollectionName = 'Run'
-        Name = 'Run'
+        CollectionName = 'Run1'
+        Name = 'Run1'
       end
       item
-        CollectionIndex = 18
-        CollectionName = 'Debug'
-        Name = 'Debug'
+        Name = 'Debug1'
       end
       item
         CollectionIndex = 98

@@ -511,12 +511,10 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
         Name = 'Collapse'
       end
       item
-        CollectionIndex = 93
         CollectionName = 'Run'
         Name = 'Run'
       end
       item
-        CollectionIndex = 18
         CollectionName = 'Debug'
         Name = 'Debug'
       end

@@ -202,7 +202,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 641
         Height = 435
-        ActivePage = PLLMAssistant
+        ActivePage = PClassModeler
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -2482,12 +2482,12 @@ object FConfiguration: TFConfiguration
             Height = 73
             Caption = 'Methods options'
             TabOrder = 1
-            object CBShowKindProcedure: TCheckBox
+            object CBShowWithWithoutReturnValue: TCheckBox
               Left = 16
               Top = 24
               Width = 206
               Height = 17
-              Caption = 'Show kind procedure'
+              Caption = 'Show with/without return value'
               TabOrder = 0
             end
             object CBShowParameterTypeSelection: TCheckBox

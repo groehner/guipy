@@ -5,7 +5,6 @@ inherited PythonIIForm: TPythonIIForm
   Caption = 'Python Interpreter'
   ClientHeight = 451
   ClientWidth = 701
-  StyleElements = [seFont, seClient, seBorder]
   OnHelp = FormHelp
   ExplicitWidth = 717
   ExplicitHeight = 490
@@ -19,7 +18,6 @@ inherited PythonIIForm: TPythonIIForm
       Width = 697
       Height = 447
       Color = clInactiveBorder
-      StyleElements = [seFont, seClient, seBorder]
       ExplicitWidth = 697
       ExplicitHeight = 447
       object SynEdit: TSynEdit

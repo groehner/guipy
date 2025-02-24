@@ -5,7 +5,7 @@ object FClassEditor: TFClassEditor
   BorderStyle = bsDialog
   Caption = 'UML class editor'
   ClientHeight = 446
-  ClientWidth = 701
+  ClientWidth = 709
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -52,7 +52,7 @@ object FClassEditor: TFClassEditor
     Top = 10
     Width = 364
     Height = 435
-    ActivePage = TSClass
+    ActivePage = TSMethods
     TabOrder = 0
     OnChange = PageControlChange
     object TSClass: TTabSheet
@@ -360,9 +360,9 @@ object FClassEditor: TFClassEditor
           'tuple')
       end
       object RGMethodAccess: TRadioGroup
-        Left = 126
+        Left = 160
         Top = 16
-        Width = 100
+        Width = 90
         Height = 105
         Caption = 'Visibility'
         ItemIndex = 2
@@ -373,9 +373,9 @@ object FClassEditor: TFClassEditor
         TabOrder = 1
       end
       object GBMethodOptions: TGroupBox
-        Left = 244
+        Left = 256
         Top = 16
-        Width = 100
+        Width = 88
         Height = 105
         Caption = 'Options'
         TabOrder = 2
@@ -427,13 +427,13 @@ object FClassEditor: TFClassEditor
       object RGMethodKind: TRadioGroup
         Left = 3
         Top = 16
-        Width = 100
+        Width = 151
         Height = 105
         Caption = 'Kind'
         Items.Strings = (
-          'Constructor'
-          'Function'
-          'Procedure')
+          'constructor'
+          'with return value'
+          'without return value')
         TabOrder = 0
       end
       object GRFormalParameters: TGroupBox

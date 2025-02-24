@@ -74,7 +74,7 @@ type
     fGetMethodChecked: Boolean;
     fSetMethodChecked: Boolean;
     fShowTypeSelection: Boolean;
-    fShowKindProcedure: Boolean;
+    fShowWithWithoutReturnValue: Boolean;
     fShowParameterTypeSelection: Boolean;
     fFromFutureImport: Boolean;
 
@@ -238,8 +238,8 @@ type
       write FGetMethodChecked;
     property ShowTypeSelection: Boolean read FShowTypeSelection
       write FShowTypeSelection;
-    property ShowKindProcedure: Boolean read FShowKindProcedure
-      write FShowKindProcedure;
+    property ShowWithWithoutReturnValue: Boolean read FShowWithWithoutReturnValue
+      write FShowWithWithoutReturnValue;
     property ShowParameterTypeSelection: Boolean read FShowParameterTypeSelection
       write FShowParameterTypeSelection;
     property FromFutureImport: Boolean read FFromFutureImport
@@ -1041,7 +1041,7 @@ type
     CBGetSetMethodsAsProperty: TCheckBox;
     CBShowTypeSelection: TCheckBox;
     GBMethodsOptions: TGroupBox;
-    CBShowKindProcedure: TCheckBox;
+    CBShowWithWithoutReturnValue: TCheckBox;
     CBShowParameterTypeSelection: TCheckBox;
     btnResetKeys: TButton;
     LLicence: TLabel;
@@ -1984,7 +1984,7 @@ begin
     CBGetMethodChecked.Checked:= GetMethodChecked;
     CBSetMethodChecked.Checked:= setMethodChecked;
     CBShowTypeSelection.Checked:= ShowTypeSelection;
-    CBShowKindProcedure.Checked:= ShowKindProcedure;
+    CBShowWithWithoutReturnValue.Checked:= ShowWithWithoutReturnValue;
     CBShowParameterTypeSelection.Checked:= ShowParameterTypeSelection;
     CBFromFutureImport.Checked:= FromFutureImport;
 
@@ -2370,7 +2370,7 @@ begin
     GetMethodChecked:= CBGetMethodChecked.Checked;
     SetMethodChecked:= CBSetmethodChecked.Checked;
     ShowTypeSelection:= CBShowTypeSelection.Checked;
-    ShowKindProcedure:= CBShowKindProcedure.Checked;
+    ShowWithWithoutReturnValue:= CBShowWithWithoutReturnValue.Checked;
     ShowParameterTypeSelection:= CBShowParameterTypeSelection.Checked;
     FromFutureImport:= CBFromFutureImport.Checked;
 
@@ -5992,7 +5992,7 @@ begin
   fGetMethodChecked:= True;
   fSetMethodChecked:= False;
   fShowTypeSelection:= True;
-  fShowKindProcedure:= True;
+  fShowWithWithoutReturnValue:= True;
   fShowParameterTypeSelection:= True;
   fFromFutureImport:= True;
 

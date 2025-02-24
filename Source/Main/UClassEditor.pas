@@ -323,9 +323,9 @@ begin
     CBParamName.Top:= PPIScale(45);
     CBParamValue.Top:= PPIScale(77);
   end;
-  if GuiPyOptions.ShowKindProcedure
-    then RGMethodKind.Items.Text:= _('Constructor') + #13#10 + _('Function') + #13#10 + _('Procedure')
-    else RGMethodKind.Items.Text:= _('Constructor') + #13#10 + _('Function');
+  if GuiPyOptions.ShowWithWithoutReturnValue
+    then RGMethodKind.Items.Text:= _('constructor') + #13#10 + _('with return value') + #13#10 + _('without return value')
+    else RGMethodKind.Items.Text:= _('constructor') + #13#10 + _('function') + #13#10 + _('procedure');
 end;
 
 procedure TFClassEditor.FormClose(Sender: TObject; var aAction: TCloseAction);
