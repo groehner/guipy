@@ -222,6 +222,8 @@ begin
       ParsedFunction:= TParsedFunction(CE);
       OpTemp := C.MakeOperation(ParsedFunction.Name, nil);
       DoOperation(ParsedFunction, OpTemp, C.Name, Level);
+      if ParsedFunction.isAbstractMethod then
+        C.IsAbstract:= true;
       Operation:= C.FindOperation(OpTemp);
       if Operation = nil then begin
         Operation:= OpTemp;
