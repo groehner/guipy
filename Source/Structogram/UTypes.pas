@@ -1,4 +1,4 @@
-{-------------------------------------------------------------------------------
+﻿{-------------------------------------------------------------------------------
  Unit:     UTypes
  Author:   Gerhard Röhner
  Based on: NSD-Editor by Marcel Kalt
@@ -310,6 +310,7 @@ type
   // a whole structure without Algorithm
   TStrList = class(TStrElement)
   private
+    BlackAndWhite: boolean;
     procedure Draw; override;
     procedure Resize(x, y: Integer); override;
     procedure SetRctList(X1, Y1, X2, Y2: Integer); override;
@@ -351,6 +352,7 @@ type
     procedure setList(aList: TStrList); override;
     procedure setPuzzleMode(Mode: Integer);
     procedure setFont(Font: TFont);
+    procedure setBlackAndWhite(value: boolean);
     procedure Collapse; override;
   end;
 
@@ -2525,6 +2527,7 @@ begin
   SwitchWithCaseLine:= GuiPyOptions.SwitchWithCaseLine;
   setLineHeight;
   PuzzleMode:= Mode;
+  BlackAndWhite:= false;
 end;
 
 destructor TStrList.Destroy;
@@ -2719,7 +2722,7 @@ end;
 
 procedure TStrList.SetColors;
 begin
-  if StyleServices.IsSystemStyle then begin
+  if StyleServices.IsSystemStyle or BlackAndWhite then begin
     Canvas.Pen.Color:= clBlack;
     Canvas.Font.Color:= clBlack;
     Canvas.Brush.Color:= clWhite;
@@ -2885,6 +2888,12 @@ procedure TStrList.setFont(Font: TFont);
 begin
   Canvas.Font.Assign(Font);
   setLineHeight;
+end;
+
+procedure TStrList.setBlackAndWhite(value: boolean);
+begin
+  BlackAndwhite:= value;
+  Paint;
 end;
 
 procedure TStrList.Collapse;

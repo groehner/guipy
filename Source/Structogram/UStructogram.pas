@@ -1228,8 +1228,10 @@ begin
     try
       aBitmap.Width:= curList.Image.Width + GuiPyOptions.StructogramShadowWidth;
       aBitmap.Height:= curList.Image.Height + GuiPyOptions.StructogramShadowWidth;
+      curList.setBlackAndWhite(true);
       aBitmap.Canvas.Draw(0, 0, curList.Image.Picture.Graphic);
       Clipboard.Assign(aBitmap);
+      curList.setBlackAndWhite(false);
     finally
       FreeAndNil(aBitmap);
     end;
