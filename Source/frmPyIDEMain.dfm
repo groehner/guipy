@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 361
+      CustomWidth = 0
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -129,6 +129,8 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
+    ExplicitWidth = 606
+    ExplicitHeight = 309
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -272,6 +274,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Height = 113
       Align = alClient
       TabOrder = 1
+      ExplicitWidth = 624
       object DebugToolbar: TSpTBXToolbar
         Left = 2
         Top = 52
@@ -291,7 +294,7 @@ object PyIDEMainForm: TPyIDEMainForm
         object tbiRunDebug: TSpTBXItem
           Action = actDebug
           ImageIndex = 34
-          ImageName = 'Debug1'
+          ImageName = 'Debug13'
         end
         object tbiRunRunToCursor: TSpTBXItem
           Action = actRunToCursor
@@ -1496,21 +1499,15 @@ object PyIDEMainForm: TPyIDEMainForm
         end
         object tbiFileSave: TSpTBXItem
           Action = CommandsDataModule.actFileSave
-          ImageIndex = 2
-          ImageName = 'Save1'
         end
         object tbiFileSaveAll: TSpTBXItem
           Action = CommandsDataModule.actFileSaveAll
         end
         object tbiEditUndo: TSpTBXItem
           Action = CommandsDataModule.actEditUndo
-          ImageIndex = 7
-          ImageName = 'Undo1'
         end
         object tbiEditRedo: TSpTBXItem
           Action = CommandsDataModule.actEditRedo
-          ImageIndex = 8
-          ImageName = 'Redo1'
         end
         object tbitbiDiagramFromOpenFiles: TSpTBXItem
           Hint = 'UML-Diagram from open files'
@@ -4017,8 +4014,8 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 99
-        CollectionName = 'Save1'
-        Name = 'Save1'
+        CollectionName = 'Save13'
+        Name = 'Save13'
       end
       item
         CollectionIndex = 100
@@ -4041,10 +4038,14 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'Print'
       end
       item
-        Name = 'Undo1'
+        CollectionIndex = 128
+        CollectionName = 'Undo13'
+        Name = 'Undo13'
       end
       item
-        Name = 'Redo1'
+        CollectionIndex = 87
+        CollectionName = 'Redo13'
+        Name = 'Redo13'
       end
       item
         CollectionIndex = 17
@@ -4172,7 +4173,9 @@ object PyIDEMainForm: TPyIDEMainForm
         Name = 'Run1'
       end
       item
-        Name = 'Debug1'
+        CollectionIndex = 18
+        CollectionName = 'Debug13'
+        Name = 'Debug13'
       end
       item
         CollectionIndex = 98

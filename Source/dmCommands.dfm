@@ -88,7 +88,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 310
       Hint = 'Save|Save active file'
       ImageIndex = 2
-      ImageName = 'Save'
+      ImageName = 'Save13'
       ShortCut = 16467
       OnExecute = actFileSaveExecute
     end
@@ -202,7 +202,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpType = htContext
       Hint = 'Undo|Reverts the last action'
       ImageIndex = 7
-      ImageName = 'Undo'
+      ImageName = 'Undo13'
       ShortCut = 16474
     end
     object actEditRedo: TAction
@@ -212,7 +212,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 320
       Hint = 'Redo| Redo last action'
       ImageIndex = 8
-      ImageName = 'Redo'
+      ImageName = 'Redo13'
       ShortCut = 24666
       OnExecute = actEditRedoExecute
     end

@@ -144,7 +144,8 @@ uses
   cPyRemoteDebugger,
   cProjectClasses,
   cSSHSupport,
-  cPySSHDebugger;
+  cPySSHDebugger,
+  UUtils;
 
 { TPythonControl }
 
@@ -698,7 +699,7 @@ begin
       if Name = '' then
         Path := CustomVersions[Index]
       else
-         Path := CustomVersions.ValueFromIndex[Index];
+        Path := AddPortableDrive(CustomVersions.ValueFromIndex[Index]);
       if PythonVersionFromPath(Path, Version, True,
         MinPyVersion, MaxPyVersion)
       then
@@ -714,7 +715,7 @@ begin
     CustomVersions.Free;
   end;
   SysVersion := AppStorage.ReadString(PythonVersionsKey+'\SysVerion');
-  InstallPath := AppStorage.ReadString(PythonVersionsKey+'\InstallPath');
+  InstallPath := AddPortableDrive(AppStorage.ReadString(PythonVersionsKey+'\InstallPath'));
 
   ActiveSSHServerName  := AppStorage.ReadString('SSHServer');
 end;
@@ -740,7 +741,8 @@ begin
   CustomVersions := TStringList.Create;
   try
     for Version in CustomPythonVersions do
-      CustomVersions.Add(Version.DisplayName + CustomVersions.NameValueSeparator +  Version.InstallPath);
+      CustomVersions.Add(Version.DisplayName + CustomVersions.NameValueSeparator +
+        RemovePortableDrive(Version.InstallPath));
     AppStorage.WriteStringList(PythonVersionsKey+'\Custom Versions', CustomVersions, 'Path');
   finally
     CustomVersions.Free;
@@ -750,7 +752,7 @@ begin
     if FPythonVersionIndex >= 0 then
       AppStorage.WriteString(PythonVersionsKey+'\SysVerion', PythonVersion.SysVersion)
     else
-      AppStorage.WriteString(PythonVersionsKey+'\InstallPath', PythonVersion.InstallPath);
+      AppStorage.WriteString(PythonVersionsKey+'\InstallPath', RemovePortableDrive(PythonVersion.InstallPath));
   end;
 
   AppStorage.WriteString('SSHServer', ActiveSSHServerName);

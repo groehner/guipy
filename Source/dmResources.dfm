@@ -3275,7 +3275,7 @@ object ResourcesDataModule: TResourcesDataModule
           #13#10#9#9'L31,4V2.5H26.5z"/>'#13#10'</svg>'#13#10
       end
       item
-        IconName = 'Debug1'
+        IconName = 'Debug13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10'<g transform="translate(-262.8 -667.1' +
           '95)">'#13#10#9'<path d="M291.7,682.1l-0.4-2.5l-3.8,0.6c-0.2-0.4-0.4-0.9' +
@@ -4309,7 +4309,7 @@ object ResourcesDataModule: TResourcesDataModule
           'L25.5,1C25,0.5,24.3,0.2,23.6,0.2L23.6,0.2z"/>'#13#10'</svg>'#13#10
       end
       item
-        IconName = 'Redo1'
+        IconName = 'Redo13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10'<g transform="translate(119.5 -231.7)' +
           '">'#13#10#9'<path d="M-100.6,242.7v-5.6l10.2,9.9l-10.2,9.9v-5.8c-7.2,0-' +
@@ -4499,7 +4499,7 @@ object ResourcesDataModule: TResourcesDataModule
           '26.2,3.2 '#9'"/>'#13#10'</svg>'#13#10
       end
       item
-        IconName = 'Save1'
+        IconName = 'Save13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10#9'<path d="M23.5,2.5h-18c-1.7,0-3,1.4-' +
           '3,3v21c0,1.6,1.3,3,3,3h21c1.6,0,3-1.4,3-3v-18L23.5,2.5z M26.5,26' +
@@ -4849,7 +4849,7 @@ object ResourcesDataModule: TResourcesDataModule
           '.1,24.6 '#9#9#9'"/>'#13#10'</svg>'#13#10
       end
       item
-        IconName = 'Undo1'
+        IconName = 'Undo13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10'<g transform="translate(94.5 -231.7)"' +
           '>'#13#10#9'<path d="M-81.4,242.6v-5.8L-91.8,247l10.3,10.2v-6c7.4,0,12.5' +
