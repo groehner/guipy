@@ -1522,7 +1522,12 @@ type
     function LayoutExists(const Layout: string): Boolean;
     procedure LoadLayout(const Layout: string);
     procedure SaveLayout(const Layout: string);
-    procedure LoadStandardLayout;
+    procedure LoadCurrentLayout;
+    procedure LoadDefaultLayout;
+    procedure LoadDebugLayout;
+    procedure LoadPredefinedDefaultLayout;
+    procedure LoadPredefinedDebugLayout;
+    procedure CreateDefaultLayout;
    // IPyIDEServices implementation
     function ReplaceParams(const AText: string): string;
     function GetActiveEditor: IEditor;
@@ -1614,7 +1619,6 @@ type
     procedure NewTkOrQTFile(FileTemplate: TFileTemplate);
     procedure NewTextDiff(Form1, Form2: TEditorForm);
     function NewBrowser(Adresse: string): TFBrowser;
-    procedure LoadDefaultLayout(LayoutAppStorage: TJvAppIniFileStorage; const Layout: string);
     procedure RunEditor(ActiveEditor: IEditor);
     procedure ImportModule(pathname: string);
     function IsAValidClass(const Pathname: string): Boolean;
@@ -2100,25 +2104,13 @@ begin
   if not AppStorage.PathExists(FactoryToolbarItems) then
     SaveToolbarItems(FactoryToolbarItems);
 
-  if (OldMonitorProfile = MonitorProfile) and
-     LocalAppStorage.PathExists('Layouts\Current\Forms') and not GuiPyOptions.UsePredefinedLayouts then
-  begin
-    try
-      //OutputDebugString(PWideChar(Format('%s ElapsedTime %d ms', ['Before LoadLayout', StopWatch.ElapsedMilliseconds])));
-      LoadLayout('Current');
-      //OutputDebugString(PWideChar(Format('%s ElapsedTime %d ms', ['After LoadLayout', StopWatch.ElapsedMilliseconds])));
-    except
-      LocalAppStorage.DeleteSubTree('Layouts\Default');
-      if Layouts.IndexOf('Default') >= 0 then
-        Layouts.Delete(Layouts.IndexOf('Default'));
-      StyledMessageDlg(Format(_(SErrorLoadLayout),
-        [LocalAppStorage.IniFile.FileName]), mtError, [mbOK], 0);
-    end;
-    LocalAppStorage.DeleteSubTree('Layouts\Current');
-  end
+  if OldMonitorProfile = MonitorProfile then
+    if GuiPyOptions.UsePredefinedLayouts then
+      LoadPredefinedDefaultLayout
+    else
+      LoadCurrentLayout
   else
-    LoadStandardLayout;
-
+    CreateDefaultLayout;
 
   Application.OnIdle := ApplicationOnIdle;
   Application.OnHint := ApplicationOnHint;
@@ -4117,6 +4109,7 @@ begin
     MachineStorage.WriteBoolean('Restricted\LockedInternet', GuiPyOptions.LockedInternet);
     MachineStorage.WriteBoolean('Restricted\LockedPaths', GuiPyOptions.LockedPaths);
     MachineStorage.WriteBoolean('Restricted\LockedStructogram', GuiPyOptions.LockedStructogram);
+    MachineStorage.WriteBoolean('Restricted\LockedStructogram', GuiPyOptions.UsePredefinedLayouts);
   end;
 
   // Save MRU Lists
@@ -4337,6 +4330,7 @@ begin
     GuiPyOptions.LockedInternet:= MachineStorage.ReadBoolean('Restricted\LockedInternet', False);
     GuiPyOptions.LockedPaths:= MachineStorage.ReadBoolean('Restricted\LockedPaths', False);
     GuiPyOptions.LockedStructogram:= MachineStorage.ReadBoolean('Restricted\LockedStructogram', False);
+    GuiPyOptions.UsePredefinedLayouts:= MachineStorage.ReadBoolean('Restricted\UsePredefinedLayouts', False);
   end;
 
   // Load MRU Lists
@@ -4793,8 +4787,7 @@ begin
   FSubversion.Execute(TSpTBXItem(Sender).Tag, getActiveEditor);
 end;
 
-procedure TPyIDEMainForm.LoadDefaultLayout(LayoutAppStorage: TJvAppIniFileStorage;
-  const Layout: string);
+procedure TPyIDEMainForm.LoadLayout(const Layout: string);
 var
   Path: string;
   i: Integer;
@@ -4802,7 +4795,7 @@ var
   TempCursor: IInterface;
 begin
   Path := 'Layouts\'+ Layout;
-  if LayoutAppStorage.PathExists(Path + '\Forms') then begin
+  if LocalAppStorage.PathExists(Path + '\Forms') then begin
     TempCursor := WaitCursor;
     SaveActiveControl := ActiveControl;
     try
@@ -4827,36 +4820,146 @@ begin
     TabsPersistsInfo);
 end;
 
-procedure TPyIDEMainForm.mnViewDebugLayoutClick(Sender: TObject);
+procedure TPyIDEMainForm.LoadCurrentLayout;
 begin
-  var LayoutAppStorage:= TJvAppIniFileStorage.Create(Self);
-  LayoutAppStorage.FileName:=
-    TPath.Combine(ExtractFilePath(Application.ExeName), 'DebugLayout.ini');
-  LoadDefaultLayout(LayoutAppStorage, 'Debug');
-  mnViewDebugLayout.Checked:= True;
-  mnViewDefaultLayout.Checked:= False;
-  FreeAndNil(LayoutAppStorage);
+  if LocalAppStorage.PathExists('Layouts\Current\Forms') then
+  begin
+    try
+      LoadLayout('Current');
+    except
+      StyledMessageDlg(Format(_(SErrorLoadLayout),
+        [LocalAppStorage.IniFile.FileName]), mtError, [mbOK], 0);
+    end;
+    LocalAppStorage.DeleteSubTree('Layouts\Current');
+  end else
+    LoadDefaultLayout;
+end;
+
+procedure TPyIDEMainForm.LoadDefaultLayout;
+begin
+  if LocalAppStorage.PathExists('Layouts\Default\Forms') then
+  begin
+    try
+      LoadLayout('Default');
+    except
+      LocalAppStorage.DeleteSubTree('Layouts\Default');
+      if Layouts.IndexOf('Default') >= 0 then
+        Layouts.Delete(Layouts.IndexOf('Default'));
+      StyledMessageDlg(Format(_(SErrorLoadLayout),
+        [LocalAppStorage.IniFile.FileName]), mtError, [mbOK], 0);
+    end;
+  end else
+    CreateDefaultLayout;
+end;
+
+procedure TPyIDEMainForm.LoadDebugLayout;
+begin
+  if LocalAppStorage.PathExists('Layouts\Debug\Forms') then
+  begin
+    try
+      LoadLayout('Debug');
+    except
+      LocalAppStorage.DeleteSubTree('Layouts\Debug');
+      if Layouts.IndexOf('Default') >= 0 then
+        Layouts.Delete(Layouts.IndexOf('Default'));
+      StyledMessageDlg(Format(_(SErrorLoadLayout),
+        [LocalAppStorage.IniFile.FileName]), mtError, [mbOK], 0);
+    end;
+  end;
+end;
+
+procedure TPyIDEMainForm.LoadPredefinedDefaultLayout;
+  var StrListLocal, StrListPredefined: TStringList; Filename: string;
+begin
+  if not LocalAppStorage.PathExists('Layouts\PredefinedDefault\Forms') then begin
+    FileName:= TPath.Combine(ExtractFilePath(Application.ExeName), 'DefaultLayout.ini');
+    if FileExists(Filename) then
+      try
+        try
+          StrListLocal:= TStringList.Create;
+          StrListLocal.LoadFromFile(LocalAppStorage.FileName);
+          StrListPredefined:= TStringList.Create;
+          StrListPredefined.LoadFromFile(FileName);
+          StrListLocal.AddStrings(StrListPredefined);
+          StrListLocal.SaveToFile(LocalAppStorage.Filename);
+          LocalAppStorage.Reload;
+        except
+          StyledMessageDlg(Format(_(SErrorLoadLayout), [Filename]), mtError, [mbOK], 0);
+        end
+      finally
+        FreeAndNil(StrListPredefined);
+        FreeAndNil(StrListLocal);
+      end
+    else
+      StyledMessageDlg(Format(_(SNotFound), [Filename]), mtError, [mbOK], 0);
+  end;
+  if LocalAppStorage.PathExists('Layouts\PredefinedDefault\Forms') then begin
+    try
+      LoadLayout('PredefinedDefault');
+      mnViewDebugLayout.Checked:= False;
+      mnViewDefaultLayout.Checked:= True;
+    except
+      LocalAppStorage.DeleteSubTree('Layouts\PredefinedDefault');
+      StyledMessageDlg(Format(_(SErrorLoadLayout),
+        [LocalAppStorage.IniFile.FileName]), mtError, [mbOK], 0);
+    end;
+  end else
+    LoadDefaultLayout;
+end;
+
+procedure TPyIDEMainForm.LoadPredefinedDebugLayout;
+  var StrListLocal, StrListPredefined: TStringList; Filename: string;
+begin
+  if not LocalAppStorage.PathExists('Layouts\PredefinedDebug\Forms') then begin
+    FileName:= TPath.Combine(ExtractFilePath(Application.ExeName), 'DebugLayout.ini');
+    if FileExists(Filename) then
+      try
+        try
+          StrListLocal:= TStringList.Create;
+          StrListLocal.LoadFromFile(LocalAppStorage.FileName);
+          StrListPredefined:= TStringList.Create;
+          StrListPredefined.LoadFromFile(FileName);
+          StrListLocal.AddStrings(StrListPredefined);
+          StrListLocal.SaveToFile(LocalAppStorage.Filename);
+          LocalAppStorage.Reload;
+        except
+          StyledMessageDlg(Format(_(SErrorLoadLayout), [Filename]), mtError, [mbOK], 0);
+        end
+      finally
+        FreeAndNil(StrListPredefined);
+        FreeAndNil(StrListLocal);
+      end
+    else
+      StyledMessageDlg(Format(_(SNotFound), [Filename]), mtError, [mbOK], 0);
+  end;
+  if LocalAppStorage.PathExists('Layouts\PredefinedDebug\Forms') then begin
+    try
+      LoadLayout('PredefinedDebug');
+      mnViewDebugLayout.Checked:= True;
+      mnViewDefaultLayout.Checked:= False;
+    except
+      LocalAppStorage.DeleteSubTree('Layouts\PredefinedDebug');
+      StyledMessageDlg(Format(_(SErrorLoadLayout),
+        [LocalAppStorage.IniFile.FileName]), mtError, [mbOK], 0);
+    end;
+  end else
+    LoadDebugLayout;
 end;
 
 procedure TPyIDEMainForm.mnViewDefaultLayoutClick(Sender: TObject);
 begin
-  if GuiPyOptions.UsePredefinedLayouts then begin
-    CallStackWindow.Hide;
-    DoFloatForm(CallStackWindow);
-    Watcheswindow.Hide;
-    DoFloatForm(WatchesWindow);
-    BreakPointsWindow.Hide;
-    DoFloatForm(BreakPointsWindow);
-    LoadStandardLayout;
-  end else begin
-    var LayoutAppStorage:= TJvAppIniFileStorage.Create(Self);
-    LayoutAppStorage.FileName:=
-      TPath.Combine(ExtractFilePath(Application.ExeName), 'DefaultLayout.ini');
-    LoadDefaultLayout(LayoutAppStorage, 'Default');
-    mnViewDebugLayout.Checked:= False;
-    mnViewDefaultLayout.Checked:= True;
-    FreeAndNil(LayoutAppStorage);
-  end;
+  if GuiPyOptions.UsePredefinedLayouts then
+    LoadPredefinedDefaultLayout
+  else
+    LoadDefaultLayout;
+end;
+
+procedure TPyIDEMainForm.mnViewDebugLayoutClick(Sender: TObject);
+begin
+  if GuiPyOptions.UsePredefinedLayouts then
+    LoadPredefinedDebugLayout
+  else
+    LoadDebugLayout;
 end;
 
 procedure TPyIDEMainForm.MoveTab(Tab: TSpTBXTabItem;
@@ -5060,7 +5163,6 @@ begin
   end;
 end;
 
-
 procedure TPyIDEMainForm.SetupCustomizer;
 var
   ItemStyle: TTBItemStyle;
@@ -5122,17 +5224,7 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.LoadLayout(const Layout: string);
-begin
-  if GuiPyOptions.UsePredefinedLayouts then begin
-    if Layout = 'Debug'
-      then mnViewDebugLayoutClick(Self)
-      else LoadStandardLayout // mnViewDefaultLayoutClick(self)
-  end else
-    LoadDefaultLayout(LocalAppStorage, Layout);
-end;
-
-procedure TPyIDEMainForm.LoadStandardLayout;
+procedure TPyIDEMainForm.CreateDefaultLayout;
 begin
   ManualConjoinDock(DockServer.RightDockPanel, FObjectInspector, FFileStructure);
   DockServer.RightDockPanel.Width := PPIScale(250);
@@ -5145,10 +5237,28 @@ begin
 
   ManualConjoinDock(DockServer.BottomDockPanel, TabHost, FUMLInteractive, alRight);
 
-  Application.ProcessMessages;
   mnViewDebugLayout.Checked:= False;
   mnViewDefaultLayout.Checked:= True;
+  Application.ProcessMessages;
 end;
+
+{
+procedure TPyIDEMainForm.CreateDebugLayout;
+begin
+  ManualConjoinDock(DockServer.RightDockPanel, FObjectInspector, FFileStructure);
+  DockServer.RightDockPanel.Width := PPIScale(250);
+  ManualConjoinDock(DockServer.BottomDockPanel, PythonIIForm, FFileStructure);
+
+  var ConjoinHost := ManualConjoinDock(DockServer.BottomDockPanel, PythonIIForm, VariablesWindow);
+  DockServer.BottomDockPanel.Height := PPIScale(200);
+  ConjoinHost.ManualDock(WatchesWindow);
+  ConjoinHost.ManualDock(CallStackWindow);
+
+  mnViewDebugLayout.Checked:= False;
+  mnViewDefaultLayout.Checked:= True;
+  Application.ProcessMessages;
+end;
+}
 
 procedure TPyIDEMainForm.SaveLayout(const Layout: string);
 begin

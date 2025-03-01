@@ -157,6 +157,7 @@
         <VerInfo_MajorVer>6</VerInfo_MajorVer>
         <VerInfo_MinorVer>3</VerInfo_MinorVer>
         <DCC_UnitSearchPath>D:\GitProjekte\SVGIconImageList\Source;D:\GitProjekte\SVGIconImageList\Image32\source;D:\GitProjekte\jcl\jcl\source\include;D:\GitProjekte\jcl\jcl\source\common;D:\GitProjekte\jcl\jcl\source\windows;D:\GitProjekte\jvcl\jvcl\run;D:\GitProjekte\jvcl\jvcl\common;D:\GitProjekte\SpTBXLib\Source;D:\GitProjekte\SynEdit\Source;D:\GitProjekte\SynEdit\Source\Highlighters;D:\GitProjekte\MustangPeak\CommonLib\Source;D:\GitProjekte\SynWeb;D:\GitProjekte\VirtualTreeView\Source;D:\GitProjekte\MustangPeak\VirtualShellTools\Source;D:\GitProjekte\delphi-detours-library\Source;D:\GitProjekte\jvcl\jvcl\resources;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_DebugDCUs>true</DCC_DebugDCUs>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
