@@ -1,3 +1,12 @@
+6.04, 2025.03.01
+DeepSeek integration
+file structure improvement for uml windows
+abstract classes italic in uml window
+copy of a structogram in black and white
+methods with or without return value option for class editor
+improved handling of portable installation
+redesign predefined layouts
+
 6.03, 2025.01.16
 dockable UML interactive window
 

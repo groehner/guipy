@@ -79,6 +79,7 @@ implementation
 
 uses
   System.SysUtils,
+  System.TypInfo,
   Vcl.Forms,
   RTTI,
   UBaseWidgets;

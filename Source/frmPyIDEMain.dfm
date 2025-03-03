@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 361
+      CustomWidth = 385
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -113,7 +113,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Visible = False
     end
     object ActivityIndicator: TActivityIndicator
-      Left = 1027
+      Left = 1039
       Top = 6
       FrameDelay = 150
       IndicatorSize = aisSmall

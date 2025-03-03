@@ -1643,6 +1643,7 @@ uses
   WinApi.ActiveX,
   Winapi.ShellAPI,
   Winapi.CommCtrl,
+  Winapi.WTSApi32,
   System.SysUtils,
   System.Contnrs,
   System.Math,
@@ -4109,7 +4110,7 @@ begin
     MachineStorage.WriteBoolean('Restricted\LockedInternet', GuiPyOptions.LockedInternet);
     MachineStorage.WriteBoolean('Restricted\LockedPaths', GuiPyOptions.LockedPaths);
     MachineStorage.WriteBoolean('Restricted\LockedStructogram', GuiPyOptions.LockedStructogram);
-    MachineStorage.WriteBoolean('Restricted\LockedStructogram', GuiPyOptions.UsePredefinedLayouts);
+    MachineStorage.WriteBoolean('Restricted\UsePredefinedLayouts', GuiPyOptions.UsePredefinedLayouts);
   end;
 
   // Save MRU Lists

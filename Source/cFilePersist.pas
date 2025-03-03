@@ -322,14 +322,13 @@ var
   FilePersistInfo : TFilePersistInfo;
   Editor : IEditor;
   aFile: IFile;
-  i, j : Integer;
   FName : string;
 begin
   PersistFileInfo := TPersistFileInfo.Create;
   try
     AppStorage.ReadObjectList(Path, PersistFileInfo.fFileInfoList,
       PersistFileInfo.CreateListItem,  True, 'File');
-    for i := 0 to PersistFileInfo.fFileInfoList.Count - 1 do begin
+    for var i := 0 to PersistFileInfo.fFileInfoList.Count - 1 do begin
       FilePersistInfo := TFilePersistInfo(PersistFileInfo.fFileInfoList[i]);
       if FileExists(FilePersistInfo.FileName) then
         try

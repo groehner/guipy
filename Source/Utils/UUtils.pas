@@ -660,7 +660,7 @@ end;
 
 
 procedure SetPrinterIndex(i: Integer);
-  var Device, Driver, Port: array[0..79] of char;
+  var Device, Driver, Port: string;
       Dest: PChar; DeviceMode: THandle;
 begin
   try
@@ -671,10 +671,11 @@ begin
     // contains the correct value.
     // This is a bug fix around the error in the delphi library,
     // as it does not use the DevNames structure correctly
+
     Printer.GetPrinter(Device, Driver, Port, DeviceMode);
     if DeviceMode <> 0 then begin
       Dest:= GlobalLock(DeviceMode);
-      StrCopy(Dest, Device);
+      StrCopy(Dest, PChar(Device));
       GlobalUnlock(DeviceMode);
     end;
   except
