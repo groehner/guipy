@@ -1,4 +1,4 @@
-{ -----------------------------------------------------------------------------
+﻿{ -----------------------------------------------------------------------------
   Unit Name: frmEditor
   Author:    Kiriakos Vlahos, Gerhard Röhner
   Date:
@@ -296,14 +296,14 @@ uses
   uCommonFunctions;
 
 resourcestring
-  sLLMBusy = 'The LLM client is busy';
-  sNoResponse = 'No response from the LLM Server';
-  sNoAPIKey = 'The LLM API key is missing';
-  sNoModel = 'The LLM model has not been set';
-  sInvalidTemperature = 'Invalid temperature: It should be a decimal number between 0.0 and 2.0';
-  sUnsupportedEndpoint = 'The LLM endpoint is missing or not supported';
-  sUnsupportedModel = 'The LLM model is not supported';
-  sUnexpectedResponse = 'Unexpected response from the LLM Server';
+  sLLMBusy = 'The LLM client is busy.';
+  sNoResponse = 'No response from the LLM Server.';
+  sNoAPIKey = 'The LLM API key is missing.';
+  sNoModel = 'The LLM model has not been set.';
+  sInvalidTemperature = 'Invalid temperature: It should be a decimal number between 0.0 and 2.0.';
+  sUnsupportedEndpoint = 'The LLM endpoint is missing or not supported.';
+  sUnsupportedModel = 'The LLM model is not supported.';
+  sUnexpectedResponse = 'Unexpected response from the LLM Server.';
 
 function Obfuscate(const S: string): string;
 // Reversible string obfuscation using the ROT13 algorithm

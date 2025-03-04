@@ -110,7 +110,7 @@ msgid "&Mac"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..UMLMenu..Caption
-#: frmPyIDEMain.dfm:1185
+#: frmPyIDEMain.dfm:1188
 msgid "&UML"
 msgstr ""
 
@@ -853,7 +853,7 @@ msgstr ""
 #. EditorForm..pmnuEditor..mnEditGit..mnGitFetch..Caption
 #: frmEditor.dfm:608
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitFetch..Caption
-#: frmPyIDEMain.dfm:1303
+#: frmPyIDEMain.dfm:1306
 msgid "Fetch"
 msgstr ""
 
@@ -889,7 +889,7 @@ msgid "Form1"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonFreeThreaded..Caption
-#: frmPyIDEMain.dfm:3985
+#: frmPyIDEMain.dfm:3982
 msgid "Free-Threaded"
 msgstr ""
 
@@ -900,14 +900,21 @@ msgstr ""
 msgid "Gemini"
 msgstr ""
 
+#. RunConfigurationForm..Panel1..GroupBox1..Caption
+#: dlgRunConfiguration.dfm:34
+#. ToolProperties..Panel1..TabControl..tabProperties..GroupBox1..Caption
+#: dlgToolProperties.dfm:201
+msgid "General"
+msgstr ""
+
 #. EditorForm..pmnuEditor..mnEditGit..Caption
 #: frmEditor.dfm:558
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..Caption
-#: frmPyIDEMain.dfm:1254
+#: frmPyIDEMain.dfm:1257
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..Hint
-#: frmPyIDEMain.dfm:1255
+#: frmPyIDEMain.dfm:1258
 #. PyIDEMainForm..actlStandard..actToolsGit..Caption
-#: frmPyIDEMain.dfm:3935
+#: frmPyIDEMain.dfm:3932
 #. FConfiguration..PMain..PanelRight..PageList..PGit..Caption
 #: Utils/UConfiguration.dfm:6242
 msgid "Git"
@@ -916,7 +923,7 @@ msgstr ""
 #. EditorForm..pmnuEditor..mnEditGit..mnGitGUI..Caption
 #: frmEditor.dfm:620
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitGUI..Caption
-#: frmPyIDEMain.dfm:1315
+#: frmPyIDEMain.dfm:1318
 msgid "GUI"
 msgstr ""
 
@@ -1046,9 +1053,9 @@ msgid "long"
 msgstr ""
 
 #. PyIDEMainForm..BGPanel..TabControl1..tbiScrollRight..FontSettings.Name
-#: frmPyIDEMain.dfm:176
+#: frmPyIDEMain.dfm:178
 #. PyIDEMainForm..BGPanel..TabControl2..tbiScrollRight2..FontSettings.Name
-#: frmPyIDEMain.dfm:229
+#: frmPyIDEMain.dfm:231
 msgid "Marlett"
 msgstr ""
 
@@ -1259,7 +1266,7 @@ msgstr ""
 #. EditorForm..pmnuEditor..mnEditGit..mnGitPush..Caption
 #: frmEditor.dfm:613
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitPush..Caption
-#: frmPyIDEMain.dfm:1308
+#: frmPyIDEMain.dfm:1311
 msgid "Push"
 msgstr ""
 
@@ -1273,7 +1280,7 @@ msgstr ""
 
 #  Doesn't look like text
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..HelpMenu..PyScripter1..Caption
-#: frmPyIDEMain.dfm:1451
+#: frmPyIDEMain.dfm:1454
 msgid "PyScripter1"
 msgstr ""
 
@@ -1293,32 +1300,32 @@ msgid "Python Scripter"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtButtonGroup..Hint
-#: frmPyIDEMain.dfm:2575
+#: frmPyIDEMain.dfm:2572
 msgid "QButtonGroup"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtCanvas..Hint
-#: frmPyIDEMain.dfm:2640
+#: frmPyIDEMain.dfm:2637
 msgid "QCanvas"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtCheckBox..Hint
-#: frmPyIDEMain.dfm:2562
+#: frmPyIDEMain.dfm:2559
 msgid "QCheckBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtColumnView..Hint
-#: frmPyIDEMain.dfm:2432
+#: frmPyIDEMain.dfm:2429
 msgid "QColumnView"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtComboBox..Hint
-#: frmPyIDEMain.dfm:2601
+#: frmPyIDEMain.dfm:2598
 msgid "QComboBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtCommandLinkButton..Hint
-#: frmPyIDEMain.dfm:2263
+#: frmPyIDEMain.dfm:2260
 msgid "QCommandLinkButton"
 msgstr ""
 
@@ -1328,190 +1335,190 @@ msgid "QContextMenu"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtDateEdit..Hint
-#: frmPyIDEMain.dfm:2328
+#: frmPyIDEMain.dfm:2325
 msgid "QDateEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtDateTimeEdit..Hint
-#: frmPyIDEMain.dfm:2315
+#: frmPyIDEMain.dfm:2312
 msgid "QDateTimeEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtDial..Hint
-#: frmPyIDEMain.dfm:2354
+#: frmPyIDEMain.dfm:2351
 msgid "QDial"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtDoubleSpinBox..Hint
-#: frmPyIDEMain.dfm:2289
+#: frmPyIDEMain.dfm:2286
 msgid "QDoubleSpinBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtFontComboBox..Hint
-#: frmPyIDEMain.dfm:2276
+#: frmPyIDEMain.dfm:2273
 msgid "QFontComboBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtFrame..Hint
-#: frmPyIDEMain.dfm:2653
+#: frmPyIDEMain.dfm:2650
 msgid "QFrame"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtGraphicsView..Hint
-#: frmPyIDEMain.dfm:2471
+#: frmPyIDEMain.dfm:2468
 msgid "QGraphicsView"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtGroupBox..Hint
-#: frmPyIDEMain.dfm:2666
+#: frmPyIDEMain.dfm:2663
 msgid "QGroupBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtLabel..Hint
-#: frmPyIDEMain.dfm:2510
+#: frmPyIDEMain.dfm:2507
 msgid "QLabel"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtLCDNumber..Hint
-#: frmPyIDEMain.dfm:2302
+#: frmPyIDEMain.dfm:2299
 msgid "QLCDNumber"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtLine..Hint
-#: frmPyIDEMain.dfm:2367
+#: frmPyIDEMain.dfm:2364
 msgid "QLine"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtLineEdit..Hint
-#: frmPyIDEMain.dfm:2523
+#: frmPyIDEMain.dfm:2520
 msgid "QLineEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtListView..Hint
-#: frmPyIDEMain.dfm:2419
+#: frmPyIDEMain.dfm:2416
 msgid "QListView"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtListWidget..Hint
-#: frmPyIDEMain.dfm:2588
+#: frmPyIDEMain.dfm:2585
 msgid "QListWidget"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQMenuBar..Hint
-#: frmPyIDEMain.dfm:2692
+#: frmPyIDEMain.dfm:2689
 msgid "QMenuBar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtPlainTextEdit..Hint
-#: frmPyIDEMain.dfm:2536
+#: frmPyIDEMain.dfm:2533
 msgid "QPlainTextEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtProgressBar..Hint
-#: frmPyIDEMain.dfm:2757
+#: frmPyIDEMain.dfm:2754
 msgid "QProgressBar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtPushButton..Hint
-#: frmPyIDEMain.dfm:2549
+#: frmPyIDEMain.dfm:2546
 msgid "QPushButton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtScrollArea..Hint
-#: frmPyIDEMain.dfm:2380
+#: frmPyIDEMain.dfm:2377
 msgid "QScrollArea"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtScrollbar..Hint
-#: frmPyIDEMain.dfm:2627
+#: frmPyIDEMain.dfm:2624
 msgid "QScrollbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtSlider..Hint
-#: frmPyIDEMain.dfm:2679
+#: frmPyIDEMain.dfm:2676
 msgid "QSlider"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtSpinBox..Hint
-#: frmPyIDEMain.dfm:2614
+#: frmPyIDEMain.dfm:2611
 msgid "QSpinBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtStackWidget..Hint
-#: frmPyIDEMain.dfm:2406
+#: frmPyIDEMain.dfm:2403
 msgid "QStackWidget"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtStatusBar..Hint
-#: frmPyIDEMain.dfm:2770
+#: frmPyIDEMain.dfm:2767
 msgid "QStatusBar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabItem4..Caption
-#: frmPyIDEMain.dfm:1543
+#: frmPyIDEMain.dfm:1540
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..Caption
-#: frmPyIDEMain.dfm:2487
+#: frmPyIDEMain.dfm:2484
 msgid "Qt Base"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabItem5..Caption
-#: frmPyIDEMain.dfm:1547
+#: frmPyIDEMain.dfm:1544
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..Caption
-#: frmPyIDEMain.dfm:2203
+#: frmPyIDEMain.dfm:2200
 msgid "Qt Controls"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtTableView..Hint
-#: frmPyIDEMain.dfm:2458
+#: frmPyIDEMain.dfm:2455
 msgid "QTableView"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtTableWidget..Hint
-#: frmPyIDEMain.dfm:2744
+#: frmPyIDEMain.dfm:2741
 msgid "QTableWidget"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtTabWidget..Hint
-#: frmPyIDEMain.dfm:2718
+#: frmPyIDEMain.dfm:2715
 msgid "QTabWidget"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtTextBrowser..Hint
-#: frmPyIDEMain.dfm:2237
+#: frmPyIDEMain.dfm:2234
 msgid "QTextBrowser"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtTextedit..Hint
-#: frmPyIDEMain.dfm:2224
+#: frmPyIDEMain.dfm:2221
 msgid "QTextEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtTimeEdit..Hint
-#: frmPyIDEMain.dfm:2341
+#: frmPyIDEMain.dfm:2338
 msgid "QTimeEdit"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtToolBox..Hint
-#: frmPyIDEMain.dfm:2393
+#: frmPyIDEMain.dfm:2390
 msgid "QToolBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtToolButton..Hint
-#: frmPyIDEMain.dfm:2250
+#: frmPyIDEMain.dfm:2247
 msgid "QToolButton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtControls..ToolBarQtControls..TBQtTreeView..Hint
-#: frmPyIDEMain.dfm:2445
+#: frmPyIDEMain.dfm:2442
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetQtBase..ToolBarQtBase..TBQtTreeWidget..Hint
-#: frmPyIDEMain.dfm:2731
+#: frmPyIDEMain.dfm:2728
 msgid "QTreeWidget"
 msgstr ""
 
 #. EditorForm..pmnuEditor..mnEditGit..mnGitReset..Caption
 #: frmEditor.dfm:586
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitReset..Caption
-#: frmPyIDEMain.dfm:1281
+#: frmPyIDEMain.dfm:1284
 #. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..btnResetKeys..Caption
 #: Utils/UConfiguration.dfm:1698
 msgid "Reset"
@@ -1641,9 +1648,9 @@ msgid "Subversion"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..Caption
-#: frmPyIDEMain.dfm:1330
+#: frmPyIDEMain.dfm:1333
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsSVN..Hint
-#: frmPyIDEMain.dfm:1331
+#: frmPyIDEMain.dfm:1334
 msgid "SVN"
 msgstr ""
 
@@ -1808,80 +1815,80 @@ msgid "Thread: %s"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBButton..Hint
-#: frmPyIDEMain.dfm:1618
+#: frmPyIDEMain.dfm:1615
 msgid "Tk Button"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBCanvas..Hint
-#: frmPyIDEMain.dfm:1714
+#: frmPyIDEMain.dfm:1711
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKCanvas..Hint
-#: frmPyIDEMain.dfm:2005
+#: frmPyIDEMain.dfm:2002
 msgid "Tk Canvas"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBCheckbutton..Hint
-#: frmPyIDEMain.dfm:1632
+#: frmPyIDEMain.dfm:1629
 msgid "Tk Checkbutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBEntry..Hint
-#: frmPyIDEMain.dfm:1590
+#: frmPyIDEMain.dfm:1587
 msgid "Tk Entry"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBFrame..Hint
-#: frmPyIDEMain.dfm:1728
+#: frmPyIDEMain.dfm:1725
 msgid "Tk Frame"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBLabel..Hint
-#: frmPyIDEMain.dfm:1576
+#: frmPyIDEMain.dfm:1573
 msgid "Tk Label"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBLabelFrame..Hint
-#: frmPyIDEMain.dfm:1742
+#: frmPyIDEMain.dfm:1739
 msgid "Tk LabelFrame"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBListbox..Hint
-#: frmPyIDEMain.dfm:1659
+#: frmPyIDEMain.dfm:1656
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKListbox..Hint
-#: frmPyIDEMain.dfm:1940
+#: frmPyIDEMain.dfm:1937
 msgid "Tk Listbox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBMenu..Hint
-#: frmPyIDEMain.dfm:1782
+#: frmPyIDEMain.dfm:1779
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKMenu..Hint
-#: frmPyIDEMain.dfm:2083
+#: frmPyIDEMain.dfm:2080
 msgid "Tk Menu"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBMenubutton..Hint
-#: frmPyIDEMain.dfm:1810
+#: frmPyIDEMain.dfm:1807
 msgid "Tk Menubutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBTMessage..Hint
-#: frmPyIDEMain.dfm:1701
+#: frmPyIDEMain.dfm:1698
 msgid "Tk Message"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBOptionMenu..Hint
-#: frmPyIDEMain.dfm:1823
+#: frmPyIDEMain.dfm:1820
 msgid "Tk Optionmenu"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBPanedWindow..Hint
-#: frmPyIDEMain.dfm:1769
+#: frmPyIDEMain.dfm:1766
 msgid "Tk PanedWindow"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBPopupMenu..Hint
-#: frmPyIDEMain.dfm:1796
+#: frmPyIDEMain.dfm:1793
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKPopupMenu..Hint
-#: frmPyIDEMain.dfm:2096
+#: frmPyIDEMain.dfm:2093
 msgid "Tk PopupMenu"
 msgstr ""
 
@@ -1891,29 +1898,29 @@ msgid "Tk Radiobutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBRadiobuttonGroup..Hint
-#: frmPyIDEMain.dfm:1646
+#: frmPyIDEMain.dfm:1643
 msgid "Tk RadiobuttonGroup"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBScale..Hint
-#: frmPyIDEMain.dfm:1756
+#: frmPyIDEMain.dfm:1753
 msgid "Tk Scale"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBScrollbar..Hint
-#: frmPyIDEMain.dfm:1687
+#: frmPyIDEMain.dfm:1684
 msgid "Tk Scrollbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBSpinBox..Hint
-#: frmPyIDEMain.dfm:1673
+#: frmPyIDEMain.dfm:1670
 msgid "Tk SpinBox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTkinter..ToolbarTkinter..TBText..Hint
-#: frmPyIDEMain.dfm:1604
+#: frmPyIDEMain.dfm:1601
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKText..Hint
-#: frmPyIDEMain.dfm:1888
+#: frmPyIDEMain.dfm:1885
 msgid "Tk Text"
 msgstr ""
 
@@ -1927,79 +1934,79 @@ msgid "True"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabItem3..Caption
-#: frmPyIDEMain.dfm:1539
+#: frmPyIDEMain.dfm:1536
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..Caption
-#: frmPyIDEMain.dfm:1839
+#: frmPyIDEMain.dfm:1836
 msgid "TTK"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKButton..Hint
-#: frmPyIDEMain.dfm:1901
+#: frmPyIDEMain.dfm:1898
 msgid "TTK Button"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKCheckbutton..Hint
-#: frmPyIDEMain.dfm:1914
+#: frmPyIDEMain.dfm:1911
 msgid "TTK Checkbutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKCombobox..Hint
-#: frmPyIDEMain.dfm:1953
+#: frmPyIDEMain.dfm:1950
 msgid "TTK Combobox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKEntry..Hint
-#: frmPyIDEMain.dfm:1875
+#: frmPyIDEMain.dfm:1872
 msgid "TTK Entry"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKFrame..Hint
-#: frmPyIDEMain.dfm:2018
+#: frmPyIDEMain.dfm:2015
 msgid "TTK Frame"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKLabel..Hint
-#: frmPyIDEMain.dfm:1862
+#: frmPyIDEMain.dfm:1859
 msgid "TTK Label"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKLabeldScale..Hint
-#: frmPyIDEMain.dfm:2057
+#: frmPyIDEMain.dfm:2054
 msgid "TTK LabeldScale"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKLabelFrame..Hint
-#: frmPyIDEMain.dfm:2031
+#: frmPyIDEMain.dfm:2028
 msgid "TTK LabelFrame"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKMenuButton..Hint
-#: frmPyIDEMain.dfm:2109
+#: frmPyIDEMain.dfm:2106
 msgid "TTK Menubutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKMessage..Hint
-#: frmPyIDEMain.dfm:1992
+#: frmPyIDEMain.dfm:1989
 msgid "TTK Message"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKNotebook..Hint
-#: frmPyIDEMain.dfm:2135
+#: frmPyIDEMain.dfm:2132
 msgid "TTK Notebook"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKOptionMenu..Hint
-#: frmPyIDEMain.dfm:2122
+#: frmPyIDEMain.dfm:2119
 msgid "TTK OptionMenu"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKPanedWindow..Hint
-#: frmPyIDEMain.dfm:2070
+#: frmPyIDEMain.dfm:2067
 msgid "TTK PanedWindow"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKProgressbar..Hint
-#: frmPyIDEMain.dfm:2161
+#: frmPyIDEMain.dfm:2158
 msgid "TTK Progressbar"
 msgstr ""
 
@@ -2009,37 +2016,37 @@ msgid "TTK Radiobutton"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKRadiogroup..Hint
-#: frmPyIDEMain.dfm:1927
+#: frmPyIDEMain.dfm:1924
 msgid "TTK RadiobuttonGroup"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKScale..Hint
-#: frmPyIDEMain.dfm:2044
+#: frmPyIDEMain.dfm:2041
 msgid "TTK Scale"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKScrollbar..Hint
-#: frmPyIDEMain.dfm:1979
+#: frmPyIDEMain.dfm:1976
 msgid "TTK Scrollbar"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKSeparator..Hint
-#: frmPyIDEMain.dfm:2174
+#: frmPyIDEMain.dfm:2171
 msgid "TTK Separator"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKSizegrip..Hint
-#: frmPyIDEMain.dfm:2187
+#: frmPyIDEMain.dfm:2184
 msgid "TTK Sizegrip"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKSpinbox..Hint
-#: frmPyIDEMain.dfm:1966
+#: frmPyIDEMain.dfm:1963
 msgid "TTK Spinbox"
 msgstr ""
 
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..TabControlWidgets..SpTBXTabSheetTTK..ToolbarTTK..TBTTKTreeview..Hint
-#: frmPyIDEMain.dfm:2148
+#: frmPyIDEMain.dfm:2145
 msgid "TTK Treeview"
 msgstr ""
 
@@ -2098,7 +2105,7 @@ msgid "URL"
 msgstr ""
 
 #. PyIDEMainForm..actlStandard..actPythonFreeThreaded..Hint
-#: frmPyIDEMain.dfm:3986
+#: frmPyIDEMain.dfm:3983
 msgid "Use the free-trheaded version of Python"
 msgstr ""
 

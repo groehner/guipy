@@ -4495,7 +4495,7 @@ begin
   actViewSplitEditorHor.Enabled := Assigned(GI_ActiveEditor);
   actViewSplitEditorVer.Enabled := Assigned(GI_ActiveEditor);
   actViewHideSecondEditor.Enabled := Assigned(GI_ActiveEditor)
-    and GI_ActiveEditor.SynEdit2.Visible;
+    and Assigned(GI_ActiveEditor.SynEdit2) and GI_ActiveEditor.SynEdit2.Visible;
   actViewHideSecondaryWorkspace.Enabled := TabControl2.Visible;
 
   actWatchesWin.Checked := WatchesWindow.Visible;
@@ -4685,7 +4685,8 @@ begin
       MenuItem := TSpTBXItem.Create(Self);
       Action := TExternalToolAction.CreateExtToolAction(Self, Tool);
       Action.ActionList := actlStandard;
-      if (Tool.ApplicationName = '$[PythonExe-Short]') and (Tool.Parameters = '') or
+      if ((Tool.ApplicationName = '$[PythonExe]') or (Tool.ApplicationName = '$[PythonExe-Short]'))
+         and (Tool.Parameters = '') or
          (Tool.ApplicationName = '%COMSPEC%') and not GuiPyOptions.LockedDOSWindow
         then ToolsMenu.Insert(11, MenuItem)
         else mnTools.Add(MenuItem);
