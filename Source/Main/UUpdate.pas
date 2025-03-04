@@ -39,15 +39,15 @@ type
     BUpdate: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var aAction: TCloseAction);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure BCloseClick(Sender: TObject);
     procedure BUpdateClick(Sender: TObject);
   private
-    NewVersion: string;
-    LocalTempDir: string;
+    FNewVersion: string;
+    FLocalTempDir: string;
     procedure MakeUpdate;
     function GetNewVersion: Boolean;
-    function ShowVersionDate(s: string): string;
+    function ShowVersionDate(VersionDate: string): string;
     function ExtractZipToDir(const FileName, Dir: string): Boolean;
   public
     class function GetVersionDate: string;
@@ -57,7 +57,7 @@ type
 implementation
 
 uses Windows, SysUtils, DateUtils, IOUtils, Zip,
-     frmPyIDEMain, jvGnugettext, cPyScripterSettings,
+     frmPyIDEMain, JvGnugettext, cPyScripterSettings,
      UUtils, UConfiguration, UDownload;
 
 {$R *.dfm}
@@ -71,15 +71,15 @@ end;
 
 procedure TFUpdate.FormShow(Sender: TObject);
 begin
-  LocalTempDir:= TPath.Combine(GuiPyOptions.TempDir, 'GuiPy\');
-  ForceDirectories(LocalTempDir);
+  FLocalTempDir:= TPath.Combine(GuiPyOptions.TempDir, 'GuiPy\');
+  ForceDirectories(FLocalTempDir);
   TThread.ForceQueue(nil, procedure
     begin
       GetNewVersion;
     end);
 end;
 
-procedure TFUpdate.FormClose(Sender: TObject; var aAction: TCloseAction);
+procedure TFUpdate.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   PyIDEMainForm.AppStorage.WriteInteger('Program\Update', CBUpdate.ItemIndex);
 end;
@@ -89,22 +89,22 @@ begin
   Close;
 end;
 
-{$WARN SYMBOL_PLATFORM OFF}
+{.$WARN SYMBOL_PLATFORM OFF}
 procedure TFUpdate.BUpdateClick(Sender: TObject);
   var FileName, Filepath: string;
 begin
   Screen.Cursor:= crHourGlass;
   try
     if TPyScripterSettings.IsPortable
-      then FileName:= ZipFile
-      else FileName:= Format(Setupfile, [NewVersion]);
-    Filepath:= TPath.Combine(LocalTempDir, FileName);
+      then FileName:= Zipfile
+      else FileName:= Format(Setupfile, [FNewVersion]);
+    Filepath:= TPath.Combine(FLocalTempDir, FileName);
     with TFDownload.Create(Self) do begin
       if GetInetFile(Server + FileName, Filepath, ProgressBar) then begin
         if TPyScripterSettings.IsPortable then begin
-          if ExtractZipToDir(Filepath, LocalTempDir)
+          if ExtractZipToDir(Filepath, FLocalTempDir)
             then MakeUpdate
-            else Memo.Lines.Add(_('Unpacking error'))
+            else Memo.Lines.Add(_('Unpacking error'));
         end else
           if FConfiguration.RunAsAdmin(Handle, Filepath, '') = 33 then begin
             Close;
@@ -118,15 +118,15 @@ begin
     Screen.Cursor:= crDefault;
   end;
 end;
-{$WARN SYMBOL_PLATFORM ON}
+{.$WARN SYMBOL_PLATFORM ON}
 
 procedure TFUpdate.MakeUpdate;
-  var Updater, Params, sVersion: string;
+  var Updater, Params, SVersion: string;
 begin
-  Updater:= TPath.Combine(LocalTempDir, 'setup.exe');
-  sVersion:= Copy(Version, 1, Pos(',', Version) -1 );
+  Updater:= TPath.Combine(FLocalTempDir, 'setup.exe');
+  SVersion:= Copy(Version, 1, Pos(',', Version) -1 );
   Params:= '-Update ' + HideBlanks(FConfiguration.EditorFolder) +  ' ' +
-                        HideBlanks(withTrailingSlash(LocalTempDir)) + ' ' + sVersion;
+                        HideBlanks(withTrailingSlash(FLocalTempDir)) + ' ' + SVersion;
   if FConfiguration.RunAsAdmin(Handle, Updater, Params) = 33 then begin
     Close;
     TThread.ForceQueue(nil, procedure
@@ -154,31 +154,31 @@ begin
 end;
 
 function TFUpdate.GetNewVersion: Boolean;
-  var SL: TStringList; OldVersion, s, Pathname: string;
+  var StrList: TStringList; OldVersion, s, Pathname: string;
 begin
   EOldVersion.Text:= Version + ', ' + GetVersionDate;
   ENewVersion.Text:= '';
   Memo.Lines.Clear;
   Screen.Cursor:= crHourGlass;
   try
-    Pathname:= TPath.Combine(LocalTempDir, 'version.txt');
+    Pathname:= TPath.Combine(FLocalTempDir, 'version.txt');
     if DownloadURL(Inffile, Pathname) then begin
-      SL:= TStringList.Create;
+      StrList:= TStringList.Create;
       try
-        SL.LoadFromFile(Pathname);
-        s:= ShowVersionDate(SL[0]);
+        StrList.LoadFromFile(Pathname);
+        s:= ShowVersionDate(StrList[0]);
         insert(Bits + ' Bit, ', s, pos(', ', s) + 2);
         ENewVersion.Text:= s;
-        Memo.Lines.AddStrings(SL);
-        OldVersion:= Copy(EOldVersion.Text, 1, Pos(',', EOldVersion.text)-1);
-        NewVersion:= Copy(ENewVersion.Text, 1, Pos(',', ENewVersion.text)-1);
-        if OldVersion = NewVersion then begin
+        Memo.Lines.AddStrings(StrList);
+        OldVersion:= Copy(EOldVersion.Text, 1, Pos(',', EOldVersion.Text)-1);
+        FNewVersion:= Copy(ENewVersion.Text, 1, Pos(',', ENewVersion.text)-1);
+        if OldVersion = FNewVersion then begin
           ENewVersion.Text:= _('GuiPy is up to date.');
           Result:= False;
         end else
           Result:= True;
       finally
-        FreeAndNil(SL);
+        FreeAndNil(StrList);
       end;
     end else begin
       Memo.Lines.Add(_('No Internet connection'));
@@ -191,7 +191,7 @@ end;
 
 procedure TFUpdate.CheckAutomatically;
   var NextUpdate: Integer;
-      aDate: TDateTime;
+      ADate: TDateTime;
       AYear, AMonth, AWeekOfMonth, ADayOfWeek: Word;
 
   procedure NextMonth;
@@ -232,27 +232,27 @@ begin
     2: NextWeek;
     3: NextDay;
   end;
-  aDate:= EncodeDateMonthWeek(AYear, AMonth, AWeekOfMonth, ADayOfWeek);
-  PyIDEMainForm.AppStorage.WriteInteger('Program\NextUpdate', Round(aDate));
+  ADate:= EncodeDateMonthWeek(AYear, AMonth, AWeekOfMonth, ADayOfWeek);
+  PyIDEMainForm.AppStorage.WriteInteger('Program\NextUpdate', Round(ADate));
   if GetNewVersion then
     Show;
 end;
 
-function TFUpdate.ShowVersionDate(s: string): string;
-  var Day, Month, Year, p: Integer;
+function TFUpdate.ShowVersionDate(VersionDate: string): string;
+  var Day, Month, Year, Posi: Integer;
       Version: string;
 begin
-  p:= Pos(',', s);
-  Version:= Copy(s, 1, p);
-  Delete(s, 1, p);
-  p:= Pos('.', s);
+  Posi:= Pos(',', VersionDate);
+  Version:= Copy(VersionDate, 1, Posi);
+  Delete(VersionDate, 1, Posi);
+  Posi:= Pos('.', VersionDate);
   Result:= Version;
-  if TryStrToInt(Copy(s, 1, p-1), Year) then begin
-    Delete(s, 1, p);
-    p:= pos('.', s);
-    if TryStrToInt(Copy(s, 1, p-1), Month) then begin
-      Delete(s, 1, p);
-      if TryStrToInt(s, Day) then
+  if TryStrToInt(Copy(VersionDate, 1, Posi-1), Year) then begin
+    Delete(VersionDate, 1, Posi);
+    Posi:= pos('.', VersionDate);
+    if TryStrToInt(Copy(VersionDate, 1, Posi-1), Month) then begin
+      Delete(VersionDate, 1, Posi);
+      if TryStrToInt(VersionDate, Day) then
         Result:= Version + ' ' + DateToStr(EncodeDate(Year, Month, Day));
     end;
   end;
