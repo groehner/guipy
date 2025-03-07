@@ -1243,15 +1243,15 @@ type
     procedure CBChatProviderSelect(Sender: TObject);
   private
     const
-      DefaultVisFileMenu    = '11100111011101011';      // len = 17
-      DefaultVisEditMenu    = '111110011110001';        // len = 15
-      DefaultVisSearchMenu  = '100101111111011';        // len = 15
-      DefaultVisViewMenu    = '1100110001111111111111'; // len = 22
-      DefaultVisProjectMenu = '111111';                 // len = 6
-      DefaultVisRunMenu     = '01111011111111111';      // len = 17
-      DefaultVisUMLMenu     = '11111111111';            // len = 11
-      DefaultVisToolsMenu   = '11101111111110001';      // len = 17
-      DefaultVisHelpMenu    = '11111';                  // len = 5
+      DefaultVisFileMenu    = '11100111011101011';        // len = 17
+      DefaultVisEditMenu    = '111110011110001';          // len = 15
+      DefaultVisSearchMenu  = '100101111111011';          // len = 15
+      DefaultVisViewMenu    = '110011000111111111111111'; // len = 22 + 2
+      DefaultVisProjectMenu = '111111';                   // len = 6
+      DefaultVisRunMenu     = '01111011111111111';        // len = 17
+      DefaultVisUMLMenu     = '11111111111';              // len = 11
+      DefaultVisToolsMenu   = '11101111111110001';        // len = 17
+      DefaultVisHelpMenu    = '11111';                    // len = 5
     var
     VisSelectedTabMenuToolbar: Integer;
     fHighlighters : TList;
@@ -5383,7 +5383,10 @@ begin
 
   n:= Length(DefaultVisViewMenu);
   if Length(GuiPyOptions.VisViewMenu) <> n then
-    GuiPyOptions.VisViewMenu:= DefaultVisViewMenu;
+    GuiPyOptions.VisViewMenu:= DefaultVisViewMenu
+  else if copy(GuiPyOptions.VisViewMenu, 23, 2) = '00' then   // fix visibility since version 6.06
+    GuiPyOptions.VisViewMenu:= copy(GuiPyOptions.VisViewMenu, 1, 22) + '11';
+
   StringVisibilityToArr2(GuiPyOptions.VisViewMenu, n, 8);
 
   n:= Length(DefaultVisProjectMenu);
