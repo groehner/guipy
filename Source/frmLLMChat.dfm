@@ -5,6 +5,8 @@ inherited LLMChatForm: TLLMChatForm
   Caption = 'Chat'
   ClientHeight = 655
   ClientWidth = 586
+  OnActivate = nil
+  OnDeactivate = nil
   OnShow = FormShow
   ExplicitWidth = 602
   ExplicitHeight = 694
@@ -33,88 +35,13 @@ inherited LLMChatForm: TLLMChatForm
           582
           85)
         object sbAsk: TSpeedButton
-          Left = 542
-          Top = 4
+          Left = 540
+          Top = 1
           Width = 32
           Height = 32
           Action = actAskQuestion
           Anchors = [akTop, akRight]
           Flat = True
-          Glyph.Data = {
-            36090000424D3609000000000000360000002800000018000000180000000100
-            2000000000000009000000000000000000000000000000000000FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00C73CC774833383AFBF3CBF7CEE2BEE3CFF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00943894A3000000FF000000FF833383AFF91AF920FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FD0EFD10331733E3000000FF000000FF0F070FF7A73BA7938E36
-            8EA75B275BCB1E0E1EEF251125EB6D2D6DBFA23AA297CA3BCA70FB14FB18FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00C73CC774000000FF000000FF000000FF000000FF0000
-            00FF000000FF000000FF000000FF000000FF000000FF000000FF160A16F3BB3C
-            BB80FD0EFD10FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00DE37DE58000000FF000000FF000000FF833383AFD13A
-            D168EE2BEE3CFC11FC14FC11FC14EE2BEE3CD13AD168833383AF000000FF0000
-            00FF1E0E1EEFEE2BEE3CFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00F81DF8242C142CE7000000FF732F73BBF425F430FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00F425F4307E32
-            7EB3000000FF2C142CE7F91AF920FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FC11FC14471F47D7000000FF893589ABFE03FE04FF00FF00FF00FF00FF00
-            FF00FF00FF00000000FF000000FFFF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF008E368EA7000000FF4E224ED3FD0AFD0CFF00FF00FF00FF00FF00FF00FF00
-            FF00BF3CBF7C000000FF5B275BCBFD0AFD0CFF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00000000FF000000FFFF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FE03FE045B275BCB000000FFC73CC774FF00FF00FF00FF00FF00FF00FF00
-            FF004E224ED3000000FFD13AD168FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00D13AD168000000FF552555CFFF00FF00FF00FF00FF00FF00FF00
-            FF001E0E1EEF000000FFF91AF920FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF006D2D6DBF000000FFF91AF920FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00F91AF920000000FF1E0E1EEFFF00FF00FF00FF00FF00FF00FF00
-            FF001E0E1EEF000000FFF91AF920FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00F91AF920672B67C3411D41DBF522F52CFF00FF00FF00FF00FF00
-            FF00FF00FF00F91AF920000000FF1E0E1EEFFF00FF00FF00FF00FF00FF00FF00
-            FF00552555CF000000FFD13AD168FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FE03FE04612961C7331733E3FF00FF00FF00FF00FF00
-            FF00FF00FF00D13AD168000000FF552555CFFF00FF00FF00FF00FF00FF00FF00
-            FF00C73CC774000000FF5B275BCBFD0AFD0CFF00FF00FF00FF00FF00FF00C33C
-            C3786D2D6DBFD13AD168FD0AFD0C612961C7000000FFFC11FC14FF00FF00FF00
-            FF00FD0AFD0C5B275BCB000000FFC73CC774FF00FF00FF00FF00FF00FF00FF00
-            FF00FD0AFD0C4E224ED3000000FF7E327EB3FE03FE04FF00FF00FF00FF00E334
-            E350070307FB000000FF000000FF000000FF793179B7FF00FF00FF00FF00FE03
-            FE04893589AB000000FF4E224ED3FD0AFD0CFF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FA17FA1C2C142CE7000000FF672B67C3EE2BEE3CFF00FF00FF00
-            FF00FB14FB18E334E350C73CC774E633E64CFE03FE04FF00FF00F425F430732F
-            73BB000000FF2C142CE7FA17FA1CFF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00F227F2342C142CE7000000FF000000FF833383AFD13A
-            D168EE2BEE3CFC11FC14FC11FC14EE2BEE3CD13AD168833383AF000000FF0000
-            00FF2C142CE7F227F234FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FE07FE08BF3CBF7C1E0E1EEF000000FF0000
-            00FF000000FF000000FF000000FF000000FF000000FF000000FF1E0E1EEFBF3C
-            BF7CFE07FE08FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FB14FB18CA3BCA70A23A
-            A297672B67C3251125EB251125EB6D2D6DBFA23AA297CA3BCA70FB14FB18FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-            FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
         end
         object aiBusy: TActivityIndicator
           Left = 542
@@ -215,48 +142,35 @@ inherited LLMChatForm: TLLMChatForm
           Customizable = False
           object spiNewTopic: TSpTBXItem
             Action = actChatNew
-            ImageIndex = 2
           end
           object spiRemoveTopic: TSpTBXItem
             Action = actChatRemove
-            ImageIndex = 3
           end
           object SpTBXSeparatorItem7: TSpTBXSeparatorItem
           end
           object spiPreviousTopic: TSpTBXItem
             Action = actChatPrevious
-            ImageIndex = 14
-            ImageName = 'ChatPrev'
           end
           object spiNextTopic: TSpTBXItem
             Action = actChatNext
-            ImageIndex = 13
-            ImageName = 'ChatNext'
           end
           object SpTBXSeparatorItem5: TSpTBXSeparatorItem
           end
           object spiTitle: TSpTBXItem
             Action = actTopicTitle
-            ImageIndex = 5
-            ImageName = 'ChatTitle'
           end
           object SpTBXSeparatorItem2: TSpTBXSeparatorItem
           end
           object spiPrint: TTBItem
             Action = actPrint
-            ImageIndex = 19
           end
           object spiSave: TSpTBXItem
             Action = actChatSave
-            ImageIndex = 4
-            ImageName = 'ChatSave'
           end
           object SpTBXSeparatorItem4: TSpTBXSeparatorItem
           end
           object spiCancel: TTBItem
             Action = actCancelRequest
-            ImageIndex = 6
-            ImageName = 'ChatCancel'
           end
           object SpTBXRightAlignSpacerItem: TSpTBXRightAlignSpacerItem
             CustomWidth = 306
@@ -274,6 +188,7 @@ inherited LLMChatForm: TLLMChatForm
         TargetCompatibleBrowserVersion = '117.0.2045.28'
         UserDataFolder = '%LOCALAPPDATA%\bds.exe.WebView2'
         OnCreateWebViewCompleted = EdgeBrowserCreateWebViewCompleted
+        OnNavigationCompleted = EdgeBrowserNavigationCompleted
         OnWebMessageReceived = EdgeBrowserWebMessageReceived
       end
       object pnlBrowserCover: TPanel
@@ -292,6 +207,7 @@ inherited LLMChatForm: TLLMChatForm
     Top = 74
   end
   object ChatActionList: TActionList
+    Images = vilImagesDark
     OnUpdate = ChatActionListUpdate
     Left = 40
     Top = 328
@@ -299,15 +215,15 @@ inherited LLMChatForm: TLLMChatForm
       Category = 'Chat'
       Caption = 'Save chat'
       Hint = 'Save chat history'
-      ImageIndex = 3
-      ImageName = 'Save'
+      ImageIndex = 4
+      ImageName = 'ChatSave'
       OnExecute = actChatSaveExecute
     end
     object actChatRemove: TAction
       Category = 'Chat'
       Caption = 'Remove Chat Topic'
       Hint = 'Remove current chat topic'
-      ImageIndex = 7
+      ImageIndex = 3
       ImageName = 'ChatRemove'
       OnExecute = actChatRemoveExecute
     end
@@ -315,7 +231,7 @@ inherited LLMChatForm: TLLMChatForm
       Category = 'Chat'
       Caption = 'New Chat Topic'
       Hint = 'Add a new chat topic'
-      ImageIndex = 6
+      ImageIndex = 2
       ImageName = 'ChatPlus'
       OnExecute = actChatNewExecute
     end
@@ -323,22 +239,22 @@ inherited LLMChatForm: TLLMChatForm
       Category = 'Chat'
       Caption = 'Previous Chat Topic'
       Hint = 'Show previous chat topic'
-      ImageIndex = 0
-      ImageName = 'ArrowLeft'
+      ImageIndex = 14
+      ImageName = 'ChatPrev'
       OnExecute = actChatPreviousExecute
     end
     object actChatNext: TAction
       Category = 'Chat'
       Caption = 'Next Chat Topic'
       Hint = 'Show next chat topic'
-      ImageIndex = 1
-      ImageName = 'ArrowRight'
+      ImageIndex = 13
+      ImageName = 'ChatNext'
       OnExecute = actChatNextExecute
     end
     object actAskQuestion: TAction
       Category = 'Chat'
       Hint = 'Ask question'
-      ImageIndex = 8
+      ImageIndex = 9
       ImageName = 'ChatQuestion'
       OnExecute = actAskQuestionExecute
     end
@@ -346,24 +262,24 @@ inherited LLMChatForm: TLLMChatForm
       Category = 'Chat'
       Caption = 'Topic Title'
       Hint = 'Set the title of the chat topic'
-      ImageIndex = 11
-      ImageName = 'Title'
+      ImageIndex = 5
+      ImageName = 'ChatTitle'
       OnExecute = actTopicTitleExecute
     end
     object actCancelRequest: TAction
       Category = 'Chat'
       Caption = 'Cancel Request'
       Hint = 'Cancel active request'
-      ImageIndex = 13
-      ImageName = 'Delete'
+      ImageIndex = 6
+      ImageName = 'ChatCancel1'
       OnExecute = actCancelRequestExecute
     end
     object actPrint: TAction
       Category = 'Chat'
       Caption = 'Print'
       Hint = 'Print chat topic'
-      ImageIndex = 21
-      ImageName = 'Print'
+      ImageIndex = 19
+      ImageName = 'Print1'
       OnExecute = actPrintExecute
     end
   end
@@ -456,7 +372,7 @@ inherited LLMChatForm: TLLMChatForm
           '4H5Z" />'#13#10'</svg>'
       end
       item
-        IconName = 'ChatCancel'
+        IconName = 'ChatCancel1'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10#9'<path fill="#E24444" d="M24.9,10.2L2' +
           '7,5.9L22.5,8l-6.2,6.2L5.6,3.5L3.4,5.8l10.7,10.7l-9,9l2.2,2.2l9-9' +
@@ -789,7 +705,7 @@ inherited LLMChatForm: TLLMChatForm
           '0012 12 14.305 14.305 0 00-12 12"/>'#13#10'</svg>'
       end
       item
-        IconName = 'Print'
+        IconName = 'Print1'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10#9'<path d="M26.5,10H25V2.5H7V10H5.5C3,' +
           '10,1,11.9,1,14.5v9h6v6h18v-6h6v-9C31,11.9,28.9,10,26.5,10z M10,5' +
@@ -925,7 +841,7 @@ inherited LLMChatForm: TLLMChatForm
           '4.305 14.305 0 0012 12 14.305 14.305 0 00-12 12"/>'#13#10'</svg>'
       end
       item
-        IconName = 'Print'
+        IconName = 'Print1'
         SVGText = 
           '<svg viewBox="0 0 32 32"  fill="#e6e6e6">'#13#10#9'<path d="M26.5,10H25' +
           'V2.5H7V10H5.5C3,10,1,11.9,1,14.5v9h6v6h18v-6h6v-9C31,11.9,28.9,1' +
@@ -970,8 +886,8 @@ inherited LLMChatForm: TLLMChatForm
       end
       item
         CollectionIndex = 6
-        CollectionName = 'ChatCancel'
-        Name = 'ChatCancel'
+        CollectionName = 'ChatCancel1'
+        Name = 'ChatCancel1'
       end
       item
         CollectionIndex = 7
@@ -1035,8 +951,8 @@ inherited LLMChatForm: TLLMChatForm
       end
       item
         CollectionIndex = 28
-        CollectionName = 'Print'
-        Name = 'Print'
+        CollectionName = 'Print1'
+        Name = 'Print1'
       end>
     ImageCollection = icMenuAndToolbar
     Width = 24
@@ -1078,8 +994,8 @@ inherited LLMChatForm: TLLMChatForm
       end
       item
         CollectionIndex = 6
-        CollectionName = 'ChatCancel'
-        Name = 'ChatCancel'
+        CollectionName = 'ChatCancel1'
+        Name = 'ChatCancel1'
       end
       item
         CollectionIndex = 7
@@ -1143,8 +1059,8 @@ inherited LLMChatForm: TLLMChatForm
       end
       item
         CollectionIndex = 33
-        CollectionName = 'Print'
-        Name = 'Print'
+        CollectionName = 'Print1'
+        Name = 'Print1'
       end>
     ImageCollection = icMenuAndToolbar
     Width = 24

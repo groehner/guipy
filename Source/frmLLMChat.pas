@@ -909,6 +909,7 @@ end;
 
 procedure TLLMChatForm.FormShow(Sender: TObject);
 begin
+  SetQuestionTextHint;
   if EdgeBrowser.DefaultInterface = nil then
     TThread.ForceQueue(nil, procedure
     begin
