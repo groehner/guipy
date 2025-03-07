@@ -2949,7 +2949,8 @@ begin
   inherited Create(nil);
   FSelCtrl := AOwnerSelCtrl;
   FPos := APos;
-  FHandleSize := PPIScale(HANDLESIZE);
+  // FHandleSize := PPIScale(HANDLESIZE);
+  FHandleSize := Round(AOwnerSelCtrl.FControl.ScaleFactor * HANDLESIZE);
   Width := FHandleSize;
   Height := FHandleSize;
   Visible := False;
