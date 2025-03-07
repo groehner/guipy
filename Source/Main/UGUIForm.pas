@@ -396,6 +396,7 @@ end;
 {$WARNINGS ON}
 
 procedure TFGuiForm.EnterForm(Sender: TObject);
+  var i, ap: integer; TC: TSpTBXTabControl;
 begin
   if Assigned(Partner) and not Partner.ParentTabItem.Checked then
     // show connected partner
@@ -414,6 +415,7 @@ begin
     not FGUIDesigner.ELDesigner.Active then
     FGUIDesigner.ChangeTo(Self);
   Partner.SynEditEnter(Partner.ActiveSynEdit);
+  PyIDEMainForm.ShowTkOrQt(Partner.FrameType);
 end;
 
 procedure TFGuiForm.FormAfterMonitorDpiChanged(Sender: TObject;

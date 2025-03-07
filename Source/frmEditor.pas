@@ -310,7 +310,6 @@ type
     function BeginOfStructure(Line: string): Boolean;
     function getNumbered: TStringList;
     procedure ChangeStyle;
-    procedure ShowTkOrQt;
     function getFrameType: Integer;
     function getActiveSynEdit: TSynEdit;
     procedure ApplyPyIDEOptions;
@@ -1843,34 +1842,6 @@ begin
     CommandsDataModule.HighlightWordInActiveEditor(ASynEdit.SelText);
 end;
 
-procedure TEditorForm.ShowTkOrQt;
-begin
-  var PC:= PyIDEMainForm.TabControlWidgets;
-  PC.TabClick(TSpTBXTabItem(PC.Items[0]));
-  if FrameType in [0, 1] then begin
-    PC.Items[1].Visible:= FConfiguration.VisTabs[1];
-    PC.Items[2].Visible:= FConfiguration.VisTabs[2];
-    PC.Items[3].Visible:= FConfiguration.VisTabs[3];
-    PC.Items[4].Visible:= FConfiguration.VisTabs[4];
-  end else if FrameType = 2 then begin
-    PC.Items[1].Visible:= FConfiguration.VisTabs[1];
-    PC.Items[2].Visible:= FConfiguration.VisTabs[2];
-    PC.Items[3].Visible:= False;
-    PC.Items[4].Visible:= False;
-    PC.TabClick(TSpTBXTabItem(PC.Items[1]));
-  end else if FrameType = 3 then begin
-    PC.Items[1].Visible:= False;
-    PC.Items[2].Visible:= False;
-    PC.Items[3].Visible:= FConfiguration.VisTabs[3];
-    PC.Items[4].Visible:= FConfiguration.VisTabs[4];
-    PC.TabClick(TSpTBXTabItem(PC.Items[3]));
-  end;
-  case FrameType of
-    2: CreateTkCursors;
-    3: CreateQtCursors;
-  end;
-end;
-
 procedure TEditorForm.SynEditEnter(Sender: TObject);
 var
   ASynEdit: TSynEdit;
@@ -2089,7 +2060,7 @@ begin
   DoUpdateCaption;
   fOldEditorForm:= Self;
   SetOptions;
-  ShowTkOrQt;
+  PyIDEMainForm.ShowTkOrQt(FrameType);
   if Assigned(Partner) then
     FGUIDesigner.ChangeTo(TFGUIForm(Partner));
   if Assigned(TVFileStructure) and Assigned(TVFileStructure.Items) and
@@ -2503,6 +2474,7 @@ begin
   end;
   if assigned(FFileStructure) then
     FFileStructure.Clear(Self);
+  PyIDEMainForm.ShowTkOrQt(0);
 end;
 
 procedure TEditorForm.FormCreate(Sender: TObject);

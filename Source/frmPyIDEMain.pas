@@ -1626,6 +1626,7 @@ type
     procedure SetLayoutMenus(Predefined: Boolean);
     procedure DropFiles(Sender: TObject; X, Y: Integer; AFiles: TStrings);
     procedure RunFile(aFile: IFile);
+    procedure ShowTkOrQt(FrameType: integer);
 
     property ActiveTabControl: TSpTBXCustomTabControl read GetActiveTabControl
       write SetActiveTabControl;
@@ -1726,7 +1727,8 @@ uses
   UGUIDesigner,
   UGit,
   USubversion,
-  UUpdate;
+  UUpdate,
+  ULink;
 
 {$R *.DFM}
 
@@ -6528,6 +6530,34 @@ begin
     [rfReplaceAll, rfIgnoreCase]);
   SL.Text := Settings;
   SL.SaveToFile(TPyScripterSettings.OptionsFileName);
+end;
+
+procedure TPyIDEMainForm.ShowTkOrQt(FrameType: integer);
+begin
+  var PC:= PyIDEMainForm.TabControlWidgets;
+  PC.TabClick(TSpTBXTabItem(PC.Items[0]));
+  if FrameType in [0, 1] then begin
+    PC.Items[1].Visible:= FConfiguration.VisTabs[1];
+    PC.Items[2].Visible:= FConfiguration.VisTabs[2];
+    PC.Items[3].Visible:= FConfiguration.VisTabs[3];
+    PC.Items[4].Visible:= FConfiguration.VisTabs[4];
+  end else if FrameType = 2 then begin
+    PC.Items[1].Visible:= FConfiguration.VisTabs[1];
+    PC.Items[2].Visible:= FConfiguration.VisTabs[2];
+    PC.Items[3].Visible:= False;
+    PC.Items[4].Visible:= False;
+    PC.TabClick(TSpTBXTabItem(PC.Items[1]));
+  end else if FrameType = 3 then begin
+    PC.Items[1].Visible:= False;
+    PC.Items[2].Visible:= False;
+    PC.Items[3].Visible:= FConfiguration.VisTabs[3];
+    PC.Items[4].Visible:= FConfiguration.VisTabs[4];
+    PC.TabClick(TSpTBXTabItem(PC.Items[3]));
+  end;
+  case FrameType of
+    2: CreateTkCursors;
+    3: CreateQtCursors;
+  end;
 end;
 
 { TTSpTBXTabControl }
