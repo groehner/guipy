@@ -1207,11 +1207,13 @@ begin
       if ValueChanged and Assigned(Attribute.TypeClassifier) and
          (Pos('|' + Attribute.TypeClassifier.asType + '|', Types) > 0) then begin
         newType:= Attribute.TypeClassifier.ValueToType(CBAttributeValue.Text);
-        if newType = ''
-          then Attribute.TypeClassifier:= nil
-          else Attribute.TypeClassifier:= MakeType(newType);
-        CBAttributeType.Text:= newType;
-        TypeChanged:= True;
+        if newType <> Attribute.TypeClassifier.asType then begin
+          if newType = ''
+            then Attribute.TypeClassifier:= nil
+            else Attribute.TypeClassifier:= MakeType(newType);
+          CBAttributeType.Text:= newType;
+          TypeChanged:= True;
+        end;
       end;
       ChangeGetSet(Attribute, ClassNumber, Node.Parent.Parent.Text);
       if (Attribute.Name <> OldName) and AttributeAlreadyExists(Attribute.Name) then
