@@ -675,7 +675,7 @@ end;
 constructor TQtCheckBox.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  Tag:= 77;
+  Tag:= 75;
   FText:= 'CheckBox';
   MouseTracking:= True;
   FCheckable:= True;
