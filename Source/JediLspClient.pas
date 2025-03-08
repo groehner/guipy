@@ -12,10 +12,11 @@ interface
 
 uses
   Winapi.Windows,
-  System.Generics.Collections,
+  System.SyncObjs,
   System.JSON,
   JclNotify,
   LspClient,
+  SynEditTypes,
   SynEdit,
   LspUtils;
 
@@ -39,7 +40,7 @@ type
     destructor Destroy; override;
     procedure Lock;
     procedure UnLock;
-    property RequestId: NativeUInt read FRequestId write FRequestID;
+    property RequestId: NativeUInt read FRequestId write FRequestId;
     property StartX: Integer read FStartX;
     property ActiveParameter: Integer read FActiveParameter;
     property Handled: Boolean read FHandled write FHandled;
@@ -54,7 +55,7 @@ type
   TJedi = class
   private
     class procedure ParamCompletionHandler(Id: NativeUInt; AResult, Error:
-        TJsonValue);
+        TJSONValue);
   public
     class var LspClient: TLspClient;
     class var SyncRequestTimeout: Integer;
@@ -70,38 +71,37 @@ type
     class procedure Initialize;
     class function Ready: Boolean;
     // Lsp functionality
-    class procedure FindDefinitionByCoordinates(const FileName: string;
+    class procedure FindDefinitionByCoordinates(const Filename: string;
       const BC: TBufferCoord; out DefFileName: string; out DefBC: TBufferCoord);
-    class function FindReferencesByCoordinates(FileName: string;
+    class function FindReferencesByCoordinates(Filename: string;
       const BC: TBufferCoord): TArray<TDocPosition>;
-    class function HandleCodeCompletion(const FileName: string;
+    class function HandleCodeCompletion(const Filename: string;
       const BC: TBufferCoord; out InsertText, DisplayText: string): Boolean;
     class function ResolveCompletionItem(CCItem: string): string;
     class procedure RequestParamCompletion(const AFileId: string; Editor:
         TCustomSynEdit);
-    class function DocumentSymbols(const FileName: string): TJsonArray;
-    class function SimpleHintAtCoordinates(const FileName: string;
+    class function DocumentSymbols(const FileName: string): TJSONArray;
+    class function SimpleHintAtCoordinates(const Filename: string;
       const BC: TBufferCoord): string;
-    class function CodeHintAtCoordinates(const FileName: string;
+    class function CodeHintAtCoordinates(const Filename: string;
       const BC: TBufferCoord; const Ident: string): string;
   end;
 
 implementation
 
 uses
+  System.Classes,
+  System.Generics.Collections,
   System.Character,
   System.SysUtils,
   System.IOUtils,
   System.RegularExpressions,
-  System.Generics.Defaults,
-  System.Classes,
-  System.SyncObjs,
   dmResources,
   dmCommands,
   uCommonFunctions,
   SynEditLsp,
-  SynEditTypes,
   cPyScripterSettings,
+  cPyControl,
   StringResources,
   JvGnugettext,
   cPySupportTypes;
@@ -129,7 +129,7 @@ begin
   if Assigned(LspClient) then
     LspClient.OnLspNotification := nil;
   LspClient.Free;
-  LspClient:= nil;
+  LspClient := nil;
 
   if not GI_PyControl.PythonLoaded then Exit;
 
@@ -137,9 +137,11 @@ begin
     TPath.Combine(TPyScripterSettings.LspServerPath,
     'jls\run-jedi-language-server.py');
   if not FileExists(ServerPath) then Exit;
+
+
   CmdLine := Format('"%s" -u "%s"',
     [GI_PyControl.PythonVersion.PythonExecutable, ServerPath]);
-  if PyIDEOptions.LspDebug or True then  // or TRUE
+  if PyIDEOptions.LspDebug or true then // or true
   begin
     CmdLine := Format('%s -v --log-file "%s"', [CmdLine,
       TPath.Combine(TPyScripterSettings.UserDataPath, LspDebugFile)]);
@@ -166,8 +168,8 @@ end;
 
 class procedure TJedi.Initialize;
 var
-  ClientCapabilities: TJsonObject;     // Will be freed by Initialize
-  InitializationOptions: TJsonObject;  // Will be freed by Initialize
+  ClientCapabilities: TJSONObject;     // Will be freed by Initialize
+  InitializationOptions: TJSONObject;  // Will be freed by Initialize
 const
    ClientCapabilitiesJson =
     '{"textDocument":{"documentSymbol":{"hierarchicalDocumentSymbolSupport":true}}}';
@@ -185,10 +187,10 @@ const
     '       "resolveEagerly": false'#13#10 +
     '   },'#13#10 +
 //    '   "markupKindPreferred": "markdown",'#13#10 +
-    '   "jediSettings": {'#13#10 +
-    '   "autoImportModules": [%s],'#13#10 +
-    '   "caseInsensitiveCompletion": %s'#13#10 +
-    '   }'#13#10 +
+    '	  "jediSettings": {'#13#10 +
+    '		"autoImportModules": [%s],'#13#10 +
+    '		"caseInsensitiveCompletion": %s'#13#10 +
+    '	  }'#13#10 +
     '}';
 
   function QuotePackages(Packages: string): string;
@@ -205,9 +207,9 @@ const
 begin
   if LspClient.Status <> lspStarted then Exit;
 
-  ClientCapabilities := TJsonObject.Create;
+  ClientCapabilities := TJSONObject.Create;
   ClientCapabilities.Parse(TEncoding.UTF8.GetBytes(ClientCapabilitiesJson), 0);
-  InitializationOptions := TJsonObject.Create;
+  InitializationOptions := TJSONObject.Create;
   InitializationOptions.Parse(TEncoding.UTF8.GetBytes(
     Format(InitializationOptionsLsp,
     [BoolToStr(PyIDEOptions.CheckSyntaxAsYouType, True).ToLower,
@@ -230,7 +232,7 @@ end;
 class procedure TJedi.OnLspClientShutdown(Sender: TObject);
 begin
   if Assigned(OnShutDown) and (OnShutDown.HandlerCount > 0) then
-    OnShutdown.Notify(LspClient);
+    OnShutDown.Notify(LspClient);
 end;
 
 class procedure TJedi.PythonVersionChanged(Sender: TObject);
@@ -246,7 +248,7 @@ end;
 
 {$Region 'Lsp functionality'}
 
-class procedure TJedi.FindDefinitionByCoordinates(const FileName: string;
+class procedure TJedi.FindDefinitionByCoordinates(const Filename: string;
   const BC: TBufferCoord; out DefFileName: string; out DefBC: TBufferCoord);
 var
   Param: TJsonObject;
@@ -273,7 +275,7 @@ begin
   FreeAndNil(Error);
 end;
 
-class function TJedi.FindReferencesByCoordinates(FileName: string;
+class function TJedi.FindReferencesByCoordinates(Filename: string;
   const BC: TBufferCoord): TArray<TDocPosition>;
 var
   Param: TJsonObject;
@@ -311,7 +313,7 @@ begin
   FreeAndNil(Error);
 end;
 
-class function TJedi.HandleCodeCompletion(const FileName: string;
+class function TJedi.HandleCodeCompletion(const Filename: string;
   const BC: TBufferCoord; out InsertText, DisplayText: string): Boolean;
 
   function KindToImageIndex(Kind: TLspCompletionItemKind): Integer;
@@ -346,7 +348,7 @@ class function TJedi.HandleCodeCompletion(const FileName: string;
 var
   Param: TJsonObject;
   AResult, Error: TJsonValue;
-  CompletionItems : TCompletionItems;
+  CompletionItems: TCompletionItems;
 begin
   if not Ready or (FileName = '') then Exit(False);
 
@@ -398,7 +400,7 @@ end;
 class procedure TJedi.ParamCompletionHandler(Id: NativeUInt; AResult,
   Error: TJsonValue);
 var
-  Signature : TJsonValue;
+  Signature: TJsonValue;
 begin
   ParamCompletionInfo.Lock;
   try
@@ -481,7 +483,7 @@ begin
   end;
 end;
 
-class function TJedi.SimpleHintAtCoordinates(const FileName: string;
+class function TJedi.SimpleHintAtCoordinates(const Filename: string;
   const BC: TBufferCoord): string;
 var
   Param: TJsonObject;
@@ -501,7 +503,7 @@ begin
   FreeAndNil(Error);
 end;
 
-class function TJedi.CodeHintAtCoordinates(const FileName: string;
+class function TJedi.CodeHintAtCoordinates(const Filename: string;
   const BC: TBufferCoord; const Ident: string): string;
 var
   Param: TJsonObject;

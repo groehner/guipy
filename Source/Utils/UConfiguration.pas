@@ -5991,7 +5991,7 @@ begin
 
   // Class modeler
   fShowGetSetMethods:= True;
-  fGetSetMethodsAsProperty:= True;
+  fGetSetMethodsAsProperty:= False;
   fGetMethodChecked:= True;
   fSetMethodChecked:= False;
   fShowTypeSelection:= True;
