@@ -817,11 +817,13 @@ object PyIDEMainForm: TPyIDEMainForm
           object mnViewDefaultLayout: TSpTBXItem
             Tag = -1
             Caption = 'Default Layout'
+            GroupIndex = 3
             OnClick = mnViewDefaultLayoutClick
           end
           object mnViewDebugLayout: TSpTBXItem
             Tag = -1
             Caption = 'Debug Layout'
+            GroupIndex = 3
             OnClick = mnViewDebugLayoutClick
           end
           object mnLayouts: TSpTBXSubmenuItem

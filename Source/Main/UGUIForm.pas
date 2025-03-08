@@ -396,7 +396,6 @@ end;
 {$WARNINGS ON}
 
 procedure TFGuiForm.EnterForm(Sender: TObject);
-  var i, ap: integer; TC: TSpTBXTabControl;
 begin
   if Assigned(Partner) and not Partner.ParentTabItem.Checked then
     // show connected partner
@@ -419,7 +418,7 @@ begin
 end;
 
 procedure TFGuiForm.FormAfterMonitorDpiChanged(Sender: TObject;
-OldDPI, NewDPI: Integer);
+  OldDPI, NewDPI: Integer);
 begin
   FGUIDesigner.ScaleImages;
   Invalidate;
@@ -428,7 +427,7 @@ begin
 end;
 
 procedure TFGuiForm.FormBeforeMonitorDpiChanged(Sender: TObject;
-OldDPI, NewDPI: Integer);
+  OldDPI, NewDPI: Integer);
 begin
   OnResize := nil;
 end;
@@ -441,7 +440,7 @@ begin
 end;
 
 procedure TFGuiForm.FormCanResize(Sender: TObject;
-var NewWidth, NewHeight: Integer; var Resize: Boolean);
+  var NewWidth, NewHeight: Integer; var Resize: Boolean);
 begin
   if FGUIDesigner.ELDesigner.Active then
     FGUIDesigner.ELDesigner.Active := False;

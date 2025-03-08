@@ -1518,6 +1518,7 @@ type
   private
     OldMonitorProfile: string;
     FShellImages: TCustomImageList;
+    LastLayout: string;
     // IIDELayouts implementation
     function LayoutExists(const Layout: string): Boolean;
     procedure LoadLayout(const Layout: string);
@@ -4793,11 +4794,22 @@ end;
 
 procedure TPyIDEMainForm.LoadLayout(const Layout: string);
 var
-  Path: string;
+  Path, CheckLayout: string;
   i: Integer;
   SaveActiveControl: TWinControl;
   TempCursor: IInterface;
 begin
+  if GuiPyOptions.UsePredefinedLayouts then begin
+    if Layout = 'Default' then begin
+      LoadPredefinedDefaultLayout;
+      Exit;
+    end else if Layout = 'Debug' then begin
+      LoadPredefinedDebugLayout;
+      Exit;
+    end else if Layout = 'Current' then
+      mnViewDefaultLayout.Checked:= True;
+  end;
+
   Path := 'Layouts\'+ Layout;
   if LocalAppStorage.PathExists(Path + '\Forms') then begin
     TempCursor := WaitCursor;
@@ -4817,11 +4829,21 @@ begin
       except
       end;
   end;
-    // Now Restore the toolbars
   LoadToolbarLayout(Layout);
-  // Load secondary workspace info
   LocalAppstorage.ReadPersistent('Layouts\'+ Layout + '\Second Workspace',
     TabsPersistsInfo);
+
+  if Layout = 'Current' then
+    CheckLayout := LastLayout
+  else
+    CheckLayout := Layout;
+  i:= 0;
+  while mnLayouts[i] <> mnLayOutSeparator do begin
+    mnLayouts[i].Checked:= false;
+    if mnLayouts[i].Caption = CheckLayout then
+      mnLayouts[i].Checked:= true;
+    Inc(i);
+  end;
 end;
 
 procedure TPyIDEMainForm.LoadCurrentLayout;
@@ -4900,7 +4922,6 @@ begin
   if LocalAppStorage.PathExists('Layouts\PredefinedDefault\Forms') then begin
     try
       LoadLayout('PredefinedDefault');
-      mnViewDebugLayout.Checked:= False;
       mnViewDefaultLayout.Checked:= True;
     except
       LocalAppStorage.DeleteSubTree('Layouts\PredefinedDefault');
@@ -4940,7 +4961,6 @@ begin
     try
       LoadLayout('PredefinedDebug');
       mnViewDebugLayout.Checked:= True;
-      mnViewDefaultLayout.Checked:= False;
     except
       LocalAppStorage.DeleteSubTree('Layouts\PredefinedDebug');
       StyledMessageDlg(Format(_(SErrorLoadLayout),
@@ -5278,6 +5298,7 @@ procedure TPyIDEMainForm.LayoutClick(Sender: TObject);
 begin
   LoadLayout(TSpTBXItem(Sender).Caption);
   TSpTBXItem(Sender).Checked := True;
+  LastLayout:= TSpTBXItem(Sender).Caption;
 end;
 
 function TPyIDEMainForm.LayoutExists(const Layout: string): Boolean;
