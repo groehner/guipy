@@ -6,6 +6,7 @@ uses
   Vcl.Controls, System.Classes, Forms, StdCtrls, ComCtrls, dlgPyIDEBase;
 
 const
+  LastHandeldPyScripterCommit = 'Feb 23, 2025';
   Server  = 'https://guipy.de/download/';
   Inffile = Server + 'version.txt';
   {$IFDEF WIN32}

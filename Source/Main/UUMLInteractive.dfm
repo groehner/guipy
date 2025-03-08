@@ -24,7 +24,6 @@ object FUMLInteractive: TFUMLInteractive
     Images = vilInteractiveDark
     ParentColor = False
     TabOrder = 0
-    ExplicitWidth = 620
     object TBInteractiveClose: TToolButton
       Left = 0
       Top = 0
@@ -113,10 +112,7 @@ object FUMLInteractive: TFUMLInteractive
     Highlighter = ResourcesDataModule.SynCppSyn
     RightEdge = 0
     ScrollbarAnnotations = <>
-    VisibleSpecialChars = []
     OnChange = SynEditChange
-    ExplicitWidth = 620
-    ExplicitHeight = 292
   end
   object vilInteractiveLight: TVirtualImageList
     Images = <

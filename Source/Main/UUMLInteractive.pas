@@ -165,6 +165,7 @@ procedure TFUMLInteractive.ReadFromAppStorage(
   AppStorage: TJvCustomAppStorage; const BasePath: string);
 begin
   AppStorage.ReadPersistent(BasePath + '\Font', SynEdit.Font);
+  SynEdit.Font.Size:= PPIScale(SynEdit.Font.Size);
 end;
 
 procedure TFUMLInteractive.SynEditChange(Sender: TObject);
