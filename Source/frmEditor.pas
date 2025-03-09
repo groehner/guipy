@@ -436,6 +436,7 @@ type
     procedure ParseAndCreateModel;
     procedure NewClass(Pathname: string);
     procedure ExportToClipboard(Lines: TStringList; Exporter: TSynCustomExporter; asText: Boolean);
+    procedure CopySelected;
     procedure CopyRTF;
     procedure CopyRTFNumbered;
     procedure CopyHTML(asText: Boolean);
@@ -457,7 +458,7 @@ type
     property Modified: Boolean read GetModified write SetModified;
   end;
 
-  TEditor = class(TFile, IUnknown, IEditor, IEditCommands, ISearchCommands)
+  TEditor = class(TFile, IUnknown, IEditor, IFileCommands, ISearchCommands)
   private
     // IEditor implementation
     function ActivateView(ViewFactory: IEditorViewFactory): IEditorView;
@@ -521,21 +522,6 @@ type
     procedure ExecPrint; override;
     procedure ExecPrintPreview; override;
     procedure ExecReload(Quiet: Boolean = False); override;
-    // IEditCommands implementation
-    function CanCopy: Boolean; override;
-    function CanCut: Boolean;
-    function IEditCommands.CanDelete = CanCut;
-    function CanPaste: Boolean; override;
-    function CanRedo: Boolean;
-    function CanSelectAll: Boolean;
-    function CanUndo: Boolean;
-    procedure ExecCopy; override;
-    procedure ExecCut;
-    procedure ExecDelete;
-    procedure ExecPaste; override;
-    procedure ExecRedo;
-    procedure ExecSelectAll;
-    procedure ExecUndo;
   public
     constructor Create(AForm: TFileForm); reintroduce;
     destructor Destroy; override;
@@ -1071,67 +1057,6 @@ begin
   Result := fForm.HasSearchHighlight;
 end;
 
-// IEditCommands implementation
-
-function TEditor.CanCopy: Boolean;
-begin
-  Result := not GetActiveSynEdit.Selections.IsEmpty or (GetActiveSynEdit.LineText <> '');
-end;
-
-function TEditor.CanCut: Boolean;
-begin
-  Result := (fForm <> nil) and not GetReadOnly;
-end;
-
-function TEditor.CanPaste: Boolean;
-begin
-  Result := (fForm <> nil) and GetActiveSynEdit.CanPaste;
-end;
-
-function TEditor.CanRedo: Boolean;
-begin
-  Result := (fForm <> nil) and fForm.SynEdit.CanRedo;
-end;
-
-function TEditor.CanSelectAll: Boolean;
-begin
-  Result := fForm <> nil;
-end;
-
-function TEditor.CanUndo: Boolean;
-begin
-  Result := (fForm <> nil) and fForm.SynEdit.CanUndo;
-end;
-
-procedure TEditor.ExecCopy;
-begin
-  if fForm <> nil then
-    GetActiveSynEdit.CopyToClipboard;
-end;
-
-procedure TEditor.ExecCut;
-begin
-  if fForm <> nil then
-    GetActiveSynEdit.CutToClipboard;
-end;
-
-procedure TEditor.ExecDelete;
-begin
-  if fForm <> nil then
-    GetActiveSynEdit.SelText := '';
-end;
-
-procedure TEditor.ExecPaste;
-begin
-  if fForm <> nil then
-    GetActiveSynEdit.PasteFromClipboard;
-end;
-
-procedure TEditor.ExecRedo;
-begin
-  if fForm <> nil then
-    fForm.SynEdit.Redo;
-end;
 
 procedure TEditor.ExecReload(Quiet: Boolean = False);
 var
@@ -1145,18 +1070,6 @@ begin
     if (BC.Line <= GetSynEdit.Lines.Count) then
       GetSynEdit.CaretXY := BC;
   end;
-end;
-
-procedure TEditor.ExecSelectAll;
-begin
-  if fForm <> nil then
-    GetActiveSynEdit.SelectAll;
-end;
-
-procedure TEditor.ExecUndo;
-begin
-  if fForm <> nil then
-    fForm.SynEdit.Undo;
 end;
 
 procedure TEditor.ExecuteSelection;
@@ -2038,7 +1951,6 @@ begin
   if AActive then
   begin
     GI_ActiveEditor := fEditor;
-    GI_EditCmds := fEditor;
     GI_FileCmds := fEditor;
     GI_SearchCmds := fEditor;
   end
@@ -2046,8 +1958,6 @@ begin
   begin
     if GI_ActiveEditor = IEditor(fEditor) then
       GI_ActiveEditor := nil;
-    if GI_EditCmds = IEditCommands(fEditor) then
-      GI_EditCmds := nil;
     if GI_FileCmds = IFileCommands(fEditor) then
       GI_FileCmds := nil;
     if GI_SearchCmds = ISearchCommands(fEditor) then
@@ -5044,6 +4954,11 @@ begin
   for i:= 0 to Lines.Count-1 do
     Lines[i]:= getFormatted(i+1, digits) + Lines[i];
   Result:= Lines;
+end;
+
+procedure TEditorForm.CopySelected;
+begin
+  Clipboard.AsText:= ActiveSynEdit.SelText;
 end;
 
 procedure TEditorForm.CopyRTF;

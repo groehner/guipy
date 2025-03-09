@@ -134,8 +134,8 @@ type
     procedure ExecCopy; virtual;
     procedure ExecPrint; virtual;
     procedure ExecPrintPreview; virtual;
-    procedure OpenFile(const AFileName: string);
     procedure ExecReload(Quiet: Boolean = False); virtual;
+    procedure OpenFile(const AFileName: string);
     procedure Translate; virtual;
   public
     fFileName: string;
@@ -409,7 +409,6 @@ begin
   if AActive then
   begin
     GI_ActiveFile := fFile;
-    //GI_EditCmds := fFile;
     GI_FileCmds := fFile;
     //GI_SearchCmds := fFile;
   end
@@ -417,8 +416,6 @@ begin
   begin
     if GI_ActiveFile = IFile(fFile) then
       GI_ActiveFile := nil;
-    //if GI_EditCmds = IEditCommands(fEditor) then
-      GI_EditCmds := nil;
     if GI_FileCmds = IFileCommands(fFile) then
       GI_FileCmds := nil;
     //if GI_SearchCmds = ISearchCommands(fFile) then

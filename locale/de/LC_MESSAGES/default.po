@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2025-03-04 11:14\n"
-"PO-Revision-Date: 2025-03-04 11:15+0100\n"
+"PO-Revision-Date: 2025-03-09 11:31+0100\n"
 "Last-Translator: Somebody <your.email@address.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -7655,7 +7655,7 @@ msgstr "GUI-Designer"
 #. FGUIDesigner..PopupMenu..MIToSource..Caption
 #: Main/UGUIDesigner.dfm:36
 msgid "to sourcecode"
-msgstr "in Quellcode umwandeln"
+msgstr "zum Quellcode"
 
 #. FGUIDesigner..PopupMenu..MIForeground..Caption
 #: Main/UGUIDesigner.dfm:42

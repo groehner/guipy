@@ -34,7 +34,7 @@ type
 
   TTabShape = (Rounded, Triangular);
 
-  TFGuiForm = class(TForm, IEditCommands)
+  TFGuiForm = class(TForm)
     procedure FormClose(Sender: TObject; var AAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormResize(Sender: TObject);
@@ -125,21 +125,6 @@ type
     function MakeHandler(Event: string): string;
     procedure DeleteEventHandler(const Event: string);
     function MakeBinding(Eventname: string): string;
-    // IEditCommands implementation
-    function CanCopy: Boolean;
-    function CanCut: Boolean;
-    function IEditCommands.CanDelete = CanCut;
-    function CanPaste: Boolean;
-    function CanRedo: Boolean;
-    function CanSelectAll: Boolean;
-    function CanUndo: Boolean;
-    procedure ExecCopy;
-    procedure ExecCut;
-    procedure ExecDelete;
-    procedure ExecPaste;
-    procedure ExecRedo;
-    procedure ExecSelectAll;
-    procedure ExecUndo;
     procedure EndOfResizeMoveDetected(var Msg: TMessage);
       message WM_EXITSIZEMOVE;
     procedure Paint; override;
@@ -601,80 +586,6 @@ begin
   if Partner.FrameType >= 3 then
     Binding := Copy(Binding, 1, Pos('(', Binding));
   Partner.DeleteBinding(Binding);
-end;
-
-{ --- IEditorCommands implementation ------------------------------------------- }
-
-function TFGuiForm.CanCopy: Boolean;
-begin
-  Result := True;
-end;
-
-function TFGuiForm.CanCut: Boolean;
-begin
-  Result := FGUIDesigner.ELDesigner.CanCut;
-end;
-
-function TFGuiForm.CanPaste: Boolean;
-begin
-  Result := FGUIDesigner.ELDesigner.CanPaste;
-end;
-
-function TFGuiForm.CanRedo: Boolean;
-begin
-  Result := False;
-end;
-
-function TFGuiForm.CanSelectAll: Boolean;
-begin
-  Result := True;
-end;
-
-function TFGuiForm.CanUndo: Boolean;
-begin
-  Result := False;
-end;
-
-procedure TFGuiForm.ExecCopy;
-var
-  Bitmap: TBitmap;
-begin
-  if FGUIDesigner.ELDesigner.CanCopy then
-    FGUIDesigner.CopyClick(Self)
-  else
-  begin
-    Bitmap := GetFormImage;
-    Clipboard.Assign(Bitmap);
-    FreeAndNil(Bitmap);
-  end;
-end;
-
-procedure TFGuiForm.ExecCut;
-begin
-  FGUIDesigner.CutClick(Self);
-end;
-
-procedure TFGuiForm.ExecDelete;
-begin
-  FGUIDesigner.MIDeleteClick(Self);
-end;
-
-procedure TFGuiForm.ExecPaste;
-begin
-  FGUIDesigner.PasteClick(Self);
-end;
-
-procedure TFGuiForm.ExecRedo;
-begin
-end;
-
-procedure TFGuiForm.ExecSelectAll;
-begin
-  FGUIDesigner.ELDesigner.SelectedControls.SelectAll;
-end;
-
-procedure TFGuiForm.ExecUndo;
-begin
 end;
 
 procedure TFGuiForm.Paint;
