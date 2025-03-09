@@ -244,7 +244,7 @@ const
   GeminiSettings: TLLMSettings = (
     EndPoint: 'https://generativelanguage.googleapis.com/v1beta';
     ApiKey: '';
-    Model: 'gemini-1.5-flash';
+    Model: 'gemini-2.0-flash';
     TimeOut: 20000;
     MaxTokens: 2000;
     Temperature: 1.0;
