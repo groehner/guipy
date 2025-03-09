@@ -1117,6 +1117,7 @@ type
     ELLMTemperature: TEdit;
     LChatTemperature: TLabel;
     EChatTemperature: TEdit;
+    cbAccessibilitySupport: TCheckBox;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1910,6 +1911,7 @@ begin
     CBDisplayFlowControl.Checked:= DisplayFlowControl.Enabled;
     CBDisplayFlowControlColor.Selected:= DisplayFlowControl.Color;
     CBIndentationGuide.Checked:= IndentGuides.Visible;
+    CBAccessibilitySupport.Checked:= AccessibilitySupport;
     CBAutoCompleteBrackets.Checked:= AutoCompleteBrackets;
     CBAutoHideFindToolbar.Checked:= AutoHideFindToolbar;
     CBAutoReloadChangedFiles.Checked:= AutoReloadChangedFiles;
@@ -2295,6 +2297,7 @@ begin
     DisplayFlowControl.Enabled:= CBDisplayFlowControl.Checked;
     DisplayFlowControl.Color:= CBDisplayFlowControlColor.Selected;
     IndentGuides.Visible:= CBIndentationGuide.Checked;
+    AccessibilitySupport := CBAccessibilitySupport.Checked;
     AutoCompleteBrackets:= CBAutoCompleteBrackets.Checked;
     AutoHideFindToolbar:= CBAutoHideFindToolbar.Checked;
     AutoReloadChangedFiles:= CBAutoReloadChangedFiles.Checked;

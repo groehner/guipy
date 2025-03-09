@@ -152,6 +152,7 @@ type
     fAutoRestart: Boolean;
     fLoggingEnabled: Boolean;
     fScrollbarAnnotation: Boolean;
+    FAccessibilitySupport: Boolean;
     fUIContentFontSize: Integer;
     fPreferFreeThreaded: Boolean;
     fTrackChanges: TSynTrackChanges;
@@ -364,6 +365,7 @@ type
     property AutoRestart: Boolean read fAutoRestart write fAutoRestart default True;
     property LoggingEnabled: Boolean read fLoggingEnabled write fLoggingEnabled default False;
     property ScrollbarAnnotation: Boolean read fScrollbarAnnotation write fScrollbarAnnotation default True;
+    property AccessibilitySupport: Boolean read FAccessibilitySupport write FAccessibilitySupport default True;
     property UIContentFontSize: Integer read fUIContentFontSize write fUIContentFontSize default 9;
     property PreferFreeThreaded: Boolean read fPreferFreeThreaded write fPreferFreeThreaded default False;
 
@@ -581,6 +583,7 @@ begin
       Self.fAutoRestart := AutoRestart;
       Self.fLoggingEnabled := LoggingEnabled;
       Self.fScrollbarAnnotation := ScrollbarAnnotation;
+      Self.FAccessibilitySupport := AccessibilitySupport;
       Self.fUIContentFontSize := UIContentFontSize;
       Self.fPreferFreeThreaded := PreferFreeThreaded;
     end
@@ -693,6 +696,7 @@ begin
   fAutoRestart := True;
   fLoggingEnabled := False;
   fScrollbarAnnotation := True;
+  FAccessibilitySupport := True;
   fUIContentFontSize := 9;
   fCodeFolding := TSynCodeFolding.Create;
   fCodeFolding.GutterShapeSize := 9;  // default value
@@ -1251,6 +1255,10 @@ begin
   EditorOptions.SelectedColor.Assign(PyIDEOptions.SelectionColor);
   EditorOptions.IndentGuides.Assign(PyIDEOptions.IndentGuides);
   EditorOptions.DisplayFlowControl.Assign(PyIDEOptions.DisplayFlowControl);
+  if PyIDEOptions.AccessibilitySupport then
+    EditorOptions.Options := EditorOptions.Options + [eoAccessibility]
+  else
+    EditorOptions.Options := EditorOptions.Options - [eoAccessibility];
   EditorSearchOptions.SearchTextAtCaret := PyIDEOptions.SearchTextAtCaret;
 end;
 

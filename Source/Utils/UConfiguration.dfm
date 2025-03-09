@@ -202,7 +202,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 641
         Height = 435
-        ActivePage = PLLMChat
+        ActivePage = POptions1
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -974,6 +974,14 @@ object FConfiguration: TFConfiguration
             Height = 17
             Caption = 'Indentation lines'
             TabOrder = 22
+          end
+          object cbAccessibilitySupport: TCheckBox
+            Left = 354
+            Top = 88
+            Width = 215
+            Height = 17
+            Caption = 'Accessibility support'
+            TabOrder = 23
           end
         end
         object POptions2: TTabSheet
