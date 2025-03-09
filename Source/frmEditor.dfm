@@ -42,7 +42,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 516
+        CustomWidth = 379
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -65,8 +65,6 @@ object EditorForm: TEditorForm
         Height = 546
         Caption = 'Source'
         ImageIndex = -1
-        ExplicitTop = 30
-        ExplicitHeight = 541
         TabItem = 'tabSource'
         object SynEdit: TSynEdit
           Left = 48
