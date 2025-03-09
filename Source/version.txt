@@ -1,3 +1,15 @@
+6.06, 2025.03.09
+bugfix visibility view menu
+bugfix chat window
+bugfix handle size in gui form
+bugfix Qt checkbox naming
+bugfix show Tk or Qt widgets tabs
+improved layout management
+bugfix font size of uml interactive window
+LLM Grok support
+configuration option for editor accessibility support
+gemini-2.0-flash available
+
 6.05, 2025.03.04
 bugfix for "Check for updates"
 
