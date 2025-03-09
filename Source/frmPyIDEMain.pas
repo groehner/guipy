@@ -593,7 +593,7 @@
 // TODO: Code helpers, automatically fill the self parameter in methods
 
 // TODO: UML Editor View
-// TODO: Refactorings using rope
+// TODO: Refactorings
 
 // TODO: Plugin architecture
 // TODO Package as an Application Scripter Component
