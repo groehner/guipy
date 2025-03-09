@@ -1138,9 +1138,12 @@ var
   end;
 
 begin
-  KeyStrokes := AProperty as TSynEditKeyStrokes;
-  ReadAddedKeystrokes;
-  ReadRemovedKeystrokes;
+  if AStorage.PathExists(APath) then
+  begin
+    KeyStrokes := AProperty as TSynEditKeyStrokes;
+    ReadAddedKeystrokes;
+    ReadRemovedKeystrokes;
+  end;
 end;
 
 {$ENDREGION 'AppStorage handlers' }
