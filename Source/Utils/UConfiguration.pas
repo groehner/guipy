@@ -5913,6 +5913,8 @@ begin
     0: Settings := TempProviders.OpenAI;
     1: Settings := TempProviders.Gemini;
     2: Settings := TempProviders.Ollama;
+    3: Settings := TempProviders.DeepSeek;
+    4: Settings := TempProviders.Grok;
   end;
   EEndPoint.text:= Settings.EndPoint;
   EModel.text:= Settings.Model;
@@ -5937,9 +5939,11 @@ begin
     value:= 20;
   Settings.Timeout:= value*1000;
   case CBProvider.ItemIndex of
-    0: TempProviders.OpenAI:= Settings;
-    1: TempProviders.Gemini:= Settings;
-    2: TempProviders.Ollama:= Settings;
+    0: TempProviders.OpenAI := Settings;
+    1: TempProviders.Gemini := Settings;
+    2: TempProviders.Ollama := Settings;
+    3: TempProviders.DeepSeek := Settings;
+    4: TempProviders.Grok := Settings;
   end;
 end;
 
@@ -5950,6 +5954,8 @@ begin
     0: Settings := TempChatProviders.OpenAI;
     1: Settings := TempChatProviders.Gemini;
     2: Settings := TempChatProviders.Ollama;
+    3: Settings := TempChatProviders.DeepSeek;
+    4: Settings := TempChatProviders.Grok;
   end;
   EChatEndPoint.text:= Settings.EndPoint;
   EChatModel.text:= Settings.Model;
@@ -5977,6 +5983,8 @@ begin
     0: TempChatProviders.OpenAI:= Settings;
     1: TempChatProviders.Gemini:= Settings;
     2: TempChatProviders.Ollama:= Settings;
+    3: TempChatProviders.DeepSeek:= Settings;
+    4: TempChatProviders.Grok:= Settings;
   end;
 end;
 

@@ -202,7 +202,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 641
         Height = 435
-        ActivePage = PClassModeler
+        ActivePage = PLLMChat
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -5876,7 +5876,8 @@ object FConfiguration: TFConfiguration
               'OpenAI'
               'Gemini'
               'Ollama'
-              'DeepSeek')
+              'DeepSeek'
+              'Grok')
           end
           object EEndPoint: TEdit
             Left = 160
@@ -6005,7 +6006,8 @@ object FConfiguration: TFConfiguration
               'OpenAI'
               'Gemini'
               'Ollama'
-              'DeepSeek')
+              'DeepSeek'
+              'Grok')
           end
           object EChatEndPoint: TEdit
             Left = 160

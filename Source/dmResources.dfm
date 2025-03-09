@@ -245,6 +245,10 @@ object ResourcesDataModule: TResourcesDataModule
           '        except:'
           '            return "Unknown type"'
           ''
+          '    def is_mapping(self, ob):'
+          '        import collections.abc'
+          '        return isinstance(ob, collections.abc.Mapping)'
+          ''
           '    def objectinfo(self, ob):'
           '        res = 1'
           '        try:'
@@ -265,7 +269,7 @@ object ResourcesDataModule: TResourcesDataModule
           '                res = res | 16'
           '            elif inspect.isclass(ob):'
           '                res = res | 32'
-          '            elif isinstance(ob, dict):'
+          '            elif isinstance(ob, dict) or self.is_mapping(ob):'
           '                res = res | 64'
           '            return res'
           '        except:'
@@ -289,7 +293,9 @@ object ResourcesDataModule: TResourcesDataModule
           '        try:'
           '            if sequenceitems and isinstance(ob, (list, tuple)):'
           '                return len(ob)'
-          '            elif dictitems and isinstance(ob, dict):'
+          
+            '            elif dictitems and (isinstance(ob, dict) or self.is_' +
+            'mapping(ob)):'
           '                return len(ob)'
           
             '            elif not expandcommontypes and (self.objecttype(ob) ' +
@@ -307,12 +313,14 @@ object ResourcesDataModule: TResourcesDataModule
           '        if sequenceitems and isinstance(ob, (list, tuple)):'
           '            for i in range(len(ob)):'
           '                result[str(i)] = ob[i]'
-          '        elif dictitems and isinstance(ob, dict):'
-          '            for (i,j) in ob.items():'
-          '                member = j'
-          '                if isinstance(member, str):'
-          '                    member = self.saferepr(member)[1:-1]'
-          '                result[self.safestr(i)] = member'
+          
+            '        elif dictitems and (isinstance(ob, dict) or self.is_mapp' +
+            'ing(ob)):'
+          '            for k in ob:'
+          '                v = ob[k]'
+          '                if isinstance(v, str):'
+          '                    v = self.saferepr(v)[1:-1]'
+          '                result[self.safestr(k)] = v'
           
             '        elif not expandcommontypes and (self.objecttype(ob) in s' +
             'elf.commontypes):'
@@ -1676,6 +1684,10 @@ object ResourcesDataModule: TResourcesDataModule
           '        except:'
           '            return "<unprintable %s object>" % type(ob).__name__'
           ''
+          '    def is_mapping(self, ob):'
+          '        import collections.abc'
+          '        return isinstance(ob, collections.abc.Mapping)'
+          ''
           
             '    def membercount(self, ob, dictitems = False, expandcommontyp' +
             'es = True, sequenceitems = False):'
@@ -1688,7 +1700,9 @@ object ResourcesDataModule: TResourcesDataModule
           '        try:'
           '            if sequenceitems and isinstance(ob, (list, tuple)):'
           '                return len(ob)'
-          '            elif dictitems and isinstance(ob, dict):'
+          
+            '            elif dictitems and (isinstance(ob, dict) or self.is_' +
+            'mapping(ob)):'
           '                return len(ob)'
           
             '            elif not expandcommontypes and (self.objecttype(ob) ' +
@@ -1706,12 +1720,14 @@ object ResourcesDataModule: TResourcesDataModule
           '        if sequenceitems and isinstance(ob, (list, tuple)):'
           '            for i in range(len(ob)):'
           '                result[str(i)] = ob[i]'
-          '        elif dictitems and isinstance(ob, dict):'
-          '            for (i,j) in ob.items():'
-          '                member = j'
-          '                if isinstance(member, str):'
-          '                    member = self.saferepr(member)[1:-1]'
-          '                result[self.safestr(i)] = member'
+          
+            '        elif dictitems and (isinstance(ob, dict) or self.is_mapp' +
+            'ing(ob)):'
+          '            for k in ob:'
+          '                v = ob[k]'
+          '                if isinstance(v, str):'
+          '                    v = self.saferepr(v)[1:-1]'
+          '                result[self.safestr(k)] = v'
           
             '        elif not expandcommontypes and (self.objecttype(ob) in s' +
             'elf.commontypes):'
@@ -1991,7 +2007,7 @@ object ResourcesDataModule: TResourcesDataModule
           '                res = res | 16'
           '            elif inspect.isclass(ob):'
           '                res = res | 32'
-          '            elif isinstance(ob, dict):'
+          '            elif isinstance(ob, dict) or self.is_mapping(ob):'
           '                res = res | 64'
           '            return res'
           '        except:'

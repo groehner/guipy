@@ -31,8 +31,10 @@ type
   TLLMProvider = (
     llmProviderOpenAI,
     llmProviderGemini,
+    llmProviderOllama,
     llmProviderDeepSeek,
-    llmProviderOllama);
+    llmProviderGrok
+    );
 
   TEndpointType = (
     etUnsupported,
@@ -66,6 +68,7 @@ type
   TLLMProviders = record
     Provider: TLLMProvider;
     DeepSeek: TLLMSettings;
+    Grok: TLLMSettings;
     OpenAI: TLLMSettings;
     Gemini: TLLMSettings;
     Ollama: TLLMSettings;
@@ -94,9 +97,10 @@ type
   private
     fProvider: integer;
     fOpenAI: TLLMSettingsClass;
-    fDeepSeek: TLLMSettingsClass;
     fGemini: TLLMSettingsClass;
     fOllama: TLLMSettingsClass;
+    fDeepSeek: TLLMSettingsClass;
+    fGrok: TLLMSettingsClass;
   public
     constructor Create;
     destructor Destroy; override;
@@ -105,9 +109,10 @@ type
   published
     property Provider: Integer read fProvider write fProvider;
     property OpenAI: TLLMSettingsClass read fOpenAI write fOpenAI;
-    property DeepSeek: TLLMSettingsClass read fDeepSeek write fDeepSeek;
     property Gemini: TLLMSettingsClass read fGemini write fGemini;
     property Ollama: TLLMSettingsClass read fOllama write fOllama;
+    property DeepSeek: TLLMSettingsClass read fDeepSeek write fDeepSeek;
+    property Grok: TLLMSettingsClass read fGrok write fGrok;
   end;
 
   TQAItem = record
@@ -258,6 +263,24 @@ const
     EndPoint: 'https://api.deepseek.com/beta/completions';
     ApiKey: '';
     Model: 'deepseek-chat';
+    TimeOut: 20000;
+    MaxTokens: 1000;
+    Temperature: 0;
+    SystemPrompt: '');
+
+  GrokChatSettings: TLLMSettings = (
+    EndPoint: 'https://api.x.ai/v1/chat/completions';
+    ApiKey: '';
+    Model: 'grok-2-latest';
+    TimeOut: 20000;
+    MaxTokens: 3000;
+    Temperature: 1.0;
+    SystemPrompt: DefaultSystemPrompt);
+
+  GrokCompletionSettings: TLLMSettings = (
+    EndPoint: 'https://api.x.ai/v1/completions';
+    ApiKey: '';
+    Model: 'grok-2-latest';
     TimeOut: 20000;
     MaxTokens: 1000;
     Temperature: 0;
@@ -443,6 +466,7 @@ function TLLMBase.GetLLMSettings: TLLMSettings;
 begin
   case Providers.Provider of
     llmProviderDeepSeek: Result := Providers.DeepSeek;
+    llmProviderGrok: Result := Providers.Grok;
     llmProviderOpenAI: Result := Providers.OpenAI;
     llmProviderOllama: Result := Providers.Ollama;
     llmProviderGemini: Result := Providers.Gemini;
@@ -549,6 +573,7 @@ begin
   inherited;
   Providers.Provider := llmProviderOpenAI;
   Providers.DeepSeek := DeepSeekChatSettings;
+  Providers.Grok := GrokChatSettings;
   Providers.OpenAI := OpenaiChatSettings;
   Providers.Ollama := OllamaChatSettings;
   Providers.Gemini := GeminiSettings;
@@ -722,7 +747,9 @@ begin
   Result := etUnsupported;
   if EndPoint.Contains('googleapis') then
     Result := etGemini
-  else if EndPoint.Contains('openai') or EndPoint.Contains('deepseek') then
+  else if EndPoint.Contains('openai') or EndPoint.Contains('deepseek') or
+    EndPoint.Contains('x.ai')
+  then
   begin
     if EndPoint.EndsWith('chat/completions') then
       Result := etOpenAIChatCompletion
@@ -792,6 +819,7 @@ begin
   OnLLMError := ShowError;
   Providers.Provider := llmProviderOpenAI;
   Providers.DeepSeek := DeepSeekCompletionSettings;
+  Providers.Grok := GrokCompletionSettings;
   Providers.OpenAI := OpenaiCompletionSettings;
   Providers.Ollama := OllamaCompletionSettings;
   Providers.Gemini := GeminiSettings;
@@ -1047,17 +1075,19 @@ end;
 constructor TLLMProvidersClass.Create;
 begin
   OpenAI := TLLMSettingsClass.Create;
-  DeepSeek := TLLMSettingsClass.Create;
   Gemini := TLLMSettingsClass.Create;
   Ollama := TLLMSettingsClass.Create;
+  DeepSeek := TLLMSettingsClass.Create;
+  Grok := TLLMSettingsClass.Create;
 end;
 
 destructor TLLMProvidersClass.Destroy;
 begin
   OpenAI.Free;
-  DeepSeek.Free;
   Gemini.Free;
   Ollama.Free;
+  DeepSeek.Free;
+  Grok.Free;
 end;
 
 procedure TLLMProvidersClass.setFromProviders(Providers: TLLMProviders);
@@ -1077,6 +1107,8 @@ begin
   setFromProvider(OpenAI, Providers.OpenAI);
   setFromProvider(Gemini, Providers.Gemini);
   setFromProvider(Ollama, Providers.Ollama);
+  setFromProvider(DeepSeek, Providers.DeepSeek);
+  setFromProvider(Grok, Providers.Grok);
 end;
 
 procedure TLLMProvidersClass.setToProviders(var Providers: TLLMProviders);
@@ -1096,6 +1128,8 @@ begin
   setToProvider(OpenAI, Providers.OpenAI);
   setToProvider(Gemini, Providers.Gemini);
   setToProvider(Ollama, Providers.Ollama);
+  setToProvider(DeepSeek, Providers.DeepSeek);
+  setToProvider(Grok, Providers.Grok);
 end;
 
 initialization
