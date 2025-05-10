@@ -67,11 +67,11 @@ type
 
   TLLMProviders = record
     Provider: TLLMProvider;
-    DeepSeek: TLLMSettings;
-    Grok: TLLMSettings;
     OpenAI: TLLMSettings;
     Gemini: TLLMSettings;
     Ollama: TLLMSettings;
+    DeepSeek: TLLMSettings;
+    Grok: TLLMSettings;
   end;
 
   TLLMSettingsClass = class(TPersistent)
@@ -268,24 +268,6 @@ const
     Temperature: 0;
     SystemPrompt: '');
 
-  GrokChatSettings: TLLMSettings = (
-    EndPoint: 'https://api.x.ai/v1/chat/completions';
-    ApiKey: '';
-    Model: 'grok-2-latest';
-    TimeOut: 20000;
-    MaxTokens: 3000;
-    Temperature: 1.0;
-    SystemPrompt: DefaultSystemPrompt);
-
-  GrokCompletionSettings: TLLMSettings = (
-    EndPoint: 'https://api.x.ai/v1/completions';
-    ApiKey: '';
-    Model: 'grok-2-latest';
-    TimeOut: 20000;
-    MaxTokens: 1000;
-    Temperature: 0;
-    SystemPrompt: '');
-
   OllamaChatSettings: TLLMSettings = (
     EndPoint: 'http://localhost:11434/api/chat';
     ApiKey: '';
@@ -306,6 +288,24 @@ const
     MaxTokens: 1000;
     Temperature: 0.2;
     SystemPrompt: DefaultSystemPrompt);
+
+  GrokChatSettings: TLLMSettings = (
+    EndPoint: 'https://api.x.ai/v1/chat/completions';
+    ApiKey: '';
+    Model: 'grok-2-latest';
+    TimeOut: 20000;
+    MaxTokens: 3000;
+    Temperature: 1.0;
+    SystemPrompt: DefaultSystemPrompt);
+
+  GrokCompletionSettings: TLLMSettings = (
+    EndPoint: 'https://api.x.ai/v1/completions';
+    ApiKey: '';
+    Model: 'grok-2-latest';
+    TimeOut: 20000;
+    MaxTokens: 1000;
+    Temperature: 0;
+    SystemPrompt: '');
 
 implementation
 
@@ -465,11 +465,11 @@ end;
 function TLLMBase.GetLLMSettings: TLLMSettings;
 begin
   case Providers.Provider of
-    llmProviderDeepSeek: Result := Providers.DeepSeek;
-    llmProviderGrok: Result := Providers.Grok;
     llmProviderOpenAI: Result := Providers.OpenAI;
     llmProviderOllama: Result := Providers.Ollama;
     llmProviderGemini: Result := Providers.Gemini;
+    llmProviderDeepSeek: Result := Providers.DeepSeek;
+    llmProviderGrok: Result := Providers.Grok;
   end;
 end;
 
@@ -572,12 +572,11 @@ constructor TLLMChat.Create;
 begin
   inherited;
   Providers.Provider := llmProviderOpenAI;
-  Providers.DeepSeek := DeepSeekChatSettings;
-  Providers.Grok := GrokChatSettings;
   Providers.OpenAI := OpenaiChatSettings;
   Providers.Ollama := OllamaChatSettings;
   Providers.Gemini := GeminiSettings;
-
+  Providers.DeepSeek := DeepSeekChatSettings;
+  Providers.Grok := GrokChatSettings;
   ChatTopics := [Default(TChatTopic)];
   ActiveTopicIndex := 0;
 end;
@@ -783,7 +782,6 @@ begin
   end;
   Result := svValid;
 end;
-
 
 { TLLMAssistant }
 

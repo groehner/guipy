@@ -142,6 +142,7 @@ type
   TStrWhile = class(TStrElement)
   private
     procedure Draw; override;
+    procedure DrawContent(x, y: Integer); override;
     procedure MoveRight(w: Integer); override;
     procedure MoveDown(h: Integer); override;
     procedure Resize(x, y: Integer); override;
@@ -168,6 +169,7 @@ type
   TStrDoWhile = class(TStrWhile)
   private
     procedure Draw; override;
+    procedure DrawContent(x, y: Integer); override;
     procedure Resize(x, y: Integer); override;
   public
     constructor Create(aList: TStrList);
@@ -1085,8 +1087,8 @@ begin
     Brush.Style:= bsClear;
     h:= then_elem.rct.Top - getLineHeight + TOP_BOTTOM;
     w:= TextWidth(GuiPyLanguageOptions.No);
-    TextOut(rct.Left+4, h, GuiPyLanguageOptions.Yes);
-    TextOut(rct.Right-w-2, h+2, GuiPyLanguageOptions.No);
+    TextOut(rct.Left+4, h+4, GuiPyLanguageOptions.Yes);
+    TextOut(rct.Right-w-2, h+4, GuiPyLanguageOptions.No);
     Brush.Style:= bsSolid;
     Brush.Color:= BrushColor;
     Font.Size:= Font.Size + 2;
@@ -1466,6 +1468,16 @@ begin
   end;
 end;
 
+procedure TStrWhile.DrawContent(x, y: Integer);
+begin
+  if text = '' then begin
+    x := (Rct.Left + Rct.Right + 1) div 2;
+    y := (Rct.Top + do_elem.Rct.Top + 1) div 2;
+    DrawCircle(x, y, (GetLineHeight - 10) div 2);
+  end else
+    DrawLines(x, y, list.LineHeight);
+end;
+
 procedure TStrWhile.MoveRight(w: Integer);
   var tmp: TStrElement;
 begin
@@ -1686,6 +1698,18 @@ begin
       tmp:= tmp.Next;
     end;
   end;
+end;
+
+procedure TStrDoWhile.DrawContent(x, y: Integer);
+begin
+  if Text = '' then
+  begin
+    x := (Rct.Left + Rct.Right + 1) div 2;
+    y := (Rct.Bottom + do_elem.Rct.Bottom + 1) div 2;
+    DrawCircle(x, y, (GetLineHeight - 10) div 2);
+  end
+  else
+    DrawLines(x, y, GetLineHeight);
 end;
 
 function TStrDoWhile.getHeadHeight: Integer; 

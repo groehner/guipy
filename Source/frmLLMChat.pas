@@ -1,4 +1,13 @@
-﻿unit frmLLMChat;
+﻿{ -----------------------------------------------------------------------------
+  Unit Name: ULLMChatForm
+  Author:    Kiriakos Vlahos, Gerhard Röhner
+  Date:      17-May-2024
+  Purpose:   The Chat window serves the purpose of interacting with
+             Large Language Models (LLMs) withoug leaving GuiPy.
+  History:
+  -----------------------------------------------------------------------------}
+
+unit frmLLMChat;
 
 interface
 
