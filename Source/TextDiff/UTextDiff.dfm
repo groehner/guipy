@@ -26,7 +26,6 @@ object FTextDiff: TFTextDiff
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
-    ExplicitWidth = 792
     object TBClose: TToolButton
       Left = 4
       Top = 0
@@ -152,12 +151,10 @@ object FTextDiff: TFTextDiff
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 792
-    ExplicitHeight = 482
     object Splitter: TSplitter
       Left = 315
       Top = 0
-      Height = 483
+      Height = 481
       OnMoved = SplitterMoved
       ExplicitHeight = 214
     end
@@ -165,11 +162,10 @@ object FTextDiff: TFTextDiff
       Left = 0
       Top = 0
       Width = 315
-      Height = 483
+      Height = 481
       Align = alLeft
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitHeight = 482
       object PCaptionLeft: TPanel
         Left = 0
         Top = 0
@@ -184,23 +180,20 @@ object FTextDiff: TFTextDiff
     object PRight: TPanel
       Left = 318
       Top = 0
-      Width = 478
-      Height = 483
+      Width = 470
+      Height = 481
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitWidth = 474
-      ExplicitHeight = 482
       object PCaptionRight: TPanel
         Left = 0
         Top = 0
-        Width = 478
+        Width = 470
         Height = 20
         Align = alTop
         Alignment = taLeftJustify
         BevelOuter = bvLowered
         TabOrder = 0
-        ExplicitWidth = 474
       end
     end
   end
@@ -209,8 +202,6 @@ object FTextDiff: TFTextDiff
     Top = 507
     Width = 788
     Height = 25
-    ExplicitTop = 508
-    ExplicitWidth = 792
     object liLineColumn: TSpTBXLabelItem
       Caption = '0000: 000'
       Alignment = taCenter
@@ -251,6 +242,7 @@ object FTextDiff: TFTextDiff
     end
   end
   object PopUpEditor: TSpTBXPopupMenu
+    OnPopup = PopUpEditorPopup
     Left = 174
     Top = 98
     object MIUndo: TSpTBXItem
@@ -283,6 +275,12 @@ object FTextDiff: TFTextDiff
       Caption = 'Close'
       ShortCut = 16499
       OnClick = MICloseClick
+    end
+    object SpTBXSeparatorItem2: TSpTBXSeparatorItem
+    end
+    object MIOpenFile: TSpTBXItem
+      Caption = 'Open file'
+      OnClick = MIOpenFileClick
     end
   end
   object vilTextDiffLight: TVirtualImageList

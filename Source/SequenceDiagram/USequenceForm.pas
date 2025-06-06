@@ -61,6 +61,8 @@ type
     vilPopupLight: TVirtualImageList;
     vilToolbarDark: TVirtualImageList;
     vilToolbarLight: TVirtualImageList;
+    SpTBXSeparatorItem2: TSpTBXSeparatorItem;
+    MIPopupCopyAsPicture: TSpTBXItem;
     procedure FormCreate(Sender: TObject); override;
     procedure FormClose(Sender: TObject; var aAction: TCloseAction); override;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -89,6 +91,7 @@ type
     procedure PopupMenuLifeLineAndSequencePanelPopup(Sender: TObject);
     procedure EditMemoChange(Sender: TObject);
     procedure SequenceScrollboxResize(Sender: TObject);
+    procedure MIPopupCopyAsPictureClick(Sender: TObject);
   private
     EditMemo: TMemo;
     LifeLines: TList;
@@ -120,13 +123,13 @@ type
     procedure AddLifeline(const Participant: string);
     procedure AddConnection(const Connection: string);
     procedure setPanelFont(aFont: TFont);
-    procedure TranslateDiagram;
+    procedure MoveDiagram;
     procedure CalculateXPositions;
     procedure CalculateDiagram;
     procedure SortLifeLines;
     procedure prepareMethod(const aMethod: string);
     function prepareParticipant(const participant: string): string;
-    function getBitmap: TBitmap;
+    function GetSequenceDiagramAsBitmap: TBitmap;
     procedure ChangeStyle;
     function getMaxLifelineHeight: Integer;
     function getMinLifelineTop: Integer;
@@ -457,6 +460,13 @@ begin
   FConfiguration.OpenAndShowPage('Sequence diagram');
 end;
 
+procedure TFSequenceForm.MIPopupCopyAsPictureClick(Sender: TObject);
+begin
+  var Bitmap:= GetSequenceDiagramAsBitmap;
+  Clipboard.Assign(Bitmap);
+  FreeAndNil(Bitmap);
+end;
+
 procedure TFSequenceForm.MIPopupCreateObjectClick(Sender: TObject);
   var LifeLine1, LifeLine2: TLifeLine; Attributes: TConnectionAttributes;
       Connections: TList; Conn: TConnection;
@@ -572,55 +582,43 @@ begin
   end;
 end;
 
-function TFSequenceForm.getBitmap: TBitmap;
-  var aBitmap: TBitmap;
-      w, h: Integer;
+function TFSequenceForm.GetSequenceDiagramAsBitmap: TBitmap;
 begin
-  SequencePanel.GetDiagramSize(w, h);
-  aBitmap:= TBitmap.Create;
-  aBitmap.Width:= w;
-  aBitmap.Height:= h;
-  aBitmap.Canvas.Lock;
-  try
-    SequencePanel.PaintTo(aBitmap.Canvas, 0, 0);
-  finally
-    aBitmap.Canvas.Unlock;
-  end;
-  Result:= aBitmap;
+  SequencePanel.ChangeStyle(True);
+  var EnclosingRect:= SequencePanel.GetEnclosingRect;
+  Result := TBitmap.Create;
+  Result.Width := EnclosingRect.Right - EnclosingRect.Left + 2;
+  Result.Height := EnclosingRect.Bottom - EnclosingRect.Top + 2;
+  Result.Canvas.Lock;
+  SequencePanel.PaintTo(Result.Canvas.Handle, -EnclosingRect.Left + 1, -EnclosingRect.Top + 1);
+  Result.Canvas.Unlock;
+  SequencePanel.ChangeStyle(False);
 end;
 
 procedure TFSequenceForm.Print;
-  var aBitmap: TBitmap;
 begin
-  aBitmap:= getBitmap;
-  try
-    PrintBitmap(aBitmap, PixelsPerInch);
-  finally
-    FreeAndNil(aBitmap);
-  end;
+  var
+  Bitmap := GetSequenceDiagramAsBitmap;
+  PrintBitmap(Bitmap, PixelsPerInch);
+  FreeAndNil(Bitmap);
 end;
 
 procedure TFSequenceForm.CopyToClipboard;
-  var aBitmap: TBitmap;
 begin
-  aBitmap:= getBitmap;
-  try
-    Clipboard.Assign(aBitmap);
-  finally
-    FreeAndNil(aBitmap);
-  end;
+  var
+  Bitmap := GetSequenceDiagramAsBitmap;
+  Clipboard.Assign(Bitmap);
+  FreeAndNil(Bitmap);
 end;
 
 procedure TFSequenceForm.DoExport;
-  var aBitmap: TBitmap;
 begin
-  aBitmap:= getBitmap;
-  try
-    PyIDEMainForm.DoExport(Pathname, aBitmap);
-  finally
-    FreeAndNil(aBitmap);
-    if canFocus then SetFocus;
-  end;
+  var
+  Bitmap := GetSequenceDiagramAsBitmap;
+  PyIDEMainForm.DoExport(Pathname, Bitmap);
+  FreeAndNil(Bitmap);
+  if CanFocus then
+    SetFocus;
 end;
 
 function TFSequenceForm.CanCopy: Boolean;
@@ -850,7 +848,7 @@ begin
   until ok;
 end;
 
-procedure TFSequenceForm.TranslateDiagram;
+procedure TFSequenceForm.MoveDiagram;
   var i, delta: Integer;
 begin
   delta:= getMinLifelineLeft - minDist;
@@ -867,16 +865,14 @@ end;
 
 procedure TFSequenceForm.MIPopupNewLayoutClick(Sender: TObject);
 begin
-  SequencePanel.isLocked:= True;
-  SequencePanel.Clear;
-  SortLifeLines;
-  TranslateDiagram;
-  SequencePanel.isLocked:= False;
-  CalculateDiagram;
-  SequenceScrollbox.HorzScrollBar.Position:= 0;
-  SequenceScrollbox.VertScrollBar.Position:= 0;
-  MIPopupRefreshClick(Self);
-  Modified:= True;
+  SequencePanel.IsLocked := True;
+  SortLifelines;
+  CalculateXPositions;
+  MoveDiagram;
+  SequenceScrollbox.HorzScrollBar.Position := 0;
+  SequenceScrollbox.VertScrollBar.Position := 0;
+  SequencePanel.IsLocked := False;
+  SequencePanel.ShowAll;
 end;
 
 procedure TFSequenceForm.TBZoomInClick(Sender: TObject);
@@ -1213,15 +1209,7 @@ begin
 end;
 
 procedure TFSequenceForm.ChangeStyle;
-  var Details: TThemedElementDetails; Color: TColor;
 begin
-  if StyleServices.IsSystemStyle then begin
-    SequencePanel.Color:= clWhite;
-  end else begin
-    Details:= StyleServices.GetElementDetails(tbsBackground);
-    StyleServices.GetElementColor(Details, ecFillColor, Color);
-    SequencePanel.Color:= Color;
-  end;
   if IsStyledWindowsColorDark then begin
     SequenceToolbar.Images:= vilToolbarDark;
     PopupMenuLifeLineAndSequencePanel.Images:= vilToolbarDark;
@@ -1231,6 +1219,7 @@ begin
     PopupMenuLifeLineAndSequencePanel.Images:= vilToolbarLight;
     PopupMenuConnection.Images:= vilPopupLight;
   end;
+  SequencePanel.ChangeStyle;
 end;
 
 function TFSequenceForm.getMaxLifelineHeight: Integer;

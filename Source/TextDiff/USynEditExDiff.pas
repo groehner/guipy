@@ -1,115 +1,141 @@
-﻿{-------------------------------------------------------------------------------
- Unit:     USynEditExDiff
- Author:   Gerhard Röhner
- Date:     2011
- Purpose:  SynEdit descendent for TextDiff
--------------------------------------------------------------------------------}
+﻿{ -------------------------------------------------------------------------------
+  Unit:     USynEditExDiff
+  Author:   Gerhard Röhner
+  Date:     2011
+  Purpose:  SynEdit descendent for TextDiff
+  ------------------------------------------------------------------------------- }
 
 unit USynEditExDiff;
 
 interface
 
-uses Classes, Graphics, ExtCtrls, Forms, SynEdit, SynEditTextBuffer;
+uses
+  Classes,
+  Graphics,
+  ExtCtrls,
+  Forms,
+  SynEdit,
+  SynEditTextBuffer;
 
 type
 
   TLineObj = class
+  private
+    FBackClr: TColor;
+    FSpezial: Boolean;
+    FTag: LongInt;
   public
-    Spezial: Boolean;
-    BackClr: TColor;
-    Tag: longint;
+    property BackClr: TColor read FBackClr write FBackClr;
+    property Spezial: Boolean read FSpezial write FSpezial;
+    property Tag: LongInt read FTag write FTag;
   end;
 
-  TSynEditExDiff = class (TSynEdit)
-    private
-      myOwner: TComponent;
-      fCurrLongestLineLen: Integer; //needed for horizontal scrollbar
-      fLineModClr: TColor;
-      fYellowGray: TColor;
-      fSilveryGray: TColor;
-      ModifiedStrs: array[Boolean] of string;
-      InsertModeStrs: array[Boolean] of string;
-      procedure DoExit1(Sender: TObject);
-      procedure CodeEditKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-      procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
-      function DoSaveFile: Boolean;
-      procedure SetHighlighter;
-      procedure DeleteObjects(from, _to: Integer);
-      procedure CreateObjects(from, _to, aTag: Integer); overload;
-      function EncodingAsString(const aEncoding: string): string;
-    public
-      Encoding: string;   // ANSI, UTF-8, UTF-16
-      LineBreak: string;  // Windows, Unix, Mac
-      Nr: Integer;
-      PCaption: TPanel;
-      Pathname: string;
-      WithColoredLines: Boolean;
+  TSynEditExDiff = class(TSynEdit)
+  private
+    FMyOwner: TComponent;
+    FCurrLongestLineLen: Integer; // needed for horizontal scrollbar
+    FLineModClr: TColor;
+    FYellowGray: TColor;
+    FSilveryGray: TColor;
+    FModifiedStrs: array [Boolean] of string;
+    FInsertModeStrs: array [Boolean] of string;
+    FEncoding: string; // ANSI, UTF-8, UTF-16
+    FLineBreak: string; // Windows, Unix, Mac
+    FNumber: Integer;
+    FPathname: string;
+    FPCaption: TPanel;
+    FWithColoredLines: Boolean;
+    procedure DoExit1(Sender: TObject);
+    procedure CodeEditKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
+    function DoSaveFile: Boolean;
+    procedure SetHighlighter;
+    procedure DeleteObjects(From, Till: Integer);
+    procedure CreateObjects(From, Till, Tag: Integer); overload;
+    function EncodingAsString(const Encoding: string): string;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure DoUndo;
+    procedure DoRedo;
+    procedure Enter(Sender: TObject);
+    procedure LinesClearAll;
+    procedure Save;
+    procedure CreateObjects; overload;
+    function LinebreakAsString: string;
+    procedure SynEditorSpecialLineColors(Sender: TObject; Line: Integer;
+      var Special: Boolean; var Foreground, Background: TColor);
+    procedure GutterTextEvent(Sender: TObject; ALine: Integer;
+      var AText: string);
+    function GetLineObj(Index: Integer): TLineObj;
+    procedure Load(Lines12: TSynEditStringList; const APathname: string);
+    procedure SetModified(Value: Boolean);
+    procedure ShowFilename;
+    procedure InsertItem(Index: Integer; const Str: string;
+      LineObject: TLineObj);
+    function CopyIntoClipboard(From, Till: Integer): Boolean;
+    procedure PasteClipboard(EmptyClipboard: Boolean; From, Till, Num: Integer);
+    procedure ChangeStyle;
+    procedure SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
 
-      constructor Create(AOwner: TComponent); override;
-      destructor Destroy; override;
-      procedure DoUndo;
-      procedure DoRedo;
-      procedure Enter(Sender: TObject);
-      procedure LinesClearAll;
-      procedure Save;
-      procedure CreateObjects; overload;
-      function LinebreakAsString: string;
-      procedure SynEditorSpecialLineColors(Sender: TObject;
-                  Line: Integer; var Special: Boolean; var FG, BG: TColor);
-      procedure GutterTextEvent(Sender: TObject; aLine: Integer;
-                  var aText: string);
-      function  GetLineObj(index: Integer): TLineObj;
-      procedure Load(Lines12: TSynEditStringList; const aPathname: string);
-      procedure SetModified(Value: Boolean);
-      procedure ShowFilename;
-      procedure InsertItem(index: Integer; const s: string; LineObject: TLineObj);
-      function  CopyIntoClipboard(from, _to: Integer): Boolean;
-      procedure PasteClipboard(EmptyClipboard: Boolean; from, _to, aNr: Integer);
-      procedure ChangeStyle;
-      procedure SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
-    end;
+    property Number: Integer read FNumber write FNumber;
+    property Pathname: string read FPathname;
+    property PCaption: TPanel read FPCaption write FPCaption;
+    property WithColoredLines: Boolean read FWithColoredLines
+      write FWithColoredLines;
+  end;
 
 implementation
 
-uses SysUtils, Windows, Controls, Clipbrd, FileCtrl,
-     JvGnugettext, StringResources,
-     UTextDiff, UUtils, frmFile, SynEditTypes,
-     cPyScripterSettings, dmResources, uCommonFunctions;
+uses
+  SysUtils,
+  Windows,
+  Controls,
+  Clipbrd,
+  FileCtrl,
+  JvGnugettext,
+  StringResources,
+  UTextDiff,
+  UUtils,
+  SynEditTypes,
+  cPyScripterSettings,
+  dmResources,
+  uCommonFunctions;
 
 constructor TSynEditExDiff.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  myOwner:= AOwner;
-  fCurrLongestLineLen:= 60;
-  WithColoredLines:= False;
-  Nr:= 0;
-  Pathname:= '';
-  ModifiedStrs[False]:= '';
-  ModifiedStrs[True]:= _(SModified);
-  InsertModeStrs[False]:= _('Over');
-  InsertModeStrs[True]:= _('Ins');
-  MaxUndo:= 300;
-  TabWidth:= 2;
-  WantTabs:= True;
-  Options:= [eoAutoIndent, eoDragDropEditing,
-             eoSmartTabs, eoTabIndent, eoTabsToSpaces, eoTrimTrailingSpaces,
-             eoSmartTabDelete, eoGroupUndo, eoKeepCaretX, eoEnhanceHomeKey];
+  FMyOwner := AOwner;
+  FCurrLongestLineLen := 60;
+  FWithColoredLines := False;
+  FNumber := 0;
+  FPathname := '';
+  FModifiedStrs[False] := '';
+  FModifiedStrs[True] := _(SModified);
+  FInsertModeStrs[False] := _('Over');
+  FInsertModeStrs[True] := _('Ins');
+  MaxUndo := 300;
+  TabWidth := 2;
+  WantTabs := True;
+  Options := [eoAutoIndent, eoDragDropEditing, eoSmartTabs, eoTabIndent,
+    eoTabsToSpaces, eoTrimTrailingSpaces, eoSmartTabDelete, eoGroupUndo,
+    eoKeepCaretX, eoEnhanceHomeKey];
   ScrollOptions := [eoScrollPastEol, eoShowScrollHint];
   Font.Assign(EditorOptions.Font);
-  OnKeyUp:= CodeEditKeyUp;
-  OnStatusChange:= EditorStatusChange;
-  OnEnter:= Enter;
-  OnExit:= DoExit1;
-  onScroll:= SyncScroll;
+  OnKeyUp := CodeEditKeyUp;
+  OnStatusChange := EditorStatusChange;
+  OnEnter := Enter;
+  OnExit := DoExit1;
+  OnScroll := SyncScroll;
   ChangeStyle;
 end;
 
 destructor TSynEditExDiff.Destroy;
 begin
-  OnStatusChange:= nil;
-  OnEnter:= nil;
-  OnExit:= nil;
-  TSynEditStringList(Lines).onCleared:= nil;
+  OnStatusChange := nil;
+  OnEnter := nil;
+  OnExit := nil;
+  TSynEditStringList(Lines).OnCleared := nil;
   LinesClearAll;
   inherited;
 end;
@@ -128,128 +154,146 @@ end;
 
 procedure TSynEditExDiff.Enter(Sender: TObject);
 begin
-  Gutter.Color:= fYellowGray;
+  Gutter.Color := FYellowGray;
   EditorStatusChange(Sender, [scAll]);
-  if WithColoredLines then
-    (myOwner as TFTextDiff).ShowDiffState;
+  if FWithColoredLines then
+    (FMyOwner as TFTextDiff).ShowDiffState;
 end;
 
 procedure TSynEditExDiff.DoExit1(Sender: TObject);
 begin
-  inherited;
-  Gutter.Color:= fSilveryGray;
+  Gutter.Color := FSilveryGray;
 end;
 
 procedure TSynEditExDiff.CodeEditKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  with myOwner as TFTextDiff do
-    if FilesCompared and (Key in [VK_Up, VK_Down, VK_Prior, VK_Next]) then
-      SyncScroll(Self, sbVertical) else
-    if (Key = VK_RETURN) or ([ssCtrl] = Shift) and (Key = Ord('V'))
-      then CreateObjects;
+  with FMyOwner as TFTextDiff do
+    if FilesCompared and (Key in [VK_UP, VK_DOWN, VK_PRIOR, VK_NEXT]) then
+      SyncScroll(Self, sbVertical)
+    else if (Key = VK_RETURN) or ([ssCtrl] = Shift) and (Key = Ord('V')) then
+      CreateObjects;
 end;
 
-function TSynEditExDiff.GetLineObj(index: Integer): TLineObj;
+function TSynEditExDiff.GetLineObj(Index: Integer): TLineObj;
 begin
   if Lines.Count = 0 then
-    result:= nil
-  else begin
-    if (index < 0) or (index >= Lines.Count) then
+    Result := nil
+  else
+  begin
+    if (Index < 0) or (Index >= Lines.Count) then
       raise Exception.Create('TLines.GetLineObj() - index out of bounds.');
-    result:= TLineObj(Lines.objects[index]);
+    Result := TLineObj(Lines.Objects[Index]);
   end;
 end;
 
-procedure TSynEditExDiff.InsertItem(index: Integer; const s: string; LineObject: TLineObj);
+procedure TSynEditExDiff.InsertItem(Index: Integer; const Str: string;
+  LineObject: TLineObj);
 begin
-  inherited Lines.InsertObject(index, s, LineObject);
+  inherited Lines.InsertObject(Index, Str, LineObject);
 end;
 
 procedure TSynEditExDiff.SynEditorSpecialLineColors(Sender: TObject;
-  Line: Integer; var Special: Boolean; var FG, BG: TColor);
-   var Lo1: TLineObj;
+  Line: Integer; var Special: Boolean; var Foreground, Background: TColor);
 begin
-  if (Line > Lines.Count) or not WithColoredLines then Exit;
-  Lo1:= GetLineObj(Line-1);
-  if Lo1 = nil then begin
-    // BG:= clRed;      good for debugging
-    BG:= fLineModClr;
-    Special:= True;
-    end
-  else with Lo1 do
-    if Spezial then begin
-      BG:= BackClr;
-      Special:= True;
-    end;
+  if (Line > Lines.Count) or not FWithColoredLines then
+    Exit;
+  var
+  Lo1 := GetLineObj(Line - 1);
+  if not Assigned(Lo1) then
+  begin
+    // Background:= clRed;      // good for debugging
+    Background := FLineModClr;
+    Special := True;
+  end
+  else
+    with Lo1 do
+      if Spezial then
+      begin
+        Background := BackClr;
+        Special := True;
+      end;
 end;
 
-procedure TSynEditExDiff.EditorStatusChange(Sender: TObject; Changes: TSynStatusChanges);
+procedure TSynEditExDiff.EditorStatusChange(Sender: TObject;
+  Changes: TSynStatusChanges);
 begin
-  (MyOwner as TFTextDiff).Nr:= Nr;
-  (MyOwner as TFTextDiff).liLineColumn.Caption:= Format(' %4d : %3d ', [CaretY, CaretX]);
-  if Changes * [scModified] <> [] then begin
-    (MyOwner as TFTextDiff).liModified.Caption:= ModifiedStrs[Modified];
+  (FMyOwner as TFTextDiff).Number := FNumber;
+  (FMyOwner as TFTextDiff).liLineColumn.Caption :=
+    Format(' %4d : %3d ', [CaretY, CaretX]);
+  if Changes * [scModified] <> [] then
+  begin
+    (FMyOwner as TFTextDiff).liModified.Caption := FModifiedStrs[Modified];
     ShowFilename;
   end;
-  (MyOwner as TFTextDiff).liInsOvr.Caption:= InsertModeStrs[InsertMode];
-  (MyOwner as TFTextDiff).liEncoding.Caption:= ' ' + Encoding + '/' + LinebreakAsString + ' ';
+  (FMyOwner as TFTextDiff).liInsOvr.Caption := FInsertModeStrs[InsertMode];
+  (FMyOwner as TFTextDiff).liEncoding.Caption := ' ' + FEncoding + '/' +
+    LinebreakAsString + ' ';
 end;
 
-procedure TSynEditExDiff.GutterTextEvent(Sender: TObject; aLine: Integer;
-           var aText: string);
-   var LineObject: TLineObj;
+procedure TSynEditExDiff.GutterTextEvent(Sender: TObject; ALine: Integer;
+  var AText: string);
 begin
-  if WithColoredLines then begin
-    LineObject:= GetLineObj(aLine-1);
-    if LineObject = nil then Exit;
+  if FWithColoredLines then
+  begin
+    var
+    LineObject := GetLineObj(ALine - 1);
+    if not Assigned(LineObject) then
+      Exit;
     with LineObject do
-      if Tag = 0
-        then aText:= ''
-        else aText:= InttoStr(Tag);
-    end
+      if Tag = 0 then
+        AText := ''
+      else
+        AText := IntToStr(Tag);
+  end
   else
-    aText:= IntToStr(aLine);
+    AText := IntToStr(ALine);
 end;
 
-procedure TSynEditExDiff.Load(Lines12: TSynEditStringList; const aPathname: string);
+procedure TSynEditExDiff.Load(Lines12: TSynEditStringList;
+  const APathname: string);
 begin
   try
-    Lines12.LoadFromFile(aPathname);
-  except on e: Exception do
-    ErrorMsg('TSynEditExDiff.Load: ' + aPathname);
+    Lines12.LoadFromFile(APathname);
+  except
+    on e: Exception do
+      ErrorMsg('TSynEditExDiff.Load: ' + APathname);
   end;
   Lines.BeginUpdate;
   LinesClearAll;
   Lines.Assign(Lines12);
   Lines.EndUpdate;
-  Self.Pathname:= aPathname;
+  Self.FPathname := APathname;
 
-  Encoding:= EncodingAsString(Lines12.Encoding.EncodingName);
-  Linebreak:= Lines12.LineBreak;
+  FEncoding := EncodingAsString(Lines12.Encoding.EncodingName);
+  FLineBreak := Lines12.LineBreak;
 
-  WithColoredLines:= False;
+  FWithColoredLines := False;
   SetHighlighter;
   SetModified(False);
-  (myOwner as TFTextDiff).setActiveControl(Self);
+  (FMyOwner as TFTextDiff).SetActiveControl(Self);
 end;
 
 procedure TSynEditExDiff.Save;
-  var i: Integer;
-      Line: TLineObj;
+var
+  Line: TLineObj;
 begin
-  if WithColoredLines then begin
+  if FWithColoredLines then
+  begin
     BeginUpdate;
-    for i:= Lines.Count - 1 downto 0 do begin
-      Line:= GetLineObj(i);
+    for var I := Lines.Count - 1 downto 0 do
+    begin
+      Line := GetLineObj(I);
       if Assigned(Line) then
-        if Line.Tag = 0 then begin
+        if Line.FTag = 0 then
+        begin
           FreeAndNil(Line);
-          Lines.Delete(i);
-        end else
-          Line.Spezial:= False;
+          Lines.Delete(I);
+        end
+        else
+          Line.FSpezial := False;
     end;
-    WithColoredLines:= False;
+    FWithColoredLines := False;
     EndUpdate;
     Invalidate;
   end;
@@ -259,34 +303,32 @@ begin
       DoSaveFile;
       SetModified(False);
     except
-      on E: Exception do
-        ErrorMsg(E.Message);
+      on e: Exception do
+        ErrorMsg(e.Message);
     end;
 end;
 
-
 function TSynEditExDiff.DoSaveFile: Boolean;
-var
-  i: Integer;
 begin
-  Result:= False;
+  Result := False;
   // Trim all lines just in case (Issue 196)
   if (Lines.Count > 0) and ((eoTrimTrailingSpaces in Options) or
-    PyIDEOptions.TrimTrailingSpacesOnSave)  then
+    PyIDEOptions.TrimTrailingSpacesOnSave) then
   begin
     BeginUpdate;
     try
-      for i := 0 to Lines.Count - 1 do
-        Lines[i] := TrimRight(Lines[i]);
+      for var I := 0 to Lines.Count - 1 do
+        Lines[I] := TrimRight(Lines[I]);
     finally
       EndUpdate;
     end;
   end;
-  if Pathname <> '' then
-    Result:= SaveWideStringsToFile(Pathname, Lines, PyIDEOptions.CreateBackupFiles);
-{  else if fEditor.fRemoteFileName <> '' then
-     Result := fEditor.SaveToRemoteFile(fEditor.fRemoteFileName, fEditor.fSSHServer);
-}
+  if FPathname <> '' then
+    Result := SaveWideStringsToFile(FPathname, Lines,
+      PyIDEOptions.CreateBackupFiles);
+  { else if fEditor.fRemoteFileName <> '' then
+    Result := fEditor.SaveToRemoteFile(fEditor.fRemoteFileName, fEditor.fSSHServer);
+  }
 
   if Result then
   begin
@@ -297,154 +339,182 @@ begin
 end;
 
 procedure TSynEditExDiff.SetHighlighter;
-  var s: string;
 begin
-  s:= Lowercase(ExtractFileExt(Pathname));
-  Highlighter:= ResourcesDataModule.Highlighters.HighlighterFromFriendlyName(s);
+  var Str := LowerCase(ExtractFileExt(FPathname));
+  Highlighter := ResourcesDataModule.Highlighters.
+    HighlighterFromFriendlyName(Str);
   if Highlighter = nil then
-    OnPaintTransient:= nil;
+    OnPaintTransient := nil;
 end;
 
-function TSynEditExDiff.EncodingAsString(const aEncoding: string): string;
+function TSynEditExDiff.EncodingAsString(const Encoding: string): string;
 begin
-  Result:= aEncoding;
-  if Pos('ANSI', Result) > 0 then Result:= 'ANSI' else
-  if Pos('ASCII', Result) > 0 then Result:= 'ASCII' else
-  if Pos('UTF-8', Result) > 0 then Result:= 'UTF-8' else
-  if Pos('UTF-16', Result) > 0 then Result:= 'UTF-16' else
-  if Pos('Unicode', Result) > 0 then Result:= 'UTF-16';
+  Result := Encoding;
+  if Pos('ANSI', Result) > 0 then
+    Result := 'ANSI'
+  else if Pos('ASCII', Result) > 0 then
+    Result := 'ASCII'
+  else if Pos('UTF-8', Result) > 0 then
+    Result := 'UTF-8'
+  else if Pos('UTF-16', Result) > 0 then
+    Result := 'UTF-16'
+  else if Pos('Unicode', Result) > 0 then
+    Result := 'UTF-16';
 end;
 
 function TSynEditExDiff.LinebreakAsString: string;
 begin
-  if LineBreak = #13#10 then Result:= 'Windows' else
-  if LineBreak = #10 then Result:= 'Unix'
-  else Result:= 'Mac';
+  if FLineBreak = #13#10 then
+    Result := 'Windows'
+  else if FLineBreak = #10 then
+    Result := 'Unix'
+  else
+    Result := 'Mac';
 end;
 
 procedure TSynEditExDiff.LinesClearAll;
 begin
-  DeleteObjects(0, Lines.Count-1);
+  DeleteObjects(0, Lines.Count - 1);
   Lines.Clear;
-  OnSpecialLineColors:= nil;
-  OnGutterGetText:= nil;
+  OnSpecialLineColors := nil;
+  OnGutterGetText := nil;
 end;
 
-procedure TSynEditExDiff.DeleteObjects(from, _to: Integer);
-  var i: Integer;
-      LineObject: TLineObj;
+procedure TSynEditExDiff.DeleteObjects(From, Till: Integer);
+var
+  LineObject: TLineObj;
 begin
-  for i:= from to _to do begin
-    LineObject:= GetLineObj(i);
-    if Assigned(LineObject) then begin
-      FreeAndNil(LineObject);
-      Lines.objects[i]:= nil
-    end;  
+  for var I := From to Till do
+  begin
+    LineObject := GetLineObj(I);
+    if Assigned(LineObject) then
+    begin
+      LineObject.Free;
+      Lines.Objects[I] := nil;
+    end;
   end;
 end;
 
 procedure TSynEditExDiff.CreateObjects;
-  var i: Integer;
-      LineObject: TLineObj;
+var
+  LineObject: TLineObj;
 begin
-  if not WithColoredLines then Exit;
+  if not FWithColoredLines then
+    Exit;
   Lines.BeginUpdate;
-  i:= 0;
-  while (i < Lines.Count) and Assigned(GetLineObj(i)) do
-    Inc(i);
-  while (i < Lines.Count) and (GetLineObj(i) = nil) do begin
-    LineObject:= TLineObj.Create;
-    LineObject.Spezial:= True;
-    LineObject.BackClr:= fLineModClr;
-    LineObject.Tag:= i+1;
-    Lines.Objects[i]:= LineObject;
-    Inc(i);
+  var Int := 0;
+  while (Int < Lines.Count) and Assigned(GetLineObj(Int)) do
+    Inc(Int);
+  while (Int < Lines.Count) and (GetLineObj(Int) = nil) do
+  begin
+    LineObject := TLineObj.Create;
+    LineObject.FSpezial := True;
+    LineObject.FBackClr := FLineModClr;
+    LineObject.FTag := Int + 1;
+    Lines.Objects[Int] := LineObject;
+    Inc(Int);
   end;
   Lines.EndUpdate;
   Invalidate;
 end;
 
-procedure TSynEditExDiff.CreateObjects(from, _to, aTag: Integer);
-  var i: Integer;
-      LineObject: TLineObj;
+procedure TSynEditExDiff.CreateObjects(From, Till, Tag: Integer);
+var
+  LineObject: TLineObj;
 begin
-  for i:= from to _to do
-    if GetLineObj(i) = nil then begin
-      LineObject:= TLineObj.Create;
-      LineObject.Spezial:= True;
-      LineObject.BackClr:= fLineModClr;
-      LineObject.Tag:= aTag;
-      if aTag > 0 then Inc(aTag);
-      Lines.Objects[i]:= LineObject;
+  for var I := From to Till do
+    if GetLineObj(I) = nil then
+    begin
+      LineObject := TLineObj.Create;
+      LineObject.FSpezial := True;
+      LineObject.FBackClr := FLineModClr;
+      LineObject.FTag := Tag;
+      if Tag > 0 then
+        Inc(Tag);
+      Lines.Objects[I] := LineObject;
     end;
 end;
 
 procedure TSynEditExDiff.ShowFilename;
-  var s: string; aCanvas: TCanvas;
+var
+  Str: string;
+  ACanvas: TCanvas;
 begin
-  aCanvas:= (myOwner as TFTextDiff).Canvas;
-  aCanvas.Font.Assign(PCaption.Font);
-  s:= ' ' + Pathname;
-  if Modified then s:= s + '*';
-  PCaption.Caption:= MinimizeName(s, aCanvas, PCaption.Width);
+  ACanvas := (FMyOwner as TFTextDiff).Canvas;
+  ACanvas.Font.Assign(FPCaption.Font);
+  Str := ' ' + FPathname;
+  if Modified then
+    Str := Str + '*';
+  FPCaption.Caption := MinimizeName(Str, ACanvas, FPCaption.Width);
 end;
 
 procedure TSynEditExDiff.SetModified(Value: Boolean);
 begin
-  Modified:= Value;
+  Modified := Value;
   ShowFilename;
 end;
 
-function TSynEditExDiff.CopyIntoClipboard(from, _to: Integer): Boolean;
+function TSynEditExDiff.CopyIntoClipboard(From, Till: Integer): Boolean;
 begin
-  SelStart:= RowColToCharIndex(BufferCoord(1, from + 1));
-  if _to + 2 > Lines.Count
-    then SelEnd:= RowColToCharIndex(BufferCoord(Length(Lines[Lines.Count-1]) + 1, _to + 1))
-    else SelEnd:= RowColToCharIndex(BufferCoord(1, _to + 2)) - 2;
-  Result:= (SelLength = 0);
-  if Result
-    then Clipboard.Clear
-    else CopyToClipboard;
-  SelLength:= 0;
+  SelStart := RowColToCharIndex(BufferCoord(1, From + 1));
+  if Till + 2 > Lines.Count then
+    SelEnd := RowColToCharIndex(BufferCoord(Length(Lines[Lines.Count - 1]) + 1,
+      Till + 1))
+  else
+    SelEnd := RowColToCharIndex(BufferCoord(1, Till + 2)) - 2;
+  Result := (SelLength = 0);
+  if Result then
+    Clipboard.Clear
+  else
+    CopyToClipboard;
+  SelLength := 0;
 end;
 
-procedure TSynEditExDiff.PasteClipboard(EmptyClipboard: Boolean; from, _to, aNr: Integer);
+procedure TSynEditExDiff.PasteClipboard(EmptyClipboard: Boolean;
+  From, Till, Num: Integer);
 begin
-  DeleteObjects(from, _To);
-  SelStart:= RowColToCharIndex(BufferCoord(1, from+1));
-  if _to + 2 > Lines.Count
-    then SelEnd:= RowColToCharIndex(BufferCoord(Length(Lines[Lines.Count-1])+1, _to + 1))
-    else SelEnd:= RowColToCharIndex(BufferCoord(1, _To + 2)) - 2;
+  DeleteObjects(From, Till);
+  SelStart := RowColToCharIndex(BufferCoord(1, From + 1));
+  if Till + 2 > Lines.Count then
+    SelEnd := RowColToCharIndex(BufferCoord(Length(Lines[Lines.Count - 1]) + 1,
+      Till + 1))
+  else
+    SelEnd := RowColToCharIndex(BufferCoord(1, Till + 2)) - 2;
   try
-    if EmptyClipboard then begin
+    if EmptyClipboard then
+    begin
       CutToClipboard;
-      Clipboard.Clear
-      end
+      Clipboard.Clear;
+    end
     else
       PasteFromClipboard;
-  except
+  except on e: Exception do
+    ErrorMsg(e.Message);
   end;
-  CreateObjects(from, _To, aNr);
+  CreateObjects(From, Till, Num);
   SetModified(True);
   Invalidate;
 end;
 
 procedure TSynEditExDiff.ChangeStyle;
 begin
-  if IsStyledWindowsColorDark then begin
-    fLineModClr:= $878787;
-    fYellowGray:= $519595;
-    fSilveryGray:= $777777;
-  end else begin
-    fLineModClr:= $E0E0E0;
-    fYellowGray:= $97734F;
-    fSilveryGray:= $16A231;
+  if IsStyledWindowsColorDark then
+  begin
+    FLineModClr := $878787;
+    FYellowGray := $519595;
+    FSilveryGray := $777777;
+  end
+  else
+  begin
+    FLineModClr := $E0E0E0;
+    FYellowGray := $97734F;
+    FSilveryGray := $16A231;
   end;
 end;
 
 procedure TSynEditExDiff.SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
 begin
-  (myOwner as TFTextDiff).SyncScroll(Self, ScrollBar);
+  (FMyOwner as TFTextDiff).SyncScroll(Self, ScrollBar);
 end;
 
 end.

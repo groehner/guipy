@@ -6,8 +6,8 @@ inherited MessagesWindow: TMessagesWindow
   Caption = 'Messages'
   ClientHeight = 218
   ClientWidth = 741
-  ExplicitWidth = 749
-  ExplicitHeight = 245
+  ExplicitWidth = 757
+  ExplicitHeight = 257
   DesignSize = (
     741
     218)
@@ -15,13 +15,13 @@ inherited MessagesWindow: TMessagesWindow
   inherited BGPanel: TPanel
     Width = 741
     Height = 218
-    ExplicitWidth = 733
-    ExplicitHeight = 206
+    ExplicitWidth = 741
+    ExplicitHeight = 218
     inherited FGPanel: TPanel
       Width = 737
       Height = 214
-      ExplicitWidth = 729
-      ExplicitHeight = 202
+      ExplicitWidth = 737
+      ExplicitHeight = 214
       object MessagesView: TVirtualStringTree
         Left = 0
         Top = 0
@@ -32,6 +32,7 @@ inherited MessagesWindow: TMessagesWindow
         BevelInner = bvNone
         BevelOuter = bvNone
         BorderStyle = bsNone
+        DefaultNodeHeight = 19
         Header.AutoSizeIndex = 0
         Header.Options = [hoAutoResize, hoColumnResize, hoDblClickResize, hoHotTrack, hoOwnerDraw, hoVisible]
         HintMode = hmTooltip
@@ -91,7 +92,6 @@ inherited MessagesWindow: TMessagesWindow
     AutoSize = True
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitLeft = 678
     DesignSize = (
       39
       17)

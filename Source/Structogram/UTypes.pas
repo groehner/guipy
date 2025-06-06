@@ -321,7 +321,7 @@ type
     SwitchWithCaseLine: Boolean;
     rctList: TRect;
     LineHeight: Integer;
-    Image: TListImage;
+    ListImage: TListImage;
     Canvas: TCanvas;
     PuzzleMode: Integer;
     DontMove: Boolean;
@@ -331,8 +331,8 @@ type
     constructor Create(ScrollBox: TScrollBox; Mode: Integer; Font: TFont);
     destructor Destroy; override;
     procedure PaintShadow;
-    procedure Paint; virtual;
-    procedure SetColors;
+    procedure Paint(BlackAndWhite: Boolean = False);
+    procedure SetColors(BlackAndWhite: Boolean);
     procedure Print;
     procedure ResizeAll; virtual;
     procedure LoadFromStream(Stream: TStream; Version: byte); override;
@@ -2542,12 +2542,12 @@ begin
   text:= 'list head';
   LoadError:= False;
   list:= Self;
-  Image:= TListImage.Create(ScrollBox, Self);
-  Image.setBounds(100, 150, 400, 250);
-  Image.AutoSize:= True;
-  Image.Parent:= ScrollBox;
-  Image.Canvas.Font.Assign(Font);
-  Canvas:= Image.Canvas;
+  ListImage:= TListImage.Create(ScrollBox, Self);
+  ListImage.setBounds(100, 150, 400, 250);
+  ListImage.AutoSize:= True;
+  ListImage.Parent:= ScrollBox;
+  ListImage.Canvas.Font.Assign(Font);
+  Canvas:= ListImage.Canvas;
   SwitchWithCaseLine:= GuiPyOptions.SwitchWithCaseLine;
   setLineHeight;
   PuzzleMode:= Mode;
@@ -2563,7 +2563,7 @@ begin
     Next:= tmp.Next;
     FreeAndNil(tmp);
   end;
-  FreeAndNil(Image);
+  FreeAndNil(ListImage);
 end;
 
 procedure TStrList.Draw;
@@ -2617,8 +2617,8 @@ procedure TStrList.LoadFromReader(Reader: TStringListReader);
 begin
   Reader.ReadLine;   // RectPos [...]
   rctList:= Reader.aRect;
-  Image.Left:= Image.PPIScale(Reader.Point.X);
-  Image.Top:= Image.PPIScale(Reader.Point.Y);
+  ListImage.Left:= ListImage.PPIScale(Reader.Point.X);
+  ListImage.Top:= ListImage.PPIScale(Reader.Point.Y);
 
   Reader.ReadLine;   // Algorithm or list head
   Text:= Reader.Text;
@@ -2666,7 +2666,7 @@ end;
 function TStrList.getRectPos(Indent: string): string;
 begin
   Result:= getRectPosAsText(Indent, rctList,
-    Point(Image.PPIUnScale(Image.Left), Image.PPIUnScale(Image.Top)));
+    Point(ListImage.PPIUnScale(ListImage.Left), ListImage.PPIUnScale(ListImage.Top)));
 end;
 
 procedure TStrList.PaintShadow;
@@ -2696,7 +2696,6 @@ begin
   R:= Rect(Sw, t, Next.rct.Right + Sw, b);
 
   Canvas.Pen.Mode:= pmCopy;
-  SetColors;
   SCol:= ColorToRGB(Canvas.Brush.Color);
   sr:= GetRValue(SCol);
   sg:= GetGValue(SCol);
@@ -2715,45 +2714,52 @@ begin
   end;
 end;
 
-procedure TStrList.Paint;
-  var Bitmap: TBitmap;
-      sw: Integer;
+procedure TStrList.Paint(BlackAndWhite: Boolean = False);
+var
+  Bitmap: TBitmap;
+  ShadowWidth: Integer;
 begin
-  if Kind = Byte(nsAlgorithm)
-    then Sw:= GuiPyOptions.StructogramShadowWidth
-    else Sw:= 0;
+  if Kind = Byte(nsAlgorithm) then
+    ShadowWidth := GuiPyOptions.StructogramShadowWidth
+  else
+    ShadowWidth := 0;
 
-  Bitmap:= TBitmap.Create;
+  Bitmap := TBitmap.Create;
   try
-    Canvas:= Bitmap.Canvas;
-    Canvas.Font:= Image.Canvas.Font;
-    Canvas.Pen:= Image.Canvas.Pen;
-    SetColors;
-    Bitmap.SetSize(getWidth + 1 + Sw, getHeight + 1 + Sw);
-    Canvas.Fillrect(Rect(0, 0, bitmap.width, bitmap.height));
+    Canvas := Bitmap.Canvas;
+    Canvas.Font := ListImage.Canvas.Font;
+    Canvas.Pen := ListImage.Canvas.Pen;
+    SetColors(BlackAndWhite);
+    Bitmap.SetSize(GetWidth + 1 + ShadowWidth, GetHeight + 1 + ShadowWidth);
+    Canvas.FillRect(Rect(0, 0, Bitmap.Width, Bitmap.Height));
     PaintShadow;
     Draw;
-    Image.Picture.Bitmap.Height:= Bitmap.Height;
-    Image.Picture.Bitmap.Width := Bitmap.Width;
+    ListImage.Picture.Bitmap.Height := Bitmap.Height;
+    ListImage.Picture.Bitmap.Width := Bitmap.Width;
 
     // paint structogram on canvas
-    Image.Canvas.Draw(0, 0, Bitmap);
-    Canvas:= Image.Canvas;
+    ListImage.Canvas.Draw(0, 0, Bitmap);
+    Canvas := ListImage.Canvas;
   finally
     FreeAndNil(Bitmap);
   end;
 end;
 
-procedure TStrList.SetColors;
+procedure TStrList.SetColors(BlackAndWhite: Boolean);
 begin
-  if StyleServices.IsSystemStyle or BlackAndWhite then begin
-    Canvas.Pen.Color:= clBlack;
-    Canvas.Font.Color:= clBlack;
-    Canvas.Brush.Color:= clWhite;
-  end else begin
-    Canvas.Pen.Color:= StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);  // clWhite
-    Canvas.Font.Color:= StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
-    Canvas.Brush.Color:= StyleServices.GetStyleColor(scPanel);
+  if BlackAndWhite or StyleServices.IsSystemStyle then
+  begin
+    Canvas.Pen.Color := clBlack;
+    Canvas.Font.Color := clBlack;
+    Canvas.Brush.Color := clWhite;
+  end
+  else
+  begin
+    Canvas.Pen.Color := StyleServices.GetStyleFontColor
+      (sfTabTextInactiveNormal); // clWhite
+    Canvas.Font.Color := StyleServices.GetStyleFontColor
+      (sfTabTextInactiveNormal);
+    Canvas.Brush.Color := StyleServices.GetStyleColor(scPanel);
   end;
 end;
 
@@ -2836,16 +2842,16 @@ begin
   while p > 0 do begin
     s1:= Copy(s, 1, p-1);
     Delete(s, 1, p+1);
-    w:= Max(Image.Canvas.TextWidth(s1) + LEFT_RIGHT, w);
+    w:= Max(ListImage.Canvas.TextWidth(s1) + LEFT_RIGHT, w);
     h:= h + LineHeight;
     p:= Pos(#13#10, s);
   end;
-  w:= Max(Image.Canvas.TextWidth(s) + LEFT_RIGHT, w);
+  w:= Max(ListImage.Canvas.TextWidth(s) + LEFT_RIGHT, w);
 end;
 
 function TStrList.getWidthOfOneLine(const aText: string): Integer;
 begin
-  Result:= Image.Canvas.TextWidth(aText) + LEFT_RIGHT;
+  Result:= ListImage.Canvas.TextWidth(aText) + LEFT_RIGHT;
 end;
 
 function TStrList.getWidthOfLines(const aText: string): Integer;
@@ -2987,7 +2993,7 @@ begin
   s:= 'TStrAlgorithm Kind=' + IntToStr(kind) + ' Text=' + text +
       ' rct(' + IntToStr(rct.Left) + ', ' + IntToStr(rct.Top) + ', ' + IntToStr(rct.Width) + ', ' + IntToStr(rct.Bottom) + ')' +
       ' rctList(' + IntToStr(rctList.Left) + ', ' + IntToStr(rctList.Top) + ', ' + IntToStr(rctList.Width) + ', ' + IntToStr(rctList.Bottom) + ')' +
-      ' Image(' + IntTostr(Image.Left) + ', ' + IntToStr(Image.Top) + ')';
+      ' ListImage(' + IntToStr(ListImage.Left) + ', ' + IntToStr(ListImage.Top) + ')';
 
   if Assigned(prev) and (prev.Next <> Self) then
     s:= s + ' prev.next <> self';

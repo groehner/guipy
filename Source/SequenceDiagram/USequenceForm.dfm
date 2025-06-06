@@ -218,11 +218,17 @@ object FSequenceForm: TFSequenceForm
       ImageName = 'Refresh'
       OnClick = MIPopupRefreshClick
     end
+    object SpTBXSeparatorItem2: TSpTBXSeparatorItem
+    end
     object MIPopupAsText: TSpTBXItem
       Caption = 'As text'
       ImageIndex = 8
       ImageName = 'AsText'
       OnClick = MIPopupAsTextClick
+    end
+    object MIPopupCopyAsPicture: TSpTBXItem
+      Caption = 'Copy as picture'
+      OnClick = MIPopupCopyAsPictureClick
     end
     object MIFont: TSpTBXItem
       Caption = 'Font'

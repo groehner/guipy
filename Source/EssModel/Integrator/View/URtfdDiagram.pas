@@ -150,19 +150,19 @@ type
     function FindClassifier(const CName: string): TClassifier;
     procedure ShowNewObject(const Objectname: string; aClass: TClass = nil);
 
-    procedure CallMethod(C: TControl; Sender: TObject);
+    procedure CallMethod(Control: TControl; Sender: TObject);
     procedure CallMethodForObject(Sender: TObject);
     procedure CallMethodForClass(Sender: TObject);
     procedure CollectClasses;
 
-    procedure EditObject(C: TControl); override;
+    procedure EditObject(Control: TControl); override;
     function HasAttributes(Objectname: string): Boolean;
     procedure UpdateAllObjects;
     procedure ShowAttributes(Objectname: string; aClass: TClass; aModelObject: TObjekt);
     procedure SetAttributeValues(aModelClass: TClass; Objectname: string; Attributes: TStringList);
-    function EditClass(const Caption, Title, ObjectNameOld: string; var ObjectNameNew: string; Attributes: TStringList): Boolean;
-    function EditObjectOrParams(const Caption, Title: string; Attributes: TStringList): Boolean;
-    function Edit(Attributes: TStringList; Row: Integer): Boolean;
+    function EditClass(const Caption, Title, ObjectNameOld: string;
+      var ObjectNameNew: string; Control: TControl; Attributes: TStringList): Boolean;
+    function EditObjectOrParams(const Caption, Title: string; Control: TControl; Attributes: TStringList): Boolean;
     procedure SetRecursiv(P: TPoint; pos: Integer); override;
     function getModelClass(const s: string): TClass;
     function StringToArrowStyle(s: string): TessConnectionArrowStyle;
@@ -1571,7 +1571,7 @@ end;
 procedure TRtfdDiagram.CreateObjectForSelectedClass(Sender: TObject);
   var Caption, Title, Pathname, ParamName, ParamValue, s, s1: string;
       p, p1, p2: Integer;
-      C: TControl;
+      Control: TControl;
       aClass: TClass;
       command: string;
       theClassname: string;
@@ -1582,11 +1582,11 @@ procedure TRtfdDiagram.CreateObjectForSelectedClass(Sender: TObject);
       ParamValues: TStringList;
       MenuItem: TSpTBXItem;
 begin
-  C:= FindVCLWindow(Frame.PopMenuClass.PopupPoint);
-  if Assigned(C) and (C is TRtfdClass) then begin
+  Control:= FindVCLWindow(Frame.PopMenuClass.PopupPoint);
+  if Assigned(Control) and (Control is TRtfdClass) then begin
     Panel.ClearSelection;
-    Pathname:= (C as TRtfdClass).GetPathname;
-    aClass:= (C as TRtfdClass).Entity as TClass;
+    Pathname:= (Control as TRtfdClass).GetPathname;
+    aClass:= (Control as TRtfdClass).Entity as TClass;
     theClassname:= aClass.Name;
     CollectClasses;
     // get parameters for constructor
@@ -1626,7 +1626,8 @@ begin
     theObjectname:= FLivingObjects.getNewObjectName(theClassname);
     theObjectnameNew:= '';
 
-    if (Parameter.Count = 0) or EditClass(Caption, Title, theObjectName, theObjectnameNew, Parameter)
+    if (Parameter.Count = 0) or EditClass(Caption, Title, theObjectName,
+      theObjectnameNew, Control, Parameter)
     then begin
       if (theObjectnameNew <> '') and not FLivingObjects.ObjectExists(theObjectnameNew) then
         theObjectname:= theObjectnameNew;
@@ -1873,7 +1874,7 @@ begin
   CallMethod(C, Sender);
 end;
 
-procedure TRtfdDiagram.CallMethod(C: TControl; Sender: TObject);
+procedure TRtfdDiagram.CallMethod(Control: TControl; Sender: TObject);
   var Caption, Title, ParamName, ParamValue, s: string;
       p, p1, p2, InheritedLevel: Integer;
       theClassname: string;
@@ -1885,13 +1886,13 @@ procedure TRtfdDiagram.CallMethod(C: TControl; Sender: TObject);
       MethodCall: string;
 begin
   try
-    if Assigned(C) and ((C is TRtfdObject) or (C is TRtfdClass)) then begin
+    if Assigned(Control) and ((Control is TRtfdObject) or (Control is TRtfdClass)) then begin
       CollectClasses;
       LockFormUpdate(UMLForm);
       try
         Panel.ClearSelection;
-        if C is TRtfdObject
-          then CallMethodObjectName:= (C as TRtfdObject).Entity.Name
+        if Control is TRtfdObject
+          then CallMethodObjectName:= (Control as TRtfdObject).Entity.Name
           else CallMethodObjectName:= '';
         InheritedLevel:= (Sender as TSpTBXItem).Tag;
         // get parameters for method call
@@ -1919,12 +1920,12 @@ begin
         Caption:= _('Parameter for method call') + ' ' + CallMethodMethodName + '(...)';
         Title:= _('Parameter') + #13#10 + _('Value');
         // get parameter-values from user
-        if (Parameter.Count = 0) or EditObjectOrParams(Caption, Title, Parameter) then begin
+        if (Parameter.Count = 0) or EditObjectOrParams(Caption, Title, Control, Parameter) then begin
           ParameterAsString:= getParameterAsString(Parameter, ParamValues);
           CollectClasses;
           // call the method
           if CallMethodObjectName = '' then begin // static method of a class
-            aModelClass:= (C as TRtfdClass).Entity as TClass;
+            aModelClass:= (Control as TRtfdClass).Entity as TClass;
             CallMethodObjectname:= aModelClass.GetTyp;
           end else begin                          // method of an object
             theClassname:= FLivingObjects.getClassnameOfObject(CallMethodObjectname);
@@ -2159,16 +2160,16 @@ begin
     Result.Name:= myStringReplace(Result.Name, '/', '.');
 end;
 
-procedure TRtfdDiagram.EditObject(C: TControl);
+procedure TRtfdDiagram.EditObject(Control: TControl);
   var Caption, Title, Objectname, Classname: string;
       Attributes: TStringList;
       aModelClass: TClass;
       U: TUnitPackage;
       i: Integer;
 begin
-  if Assigned(C) and (C is TRtfdObject) then begin
+  if Assigned(Control) and (Control is TRtfdObject) then begin
     Panel.ClearSelection;
-    Objectname:= (C as TRtfdObject).Entity.Name;
+    Objectname:= (Control as TRtfdObject).Entity.Name;
     Classname:= FLivingObjects.getClassnameOfObject(Objectname);
     U:= Model.ModelRoot.FindUnitPackage('Default');
     aModelClass:= U.FindClassifier(Classname) as TClass;
@@ -2180,7 +2181,7 @@ begin
           else Attributes.Delete(i);
       Caption:= _('Edit object') + ' ' + ObjectName;
       Title  := _('Attribute') + #13#10 + _('Value');
-      if EditObjectOrParams(Caption, Title, Attributes) then begin
+      if EditObjectOrParams(Caption, Title, Control, Attributes) then begin
         SetAttributeValues(aModelClass, Objectname, Attributes);
         FLivingObjects.makeAllObjects;
         UpdateAllObjects;
@@ -3125,44 +3126,34 @@ begin
 end;
 
 function TRtfdDiagram.EditClass(const Caption, Title, ObjectNameOld: string;
-           var ObjectNameNew: string; Attributes: TStringList): Boolean;
-  var i, Count: Integer;
+           var ObjectNameNew: string; Control: TControl; Attributes: TStringList): Boolean;
+  var Count: Integer;
 begin
   FObjectGenerator.PrepareEditClass(Caption, Title, ObjectNameOld);
-  Result:= Edit(Attributes, 2);
+  Result:= FObjectGenerator.Edit(Control, Attributes, 2);
   if Result then begin
     ObjectNameNew:= FObjectGenerator.ValueListEditor.Cells[1, 1];
     Count:= Attributes.Count;
     Attributes.Clear;
-    for i:= 0 to Count - 1 do
-      Attributes.Add(FObjectGenerator.ValueListEditor.Cells[0, i+2] + '=' +
-                     FObjectGenerator.ValueListEditor.Cells[1, i+2]);
+    for var I := 0 to Count - 1 do
+      Attributes.Add(FObjectGenerator.ValueListEditor.Cells[0, I + 2] + '=' +
+                     FObjectGenerator.ValueListEditor.Cells[1, I + 2]);
   end;
 end;
 
-function TRtfdDiagram.EditObjectOrParams(const Caption, Title: string; Attributes: TStringList): Boolean;
-  var Count, i: Integer;
+function TRtfdDiagram.EditObjectOrParams(const Caption, Title: string;
+  Control: TControl; Attributes: TStringList): Boolean;
+  var Count: Integer;
 begin
   FObjectGenerator.PrepareEditObjectOrParams(Caption, Title);
-  Result:= Edit(Attributes, 1);
+  Result:= FObjectGenerator.Edit(Control, Attributes, 1);
   if Result then begin
     Count:= Attributes.Count;
     Attributes.Clear;
-    for i:= 0 to Count - 1 do
-      Attributes.Add(FObjectGenerator.ValueListEditor.Cells[0, i+1] + '=' +
-                     FObjectGenerator.ValueListEditor.Cells[1, i+1]);
+    for var I := 0 to Count - 1 do
+      Attributes.Add(FObjectGenerator.ValueListEditor.Cells[0, I + 1] + '=' +
+                     FObjectGenerator.ValueListEditor.Cells[1, I + 1]);
   end;
-end;
-
-function TRtfdDiagram.Edit(Attributes: TStringList; Row: Integer): Boolean;
-  var i: Integer;
-begin
-  for i:= 0 to Attributes.Count - 1 do
-    FObjectGenerator.AddRow(Attributes.KeyNames[i], Attributes.ValueFromIndex[i]);
-  FObjectGenerator.DeleteRow;
-  FObjectGenerator.SetRow(Row);
-  FObjectGenerator.SetColWidths;
-  Result:= (FObjectGenerator.ShowModal = mrOk);
 end;
 
 procedure TRtfdDiagram.DeleteObjects;

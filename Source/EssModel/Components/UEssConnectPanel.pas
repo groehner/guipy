@@ -1,4 +1,4 @@
-{
+﻿{
   ESS-Model
   Copyright (C) 2002  Eldean AB, Peter Söderman, Ville Krumlinde
   Gerhard Röhner
@@ -308,6 +308,8 @@ begin
     Height := Max(Height, AObject.Top + AObject.Height + 50);
 
   AObject.Parent := Self;
+  if AObject is TRtfdObject  then
+    AObject.SendToBack;   // !!!!!
   AObject.Visible := True;
   if FindManagedControl(AObject) = nil then
   begin

@@ -42,28 +42,21 @@ type
   public
     Partner: TEditorForm;
     procedure setBoundsForFormular(Form: TForm);
-
     procedure moveOrSizeComponent(aPartner: TEditorForm; Control: TControl);
     procedure ComponentToBackground(aPartner: TEditorForm; Control: TControl);
     procedure ComponentToForeground(aPartner: TEditorForm; Control: TControl);
-
     procedure setAttributForComponent(Attr, Value: string; Typ: string; Control: TControl);
     procedure SetSlotForComponent(Attr, Value: string; Control: TControl);
-
-    procedure addRow(Attribute: string; const Value: string);
-
-    // new component
+    procedure AddRow(Attribute: string; const Value: string);
+    function Edit(Control: TControl; Attributes: TStringList; Row: Integer): Boolean;
     procedure InsertComponent(EditForm: TEditorForm; Control: TControl; Pasting: Boolean);
     procedure setComponentValues(DesignForm: TFGUIForm; Control: TControl);
     procedure setControlEvents(DesignForm: TFGUIForm; EditorForm: TEditorForm);
-
-    // deletes a component
     procedure DeleteComponent(Component: TControl);
     procedure PrepareEditClass(const aCaption, Title, ObjectNameOld: string);
     procedure PrepareEditObjectOrParams(const aCaption, Title: string);
-    procedure DeleteRow;
-    procedure SetRow(i: Integer);
-    procedure SetColWidths;
+    procedure SetPositionRelativTo(AControl: TControl);
+    procedure SetWidthAndHeight;
 end;
 
 var
@@ -228,6 +221,19 @@ begin
   Defaults[i]:= Value;
 end;
 
+function TFObjectGenerator.Edit(Control: TControl; Attributes: TStringList; Row: Integer): Boolean;
+begin
+  for var I := 0 to Attributes.Count - 1 do
+    AddRow(Attributes.KeyNames[I], Attributes.ValueFromIndex[I]);
+  if ValueListEditor.Cells[0, 1] = 'Delete' then
+    ValueListEditor.DeleteRow(1);
+  if Row < ValueListEditor.RowCount then
+    ValueListEditor.Row:= Row;
+  SetWidthAndHeight;
+  SetPositionRelativTo(Control);
+  Result:= (ShowModal = mrOk);
+end;
+
 procedure TFObjectGenerator.ReadFromAppStorage(AppStorage: TJvCustomAppStorage; const BasePath: string);
   var L, T, W, H, C: Integer;
 begin
@@ -323,18 +329,6 @@ begin
      ValueListEditor.DeleteRow(i);
   // it's not possible to delete row[1] now
   ValueListEditor.Cells[0, 1]:= 'Delete';
-end;
-
-procedure TFObjectGenerator.DeleteRow;
-begin
-  if ValueListEditor.Cells[0, 1] = 'Delete' then
-    ValueListEditor.DeleteRow(1);
-end;
-
-procedure TFObjectGenerator.SetRow(i: Integer);
-begin
-  if i < ValueListEditor.RowCount then
-    ValueListEditor.Row:= i;
 end;
 
 procedure TFObjectGenerator.setControlEvents(DesignForm: TFGUIForm; EditorForm: TEditorForm);
@@ -438,35 +432,39 @@ begin
   end;
 end;
 
-procedure TFObjectGenerator.SetColWidths;
-  var i, max1, max2, w, h: Integer;
-      s: string;
+procedure TFObjectGenerator.SetPositionRelativTo(AControl: TControl);
 begin
-  w:= Width;
-  h:= Height;
-  max1:= 0;
-  max2:= 0;
-  for i:= 0 to ValueListEditor.RowCount - 1 do begin
-    s:= ValueListEditor.Cells[0, i];
-    max1:= Math.Max(Canvas.TextWidth(s), max1);   // changes Width !?!?!?!?!?
-    s:= ValueListEditor.Cells[1, i];
-    max2:= Math.Max(Canvas.TextWidth(s), max2);
+  var ScreenPos := AControl.ClientToScreen(Point(0, 0));
+  if ScreenPos.Y < Height then
+    SetBounds(ScreenPos.X, ScreenPos.Y + AControl.Height, Width, Height)
+  else
+    SetBounds(ScreenPos.X, ScreenPos.Y - Height, Width, Height);
+end;
+
+procedure TFObjectGenerator.SetWidthAndHeight;
+var
+  Max1, Max2: Integer;
+  Content: string;
+begin
+  Max1 := 0;
+  Max2 := 0;
+  for var I := 0 to ValueListEditor.RowCount - 1 do
+  begin
+    Content := ValueListEditor.Cells[0, I];
+    Max1 := Math.Max(Canvas.TextWidth(Content), Max1);
+    Content := ValueListEditor.Cells[1, I];
+    Max2 := Math.Max(Canvas.TextWidth(Content), Max2);
   end;
-  max1:= max1 + 10;
-  max2:= max2 + 10;
-  Width:= w;
-  Height:= h;
-  if Width < max1 + 1 + max2 then
-    Width:= max1 + 3 + max2;
-  if Width < BCancel.Left + BCancel.Width then
-    Width:= BCancel.Left + BCancel.Width;
-  if ValueListEditor.ColWidths[0] < max1 then
-     ValueListEditor.ColWidths[0]:= max1;
-  if ValueListEditor.ColWidths[1] < max2 then
-     ValueListEditor.ColWidths[1]:= max2;
-  // very strange interaction with Themes/Styles
-  Show;
-  Hide;
+  Max1 := Max1 + 10;
+  Max2 := Max2 + 10;
+  if ValueListEditor.ColWidths[0] < Max1 then
+    ValueListEditor.ColWidths[0] := Max1;
+  if ValueListEditor.ColWidths[1] < Max2 then
+    ValueListEditor.ColWidths[1] := Max2;
+  //Show;
+  Width := Max3(PPIScale(Max1 + 3 + Max2), PPIScale(Canvas.TextWidth(Caption) + 55), PPIScale(270));
+  Height:= PPIScale(70) + (ValueListEditor.RowCount + 1)*ValueListEditor.DefaultRowHeight;
+  //Hide;
 end;
 
 function TFObjectGenerator.Indent2: string;

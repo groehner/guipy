@@ -47,6 +47,7 @@ type
     procedure getWidthHeigthOfText(const aText: string; var w, h: Integer);
     procedure CalcWidthHeight;
     procedure RenameParticipant(const Value: string);
+    procedure ChangeStyle(BlackAndWhite: Boolean = False);
     property Created: Boolean read FCreated write setCreated;
   end;
 
@@ -67,7 +68,8 @@ begin
   Closed:= False;
   Renamed:= (aParticipant = 'Actor');
   Self.PPIControl:= PPIControl;
-  setFont(aFont);
+  SetFont(aFont);
+  ChangeStyle;
 end;
 
 procedure TLifeLine.SetFont(aFont: TFont);
@@ -97,13 +99,6 @@ procedure TLifeLine.Paint;
   end;
 
 begin
-  if StyleServices.IsSystemStyle then begin
-    BGColor:= clWhite;
-    FGColor:= clBlack;
-  end else begin
-    BGColor:= StyleServices.GetStyleColor(scPanel);
-    FGColor:= StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
-  end;
   Canvas.Pen.Color:= FGColor;
   Canvas.Font.Color:= FGColor;
 
@@ -239,6 +234,20 @@ begin
   Participant:= Value;
   CalcWidthHeight;
   Paint;
+end;
+
+procedure TLifeline.ChangeStyle(BlackAndWhite: Boolean = False);
+begin
+  if StyleServices.IsSystemStyle or BlackAndWhite then
+  begin
+    BGColor := clWhite;
+    FGColor := clBlack;
+  end
+  else
+  begin
+    BGColor := StyleServices.GetStyleColor(scPanel);
+    FGColor := StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
+  end;
 end;
 
 end.

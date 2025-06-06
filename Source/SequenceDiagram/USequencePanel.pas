@@ -73,6 +73,7 @@ type
     function hasRect: TRect;
     function getArrowStyleAsString: string;
     procedure setFont(aFont: TFont);
+    procedure ChangeStyle(BlackAndWhite: Boolean = False);
   end;
 
   // Wrapper around a control managed by essConnectPanel
@@ -215,6 +216,9 @@ type
     procedure ShowConnections;
     procedure setFont(aFont: TFont);
     procedure Clear;
+    procedure ChangeStyle(BlackAndWhite: Boolean = False);
+    function GetEnclosingRect: TRect;
+
     property isLocked: Boolean read FIsLocked write SetLocked;
     property IsModified: Boolean read FIsModified write SetModified;
     property IsMoving: Boolean read FIsMoving write FIsMoving;
@@ -276,7 +280,7 @@ type
 implementation
 
 uses Math, SysUtils, StdCtrls, Types, Themes, UITypes,
-     uCommonFunctions, UUtils, UConnectForm;
+     uCommonFunctions, UUtils, UConnectForm, ULifeline;
 
 type
   TCrackControl = class(TControl)
@@ -334,13 +338,7 @@ procedure TConnection.Draw(Canvas: TCanvas);
   end;
 
 begin  // of draw
-  if StyleServices.IsSystemStyle then begin
-    BGColor:= clWhite;
-    FGColor:= clBlack;
-  end else begin
-    BGColor:= StyleServices.GetStyleColor(scPanel);
-    FGColor:= StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
-  end;
+  Canvas.Pen.Mode:= pmCopy;
   Canvas.Pen.Color:= FGColor;
   Canvas.Brush.Color:= BGColor;
 
@@ -600,6 +598,7 @@ begin
   Self.OnConnectionChanged:= aOnConnectionChanged;
   ConRect     := Rect(0, 0, 0, 0);
   CalcPolyline;
+  ChangeStyle;
 end;
 
 procedure TConnection.SetAttributes(Attributes: TConnectionAttributes);
@@ -706,6 +705,21 @@ begin
   DistY:= Round(cDistY*aFont.Size/12.0);
   ActivationWidth:= Round(cActivationWidth*aFont.Size/12.0);
   HeadLength:= Round(cHeadLength*aFont.Size/12.0);
+end;
+
+procedure TConnection.ChangeStyle(BlackAndWhite: Boolean = False);
+begin
+  if StyleServices.IsSystemStyle or BlackAndWhite then
+  begin
+    BGColor := clWhite;
+    FGColor := clBlack;
+  end
+  else
+  begin
+    BGColor := StyleServices.GetStyleColor(scPanel);
+    FGColor := StyleServices.GetStyleFontColor
+      (sfTabTextInactiveNormal);
+  end;
 end;
 
 {--- TSequencePanel -----------------------------------------------------------}
@@ -1574,15 +1588,8 @@ end;
 procedure TSequencePanel.Paint;
 begin
   Canvas.Pen.Mode := pmCopy;
-  if Assigned(FBackBitmap)
-    then Canvas.Brush.Bitmap := FBackBitmap
-  else if StyleServices.IsSystemStyle then begin
-    BGColor:= clWhite;
-    FGColor:= clBlack;
-  end else begin
-    BGColor:= StyleServices.GetStyleColor(scPanel);
-    FGColor:= StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
-  end;
+  if Assigned(FBackBitmap) then
+    Canvas.Brush.Bitmap := FBackBitmap;
   Canvas.Pen.Color:= FGColor;
   Canvas.Brush.Color:= BGColor;
   Canvas.FillRect(ClientRect);
@@ -1669,7 +1676,7 @@ end;
 procedure TSequencePanel.SetFocus;
 var
   F : TCustomForm;
-  X,Y : Integer;
+  X, Y : Integer;
 begin
   F := GetParentForm(Self);
 
@@ -1749,6 +1756,55 @@ end;
 procedure TSequencePanel.clear;
 begin
   Canvas.FrameRect(ClientRect);
+end;
+
+procedure TSequencePanel.ChangeStyle(BlackAndWhite: Boolean = False);
+begin
+  if StyleServices.IsSystemStyle or BlackAndWhite then
+  begin
+    BGColor := clWhite;
+    FGColor := clBlack;
+  end
+  else
+  begin
+    BGColor := StyleServices.GetStyleColor(scPanel);
+    FGColor := StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
+  end;
+  Color := BGColor;
+  Canvas.Pen.Color := FGColor;
+  Canvas.Brush.Color := BGColor;
+
+  for var I := 0 to FConnections.Count - 1 do
+    TConnection(FConnections[I]).ChangeStyle(BlackAndWhite);
+  for var I := 0 to FManagedObjects.Count - 1 do
+    (TManagedObject(FManagedObjects[I]).FControl as TLifeline)
+      .ChangeStyle(BlackAndWhite);
+end;
+
+function TSequencePanel.GetEnclosingRect: TRect;
+var
+  Control: TControl;
+  Count: Integer;
+  ARect: TRect;
+begin
+  Count := 0;
+  Result := Rect(MaxInt, MaxInt, 0, 0);
+  if Assigned(FManagedObjects) then
+    for var I := 0 to FManagedObjects.Count - 1 do begin
+      Control := TManagedObject(FManagedObjects[I]).FControl;
+      ARect := Control.BoundsRect;
+      if ARect.Top < Result.Top then
+        Result.Top := ARect.Top;
+      if ARect.Left < Result.Left then
+        Result.Left := ARect.Left;
+      if ARect.Bottom > Result.Bottom then
+        Result.Bottom := ARect.Bottom;
+      if ARect.Right > Result.Right then
+        Result.Right := ARect.Right;
+      Inc(Count);
+    end;
+  if Count = 0 then
+    Result := Rect(0, 0, 0, 0);
 end;
 
 {--- TManagedObject -----------------------------------------------------------}

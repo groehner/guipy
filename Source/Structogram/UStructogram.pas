@@ -142,7 +142,7 @@ type
     procedure CutToClipboard;
     procedure UpdateState;
 
-    procedure setEvents(Image: TListImage);
+    procedure setEvents(ListImage: TListImage);
     procedure DoEdit(StrElement: TStrElement; s: string);
     procedure CloseEdit(b: Boolean);
     procedure setLeftBorderForEditMemo;
@@ -153,13 +153,14 @@ type
     function getListAtScreenPos(Pt: TPoint): TStrList;
     function getCurList: Boolean;
     function getCurListAndCurElement: Boolean;
-    function getBitmap: TBitmap;
+    function GetStructogramAsBitmap: TBitmap;
     function getName(StrList: TStrList): string;
     procedure PaintAll;
     function fitsIn(aCurList: TStrList; aCurElement: TStrElement): Boolean;
     procedure SetPuzzleMode(Mode: Integer);
     procedure MakeVeryHard;
     procedure ChangeStyle;
+    procedure Debug(const s: string);
   protected
     function OpenFile(const aPathname: string): Boolean; override;
     function LoadFromFile(const FileName: string): Boolean; override;
@@ -174,12 +175,11 @@ type
   public
     procedure New;
     procedure Print; override;
-    function getAsStringList: TStringList; override;
+    function GetAsStringList: TStringList; override;
     function GetSaveAsName: string;
     procedure FromText(const s: string);
     procedure RenewFromText(const s: string);
     procedure DoExport; override;
-    procedure debug(const s: string);
     procedure SetOptions; override;
     procedure DPIChanged; override;
     class function ToolbarCount: Integer;
@@ -243,7 +243,7 @@ begin
   StrList.text:= GuiPyLanguageOptions.Algorithm + ' ' + ChangeFileExt(ExtractFilename(Pathname), '');
   elem:= TStrStatement.Create(StrList);
   StrList.insert(StrList, elem);
-  setEvents(StrList.Image);
+  setEvents(StrList.ListImage);
   StrList.ResizeAll;
   StrList.Paint;
   Modified:= False;
@@ -264,7 +264,7 @@ begin
   finally
     FreeAndNil(Generator);
   end;
-  setEvents(StrList.Image);
+  setEvents(StrList.ListImage);
   StrList.ResizeAll;
   StrList.Paint;
   FFile.ExecSave;
@@ -286,7 +286,7 @@ begin
 
   StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font);
   StrList.Text:= Alg;
-  setEvents(StrList.Image);
+  setEvents(StrList.ListImage);
   StrList.Text:= GuiPyLanguageOptions.Algorithm + ' ';
   Generator:= TGenerateStructogram.Create(True);
   try
@@ -326,7 +326,7 @@ var
     aList.setPuzzleMode(PuzzleMode);
     aList.setFont(Font);
     aList.setLineHeight;
-    setEvents(aList.Image);
+    setEvents(aList.ListImage);
     aList.ResizeAll;
     aList.Paint;
   end;
@@ -509,10 +509,10 @@ begin
     StrList.ResizeAll;
     PtScreen:= (Sender as TToolButton).ClientToScreen(Point(X, Y));
     PtClient:= StructogramToolbar.ScreenToClient(PtScreen);
-    StrList.Image.SetBounds(PtClient.X - StrList.rctList.Width div 2,
+    StrList.ListImage.SetBounds(PtClient.X - StrList.rctList.Width div 2,
                             PtClient.y - StrList.LineHeight div 2,
                             StrList.rctList.Width, StrList.rctList.Height);
-    setEvents(StrList.Image);
+    setEvents(StrList.ListImage);
     StrList.Paint;
     mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
     SetCursorPos(Mouse.CursorPos.X + 30, Mouse.CursorPos.Y);
@@ -530,18 +530,18 @@ end;
 
 procedure TFStructogram.ImageMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
-  var Image: TListImage;
+  var ListImage: TListImage;
 begin
   if ignoreNextMouseDown then begin
     ignoreNextMouseDown:= False;
     Exit;
   end;
   if IsMoving then Exit;
-  Image:= (Sender as TListImage);
-  Image.BringToFront;
-  curList:= Image.StrList;
+  ListImage:= (Sender as TListImage);
+  ListImage.BringToFront;
+  curList:= ListImage.StrList;
   MousePos:= Point(X, Y);
-  ScreenMousePos:= Image.ClientToScreen(Point(X, Y));
+  ScreenMousePos:= ListImage.ClientToScreen(Point(X, Y));
   if EditMemo.Visible then
     CloseEdit(True);
   curElement:= FindVisibleElement(curList, MousePos.X, MousePos.Y);
@@ -558,7 +558,7 @@ procedure TFStructogram.ImageMouseMove(Sender: TObject; Shift: TShiftState;
 var
   ScrollBoxPt, Image2Pt, ScreenPt: TPoint;
   dx, dy, dx1, dy1, i: Integer;
-  Image, Image2: TListImage;
+  ListImage, Image2: TListImage;
   StrList: TStrList; StrStatement: TStrStatement;
   aRect: TRect;
 begin
@@ -567,16 +567,16 @@ begin
   inherited;
 
   if ssLeft in Shift then begin
-    Image:= (Sender as TListImage);
-    curList:= Image.StrList;
+    ListImage:= (Sender as TListImage);
+    curList:= ListImage.StrList;
     // start moving
-    ScreenPt:= Image.ClientToScreen(Point(X, Y));
+    ScreenPt:= ListImage.ClientToScreen(Point(X, Y));
     ScrollBoxPt:= ScrollBox.ScreenToClient(ScreenPt);
     dx:= ScreenPt.x - ScreenMousePos.x;
     dy:= ScreenPt.y - ScreenMousePos.y;
     if (dx = 0) and (dy = 0) then Exit;
 
-    if (Abs(dx) + Abs(dy) > 5) or IsMoving then begin  // move Image
+    if (Abs(dx) + Abs(dy) > 5) or IsMoving then begin  // move ListImage
       IsMoving:= True;
       Modified:= True;
       ScreenMousePos:= ScreenPt;
@@ -617,34 +617,34 @@ begin
         StrList.setFont(Font);
         StrList.insert(StrList, curElement);
         StrList.setList(StrList);
-        setEvents(StrList.Image);
+        setEvents(StrList.ListImage);
         StrList.ResizeAll;
         StrList.rctList.Right:= Max(aRect.Right - aRect.Left, StrList.rctList.Right);
         StrList.rctList.Bottom:= Max(aRect.Bottom - aRect.Top, strList.rctList.Bottom);
         StrList.rct:= StrList.rctList;
-        StrList.Image.Left:= Image.Left + aRect.Left + dy;
-        StrList.Image.Top := Image.Top + aRect.Top + dx;
+        StrList.ListImage.Left:= ListImage.Left + aRect.Left + dy;
+        StrList.ListImage.Top := ListImage.Top + aRect.Top + dx;
         StrList.Paint;
         Separating:= 2;
         CurList.DontMove:= True;
         ignoreNextMouseUp:= True;
         isMoving:= False;
-        ScreenPt:= StrList.Image.ClientToScreen(Point(dx1, dy1));
+        ScreenPt:= StrList.ListImage.ClientToScreen(Point(dx1, dy1));
         SetCursorPos(ScreenPt.x, Screenpt.y);
         mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
         mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
         CurList:= StrList;
       end else begin
-        // crucial for switching mouse to new image
-        Image.SetBounds(Image.Left + dx, Image.Top + dy, Image.Width, Image.Height);
+        // crucial for switching mouse to new ListImage
+        ListImage.SetBounds(ListImage.Left + dx, ListImage.Top + dy, ListImage.Width, ListImage.Height);
         if curList.DontMove then begin
-          Image.SetBounds(Image.Left - dx, Image.Top - dy, Image.Width, Image.Height);
+          ListImage.SetBounds(ListImage.Left - dx, ListImage.Top - dy, ListImage.Width, ListImage.Height);
           curList.DontMove:= False;
         end;
         if curList.Kind <> byte(nsAlgorithm) then begin
           for i:= ScrollBox.ControlCount - 1 downto 0 do begin
             Image2:= TListImage(ScrollBox.Controls[i]);
-            if Image2 <> Image then begin
+            if Image2 <> ListImage then begin
               aRect:= Image2.BoundsRect;
               aRect.Inflate(20, 20);
               if aRect.Contains(ScrollBoxPt) then begin
@@ -692,7 +692,7 @@ begin
           CurInsert:= +1;
         end;
       end;
-      OldCanvas:= DestList.Image.Canvas;
+      OldCanvas:= DestList.ListImage.Canvas;
       if FitsIn(InsertList, curElement) then begin
         ShowShape;
         DestList.dirty:= True;
@@ -703,14 +703,14 @@ end;
 procedure TFStructogram.ImageMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
   var ScreenPt, q, ScrollBoxPt, Image2Pt: TPoint;
-      Image, Image2: TListImage;
+      ListImage, Image2: TListImage;
       StrList: TStrList;
       i: Integer;
       aRect: TRect;
 begin
   IsMoving:= False;
-  Image:= (Sender as TListImage);
-  StrList:= Image.StrList;
+  ListImage:= (Sender as TListImage);
+  StrList:= ListImage.StrList;
 
   if ignoreNextMouseUp then begin
     ignoreNextMouseUp:= False;
@@ -722,14 +722,14 @@ begin
   if aRect <> StrList.rctList then
     StrList.Paint;
   if StrList.Kind in [byte(nsAlgorithm), byte(nsList)] then begin
-    ScreenPt:= Image.ClientToScreen(Point(X, Y));
+    ScreenPt:= ListImage.ClientToScreen(Point(X, Y));
     q:= Self.ScreenToClient(ScreenPt);
     if q.x < ScrollBox.Left then begin
        FreeAndNil(StrList);
        Exit;
     end;
     if q.y < ScrollBox.Top then
-      Image.Top:= 0;
+      ListImage.Top:= 0;
   end;
   if StrList.Kind = byte(nsList) then begin
     ScrollBoxPt:= ScrollBox.ScreenToClient(ScreenPt);
@@ -737,7 +737,7 @@ begin
       Image2:= TListImage(ScrollBox.Controls[i]);
       aRect:= Image2.BoundsRect;
       aRect.Inflate(30, 30);
-      if (Image2 <> Image) and aRect.Contains(ScrollBoxPt) then begin
+      if (Image2 <> ListImage) and aRect.Contains(ScrollBoxPt) then begin
         Image2Pt:= Image2.ScreenToClient(ScreenPt);
         curElement:= FindElement(Image2.StrList, Image2Pt.X , Image2Pt.Y);
         if Assigned(curElement) and FitsIn(StrList, curElement) then
@@ -917,9 +917,9 @@ begin
       StrList.LoadFromStream(stream, Version);
       StrList.setFont(Font);
       StrList.ResizeAll;
-      StrList.Image.SetBounds(curList.Image.Left + 30, curList.Image.Top + 30,
-                              curList.Image.Width, curList.Image.Height);
-      setEvents(StrList.Image);
+      StrList.ListImage.SetBounds(curList.ListImage.Left + 30, curList.ListImage.Top + 30,
+                              curList.ListImage.Width, curList.ListImage.Height);
+      setEvents(StrList.ListImage);
       StrList.setList(StrList);
       StrList.Paint;
       Modified:= True;
@@ -942,30 +942,30 @@ end;
 
 procedure TFStructogram.DoEdit(StrElement: TStrElement; s: string);
   var le, aTop, wi, he: Integer;
-      Image: TListImage;
+      ListImage: TListImage;
 begin
   if Assigned(StrElement) and not ReadOnly then begin
     EditMemoElement:= StrElement;
-    Image:= StrElement.List.Image;
+    ListImage:= StrElement.List.ListImage;
     EditMemoBeginText:= StrElement.text;
     EditMemo.Text:= StrElement.text + s;
-    le:= StructogramToolbar.Width + Image.Left + StrElement.rct.Left;
-    aTop:= Image.Top + StrElement.rct.Top;
+    le:= StructogramToolbar.Width + ListImage.Left + StrElement.rct.Left;
+    aTop:= ListImage.Top + StrElement.rct.Top;
     wi:= StrElement.rct.Right - StrElement.rct.Left + 1;
     he:= EditMemo.Lines.Count*StrElement.list.LineHeight + 1;
     he:= Max(StrElement.getHeadHeight + 1, he);
 
     if StrElement is TStrIf then begin
       wi:= StrElement.list.getWidthOfLines(EditMemo.Text) + 10;
-      le:= StructogramToolbar.Width + Image.Left + StrElement.TextPos.x - 5;
+      le:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.x - 5;
     end else if StrElement is TStrSwitch then begin
-      le:= StructogramToolbar.Width + Image.Left + StrElement.TextPos.x - 5;
+      le:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.x - 5;
       wi:= Math.Max(100, StrElement.list.getWidthOfLines(EditMemo.Text) + 10);
     end else if (StrElement is TStrSubProgram) then begin
-      le:= StructogramToolbar.Width + Image.Left + StrElement.TextPos.x - 5;
+      le:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.x - 5;
       EditMemo.Width:= EditMemo.Width - LEFT_RIGHT;
     end else if (StrElement is TStrBreak) then begin
-      le:= StructogramToolbar.Width + Image.Left + StrElement.TextPos.x - 5;
+      le:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.x - 5;
       wi:= EditMemo.Width - LEFT_RIGHT;
     end;
 
@@ -1168,7 +1168,7 @@ begin
 end;
 {$WARNINGS ON}
 
-// Click outside of any image
+// Click outside of any ListImage
 procedure TFStructogram.ScrollBoxClick(Sender: TObject);
 begin
   UpdateState;
@@ -1184,85 +1184,56 @@ begin
 end;
 
 procedure TFStructogram.DoExport;
-  var aBitmap: TBitmap;
 begin
-  aBitmap:= getBitmap;
-  try
-    PyIDEMainForm.DoExport(Pathname, aBitmap);
-  finally
-    FreeAndNil(aBitmap);
+  var Bitmap := GetStructogramAsBitmap;
+  PyIDEMainForm.DoExport(Pathname, Bitmap);
+  FreeAndNil(Bitmap);
+  if CanFocus then
     SetFocus;
-  end;
 end;
 
 procedure TFStructogram.Print;
-  var aBitmap: Graphics.TBitmap;
-      i: Integer; aRect: TRect; LI: TListImage;
 begin
-  aRect:= Rect(-1, -1, -1, -1);
-  for i:= 0 to ScrollBox.ControlCount - 1 do
-    if aRect.Left = -1
-      then aRect:= TListImage(ScrollBox.Controls[i]).BoundsRect
-      else aRect:= UnionRect(aRect, TListImage(ScrollBox.Controls[i]).BoundsRect);
-  aBitmap:= TBitmap.Create;
-  aBitmap.Width:=  aRect.Width + GuiPyOptions.StructogramShadowWidth;
-  aBitmap.Height:= aRect.Height + GuiPyOptions.StructogramShadowWidth;
-  aBitmap.Canvas.Lock;
-  try
-    for i:= 0 to ScrollBox.ControlCount - 1 do begin
-      LI:= TListImage(ScrollBox.Controls[i]);
-      aBitmap.Canvas.Draw(LI.Left - aRect.Left, LI.top - aRect.Top, LI.Picture.Graphic);
-    end;
-    PrintBitmap(aBitmap, PixelsPerInch);
-  finally
-    aBitmap.Canvas.Unlock;
-    FreeAndNil(aBitmap);
-  end;
+  var Bitmap := GetStructogramAsBitmap;
+  PrintBitmap(Bitmap, PixelsPerInch);
+  FreeAndNil(Bitmap);
 end;
 
 procedure TFStructogram.MICopyAsPictureClick(Sender: TObject);
-  var aBitmap: Graphics.TBitmap;
+var
+  Bitmap: Graphics.TBitmap;
 begin
-  if getCurList then begin
-    aBitmap:= TBitmap.Create;
+  if GetCurList then
+  begin
+    Bitmap := TBitmap.Create;
     try
-      aBitmap.Width:= curList.Image.Width + GuiPyOptions.StructogramShadowWidth;
-      aBitmap.Height:= curList.Image.Height + GuiPyOptions.StructogramShadowWidth;
-      curList.setBlackAndWhite(true);
-      aBitmap.Canvas.Draw(0, 0, curList.Image.Picture.Graphic);
-      Clipboard.Assign(aBitmap);
-      curList.setBlackAndWhite(false);
+      Bitmap.Width := CurList.ListImage.Width +
+        GuiPyOptions.StructogramShadowWidth;
+      Bitmap.Height := CurList.ListImage.Height +
+        GuiPyOptions.StructogramShadowWidth;
+      CurList.Paint(True);
+      Bitmap.Canvas.Draw(0, 0, CurList.ListImage.Picture.Graphic);
+      CurList.Paint(False);
+      Clipboard.Assign(Bitmap);
     finally
-      FreeAndNil(aBitmap);
+      FreeAndNil(Bitmap);
     end;
-  end else begin
+  end
+  else
+  begin
     CloseEdit(True);
     CopyToClipboard;
   end;
 end;
 
 procedure TFStructogram.CopyToClipboard;
-  var aBitmap: Graphics.TBitmap;
-      i: Integer; aRect: TRect; LI: TListImage;
 begin
   if EditMemo.Visible then
     EditMemo.CopyToClipboard
-  else if ScrollBox.ControlCount > 0 then begin
-    aRect:= TListImage(ScrollBox.Controls[0]).BoundsRect;
-    for i:= 1 to ScrollBox.ControlCount - 1 do
-      aRect:= UnionRect(aRect, TListImage(ScrollBox.Controls[i]).BoundsRect);
-    try
-      aBitmap:= TBitmap.Create;
-      aBitmap.Width := aRect.Width + GuiPyOptions.StructogramShadowWidth;
-      aBitmap.Height:= aRect.Height + GuiPyOptions.StructogramShadowWidth;
-      for i:= 0 to ScrollBox.ControlCount - 1 do begin
-        LI:= TListImage(ScrollBox.Controls[i]);
-        aBitmap.Canvas.Draw(LI.Left - aRect.Left, LI.top - aRect.Top, LI.Picture.Graphic);
-      end;
-      Clipboard.Assign(aBitmap);
-    finally
-      FreeAndNil(aBitmap);
-    end;
+  else begin
+    var Bitmap:= GetStructogramAsBitmap;
+    Clipboard.Assign(Bitmap);
+    FreeAndNil(Bitmap);
     UpdateState;
   end;
 end;
@@ -1781,9 +1752,9 @@ begin
   Delete(S, 1, i);
 end;
 
-procedure TFStructogram.setEvents(Image: TListImage);
+procedure TFStructogram.setEvents(ListImage: TListImage);
 begin
-  with Image do begin
+  with ListImage do begin
     OnDblClick := ImageDblClick;
     OnMouseDown:= ImageMouseDown;
     OnMouseMove:= ImageMouseMove;
@@ -1820,7 +1791,7 @@ function TFStructogram.getCurListAndCurElement: Boolean;
 begin
   curElement:= nil;
   if getCurList then begin
-    var pt:= CurList.Image.ScreenToClient(StructoPopupMenu.PopupPoint);
+    var pt:= CurList.ListImage.ScreenToClient(StructoPopupMenu.PopupPoint);
     curElement:= FindVisibleElement(curList, Pt.X, Pt.Y);
   end;
   Result:= Assigned(curElement);
@@ -1833,22 +1804,33 @@ begin
     else Result:= TListImage(ScrollBox.controls[0]).StrList;
 end;
 
-function TFStructogram.getBitmap: TBitmap;
-  var aRect: TRect;
-      i: Integer;
-      aBitmap: TBitmap;
+function TFStructogram.GetStructogramAsBitmap: TBitmap;
+var
+  ARect: TRect;
+  ABitmap: TBitmap;
 begin
-  aRect:= rect(-1, -1, -1, -1);
-  for i:= 0 to ScrollBox.ControlCount - 1 do
-    if aRect.Left = -1
-      then aRect:= TListImage(ScrollBox.Controls[i]).BoundsRect
-      else aRect:= Unionrect(arect, TListImage(ScrollBox.Controls[i]).BoundsRect);
+  for var I := 0 to ScrollBox.ControlCount - 1 do
+    if ScrollBox.Controls[I] is TListImage then
+      TListImage(ScrollBox.Controls[I]).StrList.Paint(True);
 
-  aBitmap:= TBitmap.Create;
-  aBitmap.Width:=  aRect.Width + GuiPyOptions.StructogramShadowWidth;
-  aBitmap.Height:= aRect.Height + GuiPyOptions.StructogramShadowWidth;
-  ScrollBox.PaintTo(aBitmap.Canvas.Handle,  -aRect.Left, -aRect.Top);
-  Result:= aBitmap;
+  ARect := Rect(-1, -1, -1, -1);
+  for var I := 0 to ScrollBox.ControlCount - 1 do
+    if ARect.Left = -1 then
+      ARect := TListImage(ScrollBox.Controls[I]).BoundsRect
+    else
+      ARect := UnionRect(ARect, TListImage(ScrollBox.Controls[I]).BoundsRect);
+  ABitmap := TBitmap.Create;
+  ABitmap.Width := ARect.Width + GuiPyOptions.StructogramShadowWidth;
+  ABitmap.Height := ARect.Height + GuiPyOptions.StructogramShadowWidth;
+  for var I := 0 to ScrollBox.ControlCount - 1 do begin
+    var ListImage := TListImage(ScrollBox.Controls[I]);
+    ABitmap.Canvas.Draw(ListImage.Left - ARect.Left, ListImage.Top - ARect.Top, ListImage.Picture.Graphic);
+  end;
+  Result := ABitmap;
+
+  for var I := 0 to ScrollBox.ControlCount - 1 do
+    if ScrollBox.Controls[I] is TListImage then
+      TListImage(ScrollBox.Controls[I]).StrList.Paint(False);
 end;
 
 procedure TFStructogram.PaintAll;
@@ -1861,7 +1843,7 @@ begin
   end;
 end;
 
-procedure TFStructogram.debug(const s: string);
+procedure TFStructogram.Debug(const s: string);
 begin
   MessagesWindow.AddMessage(s);
 end;
