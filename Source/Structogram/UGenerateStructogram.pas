@@ -1,40 +1,43 @@
-{-------------------------------------------------------------------------------
- Unit:     UStructogram
- Author:   Gerhard Röhner
- Date:     March 2021
- Purpose:  generate a structogram from python code
--------------------------------------------------------------------------------}
+{ -------------------------------------------------------------------------------
+  Unit:     UGenerateStructogram
+  Author:   Gerhard Röhner
+  Date:     March 2021
+  Purpose:  generate a structogram from python code
+  ------------------------------------------------------------------------------- }
 
 unit UGenerateStructogram;
 
 interface
 
-uses UTypes, UPythonScanner, UPythonIntegrator;
+uses
+  UTypes,
+  UPythonScanner,
+  UPythonIntegrator;
 
 type
   TGenerateStructogram = class(TPythonParser)
   private
     FStructogram: TStrList;
     FCurrent: TStrElement;
-    Scanner: TPythonScannerWithTokens;
+    FScanner: TPythonScannerWithTokens;
 
-    procedure SkipTo(ch: char);
-    procedure SkipToChars(ch: string);
+    procedure SkipTo(Chr: Char);
+    procedure SkipToChars(Chr: string);
     procedure ParseDecorators;
-    function getNextToken: string;
+    function GetNextToken: string;
     procedure SkipNewLines;
     procedure SkipMethod;
-    function getExpression(Token: char): string;
-    function getSimpleExpression: string;
-    function IsIdentifier(s: string): Boolean;
-    function CleanUp(s: string): string;
-    function withoutTypes(s: string): string;
-    function withoutLineJoining(s: string): string;
-    function withoutLinefeeds(s: string): string;
-    function withoutMultipleSpaces(s: string): string;
-    function withoutComments(s: string): string;
-    function withoutSelfAndVisibility(s: string): string;
-    function KnownStatement(s: string): Boolean;
+    function GetExpression(Token: Char): string;
+    function GetSimpleExpression: string;
+    function IsIdentifier(Expression: string): Boolean;
+    function CleanUp(Expression: string): string;
+    function WithoutTypes(Expression: string): string;
+    function WithoutLineJoining(Expression: string): string;
+    function WithoutLinefeeds(Expression: string): string;
+    function WithoutMultipleSpaces(Expression: string): string;
+    function WithoutComments(Expression: string): string;
+    function WithoutSelfAndVisibility(Expression: string): string;
+    function KnownStatement(Expression: string): Boolean;
 
     procedure GenerateStatement;
     procedure GenerateIfStatement;
@@ -48,271 +51,302 @@ type
     procedure GenerateMethodCall(const Method: string);
     procedure GenerateAssignmentOrExpression(const Ident: string);
   public
-    constructor Create(aWithView: Boolean); override;
+    constructor Create(WithView: Boolean); override;
     destructor Destroy; override;
-    procedure GenerateStructogram(const s: string; aStructogram: TStrList);
+    procedure GenerateStructogram(const Source: string; Structogram: TStrList);
   end;
 
 implementation
 
-uses SysUtils, Character, UConfiguration, UUtils;
+uses
+  SysUtils,
+  Character,
+  UConfiguration,
+  UUtils;
 
-constructor TGenerateStructogram.Create;
+constructor TGenerateStructogram.Create(WithView: Boolean);
 begin
   inherited;
-  Scanner:= TPythonScannerWithTokens.Create;
+  FScanner := TPythonScannerWithTokens.Create;
 end;
 
-procedure TGenerateStructogram.GenerateStructogram(const s: string; aStructogram: TStrList);
+procedure TGenerateStructogram.GenerateStructogram(const Source: string;
+  Structogram: TStrList);
 begin
-  FStructogram:= aStructogram;
-  FCurrent:= aStructogram;
-  Scanner.Init(s);
+  FStructogram := Structogram;
+  FCurrent := Structogram;
+  FScanner.Init(Source);
   SkipNewLines;
   ParseDecorators;
   // function
-  if Scanner.Token = 'def' then
+  if FScanner.Token = 'def' then
     GenerateMethod
   else
-  // statement sequence
-    while Scanner.Token <> '' do begin
+    // statement sequence
+    while FScanner.Token <> '' do
+    begin
       ParseDecorators;
-      if (Scanner.Token = 'class') or (Scanner.Token = 'def')
-        then Break // only one global function
-        else GenerateStatement;
+      if (FScanner.Token = 'class') or (FScanner.Token = 'def') then
+        Break // only one global function
+      else
+        GenerateStatement;
     end;
 end;
 
 destructor TGenerateStructogram.Destroy;
 begin
-  FreeAndNil(Scanner);
+  FreeAndNil(FScanner);
+  inherited;
 end;
 
-function TGenerateStructogram.getNextToken: string;
+function TGenerateStructogram.GetNextToken: string;
 begin
-  Result:= Scanner.GetNextToken;
+  Result := FScanner.GetNextToken;
 end;
 
 procedure TGenerateStructogram.SkipNewLines;
 begin
-  while Scanner.Token = NEWLINE do
+  while FScanner.Token = NEWLINE do
     GetNextToken;
 end;
 
 procedure TGenerateStructogram.SkipMethod;
-  var TempFCurrent, tmp: TStrElement;
+var
+  TempFCurrent, Tmp: TStrElement;
 begin
   SkipTo(':');
   GetNextToken;
-  TempFCurrent:= FCurrent;
-  FCurrent:= TStrElement.Create(nil);
+  TempFCurrent := FCurrent;
+  FCurrent := TStrElement.Create(nil);
   GenerateSuite;
-  while FCurrent <> nil do begin
-    tmp:= FCurrent.prev;
+  while not Assigned(FCurrent) do
+  begin
+    Tmp := FCurrent.Prev;
     FreeAndNil(FCurrent);
-    FCurrent:= tmp;
+    FCurrent := Tmp;
   end;
-  FCurrent:= TempFCurrent;
+  FCurrent := TempFCurrent;
 end;
 
-procedure TGenerateStructogram.SkipTo(ch: char);
+procedure TGenerateStructogram.SkipTo(Chr: Char);
 begin
-  Scanner.SkipTo(ch);
+  FScanner.SkipTo(Chr);
 end;
 
-procedure TGenerateStructogram.SkipToChars(ch: string);
+procedure TGenerateStructogram.SkipToChars(Chr: string);
 begin
-  Scanner.SkipToChars(ch);
+  FScanner.SkipToChars(Chr);
 end;
 
-function TGenerateStructogram.IsIdentifier(s: string): Boolean;
+function TGenerateStructogram.IsIdentifier(Expression: string): Boolean;
 begin
   Result := False;
-  var I := Pos('<', s);
+  var
+  I := Pos('<', Expression);
   if I > 0 then
-    Delete(s, I, Length(s));
-  if Length(s) = 0 then
+    Delete(Expression, I, Length(Expression));
+  if Length(Expression) = 0 then
     Exit;
-  if not (s[1].isLetter or (s[1] = '_')) then
+  if not(Expression[1].IsLetter or (Expression[1] = '_')) then
     Exit;
-  for I := 2 to Length(s) do
-    if not (s[i].IsLetterOrDigit or (Pos(s[i], '_,[]<>') > 0)) then
+  for I := 2 to Length(Expression) do
+    if not(Expression[I].IsLetterOrDigit or (Pos(Expression[I], '_,[]<>') > 0))
+    then
       Exit;
-  if s[Length(s)] = '.' then
+  if Expression[Length(Expression)] = '.' then
     Exit;
-  Result := not IsReservedWord(s);
+  Result := not IsReservedWord(Expression);
 end;
 
 procedure TGenerateStructogram.ParseDecorators;
 begin
-  while Scanner.Token = '@' do begin
+  while FScanner.Token = '@' do
+  begin
     SkipTo(NEWLINE);
     GetNextToken;
   end;
   SkipNewLines;
 end;
 
-function TGenerateStructogram.CleanUp(s: string): string;
+function TGenerateStructogram.CleanUp(Expression: string): string;
 begin
-  Result:= Trim(
-           withoutSelfAndVisibility(
-           withoutMultipleSpaces(
-           withoutLineFeeds(
-           withoutLineJoining(
-           withoutComments(s))))));
+  Result := Trim(WithoutSelfAndVisibility(WithoutMultipleSpaces
+    (WithoutLinefeeds(WithoutLineJoining(WithoutComments(Expression))))));
 end;
 
-function TGenerateStructogram.getExpression(Token: Char): string;
-  var Start: PChar;
+function TGenerateStructogram.GetExpression(Token: Char): string;
+var
+  Start: PChar;
 begin
-  Start:= Scanner.CurrPos;
+  Start := FScanner.CurrPos;
   SkipTo(Token);
-  setString(Result, Start, Scanner.CurrPos - Start - 1);
-  Result:= CleanUp(Result);
+  SetString(Result, Start, FScanner.CurrPos - Start - 1);
+  Result := CleanUp(Result);
 end;
 
-function TGenerateStructogram.getSimpleExpression: string;
-  var Start: PChar;
+function TGenerateStructogram.GetSimpleExpression: string;
+var
+  Start: PChar;
 begin
-  Start:= Scanner.LastCurrPos;
+  Start := FScanner.LastCurrPos;
   SkipToChars(NEWLINE + ';');
-  setString(Result, Start, Scanner.CurrPos - Start - 1);
-  Result:= CleanUp(Result);
+  SetString(Result, Start, FScanner.CurrPos - Start - 1);
+  Result := CleanUp(Result);
 end;
 
-function TGenerateStructogram.withoutTypes(s: string): string;
-  var i, p1, p2: Integer;
+function TGenerateStructogram.WithoutTypes(Expression: string): string;
+var
+  Int, Pos1, Pos2: Integer;
 begin
-  i:= 1;
-  while i <= Length(s) do begin
-    if s[i] = ':' then begin
-      p1:= i;
-      p2:= i + 1;
-      while p2 <= Length(s) do begin
-        if s[p2] = ',' then begin
-          Delete(s, p1, p2 - p1);
+  Int := 1;
+  while Int <= Length(Expression) do
+  begin
+    if Expression[Int] = ':' then
+    begin
+      Pos1 := Int;
+      Pos2 := Int + 1;
+      while Pos2 <= Length(Expression) do
+      begin
+        if Expression[Pos2] = ',' then
+        begin
+          Delete(Expression, Pos1, Pos2 - Pos1);
           Break;
         end;
-        if p2 = Length(s) then begin
-          Delete(s, p1, p2 - p1 + 1);
+        if Pos2 = Length(Expression) then
+        begin
+          Delete(Expression, Pos1, Pos2 - Pos1 + 1);
           Break;
         end;
-        Inc(p2);
+        Inc(Pos2);
       end;
     end;
-    Inc(i);
+    Inc(Int);
   end;
-  Result:= s;
+  Result := Expression;
 end;
 
-function TGenerateStructogram.withoutSelfAndVisibility(s: string): string;
+function TGenerateStructogram.WithoutSelfAndVisibility
+  (Expression: string): string;
 begin
-  Result:= myStringReplace(myStringReplace(s, 'self.', ''), '_', '');
+  Result := myStringReplace(myStringReplace(Expression, 'self.', ''), '_', '');
 end;
 
-function TGenerateStructogram.withoutLineJoining(s: string): string;
+function TGenerateStructogram.WithoutLineJoining(Expression: string): string;
 begin
-  Result:= myStringReplace(s, '\'#10, '');
+  Result := myStringReplace(Expression, '\'#10, '');
 end;
 
-function TGenerateStructogram.withoutLinefeeds(s: string): string;
-  var i: Integer;
+function TGenerateStructogram.WithoutLinefeeds(Expression: string): string;
+var
+  Int: Integer;
 begin
-  i:= 1;
-  while i <= Length(s) do begin
-    if s[i] = #10
-      then Delete(s, i, 1)
-      else Inc(i);
+  Int := 1;
+  while Int <= Length(Expression) do
+  begin
+    if Expression[Int] = #10 then
+      Delete(Expression, Int, 1)
+    else
+      Inc(Int);
   end;
-  Result:= s;
+  Result := Expression;
 end;
 
-function TGenerateStructogram.withoutMultipleSpaces(s: string): string;
-  var p, q: Integer;
+function TGenerateStructogram.WithoutMultipleSpaces(Expression: string): string;
+var
+  Pos1, Pos2: Integer;
 begin
-  p:= Pos('  ', s);
-  while p > 0 do begin
-    q:= p + 1;
-    while (q <= Length(s)) and (s[q] = ' ') do
-      Inc(q);
-    Delete(s, p, q - p - 1);
-    p:= Pos('  ', s);
+  Pos1 := Pos('  ', Expression);
+  while Pos1 > 0 do
+  begin
+    Pos2 := Pos1 + 1;
+    while (Pos2 <= Length(Expression)) and (Expression[Pos2] = ' ') do
+      Inc(Pos2);
+    Delete(Expression, Pos1, Pos2 - Pos1 - 1);
+    Pos1 := Pos('  ', Expression);
   end;
-  Result:= s;
+  Result := Expression;
 end;
 
-function TGenerateStructogram.withoutComments(s: string): string;
-  var p, q: Integer; Double, Single: Boolean;
+function TGenerateStructogram.WithoutComments(Expression: string): string;
+var
+  Pos1, Pos2: Integer;
+  Double, Single: Boolean;
 begin
-  Double:= False;
-  Single:= False;
-  p:= 1;
-  while p <= Length(s) do begin
-    if (s[p] = '"') and not Single then
-      Double:= not Double
-    else if (s[p] = '''') and not Double then
-      Single:= not Single
-    else if (s[p] = '#') and not Double and not Single then begin
-      q:= p + 1;
-      while (q <= Length(s)) and (s[q] <> #10) do
-        Inc(q);
-      Delete(s, p, q - p);
-   end;
-   Inc(p);
+  Double := False;
+  Single := False;
+  Pos1 := 1;
+  while Pos1 <= Length(Expression) do
+  begin
+    if (Expression[Pos1] = '"') and not Single then
+      Double := not Double
+    else if (Expression[Pos1] = '''') and not Double then
+      Single := not Single
+    else if (Expression[Pos1] = '#') and not Double and not Single then
+    begin
+      Pos2 := Pos1 + 1;
+      while (Pos2 <= Length(Expression)) and (Expression[Pos2] <> #10) do
+        Inc(Pos2);
+      Delete(Expression, Pos1, Pos2 - Pos1);
+    end;
+    Inc(Pos1);
   end;
-  Result:= s;
+  Result := Expression;
 end;
 
-function TGenerateStructogram.KnownStatement(s: string): Boolean;
-  const Statements: array[1..13] of string =
-         ('assert', 'break', 'pass', 'del', 'return', 'yield', 'raise',
-          'continue', 'import', 'from', 'future', 'global', 'nonlocal');
-  var i: Integer;
+function TGenerateStructogram.KnownStatement(Expression: string): Boolean;
+const
+  Statements: array [1 .. 13] of string = ('assert', 'break', 'pass', 'del',
+    'return', 'yield', 'raise', 'continue', 'import', 'from', 'future',
+    'global', 'nonlocal');
 begin
-  Result:= False;
-  for i:= 1 to 13 do
-    if Statements[i] = s then
-      Result:= True;
+  Result := False;
+  for var I := 1 to 13 do
+    if Statements[I] = Expression then
+      Result := True;
 end;
 
 procedure TGenerateStructogram.GenerateSuite;
 begin
-  if Scanner.Token = NEWLINE then begin
+  if FScanner.Token = NEWLINE then
+  begin
     SkipNewLines;
-    if Scanner.Token = INDENT then begin
+    if FScanner.Token = INDENT then
+    begin
       GetNextToken;
       repeat
         GenerateStatement;
         SkipNewLines;
-      until (Scanner.Token = DEDENT_) or (Scanner.Token = '');
-      GetNextToken;  // skip DEDENT_
+      until (FScanner.Token = DEDENT_) or (FScanner.Token = '');
+      GetNextToken; // skip DEDENT_
     end;
-  end else begin
+  end
+  else
+  begin
     GenerateSimpleStatement;
-    while (Scanner.Token <> NEWLINE) and (Scanner.Token <> '') do
+    while (FScanner.Token <> NEWLINE) and (FScanner.Token <> '') do
       GenerateSimpleStatement;
-    if Scanner.Token = NEWLINE then
+    if FScanner.Token = NEWLINE then
       GetNextToken;
   end;
 end;
 
 procedure TGenerateStructogram.GenerateStatement;
 begin
-  if Scanner.Token = '' then
+  if FScanner.Token = '' then
     Exit;
-  if Scanner.Token = '@' then
+  if FScanner.Token = '@' then
     ParseDecorators;
-  if Scanner.Token = 'async' then
+  if FScanner.Token = 'async' then
     GetNextToken;
-  if Scanner.Token = 'if' then
+  if FScanner.Token = 'if' then
     GenerateIfStatement
-  else if Scanner.Token = 'while' then
+  else if FScanner.Token = 'while' then
     GenerateWhileStatement
-  else if Scanner.Token = 'for' then
+  else if FScanner.Token = 'for' then
     GenerateForStatement
-  else if Scanner.Token = 'with' then
+  else if FScanner.Token = 'with' then
     GenerateWithStatement
-  else if Scanner.Token = 'def' then
+  else if FScanner.Token = 'def' then
     SkipMethod
   else
     GenerateSimpleStatement;
@@ -321,210 +355,241 @@ end;
 procedure TGenerateStructogram.GenerateIfStatement;
 // 8.1
 // if_stmt ::=  "if" assignment_expression ":" suite
-//             ("elif" assignment_expression ":" suite)*
-//             ["else" ":" suite]
-  var elemIf: TStrIf; elemSwitch: TStrSwitch;
-      Expression: string; CaseCount: Integer;
-      SavedFCurrent, FTemp: TStrElement;
+// ("elif" assignment_expression ":" suite)*
+// ["else" ":" suite]
+var
+  ElemIf: TStrIf;
+  ElemSwitch: TStrSwitch;
+  Expression: string;
+  CaseCount: Integer;
+  SavedFCurrent, Tmp: TStrElement;
 
   procedure GenerateEmptyStatement;
-    var elem: TStrStatement;
+  var
+    Elem: TStrStatement;
   begin
-    elem:= TStrStatement.Create(FStructogram);
-    FStructogram.insert(FCurrent, elem);
-    elem.text:= '';
-    FCurrent:= elem;
+    Elem := TStrStatement.Create(FStructogram);
+    FStructogram.Insert(FCurrent, Elem);
+    Elem.Text := '';
+    FCurrent := Elem;
   end;
 
   procedure GenerateEnd;
   begin
-    if Scanner.Token = 'else' then begin
+    if FScanner.Token = 'else' then
+    begin
       SkipTo(':');
       GetNextToken;
       GenerateSuite;
-    end else
+    end
+    else
       GenerateEmptyStatement;
   end;
 
-  procedure NewCase(text: string);
+  procedure NewCase(Text: string);
   begin
     Inc(CaseCount);
-    SetLength(elemSwitch.case_elems, CaseCount+1);
-    elemSwitch.case_elems[CaseCount]:= TStrListHead.CreateStructogram(FStructogram, elemSwitch);
-    elemSwitch.case_elems[CaseCount].text:= 'case ' + IntToStr(CaseCount) + ' head';
-    elemSwitch.case_elems[CaseCount].Next.text:= text;
-    FCurrent:= elemSwitch.case_elems[CaseCount].Next;
+    var Elems := ElemSwitch.CaseElems;
+    SetLength(Elems, CaseCount + 1);
+    ElemSwitch.CaseElems:= Elems;
+    ElemSwitch.CaseElems[CaseCount] := TStrListHead.CreateStructogram
+      (FStructogram, ElemSwitch);
+    ElemSwitch.CaseElems[CaseCount].Text := 'case ' + IntToStr(CaseCount)
+      + ' head';
+    ElemSwitch.CaseElems[CaseCount].Next.Text := Text;
+    FCurrent := ElemSwitch.CaseElems[CaseCount].Next;
   end;
 
 begin
-  SavedFCurrent:= FCurrent;
-  FCurrent:= TStrElement.Create(FStructogram);
-  FTemp:= FCurrent;
-  Expression:= getExpression(':');
+  SavedFCurrent := FCurrent;
+  FCurrent := TStrElement.Create(FStructogram);
+  Tmp := FCurrent;
+  Expression := GetExpression(':');
   GetNextToken;
   GenerateSuite;
-  if Scanner.Token = 'elif' then begin
-    elemSwitch:= TStrSwitch.createStructogram(FStructogram);
-    elemSwitch.text:= 'falls';  // ToDo falls?
-    FStructogram.insert(SavedFCurrent, elemSwitch);
-    FTemp.Next.prev:= nil;
-    CaseCount:= 0;
-    SetLength(elemSwitch.case_elems, CaseCount + 1);
-
-    elemSwitch.case_elems[0]:= TStrListHead.CreateStructogram(FStructogram, elemSwitch);
-    elemSwitch.case_elems[0].text:= 'case ' + IntToStr(CaseCount) + ' head';
-    elemSwitch.case_elems[0].Next.text:= Expression;
-    FStructogram.insert(elemSwitch.case_elems[0].Next, FTemp.Next);
-    FreeAndNil(FTemp);
-    while Scanner.Token = 'elif' do begin
-      Expression:= getExpression(':');
-      newCase(Expression);
+  if FScanner.Token = 'elif' then
+  begin
+    ElemSwitch := TStrSwitch.CreateStructogram(FStructogram);
+    ElemSwitch.Text := 'falls'; // ToDo falls?
+    FStructogram.Insert(SavedFCurrent, ElemSwitch);
+    Tmp.Next.Prev := nil;
+    CaseCount := 0;
+    var Elems := ElemSwitch.CaseElems;
+    SetLength(Elems, CaseCount + 1);
+    ElemSwitch.CaseElems:= Elems;
+    ElemSwitch.CaseElems[0] := TStrListHead.CreateStructogram(FStructogram,
+      ElemSwitch);
+    ElemSwitch.CaseElems[0].Text := 'case ' + IntToStr(CaseCount) + ' head';
+    ElemSwitch.CaseElems[0].Next.Text := Expression;
+    FStructogram.Insert(ElemSwitch.CaseElems[0].Next, Tmp.Next);
+    FreeAndNil(Tmp);
+    while FScanner.Token = 'elif' do
+    begin
+      Expression := GetExpression(':');
+      NewCase(Expression);
       GetNextToken;
       GenerateSuite;
     end;
-    newCase(GuiPyLanguageOptions.Other);
+    NewCase(GuiPyLanguageOptions.Other);
     GenerateEnd;
-    FCurrent:= elemSwitch;
-  end else begin
-    elemIf:= TStrIf.createStructogram(FStructogram);
-    FStructogram.insert(SavedFCurrent, elemIf);
-    elemIf.Text:= Expression;
-    if Assigned(FTemp.Next) then
-      FTemp.Next.prev:= nil;
-    FStructogram.insert(elemIf.then_elem, FTemp.Next);
-    FreeAndNil(FTemp);
-    FCurrent:= elemIf.else_elem;
+    FCurrent := ElemSwitch;
+  end
+  else
+  begin
+    ElemIf := TStrIf.CreateStructogram(FStructogram);
+    FStructogram.Insert(SavedFCurrent, ElemIf);
+    ElemIf.Text := Expression;
+    if Assigned(Tmp.Next) then
+      Tmp.Next.Prev := nil;
+    FStructogram.Insert(ElemIf.ThenElem, Tmp.Next);
+    FreeAndNil(Tmp);
+    FCurrent := ElemIf.ElseElem;
     GenerateEnd;
-    FCurrent:= elemIf;
+    FCurrent := ElemIf;
   end;
 end;
 
 procedure TGenerateStructogram.GenerateWhileStatement;
 // 8.2
 // "while" assignment_expression ":" suite ["else" ":" suite]
-  var elem: TStrWhile;
-      Expression: string;
+var
+  Elem: TStrWhile;
+  Expression: string;
 begin
-  elem:= TStrWhile.createStructogram(FStructogram);
-  FStructogram.insert(FCurrent, elem);
-  Expression:= getExpression(':');
-  elem.text:= GuiPyLanguageOptions._While + ' ' + Expression;
-  FCurrent:= elem.do_elem;
+  Elem := TStrWhile.CreateStructogram(FStructogram);
+  FStructogram.Insert(FCurrent, Elem);
+  Expression := GetExpression(':');
+  Elem.Text := GuiPyLanguageOptions._While + ' ' + Expression;
+  FCurrent := Elem.DoElem;
   GetNextToken;
   GenerateSuite;
-  FCurrent:= elem;
+  FCurrent := Elem;
 end;
 
 procedure TGenerateStructogram.GenerateForStatement;
 // 8.3
 // for_stmt ::=  "for" target_list "in" expression_list ":" suite
-//              ["else" ":" suite]
+// ["else" ":" suite]
 
-  var elem: TStrFor;
-      Expression: string;
+var
+  Elem: TStrFor;
+  Expression: string;
 begin
-  elem:= TStrFor.createStructogram(FStructogram);
-  FStructogram.insert(FCurrent, elem);
-  Expression:= getExpression(':');
-  elem.text:= GuiPyLanguageOptions._For + ' ' + Expression;
-  FCurrent:= elem.do_elem;
+  Elem := TStrFor.CreateStructogram(FStructogram);
+  FStructogram.Insert(FCurrent, Elem);
+  Expression := GetExpression(':');
+  Elem.Text := GuiPyLanguageOptions._For + ' ' + Expression;
+  FCurrent := Elem.DoElem;
   GetNextToken;
   GenerateSuite;
-  FCurrent:= elem;
+  FCurrent := Elem;
 end;
 
 procedure TGenerateStructogram.GenerateWithStatement;
 // 8.5
 // with_stmt ::=  "with" with_item ("," with_item)* ":" suite
 // with_item ::=  expression ["as" target]
-  var elem: TStrWhile;
-      Expression: string;
+var
+  Elem: TStrWhile;
+  Expression: string;
 begin
-  elem:= TStrWhile.createStructogram(FStructogram);
-  FStructogram.insert(FCurrent, elem);
-  Expression:= getExpression(':');
-  elem.text:= GuiPyLanguageOptions._While + ' ' + Expression;
-  FCurrent:= elem.do_elem;
+  Elem := TStrWhile.CreateStructogram(FStructogram);
+  FStructogram.Insert(FCurrent, Elem);
+  Expression := GetExpression(':');
+  Elem.Text := GuiPyLanguageOptions._While + ' ' + Expression;
+  FCurrent := Elem.DoElem;
   GetNextToken;
   GenerateSuite;
-  FCurrent:= elem;
+  FCurrent := Elem;
 end;
 
 procedure TGenerateStructogram.GenerateSimpleStatement;
-  var Ident: string;
 begin
-  if KnownStatement(Scanner.Token) then
+  if KnownStatement(FScanner.Token) then
     GenerateKnownSimpleStatement
-  else begin
-    Ident:= Scanner.Token;
-    if IsIdentifier(Ident) and (Scanner.LookAheadToken = '(')
-      then GenerateMethodCall(Ident)
-      else GenerateAssignmentOrExpression(Ident);
+  else
+  begin
+    var Ident := FScanner.Token;
+    if IsIdentifier(Ident) and (FScanner.LookAheadToken = '(') then
+      GenerateMethodCall(Ident)
+    else
+      GenerateAssignmentOrExpression(Ident);
   end;
-  if Scanner.Token = ';' then
+  if FScanner.Token = ';' then
     GetNextToken;
 end;
 
 procedure TGenerateStructogram.GenerateKnownSimpleStatement;
-  var elem: TStrElement;
+var
+  Elem: TStrElement;
 begin
-  if Scanner.Token = 'break'
-    then elem:= TStrBreak.Create(FStructogram)
-    else elem:= TStrStatement.Create(FStructogram);
-  FStructogram.insert(FCurrent, elem);
-  elem.text:= getSimpleExpression;
-  FCurrent:= elem;
+  if FScanner.Token = 'break' then
+    Elem := TStrBreak.Create(FStructogram)
+  else
+    Elem := TStrStatement.Create(FStructogram);
+  FStructogram.Insert(FCurrent, Elem);
+  Elem.Text := GetSimpleExpression;
+  FCurrent := Elem;
 end;
 
 procedure TGenerateStructogram.GenerateMethodCall(const Method: string);
-  var elem: TStrElement;
-      Expression: string;
-      p: Integer;
+var
+  Elem: TStrElement;
+  Expression: string;
+  Posi: Integer;
 begin
-  Expression:= getSimpleExpression;
-  if Method = 'print' then begin
-    elem:= TStrStatement.Create(FStructogram);
-    p:= Pos('(', Expression); Delete(Expression, 1, p);
-    p:= Length(Expression);
-    while (p > 0) and (Expression[p] <> ')') do
-      Dec(p);
-    Delete(Expression, p, Length(Expression));
-    elem.text:= GuiPyLanguageOptions.Output + ' ' + Expression;
-  end else begin
-    elem:= TStrSubprogram.Create(FStructogram);
-    elem.text:= Expression;
+  Expression := GetSimpleExpression;
+  if Method = 'print' then
+  begin
+    Elem := TStrStatement.Create(FStructogram);
+    Posi := Pos('(', Expression);
+    Delete(Expression, 1, Posi);
+    Posi := Length(Expression);
+    while (Posi > 0) and (Expression[Posi] <> ')') do
+      Dec(Posi);
+    Delete(Expression, Posi, Length(Expression));
+    Elem.Text := GuiPyLanguageOptions.Output + ' ' + Expression;
+  end
+  else
+  begin
+    Elem := TStrSubprogram.Create(FStructogram);
+    Elem.Text := Expression;
   end;
-  FStructogram.insert(FCurrent, elem);
-  FCurrent:= elem;
+  FStructogram.Insert(FCurrent, Elem);
+  FCurrent := Elem;
 end;
 
-procedure TGenerateStructogram.GenerateAssignmentOrExpression(const Ident: string);
-  var elem: TStrElement;
-      Expression: string;
-      p: Integer;
+procedure TGenerateStructogram.GenerateAssignmentOrExpression
+  (const Ident: string);
+var
+  Elem: TStrElement;
+  Expression: string;
+  Posi: Integer;
 begin
-  elem:= TStrStatement.Create(FStructogram);
-  FStructogram.insert(FCurrent, elem);
-  Expression:= getSimpleExpression;
-  elem.text:= Expression;
-  if (Pos('=', Expression) > 0) then begin
-    p:= Pos('input(', Expression);
-    if (p > 0) and ((p = 1) or IsWordBreakChar(Expression[p-1])) then
-      elem.text:= GuiPyLanguageOptions.Input + ' ' + Ident
+  Elem := TStrStatement.Create(FStructogram);
+  FStructogram.Insert(FCurrent, Elem);
+  Expression := GetSimpleExpression;
+  Elem.Text := Expression;
+  if (Pos('=', Expression) > 0) then
+  begin
+    Posi := Pos('input(', Expression);
+    if (Posi > 0) and ((Posi = 1) or IsWordBreakChar(Expression[Posi - 1])) then
+      Elem.Text := GuiPyLanguageOptions.Input + ' ' + Ident;
   end;
-  FCurrent:= elem;
+  FCurrent := Elem;
 end;
 
 procedure TGenerateStructogram.GenerateMethod;
-  var Method, Expression: string;
+var
+  Method, Expression: string;
 begin
-  Method:= GetNextToken;
+  Method := GetNextToken;
   GetNextToken;
-  Expression:= getExpression(')');
+  Expression := GetExpression(')');
   if Left(Expression, 6) = 'self, ' then
-    Expression:= Copy(Expression, 7, Length(Expression));
-  Method:= Method + '(' + withoutTypes(Expression) + ')';
-  FStructogram.text:= FStructogram.text + ' ' + Method;
+    Expression := Copy(Expression, 7, Length(Expression));
+  Method := Method + '(' + WithoutTypes(Expression) + ')';
+  FStructogram.Text := FStructogram.Text + ' ' + Method;
   SkipTo(':');
   GetNextToken;
   GenerateSuite;

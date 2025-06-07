@@ -11,11 +11,28 @@ unit UStructogram;
 interface
 
 uses
-  Windows, Messages, Classes, Controls, ExtCtrls, Forms, Graphics,
-  ComCtrls, StdCtrls, Vcl.ToolWin, System.ImageList, Vcl.ImgList,
-  SpTBXSkins, frmFile, UTypes, SpTBXItem, TB2Item, Vcl.Menus,
-  Vcl.VirtualImageList, Vcl.BaseImageCollection, SVGIconImageCollection,
-  Vcl.VirtualImage;
+  Windows,
+  Messages,
+  Classes,
+  Controls,
+  ExtCtrls,
+  Forms,
+  Graphics,
+  ComCtrls,
+  StdCtrls,
+  System.ImageList,
+  Vcl.ToolWin,
+  Vcl.ImgList,
+  Vcl.Menus,
+  Vcl.VirtualImageList,
+  Vcl.BaseImageCollection,
+  Vcl.VirtualImage,
+  SVGIconImageCollection,
+  SpTBXSkins,
+  frmFile,
+  UTypes,
+  SpTBXItem,
+  TB2Item;
 
 type
 
@@ -103,73 +120,73 @@ type
     procedure MIConfigurationClick(Sender: TObject);
     procedure MISavePuzzleFilesClick(Sender: TObject);
   private
-    EditMemo: TMemo;
-    oldShape: TRect;
-    oldCanvas: TCanvas;
-    curElement: TStrElement;
-    curList: TStrList;
-    EditMemoElement: TStrElement;
-    EditMemoBeginText: string;
-    CurInsert: Integer;
-    IsMoving: Boolean;
-    ReadOnly: Boolean;
-    MousePos: TPoint;
-    ScreenMousePos: TPoint;
-    DataType: string;
-    Variables: string;
-    ControlCanvas: TCanvas;
-    IgnoreNextMouseDown: Boolean;
-    IgnoreNextMouseUp: Boolean;
-    Separating: Integer;
-    PuzzleMode: Integer;
-    Solution: string;
-    Version: Byte;
+    FEditMemo: TMemo;
+    FOldShape: TRect;
+    FOldCanvas: TCanvas;
+    FCurElement: TStrElement;
+    FCurList: TStrList;
+    FEditMemoElement: TStrElement;
+    FEditMemoBeginText: string;
+    FCurInsert: Integer;
+    FIsMoving: Boolean;
+    FReadOnly: Boolean;
+    FMousePos: TPoint;
+    FScreenMousePos: TPoint;
+    FDataType: string;
+    FVariables: string;
+    FControlCanvas: TCanvas;
+    FIgnoreNextMouseDown: Boolean;
+    FIgnoreNextMouseUp: Boolean;
+    FSeparating: Integer;
+    FPuzzleMode: Integer;
+    FSolution: string;
+    FVersion: Byte;
     procedure ShowShape;
     procedure HideShape;
-    procedure AddParameter(list: TStrList; paramList: TStringList);
-    procedure AddVariable(aText: string; list: TStringList);
-    procedure StrElementToPython(element: TStrElement; pList, VariablesList: TStringList; const indent: string);
-    function FindElement(current: TStrElement; X, Y: Integer): TStrElement;
-    function FindVisibleElement(current: TStrElement; X, Y: Integer): TStrElement;
-    function BeforeOrAfter(current: TStrElement): Boolean;
+    procedure AddParameter(List: TStrList; ParamList: TStringList);
+    procedure AddVariable(AText: string; List: TStringList);
+    procedure StrElementToPython(Element: TStrElement; PList, VariablesList: TStringList; const Indent: string);
+    function FindElement(Current: TStrElement; X, Y: Integer): TStrElement;
+    function FindVisibleElement(Current: TStrElement; X, Y: Integer): TStrElement;
+    function BeforeOrAfter(Current: TStrElement): Boolean;
 
-    function getParentElement(element: TStrElement): TStrElement;
-    function getToken(var S: string; var Token: string): Integer;
-    procedure CalculateInsertionShape(DestList, InsertList: TStrList; x, y: Integer);
-    procedure InsertElement(DestList, InsertList: TStrList; aCurElement: TStrElement);
+    function GetParentElement(Element: TStrElement): TStrElement;
+    function GetToken(var Str: string; var Token: string): Integer;
+    procedure CalculateInsertionShape(DestList, InsertList: TStrList; X, Y: Integer);
+    procedure InsertElement(DestList, InsertList: TStrList; ACurElement: TStrElement);
 
     procedure Save;
     procedure CutToClipboard;
     procedure UpdateState;
 
-    procedure setEvents(ListImage: TListImage);
-    procedure DoEdit(StrElement: TStrElement; s: string);
-    procedure CloseEdit(b: Boolean);
-    procedure setLeftBorderForEditMemo;
-    function getAlgorithmParameter(ParamList: TStringList): string;
-    procedure PythonProgram(list: TStrList; progList: TStringList; const aName: string);
-    function getAlgorithm: TStrAlgorithm;
-    function getList: TStrList;
-    function getListAtScreenPos(Pt: TPoint): TStrList;
-    function getCurList: Boolean;
-    function getCurListAndCurElement: Boolean;
+    procedure SetEvents(ListImage: TListImage);
+    procedure DoEdit(StrElement: TStrElement; Str: string);
+    procedure CloseEdit;
+    procedure SetLeftBorderForEditMemo;
+    function GetAlgorithmParameter(ParamList: TStringList): string;
+    procedure PythonProgram(List: TStrList; ProgList: TStringList; const Name: string);
+    function GetAlgorithm: TStrAlgorithm;
+    function GetList: TStrList;
+    function GetListAtScreenPos(Point: TPoint): TStrList;
+    function GetCurList: Boolean;
+    function GetCurListAndCurElement: Boolean;
     function GetStructogramAsBitmap: TBitmap;
-    function getName(StrList: TStrList): string;
+    function GetName(StrList: TStrList): string;
     procedure PaintAll;
-    function fitsIn(aCurList: TStrList; aCurElement: TStrElement): Boolean;
+    function FitsIn(ACurList: TStrList; ACurElement: TStrElement): Boolean;
     procedure SetPuzzleMode(Mode: Integer);
     procedure MakeVeryHard;
     procedure ChangeStyle;
-    procedure Debug(const s: string);
+    procedure Debug(const Str: string);
   protected
-    function OpenFile(const aPathname: string): Boolean; override;
+    function OpenFile(const Pathname: string): Boolean; override;
     function LoadFromFile(const FileName: string): Boolean; override;
     function CanPaste: Boolean; override;
     function CanCopy: Boolean; override;
     procedure CopyToClipboard; override;
     procedure PasteFromClipboard; override;
     procedure DoActivateFile(Primary: Boolean = True); override;
-    procedure SetFont(aFont: TFont); override;
+    procedure SetFont(AFont: TFont); override;
     procedure Enter(Sender: TObject); override;
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
@@ -177,8 +194,8 @@ type
     procedure Print; override;
     function GetAsStringList: TStringList; override;
     function GetSaveAsName: string;
-    procedure FromText(const s: string);
-    procedure RenewFromText(const s: string);
+    procedure FromText(const Source: string);
+    procedure RenewFromText(const Source: string);
     procedure DoExport; override;
     procedure SetOptions; override;
     procedure DPIChanged; override;
@@ -189,61 +206,75 @@ implementation
 
 {$R *.DFM}
 
-uses SysUtils, Math, Clipbrd, Dialogs, Themes, Types, UITypes, Buttons,
-     JvGnugettext, StringResources, IOUtils, UUtils, UConfiguration,
-     frmPyIDEMain, uEditAppIntfs, uCommonFunctions,
-     cPyScripterSettings, frmMessages, UGenerateStructogram;
+uses
+  SysUtils,
+  Math,
+  Clipbrd,
+  Dialogs,
+  Themes,
+  Types,
+  UITypes,
+  Buttons,
+  JvGnugettext,
+  StringResources,
+  IOUtils,
+  UUtils,
+  UConfiguration,
+  frmPyIDEMain,
+  uEditAppIntfs,
+  uCommonFunctions,
+  cPyScripterSettings,
+  frmMessages,
+  UGenerateStructogram;
 
 procedure TFStructogram.FormCreate(Sender: TObject);
 begin
   inherited;
-  oldShape:= Rect(-1, -1, -1, -1);
-  EditMemo:= TMemo.Create(Self);
-  EditMemo.Parent:= Self;
-  EditMemo.SetBounds(136, 156, 99, 37);
-  EditMemo.Color:= StyleServices.GetSystemColor(clSkyBlue);
-  EditMemo.OnChange:= EditMemoChange;
-  EditMemo.Visible:= False;
-  EditMemo.WordWrap:= False;
-  EditMemo.BevelInner:= bvNone;
-  ControlCanvas:= TControlCanvas.Create;
-  TControlCanvas(ControlCanvas).Control:= Scrollbox;
-  Font.assign(GuiPyOptions.StructogramFont);
+  FOldShape:= Rect(-1, -1, -1, -1);
+  FEditMemo:= TMemo.Create(Self);
+  FEditMemo.Parent:= Self;
+  FEditMemo.SetBounds(136, 156, 99, 37);
+  FEditMemo.Color:= StyleServices.GetSystemColor(clSkyBlue);
+  FEditMemo.OnChange:= EditMemoChange;
+  FEditMemo.Visible:= False;
+  FEditMemo.WordWrap:= False;
+  FEditMemo.BevelInner:= bvNone;
+  FControlCanvas:= TControlCanvas.Create;
+  TControlCanvas(FControlCanvas).Control:= ScrollBox;
+  Font.Assign(GuiPyOptions.StructogramFont);
   ScrollBox.DoubleBuffered:= True;
-  Separating:= 0;
+  FSeparating:= 0;
   StructogramToolbar.Height:= 308 - 22;
-  Version:= $0E;
-  curList:= nil;
-  curElement:= nil;
+  FVersion:= $0E;
+  FCurList:= nil;
+  FCurElement:= nil;
   DefaultExtension:= 'psg';
   UpdateState;
   ChangeStyle;
-  setOptions;
-  setPuzzleMode(0);
+  SetOptions;
+  SetPuzzleMode(0);
 end;
 
 procedure TFStructogram.FormClose(Sender: TObject; var Action: TCloseAction);
-  var i: Integer;
 begin
   inherited;
-  for i:= Scrollbox.ControlCount - 1 downto 0 do
-    TListImage(ScrollBox.Controls[i]).StrList.Destroy;
-  FreeAndNil(ControlCanvas);
+  for var I:= ScrollBox.ControlCount - 1 downto 0 do
+    TListImage(ScrollBox.Controls[I]).StrList.Destroy;
+  FreeAndNil(FControlCanvas);
   Action:= caFree;
 end;
 
 procedure TFStructogram.New;
-  var elem: TStrElement;
+  var Elem: TStrElement;
       StrList: TStrAlgorithm;
 begin
-  //setActiveControl(SBClose);
   if Pathname = '' then Pathname:= PyIDEMainForm.getFilename('.psg');
   Caption:= Pathname;
-  StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font);
-  StrList.text:= GuiPyLanguageOptions.Algorithm + ' ' + ChangeFileExt(ExtractFilename(Pathname), '');
-  elem:= TStrStatement.Create(StrList);
-  StrList.insert(StrList, elem);
-  setEvents(StrList.ListImage);
+  StrList:= TStrAlgorithm.Create(ScrollBox, FPuzzleMode, Font);
+  StrList.Text:= GuiPyLanguageOptions.Algorithm + ' ' + ChangeFileExt(ExtractFileName(Pathname), '');
+  Elem:= TStrStatement.Create(StrList);
+  StrList.Insert(StrList, Elem);
+  SetEvents(StrList.ListImage);
   StrList.ResizeAll;
   StrList.Paint;
   Modified:= False;
@@ -251,20 +282,20 @@ begin
   SetFocus;
 end;
 
-procedure TFStructogram.FromText(const s: string);
+procedure TFStructogram.FromText(const Source: string);
   var Generator: TGenerateStructogram;
       StrList: TStrAlgorithm;
 begin
   if Pathname = '' then Pathname:= PyIDEMainForm.getFilename('.psg');
-  StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font);
+  StrList:= TStrAlgorithm.Create(ScrollBox, FPuzzleMode, Font);
   StrList.Text:= GuiPyLanguageOptions.Algorithm + ' ';
   Generator:= TGenerateStructogram.Create(True);
   try
-    Generator.GenerateStructogram(s, StrList);
+    Generator.GenerateStructogram(Source, StrList);
   finally
     FreeAndNil(Generator);
   end;
-  setEvents(StrList.ListImage);
+  SetEvents(StrList.ListImage);
   StrList.ResizeAll;
   StrList.Paint;
   FFile.ExecSave;
@@ -273,24 +304,24 @@ begin
   SetFocus;
 end;
 
-procedure TFStructogram.RenewFromText(const s: string);
+procedure TFStructogram.RenewFromText(const Source: string);
   var Generator: TGenerateStructogram;
-      StrList: TStrList; i: Integer;
+      StrList: TStrList;
       Alg: string;
 begin
-  for i:= ScrollBox.ControlCount - 1 downTo 0 do begin
-    Strlist:= TListImage(ScrollBox.Controls[i]).StrList;
-    if StrList is TStrAlgorithm then Alg:= Strlist.text;
-    FreeAndNil(Strlist);
+  for var I:= ScrollBox.ControlCount - 1 downto 0 do begin
+    StrList:= TListImage(ScrollBox.Controls[I]).StrList;
+    if StrList is TStrAlgorithm then Alg:= StrList.Text;
+    FreeAndNil(StrList);
   end;
 
-  StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font);
+  StrList:= TStrAlgorithm.Create(ScrollBox, FPuzzleMode, Font);
   StrList.Text:= Alg;
-  setEvents(StrList.ListImage);
+  SetEvents(StrList.ListImage);
   StrList.Text:= GuiPyLanguageOptions.Algorithm + ' ';
   Generator:= TGenerateStructogram.Create(True);
   try
-    Generator.GenerateStructogram(s, StrList);
+    Generator.GenerateStructogram(Source, StrList);
   finally
     FreeAndNil(Generator);
   end;
@@ -301,13 +332,13 @@ begin
   SetFocus;
 end;
 
-function TFStructogram.OpenFile(const aPathname: string): Boolean;
+function TFStructogram.OpenFile(const Pathname: string): Boolean;
 begin
-  CloseEdit(True);
+  CloseEdit;
   Result:= inherited;
 end;
 
-procedure TFStructogram.enter(Sender: TObject);
+procedure TFStructogram.Enter(Sender: TObject);
 begin
   if StructogramToolbar.Visible and StructogramToolbar.CanFocus then
     StructogramToolbar.SetFocus;
@@ -320,15 +351,15 @@ var
   SwitchWithCaseLine: Boolean;
   Reader: TStringListReader;
 
-  procedure Init(aList: TStrList);
+  procedure Init(AList: TStrList);
   begin
-    aList.SwitchWithCaseLine:= SwitchWithCaseLine;
-    aList.setPuzzleMode(PuzzleMode);
-    aList.setFont(Font);
-    aList.setLineHeight;
-    setEvents(aList.ListImage);
-    aList.ResizeAll;
-    aList.Paint;
+    AList.SwitchWithCaseLine:= SwitchWithCaseLine;
+    AList.SetPuzzleMode(FPuzzleMode);
+    AList.SetFont(Font);
+    AList.SetLineHeight;
+    SetEvents(AList.ListImage);
+    AList.ResizeAll;
+    AList.Paint;
   end;
 
 begin
@@ -338,85 +369,85 @@ begin
     try
       repeat
         Reader.ReadLine;
-        if Reader.key = 'FontName' then
-          Font.Name:= Reader.val
-        else if Reader.key = 'FontSize' then
-          Font.Size:= PPIScale(StrToInt(Reader.val))
-        else if Reader.key = 'FontColor' then
-          Font.Color:= StrToInt(Reader.val)
-        else if Reader.key = 'FontBold' then
-          if Reader.val = 'true'
+        if Reader.Key = 'FontName' then
+          Font.Name:= Reader.Val
+        else if Reader.Key = 'FontSize' then
+          Font.Size:= PPIScale(StrToInt(Reader.Val))
+        else if Reader.Key = 'FontColor' then
+          Font.Color:= StrToInt(Reader.Val)
+        else if Reader.Key = 'FontBold' then
+          if Reader.Val = 'true'
             then Font.Style:= Font.Style + [fsBold]
             else Font.Style:= Font.Style - [fsBold]
-        else if Reader.key = 'FontItalic' then
-          if Reader.val = 'true'
+        else if Reader.Key = 'FontItalic' then
+          if Reader.Val = 'true'
             then Font.Style:= Font.Style + [fsItalic]
             else Font.Style:= Font.Style - [fsItalic]
-        else if Reader.key = 'PuzzleMode' then
-          PuzzleMode:= StrToInt(Reader.val)
-        else if Reader.key = 'Solution' then
-          Solution:= UnhideCrLf(Reader.val);
-      until (Reader.key = '- Kind') or (Reader.key = '');
+        else if Reader.Key = 'PuzzleMode' then
+          FPuzzleMode:= StrToInt(Reader.Val)
+        else if Reader.Key = 'Solution' then
+          FSolution:= UnHideCrLf(Reader.Val);
+      until (Reader.Key = '- Kind') or (Reader.Key = '');
 
-      while (Reader.key = '- Kind') and Result do begin
-        if Reader.val = 'Algorithm'
-          then StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font)
-          else StrList:= TStrList.Create(Scrollbox, PuzzleMode, Font);
+      while (Reader.Key = '- Kind') and Result do begin
+        if Reader.Val = 'Algorithm'
+          then StrList:= TStrAlgorithm.Create(ScrollBox, FPuzzleMode, Font)
+          else StrList:= TStrList.Create(ScrollBox, FPuzzleMode, Font);
         Reader.ReadLine;
-        if Reader.key = 'SwitchWithCaseLine'
-          then SwitchWithCaseLine:= (Reader.val = 'true')
+        if Reader.Key = 'SwitchWithCaseLine'
+          then SwitchWithCaseLine:= (Reader.Val = 'True')
           else Reader.LineBack;
         StrList.LoadFromReader(Reader);
         Init(StrList);
         Result:= Result and not StrList.LoadError;
         Reader.ReadLine;
       end;
-      GuiPyOptions.StructogramFont.assign(Font);
-      SetPuzzleMode(PuzzleMode);
+      GuiPyOptions.StructogramFont.Assign(Font);
+      SetPuzzleMode(FPuzzleMode);
     finally
       FreeAndNil(Reader);
-    end
+    end;
   except
     on e: Exception do begin
       ErrorMsg(e.Message);
       Result:= False;
     end;
   end;
-  Version:= $0F;
+  FVersion:= $0F;
 end;
 
-function TFStructogram.getAsStringList: TStringList;
-  var SL: TStringList; aList: TStrList;
+function TFStructogram.GetAsStringList: TStringList;
+  var StringList: TStringList; AList: TStrList;
 begin
-  SL:= TStringList.Create;
-  SL.Add( 'PSG: true');
+  StringList:= TStringList.Create;
+  StringList.Add( 'PSG: true');
   if Font.Name = 'Arial' then
     Font.Name:= 'Segoe UI';
-  SL.Add('FontName: ' + Font.Name);
-  SL.Add('FontSize: ' + IntToStr(PPIUnscale(Font.Size)));
+  StringList.Add('FontName: ' + Font.Name);
+  StringList.Add('FontSize: ' + IntToStr(PPIUnScale(Font.Size)));
   if fsBold in Font.Style then
-    SL.Add('FontBold: true');
+    StringList.Add('FontBold: true');
   if fsItalic in Font.Style then
-    SL.Add('FontItalic: true');
-  SL.Add('FontColor: ' + IntToStr(Font.Color));
-  if PuzzleMode > 0 then begin
-    SL.Add('PuzzleMode: ' + IntToStr(PuzzleMode));
-    SL.Add('Solution: ' + HideCrLf(Solution));
+    StringList.Add('FontItalic: true');
+  StringList.Add('FontColor: ' + IntToStr(Font.Color));
+  if FPuzzleMode > 0 then begin
+    StringList.Add('FPuzzleMode: ' + IntToStr(FPuzzleMode));
+    StringList.Add('FSolution: ' + HideCrLf(FSolution));
   end;
-  for var i:= 0 to ScrollBox.ControlCount - 1 do begin
-    aList:= (ScrollBox.Controls[i] as TListImage).StrList;
-    SL.Add('- Kind: ' + aList.getKind);
-    SL.Add('  SwitchWithCaseLine: ' + BoolToStr(aList.SwitchWithCaseLine, True));
-    SL.Add('  RectPos' + aList.getRectPos('  '));
-    SL.Add(aList.getText('  '));
+  for var I:= 0 to ScrollBox.ControlCount - 1 do begin
+    AList:= (ScrollBox.Controls[I] as TListImage).StrList;
+    StringList.Add('- Kind: ' + AList.GetKind);
+    StringList.Add('  SwitchWithCaseLine: ' + BoolToStr(AList.SwitchWithCaseLine, True));
+    StringList.Add('  RectPos' + AList.GetRectPos('  '));
+    StringList.Add(AList.GetText('  '));
   end;
-  Result:= SL;
+  Result:= StringList;
 end;
 
 procedure TFStructogram.ShowShape;
 begin
-  with OldCanvas, OldShape do begin
-    Pen.Color:= clRed; //StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
+  with FOldCanvas, FOldShape do begin
+    Pen.Color:= clRed;
     if Top = Bottom then begin
       MoveTo(Left+1, Top-2);
       LineTo(Right, Top-2);
@@ -443,8 +474,8 @@ end;
 
 procedure TFStructogram.HideShape;
 begin
-  if oldShape.top > -1 then begin
-    with OldCanvas, OldShape do begin
+  if FOldShape.Top > -1 then begin
+    with FOldCanvas, FOldShape do begin
       Pen.Color:= StyleServices.GetStyleColor(scPanel);
       if Top = Bottom then begin
         MoveTo(Left+1, Top-2);
@@ -468,7 +499,7 @@ begin
         LineTo(Left+1, Top+1);
       end;
     end;
-    oldShape:= Rect(-1, -1, -1, -1);
+    FOldShape:= Rect(-1, -1, -1, -1);
     PaintAll;
   end;
 end;
@@ -476,43 +507,43 @@ end;
 // used by buttons
 procedure TFStructogram.StrElementMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-  var StrList: TStrList; elem: TStrElement;
+  var StrList: TStrList; Elem: TStrElement;
       PtScreen, PtClient: TPoint;
 begin
   if Button = mbLeft then begin
-    CloseEdit(True);
+    CloseEdit;
     if TSpeedButton(Sender).Tag = 0
-      then StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font)
-      else StrList:= TStrList.Create(Scrollbox, PuzzleMode, Font);
-    elem:= nil;
+      then StrList:= TStrAlgorithm.Create(ScrollBox, FPuzzleMode, Font)
+      else StrList:= TStrList.Create(ScrollBox, FPuzzleMode, Font);
+    Elem:= nil;
     case TSpeedButton(Sender).Tag of
-      ord(nsAlgorithm):  begin
-                           elem:= TStrStatement.Create(StrList);
-                           StrList.text:= GuiPyLanguageOptions.Algorithm + ' ';
+      Ord(nsAlgorithm):  begin
+                           Elem:= TStrStatement.Create(StrList);
+                           StrList.Text:= GuiPyLanguageOptions.Algorithm + ' ';
                          end;
-      ord(nsStatement):  elem:= TStrStatement.Create(StrList);
-      ord(nsIf):         elem:= TStrIf.Create(StrList);
-      ord(nsWhile):      begin
-                           elem:= TStrWhile.Create(StrList);
-                           elem.text:= GuiPyLanguageOptions._While + ' ';
+      Ord(nsStatement):  Elem:= TStrStatement.Create(StrList);
+      Ord(nsIf):         Elem:= TStrIf.Create(StrList);
+      Ord(nsWhile):      begin
+                           Elem:= TStrWhile.Create(StrList);
+                           Elem.Text:= GuiPyLanguageOptions._While + ' ';
                          end;
-      ord(nsFor):        begin
-                           elem:= TStrFor.Create(StrList);
-                           elem.text:= myStringReplace(myStringReplace(GuiPyLanguageOptions._For, '[', ''), ']', '') + ' ';
+      Ord(nsFor):        begin
+                           Elem:= TStrFor.Create(StrList);
+                           Elem.Text:= myStringReplace(myStringReplace(GuiPyLanguageOptions._For, '[', ''), ']', '') + ' ';
                          end;
-      ord(nsSwitch):     elem:= TStrSwitch.Create(StrList);
-      ord(nsSubprogram): elem:= TStrSubProgram.Create(StrList);
-      ord(nsBreak):      elem:= TStrBreak.Create(StrList);
+      Ord(nsSwitch):     Elem:= TStrSwitch.Create(StrList);
+      Ord(nsSubProgram): Elem:= TStrSubprogram.Create(StrList);
+      Ord(nsBreak):      Elem:= TStrBreak.Create(StrList);
     end;
-    StrList.insert(StrList, elem);
-    StrList.setFont(Font);
+    StrList.Insert(StrList, Elem);
+    StrList.SetFont(Font);
     StrList.ResizeAll;
     PtScreen:= (Sender as TToolButton).ClientToScreen(Point(X, Y));
     PtClient:= StructogramToolbar.ScreenToClient(PtScreen);
-    StrList.ListImage.SetBounds(PtClient.X - StrList.rctList.Width div 2,
-                            PtClient.y - StrList.LineHeight div 2,
-                            StrList.rctList.Width, StrList.rctList.Height);
-    setEvents(StrList.ListImage);
+    StrList.ListImage.SetBounds(PtClient.X - StrList.RctList.Width div 2,
+                            PtClient.Y - StrList.LineHeight div 2,
+                            StrList.RctList.Width, StrList.RctList.Height);
+    SetEvents(StrList.ListImage);
     StrList.Paint;
     mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
     SetCursorPos(Mouse.CursorPos.X + 30, Mouse.CursorPos.Y);
@@ -522,33 +553,33 @@ end;
 
 procedure TFStructogram.ImageDblClick(Sender: TObject);
 begin
-  curList:= (Sender as TListImage).StrList;
-  curElement:= FindVisibleElement(curList, MousePos.X, MousePos.Y);
-  DoEdit(CurElement, '');
-  IgnoreNextMouseDown:= True;
+  FCurList:= (Sender as TListImage).StrList;
+  FCurElement:= FindVisibleElement(FCurList, FMousePos.X, FMousePos.Y);
+  DoEdit(FCurElement, '');
+  FIgnoreNextMouseDown:= True;
 end;
 
 procedure TFStructogram.ImageMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
   var ListImage: TListImage;
 begin
-  if ignoreNextMouseDown then begin
-    ignoreNextMouseDown:= False;
+  if FIgnoreNextMouseDown then begin
+    FIgnoreNextMouseDown:= False;
     Exit;
   end;
-  if IsMoving then Exit;
+  if FIsMoving then Exit;
   ListImage:= (Sender as TListImage);
   ListImage.BringToFront;
-  curList:= ListImage.StrList;
-  MousePos:= Point(X, Y);
-  ScreenMousePos:= ListImage.ClientToScreen(Point(X, Y));
-  if EditMemo.Visible then
-    CloseEdit(True);
-  curElement:= FindVisibleElement(curList, MousePos.X, MousePos.Y);
-  if (Separating = 0) and Assigned(curElement) and Assigned(curElement.prev) then
-    if (curElement.prev is TStrAlgorithm) or
-       not ((curElement.prev is TStrList) or (curElement is TStrCase)) then
-      Separating:= 1;
+  FCurList:= ListImage.StrList;
+  FMousePos:= Point(X, Y);
+  FScreenMousePos:= ListImage.ClientToScreen(Point(X, Y));
+  if FEditMemo.Visible then
+    CloseEdit;
+  FCurElement:= FindVisibleElement(FCurList, FMousePos.X, FMousePos.Y);
+  if (FSeparating = 0) and Assigned(FCurElement) and Assigned(FCurElement.Prev) then
+    if (FCurElement.Prev is TStrAlgorithm) or
+       not ((FCurElement.Prev is TStrList) or (FCurElement is TStrCase)) then
+      FSeparating:= 1;
   UpdateState;
 end;
 
@@ -557,100 +588,104 @@ procedure TFStructogram.ImageMouseMove(Sender: TObject; Shift: TShiftState;
   X, Y: Integer);
 var
   ScrollBoxPt, Image2Pt, ScreenPt: TPoint;
-  dx, dy, dx1, dy1, i: Integer;
+  DeltaX, DeltaY, DeltaX1, DeltaY1: Integer;
   ListImage, Image2: TListImage;
   StrList: TStrList; StrStatement: TStrStatement;
-  aRect: TRect;
+  ARect: TRect;
 begin
   HideShape;
-  if EditMemo.Visible then Exit;
+  if FEditMemo.Visible then Exit;
   inherited;
-
   if ssLeft in Shift then begin
     ListImage:= (Sender as TListImage);
-    curList:= ListImage.StrList;
+    FCurList:= ListImage.StrList;
     // start moving
     ScreenPt:= ListImage.ClientToScreen(Point(X, Y));
     ScrollBoxPt:= ScrollBox.ScreenToClient(ScreenPt);
-    dx:= ScreenPt.x - ScreenMousePos.x;
-    dy:= ScreenPt.y - ScreenMousePos.y;
-    if (dx = 0) and (dy = 0) then Exit;
+    DeltaX:= ScreenPt.X - FScreenMousePos.X;
+    DeltaY:= ScreenPt.Y - FScreenMousePos.Y;
+    if (DeltaX = 0) and (DeltaY = 0) then Exit;
 
-    if (Abs(dx) + Abs(dy) > 5) or IsMoving then begin  // move ListImage
-      IsMoving:= True;
+    if (Abs(DeltaX) + Abs(DeltaY) > 5) or FIsMoving then begin  // move ListImage
+      FIsMoving:= True;
       Modified:= True;
-      ScreenMousePos:= ScreenPt;
-      curElement:= FindVisibleElement(curList, X - dx, Y - dy);
+      FScreenMousePos:= ScreenPt;
+      FCurElement:= FindVisibleElement(FCurList, X - DeltaX, Y - DeltaY);
 
-      // if assigned(curElement) then curElement.debug;
+      // if assigned(FCurElement) then FCurElement.debug
 
-      if Assigned(curElement) and (Separating = 1) then begin
-        dx1:= X - curElement.rct.Left;
-        dy1:= Y - curelement.rct.Top;
-        if curElement.prev = nil then
+      if Assigned(FCurElement) and (FSeparating = 1) then begin
+        DeltaX1:= X - FCurElement.Rct.Left;
+        DeltaY1:= Y - FCurElement.Rct.Top;
+        if not Assigned(FCurElement.Prev) then
           Exit;
-        aRect:= curElement.rct;
-        if (curElement.prev is TStrListHead) or (curElement.prev is TStrCase) or
-           (Puzzlemode = 1)
+        ARect:= FCurElement.Rct;
+        if (FCurElement.Prev is TStrListHead) or (FCurElement.Prev is TStrCase) or
+           (FPuzzleMode = 1)
         then begin
-          StrStatement:= TStrStatement.Create(curList);
-          StrStatement.rct:= curElement.rct;
-          ControlCanvas.Font.Assign(Font);
-          curList.insert(curElement.prev, StrStatement);
+          StrStatement:= TStrStatement.Create(FCurList);
+          StrStatement.Rct:= FCurElement.Rct;
+          FControlCanvas.Font.Assign(Font);
+          FCurList.Insert(FCurElement.Prev, StrStatement);
         end;
 
-        if PuzzleMode = 1 then begin // handle single statements, no lists
-          curElement.prev.Next:= curElement.Next;
-          if Assigned(curElement.Next) then
-            curElement.Next.prev:= curElement.prev;
-          curElement.prev:= nil;
-          curElement.Next:= nil;
+        if FPuzzleMode = 1 then begin // handle single statements, no lists
+          FCurElement.Prev.Next:= FCurElement.Next;
+          if Assigned(FCurElement.Next) then
+            FCurElement.Next.Prev:= FCurElement.Prev;
+          FCurElement.Prev:= nil;
+          FCurElement.Next:= nil;
         end else begin
-          curElement.prev.Next:= nil;
-          curElement.prev:= nil;
+          FCurElement.Prev.Next:= nil;
+          FCurElement.Prev:= nil;
         end;
-        curList.ResizeAll;
-        curList.Paint;
+        FCurList.ResizeAll;
+        FCurList.Paint;
 
-        // create new list
-        StrList:= TStrList.Create(ScrollBox, PuzzleMode, Font);
-        StrList.setFont(Font);
-        StrList.insert(StrList, curElement);
-        StrList.setList(StrList);
-        setEvents(StrList.ListImage);
+        // create new List
+        StrList:= TStrList.Create(ScrollBox, FPuzzleMode, Font);
+        StrList.SetFont(Font);
+        StrList.Insert(StrList, FCurElement);
+        StrList.SetList(StrList);
+        SetEvents(StrList.ListImage);
         StrList.ResizeAll;
-        StrList.rctList.Right:= Max(aRect.Right - aRect.Left, StrList.rctList.Right);
-        StrList.rctList.Bottom:= Max(aRect.Bottom - aRect.Top, strList.rctList.Bottom);
-        StrList.rct:= StrList.rctList;
-        StrList.ListImage.Left:= ListImage.Left + aRect.Left + dy;
-        StrList.ListImage.Top := ListImage.Top + aRect.Top + dx;
+
+        // due to property restrictions
+        var Rect := StrList.RctList;
+        Rect.Right:= Max(ARect.Right - ARect.Left, StrList.RctList.Right);
+        Rect.Bottom:= Max(ARect.Bottom - ARect.Top, StrList.RctList.Bottom);
+        StrList.RctList:= Rect;
+
+        StrList.Rct:= StrList.RctList;
+        StrList.ListImage.Left:= ListImage.Left + ARect.Left + DeltaY;
+        StrList.ListImage.Top := ListImage.Top + ARect.Top + DeltaX;
         StrList.Paint;
-        Separating:= 2;
-        CurList.DontMove:= True;
-        ignoreNextMouseUp:= True;
-        isMoving:= False;
-        ScreenPt:= StrList.ListImage.ClientToScreen(Point(dx1, dy1));
-        SetCursorPos(ScreenPt.x, Screenpt.y);
+        FSeparating:= 2;
+        FCurList.DontMove:= True;
+        FIgnoreNextMouseUp:= True;
+        FIsMoving:= False;
+        ScreenPt:= StrList.ListImage.ClientToScreen(Point(DeltaX1, DeltaY1));
+        SetCursorPos(ScreenPt.X, ScreenPt.Y);
         mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
         mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-        CurList:= StrList;
+        FCurList:= StrList;
       end else begin
         // crucial for switching mouse to new ListImage
-        ListImage.SetBounds(ListImage.Left + dx, ListImage.Top + dy, ListImage.Width, ListImage.Height);
-        if curList.DontMove then begin
-          ListImage.SetBounds(ListImage.Left - dx, ListImage.Top - dy, ListImage.Width, ListImage.Height);
-          curList.DontMove:= False;
+        ListImage.SetBounds(ListImage.Left + DeltaX, ListImage.Top + DeltaY, ListImage.Width, ListImage.Height);
+        if FCurList.DontMove then begin
+          ListImage.SetBounds(ListImage.Left - DeltaX, ListImage.Top - DeltaY, ListImage.Width, ListImage.Height);
+          FCurList.DontMove:= False;
         end;
-        if curList.Kind <> byte(nsAlgorithm) then begin
-          for i:= ScrollBox.ControlCount - 1 downto 0 do begin
-            Image2:= TListImage(ScrollBox.Controls[i]);
+        if FCurList.Kind <> Byte(nsAlgorithm) then begin
+          for var I:= ScrollBox.ControlCount - 1 downto 0 do begin
+            Image2:= TListImage(ScrollBox.Controls[I]);
             if Image2 <> ListImage then begin
-              aRect:= Image2.BoundsRect;
-              aRect.Inflate(20, 20);
-              if aRect.Contains(ScrollBoxPt) then begin
+              ARect:= Image2.BoundsRect;
+              ARect.Inflate(20, 20);
+              if ARect.Contains(ScrollBoxPt) then begin
                 Image2Pt:= Image2.ScreenToClient(ScreenPt);
-                curElement:= FindElement(Image2.StrList, Image2Pt.X, Image2Pt.Y);
-                CalculateInsertionShape(Image2.StrList, curList, Image2Pt.X, Image2Pt.Y);
+                FCurElement:= FindElement(Image2.StrList, Image2Pt.X, Image2Pt.Y);
+                CalculateInsertionShape(Image2.StrList, FCurList, Image2Pt.X, Image2Pt.Y);
               end;
             end;
           end;
@@ -660,98 +695,96 @@ begin
   end;
 end;
 
-procedure TFStructogram.CalculateInsertionShape(DestList, InsertList: TStrList; x, y: Integer);
-  var dy: Integer;
+procedure TFStructogram.CalculateInsertionShape(DestList, InsertList: TStrList; X, Y: Integer);
 begin
-  // curElement.debug()
-  if curElement = nil then Exit;
+  // FCurElement.debug()
+  if not Assigned(FCurElement) then Exit;
 
-  with curElement do
-    if not EqualRect(oldShape, Rect(rct.bottom, rct.Left, rct.bottom, rct.Right)) then begin
-      if BeforeOrAfter(curElement) then begin
-        if Y < curElement.rct.Top + curElement.getMaxDelta then begin
-          oldShape:= Rect(rct.Left, rct.top, rct.Right, rct.top);
-          CurInsert:= -1;  // insert before
-        end else if Y > curElement.rct.Bottom - curElement.getMaxDelta then begin
-          if CurElement = List then
-            oldShape:= Rect(rct.Left, rct.bottom, List.rctList.Right, rct.bottom)
+  with FCurElement do
+    if not EqualRect(FOldShape, Rect(Rct.Bottom, Rct.Left, Rct.Bottom, Rct.Right)) then begin
+      if BeforeOrAfter(FCurElement) then begin
+        if Y < FCurElement.Rct.Top + FCurElement.GetMaxDelta then begin
+          FOldShape:= Rect(Rct.Left, Rct.Top, Rct.Right, Rct.Top);
+          FCurInsert:= -1;  // Insert before
+        end else if Y > FCurElement.Rct.Bottom - FCurElement.GetMaxDelta then begin
+          if FCurElement = List then
+            FOldShape:= Rect(Rct.Left, Rct.Bottom, List.RctList.Right, Rct.Bottom)
           else
-            oldShape:= Rect(rct.Left, rct.bottom, rct.Right, rct.bottom);
-          CurInsert:= +1;  // insert after
-        end
+            FOldShape:= Rect(Rct.Left, Rct.Bottom, Rct.Right, Rct.Bottom);
+          FCurInsert:= +1;  // Insert after
+        end;
       end else begin
-        dy:= (curElement.rct.Bottom - curElement.rct.Top) div 4;
-        if Y < curElement.rct.Top + dy then begin
-          oldShape:= Rect(rct.Left, rct.top, rct.Right, rct.top);
-          CurInsert:= -1;
-        end else if Y < curElement.rct.Bottom - dy then begin
-          oldShape:= Rect(rct.Left + 1, rct.top + 1, rct.Right - 1, rct.bottom - 1);
-          CurInsert:= 0;
+        var DeltaY:= (FCurElement.Rct.Bottom - FCurElement.Rct.Top) div 4;
+        if Y < FCurElement.Rct.Top + DeltaY then begin
+          FOldShape:= Rect(Rct.Left, Rct.Top, Rct.Right, Rct.Top);
+          FCurInsert:= -1;
+        end else if Y < FCurElement.Rct.Bottom - DeltaY then begin
+          FOldShape:= Rect(Rct.Left + 1, Rct.Top + 1, Rct.Right - 1, Rct.Bottom - 1);
+          FCurInsert:= 0;
         end else begin
-          oldShape:= Rect(rct.Left, rct.bottom, rct.Right, rct.bottom);
-          CurInsert:= +1;
+          FOldShape:= Rect(Rct.Left, Rct.Bottom, Rct.Right, Rct.Bottom);
+          FCurInsert:= +1;
         end;
       end;
-      OldCanvas:= DestList.ListImage.Canvas;
-      if FitsIn(InsertList, curElement) then begin
+      FOldCanvas:= DestList.ListImage.Canvas;
+      if FitsIn(InsertList, FCurElement) then begin
         ShowShape;
-        DestList.dirty:= True;
+        DestList.Dirty:= True;
       end;
     end;
 end;
 
 procedure TFStructogram.ImageMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
-  var ScreenPt, q, ScrollBoxPt, Image2Pt: TPoint;
+  var ScreenPt, QPoint, ScrollBoxPt, Image2Pt: TPoint;
       ListImage, Image2: TListImage;
       StrList: TStrList;
-      i: Integer;
-      aRect: TRect;
+      ARect: TRect;
 begin
-  IsMoving:= False;
+  FIsMoving:= False;
   ListImage:= (Sender as TListImage);
   StrList:= ListImage.StrList;
 
-  if ignoreNextMouseUp then begin
-    ignoreNextMouseUp:= False;
+  if FIgnoreNextMouseUp then begin
+    FIgnoreNextMouseUp:= False;
     Exit;
   end;
 
-  aRect:= StrList.rctList;
+  ARect:= StrList.RctList;
   StrList.ResizeAll;
-  if aRect <> StrList.rctList then
+  if ARect <> StrList.RctList then
     StrList.Paint;
-  if StrList.Kind in [byte(nsAlgorithm), byte(nsList)] then begin
+  if StrList.Kind in [Byte(nsAlgorithm), Byte(nsList)] then begin
     ScreenPt:= ListImage.ClientToScreen(Point(X, Y));
-    q:= Self.ScreenToClient(ScreenPt);
-    if q.x < ScrollBox.Left then begin
+    QPoint:= Self.ScreenToClient(ScreenPt);
+    if QPoint.X < ScrollBox.Left then begin
        FreeAndNil(StrList);
        Exit;
     end;
-    if q.y < ScrollBox.Top then
+    if QPoint.Y < ScrollBox.Top then
       ListImage.Top:= 0;
   end;
-  if StrList.Kind = byte(nsList) then begin
+  if StrList.Kind = Byte(nsList) then begin
     ScrollBoxPt:= ScrollBox.ScreenToClient(ScreenPt);
-    for i:= ScrollBox.ControlCount - 1 downto 0 do begin
-      Image2:= TListImage(ScrollBox.Controls[i]);
-      aRect:= Image2.BoundsRect;
-      aRect.Inflate(30, 30);
-      if (Image2 <> ListImage) and aRect.Contains(ScrollBoxPt) then begin
+    for var I:= ScrollBox.ControlCount - 1 downto 0 do begin
+      Image2:= TListImage(ScrollBox.Controls[I]);
+      ARect:= Image2.BoundsRect;
+      ARect.Inflate(30, 30);
+      if (Image2 <> ListImage) and ARect.Contains(ScrollBoxPt) then begin
         Image2Pt:= Image2.ScreenToClient(ScreenPt);
-        curElement:= FindElement(Image2.StrList, Image2Pt.X , Image2Pt.Y);
-        if Assigned(curElement) and FitsIn(StrList, curElement) then
-          InsertElement(Image2.StrList, StrList, curElement);
+        FCurElement:= FindElement(Image2.StrList, Image2Pt.X , Image2Pt.Y);
+        if Assigned(FCurElement) and FitsIn(StrList, FCurElement) then
+          InsertElement(Image2.StrList, StrList, FCurElement);
       end;
     end;
   end;
-  Separating:= 0;
+  FSeparating:= 0;
   PaintAll;
 end;
 
-// dropped on a structogram, insert element
-procedure TFStructogram.InsertElement(DestList, InsertList: TStrList; aCurElement: TStrElement);
-  var elems, aPrevious: TStrElement;
+// dropped on a structogram, Insert Element
+procedure TFStructogram.InsertElement(DestList, InsertList: TStrList; ACurElement: TStrElement);
+  var Elems, APrevious: TStrElement;
 
   procedure Inserted;
   begin
@@ -764,62 +797,62 @@ procedure TFStructogram.InsertElement(DestList, InsertList: TStrList; aCurElemen
 
 begin
   HideShape;
-  if Assigned(OldCanvas) then
-    OldCanvas.Pen.Mode:= pmCopy;
+  if Assigned(FOldCanvas) then
+    FOldCanvas.Pen.Mode:= pmCopy;
 
-  InsertList.setList(DestList);
-  elems:= InsertList.Next;
+  InsertList.SetList(DestList);
+  Elems:= InsertList.Next;
 
-  if elems <> nil then begin
-    if PuzzleMode = 1 then begin // replace empty statement
-      DestList.Insert(aCurElement, elems);
-      DestList.deleteElem(aCurElement);
+  if Assigned(Elems) then begin
+    if FPuzzleMode = 1 then begin // replace empty statement
+      DestList.Insert(ACurElement, Elems);
+      DestList.DeleteElem(ACurElement);
     end else begin
-      if (CurInsert = 1) or (aCurElement.prev = nil) then
-        DestList.Insert(aCurElement, elems)
-      else if CurInsert = 0 then begin
-        DestList.Insert(aCurElement, elems);
-        DestList.deleteElem(aCurElement);
+      if (FCurInsert = 1) or not Assigned(ACurElement.Prev) then
+        DestList.Insert(ACurElement, Elems)
+      else if FCurInsert = 0 then begin
+        DestList.Insert(ACurElement, Elems);
+        DestList.DeleteElem(ACurElement);
       end else begin
-        aPrevious:= aCurElement.prev;
-        DestList.insert(aPrevious, elems);
+        APrevious:= ACurElement.Prev;
+        DestList.Insert(APrevious, Elems);
       end;
     end;
     Inserted;
   end;
-  isMoving:= False;
+  FIsMoving:= False;
 end;
 
 procedure TFStructogram.MIGenerateFunctionClick(Sender: TObject);
 begin
-  CloseEdit(True);
-  if getCurList then
+  CloseEdit;
+  if GetCurList then
     BBGeneratePythonClick(Self);
 end;
 
 procedure TFStructogram.MIPuzzleClick(Sender: TObject);
 begin
-  if PuzzleMode > 0 then begin
-    setPuzzleMode(0);
-    Solution:= '';
+  if FPuzzleMode > 0 then begin
+    SetPuzzleMode(0);
+    FSolution:= '';
   end else begin
-    if not ((ScrollBox.ControlCount = 1) and (TListImage(Scrollbox.Controls[0]).StrList is TStrAlgorithm)) then begin
-      ShowMessage(_('Switch to puzzle mode with the finished solution from a single algorithm structogram.'));
+    if not ((ScrollBox.ControlCount = 1) and (TListImage(ScrollBox.Controls[0]).StrList is TStrAlgorithm)) then begin
+      ShowMessage(_('Switch to puzzle mode with the finished FSolution from a single algorithm structogram.'));
       Exit;
     end;
-    setPuzzleMode(1);
+    SetPuzzleMode(1);
     var StrList:= TListImage(ScrollBox.Controls[0]).StrList;
-    StrList.setPuzzleMode(1);
-    Solution:= StrList.asString;
+    StrList.SetPuzzleMode(1);
+    FSolution:= StrList.AsString;
   end;
 end;
 
 procedure TFStructogram.SetPuzzleMode(Mode: Integer);
 begin
-  PuzzleMode:= Mode;
-  if PuzzleMode = 0 then begin
+  FPuzzleMode:= Mode;
+  if FPuzzleMode = 0 then begin
     MIPuzzle.Checked:= False;
-    TBPuzzlemode.Visible:= False;
+    TBPuzzleMode.Visible:= False;
     MISavePuzzleFiles.Visible:= False;
   end else begin
     MIPuzzle.Checked:= True;
@@ -830,16 +863,16 @@ end;
 
 procedure TFStructogram.MISavePuzzleFilesClick(Sender: TObject);
 begin
-  if PuzzleMode = 1 then
+  if FPuzzleMode = 1 then
     Save;
 end;
 
 procedure TFStructogram.MISwitchWithCaseLineClick(Sender: TObject);
   var StrList: TStrList;
 begin
-  if not ReadOnly then begin
-    for var i:= 0 to ScrollBox.ControlCount -1 do begin
-      StrList:= TListImage(Scrollbox.Controls[i]).StrList;
+  if not FReadOnly then begin
+    for var I:= 0 to ScrollBox.ControlCount -1 do begin
+      StrList:= TListImage(ScrollBox.Controls[I]).StrList;
       StrList.SwitchWithCaseLine:= not StrList.SwitchWithCaseLine;
       StrList.Paint;
     end;
@@ -848,54 +881,65 @@ begin
 end;
 
 procedure TFStructogram.MIAddCaseClick(Sender: TObject);
-  var Switch: TStrSwitch; i: Integer;
 begin
-  CloseEdit(True);
-  if getCurListAndCurElement and (curElement is TStrSwitch) then begin
-    Switch:= (curElement as TStrSwitch);
-    i:= Length(Switch.case_elems);
-    setLength(Switch.case_elems, i+1);
-    Switch.case_elems[i]:= Switch.case_elems[i-1];
-    Switch.case_elems[i-1]:= TStrListHead.Create(curList, Switch);
-    curList.ResizeAll;
-    curList.Paint;
-    Modified:= True;
+  CloseEdit;
+  if GetCurListAndCurElement and (FCurElement is TStrSwitch) then
+  begin
+    var
+    Switch := (FCurElement as TStrSwitch);
+    var
+    Int := Length(Switch.CaseElems);
+    var
+    Elems := Switch.CaseElems;
+    SetLength(Elems, Int + 1);
+    Switch.CaseElems := Elems;
+    Switch.CaseElems[Int] := Switch.CaseElems[Int - 1];
+    Switch.CaseElems[Int - 1] := TStrListHead.Create(FCurList, Switch);
+    FCurList.ResizeAll;
+    FCurList.Paint;
+    Modified := True;
     UpdateState;
   end;
 end;
 
 procedure TFStructogram.MIDeleteCaseClick(Sender: TObject);
-  var Switch: TStrSwitch; x, i, k, n: Integer;
+var
+  Int, Num: Integer;
 begin
-  CloseEdit(True);
-  if getCurListAndCurElement and (curElement is TStrSwitch) then begin
-    Switch:= (curElement as TStrSwitch);
-    x:= MousePos.X;
-    i:= 0;
-    while (i < Length(Switch.case_elems)) and (x > Switch.case_elems[i].rct.Right) do
-      Inc(i);
-    FreeAndNil(Switch.case_elems[i]);
-    n:= high(Switch.case_elems);
-    for k:= i to n - 1 do
-      Switch.case_elems[k]:= Switch.case_elems[k+1];
-    setLength(Switch.case_elems, n);
-    curList.ResizeAll;
-    curList.Paint;
-    Modified:= True;
+  CloseEdit;
+  if GetCurListAndCurElement and (FCurElement is TStrSwitch) then
+  begin
+    var
+    Switch := (FCurElement as TStrSwitch);
+    Int := 0;
+    while (Int < Length(Switch.CaseElems)) and
+      (FMousePos.X > Switch.CaseElems[Int].Rct.Right) do
+      Inc(Int);
+    FreeAndNil(Switch.CaseElems[Int]);
+    Num := High(Switch.CaseElems);
+    for var K := Int to Num - 1 do
+      Switch.CaseElems[K] := Switch.CaseElems[K + 1];
+    var
+    Elems := Switch.CaseElems;
+    SetLength(Elems, Num);
+    Switch.CaseElems := Elems;
+    FCurList.ResizeAll;
+    FCurList.Paint;
+    Modified := True;
     UpdateState;
   end;
 end;
 
 procedure TFStructogram.MIDeleteClick(Sender: TObject);
 begin
-  if getCurListAndCurElement then begin
-    if (curElement.Kind = byte(nsAlgorithm)) or
-      (Assigned(curElement.prev) and (curElement.prev.Kind = byte(nsList))) then
-      FreeAndNil(curList)
+  if GetCurListAndCurElement then begin
+    if (FCurElement.Kind = Byte(nsAlgorithm)) or
+      (Assigned(FCurElement.Prev) and (FCurElement.Prev.Kind = Byte(nsList))) then
+      FreeAndNil(FCurList)
     else begin
-      curList.deleteElem(curElement);
-      curList.ResizeAll;
-      curList.Paint;
+      FCurList.DeleteElem(FCurElement);
+      FCurList.ResizeAll;
+      FCurList.Paint;
     end;
     Modified:= True;
     UpdateState;
@@ -906,21 +950,21 @@ procedure TFStructogram.MICopyClick(Sender: TObject);
   var StrList: TStrList;
       Stream: TMemoryStream;
 begin
-  if getCurList then begin
-    Stream:= TMemoryStream.Create();
+  if GetCurList then begin
+    Stream:= TMemoryStream.Create;
     try
-      curList.SaveToStream(Stream);
-      if curList is TStrAlgorithm
-        then StrList:= TStrAlgorithm.Create(ScrollBox, PuzzleMode, Font)
-        else StrList:= TStrList.Create(Scrollbox, PuzzleMode, Font);
+      FCurList.SaveToStream(Stream);
+      if FCurList is TStrAlgorithm
+        then StrList:= TStrAlgorithm.Create(ScrollBox, FPuzzleMode, Font)
+        else StrList:= TStrList.Create(ScrollBox, FPuzzleMode, Font);
       Stream.Position:= 0;
-      StrList.LoadFromStream(stream, Version);
-      StrList.setFont(Font);
+      StrList.LoadFromStream(Stream, FVersion);
+      StrList.SetFont(Font);
       StrList.ResizeAll;
-      StrList.ListImage.SetBounds(curList.ListImage.Left + 30, curList.ListImage.Top + 30,
-                              curList.ListImage.Width, curList.ListImage.Height);
-      setEvents(StrList.ListImage);
-      StrList.setList(StrList);
+      StrList.ListImage.SetBounds(FCurList.ListImage.Left + 30, FCurList.ListImage.Top + 30,
+                              FCurList.ListImage.Width, FCurList.ListImage.Height);
+      SetEvents(StrList.ListImage);
+      StrList.SetList(StrList);
       StrList.Paint;
       Modified:= True;
       UpdateState;
@@ -940,91 +984,90 @@ begin
   SelectFont(fkStructogram);
 end;
 
-procedure TFStructogram.DoEdit(StrElement: TStrElement; s: string);
-  var le, aTop, wi, he: Integer;
+procedure TFStructogram.DoEdit(StrElement: TStrElement; Str: string);
+  var Left, Top, Width, Height: Integer;
       ListImage: TListImage;
 begin
-  if Assigned(StrElement) and not ReadOnly then begin
-    EditMemoElement:= StrElement;
+  if Assigned(StrElement) and not FReadOnly then begin
+    FEditMemoElement:= StrElement;
     ListImage:= StrElement.List.ListImage;
-    EditMemoBeginText:= StrElement.text;
-    EditMemo.Text:= StrElement.text + s;
-    le:= StructogramToolbar.Width + ListImage.Left + StrElement.rct.Left;
-    aTop:= ListImage.Top + StrElement.rct.Top;
-    wi:= StrElement.rct.Right - StrElement.rct.Left + 1;
-    he:= EditMemo.Lines.Count*StrElement.list.LineHeight + 1;
-    he:= Max(StrElement.getHeadHeight + 1, he);
+    FEditMemoBeginText:= StrElement.Text;
+    FEditMemo.Text:= StrElement.Text + Str;
+    Left:= StructogramToolbar.Width + ListImage.Left + StrElement.Rct.Left;
+    Top:= ListImage.Top + StrElement.Rct.Top;
+    Width:= StrElement.Rct.Right - StrElement.Rct.Left + 1;
+    Height:= FEditMemo.Lines.Count*StrElement.List.LineHeight + 1;
+    Height:= Max(StrElement.GetHeadHeight + 1, Height);
 
     if StrElement is TStrIf then begin
-      wi:= StrElement.list.getWidthOfLines(EditMemo.Text) + 10;
-      le:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.x - 5;
+      Width:= StrElement.List.GetWidthOfLines(FEditMemo.Text) + 10;
+      Left:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.X - 5;
     end else if StrElement is TStrSwitch then begin
-      le:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.x - 5;
-      wi:= Math.Max(100, StrElement.list.getWidthOfLines(EditMemo.Text) + 10);
-    end else if (StrElement is TStrSubProgram) then begin
-      le:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.x - 5;
-      EditMemo.Width:= EditMemo.Width - LEFT_RIGHT;
+      Left:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.X - 5;
+      Width:= Math.Max(100, StrElement.List.GetWidthOfLines(FEditMemo.Text) + 10);
+    end else if (StrElement is TStrSubprogram) then begin
+      Left:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.X - 5;
+      FEditMemo.Width:= FEditMemo.Width - LEFT_RIGHT;
     end else if (StrElement is TStrBreak) then begin
-      le:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.x - 5;
-      wi:= EditMemo.Width - LEFT_RIGHT;
+      Left:= StructogramToolbar.Width + ListImage.Left + StrElement.TextPos.X - 5;
+      Width:= FEditMemo.Width - LEFT_RIGHT;
     end;
 
-    EditMemo.SetBounds(le + 2, aTop + 2, wi, he);
-    setLeftBorderForEditMemo;
-    EditMemo.Visible:= True;
-    EditMemo.SetFocus;
-    EditMemo.Perform(EM_SCROLLCARET, 0, 0);
+    FEditMemo.SetBounds(Left + 2, Top + 2, Width, Height);
+    SetLeftBorderForEditMemo;
+    FEditMemo.Visible:= True;
+    FEditMemo.SetFocus;
+    FEditMemo.Perform(EM_SCROLLCARET, 0, 0);
   end;
 end;
 
-procedure TFStructogram.setLeftBorderForEditMemo;
-  var R: TRect;
+procedure TFStructogram.SetLeftBorderForEditMemo;
 begin
-  R:= EditMemo.ClientRect;
-  R.Left:= 4;
-  SendMessage(EditMemo.Handle, EM_SETRECT,0, Longint(@R)) ;
+  var Rect:= FEditMemo.ClientRect;
+  Rect.Left:= 4;
+  SendMessage(FEditMemo.Handle, EM_SETRECT,0, LPARAM(@Rect)) ;
 end;
 
 procedure TFStructogram.EditMemoChange(Sender: TObject);
-  var w, h: Integer; aList: TStrList;
+  var Width, Height: Integer; AList: TStrList;
 begin
-  aList:= getList;
-  if Assigned(aList) then begin
-    aList.getWidthHeigthOfText(EditMemo.Lines.Text, w, h);
-    if EditMemo.Height < h then
-      EditMemo.Height:= h;
-    if EditMemo.Width < w then
-      EditMemo.Width:= w;
+  AList:= GetList;
+  if Assigned(AList) then begin
+    AList.GetWidthHeigthOfText(FEditMemo.Lines.Text, Width, Height);
+    if FEditMemo.Height < Height then
+      FEditMemo.Height:= Height;
+    if FEditMemo.Width < Width then
+      FEditMemo.Width:= Width;
   end;
-  SendMessage(EditMemo.handle, WM_VSCROLL, SB_TOP, 0);
-  setLeftBorderForEditMemo;
+  SendMessage(FEditMemo.Handle, WM_VSCROLL, SB_TOP, 0);
+  SetLeftBorderForEditMemo;
 end;
 
-procedure TFStructogram.CloseEdit(b: Boolean);
+procedure TFStructogram.CloseEdit;
 begin
-  if EditMemo.Visible then begin
-    if b and Assigned(EditMemoElement) then begin
-      EditMemoElement.text:= EditMemo.text;
-      if EditMemo.Text <> EditMemoBeginText then
+  if FEditMemo.Visible then begin
+    if Assigned(FEditMemoElement) then begin
+      FEditMemoElement.Text:= FEditMemo.Text;
+      if FEditMemo.Text <> FEditMemoBeginText then
         Modified:= True;
     end;
-    if Assigned(curList) then begin
-      curList.ResizeAll;
-      curList.Paint;
+    if Assigned(FCurList) then begin
+      FCurList.ResizeAll;
+      FCurList.Paint;
     end;
     UpdateState;
-    EditMemo.Visible:= False;
+    FEditMemo.Visible:= False;
   end;
 end;
 
 procedure TFStructogram.FormKeyPress(Sender: TObject; var Key: Char);
-  var s: string;
+  var Str: string;
 begin
   if Key = #08
-    then s:= ''
-    else s:= Key;
-  if not EditMemo.Visible then
-    DoEdit(curElement, s);
+    then Str:= ''
+    else Str:= Key;
+  if not FEditMemo.Visible then
+    DoEdit(FCurElement, Str);
 end;
 
 procedure TFStructogram.FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -1034,64 +1077,64 @@ begin
   else if Key = VK_INSERT then
     PasteFromClipboard
   else if (Key = VK_F2) then
-    DoEdit(curElement, '');
+    DoEdit(FCurElement, '');
 end;
 
 procedure TFStructogram.BBCloseClick(Sender: TObject);
 begin
-  (fFile as IFileCommands).ExecClose;
+  (FFile as IFileCommands).ExecClose;
 end;
 
-function TFStructogram.getName(StrList: TStrList): string;
+function TFStructogram.GetName(StrList: TStrList): string;
 begin
   if StrList is TStrAlgorithm then
-    Result:= (StrList as TStrAlgorithm).getAlgorithmName;
+    Result:= (StrList as TStrAlgorithm).GetAlgorithmName;
   if Result = '' then
-    Result:= TPath.GetFileNameWithoutExtension(Pathname)
+    Result:= TPath.GetFileNameWithoutExtension(Pathname);
 end;
 
 procedure TFStructogram.BBGeneratePythonClick(Sender: TObject);
 var
-  FileName, aName: string;
-  progList: TStringList;
+  FileName, AName: string;
+  ProgList: TStringList;
   StrList: TStrList;
-  aFile: IFile;
+  AFile: IFile;
 begin
-  if curList = nil then curList:= getAlgorithm;
-  if curList = nil then curList:= getList;
-  if curList = nil then Exit;
-  StrList:= curList;
-  aName:= getName(StrList);
-  FileName:= ExtractFilePath(Pathname) + aName + '.py';
-  progList:= TStringList.Create;
+  if not Assigned(FCurList) then FCurList:= GetAlgorithm;
+  if not Assigned(FCurList) then FCurList:= GetList;
+  if not Assigned(FCurList) then Exit;
+  StrList:= FCurList;
+  AName:= GetName(StrList);
+  FileName:= ExtractFilePath(Pathname) + AName + '.py';
+  ProgList:= TStringList.Create;
   try
     try
-      PythonProgram(StrList, progList, aName);
-      aFile:= GI_FileFactory.GetFileByNameAndType(FileName, fkEditor);
-      if (Assigned(aFile) or FileExists(FileName)) and
+      PythonProgram(StrList, ProgList, AName);
+      AFile:= GI_FileFactory.GetFileByNameAndType(FileName, fkEditor);
+      if (Assigned(AFile) or FileExists(FileName)) and
          (StyledMessageDlg(Format(_(LNGFileAlreadyExists), [FileName]),
                              mtConfirmation, mbYesNoCancel,0) <> mrYes)
       then
         FileName:= PyIDEMainForm.getFilename('.py');
       if FileName <> '' then begin
-        progList.SaveToFile(FileName, TEncoding.UTF8);
+        ProgList.SaveToFile(FileName, TEncoding.UTF8);
         PyIDEMainForm.DoOpen(FileName);
       end;
-    except on e: Exception do
+    except on E: Exception do
       StyledMessageDlg(Format(_(SFileSaveError), [FileName, E.Message]), mtError, [mbOK], 0);
     end;
   finally
-    FreeAndNil(progList);
+    FreeAndNil(ProgList);
   end;
 end;
 
 procedure TFStructogram.BBPuzzleClick(Sender: TObject);
-  var i: Integer; StrList: TStrList;
+  var StrList: TStrList;
 begin
-  for i:= ScrollBox.ControlCount - 1 downTo 0 do begin
-    StrList:= TListImage(ScrollBox.Controls[i]).StrList;
+  for var I:= ScrollBox.ControlCount - 1 downto 0 do begin
+    StrList:= TListImage(ScrollBox.Controls[I]).StrList;
     if StrList is TStrAlgorithm then begin
-      if StrList.asString = Solution
+      if StrList.AsString = FSolution
         then ShowMessage(_('Great, solved!'))
         else ShowMessage(_('Try again!'));
       Exit;
@@ -1109,45 +1152,44 @@ begin
   SetFontSize(-1);
 end;
 
-{$WARNINGS OFF}
 procedure TFStructogram.Save;
-  var FileName, aPathname, Filepath: string;
-      FStructogram: TFileForm; aFile: IFile;
+  var FileName, APathname, Filepath: string;
+      FStructogram: TFileForm; AFile: IFile;
 begin
-  CloseEdit(True);
+  CloseEdit;
   try
-    if (PuzzleMode = 1) and (Pos(_('Easy'), Pathname) = 0) then begin
-      FileName:= ChangeFileExt(ExtractFilename(Pathname), '');
+    if (FPuzzleMode = 1) and (Pos(_('Easy'), Pathname) = 0) then begin
+      FileName:= ChangeFileExt(ExtractFileName(Pathname), '');
       Filepath:= ExtractFilePath(Pathname);
 
-      PuzzleMode:= 2;
-      aPathname:= Filepath + FileName + _('Medium') + '.psg';
-      SaveToFile(aPathname);
-      GI_EditorFactory.OpenFile(aPathname);
+      FPuzzleMode:= 2;
+      APathname:= Filepath + FileName + _('Medium') + '.psg';
+      SaveToFile(APathname);
+      GI_EditorFactory.OpenFile(APathname);
 
-      PuzzleMode:= 3;
-      aPathname:= Filepath + FileName + _('Hard') + '.psg';
-      SaveToFile(aPathname);
-      GI_EditorFactory.OpenFile(aPathname);
+      FPuzzleMode:= 3;
+      APathname:= Filepath + FileName + _('Hard') + '.psg';
+      SaveToFile(APathname);
+      GI_EditorFactory.OpenFile(APathname);
 
-      PuzzleMode:= 4;
-      aPathname:= Filepath + FileName + _('VeryHard') + '.psg';
-      SaveToFile(aPathname);
-      GI_EditorFactory.OpenFile(aPathname);
+      FPuzzleMode:= 4;
+      APathname:= Filepath + FileName + _('VeryHard') + '.psg';
+      SaveToFile(APathname);
+      GI_EditorFactory.OpenFile(APathname);
 
-      aFile:= GI_FileFactory.GetFileByNameAndType(aPathname, fkStructogram);
-      if Assigned(aFile) then begin
-        FStructogram:= TFStructogram(aFile.Form);
+      AFile:= GI_FileFactory.GetFileByNameAndType(APathname, fkStructogram);
+      if Assigned(AFile) then begin
+        FStructogram:= TFStructogram(AFile.Form);
         (FStructogram as TFStructogram).MakeVeryHard;
         (FStructogram as TFStructogram).Save;
       end;
 
-      PuzzleMode:= 1;
+      FPuzzleMode:= 1;
       Pathname:= Filepath + FileName + _('Easy') + '.psg';
       SaveToFile(Pathname);
       DoUpdateCaption;
     end else begin
-      if ReadOnly then Exit;
+      if FReadOnly then Exit;
       SaveToFile(Pathname);
     end;
     Modified:= False;
@@ -1159,21 +1201,20 @@ begin
 
   // debugging
   {
-  for var i:= 0 to ScrollBox.ControlCount - 1 do begin
-    var aList:= (ScrollBox.Controls[i] as TListImage).StrList;
-    aList.debug;
-    aList.Paint;
+  for var I:= 0 to ScrollBox.ControlCount - 1 do begin
+    var AList:= (ScrollBox.Controls[I] as TListImage).StrList;
+    AList.debug;
+    AList.Paint;
   end;
   }
 end;
-{$WARNINGS ON}
 
 // Click outside of any ListImage
 procedure TFStructogram.ScrollBoxClick(Sender: TObject);
 begin
   UpdateState;
   SetFocus;
-  CloseEdit(True);
+  CloseEdit;
   PyIDEMainForm.ActiveTabControl := ParentTabControl;
 end;
 
@@ -1200,20 +1241,18 @@ begin
 end;
 
 procedure TFStructogram.MICopyAsPictureClick(Sender: TObject);
-var
-  Bitmap: Graphics.TBitmap;
 begin
   if GetCurList then
   begin
-    Bitmap := TBitmap.Create;
+    var Bitmap := TBitmap.Create;
     try
-      Bitmap.Width := CurList.ListImage.Width +
+      Bitmap.Width := FCurList.ListImage.Width +
         GuiPyOptions.StructogramShadowWidth;
-      Bitmap.Height := CurList.ListImage.Height +
+      Bitmap.Height := FCurList.ListImage.Height +
         GuiPyOptions.StructogramShadowWidth;
-      CurList.Paint(True);
-      Bitmap.Canvas.Draw(0, 0, CurList.ListImage.Picture.Graphic);
-      CurList.Paint(False);
+      FCurList.Paint(True);
+      Bitmap.Canvas.Draw(0, 0, FCurList.ListImage.Picture.Graphic);
+      FCurList.Paint(False);
       Clipboard.Assign(Bitmap);
     finally
       FreeAndNil(Bitmap);
@@ -1221,15 +1260,15 @@ begin
   end
   else
   begin
-    CloseEdit(True);
+    CloseEdit;
     CopyToClipboard;
   end;
 end;
 
 procedure TFStructogram.CopyToClipboard;
 begin
-  if EditMemo.Visible then
-    EditMemo.CopyToClipboard
+  if FEditMemo.Visible then
+    FEditMemo.CopyToClipboard
   else begin
     var Bitmap:= GetStructogramAsBitmap;
     Clipboard.Assign(Bitmap);
@@ -1240,8 +1279,8 @@ end;
 
 procedure TFStructogram.CutToClipboard;
 begin
-  if EditMemo.Visible then begin
-    EditMemo.CutToClipboard;
+  if FEditMemo.Visible then begin
+    FEditMemo.CutToClipboard;
     Modified:= True;
     UpdateState;
   end;
@@ -1254,489 +1293,482 @@ end;
 
 function TFStructogram.CanPaste: Boolean;
 begin
-  Result:= EditMemo.Visible;
+  Result:= FEditMemo.Visible;
 end;
 
 procedure TFStructogram.PasteFromClipboard;
 begin
-  if EditMemo.Visible then
-    EditMemo.PasteFromClipboard
+  if FEditMemo.Visible then
+    FEditMemo.PasteFromClipboard;
 end;
 
 procedure TFStructogram.MIDatatypeClick(Sender: TObject);
-  var s: string;
 begin
-  s:= (Sender as TSpTBXItem).Caption;
-  GuiPyOptions.StructoDatatype:= myStringReplace(s, '&', '');
+  var Str:= (Sender as TSpTBXItem).Caption;
+  GuiPyOptions.StructoDatatype:= myStringReplace(Str, '&', '');
 end;
 
-procedure TFStructogram.SetFont(aFont: TFont);
-  var i: Integer; StrList: TStrList;
+procedure TFStructogram.SetFont(AFont: TFont);
+  var StrList: TStrList;
 begin
-  Font.Assign(aFont);
-  for i := 0 to ScrollBox.ControlCount -1 do begin
-    StrList:= TListImage(ScrollBox.Controls[i]).StrList;
-    StrList.setFont(aFont);
-    StrList.setLineHeight;
+  Font.Assign(AFont);
+  for var I := 0 to ScrollBox.ControlCount -1 do begin
+    StrList:= TListImage(ScrollBox.Controls[I]).StrList;
+    StrList.SetFont(AFont);
+    StrList.SetLineHeight;
     StrList.ResizeAll;
     StrList.Paint;
   end;
   Modified:= True;
-  GuiPyOptions.StructogramFont.Assign(aFont);
+  GuiPyOptions.StructogramFont.Assign(AFont);
 end;
 
 procedure TFStructogram.StructoPopupMenuPopup(Sender: TObject);
-  var s: string; i: Integer; found, aParent: TStrElement;
+  var Str: string; Found, AParent: TStrElement;
 begin
   MIAddCase.Visible:= False;
   MIDeleteCase.Visible:= False;
   MISwitchWithCaseLine.Visible:= False;
 
-  s:= GuiPyOptions.StructoDatatype;
-  for i:= 0 to MIDatatype.Count - 1 do
-    MIDatatype.Items[i].Checked:= (myStringReplace(MIDatatype.Items[i].Caption, '&', '') = s);
+  Str:= GuiPyOptions.StructoDatatype;
+  for var I:= 0 to MIDatatype.Count - 1 do
+    MIDatatype[I].Checked:= (myStringReplace(MIDatatype[I].Caption, '&', '') = Str);
 
-  if getCurList then begin
-    MISwitchWithCaseLine.Checked:= curList.SwitchWithCaseLine;
-    found:= FindVisibleElement(curList, MousePos.X, MousePos.Y);
+  if GetCurList then begin
+    MISwitchWithCaseLine.Checked:= FCurList.SwitchWithCaseLine;
+    Found:= FindVisibleElement(FCurList, FMousePos.X, FMousePos.Y);
 
-    aParent:= getParentElement(found);
-    curElement:= nil;
-    if Assigned(found) and (found is TStrSwitch) then
-      curElement:= found
-    else if Assigned(aParent) and (aParent is TStrSwitch) then
-      curElement:= aParent;
+    AParent:= GetParentElement(Found);
+    FCurElement:= nil;
+    if Assigned(Found) and (Found is TStrSwitch) then
+      FCurElement:= Found
+    else if Assigned(AParent) and (AParent is TStrSwitch) then
+      FCurElement:= AParent;
 
-    if Assigned(curElement) then begin
+    if Assigned(FCurElement) then begin
       MIAddCase.Visible:= True;
-      MIDeleteCase.Visible:= (Length((curElement as TStrSwitch).case_elems) > 2);
+      MIDeleteCase.Visible:= (Length((FCurElement as TStrSwitch).CaseElems) > 2);
       MISwitchWithCaseLine.Visible:= True;
     end else
-      curElement:= found;
+      FCurElement:= Found;
   end;
-  MIDelete.Enabled:= Assigned(CurList);
-  MICopy.Enabled:= Assigned(CurList);
+  MIDelete.Enabled:= Assigned(FCurList);
+  MICopy.Enabled:= Assigned(FCurList);
 end;
 
 procedure TFStructogram.UpdateState;
 begin
-  inherited;
   MISwitchWithCaseLine.Checked:= GuiPyOptions.SwitchWithCaseLine;
-  TBStatement.Enabled:= not ReadOnly;
-  TBIfElse.Enabled:= not ReadOnly;
-  TBifElseIf.Enabled:= not ReadOnly;
-  TBWhile.Enabled:= not ReadOnly;
-  TBFor.Enabled:= not ReadOnly;
-  TBSubprogram.Enabled:= not ReadOnly;
-  TBBreak.Enabled:= not ReadOnly;
+  TBStatement.Enabled:= not FReadOnly;
+  TBIfElse.Enabled:= not FReadOnly;
+  TBIfElseif.Enabled:= not FReadOnly;
+  TBWhile.Enabled:= not FReadOnly;
+  TBFor.Enabled:= not FReadOnly;
+  TBSubprogram.Enabled:= not FReadOnly;
+  TBBreak.Enabled:= not FReadOnly;
 end;
 
 function TFStructogram.GetSaveAsName: string;
-  var StrList: TStrAlgorithm;
 begin
-  StrList:= getAlgorithm;
+  var StrList:= GetAlgorithm;
   if Assigned(StrList)
-    then Result:= StrList.getAlgorithmName
+    then Result:= StrList.GetAlgorithmName
     else Result:= '';
 end;
 
 procedure TFStructogram.SetOptions;
 begin
   FConfiguration.setToolbarVisibility(StructogramToolbar, 4);
-  for var i:= 0 to ScrollBox.ControlCount - 1 do
-    if ScrollBox.Controls[i] is TListImage then
-      TListImage(ScrollBox.Controls[i]).StrList.Paint;
-  var b:= not GuiPyOptions.LockedStructogram;
-  TBCreatePythoncode.Enabled:= b;
-  MIGenerateFunction.Visible:= b and MIGenerateFunction.Visible;
-  MIDatatype.Visible:= b and MIDatatype.Visible;
+  for var I:= 0 to ScrollBox.ControlCount - 1 do
+    if ScrollBox.Controls[I] is TListImage then
+      TListImage(ScrollBox.Controls[I]).StrList.Paint;
+  var NotLocked:= not GuiPyOptions.LockedStructogram;
+  TBCreatePythonCode.Enabled:= NotLocked;
+  MIGenerateFunction.Visible:= NotLocked and MIGenerateFunction.Visible;
+  MIDatatype.Visible:= NotLocked and MIDatatype.Visible;
 end;
 
-procedure TFStructogram.AddParameter(list: TStrList; paramList: TStringList);
+procedure TFStructogram.AddParameter(List: TStrList; ParamList: TStringList);
 var
-  aText, token, param: string;
-  i, typ: Integer;
+  AText, Token, Param: string;
+  Int, Typ: Integer;
 begin
-  i:= Pos('(', list.text);
-  if i > 0 then begin
-    aText:= Copy(list.text, i+1, Length(list.text));
-    typ:= GetToken(aText, token);
-    while (typ > 0) and (token <> ')') do begin
-      if typ = 1 then begin
-        param:= token;
+  Int:= Pos('(', List.Text);
+  if Int > 0 then begin
+    AText:= Copy(List.Text, Int+1, Length(List.Text));
+    Typ:= GetToken(AText, Token);
+    while (Typ > 0) and (Token <> ')') do begin
+      if Typ = 1 then begin
+        Param:= Token;
         repeat
-          GetToken(aText, token);
-          if (token <> ',') and (token <> ')') then
-            param:= param + token;
-        until (token = '') or (token = ',') or (token = ')');
-        paramList.Add(param);
+          GetToken(AText, Token);
+          if (Token <> ',') and (Token <> ')') then
+            Param:= Param + Token;
+        until (Token = '') or (Token = ',') or (Token = ')');
+        ParamList.Add(Param);
       end;
-      typ:= GetToken(aText, token);
+      Typ:= GetToken(AText, Token);
     end;
   end;
 end;
 
-procedure TFStructogram.AddVariable(aText: string; list: TStringList);
+procedure TFStructogram.AddVariable(AText: string; List: TStringList);
 var
-  typ: Integer;
-  token, variable: string;
+  Typ: Integer;
+  Token, Variable: string;
 begin
-  if Pos('=', aText)  > 0 then begin
-    aText:= Trim(aText);
-    GetToken(aText, variable);
-    if Pos('#' + variable + '#', Variables) = 0 then begin
-      Variables:= Variables + '#' + variable + '#';  // store of variables;
-      GetToken(aText, token);
-      typ:= GetToken(aText, token);
-      variable:= myStringReplace(variable, ' ', '_');
-      case typ of
-        2: variable:= variable + ': ' + 'str';
-        3: variable:= variable + ': ' + 'bool';
-        4: variable:= variable + ': ' + 'int';
-        5: variable:= variable + ': ' + 'float';
-        6: variable:= variable + ': ' + 'float';
-        7: variable:= variable + ': ' + 'str';
-      else variable:= variable + ': ' +  DataType;
+  if Pos('=', AText)  > 0 then begin
+    AText:= Trim(AText);
+    GetToken(AText, Variable);
+    if Pos('#' + Variable + '#', FVariables) = 0 then begin
+      FVariables:= FVariables + '#' + Variable + '#';  // store of FVariables;
+      GetToken(AText, Token);
+      Typ:= GetToken(AText, Token);
+      Variable:= myStringReplace(Variable, ' ', '_');
+      case Typ of
+        2: Variable:= Variable + ': ' + 'str';
+        3: Variable:= Variable + ': ' + 'bool';
+        4: Variable:= Variable + ': ' + 'int';
+        5: Variable:= Variable + ': ' + 'float';
+        6: Variable:= Variable + ': ' + 'float';
+        7: Variable:= Variable + ': ' + 'str';
+      else Variable:= Variable + ': ' +  FDataType;
       end;
-      list.Add(variable)
+      List.Add(Variable);
     end;
   end;
 end;
 
-function TFStructogram.getAlgorithmParameter(ParamList: TStringList): string;
-  var Param, s: string; i: Integer;
+function TFStructogram.GetAlgorithmParameter(ParamList: TStringList): string;
+  var Param, Str: string;
 begin
   Param:= '';
-  for i:= 0 to ParamList.Count - 1 do begin
-    s:= Trim(ParamList[i]);
-    Param:= Param + s + ', ';
+  for var I:= 0 to ParamList.Count - 1 do begin
+    Str:= Trim(ParamList[I]);
+    Param:= Param + Str + ', ';
   end;
   if Param <> '' then
-    Delete(Param, Length(Param)-1, 2);
+    Delete(Param, Length(Param) - 1, 2);
   Result:= '(' + Param + ')';
 end;
 
-procedure TFStructogram.PythonProgram(list: TStrList; progList: TStringList; const aName: string);
+procedure TFStructogram.PythonProgram(List: TStrList; ProgList: TStringList; const Name: string);
 var
-  i, j, p: Integer;
-  paramList, VariablesList: TStringList;
-  Indent, param, typ: string;
+  JPos, Posi: Integer;
+  ParamList, VariablesList: TStringList;
+  Indent, Param, Typ: string;
 begin
-  Datatype:= GuiPyOptions.StructoDatatype;
-  Variables:= '';
-  paramList:= TStringList.Create;
+  FDataType:= GuiPyOptions.StructoDatatype;
+  FVariables:= '';
+  ParamList:= TStringList.Create;
   VariablesList:= TStringList.Create;
   try
-    AddParameter(list, paramList);
+    AddParameter(List, ParamList);
     Indent:= FConfiguration.Indent1;
-    StrElementToPython(list.Next, progList, VariablesList, Indent);
-    for i:= 0 to paramList.Count-1 do begin
-      param:= ParamList[i];
-      if Pos(':', param) = 0 then begin
-        j:= 0;
-        while j < VariablesList.Count do begin
-          if (Pos(param + ':', VariablesList[j]) = 1) then begin
-            typ:= Trim(VariablesList[j]);
-            p:= Pos(':', typ);
-            typ:= Copy(typ, p + 1, Length(typ));
-            ParamList[i]:= param + ':' + typ;
-            VariablesList.Delete(j);
+    StrElementToPython(List.Next, ProgList, VariablesList, Indent);
+    for var I:= 0 to ParamList.Count-1 do begin
+      Param:= ParamList[I];
+      if Pos(':', Param) = 0 then begin
+        JPos:= 0;
+        while JPos < VariablesList.Count do begin
+          if (Pos(Param + ':', VariablesList[JPos]) = 1) then begin
+            Typ:= Trim(VariablesList[JPos]);
+            Posi:= Pos(':', Typ);
+            Typ:= Copy(Typ, Posi + 1, Length(Typ));
+            ParamList[I]:= Param + ':' + Typ;
+            VariablesList.Delete(JPos);
           end;
-          Inc(j);
+          Inc(JPos);
         end;
       end;
     end;
-    progList.Insert(0, 'def ' + aName + getAlgorithmParameter(paramList) + ':');
+    ProgList.Insert(0, 'def ' + Name + GetAlgorithmParameter(ParamList) + ':');
   finally
     FreeAndNil(VariablesList);
-    FreeAndNil(paramList);
+    FreeAndNil(ParamList);
   end;
 end;
 
-procedure TFStructogram.StrElementToPython(element: TStrElement; pList, VariablesList: TStringList; const indent: string);
+procedure TFStructogram.StrElementToPython(Element: TStrElement; PList, VariablesList: TStringList; const Indent: string);
 var
-  i: Integer;
-  aText, s, condition, indent1: string;
+  Int: Integer;
+  AText, Str, Condition, Indent1: string;
   SwitchElement: TStrSwitch;
 
-  function StripLNG(const LNG: string; s: string): string;
-    var p: Integer;
+  function StripLNG(const LNG: string; Str: string): string;
   begin
-    p:= Pos(LNG, s);
-    if p > 0 then Delete(s, p, Length(LNG));
-    Result:= Trim(s);
+    var Posi:= Pos(LNG, Str);
+    if Posi > 0 then Delete(Str, Posi, Length(LNG));
+    Result:= Trim(Str);
   end;
 
-  function ElementInList(s: string): string;
-    var i, j: Integer;
+  function ElementInList(Str: string): string;
   begin
-    s:= Trim(s);
-    i:= Length(s);
-    for j:= 1 to 3 do begin
-      while (i > 0) and (s[i] <> ' ') do
-        Dec(i);
-      Dec(i);
+    Str:= Trim(Str);
+    var Len:= Length(Str);
+    for var J:= 1 to 3 do begin
+      while (Len > 0) and (Str[Len] <> ' ') do
+        Dec(Len);
+      Dec(Len);
     end;
-    Result:= Copy(s, i+2, Length(s));
+    Result:= Copy(Str, Len + 2, Length(Str));
   end;
 
-  function withoutCrLf(const s: string): string;
+  function withoutCrLf(const Str: string): string;
   begin
-    Result:= myStringReplace(s, CrLf, ' ');
+    Result:= myStringReplace(Str, CrLf, ' ');
   end;
 
-  function MakeCompareEqual(s: string): string;
-    var p: Integer;
+  function MakeCompareEqual(Str: string): string;
   begin
-    p:= Pos('=', s);
-    if (p > 0) and (p < Length(s)) and (s[p-1] <> '=') and (s[p+1] <> '=') then
-      insert('=', s, p);
-    Result:= s;
+    var Posi:= Pos('=', Str);
+    if (Posi > 0) and (Posi < Length(Str)) and (Str[Posi-1] <> '=') and (Str[Posi+1] <> '=') then
+      Insert('=', Str, Posi);
+    Result:= Str;
   end;
 
 begin
-  indent1:= StringOfChar(' ', EditorOptions.TabWidth);
-  while element <> nil do begin
-    if element is TStrStatement then begin
-      s:= withoutCrLf(element.text);
-      if Pos(GuiPyLanguageOptions.Input, s) = 1 then begin
-        Delete(s, 1, Length(GuiPyLanguageOptions.Input));
-        s:= Trim(s);
-        s:= myStringReplace(s, ' ', '_');
-        AddVariable( s + '= ;', VariablesList);
-        s:= s + ' = ' + DataType + '(input' + '(''' + s + ': ''));';
-      end else if Pos(GuiPyLanguageOptions.Output, s) = 1 then begin
-        Delete(s, 1, Length(GuiPyLanguageOptions.Output));
-        s:= 'print(' + Trim(s) + ')'
+  Indent1:= StringOfChar(' ', EditorOptions.TabWidth);
+  while Assigned(Element) do begin
+    if Element is TStrStatement then begin
+      Str:= withoutCrLf(Element.Text);
+      if Pos(GuiPyLanguageOptions.Input, Str) = 1 then begin
+        Delete(Str, 1, Length(GuiPyLanguageOptions.Input));
+        Str:= Trim(Str);
+        Str:= myStringReplace(Str, ' ', '_');
+        AddVariable( Str + '= ;', VariablesList);
+        Str:= Str + ' = ' + FDataType + '(input' + '(''' + Str + ': ''));';
+      end else if Pos(GuiPyLanguageOptions.Output, Str) = 1 then begin
+        Delete(Str, 1, Length(GuiPyLanguageOptions.Output));
+        Str:= 'print(' + Trim(Str) + ')';
       end;
-      aText:= indent + s;
-      if Trim(s) <> '' then pList.Add(aText);
+      AText:= Indent + Str;
+      if Trim(Str) <> '' then PList.Add(AText);
       // declaration of variables only in TStrStatement possible
-      AddVariable(aText, VariablesList);
-    end else if element is TStrIf then begin
-      condition:= MakeCompareEqual(withoutCrLf(element.text));
-      pList.Add(indent + 'if ' + condition + ':');
-      StrElementToPython(TStrIf(element).then_elem.Next, pList, VariablesList, indent + indent1);
-      if (TStrIf(element).else_elem.Next.text <> '') or (TStrIf(element).else_elem.Next.Next <> nil) then begin
-        pList.Add(indent + 'else:');
-        StrElementToPython(TStrIf(element).else_elem.Next, pList, VariablesList, indent + indent1);
+      AddVariable(AText, VariablesList);
+    end else if Element is TStrIf then begin
+      Condition:= MakeCompareEqual(withoutCrLf(Element.Text));
+      PList.Add(Indent + 'if ' + Condition + ':');
+      StrElementToPython(TStrIf(Element).ThenElem.Next, PList, VariablesList, Indent + Indent1);
+      if (TStrIf(Element).ElseElem.Next.Text <> '') or (TStrIf(Element).ElseElem.Next.Next <> nil) then begin
+        PList.Add(Indent + 'else:');
+        StrElementToPython(TStrIf(Element).ElseElem.Next, PList, VariablesList, Indent + Indent1);
       end;
-    end else if element is TStrFor then begin
-      condition:= ElementInList(withoutCrLf(element.text));
-      pList.Add(indent + 'for ' + condition + ':');
-      StrElementToPython(TStrWhile(element).do_elem.Next, pList, VariablesList, indent + indent1);
-    end else if element is TStrWhile then begin
-      condition:= stripLNG(GuiPyLanguageOptions._While, withoutCrLf(element.text));
-      pList.Add(indent + 'while ' + condition + ':');
-      StrElementToPython(TStrWhile(element).do_elem.Next, pList, VariablesList, indent + indent1);
-    end else if element is TStrSwitch then begin
-      SwitchElement:= element as TStrSwitch;
-      for i:= 0 to high(SwitchElement.case_elems)-1 do begin
-        if i = 0
-          then aText:= 'if '
-          else aText:= 'elif ';
-        pList.Add(indent + aText + MakeCompareEqual(SwitchElement.case_elems[i].Next.text) + ':');
-        StrElementToPython(SwitchElement.case_elems[i].Next.Next, pList, VariablesList, indent + indent1);
+    end else if Element is TStrFor then begin
+      Condition:= ElementInList(withoutCrLf(Element.Text));
+      PList.Add(Indent + 'for ' + Condition + ':');
+      StrElementToPython(TStrWhile(Element).DoElem.Next, PList, VariablesList, Indent + Indent1);
+    end else if Element is TStrWhile then begin
+      Condition:= StripLNG(GuiPyLanguageOptions._While, withoutCrLf(Element.Text));
+      PList.Add(Indent + 'while ' + Condition + ':');
+      StrElementToPython(TStrWhile(Element).DoElem.Next, PList, VariablesList, Indent + Indent1);
+    end else if Element is TStrSwitch then begin
+      SwitchElement:= Element as TStrSwitch;
+      for Int:= 0 to High(SwitchElement.CaseElems)-1 do begin
+        if Int = 0
+          then AText:= 'if '
+          else AText:= 'elif ';
+        PList.Add(Indent + AText + MakeCompareEqual(SwitchElement.CaseElems[Int].Next.Text) + ':');
+        StrElementToPython(SwitchElement.CaseElems[Int].Next.Next, PList, VariablesList, Indent + Indent1);
       end;
-      pList.Add(indent + 'else:');
-      i:= high(SwitchElement.case_elems);
-      StrElementToPython(SwitchElement.case_elems[i].Next.Next, pList, VariablesList, indent + indent1);
-    end else if element is TStrSubProgram then begin
-      s:= withoutCrLf(element.text);
-      if Trim(s) <> '' then pList.Add(indent + s);
-    end else if element is TStrBreak then
-      pList.Add(indent + 'break');
-    element:= element.Next;
+      PList.Add(Indent + 'else:');
+      Int:= High(SwitchElement.CaseElems);
+      StrElementToPython(SwitchElement.CaseElems[Int].Next.Next, PList, VariablesList, Indent + Indent1);
+    end else if Element is TStrSubprogram then begin
+      Str:= withoutCrLf(Element.Text);
+      if Trim(Str) <> '' then PList.Add(Indent + Str);
+    end else if Element is TStrBreak then
+      PList.Add(Indent + 'break');
+    Element:= Element.Next;
   end;
 end;
 
-function TFStructogram.FindElement(current: TStrElement; X, Y: Integer): TStrElement;
+function TFStructogram.FindElement(Current: TStrElement; X, Y: Integer): TStrElement;
 var
-  ifElement: TStrIf;
-  whileElement: TStrWhile;
-  switchElement: TStrSwitch;
+  IfElement: TStrIf;
+  WhileElement: TStrWhile;
+  SwitchElement: TStrSwitch;
 begin
-  while (current <> nil) and (current.Next <> nil) and (Y > current.rct.bottom) do
-    current:= current.Next;
-  if current is TStrIf then begin                    { search recursively inside IF }
-    ifElement:= (current as TStrIf);
-    if Y > current.rct.Top + current.getHeadHeight div 2 then
-      if X < ifElement.then_elem.rct.Right - 5 then  { except if ±5 from middle}
-        current:= FindElement(ifElement.then_elem.Next, X, Y)
-      else if X > ifElement.else_elem.rct.Left + 5 then
-        current:= FindElement(ifElement.else_elem.Next, X, Y)
-  end else if current is TStrWhile then begin        { search recursively inside WHILE/REPEAT/FOR(!) }
-    whileElement:= current as TStrWhile;
-    if (X > whileElement.do_elem.rct.Left) and
-       (Y > current.rct.Top + current.getHeadHeight div 2) then
-      current:= FindElement(whileElement.do_elem.Next, X, Y);
-  end else if current is TStrSwitch then begin       { search recursively inside SWITCH }
-    SwitchElement:= (current as TStrSwitch);
-    if Y > current.rct.Top + current.getHeadHeight then
-      for var i:= 0 to high(SwitchElement.case_elems) do
-        if (SwitchElement.case_elems[i].rct.Left + 5 < X) and {except if ±5 from middle}
-           (X < SwitchElement.case_elems[i].rct.Right - 5)
+  while Assigned(Current) and Assigned(Current.Next) and (Y > Current.Rct.Bottom) do
+    Current:= Current.Next;
+  if Current is TStrIf then begin                    { search recursively inside IF }
+    IfElement:= (Current as TStrIf);
+    if Y > Current.Rct.Top + Current.GetHeadHeight div 2 then
+      if X < IfElement.ThenElem.Rct.Right - 5 then  { except if ±5 from middle}
+        Current:= FindElement(IfElement.ThenElem.Next, X, Y)
+      else if X > IfElement.ElseElem.Rct.Left + 5 then
+        Current:= FindElement(IfElement.ElseElem.Next, X, Y);
+  end else if Current is TStrWhile then begin        { search recursively inside WHILE/REPEAT/FOR(!) }
+    WhileElement:= Current as TStrWhile;
+    if (X > WhileElement.DoElem.Rct.Left) and
+       (Y > Current.Rct.Top + Current.GetHeadHeight div 2) then
+      Current:= FindElement(WhileElement.DoElem.Next, X, Y);
+  end else if Current is TStrSwitch then begin       { search recursively inside SWITCH }
+    SwitchElement:= (Current as TStrSwitch);
+    if Y > Current.Rct.Top + Current.GetHeadHeight then
+      for var I:= 0 to High(SwitchElement.CaseElems) do
+        if (SwitchElement.CaseElems[I].Rct.Left + 5 < X) and {except if ±5 from middle}
+           (X < SwitchElement.CaseElems[I].Rct.Right - 5)
         then begin
-          current:= FindElement(SwitchElement.case_elems[i].Next.Next, X, Y);
+          Current:= FindElement(SwitchElement.CaseElems[I].Next.Next, X, Y);
           Break;
         end;
   end;
-  if Assigned(current) and BeforeOrAfter(current) and
-    (((Y > current.rct.top + current.getMaxDelta) and
-      (Y < current.rct.bottom - current.getMaxDelta)) or
-    ((current is TStrAlgorithm) and
-     (Y < current.rct.top + current.getMaxDelta))) then
-      current:= nil;
-  Result:= current;
+  if Assigned(Current) and BeforeOrAfter(Current) and
+    (((Y > Current.Rct.Top + Current.GetMaxDelta) and
+      (Y < Current.Rct.Bottom - Current.GetMaxDelta)) or
+    ((Current is TStrAlgorithm) and
+     (Y < Current.Rct.Top + Current.GetMaxDelta))) then
+      Current:= nil;
+  Result:= Current;
 end;
 
-function TFStructogram.BeforeOrAfter(current: TStrElement): Boolean;
+function TFStructogram.BeforeOrAfter(Current: TStrElement): Boolean;
   var TestElement: TStrElement;
 begin
-  if current is TStrListHead
-    then TestElement:= current.Next
-    else TestElement:= current;
-  Result:= (TestElement.kind <> byte(nsStatement)) or (TestElement.text <> '');
+  if Current is TStrListHead
+    then TestElement:= Current.Next
+    else TestElement:= Current;
+  Result:= (TestElement.Kind <> Byte(nsStatement)) or (TestElement.Text <> '');
 end;
 
-function TFStructogram.FindVisibleElement(current: TStrElement; X, Y: Integer): TStrElement;
+function TFStructogram.FindVisibleElement(Current: TStrElement; X, Y: Integer): TStrElement;
 var
-  ifElement: TStrIf;
-  whileElement: TStrWhile;
-  switchElement: TStrSwitch;
+  IfElement: TStrIf;
+  WhileElement: TStrWhile;
+  SwitchElement: TStrSwitch;
 begin
-  while (current <> nil) and (current.Next <> nil) and (Y > current.rct.bottom) do
-    current:= current.Next;
-  if current is TStrIf then begin                    { search recursively inside IF }
-    ifElement:= (current as TStrIf);
-    if Y > current.rct.Top + current.getHeadHeight then
-      if X <= ifElement.then_elem.rct.Right
-        then current:= FindVisibleElement(ifElement.then_elem.Next, X, Y)
-        else current:= FindVisibleElement(ifElement.else_elem.Next, X, Y)
-  end else if current is TStrWhile then begin        { search recursively inside WHILE/REPEAT/FOR(!) }
-    whileElement:= current as TStrWhile;
-    if (X > whileElement.do_elem.rct.Left) and (Y > whileElement.do_elem.rct.top) then
-      current:= FindVisibleElement(whileElement.do_elem.Next, X, Y);
-  end else if current is TStrSwitch then begin       { search recursively inside SWITCH }
-    SwitchElement:= (current as TStrSwitch);
-    if Y > current.rct.Top + current.getHeadHeight then
-      for var i:= 0 to high(SwitchElement.case_elems) do
-         if X < SwitchElement.case_elems[i].rct.Right then begin     {except if ±5 from middle}
-           current:= FindVisibleElement(SwitchElement.case_elems[i].Next, X, Y);
+  while Assigned(Current) and Assigned(Current.Next) and (Y > Current.Rct.Bottom) do
+    Current:= Current.Next;
+  if Current is TStrIf then begin                    { search recursively inside IF }
+    IfElement:= (Current as TStrIf);
+    if Y > Current.Rct.Top + Current.GetHeadHeight then
+      if X <= IfElement.ThenElem.Rct.Right
+        then Current:= FindVisibleElement(IfElement.ThenElem.Next, X, Y)
+        else Current:= FindVisibleElement(IfElement.ElseElem.Next, X, Y);
+  end else if Current is TStrWhile then begin        { search recursively inside WHILE/REPEAT/FOR(!) }
+    WhileElement:= Current as TStrWhile;
+    if (X > WhileElement.DoElem.Rct.Left) and (Y > WhileElement.DoElem.Rct.Top) then
+      Current:= FindVisibleElement(WhileElement.DoElem.Next, X, Y);
+  end else if Current is TStrSwitch then begin       { search recursively inside SWITCH }
+    SwitchElement:= (Current as TStrSwitch);
+    if Y > Current.Rct.Top + Current.GetHeadHeight then
+      for var I:= 0 to High(SwitchElement.CaseElems) do
+         if X < SwitchElement.CaseElems[I].Rct.Right then begin     {except if ±5 from middle}
+           Current:= FindVisibleElement(SwitchElement.CaseElems[I].Next, X, Y);
            Break;                                            // not next.next like in FindElement
          end;
   end;
-  Result:= current;
+  Result:= Current;
 end;
 
-function TFStructogram.getParentElement(element: TStrElement): TStrElement;
-  var tmp: TStrElement;
+function TFStructogram.GetParentElement(Element: TStrElement): TStrElement;
 begin
-  tmp:= element;
-  while Assigned(tmp) and (tmp.prev <> nil) do
-    tmp:= tmp.prev;
-  if Assigned(tmp) and (tmp is TStrListHead)
-    then Result:= TStrListhead(tmp).Parent
+  var Tmp:= Element;
+  while Assigned(Tmp) and Assigned(Tmp.Prev) do
+    Tmp:= Tmp.Prev;
+  if Assigned(Tmp) and (Tmp is TStrListHead)
+    then Result:= TStrListHead(Tmp).Parent
     else Result:= nil;
 end;
 
-function TFStructogram.GetToken(var S: string; var Token: string): Integer;
-{  get next token in <S> and return in <Token>.
-   Return type of token: -1=no token, 0=invalid, 1=name, 2=char, 3=boolean, 4=integer,
-                         5=real, 6=hex number, 7=string, 8=special char.
+function TFStructogram.GetToken(var Str: string; var Token: string): Integer;
+{  get next Token in <Str> and return in <Token>.
+   Return type of Token: -1=no Token, 0=invalid, 1=name, 2=char, 3=boolean, 4=integer,
+                         5=real, 6=Hex number, 7=string, 8=special char.
 }
 var
-  ch: Char;
-  i: Integer;
-  hex: Boolean;
+  Chr: Char;
+  Int: Integer;
+  Hex: Boolean;
 
   procedure NextCh;
   begin
-    Token[i]:= ch;
-    Inc(i);
-    if i <= Length(s)
-      then ch:= S[i]
-      else ch:= #0;
+    Token[Int]:= Chr;
+    Inc(Int);
+    if Int <= Length(Str)
+      then Chr:= Str[Int]
+      else Chr:= #0;
   end;
 
 begin
-  setLength(Token, 255);
-  i:= 1;
-  while i <= Length(S) do begin // overread leading blanks and tabs
-    ch:= S[i];
-    if (ch <> ' ') and (ord(ch) <> 9) then Break;
-    Inc(i);
+  SetLength(Token, 255);
+  Int:= 1;
+  while Int <= Length(Str) do begin // overread leading blanks and tabs
+    Chr:= Str[Int];
+    if (Chr <> ' ') and (Ord(Chr) <> 9) then Break;
+    Inc(Int);
   end;
-  Delete(S, 1, i-1);
-  if S = '' then begin
+  Delete(Str, 1, Int-1);
+  if Str = '' then begin
     Token:= '';
-    Result:= -1;  {no token}
+    Result:= -1;  {no Token}
     Exit;
   end;
-  i:= 1;
-  if not IsWordBreakChar(ch) and not CharInSet(ch, ['0'..'9']) then begin   { name }
+  Int:= 1;
+  if not IsWordBreakChar(Chr) and not CharInSet(Chr, ['0'..'9']) then begin   { name }
     repeat
       NextCh;
-    until IsWordBreakChar(ch) and not isDigit(ch) and (ch <> '.') or (i > Length(S));
-    Dec(i);
-    SetLength(Token, i);
+    until IsWordBreakChar(Chr) and not IsDigit(Chr) and (Chr <> '.') or (Int > Length(Str));
+    Dec(Int);
+    SetLength(Token, Int);
     if (UpperCase(Token) = 'TRUE') or (UpperCase(Token) = 'FALSE') then
       Result:= 3   {boolean}
     else
       Result:= 1;  { name }
   end
-  else if (ch = '''') then begin                                    { char }
+  else if (Chr = '''') then begin                                    { char }
     NextCh;
-    while (ch <> '''') and (ch >= ' ') and (i <= Length(S)) do
+    while (Chr <> '''') and (Chr >= ' ') and (Int <= Length(Str)) do
       NextCh;
-    Token[i]:= '''';
+    Token[Int]:= '''';
     Result:= 2;  { char }
   end
-  else if (ch = '"') then begin                                    { string }
+  else if (Chr = '"') then begin                                    { string }
     NextCh;
-    while (ch <> '"') and (ch >= ' ') and (i <= Length(S)) do
+    while (Chr <> '"') and (Chr >= ' ') and (Int <= Length(Str)) do
       NextCh;
-    Token[i]:= '"';
+    Token[Int]:= '"';
     Result:= 7;  { String }
   end
   else begin
-    if (ch = '-') then
+    if (Chr = '-') then
       NextCh;
-    if ('0' <= ch) and (ch <= '9') then begin                       { number }
-      hex:=False;
+    if ('0' <= Chr) and (Chr <= '9') then begin                       { number }
+      Hex:=False;
       while True do begin
         NextCh;
-        if (ch < '0') or (i > Length(S)) then Break;
-        if (ch > '9') then begin
-          if ('A' <= UpperCase(ch)) and (UpperCase(ch) <= 'F') then
-            hex:=True
+        if (Chr < '0') or (Int > Length(Str)) then Break;
+        if (Chr > '9') then begin
+          if ('A' <= UpperCase(Chr)) and (UpperCase(Chr) <= 'F') then
+            Hex:=True
           else
             Break;
         end;
       end;
-      if (UpperCase(ch) = 'H') then begin                           { hex number }
+      if (UpperCase(Chr) = 'H') then begin                           { Hex number }
         NextCh;
-        Dec(i);
-        Result:= 6;  {hex number}
+        Dec(Int);
+        Result:= 6;  {Hex number}
       end
-      else if (ch = '.') then begin                                 { real }
+      else if (Chr = '.') then begin                                 { real }
         NextCh;
-        while ('0' <= ch) and (ch <= '9') do
+        while ('0' <= Chr) and (Chr <= '9') do
           NextCh;
-        if (ch = 'E') then
+        if (Chr = 'E') then
           NextCh;
-        if (ch = '+') or (ch = '-') then
+        if (Chr = '+') or (Chr = '-') then
           NextCh;
-        while ('0' <= ch) and (ch <= '9') do
+        while ('0' <= Chr) and (Chr <= '9') do
           NextCh;
-        Dec(i);
-        if hex then
+        Dec(Int);
+        if Hex then
           Result:= 0   {invalid}
         else
           Result:= 5;  {real number}
       end
       else begin
-        if hex then
+        if Hex then
           Result:= 0   {invalid}
         else
           Result:= 4;  {integer}
@@ -1744,15 +1776,15 @@ begin
     end
     else begin
       NextCh;
-      Dec(i);
+      Dec(Int);
       Result:= 8; {special char}
     end;
   end;
-  SetLength(Token, i);
-  Delete(S, 1, i);
+  SetLength(Token, Int);
+  Delete(Str, 1, Int);
 end;
 
-procedure TFStructogram.setEvents(ListImage: TListImage);
+procedure TFStructogram.SetEvents(ListImage: TListImage);
 begin
   with ListImage do begin
     OnDblClick := ImageDblClick;
@@ -1762,52 +1794,51 @@ begin
   end;
 end;
 
-function TFStructogram.getAlgorithm: TStrAlgorithm;
-  var i: Integer; aList: TStrList;
+function TFStructogram.GetAlgorithm: TStrAlgorithm;
 begin
   Result:= nil;
-  for i:= 0 to ScrollBox.ControlCount - 1 do begin
-    aList:= TListImage(ScrollBox.controls[i]).StrList;
-    if aList is TStrAlgorithm then Exit(aList as TStrAlgorithm);
+  for var I:= 0 to ScrollBox.ControlCount - 1 do begin
+    var AList:= TListImage(ScrollBox.Controls[I]).StrList;
+    if AList is TStrAlgorithm then Exit(AList as TStrAlgorithm);
   end;
 end;
 
-function TFStructogram.getListAtScreenPos(Pt: TPoint): TStrList;
+function TFStructogram.GetListAtScreenPos(Point: TPoint): TStrList;
 begin
   Result:= nil;
-  for var i:= 0 to ScrollBox.ControlCount - 1 do
-    if ScrollBox.controls[i].BoundsRect.contains(pt) then
-      Exit(TListImage(ScrollBox.controls[i]).StrList);
+  for var I:= 0 to ScrollBox.ControlCount - 1 do
+    if ScrollBox.Controls[I].BoundsRect.Contains(Point) then
+      Exit(TListImage(ScrollBox.Controls[I]).StrList);
 end;
 
-function TFStructogram.getCurList: Boolean;
+function TFStructogram.GetCurList: Boolean;
 begin
-  var pt:= ScrollBox.ScreenToClient(StructoPopupMenu.PopupPoint);
-  curList:= getListAtScreenPos(pt);
-  Result:= Assigned(curList);
+  var Point:= ScrollBox.ScreenToClient(StructoPopupMenu.PopupPoint);
+  FCurList:= GetListAtScreenPos(Point);
+  Result:= Assigned(FCurList);
 end;
 
-function TFStructogram.getCurListAndCurElement: Boolean;
+function TFStructogram.GetCurListAndCurElement: Boolean;
 begin
-  curElement:= nil;
-  if getCurList then begin
-    var pt:= CurList.ListImage.ScreenToClient(StructoPopupMenu.PopupPoint);
-    curElement:= FindVisibleElement(curList, Pt.X, Pt.Y);
+  FCurElement:= nil;
+  if GetCurList then begin
+    var Point:= FCurList.ListImage.ScreenToClient(StructoPopupMenu.PopupPoint);
+    FCurElement:= FindVisibleElement(FCurList, Point.X, Point.Y);
   end;
-  Result:= Assigned(curElement);
+  Result:= Assigned(FCurElement);
 end;
 
-function TFStructogram.getList: TStrList;
+function TFStructogram.GetList: TStrList;
 begin
   if ScrollBox.ControlCount = 0
     then Result:= nil
-    else Result:= TListImage(ScrollBox.controls[0]).StrList;
+    else Result:= TListImage(ScrollBox.Controls[0]).StrList;
 end;
 
 function TFStructogram.GetStructogramAsBitmap: TBitmap;
 var
   ARect: TRect;
-  ABitmap: TBitmap;
+  Bitmap: TBitmap;
 begin
   for var I := 0 to ScrollBox.ControlCount - 1 do
     if ScrollBox.Controls[I] is TListImage then
@@ -1819,14 +1850,14 @@ begin
       ARect := TListImage(ScrollBox.Controls[I]).BoundsRect
     else
       ARect := UnionRect(ARect, TListImage(ScrollBox.Controls[I]).BoundsRect);
-  ABitmap := TBitmap.Create;
-  ABitmap.Width := ARect.Width + GuiPyOptions.StructogramShadowWidth;
-  ABitmap.Height := ARect.Height + GuiPyOptions.StructogramShadowWidth;
+  Bitmap := TBitmap.Create;
+  Bitmap.Width := ARect.Width + GuiPyOptions.StructogramShadowWidth;
+  Bitmap.Height := ARect.Height + GuiPyOptions.StructogramShadowWidth;
   for var I := 0 to ScrollBox.ControlCount - 1 do begin
     var ListImage := TListImage(ScrollBox.Controls[I]);
-    ABitmap.Canvas.Draw(ListImage.Left - ARect.Left, ListImage.Top - ARect.Top, ListImage.Picture.Graphic);
+    Bitmap.Canvas.Draw(ListImage.Left - ARect.Left, ListImage.Top - ARect.Top, ListImage.Picture.Graphic);
   end;
-  Result := ABitmap;
+  Result := Bitmap;
 
   for var I := 0 to ScrollBox.ControlCount - 1 do
     if ScrollBox.Controls[I] is TListImage then
@@ -1835,50 +1866,49 @@ end;
 
 procedure TFStructogram.PaintAll;
 begin
-  for var i:= 0 to ScrollBox.ControlCount - 1 do begin
-    var aList:= (ScrollBox.Controls[i] as TListImage).StrList;
-    if aList.dirty then
-      aList.Paint;
-    aList.dirty:= False;
+  for var I:= 0 to ScrollBox.ControlCount - 1 do begin
+    var AList:= (ScrollBox.Controls[I] as TListImage).StrList;
+    if AList.Dirty then
+      AList.Paint;
+    AList.Dirty:= False;
   end;
 end;
 
-procedure TFStructogram.Debug(const s: string);
+procedure TFStructogram.Debug(const Str: string);
 begin
-  MessagesWindow.AddMessage(s);
+  MessagesWindow.AddMessage(Str);
 end;
 
-function TFStructogram.fitsIn(aCurList: TStrList; aCurElement: TStrElement): Boolean;
-  var w, h: Integer;
+function TFStructogram.FitsIn(ACurList: TStrList; ACurElement: TStrElement): Boolean;
+  var Width, Height: Integer;
 begin
-  if PuzzleMode = 0 then
+  if FPuzzleMode = 0 then
     Result:= True
-  else if (aCurElement is TStrListHead) or (aCurElement is TStrCase) or
-          ((PuzzleMode = 1) and (CurInsert <> 0)) then
+  else if (ACurElement is TStrListHead) or (ACurElement is TStrCase) or
+          ((FPuzzleMode = 1) and (FCurInsert <> 0)) then
     Result:= False
   else begin
-    w:= aCurElement.rct.Right - aCurElement.rct.Left;
-    h:= aCurElement.rct.Bottom - aCurElement.rct.Top;
-    if PuzzleMode = 1 then
-      Result:= (aCurList.rctList.Width = w) and (aCurList.rctList.Height = h)
-    else if PuzzleMode = 2 then
-      Result:= (aCurList.rctList.Width = w)
+    Width:= ACurElement.Rct.Right - ACurElement.Rct.Left;
+    Height:= ACurElement.Rct.Bottom - ACurElement.Rct.Top;
+    if FPuzzleMode = 1 then
+      Result:= (ACurList.RctList.Width = Width) and (ACurList.RctList.Height = Height)
+    else if FPuzzleMode = 2 then
+      Result:= (ACurList.RctList.Width = Width)
     else
       Result:= True;
   end;
 end;
 
 procedure TFStructogram.MakeVeryHard;
-  var i: Integer; aList: TStrList;
 begin
-  for i:= 0 to ScrollBox.ControlCount -1 do begin
-    aList:= TListImage(ScrollBox.controls[i]).StrList;
-    aList.Collapse;
-    if aList.Next = nil then
-      aList.Destroy
+  for var I:= 0 to ScrollBox.ControlCount -1 do begin
+    var AList:= TListImage(ScrollBox.Controls[I]).StrList;
+    AList.Collapse;
+    if not Assigned(AList.Next) then
+      AList.Destroy
     else begin
-      aList.ResizeAll;
-      aList.Paint;
+      AList.ResizeAll;
+      AList.Paint;
     end;
   end;
 end;
@@ -1901,9 +1931,9 @@ begin
     StructoPopupMenu.Images:= vilPopupMenuLight;
   end;
 
-  for var i:= 0 to ScrollBox.ControlCount -1 do
-    if Scrollbox.Controls[i] is TListImage then begin
-      var StrList:= TListImage(Scrollbox.Controls[i]).StrList;
+  for var I:= 0 to ScrollBox.ControlCount -1 do
+    if ScrollBox.Controls[I] is TListImage then begin
+      var StrList:= TListImage(ScrollBox.Controls[I]).StrList;
       StrList.Paint;
     end;
 end;
@@ -1916,7 +1946,7 @@ end;
 
 procedure TFStructogram.DPIChanged;
 begin
-  setFontSize(0);
+  SetFontSize(0);
   Hide;
   Show;
 end;
