@@ -514,7 +514,7 @@ procedure TFileForm.SetFontSize(Delta: Integer);
 begin
   Font.Size:= Font.Size + Delta;
   if Font.Size < 6 then Font.Size:= 6;
-  setFont(Font);
+  SetFont(Font);
 end;
 
 function TFileForm.CanPaste: Boolean;

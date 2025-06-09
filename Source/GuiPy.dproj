@@ -339,7 +339,6 @@
             <Form>FConnectForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="SequenceDiagram\ULifeLine.pas"/>
         <DCCReference Include="SequenceDiagram\USequenceForm.pas">
             <Form>FSequenceForm</Form>
         </DCCReference>
@@ -514,6 +513,7 @@
         <DCCReference Include="..\..\delphi-markdown\source\MarkdownTables.pas"/>
         <DCCReference Include="..\..\delphi-markdown\source\MarkdownTxtMark.pas"/>
         <DCCReference Include="..\..\delphi-markdown\source\MarkdownUtils.pas"/>
+        <DCCReference Include="SequenceDiagram\ULifeline.pas"/>
         <None Include="GuiPy.todo"/>
         <None Include="ModelSupport_PyScripter\default.txaPackage"/>
         <None Include="Main\_done.txt"/>

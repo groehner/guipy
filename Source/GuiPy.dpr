@@ -111,7 +111,6 @@ uses
   JvDockVSNetStyleSpTBX in 'JvDockVSNetStyleSpTBX.pas',
   frmFile in 'frmFile.pas' {FileForm},
   UConnectForm in 'SequenceDiagram\UConnectForm.pas' {FConnectForm},
-  ULifeLine in 'SequenceDiagram\ULifeLine.pas',
   USequenceForm in 'SequenceDiagram\USequenceForm.pas' {FSequenceForm},
   USequencePanel in 'SequenceDiagram\USequencePanel.pas',
   ELControls in 'Formdesigner\ELControls.pas',
@@ -211,7 +210,8 @@ uses
   MarkdownProcessor in '..\..\delphi-markdown\source\MarkdownProcessor.pas',
   MarkdownTables in '..\..\delphi-markdown\source\MarkdownTables.pas',
   MarkdownTxtMark in '..\..\delphi-markdown\source\MarkdownTxtMark.pas',
-  MarkdownUtils in '..\..\delphi-markdown\source\MarkdownUtils.pas';
+  MarkdownUtils in '..\..\delphi-markdown\source\MarkdownUtils.pas',
+  ULifeline in 'SequenceDiagram\ULifeline.pas';
 
 {$R *.RES}
 

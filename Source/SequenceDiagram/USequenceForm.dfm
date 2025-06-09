@@ -50,7 +50,7 @@ object FSequenceForm: TFSequenceForm
       ShowHint = True
       OnClick = TBCloseClick
     end
-    object TBLifeLine: TToolButton
+    object TBLifeline: TToolButton
       Left = 23
       Top = 0
       Hint = 'New lifeline'
@@ -58,7 +58,7 @@ object FSequenceForm: TFSequenceForm
       ImageName = 'Lifeline'
       ParentShowHint = False
       ShowHint = True
-      OnClick = MIPopupNewLifeLineClick
+      OnClick = MIPopupNewLifelineClick
     end
     object TBActor: TToolButton
       Left = 46
@@ -179,11 +179,11 @@ object FSequenceForm: TFSequenceForm
     OnPopup = PopupMenuLifeLineAndSequencePanelPopup
     Left = 320
     Top = 41
-    object MIPopupNewLifeLine: TSpTBXItem
+    object MIPopupNewLifeline: TSpTBXItem
       Caption = 'New lifeline'
       ImageIndex = 1
       ImageName = 'Lifeline'
-      OnClick = MIPopupNewLifeLineClick
+      OnClick = MIPopupNewLifelineClick
     end
     object MIPopupNewActor: TSpTBXItem
       Caption = 'New actor'
@@ -200,11 +200,11 @@ object FSequenceForm: TFSequenceForm
     object MIPopupConnectWith: TSpTBXSubmenuItem
       Caption = 'Connect with'
     end
-    object MIPopupDeleteLifeLine: TSpTBXItem
+    object MIPopupDeleteLifeline: TSpTBXItem
       Caption = 'Delete lifeline'
       ImageIndex = 7
       ImageName = 'Delete'
-      OnClick = MIPopupDeleteLifeLineClick
+      OnClick = MIPopupDeleteLifelineClick
     end
     object MIPopupNewLayout: TSpTBXItem
       Caption = 'New layout'

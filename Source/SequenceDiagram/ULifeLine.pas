@@ -1,237 +1,286 @@
-{-------------------------------------------------------------------------------
- Unit:     ULifeLine
- Author:   Gerhard Röhner
- Date:     July 2019
- Purpose:  lifeline class
--------------------------------------------------------------------------------}
+{ -------------------------------------------------------------------------------
+  Unit:     ULifeline
+  Author:   Gerhard Röhner
+  Date:     July 2019
+  Purpose:  Lifeline class
+  ------------------------------------------------------------------------------- }
 
-unit ULifeLine;
+unit ULifeline;
 
 interface
 
 uses
-  Classes, Graphics, Controls, UPanelTransparent, USequencePanel;
+  Classes,
+  Graphics,
+  UPanelTransparent,
+  USequencePanel;
 
 type
-  TLifeLine = class(TPanelTransparent)
+  TLifeline = class(TPanelTransparent)
   private
-    SequencePanel: TSequencePanel;
-    TextWidth: Integer;
-    TextHeight: Integer;
-    DistY: Integer;
-    ActivationWidth: Integer;
-    MinWidth: Integer;
-    MinHeight: Integer;
-    Padding: Integer;
+    FActivation: Integer;
+    FSequencePanel: TSequencePanel;
+    FTextWidth: Integer;
+    FTextHeight: Integer;
+    FDistY: Integer;
+    FActivationWidth: Integer;
+    FMinWidth: Integer;
+    FMinHeight: Integer;
+    FPadding: Integer;
     FCreated: Boolean;
-    BGColor: TColor;
-    FGColor: TColor;
-    LineHeight: Integer;
-    Renamed: Boolean;
-    PPIControl: TControl;
+    FBackgroundColor: TColor;
+    FClosed: Boolean;
+    FFirst: Boolean;
+    FForegroundColor: TColor;
+    FHeadHeight: Integer;
+    FInternalName: string;
+    FLineHeight: Integer;
+    FOnCreatedChanged: TNotifyEvent;
+    FParticipant: string;
+    FRenamed: Boolean;
     procedure SetCreated(const Value: Boolean);
     procedure ShowHead;
   protected
     procedure Paint; override;
   public
-    Participant: string;
-    InternalName: string;
-    Activation: Integer;
-    HeadHeight: Integer;
-    Closed: Boolean;
-    First: Boolean;
-    onCreatedChanged: TNotifyEvent;
-    constructor CreateLL(aOwner: TComponent; const aParticipant: string;
-                         aFont: TFont; PPIControl: TControl);
-    procedure SetFont(aFont: TFont);
-    procedure getWidthHeigthOfText(const aText: string; var w, h: Integer);
+    constructor CreateLL(AOwner: TComponent; const Participant: string;
+      AFont: TFont);
+    procedure SetFont(AFont: TFont);
+    procedure GetWidthHeigthOfText(const Text: string;
+      var Width, Height: Integer);
     procedure CalcWidthHeight;
     procedure RenameParticipant(const Value: string);
     procedure ChangeStyle(BlackAndWhite: Boolean = False);
-    property Created: Boolean read FCreated write setCreated;
+
+    property Activation: Integer read FActivation write FActivation;
+    property Closed: Boolean read FClosed write FClosed;
+    property Created: Boolean read FCreated write SetCreated;
+    property First: Boolean read FFirst write FFirst;
+    property HeadHeight: Integer read FHeadHeight;
+    property InternalName: string read FInternalName;
+    property OnCreatedChanged: TNotifyEvent read FOnCreatedChanged
+      write FOnCreatedChanged;
+    property Participant: string read FParticipant write FParticipant;
   end;
 
 implementation
 
 uses
-  Windows, Types, Math, SysUtils, UITypes, Themes, UConfiguration;
+  Windows,
+  Types,
+  Math,
+  Controls,
+  SysUtils,
+  UITypes,
+  Themes,
+  UConfiguration;
 
-constructor TLifeLine.CreateLL(aOwner: TComponent; const aParticipant: string; aFont: TFont; PPIControl: TControl);
+constructor TLifeline.CreateLL(AOwner: TComponent; const Participant: string;
+  AFont: TFont);
 begin
-  inherited Create(aOwner);
-  SequencePanel:= aOwner as TSequencePanel;
-  Parent:= SequencePanel;
-  if Pos('@', aParticipant) > 0
-    then InternalName:= aParticipant
-    else Self.Participant:= aParticipant;
-  Created:= False;
-  Closed:= False;
-  Renamed:= (aParticipant = 'Actor');
-  Self.PPIControl:= PPIControl;
-  SetFont(aFont);
+  inherited Create(AOwner);
+  FSequencePanel := AOwner as TSequencePanel;
+  Parent := FSequencePanel;
+  if Pos('@', Participant) > 0 then
+    FInternalName := Participant
+  else
+    Self.FParticipant := Participant;
+  FCreated := False;
+  FClosed := False;
+  FRenamed := (Participant = 'Actor');
+  SetFont(AFont);
   ChangeStyle;
 end;
 
-procedure TLifeLine.SetFont(aFont: TFont);
-  const cPadding: Integer = 20;
+procedure TLifeline.SetFont(AFont: TFont);
+const
+  CPadding: Integer = 20;
 begin
-  Canvas.Font.Assign(aFont);
-  DistY:= Round(cDistY*Font.Size/12.0);
-  ActivationWidth:= Round(cActivationWidth*Font.Size/12.0);
-  MinWidth:= Round(cMinWidth*Font.Size/12.0);
-  MinHeight:= Round(cMinHeight*Font.Size/12.0);
-  Padding:= Round(cPadding*Font.Size/12.0);
+  Canvas.Font.Assign(AFont);
+  FDistY := Round(CDistY * Font.Size / 12.0);
+  FActivationWidth := Round(CActivationWidth * Font.Size / 12.0);
+  FMinWidth := Round(CMinWidth * Font.Size / 12.0);
+  FMinHeight := Round(CMinHeight * Font.Size / 12.0);
+  FPadding := Round(CPadding * Font.Size / 12.0);
   CalcWidthHeight;
 end;
 
-procedure TLifeLine.Paint;
-  var Connections: TList;
-      Conn1, Conn2: TConnection;
-      i, j, y1, y2: Integer;
-      HeadColor: TColor;
+procedure TLifeline.Paint;
+var
+  Connections: TList;
+  Conn1, Conn2: TConnection;
+  Jdx, Y1Pos, Y2Pos: Integer;
+  HeadColor: TColor;
 
   function isDark(Color: TColor): Boolean;
-    var ACol: Longint;
+  var
+    ACol: LongInt;
   begin
     ACol := ColorToRGB(Color) and $00FFFFFF;
-    Result := ((2.99 * GetRValue(ACol) + 5.87 * GetGValue(ACol) +
-                 1.14 * GetBValue(ACol)) < $400);
+    Result := ((2.99 * GetRValue(ACol) + 5.87 * GetGValue(ACol) + 1.14 *
+      GetBValue(ACol)) < $400);
   end;
 
 begin
-  Canvas.Pen.Color:= FGColor;
-  Canvas.Font.Color:= FGColor;
+  Canvas.Pen.Color := FForegroundColor;
+  Canvas.Font.Color := FForegroundColor;
 
-  if GuiPyOptions.SDNoFilling
-    then Canvas.Brush.Color:= BGColor
-    else Canvas.Brush.Color:= GuiPyOptions.SDFillingcolor;
-
-  HeadColor:= Canvas.Brush.Color;
-  if IsDark(HeadColor) and IsDark(FGColor) then
-    Canvas.Font.Color:= FGColor
-  else if not IsDark(HeadColor) and not IsDark(FGColor) then
-    Canvas.Font.Color:= BGColor;
+  if GuiPyOptions.SDNoFilling then
+    Canvas.Brush.Color := FBackgroundColor
+  else
+    Canvas.Brush.Color := GuiPyOptions.SDFillingColor;
+  HeadColor := Canvas.Brush.Color;
+  if isDark(HeadColor) and isDark(FForegroundColor) then
+    Canvas.Font.Color := FForegroundColor
+  else if not isDark(HeadColor) and not isDark(FForegroundColor) then
+    Canvas.Font.Color := FBackgroundColor;
 
   ShowHead;
-  Connections:= SequencePanel.GetConnections;
-  Canvas.Pen.Style:= psDash;
-  Canvas.MoveTo(Width div 2, HeadHeight);
-  if Connections.Count > 0
-    then Canvas.LineTo(Width div 2, Height)
-    else Canvas.LineTo(Width div 2, HeadHeight + DistY);
-  Canvas.Pen.Style:= psSolid;
+  Connections := FSequencePanel.GetConnections;
+  Canvas.Pen.Style := psDash;
+  Canvas.MoveTo(Width div 2, FHeadHeight);
+  if Connections.Count > 0 then
+    Canvas.LineTo(Width div 2, Height)
+  else
+    Canvas.LineTo(Width div 2, FHeadHeight + FDistY);
+  Canvas.Pen.Style := psSolid;
 
-  // activation of first lifeline
-  if GuiPyOptions.SDNoFilling
-    then Canvas.Brush.Color:= BGColor
-    else Canvas.Brush.Color:= GuiPyOptions.SDFillingcolor;
+  // FActivation of FFirst Lifeline
+  if GuiPyOptions.SDNoFilling then
+    Canvas.Brush.Color := FBackgroundColor
+  else
+    Canvas.Brush.Color := GuiPyOptions.SDFillingColor;
 
-  if (Connections.Count > 0) and First then begin
-    y1:= TConnection(Connections.Items[0]).FromP.y;
-    y2:= TConnection(Connections.Items[Connections.Count-1]).FromP.y;
-    if y2 = y1 then
-      y2:= y2 + DistY;
-    if TConnection(Connections.Items[Connections.Count-1]).isRecursiv then
-      y2:= y2 + DistY div 2;
-    Canvas.Rectangle(Width div 2 - ActivationWidth, y1-Top, width div 2 + ActivationWidth, y2-Top+1);
+  if (Connections.Count > 0) and FFirst then
+  begin
+    Y1Pos := TConnection(Connections[0]).StartPoint.Y;
+    Y2Pos := TConnection(Connections.Last).StartPoint.Y;
+    if Y2Pos = Y1Pos then
+      Y2Pos := Y2Pos + FDistY;
+    if TConnection(Connections.Last).IsRecursiv then
+      Y2Pos := Y2Pos + FDistY div 2;
+    Canvas.Rectangle(Width div 2 - FActivationWidth, Y1Pos - Top,
+      Width div 2 + FActivationWidth, Y2Pos - Top + 1);
   end;
 
   // show activations
-  for i:= 0 to Connections.Count - 1 do begin
-    Conn1:= TConnection(Connections.Items[i]);
-    if (Conn1.FTo = Self) and (Conn1.ArrowStyle <> casNew) then begin
-      y1:= Conn1.FromP.y;
-      y2:= 0;
-      j:= i+1;
-      while j < Connections.Count do begin
-        Conn2:= TConnection(Connections.Items[j]);
-        if (Conn2.FTo = Conn1.FFrom) and (Conn2.FFrom = Conn1.FTo) and (Conn2.ArrowStyle = casReturn) and
-           (not Conn1.isRecursiv or (Conn2.FromActivation = Conn1.FromActivation + 1))
-        then begin
-          y2:= Conn2.FromP.y;
+  for var I := 0 to Connections.Count - 1 do
+  begin
+    Conn1 := TConnection(Connections[I]);
+    if (Conn1.EndControl = Self) and (Conn1.ArrowStyle <> casNew) then
+    begin
+      Y1Pos := Conn1.StartPoint.Y;
+      Y2Pos := 0;
+      Jdx := I + 1;
+      while Jdx < Connections.Count do
+      begin
+        Conn2 := TConnection(Connections[Jdx]);
+        if (Conn2.EndControl = Conn1.StartControl) and
+          (Conn2.StartControl = Conn1.EndControl) and
+          (Conn2.ArrowStyle = casReturn) and
+          (not Conn1.IsRecursiv or (Conn2.FromActivation = Conn1.FromActivation
+          + 1)) then
+        begin
+          Y2Pos := Conn2.StartPoint.Y;
           Break;
         end;
-        Inc(j);
+        Inc(Jdx);
       end;
-      if y2 > 0 then
-        if Conn1.isRecursiv
-          then Canvas.Rectangle(Width div 2 + (conn1.FromActivation-1)*ActivationWidth, y1 - Top + DistY div 2,
-                                Width div 2 + (conn1.FromActivation+1)*ActivationWidth, y2 - Top + 1)
-          else Canvas.Rectangle(Width div 2 - ActivationWidth, y1-Top, width div 2 + ActivationWidth, y2 - Top + 1);
+      if Y2Pos > 0 then
+        if Conn1.IsRecursiv then
+          Canvas.Rectangle(Width div 2 + (Conn1.FromActivation - 1) *
+            FActivationWidth, Y1Pos - Top + FDistY div 2,
+            Width div 2 + (Conn1.FromActivation + 1) * FActivationWidth,
+            Y2Pos - Top + 1)
+        else
+          Canvas.Rectangle(Width div 2 - FActivationWidth, Y1Pos - Top,
+            Width div 2 + FActivationWidth, Y2Pos - Top + 1);
     end;
   end;
   FreeAndNil(Connections);
 end;
 
-procedure TLifeLine.ShowHead;
-  var R: TRect; mid, unity, base, delta: Integer;
+procedure TLifeline.ShowHead;
+var
+  Rec: TRect;
+  Mid, Unity, Base, Delta: Integer;
 begin
-  if Pos('Actor', Participant) = 1 then begin
-    Canvas.Pen.Width:= 1;
-    mid:= Width div 2;
-    unity:= Round(LineHeight*0.7);
-    delta:= Round(unity*0.935);
-    base:=  Round(unity*2.21);
-    R:= Rect(mid - unity div 2, 0, mid + unity div 2, unity);
-    Canvas.Ellipse(R);
+  if Pos('Actor', FParticipant) = 1 then
+  begin
+    Canvas.Pen.Width := 1;
+    Mid := Width div 2;
+    Unity := Round(FLineHeight * 0.7);
+    Delta := Round(Unity * 0.935);
+    Base := Round(Unity * 2.21);
+    Rec := Rect(Mid - Unity div 2, 0, Mid + Unity div 2, Unity);
+    Canvas.Ellipse(Rec);
 
-    Canvas.MoveTo(mid, unity);
-    Canvas.LineTo(mid, base);
-    Canvas.MoveTo(mid - delta, round(unity*1.42));
-    Canvas.LineTo(mid + delta, round(unity*1.42));
+    Canvas.MoveTo(Mid, Unity);
+    Canvas.LineTo(Mid, Base);
+    Canvas.MoveTo(Mid - Delta, Round(Unity * 1.42));
+    Canvas.LineTo(Mid + Delta, Round(Unity * 1.42));
 
-    Canvas.MoveTo(mid,  base);
-    Canvas.LineTo(mid - delta, base + delta);
-    Canvas.MoveTo(mid,  base);
-    Canvas.LineTo(mid + delta, base + delta);
-  end else begin
-    Canvas.Pen.Width:= 2;
-    Canvas.Rectangle(1, 1, Width, HeadHeight);
-    Canvas.Pen.Width:= 1;
-    R:= Rect(0, (HeadHeight - TextHeight) div 2, Width, (HeadHeight + TextHeight) div 2);
-    DrawText(Canvas.Handle, PChar(Participant), Length(Participant), R, DT_CENTER);
+    Canvas.MoveTo(Mid, Base);
+    Canvas.LineTo(Mid - Delta, Base + Delta);
+    Canvas.MoveTo(Mid, Base);
+    Canvas.LineTo(Mid + Delta, Base + Delta);
+  end
+  else
+  begin
+    Canvas.Pen.Width := 2;
+    Canvas.Rectangle(1, 1, Width, FHeadHeight);
+    Canvas.Pen.Width := 1;
+    Rec := Rect(0, (FHeadHeight - FTextHeight) div 2, Width,
+      (FHeadHeight + FTextHeight) div 2);
+    DrawText(Canvas.Handle, PChar(FParticipant), Length(FParticipant), Rec,
+      DT_CENTER);
   end;
-  Canvas.Brush.Color:= BGColor;
+  Canvas.Brush.Color := FBackgroundColor;
 end;
 
-procedure TLifeLine.CalcWidthHeight;
+procedure TLifeline.CalcWidthHeight;
 begin
-  LineHeight:= Canvas.TextHeight('A');
-  getWidthHeigthOfText(Participant, TextWidth, TextHeight);
-  Width:= Max(TextWidth + Padding, minWidth);
-  HeadHeight:= Max(TextHeight + Padding, minHeight);
-  if Pos('Actor', Participant) = 1 then
-    HeadHeight:= Round(LineHeight*0.7*(0.935 + 2.21));
+  FLineHeight := Canvas.TextHeight('A');
+  GetWidthHeigthOfText(FParticipant, FTextWidth, FTextHeight);
+  Width := Max(FTextWidth + FPadding, FMinWidth);
+  FHeadHeight := Max(FTextHeight + FPadding, FMinHeight);
+  if Pos('Actor', FParticipant) = 1 then
+    FHeadHeight := Round(FLineHeight * 0.7 * (0.935 + 2.21));
 end;
 
-procedure TLifeLine.getWidthHeigthOfText(const aText: string; var w, h: Integer);
-  var s, s1: string; p: Integer;
+procedure TLifeline.GetWidthHeigthOfText(const Text: string;
+  var Width, Height: Integer);
+var
+  Str, Str1: string;
+  Posi: Integer;
 begin
-  w:= minWidth;
-  h:= LineHeight;
-  s:= aText;
-  p:= Pos(#13#10, s);
-  while p > 0 do begin
-    s1:= Copy(s, 1, p-1);
-    System.Delete(s, 1, p+1);
-    w:= Max(Canvas.TextWidth(s1), w);
-    h:= h + LineHeight;
-    p:= Pos(#13#10, s);
+  Width := FMinWidth;
+  Height := FLineHeight;
+  Str := Text;
+  Posi := Pos(#13#10, Str);
+  while Posi > 0 do
+  begin
+    Str1 := Copy(Str, 1, Posi - 1);
+    System.Delete(Str, 1, Posi + 1);
+    Width := Max(Canvas.TextWidth(Str1), Width);
+    Height := Height + FLineHeight;
+    Posi := Pos(#13#10, Str);
   end;
-  w:= Max(Canvas.TextWidth(s), w);
+  Width := Max(Canvas.TextWidth(Str), Width);
 end;
 
-procedure TLifeLine.SetCreated(const Value : Boolean);
+procedure TLifeline.SetCreated(const Value: Boolean);
 begin
-  if FCreated <> Value then begin
-    FCreated:= Value;
-    onCreatedChanged(Self);
+  if FCreated <> Value then
+  begin
+    FCreated := Value;
+    FOnCreatedChanged(Self);
   end;
 end;
 
-procedure TLifeLine.RenameParticipant(const Value : string);
+procedure TLifeline.RenameParticipant(const Value: string);
 begin
-  Participant:= Value;
+  FParticipant := Value;
   CalcWidthHeight;
   Paint;
 end;
@@ -240,13 +289,14 @@ procedure TLifeline.ChangeStyle(BlackAndWhite: Boolean = False);
 begin
   if StyleServices.IsSystemStyle or BlackAndWhite then
   begin
-    BGColor := clWhite;
-    FGColor := clBlack;
+    FBackgroundColor := clWhite;
+    FForegroundColor := clBlack;
   end
   else
   begin
-    BGColor := StyleServices.GetStyleColor(scPanel);
-    FGColor := StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
+    FBackgroundColor := StyleServices.GetStyleColor(scPanel);
+    FForegroundColor := StyleServices.GetStyleFontColor
+      (sfTabTextInactiveNormal);
   end;
 end;
 

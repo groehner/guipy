@@ -3412,8 +3412,8 @@ begin
     Sequenceform.MethodEntered(aMethodname);
     if GuiPyOptions.SDShowParameter then
       Sequenceform.addParameter(Parameter);
-    Sequenceform.FromParticipant:= From;
-    Sequenceform.ToParticipant:= _To;
+    Sequenceform.StartParticipant:= From;
+    Sequenceform.EndParticipant:= _To;
     Sequenceform.makeConnection;
   end;
 end;
@@ -3422,8 +3422,8 @@ procedure TRtfdDiagram.ShowMethodExited(const aMethodname, From, _To, _Result: s
 begin
   if Assigned(SequenceForm) then begin
     Sequenceform.MethodExited(aMethodname);
-    Sequenceform.FromParticipant:= From;
-    Sequenceform.ToParticipant:= _To;
+    Sequenceform.StartParticipant:= From;
+    Sequenceform.EndParticipant:= _To;
     Sequenceform.aResult:= _Result;
     Sequenceform.makeConnection;
   end;
@@ -3433,8 +3433,8 @@ procedure TRtfdDiagram.ShowObjectDeleted(const From, _To: string);
 begin
   if Assigned(SequenceForm) then begin
     Sequenceform.ObjectDelete;
-    Sequenceform.FromParticipant:= From;
-    Sequenceform.ToParticipant:= _To;
+    Sequenceform.StartParticipant:= From;
+    Sequenceform.EndParticipant:= _To;
     Sequenceform.makeConnection;
   end;
 end;

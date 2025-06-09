@@ -107,7 +107,7 @@ object ResourcesDataModule: TResourcesDataModule
             '                if caller_frame and not caller_frame.f_trace and' +
             ' caller_frame is not self.botframe:'
           '                    caller_frame.f_trace = self.trace_dispatch'
-          ''          
+          ''
           '        def do_clear(self, arg):'
           '            numberlist = arg.split()'
           '            for i in numberlist:'
@@ -944,8 +944,8 @@ object ResourcesDataModule: TResourcesDataModule
           '            """'
           '            if self.stop_here(frame) or self.break_here(frame):'
           '                self.user_line(frame)'
-          '                self.restart_events()'          
-         
+          '                self.restart_events()'
+          
             '                if self.quitting: raise __import__("bdb").BdbQui' +
             't'
           

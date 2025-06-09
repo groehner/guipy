@@ -1,26 +1,34 @@
-{-------------------------------------------------------------------------------
- Unit:     USequencePanel
- Author:   Gerhard Röhner
- Date:     July 2019
- Purpose:  sequence diagram panel
- Hint:     modified version of UESSConnectPanel
--------------------------------------------------------------------------------}
+{ -------------------------------------------------------------------------------
+  Unit:     USequencePanel
+  Author:   Gerhard Röhner
+  Date:     July 2019
+  Purpose:  sequence diagram panel
+  Hint:     modified version of UESSConnectPanel
+  ------------------------------------------------------------------------------- }
 
 unit USequencePanel;
 
 interface
 
 uses
-  Windows, Messages, Classes, Graphics, Controls, Forms, ExtCtrls, Contnrs,
-  Menus, SpTBXItem;
+  Windows,
+  Messages,
+  Classes,
+  Graphics,
+  Controls,
+  Forms,
+  ExtCtrls,
+  Contnrs,
+  Menus,
+  SpTBXItem;
 
 const
-  cDistX: Integer = 30;
-  cDistY: Integer = 30;
-  cActivationWidth: Integer = 7;
-  cHeadLength: Integer = 10;
-  cMinWidth: Integer = 60;
-  cMinHeight: Integer = 30;
+  CDistX: Integer = 30;
+  CDistY: Integer = 30;
+  CActivationWidth: Integer = 7;
+  CHeadLength: Integer = 10;
+  CMinWidth: Integer = 60;
+  CMinHeight: Integer = 30;
 
 type
   // available linestyles
@@ -30,34 +38,46 @@ type
   TArrowStyle = (casSynchron, casAsynchron, casReturn, casNew, casClose);
 
   TConnectionAttributes = class
-    ConnectStyle: TConnectStyle;
-    ArrowStyle : TArrowStyle;
-    aMessage: string;
+  private
+    FArrowStyle: TArrowStyle;
+    FConnectStyle: TConnectStyle;
+    FMessage: string;
+  public
+    property ArrowStyle: TArrowStyle read FArrowStyle write FArrowStyle;
+    property AMessage: string read FMessage write FMessage;
+    property ConnectStyle: TConnectStyle read FConnectStyle;
   end;
 
-  TConnectionChanged = procedure(Sender: TObject; ArrowStyleOld, ArrowStyleNew: TArrowStyle) of object;
+  TConnectionChanged = procedure(Sender: TObject;
+    ArrowStyleOld, ArrowStyleNew: TArrowStyle) of object;
+
+  TPolylineArray = array [1 .. 4] of TPoint;
 
   // Specifies a connection between two managed objects.
   TConnection = class(TConnectionAttributes)
+  private
+    FActivationWidth: Integer;
+    FBackgroundColor: TColor;
+    FForegroundColor: TColor;
+    FConRect: TRect;
+    FDistX: Integer;
+    FDistY: Integer;
+    FFromActivation: Integer;
+    FToActivation: Integer;
+    FStartControl: TControl;
+    FEndControl: TControl; // from --> to Lifeline
+    FStartPoint: TPoint;
+    FEndPoint: TPoint; // start/ending of connection
+    FHeadLength: Integer;
+    FIsRecursiv: Boolean;
+    FOnConnectionChanged: TConnectionChanged;
+    FPolyline: TPolylineArray;
+    FSelected: Boolean;
+    FTextRect: TRect;
+    FYPosition: Integer;
   public
-    Selected: Boolean;
-    FFrom, FTo: TControl; // from --> to Lifeline
-    FromP, ToP: TPoint;   // start/ending of connection
-    isRecursiv: Boolean;
-    Pl: array[1..4] of TPoint;
-    ConRect: TRect;
-    YPos: Integer;
-    FromActivation: Integer;
-    ToActivation: Integer;
-    TextRect: TRect;
-    DistX: Integer;
-    DistY: Integer;
-    ActivationWidth: Integer;
-    HeadLength: Integer;
-    OnConnectionChanged: TConnectionChanged;
-    BGColor: TColor;
-    FGColor: TColor;
-    constructor Create(Src, Dst: TControl; Attributes: TConnectionAttributes; aOnConnectionChanged: TConnectionChanged);
+    constructor Create(Src, Dst: TControl; Attributes: TConnectionAttributes;
+      OnConnectionChanged: TConnectionChanged);
     procedure Draw(Canvas: TCanvas);
     procedure DrawRecursiv(Canvas: TCanvas);
     procedure DrawRecursivMessage(Canvas: TCanvas);
@@ -66,14 +86,35 @@ type
     procedure SetPenBrushArrow(Canvas: TCanvas);
     procedure CalcPolyline;
     procedure SetAttributes(Attributes: TConnectionAttributes);
-    procedure SetArrow(aArrowStyle: TArrowStyle);
+    procedure SetArrow(ArrowStyle: TArrowStyle);
     procedure Turn;
-    function IsClicked(P: TPoint): Boolean;
-    function CalcRect(Canvas: TCanvas; AMaxWidth: Integer; const AString: string): TRect;
-    function hasRect: TRect;
-    function getArrowStyleAsString: string;
-    procedure setFont(aFont: TFont);
+    function IsClicked(Point: TPoint): Boolean;
+    function CalcRect(Canvas: TCanvas; AMaxWidth: Integer;
+      const AString: string): TRect;
+    function HasRect: TRect;
+    function GetArrowStyleAsString: string;
+    procedure SetFont(Font: TFont);
     procedure ChangeStyle(BlackAndWhite: Boolean = False);
+
+    property ActivationWidth: Integer read FActivationWidth;
+    property BackgroundColor: TColor read FBackgroundColor;
+    property ForegroundColor: TColor read FForegroundColor;
+    property ConRect: TRect read FConRect;
+    property DistX: Integer read FDistX;
+    property DistY: Integer read FDistY;
+    property FromActivation: Integer read FFromActivation write FFromActivation;
+    property HeadLength: Integer read FHeadLength;
+    property IsRecursiv: Boolean read FIsRecursiv;
+    property OnConnectionChanged: TConnectionChanged read FOnConnectionChanged;
+    property StartControl: TControl read FStartControl;
+    property EndControl: TControl read FEndControl;
+    property StartPoint: TPoint read FStartPoint;
+    property EndPoint: TPoint read FEndPoint;
+    property Polyline: TPolylineArray read FPolyline;
+    property Selected: Boolean read FSelected;
+    property TextRect: TRect read FTextRect;
+    property ToActivation: Integer read FToActivation write FToActivation;
+    property YPosition: Integer read FYPosition write FYPosition;
   end;
 
   // Wrapper around a control managed by essConnectPanel
@@ -81,9 +122,6 @@ type
   private
     FSelected: Boolean;
     FVisible: Boolean;
-    procedure SetSelected(const Value: Boolean);
-    procedure SetVisible(const Value: Boolean);
-  private
     FControl: TControl;
     // old eventhandlers
     FOnMouseDown: TMouseEvent;
@@ -91,6 +129,8 @@ type
     FOnMouseUp: TMouseEvent;
     FOnClick: TNotifyEvent;
     FOnDblClick: TNotifyEvent;
+    procedure SetSelected(const Value: Boolean);
+    procedure SetVisible(const Value: Boolean);
   public
     constructor Create;
     property Selected: Boolean read FSelected write SetSelected;
@@ -101,93 +141,92 @@ type
   {
     Component that manages a list of contained controls that can be connected with
     somekind of line and allows the user to move it around and gives the containd
-    control grabhandles when selected.
+    control grabhandles when FSelected.
 
     Further it manages the layout of the contained controls.
   }
 
-  TBackgroundDblClicked = procedure(Sender: TObject; Conn: TConnection) of object;
+  TBackgroundDblClicked = procedure(Sender: TObject; Conn: TConnection)
+    of object;
 
   TSequencePanel = class(TCustomPanel)
   private
     FMemMousePos: TPoint;
     FSelectRect: TRect;
     FBackBitmap: TBitmap;
-    TempHidden : TObjectList;
-    SequenceForm: TForm;
-    BGColor: TColor;
-    FGColor: TColor;
+    FTempHidden: TObjectList;
+    FSequenceForm: TForm;
+    FBackgroundColor: TColor;
+    FForegroundColor: TColor;
     FMoved: Boolean;
-
-    procedure SetSelectedOnly(const Value : Boolean);
-    procedure SetModified(const Value: Boolean);
-    procedure SetLocked(const Value: Boolean);
-    procedure TurnConnection(i: Integer);
-  protected
     FManagedObjects: TList;
     FConnections: TObjectList;
-    procedure DblClick; override;
-    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
-    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
-    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
-    procedure KeyUp(var Key: Word; Shift: TShiftState); override;
-
-    procedure WMEraseBkgnd(var Message: TWmEraseBkgnd); message WM_ERASEBKGND;
-
-    procedure SelectObjectsInRect(SelRect: TRect);
-    procedure OnManagedObjectMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure OnManagedObjectMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-    procedure OnManagedObjectMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure OnManagedObjectClick(Sender: TObject);
-    procedure OnManagedObjectDblClick(Sender: TObject);
-
-    function DoMouseWheel(Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint): Boolean; override;
-
-  public
-    OnContentChanged : TNotifyEvent;
-    OnModified: TNotifyEvent;
-    OnSelectionChanged: TNotifyEvent;
-    OnShowAll: TNotifyEvent;
-    OnConnectionSet: TNotifyEvent;
-    OnConnectionChanged: TConnectionChanged;
-    OnBackgroundDblClicked: TBackgroundDblClicked;
-    OnLifeLineSequencePanel: TNotifyEvent;
-    PopupMenuConnection: TSpTBXPopupMenu;
-    PopupMenuLifeLineAndSequencePanel: TPopupMenu;
-
     FIsModified: Boolean;
     FIsMoving: Boolean;
     FIsRectSelecting: Boolean;
     FSelectedOnly: Boolean;
     FIsLocked: Boolean;
-    MouseDownOK: Boolean;
     FResized: Boolean;
+    FChanged: Boolean;
     FShowConnections: Integer;
+    FMouseDownOK: Boolean;
+    FOnBackgroundDblClicked: TBackgroundDblClicked;
+    FOnConnectionChanged: TConnectionChanged;
+    FOnConnectionSet: TNotifyEvent;
+    FOnContentChanged: TNotifyEvent;
+    FOnLifelineSequencePanel: TNotifyEvent;
+    FOnModified: TNotifyEvent;
+    FOnSelectionChanged: TNotifyEvent;
+    FOnShowAll: TNotifyEvent;
+    FPopupMenuConnection: TSpTBXPopupMenu;
+    FPopupMenuLifelineAndSequencePanel: TPopupMenu;
 
+    procedure SetSelectedOnly(const Value: Boolean);
+    procedure SetModified(const Value: Boolean);
+    procedure SetLocked(const Value: Boolean);
+    procedure TurnConnection(Num: Integer);
+  protected
+    procedure DblClick; override;
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState;
+      X, Y: Integer); override;
+    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState;
+      X, Y: Integer); override;
+    procedure KeyUp(var Key: Word; Shift: TShiftState); override;
+    procedure WMEraseBkgnd(var Message: TWMEraseBkgnd); message WM_ERASEBKGND;
+    procedure SelectObjectsInRect(SelRect: TRect);
+    procedure OnManagedObjectMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure OnManagedObjectMouseMove(Sender: TObject; Shift: TShiftState;
+      X, Y: Integer);
+    procedure OnManagedObjectMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure OnManagedObjectClick(Sender: TObject);
+    procedure OnManagedObjectDblClick(Sender: TObject);
+    function DoMouseWheel(Shift: TShiftState; WheelDelta: Integer;
+      MousePos: TPoint): Boolean; override;
+  public
     // public declarations
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-
     procedure Paint; override;
-    function FindManagedControl(AControl: TControl ): TManagedObject;
-    // Add a control to the managed list
+    function FindManagedControl(AControl: TControl): TManagedObject;
     function AddManagedObject(AObject: TControl): TControl;
-
     function GetFirstSelected: TControl;
-    // Returns a objectlist containing the selected controls.
+    // Returns a objectlist containing the FSelected controls.
     // The list should be freed by the caller.
-    function GetSelectedControls : TObjectList;
+    function GetSelectedControls: TObjectList;
     procedure DeleteSelectedControls;
     function CountSelectedControls: Integer;
 
     // Returns a list with all interobject connections.
     // The list should be freed by the caller.
-    function GetConnections : TList;
+    function GetConnections: TList;
     function Get2NdLastConnection: TConnection;
     function GetLastConnection: TConnection;
-    procedure SetConnection(i: Integer; Arrow: TArrowStyle);
+    procedure SetConnection(Num: Integer; Arrow: TArrowStyle);
     procedure SetSelectedConnection(Attributes: TConnectionAttributes);
-    function getConnectionOfClickedTextRect: TConnection;
+    function GetConnectionOfClickedTextRect: TConnection;
     procedure DeleteConnections;
     procedure DeleteSelectedConnection;
     function HasSelectedConnection: Boolean;
@@ -196,35 +235,48 @@ type
     function GetSelectedConnection: TConnection;
 
     // Add a connection from Src to Dst with the supplied style
-    function ConnectObjects(Src, Dst: TControl; Attributes: TConnectionAttributes): TConnection;
-    function ConnectObjectsAt(Src, Dst: TControl; Attributes: TConnectionAttributes; i: Integer): TConnection;
+    function ConnectObjects(Src, Dst: TControl;
+      Attributes: TConnectionAttributes): TConnection;
+    function ConnectObjectsAt(Src, Dst: TControl;
+      Attributes: TConnectionAttributes; Pos: Integer): TConnection;
     procedure DoConnection(Item: Integer);
-
-    // Free all managed objects and the managed controls.
     procedure ClearManagedObjects;
-
-    // Unselect all selected objects
     procedure ClearSelection(WithShowAll: Boolean = True);
     function SelectionChangedOnClear: Boolean;
     procedure ShowAll;
     procedure SetFocus; override;
     procedure SelectConnection;
     procedure SelectClickedConnection;
-    procedure ConnectBoxesAt(Src, Dest: TControl; at: Integer);
-    procedure GetDiagramSize(var W, H: Integer);
+    procedure ConnectBoxesAt(Src, Dest: TControl; AtPosition: Integer);
+    procedure GetDiagramSize(var Width, Height: Integer);
     procedure RecalcSize;
     procedure ShowConnections;
-    procedure setFont(aFont: TFont);
+    procedure SetFont(AFont: TFont);
     procedure Clear;
     procedure ChangeStyle(BlackAndWhite: Boolean = False);
     function GetEnclosingRect: TRect;
-
-    property isLocked: Boolean read FIsLocked write SetLocked;
+    property SelectedOnly: Boolean read FSelectedOnly write SetSelectedOnly;
+    property BackBitmap: TBitmap read FBackBitmap write FBackBitmap;
+    property IsLocked: Boolean read FIsLocked write SetLocked;
     property IsModified: Boolean read FIsModified write SetModified;
     property IsMoving: Boolean read FIsMoving write FIsMoving;
-    // Bitmap to be used as background for printing
-    property BackBitmap : TBitmap read FBackBitmap write FBackBitmap;
-    property SelectedOnly: Boolean read FSelectedOnly write SetSelectedOnly;
+    property PopupMenuConnection: TSpTBXPopupMenu read FPopupMenuConnection write
+        FPopupMenuConnection;
+    property PopupMenuLifelineAndSequencePanel: TPopupMenu read
+        FPopupMenuLifelineAndSequencePanel write FPopupMenuLifelineAndSequencePanel;
+    property OnLifelineSequencePanel: TNotifyEvent read FOnLifelineSequencePanel
+        write FOnLifelineSequencePanel;
+    property OnBackgroundDblClicked: TBackgroundDblClicked read
+        FOnBackgroundDblClicked write FOnBackgroundDblClicked;
+    property OnConnectionChanged: TConnectionChanged read FOnConnectionChanged
+        write FOnConnectionChanged;
+    property OnConnectionSet: TNotifyEvent read FOnConnectionSet write
+        FOnConnectionSet;
+    property OnContentChanged: TNotifyEvent read FOnContentChanged write
+        FOnContentChanged;
+    property OnModified: TNotifyEvent read FOnModified write FOnModified;
+    property OnShowAll: TNotifyEvent read FOnShowAll write FOnShowAll;
+    property OnSelectionChanged: TNotifyEvent read FOnSelectionChanged;
   published
     property Align;
     property Alignment;
@@ -279,8 +331,17 @@ type
 
 implementation
 
-uses Math, SysUtils, StdCtrls, Types, Themes, UITypes,
-     uCommonFunctions, UUtils, UConnectForm, ULifeline;
+uses
+  Math,
+  SysUtils,
+  StdCtrls,
+  Types,
+  Themes,
+  UITypes,
+  uCommonFunctions,
+  UUtils,
+  UConnectForm,
+  ULifeline;
 
 type
   TCrackControl = class(TControl)
@@ -288,7 +349,7 @@ type
 
 procedure TConnection.SetPenBrushArrow(Canvas: TCanvas);
 begin
-  case ConnectStyle of
+  case FConnectStyle of
     csThin:
       begin
         Canvas.Pen.Width := 1;
@@ -300,276 +361,302 @@ begin
         Canvas.Pen.Style := psDash;
       end;
   end;
-  if ArrowStyle = casReturn then
-    Canvas.Pen.Style:= psDot;
+  if FArrowStyle = casReturn then
+    Canvas.Pen.Style := psDot;
 end;
 
 procedure TConnection.Draw(Canvas: TCanvas);
-  var
-    x1, x2: Integer;
-    y1, y2: Integer;
-    xbase: Integer;
-    ybase: Integer;
-    xLineDelta: Integer;
-    xLineUnitDelta: Double;
-    xNormalDelta: Integer;
-    xNormalUnitDelta: Double;
-    yLineDelta: Integer;
-    yLineUnitDelta: Double;
-    yNormalDelta: Integer;
-    yNormalUnitDelta: Double;
-    Tmp1: double;
-    dx, dy, th, tw: Integer;
-    absXLineDelta, absYLineDelta: Integer;
+var
+  X1Pos, X2Pos: Integer;
+  Y1Pos, Y2Pos: Integer;
+  XBase: Integer;
+  YBase: Integer;
+  XLineDelta: Integer;
+  XLineUnitDelta: Double;
+  XNormalDelta: Integer;
+  XNormalUnitDelta: Double;
+  YLineDelta: Integer;
+  YLineUnitDelta: Double;
+  YNormalDelta: Integer;
+  YNormalUnitDelta: Double;
+  Tmp1: Double;
+  DeltaX, DeltaY, TextHeight, TextWidth: Integer;
+  AbsXLineDelta, AbsYLineDelta: Integer;
 
   procedure DrawMessage;
   begin
-    th:= Canvas.TextHeight('A');
-    if aMessage = ''
-      then tw:= 100
-      else tw:= Canvas.TextWidth(aMessage);
-    if x1 < x2
-      then TextRect:= Bounds(x1 + FromActivation*ActivationWidth + 5, y1 - 1 - th, tw, th)
-      else TextRect:= Bounds(x1 - FromActivation*ActivationWidth - 5 - tw, y1 - 1 - th, tw, th);
-    SetBkColor(Canvas.Handle, BGColor);
-    DrawText(Canvas.Handle, PChar(aMessage), -1, TextRect, DT_CALCRECT);
-    DrawText(Canvas.Handle, PChar(aMessage), -1, TextRect, 0);
-    ConRect.Union(TextRect);
+    TextHeight := Canvas.TextHeight('A');
+    if FMessage = '' then
+      TextWidth := 100
+    else
+      TextWidth := Canvas.TextWidth(FMessage);
+    if X1Pos < X2Pos then
+      FTextRect := Bounds(X1Pos + FFromActivation * FActivationWidth + 5,
+        Y1Pos - 1 - TextHeight, TextWidth, TextHeight)
+    else
+      FTextRect := Bounds(X1Pos - FFromActivation * FActivationWidth - 5 - TextWidth,
+        Y1Pos - 1 - TextHeight, TextWidth, TextHeight);
+    SetBkColor(Canvas.Handle, FBackgroundColor);
+    DrawText(Canvas.Handle, PChar(FMessage), -1, FTextRect, DT_CALCRECT);
+    DrawText(Canvas.Handle, PChar(FMessage), -1, FTextRect, 0);
+    FConRect.Union(FTextRect);
   end;
 
-begin  // of draw
-  Canvas.Pen.Mode:= pmCopy;
-  Canvas.Pen.Color:= FGColor;
-  Canvas.Brush.Color:= BGColor;
+begin // of draw
+  Canvas.Pen.Mode := pmCopy;
+  Canvas.Pen.Color := FForegroundColor;
+  Canvas.Brush.Color := FBackgroundColor;
 
-  if IsRecursiv then begin
+  if FIsRecursiv then
+  begin
     DrawRecursiv(Canvas);
     Exit;
   end;
 
-  {--- draw connection line ---------------------------------------------------}
-  FromP.x:= FFrom.Left + FFrom.Width div 2; // first point
-  FromP.Y:= YPos;
-  x1:= FromP.x;
-  y1:= FromP.Y;
+  { --- draw connection line --------------------------------------------------- }
+  FStartPoint.X := FStartControl.Left + FStartControl.Width div 2;
+  // first point
+  FStartPoint.Y := FYPosition;
+  X1Pos := FStartPoint.X;
+  Y1Pos := FStartPoint.Y;
 
-  if ArrowStyle = casNew
-    then ToP.x:= FTo.Left
-    else ToP.x:= FTo.Left + FTo.Width div 2; // second point with arrow
-  ToP.y:= FromP.y;
-  x2:= ToP.x;
-  y2:= ToP.y;
+  if FArrowStyle = casNew then
+    FEndPoint.X := FEndControl.Left
+  else
+    FEndPoint.X := FEndControl.Left + FEndControl.Width div 2;
+  // second point with arrow
+  FEndPoint.Y := FStartPoint.Y;
+  X2Pos := FEndPoint.X;
+  Y2Pos := FEndPoint.Y;
 
-  xLineDelta:= x2 - x1;
-  yLineDelta:= y2 - y1;
-  absXLineDelta:= Max(abs(xLineDelta), 1);
-  absYLineDelta:= Max(abs(yLineDelta), 1);
+  XLineDelta := X2Pos - X1Pos;
+  YLineDelta := Y2Pos - Y1Pos;
+  AbsXLineDelta := Max(Abs(XLineDelta), 1);
+  AbsYLineDelta := Max(Abs(YLineDelta), 1);
 
-  if (xLineDelta = 0) and (yLineDelta = 0) then Exit; // Line has length 0
-  if (absXLineDelta > 20000) or (absYLineDelta > 20000) then Exit; // Line is too long
+  if (XLineDelta = 0) and (YLineDelta = 0) then
+    Exit; // Line has length 0
+  if (AbsXLineDelta > 20000) or (AbsYLineDelta > 20000) then
+    Exit; // Line is too long
 
-  Tmp1:= sqrt(sqr(xLineDelta) + sqr(yLineDelta));
-  xLineUnitDelta:= xLineDelta / Tmp1;
-  yLineUnitDelta:= yLineDelta / Tmp1;
+  Tmp1 := Sqrt(Sqr(XLineDelta) + Sqr(YLineDelta));
+  XLineUnitDelta := XLineDelta / Tmp1;
+  YLineUnitDelta := YLineDelta / Tmp1;
 
-  // (xBase, yBase) is where arrow line is perpendicular to base of triangle.
-  xNormalDelta :=  yLineDelta;
-  yNormalDelta := -xLineDelta;
-  xNormalUnitDelta := xNormalDelta / Sqrt(Sqr(xNormalDelta) + Sqr(yNormalDelta));
-  yNormalUnitDelta := yNormalDelta / Sqrt(Sqr(xNormalDelta) + Sqr(yNormalDelta));
+  // (XBase, YBase) is where arrow line is perpendicular to base of triangle.
+  XNormalDelta := YLineDelta;
+  YNormalDelta := -XLineDelta;
+  XNormalUnitDelta := XNormalDelta /
+    Sqrt(Sqr(XNormalDelta) + Sqr(YNormalDelta));
+  YNormalUnitDelta := YNormalDelta /
+    Sqrt(Sqr(XNormalDelta) + Sqr(YNormalDelta));
 
-  dx := Round(HeadLength*0.4*xNormalUnitDelta);
-  dy := Round(HeadLength*0.4*yNormalUnitDelta);
+  DeltaX := Round(FHeadLength * 0.4 * XNormalUnitDelta);
+  DeltaY := Round(FHeadLength * 0.4 * YNormalUnitDelta);
 
   SetPenBrushArrow(Canvas);
 
-  if ArrowStyle = casClose then
-    x2:= x2 - ActivationWidth
+  if FArrowStyle = casClose then
+    X2Pos := X2Pos - FActivationWidth
+  else if FStartControl.Left > FEndControl.Left then
+  begin
+    X1Pos := X1Pos - FFromActivation * FActivationWidth;
+    X2Pos := X2Pos + FToActivation * FActivationWidth;
+  end
   else
-    if FFrom.Left > FTo.Left then begin
-      x1:= x1 - FromActivation*ActivationWidth;
-      x2:= x2 + ToActivation*ActivationWidth
-    end else begin
-      x1:= x1 + FromActivation*ActivationWidth;
-      x2:= x2 - ToActivation*ActivationWidth;
-    end;
+  begin
+    X1Pos := X1Pos + FFromActivation * FActivationWidth;
+    X2Pos := X2Pos - FToActivation * FActivationWidth;
+  end;
 
   // just the line
-  Canvas.MoveTo(x1, y1);
-  Canvas.LineTo(x2, y2);
+  Canvas.MoveTo(X1Pos, Y1Pos);
+  Canvas.LineTo(X2Pos, Y2Pos);
   // due to unexpected painting of casReturn
-  Canvas.MoveTo(x1, y1);
-  Canvas.LineTo(x2, y2);
+  Canvas.MoveTo(X1Pos, Y1Pos);
+  Canvas.LineTo(X2Pos, Y2Pos);
 
   // draw the arrow
-  xBase:= x2 - Round(HeadLength * xLineUnitDelta);
-  yBase:= y2 - Round(HeadLength * yLineUnitDelta);
-  case ArrowStyle of
-    casSynchron,
-    casNew,
-    casClose: begin
-      Canvas.Brush.Color:= Canvas.Pen.Color;
-      Canvas.Polygon([
-        Point(xBase + dx, yBase + dy),
-        Point(x2, y2),
-        Point(xBase - dx, yBase - dy)]);
-    end;
-    casAsynchron,
-    casReturn: begin
-      Canvas.Pen.Style:= psSolid;
-      Canvas.Polyline([
-        Point(xBase + dx, yBase + dy),
-        Point(x2, y2),
-        Point(xBase - dx, yBase - dy)]);
-    end;
+  XBase := X2Pos - Round(FHeadLength * XLineUnitDelta);
+  YBase := Y2Pos - Round(FHeadLength * YLineUnitDelta);
+  case FArrowStyle of
+    casSynchron, casNew, casClose:
+      begin
+        Canvas.Brush.Color := Canvas.Pen.Color;
+        Canvas.Polygon([Point(XBase + DeltaX, YBase + DeltaY), Point(X2Pos, Y2Pos),
+          Point(XBase - DeltaX, YBase - DeltaY)]);
+      end;
+    casAsynchron, casReturn:
+      begin
+        Canvas.Pen.Style := psSolid;
+        Canvas.Polyline([Point(XBase + DeltaX, YBase + DeltaY), Point(X2Pos, Y2Pos),
+          Point(XBase - DeltaX, YBase - DeltaY)]);
+      end;
   end;
 
-  // close message
-  if ArrowStyle = casClose then begin
-    Canvas.MoveTo(x2, y2 - HeadLength);
-    Canvas.LineTo(x2 + 2*Activationwidth, y2 + HeadLength);
-    Canvas.MoveTo(x2 + 2*ActivationWidth, y2 - HeadLength);
-    Canvas.LineTo(x2, y2 + HeadLength);
+  // close Message
+  if FArrowStyle = casClose then
+  begin
+    Canvas.MoveTo(X2Pos, Y2Pos - FHeadLength);
+    Canvas.LineTo(X2Pos + 2 * FActivationWidth, Y2Pos + FHeadLength);
+    Canvas.MoveTo(X2Pos + 2 * FActivationWidth, Y2Pos - FHeadLength);
+    Canvas.LineTo(X2Pos, Y2Pos + FHeadLength);
   end;
-  Canvas.Pen.Color:= FGColor;
-  ConRect:= Rect(Min(x1, x2), Min(y1, y2) - abs(dy),
-                 Max(x1, x2), Max(y1, y2) + abs(dy));
-  ConRect.Inflate(FFrom.PPIScale(2), FFrom.PPIScale(2));
+  Canvas.Pen.Color := FForegroundColor;
+  FConRect := Rect(Min(X1Pos, X2Pos), Min(Y1Pos, Y2Pos) - Abs(DeltaY), Max(X1Pos, X2Pos),
+    Max(Y1Pos, Y2Pos) + Abs(DeltaY));
+  FConRect.Inflate(FStartControl.PPIScale(2), FStartControl.PPIScale(2));
   DrawMessage;
 
   // debug
   // Canvas.Brush.Color:= clRed;
-  // Canvas.FrameRect(ConRect);
+  // Canvas.FrameRect(FConRect);
 end;
 
 procedure TConnection.DrawRecursiv(Canvas: TCanvas);
 
-  procedure DrawArrowHead(P1, P2: TPoint);
-    var P3, P4: TPoint; dx: Integer;
+  procedure DrawArrowHead(Point1, Point2: TPoint);
+  var
+    Point3, Point4: TPoint;
+    DeltaX: Integer;
   begin
-    dx:= P2.x - P1.x;
-    P3.X:= P1.X + Round(Headlength)*sign(dx);
-    P3.Y:= P1.Y - Round(Headlength*0.4);
-    P4.X:= P3.X;
-    P4.y:= P1.Y + Round(Headlength*0.4);
+    DeltaX := Point2.X - Point1.X;
+    Point3.X := Point1.X + Round(FHeadLength) * Sign(DeltaX);
+    Point3.Y := Point1.Y - Round(FHeadLength * 0.4);
+    Point4.X := Point3.X;
+    Point4.Y := Point1.Y + Round(FHeadLength * 0.4);
 
-    case ArrowStyle of
-      casAsynchron,
-      casReturn:
-        Canvas.Polyline([P3, P1, P4]);
-      casSynchron: begin
-        Canvas.Brush.Color:= Canvas.Pen.Color;
-        Canvas.Polygon([P3, P1, P4]);
-      end;
+    case FArrowStyle of
+      casAsynchron, casReturn:
+        Canvas.Polyline([Point3, Point1, Point4]);
+      casSynchron:
+        begin
+          Canvas.Brush.Color := Canvas.Pen.Color;
+          Canvas.Polygon([Point3, Point1, Point4]);
+        end;
     end;
-    Canvas.Brush.Color:= BGColor;
+    Canvas.Brush.Color := FBackgroundColor;
   end;
 
 begin
   SetPenBrushArrow(Canvas);
   CalcPolyline;
-  Canvas.Polyline(Pl);
-  Canvas.Pen.Width:= 1;
-  Canvas.Pen.Style:= psSolid;
-  DrawArrowHead(Pl[4], Pl[3]);
+  Canvas.Polyline(FPolyline);
+  Canvas.Pen.Width := 1;
+  Canvas.Pen.Style := psSolid;
+  DrawArrowHead(FPolyline[4], FPolyline[3]);
   DrawRecursivMessage(Canvas);
 end;
 
 procedure TConnection.DrawRecursivMessage(Canvas: TCanvas);
-  var x1, y1: Integer;
-      Flags: longint;
+var
+  X1Pos, Y1Pos: Integer;
+  Flags: LongInt;
 begin
   // Relationname
-  Flags:= DT_EXPANDTABS or DT_WORDBREAK or DT_NOPREFIX;
-  TextRect:= CalcRect(Canvas, MaxInt, aMessage);
-  if ArrowStyle = casReturn
-    then x1:= Pl[1].x + 5 + ActivationWidth
-    else x1:= Pl[1].x + 5;
+  Flags := DT_EXPANDTABS or DT_WORDBREAK or DT_NOPREFIX;
+  FTextRect := CalcRect(Canvas, MaxInt, FMessage);
+  if FArrowStyle = casReturn then
+    X1Pos := FPolyline[1].X + 5 + ActivationWidth
+  else
+    X1Pos := FPolyline[1].X + 5;
 
-  y1:= Pl[1].Y - 1 - TextRect.Bottom;
-  OffsetRect(TextRect, x1, y1);
-  DrawText(Canvas.Handle, PChar(aMessage), -1, TextRect, Flags);
-  Conrect.Union(TextRect);
+  Y1Pos := FPolyline[1].Y - 1 - FTextRect.Bottom;
+  OffsetRect(FTextRect, X1Pos, Y1Pos);
+  DrawText(Canvas.Handle, PChar(FMessage), -1, FTextRect, Flags);
+  ConRect.Union(FTextRect);
 end;
 
 procedure TConnection.CalcPolyline;
-  var x1, y1: Integer;
+var
+  X1Pos, Y1Pos: Integer;
 begin
-{         DistX
-      P1----------P2
-                   |  DistY
-                   |
-         P4<------P3
-}
+  { FDistX
+    P1----------P2
+    |  FDistY
+    |
+    P4<------P3
+  }
 
-  FromP.x:= FFrom.Left + FFrom.Width div 2 + FromActivation*ActivationWidth; // first point
-  FromP.y:= YPos;
-  ToP.x  := FTo.Left + FTo.Width div 2 + ToActivation*ActivationWidth; // second point with arrow
-  ToP.y  := FromP.y + DistY div 2;
+  FStartPoint.X := FStartControl.Left + FStartControl.Width div 2 +
+    FFromActivation * FActivationWidth; // first point
+  FStartPoint.Y := FYPosition;
+  FEndPoint.X := FEndControl.Left + FEndControl.Width div 2 + FToActivation *
+    FActivationWidth; // second point with arrow
+  FEndPoint.Y := FStartPoint.Y + FDistY div 2;
 
-  x1:= FromP.x;
-  y1:= FromP.y;
+  X1Pos := FStartPoint.X;
+  Y1Pos := FStartPoint.Y;
 
-  Pl[1]:= FromP;
-  Pl[2]:= Point(x1 + DistX, y1);
-  Pl[3]:= Point(x1 + DistX, y1 + DistY div 2);
-  Pl[4]:= ToP;
+  FPolyline[1] := FStartPoint;
+  FPolyline[2] := Point(X1Pos + FDistX, Y1Pos);
+  FPolyline[3] := Point(X1Pos + FDistX, Y1Pos + FDistY div 2);
+  FPolyline[4] := FEndPoint;
 
-  if ArrowStyle = casReturn then begin
-    Dec(Pl[2].x, ActivationWidth);
-    Dec(Pl[3].x, ActivationWidth);
+  if FArrowStyle = casReturn then
+  begin
+    Dec(FPolyline[2].X, FActivationWidth);
+    Dec(FPolyline[3].X, FActivationWidth);
   end;
 
-  ConRect:= Rect(Pl[1].X - 2, Pl[2].Y- 2, Pl[2].X + 2, Pl[4].Y + 2);
+  FConRect := Rect(FPolyline[1].X - 2, FPolyline[2].Y - 2, FPolyline[2].X + 2,
+    FPolyline[4].Y + 2);
 end;
 
-procedure TConnection.DrawSelection(Canvas: TCanvas; withSelection: Boolean = True);
-  var x1, y1, x2, y2, r, xLineDelta, yLineDelta: Integer;
+procedure TConnection.DrawSelection(Canvas: TCanvas;
+  WithSelection: Boolean = True);
+var
+  X1Pos, Y1Pos, X2Pos, Y2Pos, SelSize, XLineDelta, YLineDelta: Integer;
 begin
-  {--- show selection marks ---------------------------------------------------}
-  if Selected or not withSelection then begin
-    if withSelection
-      then begin
-        Canvas.Brush.Color:= FGColor;
-        Canvas.Pen.Color:= FGColor;
-      end else begin
-        Canvas.Brush.Color:= BGColor;
-        Canvas.Pen.Color:= BGColor;
-      end;
-    r:= 5;
-    x1:= FromP.x; // first point
-    y1:= FromP.y;
-    x2:= ToP.x;   // second point with arrow
-    y2:= ToP.y;
+  { --- show selection marks --------------------------------------------------- }
+  if FSelected or not WithSelection then
+  begin
+    if WithSelection then
+    begin
+      Canvas.Brush.Color := FForegroundColor;
+      Canvas.Pen.Color := FForegroundColor;
+    end
+    else
+    begin
+      Canvas.Brush.Color := FBackgroundColor;
+      Canvas.Pen.Color := FBackgroundColor;
+    end;
+    SelSize := 5;
+    X1Pos := FStartPoint.X; // first point
+    Y1Pos := FStartPoint.Y;
+    X2Pos := FEndPoint.X; // second point with arrow
+    Y2Pos := FEndPoint.Y;
 
-    xLineDelta:= x2 - x1;
-    yLineDelta:= y2 - y1;
+    XLineDelta := X2Pos - X1Pos;
+    YLineDelta := Y2Pos - Y1Pos;
 
-    if (xLineDelta = 0) and (yLineDelta = 0) then Exit; // Line is 0 length
-    if (abs(xLineDelta) > 20000) or (abs(yLineDelta) > 20000) then Exit; // Line is too long
+    if (XLineDelta = 0) and (YLineDelta = 0) then
+      Exit; // Line is 0 length
+    if (Abs(XLineDelta) > 20000) or (Abs(YLineDelta) > 20000) then
+      Exit; // Line is too long
 
-    if FFrom.Left > FTo.Left then begin
-      x1:= x1 - FromActivation*ActivationWidth;
-      x2:= x2 + ToActivation*ActivationWidth
-    end else begin
-      x1:= x1 + FromActivation*ActivationWidth;
-      x2:= x2 - ToActivation*ActivationWidth;
+    if StartControl.Left > EndControl.Left then
+    begin
+      X1Pos := X1Pos - FFromActivation * ActivationWidth;
+      X2Pos := X2Pos + FToActivation * ActivationWidth;
+    end
+    else
+    begin
+      X1Pos := X1Pos + FFromActivation * ActivationWidth;
+      X2Pos := X2Pos - FToActivation * ActivationWidth;
     end;
 
-    Canvas.Polygon([
-      Point(x1-r, y1-r),
-      Point(x1+r, y1-r),
-      Point(x1+r, y1+r),
-      Point(x1-r, y1+r),
-      Point(x1-r, y1-r) ]);
-    Canvas.Polygon([
-      Point(x2-r, y2-r),
-      Point(x2+r, y2-r),
-      Point(x2+r, y2+r),
-      Point(x2-r, y2+r),
-      Point(x2-r, y2-r) ]);
+    Canvas.Polygon([Point(X1Pos - SelSize, Y1Pos - SelSize),
+      Point(X1Pos + SelSize, Y1Pos - SelSize), Point(X1Pos + SelSize,
+      Y1Pos + SelSize), Point(X1Pos - SelSize, Y1Pos + SelSize),
+      Point(X1Pos - SelSize, Y1Pos - SelSize)]);
+    Canvas.Polygon([Point(X2Pos - SelSize, Y2Pos - SelSize),
+      Point(X2Pos + SelSize, Y2Pos - SelSize), Point(X2Pos + SelSize,
+      Y2Pos + SelSize), Point(X2Pos - SelSize, Y2Pos + SelSize),
+      Point(X2Pos - SelSize, Y2Pos - SelSize)]);
   end;
-  Canvas.Brush.Color:= BGColor;
+  Canvas.Brush.Color := FBackgroundColor;
+  Canvas.Pen.Color := FForegroundColor;
 end;
 
 procedure TConnection.UnDrawSelection(Canvas: TCanvas);
@@ -577,198 +664,236 @@ begin
   DrawSelection(Canvas, False);
 end;
 
-function TConnection.CalcRect(Canvas: TCanvas; AMaxWidth: Integer; const AString: string): TRect;
+function TConnection.CalcRect(Canvas: TCanvas; AMaxWidth: Integer;
+  const AString: string): TRect;
 begin
   Result := Rect(0, 0, AMaxWidth, 0);
-  DrawText(Canvas.Handle, PChar(AString), -1, Result, DT_CALCRECT or DT_LEFT or DT_WORDBREAK or DT_NOPREFIX);
+  DrawText(Canvas.Handle, PChar(AString), -1, Result, DT_CALCRECT or DT_LEFT or
+    DT_WORDBREAK or DT_NOPREFIX);
 end;
 
-constructor TConnection.Create(Src, Dst: TControl; Attributes: TConnectionAttributes; aOnConnectionChanged: TConnectionChanged);
+constructor TConnection.Create(Src, Dst: TControl;
+  Attributes: TConnectionAttributes; OnConnectionChanged: TConnectionChanged);
 begin
-  FFrom       := Src;
-  FTo         := Dst;
-  Selected    := False;
-  ArrowStyle  := Attributes.ArrowStyle;
-  ConnectStyle:= csThin;
-  aMessage    := Attributes.aMessage;
-  isRecursiv  := (FFrom = FTo);
-  YPos        := 0;
-  FromP       := Point(FFrom.Left + FFrom.Width div 2, FFrom.Top + YPos);
-  ToP         := Point(FTo.Left + FTo.Width div 2, FFrom.Top + YPos);
-  Self.OnConnectionChanged:= aOnConnectionChanged;
-  ConRect     := Rect(0, 0, 0, 0);
+  FStartControl := Src;
+  FEndControl := Dst;
+  FSelected := False;
+  FArrowStyle := Attributes.ArrowStyle;
+  FConnectStyle := csThin;
+  FMessage := Attributes.AMessage;
+  FIsRecursiv := (FStartControl = FEndControl);
+  FYPosition := 0;
+  FStartPoint := Point(FStartControl.Left + FStartControl.Width div 2,
+    FStartControl.Top + FYPosition);
+  FEndPoint := Point(FEndControl.Left + FEndControl.Width div 2,
+    FStartControl.Top + FYPosition);
+  FOnConnectionChanged := OnConnectionChanged;
+  FConRect := Rect(0, 0, 0, 0);
   CalcPolyline;
   ChangeStyle;
 end;
 
 procedure TConnection.SetAttributes(Attributes: TConnectionAttributes);
 begin
-  aMessage:= Attributes.aMessage;
-  if isRecursiv and (Attributes.ArrowStyle <= casReturn) or not isRecursiv then
-    setArrow(Attributes.ArrowStyle);
+  FMessage := Attributes.AMessage;
+  if FIsRecursiv and (Attributes.ArrowStyle <= casReturn) or not FIsRecursiv
+  then
+    SetArrow(Attributes.ArrowStyle);
 end;
 
-procedure TConnection.SetArrow(aArrowStyle: TArrowStyle);
+procedure TConnection.SetArrow(ArrowStyle: TArrowStyle);
 begin
-  ConnectStyle:= csThin;
-  if Self.ArrowStyle <> aArrowStyle then begin
-    onConnectionChanged(Self, Self.ArrowStyle, aArrowStyle);
-    if (Self.ArrowStyle = casReturn) or (aArrowStyle = casReturn) then
+  FConnectStyle := csThin;
+  if Self.FArrowStyle <> ArrowStyle then
+  begin
+    FOnConnectionChanged(Self, Self.FArrowStyle, ArrowStyle);
+    if (Self.FArrowStyle = casReturn) or (ArrowStyle = casReturn) then
       Turn;
-    Self.ArrowStyle:= aArrowStyle;
+    Self.FArrowStyle := ArrowStyle;
   end;
 end;
 
 procedure TConnection.Turn;
-  var Src: TControl; Point: TPoint;
+var
+  Src: TControl;
+  Point: TPoint;
 begin
-  if IsRecursiv then
+  if FIsRecursiv then
     CalcPolyline
-  else begin
-    Src:= FFrom; FFrom:= FTo; FTo:= Src;
-    Point:= FromP; FromP:= ToP; ToP:= Point;
+  else
+  begin
+    Src := FStartControl;
+    FStartControl := FEndControl;
+    FEndControl := Src;
+    Point := FStartPoint;
+    FStartPoint := FEndPoint;
+    FEndPoint := Point;
   end;
 end;
 
-function TConnection.IsClicked(P: TPoint): Boolean;
-  var i: Integer;
-      R: TRect;
-      x1, x2, y1, y2, h: Integer;
+function TConnection.IsClicked(Point: TPoint): Boolean;
+var
+  ARect: TRect;
+  X1Pos, X2Pos, Y1Pos, Y2Pos, Help: Integer;
 
-  function makeRect(P1, P2: TPoint): TRect;
-    var dx, dy: Integer;
+  function makeRect(Point1, Point2: TPoint): TRect;
+  var
+    DeltaX, DeltaY: Integer;
   begin
-    dx:= P2.x - P1.x;
-    dy:= P2.Y - P1.Y;
-    if dy = 0 then
-      if dx > 0
-        then Result:= Rect(P1.X,      P1.y - 10, P2.X + 10, P2.Y + 10)
-        else Result:= Rect(P2.X - 10, P2.y - 10, P1.X     , P1.Y + 10)
-    else // dx = 0
-      if dy > 0
-        then Result:= Rect(P1.X - 10, P1.Y     , P2.X + 10, P2.Y + 10)
-        else Result:= Rect(P2.X - 10, P2.Y - 10, P1.X + 10, P1.Y);
-   end;
+    DeltaX := Point2.X - Point1.X;
+    DeltaY := Point2.Y - Point1.Y;
+    if DeltaY = 0 then
+      if DeltaX > 0 then
+        Result := Rect(Point1.X, Point1.Y - 10, Point2.X + 10, Point2.Y + 10)
+      else
+        Result := Rect(Point2.X - 10, Point2.Y - 10, Point1.X, Point1.Y + 10)
+    else // DeltaX = 0
+      if DeltaY > 0 then
+        Result := Rect(Point1.X - 10, Point1.Y, Point2.X + 10, Point2.Y + 10)
+      else
+        Result := Rect(Point2.X - 10, Point2.Y - 10, Point1.X + 10, Point1.Y);
+  end;
 
 begin
-  Result:= True;
-  if isRecursiv then begin
-    for i:= 1 to 3 do begin
-      R:= makeRect(Pl[i], Pl[i+1]);
-      if PtinRect(R, P) then Exit;
+  Result := True;
+  if FIsRecursiv then
+  begin
+    for var I := 1 to 3 do
+    begin
+      ARect := makeRect(FPolyline[I], FPolyline[I + 1]);
+      if PtInRect(ARect, Point) then
+        Exit;
     end;
-    R:= makeRect(Pl[4], Pl[3]);
-    if PtInRect(R, P) then Exit;
-  end else begin
-    x1:= FromP.X;
-    y1:= FromP.Y;
-    x2:= ToP.X;
-    y2:= ToP.Y;
-    if FFrom.Left > FTo.Left then begin
-      x1:= x1 - FromActivation*ActivationWidth;
-      x2:= x2 + ToActivation*ActivationWidth
-    end else begin
-      x1:= x1 + FromActivation*ActivationWidth;
-      x2:= x2 - ToActivation*ActivationWidth;
+    ARect := makeRect(FPolyline[4], FPolyline[3]);
+    if PtInRect(ARect, Point) then
+      Exit;
+  end
+  else
+  begin
+    X1Pos := FStartPoint.X;
+    Y1Pos := FStartPoint.Y;
+    X2Pos := FEndPoint.X;
+    Y2Pos := FEndPoint.Y;
+    if StartControl.Left > EndControl.Left then
+    begin
+      X1Pos := X1Pos - FFromActivation * ActivationWidth;
+      X2Pos := X2Pos + FToActivation * ActivationWidth;
+    end
+    else
+    begin
+      X1Pos := X1Pos + FFromActivation * ActivationWidth;
+      X2Pos := X2Pos - FToActivation * ActivationWidth;
     end;
-    if x1 > x2 then begin
-      h:= x2;
-      x2:= x1;
-      x1:= h;
+    if X1Pos > X2Pos then
+    begin
+      Help := X2Pos;
+      X2Pos := X1Pos;
+      X1Pos := Help;
     end;
-    if (x1 <= P.X) and (P.X <= x2) and (y1 - 10 <= P.Y) and (P.Y <= y2 + 10) then
+    if (X1Pos <= Point.X) and (Point.X <= X2Pos) and (Y1Pos - 10 <= Point.Y) and
+      (Point.Y <= Y2Pos + 10) then
       Exit;
   end;
-  Result:= False;
+  Result := False;
 end;
 
-function TConnection.hasRect: TRect;
+function TConnection.HasRect: TRect;
 begin
-  Result:= ConRect;
+  Result := FConRect;
 end;
 
-function TConnection.getArrowStyleAsString: string;
+function TConnection.GetArrowStyleAsString: string;
 begin
-  Result:= '';
-  case ArrowStyle of
-    casSynchron:  Result:= ' -> ';
-    casAsynchron: Result:= ' ->> ';
-    casReturn:    Result:= ' --> ';
-    casNew:       Result:= ' ->o ';
-    casClose:     Result:= ' ->x ';
+  Result := '';
+  case FArrowStyle of
+    casSynchron:
+      Result := ' -> ';
+    casAsynchron:
+      Result := ' ->> ';
+    casReturn:
+      Result := ' --> ';
+    casNew:
+      Result := ' ->o ';
+    casClose:
+      Result := ' ->x ';
   end;
 end;
 
-procedure TConnection.setFont(aFont: TFont);
+procedure TConnection.SetFont(Font: TFont);
 begin
-  DistX:= Round(cDistX*aFont.Size/12.0);
-  DistY:= Round(cDistY*aFont.Size/12.0);
-  ActivationWidth:= Round(cActivationWidth*aFont.Size/12.0);
-  HeadLength:= Round(cHeadLength*aFont.Size/12.0);
+  FDistX := Round(CDistX * Font.Size / 12.0);
+  FDistY := Round(CDistY * Font.Size / 12.0);
+  FActivationWidth := Round(CActivationWidth * Font.Size / 12.0);
+  FHeadLength := Round(CHeadLength * Font.Size / 12.0);
 end;
 
 procedure TConnection.ChangeStyle(BlackAndWhite: Boolean = False);
 begin
   if StyleServices.IsSystemStyle or BlackAndWhite then
   begin
-    BGColor := clWhite;
-    FGColor := clBlack;
+    FBackgroundColor := clWhite;
+    FForegroundColor := clBlack;
   end
   else
   begin
-    BGColor := StyleServices.GetStyleColor(scPanel);
-    FGColor := StyleServices.GetStyleFontColor
+    FBackgroundColor := StyleServices.GetStyleColor(scPanel);
+    FForegroundColor := StyleServices.GetStyleFontColor
       (sfTabTextInactiveNormal);
   end;
 end;
 
-{--- TSequencePanel -----------------------------------------------------------}
+{ --- TSequencePanel ----------------------------------------------------------- }
 
 function TSequencePanel.AddManagedObject(AObject: TControl): TControl;
 var
-  crkObj : TCrackControl;
-  newObj: TManagedObject;
+  CrkObj: TCrackControl;
+  NewObj: TManagedObject;
 begin
   Result := nil;
-  if AObject.Left + AObject.Width > Width  then Width := Max(Width, AObject.Left + AObject.Width + 50);
-  if AObject.Top + AObject.Height > Height then Height:= Max(Height, AObject.Top + AObject.Height + 50);
+  if AObject.Left + AObject.Width > Width then
+    Width := Max(Width, AObject.Left + AObject.Width + 50);
+  if AObject.Top + AObject.Height > Height then
+    Height := Max(Height, AObject.Top + AObject.Height + 50);
 
   AObject.Parent := Self;
   AObject.Visible := True;
-  if FindManagedControl(AObject) = nil then begin
-    newObj := TManagedObject.Create;
-    newObj.FControl:= AObject;
-    newObj.Visible:= True;
-    FManagedObjects.Add(newObj);
-    crkObj := TCrackControl(AObject);
-    newObj.FOnMouseDown:= crkObj.OnMouseDown;
-    newObj.FOnMouseMove:= crkObj.OnMouseMove;
-    newObj.FOnMouseUp  := crkObj.OnMouseUp;
-    newObj.FOnClick    := crkObj.OnClick;
-    newObj.FOnDblClick := crkObj.OnDblClick;
+  if FindManagedControl(AObject) = nil then
+  begin
+    NewObj := TManagedObject.Create;
+    NewObj.FControl := AObject;
+    NewObj.Visible := True;
+    FManagedObjects.Add(NewObj);
+    CrkObj := TCrackControl(AObject);
+    NewObj.FOnMouseDown := CrkObj.OnMouseDown;
+    NewObj.FOnMouseMove := CrkObj.OnMouseMove;
+    NewObj.FOnMouseUp := CrkObj.OnMouseUp;
+    NewObj.FOnClick := CrkObj.OnClick;
+    NewObj.FOnDblClick := CrkObj.OnDblClick;
 
-    crkObj.OnMouseDown := OnManagedObjectMouseDown;
-    crkObj.OnMouseMove := OnManagedObjectMouseMove;
-    crkObj.OnMouseUp   := OnManagedObjectMouseUp;
-    crkObj.OnClick     := OnManagedObjectClick;
-    crkObj.OnDblClick  := OnManagedObjectDblClick;
+    CrkObj.OnMouseDown := OnManagedObjectMouseDown;
+    CrkObj.OnMouseMove := OnManagedObjectMouseMove;
+    CrkObj.OnMouseUp := OnManagedObjectMouseUp;
+    CrkObj.OnClick := OnManagedObjectClick;
+    CrkObj.OnDblClick := OnManagedObjectDblClick;
     Result := AObject;
   end;
 end;
 
 procedure TSequencePanel.ClearManagedObjects;
 var
-  i: Integer; aManagedObject: TManagedObject;
+  ManagedObject: TManagedObject;
 begin
   FConnections.Clear;
   try
-    for i:= 0 to FManagedObjects.Count - 1 do begin
-      aManagedObject:= TManagedObject(FManagedObjects[i]);
-      FreeAndNil(aManagedObject.FControl);
-      FreeAndNil(aManagedObject);
+    for var I := 0 to FManagedObjects.Count - 1 do
+    begin
+      ManagedObject := TManagedObject(FManagedObjects[I]);
+      FreeAndNil(ManagedObject.FControl);
+      FreeAndNil(ManagedObject);
     end;
-  except on e: Exception do
-    ErrorMsg(e.Message);
+  except
+    on E: Exception do
+      ErrorMsg(E.Message);
   end;
   FManagedObjects.Clear;
   SetBounds(0, 0, 0, 0);
@@ -776,103 +901,109 @@ begin
 end;
 
 function TSequencePanel.SelectionChangedOnClear: Boolean;
-  var i: Integer;
 begin
-  Result:= False;
-  for i:= 0 to FManagedObjects.Count - 1 do
-    if TManagedObject(FManagedObjects[i]).Selected then begin
-      TManagedObject(FManagedObjects[i]).Selected:= False;
-      Result:= True;
+  Result := False;
+  for var I := 0 to FManagedObjects.Count - 1 do
+    if TManagedObject(FManagedObjects[I]).FSelected then
+    begin
+      TManagedObject(FManagedObjects[I]).FSelected := False;
+      Result := True;
     end;
-  for i:= 0 to FConnections.Count - 1 do
-    if TConnection(FConnections[i]).Selected then begin
-      TConnection(FConnections[i]).Selected:= False;
-      TConnection(FConnections[i]).UnDrawSelection(Canvas);
-      Result:= True;
+  for var I := 0 to FConnections.Count - 1 do
+    if TConnection(FConnections[I]).FSelected then
+    begin
+      TConnection(FConnections[I]).FSelected := False;
+      TConnection(FConnections[I]).UnDrawSelection(Canvas);
+      Result := True;
     end;
 end;
 
 procedure TSequencePanel.ClearSelection(WithShowAll: Boolean = True);
-  var i: Integer;
 begin
-  for i:= 0 to FManagedObjects.Count - 1 do
-    TManagedObject(FManagedObjects[i]).Selected:= False;
-  for i:= 0 to FConnections.Count - 1 do
-    TConnection(FConnections[i]).Selected:= False;
-  if withShowAll then
+  for var I := 0 to FManagedObjects.Count - 1 do
+    TManagedObject(FManagedObjects[I]).FSelected := False;
+  for var I := 0 to FConnections.Count - 1 do
+    TConnection(FConnections[I]).FSelected := False;
+  if WithShowAll then
     ShowAll;
-  if Assigned(OnSelectionChanged) then
-    OnSelectionChanged(nil);
+  if Assigned(FOnSelectionChanged) then
+    FOnSelectionChanged(nil);
 end;
 
 procedure TSequencePanel.ShowAll;
-  var i: Integer;
 begin
-  if Assigned(OnShowAll) then
-    OnShowAll(nil);
-  if isLocked then Exit;
+  if Assigned(FOnShowAll) then
+    FOnShowAll(nil);
+  if IsLocked then
+    Exit;
   ShowConnections;
-  for i:= 0 to FManagedObjects.Count -1 do
-    if TManagedObject(FManagedObjects[i]).FControl.Visible then
-      TManagedObject(FManagedObjects[i]).FControl.Invalidate;  // calls LifeLine.Paint
+  for var I := 0 to FManagedObjects.Count - 1 do
+    if TManagedObject(FManagedObjects[I]).FControl.Visible then
+      TManagedObject(FManagedObjects[I]).FControl.Invalidate;
+  FChanged:= False;
+  // calls Lifeline.Paint
 end;
 
-procedure TSequencePanel.WMEraseBkgnd(var Message: TWmEraseBkgnd);
-var
-  can : Tcanvas;
+procedure TSequencePanel.WMEraseBkgnd(var Message: TWMEraseBkgnd);
 begin
-  can := tcanvas.Create;
+  var Canvas := TCanvas.Create;
   try
-    can.handle := message.DC;
+    Canvas.Handle := Message.DC;
     if Assigned(FBackBitmap) then
-      Can.Brush.Bitmap := FBackBitmap
+      Canvas.Brush.Bitmap := FBackBitmap
     else
-      Can.Brush.Color := Color;
-    Can.FillRect(ClientRect);
+      Canvas.Brush.Color := Color;
+    Canvas.FillRect(ClientRect);
   finally
-    FreeAndNil(can);
+    FreeAndNil(Canvas);
   end;
   Message.Result := 1;
 end;
 
-function TSequencePanel.ConnectObjects(Src, Dst: TControl; Attributes: TConnectionAttributes): TConnection;
+function TSequencePanel.ConnectObjects(Src, Dst: TControl;
+  Attributes: TConnectionAttributes): TConnection;
 begin
-  Result:= nil;
-  if (FindManagedControl(Src) <> nil) and (FindManagedControl(Dst) <> nil) then begin
-    Result:= TConnection.Create(Src, Dst, Attributes, onConnectionChanged);
-    Result.setFont(Font);
+  Result := nil;
+  if Assigned(FindManagedControl(Src)) and Assigned(FindManagedControl(Dst)) then
+  begin
+    Result := TConnection.Create(Src, Dst, Attributes, FOnConnectionChanged);
+    Result.SetFont(Font);
     FConnections.Add(Result);
   end;
-  OnConnectionSet(Result);
+  FOnConnectionSet(Result);
 end;
 
-function TSequencePanel.ConnectObjectsAt(Src, Dst: TControl; Attributes: TConnectionAttributes; i: Integer): TConnection;
+function TSequencePanel.ConnectObjectsAt(Src, Dst: TControl;
+  Attributes: TConnectionAttributes; Pos: Integer): TConnection;
 begin
-  Result:= nil;
-  if (FindManagedControl(Src) <> nil) and (FindManagedControl(Dst) <> nil) then begin
-    Result:= TConnection.Create(Src, Dst, Attributes, OnConnectionChanged);
-    Result.setFont(Font);
-    if i = -1
-      then FConnections.Add(Result)
-      else FConnections.Insert(i, Result);
+  Result := nil;
+  if Assigned(FindManagedControl(Src)) and Assigned(FindManagedControl(Dst)) then
+  begin
+    Result := TConnection.Create(Src, Dst, Attributes, FOnConnectionChanged);
+    Result.SetFont(Font);
+    if Pos = -1 then
+      FConnections.Add(Result)
+    else
+      FConnections.Insert(Pos, Result);
   end;
-  OnConnectionSet(Result);
+  FOnConnectionSet(Result);
 end;
 
 function TSequencePanel.GetClickedConnectionNr: Integer;
-  var P: TPoint; conn: TConnection;
 begin
-  P:= Self.ScreenToClient(Mouse.CursorPos);
-  Result:= 0;
-  while Result < FConnections.Count do begin
-    Conn:= TConnection(FConnections[Result]);
-    if Conn.IsClicked(P) then begin
-      Conn.Selected:= True;
+  var Point := Self.ScreenToClient(Mouse.CursorPos);
+  Result := 0;
+  while Result < FConnections.Count do
+  begin
+    var Conn := TConnection(FConnections[Result]);
+    if Conn.IsClicked(Point) then
+    begin
+      Conn.FSelected := True;
       Exit;
     end;
     Inc(Result);
   end;
-  Result:= -1;
+  Result := -1;
 end;
 
 procedure TSequencePanel.DeleteConnections;
@@ -883,189 +1014,222 @@ end;
 constructor TSequencePanel.Create(AOwner: TComponent);
 begin
   inherited;
-  SequenceForm:= (AOwner as TScrollBox).Parent as TForm;
+  FSequenceForm := (AOwner as TScrollBox).Parent as TForm;
   FManagedObjects := TList.Create;
   FConnections := TObjectList.Create(True);
-  FShowConnections:= 0;
-  TempHidden := TObjectList.Create(False);
+  FShowConnections := 0;
+  FTempHidden := TObjectList.Create(False);
   UseDockManager := True;
-  MouseDownOK:= True;
-  Anchors:= [akLeft, akTop];
+  FMouseDownOK := True;
+  Anchors := [akLeft, akTop];
   SetFocus;
 end;
 
 procedure TSequencePanel.DblClick;
-  // on plain background
-  var found: TControl;
+// on plain background
+var
+  Found: TControl;
 begin
   inherited;
-  found:= FindVCLWindow(Mouse.CursorPos);
-  if Assigned(found) then begin
-    FindManagedControl(found);
-    if found <> Self then
-      TCrackControl(found).DblClick;
+  Found := FindVCLWindow(Mouse.CursorPos);
+  if Assigned(Found) then
+  begin
+    FindManagedControl(Found);
+    if Found <> Self then
+      TCrackControl(Found).DblClick;
     if GetClickedConnectionNr <> -1 then
       SelectClickedConnection
-    else if Assigned(OnBackgroundDblClicked) then
-      OnBackgroundDblClicked(nil, getConnectionOfClickedTextRect);
-  end
+    else if Assigned(FOnBackgroundDblClicked) then
+      FOnBackgroundDblClicked(nil, GetConnectionOfClickedTextRect);
+  end;
 end;
 
-function TSequencePanel.getConnectionOfClickedTextRect: TConnection;
-  var i: Integer; P: TPoint; conn: TConnection;
+function TSequencePanel.GetConnectionOfClickedTextRect: TConnection;
+var
+  Int: Integer;
+  Point: TPoint;
+  Conn: TConnection;
 begin
-  Result:= nil;
-  P:= Self.ScreenToClient(Mouse.CursorPos);
-  i:= 0;
-  while i < FConnections.Count do begin
-    Conn:= TConnection(FConnections[i]);
-    if PtInRect(Conn.TextRect, P) then begin
-      Result:= Conn;
-      i:= FConnections.Count;
+  Result := nil;
+  Point := Self.ScreenToClient(Mouse.CursorPos);
+  Int := 0;
+  while Int < FConnections.Count do
+  begin
+    Conn := TConnection(FConnections[Int]);
+    if PtInRect(Conn.FTextRect, Point) then
+    begin
+      Result := Conn;
+      Int := FConnections.Count;
     end;
-    Inc(i);
+    Inc(Int);
   end;
 end;
 
 function TSequencePanel.GetClickedConnection: TConnection;
-  var Nr: Integer;
 begin
-  Nr:= GetClickedConnectionNr;
-  if Nr <> -1
-    then Result:= TConnection(FConnections[Nr])
-    else Result:= nil;
+  var Num := GetClickedConnectionNr;
+  if Num <> -1 then
+    Result := TConnection(FConnections[Num])
+  else
+    Result := nil;
 end;
 
-procedure TSequencePanel.TurnConnection(i: Integer);
+procedure TSequencePanel.TurnConnection(Num: Integer);
 begin
-  TConnection(FConnections[i]).Turn;
+  TConnection(FConnections[Num]).Turn;
 end;
 
 procedure TSequencePanel.SelectConnection;
-  var i: Integer;
-      Tmp : TObjectList;
-      Attributes: TConnectionAttributes;
-      conn: TConnection; 
-      SelectedControls: Integer;
-      FConnectForm: TFConnectForm;
+var
+  Tmp: TObjectList;
+  Attributes: TConnectionAttributes;
+  Conn: TConnection;
+  SelectedControls: Integer;
+  FConnectForm: TFConnectForm;
 begin
-  FConnectForm:= TFConnectForm.Create(Self);
-  conn:= getSelectedConnection;
-  SelectedControls:= CountSelectedControls;
-  if conn = nil then
+  FConnectForm := TFConnectForm.Create(Self);
+  Conn := GetSelectedConnection;
+  SelectedControls := CountSelectedControls;
+  if not Assigned(Conn) then
     case SelectedControls of
-      1: FConnectForm.init(False, conn, 1);
-      2: FConnectForm.init(False, conn, 2)
-      else Exit;
+      1:
+        FConnectForm.Init(False, Conn, 1);
+      2:
+        FConnectForm.Init(False, Conn, 2);
+    else
+      Exit;
     end
   else
-    FConnectForm.init(False, conn, SelectedControls);
+    FConnectForm.Init(False, Conn, SelectedControls);
 
   case FConnectForm.ShowModal of
-    mrOk: begin
-      Attributes:= FConnectForm.getConnectionAttributes;
-      if HasSelectedConnection then
-        SetSelectedConnection(Attributes)
-      else begin
-        Tmp:= GetSelectedControls;
-        case Tmp.Count of
-          1: ConnectObjects(Tmp[0] as TControl, Tmp[0] as TControl, Attributes);
-          2: ConnectObjects(Tmp[0] as TControl, Tmp[1] as TControl, Attributes);
+    mrOk:
+      begin
+        Attributes := FConnectForm.GetConnectionAttributes;
+        if HasSelectedConnection then
+          SetSelectedConnection(Attributes)
+        else
+        begin
+          Tmp := GetSelectedControls;
+          case Tmp.Count of
+            1:
+              ConnectObjects(Tmp[0] as TControl, Tmp[0] as TControl,
+                Attributes);
+            2:
+              ConnectObjects(Tmp[0] as TControl, Tmp[1] as TControl,
+                Attributes);
+          end;
+          FreeAndNil(Tmp);
         end;
-        FreeAndNil(Tmp);
+        FreeAndNil(Attributes);
       end;
-      FreeAndNil(Attributes);
-    end;
     mrYes: // turn
-      for i:= 0 to FConnections.Count - 1 do
-        if TConnection(FConnections[i]).Selected then
-          TurnConnection(i);
+      for var I := 0 to FConnections.Count - 1 do
+        if TConnection(FConnections[I]).FSelected then
+          TurnConnection(I);
     mrNo:
       DeleteSelectedConnection;
   end;
   FConnectForm.Release;
   Invalidate;
   ShowAll;
-  IsModified:= True;
+  IsModified := True;
 end;
 
 procedure TSequencePanel.SelectClickedConnection;
-  var conn: TConnection;
 begin
-  conn:= getClickedConnection;
-  if Assigned(conn) then begin
-    conn.selected:= True;
+  var Conn := GetClickedConnection;
+  if Assigned(Conn) then
+  begin
+    Conn.FSelected := True;
     SelectConnection;
   end;
 end;
 
-procedure TSequencePanel.ConnectBoxesAt(Src, Dest: TControl; at: Integer);
-  var Attributes: TConnectionAttributes;
-      SelectedControls, i, pos: Integer;
-      FConnectForm: TFConnectForm;
+procedure TSequencePanel.ConnectBoxesAt(Src, Dest: TControl; AtPosition: Integer);
+var
+  Attributes: TConnectionAttributes;
+  SelectedControls, Int, Pos: Integer;
+  FConnectForm: TFConnectForm;
 begin
-  FConnectForm:= TFConnectForm.Create(Self);
-  SelectedControls:= CountSelectedControls;
+  FConnectForm := TFConnectForm.Create(Self);
+  SelectedControls := CountSelectedControls;
   case SelectedControls of
-    1: FConnectForm.init(False, nil, 1);
-    2: FConnectForm.init(False, nil, 2)
-    else Exit;
+    1:
+      FConnectForm.Init(False, nil, 1);
+    2:
+      FConnectForm.Init(False, nil, 2);
+  else
+    Exit;
   end;
-  if FConnectForm.ShowModal =  mrOk then begin
-    Attributes:= FConnectForm.getConnectionAttributes;
-    i:= 0;
-    pos:= -1;
-    while (i < FConnections.Count) and (pos = -1) do begin
-      if TConnection(FConnections[i]).yPos >= at then
-        pos:= i;
-      Inc(i);
+  if FConnectForm.ShowModal = mrOk then
+  begin
+    Attributes := FConnectForm.GetConnectionAttributes;
+    Int := 0;
+    Pos := -1;
+    while (Int < FConnections.Count) and (Pos = -1) do
+    begin
+      if TConnection(FConnections[Int]).FYPosition >= AtPosition then
+        Pos := Int;
+      Inc(Int);
     end;
     case SelectedControls of
-      1: ConnectObjectsAt(Src, Src, Attributes, pos);
-      2: ConnectObjectsAt(Src, Dest, Attributes, pos);
+      1:
+        ConnectObjectsAt(Src, Src, Attributes, Pos);
+      2:
+        ConnectObjectsAt(Src, Dest, Attributes, Pos);
     end;
     FreeAndNil(Attributes);
   end;
   ClearSelection(False);
   Invalidate;
   ShowAll;
-  IsModified:= True;
+  IsModified := True;
   FConnectForm.Release;
 end;
 
 procedure TSequencePanel.DoConnection(Item: Integer);
-  var i, n: Integer; conn: TConnection;
+var
+  Num: Integer;
+  Conn: TConnection;
 begin
-  conn:= nil;
-  n:= -1;
-  for i:= 0 to FConnections.Count-1 do
-    if TConnection(FConnections[i]).Selected then begin
-      n:= i;
-      conn:= TConnection(FConnections[i]);
+  Conn := nil;
+  Num := -1;
+  for var I := 0 to FConnections.Count - 1 do
+    if TConnection(FConnections[I]).FSelected then
+    begin
+      Num := I;
+      Conn := TConnection(FConnections[I]);
     end;
-  if n <> -1 then begin
+  if Num <> -1 then
+  begin
     case Item of
-       0..4: SetConnection(n, TArrowStyle(Item));
-       5   : SelectConnection; // Message
-       6   : TurnConnection(n);
-      else begin
-        Canvas.FillRect(conn.ConRect);
-        FConnections.Delete(n);
+      0 .. 4:
+        SetConnection(Num, TArrowStyle(Item));
+      5:
+        SelectConnection; // Message
+      6:
+        TurnConnection(Num);
+    else
+      begin
+        Canvas.FillRect(Conn.FConRect);
+        FConnections.Delete(Num);
       end;
     end;
-    if Item <= 6 then begin
-      conn.Selected:= False;
-      InvalidateRect(Handle, conn.ConRect, True);
-//      conn.Draw(Canvas);
-    end else
+    if Item <= 6 then
+    begin
+      Conn.FSelected := False;
+      InvalidateRect(Handle, Conn.FConRect, True);
+    end
+    else
       ShowAll;
-    isModified:= True;
+    IsModified := True;
   end;
 end;
 
 destructor TSequencePanel.Destroy;
 begin
-  FreeAndNil(TempHidden);
+  FreeAndNil(FTempHidden);
   ClearManagedObjects;
   FreeAndNil(FManagedObjects);
   FreeAndNil(FConnections);
@@ -1073,132 +1237,134 @@ begin
 end;
 
 function TSequencePanel.FindManagedControl(AControl: TControl): TManagedObject;
-var
-  i: Integer;
-  curr: TManagedObject;
 begin
   Result := nil;
-  for i:= 0 to FManagedObjects.Count - 1 do begin
-    curr := TManagedObject(FManagedObjects[i]);
-    if curr.FControl = AControl then begin
-      Result := curr;
+  for var I := 0 to FManagedObjects.Count - 1 do
+  begin
+    var Curr := TManagedObject(FManagedObjects[I]);
+    if Curr.FControl = AControl then
+    begin
+      Result := Curr;
       Exit;
     end;
   end;
 end;
 
 function TSequencePanel.GetConnections: TList;
-var
-  i: Integer;
 begin
-  Result:= TList.Create;
-  for i:= 0 to FConnections.Count-1 do
+  Result := TList.Create;
+  for var I := 0 to FConnections.Count - 1 do
     Result.Add(FConnections[I]);
 end;
 
-procedure TSequencePanel.SetConnection(i: Integer; Arrow: TArrowStyle);
+procedure TSequencePanel.SetConnection(Num: Integer; Arrow: TArrowStyle);
 begin
-  if (0 <= i) and (i < FConnections.Count) then
-    TConnection(FConnections[i]).setArrow(Arrow);
+  if (0 <= Num) and (Num < FConnections.Count) then
+    TConnection(FConnections[Num]).SetArrow(Arrow);
 end;
 
-procedure TSequencePanel.SetSelectedConnection(Attributes: TConnectionAttributes);
-  var i: Integer;
+procedure TSequencePanel.SetSelectedConnection
+  (Attributes: TConnectionAttributes);
 begin
-  for i:= 0 to FConnections.Count - 1 do
-    if TConnection(FConnections[i]).Selected then
-      TConnection(FConnections[i]).setAttributes(Attributes);
+  for var I := 0 to FConnections.Count - 1 do
+    if TConnection(FConnections[I]).FSelected then
+      TConnection(FConnections[I]).SetAttributes(Attributes);
 end;
 
 procedure TSequencePanel.DeleteSelectedConnection;
-  var i: Integer;
 begin
-  for i:= FConnections.Count-1 downto 0 do
-    if TConnection(FConnections[i]).Selected then begin
-      FConnections.Delete(i);
-      IsModified:= True;
+  for var I := FConnections.Count - 1 downto 0 do
+    if TConnection(FConnections[I]).FSelected then
+    begin
+      FConnections.Delete(I);
+      IsModified := True;
     end;
 end;
 
 function TSequencePanel.HasSelectedConnection: Boolean;
-  var i: Integer;
 begin
-  Result:= False;
-  for i:= FConnections.Count-1 downto 0 do
-    if TConnection(FConnections[i]).Selected then begin
-      Result:= True;
+  Result := False;
+  for var I := FConnections.Count - 1 downto 0 do
+    if TConnection(FConnections[I]).FSelected then
+    begin
+      Result := True;
       Break;
     end;
 end;
 
-function TSequencePanel.getSelectedConnection: TConnection;
-  var i: Integer;
+function TSequencePanel.GetSelectedConnection: TConnection;
 begin
-  Result:= nil;
-  for i:= 0 to FConnections.Count - 1 do
-    if TConnection(FConnections[i]).Selected then begin
-      Result:= TConnection(FConnections[i]);
+  Result := nil;
+  for var I := 0 to FConnections.Count - 1 do
+    if TConnection(FConnections[I]).FSelected then
+    begin
+      Result := TConnection(FConnections[I]);
       Exit;
     end;
 end;
 
 function TSequencePanel.GetLastConnection: TConnection;
 begin
-  if FConnections.Count > 1
-    then Result:= TConnection(FConnections[FConnections.Count-1])
-    else Result:= nil;
+  if FConnections.Count > 1 then
+    Result := TConnection(FConnections.Last)
+  else
+    Result := nil;
 end;
 
 function TSequencePanel.Get2NdLastConnection: TConnection;
 begin
-  if FConnections.Count > 1
-    then Result:= TConnection(FConnections[FConnections.Count-2])
-    else Result:= nil;
+  if FConnections.Count > 1 then
+    Result := TConnection(FConnections[FConnections.Count - 2])
+  else
+    Result := nil;
 end;
 
 function TSequencePanel.CountSelectedControls: Integer;
-  var i, n: Integer;
 begin
-  n:= 0;
-  for i:= 0 to FManagedObjects.Count-1 do
+  var Num := 0;
+  for var I := 0 to FManagedObjects.Count - 1 do
     if TManagedObject(FManagedObjects[I]).FSelected then
-      Inc(n);
-  Result:= n;
+      Inc(Num);
+  Result := Num;
 end;
 
 function TSequencePanel.GetFirstSelected: TControl;
-  var i: Integer;
 begin
-  Result:= nil;
-  for i:= 0 to FManagedObjects.Count-1 do
-    if TManagedObject(FManagedObjects[i]).FSelected then begin
-      Result:= TManagedObject(FManagedObjects[i]).FControl;
+  Result := nil;
+  for var I := 0 to FManagedObjects.Count - 1 do
+    if TManagedObject(FManagedObjects[I]).FSelected then
+    begin
+      Result := TManagedObject(FManagedObjects[I]).FControl;
       Exit;
     end;
 end;
 
 function TSequencePanel.GetSelectedControls: TObjectList;
-  var i: Integer;
 begin
-  Result:= TObjectList.Create(False);
-  for i:= 0 to FManagedObjects.Count-1 do
-    if TManagedObject(FManagedObjects[i]).FSelected then
-      Result.Add(TManagedObject(FManagedObjects[i]).FControl);
+  Result := TObjectList.Create(False);
+  for var I := 0 to FManagedObjects.Count - 1 do
+    if TManagedObject(FManagedObjects[I]).FSelected then
+      Result.Add(TManagedObject(FManagedObjects[I]).FControl);
 end;
 
 procedure TSequencePanel.DeleteSelectedControls;
-  var i, j: Integer; Control: TControl; Conn: TConnection;  ManagedObject: TManagedObject;
+var
+  Control: TControl;
+  Conn: TConnection;
+  ManagedObject: TManagedObject;
 begin
-  for i:= FManagedObjects.Count - 1 downto 0 do
-    if TManagedObject(FManagedObjects[i]).FSelected then begin
-      ManagedObject:= TManagedObject(FManagedObjects[i]);
-      Control:= TManagedObject(FManagedObjects[i]).FControl;
-      for j:= FConnections.Count - 1 downto 0 do begin
-        Conn:= TConnection(FConnections[j]);
-        if (Conn.FFrom = Control) or (Conn.FTo = Control) then
-          FConnections.Delete(j);
+  for var I := FManagedObjects.Count - 1 downto 0 do
+    if TManagedObject(FManagedObjects[I]).FSelected then
+    begin
+      ManagedObject := TManagedObject(FManagedObjects[I]);
+      Control := TManagedObject(FManagedObjects[I]).FControl;
+      for var J := FConnections.Count - 1 downto 0 do
+      begin
+        Conn := TConnection(FConnections[J]);
+        if (Conn.FStartControl = Control) or (Conn.FEndControl = Control) then
+          FConnections.Delete(J);
       end;
-      FManagedObjects.Delete(i);
+      FManagedObjects.Delete(I);
       FreeAndNil(ManagedObject);
       FreeAndNil(Control);
       IsModified := True;
@@ -1208,71 +1374,82 @@ begin
 end;
 
 // central MouseDown routine for the TSequencePanel
-procedure TSequencePanel.MouseDown(Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+procedure TSequencePanel.MouseDown(Button: TMouseButton; Shift: TShiftState;
+  X, Y: Integer);
 var
-  found: TControl;
-  mcont: TManagedObject;
-  cconn: TConnection;
-  aChanged: Boolean;
-  p2: TPoint;
-  conn: TConnection;
+  Found: TControl;
+  MCont: TManagedObject;
+  CConn: TConnection;
 begin
-  FMoved:= False;
-  if not MouseDownOK then begin MouseDownOK:= True; Exit end;
+  FMoved := False;
+  if not FMouseDownOK then
+  begin
+    FMouseDownOK := True;
+    Exit;
+  end;
   inherited;
-  SetFocus;  // a TPanel can have the Focus
+  SetFocus; // a TPanel can have the Focus
   if GetCaptureControl <> Self then
     SetCaptureControl(Self);
   FIsRectSelecting := False;
   FIsMoving := False;
-  FResized:= False;
-  FMemMousePos.x := X;
-  FMemMousePos.y := Y;
-  aChanged:= False;
+  FResized := False;
+  FMemMousePos.X := X;
+  FMemMousePos.Y := Y;
+  FChanged := False;
 
-  found:= FindVCLWindow(Mouse.CursorPos);
-  if found = Self then
-    found := nil;
-  if Assigned(found) then begin
-    mcont := FindManagedControl(found);
-    if Assigned(mcont) then begin
-      if not mcont.Selected then begin
+  Found := FindVCLWindow(Mouse.CursorPos);
+  if Found = Self then
+    Found := nil;
+  if Assigned(Found) then
+  begin
+    MCont := FindManagedControl(Found);
+    if Assigned(MCont) then
+    begin
+      if not MCont.FSelected then
+      begin
         if not CtrlPressed then
           SelectionChangedOnClear;
-        mcont.Selected:= True;
-        //TManagedObject(mcont).FControl.SendToBack;
-        aChanged:= True;
-      end else if CtrlPressed then begin
-        mcont.Selected:= False;
-        aChanged:= True;
+        MCont.FSelected := True;
+        FChanged := True;
+      end
+      else if CtrlPressed then
+      begin
+        MCont.FSelected := False;
+        FChanged := True;
       end;
-      if aChanged then
+      if FChanged then
         ShowAll;
       if CountSelectedControls > 1 then
-        FIsMoving:= True;
-      if Assigned(OnSelectionChanged) then
-        OnSelectionChanged(nil);
+        FIsMoving := True;
+      if Assigned(FOnSelectionChanged) then
+        FOnSelectionChanged(nil);
     end;
-  end else begin
-    cconn:= GetClickedConnection;
-    if Assigned(cconn) then begin
-      if not cconn.Selected then begin
+  end
+  else
+  begin
+    CConn := GetClickedConnection;
+    if Assigned(CConn) then
+    begin
+      if not CConn.FSelected then
+      begin
         if not CtrlPressed then
           SelectionChangedOnClear;
-        cconn.Selected:= True;
-      end else if CtrlPressed then
-        cconn.Selected:= False;
-      if Assigned(OnSelectionChanged) then
-        OnSelectionChanged(nil);
-    end else begin
-      //if SelectionChangedOnClear then
-      //  ShowAll;
+        CConn.FSelected := True;
+      end
+      else if CtrlPressed then
+        CConn.FSelected := False;
+      if Assigned(FOnSelectionChanged) then
+        FOnSelectionChanged(nil);
+    end
+    else
+    begin
       if Button = mbLeft then
         FIsRectSelecting := True;
     end;
   end;
-  if FIsRectSelecting then begin
+  if FIsRectSelecting then
+  begin
     FSelectRect.TopLeft := FMemMousePos;
     FSelectRect.BottomRight := FMemMousePos;
     Canvas.Brush.Style := bsClear;
@@ -1281,106 +1458,131 @@ begin
     Canvas.Pen.Width := 0;
   end;
 
-  if Button = mbRight then begin
-      found:= FindVCLWindow(Mouse.CursorPos);
-      if Button = mbRight then begin
-        conn:= GetClickedConnection;
-        if Assigned(conn) then begin
-          conn.Selected:= True;
-          if conn.isRecursiv then begin
-            PopupMenuConnection.Items[3].Visible:= False;
-            PopupMenuConnection.Items[4].Visible:= False;
-          end else begin
-            PopupMenuConnection.Items[3].Visible:= True;
-            PopupMenuConnection.Items[4].Visible:= True;
-          end;
-          PopupMenuConnection.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y)
-        end else if Assigned(found) and (found <> Self) then begin
-          if (found is TMemo) then
-            found:= (found as TMemo).Parent;
-          OnLifeLineSequencePanel(found);
-          if Assigned(TCrackControl(found).PopupMenu) and (Button = mbRight) then
-            TCrackControl(found).PopupMenu.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
-
-          if Assigned(TCrackControl(found).OnMouseUp) then begin
-            p2 := found.ScreenToClient(Mouse.CursorPos);
-            TCrackControl(found).OnMouseUp(found, Button, Shift, p2.x, p2.y);
-          end;
-        end else begin
-          OnLifeLineSequencePanel(nil);
-          PopupMenuLifeLineAndSequencePanel.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y)
+  if Button = mbRight then
+  begin
+    Found := FindVCLWindow(Mouse.CursorPos);
+    if Button = mbRight then
+    begin
+      var Conn := GetClickedConnection;
+      if Assigned(Conn) then
+      begin
+        Conn.FSelected := True;
+        if Conn.FIsRecursiv then
+        begin
+          FPopupMenuConnection.Items[3].Visible := False;
+          FPopupMenuConnection.Items[4].Visible := False;
+        end
+        else
+        begin
+          FPopupMenuConnection.Items[3].Visible := True;
+          FPopupMenuConnection.Items[4].Visible := True;
         end;
+        FPopupMenuConnection.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+      end
+      else if Assigned(Found) and (Found <> Self) then
+      begin
+        if (Found is TMemo) then
+          Found := (Found as TMemo).Parent;
+        FOnLifelineSequencePanel(Found);
+        if Assigned(TCrackControl(Found).PopupMenu) and (Button = mbRight) then
+          TCrackControl(Found).PopupMenu.Popup(Mouse.CursorPos.X,
+            Mouse.CursorPos.Y);
+
+        if Assigned(TCrackControl(Found).OnMouseUp) then
+        begin
+          var Point := Found.ScreenToClient(Mouse.CursorPos);
+          TCrackControl(Found).OnMouseUp(Found, Button, Shift, Point.X, Point.Y);
+        end;
+      end
+      else
+      begin
+        FOnLifelineSequencePanel(nil);
+        FPopupMenuLifelineAndSequencePanel.Popup(Mouse.CursorPos.X,
+          Mouse.CursorPos.Y);
       end;
+    end;
   end;
 end;
 
 procedure TSequencePanel.MouseMove(Shift: TShiftState; X, Y: Integer);
 
-const minTop = 20;
+const
+  MinTop = 20;
 
 var
-  pt, pt1, p2: TPoint;
-  found, Src, Dest: TControl;
-  mcont: TManagedObject;
-  i, j, k, dx, dy, mdx, mdy: Integer;
-  curr: TCrackControl;
-  r, rt, MovedRect, MovedRectWithoutConnections, mRectDxDy: TRect;
-  resized: Boolean;
-  connect: TConnection;
+  Point1, Point2, Point3: TPoint;
+  Found, Src, Dest: TControl;
+  MCont: TManagedObject;
+  DeltaX, DeltaY, Mdx, Mdy: Integer;
+  Curr: TCrackControl;
+  Rect1, Rect2, MovedRect, MovedRectWithoutConnections, MRectDxDy: TRect;
+  Resized: Boolean;
+  Connect: TConnection;
 
-  procedure InMakeVisible(C : TRect);
+  procedure InMakeVisible(Rect: TRect);
   begin
-    mdx := TScrollBox(Parent).HorzScrollBar.Position;
-    mdy := TScrollBox(Parent).VertScrollBar.Position;
+    Mdx := TScrollBox(Parent).HorzScrollBar.Position;
+    Mdy := TScrollBox(Parent).VertScrollBar.Position;
 
-    if (dx > 0) and (C.BottomRight.X >= TScrollBox(Parent).HorzScrollBar.Position + Parent.Width) then
-      TScrollBox(Parent).HorzScrollBar.Position := C.BottomRight.X - Parent.Width;
+    if (DeltaX > 0) and (Rect.BottomRight.X >= TScrollBox(Parent)
+      .HorzScrollBar.Position + Parent.Width) then
+      TScrollBox(Parent).HorzScrollBar.Position := Rect.BottomRight.X -
+        Parent.Width;
 
-    if (dy > 0) and (C.BottomRight.Y >= TScrollBox(Parent).VertScrollBar.Position + Parent.Height) then
-      TScrollBox(Parent).VertScrollBar.Position := C.BottomRight.Y - Parent.Height;
+    if (DeltaY > 0) and (Rect.BottomRight.Y >= TScrollBox(Parent)
+      .VertScrollBar.Position + Parent.Height) then
+      TScrollBox(Parent).VertScrollBar.Position := Rect.BottomRight.Y -
+        Parent.Height;
 
-    if (dx < 0) and (C.Left <= TScrollBox(Parent).HorzScrollBar.Position) then
-      TScrollBox(Parent).HorzScrollBar.Position := C.Left;
+    if (DeltaX < 0) and (Rect.Left <= TScrollBox(Parent).HorzScrollBar.Position) then
+      TScrollBox(Parent).HorzScrollBar.Position := Rect.Left;
 
-    if (dy < 0) and (C.Top <= TScrollBox(Parent).VertScrollBar.Position) then
-      TScrollBox(Parent).VertScrollBar.Position := C.Top;
+    if (DeltaY < 0) and (Rect.Top <= TScrollBox(Parent).VertScrollBar.Position)
+    then
+      TScrollBox(Parent).VertScrollBar.Position := Rect.Top;
 
-    mdy := mdy - TScrollBox(Parent).VertScrollBar.Position;
-    mdx := mdx - TScrollBox(Parent).HorzScrollBar.Position;
+    Mdy := Mdy - TScrollBox(Parent).VertScrollBar.Position;
+    Mdx := Mdx - TScrollBox(Parent).HorzScrollBar.Position;
 
-    if (mdx <> 0) or (mdy <> 0) then begin
-      p2 := Mouse.CursorPos;
-      p2.X := p2.X + mdx;
-      p2.Y := p2.Y + mdy;
-      Mouse.CursorPos := p2;
-      Resized:= True;
+    if (Mdx <> 0) or (Mdy <> 0) then
+    begin
+      Point3 := Mouse.CursorPos;
+      Point3.X := Point3.X + Mdx;
+      Point3.Y := Point3.Y + Mdy;
+      Mouse.CursorPos := Point3;
+      Resized := True;
     end;
   end;
 
 begin
   inherited;
-  if shift = [] then Exit;
-  pt1 := Mouse.CursorPos;
-  pt.x := X;
-  pt.Y := Y;
-  dx := pt.x - FMemMousePos.x;
-  dy := pt.y - FMemMousePos.y;
-  if (dx = 0) and (dy = 0) then Exit;
-  FMoved:= True;
-  if abs(dy) > 3*abs(dx)
-    then dx:= 0
-    else dy:= 0;
+  if Shift = [] then
+    Exit;
+  Point2 := Mouse.CursorPos;
+  Point1.X := X;
+  Point1.Y := Y;
+  DeltaX := Point1.X - FMemMousePos.X;
+  DeltaY := Point1.Y - FMemMousePos.Y;
+  if (DeltaX = 0) and (DeltaY = 0) then
+    Exit;
+  FMoved := True;
+  if Abs(DeltaY) > 3 * Abs(DeltaX) then
+    DeltaX := 0
+  else
+    DeltaY := 0;
 
-  IntersectRect(r, Parent.ClientRect, BoundsRect);
-  r.TopLeft := Parent.ClientToScreen(r.TopLeft);
-  r.BottomRight := Parent.ClientToScreen(r.BottomRight);
+  IntersectRect(Rect1, Parent.ClientRect, BoundsRect);
+  Rect1.TopLeft := Parent.ClientToScreen(Rect1.TopLeft);
+  Rect1.BottomRight := Parent.ClientToScreen(Rect1.BottomRight);
 
-  if (not PtInRect(r, pt1)) and (not (FIsRectSelecting or FIsMoving)) then
+  if (not PtInRect(Rect1, Point2)) and (not(FIsRectSelecting or FIsMoving)) then
     ReleaseCapture
-  else begin
-    found:= FindVCLWindow(pt1);
-    if FIsRectSelecting then begin
-      FMemMousePos := pt;
+  else
+  begin
+    Found := FindVCLWindow(Point2);
+    if FIsRectSelecting then
+    begin
+      FMemMousePos := Point1;
       Canvas.Brush.Style := bsClear;
       Canvas.Pen.Color := clSilver;
       Canvas.Pen.Mode := pmXor;
@@ -1389,66 +1591,84 @@ begin
       FSelectRect.BottomRight := FMemMousePos;
       Canvas.Rectangle(FSelectRect);
     end
-    else if ssLeft in Shift then begin
-      //  Move the selected boxes
-      if (Abs(dx) + Abs(dy) > 5) or FIsMoving then begin
-        Resized:= False;
-        MovedRect:= Rect(MaxInt, 0, 0, 0);
-        MovedRectWithoutConnections:= Rect(MaxInt, 0, 0, 0);
-        for i:= 0 to FManagedObjects.Count -1 do // ResumeDrawing
-          SendMessage((TManagedObject(FManagedObjects[i]).FControl as TWinControl).Handle , WM_SETREDRAW, 1, 0);
-        for i:= 0 to FManagedObjects.Count -1 do begin
-          mcont:= TManagedObject(FManagedObjects[i]);
-          if not mcont.Visible then Continue;
+    else if ssLeft in Shift then
+    begin
+      // Move the FSelected boxes
+      if (Abs(DeltaX) + Abs(DeltaY) > 5) or FIsMoving then
+      begin
+        Resized := False;
+        MovedRect := Rect(MaxInt, 0, 0, 0);
+        MovedRectWithoutConnections := Rect(MaxInt, 0, 0, 0);
+        for var I := 0 to FManagedObjects.Count - 1 do // ResumeDrawing
+          SendMessage((TManagedObject(FManagedObjects[I])
+            .FControl as TWinControl).Handle, WM_SETREDRAW, 1, 0);
+        for var I := 0 to FManagedObjects.Count - 1 do
+        begin
+          MCont := TManagedObject(FManagedObjects[I]);
+          if not MCont.Visible then
+            Continue;
 
-          curr:= TCrackControl(mcont.FControl);
-          if TManagedObject(FManagedObjects[i]).Selected then begin
-            mRectDxDy:= curr.BoundsRect;
+          Curr := TCrackControl(MCont.FControl);
+          if TManagedObject(FManagedObjects[I]).FSelected then
+          begin
+            MRectDxDy := Curr.BoundsRect;
 
             // debug
-            //  Canvas.Brush.Color:= clBlue;
-            //  Canvas.FrameRect(mRectDxDy);
+            // Canvas.Brush.Color:= clBlue;
+            // Canvas.FrameRect(MRectDxDy);
 
-            if (curr.Left + dx >= 0) and (dx <> 0) then
-              curr.Left:= curr.Left + dx;
-            if dy <> 0 then
-              for j:= 0 to FManagedObjects.Count -1 do
-                TManagedObject(FManagedObjects[j]).FControl.Top:=
-                  Min(Max(TManagedObject(FManagedObjects[j]).FControl.Top + dy, minTop), 500);
-            rt:= curr.BoundsRect;
-            mRectDxDy.Union(rt);
+            if (Curr.Left + DeltaX >= 0) and (DeltaX <> 0) then
+              Curr.Left := Curr.Left + DeltaX;
+            if DeltaY <> 0 then
+              for var J := 0 to FManagedObjects.Count - 1 do
+                TManagedObject(FManagedObjects[J]).FControl.Top :=
+                  Min(Max(TManagedObject(FManagedObjects[J]).FControl.Top
+                  + DeltaY, MinTop), 500);
+            Rect2 := Curr.BoundsRect;
+            MRectDxDy.Union(Rect2);
 
             // scrolling
-            if curr.Left + curr.Width + 50 > Width then begin
-              Width:= curr.Left + curr.Width + 50;
-              Resized:= True;
+            if Curr.Left + Curr.Width + 50 > Width then
+            begin
+              Width := Curr.Left + Curr.Width + 50;
+              Resized := True;
             end;
-            if curr.Top + curr.Height + 50 > Height then begin
-              Height:= curr.Top + curr.Height + 50;
-              Resized:= True;
+            if Curr.Top + Curr.Height + 50 > Height then
+            begin
+              Height := Curr.Top + Curr.Height + 50;
+              Resized := True;
             end;
 
-            if MovedRect.Left = MaxInt
-              then MovedRect:= mRectDxDy
-              else UnionRect(MovedRect, mRectDxDy, MovedRect);
+            if MovedRect.Left = MaxInt then
+              MovedRect := MRectDxDy
+            else
+              UnionRect(MovedRect, MRectDxDy, MovedRect);
 
-            if MovedRectWithoutConnections.Left = MaxInt
-              then MovedRectWithoutConnections:= mRectDxDy
-              else UnionRect(MovedRectWithoutConnections, mRectDxDy, MovedRectWithoutConnections);
+            if MovedRectWithoutConnections.Left = MaxInt then
+              MovedRectWithoutConnections := MRectDxDy
+            else
+              UnionRect(MovedRectWithoutConnections, MRectDxDy,
+                MovedRectWithoutConnections);
 
             // debug
-            //   Canvas.Brush.Color:= clRed;
-            //   Canvas.FrameRect(MovedRect);
+            // Canvas.Brush.Color:= clRed;
+            // Canvas.FrameRect(MovedRect);
 
-            Src:= mcont.FControl;
-            for j:= 0 to FManagedObjects.Count-1 do begin
-              if not TManagedObject(FManagedObjects[j]).Visible then Continue;
-              Dest:= TManagedObject(FManagedObjects[j]).FControl;
-              for k:= 0 to FConnections.Count-1 do begin
-                Connect:= TConnection(FConnections[k]);
-                if ((Connect.FFrom = Src) and (Connect.FTo = Dest)) or
-                   ((Connect.FFrom = Dest) and (Connect.FTo = Src)) then begin
-                  UnionRect(MovedRect, connect.hasRect, MovedRect);
+            Src := MCont.FControl;
+            for var J := 0 to FManagedObjects.Count - 1 do
+            begin
+              if not TManagedObject(FManagedObjects[J]).Visible then
+                Continue;
+              Dest := TManagedObject(FManagedObjects[J]).FControl;
+              for var K := 0 to FConnections.Count - 1 do
+              begin
+                Connect := TConnection(FConnections[K]);
+                if ((Connect.FStartControl = Src) and
+                  (Connect.FEndControl = Dest)) or
+                  ((Connect.FStartControl = Dest) and
+                  (Connect.FEndControl = Src)) then
+                begin
+                  UnionRect(MovedRect, Connect.HasRect, MovedRect);
                 end;
               end;
             end;
@@ -1456,133 +1676,139 @@ begin
         end;
 
         // debug
-        //   Canvas.Brush.Color:= clRed;
-        //   Canvas.FrameRect(MovedRect);
+        // Canvas.Brush.Color:= clRed;
+        // Canvas.FrameRect(MovedRect);
 
-        IsModified:= True;
-        FMemMousePos:= pt;
-        FIsMoving:= True;
+        IsModified := True;
+        FMemMousePos := Point1;
+        FIsMoving := True;
 
         if MovedRect.Left <> MaxInt then
           InMakeVisible(MovedRectWithoutConnections);
 
         if Resized then
-          MovedRect:= Boundsrect;
+          MovedRect := BoundsRect;
         Invalidate;
 
-      end else if Assigned(found) then begin
-        if Assigned(TCrackControl(found).OnMouseMove) then begin
-          p2 := found.ScreenToClient(pt);
-          TCrackControl(found).OnMouseMove(found, Shift, p2.x, p2.y);
+      end
+      else if Assigned(Found) then
+      begin
+        if Assigned(TCrackControl(Found).OnMouseMove) then
+        begin
+          Point3 := Found.ScreenToClient(Point1);
+          TCrackControl(Found).OnMouseMove(Found, Shift, Point3.X, Point3.Y);
         end;
-      end;  
+      end;
     end;
   end;
 end;
 
-procedure TSequencePanel.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TSequencePanel.MouseUp(Button: TMouseButton; Shift: TShiftState;
+  X, Y: Integer);
 var
-  pt: TPoint;
-  r: TRect;
+  Point: TPoint;
+  Rect: TRect;
 begin
   inherited;
   FIsMoving := False;
-  pt.X := X;
-  pt.Y := Y;
-  IntersectRect(r, Parent.ClientRect, BoundsRect);
-  r.TopLeft := Parent.ClientToScreen(r.TopLeft);
-  r.BottomRight := Parent.ClientToScreen(r.BottomRight);
-  r.TopLeft := ScreenToClient(r.TopLeft);
-  r.BottomRight := ScreenToClient(r.BottomRight);
+  Point.X := X;
+  Point.Y := Y;
+  IntersectRect(Rect, Parent.ClientRect, BoundsRect);
+  Rect.TopLeft := Parent.ClientToScreen(Rect.TopLeft);
+  Rect.BottomRight := Parent.ClientToScreen(Rect.BottomRight);
+  Rect.TopLeft := ScreenToClient(Rect.TopLeft);
+  Rect.BottomRight := ScreenToClient(Rect.BottomRight);
 
-  if FIsRectSelecting then begin
+  if FIsRectSelecting then
+  begin
     Canvas.Brush.Style := bsClear;
     Canvas.Pen.Mode := pmXor;
     Canvas.Pen.Width := 0;
     Canvas.Rectangle(FSelectRect);
     SelectObjectsInRect(FSelectRect);
-    if Assigned(OnSelectionChanged) then
-      OnSelectionChanged(nil);
-  end else
-    if PtInRect(r, pt) then
-      SetCaptureControl(nil);
+    if Assigned(FOnSelectionChanged) then
+      FOnSelectionChanged(nil);
+  end
+  else if PtInRect(Rect, Point) then
+    SetCaptureControl(nil);
   if FMoved then
     ShowAll;
-  FIsRectSelecting:= False;
-  FMoved:= False;
+  FIsRectSelecting := False;
+  FMoved := False;
 end;
 
-function TSequencePanel.DoMouseWheel(Shift: TShiftState;
-  WheelDelta: Integer; MousePos: TPoint): Boolean;
+function TSequencePanel.DoMouseWheel(Shift: TShiftState; WheelDelta: Integer;
+  MousePos: TPoint): Boolean;
 
-  const WHEEL_DIVISOR = 120; // Mouse Wheel standard
-  var mdy: Integer;
+const
+  WHEEL_DIVISOR = 120; // Mouse Wheel standard
+var
+  Mdy: Integer;
 begin
-  mdy := TScrollBox(Parent).VertScrollBar.Position - WheelDelta;
-  TScrollBox(Parent).VertScrollBar.Position:= mdy;
+  Mdy := TScrollBox(Parent).VertScrollBar.Position - WheelDelta;
+  TScrollBox(Parent).VertScrollBar.Position := Mdy;
   Result := True;
 end;
 
 procedure TSequencePanel.OnManagedObjectClick(Sender: TObject);
-var
-  inst: TManagedObject;
 begin
-  inst:= FindManagedControl(Sender as TControl);
-  if Assigned(inst) and Assigned(inst.FOnClick) then
-    inst.FOnClick(Sender);
+  var Control := FindManagedControl(Sender as TControl);
+  if Assigned(Control) and Assigned(Control.FOnClick) then
+    Control.FOnClick(Sender);
 end;
 
 procedure TSequencePanel.OnManagedObjectDblClick(Sender: TObject);
 var
-  inst: TManagedObject;
+  Control: TManagedObject;
   Conn: TConnection;
 begin
-  inst:= FindManagedControl(Sender as TControl);
-  if Assigned(inst) and Assigned(inst.FOnDblClick) then begin
-    MouseDownOK:= False;
+  Control := FindManagedControl(Sender as TControl);
+  if Assigned(Control) and Assigned(Control.FOnDblClick) then
+  begin
+    FMouseDownOK := False;
     ClearSelection;
-    conn:= getClickedConnection;
-    if Assigned(conn) then begin
-      conn.selected:= True;
+    Conn := GetClickedConnection;
+    if Assigned(Conn) then
+    begin
+      Conn.FSelected := True;
       SelectConnection;
-    end else
-      inst.FOnDblClick(Sender);
+    end
+    else
+      Control.FOnDblClick(Sender);
   end;
 end;
 
 procedure TSequencePanel.OnManagedObjectMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
-  pt: TPoint;
+  Point: TPoint;
 begin
-  if (not Focused) or (GetCaptureControl<>Self) then begin
+  if not Focused or (GetCaptureControl <> Self) then
+  begin
     // Call the essConnectpanel MouseDown instead.
-    pt.x := X;
-    pt.y := Y;
-    pt := (Sender as TControl).ClientToScreen(pt);
-    pt := ScreenToClient(pt);
-    MouseDown(Button, Shift, pt.x, pt.y);
+    Point.X := X;
+    Point.Y := Y;
+    Point := (Sender as TControl).ClientToScreen(Point);
+    Point := ScreenToClient(Point);
+    MouseDown(Button, Shift, Point.X, Point.Y);
   end;
 end;
 
 procedure TSequencePanel.OnManagedObjectMouseMove(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
-var
-  inst: TManagedObject;
 begin
-  inst := FindManagedControl(Sender as TControl);
-  if Assigned(inst) and Assigned(inst.FOnMouseMove)
-    then inst.FOnMouseMove(Sender,Shift,X,Y);
+  var Control := FindManagedControl(Sender as TControl);
+  if Assigned(Control) and Assigned(Control.FOnMouseMove) then
+    Control.FOnMouseMove(Sender, Shift, X, Y);
 end;
 
 procedure TSequencePanel.OnManagedObjectMouseUp(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var
-  inst: TManagedObject;
+
 begin
-  inst := FindManagedControl(Sender as TControl);
-  if Assigned(inst) and Assigned(inst.FOnMouseUp)
-    then inst.FOnMouseUp(Sender,Button,Shift,X,Y);
+  var Control := FindManagedControl(Sender as TControl);
+  if Assigned(Control) and Assigned(Control.FOnMouseUp) then
+    Control.FOnMouseUp(Sender, Button, Shift, X, Y);
 end;
 
 procedure TSequencePanel.Paint;
@@ -1590,170 +1816,181 @@ begin
   Canvas.Pen.Mode := pmCopy;
   if Assigned(FBackBitmap) then
     Canvas.Brush.Bitmap := FBackBitmap;
-  Canvas.Pen.Color:= FGColor;
-  Canvas.Brush.Color:= BGColor;
+  Canvas.Pen.Color := FForegroundColor;
+  Canvas.Brush.Color := FBackgroundColor;
   Canvas.FillRect(ClientRect);
-  Canvas.Font:= Font;
-  Canvas.Font.Color:= FGColor;
+  Canvas.Font := Font;
+  Canvas.Font.Color := FForegroundColor;
   ShowConnections;
-  for var i:= 0 to FManagedObjects.Count -1 do
-    if TManagedObject(FManagedObjects[i]).FControl.Visible then
-      TManagedObject(FManagedObjects[i]).FControl.Invalidate;
+  for var I := 0 to FManagedObjects.Count - 1 do
+    if TManagedObject(FManagedObjects[I]).FControl.Visible then
+      TManagedObject(FManagedObjects[I]).FControl.Invalidate;
 end;
 
 procedure TSequencePanel.ShowConnections;
-  var i: Integer; Conn: TConnection;
 begin
-  for i:= 0 to FConnections.Count -1 do begin
-    Conn:= (FConnections[i] as TConnection);
-    if Conn.FFrom.Visible and Conn.FTo.Visible then
+  for var I := 0 to FConnections.Count - 1 do
+  begin
+    var Conn := (FConnections[I] as TConnection);
+    if Conn.FStartControl.Visible and Conn.FEndControl.Visible then
       Conn.Draw(Canvas);
   end;
 end;
 
 procedure TSequencePanel.RecalcSize;
-  var i, xmax, ymax: Integer;
+var
+  XMax, YMax: Integer;
 begin
-  if Assigned(Parent) then begin
-    xmax:= Parent.Width - 4; // 300;
-    ymax:= Parent.Height- 4; // 150;
-  end else begin
-    xmax:= 300;
-    ymax:= 150;
+  if Assigned(Parent) then
+  begin
+    XMax := Parent.Width - 4; // 300;
+    YMax := Parent.Height - 4; // 150;
+  end
+  else
+  begin
+    XMax := 300;
+    YMax := 150;
   end;
-  for i:= 0 to ControlCount - 1 do begin
-    if (Controls[i].Align <> alNone) or (not Controls[i].Visible) then
+  for var I := 0 to ControlCount - 1 do
+  begin
+    if (Controls[I].Align <> alNone) or (not Controls[I].Visible) then
       Continue;
-    xmax:= Max(xmax, Controls[i].Left + Controls[i].Width + 20);
-    ymax:= Max(ymax, Controls[i].Top + Controls[i].Height + 20);
+    XMax := Max(XMax, Controls[I].Left + Controls[I].Width + 20);
+    YMax := Max(YMax, Controls[I].Top + Controls[I].Height + 20);
   end;
-  if (Width <> xmax) or (Height <> ymax) then
-    SetBounds(Left, Top, xmax, ymax);
-  if Assigned(OnContentChanged) then
-    OnContentChanged(nil);
+  if (Width <> XMax) or (Height <> YMax) then
+    SetBounds(Left, Top, XMax, YMax);
+  if Assigned(FOnContentChanged) then
+    FOnContentChanged(nil);
 end;
 
-procedure TSequencePanel.GetDiagramSize(var W, H: Integer);
-  var i: Integer;
+procedure TSequencePanel.GetDiagramSize(var Width, Height: Integer);
 begin
-  W:= 300;
-  H:= 150;
-  for i:= 0 to ControlCount - 1 do begin
-    if (Controls[i].Align <> alNone) or (not Controls[i].Visible) then
+  Width := 300;
+  Height := 150;
+  for var I := 0 to ControlCount - 1 do
+  begin
+    if (Controls[I].Align <> alNone) or (not Controls[I].Visible) then
       Continue;
-    W:= Max(W, Controls[i].Left + Controls[i].Width + 10);
-    H:= Max(H, Controls[i].Top + Controls[i].Height + 10);
+    Width := Max(Width, Controls[I].Left + Controls[I].Width + 10);
+    Height := Max(Height, Controls[I].Top + Controls[I].Height + 10);
   end;
 end;
 
 procedure TSequencePanel.SelectObjectsInRect(SelRect: TRect);
 var
-  i: Integer;
-  r1, r2: TRect;
+  Rect1, Rect2: TRect;
 begin
-  r1 := SelRect;
-  if SelRect.Top > SelRect.Bottom then begin
-    SelRect.Top := r1.Bottom;
-    SelRect.Bottom := r1.Top;
+  Rect1 := SelRect;
+  if SelRect.Top > SelRect.Bottom then
+  begin
+    SelRect.Top := Rect1.Bottom;
+    SelRect.Bottom := Rect1.Top;
   end;
-  if SelRect.Left > SelRect.Right then begin
-    SelRect.Left := r1.Right;
-    SelRect.Right := r1.Left;
+  if SelRect.Left > SelRect.Right then
+  begin
+    SelRect.Left := Rect1.Right;
+    SelRect.Right := Rect1.Left;
   end;
 
-  for i:= 0 to FManagedObjects.Count - 1 do begin
-    if Assigned(TManagedObject(FManagedObjects[i]).FControl) then begin
-      r1 := TCrackControl(TManagedObject(FManagedObjects[i]).FControl).BoundsRect;
-      IntersectRect(r2, SelRect, r1);
-      if EqualRect(r1, r2) and TManagedObject(FManagedObjects[i]).FControl.Visible then
-        TManagedObject(FManagedObjects[i]).Selected := True;
-      if Assigned(OnSelectionChanged) then
-        OnSelectionChanged(nil);
+  for var I := 0 to FManagedObjects.Count - 1 do
+  begin
+    if Assigned(TManagedObject(FManagedObjects[I]).FControl) then
+    begin
+      Rect1 := TCrackControl(TManagedObject(FManagedObjects[I]).FControl)
+        .BoundsRect;
+      IntersectRect(Rect2, SelRect, Rect1);
+      if EqualRect(Rect1, Rect2) and TManagedObject(FManagedObjects[I])
+        .FControl.Visible then
+        TManagedObject(FManagedObjects[I]).FSelected := True;
+      if Assigned(FOnSelectionChanged) then
+        FOnSelectionChanged(nil);
     end;
   end;
 end;
 
 procedure TSequencePanel.SetFocus;
 var
-  F : TCustomForm;
-  X, Y : Integer;
+  Form: TCustomForm;
+  XPos, YPos: Integer;
 begin
-  F := GetParentForm(Self);
+  Form := GetParentForm(Self);
 
   // Try to see if we can call inherited, otherwise there is a risc of getting
   // 'Cannot focus' exception when starting from delphi-tools.
-  if CanFocus and Assigned(F) and F.Active then
+  if CanFocus and Assigned(Form) and Form.Active then
   begin
     // To avoid having the scrollbox resetting its positions after a setfocus call.
-    X := (Parent as TScrollBox).HorzScrollBar.Position;
-    Y := (Parent as TScrollBox).VertScrollBar.Position;
+    XPos := (Parent as TScrollBox).HorzScrollBar.Position;
+    YPos := (Parent as TScrollBox).VertScrollBar.Position;
     inherited;
-    (Parent as TScrollBox).HorzScrollBar.Position := X;
-    (Parent as TScrollBox).VertScrollBar.Position := Y;
+    (Parent as TScrollBox).HorzScrollBar.Position := XPos;
+    (Parent as TScrollBox).VertScrollBar.Position := YPos;
   end;
 end;
 
-procedure TSequencePanel.SetModified(const Value : Boolean);
+procedure TSequencePanel.SetModified(const Value: Boolean);
 begin
-  if FIsModified <> Value then begin
-    FIsModified:= Value;
-    if Assigned(OnModified) then
-      OnModified(nil);
+  if FIsModified <> Value then
+  begin
+    FIsModified := Value;
+    if Assigned(FOnModified) then
+      FOnModified(nil);
   end;
 end;
 
-procedure TSequencePanel.SetLocked(const Value : Boolean);
+procedure TSequencePanel.SetLocked(const Value: Boolean);
 begin
-  if FIsLocked <> Value then begin
-    FIsLocked:= Value;
+  if FIsLocked <> Value then
+  begin
+    FIsLocked := Value;
     if not FIsLocked then
       ShowAll;
   end;
 end;
 
-procedure TSequencePanel.SetSelectedOnly(const Value : Boolean);
-var
-  I : Integer;
+procedure TSequencePanel.SetSelectedOnly(const Value: Boolean);
 begin
   if FSelectedOnly <> Value then
   begin
     FSelectedOnly := Value;
     if FSelectedOnly then
     begin
-      TempHidden.Clear;
-      for i:=0 to FManagedObjects.Count -1 do
-        if (not TManagedObject(FManagedObjects[i]).Selected) and TManagedObject(FManagedObjects[i]).FControl.Visible then
+      FTempHidden.Clear;
+      for var I := 0 to FManagedObjects.Count - 1 do
+        if (not TManagedObject(FManagedObjects[I]).FSelected) and
+          TManagedObject(FManagedObjects[I]).FControl.Visible then
         begin
-          TManagedObject(FManagedObjects[i]).FControl.Visible := False;
-          TempHidden.Add( TObject(FManagedObjects[i]) );
+          TManagedObject(FManagedObjects[I]).FControl.Visible := False;
+          FTempHidden.Add(TObject(FManagedObjects[I]));
         end;
     end
     else
     begin
-      for I := 0 to TempHidden.Count-1 do
-        TManagedObject(TempHidden[I]).FControl.Visible := True;
-      TempHidden.Clear;
+      for var I := 0 to FTempHidden.Count - 1 do
+        TManagedObject(FTempHidden[I]).FControl.Visible := True;
+      FTempHidden.Clear;
     end;
   end;
 end;
 
 procedure TSequencePanel.KeyUp(var Key: Word; Shift: TShiftState);
 begin
-  if Key = VK_DELETE then begin
+  if Key = VK_DELETE then
+  begin
     DeleteSelectedConnection;
     Invalidate;
   end;
 end;
 
-procedure TSequencePanel.setFont(aFont: TFont);
-  var i: Integer;
+procedure TSequencePanel.SetFont(AFont: TFont);
 begin
-  Self.Font.Assign(aFont);
-  for i:= 0 to FConnections.Count - 1 do
-    TConnection(FConnections[i]).setFont(aFont);
+  Font.Assign(AFont);
+  for var I := 0 to FConnections.Count - 1 do
+    TConnection(FConnections[I]).SetFont(AFont);
 end;
 
-procedure TSequencePanel.clear;
+procedure TSequencePanel.Clear;
 begin
   Canvas.FrameRect(ClientRect);
 end;
@@ -1762,17 +1999,18 @@ procedure TSequencePanel.ChangeStyle(BlackAndWhite: Boolean = False);
 begin
   if StyleServices.IsSystemStyle or BlackAndWhite then
   begin
-    BGColor := clWhite;
-    FGColor := clBlack;
+    FBackgroundColor := clWhite;
+    FForegroundColor := clBlack;
   end
   else
   begin
-    BGColor := StyleServices.GetStyleColor(scPanel);
-    FGColor := StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
+    FBackgroundColor := StyleServices.GetStyleColor(scPanel);
+    FForegroundColor := StyleServices.GetStyleFontColor
+      (sfTabTextInactiveNormal);
   end;
-  Color := BGColor;
-  Canvas.Pen.Color := FGColor;
-  Canvas.Brush.Color := BGColor;
+  Color := FBackgroundColor;
+  Canvas.Pen.Color := FForegroundColor;
+  Canvas.Brush.Color := FBackgroundColor;
 
   for var I := 0 to FConnections.Count - 1 do
     TConnection(FConnections[I]).ChangeStyle(BlackAndWhite);
@@ -1790,7 +2028,8 @@ begin
   Count := 0;
   Result := Rect(MaxInt, MaxInt, 0, 0);
   if Assigned(FManagedObjects) then
-    for var I := 0 to FManagedObjects.Count - 1 do begin
+    for var I := 0 to FManagedObjects.Count - 1 do
+    begin
       Control := TManagedObject(FManagedObjects[I]).FControl;
       ARect := Control.BoundsRect;
       if ARect.Top < Result.Top then
@@ -1807,12 +2046,12 @@ begin
     Result := Rect(0, 0, 0, 0);
 end;
 
-{--- TManagedObject -----------------------------------------------------------}
+{ --- TManagedObject ----------------------------------------------------------- }
 
 constructor TManagedObject.Create;
 begin
   inherited;
-  FControl:= nil;
+  FControl := nil;
 end;
 
 procedure TManagedObject.SetSelected(const Value: Boolean);

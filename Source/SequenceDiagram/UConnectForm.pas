@@ -10,8 +10,16 @@ unit UConnectForm;
 interface
 
 uses
-  Windows, Classes, Controls, StdCtrls, ComCtrls, ImgList, ImageList,
-  dlgPyIDEBase, USequencePanel, Vcl.VirtualImageList;
+  Windows,
+  Classes,
+  Controls,
+  StdCtrls,
+  ComCtrls,
+  ImgList,
+  ImageList,
+  Vcl.VirtualImageList,
+  dlgPyIDEBase,
+  USequencePanel;
 
 type
 
@@ -34,17 +42,21 @@ type
     procedure LBConnectionsDblClick(Sender: TObject);
     procedure LBConnectionsClick(Sender: TObject);
   private
-    ILConnections: TVirtualImageList;
-    isTurned: Boolean;
+    FILConnections: TVirtualImageList;
+    FIsTurned: Boolean;
   public
-    LNGClose: string;
-    procedure init(IsConnecting: Boolean; conn: TConnection; SelectedControls: Integer);
-    function getConnectionAttributes: TConnectionAttributes;
+    procedure Init(IsConnecting: Boolean; Conn: TConnection; SelectedControls: Integer);
+    function GetConnectionAttributes: TConnectionAttributes;
   end;
 
 implementation
 
-uses SysUtils, Graphics, Forms, Themes, uCommonFunctions, UConfiguration;
+uses
+  SysUtils,
+  Graphics,
+  Forms,
+  Themes,
+  UConfiguration;
 
 {$R *.dfm}
 
@@ -54,8 +66,8 @@ begin
   LBConnections.Color:= StyleServices.GetSystemColor(clWindow);
   LBConnections.ItemHeight:= LBConnections.Height div LBConnections.Items.Count;
   if TFConfiguration.isDark
-    then ILConnections:= vilConnectionsDark
-    else ILConnections:= vilConnectionsLight;
+    then FILConnections:= vilConnectionsDark
+    else FILConnections:= vilConnectionsLight;
 end;
 
 procedure TFConnectForm.FormShow(Sender: TObject);
@@ -73,12 +85,12 @@ end;
 procedure TFConnectForm.LBConnectionsDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 begin
-  var aCaption:= (Control as TListBox).Items[Index];
-  var aCanvas:= (Control as TListBox).Canvas;
-  aCanvas.FillRect(Rect);
-  ILConnections.SetSize(Rect.Height, Rect.Height);
-  ILConnections.Draw(aCanvas, 4, Rect.Top, 12 + Index);
-  aCanvas.TextOut(4 + ILConnections.Width + 8, Rect.Top + 2, aCaption);
+  var ACaption:= (Control as TListBox).Items[Index];
+  var ACanvas:= (Control as TListBox).Canvas;
+  ACanvas.FillRect(Rect);
+  FILConnections.SetSize(Rect.Height, Rect.Height);
+  FILConnections.Draw(ACanvas, 4, Rect.Top, 12 + Index);
+  ACanvas.TextOut(4 + FILConnections.Width + 8, Rect.Top + 2, ACaption);
 end;
 
 procedure TFConnectForm.LBConnectionsClick(Sender: TObject);
@@ -91,7 +103,7 @@ begin
   ModalResult:= mrOk;
 end;
 
-procedure TFConnectForm.init(IsConnecting: Boolean; conn: TConnection; SelectedControls: Integer);
+procedure TFConnectForm.Init(IsConnecting: Boolean; Conn: TConnection; SelectedControls: Integer);
 begin
   if IsConnecting then begin
     BTurn.Enabled:= False;
@@ -101,11 +113,11 @@ begin
     BTurn.Enabled:= True;
     BDelete.Enabled:= True;
   end;
-  if Assigned(conn) then begin
-    ERelation.Text:= conn.aMessage;
-    LBConnections.ItemIndex:= Ord(conn.ArrowStyle);
-    IsTurned:= False;
-    if conn.isRecursiv then begin
+  if Assigned(Conn) then begin
+    ERelation.Text:= Conn.AMessage;
+    LBConnections.ItemIndex:= Ord(Conn.ArrowStyle);
+    FIsTurned:= False;
+    if Conn.IsRecursiv then begin
       LBConnections.Items.Delete(4);
       LBConnections.Items.Delete(3);
     end;
@@ -115,18 +127,17 @@ begin
   end;
 end;
 
-function TFConnectForm.getConnectionAttributes: TConnectionAttributes;
-  var s: string;
+function TFConnectForm.GetConnectionAttributes: TConnectionAttributes;
 begin
   Result:= TConnectionAttributes.Create;
   Result.ArrowStyle:= TArrowStyle(LBConnections.ItemIndex);
   if Result.ArrowStyle = casClose then begin
-    s:= Trim(ERelation.Text);
-    if s = '' then
-      s:= LNGClose;
-    ERelation.Text:= s;
+    var Str:= Trim(ERelation.Text);
+    if Str = '' then
+      Str:= GuiPyLanguageOptions.SDClose;
+    ERelation.Text:= Str;
   end;
-  Result.aMessage:= ERelation.Text;
+  Result.AMessage:= ERelation.Text;
 end;
 
 end.
