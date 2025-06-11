@@ -174,7 +174,7 @@ type
     procedure MakeConnection;
     procedure ObjectDelete;
     procedure Print; override;
-    function getAsStringList: TStringList; override;
+    function GetAsStringList: TStringList; override;
     procedure DoExport; override;
     procedure SetOptions; override;
     procedure DPIChanged; override;
@@ -292,7 +292,7 @@ begin
   end;
 end;
 
-function TFSequenceForm.getAsStringList: TStringList;
+function TFSequenceForm.GetAsStringList: TStringList;
 var
   Lifeline: TLifeline;
   ConnStr: string;

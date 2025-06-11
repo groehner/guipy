@@ -23,7 +23,7 @@ const
 
 function CtrlPressed: Boolean;
 procedure ErrorMsg(const s: string);
-function myStringReplace(ImString: string; const DenString, DurchString: string): string;
+function MyStringReplace(ImString: string; const DenString, DurchString: string): string;
 function HideCrLf(const s: string): string;
 function UnHideCrLf(const s: string): string;
 function Split(Delimiter: Char; Input: string): TStringList;
@@ -68,13 +68,13 @@ function IsDigit(c: char): Boolean;
 function WindowStateToStr(W: TWindowState): string;
 function StrToWindowState(const s: string): TWindowState;
 function WithoutGeneric(s: string): string;
-function getShortType(s: string): string;
-function getShortTypeWith(s: string): string;
-function getShortMethod(s: string): string;
+function GetShortType(s: string): string;
+function GetShortTypeWith(s: string): string;
+function GetShortMethod(s: string): string;
 function GenericOf(const s: string): string;
 function VisibilityAsString(vis: TVisibility) : string;
 function String2Visibility(const s: string): TVisibility;
-function isPythonType(aType: string): Boolean;
+function IsPythonType(aType: string): Boolean;
 function hasClassExtension(const Pathname: string): Boolean;
 function hasPythonExtension(const Pathname: string): Boolean;
 function ValidFilename(s: string): Boolean;
@@ -143,6 +143,7 @@ function encodeQuotationMark(const s: string): string;
 function myMulDiv(nNumber, nNumerator, nDenominator: Integer): Integer;
 procedure LockWindow(Handle: THandle);
 procedure UnLockWindow;
+function IsColorDark(AColor: TColor): Boolean;
 
 implementation
 
@@ -165,7 +166,7 @@ begin
   Result:= StringReplace(s, '\r\n', #13#10, [rfReplaceAll, rfIgnoreCase]);
 end;
 
-function myStringReplace(ImString: string; const DenString, DurchString: string): string;
+function MyStringReplace(ImString: string; const DenString, DurchString: string): string;
 begin
   Result:= StringReplace(ImString, DenString, DurchString, [rfReplaceAll, rfIgnoreCase]);
 end;
@@ -911,7 +912,7 @@ begin
   end;
 end;
 
-function isPythonType(aType: string): Boolean;
+function IsPythonType(aType: string): Boolean;
   const PythonTypes : array[0..39] of string =
      ('None', 'int', 'float', 'complex', 'str', 'bool', 'list', 'tuple', 'range',
       'set', 'dict', 'bytes', 'bytearray', 'memoryview', 'frozenset',
@@ -1724,6 +1725,15 @@ begin
     on E: EConvertError do
       Result := 0.0;
   end;
+end;
+
+function IsColorDark(AColor: TColor): Boolean;
+var
+  ACol: LongInt;
+begin
+  ACol := ColorToRGB(AColor) and $00FFFFFF;
+  Result := ((2.99 * GetRValue(ACol) + 5.87 * GetGValue(ACol) + 1.14 *
+    GetBValue(ACol)) < $400);
 end;
 
 end.

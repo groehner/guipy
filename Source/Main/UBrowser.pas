@@ -80,7 +80,7 @@ type
   public
     function OpenFile(const AFilename: string): Boolean; override;
     procedure OpenWindow(Sender: TObject); override;
-    function getAsStringList: TStringList; override;
+    function GetAsStringList: TStringList; override;
     procedure UploadFilesHttpPost(const URLstring: string;
       Names, Values, NFiles, VFiles: array of string);
     procedure ChangeStyle;
@@ -352,7 +352,7 @@ begin
     (WebBrowser.Document as IHTMLDocument2).parentWindow.focus;
 end;
 
-function TFBrowser.getAsStringList: TStringList;
+function TFBrowser.GetAsStringList: TStringList;
 var
   FileName: string;
 begin

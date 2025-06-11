@@ -1,25 +1,31 @@
-{-------------------------------------------------------------------------------
- Unit:     UPythonIntegrator
- Author:   Gerhard Röhner
- Date:     March 2021
- Purpose:  parser for python classes
--------------------------------------------------------------------------------}
-
+{ -------------------------------------------------------------------------------
+  Unit:     UPythonIntegrator
+  Author:   Gerhard Röhner
+  Date:     March 2021
+  Purpose:  parser for python classes
+  ------------------------------------------------------------------------------- }
 
 unit UPythonIntegrator;
 
 interface
 
-uses Classes, Contnrs, cPythonSourceScanner, uIntegrator, uModel, uModelEntity,
-     UUtils;
+uses
+  Classes,
+  Contnrs,
+  cPythonSourceScanner,
+  UIntegrator,
+  UModel,
+  UModelEntity,
+  UUtils;
 
 type
 
   // ordinary import of python code
   TPythonImporter = class(TImportIntegrator)
   public
-    procedure ImportOneFile(const FileName : string; withoutNeedSouce: Boolean = False); override;
-    class function GetFileExtensions : TStringList; override;
+    procedure ImportOneFile(const Filename: string;
+      WithoutNeedSouce: Boolean = False); override;
+    class function GetFileExtensions: TStringList; override;
   end;
 
   TPythonParser = class
@@ -27,29 +33,31 @@ type
     FModel: TAbstractPackage;
     FUnit: TUnitPackage;
     FOM: TObjectModel;
-    WithView: Boolean;
+    FWithView: Boolean;
     FWithoutNeedSource: Boolean;
-    fModule: TParsedModule;
-    fFileName: string;
-    ModVisibility: TVisibility;
-    //function ShowView(IsInner: Boolean): Boolean;
+    FModule: TParsedModule;
+    FFilename: string;
+    FModVisibility: TVisibility;
   public
-    constructor Create(aWithView: Boolean); virtual;
+    constructor Create(WithView: Boolean); virtual;
     procedure ParseModul(Module: TParsedModule; AModel: TAbstractPackage;
-      AOM: TObjectModel; FileName: string; Level: Integer; withoutNeedSource: Boolean);
-    procedure ParseClassDeclaration(ParsedClass: TParsedClass;
-      Level: Integer; const ParentName: string = '');
-    procedure ParseAttributes(C: TClass; Attributes: TObjectList; Level: Integer);
-    procedure ParseMethods(C: TClass; ParsedClass: TParsedClass; Level: Integer);
-    procedure DoOperation(ParsedFunction: TParsedFunction; O: TOperation;
-                const ParentName: string; Level: Integer);
+      AOM: TObjectModel; Filename: string; Level: Integer;
+      WithoutNeedSource: Boolean);
+    procedure ParseClassDeclaration(ParsedClass: TParsedClass; Level: Integer;
+      const ParentName: string = '');
+    procedure ParseAttributes(AClass: TClass; Attributes: TObjectList;
+      Level: Integer);
+    procedure ParseMethods(AClass: TClass; ParsedClass: TParsedClass;
+      Level: Integer);
+    procedure DoOperation(ParsedFunction: TParsedFunction;
+      Operation: TOperation; const ParentName: string; Level: Integer);
     procedure ParseFunction(ParsedFunction: TParsedFunction);
     function NeedClassifier(const ParentClass, CName: string): TClassifier;
-    procedure SetAttributeVisibility(M: TModelEntity);
-    procedure SetOperationVisibility(M: TModelEntity);
-    procedure SetVisibility(M: TModelEntity);
-    function IsTypename(const s: string): Boolean;
-    function IsReservedWord(const s: string): Boolean;
+    procedure SetAttributeVisibility(Model: TModelEntity);
+    procedure SetOperationVisibility(Model: TModelEntity);
+    procedure SetVisibility(Model: TModelEntity);
+    function IsTypename(const Identifier: string): Boolean;
+    function IsReservedWord(const Word: string): Boolean;
   end;
 
 implementation
@@ -59,38 +67,39 @@ uses SysUtils, Math, uEditAppIntfs, frmEditor, UConfiguration;
 { TPythonImporter }
 
 const
-  ReservedWords: array [0 .. 33] of string =
-    ('False', 'None', 'True', 'and', 'as', 'assert', 'async',
-     'await', 'break', 'class', 'def', 'del', 'elif',
-     'else', 'except', 'finally', 'for', 'from', 'global', 'if',
-     'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or',
-     'pass', 'raise', 'return', 'try', 'while', 'with', 'yield');
+  ReservedWords: array [0 .. 33] of string = ('False', 'None', 'True', 'and',
+    'as', 'assert', 'async', 'await', 'break', 'class', 'def', 'del', 'elif',
+    'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'in',
+    'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try',
+    'while', 'with', 'yield');
 
-
-procedure TPythonImporter.ImportOneFile(const FileName: string; withoutNeedSouce: Boolean);
+procedure TPythonImporter.ImportOneFile(const Filename: string;
+  WithoutNeedSouce: Boolean);
 var
   SourceScanner: IAsyncSourceScanner;
-  SL: TStringList;
+  StringList: TStringList;
   Module: TParsedModule;
   Parser: TPythonParser;
   Encoding: TEncoding;
   Editor: IEditor;
 begin
-  Encoding:= FConfiguration.getEncoding(FileName);
-  SL:= TStringList.Create;
-  Editor:= GI_EditorFactory.GetEditorByName(filename);
-  if Assigned(Editor)
-    then SL.Text:= (Editor.Form as TEditorForm).SynEdit.Text
-    else SL.LoadFromFile(FileName, Encoding);
-  SourceScanner := TAsynchSourceScanner.Create(FileName, SL.Text);
-  Module:= SourceScanner.ParsedModule;
-  Parser:= TPythonParser.Create(True);
+  Encoding := FConfiguration.getEncoding(Filename);
+  StringList := TStringList.Create;
+  Editor := GI_EditorFactory.GetEditorByName(Filename);
+  if Assigned(Editor) then
+    StringList.Text := (Editor.Form as TEditorForm).SynEdit.Text
+  else
+    StringList.LoadFromFile(Filename, Encoding);
+  SourceScanner := TAsynchSourceScanner.Create(Filename, StringList.Text);
+  Module := SourceScanner.ParsedModule;
+  Parser := TPythonParser.Create(True);
   try
-    Parser.ParseModul(Module, Model.ModelRoot, Model, FileName, 0, withoutNeedSouce);
+    Parser.ParseModul(Module, Model.ModelRoot, Model, Filename, 0,
+      WithoutNeedSouce);
   finally
     FreeAndNil(Parser);
   end;
-  FreeAndNil(SL);
+  FreeAndNil(StringList);
 end;
 
 class function TPythonImporter.GetFileExtensions: TStringList;
@@ -100,148 +109,160 @@ begin
   Result.Values['.pyw'] := 'Python';
 end;
 
-{--- TPythonParser ------------------------------------------------------------}
+{ --- TPythonParser ------------------------------------------------------------ }
 
-constructor TPythonParser.Create(aWithView: Boolean);
+constructor TPythonParser.Create(WithView: Boolean);
 begin
-  Self.WithView := aWithView;
-  ModVisibility:= viPublic;
+  FWithView := WithView;
+  FModVisibility := viPublic;
 end;
 
-procedure TPythonParser.ParseModul(Module: TParsedModule; AModel: TAbstractPackage;
-  AOM: TObjectModel; FileName: string; Level: Integer; withoutNeedSource: Boolean);
-  var aClassifier: TClassifier; aClass: TClass; i: Integer;
-    CE : TCodeElement;
+procedure TPythonParser.ParseModul(Module: TParsedModule;
+  AModel: TAbstractPackage; AOM: TObjectModel; Filename: string; Level: Integer;
+  WithoutNeedSource: Boolean);
+var
+  AClassifier: TClassifier;
+  AClass: TClass;
+  CodeElement: TCodeElement;
 begin
-  fModule:= Module;
+  FModule := Module;
   FModel := AModel;
-  fFilename:= FileName;
+  FFilename := Filename;
   FOM := AOM;
-  FWithoutNeedSource:= withoutNeedSource;
+  FWithoutNeedSource := WithoutNeedSource;
   FUnit := (FModel as TLogicPackage).FindUnitPackage('Default');
   if not Assigned(FUnit) then
     FUnit := (FModel as TLogicPackage).AddUnit('Default');
 
-  aClassifier:= FUnit.FindClass(FileName);
-  if Assigned(aClassifier) and aClassifier.SourceRead then begin
-    if aClassifier is TClass then begin
-      aClass:= aClassifier as TClass;
-      aClass.IsVisible:= True;
-      FUnit.AddClass(aClass);
+  AClassifier := FUnit.FindClass(Filename);
+  if Assigned(AClassifier) and AClassifier.SourceRead then
+  begin
+    if AClassifier is TClass then
+    begin
+      AClass := AClassifier as TClass;
+      AClass.IsVisible := True;
+      FUnit.AddClass(AClass);
     end;
     Exit;
   end;
 
-  for i:= 0 to Module.ChildCount - 1 do begin
-    CE := Module.Children[i];
-    if CE is TParsedClass then
-      ParseClassDeclaration(TParsedClass(CE), Level)
-    else if CE is TParsedFunction then
-      ParseFunction(TParsedFunction(CE));
+  for var I := 0 to Module.ChildCount - 1 do
+  begin
+    CodeElement := Module.Children[I];
+    if CodeElement is TParsedClass then
+      ParseClassDeclaration(TParsedClass(CodeElement), Level)
+    else if CodeElement is TParsedFunction then
+      ParseFunction(TParsedFunction(CodeElement));
   end;
 end;
 
 procedure TPythonParser.ParseClassDeclaration(ParsedClass: TParsedClass;
-      Level: Integer; const ParentName: string = '');
+  Level: Integer; const ParentName: string = '');
 var
-  C: TClass;
-  aClass: TClassifier;
-  aClassname: string;
-  i: Integer;
+  AClass: TClass;
+  AClassifier: TClassifier;
+  AClassname: string;
 begin
-  if Level > 0
-    then aClassname := ParentName + '.' + ParsedClass.Name
-    else aClassname := ParsedClass.Name;
-  C := FUnit.MakeClass(aClassname, FFilename);
-  C.Importname := aClassname;
-  //C.aGeneric := aGeneric;
-  C.Level := Level;
-  //C.anonym := anonym;
-  //C.IsVisible := ShowView(IsInner) and not anonym;
-  C.IsVisible:= True;
-  if C.IsVisible then
-    FUnit.AddClass(C);
-  SetVisibility(C);
-  C.LineS:= ParsedClass.CodeBlock.StartLine;
-  C.LineSE:= Max(ParsedClass.CodeBlock.LastCommentLine, ParsedClass.CodeBlock.StartLine);
-  C.LineE:= ParsedClass.CodeBlock.EndLine;
+  if Level > 0 then
+    AClassname := ParentName + '.' + ParsedClass.Name
+  else
+    AClassname := ParsedClass.Name;
+  AClass := FUnit.MakeClass(AClassname, FFilename);
+  AClass.Importname := AClassname;
+  AClass.Level := Level;
+  AClass.IsVisible := True;
+  if AClass.IsVisible then
+    FUnit.AddClass(AClass);
+  SetVisibility(AClass);
+  AClass.LineS := ParsedClass.CodeBlock.StartLine;
+  AClass.LineSE := Max(ParsedClass.CodeBlock.LastCommentLine,
+    ParsedClass.CodeBlock.StartLine);
+  AClass.LineE := ParsedClass.CodeBlock.EndLine;
 
-  if ParsedClass.SuperClasses.Count > 0 then  // ToDo only one superclass
-    for i:= 0 to ParsedClass.SuperClasses.Count - 1 do begin
-      aClass := NeedClassifier('', ParsedClass.SuperClasses[i]);
-      if Assigned(aClass) and (aClass is TClass) then
-        C.AddAncestors(aClass as TClass);
+  if ParsedClass.SuperClasses.Count > 0 then // ToDo only one superclass
+    for var I := 0 to ParsedClass.SuperClasses.Count - 1 do
+    begin
+      AClassifier := NeedClassifier('', ParsedClass.SuperClasses[I]);
+      if Assigned(AClassifier) and (AClassifier is TClass) then
+        AClass.AddAncestors(AClassifier as TClass);
     end;
-  ParseAttributes(C, ParsedClass.Attributes, Level);
-  ParseMethods(C, ParsedClass, Level);
+  ParseAttributes(AClass, ParsedClass.Attributes, Level);
+  ParseMethods(AClass, ParsedClass, Level);
 end;
 
-procedure TPythonParser.ParseAttributes(C: TClass; Attributes: TObjectList; Level: Integer);
-  var i: Integer;
-    SL: TStringList;
-    AttributeName, Variablename: string;
-    Attribute: TAttribute;
-    Variable: TVariable;
+procedure TPythonParser.ParseAttributes(AClass: TClass; Attributes: TObjectList;
+  Level: Integer);
+var
+  StringList: TStringList;
+  AttributeName, Variablename: string;
+  Attribute: TAttribute;
+  Variable: TVariable;
 begin
-  SL:= TStringList.Create;
-  for i:= 0 to Attributes.Count - 1 do begin
-    Variable:= TVariable(Attributes[i]);
-    AttributeName:= Variable.Name;
-    if SL.IndexOf(withoutArray(AttributeName)) = -1 then begin
-      SL.Add(AttributeName);
-      Attribute:= C.AddAttribute(AttributeName, nil);
-      Attribute.LineS:= Variable.CodePos.LineNo;
-      Attribute.LineE:= Variable.CodePos.LineNo;
-      Attribute.Static:= (vaClassAttribute in Variable.Attributes);
-      Attribute.IsFinal:= Variable.IsFinal;
+  StringList := TStringList.Create;
+  for var I := 0 to Attributes.Count - 1 do
+  begin
+    Variable := TVariable(Attributes[I]);
+    AttributeName := Variable.Name;
+    if StringList.IndexOf(WithoutArray(AttributeName)) = -1 then
+    begin
+      StringList.Add(AttributeName);
+      Attribute := AClass.AddAttribute(AttributeName, nil);
+      Attribute.LineS := Variable.CodePos.LineNo;
+      Attribute.LineE := Variable.CodePos.LineNo;
+      Attribute.Static := (vaClassAttribute in Variable.Attributes);
+      Attribute.IsFinal := Variable.IsFinal;
       if Variable.Typ <> '' then
-        Attribute.TypeClassifier:= NeedClassifier(C.Name, Variable.Typ);
-      //if Variable.ObjType <> '' then
-      //  Attribute.TypeClassifier:= NeedClassifier(C.Name, Variable.ObjType);
-      Variablename:= WithoutVisibility(Variable.Name);
-      if Variable.DefaultValue <> Variablename
-        then Attribute.Value:= Variable.DefaultValue
-        else Attribute.Value:= Variablename;
+        Attribute.TypeClassifier := NeedClassifier(AClass.Name, Variable.Typ);
+      Variablename := WithoutVisibility(Variable.Name);
+      if Variable.DefaultValue <> Variablename then
+        Attribute.Value := Variable.DefaultValue
+      else
+        Attribute.Value := Variablename;
       SetAttributeVisibility(Attribute);
       Attribute.IsAbstract := False;
-      Attribute.Level:= Level;
+      Attribute.Level := Level;
     end;
   end;
-  FreeAndNil(SL);
+  FreeAndNil(StringList);
 end;
 
-procedure TPythonParser.ParseMethods(C: TClass; ParsedClass: TParsedClass; Level: Integer);
-  var i: Integer;
-    CE : TCodeElement;
-    ParsedFunction: TParsedFunction;
-    Operation, OPTemp: TOperation;
+procedure TPythonParser.ParseMethods(AClass: TClass; ParsedClass: TParsedClass;
+  Level: Integer);
+var
+  CodeEditor: TCodeElement;
+  ParsedFunction: TParsedFunction;
+  Operation, OPTemp: TOperation;
 begin
-  for i:= 0 to ParsedClass.ChildCount - 1 do begin
-    CE:= ParsedClass.Children[i];
-    if CE is TParsedFunction then begin
-      ParsedFunction:= TParsedFunction(CE);
-      OpTemp := C.MakeOperation(ParsedFunction.Name, nil);
-      DoOperation(ParsedFunction, OpTemp, C.Name, Level);
+  for var I := 0 to ParsedClass.ChildCount - 1 do
+  begin
+    CodeEditor := ParsedClass.Children[I];
+    if CodeEditor is TParsedFunction then
+    begin
+      ParsedFunction := TParsedFunction(CodeEditor);
+      OPTemp := AClass.MakeOperation(ParsedFunction.Name, nil);
+      DoOperation(ParsedFunction, OPTemp, AClass.Name, Level);
       if ParsedFunction.isAbstractMethod then
-        C.IsAbstract:= true;
-      Operation:= C.FindOperation(OpTemp);
-      if Operation = nil then begin
-        Operation:= OpTemp;
-        C.AddOperation(Operation);
-      end else
-        FreeAndNil(OpTemp);
-    end else if CE is TParsedClass then
-      ParseClassDeclaration(TParsedClass(CE), Level + 1, C.Name);
+        AClass.IsAbstract := True;
+      Operation := AClass.FindOperation(OPTemp);
+      if not Assigned(Operation) then
+      begin
+        Operation := OPTemp;
+        AClass.AddOperation(Operation);
+      end
+      else
+        FreeAndNil(OPTemp);
+    end
+    else if CodeEditor is TParsedClass then
+      ParseClassDeclaration(TParsedClass(CodeEditor), Level + 1, AClass.Name);
   end;
 end;
 
-procedure TPythonParser.DoOperation(ParsedFunction: TParsedFunction; O: TOperation;
-           const ParentName: string; Level: Integer);
+procedure TPythonParser.DoOperation(ParsedFunction: TParsedFunction;
+  Operation: TOperation; const ParentName: string; Level: Integer);
 var
   Param: TParameter;
-  i: Integer;
   Arguments: TObjectList;
-  aVariable: TVariable;
+  Variable: TVariable;
 
   function FormatVarArgument(Variable: TVariable): string;
   begin
@@ -254,61 +275,68 @@ var
   end;
 
 begin
-  O.ParentName := ParentName;
-  O.LineS:= ParsedFunction.CodeBlock.StartLine;
-  O.LineSE:= Max(ParsedFunction.Codeblock.LastCommentLine, ParsedFunction.CodeBlock.StartLine);
-  O.LineE:= ParsedFunction.CodeBlock.EndLine;
-  O.hasSourceCode:= True;
-  O.isStaticMethod:= ParsedFunction.isStaticMethod;
-  O.isClassMethod:= ParsedFunction.isClassMethod;
-  O.isAbstract:= ParsedFunction.isAbstractMethod;
-  O.isPropertyMethod:= ParsedFunction.isPropertyMethod;
-  O.Level:= Level;
-  SetOperationVisibility(O);
+  Operation.Parentname := ParentName;
+  Operation.LineS := ParsedFunction.CodeBlock.StartLine;
+  Operation.LineSE := Max(ParsedFunction.CodeBlock.LastCommentLine,
+    ParsedFunction.CodeBlock.StartLine);
+  Operation.LineE := ParsedFunction.CodeBlock.EndLine;
+  Operation.HasSourceCode := True;
+  Operation.IsStaticMethod := ParsedFunction.IsStaticMethod;
+  Operation.IsClassMethod := ParsedFunction.IsClassMethod;
+  Operation.IsAbstract := ParsedFunction.isAbstractMethod;
+  Operation.IsPropertyMethod := ParsedFunction.IsPropertyMethod;
+  Operation.Level := Level;
+  SetOperationVisibility(Operation);
   if ParsedFunction.ReturnType <> '' then
-    O.ReturnValue := NeedClassifier(Parentname, ParsedFunction.ReturnType);
-  if O.Name = '__init__' then
-    O.OperationType := otConstructor
-  else if (ParsedFunction.ReturnType <> '') or (ParsedFunction.ReturnValue <> '') then
-    O.OperationType := otFunction
+    Operation.ReturnValue := NeedClassifier(ParentName,
+      ParsedFunction.ReturnType);
+  if Operation.Name = '__init__' then
+    Operation.OperationType := otConstructor
+  else if (ParsedFunction.ReturnType <> '') or (ParsedFunction.ReturnValue <> '')
+  then
+    Operation.OperationType := otFunction
   else
-    O.OperationType := otProcedure;
+    Operation.OperationType := otProcedure;
 
   // Parameterlist
-  Arguments:= ParsedFunction.Arguments;
-  for i:= 0 to Arguments.Count - 1 do begin
-    aVariable:= TVariable(Arguments[i]);
-    Param := O.AddParameter(FormatVarArgument(aVariable));
-    if aVariable.aType <> ''
-      then Param.TypeClassifier:= NeedClassifier(Parentname, aVariable.aType)
-      else Param.TypeClassifier:= nil;
-    Param.Value:= aVariable.DefaultValue;
+  Arguments := ParsedFunction.Arguments;
+  for var I := 0 to Arguments.Count - 1 do
+  begin
+    Variable := TVariable(Arguments[I]);
+    Param := Operation.AddParameter(FormatVarArgument(Variable));
+    if Variable.aType <> '' then
+      Param.TypeClassifier := NeedClassifier(ParentName, Variable.aType)
+    else
+      Param.TypeClassifier := nil;
+    Param.Value := Variable.DefaultValue;
   end;
 end;
 
 procedure TPythonParser.ParseFunction(ParsedFunction: TParsedFunction);
-  var Operation: TOperation;
+var
+  Operation: TOperation;
 begin
   Operation := TOperation.Create(nil);
   Operation.Name := ParsedFunction.Name;
-  Operation.ReturnValue:= nil;
+  Operation.ReturnValue := nil;
   DoOperation(ParsedFunction, Operation, 'no parent', 1);
   FUnit.AddFunction(Operation);
 end;
 
-function TPythonParser.NeedClassifier(const ParentClass, CName: string): TClassifier;
+function TPythonParser.NeedClassifier(const ParentClass, CName: string)
+  : TClassifier;
 
   function AddAClass(const CName: string): TClassifier;
   var
-    C: TClass;
+    AClass: TClass;
   begin
     Result := nil;
-    C := FUnit.MakeClass(CName, '');
-    if not Assigned(C) then
+    AClass := FUnit.MakeClass(CName, '');
+    if not Assigned(AClass) then
       Exit;
-    C.Importname := CName;
-    FUnit.AddClassWithoutShowing(C);
-    Result := TClassifier(C);
+    AClass.Importname := CName;
+    FUnit.AddClassWithoutShowing(AClass);
+    Result := TClassifier(AClass);
   end;
 
 begin
@@ -316,80 +344,70 @@ begin
   if not Assigned(FUnit) then
     Exit;
 
-  Result:= FUnit.FindClassifier(CName, TClass, True);
-  if Result = nil then
+  Result := FUnit.FindClassifier(CName, TClass, True);
+  if not Assigned(Result) then
     Result := AddAClass(CName);
-//  if ParentClass = CName then
-//    Result.Recursive:= true;
 end;
 
-{function TPythonParser.ShowView(IsInner: Boolean): Boolean;
+procedure TPythonParser.SetAttributeVisibility(Model: TModelEntity);
 begin
-  Result := WithView;
-
-  if FConfiguration.ShowPublicOnly and (ModVisibility <> viPublic) then
-    Result := False;
-
-  Result := Result or FConfiguration.ShowAlways;
-  if IsInner then
-    Result := true;
-end;
-}
-
-procedure TPythonParser.SetAttributeVisibility(M: TModelEntity);
-begin
-  M.Visibility:= viPublic;
-  if Pos('_', M.Name) = 1 then begin
-    M.Visibility:= viProtected;
-    M.Name:= Copy(M.Name, 2, Length(M.Name));
+  Model.Visibility := viPublic;
+  if Pos('_', Model.Name) = 1 then
+  begin
+    Model.Visibility := viProtected;
+    Model.Name := Copy(Model.Name, 2, Length(Model.Name));
   end;
-  if Pos('_', M.Name) = 1 then begin
-    M.Visibility:= viPrivate;
-    M.Name:= Copy(M.Name, 2, Length(M.Name));
+  if Pos('_', Model.Name) = 1 then
+  begin
+    Model.Visibility := viPrivate;
+    Model.Name := Copy(Model.Name, 2, Length(Model.Name));
   end;
 end;
 
-procedure TPythonParser.SetOperationVisibility(M: TModelEntity);
+procedure TPythonParser.SetOperationVisibility(Model: TModelEntity);
 begin
-  if isDunder(M.Name) then
-    M.Visibility:= viPublic
+  if isDunder(Model.Name) then
+    Model.Visibility := viPublic
   else
-    setAttributeVisibility(M);
+    SetAttributeVisibility(Model);
 end;
 
-procedure TPythonParser.SetVisibility(M: TModelEntity);
+procedure TPythonParser.SetVisibility(Model: TModelEntity);
 begin
-  M.Visibility:= ModVisibility;
-  M.Static := False;
-  M.IsFinal := False;
-  M.IsAbstract := False;
+  Model.Visibility := FModVisibility;
+  Model.Static := False;
+  Model.IsFinal := False;
+  Model.IsAbstract := False;
 end;
 
-function TPythonParser.IsTypename(const s: string): Boolean;
+function TPythonParser.IsTypename(const Identifier: string): Boolean;
 var
-  ci, it: IModelIterator;
+  CIte, Ite: IModelIterator;
   Attr: TAttribute;
-  cent: TModelEntity;
+  Cent: TModelEntity;
 begin
-  Result:= True;
-  if IsSimpleType(s) then
+  Result := True;
+  if IsSimpleType(Identifier) then
     Exit;
-  Result:= not IsReservedWord(s);
-  if Result and Assigned(FUnit) then begin
-    ci:= FUnit.GetClassifiers;
-    while ci.HasNext do begin
-      cent:= ci.Next;
-      it:= (cent as TClassifier).GetAttributes;
-      while it.HasNext do  begin
-        Attr:= it.Next as TAttribute;
-        if Attr.Name = s then
-          Result:= False;
-      end
+  Result := not IsReservedWord(Identifier);
+  if Result and Assigned(FUnit) then
+  begin
+    CIte := FUnit.GetClassifiers;
+    while CIte.HasNext do
+    begin
+      Cent := CIte.Next;
+      Ite := (Cent as TClassifier).GetAttributes;
+      while Ite.HasNext do
+      begin
+        Attr := Ite.Next as TAttribute;
+        if Attr.Name = Identifier then
+          Result := False;
+      end;
     end;
   end;
 end;
 
-function TPythonParser.IsReservedWord(const s: string): Boolean;
+function TPythonParser.IsReservedWord(const Word: string): Boolean;
 var
   Left, Mid, Right: Integer;
 begin
@@ -400,9 +418,9 @@ begin
   while Left <= Right do
   begin
     Mid := (Left + Right) div 2;
-    if ReservedWords[Mid] = s then
+    if ReservedWords[Mid] = Word then
       Exit;
-    if ReservedWords[Mid] > s then
+    if ReservedWords[Mid] > Word then
       Right := Mid - 1
     else
       Left := Mid + 1;
@@ -410,8 +428,8 @@ begin
   Result := False;
 end;
 
-
 initialization
-  Integrators.Register(TPythonImporter);
+
+Integrators.Register(TPythonImporter);
 
 end.

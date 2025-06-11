@@ -21,13 +21,14 @@ unit UCodeProvider;
 
 interface
 
-uses Classes, uFeedback, frmFile;
+uses Classes, frmFile;
 
 type
-  { Enum specifying the reason OnCodeChange was called.}
+  { Enum specifying the reason OnCodeChange was called. }
   TCodeChangeType = (cctAdd, cctRemove, cctChange);
 
-  TCodeChangeEvent = procedure(ChangeType: TCodeChangeType; Namn: string) of object;
+  TCodeChangeEvent = procedure(ChangeType: TCodeChangeType; Namn: string)
+    of object;
 
   {
     Abstract baseclass for source code providers
@@ -40,19 +41,20 @@ type
     FWatched: TStringList;
     procedure SetActive(const Value: Boolean);
   protected
-    Feedback : IEldeanFeedback;
-    LoadedCount : Integer;
+    FLoadedCount: Integer;
     procedure HookChanges; virtual; abstract;
     procedure UnhookChanges; virtual; abstract;
     procedure AddChangeWatch(const AName: string);
   public
-    constructor Create(aFeedback : IEldeanFeedback = nil);
+    constructor Create;
     destructor Destroy; override;
 
-    function LoadStream(const AName: string; Form: TFileForm = nil): TStream; virtual; abstract;
-    procedure SaveStream(const AName: string; AStream: TStream); virtual; abstract;
+    function LoadStream(const AName: string; Form: TFileForm = nil): TStream;
+      virtual; abstract;
+    procedure SaveStream(const AName: string; AStream: TStream);
+      virtual; abstract;
 
-    { Add a path to the search path list.}
+    { Add a path to the search path list. }
     procedure AddSearchPath(APath: string);
 
     { Locate a unit and return the full path to it. }
@@ -67,9 +69,9 @@ type
     property SearchPath: TStringList read FSearchPath;
 
     { Event to be called when there are external changes to the source detected }
-    property OnCodeChange: TCodeChangeEvent read FOnCodeChange write FOnCodeChange;
+    property OnCodeChange: TCodeChangeEvent read FOnCodeChange
+      write FOnCodeChange;
   end;
-
 
 implementation
 
@@ -80,12 +82,13 @@ uses SysUtils;
 procedure TCodeProvider.AddChangeWatch(const AName: string);
 begin
   FWatched.Add(AName);
-  if Active then HookChanges; // Attach 'again' to recieve changes to this file.
+  if Active then
+    HookChanges; // Attach 'again' to recieve changes to this file.
 end;
 
 procedure TCodeProvider.AddSearchPath(APath: string);
 begin
- if APath<>'' then
+  if APath <> '' then
   begin
     if APath[Length(APath)] <> PathDelim then
       APath := APath + PathDelim;
@@ -94,15 +97,11 @@ begin
   end;
 end;
 
-constructor TCodeProvider.Create(aFeedback : IEldeanFeedback = nil);
+constructor TCodeProvider.Create;
 begin
   inherited Create;
   FSearchPath := TStringList.Create;
   FWatched := TStringList.Create;
-  if Feedback=nil then
-    Self.Feedback := NilFeedback
-  else
-    Self.Feedback := aFeedback;
 end;
 
 destructor TCodeProvider.Destroy;
@@ -116,13 +115,13 @@ procedure TCodeProvider.SetActive(const Value: Boolean);
 begin
   if (not Active) and Value then
   begin
-      // Activate soruce change hook
+    // Activate source change hook
     HookChanges;
     FActive := Value;
   end
   else if Active and (not Value) then
   begin
-      // Deactivate soruce change hook
+    // Deactivate source change hook
     UnhookChanges;
     FActive := Value;
   end;

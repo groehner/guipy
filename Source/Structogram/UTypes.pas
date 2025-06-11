@@ -36,11 +36,11 @@ type
     FStringList: TStringList;
     FText: string;
     FVal: string;
-    destructor Destroy; override;
     function NextLineIndent: Integer;
     function GetKind(Kind: string): Byte;
   public
     constructor Create(Filename: string);
+    destructor Destroy; override;
     procedure LineBack;
     procedure ReadLine;
 

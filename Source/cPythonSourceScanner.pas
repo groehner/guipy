@@ -124,10 +124,10 @@ type
     ReturnType : string;
     ReturnValue: string;
     ReturnAttributes: TVariableAttributes;
-    isStaticMethod: Boolean;
-    isClassMethod: Boolean;
-    isAbstractMethod: Boolean;
-    isPropertyMethod: Boolean;
+    IsStaticMethod: Boolean;
+    IsClassMethod: Boolean;
+    IsAbstractMethod: Boolean;
+    IsPropertyMethod: Boolean;
     constructor Create;
     destructor Destroy; override;
     function ArgumentsString : string; virtual;
@@ -792,10 +792,10 @@ var
   LineStarts: TList;
   GlobalList : TStringList;
   AsgnTargetCount : Integer;
-  isClassMethod: Boolean;
-  isStaticMethod: Boolean;
-  isAbstractMethod: Boolean;
-  isPropertyMethod: Boolean;
+  IsClassMethod: Boolean;
+  IsStaticMethod: Boolean;
+  IsAbstractMethod: Boolean;
+  IsPropertyMethod: Boolean;
   initialComment: Boolean;
   ClassStaticMethodStart: Integer;
   LastNotEmptyLine: Integer;
@@ -803,10 +803,10 @@ begin
   SourceLines := nil;
   ClassStaticMethodStart:= 0;
   LastNotEmptyLine:= 0;
-  isClassMethod:= False;
-  isStaticMethod:= False;
-  isAbstractMethod:= False;
-  isPropertyMethod:= False;
+  IsClassMethod:= False;
+  IsStaticMethod:= False;
+  IsAbstractMethod:= False;
+  IsPropertyMethod:= False;
 
   LineStarts := TSmartPtr.Make(TList.Create)();
   GlobalList := TSmartPtr.Make(TStringList.Create)();
@@ -883,14 +883,14 @@ begin
         CodeElement := TParsedFunction.Create;
         initialComment:= True;
         TParsedFunction(CodeElement).ReturnType := getGroup(CodeMatch, 7);
-        TParsedFunction(CodeElement).isStaticMethod:= isStaticMethod;
-        TParsedFunction(CodeElement).isClassMethod:= isClassMethod;
-        TParsedFunction(CodeElement).isAbstractMethod:= isAbstractMethod;
-        TParsedFunction(CodeElement).isPropertyMethod:= isPropertyMethod;
-        isStaticMethod:= False;
-        isClassMethod:= False;
-        isAbstractMethod:= False;
-        isPropertyMethod:= False;
+        TParsedFunction(CodeElement).IsStaticMethod:= IsStaticMethod;
+        TParsedFunction(CodeElement).IsClassMethod:= IsClassMethod;
+        TParsedFunction(CodeElement).IsAbstractMethod:= IsAbstractMethod;
+        TParsedFunction(CodeElement).IsPropertyMethod:= IsPropertyMethod;
+        IsStaticMethod:= False;
+        IsClassMethod:= False;
+        IsAbstractMethod:= False;
+        IsPropertyMethod:= False;
 
         if S <> '' then begin
           CharOffset := getGroupOffset(CodeMatch, 5);
@@ -1231,15 +1231,15 @@ begin
         if ClassStaticMethodStart = 0 then
           ClassStaticMethodStart:= LineNo;
       end else if fClassMethodRE.IsMatch(Line) then begin
-        isClassMethod:= True;
+        IsClassMethod:= True;
         if ClassStaticMethodStart = 0 then
           ClassStaticMethodStart:= LineNo;
       end else if fAbstractMethodRE.IsMatch(Line) then begin
-        isAbstractMethod:= True;
+        IsAbstractMethod:= True;
         if ClassStaticMethodStart = 0 then
           ClassStaticMethodStart:= LineNo;
       end else if fPropertyMethodRE.IsMatch(Line) then begin
-        isPropertyMethod:= True;
+        IsPropertyMethod:= True;
         if ClassStaticMethodStart = 0 then
           ClassStaticMethodStart:= LineNo;
       end;

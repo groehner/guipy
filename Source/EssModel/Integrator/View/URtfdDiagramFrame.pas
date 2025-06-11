@@ -23,14 +23,22 @@ unit URtfdDiagramFrame;
 interface
 
 uses
-  Messages, Classes, Controls, Forms, Vcl.Menus, System.ImageList, ImgList,
-  uListeners, uDiagramFrame, uRtfdDiagram, SpTBXItem, TB2Item,
-  Vcl.VirtualImageList, Vcl.BaseImageCollection, SVGIconImageCollection;
+  Classes,
+  Vcl.Menus,
+  Vcl.VirtualImageList,
+  Vcl.BaseImageCollection,
+  ImageList,
+  ImgList,
+  SVGIconImageCollection,
+  SpTBXItem,
+  TB2Item,
+  UDiagramFrame,
+  URtfdDiagram;
 
 type
   TAFrameRtfdDiagram = class(TAFrameDiagram)
   public
-    constructor Create(aOwner: TComponent; aDiagram: TRtfdDiagram); reintroduce;
+    constructor Create(Owner: TComponent; Diagram: TRtfdDiagram); reintroduce;
   end;
 
 implementation
@@ -39,10 +47,10 @@ implementation
 
 // probably really necessary for reasons of circular references
 
-constructor TAFrameRtfdDiagram.Create(aOwner: TComponent; aDiagram: TRtfdDiagram);
+constructor TAFrameRtfdDiagram.Create(Owner: TComponent; Diagram: TRtfdDiagram);
 begin
-  inherited Create(aOwner, aDiagram.Model);
-  Self.Diagram:= aDiagram;
+  inherited Create(Owner, Diagram.Model);
+  Self.Diagram:= Diagram;
 end;
 
 end.

@@ -26,8 +26,6 @@ object FUMLForm: TFUMLForm
     Align = alClient
     Caption = 'PUML'
     TabOrder = 0
-    ExplicitWidth = 615
-    ExplicitHeight = 557
     object PDiagramPanel: TPanel
       Left = 1
       Top = 23
@@ -48,8 +46,6 @@ object FUMLForm: TFUMLForm
       ParentFont = False
       TabOrder = 0
       OnResize = PDiagramPanelResize
-      ExplicitWidth = 613
-      ExplicitHeight = 533
       object TVFileStructure: TTreeView
         Left = 472
         Top = 6
@@ -73,7 +69,6 @@ object FUMLForm: TFUMLForm
       Images = vilToolbarDark
       ParentColor = False
       TabOrder = 1
-      ExplicitWidth = 613
       object TBClose: TToolButton
         Left = 0
         Top = 0

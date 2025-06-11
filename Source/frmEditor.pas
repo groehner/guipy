@@ -2529,7 +2529,7 @@ begin
   if Trim(aText) <> '' then begin
     Scanner:= TPythonScannerWithTokens.Create;
     Scanner.Init(aText);
-    FileName:= Scanner.getFilename;
+    FileName:= Scanner.GetFilename;
     FreeAndNil(Scanner);
     if FileName <> ''
       then FileName:= extractFilePath(Pathname) + FileName + '.psg'

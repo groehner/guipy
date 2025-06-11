@@ -40,9 +40,9 @@ uses
   Vcl.BaseImageCollection,
   Vcl.VirtualImageList,
   SpTBXSkins,
-  UUMLModule,
+  SVGIconImageCollection,
   frmFile,
-  SVGIconImageCollection;
+  UUMLModule;
 
 type
 
@@ -121,11 +121,11 @@ type
     procedure SaveAndReload;
     procedure OnPanelModified(AValue: Boolean);
     procedure OnInteractiveModified(Sender: TObject);
+    procedure OnFormMouseDown(Sender: TObject);
     procedure AddToProject(const FileName: string);
     procedure CreateTVFileStructure;
-    function getAsStringList: TStringList; override;
+    function GetAsStringList: TStringList; override;
     procedure ClassEdit;
-    procedure OnFormMouseDown(Sender: TObject);
     procedure BeginUpdate;
     procedure EndUpdate;
     procedure DeleteObjects;
@@ -192,7 +192,7 @@ begin
   end;
   FFileStructure.Clear(Self);
   FUMLInteractive.Clear;
-  if MainModul.Diagram.hasObjects and PyIDEOptions.ReinitializeWhenClosing then
+  if MainModul.Diagram.HasObjects and PyIDEOptions.ReinitializeWhenClosing then
     TBReInitializeClick(Self);
   CanClose:= True;
 end;
@@ -205,7 +205,7 @@ begin
   FLockCreateTV:= True;
   AAction:= caFree;
   for var I:= TVFileStructure.Items.Count - 1 downto 0 do
-    FreeAndNil(TVFileStructure.Items[I].Data);
+    Dispose(TVFileStructure.Items[I].Data);
 end;
 
 procedure TFUMLForm.FormDestroy(Sender: TObject);
@@ -248,7 +248,6 @@ begin
 end;
 
 procedure TFUMLForm.Enter(Sender: TObject);
-  var APanel: TCustomPanel;
 begin
   if FLockEnter then
     Exit;
@@ -258,14 +257,14 @@ begin
   FUMLInteractive.Init(InteractiveLines, Self);
   if Visible then begin  // due to bug, else ActiveForm doesn't change
     if Assigned(MainModul) and Assigned(MainModul.Diagram) then begin
-      APanel:= MainModul.Diagram.GetPanel;
+      var APanel:= MainModul.Diagram.GetPanel;
       if Assigned(APanel) and APanel.CanFocus then
         APanel.SetFocus;
     end;
   end;
   SaveAndReload;
   if MainModul.Diagram.HasAInvalidClass then
-    PyIDEMainForm.RunFile(fFile);
+    PyIDEMainForm.RunFile(FFile);
   FLockEnter:= False;
 end;
 
@@ -280,7 +279,7 @@ end;
 
 procedure TFUMLForm.SBCloseClick(Sender: TObject);
 begin
-  (fFile as IFileCommands).ExecClose;
+  (FFile as IFileCommands).ExecClose;
 end;
 
 procedure TFUMLForm.TBShowConnectionsClick(Sender: TObject);
@@ -345,7 +344,6 @@ begin
     LockFormUpdate(Self);
     DoSave;
     MainModul.Diagram.FetchDiagram(Pathname);
-//    MainModul.Diagram.ShowAll;
     CreateTVFileStructure;
     UnlockFormUpdate(Self);
   end;
@@ -585,7 +583,7 @@ begin
       Attribute:= Imt.Next as TAttribute;
       PictureNr:= 1 + Integer(Attribute.Visibility);
       Node:= TVFileStructure.Items.AddChildObject(ClassNode,
-                 Attribute.toNameTypeUML, TInteger.Create(Attribute.LineS));
+                 Attribute.ToNameTypeUML, TInteger.Create(Attribute.LineS));
       Node.ImageIndex:= PictureNr;
       Node.SelectedIndex:= PictureNr;
       Node.HasChildren:= False;
@@ -596,7 +594,7 @@ begin
       if Method.OperationType = otConstructor
         then PictureNr:= 4
         else PictureNr:= 5 + Integer(Method.Visibility);
-      Node:= TVFileStructure.Items.AddChildObject(ClassNode, Method.toShortStringNode, TInteger.Create(Method.LineS));
+      Node:= TVFileStructure.Items.AddChildObject(ClassNode, Method.ToShortStringNode, TInteger.Create(Method.LineS));
       Node.ImageIndex:= PictureNr;
       Node.SelectedIndex:= PictureNr;
       Node.HasChildren:= False;
@@ -622,7 +620,7 @@ begin
   MainModul.Diagram.ChangeStyle;
 end;
 
-function TFUMLForm.getAsStringList: TStringList;
+function TFUMLForm.GetAsStringList: TStringList;
 begin
   Save(False);
   Result:= TStringList.Create;
@@ -663,7 +661,7 @@ begin
   SaveAndReload;
   MainModul.Diagram.ResolveAssociations;
   MainModul.DoLayout;
-  PyIDEMainForm.RunFile(fFile);
+  PyIDEMainForm.RunFile(FFile);
 end;
 
 procedure TFUMLForm.OpenFolder;
@@ -674,7 +672,7 @@ begin
     SaveAndReload;
     MainModul.Diagram.ResolveAssociations;
     MainModul.DoLayout;
-    PyIDEMainForm.RunFile(fFile);
+    PyIDEMainForm.RunFile(FFile);
   end else
     CommandsDataModule.actFileCloseExecute(Self);
 end;

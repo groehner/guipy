@@ -19,55 +19,69 @@
 }
 
 {$ASSERTIONS ON}
-
 unit URtfdDiagram;
 
 interface
 
-uses Controls, Types, Graphics, Classes, ExtCtrls,
-  uDiagramFrame, uRtfdComponents, uFeedback, uListeners, uModelEntity, uModel,
-  UUtils, uViewIntegrator, UEssConnectPanel, USequenceform,
-  UUMLForm, UConnection, ULivingObjects;
+uses
+  Controls,
+  Types,
+  Graphics,
+  Classes,
+  ExtCtrls,
+  UDiagramFrame,
+  URtfdComponents,
+  UListeners,
+  UModelEntity,
+  UModel,
+  UUtils,
+  UViewIntegrator,
+  UEssConnectPanel,
+  USequenceForm,
+  UUMLForm,
+  UConnection,
+  ULivingObjects;
 
 type
-  TRtfdDiagram = class(TDiagramIntegrator,
-      IBeforeObjectModelListener,
-      IAfterObjectModelListener,
-      IAfterUnitPackageListener)
+  TRtfdDiagram = class(TDiagramIntegrator, IBeforeObjectModelListener,
+    IAfterObjectModelListener, IAfterUnitPackageListener)
   private
-    // Model: TObjectModel; is inherited
-    IsAllClasses : Boolean;
-    OnModified: TNotifyEvent;
-    BoxNames, FullParameters, MenuClassFiles: TStringList;
+    // Model: TObjectModel is inherited
+    FIsAllClasses: Boolean;
+    FOnModified: TNotifyEvent;
+    FBoxNames: TStringList;
+    FFullParameters: TStringList;
+    FMenuClassFiles: TStringList;
     FLivingObjects: TLivingObjects;
-    UMLForm: TFUMLForm;
-    PPIControl: TControl;
-
-    CreateObjectObjectname: string;
-    CreateObjectParameter: string;
-    CreateObjectClass: TClass;
-
-    CallMethodObjectname: string;
-    CallMethodMethodname: string;
-    CallMethodFrom: string;
-
-    procedure AddBox(E: TModelEntity);
-    function GetBox(typ: string) : TRtfdBox;
-    //Model listeners
+    FUMLForm: TFUMLForm;
+    FPPIControl: TControl;
+    FCreateObjectObjectname: string;
+    FCreateObjectParameter: string;
+    FCreateObjectClass: TClass;
+    FCallMethodObjectname: string;
+    FCallMethodMethodname: string;
+    FCallMethodFrom: string;
+    FFrame: TAFrameDiagram;
+    FPanel: TEssConnectPanel;
+    FSequenceForm: TFSequenceForm;
+    procedure AddBox(ModelEntity: TModelEntity);
+    function GetBox(Typ: string): TRtfdBox;
+    // Model listeners
     procedure ModelBeforeChange(Sender: TModelEntity);
     procedure ModelAfterChange(Sender: TModelEntity);
     procedure IBeforeObjectModelListener.Change = ModelBeforeChange;
     procedure IAfterObjectModelListener.Change = ModelAfterChange;
-    //Unitpackage listeners
+    // Unitpackage listeners
     procedure UnitPackageAfterChange(Sender: TModelEntity);
-    procedure UnitPackageAfterAddChild(Sender: TModelEntity; NewChild: TModelEntity);
+    procedure UnitPackageAfterAddChild(Sender: TModelEntity;
+      NewChild: TModelEntity);
     procedure UnitPackageAfterRemove(Sender: TModelEntity);
     procedure UnitPackageAfterEntityChange(Sender: TModelEntity);
     procedure IAfterUnitPackageListener.Change = UnitPackageAfterChange;
     procedure IAfterUnitPackageListener.AddChild = UnitPackageAfterAddChild;
     procedure IAfterUnitPackageListener.Remove = UnitPackageAfterRemove;
-    procedure IAfterUnitPackageListener.EntityChange = UnitPackageAfterEntityChange;
-  private
+    procedure IAfterUnitPackageListener.EntityChange =
+      UnitPackageAfterEntityChange;
     procedure CreateObjectExecuted(Sender: TObject);
     procedure CallMethodExecuted(Sender: TObject);
     function PPIScale(ASize: Integer): Integer;
@@ -83,53 +97,47 @@ type
     procedure SetShowObjectDiagram(const Value: Boolean); override;
     procedure CurrentEntityChanged; override;
   public
-    Panel: TessConnectPanel;
-    Frame: TAFrameDiagram;
-    SequenceForm: TFSequenceForm;
-    constructor Create(om: TObjectModel; Parent: TWinControl; aFeedback : IEldeanFeedback = nil); override;
+    constructor Create(ObjectModel: TObjectModel; Parent: TWinControl);
+      override;
     destructor Destroy; override;
     procedure ClearDiagram; override;
     procedure ResolveAssociations; override;
     procedure ResolveObjectAssociations; override;
     procedure InitFromModel; override;
-    procedure PaintTo(Canvas: TCanvas; X, Y: Integer; SelectedOnly : Boolean); override;
-    procedure GetDiagramSize(var W, H : Integer); override;
+    procedure PaintTo(Canvas: TCanvas; X, Y: Integer;
+      SelectedOnly: Boolean); override;
+    procedure GetDiagramSize(var Width, Height: Integer); override;
     procedure SetPackage(const Value: TAbstractPackage); override;
     procedure DoLayout; override;
-    function GetClickAreas : TStringList; override;
+    function GetClickAreas: TStringList; override;
     procedure ClassEditSelectedDiagramElements; override;
-    procedure ClassEditSelectedDiagramElementsControl(Sender: TObject); override;
-    procedure SourceEditSelectedDiagramElements(C: TControl); override;
-
+    procedure ClassEditSelectedDiagramElementsControl(Sender: TObject);
+      override;
+    procedure SourceEditSelectedDiagramElements(Control: TControl); override;
     procedure UnSelectAllElements; override;
     function GetSelectedRect: TRect; override;
-    procedure ScreenCenterEntity(E : TModelEntity); override;
-    procedure SetFont(const aFont: TFont); override;
-
-    procedure StoreDiagram(filename: string); override;
-    procedure FetchDiagram(filename: string); override;
-
+    procedure ScreenCenterEntity(ModelEntity: TModelEntity); override;
+    procedure SetFont(const AFont: TFont); override;
+    procedure StoreDiagram(Filename: string); override;
+    procedure FetchDiagram(Filename: string); override;
     procedure RefreshDiagram; override;
     procedure RecalcPanelSize; override;
     procedure SetConnections(const Value: Integer); override;
-
     procedure SelectAssociation; override;
     procedure DeleteSelectedControls(Sender: TObject);
     procedure DeleteSelectedControlsAndRefresh; override;
-
     procedure DeleteObjects; override;
-    function hasObjects: Boolean; override;
-    function hasSelectedConnection: Boolean; override;
+    function HasObjects: Boolean; override;
+    function HasSelectedConnection: Boolean; override;
     function GetPanel: TCustomPanel; override;
     procedure SetInteractive(OnInteractiveModified: TNotifyEvent); override;
     procedure SetFormMouseDown(OnFormMouseDown: TNotifyEvent); override;
-    procedure AddToInteractive(const s: string);
-    function getSourcePath: string; override;
+    procedure AddToInteractive(const Source: string);
+    function GetSourcepath: string; override;
     procedure Reinitalize; override;
-
-    procedure Run(C: TControl); override;
-    procedure ShowInheritedMethodsFromSystemClasses(C: TControl; ShowOrHide: Boolean); override;
-
+    procedure Run(Control: TControl); override;
+    procedure ShowInheritedMethodsFromSystemClasses(Control: TControl;
+      ShowOrHide: Boolean); override;
     procedure OpenClassOrInterface(Sender: TObject);
     procedure OpenClassWithDialog; override;
     procedure NewClass; override;
@@ -140,205 +148,249 @@ type
     procedure ConnectBoxes(Sender: TObject);
     procedure DoConnection(Item: Integer); override;
     procedure DoAlign(Item: Integer); override;
-
     procedure PopMenuClassPopup(Sender: TObject); override;
-    procedure PopMenuObjectPopup(Sender: TOBject); override;
+    procedure PopMenuObjectPopup(Sender: TObject); override;
     procedure PopMenuConnectionPopup(Sender: TObject); override;
-
     procedure CreateObjectForSelectedClass(Sender: TObject);
     function CreateModelClass(const Typ: string): TClass;
     function FindClassifier(const CName: string): TClassifier;
-    procedure ShowNewObject(const Objectname: string; aClass: TClass = nil);
-
+    procedure ShowNewObject(const Objectname: string; AClass: TClass = nil);
     procedure CallMethod(Control: TControl; Sender: TObject);
     procedure CallMethodForObject(Sender: TObject);
     procedure CallMethodForClass(Sender: TObject);
     procedure CollectClasses;
-
     procedure EditObject(Control: TControl); override;
     function HasAttributes(Objectname: string): Boolean;
     procedure UpdateAllObjects;
-    procedure ShowAttributes(Objectname: string; aClass: TClass; aModelObject: TObjekt);
-    procedure SetAttributeValues(aModelClass: TClass; Objectname: string; Attributes: TStringList);
+    procedure ShowAttributes(Objectname: string; AClass: TClass;
+      AModelObject: TObjekt);
+    procedure SetAttributeValues(ModelClass: TClass; Objectname: string;
+      Attributes: TStringList);
     function EditClass(const Caption, Title, ObjectNameOld: string;
-      var ObjectNameNew: string; Control: TControl; Attributes: TStringList): Boolean;
-    function EditObjectOrParams(const Caption, Title: string; Control: TControl; Attributes: TStringList): Boolean;
-    procedure SetRecursiv(P: TPoint; pos: Integer); override;
-    function getModelClass(const s: string): TClass;
-    function StringToArrowStyle(s: string): TessConnectionArrowStyle;
-    function ArrowStyleToString(ArrowStyle: TessConnectionArrowStyle): string;
-    function getCommentBoxName: string;
-    procedure AddCommentBoxTo(aControl: TControl); override;
-    function insertParameterNames(s: string): string;
-    function hasClass(aClassname: string): Boolean;
-    procedure DoShowParameter(aControl: TControl; Mode: Integer); override;
-    procedure DoShowVisibility(aControl: TControl; Mode: Integer); override;
-    procedure DoShowVisibilityFilter(aControl: TControl; Mode: Integer); override;
-    procedure CreateTestClass(aControl: TControl); override;
-    procedure RunTests(aControl: TControl; const Method: string); override;
+      var ObjectNameNew: string; Control: TControl;
+      Attributes: TStringList): Boolean;
+    function EditObjectOrParams(const Caption, Title: string; Control: TControl;
+      Attributes: TStringList): Boolean;
+    procedure SetRecursiv(Point: TPoint; Pos: Integer); override;
+    function GetModelClass(const Str: string): TClass;
+    function StringToArrowStyle(Str: string): TEssConnectionArrowStyle;
+    function ArrowStyleToString(ArrowStyle: TEssConnectionArrowStyle): string;
+    function GetCommentBoxName: string;
+    procedure AddCommentBoxTo(Control: TControl); override;
+    function InsertParameterNames(Names: string): string;
+    function HasClass(Classname: string): Boolean;
+    procedure DoShowParameter(Control: TControl; Mode: Integer); override;
+    procedure DoShowVisibility(Control: TControl; Mode: Integer); override;
+    procedure DoShowVisibilityFilter(Control: TControl; Mode: Integer);
+      override;
+    procedure CreateTestClass(Control: TControl); override;
+    procedure RunTests(Control: TControl; const Method: string); override;
     procedure OnRunJunitTestMethod(Sender: TObject);
-    procedure ShowMethodEntered(const aMethodname, From, _To, Parameter: string);
-    procedure ShowMethodExited(const aMethodname, From, _To, _Result: string);
-    procedure ShowObjectDeleted(const From, _To: string);
+    procedure ShowMethodEntered(const Methodname, From, Till,
+      Parameter: string);
+    procedure ShowMethodExited(const Methodname, From, Till, Result: string);
+    procedure ShowObjectDeleted(const From, Till: string);
     procedure CloseNotify(Sender: TObject);
     procedure ClearSelection; override;
     procedure CopyDiagramToClipboard; override;
     procedure ClearMarkerAndConnections(Control: TControl); override;
-    procedure DrawMarkers(r: TRect; show: Boolean); override;
+    procedure DrawMarkers(Rect: TRect; Show: Boolean); override;
     procedure EditBox(Control: TControl); override;
     procedure SetModified(const Value: Boolean); override;
     procedure SetOnModified(OnBoolEvent: TBoolEvent); override;
     procedure ChangeStyle; override;
     procedure DeleteComment; override;
-    function getDebug: TStringList;
-    function getSVG: string; override;
-    function getParameterAsString(Parameter, ParamValues: TStringList): string;
-    function getInternName(aClass: TClass; aName: string; aVisibility: TVisibility): string;
-    function StrToPythonValue(s: string): string;
-    function StrAndTypeToPythonValue(s, pValue: string): string;
-    procedure ExecutePython(s: string); override;
-    procedure GetVisFromName(var Name: string; var vis: TVisibility);
+    function GetDebug: TStringList;
+    function GetSVG: string; override;
+    function GetParameterAsString(Parameter, ParamValues: TStringList): string;
+    function GetInternName(AClass: TClass; Name: string;
+      Visibility: TVisibility): string;
+    function StrToPythonValue(Value: string): string;
+    function StrAndTypeToPythonValue(Value, PValue: string): string;
+    procedure ExecutePython(Source: string); override;
+    procedure GetVisFromName(var Name: string; var Vis: TVisibility);
     procedure Retranslate; override;
     function PanelIsLocked: Boolean; override;
     procedure SetUMLFont; override;
     function HasAInvalidClass: Boolean; override;
+    property Frame: TAFrameDiagram read FFrame;
+    property Panel: TEssConnectPanel read FPanel;
+    property SequenceForm: TFSequenceForm read FSequenceForm
+      write FSequenceForm;
   end;
 
 implementation
 
-uses Windows, Menus, Forms, Math, SysUtils, UITypes, Dialogs, Contnrs, IOUtils,
-  IniFiles, Clipbrd, JvGnugettext, TB2Item, SpTBXItem,
-  uIterators, uRtfdDiagramFrame, USugiyamaLayout, uIntegrator, UConfiguration,
-  SynEdit, UUMLModule, UImages, UObjectGenerator, dmResources,
-  frmPyIDEMain, uEditAppIntfs, frmFile, frmPythonII, frmVariables,
-  cPyControl, cPySupportTypes, cPyBaseDebugger, PythonEngine, uCommonFunctions;
+uses
+  Windows,
+  Menus,
+  Forms,
+  Math,
+  SysUtils,
+  UITypes,
+  Dialogs,
+  Contnrs,
+  IOUtils,
+  IniFiles,
+  Clipbrd,
+  JvGnugettext,
+  TB2Item,
+  SpTBXItem,
+  dmResources,
+  frmPyIDEMain,
+  uEditAppIntfs,
+  frmFile,
+  frmPythonII,
+  frmVariables,
+  cPyControl,
+  cPySupportTypes,
+  PythonEngine,
+  uCommonFunctions,
+  UIterators,
+  URtfdDiagramFrame,
+  USugiyamaLayout,
+  UIntegrator,
+  UObjectGenerator,
+  UConfiguration;
 
 { TRtfdDiagram }
 
-constructor TRtfdDiagram.Create(om: TObjectModel; Parent: TWinControl; aFeedback: IEldeanFeedback = nil);
+constructor TRtfdDiagram.Create(ObjectModel: TObjectModel; Parent: TWinControl);
 begin
-  inherited Create(Om, Parent, aFeedback);
-  Frame:= TAFrameRtfdDiagram.Create(Parent, Self);
-  Frame.Parent:= Parent;  // assigment to the gui
-  UMLForm:= (Parent.Parent.Parent as TFUMLForm);
-  PPIControl:= UMLForm.TBClose;
-  FLivingObjects:= TLivingObjects.Create;
+  inherited Create(ObjectModel, Parent);
+  FFrame := TAFrameRtfdDiagram.Create(Parent, Self);
+  FFrame.Parent := Parent; // assigment to the gui
+  FUMLForm := (Parent.Parent.Parent as TFUMLForm);
+  FPPIControl := FUMLForm.TBClose;
+  FLivingObjects := TLivingObjects.Create;
 
-  // Panel is ActiveControl in MainForm
-  Panel:= TessConnectPanel.Create(UMLForm);
-  Panel.PopupMenuConnection:= Frame.PopMenuConnection;
-  Panel.PopupMenuAlign:= Frame.PopupMenuAlign;
-  Panel.PopupMenuWindow:= Frame.PopupMenuWindow;
-  Panel.Parent:= Frame.ScrollBox;
-  Panel.Name:= 'PanelName';
-  Panel.OnDeleteSelectedControls:= DeleteSelectedControls;
-  Panel.OnClassEditSelectedDiagramElements:= ClassEditSelectedDiagramElementsControl;
+  // FPanel is ActiveControl in MainForm
+  FPanel := TEssConnectPanel.Create(FUMLForm);
+  FPanel.PopupMenuConnection := FFrame.PopMenuConnection;
+  FPanel.PopupMenuAlign := FFrame.PopupMenuAlign;
+  FPanel.PopupMenuWindow := FFrame.PopupMenuWindow;
+  FPanel.Parent := FFrame.ScrollBox;
+  FPanel.Name := 'PanelName';
+  FPanel.OnDeleteSelectedControls := DeleteSelectedControls;
+  FPanel.OnClassEditSelectedDiagramElements :=
+    ClassEditSelectedDiagramElementsControl;
 
-  OnModified:= nil;
-  Sequenceform:= nil;
+  FOnModified := nil;
+  FSequenceForm := nil;
 
-  BoxNames:= TStringList.Create;
-  BoxNames.CaseSensitive:= True;
-  BoxNames.Sorted:= True;
-  BoxNames.Duplicates:= dupIgnore;
-  FullParameters:= TStringList.Create;
-  MenuClassFiles:= TStringList.Create;
-  MenuClassFiles.Sorted:= True;
-  MenuClassFiles.Duplicates:= dupIgnore;
+  FBoxNames := TStringList.Create;
+  FBoxNames.CaseSensitive := True;
+  FBoxNames.Sorted := True;
+  FBoxNames.Duplicates := dupIgnore;
+  FFullParameters := TStringList.Create;
+  FMenuClassFiles := TStringList.Create;
+  FMenuClassFiles.Sorted := True;
+  FMenuClassFiles.Duplicates := dupIgnore;
 
   Model.AddListener(IBeforeObjectModelListener(Self));
   ClearDiagram;
 end;
 
 destructor TRtfdDiagram.Destroy;
-  var Box: TRtfdBox; i: Integer;
+var
+  Box: TRtfdBox;
+  I: Integer;
 begin
   // Force listeners to release, and diagram to persist.
   // Package:= nil;
-  //Model.RemoveListener(IBeforeObjectModelListener(Self));
+  // Model.RemoveListener(IBeforeObjectModelListener(Self));
   Model.ClearListeners;
 
-  FreeAndNil(FullParameters);
-  for i:= 0 to BoxNames.Count-1 do begin
-    Box := BoxNames.Objects[i] as TRtfdBox;
+  FreeAndNil(FFullParameters);
+  for I := 0 to FBoxNames.Count - 1 do
+  begin
+    Box := FBoxNames.Objects[I] as TRtfdBox;
     FreeAndNil(Box);
   end;
-  FreeAndNil(BoxNames);
-  FreeAndNil(MenuClassFiles);
+  FreeAndNil(FBoxNames);
+  FreeAndNil(FMenuClassFiles);
   FreeAndNil(FLivingObjects);
-  // dont do that: FreeAndNil(Frame);
-  // Frame is part of the gui and therefore is destroyed as GUI-component
-  // Panel is part of Frame so it is also destroyed by system as GUI-component
-  inherited;   // Model is inherited
+  // dont do that: FreeAndNil(FFrame);
+  // FFrame is part of the gui and therefore is destroyed as GUI-component
+  // FPanel is part of FFrame so it is also destroyed by system as GUI-component
+  inherited; // Model is inherited
 end;
 
 procedure TRtfdDiagram.InitFromModel;
 var
-  Mi: IModelIterator;
+  MIte: IModelIterator;
 
-  procedure InAddUnit(Up: TUnitPackage);
+  procedure InAddUnit(UnitPackage: TUnitPackage);
   var
-    Mi: IModelIterator;
-    Cl: TClassifier;
+    MIte: IModelIterator;
+    Classifier: TClassifier;
   begin
-    Mi:= Up.GetClassifiers;
-    while Mi.HasNext do begin
-      Cl:= MI.Next as TClassifier;
-      if CL.IsVisible then
-        AddBox( Cl );
+    MIte := UnitPackage.GetClassifiers;
+    while MIte.HasNext do
+    begin
+      Classifier := MIte.Next as TClassifier;
+      if Classifier.IsVisible then
+        AddBox(Classifier);
     end;
   end;
 
 begin
-  // IsAllClasses:= (Package = AllClassesPackage);
-  IsAllClasses:= True;  // otherwise no Delpi-class is shown
-  Panel.Hide;
-  if not Assigned(FPackage) then begin
+  FIsAllClasses := True;
+  FPanel.Hide;
+  if not Assigned(FPackage) then
+  begin
     Package := Model.ModelRoot;
-    //If there is only one package (except unknown) then show it.
-    //Assign with Package-property to trigger listeners
-    Mi := (FPackage as TLogicPackage).GetPackages;
-    if Mi.Count = 2 then begin
-      Mi.Next;
-      Package := Mi.Next as TAbstractPackage;
+    // If there is only one package (except unknown) then show it.
+    // Assign with Package-property to trigger listeners
+    MIte := (FPackage as TLogicPackage).GetPackages;
+    if MIte.Count = 2 then
+    begin
+      MIte.Next;
+      Package := MIte.Next as TAbstractPackage;
     end;
   end;
 
-  //Clean old
+  // Clean old
   ClearDiagram;
 
-  //Create boxes
+  // Create boxes
   if FPackage is TUnitPackage then
     InAddUnit(FPackage as TUnitPackage)
-  else  begin
-    //Logic package
-    //Exclude unknown-package, otherwise all temp-classes will be included on showallclasses.
-    //Also, unkown-package will be shown on package-overview (including docgen)
-    if IsAllClasses then begin
-      //These lines show all members of a package on one diagram
-      Mi := TModelIterator.Create( (Model.ModelRoot as TLogicPackage).GetPackages, TEntitySkipFilter.Create(Model.UnknownPackage) );
-      while Mi.HasNext do
-        InAddUnit(Mi.Next as TUnitPackage)
-    end else begin
-      Mi := TModelIterator.Create( (FPackage as TLogicPackage).GetPackages, TEntitySkipFilter.Create(Model.UnknownPackage) );
-      while Mi.HasNext do
-        AddBox(Mi.Next);
+  else
+  begin
+    // Logic package
+    // Exclude unknown-package, otherwise all temp-classes will be included on showallclasses.
+    // Also, unkown-package will be shown on package-overview (including docgen)
+    if FIsAllClasses then
+    begin
+      // These lines show all members of a package on one diagram
+      MIte := TModelIterator.Create(Model.ModelRoot.GetPackages,
+        TEntitySkipFilter.Create(Model.UnknownPackage));
+      while MIte.HasNext do
+        InAddUnit(MIte.Next as TUnitPackage);
+    end
+    else
+    begin
+      MIte := TModelIterator.Create((FPackage as TLogicPackage).GetPackages,
+        TEntitySkipFilter.Create(Model.UnknownPackage));
+      while MIte.HasNext do
+        AddBox(MIte.Next);
     end;
   end;
 
-  //Create arrow between boxes
-  //This must be done after fetchdiagram because connection-setting might be stored
+  // Create arrow between boxes
+  // This must be done after fetchdiagram because connection-setting might be stored
   DoLayout;
-  Panel.RecalcSize;
-  Panel.IsModified := False;
-  Panel.Show;
-  Panel.SetFocus;
+  FPanel.RecalcSize;
+  FPanel.IsModified := False;
+  FPanel.Show;
+  FPanel.SetFocus;
 end;
 
 procedure TRtfdDiagram.ModelBeforeChange(Sender: TModelEntity);
 begin
   Package := nil;
-  IsAllClasses := False;
+  FIsAllClasses := False;
   ClearDiagram;
 end;
 
@@ -347,279 +399,335 @@ begin
   InitFromModel;
 end;
 
-procedure TRtfdDiagram.PaintTo(Canvas: TCanvas; X, Y: Integer; SelectedOnly : Boolean);
+procedure TRtfdDiagram.PaintTo(Canvas: TCanvas; X, Y: Integer;
+  SelectedOnly: Boolean);
 var
-  OldBit : Graphics.TBitmap;
+  OldBit: Graphics.TBitmap;
 begin
-  OldBit := Panel.BackBitmap;
-  Panel.BackBitmap := nil;
-  if SelectedOnly then begin
-    if Panel.GetFirstSelected <> nil then
-      Panel.SelectedOnly := True;
-  end else
+  OldBit := FPanel.BackBitmap;
+  FPanel.BackBitmap := nil;
+  if SelectedOnly then
+  begin
+    if FPanel.GetFirstSelected <> nil then
+      FPanel.SelectedOnly := True;
+  end
+  else
     // selection-markers should not be visible in the saved picture
-    Panel.ClearSelection;
+    FPanel.ClearSelection;
   Canvas.Lock;
   try
-    Panel.PaintTo(Canvas.Handle, X, Y);
-    Panel.TextTo(Canvas);
+    FPanel.PaintTo(Canvas.Handle, X, Y);
+    FPanel.TextTo(Canvas);
   finally
     Canvas.Unlock;
-    Panel.SelectedOnly := False;
-    Panel.BackBitmap := OldBit;
+    FPanel.SelectedOnly := False;
+    FPanel.BackBitmap := OldBit;
   end;
 end;
 
-function TRtfdDiagram.getSVG: string;
-  var s, sw, si, ga: string; i, w, h: Integer;
+function TRtfdDiagram.GetSVG: string;
+var
+  SVG, ShadowWidth, ShadowIntensity, ShadowWidth2: string;
+  Width, Height: Integer;
 begin
-  Panel.GetDiagramSize(w, h);
-  s:= '<?xml version="1.0" encoding="UTF-8" ?>'#13#10;
-  s:= s + '<svg width="' + IntToStr(w) + '"' + ' height="' + IntToStr(h) + '"' +
-          ' font-family="' + Font.Name + '"' +
-          ' font-size="' + IntToStr(round(Font.Size*1.3)) + '">'#13#10;
-  if GuiPyOptions.Shadowwidth > 0 then begin
-    sw:= FloatToVal(GuiPyOptions.ShadowWidth / 2.0);
-    si:= FloatToVal(Min(2*GuiPyOptions.ShadowIntensity/10.0, 1));
-    ga:= FloatToVal(Min(GuiPyOptions.ShadowWidth, 10)*0.4);
-    s:= s +
-      '  <defs>'#13#10 +
-      '    <filter style="color-interpolation-filters:sRGB;" id="Shadow">'#13#10 +
-      '      <feFlood flood-opacity=' + si + ' flood-color="rgb(0,0,0)" result="flood" />'#13#10 +
-      '      <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>'#13#10 +
-      '      <feGaussianBlur in="composite1" stdDeviation=' + ga + ' result="blur" />'#13#10 +
-      '      <feOffset dx=' + sw + ' dy=' + sw + ' result="offset" />'#13#10 +
-      '      <feComposite in="SourceGraphic" in2="offset" operator="over" result="composite2" />'#13#10 +
-      '    </filter>'#13#10 +
-      '  </defs>'#13#10;
+  FPanel.GetDiagramSize(Width, Height);
+  SVG := '<?xml version="1.0" encoding="UTF-8" ?>'#13#10;
+  SVG := SVG + '<svg width="' + IntToStr(Width) + '"' + ' height="' +
+    IntToStr(Height) + '"' + ' font-family="' + Font.Name + '"' + ' font-size="'
+    + IntToStr(Round(Font.Size * 1.3)) + '">'#13#10;
+  if GuiPyOptions.ShadowWidth > 0 then
+  begin
+    ShadowWidth := FloatToVal(GuiPyOptions.ShadowWidth / 2.0);
+    ShadowIntensity :=
+      FloatToVal(Min(2 * GuiPyOptions.ShadowIntensity / 10.0, 1));
+    ShadowWidth2 := FloatToVal(Min(GuiPyOptions.ShadowWidth, 10) * 0.4);
+    SVG := SVG + '  <defs>'#13#10 +
+      '    <filter style="color-interpolation-filters:sRGB;" id="Shadow">'#13#10
+      + '      <feFlood flood-opacity=' + ShadowIntensity +
+      ' flood-color="rgb(0,0,0)" result="flood" />'#13#10 +
+      '      <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>'#13#10
+      + '      <feGaussianBlur in="composite1" stdDeviation=' + ShadowWidth2 +
+      ' result="blur" />'#13#10 + '      <feOffset dx=' + ShadowWidth + ' dy=' +
+      ShadowWidth + ' result="offset" />'#13#10 +
+      '      <feComposite in="SourceGraphic" in2="offset" operator="over" result="composite2" />'#13#10
+      + '    </filter>'#13#10 + '  </defs>'#13#10;
   end;
-  s:= s + Panel.getSVGConnections;
-  for i:= 0 to BoxNames.Count-1 do
-    s:= s + (BoxNames.Objects[i] as TRtfdBox).getSVG;
-  Result:= s + '</svg>'#13#10;
+  SVG := SVG + FPanel.GetSVGConnections;
+  for var I := 0 to FBoxNames.Count - 1 do
+    SVG := SVG + (FBoxNames.Objects[I] as TRtfdBox).GetSVG;
+  Result := SVG + '</svg>'#13#10;
 end;
 
 procedure TRtfdDiagram.ClearDiagram;
 begin
-  if not (csDestroying in Panel.ComponentState) then begin
-    Panel.ClearManagedObjects;
-    Panel.DestroyComponents;
+  if not(csDestroying in FPanel.ComponentState) then
+  begin
+    FPanel.ClearManagedObjects;
+    FPanel.DestroyComponents;
   end;
-  BoxNames.Clear;
+  FBoxNames.Clear;
 end;
 
-//Add a 'Box' to the diagram (class/package/objekt/comment).
-procedure TRtfdDiagram.AddBox(E: TModelEntity);
+// Add a 'Box' to the diagram (class/package/objekt/comment).
+procedure TRtfdDiagram.AddBox(ModelEntity: TModelEntity);
 var
-  Mi : IModelIterator;
-  C : TClass;
-  A : TAttribute;
-  i: Integer;
+  MIte: IModelIterator;
+  AClass: TClass;
+  Attribute: TAttribute;
 
-  function InCreateBox(E: TModelEntity; BoxT: TRtfdBoxClass): TRtfdBox;
+  function InCreateBox(ModelEntity: TModelEntity; BoxT: TRtfdBoxClass)
+    : TRtfdBox;
   begin
-    Result:= BoxT.Create(Panel, E, Frame, viPrivate);
+    Result := BoxT.Create(FPanel, ModelEntity, FFrame, viPrivate);
     Result.Font.Assign(Font);
-    BoxNames.AddObject(E.Name, Result);
+    FBoxNames.AddObject(ModelEntity.Name, Result);
   end;
 
 begin
-  if E is TUnitPackage then
-    Panel.AddManagedObject(InCreateBox(E, TRtfdUnitPackage))
-  else if E is TClass then begin
-    //Insert related boxes from other packages
-    //This should not be done if IsAllClasses, because then all boxes are inserted anyway
-    IsAllClasses:= True; // for testing
-    if not IsAllClasses then begin
-      //Ancestor that is in another package and that is not already inserted
-      //is added to the diagram.
-      C := (E as TClass);
-      for i:= 0 to C.AncestorsCount - 1 do
-        if (C.Ancestor[i].Owner <> E.Owner) and
-          (GetBox(C.Ancestor[i].FullName) = nil) then begin
-            Panel.AddManagedObject(InCreateBox(C.Ancestor[i], TRtfdClass));
-        end;
-      //Attribute associations that are in other packages are added
-      Mi := C.GetAttributes;
-      while Mi.HasNext do begin
-        A := TAttribute(Mi.Next);
-        if Assigned(A.TypeClassifier) and (GetBox(A.TypeClassifier.FullName) = nil) and
-          (A.TypeClassifier <> C) and (A.TypeClassifier <> C.Ancestor[0]) and  // ToDo n ancestors
-          (A.TypeClassifier.Owner <> Model.UnknownPackage) then
+  if ModelEntity is TUnitPackage then
+    FPanel.AddManagedObject(InCreateBox(ModelEntity, TRtfdUnitPackage))
+  else if ModelEntity is TClass then
+  begin
+    // Insert related boxes from other packages
+    // This should not be done if FIsAllClasses, because then all boxes are inserted anyway
+    FIsAllClasses := True; // for testing
+    if not FIsAllClasses then
+    begin
+      // Ancestor that is in another package and that is not already inserted
+      // is added to the diagram.
+      AClass := (ModelEntity as TClass);
+      for var I := 0 to AClass.AncestorsCount - 1 do
+        if (AClass.Ancestor[I].Owner <> ModelEntity.Owner) and
+          (GetBox(AClass.Ancestor[I].Fullname) = nil) then
         begin
-          if A.TypeClassifier is TClass then
-            Panel.AddManagedObject(InCreateBox(A.TypeClassifier,TRtfdClass) );
-          if A.TypeClassifier is TInterface then
-            Panel.AddManagedObject(InCreateBox(A.TypeClassifier, TRtfdInterface) );
+          FPanel.AddManagedObject(InCreateBox(AClass.Ancestor[I], TRtfdClass));
+        end;
+      // Attribute associations that are in other packages are added
+      MIte := AClass.GetAttributes;
+      while MIte.HasNext do
+      begin
+        Attribute := TAttribute(MIte.Next);
+        if Assigned(Attribute.TypeClassifier) and
+          (GetBox(Attribute.TypeClassifier.Fullname) = nil) and
+          (Attribute.TypeClassifier <> AClass) and
+          (Attribute.TypeClassifier <> AClass.Ancestor[0]) and
+        // ToDo n ancestors
+          (Attribute.TypeClassifier.Owner <> Model.UnknownPackage) then
+        begin
+          if Attribute.TypeClassifier is TClass then
+            FPanel.AddManagedObject(InCreateBox(Attribute.TypeClassifier,
+              TRtfdClass));
+          if Attribute.TypeClassifier is TInterface then
+            FPanel.AddManagedObject(InCreateBox(Attribute.TypeClassifier,
+              TRtfdInterface));
         end;
       end;
     end;
-    if E.IsVisible and (GetBox(E.getFullnameWithoutOuter) = nil)
-      then Panel.AddManagedObject(InCreateBox(E, TRtfdClass));
+    if ModelEntity.IsVisible and (GetBox(ModelEntity.GetFullnameWithoutOuter)
+      = nil) then
+      FPanel.AddManagedObject(InCreateBox(ModelEntity, TRtfdClass));
   end
-  else if E is TObjekt then begin
-    if GetBox(E.FullName) = nil then
-      Panel.AddManagedObject(InCreateBox(E, TRtfdObject));
+  else if ModelEntity is TObjekt then
+  begin
+    if GetBox(ModelEntity.Fullname) = nil then
+      FPanel.AddManagedObject(InCreateBox(ModelEntity, TRtfdObject));
   end;
 end;
 
-//Make arrows between boxes
+// Make arrows between boxes
 procedure TRtfdDiagram.ResolveAssociations;
 var
-  i, j, p : Integer;
+  Posi: Integer;
   CBox: TRtfdClass;
-  aClass: TClass;
-  A : TAttribute;
+  AClass: TClass;
+  Attribute: TAttribute;
   OBox: TRtfdObject;
 
-  UBox : TRtfdUnitPackage;
-  U : TUnitPackage;
-  Dep : TUnitDependency;
+  UBox: TRtfdUnitPackage;
+  UnitPackage: TUnitPackage;
+  Dep: TUnitDependency;
 
-  Mi : IModelIterator;
+  MIte: IModelIterator;
   DestBox: TRtfdBox;
-  s, Agg, Ass: string;
+  Str, Agg, Ass: string;
   AttributeConnected: Boolean;
 
 begin
-  Panel.DeleteNotEditedConnections;
-  Panel.DeleteObjectConnections;    // why?
-  for i:= 0 to BoxNames.Count - 1 do
-    if (BoxNames.Objects[i] is TRtfdClass) then begin //Class
-      CBox:= (BoxNames.Objects[i] as TRtfdClass);
-      //Ancestors
-      for j:= 0 to (CBox.Entity as TClass).AncestorsCount - 1 do begin
-        aClass:= CBox.Entity as TClass;
-        if Assigned(aClass) then begin
-          DestBox := GetBox( aClass.Ancestor[j].FullName );
+  FPanel.DeleteNotEditedConnections;
+  FPanel.DeleteObjectConnections; // why?
+  for var I := 0 to FBoxNames.Count - 1 do
+    if (FBoxNames.Objects[I] is TRtfdClass) then
+    begin // Class
+      CBox := (FBoxNames.Objects[I] as TRtfdClass);
+      // Ancestors
+      for var J := 0 to (CBox.Entity as TClass).AncestorsCount - 1 do
+      begin
+        AClass := CBox.Entity as TClass;
+        if Assigned(AClass) then
+        begin
+          DestBox := GetBox(AClass.Ancestor[J].Fullname);
           if Assigned(DestBox) then
-            Panel.ConnectObjects(CBox, DestBox, asInheritends);
+            FPanel.ConnectObjects(CBox, DestBox, asInheritends);
         end;
       end;
-      p:= Pos('.', CBox.Entity.Name);
-      if p > 0 then begin
-        DestBox:= GetBox(Copy(CBox.Entity.Name, 1, p-1));
+      Posi := Pos('.', CBox.Entity.Name);
+      if Posi > 0 then
+      begin
+        DestBox := GetBox(Copy(CBox.Entity.Name, 1, Posi - 1));
         if Assigned(DestBox) then
-          Panel.ConnectObjects(DestBox, CBox, asAssociation2);
+          FPanel.ConnectObjects(DestBox, CBox, asAssociation2);
       end;
 
-      //Attributes associations
-      AttributeConnected:= False;
-      aClass:= CBox.Entity as TClass;
-      Mi := aClass.GetAttributes;
-      while Mi.HasNext do begin
-        AttributeConnected:= False;
-        A := TAttribute(Mi.Next);
+      // Attributes associations
+      AttributeConnected := False;
+      AClass := CBox.Entity as TClass;
+      MIte := AClass.GetAttributes;
+      while MIte.HasNext do
+      begin
+        AttributeConnected := False;
+        Attribute := TAttribute(MIte.Next);
         // avoid arrows that points to themselves, also associations to ancestor (double arrows)
-        if Assigned(A.TypeClassifier) then begin
-          for j:= 0 to aClass.AncestorsCount - 1 do
-            if (A.TypeClassifier = aClass.Ancestor[j]) and Assigned(getBox(A.TypeClassifier.Name)) then
-              A.Connected:= True;
-          s:= A.TypeClassifier.Fullname;
-          if (Pos('[', s) > 0) and (Pos(']', s) > 0) then begin // Typ[], i.e. list[aClass]
-            Agg:= Copy(s, Pos('[', s) + 1, Length(s));
-            Agg:= Copy(Agg, 1, Pos(']', Agg) - 1);
-            DestBox:= GetBox(Agg);
-            if not Assigned(DestBox) and (Pos('.', Agg) = 0) and (CBox.Entity.Package <> '') then begin
-              Agg:= CBox.Entity.Package + '.' + Agg;
-              DestBox:= GetBox(Agg);
+        if Assigned(Attribute.TypeClassifier) then
+        begin
+          for var J := 0 to AClass.AncestorsCount - 1 do
+            if (Attribute.TypeClassifier = AClass.Ancestor[J]) and
+              Assigned(GetBox(Attribute.TypeClassifier.Name)) then
+              Attribute.Connected := True;
+          Str := Attribute.TypeClassifier.Fullname;
+          if (Pos('[', Str) > 0) and (Pos(']', Str) > 0) then
+          begin // Typ[], I.e. list[AClass]
+            Agg := Copy(Str, Pos('[', Str) + 1, Length(Str));
+            Agg := Copy(Agg, 1, Pos(']', Agg) - 1);
+            DestBox := GetBox(Agg);
+            if not Assigned(DestBox) and (Pos('.', Agg) = 0) and
+              (CBox.Entity.Package <> '') then
+            begin
+              Agg := CBox.Entity.Package + '.' + Agg;
+              DestBox := GetBox(Agg);
             end;
-            if Assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) = -1) then
-              Panel.ConnectObjects(CBox, DestBox, asAggregation1);
-          end else if IsPythonType(s)
-            then Continue
-          else begin
-            Ass:= s;
-            DestBox:= GetBox(Ass);
-            if not Assigned(DestBox) and (Pos('.', Ass) = 0) and (CBox.Entity.Package <> '') then begin
-              Ass:= CBox.Entity.Package + '.' + Ass;
-              DestBox:= GetBox(Ass);
+            if Assigned(DestBox) and (FPanel.HaveConnection(CBox, DestBox) = -1)
+            then
+              FPanel.ConnectObjects(CBox, DestBox, asAggregation1);
+          end
+          else if IsPythonType(Str) then
+            Continue
+          else
+          begin
+            Ass := Str;
+            DestBox := GetBox(Ass);
+            if not Assigned(DestBox) and (Pos('.', Ass) = 0) and
+              (CBox.Entity.Package <> '') then
+            begin
+              Ass := CBox.Entity.Package + '.' + Ass;
+              DestBox := GetBox(Ass);
             end;
             if Assigned(DestBox) then
-              if Panel.HaveConnection(CBox, DestBox) = -1  then
-                Panel.ConnectObjects(CBox, DestBox, asAssociation2)
-              else begin
-                p:= Panel.HaveConnection(DestBox, CBox, asAssociation2);
-                if p > -1 then
-                  Panel.SetConnection(p, asAssociation3)
+              if FPanel.HaveConnection(CBox, DestBox) = -1 then
+                FPanel.ConnectObjects(CBox, DestBox, asAssociation2)
+              else
+              begin
+                Posi := FPanel.HaveConnection(DestBox, CBox, asAssociation2);
+                if Posi > -1 then
+                  FPanel.SetConnection(Posi, asAssociation3);
               end;
           end;
-          if Assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) > -1) and DestBox.Entity.IsVisible then begin
-            A.Connected:= True;
-            AttributeConnected:= True;
+          if Assigned(DestBox) and (FPanel.HaveConnection(CBox, DestBox) > -1)
+            and DestBox.Entity.IsVisible then
+          begin
+            Attribute.Connected := True;
+            AttributeConnected := True;
           end;
         end;
       end;
       if AttributeConnected then
         CBox.RefreshEntities;
-    end else if (BoxNames.Objects[I] is TRtfdUnitPackage) then begin
-      //Unit
-      UBox := (BoxNames.Objects[I] as TRtfdUnitPackage);
-      U := UBox.Entity as TUnitPackage;
-      Mi := U.GetUnitDependencies;
-      while Mi.HasNext do begin
-        Dep := Mi.Next as TUnitDependency;
-        if Dep.Visibility = viPublic then begin
-          DestBox:= GetBox( Dep.myPackage.FullName );
+    end
+    else if (FBoxNames.Objects[I] is TRtfdUnitPackage) then
+    begin
+      // Unit
+      UBox := (FBoxNames.Objects[I] as TRtfdUnitPackage);
+      UnitPackage := UBox.Entity as TUnitPackage;
+      MIte := UnitPackage.GetUnitDependencies;
+      while MIte.HasNext do
+      begin
+        Dep := MIte.Next as TUnitDependency;
+        if Dep.Visibility = viPublic then
+        begin
+          DestBox := GetBox(Dep.MyPackage.Fullname);
           if Assigned(DestBox) then
-            Panel.ConnectObjects(UBox, DestBox, asAssociation2);
+            FPanel.ConnectObjects(UBox, DestBox, asAssociation2);
         end;
       end;
     end
-    else if (BoxNames.Objects[i] is TRtfdObject) then begin
+    else if (FBoxNames.Objects[I] is TRtfdObject) then
+    begin
       // connect Objects to Classes
-      OBox:= (BoxNames.Objects[I] as TRtfdObject);
-      if Assigned(OBox.Entity) then begin
-        DestBox:= GetBox(FLivingObjects.getClassnameOfObject(OBox.Entity.Name));
+      OBox := (FBoxNames.Objects[I] as TRtfdObject);
+      if Assigned(OBox.Entity) then
+      begin
+        DestBox := GetBox(FLivingObjects.getClassnameOfObject
+          (OBox.Entity.Name));
         if Assigned(DestBox) then
-          Panel.ConnectObjects(OBox, DestBox, asInstanceOf);
+          FPanel.ConnectObjects(OBox, DestBox, asInstanceOf);
       end;
     end;
-  Panel.ShowAll;
+  FPanel.ShowAll;
 end;
 
 procedure TRtfdDiagram.ShowRelationshipAttributesBold;
 var
-  i, j: Integer;
   CBox: TRtfdClass;
-  aClass: TClass;
-  A : TAttribute;
-  Mi : IModelIterator;
+  AClass: TClass;
+  Attribute: TAttribute;
+  MIte: IModelIterator;
   DestBox: TRtfdBox;
-  Ass, Agg, s: string;
+  Ass, Agg, Str: string;
 begin
-  for i:= 0 to BoxNames.Count - 1 do begin
-    if (BoxNames.Objects[i] is TRtfdClass) then begin //Class
-      CBox:= (BoxNames.Objects[i] as TRtfdClass);
-      aClass:= CBox.Entity as TClass;
-      Mi := aClass.GetAttributes;
-      while Mi.HasNext do begin
-        A := TAttribute(Mi.Next);
-        if Assigned(A.TypeClassifier) then begin
-          for j:= 0 to aClass.AncestorsCount - 1 do
-            if (A.TypeClassifier = aClass.Ancestor[j]) and Assigned(getBox(A.TypeClassifier.Name)) then
-              A.Connected:= True;
-          s:= A.TypeClassifier.Fullname;
-          if (Pos('[', s) > 0) and (Pos(']', s) > 0) then begin // Typ[], i.e. list[aClass]
-            Agg:= Copy(s, Pos('[', s) + 1, Length(s));
-            Agg:= Copy(Agg, 1, Pos(']', Agg) - 1);
-            DestBox:= GetBox(Agg);
-            if not Assigned(DestBox) and (Pos('.', Agg) = 0) and (CBox.Entity.Package <> '') then begin
-              Agg:= CBox.Entity.Package + '.' + Agg;
-              DestBox:= GetBox(Agg);
+  for var I := 0 to FBoxNames.Count - 1 do
+  begin
+    if (FBoxNames.Objects[I] is TRtfdClass) then
+    begin // Class
+      CBox := (FBoxNames.Objects[I] as TRtfdClass);
+      AClass := CBox.Entity as TClass;
+      MIte := AClass.GetAttributes;
+      while MIte.HasNext do
+      begin
+        Attribute := TAttribute(MIte.Next);
+        if Assigned(Attribute.TypeClassifier) then
+        begin
+          for var J := 0 to AClass.AncestorsCount - 1 do
+            if (Attribute.TypeClassifier = AClass.Ancestor[J]) and
+              Assigned(GetBox(Attribute.TypeClassifier.Name)) then
+              Attribute.Connected := True;
+          Str := Attribute.TypeClassifier.Fullname;
+          if (Pos('[', Str) > 0) and (Pos(']', Str) > 0) then
+          begin // Typ[], I.e. list[AClass]
+            Agg := Copy(Str, Pos('[', Str) + 1, Length(Str));
+            Agg := Copy(Agg, 1, Pos(']', Agg) - 1);
+            DestBox := GetBox(Agg);
+            if not Assigned(DestBox) and (Pos('.', Agg) = 0) and
+              (CBox.Entity.Package <> '') then
+            begin
+              Agg := CBox.Entity.Package + '.' + Agg;
+              DestBox := GetBox(Agg);
             end;
-          end else if IsPythonType(s)
-            then Continue
-          else begin
-            Ass:= s;
-            DestBox:= GetBox(Ass);
-            if not Assigned(DestBox) and (Pos('.', Ass) = 0) and (CBox.Entity.Package <> '') then begin
-              Ass:= CBox.Entity.Package + '.' + Ass;
-              DestBox:= GetBox(Ass);
+          end
+          else if IsPythonType(Str) then
+            Continue
+          else
+          begin
+            Ass := Str;
+            DestBox := GetBox(Ass);
+            if not Assigned(DestBox) and (Pos('.', Ass) = 0) and
+              (CBox.Entity.Package <> '') then
+            begin
+              Ass := CBox.Entity.Package + '.' + Ass;
+              DestBox := GetBox(Ass);
             end;
           end;
-          if Assigned(DestBox) and (Panel.HaveConnection(CBox, DestBox) > -1) and DestBox.Entity.IsVisible then
-            A.Connected:= True;
+          if Assigned(DestBox) and (FPanel.HaveConnection(CBox, DestBox) > -1)
+            and DestBox.Entity.IsVisible then
+            Attribute.Connected := True;
         end;
       end;
     end;
@@ -628,32 +736,39 @@ end;
 
 // make arrows between Objects
 procedure TRtfdDiagram.ResolveObjectAssociations;
-  var
-    i, j: Integer;
-    SLObjectAttributes: TStringList;
-    OBox: TRtfdObject;
-    DestBox: TRtfdBox;
+var
+  SLObjectAttributes: TStringList;
+  OBox: TRtfdObject;
+  DestBox: TRtfdBox;
 begin
-  Panel.DeleteObjectConnections;
-  for i:= 0 to BoxNames.Count - 1 do begin
-    if Assigned(BoxNames.Objects[i]) and (BoxNames.Objects[i] is TRtfdObject) then begin  // reconnect Objects
-      OBox:= BoxNames.Objects[i] as TRtfdObject;
-      if Assigned(OBox.Entity) then begin
-        SLObjectAttributes:= FLivingObjects.getObjectObjectMembers(OBox.Entity.Name);
-        for j:= 0 to SLObjectAttributes.Count - 1 do begin
-          DestBox:= GetBox(SLObjectAttributes[j]);
+  FPanel.DeleteObjectConnections;
+  for var I := 0 to FBoxNames.Count - 1 do
+  begin
+    if Assigned(FBoxNames.Objects[I]) and (FBoxNames.Objects[I] is TRtfdObject)
+    then
+    begin // reconnect Objects
+      OBox := FBoxNames.Objects[I] as TRtfdObject;
+      if Assigned(OBox.Entity) then
+      begin
+        SLObjectAttributes := FLivingObjects.getObjectObjectMembers
+          (OBox.Entity.Name);
+        for var J := 0 to SLObjectAttributes.Count - 1 do
+        begin
+          DestBox := GetBox(SLObjectAttributes[J]);
           if Assigned(DestBox) then
-            Panel.ConnectObjects(OBox, DestBox, asAssociation2);
+            FPanel.ConnectObjects(OBox, DestBox, asAssociation2);
         end;
         FreeAndNil(SLObjectAttributes);
 
-        DestBox:= GetBox(FLivingObjects.getClassnameOfObject(OBox.Entity.Name));
-        if Assigned(DestBox) and (Panel.HaveConnection(OBox, DestBox) = -1) then
-          Panel.ConnectObjects(OBox, DestBox, asInstanceOf);
+        DestBox := GetBox(FLivingObjects.getClassnameOfObject
+          (OBox.Entity.Name));
+        if Assigned(DestBox) and (FPanel.HaveConnection(OBox, DestBox) = -1)
+        then
+          FPanel.ConnectObjects(OBox, DestBox, asInstanceOf);
       end;
     end;
   end;
-  Panel.ShowAll;
+  FPanel.ShowAll;
 end;
 
 procedure TRtfdDiagram.SetPackage(const Value: TAbstractPackage);
@@ -661,15 +776,17 @@ begin
   if Assigned(FPackage) and (FPackage is TUnitPackage) then
     FPackage.RemoveListener(IAfterUnitPackageListener(Self));
   inherited SetPackage(Value);
-  if Assigned(FPackage) then begin
-    if (FPackage is TUnitPackage)
-      then FPackage.AddListener(IAfterUnitPackageListener(Self));
-    if (FPackage is TLogicPackage)
-      then FPackage.AddListener(IAfterUnitPackageListener(Self));
+  if Assigned(FPackage) then
+  begin
+    if (FPackage is TUnitPackage) then
+      FPackage.AddListener(IAfterUnitPackageListener(Self));
+    if (FPackage is TLogicPackage) then
+      FPackage.AddListener(IAfterUnitPackageListener(Self));
   end;
-  if Assigned(Frame.ScrollBox) and Assigned(GuiPyOptions) then begin
-    Frame.ScrollBox.HorzScrollBar.Position := 0;
-    Frame.ScrollBox.VertScrollBar.Position := 0;
+  if Assigned(FFrame.ScrollBox) and Assigned(GuiPyOptions) then
+  begin
+    FFrame.ScrollBox.HorzScrollBar.Position := 0;
+    FFrame.ScrollBox.VertScrollBar.Position := 0;
   end;
 end;
 
@@ -691,122 +808,142 @@ procedure TRtfdDiagram.UnitPackageAfterRemove(Sender: TModelEntity);
 begin
 end;
 
-procedure TRtfdDiagram.StoreDiagram(FileName: string);
+procedure TRtfdDiagram.StoreDiagram(Filename: string);
 var
-  Ini : TMemIniFile;
-  p, comments: Integer;
+  Ini: TMemIniFile;
+  Posi, Comments: Integer;
   Box: TRtfdBox;
-  S, C, fname, s1, path: string;
+  Section, ConnStr, FName, Path: string;
   Connections: TList;
   Conn: TConnection;
   Values: TStrings;
 
 begin
-  Values:= TStringList.Create;
-  if FileExists(FileName) then begin
-    Ini:= TMemIniFile.Create(FileName);
+  Values := TStringList.Create;
+  if FileExists(Filename) then
+  begin
+    Ini := TMemIniFile.Create(Filename);
     Ini.ReadSectionValues('Window', Values);
     FreeAndNil(Ini);
   end;
-  DeleteFile(FileName);
+  DeleteFile(Filename);
 
-  path:= ExtractFilePath(FileName);
-  if isUNC(path)
-    then path:= ''
-    else SetCurrentDir(path); // due to relativ paths
+  Path := ExtractFilePath(Filename);
+  if IsUNC(Path) then
+    Path := ''
+  else
+    SetCurrentDir(Path); // due to relativ paths
 
-  Ini:= TMemIniFile.Create(FileName, TEncoding.UTF8);
+  Ini := TMemIniFile.Create(Filename, TEncoding.UTF8);
   try
     try
-      //Boxes
-      comments:= 0;
-      for var I:= 0 to BoxNames.Count - 1 do begin
-        if BoxNames.Objects[I] is TRtfdObject then begin
+      // Boxes
+      Comments := 0;
+      for var I := 0 to FBoxNames.Count - 1 do
+      begin
+        if FBoxNames.Objects[I] is TRtfdObject then
+        begin
           // Objects
-          Box:= BoxNames.Objects[I] as TRtfdObject;
-          S:= 'Object: ' + Box.Entity.FullName;
-          Ini.WriteInteger(S, 'X', PPIUnScale(Box.Left));
-          Ini.WriteInteger(S, 'Y', PPIUnScale(Box.Top));
-          Ini.WriteString(S, 'Name', Box.Entity.Name);
-          if FLivingObjects.ObjectExists(Box.Entity.Name)
-            then Ini.WriteString(S, 'Typ', FLivingObjects.getClassnameOfObject(Box.Entity.Name))
-            else Ini.WriteString(S, 'Typ','unknown')
-        end else if BoxNames.Objects[I] is TRtfdCommentBox then begin
+          Box := FBoxNames.Objects[I] as TRtfdObject;
+          Section := 'Object: ' + Box.Entity.Fullname;
+          Ini.WriteInteger(Section, 'X', PPIUnScale(Box.Left));
+          Ini.WriteInteger(Section, 'Y', PPIUnScale(Box.Top));
+          Ini.WriteString(Section, 'Name', Box.Entity.Name);
+          if FLivingObjects.ObjectExists(Box.Entity.Name) then
+            Ini.WriteString(Section, 'Typ',
+              FLivingObjects.getClassnameOfObject(Box.Entity.Name))
+          else
+            Ini.WriteString(Section, 'Typ', 'unknown');
+        end
+        else if FBoxNames.Objects[I] is TRtfdCommentBox then
+        begin
           // Comments
-          Box:= BoxNames.Objects[I] as TRtfdBox;
-          S:= Box.Entity.FullName;
-          Ini.WriteInteger(S, 'X', PPIUnScale(Box.Left));
-          Ini.WriteInteger(S, 'Y', PPIUnScale(Box.Top));
-          Ini.WriteInteger(S, 'W', PPIUnScale(Box.Width));
-          Ini.WriteInteger(S, 'H', PPIUnScale(Box.Height));
-          s1:= (Box as TRtfdCommentBox).TrMemo.Text;
-          Ini.WriteString(S, 'Comment', myStringReplace(s1, #13#10, '_;_'));
-        end else begin
+          Box := FBoxNames.Objects[I] as TRtfdBox;
+          Section := Box.Entity.Fullname;
+          Ini.WriteInteger(Section, 'X', PPIUnScale(Box.Left));
+          Ini.WriteInteger(Section, 'Y', PPIUnScale(Box.Top));
+          Ini.WriteInteger(Section, 'W', PPIUnScale(Box.Width));
+          Ini.WriteInteger(Section, 'H', PPIUnScale(Box.Height));
+          var
+          Str := (Box as TRtfdCommentBox).TrMemo.Text;
+          Ini.WriteString(Section, 'Comment',
+            myStringReplace(Str, #13#10, '_;_'));
+        end
+        else
+        begin
           // Class
-          Box:= BoxNames.Objects[I] as TRtfdBox;
-          if Box.Entity.IsVisible then begin
-            S:= 'Box: ' + Box.Entity.FullName;
-            fName:= RemovePortableDrive((Box.Entity as TClassifier).Pathname, path);
-            Ini.WriteString(S, 'File', fName);
-            Ini.WriteInteger(S, 'X', PPIUnScale(Box.Left));
-            Ini.WriteInteger(S, 'Y', PPIUnScale(Box.Top));
-            Ini.WriteInteger(S, 'MinVis', Integer(Box.MinVisibility));
-            Ini.WriteInteger(S, 'ShowParameter', Box.ShowParameter);
-            Ini.WriteInteger(S, 'SortOrder', Box.SortOrder);
-            Ini.WriteInteger(S, 'ShowIcons', Box.ShowIcons);
+          Box := FBoxNames.Objects[I] as TRtfdBox;
+          if Box.Entity.IsVisible then
+          begin
+            Section := 'Box: ' + Box.Entity.Fullname;
+            FName := RemovePortableDrive((Box.Entity as TClassifier)
+              .Pathname, Path);
+            Ini.WriteString(Section, 'File', FName);
+            Ini.WriteInteger(Section, 'X', PPIUnScale(Box.Left));
+            Ini.WriteInteger(Section, 'Y', PPIUnScale(Box.Top));
+            Ini.WriteInteger(Section, 'MinVis', Integer(Box.MinVisibility));
+            Ini.WriteInteger(Section, 'ShowParameter', Box.ShowParameter);
+            Ini.WriteInteger(Section, 'SortOrder', Box.SortOrder);
+            Ini.WriteInteger(Section, 'ShowIcons', Box.ShowIcons);
             if Box.TypeBinding <> '' then
-              Ini.WriteString(S, 'TypeBinding', Box.TypeBinding);
+              Ini.WriteString(Section, 'TypeBinding', Box.TypeBinding);
           end;
         end;
       end;
 
-      //Diagram stuff
-      s:= 'Diagram';
-      Ini.WriteInteger(S, 'comments', comments);
-      Ini.WriteInteger(S, 'OffsetX', Frame.ScrollBox.VertScrollBar.Position);
-      Ini.WriteInteger(S, 'OffsetY', Frame.ScrollBox.HorzScrollBar.Position);
+      // Diagram stuff
+      Section := 'Diagram';
+      Ini.WriteInteger(Section, 'Comments', Comments);
+      Ini.WriteInteger(Section, 'OffsetX',
+        FFrame.ScrollBox.VertScrollBar.Position);
+      Ini.WriteInteger(Section, 'OffsetY',
+        FFrame.ScrollBox.HorzScrollBar.Position);
 
-      Ini.WriteInteger(S, 'Visibility', Integer(VisibilityFilter));
-      Ini.WriteInteger(S, 'ShowParameter', Showparameter);
-      Ini.WriteInteger(S, 'SortOrder', SortOrder);
-      Ini.WriteInteger(S, 'ShowIcons', ShowIcons);
-      Ini.WriteInteger(S, 'ShowConnections', ShowConnections);
-      Ini.WriteString (S, 'Fontname', Font.Name);
-      Ini.WriteInteger(S, 'Fontsize', PPIUnScale(Font.Size));
-      Ini.WriteBool   (S, 'ShowObjectDiagram', ShowObjectDiagram);
+      Ini.WriteInteger(Section, 'Visibility', Integer(VisibilityFilter));
+      Ini.WriteInteger(Section, 'ShowParameter', ShowParameter);
+      Ini.WriteInteger(Section, 'SortOrder', SortOrder);
+      Ini.WriteInteger(Section, 'ShowIcons', ShowIcons);
+      Ini.WriteInteger(Section, 'ShowConnections', ShowConnections);
+      Ini.WriteString(Section, 'Fontname', Font.Name);
+      Ini.WriteInteger(Section, 'Fontsize', PPIUnScale(Font.Size));
+      Ini.WriteBool(Section, 'ShowObjectDiagram', ShowObjectDiagram);
 
       // Connections
-      s:= 'Connections';
-      Connections:= Panel.GetConnections;
-      for var I:= 0 to Connections.Count - 1 do begin
-        Conn:= TConnection(Connections[I]);
-        with conn do
-          c:= (FFrom as TRtfdBox).Entity.FullName + '#' +
-              (FTo as TRtfdBox).Entity.FullName + '#' +
-              ArrowStyleToString(ArrowStyle) + '#' +
-              HideCrLf(MultiplicityA) + '#' + Relation + '#' + HideCrLf(MultiplicityB) + '#' +
-              IntToStr(RecursivCorner) + '#' + BoolToStr(isTurned) + '#' +
-              BoolToStr(isEdited) + '#' +
-              HideCrLf(RoleA) + '#' + HideCrLf(RoleB) + '#' +
-              BoolToStr(ReadingOrderA) + '#' + BoolToStr(ReadingOrderB);
-         Ini.WriteString(S, 'V' + IntToStr(I), c);
+      Section := 'Connections';
+      Connections := FPanel.GetConnections;
+      for var I := 0 to Connections.Count - 1 do
+      begin
+        Conn := TConnection(Connections[I]);
+        with Conn do
+          ConnStr := (FromControl as TRtfdBox).Entity.Fullname + '#' +
+            (ToControl as TRtfdBox).Entity.Fullname + '#' +
+            ArrowStyleToString(ArrowStyle) + '#' + HideCrLf(MultiplicityA) + '#'
+            + Relation + '#' + HideCrLf(MultiplicityB) + '#' +
+            IntToStr(RecursivCorner) + '#' + BoolToStr(IsTurned) + '#' +
+            BoolToStr(IsEdited) + '#' + HideCrLf(RoleA) + '#' + HideCrLf(RoleB)
+            + '#' + BoolToStr(ReadingOrderA) + '#' + BoolToStr(ReadingOrderB);
+        Ini.WriteString(Section, 'V' + IntToStr(I), ConnStr);
       end;
       FreeAndNil(Connections);
 
       // Interactive
-      for var I:= 0 to UMLForm.InteractiveLines.Count - 1 do
-        Ini.WriteString('Interactive', 'I' + IntToStr(I), UMLForm.InteractiveLines[I]);
+      for var I := 0 to FUMLForm.InteractiveLines.Count - 1 do
+        Ini.WriteString('Interactive', 'I' + IntToStr(I),
+          FUMLForm.InteractiveLines[I]);
 
       // Window
-      for var I:= 0 to Values.Count - 1 do begin
-        s:= Values[I];
-        p:= Pos('=', s);
-        Ini.WriteString('Window', Copy(s, 1, p - 1), Copy(s, p + 1, Length(s)));
+      for var I := 0 to Values.Count - 1 do
+      begin
+        Section := Values[I];
+        Posi := Pos('=', Section);
+        Ini.WriteString('Window', Copy(Section, 1, Posi - 1),
+          Copy(Section, Posi + 1, Length(Section)));
       end;
 
       Ini.UpdateFile;
     except
-      on e: Exception do begin
+      on e: Exception do
+      begin
         ErrorMsg(e.Message);
       end;
     end;
@@ -815,592 +952,688 @@ begin
   end;
 
   FreeAndNil(Values);
-  Panel.IsModified:= False;
+  FPanel.IsModified := False;
 end;
 
-procedure TRtfdDiagram.FetchDiagram(FileName: string);
+procedure TRtfdDiagram.FetchDiagram(Filename: string);
 var
   Ini: TMemIniFile;
-  i, j, p, CountObjects: Integer;
+  Int, Num, Posi, CountObjects: Integer;
   Box, Box1, Box2: TRtfdBox;
-  s, c, aFile, b1, b2, path: string;
-  Files, Sections, SL: TStringList;
+  Section, CName, AFile, B1Name, B2Name, Path: string;
+  Files, Sections, StringList: TStringList;
   AllBoxes: TList;
 
   UnitPackage: TUnitPackage;
-  theClassname: string;
-  theObjectname: string;
-  aModelObject: TObjekt;
+  TheClassname: string;
+  TheObjectname: string;
+  AModelObject: TObjekt;
 
   Attributes: TConnectionAttributes;
-  aClass: TClass;
-  aClassifier: TClassifier;
+  AClass: TClass;
+  AClassifier: TClassifier;
 
-  BoxShowParameter, BoxSortorder, BoxShowIcons: Integer;
+  BoxShowParameter, BoxSortOrder, BoxShowIcons: Integer;
   BoxTypeBinding: string;
   CommentBox: TRtfdCommentBox;
   VisibilityFilterAsInteger: Integer;
 begin
-  FileName:= ExpandFileName(FileName);
-  Ini:= TMemIniFile.Create(FileName);
-  Files:= TStringList.Create;
-  Sections:= TStringList.Create;
-  Attributes:= TConnectionAttributes.Create;
+  Filename := ExpandFileName(Filename);
+  Ini := TMemIniFile.Create(Filename);
+  Files := TStringList.Create;
+  Sections := TStringList.Create;
+  Attributes := TConnectionAttributes.Create;
   try
-    s:= 'Diagram';
-    Frame.ScrollBox.VertScrollBar.Position:= Ini.ReadInteger(S, 'OffsetX', Frame.ScrollBox.VertScrollBar.Position);
-    Frame.ScrollBox.HorzScrollBar.Position:= Ini.ReadInteger(S, 'OffsetY', Frame.ScrollBox.HorzScrollBar.Position);
+    Section := 'Diagram';
+    FFrame.ScrollBox.VertScrollBar.Position :=
+      Ini.ReadInteger(Section, 'OffsetX',
+      FFrame.ScrollBox.VertScrollBar.Position);
+    FFrame.ScrollBox.HorzScrollBar.Position :=
+      Ini.ReadInteger(Section, 'OffsetY',
+      FFrame.ScrollBox.HorzScrollBar.Position);
 
-    ShowConnections:= Ini.ReadInteger(S, 'ShowConnections', 0);
-    VisibilityFilterAsInteger:= Ini.ReadInteger(S, 'Visibility', 0);
-    VisibilityFilter:= TVisibility(VisibilityFilterAsInteger);
-    ShowParameter:= Ini.ReadInteger(S, 'ShowParameter', ShowParameter);
-    SortOrder:= Ini.ReadInteger(S, 'SortOrder', SortOrder);
-    ShowIcons:= Ini.ReadInteger(S, 'ShowIcons', ShowIcons);
-    ShowObjectDiagram:= Ini.ReadBool(S, 'ShowObjectDiagram', False);
-    Font.Name:= Ini.ReadString(S, 'Fontname', 'Segoe UI');
-    Font.Size:= PPIScale(Ini.ReadInteger(S, 'Fontsize', 11));
-    setFont(Font);
+    ShowConnections := Ini.ReadInteger(Section, 'ShowConnections', 0);
+    VisibilityFilterAsInteger := Ini.ReadInteger(Section, 'Visibility', 0);
+    VisibilityFilter := TVisibility(VisibilityFilterAsInteger);
+    ShowParameter := Ini.ReadInteger(Section, 'ShowParameter', ShowParameter);
+    SortOrder := Ini.ReadInteger(Section, 'SortOrder', SortOrder);
+    ShowIcons := Ini.ReadInteger(Section, 'ShowIcons', ShowIcons);
+    ShowObjectDiagram := Ini.ReadBool(Section, 'ShowObjectDiagram', False);
+    Font.Name := Ini.ReadString(Section, 'Fontname', 'Segoe UI');
+    Font.Size := PPIScale(Ini.ReadInteger(Section, 'Fontsize', 11));
+    SetFont(Font);
 
     // read files
-    path:= ExtractFilePath(FileName);
-    if isUNC(path)
-      then path:= ''
-      else SetCurrentDir(path); // due to relativ paths
+    Path := ExtractFilePath(Filename);
+    if IsUNC(Path) then
+      Path := ''
+    else
+      SetCurrentDir(Path); // due to relativ paths
     Ini.ReadSections(Sections);
-    for i:= 0 to Sections.Count - 1 do begin
-      if Pos('Box: ', Sections[i]) > 0 then begin
-        aFile:= Ini.ReadString(Sections[i], 'File', '');
-        if aFile <> '' then begin
-          aFile:= ExpandFileName(AddPortableDrive(aFile, path));
-          if not FileExistsCaseSensitive(aFile) then
-            aFile:= ExtractFilePath(FileName) + extractFilename(aFile);
-          if FileExistsCaseSensitive(aFile) and (Files.IndexOf(aFile) = -1) then
-            Files.Add(aFile);
+    for var I := 0 to Sections.Count - 1 do
+    begin
+      if Pos('Box: ', Sections[I]) > 0 then
+      begin
+        AFile := Ini.ReadString(Sections[I], 'File', '');
+        if AFile <> '' then
+        begin
+          AFile := ExpandFileName(AddPortableDrive(AFile, Path));
+          if not FileExistsCaseSensitive(AFile) then
+            AFile := ExtractFilePath(Filename) + ExtractFileName(AFile);
+          if FileExistsCaseSensitive(AFile) and (Files.IndexOf(AFile) = -1) then
+            Files.Add(AFile);
         end;
       end;
     end;
-    UMLForm.MainModul.LoadProject(Files);
+    FUMLForm.MainModul.LoadProject(Files);
 
     // read classes
-    for i:= BoxNames.Count - 1 downto 0 do begin
-      Box:= BoxNames.Objects[i] as TRtfdBox;
-      if BoxNames.Objects[i] is TRtfdClass then begin
-        S:= 'Box: ' + Box.Entity.FullName;
-        if Ini.SectionExists(S) then begin
-          Box.Left:= PPIScale(Ini.ReadInteger(S, 'X', Box.Left));
-          Box.Top := PPIScale(Ini.ReadInteger(S, 'Y', Box.Top));
-          Box.MinVisibility:= TVisibility(Ini.ReadInteger(S, 'MinVis', VisibilityFilterAsInteger));
-          BoxShowParameter:= Ini.ReadInteger(S, 'ShowParameter', ShowParameter);
-          BoxSortOrder:= Ini.ReadInteger(S, 'SortOrder', SortOrder);
-          BoxShowIcons:= Ini.ReadInteger(S, 'ShowIcons', ShowIcons);
-          BoxTypeBinding:= Ini.ReadString(S, 'TypeBinding', '');
-          Box.SetParameters(BoxShowParameter, BoxSortOrder, BoxShowIcons, Font, BoxTypeBinding);
-        end else
-          TManagedObject(Panel.FindManagedControl(Box)).Selected:= True;
+    for var I := FBoxNames.Count - 1 downto 0 do
+    begin
+      Box := FBoxNames.Objects[I] as TRtfdBox;
+      if FBoxNames.Objects[I] is TRtfdClass then
+      begin
+        Section := 'Box: ' + Box.Entity.Fullname;
+        if Ini.SectionExists(Section) then
+        begin
+          Box.Left := PPIScale(Ini.ReadInteger(Section, 'X', Box.Left));
+          Box.Top := PPIScale(Ini.ReadInteger(Section, 'Y', Box.Top));
+          Box.MinVisibility := TVisibility(Ini.ReadInteger(Section, 'MinVis',
+            VisibilityFilterAsInteger));
+          BoxShowParameter := Ini.ReadInteger(Section, 'ShowParameter',
+            ShowParameter);
+          BoxSortOrder := Ini.ReadInteger(Section, 'SortOrder', SortOrder);
+          BoxShowIcons := Ini.ReadInteger(Section, 'ShowIcons', ShowIcons);
+          BoxTypeBinding := Ini.ReadString(Section, 'TypeBinding', '');
+          Box.SetParameters(BoxShowParameter, BoxSortOrder, BoxShowIcons, Font,
+            BoxTypeBinding);
+        end
+        else
+          FPanel.FindManagedControl(Box).Selected := True;
       end;
     end;
     DeleteSelectedControls(nil);
 
-    // read objects
-    CountObjects:= 0;
-    for i:= 0 to Sections.Count - 1 do begin
-      if Pos('Object: ', Sections[i]) > 0 then begin
-        S:= Sections[i];
-        UnitPackage:= Model.ModelRoot.FindUnitPackage('Default');
+    // read Objects
+    CountObjects := 0;
+    for var I := 0 to Sections.Count - 1 do
+    begin
+      if Pos('Object: ', Sections[I]) > 0 then
+      begin
+        Section := Sections[I];
+        UnitPackage := Model.ModelRoot.FindUnitPackage('Default');
         if not Assigned(UnitPackage) then
-          UnitPackage:= Model.ModelRoot.AddUnit('Default');
-        theClassname := Ini.ReadString(S, 'Typ', '');
-        theObjectname:= Ini.ReadString(S, 'Name', '');
+          UnitPackage := Model.ModelRoot.AddUnit('Default');
+        TheClassname := Ini.ReadString(Section, 'Typ', '');
+        TheObjectname := Ini.ReadString(Section, 'Name', '');
 
-        aClass:= nil;
-        if FLivingObjects.ObjectExists(theObjectname) then begin
-          j:= BoxNames.IndexOf(theClassname);
-          if j >= 0 then
-            aClass:= ((BoxNames.Objects[j] as TRtfdClass).Entity) as TClass
-        end else
-          theObjectname:= '';
-        if aClass = nil then begin
-          aClassifier:= UnitPackage.FindClassifier(theClassname, TClass, True);
-          if Assigned(aClassifier) then
-            aClass:= aClassifier as TClass
-          else begin
-            aClass:= TClass.Create(nil);
-            aClass.Name:= theClassname;
-            UnitPackage.AddClass(aClass);
+        AClass := nil;
+        if FLivingObjects.ObjectExists(TheObjectname) then
+        begin
+          Num := FBoxNames.IndexOf(TheClassname);
+          if Num >= 0 then
+            AClass := (FBoxNames.Objects[Num] as TRtfdClass).Entity as TClass;
+        end
+        else
+          TheObjectname := '';
+        if not Assigned(AClass) then
+        begin
+          AClassifier := UnitPackage.FindClassifier(TheClassname, TClass, True);
+          if Assigned(AClassifier) then
+            AClass := AClassifier as TClass
+          else
+          begin
+            AClass := TClass.Create(nil);
+            AClass.Name := TheClassname;
+            UnitPackage.AddClass(AClass);
           end;
         end;
 
-        if theObjectname <> '' then begin
-          aModelObject:= UnitPackage.AddObject(theObjectname, aClass);
-          ShowAttributes(theObjectname, aClass, aModelObject);
-          j:= BoxNames.IndexOf(theObjectname);
-          if j = -1 then begin
-            AddBox(aModelObject);
-            j:= BoxNames.IndexOf(theObjectname);
+        if TheObjectname <> '' then
+        begin
+          AModelObject := UnitPackage.AddObject(TheObjectname, AClass);
+          ShowAttributes(TheObjectname, AClass, AModelObject);
+          Num := FBoxNames.IndexOf(TheObjectname);
+          if Num = -1 then
+          begin
+            AddBox(AModelObject);
+            Num := FBoxNames.IndexOf(TheObjectname);
           end;
 
-          if j > -1 then begin
-            Box:= BoxNames.Objects[j] as TRtfdBox;
-            Box.Left:= PPIScale(Ini.ReadInteger(S, 'X', Box.Left));
-            Box.Top := PPIScale(Ini.ReadInteger(S, 'Y', Box.Top));
+          if Num > -1 then
+          begin
+            Box := FBoxNames.Objects[Num] as TRtfdBox;
+            Box.Left := PPIScale(Ini.ReadInteger(Section, 'X', Box.Left));
+            Box.Top := PPIScale(Ini.ReadInteger(Section, 'Y', Box.Top));
             Box.Font.Assign(Font);
           end;
           Inc(CountObjects);
         end;
       end;
     end;
-    Panel.DeleteConnections;
+    FPanel.DeleteConnections;
 
-    // read comments
-    for i:= 0 to Sections.Count - 1 do begin
-      if Pos('Comment: ', Sections[i]) = 1 then begin
-        S:= Sections[i];
-        j:= BoxNames.IndexOf(S);
-        if j = -1 then begin
-          CommentBox:= TRtfdCommentBox.Create(Panel, S, Frame, viPublic, HANDLESIZE);
-          BoxNames.AddObject(S, CommentBox);
-          Panel.AddManagedObject(CommentBox);
-          j:= BoxNames.IndexOf(S);
+    // read Comments
+    for var I := 0 to Sections.Count - 1 do
+    begin
+      if Pos('Comment: ', Sections[I]) = 1 then
+      begin
+        Section := Sections[I];
+        Num := FBoxNames.IndexOf(Section);
+        if Num = -1 then
+        begin
+          CommentBox := TRtfdCommentBox.Create(FPanel, Section, FFrame,
+            viPublic, HANDLESIZE);
+          FBoxNames.AddObject(Section, CommentBox);
+          FPanel.AddManagedObject(CommentBox);
+          Num := FBoxNames.IndexOf(Section);
         end;
-        if j > -1 then begin
-          Box:= BoxNames.Objects[j] as TRtfdBox;
-          Box.Left:= PPIScale(Ini.ReadInteger(S, 'X', Box.Left));
-          Box.Top := PPIScale(Ini.ReadInteger(S, 'Y', Box.Top));
-          Box.Width:= PPIScale(Ini.ReadInteger(S, 'W', Box.Width));
-          Box.Height:= PPIScale(Ini.ReadInteger(S, 'H', Box.Height));
+        if Num > -1 then
+        begin
+          Box := FBoxNames.Objects[Num] as TRtfdBox;
+          Box.Left := PPIScale(Ini.ReadInteger(Section, 'X', Box.Left));
+          Box.Top := PPIScale(Ini.ReadInteger(Section, 'Y', Box.Top));
+          Box.Width := PPIScale(Ini.ReadInteger(Section, 'W', Box.Width));
+          Box.Height := PPIScale(Ini.ReadInteger(Section, 'H', Box.Height));
           Box.Font.Assign(Font);
-          s:= Ini.ReadString(S, 'Comment', '');
-          (Box as TRtfdCommentBox).TrMemo.Text:= myStringReplace(s, '_;_', #13#10);
+          Section := Ini.ReadString(Section, 'Comment', '');
+          (Box as TRtfdCommentBox).TrMemo.Text :=
+            myStringReplace(Section, '_;_', #13#10);
         end;
       end;
     end;
-    Panel.DeleteConnections;
-    AllBoxes:= Panel.GetManagedObjects;
+    FPanel.DeleteConnections;
+    AllBoxes := FPanel.GetManagedObjects;
 
-    S:= 'Connections';
-    i:= 0;
+    Section := 'Connections';
+    Int := 0;
     repeat
-      c:= Ini.ReadString(S, 'V' + IntToStr(i), '');
-      if c <> '' then begin
-        Box1:= nil;
-        Box2:= nil;
-        SL:= Split('#', c);
-        b1:= Trim(SL[0]);
-        b2:= Trim(SL[1]);
-        Attributes.ArrowStyle:= StringToArrowStyle(SL[2]);
-        Attributes.MultiplicityA:= UnhideCrLf(SL[3]);
-        Attributes.Relation:= SL[4];
-        Attributes.MultiplicityB:= UnhideCrLf(SL[5]);
-        Attributes.RecursivCorner:= StrToInt(SL[6]);
-        Attributes.isTurned:= StrToBool(SL[7]);
-        Attributes.isEdited:= StrToBool(SL[8]);
-        Attributes.RoleA:= UnhideCrLf(SL[9]);
-        Attributes.RoleB:= UnhideCrLf(SL[10]);
-        Attributes.ReadingOrderA:= StrToBool(SL[11]);
-        Attributes.ReadingOrderB:= StrToBool(SL[12]);
-        for j:= 0 to AllBoxes.Count-1 do begin
-          Box:= TRtfdBox(AllBoxes[j]);
-          if Box.Entity.FullName = b1 then Box1:= Box;
-          if Box.Entity.FullName = b2 then Box2:= Box;
+      CName := Ini.ReadString(Section, 'V' + IntToStr(Int), '');
+      if CName <> '' then
+      begin
+        Box1 := nil;
+        Box2 := nil;
+        StringList := Split('#', CName);
+        B1Name := Trim(StringList[0]);
+        B2Name := Trim(StringList[1]);
+        Attributes.ArrowStyle := StringToArrowStyle(StringList[2]);
+        Attributes.MultiplicityA := UnHideCrLf(StringList[3]);
+        Attributes.Relation := StringList[4];
+        Attributes.MultiplicityB := UnHideCrLf(StringList[5]);
+        Attributes.RecursivCorner := StrToInt(StringList[6]);
+        Attributes.IsTurned := StrToBool(StringList[7]);
+        Attributes.IsEdited := StrToBool(StringList[8]);
+        Attributes.RoleA := UnHideCrLf(StringList[9]);
+        Attributes.RoleB := UnHideCrLf(StringList[10]);
+        Attributes.ReadingOrderA := StrToBool(StringList[11]);
+        Attributes.ReadingOrderB := StrToBool(StringList[12]);
+        for Num := 0 to AllBoxes.Count - 1 do
+        begin
+          Box := TRtfdBox(AllBoxes[Num]);
+          if Box.Entity.Fullname = B1Name then
+            Box1 := Box;
+          if Box.Entity.Fullname = B2Name then
+            Box2 := Box;
         end;
-        Panel.ConnectObjects(Box1, Box2, Attributes);
-        FreeAndNil(SL);
+        FPanel.ConnectObjects(Box1, Box2, Attributes);
+        FreeAndNil(StringList);
       end;
-      Inc(i);
-    until c = '';
+      Inc(Int);
+    until CName = '';
     FreeAndNil(AllBoxes);
     if GuiPyOptions.RelationshipAttributesBold then
       ShowRelationshipAttributesBold;
 
-    Panel.SetConnections(ShowConnections);
-    if CountObjects = 0
-      then SetShowObjectDiagram(False)
-      else SetShowObjectDiagram(ShowObjectDiagram);
+    FPanel.SetConnections(ShowConnections);
+    if CountObjects = 0 then
+      SetShowObjectDiagram(False)
+    else
+      SetShowObjectDiagram(ShowObjectDiagram);
     FLivingObjects.makeAllObjects;
     UpdateAllObjects;
 
     // read interactive lines
-    SL:= TStringList.Create;
-    Ini.ReadSectionValues('Interactive', SL);
-    for i:= 0 to SL.Count - 1 do begin
-      s:= SL[i];
-      p:= Pos('=', s);
-      Delete(s, 1, p);
-      SL[i]:= s;
+    StringList := TStringList.Create;
+    Ini.ReadSectionValues('Interactive', StringList);
+    for var I := 0 to StringList.Count - 1 do
+    begin
+      Section := StringList[I];
+      Posi := Pos('=', Section);
+      Delete(Section, 1, Posi);
+      StringList[I] := Section;
     end;
-    UMLForm.InteractiveLines:= SL;
-    FreeAndNil(SL);
+    FUMLForm.InteractiveLines := StringList;
+    FreeAndNil(StringList);
   finally
     FreeAndNil(Ini);
     FreeAndNil(Files);
     FreeAndNil(Attributes);
     FreeAndNil(Sections);
   end;
-  Panel.RecalcSize;
-  Panel.IsModified := False;
-  Panel.ShowAll;
-  if Panel.CanFocus then
-    Panel.SetFocus;
+  FPanel.RecalcSize;
+  FPanel.IsModified := False;
+  FPanel.ShowAll;
+  if FPanel.CanFocus then
+    FPanel.SetFocus;
 end;
 
 procedure TRtfdDiagram.DoLayout;
 begin
-  if BoxNames.Count > 0 then begin
-    Panel.Hide;
-    var Layout:= TSugiyamaLayout.Create(Panel.GetManagedObjects, Panel.GetConnections);
+  if FBoxNames.Count > 0 then
+  begin
+    FPanel.Hide;
+    var
+    Layout := TSugiyamaLayout.Create(FPanel.GetManagedObjects,
+      FPanel.GetConnections);
     try
       Layout.Execute;
     finally
-      Panel.Show;
+      FPanel.Show;
       FreeAndNil(Layout);
     end;
-    Panel.IsModified:= True;
-    Panel.RecalcSize;
-    Panel.ShowAll;
+    FPanel.IsModified := True;
+    FPanel.RecalcSize;
+    FPanel.ShowAll;
   end;
 end;
 
-function TRtfdDiagram.GetBox(typ: string): TRtfdBox;
-  var i: Integer; s: string;
+function TRtfdDiagram.GetBox(Typ: string): TRtfdBox;
+var
+  Int: Integer;
 begin
-  typ:= withoutGeneric(typ);
-  i:= 0;
-  while i < BoxNames.Count do begin
-    s:= withoutGeneric(BoxNames[i]);
-    if typ = s then
+  Typ := WithoutGeneric(Typ);
+  Int := 0;
+  while Int < FBoxNames.Count do
+  begin
+    if Typ = WithoutGeneric(FBoxNames[Int]) then
       Break;
-    Inc(i);
+    Inc(Int);
   end;
-  if i = BoxNames.Count
-    then Result:= nil
-    else Result:= BoxNames.Objects[i] as TRtfdBox;
+  if Int = FBoxNames.Count then
+    Result := nil
+  else
+    Result := FBoxNames.Objects[Int] as TRtfdBox;
 end;
 
 procedure TRtfdDiagram.SetVisibilityFilter(const Value: TVisibility);
-  var B: TRtfdBox; L: TList; i: Integer;
+var
+  Box: TRtfdBox;
+  Controls: TList;
 begin
-  if Panel.CountSelectedControls > 0
-    then L:= Panel.GetSelectedControls
-    else L:= Panel.GetManagedObjects;
-  Panel.Hide;
+  if FPanel.CountSelectedControls > 0 then
+    Controls := FPanel.GetSelectedControls
+  else
+    Controls := FPanel.GetManagedObjects;
+  FPanel.Hide;
   try
-    for i:= 0 to L.Count-1 do
-      if TObject(L[i]) is TRtfdBox then begin
-        B:= TObject(L[i]) as TRtfdBox;
-        if B.MinVisibility <> Value then begin
-          B.MinVisibility:= Value;
-          Panel.isModified:= True;
+    for var I := 0 to Controls.Count - 1 do
+      if TObject(Controls[I]) is TRtfdBox then
+      begin
+        Box := TObject(Controls[I]) as TRtfdBox;
+        if Box.MinVisibility <> Value then
+        begin
+          Box.MinVisibility := Value;
+          FPanel.IsModified := True;
         end;
       end;
   finally
-    FreeAndNil(L);
+    FreeAndNil(Controls);
   end;
-  Panel.RecalcSize;
-  Panel.Show;
+  FPanel.RecalcSize;
+  FPanel.Show;
   inherited;
 end;
 
 procedure TRtfdDiagram.SetShowView(Value: Integer);
-  var i, objs: Integer; L: TList; B: TRtfdBox;
+var
+  Objs: Integer;
+  Objects: TList;
+  Box: TRtfdBox;
 begin
-  L:= Panel.GetManagedObjects;
-  Panel.Hide;
+  Objects := FPanel.GetManagedObjects;
+  FPanel.Hide;
   try
-    objs:= 0;
-    for i:= 0 to L.Count-1 do
-      if TObject(L[i]) is TRtfdObject then
-        Inc(objs);
-    if (objs = 0) and (Value = 1) then
-      Value:= 2;
-    for i:= 0 to L.Count-1 do begin
-      B:= TObject(L[i]) as TRtfdBox;
-      case value of
-        0: B.MinVisibility:= TVisibility(0);
-        1: if B is TRtfdClass
-             then B.MinVisibility:= TVisibility(3)
-             else B.MinVisibility:= TVisibility(0);
-        2: B.MinVisibility:= TVisibility(3);
+    Objs := 0;
+    for var I := 0 to Objects.Count - 1 do
+      if TObject(Objects[I]) is TRtfdObject then
+        Inc(Objs);
+    if (Objs = 0) and (Value = 1) then
+      Value := 2;
+    for var I := 0 to Objects.Count - 1 do
+    begin
+      Box := TObject(Objects[I]) as TRtfdBox;
+      case Value of
+        0:
+          Box.MinVisibility := TVisibility(0);
+        1:
+          if Box is TRtfdClass then
+            Box.MinVisibility := TVisibility(3)
+          else
+            Box.MinVisibility := TVisibility(0);
+        2:
+          Box.MinVisibility := TVisibility(3);
       end;
     end;
   finally
-    FreeAndNil(L);
+    FreeAndNil(Objects);
   end;
-  Panel.isModified:= True;
-  Panel.RecalcSize;
-  Panel.Show;
+  FPanel.IsModified := True;
+  FPanel.RecalcSize;
+  FPanel.Show;
   inherited;
 end;
 
 procedure TRtfdDiagram.SetShowParameter(const Value: Integer);
-  var i: Integer; L: TList; B: TRtfdBox;
+var
+  Objects: TList;
+  Box: TRtfdBox;
 begin
-  if Panel.CountSelectedControls > 0
-    then L:= Panel.GetSelectedControls
-    else L:= Panel.GetManagedObjects;
-  Panel.Hide;
+  if FPanel.CountSelectedControls > 0 then
+    Objects := FPanel.GetSelectedControls
+  else
+    Objects := FPanel.GetManagedObjects;
+  FPanel.Hide;
   try
-    for i:= 0 to L.Count-1 do begin
-      B:= TObject(L[i]) as TRtfdBox;
-      if B.ShowParameter <> Value then begin
-        B.ShowParameter:= Value;
-        Panel.isModified:= True;
+    for var I := 0 to Objects.Count - 1 do
+    begin
+      Box := TObject(Objects[I]) as TRtfdBox;
+      if Box.ShowParameter <> Value then
+      begin
+        Box.ShowParameter := Value;
+        FPanel.IsModified := True;
       end;
     end;
   finally
-    FreeAndNil(L);
+    FreeAndNil(Objects);
   end;
-  Panel.RecalcSize;
-  Panel.Show;
+  FPanel.RecalcSize;
+  FPanel.Show;
   inherited;
 end;
 
 procedure TRtfdDiagram.SetSortOrder(const Value: Integer);
-  var i: Integer; L: TList; B: TRtfdBox;
+var
+  Objects: TList;
+  Box: TRtfdBox;
 begin
-  if Panel.CountSelectedControls > 0
-    then L:= Panel.GetSelectedControls
-    else L:= Panel.GetManagedObjects;
-  Panel.Hide;
+  if FPanel.CountSelectedControls > 0 then
+    Objects := FPanel.GetSelectedControls
+  else
+    Objects := FPanel.GetManagedObjects;
+  FPanel.Hide;
   try
-    for i:= 0 to L.Count-1 do begin
-      B:= TObject(L[i]) as TRtfdBox;
-      if B.SortOrder <> Value then begin
-        B.SortOrder:= Value;
-        Panel.IsModified:= True;
+    for var I := 0 to Objects.Count - 1 do
+    begin
+      Box := TObject(Objects[I]) as TRtfdBox;
+      if Box.SortOrder <> Value then
+      begin
+        Box.SortOrder := Value;
+        FPanel.IsModified := True;
       end;
     end;
   finally
-    FreeAndNil(L);
+    FreeAndNil(Objects);
   end;
-  Panel.RecalcSize;
-  Panel.Show;
+  FPanel.RecalcSize;
+  FPanel.Show;
   inherited;
 end;
 
 procedure TRtfdDiagram.SetShowIcons(const Value: Integer);
-  var i: Integer; L: TList; B: TRtfdBox;
+var
+  Objects: TList;
+  Box: TRtfdBox;
 begin
-  if Panel.CountSelectedControls > 0
-    then L:= Panel.GetSelectedControls
-    else L:= Panel.GetManagedObjects;
-  Panel.Hide;
+  if FPanel.CountSelectedControls > 0 then
+    Objects := FPanel.GetSelectedControls
+  else
+    Objects := FPanel.GetManagedObjects;
+  FPanel.Hide;
   try
-    for i:= 0 to L.Count-1 do begin
-      B:= TObject(L[i]) as TRtfdBox;
-      if (B is TRtfdObject) and GuiPyOptions.ObjectsWithoutVisibility then
+    for var I := 0 to Objects.Count - 1 do
+    begin
+      Box := TObject(Objects[I]) as TRtfdBox;
+      if (Box is TRtfdObject) and GuiPyOptions.ObjectsWithoutVisibility then
         Continue;
-      if B.ShowIcons <> Value then begin
-        B.ShowIcons:= Value;
-        Panel.IsModified:= True;
+      if Box.ShowIcons <> Value then
+      begin
+        Box.ShowIcons := Value;
+        FPanel.IsModified := True;
       end;
     end;
   finally
-    FreeAndNil(L);
+    FreeAndNil(Objects);
   end;
-  Panel.RecalcSize;
-  Panel.Show;
+  FPanel.RecalcSize;
+  FPanel.Show;
   inherited;
 end;
 
-procedure TRtfdDiagram.SetFont(const aFont: TFont);
-  var i: Integer; L: TList; B: TRtfdBox;
+procedure TRtfdDiagram.SetFont(const AFont: TFont);
+var
+  Objects: TList;
+  Box: TRtfdBox;
 begin
   inherited;
-  L:= Panel.GetManagedObjects;
+  Objects := FPanel.GetManagedObjects;
   try
-    for i:= 0 to L.Count - 1 do begin
-      B:= TObject(L[i]) as TRtfdBox;
-      if Assigned(B) and Assigned(B.Font) then
-        B.Font.Assign(aFont);
+    for var I := 0 to Objects.Count - 1 do
+    begin
+      Box := TObject(Objects[I]) as TRtfdBox;
+      if Assigned(Box) and Assigned(Box.Font) then
+        Box.Font.Assign(AFont);
     end;
   finally
-    FreeAndNil(L);
+    FreeAndNil(Objects);
   end;
-  Panel.Font.Assign(aFont);
+  FPanel.Font.Assign(AFont);
 end;
 
-procedure TRtfdDiagram.GetDiagramSize(var W, H: Integer);
+procedure TRtfdDiagram.GetDiagramSize(var Width, Height: Integer);
 begin
-  Panel.GetDiagramSize(W, H);
+  FPanel.GetDiagramSize(Width, Height);
 end;
 
-//Returns list with str = 'x1,y1,x2,y2', obj = modelentity
+// Returns list with str = 'x1,y1,x2,y2', obj = modelentity
 function TRtfdDiagram.GetClickAreas: TStringList;
-var
-  I : Integer;
-  Box : TRtfdBox;
-  S : string;
 begin
   Result := TStringList.Create;
-  for I := 0 to BoxNames.Count-1 do begin
-    Box := BoxNames.Objects[I] as TRtfdBox;
-    S := IntToStr(Box.Left) + ',' + IntToStr(Box.Top) + ',' +
+  for var I := 0 to FBoxNames.Count - 1 do
+  begin
+    var
+    Box := FBoxNames.Objects[I] as TRtfdBox;
+    var
+    Size := IntToStr(Box.Left) + ',' + IntToStr(Box.Top) + ',' +
       IntToStr(Box.Left + Box.Width) + ',' + IntToStr(Box.Top + Box.Height);
-    Result.AddObject(S,Box.Entity);
+    Result.AddObject(Size, Box.Entity);
   end;
 end;
 
 procedure TRtfdDiagram.ClassEditSelectedDiagramElementsControl(Sender: TObject);
-  var Pathname: string; aBox: TRtfdBox;
-    Editor: IEditor; aFile: IFile;
+var
+  Pathname: string;
+  Box: TRtfdBox;
+  Editor: IEditor;
+  AFile: IFile;
 begin
   LockFormUpdate(PyIDEMainForm);
-  aBox:= (Sender as TRtfdBox);
-  if (aBox is TRtfdClass) and Assigned(GetBox(aBox.Entity.FullName)) then begin
-    aFile:= GI_PyIDEServices.getActiveFile;
-    Pathname:= ChangeFileExt(aBox.GetPathname, '.py');
-    Editor:= IEditor(PyIDEMainForm.DoOpen(Pathname));
-    if Assigned(Editor) then begin
+  Box := (Sender as TRtfdBox);
+  if (Box is TRtfdClass) and Assigned(GetBox(Box.Entity.Fullname)) then
+  begin
+    AFile := GI_PyIDEServices.GetActiveFile;
+    Pathname := ChangeFileExt(Box.GetPathname, '.py');
+    Editor := IEditor(PyIDEMainForm.DoOpen(Pathname));
+    if Assigned(Editor) then
+    begin
       if Editor.Modified then
         TFileForm(Editor.Form).DoSave;
-      if Assigned(aFile) and (aFile.FileKind = fkUML) then
-        PyIDEMainForm.PrepareClassEdit(Editor, 'Edit', TFUMLForm(aFile.Form));
+      if Assigned(AFile) and (AFile.FileKind = fkUML) then
+        PyIDEMainForm.PrepareClassEdit(Editor, 'Edit', TFUMLForm(AFile.Form));
     end;
-    aFile.Activate;
+    AFile.Activate;
   end;
-  Panel.ClearSelection;
+  FPanel.ClearSelection;
   UnlockFormUpdate(PyIDEMainForm);
 end;
 
 procedure TRtfdDiagram.ClassEditSelectedDiagramElements;
-  var C: TControl;
+var
+  Control: TControl;
 begin
-  C:= Panel.GetFirstSelected;
-  if not Assigned(C) then
-    C:= Panel.GetFirstManaged;
-  if Assigned(C) then
-    ClassEditSelectedDiagramElementsControl(C);
+  Control := FPanel.GetFirstSelected;
+  if not Assigned(Control) then
+    Control := FPanel.GetFirstManaged;
+  if Assigned(Control) then
+    ClassEditSelectedDiagramElementsControl(Control);
 end;
 
-procedure TRtfdDiagram.SourceEditSelectedDiagramElements(C: TControl);
-  var FileName: string;
+procedure TRtfdDiagram.SourceEditSelectedDiagramElements(Control: TControl);
+var
+  Filename: string;
 begin
-  Panel.ClearSelection;
-  if Assigned(C) and (C is TRtfdBox) then begin
-    FileName:= (C as TRtfdBox).GetPathname;
-    if FileExists(FileName) then
-      PyIDEMainForm.DoOpen(FileName);
+  FPanel.ClearSelection;
+  if Assigned(Control) and (Control is TRtfdBox) then
+  begin
+    Filename := (Control as TRtfdBox).GetPathname;
+    if FileExists(Filename) then
+      PyIDEMainForm.DoOpen(Filename);
   end;
 end;
 
 procedure TRtfdDiagram.DeleteSelectedControls(Sender: TObject);
 var
-  C: TControl;
-  L: TObjectList;
+  Control: TControl;
+  ObjectList: TObjectList;
   Box: TRtfdBox;
-  U : TUnitPackage;
-  i, k: Integer;
-  key: string;
-  aObject: TObject;
+  UnitPackage: TUnitPackage;
+  Num: Integer;
+  KIdx: string;
+  AObject: TObject;
 
-  function CountClassesWith(const classname: string): Integer;
-    var
-      C: TControl;
-      L: TList;
-      Box: TRtfdBox;
-      s: string;
-      i: Integer;
+  function CountClassesWith(const AClassname: string): Integer;
+  var
+    Control: TControl;
+    ObjectList: TList;
+    Box: TRtfdBox;
+    Name: string;
   begin
-    Result:= 0;
-    L:= Panel.GetManagedObjects;
-    for i:= 0 to L.Count-1 do begin
-      C:= TControl(L[i]);
-      if C is TRtfdBox then begin
-        Box:= C as TRtfdBox;
-        if C is TRtfdClass then begin
-          s:= Box.Entity.Name;
-          Delete(s, 1, LastDelimiter('.', s));
-          //if Pos(classname, s) = 1 then inc(Result);
-          if classname = s then Inc(Result);
+    Result := 0;
+    ObjectList := FPanel.GetManagedObjects;
+    for var I := 0 to ObjectList.Count - 1 do
+    begin
+      Control := TControl(ObjectList[I]);
+      if Control is TRtfdBox then
+      begin
+        Box := Control as TRtfdBox;
+        if Control is TRtfdClass then
+        begin
+          Name := Box.Entity.Name;
+          Delete(Name, 1, LastDelimiter('.', Name));
+          if AClassname = Name then
+            Inc(Result);
         end;
       end;
     end;
-    FreeAndNil(L);
+    FreeAndNil(ObjectList);
   end;
 
 begin
-  L:= Panel.GetSelectedControls;
+  ObjectList := FPanel.GetSelectedControls;
   try
-    for i:= 0 to L.Count-1 do begin
-      C:= L[i] as TControl;
-      if C is TRtfdBox then begin
-        Box:= C as TRtfdBox;
-        if C is TRtfdClass then begin
-          Box.Entity.isVisible:= False;
-          k:= BoxNames.IndexOf(Box.Entity.FullName);
-          if k > -1 then begin
-            if Assigned(BoxNames.Objects[k]) then begin
-              aObject:= BoxNames.Objects[k];
-              FreeAndNil(aObject);
+    for var I := 0 to ObjectList.Count - 1 do
+    begin
+      Control := ObjectList[I] as TControl;
+      if Control is TRtfdBox then
+      begin
+        Box := Control as TRtfdBox;
+        if Control is TRtfdClass then
+        begin
+          Box.Entity.IsVisible := False;
+          Num := FBoxNames.IndexOf(Box.Entity.Fullname);
+          if Num > -1 then
+          begin
+            if Assigned(FBoxNames.Objects[Num]) then
+            begin
+              AObject := FBoxNames.Objects[Num];
+              FreeAndNil(AObject);
             end;
-            BoxNames.Delete(k);
-          end
-        end else if (C is TRtfdObject) then begin
-          key:= (C as TRtfdObject).Entity.Name;
-          ShowObjectDeleted('Actor', key);
-          k:= BoxNames.IndexOf(key);
-          if k > -1 then begin
-            if Assigned(BoxNames.Objects[k]) then begin
-              aObject:= BoxNames.Objects[k];
-              FreeAndNil(aObject);
-            end;
-            BoxNames.Delete(k);
+            FBoxNames.Delete(Num);
           end;
-          if FLivingObjects.ObjectExists(key) then begin
-            PyControl.ActiveInterpreter.RunSource('del ' + key, '<interactive input>');
-            FLivingObjects.DeleteObject(key);
-          end;
-          U:= Model.ModelRoot.FindUnitPackage('Default');
-          U.DeleteObject(key);                               // diagram-level
-        end else if (C is TRtfdCommentBox) then begin
-          key:= (C as TRtfdCommentBox).Entity.Name;
-          k:= BoxNames.IndexOf(key);
-          if k > -1 then begin
-            if Assigned(BoxNames.Objects[k]) then begin
-              aObject:= BoxNames.Objects[k];
-              FreeAndNil(aObject);
+        end
+        else if (Control is TRtfdObject) then
+        begin
+          KIdx := (Control as TRtfdObject).Entity.Name;
+          ShowObjectDeleted('Actor', KIdx);
+          Num := FBoxNames.IndexOf(KIdx);
+          if Num > -1 then
+          begin
+            if Assigned(FBoxNames.Objects[Num]) then
+            begin
+              AObject := FBoxNames.Objects[Num];
+              FreeAndNil(AObject);
             end;
-            BoxNames.Delete(k);
+            FBoxNames.Delete(Num);
+          end;
+          if FLivingObjects.ObjectExists(KIdx) then
+          begin
+            PyControl.ActiveInterpreter.RunSource('del ' + KIdx,
+              '<interactive input>');
+            FLivingObjects.DeleteObject(KIdx);
+          end;
+          UnitPackage := Model.ModelRoot.FindUnitPackage('Default');
+          UnitPackage.DeleteObject(KIdx); // diagram-level
+        end
+        else if (Control is TRtfdCommentBox) then
+        begin
+          KIdx := (Control as TRtfdCommentBox).Entity.Name;
+          Num := FBoxNames.IndexOf(KIdx);
+          if Num > -1 then
+          begin
+            if Assigned(FBoxNames.Objects[Num]) then
+            begin
+              AObject := FBoxNames.Objects[Num];
+              FreeAndNil(AObject);
+            end;
+            FBoxNames.Delete(Num);
           end;
         end;
       end;
     end;
   finally
-    Panel.DeleteSelectedControls;
-    FreeAndNil(L);
+    FPanel.DeleteSelectedControls;
+    FreeAndNil(ObjectList);
   end;
   ResolveObjectAssociations;
 end;
 
 procedure TRtfdDiagram.DeleteSelectedControlsAndRefresh;
 begin
-  LockFormUpdate(UMLForm);
+  LockFormUpdate(FUMLForm);
   DeleteSelectedControls(nil);
-  UMLForm.SaveAndReload;
-  UMLForm.CreateTVFileStructure;
-  UnlockFormUpdate(UMLForm);
+  FUMLForm.SaveAndReload;
+  FUMLForm.CreateTVFileStructure;
+  UnlockFormUpdate(FUMLForm);
 end;
 
 procedure TRtfdDiagram.UnSelectAllElements;
 begin
-  if Assigned(Panel) then
-    Panel.ClearSelection(False)
+  if Assigned(FPanel) then
+    FPanel.ClearSelection(False);
 end;
 
 procedure TRtfdDiagram.CurrentEntityChanged;
 var
-  P : TModelEntity;
+  ModelEntity: TModelEntity;
 begin
   inherited;
 
-  P := CurrentEntity;
-  while Assigned(P) and (not (P is TAbstractPackage)) do
-    P := P.Owner;
+  ModelEntity := CurrentEntity;
+  while Assigned(ModelEntity) and (not(ModelEntity is TAbstractPackage)) do
+    ModelEntity := ModelEntity.Owner;
 
-  if Assigned(P) and (P<>Package) then
+  if Assigned(ModelEntity) and (ModelEntity <> Package) then
   begin
-    Package := P as TAbstractPackage;
+    Package := ModelEntity as TAbstractPackage;
     InitFromModel;
   end;
 
@@ -1410,124 +1643,138 @@ end;
 
 function TRtfdDiagram.GetSelectedRect: TRect;
 begin
-  Result:= Panel.GetSelectedRect;
+  Result := FPanel.GetSelectedRect;
 end;
 
-procedure TRtfdDiagram.ScreenCenterEntity(E: TModelEntity);
-var
-  I : Integer;
-  Box : TRtfdBox;
+procedure TRtfdDiagram.ScreenCenterEntity(ModelEntity: TModelEntity);
 begin
-  for I := 0 to BoxNames.Count-1 do
-    if TRtfdBox(BoxNames.Objects[I]).Entity = E then begin
-      Box := TRtfdBox(BoxNames.Objects[I]);
-      Frame.ScrollBox.ScrollInView(Box);
+  for var I := 0 to FBoxNames.Count - 1 do
+    if TRtfdBox(FBoxNames.Objects[I]).Entity = ModelEntity then
+    begin
+      var
+      Box := TRtfdBox(FBoxNames.Objects[I]);
+      FFrame.ScrollBox.ScrollInView(Box);
       Break;
     end;
 end;
 
 procedure TRtfdDiagram.SetShowObjectDiagram(const Value: Boolean);
 begin
-  UMLForm.TBObjectDiagram.Down:= Value;
+  FUMLForm.TBObjectDiagram.Down := Value;
   inherited SetShowObjectDiagram(Value);
-  Panel.SetShowObjectDiagram(Value);
+  FPanel.SetShowObjectDiagram(Value);
 end;
 
 procedure TRtfdDiagram.RefreshDiagram;
 begin
   if not PanelIsLocked then
-    for var i:= 0 to BoxNames.Count - 1 do
-      (BoxNames.Objects[I] as TRtfdBox).RefreshEntities;
-  Panel.RecalcSize;
-  Panel.ShowAll;
-  Panel.IsModified:= True;
+    for var I := 0 to FBoxNames.Count - 1 do
+      (FBoxNames.Objects[I] as TRtfdBox).RefreshEntities;
+  FPanel.RecalcSize;
+  FPanel.ShowAll;
+  FPanel.IsModified := True;
 end;
 
 function TRtfdDiagram.HasAInvalidClass: Boolean;
 begin
-  for var i:= 0 to BoxNames.Count - 1 do
-    if (BoxNames.Objects[i] is TRtfdClass) then begin
-      var path:= (BoxNames.Objects[i] as TRtfdClass).getPathname;
-      if not PyIDEMainForm.IsAValidClass(path) then Exit(True);
+  for var I := 0 to FBoxNames.Count - 1 do
+    if (FBoxNames.Objects[I] is TRtfdClass) then
+    begin
+      var
+      Path := (FBoxNames.Objects[I] as TRtfdClass).GetPathname;
+      if not PyIDEMainForm.IsAValidClass(Path) then
+        Exit(True);
     end;
-   Result:= False;
+  Result := False;
 end;
 
 procedure TRtfdDiagram.RecalcPanelSize;
 begin
-  Panel.RecalcSize;
+  FPanel.RecalcSize;
 end;
 
 procedure TRtfdDiagram.SetConnections(const Value: Integer);
 begin
-  if Value <> ShowConnections then begin
-    Panel.IsModified:= True;
+  if Value <> ShowConnections then
+  begin
+    FPanel.IsModified := True;
     inherited SetConnections(Value);
-    Panel.SetConnections(Value);
+    FPanel.SetConnections(Value);
   end;
   inherited;
 end;
 
 procedure TRtfdDiagram.SelectAssociation;
 begin
-  Panel.SelectAssociation;
+  FPanel.SelectAssociation;
 end;
 
 function TRtfdDiagram.GetPanel: TCustomPanel;
 begin
-  Result:= Panel;
+  Result := FPanel;
 end;
 
 procedure TRtfdDiagram.Retranslate;
 begin
-  Frame.Retranslate;
+  FFrame.Retranslate;
 end;
 
-procedure TRtfdDiagram.Run(C: TControl);
+procedure TRtfdDiagram.Run(Control: TControl);
 begin
-  if Assigned(GetBox((C as TRtfdBox).Entity.FullName)) then
+  if Assigned(GetBox((Control as TRtfdBox).Entity.Fullname)) then
     PyIDEMainForm.actRunExecute(nil);
-  Panel.ClearSelection;
+  FPanel.ClearSelection;
 end;
 
-function TRtfdDiagram.getDebug: TStringList;
-  var L: TList; i: Integer; aBox: TRtfdBox;
+function TRtfdDiagram.GetDebug: TStringList;
+var
+  ObjectList: TList;
+  Box: TRtfdBox;
 begin
   try
-    L:= Panel.GetManagedObjects;
-    Result:= TStringList.Create;
-    for i:= 0 to L.Count-1 do begin
-      aBox:= TRtfdBox(L[I]);
-      Result.Add(aBox.Entity.Fullname);
+    ObjectList := FPanel.GetManagedObjects;
+    Result := TStringList.Create;
+    for var I := 0 to ObjectList.Count - 1 do
+    begin
+      Box := TRtfdBox(ObjectList[I]);
+      Result.Add(Box.Entity.Fullname);
     end;
     Result.Add('');
- finally
-    FreeAndNil(L);
+  finally
+    FreeAndNil(ObjectList);
   end;
 end;
 
-procedure TRtfdDiagram.ShowInheritedMethodsFromSystemClasses(C: TControl; ShowOrHide: Boolean);
+procedure TRtfdDiagram.ShowInheritedMethodsFromSystemClasses(Control: TControl;
+  ShowOrHide: Boolean);
 begin
-  if (C is TRtfdBox) then
-   (C as TRtfdBox).ShowInherited:= ShowOrHide;
-  Panel.ClearSelection;
+  if (Control is TRtfdBox) then
+    (Control as TRtfdBox).ShowInherited := ShowOrHide;
+  FPanel.ClearSelection;
 end;
 
 procedure TRtfdDiagram.CollectClasses;
-  var Pathname, Boxname, aClassname: string;
-      SLFiles: TStringList;
+var
+  Pathname, Boxname, AClassname: string;
+  SLFiles: TStringList;
 begin
-  SLFiles:= TStringList.Create;
-  for var i:= BoxNames.Count - 1 downto 0 do begin
-    Boxname:= (BoxNames.Objects[i] as TRtfdBox).Entity.Name;
-    if BoxNames.Objects[i] is TRtfdObject then begin
-      aClassname:= FLivingObjects.getClassnameOfObject(Boxname);
-      if not FLivingObjects.ClassExists(aClassname) then
-        FLivingObjects.LoadClassOfObject(Boxname, aClassname)
-    end else if not FLivingObjects.ClassExists(Boxname) then begin
-      if (BoxNames.Objects[i] is TRtfdClass) then
-        Pathname:= ((BoxNames.Objects[i] as TRtfdBox).Entity as TClass).Pathname;
-      if SLFiles.IndexOf(Pathname) = -1 then begin
+  SLFiles := TStringList.Create;
+  for var I := FBoxNames.Count - 1 downto 0 do
+  begin
+    Boxname := (FBoxNames.Objects[I] as TRtfdBox).Entity.Name;
+    if FBoxNames.Objects[I] is TRtfdObject then
+    begin
+      AClassname := FLivingObjects.getClassnameOfObject(Boxname);
+      if not FLivingObjects.ClassExists(AClassname) then
+        FLivingObjects.LoadClassOfObject(Boxname, AClassname);
+    end
+    else if not FLivingObjects.ClassExists(Boxname) then
+    begin
+      if (FBoxNames.Objects[I] is TRtfdClass) then
+        Pathname := ((FBoxNames.Objects[I] as TRtfdBox)
+          .Entity as TClass).Pathname;
+      if SLFiles.IndexOf(Pathname) = -1 then
+      begin
         PyIDEMainForm.ImportModule(Pathname);
         SLFiles.Add(Pathname);
       end;
@@ -1537,110 +1784,128 @@ begin
   Sleep(100);
 end;
 
-procedure TRtfdDiagram.ShowNewObject(const Objectname: string; aClass: TClass = nil);
-  var U: TUnitPackage;
-      aModelObject: TObjekt;
-      B1, B2: TRtfdBox;
-      Address, Classname: string;
+procedure TRtfdDiagram.ShowNewObject(const Objectname: string;
+  AClass: TClass = nil);
+var
+  UnitPackage: TUnitPackage;
+  AModelObject: TObjekt;
+  Box1, Box2: TRtfdBox;
+  Address, AClassname: string;
 begin
-  U:= Model.ModelRoot.FindUnitPackage('Default');
-  if not Assigned(U) then
-    U:= Model.ModelRoot.AddUnit('Default');
-  if aClass = nil then begin
-    Address:= FLivingObjects.getHexAddressFromName(Objectname);
-    Classname:= FLivingObjects.getClassnameFromAddress(Address);
-    aClass:= TClass(FindClassifier(Classname));
+  UnitPackage := Model.ModelRoot.FindUnitPackage('Default');
+  if not Assigned(UnitPackage) then
+    UnitPackage := Model.ModelRoot.AddUnit('Default');
+  if not Assigned(AClass) then
+  begin
+    Address := FLivingObjects.getHexAddressFromName(Objectname);
+    AClassname := FLivingObjects.getClassnameFromAddress(Address);
+    AClass := TClass(FindClassifier(AClassname));
   end;
-  aModelObject:= U.AddObject(Objectname, aClass);   // model-level -> show object
-  B1:= GetBox(aClass.Name);
-  B2:= GetBox(aModelObject.FullName);
-  if Assigned(B1) and Assigned(B2) then begin
-    B2.Top := B1.Top + B1.Height + 50 + random(30)-30;
-    B2.Left:= Max(B1.Left + (B1.Width - B2.Width) div 2 + random(200) - 100, 0);
-    Panel.ConnectObjects(B2, B1, asInstanceOf);
-  end else if Assigned(B2) then begin
-    B2.Top := B2.Top  + random(30) - 30;
-    B2.Left:= B2.Left + random(30) - 30;
+  AModelObject := UnitPackage.AddObject(Objectname, AClass);
+  // model-level -> show object
+  Box1 := GetBox(AClass.Name);
+  Box2 := GetBox(AModelObject.Fullname);
+  if Assigned(Box1) and Assigned(Box2) then
+  begin
+    Box2.Top := Box1.Top + Box1.Height + 50 + Random(30) - 30;
+    Box2.Left := Max(Box1.Left + (Box1.Width - Box2.Width) div 2 + Random(200)
+      - 100, 0);
+    FPanel.ConnectObjects(Box2, Box1, asInstanceOf);
+  end
+  else if Assigned(Box2) then
+  begin
+    Box2.Top := Box2.Top + Random(30) - 30;
+    Box2.Left := Box2.Left + Random(30) - 30;
   end;
-  B2.Font.Assign(Font);
-  ShowAttributes(Objectname, aClass, aModelObject);
-  if (B2 = nil) and Assigned(aModelObject) then
-    AddBox(aModelObject);
+  Box2.Font.Assign(Font);
+  ShowAttributes(Objectname, AClass, AModelObject);
+  if not Assigned(Box2) and Assigned(AModelObject) then
+    AddBox(AModelObject);
 end;
 
 procedure TRtfdDiagram.CreateObjectForSelectedClass(Sender: TObject);
-  var Caption, Title, Pathname, ParamName, ParamValue, s, s1: string;
-      p, p1, p2: Integer;
-      Control: TControl;
-      aClass: TClass;
-      command: string;
-      theClassname: string;
-      theObjectname: string;
-      theObjectnameNew: string;
-      ParameterAsString: string;
-      Parameter: TStringList;
-      ParamValues: TStringList;
-      MenuItem: TSpTBXItem;
+var
+  Caption, Title, ParamName, ParamValue, StringList, Str1: string;
+  Posi, Posi1, Posi2: Integer;
+  Control: TControl;
+  AClass: TClass;
+  Command: string;
+  TheClassname: string;
+  TheObjectname: string;
+  TheObjectnameNew: string;
+  ParameterAsString: string;
+  Parameter: TStringList;
+  ParamValues: TStringList;
+  MenuItem: TSpTBXItem;
 begin
-  Control:= FindVCLWindow(Frame.PopMenuClass.PopupPoint);
-  if Assigned(Control) and (Control is TRtfdClass) then begin
-    Panel.ClearSelection;
-    Pathname:= (Control as TRtfdClass).GetPathname;
-    aClass:= (Control as TRtfdClass).Entity as TClass;
-    theClassname:= aClass.Name;
+  Control := FindVCLWindow(FFrame.PopMenuClass.PopupPoint);
+  if Assigned(Control) and (Control is TRtfdClass) then
+  begin
+    FPanel.ClearSelection;
+    AClass := (Control as TRtfdClass).Entity as TClass;
+    TheClassname := AClass.Name;
     CollectClasses;
     // get parameters for constructor
-    Parameter:= TStringList.Create;
-    ParamValues:= TStringList.Create;
-    MenuItem:= (Sender as TSpTBXItem);
-    s:= myStringReplace(MenuItem.Caption, ' = ', chr(4));
-    if Assigned(MenuItem.Parent) then begin
-      s1:= MenuItem.Parent.caption;
-      p:= Pos('Inherited from ', s1);
-      if p > 0 then
-        theClassname:= Copy(s1, 16, Length(s1));
+    Parameter := TStringList.Create;
+    ParamValues := TStringList.Create;
+    MenuItem := (Sender as TSpTBXItem);
+    StringList := myStringReplace(MenuItem.Caption, ' = ', Chr(4));
+    if Assigned(MenuItem.Parent) then
+    begin
+      Str1 := MenuItem.Parent.Caption;
+      Posi := Pos('Inherited from ', Str1);
+      if Posi > 0 then
+        TheClassname := Copy(Str1, 16, Length(Str1));
     end;
 
-    p:= FullParameters.IndexOfName(s);
-    s:= FullParameters.ValueFromIndex[p];
-    p:= Pos('(', s);
-    Delete(s, 1, p);
+    Posi := FFullParameters.IndexOfName(StringList);
+    StringList := FFullParameters.ValueFromIndex[Posi];
+    Posi := Pos('(', StringList);
+    Delete(StringList, 1, Posi);
 
-    while s <> ')' do begin
-      p1:= Pos(Chr(4), s);
-      ParamName:= Copy(s, 1, p1 - 1);
-      p2:= Pos(Chr(5), s);
-      ParamValue:= Copy(s, p1 + 1, p2 - p1 - 1);
-      Delete(s, 1, p2);
+    while StringList <> ')' do
+    begin
+      Posi1 := Pos(Chr(4), StringList);
+      ParamName := Copy(StringList, 1, Posi1 - 1);
+      Posi2 := Pos(Chr(5), StringList);
+      ParamValue := Copy(StringList, Posi1 + 1, Posi2 - Posi1 - 1);
+      Delete(StringList, 1, Posi2);
       Parameter.Add(ParamName);
       ParamValues.Add(ParamValue);
     end;
 
-    if Parameter.Count = 0 then begin
-      Title  := _('Attribute') + #13#10 + _('Value');
-      Caption:= _('Name of object')
-    end else begin
-      Title  := _('Parameter') + #13#10 + _('Value');
-      Caption:= _('Parameter for constructor') + ' ' + theClassname + '(...)';
+    if Parameter.Count = 0 then
+    begin
+      Title := _('Attribute') + #13#10 + _('Value');
+      Caption := _('Name of object');
+    end
+    else
+    begin
+      Title := _('Parameter') + #13#10 + _('Value');
+      Caption := _('Parameter for constructor') + ' ' + TheClassname + '(...)';
     end;
-    theObjectname:= FLivingObjects.getNewObjectName(theClassname);
-    theObjectnameNew:= '';
+    TheObjectname := FLivingObjects.getNewObjectName(TheClassname);
+    TheObjectnameNew := '';
 
-    if (Parameter.Count = 0) or EditClass(Caption, Title, theObjectName,
-      theObjectnameNew, Control, Parameter)
-    then begin
-      if (theObjectnameNew <> '') and not FLivingObjects.ObjectExists(theObjectnameNew) then
-        theObjectname:= theObjectnameNew;
-      if FLivingObjects.ClassExists(aClass.Name) then begin
-        ParameterAsString:= getParameterAsString(Parameter, ParamValues);
-        AddToInteractive(theObjectname  + ' = ' + aClass.Name + '(' + ParameterAsString +')');
-        CreateObjectObjectname:= theObjectname;
-        CreateObjectParameter:= ParameterAsString;
-        CreateObjectClass:= aClass;
-        VariablesWindow.OnNotify:= CreateObjectExecuted;
-        command:= theObjectname  + ' = ' + aClass.Name + '(' + ParameterAsString + ')';
+    if (Parameter.Count = 0) or EditClass(Caption, Title, TheObjectname,
+      TheObjectnameNew, Control, Parameter) then
+    begin
+      if (TheObjectnameNew <> '') and not FLivingObjects.ObjectExists
+        (TheObjectnameNew) then
+        TheObjectname := TheObjectnameNew;
+      if FLivingObjects.ClassExists(AClass.Name) then
+      begin
+        ParameterAsString := GetParameterAsString(Parameter, ParamValues);
+        AddToInteractive(TheObjectname + ' = ' + AClass.Name + '(' +
+          ParameterAsString + ')');
+        FCreateObjectObjectname := TheObjectname;
+        FCreateObjectParameter := ParameterAsString;
+        FCreateObjectClass := AClass;
+        VariablesWindow.OnNotify := CreateObjectExecuted;
+        Command := TheObjectname + ' = ' + AClass.Name + '(' +
+          ParameterAsString + ')';
         // executed in a thread
-        FLivingObjects.Execute(command);
+        FLivingObjects.Execute(Command);
       end;
     end;
   end;
@@ -1650,109 +1915,129 @@ end;
 
 procedure TRtfdDiagram.CreateObjectExecuted(Sender: TObject);
 begin
-  VariablesWindow.OnNotify:= nil;
-  LockFormUpdate(UMLForm);
+  VariablesWindow.OnNotify := nil;
+  LockFormUpdate(FUMLForm);
   Screen.Cursor := crHourGlass;
   try
     FLivingObjects.makeAllObjects;
-    if FLivingObjects.InsertObject(CreateObjectObjectname) then begin
-      ShowMethodEntered('<init>', 'Actor', CreateObjectObjectname, CreateObjectParameter);
-      ShowNewObject(CreateObjectObjectname, CreateObjectClass);
+    if FLivingObjects.InsertObject(FCreateObjectObjectname) then
+    begin
+      ShowMethodEntered('<init>', 'Actor', FCreateObjectObjectname,
+        FCreateObjectParameter);
+      ShowNewObject(FCreateObjectObjectname, FCreateObjectClass);
       if GuiPyOptions.ShowAllNewObjects then
-        ShowAllNewObjectsString(CreateObjectObjectname)
-      else begin
+        ShowAllNewObjectsString(FCreateObjectObjectname)
+      else
+      begin
         UpdateAllObjects;
         ResolveObjectAssociations;
-        Panel.RecalcSize;
+        FPanel.RecalcSize;
       end;
     end;
   finally
     Screen.Cursor := crDefault;
-    UnLockFormUpdate(UMLForm);
+    UnlockFormUpdate(FUMLForm);
   end;
 end;
 
-function TRtfdDiagram.getInternName(aClass: TClass; aName: string; aVisibility: TVisibility): string;
+function TRtfdDiagram.GetInternName(AClass: TClass; Name: string;
+  Visibility: TVisibility): string;
 
-  function getAncestorInternName(aClass: TClass; aName: string): string;
+  function getAncestorInternName(AClass: TClass; Name: string): string;
   begin
-    Result:= '';
-    if aClass.AncestorsCount > 0 then
-      Result:= getAncestorInternName(aClass.Ancestor[0], aName);
-    if Result = '' then begin
-      var Ami:= TModelIterator.Create(aClass.GetAttributes);
-      while Ami.HasNext do begin // we have a model from sourecode
-        var Attribute:= Ami.Next;
-        if Attribute.Name = aName then
-          Exit('_' + aClass.Name + '__' + aName);
+    Result := '';
+    if AClass.AncestorsCount > 0 then
+      Result := getAncestorInternName(AClass.Ancestor[0], Name);
+    if Result = '' then
+    begin
+      var
+      Ami := TModelIterator.Create(AClass.GetAttributes);
+      while Ami.HasNext do
+      begin // we have a model from sourecode
+        var
+        Attribute := Ami.Next;
+        if Attribute.Name = Name then
+          Exit('_' + AClass.Name + '__' + Name);
       end;
     end;
   end;
 
 begin
-  Result:= '';
-  if aVisibility <> viPrivate then
-    Result:= VisibilityAsString(aVisibility) + aName
-  else begin
-    if aClass.AncestorsCount > 0 then
-      Result:= getAncestorInternName(aClass.Ancestor[0], aName);
-    if Result = '' then  // we use live values from python
-      Result:= '_' + aClass.Name + '__' + aName;
+  Result := '';
+  if Visibility <> viPrivate then
+    Result := VisibilityAsString(Visibility) + Name
+  else
+  begin
+    if AClass.AncestorsCount > 0 then
+      Result := getAncestorInternName(AClass.Ancestor[0], Name);
+    if Result = '' then // we use live values from python
+      Result := '_' + AClass.Name + '__' + Name;
   end;
 end;
 
-procedure TRtfdDiagram.ShowAttributes(Objectname: string; aClass: TClass;
-            aModelObject: TObjekt);
-  // just create attributes, they will be shown by UpdateAllObjects
+procedure TRtfdDiagram.ShowAttributes(Objectname: string; AClass: TClass;
+  AModelObject: TObjekt);
+// just create attributes, they will be shown by UpdateAllObjects
 
-  var SLObject: TStringList;
-      AddedAttributes: TStringList;
+var
+  SLObject: TStringList;
+  AddedAttributes: TStringList;
 
-  procedure ShowAttributesOfClass1(aClass: TClass);
-    var aModelAttribut: TAttribute;
-        SL1: TStringList;
-        Ami : IModelIterator;
-        aEntity: TModelEntity;
-        aBox: TRtfdBox;
-        p: Integer; iname: string;
-        SuperClass: TClass;
+  procedure ShowAttributesOfClass1(AClass: TClass);
+  var
+    ModelAttribute: TAttribute;
+    SL1: TStringList;
+    Ami: IModelIterator;
+    ModelEntity: TModelEntity;
+    Box: TRtfdBox;
+    Posi: Integer;
+    IName: string;
+    SuperClass: TClass;
   begin
-    // add from knowledge about model
-    if aClass.AncestorsCount > 0 then begin
-      SuperClass:= aClass.Ancestor[0];
+    // Add from knowledge about model
+    if AClass.AncestorsCount > 0 then
+    begin
+      SuperClass := AClass.Ancestor[0];
       ShowAttributesOfClass1(SuperClass);
     end;
-    aBox:= GetBox(Objectname);
+    Box := GetBox(Objectname);
     // get names in visibility order like in TRtfdClass.RefreshEntities
-    if Assigned(aBox) then
-      if aBox.MinVisibility > Low(TVisibility) then
-        Ami:= TModelIterator.Create(aClass.GetAttributes, TAttribute,
-                aBox.MinVisibility, TIteratorOrder(aBox.SortOrder))
+    if Assigned(Box) then
+      if Box.MinVisibility > Low(TVisibility) then
+        Ami := TModelIterator.Create(AClass.GetAttributes, TAttribute,
+          Box.MinVisibility, TIteratorOrder(Box.SortOrder))
       else
-        Ami:= TModelIterator.Create(aClass.GetAttributes, TIteratorOrder(aBox.SortOrder))
+        Ami := TModelIterator.Create(AClass.GetAttributes,
+          TIteratorOrder(Box.SortOrder))
     else
-      Ami:= TModelIterator.Create(aClass.GetAttributes, TIteratorOrder(GuiPyOptions.DiSortOrder));
+      Ami := TModelIterator.Create(AClass.GetAttributes,
+        TIteratorOrder(GuiPyOptions.DiSortOrder));
 
-    //Attributes
-    while Ami.HasNext do begin
-      aEntity:= Ami.Next;
-      iname:= getInternName(aClass, aEntity.Name, aEntity.Visibility);
-      p:= SLObject.IndexOfName(iname);
-      if {(p > -1) and }not aEntity.Static then begin
-        SL1:= Split('|', SLObject.ValueFromIndex[p]);
-        if SL1.Count = 2 then begin // object has an attribute
-          aModelAttribut:= aModelObject.AddAttribute(aEntity.Name);  // AddAttribut can raise an exception
-          AddedAttributes.Add(iname);
-          aModelAttribut.Visibility:= aEntity.Visibility;
-          aModelAttribut.Static:= aEntity.Static;
-          aModelAttribut.IsFinal:= aEntity.IsFinal;
-          if aModelAttribut.IsFinal then
-            aModelObject.hasFinal:= True;
-          aModelAttribut.Value:= SL1[0];
-          aModelAttribut.TypeClassifier:= FindClassifier(SL1[1]);
-          if aModelAttribut.TypeClassifier = nil then begin
-            aModelAttribut.TypeClassifier:= TClassifier.Create(nil);
-            aModelAttribut.TypeClassifier.Name:= SL1[1];
+    // Attributes
+    while Ami.HasNext do
+    begin
+      ModelEntity := Ami.Next;
+      IName := GetInternName(AClass, ModelEntity.Name, ModelEntity.Visibility);
+      Posi := SLObject.IndexOfName(IName);
+      if { (Posi > -1) and } not ModelEntity.Static then
+      begin
+        SL1 := Split('|', SLObject.ValueFromIndex[Posi]);
+        if SL1.Count = 2 then
+        begin // object has an attribute
+          ModelAttribute := AModelObject.AddAttribute(ModelEntity.Name);
+          // AddAttribut can raise an exception
+          AddedAttributes.Add(IName);
+          ModelAttribute.Visibility := ModelEntity.Visibility;
+          ModelAttribute.Static := ModelEntity.Static;
+          ModelAttribute.IsFinal := ModelEntity.IsFinal;
+          if ModelAttribute.IsFinal then
+            AModelObject.HasFinal := True;
+          ModelAttribute.Value := SL1[0];
+          ModelAttribute.TypeClassifier := FindClassifier(SL1[1]);
+          if ModelAttribute.TypeClassifier = nil then
+          begin
+            ModelAttribute.TypeClassifier := TClassifier.Create(nil);
+            ModelAttribute.TypeClassifier.Name := SL1[1];
           end;
         end;
         FreeAndNil(SL1);
@@ -1760,26 +2045,31 @@ procedure TRtfdDiagram.ShowAttributes(Objectname: string; aClass: TClass;
     end;
   end;
 
-  procedure ShowAttributesOfClass2(aClass: TClass);
-    var aModelAttribut: TAttribute;
-        SL1: TStringList;
-        iname: string;
-        vis: TVisibility;
+  procedure ShowAttributesOfClass2(AClass: TClass);
+  var
+    ModelAttribute: TAttribute;
+    SL1: TStringList;
+    IName: string;
+    Vis: TVisibility;
   begin
-    // add from knowldege about LivingObjects
-    for var i:= 0 to SLObject.Count - 1 do begin
-      iname:= SLObject.KeyNames[i];
-      if AddedAttributes.IndexOf(iname) = -1 then begin
-        SL1:= Split('|', SLObject.ValueFromIndex[i]);
-        if SL1.Count = 2 then begin // object has an attribute
-          getVisFromName(iname, vis);
-          aModelAttribut:= aModelObject.AddAttribute(iname);
-          aModelAttribut.Visibility:= vis;
-          aModelAttribut.Value:= SL1[0];
-          aModelAttribut.TypeClassifier:= FindClassifier(SL1[1]);
-          if aModelAttribut.TypeClassifier = nil then begin
-            aModelAttribut.TypeClassifier:= TClassifier.Create(nil);
-            aModelAttribut.TypeClassifier.Name:= SL1[1];
+    // Add from knowldege about LivingObjects
+    for var I := 0 to SLObject.Count - 1 do
+    begin
+      IName := SLObject.KeyNames[I];
+      if AddedAttributes.IndexOf(IName) = -1 then
+      begin
+        SL1 := Split('|', SLObject.ValueFromIndex[I]);
+        if SL1.Count = 2 then
+        begin // object has an attribute
+          GetVisFromName(IName, Vis);
+          ModelAttribute := AModelObject.AddAttribute(IName);
+          ModelAttribute.Visibility := Vis;
+          ModelAttribute.Value := SL1[0];
+          ModelAttribute.TypeClassifier := FindClassifier(SL1[1]);
+          if ModelAttribute.TypeClassifier = nil then
+          begin
+            ModelAttribute.TypeClassifier := TClassifier.Create(nil);
+            ModelAttribute.TypeClassifier.Name := SL1[1];
           end;
         end;
         FreeAndNil(SL1);
@@ -1788,177 +2078,211 @@ procedure TRtfdDiagram.ShowAttributes(Objectname: string; aClass: TClass;
   end;
 
 begin
-  aModelObject.Locked:= True;
-  AddedAttributes:= TStringList.Create;
-  SLObject:= FLivingObjects.getObjectMembers(Objectname);
-  aModelObject.setCapacity(SLObject.Count);
-  ShowAttributesOfClass1(aClass);
-  ShowAttributesOfClass2(aClass);
+  AModelObject.Locked := True;
+  AddedAttributes := TStringList.Create;
+  SLObject := FLivingObjects.getObjectMembers(Objectname);
+  AModelObject.SetCapacity(SLObject.Count);
+  ShowAttributesOfClass1(AClass);
+  ShowAttributesOfClass2(AClass);
   FreeAndNil(SLObject);
   FreeAndNil(AddedAttributes);
-  aModelObject.Locked:= False;
+  AModelObject.Locked := False;
 end;
 
-function TRtfdDiagram.StrToPythonValue(s: string): string;
+function TRtfdDiagram.StrToPythonValue(Value: string): string;
 begin
-  Result:= Trim(s);
-  if not ((Result <> '') and (Pos(Result[1], '[({''') > 0) or
-          isNumber(Result) or isBool(Result) or (Result = 'None') or
-          FLivingObjects.ObjectExists(Result))
+  Result := Trim(Value);
+  if not((Result <> '') and (Pos(Result[1], '[({''') > 0) or isNumber(Result) or
+    isBool(Result) or (Result = 'None') or FLivingObjects.ObjectExists(Result))
   then
-    Result:= asString(Result);
+    Result := asString(Result);
 end;
 
-function TRtfdDiagram.StrAndTypeToPythonValue(s, pValue: string): string;
+function TRtfdDiagram.StrAndTypeToPythonValue(Value, PValue: string): string;
 begin
-  Result:= StrToPythonValue(s);
-  if (Result = asString('')) and (pValue <> '') then
-    Result:= '';
+  Result := StrToPythonValue(Value);
+  if (Result = asString('')) and (PValue <> '') then
+    Result := '';
 end;
 
-function TRtfdDiagram.getParameterAsString(Parameter, ParamValues: TStringList): string;
-  var s, s1, value: string; i: Integer;
+function TRtfdDiagram.GetParameterAsString(Parameter,
+  ParamValues: TStringList): string;
+var
+  Str, Str1, Value: string;
 begin
-  s:= '';
-  var AllParameters:= True;
-  for i:= 0 to Parameter.Count - 1 do begin
-    value:= ParamValues[i];
-    s1:= StrAndTypeToPythonValue(Parameter.ValueFromIndex[i], Value);
-    if AllParameters then
-      if s1 <> ''
-        then s:= s +  s1 + ', '
-        else AllParameters:= False
-    else
-      if s1 <> '' then
-        s:= s + Parameter.KeyNames[i] + '=' + s1 + ', ';
-  end;
-  Result:= Copy(s, 1, Length(s)-2);
-end;
-
-procedure TRtfdDiagram.SetAttributeValues(aModelClass: TClass; Objectname: string; Attributes: TStringList);
-  var OldAttributes: TStringList; i: Integer;
-
-  procedure DoSetAttributeValues(aClass: TClass);
-    var newValue: string; i: Integer;
+  Str := '';
+  var
+  AllParameters := True;
+  for var I := 0 to Parameter.Count - 1 do
   begin
-    if aClass.AncestorsCount > 0 then
-      DoSetAttributeValues(aClass.Ancestor[0]);
-    for i:= 0 to Attributes.Count - 1 do begin
-      newValue:= StrToPythonValue(Attributes.ValueFromIndex[i]);
-      if newValue <> OldAttributes.ValueFromIndex[i] then
-      PyControl.ActiveInterpreter.RunSource(
-        Objectname + '.' + OldAttributes.KeyNames[i] + ' = ' + newValue, '<interactive input>');
+    Value := ParamValues[I];
+    Str1 := StrAndTypeToPythonValue(Parameter.ValueFromIndex[I], Value);
+    if AllParameters then
+      if Str1 <> '' then
+        Str := Str + Str1 + ', '
+      else
+        AllParameters := False
+    else if Str1 <> '' then
+      Str := Str + Parameter.KeyNames[I] + '=' + Str1 + ', ';
+  end;
+  Result := Copy(Str, 1, Length(Str) - 2);
+end;
+
+procedure TRtfdDiagram.SetAttributeValues(ModelClass: TClass;
+  Objectname: string; Attributes: TStringList);
+var
+  OldAttributes: TStringList;
+
+  procedure DoSetAttributeValues(AClass: TClass);
+  var
+    NewValue: string;
+    I: Integer;
+  begin
+    if AClass.AncestorsCount > 0 then
+      DoSetAttributeValues(AClass.Ancestor[0]);
+    for I := 0 to Attributes.Count - 1 do
+    begin
+      NewValue := StrToPythonValue(Attributes.ValueFromIndex[I]);
+      if NewValue <> OldAttributes.ValueFromIndex[I] then
+        PyControl.ActiveInterpreter.RunSource
+          (Objectname + '.' + OldAttributes.KeyNames[I] + ' = ' + NewValue,
+          '<interactive input>');
     end;
   end;
 
 begin
-  OldAttributes:= FLivingObjects.getObjectAttributeValues(Objectname);
-  for i:= OldAttributes.Count - 1 downto 0 do
-    if not (GuiPyOptions.PrivateAttributEditable or (Pos('__', OldAttributes.KeyNames[i]) = 0)) then
-      OldAttributes.Delete(i);
-  DoSetAttributeValues(aModelClass);
+  OldAttributes := FLivingObjects.getObjectAttributeValues(Objectname);
+  for var I := OldAttributes.Count - 1 downto 0 do
+    if not(GuiPyOptions.PrivateAttributEditable or
+      (Pos('__', OldAttributes.KeyNames[I]) = 0)) then
+      OldAttributes.Delete(I);
+  DoSetAttributeValues(ModelClass);
   FreeAndNil(OldAttributes);
 end;
 
 procedure TRtfdDiagram.CallMethodForObject(Sender: TObject);
-  var C: TControl;
+var
+  Control: TControl;
 begin
-  C:= FindVCLWindow(Frame.PopMenuObject.PopupPoint);
-  CallMethod(C, Sender);
+  Control := FindVCLWindow(FFrame.PopMenuObject.PopupPoint);
+  CallMethod(Control, Sender);
 end;
 
 procedure TRtfdDiagram.CallMethodForClass(Sender: TObject);
-  var C: TControl;
+var
+  Control: TControl;
 begin
-  C:= FindVCLWindow(Frame.PopMenuClass.PopupPoint);
-  CallMethod(C, Sender);
+  Control := FindVCLWindow(FFrame.PopMenuClass.PopupPoint);
+  CallMethod(Control, Sender);
 end;
 
 procedure TRtfdDiagram.CallMethod(Control: TControl; Sender: TObject);
-  var Caption, Title, ParamName, ParamValue, s: string;
-      p, p1, p2, InheritedLevel: Integer;
-      theClassname: string;
-      ParameterAsString: string;
-      Parameter: TStringList;
-      ParamValues: TStringList;
-      aViewClass: TRtfdClass;
-      aModelClass: TClass;
-      MethodCall: string;
+var
+  Caption, Title, ParamName, ParamValue, Str: string;
+  Posi, Posi1, Posi2, InheritedLevel: Integer;
+  TheClassname: string;
+  ParameterAsString: string;
+  Parameter: TStringList;
+  ParamValues: TStringList;
+  AViewClass: TRtfdClass;
+  ModelClass: TClass;
+  MethodCall: string;
 begin
   try
-    if Assigned(Control) and ((Control is TRtfdObject) or (Control is TRtfdClass)) then begin
+    if Assigned(Control) and ((Control is TRtfdObject) or
+      (Control is TRtfdClass)) then
+    begin
       CollectClasses;
-      LockFormUpdate(UMLForm);
+      LockFormUpdate(FUMLForm);
       try
-        Panel.ClearSelection;
-        if Control is TRtfdObject
-          then CallMethodObjectName:= (Control as TRtfdObject).Entity.Name
-          else CallMethodObjectName:= '';
-        InheritedLevel:= (Sender as TSpTBXItem).Tag;
+        FPanel.ClearSelection;
+        if Control is TRtfdObject then
+          FCallMethodObjectname := (Control as TRtfdObject).Entity.Name
+        else
+          FCallMethodObjectname := '';
+        InheritedLevel := (Sender as TSpTBXItem).Tag;
         // get parameters for method call
-        Parameter:= TStringList.Create;
-        ParamValues:= TStringList.Create;
+        Parameter := TStringList.Create;
+        ParamValues := TStringList.Create;
 
-        s:= myStringReplace((Sender as TSpTBXItem).Caption, ' = ', chr(4));
+        Str := myStringReplace((Sender as TSpTBXItem).Caption, ' = ', Chr(4));
 
-        p:= FullParameters.IndexOfName(s);
-        s:= FullParameters.ValueFromIndex[p];
-        p:= Pos('(', s);
-        CallMethodMethodname:= getShortType(Copy(s, 1, p-1));
-        Delete(s, 1, p);
-        s:= Trim(s);
+        Posi := FFullParameters.IndexOfName(Str);
+        Str := FFullParameters.ValueFromIndex[Posi];
+        Posi := Pos('(', Str);
+        FCallMethodMethodname := GetShortType(Copy(Str, 1, Posi - 1));
+        Delete(Str, 1, Posi);
+        Str := Trim(Str);
 
-        while s <> ')' do begin
-          p1:= Pos(Chr(4), s);
-          ParamName:= Copy(s, 1, p1 - 1);
-          p2:= Pos(Chr(5), s);
-          ParamValue:= Copy(s, p1 + 1, p2 - p1 - 1);
-          Delete(s, 1, p2);
+        while Str <> ')' do
+        begin
+          Posi1 := Pos(Chr(4), Str);
+          ParamName := Copy(Str, 1, Posi1 - 1);
+          Posi2 := Pos(Chr(5), Str);
+          ParamValue := Copy(Str, Posi1 + 1, Posi2 - Posi1 - 1);
+          Delete(Str, 1, Posi2);
           Parameter.Add(ParamName);
           ParamValues.Add(ParamValue);
         end;
-        Caption:= _('Parameter for method call') + ' ' + CallMethodMethodName + '(...)';
-        Title:= _('Parameter') + #13#10 + _('Value');
+        Caption := _('Parameter for method call') + ' ' + FCallMethodMethodname
+          + '(...)';
+        Title := _('Parameter') + #13#10 + _('Value');
         // get parameter-values from user
-        if (Parameter.Count = 0) or EditObjectOrParams(Caption, Title, Control, Parameter) then begin
-          ParameterAsString:= getParameterAsString(Parameter, ParamValues);
+        if (Parameter.Count = 0) or EditObjectOrParams(Caption, Title, Control,
+          Parameter) then
+        begin
+          ParameterAsString := GetParameterAsString(Parameter, ParamValues);
           CollectClasses;
           // call the method
-          if CallMethodObjectName = '' then begin // static method of a class
-            aModelClass:= (Control as TRtfdClass).Entity as TClass;
-            CallMethodObjectname:= aModelClass.GetTyp;
-          end else begin                          // method of an object
-            theClassname:= FLivingObjects.getClassnameOfObject(CallMethodObjectname);
+          if FCallMethodObjectname = '' then
+          begin // static method of a class
+            ModelClass := (Control as TRtfdClass).Entity as TClass;
+            FCallMethodObjectname := ModelClass.GetTyp;
+          end
+          else
+          begin // method of an object
+            TheClassname := FLivingObjects.getClassnameOfObject
+              (FCallMethodObjectname);
             // get model class for object to get the methods
-            aModelClass:= nil;
-            aViewClass:= GetBox(theClassname) as TRtfdClass;
-            if aViewClass = nil then
-              aViewClass:= GetBox(getShortType(theClassname)) as TRtfdClass;
-            if Assigned(aViewClass) then
-              aModelClass:= (aViewClass.Entity as TClass);      // model class from view class
-            if aModelClass = nil then
-              aModelClass:= getModelClass(theClassname);        // model class from model
-            if (aModelClass = nil) or (aModelClass.Pathname = '') then
-              aModelClass:= CreateModelClass(TheClassname);     // model class from python
+            ModelClass := nil;
+            AViewClass := GetBox(TheClassname) as TRtfdClass;
+            if not Assigned(AViewClass) then
+              AViewClass := GetBox(GetShortType(TheClassname)) as TRtfdClass;
+            if Assigned(AViewClass) then
+              ModelClass := (AViewClass.Entity as TClass);
+            // model class from view class
+            if not Assigned(ModelClass) then
+              ModelClass := GetModelClass(TheClassname);
+            // model class from model
+            if not Assigned(ModelClass) or (ModelClass.Pathname = '') then
+              ModelClass := CreateModelClass(TheClassname);
+            // model class from python
           end;
-          while Assigned(aModelClass) and (InheritedLevel > 0) do begin
-            aModelClass:= aModelClass.Ancestor[0];  // ToDo many ancestors
+          while Assigned(ModelClass) and (InheritedLevel > 0) do
+          begin
+            ModelClass := ModelClass.Ancestor[0]; // ToDo many ancestors
             Dec(InheritedLevel);
           end;
-          CallMethodFrom:= CallMethodObjectname;
-          if (CallMethodFrom = '') and Assigned(aModelClass) then
-            CallMethodFrom:= aModelClass.Name;
-          if aModelClass.OperationIsProperty(CallMethodMethodname) then
-            if Parameter.Count = 0
-              then Methodcall:= CallMethodObjectname + '.' + CallMethodMethodname
-              else Methodcall:= CallMethodObjectname + '.' + CallMethodMethodname + ' = ' + ParameterAsString
-            else Methodcall:= CallMethodObjectname + '.' + CallMethodMethodname + '(' + ParameterAsString + ')';
+          FCallMethodFrom := FCallMethodObjectname;
+          if (FCallMethodFrom = '') and Assigned(ModelClass) then
+            FCallMethodFrom := ModelClass.Name;
+          if ModelClass.OperationIsProperty(FCallMethodMethodname) then
+            if Parameter.Count = 0 then
+              MethodCall := FCallMethodObjectname + '.' + FCallMethodMethodname
+            else
+              MethodCall := FCallMethodObjectname + '.' + FCallMethodMethodname
+                + ' = ' + ParameterAsString
+          else
+            MethodCall := FCallMethodObjectname + '.' + FCallMethodMethodname +
+              '(' + ParameterAsString + ')';
           AddToInteractive(MethodCall);
-          ShowMethodEntered(CallMethodMethodName, 'Actor', CallMethodObjectname, ParameterAsString);
-          PythonIIForm.OnExecuted:= CallMethodExecuted;
-          GI_PyInterpreter.StartOutputMirror(TPath.Combine(GuiPyOptions.TempDir, 'output.txt'), False);
+          ShowMethodEntered(FCallMethodMethodname, 'Actor',
+            FCallMethodObjectname, ParameterAsString);
+          PythonIIForm.OnExecuted := CallMethodExecuted;
+          GI_PyInterpreter.StartOutputMirror(TPath.Combine(GuiPyOptions.TempDir,
+            'output.txt'), False);
           // execute within a thread
-          FLivingObjects.Execute(Methodcall);
+          FLivingObjects.Execute(MethodCall);
         end;
         FreeAndNil(Parameter);
         FreeAndNil(ParamValues);
@@ -1968,85 +2292,98 @@ begin
       end;
     end;
   finally
-    UnlockFormUpdate(UMLForm);
+    UnlockFormUpdate(FUMLForm);
   end;
 end;
 
 procedure TRtfdDiagram.CallMethodExecuted(Sender: TObject);
-  var SL: TStringList;
+var
+  StringList: TStringList;
 begin
-  PythonIIForm.OnExecuted:= nil;
+  PythonIIForm.OnExecuted := nil;
   GI_PyInterpreter.StopFileMirror;
   FLivingObjects.makeAllObjects;
 
   if GuiPyOptions.ShowAllNewObjects then
-    ShowAllNewObjectsString(CallMethodFrom)
+    ShowAllNewObjectsString(FCallMethodFrom)
   else
     UpdateAllObjects;
-  SL:= TStringList.Create;
+  StringList := TStringList.Create;
   try
-    SL.LoadFromFile(TPath.Combine(GuiPyOptions.TempDir, 'output.txt'));
-    if SL.Count > 0
-      then ShowMethodExited(CallMethodMethodName, CallMethodObjectname, 'Actor', SL[0])
-      else ShowMethodExited(CallMethodMethodName, CallMethodObjectname, 'Actor', '');
+    StringList.LoadFromFile(TPath.Combine(GuiPyOptions.TempDir, 'output.txt'));
+    if StringList.Count > 0 then
+      ShowMethodExited(FCallMethodMethodname, FCallMethodObjectname, 'Actor',
+        StringList[0])
+    else
+      ShowMethodExited(FCallMethodMethodname, FCallMethodObjectname,
+        'Actor', '');
   finally
-    FreeAndNil(SL);
+    FreeAndNil(StringList);
   end;
 end;
 
 function TRtfdDiagram.CreateModelClass(const Typ: string): TClass;
-  var U: TUnitPackage;
-      C, C1: TClass;
-      Operation: UModel.TOperation;
-      SLMethods, SLParams: TStringList;
-      i, p: Integer;
-      Method, ParName, OpName, Params: string;
-      vis: TVisibility;
+var
+  UnitPackage: TUnitPackage;
+  AClass, AClass1: TClass;
+  Operation: UModel.TOperation;
+  SLMethods, SLParams: TStringList;
+  Posi: Integer;
+  Method, ParName, OpName, Params: string;
+  Vis: TVisibility;
 begin
-  Result:= nil;
-  U:= Model.ModelRoot.FindUnitPackage('Default');
+  Result := nil;
+  UnitPackage := Model.ModelRoot.FindUnitPackage('Default');
   CollectClasses;
-  if FLivingObjects.ClassExists(Typ) then begin
-    C:= U.MakeClass(Typ, '');
-    C.Importname:= Typ;
-    U.AddClassWithoutShowing(C);
+  if FLivingObjects.ClassExists(Typ) then
+  begin
+    AClass := UnitPackage.MakeClass(Typ, '');
+    AClass.Importname := Typ;
+    UnitPackage.AddClassWithoutShowing(AClass);
 
     // make operations
-    SLMethods:= FLivingObjects.getClassMethods(Typ); // static and not static
+    SLMethods := FLivingObjects.getClassMethods(Typ); // static and not static
     try
-      for i:= 0 to SLMethods.Count - 1 do begin
-        Method:= SLMethods[i];
-        p:= Pos(chr(3), Method);
-        OpName:= Copy(Method, 1, p - 1);
-        if OpName = '__init__' then Continue;
-        Params:= FLivingObjects.getSignature(Typ + '.' + OpName);
-        Operation:= C.AddOperationWithoutType('');
-        getVisFromName(OpName, vis);
-        Operation.Visibility:= vis;
-        Operation.Name:= OpName;
-        Delete(Method, 1, p);
-        if Method = 'function'
-          then Operation.OperationType:= otFunction
-          else Operation.OperationType:= otProcedure;
-        Operation.Static:= False;
+      for var I := 0 to SLMethods.Count - 1 do
+      begin
+        Method := SLMethods[I];
+        Posi := Pos(Chr(3), Method);
+        OpName := Copy(Method, 1, Posi - 1);
+        if OpName = '__init__' then
+          Continue;
+        Params := FLivingObjects.getSignature(Typ + '.' + OpName);
+        Operation := AClass.AddOperationWithoutType('');
+        GetVisFromName(OpName, Vis);
+        Operation.Visibility := Vis;
+        Operation.Name := OpName;
+        Delete(Method, 1, Posi);
+        if Method = 'function' then
+          Operation.OperationType := otFunction
+        else
+          Operation.OperationType := otProcedure;
+        Operation.Static := False;
         // Parameters
-        p:= Pos(' ->', Params);
-        if p > 0 then begin
-          C1:= U.MakeClass(Copy(Params, p+3, Length(Params)), '');
-          if Assigned(C1) then begin
-            Operation.ReturnValue:= C1;
-            U.AddClassWithoutShowing(C1);
+        Posi := Pos(' ->', Params);
+        if Posi > 0 then
+        begin
+          AClass1 := UnitPackage.MakeClass(Copy(Params, Posi + 3,
+            Length(Params)), '');
+          if Assigned(AClass1) then
+          begin
+            Operation.ReturnValue := AClass1;
+            UnitPackage.AddClassWithoutShowing(AClass1);
           end;
-          Delete(Params, p, Length(Params));
+          Delete(Params, Posi, Length(Params));
         end;
-        Params:= Copy(Params, 2, Length(Params)-2);
-        SLParams:= Split(',', Params);
-        for var j:= 0 to SLParams.Count - 1 do begin
-          ParName:= SLParams[j];
-          p:= Pos(':', Parname);
-          if p > 0 then
-            Delete(Parname, p, Length(Parname));
-          ParName:= Trim(ParName);
+        Params := Copy(Params, 2, Length(Params) - 2);
+        SLParams := Split(',', Params);
+        for var J := 0 to SLParams.Count - 1 do
+        begin
+          ParName := SLParams[J];
+          Posi := Pos(':', ParName);
+          if Posi > 0 then
+            Delete(ParName, Posi, Length(ParName));
+          ParName := Trim(ParName);
           if ParName <> '' then
             Operation.AddParameter(ParName);
         end;
@@ -2056,75 +2393,77 @@ begin
       FreeAndNil(SLMethods);
     end;
     // no attributes, because classes don't have them
-    C.Pathname:= FLivingObjects.getPathOf(Typ);
-    Result:= C;
+    AClass.Pathname := FLivingObjects.getPathOf(Typ);
+    Result := AClass;
   end;
 end;
 
 function TRtfdDiagram.PPIScale(ASize: Integer): Integer;
 begin
-  Result := MulDiv(ASize, PPIControl.CurrentPPI, 96);
+  Result := MulDiv(ASize, FPPIControl.CurrentPPI, 96);
 end;
 
 function TRtfdDiagram.PPIUnScale(ASize: Integer): Integer;
 begin
-  Result := MulDiv(ASize, 96, PPIControl.CurrentPPI);
+  Result := MulDiv(ASize, 96, FPPIControl.CurrentPPI);
 end;
 
 function TRtfdDiagram.FindClassifier(const CName: string): TClassifier;
 var
-  PName, ShortName : string;
-  CacheI : Integer;
-  aClass: TClass;
+  PName, ShortName: string;
+  CacheI: Integer;
+  AClass: TClass;
   TheClass: TModelEntityClass;
 
   function InLookInModel: TClassifier;
   var
-    U : TUnitPackage;
+    UnitPackage: TUnitPackage;
   begin
     Result := nil;
-    if PName <> '' then begin // search in package
-      U := Model.ModelRoot.FindUnitPackage(PName);
-      if Assigned(U) then
-        Result:= U.FindClassifier(ShortName, TheClass, True);
+    if PName <> '' then
+    begin // search in package
+      UnitPackage := Model.ModelRoot.FindUnitPackage(PName);
+      if Assigned(UnitPackage) then
+        Result := UnitPackage.FindClassifier(ShortName, TheClass, True);
     end;
-    if Result = nil then begin
-      U:= Model.ModelRoot.FindUnitPackage('Default');
-      Result := U.FindClassifier(ShortName, TheClass, True);
+    if not Assigned(Result) then
+    begin
+      UnitPackage := Model.ModelRoot.FindUnitPackage('Default');
+      Result := UnitPackage.FindClassifier(ShortName, TheClass, True);
     end;
-    if Result = nil then begin
-      U:= Model.ModelRoot.FindUnitPackage('Default');
-      Result := U.FindClassifier(CName, TheClass, True);
+    if not Assigned(Result) then
+    begin
+      UnitPackage := Model.ModelRoot.FindUnitPackage('Default');
+      Result := UnitPackage.FindClassifier(CName, TheClass, True);
     end;
   end;
 
   function ExtractPackageName(const CName: string): string;
-  var
-    I : Integer;
   begin
-    I := LastDelimiter('.', CName);
-    if I=0 then
+    var
+    Int := LastDelimiter('.', CName);
+    if Int = 0 then
       Result := ''
     else
-      Result := Copy(CName, 1, I-1);
+      Result := Copy(CName, 1, Int - 1);
   end;
 
   function ExtractClassName(const CName: string): string;
-  var
-    I : Integer;
   begin
-    I := LastDelimiter('.', CName);
-    if I=0 then
+    var
+    Int := LastDelimiter('.', CName);
+    if Int = 0 then
       Result := CName
     else
-      Result := Copy(CName,I+1,255);
-    Result:= withoutArray(Result);
+      Result := Copy(CName, Int + 1, 255);
+    Result := WithoutArray(Result);
   end;
 
 begin
-  TheClass:= nil;
-  CacheI:= Model.NameCache.IndexOf(CName);
-  if (CacheI > -1) then begin
+  TheClass := nil;
+  CacheI := Model.NameCache.IndexOf(CName);
+  if (CacheI > -1) then
+  begin
     Result := TClassifier(Model.NameCache.Objects[CacheI]);
     Exit;
   end;
@@ -2132,57 +2471,63 @@ begin
   ShortName := ExtractClassName(CName);
   Result := InLookInModel;
 
-  if Assigned(Result) and (Pos('[]', CName) > 0) and (Result.Name <> CName) then begin
-    if Result is TClass then begin
-      aClass:= TClass.Create(Result.Owner);
-      aClass.Pathname:= Result.Pathname;
-      aClass.Importname:= Result.Importname;
-      aClass.Ancestor[0]:= (Result as TClass).Ancestor[0]; // ToDo n ancestors
-      aClass.Name:= CName;
-      aClass.Visibility:= Result.Visibility;
-      aClass.Static:= Result.Static;
-      Result:= aClass;
+  if Assigned(Result) and (Pos('[]', CName) > 0) and (Result.Name <> CName) then
+  begin
+    if Result is TClass then
+    begin
+      AClass := TClass.Create(Result.Owner);
+      AClass.Pathname := Result.Pathname;
+      AClass.Importname := Result.Importname;
+      AClass.Ancestor[0] := (Result as TClass).Ancestor[0]; // ToDo n ancestors
+      AClass.Name := CName;
+      AClass.Visibility := Result.Visibility;
+      AClass.Static := Result.Static;
+      Result := AClass;
     end;
     Model.NameCache.AddObject(CName, Result);
   end;
 
-  if not Assigned(Result) then begin
-    Result:= Model.UnknownPackage.FindClassifier(CName, TClass, True);
-    if not Assigned(Result) then begin
-      Result:= Model.UnknownPackage.MakeClass(CName, '');
+  if not Assigned(Result) then
+  begin
+    Result := Model.UnknownPackage.FindClassifier(CName, TClass, True);
+    if not Assigned(Result) then
+    begin
+      Result := Model.UnknownPackage.MakeClass(CName, '');
       Model.UnknownPackage.AddClass(TClass(Result));
     end;
   end;
-
- // if Assigned(Result) and (CacheI = -1) then
- //   Model.NameCache.AddObject(CName, Result);
   if Assigned(Result) and (Pos('/', Result.Name) > 0) then
-    Result.Name:= myStringReplace(Result.Name, '/', '.');
+    Result.Name := myStringReplace(Result.Name, '/', '.');
 end;
 
 procedure TRtfdDiagram.EditObject(Control: TControl);
-  var Caption, Title, Objectname, Classname: string;
-      Attributes: TStringList;
-      aModelClass: TClass;
-      U: TUnitPackage;
-      i: Integer;
+var
+  Caption, Title, Objectname, Classname: string;
+  Attributes: TStringList;
+  ModelClass: TClass;
+  UnitPackage: TUnitPackage;
 begin
-  if Assigned(Control) and (Control is TRtfdObject) then begin
-    Panel.ClearSelection;
-    Objectname:= (Control as TRtfdObject).Entity.Name;
-    Classname:= FLivingObjects.getClassnameOfObject(Objectname);
-    U:= Model.ModelRoot.FindUnitPackage('Default');
-    aModelClass:= U.FindClassifier(Classname) as TClass;
-    if FLivingObjects.ObjectExists(Objectname) and Assigned(aModelClass) then begin
-      Attributes:= FLivingObjects.getObjectAttributeValues(Objectname);
-      for i:= Attributes.Count - 1 downto 0 do
-        if GuiPyOptions.PrivateAttributEditable or (Pos('__', Attributes.KeyNames[i]) = 0)
-          then Attributes[i]:= WithoutVisibility(Attributes[i])
-          else Attributes.Delete(i);
-      Caption:= _('Edit object') + ' ' + ObjectName;
-      Title  := _('Attribute') + #13#10 + _('Value');
-      if EditObjectOrParams(Caption, Title, Control, Attributes) then begin
-        SetAttributeValues(aModelClass, Objectname, Attributes);
+  if Assigned(Control) and (Control is TRtfdObject) then
+  begin
+    FPanel.ClearSelection;
+    Objectname := (Control as TRtfdObject).Entity.Name;
+    Classname := FLivingObjects.getClassnameOfObject(Objectname);
+    UnitPackage := Model.ModelRoot.FindUnitPackage('Default');
+    ModelClass := UnitPackage.FindClassifier(Classname) as TClass;
+    if FLivingObjects.ObjectExists(Objectname) and Assigned(ModelClass) then
+    begin
+      Attributes := FLivingObjects.getObjectAttributeValues(Objectname);
+      for var I := Attributes.Count - 1 downto 0 do
+        if GuiPyOptions.PrivateAttributEditable or
+          (Pos('__', Attributes.KeyNames[I]) = 0) then
+          Attributes[I] := WithoutVisibility(Attributes[I])
+        else
+          Attributes.Delete(I);
+      Caption := _('Edit object') + ' ' + Objectname;
+      Title := _('Attribute') + #13#10 + _('Value');
+      if EditObjectOrParams(Caption, Title, Control, Attributes) then
+      begin
+        SetAttributeValues(ModelClass, Objectname, Attributes);
         FLivingObjects.makeAllObjects;
         UpdateAllObjects;
       end;
@@ -2192,661 +2537,773 @@ begin
 end;
 
 procedure TRtfdDiagram.UpdateAllObjects;
-  var
-    U: TUnitPackage;
-    aModelClass: TClassifier;
-    aModelObject: TObjekt;
-    aModelAttribut: TAttribute;
-    aModelClassAttribut: TAttribute;
-    It, It2: IModelIterator;
-    aObjectList, SL_Attributes: TStringList;
-    i, j: Integer;
-    value, internname: string;
+var
+  UnitPackage: TUnitPackage;
+  ModelClass: TClassifier;
+  AModelObject: TObjekt;
+  ModelAttribut: TAttribute;
+  ModelClassAttribut: TAttribute;
+  It1, It2: IModelIterator;
+  ObjectList, SL_Attributes: TStringList;
+  Value, Internname: string;
 
-  function Shorten(const s: string): string;
-    var p: Integer;
+  function Shorten(const Value: string): string;
+  var
+    Posi: Integer;
   begin
-    Result:= s;
-    if Length(s) > 100 then begin
-      p:= 100;
-      while (p > 0) and (s[p] <> ',') do
-        Dec(p);
-      if p = 0 then p:= 96;
-      Result:= Copy(s, 1, p+1) + '...';
+    Result := Value;
+    if Length(Value) > 100 then
+    begin
+      Posi := 100;
+      while (Posi > 0) and (Value[Posi] <> ',') do
+        Dec(Posi);
+      if Posi = 0 then
+        Posi := 96;
+      Result := Copy(Value, 1, Posi + 1) + '...';
     end;
   end;
 
 begin
-  if Assigned(Model) and Assigned(Model.ModelRoot)
-    then U:= Model.ModelRoot.FindUnitPackage('Default')
-    else U:= nil;
-  if U = nil then Exit;
-  aObjectList:= U.GetAllObjects;
-  for i:= 0 to aObjectList.Count - 1 do begin
-    if not FLivingObjects.ObjectExists(aObjectList[i]) then
+  if Assigned(Model) and Assigned(Model.ModelRoot) then
+    UnitPackage := Model.ModelRoot.FindUnitPackage('Default')
+  else
+    UnitPackage := nil;
+  if not Assigned(UnitPackage) then
+    Exit;
+  ObjectList := UnitPackage.GetAllObjects;
+  for var I := 0 to ObjectList.Count - 1 do
+  begin
+    if not FLivingObjects.ObjectExists(ObjectList[I]) then
       Continue;
-    if Assigned(aObjectList.objects[i]) and (aObjectList.Objects[i] is TObjekt)
-      then aModelObject:= aObjectList.objects[i] as TObjekt
-      else Continue;
-    SL_Attributes:= FLivingObjects.getObjectAttributeValues(aObjectList[i]);
-    It:= aModelObject.GetAttributes;
-    while It.HasNext do begin
-      aModelAttribut:= It.Next as TAttribute;
-      Internname:= getInternName(aModelObject.getTyp, aModelAttribut.Name, aModelAttribut.Visibility);
-      j:= SL_Attributes.IndexOfName(Internname);
-      if j >= 0
-        then Value:= Shorten(SL_Attributes.ValueFromIndex[j])
-        else Value:= '<error>';
+    if Assigned(ObjectList.Objects[I]) and (ObjectList.Objects[I] is TObjekt)
+    then
+      AModelObject := ObjectList.Objects[I] as TObjekt
+    else
+      Continue;
+    SL_Attributes := FLivingObjects.getObjectAttributeValues(ObjectList[I]);
+    It1 := AModelObject.GetAttributes;
+    while It1.HasNext do
+    begin
+      ModelAttribut := It1.Next as TAttribute;
+      Internname := GetInternName(AModelObject.GetTyp, ModelAttribut.Name,
+        ModelAttribut.Visibility);
+      var
+      J := SL_Attributes.IndexOfName(Internname);
+      if J >= 0 then
+        Value := Shorten(SL_Attributes.ValueFromIndex[J])
+      else
+        Value := '<error>';
 
-      if aModelAttribut.Static then begin
-        aModelClass:= aModelObject.getTyp;
-        if Assigned(aModelClass) then begin
-          It2:= aModelClass.GetAttributes;
-          while It2.HasNext do begin
-            aModelClassAttribut:= It2.Next as TAttribute;
-            if aModelClassAttribut.Name = aModelAttribut.Name then begin
-              aModelClassAttribut.Value:= Value;
+      if ModelAttribut.Static then
+      begin
+        ModelClass := AModelObject.GetTyp;
+        if Assigned(ModelClass) then
+        begin
+          It2 := ModelClass.GetAttributes;
+          while It2.HasNext do
+          begin
+            ModelClassAttribut := It2.Next as TAttribute;
+            if ModelClassAttribut.Name = ModelAttribut.Name then
+            begin
+              ModelClassAttribut.Value := Value;
               Break;
             end;
           end;
         end;
-      end else
-        aModelAttribut.Value:= Value;
+      end
+      else
+        ModelAttribut.Value := Value;
     end;
     FreeAndNil(SL_Attributes);
   end;
-  FreeAndNil(aObjectList);
+  FreeAndNil(ObjectList);
   RefreshDiagram;
 end;
 
-function TRtfdDiagram.insertParameterNames(s: string): string;
-  var p: Integer; s1, s2: string;
+function TRtfdDiagram.InsertParameterNames(Names: string): string;
+var
+  Posi: Integer;
+  Str1, Str2: string;
 begin
-  p:= pos('(', s);
-  s1:= Copy(s, 1, p);
-  Delete(s, 1, p);
-  s:= myStringReplace(s, ')', ',)');
-  p:= pos(',', s);
-  while p > 0 do begin
-    s2:= Copy(s, 1, p-1);
-    Delete(s, 1, p);
-    s2:= GetShortTypeWith(s2);
-    if Pos('<?', s2) > 0 then begin
-      s2:= s2;
-    end else begin
-      p:= Pos(' ', s2);
-      if (p = 0) and (s2 <> '') then
-        s2:= s2;
-    end;
-    p:= Pos(',', s);
-    if p > 0
-      then s1:= s1 + s2 + ', '
-      else s1:= s1 + s2 + ')';
+  Posi := Pos('(', Names);
+  Str1 := Copy(Names, 1, Posi);
+  Delete(Names, 1, Posi);
+  Names := myStringReplace(Names, ')', ',)');
+  Posi := Pos(',', Names);
+  while Posi > 0 do
+  begin
+    Str2 := Copy(Names, 1, Posi - 1);
+    Delete(Names, 1, Posi);
+    Str2 := GetShortTypeWith(Str2);
+    Posi := Pos(',', Names);
+    if Posi > 0 then
+      Str1 := Str1 + Str2 + ', '
+    else
+      Str1 := Str1 + Str2 + ')';
   end;
-  Result:= s1;
+  Result := Str1;
 end;
 
 procedure TRtfdDiagram.PopMenuClassPopup(Sender: TObject);
-  var s1, s2: string;
-      i, MenuIndex, InheritedLevel, StartIndex: Integer;
-      aViewClass: TRtfdClass;
-      aModelClass: TClass;
-      it1: IModelIterator;
-      Operation: UModel.TOperation;
-      Attribute: UModel.TAttribute;
-      aInheritedMenu: TSpTBXItem;
-      HasSourcecode: Boolean;
-      Associations: TStringList;
-      Connections: TStringlist;
-      SLSorted: TStringList;
-      aBox: TControl;
-      hasInheritedSystemMethods: Boolean;
+var
+  Str1, Str2: string;
+  MenuIndex, InheritedLevel, StartIndex, Num: Integer;
+  ViewClass: TRtfdClass;
+  ModelClass: TClass;
+  Ite1: IModelIterator;
+  Operation: UModel.TOperation;
+  Attribute: UModel.TAttribute;
+  InheritedMenu: TSpTBXItem;
+  HasSourcecode: Boolean;
+  Associations: TStringList;
+  Connections: TStringList;
+  SLSorted: TStringList;
+  Box: TControl;
+  HasInheritedSystemMethods: Boolean;
 
-  procedure MakeOpenClassMenuItem(aClass: string; ImageIndex: Integer);
+  procedure MakeOpenClassMenuItem(AClass: string; ImageIndex: Integer);
   begin
-    if (BoxNames.IndexOf(aClass) = -1) and FLivingObjects.ClassExists(aClass) and
-       (MenuClassFiles.IndexOfName(aClass) = -1)
-    then begin
-      var aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
-      aMenuItem.Caption:= WithoutGeneric(aClass);
-      aMenuItem.OnClick:= OpenClassOrInterface;
-      aMenuItem.ImageIndex:= ImageIndex;
-      Frame.MIClassPopupOpenClass.Add(aMenuItem);
-      MenuClassFiles.Add(aClass + '=' + FLivingObjects.getPathOf(aClass));
+    if (FBoxNames.IndexOf(AClass) = -1) and FLivingObjects.ClassExists(AClass)
+      and (FMenuClassFiles.IndexOfName(AClass) = -1) then
+    begin
+      var
+      AMenuItem := TSpTBXItem.Create(FFrame.PopMenuClass);
+      AMenuItem.Caption := WithoutGeneric(AClass);
+      AMenuItem.OnClick := OpenClassOrInterface;
+      AMenuItem.ImageIndex := ImageIndex;
+      FFrame.MIClassPopupOpenClass.Add(AMenuItem);
+      FMenuClassFiles.Add(AClass + '=' + FLivingObjects.getPathOf(AClass));
     end;
   end;
 
   procedure MakeConnectClassMenuItems;
-    var aMenuItem: TSpTBXItem; c: char;
-        i: Integer; s: string;
+  var
+    MenuItem: TSpTBXItem;
+    Connection: Char;
+    Name: string;
   begin
-    for i:= BoxNames.Count - 1 downto 0 do
-      if (BoxNames.Objects[i] is TRtfdClass) then
-        Connections.Add('C' + (BoxNames.Objects[i] as TRtfdBox).Entity.FullName)
-      else if (BoxNames.Objects[i] is TRtfdCommentBox) then
-        Connections.Add('K' + BoxNames[i]);
-    for i:= 0 to Connections.Count - 1 do begin
-      s:= Connections[i];
-      c:= s[1];
-      s:= Copy(s, 2, Length(s));
-      aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
-      aMenuItem.Caption:= WithoutGeneric(s);
-      AMenuItem.Caption:= s;
-      aMenuItem.OnClick:= ConnectBoxes;
-      case c of
-        'C': aMenuItem.ImageIndex:= 0;
-        'I': aMenuItem.ImageIndex:= 16;
-        'K': aMenuItem.ImageIndex:= 23;
+    for var I := FBoxNames.Count - 1 downto 0 do
+      if (FBoxNames.Objects[I] is TRtfdClass) then
+        Connections.Add('Connection' + (FBoxNames.Objects[I] as TRtfdBox)
+          .Entity.Fullname)
+      else if (FBoxNames.Objects[I] is TRtfdCommentBox) then
+        Connections.Add('K' + FBoxNames[I]);
+    for var I := 0 to Connections.Count - 1 do
+    begin
+      Name := Connections[I];
+      Connection := Name[1];
+      Name := Copy(Name, 2, Length(Name));
+      MenuItem := TSpTBXItem.Create(FFrame.PopMenuClass);
+      MenuItem.Caption := WithoutGeneric(Name);
+      MenuItem.Caption := Name;
+      MenuItem.OnClick := ConnectBoxes;
+      case Connection of
+        'C':
+          MenuItem.ImageIndex := 0;
+        'I':
+          MenuItem.ImageIndex := 16;
+        'K':
+          MenuItem.ImageIndex := 23;
       end;
-      s:= (aBox as TRtfdBox).Entity.Name;
-      aMenuItem.Tag:= BoxNames.IndexOf(s);
-      Frame.MIClassPopupConnect.Add(aMenuItem);
+      Name := (Box as TRtfdBox).Entity.Name;
+      MenuItem.Tag := FBoxNames.IndexOf(Name);
+      FFrame.MIClassPopupConnect.Add(MenuItem);
     end;
   end;
 
-  procedure AddDatatype(const s: string);
+  procedure AddDatatype(const Source: string);
   begin
-    if IsPythonType(s) then
+    if IsPythonType(Source) then
       Exit;
-    var s1:= WithoutGeneric(WithOutArray(s));
-    if IsPythonType(s1) or (s1 = '') then
+    var
+    Str1 := WithoutGeneric(WithoutArray(Source));
+    if IsPythonType(Str1) or (Str1 = '') then
       Exit;
-    for var i:= 0 to BoxNames.Count - 1 do
-      if s1 = BoxNames[i] then Exit;
-    if (Associations.IndexOf(s1) > -1) then
+    for var I := 0 to FBoxNames.Count - 1 do
+      if Str1 = FBoxNames[I] then
+        Exit;
+    if (Associations.IndexOf(Str1) > -1) then
       Exit;
-    Associations.Add(getShortType(s1));
+    Associations.Add(GetShortType(Str1));
   end;
 
-  procedure MakeMenuItem(const s1, s2: string; ImageIndex: Integer);
+  procedure MakeMenuItem(const Str1, Str2: string; ImageIndex: Integer);
   begin
-    if s1 = '' then begin
-      var aSeparator:= TSpTBXSeparatorItem.Create(Frame.PopMenuClass);
-      Frame.PopMenuClass.Items.Insert(MenuIndex, aSeparator);
+    if Str1 = '' then
+    begin
+      var
+      ASeparator := TSpTBXSeparatorItem.Create(FFrame.PopMenuClass);
+      FFrame.PopMenuClass.Items.Insert(MenuIndex, ASeparator);
       Inc(MenuIndex);
-    end else begin
-      var aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
-      aMenuItem.Caption:= s1; // Copy(Caption, 1, 50);
-      aMenuItem.Tag:= InheritedLevel;
-      if s1 <> '' then begin
-        if ImageIndex >= 7
-          then aMenuItem.OnClick:= CallMethodForClass
-          else aMenuItem.OnClick:= CreateObjectForSelectedClass;
-        aMenuItem.ImageIndex:= ImageIndex;
-        FullParameters.Add(s1 + '=' + s2);
+    end
+    else
+    begin
+      var
+      AMenuItem := TSpTBXItem.Create(FFrame.PopMenuClass);
+      AMenuItem.Caption := Str1;
+      AMenuItem.Tag := InheritedLevel;
+      if Str1 <> '' then
+      begin
+        if ImageIndex >= 7 then
+          AMenuItem.OnClick := CallMethodForClass
+        else
+          AMenuItem.OnClick := CreateObjectForSelectedClass;
+        AMenuItem.ImageIndex := ImageIndex;
+        FFullParameters.Add(Str1 + '=' + Str2);
       end;
-      if (InheritedLevel = 0) and (0 <= MenuIndex) and (MenuIndex < Frame.PopMenuClass.Items.Count) then begin
-        Frame.PopMenuClass.Items.Insert(MenuIndex, aMenuItem);
+      if (InheritedLevel = 0) and (0 <= MenuIndex) and
+        (MenuIndex < FFrame.PopMenuClass.Items.Count) then
+      begin
+        FFrame.PopMenuClass.Items.Insert(MenuIndex, AMenuItem);
         Inc(MenuIndex);
-      end else
-        aInheritedMenu.Add(aMenuItem);
+      end
+      else
+        InheritedMenu.Add(AMenuItem);
     end;
   end;
 
-  function MakeTestMenuItem(const s1, s2: string): TSpTBXItem;
+  function MakeTestMenuItem(const Str1, Str2: string): TSpTBXItem;
   begin
-    var aMenuItem:= TSpTBXItem.Create(Frame.PopMenuClass);
-    aMenuItem.Caption:= s1; // Copy(Caption, 1, 50);
-    aMenuItem.OnClick:= OnRunJunitTestMethod;
-    aMenuItem.ImageIndex:= 21;
-    FullParameters.Add(s1 + '=' + s2);
-    Result:= aMenuItem;
+    var
+    AMenuItem := TSpTBXItem.Create(FFrame.PopMenuClass);
+    AMenuItem.Caption := Str1;
+    AMenuItem.OnClick := OnRunJunitTestMethod;
+    AMenuItem.ImageIndex := 21;
+    FFullParameters.Add(Str1 + '=' + Str2);
+    Result := AMenuItem;
   end;
 
   procedure MakeSeparatorItem;
   begin
-    var aMenuItem:= TSpTBXSeparatorItem.Create(Frame.PopMenuClass);
-    aMenuItem.Tag:= InheritedLevel;
+    var
+    AMenuItem := TSpTBXSeparatorItem.Create(FFrame.PopMenuClass);
+    AMenuItem.Tag := InheritedLevel;
     if (InheritedLevel = 0) and (0 <= MenuIndex) and
-       (MenuIndex < Frame.PopMenuClass.Items.Count) then begin
-        Frame.PopMenuClass.Items.Insert(MenuIndex, aMenuItem);
-        Inc(MenuIndex);
-      end
+      (MenuIndex < FFrame.PopMenuClass.Items.Count) then
+    begin
+      FFrame.PopMenuClass.Items.Insert(MenuIndex, AMenuItem);
+      Inc(MenuIndex);
+    end
     else
-      aInheritedMenu.Add(aMenuItem);
+      InheritedMenu.Add(AMenuItem);
   end;
 
-  procedure AddParameter(var s1, s2: string; Operation: TOperation);
-    var Parameter: TParameter;
+  procedure AddParameter(var Str1, Str2: string; Operation: TOperation);
+  var
+    Parameter: TParameter;
   begin
-    var it2:= Operation.GetParameters;
-    while it2.HasNext do begin
-      Parameter:= it2.Next as TParameter;
+    var
+    Ite2 := Operation.GetParameters;
+    while Ite2.HasNext do
+    begin
+      Parameter := Ite2.Next as TParameter;
       if (Parameter.Name = 'self') or (Parameter.Name = 'cls') then
         Continue;
-      s1:= s1 + Parameter.Name;
-      s2:= s2 + Parameter.Name;
-      // chr(x) are used as separators
-      if Assigned(Parameter.TypeClassifier) then begin
-        s1:= s1 + ': ' + Parameter.TypeClassifier.asType;
+      Str1 := Str1 + Parameter.Name;
+      Str2 := Str2 + Parameter.Name;
+      // Chr(x) are used as separators
+      if Assigned(Parameter.TypeClassifier) then
+      begin
+        Str1 := Str1 + ': ' + Parameter.TypeClassifier.AsType;
         if InheritedLevel = 0 then
-          AddDatatype(Parameter.TypeClassifier.asType);
+          AddDatatype(Parameter.TypeClassifier.AsType);
       end;
-      s2:= s2 + chr(4);
-      if Parameter.Value <> '' then  begin
-        s1:= s1 + chr(4) + Parameter.Value;
-        s2:= s2 + Parameter.Value;
+      Str2 := Str2 + Chr(4);
+      if Parameter.Value <> '' then
+      begin
+        Str1 := Str1 + Chr(4) + Parameter.Value;
+        Str2 := Str2 + Parameter.Value;
       end;
-      s1:= s1 + ', ';
-      s2:= s2 + chr(5);
+      Str1 := Str1 + ', ';
+      Str2 := Str2 + Chr(5);
     end;
-    s1:= myStringReplace(s1 + ')', ', )', ')');
-    s2:= s2 + ')';
-    if (Operation.OperationType = otFunction) and Assigned(Operation.ReturnValue) then begin
-      s1:= s1 + ': ' + Operation.ReturnValue.GetShortType;
+    Str1 := myStringReplace(Str1 + ')', ', )', ')');
+    Str2 := Str2 + ')';
+    if (Operation.OperationType = otFunction) and Assigned(Operation.ReturnValue)
+    then
+    begin
+      Str1 := Str1 + ': ' + Operation.ReturnValue.GetShortType;
       if InheritedLevel = 0 then
         AddDatatype(Operation.ReturnValue.Name);
     end;
   end;
 
-  procedure Debugmenu(aMenu: TSpTBXPopupMenu);
-    var i, j: Integer; s: string; aMenuItem: TTBCustomItem;
+  procedure Debugmenu(AMenu: TSpTBXPopupMenu);
+  var
+    Str: string;
+    AMenuItem: TTBCustomItem;
   begin
-    s:= '';
-    for i:= 0 to aMenu.Items.Count - 1 do begin
-      aMenuItem:= aMenu.Items[i];
-      s:= s + aMenuItem.caption + ' ' + BoolToStr(aMenuItem.Visible, True) + sLineBreak;
-      for j:= 0 to aMenuItem.Count - 1 do
-        s:= s + '-- ' + aMenuItem.Items[j].caption + ' ' + BoolToStr(aMenuItem.Items[j].Visible, True) + sLineBreak;
+    Str := '';
+    for var I := 0 to AMenu.Items.Count - 1 do
+    begin
+      AMenuItem := AMenu.Items[I];
+      Str := Str + AMenuItem.Caption + ' ' + BoolToStr(AMenuItem.Visible, True)
+        + sLineBreak;
+      for var J := 0 to AMenuItem.Count - 1 do
+        Str := Str + '-- ' + AMenuItem[J].Caption + ' ' +
+          BoolToStr(AMenuItem[J].Visible, True) + sLineBreak;
     end;
-    ShowMessage(s);
+    ShowMessage(Str);
   end;
 
 begin // PopMenuClassPopup
-  aBox:= FindVCLWindow((Sender as TPopupMenu).PopupPoint);
+  Box := FindVCLWindow((Sender as TPopupMenu).PopupPoint);
 
-  aViewClass:= nil;
-  MenuClassFiles.Clear;
-  Panel.ClearSelection;
-  if Assigned(aBox)
-    then TManagedObject(Panel.FindManagedControl(aBox)).Selected:= True
-    else Exit;
+  ViewClass := nil;
+  FMenuClassFiles.Clear;
+  FPanel.ClearSelection;
+  if Assigned(Box) then
+    FPanel.FindManagedControl(Box).Selected := True
+  else
+    Exit;
 
   // delete previous menu
-  for i:= Frame.PopMenuClass.Items.Count - 1 downto 0 do
-    if Frame.PopMenuClass.Items[i].Tag = 0 then
-      FreeAndNil(Frame.PopMenuClass.Items[i]);
-  for i:= Frame.MIClassPopupRunOneTest.Count - 1 downto 0 do
-    FreeAndNil(Frame.MIClassPopupRunOneTest.Items[i]);
-  for i:= Frame.MIClassPopupOpenClass.Count - 1 downto 0 do
-    FreeAndNil(Frame.MIClassPopupOpenClass.Items[i]);
-  for i:= Frame.MIClassPopupConnect.Count - 1 downto 0 do
-    FreeAndNil(Frame.MIClassPopupConnect.Items[i]);
+  for var I := FFrame.PopMenuClass.Items.Count - 1 downto 0 do
+    if FFrame.PopMenuClass.Items[I].Tag = 0 then
+      FreeAndNil(FFrame.PopMenuClass.Items[I]);
+  for var I := FFrame.MIClassPopupRunOneTest.Count - 1 downto 0 do
+    FreeAndNil(FFrame.MIClassPopupRunOneTest[I]);
+  for var I := FFrame.MIClassPopupOpenClass.Count - 1 downto 0 do
+    FreeAndNil(FFrame.MIClassPopupOpenClass[I]);
+  for var I := FFrame.MIClassPopupConnect.Count - 1 downto 0 do
+    FreeAndNil(FFrame.MIClassPopupConnect[I]);
 
-  FullParameters.Clear;
-  InheritedLevel:= 0;
-  StartIndex:= 10;
-  MenuIndex:= StartIndex;
-  Associations:= TStringList.Create;
-  Associations.Sorted:= True;
-  Associations.Duplicates:= dupIgnore;
-  Connections:= TStringList.Create;
-  Connections.Sorted:= True;
-  Connections.Duplicates:= dupIgnore;
-  SLSorted:= TStringList.Create;
-  SLSorted.Sorted:= True;
-  hasInheritedSystemMethods:= False;
+  FFullParameters.Clear;
+  InheritedLevel := 0;
+  StartIndex := 10;
+  MenuIndex := StartIndex;
+  Associations := TStringList.Create;
+  Associations.Sorted := True;
+  Associations.Duplicates := dupIgnore;
+  Connections := TStringList.Create;
+  Connections.Sorted := True;
+  Connections.Duplicates := dupIgnore;
+  SLSorted := TStringList.Create;
+  SLSorted.Sorted := True;
+  HasInheritedSystemMethods := False;
   MakeSeparatorItem;
 
-  if (aBox is TRtfdClass) and not (aBox as TRtfdBox).isJUnitTestclass then begin
-    aViewClass:= aBox as TRtfdClass;
-    aModelClass:= aViewClass.Entity as TClass;
+  if (Box is TRtfdClass) and not(Box as TRtfdBox).IsJUnitTestClass then
+  begin
+    ViewClass := Box as TRtfdClass;
+    ModelClass := ViewClass.Entity as TClass;
 
     // get superclasses
-    for i:= 1 to aModelClass.AncestorsCount do
-      MakeOpenClassMenuItem(aModelClass.Ancestor[i-1].Name, 13);
+    for var I := 1 to ModelClass.AncestorsCount do
+      MakeOpenClassMenuItem(ModelClass.Ancestor[I - 1].Name, 13);
 
     // get constructor
-    if not aModelClass.IsAbstract then begin
-      var ConstructorMissing:= True;
-      it1:= aModelClass.GetOperations;
-      while it1.HasNext do begin
-        Operation:= it1.Next as UModel.TOperation;
-        if Operation.OperationType = otConstructor then begin
-          ConstructorMissing:= False;
-          s1:= aModelClass.Name + '(';   // Konto() instead of __init__()
-          s2:= s1;
-          AddParameter(s1, s2, Operation);
-          Break;  // only one constructor
-        end
+    if not ModelClass.IsAbstract then
+    begin
+      var
+      ConstructorMissing := True;
+      Ite1 := ModelClass.GetOperations;
+      while Ite1.HasNext do
+      begin
+        Operation := Ite1.Next as UModel.TOperation;
+        if Operation.OperationType = otConstructor then
+        begin
+          ConstructorMissing := False;
+          Str1 := ModelClass.Name + '('; // Konto() instead of __init__()
+          Str2 := Str1;
+          AddParameter(Str1, Str2, Operation);
+          Break; // only one constructor
+        end;
       end;
-      if ConstructorMissing then begin
-        s1:= aModelClass.Name + '()';
-        s2:= s1;
+      if ConstructorMissing then
+      begin
+        Str1 := ModelClass.Name + '()';
+        Str2 := Str1;
       end;
-      MakeMenuItem(s1, s2, 2);
+      MakeMenuItem(Str1, Str2, 2);
     end;
 
     // get static|class methods and parameter classes
     repeat
-      it1:= aModelClass.GetOperations;
-      while it1.HasNext do begin
-        Operation:= it1.Next as UModel.TOperation;
-        if Operation.OperationType in [otFunction, otProcedure] then begin
-          if not (Operation.isClassMethod or Operation.isStaticMethod) then
+      Ite1 := ModelClass.GetOperations;
+      while Ite1.HasNext do
+      begin
+        Operation := Ite1.Next as UModel.TOperation;
+        if Operation.OperationType in [otFunction, otProcedure] then
+        begin
+          if not(Operation.IsClassMethod or Operation.IsStaticMethod) then
             Continue;
-          s1:= Operation.Name + '(';
-          s2:= s1;
-          addParameter(s1, s2, Operation);
-          MakeMenuItem(s1, s2, Integer(Operation.Visibility) + 7);
+          Str1 := Operation.Name + '(';
+          Str2 := Str1;
+          AddParameter(Str1, Str2, Operation);
+          MakeMenuItem(Str1, Str2, Integer(Operation.Visibility) + 7);
         end;
       end;
 
       // empty inherited static methods menu
-      if (InheritedLevel > 0) and (aInheritedMenu.Count = 0) then begin
-        FreeAndNil(aInheritedMenu);
+      if (InheritedLevel > 0) and (InheritedMenu.Count = 0) then
+      begin
+        FreeAndNil(InheritedMenu);
         Dec(MenuIndex);
       end;
 
       // get association classes
-      if InheritedLevel = 0 then begin
-        it1:= aModelClass.GetAttributes;
-        while it1.HasNext do begin
-          Attribute:= it1.Next as UModel.TAttribute;
+      if InheritedLevel = 0 then
+      begin
+        Ite1 := ModelClass.GetAttributes;
+        while Ite1.HasNext do
+        begin
+          Attribute := Ite1.Next as UModel.TAttribute;
           if Assigned(Attribute.TypeClassifier) then
-            AddDatatype(Attribute.TypeClassifier.Importname)
+            AddDatatype(Attribute.TypeClassifier.Importname);
         end;
       end;
 
       // get inherited static methods
-      if aModelClass.AncestorsCount > 0 then begin
-         //for j:= 0 to aModelClass.AncestorsCount -1 do begin // wrong approach
-         aModelClass:= aModelClass.Ancestor[0];
-         if Assigned(aModelClass) then begin
-           Inc(InheritedLevel);
-           aInheritedMenu:= TSpTBXSubmenuItem.Create(Frame.PopMenuClass);
-           aInheritedMenu.Caption:= 'Inherited from ' + aModelClass.Name;
-           Frame.PopMenuClass.Items.Insert(MenuIndex, aInheritedMenu);
-           Inc(MenuIndex);
-         end
-       end else
-        aModelClass:= nil;
-    until aModelClass = nil;
+      if ModelClass.AncestorsCount > 0 then
+      begin
+        // for J:= 0 to ModelClass.AncestorsCount -1 do begin // wrong approach
+        ModelClass := ModelClass.Ancestor[0];
+        if Assigned(ModelClass) then
+        begin
+          Inc(InheritedLevel);
+          InheritedMenu := TSpTBXSubmenuItem.Create(FFrame.PopMenuClass);
+          InheritedMenu.Caption := 'Inherited from ' + ModelClass.Name;
+          FFrame.PopMenuClass.Items.Insert(MenuIndex, InheritedMenu);
+          Inc(MenuIndex);
+        end;
+      end
+      else
+        ModelClass := nil;
+    until not Assigned(ModelClass);
   end;
 
-  for i:= 0 to Associations.Count - 1 do
-    MakeOpenClassMenuItem(Associations[i], 0);
+  for var I := 0 to Associations.Count - 1 do
+    MakeOpenClassMenuItem(Associations[I], 0);
   MakeConnectClassMenuItems;
 
-  InheritedLevel:= 0;
+  InheritedLevel := 0;
   Inc(MenuIndex, 2);
   MakeSeparatorItem;
 
-  s1:= ChangeFileExt((aBox as TRtfdBox).GetPathname, '.py');
-  HasSourcecode:= FileExists(s1);
+  Str1 := ChangeFileExt((Box as TRtfdBox).GetPathname, '.py');
+  HasSourcecode := FileExists(Str1);
 
-  Frame.MIClassPopupRun.Visible:= True; // was hasMain
-  Frame.MIClassPopupClassEdit.Visible := (aBox is TRtfdClass) and HasSourceCode;
-  Frame.MIClassPopupOpenSource.Visible:= HasSourceCode;  // in Arbeit
-  Frame.MIClassPopupOpenclass.Visible := (Frame.MIClassPopupOpenclass.Count > 0);
-  Frame.MIClassPopupConnect.Visible   := (Frame.MIClassPopupConnect.Count > 0);
-  Frame.MIClassPopupDelete.Caption    := _('Delete class');
-  Frame.MIClassPopupShowInherited.Visible:= not (aBox as TRtfdBox).ShowInherited and hasInheritedSystemMethods;
-  Frame.MIClassPopupHideInherited.Visible:= (aBox as TRtfdBox).ShowInherited and hasInheritedSystemMethods;
-  Frame.MIClassPopupRunAllTests.Visible:= False;
-  Frame.MIClassPopupRunOneTest.Visible:= False;
-  Frame.NEndOfJUnitTest.Visible:= False;
-  Frame.MIClassPopupCreateTestClass.Visible:= False;
-  for i:= 0 to Frame.MIClassPopupDisplay.Count - 1 do
-    Frame.MIClassPopupDisplay.Items[i].Checked:= False;
-  if Assigned(aViewClass) then begin
-    i:= 3 - Ord(aViewClass.MinVisibility);
-    Frame.MIClassPopupDisplay.Items[i].Checked:= True;
+  FFrame.MIClassPopupRun.Visible := True; // was hasMain
+  FFrame.MIClassPopupClassEdit.Visible := (Box is TRtfdClass) and HasSourcecode;
+  FFrame.MIClassPopupOpenSource.Visible := HasSourcecode; // in Arbeit
+  FFrame.MIClassPopupOpenClass.Visible :=
+    (FFrame.MIClassPopupOpenClass.Count > 0);
+  FFrame.MIClassPopupConnect.Visible := (FFrame.MIClassPopupConnect.Count > 0);
+  FFrame.MIClassPopupDelete.Caption := _('Delete class');
+  FFrame.MIClassPopupShowInherited.Visible := not(Box as TRtfdBox)
+    .ShowInherited and HasInheritedSystemMethods;
+  FFrame.MIClassPopupHideInherited.Visible := (Box as TRtfdBox)
+    .ShowInherited and HasInheritedSystemMethods;
+  FFrame.MIClassPopupRunAllTests.Visible := False;
+  FFrame.MIClassPopupRunOneTest.Visible := False;
+  FFrame.NEndOfJUnitTest.Visible := False;
+  FFrame.MIClassPopupCreateTestClass.Visible := False;
+  for var I := 0 to FFrame.MIClassPopupDisplay.Count - 1 do
+    FFrame.MIClassPopupDisplay[I].Checked := False;
+  if Assigned(ViewClass) then
+  begin
+    Num := 3 - Ord(ViewClass.MinVisibility);
+    FFrame.MIClassPopupDisplay[Num].Checked := True;
   end;
-  for i:= 0 to Frame.MIClassPopupParameter.Count - 1 do
-    Frame.MIClassPopupParameter.Items[i].Checked:= False;
-  if Assigned(aViewClass) then begin
-    i:= aViewClass.ShowParameter;
-    Frame.MIClassPopUpParameter.Items[i].Checked:= True;
+  for var I := 0 to FFrame.MIClassPopupParameter.Count - 1 do
+    FFrame.MIClassPopupParameter[I].Checked := False;
+  if Assigned(ViewClass) then
+  begin
+    Num := ViewClass.ShowParameter;
+    FFrame.MIClassPopupParameter[Num].Checked := True;
   end;
-  for i:= 0 to Frame.MIClassPopupVisibility.Count - 1 do
-    Frame.MIClassPopupVisibility.Items[i].Checked:= False;
-  if Assigned(aViewClass) then begin
-    i:= 2 - aViewClass.ShowIcons;
-    Frame.MIClassPopupVisibility.Items[i].Checked:= True;
+  for var I := 0 to FFrame.MIClassPopupVisibility.Count - 1 do
+    FFrame.MIClassPopupVisibility[I].Checked := False;
+  if Assigned(ViewClass) then
+  begin
+    Num := 2 - ViewClass.ShowIcons;
+    FFrame.MIClassPopupVisibility[Num].Checked := True;
   end;
-  Frame.MIClassPopupVisibility.Visible:= True;
+  FFrame.MIClassPopupVisibility.Visible := True;
 
   FreeAndNil(Associations);
   FreeAndNil(Connections);
   FreeAndNil(SLSorted);
-  // DebugMenu(Frame.PopMenuClass);
-end;  // PopMenuClassPopup
+end; // PopMenuClassPopup
 
-procedure TRtfdDiagram.PopMenuObjectPopup(Sender: TOBject);
+procedure TRtfdDiagram.PopMenuObjectPopup(Sender: TObject);
+var
+  LongType, Objectname: string;
+  Control: TControl;
+  Num, InheritedLevel, MenuIndex: Integer;
+  AObjectBox: TRtfdObject;
+  AViewClass: TRtfdClass;
+  AModelClass: TClass;
+  AModelClassRoot: TClass;
+  AMenuItem: TTBCustomItem;
+  AInheritedMenu: TSpTBXItem;
 
-  var LongType, objectname: string; C: TControl;
-      i, InheritedLevel, MenuIndex: Integer;
-      aObjectBox: TRtfdObject;
-      aViewClass: TRtfdClass;
-      aModelClass: TClass;
-      aModelClassRoot: TClass;
-      aMenuItem: TTBCustomItem;
-      aInheritedMenu: TSpTBXItem;
-
-  procedure MakeMenuItem(const s1, s2: string; ImageIndex: Integer);
+  procedure MakeMenuItem(const Str1, Str2: string; ImageIndex: Integer);
   begin
-    if s1 = '' then begin
-      var aSeparator:= TSpTBXSeparatorItem.Create(Frame.PopMenuObject);
-      Frame.PopMenuObject.Items.Insert(MenuIndex, aSeparator);
+    if Str1 = '' then
+    begin
+      var
+      ASeparator := TSpTBXSeparatorItem.Create(FFrame.PopMenuObject);
+      FFrame.PopMenuObject.Items.Insert(MenuIndex, ASeparator);
       Inc(MenuIndex);
-    end else begin
-      var aMenuItem:= TSpTBXItem.Create(Frame.PopMenuObject);
-      aMenuItem.Caption:= s1;
-      aMenuItem.OnClick:= CallMethodForObject;
-      aMenuItem.ImageIndex:= ImageIndex;
-      FullParameters.Add(s1 + '=' + s2);
-      if InheritedLevel = 0 then begin
-        Frame.PopMenuObject.Items.Insert(MenuIndex, aMenuItem);
+    end
+    else
+    begin
+      var
+      AMenuItem := TSpTBXItem.Create(FFrame.PopMenuObject);
+      AMenuItem.Caption := Str1;
+      AMenuItem.OnClick := CallMethodForObject;
+      AMenuItem.ImageIndex := ImageIndex;
+      FFullParameters.Add(Str1 + '=' + Str2);
+      if InheritedLevel = 0 then
+      begin
+        FFrame.PopMenuObject.Items.Insert(MenuIndex, AMenuItem);
         Inc(MenuIndex);
-      end else begin
-        aMenuItem.Tag:= InheritedLevel;
-        aInheritedMenu.Add(aMenuItem);
+      end
+      else
+      begin
+        AMenuItem.Tag := InheritedLevel;
+        AInheritedMenu.Add(AMenuItem);
       end;
     end;
   end;
 
   procedure MakeSortedMenu(SLSorted: TStringList);
-    var i, e, p, img: Integer; s, s1, s2: string;
+  var
+    Error, Posi, Img: Integer;
+    Str, Str1, Str2: string;
   begin
-    for i:= 0 to SLSorted.Count - 1 do begin
-      s:= SLSorted[i];
-      p:= Pos(chr(3), s);
-      Delete(s, 1, p);
-      p:= Pos(chr(3), s);
-      s1:= Copy(s, 1, p - 1);
-      Delete(s, 1, p);
-      p:= Pos(chr(3), s);
-      s2:= Copy(s, 1, p - 1);
-      Delete(s, 1, p);
-      val(s, img, e);
-      MakeMenuItem(s1, s2, img);
+    for var I := 0 to SLSorted.Count - 1 do
+    begin
+      Str := SLSorted[I];
+      Posi := Pos(Chr(3), Str);
+      Delete(Str, 1, Posi);
+      Posi := Pos(Chr(3), Str);
+      Str1 := Copy(Str, 1, Posi - 1);
+      Delete(Str, 1, Posi);
+      Posi := Pos(Chr(3), Str);
+      Str2 := Copy(Str, 1, Posi - 1);
+      Delete(Str, 1, Posi);
+      Val(Str, Img, Error);
+      MakeMenuItem(Str1, Str2, Img);
     end;
   end;
 
   procedure MakeShowUnnamedMenu;
+  var
+    SL1, SL2: TStringList;
+    AMenuItem: TSpTBXItem;
+
+    function NotShown(const Str: string): Boolean;
+    begin
+      Result := (Str <> '') and (FBoxNames.IndexOf(Str) = -1) and
+        (SL2.IndexOf(Str) = -1);
+    end;
+
+    procedure PrepareMenu(const Attr: string);
+    begin
+      if NotShown(Attr) then
+        SL2.Add(Attr);
+    end;
+
+    function MakeMenuItem(const Str: string; Count: Integer): TSpTBXItem;
     var
-      i: Integer;
-      SL1, SL2: TStringList;
-      aMenuItem: TSpTBXItem;
-
-    function NotShown(const s: string): Boolean;
+      AMenuItem: TSpTBXItem;
     begin
-      Result:= (s <> '') and (BoxNames.IndexOf(s) = -1) and (SL2.IndexOf(s) = -1);
-    end;
-
-    procedure PrepareMenu(const attr: string);
-    begin
-      if NotShown(attr) then
-        SL2.Add(attr);
-    end;
-
-    function MakeMenuItem(const s: string; Count: Integer): TSpTBXItem;
-      var aMenuItem: TSpTBXItem;
-    begin
-      aMenuItem:= TSpTBXItem.Create(Frame.MIObjectPopupShowNewObject);
-      if Count > 3
-        then aMenuItem.Caption:= s
-        else aMenuItem.Caption:= Frame.MIObjectPopupShowNewObject.Caption + ' ' + s;
-      aMenuItem.OnClick:= ShowUnnamedObject;
-      aMenuItem.ImageIndex:= 19;
-      aMenuItem.Tag:= -2;  // only unnamed menuitems
-      Result:= aMenuItem;
+      AMenuItem := TSpTBXItem.Create(FFrame.MIObjectPopupShowNewObject);
+      if Count > 3 then
+        AMenuItem.Caption := Str
+      else
+        AMenuItem.Caption := FFrame.MIObjectPopupShowNewObject.Caption +
+          ' ' + Str;
+      AMenuItem.OnClick := ShowUnnamedObject;
+      AMenuItem.ImageIndex := 19;
+      AMenuItem.Tag := -2; // only unnamed menuitems
+      Result := AMenuItem;
     end;
 
   begin // MakeShowUnnamedMenu
-    Frame.MIObjectPopupShowNewObject.Visible:= False;
-    Frame.MIObjectPopupShowAllNewObjects.Visible:= False;
-    SL1:= FLivingObjects.getObjectObjectMembers(Objectname);
-    SL2:= TStringList.Create;
-    for i:= 0 to SL1.Count - 1 do
-      PrepareMenu(SL1[i]);
-    for i:= 0 to SL2.Count - 1 do begin
-      aMenuItem:= MakeMenuItem(SL2[i], SL2.Count);
+    FFrame.MIObjectPopupShowNewObject.Visible := False;
+    FFrame.MIObjectPopupShowAllNewObjects.Visible := False;
+    SL1 := FLivingObjects.getObjectObjectMembers(Objectname);
+    SL2 := TStringList.Create;
+    for var I := 0 to SL1.Count - 1 do
+      PrepareMenu(SL1[I]);
+    for var I := 0 to SL2.Count - 1 do
+    begin
+      AMenuItem := MakeMenuItem(SL2[I], SL2.Count);
       if SL2.Count > 3 then
-        Frame.MIObjectPopupShowNewObject.Add(aMenuItem)
-      else begin
-        Frame.PopMenuObject.Items.Insert(MenuIndex-1, aMenuItem);
+        FFrame.MIObjectPopupShowNewObject.Add(AMenuItem)
+      else
+      begin
+        FFrame.PopMenuObject.Items.Insert(MenuIndex - 1, AMenuItem);
         Inc(MenuIndex);
       end;
     end;
-    Frame.MIObjectPopupShowNewObject.Visible:= (SL2.Count > 3);
-    Frame.MIObjectPopupShowAllNewObjects.Visible:= (SL2.Count > 1);
+    FFrame.MIObjectPopupShowNewObject.Visible := (SL2.Count > 3);
+    FFrame.MIObjectPopupShowAllNewObjects.Visible := (SL2.Count > 1);
     FreeAndNil(SL2);
     FreeAndNil(SL1);
   end;
 
   procedure MakeSeparatorItem;
   begin
-    var aMenuItem:= TSpTBXSeparatorItem.Create(Frame.PopMenuObject);
-    aMenuItem.Tag:= InheritedLevel;
-    if (InheritedLevel = 0) then begin
-        Frame.PopMenuObject.Items.Insert(MenuIndex, aMenuItem);
-        Inc(MenuIndex);
-    end else begin
-      aMenuItem.Tag:= InheritedLevel;
-      aInheritedMenu.Add(aMenuItem);
+    var
+    AMenuItem := TSpTBXSeparatorItem.Create(FFrame.PopMenuObject);
+    AMenuItem.Tag := InheritedLevel;
+    if (InheritedLevel = 0) then
+    begin
+      FFrame.PopMenuObject.Items.Insert(MenuIndex, AMenuItem);
+      Inc(MenuIndex);
+    end
+    else
+    begin
+      AMenuItem.Tag := InheritedLevel;
+      AInheritedMenu.Add(AMenuItem);
     end;
   end;
 
   procedure MakeMethodMenuFromModel;
-    var
-      Operation: UModel.TOperation;
-      Parameter: TParameter;
-      s1, s2, ancest, iname: string;
-      it1, it2: IModelIterator;
+  var
+    Operation: UModel.TOperation;
+    Parameter: TParameter;
+    Str1, Str2, Ancest, IName: string;
+    Ite1, Ite2: IModelIterator;
   begin
-    var SLSorted:= TStringList.Create;
-    SLSorted.Sorted:= True;
+    var
+    SLSorted := TStringList.Create;
+    SLSorted.Sorted := True;
     repeat
-      it1:= aModelClass.GetOperations;
-      while it1.HasNext do begin
-        Operation:= it1.Next as UModel.TOperation;
-        if (InheritedLevel > 0) and (Operation.Visibility = viPrivate) then Continue;
-        if (Operation.OperationType in [otProcedure, otFunction]) and not Operation.IsAbstract then begin
-          iname:= getInternName(aModelClass, Operation.Name, Operation.Visibility);
-          s1:= Operation.Name + '(';
-          s2:= iname + '(';
-          it2:= Operation.GetParameters;
-          while it2.HasNext do begin
-            Parameter:= it2.Next as TParameter;
+      Ite1 := AModelClass.GetOperations;
+      while Ite1.HasNext do
+      begin
+        Operation := Ite1.Next as UModel.TOperation;
+        if (InheritedLevel > 0) and (Operation.Visibility = viPrivate) then
+          Continue;
+        if (Operation.OperationType in [otProcedure, otFunction]) and
+          not Operation.IsAbstract then
+        begin
+          IName := GetInternName(AModelClass, Operation.Name,
+            Operation.Visibility);
+          Str1 := Operation.Name + '(';
+          Str2 := IName + '(';
+          Ite2 := Operation.GetParameters;
+          while Ite2.HasNext do
+          begin
+            Parameter := Ite2.Next as TParameter;
             if (Parameter.Name = 'self') or (Parameter.Name = 'cls') then
               Continue;
-            s1:= s1 + Parameter.Name;
-            s2:= s2 + Parameter.Name;
+            Str1 := Str1 + Parameter.Name;
+            Str2 := Str2 + Parameter.Name;
             if Assigned(Parameter.TypeClassifier) then
-              s1:= s1 + ': ' + Parameter.TypeClassifier.asType;
-            s2:= s2 + chr(4);
-            if Parameter.Value <> '' then begin
-              s1:= s1 + chr(4) + Parameter.Value;
-              s2:= s2 + Parameter.Value;
+              Str1 := Str1 + ': ' + Parameter.TypeClassifier.AsType;
+            Str2 := Str2 + Chr(4);
+            if Parameter.Value <> '' then
+            begin
+              Str1 := Str1 + Chr(4) + Parameter.Value;
+              Str2 := Str2 + Parameter.Value;
             end;
-            s1:= s1 + ', ';
-            s2:= s2 + chr(5);
+            Str1 := Str1 + ', ';
+            Str2 := Str2 + Chr(5);
           end;
-          s1:= myStringReplace(s1 + ')', ', )', ')');
-          s2:= s2 + ')';
-          if (Operation.OperationType = otFunction) and Assigned(Operation.ReturnValue) then
-            s1:= s1 + ': ' + Operation.ReturnValue.GetShortType;
-          // Operation.Name is sort-criteria, s1 is Menu.caption, s2 is for calling method
-          SLSorted.add(Operation.Name + chr(3) + s1 + chr(3) + s2 + chr(3) + IntToStr(Integer(Operation.Visibility) + 7));
+          Str1 := myStringReplace(Str1 + ')', ', )', ')');
+          Str2 := Str2 + ')';
+          if (Operation.OperationType = otFunction) and
+            Assigned(Operation.ReturnValue) then
+            Str1 := Str1 + ': ' + Operation.ReturnValue.GetShortType;
+          // Operation.Name is sort-criteria, Str1 is Menu.Caption, Str2 is for calling method
+          SLSorted.Add(Operation.Name + Chr(3) + Str1 + Chr(3) + Str2 + Chr(3) +
+            IntToStr(Integer(Operation.Visibility) + 7));
         end;
       end;
       // end of while - all methods handelt
 
       MakeSortedMenu(SLSorted);
-      SLSorted.Text:= '';
+      SLSorted.Text := '';
 
       // empty inherited methods menu
-      if (InheritedLevel > 0) and (aInheritedMenu.Count = 0) then begin
-        FreeAndNil(aInheritedMenu);
+      if (InheritedLevel > 0) and (AInheritedMenu.Count = 0) then
+      begin
+        FreeAndNil(AInheritedMenu);
         Dec(MenuIndex);
       end;
-      if aModelClass.AncestorsCount > 0 then begin
-        var aClassname:= aModelClass.Name;
-        ancest:= aModelClass.Ancestor[0].Name;
-        aModelClass:= getModelClass(ancest);
-        { if assigned(aModelClass) and (aModelClass.Name = aClassname) then
-          break;}
-        if (aModelClass = nil) or (aModelClass.Pathname = '') then
-          aModelClass:= CreateModelClass(ancest);
-      end else
-        aModelClass:= nil;
-      if Assigned(aModelClass) then begin
+      if AModelClass.AncestorsCount > 0 then
+      begin
+        Ancest := AModelClass.Ancestor[0].Name;
+        AModelClass := GetModelClass(Ancest);
+        if not Assigned(AModelClass) or (AModelClass.Pathname = '') then
+          AModelClass := CreateModelClass(Ancest);
+      end
+      else
+        AModelClass := nil;
+      if Assigned(AModelClass) then
+      begin
         Inc(InheritedLevel);
-        aInheritedMenu:= TSpTBXSubmenuItem.Create(Frame.PopMenuObject);
-        aInheritedMenu.Caption:= _('Inherited from') + ' ' + aModelClass.Name;
-        Frame.PopMenuObject.Items.Insert(MenuIndex, aInheritedMenu);
+        AInheritedMenu := TSpTBXSubmenuItem.Create(FFrame.PopMenuObject);
+        AInheritedMenu.Caption := _('Inherited from') + ' ' + AModelClass.Name;
+        FFrame.PopMenuObject.Items.Insert(MenuIndex, AInheritedMenu);
         Inc(MenuIndex);
-      end else
+      end
+      else
         Break;
     until False;
     FreeAndNil(SLSorted);
   end;
 
   procedure MakeMethodMenuFromLivingObjects;
-    var SLSorted, SLMethods, SLParameters: TStringList;
-        s1, s2, Param, ParamTyp, ReturnType, Signature: string;
+  var
+    SLSorted, SLMethods, SLParameters: TStringList;
+    Str1, Str2, Param, ParamTyp, ReturnType, Signature: string;
   begin
-    SLSorted:= TStringList.Create;
-    SLSorted.Sorted:= True;
-    SLMethods:= FLivingObjects.getMethods(Objectname);
-    var p:= SLMethods.IndexOf('__init__');
-    if p > -1 then SLMethods.Delete(p);
-    for var i:= 0 to SLMethods.Count - 1 do begin
-       s1:= SLMethods[i] + '(';
-       s2:= s1;
-       Signature:= FLivingObjects.getSignature(Objectname + '.' + SLMethods[i]);
-       p:= Pos('->', Signature);
-       if p > 0 then begin
-         ReturnType:= Trim(Copy(Signature, p + 2, Length(Signature)));
-         Signature:= Trim(Copy(Signature, 1, p - 1));
-       end else
-         ReturnType:= '';
-       Signature:= Copy(Signature, 2, Length(Signature) - 2);
-       SLParameters:= Split(',', Signature);
-       for var j:= 0 to SLParameters.Count -1 do begin
-          Param:= SLParameters[j];
-          p:= Pos(':', Param);
-          if p > 0 then begin
-            ParamTyp:= Trim(Copy(Param, p+1, Length(Param)));
-            Param:= Copy(Param, 1, p - 1);
-          end else
-            ParamTyp:= '';
-          s1:= s1 + Param;
-          s2:= s2 + Param;
-          if ParamTyp <> '' then
-            s1:= s1 + ': ' + ParamTyp;
-          s2:= s2 + chr(4);
-          s1:= s1 + ', ';
-          s2:= s2 + chr(5);
-       end;
-       s1:= myStringReplace(s1 + ')', ', )', ')');
-       s2:= s2 + ')';
-       if ReturnType <> '' then
-         s1:= s1 + ': ' + ReturnType;
-       SLSorted.add(SLMethods[i] + chr(3) + s1 + chr(3) + s2 + chr(3) + IntToStr(Integer(viPublic) + 7));
-       FreeAndNil(SLParameters);
+    SLSorted := TStringList.Create;
+    SLSorted.Sorted := True;
+    SLMethods := FLivingObjects.getMethods(Objectname);
+    var
+    Posi := SLMethods.IndexOf('__init__');
+    if Posi > -1 then
+      SLMethods.Delete(Posi);
+    for var I := 0 to SLMethods.Count - 1 do
+    begin
+      Str1 := SLMethods[I] + '(';
+      Str2 := Str1;
+      Signature := FLivingObjects.getSignature(Objectname + '.' + SLMethods[I]);
+      Posi := Pos('->', Signature);
+      if Posi > 0 then
+      begin
+        ReturnType := Trim(Copy(Signature, Posi + 2, Length(Signature)));
+        Signature := Trim(Copy(Signature, 1, Posi - 1));
+      end
+      else
+        ReturnType := '';
+      Signature := Copy(Signature, 2, Length(Signature) - 2);
+      SLParameters := Split(',', Signature);
+      for var J := 0 to SLParameters.Count - 1 do
+      begin
+        Param := SLParameters[J];
+        Posi := Pos(':', Param);
+        if Posi > 0 then
+        begin
+          ParamTyp := Trim(Copy(Param, Posi + 1, Length(Param)));
+          Param := Copy(Param, 1, Posi - 1);
+        end
+        else
+          ParamTyp := '';
+        Str1 := Str1 + Param;
+        Str2 := Str2 + Param;
+        if ParamTyp <> '' then
+          Str1 := Str1 + ': ' + ParamTyp;
+        Str2 := Str2 + Chr(4);
+        Str1 := Str1 + ', ';
+        Str2 := Str2 + Chr(5);
+      end;
+      Str1 := myStringReplace(Str1 + ')', ', )', ')');
+      Str2 := Str2 + ')';
+      if ReturnType <> '' then
+        Str1 := Str1 + ': ' + ReturnType;
+      SLSorted.Add(SLMethods[I] + Chr(3) + Str1 + Chr(3) + Str2 + Chr(3) +
+        IntToStr(Integer(viPublic) + 7));
+      FreeAndNil(SLParameters);
     end;
     FreeAndNil(SLMethods);
     MakeSortedMenu(SLSorted);
@@ -2854,126 +3311,136 @@ procedure TRtfdDiagram.PopMenuObjectPopup(Sender: TOBject);
   end;
 
 begin // PopMenuObjectPopup
-  C:= FindVCLWindow((Sender as TPopupMenu).PopupPoint);
-  Panel.ClearSelection;
-  if Assigned(C)
-    then TManagedObject(Panel.FindManagedControl(C)).Selected:= True
-    else Exit;
+  Control := FindVCLWindow((Sender as TPopupMenu).PopupPoint);
+  FPanel.ClearSelection;
+  if Assigned(Control) then
+    FPanel.FindManagedControl(Control).Selected := True
+  else
+    Exit;
 
   // delete previous menu
-  for i:= Frame.PopMenuObject.Items.Count - 1 downto 0 do
-    if Frame.PopMenuObject.Items[i].Tag <= 0 then begin
-      aMenuItem:= Frame.PopMenuObject.Items[i];
-      FreeAndNil(aMenuItem);
+  for var I := FFrame.PopMenuObject.Items.Count - 1 downto 0 do
+    if FFrame.PopMenuObject.Items[I].Tag <= 0 then
+    begin
+      AMenuItem := FFrame.PopMenuObject.Items[I];
+      FreeAndNil(AMenuItem);
     end;
-  for i:= Frame.MIObjectPopupShowNewObject.Count - 1 downto 0 do begin
-    aMenuItem:= Frame.MIObjectPopupShowNewObject.Items[i];
-    FreeAndNil(aMenuItem);
+  for var I := FFrame.MIObjectPopupShowNewObject.Count - 1 downto 0 do
+  begin
+    AMenuItem := FFrame.MIObjectPopupShowNewObject[I];
+    FreeAndNil(AMenuItem);
   end;
 
-  FullParameters.Clear;
+  FFullParameters.Clear;
 
-  if Assigned(C) and (C is TRtfdObject) then begin
-    Objectname:= (C as TRtfdObject).Entity.FullName;
-    Longtype:= ((C as TRtfdObject).Entity as TObjekt).getTyp.Name;
-    InheritedLevel:= 0;
-    MenuIndex:= 3;   // edit, show, hide, show final, hide final, open class
+  if Assigned(Control) and (Control is TRtfdObject) then
+  begin
+    Objectname := (Control as TRtfdObject).Entity.Fullname;
+    LongType := ((Control as TRtfdObject).Entity as TObjekt).GetTyp.Name;
+    InheritedLevel := 0;
+    MenuIndex := 3; // edit, show, hide, show final, hide final, open class
     Inc(MenuIndex);
     MakeShowUnnamedMenu;
     MakeSeparatorItem;
 
     // get model class for object to get the methods
-    aObjectBox:= GetBox(Objectname) as TRtfdObject;
-    aViewClass:= GetBox(Longtype) as TRtfdClass;
-    if aViewClass = nil then
-      aViewClass:= GetBox(getShortType(LongType)) as TRtfdClass;
-    aModelClass:= nil;
-    if Assigned(aViewClass) then
-      aModelClass:= (aViewClass.Entity as TClass);       // model class from view class
-    if aModelClass = nil then
-      aModelClass:= getModelClass(LongType);             // model class from model
-    if (aModelClass = nil) or (aModelClass.Pathname = '') then
-      aModelClass:= CreateModelClass(LongType);          // model class from python
-    aModelClassRoot:= aModelClass;
+    AObjectBox := GetBox(Objectname) as TRtfdObject;
+    AViewClass := GetBox(LongType) as TRtfdClass;
+    if not Assigned(AViewClass) then
+      AViewClass := GetBox(GetShortType(LongType)) as TRtfdClass;
+    AModelClass := nil;
+    if Assigned(AViewClass) then
+      AModelClass := (AViewClass.Entity as TClass);
+    // model class from view class
+    if not Assigned(AModelClass) then
+      AModelClass := GetModelClass(LongType); // model class from model
+    if not Assigned(AModelClass) or (AModelClass.Pathname = '') then
+      AModelClass := CreateModelClass(LongType); // model class from python
+    AModelClassRoot := AModelClass;
 
-    if Assigned(aModelClass)
-      then MakeMethodMenuFromModel // known Class in Model
-      else MakeMethodMenuFromLivingObjects;
+    if Assigned(AModelClass) then
+      MakeMethodMenuFromModel // known Class in Model
+    else
+      MakeMethodMenuFromLivingObjects;
 
-    InheritedLevel:= 0;
+    InheritedLevel := 0;
     Inc(MenuIndex, 1);
     MakeSeparatorItem;
-    if Assigned(aModelClassRoot)
-      then Frame.MIObjectPopupEdit.Visible:= HasAttributes(Objectname)
-      else Frame.MIObjectPopupEdit.Visible:= False;
-    if Assigned(aObjectBox) then begin
-      Frame.MIObjectPopupShowInherited.Visible:= not aObjectBox.ShowInherited;
-      Frame.MIObjectPopupHideInherited.Visible:= aObjectBox.ShowInherited;
+    if Assigned(AModelClassRoot) then
+      FFrame.MIObjectPopupEdit.Visible := HasAttributes(Objectname)
+    else
+      FFrame.MIObjectPopupEdit.Visible := False;
+    if Assigned(AObjectBox) then
+    begin
+      FFrame.MIObjectPopupShowInherited.Visible := not AObjectBox.ShowInherited;
+      FFrame.MIObjectPopupHideInherited.Visible := AObjectBox.ShowInherited;
     end;
 
     // ToDo
-    Frame.MIObjectPopupShowInherited.Visible:= False;
-    Frame.MIObjectPopupHideInherited.Visible:= False;
+    FFrame.MIObjectPopupShowInherited.Visible := False;
+    FFrame.MIObjectPopupHideInherited.Visible := False;
 
-    for i:= 0 to Frame.MIObjectPopupDisplay.Count - 1 do
-      Frame.MIObjectPopupDisplay.Items[i].Checked:= False;
-    i:= 3 - Ord(aObjectBox.MinVisibility);
-    Frame.MIObjectPopupDisplay.Items[i].Checked:= True;
+    for var I := 0 to FFrame.MIObjectPopupDisplay.Count - 1 do
+      FFrame.MIObjectPopupDisplay[I].Checked := False;
+    Num := 3 - Ord(AObjectBox.MinVisibility);
+    FFrame.MIObjectPopupDisplay[Num].Checked := True;
 
-    for i:= 0 to Frame.MIObjectPopupVisibility.Count - 1 do
-      Frame.MIObjectPopupVisibility.Items[i].Checked:= False;
-    i:= 2 - aObjectBox.ShowIcons;
-    Frame.MIObjectPopupVisibility.Items[i].Checked:= True;
+    for var I := 0 to FFrame.MIObjectPopupVisibility.Count - 1 do
+      FFrame.MIObjectPopupVisibility[I].Checked := False;
+    Num := 2 - AObjectBox.ShowIcons;
+    FFrame.MIObjectPopupVisibility[Num].Checked := True;
   end;
 end; // PopMenuObjectPopup
 
 procedure TRtfdDiagram.PopMenuConnectionPopup(Sender: TObject);
-  var Conn: TConnection;
-      BothClass, AClassAObject: Boolean;
+var
+  Conn: TConnection;
+  BothClass, AClassAObject: Boolean;
 begin
-  Conn:= Panel.GetClickedConnection;
-  if Conn = nil then Exit;
+  Conn := FPanel.GetClickedConnection;
+  if not Assigned(Conn) then
+    Exit;
 
-  BothClass:=
-    ((Conn.FFrom is TRtfdClass) and (Conn.FTo is TRtfdClass));
-  AClassAObject:=
-    ((Conn.FFrom is TRtfdClass) and (Conn.FTo is TRtfdObject)) or
-    ((Conn.FFrom is TRtfdObject) and (Conn.FTo is TRtfdClass));
-  Frame.MIConnectionAssociation.Visible:= BothClass;
-  Frame.MIConnectionAssociationArrow.Visible:= BothClass;
-  Frame.MIConnectionAssociationBidirectional.Visible:= BothClass;
-  Frame.MIConnectionAggregation.Visible:= BothClass;
-  Frame.MIConnectionAggregationArrow.Visible:= BothClass;
-  Frame.MIConnectionComposition.Visible:= BothClass;
-  Frame.MIConnectionCompositionArrow.Visible:= BothClass;
-  Frame.MIConnectionInheritance.Visible:= not Conn.isRecursiv and BothClass;
-  Frame.MIConnectionInstanceOf.Visible:= AClassAObject;
-  Frame.MIConnectionRecursiv.Visible:= Conn.isRecursiv;
+  BothClass := ((Conn.FromControl is TRtfdClass) and (Conn.ToControl is TRtfdClass));
+  AClassAObject := ((Conn.FromControl is TRtfdClass) and (Conn.ToControl is TRtfdObject)) or
+    ((Conn.FromControl is TRtfdObject) and (Conn.ToControl is TRtfdClass));
+  FFrame.MIConnectionAssociation.Visible := BothClass;
+  FFrame.MIConnectionAssociationArrow.Visible := BothClass;
+  FFrame.MIConnectionAssociationBidirectional.Visible := BothClass;
+  FFrame.MIConnectionAggregation.Visible := BothClass;
+  FFrame.MIConnectionAggregationArrow.Visible := BothClass;
+  FFrame.MIConnectionComposition.Visible := BothClass;
+  FFrame.MIConnectionCompositionArrow.Visible := BothClass;
+  FFrame.MIConnectionInheritance.Visible := not Conn.IsRecursiv and BothClass;
+  FFrame.MIConnectionInstanceOf.Visible := AClassAObject;
+  FFrame.MIConnectionRecursiv.Visible := Conn.IsRecursiv;
 end;
 
 function TRtfdDiagram.HasAttributes(Objectname: string): Boolean;
 begin
-  var SL:= FLivingObjects.getObjectMembers(Objectname);
-  Result:= (SL.Count > 0);
-  FreeAndNil(SL);
+  var
+  StringList := FLivingObjects.getObjectMembers(Objectname);
+  Result := (StringList.Count > 0);
+  FreeAndNil(StringList);
 end;
 
-function TRtfdDiagram.hasSelectedConnection: Boolean;
+function TRtfdDiagram.HasSelectedConnection: Boolean;
 begin
-  Result:= Panel.hasSelectedConnection;
+  Result := FPanel.HasSelectedConnection;
 end;
 
 procedure TRtfdDiagram.OpenClassOrInterface(Sender: TObject);
-  var CName, FileName: string;
+var
+  CName, Filename: string;
 begin
-  CName:= (Sender as TSpTBXItem).Caption;
+  CName := (Sender as TSpTBXItem).Caption;
   try
-    Screen.Cursor:= crHourGlass;
-    FileName:= MenuClassFiles.Values[CName];
-    (Frame.Parent.Owner as TFUMLForm).AddToProject(FileName);
-    Panel.ClearSelection;
+    Screen.Cursor := crHourGlass;
+    Filename := FMenuClassFiles.Values[CName];
+    (FFrame.Parent.Owner as TFUMLForm).AddToProject(Filename);
+    FPanel.ClearSelection;
   finally
-    Screen.Cursor:= crDefault;
+    Screen.Cursor := crDefault;
   end;
 end;
 
@@ -2996,20 +3463,24 @@ begin
 end;
 
 procedure TRtfdDiagram.ShowUnnamed(Objectname: string);
-  var address: string; p: Integer;
+var
+  Address: string;
+  Posi: Integer;
 begin
-  p:= Pos(' ', Objectname);
-  while p > 0 do begin
-    Delete(Objectname, 1, p);
-    p:= Pos(' ', Objectname);
+  Posi := Pos(' ', Objectname);
+  while Posi > 0 do
+  begin
+    Delete(Objectname, 1, Posi);
+    Posi := Pos(' ', Objectname);
   end;
-  if FLivingObjects.ObjectExists(Objectname) then begin
+  if FLivingObjects.ObjectExists(Objectname) then
+  begin
     // ToDo is this necessary?
-    PyControl.ActiveInterpreter.RunSource('import ctypes', '<interactive input>');
-    address:= FLivingObjects.getRealAddressFromName(Objectname);
-    PyControl.ActiveInterpreter.RunSource(
-      Objectname + ' = ctypes.cast(' + address + ', ctypes.py_object).value',
+    PyControl.ActiveInterpreter.RunSource('import ctypes',
       '<interactive input>');
+    Address := FLivingObjects.getRealAddressFromName(Objectname);
+    PyControl.ActiveInterpreter.RunSource(Objectname + ' = ctypes.cast(' +
+      Address + ', ctypes.py_object).value', '<interactive input>');
     FLivingObjects.SimplifyPath(Objectname);
     ShowNewObject(Objectname);
   end;
@@ -3018,167 +3489,186 @@ end;
 procedure TRtfdDiagram.ShowUnnamedObject(Sender: TObject);
 begin
   try
-    LockFormUpdate(UMLForm);
+    LockFormUpdate(FUMLForm);
     ShowUnnamed((Sender as TSpTBXItem).Caption);
     ResolveObjectAssociations;
     UpdateAllObjects;
-    Panel.RecalcSize;
+    FPanel.RecalcSize;
   finally
-    UnlockFormUpdate(UMLForm);
+    UnlockFormUpdate(FUMLForm);
   end;
 end;
 
 procedure TRtfdDiagram.ShowAllNewObjects(Sender: TObject);
-  var i: Integer;
+var
+  Int: Integer;
 begin
   try
-    LockFormUpdate(UMLForm);
-    Screen.Cursor:= crHourGlass;
-    if Frame.MIObjectPopupShowNewObject.Visible then
-      for i:= 0 to Frame.MIObjectPopupShowNewObject.Count - 1 do
-        ShowUnnamed(Frame.MIObjectPopupShowNewObject.Items[i].Caption)
-    else begin
-      i:= 0;
-      while (i < Frame.PopMenuObject.Items.Count) and
-            (Frame.PopMenuObject.Items[i].Tag <> -2)  do
-        Inc(i);
-      while (i < Frame.PopMenuObject.Items.Count) and
-            (Frame.PopMenuObject.Items[i].Tag = -2) do begin
-        ShowUnnamed(Frame.PopMenuObject.Items[i].Caption);
-        Inc(i);
+    LockFormUpdate(FUMLForm);
+    Screen.Cursor := crHourGlass;
+    if FFrame.MIObjectPopupShowNewObject.Visible then
+      for Int := 0 to FFrame.MIObjectPopupShowNewObject.Count - 1 do
+        ShowUnnamed(FFrame.MIObjectPopupShowNewObject[Int].Caption)
+    else
+    begin
+      Int := 0;
+      while (Int < FFrame.PopMenuObject.Items.Count) and
+        (FFrame.PopMenuObject.Items[Int].Tag <> -2) do
+        Inc(Int);
+      while (Int < FFrame.PopMenuObject.Items.Count) and
+        (FFrame.PopMenuObject.Items[Int].Tag = -2) do
+      begin
+        ShowUnnamed(FFrame.PopMenuObject.Items[Int].Caption);
+        Inc(Int);
       end;
     end;
     ResolveObjectAssociations;
   finally
-    UnLockFormUpdate(UMLForm);
-    Screen.Cursor:= crDefault;
+    UnlockFormUpdate(FUMLForm);
+    Screen.Cursor := crDefault;
   end;
 end;
 
 procedure TRtfdDiagram.ShowAllNewObjectsString(From: string = '');
-  var SLObjects: TStringList;
-      Py: IPyEngineAndGIL;
-      newObject, address: string;
-      i: Integer;
+var
+  SLObjects: TStringList;
+  PyE: IPyEngineAndGIL;
+  NewObject, Address: string;
 begin
   PyControl.ActiveInterpreter.RunSource('import ctypes', '<interactive input>');
-  SLObjects:= FLivingObjects.getAllObjects;
-  Py := SafePyEngine;
-  for i:= 0 to SLObjects.Count - 1 do begin
-    newObject:= SLObjects.KeyNames[i];
-    if BoxNames.IndexOf(newObject) = -1 then begin
-      address:= FLivingObjects.getRealAddressFromName(newObject);
-      PyControl.ActiveInterpreter.RunSource(
-        newObject + ' = ctypes.cast(' + address + ', ctypes.py_object).value',
-        '<interactive input>');
-      FLivingObjects.SimplifyPath(newObject);
-      ShowNewObject(newObject);
+  SLObjects := FLivingObjects.GetAllObjects;
+  PyE := SafePyEngine;
+  for var I := 0 to SLObjects.Count - 1 do
+  begin
+    NewObject := SLObjects.KeyNames[I];
+    if FBoxNames.IndexOf(NewObject) = -1 then
+    begin
+      Address := FLivingObjects.getRealAddressFromName(NewObject);
+      PyControl.ActiveInterpreter.RunSource(NewObject + ' = ctypes.cast(' +
+        Address + ', ctypes.py_object).value', '<interactive input>');
+      FLivingObjects.SimplifyPath(NewObject);
+      ShowNewObject(NewObject);
       if From = '' then
-        From:= 'Actor';
-      ShowMethodEntered('<init>', From, newObject, '');
+        From := 'Actor';
+      ShowMethodEntered('<init>', From, NewObject, '');
     end;
   end;
   UpdateAllObjects;
   ResolveObjectAssociations;
-  Panel.RecalcSize;
+  FPanel.RecalcSize;
 end;
 
 procedure TRtfdDiagram.ConnectBoxes(Sender: TObject);
-  var CName: string; Src: TControl; Dest: TRtfdBox; UMLForm: TFUMLForm;
+var
+  CName: string;
+  Src: TControl;
+  Dest: TRtfdBox;
+  UMLForm: TFUMLForm;
 begin
-  Src:= Panel.GetFirstSelected;
-  if (Src <> nil) and (Src is TRtfdBox) then begin
-    if Src.Owner.Owner is TFUMLForm
-      then UMLForm:= Src.Owner.Owner as TFUMLForm
-      else UMLForm:= nil;
+  Src := FPanel.GetFirstSelected;
+  if Assigned(Src) and (Src is TRtfdBox) then
+  begin
+    if Src.Owner.Owner is TFUMLForm then
+      UMLForm := Src.Owner.Owner as TFUMLForm
+    else
+      UMLForm := nil;
     LockFormUpdate(UMLForm);
-    CName:= (Sender as TSpTBXItem).Caption;
-    Dest:= GetBox(CName);
-    Panel.FindManagedControl(Dest).Selected:= True;
-    Panel.ConnectBoxes(Src, Dest);
-    UnLockFormUpdate(UMLForm);
+    CName := (Sender as TSpTBXItem).Caption;
+    Dest := GetBox(CName);
+    FPanel.FindManagedControl(Dest).Selected := True;
+    FPanel.ConnectBoxes(Src, Dest);
+    UnlockFormUpdate(UMLForm);
   end;
 end;
 
 procedure TRtfdDiagram.DoConnection(Item: Integer);
 begin
-  Panel.DoConnection(Item);
+  FPanel.DoConnection(Item);
 end;
 
 procedure TRtfdDiagram.DoAlign(Item: Integer);
 begin
-  Panel.DoAlign(Item);
+  FPanel.DoAlign(Item);
 end;
 
 procedure TRtfdDiagram.SetInteractive(OnInteractiveModified: TNotifyEvent);
 begin
-  OnModified:= OnInteractiveModified;
+  FOnModified := OnInteractiveModified;
 end;
 
 procedure TRtfdDiagram.SetFormMouseDown(OnFormMouseDown: TNotifyEvent);
 begin
-  Panel.OnFormMouseDown:= OnFormMouseDown;
+  FPanel.OnFormMouseDown := OnFormMouseDown;
 end;
 
-procedure TRtfdDiagram.AddToInteractive(const s: string);
+procedure TRtfdDiagram.AddToInteractive(const Source: string);
 begin
-  UMLForm.AddInteractiveLine(s);
+  FUMLForm.AddInteractiveLine(Source);
 end;
 
 function TRtfdDiagram.EditClass(const Caption, Title, ObjectNameOld: string;
-           var ObjectNameNew: string; Control: TControl; Attributes: TStringList): Boolean;
-  var Count: Integer;
+  var ObjectNameNew: string; Control: TControl;
+  Attributes: TStringList): Boolean;
+var
+  Count: Integer;
 begin
   FObjectGenerator.PrepareEditClass(Caption, Title, ObjectNameOld);
-  Result:= FObjectGenerator.Edit(Control, Attributes, 2);
-  if Result then begin
-    ObjectNameNew:= FObjectGenerator.ValueListEditor.Cells[1, 1];
-    Count:= Attributes.Count;
+  Result := FObjectGenerator.Edit(Control, Attributes, 2);
+  if Result then
+  begin
+    ObjectNameNew := FObjectGenerator.ValueListEditor.Cells[1, 1];
+    Count := Attributes.Count;
     Attributes.Clear;
     for var I := 0 to Count - 1 do
       Attributes.Add(FObjectGenerator.ValueListEditor.Cells[0, I + 2] + '=' +
-                     FObjectGenerator.ValueListEditor.Cells[1, I + 2]);
+        FObjectGenerator.ValueListEditor.Cells[1, I + 2]);
   end;
 end;
 
 function TRtfdDiagram.EditObjectOrParams(const Caption, Title: string;
   Control: TControl; Attributes: TStringList): Boolean;
-  var Count: Integer;
+var
+  Count: Integer;
 begin
   FObjectGenerator.PrepareEditObjectOrParams(Caption, Title);
-  Result:= FObjectGenerator.Edit(Control, Attributes, 1);
-  if Result then begin
-    Count:= Attributes.Count;
+  Result := FObjectGenerator.Edit(Control, Attributes, 1);
+  if Result then
+  begin
+    Count := Attributes.Count;
     Attributes.Clear;
     for var I := 0 to Count - 1 do
       Attributes.Add(FObjectGenerator.ValueListEditor.Cells[0, I + 1] + '=' +
-                     FObjectGenerator.ValueListEditor.Cells[1, I + 1]);
+        FObjectGenerator.ValueListEditor.Cells[1, I + 1]);
   end;
 end;
 
 procedure TRtfdDiagram.DeleteObjects;
-  var i: Integer; aObject: TRtfdObject; ManagedObject: TManagedObject;
+var
+  AObject: TRtfdObject;
+  ManagedObject: TManagedObject;
 begin
   // FLivingObjects.makeAllObjects;
   UnSelectAllElements;
-  for i:= BoxNames.Count - 1 downto 0 do
-    if (BoxNames.Objects[i] is TRtfdObject) then begin
-      aObject:= BoxNames.Objects[i] as TRtfdObject;
-      ManagedObject:= Panel.FindManagedControl(aObject);
-      if Assigned(ManagedObject) then begin
-        ManagedObject.Selected:= True;
+  for var I := FBoxNames.Count - 1 downto 0 do
+    if (FBoxNames.Objects[I] is TRtfdObject) then
+    begin
+      AObject := FBoxNames.Objects[I] as TRtfdObject;
+      ManagedObject := FPanel.FindManagedControl(AObject);
+      if Assigned(ManagedObject) then
+      begin
+        ManagedObject.Selected := True;
       end;
     end;
   DeleteSelectedControls(nil);
-  Panel.Invalidate;
+  FPanel.Invalidate;
 end;
 
-function TRtfdDiagram.hasObjects: Boolean;
+function TRtfdDiagram.HasObjects: Boolean;
 begin
-  for var i:= 0 to BoxNames.Count - 1 do
-    if (BoxNames.Objects[i] is TRtfdObject) then
+  for var I := 0 to FBoxNames.Count - 1 do
+    if (FBoxNames.Objects[I] is TRtfdObject) then
       Exit(True);
-  Result:= False;
+  Result := False;
 end;
 
 procedure TRtfdDiagram.Reinitalize;
@@ -3188,388 +3678,445 @@ begin
   RefreshDiagram;
 end;
 
-procedure TRtfdDiagram.SetRecursiv(P: TPoint; pos: Integer);
+procedure TRtfdDiagram.SetRecursiv(Point: TPoint; Pos: Integer);
 begin
-  Panel.SetRecursiv(P, pos);
+  FPanel.SetRecursiv(Point, Pos);
 end;
 
-function TRtfdDiagram.getModelClass(const s: string): TClass;
-  var Ci: IModelIterator; cent: TClassifier; typ: string;
+function TRtfdDiagram.GetModelClass(const Str: string): TClass;
+var
+  CIte: IModelIterator;
+  Cent: TClassifier;
+  Typ: string;
 begin
-  Result:= nil;
-  Ci:= Model.ModelRoot.GetAllClassifiers;
-  while Ci.HasNext do begin
-    cent:= TClassifier(Ci.Next);
-    if cent is TClass then begin
-      typ:= (cent as TClass).getTyp;
-      if (typ = s) or (typ = GetShortType(s)) then begin
-        Result:= (cent as TClass);
+  Result := nil;
+  CIte := Model.ModelRoot.GetAllClassifiers;
+  while CIte.HasNext do
+  begin
+    Cent := TClassifier(CIte.Next);
+    if Cent is TClass then
+    begin
+      Typ := (Cent as TClass).GetTyp;
+      if (Typ = Str) or (Typ = GetShortType(Str)) then
+      begin
+        Result := (Cent as TClass);
         Break;
       end;
     end;
-  end;                    // without source
-  if Assigned(Result) and (Result.Pathname = '') then begin
-    var U:= Model.ModelRoot.FindUnitPackage('Default');
-    U.DeleteObject(typ);
-    Result:= nil;
+  end; // without source
+  if Assigned(Result) and (Result.Pathname = '') then
+  begin
+    var
+    UnitPackage := Model.ModelRoot.FindUnitPackage('Default');
+    UnitPackage.DeleteObject(Typ);
+    Result := nil;
   end;
 end;
 
-function TRtfdDiagram.StringToArrowStyle(s: string): TessConnectionArrowStyle;
-  var i: Integer; t: TessConnectionArrowStyle;
+function TRtfdDiagram.StringToArrowStyle(Str: string): TEssConnectionArrowStyle;
+var
+  Int: Integer;
+  ArrowStyle: TEssConnectionArrowStyle;
 begin
-  Result:= asAssociation1;
-  s:= Trim(s);
-  if TryStrToInt(s, i) then // pre 10.3 uml-file-format
-    Result:= TessConnectionArrowStyle(i)
+  Result := asAssociation1;
+  Str := Trim(Str);
+  if TryStrToInt(Str, Int) then // pre 10.3 uml-file-format
+    Result := TEssConnectionArrowStyle(Int)
   else
-    for t:= asAssociation1 to asComment do
-      if ArrowStyleToString(t) = s then begin
-        Result:= t;
+    for ArrowStyle := asAssociation1 to asComment do
+      if ArrowStyleToString(ArrowStyle) = Str then
+      begin
+        Result := ArrowStyle;
         Exit;
       end;
 end;
 
-function TRtfdDiagram.ArrowStyleToString(ArrowStyle: TessConnectionArrowStyle): string;
+function TRtfdDiagram.ArrowStyleToString(ArrowStyle
+  : TEssConnectionArrowStyle): string;
 begin
   case ArrowStyle of
-    asAssociation1: Result:= 'Association';
-    asAssociation2: Result:= 'AssociationDirected';
-    asAssociation3: Result:= 'AssociationBidirectional';
-    asAggregation1: Result:= 'Aggregation';
-    asAggregation2: Result:= 'AggregationArrow';
-    asComposition1: Result:= 'Composition';
-    asComposition2: Result:= 'CompositionArrow';
-    asInheritends:  Result:= 'Inheritends';
-    asInstanceOf:   Result:= 'InstanceOf';
-    asComment:      Result:= 'Comment';
+    asAssociation1:
+      Result := 'Association';
+    asAssociation2:
+      Result := 'AssociationDirected';
+    asAssociation3:
+      Result := 'AssociationBidirectional';
+    asAggregation1:
+      Result := 'Aggregation';
+    asAggregation2:
+      Result := 'AggregationArrow';
+    asComposition1:
+      Result := 'Composition';
+    asComposition2:
+      Result := 'CompositionArrow';
+    asInheritends:
+      Result := 'Inheritends';
+    asInstanceOf:
+      Result := 'InstanceOf';
+    asComment:
+      Result := 'Comment';
   end;
 end;
 
-function TRtfdDiagram.getSourcepath: string;
-  var i: Integer; SL: TStringList; s: string;
+function TRtfdDiagram.GetSourcepath: string;
+var
+  StringList: TStringList;
+  Str: string;
 begin
-  Result:= '';
-  if Assigned(Model) and Assigned(Model.ModelRoot) then begin
-    SL:= Model.ModelRoot.Files;
-    for i:= 0 to SL.Count - 1 do begin
-      s:= SL[i];
-      s:= ExtractFilePath(s);
-      if Pos(s, Result) = 0 then
-        Result:= Result + ';' + s;
+  Result := '';
+  if Assigned(Model) and Assigned(Model.ModelRoot) then
+  begin
+    StringList := Model.ModelRoot.Files;
+    for var I := 0 to StringList.Count - 1 do
+    begin
+      Str := StringList[I];
+      Str := ExtractFilePath(Str);
+      if Pos(Str, Result) = 0 then
+        Result := Result + ';' + Str;
     end;
     Delete(Result, 1, 1);
   end;
 end;
 
-function TRtfdDiagram.getCommentBoxName: string;
-  var i, Nr, CommentNr: Integer;
-      s: string;
+function TRtfdDiagram.GetCommentBoxName: string;
+var
+  Num, CommentNr: Integer;
+  Str: string;
 begin
-  CommentNr:= 0;
-  for i:= 0 to BoxNames.Count - 1 do
-    if Pos('Comment: ', BoxNames[i]) = 1 then begin
-      s:= Copy(BoxNames[i], 9, 255);
-      if TryStrToInt(s, Nr) then
-        CommentNr:= Math.Max(CommentNr, Nr);
+  CommentNr := 0;
+  for var I := 0 to FBoxNames.Count - 1 do
+    if Pos('Comment: ', FBoxNames[I]) = 1 then
+    begin
+      Str := Copy(FBoxNames[I], 9, 255);
+      if TryStrToInt(Str, Num) then
+        CommentNr := Math.Max(CommentNr, Num);
     end;
-  Result:= 'Comment: ' + IntToStr(CommentNr+1);
+  Result := 'Comment: ' + IntToStr(CommentNr + 1);
 end;
 
-procedure TRtfdDiagram.AddCommentBoxTo(aControl: TControl);
-  var CommentBox: TRtfdCommentBox;
-      aClass: TRtfdClass;
-      s: string;
+procedure TRtfdDiagram.AddCommentBoxTo(Control: TControl);
+var
+  CommentBox: TRtfdCommentBox;
+  AClass: TRtfdClass;
+  Boxname: string;
 begin
-  s:= getCommentBoxName;
-  CommentBox:= TRtfdCommentBox.Create(Panel, S, Frame, viPublic, HANDLESIZE);
-  CommentBox.Top:= 50 + random(50);
-  CommentBox.Left:= 50 + random(50);
-  CommentBox.Width:= 150;
-  CommentBox.Height:= 100;
-  BoxNames.AddObject(S, CommentBox);
-  Panel.AddManagedObject(CommentBox);
+  Boxname := GetCommentBoxName;
+  CommentBox := TRtfdCommentBox.Create(FPanel, Boxname, FFrame, viPublic,
+    HANDLESIZE);
+  CommentBox.Top := 50 + Random(50);
+  CommentBox.Left := 50 + Random(50);
+  CommentBox.Width := 150;
+  CommentBox.Height := 100;
+  FBoxNames.AddObject(Boxname, CommentBox);
+  FPanel.AddManagedObject(CommentBox);
 
-  if aControl = nil then
-    aControl:= Panel.GetFirstSelected;
-  if Assigned(aControl) and (aControl is TRtfdClass) then begin
-    aClass:= (aControl as TRtfdClass);
+  if not Assigned(Control) then
+    Control := FPanel.GetFirstSelected;
+  if Assigned(Control) and (Control is TRtfdClass) then
+  begin
+    AClass := (Control as TRtfdClass);
     CommentBox.Font.Assign(Font);
-    CommentBox.Top:= aClass.Top + random(50);
-    CommentBox.Left:= aClass.Left + aClass.Width + 100 + random(50);
-    Panel.ConnectObjects(aClass, CommentBox, asComment);
+    CommentBox.Top := AClass.Top + Random(50);
+    CommentBox.Left := AClass.Left + AClass.Width + 100 + Random(50);
+    FPanel.ConnectObjects(AClass, CommentBox, asComment);
   end;
-  Panel.IsModified:= True;
-  Panel.RecalcSize;
-  Panel.ShowConnections;
+  FPanel.IsModified := True;
+  FPanel.RecalcSize;
+  FPanel.ShowConnections;
   CommentBox.SendToBack;
 end;
 
-function TRtfdDiagram.hasClass(aClassname: string): Boolean;
-  var i: Integer;
+function TRtfdDiagram.HasClass(Classname: string): Boolean;
 begin
-  Result:= False;
-  for i:= 0 to BoxNames.Count - 1 do
-    if BoxNames[i] = aClassname then begin
-      Result:= True;
+  Result := False;
+  for var I := 0 to FBoxNames.Count - 1 do
+    if FBoxNames[I] = Classname then
+    begin
+      Result := True;
       Break;
     end;
 end;
 
-procedure TRtfdDiagram.DoShowParameter(aControl: TControl; Mode: Integer);
-  var Box: TRtfdBox;
+procedure TRtfdDiagram.DoShowParameter(Control: TControl; Mode: Integer);
+var
+  Box: TRtfdBox;
 begin
-  if aControl is TRtfdBox then begin
-    Box:= (aControl as TRtfdBox);
-    if Box.ShowParameter <> Mode then begin
-      Box.ShowParameter:= Mode;
-      Panel.ShowAll;
-      Panel.IsModified:= True;
+  if Control is TRtfdBox then
+  begin
+    Box := (Control as TRtfdBox);
+    if Box.ShowParameter <> Mode then
+    begin
+      Box.ShowParameter := Mode;
+      FPanel.ShowAll;
+      FPanel.IsModified := True;
     end;
   end;
 end;
 
-procedure TRtfdDiagram.DoShowVisibility(aControl: TControl; Mode: Integer);
-  var Box: TRtfdBox;
+procedure TRtfdDiagram.DoShowVisibility(Control: TControl; Mode: Integer);
+var
+  Box: TRtfdBox;
 begin
-  if aControl is TRtfdBox then begin
-    Box:= (aControl as TRtfdBox);
-    if Box.ShowIcons <>  Mode then begin
-      Box.ShowIcons:= Mode;
-      Panel.ShowAll;
-      Panel.IsModified:= True;
+  if Control is TRtfdBox then
+  begin
+    Box := (Control as TRtfdBox);
+    if Box.ShowIcons <> Mode then
+    begin
+      Box.ShowIcons := Mode;
+      FPanel.ShowAll;
+      FPanel.IsModified := True;
     end;
   end;
 end;
 
-procedure TRtfdDiagram.DoShowVisibilityFilter(aControl: TControl; Mode: Integer);
-  var Box: TRtfdBox;
+procedure TRtfdDiagram.DoShowVisibilityFilter(Control: TControl; Mode: Integer);
+var
+  Box: TRtfdBox;
 begin
-  if aControl is TRtfdBox then begin
-    Box:= (aControl as TRtfdBox);
-    if Box.MinVisibility <>  TVisibility(Mode) then begin
-      Box.MinVisibility:= TVisibility(Mode);
-      Panel.ShowAll;
-      Panel.IsModified:= True;
+  if Control is TRtfdBox then
+  begin
+    Box := (Control as TRtfdBox);
+    if Box.MinVisibility <> TVisibility(Mode) then
+    begin
+      Box.MinVisibility := TVisibility(Mode);
+      FPanel.ShowAll;
+      FPanel.IsModified := True;
     end;
   end;
 end;
 
-
-procedure TRtfdDiagram.CreateTestClass(aControl: TControl);
-//  var aClass: TRtfdClass; aClassname, Filename: String; SL: TStringList;
+procedure TRtfdDiagram.CreateTestClass(Control: TControl);
+// var AClass: TRtfdClass; aClassname, Filename: String; SL: TStringList;
 begin
-{
-  if (aControl is TRtfdClass) then begin
-    aClass:= (aControl as TRtfdClass);
-    aClassname:= aClass.Entity.Name + 'Test';
-    Filename:= ExtractFilepath(aClass.getPathname) + WithoutGeneric(aClassname) + '.py';
+  {
+    if (Control is TRtfdClass) then begin
+    AClass:= (Control as TRtfdClass);
+    aClassname:= AClass.Entity.Name + 'Test';
+    Filename:= ExtractFilepath(AClass.GetPathname) + WithoutGeneric(aClassname) + '.py';
     if FileExists(Filename) and
-                 (StyledMessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
-                            mtConfirmation, mbYesNoCancel, 0) = mrYes) or
-                 not FileExists(Filename)
+    (StyledMessageDlg(Format(_(LNGFileAlreadyExists), [Filename]),
+    mtConfirmation, mbYesNoCancel, 0) = mrYes) or
+    not FileExists(Filename)
     then begin
-      SL:= TStringList.Create;
-      SL.Text:= FObjectgenerator.GetTemplate(aClassname, 12);
-      if SL.Text = '' then SL.Text:= FObjectGenerator.GetTestClassCode(aClassname);
-      SL.SaveToFile(Filename);
-      UMLForm.MainModul.AddToProject(Filename);
-      UMLForm.Modified:= true;
+    SL:= TStringList.Create;
+    SL.Text:= FObjectgenerator.GetTemplate(aClassname, 12);
+    if SL.Text = '' then SL.Text:= FObjectGenerator.GetTestClassCode(aClassname);
+    SL.SaveToFile(Filename);
+    FUMLForm.MainModul.AddToProject(Filename);
+    FUMLForm.Modified:= true;
     end;
-  end;
+    end;
   }
 end;
 
 procedure TRtfdDiagram.OnRunJunitTestMethod(Sender: TObject);
-{  var aMenuItem: TSpTBXItem; s: string; p: integer;
-      C: TControl;}
+{ var AMenuItem: TSpTBXItem; s: string; p: integer;
+  C: TControl; }
 begin
-{  C:= FindVCLWindow(Frame.PopMenuClass.PopupPoint);
-  if (Sender is TSpTBXItem) then begin
-    aMenuItem:= Sender as TSpTBXItem;
-    p:= FullParameters.IndexOfName(aMenuItem.Caption);
-    s:= FullParameters.ValueFromIndex[p];
+  { C:= FindVCLWindow(FFrame.PopMenuClass.PopupPoint);
+    if (Sender is TSpTBXItem) then begin
+    AMenuItem:= Sender as TSpTBXItem;
+    p:= FFullParameters.IndexOfName(AMenuItem.Caption);
+    s:= FFullParameters.ValueFromIndex[p];
     RunTests(C, s);
-  end;}
+    end; }
 end;
 
-procedure TRtfdDiagram.RunTests(aControl: TControl; const Method: string);
+procedure TRtfdDiagram.RunTests(Control: TControl; const Method: string);
 begin
-{
-  if (aControl is TRtfdClass) then
-    if (aControl as TRtfdClass).Entity is TClass then begin
-      if FJUnitTests = nil then
-        FJUnitTests:= TFJUnitTests.Create(FJava);
-      FJUnitTests.Pathname:= ((aControl as TRtfdClass).Entity as TClass).Pathname;
-      myJavaCommands.RunTests((aControl as TRtfdClass).Entity as TClass, Method);
+  {
+    if (Control is TRtfdClass) then
+    if (Control as TRtfdClass).Entity is TClass then begin
+    if FJUnitTests = nil then
+    FJUnitTests:= TFJUnitTests.Create(FJava);
+    FJUnitTests.Pathname:= ((Control as TRtfdClass).Entity as TClass).Pathname;
+    myJavaCommands.RunTests((Control as TRtfdClass).Entity as TClass, Method);
     end;
-    }
+  }
 end;
 
-procedure TRtfdDiagram.ShowMethodEntered(const aMethodname, From, _To, Parameter: string);
+procedure TRtfdDiagram.ShowMethodEntered(const Methodname, From, Till,
+  Parameter: string);
 begin
-  if Assigned(SequenceForm) then begin
-    Sequenceform.MethodEntered(aMethodname);
+  if Assigned(FSequenceForm) then
+  begin
+    FSequenceForm.MethodEntered(Methodname);
     if GuiPyOptions.SDShowParameter then
-      Sequenceform.addParameter(Parameter);
-    Sequenceform.StartParticipant:= From;
-    Sequenceform.EndParticipant:= _To;
-    Sequenceform.makeConnection;
+      FSequenceForm.AddParameter(Parameter);
+    FSequenceForm.StartParticipant := From;
+    FSequenceForm.EndParticipant := Till;
+    FSequenceForm.MakeConnection;
   end;
 end;
 
-procedure TRtfdDiagram.ShowMethodExited(const aMethodname, From, _To, _Result: string);
+procedure TRtfdDiagram.ShowMethodExited(const Methodname, From, Till,
+  Result: string);
 begin
-  if Assigned(SequenceForm) then begin
-    Sequenceform.MethodExited(aMethodname);
-    Sequenceform.StartParticipant:= From;
-    Sequenceform.EndParticipant:= _To;
-    Sequenceform.aResult:= _Result;
-    Sequenceform.makeConnection;
+  if Assigned(FSequenceForm) then
+  begin
+    FSequenceForm.MethodExited(Methodname);
+    FSequenceForm.StartParticipant := From;
+    FSequenceForm.EndParticipant := Till;
+    FSequenceForm.AResult := Result;
+    FSequenceForm.MakeConnection;
   end;
 end;
 
-procedure TRtfdDiagram.ShowObjectDeleted(const From, _To: string);
+procedure TRtfdDiagram.ShowObjectDeleted(const From, Till: string);
 begin
-  if Assigned(SequenceForm) then begin
-    Sequenceform.ObjectDelete;
-    Sequenceform.StartParticipant:= From;
-    Sequenceform.EndParticipant:= _To;
-    Sequenceform.makeConnection;
+  if Assigned(FSequenceForm) then
+  begin
+    FSequenceForm.ObjectDelete;
+    FSequenceForm.StartParticipant := From;
+    FSequenceForm.EndParticipant := Till;
+    FSequenceForm.MakeConnection;
   end;
 end;
 
 procedure TRtfdDiagram.CloseNotify(Sender: TObject);
 begin
-  SequenceForm:= nil;
+  FSequenceForm := nil;
 end;
 
 procedure TRtfdDiagram.ClearSelection;
 begin
-  Panel.ClearSelection();
+  FPanel.ClearSelection;
 end;
 
 procedure TRtfdDiagram.ChangeStyle;
 begin
-  if IsStyledWindowsColorDark then begin
-    Frame.PopMenuClass.Images:= Frame.vilClassObjectDark;
-    Frame.PopMenuObject.Images:= Frame.vilClassObjectDark;
-    Frame.PopMenuConnection.Images:= Frame.vilAssociationsDark;
-    Frame.PopupMenuWindow.Images:= Frame.vilWindowDark;
-    Frame.PopupMenuAlign.Images:= Frame.vilAlignDark;
-  end else begin
-    Frame.PopMenuClass.Images:= Frame.vilClassObjectLight;
-    Frame.PopMenuObject.Images:= Frame.vilClassObjectLight;
-    Frame.PopMenuConnection.Images:= Frame.vilAssociationsLight;
-    Frame.PopupMenuWindow.Images:= Frame.vilWindowLight;
-    Frame.PopupMenuAlign.Images:= Frame.vilAlignLight;
+  if IsStyledWindowsColorDark then
+  begin
+    FFrame.PopMenuClass.Images := FFrame.vilClassObjectDark;
+    FFrame.PopMenuObject.Images := FFrame.vilClassObjectDark;
+    FFrame.PopMenuConnection.Images := FFrame.vilAssociationsDark;
+    FFrame.PopupMenuWindow.Images := FFrame.vilWindowDark;
+    FFrame.PopupMenuAlign.Images := FFrame.vilAlignDark;
+  end
+  else
+  begin
+    FFrame.PopMenuClass.Images := FFrame.vilClassObjectLight;
+    FFrame.PopMenuObject.Images := FFrame.vilClassObjectLight;
+    FFrame.PopMenuConnection.Images := FFrame.vilAssociationsLight;
+    FFrame.PopupMenuWindow.Images := FFrame.vilWindowLight;
+    FFrame.PopupMenuAlign.Images := FFrame.vilAlignLight;
   end;
-  Panel.ChangeStyle;
+  FPanel.ChangeStyle;
 end;
 
 procedure TRtfdDiagram.CopyDiagramToClipboard;
 var
   Selected: Boolean;
-  B1, B2:  Graphics.TBitmap;
-  W, H : Integer;
+  Bmp1, Bmp2: Graphics.TBitmap;
+  Width, Height: Integer;
   SelRect: TRect;
 begin
-  Panel.ChangeStyle(True);
-  SelRect:= GetSelectedRect;
-  Selected:= (SelRect.Right > SelRect.Left);
-  GetDiagramSize(W, H);
+  FPanel.ChangeStyle(True);
+  SelRect := GetSelectedRect;
+  Selected := (SelRect.Right > SelRect.Left);
+  GetDiagramSize(Width, Height);
   try
-    B1:= Graphics.TBitmap.Create;
-    B1.Width := W;
-    B1.Height:= H;
-    B1.Canvas.Lock;
-    PaintTo(B1.Canvas, 0, 0, True);
+    Bmp1 := Graphics.TBitmap.Create;
+    Bmp1.Width := Width;
+    Bmp1.Height := Height;
+    Bmp1.Canvas.Lock;
+    PaintTo(Bmp1.Canvas, 0, 0, True);
 
-    B2:= Graphics.TBitmap.Create;
-    if Selected then begin
-      B2.Width := SelRect.Right - SelRect.Left + 2;
-      B2.Height:= SelRect.Bottom - SelRect.Top + 2;
-      B2.Canvas.Draw(-SelRect.Left + 1, -SelRect.Top + 1, B1);
-      Clipboard.Assign(B2)
-    end else
-      Clipboard.Assign(B1);
-    B1.Canvas.Unlock;
+    Bmp2 := Graphics.TBitmap.Create;
+    if Selected then
+    begin
+      Bmp2.Width := SelRect.Right - SelRect.Left + 2;
+      Bmp2.Height := SelRect.Bottom - SelRect.Top + 2;
+      Bmp2.Canvas.Draw(-SelRect.Left + 1, -SelRect.Top + 1, Bmp1);
+      Clipboard.Assign(Bmp2);
+    end
+    else
+      Clipboard.Assign(Bmp1);
+    Bmp1.Canvas.Unlock;
   finally
-    FreeAndNil(B1);
-    FreeAndNil(B2);
+    FreeAndNil(Bmp1);
+    FreeAndNil(Bmp2);
   end;
   ClearSelection;
-  Panel.ChangeStyle(False);
+  FPanel.ChangeStyle(False);
 end;
 
 procedure TRtfdDiagram.ClearMarkerAndConnections(Control: TControl);
 begin
-  Panel.ClearMarkerAndConnections(Control);
+  FPanel.ClearMarkerAndConnections(Control);
 end;
 
-procedure TRtfdDiagram.DrawMarkers(r: TRect; show: Boolean);
+procedure TRtfdDiagram.DrawMarkers(Rect: TRect; Show: Boolean);
 begin
-  Panel.DrawMarkers(r, show);
+  FPanel.DrawMarkers(Rect, Show);
 end;
 
 procedure TRtfdDiagram.EditBox(Control: TControl);
 begin
-  Panel.EditBox(Control);
+  FPanel.EditBox(Control);
 end;
 
 procedure TRtfdDiagram.SetModified(const Value: Boolean);
 begin
-  Panel.SetModified(Value);
+  FPanel.SetModified(Value);
 end;
 
 procedure TRtfdDiagram.SetOnModified(OnBoolEvent: TBoolEvent);
 begin
-  Panel.OnModified:= OnBoolEvent;
+  FPanel.OnModified := OnBoolEvent;
 end;
 
 procedure TRtfdDiagram.DeleteComment;
-  var C: TControl; ManagedObject: TManagedObject;
+var
+  Control: TControl;
+  ManagedObject: TManagedObject;
 begin
-  C:= FindVCLWindow(Frame.PopupMenuComment.PopupPoint);
-  if Assigned(C) then begin
-    ManagedObject:= Panel.FindManagedControl(C);
-    if Assigned(ManagedObject) then begin
+  Control := FindVCLWindow(FFrame.PopupMenuComment.PopupPoint);
+  if Assigned(Control) then
+  begin
+    ManagedObject := FPanel.FindManagedControl(Control);
+    if Assigned(ManagedObject) then
+    begin
       UnSelectAllElements;
-      ManagedObject.Selected:= True;
+      ManagedObject.Selected := True;
       DeleteSelectedControls(nil);
     end;
   end;
 end;
 
-procedure TRtfdDiagram.ExecutePython(s: string);
+procedure TRtfdDiagram.ExecutePython(Source: string);
 begin
-  FLivingObjects.ExecutePython(s);
+  FLivingObjects.ExecutePython(Source);
 end;
 
-procedure TRtfdDiagram.GetVisFromName(var Name: string; var vis: TVisibility);
+procedure TRtfdDiagram.GetVisFromName(var Name: string; var Vis: TVisibility);
 begin
-  vis:= viPublic;
-  var p:= Pos('__', Name);
-  if p > 0 then begin
-    Name:= Copy(Name, p+2, Length(Name));
-    vis:= viPrivate;
+  Vis := viPublic;
+  var
+  Posi := Pos('__', Name);
+  if Posi > 0 then
+  begin
+    Name := Copy(Name, Posi + 2, Length(Name));
+    Vis := viPrivate;
   end;
-  if Name[1] = '_' then begin
-    Name:= Copy(Name, 2, Length(Name));
-    vis:= viProtected;
+  if Name[1] = '_' then
+  begin
+    Name := Copy(Name, 2, Length(Name));
+    Vis := viProtected;
   end;
 end;
 
 function TRtfdDiagram.PanelIsLocked: Boolean;
 begin
-  Result:= (Panel.UpdateCounter > 0);
+  Result := (FPanel.UpdateCounter > 0);
 end;
 
 procedure TRtfdDiagram.SetUMLFont;
 begin
   ResourcesDataModule.dlgFontDialog.Font.Assign(Font);
-  ResourcesDataModule.dlgFontDialog.Options:= [];
-  if ResourcesDataModule.dlgFontDialog.Execute then begin
+  ResourcesDataModule.dlgFontDialog.Options := [];
+  if ResourcesDataModule.dlgFontDialog.Execute then
+  begin
     Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
     GuiPyOptions.UMLFont.Assign(Font);
     SetFont(Font);

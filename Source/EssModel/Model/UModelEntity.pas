@@ -28,7 +28,10 @@ unit UModelEntity;
 
 interface
 
-uses Classes, uDocumentation, UUtils;
+uses
+  Classes,
+  UDocumentation,
+  UUtils;
 
 type
   TListenerMethodType = (mtBeforeChange, mtBeforeAddChild, mtBeforeRemove, mtBeforeEntityChange,
@@ -39,8 +42,7 @@ type
     function GetRoot: TModelEntity;
   protected
     FDocumentation: TDocumentation;
-    Listeners: TInterfaceList;
-
+    FListeners: TInterfaceList;
     FOwner: TModelEntity;
     FVisibility: TVisibility;
     FName: string;
@@ -61,8 +63,8 @@ type
     FHidden: Boolean;
     FLevel: Integer;
     procedure SetName(const Value: string); virtual;
-    function GetShortName: string;
-    function getFullName: string; virtual;
+    function GetShortname: string;
+    function GetFullname: string; virtual;
     function GetPackage: string;
     class function GetBeforeListener: TGUID; virtual;
     class function GetAfterListener: TGUID; virtual;
@@ -71,25 +73,25 @@ type
     function GetLocked: Boolean;
     procedure Fire(Method: TListenerMethodType; Info: TModelEntity = nil); virtual;
     { IUnknown, required for listener }
-    function QueryInterface(const IID: TGUID; out Obj): HResult; stdcall;
+    function QueryInterface(const IID: TGUID; out Obj): HRESULT; stdcall;
     function _AddRef: Integer; stdcall;
     function _Release: Integer; stdcall;
   public
-    constructor Create(aOwner: TModelEntity); virtual;
+    constructor Create(Owner: TModelEntity); virtual;
     destructor Destroy; override;
     procedure AddListener(NewListener: IUnknown);
     procedure RemoveListener(Listener: IUnknown);
-    function GetFullNameWithoutOuter: string;
+    function GetFullnameWithoutOuter: string;
     property Level: Integer read FLevel write FLevel;
     property Name: string read FName write SetName;
-    property Fullname: string read GetFullName;
-    property ShortName: string read GetShortName;
+    property Fullname: string read GetFullname;
+    property ShortName: string read GetShortname;
     property Package: string read GetPackage;
     property Owner: TModelEntity read FOwner write FOwner;
     property Visibility: TVisibility read FVisibility write SetVisibility;
     property Static: Boolean read FStatic write FStatic;
     property IsFinal: Boolean read FFinal write FFinal;
-    property hasFinal: Boolean read FhasFinal write FhasFinal;
+    property HasFinal: Boolean read FHasFinal write FHasFinal;
     property IsAbstract: Boolean read FIsAbstract write SetIsAbstract;
     property Locked: Boolean read GetLocked write FLocked;
     property Root : TModelEntity read GetRoot;
@@ -120,20 +122,23 @@ type
   //Basinterface for iteratorfilters
   IIteratorFilter = interface(IUnknown)
     ['{FD77FD42-456C-4B8A-A917-A2555881E164}']
-    function Accept(M : TModelEntity) : Boolean;
+    function Accept(Model : TModelEntity) : Boolean;
   end;
 
 implementation
 
-uses Sysutils, Windows, uListeners;
+uses
+  SysUtils,
+  Windows,
+  UListeners;
 
 { TModelEntity }
 
-constructor TModelEntity.Create(aOwner: TModelEntity);
+constructor TModelEntity.Create(Owner: TModelEntity);
 begin
-  Self.Owner:= aOwner;
+  Self.Owner:= Owner;
   FIsObject:= False;
-  Listeners:= TInterfaceList.Create;
+  FListeners:= TInterfaceList.Create;
   FDocumentation:= TDocumentation.Create;
   FName:= '';
   FShortName:= '';
@@ -150,56 +155,59 @@ begin
 
   //if not (Self.ClassName = 'TLogicPackage') then
   try
-    Listeners.Clear;
-    FreeAndNil(Listeners);
+    FListeners.Clear;
+    FreeAndNil(FListeners);
   except
+    on E: Exception do
+      OutputDebugString(PChar('Exception: ' + E.ClassName + ' - ' + E.Message));
   end;
+  inherited;
 end;
 
-function TModelEntity.GetShortName: string;
-  var p: Integer; s, vararg: string;
+function TModelEntity.GetShortname: string;
+  var Posi: Integer; Str, VarArg: string;
 begin
   if FShortName = '' then begin
-    s:= FName;
+    Str:= FName;
     if Pos('.', FName) > 0 then begin
       // remove all long package types
-      s:= FName;
-      if s.EndsWith('...') then begin
-        Delete(s, Length(s)-2, 3);
-        vararg:= '...'
+      Str:= FName;
+      if Str.EndsWith('...') then begin
+        Delete(Str, Length(Str)-2, 3);
+        VarArg:= '...';
       end else
-        vararg:= '';
-      p:= LastDelimiter('.', s);
-      Delete(s, 1, p);
-      s:= s + vararg;
+        VarArg:= '';
+      Posi:= LastDelimiter('.', Str);
+      Delete(Str, 1, Posi);
+      Str:= Str + VarArg;
     end;
-    FShortName:= s;
+    FShortName:= Str;
   end;
   Result:= FShortName;
 end;
 
-function TModelEntity.GetFullName: string;
+function TModelEntity.GetFullname: string;
 begin
   if FName = 'Default'
     then Result:= ''
     else Result:= FName;
 end;
 
-function TModelEntity.GetFullNameWithoutOuter: string;
-  var p: Integer;
+function TModelEntity.GetFullnameWithoutOuter: string;
+  var Posi: Integer;
 begin
-  Result:= GetFullName;
-  p:= Pos('.', Result);
-  if p > 0 then Delete(Result, 1, p);
+  Result:= GetFullname;
+  Posi:= Pos('.', Result);
+  if Posi > 0 then Delete(Result, 1, Posi);
 end;
 
 function TModelEntity.GetPackage: string;
-  var i: Integer;
+  var Int: Integer;
 begin
   if FPackage = ' ' then begin
-    i:= LastDelimiter('.', FName);
-    if i > 0
-      then Result:= Copy(FName, 1, i-1)
+    Int:= LastDelimiter('.', FName);
+    if Int > 0
+      then Result:= Copy(FName, 1, Int-1)
       else Result:= '';
   end else
     Result:= FPackage;
@@ -214,36 +222,38 @@ end;
 
 procedure TModelEntity.AddListener(NewListener: IUnknown);
 begin
-  if Listeners.IndexOf(NewListener) = -1 then
-    Listeners.Add(NewListener)
+  if FListeners.IndexOf(NewListener) = -1 then
+    FListeners.Add(NewListener);
 end;
 
 procedure TModelEntity.RemoveListener(Listener: IUnknown);
 begin
   try
-    Listeners.Remove(Listener);
+    FListeners.Remove(Listener);
   except
-  end;
+    on E: Exception do
+      OutputDebugString(PChar('Exception: ' + E.ClassName + ' - ' + E.Message));
+ end;
 end;
 
 procedure TModelEntity.SetName(const Value: string);
 var
-  OldName: string; i: Integer;
+  OldName: string; Int: Integer;
 begin
   OldName := FName;
   FName:= Value;
   try
     Fire(mtBeforeEntityChange);
-    FShortName:= getShortName;
-    i:= LastDelimiter('.', withoutGeneric(Value));
-    if i > 0
-      then FPackage:= Copy(FName, 1, i-1)
+    FShortName:= GetShortname;
+    Int:= LastDelimiter('.', WithoutGeneric(Value));
+    if Int > 0
+      then FPackage:= Copy(FName, 1, Int-1)
       else FPackage:= '';
   except
     FName := OldName;
     raise;
   end {try};
-  Fire(mtAfterEntityChange)
+  Fire(mtAfterEntityChange);
 end;
 
 procedure TModelEntity.SetVisibility(const Value: TVisibility);
@@ -253,12 +263,12 @@ begin
   Old := Value;
   FVisibility := Value;
   try
-    Fire(mtBeforeEntityChange)
+    Fire(mtBeforeEntityChange);
   except
     FVisibility := Old;
     raise;
   end {try};
-  Fire(mtAfterEntityChange)
+  Fire(mtAfterEntityChange);
 end;
 
 procedure TModelEntity.SetIsAbstract(const Value: Boolean);
@@ -281,48 +291,47 @@ end;
 
 procedure TModelEntity.Fire(Method: TListenerMethodType; Info: TModelEntity = nil);
 var
-  I: Integer;
-  IL: IModelEntityListener;
-  L: IUnknown;
+  IMEL: IModelEntityListener;
+  Instance: IUnknown;
 begin
-  if not Locked and Assigned(Listeners) then
-    for I := 0 to Listeners.Count - 1 do begin
-      L := Listeners[I];
+  if not Locked and Assigned(FListeners) then
+    for var I := 0 to FListeners.Count - 1 do begin
+      Instance := FListeners[I];
       case Method of
         mtBeforeAddChild:
-          if Supports(L, GetBeforeListener, IL) then
-            IL.AddChild(Self, Info);
+          if Supports(Instance, GetBeforeListener, IMEL) then
+            IMEL.AddChild(Self, Info);
         mtBeforeRemove:
-          if Supports(L, GetBeforeListener, IL) then
-            IL.Remove(Self);
+          if Supports(Instance, GetBeforeListener, IMEL) then
+            IMEL.Remove(Self);
         mtBeforeChange:
-          if Supports(L, GetBeforeListener, IL) then
-            IL.Change(Self);
+          if Supports(Instance, GetBeforeListener, IMEL) then
+            IMEL.Change(Self);
         mtBeforeEntityChange:
-          if Supports(L, GetBeforeListener, IL) then
-            IL.EntityChange(Self);
+          if Supports(Instance, GetBeforeListener, IMEL) then
+            IMEL.EntityChange(Self);
         mtAfterAddChild:
-          if Supports(L, GetAfterListener, IL) then
-            IL.AddChild(Self, Info);
+          if Supports(Instance, GetAfterListener, IMEL) then
+            IMEL.AddChild(Self, Info);
         mtAfterRemove:
-          if Supports(L, GetAfterListener, IL) then
-            IL.Remove(Self);
+          if Supports(Instance, GetAfterListener, IMEL) then
+            IMEL.Remove(Self);
         mtAfterChange:
-          if Supports(L, GetAfterListener, IL) then
-            IL.Change(Self);
+          if Supports(Instance, GetAfterListener, IMEL) then
+            IMEL.Change(Self);
         mtAfterEntityChange:
-          if Supports(L, GetAfterListener, IL) then
-            IL.EntityChange(Self);
+          if Supports(Instance, GetAfterListener, IMEL) then
+            IMEL.EntityChange(Self);
       else
         raise Exception.Create(ClassName + ' Eventmethod not recognized.');
       end {case};
     end;
 end;
 
-function TModelEntity.QueryInterface(const IID: TGUID; out Obj): HResult; stdcall;
+function TModelEntity.QueryInterface(const IID: TGUID; out Obj): HRESULT; stdcall;
 begin
   if GetInterface(IID, Obj) then Result := S_OK
-  else Result := E_NOINTERFACE
+  else Result := E_NOINTERFACE;
 end;
 
 function TModelEntity._AddRef: Integer; stdcall;

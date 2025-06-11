@@ -138,7 +138,7 @@
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_MajorVer>6</VerInfo_MajorVer>
         <VerInfo_MinorVer>5</VerInfo_MinorVer>
-        <DCC_UnitSearchPath>D:\Sicherung\DelphiPipes\src;D:\GitProjekte\SpTBXLib\Source;D:\GitProjekte\jcl\jcl\source\include;D:\GitProjekte\jvcl\jvcl\run;D:\GitProjekte\jvcl\jvcl\common;D:\GitProjekte\jcl\jcl\source\common;D:\GitProjekte\jcl\jcl\source\windows;D:\GitProjekte\SVGIconImageList\Source;D:\GitProjekte\SVGIconImageList\Image32\source;D:\GitProjekte\MustangPeak\VirtualShellTools\Source;D:\GitProjekte\MustangPeak\CommonLib\Source;D:\GitProjekte\jvcl\jvcl\resources;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>D:\Sicherung\DelphiPipes\src;D:\GitProjekte\SpTBXLib\Source;D:\GitProjekte\jcl\jcl\source\include;D:\GitProjekte\jvcl\jvcl\run;D:\GitProjekte\jvcl\jvcl\common;D:\GitProjekte\jcl\jcl\source\common;D:\GitProjekte\jcl\jcl\source\windows;D:\GitProjekte\SVGIconImageList\Source;D:\GitProjekte\SVGIconImageList\Image32\source;D:\GitProjekte\MustangPeak\VirtualShellTools\Source;D:\GitProjekte\MustangPeak\CommonLib\Source;D:\GitProjekte\jvcl\jvcl\resources;D:\GitProjekte\delphi-markdown\source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <DCC_ExeOutput>.\$(Config)\$(Platform)</DCC_ExeOutput>
@@ -156,7 +156,7 @@
         <DCC_Optimize>false</DCC_Optimize>
         <VerInfo_MajorVer>6</VerInfo_MajorVer>
         <VerInfo_MinorVer>5</VerInfo_MinorVer>
-        <DCC_UnitSearchPath>D:\GitProjekte\SVGIconImageList\Source;D:\GitProjekte\SVGIconImageList\Image32\source;D:\GitProjekte\jcl\jcl\source\include;D:\GitProjekte\jcl\jcl\source\common;D:\GitProjekte\jcl\jcl\source\windows;D:\GitProjekte\jvcl\jvcl\run;D:\GitProjekte\jvcl\jvcl\common;D:\GitProjekte\SpTBXLib\Source;D:\GitProjekte\SynEdit\Source;D:\GitProjekte\SynEdit\Source\Highlighters;D:\GitProjekte\MustangPeak\CommonLib\Source;D:\GitProjekte\SynWeb;D:\GitProjekte\VirtualTreeView\Source;D:\GitProjekte\MustangPeak\VirtualShellTools\Source;D:\GitProjekte\delphi-detours-library\Source;D:\GitProjekte\jvcl\jvcl\resources;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>D:\GitProjekte\SVGIconImageList\Source;D:\GitProjekte\SVGIconImageList\Image32\source;D:\GitProjekte\jcl\jcl\source\include;D:\GitProjekte\jcl\jcl\source\common;D:\GitProjekte\jcl\jcl\source\windows;D:\GitProjekte\jvcl\jvcl\run;D:\GitProjekte\jvcl\jvcl\common;D:\GitProjekte\SpTBXLib\Source;D:\GitProjekte\SynEdit\Source;D:\GitProjekte\SynEdit\Source\Highlighters;D:\GitProjekte\MustangPeak\CommonLib\Source;D:\GitProjekte\SynWeb;D:\GitProjekte\VirtualTreeView\Source;D:\GitProjekte\MustangPeak\VirtualShellTools\Source;D:\GitProjekte\delphi-detours-library\Source;D:\GitProjekte\jvcl\jvcl\resources;D:\GitProjekte\delphi-markdown\source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_DebugDCUs>true</DCC_DebugDCUs>
     </PropertyGroup>
     <ItemGroup>
@@ -383,7 +383,6 @@
         <DCCReference Include="EssModel\Model\UListeners.pas"/>
         <DCCReference Include="EssModel\Model\UModel.pas"/>
         <DCCReference Include="EssModel\Model\UModelEntity.pas"/>
-        <DCCReference Include="EssModel\System\UFeedback.pas"/>
         <DCCReference Include="EssModel\System\UUMLForm.pas">
             <Form>FUMLForm</Form>
         </DCCReference>
@@ -506,13 +505,6 @@
             <Form>FUMLInteractive</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\..\delphi-markdown\source\MarkdownCommonMark.pas"/>
-        <DCCReference Include="..\..\delphi-markdown\source\MarkdownDaringFireball.pas"/>
-        <DCCReference Include="..\..\delphi-markdown\source\MarkdownMathCode.pas"/>
-        <DCCReference Include="..\..\delphi-markdown\source\MarkdownProcessor.pas"/>
-        <DCCReference Include="..\..\delphi-markdown\source\MarkdownTables.pas"/>
-        <DCCReference Include="..\..\delphi-markdown\source\MarkdownTxtMark.pas"/>
-        <DCCReference Include="..\..\delphi-markdown\source\MarkdownUtils.pas"/>
         <DCCReference Include="SequenceDiagram\ULifeline.pas"/>
         <None Include="GuiPy.todo"/>
         <None Include="ModelSupport_PyScripter\default.txaPackage"/>
@@ -540,8 +532,8 @@
                     <Source Name="MainSource">GuiPy.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 Beispiele für gekapselte Komponenten für Automatisierungsserver</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP Beispiele für gekapselte Komponenten für Automation Server</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
                 <VersionInfo>
                     <VersionInfo Name="IncludeVerInfo">True</VersionInfo>

@@ -62,7 +62,7 @@ type
     function getMethods(from: string): TStringList;
     function getPathOf(Classname: string): string;
 
-    function getAllObjects: TStringList;
+    function GetAllObjects: TStringList;
     procedure makeAllObjects;
     procedure DeleteObjects;
   end;
@@ -761,7 +761,7 @@ begin
   FreeAndNil(SLObjectsAddressNameDuplicat);
 end;
 
-function TLivingObjects.getAllObjects: TStringList;
+function TLivingObjects.GetAllObjects: TStringList;
 begin
   Result := SLObjectsNamePath;
 end;

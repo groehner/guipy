@@ -1,1572 +1,1893 @@
-{-------------------------------------------------------------------------------
- Unit:     UConnection
- Author:   Gerhard Röhner
- Date:     2013
- Purpose:  connection in uml window
--------------------------------------------------------------------------------}
+{ -------------------------------------------------------------------------------
+  Unit:     UConnection
+  Author:   Gerhard Röhner
+  Date:     2013
+  Purpose:  connection in uml window
+  ------------------------------------------------------------------------------- }
 
 unit UConnection;
 
 interface
 
-uses Windows, Controls, Graphics;
+uses
+  Windows,
+  Controls,
+  Graphics;
 
 type
 
-  TFivePoints = array[1..5] of TPoint;
+  TFivePoints = array [1 .. 5] of TPoint;
 
-  { A square is a parallelogram or trapez  around a connection including
-    the arrows, roles, relation an multiplicities.
+  { A square is a parallelogram or trapez around a connection including
+    the arrows, roles, relation and multiplicities.
   }
 
-  {  TControl = class(Controls.TControl)
-       function getBoundsRect: TRect; virtual;
-     end;
-   }
-
   TSquare = class
-    // Points[1] and Points[2] belong to FromP
-    // Points[3] and Points[4] belong to ToP
-    Points: array[1..4] of TPoint;
+  private
+    // Points[1] and Points[2] belong to FFromBorder
+    // Points[3] and Points[4] belong to FToBorder
+    FPoints: array [1 .. 4] of TPoint;
+  public
     constructor Create;
-    procedure init;
-    procedure enlargeRight(From, To_: Integer; dx, dy: Integer); overload;
-    procedure enlargeLeft(From, To_: Integer; dx, dy: Integer); overload;
-    function prev(n: Integer): Integer;
-    procedure enlargeLeft(corner, dx: Integer); overload;
-    procedure enlargeRight(corner, dx: Integer); overload;
-    procedure enlargeTop(corner, dy: Integer);
-    procedure enlargeBottom(corner, dy: Integer);
-    procedure term(FromP, ToP: TPoint); overload;
-    procedure term(corner: Integer; pl: TFivePoints); overload;
-    procedure draw(aCanvas: TCanvas);
-    function LineIntersectsLine(l1p1, l1p2, l2p1, l2p2: TPoint): Boolean;
-    function intersects(P1, P2: TPoint; R: TRect): Boolean; overload;
-    function intersects(P1, P2: TPoint; S: TSquare): Boolean; overload;
-    function intersects(R: TRect): Boolean; overload;
-    function intersects(S: TSquare): Boolean; overload;
+    procedure Init;
+    procedure EnlargeRight(FromCorner, ToCorner: Integer;
+      DeltaX, DeltaY: Integer); overload;
+    procedure EnlargeLeft(FromCorner, ToCorner: Integer;
+      DeltaX, DeltaY: Integer); overload;
+    function Prev(Corner: Integer): Integer;
+    procedure EnlargeLeft(Corner, DeltaX: Integer); overload;
+    procedure EnlargeRight(Corner, DeltaX: Integer); overload;
+    procedure EnlargeTop(Corner, DeltaY: Integer);
+    procedure EnlargeBottom(Corner, DeltaY: Integer);
+    procedure Term(FFromBorder, FToBorder: TPoint); overload;
+    procedure Term(Corner: Integer; FFivePoints: TFivePoints); overload;
+    procedure Draw(FCanvas: TCanvas);
+    function LineIntersectsLine(L1p1, L1p2, L2p1, L2p2: TPoint): Boolean;
+    function Intersects(Point1, Point2: TPoint; Rect: TRect): Boolean; overload;
+    function Intersects(Point1, Point2: TPoint; Square: TSquare)
+      : Boolean; overload;
+    function Intersects(Rect: TRect): Boolean; overload;
+    function Intersects(Square: TSquare): Boolean; overload;
   end;
 
   // Available linestyles
-  TessConnectionStyle = (csThin, csNormal, csThinDash);
+  TEssConnectionStyle = (csThin, csNormal, csThinDash);
 
-  //Different kinds of arrowheads
-  TessConnectionArrowStyle = (asAssociation1, asAssociation2, asAssociation3,
-                              asAggregation1, asAggregation2,
-                              asComposition1, asComposition2,
-                              asInheritends,  asInstanceOf, asComment);
+  // Different kinds of arrowheads
+  TEssConnectionArrowStyle = (asAssociation1, asAssociation2, asAssociation3,
+    asAggregation1, asAggregation2, asComposition1, asComposition2,
+    asInheritends, asInstanceOf, asComment);
 
   TConnectionAttributes = class
+  private
+    FArrowStyle: TEssConnectionArrowStyle;
+    FConnectStyle: TEssConnectionStyle;
+    FIsEdited: Boolean;
+    FIsTurned: Boolean;
+    FMultiplicityA: string;
+    FMultiplicityB: string;
+    FReadingOrderA: Boolean;
+    FReadingOrderB: Boolean;
+    FRecursivCorner: Integer; // Corner position of recursiv connection
+    FRelation: string;
+    FRoleA: string;
+    FRoleB: string;
+    FVisible: Boolean;
   public
-    ConnectStyle: TessConnectionStyle;
-    ArrowStyle : TessConnectionArrowStyle;
-    RoleA, Relation, RoleB: string;
-    MultiplicityA, MultiplicityB: string;
-    ReadingOrderA, ReadingOrderB: Boolean;
-    RecursivCorner: Integer;  // corner position of recursiv connection
-    isTurned: Boolean;
-    Visible: Boolean;
-    isEdited: Boolean;
+    property ArrowStyle: TEssConnectionArrowStyle read FArrowStyle
+      write FArrowStyle;
+    property ConnectStyle: TEssConnectionStyle read FConnectStyle;
+    property IsEdited: Boolean read FIsEdited write FIsEdited;
+    property MultiplicityA: string read FMultiplicityA write FMultiplicityA;
+    property MultiplicityB: string read FMultiplicityB write FMultiplicityB;
+    property ReadingOrderA: Boolean read FReadingOrderA write FReadingOrderA;
+    property ReadingOrderB: Boolean read FReadingOrderB write FReadingOrderB;
+    property RecursivCorner: Integer read FRecursivCorner write FRecursivCorner;
+    property IsTurned: Boolean read FIsTurned write FIsTurned;
+    property Relation: string read FRelation write FRelation;
+    property RoleA: string read FRoleA write FRoleA;
+    property RoleB: string read FRoleB write FRoleB;
+    property Visible: Boolean read FVisible write FVisible;
   end;
 
   { Specifies a connection between two managed objects. }
-  TConnection = class (TConnectionAttributes)
-  public
-    Selected: Boolean;
-    FFrom, FTo: TControl;
-    FromCenter, ToCenter: TPoint;  // Center with parallel correction
-    FromP, ToP: TPoint;  // start/ending on border of Control
-    FromPStart: Integer; // start is on right, top, left, bottom side
-    ToPEnd: Integer;     // end is on right, top, left, bottom side
-    isRecursiv: Boolean;
-    pl: TFivePoints;
-    XEnlarge: Integer;
-    YEnlarge: Integer;
-    XDecrease: Integer;
-    YDecrease: Integer;
+  TConnection = class(TConnectionAttributes)
+  private
+    FBackgroundColor: TColor;
+    FForegroundColor: TColor;
+    FCanvas: TCanvas;
+    FCutted: Boolean;
+    FFromCenter: TPoint; // Center with parallel correction
+    FToCenter: TPoint;
+    FFromControl: TControl;
+    FToControl: TControl;
+    FSelected: Boolean;
+    FFromBorder: TPoint; // start/ending on border of control
+    FToBorder: TPoint;
+    FFromBorderNum: Integer; // start is on right, FToBorder, left, bottom Side
+    FIsRecursiv: Boolean;
+    FToBorderNum: Integer; // end is on right, FToBorder, left, bottom Side
+    FFivePoints: TFivePoints;
     // parallel connections
-    parallelindex: Integer;    // index of parallel connection
-    parallelcount: Integer;    // count of parallel connection
-    parallelvisited: Boolean;  // avoid to compare
-    parallelvisiting: Boolean;
-    Canvas: TCanvas;
-    Square: TSquare;
-    Cutted: Boolean;
-    BGColor: TColor;
-    FGColor: TColor;
-    svg: string;
-    constructor Create(Src, Dst: TControl; Attributes: TConnectionAttributes; aCanvas: TCanvas);
+    FParallelCount: Integer;
+    FParallelIndex: Integer;
+    FParallelVisited: Boolean;
+    FParallelVisiting: Boolean;
+    FSquare: TSquare;
+    FSVG: string;
+    FXDecrease: Integer;
+    FXEnlarge: Integer;
+    FYDecrease: Integer;
+    FYEnlarge: Integer;
+  public
+    constructor Create(Src, Dst: TControl; Attributes: TConnectionAttributes;
+      Canvas: TCanvas);
     destructor Destroy; override;
-    procedure Draw(aCanvas: TCanvas; show: Boolean);
-    procedure DrawRecursiv(aCanvas: TCanvas; show: Boolean);
-    procedure DrawRecursivAnnotations(aCanvas: TCanvas);
-    procedure DrawSelection(aCanvas: TCanvas; WithSelection: Boolean = True);
-    procedure SetPenBrushArrow(aCanvas: TCanvas);
+    procedure Draw(Canvas: TCanvas; Show: Boolean);
+    procedure DrawRecursiv(Canvas: TCanvas; Show: Boolean);
+    procedure DrawRecursivAnnotations(Canvas: TCanvas);
+    procedure DrawSelection(Canvas: TCanvas; WithSelection: Boolean = True);
+    procedure SetPenBrushArrow(Canvas: TCanvas);
     procedure CalcShortest;
     procedure CalcPolyline;
-    function ArrowStartLength(Arrow: TessConnectionArrowStyle): Integer;
-    function ArrowHeadLength(Arrow: TessConnectionArrowStyle): Integer;
+    function ArrowStartLength(Arrow: TEssConnectionArrowStyle): Integer;
+    function ArrowHeadLength(Arrow: TEssConnectionArrowStyle): Integer;
     procedure SetAttributes(Attributes: TConnectionAttributes);
-    procedure SetArrow(Arrow: TessConnectionArrowStyle);
+    procedure SetArrow(Arrow: TEssConnectionArrowStyle);
     procedure Turn;
-    function IsClicked(P: TPoint): Boolean;
-    procedure setRecursivPosition(pos: Integer);
-    procedure parallelCorrection;
-    function getQuadrant(x, y: Integer; R: TRect): Integer;
-    function CalcRect(ACanvas: TCanvas; AMaxWidth: Integer; const AString: string): TRect;
-    function getBoundsRect(arect: TRect): TRect; overload;
-    function getBoundsRect(aControl: TControl): TRect; overload;
-    function getCenter(R: TRect): TPoint;
-    function ArrowToConnect(Arrow: TessConnectionArrowStyle): TessConnectionStyle;
+    function IsClicked(Point: TPoint): Boolean;
+    procedure SetRecursivPosition(Pos: Integer);
+    procedure ParallelCorrection;
+    function GetQuadrant(XPos, YPos: Integer; Rect: TRect): Integer;
+    function CalcRect(Canvas: TCanvas; AMaxWidth: Integer;
+      const AString: string): TRect;
+    function GetBoundsRect(Control: TControl): TRect; overload;
+    function GetCenter(Rect: TRect): TPoint;
+    function ArrowToConnect(Arrow: TEssConnectionArrowStyle)
+      : TEssConnectionStyle;
     procedure ChangeStyle(BlackAndWhite: Boolean = False);
-    function calcSVGBaseLine(R: TRect): Integer;
-    function getSVGText(R: TRect; s: string): string;
-    function getSVGLine(x1, y1, x2, y2: real): string;
-    function getSVGPolyline(Points: array of TPoint): string;
-    function getSVGPolygon(Points: array of TPoint; color: string): string;
-    function getSVG: string;
-  end;
+    function CalcSVGBaseLine(Rect: TRect): Integer;
+    function GetSVGText(Rect: TRect; Str: string): string;
+    function GetSVGLine(X1Pos, Y1Pos, X2Pos, Y2Pos: Real): string;
+    function GetSVGPolyline(Points: array of TPoint): string;
+    function GetSVGPolygon(Points: array of TPoint; Color: string): string;
 
+    property Cutted: Boolean read FCutted write FCutted;
+    property FromControl: TControl read FFromControl write FFromControl;
+    property IsRecursiv: Boolean read FIsRecursiv;
+    property ParallelCount: Integer read FParallelCount write FParallelCount;
+    property ParallelIndex: Integer read FParallelIndex write FParallelIndex;
+    property ParallelVisited: Boolean read FParallelVisited
+      write FParallelVisited;
+    property ParallelVisiting: Boolean read FParallelVisiting
+      write FParallelVisiting;
+    property Selected: Boolean read FSelected write FSelected;
+    property Square: TSquare read FSquare;
+    property SVG: string read FSVG;
+    property ToControl: TControl read FToControl write FToControl;
+    property XDecrease: Integer read FXDecrease;
+    property XEnlarge: Integer read FXEnlarge;
+    property YDecrease: Integer read FYDecrease;
+    property YEnlarge: Integer read FYEnlarge;
+  end;
 
 implementation
 
-uses Types, Math, Themes, UITypes, SysUtils, uCommonFunctions, UUtils;
+uses
+  Types,
+  Math,
+  Themes,
+  UITypes,
+  SysUtils,
+  uCommonFunctions,
+  UUtils;
 
-const rec_dx = 30;  // recursive connections
-      rec_dy = 23;
-      rec_dc = 40; // recursiv distance from corner
+const
+  RecDx = 30; // recursive connections
+  RecDc = 40; // recursiv distance FromCorner Corner
   HeadLength = 10; // pixels
 
-{--- TControl -----------------------------------------------------------------}
-
-{function TControl.getBoundsRect: TRect;
-  var aRect: TRect; //aBox: TRtfdBox;
-begin
-  aRect:= Self.BoundsRect;
-  if (aControl is TRtfdBox) then begin
-    aBox:= aControl as TRtfdBox;
-    aRect.Width:= aRect.Width - aBox.ExtentX;
-    aRect.Top:= aRect.Top + aBox.ExtentY;
-  end;
-  Result:= aRect;
-end;
-}
-
-{--- TSquare ------------------------------------------------------------------}
+  { --- TSquare ------------------------------------------------------------------ }
 
 constructor TSquare.Create;
 begin
-  init;
+  Init;
 end;
 
-procedure TSquare.init;
-  var i: Integer;
+procedure TSquare.Init;
 begin
-  for i:= 1 to 4 do
-    Points[i]:= Point(0, 0);
+  for var I := 1 to 4 do
+    FPoints[I] := Point(0, 0);
 end;
 
-procedure TSquare.enlargeRight(From, To_: Integer; dx, dy: Integer);
+procedure TSquare.EnlargeRight(FromCorner, ToCorner: Integer;
+  DeltaX, DeltaY: Integer);
 begin
-  case From of
-    1: Points[1].y := Max(Points[1].y, +dy);
-    2: Points[1].x := Max(Points[1].x, +dx);
-    3: Points[1].y := Min(Points[1].y, -dy);
-    4: Points[1].x := Min(Points[1].x, -dx);
+  case FromCorner of
+    1:
+      FPoints[1].Y := Max(FPoints[1].Y, +DeltaY);
+    2:
+      FPoints[1].X := Max(FPoints[1].X, +DeltaX);
+    3:
+      FPoints[1].Y := Min(FPoints[1].Y, -DeltaY);
+    4:
+      FPoints[1].X := Min(FPoints[1].X, -DeltaX);
   end;
-  case To_ of
-    1: Points[4].y := Min(Points[4].y, -dy);
-    2: Points[4].x := Min(Points[4].x, -dx);
-    3: Points[4].y := Max(Points[4].y, +dy);
-    4: Points[4].x := Max(Points[4].x, +dx);
-  end;
-end;
-
-procedure TSquare.enlargeLeft(From, To_: Integer; dx, dy: Integer);
-begin
-  case From of
-    1: Points[2].y := Min(Points[2].y, -dy);
-    2: Points[2].x := Min(Points[2].x, -dx);
-    3: Points[2].y := Max(Points[2].y, +dy);
-    4: Points[2].x := Max(Points[2].x, +dx);
-  end;
-  case To_ of
-    1: Points[3].y := Max(Points[3].y, +dy);
-    2: Points[3].x := Max(Points[3].x, +dx);
-    3: Points[3].y := Min(Points[3].y, -dy);
-    4: Points[3].x := Min(Points[3].x, -dx);
+  case ToCorner of
+    1:
+      FPoints[4].Y := Min(FPoints[4].Y, -DeltaY);
+    2:
+      FPoints[4].X := Min(FPoints[4].X, -DeltaX);
+    3:
+      FPoints[4].Y := Max(FPoints[4].Y, +DeltaY);
+    4:
+      FPoints[4].X := Max(FPoints[4].X, +DeltaX);
   end;
 end;
 
-function TSquare.prev(n: Integer): Integer;
+procedure TSquare.EnlargeLeft(FromCorner, ToCorner: Integer;
+  DeltaX, DeltaY: Integer);
 begin
-  Result:= n - 1;
+  case FromCorner of
+    1:
+      FPoints[2].Y := Min(FPoints[2].Y, -DeltaY);
+    2:
+      FPoints[2].X := Min(FPoints[2].X, -DeltaX);
+    3:
+      FPoints[2].Y := Max(FPoints[2].Y, +DeltaY);
+    4:
+      FPoints[2].X := Max(FPoints[2].X, +DeltaX);
+  end;
+  case ToCorner of
+    1:
+      FPoints[3].Y := Max(FPoints[3].Y, +DeltaY);
+    2:
+      FPoints[3].X := Max(FPoints[3].X, +DeltaX);
+    3:
+      FPoints[3].Y := Min(FPoints[3].Y, -DeltaY);
+    4:
+      FPoints[3].X := Min(FPoints[3].X, -DeltaX);
+  end;
+end;
+
+function TSquare.Prev(Corner: Integer): Integer;
+begin
+  Result := Corner - 1;
   if Result = 0 then
-    Result:= 4;
+    Result := 4;
 end;
 
-procedure TSquare.enlargeLeft(corner, dx: Integer);
-  var i, i1, i2: Integer;
+procedure TSquare.EnlargeLeft(Corner, DeltaX: Integer);
+var
+  Int1, Int2: Integer;
 begin
-  i1:= 1;
-  i2:= 4;
-  for i:= 2 to corner do begin
-    i1:= prev(i1);
-    i2:= prev(i2);
+  Int1 := 1;
+  Int2 := 4;
+  for var I := 2 to Corner do
+  begin
+    Int1 := Prev(Int1);
+    Int2 := Prev(Int2);
   end;
-  Points[i1].x:= Min(Points[i1].x, -dx);
-  Points[i2].x:= Min(Points[i2].x, -dx);
+  FPoints[Int1].X := Min(FPoints[Int1].X, -DeltaX);
+  FPoints[Int2].X := Min(FPoints[Int2].X, -DeltaX);
 end;
 
-procedure TSquare.enlargeRight(corner, dx: Integer);
-  var i, i1, i2: Integer;
+procedure TSquare.EnlargeRight(Corner, DeltaX: Integer);
+var
+  Int1, Int2: Integer;
 begin
-  i1:= 2;
-  i2:= 3;
-  for i:= 2 to corner do begin
-    i1:= prev(i1);
-    i2:= prev(i2);
+  Int1 := 2;
+  Int2 := 3;
+  for var I := 2 to Corner do
+  begin
+    Int1 := Prev(Int1);
+    Int2 := Prev(Int2);
   end;
-  Points[i1].x:= Max(Points[i1].x, dx);
-  Points[i2].x:= Max(Points[i2].x, dx);
+  FPoints[Int1].X := Max(FPoints[Int1].X, DeltaX);
+  FPoints[Int2].X := Max(FPoints[Int2].X, DeltaX);
 end;
 
-procedure TSquare.enlargeTop(corner, dy: Integer);
-  var i, i1, i2: Integer;
+procedure TSquare.EnlargeTop(Corner, DeltaY: Integer);
+var
+  Int1, Int2: Integer;
 begin
-  i1:= 3;
-  i2:= 4;
-  for i:= 2 to corner do begin
-    i1:= prev(i1);
-    i2:= prev(i2);
+  Int1 := 3;
+  Int2 := 4;
+  for var I := 2 to Corner do
+  begin
+    Int1 := Prev(Int1);
+    Int2 := Prev(Int2);
   end;
-  Points[i1].y:= Min(Points[i1].y, -dy);
-  Points[i2].y:= Min(Points[i2].y, -dy);
+  FPoints[Int1].Y := Min(FPoints[Int1].Y, -DeltaY);
+  FPoints[Int2].Y := Min(FPoints[Int2].Y, -DeltaY);
 end;
 
-procedure TSquare.enlargeBottom(corner, dy: Integer);
-  var i, i1, i2: Integer;
+procedure TSquare.EnlargeBottom(Corner, DeltaY: Integer);
+var
+  Int1, Int2: Integer;
 begin
-  i1:= 1;
-  i2:= 2;
-  for i:= 2 to corner do begin
-    i1:= prev(i1);
-    i2:= prev(i2);
+  Int1 := 1;
+  Int2 := 2;
+  for var I := 2 to Corner do
+  begin
+    Int1 := Prev(Int1);
+    Int2 := Prev(Int2);
   end;
-  Points[i1].y:= Max(Points[i1].y, dy);
-  Points[i2].y:= Max(Points[i2].y, dy);
+  FPoints[Int1].Y := Max(FPoints[Int1].Y, DeltaY);
+  FPoints[Int2].Y := Max(FPoints[Int2].Y, DeltaY);
 end;
 
-procedure TSquare.Term(FromP, ToP: TPoint);
+procedure TSquare.Term(FFromBorder, FToBorder: TPoint);
 begin
-  Points[1].x := FromP.x + Points[1].x;
-  Points[1].y := FromP.y + Points[1].y;
-  Points[2].x := FromP.x + Points[2].x;
-  Points[2].y := FromP.y + Points[2].y;
-  Points[3].x := ToP.x + Points[3].x;
-  Points[3].y := ToP.y + Points[3].y;
-  Points[4].x := ToP.x + Points[4].x;
-  Points[4].y := ToP.y + Points[4].y;
+  FPoints[1].X := FFromBorder.X + FPoints[1].X;
+  FPoints[1].Y := FFromBorder.Y + FPoints[1].Y;
+  FPoints[2].X := FFromBorder.X + FPoints[2].X;
+  FPoints[2].Y := FFromBorder.Y + FPoints[2].Y;
+  FPoints[3].X := FToBorder.X + FPoints[3].X;
+  FPoints[3].Y := FToBorder.Y + FPoints[3].Y;
+  FPoints[4].X := FToBorder.X + FPoints[4].X;
+  FPoints[4].Y := FToBorder.Y + FPoints[4].Y;
 end;
 
-procedure TSquare.Term(corner: Integer; Pl: TFivePoints);
-  var i: Integer;
+procedure TSquare.Term(Corner: Integer; FFivePoints: TFivePoints);
 begin
-  for i:= 2 to 4 do begin
-    Points[i].x:= Pl[i].x + Points[i].x;
-    Points[i].y:= Pl[i].y + Points[i].Y;
+  for var I := 2 to 4 do
+  begin
+    FPoints[I].X := FFivePoints[I].X + FPoints[I].X;
+    FPoints[I].Y := FFivePoints[I].Y + FPoints[I].Y;
   end;
-  if corner in [1, 3] then begin
-    Points[1].x:= Pl[4].x + Points[1].x;
-    Points[1].y:= Pl[2].y + Points[1].y;
-  end else begin
-    Points[1].x:= Pl[2].x + Points[1].x;
-    Points[1].y:= Pl[4].y + Points[1].y;
+  if Corner in [1, 3] then
+  begin
+    FPoints[1].X := FFivePoints[4].X + FPoints[1].X;
+    FPoints[1].Y := FFivePoints[2].Y + FPoints[1].Y;
+  end
+  else
+  begin
+    FPoints[1].X := FFivePoints[2].X + FPoints[1].X;
+    FPoints[1].Y := FFivePoints[4].Y + FPoints[1].Y;
   end;
 end;
 
-procedure TSquare.Draw(aCanvas: TCanvas);
-  var i: Integer;
+procedure TSquare.Draw(FCanvas: TCanvas);
 begin
-  aCanvas.Pen.Color:= clYellow;
-
+  FCanvas.Pen.Color := clYellow;
   {
-  aCanvas.moveTo(Points[1].x, Points[1].y);
-  aCanvas.lineTo(Points[4].x, Points[4].y);
-  aCanvas.moveTo(Points[2].x, Points[2].y);
-  aCanvas.lineTo(Points[3].x, Points[3].y);
+    Canvas.MoveTo(FPoints[1].X, FPoints[1].Y);
+    Canvas.LineTo(FPoints[4].X, FPoints[4].Y);
+    Canvas.MoveTo(FPoints[2].X, FPoints[2].Y);
+    Canvas.LineTo(FPoints[3].X, FPoints[3].Y);
   }
-  aCanvas.moveTo(Points[4].x, Points[4].y);
-  for i:= 1 to 4 do
-    aCanvas.lineTo(Points[i].x, Points[i].y);
-
+  FCanvas.MoveTo(FPoints[4].X, FPoints[4].Y);
+  for var I := 1 to 4 do
+    FCanvas.LineTo(FPoints[I].X, FPoints[I].Y);
 end;
 
-function TSquare.LineIntersectsLine(l1p1, l1p2, l2p1, l2p2: TPoint): Boolean;
-  var q, d, r, s: double;
+function TSquare.LineIntersectsLine(L1p1, L1p2, L2p1, L2p2: TPoint): Boolean;
+var
+  QVal, DVal, RVal, SVal: Double;
 begin
-  Result:= False;
-  q:= (l1p1.Y - l2p1.Y) * (l2p2.X - l2p1.X) - (l1p1.X - l2p1.X) * (l2p2.Y - l2p1.Y);
-  d:= (l1p2.X - l1p1.X) * (l2p2.Y - l2p1.Y) - (l1p2.Y - l1p1.Y) * (l2p2.X - l2p1.X);
-  if d = 0 then Exit;
-  r:= q / d;
-  q:= (l1p1.Y - l2p1.Y) * (l1p2.X - l1p1.X) - (l1p1.X - l2p1.X) * (l1p2.Y - l1p1.Y);
-  s:= q / d;
-  if not ((r <= 0) or (r >= 1) or (s <= 0) or (s >= 1))
-    then Result:= True;
+  Result := False;
+  QVal := (L1p1.Y - L2p1.Y) * (L2p2.X - L2p1.X) - (L1p1.X - L2p1.X) *
+    (L2p2.Y - L2p1.Y);
+  DVal := (L1p2.X - L1p1.X) * (L2p2.Y - L2p1.Y) - (L1p2.Y - L1p1.Y) *
+    (L2p2.X - L2p1.X);
+  if DVal = 0 then
+    Exit;
+  RVal := QVal / DVal;
+  QVal := (L1p1.Y - L2p1.Y) * (L1p2.X - L1p1.X) - (L1p1.X - L2p1.X) *
+    (L1p2.Y - L1p1.Y);
+  SVal := QVal / DVal;
+  if not((RVal <= 0) or (RVal >= 1) or (SVal <= 0) or (SVal >= 1)) then
+    Result := True;
 end;
 
-function TSquare.Intersects(P1, P2: TPoint; R: TRect): Boolean;
+function TSquare.Intersects(Point1, Point2: TPoint; Rect: TRect): Boolean;
 begin
-  Result:=
-    LineIntersectsLine(P1, P2, Point(R.Left, R.Top), Point(R.Right, R.Top)) or
-    LineIntersectsLine(P1, P2, Point(R.Right, R.Top), Point(R.Right, R.Bottom)) or
-    LineIntersectsLine(P1, P2, Point(R.Right, R.Bottom), Point(R.Left, R.Bottom)) or
-    LineIntersectsLine(P1, P2, Point(R.Left, R.Bottom), Point(R.Left, R.Top));
+  Result := LineIntersectsLine(Point1, Point2, Point(Rect.Left, Rect.Top),
+    Point(Rect.Right, Rect.Top)) or LineIntersectsLine(Point1, Point2,
+    Point(Rect.Right, Rect.Top), Point(Rect.Right, Rect.Bottom)) or
+    LineIntersectsLine(Point1, Point2, Point(Rect.Right, Rect.Bottom),
+    Point(Rect.Left, Rect.Bottom)) or LineIntersectsLine(Point1, Point2,
+    Point(Rect.Left, Rect.Bottom), Point(Rect.Left, Rect.Top));
 end;
 
-function TSquare.Intersects(P1, P2: TPoint; S: TSquare): Boolean;
+function TSquare.Intersects(Point1, Point2: TPoint; Square: TSquare): Boolean;
 begin
-  Result:=
-    LineIntersectsLine(P1, P2, S.Points[1], S.Points[2]) or
-    LineIntersectsLine(P1, P2, S.Points[2], S.Points[3]) or
-    LineIntersectsLine(P1, P2, S.Points[3], S.Points[4]) or
-    LineIntersectsLine(P1, P2, S.Points[4], S.Points[1]);
+  Result := LineIntersectsLine(Point1, Point2, Square.FPoints[1],
+    Square.FPoints[2]) or LineIntersectsLine(Point1, Point2, Square.FPoints[2],
+    Square.FPoints[3]) or LineIntersectsLine(Point1, Point2, Square.FPoints[3],
+    Square.FPoints[4]) or LineIntersectsLine(Point1, Point2, Square.FPoints[4],
+    Square.FPoints[1]);
 end;
 
-function TSquare.intersects(R: TRect): Boolean;
+function TSquare.Intersects(Rect: TRect): Boolean;
 begin
-  Result:=
-    Intersects(Points[1], Points[2], R) or
-    Intersects(Points[2], Points[3], R) or
-    Intersects(Points[3], Points[4], R) or
-    Intersects(Points[4], Points[1], R);
+  Result := Intersects(FPoints[1], FPoints[2], Rect) or
+    Intersects(FPoints[2], FPoints[3], Rect) or
+    Intersects(FPoints[3], FPoints[4], Rect) or
+    Intersects(FPoints[4], FPoints[1], Rect);
 end;
 
-function TSquare.intersects(S: TSquare): Boolean;
+function TSquare.Intersects(Square: TSquare): Boolean;
 begin
-  Result:=
-    Intersects(Points[1], Points[2], S) or
-    Intersects(Points[2], Points[3], S) or
-    Intersects(Points[3], Points[4], S) or
-    Intersects(Points[4], Points[1], S);
+  Result := Intersects(FPoints[1], FPoints[2], Square) or
+    Intersects(FPoints[2], FPoints[3], Square) or
+    Intersects(FPoints[3], FPoints[4], Square) or
+    Intersects(FPoints[4], FPoints[1], Square);
 end;
 
-{--- TConnection --------------------------------------------------------------}
+{ --- TConnection -------------------------------------------------------------- }
 
-function TConnection.ArrowToConnect(Arrow: TessConnectionArrowStyle): TessConnectionStyle;
+function TConnection.ArrowToConnect(Arrow: TEssConnectionArrowStyle)
+  : TEssConnectionStyle;
 begin
   case Arrow of
-    asInheritends: Result:= csNormal;
-    asInstanceOf,
-    asComment :    Result:= csThinDash;
-    else           Result:= csThin;
-  end;
-end;
-
-function TConnection.getCenter(R: TRect): TPoint;
-begin
-  Result:= Point((R.Left + R.Right) div 2, (R.Top + R.Bottom) div 2);
-end;
-
-procedure TConnection.SetPenBrushArrow(aCanvas: TCanvas);
-begin
-  case ConnectStyle of
-    csThin: begin
-        aCanvas.Pen.Width := 1;
-        aCanvas.Pen.Style := psSolid;
-      end;
-    csNormal: begin
-        aCanvas.Pen.Width := 3;
-        aCanvas.Pen.Style := psSolid;
-      end;
-    csThinDash: begin
-        aCanvas.Pen.Width := 1;
-        aCanvas.Pen.Style := psDash;
-      end;
-  end;
-end;
-
-function TConnection.getQuadrant(x, y: Integer; R: TREct): Integer;
-begin
-  if y < (R.Top + R.Bottom) div 2 then
-    if x < (R.Left + R.Right) div 2
-      then Result:= 2
-      else Result:= 1
+    asInheritends:
+      Result := csNormal;
+    asInstanceOf, asComment:
+      Result := csThinDash;
   else
-    if x < (R.Left + R.Right) div 2
-      then Result:= 3
-      else Result:= 4;
+    Result := csThin;
+  end;
 end;
 
-procedure TConnection.Draw(aCanvas: TCanvas; show: Boolean);
-  var
-    x1, x2: Integer;
-    y1, y2: Integer;
-    xbase: Integer;
-    ybase: Integer;
-    xLineDelta: Integer;
-    xLineUnitDelta: Double;
-    xNormalDelta: Integer;
-    xNormalUnitDelta: Double;
-    yLineDelta: Integer;
-    yLineUnitDelta: Double;
-    yNormalDelta: Integer;
-    yNormalUnitDelta: Double;
-    Tmp1: double;
-    dx, dy, d2x, d2y, d1x, d1y, d3x, d3y, xr, yr, hl: Integer;
-    absXLineDelta, absYLineDelta: Integer;
-    R2: TRect;
-    MyRgn: HRGN;
-    ConRect: TRect;
-    PointArray: array of TPoint;
+function TConnection.GetCenter(Rect: TRect): TPoint;
+begin
+  Result := Point((Rect.Left + Rect.Right) div 2,
+    (Rect.Top + Rect.Bottom) div 2);
+end;
 
-  function aCalcRect(ACanvas: TCanvas; const AString: string): TRect;
+procedure TConnection.SetPenBrushArrow(Canvas: TCanvas);
+begin
+  case FConnectStyle of
+    csThin:
+      begin
+        Canvas.Pen.Width := 1;
+        Canvas.Pen.Style := psSolid;
+      end;
+    csNormal:
+      begin
+        Canvas.Pen.Width := 3;
+        Canvas.Pen.Style := psSolid;
+      end;
+    csThinDash:
+      begin
+        Canvas.Pen.Width := 1;
+        Canvas.Pen.Style := psDash;
+      end;
+  end;
+end;
+
+function TConnection.GetQuadrant(XPos, YPos: Integer; Rect: TRect): Integer;
+begin
+  if YPos < (Rect.Top + Rect.Bottom) div 2 then
+    if XPos < (Rect.Left + Rect.Right) div 2 then
+      Result := 2
+    else
+      Result := 1
+  else if XPos < (Rect.Left + Rect.Right) div 2 then
+    Result := 3
+  else
+    Result := 4;
+end;
+
+procedure TConnection.Draw(Canvas: TCanvas; Show: Boolean);
+var
+  X1Pos, X2Pos: Integer;
+  Y1Pos, Y2Pos: Integer;
+  XBase: Integer;
+  YBase: Integer;
+  XLineDelta: Integer;
+  XLineUnitDelta: Double;
+  XNormalDelta: Integer;
+  XNormalUnitDelta: Double;
+  YLineDelta: Integer;
+  YLineUnitDelta: Double;
+  YNormalDelta: Integer;
+  YNormalUnitDelta: Double;
+  Tmp1: Double;
+  DeltaX, DeltaY, D2X, D2Y, D1X, D1Y, D3X, D3Y, XRPos, YRPos, HLPPI: Integer;
+  AbsXLineDelta, AbsYLineDelta: Integer;
+  Rect2: TRect;
+  MyRgn: HRGN;
+  ConRect: TRect;
+  PointArray: array of TPoint;
+
+  function aCalcRect(Canvas: TCanvas; const AString: string): TRect;
   begin
     Result := Rect(0, 0, MaxInt, 0);
-    DrawText(ACanvas.Handle, PChar(AString), -1, Result, DT_CALCRECT or DT_LEFT or DT_WORDBREAK or DT_NOPREFIX);
+    DrawText(Canvas.Handle, PChar(AString), -1, Result, DT_CALCRECT or
+      DT_LEFT or DT_WORDBREAK or DT_NOPREFIX);
     Inc(Result.Right, 6);
     Inc(Result.Bottom, 4);
-    Result.Top:= 2;
+    Result.Top := 2;
   end;
 
-  procedure ShowMultiplicity(turned: Boolean; xr, yr: Integer; R2: TRect; const Multiplicity: string);
-    var th, tw, Quadrant: Integer; Flags: longint; R: TRect;
+  procedure ShowMultiplicity(Turned: Boolean; XRPos, YRPos: Integer;
+    Rect2: TRect; const Multiplicity: string);
+  var
+    THeight, TWidth, Quadrant: Integer;
+    Flags: LongInt;
+    Rect: TRect;
   begin
-    if Multiplicity = '' then Exit;
-    R:= aCalcRect(aCanvas, Multiplicity);
-    th:= R.Bottom;
-    tw:= R.Right;
+    if Multiplicity = '' then
+      Exit;
+    Rect := aCalcRect(Canvas, Multiplicity);
+    THeight := Rect.Bottom;
+    TWidth := Rect.Right;
 
-    Quadrant:= getQuadrant(xr, yr, R2);
-    if Quadrant = 1 then begin
-      // sofern der Schnittpunkt (xr/yr) auf der obere Rechtecklinie liegt
+    Quadrant := GetQuadrant(XRPos, YRPos, Rect2);
+    if Quadrant = 1 then
+    begin
+      // sofern der Schnittpunkt (XRPos/YRPos) auf der obere Rechtecklinie liegt
       // ihn auf die rechte Randlinie verschieben
-      if xr < R2.Right then begin
-        yr:= yr - (R2.Right - xr)*absYLineDelta div absXLineDelta;
-        xr:= R2.Right;
+      if XRPos < Rect2.Right then
+      begin
+        YRPos := YRPos - (Rect2.Right - XRPos) *
+          AbsYLineDelta div AbsXLineDelta;
+        XRPos := Rect2.Right;
       end;
       // ist die Korrektur zu groß
-      if yr + th < R2.Top then begin
+      if YRPos + THeight < Rect2.Top then
+      begin
         // wird das Rechteck so verschoben, dass es auf der oberen Rechtecklinie aufliegt
-        xr:= R2.Right - (R2.Top - (yr + th))*absXLineDelta div absYLineDelta +10;
-        yr:= R2.Top - th;
+        XRPos := Rect2.Right - (Rect2.Top - (YRPos + THeight)) *
+          AbsXLineDelta div AbsYLineDelta + 10;
+        YRPos := Rect2.Top - THeight;
       end;
 
-    end else if Quadrant = 2 then begin
+    end
+    else if Quadrant = 2 then
+    begin
       // Bezugspunkt rechte obere Ecke
-      if yr + th > R2.Top then begin
+      if YRPos + THeight > Rect2.Top then
+      begin
         // Ausgaberechteck nach oben verschieben
-        xr:= xr - ((yr + th) - R2.Top)*absXLineDelta div absYLineDelta;
-        yr:= R2.Top - th;
+        XRPos := XRPos - ((YRPos + THeight) - Rect2.Top) *
+          AbsXLineDelta div AbsYLineDelta;
+        YRPos := Rect2.Top - THeight;
       end;
-      if xr < R2.Left then begin
+      if XRPos < Rect2.Left then
+      begin
         // Ausgaberechteck nach rechts/unten verschieben
-        yr:= yr + (R2.Left - xr)*absYLineDelta div absXLineDelta;
-        xr:= R2.Left;
+        YRPos := YRPos + (Rect2.Left - XRPos) * AbsYLineDelta div AbsXLineDelta;
+        XRPos := Rect2.Left;
       end;
-      xr:= xr - tw; // left of connection
-    end else if Quadrant = 3 then begin
-      if yr < R2.Bottom then begin
-        yr:= yr + tw*absYLineDelta div absXLineDelta;
-        xr:= R2.Left - tw;
+      XRPos := XRPos - TWidth; // left of connection
+    end
+    else if Quadrant = 3 then
+    begin
+      if YRPos < Rect2.Bottom then
+      begin
+        YRPos := YRPos + TWidth * AbsYLineDelta div AbsXLineDelta;
+        XRPos := Rect2.Left - TWidth;
       end;
-      if yr > R2.Bottom then begin
-        xr:= xr + (yr - R2.Bottom)*absXLineDelta div absYLineDelta;
-        yr:= R2.Bottom;
-     end;
-    end else if Quadrant = 4 then begin
-      if yr < R2.Bottom then begin
-        xr:= xr + (R2.Bottom - yr)* absXLineDelta div absYLineDelta;
-        yr:= R2.Bottom;
+      if YRPos > Rect2.Bottom then
+      begin
+        XRPos := XRPos + (YRPos - Rect2.Bottom) *
+          AbsXLineDelta div AbsYLineDelta;
+        YRPos := Rect2.Bottom;
       end;
-      if xr - tw > R2.Right then begin
-         yr:= yr - ((xr -tw) - R2.Right)*absYLineDelta div absXLineDelta;
-         xr:= R2.Right + tw;
+    end
+    else if Quadrant = 4 then
+    begin
+      if YRPos < Rect2.Bottom then
+      begin
+        XRPos := XRPos + (Rect2.Bottom - YRPos) *
+          AbsXLineDelta div AbsYLineDelta;
+        YRPos := Rect2.Bottom;
       end;
-      xr:= xr - tw; // left of connection
+      if XRPos - TWidth > Rect2.Right then
+      begin
+        YRPos := YRPos - ((XRPos - TWidth) - Rect2.Right) *
+          AbsYLineDelta div AbsXLineDelta;
+        XRPos := Rect2.Right + TWidth;
+      end;
+      XRPos := XRPos - TWidth; // left of connection
     end;
-    OffsetRect(R, xr, yr);
-    Flags:= DT_EXPANDTABS or DT_WORDBREAK or DT_NOPREFIX;
-    DrawText(aCanvas.Handle, PChar(Multiplicity), -1, R, Flags);
-    if not turned and (Quadrant in [1, 4]) or turned and (Quadrant in [2, 3])
-      then Square.enlargeRight(FromPStart, ToPEnd, tw + 15, th)
-      else Square.enlargeLeft(FromPStart, ToPEnd, tw + 15, th);
-    svg:= svg + getSVGText(R, Multiplicity);
+    OffsetRect(Rect, XRPos, YRPos);
+    Flags := DT_EXPANDTABS or DT_WORDBREAK or DT_NOPREFIX;
+    DrawText(Canvas.Handle, PChar(Multiplicity), -1, Rect, Flags);
+    if not Turned and (Quadrant in [1, 4]) or Turned and (Quadrant in [2, 3])
+    then
+      Square.EnlargeRight(FFromBorderNum, FToBorderNum, TWidth + 15, THeight)
+    else
+      Square.EnlargeLeft(FFromBorderNum, FToBorderNum, TWidth + 15, THeight);
+    FSVG := FSVG + GetSVGText(Rect, Multiplicity);
   end;
 
-  procedure ShowRole(turned: Boolean; xr, yr: Integer; R2: TRect; const Role: string);
-    var th, tw, Quadrant: Integer; Flags: longint; R: TRect;
+  procedure ShowRole(Turned: Boolean; XRPos, YRPos: Integer; Rect2: TRect;
+    const Role: string);
+  var
+    THeight, TWidth, Quadrant: Integer;
+    Flags: LongInt;
+    Rect: TRect;
   begin
-    if Role = '' then Exit;
-    R:= aCalcRect(aCanvas, Role);
-    th:= R.Bottom;
-    tw:= R.Right;
+    if Role = '' then
+      Exit;
+    Rect := aCalcRect(Canvas, Role);
+    THeight := Rect.Bottom;
+    TWidth := Rect.Right;
 
-    Quadrant:= getQuadrant(xr, yr, R2);
-    if Quadrant = 1 then begin
+    Quadrant := GetQuadrant(XRPos, YRPos, Rect2);
+    if Quadrant = 1 then
+    begin
       // Verschiebung nach oben, damit Strecke nicht geschnitten wird
-      yr:= yr - tw*absYLineDelta div absXLineDelta;
-      if yr < R2.Top then begin
-        xr:= xr - (R2.Top - yr)*absXLineDelta div absYLineDelta;
-        yr:= R2.Top;
+      YRPos := YRPos - TWidth * AbsYLineDelta div AbsXLineDelta;
+      if YRPos < Rect2.Top then
+      begin
+        XRPos := XRPos - (Rect2.Top - YRPos) * AbsXLineDelta div AbsYLineDelta;
+        YRPos := Rect2.Top;
       end;
-      yr:= yr - th;
-    end else if Quadrant = 2 then begin
-      if yr > R2.Top then begin
-        xr:= xr - (yr - R2.Top)*absXLineDelta div absYLineDelta;
-        yr:= R2.Top;
+      YRPos := YRPos - THeight;
+    end
+    else if Quadrant = 2 then
+    begin
+      if YRPos > Rect2.Top then
+      begin
+        XRPos := XRPos - (YRPos - Rect2.Top) * AbsXLineDelta div AbsYLineDelta;
+        YRPos := Rect2.Top;
       end;
-      if xr + tw < R2.Left then begin
-        yr:= yr + (R2.Left - (xr + tw))* absYLineDelta div absXLineDelta;
-        xr:= R2.Left - tw;
+      if XRPos + TWidth < Rect2.Left then
+      begin
+        YRPos := YRPos + (Rect2.Left - (XRPos + TWidth)) *
+          AbsYLineDelta div AbsXLineDelta;
+        XRPos := Rect2.Left - TWidth;
       end;
-      yr:= yr - th;
-    end else if Quadrant = 3 then begin
-      if xr > R2.Left then begin
-        yr:= yr + (xr - R2.Left)*absYLineDelta div absXLineDelta;
-        xr:= R2.Left;
+      YRPos := YRPos - THeight;
+    end
+    else if Quadrant = 3 then
+    begin
+      if XRPos > Rect2.Left then
+      begin
+        YRPos := YRPos + (XRPos - Rect2.Left) * AbsYLineDelta div AbsXLineDelta;
+        XRPos := Rect2.Left;
       end;
-      if yr > R2.Bottom + th then begin
-        xr:= xr - (R2.Bottom +th - yr)*absXLineDelta div absYLineDelta;
-        yr:= R2.Bottom + th;
+      if YRPos > Rect2.Bottom + THeight then
+      begin
+        XRPos := XRPos - (Rect2.Bottom + THeight - YRPos) *
+          AbsXLineDelta div AbsYLineDelta;
+        YRPos := Rect2.Bottom + THeight;
       end;
-      xr:= xr - tw;
-      yr:= yr - th;
-    end else if Quadrant = 4 then begin
-      if xr < R2.Right then begin
-        yr:= yr + (R2.Right - xr)*absYLineDelta div absXLineDelta;
-        xr:= R2.Right;
+      XRPos := XRPos - TWidth;
+      YRPos := YRPos - THeight;
+    end
+    else if Quadrant = 4 then
+    begin
+      if XRPos < Rect2.Right then
+      begin
+        YRPos := YRPos + (Rect2.Right - XRPos) *
+          AbsYLineDelta div AbsXLineDelta;
+        XRPos := Rect2.Right;
       end;
-      if yr > R2.Bottom + th then begin
-        xr:= xr - (yr - R2.Bottom -th)*absXLineDelta div absYLineDelta;
-        yr:= R2.Bottom + th;
+      if YRPos > Rect2.Bottom + THeight then
+      begin
+        XRPos := XRPos - (YRPos - Rect2.Bottom - THeight) *
+          AbsXLineDelta div AbsYLineDelta;
+        YRPos := Rect2.Bottom + THeight;
       end;
-      yr:= yr - th;
+      YRPos := YRPos - THeight;
     end;
-    OffsetRect(R, xr, yr);
-    Flags:= DT_EXPANDTABS or DT_WORDBREAK or DT_NOPREFIX;
-    DrawText(aCanvas.Handle, PChar(Role), -1, R, Flags);
-    if not turned and (Quadrant in [1, 4]) or turned and (Quadrant in [2, 3])
-      then Square.enlargeLeft(FromPStart, ToPEnd, tw + 15, th)
-      else Square.enlargeRight(FromPStart, ToPEnd, tw + 15, th);
-    svg:= svg + getSVGText(R, Role);
+    OffsetRect(Rect, XRPos, YRPos);
+    Flags := DT_EXPANDTABS or DT_WORDBREAK or DT_NOPREFIX;
+    DrawText(Canvas.Handle, PChar(Role), -1, Rect, Flags);
+    if not Turned and (Quadrant in [1, 4]) or Turned and (Quadrant in [2, 3])
+    then
+      Square.EnlargeLeft(FFromBorderNum, FToBorderNum, TWidth + 15, THeight)
+    else
+      Square.EnlargeRight(FFromBorderNum, FToBorderNum, TWidth + 15, THeight);
+    FSVG := FSVG + GetSVGText(Rect, Role);
   end;
 
-  procedure ShowRelation(R2: TRect; dx, dy: Integer; Relation: string);
-    var R: TRect; tw, th, xBase, yBase, Quadrant: Integer; alpha: double;
+  procedure ShowRelation(Rect2: TRect; DeltaX, DeltaY: Integer;
+    FRelation: string);
+  var
+    Rect: TRect;
+    TWidth, THeight, XBase, YBase, Quadrant: Integer;
+    Alpha: Double;
   begin
-    if Relation = '' then Exit;
-    yLineDelta:= - yLineDelta;
-    th:= aCanvas.TextHeight(Relation);
-    tw:= aCanvas.TextWidth(Relation);
-    xBase:= (x1 + x2) div 2;
-    yBase:= (y1 + y2) div 2;
+    if FRelation = '' then
+      Exit;
+    YLineDelta := -YLineDelta;
+    THeight := Canvas.TextHeight(FRelation);
+    TWidth := Canvas.TextWidth(FRelation);
+    XBase := (X1Pos + X2Pos) div 2;
+    YBase := (Y1Pos + Y2Pos) div 2;
 
-    Quadrant:= getQuadrant(xBase, yBase, R2);
-    if Quadrant in [1, 3]
-      then R:= Bounds(xBase - abs(dx) - tw, yBase -1 - th, tw, th)
-      else R:= Bounds(xBase + abs(dx), yBase -1 - th, tw, th);
+    Quadrant := GetQuadrant(XBase, YBase, Rect2);
+    if Quadrant in [1, 3] then
+      Rect := Bounds(XBase - Abs(DeltaX) - TWidth, YBase - 1 - THeight,
+        TWidth, THeight)
+    else
+      Rect := Bounds(XBase + Abs(DeltaX), YBase - 1 - THeight, TWidth, THeight);
 
-    if yLineDelta = 0
-      then alpha:= 0
-      else alpha:= Round(RadToDeg(arctan2(yLineDelta, xLineDelta)));
-    if (abs(alpha) < 25) or (abs(abs(alpha)-180) < 25) then
-      R.Left:= xBase + dx - tw div 2;
-    if abs(abs(alpha)-90) < 20 then
-      R.Top:= yBase + dy - th div 2;
+    if YLineDelta = 0 then
+      Alpha := 0
+    else
+      Alpha := Round(RadToDeg(ArcTan2(Double(YLineDelta), Double(XLineDelta))));
+    if (Abs(Alpha) < 25) or (Abs(Abs(Alpha) - 180) < 25) then
+      Rect.Left := XBase + DeltaX - TWidth div 2;
+    if Abs(Abs(Alpha) - 90) < 20 then
+      Rect.Top := YBase + DeltaY - THeight div 2;
 
-    //   Canvas.TextOut(R1.Left, R1.Top, Relation); doesn't show Unicode characters well
-    DrawText(aCanvas.Handle, PChar(Relation), -1, R, DT_CALCRECT);
-    DrawText(aCanvas.Handle, PChar(Relation), -1, R, 0);
-    if Quadrant in [1, 4]
-      then Square.enlargeLeft(FromPStart, ToPEnd, tw + abs(dx), th)
-      else Square.enlargeRight(FromPStart, ToPEnd, tw + abs(dx), th);
-    svg:= svg + getSVGText(R, Relation);
+    // FCanvas.TextOut(R1.Left, R1.FToBorder, FRelation); doesn't Show Unicode characters well
+    DrawText(Canvas.Handle, PChar(FRelation), -1, Rect, DT_CALCRECT);
+    DrawText(Canvas.Handle, PChar(FRelation), -1, Rect, 0);
+    if Quadrant in [1, 4] then
+      Square.EnlargeLeft(FFromBorderNum, FToBorderNum,
+        TWidth + Abs(DeltaX), THeight)
+    else
+      Square.EnlargeRight(FFromBorderNum, FToBorderNum,
+        TWidth + Abs(DeltaX), THeight);
+    FSVG := FSVG + GetSVGText(Rect, FRelation);
   end;
 
-begin  // of draw
-  if not Visible then Exit;
-  SetPenBrushArrow(aCanvas);
-  if show then begin
-    aCanvas.Pen.Color:= FGColor;
-    aCanvas.Font.Color:= FGColor;
-  end else begin
-    aCanvas.Pen.Color:= BGColor;
-    aCanvas.Font.Color:= BGColor;
+begin // of Draw
+  if not FVisible then
+    Exit;
+  SetPenBrushArrow(Canvas);
+  if Show then
+  begin
+    Canvas.Pen.Color := FForegroundColor;
+    Canvas.Font.Color := FForegroundColor;
+  end
+  else
+  begin
+    Canvas.Pen.Color := FBackgroundColor;
+    Canvas.Font.Color := FBackgroundColor;
   end;
-  aCanvas.Brush.Color:= BGColor;
+  Canvas.Brush.Color := FBackgroundColor;
 
-  if IsRecursiv then begin
-    DrawRecursiv(aCanvas, show);
+  if FIsRecursiv then
+  begin
+    DrawRecursiv(Canvas, Show);
     Exit;
   end;
-  if IntersectRect(getBoundsRect(FFrom), getBoundsRect(FTo)) then Exit;
+  if IntersectRect(GetBoundsRect(FFromControl), GetBoundsRect(FToControl)) then
+    Exit;
 
-  parallelCorrection;  // use actual position, control might be moved
+  ParallelCorrection; // use actual position, control might be moved
   CalcShortest;
 
-  {--- draw connection line ---------------------------------------------------}
-  x1:= FromP.x; // first point
-  y1:= FromP.y;
-  x2:= ToP.x; // second point with arrow
-  y2:= ToP.y;
-  ConRect:= Rect(Min(x1, x2),  Min(y1, y2), Max(x1, x2) + 1, Max(y1, y2) + 1);
-  dx:= abs(x2-x1); if dx < 3 then InflateRect(ConRect, 1, 0);
-  dy:= abs(y2-y1); if dy < 3 then InflateRect(ConRect, 0, 1);
+  { --- Draw connection line --------------------------------------------------- }
+  X1Pos := FFromBorder.X; // first point
+  Y1Pos := FFromBorder.Y;
+  X2Pos := FToBorder.X; // second point with arrow
+  Y2Pos := FToBorder.Y;
+  ConRect := Rect(Min(X1Pos, X2Pos), Min(Y1Pos, Y2Pos), Max(X1Pos, X2Pos) + 1,
+    Max(Y1Pos, Y2Pos) + 1);
+  DeltaX := Abs(X2Pos - X1Pos);
+  if DeltaX < 3 then
+    InflateRect(ConRect, 1, 0);
+  DeltaY := Abs(Y2Pos - Y1Pos);
+  if DeltaY < 3 then
+    InflateRect(ConRect, 0, 1);
 
-  Square.init;
-  xLineDelta:= x2 - x1;
-  yLineDelta:= y2 - y1;
+  Square.Init;
+  XLineDelta := X2Pos - X1Pos;
+  YLineDelta := Y2Pos - Y1Pos;
 
-  absXLineDelta:= abs(xLineDelta);
-  absYLineDelta:= abs(yLineDelta);
-  if absXLineDelta = 0 then absXLineDelta:= 1;
-  if absYLineDelta = 0 then absYLineDelta:= 1;
+  AbsXLineDelta := Abs(XLineDelta);
+  AbsYLineDelta := Abs(YLineDelta);
+  if AbsXLineDelta = 0 then
+    AbsXLineDelta := 1;
+  if AbsYLineDelta = 0 then
+    AbsYLineDelta := 1;
 
-  if (xLineDelta = 0) and (yLineDelta = 0) then Exit; // Line has length 0
-  if (absXLineDelta > 20000) or (absYLineDelta > 20000) then Exit; // Line is too long
+  if (XLineDelta = 0) and (YLineDelta = 0) then
+    Exit; // Line has length 0
+  if (AbsXLineDelta > 20000) or (AbsYLineDelta > 20000) then
+    Exit; // Line is too long
 
-  Tmp1:= sqrt(sqr(xLineDelta) + sqr(yLineDelta));
-  xLineUnitDelta:= xLineDelta / Tmp1;
-  yLineUnitDelta:= yLineDelta / Tmp1;
+  Tmp1 := Sqrt(Sqr(XLineDelta) + Sqr(YLineDelta));
+  XLineUnitDelta := XLineDelta / Tmp1;
+  YLineUnitDelta := YLineDelta / Tmp1;
 
   // just the line
   // clipping is necessary due to line width 3
-  MyRgn:= CreateRectRgn(ConRect.Left, ConRect.Top, ConRect.Right, ConRect.Bottom);
-  SelectClipRgn(aCanvas.Handle, MyRgn);
+  MyRgn := CreateRectRgn(ConRect.Left, ConRect.Top, ConRect.Right,
+    ConRect.Bottom);
+  SelectClipRgn(Canvas.Handle, MyRgn);
 
-  svg:= '<g>'#13#10;
-  aCanvas.MoveTo(x1, y1);
-  if Canvas.Pen.Width = 1 then begin
-    aCanvas.LineTo(x2, y2);
-    aCanvas.Pixels[x2, y2]:= aCanvas.Pen.Color;
-    svg:= svg + getSVGLine(x1, y1, x2, y2);
-  end else begin
-    aCanvas.LineTo(x2-Round(5*xLineUnitDelta), y2 - Round(5*yLineUnitDelta));
-    svg:= svg + getSVGLine(x1, y1, x2 - SimpleRoundTo(5*xLineUnitDelta, -1), y2 - SimpleRoundTo(5*yLineUnitDelta, -1));
-    insert('stroke-width="3" ', svg, pos('/>', svg));
+  FSVG := '<g>'#13#10;
+  Canvas.MoveTo(X1Pos, Y1Pos);
+  if FCanvas.Pen.Width = 1 then
+  begin
+    Canvas.LineTo(X2Pos, Y2Pos);
+    Canvas.Pixels[X2Pos, Y2Pos] := Canvas.Pen.Color;
+    FSVG := FSVG + GetSVGLine(X1Pos, Y1Pos, X2Pos, Y2Pos);
+  end
+  else
+  begin
+    Canvas.LineTo(X2Pos - Round(5 * XLineUnitDelta),
+      Y2Pos - Round(5 * YLineUnitDelta));
+    FSVG := FSVG + GetSVGLine(X1Pos, Y1Pos,
+      X2Pos - SimpleRoundTo(5 * XLineUnitDelta, -1),
+      Y2Pos - SimpleRoundTo(5 * YLineUnitDelta, -1));
+    Insert('stroke-width="3" ', FSVG, Pos('/>', FSVG));
   end;
   if ArrowStyle in [asInstanceOf, asComment] then
-    insert('stroke-dasharray="1.5% 0.5%" ', svg, pos('/>', svg));
+    Insert('stroke-dasharray="1.5% 0.5%" ', FSVG, Pos('/>', FSVG));
 
-  SelectClipRgn(aCanvas.Handle, HRGN(nil));
+  SelectClipRgn(Canvas.Handle, HRGN(nil));
   DeleteObject(MyRgn);
 
-  xNormalDelta :=  yLineDelta;
-  yNormalDelta := -xLineDelta;
-  xNormalUnitDelta := xNormalDelta / Sqrt(Sqr(xNormalDelta) + Sqr(yNormalDelta));
-  yNormalUnitDelta := yNormalDelta / Sqrt(Sqr(xNormalDelta) + Sqr(yNormalDelta));
+  XNormalDelta := YLineDelta;
+  YNormalDelta := -XLineDelta;
+  XNormalUnitDelta := XNormalDelta /
+    Sqrt(Sqr(XNormalDelta) + Sqr(YNormalDelta));
+  YNormalUnitDelta := YNormalDelta /
+    Sqrt(Sqr(XNormalDelta) + Sqr(YNormalDelta));
 
-  aCanvas.Pen.Width := 1;
-  aCanvas.Pen.Style := psSolid;
+  Canvas.Pen.Width := 1;
+  Canvas.Pen.Style := psSolid;
 
-  hl:= FFrom.PPIScale(HeadLength);
+  HLPPI := FFromControl.PPIScale(HeadLength);
 
-  dx := Round(hl*xNormalUnitDelta);
-  dy := Round(hl*yNormalUnitDelta);
-  d1x:= Round(hl*xLineUnitDelta);
-  d1y:= Round(hl*yLineUnitDelta);
-  d2x:= Round(hl*xLineUnitDelta*2.0);
-  d2y:= Round(hl*yLineUnitDelta*2.0);
-  d3x:= Round(hl*xLineUnitDelta*3.0);
-  d3y:= Round(hl*yLineUnitDelta*3.0);
+  DeltaX := Round(HLPPI * XNormalUnitDelta);
+  DeltaY := Round(HLPPI * YNormalUnitDelta);
+  D1X := Round(HLPPI * XLineUnitDelta);
+  D1Y := Round(HLPPI * YLineUnitDelta);
+  D2X := Round(HLPPI * XLineUnitDelta * 2.0);
+  D2Y := Round(HLPPI * YLineUnitDelta * 2.0);
+  D3X := Round(HLPPI * XLineUnitDelta * 3.0);
+  D3Y := Round(HLPPI * YLineUnitDelta * 3.0);
 
   case ArrowStyle of
-    asAggregation1, asAggregation2: aCanvas.Brush.Color:= BGColor;
+    asAggregation1, asAggregation2:
+      Canvas.Brush.Color := FBackgroundColor;
     asComposition1, asComposition2:
-      if Show
-       then aCanvas.Brush.Color:= FGColor
-       else aCanvas.Brush.Color:= BGColor;
+      if Show then
+        Canvas.Brush.Color := FForegroundColor
+      else
+        Canvas.Brush.Color := FBackgroundColor;
   end;
 
-  // (xBase, yBase) is where arrow line is perpendicular to base of triangle.
-  xBase:= x1 + Round(hl * xLineUnitDelta);
-  yBase:= y1 + Round(hl * yLineUnitDelta);
-  if ArrowStyle in [asAggregation1, asAggregation2, asComposition1, asComposition2, asAssociation3] then
-      case FromPStart of
-        1, 3: begin
-             ConRect.Bottom:= max3(ConRect.Bottom, yBase + dy, yBase - dy);
-             ConRect.Top:= min3(ConRect.Top, yBase + dy, yBase - dy);
-           end;
-        2, 4: begin
-             ConRect.Right:= max3(ConRect.Right, xBase + dx, xBase - dx);
-             ConRect.Left:= min3(ConRect.Left, xBase + dx, xBase - dx);
-           end;
-      end;
+  // (XBase, YBase) is where arrow line is perpendicular to base of triangle.
+  XBase := X1Pos + Round(HLPPI * XLineUnitDelta);
+  YBase := Y1Pos + Round(HLPPI * YLineUnitDelta);
+  if ArrowStyle in [asAggregation1, asAggregation2, asComposition1,
+    asComposition2, asAssociation3] then
+    case FFromBorderNum of
+      1, 3:
+        begin
+          ConRect.Bottom := max3(ConRect.Bottom, YBase + DeltaY,
+            YBase - DeltaY);
+          ConRect.Top := min3(ConRect.Top, YBase + DeltaY, YBase - DeltaY);
+        end;
+      2, 4:
+        begin
+          ConRect.Right := max3(ConRect.Right, XBase + DeltaX, XBase - DeltaX);
+          ConRect.Left := min3(ConRect.Left, XBase + DeltaX, XBase - DeltaX);
+        end;
+    end;
 
-  // show aggregation and composition
-  MyRgn:= CreateRectRgn(ConRect.Left, ConRect.Top, ConRect.Right, ConRect.Bottom);
-  SelectClipRgn(aCanvas.Handle, MyRgn);
-  if ArrowStyle in [asAggregation1, asAggregation2, asComposition1, asComposition2] then begin
-    PointArray:= [Point(x1, y1), Point(xBase + dx, yBase + dy),
-                  Point(x1 + d2x, y1 + d2y), Point(xBase - dx, yBase - dy)];
-    aCanvas.Polygon(PointArray);
-    if ArrowStyle in [asAggregation1, asAggregation2]
-      then svg:= svg + getSVGPolygon(PointArray, 'white')
-      else svg:= svg + getSVGPolygon(PointArray, 'black');
+  // Show aggregation and composition
+  MyRgn := CreateRectRgn(ConRect.Left, ConRect.Top, ConRect.Right,
+    ConRect.Bottom);
+  SelectClipRgn(Canvas.Handle, MyRgn);
+  if ArrowStyle in [asAggregation1, asAggregation2, asComposition1,
+    asComposition2] then
+  begin
+    PointArray := [Point(X1Pos, Y1Pos), Point(XBase + DeltaX, YBase + DeltaY),
+      Point(X1Pos + D2X, Y1Pos + D2Y), Point(XBase - DeltaX, YBase - DeltaY)];
+    Canvas.Polygon(PointArray);
+    if ArrowStyle in [asAggregation1, asAggregation2] then
+      FSVG := FSVG + GetSVGPolygon(PointArray, 'white')
+    else
+      FSVG := FSVG + GetSVGPolygon(PointArray, 'black');
 
-  end else if Arrowstyle = asAssociation3 then begin
-    PointArray:= [Point(xBase + dx, yBase + dy), Point(x1, y1),
-                  Point(xBase - dx, yBase - dy)];
-    aCanvas.Polyline(PointArray);
-    svg:= svg + getSVGPolyline(PointArray);
+  end
+  else if ArrowStyle = asAssociation3 then
+  begin
+    PointArray := [Point(XBase + DeltaX, YBase + DeltaY), Point(X1Pos, Y1Pos),
+      Point(XBase - DeltaX, YBase - DeltaY)];
+    Canvas.Polyline(PointArray);
+    FSVG := FSVG + GetSVGPolyline(PointArray);
   end;
-  SelectClipRgn(aCanvas.Handle, HRGN(nil));
+  SelectClipRgn(Canvas.Handle, HRGN(nil));
   DeleteObject(MyRgn);
-  if not (ArrowStyle in [asAssociation1, asComment]) then begin
-    square.enlargeLeft(FromPStart, ToPEnd, 22, 22);
-    square.enlargeRight(FromPStart, ToPEnd, 22, 22);
+  if not(ArrowStyle in [asAssociation1, asComment]) then
+  begin
+    Square.EnlargeLeft(FFromBorderNum, FToBorderNum, 22, 22);
+    Square.EnlargeRight(FFromBorderNum, FToBorderNum, 22, 22);
   end;
 
-  // draw  arrow head
-  aCanvas.Brush.Color:= BGColor;
-  xBase:= x2 - Round(hl * xLineUnitDelta);
-  yBase:= y2 - Round(hl * yLineUnitDelta);
+  // Draw  arrow head
+  Canvas.Brush.Color := FBackgroundColor;
+  XBase := X2Pos - Round(HLPPI * XLineUnitDelta);
+  YBase := Y2Pos - Round(HLPPI * YLineUnitDelta);
   if ArrowStyle in [asInheritends, asAssociation2, asAssociation3,
-                    asAggregation2, asComposition2, asInstanceOf] then
-      case ToPEnd of
-        1, 3: begin
-             ConRect.Bottom:= max3(ConRect.Bottom, yBase + dy, yBase - dy);
-             ConRect.Top:= min3(ConRect.Top, yBase + dy, yBase - dy);
-           end;
-        2, 4: begin
-             ConRect.Right:= max3(ConRect.Right, xBase + dx, xBase - dx);
-             ConRect.Left:= min3(ConRect.Left, xBase + dx, xBase - dx);
-           end;
-      end;
+    asAggregation2, asComposition2, asInstanceOf] then
+    case FToBorderNum of
+      1, 3:
+        begin
+          ConRect.Bottom := max3(ConRect.Bottom, YBase + DeltaY,
+            YBase - DeltaY);
+          ConRect.Top := min3(ConRect.Top, YBase + DeltaY, YBase - DeltaY);
+        end;
+      2, 4:
+        begin
+          ConRect.Right := max3(ConRect.Right, XBase + DeltaX, XBase - DeltaX);
+          ConRect.Left := min3(ConRect.Left, XBase + DeltaX, XBase - DeltaX);
+        end;
+    end;
 
-  MyRgn:= CreateRectRgn(ConRect.Left, ConRect.Top, ConRect.Right, ConRect.Bottom);
-  SelectClipRgn(aCanvas.Handle, MyRgn);
+  MyRgn := CreateRectRgn(ConRect.Left, ConRect.Top, ConRect.Right,
+    ConRect.Bottom);
+  SelectClipRgn(Canvas.Handle, MyRgn);
   case ArrowStyle of
     asInheritends:
-    begin
-      PointArray:= [Point(x2, y2), Point(xBase + dx, yBase + dy),
-                    Point(xBase - dx, yBase - dy)];
-      aCanvas.Polygon(PointArray);
-      svg:= svg + getSVGPolygon(PointArray, 'white');
-    end;
-    asAssociation2, asAssociation3, asAggregation2, asComposition2, asInstanceOf:
-    begin
-      PointArray:= [Point(xBase + dx, yBase + dy), Point(x2, y2),
-                    Point(xBase - dx, yBase - dy)];
-      aCanvas.Polyline(PointArray);
-      svg:= svg + getSVGPolyline(PointArray);
-    end;
+      begin
+        PointArray := [Point(X2Pos, Y2Pos),
+          Point(XBase + DeltaX, YBase + DeltaY),
+          Point(XBase - DeltaX, YBase - DeltaY)];
+        Canvas.Polygon(PointArray);
+        FSVG := FSVG + GetSVGPolygon(PointArray, 'white');
+      end;
+    asAssociation2, asAssociation3, asAggregation2, asComposition2,
+      asInstanceOf:
+      begin
+        PointArray := [Point(XBase + DeltaX, YBase + DeltaY),
+          Point(X2Pos, Y2Pos), Point(XBase - DeltaX, YBase - DeltaY)];
+        Canvas.Polyline(PointArray);
+        FSVG := FSVG + GetSVGPolyline(PointArray);
+      end;
   end;
-  SelectClipRgn(aCanvas.Handle, HRGN(nil));
+  SelectClipRgn(Canvas.Handle, HRGN(nil));
   DeleteObject(MyRgn);
-  svg:= svg + '</g>'#13#10;
+  FSVG := FSVG + '</g>'#13#10;
 
-  {--- draw multiplicities and roles ------------------------------------------}
+  { --- Draw multiplicities and roles ------------------------------------------ }
 
-  R2:= getBoundsRect(FFrom);
-  if ArrowStyle in [asAggregation1, asAggregation2, asComposition1, asComposition2] then begin
-    Inc(R2.Right, abs(d3x));
-    Dec(R2.Top, abs(d3y));
-    Dec(R2.Left, abs(d3x));
-    Inc(R2.Bottom, abs(d3y));
-    xr:= x1 + d3x;
-    yr:= y1 + d3y;
-  end else begin
-    Inc(R2.Right, abs(d1x));
-    Dec(R2.Top, abs(d1y));
-    Dec(R2.Left, abs(d1x));
-    Inc(R2.Bottom, abs(d1y));
-    xr:= x1 + d1x;
-    yr:= y1 + d1y;
+  Rect2 := GetBoundsRect(FFromControl);
+  if ArrowStyle in [asAggregation1, asAggregation2, asComposition1,
+    asComposition2] then
+  begin
+    Inc(Rect2.Right, Abs(D3X));
+    Dec(Rect2.Top, Abs(D3Y));
+    Dec(Rect2.Left, Abs(D3X));
+    Inc(Rect2.Bottom, Abs(D3Y));
+    XRPos := X1Pos + D3X;
+    YRPos := Y1Pos + D3Y;
+  end
+  else
+  begin
+    Inc(Rect2.Right, Abs(D1X));
+    Dec(Rect2.Top, Abs(D1Y));
+    Dec(Rect2.Left, Abs(D1X));
+    Inc(Rect2.Bottom, Abs(D1Y));
+    XRPos := X1Pos + D1X;
+    YRPos := Y1Pos + D1Y;
   end;
-  ShowMultiplicity(False, xr, yr, R2, MultiplicityA);
-  ShowRole(False, xr, yr, R2, RoleA);
+  ShowMultiplicity(False, XRPos, YRPos, Rect2, FMultiplicityA);
+  ShowRole(False, XRPos, YRPos, Rect2, FRoleA);
 
-  ShowRelation(R2, dx, dy, Relation);
+  ShowRelation(Rect2, DeltaX, DeltaY, FRelation);
 
-  R2:= getBoundsRect(FTo);
-  if ArrowStyle in [asAssociation2, asAssociation3, asAggregation2, asComposition2,
-                    asInheritends,  asInstanceOf] then begin
-    Inc(R2.Right, abs(d2x));
-    Dec(R2.Top, abs(d2y));
-    Dec(R2.Left, abs(d2x));
-    Inc(R2.Bottom, abs(d2y));
-    xr:= x2 - d2x;
-    yr:= y2 - d2y;
-  end else begin
-    Inc(R2.Right, abs(d1x));
-    Dec(R2.Top, abs(d1y));
-    Dec(R2.Left, abs(d1x));
-    Inc(R2.Bottom, abs(d1y));
-    xr:= x2 - d1x;
-    yr:= y2 - d1y;
+  Rect2 := GetBoundsRect(FToControl);
+  if ArrowStyle in [asAssociation2, asAssociation3, asAggregation2,
+    asComposition2, asInheritends, asInstanceOf] then
+  begin
+    Inc(Rect2.Right, Abs(D2X));
+    Dec(Rect2.Top, Abs(D2Y));
+    Dec(Rect2.Left, Abs(D2X));
+    Inc(Rect2.Bottom, Abs(D2Y));
+    XRPos := X2Pos - D2X;
+    YRPos := Y2Pos - D2Y;
+  end
+  else
+  begin
+    Inc(Rect2.Right, Abs(D1X));
+    Dec(Rect2.Top, Abs(D1Y));
+    Dec(Rect2.Left, Abs(D1X));
+    Inc(Rect2.Bottom, Abs(D1Y));
+    XRPos := X2Pos - D1X;
+    YRPos := Y2Pos - D1Y;
   end;
-  ShowMultiplicity(True, xr, yr, R2, MultiplicityB);
-  ShowRole(True, xr, yr, R2, RoleB);
-  DrawSelection(aCanvas);
-  square.term(FromP, ToP);
-  //square.draw(aCanvas);
+  ShowMultiplicity(True, XRPos, YRPos, Rect2, FMultiplicityB);
+  ShowRole(True, XRPos, YRPos, Rect2, FRoleB);
+  DrawSelection(Canvas);
+  Square.Term(FFromBorder, FToBorder);
+  // Square.Draw(Canvas);
 end;
 
-procedure TConnection.DrawRecursiv(aCanvas: TCanvas; show: Boolean);
+procedure TConnection.DrawRecursiv(Canvas: TCanvas; Show: Boolean);
 
-  var PointArray: array of TPoint;
-      hl: Integer;
+var
+  PointArray: array of TPoint;
+  HLPPI: Integer;
 
-  procedure DrawArrowStart(P1, P2: TPoint);
-    var P3, P4: TPoint; dx, dy: Integer;
+  procedure DrawArrowStart(Point1, Point2: TPoint);
+  var
+    Point3, Point4: TPoint;
+    DeltaX, DeltaY: Integer;
   begin
     case ArrowStyle of
-      asAssociation3:;
-      asAggregation1, asAggregation2: aCanvas.Brush.Color:= BGColor;
+      asAssociation3:
+        ;
+      asAggregation1, asAggregation2:
+        Canvas.Brush.Color := FBackgroundColor;
       asComposition1, asComposition2:
-        if show
-          then aCanvas.Brush.Color:= FGColor
-          else aCanvas.Brush.Color:= BGColor;
-      else Exit;
+        if Show then
+          Canvas.Brush.Color := FForegroundColor
+        else
+          Canvas.Brush.Color := FBackgroundColor;
+    else
+      Exit;
     end;
-    dx:= P2.x - P1.x;
-    dy:= P2.Y - P1.y;
-    if dy = 0 then begin
-      P2.X:= P1.X + hl*2*sign(dx);
-      P3.X:= P1.X + hl*sign(dx);
-      P3.Y:= P1.Y - hl;
-      P4.X:= P3.X;
-      P4.y:= P1.Y + hl;
-    end else begin
-      P2.Y:= P1.Y + hl*2*sign(dy);
-      P3.X:= P1.X + hl;
-      P3.Y:= P1.Y + hl*sign(dy);
-      P4.X:= P1.X - hl;
-      P4.Y:= P3.Y;
+    DeltaX := Point2.X - Point1.X;
+    DeltaY := Point2.Y - Point1.Y;
+    if DeltaY = 0 then
+    begin
+      Point2.X := Point1.X + HLPPI * 2 * Sign(DeltaX);
+      Point3.X := Point1.X + HLPPI * Sign(DeltaX);
+      Point3.Y := Point1.Y - HLPPI;
+      Point4.X := Point3.X;
+      Point4.Y := Point1.Y + HLPPI;
+    end
+    else
+    begin
+      Point2.Y := Point1.Y + HLPPI * 2 * Sign(DeltaY);
+      Point3.X := Point1.X + HLPPI;
+      Point3.Y := Point1.Y + HLPPI * Sign(DeltaY);
+      Point4.X := Point1.X - HLPPI;
+      Point4.Y := Point3.Y;
     end;
-    if ArrowStyle = asAssociation3 then begin
-      PointArray:= [P3, P1, P4];
-      aCanvas.Polyline(PointArray);
-      svg:= svg + getSVGPolyline(PointArray);
-    end else begin
-      PointArray:= [P1, P3, P2, P4];
-      aCanvas.Polygon(PointArray);
-      if ArrowStyle in [asAggregation1, asAggregation2]
-        then svg:= svg + getSVGPolygon(PointArray, 'white')
-        else svg:= svg + getSVGPolygon(PointArray, 'black');
+    if ArrowStyle = asAssociation3 then
+    begin
+      PointArray := [Point3, Point1, Point4];
+      Canvas.Polyline(PointArray);
+      FSVG := FSVG + GetSVGPolyline(PointArray);
+    end
+    else
+    begin
+      PointArray := [Point1, Point3, Point2, Point4];
+      Canvas.Polygon(PointArray);
+      if ArrowStyle in [asAggregation1, asAggregation2] then
+        FSVG := FSVG + GetSVGPolygon(PointArray, 'white')
+      else
+        FSVG := FSVG + GetSVGPolygon(PointArray, 'black');
     end;
-    aCanvas.Brush.Color:= BGColor;
+    Canvas.Brush.Color := FBackgroundColor;
   end;
 
-  procedure DrawArrowHead(P1, P2: TPoint);
-    var P3, P4: TPoint; dx, dy: Integer;
+  procedure DrawArrowHead(Point1, Point2: TPoint);
+  var
+    Point3, Point4: TPoint;
+    DeltaX, DeltaY: Integer;
   begin
-    //if ArrowStyle in [asAssociation1, asAggregation1, asComposition1, asComment] then exit;
-    dx:= P2.x - P1.x;
-    dy:= P2.Y - P1.y;
-    if dy = 0 then begin
-      P3.X:= P1.X + hl*sign(dx);
-      P3.Y:= P1.Y - hl;
-      P4.X:= P3.X;
-      P4.y:= P1.Y + hl;
-    end else begin
-      P3.X:= P1.X + hl;
-      P3.Y:= P1.Y + hl*sign(dy);
-      P4.X:= P1.X - hl;
-      P4.Y:= P3.Y;
+    // if ArrowStyle in [asAssociation1, asAggregation1, asComposition1, asComment] then exit;
+    DeltaX := Point2.X - Point1.X;
+    DeltaY := Point2.Y - Point1.Y;
+    if DeltaY = 0 then
+    begin
+      Point3.X := Point1.X + HLPPI * Sign(DeltaX);
+      Point3.Y := Point1.Y - HLPPI;
+      Point4.X := Point3.X;
+      Point4.Y := Point1.Y + HLPPI;
+    end
+    else
+    begin
+      Point3.X := Point1.X + HLPPI;
+      Point3.Y := Point1.Y + HLPPI * Sign(DeltaY);
+      Point4.X := Point1.X - HLPPI;
+      Point4.Y := Point3.Y;
     end;
     case ArrowStyle of
-      asInheritends: begin
-        PointArray:= [P1, P3, P4];
-        aCanvas.Polygon(PointArray);
-        if ArrowStyle in [asAggregation1, asAggregation2]
-          then svg:= svg + getSVGPolygon(PointArray, 'white')
-          else svg:= svg + getSVGPolygon(PointArray, 'black');
-      end;
-      asAssociation2,
-      asAssociation3,
-      asAggregation2,
-      asComposition2,
-      asInstanceOf: begin
-        PointArray:= [P3, P1, P4];
-        aCanvas.Polyline(PointArray);
-        aCanvas.Pixels[P4.x, P4.y]:= aCanvas.Pen.Color;
-        svg:= svg + getSVGPolyline(PointArray);
-      end;
-      asAssociation1,
-      asAggregation1,
-      asComposition1,
-      asComment: begin
-        PointArray:= [P1, P2];
-        aCanvas.Polyline(PointArray);
-        svg:= svg + getSVGPolyline(PointArray);
-      end;
+      asInheritends:
+        begin
+          PointArray := [Point1, Point3, Point4];
+          Canvas.Polygon(PointArray);
+          if ArrowStyle in [asAggregation1, asAggregation2] then
+            FSVG := FSVG + GetSVGPolygon(PointArray, 'white')
+          else
+            FSVG := FSVG + GetSVGPolygon(PointArray, 'black');
+        end;
+      asAssociation2, asAssociation3, asAggregation2, asComposition2,
+        asInstanceOf:
+        begin
+          PointArray := [Point3, Point1, Point4];
+          Canvas.Polyline(PointArray);
+          Canvas.Pixels[Point4.X, Point4.Y] := Canvas.Pen.Color;
+          FSVG := FSVG + GetSVGPolyline(PointArray);
+        end;
+      asAssociation1, asAggregation1, asComposition1, asComment:
+        begin
+          PointArray := [Point1, Point2];
+          Canvas.Polyline(PointArray);
+          FSVG := FSVG + GetSVGPolyline(PointArray);
+        end;
     end;
-    aCanvas.Brush.Color:= BGColor;
+    Canvas.Brush.Color := FBackgroundColor;
   end;
 
 begin
-  hl:= FFrom.PPIScale(HeadLength);
+  HLPPI := FFromControl.PPIScale(HeadLength);
   CalcPolyline;
-  if show
-    then aCanvas.Pen.Color:= FGColor
-    else aCanvas.Pen.Color:= BGColor;
-  aCanvas.Polyline(Pl);
-  svg:= '<g>'#13#10 + getSVGPolyline(Pl);
+  if Show then
+    Canvas.Pen.Color := FForegroundColor
+  else
+    Canvas.Pen.Color := FBackgroundColor;
+  Canvas.Polyline(FFivePoints);
+  FSVG := '<g>'#13#10 + GetSVGPolyline(FFivePoints);
   if ArrowStyle in [asInstanceOf, asComment] then
-    insert('stroke-dasharray="1.5% 0.5%" ', svg, pos('/>', svg));
+    Insert('stroke-dasharray="1.5% 0.5%" ', FSVG, Pos('/>', FSVG));
 
-  aCanvas.Pen.Width:= 1;
-  aCanvas.Pen.Style:= psSolid;
-  if isTurned then begin
-    DrawArrowStart(Pl[5], PL[4]);
-    DrawArrowHead(Pl[1], Pl[2]);
-  end else begin
-    DrawArrowStart(Pl[1], PL[2]);
-    DrawArrowHead(Pl[5], Pl[4]);
+  Canvas.Pen.Width := 1;
+  Canvas.Pen.Style := psSolid;
+  if FIsTurned then
+  begin
+    DrawArrowStart(FFivePoints[5], FFivePoints[4]);
+    DrawArrowHead(FFivePoints[1], FFivePoints[2]);
+  end
+  else
+  begin
+    DrawArrowStart(FFivePoints[1], FFivePoints[2]);
+    DrawArrowHead(FFivePoints[5], FFivePoints[4]);
   end;
-  svg:= svg + '</g>'#13#10;
-  DrawRecursivAnnotations(aCanvas);
-  DrawSelection(aCanvas);
-  Square.term(RecursivCorner, Pl);
+  FSVG := FSVG + '</g>'#13#10;
+  DrawRecursivAnnotations(Canvas);
+  DrawSelection(Canvas);
+  Square.Term(FRecursivCorner, FFivePoints);
   // debugging
-  // Square.draw(Canvas);
+  // Square.Draw(FCanvas);
 end;
 
-procedure TConnection.DrawRecursivAnnotations(aCanvas: TCanvas);
-  var R: TRect;
-      x1, y1, th, tw, sl, hl: Integer;
-      ma, mb, ra, rb: string;
-      Flags: longint;
+procedure TConnection.DrawRecursivAnnotations(Canvas: TCanvas);
+var
+  Rect: TRect;
+  X1Pos, Y1Pos, THeight, TWidth, ArrowLength1, ArrowLength2: Integer;
+  Multiplicity1, Multiplicity2, RoleA, RoleB: string;
+  Flags: LongInt;
 begin
-  Flags:= DT_EXPANDTABS or DT_WORDBREAK or DT_NOPREFIX;
-  x1:= 0;
-  y1:= 0;
+  Flags := DT_EXPANDTABS or DT_WORDBREAK or DT_NOPREFIX;
+  X1Pos := 0;
+  Y1Pos := 0;
 
-  if isTurned then begin
-    sl:= ArrowHeadLength(ArrowStyle);
-    hl:= ArrowStartLength(ArrowStyle);
-    ma:= MultiplicityB;
-    mb:= MultiplicityA;
-    ra:= RoleB;
-    rb:= RoleA;
-  end else begin
-    sl:= ArrowStartLength(ArrowStyle);
-    hl:= ArrowHeadLength(ArrowStyle);
-    ma:= MultiplicityA;
-    mb:= MultiplicityB;
-    ra:= RoleA;
-    rb:= RoleB;
+  if FIsTurned then
+  begin
+    ArrowLength1 := ArrowHeadLength(ArrowStyle);
+    ArrowLength2 := ArrowStartLength(ArrowStyle);
+    Multiplicity1 := FMultiplicityB;
+    Multiplicity2 := FMultiplicityA;
+    RoleA := FRoleB;
+    RoleB := FRoleA;
+  end
+  else
+  begin
+    ArrowLength1 := ArrowStartLength(ArrowStyle);
+    ArrowLength2 := ArrowHeadLength(ArrowStyle);
+    Multiplicity1 := FMultiplicityA;
+    Multiplicity2 := FMultiplicityB;
+    RoleA := FRoleA;
+    RoleB := FRoleB;
   end;
 
-  if ma <> '' then begin // Multiplicity A
-    R:= CalcRect(aCanvas, MaxInt, ma);
-    case RecursivCorner of
-      1: begin
-           x1:= Pl[1].x + sl + 5;
-           y1:= Pl[1].Y + 5;
-         end;
-      2: begin
-           x1:= Pl[2].x + 5;
-           y1:= Pl[2].y + 5;
-         end;
-      3: begin
-           x1:= Pl[2].x + 5;
-           y1:= Pl[2].y - R.Bottom - 5;
-         end;
-      4: begin
-           x1:= Pl[1].x - R.Right - 5;
-           y1:= Pl[1].y + sl + 5;
-         end;
+  if Multiplicity1 <> '' then
+  begin // Multiplicity A
+    Rect := CalcRect(Canvas, MaxInt, Multiplicity1);
+    case FRecursivCorner of
+      1:
+        begin
+          X1Pos := FFivePoints[1].X + ArrowLength1 + 5;
+          Y1Pos := FFivePoints[1].Y + 5;
+        end;
+      2:
+        begin
+          X1Pos := FFivePoints[2].X + 5;
+          Y1Pos := FFivePoints[2].Y + 5;
+        end;
+      3:
+        begin
+          X1Pos := FFivePoints[2].X + 5;
+          Y1Pos := FFivePoints[2].Y - Rect.Bottom - 5;
+        end;
+      4:
+        begin
+          X1Pos := FFivePoints[1].X - Rect.Right - 5;
+          Y1Pos := FFivePoints[1].Y + ArrowLength1 + 5;
+        end;
     end;
-    OffsetRect(R, x1, y1);
-    DrawText(aCanvas.Handle, PChar(ma), -1, R, Flags);
-    svg:= svg + getSVGText(R, ma);
+    OffsetRect(Rect, X1Pos, Y1Pos);
+    DrawText(Canvas.Handle, PChar(Multiplicity1), -1, Rect, Flags);
+    FSVG := FSVG + GetSVGText(Rect, Multiplicity1);
   end;
 
-  if ra <> '' then begin // Role A
-    R:= CalcRect(aCanvas, MaxInt, ra);
-    case RecursivCorner of
-      1: begin
-           x1:= Pl[1].x + sl + 5;
-           y1:= Pl[1].y - R.Bottom - 5;
-         end;
-      2: begin
-           x1:= Pl[2].x - R.Right - 5;
-           y1:= Pl[2].y + 5;
-         end;
-      3: begin
-           x1:= Pl[2].x + 5;
-           y1:= Pl[2].y + 5;
-         end;
-      4: begin
-           x1:= Pl[1].x + 5;
-           y1:= Pl[1].y + sl + 5;
-         end;
+  if RoleA <> '' then
+  begin // Role A
+    Rect := CalcRect(Canvas, MaxInt, RoleA);
+    case FRecursivCorner of
+      1:
+        begin
+          X1Pos := FFivePoints[1].X + ArrowLength1 + 5;
+          Y1Pos := FFivePoints[1].Y - Rect.Bottom - 5;
+        end;
+      2:
+        begin
+          X1Pos := FFivePoints[2].X - Rect.Right - 5;
+          Y1Pos := FFivePoints[2].Y + 5;
+        end;
+      3:
+        begin
+          X1Pos := FFivePoints[2].X + 5;
+          Y1Pos := FFivePoints[2].Y + 5;
+        end;
+      4:
+        begin
+          X1Pos := FFivePoints[1].X + 5;
+          Y1Pos := FFivePoints[1].Y + ArrowLength1 + 5;
+        end;
     end;
-    OffsetRect(R, x1, y1);
-    DrawText(aCanvas.Handle, PChar(ra), -1, R, Flags);
-    svg:= svg + getSVGText(R, ra);
+    OffsetRect(Rect, X1Pos, Y1Pos);
+    DrawText(Canvas.Handle, PChar(RoleA), -1, Rect, Flags);
+    FSVG := FSVG + GetSVGText(Rect, RoleA);
   end;
 
-  if Relation <> '' then begin // Relationname
-    R:= CalcRect(aCanvas, MaxInt, Relation);
-    th:= R.Bottom;
-    tw:= R.Right;
-    case RecursivCorner of
-      1: begin
-           x1:= (Pl[3].x + Pl[4].x) div 2 - tw div 2;
-           y1:= Pl[3].Y - 5 - th;
-           Inc(YDecrease, 5 + th);
-         end;
-      2: begin
-           x1:= (Pl[2].x + Pl[3].x) div 2 - tw div 2;
-           y1:= Pl[2].Y - 5 - th;
-           Inc(YDecrease, 5 + th);
+  if FRelation <> '' then
+  begin // Relationname
+    Rect := CalcRect(Canvas, MaxInt, FRelation);
+    THeight := Rect.Bottom;
+    TWidth := Rect.Right;
+    case FRecursivCorner of
+      1:
+        begin
+          X1Pos := (FFivePoints[3].X + FFivePoints[4].X) div 2 - TWidth div 2;
+          Y1Pos := FFivePoints[3].Y - 5 - THeight;
+          Inc(FYDecrease, 5 + THeight);
         end;
-      3: begin
-           x1:= (Pl[3].x + Pl[4].x) div 2 - tw div 2;
-           y1:= Pl[3].Y + 5;
-           Inc(YEnlarge, 5 + th);
+      2:
+        begin
+          X1Pos := (FFivePoints[2].X + FFivePoints[3].X) div 2 - TWidth div 2;
+          Y1Pos := FFivePoints[2].Y - 5 - THeight;
+          Inc(FYDecrease, 5 + THeight);
         end;
-      4: begin
-           x1:= (Pl[2].x + Pl[3].x) div 2 - tw div 2;
-           y1:= Pl[3].Y + 5;
-           Inc(YEnlarge, 5 + th);
+      3:
+        begin
+          X1Pos := (FFivePoints[3].X + FFivePoints[4].X) div 2 - TWidth div 2;
+          Y1Pos := FFivePoints[3].Y + 5;
+          Inc(FYEnlarge, 5 + THeight);
         end;
-      else begin
-         x1:= 0;
-         y1:= 0;
+      4:
+        begin
+          X1Pos := (FFivePoints[2].X + FFivePoints[3].X) div 2 - TWidth div 2;
+          Y1Pos := FFivePoints[3].Y + 5;
+          Inc(FYEnlarge, 5 + THeight);
+        end;
+    else
+      begin
+        X1Pos := 0;
+        Y1Pos := 0;
       end;
     end;
-    OffsetRect(R, x1, y1);
-    DrawText(aCanvas.Handle, PChar(Relation), -1, R, Flags);
-    svg:= svg + getSVGText(R, Relation);
+    OffsetRect(Rect, X1Pos, Y1Pos);
+    DrawText(Canvas.Handle, PChar(FRelation), -1, Rect, Flags);
+    FSVG := FSVG + GetSVGText(Rect, FRelation);
   end;
 
-  if mb <> '' then begin // Multiplicity B
-    R:= CalcRect(aCanvas, MaxInt, mb);
-    case RecursivCorner of
-      1: begin
-           x1:= Pl[4].x - R.Right - 5;
-           y1:= PL[4].y + 5;
-         end;
-      2: begin
-           x1:= Pl[4].x + 5;
-           y1:= Pl[4].y + 5;
-         end;
-      3: begin
-           x1:= Pl[5].x + 5;
-           y1:= Pl[5].y + hl + 5;
-         end;
-      4: begin
-           x1:= Pl[5].x + hl + 5;
-           y1:= Pl[5].y - R.Bottom - 5;
-         end;
-    end;
-    OffsetRect(R, x1, y1);
-    DrawText(aCanvas.Handle, PChar(mb), -1, R, Flags);
-    svg:= svg + getSVGText(R, mb);
-  end;
-
-  if rb <> '' then begin // Role B
-    R:= CalcRect(aCanvas, MaxInt, rb);
-    case RecursivCorner of
-      1: begin
-           x1:= Pl[4].x + 5;
-           y1:= Pl[4].Y + 5;
-         end;
-      2: begin
-           x1:= Pl[4].x + 5;
-           y1:= Pl[4].y - R.Bottom - 5;
-         end;
-      3: begin
-           x1:= Pl[5].x - R.Right - 5;
-           y1:= Pl[5].y + hl + 5;
-         end;
-      4: begin
-           x1:= Pl[5].x + hl + 5;
-           y1:= Pl[5].y + 5;
+  if Multiplicity2 <> '' then
+  begin // Multiplicity B
+    Rect := CalcRect(Canvas, MaxInt, Multiplicity2);
+    case FRecursivCorner of
+      1:
+        begin
+          X1Pos := FFivePoints[4].X - Rect.Right - 5;
+          Y1Pos := FFivePoints[4].Y + 5;
+        end;
+      2:
+        begin
+          X1Pos := FFivePoints[4].X + 5;
+          Y1Pos := FFivePoints[4].Y + 5;
+        end;
+      3:
+        begin
+          X1Pos := FFivePoints[5].X + 5;
+          Y1Pos := FFivePoints[5].Y + ArrowLength2 + 5;
+        end;
+      4:
+        begin
+          X1Pos := FFivePoints[5].X + ArrowLength2 + 5;
+          Y1Pos := FFivePoints[5].Y - Rect.Bottom - 5;
         end;
     end;
-    OffsetRect(R, x1, y1);
-    DrawText(aCanvas.Handle, PChar(rb), -1, R, Flags);
-    svg:= svg + getSVGText(R, rb);
+    OffsetRect(Rect, X1Pos, Y1Pos);
+    DrawText(Canvas.Handle, PChar(Multiplicity2), -1, Rect, Flags);
+    FSVG := FSVG + GetSVGText(Rect, Multiplicity2);
+  end;
+
+  if RoleB <> '' then
+  begin // Role B
+    Rect := CalcRect(Canvas, MaxInt, RoleB);
+    case FRecursivCorner of
+      1:
+        begin
+          X1Pos := FFivePoints[4].X + 5;
+          Y1Pos := FFivePoints[4].Y + 5;
+        end;
+      2:
+        begin
+          X1Pos := FFivePoints[4].X + 5;
+          Y1Pos := FFivePoints[4].Y - Rect.Bottom - 5;
+        end;
+      3:
+        begin
+          X1Pos := FFivePoints[5].X - Rect.Right - 5;
+          Y1Pos := FFivePoints[5].Y + ArrowLength2 + 5;
+        end;
+      4:
+        begin
+          X1Pos := FFivePoints[5].X + ArrowLength2 + 5;
+          Y1Pos := FFivePoints[5].Y + 5;
+        end;
+    end;
+    OffsetRect(Rect, X1Pos, Y1Pos);
+    DrawText(Canvas.Handle, PChar(RoleB), -1, Rect, Flags);
+    FSVG := FSVG + GetSVGText(Rect, RoleB);
   end;
 end;
 
-procedure TConnection.DrawSelection(aCanvas: TCanvas; withSelection: Boolean = True);
+procedure TConnection.DrawSelection(Canvas: TCanvas;
+  WithSelection: Boolean = True);
 
-  function getRect(P: TPoint; side: Integer): TRect;
-    const w = 5;
+  function getRect(Point4: TPoint; Side: Integer): TRect;
+  const
+    CWidth = 5;
   begin
-    case side of
-      1: Result:= Rect(P.x, P.y - w, P.x + w + 1, P.y + w + 1);
-      2: Result:= Rect(P.x - w, P.y - w, P.x + w + 1, P.y + 1);
-      3: Result:= Rect(P.x - w, P.y - w, P.x + 1, P.y + w + 1);
-      4: Result:= Rect(P.x - w, P.y, P.x + w +1, P.y + w);
+    case Side of
+      1:
+        Result := Rect(Point4.X, Point4.Y - CWidth, Point4.X + CWidth + 1,
+          Point4.Y + CWidth + 1);
+      2:
+        Result := Rect(Point4.X - CWidth, Point4.Y - CWidth,
+          Point4.X + CWidth + 1, Point4.Y + 1);
+      3:
+        Result := Rect(Point4.X - CWidth, Point4.Y - CWidth, Point4.X + 1,
+          Point4.Y + CWidth + 1);
+      4:
+        Result := Rect(Point4.X - CWidth, Point4.Y, Point4.X + CWidth + 1,
+          Point4.Y + CWidth);
     end;
   end;
 
 begin
-  {--- show selection marks ---------------------------------------------------}
-  if Selected or not withSelection then begin
-    if withSelection
-      then aCanvas.Brush.Color:= FGColor // clYellow
-      else aCanvas.Brush.Color:= BGColor;
-    aCanvas.FillRect(getRect(FromP, FromPStart));
-    aCanvas.FillRect(getRect(ToP, ToPEnd));
+  { --- Show selection marks --------------------------------------------------- }
+  if FSelected or not WithSelection then
+  begin
+    if WithSelection then
+      Canvas.Brush.Color := FForegroundColor // clYellow
+    else
+      Canvas.Brush.Color := FBackgroundColor;
+    Canvas.FillRect(getRect(FFromBorder, FFromBorderNum));
+    Canvas.FillRect(getRect(FToBorder, FToBorderNum));
   end;
-  aCanvas.Brush.Color:= BGColor;
+  Canvas.Brush.Color := FBackgroundColor;
 end;
 
-function TConnection.CalcRect(ACanvas: TCanvas; AMaxWidth: Integer; const AString: string): TRect;
+function TConnection.CalcRect(Canvas: TCanvas; AMaxWidth: Integer;
+  const AString: string): TRect;
 begin
   Result := Rect(0, 0, AMaxWidth, 0);
-  DrawText(ACanvas.Handle, PChar(AString), -1, Result, DT_CALCRECT or DT_LEFT or DT_WORDBREAK or DT_NOPREFIX);
+  DrawText(Canvas.Handle, PChar(AString), -1, Result, DT_CALCRECT or DT_LEFT or
+    DT_WORDBREAK or DT_NOPREFIX);
 end;
 
 procedure TConnection.CalcPolyline;
-  var sl, hl, sw, hw, x1, y1, dy, l, w, t, h, tw, th, RRRb: Integer;
-      RRA, RRB, RMA, RMB, RRR: TRect;
+var
+  Arrow1, Arrow2, Arrow3, Arrow4, X1Pos, Y1Pos, DeltaY, Left, Width, Top,
+    Height, TextWidth, TextHeight, RRRb: Integer;
+  RRA, RRB, RMA, RMB, RRR: TRect;
 begin
-{
-      P4-----P3
-      |      |
-      P5     |
-             |
-        P1---P2
-}
-  if isTurned then begin
-    sl:= ArrowHeadLength(ArrowStyle);
-    hl:= ArrowStartLength(ArrowStyle);
-    sw:= sl;
-    if hl > 0 then hw:= FFrom.PPIScale(HeadLength) else hw:= 0;
-  end else begin
-    sl:= ArrowStartLength(ArrowStyle);
-    hl:= ArrowHeadLength(ArrowStyle);
-    if sl > 0 then sw:= FFrom.PPIScale(HeadLength) else sw:= 0;
-    hw:= hl;
+  {
+    P4-----P3
+    |      |
+    P5     |
+    |
+    Point1---Point2
+  }
+  if FIsTurned then
+  begin
+    Arrow1 := ArrowHeadLength(ArrowStyle);
+    Arrow2 := ArrowStartLength(ArrowStyle);
+    Arrow3 := Arrow1;
+    if Arrow2 > 0 then
+      Arrow4 := FFromControl.PPIScale(HeadLength)
+    else
+      Arrow4 := 0;
+  end
+  else
+  begin
+    Arrow1 := ArrowStartLength(ArrowStyle);
+    Arrow2 := ArrowHeadLength(ArrowStyle);
+    if Arrow1 > 0 then
+      Arrow3 := FFromControl.PPIScale(HeadLength)
+    else
+      Arrow3 := 0;
+    Arrow4 := Arrow2;
   end;
 
-  dy:= Min(FFrom.Height div 2, rec_dc);
-  l:= FFrom.Left;
-  t:= FFrom.Top;
-  w:= FFrom.Width;
-  h:= FFrom.Height;
-  case RecursivCorner of
-    1: begin
-         FromP:= Point(l + w, t + dy);
-         ToP  := Point(l + w - rec_dx, t - 1);
-       end;
-    2: begin
-         FromP:= Point(l + rec_dx, t - 1);
-         ToP  := Point(l - 1, t + dy);
-       end;
-    3: begin
-         FromP:= Point(l - 1, t + h - dy);
-         ToP  := Point(l + rec_dx, t + h);
-       end;
-    4: begin
-         FromP:= Point(l + w - rec_dx, t + h);
-         ToP  := Point(l + w, t + h - dy);
-       end;
+  DeltaY := Min(FFromControl.Height div 2, RecDc);
+  Left := FFromControl.Left;
+  Top := FFromControl.Top;
+  Width := FFromControl.Width;
+  Height := FFromControl.Height;
+  case FRecursivCorner of
+    1:
+      begin
+        FFromBorder := Point(Left + Width, Top + DeltaY);
+        FToBorder := Point(Left + Width - RecDx, Top - 1);
+      end;
+    2:
+      begin
+        FFromBorder := Point(Left + RecDx, Top - 1);
+        FToBorder := Point(Left - 1, Top + DeltaY);
+      end;
+    3:
+      begin
+        FFromBorder := Point(Left - 1, Top + Height - DeltaY);
+        FToBorder := Point(Left + RecDx, Top + Height);
+      end;
+    4:
+      begin
+        FFromBorder := Point(Left + Width - RecDx, Top + Height);
+        FToBorder := Point(Left + Width, Top + Height - DeltaY);
+      end;
   end;
-  FromPStart:= RecursivCorner;
-  ToPEnd:= RecursivCorner + 1;
-  if ToPEnd = 5 then ToPEnd:= 1;
+  FFromBorderNum := FRecursivCorner;
+  FToBorderNum := FRecursivCorner + 1;
+  if FToBorderNum = 5 then
+    FToBorderNum := 1;
 
-  x1:= FromP.x;
-  y1:= FromP.Y;
+  X1Pos := FFromBorder.X;
+  Y1Pos := FFromBorder.Y;
 
-  Pl[1]:= FromP;
-  Pl[5]:= ToP;
-  XEnlarge:= 0;
-  YEnlarge:= 0;
-  XDecrease:= 0;
-  yDecrease:= 0;
-  RRA:= CalcRect(Canvas, MaxInt, RoleA);
-  RRB:= CalcRect(Canvas, MaxInt, RoleB);
-  RMA:= CalcRect(Canvas, MaxInt, MultiplicityA);
-  RMB:= CalcRect(Canvas, MaxInt, MultiplicityB);
-  RRR:= CalcRect(Canvas, MaxInt, Relation);
-  if RRR.Bottom = 0 then RRRb:= 2 else RRRb:= RRR.Bottom + 5;
+  FFivePoints[1] := FFromBorder;
+  FFivePoints[5] := FToBorder;
+  FXEnlarge := 0;
+  FYEnlarge := 0;
+  FXDecrease := 0;
+  FYDecrease := 0;
+  RRA := CalcRect(FCanvas, MaxInt, FRoleA);
+  RRB := CalcRect(FCanvas, MaxInt, FRoleB);
+  RMA := CalcRect(FCanvas, MaxInt, FMultiplicityA);
+  RMB := CalcRect(FCanvas, MaxInt, FMultiplicityB);
+  RRR := CalcRect(FCanvas, MaxInt, FRelation);
+  if RRR.Bottom = 0 then
+    RRRb := 2
+  else
+    RRRb := RRR.Bottom + 5;
   Square.Init;
 
-  case RecursivCorner of
-    1: begin
-         th:= max3(RMB.Bottom, RRB.Bottom, RRA.Bottom - dy) + 10;
-         tw:= max3(RMA.Right, RRA.Right, RRB.Right - rec_dx) + 10;
-         Pl[2]:= Point(x1 + sl + tw, y1);
-         Pl[3]:= Point(Pl[2].x, Pl[5].y - hl - th);
-         Pl[4]:= Point(Pl[5].x, Pl[3].y);
-         XEnlarge := Pl[2].x - Pl[1].x;
-         YDecrease:= Pl[5].Y - Pl[4].y;
-         Square.enlargeBottom(RecursivCorner, sw + RMA.Bottom);
-         Square.enlargeLeft(RecursivCorner, hw + RMB.Right);
-         Square.enlargeTop(RecursivCorner, RRRb);
-         Square.enlargeRight(RecursivCorner, 2);
-       end;
-    2: begin
-         th:= max3(RMA.Bottom, RRA.Bottom, RRB.Bottom - dy) + 10;
-         tw:= max3(RMB.Right, RRB.Right, RRA.Right - rec_dx) + 10;
-         Pl[2]:= Point(x1, y1 - sl - th);
-         Pl[3]:= Point(Pl[5].x - hl - tw, Pl[2].y);
-         Pl[4]:= Point(Pl[3].x, Pl[5].y);
-         XDecrease:= Pl[5].x - Pl[4].x;
-         YDecrease:= Pl[1].y - Pl[2].y;
-         Square.enlargeRight(RecursivCorner, sw + RMA.Right);
-         Square.enlargeBottom(RecursivCorner, hw + RMB.Bottom);
-         Square.enlargeTop(RecursivCorner, RRRb);
-         Square.enlargeLeft(RecursivCorner, 2);
-       end;
-    3: begin
-         th:= max3(RMB.Bottom, RRB.Bottom, RRA.Bottom - dy) + 10;
-         tw:= max3(RMA.Right, RRA.Right, RRB.Right - rec_dx) + 10;
-         Pl[2]:= Point(x1 - sl - tw, y1);
-         Pl[3]:= Point(Pl[2].x, pl[5].y + hl + th);
-         Pl[4]:= Point(Pl[5].x, Pl[3].y);
-         XDecrease:= Pl[1].x - Pl[2].x;
-         YEnlarge := Pl[4].y - Pl[5].y;
-         Square.enlargeTop(RecursivCorner, sw + RMA.Bottom);
-         Square.enlargeRight(RecursivCorner, hw + RMB.Right);
-         Square.enlargeBottom(RecursivCorner, RRRb);
-         Square.enlargeLeft(RecursivCorner, 2);
-       end;
-    4: begin
-         th:= max3(RMA.Bottom, RRA.Bottom, RRB.Bottom - dy) + 10;
-         tw:= max3(RMB.Right, RRB.Right, RRA.Right - rec_dx) + 10;
-         Pl[2]:= Point(x1, y1 + sl + th);
-         Pl[3]:= Point(Pl[5].x + hl + tw, Pl[2].y);
-         Pl[4]:= Point(Pl[3].x, Pl[5].y);
-         XEnlarge:= Pl[4].x - Pl[5].x;
-         YEnlarge:= Pl[2].y - Pl[1].y;
-         Square.enlargeLeft(RecursivCorner, sw + RMA.Right);
-         Square.enlargeTop(RecursivCorner, hw + RMB.Bottom);
-         Square.enlargeBottom(RecursivCorner, RRRb);
-         Square.enlargeRight(RecursivCorner, 2);
-       end;
+  case FRecursivCorner of
+    1:
+      begin
+        TextHeight := max3(RMB.Bottom, RRB.Bottom, RRA.Bottom - DeltaY) + 10;
+        TextWidth := max3(RMA.Right, RRA.Right, RRB.Right - RecDx) + 10;
+        FFivePoints[2] := Point(X1Pos + Arrow1 + TextWidth, Y1Pos);
+        FFivePoints[3] := Point(FFivePoints[2].X, FFivePoints[5].Y - Arrow2 -
+          TextHeight);
+        FFivePoints[4] := Point(FFivePoints[5].X, FFivePoints[3].Y);
+        FXEnlarge := FFivePoints[2].X - FFivePoints[1].X;
+        FYDecrease := FFivePoints[5].Y - FFivePoints[4].Y;
+        Square.EnlargeBottom(FRecursivCorner, Arrow3 + RMA.Bottom);
+        Square.EnlargeLeft(FRecursivCorner, Arrow4 + RMB.Right);
+        Square.EnlargeTop(FRecursivCorner, RRRb);
+        Square.EnlargeRight(FRecursivCorner, 2);
+      end;
+    2:
+      begin
+        TextHeight := max3(RMA.Bottom, RRA.Bottom, RRB.Bottom - DeltaY) + 10;
+        TextWidth := max3(RMB.Right, RRB.Right, RRA.Right - RecDx) + 10;
+        FFivePoints[2] := Point(X1Pos, Y1Pos - Arrow1 - TextHeight);
+        FFivePoints[3] := Point(FFivePoints[5].X - Arrow2 - TextWidth,
+          FFivePoints[2].Y);
+        FFivePoints[4] := Point(FFivePoints[3].X, FFivePoints[5].Y);
+        FXDecrease := FFivePoints[5].X - FFivePoints[4].X;
+        FYDecrease := FFivePoints[1].Y - FFivePoints[2].Y;
+        Square.EnlargeRight(FRecursivCorner, Arrow3 + RMA.Right);
+        Square.EnlargeBottom(FRecursivCorner, Arrow4 + RMB.Bottom);
+        Square.EnlargeTop(FRecursivCorner, RRRb);
+        Square.EnlargeLeft(FRecursivCorner, 2);
+      end;
+    3:
+      begin
+        TextHeight := max3(RMB.Bottom, RRB.Bottom, RRA.Bottom - DeltaY) + 10;
+        TextWidth := max3(RMA.Right, RRA.Right, RRB.Right - RecDx) + 10;
+        FFivePoints[2] := Point(X1Pos - Arrow1 - TextWidth, Y1Pos);
+        FFivePoints[3] := Point(FFivePoints[2].X, FFivePoints[5].Y + Arrow2 +
+          TextHeight);
+        FFivePoints[4] := Point(FFivePoints[5].X, FFivePoints[3].Y);
+        FXDecrease := FFivePoints[1].X - FFivePoints[2].X;
+        FYEnlarge := FFivePoints[4].Y - FFivePoints[5].Y;
+        Square.EnlargeTop(FRecursivCorner, Arrow3 + RMA.Bottom);
+        Square.EnlargeRight(FRecursivCorner, Arrow4 + RMB.Right);
+        Square.EnlargeBottom(FRecursivCorner, RRRb);
+        Square.EnlargeLeft(FRecursivCorner, 2);
+      end;
+    4:
+      begin
+        TextHeight := max3(RMA.Bottom, RRA.Bottom, RRB.Bottom - DeltaY) + 10;
+        TextWidth := max3(RMB.Right, RRB.Right, RRA.Right - RecDx) + 10;
+        FFivePoints[2] := Point(X1Pos, Y1Pos + Arrow1 + TextHeight);
+        FFivePoints[3] := Point(FFivePoints[5].X + Arrow2 + TextWidth,
+          FFivePoints[2].Y);
+        FFivePoints[4] := Point(FFivePoints[3].X, FFivePoints[5].Y);
+        FXEnlarge := FFivePoints[4].X - FFivePoints[5].X;
+        FYEnlarge := FFivePoints[2].Y - FFivePoints[1].Y;
+        Square.EnlargeLeft(FRecursivCorner, Arrow3 + RMA.Right);
+        Square.EnlargeTop(FRecursivCorner, Arrow4 + RMB.Bottom);
+        Square.EnlargeBottom(FRecursivCorner, RRRb);
+        Square.EnlargeRight(FRecursivCorner, 2);
+      end;
   end;
 end;
 
 procedure TConnection.CalcShortest;
 
-{         2
-    -------------
-    |           |
+{ 2
+  -------------
+  |           |
   3 |           |  1
-    |           |
-    -------------
-          4
+  |           |
+  -------------
+  4
 }
 
-  function CalcPointPos(P: TPoint; R: TRect): Integer;
+  function CalcPointPos(Point: TPoint; Rect: TRect): Integer;
   begin
-    if P.X = R.Left - 1 then Result:= 3 else
-    if P.X = R.Right    then Result:= 1 else
-    if P.y = R.Top - 1  then Result:= 2 else
-    if P.Y = R.Bottom   then Result:= 4 else
-    Result:= -1;
+    if Point.X = Rect.Left - 1 then
+      Result := 3
+    else if Point.X = Rect.Right then
+      Result := 1
+    else if Point.Y = Rect.Top - 1 then
+      Result := 2
+    else if Point.Y = Rect.Bottom then
+      Result := 4
+    else
+      Result := -1;
   end;
 
-  function CalcIntersectionPoint(A, B: TPoint; R: TRect): TPoint;
-    var dx, dy: LongInt;
+  function CalcIntersectionPoint(APoint, BPoint: TPoint; Rect: TRect): TPoint;
+  var
+    DeltaX, DeltaY: LongInt;
   begin
-    Dec(R.Left);    // intersection point must be outside rect
-    Dec(R.Top);
-    Result:= A;
-    dx:= B.x - A.x;
-    dy:= B.y - A.y;
-    if dx <> 0 then begin
-      if dx > 0
-        then Result.X:= R.Right
-        else Result.X:= R.Left;
-      Result.Y:= A.Y + round(dy*(Result.X - A.X) / dx);
-      if not ((R.Top <= Result.Y) and (Result.Y <= R.Bottom)) then begin
-        if abs(R.Top-Result.Y) < abs(Result.y-R.Bottom)
-          then Result.y:= R.Top
-          else Result.Y:= R.Bottom;
-        if dy <> 0 then
-          Result.x:= A.x + round(dx*(Result.y - A.y) / dy);
-      end
-    end else begin
-      Result.x:= A.x;
-      if dy > 0
-        then Result.y:= R.Bottom
-        else Result.Y:= R.Top;
+    Dec(Rect.Left); // intersection point must be outside rect
+    Dec(Rect.Top);
+    Result := APoint;
+    DeltaX := BPoint.X - APoint.X;
+    DeltaY := BPoint.Y - APoint.Y;
+    if DeltaX <> 0 then
+    begin
+      if DeltaX > 0 then
+        Result.X := Rect.Right
+      else
+        Result.X := Rect.Left;
+      Result.Y := APoint.Y + Round(DeltaY * (Result.X - APoint.X) / DeltaX);
+      if not((Rect.Top <= Result.Y) and (Result.Y <= Rect.Bottom)) then
+      begin
+        if Abs(Rect.Top - Result.Y) < Abs(Result.Y - Rect.Bottom) then
+          Result.Y := Rect.Top
+        else
+          Result.Y := Rect.Bottom;
+        if DeltaY <> 0 then
+          Result.X := APoint.X + Round(DeltaX * (Result.Y - APoint.Y) / DeltaY);
+      end;
+    end
+    else
+    begin
+      Result.X := APoint.X;
+      if DeltaY > 0 then
+        Result.Y := Rect.Bottom
+      else
+        Result.Y := Rect.Top;
     end;
-    if Result.x > R.Right then Result.x:= R.Right;
-    if Result.x < R.Left then Result.x:= R.Left;
+    if Result.X > Rect.Right then
+      Result.X := Rect.Right;
+    if Result.X < Rect.Left then
+      Result.X := Rect.Left;
   end;
 
 begin
-  FromP:= CalcIntersectionPoint(FromCenter, ToCenter, getBoundsRect(FFrom));
-  FromPStart:= CalcPointPos(FromP, getBoundsRect(FFrom));
-  ToP:= CalcIntersectionPoint(ToCenter, FromCenter, getBoundsRect(FTo));
-  ToPEnd:= CalcPointPos(ToP, getBoundsRect(FTo));
+  FFromBorder := CalcIntersectionPoint(FFromCenter, FToCenter,
+    GetBoundsRect(FFromControl));
+  FFromBorderNum := CalcPointPos(FFromBorder, GetBoundsRect(FFromControl));
+  FToBorder := CalcIntersectionPoint(FToCenter, FFromCenter,
+    GetBoundsRect(FToControl));
+  FToBorderNum := CalcPointPos(FToBorder, GetBoundsRect(FToControl));
 end;
 
-function TConnection.ArrowHeadLength(Arrow: TessConnectionArrowStyle): Integer;
+function TConnection.ArrowHeadLength(Arrow: TEssConnectionArrowStyle): Integer;
 begin
-  if arrow in [asAssociation2, asAssociation3, asAggregation2, asComposition2,
-               asInheritends, asInstanceOf]
-    then Result:= FFrom.PPIScale(HeadLength)
-    else Result:= 0;
+  if Arrow in [asAssociation2, asAssociation3, asAggregation2, asComposition2,
+    asInheritends, asInstanceOf] then
+    Result := FFromControl.PPIScale(HeadLength)
+  else
+    Result := 0;
 end;
 
-function TConnection.ArrowStartLength(Arrow: TessConnectionArrowStyle): Integer;
+function TConnection.ArrowStartLength(Arrow: TEssConnectionArrowStyle): Integer;
 begin
-  if arrow in [asAggregation1, asAggregation2, asComposition1, asComposition2]
-    then Result:= FFrom.PPIScale(HeadLength)*2
-  else if arrow = asAssociation3
-    then Result:= FFrom.PPIScale(HeadLength)
-    else Result:= 0
+  if Arrow in [asAggregation1, asAggregation2, asComposition1, asComposition2]
+  then
+    Result := FFromControl.PPIScale(HeadLength) * 2
+  else if Arrow = asAssociation3 then
+    Result := FFromControl.PPIScale(HeadLength)
+  else
+    Result := 0;
 end;
 
-constructor TConnection.Create(Src, Dst: TControl; Attributes: TConnectionAttributes; aCanvas: TCanvas);
+constructor TConnection.Create(Src, Dst: TControl;
+  Attributes: TConnectionAttributes; Canvas: TCanvas);
 begin
-  FFrom         := Src;
-  FTo           := Dst;
-  ArrowStyle    := Attributes.ArrowStyle;
-  ConnectStyle  := ArrowToConnect(ArrowStyle);
-  RoleA         := Attributes.RoleA;
-  MultiplicityA := Attributes.MultiplicityA;
-  ReadingOrderA := Attributes.ReadingOrderA;
-  Relation      := Attributes.Relation;
-  ReadingOrderB := Attributes.ReadingOrderB;
-  MultiplicityB := Attributes.MultiplicityB;
-  RoleB         := Attributes.RoleB;
-  RecursivCorner:= Attributes.RecursivCorner;
-  isTurned      := Attributes.isTurned;
-  Visible       := Attributes.Visible;
-  isEdited      := Attributes.isEdited;
-  FromCenter    := getCenter(getBoundsRect(FFrom));
-  ToCenter      := getCenter(getBoundsRect(FTo));
-  Square        := TSquare.Create;
-  isRecursiv    := (FFrom = FTo);
-  Self.Canvas   := aCanvas;
-  Selected      := False;
-  Cutted        := False;
-  XEnlarge      := 0;
-  YEnlarge      := 0;
-  FromPStart    := -1;
-  ToPEnd        := -1;
+  FFromControl := Src;
+  FToControl := Dst;
+  ArrowStyle := Attributes.ArrowStyle;
+  FConnectStyle := ArrowToConnect(ArrowStyle);
+  FRoleA := Attributes.FRoleA;
+  FMultiplicityA := Attributes.FMultiplicityA;
+  FReadingOrderA := Attributes.FReadingOrderA;
+  FRelation := Attributes.FRelation;
+  FReadingOrderB := Attributes.FReadingOrderB;
+  FMultiplicityB := Attributes.FMultiplicityB;
+  FRoleB := Attributes.FRoleB;
+  FRecursivCorner := Attributes.FRecursivCorner;
+  FIsTurned := Attributes.FIsTurned;
+  FVisible := Attributes.FVisible;
+  FIsEdited := Attributes.FIsEdited;
+  FFromCenter := GetCenter(GetBoundsRect(FFromControl));
+  FToCenter := GetCenter(GetBoundsRect(FToControl));
+  FSquare := TSquare.Create;
+  FIsRecursiv := (FFromControl = FToControl);
+  FCanvas := Canvas;
+  FSelected := False;
+  FCutted := False;
+  FXEnlarge := 0;
+  FYEnlarge := 0;
+  FFromBorderNum := -1;
+  FToBorderNum := -1;
   ChangeStyle;
-  if IsRecursiv then
+  if FIsRecursiv then
     CalcPolyline;
 end;
 
-destructor TConnection.destroy;
+destructor TConnection.Destroy;
 begin
   FreeAndNil(Square);
+  inherited;
 end;
 
 procedure TConnection.SetAttributes(Attributes: TConnectionAttributes);
 begin
-  ConnectStyle:= ArrowToConnect(Attributes.ArrowStyle);
-  ArrowStyle:= Attributes.ArrowStyle;
-  RoleA:= Attributes.RoleA;
-  MultiplicityA:= Attributes.MultiplicityA;
-  ReadingOrderA:= Attributes.ReadingOrderA;
-  Relation:= Attributes.Relation;
-  ReadingOrderB:= Attributes.ReadingOrderB;
-  MultiplicityB:= Attributes.MultiplicityB;
-  RoleB:= Attributes.RoleB;
-  if IsRecursiv and (Attributes.RecursivCorner <> 0) then
-    RecursivCorner:= Attributes.RecursivCorner;
-  IsEdited:= Attributes.IsEdited;
+  FConnectStyle := ArrowToConnect(Attributes.ArrowStyle);
+  ArrowStyle := Attributes.ArrowStyle;
+  FRoleA := Attributes.FRoleA;
+  FMultiplicityA := Attributes.FMultiplicityA;
+  FReadingOrderA := Attributes.FReadingOrderA;
+  FRelation := Attributes.FRelation;
+  FReadingOrderB := Attributes.FReadingOrderB;
+  FMultiplicityB := Attributes.FMultiplicityB;
+  FRoleB := Attributes.FRoleB;
+  if FIsRecursiv and (Attributes.FRecursivCorner <> 0) then
+    FRecursivCorner := Attributes.FRecursivCorner;
+  FIsEdited := Attributes.FIsEdited;
 end;
 
-procedure TConnection.SetArrow(Arrow: TessConnectionArrowStyle);
+procedure TConnection.SetArrow(Arrow: TEssConnectionArrowStyle);
 begin
-  ConnectStyle:= ArrowToConnect(Arrow);
-  ArrowStyle:= Arrow;
+  FConnectStyle := ArrowToConnect(Arrow);
+  ArrowStyle := Arrow;
 end;
 
 procedure TConnection.Turn;
-  var Src: TControl; Point: TPoint;
+var
+  Src: TControl;
+  Point: TPoint;
 begin
-  if IsRecursiv then begin
-    isTurned:= not isTurned;
+  if FIsRecursiv then
+  begin
+    FIsTurned := not FIsTurned;
     CalcPolyline;
-  end else begin
-    Src:= FFrom; FFrom:= FTo; FTo:= Src;
-    Point:= FromP; FromP:= ToP; ToP:= Point;
+  end
+  else
+  begin
+    Src := FFromControl;
+    FFromControl := FToControl;
+    FToControl := Src;
+    Point := FFromBorder;
+    FFromBorder := FToBorder;
+    FToBorder := Point;
   end;
-  IsEdited:= True;
+  FIsEdited := True;
 end;
 
-function TConnection.IsClicked(P: TPoint): Boolean;
-  var A, B, VectorAB, VectorAP, Normale: TPoint;
-      i, xlineDelta, yLineDelta: Integer;
-      Distance, CosAlpha: real;
-      R: TRect;
+function TConnection.IsClicked(Point: TPoint): Boolean;
+var
+  APoint, BPoint, VectorAB, VectorAP, Normale: TPoint;
+  XLineDelta, YLineDelta: Integer;
+  Distance, CosAlpha: Real;
+  ARect: TRect;
 
-  function Scalarproduct(P, Q: TPoint): real;
+  function Scalarproduct(Point1, Point2: TPoint): Real;
   begin
-    Result:= P.X*Q.X + P.Y*Q.Y;
+    Result := Point1.X * Point2.X + Point1.Y * Point2.Y;
   end;
 
-  function Norm(vector: TPoint):real;
+  function Norm(Vector: TPoint): Real;
   begin
-    Result:= sqrt(sqr(vector.X) + sqr(vector.Y));
+    Result := Sqrt(Sqr(Vector.X) + Sqr(Vector.Y));
   end;
 
-  function makeRect(P1, P2: TPoint): TRect;
-    var dx, dy: Integer;
+  function makeRect(Point1, Point2: TPoint): TRect;
+  var
+    DeltaX, DeltaY: Integer;
   begin
-    dx:= P2.x - P1.x;
-    dy:= P2.Y - P1.Y;
-    if dy = 0 then
-      if dx > 0
-        then Result:= Rect(P1.X,      P1.y - 10, P2.X + 10, P2.Y + 10)
-        else Result:= Rect(P2.X - 10, P2.y - 10, P1.X     , P1.Y + 10)
-    else // dx = 0
-      if dy > 0
-        then Result:= Rect(P1.X - 10, P1.Y     , P2.X + 10, P2.Y + 10)
-        else Result:= Rect(P2.X - 10, P2.Y - 10, P1.X + 10, P1.Y);
-   end;
+    DeltaX := Point2.X - Point1.X;
+    DeltaY := Point2.Y - Point1.Y;
+    if DeltaY = 0 then
+      if DeltaX > 0 then
+        Result := Rect(Point1.X, Point1.Y - 10, Point2.X + 10, Point2.Y + 10)
+      else
+        Result := Rect(Point2.X - 10, Point2.Y - 10, Point1.X, Point1.Y + 10)
+    else // DeltaX = 0
+      if DeltaY > 0 then
+        Result := Rect(Point1.X - 10, Point1.Y, Point2.X + 10, Point2.Y + 10)
+      else
+        Result := Rect(Point2.X - 10, Point2.Y - 10, Point1.X + 10, Point1.Y);
+  end;
 
 begin
-  Result:= True;
-  if isRecursiv then begin
-    for i:= 1 to 3 do begin
-      R:= makeRect(Pl[i], Pl[i+1]);
-      if PtinRect(R, P) then Exit;
+  Result := True;
+  if FIsRecursiv then
+  begin
+    for var I := 1 to 3 do
+    begin
+      ARect := makeRect(FFivePoints[I], FFivePoints[I + 1]);
+      if PtInRect(ARect, Point) then
+        Exit;
     end;
-    R:= makeRect(Pl[5], Pl[4]);
-    if PtInRect(R, P) then Exit;
-  end else begin
-    A:= FromP;
-    B:= ToP;
-    xLineDelta:= B.x - A.x;
-    yLineDelta:= B.y - A.y;
-    if (xLineDelta = 0) and (yLineDelta = 0) then begin Result:= False; Exit; end;// Line is 0 length
-    if (abs(xLineDelta) > 20000) or (abs(yLineDelta) > 20000) then Exit; // Line is too long
-    VectorAB.X:= B.X - A.X;
-    VectorAB.Y:= B.Y - A.Y;
-    VectorAP.X:= P.X - A.X;
-    VectorAP.Y:= P.Y - A.Y;
-    Normale.X:= -VectorAB.Y;
-    Normale.Y:=  VectorAB.X;
-    if Norm(Normale) = 0
-      then Distance:= 10000000
-      else Distance:= Abs(Scalarproduct(VectorAP, Normale)/Norm(Normale));
-    CosAlpha:= Scalarproduct(VectorAB, VectorAP);
-    if (CosAlpha > 0) and (Distance < 10) and (norm(VectorAP) <= norm(VectorAB) + 10) then
+    ARect := makeRect(FFivePoints[5], FFivePoints[4]);
+    if PtInRect(ARect, Point) then
+      Exit;
+  end
+  else
+  begin
+    APoint := FFromBorder;
+    BPoint := FToBorder;
+    XLineDelta := BPoint.X - APoint.X;
+    YLineDelta := BPoint.Y - APoint.Y;
+    if (XLineDelta = 0) and (YLineDelta = 0) then
+    begin
+      Result := False;
+      Exit;
+    end; // Line is 0 length
+    if (Abs(XLineDelta) > 20000) or (Abs(YLineDelta) > 20000) then
+      Exit; // Line is too long
+    VectorAB.X := BPoint.X - APoint.X;
+    VectorAB.Y := BPoint.Y - APoint.Y;
+    VectorAP.X := Point.X - APoint.X;
+    VectorAP.Y := Point.Y - APoint.Y;
+    Normale.X := -VectorAB.Y;
+    Normale.Y := VectorAB.X;
+    if Norm(Normale) = 0 then
+      Distance := 10000000
+    else
+      Distance := Abs(Scalarproduct(VectorAP, Normale) / Norm(Normale));
+    CosAlpha := Scalarproduct(VectorAB, VectorAP);
+    if (CosAlpha > 0) and (Distance < 10) and
+      (Norm(VectorAP) <= Norm(VectorAB) + 10) then
       Exit;
   end;
-  Result:= False;
+  Result := False;
 end;
 
-procedure TConnection.setRecursivPosition(pos: Integer);
+procedure TConnection.SetRecursivPosition(Pos: Integer);
 begin
-  RecursivCorner:= pos;
+  FRecursivCorner := Pos;
   CalcPolyline;
 end;
 
-procedure TConnection.parallelCorrection;
-  var dx, dy, xLineDelta, yLineDelta, hl: Integer;
-      xLineunitDelta, yLineUnitDelta, Tmp: double;
-      A, B: TPoint;
+procedure TConnection.ParallelCorrection;
+var
+  DeltaX, DeltaY, XLineDelta, YLineDelta, HLPPI: Integer;
+  XLineUnitDelta, YLineUnitDelta, Tmp: Double;
+  APoint, BPoint: TPoint;
 begin
-  A:= getCenter(getBoundsRect(FFrom));
-  B:= getCenter(getBoundsRect(FTo));
-  xLineDelta:= B.x - A.x;
-  yLineDelta:= B.y - A.y;
-  if (xLineDelta = 0) and (yLineDelta = 0) then Exit; // Line has length 0
-  if (abs(xLineDelta) > 20000) or (abs(yLineDelta) > 20000) then Exit; // Line is too long
+  APoint := GetCenter(GetBoundsRect(FFromControl));
+  BPoint := GetCenter(GetBoundsRect(FToControl));
+  XLineDelta := BPoint.X - APoint.X;
+  YLineDelta := BPoint.Y - APoint.Y;
+  if (XLineDelta = 0) and (YLineDelta = 0) then
+    Exit; // Line has length 0
+  if (Abs(XLineDelta) > 20000) or (Abs(YLineDelta) > 20000) then
+    Exit; // Line is too long
 
-  Tmp:= sqrt(sqr(xLineDelta) + sqr(yLineDelta));
-  if Tmp = 0 then begin
-    xLineUnitDelta:= 0;
-    yLineUnitDelta:= 0;
-  end else begin
-    xLineUnitDelta:= xLineDelta / Tmp;
-    yLineUnitDelta:= yLineDelta / Tmp;
+  Tmp := Sqrt(Sqr(XLineDelta) + Sqr(YLineDelta));
+  if Tmp = 0 then
+  begin
+    XLineUnitDelta := 0;
+    YLineUnitDelta := 0;
+  end
+  else
+  begin
+    XLineUnitDelta := XLineDelta / Tmp;
+    YLineUnitDelta := YLineDelta / Tmp;
   end;
 
-  hl:= fFrom.PPIScale(HeadLength);
-  if parallelcount > 0 then
-    if abs(xLineUnitDelta) > abs(yLineUnitDelta) then begin
-      dy:= -2*(hl+2)*Parallelcount div 2 + 2*(hl+2)*Parallelindex;
-      A.y:= A.y + dy;
-      B.y:= B.y + dy;
-    end else begin
-      dx:= -2*(hl+2)*Parallelcount div 2 + 2*(hl+2)*Parallelindex;
-      A.x:= A.x + dx;
-      B.x:= B.x + dx;
+  HLPPI := FFromControl.PPIScale(HeadLength);
+  if FParallelCount > 0 then
+    if Abs(XLineUnitDelta) > Abs(YLineUnitDelta) then
+    begin
+      DeltaY := -2 * (HLPPI + 2) * FParallelCount div 2 + 2 * (HLPPI + 2) *
+        FParallelIndex;
+      APoint.Y := APoint.Y + DeltaY;
+      BPoint.Y := BPoint.Y + DeltaY;
+    end
+    else
+    begin
+      DeltaX := -2 * (HLPPI + 2) * FParallelCount div 2 + 2 * (HLPPI + 2) *
+        FParallelIndex;
+      APoint.X := APoint.X + DeltaX;
+      BPoint.X := BPoint.X + DeltaX;
     end;
-  FromCenter:= A;
-  ToCenter:= B;
+  FFromCenter := APoint;
+  FToCenter := BPoint;
 end;
 
-function TConnection.getBoundsRect(aRect: TRect): TRect;
+function TConnection.GetBoundsRect(Control: TControl): TRect;
 begin
-  Result:= aRect;
-  Result.Bottom:= Result.Bottom;
-  Result.Right:= Result.Right;
-end;
-
-function TConnection.getBoundsRect(aControl: TControl): TRect;
-  var aRect: TRect; //aBox: TRtfdBox;
-begin
-  aRect:= getBoundsRect(aControl.BoundsRect);
-  {
-  if (aControl is TRtfdBox) then begin
-    aBox:= aControl as TRtfdBox;
-    aRect.Width:= aRect.Width - aBox.ExtentX;
-    aRect.Top:= aRect.Top + aBox.ExtentY;
-  end;}
-  Result:= aRect;
+  Result := Control.BoundsRect;
 end;
 
 procedure TConnection.ChangeStyle(BlackAndWhite: Boolean = False);
 begin
-  if StyleServices.IsSystemStyle or BlackandWhite then begin
-    BGColor:= clWhite;
-    FGColor:= clBlack;
-  end else begin
-    BGColor:= StyleServices.GetStyleColor(scPanel);
-    FGColor:= StyleServices.GetStyleFontColor(sfTabTextInactiveNormal);
+  if StyleServices.IsSystemStyle or BlackAndWhite then
+  begin
+    FBackgroundColor := clWhite;
+    FForegroundColor := clBlack;
+  end
+  else
+  begin
+    FBackgroundColor := StyleServices.GetStyleColor(scPanel);
+    FForegroundColor := StyleServices.GetStyleFontColor
+      (sfTabTextInactiveNormal);
   end;
 end;
 
-function TConnection.calcSVGBaseLine(R: TRect): Integer;
+function TConnection.CalcSVGBaseLine(Rect: TRect): Integer;
 begin
-  Result:= R.Top + Round(1.0*abs(Canvas.Font.Height));
+  Result := Rect.Top + Round(1.0 * Abs(FCanvas.Font.Height));
 end;
 
-function TConnection.getSVGText(R: TRect; s: string): string;
+function TConnection.GetSVGText(Rect: TRect; Str: string): string;
 begin
-  Result:= '  <text x=' + IntToVal(R.Left) + ' y=' + IntToVal(calcSVGBaseLine(R)) +
-           ' white-space="pre-line">' + s + '</text>'#13#10;
+  Result := '  <text x=' + IntToVal(Rect.Left) + ' y=' +
+    IntToVal(CalcSVGBaseLine(Rect)) + ' white-space="pre-line">' + Str +
+    '</text>'#13#10;
 end;
 
-function TConnection.getSVGLine(x1, y1, x2, y2: real): string;
+function TConnection.GetSVGLine(X1Pos, Y1Pos, X2Pos, Y2Pos: Real): string;
 begin
-  Result:= '  <line x1=' + FloatToVal(x1) + ' y1=' + FloatToVal(y1) +
-           ' x2=' + FloatToVal(x2) + ' y2=' + FloatToVal(y2) +
-           ' stroke="black" stroke-linecap="square" />'#13#10;
+  Result := '  <line x1=' + FloatToVal(X1Pos) + ' y1=' + FloatToVal(Y1Pos) +
+    ' x2=' + FloatToVal(X2Pos) + ' y2=' + FloatToVal(Y2Pos) +
+    ' stroke="black" stroke-linecap="square" />'#13#10;
 end;
 
-function TConnection.getSVGPolyline(Points: array of TPoint): string;
-  var i: Integer;
+function TConnection.GetSVGPolyline(Points: array of TPoint): string;
 begin
-  Result:= '  <polyline points="';
-  for i:= 0 to High(Points) do
-    Result:= Result + PointToVal(Points[i]);
-  Result[Length(Result)]:= '"';
-  Result:= Result + ' fill="none" stroke="black" />'#13#10;
+  Result := '  <polyline points="';
+  for var I := 0 to High(Points) do
+    Result := Result + PointToVal(Points[I]);
+  Result[Length(Result)] := '"';
+  Result := Result + ' fill="none" stroke="black" />'#13#10;
 end;
 
-function TConnection.getSVGPolygon(Points: array of TPoint; color: string): string;
-  var i: Integer;
+function TConnection.GetSVGPolygon(Points: array of TPoint;
+  Color: string): string;
 begin
-  Result:= '  <polygon points="';
-  for i:= 0 to High(Points) do
-    Result:= Result + PointToVal(Points[i]);
-  Result[Length(Result)]:= '"';
-  Result:= Result + ' fill="' + color + '" stroke="black" />'#13#10;
+  Result := '  <polygon points="';
+  for var I := 0 to High(Points) do
+    Result := Result + PointToVal(Points[I]);
+  Result[Length(Result)] := '"';
+  Result := Result + ' fill="' + Color + '" stroke="black" />'#13#10;
 end;
-
-function TConnection.getSVG: string;
-begin
-  Result:= svg;
-end;
-
 
 end.

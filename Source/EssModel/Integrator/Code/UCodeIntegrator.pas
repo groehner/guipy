@@ -21,7 +21,9 @@ unit UCodeIntegrator;
 
 interface
 
-uses uIntegrator, uCodeProvider;
+uses
+  UIntegrator,
+  UCodeProvider;
 
 type
   {
@@ -32,24 +34,16 @@ type
     FCodeProvider: TCodeProvider;
     procedure SetCodeProvider(const Value: TCodeProvider);
   public
-    property CodeProvider: TCodeProvider read FCodeProvider write SetCodeProvider;
+    property CodeProvider: TCodeProvider read FCodeProvider
+      write SetCodeProvider;
   end;
 
 implementation
 
-uses SysUtils;
-
 procedure TCodeIntegrator.SetCodeProvider(const Value: TCodeProvider);
 begin
-  if Assigned(FCodeProvider) then
-  begin
-    FreeAndNil(FCodeProvider);
-    FCodeProvider := nil;
-  end;
-
+  FCodeProvider.Free;
   FCodeProvider := Value;
 end;
 
-
 end.
-

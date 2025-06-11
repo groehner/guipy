@@ -91,7 +91,7 @@ type
     function GetFile: IFile;
     function DoSave: Boolean;
     procedure DoExport; virtual;
-    function getAsStringList: TStringList; virtual;
+    function GetAsStringList: TStringList; virtual;
     procedure OpenWindow(Sender: TObject); virtual;
     procedure CollectClasses(SL: TStringList); virtual;
     procedure DoUpdateCaption; virtual;
@@ -373,7 +373,7 @@ begin
   PyIDEMainForm.ActiveTabControl := ParentTabControl;
 end;
 
-function TFileForm.getAsStringList: TStringList;
+function TFileForm.GetAsStringList: TStringList;
 begin
   Result:= nil;
 end;
@@ -470,7 +470,7 @@ end;
 function TFileForm.SaveToFile(const FileName: string): Boolean;
   var SL: TStringList;
 begin
-  SL:= getAsStringList;
+  SL:= GetAsStringList;
   try
     try
       SL.SaveToFile(FileName, TEncoding.UTF8);
@@ -945,7 +945,7 @@ begin
   if (fForm = nil)  or (FileName = '') or (ServerName = '') then Exit;    // ToDo was Abort
 
   var TempFileName := FileGetTempName('PyScripter');
-  var SL:= fForm.getAsStringList;
+  var SL:= fForm.GetAsStringList;
   Result := SaveWideStringsToFile(TempFileName, SL, False);
   if Result then begin
     Result := GI_SSHServices.ScpUpload(ServerName, TempFileName, FileName, ErrorMsg);

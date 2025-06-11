@@ -73,6 +73,7 @@ uses
   SysUtils,
   UITypes,
   Themes,
+  UUtils,
   UConfiguration;
 
 constructor TLifeline.CreateLL(AOwner: TComponent; const Participant: string;
@@ -111,16 +112,6 @@ var
   Conn1, Conn2: TConnection;
   Jdx, Y1Pos, Y2Pos: Integer;
   HeadColor: TColor;
-
-  function isDark(Color: TColor): Boolean;
-  var
-    ACol: LongInt;
-  begin
-    ACol := ColorToRGB(Color) and $00FFFFFF;
-    Result := ((2.99 * GetRValue(ACol) + 5.87 * GetGValue(ACol) + 1.14 *
-      GetBValue(ACol)) < $400);
-  end;
-
 begin
   Canvas.Pen.Color := FForegroundColor;
   Canvas.Font.Color := FForegroundColor;
@@ -130,9 +121,9 @@ begin
   else
     Canvas.Brush.Color := GuiPyOptions.SDFillingColor;
   HeadColor := Canvas.Brush.Color;
-  if isDark(HeadColor) and isDark(FForegroundColor) then
+  if IsColorDark(HeadColor) and IsColorDark(FForegroundColor) then
     Canvas.Font.Color := FForegroundColor
-  else if not isDark(HeadColor) and not isDark(FForegroundColor) then
+  else if not IsColorDark(HeadColor) and not IsColorDark(FForegroundColor) then
     Canvas.Font.Color := FBackgroundColor;
 
   ShowHead;

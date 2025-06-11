@@ -141,7 +141,6 @@ uses
   UListeners in 'EssModel\Model\UListeners.pas',
   UModel in 'EssModel\Model\UModel.pas',
   UModelEntity in 'EssModel\Model\UModelEntity.pas',
-  UFeedback in 'EssModel\System\UFeedback.pas',
   UUMLForm in 'EssModel\System\UUMLForm.pas' {FUMLForm},
   UUMLModule in 'EssModel\System\UUMLModule.pas' {DMUMLModule: TDataModule},
   UAssociation in 'Main\UAssociation.pas' {FAssociation},
@@ -204,13 +203,6 @@ uses
   uLLMSupport in 'uLLMSupport.pas',
   frmSuggest in 'frmSuggest.pas' {SuggestWindow},
   UUMLInteractive in 'Main\UUMLInteractive.pas' {FUMLInteractive},
-  MarkdownCommonMark in '..\..\delphi-markdown\source\MarkdownCommonMark.pas',
-  MarkdownDaringFireball in '..\..\delphi-markdown\source\MarkdownDaringFireball.pas',
-  MarkdownMathCode in '..\..\delphi-markdown\source\MarkdownMathCode.pas',
-  MarkdownProcessor in '..\..\delphi-markdown\source\MarkdownProcessor.pas',
-  MarkdownTables in '..\..\delphi-markdown\source\MarkdownTables.pas',
-  MarkdownTxtMark in '..\..\delphi-markdown\source\MarkdownTxtMark.pas',
-  MarkdownUtils in '..\..\delphi-markdown\source\MarkdownUtils.pas',
   ULifeline in 'SequenceDiagram\ULifeline.pas';
 
 {$R *.RES}

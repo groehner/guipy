@@ -26,11 +26,13 @@ type
   TDocumentation = class
   private
     FDescription : string;
+    FLineE: Integer;
+    FLineS: Integer;
     procedure SetDescription(const Value: string);
   public
-    LineS: Integer;
-    LineE: Integer;
     property Description : string read FDescription write SetDescription;
+    property LineE: Integer read FLineE write FLineE;
+    property LineS: Integer read FLineS write FLineS;
   end;
 
 implementation
@@ -40,16 +42,16 @@ uses SysUtils;
 { TDocumentation }
 
 procedure TDocumentation.SetDescription(const Value: string);
-var
-  I : Integer;
 begin
-  I := 1;
-  while (I<Length(Value)+1) and CharInset(Value[I], ['*','_','/',' ',#13,#10]) do Inc(I);
-  if I>1 then
-    FDescription := Copy(Value,I,MAXINT)
+  var
+  Int := 1;
+  while (Int < Length(Value) + 1) and
+    CharInSet(Value[Int], ['*', '_', '/', ' ', #13, #10]) do
+    Inc(Int);
+  if Int > 1 then
+    FDescription := Copy(Value, Int, MaxInt)
   else
     FDescription := Value;
-
   FDescription := Value;
 end;
 

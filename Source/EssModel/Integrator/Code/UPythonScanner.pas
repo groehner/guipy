@@ -1,121 +1,127 @@
-{-------------------------------------------------------------------------------
- Unit:     UPythonScanner
- Author:   Gerhard Röhner
- Date:     June 2021
- Purpose:  python scanner
--------------------------------------------------------------------------------}
+{ -------------------------------------------------------------------------------
+  Unit:     UPythonScanner
+  Author:   Gerhard Röhner
+  Date:     June 2021
+  Purpose:  python scanner
+  ------------------------------------------------------------------------------- }
 
 unit UPythonScanner;
 
 interface
 
-  const
-    NEWLINE = Chr($0A);
-    INDENT = Chr($03);
-    DEDENT_ = Chr($04);
+const
+  NEWLINE = Chr($0A);
+  INDENT = Chr($03);
+  DEDENT_ = Chr($04);
 
-  type
+type
 
   TPythonScannerWithTokens = class
-  public
-    Comment: string; // Accumulated comment string used for documentation of entities.
-    Line: Integer;             // current line, calculated by GetNextToken
-    Column: Integer;           // current column
-    LastTokenLine: Integer;
-    LastTokenColumn: Integer;
-    TokenLine: Integer;
-    TokenColumn: Integer;
-    StartPos: PChar;
-    CurrPos: PChar;
-    LastCurrPos: PChar;
-    ScanStr: string;
-    LastToken: string;
-    Token: string;
-    TokenTyp: string;
-    CompoundTokens: Boolean;
-    IndentIndex: Integer;
-    Indents: array[1..50] of Integer;
-    PushToken: string;
-    InhibitDetermineIndent: Boolean;
-    constructor Create;
-    destructor Destroy; override;
-    procedure Init(const s: string);   // simple scanning of a string
-    function GetChar: char;
+  private
+    FColumn: Integer; // current FColumn
+    FComment: string;
+    // Accumulated FComment string used for documentation of entities.
+    FCompoundTokens: Boolean;
+    FCurrPos: PChar;
+    FIndentIndex: Integer;
+    FIndents: array [1 .. 50] of Integer;
+    FInhibitDetermineIndent: Boolean;
+    FLastCurrPos: PChar;
+    FLastToken: string;
+    FLastTokenColumn: Integer;
+    FLastTokenLine: Integer;
+    FLine: Integer; // current line, calculated by GetNextToken
+    FPushToken: string;
+    FScanStr: string;
+    FStartPos: PChar;
+    FToken: string;
+    FTokenColumn: Integer;
+    FTokenLine: Integer;
+    FTokenTyp: string;
     procedure DetermineIndent;
-    procedure EatWhiteSpace;
-    function GetNextToken: string;
-    procedure SkipTo(ch: char);
-    procedure SkipToChars(ch: string);
-    procedure SkipPairTo(const open, close: string);
-    function LookAheadToken: string;
-    function getExtends: string;
-    function getFilename: string;
+    procedure EatWhitespace;
+    function GetChar: Char;
+    function GetExtends: string;
+    procedure SkipPairTo(const Open, Close: string);
+  public
+    constructor Create;
+    procedure Init(const Source: string); // simple scanning of a source
+    function GetFilename: string;
     function GetFrameType: Integer;
+    function GetNextToken: string;
+    function LookAheadToken: string;
+    procedure SkipTo(Chr: Char);
+    procedure SkipToChars(Chr: string);
+
+    property CurrPos: PChar read FCurrPos;
+    property LastCurrPos: PChar read FLastCurrPos;
+    property Token: string read FToken;
   end;
 
 implementation
 
-uses SysUtils, Character;
+uses
+  SysUtils,
+  Character;
 
-{--- Scanner ------------------------------------------------------------------}
+{ --- Scanner ------------------------------------------------------------------ }
 
 constructor TPythonScannerWithTokens.Create;
-  var i: Integer;
 begin
   inherited;
-  Line:= 1;
-  Column:= 1;
-  LastTokenLine:= -1;
-  IndentIndex:= 0;
-  for i:= 1 to 50 do
-    Indents[i]:= 0;
-  Token:= NEWLINE;
+  FLine := 1;
+  FColumn := 1;
+  FLastTokenLine := -1;
+  FIndentIndex := 0;
+  for var I := 1 to 50 do
+    FIndents[I] := 0;
+  FToken := NEWLINE;
 end;
 
-destructor TPythonScannerWithTokens.Destroy;
+function TPythonScannerWithTokens.GetChar: Char;
 begin
-  inherited;
-end;
-
-function TPythonScannerWithTokens.GetChar: char;
-begin
-  Result:= CurrPos^;
-  if (CurrPos^ = #10) or ((CurrPos^ = #13) and ((CurrPos+1)^ <> #10)) then begin
-    Inc(Line);
-    Column:= 0;
+  Result := FCurrPos^;
+  if (FCurrPos^ = #10) or ((FCurrPos^ = #13) and ((FCurrPos + 1)^ <> #10)) then
+  begin
+    Inc(FLine);
+    FColumn := 0;
   end;
-  if Result <> #0 then begin
-    Inc(CurrPos);
-    Inc(Column);
+  if Result <> #0 then
+  begin
+    Inc(FCurrPos);
+    Inc(FColumn);
   end;
 end;
 
-procedure TPythonScannerWithTokens.EatWhiteSpace;
+procedure TPythonScannerWithTokens.EatWhitespace;
 var
-  inComment, continueLastComment, State: Boolean;
+  InComment, ContinueLastComment, State: Boolean;
 
   procedure EatOne;
   begin
-    if inComment
-      then Comment:= Comment + GetChar
-      else GetChar;
+    if InComment then
+      FComment := FComment + GetChar
+    else
+      GetChar;
   end;
 
   function EatWhite: Boolean;
   begin
-    Result:= False;
-    while not CharInSet(CurrPos^, [#0, #10, #13, #33..#255]) do begin
-      Result:= True;
+    Result := False;
+    while not CharInSet(FCurrPos^, [#0, #10, #13, #33 .. #255]) do
+    begin
+      Result := True;
       EatOne;
     end;
   end;
 
   function EatTripleComment: Boolean;
   begin
-    Result:= True;
-    while not ((CurrPos^ = '"') and ((CurrPos + 1)^ = '"') and ((CurrPos + 2)^ = '"')) and (CurrPos^ <> #0) do
+    Result := True;
+    while not((FCurrPos^ = '"') and ((FCurrPos + 1)^ = '"') and
+      ((FCurrPos + 2)^ = '"')) and (FCurrPos^ <> #0) do
       EatOne;
-    continueLastComment:= False;
+    ContinueLastComment := False;
     EatOne;
     EatOne;
     EatOne;
@@ -123,314 +129,378 @@ var
 
   function EatHashComment: Boolean;
   begin
-    Result:= True;
-    while (CurrPos^ <> #13) and (CurrPos^ <> #10) and (CurrPos^ <> #0) do
+    Result := True;
+    while (FCurrPos^ <> #13) and (FCurrPos^ <> #10) and (FCurrPos^ <> #0) do
       EatOne;
-    continueLastComment:= True;
-    inComment:= False;
-    if CurrPos^ = #13 then
+    ContinueLastComment := True;
+    InComment := False;
+    if FCurrPos^ = #13 then
       GetChar;
   end;
 
 begin
-  inComment:= False;
-  continueLastComment:= False;
-  State:= True;
-  while State do begin
-    State:= False;
-    if (CurrPos^ = #10) or ((CurrPos^ = #13) and ((CurrPos + 1)^ = #10)) then
-      continueLastComment:= False;
-    if not CharInSet(CurrPos^, [#0, #10, #13, #33..#255]) then
-      State:= EatWhite;
-    if CurrPos^ = '#' then begin
-      inComment:= True;
-      Comment:= '';
+  InComment := False;
+  ContinueLastComment := False;
+  State := True;
+  while State do
+  begin
+    State := False;
+    if (FCurrPos^ = #10) or ((FCurrPos^ = #13) and ((FCurrPos + 1)^ = #10)) then
+      ContinueLastComment := False;
+    if not CharInSet(FCurrPos^, [#0, #10, #13, #33 .. #255]) then
+      State := EatWhite;
+    if FCurrPos^ = '#' then
+    begin
+      InComment := True;
+      FComment := '';
       EatOne;
-      State:= EatHashComment;
-      inComment:= False;
+      State := EatHashComment;
+      InComment := False;
     end;
-    if (CurrPos^ = '"') and ((CurrPos + 1)^ = '"') and ((CurrPos + 2)^ = '"') then begin
-      if not continueLastComment
-        then Comment:= ''
-        else Comment:= Comment + #13#10;
+    if (FCurrPos^ = '"') and ((FCurrPos + 1)^ = '"') and ((FCurrPos + 2)^ = '"')
+    then
+    begin
+      if not ContinueLastComment then
+        FComment := ''
+      else
+        FComment := FComment + #13#10;
       EatOne;
       EatOne;
       EatOne; // Skip the triple slashes
-      inComment:= True;
-      State:= EatTripleComment;
-      inComment:= False;
+      InComment := True;
+      State := EatTripleComment;
+      InComment := False;
     end;
   end;
 end;
 
 procedure TPythonScannerWithTokens.DetermineIndent;
-  var Spaces: Integer;
+var
+  Spaces: Integer;
 begin
-  if not InhibitDetermineIndent then begin
-    Spaces:= 0;
-    if CurrPos^ = #13 then
+  if not FInhibitDetermineIndent then
+  begin
+    Spaces := 0;
+    if FCurrPos^ = #13 then
       GetChar;
-    while (CurrPos^ = #10) and (CurrPos^ <> #0) do begin
+    while (FCurrPos^ = #10) and (FCurrPos^ <> #0) do
+    begin
       GetChar;
-      if CurrPos^= #13 then
+      if FCurrPos^ = #13 then
         GetChar;
     end;
-    while CurrPos^ = ' ' do begin
+    while FCurrPos^ = ' ' do
+    begin
       Inc(Spaces);
       GetChar;
     end;
-    if (CurrPos^ = '#') or (CurrPos^ = '"') and ((CurrPos+1)^ = '"') and ((CurrPos+2)^ = '"') then
+    if (FCurrPos^ = '#') or (FCurrPos^ = '"') and ((FCurrPos + 1)^ = '"') and
+      ((FCurrPos + 2)^ = '"') then
       Exit;
-    if IndentIndex = 0 then begin
-      Inc(IndentIndex);
-      Indents[IndentIndex]:= Spaces
-    end else if Spaces > Indents[IndentIndex] then begin
-      PushToken:= INDENT + PushToken;
-      Inc(IndentIndex);
-      Indents[IndentIndex]:= Spaces;
-    end else while (IndentIndex > 1) and (Spaces < Indents[IndentIndex]) do begin
-      PushToken:= DEDENT_ + PushToken;
-      Indents[IndentIndex]:= 0;
-      Dec(IndentIndex);
-    end;
+    if FIndentIndex = 0 then
+    begin
+      Inc(FIndentIndex);
+      FIndents[FIndentIndex] := Spaces;
+    end
+    else if Spaces > FIndents[FIndentIndex] then
+    begin
+      FPushToken := INDENT + FPushToken;
+      Inc(FIndentIndex);
+      FIndents[FIndentIndex] := Spaces;
+    end
+    else
+      while (FIndentIndex > 1) and (Spaces < FIndents[FIndentIndex]) do
+      begin
+        FPushToken := DEDENT_ + FPushToken;
+        FIndents[FIndentIndex] := 0;
+        Dec(FIndentIndex);
+      end;
   end;
 end;
 
 function TPythonScannerWithTokens.GetNextToken: string;
-  var bracket: Integer;
+var
+  Bracket: Integer;
 
   procedure AddOne;
   begin
-    Token:= Token + GetChar;
+    FToken := FToken + GetChar;
   end;
 
 begin
-  LastToken:= Token;
-  LastCurrPos:= CurrPos;
-  if PushToken <> '' then begin
-    Token:= PushToken[1];
-    Delete(PushToken, 1, 1);
-    Exit(Token);
+  FLastToken := FToken;
+  FLastCurrPos := FCurrPos;
+  if FPushToken <> '' then
+  begin
+    FToken := FPushToken[1];
+    Delete(FPushToken, 1, 1);
+    Exit(FToken);
   end;
-  Token:= '';
-  TokenTyp:= '';
-  if LastToken = NEWLINE then begin
+  FToken := '';
+  FTokenTyp := '';
+  if FLastToken = NEWLINE then
+  begin
     DetermineIndent;
-    if PushToken <> '' then begin
-      Token:= PushToken[1];
-      Delete(PushToken, 1, 1);
-      Exit(Token);
+    if FPushToken <> '' then
+    begin
+      FToken := FPushToken[1];
+      Delete(FPushToken, 1, 1);
+      Exit(FToken);
     end;
   end;
-  // 2.1.5. line joining
-  EatWhiteSpace;
-  if (CurrPos^ = '\') and ((CurrPos + 1)^ = #10) then begin
+  // 2.1.5. FLine joining
+  EatWhitespace;
+  if (FCurrPos^ = '\') and ((FCurrPos + 1)^ = #10) then
+  begin
     GetChar;
     GetChar;
-    EatWhiteSpace;
+    EatWhitespace;
   end;
-  if LastTokenLine = -1 then begin
-    LastTokenLine:= Line;
-    LastTokenColumn:= Column;
-  end else begin
-    LastTokenLine:= TokenLine;
-    LastTokenColumn:= TokenColumn;
+  if FLastTokenLine = -1 then
+  begin
+    FLastTokenLine := FLine;
+    FLastTokenColumn := FColumn;
+  end
+  else
+  begin
+    FLastTokenLine := FTokenLine;
+    FLastTokenColumn := FTokenColumn;
   end;
-  TokenLine:= Line;
-  TokenColumn:= Column;
-  if CurrPos^ = '"' then begin // Parse String
+  FTokenLine := FLine;
+  FTokenColumn := FColumn;
+  if FCurrPos^ = '"' then
+  begin // Parse String
     AddOne;
-    while not CharInSet(CurrPos^, ['"', #0]) do begin
-      if ((CurrPos^ = '\') and CharInSet((CurrPos + 1)^, ['"', '\'])) then
+    while not CharInSet(FCurrPos^, ['"', #0]) do
+    begin
+      if ((FCurrPos^ = '\') and CharInSet((FCurrPos + 1)^, ['"', '\'])) then
         AddOne;
       AddOne;
     end;
     AddOne;
-    TokenTyp:= 'String';
-  end else if CurrPos^ = '''' then begin // Parse char
+    FTokenTyp := 'String';
+  end
+  else if FCurrPos^ = '''' then
+  begin // Parse Char
     AddOne;
-    while not CharInSet(CurrPos^, ['''', #0]) do begin
-      if ((CurrPos^ = '\') and CharInSet((CurrPos + 1)^, ['''', '\'])) then
+    while not CharInSet(FCurrPos^, ['''', #0]) do
+    begin
+      if ((FCurrPos^ = '\') and CharInSet((FCurrPos + 1)^, ['''', '\'])) then
         AddOne;
       AddOne;
     end;
     AddOne;
-    TokenTyp:= 'int'; // instead of char
-  end else //Identifier
-    if CurrPos^.isLetter or (CurrPos^ = '_') then begin
-      while CurrPos^ = '_' do
+    FTokenTyp := 'int'; // instead of Char
+  end
+  else // Identifier
+    if FCurrPos^.IsLetter or (FCurrPos^ = '_') then
+    begin
+      while FCurrPos^ = '_' do
         GetChar;
       AddOne;
-      while True do begin
-        while CurrPos^.IsLetterOrDigit or (CurrPos^ = '_') do
+      while True do
+      begin
+        while FCurrPos^.IsLetterOrDigit or (FCurrPos^ = '_') do
           AddOne;
-        if CompoundTokens and (CurrPos^ = '.') then begin
+        if FCompoundTokens and (FCurrPos^ = '.') then
+        begin
           AddOne;
-          if Token = 'self.' then
-            Token:= '';
+          if FToken = 'self.' then
+            FToken := '';
           Continue;
         end;
         Break;
       end;
-      while CurrPos^ = '[' do begin
-        bracket:= 1;
+      while FCurrPos^ = '[' do
+      begin
+        Bracket := 1;
         AddOne;
-        while (bracket > 0) and (CurrPos^ <> #0) and (CurrPos^ <> '}') and (CurrPos^ <> ';') do begin
-          if CurrPos^ = '['
-            then Inc(bracket)
-          else if CurrPos^ = ']'
-            then Dec(bracket);
+        while (Bracket > 0) and (FCurrPos^ <> #0) and (FCurrPos^ <> '}') and
+          (FCurrPos^ <> ';') do
+        begin
+          if FCurrPos^ = '[' then
+            Inc(Bracket)
+          else if FCurrPos^ = ']' then
+            Dec(Bracket);
           AddOne;
         end;
       end;
     end
-  else if CharInSet(CurrPos^, [';', '[', ']', '{', '}', '(', ')', ',', ':', '.', '?', '@']) then begin
-    //single chars to test
-    AddOne;
-    if (CurrPos^= '.') and ((CurrPos+1)^ = '.') then begin
+    else if CharInSet(FCurrPos^, [';', '[', ']', '{', '}', '(', ')', ',', ':',
+      '.', '?', '@']) then
+    begin
+      // single chars to test
       AddOne;
-      AddOne;
+      if (FCurrPos^ = '.') and ((FCurrPos + 1)^ = '.') then
+      begin
+        AddOne;
+        AddOne;
+      end;
     end
-  end else if CurrPos^ = '=' then begin //single chars to test
-    AddOne;
-    while CurrPos^ = '=' do AddOne;
-  end
-  else if CurrPos^ = '[' then begin  // lose Klammern
-    AddOne;
-    EatWhitespace;
-    if CurrPos^ = ']' then AddOne;
-  end else if CharInSet(CurrPos^, ['*', '/', '%', '+', '-', '<', '>', '&', '^', '|']) then begin // operators
-    AddOne;
-    if CharInSet(CurrPos^,  ['=', '+', '-']) then
+    else if FCurrPos^ = '=' then
+    begin // single chars to test
       AddOne;
-  end else if CharInSet(CurrPos^, ['0'..'9']) then begin
-    while CharInSet(CurrPos^, ['0'..'9']) do
+      while FCurrPos^ = '=' do
+        AddOne;
+    end
+    else if FCurrPos^ = '[' then
+    begin // lose Klammern
       AddOne;
-    TokenTyp:= 'int';
-    while CharInSet(CurrPos^, ['0'..'9', '.', 'E', 'e']) do begin
+      EatWhitespace;
+      if FCurrPos^ = ']' then
+        AddOne;
+    end
+    else if CharInSet(FCurrPos^, ['*', '/', '%', '+', '-', '<', '>', '&', '^',
+      '|']) then
+    begin // operators
       AddOne;
-      TokenTyp:= 'double';
-    end;
-  end else if CurrPos^ = #13 then begin
-    GetChar;
-    if CurrPos^ = #10 then
-      AddOne;              // NEWLINE
-  end else if CurrPos^= #10 then
-    AddOne
-  else
-    while not CharInSet(CurrPos^, [#0, #9, #12, #32, ',', '=', ';', '{', '}', '(', ')', '"', '''']) do
-      AddOne;
-  Result:= Token;
+      if CharInSet(FCurrPos^, ['=', '+', '-']) then
+        AddOne;
+    end
+    else if CharInSet(FCurrPos^, ['0' .. '9']) then
+    begin
+      while CharInSet(FCurrPos^, ['0' .. '9']) do
+        AddOne;
+      FTokenTyp := 'int';
+      while CharInSet(FCurrPos^, ['0' .. '9', '.', 'E', 'e']) do
+      begin
+        AddOne;
+        FTokenTyp := 'double';
+      end;
+    end
+    else if FCurrPos^ = #13 then
+    begin
+      GetChar;
+      if FCurrPos^ = #10 then
+        AddOne; // NEWLINE
+    end
+    else if FCurrPos^ = #10 then
+      AddOne
+    else
+      while not CharInSet(FCurrPos^, [#0, #9, #12, #32, ',', '=', ';', '{', '}',
+        '(', ')', '"', '''']) do
+        AddOne;
+  Result := FToken;
 end;
 
-procedure TPythonScannerWithTokens.Init(const s: string);
+procedure TPythonScannerWithTokens.Init(const Source: string);
 begin
-  Token:= NEWLINE;
-  PushToken:= '';
-  ScanStr:= s;
-  CurrPos := PChar(ScanStr);
-  StartPos:= PChar(ScanStr);
-  CompoundTokens:= True;
+  FToken := NEWLINE;
+  FPushToken := '';
+  FScanStr := Source;
+  FCurrPos := PChar(FScanStr);
+  FStartPos := PChar(FScanStr);
+  FCompoundTokens := True;
   DetermineIndent;
 end;
 
-procedure TPythonScannerWithTokens.SkipTo(ch: char);
+procedure TPythonScannerWithTokens.SkipTo(Chr: Char);
 begin
-  while (Token <> ch) and (Token <> '') do begin
-    if Token = '{'
-      then SkipPairTo('{', '}')
-    else if Token = '('
-      then SkipPairTo('(', ')')
-    else if Token = '['
-      then SkipPairTo('[', ']')
-    else GetNextToken;
+  while (FToken <> Chr) and (FToken <> '') do
+  begin
+    if FToken = '{' then
+      SkipPairTo('{', '}')
+    else if FToken = '(' then
+      SkipPairTo('(', ')')
+    else if FToken = '[' then
+      SkipPairTo('[', ']')
+    else
+      GetNextToken;
   end;
 end;
 
-procedure TPythonScannerWithTokens.SkipToChars(ch: string);
+procedure TPythonScannerWithTokens.SkipToChars(Chr: string);
 begin
-  while (Pos(Token, ch) = 0) and (Token <> '') do begin
-    if Token = '{'
-      then SkipPairTo('{', '}')
-    else if Token = '('
-      then SkipPairTo('(', ')')
-    else if Token = '['
-      then SkipPairTo('[', ']')
-    else GetNextToken;
+  while (Pos(FToken, Chr) = 0) and (FToken <> '') do
+  begin
+    if FToken = '{' then
+      SkipPairTo('{', '}')
+    else if FToken = '(' then
+      SkipPairTo('(', ')')
+    else if FToken = '[' then
+      SkipPairTo('[', ']')
+    else
+      GetNextToken;
   end;
 end;
 
-procedure TPythonScannerWithTokens.SkipPairTo(const open, close: string);
-  var Count: Integer;
+procedure TPythonScannerWithTokens.SkipPairTo(const Open, Close: string);
+var
+  Count: Integer;
 begin
-  Count:= 1;
-  InhibitDetermineIndent:= True;
-  while (Count > 0) and (Token <> '') do begin
+  Count := 1;
+  FInhibitDetermineIndent := True;
+  while (Count > 0) and (FToken <> '') do
+  begin
     GetNextToken;
-    if Token = open
-      then Inc(Count)
-    else if Token = close
-      then Dec(Count);
+    if FToken = Open then
+      Inc(Count)
+    else if FToken = Close then
+      Dec(Count);
   end;
-  InhibitDetermineIndent:= False;
+  FInhibitDetermineIndent := False;
 end;
 
 function TPythonScannerWithTokens.LookAheadToken: string;
-  var SaveCurrPos: PChar;
-      SaveLastCurrPos: PChar;
-      SaveLastToken: string;
-      SaveToken: string;
-      SaveLine: Integer;
+var
+  SaveCurrPos: PChar;
+  SaveLastCurrPos: PChar;
+  SaveLastToken: string;
+  SaveToken: string;
+  SaveLine: Integer;
 begin
-  SaveCurrPos:= CurrPos;
-  SaveLastCurrPos:= LastCurrPos;
-  SaveLastToken:= LastToken;
-  SaveToken:= Token;
-  SaveLine:= Line;
-  Result:= GetNextToken;
-  LastToken:= SaveLastToken;
-  Token:= SaveToken;
-  LastCurrPos:= SaveLastCurrPos;
-  CurrPos:= SaveCurrPos;
-  Line:= SaveLine;
+  SaveCurrPos := FCurrPos;
+  SaveLastCurrPos := FLastCurrPos;
+  SaveLastToken := FLastToken;
+  SaveToken := FToken;
+  SaveLine := FLine;
+  Result := GetNextToken;
+  FLastToken := SaveLastToken;
+  FToken := SaveToken;
+  FLastCurrPos := SaveLastCurrPos;
+  FCurrPos := SaveCurrPos;
+  FLine := SaveLine;
 end;
 
-function TPythonScannerWithTokens.getFilename: string;
+function TPythonScannerWithTokens.GetFilename: string;
 begin
-  getNextToken;
-  while (Token <> '') and (Token <> 'def') do
-    getNextToken;
-  if Token = 'def' then
-    Result:= getNextToken;
-end;
-
-function TPythonScannerWithTokens.getExtends: string;
-begin
-  Result:= '';
   GetNextToken;
-  while (Token <> '') and (Token <> 'class') do
+  while (FToken <> '') and (FToken <> 'def') do
     GetNextToken;
+  if FToken = 'def' then
+    Result := GetNextToken;
+end;
 
-  if Token = 'class' then begin
+function TPythonScannerWithTokens.GetExtends: string;
+begin
+  Result := '';
+  GetNextToken;
+  while (FToken <> '') and (FToken <> 'class') do
+    GetNextToken;
+  if FToken = 'class' then
+  begin
     GetNextToken;
     GetNextToken;
-    if Token = '(' then
-      Result:= GetNextToken;
+    if FToken = '(' then
+      Result := GetNextToken;
   end;
 end;
 
 function TPythonScannerWithTokens.GetFrameType: Integer;
-  var Typ: string;
+var
+  Typ: string;
 begin
-  CompoundTokens:= True;
-  Typ:= getExtends;
-  if ScanStr <> '' then
-    if (Typ = 'QMainWindow') or (Typ = 'QWidget')
-      then Result:= 3
-    else if Typ = 'tk.Frame'
-      then Result:= 2
-      else Result:= 1
-  else Result:= 0;
+  FCompoundTokens := True;
+  Typ := GetExtends;
+  if FScanStr <> '' then
+    if (Typ = 'QMainWindow') or (Typ = 'QWidget') then
+      Result := 3
+    else if Typ = 'tk.Frame' then
+      Result := 2
+    else
+      Result := 1
+  else
+    Result := 0;
 end;
 
 end.

@@ -474,7 +474,7 @@ object AFrameDiagram: TAFrameDiagram
       Caption = 'Hide inherited methods of system classes'
       OnClick = MIClassPopupHideInheritedClick
     end
-    object N1: TSpTBXSeparatorItem
+    object N1Sep: TSpTBXSeparatorItem
     end
     object MIClassPopupDisplay: TSpTBXSubmenuItem
       Tag = 1
