@@ -1,26 +1,29 @@
-{-------------------------------------------------------------------------------
- Unit:     UTKButtonBase
- Author:   Gerhard Röhner
- Date:     May 2021
- Purpose:  tkinter button widgets
--------------------------------------------------------------------------------}
+﻿{ -------------------------------------------------------------------------------
+  Unit:     UTKButtonBase
+  Author:   Gerhard Röhner
+  Date:     May 2021
+  Purpose:  tkinter button widgets
+  ------------------------------------------------------------------------------- }
 
 unit UTKButtonBase;
 
 { class hierarchy
 
   TKButtonBaseWidget
-    TKLabel
-    TKButton
-    TKCheckbutton
-    TKMenubutton
-      TKOptionMenu
+  TKLabel
+  TKButton
+  TKCheckbutton
+  TKMenubutton
+  TKOptionMenu
 }
 
 interface
 
 uses
-  Classes, Graphics, UBaseTkWidgets, UTkWidgets;
+  Classes,
+  Graphics,
+  UBaseTKWidgets,
+  UTKWidgets;
 
 type
 
@@ -31,7 +34,6 @@ type
   TButtonState = (active, disabled, normal);
 
   TDirection = (above, below, flush, left, right);
-
 
   TKButtonBaseWidget = class(TKWidget)
   private
@@ -44,32 +46,39 @@ type
     FSelectColor: TColor;
     FSelectImage: string;
     FState: TButtonState;
-    procedure setBitmap(aValue: string);
-    procedure setCompound(aValue: TCompound);
-    procedure setIndicatorOn(aValue: Boolean);
-    procedure setState(aValue: TButtonState);
+    procedure SetBitmap(Value: string);
+    procedure SetCompound(Value: TCompound);
+    procedure SetIndicatorOn(Value: Boolean);
+    procedure SetState(Value: TButtonState);
   protected
     procedure MakeDirection(Value: string);
-    procedure CalculateText(var tw, th: Integer; var SL: TStringlist); override;
+    procedure CalculateText(var TextWidth, TextHeight: Integer;
+      var StringList: TStringList); override;
   public
-    constructor Create(AOwner: TComponent); override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function getCompound: TUCompound; override;
+    constructor Create(Owner: TComponent); override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function GetCompound: TUCompound; override;
     procedure SizeToText; override;
 
-    property OffRelief: TRelief read fOffRelief write fOffRelief default _TR_raised;
-    property OverRelief: TRelief read fOverRelief write fOverRelief default _TR_raised;
-    property IndicatorOn: Boolean read FIndicatorOn write setIndicatorOn default True;
-    property SelectColor: TColor read fSelectColor write fSelectColor default clWindow;
-    property SelectImage: string read fSelectImage write fSelectImage;
+    property OffRelief: TRelief read FOffRelief write FOffRelief
+      default _TR_raised;
+    property OverRelief: TRelief read FOverRelief write FOverRelief
+      default _TR_raised;
+    property IndicatorOn: Boolean read FIndicatorOn write SetIndicatorOn
+      default True;
+    property SelectColor: TColor read FSelectColor write FSelectColor
+      default clWindow;
+    property SelectImage: string read FSelectImage write FSelectImage;
   published
     property ActiveBackground;
-    property ActiveForeground: TColor read FActiveForeground write FActiveForeground default clBtnText;
+    property ActiveForeground: TColor read FActiveForeground
+      write FActiveForeground default clBtnText;
     property Anchor;
-    property Bitmap: string read FBitmap write setBitmap;
-    property Compound: TCompound read FCompound write setCompound default _TC_none;
+    property Bitmap: string read FBitmap write SetBitmap;
+    property Compound: TCompound read FCompound write SetCompound
+      default _TC_none;
     property DisabledForeground;
     property Font;
     property Foreground;
@@ -80,45 +89,47 @@ type
     property Justify;
     property PadX;
     property PadY;
-    property State: TButtonState read FState write setState default normal;
+    property State: TButtonState read FState write SetState default normal;
     property Text;
     property Underline;
     property WrapLength;
   end;
 
-  TKLabel = class (TKButtonBaseWidget)
+  TKLabel = class(TKButtonBaseWidget)
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     procedure NewWidget(Widget: string = ''); override;
   end;
 
-  TKButton = class (TKButtonBaseWidget)
+  TKButton = class(TKButtonBaseWidget)
   private
     FDefault: Boolean;
     FRepeatDelay: Integer;
     FRepeatInterval: Integer;
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
   published
     property Command;
     property Default: Boolean read FDefault write FDefault default False;
     property OverRelief;
-    property RepeatDelay: Integer read FRepeatDelay write FRepeatDelay default 0;
-    property RepeatInterval: Integer read FRepeatInterval write FRepeatInterval default 0;
+    property RepeatDelay: Integer read FRepeatDelay write FRepeatDelay
+      default 0;
+    property RepeatInterval: Integer read FRepeatInterval write FRepeatInterval
+      default 0;
     property TakeFocus;
   end;
 
-  TKCheckbutton = class (TKButtonBaseWidget)
+  TKCheckbutton = class(TKButtonBaseWidget)
   private
     FOffValue: string;
     FOnValue: string;
   protected
     procedure Paint; override;
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure SizeToText; override;
   published
@@ -126,8 +137,8 @@ type
     property IndicatorOn;
     property OffRelief;
     property OverRelief;
-    property OffValue: string read fOffValue write fOffValue;
-    property OnValue: string read fOnValue write fOnValue;
+    property OffValue: string read FOffValue write FOffValue;
+    property OnValue: string read FOnValue write FOnValue;
     property SelectColor;
     property SelectImage;
     property TakeFocus;
@@ -138,13 +149,14 @@ type
     FDirection: TDirection;
     FMenu: string;
   public
-    constructor Create (AOwner: TComponent); override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    constructor Create(Owner: TComponent); override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property Direction: TDirection read FDirection write FDirection default below;
+    property Direction: TDirection read FDirection write FDirection
+      default below;
     property IndicatorOn;
     property Menu: string read FMenu write FMenu;
   end;
@@ -153,39 +165,45 @@ type
   private
     FNewItems: TStrings;
     FOldItems: TStrings;
-    procedure setItems(aItems: TStrings);
+    procedure SetItems(Items: TStrings);
     procedure MakeMenuItems;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
-    function getText: string; override;
+    function GetText: string; override;
   published
     property IndicatorOn;
-    property MenuItems: TStrings read FNewItems write setItems;
+    property MenuItems: TStrings read FNewItems write SetItems;
   end;
 
 implementation
 
-uses Math, Controls, SysUtils, System.Types, UUtils, UGUIDesigner;
+uses
+  Math,
+  Controls,
+  SysUtils,
+  System.Types,
+  UUtils,
+  UGUIDesigner;
 
-{--- TButtonBaseWidget --------------------------------------------------------}
+{ --- TButtonBaseWidget -------------------------------------------------------- }
 
-constructor TKButtonBaseWidget.Create(AOwner: TComponent);
+constructor TKButtonBaseWidget.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Width:= 80;
-  Height:= 24;
-  FActiveForeground:= clBtnText;
-  FCompound:= _TC_none;
-  FIndicatorOn:= True;
-  FOffRelief:= _TR_raised;
-  FOverRelief:= _TR_raised;
-  FSelectColor:= clWindow;
-  FState:= normal;
+  inherited Create(Owner);
+  Width := 80;
+  Height := 24;
+  FActiveForeground := clBtnText;
+  FCompound := _TC_none;
+  FIndicatorOn := True;
+  FOffRelief := _TR_raised;
+  FOverRelief := _TR_raised;
+  FSelectColor := clWindow;
+  FState := normal;
 end;
 
 procedure TKButtonBaseWidget.SetAttribute(Attr, Value, Typ: string);
@@ -198,285 +216,329 @@ begin
     inherited;
 end;
 
-function TKButtonBaseWidget.getAttributes(ShowAttributes: Integer): string;
+function TKButtonBaseWidget.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Text|Anchor';
+  Result := '|Text|Anchor';
   if ShowAttributes >= 2 then
-    Result:= Result + '|Bitmap|Compound|Image';
+    Result := Result + '|Bitmap|Compound|Image';
   if ShowAttributes = 3 then
-    Result:= Result + '|ActiveBackground|ActiveForeground|DisabledForeground' +
-                      '|Foreground|HighlightBackground|HighlightColor' +
-                      '|HighlightThickness|Justify|PadX|PadY|State|Underline|WrapLength';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|ActiveBackground|ActiveForeground|DisabledForeground' +
+      '|Foreground|HighlightBackground|HighlightColor' +
+      '|HighlightThickness|Justify|PadX|PadY|State|Underline|WrapLength';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-function TKButtonBaseWidget.getEvents(ShowEvents: Integer): string;
+function TKButtonBaseWidget.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= getMouseEvents(ShowEvents);
+  Result := GetMouseEvents(ShowEvents);
 end;
 
 procedure TKButtonBaseWidget.MakeDirection(Value: string);
-  var s: string;
+var
+  Str: string;
 begin
-  s:= 'self.' + Name + '[''direction'']';
-  setAttributValue(s, s + ' = ' + asString(Value));
+  Str := 'self.' + Name + '[''direction'']';
+  SetAttributValue(Str, Str + ' = ' + AsString(Value));
 end;
 
-function TKButtonBaseWidget.getCompound: TUCompound;
+function TKButtonBaseWidget.GetCompound: TUCompound;
 begin
   case FCompound of
-    _TC_top   : Result:= _TU_top;
-    _TC_bottom: Result:= _TU_bottom;
-    _TC_left  : Result:= _TU_left;
-    _TC_right : Result:= _TU_right;
-    _TC_center: Result:= _TU_center;
-  else          Result:= _TU_none;
+    _TC_top:
+      Result := _TU_top;
+    _TC_bottom:
+      Result := _TU_bottom;
+    _TC_left:
+      Result := _TU_left;
+    _TC_right:
+      Result := _TU_right;
+    _TC_center:
+      Result := _TU_center;
+  else
+    Result := _TU_none;
   end;
 end;
 
-procedure TKButtonBaseWidget.CalculateText(var tw, th: Integer; var SL: TStringlist);
-  var s: string; p: Integer;
+procedure TKButtonBaseWidget.CalculateText(var TextWidth, TextHeight: Integer;
+  var StringList: TStringList);
+var
+  Str: string;
+  Posi: Integer;
 begin
-  s:= getText;
-  p:= Pos('\n', s);
-  while p > 0 do begin
-    SL.Add(Copy(s, 1, p-1));
-    Delete(s, 1, p+1);
-    p:= Pos('\n', s);
+  Str := GetText;
+  Posi := Pos('\n', Str);
+  while Posi > 0 do
+  begin
+    StringList.Add(Copy(Str, 1, Posi - 1));
+    Delete(Str, 1, Posi + 1);
+    Posi := Pos('\n', Str);
   end;
-  SL.Add(s);
-  tw:= 0;
-  for p:= 0 to SL.Count - 1 do
-    tw:= Max(tw, Canvas.TextWidth(SL[p]));
-  th:= SL.Count * Canvas.TextHeight('Hg');
+  StringList.Add(Str);
+  TextWidth := 0;
+  for Posi := 0 to StringList.Count - 1 do
+    TextWidth := Max(TextWidth, Canvas.TextWidth(StringList[Posi]));
+  TextHeight := StringList.Count * Canvas.TextHeight('Hg');
 end;
 
 procedure TKButtonBaseWidget.SizeToText;
 begin
-  var d:= Canvas.TextWidth(Text + 'x') - Width;
-  if d > 0 then Width:= Width + d;
-  d:= Canvas.TextHeight(Text)+ 4 - Height;
-  if d > 0 then Height:= Height + d;
+  var
+  Delta := Canvas.TextWidth(Text + 'x') - Width;
+  if Delta > 0 then
+    Width := Width + Delta;
+  Delta := Canvas.TextHeight(Text) + 4 - Height;
+  if Delta > 0 then
+    Height := Height + Delta;
 end;
 
-procedure TKButtonBaseWidget.setBitmap(aValue: string);
+procedure TKButtonBaseWidget.SetBitmap(Value: string);
 begin
-  if aValue <> fBitmap then begin
-    fBitmap:= aValue;
+  if Value <> FBitmap then
+  begin
+    FBitmap := Value;
     Invalidate;
   end;
 end;
 
-procedure TKButtonBaseWidget.setCompound(aValue: TCompound);
+procedure TKButtonBaseWidget.SetCompound(Value: TCompound);
 begin
-  if aValue <> fCompound then begin
-    fCompound:= aValue;
+  if Value <> FCompound then
+  begin
+    FCompound := Value;
     Invalidate;
   end;
 end;
 
-procedure TKButtonBaseWidget.setIndicatorOn(aValue: Boolean);
+procedure TKButtonBaseWidget.SetIndicatorOn(Value: Boolean);
 begin
-  if aValue <> FIndicatorOn then begin
-    FIndicatorOn:= aValue;
+  if Value <> FIndicatorOn then
+  begin
+    FIndicatorOn := Value;
     Invalidate;
   end;
 end;
 
-procedure TKButtonBaseWidget.setState(aValue: TButtonState);
+procedure TKButtonBaseWidget.SetState(Value: TButtonState);
 begin
-  if aValue <> FState then begin
-    FState:= aValue;
+  if Value <> FState then
+  begin
+    FState := Value;
     Invalidate;
   end;
 end;
 
-{--- TKLabel ------------------------------------------------------------------}
+{ --- TKLabel ------------------------------------------------------------------ }
 
-constructor TKLabel.Create(AOwner: TComponent);
+constructor TKLabel.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 1;
-  Text:= 'Label';
-  Anchor:= _TA_w;
-  HighlightThickness:= '0';
+  inherited Create(Owner);
+  Tag := 1;
+  Text := 'Label';
+  Anchor := _TA_w;
+  HighlightThickness := '0';
 end;
 
 procedure TKLabel.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.Label');
-  InsertValue('self.' + Name + '[' + asString('anchor') + '] = ' + asString('w'));
-  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
+  InsertValue('self.' + Name + '[' + AsString('anchor') + '] = ' +
+    AsString('w'));
+  InsertValue('self.' + Name + '[' + AsString('text') + '] = ' +
+    AsString(Text));
 end;
 
-{--- TKButton -----------------------------------------------------------------}
+{ --- TKButton ----------------------------------------------------------------- }
 
-constructor TKButton.Create(AOwner: TComponent);
+constructor TKButton.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 4;
-  Text:= 'Button';
-  FDefault:= False;
-  FRepeatDelay:= 0;
-  FRepeatInterval:= 0;
-  Relief:= _TR_raised;
-  TakeFocus:= True;
+  inherited Create(Owner);
+  Tag := 4;
+  Text := 'Button';
+  FDefault := False;
+  FRepeatDelay := 0;
+  FRepeatInterval := 0;
+  Relief := _TR_raised;
+  TakeFocus := True;
 end;
 
-function TKButton.getAttributes(ShowAttributes: Integer): string;
+function TKButton.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Command|Default';
-  if ShowAttributes >= 3 then Result:= Result + '|OverRelief|RepeatDelay|RepeatInterval';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|Command|Default';
+  if ShowAttributes >= 3 then
+    Result := Result + '|OverRelief|RepeatDelay|RepeatInterval';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
 procedure TKButton.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.Button');
-  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
-  Command:= True;
+  InsertValue('self.' + Name + '[' + AsString('text') + '] = ' +
+    AsString(Text));
+  Command := True;
   ChangeCommand('Command', Name + '_Command');
 end;
 
-{--- TKCheckbutton ------------------------------------------------------------}
+{ --- TKCheckbutton ------------------------------------------------------------ }
 
-constructor TKCheckbutton.Create(AOwner: TComponent);
+constructor TKCheckbutton.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 5;
-  Text:= 'Checkbutton';
-  FActiveForeground:= clWindowText;
-  FOffValue:= '0';
-  FOnValue:= '1';
-  Foreground:= clWindowText;
-  TakeFocus:= True;
-  Width:= 120;
+  inherited Create(Owner);
+  Tag := 5;
+  Text := 'Checkbutton';
+  FActiveForeground := clWindowText;
+  FOffValue := '0';
+  FOnValue := '1';
+  Foreground := clWindowText;
+  TakeFocus := True;
+  Width := 120;
 end;
 
-function TKCheckbutton.getAttributes(ShowAttributes: Integer): string;
+function TKCheckbutton.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Command';
+  Result := '|Command';
   if ShowAttributes >= 2 then
-    Result:= Result + '|OffValue|OnValue';
+    Result := Result + '|OffValue|OnValue';
   if ShowAttributes = 3 then
-    Result:= Result + '|IndicatorOn|OffRelief|OverRelief|SelectColor|SelectImage';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result +
+      '|IndicatorOn|OffRelief|OverRelief|SelectColor|SelectImage';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
 procedure TKCheckbutton.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('tk.Checkbutton');
   MakeControlVar('variable', Name + 'CV', '0', 'Int');
-  Anchor:= _TA_w;
-  InsertValue('self.' + Name + '[' + asString('anchor') + '] = ' + asString('w'));
-  InsertValue('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
+  Anchor := _TA_w;
+  InsertValue('self.' + Name + '[' + AsString('anchor') + '] = ' +
+    AsString('w'));
+  InsertValue('self.' + Name + '[' + AsString('text') + '] = ' +
+    AsString(Text));
 end;
 
 procedure TKCheckbutton.Paint;
-  var R: TRect;
+var
+  ARect: TRect;
 begin
-  if FIndicatorOn
-    then LeftSpace:= PPIScale(21)
-    else LeftSpace:= 0;
+  if FIndicatorOn then
+    LeftSpace := PPIScale(21)
+  else
+    LeftSpace := 0;
   inherited;
   if FIndicatorOn then
     FGUIDesigner.vilPythonControls.Draw(Canvas, LeftSpace, TopSpace, 2)
-  else begin
-    R:= ClientRect;
-    PaintBorder(R, FOffRelief, BorderWidthInt);
+  else
+  begin
+    ARect := ClientRect;
+    PaintBorder(ARect, FOffRelief, BorderWidthInt);
   end;
 end;
 
 procedure TKCheckbutton.SizeToText;
 begin
-  var d:= Canvas.TextWidth(Text) + + 18 + (3*Canvas.TextWidth('x')) div 2 - Width;
-  if d > 0 then Width:= Width + d;
-  d:= Canvas.TextHeight(Text)+ 4 - Height;
-  if d > 0 then Height:= Height + d;
+  var
+  Delta := Canvas.TextWidth(Text) + +18 + (3 * Canvas.TextWidth('x'))
+    div 2 - Width;
+  if Delta > 0 then
+    Width := Width + Delta;
+  Delta := Canvas.TextHeight(Text) + 4 - Height;
+  if Delta > 0 then
+    Height := Height + Delta;
 end;
 
-{--- TKMenubutton -------------------------------------------------------------}
+{ --- TKMenubutton ------------------------------------------------------------- }
 
-constructor TKMenubutton.Create(AOwner: TComponent);
+constructor TKMenubutton.Create(Owner: TComponent);
 begin
-  inherited Create (AOwner);
-  Tag:= 17;
-  BorderWidth:= '1';
-  HighlightThickness:= '0';
-  FDirection:= below;
-  FIndicatorOn:= False;
-  PadX:= '5';
-  PadY:= '4';
-  Text:= 'Menubutton';
+  inherited Create(Owner);
+  Tag := 17;
+  BorderWidth := '1';
+  HighlightThickness := '0';
+  FDirection := below;
+  FIndicatorOn := False;
+  PadX := '5';
+  PadY := '4';
+  Text := 'Menubutton';
 end;
 
-function TKMenubutton.getAttributes(ShowAttributes: Integer): string;
+function TKMenubutton.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Menu';
+  Result := '|Menu';
   if ShowAttributes >= 2 then
-    Result:= Result + '|Direction';
+    Result := Result + '|Direction';
   if ShowAttributes = 3 then
-    Result:= Result + '|IndicatorOn|OffRelief|OverRelief|SelectColor|SelectImage';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result +
+      '|IndicatorOn|OffRelief|OverRelief|SelectColor|SelectImage';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TKMenubutton.setAttribute(Attr, Value, Typ: string);
-  var w: Integer;
+procedure TKMenubutton.SetAttribute(Attr, Value, Typ: string);
+var
+  AWidth: Integer;
 begin
-  if Attr = 'Text' then begin
-    w:= 17 + Canvas.TextWidth(Value + '    ');
-    if Width < w then Width:= w;
+  if Attr = 'Text' then
+  begin
+    AWidth := 17 + Canvas.TextWidth(Value + '    ');
+    if Width < AWidth then
+      Width := AWidth;
   end;
   inherited;
 end;
 
 procedure TKMenubutton.NewWidget(Widget: string = '');
-  var s: string;
+var
+  Str: string;
 begin
   // because TKOptionMenu inherits from TKMenubutton
-  if Widget = '' then begin
-    s:= surround('self.' + Name + ' = tk.Menubutton(' + getContainer + ')') +
-        surround('self.' + Name + '[' + asString('text') + '] = ' + asString(Text));
-    Partner.InsertAtBegin(s); // Menubutton must stay before a menu
-    setPositionAndSize;
-  end else
+  if Widget = '' then
+  begin
+    Str := Surround('self.' + Name + ' = tk.Menubutton(' + getContainer + ')') +
+      Surround('self.' + Name + '[' + AsString('text') + '] = ' +
+      AsString(Text));
+    Partner.InsertAtBegin(Str); // Menubutton must stay before a menu
+    SetPositionAndSize;
+  end
+  else
     inherited NewWidget('tk.OptionMenu');
 end;
 
 procedure TKMenubutton.Paint;
-  var R: TRect; x, y: Integer;
+var
+  ARect: TRect;
+  XPos, YPos: Integer;
 begin
-  if FIndicatorOn
-    then RightSpace:= PPIScale(21)
-    else RightSpace:= 0;
+  if FIndicatorOn then
+    RightSpace := PPIScale(21)
+  else
+    RightSpace := 0;
   inherited;
-  if FIndicatorOn then begin
-    R:= ClientRect;
-    R.Inflate(-BorderWidthInt, -BorderWidthInt);
+  if FIndicatorOn then
+  begin
+    ARect := ClientRect;
+    ARect.Inflate(-BorderWidthInt, -BorderWidthInt);
 
-    x:= Width - BorderWidthInt - PPIScale(21);
-    y:= (Height - 6) div 2;
-    R:= Rect(x, y, x + PPIScale(15), y + PPIScale(6));
-    Canvas.FillRect(R);
-    PaintBorder(R, _TR_raised, 1);
+    XPos := Width - BorderWidthInt - PPIScale(21);
+    YPos := (Height - 6) div 2;
+    ARect := Rect(XPos, YPos, XPos + PPIScale(15), YPos + PPIScale(6));
+    Canvas.FillRect(ARect);
+    PaintBorder(ARect, _TR_raised, 1);
   end;
 end;
 
-{--- TKOptionMenu -------------------------------------------------------------}
+{ --- TKOptionMenu ------------------------------------------------------------- }
 
-constructor TKOptionMenu.Create(AOwner: TComponent);
+constructor TKOptionMenu.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 18;
-  HighlightThickness:= '2';
-  PadX:= '5';
-  PadY:= '4';
-  FDirection:= Below;
-  Relief:= _TR_raised;
-  FIndicatorOn:= True;
-  FNewItems:= TStringList.Create;
-  FNewItems.Text:= defaultItems;
-  FOldItems:= TStringList.Create;
+  inherited Create(Owner);
+  Tag := 18;
+  HighlightThickness := '2';
+  PadX := '5';
+  PadY := '4';
+  FDirection := below;
+  Relief := _TR_raised;
+  FIndicatorOn := True;
+  FNewItems := TStringList.Create;
+  FNewItems.Text := DefaultItems;
+  FOldItems := TStringList.Create;
 end;
 
 destructor TKOptionMenu.Destroy;
@@ -486,19 +548,21 @@ begin
   inherited;
 end;
 
-function TKOptionMenu.getAttributes(ShowAttributes: Integer): string;
+function TKOptionMenu.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|MenuItems';
+  Result := '|MenuItems';
   if ShowAttributes = 3 then
-    Result:= Result + '';
-  Result:= Result + inherited getAttributes(ShowAttributes);
-  if ShowAttributes = 1 then begin
-    var p:= Pos('|Menu|', Result);
-    Delete(Result, p, 5);
+    Result := Result + '';
+  Result := Result + inherited GetAttributes(ShowAttributes);
+  if ShowAttributes = 1 then
+  begin
+    var
+    Posi := Pos('|Menu|', Result);
+    Delete(Result, Posi, 5);
   end;
 end;
 
-procedure TKOptionMenu.setAttribute(Attr, Value, Typ: string);
+procedure TKOptionMenu.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'MenuItems' then
     MakeMenuItems
@@ -509,49 +573,53 @@ end;
 procedure TKOptionMenu.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
-  insertValue('self.' + Name + 'CV = tk.StringVar()');
-  insertValue('self.' + Name + 'CV.set(' + asString(MenuItems[0]) + ')');
+  InsertValue('self.' + Name + 'CV = tk.StringVar()');
+  InsertValue('self.' + Name + 'CV.set(' + AsString(MenuItems[0]) + ')');
   MakeMenuItems;
   SetPositionAndSize;
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TKOptionMenu.setItems(aItems: TStrings);
+procedure TKOptionMenu.SetItems(Items: TStrings);
 begin
-  FOldItems.Text:= FNewItems.Text;
-  if aItems.Text <> FNewItems.Text then
-    FNewItems.Assign(aItems);
+  FOldItems.Text := FNewItems.Text;
+  if Items.Text <> FNewItems.Text then
+    FNewItems.Assign(Items);
 end;
 
 procedure TKOptionMenu.MakeMenuItems;
-  var i: Integer;
-      s, MenuItems, newMenuTitle: string;
+var
+  Str, MenuItems, NewMenuTitle: string;
 begin
-  MenuItems:= '';
-  for i := 0 to FNewItems.Count - 1 do begin
-    newMenuTitle:= Trim(FNewItems[i]);
-    if newMenuTitle = '' then Continue;
-    MenuItems:= MenuItems + ', ' + asString(newMenuTitle);
+  MenuItems := '';
+  for var I := 0 to FNewItems.Count - 1 do
+  begin
+    NewMenuTitle := Trim(FNewItems[I]);
+    if NewMenuTitle = '' then
+      Continue;
+    MenuItems := MenuItems + ', ' + AsString(NewMenuTitle);
   end;
-  s:= 'self.' + Name;
-  setAttributValue(s, s + ' = tk.OptionMenu(self.root, self.' + Name + 'CV' + MenuItems + ')');
+  Str := 'self.' + Name;
+  SetAttributValue(Str, Str + ' = tk.OptionMenu(self.root, self.' + Name + 'CV'
+    + MenuItems + ')');
 end;
 
 procedure TKOptionMenu.Paint;
 begin
-  FOldItems.Text:= FNewItems.Text;
+  FOldItems.Text := FNewItems.Text;
   inherited;
 end;
 
-function TKOptionMenu.getText: string;
-  var s: string;
+function TKOptionMenu.GetText: string;
+var
+  Str: string;
 begin
   if FNewItems.Count > 0 then
-    s:= Trim(FNewItems[0]);
-  if s <> ''
-    then Result:= s
-    else Result:= Text;
+    Str := Trim(FNewItems[0]);
+  if Str <> '' then
+    Result := Str
+  else
+    Result := Text;
 end;
 
 end.
-

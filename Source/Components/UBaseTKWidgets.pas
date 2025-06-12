@@ -1,31 +1,36 @@
-{-------------------------------------------------------------------------------
- Unit:     UBaseTkWidgets
- Author:   Gerhard Röhner
- Date:     May 2021
- Purpose:  base widget of Tkinter and TTKinter
--------------------------------------------------------------------------------}
+﻿{ -------------------------------------------------------------------------------
+  Unit:     UBaseTkWidgets
+  Author:   Gerhard Röhner
+  Date:     May 2021
+  Purpose:  base widget of Tkinter and TTKinter
+  ------------------------------------------------------------------------------- }
 
 unit UBaseTKWidgets;
 
 interface
 
 uses
-  Windows, Graphics, Classes,
-  ELEvents, UBaseWidgets;
+  Windows,
+  Graphics,
+  Classes,
+  ELEvents,
+  UBaseWidgets;
 
 type
 
   // Relief
-  TRelief = (_TR_flat, _TR_groove, _TR_raised, _TR_ridge, _TR_solid, _TR_sunken);
+  TRelief = (_TR_flat, _TR_groove, _TR_raised, _TR_ridge, _TR_solid,
+    _TR_sunken);
 
   // positioning of text, used in TextWidget
-  TAnchor = (_TA_nw, _TA_n, _TA_ne, _TA_w, _TA_center, _TA_e, _TA_sw, _TA_s, _TA_se);
+  TAnchor = (_TA_nw, _TA_n, _TA_ne, _TA_w, _TA_center, _TA_e, _TA_sw,
+    _TA_s, _TA_se);
 
   // used in Text and Labeled
   TJustify = (_TJ_left, _TJ_center, _TJ_right);
 
   TUCompound = (_TU_top, _TU_bottom, _TU_left, _TU_right, _TU_center, _TU_none,
-                _TU_image, _TU_text); // united Compound
+    _TU_image, _TU_text); // united Compound
 
   TScrollbar = (_TB_none, _TB_horizontal, _TB_vertical, _TB_both);
 
@@ -46,7 +51,6 @@ type
     FTakeFocus: Boolean;
     FUnderline: Integer;
     FWrapLength: string;
-
     // events
     FActivate: TEvent;
     FButtonPress: TEvent;
@@ -61,150 +65,172 @@ type
     FLeave: TEvent;
     FMotion: TEvent;
     FMouseWheel: TEvent;
-
-    procedure setAnchor(aValue: TAnchor);
-    procedure setBackground(aColor: TColor);
-    procedure setForeground(aColor: TColor);
-    procedure setBorderWidth(aValue: string);
-    procedure setMenu(Value: string);
-    procedure setImage(aValue: string);
-    procedure setJustify(aValue: TJustify);
-    procedure setRelief(aValue: TRelief);
-    procedure setUnderline(aValue: Integer);
-    procedure setWrapLength(aValue: string);
+    procedure SetAnchor(AValue: TAnchor);
+    procedure SetBackground(AColor: TColor);
+    procedure SetForeground(AColor: TColor);
+    procedure SetBorderWidth(AValue: string);
+    procedure SetMenu(Value: string);
+    procedure SetImage(AValue: string);
+    procedure SetJustify(AValue: TJustify);
+    procedure SetRelief(AValue: TRelief);
+    procedure SetUnderline(AValue: Integer);
+    procedure SetWrapLength(AValue: string);
     procedure MakeBoolean(Attr, Value: string);
     procedure MakeShow(Value: string);
   protected
     FNameExtension: string; // used by LabeledScale
-    BorderWidthInt: Integer;
-    TopSpace: Integer;
-    LeftSpace: Integer;
-    RightSpace: Integer;
-
-    function getMouseEvents(ShowEvents: Integer): string; virtual;
-    function getKeyboardEvents(ShowEvents: Integer): string; virtual;
-    function getCompound: TUCompound; virtual; abstract;
-    function getAttrAsKey(Attr: string): string;
-    procedure Calculate3DColors(var DarkColor, LightColor: TColor; Background: TColor);
-    procedure CalculatePadding(var pl, pt, pr, pb: Integer); virtual; abstract;
-    procedure CalculateText(var tw, th: Integer; var SL: TStringList); virtual; abstract;
-    procedure AddParameter(const Value, par: string);
-    procedure MakeControlVar(Variable, ControlVar: string; Value: string = '';  Typ: string = 'String');
+    FBorderWidthInt: Integer;
+    FLeftSpace: Integer;
+    FRightSpace: Integer;
+    FTopSpace: Integer;
+    function GetMouseEvents(ShowEvents: Integer): string; virtual;
+    function GetKeyboardEvents(ShowEvents: Integer): string; virtual;
+    function GetCompound: TUCompound; virtual; abstract;
+    function GetAttrAsKey(Attr: string): string;
+    procedure Calculate3DColors(var DarkColor, LightColor: TColor;
+      Background: TColor);
+    procedure CalculatePadding(var PaddingLeft, PaddingTop, PaddingRight,
+      PaddingBottom: Integer); virtual; abstract;
+    procedure CalculateText(var TextWidth, TextHeight: Integer;
+      var StringList: TStringList); virtual; abstract;
+    procedure AddParameter(const Value, Par: string);
+    procedure MakeControlVar(Variable, ControlVar: string; Value: string = '';
+      Typ: string = 'String');
     procedure MakeImage(const Value: string);
     procedure MakeValidateCommand(Attr, Value: string);
     procedure MakeScrollbar(Value, TkTyp: string);
     procedure MakeScrollbars(Value, TkTyp: string);
     procedure PaintAScrollbar(Value: Boolean);
     procedure PaintScrollbars(Scrollbar: TScrollbar);
-    procedure setScrollbar(Value: Boolean);
-    procedure setScrollbars(Value: TScrollbar);
-    procedure ShowText(s: string; newWidth, newHeight: Integer);
+    procedure SetScrollbar(Value: Boolean);
+    procedure SetScrollbars(Value: TScrollbar);
+    procedure ShowText(Text: string; NewWidth, NewHeight: Integer);
     procedure Paint; override;
-    procedure PaintBorder(R: TRect; Relief: TRelief; BorderWidth: Integer); virtual; abstract;
-    procedure PaintScrollbar(R: TRect; horizontal: Boolean; ttk: Boolean = False);
+    procedure PaintBorder(Rect: TRect; Relief: TRelief; BorderWidth: Integer);
+      virtual; abstract;
+    procedure PaintScrollbar(Rect: TRect; Horizontal: Boolean;
+      TTK: Boolean = False);
     procedure ChangeCommand(Attr, Value: string);
   public
-    property Anchor: TAnchor read FAnchor write setAnchor default _TA_center;
-    property Background: TColor read FBackground write setBackground default clBtnFace;
-    property BorderWidth: string read FBorderWidth write setBorderWidth;
-    property Command: Boolean read FCommand write FCommand;
-    property Foreground: TColor read FForeground write setForeground default clWindowText;
-    property Image: string read fImage write setImage;
-    property Justify: TJustify read FJustify write setJustify default _TJ_center;
-    property Relief: TRelief read FRelief write setRelief default _TR_flat;
-    property Scrollbars: TScrollbar read FScrollbars write setScrollbars default _TB_none;
-    property Scrollbar: Boolean read FScrollbar write setScrollbar default False;
-    property TakeFocus: Boolean read FTakeFocus write fTakeFocus default True;
-    property Underline: Integer read FUnderline write setUnderline default -1;
-    property WrapLength: string read FWrapLength write setWrapLength;
-
-    constructor Create(aOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    procedure setEvent(Event: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetEvent(Event: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure DeleteEvents; override;
     procedure DeleteWidget; override;
     procedure DeleteEventHandler(const Event: string); override;
     procedure NewWidget(Widget: string = ''); override;
     function MakeBinding(Eventname: string): string; override;
-    function MakeHandler(const event: string ): string; override;
+    function MakeHandler(const Event: string): string; override;
     procedure Resize; override;
     procedure SetPositionAndSize; override;
     function ClientRectWithoutScrollbars: TRect;
-    function getType: string; override;
-    function getNameAndType: string; override;
-    function getContainer: string;
+    function GetType: string; override;
+    function GetNameAndType: string; override;
+    function GetContainer: string;
     procedure MakeFont; override;
+
+    property Anchor: TAnchor read FAnchor write SetAnchor default _TA_center;
+    property Background: TColor read FBackground write SetBackground
+      default clBtnFace;
+    property BorderWidth: string read FBorderWidth write SetBorderWidth;
+    property BorderWidthInt: Integer read FBorderWidthInt write FBorderWidthInt;
+    property Command: Boolean read FCommand write FCommand;
+    property Foreground: TColor read FForeground write SetForeground
+      default clWindowText;
+    property Image: string read FImage write SetImage;
+    property Justify: TJustify read FJustify write SetJustify
+      default _TJ_center;
+    property Relief: TRelief read FRelief write SetRelief default _TR_flat;
+    property Scrollbars: TScrollbar read FScrollbars write SetScrollbars
+      default _TB_none;
+    property Scrollbar: Boolean read FScrollbar write SetScrollbar
+      default False;
+    property TakeFocus: Boolean read FTakeFocus write FTakeFocus default True;
+    property Underline: Integer read FUnderline write SetUnderline default -1;
+    property WrapLength: string read FWrapLength write SetWrapLength;
+    property LeftSpace: Integer read FLeftSpace write FLeftSpace;
+    property RightSpace: Integer read FRightSpace write FRightSpace;
+    property TopSpace: Integer read FTopSpace write FTopSpace;
   published
-    // events
-    {$WARNINGS OFF}
-    property Activate: TEvent read Factivate write Factivate;
-    property ButtonPress: TEvent read FbuttonPress write FbuttonPress;
-    property ButtonRelease: TEvent read FbuttonRelease write FbuttonRelease;
-    property Configure: TEvent read Fconfigure write Fconfigure;
-    property Deactivate: TEvent read Fdeactivate write Fdeactivate;
+    property Activate: TEvent read FActivate write FActivate;
+    property ButtonPress: TEvent read FButtonPress write FButtonPress;
+    property ButtonRelease: TEvent read FButtonRelease write FButtonRelease;
+    property Configure: TEvent read FConfigure write FConfigure;
+    property Deactivate: TEvent read FDeactivate write FDeactivate;
     property Enter: TEvent read FEnter write FEnter;
-    property FocusIn: TEvent read FfocusIn write FfocusIn;
-    property FocusOut: TEvent read FfocusOut write FfocusOut;
-    property KeyPress: TEvent read fkeyPress write fkeyPress;
-    property KeyRelease: TEvent read fkeyRelease write fkeyRelease;
-    property Leave: TEvent read fleave write fleave;
-    property Motion: TEvent read fMotion write fMotion;
-    property MouseWheel: TEvent read fmouseWheel write fmouseWheel;
-    {$WARNINGS ON}
+    property FocusIn: TEvent read FFocusIn write FFocusIn;
+    property FocusOut: TEvent read FFocusOut write FFocusOut;
+    property KeyPress: TEvent read FKeyPress write FKeyPress;
+    property KeyRelease: TEvent read FKeyRelease write FKeyRelease;
+    property Leave: TEvent read FLeave write FLeave;
+    property Motion: TEvent read FMotion write FMotion;
+    property MouseWheel: TEvent read FMouseWheel write FMouseWheel;
   end;
 
   TKMainWindow = class(TBaseWidget)
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
     function getEvents(ShowEvents: Integer): string; override;
-    function HandlerParameter(const event: string): string; override;
-    function HandlerName(const event: string): string; override;
+    function HandlerParameter(const Event: string): string; override;
+    function HandlerName(const Event: string): string; override;
   end;
 
 implementation
 
-uses Math, Controls, SysUtils, UITypes,
-     UGuiForm, UTKMiscBase, UTTKMiscBase,
-     UGUIDesigner, UObjectInspector, UUtils, ULink, UConfiguration, frmEditor;
+uses
+  Math,
+  Controls,
+  SysUtils,
+  UITypes,
+  UGUIForm,
+  UTKMiscBase,
+  UTTKMiscBase,
+  UGUIDesigner,
+  UObjectInspector,
+  UUtils,
+  ULink,
+  UConfiguration;
 
-const CrLf = #13#10;
+const
+  CrLf = #13#10;
 
-constructor TBaseTkWidget.Create(aOwner: TComponent);
+constructor TBaseTkWidget.Create(Owner: TComponent);
 begin
-  inherited Create(aOwner);
-  Width:= 100;
-  Height:= 100;
-  FAnchor:= _TA_center;
-  FBackground:= clBtnFace;     // SystemButtonFace
-  FForeground:= clWindowText;  // SystemWindowText
-  FBorderWidth:= '2';
-  FJustify:= _TJ_CENTER;
-  FNameExtension:= '';
-  FRelief:= _TR_flat;
-  FTakeFocus:= True;
-  FUnderline:= -1;
-  FWrapLength:= '0';
-  Font.Name:= GuiPyOptions.GuiFontName; // 'Segoe UI';   // TkDefaultFont and TkTextFont
-  Font.Size:= GuiPyOptions.GuiFontSize;
-  Font.Style:= [];
-  HelpType:= htContext;
-  Sizeable:= True;
+  inherited Create(Owner);
+  Width := 100;
+  Height := 100;
+  FAnchor := _TA_center;
+  FBackground := clBtnFace; // SystemButtonFace
+  FForeground := clWindowText; // SystemWindowText
+  FBorderWidth := '2';
+  FJustify := _TJ_center;
+  FNameExtension := '';
+  FRelief := _TR_flat;
+  FTakeFocus := True;
+  FUnderline := -1;
+  FWrapLength := '0';
+  Font.Name := GuiPyOptions.GuiFontName;
+  // 'Segoe UI';   // TkDefaultFont and TkTextFont
+  Font.Size := GuiPyOptions.GuiFontSize;
+  Font.Style := [];
+  HelpType := htContext;
+  Sizeable := True;
 
-  FButtonPress:= TEvent.Create(Self);
-  FButtonRelease:= TEvent.Create(Self);
-  FKeyPress:= TEvent.Create(Self);
-  FKeyRelease:= TEvent.Create(Self);
-  FActivate:= TEvent.Create(Self);
-  FConfigure:= TEvent.Create(Self);
-  FDeactivate:= TEvent.Create(Self);
-  FEnter:= TEvent.Create(Self);
-  FFocusIn:= TEvent.Create(Self);
-  FFocusOut:= TEvent.Create(Self);
-  FLeave:= TEvent.Create(Self);
-  FMouseWheel:= TEvent.Create(Self);
-  FMotion:= TEvent.Create(Self);
+  FButtonPress := TEvent.Create(Self);
+  FButtonRelease := TEvent.Create(Self);
+  FKeyPress := TEvent.Create(Self);
+  FKeyRelease := TEvent.Create(Self);
+  FActivate := TEvent.Create(Self);
+  FConfigure := TEvent.Create(Self);
+  FDeactivate := TEvent.Create(Self);
+  FEnter := TEvent.Create(Self);
+  FFocusIn := TEvent.Create(Self);
+  FFocusOut := TEvent.Create(Self);
+  FLeave := TEvent.Create(Self);
+  FMouseWheel := TEvent.Create(Self);
+  FMotion := TEvent.Create(Self);
 end;
 
 destructor TBaseTkWidget.Destroy;
@@ -225,341 +251,436 @@ begin
   inherited;
 end;
 
-function TBaseTkWidget.getAttributes(ShowAttributes: Integer): string;
+function TBaseTkWidget.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Name|Font';
+  Result := '|Name|Font';
   if ShowAttributes >= 2 then
-    Result:= Result + '|BorderWidth|Relief';
+    Result := Result + '|BorderWidth|Relief';
   if ShowAttributes = 3 then
-    Result:= Result + '|Cursor|Left|Top|Height|Width|TakeFocus';
+    Result := Result + '|Cursor|Left|Top|Height|Width|TakeFocus';
 end;
 
-function TBaseTkWidget.getMouseEvents(ShowEvents: Integer): string;
+function TBaseTkWidget.GetMouseEvents(ShowEvents: Integer): string;
 begin
-  Result:= MouseEvents1;
+  Result := MouseEvents1;
   if ShowEvents >= 2 then
-    Result:= MouseEvents1 + MouseEvents2;
+    Result := MouseEvents1 + MouseEvents2;
   if ShowEvents = 3 then
-    Result:= AllEvents;
-  Result:= Result + '|';
+    Result := AllEvents;
+  Result := Result + '|';
 end;
 
-function TBaseTkWidget.getKeyboardEvents(ShowEvents: Integer): string;
+function TBaseTkWidget.GetKeyboardEvents(ShowEvents: Integer): string;
 begin
-  Result:= KeyboardEvents1;
+  Result := KeyboardEvents1;
   if ShowEvents = 3 then
-    Result:= AllEvents;
-  Result:= Result + '|';
+    Result := AllEvents;
+  Result := Result + '|';
 end;
 
-procedure TBaseTkWidget.PaintScrollbar(R: TRect; horizontal: Boolean; ttk: Boolean = False);
-  var i, mid, i3, i4, i6, i9, i10, i18: Integer;
+procedure TBaseTkWidget.PaintScrollbar(Rect: TRect; Horizontal: Boolean;
+  TTK: Boolean = False);
+var
+  Mid, Int3, Int4, Int6, Int9, Int10, Int18: Integer;
 begin
-  Canvas.Brush.Color:= clBtnFace;
-  Canvas.FillRect(R);
-  Canvas.Brush.Color:= $CDCDCD;
-  Canvas.Pen.Color:= clWhite;
-  i3:= PPIScale(3);
-  i4:= PPIScale(4);
-  i6:= PPIScale(6);
-  i9:= PPIScale(9);
-  i10:= PPIScale(10);
-  i18:= PPIScale(18);
-  if horizontal then begin
-    Canvas.MoveTo(R.Left, R.Top);
-    Canvas.LineTo(R.Right, R.Top);
-    Canvas.Pen.Color:= $606060;
-    mid:= (R.Top + R.Bottom) div 2;
-    for i:= 0 to 2 do begin
-      Canvas.MoveTo(R.Left +  i9 + i, mid - i3);
-      Canvas.LineTo(R.Left +  i6 + i, mid);
-      Canvas.LineTo(R.Left + i10 + i, mid + i4);
+  Canvas.Brush.Color := clBtnFace;
+  Canvas.FillRect(Rect);
+  Canvas.Brush.Color := $CDCDCD;
+  Canvas.Pen.Color := clWhite;
+  Int3 := PPIScale(3);
+  Int4 := PPIScale(4);
+  Int6 := PPIScale(6);
+  Int9 := PPIScale(9);
+  Int10 := PPIScale(10);
+  Int18 := PPIScale(18);
+  if Horizontal then
+  begin
+    Canvas.MoveTo(Rect.Left, Rect.Top);
+    Canvas.LineTo(Rect.Right, Rect.Top);
+    Canvas.Pen.Color := $606060;
+    Mid := (Rect.Top + Rect.Bottom) div 2;
+    for var I := 0 to 2 do
+    begin
+      Canvas.MoveTo(Rect.Left + Int9 + I, Mid - Int3);
+      Canvas.LineTo(Rect.Left + Int6 + I, Mid);
+      Canvas.LineTo(Rect.Left + Int10 + I, Mid + Int4);
     end;
-    for i:= 0 to 2 do begin
-      Canvas.MoveTo(R.Right -  i9 + i, mid - i3);
-      Canvas.LineTo(R.Right -  i6 + i, mid);
-      Canvas.LineTo(R.Right - i10 + i, mid + i4);
+    for var I := 0 to 2 do
+    begin
+      Canvas.MoveTo(Rect.Right - Int9 + I, Mid - Int3);
+      Canvas.LineTo(Rect.Right - Int6 + I, Mid);
+      Canvas.LineTo(Rect.Right - Int10 + I, Mid + Int4);
     end;
-    if ttk then begin
-      R.Left:= R.Left + i18;
-      R.Right:= R.Right - i18;
-    end else begin
-      R.Left:= R.Left + i18;
-      R.Right:= R.Left + i18;
+    if TTK then
+    begin
+      Rect.Left := Rect.Left + Int18;
+      Rect.Right := Rect.Right - Int18;
+    end
+    else
+    begin
+      Rect.Left := Rect.Left + Int18;
+      Rect.Right := Rect.Left + Int18;
     end;
-  end else begin
-    Canvas.MoveTo(R.Left, R.Top);
-    Canvas.LineTo(R.Left, R.Bottom);
-    Canvas.Pen.Color:= $606060;
-    mid:= (R.Left + r.Right) div 2;
-    for i:= 0 to 2 do begin
-      Canvas.MoveTo(mid - i3, R.Top +  i9 + i);
-      Canvas.LineTo(mid     , R.Top +  i6 + i);
-      Canvas.LineTo(mid + i4, R.Top + i10 + i);
+  end
+  else
+  begin
+    Canvas.MoveTo(Rect.Left, Rect.Top);
+    Canvas.LineTo(Rect.Left, Rect.Bottom);
+    Canvas.Pen.Color := $606060;
+    Mid := (Rect.Left + Rect.Right) div 2;
+    for var I := 0 to 2 do
+    begin
+      Canvas.MoveTo(Mid - Int3, Rect.Top + Int9 + I);
+      Canvas.LineTo(Mid, Rect.Top + Int6 + I);
+      Canvas.LineTo(Mid + Int4, Rect.Top + Int10 + I);
     end;
-    for i:= 0 to 2 do begin
-      Canvas.MoveTo(mid - i3, R.Bottom -  i9 + i);
-      Canvas.LineTo(mid     , R.Bottom -  i6 + i);
-      Canvas.LineTo(mid + i4, R.Bottom - i10 + i);
+    for var I := 0 to 2 do
+    begin
+      Canvas.MoveTo(Mid - Int3, Rect.Bottom - Int9 + I);
+      Canvas.LineTo(Mid, Rect.Bottom - Int6 + I);
+      Canvas.LineTo(Mid + Int4, Rect.Bottom - Int10 + I);
     end;
-    if ttk then begin
-      R.Top:= R.Top + i18;
-      R.Bottom:= R.Bottom - i18;
-    end else begin
-      R.Top:= R.Top + i18;
-      R.Bottom:= R.Top + i18;
+    if TTK then
+    begin
+      Rect.Top := Rect.Top + Int18;
+      Rect.Bottom := Rect.Bottom - Int18;
+    end
+    else
+    begin
+      Rect.Top := Rect.Top + Int18;
+      Rect.Bottom := Rect.Top + Int18;
     end;
   end;
-  R.Inflate(-1, -1);
-  Canvas.FillRect(R);
+  Rect.Inflate(-1, -1);
+  Canvas.FillRect(Rect);
 end;
 
 procedure TBaseTkWidget.Paint;
-  var tx, ty, tw, th, x, y, w, h, gw, gh, gx, gy, maxw, maxh, mgw, mtw,
-      gtg, bx, by, pl, pt, pr, pb, center: Integer;
-      pathname: string;
-      bmp: Graphics.TBitmap;
-      SL: TStringList;
-      Compound: TUCompound;
+var
+  TextX, TextY, TextWidth, TextHeight, XPos, YPos, BmpW, BmpH, BmpX, BmpY, MaxW,
+    MaxH, Mgw, Mtw, Gtg, BoxX, BoxY, PaddingL, PaddingT, PaddingR, PaddingB,
+    Center: Integer;
+  Pathname: string;
+  Bmp: Graphics.TBitmap;
+  StringList: TStringList;
+  Compound: TUCompound;
 
-  procedure ShowText(R: TRect);
-    var Format: Integer; wraplen: double; s: string;
+  procedure ShowText(Rect: TRect);
+  var
+    Format: Integer;
+    WarpLen: Double;
+    Text: string;
   begin
     case Justify of
-      _TJ_left:   Format:= DT_LEFT;
-      _TJ_center: Format:= DT_CENTER;
-    else          Format:= DT_RIGHT;
+      _TJ_left:
+        Format := DT_LEFT;
+      _TJ_center:
+        Format := DT_CENTER;
+    else
+      Format := DT_RIGHT;
     end;
-    s:= SL.Text;
-    if Trim(s) = '' then
+    Text := StringList.Text;
+    if Trim(Text) = '' then
       Exit;
     if FUnderline >= 0 then
-      insert('&', s, FUnderline + 1);
-    if TryStrToFloat(FWrapLength, wraplen) and (wraplen > 0) and (wraplen < tw) then begin
-      Format:= Format + DT_WORDBREAK + DT_NOFULLWIDTHCHARBREAK;
-      R.Left:= R.Left + tw div 2 - Round(wraplen/2);
-      R.Right:= R.Left + round(wraplen);
-      R.Bottom:= R.Top + round((th*tw)/wraplen);
+      insert('&', Text, FUnderline + 1);
+    if TryStrToFloat(FWrapLength, WarpLen) and (WarpLen > 0) and
+      (WarpLen < TextWidth) then
+    begin
+      Format := Format + DT_WORDBREAK + DT_NOFULLWIDTHCHARBREAK;
+      Rect.Left := Rect.Left + TextWidth div 2 - Round(WarpLen / 2);
+      Rect.Right := Rect.Left + Round(WarpLen);
+      Rect.Bottom := Rect.Top + Round((TextHeight * TextWidth) / WarpLen);
     end;
-    DrawText(Canvas.Handle, PChar(s), Length(s), R, Format);
+    DrawText(Canvas.Handle, PChar(Text), Length(Text), Rect, Format);
   end;
 
 begin
   Canvas.Font.Assign(Font);
-  Canvas.Font.Color:= FForeground;
-  Canvas.Brush.Color:= FBackground;
-  if (Parent is TKPanedWindow) or (Parent is TTKPanedwindow) then
-    Parent.invalidate;
+  Canvas.Font.Color := FForeground;
+  Canvas.Brush.Color := FBackground;
+  if (Parent is TKPanedWindow) or (Parent is TTKPanedWindow) then
+    Parent.Invalidate;
   Canvas.FillRect(ClientRect);
-  PaintBorder(ClientRectWithoutScrollbars, Relief, BorderWidthInt);
-  h:= Height;
-  w:= Width;
-  CalculatePadding(pl, pt, pr, pb);
-  SL:= TStringList.Create;
+  PaintBorder(ClientRectWithoutScrollbars, Relief, FBorderWidthInt);
+  CalculatePadding(PaddingL, PaddingT, PaddingR, PaddingB);
+  StringList := TStringList.Create;
   try
-    CalculateText(tw, th, SL);
-
-    Compound:= getCompound;
-    if Compound = _TU_image then begin
-      tw:= 0;
-      th:= 0;
+    CalculateText(TextWidth, TextHeight, StringList);
+    Compound := GetCompound;
+    if Compound = _TU_image then
+    begin
+      TextWidth := 0;
+      TextHeight := 0;
     end;
-    if LeftSpace <> PPIScale(21) then
-      LeftSpace:= 0;
-    if RightSpace <> PPIScale(21) then
-      RightSpace:= 0;
+    if FLeftSpace <> PPIScale(21) then
+      FLeftSpace := 0;
+    if FRightSpace <> PPIScale(21) then
+      FRightSpace := 0;
 
-    pathname:= FGuiDesigner.getPath + 'images\' + Copy(Image, 8, Length(Image));
-    if (Image = '') or not FileExists(pathname) or (Compound = _TU_text) then begin
+    Pathname := FGUIDesigner.getPath + 'images\' +
+      Copy(Image, 8, Length(Image));
+    if (Image = '') or not FileExists(Pathname) or (Compound = _TU_text) then
+    begin
       // without graphic
-      center:= (w - tw - LeftSpace - RightSpace) div 2 + LeftSpace;
+      Center := (Width - TextWidth - FLeftSpace - FRightSpace) div 2 +
+        FLeftSpace;
       case FAnchor of
-        _TA_NW:     begin x:= pl + LeftSpace;               y:= 1 + pt; end;
-        _TA_N :     begin x:= center;                       y:= 1 + pt; end;
-        _TA_NE:     begin x:= w - 3 - tw - pr - RightSpace; y:= 1 + pt; end;
-        _TA_W:      begin x:= pl + LeftSpace;               y:= (h - th) div 2; end;
-        _TA_CENTER: begin x:= center;                       y:= (h - th) div 2; end;
-        _TA_E:      begin x:= w - 3 - tw - pr - RightSpace; y:= (h - th) div 2; end;
-        _TA_SW:     begin x:= pl + LeftSpace;               y:= h - 1 - th - pb; end;
-        _TA_S:      begin x:= center;                       y:= h - 1 - th - pb; end;
-        _TA_SE:     begin x:= w - 3 - tw - pr - RightSpace; y:= h - 1 - th - pb; end;
-        else        begin x:= 0;                            y:= 0; end;
+        _TA_nw:
+          begin
+            XPos := PaddingL + FLeftSpace;
+            YPos := 1 + PaddingT;
+          end;
+        _TA_n:
+          begin
+            XPos := Center;
+            YPos := 1 + PaddingT;
+          end;
+        _TA_ne:
+          begin
+            XPos := Width - 3 - TextWidth - PaddingR - FRightSpace;
+            YPos := 1 + PaddingT;
+          end;
+        _TA_w:
+          begin
+            XPos := PaddingL + FLeftSpace;
+            YPos := (Height - TextHeight) div 2;
+          end;
+        _TA_center:
+          begin
+            XPos := Center;
+            YPos := (Height - TextHeight) div 2;
+          end;
+        _TA_e:
+          begin
+            XPos := Width - 3 - TextWidth - PaddingR - FRightSpace;
+            YPos := (Height - TextHeight) div 2;
+          end;
+        _TA_sw:
+          begin
+            XPos := PaddingL + FLeftSpace;
+            YPos := Height - 1 - TextHeight - PaddingB;
+          end;
+        _TA_s:
+          begin
+            XPos := Center;
+            YPos := Height - 1 - TextHeight - PaddingB;
+          end;
+        _TA_se:
+          begin
+            XPos := Width - 3 - TextWidth - PaddingR - FRightSpace;
+            YPos := Height - 1 - TextHeight - PaddingB;
+          end;
+      else
+        begin
+          XPos := 0;
+          YPos := 0;
+        end;
       end;
-      tw:= Min(tw, Width - RightSpace);
-      ShowText(Rect(x, y, x + tw, y + th));
-      LeftSpace:= x - PPIScale(21);  // for use in Checkbutton and Radiobutton
-      TopSpace:= y;
-    end else begin
+      TextWidth := Min(TextWidth, Width - FRightSpace);
+      ShowText(Rect(XPos, YPos, XPos + TextWidth, YPos + TextHeight));
+      FLeftSpace := XPos - PPIScale(21);
+      // for use in Checkbutton and Radiobutton
+      FTopSpace := YPos;
+    end
+    else
+    begin
       // with graphic
-      bmp:= BitmapFromRelativePath(Image);
-      gw:= bmp.Width;
-      gh:= bmp.Height;
-      gtg:= 4; // GraphicTextGap
-      maxw:= 0;
-      maxh:= 0;
+      Bmp := BitmapFromRelativePath(Image);
+      BmpW := Bmp.Width;
+      BmpH := Bmp.Height;
+      Gtg := 4; // GraphicTextGap
+      MaxW := 0;
+      MaxH := 0;
 
       case Compound of
-        _TU_top, _TU_bottom: begin
-          maxw:= Max(tw, gw);
-          maxh:= gh + gtg + th;
-        end;
-        _TU_center: begin
-          maxw:= Max(tw, gw);
-          maxh:= Max(gh, th);
-        end;
-        _TU_none, _TU_image: begin
-          maxw:= gw;
-          maxh:= gh;
-        end;
-        _TU_left, _TU_right: begin
-          maxw:= gw + gtg + tw;
-          maxh:= Max(th, gh);
-        end;
+        _TU_top, _TU_bottom:
+          begin
+            MaxW := Max(TextWidth, BmpW);
+            MaxH := BmpH + Gtg + TextHeight;
+          end;
+        _TU_center:
+          begin
+            MaxW := Max(TextWidth, BmpW);
+            MaxH := Max(BmpH, TextHeight);
+          end;
+        _TU_none, _TU_image:
+          begin
+            MaxW := BmpW;
+            MaxH := BmpH;
+          end;
+        _TU_left, _TU_right:
+          begin
+            MaxW := BmpW + Gtg + TextWidth;
+            MaxH := Max(TextHeight, BmpH);
+          end;
       end;
-      if maxw > w then begin
-        width:= maxw;
-        w:= maxw;
-      end;
-
-      // bx, by = position of compound box of graphic and text
-      // maxw, maxh = size of compound box
-      bx:= 0;
-      by:= 0;
-      case fAnchor of
-        _TA_NW: begin
-          bx:= pl + LeftSpace;
-          by:= pt;
-        end;
-        _TA_N: begin
-          bx:= (w - maxw - RightSpace) div 2 + LeftSpace;
-          by:= pt;
-        end;
-        _TA_NE: begin
-          bx:= w - maxw - pr - RightSpace;
-          by:= pt;
-        end;
-        _TA_W: begin
-          bx:= pl + LeftSpace;
-          by:= (h - maxh) div 2;
-        end;
-        _TA_CENTER: begin
-          bx:= (w - maxw - RightSpace) div 2 + LeftSpace;
-          by:= (h - maxh) div 2;
-        end;
-        _TA_E: begin
-          bx:= w - maxw - pr - RightSpace;
-          by:= (h - maxh) div 2;
-        end;
-        _TA_SW: begin
-          bx:= pr + LeftSpace;
-          by:= h - maxh - pb;
-        end;
-        _TA_S: begin
-          bx:= (w - maxw - RightSpace) div 2 + LeftSpace;
-          by:= h - maxh - pb;
-        end;
-        _TA_SE: begin
-          bx:= w - maxw - pr - RightSpace;
-          by:= h - maxh - pb;
-        end;
+      if MaxW > Width then
+      begin
+        Width := MaxW;
+        Width := MaxW;
       end;
 
-      mgw:= (maxw - gw) div 2;
-      mtw:= (maxw - tw) div 2;
-      tx:= 0;
-      ty:= 0;
-      gx:= 0;
-      gy:= 0;
+      // BoxX, BoxY = position of compound box of graphic and text
+      // MaxW, MaxH = size of compound box
+      BoxX := 0;
+      BoxY := 0;
+      case FAnchor of
+        _TA_nw:
+          begin
+            BoxX := PaddingL + FLeftSpace;
+            BoxY := PaddingT;
+          end;
+        _TA_n:
+          begin
+            BoxX := (Width - MaxW - FRightSpace) div 2 + FLeftSpace;
+            BoxY := PaddingT;
+          end;
+        _TA_ne:
+          begin
+            BoxX := Width - MaxW - PaddingR - FRightSpace;
+            BoxY := PaddingT;
+          end;
+        _TA_w:
+          begin
+            BoxX := PaddingL + FLeftSpace;
+            BoxY := (Height - MaxH) div 2;
+          end;
+        _TA_center:
+          begin
+            BoxX := (Width - MaxW - FRightSpace) div 2 + FLeftSpace;
+            BoxY := (Height - MaxH) div 2;
+          end;
+        _TA_e:
+          begin
+            BoxX := Width - MaxW - PaddingR - FRightSpace;
+            BoxY := (Height - MaxH) div 2;
+          end;
+        _TA_sw:
+          begin
+            BoxX := PaddingR + FLeftSpace;
+            BoxY := Height - MaxH - PaddingB;
+          end;
+        _TA_s:
+          begin
+            BoxX := (Width - MaxW - FRightSpace) div 2 + FLeftSpace;
+            BoxY := Height - MaxH - PaddingB;
+          end;
+        _TA_se:
+          begin
+            BoxX := Width - MaxW - PaddingR - FRightSpace;
+            BoxY := Height - MaxH - PaddingB;
+          end;
+      end;
+
+      Mgw := (MaxW - BmpW) div 2;
+      Mtw := (MaxW - TextWidth) div 2;
+      TextX := 0;
+      TextY := 0;
+      BmpX := 0;
+      BmpY := 0;
 
       case Compound of
-        _TU_top: begin
-          gx:= mgw;
-          gy:= 0;
-          tx:= mtw;
-          ty:= gh + gtg;
-        end;
-        _TU_bottom: begin
-          gx:= mgw;
-          gy:= maxh - gh;
-          tx:= mtw;
-          ty:= 0;
-        end;
-        _TU_left: begin
-          gx:= 0;
-          gy:= 0;
-          tx:= gw + gtg;
-          ty:= (maxh - th) div 2;
-        end;
-        _TU_right: begin
-          gx:= maxw - gw;
-          gy:= 0;
-          tx:= 0;
-          ty:= (maxh - th) div 2;
-        end;
-        _TU_center: begin
-          gx:= mgw;
-          gy:= 0;
-          tx:= mtw;
-          ty:= (maxh - th) div 2;
-        end;
-        _TU_none: begin
-          gx:= 0;
-          gy:= 0;
-        end;
+        _TU_top:
+          begin
+            BmpX := Mgw;
+            BmpY := 0;
+            TextX := Mtw;
+            TextY := BmpH + Gtg;
+          end;
+        _TU_bottom:
+          begin
+            BmpX := Mgw;
+            BmpY := MaxH - BmpH;
+            TextX := Mtw;
+            TextY := 0;
+          end;
+        _TU_left:
+          begin
+            BmpX := 0;
+            BmpY := 0;
+            TextX := BmpW + Gtg;
+            TextY := (MaxH - TextHeight) div 2;
+          end;
+        _TU_right:
+          begin
+            BmpX := MaxW - BmpW;
+            BmpY := 0;
+            TextX := 0;
+            TextY := (MaxH - TextHeight) div 2;
+          end;
+        _TU_center:
+          begin
+            BmpX := Mgw;
+            BmpY := 0;
+            TextX := Mtw;
+            TextY := (MaxH - TextHeight) div 2;
+          end;
+        _TU_none:
+          begin
+            BmpX := 0;
+            BmpY := 0;
+          end;
       end;
 
-      gx:= bx + gx;
-      gy:= by + gy;
-      tx:= bx + tx;
-      ty:= by + ty;
+      BmpX := BoxX + BmpX;
+      BmpY := BoxY + BmpY;
+      TextX := BoxX + TextX;
+      TextY := BoxY + TextY;
 
-      Canvas.Draw(gx, gy, bmp);
-      if (Compound <> _TU_none) and (Compound <> _TU_image) and (SL.Text <> #13#10) then
-        ShowText(Rect(tx, ty, tx+tw, ty+th));
+      Canvas.Draw(BmpX, BmpY, Bmp);
+      if (Compound <> _TU_none) and (Compound <> _TU_image) and
+        (StringList.Text <> #13#10) then
+        ShowText(Rect(TextX, TextY, TextX + TextWidth, TextY + TextHeight));
       // for debugging
-      // R:= rect(min(gx,tx), min(gy,ty), max(gx+gw,tx+tw), max(gy+gh, ty+th));
+      // R:= rect(min(BmpX,TextX), min(BmpY,TextY), max(BmpX+BmpW,TextX+TextWidth), max(BmpY+BmpH, TextY+TextHeight));
       // Canvas.DrawFocusRect(r);
 
       // for use in Checkbutton and Radiobutton
-      LeftSpace:= bx - PPIScale(21);
-      TopSpace:= by + maxh div 2 - PPIScale(10);
-      FreeAndNil(bmp);
+      FLeftSpace := BoxX - PPIScale(21);
+      FTopSpace := BoxY + MaxH div 2 - PPIScale(10);
+      FreeAndNil(Bmp);
     end;
   finally
-    FreeAndNil(SL);
+    FreeAndNil(StringList);
   end;
 end;
 
 procedure TBaseTkWidget.SetPositionAndSize;
-  var key: string; R: TRect;
+var
+  Key: string;
+  Rect: TRect;
 begin
-  R:= ClientRectWithoutScrollbars;
-  if not (Parent is TKPanedWindow) then
-    setAttributValue('self.' + Name + '.place',
-      'self.' + Name +
-      '.place(x=' + IntToStr(PPIUnScale(Left)) + ', y=' + IntToStr(PPIUnScale(Top)) +
-      ', width=' + IntToStr(PPIUnScale(R.Right)) + ', height=' + IntToStr(PPIUnScale(R.Bottom)) +')');
-  if Scrollbars in [_TB_both, _TB_vertical] then begin
-    key:= 'self.' + Name + 'ScrollbarV.place';
-    setAttributValue(key,
-      key + '(x=' + IntToStr(PPIUnScale(x + R.Right - 2)) + ', y=' + IntToStr(PPIUnScale(y)) +
-            ', width=' + IntToStr(PPIUnScale(20))+ ', height='+ IntToStr(PPIUnScale(R.Bottom)) + ')');
+  Rect := ClientRectWithoutScrollbars;
+  if not(Parent is TKPanedWindow) then
+    SetAttributValue('self.' + Name + '.place', 'self.' + Name + '.place(x=' +
+      IntToStr(PPIUnScale(Left)) + ', y=' + IntToStr(PPIUnScale(Top)) +
+      ', width=' + IntToStr(PPIUnScale(Rect.Right)) + ', height=' +
+      IntToStr(PPIUnScale(Rect.Bottom)) + ')');
+  if Scrollbars in [_TB_both, _TB_vertical] then
+  begin
+    Key := 'self.' + Name + 'ScrollbarV.place';
+    SetAttributValue(Key, Key + '(x=' + IntToStr(PPIUnScale(X + Rect.Right - 2))
+      + ', y=' + IntToStr(PPIUnScale(Y)) + ', width=' + IntToStr(PPIUnScale(20))
+      + ', height=' + IntToStr(PPIUnScale(Rect.Bottom)) + ')');
   end;
-  if (Scrollbars in [_TB_both, _TB_horizontal]) or Scrollbar then begin
-    key:= 'self.' + Name + 'ScrollbarH.place';
-    setAttributValue(key,
-      key + '(x=' + IntToStr(PPIUnScale(x)) + ', y=' + IntToStr(PPIUnScale(y + R.Bottom - 2)) +
-            ', width=' + IntToStr(PPIUnScale(R.Right)) + ', height=' + IntToStr(PPIUnScale(20)) + ')');
+  if (Scrollbars in [_TB_both, _TB_horizontal]) or Scrollbar then
+  begin
+    Key := 'self.' + Name + 'ScrollbarH.place';
+    SetAttributValue(Key, Key + '(x=' + IntToStr(PPIUnScale(X)) + ', y=' +
+      IntToStr(PPIUnScale(Y + Rect.Bottom - 2)) + ', width=' +
+      IntToStr(PPIUnScale(Rect.Right)) + ', height=' +
+      IntToStr(PPIUnScale(20)) + ')');
   end;
 end;
 
 function TBaseTkWidget.ClientRectWithoutScrollbars: TRect;
 begin
-  Result:= ClientRect;
-  if Scrollbars in [_TB_vertical, _TB_both]
-    then Result.Right:= Result.Right - 20;
-  if (Scrollbars in [_TB_horizontal, _TB_both]) or Scrollbar
-    then Result.Bottom:= Result.Bottom - 20;
+  Result := ClientRect;
+  if Scrollbars in [_TB_vertical, _TB_both] then
+    Result.Right := Result.Right - 20;
+  if (Scrollbars in [_TB_horizontal, _TB_both]) or Scrollbar then
+    Result.Bottom := Result.Bottom - 20;
 end;
 
 procedure TBaseTkWidget.Resize;
@@ -569,53 +690,61 @@ begin
     (Parent as TKPanedWindow).Resize
   else if Self is TKPanedWindow then
     (Self as TKPanedWindow).Resize
-  else if Parent is TTKPanedwindow then
-    (Parent as TTKPanedwindow).Resize
-  else if Self is TTKPanedwindow then
-    (Self as TTKPanedwindow).Resize;
+  else if Parent is TTKPanedWindow then
+    (Parent as TTKPanedWindow).Resize
+  else if Self is TTKPanedWindow then
+    (Self as TTKPanedWindow).Resize;
 end;
 
-function TBaseTkWidget.getAttrAsKey(Attr: string): string;
+function TBaseTkWidget.GetAttrAsKey(Attr: string): string;
 begin
-  Result:= 'self.' + Name + FNameExtension + '[''' + Lowercase(Attr) + ''']';
+  Result := 'self.' + Name + FNameExtension + '[''' + LowerCase(Attr) + ''']';
 end;
 
-procedure TBaseTkWidget.setAttribute(Attr, Value, Typ: string);
-  var s1: string;
+procedure TBaseTkWidget.SetAttribute(Attr, Value, Typ: string);
+var
+  Key: string;
 begin
-  s1:= getAttrAsKey(Attr);
-  if isFontAttribute(Attr)then
+  Key := GetAttrAsKey(Attr);
+  if IsFontAttribute(Attr) then
     MakeFont
   else if Attr = 'TakeFocus' then
     MakeBoolean(Attr, Value)
   else if Attr = 'Menu' then
-    setMenu(Value)
+    SetMenu(Value)
   else if Attr = 'Show' then
     MakeShow(Value)
   else if Right(Attr, -7) = 'Command' then
     ChangeCommand(Attr, Value)
   else if Typ = 'Source' then
-    if Value = ''
-      then Partner.DeleteAttribute(s1)
-      else setAttributValue(s1, s1 + ' = ' + Value)
+    if Value = '' then
+      Partner.DeleteAttribute(Key)
+    else
+      SetAttributValue(Key, Key + ' = ' + Value)
   else if Typ = 'TCursor' then
-    if Value = 'default'
-      then Partner.DeleteAttribute(s1)
-      else setAttributValue(s1, s1 + ' = ' + asString(Value))
+    if Value = 'default' then
+      Partner.DeleteAttribute(Key)
+    else
+      SetAttributValue(Key, Key + ' = ' + AsString(Value))
   else if Typ = 'Boolean' then
     MakeBoolean(Attr, Value)
-  else if (Typ = 'string') or ((Typ <> '') and (Typ[1] = 'T')) then  // enum type, TColor
-    if Value = ''
-      then Partner.DeleteAttribute(s1)  // borderwidth, padx, ...
-      else setAttributValue(s1, s1 + ' = ' + asString(Value))
-  else begin
-    if Value = ''                                  // Typ real
-      then Partner.DeleteAttribute(s1)
-      else setAttributValue(s1, s1 + ' = ' + Value);
+  else if (Typ = 'string') or ((Typ <> '') and (Typ[1] = 'T')) then
+    // enum type, TColor
+    if Value = '' then
+      Partner.DeleteAttribute(Key) // borderwidth, padx, ...
+    else
+      SetAttributValue(Key, Key + ' = ' + AsString(Value))
+  else
+  begin
+    if Value = '' // Typ Real
+    then
+      Partner.DeleteAttribute(Key)
+    else
+      SetAttributValue(Key, Key + ' = ' + Value);
   end;
 end;
 
-procedure TBaseTkWidget.setEvent(Event: string);
+procedure TBaseTkWidget.SetEvent(Event: string);
 begin
   if not Partner.hasText('def ' + HandlerNameAndParameter(Event)) then
     Partner.InsertProcedure(CrLf + MakeHandler(Event));
@@ -623,244 +752,289 @@ begin
 end;
 
 procedure TBaseTkWidget.MakeBoolean(Attr, Value: string);
-  var s1, s2: string;
+var
+  Key, Value2: string;
 begin
-  s1:= getAttrAsKey(Attr);
-  if Value = 'True'
-    then s2:= s1 + ' = 1'
-    else s2:= s1 + ' = 0';
-  setAttributValue(s1, s2)
+  Key := GetAttrAsKey(Attr);
+  if Value = 'True' then
+    Value2 := Key + ' = 1'
+  else
+    Value2 := Key + ' = 0';
+  SetAttributValue(Key, Value2);
 end;
 
 procedure TBaseTkWidget.MakeShow(Value: string);
-  var s: string;
 begin
-  s:= 'self.' + Name  + '[''show'']';
-  if Value = 'True'
-    then Partner.DeleteAttribute(s)
-    else setAttributValue(s, s + ' = ''*''');
+  var
+  Str := 'self.' + Name + '[''show'']';
+  if Value = 'True' then
+    Partner.DeleteAttribute(Str)
+  else
+    SetAttributValue(Str, Str + ' = ''*''');
 end;
 
-procedure TBaseTkWidget.AddParameter(const Value, par: string);
-  var old, new: string;
+procedure TBaseTkWidget.AddParameter(const Value, Par: string);
+var
+  Old, New: string;
 begin
-  old:= 'def ' + Value + '(self):';
-  new:= 'def ' + Value + '(self, ' + par + '):';
-  Partner.ReplaceWord(old, new, False);
+  Old := 'def ' + Value + '(self):';
+  New := 'def ' + Value + '(self, ' + Par + '):';
+  Partner.ReplaceWord(Old, New, False);
 end;
 
-procedure TBaseTkWidget.MakeControlVar(Variable, ControlVar: string; Value: string = ''; Typ: string = 'String');
-  var s: string;
+procedure TBaseTkWidget.MakeControlVar(Variable, ControlVar: string;
+  Value: string = ''; Typ: string = 'String');
 begin
-  s:= surround('self.' + ControlVar + ' = tk.' + Typ + 'Var()');
-  if Typ = 'String'
-    then s:= s + surround('self.' + ControlVar + '.set(' + asString(Value) + ')')
-    else s:= s + surround('self.' + ControlVar + '.set(' + Value + ')');
-  s:= s + surround('self.' + Name + '[' + asString(Variable) + '] = self.' + ControlVar);
-  insertValue(s);
+  var
+  Str := Surround('self.' + ControlVar + ' = tk.' + Typ + 'Var()');
+  if Typ = 'String' then
+    Str := Str + Surround('self.' + ControlVar + '.set(' +
+      AsString(Value) + ')')
+  else
+    Str := Str + Surround('self.' + ControlVar + '.set(' + Value + ')');
+  Str := Str + Surround('self.' + Name + '[' + AsString(Variable) + '] = self.'
+    + ControlVar);
+  InsertValue(Str);
 end;
 
-procedure TBaseTkWidget.setMenu(Value: string);
-  var s1, s2: string;
+procedure TBaseTkWidget.SetMenu(Value: string);
+var
+  Str1, Str2: string;
 begin
-  s1:= 'self.' + Name + '[' + asString('menu') + ']';
-  Partner.DeleteAttribute(s1);
-  if Value = '' then begin
-    s1:= 'self.' + LOldValue + ' = tk.Menu';
-    s2:= s1 + '(tearoff=0)';
-    setAttributValue(s1, s2);
-  end else begin
-    Partner.InsertAtEnd(Indent2 + s1 + ' = self.' + Value);
-    s1:= 'self.' + Value + ' = tk.Menu';
-    s2:= s1 + '(self.' + Name + ', tearoff=0)';
-    setAttributValue(s1, s2);
+  Str1 := 'self.' + Name + '[' + AsString('menu') + ']';
+  Partner.DeleteAttribute(Str1);
+  if Value = '' then
+  begin
+    Str1 := 'self.' + LOldValue + ' = tk.Menu';
+    Str2 := Str1 + '(tearoff=0)';
+    SetAttributValue(Str1, Str2);
+  end
+  else
+  begin
+    Partner.InsertAtEnd(Indent2 + Str1 + ' = self.' + Value);
+    Str1 := 'self.' + Value + ' = tk.Menu';
+    Str2 := Str1 + '(self.' + Name + ', tearoff=0)';
+    SetAttributValue(Str1, Str2);
   end;
 end;
 
 procedure TBaseTkWidget.ChangeCommand(Attr, Value: string);
-  var nam, key: string;
+var
+  Nam, Key: string;
 begin
-  nam:= Name + '_' + Attr;
-  key:= 'self.' + Name + FNameExtension + '[' + asString(lowercase(Attr)) + ']';
-  if Value = 'False' then begin
-    Partner.DeleteAttribute(key);
-    Partner.DeleteMethod(nam);
-  end else begin
-    setAttributValue(key, key + ' = self.' + nam);
-    MakeCommand(Attr, nam);
+  Nam := Name + '_' + Attr;
+  Key := 'self.' + Name + FNameExtension + '[' +
+    AsString(LowerCase(Attr)) + ']';
+  if Value = 'False' then
+  begin
+    Partner.DeleteAttribute(Key);
+    Partner.DeleteMethod(Nam);
+  end
+  else
+  begin
+    SetAttributValue(Key, Key + ' = self.' + Nam);
+    MakeCommand(Attr, Nam);
   end;
 end;
 
 function TBaseTkWidget.MakeBinding(Eventname: string): string;
-  var Event: TEvent;
+var
+  Event: TEvent;
 begin
   if Eventname = 'ButtonPress' then
-    Event:= ButtonPress
+    Event := ButtonPress
   else if Eventname = 'ButtonRelease' then
-    Event:= ButtonRelease
+    Event := ButtonRelease
   else if Eventname = 'KeyPress' then
-    Event:= KeyPress
+    Event := KeyPress
   else if Eventname = 'KeyRelease' then
-    Event:= KeyRelease
+    Event := KeyRelease
   else if Eventname = 'Activate' then
-    Event:= Activate
+    Event := Activate
   else if Eventname = 'Configure' then
-    Event:= Configure
+    Event := Configure
   else if Eventname = 'Deactivate' then
-    Event:= Deactivate
+    Event := Deactivate
   else if Eventname = 'Enter' then
-    Event:= Enter
+    Event := Enter
   else if Eventname = 'FocusIn' then
-    Event:= FocusIn
+    Event := FocusIn
   else if Eventname = 'FocusOut' then
-    Event:= FocusOut
+    Event := FocusOut
   else if Eventname = 'Leave' then
-    Event:= Leave
+    Event := Leave
   else if Eventname = 'Motion' then
-    Event:= Motion
+    Event := Motion
   else
-    Event:= MouseWheel;
-  Result:= Indent2 + 'self.' + Name + '.bind(''<' + Event.getModifiers(Eventname) +
-           Eventname + Event.getDetail(Eventname) + '>'', self.' + HandlerName(Eventname) + ')';
+    Event := MouseWheel;
+  Result := Indent2 + 'self.' + Name + '.bind(''<' +
+    Event.getModifiers(Eventname) + Eventname + Event.getDetail(Eventname) +
+    '>'', self.' + HandlerName(Eventname) + ')';
 end;
 
-function TBaseTkWidget.MakeHandler(const event: string ): string;
+function TBaseTkWidget.MakeHandler(const Event: string): string;
 begin
-  Result:= Indent1 + 'def ' + HandlerNameAndParameter(Event) + CrLf +
-           Indent2 + '# ToDo insert source code here' + CrLf +
-           Indent2 + 'pass' + CrLf;
+  Result := Indent1 + 'def ' + HandlerNameAndParameter(Event) + CrLf + Indent2 +
+    '# ToDo insert source code here' + CrLf + Indent2 + 'pass' + CrLf;
 end;
 
 procedure TBaseTkWidget.MakeImage(const Value: string);
-  var s, key1, key2, Dest, filename, Path: string;
+var
+  Str, Key1, Key2, Dest, Filename, Path: string;
 begin
   // ToDo use PIL if png-file selected
-  if Value = '(Image)' then begin
-    key1:= 'self.' + Name + 'Image';
-    Partner.DeleteAttribute(key1);
-    key2:= 'self.' + Name + '[''image'']';
-    Partner.DeleteAttribute(key2);
-  end else begin
-    filename:= ExtractFileName(Value);
-    if Pos('images/', filename) = 1 then
-      System.Delete(filename, 1, 7);
-    Path:= ExtractFilePath(Partner.Pathname);
-    Dest:= Path + 'images\' + filename;
+  if Value = '(Image)' then
+  begin
+    Key1 := 'self.' + Name + 'Image';
+    Partner.DeleteAttribute(Key1);
+    Key2 := 'self.' + Name + '[''Image'']';
+    Partner.DeleteAttribute(Key2);
+  end
+  else
+  begin
+    Filename := ExtractFileName(Value);
+    if Pos('images/', Filename) = 1 then
+      System.Delete(Filename, 1, 7);
+    Path := ExtractFilePath(Partner.Pathname);
+    Dest := Path + 'images\' + Filename;
     ForceDirectories(Path + 'images\');
     if not FileExists(Dest) then
-      copyFile(PChar(Value), PChar(Dest), True);
-    FImage:= 'images/' + filename;
-    key1:= 'self.' + Name + 'Image';
-    s:= key1 + ' = tk.PhotoImage(file=' + asString(FImage) + ')';
-    setAttributValue(key1, s);
-    key2:= 'self.' + Name + '[''image'']';
-    s:= key2 + ' = ' + key1;
-    setAttributValue(key2, s);
+      CopyFile(PChar(Value), PChar(Dest), True);
+    FImage := 'images/' + Filename;
+    Key1 := 'self.' + Name + 'Image';
+    Str := Key1 + ' = tk.PhotoImage(file=' + AsString(FImage) + ')';
+    SetAttributValue(Key1, Str);
+    Key2 := 'self.' + Name + '[''image'']';
+    Str := Key2 + ' = ' + Key1;
+    SetAttributValue(Key2, Str);
     FObjectInspector.Invalidate;
   end;
 end;
 
 procedure TBaseTkWidget.MakeValidateCommand(Attr, Value: string);
-  var key: string;
+var
+  Key: string;
 begin
-  if Value = '' then begin
+  if Value = '' then
+  begin
     Partner.DeleteAttribute(Name + 'VC');
     Partner.DeleteAttribute('self.' + Name + '[''validatecommand'']');
     Partner.DeleteMethod(ULink.LOldValue);
-  end else begin
-    key:= 'self.' + Name + 'VC';
-    setAttributValue(key, key + ' = self.register(self.' + Name + '_ValidateCommand)');
+  end
+  else
+  begin
+    Key := 'self.' + Name + 'VC';
+    SetAttributValue(Key, Key + ' = self.register(self.' + Name +
+      '_ValidateCommand)');
     ChangeCommand(Attr, Value);
-    key:= 'self.' + Name + '[''validatecommand'']';
-    setAttributValue(key, key + ' = (self.' + Name + 'VC, ''%d'', ''%i'', ''%S'')');
+    Key := 'self.' + Name + '[''validatecommand'']';
+    SetAttributValue(Key, Key + ' = (self.' + Name +
+      'VC, ''%d'', ''%I'', ''%S'')');
   end;
 end;
 
-procedure TBaseTkWidget.setScrollbars(Value: TScrollbar);
+procedure TBaseTkWidget.SetScrollbars(Value: TScrollbar);
 begin
-  if FScrollbars <> Value then begin
-    FScrollbars:= Value;
-    invalidate;
+  if FScrollbars <> Value then
+  begin
+    FScrollbars := Value;
+    Invalidate;
   end;
 end;
 
-procedure TBaseTkWidget.setScrollbar(Value: Boolean);
+procedure TBaseTkWidget.SetScrollbar(Value: Boolean);
 begin
-  if FScrollbar <> Value then begin
-    FScrollbar:= Value;
-    invalidate;
+  if FScrollbar <> Value then
+  begin
+    FScrollbar := Value;
+    Invalidate;
   end;
 end;
 
 procedure TBaseTkWidget.MakeScrollbar(Value, TkTyp: string);
 begin
-  if Value = 'True'
-    then MakeScrollbars('horizontal', TkTyp)
-    else MakeScrollbars('none', TkTyp);
+  if Value = 'True' then
+    MakeScrollbars('horizontal', TkTyp)
+  else
+    MakeScrollbars('none', TkTyp);
 end;
 
 procedure TBaseTkWidget.MakeScrollbars(Value, TkTyp: string);
-  var ScrollbarName, OldValue: string;
-     WidthNoScrollbar, HeightNoScrollbar, WidthScrollbar, HeightScrollbar: Integer;
+var
+  ScrollbarName, OldValue: string;
+  WidthNoScrollbar, HeightNoScrollbar, WidthScrollbar, HeightScrollbar: Integer;
 
   procedure DeleteVertical;
   begin
     Partner.DeleteAttributeValues(ScrollbarName + 'V');
-    Partner.DeleteAttribute('self.' + Name +  '[' + asString('yscrollcommand') + ']');
+    Partner.DeleteAttribute('self.' + Name + '[' +
+      AsString('yscrollcommand') + ']');
     Dec(WidthNoScrollbar, 20);
   end;
 
   procedure DeleteHorizontal;
   begin
     Partner.DeleteAttributeValues(ScrollbarName + 'H');
-    Partner.DeleteAttribute('self.' + Name +  '[' + asString('sxcrollcommand') + ']');
+    Partner.DeleteAttribute('self.' + Name + '[' +
+      AsString('xscrollcommand') + ']');
     Dec(HeightNoScrollbar, 20);
   end;
 
   procedure InsertVertical;
-    var s: string;
+  var
+    Str: string;
   begin
-    s:= surround(ScrollbarName + 'V = ' + TkTyp + 'Scrollbar(' + getContainer + ')');
-    s:= s + surround(ScrollbarName + 'V.place(x=' + IntToStr(x + WidthNoScrollbar - 2) + ', y=' + IntToStr(y) +
-                            ', width=20, height=' + IntToStr(HeightNoScrollbar) + ')');
-    s:= s + surround(ScrollbarName + 'V[' + asString('command') + '] = self.' + Name + '.yview');
-    s:= s + surround('self.' + Name + '[' + asString('yscrollcommand') + '] = ' + ScrollbarName + 'V.set');
-    InsertValue(s);
+    Str := Surround(ScrollbarName + 'V = ' + TkTyp + 'Scrollbar(' +
+      GetContainer + ')');
+    Str := Str + Surround(ScrollbarName + 'V.place(x=' +
+      IntToStr(X + WidthNoScrollbar - 2) + ', y=' + IntToStr(Y) +
+      ', width=20, height=' + IntToStr(HeightNoScrollbar) + ')');
+    Str := Str + Surround(ScrollbarName + 'V[' + AsString('command') +
+      '] = self.' + Name + '.yview');
+    Str := Str + Surround('self.' + Name + '[' + AsString('yscrollcommand') +
+      '] = ' + ScrollbarName + 'V.set');
+    InsertValue(Str);
     Inc(WidthScrollbar, 20);
   end;
 
   procedure InsertHorizontal;
-    var s, s1: string;
+  var
+    Str, Str1: string;
   begin
-    s1:= getContainer;
-    if s1 <> '' then s1:= s1 + ', ';
-    s1:= s1 + 'orient=' + asString('horizontal');
-    s:= surround(ScrollbarName + 'H = ' + TkTyp+ 'Scrollbar(' + s1 + ')');
-    s:= s + surround(ScrollbarName + 'H.place(x=' + IntToStr(x) + ', y=' + IntToStr(y + HeightNoScrollbar - 2) +
-                                   ', width=' + IntToStr(WidthNoScrollbar) + ', height=20)');
-    s:= s + surround(ScrollbarName + 'H[' + asString('command') + '] = self.' + Name + '.xview');
-    s:= s + surround('self.' + Name + '[' + asString('xscrollcommand') + '] = ' + ScrollbarName + 'H.set');
-    InsertValue(s);
+    Str1 := GetContainer;
+    if Str1 <> '' then
+      Str1 := Str1 + ', ';
+    Str1 := Str1 + 'orient=' + AsString('horizontal');
+    Str := Surround(ScrollbarName + 'H = ' + TkTyp + 'Scrollbar(' + Str1 + ')');
+    Str := Str + Surround(ScrollbarName + 'H.place(x=' + IntToStr(X) + ', y=' +
+      IntToStr(Y + HeightNoScrollbar - 2) + ', width=' +
+      IntToStr(WidthNoScrollbar) + ', height=20)');
+    Str := Str + Surround(ScrollbarName + 'H[' + AsString('command') +
+      '] = self.' + Name + '.xview');
+    Str := Str + Surround('self.' + Name + '[' + AsString('xscrollcommand') +
+      '] = ' + ScrollbarName + 'H.set');
+    InsertValue(Str);
     Inc(HeightScrollbar, 20);
   end;
 
 begin
-  OldValue:= ULink.LOldValue;
-  ScrollbarName:= 'self.' + Name + 'Scrollbar';
+  OldValue := ULink.LOldValue;
+  ScrollbarName := 'self.' + Name + 'Scrollbar';
   Partner.ActiveSynEdit.BeginUpdate;
-  WidthNoScrollbar:= Width;
-  HeightNoScrollbar:= Height;
+  WidthNoScrollbar := Width;
+  HeightNoScrollbar := Height;
   if (OldValue = 'vertical') or (OldValue = 'both') then
     DeleteVertical;
-  if (OldValue = 'horizontal') or (OldValue = 'both') or (OldValue = 'True') then
+  if (OldValue = 'horizontal') or (OldValue = 'both') or (OldValue = 'True')
+  then
     DeleteHorizontal;
-  WidthScrollbar:= WidthNoScrollbar;
-  HeightScrollbar:= HeightNoScrollbar;
+  WidthScrollbar := WidthNoScrollbar;
+  HeightScrollbar := HeightNoScrollbar;
   if (Value = 'vertical') or (Value = 'both') then
     InsertVertical;
   if (Value = 'horizontal') or (Value = 'both') then
     InsertHorizontal;
-  SetBounds(x, y, WidthScrollbar, HeightScrollbar);
+  SetBounds(X, Y, WidthScrollbar, HeightScrollbar);
   Partner.ActiveSynEdit.EndUpdate;
   FObjectInspector.Invalidate;
 end;
@@ -868,117 +1042,134 @@ end;
 procedure TBaseTkWidget.PaintAScrollbar(Value: Boolean);
 begin
   if Value then
-    PaintScrollbars(_TB_horizontal)
+    PaintScrollbars(_TB_horizontal);
 end;
 
 procedure TBaseTkWidget.PaintScrollbars(Scrollbar: TScrollbar);
-  var R: TRect;
+var
+  Rect: TRect;
 begin
-  if Scrollbar = _TB_vertical then begin
-    R:= ClientRect;
-    R.Left:= R.Right - 20;
-    PaintScrollbar(R, False);
+  if Scrollbar = _TB_vertical then
+  begin
+    Rect := ClientRect;
+    Rect.Left := Rect.Right - 20;
+    PaintScrollbar(Rect, False);
   end;
 
-  if Scrollbar = _TB_horizontal then begin
-    R:= ClientRect;
-    R.Top:= R.Bottom - 20;
-    PaintScrollbar(R, True);
+  if Scrollbar = _TB_horizontal then
+  begin
+    Rect := ClientRect;
+    Rect.Top := Rect.Bottom - 20;
+    PaintScrollbar(Rect, True);
   end;
 
-  if Scrollbar = _TB_both then begin
-    R:= ClientRect;
-    R.Left:= R.Right - 20;
-    R.Bottom:= R.Bottom - 20;
-    PaintScrollbar(R, False);
-    R:= ClientRect;
-    R.Top:= R.Bottom - 20;
-    R.Right:= R.Right - 20;
-    PaintScrollbar(R, True);
+  if Scrollbar = _TB_both then
+  begin
+    Rect := ClientRect;
+    Rect.Left := Rect.Right - 20;
+    Rect.Bottom := Rect.Bottom - 20;
+    PaintScrollbar(Rect, False);
+    Rect := ClientRect;
+    Rect.Top := Rect.Bottom - 20;
+    Rect.Right := Rect.Right - 20;
+    PaintScrollbar(Rect, True);
   end;
 end;
 
-procedure TBaseTkWidget.ShowText(s: string; newWidth, newHeight: Integer);
-  var th, tw, x, y: Integer;
+procedure TBaseTkWidget.ShowText(Text: string; NewWidth, NewHeight: Integer);
+var
+  TextHeight, TextWidth, XPos, YPos: Integer;
 begin
-  th:= Canvas.TextHeight(s);
-  tw:= Canvas.TextWidth(s);
-  y:= (newHeight - th) div 2;
+  TextHeight := Canvas.TextHeight(Text);
+  TextWidth := Canvas.TextWidth(Text);
+  YPos := (NewHeight - TextHeight) div 2;
   case Justify of
-    _TJ_LEFT:   x:= BorderWidthInt + 2;
-    _TJ_CENTER: x:= (newWidth - tw) div 2;
-    else        x:= newWidth - BorderWidthInt - tw - 2;
+    _TJ_left:
+      XPos := FBorderWidthInt + 2;
+    _TJ_center:
+      XPos := (NewWidth - TextWidth) div 2;
+  else
+    XPos := NewWidth - FBorderWidthInt - TextWidth - 2;
   end;
-  Canvas.TextOut(x, y, s);
+  Canvas.TextOut(XPos, YPos, Text);
 end;
 
-procedure TBaseTkWidget.setAnchor(aValue: TAnchor);
+procedure TBaseTkWidget.SetAnchor(AValue: TAnchor);
 begin
-  if aValue <> fAnchor then begin
-    fAnchor:= aValue;
+  if AValue <> FAnchor then
+  begin
+    FAnchor := AValue;
     Invalidate;
   end;
 end;
 
-procedure TBaseTkWidget.SetBackground(aColor: TColor);
+procedure TBaseTkWidget.SetBackground(AColor: TColor);
 begin
-  if aColor <> FBackground then begin
-    FBackground:= aColor;
+  if AColor <> FBackground then
+  begin
+    FBackground := AColor;
     Invalidate;
   end;
 end;
 
-procedure TBaseTkWidget.SetForeground(aColor: TColor);
+procedure TBaseTkWidget.SetForeground(AColor: TColor);
 begin
-  if aColor <> FForeground then begin
-    FForeground:= aColor;
+  if AColor <> FForeground then
+  begin
+    FForeground := AColor;
     Invalidate;
   end;
 end;
 
-procedure TBaseTkWidget.setBorderWidth(aValue: string);
+procedure TBaseTkWidget.SetBorderWidth(AValue: string);
 begin
-  if aValue <> fBorderWidth then begin
-    fBorderWidth:= aValue;
+  if AValue <> FBorderWidth then
+  begin
+    FBorderWidth := AValue;
     Invalidate;
   end;
 end;
 
-procedure TBaseTkWidget.setImage(aValue: string);
+procedure TBaseTkWidget.SetImage(AValue: string);
 begin
-  if aValue <> fImage then begin
-    fImage:= aValue;
+  if AValue <> FImage then
+  begin
+    FImage := AValue;
     Invalidate;
   end;
 end;
 
-procedure TBaseTkWidget.setJustify(aValue: TJustify);
+procedure TBaseTkWidget.SetJustify(AValue: TJustify);
 begin
-  if aValue <> fJustify then begin
-    fJustify:= aValue;
+  if AValue <> FJustify then
+  begin
+    FJustify := AValue;
     Invalidate;
   end;
 end;
 
-procedure TBaseTkWidget.setUnderline(aValue: Integer);
+procedure TBaseTkWidget.SetUnderline(AValue: Integer);
 begin
-  if aValue <> FUnderline then begin
-    FUnderline:= aValue;
+  if AValue <> FUnderline then
+  begin
+    FUnderline := AValue;
     Invalidate;
   end;
 end;
 
-procedure TBaseTkWidget.setWrapLength(aValue: string);
+procedure TBaseTkWidget.SetWrapLength(AValue: string);
 begin
-  if aValue <> FWrapLength then begin
-    FWrapLength:= aValue;
+  if AValue <> FWrapLength then
+  begin
+    FWrapLength := AValue;
     Invalidate;
   end;
 end;
 
 procedure TBaseTkWidget.DeleteWidget;
 begin
-  if FCommand then Partner.DeleteMethod(Name + '_Command');
+  if FCommand then
+    Partner.DeleteMethod(Name + '_Command');
   Partner.DeleteMethod(Name + 'ScrollbarH.set');
   Partner.DeleteMethod(Name + 'ScrollbarV.set');
   DeleteEvents;
@@ -994,21 +1185,26 @@ begin
 end;
 
 procedure TBaseTkWidget.DeleteEvents;
-  var p: Integer; s, Event: string; SL1, SL2: TStringList;
+var
+  Posi: Integer;
+  Str, Event: string;
+  SL1, SL2: TStringList;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
-  SL1:= TStringList.Create;
-  SL2:= TStringList.Create;
-  s:= getEvents(3) + '|';
-  p:= Pos('|', s);
-  while p > 0 do begin
-    Event:= UUtils.Left(s, p-1);
-    if Event <> '' then begin
+  SL1 := TStringList.Create;
+  SL2 := TStringList.Create;
+  Str := getEvents(3) + '|';
+  Posi := Pos('|', Str);
+  while Posi > 0 do
+  begin
+    Event := UUtils.Left(Str, Posi - 1);
+    if Event <> '' then
+    begin
       Partner.DeleteBinding(MakeBinding(Name));
       SL1.Add(HandlerNameAndParameter(Event));
     end;
-    Delete(s, 1, p);
-    p:= Pos('|', s);
+    Delete(Str, 1, Posi);
+    Posi := Pos('|', Str);
   end;
   Partner.DeleteOldAddNewMethods(SL1, SL2);
   FreeAndNil(SL1);
@@ -1019,182 +1215,231 @@ end;
 procedure TBaseTkWidget.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
-  InsertValue('self.' + Name + ' = ' + Widget + '(' + getContainer + ')');
-  setPositionAndSize;
+  InsertValue('self.' + Name + ' = ' + Widget + '(' + GetContainer + ')');
+  SetPositionAndSize;
   MakeFont;
   if Parent is TKPanedWindow then
     InsertValue('self.' + Parent.Name + '.add(self.' + Name + ')')
-  else if Parent is TTKPanedwindow then
+  else if Parent is TTKPanedWindow then
     InsertValue('self.' + Parent.Name + '.add(self.' + Name + ', weight=1)');
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TBaseTkWidget.Calculate3DColors(var DarkColor, LightColor: TColor; Background: TColor);
-  const MAX_INTENSITY = 255.0;
-  var r, g, b: Integer; lr, lg, lb, dr, dg, db, tmp1, tmp2: real;  Color: TColor;
+procedure TBaseTkWidget.Calculate3DColors(var DarkColor, LightColor: TColor;
+  Background: TColor);
+const
+  MAX_INTENSITY = 255.0;
+var
+  Red, Green, Blue: Integer;
+  LightRed, LightGreen, LightBlue, DarkRed, DarkGreen, DarkBlue, Tmp1,
+    Tmp2: Real;
+  Color: TColor;
 begin
   // from: https://github.com/tcltk/tk/blob/main/win/tkWin3d.c
-  Color:= Graphics.ColorToRGB(Background);
-  Color2RGB(Color, r, g, b);
+  Color := Graphics.ColorToRGB(Background);
+  Color2RGB(Color, Red, Green, Blue);
 
-     if (r*0.5*r + g*1.0*g + b*0.28*b < MAX_INTENSITY*0.05*MAX_INTENSITY) then begin
-    dr:= (MAX_INTENSITY + 3*r)/4;
-    dg:= (MAX_INTENSITY + 3*g)/4;
-    db:= (MAX_INTENSITY + 3*b)/4;
-  end else begin
-    dr:= (60 * r)/100;
-    dg:= (60 * g)/100;
-    db:= (60 * b)/100;
+  if (Red * 0.5 * Red + Green * 1.0 * Green + Blue * 0.28 * Blue < MAX_INTENSITY
+    * 0.05 * MAX_INTENSITY) then
+  begin
+    DarkRed := (MAX_INTENSITY + 3 * Red) / 4;
+    DarkGreen := (MAX_INTENSITY + 3 * Green) / 4;
+    DarkBlue := (MAX_INTENSITY + 3 * Blue) / 4;
+  end
+  else
+  begin
+    DarkRed := (60 * Red) / 100;
+    DarkGreen := (60 * Green) / 100;
+    DarkBlue := (60 * Blue) / 100;
   end;
-  DarkColor:= RGB2Color(Round(dr), Round(dg), round(db));
+  DarkColor := RGB2Color(Round(DarkRed), Round(DarkGreen), Round(DarkBlue));
 
-     if (g > MAX_INTENSITY*0.95) then begin
-    lr:= (90 * r)/100;
-    lg:= (90 * g)/100;
-    lb:= (90 * b)/100;
-  end else begin
-       tmp1:= Min((14 * r)/10, MAX_INTENSITY);
-    tmp2:= (MAX_INTENSITY + r)/2;
-    lr:= Max(tmp1, tmp2);
-    tmp1:= Min((14 * g)/10, MAX_INTENSITY);
-    tmp2:= (MAX_INTENSITY + g)/2;
-    lg:= Max(tmp1, tmp2);
-    tmp1:= Min((14 * b)/10, MAX_INTENSITY);
-    tmp2:= (MAX_INTENSITY + b)/2;
-    lb:= Max(tmp1, tmp2);
+  if (Green > MAX_INTENSITY * 0.95) then
+  begin
+    LightRed := (90 * Red) / 100;
+    LightGreen := (90 * Green) / 100;
+    LightBlue := (90 * Blue) / 100;
+  end
+  else
+  begin
+    Tmp1 := Min((14 * Red) / 10, MAX_INTENSITY);
+    Tmp2 := (MAX_INTENSITY + Red) / 2;
+    LightRed := Max(Tmp1, Tmp2);
+    Tmp1 := Min((14 * Green) / 10, MAX_INTENSITY);
+    Tmp2 := (MAX_INTENSITY + Green) / 2;
+    LightGreen := Max(Tmp1, Tmp2);
+    Tmp1 := Min((14 * Blue) / 10, MAX_INTENSITY);
+    Tmp2 := (MAX_INTENSITY + Blue) / 2;
+    LightBlue := Max(Tmp1, Tmp2);
   end;
-  LightColor:= RGB2Color(Round(lr), Round(lg), Round(lb));
+  LightColor := RGB2Color(Round(LightRed), Round(LightGreen), Round(LightBlue));
 end;
 
-procedure TBaseTkWidget.setRelief(aValue: TRelief);
+procedure TBaseTkWidget.SetRelief(AValue: TRelief);
 begin
-  if fRelief <> aValue then begin
-    fRelief:= aValue;
+  if FRelief <> AValue then
+  begin
+    FRelief := AValue;
     Invalidate;
   end;
 end;
 
-function TBaseTkWidget.getType;
+function TBaseTkWidget.GetType: string;
 begin
-  if Pos('TTK', Classname) = 1
-    then Result:= Copy(Classname, 4, Length(Classname))
-    else Result:= Copy(Classname, 3, Length(Classname));
+  if Pos('TTK', ClassName) = 1 then
+    Result := Copy(ClassName, 4, Length(ClassName))
+  else
+    Result := Copy(ClassName, 3, Length(ClassName));
 end;
 
-function TBaseTkWidget.getNameAndType;
+function TBaseTkWidget.GetNameAndType: string;
 begin
-  Result:= Name + ': ' + getType;
+  Result := Name + ': ' + GetType;
 end;
 
-function TBaseTkWidget.getContainer: string;
+function TBaseTkWidget.GetContainer: string;
 begin
-  if (Parent = nil) or (Parent is TFGUIForm)
-    then Result:= ''
-    else Result:= 'self.' + Parent.Name;
+  if (Parent = nil) or (Parent is TFGuiForm) then
+    Result := ''
+  else
+    Result := 'self.' + Parent.Name;
 end;
 
 procedure TBaseTkWidget.MakeFont;
-  var s1, s2: string;
+var
+  Str1, Str2: string;
 begin
-  if Name = '' then Exit;
-  s1:= 'self.' + Name + '[''font'']';
-  s2:= ' = (' + asString(Font.Name) + ', ' + IntToStr(Font.Size);
-  if fsBold   in Font.Style then s2:= s2 + ', ' + asString('bold');
-  if fsItalic in Font.Style then s2:= s2 + ', ' + asString('italic');
-  if fsStrikeout in Font.Style then s2:= s2 + ', ' + asString('overstrike');
-  if fsUnderline in Font.Style then s2:= s2 + ', ' + asString('underline');
-  s2:= s2 + ')';
-  setAttributValue(s1, s1 + s2);
+  if Name = '' then
+    Exit;
+  Str1 := 'self.' + Name + '[''font'']';
+  Str2 := ' = (' + AsString(Font.Name) + ', ' + IntToStr(Font.Size);
+  if fsBold in Font.Style then
+    Str2 := Str2 + ', ' + AsString('bold');
+  if fsItalic in Font.Style then
+    Str2 := Str2 + ', ' + AsString('italic');
+  if fsStrikeOut in Font.Style then
+    Str2 := Str2 + ', ' + AsString('overstrike');
+  if fsUnderline in Font.Style then
+    Str2 := Str2 + ', ' + AsString('underline');
+  Str2 := Str2 + ')';
+  SetAttributValue(Str1, Str1 + Str2);
   Invalidate;
 end;
 
-{--- TKMainWindow ------------------------------------------------------------}
+{ --- TKMainWindow ------------------------------------------------------------ }
 
-function TKMainWindow.getAttributes(ShowAttributes: Integer): string;
-  const Attributes1 = '|Transparency|Resizable|Title|Background|Width|Height';
-        Attributes2 = Attributes1 + '|Fullscreen|AlwaysOnTop|Iconified';
-        Attributes3 = Attributes2 + '|MaxHeight|MaxWidth|MinHeight|MinWidth|Theme';
+function TKMainWindow.GetAttributes(ShowAttributes: Integer): string;
+const
+  Attributes1 = '|Transparency|Resizable|Title|Background|Width|Height';
+  Attributes2 = Attributes1 + '|Fullscreen|AlwaysOnTop|Iconified';
+  Attributes3 = Attributes2 + '|MaxHeight|MaxWidth|MinHeight|MinWidth|Theme';
 begin
   case ShowAttributes of
-    1: Result:= Attributes1 + '|';
-    2: Result:= Attributes2 + '|';
-  else Result:= Attributes3 + '|';
+    1:
+      Result := Attributes1 + '|';
+    2:
+      Result := Attributes2 + '|';
+  else
+    Result := Attributes3 + '|';
   end;
 end;
 
-procedure TKMainWindow.setAttribute(Attr, Value, Typ: string);
-  var s1, s2: string;
+procedure TKMainWindow.SetAttribute(Attr, Value, Typ: string);
+var
+  Str1, Str2: string;
 begin
-  if Attr = 'Title' then begin
-    s1:= 'self.root.title';
-    s2:= Indent2 + s1 + '(' + asString(Value) + ')';
-    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
-  end else if Attr = 'Background' then begin
-    s1:= 'self.root[''background'']';
-    s2:=  Indent2 + s1 + ' = ' + asString(Value);
-    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
-  end else if Attr = 'Resizable' then begin
-    s1:= 'self.root.resizable';
-    s2:=  Indent2 + s1 + '(' + Value + ', ' + Value + ')';
-    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
-  end else if Attr = 'Transparency' then begin
-    s1:= 'self.root.attributes(''-alpha''';
-    s2:=  Indent2 + s1 + ', ' + Value + ')';
-    Partner.setAttributValue('self.create_widgets', s1, s2, 0)
-  end else if Attr = 'Fullscreen' then begin
-    s1:= 'self.root.attributes(''-fullscreen''';
-    s2:=  Indent2 + s1 + ', ' + Value + ')';
-    if Value = 'True'
-      then Partner.setAttributValue('self.create_widgets', s1, s2, 0)
-      else Partner.DeleteAttribute(s1);
-  end else if (Attr = 'MaxHeight') or (Attr = 'MaxWidth') then begin
-    s1:= 'self.root.maxsize';
-    s2:=  Indent2 + s1 + '(' + Value + ')';
-    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
-  end else if (Attr = 'MinHeight') or (Attr = 'MinWidth') then begin
-    s1:= 'self.root.minsize';
-    s2:=  Indent2 + s1 + '(' + Value + ')';
-    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
-  end else if Attr = 'Iconified' then begin
-    s1:= 'self.root.iconify';
-    s2:=  Indent2 + s1 + '()';
-    if Value = 'True'
-      then Partner.setAttributValue('self.create_widgets', s1, s2, 0)
-      else Partner.DeleteAttribute(s1);
-  end else if Attr = 'AlwaysOnTop' then begin
-    s1:= 'self.root.attributes(''-topmost''';
-    s2:=  Indent2 + s1 + ', 1)';
-    if Value = 'True'
-      then Partner.setAttributValue('self.create_widgets', s1, s2, 0)
-      else Partner.DeleteAttribute(s1);
-  end else if Attr = 'Theme' then begin
-    s1:= 'self.theme';
-    s2:= Indent2 + s1 + ' = ttk.Style()';
-    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
-    s1:= 'self.theme.theme_use';
-    s2:= Indent2 + s1 + '(' + asString(Value) + ')';
-    Partner.setAttributValue('self.create_widgets', s1, s2, 0);
+  if Attr = 'Title' then
+  begin
+    Str1 := 'self.root.title';
+    Str2 := Indent2 + Str1 + '(' + AsString(Value) + ')';
+    Partner.SetAttributValue('self.create_widgets', Str1, Str2, 0);
+  end
+  else if Attr = 'Background' then
+  begin
+    Str1 := 'self.root[''background'']';
+    Str2 := Indent2 + Str1 + ' = ' + AsString(Value);
+    Partner.SetAttributValue('self.create_widgets', Str1, Str2, 0);
+  end
+  else if Attr = 'Resizable' then
+  begin
+    Str1 := 'self.root.resizable';
+    Str2 := Indent2 + Str1 + '(' + Value + ', ' + Value + ')';
+    Partner.SetAttributValue('self.create_widgets', Str1, Str2, 0);
+  end
+  else if Attr = 'Transparency' then
+  begin
+    Str1 := 'self.root.attributes(''-alpha''';
+    Str2 := Indent2 + Str1 + ', ' + Value + ')';
+    Partner.SetAttributValue('self.create_widgets', Str1, Str2, 0);
+  end
+  else if Attr = 'Fullscreen' then
+  begin
+    Str1 := 'self.root.attributes(''-fullscreen''';
+    Str2 := Indent2 + Str1 + ', ' + Value + ')';
+    if Value = 'True' then
+      Partner.SetAttributValue('self.create_widgets', Str1, Str2, 0)
+    else
+      Partner.DeleteAttribute(Str1);
+  end
+  else if (Attr = 'MaxHeight') or (Attr = 'MaxWidth') then
+  begin
+    Str1 := 'self.root.maxsize';
+    Str2 := Indent2 + Str1 + '(' + Value + ')';
+    Partner.SetAttributValue('self.create_widgets', Str1, Str2, 0);
+  end
+  else if (Attr = 'MinHeight') or (Attr = 'MinWidth') then
+  begin
+    Str1 := 'self.root.minsize';
+    Str2 := Indent2 + Str1 + '(' + Value + ')';
+    Partner.SetAttributValue('self.create_widgets', Str1, Str2, 0);
+  end
+  else if Attr = 'Iconified' then
+  begin
+    Str1 := 'self.root.iconify';
+    Str2 := Indent2 + Str1 + '()';
+    if Value = 'True' then
+      Partner.SetAttributValue('self.create_widgets', Str1, Str2, 0)
+    else
+      Partner.DeleteAttribute(Str1);
+  end
+  else if Attr = 'AlwaysOnTop' then
+  begin
+    Str1 := 'self.root.attributes(''-topmost''';
+    Str2 := Indent2 + Str1 + ', 1)';
+    if Value = 'True' then
+      Partner.SetAttributValue('self.create_widgets', Str1, Str2, 0)
+    else
+      Partner.DeleteAttribute(Str1);
+  end
+  else if Attr = 'Theme' then
+  begin
+    Str1 := 'self.theme';
+    Str2 := Indent2 + Str1 + ' = ttk.Style()';
+    Partner.SetAttributValue('self.create_widgets', Str1, Str2, 0);
+    Str1 := 'self.theme.theme_use';
+    Str2 := Indent2 + Str1 + '(' + AsString(Value) + ')';
+    Partner.SetAttributValue('self.create_widgets', Str1, Str2, 0);
   end;
 end;
 
 function TKMainWindow.getEvents(ShowEvents: Integer): string;
 begin
-  Result:= MouseEvents1;
+  Result := MouseEvents1;
   if ShowEvents >= 2 then
-    Result:= MouseEvents1 + MouseEvents2;
+    Result := MouseEvents1 + MouseEvents2;
   if ShowEvents = 3 then
-    Result:= AllEvents;
-  Result:= Result + '|Destroy_|Expose|Visibility|';
+    Result := AllEvents;
+  Result := Result + '|Destroy_|Expose|Visibility|';
 end;
 
-function TKMainWindow.HandlerParameter(const event: string): string;
+function TKMainWindow.HandlerParameter(const Event: string): string;
 begin
-  Result:= 'self, event';
+  Result := 'self, Event';
 end;
 
-function TKMainWindow.HandlerName(const event: string): string;
+function TKMainWindow.HandlerName(const Event: string): string;
 begin
-  Result:= 'root_' + event;
+  Result := 'root_' + Event;
 end;
 
 end.

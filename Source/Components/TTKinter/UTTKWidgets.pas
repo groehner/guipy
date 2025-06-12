@@ -1,214 +1,253 @@
-{-------------------------------------------------------------------------------
- Unit:     UTTKWidgets
- Author:   Gerhard Röhner
- Date:     May 2021
- Purpose:  TTKinter base widget
--------------------------------------------------------------------------------}
+{ -------------------------------------------------------------------------------
+  Unit:     UTTKWidgets
+  Author:   Gerhard Röhner
+  Date:     May 2021
+  Purpose:  TTKinter base widget
+  ------------------------------------------------------------------------------- }
 
 unit UTTKWidgets;
 
 interface
 
 uses
-  Windows, Classes, UBaseTKWidgets;
+  Windows,
+  Classes,
+  UBaseTKWidgets;
 
 type
 
-  TTKWidget = class (TBaseTKWidget)
+  TTKWidget = class(TBaseTkWidget)
   private
     FPadding: string;
     FStyle: string;
     FText: string;
-    procedure setPadding(aValue: string);
+    procedure SetPadding(Value: string);
   protected
-    function getCompound: TUCompound; override;
+    function GetCompound: TUCompound; override;
     procedure Paint; override;
-    procedure PaintBorder(R: TRect; Relief: TRelief; BorderWidth: Integer); override;
-    procedure CalculatePadding(var pl, pt, pr, pb: Integer); override;
-    procedure CalculateText(var tw, th: Integer; var SL: TStringlist); override;
-    function getText: string; virtual;
-    procedure setText(aValue: string); virtual;
-    function getWidgetStylename: string; virtual;
+    procedure PaintBorder(Rect: TRect; Relief: TRelief;
+      BorderWidth: Integer); override;
+    procedure CalculatePadding(var PaddingL, PaddingT, PaddingR,
+      PaddingB: Integer); override;
+    procedure CalculateText(var Textwidth, TextHeight: Integer;
+      var StringList: TStringList); override;
+    function GetText: string; virtual;
+    procedure SetText(Value: string); virtual;
+    function GetWidgetStylename: string; virtual;
     procedure MakePadding(Value: string);
   public
-    constructor Create(aOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     procedure Rename(const OldName, NewName, Events: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
     procedure DeleteWidget; override;
     procedure MakeStyle(Value: string);
-    property Padding: string read FPadding write setPadding;
-    property Text: string read FText write setText;
+    property Padding: string read FPadding write SetPadding;
+    property Text: string read FText write SetText;
   published
     property Style: string read FStyle write FStyle;
   end;
 
 implementation
 
-uses Math, SysUtils, UITypes, UUtils;
+uses
+  Math,
+  SysUtils,
+  UITypes,
+  UUtils;
 
-{--- TTKWidget ----------------------------------------------------------------}
+{ --- TTKWidget ---------------------------------------------------------------- }
 
-constructor TTKWidget.Create(aOwner: TComponent);
+constructor TTKWidget.Create(Owner: TComponent);
 begin
   inherited;
-  BorderWidth:= '0';
+  BorderWidth := '0';
 end;
 
-procedure TTKWidget.setPadding(aValue: string);
+procedure TTKWidget.SetPadding(Value: string);
 begin
-  if aValue <> fPadding then begin
-    fPadding:= aValue;
+  if Value <> FPadding then
+  begin
+    FPadding := Value;
     Invalidate;
   end;
 end;
 
-procedure TTKWidget.setText(aValue: string);
+procedure TTKWidget.SetText(Value: string);
 begin
-  if aValue <> fText then begin
-    fText:= aValue;
+  if Value <> FText then
+  begin
+    FText := Value;
     Invalidate;
   end;
 end;
 
-function TTKWidget.getText: string;
+function TTKWidget.GetText: string;
 begin
-  Result:= FText;
+  Result := FText;
 end;
 
-procedure TTKWidget.CalculateText(var tw, th: Integer; var SL: TStringlist);
-  var s: string; p: Integer;
+procedure TTKWidget.CalculateText(var Textwidth, TextHeight: Integer;
+  var StringList: TStringList);
+var
+  Text: string;
+  Posi: Integer;
 begin
-  s:= getText;
-  p:= Pos('\n', s);
-  while p > 0 do begin
-    SL.Add(Copy(s, 1, p-1));
-    Delete(s, 1, p+1);
-    p:= Pos('\n', s);
+  Text := GetText;
+  Posi := Pos('\n', Text);
+  while Posi > 0 do
+  begin
+    StringList.Add(Copy(Text, 1, Posi - 1));
+    Delete(Text, 1, Posi + 1);
+    Posi := Pos('\n', Text);
   end;
-  SL.Add(s);
-  tw:= 0;
-  for p:= 0 to SL.Count - 1 do
-    tw:= Max(tw, Canvas.TextWidth(SL[p]));
-  th:= SL.Count * Canvas.TextHeight('Hg');
+  StringList.Add(Text);
+  Textwidth := 0;
+  for Posi := 0 to StringList.Count - 1 do
+    Textwidth := Max(Textwidth, Canvas.Textwidth(StringList[Posi]));
+  TextHeight := StringList.Count * Canvas.TextHeight('Hg');
 end;
 
 {
-f['padding'] = 5           # 5 pixels on all sides
-f['padding'] = (5,10)      # 5 on left and right, 10 on top and bottom
-f['padding'] = (5,7,10,12) # left: 5, top: 7, right: 10, bottom: 12
+  f['padding'] = 5           # 5 pixels on all sides
+  f['padding'] = (5,10)      # 5 on left and right, 10 on top and bottom
+  f['padding'] = (5,7,10,12) # left: 5, top: 7, right: 10, bottom: 12
 }
-procedure TTKWidget.CalculatePadding(var pl, pt, pr, pb: Integer);
-  var s: string; SL: TStringList;
+procedure TTKWidget.CalculatePadding(var PaddingL, PaddingT, PaddingR,
+  PaddingB: Integer);
+var
+  Padding: string;
+  StringList: TStringList;
 begin
-  s:= Trim(FPadding);
-  if s = '' then
-    s:= '0';
-  if (s[1] = '(') and (s[Length(s)] = ')') then begin
-    s:= Copy(s, 2, Length(s) - 2);
-    SL:= Split(',', s);
-    if SL.Count = 2 then begin
-      if not TryStrToInt(SL[0], pl) then pl:= 0;
-      pr:= pl;
-      if not TryStrToInt(SL[1], pt) then pt:= 0;
-      pb:= pt;
-    end else if SL.Count = 4 then begin
-      if not TryStrToInt(SL[0], pl) then pl:= 0;
-      if not TryStrToInt(SL[1], pt) then pt:= 0;
-      if not TryStrToInt(SL[2], pr) then pr:= 0;
-      if not TryStrToInt(SL[3], pb) then pb:= 0;
+  Padding := Trim(FPadding);
+  if Padding = '' then
+    Padding := '0';
+  if (Padding[1] = '(') and (Padding[Length(Padding)] = ')') then
+  begin
+    Padding := Copy(Padding, 2, Length(Padding) - 2);
+    StringList := Split(',', Padding);
+    if StringList.Count = 2 then
+    begin
+      if not TryStrToInt(StringList[0], PaddingL) then
+        PaddingL := 0;
+      PaddingR := PaddingL;
+      if not TryStrToInt(StringList[1], PaddingT) then
+        PaddingT := 0;
+      PaddingB := PaddingT;
+    end
+    else if StringList.Count = 4 then
+    begin
+      if not TryStrToInt(StringList[0], PaddingL) then
+        PaddingL := 0;
+      if not TryStrToInt(StringList[1], PaddingT) then
+        PaddingT := 0;
+      if not TryStrToInt(StringList[2], PaddingR) then
+        PaddingR := 0;
+      if not TryStrToInt(StringList[3], PaddingB) then
+        PaddingB := 0;
     end;
-    FreeandNil(SL);
-  end else begin
-    if not TryStrToInt(s, pl) then pl:= 0;
-    pr:= pl;
-    pt:= pl;
-    pb:= pl;
+    FreeAndNil(StringList);
+  end
+  else
+  begin
+    if not TryStrToInt(Padding, PaddingL) then
+      PaddingL := 0;
+    PaddingR := PaddingL;
+    PaddingT := PaddingL;
+    PaddingB := PaddingL;
   end;
-  pl:= pl + BorderWidthInt;
-  pt:= pt + BorderWidthInt;
-  pr:= pr + BorderWidthInt;
-  pb:= pb + BorderWidthInt;
+  PaddingL := PaddingL + BorderWidthInt;
+  PaddingT := PaddingT + BorderWidthInt;
+  PaddingR := PaddingR + BorderWidthInt;
+  PaddingB := PaddingB + BorderWidthInt;
   if (Scrollbars in [_TB_horizontal, _TB_both]) or Scrollbar then
-    pb:= pb + 20;
+    PaddingB := PaddingB + 20;
   if (Scrollbars = _TB_vertical) or (Scrollbars = _TB_both) then
-    pr:= pr + 20;
+    PaddingR := PaddingR + 20;
 end;
 
-function TTKWidget.getCompound: TUCompound;
+function TTKWidget.GetCompound: TUCompound;
 begin
-  Result:= _TU_none;
+  Result := _TU_none;
 end;
 
-procedure TTKWidget.PaintBorder(R: TRect; Relief: TRelief; BorderWidth: Integer);
+procedure TTKWidget.PaintBorder(Rect: TRect; Relief: TRelief;
+  BorderWidth: Integer);
 
-  procedure PaintTopLeft(C1, C2: TColor);
+  procedure PaintTopLeft(Color1, Color2: TColor);
   begin
-    Canvas.Pen.Color:= C1;
-    Canvas.MoveTo(R.Left, R.Bottom - 1);
-    Canvas.LineTo(R.Left, R.Top);
-    Canvas.LineTo(R.Right, R.Top);
-    Canvas.Pen.Color:= C2;
-    Canvas.MoveTo(R.Left + 1, R.Bottom - 2);
-    Canvas.LineTo(R.Left + 1, R.Top + 1);
-    Canvas.LineTo(R.Right - 1, R.Top + 1);
+    Canvas.Pen.Color := Color1;
+    Canvas.MoveTo(Rect.Left, Rect.Bottom - 1);
+    Canvas.LineTo(Rect.Left, Rect.Top);
+    Canvas.LineTo(Rect.Right, Rect.Top);
+    Canvas.Pen.Color := Color2;
+    Canvas.MoveTo(Rect.Left + 1, Rect.Bottom - 2);
+    Canvas.LineTo(Rect.Left + 1, Rect.Top + 1);
+    Canvas.LineTo(Rect.Right - 1, Rect.Top + 1);
   end;
 
-  procedure PaintBottomRight(C1, C2: TColor);
+  procedure PaintBottomRight(Color1, Color2: TColor);
   begin
-    Canvas.Pen.Color:= C1;
-    Canvas.MoveTo(R.Left + 1, R.Bottom - 2);
-    Canvas.LineTo(R.Right - 2, R.Bottom - 2);
-    Canvas.LineTo(R.Right - 2, R.Top);
-    Canvas.Pen.Color:= C2;
-    Canvas.MoveTo(R.Left, R.Bottom - 1);
-    Canvas.LineTo(R.Right - 1, R.Bottom - 1);
-    Canvas.LineTo(R.Right - 1, R.Top - 1);
+    Canvas.Pen.Color := Color1;
+    Canvas.MoveTo(Rect.Left + 1, Rect.Bottom - 2);
+    Canvas.LineTo(Rect.Right - 2, Rect.Bottom - 2);
+    Canvas.LineTo(Rect.Right - 2, Rect.Top);
+    Canvas.Pen.Color := Color2;
+    Canvas.MoveTo(Rect.Left, Rect.Bottom - 1);
+    Canvas.LineTo(Rect.Right - 1, Rect.Bottom - 1);
+    Canvas.LineTo(Rect.Right - 1, Rect.Top - 1);
   end;
 
 begin
-  if Relief <> _TR_flat then begin
+  if Relief <> _TR_flat then
+  begin
     case Relief of
-      _TR_groove: begin
-         PaintTopLeft($A0A0A0, $FFFFFF);
-         PaintBottomRight($A0A0A0, $FFFFFF);
-       end;
-      _TR_raised: begin
-         PaintTopLeft($E3E3E3, $FFFFFF);
-         PaintBottomRight($696969, $A0A0A0);
-       end;
-      _TR_ridge: begin
-         PaintTopLeft($E3E3E3, $696969);
-         PaintBottomRight($696969, $E3E3E3);
-       end;
-      _TR_solid: begin
-         Canvas.Rectangle(R);
-       end;
-      _TR_sunken: begin
-         PaintTopLeft($A0A0A0, $696969);
-         PaintBottomRight($FFFFFF, $E3E3E3);
-       end;
+      _TR_groove:
+        begin
+          PaintTopLeft($A0A0A0, $FFFFFF);
+          PaintBottomRight($A0A0A0, $FFFFFF);
+        end;
+      _TR_raised:
+        begin
+          PaintTopLeft($E3E3E3, $FFFFFF);
+          PaintBottomRight($696969, $A0A0A0);
+        end;
+      _TR_ridge:
+        begin
+          PaintTopLeft($E3E3E3, $696969);
+          PaintBottomRight($696969, $E3E3E3);
+        end;
+      _TR_solid:
+        begin
+          Canvas.Rectangle(Rect);
+        end;
+      _TR_sunken:
+        begin
+          PaintTopLeft($A0A0A0, $696969);
+          PaintBottomRight($FFFFFF, $E3E3E3);
+        end;
     end;
   end;
 end;
 
 procedure TTKWidget.Paint;
 begin
-  if Relief <> _TR_flat
-    then BorderWidthInt:= PPIScale(2)
-    else BorderWidthInt:= 0;
+  if Relief <> _TR_flat then
+    BorderWidthInt := PPIScale(2)
+  else
+    BorderWidthInt := 0;
   inherited;
 end;
 
-function TTKWidget.getAttributes(ShowAttributes: Integer): string;
+function TTKWidget.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '';
+  Result := '';
   if ShowAttributes = 3 then
-    Result:= Result + '|Style';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|Style';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKWidget.setAttribute(Attr, Value, Typ: string);
+procedure TTKWidget.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'Style' then
     MakeStyle(Value)
@@ -218,53 +257,60 @@ begin
     inherited;
 end;
 
-function TTKWidget.getWidgetStylename: string;
+function TTKWidget.GetWidgetStylename: string;
 begin
-  Result:= Name + '.T' + Copy(Classname, 4, Length(Classname));
+  Result := Name + '.T' + Copy(ClassName, 4, Length(ClassName));
 end;
 
 procedure TTKWidget.DeleteWidget;
 begin
   inherited;
   if Style <> '' then
-    Partner.DeleteLine('ttk.Style().configure(' + asString(Style));
+    Partner.DeleteLine('ttk.Style().configure(' + AsString(Style));
 end;
 
 procedure TTKWidget.Rename(const OldName, NewName, Events: string);
-  var WType: string;
+var
+  WType: string;
 begin
   inherited;
-  if FStyle <> '' then begin
-    WType:= Copy(FStyle, Pos('.', FStyle), Length(FStyle));
+  if FStyle <> '' then
+  begin
+    WType := Copy(FStyle, Pos('.', FStyle), Length(FStyle));
     Partner.ReplaceWord(FStyle, NewName + WType, True);
-    FStyle:= NewName + WType;
+    FStyle := NewName + WType;
   end;
 end;
 
 procedure TTKWidget.MakeStyle(Value: string);
-  var s: string;
+var
+  Str: string;
 begin
-  FStyle:= getWidgetStylename;
-  s:= 'ttk.Style().configure(' + asString(FStyle) + ')';
-  setAttributValue(s, s);
-  s:= 'self.' + Name + '[''style'']';
-  setAttributValue(s, s + ' = ' + asString(FStyle));
+  FStyle := GetWidgetStylename;
+  Str := 'ttk.Style().configure(' + AsString(FStyle) + ')';
+  SetAttributValue(Str, Str);
+  Str := 'self.' + Name + '[''style'']';
+  SetAttributValue(Str, Str + ' = ' + AsString(FStyle));
   UpdateObjectInspector;
 end;
 
 procedure TTKWidget.MakePadding(Value: string);
-  var key: string; i: Integer;
+var
+  Key: string;
+  Int: Integer;
 begin
-  key:= 'self.' + Name + '[''padding'']';
+  Key := 'self.' + Name + '[''padding'']';
   if Value = '' then
-    Partner.DeleteAttribute(key)
+    Partner.DeleteAttribute(Key)
   else if (Value[1] = '(') and (Value[Length(Value)] = ')') then
-    setAttributValue(key, key + ' = ' + Value)
-  else begin
-    if TryStrToInt(Value, i)
-      then FPadding:= '(' + Value + ', ' + Value + ', ' + Value + ', ' + Value + ')'
-      else FPadding:= '(10, 10, 10, 10)';
-    setAttributValue(key, key + ' = ' + Padding);
+    SetAttributValue(Key, Key + ' = ' + Value)
+  else
+  begin
+    if TryStrToInt(Value, Int) then
+      FPadding := '(' + Value + ', ' + Value + ', ' + Value + ', ' + Value + ')'
+    else
+      FPadding := '(10, 10, 10, 10)';
+    SetAttributValue(Key, Key + ' = ' + Padding);
     UpdateObjectInspector;
   end;
 end;

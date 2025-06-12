@@ -1,29 +1,32 @@
-{-------------------------------------------------------------------------------
- Unit:     UQtWidgetDescendants
- Author:   Gerhard Röhner
- Date:     July 2022
- Purpose:  PyQt simple widgets
--------------------------------------------------------------------------------}
+﻿{ -------------------------------------------------------------------------------
+  Unit:     UQtWidgetDescendants
+  Author:   Gerhard Röhner
+  Date:     July 2022
+  Purpose:  PyQt simple widgets
+  ------------------------------------------------------------------------------- }
 unit UQtWidgetDescendants;
 
 { classes
-    TQtLineEdit
-    TQtComboBox
-      TQtFontComboBox
-    TQtProgressBar
-    TQtStatusBar
-    TQtGroupBox
-    TQtTabWidget
-    TQtMenuBar
-    TQtMenu
-    TQtButtonGroup
-    TQtMainWindow
+  TQtLineEdit
+  TQtComboBox
+  TQtFontComboBox
+  TQtProgressBar
+  TQtStatusBar
+  TQtGroupBox
+  TQtTabWidget
+  TQtMenuBar
+  TQtMenu
+  TQtButtonGroup
+  TQtMainWindow
 }
 
 interface
 
 uses
-  Windows, Graphics, Classes, UBaseQtWidgets;
+  Windows,
+  Graphics,
+  Classes,
+  UBaseQtWidgets;
 
 type
 
@@ -31,21 +34,19 @@ type
 
   TCursorMoveStyle = (LogicalMoveStyle, VisualMoveStyle);
 
-  TInsertPolicy = (NoInsert, InsertAtTop, InsertAtCurrent,
-                   InsertAtBottom, InsertAfterCurrent,
-                   InsertBeforeCurrent, InsertAlphabetically);
+  TInsertPolicy = (NoInsert, InsertAtTop, InsertAtCurrent, InsertAtBottom,
+    InsertAfterCurrent, InsertBeforeCurrent, InsertAlphabetically);
 
   TSizeAdjustPolicy = (AdjustToContents, AdjustToContentsOnFirstShow,
-                       AdjustToMinimumContentsLength,
-                       AdjustToMinimumContentsLengthWithIcon);
+    AdjustToMinimumContentsLength, AdjustToMinimumContentsLengthWithIcon);
 
   TTextDirection = (TopToBottom, BottomToTop);
 
   TWritingSystem = (Any, Latin, Greek, Cyrillic, Armenian, Hebrew, Arabic,
-                    SimplifiedChinese, Symbol, Other);
+    SimplifiedChinese, Symbol, Other);
 
   TFontFilters = (AllFonts, ScalableFonts, NonScalableFonts, MonospacedFonts,
-                  ProportionalFonts);
+    ProportionalFonts);
 
   TSetOfFontFilters = set of TFontFilters;
 
@@ -74,38 +75,44 @@ type
     FSelectionChanged: string;
     FTextChanged: string;
     FTextEdited: string;
-    procedure setText(Value: string);
-    procedure setPlaceholderText(Value: string);
-    procedure setEchoMode(Value: TEchoMode);
-    procedure setFrame(Value: Boolean);
+    procedure SetText(Value: string);
+    procedure SetPlaceholderText(Value: string);
+    procedure SetEchoMode(Value: TEchoMode);
+    procedure SetFrame(Value: Boolean);
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
     property InputMask: string read FInputMask write FInputMask;
-    property Text: string read FText write setText;
+    property Text: string read FText write SetText;
     property MaxLength: Integer read FMaxLength write FMaxLength;
-    property Frame: Boolean read FFrame write setFrame;
-    property EchoMode: TEchoMode read FEchoMode write setEchoMode;
+    property Frame: Boolean read FFrame write SetFrame;
+    property EchoMode: TEchoMode read FEchoMode write SetEchoMode;
     property CursorPosition: Integer read FCursorPosition write FCursorPosition;
     property Aligment: string read FAligment write FAligment;
     property DragEnabled: Boolean read FDragEnabled write FDragEnabled;
     property ReadOnly: Boolean read FReadOnly write FReadOnly;
-    property PlaceholderText: string read FPlaceholderText write setPlaceholderText;
-    property CursorMoveStyle: TCursorMoveStyle read FCursorMoveStyle write FCursorMoveStyle;
-    property ClearButtonEnabled: Boolean read FClearButtonEnabled write FClearButtonEnabled;
+    property PlaceholderText: string read FPlaceholderText
+      write SetPlaceholderText;
+    property CursorMoveStyle: TCursorMoveStyle read FCursorMoveStyle
+      write FCursorMoveStyle;
+    property ClearButtonEnabled: Boolean read FClearButtonEnabled
+      write FClearButtonEnabled;
     // signals
-    property cursorPositionChanged: string read FCursorPositionChanged write FCursorPositionChanged;
-    property editingFinished: string read FEditingFinished write FEditingFinished;
+    property cursorPositionChanged: string read FCursorPositionChanged
+      write FCursorPositionChanged;
+    property editingFinished: string read FEditingFinished
+      write FEditingFinished;
     property inputRejected: string read FInputRejected write FInputRejected;
     property returnPressed: string read FReturnPressed write FReturnPressed;
-    property selectionChanged: string read FSelectionChanged write FSelectionChanged;
+    property selectionChanged: string read FSelectionChanged
+      write FSelectionChanged;
     property textChanged: string read FTextChanged write FTextChanged;
     property textEdited: string read FTextEdited write FTextEdited;
   end;
@@ -132,44 +139,53 @@ type
     FHighlighted: string;
     FTextActivated: string;
     FTextHighlighted: string;
-    procedure setListItems(Values: TStrings);
-    function getListItems: string;
-    procedure setCurrentText(Value: string);
-    procedure setPlaceholderText(Value: string);
-    procedure setEditable(Value: Boolean);
-    procedure setFrame(Value: Boolean);
+    procedure SetListItems(Values: TStrings);
+    function GetListItems: string;
+    procedure SetCurrentText(Value: string);
+    procedure SetPlaceholderText(Value: string);
+    procedure SetEditable(Value: Boolean);
+    procedure SetFrame(Value: Boolean);
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property Editable: Boolean read FEditable write setEditable;
-    property CurrentText: string read FCurrentText write setCurrentText;
+    property Editable: Boolean read FEditable write SetEditable;
+    property CurrentText: string read FCurrentText write SetCurrentText;
     property CurrentIndex: Integer read FCurrentIndex write FCurrentIndex;
-    property MaxVisibleItems: Integer read FMaxVisibleItems write FMaxVisibleItems;
+    property MaxVisibleItems: Integer read FMaxVisibleItems
+      write FMaxVisibleItems;
     property MaxCount: Integer read FMaxCount write FMaxCount;
     property InsertPolicy: TInsertPolicy read FInsertPolicy write FInsertPolicy;
-    property SizeAdjustPolicy: TSizeAdjustPolicy read FSizeAdjustPolicy write FSizeAdjustPolicy;
-    property MinimumContentsLength: Integer read FMinimumContentsLength write FMinimumContentsLength;
-    property PlaceholderText: string read FPlaceholderText write setPlaceholderText;
-    property DuplicatesEnabled: Boolean read FDuplicatesEnabled write FDuplicatesEnabled;
-    property Frame: Boolean read FFrame write setFrame;
+    property SizeAdjustPolicy: TSizeAdjustPolicy read FSizeAdjustPolicy
+      write FSizeAdjustPolicy;
+    property MinimumContentsLength: Integer read FMinimumContentsLength
+      write FMinimumContentsLength;
+    property PlaceholderText: string read FPlaceholderText
+      write SetPlaceholderText;
+    property DuplicatesEnabled: Boolean read FDuplicatesEnabled
+      write FDuplicatesEnabled;
+    property Frame: Boolean read FFrame write SetFrame;
     property ModelColumn: Integer read FModelColumn write FModelColumn;
-    property ListItems: TStrings read FListItems write setListItems;
+    property ListItems: TStrings read FListItems write SetListItems;
     // signals
     property activated: string read FActivated write FActivated;
-    property currentIndexChanged: string read FCurrentIndexChanged write FCurrentIndexChanged;
-    property currentTextChanged: string read FCurrentTextChanged write FCurrentTextChanged;
-    property editTextChanged: string read FEditTextChanged write FEditTextChanged;
+    property currentIndexChanged: string read FCurrentIndexChanged
+      write FCurrentIndexChanged;
+    property currentTextChanged: string read FCurrentTextChanged
+      write FCurrentTextChanged;
+    property editTextChanged: string read FEditTextChanged
+      write FEditTextChanged;
     property highlighted: string read FHighlighted write FHighlighted;
     property textActivated: string read FTextActivated write FTextActivated;
-    property textHighlighted: string read FTextHighlighted write FTextHighlighted;
+    property textHighlighted: string read FTextHighlighted
+      write FTextHighlighted;
   end;
 
   TQtFontComboBox = class(TQtComboBox)
@@ -178,25 +194,28 @@ type
     FFontFilters: TSetOfFontFilters;
     FCurrentFont: TFont;
     FCurrentFontChanged: string;
-    procedure setCurrentFont(Value: TFont);
+    procedure SetCurrentFont(Value: TFont);
     procedure MakeFontFilters;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
     procedure MakeFont; override;
   published
-    property WritingSystem: TWritingSystem read FWritingSystem write FWritingSystem;
-    property FontFilters: TSetOfFontFilters read FFontFilters write FFontFilters;
-    property CurrentFont: TFont read FCurrentFont write setCurrentFont;
+    property WritingSystem: TWritingSystem read FWritingSystem
+      write FWritingSystem;
+    property FontFilters: TSetOfFontFilters read FFontFilters
+      write FFontFilters;
+    property CurrentFont: TFont read FCurrentFont write SetCurrentFont;
     // signals
-    property currentFontChanged: string read FCurrentFontChanged write FCurrentFontChanged;
+    property currentFontChanged: string read FCurrentFontChanged
+      write FCurrentFontChanged;
   end;
 
   TQtProgressbar = class(TBaseQtWidget)
@@ -211,32 +230,33 @@ type
     FFormat: string;
     // Signals
     FValueChanged: string;
-    procedure setMinimum(Value: Integer);
-    procedure setMaximum(Value: Integer);
-    procedure setValue(Value: Integer);
-    procedure setTextVisible(Value: Boolean);
-    procedure setOrientation(Value: TOrientation);
-    procedure setInvertedAppearance(Value: Boolean);
-    procedure setFormat(Value: string);
-    function getText: string;
+    procedure SetMinimum(Value: Integer);
+    procedure SetMaximum(Value: Integer);
+    procedure SetValue(Value: Integer);
+    procedure SetTextVisible(Value: Boolean);
+    procedure SetOrientation(Value: TOrientation);
+    procedure SetInvertedAppearance(Value: Boolean);
+    procedure SetFormat(Value: string);
+    function GetText: string;
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     function InnerRect: TRect; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property Minimum: Integer read FMinimum write setMinimum;
-    property Maximum: Integer read FMaximum write setMaximum;
-    property Value: Integer read FValue write setValue;
-    property TextVisible: Boolean read FTextVisible write setTextVisible;
-    property Orientation: TOrientation read FOrientation write setOrientation;
-    property InvertedAppearance: Boolean read FInvertedAppearance write setInvertedAppearance;
-    property Format: string read FFormat write setFormat;
+    property Minimum: Integer read FMinimum write SetMinimum;
+    property Maximum: Integer read FMaximum write SetMaximum;
+    property Value: Integer read FValue write SetValue;
+    property TextVisible: Boolean read FTextVisible write SetTextVisible;
+    property Orientation: TOrientation read FOrientation write SetOrientation;
+    property InvertedAppearance: Boolean read FInvertedAppearance
+      write SetInvertedAppearance;
+    property Format: string read FFormat write SetFormat;
     // signals
     property valueChanged: string read FValueChanged write FValueChanged;
   end;
@@ -245,19 +265,20 @@ type
   private
     FSizeGripEnabled: Boolean;
     FMessageChanged: string;
-    procedure setSizeGripEnabled(Value: Boolean);
+    procedure SetSizeGripEnabled(Value: Boolean);
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
   published
-    property SizeGripEnabled: Boolean read FSizeGripEnabled write setSizeGripEnabled;
+    property SizeGripEnabled: Boolean read FSizeGripEnabled
+      write SetSizeGripEnabled;
     // signals
     property messageChanged: string read FMessageChanged write FMessageChanged;
   end;
@@ -265,29 +286,29 @@ type
   TQtGroupBox = class(TBaseQtWidget)
   private
     FTitle: string;
-    //FAligmnent
+    // FAligmnent
     FFlat: Boolean;
     FCheckable: Boolean;
     FChecked: Boolean;
     FClicked: string;
     FToggled: string;
-    procedure setTitle(Value: string);
-    procedure setFlat(Value: Boolean);
-    procedure setCheckable(Value: Boolean);
-    procedure setChecked(Value: Boolean);
+    procedure SetTitle(Value: string);
+    procedure SetFlat(Value: Boolean);
+    procedure SetCheckable(Value: Boolean);
+    procedure SetChecked(Value: Boolean);
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property Title: string read FTitle write setTitle;
-    property Flat: Boolean read FFlat write setFlat;
-    property Checkable: Boolean read FCheckable write setCheckable;
-    property Checked: Boolean read FChecked write setChecked;
+    property Title: string read FTitle write SetTitle;
+    property Flat: Boolean read FFlat write SetFlat;
+    property Checkable: Boolean read FCheckable write SetCheckable;
+    property Checked: Boolean read FChecked write SetChecked;
     // signals
     property clicked: string read FClicked write FClicked;
     property toggled: string read FToggled write FToggled;
@@ -308,66 +329,70 @@ type
     FTabBarClicked: string;
     FTabBarDoubleClicked: string;
     FTabCloseRequested: string;
-    procedure setTabPosition(Value: TTabPosition);
-    procedure setTabShape(Value: TTabShape);
-    procedure setCurrentIndex(Value: Integer);
-    procedure setTabs(Value: TStrings);
+    procedure SetTabPosition(Value: TTabPosition);
+    procedure SetTabShape(Value: TTabShape);
+    procedure SetCurrentIndex(Value: Integer);
+    procedure SetTabs(Value: TStrings);
     procedure MakeTabs;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     procedure DeleteWidget; override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property TabPosition: TTabPosition read FTabPosition write setTabPosition;
-    property TabShape: TTabShape read FTabShape write setTabShape;
-    property CurrentIndex: Integer read FCurrentIndex write setCurrentIndex;
-    property UsesScrollButtons: Boolean read FUsesScrollButtons write FUsesScrollButtons;
+    property TabPosition: TTabPosition read FTabPosition write SetTabPosition;
+    property TabShape: TTabShape read FTabShape write SetTabShape;
+    property CurrentIndex: Integer read FCurrentIndex write SetCurrentIndex;
+    property UsesScrollButtons: Boolean read FUsesScrollButtons
+      write FUsesScrollButtons;
     property DocumentMode: Boolean read FDocumentMode write FDocumentMode;
     property TabsClosable: Boolean read FTabsClosable write FTabsClosable;
     property Moveable: Boolean read FMoveable write FMoveable;
     property TabBarAutoHide: Boolean read FTabBarAutoHide write FTabBarAutoHide;
-    property Tabs: TStrings read FTabs write setTabs;
+    property Tabs: TStrings read FTabs write SetTabs;
     // signals
     property currentChanged: string read FCurrentChanged write FCurrentChanged;
     property tabBarClicked: string read FTabBarClicked write FTabBarClicked;
-    property tabBarDoubleClicked: string read FTabBarDoubleClicked write FTabBarDoubleClicked;
-    property tabCloseRequested: string read FTabCloseRequested write FTabCloseRequested;
+    property tabBarDoubleClicked: string read FTabBarDoubleClicked
+      write FTabBarDoubleClicked;
+    property tabCloseRequested: string read FTabCloseRequested
+      write FTabCloseRequested;
   end;
 
   TQtMenuBar = class(TBaseQtWidget)
   private
     FMenuItems: TStrings;
     FHovered: string;
+    FMenuItemsOld: TStrings;
     FTriggered: string;
-    procedure setItems(aItems: TStrings);
+    procedure SetItems(Items: TStrings);
     procedure MakeMenuItems;
-    function hasSubMenu(MenuItems: TStrings; i: Integer): Boolean;
-    function makeMenuName(m, s: string): string;
+    function HasSubMenu(MenuItems: TStrings; Num: Integer): Boolean;
+    function MakeMenuName(MenuStr, Str: string): string;
     procedure CalculateMenus(MenuItems, PyMenu, PyMethods: TStrings); virtual;
-    function getCreateMenu: string; virtual;
+    function GetCreateMenu: string; virtual;
   public
-    MenuItemsOld: TStrings;
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     procedure NewWidget(Widget: string = ''); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure Rename(const OldName, NewName, Events: string); override;
     procedure SetPositionAndSize; override;
     procedure DeleteWidget; override;
     procedure Paint; override;
+    property MenuItemsOld: TStrings read FMenuItemsOld write FMenuItemsOld;
   published
-    property MenuItems: TStrings read FMenuItems write setItems;
+    property MenuItems: TStrings read FMenuItems write SetItems;
     // signals
     property hovered: string read FHovered write FHovered;
     property triggered: string read FTriggered write FTriggered;
@@ -375,14 +400,14 @@ type
 
   TQtMenu = class(TQtMenuBar)
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     procedure DeleteWidget; override;
-    function getCreateMenu: string; override;
+    function GetCreateMenu: string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   end;
 
-  TQtButtonGroup = class (TBaseQtWidget)
+  TQtButtonGroup = class(TBaseQtWidget)
   private
     FColumns: Integer;
     FTitle: string;
@@ -397,33 +422,34 @@ type
     FidPressed: string;
     FidReleased: string;
     FidToggled: string;
-    procedure setColumns(Value: Integer);
-    procedure setTitle(Value: string);
-    procedure setItems(Value: TStrings);
-    procedure setCheckboxes(Value: Boolean);
+    procedure SetColumns(Value: Integer);
+    procedure SetTitle(Value: string);
+    procedure SetItems(Value: TStrings);
+    procedure SetCheckboxes(Value: Boolean);
     procedure MakeButtongroupItems;
     procedure MakeTitle(Title: string);
-    function ItemsInColumn(i: Integer): Integer;
-    function RBName(i: Integer): string;
+    function ItemsInColumn(Num: Integer): Integer;
+    function RBName(Num: Integer): string;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     procedure DeleteWidget; override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    procedure setEvent(Attr: string); override;
-    function HandlerInfo(const event: string): string; override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    procedure SetEvent(Attr: string); override;
+    function HandlerInfo(const Event: string): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
     function MakeBinding(Eventname: string): string; override;
     procedure Rename(const OldName, NewName, Events: string); override;
   published
-    property Items: TStrings read fItems write setItems; // must stay before columns or label
-    property Columns: Integer read FColumns write setColumns;
-    property Title: string read FTitle write setTitle;
-    property Checkboxes: Boolean read FCheckboxes write setCheckboxes;
+    property Items: TStrings read FItems write SetItems;
+    // must stay before columns or label
+    property Columns: Integer read FColumns write SetColumns;
+    property Title: string read FTitle write SetTitle;
+    property Checkboxes: Boolean read FCheckboxes write SetCheckboxes;
     // signals
     property buttonClicked: string read FbuttonClicked write FbuttonClicked;
     property buttonPressed: string read FbuttonPressed write FbuttonPressed;
@@ -435,50 +461,59 @@ type
     property idToggled: string read FidToggled write FidToggled;
   end;
 
-  TQtMainWindow = class (TBaseQtWidget)
+  TQtMainWindow = class(TBaseQtWidget)
   public
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
-    function HandlerName(const event: string): string; override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
+    function HandlerName(const Event: string): string; override;
   end;
 
 implementation
 
-uses Controls, SysUtils, Math, Types, UITypes, JvGnugettext,
-     frmPyIDEMain, UGUIDesigner, UUtils;
+uses
+  Controls,
+  SysUtils,
+  Math,
+  Types,
+  UITypes,
+  JvGnugettext,
+  frmPyIDEMain,
+  UGUIDesigner,
+  UUtils;
 
-{--- TQtLineEdit --------------------------------------------------------------}
+{ --- TQtLineEdit -------------------------------------------------------------- }
 
-constructor TQtLineEdit.Create(AOwner: TComponent);
+constructor TQtLineEdit.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 72;
-  Width:= 80;
-  Height:= 24;
-  FocusPolicy:= StrongFocus;
-  ContextMenuPolicy:= DefaultContextMenu;
-  Cursor:= crIBeam;
-  MouseTracking:= True;
-  FMaxLength:= 32767;
-  FFrame:= True;
+  inherited Create(Owner);
+  Tag := 72;
+  Width := 80;
+  Height := 24;
+  FocusPolicy := StrongFocus;
+  ContextMenuPolicy := DefaultContextMenu;
+  Cursor := crIBeam;
+  MouseTracking := True;
+  FMaxLength := 32767;
+  FFrame := True;
 end;
 
-function TQtLineEdit.getAttributes(ShowAttributes: Integer): string;
+function TQtLineEdit.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|EchoMode|InputMask|Text|PlaceholderText';
+  Result := '|EchoMode|InputMask|Text|PlaceholderText';
   if ShowAttributes >= 2 then
-    Result:= Result + '|Frame|ReadOnly|ClearButtonEnabled';
+    Result := Result + '|Frame|ReadOnly|ClearButtonEnabled';
   if ShowAttributes = 3 then
-    Result:= Result + '|MaxLength|CursorPosition|Alignment|DragEnabled|CursorMoveStyle';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result +
+      '|MaxLength|CursorPosition|Alignment|DragEnabled|CursorMoveStyle';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
 procedure TQtLineEdit.SetAttribute(Attr, Value, Typ: string);
 begin
-  if Attr = 'EchoMode'  then
+  if Attr = 'EchoMode' then
     MakeAttribut(Attr, 'QLineEdit.EchoMode.' + Value)
   else if Attr = 'CursorMoveStyle' then
     MakeAttribut(Attr, 'Qt.CursorMoveStyle.' + Value)
@@ -486,26 +521,27 @@ begin
     inherited;
 end;
 
-function TQtLineEdit.getEvents(ShowEvents: Integer): string;
+function TQtLineEdit.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|cursorPositionChanged|editingFinished|inputRejected' +
-           '|returnPressed|selectionChanged|textChanged|textEdited';
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := '|cursorPositionChanged|editingFinished|inputRejected' +
+    '|returnPressed|selectionChanged|textChanged|textEdited';
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtLineEdit.HandlerInfo(const event: string): string;
+function TQtLineEdit.HandlerInfo(const Event: string): string;
 begin
-  if event = 'cursorPositionChanged' then
-    Result:= 'int, int;oldPos, newPos'
-  else if Pos('text', event) = 1 then
-    Result:= 'QString;text'
+  if Event = 'cursorPositionChanged' then
+    Result := 'int, int;oldPos, newPos'
+  else if Pos('text', Event) = 1 then
+    Result := 'QString;text'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtLineEdit.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtLineEdit.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
-  if Parametertypes = '' then begin
+  if Parametertypes = '' then
+  begin
     Slots.Add(Name + '.clear');
     Slots.Add(Name + '.copy');
     Slots.Add(Name + '.cut');
@@ -513,100 +549,114 @@ begin
     Slots.Add(Name + '.redo');
     Slots.Add(Name + '.selectAll');
     Slots.Add(Name + '.undo');
-  end else if Parametertypes = 'QString' then
+  end
+  else if Parametertypes = 'QString' then
     Slots.Add(Name + '.setText');
   inherited;
 end;
 
 procedure TQtLineEdit.NewWidget(Widget: string = '');
 begin
-  inherited NewWidget('QLineEdit')
+  inherited NewWidget('QLineEdit');
 end;
 
 procedure TQtLineEdit.Paint;
-  var R: TRect; s: string;
+var
+  ARect: TRect;
+  Str: string;
 begin
   inherited;
-  if FFrame
-    then Canvas.Pen.Color:= $7A7A7A
-    else Canvas.Pen.Color:= clWhite;
-  Canvas.Brush.Color:= clWhite;
+  if FFrame then
+    Canvas.Pen.Color := $7A7A7A
+  else
+    Canvas.Pen.Color := clWhite;
+  Canvas.Brush.Color := clWhite;
   Canvas.Rectangle(ClientRect);
 
-  R:= ClientRect;
-  R.Left:= 2;
-  R.Right:= R.Right - 2;
+  ARect := ClientRect;
+  ARect.Left := 2;
+  ARect.Right := ARect.Right - 2;
   if FClearButtonEnabled then
-    R.Right:= R.Right - PPIScale(28);
-  R.Top:= (Height - Canvas.TextHeight('Hg')) div 2;
+    ARect.Right := ARect.Right - PPIScale(28);
+  ARect.Top := (Height - Canvas.TextHeight('Hg')) div 2;
 
-  if FText <> '' then begin
+  if FText <> '' then
+  begin
     case FEchoMode of
-      Normal: s:= FText;
-      NoEcho: s:= '';
-      Password,
-      PasswordEchoOnEdit: s:= StringOfChar('*', Length(FText));
+      Normal:
+        Str := FText;
+      NoEcho:
+        Str := '';
+      Password, PasswordEchoOnEdit:
+        Str := StringOfChar('*', Length(FText));
     end;
-  end else if FPlaceholderText <> '' then begin
-    Canvas.Font.Color:= $7F7F7F;
-    s:= FPlaceholderText;
+  end
+  else if FPlaceholderText <> '' then
+  begin
+    Canvas.Font.Color := $7F7F7F;
+    Str := FPlaceholderText;
   end;
-  if s <> '' then
-    DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_LEFT);
+  if Str <> '' then
+    DrawText(Canvas.Handle, PChar(Str), Length(Str), ARect, DT_LEFT);
   if FClearButtonEnabled then
-    FGUIDesigner.vilQtControls1616.Draw(Canvas, R.Right + 8, (R.Height - FGUIDesigner.vilQtControls1616.Height) div 2, 4);
+    FGUIDesigner.vilQtControls1616.Draw(Canvas, ARect.Right + 8,
+      (ARect.Height - FGUIDesigner.vilQtControls1616.Height) div 2, 4);
 end;
 
-procedure TQtLineEdit.setText(Value: string);
+procedure TQtLineEdit.SetText(Value: string);
 begin
-  if Value <> FText then begin
-    FText:= Value;
+  if Value <> FText then
+  begin
+    FText := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtLineEdit.setPlaceholderText(Value: string);
+procedure TQtLineEdit.SetPlaceholderText(Value: string);
 begin
-  if Value <> FPlaceholderText then begin
-    FPlaceholderText:= Value;
+  if Value <> FPlaceholderText then
+  begin
+    FPlaceholderText := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtLineEdit.setEchoMode(Value: TEchoMode);
+procedure TQtLineEdit.SetEchoMode(Value: TEchoMode);
 begin
-  if Value <> FEchoMode then begin
-    FEchoMode:= Value;
+  if Value <> FEchoMode then
+  begin
+    FEchoMode := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtLineEdit.setFrame(Value: Boolean);
+procedure TQtLineEdit.SetFrame(Value: Boolean);
 begin
-  if Value <> FFrame then begin
-    FFrame:= Value;
+  if Value <> FFrame then
+  begin
+    FFrame := Value;
     Invalidate;
   end;
 end;
 
-{--- TQtComboBox --------------------------------------------------------------}
+{ --- TQtComboBox -------------------------------------------------------------- }
 
-constructor TQtComboBox.Create(AOwner: TComponent);
+constructor TQtComboBox.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 78;
-  Width:= 80;
-  Height:= 24;
-  FocusPolicy:= WheelFocus;
-  ContextMenuPolicy:= DefaultContextMenu;
-  FMaxVisibleItems:= 10;
-  FMaxCount:= 2147483647;
-  FInsertPolicy:= InsertAtBottom;
-  FSizeAdjustPolicy:= AdjustToContentsOnFirstShow;
-  FFrame:= True;
-  FCurrentIndex:= -1;
-  FListItems:= TStringList.Create;
-  FListItems.Text:= defaultItems;
+  inherited Create(Owner);
+  Tag := 78;
+  Width := 80;
+  Height := 24;
+  FocusPolicy := WheelFocus;
+  ContextMenuPolicy := DefaultContextMenu;
+  FMaxVisibleItems := 10;
+  FMaxCount := 2147483647;
+  FInsertPolicy := InsertAtBottom;
+  FSizeAdjustPolicy := AdjustToContentsOnFirstShow;
+  FFrame := True;
+  FCurrentIndex := -1;
+  FListItems := TStringList.Create;
+  FListItems.Text := DefaultItems;
 end;
 
 destructor TQtComboBox.Destroy;
@@ -615,23 +665,26 @@ begin
   inherited;
 end;
 
-function TQtComboBox.getAttributes(ShowAttributes: Integer): string;
+function TQtComboBox.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|CurrentText|CurrentIndex|PlaceholderText|ListItems|Editable';
+  Result := '|CurrentText|CurrentIndex|PlaceholderText|ListItems|Editable';
   if ShowAttributes >= 2 then
-    Result:= Result + '|Frame|InsertPolicy|DuplicatesEnabled';
+    Result := Result + '|Frame|InsertPolicy|DuplicatesEnabled';
   if ShowAttributes = 3 then
-    Result:= Result + '|MaxVisibleItems|MaxCount|SizeAdjustPolicy' +
-                      '|MinimumContentsLength|ModelColumn';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|MaxVisibleItems|MaxCount|SizeAdjustPolicy' +
+      '|MinimumContentsLength|ModelColumn';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
 procedure TQtComboBox.SetAttribute(Attr, Value, Typ: string);
 begin
-  if Attr = 'ListItems' then begin
-    var s:= 'self.' + Name  + '.setModel';
-    setAttributValue(s, s + '(QStringListModel(' + getListItems + '))');
-  end else if (Attr = 'InsertPolicy') or (Attr = 'SizeAdjustPolicy') then
+  if Attr = 'ListItems' then
+  begin
+    var
+    Str := 'self.' + Name + '.setModel';
+    SetAttributValue(Str, Str + '(QStringListModel(' + GetListItems + '))');
+  end
+  else if (Attr = 'InsertPolicy') or (Attr = 'SizeAdjustPolicy') then
     MakeAttribut(Attr, 'QComboBox.' + Attr + '.' + Value)
   else
     inherited;
@@ -639,32 +692,36 @@ end;
 
 const
   EventsWithIndex = '|activated|currentIndexChanged|highlighted';
-  EventsWithText = '|currentTextChanged|editTextChanged|textActivated|textHighlighted';
+  EventsWithText =
+    '|currentTextChanged|editTextChanged|textActivated|textHighlighted';
 
-function TQtComboBox.getEvents(ShowEvents: Integer): string;
+function TQtComboBox.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= EventsWithIndex + EventsWithText;
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := EventsWithIndex + EventsWithText;
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtComboBox.HandlerInfo(const event: string): string;
+function TQtComboBox.HandlerInfo(const Event: string): string;
 begin
-  if Pos(event, EventsWithIndex) > 0 then
-    Result:= 'int;index'
+  if Pos(Event, EventsWithIndex) > 0 then
+    Result := 'int;index'
   else if Pos(Event, EventsWithText) > 0 then
-    Result:= 'QString;text'
+    Result := 'QString;text'
   else
     inherited;
 end;
 
-procedure TQtComboBox.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtComboBox.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
-  if Parametertypes = '' then begin
+  if Parametertypes = '' then
+  begin
     Slots.Add(Name + '.clear');
     Slots.Add(Name + '.clearEditText');
-  end else if Parametertypes = 'int' then
+  end
+  else if Parametertypes = 'int' then
     Slots.Add(Name + '.setCurrentIndex')
-  else if Parametertypes = 'QString' then begin
+  else if Parametertypes = 'QString' then
+  begin
     Slots.Add(Name + '.setCurrentText');
     Slots.Add(Name + '.setEditText');
   end;
@@ -673,126 +730,143 @@ end;
 
 procedure TQtComboBox.NewWidget(Widget: string = '');
 begin
-  if Widget = '' then begin
+  if Widget = '' then
+  begin
     inherited NewWidget('QComboBox');
-    setAttribute('ListItems', '[''A'', ''B'', ''C'']', '');
-  end else
+    SetAttribute('ListItems', '[''A'', ''B'', ''C'']', '');
+  end
+  else
     inherited NewWidget('QFontComboBox');
 end;
 
 procedure TQtComboBox.Paint;
-  var R: TRect; s: string; x, y: Integer;
+var
+  ARect: TRect;
+  Str: string;
+  XPos, YPos: Integer;
 begin
   inherited;
-  if FFrame
-    then Canvas.Pen.Color:= $7A7A7A
-    else Canvas.Pen.Color:= clWhite;
-  if FEditable
-    then Canvas.Brush.Color:= clWhite
-    else Canvas.Brush.Color:= $E1E1E1;
+  if FFrame then
+    Canvas.Pen.Color := $7A7A7A
+  else
+    Canvas.Pen.Color := clWhite;
+  if FEditable then
+    Canvas.Brush.Color := clWhite
+  else
+    Canvas.Brush.Color := $E1E1E1;
   Canvas.Rectangle(ClientRect);
 
-  if FCurrentText <> ''
-    then s:= FCurrentText
+  if FCurrentText <> '' then
+    Str := FCurrentText
   else if FListItems.Count > 0 then
-    s:= FListItems[0];
-  if s = '' then
-    s:= FPlaceholderText;
+    Str := FListItems[0];
+  if Str = '' then
+    Str := FPlaceholderText;
 
-  R:= InnerRect;
-  R.Top:= (R.Bottom - R.Top - Canvas.TextHeight('A')) div 2;
-  R.Left:= R.Left + HalfX;
-  R.Right:= R.Right - PPIScale(18);
-  DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_LEFT);
+  ARect := InnerRect;
+  ARect.Top := (ARect.Bottom - ARect.Top - Canvas.TextHeight('A')) div 2;
+  ARect.Left := ARect.Left + HalfX;
+  ARect.Right := ARect.Right - PPIScale(18);
+  DrawText(Canvas.Handle, PChar(Str), Length(Str), ARect, DT_LEFT);
 
-  x:= Width - PPIScale(14);
-  y:= Height div 2 - 2;
-  var i3:= PPIScale(3);
-  var i4:= PPIScale(4);
-  var i5:= PPIScale(5);
-  var i8:= PPIScale(8);
-  var i10:= PPIScale(10);
-  Canvas.Pen.Color:= $F1F1F1;
-  Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + i4, y + i4);
-  Canvas.LineTo(x + i5, y + i4);
-  Canvas.LineTo(x + i10, y - 1);
+  XPos := Width - PPIScale(14);
+  YPos := Height div 2 - 2;
+  var
+  Int3 := PPIScale(3);
+  var
+  Int4 := PPIScale(4);
+  var
+  Int5 := PPIScale(5);
+  var
+  Int8 := PPIScale(8);
+  var
+  Int10 := PPIScale(10);
+  Canvas.Pen.Color := $F1F1F1;
+  Canvas.MoveTo(XPos, YPos);
+  Canvas.LineTo(XPos + Int4, YPos + Int4);
+  Canvas.LineTo(XPos + Int5, YPos + Int4);
+  Canvas.LineTo(XPos + Int10, YPos - 1);
 
-  Canvas.Pen.Color:= $5C5C5C;
-  x:= x + 1;
-  Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + i3, y + i3);
-  Canvas.LineTo(x + i4, y + i3);
-  Canvas.LineTo(x + i8, y - 1);
+  Canvas.Pen.Color := $5C5C5C;
+  XPos := XPos + 1;
+  Canvas.MoveTo(XPos, YPos);
+  Canvas.LineTo(XPos + Int3, YPos + Int3);
+  Canvas.LineTo(XPos + Int4, YPos + Int3);
+  Canvas.LineTo(XPos + Int8, YPos - 1);
 
-  y:= y - 1;
-  Canvas.Pen.Color:= $ADADAD;
-  Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + i3, y + i3);
-  Canvas.LineTo(x + i4, y + i3);
-  Canvas.LineTo(x + i8, y - 1);
+  YPos := YPos - 1;
+  Canvas.Pen.Color := $ADADAD;
+  Canvas.MoveTo(XPos, YPos);
+  Canvas.LineTo(XPos + Int3, YPos + Int3);
+  Canvas.LineTo(XPos + Int4, YPos + Int3);
+  Canvas.LineTo(XPos + Int8, YPos - 1);
 end;
 
-procedure TQtComboBox.setListItems(Values: TStrings);
+procedure TQtComboBox.SetListItems(Values: TStrings);
 begin
   FListItems.Assign(Values);
   Invalidate;
 end;
 
-function TQtComboBox.getListItems: string;
-  var s: string; i: Integer;
+function TQtComboBox.GetListItems: string;
+var
+  Str: string;
 begin
-  s:= '[';
-  for i:= 0 to FListItems.Count -1 do
-    s:= s + asString(FListItems[i]) + ', ';
-  Delete(s, Length(s) - 1, 2);
-  Result:= s + ']';
+  Str := '[';
+  for var I := 0 to FListItems.Count - 1 do
+    Str := Str + AsString(FListItems[I]) + ', ';
+  Delete(Str, Length(Str) - 1, 2);
+  Result := Str + ']';
 end;
 
-procedure TQtComboBox.setCurrentText(Value: string);
+procedure TQtComboBox.SetCurrentText(Value: string);
 begin
-  if Value <> FCurrentText then begin
-    FCurrentText:= Value;
+  if Value <> FCurrentText then
+  begin
+    FCurrentText := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtComboBox.setPlaceholderText(Value: string);
+procedure TQtComboBox.SetPlaceholderText(Value: string);
 begin
-  if Value <> FPlaceholderText then begin
-    FPlaceholderText:= Value;
+  if Value <> FPlaceholderText then
+  begin
+    FPlaceholderText := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtComboBox.setEditable(Value: Boolean);
+procedure TQtComboBox.SetEditable(Value: Boolean);
 begin
-  if Value <> FEditable then begin
-    FEditable:= Value;
+  if Value <> FEditable then
+  begin
+    FEditable := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtComboBox.setFrame(Value: Boolean);
+procedure TQtComboBox.SetFrame(Value: Boolean);
 begin
-  if Value <> FFrame then begin
-    FFrame:= Value;
+  if Value <> FFrame then
+  begin
+    FFrame := Value;
     Invalidate;
   end;
 end;
 
-{--- TQtFontComboBox ----------------------------------------------------------}
+{ --- TQtFontComboBox ---------------------------------------------------------- }
 
-constructor TQtFontComboBox.Create(AOwner: TComponent);
+constructor TQtFontComboBox.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 105;
-  Width:= 144;
-  Height:= 24;
-  FCurrentFont:= TFont.Create;
+  inherited Create(Owner);
+  Tag := 105;
+  Width := 144;
+  Height := 24;
+  FCurrentFont := TFont.Create;
   FCurrentFont.Assign(Font);
-  Editable:= True;
-  ListItems.Text:= '';
+  Editable := True;
+  ListItems.Text := '';
 end;
 
 destructor TQtFontComboBox.Destroy;
@@ -801,19 +875,22 @@ begin
   FreeAndNil(FCurrentFont);
 end;
 
-function TQtFontComboBox.getAttributes(ShowAttributes: Integer): string;
+function TQtFontComboBox.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|WritingSystem|FontFilters|CurrentFont';
-  Result:= Result + inherited getAttributes(ShowAttributes);
-  var p:= Pos('|CurrentText|CurrentIndex|PlaceholderText|ListItems', Result);
-  if p > 0 then Delete(Result, p, 51);
+  Result := '|WritingSystem|FontFilters|CurrentFont';
+  Result := Result + inherited GetAttributes(ShowAttributes);
+  var
+  Posi := Pos('|CurrentText|CurrentIndex|PlaceholderText|ListItems', Result);
+  if Posi > 0 then
+    Delete(Result, Posi, 51);
 end;
 
-procedure TQtFontComboBox.setAttribute(Attr, Value, Typ: string);
+procedure TQtFontComboBox.SetAttribute(Attr, Value, Typ: string);
 begin
   if Typ = 'TSetOfFontFilters' then
     MakeFontFilters
-  else if (Attr = 'CurrentFont') or (Pos(Attr, ' Name Size Bold Italic ') > 0) then
+  else if (Attr = 'CurrentFont') or (Pos(Attr, ' Name Size Bold Italic ') > 0)
+  then
     MakeFont
   else if Attr = 'WritingSystem' then
     MakeAttribut(Attr, 'QFontDatabase.WritingSystem.' + Value)
@@ -821,21 +898,21 @@ begin
     inherited;
 end;
 
-function TQtFontComboBox.getEvents(ShowEvents: Integer): string;
+function TQtFontComboBox.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|currentFontChanged';
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := '|currentFontChanged';
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtFontComboBox.HandlerInfo(const event: string): string;
+function TQtFontComboBox.HandlerInfo(const Event: string): string;
 begin
-  if event = 'currentFontChanged' then
-    Result:= 'QFont;font'
+  if Event = 'currentFontChanged' then
+    Result := 'QFont;font'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtFontComboBox.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtFontComboBox.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'QFont' then
     Slots.Add(Name + '.setCurrentFont');
@@ -843,46 +920,52 @@ begin
 end;
 
 procedure TQtFontComboBox.MakeFont;
-  var s1, s2: string;
+var
+  Str1, Str2: string;
 begin
-  if Name = '' then Exit;
+  if Name = '' then
+    Exit;
 
-  s1:= 'self.' + Name + '.setCurrentFont';
-  s2:= '(QFont(' + asString(FCurrentFont.Name) + ', ' + IntToStr(FCurrentFont.Size);
-  if fsBold   in FCurrentFont.Style then
-    s2:= s2 + ', QFont.Weight.Bold';
+  Str1 := 'self.' + Name + '.setCurrentFont';
+  Str2 := '(QFont(' + AsString(FCurrentFont.Name) + ', ' +
+    IntToStr(FCurrentFont.Size);
+  if fsBold in FCurrentFont.Style then
+    Str2 := Str2 + ', QFont.Weight.Bold';
   if fsItalic in FCurrentFont.Style then
-    s2:= s2 + ', italic=True';
-  s2:= s2 + '))';
-  setAttributValue(s1, s1 + s2);
-  s1:= 'self.' + Name + '.currentFont().setUnderline';
-  if fsUnderline in FCurrentFont.Style
-    then setAttributValue(s1, s1 + '(True)')
-    else Partner.DeleteAttribute(s1);
-  s1:= 'self.' + Name + '.currentFont().setStrikeOut';
-  if fsStrikeout in FCurrentFont.Style
-    then setAttributValue(s1, s1 + '(True)')
-    else Partner.DeleteAttribute(s1);
+    Str2 := Str2 + ', italic=True';
+  Str2 := Str2 + '))';
+  SetAttributValue(Str1, Str1 + Str2);
+  Str1 := 'self.' + Name + '.currentFont().setUnderline';
+  if fsUnderline in FCurrentFont.Style then
+    SetAttributValue(Str1, Str1 + '(True)')
+  else
+    Partner.DeleteAttribute(Str1);
+  Str1 := 'self.' + Name + '.currentFont().setStrikeOut';
+  if fsStrikeOut in FCurrentFont.Style then
+    SetAttributValue(Str1, Str1 + '(True)')
+  else
+    Partner.DeleteAttribute(Str1);
   Invalidate;
 end;
 
 procedure TQtFontComboBox.MakeFontFilters;
 begin
-  var s:= '';
+  var
+  Str := '';
   if AllFonts in FFontFilters then
-    s:= s + '|QFontComboBox.AllFonts';
+    Str := Str + '|QFontComboBox.AllFonts';
   if ScalableFonts in FFontFilters then
-    s:= s + '|QFontComboBox.ScalableFonts';
+    Str := Str + '|QFontComboBox.ScalableFonts';
   if NonScalableFonts in FFontFilters then
-    s:= s + '|QFontComboBox.NonScalableFonts';
+    Str := Str + '|QFontComboBox.NonScalableFonts';
   if MonospacedFonts in FFontFilters then
-    s:= s + '|QFontComboBox.MonospacedFonts';
+    Str := Str + '|QFontComboBox.MonospacedFonts';
   if ProportionalFonts in FFontFilters then
-    s:= s + '|QFontComboBox.ProportionalFonts';
-  if s = '' then
-    s:= '|QFontComboBox.AllFonts';
-  Delete(s, 1, 1);
-  setAttribute('FontFilters', s, '');
+    Str := Str + '|QFontComboBox.ProportionalFonts';
+  if Str = '' then
+    Str := '|QFontComboBox.AllFonts';
+  Delete(Str, 1, 1);
+  SetAttribute('FontFilters', Str, '');
 end;
 
 procedure TQtFontComboBox.NewWidget(Widget: string = '');
@@ -892,43 +975,44 @@ end;
 
 procedure TQtFontComboBox.Paint;
 begin
-  CurrentText:= FCurrentFont.Name;
+  CurrentText := FCurrentFont.Name;
   inherited;
 end;
 
-procedure TQtFontComboBox.setCurrentFont(Value: TFont);
+procedure TQtFontComboBox.SetCurrentFont(Value: TFont);
 begin
-  if Value <> FCurrentFont then begin
-    FCurrentFont.assign(Value);
+  if Value <> FCurrentFont then
+  begin
+    FCurrentFont.Assign(Value);
     Invalidate;
   end;
 end;
 
-{--- TQtProgressBar -----------------------------------------------------------}
+{ --- TQtProgressBar ----------------------------------------------------------- }
 
-constructor TQtProgressBar.Create(AOwner: TComponent);
+constructor TQtProgressbar.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 90;
-  Width:= 120;
-  Height:= 24;
-  FMinimum:= 0;
-  FMaximum:= 100;
-  FValue:= 24;
-  FTextVisible:= True;
-  FOrientation:= Horizontal;
-  FFormat:= '%p%';
+  inherited Create(Owner);
+  Tag := 90;
+  Width := 120;
+  Height := 24;
+  FMinimum := 0;
+  FMaximum := 100;
+  FValue := 24;
+  FTextVisible := True;
+  FOrientation := Horizontal;
+  FFormat := '%p%';
 end;
 
-function TQtProgressBar.getAttributes(ShowAttributes: Integer): string;
+function TQtProgressbar.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Minimum|Maximum|Value|';
+  Result := '|Minimum|Maximum|Value|';
   if ShowAttributes >= 2 then
-    Result:= Result + '|TextVisible|Orientation|InvertedAppearance|Format';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|TextVisible|Orientation|InvertedAppearance|Format';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtProgressBar.SetAttribute(Attr, Value, Typ: string);
+procedure TQtProgressbar.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'TextDirection' then
     MakeAttribut(Attr, 'QProgressBar.' + Value)
@@ -938,198 +1022,230 @@ begin
     inherited;
 end;
 
-function TQtProgressBar.getEvents(ShowEvents: Integer): string;
+function TQtProgressbar.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|valueChanged';
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := '|valueChanged';
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtProgressBar.HandlerInfo(const event: string): string;
+function TQtProgressbar.HandlerInfo(const Event: string): string;
 begin
-  if event = 'valueChanged' then
-    Result:= 'int;value'
+  if Event = 'valueChanged' then
+    Result := 'int;value'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtProgressBar.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtProgressbar.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
-  if Parametertypes = 'int' then begin
+  if Parametertypes = 'int' then
+  begin
     Slots.Add(Name + '.setMaximum');
     Slots.Add(Name + '.setMinimum');
     Slots.Add(Name + '.setValue');
-  end else if Parametertypes = '' then
+  end
+  else if Parametertypes = '' then
     Slots.Add(Name + '.reset')
   else if Parametertypes = 'int, int' then
     Slots.Add(Name + '.setRange');
   inherited;
 end;
 
-function TQtProgressBar.InnerRect: TRect;
+function TQtProgressbar.InnerRect: TRect;
 begin
-  Result:= inherited;
+  Result := inherited;
   if FTextVisible and (FOrientation = Horizontal) and (FMinimum < FMaximum) then
-    Result.Right:= Result.Right - Canvas.TextWidth(getText);
+    Result.Right := Result.Right - Canvas.TextWidth(GetText);
 end;
 
-procedure TQtProgressBar.NewWidget(Widget: string = '');
+procedure TQtProgressbar.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QProgressBar');
-  setAttribute('Value', '24', '');
+  SetAttribute('Value', '24', '');
 end;
 
-procedure TQtProgressBar.Paint;
-  var x, y: Integer; R: TRect; s: string;
+procedure TQtProgressbar.Paint;
+var
+  XPos, YPos: Integer;
+  ARect: TRect;
+  Str: string;
 begin
   inherited;
-  Canvas.Pen.Color:= $BCBCBC;
-  Canvas.Brush.Color:= $E6E6E6;
-  R:= InnerRect;
-  Canvas.Rectangle(R);
+  Canvas.Pen.Color := $BCBCBC;
+  Canvas.Brush.Color := $E6E6E6;
+  ARect := InnerRect;
+  Canvas.Rectangle(ARect);
 
   if (FValue < FMinimum) or (FValue > FMaximum) or (FMaximum <= FMinimum) then
     Exit;
 
   // draw text
-  if FTextVisible and (FOrientation = Horizontal) then begin
-    var R2:= ClientRect;
-    R2.inflate(-1, -1);
-    R2.Left:= R.Right + 1;
-    s:= getText;
-    Canvas.Brush.Color:= clBtnFace;
-    DrawText(Canvas.Handle, PChar(s), Length(s), R2, DT_CENTER+DT_VCENTER+DT_SINGLELINE);
+  if FTextVisible and (FOrientation = Horizontal) then
+  begin
+    var
+    Rect2 := ClientRect;
+    Rect2.Inflate(-1, -1);
+    Rect2.Left := ARect.Right + 1;
+    Str := GetText;
+    Canvas.Brush.Color := clBtnFace;
+    DrawText(Canvas.Handle, PChar(Str), Length(Str), Rect2,
+      DT_CENTER + DT_VCENTER + DT_SINGLELINE);
   end;
 
   // draw visible progress
-  if FOrientation = horizontal then begin
-    x:= Round((R.Right - R.Left) * (FValue - FMinimum) / (FMaximum - FMinimum));
-    if FInvertedAppearance
-      then R.Left:= R.Right - x
-      else R.Right:= R.Left + x;
-  end else begin
-    y:= Round((R.Bottom - R.Top) * (FValue - FMinimum) / (FMaximum - FMinimum));
-    if InvertedAppearance
-      then R.Bottom:= R.Top + y
-      else R.Top:= R.Bottom - y;
+  if FOrientation = Horizontal then
+  begin
+    XPos := Round((ARect.Right - ARect.Left) * (FValue - FMinimum) /
+      (FMaximum - FMinimum));
+    if FInvertedAppearance then
+      ARect.Left := ARect.Right - XPos
+    else
+      ARect.Right := ARect.Left + XPos;
+  end
+  else
+  begin
+    YPos := Round((ARect.Bottom - ARect.Top) * (FValue - FMinimum) /
+      (FMaximum - FMinimum));
+    if InvertedAppearance then
+      ARect.Bottom := ARect.Top + YPos
+    else
+      ARect.Top := ARect.Bottom - YPos;
   end;
-  Canvas.Brush.Color:= $25B006;
-  Canvas.FillRect(R);
+  Canvas.Brush.Color := $25B006;
+  Canvas.FillRect(ARect);
 end;
 
-function TQtProgressBar.getText: string;
-  var s: string; p: Integer;
+function TQtProgressbar.GetText: string;
+var
+  Str: string;
+  Posi: Integer;
 begin
-  s:= FFormat;
-  p:= Pos('%p', s);
-  if p > 0 then begin
-    Delete(s, p, 2);
-    insert(IntToStr(Round(0.5 + (FValue - FMinimum)/(FMaximum - FMinimum)*100)), s, p);
+  Str := FFormat;
+  Posi := Pos('%p', Str);
+  if Posi > 0 then
+  begin
+    Delete(Str, Posi, 2);
+    insert(IntToStr(Round(0.5 + (FValue - FMinimum) / (FMaximum - FMinimum) *
+      100)), Str, Posi);
   end;
-  p:= Pos('%v', s);
-  if p > 0 then begin
-    Delete(s, p, 2);
-    insert(IntToStr(FValue), s, p);
+  Posi := Pos('%v', Str);
+  if Posi > 0 then
+  begin
+    Delete(Str, Posi, 2);
+    insert(IntToStr(FValue), Str, Posi);
   end;
-  p:= Pos('%m', s);
-  if p > 0 then begin
-    Delete(s, p, 2);
-    insert(IntToStr(FMaximum - FMinimum), s, p);
+  Posi := Pos('%m', Str);
+  if Posi > 0 then
+  begin
+    Delete(Str, Posi, 2);
+    insert(IntToStr(FMaximum - FMinimum), Str, Posi);
   end;
-  Result:= '  ' + s + '  ';
+  Result := '  ' + Str + '  ';
 end;
 
-procedure TQtProgressBar.setMinimum(Value: Integer);
+procedure TQtProgressbar.SetMinimum(Value: Integer);
 begin
-  if Value <> FMinimum then begin
-    FMinimum:= Value;
+  if Value <> FMinimum then
+  begin
+    FMinimum := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtProgressBar.setMaximum(Value: Integer);
+procedure TQtProgressbar.SetMaximum(Value: Integer);
 begin
-  if Value <> FMaximum then begin
-    FMaximum:= Value;
+  if Value <> FMaximum then
+  begin
+    FMaximum := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtProgressBar.setValue(Value: Integer);
+procedure TQtProgressbar.SetValue(Value: Integer);
 begin
-  if Value <> FValue then begin
-    FValue:= Value;
+  if Value <> FValue then
+  begin
+    FValue := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtProgressBar.setTextVisible(Value: Boolean);
+procedure TQtProgressbar.SetTextVisible(Value: Boolean);
 begin
-  if Value <> FTextVisible then begin
-    FTextVisible:= Value;
+  if Value <> FTextVisible then
+  begin
+    FTextVisible := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtProgressBar.setOrientation(Value: TOrientation);
-  var h: Integer;
+procedure TQtProgressbar.SetOrientation(Value: TOrientation);
+var
+  Tmp: Integer;
 begin
-  if Value <> FOrientation then begin
-    FOrientation:= Value;
-    if not (csLoading in ComponentState) then begin
-      h:= Width; Width:= Height; Height:= h;
+  if Value <> FOrientation then
+  begin
+    FOrientation := Value;
+    if not(csLoading in ComponentState) then
+    begin
+      Tmp := Width;
+      Width := Height;
+      Height := Tmp;
       SetPositionAndSize;
     end;
     Invalidate;
   end;
 end;
 
-procedure TQtProgressBar.setInvertedAppearance(Value: Boolean);
+procedure TQtProgressbar.SetInvertedAppearance(Value: Boolean);
 begin
-  if Value <> FInvertedAppearance then begin
-    FInvertedAppearance:= Value;
+  if Value <> FInvertedAppearance then
+  begin
+    FInvertedAppearance := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtProgressBar.setFormat(Value: string);
+procedure TQtProgressbar.SetFormat(Value: string);
 begin
-  if Value <> FFormat then begin
-    FFormat:= Value;
+  if Value <> FFormat then
+  begin
+    FFormat := Value;
     Invalidate;
   end;
 end;
 
-{--- TQtStatusBar -------------------------------------------------------------}
+{ --- TQtStatusBar ------------------------------------------------------------- }
 
-constructor TQtStatusBar.Create(AOwner: TComponent);
+constructor TQtStatusbar.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 91;
-  Width:= 100;
-  Height:= 20;
+  inherited Create(Owner);
+  Tag := 91;
+  Width := 100;
+  Height := 20;
 end;
 
-function TQtStatusBar.getAttributes(ShowAttributes: Integer): string;
+function TQtStatusbar.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|SizeGripEnabled';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|SizeGripEnabled';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-function TQtStatusBar.getEvents(ShowEvents: Integer): string;
+function TQtStatusbar.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|messageChanged';
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := '|messageChanged';
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtStatusBar.HandlerInfo(const event: string): string;
+function TQtStatusbar.HandlerInfo(const Event: string): string;
 begin
-  if event = 'messageChanged' then
-    Result:= 'QString;message'
+  if Event = 'messageChanged' then
+    Result := 'QString;message'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtStatusBar.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtStatusbar.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
     Slots.Add(Name + '.clearMessage')
@@ -1138,85 +1254,90 @@ begin
   inherited;
 end;
 
-procedure TQtStatusBar.NewWidget(Widget: string = '');
+procedure TQtStatusbar.NewWidget(Widget: string = '');
 begin
   InsertValue('self.statusBar()');
 end;
 
-procedure TQtStatusBar.DeleteWidget;
+procedure TQtStatusbar.DeleteWidget;
 begin
   Partner.DeleteAttribute('self.statusBar');
 end;
 
-procedure TQtStatusBar.Paint;
-  var R: TRect; p3: Integer;
+procedure TQtStatusbar.Paint;
+var
+  ARect: TRect;
+  Int3: Integer;
 begin
-  setBounds(0, Parent.ClientHeight-PPIScale(21), Parent.ClientWidth, PPIScale(21));
+  SetBounds(0, Parent.ClientHeight - PPIScale(21), Parent.ClientWidth,
+    PPIScale(21));
   inherited;
-  R:= Rect(Width - PPIScale(12), Height - PPIScale(5), Width - PPIScale(10), Height - PPIScale(3));
-  Canvas.Brush.Color:= $BFBFBF;
-  Canvas.FillRect(R);
-  p3:= PPIScale(3);
-  R.Offset(p3, 0);
-  Canvas.FillRect(R);
-  R.Offset(p3, 0);
-  Canvas.FillRect(R);
-  R.Offset(0, -p3);
-  Canvas.FillRect(R);
-  R.Offset(0, -p3);
-  Canvas.FillRect(R);
-  R.Offset(-p3, p3);
-  Canvas.FillRect(R);
+  ARect := Rect(Width - PPIScale(12), Height - PPIScale(5),
+    Width - PPIScale(10), Height - PPIScale(3));
+  Canvas.Brush.Color := $BFBFBF;
+  Canvas.FillRect(ARect);
+  Int3 := PPIScale(3);
+  ARect.Offset(Int3, 0);
+  Canvas.FillRect(ARect);
+  ARect.Offset(Int3, 0);
+  Canvas.FillRect(ARect);
+  ARect.Offset(0, -Int3);
+  Canvas.FillRect(ARect);
+  ARect.Offset(0, -Int3);
+  Canvas.FillRect(ARect);
+  ARect.Offset(-Int3, Int3);
+  Canvas.FillRect(ARect);
 end;
 
-procedure TQtStatusBar.SetPositionAndSize;
+procedure TQtStatusbar.SetPositionAndSize;
 begin
   // do nothing
 end;
 
-procedure TQtStatusBar.setSizeGripEnabled(Value: Boolean);
+procedure TQtStatusbar.SetSizeGripEnabled(Value: Boolean);
 begin
-  if Value <> FSizeGripEnabled then begin
-    FSizeGripEnabled:= Value;
+  if Value <> FSizeGripEnabled then
+  begin
+    FSizeGripEnabled := Value;
     Invalidate;
   end;
 end;
 
-{--- TQtGroupBox --------------------------------------------------------------}
+{ --- TQtGroupBox -------------------------------------------------------------- }
 
-constructor TQtGroupBox.Create(AOwner: TComponent);
+constructor TQtGroupBox.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 83;
-  Width:= 120;
-  Height:= 80;
-  FTitle:= 'GroupBox';
+  inherited Create(Owner);
+  Tag := 83;
+  Width := 120;
+  Height := 80;
+  FTitle := 'GroupBox';
   ControlStyle := [csAcceptsControls];
 end;
 
-function TQtGroupBox.getAttributes(ShowAttributes: Integer): string;
+function TQtGroupBox.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Title|Flat|Checkable|Checked';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|Title|Flat|Checkable|Checked';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-function TQtGroupBox.getEvents(ShowEvents: Integer): string;
+function TQtGroupBox.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|clicked|toggled';
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := '|clicked|toggled';
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtGroupBox.HandlerInfo(const event: string): string;
+function TQtGroupBox.HandlerInfo(const Event: string): string;
 begin
-  if event = 'clicked' then
-    Result:= 'bool;checked'
+  if Event = 'clicked' then
+    Result := 'bool;checked'
   else if Result = 'toggled' then
-    Result:= 'bool;on'
+    Result := 'bool;on'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtGroupBox.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtGroupBox.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'bool' then
     Slots.Add(Name + '.setChecked');
@@ -1226,86 +1347,95 @@ end;
 procedure TQtGroupBox.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QGroupBox');
-  setAttribute('Title', 'GroupBox', 'Text');
+  SetAttribute('Title', 'GroupBox', 'Text');
 end;
 
 procedure TQtGroupBox.Paint;
-  var R: TRect; x: Integer;
+var
+  ARect: TRect;
+  XPos: Integer;
 begin
   inherited;
-  Canvas.Pen.Color:= $DCDCDC;
-  Canvas.Brush.Color:= $F0F0F0;
-  R:= ClientRect;
-  Canvas.FillRect(R);
-  R.Top:= R.Top + Canvas.TextHeight('A') div 2;
-  Canvas.Brush.Color:= $DCDCDC;
-  Canvas.FrameRect(R);
+  Canvas.Pen.Color := $DCDCDC;
+  Canvas.Brush.Color := $F0F0F0;
+  ARect := ClientRect;
+  Canvas.FillRect(ARect);
+  ARect.Top := ARect.Top + Canvas.TextHeight('A') div 2;
+  Canvas.Brush.Color := $DCDCDC;
+  Canvas.FrameRect(ARect);
 
-  if FCheckable then begin
-    Canvas.Pen.Color:= $333333;
-    Canvas.Brush.Color:= clWhite;
-    R:= Rect(9, 1, 22, 14);
-    Canvas.Rectangle(R);
-    if FChecked then begin
-      Canvas.Pen.Color:= $222222;
+  if FCheckable then
+  begin
+    Canvas.Pen.Color := $333333;
+    Canvas.Brush.Color := clWhite;
+    ARect := Rect(9, 1, 22, 14);
+    Canvas.Rectangle(ARect);
+    if FChecked then
+    begin
+      Canvas.Pen.Color := $222222;
       Canvas.MoveTo(11, 7);
       Canvas.LineTo(14, 10);
       Canvas.LineTo(19, 4);
     end;
-    x:= 28;
-  end else
-    x:= 8;
-  Canvas.Brush.Color:= $F0F0F0;
-  R:= ClientRect;
-  R.Left:= x;
-  DrawText(Canvas.Handle, PChar(FTitle), Length(FTitle), R, DT_LEFT);
+    XPos := 28;
+  end
+  else
+    XPos := 8;
+  Canvas.Brush.Color := $F0F0F0;
+  ARect := ClientRect;
+  ARect.Left := XPos;
+  DrawText(Canvas.Handle, PChar(FTitle), Length(FTitle), ARect, DT_LEFT);
 end;
 
-procedure TQtGroupBox.setTitle(Value: string);
+procedure TQtGroupBox.SetTitle(Value: string);
 begin
-  if Value <> FTitle then begin
-    FTitle:= Value;
+  if Value <> FTitle then
+  begin
+    FTitle := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtGroupBox.setFlat(Value: Boolean);
+procedure TQtGroupBox.SetFlat(Value: Boolean);
 begin
-  if Value <> FFlat then begin
-    FFlat:= Value;
+  if Value <> FFlat then
+  begin
+    FFlat := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtGroupBox.setCheckable(Value: Boolean);
+procedure TQtGroupBox.SetCheckable(Value: Boolean);
 begin
-  if Value <> FCheckable then begin
-    FCheckable:= Value;
+  if Value <> FCheckable then
+  begin
+    FCheckable := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtGroupBox.setChecked(Value: Boolean);
+procedure TQtGroupBox.SetChecked(Value: Boolean);
 begin
-  if Value <> FChecked then begin
-    FChecked:= Value;
+  if Value <> FChecked then
+  begin
+    FChecked := Value;
     Invalidate;
   end;
 end;
 
-{--- TQtTabWidget -------------------------------------------------------------}
+{ --- TQtTabWidget ------------------------------------------------------------- }
 
-constructor TQtTabWidget.Create(AOwner: TComponent);
+constructor TQtTabWidget.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 87;
-  Width:= 160;
-  Height:= 80;
-  FTabs:= TStringList.Create;
-  FTabs.Text:= 'Tab 1'#13#10'Tab 2'#13#10'Tab 3'#13#10;
-  FTabPosition:= North;
-  FTabShape:= Rounded;
-  FUsesScrollButtons:= True;
+  inherited Create(Owner);
+  Tag := 87;
+  Width := 160;
+  Height := 80;
+  FTabs := TStringList.Create;
+  FTabs.Text := 'Tab 1'#13#10'Tab 2'#13#10'Tab 3'#13#10;
+  FTabPosition := North;
+  FTabShape := Rounded;
+  FUsesScrollButtons := True;
 end;
 
 destructor TQtTabWidget.Destroy;
@@ -1320,15 +1450,16 @@ begin
   Partner.DeleteItems(Name, 'Page');
 end;
 
-function TQtTabWidget.getAttributes(ShowAttributes: Integer): string;
+function TQtTabWidget.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|TabPosition|TabShape|CurrentIndex|Tabs';
+  Result := '|TabPosition|TabShape|CurrentIndex|Tabs';
   if ShowAttributes >= 2 then
-    Result:= Result + '|UsesScrollButtons|DocumentMode|TabsClosable|Movable|TabBarAutoHide';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result +
+      '|UsesScrollButtons|DocumentMode|TabsClosable|Movable|TabBarAutoHide';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtTabWidget.setAttribute(Attr, Value, Typ: string);
+procedure TQtTabWidget.SetAttribute(Attr, Value, Typ: string);
 begin
   if (Attr = 'TabPosition') or (Attr = 'TabShape') then
     MakeAttribut(Attr, 'QTabWidget.' + Attr + '.' + Value)
@@ -1339,22 +1470,23 @@ begin
 end;
 
 const
-  TabEvents = '|currentChanged|tabBarClicked|tabBarDoubleClicked|tabCloseRequested';
+  TabEvents =
+    '|currentChanged|tabBarClicked|tabBarDoubleClicked|tabCloseRequested';
 
-function TQtTabWidget.getEvents(ShowEvents: Integer): string;
+function TQtTabWidget.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= TabEvents + inherited getEvents(ShowEvents);
+  Result := TabEvents + inherited GetEvents(ShowEvents);
 end;
 
-function TQtTabWidget.HandlerInfo(const event: string): string;
+function TQtTabWidget.HandlerInfo(const Event: string): string;
 begin
-  if Pos(event, TabEvents) > 0 then
-    Result:= 'int;index'
+  if Pos(Event, TabEvents) > 0 then
+    Result := 'int;index'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtTabWidget.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtTabWidget.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'int' then
     Slots.Add(Name + '.setCurrentIndex')
@@ -1370,265 +1502,308 @@ begin
 end;
 
 procedure TQtTabWidget.MakeTabs;
-  var i: Integer; pagename, s: string;
+var
+  Pagename, Str: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   Partner.DeleteAttributeValues('self.' + Name + '.addTab');
   Partner.DeleteItems(Name, 'Page');
-  s:= '';
-  for i:= 1 to FTabs.Count do begin
-    pagename:= 'self.' + Name + 'Page' + IntToStr(i);
-    s:= s + surround(pagename + ' = QLabel()');
-    s:= s + surround(pagename + '.setText(''Add widgets to this page'')');
-    s:= s + surround('self.' + Name + '.addTab(' + pagename + ', ' + asString(FTabs[i-1]) + ')');
+  Str := '';
+  for var I := 1 to FTabs.Count do
+  begin
+    Pagename := 'self.' + Name + 'Page' + IntToStr(I);
+    Str := Str + Surround(Pagename + ' = QLabel()');
+    Str := Str + Surround(Pagename + '.setText(''Add widgets to this page'')');
+    Str := Str + Surround('self.' + Name + '.addTab(' + Pagename + ', ' +
+      AsString(FTabs[I - 1]) + ')');
   end;
-  InsertValue(s);
+  InsertValue(Str);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
 procedure TQtTabWidget.Paint;
-  const paddingH = 12;
-  var th, tw, i, x1, y1, RowHeight, x1Curr, x2Curr, y1Curr, y2Curr: Integer;
-      Points: array[0..3] of TPoint;
+const
+  CPaddingH = 12;
+var
+  TextHeight, TextWidth, Int, X1Pos, Y1Pos, RowHeight, X1Curr, X2Curr, Y1Curr,
+    Y2Curr: Integer;
+  Points: array [0 .. 3] of TPoint;
 
-  function ShowHorTab(x1, y1: Integer; const s: string; TopCorner: Boolean): Integer;
-    var dx, dy: Integer; R: TRect;
+  function ShowHorTab(X1Pos, Y1Pos: Integer; const Str: string;
+    TopCorner: Boolean): Integer;
+  var
+    DeltaX, DeltaY: Integer;
+    ARect: TRect;
   begin
-    tw:= Canvas.TextWidth(s);
-    dx:= Min(tw + 2*paddingH, Width-2);
-    dy:= th + 2*HalfX;
+    TextWidth := Canvas.TextWidth(Str);
+    DeltaX := Min(TextWidth + 2 * CPaddingH, Width - 2);
+    DeltaY := TextHeight + 2 * HalfX;
 
-    if (i = FCurrentIndex) or ((i = 0) and (FCurrentIndex = -1)) then begin
+    if (Int = FCurrentIndex) or ((Int = 0) and (FCurrentIndex = -1)) then
+    begin
       if TopCorner then
-        y1:= y1 - 2;
-      dy:= dy + 2;
-      x1Curr:= x1;
-      x2Curr:= x1 + dx;
+        Y1Pos := Y1Pos - 2;
+      DeltaY := DeltaY + 2;
+      X1Curr := X1Pos;
+      X2Curr := X1Pos + DeltaX;
     end;
 
-    if FTabShape = Rounded then begin
-      R:= Rect(x1, y1, x1 + dx, y1 + dy);
-      Canvas.Rectangle(R);
-    end else begin
-      if TopCorner then begin
-        Points[0]:= Point(x1, y1 + dy);
-        Points[1]:= Point(x1 + 7, y1);
-        Points[2]:= Point(x1 + dx - 7, y1);
-        Points[3]:= Point(x1 + dx, y1 + dy);
-      end else begin
-        Points[0]:= Point(x1, y1);
-        Points[1]:= Point(x1 + 7, y1 + dy);
-        Points[2]:= Point(x1 + dx - 7, y1 + dy);
-        Points[3]:= Point(x1 + dx, y1);
+    if FTabShape = Rounded then
+    begin
+      ARect := Rect(X1Pos, Y1Pos, X1Pos + DeltaX, Y1Pos + DeltaY);
+      Canvas.Rectangle(ARect);
+    end
+    else
+    begin
+      if TopCorner then
+      begin
+        Points[0] := Point(X1Pos, Y1Pos + DeltaY);
+        Points[1] := Point(X1Pos + 7, Y1Pos);
+        Points[2] := Point(X1Pos + DeltaX - 7, Y1Pos);
+        Points[3] := Point(X1Pos + DeltaX, Y1Pos + DeltaY);
+      end
+      else
+      begin
+        Points[0] := Point(X1Pos, Y1Pos);
+        Points[1] := Point(X1Pos + 7, Y1Pos + DeltaY);
+        Points[2] := Point(X1Pos + DeltaX - 7, Y1Pos + DeltaY);
+        Points[3] := Point(X1Pos + DeltaX, Y1Pos);
       end;
       Canvas.Polygon(Points);
     end;
-    Canvas.TextOut(x1 + paddingH, y1 + HalfX, s);
-    Result:= x1 + dx;
+    Canvas.TextOut(X1Pos + CPaddingH, Y1Pos + HalfX, Str);
+    Result := X1Pos + DeltaX;
   end;
 
-  function ShowVerTab(x1, y1: Integer; const s: string; LeftCorner: Boolean): Integer;
-    var dy, dx, tw: Integer; R: TRect;
+  function ShowVerTab(X1Pos, Y1Pos: Integer; const Str: string;
+    LeftCorner: Boolean): Integer;
+  var
+    DeltaY, DeltaX, TextWidth: Integer;
+    ARect: TRect;
   begin
-    tw:= Canvas.TextWidth(s);
-    dy:= Min(tw + 2*paddingH, Height-2);
-    dx:= th + 2*HalfX +2;
+    TextWidth := Canvas.TextWidth(Str);
+    DeltaY := Min(TextWidth + 2 * CPaddingH, Height - 2);
+    DeltaX := TextHeight + 2 * HalfX + 2;
 
-    if (i = FCurrentIndex) or ((i = 0) and (FCurrentIndex = -1)) then begin
+    if (Int = FCurrentIndex) or ((Int = 0) and (FCurrentIndex = -1)) then
+    begin
       if LeftCorner then
-        x1:= x1 - 2;
-      dx:= dx + 2;
-      y1Curr:= y1;
-      y2Curr:= y1 + dy;
+        X1Pos := X1Pos - 2;
+      DeltaX := DeltaX + 2;
+      Y1Curr := Y1Pos;
+      Y2Curr := Y1Pos + DeltaY;
     end;
 
-    if FTabShape = Rounded then begin
-      R:= Rect(x1, y1, x1 + dx, y1 + dy);
-      Canvas.Rectangle(R);
-    end else begin
-      if LeftCorner then begin
-        Points[0]:= Point(x1, y1 + 7);
-        Points[1]:= Point(x1 + dx, y1);
-        Points[2]:= Point(x1 + dx, y1 + dy);
-        Points[3]:= Point(x1, y1 + dy - 7);
-      end else begin
-        Points[0]:= Point(x1, y1);
-        Points[1]:= Point(x1 + dx, y1 + 7);
-        Points[2]:= Point(x1 + dx, y1 + dy - 7);
-        Points[3]:= Point(x1, y1 + dy);
+    if FTabShape = Rounded then
+    begin
+      ARect := Rect(X1Pos, Y1Pos, X1Pos + DeltaX, Y1Pos + DeltaY);
+      Canvas.Rectangle(ARect);
+    end
+    else
+    begin
+      if LeftCorner then
+      begin
+        Points[0] := Point(X1Pos, Y1Pos + 7);
+        Points[1] := Point(X1Pos + DeltaX, Y1Pos);
+        Points[2] := Point(X1Pos + DeltaX, Y1Pos + DeltaY);
+        Points[3] := Point(X1Pos, Y1Pos + DeltaY - 7);
+      end
+      else
+      begin
+        Points[0] := Point(X1Pos, Y1Pos);
+        Points[1] := Point(X1Pos + DeltaX, Y1Pos + 7);
+        Points[2] := Point(X1Pos + DeltaX, Y1Pos + DeltaY - 7);
+        Points[3] := Point(X1Pos, Y1Pos + DeltaY);
 
       end;
       Canvas.Polygon(Points);
     end;
-    if LeftCorner
-      then Canvas.TextOut(x1 + HalfX, y1 + dy - paddingH, s)
-      else Canvas.TextOut(x1 + dx - HalfX, y1 + paddingH, s);
-    Result:= y1 + dy;
+    if LeftCorner then
+      Canvas.TextOut(X1Pos + HalfX, Y1Pos + DeltaY - CPaddingH, Str)
+    else
+      Canvas.TextOut(X1Pos + DeltaX - HalfX, Y1Pos + CPaddingH, Str);
+    Result := Y1Pos + DeltaY;
   end;
 
-  procedure SetBrushColor(i: Integer);
+  procedure SetBrushColor(Int: Integer);
   begin
-    if (i = FCurrentIndex) or ((i = 0) and (FCurrentIndex = -1))
-      then Canvas.Brush.Color:= clWhite //SelectionColor
-      else Canvas.Brush.Color:= clBtnFace;
+    if (Int = FCurrentIndex) or ((Int = 0) and (FCurrentIndex = -1)) then
+      Canvas.Brush.Color := clWhite // SelectionColor
+    else
+      Canvas.Brush.Color := clBtnFace;
   end;
 
 begin
   inherited;
-  Canvas.Pen.Color:= $D9D9D9;
-  Canvas.Brush.Color:= clBtnFace;
+  Canvas.Pen.Color := $D9D9D9;
+  Canvas.Brush.Color := clBtnFace;
   Canvas.FillRect(ClientRect);
 
-  th:= Canvas.TextHeight('Hg');
-  RowHeight:= th + 2* HalfX;
+  TextHeight := Canvas.TextHeight('Hg');
+  RowHeight := TextHeight + 2 * HalfX;
   if FTabs.Count > 0 then
     case FTabPosition of
-      North: begin
-        x1:= 2;
-        y1:= 2;
-        for i:= 0 to FTabs.Count - 1 do begin
-          SetBrushColor(i);
-          x1:= ShowHorTab(x1, y1, FTabs[i], True);
+      North:
+        begin
+          X1Pos := 2;
+          Y1Pos := 2;
+          for Int := 0 to FTabs.Count - 1 do
+          begin
+            SetBrushColor(Int);
+            X1Pos := ShowHorTab(X1Pos, Y1Pos, FTabs[Int], True);
+          end;
+          Canvas.Pen.Color := $A0A0A0;
+          Y1Pos := RowHeight + 1;
+          Canvas.MoveTo(0, Y1Pos);
+          Canvas.LineTo(Width, Y1Pos);
+          Canvas.Pen.Color := clWhite;
+          Canvas.MoveTo(X1Curr, Y1Pos);
+          Canvas.LineTo(X2Curr, Y1Pos);
         end;
-        Canvas.Pen.Color:= $A0A0A0;
-        y1:= RowHeight + 1;
-        Canvas.MoveTo(0, y1);
-        Canvas.LineTo(Width, y1);
-        Canvas.Pen.Color:= clWhite;
-        Canvas.MoveTo(x1Curr, y1);
-        Canvas.LineTo(x2Curr, y1);
-      end;
-      South: begin
-        x1:= 2;
-        y1:= Height - RowHeight - 1;
-        for i:= 0 to FTabs.Count - 1 do begin
-          SetBrushColor(i);
-          x1:= ShowHorTab(x1, y1, FTabs[i], False);
+      South:
+        begin
+          X1Pos := 2;
+          Y1Pos := Height - RowHeight - 1;
+          for Int := 0 to FTabs.Count - 1 do
+          begin
+            SetBrushColor(Int);
+            X1Pos := ShowHorTab(X1Pos, Y1Pos, FTabs[Int], False);
+          end;
+          Canvas.Pen.Color := $A0A0A0;
+          Y1Pos := Height - RowHeight - 1;
+          Canvas.MoveTo(0, Y1Pos);
+          Canvas.LineTo(Width, Y1Pos);
+          Canvas.Pen.Color := clWhite;
+          Canvas.MoveTo(X1Curr, Y1Pos);
+          Canvas.LineTo(X2Curr, Y1Pos);
         end;
-        Canvas.Pen.Color:= $A0A0A0;
-        y1:= Height - RowHeight - 1;
-        Canvas.MoveTo(0, y1);
-        Canvas.LineTo(Width, y1);
-        Canvas.Pen.Color:= clWhite;
-        Canvas.MoveTo(x1Curr, y1);
-        Canvas.LineTo(x2Curr, y1);
-      end;
-      West: begin
-        Canvas.Font.Orientation:= 900;
-        x1:= 2;
-        y1:= 2;
-        for i:= 0 to FTabs.Count - 1 do begin
-          SetBrushColor(i);
-          y1:= ShowVerTab(x1, y1, FTabs[i], True);
+      West:
+        begin
+          Canvas.Font.Orientation := 900;
+          X1Pos := 2;
+          Y1Pos := 2;
+          for Int := 0 to FTabs.Count - 1 do
+          begin
+            SetBrushColor(Int);
+            Y1Pos := ShowVerTab(X1Pos, Y1Pos, FTabs[Int], True);
+          end;
+          Canvas.Pen.Color := $A0A0A0;
+          X1Pos := RowHeight + 3;
+          Canvas.MoveTo(X1Pos, 0);
+          Canvas.LineTo(X1Pos, Height);
+          Canvas.Pen.Color := clWhite;
+          Canvas.MoveTo(X1Pos, Y1Curr);
+          Canvas.LineTo(X1Pos, Y2Curr);
+          Canvas.Font.Orientation := 0;
         end;
-        Canvas.Pen.Color:= $A0A0A0;
-        x1:= RowHeight + 3;
-        Canvas.MoveTo(x1, 0);
-        Canvas.LineTo(x1, Height);
-        Canvas.Pen.Color:= clWhite;
-        Canvas.MoveTo(x1, y1Curr);
-        Canvas.LineTo(x1, y2Curr);
-        Canvas.Font.Orientation:= 0;
-      end;
-      East: begin
-        Canvas.Font.Orientation:= -900;
-        x1:= Width - RowHeight - 3;
-        y1:= 2;
-        for i:= 0 to FTabs.Count - 1 do begin
-          SetBrushColor(i);
-          y1:= ShowVerTab(x1, y1, FTabs[i], False);
+      East:
+        begin
+          Canvas.Font.Orientation := -900;
+          X1Pos := Width - RowHeight - 3;
+          Y1Pos := 2;
+          for Int := 0 to FTabs.Count - 1 do
+          begin
+            SetBrushColor(Int);
+            Y1Pos := ShowVerTab(X1Pos, Y1Pos, FTabs[Int], False);
+          end;
+          Canvas.Pen.Color := $A0A0A0;
+          X1Pos := Width - RowHeight - 3;
+          Canvas.MoveTo(X1Pos, 0);
+          Canvas.LineTo(X1Pos, Height);
+          Canvas.Pen.Color := clWhite;
+          Canvas.MoveTo(X1Pos, Y1Curr);
+          Canvas.LineTo(X1Pos, Y2Curr);
+          Canvas.Font.Orientation := 0;
         end;
-        Canvas.Pen.Color:= $A0A0A0;
-        x1:= Width - RowHeight - 3;
-        Canvas.MoveTo(x1, 0);
-        Canvas.LineTo(x1, Height);
-        Canvas.Pen.Color:= clWhite;
-        Canvas.MoveTo(x1, y1Curr);
-        Canvas.LineTo(x1, y2Curr);
-        Canvas.Font.Orientation:= 0;
-      end;
-  end
-  else begin
-    Canvas.Brush.Color:= clBtnFace;
+    end
+  else
+  begin
+    Canvas.Brush.Color := clBtnFace;
     Canvas.Rectangle(Rect(0, 0, Width, Height));
   end;
 end;
 
-procedure TQtTabWidget.setTabPosition(Value: TTabPosition);
+procedure TQtTabWidget.SetTabPosition(Value: TTabPosition);
 begin
-  if Value <> FTabPosition then begin
-    FTabPosition:= Value;
+  if Value <> FTabPosition then
+  begin
+    FTabPosition := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtTabWidget.setTabShape(Value: TTabShape);
+procedure TQtTabWidget.SetTabShape(Value: TTabShape);
 begin
-  if Value <> FTabShape then begin
-    FTabShape:= Value;
+  if Value <> FTabShape then
+  begin
+    FTabShape := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtTabWidget.setCurrentIndex(Value: Integer);
+procedure TQtTabWidget.SetCurrentIndex(Value: Integer);
 begin
-  if Value <> FCurrentIndex then begin
-    FCurrentIndex:= Value;
+  if Value <> FCurrentIndex then
+  begin
+    FCurrentIndex := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtTabWidget.setTabs(Value: TStrings);
+procedure TQtTabWidget.SetTabs(Value: TStrings);
 begin
-  if Value <> FTabs then begin
-    FTabs.assign(Value);
+  if Value <> FTabs then
+  begin
+    FTabs.Assign(Value);
     Invalidate;
   end;
 end;
 
-{--- TQtMenuBar ---------------------------------------------------------------}
+{ --- TQtMenuBar --------------------------------------------------------------- }
 
-constructor TQtMenuBar.Create(AOwner: TComponent);
+constructor TQtMenuBar.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 85;
-  Width:= 100;
-  Height:= 21;
-  FMenuItems:= TStringList.Create;
-  FMenuItems.text:= 'File'#13#10'  New'#13#10'    Python'#13#10'    XML'#13#10'  Load'#13#10'  Save, Ctrl+S'#13#10 +
-                    'Edit'#13#10'  Copy, Ctrl+C'#13#10'  Paste, Ctrl+V'#13#10'  -'#13#10'  Delete'#13#10;
-  MenuItemsOld:= TStringList.Create;
+  inherited Create(Owner);
+  Tag := 85;
+  Width := 100;
+  Height := 21;
+  FMenuItems := TStringList.Create;
+  FMenuItems.Text :=
+    'File'#13#10'  New'#13#10'    Python'#13#10'    XML'#13#10'  Load'#13#10'  Save, Ctrl+Str'#13#10
+    + 'Edit'#13#10'  Copy, Ctrl+C'#13#10'  Paste, Ctrl+V'#13#10'  -'#13#10'  Delete'#13#10;
+  FMenuItemsOld := TStringList.Create;
 end;
 
 destructor TQtMenuBar.Destroy;
 begin
   FreeAndNil(FMenuItems);
-  FreeAndNil(MenuItemsOld);
+  FreeAndNil(FMenuItemsOld);
   inherited;
 end;
 
-function TQtMenuBar.getAttributes(ShowAttributes: Integer): string;
+function TQtMenuBar.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|MenuItems|Name';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|MenuItems|Name';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-const MenuBarEvents = '|hovered|triggered';
+const
+  MenuBarEvents = '|hovered|triggered';
 
-function TQtMenuBar.getEvents(ShowEvents: Integer): string;
+function TQtMenuBar.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= MenuBarEvents + inherited getEvents(ShowEvents);
+  Result := MenuBarEvents + inherited GetEvents(ShowEvents);
 end;
 
-function TQtMenuBar.HandlerInfo(const event: string): string;
+function TQtMenuBar.HandlerInfo(const Event: string): string;
 begin
-  if Pos(event, MenuBarEvents) > 0 then
-    Result:= 'QAction;action'
+  if Pos(Event, MenuBarEvents) > 0 then
+    Result := 'QAction;action'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtMenuBar.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtMenuBar.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'bool' then
     Slots.Add(Name + '.setVisible');
@@ -1637,7 +1812,7 @@ end;
 
 procedure TQtMenuBar.NewWidget(Widget: string = '');
 begin
-  MenuItemsOld.Text:= '';
+  FMenuItemsOld.Text := '';
   MakeMenuItems;
 end;
 
@@ -1646,113 +1821,127 @@ begin
   // do nothing
 end;
 
-procedure TQtMenuBar.setItems(aItems: TStrings);
+procedure TQtMenuBar.SetItems(Items: TStrings);
 begin
-  MenuItemsOld.Text:= FMenuItems.Text;
-  if aItems.Text <> FMenuItems.Text then
-    FMenuItems.Assign(aItems);
+  FMenuItemsOld.Text := FMenuItems.Text;
+  if Items.Text <> FMenuItems.Text then
+    FMenuItems.Assign(Items);
 end;
 
-procedure TQtMenuBar.setAttribute(Attr, Value, Typ: string);
+procedure TQtMenuBar.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'MenuItems' then
     MakeMenuItems
   else
-    inherited
+    inherited;
 end;
 
-function TQtMenuBar.hasSubMenu(MenuItems: TStrings; i: Integer): Boolean;
+function TQtMenuBar.HasSubMenu(MenuItems: TStrings; Num: Integer): Boolean;
 begin
-  Result:= (i < MenuItems.Count - 1) and
-           (LeftSpaces(MenuItems[i], 2) < LeftSpaces(MenuItems[i+1], 2));
+  Result := (Num < MenuItems.Count - 1) and
+    (LeftSpaces(MenuItems[Num], 2) < LeftSpaces(MenuItems[Num + 1], 2));
 end;
 
-function TQtMenuBar.makeMenuName(m, s: string): string;
+function TQtMenuBar.MakeMenuName(MenuStr, Str: string): string;
 begin
-  if Right(m, -4) = 'Menu' then
-    m:= Copy(m, 1, Length(m) - 4);
-  Result:= m + OnlyCharsAndDigits(s) + 'Menu';
+  if Right(MenuStr, -4) = 'Menu' then
+    MenuStr := Copy(MenuStr, 1, Length(MenuStr) - 4);
+  Result := MenuStr + OnlyCharsAndDigits(Str) + 'Menu';
 end;
 
-function TQtMenuBar.getCreateMenu: string;
+function TQtMenuBar.GetCreateMenu: string;
 begin
-  Result:= Indent2 + 'self.' + Name + ' = self.menuBar()';
+  Result := Indent2 + 'self.' + Name + ' = self.menuBar()';
 end;
 
 procedure TQtMenuBar.CalculateMenus(MenuItems, PyMenu, PyMethods: TStrings);
-  var i, MenuIndent, ls, p: Integer;
-      s, ts, Shortcut: string;
-      MenuName: array[-1..10] of string;
-      MenuText: array[-1..10] of string;
+var
+  MenuIndent, LeftSpac, Posi: Integer;
+  Str, TStr, Shortcut: string;
+  MenuName: array [-1 .. 10] of string;
+  MenuText: array [-1 .. 10] of string;
 
   procedure MakeCommand(Indent: Integer);
-    var Com: string;
+  var
+    Com: string;
   begin
-    if ts = '-' then
-      PyMenu.Add(Indent2 + 'self.' + MenuName[MenuIndent-1] + '.addSeparator()')
-    else begin
-      Com:= MenuName[Indent-1];
-      Com:= Com + OnlyCharsAndDigits(ts) + 'Command';
+    if TStr = '-' then
+      PyMenu.Add(Indent2 + 'self.' + MenuName[MenuIndent - 1] +
+        '.addSeparator()')
+    else
+    begin
+      Com := MenuName[Indent - 1];
+      Com := Com + OnlyCharsAndDigits(TStr) + 'Command';
       PyMethods.Add(Com + '(self):');
-      PyMenu.Add(Indent2 + 'self.' + MenuName[Indent-1] +
-                 '.addAction(' + asString(ts) + Shortcut + ', self.' + Com + ')');
+      PyMenu.Add(Indent2 + 'self.' + MenuName[Indent - 1] + '.addAction(' +
+        AsString(TStr) + Shortcut + ', self.' + Com + ')');
     end;
   end;
 
 begin
-  MenuName[-1]:= Name;
-  MenuText[-1]:= '';
-  MenuIndent:= 0;
+  MenuName[-1] := Name;
+  MenuText[-1] := '';
+  MenuIndent := 0;
   // insert new MenuItems
-  for i:= 0 to MenuItems.Count - 1 do begin
-    s:= MenuItems[i];
-    p:= Pos(',', s);
-    if p > 0 then begin
-      Shortcut:= ', QKeySequence(' + asString(Trim(Copy(s, p+1, Length(s)))) + ')';
-      s:= Copy(s, 1, p-1);
-    end else
-      Shortcut:= '';
-    ts:= Trim(s);
-    ls:= LeftSpaces(s, 2) div 2;
-    if ls < MenuIndent then
-      MenuIndent:= ls;
-    if ls > MenuIndent then begin
+  for var I := 0 to MenuItems.Count - 1 do
+  begin
+    Str := MenuItems[I];
+    Posi := Pos(',', Str);
+    if Posi > 0 then
+    begin
+      Shortcut := ', QKeySequence(' +
+        AsString(Trim(Copy(Str, Posi + 1, Length(Str)))) + ')';
+      Str := Copy(Str, 1, Posi - 1);
+    end
+    else
+      Shortcut := '';
+    TStr := Trim(Str);
+    LeftSpac := LeftSpaces(Str, 2) div 2;
+    if LeftSpac < MenuIndent then
+      MenuIndent := LeftSpac;
+    if LeftSpac > MenuIndent then
+    begin
       MakeCommand(MenuIndent);
       Inc(MenuIndent);
-    end else if hasSubMenu(MenuItems, i) then begin  // create new menu/submenu
-      MenuText[MenuIndent]:= ts;
-      MenuName[MenuIndent]:= makeMenuName(MenuName[MenuIndent-1], s);
-      PyMenu.Add(Indent2 + 'self.' + MenuName[MenuIndent] + ' = self.' + MenuName[MenuIndent-1] + '.addMenu(' + asString(MenuText[MenuIndent]) + ')');
+    end
+    else if HasSubMenu(MenuItems, I) then
+    begin // create new menu/submenu
+      MenuText[MenuIndent] := TStr;
+      MenuName[MenuIndent] := MakeMenuName(MenuName[MenuIndent - 1], Str);
+      PyMenu.Add(Indent2 + 'self.' + MenuName[MenuIndent] + ' = self.' +
+        MenuName[MenuIndent - 1] + '.addMenu(' +
+        AsString(MenuText[MenuIndent]) + ')');
       Inc(MenuIndent);
-    end else
+    end
+    else
       MakeCommand(MenuIndent);
   end;
 end;
 
 procedure TQtMenuBar.MakeMenuItems;
-  var i: Integer;
-      OldMenu: TStringList;
-      OldMethods: TStringList;
-      NewMenu: TStringList;
-      NewMethods: TStringList;
+var
+  OldMenu: TStringList;
+  OldMethods: TStringList;
+  NewMenu: TStringList;
+  NewMethods: TStringList;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   Partner.ParseAndCreateModel;
   FormatItems(FMenuItems);
-  OldMenu:= TStringList.Create;
-  OldMethods:= TStringList.Create;
-  NewMenu:= TStringList.Create;
-  NewMethods:= TStringList.Create;
+  OldMenu := TStringList.Create;
+  OldMethods := TStringList.Create;
+  NewMenu := TStringList.Create;
+  NewMethods := TStringList.Create;
 
-  CalculateMenus(MenuItemsOld, OldMenu, OldMethods);
+  CalculateMenus(FMenuItemsOld, OldMenu, OldMethods);
   CalculateMenus(FMenuItems, NewMenu, NewMethods);
   Partner.DeleteOldAddNewMethods(OldMethods, NewMethods);
 
-  for i:= 0 to OldMenu.Count - 1 do
-    Partner.DeleteLine(OldMenu[i]);
-  Partner.DeleteLine(getCreateMenu);
+  for var I := 0 to OldMenu.Count - 1 do
+    Partner.DeleteLine(OldMenu[I]);
+  Partner.DeleteLine(GetCreateMenu);
   if NewMenu.Text <> '' then
-    Partner.InsertAtBegin(getCreateMenu + CrLf + NewMenu.Text);
+    Partner.InsertAtBegin(GetCreateMenu + CrLf + NewMenu.Text);
 
   FreeAndNil(OldMenu);
   FreeAndNil(OldMethods);
@@ -1762,30 +1951,30 @@ begin
 end;
 
 procedure TQtMenuBar.Rename(const OldName, NewName, Events: string);
-  var i: Integer;
-      OldMenu: TStringList;
-      OldMethods: TStringList;
-      NewMenu: TStringList;
-      NewMethods: TStringList;
+var
+  OldMenu: TStringList;
+  OldMethods: TStringList;
+  NewMenu: TStringList;
+  NewMethods: TStringList;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   Partner.ParseAndCreateModel;
-  OldMenu:= TStringList.Create;
-  OldMethods:= TStringList.Create;
-  NewMenu:= TStringList.Create;
-  NewMethods:= TStringList.Create;
-  MenuItemsOld.Text:= FMenuItems.Text;
-  Name:= OldName;
-  Partner.DeleteLine(getCreateMenu);
-  CalculateMenus(MenuItemsOld, OldMenu, OldMethods);
-  Name:= NewName;
+  OldMenu := TStringList.Create;
+  OldMethods := TStringList.Create;
+  NewMenu := TStringList.Create;
+  NewMethods := TStringList.Create;
+  FMenuItemsOld.Text := FMenuItems.Text;
+  Name := OldName;
+  Partner.DeleteLine(GetCreateMenu);
+  CalculateMenus(FMenuItemsOld, OldMenu, OldMethods);
+  Name := NewName;
   CalculateMenus(FMenuItems, NewMenu, NewMethods);
   Partner.DeleteOldAddNewMethods(OldMethods, NewMethods);
 
-  for i:= 0 to OldMenu.Count - 1 do
-    Partner.DeleteLine(OldMenu[i]);
+  for var I := 0 to OldMenu.Count - 1 do
+    Partner.DeleteLine(OldMenu[I]);
   if NewMenu.Text <> '' then
-    Partner.InsertAtBegin(getCreateMenu + CrLf + NewMenu.Text);
+    Partner.InsertAtBegin(GetCreateMenu + CrLf + NewMenu.Text);
 
   FreeAndNil(OldMenu);
   FreeAndNil(OldMethods);
@@ -1798,49 +1987,52 @@ end;
 procedure TQtMenuBar.DeleteWidget;
 begin
   inherited;
-  MenuItemsOld.Text:= FMenuItems.Text;
+  FMenuItemsOld.Text := FMenuItems.Text;
   FMenuItems.Clear;
   MakeMenuItems;
 end;
 
 procedure TQtMenuBar.Paint;
-  var s, item: string; i: Integer;
+var
+  Str, Item: string;
 begin
-  setBounds(0, 0, Parent.ClientWidth, PPIScale(21));
+  SetBounds(0, 0, Parent.ClientWidth, PPIScale(21));
   inherited;
-  Canvas.Brush.Color:= clWhite;
+  Canvas.Brush.Color := clWhite;
   Canvas.FillRect(Rect(0, 0, Width, Height));
-  s:= '';
-  for i:= 0 to FMenuItems.Count - 1 do begin
-    item:= FMenuItems[i];
-    if (item <> '') and (item[1] <> '-') and (item[1] <> ' ') then
-      s:= s + item + '     ';
+  Str := '';
+  for var I := 0 to FMenuItems.Count - 1 do
+  begin
+    Item := FMenuItems[I];
+    if (Item <> '') and (Item[1] <> '-') and (Item[1] <> ' ') then
+      Str := Str + Item + '     ';
   end;
-  Canvas.TextOut(PPIScale(3), PPIScale(3), s);
+  Canvas.TextOut(PPIScale(3), PPIScale(3), Str);
 end;
 
-{--- TQtMenu -----------------------------------------------------------}
+{ --- TQtMenu ----------------------------------------------------------- }
 
-constructor TQtMenu.Create(AOwner: TComponent);
+constructor TQtMenu.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 86;
-  Width:= 33;
-  Height:= 28;
-  FMenuItems.Text:= 'Cut, Ctrl+X'#13#10'Copy, Ctrl+C'#13#10'Paste, Ctrl+C'#13#10'-'#13#10+
-                    'Delete'#13#10'  All'#13#10'  Selected';
-  Sizeable:= False;
+  inherited Create(Owner);
+  Tag := 86;
+  Width := 33;
+  Height := 28;
+  FMenuItems.Text :=
+    'Cut, Ctrl+X'#13#10'Copy, Ctrl+C'#13#10'Paste, Ctrl+C'#13#10'-'#13#10 +
+    'Delete'#13#10'  All'#13#10'  Selected';
+  Sizeable := False;
 end;
 
 procedure TQtMenu.NewWidget(Widget: string = '');
 begin
-  MenuItemsOld.Text:= '';
+  FMenuItemsOld.Text := '';
   MakeMenuItems;
 end;
 
-function TQtMenu.getCreateMenu: string;
+function TQtMenu.GetCreateMenu: string;
 begin
-  Result:= Indent2 + 'self.' + Name + ' = QMenu()';
+  Result := Indent2 + 'self.' + Name + ' = QMenu()';
 end;
 
 procedure TQtMenu.DeleteWidget;
@@ -1852,22 +2044,22 @@ end;
 procedure TQtMenu.Paint;
 begin
   Canvas.Rectangle(Rect(0, 0, Width, Height));
-  PyIDEMainForm.vilTkinterLight.Draw(Canvas, 7, 4, 16);
+  PyIDEMainForm.vilTkInterLight.Draw(Canvas, 7, 4, 16);
 end;
 
-{--- TQtButtonGroup -----------------------------------------------------------}
+{ --- TQtButtonGroup ----------------------------------------------------------- }
 
-constructor TQtButtonGroup.Create(AOwner: TComponent);
+constructor TQtButtonGroup.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 76;
-  Width:= 120;
-  Height:= 80;
-  FColumns:= 1;
-  FItems:= TStringList.Create;
-  FOldItems:= TStringList.Create;
-  FTitle:= ' ' + _('Continent') + ' ';
-  FCheckboxes:= False;
+  inherited Create(Owner);
+  Tag := 76;
+  Width := 120;
+  Height := 80;
+  FColumns := 1;
+  FItems := TStringList.Create;
+  FOldItems := TStringList.Create;
+  FTitle := ' ' + _('Continent') + ' ';
+  FCheckboxes := False;
 end;
 
 destructor TQtButtonGroup.Destroy;
@@ -1880,160 +2072,187 @@ end;
 procedure TQtButtonGroup.DeleteWidget;
 begin
   inherited;
-  for var i:= 0 to FItems.Count - 1 do
-    Partner.DeleteAttributeValues(RBName(i));
+  for var I := 0 to FItems.Count - 1 do
+    Partner.DeleteAttributeValues(RBName(I));
   Partner.DeleteAttributeValues('self.' + Name + 'BG');
 end;
 
-function TQtButtonGroup.getAttributes(ShowAttributes: Integer): string;
+function TQtButtonGroup.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Columns|Items|Title|Checkboxes';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|Columns|Items|Title|Checkboxes';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtButtonGroup.setAttribute(Attr, Value, Typ: string);
+procedure TQtButtonGroup.SetAttribute(Attr, Value, Typ: string);
 begin
   if (Attr = 'Items') or (Attr = 'Checkboxes') then
-    MakeButtonGroupItems
+    MakeButtongroupItems
   else if Attr = 'Columns' then
     SetPositionAndSize
   else if Attr = 'Title' then
     MakeTitle(Value)
-  else if isFontAttribute(Attr) then begin
-    if Title <> '' then inherited;
+  else if IsFontAttribute(Attr) then
+  begin
+    if Title <> '' then
+      inherited;
     MakeButtongroupItems;
-  end else
+  end
+  else
     inherited;
 end;
 
-function TQtButtonGroup.getEvents(ShowEvents: Integer): string;
+function TQtButtonGroup.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|buttonClicked|buttonPressed|buttonReleased|buttonToggled' +
-           '|idClicked|idPressed|idReleased|idToggled';
+  Result := '|buttonClicked|buttonPressed|buttonReleased|buttonToggled' +
+    '|idClicked|idPressed|idReleased|idToggled';
 end;
 
-procedure TQtButtonGroup.setEvent(Attr: string);
+procedure TQtButtonGroup.SetEvent(Attr: string);
 begin
   if not Partner.hasText('def ' + HandlerNameAndParameter(Attr)) then
     Partner.InsertProcedure(CrLf + MakeHandler(Attr));
   Partner.InsertQtBinding(Name + 'RB', MakeBinding(Attr));
 end;
 
-function TQtButtonGroup.HandlerInfo(const event: string): string;
+function TQtButtonGroup.HandlerInfo(const Event: string): string;
 begin
-  if event = 'buttonToggled' then
-    Result:= 'QAbstractButton, bool;button, checked'
-  else if event = 'idToggled' then
-    Result:= 'int, bool;id, checked'
-  else if Pos('button', event) = 1 then
-    Result:= 'QAbstractButton;button'
-  else if Pos('id', event) = 1 then
-    Result:= 'int;id'
+  if Event = 'buttonToggled' then
+    Result := 'QAbstractButton, bool;button, checked'
+  else if Event = 'idToggled' then
+    Result := 'int, bool;id, checked'
+  else if Pos('button', Event) = 1 then
+    Result := 'QAbstractButton;button'
+  else if Pos('id', Event) = 1 then
+    Result := 'int;id'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-function TQtButtonGroup.RBName(i: Integer): string;
+function TQtButtonGroup.RBName(Num: Integer): string;
 begin
-  Result:= 'self.' + Name + 'RB' + IntToStr(i);
+  Result := 'self.' + Name + 'RB' + IntToStr(Num);
 end;
 
 procedure TQtButtonGroup.MakeButtongroupItems;
-  var i, p: Integer; s, s1, s2: string;
+var
+  Posi: Integer;
+  Str, Str1, Str2: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
-  for i:= 0 to FOldItems.Count - 1 do
-    Partner.DeleteAttributeValues(RBName(i));
+  for var I := 0 to FOldItems.Count - 1 do
+    Partner.DeleteAttributeValues(RBName(I));
   Partner.DeleteAttribute('self.' + Name + 'BG');
   Partner.DeleteAttribute('self.' + Name + 'BG.setExclusive');
   // don't delete handlers
-  s1:= '';
-  s2:= surround('self.' + Name + 'BG = QButtonGroup(self)');
-  if FCheckboxes
-    then s2:= s2 + surround('self.' + Name + 'BG.setExclusive(False)')
-    else s2:= s2 + surround('self.' + Name + 'BG.setExclusive(True)');
-  for i:= 0 to FItems.Count - 1 do begin
-    s:= FItems[i];
-    p:= Pos(', ' + _('selected'), s);
-    if p > 0
-      then s:= asString(Copy(s, 1, p-1))
-      else s:= asString(s);
-    if FCheckboxes
-      then s1:= s1 + surround(RBName(i) + ' = QCheckBox(' + s + ', self.' + Name + ')')
-      else s1:= s1 + surround(RBName(i) + ' = QRadioButton(' + s + ', self.' + Name + ')');
-    s1:= s1 + surround(RBName(i) + '.setGeometry(0, 0, 0, 0)');
-    s2:= s2 + surround('self.' + Name + 'BG.addButton(' + RBName(i) + ')');
-    s2:= s2 + surround('self.' + Name + 'BG.setId(' + RBName(i) + ', ' + IntToStr(i) + ')');
+  Str1 := '';
+  Str2 := Surround('self.' + Name + 'BG = QButtonGroup(self)');
+  if FCheckboxes then
+    Str2 := Str2 + Surround('self.' + Name + 'BG.setExclusive(False)')
+  else
+    Str2 := Str2 + Surround('self.' + Name + 'BG.setExclusive(True)');
+  for var I := 0 to FItems.Count - 1 do
+  begin
+    Str := FItems[I];
+    Posi := Pos(', ' + _('selected'), Str);
+    if Posi > 0 then
+      Str := AsString(Copy(Str, 1, Posi - 1))
+    else
+      Str := AsString(Str);
+    if FCheckboxes then
+      Str1 := Str1 + Surround(RBName(I) + ' = QCheckBox(' + Str + ', self.' +
+        Name + ')')
+    else
+      Str1 := Str1 + Surround(RBName(I) + ' = QRadioButton(' + Str + ', self.' +
+        Name + ')');
+    Str1 := Str1 + Surround(RBName(I) + '.setGeometry(0, 0, 0, 0)');
+    Str2 := Str2 + Surround('self.' + Name + 'BG.addButton(' + RBName(I) + ')');
+    Str2 := Str2 + Surround('self.' + Name + 'BG.setId(' + RBName(I) + ', ' +
+      IntToStr(I) + ')');
   end;
-  insertValue(s1 + s2);
-  FOldItems.Text:= FItems.Text;
-  setPositionAndSize;
+  InsertValue(Str1 + Str2);
+  FOldItems.Text := FItems.Text;
+  SetPositionAndSize;
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
 function TQtButtonGroup.MakeBinding(Eventname: string): string;
 begin
-  Result:= Indent2 + 'self.' + Name + 'BG.' + Eventname + '.connect(self.' + HandlerName(Eventname) + ')';
+  Result := Indent2 + 'self.' + Name + 'BG.' + Eventname + '.connect(self.' +
+    HandlerName(Eventname) + ')';
 end;
 
-procedure TQtButtonGroup.setPositionAndSize;
-  var col, row, ItemsInCol, line, x, y, dx, dy, th: Integer;
-      RadioHeight, RadioWidth, ColWidth, RowHeight, ColWidthRest, RowHeightRest: Integer;
-      xold, yold,ColWidthI, RowHeightI: Integer;
-      key: string;
+procedure TQtButtonGroup.SetPositionAndSize;
+var
+  Col, Row, ItemsInCol, Line, XPos, YPos, DeltaX, DeltaY, TextHeight: Integer;
+  RadioHeight, RadioWidth, ColWidth, RowHeight, ColWidthRest,
+    RowHeightRest: Integer;
+  XOld, YOld, ColWidthI, RowHeightI: Integer;
+  Key: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited;
   Canvas.Font.Assign(Font);
-  th:= Canvas.TextHeight('Hg');
-  if FTitle = '' then begin
-    RadioWidth:= Width;
-    RadioHeight:= Height - PPIScale(4);
-    dy:= PPIScale(2);
-  end else begin
-    RadioWidth:= Width - PPIScale(4);
-    RadioHeight:= Height - th - PPIScale(4);
-    dy:= PPIScale(2) + th;
+  TextHeight := Canvas.TextHeight('Hg');
+  if FTitle = '' then
+  begin
+    RadioWidth := Width;
+    RadioHeight := Height - PPIScale(4);
+    DeltaY := PPIScale(2);
+  end
+  else
+  begin
+    RadioWidth := Width - PPIScale(4);
+    RadioHeight := Height - TextHeight - PPIScale(4);
+    DeltaY := PPIScale(2) + TextHeight;
   end;
-  dx:= Canvas.TextWidth('x');
+  DeltaX := Canvas.TextWidth('x');
 
-  if FItems.Count > 0 then begin
-    ColWidth:= RadioWidth div FColumns;
-    RowHeight:= RadioHeight div ItemsInColumn(1);
-    line:= 0;
-    xold:= 0;
-    ColWidthRest:= RadioWidth mod FColumns;
-    for col:= 0 to FColumns - 1 do begin
-      if ColWidthRest > 0
-        then ColWidthI:= ColWidth + 1
-        else ColWidthI:= ColWidth;
-      if col = 0
-        then x:= dx
-        else x:= xold + ColWidthI;
+  if FItems.Count > 0 then
+  begin
+    ColWidth := RadioWidth div FColumns;
+    RowHeight := RadioHeight div ItemsInColumn(1);
+    Line := 0;
+    XOld := 0;
+    ColWidthRest := RadioWidth mod FColumns;
+    for Col := 0 to FColumns - 1 do
+    begin
+      if ColWidthRest > 0 then
+        ColWidthI := ColWidth + 1
+      else
+        ColWidthI := ColWidth;
+      if Col = 0 then
+        XPos := DeltaX
+      else
+        XPos := XOld + ColWidthI;
       Dec(ColWidthRest);
 
-      yold:= 0;
-      ItemsInCol:= ItemsInColumn(col+1);
-      RowHeightRest:= RadioHeight mod ItemsInColumn(1);
-      for row:= 0 to ItemsInCol - 1 do begin
-        if RowHeightRest > 0
-          then RowHeightI:= RowHeight + 1
-          else RowHeightI:= RowHeight;
-        if row = 0
-          then y:= dy
-          else y:= yold + RowHeightI;
+      YOld := 0;
+      ItemsInCol := ItemsInColumn(Col + 1);
+      RowHeightRest := RadioHeight mod ItemsInColumn(1);
+      for Row := 0 to ItemsInCol - 1 do
+      begin
+        if RowHeightRest > 0 then
+          RowHeightI := RowHeight + 1
+        else
+          RowHeightI := RowHeight;
+        if Row = 0 then
+          YPos := DeltaY
+        else
+          YPos := YOld + RowHeightI;
         Dec(RowHeightRest);
-        key:= RBName(line) + '.setGeometry';
-        setAttributValue(key, key + '(' + IntToStr(PPIUnScale(x)) + ', ' + IntToStr(PPIUnScale(y)) +
-          ', ' + IntToStr(PPIUnScale(ColWidthI)) + ', ' + IntToStr(PPIUnScale(RowHeightI)) + ')');
-        if Pos(', ' + _('selected'), FItems[line]) > 0 then begin
-          key:= RBName(line) + '.setChecked';
-          setAttributValue(key, key + '(True)');
+        Key := RBName(Line) + '.setGeometry';
+        SetAttributValue(Key, Key + '(' + IntToStr(PPIUnScale(XPos)) + ', ' +
+          IntToStr(PPIUnScale(YPos)) + ', ' + IntToStr(PPIUnScale(ColWidthI)) +
+          ', ' + IntToStr(PPIUnScale(RowHeightI)) + ')');
+        if Pos(', ' + _('selected'), FItems[Line]) > 0 then
+        begin
+          Key := RBName(Line) + '.setChecked';
+          SetAttributValue(Key, Key + '(True)');
         end;
-        Inc(line);
-        yold:= y;
+        Inc(Line);
+        YOld := YPos;
       end;
-      xold:= x;
+      XOld := XPos;
     end;
   end;
   Partner.ActiveSynEdit.EndUpdate;
@@ -2041,61 +2260,67 @@ end;
 
 procedure TQtButtonGroup.MakeTitle(Title: string);
 begin
-  FTitle:= Title;
-  MakeAttribut('Title', asString(FTitle));
-  setPositionAndSize;
+  FTitle := Title;
+  MakeAttribut('Title', AsString(FTitle));
+  SetPositionAndSize;
 end;
 
 procedure TQtButtonGroup.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QGroupBox');
   MakeTitle(' ' + _('Continent') + ' ');
-  FItems.Text:= defaultItems;
-  FItems[0]:= FItems[0] + ', ' + _('selected');
+  FItems.Text := DefaultItems;
+  FItems[0] := FItems[0] + ', ' + _('selected');
   MakeButtongroupItems;
 end;
 
-procedure TQtButtonGroup.setItems(Value: TStrings);
+procedure TQtButtonGroup.SetItems(Value: TStrings);
 begin
-  if FItems.Text <> Value.Text then begin
-    FOldItems.Text:= FItems.Text;
-    FItems.Text:= Value.Text;
+  if FItems.Text <> Value.Text then
+  begin
+    FOldItems.Text := FItems.Text;
+    FItems.Text := Value.Text;
     Invalidate;
   end;
 end;
 
-procedure TQtButtonGroup.setColumns(Value: Integer);
+procedure TQtButtonGroup.SetColumns(Value: Integer);
 begin
-  if (FColumns <> Value) and (Value > 0) then begin
-    FColumns:= Value;
+  if (FColumns <> Value) and (Value > 0) then
+  begin
+    FColumns := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtButtonGroup.setTitle(Value: string);
+procedure TQtButtonGroup.SetTitle(Value: string);
 begin
-  if FTitle <> Value then begin
-    FTitle:= Value;
+  if FTitle <> Value then
+  begin
+    FTitle := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtButtonGroup.setCheckboxes(Value: Boolean);
+procedure TQtButtonGroup.SetCheckboxes(Value: Boolean);
 begin
-  if FCheckboxes <> Value then begin
-    FCheckboxes:= Value;
+  if FCheckboxes <> Value then
+  begin
+    FCheckboxes := Value;
     Invalidate;
   end;
 end;
 
-function TQtButtonGroup.ItemsInColumn(i: Integer): Integer;
-  var quot, rest: Integer;
+function TQtButtonGroup.ItemsInColumn(Num: Integer): Integer;
+var
+  Quot, Rest: Integer;
 begin
-  quot:= FItems.Count div FColumns;
-  rest:= FItems.Count mod FColumns;
-  if i <= rest
-    then Result:= quot + 1
-    else Result:= quot;
+  Quot := FItems.Count div FColumns;
+  Rest := FItems.Count mod FColumns;
+  if Num <= Rest then
+    Result := Quot + 1
+  else
+    Result := Quot;
 end;
 
 procedure TQtButtonGroup.Rename(const OldName, NewName, Events: string);
@@ -2105,129 +2330,151 @@ begin
 end;
 
 procedure TQtButtonGroup.Paint;
-  const cRadius = 7;
-  var ColumnWidth, RowHeight, RadioHeight, LabelHeight,
-      col, row, yc, ItemsInCol, line, x, y, th, p, Radius: Integer;
-      R: TRect; s: string;
+const
+  CRadius = 7;
+var
+  ColumnWidth, RowHeight, RadioHeight, LabelHeight, Col, Row, YCenter,
+    ItemsInCol, Line, XPos, YPos, TextHeight, Posi, Radius: Integer;
+  ARect: TRect;
+  Str: string;
 begin
-  FOldItems.Text:= FItems.Text;
+  FOldItems.Text := FItems.Text;
   inherited;
-  Canvas.Brush.Color:= clBtnFace;
+  Canvas.Brush.Color := clBtnFace;
   Canvas.FillRect(ClientRect);
-  th:= Canvas.TextHeight('Hg');
-  Radius:= PPIScale(cRadius);
-  LabelHeight:= 0;
-  RadioHeight:= Height;
-  R:= ClientRect;
-  Canvas.Pen.Color:= $BABABA;
+  TextHeight := Canvas.TextHeight('Hg');
+  Radius := PPIScale(CRadius);
+  LabelHeight := 0;
+  RadioHeight := Height;
+  ARect := ClientRect;
+  Canvas.Pen.Color := $BABABA;
   if FTitle <> '' then
-    R.Top:= th div 2;
-  Canvas.Rectangle(R);
+    ARect.Top := TextHeight div 2;
+  Canvas.Rectangle(ARect);
 
-  if FTitle <> '' then begin
-    R.Top:= th div 2;
-    LabelHeight:= th;
-    RadioHeight:= Height - th;
-    Canvas.Rectangle(R);
-    Canvas.Textout(PPIScale(10), 0, FTitle);
+  if FTitle <> '' then
+  begin
+    ARect.Top := TextHeight div 2;
+    LabelHeight := TextHeight;
+    RadioHeight := Height - TextHeight;
+    Canvas.Rectangle(ARect);
+    Canvas.TextOut(PPIScale(10), 0, FTitle);
   end;
 
-  if FItems.Count > 0 then begin
-    Canvas.Pen.Color:= $333333;
-    ColumnWidth:= Width div FColumns;
-    RowHeight:= RadioHeight div ItemsInColumn(1);
-    line:= 0;
-    for col:= 1 to FColumns do begin
-      ItemsInCol:= ItemsInColumn(col);
-      for row:= 1 to ItemsInCol do begin
-        s:= FItems[line];
-        p:= Pos(', ' + _('selected'), s);
-        if p > 0 then
-          s:= Copy(s, 1, p-1);
-        x:= PPIScale(4) + (col - 1)*ColumnWidth;
-        y:= LabelHeight + PPIScale(2) + (row - 1)*RowHeight;
-        Canvas.Brush.Color:= clWhite;
-        yc:= y + RowHeight div 2 - th div 2;
-        if FCheckboxes then begin
-          R:= Rect(x, y + PPIScale(3), x + PPIScale(13), y + PPIScale(16));
-          Canvas.Rectangle(R);
-          if p > 0 then begin
-            Canvas.Pen.Width:= PPIScale(2);
-            Canvas.MoveTo(x + PPIScale(3), yc + PPIScale(6));
-            Canvas.LineTo(x + PPIScale(4), yc + PPIScale(9));
-            Canvas.LineTo(x + PPIScale(9), yc + PPIScale(3));
-            Canvas.Pen.Width:= 1;
+  if FItems.Count > 0 then
+  begin
+    Canvas.Pen.Color := $333333;
+    ColumnWidth := Width div FColumns;
+    RowHeight := RadioHeight div ItemsInColumn(1);
+    Line := 0;
+    for Col := 1 to FColumns do
+    begin
+      ItemsInCol := ItemsInColumn(Col);
+      for Row := 1 to ItemsInCol do
+      begin
+        Str := FItems[Line];
+        Posi := Pos(', ' + _('selected'), Str);
+        if Posi > 0 then
+          Str := Copy(Str, 1, Posi - 1);
+        XPos := PPIScale(4) + (Col - 1) * ColumnWidth;
+        YPos := LabelHeight + PPIScale(2) + (Row - 1) * RowHeight;
+        Canvas.Brush.Color := clWhite;
+        YCenter := YPos + RowHeight div 2 - TextHeight div 2;
+        if FCheckboxes then
+        begin
+          ARect := Rect(XPos, YPos + PPIScale(3), XPos + PPIScale(13),
+            YPos + PPIScale(16));
+          Canvas.Rectangle(ARect);
+          if Posi > 0 then
+          begin
+            Canvas.Pen.Width := PPIScale(2);
+            Canvas.MoveTo(XPos + PPIScale(3), YCenter + PPIScale(6));
+            Canvas.LineTo(XPos + PPIScale(4), YCenter + PPIScale(9));
+            Canvas.LineTo(XPos + PPIScale(9), YCenter + PPIScale(3));
+            Canvas.Pen.Width := 1;
           end;
-        end else begin
-          yc:= y + RowHeight div 2 - Radius;
-          Canvas.Ellipse(x, yc, x + 2*Radius, yc + 2*Radius);
-          if p > 0 then begin
-            Canvas.Brush.Color:= clBlack;
-            Canvas.Ellipse(x + PPIScale(3), yc + PPIScale(3), x + 2*Radius-PPIScale(3), yc + 2*Radius-PPIScale(3));
-            Canvas.Brush.Color:= clWhite;
+        end
+        else
+        begin
+          YCenter := YPos + RowHeight div 2 - Radius;
+          Canvas.Ellipse(XPos, YCenter, XPos + 2 * Radius,
+            YCenter + 2 * Radius);
+          if Posi > 0 then
+          begin
+            Canvas.Brush.Color := clBlack;
+            Canvas.Ellipse(XPos + PPIScale(3), YCenter + PPIScale(3),
+              XPos + 2 * Radius - PPIScale(3), YCenter + 2 * Radius -
+              PPIScale(3));
+            Canvas.Brush.Color := clWhite;
           end;
         end;
-        Canvas.Brush.Color:= clBtnFace;
-        yc:= y + RowHeight div 2 - th div 2;
-        R:= Rect(x + PPIScale(19), yc, col*ColumnWidth, yc + RowHeight);
-        Canvas.TextRect(R, s);
-        Inc(line);
+        Canvas.Brush.Color := clBtnFace;
+        YCenter := YPos + RowHeight div 2 - TextHeight div 2;
+        ARect := Rect(XPos + PPIScale(19), YCenter, Col * ColumnWidth,
+          YCenter + RowHeight);
+        Canvas.TextRect(ARect, Str);
+        Inc(Line);
       end;
     end;
   end;
 end;
 
-{--- TQtMainWindow ------------------------------------------------------------}
+{ --- TQtMainWindow ------------------------------------------------------------ }
 
-function TQtMainWindow.getAttributes(ShowAttributes: Integer): string;
+function TQtMainWindow.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Title|Animated|DockNestingEnabled|DocumentMode|TabShape|ToolButtonStyle';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|Title|Animated|DockNestingEnabled|DocumentMode|TabShape|ToolButtonStyle';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtMainWindow.setAttribute(Attr, Value, Typ: string);
+procedure TQtMainWindow.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'TabShape' then
     MakeAttribut(Attr, 'QTabWidget.' + Value)
-  else if attr = 'ToolButtonStyle' then
+  else if Attr = 'ToolButtonStyle' then
     MakeAttribut(Attr, 'Qt.ToolButtonStyle.' + Value)
-  else if Attr = 'Title' then begin
-    var s:= 'self.setWindowTitle';
-    setAttributValue(s, s + '(' + asString(Value) + ')');
-  end else
+  else if Attr = 'Title' then
+  begin
+    var
+    Str := 'self.setWindowTitle';
+    SetAttributValue(Str, Str + '(' + AsString(Value) + ')');
+  end
+  else
     inherited;
 end;
 
-function TQtMainWindow.getEvents(ShowEvents: Integer): string;
+function TQtMainWindow.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|iconSizeChanged|tabifiedDockWidgetActivated|toolButtonStyleChanged'; // ToDo
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := '|iconSizeChanged|tabifiedDockWidgetActivated|toolButtonStyleChanged';
+  // ToDo
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtMainWindow.HandlerInfo(const event: string): string;
+function TQtMainWindow.HandlerInfo(const Event: string): string;
 begin
-  if event = 'iconSizeChanged' then
-    Result:= 'QSize;iconSize'
-  else if event = 'tabifiedDockWidgetActivated' then
-    Result:= 'QDockWidget;dockWidget'
-  else if event = 'toolButtonStyleChanged' then
-    Result:= 'QToolButtonStyle;toolButtonStyle'
+  if Event = 'iconSizeChanged' then
+    Result := 'QSize;iconSize'
+  else if Event = 'tabifiedDockWidgetActivated' then
+    Result := 'QDockWidget;dockWidget'
+  else if Event = 'toolButtonStyleChanged' then
+    Result := 'QToolButtonStyle;toolButtonStyle'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtMainWindow.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtMainWindow.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
-  if Parametertypes = 'bool' then begin
+  if Parametertypes = 'bool' then
+  begin
     Slots.Add(Name + '.setAnimated');
     Slots.Add(Name + '.setDockNestingEnabled');
   end;
   inherited;
 end;
 
-function TQtMainWindow.HandlerName(const event: string): string;
+function TQtMainWindow.HandlerName(const Event: string): string;
 begin
-  Result:= 'MainWindow_' + Event;
+  Result := 'MainWindow_' + Event;
 end;
 
 end.

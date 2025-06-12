@@ -1,47 +1,51 @@
-{-------------------------------------------------------------------------------
- Unit:     UQtScrollable
- Author:   Gerhard Röhner
- Date:     July 2022
- Purpose:  PyQt scrollable widgets
--------------------------------------------------------------------------------}
+{ -------------------------------------------------------------------------------
+  Unit:     UQtScrollable
+  Author:   Gerhard Röhner
+  Date:     July 2022
+  Purpose:  PyQt scrollable widgets
+  ------------------------------------------------------------------------------- }
 unit UQtScrollable;
 
 { classes
-    TQtAbstractScrollArea
-      TQtScrollArea
-      TQtPlainTextEdit
-      TQtTextEdit
-        TQtTextBrowser
-      TQtGraphicsView
+  TQtAbstractScrollArea
+  TQtScrollArea
+  TQtPlainTextEdit
+  TQtTextEdit
+  TQtTextBrowser
+  TQtGraphicsView
 
-    TQtAbstractSlider
-      TQtScrollBar
-      TQtSlider
-      TQtDial
+  TQtAbstractSlider
+  TQtScrollBar
+  TQtSlider
+  TQtDial
 }
 
 interface
 
 uses
-  Windows, Graphics, Classes,
-  UBaseQtWidgets, UQtFrameBased;
+  Windows,
+  Graphics,
+  Classes,
+  UBaseQtWidgets,
+  UQtFrameBased;
 
 type
 
   TScrollBarPolicy = (ScrollBarAsNeeded, ScrollBarAlwaysOff, ScrollBarAlwaysOn);
 
-  TSizeAdjustPolicy = (AdjustIgnored, AdjustToContentsOnFirstShow, AdjustToContents);
+  TSizeAdjustPolicy = (AdjustIgnored, AdjustToContentsOnFirstShow,
+    AdjustToContents);
 
-  TTickPosition = (NoTicks, TicksAbove, TicksLeft, TicksBelow,
-                   TicksRight, TicksBothSides);
+  TTickPosition = (NoTicks, TicksAbove, TicksLeft, TicksBelow, TicksRight,
+    TicksBothSides);
 
   TAutoFormattings = (AutoNone, AutoBulletList, AutoAll);
 
   TAutoFormatting = set of TAutoFormattings;
 
   TTextInteractionItem = (NoTextInteraction, TextSelectableByMouse,
-   TextSelectableByKeyboard, LinkAccessibleByMouse, LinkAcessibleByKeyboard,
-   TextEditable, TextEditorInteraction, TextBrowserInteraction);
+    TextSelectableByKeyboard, LinkAccessibleByMouse, LinkAcessibleByKeyboard,
+    TextEditable, TextEditorInteraction, TextBrowserInteraction);
 
   TTextInteractionFlags = set of TTextInteractionItem;
 
@@ -57,7 +61,7 @@ type
   TCacheMode = (CacheNone, CacheBackground);
 
   // QGraphicsView
-  TAnchor =  (NoAnchor, AnchorViewCenter, AnchorUnderMouse);
+  TAnchor = (NoAnchor, AnchorViewCenter, AnchorUnderMouse);
 
   // QGraphicsView
   TViewportUpdateMode = (FullViewportUpdate, MinimalViewportUpdate,
@@ -69,19 +73,21 @@ type
 
   // QGraphicsView
   TOptimizationFlag = (DontSavePainterState, DontAdjustForAntialiasing,
-                       DontClipPainter);
+    DontClipPainter);
   TOptimizationFlags = set of TOptimizationFlag;
 
   // Qt
   TQtBrushStyle = (SolidPattern, Dense1Pattern, Dense2Pattern, Dense3Pattern,
-   Dense4Pattern, Dense5Patten, Dense6Pattern, Dense7Pattern, NoBrush, HorPattern,
-   VerPattern, CrossPattern, BDiagPattern, FDiagPattern, DiagCrossPattern,
-   LinearGradientPattern, RadialGradientPattern, ConicalGradientPattern);
+    Dense4Pattern, Dense5Patten, Dense6Pattern, Dense7Pattern, NoBrush,
+    HorPattern, VerPattern, CrossPattern, BDiagPattern, FDiagPattern,
+    DiagCrossPattern, LinearGradientPattern, RadialGradientPattern,
+    ConicalGradientPattern);
 
-  TTextEditLineWrapMode = (NoWrap, WidgetWidth, FixedPixelWidth, FixedColumnWidth);
-  TPlainTextLineWrapMode = NoWrap..WidgetWidth;
+  TTextEditLineWrapMode = (NoWrap, WidgetWidth, FixedPixelWidth,
+    FixedColumnWidth);
+  TPlainTextLineWrapMode = NoWrap .. WidgetWidth;
   TWordWrapMode = (_WW_NoWrap, _WW_WordWrap, _WW_ManualWrap, _WW_WrapAnywhere,
-                   _WW_WrapAtWordBoundaryOrAnywhere);
+    _WW_WrapAtWordBoundaryOrAnywhere);
 
   TQtAbstractScrollArea = class(TQtFrame)
   private
@@ -89,36 +95,38 @@ type
     FVerticalScrollBarPolicy: TScrollBarPolicy;
     FSizeAdjustPolicy: TSizeAdjustPolicy;
     FTextInteractionFlags: TTextInteractionFlags;
-    procedure setHorizontalScrollBarPolicy(Value: TScrollbarPolicy);
-    procedure setVerticalScrollBarPolicy(Value: TScrollbarPolicy);
+    procedure SetHorizontalScrollBarPolicy(Value: TScrollBarPolicy);
+    procedure SetVerticalScrollBarPolicy(Value: TScrollBarPolicy);
     procedure PaintScrollbars;
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
     procedure Paint; override;
     function InnerRect: TRect; override;
-    procedure PaintAScrollbar(horizontal: Boolean);
+    procedure PaintAScrollbar(Horizontal: Boolean);
     procedure MakeTextInteraction;
-    property TextInteractionFlags: TTextInteractionFlags read FTextInteractionFlags write FTextInteractionFlags;
+    property TextInteractionFlags: TTextInteractionFlags
+      read FTextInteractionFlags write FTextInteractionFlags;
   published
     property HorizontalScrollBarPolicy: TScrollBarPolicy
-      read FHorizontalScrollBarPolicy write setHorizontalScrollBarPolicy;
+      read FHorizontalScrollBarPolicy write SetHorizontalScrollBarPolicy;
     property VerticalScrollBarPolicy: TScrollBarPolicy
-      read FVerticalScrollBarPolicy write setVerticalScrollBarPolicy;
-    property SizeAdjustPolicy: TSizeAdjustPolicy
-      read FSizeAdjustPolicy write FSizeAdjustPolicy;
+      read FVerticalScrollBarPolicy write SetVerticalScrollBarPolicy;
+    property SizeAdjustPolicy: TSizeAdjustPolicy read FSizeAdjustPolicy
+      write FSizeAdjustPolicy;
   end;
 
   TQtScrollArea = class(TQtAbstractScrollArea)
   private
     FWidgetResizable: Boolean;
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
   published
-    property WidgetResizable: Boolean read FWidgetResizable write FWidgetResizable;
+    property WidgetResizable: Boolean read FWidgetResizable
+      write FWidgetResizable;
   end;
 
   TQtPlainTextEdit = class(TQtAbstractScrollArea)
@@ -147,45 +155,56 @@ type
     FUndoRedoEnabled: Boolean;
     FUpdateRequest: string;
     FWordWrapMode: TWordWrapMode;
-    procedure setTabChangesFocus(Value: Boolean);
-    procedure setLineWrapMode(Value: TPlainTextLineWrapMode);
-    procedure setPlainText(Value: TStrings);
-    procedure setPlaceholderText(Value: string);
+    procedure SetTabChangesFocus(Value: Boolean);
+    procedure SetLineWrapMode(Value: TPlainTextLineWrapMode);
+    procedure SetPlainText(Value: TStrings);
+    procedure SetPlaceholderText(Value: string);
     procedure MakePlainText;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property TabChangesFocus: Boolean read FTabChangesFocus write setTabChangesFocus;
+    property TabChangesFocus: Boolean read FTabChangesFocus
+      write SetTabChangesFocus;
     property DocumentTitle: string read FDocumentTitle write FDocumentTitle;
-    property UndoRedoEnabled: Boolean read FUndoRedoEnabled write FUndoRedoEnabled;
-    property LineWrapMode: TPlainTextLineWrapMode read FLineWrapMode write setLineWrapMode;
+    property UndoRedoEnabled: Boolean read FUndoRedoEnabled
+      write FUndoRedoEnabled;
+    property LineWrapMode: TPlainTextLineWrapMode read FLineWrapMode
+      write SetLineWrapMode;
     property ReadOnly: Boolean read FReadOnly write FReadOnly;
-    property PlainText: TStrings read FPlainText write setPlainText;
+    property PlainText: TStrings read FPlainText write SetPlainText;
     property OverwriteMode: Boolean read FOverwriteMode write FOverwriteMode;
     property TabStopWidth: Integer read FTabStopWidth write FTabStopWidth;
-    property TabStopDistance: Integer read FTabStopDistance write FTabStopDistance;
+    property TabStopDistance: Integer read FTabStopDistance
+      write FTabStopDistance;
     property CursorWidth: Integer read FCursorWidth write FCursorWidth;
     property TextInteractionFlags;
-    property MaximumBlockCount: Integer read FMaximumBlockCount write FMaximumBlockCount;
-    property BackgroundVisible: Boolean read FBackgroundVisible write FBackgroundVisible;
+    property MaximumBlockCount: Integer read FMaximumBlockCount
+      write FMaximumBlockCount;
+    property BackgroundVisible: Boolean read FBackgroundVisible
+      write FBackgroundVisible;
     property CenterOnScroll: Boolean read FCenterOnScroll write FCenterOnScroll;
-    property PlaceholderText: string read FPlaceholderText write setPlaceholderText;
+    property PlaceholderText: string read FPlaceHolderText
+      write SetPlaceholderText;
     property WordWrapMode: TWordWrapMode read FWordWrapMode write FWordWrapMode;
     // signals
-    property blockCountChanged: string read FBlockCountChanged write FBlockCountChanged;
+    property blockCountChanged: string read FBlockCountChanged
+      write FBlockCountChanged;
     property copyAvailable: string read FCopyAvailable write FCopyAvailable;
-    property cursorPositionChanged: string read FCursorPositionChanged write FCursorPositionChanged;
-    property modificationChanged: string read FModificationChanged write FModificationChanged;
+    property cursorPositionChanged: string read FCursorPositionChanged
+      write FCursorPositionChanged;
+    property modificationChanged: string read FModificationChanged
+      write FModificationChanged;
     property redoAvailable: string read FRedoAvailable write FRedoAvailable;
-    property selectionChanged: string read FSelectionChanged write FSelectionChanged;
+    property selectionChanged: string read FSelectionChanged
+      write FSelectionChanged;
     property textChanged: string read FTextChanged write FTextChanged;
     property undoAvailable: string read FUndoAvailable write FUndoAvailable;
     property updateRequest: string read FUpdateRequest write FUpdateRequest;
@@ -204,10 +223,10 @@ type
     FHtml: TStrings;
     FOverwriteMode: Boolean;
     FTabStopWidth: Integer;
-    FTabStopDistance: double;
+    FTabStopDistance: Double;
     FAcceptRichText: Boolean;
     FCursorWidth: Integer;
-    FPlaceholderText: string;
+    FPlaceHolderText: string;
     FCopyAvailable: string;
     FCurrentCharFormatChanged: string;
     FCursorPositionChanged: string;
@@ -216,47 +235,55 @@ type
     FTextChanged: string;
     FUndoAvailable: string;
     FWordWrapMode: TWordWrapMode;
-    procedure setLineWrapMode(Value: TTextEditLineWrapMode);
-    procedure setHTML(Value: TStrings);
-    procedure setPlaceholderText(Value: string);
+    procedure SetLineWrapMode(Value: TTextEditLineWrapMode);
+    procedure SetHTML(Value: TStrings);
+    procedure SetPlaceholderText(Value: string);
     procedure MakeAutoFormatting;
     procedure MakeHTML;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property AutoFormatting: TAutoFormatting
-      read FAutoFormatting write FAutoFormatting;
-    property TabChangesFocus: Boolean read FTabChangesFocus write FTabChangesFocus;
+    property AutoFormatting: TAutoFormatting read FAutoFormatting
+      write FAutoFormatting;
+    property TabChangesFocus: Boolean read FTabChangesFocus
+      write FTabChangesFocus;
     property DocumentTitle: string read FDocumentTitle write FDocumentTitle;
-    property UndoRedoEnabled: Boolean read FUndoRedoEnabled write FUndoRedoEnabled;
-    property LineWrapMode: TTextEditLineWrapMode read FLineWrapMode write setLineWrapMode;
-    property LineWarpColumnOrWidth: Integer
-      read FLineWarpColumnOrWidth write FLineWarpColumnOrWidth;
+    property UndoRedoEnabled: Boolean read FUndoRedoEnabled
+      write FUndoRedoEnabled;
+    property LineWrapMode: TTextEditLineWrapMode read FLineWrapMode
+      write SetLineWrapMode;
+    property LineWarpColumnOrWidth: Integer read FLineWarpColumnOrWidth
+      write FLineWarpColumnOrWidth;
     property ReadOnly: Boolean read FReadOnly write FReadOnly;
     property MarkDown: string read FMarkDown write FMarkDown;
-    property Html: TStrings read FHtml write setHtml;
+    property Html: TStrings read FHtml write SetHTML;
     property OverwriteMode: Boolean read FOverwriteMode write FOverwriteMode;
     property TextInteractionFlags;
     property TabStopWidth: Integer read FTabStopWidth write FTabStopWidth;
-    property TabStopDistance: double read FTabStopDistance write FTabStopDistance;
+    property TabStopDistance: Double read FTabStopDistance
+      write FTabStopDistance;
     property AcceptRichText: Boolean read FAcceptRichText write FAcceptRichText;
     property CursorWidth: Integer read FCursorWidth write FCursorWidth;
-    property PlaceholderText: string read FPlaceholderText write setPlaceholderText;
+    property PlaceholderText: string read FPlaceHolderText
+      write SetPlaceholderText;
     property WordWrapMode: TWordWrapMode read FWordWrapMode write FWordWrapMode;
     // signals
     property copyAvailable: string read FCopyAvailable write FCopyAvailable;
-    property currentCharFormatChanged: string read FCurrentCharFormatChanged write FCurrentCharFormatChanged;
-    property cursorPositionChanged: string read FCursorPositionChanged write FCursorPositionChanged;
+    property currentCharFormatChanged: string read FCurrentCharFormatChanged
+      write FCurrentCharFormatChanged;
+    property cursorPositionChanged: string read FCursorPositionChanged
+      write FCursorPositionChanged;
     property redoAvailable: string read FRedoAvailable write FRedoAvailable;
-    property selectionChanged: string read FSelectionChanged write FSelectionChanged;
+    property selectionChanged: string read FSelectionChanged
+      write FSelectionChanged;
     property textChanged: string read FTextChanged write FTextChanged;
     property undoAvailable: string read FUndoAvailable write FUndoAvailable;
   end;
@@ -273,25 +300,28 @@ type
     FHighlighted: string;
     FHistoryChanged: string;
     FSourceChanged: string;
-    function getSearchPaths: string;
+    function GetSearchPaths: string;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
   published
     property Source: string read FSource write FSource;
     property SearchPaths: TStrings read FSearchPaths write FSearchPaths;
-    property OpenExternalLinks: Boolean read FOpenExternalLinks write FOpenExternalLinks;
+    property OpenExternalLinks: Boolean read FOpenExternalLinks
+      write FOpenExternalLinks;
     property OpenLinks: Boolean read FOpenLinks write FOpenLinks;
     // signals
     property anchorClicked: string read FAnchorClicked write FAnchorClicked;
-    property backwardAvailable: string read FBackwardAvailable write FBackwardAvailable;
-    property forwardAvailable: string read FForwardAvailable write FForwardAvailable;
+    property backwardAvailable: string read FBackwardAvailable
+      write FBackwardAvailable;
+    property forwardAvailable: string read FForwardAvailable
+      write FForwardAvailable;
     property highlighted: string read FHighlighted write FHighlighted;
     property historyChanged: string read FHistoryChanged write FHistoryChanged;
     property sourceChanged: string read FSourceChanged write FSourceChanged;
@@ -304,8 +334,8 @@ type
     FForegroundColor: TColor;
     FForegroundStyle: TQtBrushStyle;
     FInteractive: Boolean;
-    //FSceneRect: TQtRect;
-    //FAlignment: TQtAlignment;
+    // FSceneRect: TQtRect;
+    // FAlignment: TQtAlignment;
     FRenderHints: TRenderHints;
     FDragMode: TQtDragMode;
     FCacheMode: TCacheMode;
@@ -319,32 +349,41 @@ type
     procedure MakeOptimizationFlags;
     procedure MakeColorAndStyle(Attr: string);
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property BackgroundColor: TColor read FBackgroundColor write FBackgroundColor;
-    property ForegroundColor: TColor read FForegroundColor write FForegroundColor;
-    property BackgroundStyle: TQtBrushStyle read FBackgroundStyle write FBackgroundStyle;
-    property ForegroundStyle: TQtBrushStyle read FForegroundStyle write FForegroundStyle;
+    property BackgroundColor: TColor read FBackgroundColor
+      write FBackgroundColor;
+    property ForegroundColor: TColor read FForegroundColor
+      write FForegroundColor;
+    property BackgroundStyle: TQtBrushStyle read FBackgroundStyle
+      write FBackgroundStyle;
+    property ForegroundStyle: TQtBrushStyle read FForegroundStyle
+      write FForegroundStyle;
     property Interactive: Boolean read FInteractive write FInteractive;
-    //property SceneRect: TQtRect read FSceneRect write FSceneRect;
-    //property Alignment: TQtAlignment read FAlignment write FAlignment;
+    // property SceneRect: TQtRect read FSceneRect write FSceneRect;
+    // property Alignment: TQtAlignment read FAlignment write FAlignment;
     property RenderHints: TRenderHints read FRenderHints write FRenderHints;
     property DragMode: TQtDragMode read FDragMode write FDragMode;
     property CacheMode: TCacheMode read FCacheMode write FCacheMode;
-    property TransformationAnchor: TAnchor read FTransformationAnchor write FTransformationAnchor;
+    property TransformationAnchor: TAnchor read FTransformationAnchor
+      write FTransformationAnchor;
     property ResizeAnchor: TAnchor read FResizeAnchor write FResizeAnchor;
-    property ViewportUpdateMode: TViewportUpdateMode read FViewportUpdateMode write FViewportUpdateMode;
-    property RubberBandSelectionMode: TRubberBandSelectionMode read FRubberBandSelectionMode write FRubberBandSelectionMode;
-    property OptimizationFlags: TOptimizationFlags read FOptimizationFlags write FOptimizationFlags;
+    property ViewportUpdateMode: TViewportUpdateMode read FViewportUpdateMode
+      write FViewportUpdateMode;
+    property RubberBandSelectionMode: TRubberBandSelectionMode
+      read FRubberBandSelectionMode write FRubberBandSelectionMode;
+    property OptimizationFlags: TOptimizationFlags read FOptimizationFlags
+      write FOptimizationFlags;
     // signals
-    property rubberBandChanged: string read FRubberBandChanged write FRubberBandChanged;
+    property rubberBandChanged: string read FRubberBandChanged
+      write FRubberBandChanged;
   end;
 
   TQtAbstractSlider = class(TBaseQtWidget)
@@ -365,28 +404,31 @@ type
     FSliderPressed: string;
     FSliderReleased: string;
     FValueChanged: string;
-    procedure setOrientation(Value: TOrientation);
-    procedure setValue(Value: Integer);
-    procedure setInvertedAppearance(Value: Boolean);
+    procedure SetOrientation(Value: TOrientation);
+    procedure SetValue(Value: Integer);
+    procedure SetInvertedAppearance(Value: Boolean);
   public
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
-    function HandlerInfo(const event: string): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    function HandlerInfo(const Event: string): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
   published
     property Minimum: Integer read FMinimum write FMinimum;
     property Maximum: Integer read FMaximum write FMaximum;
     property SingleStep: Integer read FSingleStep write FSingleStep;
     property PageStep: Integer read FPageStep write FPageStep;
-    property Value: Integer read FValue write setValue;
+    property Value: Integer read FValue write SetValue;
     property SliderPosition: Integer read FSliderPosition write FSliderPosition;
     property Tracking: Boolean read FTracking write FTracking;
-    property Orientation: TOrientation read FOrientation write setOrientation;
-    property InvertedAppearance: Boolean read FInvertedAppearance write setInvertedAppearance;
-    property InvertedControls: Boolean read FInvertedControls write FInvertedControls;
+    property Orientation: TOrientation read FOrientation write SetOrientation;
+    property InvertedAppearance: Boolean read FInvertedAppearance
+      write SetInvertedAppearance;
+    property InvertedControls: Boolean read FInvertedControls
+      write FInvertedControls;
     // signals
-    property actionTriggered: string read FActionTriggered write FActionTriggered;
+    property actionTriggered: string read FActionTriggered
+      write FActionTriggered;
     property rangeChanged: string read FRangeChanged write FRangeChanged;
     property sliderMoved: string read FSliderMoved write FSliderMoved;
     property sliderPressed: string read FSliderPressed write FSliderPressed;
@@ -396,7 +438,7 @@ type
 
   TQtScrollBar = class(TQtAbstractSlider)
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   end;
@@ -405,63 +447,71 @@ type
   private
     FTickPosition: TTickPosition;
     FTickInterval: Integer;
-    procedure setTickPosition(Value: TTickPosition);
-    procedure setTickInterval(Value: Integer);
+    procedure SetTickPosition(Value: TTickPosition);
+    procedure SetTickInterval(Value: Integer);
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property TickPosition: TTickPosition read FTickPosition write setTickPosition;
-    property TickInterval: Integer read FTickInterval write setTickInterval;
+    property TickPosition: TTickPosition read FTickPosition
+      write SetTickPosition;
+    property TickInterval: Integer read FTickInterval write SetTickInterval;
   end;
 
   TQtDial = class(TQtAbstractSlider)
   private
     FWrapping: Boolean;
-    FNotchTarget: double;
+    FNotchTarget: Double;
     FNotchesVisible: Boolean;
-    procedure setWrapping(Value: Boolean);
-    procedure setNotchTarget(Value: double);
-    procedure setNotchesVisible(Value: Boolean);
+    procedure SetWrapping(Value: Boolean);
+    procedure SetNotchTarget(Value: Double);
+    procedure SetNotchesVisible(Value: Boolean);
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure getSlots(Parametertypes: string; Slots: TStrings); override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
-    property Wrapping: Boolean read FWrapping write setWrapping;
-    property NotchTarget: double read FNotchTarget write setNotchTarget;
-    property NotchesVisible: Boolean read FNotchesVisible write setNotchesVisible;
+    property Wrapping: Boolean read FWrapping write SetWrapping;
+    property NotchTarget: Double read FNotchTarget write SetNotchTarget;
+    property NotchesVisible: Boolean read FNotchesVisible
+      write SetNotchesVisible;
   end;
 
 implementation
 
-uses Controls, SysUtils, Types, Math, UUtils;
+uses
+  Controls,
+  SysUtils,
+  Types,
+  Math,
+  UUtils;
 
-{--- TQtAbstractScrollArea ----------------------------------------------------}
+{ --- TQtAbstractScrollArea ---------------------------------------------------- }
 
-constructor TQtAbstractScrollArea.Create(AOwner: TComponent);
+constructor TQtAbstractScrollArea.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  FTextInteractionFlags:= [TextSelectableByMouse, TextSelectableByKeyboard,
-                           Texteditable];
+  inherited Create(Owner);
+  FTextInteractionFlags := [TextSelectableByMouse, TextSelectableByKeyboard,
+    TextEditable];
 end;
 
-function TQtAbstractScrollArea.getAttributes(ShowAttributes: Integer): string;
+function TQtAbstractScrollArea.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|VerticalScrollBarPolicy|HorizontalScrollBarPolicy|';
+  Result := '|VerticalScrollBarPolicy|HorizontalScrollBarPolicy|';
   if ShowAttributes = 3 then
-    Result:= Result + '|SizeAdjustPolicy';
-  Result:= Result + inherited getAttributes(ShowAttributes)
+    Result := Result + '|SizeAdjustPolicy';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
 procedure TQtAbstractScrollArea.SetAttribute(Attr, Value, Typ: string);
 begin
-  if (Attr = 'HorizontalScrollBarPolicy') or (Attr = 'VerticalScrollBarPolicy')  then
+  if (Attr = 'HorizontalScrollBarPolicy') or (Attr = 'VerticalScrollBarPolicy')
+  then
     MakeAttribut(Attr, 'Qt.ScrollBarPolicy.' + Value)
   else if Attr = 'SizeAdjustPolicy' then
     MakeAttribut(Attr, 'QAbstractScrollArea.SizeAdjustPolicy.' + Value)
@@ -476,100 +526,112 @@ begin
 end;
 
 procedure TQtAbstractScrollArea.PaintScrollbars;
-  var R: TRect;
+var
+  ARect: TRect;
 begin
-  R:= inherited InnerRect;
-  if FHorizontalScrollbarPolicy = ScrollbarAlwaysOn then begin
-    R.Top:= R.Bottom - 16;
-    if FVerticalScrollbarPolicy = ScrollbarAlwaysOn then
-      R.Right:= R.Right - 16;
-    PaintScrollbar(R, True);
+  ARect := inherited InnerRect;
+  if FHorizontalScrollBarPolicy = ScrollBarAlwaysOn then
+  begin
+    ARect.Top := ARect.Bottom - 16;
+    if FVerticalScrollBarPolicy = ScrollBarAlwaysOn then
+      ARect.Right := ARect.Right - 16;
+    PaintScrollbar(ARect, True);
   end;
-  R:= inherited InnerRect;
-  if FVerticalScrollbarPolicy = ScrollbarAlwaysOn then begin
-    R.Left:= R.Right - 16;
-    if FHorizontalScrollbarPolicy = ScrollbarAlwaysOn then
-      R.Bottom:= R.Bottom - 16;
-    PaintScrollbar(R, False);
+  ARect := inherited InnerRect;
+  if FVerticalScrollBarPolicy = ScrollBarAlwaysOn then
+  begin
+    ARect.Left := ARect.Right - 16;
+    if FHorizontalScrollBarPolicy = ScrollBarAlwaysOn then
+      ARect.Bottom := ARect.Bottom - 16;
+    PaintScrollbar(ARect, False);
   end;
 end;
 
-procedure TQtAbstractScrollArea.PaintAScrollbar(horizontal: Boolean);
-  var R: TRect;
+procedure TQtAbstractScrollArea.PaintAScrollbar(Horizontal: Boolean);
+var
+  ARect: TRect;
 begin
-  R:= inherited InnerRect;
-  if horizontal
-    then R.Top:= R.Bottom - 16
-    else R.Left:= R.Right - 16;
-  PaintScrollbar(R, horizontal);
+  ARect := inherited InnerRect;
+  if Horizontal then
+    ARect.Top := ARect.Bottom - 16
+  else
+    ARect.Left := ARect.Right - 16;
+  PaintScrollbar(ARect, Horizontal);
 end;
 
 function TQtAbstractScrollArea.InnerRect: TRect;
 begin
-  Result:= inherited;
-  if FHorizontalScrollBarPolicy = ScrollbarAlwaysOn then
-    Result.Bottom:= Result.Bottom - 16;
-  if FVerticalScrollBarPolicy = ScrollbarAlwaysOn then
-    Result.Right:= Result.Right - 16;
+  Result := inherited;
+  if FHorizontalScrollBarPolicy = ScrollBarAlwaysOn then
+    Result.Bottom := Result.Bottom - 16;
+  if FVerticalScrollBarPolicy = ScrollBarAlwaysOn then
+    Result.Right := Result.Right - 16;
 end;
 
 procedure TQtAbstractScrollArea.MakeTextInteraction;
 begin
-  var s:= '';
+  var
+  Str := '';
   if NoTextInteraction in FTextInteractionFlags then
-    s:= s + '|Qt.TextInteractionFlag.NoTextInteraction';
+    Str := Str + '|Qt.TextInteractionFlag.NoTextInteraction';
   if TextSelectableByMouse in FTextInteractionFlags then
-    s:= s + '|Qt.TextInteractionFlag.TextSelectableByMouse';
+    Str := Str + '|Qt.TextInteractionFlag.TextSelectableByMouse';
   if TextSelectableByKeyboard in FTextInteractionFlags then
-    s:= s + '|Qt.TextInteractionFlag.TextSelectableByKeyboard';
+    Str := Str + '|Qt.TextInteractionFlag.TextSelectableByKeyboard';
   if LinkAccessibleByMouse in FTextInteractionFlags then
-    s:= s + '|Qt.TextInteractionFlag.LinkAccessibleByMouse';
+    Str := Str + '|Qt.TextInteractionFlag.LinkAccessibleByMouse';
   if LinkAcessibleByKeyboard in FTextInteractionFlags then
-    s:= s + '|Qt.TextInteractionFlag.LinkAcessibleByKeyboard';
+    Str := Str + '|Qt.TextInteractionFlag.LinkAcessibleByKeyboard';
   if TextEditable in FTextInteractionFlags then
-    s:= s + '|Qt.TextInteractionFlag.TextEditable';
+    Str := Str + '|Qt.TextInteractionFlag.TextEditable';
   if TextEditorInteraction in FTextInteractionFlags then
-    s:= s + '|Qt.TextInteractionFlag.TextEditorInteraction';
+    Str := Str + '|Qt.TextInteractionFlag.TextEditorInteraction';
   if TextBrowserInteraction in FTextInteractionFlags then
-    s:= s + '|Qt.TextInteractionFlag.TextBrowserInteraction';
-  if s <> '' then begin
-    Delete(s, 1, 1);
-    MakeAttribut('TextInteractionFlags', s);
-  end else
-    Partner.DeleteAttribute('self.' + name + '.setTextInteractionFlags');
+    Str := Str + '|Qt.TextInteractionFlag.TextBrowserInteraction';
+  if Str <> '' then
+  begin
+    Delete(Str, 1, 1);
+    MakeAttribut('TextInteractionFlags', Str);
+  end
+  else
+    Partner.DeleteAttribute('self.' + Name + '.setTextInteractionFlags');
 end;
 
-procedure TQtAbstractScrollArea.setHorizontalScrollBarPolicy(Value: TScrollbarPolicy);
+procedure TQtAbstractScrollArea.SetHorizontalScrollBarPolicy
+  (Value: TScrollBarPolicy);
 begin
-  if Value <> FHorizontalScrollBarPolicy then begin
-    FHorizontalScrollBarPolicy:= Value;
+  if Value <> FHorizontalScrollBarPolicy then
+  begin
+    FHorizontalScrollBarPolicy := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtAbstractScrollArea.setVerticalScrollBarPolicy(Value: TScrollbarPolicy);
+procedure TQtAbstractScrollArea.SetVerticalScrollBarPolicy
+  (Value: TScrollBarPolicy);
 begin
-  if Value <> FVerticalScrollBarPolicy then begin
-    FVerticalScrollBarPolicy:= Value;
+  if Value <> FVerticalScrollBarPolicy then
+  begin
+    FVerticalScrollBarPolicy := Value;
     Invalidate;
   end;
 end;
 
-{--- TQtScrollArea ------------------------------------------------------------}
+{ --- TQtScrollArea ------------------------------------------------------------ }
 
-constructor TQtScrollArea.Create(AOwner: TComponent);
+constructor TQtScrollArea.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 113;
-  Width:= 120;
-  Height:= 80;
-  FrameShadow:= Sunken;
+  inherited Create(Owner);
+  Tag := 113;
+  Width := 120;
+  Height := 80;
+  FrameShadow := Sunken;
 end;
 
-function TQtScrollArea.getAttributes(ShowAttributes: Integer): string;
+function TQtScrollArea.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|WidgetResizable';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|WidgetResizable';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
 procedure TQtScrollArea.NewWidget(Widget: string = '');
@@ -577,24 +639,24 @@ begin
   inherited NewWidget('QScrollArea');
 end;
 
-{--- TQtPlainTextEdit ---------------------------------------------------------}
+{ --- TQtPlainTextEdit --------------------------------------------------------- }
 
-constructor TQtPlainTextEdit.Create(AOwner: TComponent);
+constructor TQtPlainTextEdit.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 73;
-  Width:= 120;
-  Height:= 80;
-  FrameShape:= StyledPanel;
-  FrameShadow:= Sunken;
-  LineWidth:= 1;
-  FUndoRedoEnabled:= True;
-  FLineWrapMode:= WidgetWidth;
-  FTabStopWidth:= 80;
-  FTabStopdistance:= 80;
-  Cursor:= crIBeam;
-  FCursorWidth:= 1;
-  FPlainText:= TStringList.Create;
+  inherited Create(Owner);
+  Tag := 73;
+  Width := 120;
+  Height := 80;
+  LineWidth := 1;
+  Cursor := crIBeam;
+  FrameShape := StyledPanel;
+  FrameShadow := Sunken;
+  FUndoRedoEnabled := True;
+  FLineWrapMode := WidgetWidth;
+  FTabStopWidth := 80;
+  FTabStopDistance := 80;
+  FCursorWidth := 1;
+  FPlainText := TStringList.Create;
 end;
 
 destructor TQtPlainTextEdit.Destroy;
@@ -603,22 +665,22 @@ begin
   inherited;
 end;
 
-function TQtPlainTextEdit.getAttributes(ShowAttributes: Integer): string;
+function TQtPlainTextEdit.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|PlainText|PlaceholderText';
+  Result := '|PlainText|PlaceholderText';
   if ShowAttributes >= 2 then
-    Result:= Result + '|LineWrapMode';
+    Result := Result + '|LineWrapMode';
   if ShowAttributes = 3 then
-    Result:= Result + '|TabChangesFocus|UndoRedoEnabled|ReadOnly|DocumentTitle' +
-                      '|OverwriteMode|TabStopWidth|TabStopDistance|CursorWidth' +
-                      '|MaximumBlockCount|BackgroundVisible|CenterOnScroll' +
-                      '|TextInteractionFlags|WordWrapMode';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|TabChangesFocus|UndoRedoEnabled|ReadOnly|DocumentTitle'
+      + '|OverwriteMode|TabStopWidth|TabStopDistance|CursorWidth' +
+      '|MaximumBlockCount|BackgroundVisible|CenterOnScroll' +
+      '|TextInteractionFlags|WordWrapMode';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtPlainTextEdit.setAttribute(Attr, Value, Typ: string);
+procedure TQtPlainTextEdit.SetAttribute(Attr, Value, Typ: string);
 begin
-  if Attr = 'LineWrapMode'  then
+  if Attr = 'LineWrapMode' then
     MakeAttribut(Attr, 'QPlainTextEdit.LineWrapMode.' + Value)
   else if Attr = 'PlainText' then
     MakePlainText
@@ -628,33 +690,34 @@ begin
     inherited;
 end;
 
-function TQtPlainTextEdit.getEvents(ShowEvents: Integer): string;
+function TQtPlainTextEdit.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|blockCountChanged|copyAvailable|cursorPositionChanged' +
-           '|modificationChanged|redoAvailable|selectionChanged' +
-           '|textChanged|undoAvailable|updateRequest';
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := '|blockCountChanged|copyAvailable|cursorPositionChanged' +
+    '|modificationChanged|redoAvailable|selectionChanged' +
+    '|textChanged|undoAvailable|updateRequest';
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtPlainTextEdit.HandlerInfo(const event: string): string;
+function TQtPlainTextEdit.HandlerInfo(const Event: string): string;
 begin
-  if event = 'blockCountChanged' then
-    Result:= 'int;newBlockCount'
-  else if event = 'copyAvailable' then
-    Result:= 'bool;yes'
-  else if event = 'modificationChanged' then
-    Result:= 'bool;changed'
-  else if (event = 'redoAvailable') or (event = 'undoAvailable') then
-    Result:= 'bool;available'
-  else if event = 'updateRequest' then
-    Result:= 'QRect, int;rect, dy'
+  if Event = 'blockCountChanged' then
+    Result := 'int;newBlockCount'
+  else if Event = 'copyAvailable' then
+    Result := 'bool;yes'
+  else if Event = 'modificationChanged' then
+    Result := 'bool;changed'
+  else if (Event = 'redoAvailable') or (Event = 'undoAvailable') then
+    Result := 'bool;available'
+  else if Event = 'updateRequest' then
+    Result := 'QRect, int;rect, dy'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtPlainTextEdit.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtPlainTextEdit.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
-  if Parametertypes = '' then begin
+  if Parametertypes = '' then
+  begin
     Slots.Add(Name + '.centerCursor');
     Slots.Add(Name + '.clear');
     Slots.Add(Name + '.copy');
@@ -663,12 +726,16 @@ begin
     Slots.Add(Name + '.redo');
     Slots.Add(Name + '.selectAll');
     Slots.Add(Name + '.undo');
-  end else if Parametertypes = 'QString' then begin
+  end
+  else if Parametertypes = 'QString' then
+  begin
     Slots.Add(Name + '.appendHtml');
     Slots.Add(Name + '.appendPlainText');
     Slots.Add(Name + '.insertPlainText');
     Slots.Add(Name + '.setPlainText');
-  end else if Parametertypes = 'int' then begin
+  end
+  else if Parametertypes = 'int' then
+  begin
     Slots.Add(Name + '.zoomIn');
     Slots.Add(Name + '.zoomOut');
   end;
@@ -677,7 +744,8 @@ end;
 
 procedure TQtPlainTextEdit.MakePlainText;
 begin
-  MakeAttribut('PlainText', asString(myStringReplace(FPlainText.Text, sLineBreak, '\n')));
+  MakeAttribut('PlainText', AsString(MyStringReplace(FPlainText.Text,
+    sLineBreak, '\n')));
 end;
 
 procedure TQtPlainTextEdit.NewWidget(Widget: string = '');
@@ -686,85 +754,97 @@ begin
 end;
 
 procedure TQtPlainTextEdit.Paint;
-  var w, h, format: Integer;
-      SL: TStringList; R: TRect;
+var
+  AWidth, AHeight, Format: Integer;
+  StringList: TStringList;
+  ARect: TRect;
 begin
   inherited;
-  R:= InnerRect;
-  R.Inflate(-HalfX, -HalfX);
-  Canvas.Brush.Color:= clWhite;
-  Canvas.FillRect(R);
-  SL:= TStringList.Create;
-  format:= DT_LEFT;
-  if FLineWrapMode = WidgetWidth then begin
-    format:= format + DT_WORDBREAK;
-    WrapText(FPlainText.Text, R.Right - R.Left, w, h, SL);
-  end else
-    CalculateText(FPlainText.Text, w, h, SL);
-  if SL.Text <> CrLf then
-    DrawText(Canvas.Handle, PChar(SL.Text), Length(SL.Text), R, format);
-  FreeAndNil(SL);
+  ARect := InnerRect;
+  ARect.Inflate(-HalfX, -HalfX);
+  Canvas.Brush.Color := clWhite;
+  Canvas.FillRect(ARect);
+  StringList := TStringList.Create;
+  Format := DT_LEFT;
+  if FLineWrapMode = WidgetWidth then
+  begin
+    Format := Format + DT_WORDBREAK;
+    WrapText(FPlainText.Text, ARect.Right - ARect.Left, AWidth, AHeight,
+      StringList);
+  end
+  else
+    CalculateText(FPlainText.Text, AWidth, AHeight, StringList);
+  if StringList.Text <> CrLf then
+    DrawText(Canvas.Handle, PChar(StringList.Text), Length(StringList.Text),
+      ARect, Format);
+  FreeAndNil(StringList);
 end;
 
-procedure TQtPlainTextEdit.setTabChangesFocus(Value: Boolean);
+procedure TQtPlainTextEdit.SetTabChangesFocus(Value: Boolean);
 begin
-  if Value <> FTabChangesFocus then begin
-    FTabChangesFocus:= Value;
+  if Value <> FTabChangesFocus then
+  begin
+    FTabChangesFocus := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtPlainTextEdit.setLineWrapMode(Value: TPlainTextLineWrapMode);
+procedure TQtPlainTextEdit.SetLineWrapMode(Value: TPlainTextLineWrapMode);
 begin
-  if Value <> FLineWrapMode then begin
-    FLineWrapMode:= Value;
+  if Value <> FLineWrapMode then
+  begin
+    FLineWrapMode := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtPlainTextEdit.setPlainText(Value: TStrings);
+procedure TQtPlainTextEdit.SetPlainText(Value: TStrings);
 begin
-  if Value.text <> FPlainText.Text then begin
+  if Value.Text <> FPlainText.Text then
+  begin
     FPlainText.Assign(Value);
     Invalidate;
   end;
 end;
 
-procedure TQtPlainTextEdit.setPlaceholderText(Value: string);
+procedure TQtPlainTextEdit.SetPlaceholderText(Value: string);
 begin
-  if Value <> FPlaceholderText then begin
-    FPlaceholderText:= Value;
+  if Value <> FPlaceHolderText then
+  begin
+    FPlaceHolderText := Value;
     Invalidate;
   end;
 end;
 
-{--- TQtTextEdit --------------------------------------------------------------}
+{ --- TQtTextEdit -------------------------------------------------------------- }
 
-constructor TQtTextEdit.Create(AOwner: TComponent);
-  var SL: TStringList;
+constructor TQtTextEdit.Create(Owner: TComponent);
+var
+  StringList: TStringList;
 begin
-  inherited Create(AOwner);
-  Tag:= 101;
-  Width:= 120;
-  Height:= 80;
-  FrameShape:= StyledPanel;
-  FrameShadow:= Sunken;
-  LineWidth:= 1;
-  FUndoRedoEnabled:= True;
-  FLineWrapMode:= WidgetWidth;
-  FHtml:= TStringList.Create;
-  SL:= TStringList.Create;
-  SL.Text:= DefaultItems;
-  var s:= '<ul>'#13#10;
-  for var i:= 0 to SL.Count-1 do
-    s:= s  + '<li>' + SL[i] + '</li>' + #13#10;
-  FHtml.Text:= s + '</ul>'#13#10;
-  FreeAndNil(SL);
-  FTabStopWidth:= 80;
-  FTabStopDistance:= 80;
-  FAcceptRichtext:= True;
-  FCursorWidth:= 1;
-  Cursor:= crIBeam;
+  inherited Create(Owner);
+  Tag := 101;
+  Width := 120;
+  Height := 80;
+  FrameShape := StyledPanel;
+  FrameShadow := Sunken;
+  LineWidth := 1;
+  FUndoRedoEnabled := True;
+  FLineWrapMode := WidgetWidth;
+  FHtml := TStringList.Create;
+  StringList := TStringList.Create;
+  StringList.Text := DefaultItems;
+  var
+  Str := '<ul>'#13#10;
+  for var I := 0 to StringList.Count - 1 do
+    Str := Str + '<li>' + StringList[I] + '</li>' + #13#10;
+  FHtml.Text := Str + '</ul>'#13#10;
+  FreeAndNil(StringList);
+  FTabStopWidth := 80;
+  FTabStopDistance := 80;
+  FAcceptRichText := True;
+  FCursorWidth := 1;
+  Cursor := crIBeam;
 end;
 
 destructor TQtTextEdit.Destroy;
@@ -773,23 +853,25 @@ begin
   FreeAndNil(FHtml);
 end;
 
-function TQtTextEdit.getAttributes(ShowAttributes: Integer): string;
+function TQtTextEdit.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|AutoFormatting|DocumentTitle|UndoRedoEnabled|ReadOnly|Markdown' +
-           '|Html|OverwriteMode|TabStopWidth|AcceptRichText|PlaceholderText';
+  Result := '|AutoFormatting|DocumentTitle|UndoRedoEnabled|ReadOnly|Markdown' +
+    '|Html|OverwriteMode|TabStopWidth|AcceptRichText|PlaceholderText';
   if ShowAttributes >= 2 then
-    Result:= Result + '|CursorWidth|TextInteractionFlags|TabStopDistance' +
-              '|LineWrapColumnsOrWidth|LineWrapMode|TabChangesFocus|WordWrapMode';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|CursorWidth|TextInteractionFlags|TabStopDistance' +
+      '|LineWrapColumnsOrWidth|LineWrapMode|TabChangesFocus|WordWrapMode';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtTextEdit.setAttribute(Attr, Value, Typ: string);
+procedure TQtTextEdit.SetAttribute(Attr, Value, Typ: string);
 begin
-  if Attr = 'LineWrapMode'  then
+  if Attr = 'LineWrapMode' then
     MakeAttribut(Attr, 'QTextEdit.' + Value)
-  else if (Attr = 'AutoNone') or (Attr = 'AutoBulletList') or (Attr = 'AutoAll') then
+  else if (Attr = 'AutoNone') or (Attr = 'AutoBulletList') or (Attr = 'AutoAll')
+  then
     MakeAutoFormatting
-  else if (Pos('Text', Attr) = 1) or (Pos('Link', Attr) = 1) or (Attr = 'NoTextInteraction') then
+  else if (Pos('Text', Attr) = 1) or (Pos('Link', Attr) = 1) or
+    (Attr = 'NoTextInteraction') then
     MakeTextInteraction
   else if Attr = 'Html' then
     MakeHTML
@@ -799,28 +881,29 @@ begin
     inherited;
 end;
 
-function TQtTextEdit.getEvents(ShowEvents: Integer): string;
+function TQtTextEdit.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|copyAvailable|currentCharFormatChanged|cursorPositionChanged' +
-           '|redoAvailable|selectionChanged|textChanged|undoAvailable';
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := '|copyAvailable|currentCharFormatChanged|cursorPositionChanged' +
+    '|redoAvailable|selectionChanged|textChanged|undoAvailable';
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtTextEdit.HandlerInfo(const event: string): string;
+function TQtTextEdit.HandlerInfo(const Event: string): string;
 begin
-  if event = 'copyAvailable' then
-    Result:= 'bool;yes'
-  else if event = 'currentCharFormatChanged' then
-    Result:= 'QTextCharFormat;f'
-  else if (event = 'redoAvailable') or (event = 'undoAvailable') then
-    Result:= 'bool;available'
+  if Event = 'copyAvailable' then
+    Result := 'bool;yes'
+  else if Event = 'currentCharFormatChanged' then
+    Result := 'QTextCharFormat;f'
+  else if (Event = 'redoAvailable') or (Event = 'undoAvailable') then
+    Result := 'bool;available'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtTextEdit.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtTextEdit.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
-  if Parametertypes = '' then begin
+  if Parametertypes = '' then
+  begin
     Slots.Add(Name + '.clear(');
     Slots.Add(Name + '.copy');
     Slots.Add(Name + '.cut');
@@ -828,24 +911,30 @@ begin
     Slots.Add(Name + '.redo');
     Slots.Add(Name + '.selectAll');
     Slots.Add(Name + '.undo(');
-  end else if Parametertypes = 'QString' then begin
+  end
+  else if Parametertypes = 'QString' then
+  begin
     Slots.Add(Name + '.append');
     Slots.Add(Name + '.insertHtml');
     Slots.Add(Name + '.insertPlainText');
     Slots.Add(Name + '.scrollToAnchor');
     Slots.Add(Name + '.setFontFamily');
-    Slots.Add(Name + '.setHtml');
+    Slots.Add(Name + '.setHTML');
     Slots.Add(Name + '.setMarkdown');
     Slots.Add(Name + '.setPlainText');
     Slots.Add(Name + '.setText');
-  end else if Parametertypes = 'QFont' then
+  end
+  else if Parametertypes = 'QFont' then
     Slots.Add(Name + '.setCurrentFont')
-  else if Parametertypes = 'bool' then begin
+  else if Parametertypes = 'bool' then
+  begin
     Slots.Add(Name + '.setFontItalic');
     Slots.Add(Name + '.setFontUnderline');
-  end else if Parametertypes = 'int' then
+  end
+  else if Parametertypes = 'int' then
     Slots.Add(Name + '.setFontWeight')
-  else if Parametertypes = 'QColor' then begin
+  else if Parametertypes = 'QColor' then
+  begin
     Slots.Add(Name + '.setTextBackgroundColor');
     Slots.Add(Name + '.setTextColor');
   end;
@@ -854,91 +943,104 @@ end;
 
 procedure TQtTextEdit.MakeAutoFormatting;
 begin
-  var s:= '';
+  var
+  Str := '';
   if AutoNone in FAutoFormatting then
-    s:= s + '|QTextEdit.AutoNone';
+    Str := Str + '|QTextEdit.AutoNone';
   if AutoBulletList in FAutoFormatting then
-    s:= s + '|QTextEdit.AutoBulletList';
+    Str := Str + '|QTextEdit.AutoBulletList';
   if AutoAll in FAutoFormatting then
-    s:= s + '|QTextEdit.AutoAll';
-  if s <> '' then begin
-    Delete(s, 1, 1);
-    MakeAttribut('AutoFormatting', s);
-  end else
-    Partner.DeleteAttribute('self.' + name + '.setAutoFormatting');
+    Str := Str + '|QTextEdit.AutoAll';
+  if Str <> '' then
+  begin
+    Delete(Str, 1, 1);
+    MakeAttribut('AutoFormatting', Str);
+  end
+  else
+    Partner.DeleteAttribute('self.' + Name + '.setAutoFormatting');
 end;
 
-procedure TQtTextedit.MakeHTML;
+procedure TQtTextEdit.MakeHTML;
 begin
-  MakeAttribut('Html', asString(myStringReplace(FHtml.Text, sLineBreak, '\n')));
+  MakeAttribut('Html', AsString(MyStringReplace(FHtml.Text, sLineBreak, '\n')));
 end;
 
 procedure TQtTextEdit.NewWidget(Widget: string = '');
 begin
-  if Widget = ''then begin
+  if Widget = '' then
+  begin
     inherited NewWidget('QTextEdit');
     MakeHTML;
-  end else
+  end
+  else
     inherited NewWidget('QTextBrowser');
 end;
 
 procedure TQtTextEdit.Paint;
-  var w, h, format: Integer;
-      SL: TStringList; R: TRect;
+var
+  AWidth, AHeight, Format: Integer;
+  StringList: TStringList;
+  ARect: TRect;
 begin
   inherited;
-  R:= InnerRect;
-  R.Inflate(-HalfX, -HalfX);
-  Canvas.Brush.Color:= clWhite;
-  Canvas.FillRect(R);
-  SL:= TStringList.Create;
-  format:= DT_LEFT;
-  if FLineWrapMode = WidgetWidth then begin
-    format:= format + DT_WORDBREAK;
-    WrapText(FHtml.Text, R.Right - R.Left, w, h, SL);
-  end else
-    CalculateText(FHtml.Text, w, h, SL);
-  if SL.Text <> CrLf then
-    DrawText(Canvas.Handle, PChar(SL.Text), Length(SL.Text), R, format);
-  FreeAndNil(SL);
+  ARect := InnerRect;
+  ARect.Inflate(-HalfX, -HalfX);
+  Canvas.Brush.Color := clWhite;
+  Canvas.FillRect(ARect);
+  StringList := TStringList.Create;
+  Format := DT_LEFT;
+  if FLineWrapMode = WidgetWidth then
+  begin
+    Format := Format + DT_WORDBREAK;
+    WrapText(FHtml.Text, ARect.Right - ARect.Left, AWidth, AHeight, StringList);
+  end
+  else
+    CalculateText(FHtml.Text, AWidth, AHeight, StringList);
+  if StringList.Text <> CrLf then
+    DrawText(Canvas.Handle, PChar(StringList.Text), Length(StringList.Text),
+      ARect, Format);
+  FreeAndNil(StringList);
 end;
 
-procedure TQtTextEdit.setLineWrapMode(Value: TTextEditLineWrapMode);
+procedure TQtTextEdit.SetLineWrapMode(Value: TTextEditLineWrapMode);
 begin
-  if Value <> FLineWrapMode then begin
-    FLineWrapMode:= Value;
+  if Value <> FLineWrapMode then
+  begin
+    FLineWrapMode := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtTextEdit.setHTML(Value: TStrings);
+procedure TQtTextEdit.SetHTML(Value: TStrings);
 begin
-  if Value.Text <> FHtml.Text then begin
+  if Value.Text <> FHtml.Text then
+  begin
     FHtml.Assign(Value);
     Invalidate;
   end;
 end;
 
-procedure TQtTextEdit.setPlaceholderText(Value: string);
+procedure TQtTextEdit.SetPlaceholderText(Value: string);
 begin
-  if Value <> FPlaceholderText then begin
-    FPlaceholderText:= Value;
+  if Value <> FPlaceHolderText then
+  begin
+    FPlaceHolderText := Value;
     Invalidate;
   end;
 end;
 
-{--- TQtTextBrowser -----------------------------------------------------------}
+{ --- TQtTextBrowser ----------------------------------------------------------- }
 
-constructor TQtTextBrowser.Create(AOwner: TComponent);
+constructor TQtTextBrowser.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 102;
-  FrameShape:= StyledPanel;
-  FrameShadow:= Sunken;
-  LineWidth:= 1;
-  FOpenLinks:= True;
-  FSearchPaths:= TStringList.Create;
-  FSearchPaths.Text:= '';
+  inherited Create(Owner);
+  Tag := 102;
+  FrameShape := StyledPanel;
+  FrameShadow := Sunken;
+  LineWidth := 1;
+  FOpenLinks := True;
+  FSearchPaths := TStringList.Create;
+  FSearchPaths.Text := '';
 end;
 
 destructor TQtTextBrowser.Destroy;
@@ -947,58 +1049,60 @@ begin
   FreeAndNil(FSearchPaths);
 end;
 
-function TQtTextBrowser.getAttributes(ShowAttributes: Integer): string;
+function TQtTextBrowser.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Source|SearchPaths|OpenExternalLinks|OpenLinks';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|Source|SearchPaths|OpenExternalLinks|OpenLinks';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtTextBrowser.setAttribute(Attr, Value, Typ: string);
+procedure TQtTextBrowser.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'SearchPaths' then
-    MakeAttribut(Attr, getSearchPaths)
+    MakeAttribut(Attr, GetSearchPaths)
   else if Attr = 'Source' then
-    MakeAttribut(Attr, 'QUrl(' + asString(Value) + ')')
+    MakeAttribut(Attr, 'QUrl(' + AsString(Value) + ')')
   else
     inherited;
 end;
 
-function TQtTextBrowser.getSearchPaths: string;
+function TQtTextBrowser.GetSearchPaths: string;
 begin
-  Result:= '';
-  for var i:= 0 to FSearchPaths.Count - 1 do
-    Result:= Result + asString(FSearchPaths[i]) + ', ';
+  Result := '';
+  for var I := 0 to FSearchPaths.Count - 1 do
+    Result := Result + AsString(FSearchPaths[I]) + ', ';
   Delete(Result, Length(Result) - 1, 2);
-  Result:= '[' + Result + ']';
+  Result := '[' + Result + ']';
 end;
 
-function TQtTextBrowser.getEvents(ShowEvents: Integer): string;
+function TQtTextBrowser.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|anchorClicked|backwardAvailable|forwardAvailable' +
-           '|highlighted|historyChanged|sourceChanged';
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := '|anchorClicked|backwardAvailable|forwardAvailable' +
+    '|highlighted|historyChanged|sourceChanged';
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtTextBrowser.HandlerInfo(const event: string): string;
+function TQtTextBrowser.HandlerInfo(const Event: string): string;
 begin
-  if (event = 'anchorClicked') or (event = 'highlighted') then
-    Result:= 'QUrl;link'
-  else if (event = 'backwardAvailable') or (event = 'forwardAvailable') then
-    Result:= 'bool;available'
-  else if event = 'sourceChanged' then
-    Result:= 'QUrl;src'
+  if (Event = 'anchorClicked') or (Event = 'highlighted') then
+    Result := 'QUrl;link'
+  else if (Event = 'backwardAvailable') or (Event = 'forwardAvailable') then
+    Result := 'bool;available'
+  else if Event = 'sourceChanged' then
+    Result := 'QUrl;src'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtTextBrowser.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtTextBrowser.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
-  if Parametertypes = '' then begin
+  if Parametertypes = '' then
+  begin
     Slots.Add(Name + '.backward');
     Slots.Add(Name + '.forward');
     Slots.Add(Name + '.home');
     Slots.Add(Name + '.reload');
-  end else if Parametertypes = 'QUrl, QTextDocument' then
+  end
+  else if Parametertypes = 'QUrl, QTextDocument' then
     Slots.Add(Name + '.setSource');
   inherited;
 end;
@@ -1008,47 +1112,47 @@ begin
   inherited NewWidget('QTextBrowser');
 end;
 
-{--- TQtGraphicsView ----------------------------------------------------------}
+{ --- TQtGraphicsView ---------------------------------------------------------- }
 
-constructor TQtGraphicsView.Create(AOwner: TComponent);
+constructor TQtGraphicsView.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 120;
-  Width:= 256;
-  Height:= 104;
-  FrameShape:= StyledPanel;
-  FrameShadow:= Sunken;
-  LineWidth:= 1;
-  FInteractive:= True;
-  FRenderHints:= [TextAntialiasing];
-  FTransformationAnchor:= AnchorViewCenter;
-  FViewportUpdateMode:= MinimalViewportUpdate;
-  FRubberBandSelectionMode:= IntersectsItemShape;
+  inherited Create(Owner);
+  Tag := 120;
+  Width := 256;
+  Height := 104;
+  FrameShape := StyledPanel;
+  FrameShadow := Sunken;
+  LineWidth := 1;
+  FInteractive := True;
+  FRenderHints := [TextAntialiasing];
+  FTransformationAnchor := AnchorViewCenter;
+  FViewportUpdateMode := MinimalViewportUpdate;
+  FRubberBandSelectionMode := IntersectsItemShape;
 end;
 
-function TQtGraphicsView.getAttributes(ShowAttributes: Integer): string;
+function TQtGraphicsView.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|BackgroundColor|ForegroundColor|ForegroundStyle|BackgroundStyle|Interactive' +
-           '|Alignment|RenderHints|DragMode|CacheMode|TransformationAnchor|SceneRect' +
-           '|ResizeAnchor|ViewportUpdateMode|RubberBandSelectionMode|OptimizationFlags';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|BackgroundColor|ForegroundColor|ForegroundStyle|BackgroundStyle|Interactive'
+    + '|Alignment|RenderHints|DragMode|CacheMode|TransformationAnchor|SceneRect'
+    + '|ResizeAnchor|ViewportUpdateMode|RubberBandSelectionMode|OptimizationFlags';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-function TQtGraphicsView.getEvents(ShowEvents: Integer): string;
+function TQtGraphicsView.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|rubberBandChanged';
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := '|rubberBandChanged';
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtGraphicsView.HandlerInfo(const event: string): string;
+function TQtGraphicsView.HandlerInfo(const Event: string): string;
 begin
-  if event = 'rubberBandChanged' then
-    Result:= 'QRect, QPointF, QPointF;rubberBandRect, fromScenePoint, toScenePoint'
+  if Event = 'rubberBandChanged' then
+    Result := 'QRect, QPointF, QPointF;rubberBandRect, fromScenePoint, toScenePoint'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtGraphicsView.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtGraphicsView.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'QRect, QGraphicsScene' then
     Slots.Add(Name + '.invalidateScene')
@@ -1059,7 +1163,7 @@ begin
   inherited;
 end;
 
-procedure TQtGraphicsView.setAttribute(Attr, Value, Typ: string);
+procedure TQtGraphicsView.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'CacheMode' then
     MakeAttribut(Attr, 'QGraphicsView.CacheModeFlag.' + Value)
@@ -1075,8 +1179,7 @@ begin
   else if Pos('Dont', Attr) = 1 then
     MakeOptimizationFlags
   else if (Attr = 'ForegroundColor') or (Attr = 'BackgroundColor') or
-          (Attr = 'ForegroundStyle') or (Attr = 'BackgroundStyle')
-  then
+    (Attr = 'ForegroundStyle') or (Attr = 'BackgroundStyle') then
     MakeColorAndStyle(Attr)
   else
     inherited;
@@ -1084,56 +1187,67 @@ end;
 
 procedure TQtGraphicsView.MakeRenderHints;
 begin
-  var s:= '';
+  var
+  Str := '';
   if Antialiasing in FRenderHints then
-    s:= s + '|QPainter.Antialiasing';
+    Str := Str + '|QPainter.Antialiasing';
   if TextAntialiasing in FRenderHints then
-    s:= s + '|QPainter.TextAntialiasing';
+    Str := Str + '|QPainter.TextAntialiasing';
   if SmoothPixmapTransform in FRenderHints then
-    s:= s + '|QPainter.SmoothPixmapTransform';
-{  if VerticalSubpixelPositioning in FRenderHints then
+    Str := Str + '|QPainter.SmoothPixmapTransform';
+  { if VerticalSubpixelPositioning in FRenderHints then
     s:= s + '|QPainter.VerticalSubpixelPositioning';
-}
+  }
   if LosslessImageRendering in FRenderHints then
-    s:= s + '|QPainter.LosslessImageRendering';
-  if s <> '' then begin
-    Delete(s, 1, 1);
-    MakeAttribut('RenderHints', s);
-  end else
-    Partner.DeleteAttribute('self.' + name + '.setRenderHints');
+    Str := Str + '|QPainter.LosslessImageRendering';
+  if Str <> '' then
+  begin
+    Delete(Str, 1, 1);
+    MakeAttribut('RenderHints', Str);
+  end
+  else
+    Partner.DeleteAttribute('self.' + Name + '.setRenderHints');
 end;
 
 procedure TQtGraphicsView.MakeOptimizationFlags;
 begin
-  var s:= '';
+  var
+  Str := '';
   if DontSavePainterState in FOptimizationFlags then
-    s:= s + '|QGraphicsView.DontSavePainterState';
+    Str := Str + '|QGraphicsView.DontSavePainterState';
   if DontAdjustForAntialiasing in FOptimizationFlags then
-    s:= s + '|QGraphicsView.DontAdjustForAntialiasing';
+    Str := Str + '|QGraphicsView.DontAdjustForAntialiasing';
   if DontClipPainter in FOptimizationFlags then
-    s:= s + '|QGraphicsView.DontClipPainter';
-  if s <> '' then begin
-    Delete(s, 1, 1);
-    MakeAttribut('OptimizationFlags', s);
-  end else
+    Str := Str + '|QGraphicsView.DontClipPainter';
+  if Str <> '' then
+  begin
+    Delete(Str, 1, 1);
+    MakeAttribut('OptimizationFlags', Str);
+  end
+  else
     Partner.DeleteAttribute('self.' + Name + '.setOptimizationFlags');
 end;
 
 procedure TQtGraphicsView.MakeColorAndStyle(Attr: string);
-  var R, G, B: Integer; Color, Style: string;
+var
+  Red, Green, Blue: Integer;
+  Color, Style: string;
 begin
-  if Pos('Foreground', Attr) = 1 then begin
-    Color2RGB(FForegroundColor, R, G, B);
-    Style:= 'Qt.BrushStyle.' + enumTostring(FForegroundStyle);
-    Attr:= 'Foreground';
-  end else begin
-    Color2RGB(FBackgroundColor, R, G, B);
-    Style:= 'Qt.BrushStyle.' + enumTostring(FBackgroundStyle);
-    Attr:= 'Background';
+  if Pos('Foreground', Attr) = 1 then
+  begin
+    Color2RGB(FForegroundColor, Red, Green, Blue);
+    Style := 'Qt.BrushStyle.' + EnumToString(FForegroundStyle);
+    Attr := 'Foreground';
+  end
+  else
+  begin
+    Color2RGB(FBackgroundColor, Red, Green, Blue);
+    Style := 'Qt.BrushStyle.' + EnumToString(FBackgroundStyle);
+    Attr := 'Background';
   end;
-  Color:= 'QColor(' + IntToStr(R) + ', ' + IntToStr(G) + ', ' +
-                      IntToStr(B) + ', 255)';
-  MakeAttribut(Attr + 'Brush', 'QBrush(' + Color + ', ' + Style + ')')
+  Color := 'QColor(' + IntToStr(Red) + ', ' + IntToStr(Green) + ', ' +
+    IntToStr(Blue) + ', 255)';
+  MakeAttribut(Attr + 'Brush', 'QBrush(' + Color + ', ' + Style + ')');
 end;
 
 procedure TQtGraphicsView.NewWidget(Widget: string = '');
@@ -1144,49 +1258,49 @@ end;
 procedure TQtGraphicsView.Paint;
 begin
   inherited;
-  Canvas.Brush.Color:= clWhite;
+  Canvas.Brush.Color := clWhite;
   Canvas.FillRect(InnerRect);
 end;
 
-{--- TQtAbstractSlider --------------------------------------------------------}
+{ --- TQtAbstractSlider -------------------------------------------------------- }
 
-function TQtAbstractSlider.getAttributes(ShowAttributes: Integer): string;
+function TQtAbstractSlider.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Minimum|Maximum|Value|Orientation';
+  Result := '|Minimum|Maximum|Value|Orientation';
   if ShowAttributes >= 2 then
-    Result:= Result + '|SingleStep|PageStep|SliderPosition|Tracking' +
-                      '|InvertedAppearance|InvertedControls';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|SingleStep|PageStep|SliderPosition|Tracking' +
+      '|InvertedAppearance|InvertedControls';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtAbstractSlider.setAttribute(Attr, Value, Typ: string);
+procedure TQtAbstractSlider.SetAttribute(Attr, Value, Typ: string);
 begin
-  if Attr = 'Orientation'  then
+  if Attr = 'Orientation' then
     MakeAttribut(Attr, 'Qt.Orientation.' + Value)
   else
     inherited;
 end;
 
-function TQtAbstractSlider.getEvents(ShowEvents: Integer): string;
+function TQtAbstractSlider.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= '|actionTriggered|rangeChanged|sliderMoved|sliderPressed' +
-           '|sliderReleased|valueChanged';
-  Result:= Result + inherited getEvents(ShowEvents);
+  Result := '|actionTriggered|rangeChanged|sliderMoved|sliderPressed' +
+    '|sliderReleased|valueChanged';
+  Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtAbstractSlider.HandlerInfo(const event: string): string;
+function TQtAbstractSlider.HandlerInfo(const Event: string): string;
 begin
-  if event = 'actionTriggered' then
-    Result:= 'int;action'
-  else if event = 'rangeChanged' then
-    Result:= 'int, int;min, max'
-  else if (event = 'sliderMoved') or (event = 'valueChanged') then
-    Result:= 'int;value'
+  if Event = 'actionTriggered' then
+    Result := 'int;action'
+  else if Event = 'rangeChanged' then
+    Result := 'int, int;min, max'
+  else if (Event = 'sliderMoved') or (Event = 'valueChanged') then
+    Result := 'int;value'
   else
-    Result:= inherited;
+    Result := inherited;
 end;
 
-procedure TQtAbstractSlider.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtAbstractSlider.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'Orientation' then
     Slots.Add(Name + '.setOrientation')
@@ -1197,49 +1311,56 @@ begin
   inherited;
 end;
 
-procedure TQtAbstractSlider.setOrientation(Value: TOrientation);
-  var h: Integer;
+procedure TQtAbstractSlider.SetOrientation(Value: TOrientation);
+var
+  Tmp: Integer;
 begin
-  if Value <> FOrientation then begin
-    FOrientation:= Value;
-    if not (csLoading in ComponentState) then begin
-      h:= Width; Width:= Height; Height:= h;
+  if Value <> FOrientation then
+  begin
+    FOrientation := Value;
+    if not(csLoading in ComponentState) then
+    begin
+      Tmp := Width;
+      Width := Height;
+      Height := Tmp;
       SetPositionAndSize;
     end;
     Invalidate;
   end;
 end;
 
-procedure TQtAbstractSlider.setValue(Value: Integer);
+procedure TQtAbstractSlider.SetValue(Value: Integer);
 begin
-  if Value <> FValue then begin
-    FValue:= Value;
+  if Value <> FValue then
+  begin
+    FValue := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtAbstractSlider.setInvertedAppearance(Value: Boolean);
+procedure TQtAbstractSlider.SetInvertedAppearance(Value: Boolean);
 begin
-  if Value <> FInvertedAppearance then begin
-    FInvertedAppearance:= Value;
+  if Value <> FInvertedAppearance then
+  begin
+    FInvertedAppearance := Value;
     Invalidate;
   end;
 end;
 
-{--- TQtScrollBar -------------------------------------------------------------}
+{ --- TQtScrollBar ------------------------------------------------------------- }
 
-constructor TQtScrollBar.Create(AOwner: TComponent);
+constructor TQtScrollBar.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 80;
-  Width:= 120;
-  Height:= 16;
-  FMaximum:= 99;
-  FSingleStep:= 1;
-  FPageStep:= 10;
-  FTracking:= True;
-  FOrientation:= Horizontal;
-  FInvertedControls:= True;
+  inherited Create(Owner);
+  Tag := 80;
+  Width := 120;
+  Height := 16;
+  FMaximum := 99;
+  FSingleStep := 1;
+  FPageStep := 10;
+  FTracking := True;
+  FOrientation := Horizontal;
+  FInvertedControls := True;
 end;
 
 procedure TQtScrollBar.NewWidget(Widget: string = '');
@@ -1253,23 +1374,23 @@ begin
   PaintScrollbar(ClientRect, FOrientation = Horizontal);
 end;
 
-{--- TQtSlider ----------------------------------------------------------------}
+{ --- TQtSlider ---------------------------------------------------------------- }
 
-constructor TQtSlider.Create(AOwner: TComponent);
+constructor TQtSlider.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 84;
-  Width:= 120;
-  Height:= 24;
-  FMaximum:= 99;
-  FSingleStep:= 1;
-  FPageStep:= 10;
-  FTracking:= True;
-  FOrientation:= Horizontal;
-  FInvertedControls:= True;
+  inherited Create(Owner);
+  Tag := 84;
+  Width := 120;
+  Height := 24;
+  FMaximum := 99;
+  FSingleStep := 1;
+  FPageStep := 10;
+  FTracking := True;
+  FOrientation := Horizontal;
+  FInvertedControls := True;
 end;
 
-procedure TQtSlider.setAttribute(Attr, Value, Typ: string);
+procedure TQtSlider.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'TickPosition' then
     MakeAttribut(Attr, 'QSlider.TickPosition.' + Value)
@@ -1277,10 +1398,10 @@ begin
     inherited;
 end;
 
-function TQtSlider.getAttributes(ShowAttributes: Integer): string;
+function TQtSlider.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|TickPosition|TickInterval';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|TickPosition|TickInterval';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
 procedure TQtSlider.NewWidget(Widget: string = '');
@@ -1291,210 +1412,254 @@ end;
 
 procedure TQtSlider.Paint;
 
-  type TArrayOfPoint = array of TPoint;
+type
+  TArrayOfPoint = array of TPoint;
 
-  var R: TRect; TickInc: double;
-      i, X, Y, V, SliderWidth, SliderHeight, UsablePixels,
-      Tick1, Tick2, TickCount: Integer;
-      Arr: TArrayOfPoint;
+var
+  ARect: TRect;
+  TickInc: Double;
+  XPos, YPos, Range, SliderWidth, SliderHeight, UsablePixels, Tick1, Tick2,
+    TickCount: Integer;
+  Arr: TArrayOfPoint;
 
   function RectToArrow: TArrayOfPoint;
-    var Arr: TArrayOfPoint; TickPos: TTickPosition;
+  var
+    Arr: TArrayOfPoint;
+    TickPos: TTickPosition;
   begin
-    TickPos:= FTickPosition;
-    if FOrientation = Horizontal then begin
+    TickPos := FTickPosition;
+    if FOrientation = Horizontal then
+    begin
       if TickPos = TicksRight then
-        TickPos:= TicksBelow
+        TickPos := TicksBelow
       else if TickPos = TicksLeft then
-        TickPos:= TicksAbove
-    end else begin
+        TickPos := TicksAbove;
+    end
+    else
+    begin
       if TickPos = TicksAbove then
-        TickPos:= TicksLeft
+        TickPos := TicksLeft
       else if TickPos = TicksBelow then
-        TickPos:= TicksRight;
+        TickPos := TicksRight;
     end;
-    setLength(Arr, 5);
+    SetLength(Arr, 5);
     case TickPos of
-      NoTicks,
-      TicksBothSides: begin
-        Arr[0]:= Point(R.Left, R.Top);
-        Arr[1]:= Point(R.Right, R.Top);
-        Arr[2]:= Point(R.Right, R.Bottom);
-        Arr[3]:= Point(R.Left, R.Bottom);
-        setLength(Arr, 4);
-      end;
-      TicksAbove: begin
-        Arr[0]:= Point(R.Left, R.Top + 5);
-        Arr[1]:= Point(R.Left + 5, R.Top);
-        Arr[2]:= Point(R.Right, R.Top + 5);
-        Arr[3]:= Point(R.Right, R.Bottom);
-        Arr[4]:= Point(R.Left, R.Bottom);
-      end;
-      TicksLeft: begin
-        Arr[0]:= Point(R.Left + 5, R.Bottom);
-        Arr[1]:= Point(R.Left, R.Top + 5);
-        Arr[2]:= Point(R.Left + 5, R.Top);
-        Arr[3]:= Point(R.Right, R.Top);
-        Arr[4]:= Point(R.Right, R.Bottom);
-      end;
-      TicksBelow: begin
-        Arr[0]:= Point(R.Right, R.Bottom - 5);
-        Arr[1]:= Point(R.Right - 5, R.Bottom);
-        Arr[2]:= Point(R.Left, R.Bottom - 5);
-        Arr[3]:= Point(R.Left, R.Top);
-        Arr[4]:= Point(R.Right, R.Top);
-      end;
-      TicksRight: begin
-        Arr[0]:= Point(R.Right - 5, R.Top);
-        Arr[1]:= Point(R.Right, R.Top + 5);
-        Arr[2]:= Point(R.Right - 5, R.Bottom);
-        Arr[3]:= Point(R.Left, R.Bottom);
-        Arr[4]:= Point(R.Left, r.Top);
-      end;
+      NoTicks, TicksBothSides:
+        begin
+          Arr[0] := Point(ARect.Left, ARect.Top);
+          Arr[1] := Point(ARect.Right, ARect.Top);
+          Arr[2] := Point(ARect.Right, ARect.Bottom);
+          Arr[3] := Point(ARect.Left, ARect.Bottom);
+          SetLength(Arr, 4);
+        end;
+      TicksAbove:
+        begin
+          Arr[0] := Point(ARect.Left, ARect.Top + 5);
+          Arr[1] := Point(ARect.Left + 5, ARect.Top);
+          Arr[2] := Point(ARect.Right, ARect.Top + 5);
+          Arr[3] := Point(ARect.Right, ARect.Bottom);
+          Arr[4] := Point(ARect.Left, ARect.Bottom);
+        end;
+      TicksLeft:
+        begin
+          Arr[0] := Point(ARect.Left + 5, ARect.Bottom);
+          Arr[1] := Point(ARect.Left, ARect.Top + 5);
+          Arr[2] := Point(ARect.Left + 5, ARect.Top);
+          Arr[3] := Point(ARect.Right, ARect.Top);
+          Arr[4] := Point(ARect.Right, ARect.Bottom);
+        end;
+      TicksBelow:
+        begin
+          Arr[0] := Point(ARect.Right, ARect.Bottom - 5);
+          Arr[1] := Point(ARect.Right - 5, ARect.Bottom);
+          Arr[2] := Point(ARect.Left, ARect.Bottom - 5);
+          Arr[3] := Point(ARect.Left, ARect.Top);
+          Arr[4] := Point(ARect.Right, ARect.Top);
+        end;
+      TicksRight:
+        begin
+          Arr[0] := Point(ARect.Right - 5, ARect.Top);
+          Arr[1] := Point(ARect.Right, ARect.Top + 5);
+          Arr[2] := Point(ARect.Right - 5, ARect.Bottom);
+          Arr[3] := Point(ARect.Left, ARect.Bottom);
+          Arr[4] := Point(ARect.Left, ARect.Top);
+        end;
     end;
-    Result:= Arr;
+    Result := Arr;
   end;
 
 begin
   inherited;
-  Canvas.Brush.Color:= $EAEAE7;
-  Canvas.Pen.Color:= $D6D6D6;
-  Tick2:= 0;
+  Canvas.Brush.Color := $EAEAE7;
+  Canvas.Pen.Color := $D6D6D6;
+  Tick2 := 0;
 
   // track
-  if FOrientation = Horizontal then begin
-    R.Left  := 1;
-    R.Right := Width - 1;
-    if FTickPosition in [NoTicks, TicksBothSides] then begin
-      R.Top:= Height div 2 - 1;
-      Tick1:= Round(Height/4.0);
-      Tick2:= Round(3*Height/4.0);
-    end else if FTickPosition in [TicksRight, TicksBelow] then begin
-      R.Top:= Round(Height/3.0) - 1;
-      Tick1:= Round(2.0*Height/3.0);
-    end else begin
-      R.Top:= Round(2.0*Height/3.0) - 1;
-      Tick1:= Round(Height/3.0);
+  if FOrientation = Horizontal then
+  begin
+    ARect.Left := 1;
+    ARect.Right := Width - 1;
+    if FTickPosition in [NoTicks, TicksBothSides] then
+    begin
+      ARect.Top := Height div 2 - 1;
+      Tick1 := Round(Height / 4.0);
+      Tick2 := Round(3 * Height / 4.0);
+    end
+    else if FTickPosition in [TicksRight, TicksBelow] then
+    begin
+      ARect.Top := Round(Height / 3.0) - 1;
+      Tick1 := Round(2.0 * Height / 3.0);
+    end
+    else
+    begin
+      ARect.Top := Round(2.0 * Height / 3.0) - 1;
+      Tick1 := Round(Height / 3.0);
     end;
-    R.Bottom:= R.Top + 3;
-    if FTickPosition = NoTicks
-      then SliderHeight:= Height
-      else SliderHeight:= 2*(Round(Height/4.0)-2);
+    ARect.Bottom := ARect.Top + 3;
+    if FTickPosition = NoTicks then
+      SliderHeight := Height
+    else
+      SliderHeight := 2 * (Round(Height / 4.0) - 2);
     SliderWidth := PPIScale(10);
     UsablePixels := Width - 2 - SliderWidth;
-  end else begin
-    R.Top := 1;
-    R.Bottom := Height - 1;
-    if FTickPosition in [NoTicks, TicksBothSides] then begin
-      R.Left:= Width div 2 - 1;
-      Tick1:= Round(Width/4.0);
-      Tick2:= Round(3*Width/4.0);
-    end else if FTickPosition in [TicksRight, TicksBelow] then begin
-      R.Left:= Round(Width/3.0) - 1;
-      Tick1:= Round(2.0*Width/3.0);
-    end else begin
-      R.Left:= Round(2.0*Width/3.0) - 1;
-      Tick1:= Round(Width/3.0);
+  end
+  else
+  begin
+    ARect.Top := 1;
+    ARect.Bottom := Height - 1;
+    if FTickPosition in [NoTicks, TicksBothSides] then
+    begin
+      ARect.Left := Width div 2 - 1;
+      Tick1 := Round(Width / 4.0);
+      Tick2 := Round(3 * Width / 4.0);
+    end
+    else if FTickPosition in [TicksRight, TicksBelow] then
+    begin
+      ARect.Left := Round(Width / 3.0) - 1;
+      Tick1 := Round(2.0 * Width / 3.0);
+    end
+    else
+    begin
+      ARect.Left := Round(2.0 * Width / 3.0) - 1;
+      Tick1 := Round(Width / 3.0);
     end;
-    R.Right := R.Left + 3;
-    if FTickPosition = NoTicks
-      then SliderWidth:= Width
-      else SliderWidth:= 2*(Round(Width/4.0)-2);
-    SliderHeight:= PPIScale(10);
+    ARect.Right := ARect.Left + 3;
+    if FTickPosition = NoTicks then
+      SliderWidth := Width
+    else
+      SliderWidth := 2 * (Round(Width / 4.0) - 2);
+    SliderHeight := PPIScale(10);
     UsablePixels := Height - 2 - SliderHeight;
   end;
-  Canvas.Rectangle(R);
+  Canvas.Rectangle(ARect);
 
   // ticks
-  if FTickPosition <> NoTicks then begin
-    Canvas.Pen.Color:= $94A2A5;
-    if FTickInterval = 0
-      then TickInc:= (FMaximum - FMinimum)/10.0
-      else TickInc:= (FMaximum - FMinimum)/FTickInterval;
-    TickCount:= Round((FMaximum - FMinimum)/TickInc);
+  if FTickPosition <> NoTicks then
+  begin
+    Canvas.Pen.Color := $94A2A5;
+    if FTickInterval = 0 then
+      TickInc := (FMaximum - FMinimum) / 10.0
+    else
+      TickInc := (FMaximum - FMinimum) / FTickInterval;
+    TickCount := Round((FMaximum - FMinimum) / TickInc);
     if FOrientation = Horizontal then
-      for i:= 0 to TickCount  do begin
-        x:= Round(UsablePixels * (FMinimum + i*TickInc) / (FMaximum - FMinimum) + TickInc/2 + 1);
-        Canvas.MoveTo(x, Tick1 - 2);
-        Canvas.LineTo(x, Tick1 + 2);
-        if FTickPosition = TicksBothSides then begin
-          Canvas.MoveTo(x, Tick2 - 2);
-          Canvas.LineTo(x, Tick2 + 2);
+      for var I := 0 to TickCount do
+      begin
+        XPos := Round(UsablePixels * (FMinimum + I * TickInc) /
+          (FMaximum - FMinimum) + TickInc / 2 + 1);
+        Canvas.MoveTo(XPos, Tick1 - 2);
+        Canvas.LineTo(XPos, Tick1 + 2);
+        if FTickPosition = TicksBothSides then
+        begin
+          Canvas.MoveTo(XPos, Tick2 - 2);
+          Canvas.LineTo(XPos, Tick2 + 2);
         end;
       end
     else
-      for i:= 0 to TickCount do begin
-        y:= Round(UsablePixels * (FMinimum + i*TickInc) / (FMaximum - FMinimum) + TickInc/2 + 1);
-        Canvas.MoveTo(Tick1 - 2, y);
-        Canvas.LineTo(Tick1 + 2, y);
-        if FTickPosition = TicksBothSides then begin
-          Canvas.MoveTo(Tick2 - 2, y);
-          Canvas.LineTo(Tick2 + 2, y);
+      for var I := 0 to TickCount do
+      begin
+        YPos := Round(UsablePixels * (FMinimum + I * TickInc) /
+          (FMaximum - FMinimum) + TickInc / 2 + 1);
+        Canvas.MoveTo(Tick1 - 2, YPos);
+        Canvas.LineTo(Tick1 + 2, YPos);
+        if FTickPosition = TicksBothSides then
+        begin
+          Canvas.MoveTo(Tick2 - 2, YPos);
+          Canvas.LineTo(Tick2 + 2, YPos);
         end;
-      end
+      end;
   end;
 
   // slider
   if FInvertedAppearance and (FOrientation = Horizontal) or
-     not FInvertedAppearance and (FOrientation = Vertical)
-    then V:= Round(UsablePixels * (FMaximum - FValue) / (FMaximum - FMinimum)) + 1
-    else V:= Round(UsablePixels * (FValue - FMinimum) / (FMaximum - FMinimum)) + 1;
-  if FOrientation = Horizontal then begin
-    X:= Round(V);
-    Y:= R.Top + 1 - SliderHeight div 2;
-    R:= Rect(X, Y, X + SliderWidth, Y + SliderHeight)
-  end else begin
-    X:= R.Left + 1 - SliderWidth div 2;
-    Y:= Round(V);
-    R:= Rect(X, Y, X + SliderWidth, Y + SliderHeight)
+    not FInvertedAppearance and (FOrientation = Vertical) then
+    Range := Round(UsablePixels * (FMaximum - FValue) /
+      (FMaximum - FMinimum)) + 1
+  else
+    Range := Round(UsablePixels * (FValue - FMinimum) /
+      (FMaximum - FMinimum)) + 1;
+  if FOrientation = Horizontal then
+  begin
+    XPos := Round(Range);
+    YPos := ARect.Top + 1 - SliderHeight div 2;
+    ARect := Rect(XPos, YPos, XPos + SliderWidth, YPos + SliderHeight);
+  end
+  else
+  begin
+    XPos := ARect.Left + 1 - SliderWidth div 2;
+    YPos := Round(Range);
+    ARect := Rect(XPos, YPos, XPos + SliderWidth, YPos + SliderHeight);
   end;
-  Canvas.Pen.Color:= $D97A00;
-  Canvas.Brush.Color:= $D97A00;
-  Arr:= RectToArrow;
+  Canvas.Pen.Color := $D97A00;
+  Canvas.Brush.Color := $D97A00;
+  Arr := RectToArrow;
   Canvas.Polygon(Arr);
-  setLength(Arr, 0);
+  SetLength(Arr, 0);
 end;
 
-procedure TQtSlider.setTickPosition(Value: TTickPosition);
+procedure TQtSlider.SetTickPosition(Value: TTickPosition);
 begin
-  if Value <> FTickPosition then begin
-    FTickPosition:= Value;
+  if Value <> FTickPosition then
+  begin
+    FTickPosition := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtSlider.setTickInterval(Value: Integer);
+procedure TQtSlider.SetTickInterval(Value: Integer);
 begin
-  if Value <> FTickInterval then begin
-    FTickInterval:= Value;
+  if Value <> FTickInterval then
+  begin
+    FTickInterval := Value;
     Invalidate;
   end;
 end;
 
-{--- TQtDial ------------------------------------------------------------------}
+{ --- TQtDial ------------------------------------------------------------------ }
 
-constructor TQtDial.Create(AOwner: TComponent);
+constructor TQtDial.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 111;
-  Width:= 64;
-  Height:= 64;
-  FMaximum:= 99;
-  FSingleStep:= 1;
-  FPageStep:= 10;
-  FTracking:= True;
-  FNotchTarget:= 3.7;
+  inherited Create(Owner);
+  Tag := 111;
+  Width := 64;
+  Height := 64;
+  FMaximum := 99;
+  FSingleStep := 1;
+  FPageStep := 10;
+  FTracking := True;
+  FNotchTarget := 3.7;
 end;
 
-function TQtDial.getAttributes(ShowAttributes: Integer): string;
+function TQtDial.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Wrapping|NotchTarget|NotchesVisible';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|Wrapping|NotchTarget|NotchesVisible';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtDial.getSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtDial.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
-  if Parametertypes = 'bool' then begin
+  if Parametertypes = 'bool' then
+  begin
     Slots.Add(Name + '.setNotchesVisible');
     Slots.Add(Name + '.setWrapping');
   end;
@@ -1507,93 +1672,113 @@ begin
 end;
 
 procedure TQtDial.Paint;
-  var Radius, Radius1, Radius2, Count, size, WholeArc, PageStepArc, SingleStepArc,
-      SingleStepPerNotchTarget, StartAngle, EndAngle, Angle, mx, my: Integer;
-      ValueAngle: double;
-      R: TRect; CP: TPoint;
+var
+  Radius, Radius1, Radius2, Count, Size, WholeArc, PageStepArc, SingleStepArc,
+    SingleStepPerNotchTarget, StartAngle, EndAngle, Angle, MidX, MidY: Integer;
+  ValueAngle: Double;
+  ARect: TRect;
+  Center: TPoint;
 begin
   // big circle
-  Canvas.Brush.Color:= $F5F5F5;
-  Canvas.Pen.Color:= $606060;
-  R:= InnerRect;
-  CP:= R.CenterPoint;
-  size:= Min(Width, Height) div 2;
-  Radius:= round(0.82*size);
-  Canvas.Ellipse(CP.x - Radius, CP.y - Radius, CP.x + Radius, CP.y + Radius);
+  Canvas.Brush.Color := $F5F5F5;
+  Canvas.Pen.Color := $606060;
+  ARect := InnerRect;
+  Center := ARect.CenterPoint;
+  Size := Min(Width, Height) div 2;
+  Radius := Round(0.82 * Size);
+  Canvas.Ellipse(Center.X - Radius, Center.Y - Radius, Center.X + Radius,
+    Center.Y + Radius);
 
-  if FWrapping then begin
-    StartAngle:= 0;
-    EndAngle:= 360;
-  end else begin
-    StartAngle:= -60;
-    EndAngle:= 240;
+  if FWrapping then
+  begin
+    StartAngle := 0;
+    EndAngle := 360;
+  end
+  else
+  begin
+    StartAngle := -60;
+    EndAngle := 240;
   end;
 
   // show notches
-  if FNotchesVisible then begin
-    WholeArc:= round(0.5 + 2*System.PI*Radius);
+  if FNotchesVisible then
+  begin
+    WholeArc := Round(0.5 + 2 * System.Pi * Radius);
     if not FWrapping then
-      WholeArc:= Round(0.5 + 5/6*2*System.PI*Radius);
-    if Maximum > Minimum + PageStep
-      then PageStepArc:= Round(0.5 + WholeArc * (PageStep/(Maximum - Minimum)))
-      else PageStepArc:= Round(0.5 + WholeArc);
-    if PageStepArc <> 0
-      then SingleStepArc:= Round(0.5 + PageStepArc*SingleStep/PageStep)
-      else SingleStepArc:= Round(0.5 + PageStepArc*SingleStep);
+      WholeArc := Round(0.5 + 5 / 6 * 2 * System.Pi * Radius);
+    if Maximum > Minimum + PageStep then
+      PageStepArc := Round(0.5 + WholeArc * (PageStep / (Maximum - Minimum)))
+    else
+      PageStepArc := Round(0.5 + WholeArc);
+    if PageStepArc <> 0 then
+      SingleStepArc := Round(0.5 + PageStepArc * SingleStep / PageStep)
+    else
+      SingleStepArc := Round(0.5 + PageStepArc * SingleStep);
     if SingleStepArc < 1 then
-      SingleStepArc:= 1;
-    SingleStepPerNotchTarget:= round(0.5 + NotchTarget/SingleStepArc);
+      SingleStepArc := 1;
+    SingleStepPerNotchTarget := Round(0.5 + NotchTarget / SingleStepArc);
     if SingleStepPerNotchTarget < 1 then
-      SingleStepPerNotchTarget:= 1;
-    Radius1:= round(0.9*size);
-    Radius2:= round(1.0*size);
-    Angle:= StartAngle;
-    Count:= 0;
+      SingleStepPerNotchTarget := 1;
+    Radius1 := Round(0.9 * Size);
+    Radius2 := Round(1.0 * Size);
+    Angle := StartAngle;
+    Count := 0;
 
-    while Angle <= EndAngle do begin
-      if Count = 0 then begin
-        Canvas.MoveTo(CP.x - Round(Radius*cos(Angle*Pi/180)), CP.y - Round(Radius*sin(Angle*Pi/180)));
-        Count:= Round(PageStep/SingleStep);
-      end else
-        Canvas.MoveTo(CP.x - Round(Radius1*cos(Angle*Pi/180)), CP.y - Round(Radius1*sin(Angle*Pi/180)));
-      Canvas.LineTo(CP.x - Round(Radius2*cos(Angle*Pi/180)), CP.y - Round(Radius2*sin(Angle*Pi/180)));
-      Angle:= Angle + SingleStepPerNotchTarget;
-      Count:= Count - 1;
+    while Angle <= EndAngle do
+    begin
+      if Count = 0 then
+      begin
+        Canvas.MoveTo(Center.X - Round(Radius * Cos(Angle * Pi / 180)),
+          Center.Y - Round(Radius * Sin(Angle * Pi / 180)));
+        Count := Round(PageStep / SingleStep);
+      end
+      else
+        Canvas.MoveTo(Center.X - Round(Radius1 * Cos(Angle * Pi / 180)),
+          Center.Y - Round(Radius1 * Sin(Angle * Pi / 180)));
+      Canvas.LineTo(Center.X - Round(Radius2 * Cos(Angle * Pi / 180)),
+        Center.Y - Round(Radius2 * Sin(Angle * Pi / 180)));
+      Angle := Angle + SingleStepPerNotchTarget;
+      Count := Count - 1;
     end;
   end;
 
   // small value circle
-  ValueAngle:= StartAngle + Value/(Maximum - Minimum)*(EndAngle - StartAngle);
+  ValueAngle := StartAngle + Value / (Maximum - Minimum) *
+    (EndAngle - StartAngle);
   if FWrapping then
-    ValueAngle:= ValueAngle - 90;
+    ValueAngle := ValueAngle - 90;
 
-  Radius1:= Round(0.6*size);
-  Radius2:= Round((0.78 - 0.65)*size);
-  mx:= CP.x - Round(Radius1*cos(ValueAngle*Pi/180));
-  my:= CP.y - round(Radius1*sin(ValueAngle*Pi/180));
-  Canvas.Ellipse(mx - Radius2, my - Radius2, mx + Radius2, my + Radius2);
+  Radius1 := Round(0.6 * Size);
+  Radius2 := Round((0.78 - 0.65) * Size);
+  MidX := Center.X - Round(Radius1 * Cos(ValueAngle * Pi / 180));
+  MidY := Center.Y - Round(Radius1 * Sin(ValueAngle * Pi / 180));
+  Canvas.Ellipse(MidX - Radius2, MidY - Radius2, MidX + Radius2,
+    MidY + Radius2);
 end;
 
-procedure TQtDial.setWrapping(Value: Boolean);
+procedure TQtDial.SetWrapping(Value: Boolean);
 begin
-  if Value <> FWrapping then begin
-    FWrapping:= Value;
+  if Value <> FWrapping then
+  begin
+    FWrapping := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtDial.setNotchTarget(Value: double);
+procedure TQtDial.SetNotchTarget(Value: Double);
 begin
-  if Value <> FNotchTarget then begin
-    FNotchTarget:= Value;
+  if Value <> FNotchTarget then
+  begin
+    FNotchTarget := Value;
     Invalidate;
   end;
 end;
 
-procedure TQtDial.setNotchesVisible(Value: Boolean);
+procedure TQtDial.SetNotchesVisible(Value: Boolean);
 begin
-  if Value <> FNotchesVisible then begin
-    FNotchesVisible:= Value;
+  if Value <> FNotchesVisible then
+  begin
+    FNotchesVisible := Value;
     Invalidate;
   end;
 end;

@@ -396,7 +396,7 @@ type
     procedure ReplaceComponentname(const s1, s2: string; Events: string);
     procedure ReplaceAttribute(const key, s: string);
     procedure RemovePass(Classnumber: Integer);
-    procedure setAttributValue(const destination, key, s: string; after: Integer);
+    procedure SetAttributValue(const destination, key, s: string; after: Integer);
 
     procedure InsertValue(const destination, s: string; after: Integer);
     procedure InsertLinesAt(line: Integer; s: string); overload;
@@ -4583,7 +4583,7 @@ begin
     end;
 end;
 
-procedure TEditorForm.setAttributValue(const destination, key, s: string; after: Integer);
+procedure TEditorForm.SetAttributValue(const destination, key, s: string; after: Integer);
   var line, till: Integer; aChanged: Boolean;
 begin
   aChanged:= True;

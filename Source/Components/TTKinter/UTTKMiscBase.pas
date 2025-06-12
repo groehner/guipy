@@ -1,38 +1,40 @@
-{-------------------------------------------------------------------------------
- Unit:     UTTKMiscBase
- Author:   Gerhard Röhner
- Date:     May 2021
- Purpose:  TKKinter misc widgets
--------------------------------------------------------------------------------}
+﻿{ -------------------------------------------------------------------------------
+  Unit:     UTTKMiscBase
+  Author:   Gerhard Röhner
+  Date:     May 2021
+  Purpose:  TKKinter misc widgets
+  ------------------------------------------------------------------------------- }
 
 unit UTTKMiscBase;
 
 { class hierarchie
 
   TTKMiscBaseWidget
-    TTKFrame
-      TTKLabelframe
-    TTKScale
-    TTKLabeledScale
-    TTKScrollbar
-    TTKPanedWindow
-    TTKRadiobuttonGroup
-    TTKNotebook
-    TTKTreeview
-    TTKProgressbar
-    TTKSeparator
-    TTKSizeGrip
+  TTKFrame
+  TTKLabelframe
+  TTKScale
+  TTKLabeledScale
+  TTKScrollbar
+  TTKPanedWindow
+  TTKRadiobuttonGroup
+  TTKNotebook
+  TTKTreeview
+  TTKProgressbar
+  TTKSeparator
+  TTKSizeGrip
 }
 
 interface
 
 uses
-  Classes, UTtkWidgets;
+  Classes,
+  UTTKWidgets;
 
 type
 
   // positioning of text, used in TextWidget
-  TLabelAnchor = (_TL_nw, _TL_n, _TL_ne, _TL_en, _TL_e, _TL_es, _TL_se, _TL_s, _TL_sw, _TL_ws, _TL_w, _TL_wn);
+  TLabelAnchor = (_TL_nw, _TL_n, _TL_ne, _TL_en, _TL_e, _TL_es, _TL_se, _TL_s,
+    _TL_sw, _TL_ws, _TL_w, _TL_wn);
 
   TOrient = (horizontal, vertical);
 
@@ -40,7 +42,7 @@ type
 
   TButtonState = (active, disabled, normal);
 
-  TType = (_TT_menubar, _TT_normal);    // normal is used in TButtonState
+  TType = (_TT_menubar, _TT_normal); // normal is used in TButtonState
 
   TSelectMode = (extended, browse, none);
 
@@ -49,24 +51,22 @@ type
   TTKMiscBaseWidget = class(TTKWidget)
   private
     FOrient: TOrient;
-    procedure setOrient(Value: TOrient);
+    procedure SetOrient(Value: TOrient);
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    function getEvents(ShowEvents: Integer): string; override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    function GetEvents(ShowEvents: Integer): string; override;
     procedure MakeFont; override;
-
     property Background;
-    property Orient: TOrient read FOrient write setOrient;
+    property Orient: TOrient read FOrient write SetOrient;
   end;
 
-  TTKFrame = class (TTKMiscBaseWidget)
-  private
+  TTKFrame = class(TTKMiscBaseWidget)
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     procedure NewWidget(Widget: string = ''); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
   published
     property Background;
     property BorderWidth;
@@ -74,159 +74,161 @@ type
     property Relief;
   end;
 
-  TTKLabelframe = class (TTKFrame)
+  TTKLabelframe = class(TTKFrame)
   private
     FLabelAnchor: TLabelAnchor;
     FLabelWidget: string;
-    procedure setLabelAnchor(Value: TLabelAnchor);
+    procedure SetLabelAnchor(Value: TLabelAnchor);
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     procedure NewWidget(Widget: string = ''); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
     procedure Paint; override;
   published
-    property LabelAnchor: TLabelAnchor read FLabelAnchor write setLabelAnchor default _TL_nw;
+    property LabelAnchor: TLabelAnchor read FLabelAnchor write SetLabelAnchor
+      default _TL_nw;
     property LabelWidget: string read FLabelWidget write FLabelWidget;
     property Text;
     property Underline;
   end;
 
-  TTKScale = class (TTKMiscBaseWidget)
+  TTKScale = class(TTKMiscBaseWidget)
   private
-    FFrom: real;
+    FFrom: Real;
     FState: TButtonState;
-    FTo: real;
-    FValue: real;
-    procedure setRValue(Value: real);
+    FTo: Real;
+    FValue: Real;
+    procedure SetRValue(Value: Real);
   public
-    constructor Create(AOwner: TComponent); override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    constructor Create(Owner: TComponent); override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure MakeCommand(Attr, Value: string); override;
-    function getWidgetStylename: string; override;
+    function GetWidgetStylename: string; override;
     procedure Paint; override;
   published
     property Command;
-    property From: real read FFrom write FFrom;
+    property From: Real read FFrom write FFrom;
     property Orient;
     property State: TButtonState read FState write FState default normal;
     property TakeFocus;
-    property To_: real read FTo write FTo;
-    property Value: real read FValue write setRValue;
+    property To_: Real read FTo write FTo;
+    property Value: Real read FValue write SetRValue;
   end;
 
-  TTKLabeledScale = class (TTKMiscBaseWidget)
+  TTKLabeledScale = class(TTKMiscBaseWidget)
   private
     FCompound: TCompound;
-    FFrom: real;
+    FFrom: Real;
     FState: TButtonState;
-    FTo: real;
-    FValue: real;
-    procedure setRValue(Value: real);
-    procedure setCompound(Value: TCompound);
-    procedure setConfiguration;
+    FTo: Real;
+    FValue: Real;
+    procedure SetRValue(Value: Real);
+    procedure SetCompound(Value: TCompound);
+    procedure SetConfiguration;
   public
-    constructor Create(AOwner: TComponent); override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    constructor Create(Owner: TComponent); override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure MakeCommand(Attr, Value: string); override;
     procedure Paint; override;
   published
     property BorderWidth;
     property Command;
-    property Compound: TCompound read FCompound write setCompound default _TC_top;
-    property From: real read FFrom write FFrom;
+    property Compound: TCompound read FCompound write SetCompound
+      default _TC_top;
+    property From: Real read FFrom write FFrom;
     property Relief;
     property State: TButtonState read FState write FState default normal;
     property TakeFocus;
-    property To_: real read FTo write FTo;
-    property Value: real read FValue write setRValue;
+    property To_: Real read FTo write FTo;
+    property Value: Real read FValue write SetRValue;
   end;
 
   TTKScrollbar = class(TTKMiscBaseWidget)
-  private
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure MakeCommand(Attr, Value: string); override;
-    function getWidgetStylename: string; override;
+    function GetWidgetStylename: string; override;
     procedure Paint; override;
   published
     property Command;
     property Orient;
   end;
 
-  TTKPanedWindow = class (TTKMiscBaseWidget)
+  TTKPanedWindow = class(TTKMiscBaseWidget)
   private
     procedure PaintSlashAt(Pos: Integer);
-    function getPos(i: Integer): Integer;
+    function GetPos(Num: Integer): Integer;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     procedure NewWidget(Widget: string = ''); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure Resize; override;
     procedure Paint; override;
   published
     property Orient;
   end;
 
-  TTKRadiobuttonGroup = class (TTKMiscBaseWidget)
+  TTKRadiobuttonGroup = class(TTKMiscBaseWidget)
   private
     FColumns: Integer;
     FLabel: string;
     FItems: TStrings;
     FOldItems: TStrings;
     FCheckboxes: Boolean;
-    procedure setColumns(Value: Integer);
-    procedure setLabel(Value: string);
-    procedure setItems(Value: TStrings);
-    procedure setCheckboxes(Value: Boolean);
+    procedure SetColumns(Value: Integer);
+    procedure SetLabel(Value: string);
+    procedure SetItems(Value: TStrings);
+    procedure SetCheckboxes(Value: Boolean);
     procedure ChangeCommand(Value: string);
     procedure MakeButtongroupItems;
-    procedure MakeLabel(aLabel: string);
-    function ItemsInColumn(i: Integer): Integer;
-    function RBName(i: Integer): string;
+    procedure MakeLabel(ALabel: string);
+    function ItemsInColumn(Num: Integer): Integer;
+    function RBName(Num: Integer): string;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure MakeCommand(Attr, Value: string); override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
   published
-    property Items: TStrings read FItems write setItems; // must stay before columns or label
-    property Columns: Integer read FColumns write setColumns;
+    property Items: TStrings read FItems write SetItems;
+    // must stay before columns or label
+    property Columns: Integer read FColumns write SetColumns;
     property Command;
     property Font;
-    property Label_: string read FLabel write setLabel;
-    property Checkboxes: Boolean read FCheckboxes write setCheckboxes;
+    property Label_: string read FLabel write SetLabel;
+    property Checkboxes: Boolean read FCheckboxes write SetCheckboxes;
   end;
 
   TTKNotebook = class(TTKMiscBaseWidget)
   private
     FTabs: TStrings;
     FOldTabs: TStrings;
-    procedure setTabs(Value: TStrings);
+    procedure SetTabs(Value: TStrings);
     procedure MakeTabs;
-    function TabName(i: Integer): string;
+    function TabName(Num: Integer): string;
     procedure DeleteTabs;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
   published
-    property Tabs: TStrings read FTabs write setTabs;
+    property Tabs: TStrings read FTabs write SetTabs;
     property Padding;
     property TakeFocus;
   end;
@@ -239,59 +241,62 @@ type
     FOldItems: TStrings;
     FSelectMode: TSelectMode;
     FShowHeadings: Boolean;
-    procedure setColumns(Value: TStrings);
-    procedure setDisplayColumns(Value: string);
-    procedure setItems(Value: TStrings);
-    procedure setShowHeadings(Value: Boolean);
+    procedure SetColumns(Value: TStrings);
+    procedure SetDisplayColumns(Value: string);
+    procedure SetItems(Value: TStrings);
+    procedure SetShowHeadings(Value: Boolean);
     procedure MakeColumns;
     procedure MakeItems;
-    function ColumnId(i: Integer): string;
+    function ColumnId(Num: Integer): string;
     procedure DeleteColumns;
-    function hasSubNodes(i: Integer): Boolean;
+    function HasSubNodes(Num: Integer): Boolean;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
     procedure NewWidget(Widget: string = ''); override;
     procedure DeleteWidget; override;
-    function getWidgetStylename: string; override;
+    function GetWidgetStylename: string; override;
     procedure Paint; override;
   published
-    property Columns: TStrings read FColumns write setColumns;
-    property DisplayColumns: string read FDisplayColumns write setDisplayColumns;
-    property Items: TStrings read FItems write setItems;
-    property SelectMode: TSelectMode read FSelectMode write FSelectMode default extended;
-    property ShowHeadings: Boolean read FShowHeadings write setShowHeadings default True;
+    property Columns: TStrings read FColumns write SetColumns;
+    property DisplayColumns: string read FDisplayColumns
+      write SetDisplayColumns;
+    property Items: TStrings read FItems write SetItems;
+    property SelectMode: TSelectMode read FSelectMode write FSelectMode
+      default extended;
+    property ShowHeadings: Boolean read FShowHeadings write SetShowHeadings
+      default True;
     property Padding;
     property Scrollbars;
     property TakeFocus;
   end;
 
-  TTKProgressbar = class (TTKMiscBaseWidget)
+  TTKProgressbar = class(TTKMiscBaseWidget)
   private
-    FMaximum: real;
+    FMaximum: Real;
     FMode: TMode;
-    FValue: real;
-    procedure setRValue(Value: real);
+    FValue: Real;
+    procedure SetRValue(Value: Real);
   public
-    constructor Create(AOwner: TComponent); override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    constructor Create(Owner: TComponent); override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
-    function getWidgetStylename: string; override;
+    function GetWidgetStylename: string; override;
   published
-    property Maximum: real read FMaximum write FMaximum;
+    property Maximum: Real read FMaximum write FMaximum;
     property Mode: TMode read FMode write FMode default determinate;
     property Orient;
-    property Value: real read FValue write setRValue;
+    property Value: Real read FValue write SetRValue;
   end;
 
   TTKSeparator = class(TTKMiscBaseWidget)
   public
-    constructor Create(AOwner: TComponent); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    constructor Create(Owner: TComponent); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
@@ -300,39 +305,45 @@ type
 
   TTKSizeGrip = class(TTKMiscBaseWidget)
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     procedure NewWidget(Widget: string = ''); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
   end;
 
 implementation
 
-uses Math, Windows, Controls, Graphics, SysUtils,
-     JvGnugettext, UBaseTkWidgets, UUtils, UConfiguration;
+uses
+  Math,
+  Windows,
+  Controls,
+  Graphics,
+  SysUtils,
+  JvGnugettext,
+  UBaseTKWidgets,
+  UUtils,
+  UConfiguration;
 
-{--- TButtonBaseWidget --------------------------------------------------------}
+{ --- TButtonBaseWidget -------------------------------------------------------- }
 
-constructor TTKMiscBaseWidget.Create(AOwner: TComponent);
+constructor TTKMiscBaseWidget.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  FOrient:= vertical;
-  Width:= 120;
-  Height:= 80;
+  inherited Create(Owner);
+  FOrient := vertical;
+  Width := 120;
+  Height := 80;
 end;
 
-function TTKMiscBaseWidget.getAttributes(ShowAttributes: Integer): string;
+function TTKMiscBaseWidget.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '';
-  if ShowAttributes = 3 then
-    Result:= Result;
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-function TTKMiscBaseWidget.getEvents(ShowEvents: Integer): string;
+function TTKMiscBaseWidget.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= getMouseEvents(ShowEvents);
+  Result := GetMouseEvents(ShowEvents);
 end;
 
 procedure TTKMiscBaseWidget.MakeFont;
@@ -340,64 +351,73 @@ begin
   // no font
 end;
 
-procedure TTKMiscBaseWidget.setOrient(Value: TOrient);
-  var h: Integer;
+procedure TTKMiscBaseWidget.SetOrient(Value: TOrient);
+var
+  Tmp: Integer;
 begin
-  if FOrient <> Value then begin
-    FOrient:= Value;
-    if not (csLoading in ComponentState) then begin
-      h:= Width; Width:= Height; Height:= h;
+  if FOrient <> Value then
+  begin
+    FOrient := Value;
+    if not(csLoading in ComponentState) then
+    begin
+      Tmp := Width;
+      Width := Height;
+      Height := Tmp;
       SetPositionAndSize;
     end;
     Invalidate;
   end;
 end;
 
-{--- TTKFrame ------------------------------------------------------------------}
+{ --- TTKFrame ------------------------------------------------------------------ }
 
-constructor TTKFrame.Create(AOwner: TComponent);
+constructor TTKFrame.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 43;
+  inherited Create(Owner);
+  Tag := 43;
   ControlStyle := [csAcceptsControls];
 end;
 
 procedure TTKFrame.NewWidget(Widget: string = '');
 begin
-  if Widget = ''
-    then inherited NewWidget('ttk.Frame')
-    else inherited NewWidget(Widget);     // for LabelFrame
+  if Widget = '' then
+    inherited NewWidget('ttk.Frame')
+  else
+    inherited NewWidget(Widget); // for LabelFrame
 end;
 
-function TTKFrame.getAttributes(ShowAttributes: Integer): string;
+function TTKFrame.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Background';
+  Result := '|Background';
   if ShowAttributes >= 3 then
-    Result:= Result + '|Padding';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|Padding';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKFrame.setAttribute(Attr, Value, Typ: string);
+procedure TTKFrame.SetAttribute(Attr, Value, Typ: string);
 begin
-  if Attr = 'Background' then begin
-    Style:= Name + '.TFrame';
-    var s:= 'ttk.Style().configure(' + asString(Style);
-    setAttributValue(s, s + ', background = ' + asString(Value) + ')');
-    s:= 'self.' + Name + '[''style'']';
-    setAttributValue(s, s + ' = ' + asString(Style));
+  if Attr = 'Background' then
+  begin
+    Style := Name + '.TFrame';
+    var
+    Str := 'ttk.Style().configure(' + AsString(Style);
+    SetAttributValue(Str, Str + ', background = ' + AsString(Value) + ')');
+    Str := 'self.' + Name + '[''style'']';
+    SetAttributValue(Str, Str + ' = ' + AsString(Style));
     UpdateObjectInspector;
-  end else
+  end
+  else
     inherited;
 end;
 
-{--- TTKLabelframe ------------------------------------------------------------------}
+{ --- TTKLabelframe ------------------------------------------------------------------ }
 
-constructor TTKLabelframe.Create(AOwner: TComponent);
+constructor TTKLabelframe.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 44;
-  FLabelAnchor:= _TL_nw;
-  Relief:= _TR_solid;
+  inherited Create(Owner);
+  Tag := 44;
+  FLabelAnchor := _TL_nw;
+  Relief := _TR_solid;
 end;
 
 procedure TTKLabelframe.NewWidget(Widget: string = '');
@@ -405,115 +425,169 @@ begin
   inherited NewWidget('ttk.LabelFrame');
 end;
 
-function TTKLabelframe.getAttributes(ShowAttributes: Integer): string;
+function TTKLabelframe.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|LabelAnchor|Text|Underline';
+  Result := '|LabelAnchor|Text|Underline';
   if ShowAttributes >= 2 then
-    Result:= Result + '';
+    Result := Result + '';
   if ShowAttributes >= 3 then
-    Result:= Result + '|LabelWidget';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|LabelWidget';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKLabelframe.setAttribute(Attr, Value, Typ: string);
+procedure TTKLabelframe.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'LabelWidget' then
-    inherited setAttribute(Attr, Value, 'Source')
+    inherited SetAttribute(Attr, Value, 'Source')
   else
     inherited;
 end;
 
-procedure TTKLabelframe.setLabelAnchor(Value: TLabelAnchor);
+procedure TTKLabelframe.SetLabelAnchor(Value: TLabelAnchor);
 begin
-  if FLabelAnchor <> Value then begin
-    FLabelAnchor:= Value;
+  if FLabelAnchor <> Value then
+  begin
+    FLabelAnchor := Value;
     Invalidate;
   end;
 end;
 
 procedure TTKLabelframe.Paint;
-  var tw, th, ts, tr, bd, h, w, x, y: Integer; R: TRect; s: string;
+var
+  TextWidth, TextWidthR, TextHeight, TextHeightS, BorderWidth, XPos,
+    YPos: Integer;
+  ARect: TRect;
+  Str: string;
 begin
   inherited;
-  R:= ClientRect;
-  Canvas.FillRect(R);  // remove border
-  tw:= Canvas.TextWidth(Text);
-  th:= Canvas.TextHeight('Hg');
-  ts:= Max((th - BorderWidthInt) div 2, 0);
-  tr:= Max((tw - BorderWidthInt) div 2, 0);
+  ARect := ClientRect;
+  Canvas.FillRect(ARect); // remove border
+  TextWidth := Canvas.TextWidth(Text);
+  TextWidthR := Max((TextWidth - BorderWidthInt) div 2, 0);
+  TextHeight := Canvas.TextHeight('Hg');
+  TextHeightS := Max((TextHeight - BorderWidthInt) div 2, 0);
   case FLabelAnchor of
-    _TL_nw, _TL_n, _TL_ne: R.Top   := R.Top + ts;
-    _TL_en, _TL_e, _TL_es: R.Right := R.Right - tr;
-    _TL_se, _TL_s, _TL_sw: R.Bottom:= R.Bottom - ts;
-    _TL_ws, _TL_w, _TL_wn: R.Left  := R.Left + tr;
+    _TL_nw, _TL_n, _TL_ne:
+      ARect.Top := ARect.Top + TextHeightS;
+    _TL_en, _TL_e, _TL_es:
+      ARect.Right := ARect.Right - TextWidthR;
+    _TL_se, _TL_s, _TL_sw:
+      ARect.Bottom := ARect.Bottom - TextHeightS;
+    _TL_ws, _TL_w, _TL_wn:
+      ARect.Left := ARect.Left + TextWidthR;
   end;
-  Canvas.Pen.Color:= $DCDCDC;
-  PaintBorder(R, Relief, BorderWidthInt);
-
-  h:= Height;
-  w:= Width;
-  bd:= BorderWidthInt;
+  Canvas.Pen.Color := $DCDCDC;
+  PaintBorder(ARect, Relief, BorderWidthInt);
+  BorderWidth := BorderWidthInt;
   case FLabelAnchor of
-    _TL_nw: begin x:= bd + 4;          y:= 0; end;
-    _TL_n : begin x:= (w - tw) div 2;  y:= 0; end;
-    _TL_ne: begin x:= w - bd - 4 - tw; y:= 0; end;
-    _TL_en: begin x:= w - tw - 1;      y:= bd + 4; end;
-    _TL_e:  begin x:= w - tw - 1;      y:= (h - th) div 2; end;
-    _TL_es: begin x:= w - tw - 1;      y:= h - bd - 4 - th; end;
-    _TL_se: begin x:= w - bd - 4 - tw; y:= h - th - 1; end;
-    _TL_s:  begin x:= (w - tw) div 2;  y:= h - th - 1; end;
-    _TL_sw: begin x:= bd + 4;          y:= h - th - 1; end;
-    _TL_ws: begin x:= 0;               y:= h - bd - 4 - th; end;
-    _TL_w:  begin x:= 0;               y:= (h - th) div 2; end;
-    else    begin x:= 0;               y:= bd + 4; end; // _TL_wn:
+    _TL_nw:
+      begin
+        XPos := BorderWidth + 4;
+        YPos := 0;
+      end;
+    _TL_n:
+      begin
+        XPos := (Width - TextWidth) div 2;
+        YPos := 0;
+      end;
+    _TL_ne:
+      begin
+        XPos := Width - BorderWidth - 4 - TextWidth;
+        YPos := 0;
+      end;
+    _TL_en:
+      begin
+        XPos := Width - TextWidth - 1;
+        YPos := BorderWidth + 4;
+      end;
+    _TL_e:
+      begin
+        XPos := Width - TextWidth - 1;
+        YPos := (Height - TextHeight) div 2;
+      end;
+    _TL_es:
+      begin
+        XPos := Width - TextWidth - 1;
+        YPos := Height - BorderWidth - 4 - TextHeight;
+      end;
+    _TL_se:
+      begin
+        XPos := Width - BorderWidth - 4 - TextWidth;
+        YPos := Height - TextHeight - 1;
+      end;
+    _TL_s:
+      begin
+        XPos := (Width - TextWidth) div 2;
+        YPos := Height - TextHeight - 1;
+      end;
+    _TL_sw:
+      begin
+        XPos := BorderWidth + 4;
+        YPos := Height - TextHeight - 1;
+      end;
+    _TL_ws:
+      begin
+        XPos := 0;
+        YPos := Height - BorderWidth - 4 - TextHeight;
+      end;
+    _TL_w:
+      begin
+        XPos := 0;
+        YPos := (Height - TextHeight) div 2;
+      end;
+  else
+    begin
+      XPos := 0;
+      YPos := BorderWidth + 4;
+    end; // _TL_wn:
   end;
-  R:= Rect(x, y, x + tw, y + th);
-  s:= Text;
+  ARect := Rect(XPos, YPos, XPos + TextWidth, YPos + TextHeight);
+  Str := Text;
   if Underline >= 0 then
-    insert('&', s, Underline + 1);
-  DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_LEFT);
+    Insert('&', Str, Underline + 1);
+  DrawText(Canvas.Handle, PChar(Str), Length(Str), ARect, DT_LEFT);
 end;
 
-{--- TTKScale ------------------------------------------------------------------}
+{ --- TTKScale ------------------------------------------------------------------ }
 
-constructor TTKScale.Create(AOwner: TComponent);
+constructor TTKScale.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 45;
-  Width:= 120;
-  Height:= 32;
-  FOrient:= horizontal;
-  FFrom:= 0;
-  FTo:= 100;
-  FValue:= 30;
-  FState:= normal;
+  inherited Create(Owner);
+  Tag := 45;
+  Width := 120;
+  Height := 32;
+  FOrient := horizontal;
+  FFrom := 0;
+  FTo := 100;
+  FValue := 30;
+  FState := normal;
 end;
 
-function TTKScale.getAttributes(ShowAttributes: Integer): string;
+function TTKScale.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|From|To_|Orient|Value';
+  Result := '|From|To_|Orient|Value';
   if ShowAttributes >= 2 then
-    Result:= Result + '|Command';
+    Result := Result + '|Command';
   if ShowAttributes = 3 then
-    Result:= Result + '|State';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|State';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKScale.setAttribute(Attr, Value, Typ: string);
+procedure TTKScale.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'Value' then
-    setValue(Name + 'CV', asString(Value))
+    SetValue(Name + 'CV', AsString(Value))
   else if Attr = 'To_' then
-    inherited setAttribute('To', Value, Typ)
+    inherited SetAttribute('To', Value, Typ)
   else
     inherited;
 end;
 
 procedure TTKScale.NewWidget(Widget: string = '');
 begin
- inherited NewWidget('ttk.Scale');
+  inherited NewWidget('ttk.Scale');
   MakeControlVar('variable', Name + 'CV', IntToStr(Round(FValue)), 'Int');
-  setAttribute('To', '100', '');
+  SetAttribute('To', '100', '');
 end;
 
 procedure TTKScale.MakeCommand(Attr, Value: string);
@@ -522,124 +596,142 @@ begin
   AddParameter(Value, 'x');
 end;
 
-function TTKScale.getWidgetStylename: string;
+function TTKScale.GetWidgetStylename: string;
 begin
-  if FOrient = horizontal
-    then Result:= Name + '.Horizontal.TScale'
-    else Result:= Name + '.Vertical.TScale';
+  if FOrient = horizontal then
+    Result := Name + '.Horizontal.TScale'
+  else
+    Result := Name + '.Vertical.TScale';
 end;
 
 procedure TTKScale.Paint;
-  var X, Y, V, SliderWidth, SliderHeight, UsablePixels: Integer;
-      R: TRect;
+var
+  XPos, YPos, Value, SliderWidth, SliderHeight, UsablePixels: Integer;
+  ARect: TRect;
 begin
-  inherited;       // Length??
+  inherited; // Length??
   // track
-  if FOrient = horizontal then begin
-    R.Left  := 1;
-    R.Right := Width - 1;
-    R.Top   := Height div 2 - 1;
-    R.Bottom:= R.Top + PPIScale(3);
+  if FOrient = horizontal then
+  begin
+    ARect.Left := 1;
+    ARect.Right := Width - 1;
+    ARect.Top := Height div 2 - 1;
+    ARect.Bottom := ARect.Top + PPIScale(3);
     SliderWidth := PPIScale(12);
-    SliderHeight:= PPIScale(23);
+    SliderHeight := PPIScale(23);
     UsablePixels := Width - PPIScale(2) - SliderWidth;
-  end else begin
-    R.Top := 1;
-    R.Bottom := Height - 1;
-    R.Left := Width div 2 - 1;
-    R.Right := R.Left + PPIScale(3);
+  end
+  else
+  begin
+    ARect.Top := 1;
+    ARect.Bottom := Height - 1;
+    ARect.Left := Width div 2 - 1;
+    ARect.Right := ARect.Left + PPIScale(3);
     SliderWidth := PPIScale(23);
-    SliderHeight:= PPIScale(12);
+    SliderHeight := PPIScale(12);
     UsablePixels := Height - PPIScale(2) - SliderHeight;
   end;
-  Canvas.Pen.Color:= $D6D6D6;
-  Canvas.Rectangle(R);
+  Canvas.Pen.Color := $D6D6D6;
+  Canvas.Rectangle(ARect);
 
   // slider
-  V:= Round(UsablePixels * (FValue - FFrom) / (FTo - FFrom)) + 1;
-  if FOrient = horizontal then begin
-    X := Round(V);
-    Y := Height div 2 - SliderHeight div 2;
-    R:= Rect(X, Y, X + SliderWidth, Y + SliderHeight)
-  end else begin
-    X := Width div 2 - SliderWidth div 2;
-    Y := Round(V);
-    R:= Rect(X, Y, X + SliderWidth, Y + SliderHeight)
+  Value := Round(UsablePixels * (FValue - FFrom) / (FTo - FFrom)) + 1;
+  if FOrient = horizontal then
+  begin
+    XPos := Round(Value);
+    YPos := Height div 2 - SliderHeight div 2;
+    ARect := Rect(XPos, YPos, XPos + SliderWidth, YPos + SliderHeight);
+  end
+  else
+  begin
+    XPos := Width div 2 - SliderWidth div 2;
+    YPos := Round(Value);
+    ARect := Rect(XPos, YPos, XPos + SliderWidth, YPos + SliderHeight);
   end;
-  Canvas.Brush.Color:= $D97A00;
-  Canvas.FillRect(R);
+  Canvas.Brush.Color := $D97A00;
+  Canvas.FillRect(ARect);
 end;
 
-procedure TTKScale.setRValue(Value: Real);
+procedure TTKScale.SetRValue(Value: Real);
 begin
-  if Value <> FValue then begin
+  if Value <> FValue then
+  begin
     FValue := Value;
-    if FValue > FTo then FValue := FTo
-    else if FValue < FFrom then FValue := FFrom;
+    if FValue > FTo then
+      FValue := FTo
+    else if FValue < FFrom then
+      FValue := FFrom;
     Invalidate;
   end;
 end;
 
-{--- TTKLabeledScale ----------------------------------------------------------}
+{ --- TTKLabeledScale ---------------------------------------------------------- }
 
-constructor TTKLabeledScale.Create(AOwner: TComponent);
+constructor TTKLabeledScale.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 46;
-  Width:= 120;
-  Height:= 48;
-  FCompound:= _TC_top;
-  FFrom:= 0;
-  FTo:= 100;
-  FValue:= 0;
-  FState:= normal;
-  FNameExtension:= '.scale';
+  inherited Create(Owner);
+  Tag := 46;
+  Width := 120;
+  Height := 48;
+  FCompound := _TC_top;
+  FFrom := 0;
+  FTo := 100;
+  FValue := 0;
+  FState := normal;
+  FNameExtension := '.scale';
 end;
 
-function TTKLabeledScale.getAttributes(ShowAttributes: Integer): string;
+function TTKLabeledScale.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Compound|From|To_|Value';
+  Result := '|Compound|From|To_|Value';
   if ShowAttributes >= 2 then
-    Result:= Result + '|Command';
+    Result := Result + '|Command';
   if ShowAttributes = 3 then
-    Result:= Result + '|Padding|State';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|Padding|State';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKLabeledScale.setAttribute(Attr, Value, Typ: string);
-  var s: string; p: Integer;
+procedure TTKLabeledScale.SetAttribute(Attr, Value, Typ: string);
+var
+  Str: string;
+  Posi: Integer;
 begin
   if Attr = 'Value' then
-    setValue(Name + 'CV', asString(Value))
+    SetValue(Name + 'CV', AsString(Value))
   else if (Attr = 'Compound') or (Attr = 'From') or (Attr = 'To_') then
-    setConfiguration
-  else if (Attr = 'BorderWidth') or (Attr = 'Relief') then begin
-    s:= getAttrAsKey(Attr);
-    p:= Pos(FNameExtension, s);
-    Delete(s, p, Length(FNameExtension));
-    if Value = ''
-      then Partner.DeleteAttribute(s)
-      else setAttributValue(s, s + ' = ' + asString(Value))
-  end else
+    SetConfiguration
+  else if (Attr = 'BorderWidth') or (Attr = 'Relief') then
+  begin
+    Str := GetAttrAsKey(Attr);
+    Posi := Pos(FNameExtension, Str);
+    Delete(Str, Posi, Length(FNameExtension));
+    if Value = '' then
+      Partner.DeleteAttribute(Str)
+    else
+      SetAttributValue(Str, Str + ' = ' + AsString(Value));
+  end
+  else
     inherited;
 end;
 
-procedure TTKLabeledScale.setConfiguration;
-  var s, scomp: string;
+procedure TTKLabeledScale.SetConfiguration;
+var
+  Str, Scomp: string;
 begin
-  if Compound = _TC_top
-    then scomp:= asString('top')
-    else scomp:= asString('bottom');
-  s:= 'self.'+ Name + ' = ttk.LabeledScale';
-  setAttributValue(s, s + '(variable=self.' + Name + 'CV, compound=' + scomp +
-                      ', from_=' + FloatToStr(FFrom) + ', to=' + FloatToStr(FTo) + ')');
+  if Compound = _TC_top then
+    Scomp := AsString('top')
+  else
+    Scomp := AsString('bottom');
+  Str := 'self.' + Name + ' = ttk.LabeledScale';
+  SetAttributValue(Str, Str + '(variable=self.' + Name + 'CV, compound=' + Scomp
+    + ', from_=' + FloatToStr(FFrom) + ', to=' + FloatToStr(FTo) + ')');
 end;
 
 procedure TTKLabeledScale.NewWidget(Widget: string = '');
 begin
   InsertValue('self.' + Name + 'CV = tk.IntVar()');
   inherited NewWidget('ttk.LabeledScale');
-  setConfiguration;
+  SetConfiguration;
 end;
 
 procedure TTKLabeledScale.MakeCommand(Attr, Value: string);
@@ -649,76 +741,85 @@ begin
 end;
 
 procedure TTKLabeledScale.Paint;
-  var X, Y, V, SliderWidth, SliderHeight, UsablePixels, tw, th: Integer;
-      R: TRect; s: string;
+var
+  XPos, YPos, Value, SliderWidth, SliderHeight, UsablePixels, TextWidth,
+    TextHeight: Integer;
+  ARect: TRect;
+  Str: string;
 begin
   inherited;
   // track
-  R.Left  := 1;
-  R.Right := Width - 1;
-  if FCompound = _TC_top
-    then R.Top:= Height - PPIScale(15)
-    else R.Top:= PPIScale(12);
-  R.Bottom:= R.Top + PPIScale(3);
+  ARect.Left := 1;
+  ARect.Right := Width - 1;
+  if FCompound = _TC_top then
+    ARect.Top := Height - PPIScale(15)
+  else
+    ARect.Top := PPIScale(12);
+  ARect.Bottom := ARect.Top + PPIScale(3);
   SliderWidth := PPIScale(12);
-  SliderHeight:= PPIScale(23);
+  SliderHeight := PPIScale(23);
   UsablePixels := Width - 2 - SliderWidth;
-  Canvas.Pen.Color:= $D6D6D6;
-  Canvas.Rectangle(R);
+  Canvas.Pen.Color := $D6D6D6;
+  Canvas.Rectangle(ARect);
 
   // slider
-  V:= Round(UsablePixels * (FValue - FFrom) / (FTo - FFrom)) + 1;
-  X := Round(V);
-  Y := R.Top + 1 - SliderHeight div 2;
-  R:= Rect(X, Y, X + SliderWidth, Y + SliderHeight);
-  Canvas.Brush.Color:= $D97A00;
-  Canvas.FillRect(R);
+  Value := Round(UsablePixels * (FValue - FFrom) / (FTo - FFrom)) + 1;
+  XPos := Round(Value);
+  YPos := ARect.Top + 1 - SliderHeight div 2;
+  ARect := Rect(XPos, YPos, XPos + SliderWidth, YPos + SliderHeight);
+  Canvas.Brush.Color := $D97A00;
+  Canvas.FillRect(ARect);
 
   // Label
-  s:= IntToStr(round(FValue));
-  tw:= Canvas.TextWidth(s);
-  th:= Canvas.TextHeight(s);
-  x:= R.Left + (R.Right - R.Left - tw) div 2;
-  if FCompound = _TC_top
-    then y:= R.Top - th - PPIScale(3)
-    else y:= R.Bottom + PPIScale(3);
-  Canvas.Brush.Color:= clBtnFace;
-  Canvas.TextOut(x, y, s);
+  Str := IntToStr(Round(FValue));
+  TextWidth := Canvas.TextWidth(Str);
+  TextHeight := Canvas.TextHeight(Str);
+  XPos := ARect.Left + (ARect.Right - ARect.Left - TextWidth) div 2;
+  if FCompound = _TC_top then
+    YPos := ARect.Top - TextHeight - PPIScale(3)
+  else
+    YPos := ARect.Bottom + PPIScale(3);
+  Canvas.Brush.Color := clBtnFace;
+  Canvas.TextOut(XPos, YPos, Str);
 end;
 
-procedure TTKLabeledScale.setRValue(Value: Real);
+procedure TTKLabeledScale.SetRValue(Value: Real);
 begin
-  if Value <> FValue then begin
+  if Value <> FValue then
+  begin
     FValue := Value;
-    if FValue > FTo then FValue := FTo
-    else if FValue < FFrom then FValue := FFrom;
+    if FValue > FTo then
+      FValue := FTo
+    else if FValue < FFrom then
+      FValue := FFrom;
     Invalidate;
   end;
 end;
 
-procedure TTKLabeledScale.setCompound(Value: TCompound);
+procedure TTKLabeledScale.SetCompound(Value: TCompound);
 begin
-  if FCompound <> Value then begin
-    FCompound:= Value;
-    invalidate;
+  if FCompound <> Value then
+  begin
+    FCompound := Value;
+    Invalidate;
   end;
 end;
 
-{--- TTKScrollbar --------------------------------------------------------------}
+{ --- TTKScrollbar -------------------------------------------------------------- }
 
-constructor TTKScrollbar.Create(AOwner: TComponent);
+constructor TTKScrollbar.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 42;
-  Width:= 120;
-  Height:= 20;
-  FOrient:= horizontal;
+  inherited Create(Owner);
+  Tag := 42;
+  Width := 120;
+  Height := 20;
+  FOrient := horizontal;
 end;
 
-function TTKScrollbar.getAttributes(ShowAttributes: Integer): string;
+function TTKScrollbar.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Command|Orient';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|Command|Orient';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
 procedure TTKScrollbar.MakeCommand(Attr, Value: string);
@@ -730,14 +831,15 @@ end;
 procedure TTKScrollbar.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('ttk.Scrollbar');
-  InsertValue('self.' + Name + '[''orient''] = ' + asString('horizontal'));
+  InsertValue('self.' + Name + '[''orient''] = ' + AsString('horizontal'));
 end;
 
-function TTKScrollbar.getWidgetStylename: string;
+function TTKScrollbar.GetWidgetStylename: string;
 begin
-  if FOrient = horizontal
-    then Result:= Name + '.Horizontal.TScrollbar'
-    else Result:= Name + '.Vertical.TScrollbar';
+  if FOrient = horizontal then
+    Result := Name + '.Horizontal.TScrollbar'
+  else
+    Result := Name + '.Vertical.TScrollbar';
 end;
 
 procedure TTKScrollbar.Paint;
@@ -745,14 +847,14 @@ begin
   PaintScrollbar(ClientRect, FOrient = horizontal, True);
 end;
 
-{--- PanedWindow --------------------------------------------------------------}
+{ --- PanedWindow -------------------------------------------------------------- }
 
-constructor TTKPanedWindow.Create(AOwner: TComponent);
+constructor TTKPanedWindow.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 47;
+  inherited Create(Owner);
+  Tag := 47;
   ControlStyle := [csAcceptsControls];
-  Orient:= vertical;
+  Orient := vertical;
 end;
 
 procedure TTKPanedWindow.NewWidget(Widget: string = '');
@@ -760,87 +862,99 @@ begin
   inherited NewWidget('ttk.PanedWindow');
 end;
 
-function TTKPanedWindow.getAttributes(ShowAttributes: Integer): string;
+function TTKPanedWindow.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Orient';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|Orient';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
 procedure TTKPanedWindow.PaintSlashAt(Pos: Integer);
-  var R: TRect; w: Integer;
+var
+  ARect: TRect;
 begin
-  w:= 2;
-  if FOrient = horizontal
-    then R:= Rect(Pos - w, 0, Pos + w, Height)
-    else R:= Rect(0, Pos - w, Width, Pos + w);
-  Canvas.Brush.Color:= Background;
-  Canvas.FillRect(R);
+  if FOrient = horizontal then
+    ARect := Rect(Pos - 2, 0, Pos + 2, Height)
+  else
+    ARect := Rect(0, Pos - 2, 2, Pos + 2);
+  Canvas.Brush.Color := Background;
+  Canvas.FillRect(ARect);
 end;
 
-function TTKPanedWindow.getPos(i: Integer): Integer;
-  var SashW: Integer; ControlW: real;
+function TTKPanedWindow.GetPos(Num: Integer): Integer;
+var
+  SashW: Integer;
+  ControlW: Real;
 begin
-  SashW:= 5;
+  SashW := 5;
   if ControlCount > 0 then
-    if FOrient = horizontal
-       then ControlW:= (Width - (ControlCount - 1)* SashW)/(ControlCount*1.0)
-       else ControlW:= (Height - (ControlCount - 1)* SashW)/(ControlCount*1.0)
+    if FOrient = horizontal then
+      ControlW := (Width - (ControlCount - 1) * SashW) / (ControlCount * 1.0)
+    else
+      ControlW := (Height - (ControlCount - 1) * SashW) / (ControlCount * 1.0)
   else
-    ControlW:= 0;
-  Result:= Round(i*ControlW + (i-1)*SashW + SashW div 2);
+    ControlW := 0;
+  Result := Round(Num * ControlW + (Num - 1) * SashW + SashW div 2);
 end;
 
 procedure TTKPanedWindow.Paint;
-  var R: TRect; i: Integer;
+var
+  ARect: TRect;
 begin
   inherited;
-  R:= ClientRect;
-  Canvas.Brush.Color:= Background;
-  Canvas.FillRect(R);
+  ARect := ClientRect;
+  Canvas.Brush.Color := Background;
+  Canvas.FillRect(ARect);
   if ControlCount > 1 then
-    for i:= 1 to ControlCount - 1 do
-      PaintSlashAt(getPos(i))
+    for var I := 1 to ControlCount - 1 do
+      PaintSlashAt(GetPos(I))
   else
-    PaintSlashAt(getPos(1)); // to show a slider in the gui form
+    PaintSlashAt(GetPos(1)); // to show a slider in the gui form
 end;
 
 procedure TTKPanedWindow.Resize;
-  var i, w, cw, ch: Integer;
+var
+  CWidth, CHeight: Integer;
 begin
-  w:= 2;
-  if Orient = horizontal then begin
-    ch:= Height;
-    if ControlCount > 1 then begin
-      cw:= getPos(1) - w;
-      Controls[0].SetBounds(0, 0, cw, ch);
-      for i:= 1 to ControlCount - 1 do
-        Controls[i].SetBounds(getPos(i) + w, 0, cw, ch);
-      Controls[ControlCount-1].SetBounds(getPos(ControlCount-1) + w, 0, cw, ch);
-    end else if ControlCount = 1 then
-      Controls[0].SetBounds(0, 0, Width, ch);
-  end else begin
-    cw:= Width;
-    if ControlCount > 1 then begin
-      ch:= getPos(1) - w;
-      Controls[0].SetBounds(0, 0, cw, ch);
-      for i:= 1 to ControlCount - 1 do
-        Controls[i].SetBounds(0, getPos(i) + w, cw, ch);
-      Controls[ControlCount-1].SetBounds(0, getPos(ControlCount-1) + w, cw, ch);
-    end else if ControlCount = 1 then
-      Controls[0].SetBounds(0, 0, cw, Height);
+  if Orient = horizontal then
+  begin
+    if ControlCount > 1 then
+    begin
+      CWidth := GetPos(1) - 2;
+      Controls[0].SetBounds(0, 0, CWidth, Height);
+      for var I := 1 to ControlCount - 1 do
+        Controls[I].SetBounds(GetPos(I) + 2, 0, CWidth, Height);
+      Controls[ControlCount - 1].SetBounds(GetPos(ControlCount - 1) + 2, 0,
+        CWidth, Height);
+    end
+    else if ControlCount = 1 then
+      Controls[0].SetBounds(0, 0, Width, Height);
+  end
+  else
+  begin
+    if ControlCount > 1 then
+    begin
+      CHeight := GetPos(1) - 2;
+      Controls[0].SetBounds(0, 0, Width, CHeight);
+      for var I := 1 to ControlCount - 1 do
+        Controls[I].SetBounds(0, GetPos(I) + 2, Width, CHeight);
+      Controls[ControlCount - 1].SetBounds(0, GetPos(ControlCount - 1) + 2,
+        Width, CHeight);
+    end
+    else if ControlCount = 1 then
+      Controls[0].SetBounds(0, 0, Width, Height);
   end;
 end;
 
-{--- TKRadiobuttonGroup -------------------------------------------------------}
+{ --- TKRadiobuttonGroup ------------------------------------------------------- }
 
-constructor TTKRadiobuttonGroup.Create(AOwner: TComponent);
+constructor TTKRadiobuttonGroup.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 37;
-  FColumns:= 1;
-  FItems:= TStringList.Create;
-  FOldItems:= TStringList.Create;
-  FLabel:= ' ' + _('Continent') + ' ';
+  inherited Create(Owner);
+  Tag := 37;
+  FColumns := 1;
+  FItems := TStringList.Create;
+  FOldItems := TStringList.Create;
+  FLabel := ' ' + _('Continent') + ' ';
 end;
 
 destructor TTKRadiobuttonGroup.Destroy;
@@ -850,299 +964,352 @@ begin
   inherited;
 end;
 
-function TTKRadiobuttonGroup.getAttributes(ShowAttributes: Integer): string;
+function TTKRadiobuttonGroup.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Columns|Command|Items|Label_|Name|Checkboxes';
+  Result := '|Columns|Command|Items|Label_|Name|Checkboxes';
   if ShowAttributes = 3 then
-    Result:= Result + '|Height|Width|Left|Top';
+    Result := Result + '|Height|Width|Left|Top';
 end;
 
-procedure TTKRadiobuttonGroup.setAttribute(Attr, Value, Typ: string);
+procedure TTKRadiobuttonGroup.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'Command' then
     ChangeCommand(Value)
   else if Attr = 'Items' then
-    MakeButtonGroupItems
+    MakeButtongroupItems
   else if Attr = 'Columns' then
     SetPositionAndSize
   else if Attr = 'Label_' then
     MakeLabel(Value)
-  else if Attr = 'Background' then begin
+  else if Attr = 'Background' then
+  begin
     inherited;
     MakeButtongroupItems;
-  end else if Attr = 'Checkboxes' then
+  end
+  else if Attr = 'Checkboxes' then
     MakeButtongroupItems
-  else if isFontAttribute(Attr) then begin
-    if Label_ <> '' then inherited;
+  else if IsFontAttribute(Attr) then
+  begin
+    if Label_ <> '' then
+      inherited;
     MakeButtongroupItems;
-  end else
+  end
+  else
     inherited;
 end;
 
-function TTKRadiobuttonGroup.RBName(i: Integer): string;
+function TTKRadiobuttonGroup.RBName(Num: Integer): string;
 begin
-  Result:= 'self.' + Name + 'RB' + IntToStr(i);
+  Result := 'self.' + Name + 'RB' + IntToStr(Num);
 end;
 
 procedure TTKRadiobuttonGroup.MakeButtongroupItems;
-  var key, Options, s: string;
+var
+  Key, Options, Str: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
-  for var i := 0 to FOldItems.Count - 1 do begin
-    Partner.DeleteAttributeValues(RBName(i));
-    Partner.DeleteAttributeValues(RBName(i) + 'CV');
+  for var I := 0 to FOldItems.Count - 1 do
+  begin
+    Partner.DeleteAttributeValues(RBName(I));
+    Partner.DeleteAttributeValues(RBName(I) + 'CV');
   end;
   Partner.DeleteAttributeValues('self.' + Name + '[''variable'']');
 
-  s:= '';
-  for var i:= 0 to FItems.Count - 1 do begin
-    key:= asString(FItems[i]);
-    if FCheckboxes then begin
-      Options:= 'self.' + Name + ', text=' + key;
-      s:= s + surround(RBName(i) + ' = ttk.Checkbutton(' + Options + ')') +
-          surround(RBName(i) + '.place(x=0, y=0, width=0, height=0)') +
-          surround(RBName(i) + 'CV = tk.IntVar()') +
-          surround(RBName(i) + '[''variable''] = ' + RBName(i) + 'CV') +
-          surround(RBName(i) + 'CV.set(0)');
-    end else begin
-      Options:= 'self.' + Name + ', text=' + key + ', value=' + key;
-      s:= s + surround(RBName(i) + ' = ttk.Radiobutton(' + Options + ')') +
-          surround(RBName(i) + '.place(x=0, y=0, width=0, height=0)') +
-          surround(RBName(i) + '[''variable''] = self.' + Name + 'CV');
+  Str := '';
+  for var I := 0 to FItems.Count - 1 do
+  begin
+    Key := AsString(FItems[I]);
+    if FCheckboxes then
+    begin
+      Options := 'self.' + Name + ', text=' + Key;
+      Str := Str + Surround(RBName(I) + ' = ttk.Checkbutton(' + Options + ')') +
+        Surround(RBName(I) + '.place(x=0, y=0, width=0, height=0)') +
+        Surround(RBName(I) + 'CV = tk.IntVar()') +
+        Surround(RBName(I) + '[''variable''] = ' + RBName(I) + 'CV') +
+        Surround(RBName(I) + 'CV.set(0)');
+    end
+    else
+    begin
+      Options := 'self.' + Name + ', text=' + Key + ', value=' + Key;
+      Str := Str + Surround(RBName(I) + ' = ttk.Radiobutton(' + Options + ')') +
+        Surround(RBName(I) + '.place(x=0, y=0, width=0, height=0)') +
+        Surround(RBName(I) + '[''variable''] = self.' + Name + 'CV');
     end;
   end;
-  insertValue(s);
+  InsertValue(Str);
   Partner.ActiveSynEdit.EndUpdate;
-  FOldItems.Text:= FItems.Text;
-  setPositionAndSize;
+  FOldItems.Text := FItems.Text;
+  SetPositionAndSize;
 end;
 
 procedure TTKRadiobuttonGroup.SetPositionAndSize;
-  var col, row, ItemsInCol, line, x, y, th: Integer;
-      RadioHeight, RadioWidth, ColWidth, RowHeight, ColWidthRest, RowHeightRest: Integer;
-      xold, yold,ColWidthI, RowHeightI: Integer;
-      key: string;
+var
+  Col, Row, ItemsInCol, Line, XPos, YPos, TextHeight: Integer;
+  RadioHeight, RadioWidth, ColWidth, RowHeight, ColWidthRest,
+    RowHeightRest: Integer;
+  XOld, YOld, ColWidthI, RowHeightI: Integer;
+  Key: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited;
   Canvas.Font.Assign(Font);
-  th:= Canvas.TextHeight('Hg');
-  if FLabel = '' then begin
-    RadioWidth:= Width;
-    RadioHeight:= Height;
-  end else begin
-    RadioWidth:= Width - PPIScale(4);
-    RadioHeight:= Height - th - PPIScale(4);
+  TextHeight := Canvas.TextHeight('Hg');
+  if FLabel = '' then
+  begin
+    RadioWidth := Width;
+    RadioHeight := Height;
+  end
+  else
+  begin
+    RadioWidth := Width - PPIScale(4);
+    RadioHeight := Height - TextHeight - PPIScale(4);
   end;
 
-  if FItems.Count > 0 then begin
-    ColWidth:= RadioWidth div FColumns;
-    RowHeight:= RadioHeight div ItemsInColumn(1);
-    line:= 0;
-    xold:= 0;
-    ColWidthRest:= RadioWidth mod FColumns;
-    for col:= 0 to FColumns - 1 do begin
-      if ColWidthRest > 0
-        then ColWidthI:= ColWidth + 1
-        else ColWidthI:= ColWidth;
-      if col = 0
-        then x:= 0
-        else x:= xold + ColWidthI;
+  if FItems.Count > 0 then
+  begin
+    ColWidth := RadioWidth div FColumns;
+    RowHeight := RadioHeight div ItemsInColumn(1);
+    Line := 0;
+    XOld := 0;
+    ColWidthRest := RadioWidth mod FColumns;
+    for Col := 0 to FColumns - 1 do
+    begin
+      if ColWidthRest > 0 then
+        ColWidthI := ColWidth + 1
+      else
+        ColWidthI := ColWidth;
+      if Col = 0 then
+        XPos := 0
+      else
+        XPos := XOld + ColWidthI;
       Dec(ColWidthRest);
 
-      yold:= 0;
-      ItemsInCol:= ItemsInColumn(col+1);
-      RowHeightRest:= RadioHeight mod ItemsInColumn(1);
-      for row:= 0 to ItemsInCol - 1 do begin
-        if RowHeightRest > 0
-          then RowHeightI:= RowHeight + 1
-          else RowHeightI:= RowHeight;
-        if row = 0
-          then y:= 0 // th in Qt?
-          else y:= yold + RowHeightI;
+      YOld := 0;
+      ItemsInCol := ItemsInColumn(Col + 1);
+      RowHeightRest := RadioHeight mod ItemsInColumn(1);
+      for Row := 0 to ItemsInCol - 1 do
+      begin
+        if RowHeightRest > 0 then
+          RowHeightI := RowHeight + 1
+        else
+          RowHeightI := RowHeight;
+        if Row = 0 then
+          YPos := 0 // TextHeight in Qt?
+        else
+          YPos := YOld + RowHeightI;
         Dec(RowHeightRest);
-        key:= RBName(line) + '.place';
-        setAttributValue(key, key + '(x=' + IntToStr(PPIUnScale(x)) + ', y=' + IntToStr(PPIUnScale(y)) +
-          ', width=' + IntToStr(PPIUnScale(ColWidthI)) + ', height=' + IntToStr(PPIUnScale(RowHeightI)) + ')');
-        Inc(line);
-        yold:= y;
+        Key := RBName(Line) + '.place';
+        SetAttributValue(Key, Key + '(x=' + IntToStr(PPIUnScale(XPos)) + ', y='
+          + IntToStr(PPIUnScale(YPos)) + ', width=' +
+          IntToStr(PPIUnScale(ColWidthI)) + ', height=' +
+          IntToStr(PPIUnScale(RowHeightI)) + ')');
+        Inc(Line);
+        YOld := YPos;
       end;
-      xold:= x;
+      XOld := XPos;
     end;
   end;
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
 procedure TTKRadiobuttonGroup.MakeCommand(Attr, Value: string);
-  var func, nam, s: string; i: Integer;
+var
+  Func, Nam, Str: string;
 begin
-  Command:= True;
-  nam:= Name + '_Command';
-  func:= CrLF +
-         Indent1 + 'def ' + nam +'(self):' + CrLf +
-         Indent2 + '# ToDo insert source code here' + CrLf +
-         Indent2 + 'pass' + CrLf;
-  Partner.InsertProcedure(func);
-  s:= '';
-  for i:= 0 to FItems.Count - 1 do
-    s:= s + surround(RBName(i) + '[''command''] = ' + 'self.' + nam);
-  insertValue(s);
+  Command := True;
+  Nam := Name + '_Command';
+  Func := CrLf + Indent1 + 'def ' + Nam + '(self):' + CrLf + Indent2 +
+    '# ToDo insert source code here' + CrLf + Indent2 + 'pass' + CrLf;
+  Partner.InsertProcedure(Func);
+  Str := '';
+  for var I := 0 to FItems.Count - 1 do
+    Str := Str + Surround(RBName(I) + '[''command''] = ' + 'self.' + Nam);
+  InsertValue(Str);
 end;
 
 procedure TTKRadiobuttonGroup.ChangeCommand(Value: string);
-  var key: string; i: Integer;
+var
+  Key: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
-  if Value = 'True' then begin
+  if Value = 'True' then
+  begin
     MakeCommand('Command', Value);
-    for i:= 0 to FItems.Count - 1 do begin
-      key:= RBName(i) + '[''command'']';
-      setAttributValue(key, key + ' = self.' + Name + '_Command');
+    for var I := 0 to FItems.Count - 1 do
+    begin
+      Key := RBName(I) + '[''command'']';
+      SetAttributValue(Key, Key + ' = self.' + Name + '_Command');
     end;
-  end else begin
+  end
+  else
+  begin
     Partner.DeleteMethod(Name + '_Command');
-    for i:= 0 to FItems.Count - 1 do
-      Partner.DeleteAttribute(RBName(i) + '[''command'']');
+    for var I := 0 to FItems.Count - 1 do
+      Partner.DeleteAttribute(RBName(I) + '[''command'']');
   end;
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TTKRadiobuttonGroup.MakeLabel(aLabel: string);
+procedure TTKRadiobuttonGroup.MakeLabel(ALabel: string);
 begin
-  FLabel:= aLabel;
-  var key:= 'self.' + Name + ' = ';
-  if aLabel = '' then begin
-    Partner.ReplaceLine(key, Indent2 + key + 'ttk.Frame()');
+  FLabel := ALabel;
+  var
+  Key := 'self.' + Name + ' = ';
+  if ALabel = '' then
+  begin
+    Partner.ReplaceLine(Key, Indent2 + Key + 'ttk.Frame()');
     Partner.DeleteAttribute('self.' + Name + '[''text'']');
-  end else begin
-    Partner.ReplaceLine(key, Indent2 + key + 'ttk.LabelFrame()');
-    key:= 'self.' + Name + '[''text'']';
-    setAttributValue(key, key + ' = ' + asString(FLabel));
+  end
+  else
+  begin
+    Partner.ReplaceLine(Key, Indent2 + Key + 'ttk.LabelFrame()');
+    Key := 'self.' + Name + '[''text'']';
+    SetAttributValue(Key, Key + ' = ' + AsString(FLabel));
   end;
-  setPositionAndSize;
+  SetPositionAndSize;
 end;
 
 procedure TTKRadiobuttonGroup.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('ttk.Frame');
   MakeLabel(' ' + _('Continent') + ' ');
-  FItems.Text:= defaultItems;
+  FItems.Text := DefaultItems;
   InsertValue('self.' + Name + 'CV = tk.StringVar()');
-  InsertValue('self.' + Name + 'CV.set(' + asString(FItems[0]) + ')');
+  InsertValue('self.' + Name + 'CV.set(' + AsString(FItems[0]) + ')');
   MakeButtongroupItems;
 end;
 
 procedure TTKRadiobuttonGroup.DeleteWidget;
 begin
-  for var i := 0 to FItems.Count - 1 do begin
-    Partner.DeleteAttributeValues(RBName(i));
-    Partner.DeleteAttributeValues(RBName(i) + 'CV');
+  for var I := 0 to FItems.Count - 1 do
+  begin
+    Partner.DeleteAttributeValues(RBName(I));
+    Partner.DeleteAttributeValues(RBName(I) + 'CV');
   end;
   inherited;
 end;
 
-procedure TTKRadiobuttonGroup.setItems(Value: TStrings);
+procedure TTKRadiobuttonGroup.SetItems(Value: TStrings);
 begin
-  if FItems.Text <> Value.Text then begin
-    FOldItems.Text:= FItems.Text;
-    FItems.Text:= Value.Text;
+  if FItems.Text <> Value.Text then
+  begin
+    FOldItems.Text := FItems.Text;
+    FItems.Text := Value.Text;
     Invalidate;
   end;
 end;
 
-procedure TTKRadiobuttonGroup.setColumns(Value: Integer);
+procedure TTKRadiobuttonGroup.SetColumns(Value: Integer);
 begin
-  if (FColumns <> Value) and (Value > 0) then begin
-    FColumns:= Value;
+  if (FColumns <> Value) and (Value > 0) then
+  begin
+    FColumns := Value;
     Invalidate;
   end;
 end;
 
-procedure TTKRadiobuttonGroup.setLabel(Value: string);
+procedure TTKRadiobuttonGroup.SetLabel(Value: string);
 begin
-  if FLabel <> Value then begin
-    FLabel:= Value;
+  if FLabel <> Value then
+  begin
+    FLabel := Value;
     Invalidate;
   end;
 end;
 
-procedure TTKRadiobuttonGroup.setCheckboxes(Value: Boolean);
+procedure TTKRadiobuttonGroup.SetCheckboxes(Value: Boolean);
 begin
-  if FCheckboxes <> Value then begin
-    FCheckboxes:= Value;
+  if FCheckboxes <> Value then
+  begin
+    FCheckboxes := Value;
     Invalidate;
   end;
 end;
 
-function TTKRadiobuttonGroup.ItemsInColumn(i: Integer): Integer;
-  var quot, rest: Integer;
+function TTKRadiobuttonGroup.ItemsInColumn(Num: Integer): Integer;
+var
+  Quot, Rest: Integer;
 begin
-  quot:= FItems.Count div FColumns;
-  rest:= FItems.Count mod FColumns;
-  if i <= rest
-    then Result:= quot + 1
-    else Result:= quot;
+  Quot := FItems.Count div FColumns;
+  Rest := FItems.Count mod FColumns;
+  if Num <= Rest then
+    Result := Quot + 1
+  else
+    Result := Quot;
 end;
 
 procedure TTKRadiobuttonGroup.Paint;
-  const cRadius = 5;
-  var ColumnWidth, RowWidth, RadioHeight, LabelHeight,
-      col, row, yc, ItemsInCol, line, x, y, th, Radius: Integer;
-      R: TRect; s: string;
+const
+  CRadius = 5;
+var
+  ColumnWidth, RowWidth, RadioHeight, LabelHeight, Col, Row, YCenter,
+    ItemsInCol, Line, XPos, YPos, TextHeight, Radius: Integer;
+  ARect: TRect;
+  Str: string;
 begin
-  FOldItems.Text:= FItems.Text;
+  FOldItems.Text := FItems.Text;
   inherited;
-  Radius:= PPIScale(cRadius);
+  Radius := PPIScale(CRadius);
   Canvas.FillRect(ClientRect);
-  th:= Canvas.TextHeight('Hg');
-  LabelHeight:= 0;
-  RadioHeight:= Height;
-  R:= ClientRect;
-  if FLabel <> '' then begin
-    R.Top:= th div 2;
-    LabelHeight:= th;
-    RadioHeight:= Height - th;
-    Canvas.Rectangle(R);
-    Canvas.Textout(PPIScale(10), 0, FLabel);
+  TextHeight := Canvas.TextHeight('Hg');
+  LabelHeight := 0;
+  RadioHeight := Height;
+  ARect := ClientRect;
+  if FLabel <> '' then
+  begin
+    ARect.Top := TextHeight div 2;
+    LabelHeight := TextHeight;
+    RadioHeight := Height - TextHeight;
+    Canvas.Rectangle(ARect);
+    Canvas.TextOut(PPIScale(10), 0, FLabel);
   end;
 
-  if FItems.Count > 0 then begin
-    ColumnWidth:= Width div FColumns;
-    RowWidth:= RadioHeight div ItemsInColumn(1);
-    line:= 0;
-    for col:= 1 to FColumns do begin
-      ItemsInCol:= ItemsInColumn(col);
-      for row:= 1 to ItemsInCol do begin
-        x:= PPIScale(4) + (col - 1)*ColumnWidth;
-        y:= LabelHeight + 2 + (row - 1)*RowWidth;
-        Canvas.Brush.Color:= clWhite;
-        if FCheckboxes then begin
-          R:= Rect(x, y + PPIScale(6), x + PPIScale(13), y + PPIScale(19));
-          Canvas.Rectangle(R);
-        end else begin
-          yc:= y + RowWidth div 2 - Radius;
-          Canvas.Ellipse(x, yc, x + 2*Radius, yc + 2*Radius);
+  if FItems.Count > 0 then
+  begin
+    ColumnWidth := Width div FColumns;
+    RowWidth := RadioHeight div ItemsInColumn(1);
+    Line := 0;
+    for Col := 1 to FColumns do
+    begin
+      ItemsInCol := ItemsInColumn(Col);
+      for Row := 1 to ItemsInCol do
+      begin
+        XPos := PPIScale(4) + (Col - 1) * ColumnWidth;
+        YPos := LabelHeight + 2 + (Row - 1) * RowWidth;
+        Canvas.Brush.Color := clWhite;
+        if FCheckboxes then
+        begin
+          ARect := Rect(XPos, YPos + PPIScale(6), XPos + PPIScale(13),
+            YPos + PPIScale(19));
+          Canvas.Rectangle(ARect);
+        end
+        else
+        begin
+          YCenter := YPos + RowWidth div 2 - Radius;
+          Canvas.Ellipse(XPos, YCenter, XPos + 2 * Radius,
+            YCenter + 2 * Radius);
         end;
-        Canvas.Brush.Color:= clBtnFace;
-        yc:= y + RowWidth div 2 - th div 2;
-        R:= Rect(x + PPIScale(15), yc, col*ColumnWidth, yc + RowWidth);
-        s:= FItems[line];
-        Canvas.TextRect(R, s);
-        Inc(line);
+        Canvas.Brush.Color := clBtnFace;
+        YCenter := YPos + RowWidth div 2 - TextHeight div 2;
+        ARect := Rect(XPos + PPIScale(15), YCenter, Col * ColumnWidth,
+          YCenter + RowWidth);
+        Str := FItems[Line];
+        Canvas.TextRect(ARect, Str);
+        Inc(Line);
       end;
     end;
   end;
 end;
 
-{--- TTKNotebook --------------------------------------------------------------}
+{ --- TTKNotebook -------------------------------------------------------------- }
 
-constructor TTKNotebook.Create(AOwner: TComponent);
+constructor TTKNotebook.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 50;
-  FTabs:= TStringList.Create;
-  FTabs.Text:= 'Tab 1'#13#10'Tab 2'#13#10'Tab 3';
-  FOldTabs:= TStringList.Create;
+  inherited Create(Owner);
+  Tag := 50;
+  FTabs := TStringList.Create;
+  FTabs.Text := 'Tab 1'#13#10'Tab 2'#13#10'Tab 3';
+  FOldTabs := TStringList.Create;
 end;
 
 destructor TTKNotebook.Destroy;
@@ -1152,13 +1319,13 @@ begin
   inherited;
 end;
 
-function TTKNotebook.getAttributes(ShowAttributes: Integer): string;
+function TTKNotebook.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Padding|Tabs';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|Padding|Tabs';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKNotebook.setAttribute(Attr, Value, Typ: string);
+procedure TTKNotebook.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'Tabs' then
     MakeTabs
@@ -1166,9 +1333,9 @@ begin
     inherited;
 end;
 
-function TTKNotebook.TabName(i: Integer): string;
+function TTKNotebook.TabName(Num: Integer): string;
 begin
-  Result:= 'self.' + Name + 'Tab' + IntToStr(i);
+  Result := 'self.' + Name + 'Tab' + IntToStr(Num);
 end;
 
 procedure TTKNotebook.DeleteWidget;
@@ -1178,24 +1345,27 @@ begin
 end;
 
 procedure TTKNotebook.DeleteTabs;
-  var i, all: Integer;
 begin
-  all:= Max(FOldTabs.Count - 1, FTabs.Count - 1);
-  for i:= 0 to all do
-    Partner.DeleteAttributeValues(TabName(i));
+  var
+  All := Max(FOldTabs.Count - 1, FTabs.Count - 1);
+  for var I := 0 to All do
+    Partner.DeleteAttributeValues(TabName(I));
 end;
 
 procedure TTKNotebook.MakeTabs;
-  var i: Integer; s: string;
+var
+  Str: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   DeleteTabs;
-  s:= '';
-  for i:= 0 to FTabs.Count - 1 do begin
-    s:= s + surround(TabName(i) + ' = ttk.Frame(self.' + Name + ')');
-    s:= s + surround('self.' + Name + '.add(' + TabName(i) + ', text=' + asString(FTabs[i]) + ')');
+  Str := '';
+  for var I := 0 to FTabs.Count - 1 do
+  begin
+    Str := Str + Surround(TabName(I) + ' = ttk.Frame(self.' + Name + ')');
+    Str := Str + Surround('self.' + Name + '.add(' + TabName(I) + ', text=' +
+      AsString(FTabs[I]) + ')');
   end;
-  InsertValue(s);
+  InsertValue(Str);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
@@ -1205,56 +1375,65 @@ begin
   MakeTabs;
 end;
 
-procedure TTKNotebook.setTabs(Value: TStrings);
+procedure TTKNotebook.SetTabs(Value: TStrings);
 begin
-  FOldTabs.Text:= FTabs.Text;
-  FTabs.Text:= Value.Text;
+  FOldTabs.Text := FTabs.Text;
+  FTabs.Text := Value.Text;
   Invalidate;
 end;
 
 procedure TTKNotebook.Paint;
-  var pl, pt, pr, pb, tw, th, x, y, i: Integer; R: TRect; s: string;
+var
+  PaddingL, PaddingT, PaddingR, PaddingB, TextWidth, TextHeight, XPos,
+    YPos: Integer;
+  ARect: TRect;
+  Str: string;
 begin
-  Background:= clBtnFace;
+  Background := clBtnFace;
   inherited;
-  CalculatePadding(pl, pt, pr, pb);
-  Canvas.Pen.Color:= $D9D9D9;
-  Canvas.MoveTo(pl, pt);
-  Canvas.LineTo(pl, Height - pb);
-  Canvas.Lineto(Width - pr, Height - pb);
-  Canvas.LineTo(Width - pr, pt -1);
-  x:= pl;
-  y:= pt;
-  for i:= 0 to FTabs.Count - 1 do begin
-    s:= FTabs[i];
-    tw:= Canvas.TextWidth(s) + 8;
-    th:= Canvas.TextHeight(s) + 4;
-    if i = 0 then begin
-      Canvas.Brush.Color:= clWindow;
-      R:= Rect(x, y, x + tw, y + th + 2);
-    end else begin
-      Canvas.Brush.Color:= $F0F0F0;
-      R:= Rect(x, y, x + tw, y + th);
+  CalculatePadding(PaddingL, PaddingT, PaddingR, PaddingB);
+  Canvas.Pen.Color := $D9D9D9;
+  Canvas.MoveTo(PaddingL, PaddingT);
+  Canvas.LineTo(PaddingL, Height - PaddingB);
+  Canvas.LineTo(Width - PaddingR, Height - PaddingB);
+  Canvas.LineTo(Width - PaddingR, PaddingT - 1);
+  XPos := PaddingL;
+  YPos := PaddingT;
+  for var I := 0 to FTabs.Count - 1 do
+  begin
+    Str := FTabs[I];
+    TextWidth := Canvas.TextWidth(Str) + 8;
+    TextHeight := Canvas.TextHeight(Str) + 4;
+    if I = 0 then
+    begin
+      Canvas.Brush.Color := clWindow;
+      ARect := Rect(XPos, YPos, XPos + TextWidth, YPos + TextHeight + 2);
+    end
+    else
+    begin
+      Canvas.Brush.Color := $F0F0F0;
+      ARect := Rect(XPos, YPos, XPos + TextWidth, YPos + TextHeight);
     end;
-    Canvas.Rectangle(R);
-    Canvas.TextOut(x + 4, y + 2, s);
-    x:= x + tw - 1;
-    y:= pt + 2;
+    Canvas.Rectangle(ARect);
+    Canvas.TextOut(XPos + 4, YPos + 2, Str);
+    XPos := XPos + TextWidth - 1;
+    YPos := PaddingT + 2;
   end;
 end;
 
-{--- TTKTreeview --------------------------------------------------------------}
+{ --- TTKTreeview -------------------------------------------------------------- }
 
-constructor TTKTreeview.Create(AOwner: TComponent);
+constructor TTKTreeview.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 51;
-  FColumns:= TStringList.Create;
-  FColumns.Text:= 'Items';
-  FItems:= TStringList.Create;
-  FItems.Text:= 'First'#13#10'  node A'#13#10'  node B'#13#10'Second'#13#10'   node C'#13#10'    node D';
-  FOldItems:= TStringList.Create;
-  FShowHeadings:= True;
+  inherited Create(Owner);
+  Tag := 51;
+  FColumns := TStringList.Create;
+  FColumns.Text := 'Items';
+  FItems := TStringList.Create;
+  FItems.Text :=
+    'First'#13#10'  node A'#13#10'  node B'#13#10'Second'#13#10'   node C'#13#10'    node D';
+  FOldItems := TStringList.Create;
+  FShowHeadings := True;
 end;
 
 destructor TTKTreeview.Destroy;
@@ -1265,39 +1444,45 @@ begin
   inherited;
 end;
 
-function TTKTreeview.getAttributes(ShowAttributes: Integer): string;
+function TTKTreeview.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Columns|Items|Padding|Scrollbars';
+  Result := '|Columns|Items|Padding|Scrollbars';
   if ShowAttributes >= 2 then
-    Result:= Result + '|SelectMode|ShowHeadings';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|SelectMode|ShowHeadings';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKTreeview.setAttribute(Attr, Value, Typ: string);
-  var key: string;
+procedure TTKTreeview.SetAttribute(Attr, Value, Typ: string);
+var
+  Key: string;
 begin
   if Attr = 'Columns' then
     MakeColumns
-  else if Attr = 'Items' then begin
+  else if Attr = 'Items' then
+  begin
     MakeItems;
     if FColumns.Text = '' then
       MakeColumns;
-  end else if Attr = 'Scrollbars' then
+  end
+  else if Attr = 'Scrollbars' then
     MakeScrollbars(Value, 'ttk.')
-  else if Attr = 'ShowHeadings' then begin
-    key:= getAttrAsKey('Show');
-    if Value = 'True'
-      then Partner.DeleteAttribute(key)
-      else InsertValue(key + ' = ' + asString('tree'));   // test
-  end else
+  else if Attr = 'ShowHeadings' then
+  begin
+    Key := GetAttrAsKey('Show');
+    if Value = 'True' then
+      Partner.DeleteAttribute(Key)
+    else
+      InsertValue(Key + ' = ' + AsString('tree')); // test
+  end
+  else
     inherited;
   if Attr = 'Padding' then
     MakeColumns;
 end;
 
-function TTKTreeview.ColumnId(i: Integer): string;
+function TTKTreeview.ColumnId(Num: Integer): string;
 begin
-  Result:= asString('#' + IntToStr(i));
+  Result := AsString('#' + IntToStr(Num));
 end;
 
 procedure TTKTreeview.DeleteWidget;
@@ -1308,68 +1493,79 @@ end;
 
 procedure TTKTreeview.DeleteColumns;
 begin
-  Partner.DeleteAttribute(getAttrAsKey('Columns'));
-  //Partner.DeleteAttribute(getAttrAsKey('DisplayColumns'));
+  Partner.DeleteAttribute(GetAttrAsKey('Columns'));
   Partner.DeleteAttributeValues('self.' + Name + '.column');
   Partner.DeleteAttributeValues('self.' + Name + '.heading');
 end;
 
 procedure TTKTreeview.MakeColumns;
-  var w, i, Count, pl, pt, pr, pb: Integer; s, s1: string;
+var
+  AWidth, Count, PaddingL, PaddingT, PaddingR, PaddingB: Integer;
+  Str, Str1: string;
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   DeleteColumns;
-  CalculatePadding(pl, pt, pr, pb);
-  s:= '';
-  Count:= FColumns.Count;
-  if Count = 0 then begin
-    w:= Width - pl - pr - 2;
-    s:= s + surround('self.' + Name + '.column(' + ColumnId(0) + ', width=' + IntToStr(w) + ')');
-  end else begin
-    s1:= asString(FColumns[0]);
-    for i:= 1 to FColumns.Count - 1 do
-      s1:= s1 + ', ' + asString(FColumns[i]);
-    s1:= '(' + s1 + ')';
-    s:= s + surround(getAttrAsKey('Columns') + ' = ' + s1);
+  CalculatePadding(PaddingL, PaddingT, PaddingR, PaddingB);
+  Str := '';
+  Count := FColumns.Count;
+  if Count = 0 then
+  begin
+    AWidth := Width - PaddingL - PaddingR - 2;
+    Str := Str + Surround('self.' + Name + '.column(' + ColumnId(0) + ', width='
+      + IntToStr(AWidth) + ')');
+  end
+  else
+  begin
+    Str1 := AsString(FColumns[0]);
+    for var I := 1 to FColumns.Count - 1 do
+      Str1 := Str1 + ', ' + AsString(FColumns[I]);
+    Str1 := '(' + Str1 + ')';
+    Str := Str + Surround(GetAttrAsKey('Columns') + ' = ' + Str1);
     UpdateObjectInspector;
-    w:= (Width - pl - pr - 2) div Count;
-    for i:= 0 to Count - 1 do
-      s:= s + surround('self.' + Name + '.column(' + ColumnId(i) + ', width=' + IntToStr(w) + ')');
+    AWidth := (Width - PaddingL - PaddingR - 2) div Count;
+    for var I := 0 to Count - 1 do
+      Str := Str + Surround('self.' + Name + '.column(' + ColumnId(I) +
+        ', width=' + IntToStr(AWidth) + ')');
     // hack
     if Count = 1 then
-      s:= s+ surround('self.' + Name + '.column(' + ColumnId(1) + ', width=0)');
-    for i:= 0 to Count - 1 do
-      s:=s + surround('self.' + Name + '.heading(' + ColumnId(i) + ', text=' + asString(FColumns[i]) + ')');
+      Str := Str + Surround('self.' + Name + '.column(' + ColumnId(1) +
+        ', width=0)');
+    for var I := 0 to Count - 1 do
+      Str := Str + Surround('self.' + Name + '.heading(' + ColumnId(I) +
+        ', text=' + AsString(FColumns[I]) + ')');
   end;
-  InsertValue(s);
+  InsertValue(Str);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-function TTKTreeview.hasSubNodes(i: Integer): Boolean;
+function TTKTreeview.HasSubNodes(Num: Integer): Boolean;
 begin
-  Result:= (i < FItems.Count - 1) and
-           (LeftSpaces(FItems[i], 2) < LeftSpaces(FItems[i+1], 2));
+  Result := (Num < FItems.Count - 1) and
+    (LeftSpaces(FItems[Num], 2) < LeftSpaces(FItems[Num + 1], 2));
 end;
 
 procedure TTKTreeview.MakeItems;
-  var i, ls, Indent, NodeCount: Integer;
-      s: string;
-      NodeId: array[-1..10] of string;
+var
+  Int, LeftSpac, Indent, NodeCount: Integer;
+  Str: string;
+  NodeId: array [-1 .. 10] of string;
 
   function MakeNode(Indent: Integer; Id: string = ''): string;
-    var s: string;
+  var
+    Str: string;
   begin
-    s:= 'self.' + Name + '.insert(' + asString(NodeId[Indent-1]) + ', ' + asString('end');
+    Str := 'self.' + Name + '.insert(' + AsString(NodeId[Indent - 1]) + ', ' +
+      AsString('end');
     if Id <> '' then
-      s:= s + ', ' + asString(Id);
-    s:= s + ', text=' + asString(Trim(FItems[i])) + ')';
-    Result:= surround(s);
+      Str := Str + ', ' + AsString(Id);
+    Str := Str + ', text=' + AsString(Trim(FItems[Int])) + ')';
+    Result := Surround(Str);
   end;
 
   function getNextNodeId: string;
   begin
     Inc(NodeCount);
-    Result:= 'Id' + IntToStr(NodeCount);
+    Result := 'Id' + IntToStr(NodeCount);
   end;
 
 begin
@@ -1377,30 +1573,37 @@ begin
   Partner.DeleteAttributeValues('self.' + Name + '.insert');
 
   FormatItems(FItems);
-  NodeCount:= 0;
-  NodeId[-1]:= '';
-  Indent:= 0;
+  NodeCount := 0;
+  NodeId[-1] := '';
+  Indent := 0;
   // insert new items
-  i:= 0;
-  s:= '';
-  while i < Items.Count do begin
-    ls:= LeftSpaces(Items[i], 2) div 2;
-    if ls < Indent then begin  // close open menus
-      while Indent > ls do
+  Int := 0;
+  Str := '';
+  while Int < Items.Count do
+  begin
+    LeftSpac := LeftSpaces(Items[Int], 2) div 2;
+    if LeftSpac < Indent then
+    begin // close open menus
+      while Indent > LeftSpac do
         Dec(Indent);
-      Dec(i);
-    end else if ls > Indent then begin
-      s:= s + MakeNode(Indent);
+      Dec(Int);
+    end
+    else if LeftSpac > Indent then
+    begin
+      Str := Str + MakeNode(Indent);
       Inc(Indent);
-    end else if hasSubNodes(i) then begin  // create new node/subnode
-      NodeId[Indent]:= getNextNodeId;
-      s:= s + MakeNode(Indent, NodeId[Indent]);
+    end
+    else if HasSubNodes(Int) then
+    begin // create new node/subnode
+      NodeId[Indent] := getNextNodeId;
+      Str := Str + MakeNode(Indent, NodeId[Indent]);
       Inc(Indent);
-    end else
-      s:= s + MakeNode(Indent);
-    Inc(i);
+    end
+    else
+      Str := Str + MakeNode(Indent);
+    Inc(Int);
   end;
-  InsertValue(s);
+  InsertValue(Str);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
@@ -1411,132 +1614,149 @@ begin
   MakeItems;
 end;
 
-procedure TTKTreeview.setItems(Value: TStrings);
+procedure TTKTreeview.SetItems(Value: TStrings);
 begin
-  if FItems.Text <> Value.Text then begin
-    FOldItems.Text:= FItems.Text;
-    FItems.Text:= Value.Text;
+  if FItems.Text <> Value.Text then
+  begin
+    FOldItems.Text := FItems.Text;
+    FItems.Text := Value.Text;
     Invalidate;
   end;
 end;
 
-procedure TTKTreeview.setColumns(Value: TStrings);
+procedure TTKTreeview.SetColumns(Value: TStrings);
 begin
-  if FColumns.Text <> Value.Text then begin
-    FColumns.Text:= Value.Text;
+  if FColumns.Text <> Value.Text then
+  begin
+    FColumns.Text := Value.Text;
     Invalidate;
   end;
 end;
 
-procedure TTKTreeview.setDisplayColumns(Value: string);
+procedure TTKTreeview.SetDisplayColumns(Value: string);
 begin
-  if FDisplayColumns <> Value then begin
-    FDisplayColumns:= Value;
+  if FDisplayColumns <> Value then
+  begin
+    FDisplayColumns := Value;
     Invalidate;
   end;
 end;
 
-procedure TTKTreeview.setShowHeadings(Value: Boolean);
+procedure TTKTreeview.SetShowHeadings(Value: Boolean);
 begin
-  if FShowHeadings <> Value then begin
-    FShowHeadings:= Value;
+  if FShowHeadings <> Value then
+  begin
+    FShowHeadings := Value;
     Invalidate;
   end;
 end;
 
-function TTKTreeview.getWidgetStylename: string;
+function TTKTreeview.GetWidgetStylename: string;
 begin
-  Result:= Name + '.Treeview';
+  Result := Name + '.Treeview';
 end;
 
 procedure TTKTreeview.Paint;
-  var pl, pt, pr, pb, x, y, i, Count, ColWidth: Integer;
-      R: TRect; s: string;
+var
+  PaddingL, PaddingT, PaddingR, PaddingB, XPos, YPos, Int, Count,
+    ColWidth: Integer;
+  ARect: TRect;
+  Str: string;
 begin
-  Background:= clWindow;
-  FOldItems.Text:= FItems.Text;
+  Background := clWindow;
+  FOldItems.Text := FItems.Text;
   inherited;
-  CalculatePadding(pl, pt, pr, pb);
+  CalculatePadding(PaddingL, PaddingT, PaddingR, PaddingB);
   // headings
-  ColWidth:= Width - pl - pr - 2;
-  Canvas.Pen.Color:= $908782;
+  ColWidth := Width - PaddingL - PaddingR - 2;
+  Canvas.Pen.Color := $908782;
   Canvas.Rectangle(ClientRect);
-  if FShowHeadings then begin
-    Count:= FColumns.Count;
-    if Count > 1 then begin
-      ColWidth:= ColWidth div Count;
-      Canvas.Pen.Color:= $E5E5E5;
-      for i:= 1 to Count - 1 do begin
-        x:= pl + i*ColWidth;
-        Canvas.MoveTo(x, 1);
-        Canvas.LineTo(x, PPIScale(24));
+  if FShowHeadings then
+  begin
+    Count := FColumns.Count;
+    if Count > 1 then
+    begin
+      ColWidth := ColWidth div Count;
+      Canvas.Pen.Color := $E5E5E5;
+      for var I := 1 to Count - 1 do
+      begin
+        XPos := PaddingL + I * ColWidth;
+        Canvas.MoveTo(XPos, 1);
+        Canvas.LineTo(XPos, PPIScale(24));
       end;
     end;
-    for i:= 0 to Count - 1 do begin
-      x:= pl + i*ColWidth + 1;
-      R:= Rect(x, PPIScale(4), x + ColWidth, PPIScale(23));
-      s:= FColumns[i];
-      DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_CENTER);
+    for var I := 0 to Count - 1 do
+    begin
+      XPos := PaddingL + I * ColWidth + 1;
+      ARect := Rect(XPos, PPIScale(4), XPos + ColWidth, PPIScale(23));
+      Str := FColumns[I];
+      DrawText(Canvas.Handle, PChar(Str), Length(Str), ARect, DT_CENTER);
     end;
-    y:= PPIScale(26);
-  end else
-    y:= PPIScale(2);
+    YPos := PPIScale(26);
+  end
+  else
+    YPos := PPIScale(2);
   // nodes
-  x:= 1;
-  i:= 0;
-  while i < FItems.Count do begin
-    if LeftSpaces(FItems[i], 2) = 0 then begin
-      if hasSubNodes(i) then begin
-        R:= Rect(x + PPIScale(5), y + PPIScale(6), x + PPIScale(14), y + PPIScale(15));
-        Canvas.Pen.Color:= $919191;
-        Canvas.Rectangle(R);
-        Canvas.Pen.Color:= $724229;
-        Canvas.MoveTo(x + PPIScale(9), y + PPIScale(8));
-        Canvas.LineTo(x + PPIScale(9), y + PPIScale(13));
-        Canvas.Pen.Color:= $A7634B;
-        Canvas.MoveTo(x +  PPIScale(7), y + PPIScale(10));
-        Canvas.LineTo(x + PPIScale(12), y + PPIScale(10));
+  XPos := 1;
+  Int := 0;
+  while Int < FItems.Count do
+  begin
+    if LeftSpaces(FItems[Int], 2) = 0 then
+    begin
+      if HasSubNodes(Int) then
+      begin
+        ARect := Rect(XPos + PPIScale(5), YPos + PPIScale(6),
+          XPos + PPIScale(14), YPos + PPIScale(15));
+        Canvas.Pen.Color := $919191;
+        Canvas.Rectangle(ARect);
+        Canvas.Pen.Color := $724229;
+        Canvas.MoveTo(XPos + PPIScale(9), YPos + PPIScale(8));
+        Canvas.LineTo(XPos + PPIScale(9), YPos + PPIScale(13));
+        Canvas.Pen.Color := $A7634B;
+        Canvas.MoveTo(XPos + PPIScale(7), YPos + PPIScale(10));
+        Canvas.LineTo(XPos + PPIScale(12), YPos + PPIScale(10));
       end;
-      s:= FItems[i];
-      R:= Rect(x + PPIScale(20), y + PPIScale(2), x + ColWidth - 1, y + PPIScale(22));
-      DrawText(Canvas.Handle, PChar(s), Length(s), R, DT_LEFT);
-      y:= y + PPIScale(20);
-      if y + PPIScale(20) > Height - pb then
-        i:= FItems.Count;
+      Str := FItems[Int];
+      ARect := Rect(XPos + PPIScale(20), YPos + PPIScale(2),
+        XPos + ColWidth - 1, YPos + PPIScale(22));
+      DrawText(Canvas.Handle, PChar(Str), Length(Str), ARect, DT_LEFT);
+      YPos := YPos + PPIScale(20);
+      if YPos + PPIScale(20) > Height - PaddingB then
+        Int := FItems.Count;
     end;
-    Inc(i);
+    Inc(Int);
   end;
   PaintScrollbars(Scrollbars);
 end;
 
-{--- TTKProgresbar ------------------------------------------------------------}
+{ --- TTKProgresbar ------------------------------------------------------------ }
 
-constructor TTKProgressbar.Create(AOwner: TComponent);
+constructor TTKProgressbar.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 52;
-  Width:= 120;
-  Height:= 24;
-  FOrient:= horizontal;
-  FMaximum:= 100;
-  FMode:= determinate;
-  FValue:= 30;
+  inherited Create(Owner);
+  Tag := 52;
+  Width := 120;
+  Height := 24;
+  FOrient := horizontal;
+  FMaximum := 100;
+  FMode := determinate;
+  FValue := 30;
 end;
 
-function TTKProgressbar.getAttributes(ShowAttributes: Integer): string;
+function TTKProgressbar.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Maximum|Orient|Value';
+  Result := '|Maximum|Orient|Value';
   if ShowAttributes >= 2 then
-    Result:= Result + '|Mode';
+    Result := Result + '|Mode';
   if ShowAttributes = 3 then
-    Result:= Result + '';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKProgressbar.setAttribute(Attr, Value, Typ: string);
+procedure TTKProgressbar.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'Value' then
-    setValue(Name + 'CV', asString(Value))
+    SetValue(Name + 'CV', AsString(Value))
   else
     inherited;
 end;
@@ -1549,56 +1769,63 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-function TTKProgressbar.getWidgetStylename: string;
+function TTKProgressbar.GetWidgetStylename: string;
 begin
-  if FOrient = horizontal
-    then Result:= Name + '.Horizontal.TProgressbar'
-    else Result:= Name + '.Vertical.TPrograssbar';
+  if FOrient = horizontal then
+    Result := Name + '.Horizontal.TProgressbar'
+  else
+    Result := Name + '.Vertical.TProgressbar';
 end;
 
 procedure TTKProgressbar.Paint;
-  var x, y: Integer; R: TRect;
+var
+  XPos, YPos: Integer;
+  ARect: TRect;
 begin
   inherited;
-  Canvas.Pen.Color:= $BCBCBC;
-  Canvas.Brush.Color:= $E6E6E6;
-  R:= ClientRect;
-  Canvas.Rectangle(R);
-  R.Inflate(-3, -3);
-  if FOrient = horizontal then begin
-    x:= Round((Width - 6) * FValue / FMaximum);
-    R.Right:= R.Left + x;
-  end else begin
-    y:= Round((Height - 6) * FValue / FMaximum);
-    R.Top:= R.Bottom - y;
+  Canvas.Pen.Color := $BCBCBC;
+  Canvas.Brush.Color := $E6E6E6;
+  ARect := ClientRect;
+  Canvas.Rectangle(ARect);
+  ARect.Inflate(-3, -3);
+  if FOrient = horizontal then
+  begin
+    XPos := Round((Width - 6) * FValue / FMaximum);
+    ARect.Right := ARect.Left + XPos;
+  end
+  else
+  begin
+    YPos := Round((Height - 6) * FValue / FMaximum);
+    ARect.Top := ARect.Bottom - YPos;
   end;
-  Canvas.Brush.Color:= $25B006;
-  Canvas.FillRect(R);
+  Canvas.Brush.Color := $25B006;
+  Canvas.FillRect(ARect);
 end;
 
-procedure TTKProgressbar.setRValue(Value: Real);
+procedure TTKProgressbar.SetRValue(Value: Real);
 begin
-  if Value <> FValue then begin
+  if Value <> FValue then
+  begin
     FValue := Value;
     Invalidate;
   end;
 end;
 
-{--- TTKSeparator -------------------------------------------------------------}
+{ --- TTKSeparator ------------------------------------------------------------- }
 
-constructor TTKSeparator.Create(AOwner: TComponent);
+constructor TTKSeparator.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 53;
-  Width:= 120;
-  Height:= 2;
-  FOrient:= horizontal;
+  inherited Create(Owner);
+  Tag := 53;
+  Width := 120;
+  Height := 2;
+  FOrient := horizontal;
 end;
 
-function TTKSeparator.getAttributes(ShowAttributes: Integer): string;
+function TTKSeparator.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Orient';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+  Result := '|Orient';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
 procedure TTKSeparator.NewWidget(Widget: string = '');
@@ -1609,65 +1836,70 @@ end;
 procedure TTKSeparator.Paint;
 begin
   inherited;
-  Canvas.Pen.Color:= $A0A0A0;
+  Canvas.Pen.Color := $A0A0A0;
   Canvas.MoveTo(0, 0);
-  if FOrient = horizontal then begin
+  if FOrient = horizontal then
+  begin
     Canvas.LineTo(Width + 1, 0);
-    Canvas.Pen.Color:= clWhite;
+    Canvas.Pen.Color := clWhite;
     Canvas.MoveTo(0, 1);
-    Canvas.LineTo(Width + 1, 1)
-  end else begin
+    Canvas.LineTo(Width + 1, 1);
+  end
+  else
+  begin
     Canvas.LineTo(0, Height + 1);
-    Canvas.Pen.Color:= clWhite;
+    Canvas.Pen.Color := clWhite;
     Canvas.MoveTo(1, 0);
-    Canvas.LineTo(1, Height + 1)
+    Canvas.LineTo(1, Height + 1);
   end;
 end;
 
-{--- TTKSizeGrip --------------------------------------------------------------}
+{ --- TTKSizeGrip -------------------------------------------------------------- }
 
-constructor TTKSizeGrip.Create(AOwner: TComponent);
+constructor TTKSizeGrip.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 54;
-  Width:= 14;
-  Height:= 14;
+  inherited Create(Owner);
+  Tag := 54;
+  Width := 14;
+  Height := 14;
 end;
 
 procedure TTKSizeGrip.NewWidget(Widget: string = '');
 begin
-  InsertValue('self.' + Name + ' = ttk.Sizegrip(' + getContainer + ')');
-  InsertValue('self.' + Name + '.pack(side=' + asString('right') + ', anchor=' + asString('se') + ')');
+  InsertValue('self.' + Name + ' = ttk.Sizegrip(' + GetContainer + ')');
+  InsertValue('self.' + Name + '.pack(side=' + AsString('right') + ', anchor=' +
+    AsString('se') + ')');
 end;
 
-function TTKSizeGrip.getAttributes(ShowAttributes: Integer): string;
+function TTKSizeGrip.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Name';
+  Result := '|Name';
 end;
 
 procedure TTKSizeGrip.Paint;
-  var pw, ph, p3, p14: Integer; R: TRect;
+var
+  Int3, Int14: Integer;
+  ARect: TRect;
 begin
-  p14:= PPIScale(14);
-  p3:= PPIScale(3);
-  setBounds(Parent.ClientWidth-p14, Parent.ClientHeight-p14, p14, p14);
+  Int14 := PPIScale(14);
+  Int3 := PPIScale(3);
+  SetBounds(Parent.ClientWidth - Int14, Parent.ClientHeight - Int14,
+    Int14, Int14);
   inherited;
-  pw:= ClientWidth;
-  ph:= ClientHeight;
-
-  Canvas.Brush.Color:= $BFBFBF;
-  R:= Rect(pw - PPIScale(11), ph - PPIScale(5), pw - PPIScale(9), ph - p3);
-  Canvas.FillRect(R);
-  R.Offset(p3, 0);
-  Canvas.FillRect(R);
-  R.Offset(p3, 0);
-  Canvas.FillRect(R);
-  R.Offset(0, -p3);
-  Canvas.FillRect(R);
-  R.Offset(0, -p3);
-  Canvas.FillRect(R);
-  R.Offset(-p3, +p3);
-  Canvas.FillRect(R);
+  Canvas.Brush.Color := $BFBFBF;
+  ARect := Rect(ClientWidth - PPIScale(11), ClientHeight - PPIScale(5),
+    ClientWidth - PPIScale(9), ClientHeight - Int3);
+  Canvas.FillRect(ARect);
+  ARect.Offset(Int3, 0);
+  Canvas.FillRect(ARect);
+  ARect.Offset(Int3, 0);
+  Canvas.FillRect(ARect);
+  ARect.Offset(0, -Int3);
+  Canvas.FillRect(ARect);
+  ARect.Offset(0, -Int3);
+  Canvas.FillRect(ARect);
+  ARect.Offset(-Int3, +Int3);
+  Canvas.FillRect(ARect);
 end;
 
 procedure TTKSizeGrip.SetPositionAndSize;
@@ -1676,4 +1908,3 @@ begin
 end;
 
 end.
-

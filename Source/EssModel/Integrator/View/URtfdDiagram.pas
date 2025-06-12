@@ -294,7 +294,6 @@ end;
 destructor TRtfdDiagram.Destroy;
 var
   Box: TRtfdBox;
-  I: Integer;
 begin
   // Force listeners to release, and diagram to persist.
   // Package:= nil;
@@ -302,7 +301,7 @@ begin
   Model.ClearListeners;
 
   FreeAndNil(FFullParameters);
-  for I := 0 to FBoxNames.Count - 1 do
+  for var I := 0 to FBoxNames.Count - 1 do
   begin
     Box := FBoxNames.Objects[I] as TRtfdBox;
     FreeAndNil(Box);
@@ -2136,11 +2135,10 @@ var
   procedure DoSetAttributeValues(AClass: TClass);
   var
     NewValue: string;
-    I: Integer;
   begin
     if AClass.AncestorsCount > 0 then
       DoSetAttributeValues(AClass.Ancestor[0]);
-    for I := 0 to Attributes.Count - 1 do
+    for var I := 0 to Attributes.Count - 1 do
     begin
       NewValue := StrToPythonValue(Attributes.ValueFromIndex[I]);
       if NewValue <> OldAttributes.ValueFromIndex[I] then

@@ -1,24 +1,25 @@
-{-------------------------------------------------------------------------------
- Unit:     UTTKTextBase
- Author:   Gerhard Röhner
- Date:     May 2021
- Purpose:  TKKinter text widgets
--------------------------------------------------------------------------------}
+﻿{ -------------------------------------------------------------------------------
+  Unit:     UTTKTextBase
+  Author:   Gerhard Röhner
+  Date:     May 2021
+  Purpose:  TKKinter text widgets
+  ------------------------------------------------------------------------------- }
 
 unit UTTKTextBase;
 
 { class hierarchy
 
   TKTextBaseWidget
-    TTKEntry
-    TKSpinbox
-    TTKCombobox
+  TTKEntry
+  TKSpinbox
+  TTKCombobox
 }
 
 interface
 
 uses
-  Classes, UTtkWidgets;
+  Classes,
+  UTTKWidgets;
 
 type
 
@@ -29,7 +30,8 @@ type
 
   TSelectMode = (browse, single, multiple, extended);
 
-  TValidate = (_TV_none, _TV_all, _TV_key, _TV_focus, _TV_focusin, _TV_focusout);
+  TValidate = (_TV_none, _TV_all, _TV_key, _TV_focus, _TV_focusin,
+    _TV_focusout);
 
   TTKTextBaseWidget = class(TTKWidget)
   private
@@ -38,48 +40,49 @@ type
     FState: TTextState;
     FValidate: TValidate;
     FValidateCommand: Boolean;
-    procedure setState(aValue: TTextState);
+    procedure SetState(aValue: TTextState);
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     procedure DeleteWidget; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    function getEvents(ShowEvents: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    function GetEvents(ShowEvents: Integer): string; override;
     procedure MakeCommand(Attr, Value: string); override;
     procedure Paint; override;
   published
-    property ExportSelection: Boolean read FExportSelection write FExportSelection default True;
+    property ExportSelection: Boolean read FExportSelection
+      write FExportSelection default True;
     property Font;
     property Foreground;
     property InvalidCommand: Boolean read FInvalidCommand write FInvalidCommand;
     property Justify;
     property Scrollbar;
-    property State: TTextState read FState write setState default normal;
-    property Validate: TValidate read FValidate write FValidate default _TV_none;
-    property ValidateCommand: Boolean read FValidateCommand write FValidateCommand;
+    property State: TTextState read FState write SetState default normal;
+    property Validate: TValidate read FValidate write FValidate
+      default _TV_none;
+    property ValidateCommand: Boolean read FValidateCommand
+      write FValidateCommand;
   end;
 
-  TTKEntry = class (TTKTextBaseWidget)
+  TTKEntry = class(TTKTextBaseWidget)
   private
     FShow: Boolean;
     FText: string;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     procedure NewWidget(Widget: string = ''); override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
-    function getEvents(ShowEvents: Integer): string; override;
-    procedure setText(Value: string); override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
+    function GetEvents(ShowEvents: Integer): string; override;
+    procedure SetText(Value: string); override;
     procedure Paint; override;
   published
-    {$WARNINGS OFF}
     property Show: Boolean read FShow write FShow default True;
-    {$WARNINGS ON}
-    property Text: string read FText write setText;
+    property Text: string read FText write SetText;
     property TakeFocus;
   end;
 
-  TTKSpinbox = class (TTKTextBaseWidget)
+  TTKSpinbox = class(TTKTextBaseWidget)
   private
     FFormat: string;
     FFrom: string;
@@ -87,14 +90,14 @@ type
     FTo: string;
     FValue: string;
     FValues: TStrings;
-    procedure setValues(Values: TStrings);
-    procedure setRValue(aValue: string);
+    procedure SetValues(Values: TStrings);
+    procedure SetRValue(Value: string);
     procedure MakeValues;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure Paint; override;
   published
@@ -104,8 +107,8 @@ type
     property Increment: string read FIncrement write FIncrement;
     property TakeFocus;
     property _To: string read FTo write FTo;
-    property Values: TStrings read FValues write setValues;
-    property Value: string read FValue write setRValue;
+    property Values: TStrings read FValues write SetValues;
+    property Value: string read FValue write SetRValue;
   end;
 
   TTKCombobox = class(TTKTextBaseWidget)
@@ -113,50 +116,58 @@ type
     FPostCommand: Boolean;
     FValue: string;
     FValues: TStrings;
-    procedure setRValue(aValue: string);
-    procedure setValues(Values: TStrings);
-    function getListItems: string;
+    procedure SetRValue(Value: string);
+    procedure SetValues(Values: TStrings);
+    function GetListItems: string;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure setAttribute(Attr, Value, Typ: string); override;
-    function getAttributes(ShowAttributes: Integer): string; override;
+    procedure SetAttribute(Attr, Value, Typ: string); override;
+    function GetAttributes(ShowAttributes: Integer): string; override;
     procedure NewWidget(Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
   published
     property PostCommand: Boolean read FPostCommand write FPostCommand;
     property TakeFocus;
-    property Value: string read FValue write setRValue;
-    property Values: TStrings read FValues write setValues;
+    property Value: string read FValue write SetRValue;
+    property Values: TStrings read FValues write SetValues;
   end;
 
 implementation
 
-uses Controls, Graphics, SysUtils, Types, UITypes,
-     UBaseTkWidgets, UUtils;
+uses
+  Controls,
+  Graphics,
+  SysUtils,
+  Types,
+  UITypes,
+  UBaseTKWidgets,
+  UUtils;
 
-{--- TButtonBaseWidget --------------------------------------------------------}
+{ --- TButtonBaseWidget -------------------------------------------------------- }
 
-constructor TTKTextBaseWidget.Create(AOwner: TComponent);
+constructor TTKTextBaseWidget.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  FExportSelection:= True;
-  FState:= normal;
-  FValidate:= _TV_none;
-  Cursor:= crIBeam;
-  Justify:= _TJ_Left;
-  Relief:= _TR_solid;
+  inherited Create(Owner);
+  FExportSelection := True;
+  FState := normal;
+  FValidate := _TV_none;
+  Cursor := crIBeam;
+  Justify := _TJ_left;
+  Relief := _TR_solid;
 end;
 
 procedure TTKTextBaseWidget.DeleteWidget;
 begin
   inherited;
-  if FInvalidCommand then Partner.DeleteMethod(Name + '_InvalidCommand');
-  if FValidateCommand then Partner.DeleteMethod(Name + '_ValidateCommand');
+  if FInvalidCommand then
+    Partner.DeleteMethod(Name + '_InvalidCommand');
+  if FValidateCommand then
+    Partner.DeleteMethod(Name + '_ValidateCommand');
 end;
 
-procedure TTKTextBaseWidget.setAttribute(Attr, Value, Typ: string);
+procedure TTKTextBaseWidget.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'Scrollbar' then
     MakeScrollbar(Value, 'ttk.')
@@ -164,20 +175,20 @@ begin
     inherited;
 end;
 
-function TTKTextBaseWidget.getAttributes(ShowAttributes: Integer): string;
+function TTKTextBaseWidget.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Background|Show';
+  Result := '|Background|Show';
   if ShowAttributes >= 2 then
-    Result:= Result + '|Justify|Scrollbar|State';
+    Result := Result + '|Justify|Scrollbar|State';
   if ShowAttributes = 3 then
-    Result:= Result + '|ExportSelection|Foreground' +
-                      '|InvalidCommand|Validate|ValidateCommand';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|ExportSelection|Foreground' +
+      '|InvalidCommand|Validate|ValidateCommand';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-function TTKTextBaseWidget.getEvents(ShowEvents: Integer): string;
+function TTKTextBaseWidget.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= getMouseEvents(ShowEvents);
+  Result := GetMouseEvents(ShowEvents);
 end;
 
 procedure TTKTextBaseWidget.MakeCommand(Attr, Value: string);
@@ -187,31 +198,33 @@ begin
     AddParameter(Value, 'why, where, what');
 end;
 
-procedure TTKTextbaseWidget.Paint;
+procedure TTKTextBaseWidget.Paint;
 begin
-  if FState = normal
-    then Background:= clWindow
-    else Background:= clBtnFace;
+  if FState = normal then
+    Background := clWindow
+  else
+    Background := clBtnFace;
   inherited;
 end;
 
-procedure TTKTextBaseWidget.setState(aValue: TTextState);
+procedure TTKTextBaseWidget.SetState(aValue: TTextState);
 begin
-  if aValue <> FState then begin
-    FState:= aValue;
+  if aValue <> FState then
+  begin
+    FState := aValue;
     Invalidate;
   end;
 end;
 
-{--- TTKEntry ------------------------------------------------------------------}
+{ --- TTKEntry ----------------------------------------------------------------- }
 
-constructor TTKEntry.Create(AOwner: TComponent);
+constructor TTKEntry.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 32;
-  Width:= 80;
-  Height:= 24;
-  FShow:= True;
+  inherited Create(Owner);
+  Tag := 32;
+  Width := 80;
+  Height := 24;
+  FShow := True;
 end;
 
 procedure TTKEntry.NewWidget(Widget: string = '');
@@ -222,59 +235,62 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TTKEntry.setAttribute(Attr, Value, Typ: string);
+procedure TTKEntry.SetAttribute(Attr, Value, Typ: string);
 begin
-  if Attr = 'Text' then  // different from Button.Text
-    setValue(Name + 'CV', asString(Value))
+  if Attr = 'Text' then // different from Button.Text
+    SetValue(Name + 'CV', AsString(Value))
   else if Attr = 'ValidateCommand' then
     MakeValidateCommand(Attr, Value)
   else
     inherited;
 end;
 
-function TTKEntry.getAttributes(ShowAttributes: Integer): string;
+function TTKEntry.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Text' + inherited getAttributes(ShowAttributes);
+  Result := '|Text' + inherited GetAttributes(ShowAttributes);
 end;
 
-function TTKEntry.getEvents(ShowEvents: Integer): string;
+function TTKEntry.GetEvents(ShowEvents: Integer): string;
 begin
-  Result:= getKeyboardEvents(ShowEvents);
+  Result := GetKeyboardEvents(ShowEvents);
 end;
 
-procedure TTKEntry.setText(Value: string);
+procedure TTKEntry.SetText(Value: string);
 begin
-  if Value <> FText then begin
-    FText:= Value;
+  if Value <> FText then
+  begin
+    FText := Value;
     Invalidate;
   end;
 end;
 
 procedure TTKEntry.Paint;
-  var newHeight: Integer;
+var
+  NewHeight: Integer;
 begin
-  Canvas.Pen.Color:= $7A7A7A;
+  Canvas.Pen.Color := $7A7A7A;
   inherited; // shows no text, because FText of TKWidget is overridden
-  if Scrollbar
-    then newHeight:= Height - 20
-    else newHeight:= Height;
-  ShowText(FText, Width, newHeight);
+  if Scrollbar then
+    NewHeight := Height - 20
+  else
+    NewHeight := Height;
+  ShowText(FText, Width, NewHeight);
   PaintAScrollbar(Scrollbar);
 end;
 
-{--- TTKSpinbox ----------------------------------------------------------------}
+{ --- TTKSpinbox ---------------------------------------------------------------- }
 
-constructor TTKSpinbox.Create(AOwner: TComponent);
+constructor TTKSpinbox.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 39;
-  Width:= 40;
-  Height:= 24;
-  FFrom:= '0';
-  FTo:= '0';
-  FValue:= '0';
-  FIncrement:= '1';
-  FValues:= TStringList.Create;
+  inherited Create(Owner);
+  Tag := 39;
+  Width := 40;
+  Height := 24;
+  FFrom := '0';
+  FTo := '0';
+  FValue := '0';
+  FIncrement := '1';
+  FValues := TStringList.Create;
 end;
 
 destructor TTKSpinbox.Destroy;
@@ -284,51 +300,55 @@ begin
 end;
 
 procedure TTKSpinbox.MakeValues;
-  var s1, Value, AllValues: string; i: Integer;
+var
+  Str, Value, AllValues: string;
 begin
-  s1:= 'self.' + Name + '[''values'']';
-  AllValues:= '[';
-  for i := 0 to FValues.Count - 1 do begin
-    Value:= Trim(FValues[i]);
-    if Value = '' then Continue;
-    AllValues:= AllValues + asString(Value) + ', ';
+  Str := 'self.' + Name + '[''values'']';
+  AllValues := '[';
+  for var I := 0 to FValues.Count - 1 do
+  begin
+    Value := Trim(FValues[I]);
+    if Value = '' then
+      Continue;
+    AllValues := AllValues + AsString(Value) + ', ';
   end;
-  if Copy(AllValues, Length(AllValues) -1, 2) = ', ' then
-    Delete(AllValues, Length(AllValues)-1, 2);
-  AllValues:= AllValues + ']';
-  setAttributValue(s1, s1 + ' = ' + AllValues);
+  if Copy(AllValues, Length(AllValues) - 1, 2) = ', ' then
+    Delete(AllValues, Length(AllValues) - 1, 2);
+  AllValues := AllValues + ']';
+  SetAttributValue(Str, Str + ' = ' + AllValues);
 end;
 
-procedure TTKSpinbox.setAttribute(Attr, Value, Typ: string);
+procedure TTKSpinbox.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'Value' then
-    setValue(Name + 'CV', asString(Value))
+    SetValue(Name + 'CV', AsString(Value))
   else if Attr = 'Values' then
     MakeValues
   else
     inherited;
 end;
 
-function TTKSpinbox.getAttributes(ShowAttributes: Integer): string;
+function TTKSpinbox.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|From_|_To|Increment|Values|Value';
+  Result := '|From_|_To|Increment|Values|Value';
   if ShowAttributes >= 2 then
-    Result:= Result + '|Command|Format';
+    Result := Result + '|Command|Format';
   if ShowAttributes = 3 then
-    Result:= Result + '|Exportselection';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|Exportselection';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKSpinbox.setValues(Values: TStrings);
+procedure TTKSpinbox.SetValues(Values: TStrings);
 begin
   FValues.Assign(Values);
   Invalidate;
 end;
 
-procedure TTKSpinbox.SetRValue(aValue: string);
+procedure TTKSpinbox.SetRValue(Value: string);
 begin
-  if FValue <> aValue then begin
-    FValue:= aValue;
+  if FValue <> Value then
+  begin
+    FValue := Value;
     Invalidate;
   end;
 end;
@@ -342,68 +362,74 @@ begin
 end;
 
 procedure TTKSpinbox.Paint;
-  var s: string;
-      x, y, newHeight: Integer;
-      Points: array[0..2] of TPoint;
-      R: TRect;
+var
+  Str: string;
+  XPos, YPos, NewHeight: Integer;
+  Points: array [0 .. 2] of TPoint;
+  ARect: TRect;
 begin
-  Canvas.Pen.Color:= $7A7A7A;
+  Canvas.Pen.Color := $7A7A7A;
   inherited;
   // paint number/value
-  if FValue <> ''
-    then s:= FValue
-    else if FValues.Count > 0
-      then s:= FValues[0]
-      else s:= FFrom;
-  if Scrollbar
-    then newHeight:= Height - PPIScale(20)
-    else newHeight:= Height;
-  ShowText(s, Width - PPIScale(16), newHeight);
+  if FValue <> '' then
+    Str := FValue
+  else if FValues.Count > 0 then
+    Str := FValues[0]
+  else
+    Str := FFrom;
+  if Scrollbar then
+    NewHeight := Height - PPIScale(20)
+  else
+    NewHeight := Height;
+  ShowText(Str, Width - PPIScale(16), NewHeight);
 
   // paint up/down
-  Canvas.Brush.Color:= $F0F0F0;
-  Canvas.Pen.Color:= $ACACAC;
+  Canvas.Brush.Color := $F0F0F0;
+  Canvas.Pen.Color := $ACACAC;
 
-  R:= Rect(Width - PPIScale(19), 2, Width - 2, PPIScale(11));
-  Canvas.FillRect(R);
-  R.Inflate(-1, -1);
-  Canvas.Rectangle(R);
+  ARect := Rect(Width - PPIScale(19), 2, Width - 2, PPIScale(11));
+  Canvas.FillRect(ARect);
+  ARect.Inflate(-1, -1);
+  Canvas.Rectangle(ARect);
 
-  R:= Rect(Width - PPIScale(19), newHeight - PPIScale(11), Width - 2, newHeight - 2);
-  Canvas.FillRect(R);
-  R.Inflate(-1, -1);
-  Canvas.Rectangle(R);
+  ARect := Rect(Width - PPIScale(19), NewHeight - PPIScale(11), Width - 2,
+    NewHeight - 2);
+  Canvas.FillRect(ARect);
+  ARect.Inflate(-1, -1);
+  Canvas.Rectangle(ARect);
 
-  Canvas.Brush.Color:= clBlack;
-  Canvas.Pen.Color:= clBlack;
-  x:= Width - PPIScale(13);
-  y:= PPIScale(7);
-  var i2:= PPIScale(2);
-  var i4:= PPIScale(4);
-  Points[0]:= Point(x, y);
-  Points[1]:= Point(x + i4, y);
-  Points[2]:= Point(x + i2, y - i2);
+  Canvas.Brush.Color := clBlack;
+  Canvas.Pen.Color := clBlack;
+  XPos := Width - PPIScale(13);
+  YPos := PPIScale(7);
+  var
+  Int2 := PPIScale(2);
+  var
+  Int4 := PPIScale(4);
+  Points[0] := Point(XPos, YPos);
+  Points[1] := Point(XPos + Int4, YPos);
+  Points[2] := Point(XPos + Int2, YPos - Int2);
   Canvas.Polygon(Points);
 
-  y:= newHeight - PPIScale(8);
-  Points[0]:= Point(x, y);
-  Points[1]:= Point(x + i4, y);
-  Points[2]:= Point(x + i2, y + i2);
+  YPos := NewHeight - PPIScale(8);
+  Points[0] := Point(XPos, YPos);
+  Points[1] := Point(XPos + Int4, YPos);
+  Points[2] := Point(XPos + Int2, YPos + Int2);
   Canvas.Polygon(Points);
   PaintAScrollbar(Scrollbar);
 end;
 
-{--- TKKCombobox --------------------------------------------------------------}
+{ --- TKKCombobox -------------------------------------------------------------- }
 
-constructor TTKCombobox.Create(AOwner: TComponent);
+constructor TTKCombobox.Create(Owner: TComponent);
 begin
-  inherited Create(AOwner);
-  Tag:= 38;
-  Width:= 80;
-  Height:= 24;
-  Foreground:= clBtnText;
-  FValues:= TStringList.Create;
-  FValues.Text:= defaultItems;
+  inherited Create(Owner);
+  Tag := 38;
+  Width := 80;
+  Height := 24;
+  Foreground := clBtnText;
+  FValues := TStringList.Create;
+  FValues.Text := DefaultItems;
 end;
 
 destructor TTKCombobox.Destroy;
@@ -412,45 +438,47 @@ begin
   inherited;
 end;
 
-function TTKCombobox.getAttributes(ShowAttributes: Integer): string;
+function TTKCombobox.GetAttributes(ShowAttributes: Integer): string;
 begin
-  Result:= '|Value|Values';
+  Result := '|Value|Values';
   if ShowAttributes >= 2 then
-    Result:= Result + '|PostCommand';
-  Result:= Result + inherited getAttributes(ShowAttributes);
+    Result := Result + '|PostCommand';
+  Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-function TTKCombobox.getListItems: string;
-  var s: string; i: Integer;
+function TTKCombobox.GetListItems: string;
+var
+  Str: string;
 begin
-  s:= '[';
-  for i:= 0 to FValues.Count -1 do
-    s:= s + asString(FValues[i]) + ', ';
-  Delete(s, Length(s) - 1, 2);
-  Result:= s + ']';
+  Str := '[';
+  for var I := 0 to FValues.Count - 1 do
+    Str := Str + AsString(FValues[I]) + ', ';
+  Delete(Str, Length(Str) - 1, 2);
+  Result := Str + ']';
 end;
 
-procedure TTKCombobox.setAttribute(Attr, Value, Typ: string);
+procedure TTKCombobox.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'Value' then
-    setValue(Name + 'CV', asString(Value))
+    SetValue(Name + 'CV', AsString(Value))
   else if Attr = 'Values' then
-    inherited setAttribute(Attr, getListItems, 'Source')
+    inherited SetAttribute(Attr, GetListItems, 'Source')
   else if Attr = 'ValidateCommand' then
     MakeValidateCommand(Attr, Value)
   else
     inherited;
 end;
 
-procedure TTKCombobox.setRValue(aValue: string);
+procedure TTKCombobox.SetRValue(Value: string);
 begin
-  if FValue <> aValue then begin
-    FValue:= aValue;
+  if FValue <> Value then
+  begin
+    FValue := Value;
     Invalidate;
   end;
 end;
 
-procedure TTKCombobox.setValues(Values: TStrings);
+procedure TTKCombobox.SetValues(Values: TStrings);
 begin
   FValues.Assign(Values);
   Invalidate;
@@ -461,59 +489,64 @@ begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('ttk.Combobox');
   MakeControlVar('textvariable', Name + 'CV', FValue);
-  InsertValue('self.' + Name + '[' + asString('values') + '] = ' + getListItems);
+  InsertValue('self.' + Name + '[' + AsString('values') + '] = ' +
+    GetListItems);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
 procedure TTKCombobox.DeleteWidget;
 begin
   inherited;
-  if FPostCommand then Partner.DeleteMethod(Name + '_PostCommand');
+  if FPostCommand then
+    Partner.DeleteMethod(Name + '_PostCommand');
 end;
 
 procedure TTKCombobox.Paint;
-  var s: string; x, y, newHeight, i3, i4, i5, i8, i10: Integer;
+var
+  Str: string;
+  XPos, YPos, NewHeight, Int3, Int4, Int5, Int8, Int10: Integer;
 begin
-  Canvas.Pen.Color:= $7A7A7A;
+  Canvas.Pen.Color := $7A7A7A;
   inherited;
-  i3:= PPIScale(3);
-  i4:= PPIScale(4);
-  i5:= PPIScale(5);
-  i8:= PPIScale(8);
-  i10:= PPIScale(10);
-  if FValue <> ''
-    then s:= FValue
-    else if FValues.Count > 0
-      then s:= FValues[0]
-      else s:= '';
-  if Scrollbar
-    then newHeight:= Height - 20
-    else newHeight:= Height;
-  ShowText(s, Width - PPIScale(16), newHeight);
+  Int3 := PPIScale(3);
+  Int4 := PPIScale(4);
+  Int5 := PPIScale(5);
+  Int8 := PPIScale(8);
+  Int10 := PPIScale(10);
+  if FValue <> '' then
+    Str := FValue
+  else if FValues.Count > 0 then
+    Str := FValues[0]
+  else
+    Str := '';
+  if Scrollbar then
+    NewHeight := Height - 20
+  else
+    NewHeight := Height;
+  ShowText(Str, Width - PPIScale(16), NewHeight);
 
-  x:= Width - PPIScale(14);
-  y:= newHeight div 2 - 2;
-  Canvas.Pen.Color:= $F1F1F1;
-  Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + i4, y + i4);
-  Canvas.LineTo(x + i5, y + i4);
-  Canvas.LineTo(x + i10, y -1);
+  XPos := Width - PPIScale(14);
+  YPos := NewHeight div 2 - 2;
+  Canvas.Pen.Color := $F1F1F1;
+  Canvas.MoveTo(XPos, YPos);
+  Canvas.LineTo(XPos + Int4, YPos + Int4);
+  Canvas.LineTo(XPos + Int5, YPos + Int4);
+  Canvas.LineTo(XPos + Int10, YPos - 1);
 
-  Canvas.Pen.Color:= $5C5C5C;
-  x:= x + 1;
-  Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + i3, y + i3);
-  Canvas.LineTo(x + i4, y + i3);
-  Canvas.LineTo(x + i8, y - 1);
+  Canvas.Pen.Color := $5C5C5C;
+  XPos := XPos + 1;
+  Canvas.MoveTo(XPos, YPos);
+  Canvas.LineTo(XPos + Int3, YPos + Int3);
+  Canvas.LineTo(XPos + Int4, YPos + Int3);
+  Canvas.LineTo(XPos + Int8, YPos - 1);
 
-  y:= y - 1;
-  Canvas.Pen.Color:= $ADADAD;
-  Canvas.MoveTo(x, y);
-  Canvas.LineTo(x + i3, y + i3);
-  Canvas.LineTo(x + i4, y + i3);
-  Canvas.LineTo(x + i8, y - 1);
+  YPos := YPos - 1;
+  Canvas.Pen.Color := $ADADAD;
+  Canvas.MoveTo(XPos, YPos);
+  Canvas.LineTo(XPos + Int3, YPos + Int3);
+  Canvas.LineTo(XPos + Int4, YPos + Int3);
+  Canvas.LineTo(XPos + Int8, YPos - 1);
   PaintAScrollbar(Scrollbar);
 end;
 
 end.
-

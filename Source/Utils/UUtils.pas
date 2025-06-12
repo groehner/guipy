@@ -101,7 +101,7 @@ function LowerUpper(const s: string): string;
 function isLower(c: char): Boolean;
 function WithoutSpaces(const s: string): string;
 function ChangeColor(Color: TColor; percent: real): TColor;
-function asString(s: string): string;
+function AsString(s: string): string;
 function isIdentifierChar(c: char): Boolean;
 function LeftSpaces(s: string; tabW: Integer): Integer;
 function RGB2Color(const R, G, B: Integer): Integer;
@@ -140,7 +140,7 @@ function myColorToRGB(Color: TColor): string;
 function XYToVal(x, y: Integer): string;
 function CalcIndent(S : string; TabWidth : Integer = 4): Integer;
 function encodeQuotationMark(const s: string): string;
-function myMulDiv(nNumber, nNumerator, nDenominator: Integer): Integer;
+function MyMulDiv(nNumber, nNumerator, nDenominator: Integer): Integer;
 procedure LockWindow(Handle: THandle);
 procedure UnLockWindow;
 function IsColorDark(AColor: TColor): Boolean;
@@ -1221,7 +1221,7 @@ begin
   Result:= RGB2Color(r, g, b);
 end;
 
-function asString(s: string): string;
+function AsString(s: string): string;
 begin
   Result:= '''' + s + '''';
 end;
@@ -1697,7 +1697,7 @@ begin
   Result:= ReplaceStr(s, '"', '&quot;');
 end;
 
-function myMulDiv(nNumber, nNumerator, nDenominator: Integer): Integer;
+function MyMulDiv(nNumber, nNumerator, nDenominator: Integer): Integer;
 begin
   Result:= MulDiv(nNumber, nNumerator, nDenominator);
 end;
