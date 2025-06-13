@@ -1,27 +1,30 @@
-﻿{*******************************************************}
-{                                                       }
-{       Extension Library                               }
-{       Strin List Editor dialog Unit                   }
-{                                                       }
-{       (c) 2002, Balabuyev Yevgeny                     }
-{       E-mail: stalcer@rambler.ru                      }
-{       Licence: Freeware                               }
-{       https://torry.net/authorsmore.php?id=3588       }
-{                                                       }
-{*******************************************************}
+﻿{ ******************************************************* }
+{ }
+{ Extension Library }
+{ Strin List Editor dialog Unit }
+{ }
+{ (c) 2002, Balabuyev Yevgeny }
+{ E-mail: stalcer@rambler.ru }
+{ Licence: Freeware }
+{ https://torry.net/authorsmore.php?id=3588 }
+{ }
+{ ******************************************************* }
 
 unit ELStringsEdit;
 
 interface
 
 uses
-  Classes, ExtCtrls, Vcl.StdCtrls, Vcl.Controls,
+  Classes,
+  ExtCtrls,
+  Vcl.StdCtrls,
+  Vcl.Controls,
   dlgPyIDEBase;
 
 var
-  SELStringsEditorDlgCaption: string            = 'String List Editor';
-  SELStringsEditorDlgOkBtnCaption: string       = '&Ok';
-  SELStringsEditorDlgCancelBtnCaption: string   = 'Cancel';
+  SELStringsEditorDlgCaption: string = 'String List Editor';
+  SELStringsEditorDlgOkBtnCaption: string = '&Ok';
+  SELStringsEditorDlgCancelBtnCaption: string = 'Cancel';
   SELStringsEditorDlgLinesCountTemplate: string = '%d lines';
 
 type
@@ -54,35 +57,39 @@ begin
   Caption := SELStringsEditorDlgCaption;
   btnOk.Caption := SELStringsEditorDlgOkBtnCaption;
   btnCancel.Caption := SELStringsEditorDlgCancelBtnCaption;
-  lbLineCount.Caption :=
-    Format(SELStringsEditorDlgLinesCountTemplate, [memMain.Lines.Count]);
+  lbLineCount.Caption := Format(SELStringsEditorDlgLinesCountTemplate,
+    [memMain.Lines.Count]);
   Result := (ShowModal = mrOk);
 end;
 
 procedure TELStringsEditorDlg.FormActivate(Sender: TObject);
-  var Mouse: TPoint;
+var
+  Mouse: TPoint;
 begin
   Application.ProcessMessages;
   GetCursorPos(Mouse);
   SetCursorPos(Left + Width div 2, Top + Height div 2);
-  if GetSystemMetrics(SM_SWAPBUTTON) = 0 then begin
+  if GetSystemMetrics(SM_SWAPBUTTON) = 0 then
+  begin
     mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
     mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-  end else begin
+  end
+  else
+  begin
     mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
     mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
   end;
-  SetCursorPos(Mouse.x, Mouse.y);
+  SetCursorPos(Mouse.X, Mouse.Y);
 end;
 
 procedure TELStringsEditorDlg.FormResize(Sender: TObject);
 begin
-  SetBounds(Mouse.CursorPos.x - Width, Mouse.CursorPos.y + 10, Width, Height);
+  SetBounds(Mouse.CursorPos.X - Width, Mouse.CursorPos.Y + 10, Width, Height);
 end;
 
 function TELStringsEditorDlg.GetLines: TStrings;
 begin
-  Result:= memMain.Lines;
+  Result := memMain.Lines;
 end;
 
 procedure TELStringsEditorDlg.SetLines(const Value: TStrings);
@@ -92,8 +99,8 @@ end;
 
 procedure TELStringsEditorDlg.memMainChange(Sender: TObject);
 begin
-  lbLineCount.Caption :=
-    Format(SELStringsEditorDlgLinesCountTemplate, [memMain.Lines.Count]);
+  lbLineCount.Caption := Format(SELStringsEditorDlgLinesCountTemplate,
+    [memMain.Lines.Count]);
 end;
 
 end.

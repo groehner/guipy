@@ -13,7 +13,8 @@ uses
   System.Classes,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
-  dlgPyIDEBase, Vcl.Controls;
+  Vcl.Controls,
+  dlgPyIDEBase;
 
 type
 
@@ -32,8 +33,8 @@ type
     FButton: Integer;
   public
     constructor Create(AOwner: TComponent); override;
-    function getModifiers(Eventname: string): string;
-    function getDetail(Eventname: string): string;
+    function GetModifiers(Eventname: string): string;
+    function GetDetail(Eventname: string): string;
     procedure Clear;
   published
     property Control: Boolean read FControl write FControl default False;
@@ -67,13 +68,12 @@ type
     procedure CBAnyClick(Sender: TObject);
   public
     function Execute: Boolean;
-    procedure setEvent(Event: TEvent);
-    procedure getEvent(var Event: TEvent);
+    procedure SetEvent(Event: TEvent);
+    procedure GetEvent(var Event: TEvent);
   end;
 
 procedure GetEventProperties(Obj: TObject; PropName: string; var Event: TEvent);
 procedure SetEventProperties(Obj: TObject; PropName: string; Event: TEvent);
-
 
 implementation
 
@@ -81,7 +81,7 @@ uses
   System.SysUtils,
   System.TypInfo,
   Vcl.Forms,
-  RTTI,
+  Rtti,
   UBaseWidgets;
 
 {$R *.dfm}
@@ -136,22 +136,22 @@ begin
   FButton:= 0;
 end;
 
-function TEvent.getModifiers(Eventname: string): string;
-  var s: string;
+function TEvent.GetModifiers(Eventname: string): string;
+  var Str: string;
 begin
-  s:= '';
-  if FControl then s:= s + 'Control-';
-  if FShift   then s:= s + 'Shift-';
-  if FAlt     then s:= s + 'Alt-';
-  if FDouble  then s:= s + 'Double-';
-  if FTriple  then s:= s + 'Triple-';
-  if FAny     then s:= s + 'Any-';
+  Str:= '';
+  if FControl then Str:= Str + 'Control-';
+  if FShift   then Str:= Str + 'Shift-';
+  if FAlt     then Str:= Str + 'Alt-';
+  if FDouble  then Str:= Str + 'Double-';
+  if FTriple  then Str:= Str + 'Triple-';
+  if FAny     then Str:= Str + 'Any-';
   if (Pos('Button', Eventname) = 0) and (FButton > 0) then
-    s:= s + 'Button' + IntToStr(FButton) + '-';
-  Result:= s;
+    Str:= Str + 'Button' + IntToStr(FButton) + '-';
+  Result:= Str;
 end;
 
-function TEvent.getDetail(Eventname: string): string;
+function TEvent.GetDetail(Eventname: string): string;
 begin
   Result:= '';
   if (Pos('Button', Eventname) > 0) and (FButton > 0) then
@@ -164,10 +164,10 @@ end;
 
 procedure TELEventEditorDlg.FormResize(Sender: TObject);
 begin
-  SetBounds(Mouse.CursorPos.x - Width, Mouse.CursorPos.y + 10, Width, Height);
+  SetBounds(Mouse.CursorPos.X - Width, Mouse.CursorPos.Y + 10, Width, Height);
 end;
 
-procedure TELEventEditorDlg.setEvent(Event: TEvent);
+procedure TELEventEditorDlg.SetEvent(Event: TEvent);
 begin
   CBControl.Checked:= Event.Control;
   CBShift.Checked  := Event.Shift;
@@ -179,7 +179,7 @@ begin
   RBMouseButton.ItemIndex:= Event.Button;
 end;
 
-procedure TELEventEditorDlg.getEvent(var Event: TEvent);
+procedure TELEventEditorDlg.GetEvent(var Event: TEvent);
 begin
   Event.Control:= CBControl.Checked;
   Event.Shift  := CBShift.Checked;
@@ -188,7 +188,7 @@ begin
   Event.Triple := CBTriple.Checked;
   Event.Any    := CBAny.Checked;
   Event.Key    := CBKey.Text;
-  Event.Button := RBMouseButton.ItemIndex
+  Event.Button := RBMouseButton.ItemIndex;
 end;
 
 procedure TELEventEditorDlg.CBAnyClick(Sender: TObject);

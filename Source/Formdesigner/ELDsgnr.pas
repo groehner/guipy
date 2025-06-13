@@ -115,7 +115,6 @@ type
 
   { TELDesigner }
 
-type
   EELDesigner = class(Exception);
   TELCustomDesigner = class;
 
@@ -166,7 +165,7 @@ type
     function GetDefaultControl: TControl;
     procedure Change;
     procedure UpdateMode;
-    procedure DeleteItem(AI: Integer);
+    procedure DeleteItem(AItem: Integer);
     procedure AddItem(AItem: Pointer);
     function IndexOfByItem(AItem: Pointer): Integer;
     procedure CheckDesignControl(AControl: TControl);
@@ -175,7 +174,7 @@ type
     destructor Destroy; override;
     function Add(AControl: TControl): Integer;
     function IndexOf(AControl: TControl): Integer;
-    procedure Delete(AI: Integer);
+    procedure Delete(AItem: Integer);
     procedure Remove(AControl: TControl);
     procedure SelectControls(AControls: TList);
     procedure GetControls(AResult: TList);
@@ -212,13 +211,13 @@ type
   TELDesignerOnGetUniqueName = procedure(Sender: TObject;
     const ABaseName: string; var AUniqueName: string) of object;
   TELDesignerDragOverEvent = procedure(Sender, ASource, ATarget: TObject;
-    AX, AY: Integer; AState: TDragState; var AAccept: Boolean) of object;
+    XPos, YPos: Integer; AState: TDragState; var AAccept: Boolean) of object;
   TELDesignerDragDropEvent = procedure(Sender, ASource, ATarget: TObject;
-    AX, AY: Integer) of object;
+    XPos, YPos: Integer) of object;
 
   TELCustomDesigner = class(TComponent)
   private
-    FEng: Pointer; // TDEng;
+    FEng: Pointer; // TDEng
     FSnapToGrid: Boolean;
     FActive: Boolean;
     FOnControlInserted: TNotifyEvent;
@@ -299,7 +298,7 @@ type
     procedure KeyPress(var Key: Char); virtual;
     procedure KeyUp(var Key: Word; Shift: TShiftState); virtual;
     procedure DblClick; virtual;
-    procedure DragOver(ASource, ATarget: TObject; AX, AY: Integer;
+    procedure DragOver(ASource, ATarget: TObject; XPos, YPos: Integer;
       AState: TDragState; var AAccept: Boolean); dynamic;
     property Active: Boolean read FActive write SetActive;
     property DesignControl: TWinControl read FDesignControl
@@ -365,7 +364,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure DragDrop(ASource, ATarget: TObject; AX, AY: Integer); dynamic;
+    procedure DragDrop(ASource, ATarget: TObject; XPos, YPos: Integer); dynamic;
     procedure Modified;
     procedure DeleteSelectedControls;
     procedure SelectControl(const AName: string);
@@ -430,7 +429,7 @@ procedure Register;
 implementation
 
 uses Windows, RTLConsts, Math, Clipbrd, ExtCtrls, Types,
-     JvGnugettext, ELHintWindow, ELSConsts, uCommonFunctions, ULink, UBaseWidgets;
+  JvGnugettext, ELHintWindow, ELSConsts, uCommonFunctions, ULink, UBaseWidgets;
 
 procedure Register;
 begin
@@ -448,18 +447,17 @@ type
   TControlAccess = class(TControl);
   TWinControlAccess = class(TWinControl);
 
-  PELWMMouse = ^TWMMouse;
+  PTWMMouse = ^TWMMouse;
 
   TELDMSizing = packed record
     Msg: Cardinal;
-    MouseMessage: PELWMMouse;
-    Unused: Longint;
-    Result: Longint;
+    MouseMessage: PTWMMouse;
+    Unused: LongInt;
+    Result: LongInt;
   end;
 
   PELDesignerLockMode = ^TELDesignerLockMode;
 
-type
   TDPForm = class(TCustomForm)
   private
     FDesignPanel: TELCustomDesignPanel;
@@ -471,7 +469,6 @@ type
     constructor Create(AOwner: TComponent); override;
   end;
 
-type
   TDEngCanvas = class(TCanvas)
   private
     FWinControl: TWinControl;
@@ -482,11 +479,10 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    function ScreenToClient(const AP: TPoint): TPoint;
+    function ScreenToClient(const Point: TPoint): TPoint;
     property WinControl: TWinControl read FWinControl write SetWinControl;
   end;
 
-type
   TDEngHintTimerMode = (tmShow, tmHide);
 
   TDEngHint = class
@@ -511,7 +507,6 @@ type
     property Active: Boolean read FActive;
   end;
 
-type
   TDEngNames = class
   private
     FSourceNames, FDestNames: TStringList;
@@ -521,10 +516,9 @@ type
     procedure Clear;
     procedure Add(const ASourceName, ADestName: string);
     function IndexOf(const ASourceName: string): Integer;
-    function DestName(AI: Integer): string;
+    function DestName(Idx: Integer): string;
   end;
 
-type
   TDEngDrawProcFlag = (pfInitAndDraw, pfMove, pfOkRemoveAndDispose,
     ddpfCancelRemoveAndDispose);
   TDEngDrawProc = function(ACanvas: TDEngCanvas; AOldDataPtr: Pointer;
@@ -629,7 +623,6 @@ type
     procedure PaintMenu;
   end;
 
-type
   TDSelCtrlItemMode = (imNone, imSizeable, imMultySelect);
   TDSelCtrlItemPointPos = (ppTopLeft, ppTop, ppTopRight,
     // 8 Controlpoints of an object
@@ -675,17 +668,17 @@ var
   DHintWindowRefCount: Integer;
   DHintHook: HHOOK;
 
-function HintHookMsgProc(ACode: Integer; AParam: Longint; var AMsg: TMsg)
-  : Longint; stdcall;
+function HintHookMsgProc(ACode: Integer; AParam: LongInt; var AMsg: TMsg)
+  : LongInt; stdcall;
 var
   Message: TMessage;
 begin
-  Result := CallNextHookEx(DHintHook, ACode, AParam, LPARAM(@AMsg)); // LPARAM instead of LongInt
-  if (DHintWindowShower <> nil) and DHintWindowShower.Active then
+  Result := CallNextHookEx(DHintHook, ACode, AParam, LPARAM(@AMsg));
+  if Assigned(DHintWindowShower) and DHintWindowShower.Active then
   begin
     Message.Msg := AMsg.Message;
     Message.WParam := AMsg.WParam;
-    Message.LParam := AMsg.LParam;
+    Message.LPARAM := AMsg.LPARAM;
     if DHintWindowShower.FUseHooks then
       DHintWindowShower.CheckHideMessageProc(AMsg.hwnd, Message);
   end;
@@ -695,7 +688,7 @@ procedure HookDesignerHintHooks;
 begin
   if DHintHook = 0 then
     DHintHook := SetWindowsHookEx(WH_GETMESSAGE, @HintHookMsgProc, 0,
-      GetCurrentThreadID);
+      GetCurrentThreadId);
 end;
 
 procedure UnhookDesignerHintHooks;
@@ -707,25 +700,25 @@ end;
 
 function RectFromPoints(AP1, AP2: TPoint): TRect;
 begin
-  if AP1.x < AP2.x then
+  if AP1.X < AP2.X then
   begin
-    Result.Left := AP1.x;
-    Result.Right := AP2.x;
+    Result.Left := AP1.X;
+    Result.Right := AP2.X;
   end
   else
   begin
-    Result.Left := AP2.x;
-    Result.Right := AP1.x;
+    Result.Left := AP2.X;
+    Result.Right := AP1.X;
   end;
-  if AP1.y < AP2.y then
+  if AP1.Y < AP2.Y then
   begin
-    Result.Top := AP1.y;
-    Result.Bottom := AP2.y;
+    Result.Top := AP1.Y;
+    Result.Bottom := AP2.Y;
   end
   else
   begin
-    Result.Top := AP2.y;
-    Result.Bottom := AP1.y;
+    Result.Top := AP2.Y;
+    Result.Bottom := AP1.Y;
   end;
 end;
 
@@ -851,6 +844,7 @@ end;
 function TDEng.GetExcludedStyleElements(AControl: TControl): TStyleElements;
 begin
   // otherwise the compiler will complain!
+  Result := [];
 end;
 
 function TDEng.GetCustomForm: TCustomForm;
@@ -881,12 +875,12 @@ end;
 
 function TDEng.DesignPPI(AControl: TWinControl): Integer;
 begin
-  Result:= 0;
+  Result := 0;
 end;
 
 function TDEng.GetDesignerHighDPIMode: TVCLDesignerHighDPIMode;
 begin
-  Result:= hdmAutoScale;
+  Result := hdmAutoScale;
 end;
 
 procedure TDEng.GridParamsChanged;
@@ -929,14 +923,13 @@ function TDEng.IsDesignMsg(Sender: TControl; var Message: TMessage): Boolean;
   end;
 
 var
-  LI: Integer;
   LTarget: TControl;
-  S: TObject;
+  AObject: TObject;
   Accepts, IsDockOp: Boolean;
 
 begin
   Result := False;
-  if Sender = nil then
+  if not Assigned(Sender) then
     Exit;
   if not FIsInDrawMode then
     FHint.CheckHideMessageProc(0, Message);
@@ -948,27 +941,27 @@ begin
             with TCMDrag(Message) do
             begin
               LTarget := TControl(DragRec.Target);
-              if LTarget <> nil then
+              if Assigned(LTarget) then
                 LTarget := GetDesignControl(LTarget);
-              if (LTarget <> nil) and (DragRec.Source <> nil) then
+              if Assigned(LTarget) and Assigned(DragRec.Source) then
               begin
-                S := DragRec.Source;
-                IsDockOp := S is TDragDockObject;
+                AObject := DragRec.Source;
+                IsDockOp := AObject is TDragDockObject;
                 if not IsDockOp then
-                  S := (S as TDragControlObject).Control;
-                if S <> nil then
+                  AObject := (AObject as TDragControlObject).Control;
+                if Assigned(AObject) then
                   with LTarget.ScreenToClient(DragRec.Pos) do
                     case DragMessage of
                       dmDragEnter, dmDragLeave, dmDragMove:
                         begin
                           Accepts := True;
-                          FDesigner.DragOver(S, LTarget, x, y,
+                          FDesigner.DragOver(AObject, LTarget, X, Y,
                             TDragState(DragMessage), Accepts);
                           Result := Ord(Accepts);
                         end;
                       dmDragDrop:
                         if not IsDockOp then
-                          FDesigner.DragDrop(S, LTarget, x, y);
+                          FDesigner.DragDrop(AObject, LTarget, X, Y);
                     end;
               end;
             end;
@@ -977,12 +970,13 @@ begin
               Sender := GetDesignControl(Sender);
               with TCMDrag(Message) do
               begin
-                if (Sender <> nil) and (Sender is TWinControl) then
+                if Assigned(Sender) and (Sender is TWinControl) then
                 begin
-                  Result := LPARAM(TWinControl(Sender) // LPARAM instead of LongInt
+                  Result := LPARAM(TWinControl(Sender)
+                    // LPARAM instead of LongInt
                     .ControlAtPos(Sender.ScreenToClient(DragRec.Pos), False));
                   if Result = 0 then
-                    Result := LPARAM(Sender);  // LPARAM instead of LongInt
+                    Result := LPARAM(Sender); // LPARAM instead of LongInt
                 end
                 else
                   TCMDrag(Message).Result := 0;
@@ -1001,9 +995,10 @@ begin
     // control painting
     DESIGNER_SCUPDT:
       begin
-        LI := FSelCtrls.IndexOf(TControl(Message.WParam));
-        if LI <> -1 then
-          FSelCtrls.UpdateControl(LI);
+        var
+        Int := FSelCtrls.IndexOf(TControl(Message.WParam));
+        if Int <> -1 then
+          FSelCtrls.UpdateControl(Int);
       end;
     WM_SETFOCUS:
       FSelCtrls.SetActive(True);
@@ -1079,23 +1074,20 @@ end;
 
 function TDEng.UniqueName(const BaseName: string): string;
 var
-  LI: Integer;
-  LS: string;
-label
-  Start;
+  Int: Integer;
+  Str: string;
 begin
   FDesigner.GetUniqueName(BaseName, Result);
   if Result = '' then
   begin
-    if (Length(BaseName) >= 2) and CharInset(BaseName[1], ['t', 'T']) then
-      LS := Copy(BaseName, 2, MaxInt);
-    LI := 0;
-    goto Start;
+    if (Length(BaseName) >= 2) and CharInSet(BaseName[1], ['t', 'T']) then
+      Str := Copy(BaseName, 2, MaxInt);
+    Int := 1;
+    Result := Str + IntToStr(Int);
     while not IsUniqueName(Result) do
     begin
-    Start:
-      Inc(LI);
-      Result := LS + IntToStr(LI);
+      Inc(Int);
+      Result := Str + IntToStr(Int);
     end;
   end;
 end;
@@ -1113,7 +1105,7 @@ begin
       FDesigner.ValidateName(NewName, LIsValidName);
     if not LIsValidName then
       raise EELDesigner.CreateFmt(SInvalidName, [NewName]);
-    if uppercase(CurName) <> uppercase(NewName) then // changed by Röhner
+    if UpperCase(CurName) <> UpperCase(NewName) then // changed by Röhner
       if not IsUniqueName(NewName) then
         raise EELDesigner.CreateFmt(SDuplicateName, [NewName]);
   end;
@@ -1153,22 +1145,22 @@ function TDEng.MouseMessage(Sender: TControl; const Message: TMessage): Boolean;
   begin
     GetCursorPos(Result);
     if FInitSkipXCursorMoving then
-      Result.x := AStartCursorPos.x
+      Result.X := AStartCursorPos.X
     else if FDesigner.SnapToGrid and FInitSnapToGrid then
-      Result.x := Round((Result.x - AStartCursorPos.x) / FGrid.FXStep) *
-        FGrid.FXStep + AStartCursorPos.x;
+      Result.X := Round((Result.X - AStartCursorPos.X) / FGrid.FXStep) *
+        FGrid.FXStep + AStartCursorPos.X;
     if FInitSkipYCursorMoving then
-      Result.y := AStartCursorPos.y
+      Result.Y := AStartCursorPos.Y
     else if FDesigner.SnapToGrid and FInitSnapToGrid then
-      Result.y := Round((Result.y - AStartCursorPos.y) / FGrid.FYStep) *
-        FGrid.FYStep + AStartCursorPos.y;
+      Result.Y := Round((Result.Y - AStartCursorPos.Y) / FGrid.FYStep) *
+        FGrid.FYStep + AStartCursorPos.Y;
   end;
 
   procedure _InitDrawMode(AControlToDrawOn: TWinControl;
     ADrawProc: TDEngDrawProc; ASnapToGrid, AInitSkipXCursorMoving,
     AInitSkipYCursorMoving, ASnapToGridFirstCursorPos: Boolean);
   var
-    LR: TRect;
+    Rect: TRect;
   begin
     FHint.Hide;
     FForm.Update;
@@ -1182,16 +1174,16 @@ function TDEng.MouseMessage(Sender: TControl; const Message: TMessage): Boolean;
     if FDesigner.SnapToGrid and ASnapToGridFirstCursorPos then
     begin
       FInitCursorPos := FForm.ScreenToClient(FInitCursorPos);
-      FInitCursorPos.x := ((FInitCursorPos.x + FForm.HorzScrollBar.ScrollPos)
+      FInitCursorPos.X := ((FInitCursorPos.X + FForm.HorzScrollBar.ScrollPos)
         div FGrid.FXStep) * FGrid.FXStep - FForm.HorzScrollBar.ScrollPos;
-      FInitCursorPos.y := ((FInitCursorPos.y + FForm.VertScrollBar.ScrollPos)
+      FInitCursorPos.Y := ((FInitCursorPos.Y + FForm.VertScrollBar.ScrollPos)
         div FGrid.FYStep) * FGrid.FYStep - FForm.VertScrollBar.ScrollPos;
       FInitCursorPos := FForm.ClientToScreen(FInitCursorPos);
     end;
     FInitCursorPos := _GetVirtualCursorPos(FInitCursorPos);
     SetCaptureControl(FRoot);
-    if _FindVisibleScreenRect(AControlToDrawOn, LR) then
-      ClipCursor(@LR);
+    if _FindVisibleScreenRect(AControlToDrawOn, Rect) then
+      ClipCursor(@Rect);
     FLastVirtCursorPos := FInitCursorPos;
     FOldDrawInfo := FInitDrawProc(FCanvas, nil, FInitCursorPos, pfInitAndDraw);
     FIsInDrawMode := True;
@@ -1199,27 +1191,28 @@ function TDEng.MouseMessage(Sender: TControl; const Message: TMessage): Boolean;
 
   procedure _DrawModeMouseMove;
   var
-    LP: TPoint;
+    Point: TPoint;
   begin
-    LP := _GetVirtualCursorPos(FInitCursorPos);
-    if (FLastVirtCursorPos.x <> LP.x) or (FLastVirtCursorPos.y <> LP.y) then
-      FOldDrawInfo := FInitDrawProc(FCanvas, FOldDrawInfo, LP, pfMove);
-    FLastVirtCursorPos := LP;
+    Point := _GetVirtualCursorPos(FInitCursorPos);
+    if (FLastVirtCursorPos.X <> Point.X) or (FLastVirtCursorPos.Y <> Point.Y)
+    then
+      FOldDrawInfo := FInitDrawProc(FCanvas, FOldDrawInfo, Point, pfMove);
+    FLastVirtCursorPos := Point;
   end;
 
   procedure _DrawModeLButtonUp(ACancel: Boolean);
   var
-    LP: TPoint;
+    Point: TPoint;
     LFlag: TDEngDrawProcFlag;
   begin
     try
-      LP := _GetVirtualCursorPos(FInitCursorPos);
+      Point := _GetVirtualCursorPos(FInitCursorPos);
       if ACancel then
         LFlag := ddpfCancelRemoveAndDispose
       else
         LFlag := pfOkRemoveAndDispose;
       try
-        FInitDrawProc(FCanvas, FOldDrawInfo, LP, LFlag);
+        FInitDrawProc(FCanvas, FOldDrawInfo, Point, LFlag);
       finally
         if GetCaptureControl = FRoot then
           SetCaptureControl(nil);
@@ -1232,10 +1225,9 @@ function TDEng.MouseMessage(Sender: TControl; const Message: TMessage): Boolean;
   end;
 
 var
-  LI: Integer;
   LDesignMessage: Boolean;
   LContainer: TWinControl;
-  LS: string;
+  Str: string;
   LInsertingControl: Boolean;
   LNeedMove: Boolean;
   LControls: TList;
@@ -1284,11 +1276,11 @@ begin
         begin
           FInsertingControlClass := nil;
           LContainer := FindContainer(Sender);
-          if not(lmNoInsertIn in GetLockMode(LContainer)) and (LContainer <> nil)
-          then
+          if not(lmNoInsertIn in GetLockMode(LContainer)) and
+            Assigned(LContainer) then
           begin
             FDesigner.ControlInserting(FInsertingControlClass);
-            if FInsertingControlClass <> nil then
+            if Assigned(FInsertingControlClass) then
             begin
               LInsertingControl := True;
               _InitDrawMode(LContainer, InsertControlProc, True, False,
@@ -1324,14 +1316,14 @@ begin
               FSelCtrls.ClearExcept(FRoot);
               if Result and (Message.Msg = WM_LBUTTONDOWN) then
               begin
-                while (Sender <> nil) and
+                while Assigned(Sender) and
                   (not IsDesignControl(Sender) or
                   not(TControlAccess(Sender).GetChildParent <> nil) or
                   not(TControlAccess(Sender).GetChildParent is TWinControl) or
                   not(csAcceptsControls in TWinControl(TControlAccess(Sender)
                   .GetChildParent).ControlStyle)) do
                   Sender := Sender.Parent;
-                if (Sender <> nil) and
+                if Assigned(Sender) and
                   (TControlAccess(Sender).GetChildParent <> nil) then
                   _InitDrawMode
                     (TWinControl(TControlAccess(Sender).GetChildParent),
@@ -1342,30 +1334,36 @@ begin
             begin
               LControls := TList.Create;
               try
-                if FSelCtrls.IndexOf(Sender) = -1 then begin
-                  if FDesigner.FSnapToGrid then begin
-                    Sender.Top:= Round(Sender.Top / FGrid.FYStep)* FGrid.FYStep;
-                    Sender.Left:= Round(Sender.Left / FGrid.FXStep)* FGrid.FXStep;
+                if FSelCtrls.IndexOf(Sender) = -1 then
+                begin
+                  if FDesigner.FSnapToGrid then
+                  begin
+                    Sender.Top := Round(Sender.Top / FGrid.FYStep) *
+                      FGrid.FYStep;
+                    Sender.Left := Round(Sender.Left / FGrid.FXStep) *
+                      FGrid.FXStep;
                   end;
                   LControls.Add(Sender);
-                end else begin
+                end
+                else
+                begin
                   FSelCtrls.ClearNotChildrensOf(Sender.Parent);
                   FSelCtrls.GetControls(LControls);
                 end;
                 if Result and (Message.Msg = WM_LBUTTONDOWN) then
                 begin
                   LNeedMove := False;
-                  for LI := 0 to LControls.Count - 1 do
-                    if not(lmNoMove in GetLockMode(LControls[LI])) then
+                  for var I := 0 to LControls.Count - 1 do
+                    if not(lmNoMove in GetLockMode(LControls[I])) then
                     begin
                       LNeedMove := True;
                       Break;
                     end;
                   if not(lmNoMove in GetLockMode(Sender)) and LNeedMove then
                   begin
-                    for LI := LControls.Count - 1 downto 0 do
-                      if lmNoMove in GetLockMode(LControls[LI]) then
-                        LControls.Delete(LI);
+                    for var I := LControls.Count - 1 downto 0 do
+                      if lmNoMove in GetLockMode(LControls[I]) then
+                        LControls.Delete(I);
                     FSelCtrls.SetVisible(False);
                     FSelCtrls.SelectControls(LControls);
                     _InitDrawMode(Sender.Parent, MoveControlsProc, True, False,
@@ -1389,7 +1387,7 @@ begin
       else
       begin
         Sender := GetDesignControl(Sender);
-        if Sender <> nil then
+        if Assigned(Sender) then
         begin
           if (Sender = FRoot) or (Sender = FForm) or not Result then
             FHint.Hide
@@ -1398,17 +1396,20 @@ begin
             if htControl in FDesigner.ShowingHints then
             begin
               Typ := Tag2PythonType((Sender as TBaseWidget).Tag);
-              LS := Sender.Name + ': ' + Typ + #13#10;
-              LS := LS + _('Position') + ': ' + IntToStr(Sender.PPIUnScale(Sender.Left)) +
-                                         ', ' + IntToStr(Sender.PPIUnScale(Sender.Top)) + #13#10;
-              LS := LS + _('Size') + ': ' + IntToStr(Sender.PPIUnScale(Sender.Width)) +
-                                     ', ' + IntToStr(Sender.PPIUnScale(Sender.Height));
-              LS:= LS + #13#10 + _('Font size') + ': ' + IntToStr((Sender as TBaseWidget).Font.Size);
+              Str := Sender.Name + ': ' + Typ + #13#10;
+              Str := Str + _('Position') + ': ' +
+                IntToStr(Sender.PPIUnScale(Sender.Left)) + ', ' +
+                IntToStr(Sender.PPIUnScale(Sender.Top)) + #13#10;
+              Str := Str + _('Size') + ': ' +
+                IntToStr(Sender.PPIUnScale(Sender.Width)) + ', ' +
+                IntToStr(Sender.PPIUnScale(Sender.Height));
+              Str := Str + #13#10 + _('Font size') + ': ' +
+                IntToStr((Sender as TBaseWidget).Font.Size);
               if Assigned(FDesigner) then
-                FDesigner.ControlHint(Sender, LS);
-              if LS <> '' then
+                FDesigner.ControlHint(Sender, Str);
+              if Str <> '' then
               begin
-                FHint.Caption := LS;
+                FHint.Caption := Str;
                 if GuiDesignerHints then
                   FHint.Show(False, False, True, Sender)
                 else
@@ -1458,16 +1459,15 @@ type
 
   procedure _FillData(PointsRect: PPointsRect);
   var
-    LR: TRect;
+    Rect: TRect;
   begin
-    LR := ACanvas.WinControl.ClientRect;
-    LR.TopLeft := ACanvas.WinControl.ClientToScreen(LR.TopLeft);
-    LR.BottomRight := ACanvas.WinControl.ClientToScreen(LR.BottomRight);
+    Rect := ACanvas.WinControl.ClientRect;
+    Rect.TopLeft := ACanvas.WinControl.ClientToScreen(Rect.TopLeft);
+    Rect.BottomRight := ACanvas.WinControl.ClientToScreen(Rect.BottomRight);
     PointsRect^[0] := ACanvas.ScreenToClient(AVirtCursorPos);
   end;
 
 var
-  LI: Integer;
   LSelectRect: TRect;
   LPointsRect: TPointsRect;
   LControl: TControl;
@@ -1477,12 +1477,12 @@ begin
   case AFlag of
     pfInitAndDraw:
       begin
-        if AOldDataPtr = nil then
+        if not Assigned(AOldDataPtr) then
           New(PPointsRect(Result))
         else
           Result := AOldDataPtr;
         _FillData(Result);
-        if AOldDataPtr = nil then
+        if not Assigned(AOldDataPtr) then
           PPointsRect(Result)^[1] := PPointsRect(Result)^[0];
         _DoXORDraw(Result);
       end;
@@ -1502,12 +1502,12 @@ begin
           PPointsRect(AOldDataPtr)^[1]);
         FSelCtrls.BeginUpdate;
         try
-          for LI := 0 to ACanvas.WinControl.ControlCount - 1 do
+          for var I := 0 to ACanvas.WinControl.ControlCount - 1 do
           begin
-            LControl := ACanvas.WinControl.Controls[LI];
+            LControl := ACanvas.WinControl.Controls[I];
             if IsRectCrossed(LControl.BoundsRect, LSelectRect) and
               IsDesignControl(LControl) then
-              FSelCtrls.Add(ACanvas.WinControl.Controls[LI]);
+              FSelCtrls.Add(ACanvas.WinControl.Controls[I]);
           end;
           if FSelCtrls.Count > 1 then
             FSelCtrls.Remove(FRoot);
@@ -1551,83 +1551,76 @@ type
     procedure __AddControl(AData: PDataRec; AControl: TControl);
     var
       LControlItemPtr: PControlItem;
-      LR: TRect;
+      Rect: TRect;
     begin
       New(LControlItemPtr);
-      LR := AControl.BoundsRect;
-      LControlItemPtr.Rect := LR;
+      Rect := AControl.BoundsRect;
+      LControlItemPtr.Rect := Rect;
       LControlItemPtr.Control := AControl;
       AData.ControlList.Add(LControlItemPtr);
-      if AData.MinLeftTop.x > LR.Left then
-        AData.MinLeftTop.x := LR.Left;
-      if AData.MinLeftTop.y > LR.Top then
-        AData.MinLeftTop.y := LR.Top;
+      if AData.MinLeftTop.X > Rect.Left then
+        AData.MinLeftTop.X := Rect.Left;
+      if AData.MinLeftTop.Y > Rect.Top then
+        AData.MinLeftTop.Y := Rect.Top;
     end;
-
-  var
-    LI: Integer;
 
   begin
     New(Result);
     Result.ControlList := TList.Create;
     Result.MinLeftTop := Point(MaxInt, MaxInt);
-    for LI := 0 to FSelCtrls.Count - 1 do
-      __AddControl(Result, FSelCtrls[LI]);
+    for var I := 0 to FSelCtrls.Count - 1 do
+      __AddControl(Result, FSelCtrls[I]);
     Result.StartClientCursorPos := ACanvas.ScreenToClient(AVirtCursorPos);
     Result.Offset := Point(0, 0);
   end;
 
   procedure _DisposeData(AData: PDataRec);
-  var
-    LI: Integer;
   begin
-    for LI := 0 to AData.ControlList.Count - 1 do
-      Dispose(PControlItem(AData.ControlList[LI]));
+    for var I := 0 to AData.ControlList.Count - 1 do
+      Dispose(PControlItem(AData.ControlList[I]));
     FreeAndNil(AData.ControlList);
     Dispose(AData);
   end;
 
   procedure _DoXORDraw(AData: PDataRec);
   var
-    LI: Integer;
-    LR: TRect;
+    Rect: TRect;
   begin
-    for LI := 0 to AData.ControlList.Count - 1 do
-      if not(lmNoMove in GetLockMode(PControlItem(AData.ControlList[LI])
-        .Control)) then
+    for var I := 0 to AData.ControlList.Count - 1 do
+      if not(lmNoMove in GetLockMode(PControlItem(AData.ControlList[I]).Control))
+      then
       begin
-        LR := PControlItem(AData.ControlList[LI]).Rect;
-        OffsetRect(LR, AData.Offset.x, AData.Offset.y);
-        DrawControlRect(LR, ACanvas);
+        Rect := PControlItem(AData.ControlList[I]).Rect;
+        OffsetRect(Rect, AData.Offset.X, AData.Offset.Y);
+        DrawControlRect(Rect, ACanvas);
       end;
   end;
 
-  procedure _ShowHint(P: TPoint);
+  procedure _ShowHint(Point: TPoint);
   begin
     if htMove in FDesigner.ShowingHints then
     begin
       if Assigned(FHintControl) then
-        FHint.Caption := IntToStr(FHintControl.PPIUnScale(P.x)) + ', ' +
-                         IntToStr(FHintControl.PPIUnScale(P.y))
+        FHint.Caption := IntToStr(FHintControl.PPIUnScale(Point.X)) + ', ' +
+          IntToStr(FHintControl.PPIUnScale(Point.Y))
       else
-        FHint.Caption := IntToStr(P.x) + ', ' + IntToStr(P.y);
+        FHint.Caption := IntToStr(Point.X) + ', ' + IntToStr(Point.Y);
       FHint.Show(False, False, False, nil);
     end;
   end;
 
   procedure _FillData(DataRecPtr: PDataRec);
   var
-    LP: TPoint;
+    Point: TPoint;
   begin
-    LP := ACanvas.ScreenToClient(AVirtCursorPos);
-    LP.x := LP.x - DataRecPtr.StartClientCursorPos.x;
-    LP.y := LP.y - DataRecPtr.StartClientCursorPos.y;
-    DataRecPtr.Offset.x := LP.x;
-    DataRecPtr.Offset.y := LP.y;
+    Point := ACanvas.ScreenToClient(AVirtCursorPos);
+    Point.X := Point.X - DataRecPtr.StartClientCursorPos.X;
+    Point.Y := Point.Y - DataRecPtr.StartClientCursorPos.Y;
+    DataRecPtr.Offset.X := Point.X;
+    DataRecPtr.Offset.Y := Point.Y;
   end;
 
 var
-  LI: Integer;
   LNewControlBounds: TRect;
   LDataRec: TDataRec;
 
@@ -1639,9 +1632,9 @@ begin
         Result := _InitData;
         _FillData(Result);
         _DoXORDraw(Result);
-        _ShowHint(Point(PDataRec(Result).MinLeftTop.x + PDataRec(Result)
-          .Offset.x, PDataRec(Result).MinLeftTop.y + PDataRec(Result)
-          .Offset.y));
+        _ShowHint(Point(PDataRec(Result).MinLeftTop.X + PDataRec(Result)
+          .Offset.X, PDataRec(Result).MinLeftTop.Y + PDataRec(Result)
+          .Offset.Y));
       end;
     pfMove:
       begin
@@ -1650,8 +1643,8 @@ begin
         FHint.Hide;
         _DoXORDraw(AOldDataPtr);
         _DoXORDraw(@LDataRec);
-        _ShowHint(Point(LDataRec.MinLeftTop.x + LDataRec.Offset.x,
-          LDataRec.MinLeftTop.y + LDataRec.Offset.y));
+        _ShowHint(Point(LDataRec.MinLeftTop.X + LDataRec.Offset.X,
+          LDataRec.MinLeftTop.Y + LDataRec.Offset.Y));
         PDataRec(AOldDataPtr)^ := LDataRec;
         Result := AOldDataPtr;
       end;
@@ -1659,19 +1652,19 @@ begin
       try
         FHint.Hide;
         _DoXORDraw(AOldDataPtr);
-        if (PDataRec(AOldDataPtr).Offset.x <> 0) or
-          (PDataRec(AOldDataPtr).Offset.y <> 0) then
+        if (PDataRec(AOldDataPtr).Offset.X <> 0) or
+          (PDataRec(AOldDataPtr).Offset.Y <> 0) then
         begin
-          for LI := 0 to PDataRec(AOldDataPtr).ControlList.Count - 1 do
+          for var I := 0 to PDataRec(AOldDataPtr).ControlList.Count - 1 do
             if not(lmNoMove in GetLockMode(PControlItem(PDataRec(AOldDataPtr)
-              .ControlList[LI]).Control)) then
+              .ControlList[I]).Control)) then
             begin
               LNewControlBounds :=
-                PControlItem(PDataRec(AOldDataPtr).ControlList[LI]).Rect;
-              OffsetRect(LNewControlBounds, PDataRec(AOldDataPtr).Offset.x,
-                PDataRec(AOldDataPtr).Offset.y);
+                PControlItem(PDataRec(AOldDataPtr).ControlList[I]).Rect;
+              OffsetRect(LNewControlBounds, PDataRec(AOldDataPtr).Offset.X,
+                PDataRec(AOldDataPtr).Offset.Y);
               with LNewControlBounds do
-                PControlItem(PDataRec(AOldDataPtr).ControlList[LI])
+                PControlItem(PDataRec(AOldDataPtr).ControlList[I])
                   .Control.SetBounds(Left, Top, Right - Left, Bottom - Top);
             end;
           Modified;
@@ -1724,39 +1717,41 @@ type
   function _CalcDrawRect(AData: PDataRec): TRect;
   begin
     Result := AData.Control.BoundsRect;
-    Result.Left := Result.Left + AData.Offset.x *
+    Result.Left := Result.Left + AData.Offset.X *
       Ord(AData.PointPosition in [ppTopLeft, ppBottomLeft, ppLeft]);
-    Result.Top := Result.Top + AData.Offset.y *
+    Result.Top := Result.Top + AData.Offset.Y *
       Ord(AData.PointPosition in [ppTopLeft, ppTop, ppTopRight]);
-    Result.Right := Result.Right + AData.Offset.x *
+    Result.Right := Result.Right + AData.Offset.X *
       Ord(AData.PointPosition in [ppTopRight, ppRight, ppBottomRight]);
-    Result.Bottom := Result.Bottom + AData.Offset.y *
+    Result.Bottom := Result.Bottom + AData.Offset.Y *
       Ord(AData.PointPosition in [ppBottomRight, ppBottom, ppBottomLeft]);
     Result := RectFromPoints(Result.TopLeft, Result.BottomRight);
   end;
 
-  procedure _ShowHint(R: TRect);
+  procedure _ShowHint(Rect: TRect);
   begin
     if htSize in FDesigner.ShowingHints then
     begin
       if Assigned(FHintControl) then
-        FHint.Caption := IntToStr(FHintControl.PPIUnScale(R.Right - R.Left)) + ' x ' +
-                         IntToStr(FHintControl.PPIUnScale(R.Bottom - R.Top))
+        FHint.Caption :=
+          IntToStr(FHintControl.PPIUnScale(Rect.Right - Rect.Left)) + ' X ' +
+          IntToStr(FHintControl.PPIUnScale(Rect.Bottom - Rect.Top))
       else
-        FHint.Caption := IntToStr(R.Right - R.Left) + ' x ' + IntToStr(R.Bottom - R.Top);
+        FHint.Caption := IntToStr(Rect.Right - Rect.Left) + ' X ' +
+          IntToStr(Rect.Bottom - Rect.Top);
       FHint.Show(False, False, False, nil);
     end;
   end;
 
   procedure _FillData(ADataRec: PDataRec);
   var
-    LP: TPoint;
+    Point: TPoint;
   begin
-    LP := ACanvas.ScreenToClient(AVirtCursorPos);
-    LP.x := LP.x - ADataRec.StartClientCursorPos.x;
-    LP.y := LP.y - ADataRec.StartClientCursorPos.y;
-    ADataRec.Offset.x := LP.x;
-    ADataRec.Offset.y := LP.y;
+    Point := ACanvas.ScreenToClient(AVirtCursorPos);
+    Point.X := Point.X - ADataRec.StartClientCursorPos.X;
+    Point.Y := Point.Y - ADataRec.StartClientCursorPos.Y;
+    ADataRec.Offset.X := Point.X;
+    ADataRec.Offset.Y := Point.Y;
   end;
 
 var
@@ -1826,14 +1821,13 @@ type
   const
     LRotateCount: array [TDirection] of Integer = (-1, 4, 3, 2, 1);
   var
-    LI: Integer;
     LBufRect: TRect;
     LFromP, LToP: TPoint;
   begin
     Result := -1;
     if LRotateCount[ADirection] = -1 then
       Exit;
-    for LI := 1 to LRotateCount[ADirection] do
+    for var I := 1 to LRotateCount[ADirection] do
     begin
       LBufRect := AFromRect;
       AFromRect.TopLeft := Point(-LBufRect.Bottom, LBufRect.Left);
@@ -1867,21 +1861,21 @@ type
     LFromP := Point(AFromRect.Left, (AFromRect.Top + AFromRect.Bottom) div 2);
     if AToRect.Right < AFromRect.Left then
     begin
-      if AToRect.Bottom < LFromP.y then
+      if AToRect.Bottom < LFromP.Y then
         LToP := AToRect.BottomRight
-      else if AToRect.Bottom > LFromP.y then
+      else if AToRect.Bottom > LFromP.Y then
         LToP := Point(AToRect.Right, AToRect.Top)
       else
-        LToP := Point(AToRect.Right, LFromP.y);
+        LToP := Point(AToRect.Right, LFromP.Y);
     end
-    else if AToRect.Top > LFromP.y then
-      LToP := Point(AToRect.Top, LFromP.y)
-    else if AToRect.Bottom < LFromP.y then
-      LToP := Point(AToRect.Bottom, LFromP.y)
+    else if AToRect.Top > LFromP.Y then
+      LToP := Point(AToRect.Top, LFromP.Y)
+    else if AToRect.Bottom < LFromP.Y then
+      LToP := Point(AToRect.Bottom, LFromP.Y)
     else
       LToP := LFromP;
-    Result := Sqrt((LFromP.x - LToP.x) * (LFromP.x - LToP.x) +
-      (LFromP.y - LToP.y) * (LFromP.y - LToP.y));
+    Result := Sqrt((LFromP.X - LToP.X) * (LFromP.X - LToP.X) +
+      (LFromP.Y - LToP.Y) * (LFromP.Y - LToP.Y));
   end;
 
   function _FindNearControl(AForward: Boolean): TControl;
@@ -1915,7 +1909,7 @@ type
       begin
         Result := __DoFind(LMainControl.ComponentIndex + (-1 + 2 * Ord(AForward)
           ), (FRoot.ComponentCount - 1) * Ord(AForward), AForward);
-        if Result = nil then
+        if not Assigned(Result) then
           Result := __DoFind((FRoot.ComponentCount - 1) * Ord(not AForward),
             LMainControl.ComponentIndex + (1 - 2 * Ord(AForward)), AForward);
       end;
@@ -1926,7 +1920,7 @@ var
   LDMCancelMessage: TMessage;
   LShiftState: TShiftState;
   LControl, LChousedControl: TControl;
-  LI, LdX, LdY: Integer;
+  LdX, LdY: Integer;
   LControlOffset, LChousedControlOffset: Real;
   LDirection: TDirection;
 
@@ -1949,7 +1943,7 @@ begin
               if (FSelCtrls.DefaultControl <> nil) and
                 (FSelCtrls.DefaultControl.Parent <> nil) then
                 LControl := GetDesignControl(FSelCtrls.DefaultControl.Parent);
-              if LControl = nil then
+              if not Assigned(LControl) then
                 LControl := FRoot;
               FSelCtrls.ClearExcept(LControl);
             end;
@@ -1966,14 +1960,14 @@ begin
                       (FSelCtrls.DefaultControl.Parent);
                     if ssShift in LShiftState then
                     begin
-                      for LI := FSelCtrls.Count - 1 downto 0 do
-                        if lmNoResize in GetLockMode(FSelCtrls[LI]) then
-                          FSelCtrls.Delete(LI);
+                      for var I := FSelCtrls.Count - 1 downto 0 do
+                        if lmNoResize in GetLockMode(FSelCtrls[I]) then
+                          FSelCtrls.Delete(I);
                     end
                     else
-                      for LI := FSelCtrls.Count - 1 downto 0 do
-                        if lmNoMove in GetLockMode(FSelCtrls[LI]) then
-                          FSelCtrls.Delete(LI);
+                      for var I := FSelCtrls.Count - 1 downto 0 do
+                        if lmNoMove in GetLockMode(FSelCtrls[I]) then
+                          FSelCtrls.Delete(I);
                   finally
                     FSelCtrls.EndUpdate;
                   end;
@@ -1995,14 +1989,14 @@ begin
                     begin
                       if ssShift in LShiftState then
                       begin
-                        for LI := 0 to FSelCtrls.Count - 1 do
-                          with FSelCtrls[LI] do
+                        for var I := 0 to FSelCtrls.Count - 1 do
+                          with FSelCtrls[I] do
                             SetBounds(Left, Top, Max(Width + LdX, 0),
                               Max(Height + LdY, 0));
                       end
                       else
-                        for LI := 0 to FSelCtrls.Count - 1 do
-                          with FSelCtrls[LI] do
+                        for var I := 0 to FSelCtrls.Count - 1 do
+                          with FSelCtrls[I] do
                             SetBounds(Left + LdX, Top + LdY, Width, Height);
                       Modified;
                     end;
@@ -2027,10 +2021,10 @@ begin
                   end;
                   LChousedControl := nil;
                   LChousedControlOffset := 1.7E+308; // MaxReal
-                  for LI := 0 to FSelCtrls.DefaultControl.Parent.
+                  for var I := 0 to FSelCtrls.DefaultControl.Parent.
                     ControlCount - 1 do
                   begin
-                    LControl := FSelCtrls.DefaultControl.Parent.Controls[LI];
+                    LControl := FSelCtrls.DefaultControl.Parent.Controls[I];
                     if (LControl <> FSelCtrls.DefaultControl) and
                       IsDesignControl(LControl) then
                     begin
@@ -2045,7 +2039,7 @@ begin
                       end;
                     end;
                   end;
-                  if LChousedControl <> nil then
+                  if Assigned(LChousedControl) then
                     FSelCtrls.ClearExcept(LChousedControl);
                 end;
               end;
@@ -2054,7 +2048,7 @@ begin
             if not FIsInDrawMode then
             begin
               LChousedControl := _FindNearControl(not(ssShift in LShiftState));
-              if LChousedControl <> nil then
+              if Assigned(LChousedControl) then
                 FSelCtrls.ClearExcept(LChousedControl);
             end;
           VK_DELETE:
@@ -2070,18 +2064,15 @@ begin
 end;
 
 procedure TDEng.RecursionRefresh(AWinControl: TWinControl);
-var
-  LI: Integer;
 begin
   AWinControl.Refresh;
-  for LI := 0 to AWinControl.ControlCount - 1 do
-    if AWinControl.Controls[LI] is TWinControl then
-      RecursionRefresh(TWinControl(AWinControl.Controls[LI]));
+  for var I := 0 to AWinControl.ControlCount - 1 do
+    if AWinControl.Controls[I] is TWinControl then
+      RecursionRefresh(TWinControl(AWinControl.Controls[I]));
 end;
 
 procedure TDEng.DeleteSelectedControls;
 var
-  LI: Integer;
   LLockedIndex: Integer;
 begin
   if ((FSelCtrls.Count = 1) and (FSelCtrls[0] <> FRoot)) or (FSelCtrls.Count > 1)
@@ -2090,30 +2081,31 @@ begin
     FSelCtrls.BeginUpdate;
     try
       LLockedIndex := -1;
-      for LI := 0 to FSelCtrls.Count - 1 do
-        if (FSelCtrls[LI] <> FRoot) and
-          (lmNoDelete in GetFullLockMode(FSelCtrls[LI])) then
+      for var I := 0 to FSelCtrls.Count - 1 do
+        if (FSelCtrls[I] <> FRoot) and
+          (lmNoDelete in GetFullLockMode(FSelCtrls[I])) then
           if LLockedIndex = -1 then
-            LLockedIndex := LI
+            LLockedIndex := I
           else
             LLockedIndex := -2;
       if LLockedIndex = -1 then
       begin
         FDesigner.ControlDeleting(FSelCtrls);
-        LI := FSelCtrls.Count - 1;
+        var
+        Int := FSelCtrls.Count - 1;
         while True do
         begin
-          if LI > FSelCtrls.Count - 1 then
-            LI := FSelCtrls.Count - 1;
-          if LI < 0 then
+          if Int > FSelCtrls.Count - 1 then
+            Int := FSelCtrls.Count - 1;
+          if Int < 0 then
             Break;
-          if FSelCtrls[LI] <> FRoot then
-            FreeAndNil(FSelCtrls[LI]);
-          Dec(LI);
+          if FSelCtrls[Int] <> FRoot then
+            FreeAndNil(FSelCtrls[Int]);
+          Dec(Int);
         end;
       end
       else if LLockedIndex = -2 then
-        raise EELDesigner.Create(SELDsgnrControlsLockedDel)
+        raise EELDesigner.Create(SELDsgnrControlsLockedDel);
     finally
       FSelCtrls.EndUpdate;
     end;
@@ -2154,34 +2146,36 @@ type
   function _CalcDrawRect(AData: PDataRec): TRect;
   begin
     Result := RectFromPoints(AData.StartClientCursorPos,
-      Point(AData.StartClientCursorPos.x + AData.Offset.x,
-      AData.StartClientCursorPos.y + AData.Offset.y));
+      Point(AData.StartClientCursorPos.X + AData.Offset.X,
+      AData.StartClientCursorPos.Y + AData.Offset.Y));
     Inc(Result.Right);
     Inc(Result.Bottom);
   end;
 
-  procedure _ShowHint(R: TRect);
+  procedure _ShowHint(Rect: TRect);
   begin
     if htInsert in FDesigner.ShowingHints then
     begin
       if Assigned(FHintControl) then
-        FHint.Caption := IntToStr(FHintControl.PPIUnScale(R.Right - R.Left)) + ' x ' +
-                         IntToStr(FHintControl.PPIUnScale(R.Bottom - R.Top))
+        FHint.Caption :=
+          IntToStr(FHintControl.PPIUnScale(Rect.Right - Rect.Left)) + ' X ' +
+          IntToStr(FHintControl.PPIUnScale(Rect.Bottom - Rect.Top))
       else
-        FHint.Caption := IntToStr(R.Right - R.Left) + ' x ' + IntToStr(R.Bottom - R.Top);
+        FHint.Caption := IntToStr(Rect.Right - Rect.Left) + ' X ' +
+          IntToStr(Rect.Bottom - Rect.Top);
       FHint.Show(False, False, False, nil);
     end;
   end;
 
   procedure _FillData(ADataRec: PDataRec);
   var
-    LP: TPoint;
+    Point: TPoint;
   begin
-    LP := ACanvas.ScreenToClient(AVirtCursorPos);
-    LP.x := LP.x - ADataRec.StartClientCursorPos.x;
-    LP.y := LP.y - ADataRec.StartClientCursorPos.y;
-    ADataRec.Offset.x := LP.x;
-    ADataRec.Offset.y := LP.y;
+    Point := ACanvas.ScreenToClient(AVirtCursorPos);
+    Point.X := Point.X - ADataRec.StartClientCursorPos.X;
+    Point.Y := Point.Y - ADataRec.StartClientCursorPos.Y;
+    ADataRec.Offset.X := Point.X;
+    ADataRec.Offset.Y := Point.Y;
   end;
 
 var
@@ -2325,17 +2319,15 @@ end;
 procedure TDEng.SelectAll;
 
   procedure _SelectChildControls(AControl: TWinControl);
-  var
-    LI: Integer;
   begin
     if IsDesignControl(AControl) then
     begin
       FSelCtrls.Add(AControl);
-      for LI := 0 to AControl.ControlCount - 1 do
-        if AControl.Controls[LI] is TWinControl then
-          _SelectChildControls(TWinControl(AControl.Controls[LI]))
-        else if IsDesignControl(AControl.Controls[LI]) then
-          FSelCtrls.Add(AControl.Controls[LI]);
+      for var I := 0 to AControl.ControlCount - 1 do
+        if AControl.Controls[I] is TWinControl then
+          _SelectChildControls(TWinControl(AControl.Controls[I]))
+        else if IsDesignControl(AControl.Controls[I]) then
+          FSelCtrls.Add(AControl.Controls[I]);
     end;
   end;
 
@@ -2364,7 +2356,7 @@ end;
 function TDEng.FindContainer(ASender: TControl): TWinControl;
 begin
   Result := nil;
-  while ASender <> nil do
+  while Assigned(ASender) do
   begin
     if (ASender is TWinControl) and (csAcceptsControls in ASender.ControlStyle)
     then
@@ -2379,7 +2371,7 @@ end;
 function TDEng.GetDesignControl(AControl: TControl): TControl;
 begin
   Result := nil;
-  while AControl <> nil do
+  while Assigned(AControl) do
   begin
     if IsDesignControl(AControl) then
     begin
@@ -2417,31 +2409,29 @@ begin
 end;
 
 class function TDEng.GetFullLockMode(AControl: TControl): TELDesignerLockMode;
-var
-  LI: Integer;
 begin
   Result := GetLockMode(AControl);
   if AControl is TWinControl then
-    for LI := 0 to TWinControl(AControl).ControlCount - 1 do
-      Result := Result + GetLockMode(TWinControl(AControl).Controls[LI]);
+    for var I := 0 to TWinControl(AControl).ControlCount - 1 do
+      Result := Result + GetLockMode(TWinControl(AControl).Controls[I]);
 end;
 
 procedure TDEng.LoadControlsFromStream(AStream: TStream; AParent: TWinControl);
 var
-  LR: TReader;
+  Reader: TReader;
 begin
   FSelCtrls.BeginUpdate;
   try
     FSelCtrls.Clear;
     FReaderNames := TDEngNames.Create;
     try
-      LR := TReader.Create(AStream, 1024);
+      Reader := TReader.Create(AStream, 1024);
       try
-        LR.OnSetName := ReaderSetName;
-        LR.OnReferenceName := ReaderReferenceName;
-        LR.ReadComponents(FRoot, AParent, ReaderReadComponent);
+        Reader.OnSetName := ReaderSetName;
+        Reader.OnReferenceName := ReaderReferenceName;
+        Reader.ReadComponents(FRoot, AParent, ReaderReadComponent);
       finally
-        FreeAndNil(LR);
+        FreeAndNil(Reader);
       end;
     finally
       FreeAndNil(FReaderNames);
@@ -2449,26 +2439,24 @@ begin
   finally
     FSelCtrls.EndUpdate;
   end;
-  // Modified;
 end;
 
 procedure TDEng.SaveControlsToStream(AStream: TStream; AControls: TList);
 var
-  LW: TWriter;
-  LI: Integer;
+  Writer: TWriter;
 begin
-  LW := TWriter.Create(AStream, 1024);
+  Writer := TWriter.Create(AStream, 1024);
   try
-    LW.Root := FRoot;
-    for LI := 0 to AControls.Count - 1 do
-      if not(lmNoCopy in GetFullLockMode(AControls[LI])) then
+    Writer.Root := FRoot;
+    for var I := 0 to AControls.Count - 1 do
+      if not(lmNoCopy in GetFullLockMode(AControls[I])) then
       begin
-        LW.WriteSignature;
-        LW.WriteComponent(AControls[LI]);
+        Writer.WriteSignature;
+        Writer.WriteComponent(AControls[I]);
       end;
-    LW.WriteListEnd;
+    Writer.WriteListEnd;
   finally
-    FreeAndNil(LW);
+    FreeAndNil(Writer);
   end;
 end;
 
@@ -2480,7 +2468,6 @@ begin
   if not IsUniqueName(Name) then
   begin
     LOldName := Name;
-    // Name := UniqueName (Component.ClassName);
     Name := UniqueName(LOldName);
     FReaderNames.Add(LOldName, Name);
   end;
@@ -2489,13 +2476,11 @@ end;
 procedure TDEng.ReaderReadComponent(Component: TComponent);
 
   function _ControlExist(AParent: TWinControl; ALeft, ATop: Integer): Boolean;
-  var
-    LI: Integer;
   begin
     Result := False;
-    for LI := 0 to AParent.ControlCount - 1 do
-      if AParent.Controls[LI] <> Component then
-        with AParent.Controls[LI] do
+    for var I := 0 to AParent.ControlCount - 1 do
+      if AParent.Controls[I] <> Component then
+        with AParent.Controls[I] do
           if (Left = ALeft) and (Top = ATop) then
           begin
             Result := True;
@@ -2527,11 +2512,11 @@ end;
 
 procedure TDEng.ReaderReferenceName(Reader: TReader; var Name: string);
 var
-  LI: Integer;
+  Int: Integer;
 begin
-  LI := FReaderNames.IndexOf(Name);
-  if LI <> -1 then
-    Name := FReaderNames.DestName(LI);
+  Int := FReaderNames.IndexOf(Name);
+  if Int <> -1 then
+    Name := FReaderNames.DestName(Int);
 end;
 
 function TDEng._AddRef: Integer;
@@ -2689,7 +2674,7 @@ end;
 
 function TELCustomDesignPanel.GetIsUsed: Boolean;
 begin
-  Result := FEng <> nil;
+  Result := Assigned(FEng);
 end;
 
 function TELCustomDesignPanel.GetPopupMenu: TPopupMenu;
@@ -2743,12 +2728,13 @@ end;
 
 procedure TELCustomDesignPanel.UpdateFormBounds;
 var
-  R: TRect;
+  Rect: TRect;
 begin
   if HandleAllocated then
   begin
-    R := ClientRect;
-    FForm.SetBounds(R.Left, R.Top, R.Right - R.Left, R.Bottom - R.Top);
+    Rect := ClientRect;
+    FForm.SetBounds(Rect.Left, Rect.Top, Rect.Right - Rect.Left,
+      Rect.Bottom - Rect.Top);
   end;
 end;
 
@@ -2762,7 +2748,8 @@ end;
 
 procedure TELCustomDesignPanel.WMSetFocus(var Msg: TWMSetFocus);
 begin
-  if (FForm <> nil) and FForm.HandleAllocated and (FForm.ParentWindow <> 0) then
+  if Assigned(FForm) and FForm.HandleAllocated and (FForm.ParentWindow <> 0)
+  then
     Windows.SetFocus(FForm.Handle);
 end;
 
@@ -2776,7 +2763,7 @@ begin
     LMsg.hwnd := AHandle;
     LMsg.Message := Message.Msg;
     LMsg.WParam := Message.WParam;
-    LMsg.LParam := Message.LParam;
+    LMsg.LPARAM := Message.LPARAM;
     if DHintWindow.IsHintMsg(LMsg) then
       Hide;
   end;
@@ -2787,7 +2774,7 @@ begin
   FTimer := TTimer.Create(nil);
   FTimer.Enabled := False;
   FTimer.OnTimer := FTimerOnTimer;
-  if DHintWindow = nil then
+  if not Assigned(DHintWindow) then
   begin
     DHintWindow := TESHintWindow.Create(nil);
     HookDesignerHintHooks;
@@ -2824,13 +2811,13 @@ procedure TDEngHint.DoShowNoPause;
     function FindScanline(Source: Pointer; MaxLen: Cardinal; Value: Cardinal)
       : Cardinal;
     var
-      P: PByte;
+      PSource: PByte;
     begin
-      P := Source;
+      PSource := Source;
       Result := MaxLen;
-      while (Result > 0) and (P^ = Value) do
+      while (Result > 0) and (PSource^ = Value) do
       begin
-        Inc(P);
+        Inc(PSource);
         Dec(Result);
       end;
     end;
@@ -2878,21 +2865,22 @@ procedure TDEngHint.DoShowNoPause;
   end;
 
 var
-  LP: TPoint;
-  LR: TRect;
+  Point: TPoint;
+  Rect: TRect;
 
 begin
-  GetCursorPos(LP);
-  if (FCheckControl <> nil) and (FindDragTarget(LP, True) <> FCheckControl) then
+  GetCursorPos(Point);
+  if Assigned(FCheckControl) and (FindDragTarget(Point, True) <> FCheckControl)
+  then
     Hide
   else
   begin
     FTimer.Enabled := False;
     DHintWindow.Color := Application.HintColor;
     DHintWindow.Font := Screen.HintFont;
-    LR := DHintWindow.CalcHintRect(Screen.Width, Caption, nil);
-    OffsetRect(LR, LP.x, LP.y + GetCursorHeightMargin);
-    DHintWindow.ActivateHint(LR, Caption);
+    Rect := DHintWindow.CalcHintRect(Screen.Width, Caption, nil);
+    OffsetRect(Rect, Point.X, Point.Y + GetCursorHeightMargin);
+    DHintWindow.ActivateHint(Rect, Caption);
     DHintWindow.Update;
     DHintWindowShower := Self;
     if FNeedStartHideTimer then
@@ -2944,12 +2932,12 @@ end;
 
 constructor TDSelCtrlItemPoint.Create(AOwnerSelCtrl: TDSelCtrlItem;
   APos: TDSelCtrlItemPointPos);
-  const HANDLESIZE = 5;
+const
+  HANDLESIZE = 5;
 begin
   inherited Create(nil);
   FSelCtrl := AOwnerSelCtrl;
   FPos := APos;
-  // FHandleSize := PPIScale(HANDLESIZE);
   FHandleSize := Round(AOwnerSelCtrl.FControl.ScaleFactor * HANDLESIZE);
   Width := FHandleSize;
   Height := FHandleSize;
@@ -2975,8 +2963,8 @@ var
   LDesigner: TELCustomDesigner;
 
 begin
-  if (FSelCtrl.Control.Parent <> nil) and
-    (FSelCtrl.Control.Parent.HandleAllocated) then
+  if (FSelCtrl.Control.Parent <> nil) and FSelCtrl.Control.Parent.HandleAllocated
+  then
     ParentWindow := FSelCtrl.Control.Parent.Handle
   else
     ParentWindow := 0;
@@ -2985,15 +2973,16 @@ begin
   case FPos of
     ppTopLeft, ppTop, ppTopRight:
       if FSelCtrl.Mode = imSizeable then
-        Top:= FSelCtrl.Control.Top - FHandleSize div 2
+        Top := FSelCtrl.Control.Top - FHandleSize div 2
       else
-        Top:= FSelCtrl.Control.Top - FHandleSize;
+        Top := FSelCtrl.Control.Top - FHandleSize;
     ppRight, ppLeft:
       Top := FSelCtrl.Control.Top + FSelCtrl.Control.Height div 2 -
         FHandleSize div 2;
     ppBottomRight, ppBottom, ppBottomLeft:
       if FSelCtrl.Mode = imSizeable then
-        Top := FSelCtrl.Control.Top + FSelCtrl.Control.Height - FHandleSize div 2
+        Top := FSelCtrl.Control.Top + FSelCtrl.Control.Height -
+          FHandleSize div 2
       else
         Top := FSelCtrl.Control.Top + FSelCtrl.Control.Height;
   end;
@@ -3008,7 +2997,8 @@ begin
         FHandleSize div 2;
     ppTopRight, ppRight, ppBottomRight:
       if FSelCtrl.Mode = imSizeable then
-        Left := FSelCtrl.Control.Left + FSelCtrl.Control.Width - FHandleSize div 2
+        Left := FSelCtrl.Control.Left + FSelCtrl.Control.Width -
+          FHandleSize div 2
       else
         Left := FSelCtrl.Control.Left + FSelCtrl.Control.Width;
   end;
@@ -3058,28 +3048,24 @@ end;
 
 constructor TDSelCtrlItem.Create(AOwnerSelCtrls: TELDesignerSelectedControls;
   AControl: TControl);
-var
-  LI: TDSelCtrlItemPointPos;
 begin
   FSelCtrls := AOwnerSelCtrls;
   FControl := AControl;
-  for LI := ppTopLeft to ppLeft do
-    FPoints[LI] := TDSelCtrlItemPoint.Create(Self, LI);
+  for var I := ppTopLeft to ppLeft do
+    FPoints[I] := TDSelCtrlItemPoint.Create(Self, I);
   AControl.FreeNotification(FSelCtrls.FDesigner);
   FSelCtrls.AddItem(Self);
 end;
 
 destructor TDSelCtrlItem.Destroy;
-var
-  LI: TDSelCtrlItemPointPos;
-  LJ: Integer;
 begin
   Control.RemoveFreeNotification(FSelCtrls.FDesigner);
-  LJ := FSelCtrls.IndexOfByItem(Self);
-  if LJ <> -1 then
-    FSelCtrls.DeleteItem(LJ);
-  for LI := ppTopLeft to ppLeft do
-    FreeAndNil(FPoints[LI]);
+  var
+  Int := FSelCtrls.IndexOfByItem(Self);
+  if Int <> -1 then
+    FSelCtrls.DeleteItem(Int);
+  for var I := ppTopLeft to ppLeft do
+    FreeAndNil(FPoints[I]);
   inherited;
 end;
 
@@ -3093,24 +3079,20 @@ begin
 end;
 
 procedure TDSelCtrlItem.Update;
-var
-  LI: TDSelCtrlItemPointPos;
 begin
-  for LI := ppTopLeft to ppLeft do
-    FPoints[LI].Update;
+  for var I := ppTopLeft to ppLeft do
+    FPoints[I].Update;
 end;
 
 procedure TELDesignerSelectedControls.UpdateMode;
 
   procedure _SetHandlesMode(Value: TDSelCtrlItemMode);
-  var
-    LI: Integer;
   begin
-    for LI := 0 to Count - 1 do
-      if TDSelCtrlItem(FItems[LI]).Control <> FRootWinControl then
-        TDSelCtrlItem(FItems[LI]).SetMode(Value)
+    for var I := 0 to Count - 1 do
+      if TDSelCtrlItem(FItems[I]).Control <> FRootWinControl then
+        TDSelCtrlItem(FItems[I]).SetMode(Value)
       else
-        TDSelCtrlItem(FItems[LI]).SetMode(imNone);
+        TDSelCtrlItem(FItems[I]).SetMode(imNone);
   end;
 
 begin
@@ -3135,22 +3117,18 @@ begin
 end;
 
 procedure TELDesignerSelectedControls.Update;
-var
-  LI: Integer;
 begin
-  for LI := 0 to Count - 1 do
-    TDSelCtrlItem(FItems[LI]).Update;
+  for var I := 0 to Count - 1 do
+    TDSelCtrlItem(FItems[I]).Update;
 end;
 
 function TELDesignerSelectedControls.IndexOf(AControl: TControl): Integer;
-var
-  LI: Integer;
 begin
   Result := -1;
-  for LI := 0 to Count - 1 do
-    if TDSelCtrlItem(FItems[LI]).Control = AControl then
+  for var I := 0 to Count - 1 do
+    if TDSelCtrlItem(FItems[I]).Control = AControl then
     begin
-      Result := LI;
+      Result := I;
       Break;
     end;
 end;
@@ -3170,18 +3148,18 @@ end;
 
 function TELDesignerSelectedControls.Add(AControl: TControl): Integer;
 var
-  LI: Integer;
+  Int: Integer;
 begin
   FDesigner.CheckActive(True);
-  LI := IndexOf(AControl);
-  if LI = -1 then
+  Int := IndexOf(AControl);
+  if Int = -1 then
   begin
     CheckDesignControl(AControl);
     TDSelCtrlItem.Create(Self, AControl);
     Result := Count - 1;
   end
   else
-    Result := LI;
+    Result := Int;
 end;
 
 constructor TELDesignerSelectedControls.Create(AOwnerDesigner
@@ -3191,14 +3169,14 @@ begin
   FItems := TList.Create;
 end;
 
-procedure TELDesignerSelectedControls.Delete(AI: Integer);
+procedure TELDesignerSelectedControls.Delete(AItem: Integer);
 begin
-  FreeAndNil(TObject(FItems[AI]));
+  FreeAndNil(TObject(FItems[AItem]));
 end;
 
-procedure TELDesignerSelectedControls.DeleteItem(AI: Integer);
+procedure TELDesignerSelectedControls.DeleteItem(AItem: Integer);
 begin
-  FItems.Delete(AI);
+  FItems.Delete(AItem);
   Change;
 end;
 
@@ -3244,11 +3222,11 @@ end;
 
 procedure TELDesignerSelectedControls.Remove(AControl: TControl);
 var
-  LI: Integer;
+  Int: Integer;
 begin
-  LI := IndexOf(AControl);
-  if LI <> -1 then
-    Delete(LI);
+  Int := IndexOf(AControl);
+  if Int <> -1 then
+    Delete(Int);
 end;
 
 procedure TELDesignerSelectedControls.ClearExcept(AControl: TControl);
@@ -3263,7 +3241,7 @@ begin
       Delete(1);
     if Count = 0 then
     begin
-      if AControl <> nil then
+      if Assigned(AControl) then
         Add(AControl);
     end
     else if FVisible and (AControl.Parent <> nil) then
@@ -3321,15 +3299,15 @@ begin
   inherited;
 end;
 
-function TDEngCanvas.ScreenToClient(const AP: TPoint): TPoint;
+function TDEngCanvas.ScreenToClient(const Point: TPoint): TPoint;
 begin
-  Result := FHiddenControl.ScreenToClient(AP);
+  Result := FHiddenControl.ScreenToClient(Point);
 end;
 
 procedure TDEngCanvas.SetWinControl(const Value: TWinControl);
 begin
   FWinControl := Value;
-  if Value <> nil then
+  if Assigned(Value) then
     FHiddenControl.ParentWindow := Value.Handle
   else
     FHiddenControl.ParentWindow := 0;
@@ -3356,8 +3334,8 @@ begin
 {$ENDIF}
 {$IFDEF WIN64}
     AMsg.Msg := LDMSng.Msg;
-    AMsg.WParam := WParam(LDMSng.MouseMessage);   // WPARAM instead of LongInt
-    AMsg.LParam := LDMSng.Unused;
+    AMsg.WParam := WParam(LDMSng.MouseMessage); // WPARAM instead of LongInt
+    AMsg.LPARAM := LDMSng.Unused;
     AMsg.Result := LDMSng.Result;
     LEng.IsDesignMsg(FSelCtrl.Control, AMsg);
 {$ENDIF}
@@ -3372,14 +3350,14 @@ end;
 
 procedure TELCustomDesigner.CheckActive(AIsActiveNeeded: Boolean);
 var
-  LS: string;
+  Str: string;
 begin
   if AIsActiveNeeded then
-    LS := 'Designer must be active'
+    Str := 'Designer must be active'
   else
-    LS := 'Designer must be inactive';
+    Str := 'Designer must be inactive';
   if Active <> AIsActiveNeeded then
-    raise EELDesigner.Create(LS);
+    raise EELDesigner.Create(Str);
 end;
 
 procedure TELCustomDesigner.ControlHint(AControl: TControl; var AHint: string);
@@ -3562,10 +3540,10 @@ end;
 procedure TELCustomDesigner.SetDesignControl(const Value: TWinControl);
 begin
   CheckActive(False);
-  if FDesignControl <> nil then
+  if Assigned(FDesignControl) then
     FDesignControl.RemoveFreeNotification(Self);
   FDesignControl := Value;
-  if FDesignControl <> nil then
+  if Assigned(FDesignControl) then
     FDesignControl.FreeNotification(Self);
 end;
 
@@ -3591,10 +3569,10 @@ end;
 procedure TELCustomDesigner.ChangeDesignPanel(const Value
   : TELCustomDesignPanel);
 begin
-  if FDesignPanel <> nil then
+  if Assigned(FDesignPanel) then
     FDesignPanel.RemoveFreeNotification(Self);
   FDesignPanel := Value;
-  if FDesignPanel <> nil then
+  if Assigned(FDesignPanel) then
     FDesignPanel.FreeNotification(Self);
 end;
 
@@ -3621,10 +3599,10 @@ begin
   if LHandled then
     Exit;
   LPopupMenu := GetPopupMenu;
-  if (LPopupMenu <> nil) and LPopupMenu.AutoPopup then
+  if Assigned(LPopupMenu) and LPopupMenu.AutoPopup then
   begin
     LPopupMenu.PopupComponent := Self;
-    LPopupMenu.Popup(LPt.x, LPt.y);
+    LPopupMenu.Popup(LPt.X, LPt.Y);
   end;
 end;
 
@@ -3697,17 +3675,15 @@ begin
 end;
 
 procedure TELDesignerSelectedControls.SelectControls(AControls: TList);
-var
-  LI: Integer;
 begin
   FDesigner.CheckActive(True);
   BeginUpdate;
   try
-    for LI := Count - 1 downto 0 do
-      if AControls.IndexOf(Items[LI]) = -1 then
-        Delete(LI);
-    for LI := 0 to AControls.Count - 1 do
-      Add(AControls[LI]);
+    for var I := Count - 1 downto 0 do
+      if AControls.IndexOf(Items[I]) = -1 then
+        Delete(I);
+    for var I := 0 to AControls.Count - 1 do
+      Add(AControls[I]);
   finally
     EndUpdate;
   end;
@@ -3794,7 +3770,7 @@ begin
               (SelectedControls.DefaultControl)
           else
             LParent := nil;
-          if LParent = nil then
+          if not Assigned(LParent) then
             LParent := TDEng(FEng).FRoot;
           TDEng(FEng).LoadControlsFromStream(LStream, LParent);
         finally
@@ -3898,15 +3874,13 @@ begin
 end;
 
 procedure TELDesignerSelectedControls.ClearNotChildrensOf(AParent: TWinControl);
-var
-  LI: Integer;
 begin
   FDesigner.CheckActive(True);
   BeginUpdate;
   try
-    for LI := Count - 1 downto 0 do
-      if Items[LI].Parent <> AParent then
-        Delete(LI);
+    for var I := Count - 1 downto 0 do
+      if Items[I].Parent <> AParent then
+        Delete(I);
   finally
     EndUpdate;
   end;
@@ -3932,18 +3906,16 @@ begin
 end;
 
 function TELCustomDesigner.CanCopy: Boolean;
-var
-  LI: Integer;
 begin
   if Active and (((SelectedControls.Count = 1) and
     (SelectedControls[0] <> TDEng(FEng).FRoot)) or (SelectedControls.Count > 1))
   then
   begin
     Result := True;
-    for LI := 0 to SelectedControls.Count - 1 do
-      if (SelectedControls[LI].Parent = SelectedControls.DefaultControl.Parent)
-        and (SelectedControls[LI] <> TDEng(FEng).FRoot) and
-        (lmNoCopy in TDEng(FEng).GetFullLockMode(SelectedControls[LI])) then
+    for var I := 0 to SelectedControls.Count - 1 do
+      if (SelectedControls[I].Parent = SelectedControls.DefaultControl.Parent)
+        and (SelectedControls[I] <> TDEng(FEng).FRoot) and
+        (lmNoCopy in TDEng(FEng).GetFullLockMode(SelectedControls[I])) then
       begin
         Result := False;
         Break;
@@ -3954,16 +3926,16 @@ begin
 end;
 
 function TELCustomDesigner.CanPaste: Boolean;
-var
-  LC: TWinControl;
 begin
   if Active then
   begin
     Result := True;
     if SelectedControls.Count > 0 then
     begin
-      LC := TDEng(FEng).FindContainer(SelectedControls.DefaultControl);
-      if (LC = nil) or (lmNoInsertIn in TDEng(FEng).GetLockMode(LC)) then
+      var
+      AControl := TDEng(FEng).FindContainer(SelectedControls.DefaultControl);
+      if not Assigned(AControl) or
+        (lmNoInsertIn in TDEng(FEng).GetLockMode(AControl)) then
         Result := False;
     end;
     if Result then
@@ -3977,19 +3949,17 @@ begin
 end;
 
 function TELCustomDesigner.CanCut: Boolean;
-var
-  LI: Integer;
 begin
   if Active and (((SelectedControls.Count = 1) and
     (SelectedControls[0] <> TDEng(FEng).FRoot)) or (SelectedControls.Count > 1))
   then
   begin
     Result := True;
-    for LI := 0 to SelectedControls.Count - 1 do
-      if (SelectedControls[LI].Parent = SelectedControls.DefaultControl.Parent)
-        and (SelectedControls[LI] <> TDEng(FEng).FRoot) and
-        ((lmNoCopy in TDEng(FEng).GetFullLockMode(SelectedControls[LI])) or
-        (lmNoDelete in TDEng(FEng).GetFullLockMode(SelectedControls[LI]))) then
+    for var I := 0 to SelectedControls.Count - 1 do
+      if (SelectedControls[I].Parent = SelectedControls.DefaultControl.Parent)
+        and (SelectedControls[I] <> TDEng(FEng).FRoot) and
+        ((lmNoCopy in TDEng(FEng).GetFullLockMode(SelectedControls[I])) or
+        (lmNoDelete in TDEng(FEng).GetFullLockMode(SelectedControls[I]))) then
       begin
         Result := False;
         Break;
@@ -4000,13 +3970,11 @@ begin
 end;
 
 procedure TELCustomDesigner.LockAll(ALockMode: TELDesignerLockMode);
-var
-  LI: Integer;
 begin
   CheckActive(True);
-  for LI := 0 to TDEng(FEng).FRoot.ComponentCount - 1 do
-    if TDEng(FEng).FRoot.Components[LI] is TControl then
-      TDEng(FEng).LockControl(TControl(TDEng(FEng).FRoot.Components[LI]),
+  for var I := 0 to TDEng(FEng).FRoot.ComponentCount - 1 do
+    if TDEng(FEng).FRoot.Components[I] is TControl then
+      TDEng(FEng).LockControl(TControl(TDEng(FEng).FRoot.Components[I]),
         ALockMode);
 end;
 
@@ -4028,9 +3996,9 @@ begin
   FDestNames := TStringList.Create;
 end;
 
-function TDEngNames.DestName(AI: Integer): string;
+function TDEngNames.DestName(Idx: Integer): string;
 begin
-  Result := FDestNames[AI];
+  Result := FDestNames[Idx];
 end;
 
 destructor TDEngNames.Destroy;
@@ -4047,12 +4015,10 @@ begin
 end;
 
 procedure TELDesignerSelectedControls.GetControls(AResult: TList);
-var
-  LI: Integer;
 begin
   AResult.Clear;
-  for LI := 0 to Count - 1 do
-    AResult.Add(Items[LI]);
+  for var I := 0 to Count - 1 do
+    AResult.Add(Items[I]);
 end;
 
 function TELDesignerSelectedControls.GetDefaultControl: TControl;
@@ -4064,42 +4030,34 @@ begin
 end;
 
 procedure TELDesignerSelectedControls.Lock(ALockMode: TELDesignerLockMode);
-var
-  LI: Integer;
 begin
   FDesigner.CheckActive(True);
-  for LI := 0 to Count - 1 do
-    FDesigner.LockControl(Items[LI], ALockMode);
+  for var I := 0 to Count - 1 do
+    FDesigner.LockControl(Items[I], ALockMode);
 end;
 
 procedure TELDesignerSelectedControls.AlignToGrid;
-var
-  LI: Integer;
 begin
   FDesigner.CheckActive(True);
-  for LI := 0 to Count - 1 do
-    TDEng(FDesigner.FEng).AlignToGrid(Items[LI]);
+  for var I := 0 to Count - 1 do
+    TDEng(FDesigner.FEng).AlignToGrid(Items[I]);
 end;
 
 procedure TELDesignerSelectedControls.BringToFront;
-var
-  LI: Integer;
 begin
   FDesigner.CheckActive(True);
-  for LI := 0 to Count - 1 do
-    if Items[LI] <> TDEng(FDesigner.FEng).FRoot then
-      Items[LI].BringToFront;
+  for var I := 0 to Count - 1 do
+    if Items[I] <> TDEng(FDesigner.FEng).FRoot then
+      Items[I].BringToFront;
   TDEng(FDesigner.FEng).Modified;
 end;
 
 procedure TELDesignerSelectedControls.SendToBack;
-var
-  LI: Integer;
 begin
   FDesigner.CheckActive(True);
-  for LI := 0 to Count - 1 do
-    if Items[LI] <> TDEng(FDesigner.FEng).FRoot then
-      Items[LI].SendToBack;
+  for var I := 0 to Count - 1 do
+    if Items[I] <> TDEng(FDesigner.FEng).FRoot then
+      Items[I].SendToBack;
   TDEng(FDesigner.FEng).Modified;
 end;
 
@@ -4132,23 +4090,23 @@ type
 
   procedure _AlignAdges(AEdges: _TEdges);
   var
-    LBase, LCur, LI: Integer;
+    LBase, LCur: Integer;
   begin
     if Count < 2 then
       Exit;
     LBase := 0 + MaxInt * Ord(AEdges in [etLeft, etTop]);
-    for LI := 0 to Count - 1 do
+    for var I := 0 to Count - 1 do
     begin
       LCur := 0; // Initialize
       case AEdges of
         etLeft:
-          LCur := Items[LI].Left;
+          LCur := Items[I].Left;
         etTop:
-          LCur := Items[LI].Top;
+          LCur := Items[I].Top;
         etRight:
-          LCur := Items[LI].Left + Items[LI].Width;
+          LCur := Items[I].Left + Items[I].Width;
         etBottom:
-          LCur := Items[LI].Top + Items[LI].Height;
+          LCur := Items[I].Top + Items[I].Height;
       end;
       if AEdges in [etLeft, etTop] then
       begin
@@ -4158,17 +4116,17 @@ type
       else if LCur > LBase then
         LBase := LCur;
     end;
-    for LI := 0 to Count - 1 do
+    for var I := 0 to Count - 1 do
     begin
       case AEdges of
         etLeft:
-          Items[LI].Left := LBase;
+          Items[I].Left := LBase;
         etTop:
-          Items[LI].Top := LBase;
+          Items[I].Top := LBase;
         etRight:
-          Items[LI].Left := LBase - Items[LI].Width;
+          Items[I].Left := LBase - Items[I].Width;
         etBottom:
-          Items[LI].Top := LBase - Items[LI].Height;
+          Items[I].Top := LBase - Items[I].Height;
       end;
     end;
     TDEng(FDesigner.FEng).Modified;
@@ -4176,7 +4134,6 @@ type
 
   procedure _SpaceEqually(ADir: _TDirection);
   var
-    LI: Integer;
     LMin, LMax, LCur: Integer;
     LControls: TList;
   begin
@@ -4189,21 +4146,21 @@ type
       begin
         LControls.Sort(Align_HorzSortProc);
         LMin := TControl(LControls[0]).Left;
-        LMax := TControl(LControls[LControls.Count - 1]).Left;
+        LMax := TControl(LControls.Last).Left;
       end
       else
       begin
         LControls.Sort(Align_VertSortProc);
         LMin := TControl(LControls[0]).Top;
-        LMax := TControl(LControls[LControls.Count - 1]).Top;
+        LMax := TControl(LControls.Last).Top;
       end;
-      for LI := 1 to LControls.Count - 2 do
+      for var I := 1 to LControls.Count - 2 do
       begin
-        LCur := LMin + Round(LI * (LMax - LMin) / (LControls.Count - 1));
+        LCur := LMin + Round(I * (LMax - LMin) / (LControls.Count - 1));
         if ADir = dtHorz then
-          TControl(LControls[LI]).Left := LCur
+          TControl(LControls[I]).Left := LCur
         else
-          TControl(LControls[LI]).Top := LCur;
+          TControl(LControls[I]).Top := LCur;
       end;
     finally
       FreeAndNil(LControls);
@@ -4212,15 +4169,13 @@ type
   end;
 
   procedure _SetCenters(ADir: _TDirection; AValue: Integer);
-  var
-    LI: Integer;
   begin
-    for LI := 0 to Count - 1 do
+    for var I := 0 to Count - 1 do
     begin
       if ADir = dtHorz then
-        Items[LI].Left := AValue - Items[LI].Width div 2
+        Items[I].Left := AValue - Items[I].Width div 2
       else
-        Items[LI].Top := AValue - Items[LI].Height div 2;
+        Items[I].Top := AValue - Items[I].Height div 2;
     end;
   end;
 
@@ -4294,7 +4249,7 @@ end;
 
 procedure TDEng.UpdateGridPattern;
 var
-  LI, LJ, LXOff, LYOff: Integer;
+  Int1, Int2, LXOff, LYOff: Integer;
 begin
   FGridBkColor := FForm.Color;
   FGridHScrollPos := FForm.HorzScrollBar.ScrollPos;
@@ -4315,17 +4270,17 @@ begin
     Canvas.Brush.Style := bsSolid;
     Canvas.FillRect(Rect(0, 0, FGridBitmap.Width, FGridBitmap.Height));
 
-    LI := -LXOff;
-    while LI < FGridBitmap.Width do
+    Int1 := -LXOff;
+    while Int1 < FGridBitmap.Width do
     begin
-      LJ := -LYOff;
-      while LJ < FGridBitmap.Height do
+      Int2 := -LYOff;
+      while Int2 < FGridBitmap.Height do
       begin
-        if (LI >= 0) and (LJ >= 0) then
-          Canvas.Pixels[LI, LJ] := FGrid.Color;
-        Inc(LJ, FGrid.YStep);
+        if (Int1 >= 0) and (Int2 >= 0) then
+          Canvas.Pixels[Int1, Int2] := FGrid.Color;
+        Inc(Int2, FGrid.YStep);
       end;
-      Inc(LI, FGrid.XStep);
+      Inc(Int1, FGrid.XStep);
     end;
   end;
   if FGridBrush <> 0 then
@@ -4338,22 +4293,22 @@ begin
   TDSelCtrlItem(FItems[AIndex]).Update;
 end;
 
-procedure TELCustomDesigner.DragOver(ASource, ATarget: TObject; AX, AY: Integer;
-  AState: TDragState; var AAccept: Boolean);
+procedure TELCustomDesigner.DragOver(ASource, ATarget: TObject;
+  XPos, YPos: Integer; AState: TDragState; var AAccept: Boolean);
 begin
   AAccept := False;
   if Assigned(FOnDragOver) then
   begin
     AAccept := True;
-    FOnDragOver(Self, ASource, ATarget, AX, AY, AState, AAccept);
+    FOnDragOver(Self, ASource, ATarget, XPos, YPos, AState, AAccept);
   end;
 end;
 
 procedure TELCustomDesigner.DragDrop(ASource, ATarget: TObject;
-  AX, AY: Integer);
+  XPos, YPos: Integer);
 begin
   if Assigned(FOnDragDrop) then
-    FOnDragDrop(Self, ASource, ATarget, AX, AY);
+    FOnDragDrop(Self, ASource, ATarget, XPos, YPos);
 end;
 
 end.

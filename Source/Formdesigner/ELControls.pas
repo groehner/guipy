@@ -15,7 +15,7 @@ unit ELControls;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes;
 
   { TELObjectList }
 
@@ -52,6 +52,9 @@ type
 
 implementation
 
+uses
+  SysUtils;
+
 { TELObjectList }
 
 function TELObjectList.Add: Integer;
@@ -73,11 +76,11 @@ begin
 end;
 
 procedure TELObjectList.Delete(AIndex: Integer);
-  var aObject: TObject;
+  var AObject: TObject;
 begin
   ValidateDeletion;
-  aObject:= TObject(FItems[AIndex]);
-  FreeAndNil(aObject);
+  AObject:= TObject(FItems[AIndex]);
+  FreeAndNil(AObject);
   FItems.Delete(AIndex);
   Deleted;
   if not FChangingCount then Change;
@@ -113,10 +116,10 @@ end;
 
 procedure TELObjectList.Remove(AItem: TObject);
 var
-  LI: Integer;
+  LIndex: Integer;
 begin
-  LI := FItems.IndexOf(AItem);
-  if LI <> -1 then Delete(LI);
+  LIndex := FItems.IndexOf(AItem);
+  if LIndex <> -1 then Delete(LIndex);
 end;
 
 procedure TELObjectList.SetCount(const Value: Integer);
