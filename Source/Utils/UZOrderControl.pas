@@ -1,149 +1,139 @@
 unit UZOrderControl;
 
 {
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-PURPOSE     Get and Set the Z order of VCL controls
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  PURPOSE     Get and Set the Z order of VCL controls
 
-AUTHOR      Scott Hollows
-            Web     www.ScottHollows.com
-            Email   scott.hollow@gmail.com
+  AUTHOR      Scott Hollows
+  Web     www.ScottHollows.com
+  Email   scott.hollow@gmail.com
 
-LEGAL
-            Placed in the public domain
-            Use at your own risk
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  LEGAL
+  Placed in the public domain
+  Use at your own risk
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 
 interface
 
-function zzGetControlZOrder (
-                  aControl   : TObject     // only Controls are processed, but you can throw anything you like at this
-                  ) : Integer;
-  // return the Z order of the control within its parent
-  // if not found or not applicable, return -1
-  // the order is zero based, so the first control is # 0
+function ZzGetControlZOrder(AControl: TObject
+  // only Controls are processed, but you can throw anything you like at this
+  ): Integer;
+// return the Z order of the control within its parent
+// if not found or not applicable, return -1
+// the order is zero based, so the first control is # 0
 
-function zzSetControlZOrder (
-                  aControl   : TObject;    // only Controls are processed, but you can throw anything you like at this
-                  aNewZorder : Integer     // ignore if this is -1
-                  ) : Boolean;
-  // set the Z order of the control
-  // if a control already exists at this Z Order, the aControl will be placed underneath it (pushing the other control up)
-  // the order is zero based, so the first control is # 0
-  //
-  // ignore all errors
-  // return TRUE if change was applied
-  // return FALSE if the Z order was not changed at all
+function ZzSetControlZOrder(AControl: TObject;
+  // only Controls are processed, but you can throw anything you like at this
+  ANewZorder: Integer // ignore if this is -1
+  ): Boolean;
+// set the Z order of the control
+// if a control already exists at this Z Order, the AControl will be placed underneath it (pushing the other control up)
+// the order is zero based, so the first control is # 0
+//
+// ignore all errors
+// return True if change was applied
+// return FALSE if the Z order was not changed at all
 
 implementation
 
 uses
-       System.Classes
-//    ,MainForm          // for testing
-      ,VCL.Controls;
+  Windows,
+  SysUtils,
+  System.Classes,
+  Vcl.Controls;
 
 // =============================================================================
 
-function zzGetControlZOrder (
-                  aControl   : TObject        // only Controls are processed, but throw anything you like at this
-                  ) : Integer;
-  // return the Z order of the control within its parent
-  // if not found or not applicable, return -1
-  // the order is zero based, so the first control is # 0
+function ZzGetControlZOrder(AControl: TObject
+  // only Controls are processed, but throw anything you like at this
+  ): Integer;
+// return the Z order of the control within its parent
+// if not found or not applicable, return -1
+// the order is zero based, so the first control is # 0
 var
-  i        : Integer;
-  vControl : TControl;
-  vList    : TList;
-  vParent  : TWinControl;
+  VControl: TControl;
+  VList: TList;
+  VParent: TWinControl;
 begin
-  result := -1;                                         // flag for not found or not relevent
-
+  Result := -1; // flag for not found or not relevent
   try
+    if (AControl is TControl) // some of these might not be needed
+      and ((AControl as TControl).Parent is TComponent) and
+      Assigned((AControl as TControl).Parent) // unlikely but may as well check
+    then
+    begin
+      VControl := AControl as TControl;
+      VParent := VControl.Parent;
+      VList := TList.Create;
+      // determine current position in z-order
+      for var I := 0 to VParent.ControlCount - 1 do // loop through all children
+        if VParent.Controls[I] = AControl then // found the control
+        begin
+          Result := I;
+          Break;
+        end;
 
-      if    (aControl  is TControl)                          // some of these might not be needed
-        and ((aControl as TControl).Parent is TComponent)
-        and ((aControl as TControl).Parent <> nil)           // unlikely but may as well check
-//      and ((aControl as TControl).Parent is TWinControl)   // not required as the parent must be a TWinControl if not nil
-      then
-          begin
-          vControl := aControl as TControl;
-          vParent  := vControl.Parent as TWinControl;
-
-          vList := TList.Create;
-                                                         // determine current position in z-order
-          for i := 0 to vParent.ControlCount - 1 do      // loop through all children
-              if  vParent.Controls[i] = aControl then    // found the control
-                  begin
-                  result := i;
-                  Break;
-                  end;
-
-          vList.Free;
-          end;
-  except          // ignore all errors
+      VList.Free;
+    end;
+  except
+    on E: Exception do
+      OutputDebugString(PChar('Exception: ' + E.ClassName + ' - ' + E.Message));
   end;
 end;
 
 // =============================================================================
 
-function zzSetControlZOrder (
-                  aControl   : TObject;    // only Controls are processed, but you can throw anything you like at this
-                  aNewZorder : Integer     // ignore if this is -1
-                  ) : Boolean;
-  // set the Z order of the control
-  // if a control already exists at this Z Order, the control will be placed underneath it (pushing the other control up)
-  // the order is zero based, so the first control is # 0
-  //
-  // ignore all errors
-  // return TRUE if change was applied
-  // return FALSE if not changed, probably because the Z Order can not be set
+function ZzSetControlZOrder(AControl: TObject;
+  // only Controls are processed, but you can throw anything you like at this
+  ANewZorder: Integer // ignore if this is -1
+  ): Boolean;
+// set the Z order of the control
+// if a control already exists at this Z Order, the control will be placed underneath it (pushing the other control up)
+// the order is zero based, so the first control is # 0
+//
+// ignore all errors
+// return True if change was applied
+// return FALSE if not changed, probably because the Z Order can not be set
 var
-  i           : Integer;
-  vControl    : TControl;
-  vZorderList : TList;         // list of controls to be raised
-  vParent     : TWinControl;   // form, panel, button etc
-  vCurrentZ   : Integer;
-  vFirstZ     : Integer;
+  VControl: TControl;
+  VZorderList: TList; // list of controls to be raised
+  VParent: TWinControl; // form, panel, button etc
+  VCurrentZ: Integer;
+  VFirstZ: Integer;
 begin
-  result := FALSE;
-
-  vCurrentZ := zzGetControlZOrder(aControl);
-
-  if    (aControl is TControl)
-    and (vCurrentZ <> -1)
-    and (vCurrentZ <> aNewZorder)
-    and (aNewZorder >= 0)
-    and ((aControl as TControl).Parent <> nil)           // unlikely but may as well check
-//  and ((aControl as TControl).Parent is TWinControl)   // not required as the parent must be a TWinControl if not nil
+  Result := False;
+  VCurrentZ := ZzGetControlZOrder(AControl);
+  if (AControl is TControl) and (VCurrentZ <> -1) and (VCurrentZ <> ANewZorder)
+    and (ANewZorder >= 0) and Assigned((AControl as TControl).Parent)
+  // unlikely but may as well check
   then
-        begin
-        vZorderList := TList.Create;
-        try
-              vControl := aControl as TControl;
-              vParent  := vControl.Parent as TWinControl;
-
-              if     aNewZOrder > vCurrentZ      // if moving higher in Z order
-                then vFirstZ := aNewZOrder + 1
-                else vFirstZ := aNewZOrder;
-                                                                 // populate list of controls that need to be raised to the top
-              vZorderList.Add (aControl);                        // source control
-              for i := vFirstZ to vParent.ControlCount - 1 do
-                  if  vParent.Controls[i] <> aControl then       // skip source control as already added
-                      vZorderList.Add (vParent.Controls[i]);     // other controls
-
-                                                    // loop through controls and bring each one to the front
-              for i := 0 to vZorderList.Count - 1 do
-                  TControl (vZorderList[i]).BringToFront;
-
-              if  vParent is TControl then
-                  (vParent as TControl).Repaint;
-
-              result := TRUE;
-
-        finally
-             vZorderList.Free;
-        end;
-        end;
+  begin
+    VZorderList := TList.Create;
+    try
+      VControl := AControl as TControl;
+      VParent := VControl.Parent;
+      if ANewZorder > VCurrentZ // if moving higher in Z order
+      then
+        VFirstZ := ANewZorder + 1
+      else
+        VFirstZ := ANewZorder;
+      // populate list of controls that need to be raised to the top
+      VZorderList.Add(AControl); // source control
+      for var I := VFirstZ to VParent.ControlCount - 1 do
+        if VParent.Controls[I] <> AControl then
+        // skip source control as already added
+          VZorderList.Add(VParent.Controls[I]); // other controls
+      // loop through controls and bring each one to the front
+      for var I := 0 to VZorderList.Count - 1 do
+        TControl(VZorderList[I]).BringToFront;
+      if VParent is TControl then
+        (VParent as TControl).Repaint;
+      Result := True;
+    finally
+      VZorderList.Free;
+    end;
+  end;
 end;
 
 // =============================================================================

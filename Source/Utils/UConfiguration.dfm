@@ -202,7 +202,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 641
         Height = 435
-        ActivePage = PSequencediagram
+        ActivePage = PSyntaxColors
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -508,7 +508,7 @@ object FConfiguration: TFConfiguration
                 ParentFont = False
               end
             end
-            object cbGutterColor: TSpTBXColorEdit
+            object CBGutterColor: TSpTBXColorEdit
               Left = 361
               Top = 112
               Width = 137
@@ -560,7 +560,7 @@ object FConfiguration: TFConfiguration
               Caption = 'Start at zero'
               TabOrder = 8
             end
-            object cbGutterFont: TCheckBox
+            object CBGutterFont: TCheckBox
               Left = 12
               Top = 162
               Width = 196
@@ -568,7 +568,7 @@ object FConfiguration: TFConfiguration
               Anchors = [akTop, akRight]
               Caption = 'Use Gutter Font'
               TabOrder = 4
-              OnClick = cbGutterFontClick
+              OnClick = CBGutterFontClick
             end
             object ckGutterGradient: TCheckBox
               Left = 12
@@ -723,7 +723,7 @@ object FConfiguration: TFConfiguration
             DesignSize = (
               271
               43)
-            object cbActiveLineColor: TSpTBXColorEdit
+            object CBActiveLineColor: TSpTBXColorEdit
               Left = 48
               Top = 16
               Width = 206
@@ -947,7 +947,7 @@ object FConfiguration: TFConfiguration
             Caption = 'Code folding for gui components'
             TabOrder = 19
           end
-          object cbDisplayFlowControl: TCheckBox
+          object CBDisplayFlowControl: TCheckBox
             Left = 354
             Top = 16
             Width = 200
@@ -955,7 +955,7 @@ object FConfiguration: TFConfiguration
             Caption = 'Program flow control symbols'
             TabOrder = 20
           end
-          object cbDisplayFlowControlColor: TColorBox
+          object CBDisplayFlowControlColor: TColorBox
             Left = 560
             Top = 16
             Width = 86
@@ -971,7 +971,7 @@ object FConfiguration: TFConfiguration
             Caption = 'Indentation lines'
             TabOrder = 22
           end
-          object cbAccessibilitySupport: TCheckBox
+          object CBAccessibilitySupport: TCheckBox
             Left = 354
             Top = 88
             Width = 215
@@ -1744,7 +1744,7 @@ object FConfiguration: TFConfiguration
             Height = 15
             Caption = 'Editor Syntax Language'
           end
-          object cbHighlighters: TComboBox
+          object CBHighlighters: TComboBox
             Left = 8
             Top = 23
             Width = 136
@@ -1752,7 +1752,7 @@ object FConfiguration: TFConfiguration
             Style = csDropDownList
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 0
-            OnChange = cbHighlightersChange
+            OnChange = CBHighlightersChange
           end
           object GroupBox1: TGroupBox
             Left = 8
@@ -1807,7 +1807,7 @@ object FConfiguration: TFConfiguration
               OnClick = cbxElementBoldClick
             end
           end
-          object cbElementBackground: TSpTBXColorEdit
+          object CBElementBackground: TSpTBXColorEdit
             Left = 8
             Top = 261
             Width = 191
@@ -1815,9 +1815,9 @@ object FConfiguration: TFConfiguration
             TabOrder = 2
             SelectedColor = clBlack
             SelectedFormat = cttHTML
-            OnSelectedColorChanged = cbElementBackgroundSelectedColorChanged
+            OnSelectedColorChanged = CBElementBackgroundSelectedColorChanged
           end
-          object cbElementForeground: TSpTBXColorEdit
+          object CBElementForeground: TSpTBXColorEdit
             Left = 8
             Top = 205
             Width = 191
@@ -1825,7 +1825,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 3
             SelectedColor = clBlack
             SelectedFormat = cttHTML
-            OnSelectedColorChanged = cbElementForegroundSelectedColorChanged
+            OnSelectedColorChanged = CBElementForegroundSelectedColorChanged
           end
           object SynSyntaxSample: TSynEdit
             Left = 217
@@ -5685,7 +5685,7 @@ object FConfiguration: TFConfiguration
             Caption = '.py'
             TabOrder = 0
           end
-          object CBAssociationJfm: TCheckBox
+          object CBAssociationPfm: TCheckBox
             Left = 150
             Top = 40
             Width = 60
@@ -5701,7 +5701,7 @@ object FConfiguration: TFConfiguration
             Caption = '.html'
             TabOrder = 2
           end
-          object CBAssociationUml: TCheckBox
+          object CBAssociationPuml: TCheckBox
             Left = 204
             Top = 39
             Width = 60
@@ -5783,7 +5783,7 @@ object FConfiguration: TFConfiguration
             TabOrder = 12
             OnClick = BJEAssociationClick
           end
-          object CBAssociationJsg: TCheckBox
+          object CBAssociationPsg: TCheckBox
             Left = 330
             Top = 40
             Width = 60
@@ -5791,7 +5791,7 @@ object FConfiguration: TFConfiguration
             Caption = '.psg'
             TabOrder = 13
           end
-          object CBAssociationJSD: TCheckBox
+          object CBAssociationPsd: TCheckBox
             Left = 270
             Top = 40
             Width = 55
@@ -5799,7 +5799,7 @@ object FConfiguration: TFConfiguration
             Caption = '.psd'
             TabOrder = 14
           end
-          object CheckBox1: TCheckBox
+          object CBAssociationPyw: TCheckBox
             Left = 90
             Top = 40
             Width = 54

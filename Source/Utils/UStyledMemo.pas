@@ -5,7 +5,9 @@ unit UStyledMemo;
 interface
 
 uses
-  Messages, Controls, StdCtrls;
+  Messages,
+  Controls,
+  StdCtrls;
 
 type
 
@@ -26,7 +28,10 @@ type
 implementation
 
 uses
-  Windows, Themes, Graphics, UITypes;
+  Windows,
+  Themes,
+  Graphics,
+  UITypes;
 
 {--- TMemoStyleHook -----------------------------------------------------------}
 {--- https://theroadtodelphi.com/2012/02/06/changing-the-color-of-edit-controls-with-vcl-styles-enabled/ }
@@ -40,7 +45,6 @@ uses
 constructor TMemoStyleHookColor.Create(AControl: TWinControl);
 begin
   inherited;
-  //call the UpdateColors method to use the custom colors
   UpdateColors;
 end;
 
@@ -76,17 +80,11 @@ begin
         //get the colors
         UpdateColors;
         Handled:= False;
-      end
+      end;
   else
     inherited WndProc(Message);
   end;
 end;
-
-initialization
-//  TStyleManager.Engine.RegisterStyleHook(TStyledMemo, TMemoStyleHookColor);
-
-//finalization
-//  TStyleManager.Engine.UnRegisterStyleHook(TStyledMemo, TMemoStyleHookColor);
 
 end.
 

@@ -28,21 +28,55 @@ http://dxgettext.po.dk/documentation/how-to
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Dialogs,
-  StdCtrls, Buttons, ComCtrls, ExtCtrls, Generics.Collections,
-  UITypes, SynEditHighlighter, SynEditPrintHeaderFooter, SynEditPrint,
-  VirtualTrees, System.Actions, VCL.Styles.PyScripter, Vcl.BaseImageCollection,
-  SVGIconImageCollection, Vcl.ActnList, System.ImageList, Vcl.ImgList,
-  Vcl.VirtualImageList, TB2Item, SpTBXItem, TB2Dock, TB2Toolbar, SpTBXEditors,
-  SynEdit, Vcl.WinXPanels, SpTBXExtEditors,
-  cPyScripterSettings, dlgSynEditOptions, dlgCustomShortcuts, SynEditKeyCmds,
-  SynEditMiscClasses, SynEditPrintMargins, cFileTemplates, dlgPyIDEBase,
-  VirtualTrees.Types, VirtualTrees.BaseAncestorVCL, VirtualTrees.BaseTree,
-  VirtualTrees.AncestorVCL, uLLMSupport;
+  Windows,
+  Messages,
+  SysUtils,
+  Classes,
+  Graphics,
+  Controls,
+  Dialogs,
+  StdCtrls,
+  Buttons,
+  ComCtrls,
+  ExtCtrls,
+  UITypes,
+  System.Actions,
+  System.ImageList,
+  VCL.Styles.PyScripter,
+  Vcl.BaseImageCollection,
+  Vcl.ActnList,
+  Vcl.ImgList,
+  Vcl.VirtualImageList,
+  Vcl.WinXPanels,
+  Generics.Collections,
+  VirtualTrees,
+  VirtualTrees.Types,
+  VirtualTrees.BaseAncestorVCL,
+  VirtualTrees.BaseTree,
+  VirtualTrees.AncestorVCL,
+  SVGIconImageCollection,
+  TB2Item,
+  TB2Dock,
+  TB2Toolbar,
+  SpTBXItem,
+  SpTBXEditors,
+  SpTBXExtEditors,
+  dlgSynEditOptions,
+  dlgCustomShortcuts,
+  dlgPyIDEBase,
+  SynEdit,
+  SynEditHighlighter,
+  SynEditPrintHeaderFooter,
+  SynEditPrint,
+  SynEditKeyCmds,
+  SynEditMiscClasses,
+  SynEditPrintMargins,
+  cFileTemplates,
+  uLLMSupport;
 
 const
   CrLf = #13#10;
-  Homepage = 'https://www.guipy.de';
+  Homepage = 'https://www.guipy.Deu';
   VisTabsLen = 5; // Program, Tkinter, TTK, QtBase, QtControls
   VisMenusLen = 9; // all menus
   VisToolbarsLen = 6; // Main, Debug, Editor, UML, Structogram, Sequencediagram
@@ -66,158 +100,158 @@ type
   TGuiPyOptions = class(TInterfacedPersistent)
   private
     // Color themes
-    fColorTheme: string;
+    FColorTheme: string;
 
     // Class modeler
-    fShowGetSetMethods: Boolean;
-    fGetSetMethodsAsProperty: Boolean;
-    fGetMethodChecked: Boolean;
-    fSetMethodChecked: Boolean;
-    fShowTypeSelection: Boolean;
-    fShowWithWithoutReturnValue: Boolean;
-    fShowParameterTypeSelection: Boolean;
-    fFromFutureImport: Boolean;
+    FShowGetSetMethods: Boolean;
+    FGetSetMethodsAsProperty: Boolean;
+    FGetMethodChecked: Boolean;
+    FSetMethodChecked: Boolean;
+    FShowTypeSelection: Boolean;
+    FShowWithWithoutReturnValue: Boolean;
+    FShowParameterTypeSelection: Boolean;
+    FFromFutureImport: Boolean;
 
     // GUI designer
-    fNameFromText: Boolean;
-    fGuiDesignerHints: Boolean;
-    fSnapToGrid: Boolean;
-    fGridSize: Integer;
-    fZoomSteps: Integer;
-    fGUIFontSize: Integer;
-    fGUIFontName: string;
-    fFrameWidth: Integer;
-    fFrameHeight: Integer;
+    FNameFromText: Boolean;
+    FGuiDesignerHints: Boolean;
+    FSnapToGrid: Boolean;
+    FGridSize: Integer;
+    FZoomSteps: Integer;
+    FGUIFontSize: Integer;
+    FGUIFontName: string;
+    FFrameWidth: Integer;
+    FFrameHeight: Integer;
 
     // Structogram
-    fStructoDatatype: string;
-    fSwitchWithCaseLine: Boolean;
-    fCaseCount: Integer;
-    fStructogramShadowWidth: Integer;
-    fStructogramShadowIntensity: Integer;
+    FStructoDatatype: string;
+    FSwitchWithCaseLine: Boolean;
+    FCaseCount: Integer;
+    FStructogramShadowWidth: Integer;
+    FStructogramShadowIntensity: Integer;
 
     // Sequencediagram
-    fSDFillingcolor: TColor;
-    fSDNoFilling: Boolean;
-    fSDShowMainCall: Boolean;
-    fSDShowParameter: Boolean;
-    fSDShowReturn: Boolean;
+    FSDFillingColor: TColor;
+    FSDNoFilling: Boolean;
+    FSDShowMainCall: Boolean;
+    FSDShowParameter: Boolean;
+    FSDShowReturn: Boolean;
 
     // UML design
-    fValidClassColor: TColor;
-    fInvalidClassColor: TColor;
-    fClassHead: Integer;
-    fShadowWidth: Integer;
-    fShadowIntensity: Integer;
-    fObjectColor: TColor;
-    fObjectHead: Integer;
-    fObjectFooter: Integer;
-    fObjectCaption: Integer;
-    fObjectUnderline: Boolean;
-    fCommentColor: TColor;
-    fDiVisibilityFilter: Integer;
-    fDiSortOrder: Integer;
-    fDIShowParameter: Integer;
-    fDiShowIcons: Integer;
+    FValidClassColor: TColor;
+    FInvalidClassColor: TColor;
+    FClassHead: Integer;
+    FShadowWidth: Integer;
+    FShadowIntensity: Integer;
+    FObjectColor: TColor;
+    FObjectHead: Integer;
+    FObjectFooter: Integer;
+    FObjectCaption: Integer;
+    FObjectUnderline: Boolean;
+    FCommentColor: TColor;
+    FDiVisibilityFilter: Integer;
+    FDiSortOrder: Integer;
+    FDiShowParameter: Integer;
+    FDiShowIcons: Integer;
 
     // UML options
-    fShowEmptyRects: Boolean;
-    fIntegerInsteadofInt: Boolean;
-    fConstructorWithVisibility: Boolean;
-    fRelationshipAttributesBold: Boolean;
-    fShowClassparameterSeparately: Boolean;
-    fRoleHidesAttribute: Boolean;
-    fClassnameInUppercase: Boolean;
-    fDefaultModifiers: Boolean;
-    fShowPublicOnly: Boolean;
-    fShowObjectsWithInheritedPrivateAttributes: Boolean;
-    fShowObjectsWithMethods: Boolean;
-    fObjectLowerCaseLetter: Boolean;
-    fShowAllNewObjects: Boolean;
-    fObjectsWithoutVisibility: Boolean;
-    fPrivateAttributEditable: Boolean;
-    fOpenFolderFormItems: string;
+    FShowEmptyRects: Boolean;
+    FIntegerInsteadofInt: Boolean;
+    FConstructorWithVisibility: Boolean;
+    FRelationshipAttributesBold: Boolean;
+    FShowClassparameterSeparately: Boolean;
+    FRoleHidesAttribute: Boolean;
+    FClassnameInUppercase: Boolean;
+    FDefaultModifiers: Boolean;
+    FShowPublicOnly: Boolean;
+    FShowObjectsWithInheritedPrivateAttributes: Boolean;
+    FShowObjectsWithMethods: Boolean;
+    FObjectLowerCaseLetter: Boolean;
+    FShowAllNewObjects: Boolean;
+    FObjectsWithoutVisibility: Boolean;
+    FPrivateAttributEditable: Boolean;
+    FOpenFolderFormItems: string;
 
     // Restrictions
-    fLockedDOSWindow: Boolean;
-    fLockedInternet: Boolean;
-    fLockedPaths: Boolean;
-    fLockedStructogram: Boolean;
-    fUsePredefinedLayouts: Boolean;
+    FLockedDOSWindow: Boolean;
+    FLockedInternet: Boolean;
+    FLockedPaths: Boolean;
+    FLockedStructogram: Boolean;
+    FUsePredefinedLayouts: Boolean;
 
     // Associations
-    fAdditionalAssociations: string;
+    FAdditionalAssociations: string;
 
     // LLM assistant & chat
-    fProviders: TLLMProvidersClass;
-    fChatProviders: TLLMProvidersClass;
+    FProviders: TLLMProvidersClass;
+    FChatProviders: TLLMProvidersClass;
 
     // Visibility
-    fVisProgram: string;
-    fVisTkinter: string;
-    fVisTTK: string;
-    fVisQTBase: string;
-    fVisQTControls: string;
-    fVisTabs: string;
-    fVisMenus: string;
-    fVisToolbars: string;
-    fVisFileMenu: string;
-    fVisEditMenu: string;
-    fVisSearchMenu: string;
-    fVisViewMenu: string;
-    fVisProjectMenu: string;
-    fVisRunMenu: string;
-    fVisUMLMenu: string;
-    fVisToolsMenu: string;
-    fVisHelpMenu: string;
-    fVisMainToolbar: string;
-    fVisDebugToolbar: string;
-    fVisEditToolbar: string;
-    fVisUMLToolbar: string;
-    fVisStructoToolbar: string;
+    FVisProgram: string;
+    FVisTkinter: string;
+    FVisTTK: string;
+    FVisQtBase: string;
+    FVisQtControls: string;
+    FVisTabs: string;
+    FVisMenus: string;
+    FVisToolbars: string;
+    FVisFileMenu: string;
+    FVisEditMenu: string;
+    FVisSearchMenu: string;
+    FVisViewMenu: string;
+    FVisProjectMenu: string;
+    FVisRunMenu: string;
+    FVisUMLMenu: string;
+    FVisToolsMenu: string;
+    FVisHelpMenu: string;
+    FVisMainToolbar: string;
+    FVisDebugToolbar: string;
+    FVisEditToolbar: string;
+    FVisUMLToolbar: string;
+    FVisStructoToolbar: string;
     FVisSequenceToolbar: string;
 
     // Git
-    fGitFolder: string;
-    fGitLocalRepository: string;
-    fGitRemoteRepository: string;
-    fGitUserName: string;
-    fGitUserEMail: string;
+    FGitFolder: string;
+    FGitLocalRepository: string;
+    FGitRemoteRepository: string;
+    FGitUserName: string;
+    FGitUserEMail: string;
 
     // Subversion
-    fSVNFolder: string;
-    fSVNRepository: string;
+    FSVNFolder: string;
+    FSVNRepository: string;
 
     // TextDiff
-    fTextDiffState: string;
-    fTextDiffIgnoreCase: Boolean;
-    fTextDiffIgnoreBlanks: Boolean;
+    FTextDiffState: string;
+    FTextDiffIgnoreCase: Boolean;
+    FTextDiffIgnoreBlanks: Boolean;
 
     // Browser
-    fBrowserURLs: string;
-    fCBWidth: Integer;
-    fUseIEinternForDocuments: Boolean;
-    fOnlyOneBrowserWindow: Boolean;
-    fBrowserTitle: string;
-    fOpenBrowserShortcut: string;
-    fBrowserProgram: string;
+    FBrowserURLs: string;
+    FCBWidth: Integer;
+    FUseIEinternForDocuments: Boolean;
+    FOnlyOneBrowserWindow: Boolean;
+    FBrowserTitle: string;
+    FOpenBrowserShortcut: string;
+    FBrowserProgram: string;
 
     // comment
-    fLicence: string;
-    fAuthor: string;
+    FLicence: string;
+    FAuthor: string;
 
     // others
-    fSourcepath: string;
-    fTempDir: string;
+    FSourcepath: string;
+    FTempDir: string;
 
     // Fonts
-    fUMLFont: TFont;
-    fStructogramFont: TFont;
-    fSequenceFont: TFont;
+    FUMLFont: TFont;
+    FStructogramFont: TFont;
+    FSequenceFont: TFont;
 
-    procedure setUMLFont(Value: TFont);
-    procedure setStructogramFont(Value: TFont);
-    procedure setSequenceFont(Value: TFont);
+    procedure SetUMLFont(Value: TFont);
+    procedure SetStructogramFont(Value: TFont);
+    procedure SetSequenceFont(Value: TFont);
   public
     constructor Create;
     destructor Destroy; override;
@@ -225,7 +259,7 @@ type
     procedure AddPortableDrives;
   published
     // Color themes
-    property ColorTheme: string read fColorTheme write fColorTheme;
+    property ColorTheme: string read FColorTheme write FColorTheme;
 
     // Class modeler
     property ShowGetSetMethods: Boolean read FShowGetSetMethods
@@ -246,249 +280,251 @@ type
       write FFromFutureImport;
 
     // GUI designer
-    property NameFromText : Boolean read fNameFromText
+    property NameFromText : Boolean read FNameFromText
       write FNameFromText;
-    property GuiDesignerHints : Boolean read fGuiDesignerHints
-      write fGuiDesignerHints;
-    property SnapToGrid : Boolean read fSnapToGrid
-      write fSnapToGrid;
-    property GridSize : Integer read fGridSize
-      write fGridSize;
-    property ZoomSteps : Integer read fZoomSteps
-      write fZoomSteps;
-    property GuiFontSize : Integer read fGUIFontSize
-      write fGUIFontSize;
-    property GuiFontName : string read fGUIFontName
-      write fGUIFontName;
-    property FrameWidth : Integer read fFrameWidth
-      write fFrameWidth;
-    property FrameHeight : Integer read fFrameHeight
-      write fFrameHeight;
+    property GuiDesignerHints : Boolean read FGuiDesignerHints
+      write FGuiDesignerHints;
+    property SnapToGrid : Boolean read FSnapToGrid
+      write FSnapToGrid;
+    property GridSize : Integer read FGridSize
+      write FGridSize;
+    property ZoomSteps : Integer read FZoomSteps
+      write FZoomSteps;
+    property GuiFontSize : Integer read FGUIFontSize
+      write FGUIFontSize;
+    property GuiFontName : string read FGUIFontName
+      write FGUIFontName;
+    property FrameWidth : Integer read FFrameWidth
+      write FFrameWidth;
+    property FrameHeight : Integer read FFrameHeight
+      write FFrameHeight;
 
     // structogram
-    property StructoDatatype : string read fStructoDatatype
-      write fStructoDatatype;
-    property SwitchWithCaseLine : Boolean read fSwitchWithCaseLine
-      write fSwitchWithCaseLine;
-    property CaseCount : Integer read fCaseCount write fCaseCount;
-    property StructogramShadowWidth : Integer read fStructogramShadowWidth
-      write fStructogramShadowWidth;
-    property StructogramShadowIntensity : Integer read fStructogramShadowIntensity
-      write fStructogramShadowIntensity;
+    property StructoDatatype : string read FStructoDatatype
+      write FStructoDatatype;
+    property SwitchWithCaseLine : Boolean read FSwitchWithCaseLine
+      write FSwitchWithCaseLine;
+    property CaseCount : Integer read FCaseCount write FCaseCount;
+    property StructogramShadowWidth : Integer read FStructogramShadowWidth
+      write FStructogramShadowWidth;
+    property StructogramShadowIntensity : Integer read FStructogramShadowIntensity
+      write FStructogramShadowIntensity;
 
     // sequence diagram
-    property SDFillingColor : TColor read fSDFillingcolor
-      write fSDFillingColor;
-    property SDNoFilling : Boolean read fSDNoFilling
-      write fSDNoFilling;
-    property SDShowMainCall : Boolean read fSDShowMainCall
-      write fSDShowMainCall;
-    property SDShowParameter : Boolean read fSDShowParameter
-      write fSDShowParameter;
-    property SDShowReturn : Boolean read fSDShowReturn
-      write fSDShowReturn;
+    property SDFillingColor : TColor read FSDFillingColor
+      write FSDFillingColor;
+    property SDNoFilling : Boolean read FSDNoFilling
+      write FSDNoFilling;
+    property SDShowMainCall : Boolean read FSDShowMainCall
+      write FSDShowMainCall;
+    property SDShowParameter : Boolean read FSDShowParameter
+      write FSDShowParameter;
+    property SDShowReturn : Boolean read FSDShowReturn
+      write FSDShowReturn;
 
     // UML design
-    property ValidClassColor : TColor read fValidClassColor
-      write fValidClassColor;
-    property InvalidClassColor : TColor read fInvalidClassColor
-      write fInvalidClassColor;
-    property ClassHead : Integer read fClassHead
-      write fClassHead;
-    property ShadowWidth : Integer read fShadowWidth
-      write fShadowWidth;
-    property ShadowIntensity : Integer read fShadowIntensity
-      write fShadowIntensity;
-    property ObjectColor : TColor read fObjectColor
-      write fObjectColor;
-    property ObjectHead : Integer read fObjectHead
-      write fObjectHead;
-    property ObjectFooter : Integer read fObjectFooter
-      write fObjectFooter;
-    property ObjectCaption : Integer read fObjectCaption
-      write fObjectCaption;
-    property ObjectUnderline : Boolean read fObjectUnderline
-      write fObjectUnderline;
-    property CommentColor : TColor read fCommentColor
-      write fCommentColor;
-    property DiVisibilityFilter : Integer read fDiVisibilityFilter
-      write fDiVisibilityFilter;
-    property DiSortOrder : Integer read fDiSortOrder
-      write fDiSortOrder;
-    property DiShowParameter : Integer read fDiShowParameter
-      write fDiShowParameter;
-    property DiShowIcons : Integer read fDiShowIcons
-      write fDiShowIcons;
+    property ValidClassColor : TColor read FValidClassColor
+      write FValidClassColor;
+    property InvalidClassColor : TColor read FInvalidClassColor
+      write FInvalidClassColor;
+    property ClassHead : Integer read FClassHead
+      write FClassHead;
+    property ShadowWidth : Integer read FShadowWidth
+      write FShadowWidth;
+    property ShadowIntensity : Integer read FShadowIntensity
+      write FShadowIntensity;
+    property ObjectColor : TColor read FObjectColor
+      write FObjectColor;
+    property ObjectHead : Integer read FObjectHead
+      write FObjectHead;
+    property ObjectFooter : Integer read FObjectFooter
+      write FObjectFooter;
+    property ObjectCaption : Integer read FObjectCaption
+      write FObjectCaption;
+    property ObjectUnderline : Boolean read FObjectUnderline
+      write FObjectUnderline;
+    property CommentColor : TColor read FCommentColor
+      write FCommentColor;
+    property DiVisibilityFilter : Integer read FDiVisibilityFilter
+      write FDiVisibilityFilter;
+    property DiSortOrder : Integer read FDiSortOrder
+      write FDiSortOrder;
+    property DiShowParameter : Integer read FDiShowParameter
+      write FDiShowParameter;
+    property DiShowIcons : Integer read FDiShowIcons
+      write FDiShowIcons;
 
     // UML options
-    property ShowEmptyRects : Boolean read fShowEmptyRects
-      write fShowEmptyRects;
-    property IntegerInsteadofInt : Boolean read fIntegerInsteadofInt
-      write fIntegerInsteadofInt;
-    property ConstructorWithVisibility : Boolean read fConstructorWithVisibility
-      write fConstructorWithVisibility;
-    property RelationshipAttributesBold : Boolean read fRelationshipAttributesBold
-      write fRelationshipAttributesBold;
-    property ShowClassparameterSeparately : Boolean read fShowClassparameterSeparately
-      write fShowClassparameterSeparately ;
-    property RoleHidesAttribute : Boolean read fRoleHidesAttribute
-      write fRoleHidesAttribute;
-    property ClassnameInUppercase : Boolean read fClassnameInUppercase
-      write fClassnameInUppercase;
-    property DefaultModifiers : Boolean read fDefaultModifiers
-      write fDefaultModifiers;
-    property ShowPublicOnly : Boolean read fShowPublicOnly
-      write fShowPublicOnly;
-    property ShowObjectsWithInheritedPrivateAttributes : Boolean read fShowObjectsWithInheritedPrivateAttributes
-      write fShowObjectsWithInheritedPrivateAttributes;
-    property ShowObjectsWithMethods : Boolean read fShowObjectsWithMethods
-      write fShowObjectsWithMethods;
-    property ObjectLowerCaseLetter : Boolean read fObjectLowerCaseLetter
-      write fObjectLowerCaseLetter;
-    property ShowAllNewObjects : Boolean read fShowAllNewObjects
-      write fShowAllNewObjects;
-    property ObjectsWithoutVisibility : Boolean read fObjectsWithoutVisibility
-      write fObjectsWithoutVisibility;
-    property PrivateAttributEditable : Boolean read fPrivateAttributEditable
-      write fPrivateAttributEditable;
-    property OpenFolderFormItems: string read fOpenFolderFormItems
-      write fOpenFolderFormItems;
+    property ShowEmptyRects : Boolean read FShowEmptyRects
+      write FShowEmptyRects;
+    property IntegerInsteadofInt : Boolean read FIntegerInsteadofInt
+      write FIntegerInsteadofInt;
+    property ConstructorWithVisibility : Boolean read FConstructorWithVisibility
+      write FConstructorWithVisibility;
+    property RelationshipAttributesBold : Boolean read FRelationshipAttributesBold
+      write FRelationshipAttributesBold;
+    property ShowClassparameterSeparately : Boolean read FShowClassparameterSeparately
+      write FShowClassparameterSeparately ;
+    property RoleHidesAttribute : Boolean read FRoleHidesAttribute
+      write FRoleHidesAttribute;
+    property ClassnameInUppercase : Boolean read FClassnameInUppercase
+      write FClassnameInUppercase;
+    property DefaultModifiers : Boolean read FDefaultModifiers
+      write FDefaultModifiers;
+    property ShowPublicOnly : Boolean read FShowPublicOnly
+      write FShowPublicOnly;
+    property ShowObjectsWithInheritedPrivateAttributes : Boolean read FShowObjectsWithInheritedPrivateAttributes
+      write FShowObjectsWithInheritedPrivateAttributes;
+    property ShowObjectsWithMethods : Boolean read FShowObjectsWithMethods
+      write FShowObjectsWithMethods;
+    property ObjectLowerCaseLetter : Boolean read FObjectLowerCaseLetter
+      write FObjectLowerCaseLetter;
+    property ShowAllNewObjects : Boolean read FShowAllNewObjects
+      write FShowAllNewObjects;
+    property ObjectsWithoutVisibility : Boolean read FObjectsWithoutVisibility
+      write FObjectsWithoutVisibility;
+    property PrivateAttributEditable : Boolean read FPrivateAttributEditable
+      write FPrivateAttributEditable;
+    property OpenFolderFormItems: string read FOpenFolderFormItems
+      write FOpenFolderFormItems;
 
     // restrictions
-    property LockedDOSWindow : Boolean read fLockedDOSWindow
-      write fLockedDOSWindow;
-    property LockedInternet : Boolean read fLockedInternet
-      write fLockedInternet;
-    property LockedPaths : Boolean read fLockedPaths
-      write fLockedPaths;
-    property LockedStructogram : Boolean read fLockedStructogram
-      write fLockedStructogram;
+    property LockedDOSWindow : Boolean read FLockedDOSWindow
+      write FLockedDOSWindow;
+    property LockedInternet : Boolean read FLockedInternet
+      write FLockedInternet;
+    property LockedPaths : Boolean read FLockedPaths
+      write FLockedPaths;
+    property LockedStructogram : Boolean read FLockedStructogram
+      write FLockedStructogram;
     property UsePredefinedLayouts : Boolean read FUsePredefinedLayouts
-      write fUsePredefinedLayouts;
+      write FUsePredefinedLayouts;
 
     // Associations
-    property AdditionalAssociations: string read fAdditionalAssociations
-      write fAdditionalAssociations;
+    property AdditionalAssociations: string read FAdditionalAssociations
+      write FAdditionalAssociations;
 
     // Providers
-    property Providers: TLLMProvidersClass read fProviders
-      write fProviders;
-    property ChatProviders: TLLMProvidersClass read fChatProviders
-      write fChatProviders;
+    property Providers: TLLMProvidersClass read FProviders
+      write FProviders;
+    property ChatProviders: TLLMProvidersClass read FChatProviders
+      write FChatProviders;
 
     // Visibility
-    property VisTabs: string read fVisTabs write fVisTabs;
-    property VisMenus: string read fVisMenus write fVisMenus;
-    property VisToolbars: string read fVisToolbars write fVisToolbars;
+    property VisTabs: string read FVisTabs write FVisTabs;
+    property VisMenus: string read FVisMenus write FVisMenus;
+    property VisToolbars: string read FVisToolbars write FVisToolbars;
 
-    property VisProgram: string read fVisProgram write fVisProgram;
-    property VisTkinter: string read fVisTkinter write fVisTkinter;
-    property VisTTK: string read fVisTTK write fVisTTK;
-    property VisQtBase: string read fVisQtBase write fVisQtBase;
-    property VisQtControls: string read fVisQtControls write fVisQtControls;
+    property VisProgram: string read FVisProgram write FVisProgram;
+    property VisTkinter: string read FVisTkinter write FVisTkinter;
+    property VisTTK: string read FVisTTK write FVisTTK;
+    property VisQtBase: string read FVisQtBase write FVisQtBase;
+    property VisQtControls: string read FVisQtControls write FVisQtControls;
 
-    property VisFileMenu: string read fVisFileMenu write fVisFileMenu;
-    property VisEditMenu: string read fVisEditMenu write fVisEditMenu;
-    property VisSearchMenu: string read fVisSearchMenu write fVisSearchMenu;
-    property VisViewMenu: string read fVisViewMenu write fVisViewMenu;
-    property VisProjectMenu: string read fVisProjectMenu write fVisProjectMenu;
-    property VisRunMenu: string read fVisRunMenu write fVisRunMenu;
-    property VisUMLMenu: string read fVisUMLMenu write fVisUMLMenu;
-    property VisToolsMenu: string read fVisToolsMenu write fVisToolsMenu;
-    property VisHelpMenu: string read fVisHelpMenu write fVisHelpMenu;
+    property VisFileMenu: string read FVisFileMenu write FVisFileMenu;
+    property VisEditMenu: string read FVisEditMenu write FVisEditMenu;
+    property VisSearchMenu: string read FVisSearchMenu write FVisSearchMenu;
+    property VisViewMenu: string read FVisViewMenu write FVisViewMenu;
+    property VisProjectMenu: string read FVisProjectMenu write FVisProjectMenu;
+    property VisRunMenu: string read FVisRunMenu write FVisRunMenu;
+    property VisUMLMenu: string read FVisUMLMenu write FVisUMLMenu;
+    property VisToolsMenu: string read FVisToolsMenu write FVisToolsMenu;
+    property VisHelpMenu: string read FVisHelpMenu write FVisHelpMenu;
 
-    property VisMainToolbar: string read fVisMainToolbar write fVisMainToolbar;
-    property VisDebugToolbar: string read fVisDebugToolbar write fVisDebugToolbar;
-    property VisEditToolbar: string read fVisEditToolbar write fVisEditToolbar;
-    property VisUMLToolbar: string read fVisUMLToolbar write fVisUMLToolbar;
-    property VisStructoToolbar: string read fVisStructoToolbar write fVisStructoToolbar;
-    property VisSequenceToolbar: string read fVisSequenceToolbar write fVisSequenceToolbar;
+    property VisMainToolbar: string read FVisMainToolbar write FVisMainToolbar;
+    property VisDebugToolbar: string read FVisDebugToolbar write FVisDebugToolbar;
+    property VisEditToolbar: string read FVisEditToolbar write FVisEditToolbar;
+    property VisUMLToolbar: string read FVisUMLToolbar write FVisUMLToolbar;
+    property VisStructoToolbar: string read FVisStructoToolbar write FVisStructoToolbar;
+    property VisSequenceToolbar: string read FVisSequenceToolbar write FVisSequenceToolbar;
 
     // Git
-    property GitFolder: string read fGitFolder
-      write fGitFolder;
-    property GitLocalRepository: string read fGitLocalRepository
-      write fGitLocalRepository;
-    property GitRemoteRepository: string read fGitRemoteRepository
-      write fGitRemoteRepository;
-    property GitUserName: string read fGitUserName
-      write fGitUserName;
-    property GitUserEMail: string read fGitUserEMail
-      write fGitUserEMail;
+    property GitFolder: string read FGitFolder
+      write FGitFolder;
+    property GitLocalRepository: string read FGitLocalRepository
+      write FGitLocalRepository;
+    property GitRemoteRepository: string read FGitRemoteRepository
+      write FGitRemoteRepository;
+    property GitUserName: string read FGitUserName
+      write FGitUserName;
+    property GitUserEMail: string read FGitUserEMail
+      write FGitUserEMail;
 
     // Subversion
-    property SVNFolder: string read fSVNFolder write fSVNFolder;
-    property SVNRepository: string read fSVNRepository write fSVNRepository;
+    property SVNFolder: string read FSVNFolder write FSVNFolder;
+    property SVNRepository: string read FSVNRepository write FSVNRepository;
 
     // TextDiff
-    property TextDiffState: string read fTextDiffState
-      write fTextDiffState;
-    property TextDiffIgnoreCase: Boolean read fTextDiffIgnoreCase
-      write fTextDiffIgnoreCase;
-    property TextDiffIgnoreBlanks: Boolean read fTextDiffIgnoreBlanks
-      write fTextDiffIgnoreBlanks;
+    property TextDiffState: string read FTextDiffState
+      write FTextDiffState;
+    property TextDiffIgnoreCase: Boolean read FTextDiffIgnoreCase
+      write FTextDiffIgnoreCase;
+    property TextDiffIgnoreBlanks: Boolean read FTextDiffIgnoreBlanks
+      write FTextDiffIgnoreBlanks;
 
     // Browser
-    property UseIEinternForDocuments: Boolean read fUseIEinternForDocuments
-      write fUseIEinternForDocuments;
-    property OnlyOneBrowserWindow: Boolean read fOnlyOneBrowserWindow
-      write fOnlyOneBrowserWindow;
-    property BrowserTitle: string read fBrowserTitle
-      write fBrowserTitle;
-    property OpenBrowserShortcut: string read fOpenBrowserShortcut
-      write fOpenBrowserShortcut;
-    property BrowserProgram: string read fBrowserProgram
-      write fBrowserProgram;
+    property UseIEinternForDocuments: Boolean read FUseIEinternForDocuments
+      write FUseIEinternForDocuments;
+    property OnlyOneBrowserWindow: Boolean read FOnlyOneBrowserWindow
+      write FOnlyOneBrowserWindow;
+    property BrowserTitle: string read FBrowserTitle
+      write FBrowserTitle;
+    property OpenBrowserShortcut: string read FOpenBrowserShortcut
+      write FOpenBrowserShortcut;
+    property BrowserProgram: string read FBrowserProgram
+      write FBrowserProgram;
 
     // Comment
-    property Author: string read fAuthor
-      write fAuthor;
-    property Licence: string read fLicence
-      write fLicence;
+    property Author: string read FAuthor
+      write FAuthor;
+    property Licence: string read FLicence
+      write FLicence;
 
     // Others
-    property SourcePath: string read fSourcePath write fSourcePath;
-    property TempDir: string read fTempDir write fTempDir;
+    property Sourcepath: string read FSourcepath write FSourcepath;
+    property TempDir: string read FTempDir write FTempDir;
 
     // Fonts
-    property UMLFont: TFont read fUMLFont write setUMLFont;
-    property StructogramFont: TFont read fStructogramFont write setStructogramFont;
-    property SequenceFont: TFont read fSequenceFont write setSequenceFont;
+    property UMLFont: TFont read FUMLFont write SetUMLFont;
+    property StructogramFont: TFont read FStructogramFont write SetStructogramFont;
+    property SequenceFont: TFont read FSequenceFont write SetSequenceFont;
   end;
 
   TGuiPyLanguageOptions = class(TInterfacedPersistent)
   private
     // Structogram
-    fAlgorithm: string;
-    fInput: string;
-    fOutput: string;
-    fWhile: string;
-    fFor: string;
-    fYes: string;
-    fNo: string;
-    fOther: string;
+    FAlgorithm: string;
+    FInput: string;
+    FOutput: string;
+    FWhile: string;
+    FFor: string;
+    FYes: string;
+    FNo: string;
+    FOther: string;
     // Sequencediagram
-    fSDObject: string;
-    fSDNew: string;
-    fSDClose: string;
+    FSDObject: string;
+    FSDNew: string;
+    FSDClose: string;
   public
-    procedure getInLanguage(Language: string);
+    procedure GetInLanguage(Language: string);
   published
-    property Algorithm : string read fAlgorithm write fAlgorithm;
-    property Input : string read fInput write fInput;
-    property Output : string read fOutput write fOutput;
-    property _While : string read fWhile write fWhile;
-    property _For : string read fFor write fFor;
-    property Yes : string read fYes write fYes;
-    property No : string read fNo write fNo;
-    property Other : string read fOther write fOther;
+    property Algorithm : string read FAlgorithm write FAlgorithm;
+    property Input : string read FInput write FInput;
+    property Output : string read FOutput write FOutput;
+    property _While : string read FWhile write FWhile;
+    property _For : string read FFor write FFor;
+    property Yes : string read FYes write FYes;
+    property No : string read FNo write FNo;
+    property Other : string read FOther write FOther;
 
-    property SDObject : string read fSDObject write fSDObject;
-    property SDNew : string read fSDNew write fSDNew;
-    property SDClose : string read fSDClose write fSDClose;
+    property SDObject : string read FSDObject write FSDObject;
+    property SDNew : string read FSDNew write FSDNew;
+    property SDClose : string read FSDClose write FSDClose;
   end;
 
   { TFConfiguration }
+
+  TArr21StringList = array[1..21] of TStringList;
 
   TFConfiguration = class(TPyIDEDlgBase)
     PMain: TPanel;
@@ -500,7 +536,6 @@ type
     BHelp: TButton;
     PTitle: TPanel;
     LTitle: TLabel;
-    {$WARNINGS OFF}
     FolderDialog: TFileOpenDialog;
     TVConfiguration: TTreeView;
     PanelRight: TPanel;
@@ -575,13 +610,13 @@ type
     lGutterColor: TLabel;
     pnlGutterFontDisplay: TPanel;
     lblGutterFont: TLabel;
-    cbGutterColor: TSpTBXColorEdit;
+    CBGutterColor: TSpTBXColorEdit;
     ckGutterAutosize: TCheckBox;
     ckGutterShowLineNumbers: TCheckBox;
     ckGutterShowLeaderZeros: TCheckBox;
     ckGutterVisible: TCheckBox;
     ckGutterStartAtZero: TCheckBox;
-    cbGutterFont: TCheckBox;
+    CBGutterFont: TCheckBox;
     ckGutterGradient: TCheckBox;
     btnGutterFont: TButton;
     gbLineSpacing: TGroupBox;
@@ -598,7 +633,7 @@ type
     ckBookmarkKeys: TCheckBox;
     ckBookmarkVisible: TCheckBox;
     gbActiveLineColor: TGroupBox;
-    cbActiveLineColor: TSpTBXColorEdit;
+    CBActiveLineColor: TSpTBXColorEdit;
     gbEditorFont: TGroupBox;
     Panel3: TPanel;
     labFont: TLabel;
@@ -681,14 +716,14 @@ type
     Label14: TLabel;
     Label11: TLabel;
     Label15: TLabel;
-    cbHighlighters: TComboBox;
+    CBHighlighters: TComboBox;
     GroupBox1: TGroupBox;
     cbxElementBold: TCheckBox;
     cbxElementItalic: TCheckBox;
     cbxElementUnderline: TCheckBox;
     cbxElementStrikeout: TCheckBox;
-    cbElementBackground: TSpTBXColorEdit;
-    cbElementForeground: TSpTBXColorEdit;
+    CBElementBackground: TSpTBXColorEdit;
+    CBElementForeground: TSpTBXColorEdit;
     SynSyntaxSample: TSynEdit;
     lbElements: TSpTBXListBox;
     PColorTheme: TTabSheet;
@@ -741,7 +776,7 @@ type
     CBSnapToGrid: TCheckBox;
     EGridSize: TEdit;
     UDGridSize: TUpDown;
-    EFrameheight: TEdit;
+    EFrameHeight: TEdit;
     EFrameWidth: TEdit;
     PStructogram: TTabSheet;
     LInput: TLabel;
@@ -986,9 +1021,9 @@ type
     LAssociationsExample: TLabel;
     LJEAssociation: TLabel;
     CBAssociationPython: TCheckBox;
-    CBAssociationJfm: TCheckBox;
+    CBAssociationPfm: TCheckBox;
     CBAssociationHtml: TCheckBox;
-    CBAssociationUml: TCheckBox;
+    CBAssociationPuml: TCheckBox;
     CBAssociationTxt: TCheckBox;
     CBAssociationJsp: TCheckBox;
     CBAssociationPhp: TCheckBox;
@@ -998,9 +1033,9 @@ type
     BFileExtensions: TButton;
     EGuiPyAssociation: TEdit;
     BJEAssociation: TButton;
-    CBAssociationJsg: TCheckBox;
-    CBAssociationJSD: TCheckBox;
-    CheckBox1: TCheckBox;
+    CBAssociationPsg: TCheckBox;
+    CBAssociationPsd: TCheckBox;
+    CBAssociationPyw: TCheckBox;
     PSSH: TTabSheet;
     LScpCommand: TLabel;
     LScpOptions: TLabel;
@@ -1070,8 +1105,8 @@ type
     BGuiFont: TButton;
     CBGetMethodChecked: TCheckBox;
     CBSetMethodChecked: TCheckBox;
-    cbDisplayFlowControl: TCheckBox;
-    cbDisplayFlowControlColor: TColorBox;
+    CBDisplayFlowControl: TCheckBox;
+    CBDisplayFlowControlColor: TColorBox;
     ckScrollbarAnnotation: TCheckBox;
     ckTrimTrailingSpaces: TCheckBox;
     CBIndentationGuide: TCheckBox;
@@ -1117,7 +1152,7 @@ type
     ELLMTemperature: TEdit;
     LChatTemperature: TLabel;
     EChatTemperature: TEdit;
-    cbAccessibilitySupport: TCheckBox;
+    CBAccessibilitySupport: TCheckBox;
     {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1142,7 +1177,7 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure TVConfigurationChange(Sender: TObject; Node: TTreeNode);
     procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var aAction: TCloseAction);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure vtPythonVersionsGetCellText(Sender: TCustomVirtualStringTree;
       var E: TVSTGetCellTextEventArgs);
     procedure vtPythonVersionsGetImageIndex(Sender: TBaseVirtualTree;
@@ -1159,12 +1194,12 @@ type
       var Handled: Boolean);
     procedure actPVCommandShellExecute(Sender: TObject);
     procedure BCodeCompletionFontClick(Sender: TObject);
-    procedure cbHighlightersChange(Sender: TObject);
+    procedure CBHighlightersChange(Sender: TObject);
     procedure cbFileTemplatesHighlightersChange(Sender: TObject);
     procedure lbElementsClick(Sender: TObject);
     procedure SynSyntaxSampleClick(Sender: TObject);
-    procedure cbElementForegroundSelectedColorChanged(Sender: TObject);
-    procedure cbElementBackgroundSelectedColorChanged(Sender: TObject);
+    procedure CBElementForegroundSelectedColorChanged(Sender: TObject);
+    procedure CBElementBackgroundSelectedColorChanged(Sender: TObject);
     procedure cbxElementBoldClick(Sender: TObject);
     procedure lbColorThemesClick(Sender: TObject);
     procedure btnUpdateKeyClick(Sender: TObject);
@@ -1174,7 +1209,7 @@ type
       Shift: TShiftState);
     procedure btnFontClick(Sender: TObject);
     procedure btnGutterFontClick(Sender: TObject);
-    procedure cbGutterFontClick(Sender: TObject);
+    procedure CBGutterFontClick(Sender: TObject);
     procedure actAssignShortcutExecute(Sender: TObject);
     procedure actAssignShortcutUpdate(Sender: TObject);
     procedure actRemoveShortcutExecute(Sender: TObject);
@@ -1254,68 +1289,79 @@ type
       DefaultVisToolsMenu   = '11101111111110001';        // len = 17
       DefaultVisHelpMenu    = '11111';                    // len = 5
     var
-    VisSelectedTabMenuToolbar: Integer;
-    fHighlighters : TList;
-    fColorThemeHighlighter : TSynCustomHighlighter;
-    HighlighterFileDir: string;
+    FVisSelectedTabMenuToolbar: Integer;
+    FHighlighters : TList;
+    FColorThemeHighlighter : TSynCustomHighlighter;
+    FHighlighterFileDir: string;
     FSynEdit: TSynEditorOptionsContainer;
-    eKeyShort2: TSynHotKey;
-    eKeyShort1: TSynHotKey;
+    FEKeyShort1: TSynHotKey;
+    FEKeyShort2: TSynHotKey;
     FUserCommand: TSynEditorOptionsUserCommand;
     FAllUserCommands: TSynEditorOptionsAllUserCommands;
     FExtended: Boolean;
-    edNewShortcut: TSynHotKey;
+    FEdNewShortcut: TSynHotKey;
     FInternalCall: Boolean;
     FMargins: TSynEditPrintMargins;
-    Editor: TCustomRichEdit;
-    HeaderFooterCharPos: TPoint;
-    HeaderFooterOldStart: Integer;
+    FEditor: TCustomRichEdit;
+    FHeaderFooterCharPos: TPoint;
+    FHeaderFooterOldStart: Integer;
 
-    FunctionList : TStringList;
-    IDEKeyList   : TStringList;
-    ActionProxyCollection   : TActionProxyCollection;
-    CodeTemplateText : string;
-    TempFileTemplates : TFileTemplates;
+    FFunctionList : TStringList;
+    FIDEKeyList   : TStringList;
+    FActionProxyCollection   : TActionProxyCollection;
+    FCodeTemplateText : string;
+    FControlStructureTemplates: TArr21StringList;
+    FTempFileTemplates : TFileTemplates;
 
-    Loading : Boolean;
+    FLoading : Boolean;
     FStylesPath : string;
     FPreview: TVclStylesPreview;
-    ExternalStyleFilesDict :  TDictionary<string, string>;
-    LoadedStylesDict :  TDictionary<string, string>;
+    FExternalStyleFilesDict :  TDictionary<string, string>;
+    FLoadedStylesDict :  TDictionary<string, string>;
 
     FHandleChanges : Boolean;  //Normally true, can prevent unwanted execution of event handlers
-    IndentWidth: Integer;
-    CurrentLanguage: string;
+    FIndentWidth: Integer;
+    FCurrentLanguage: string;
+    FEditorFolder: string;
+    FGitOK: Boolean;
 
     // tab LLM assistant
-    TempProviders: TLLMProviders;
-    TempChatProviders: TLLMProviders;
+    FTempProviders: TLLMProviders;
+    FTempChatProviders: TLLMProviders;
 
     // tab Visibility
-    vis1: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of Boolean;
-    vis2: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of Boolean;
-    TabsMenusToolbars: Integer;
+    FVis1: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of Boolean;
+    FVis2: array[0..MaxVisLen - 1, 0..MaxTabItem - 1] of Boolean;
+    FTabsMenusToolbars: Integer;
+    FIndent1: string;
+    FIndent2: string;
+    FIndent3: string;
+    FKeyStrokesReset: Boolean;
+    FSubversionOK: Boolean;
+    FVisMenus: TBoolArray;
+    FVisTabs: TBoolArray;
+    FVisToolbars: TBoolArray;
 
-    function DirectoryFilesExists(s: string): Boolean;
-    procedure CheckFolder(Edit: TEdit; emptyAllowed: Boolean);
+    function DirectoryFilesExists(Str: string): Boolean;
+    procedure CheckFolder(Edit: TEdit; EmptyAllowed: Boolean);
     procedure CheckFolderCB(ComboBox: TComboBox);
     procedure CheckUserFolder(Edit: TEdit);
-    procedure CheckFile(WinControl: TWinControl; emptyAllowed: Boolean);
-    function getCheckColor(s: string; LeerErlaubt: Boolean): TColor;
-    procedure ShortenPath(WinControl: TWinControl; const s: string);
+    procedure CheckFile(WinControl: TWinControl; EmptyAllowed: Boolean);
+    function GetCheckColor(Str: string; EmptyAllowed: Boolean): TColor;
+    procedure ShortenPath(WinControl: TWinControl; const Str: string);
     function ExtendPath(WinControl: TWinControl): string;
-    function BrowserProgToName(const s: string): string;
+    function BrowserProgToName(const Str: string): string;
 
     function SelectedHighlighter : TSynCustomHighlighter;
     procedure UpdateColorFontStyle;
     procedure PrepareHighlighters;
     procedure UpdateHighlighters;
-    procedure UpdateKey(AKey: TSynEditKeystroke);
-    procedure FillInKeystrokeInfo(AKey: TSynEditKeystroke; AItem: TListItem);
+    procedure UpdateKey(AKey: TSynEditKeyStroke);
+    procedure FillInKeystrokeInfo(AKey: TSynEditKeyStroke; AItem: TListItem);
     procedure PrepareKeyStrokes;
     procedure KeyListSelectItem(Sender: TObject;
       Item: TListItem; Selected: Boolean);
-    procedure EditStrCallback(const S: string);
+    procedure EditStrCallback(const Str: string);
     procedure SynEditOptionsShow;
     function GetCurrentAction: TActionProxyItem;
     procedure AssignKeysToActionProxy(var CurAction: TActionProxyItem);
@@ -1342,7 +1388,7 @@ type
     procedure SetHeaderFooterOptions;
     procedure UpdateHeaderFooterCursorPos;
     procedure PageSetupShow;
-    procedure AddLines(HeadFoot: THeaderFooter; AEdit: TCustomRichEdit; Al: TALignment);
+    procedure AddLines(HeadFoot: THeaderFooter; AEdit: TCustomRichEdit; Alig: TAlignment);
     procedure GetValues(SynEditPrint: TSynEditPrint);
     procedure SetValues(SynEditPrint: TSynEditPrint);
     procedure StyleSelectorFormCreate;
@@ -1356,15 +1402,15 @@ type
 
     procedure MakeAssociations;
     procedure RegisterGuiPy;
-    procedure ShowPage(i: Integer);
-    procedure FolderSelect(Edit: TEdit; const aFoldername: string);
-    function GetConfigurationAddress(const s: string): string;
-    function getDumpText: string;
+    procedure ShowPage(Page: Integer);
+    procedure FolderSelect(Edit: TEdit; const Foldername: string);
+    function GetConfigurationAddress(const Str: string): string;
+    function GetDumpText: string;
 
     procedure CallUpdater(const Target, Source1: string; Source2: string); overload;
-    procedure SetElevationRequiredState(aControl: TWinControl);
+    procedure SetElevationRequiredState(Control: TWinControl);
     procedure MakeControlStructureTemplates;
-    procedure EnableColorItems(aEnable:Boolean);
+    procedure EnableColorItems(Enable:Boolean);
     procedure StoreApplicationData;
 
     procedure LoadVisibility;
@@ -1374,74 +1420,111 @@ type
     procedure VisibilityViewToModel;
     procedure VisibilityModelToView;
     function CountMenuItems(Menu: TTBCustomItem): Integer;
-    procedure setSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Nr: Integer);
+    procedure SetSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Num: Integer);
     procedure LLMAssistantModelToView;
     procedure LLMAssistantViewToModel;
     procedure LLMChatModelToView;
     procedure LLMChatViewToModel;
   public
     class var CurrentSkinName : string;
-    Indent1, Indent2, Indent3: string;
-    ControlStructureTemplates: array[1..21] of TStringList;
-    GitOK: Boolean;
-    SubversionOK: Boolean;
-    EditorFolder: string;
-    KeyStrokesReset: Boolean;
-    VisTabs:     TBoolArray;
-    VisMenus:    TBoolArray;
-    VisToolbars: TBoolArray;
 
     procedure Changed;
     procedure RestoreApplicationData;
-    procedure setToolbarVisibility(Toolbar: TToolbar; Nr: Integer);
-    function getEncoding(const Pathname: string): TEncoding;
+    procedure SetToolbarVisibility(Toolbar: TToolBar; Num: Integer);
+    function GetEncoding(const Pathname: string): TEncoding;
     procedure PrepareShow;
-    function getMultiLineComment(Indent: string): string;
-    function getClassCodeTemplate: string;
-    function getTVConfigurationItem(text: string): TTreeNode;
-    function getFileFilters: string;
+    function GetMultiLineComment(Indent: string): string;
+    function GetClassCodeTemplate: string;
+    function GetTVConfigurationItem(Text: string): TTreeNode;
+    function GetFileFilters: string;
     procedure OpenAndShowPage(Page: string);
-    function RunAsAdmin(hWnd: HWND; const aFile, aParameters: string): THandle;
+    function RunAsAdmin(AHWnd: HWND; const AFile, Parameters: string): THandle;
     procedure AddScriptsPath;
     procedure PatchConfiguration;
     procedure LanguageOptionsToView;
     procedure LanguageOptionsToModel;
     procedure DoHelp(Adresse: string);
-    function getClassesAndFilename(Pathname: string): TStringList;
+    function GetClassesAndFilename(Pathname: string): TStringList;
     procedure SetStyle(StyleName: string);
-    class function isDark: Boolean;
     procedure ApplyColorTheme;
     procedure Retranslate;
+    class function IsDark: Boolean;
 
+    property ControlStructureTemplates: TArr21StringList read
+        FControlStructureTemplates;
     property GetUserCommandNames: TSynEditorOptionsUserCommand read FUserCommand
       write FUserCommand;
     property GetAllUserCommands: TSynEditorOptionsAllUserCommands
       read FAllUserCommands write FAllUserCommands;
     property CurrentAction : TActionProxyItem read GetCurrentAction;
+    property EditorFolder: string read FEditorFolder;
+    property GitOK: Boolean read FGitOK;
+    property Indent1: string read FIndent1;
+    property Indent2: string read FIndent2;
+    property Indent3: string read FIndent3;
+    property KeyStrokesReset: Boolean read FKeyStrokesReset;
+    property SubversionOK: Boolean read FSubversionOK;
+    property VisMenus: TBoolArray read FVisMenus;
+    property VisTabs: TBoolArray read FVisTabs;
+    property VisToolbars: TBoolArray read FVisToolbars;
   end;
 
- var
-   FConfiguration: TFConfiguration = nil;
-   GuiPyOptions: TGuiPyOptions = nil;
-   GuiPyLanguageOptions: TGuiPyLanguageOptions = nil;
+var
+ FConfiguration: TFConfiguration = nil;
+ GuiPyOptions: TGuiPyOptions = nil;
+ GuiPyLanguageOptions: TGuiPyLanguageOptions = nil;
 
 implementation
 
 {$R *.DFM}
 
-uses SynUnicode, StringResources, JvGnugettext, FileCtrl, Forms, Math,
-     Menus, ShlObj, Themes, ShellAPI, Winapi.RichEdit, SynEditTypes, UUtils, Contnrs,
-     Registry, SynEditPrintTypes, dmResources, dmCommands, cPyControl, uEditAppIntfs,
-     PythonVersions, uCommonFunctions, cPySupportTypes, frmPyIDEMain, SpTBXTabs,
-     IOUtils, JvAppStorage, JvAppIniStorage, SynEditKeyConst, JvJCLUtils,
-     frmFile, frmEditor, UUMLForm, UStructogram, USequenceform, UImages, UGit,
-     USubversion, frmPythonII, frmLLMChat;
+uses
+  Forms,
+  Math,
+  Menus,
+  ShlObj,
+  Themes,
+  ShellAPI,
+  FileCtrl,
+  Contnrs,
+  Registry,
+  IOUtils,
+  Winapi.RichEdit,
+  JvJCLUtils,
+  JvGnugettext,
+  JvAppStorage,
+  JvAppIniStorage,
+  SynUnicode,
+  SynEditTypes,
+  SynEditPrintTypes,
+  SynEditKeyConst,
+  SpTBXTabs,
+  dmResources,
+  dmCommands,
+  cPyScripterSettings,
+  cPyControl,
+  uEditAppIntfs,
+  PythonVersions,
+  StringResources,
+  uCommonFunctions,
+  cPySupportTypes,
+  frmPyIDEMain,
+  frmFile,
+  frmEditor,
+  frmPythonII,
+  frmLLMChat,
+  UUtils,
+  UUMLForm,
+  UStructogram,
+  USequenceForm,
+  UGit,
+  USubversion;
 
 const
   MaxPages = 33;
-  machine = 0;
-  allusers = 1;
-  user = 2;
+  CMachine = 0;
+  CAllUsers = 1;
+  CUser = 2;
 
 {--- TEditStyleHook -----------------------------------------------------------}
 
@@ -1488,7 +1571,7 @@ begin
         //get the colors
         UpdateColors;
         Handled:= False;
-      end
+      end;
   else
     inherited WndProc(Message);
   end;
@@ -1497,22 +1580,21 @@ end;
 {--- Configuration ------------------------------------------------------------}
 
 procedure TFConfiguration.FormCreate(Sender: TObject);
-  var i: Integer;
 begin
   inherited;
   Width:= PPIScale(860);
   Height:= PPIScale(540);
-  TempFileTemplates := TFileTemplates.Create;
+  FTempFileTemplates := TFileTemplates.Create;
   GuiPyOptions:= TGuiPyOptions.Create;
   GuiPyLanguageOptions:= TGuiPyLanguageOptions.Create;
   CBValidClassColor.Style:= [cbStandardColors, cbExtendedColors, cbCustomColor, cbPrettyNames];
   CBInvalidClassColor.Style:= [cbStandardColors, cbExtendedColors, cbCustomColor, cbPrettyNames];
   CBObjectColor.Style:= [cbStandardColors, cbExtendedColors, cbCustomColor, cbPrettyNames];
   CBCommentColor.Style:= [cbStandardColors, cbExtendedColors, cbCustomColor, cbPrettyNames];
-  for i:= 1 to 21 do
-    ControlStructureTemplates[i]:= nil;
-  for i:= 0 to PageList.PageCount - 1 do
-    PageList.Pages[i].TabVisible := False;
+  for var I:= 1 to 21 do
+    FControlStructureTemplates[I]:= nil;
+  for var I:= 0 to PageList.PageCount - 1 do
+    PageList.Pages[I].TabVisible := False;
   TVConfiguration.FullExpand;
   ShowPage(0);
   TVConfiguration.TopItem:= TVConfiguration.Items[0];
@@ -1520,65 +1602,62 @@ begin
     SetElevationRequiredState(BFileExtensions);
     SetElevationRequiredState(BJEAssociation);
   end;
-  VisSelectedTabMenuToolbar:= 0;
-  fHighlighters := TList.Create;
+  FVisSelectedTabMenuToolbar:= 0;
+  FHighlighters := TList.Create;
   PrepareHighlighters;
   FSynEdit:= TSynEditorOptionsContainer.Create(Self);
   FInternalCall:= False;
   CustomShortcutsCreate;
   FInternalCall := False;
   FMargins := TSynEditPrintMargins.Create;
-  Editor := nil;
-  EditorFolder:= ExtractFilePath(ParamStr(0));
+  FEditor := nil;
+  FEditorFolder:= ExtractFilePath(ParamStr(0));
   StyleSelectorFormCreate;
-  KeyStrokesReset:= False;
-  setLength(VisTabs, VisTabsLen);
-  setLength(VisMenus, VisMenusLen);
-  setLength(VisToolbars, VisToolbarsLen);
-  TabsMenusToolbars:= 1;
-  IndentWidth:= EditorOptions.TabWidth;
-  Indent1:= StringOfChar(' ', 1*IndentWidth);
-  Indent2:= StringOfChar(' ', 2*IndentWidth);
-  Indent3:= StringOfChar(' ', 3*IndentWidth);
+  FKeyStrokesReset:= False;
+  SetLength(FVisTabs, VisTabsLen);
+  SetLength(FVisMenus, VisMenusLen);
+  SetLength(FVisToolbars, VisToolbarsLen);
+  FTabsMenusToolbars:= 1;
+  FIndentWidth:= EditorOptions.TabWidth;
+  FIndent1:= StringOfChar(' ', 1*FIndentWidth);
+  FIndent2:= StringOfChar(' ', 2*FIndentWidth);
+  FIndent3:= StringOfChar(' ', 3*FIndentWidth);
   ckGutterGradient.Left:= 24;
-  cbGutterFont.Left:= 24;
+  CBGutterFont.Left:= 24;
   CBDisplayFlowControlColor.DefaultColorColor:= $0045FF;
 end;
 
 procedure TFConfiguration.FormDestroy(Sender: TObject);
-  var i: Integer;
 begin
-  for i:= 1 to 21 do
-    FreeAndNil(ControlStructureTemplates[i]);
-
-  for i:= fHighlighters.Count - 1 downto 0 do
-    FreeAndNil(fHighlighters.Items[i]);
-
-  FreeAndNil(fHighlighters);
-  FreeAndNil(fColorThemeHighlighter);
+  for var I:= 1 to 21 do
+    FreeAndNil(FControlStructureTemplates[I]);
+  for var I:= FHighlighters.Count - 1 downto 0 do
+    FreeAndNil(FHighlighters.Items[I]);
+  FreeAndNil(FHighlighters);
+  FreeAndNil(FColorThemeHighlighter);
   FreeAndNil(FSynEdit);
 
-  ActionProxyCollection.Free;
+  FActionProxyCollection.Free;
   FMargins.Free;
-  ExternalStyleFilesDict.Free;
+  FExternalStyleFilesDict.Free;
   FPreview.Free;
-  LoadedStylesDict.Free;
+  FLoadedStylesDict.Free;
   FreeAndNil(GuiPyOptions);
   FreeAndNil(GuiPyLanguageOptions);
 
   FreeAndNil(KeyList);
-  FreeAndNil(FunctionList);
-  FreeAndNil(IDEKeyList);
-  TempFileTemplates.Clear;
-  FreeAndNil(TempFileTemplates);
+  FreeAndNil(FFunctionList);
+  FreeAndNil(FIDEKeyList);
+  FTempFileTemplates.Clear;
+  FreeAndNil(FTempFileTemplates);
   FConfiguration:= nil;
 end;
 
-procedure TFConfiguration.FormClose(Sender: TObject; var aAction: TCloseAction);
+procedure TFConfiguration.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   PageListClose;
   DoneItems;
-  FreeAndNil(ActionProxyCollection);
+  FreeAndNil(FActionProxyCollection);
 end;
 
 procedure TFConfiguration.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -1590,75 +1669,75 @@ procedure TFConfiguration.FormShow(Sender: TObject);
 begin
   vtPythonVersions.DefaultText := '';
   vtPythonVersions.RootNodeCount := 2;
-  vtPythonVersions.Header.Columns.Items[1].Text:= _('Folder');
+  vtPythonVersions.Header.Columns[1].Text:= _('Folder');
 
   SynEditOptionsShow;
   CustomShortcutsShow;
   PageSetupShow;
   StyleSelectorFormShow;
-  onShow:= nil;
+  OnShow:= nil;
 end;
 
 procedure TFConfiguration.Retranslate;
 begin
-  for var i:= 0 to PageList.PageCount - 1 do
-    TVConfiguration.Items[i].Text:= PageList.Pages[i].Caption;
+  for var I:= 0 to PageList.PageCount - 1 do
+    TVConfiguration.Items[I].Text:= PageList.Pages[I].Caption;
 end;
 
 procedure TFConfiguration.PageSetupShow;
 begin
-  Editor := REHeaderLeft;
+  FEditor := REHeaderLeft;
   SetHeaderFooterOptions;
   UpdateHeaderFooterCursorPos;
 end;
 
-function TFConfiguration.DirectoryFilesExists(s: string): Boolean;
-  var p: Integer; dir: string;
+function TFConfiguration.DirectoryFilesExists(Str: string): Boolean;
+  var Posi: Integer; Dir: string;
 begin
   Result:= True;
-  if s <> '' then begin
-    s:= s + ';';
-    p:= Pos(';', s);
-    while p > 0 do begin
-      dir:= Trim(Copy(s, 1, p-1));
-      Delete(s, 1, p);
-      if dir.endsWith('*') then Delete(dir, Length(dir), 1);
-      if ((Copy(dir, 2, 1) = ':') or (Copy(dir, 1, 2) = '\\')) and
-         not (SysUtils.DirectoryExists(dir) or FileExists(dir)) then
+  if Str <> '' then begin
+    Str:= Str + ';';
+    Posi:= Pos(';', Str);
+    while Posi > 0 do begin
+      Dir:= Trim(Copy(Str, 1, Posi-1));
+      Delete(Str, 1, Posi);
+      if Dir.EndsWith('*') then Delete(Dir, Length(Dir), 1);
+      if ((Copy(Dir, 2, 1) = ':') or (Copy(Dir, 1, 2) = '\\')) and
+         not (SysUtils.DirectoryExists(Dir) or FileExists(Dir)) then
           Result:= False;
-      p:= Pos(';', s);
+      Posi:= Pos(';', Str);
     end;
   end;
 end;
 
-procedure TFConfiguration.CheckFolder(Edit: TEdit; emptyAllowed: Boolean);
-  var s: string;
+procedure TFConfiguration.CheckFolder(Edit: TEdit; EmptyAllowed: Boolean);
+  var Str: string;
 begin
-  s:= ExtendPath(Edit);
-  ShortenPath(Edit, s);
-  if Sysutils.DirectoryExists(Edit.Hint) or (s = '') and emptyAllowed
+  Str:= ExtendPath(Edit);
+  ShortenPath(Edit, Str);
+  if SysUtils.DirectoryExists(Edit.Hint) or (Str = '') and EmptyAllowed
     then Edit.Color:= clWindow
     else Edit.Color:= clRed;
   Edit.Enabled:= not GuiPyOptions.LockedPaths;
 end;
 
 procedure TFConfiguration.CheckFolderCB(ComboBox: TComboBox);
-  var s: string;
+  var Str: string;
 begin
-  s:= ExtendPath(ComboBox);
-  ShortenPath(ComboBox, s);
-  if DirectoryFilesExists(s)
+  Str:= ExtendPath(ComboBox);
+  ShortenPath(ComboBox, Str);
+  if DirectoryFilesExists(Str)
     then ComboBox.Color:= clWindow
     else ComboBox.Color:= clRed;
   ComboBox.Enabled:= not GuiPyOptions.LockedPaths;
 end;
 
 procedure TFConfiguration.CheckUserFolder(Edit: TEdit);
-  var s: string;
+  var Str: string;
 begin
-  s:= ExtendPath(Edit);
-  ShortenPath(Edit, s);
-  if DirectoryFilesExists(dissolveUsername(Edit.Hint))
+  Str:= ExtendPath(Edit);
+  ShortenPath(Edit, Str);
+  if DirectoryFilesExists(DissolveUsername(Edit.Hint))
     then Edit.Color:= clWindow
     else Edit.Color:= clRed;
 end;
@@ -1698,28 +1777,28 @@ begin
   end;
 end;
 
-function TFConfiguration.getCheckColor(s: string; LeerErlaubt: Boolean): TColor;
+function TFConfiguration.GetCheckColor(Str: string; EmptyAllowed: Boolean): TColor;
 begin
   Result:= clRed;
-  if s = '' then
-    if LeerErlaubt
-      then Result:= StyleServices.getSystemColor(clWindow)
+  if Str = '' then
+    if EmptyAllowed
+      then Result:= StyleServices.GetSystemColor(clWindow)
       else
-  else if FileExists(dissolveUsername(s))
-    then Result:= StyleServices.getSystemColor(clWindow)
+  else if FileExists(DissolveUsername(Str))
+    then Result:= StyleServices.GetSystemColor(clWindow);
 end;
 
-procedure TFConfiguration.CheckFile(WinControl: TWinControl; emptyAllowed: Boolean);
-  var s: string; E: TEdit;
+procedure TFConfiguration.CheckFile(WinControl: TWinControl; EmptyAllowed: Boolean);
+  var Str: string; Edit: TEdit;
 begin
-  s:= ExtendPath(WinControl);
-  ShortenPath(WinControl, s);
+  Str:= ExtendPath(WinControl);
+  ShortenPath(WinControl, Str);
   if WinControl is TEdit
     then begin
-    E:= (WinControl as TEdit);
-    E.Color:= getCheckColor(s, emptyAllowed);
+    Edit:= (WinControl as TEdit);
+    Edit.Color:= GetCheckColor(Str, EmptyAllowed);
     end
-    else (WinControl as TComboBox).Color:= getCheckColor(s, emptyAllowed);
+    else (WinControl as TComboBox).Color:= GetCheckColor(Str, EmptyAllowed);
   WinControl.Enabled:= not GuiPyOptions.LockedPaths;
 end;
 
@@ -1732,7 +1811,7 @@ begin
     InitialDir:= GetEnvironmentVariable('PROGRAMFILES');
     FileName  := '*.exe';
     Filter:= '*.exe|*.exe';
-    if not Sysutils.DirectoryExists(InitialDir) then InitialDir:= 'C:\';
+    if not SysUtils.DirectoryExists(InitialDir) then InitialDir:= 'C:\';
     if Execute then
       ShortenPath(EBrowserProgram, FileName);
     CheckFile(EBrowserProgram, True);
@@ -1740,10 +1819,10 @@ begin
   FreeAndNil(ODSelect);
 end;
 
-function TFConfiguration.BrowserProgToName(const s: string): string;
+function TFConfiguration.BrowserProgToName(const Str: string): string;
   var Browser: string;
 begin
-  Browser:= UpperCase(s);
+  Browser:= UpperCase(Str);
   if Pos('NETSCAPE', Browser) > 0
     then Result:= 'Netscape'
   else if Pos('IEXPLORE', Browser) > 0
@@ -1759,7 +1838,7 @@ end;
 
 procedure TFConfiguration.BBrowserTitleClick(Sender: TObject);
 begin
-  ShortenPath(EBrowsertitle, BrowserProgToName(EBrowserProgram.Hint));
+  ShortenPath(EBrowserTitle, BrowserProgToName(EBrowserProgram.Hint));
 end;
 
 procedure TFConfiguration.BCancelClick(Sender: TObject);
@@ -1767,28 +1846,26 @@ begin
   Close;
 end;
 
-procedure TFConfiguration.FolderSelect(Edit: TEdit; const aFoldername: string);
-  var s: string;
+procedure TFConfiguration.FolderSelect(Edit: TEdit; const Foldername: string);
+  var Str: string;
 begin
-  {$WARNINGS OFF}
-  FolderDialog.DefaultFolder:= aFoldername;
+  FolderDialog.DefaultFolder:= Foldername;
   if FolderDialog.Execute then begin
-    s:= withoutTrailingSlash(FolderDialog.FileName);
-    ShortenPath(Edit, s);
+    Str:= WithoutTrailingSlash(FolderDialog.FileName);
+    ShortenPath(Edit, Str);
   end;
-  {$WARNINGS ON}
 end;
 
 procedure TFConfiguration.Changed;
 begin
-  ResourcesDataModule.dlgFileOpen.Filter:= getFileFilters;
+  ResourcesDataModule.dlgFileOpen.Filter:= GetFileFilters;
   SetVisibility;
 
   // tab Editor
-  IndentWidth:= EditorOptions.TabWidth;
-  Indent1:= StringOfChar(' ', 1*IndentWidth);
-  Indent2:= StringOfChar(' ', 2*IndentWidth);
-  Indent3:= StringOfChar(' ', 3*IndentWidth);
+  FIndentWidth:= EditorOptions.TabWidth;
+  FIndent1:= StringOfChar(' ', 1*FIndentWidth);
+  FIndent2:= StringOfChar(' ', 2*FIndentWidth);
+  FIndent3:= StringOfChar(' ', 3*FIndentWidth);
   MakeControlStructureTemplates;
 
   // tab LLM
@@ -1796,40 +1873,40 @@ begin
   GuiPyOptions.ChatProviders.setToProviders(LLMChatForm.LLMChat.Providers);
 
   // tab Git
-  GitOK := FileExists(TPath.Combine(GuiPyOptions.GitFolder, '\bin\git.exe'));
-  PyIDEMainForm.mnToolsGit.Visible:= GitOK and vis1[VisTabsLen + 7, 4];
-  if GitOK and (FGit = nil) then
+  FGitOK := FileExists(TPath.Combine(GuiPyOptions.GitFolder, '\bin\git.exe'));
+  PyIDEMainForm.mnToolsGit.Visible:= FGitOK and FVis1[VisTabsLen + 7, 4];
+  if FGitOK and not Assigned(FGit) then
     FGit:= TFGit.Create(Self);
 
   // tab Subversion
-  SubversionOK := FileExists(TPath.Combine(GuiPyOptions.SVNFolder, '\svn.exe'));
-  PyIDEMainForm.mnToolsSVN.Visible:= SubversionOK  and vis1[VisTabsLen + 7, 5];
-  if SubversionOK and (FSubversion = nil) then
+  FSubversionOK := FileExists(TPath.Combine(GuiPyOptions.SVNFolder, '\svn.exe'));
+  PyIDEMainForm.mnToolsSVN.Visible:= FSubversionOK  and FVis1[VisTabsLen + 7, 5];
+  if FSubversionOK and not Assigned(FSubversion) then
     FSubversion:= TFSubversion.Create(Self);
 
-  PyIDEMainForm.setLayoutMenus(GuiPyOptions.UsePredefinedLayouts);
+  PyIDEMainForm.SetLayoutMenus(GuiPyOptions.UsePredefinedLayouts);
 
-  GI_FileFactory.ApplyToFiles(procedure(aFile: IFile)
+  GI_FileFactory.ApplyToFiles(procedure(AFile: IFile)
   begin
-      (aFile as TFile).fForm.setOptions;
+      (AFile as TFile).fForm.SetOptions;
   end);
 end;
 
 procedure TFConfiguration.ModelToView;
 begin
   if Assigned(GI_ActiveEditor)
-    then FSynEdit.assign(GI_ActiveEditor.ActiveSynEdit)
-    else FSynEdit.assign(EditorOptions);
+    then FSynEdit.Assign(GI_ActiveEditor.ActiveSynEdit)
+    else FSynEdit.Assign(EditorOptions);
   PrepareKeyStrokes;
   DoneItems;
   PrepActions;  // IDE commands
-  CodeTemplateText:= ResourcesDataModule.CodeTemplatesCompletion.AutoCompleteList.Text;
+  FCodeTemplateText:= ResourcesDataModule.CodeTemplatesCompletion.AutoCompleteList.Text;
   SetValues(CommandsDataModule.SynEditPrint);
   CodeTemplatesInit;
   FileTemplatesInit;
 
   // tab Python
-  RGEnginetypes.ItemIndex:= Ord(PyControl.PythonEngineType) - 1;
+  RGEngineTypes.ItemIndex:= Ord(PyControl.PythonEngineType) - 1;
 
   //Gutter
   ckGutterVisible.Checked:= FSynEdit.Gutter.Visible;
@@ -1837,8 +1914,8 @@ begin
   ckGutterShowLineNumbers.Checked:= FSynEdit.Gutter.ShowLineNumbers;
   ckGutterShowLeaderZeros.Checked:= FSynEdit.Gutter.LeadingZeros;
   ckGutterStartAtZero.Checked:= FSynEdit.Gutter.ZeroStart;
-  cbGutterFont.Checked := FSynEdit.Gutter.UseFontStyle;
-  cbGutterColor.SelectedColor := FSynEdit.Gutter.Color;
+  CBGutterFont.Checked := FSynEdit.Gutter.UseFontStyle;
+  CBGutterColor.SelectedColor := FSynEdit.Gutter.Color;
   lblGutterFont.Font.Assign(FSynEdit.Gutter.Font);
   lblGutterFont.Caption:= lblGutterFont.Font.Name + ' ' + IntToStr(lblGutterFont.Font.Size) + 'pt';
   ckGutterGradient.Checked := FSynEdit.Gutter.Gradient;
@@ -1848,8 +1925,7 @@ begin
   //Right Edge
   eRightEdge.Text:= IntToStr(FSynEdit.RightEdge);
   cbRightEdgeColor.SelectedColor:= FSynEdit.RightEdgeColor;
-  //ActiveLineColor;
-  cbActiveLineColor.SelectedColor := FSynEdit.ActiveLineColor;
+  CBActiveLineColor.SelectedColor := FSynEdit.ActiveLineColor;
   //Line Spacing
   eLineSpacing.Text:= IntToStr(FSynEdit.ExtraLineSpacing);
   eTabWidth.Text:= IntToStr(FSynEdit.TabWidth);
@@ -1905,7 +1981,7 @@ begin
     UDTimeOut.Position:= TimeOut;
     UDInterpreterHistorySize.Position:= InterpreterHistorySize;
 
-    // tab editor, Options 1
+    // tab Editor, Options 1
     CBCheckSyntaxAsYouType.Checked:= CheckSyntaxAsYouType;
     CBHighlightSelectedWord.Checked:= HighlightSelectedWord;
     CBDisplayFlowControl.Checked:= DisplayFlowControl.Enabled;
@@ -1916,7 +1992,7 @@ begin
     CBAutoHideFindToolbar.Checked:= AutoHideFindToolbar;
     CBAutoReloadChangedFiles.Checked:= AutoReloadChangedFiles;
     CBCodeFoldingEnabled.Checked:= CodeFoldingEnabled;
-    CBGuiCodeFolding.Checked:= CodeFoldingForGuiElements;
+    CBGUICodeFolding.Checked:= CodeFoldingForGuiElements;
     CBCompactLineNumbers.Checked:= CompactLineNumbers;
     CBCreateBackupFiles.Checked:= CreateBackupFiles;
     CBDetectUTF8Encoding.Checked:= DetectUTF8Encoding;
@@ -1929,7 +2005,7 @@ begin
     CBUndoAfterSave.Checked:= UndoAfterSave;
     CBHighlightSelectedWordColor.Color:= HighlightSelectedWordColor;
     RGNewFileEncoding.ItemIndex:= Ord(NewFileEncoding);
-    RGNewFileLineBreaks.ItemIndex:= ord(NewFileLineBreaks);
+    RGNewFileLineBreaks.ItemIndex:= Ord(NewFileLineBreaks);
 
     // tab options 2
     ckScrollbarAnnotation.Checked:= ScrollbarAnnotation;
@@ -1968,23 +2044,23 @@ begin
     RGFileChangeNotification.ItemIndex:= Ord(FileChangeNotification);
 
     // tab ssh
-    EScpCommand.text:= ScpCommand;
-    EScpOptions.text:= ScpOptions;
-    ESSHCommand.text:= SSHCommand;
-    ESSHOptions.text:= SSHOptions;
+    EScpCommand.Text:= ScpCommand;
+    EScpOptions.Text:= ScpOptions;
+    ESSHCommand.Text:= SSHCommand;
+    ESSHOptions.Text:= SSHOptions;
     CBSSHDisableVariablesWin.Checked:= SSHDisableVariablesWin;
   end;
 
   with GuiPyOptions do begin
     // Color themes
-    lbColorThemes.ItemIndex:= lbColorThemes.Items.IndexOf(fColorTheme);
+    lbColorThemes.ItemIndex:= lbColorThemes.Items.IndexOf(FColorTheme);
     lbColorThemesClick(Self);
 
     // Class modeler
     CBShowGetSetMethods.Checked:= ShowGetSetMethods;
     CBGetSetMethodsAsProperty.Checked:= GetSetMethodsAsProperty;
     CBGetMethodChecked.Checked:= GetMethodChecked;
-    CBSetMethodChecked.Checked:= setMethodChecked;
+    CBSetMethodChecked.Checked:= SetMethodChecked;
     CBShowTypeSelection.Checked:= ShowTypeSelection;
     CBShowWithWithoutReturnValue.Checked:= ShowWithWithoutReturnValue;
     CBShowParameterTypeSelection.Checked:= ShowParameterTypeSelection;
@@ -2000,14 +2076,14 @@ begin
     EFrameHeight.Text:= IntToStr(FrameHeight);
 
     // tab structograms
-    CBDatatype.text:= StructoDatatype;
+    CBDataType.Text:= StructoDatatype;
     CBSwitchWithCaseLine.Checked:= SwitchWithCaseLine;
-    ECaseCount.text:= IntTostr(CaseCount);
+    ECaseCount.Text:= IntToStr(CaseCount);
     UDStructogramShadowWidth.Position:= StructogramShadowWidth;
     UDStructogramShadowIntensity.Position:= StructogramShadowIntensity;
 
     // tab sequence diagrams
-    CBSDFillingColor.Selected:= SDFillingcolor;
+    CBSDFillingColor.Selected:= SDFillingColor;
     CBSDNoFilling.Checked:= SDNoFilling;
     CBSDShowMainCall.Checked:= SDShowMainCall;
     CBSDShowParameter.Checked:= SDShowParameter;
@@ -2024,9 +2100,9 @@ begin
     CBObjectUnderline.Checked:= ObjectUnderline;
     CBCommentColor.Selected:= CommentColor;
     RGAttributsMethodsDisplay.ItemIndex:= 3 - DiVisibilityFilter;
-    RGSequenceAttributsMethods.ItemIndex:= DISortOrder;
-    RGParameterDisplay.ItemIndex:= DIShowParameter;
-    RGVisibilityDisplay.ItemIndex:= 2 - DIShowIcons;
+    RGSequenceAttributsMethods.ItemIndex:= DiSortOrder;
+    RGParameterDisplay.ItemIndex:= DiShowParameter;
+    RGVisibilityDisplay.ItemIndex:= 2 - DiShowIcons;
     UDShadowWidth.Position:= ShadowWidth;
     UDShadowIntensity.Position:= ShadowIntensity;
 
@@ -2063,25 +2139,25 @@ begin
 
     // tab associations
     CBAssociationPython.Checked:= HasAssociationWithGuiPy('.py');
-    CBAssociationJfm.Checked := HasAssociationWithGuiPy('.pfm');
-    CBAssociationUml.Checked := HasAssociationWithGuiPy('.puml');
+    CBAssociationPfm.Checked := HasAssociationWithGuiPy('.pfm');
+    CBAssociationPuml.Checked := HasAssociationWithGuiPy('.puml');
     CBAssociationHtml.Checked:= HasAssociationWithGuiPy('.html');
     CBAssociationTxt.Checked := HasAssociationWithGuiPy('.txt');
     CBAssociationJsp.Checked := HasAssociationWithGuiPy('.jsp');
     CBAssociationPhp.Checked := HasAssociationWithGuiPy('.php');
     CBAssociationCss.Checked := HasAssociationWithGuiPy('.css');
     CBAssociationInc.Checked := HasAssociationWithGuiPy('.inc');
-    CBAssociationJsg.Checked := HasAssociationWithGuiPy('.psg');
-    CBAssociationJsd.Checked := HasAssociationWithGuiPy('.psd');
-    EGuiPyAssociation.Text:= getRegisteredGuiPy;
+    CBAssociationPsg.Checked := HasAssociationWithGuiPy('.psg');
+    CBAssociationPsd.Checked := HasAssociationWithGuiPy('.psd');
+    EGuiPyAssociation.Text:= GetRegisteredGuiPy;
     EAdditionalAssociations.Text:= AdditionalAssociations;
 
     // tab LLM Assistant
-    Providers.setToProviders(TempProviders);
-    CBProvider.ItemIndex:= Integer(TempProviders.Provider);
+    Providers.setToProviders(FTempProviders);
+    CBProvider.ItemIndex:= Integer(FTempProviders.Provider);
     LLMAssistantModelToView;
-    ChatProviders.setToProviders(TempChatProviders);
-    CBChatProvider.ItemIndex:= Integer(TempChatProviders.Provider);
+    ChatProviders.setToProviders(FTempChatProviders);
+    CBChatProvider.ItemIndex:= Integer(FTempChatProviders.Provider);
     LLMChatModelToView;
 
     // tab Visibility
@@ -2101,7 +2177,7 @@ begin
     // tab Browser
     CBUseIEinternForDocuments.Checked:= UseIEinternForDocuments;
     CBOnlyOneBrowserWindow.Checked:= OnlyOneBrowserWindow;
-    EBrowsertitle.text:= BrowserTitle;
+    EBrowserTitle.Text:= BrowserTitle;
     CBOpenBrowserShortcut.Text:= OpenBrowserShortcut;
     ShortenPath(EBrowserProgram, BrowserProgram);
 
@@ -2111,7 +2187,7 @@ begin
     ShortenPath(ETempFolder, TempDir);
   end;
   LanguageOptionsToView;
-  CurrentLanguage:= getCurrentLanguage;
+  FCurrentLanguage:= GetCurrentLanguage;
   RGLanguages.OnClick:= RGLanguagesClick;
 end;
 
@@ -2179,24 +2255,24 @@ end;
 
 procedure TFConfiguration.ViewToModel;
   var LanguageNr: Integer;
-      vOptions: TSynEditorOptions;
-      vScrollOptions: TSynEditorScrollOptions;
+      VOptions: TSynEditorOptions;
+      VScrollOptions: TSynEditorScrollOptions;
       Digits: Integer;
 
-  procedure SetFlag(aOption: TSynEditorOption; aValue: Boolean);
+  procedure SetFlag(Option: TSynEditorOption; Value: Boolean);
   begin
-    if aValue then
-      Include(vOptions, aOption)
+    if Value then
+      Include(VOptions, Option)
     else
-      Exclude(vOptions, aOption);
+      Exclude(VOptions, Option);
   end;
 
-  procedure SetScrollFlag(aOption: TSynEditorScrollOption; aValue: Boolean);
+  procedure SetScrollFlag(Option: TSynEditorScrollOption; Value: Boolean);
   begin
-    if aValue then
-      Include(vScrollOptions, aOption)
+    if Value then
+      Include(VScrollOptions, Option)
     else
-      Exclude(vScrollOptions, aOption);
+      Exclude(VScrollOptions, Option);
   end;
 
 begin
@@ -2219,8 +2295,8 @@ begin
   FSynEdit.Gutter.ShowLineNumbers:= ckGutterShowLineNumbers.Checked;
   FSynEdit.Gutter.LeadingZeros:= ckGutterShowLeaderZeros.Checked;
   FSynEdit.Gutter.ZeroStart:= ckGutterStartAtZero.Checked;
-  FSynEdit.Gutter.Color:= cbGutterColor.SelectedColor;
-  FSynEdit.Gutter.UseFontStyle := cbGutterFont.Checked;
+  FSynEdit.Gutter.Color:= CBGutterColor.SelectedColor;
+  FSynEdit.Gutter.UseFontStyle := CBGutterFont.Checked;
   FSynEdit.Gutter.Font.Assign(lblGutterFont.Font);
   FSynEdit.Gutter.Gradient := ckGutterGradient.Checked;
   if not ckGutterAutosize.Checked and
@@ -2230,8 +2306,7 @@ begin
   //Right Edge
   FSynEdit.RightEdge:= StrToIntDef(eRightEdge.Text, 80);
   FSynEdit.RightEdgeColor:= cbRightEdgeColor.SelectedColor;
-  //ActiveLineColor;
-  FSynEdit.ActiveLineColor := cbActiveLineColor.SelectedColor;
+  FSynEdit.ActiveLineColor := CBActiveLineColor.SelectedColor;
   //Line Spacing
   FSynEdit.ExtraLineSpacing:= StrToIntDef(eLineSpacing.Text, 0);
   FSynEdit.TabWidth:= StrToIntDef(eTabWidth.Text, 8);
@@ -2243,7 +2318,7 @@ begin
 
   // tab options2
   FSynEdit.WordWrap := ckWordWrap.Checked;
-  vOptions := FSynEdit.Options; //Keep old values for unsupported options
+  VOptions := FSynEdit.Options; //Keep old values for unsupported options
   SetFlag(eoAutoIndent, ckAutoIndent.Checked);
   SetFlag(eoDragDropEditing, ckDragAndDropEditing.Checked);
   SetFlag(eoTabIndent, ckTabIndent.Checked);
@@ -2257,7 +2332,7 @@ begin
   SetFlag(eoEnhanceEndKey, ckEnhanceEndKey.Checked);
   SetFlag(eoGroupUndo, ckGroupUndo.Checked);
   SetFlag(eoShowLigatures, ckShowLigatures.Checked);
-  FSynEdit.Options := vOptions;
+  FSynEdit.Options := VOptions;
 
   SetScrollFlag(eoHalfPageScroll, ckHalfPageScroll.Checked);
   SetScrollFlag(eoScrollByOneLess, ckScrollByOneLess.Checked);
@@ -2267,7 +2342,7 @@ begin
   SetScrollFlag(eoScrollHintFollows, ckScrollHintFollows.Checked);
   SetScrollFlag(eoDisableScrollArrows, ckDisableScrollArrows.Checked);
   SetScrollFlag(eoHideShowScrollbars, ckHideShowScrollbars.Checked);
-  FSynedit.ScrollOptions:= vScrollOptions;
+  FSynEdit.ScrollOptions:= VScrollOptions;
   if ckShowSpecialChars.Checked then
     FSynEdit.VisibleSpecialChars := [scWhitespace, scControlChars, scEOL]
   else
@@ -2291,7 +2366,7 @@ begin
     TimeOut:= UDTimeOut.Position;
     InterpreterHistorySize:= UDInterpreterHistorySize.Position;
 
-    // tab editor
+    // tab Editor
     CheckSyntaxAsYouType:= CBCheckSyntaxAsYouType.Checked;
     HighlightSelectedWord:= CBHighlightSelectedWord.Checked;
     DisplayFlowControl.Enabled:= CBDisplayFlowControl.Checked;
@@ -2353,25 +2428,25 @@ begin
     FileChangeNotification:= TFileChangeNotificationType(RGFileChangeNotification.ItemIndex);
 
     // tab ssh
-    ScpCommand:= EScpCommand.text;
-    ScpOptions:= EScpOptions.text;
-    SSHCommand:= ESSHCommand.text;
-    SSHOptions:= ESSHOptions.text;
+    ScpCommand:= EScpCommand.Text;
+    ScpOptions:= EScpOptions.Text;
+    SSHCommand:= ESSHCommand.Text;
+    SSHOptions:= ESSHOptions.Text;
     SSHDisableVariablesWin:= CBSSHDisableVariablesWin.Checked;
 
-    getValues(CommandsDataModule.SynEditPrint);
+    GetValues(CommandsDataModule.SynEditPrint);
   end;
 
   with GuiPyOptions do begin
     // Color themes
     if lbColorThemes.ItemIndex > -1 then
-      fColorTheme:= lbColorThemes.Items[lbColorThemes.ItemIndex];
+      FColorTheme:= lbColorThemes.Items[lbColorThemes.ItemIndex];
 
     // Class modeler
     ShowGetSetMethods:= CBShowGetSetMethods.Checked;
     GetSetMethodsAsProperty:= CBGetSetMethodsAsProperty.Checked;
     GetMethodChecked:= CBGetMethodChecked.Checked;
-    SetMethodChecked:= CBSetmethodChecked.Checked;
+    SetMethodChecked:= CBSetMethodChecked.Checked;
     ShowTypeSelection:= CBShowTypeSelection.Checked;
     ShowWithWithoutReturnValue:= CBShowWithWithoutReturnValue.Checked;
     ShowParameterTypeSelection:= CBShowParameterTypeSelection.Checked;
@@ -2384,17 +2459,17 @@ begin
     ZoomSteps:= UDZoomSteps.Position;
     SnapToGrid:= CBSnapToGrid.Checked;
     FrameWidth:= StrToInt(EFrameWidth.Text);
-    FrameHeight:= strToInt(EFrameHeight.Text);
+    FrameHeight:= StrToInt(EFrameHeight.Text);
 
     // tab Structograms
-    StructoDatatype:= CBDatatype.Text;
+    StructoDatatype:= CBDataType.Text;
     SwitchWithCaseLine:= CBSwitchWithCaseLine.Checked;
-    CaseCount:= StrToInt(ECaseCount.text);
+    CaseCount:= StrToInt(ECaseCount.Text);
     StructogramShadowWidth:= UDStructogramShadowWidth.Position;
     StructogramShadowIntensity:= UDStructogramShadowIntensity.Position;
 
     // tab Sequencediagram
-    SDFillingcolor:= CBSDFillingcolor.Selected;
+    SDFillingColor:= CBSDFillingColor.Selected;
     SDNoFilling:= CBSDNoFilling.Checked;
     SDShowMainCall:= CBSDShowMainCall.Checked;
     SDShowParameter:= CBSDShowParameter.Checked;
@@ -2412,10 +2487,10 @@ begin
     ObjectCaption:= RGObjectCaption.ItemIndex;
     ObjectUnderline:= CBObjectUnderline.Checked;
     CommentColor:= CBCommentColor.Selected;
-    DIVisibilityFilter:= 3 - RGAttributsMethodsDisplay.ItemIndex;
-    DISortOrder:= RGSequenceAttributsMethods.ItemIndex;
-    DIShowParameter:= RGParameterDisplay.ItemIndex;
-    DIShowIcons:= 2 - RGVisibilityDisplay.ItemIndex;
+    DiVisibilityFilter:= 3 - RGAttributsMethodsDisplay.ItemIndex;
+    DiSortOrder:= RGSequenceAttributsMethods.ItemIndex;
+    DiShowParameter:= RGParameterDisplay.ItemIndex;
+    DiShowIcons:= 2 - RGVisibilityDisplay.ItemIndex;
 
     // tab uml options
     PrivateAttributEditable:= CBUMLEdit.Checked;
@@ -2428,7 +2503,7 @@ begin
     ShowObjectsWithInheritedPrivateAttributes:= CBShowObjectsWithInheritedPrivateAttributes.Checked;
     IntegerInsteadofInt:= CBIntegerInsteadofInt.Checked;
     ShowAllNewObjects:= CBShowAllNewObjects.Checked;
-    ObjectsWithoutVisibility:= CBObjectswithoutVisibility.Checked;
+    ObjectsWithoutVisibility:= CBObjectsWithoutVisibility.Checked;
     RelationshipAttributesBold:= CBRelationshipAttributesBold.Checked;
     ShowClassparameterSeparately:= CBShowClassparameterSeparately.Checked;
     RoleHidesAttribute:= CBRoleHidesAttribute.Checked;
@@ -2446,12 +2521,12 @@ begin
 
     // tab LLM Assistant
     LLMAssistantViewToModel;
-    Providers.setFromProviders(TempProviders);
-    LLMAssistant.Providers:= TempProviders;
+    Providers.setFromProviders(FTempProviders);
+    LLMAssistant.Providers:= FTempProviders;
 
     LLMChatViewToModel;
-    ChatProviders.setFromProviders(TempChatProviders);
-    LLMChatForm.LLMChat.Providers:= TempChatProviders;
+    ChatProviders.setFromProviders(FTempChatProviders);
+    LLMChatForm.LLMChat.Providers:= FTempChatProviders;
 
     // Visibility
     VisibilityViewToModel;
@@ -2461,11 +2536,11 @@ begin
     GitLocalRepository:= ExtendPath(CBLocalRepository);
     GitRemoteRepository:= ExtendPath(CBRemoteRepository);
     if Assigned(FGit) and (EUserName.Text <> GuiPyOptions.GitUserName) then begin
-      FGit.GitCall('config --global user.name="' + EUserName.Text + '"', '.');
+      FGit.GitCall('config --global CUser.name="' + EUserName.Text + '"', '.');
       GitUserName:= EUserName.Text;
     end;
     if Assigned(FGit) and (EUserEMail.Text <> GuiPyOptions.GitUserEMail) then begin
-      FGit.GitCall('config --global user.email="' + EUserEMail.Text + '"', '.');
+      FGit.GitCall('config --global CUser.email="' + EUserEMail.Text + '"', '.');
       GitUserEMail:= EUserEMail.Text;
     end;
 
@@ -2478,7 +2553,7 @@ begin
     // tab Browser
     UseIEinternForDocuments:= CBUseIEinternForDocuments.Checked;
     OnlyOneBrowserWindow:= CBOnlyOneBrowserWindow.Checked;
-    BrowserTitle:= EBrowsertitle.text;
+    BrowserTitle:= EBrowserTitle.Text;
     OpenBrowserShortcut:= CBOpenBrowserShortcut.Text;
     BrowserProgram:= ExtendPath(EBrowserProgram);
 
@@ -2492,69 +2567,65 @@ begin
 
   // tab languages
   LanguageNr:= RGLanguages.ItemIndex;
-  if not PyIDEMainForm.mnLanguage.Items[LanguageNr].checked then
-    PyIDEMainForm.mnLanguageClick(PyIDEMainForm.mnLanguage.Items[LanguageNr]);
+  if not PyIDEMainForm.mnLanguage[LanguageNr].Checked then
+    PyIDEMainForm.mnLanguageClick(PyIDEMainForm.mnLanguage[LanguageNr]);
 
   UpdateHighlighters;
-  ActionProxyCollection.ApplyShortCuts;
+  FActionProxyCollection.ApplyShortCuts;
   FileTemplatesGetItems;
   CodeTemplatesGetItems;
-  EditorOptions.assign(FSynEdit);
-  for var i := 0 to cbHighlighters.Items.Count-1 do
+  EditorOptions.Assign(FSynEdit);
+  for var I := 0 to CBHighlighters.Items.Count-1 do
     CommandsDataModule.SynEditOptionsDialogSetHighlighter(
-      Self, i, TSynCustomHighlighter(cbHighlighters.Items.Objects[i]));
+      Self, I, TSynCustomHighlighter(CBHighlighters.Items.Objects[I]));
 
   CommandsDataModule.ApplyEditorOptions;
   PythonIIForm.ApplyEditorOptions;
 end;
 
 procedure TFConfiguration.BTempFolderClick(Sender: TObject);
-  var s: string;
+  var Str: string;
 begin
   if TPyScripterSettings.IsPortable then
-    s:= TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
+    Str:= TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
   else begin
-    s:= GetTempDir;
-    {$WARN SYMBOL_PLATFORM OFF}
-    s:= IncludeTrailingPathDelimiter(GetLongPathName(s));
-    {$WARN SYMBOL_PLATFORM ON}
+    Str:= GetTempDir;
+    Str:= IncludeTrailingPathDelimiter(GetLongPathName(Str));
   end;
-  SysUtils.ForceDirectories(s);
-  ShortenPath(ETempFolder, s);
+  SysUtils.ForceDirectories(Str);
+  ShortenPath(ETempFolder, Str);
 end;
 
 procedure TFConfiguration.SBTempSelectClick(Sender: TObject);
-  var s: string;
+  var Str: string;
 begin
   if TPyScripterSettings.IsPortable then
-    s:= TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
+    Str:= TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
   else begin
-    s:= GetTempDir;
-    {$WARN SYMBOL_PLATFORM OFF}
-    s:= IncludeTrailingPathDelimiter(GetLongPathName(s));
-    {$WARN SYMBOL_PLATFORM ON}
+    Str:= GetTempDir;
+    Str:= IncludeTrailingPathDelimiter(GetLongPathName(Str));
   end;
-  FolderSelect(ETempFolder, s);
-  SysUtils.ForceDirectories(s);
-  ShortenPath(ETempFolder, s);
+  FolderSelect(ETempFolder, Str);
+  SysUtils.ForceDirectories(Str);
+  ShortenPath(ETempFolder, Str);
 end;
 
 procedure TFConfiguration.DoHelp(Adresse: string);
 begin
-  if isHttp(Adresse) and GuiPyOptions.LockedInternet then
+  if IsHttp(Adresse) and GuiPyOptions.LockedInternet then
     Adresse:= 'about:' + _('Internet locked!');
   OpenObject(Adresse);
 end;
 
 var
-  en: array[0..MaxPages] of string =
+  Eng: array[0..MaxPages] of string =
       ('python', 'interpreter', 'editor', 'display', 'options_1', 'options_2', 'code_completion',
        'keystrokes', 'syntax_colors', 'color_themes', 'code_templates', 'file_templates',
        'class_modeler', 'gui_designer', 'structogram', 'sequence_diagram', 'uml_design',
        'uml_options', 'ide_shortcuts', 'browser', 'language', 'options', 'styles',
        'printer', 'header_footer', 'restrictions', 'associations', 'llm_assistant', 'llm_chat',
        'visibility', 'ssh', 'tools', 'git', 'subversion');
-  de: array[0..MaxPages] of string =
+  Deu: array[0..MaxPages] of string =
       ('python', 'interpreter', 'editor', 'anzeige', 'optionen_1', 'optionen_2', 'codevervollstaendigung',
        'tastenkuerzel', 'syntaxfarben', 'farbschemen', 'codevorlagen', 'dateivorlagen',
        'klassenmodellierer', 'gui_designer', 'struktogramm', 'sequenzdiagramm',
@@ -2564,17 +2635,17 @@ var
        'git', 'subversion');
 
 procedure TFConfiguration.BHelpClick(Sender: TObject);
-  var Count: Integer; aNode: TTreeNode;
+  var Count: Integer; ANode: TTreeNode;
 begin
-  aNode:= TVConfiguration.Items.GetFirstNode;
+  ANode:= TVConfiguration.Items.GetFirstNode;
   Count:= 0;
-  while (Count < TVConfiguration.Items.Count) and (aNode <> TVConfiguration.Selected) do begin
-    aNode:= aNode.GetNext;
+  while (Count < TVConfiguration.Items.Count) and (ANode <> TVConfiguration.Selected) do begin
+    ANode:= ANode.GetNext;
     Inc(Count);
   end;
-  if GetCurrentLanguage = 'de'
-    then DoHelp(GetConfigurationAddress(de[Count]))
-    else DoHelp(GetConfigurationAddress(en[Count]));
+  if GetCurrentLanguage = 'Deu'
+    then DoHelp(GetConfigurationAddress(Deu[Count]))
+    else DoHelp(GetConfigurationAddress(Eng[Count]));
 end;
 
 procedure TFConfiguration.BCheckClick(Sender: TObject);
@@ -2582,76 +2653,74 @@ begin
   CheckAllFilesAndFolders;
 end;
 
-{$WARNINGS OFF}
-function TFConfiguration.getDumpText: string;
-  var Pathname, fMachine, fApp, s, s1, winplatform: string;
-      SL: TStringList; aFile: IFile;
+function TFConfiguration.GetDumpText: string;
+  var Pathname, CMachine, App, Str, Str1, WinPlatform: string;
+      StringList: TStringList; AFile: IFile;
 begin
   {$IFDEF WIN64}
-  winplatform := 'x64';
+  WinPlatform := 'x64';
   {$ELSE}
-  winplatform := 'x86';
+  WinPlatform := 'x86';
   {$ENDIF}
   Result:= '';
   Pathname:= TPath.Combine(GuiPyOptions.TempDir, 'Configuration.ini');
-  aFile:= GI_FileFactory.GetFileByFileId(Pathname);
-  if Assigned(aFile) then
-    aFile.Close;
+  AFile:= GI_FileFactory.GetFileByFileId(Pathname);
+  if Assigned(AFile) then
+    AFile.Close;
   Application.ProcessMessages;
   if FileExists(Pathname) then DeleteFile(Pathname);
-  fMachine:= PyIDEMainForm.MachineStorage.FileName;
-  fApp:= PyIDEMainForm.AppStorage.FileName;
+  CMachine:= PyIDEMainForm.MachineStorage.FileName;
+  App:= PyIDEMainForm.AppStorage.FileName;
   try
-    s:= 'Installation ' + CrLf;
-    s1:= Format('Version %s %s', [ApplicationVersion, winplatform]);
-    s:= s + '  GuiPy-Version: ' + s1 + CrLf;
+    Str:= 'Installation ' + CrLf;
+    Str1:= Format('Version %Str %Str', [ApplicationVersion, WinPlatform]);
+    Str:= Str + '  GuiPy-Version: ' + Str1 + CrLf;
     if GI_PyControl.PythonLoaded then
-      s1:= PyControl.PythonVersion.DisplayName + _(EngineTypeName[PyControl.PythonEngineType])
+      Str1:= PyControl.PythonVersion.DisplayName + _(EngineTypeName[PyControl.PythonEngineType])
     else
-      s1:= '<not loaded>';
-    s:= s + '  Python-Version: ' + s1 + CrLf;
-    s:= s + '  Windows-Version: ' + TOSVersion.ToString + CrLF;
-    s:= s + '  CmdLine: ' + CmdLine + CrLf;
-    s:= s + CrLf;
-    s:= s + '  ' + fMachine + CrLf;
-    s:= s + '  ' + fApp + CrLf;
-    s:= s + CrLf;
-    s:= s + StringOfChar('-', 80) + CrLf;
-    s:= s + '--- ' + fMachine + CrLf + CrLf;
-    SL:= TStringList.Create;
-    SL.LoadFromFile(fMachine);
-    s:= s + SL.Text + CrLf;
-    s:= s + StringOfChar('-', 80) + CrLf;
-    s:= s + '--- ' + fApp + CrLf + CrLf;
-    SL.Clear;
-    SL.LoadFromFile(fApp);
-    s:= s + SL.Text;
-    s:= s + StringOfChar('-', 80) + CrLf;
-    FreeAndNil(SL);
-    Result:= s + CrLf;
+      Str1:= '<not loaded>';
+    Str:= Str + '  Python-Version: ' + Str1 + CrLf;
+    Str:= Str + '  Windows-Version: ' + TOSVersion.ToString + CrLf;
+    Str:= Str + '  CmdLine: ' + CmdLine + CrLf;
+    Str:= Str + CrLf;
+    Str:= Str + '  ' + CMachine + CrLf;
+    Str:= Str + '  ' + App + CrLf;
+    Str:= Str + CrLf;
+    Str:= Str + StringOfChar('-', 80) + CrLf;
+    Str:= Str + '--- ' + CMachine + CrLf + CrLf;
+    StringList:= TStringList.Create;
+    StringList.LoadFromFile(CMachine);
+    Str:= Str + StringList.Text + CrLf;
+    Str:= Str + StringOfChar('-', 80) + CrLf;
+    Str:= Str + '--- ' + App + CrLf + CrLf;
+    StringList.Clear;
+    StringList.LoadFromFile(App);
+    Str:= Str + StringList.Text;
+    Str:= Str + StringOfChar('-', 80) + CrLf;
+    FreeAndNil(StringList);
+    Result:= Str + CrLf;
   except
     on e: Exception do
       ErrorMsg(e.Message + ' ' + 'The configuration could not be generated.');
   end;
 end;
-{$WARNINGS ON}
 
 procedure TFConfiguration.BDumpClick(Sender: TObject);
-  var pathname: string; SL: TStringList;
+  var Pathname: string; StringList: TStringList;
 begin
-  SL:= TStringList.Create;
-  SL.Text:= getDumpText;
+  StringList:= TStringList.Create;
+  StringList.Text:= GetDumpText;
   if SysUtils.ForceDirectories(GuiPyOptions.TempDir) then begin
     Pathname:= TPath.Combine(GuiPyOptions.TempDir, 'Configuration.ini');
-    SL.SaveToFile(Pathname);
+    StringList.SaveToFile(Pathname);
     GI_EditorFactory.OpenFile(Pathname);
   end;
-  FreeAndNil(SL);
+  FreeAndNil(StringList);
 end;
 
 procedure TFConfiguration.LMouseEnter(Sender: TObject);
 begin
-  Screen.Cursor:= crHandpoint;
+  Screen.Cursor:= crHandPoint;
 end;
 
 procedure TFConfiguration.LMouseLeave(Sender: TObject);
@@ -2660,57 +2729,57 @@ begin
 end;
 
 procedure TFConfiguration.CallUpdater(const Target, Source1: string; Source2: string);
-  var Updater, s: string;
+  var Updater, Str: string;
 begin
   if Source2 = '' then Source2:= '-xxx';
-  Updater:= EditorFolder + 'setup.exe';
-  s:= '-Update ' + HideBlanks(Target) + ' ' + HideBlanks(Source1) + ' ' + HideBlanks(Source2);
-  s:= s + ' -INI ' + HideBlanks(PyIDEMainForm.MachineStorage.FileName);
+  Updater:= FEditorFolder + 'setup.exe';
+  Str:= '-Update ' + HideBlanks(Target) + ' ' + HideBlanks(Source1) + ' ' + HideBlanks(Source2);
+  Str:= Str + ' -INI ' + HideBlanks(PyIDEMainForm.MachineStorage.FileName);
   if FileExists(Updater) then
     try
-      RunAsAdmin(Handle, Updater, s);
+      RunAsAdmin(Handle, Updater, Str);
     except
       on e: Exception do
         ErrorMsg(e.Message);
     end
   else
-    ErrorMsg(Format(_('File \"%s\" not found.'), [Updater]));
+    ErrorMsg(Format(_('File \"%Str\" not found.'), [Updater]));
 end;
 
-function TFConfiguration.GetConfigurationAddress(const s: string): string;
+function TFConfiguration.GetConfigurationAddress(const Str: string): string;
 begin
-  if GetCurrentLanguage = 'de'
-    then Result:= Homepage + '/doku.php?id=de:konfiguration#' + s
-    else Result:= Homepage + '/doku.php?id=en:configuration#' + s;
+  if GetCurrentLanguage = 'Deu'
+    then Result:= Homepage + '/doku.php?id=Deu:konfiguration#' + Str
+    else Result:= Homepage + '/doku.php?id=Eng:configuration#' + Str;
 end;
 
 procedure TFConfiguration.TVConfigurationChange(Sender: TObject; Node: TTreeNode);
-  var aNode: TTreeNode; Count: Integer;
+  var ANode: TTreeNode; Count: Integer;
 begin
-  aNode:= TVConfiguration.Items.GetFirstNode;
+  ANode:= TVConfiguration.Items.GetFirstNode;
   Count:= 0;
-  while (Count < TVConfiguration.Items.Count) and (aNode <> Node) do begin
-    aNode:= aNode.GetNext;
+  while (Count < TVConfiguration.Items.Count) and (ANode <> Node) do begin
+    ANode:= ANode.GetNext;
     Inc(Count);
   end;
-  if aNode.HasChildren then Inc(Count);
+  if ANode.HasChildren then Inc(Count);
 
   ShowPage(Count);
   CheckAllFilesAndFolders;
 end;
 
-function TFConfiguration.getTVConfigurationItem(text: string): TTreeNode;
+function TFConfiguration.GetTVConfigurationItem(Text: string): TTreeNode;
 begin
-  for var i:= 0 to TVConfiguration.Items.Count - 1 do
-    if TVConfiguration.Items[i].text = text then
-      Exit(TVConfiguration.Items[i]);
+  for var I:= 0 to TVConfiguration.Items.Count - 1 do
+    if TVConfiguration.Items[I].Text = Text then
+      Exit(TVConfiguration.Items[I]);
   Result:= TVConfiguration.Items[0];
 end;
 
-procedure TFConfiguration.ShowPage(i: Integer);
+procedure TFConfiguration.ShowPage(Page: Integer);
 begin
-  PageList.ActivePageIndex:= i;
-  TVConfiguration.Selected:= TVConfiguration.Items[i];
+  PageList.ActivePageIndex:= Page;
+  TVConfiguration.Selected:= TVConfiguration.Items[Page];
   LTitle.Caption:= PageList.ActivePage.Caption;
   PageListClose;
   if PageList.ActivePage.Caption = _('File templates') then begin
@@ -2725,7 +2794,6 @@ begin
   end;
 end;
 
-
 procedure TFConfiguration.PageListClose;
 begin
   ResourcesDataModule.ParameterCompletion.Editor := nil;
@@ -2735,14 +2803,14 @@ begin
 end;
 
 function TFConfiguration.GetEncoding(const Pathname: string): TEncoding;
-  var Stream: TStream; withBOM: Boolean;
+  var Stream: TStream; WithBOM: Boolean;
 begin
-  Result:= TEncoding.Ansi;
+  Result:= TEncoding.ANSI;
   if FileExists(Pathname) then
     try
       Stream:= TFileStream.Create(Pathname, fmOpenRead or fmShareDenyWrite);
       try
-        Result:= SynUnicode.GetEncoding(Stream, withBOM);
+        Result:= SynUnicode.GetEncoding(Stream, WithBOM);
       finally
         FreeAndNil(Stream);
       end;
@@ -2768,26 +2836,26 @@ begin
     '|' + _('All') + ' (*.*)|*.*';
 end;
 
-procedure TFConfiguration.SetElevationRequiredState(aControl: TWinControl);
+procedure TFConfiguration.SetElevationRequiredState(Control: TWinControl);
   const BCM_FIRST = $1600;
         BCM_SETSHIELD = BCM_FIRST + $000C;
 begin
-  SendMessage(aControl.Handle, BCM_SETSHIELD, 0, Integer(True));
+  SendMessage(Control.Handle, BCM_SETSHIELD, 0, Integer(True));
 end;
 
-function TFConfiguration.RunAsAdmin(hWnd: HWND; const aFile, aParameters: string): THandle;
-  var sei: TShellExecuteInfoA;
+function TFConfiguration.RunAsAdmin(AHWnd: HWND; const AFile, Parameters: string): THandle;
+  var Sei: TShellExecuteInfoA;
 begin
-  FillChar(sei, SizeOf(sei), 0);
-  sei.cbSize:= SizeOf(sei);
-  sei.Wnd:= hWnd;
-  sei.fMask:= SEE_MASK_FLAG_DDEWAIT or SEE_MASK_FLAG_NO_UI;
+  FillChar(Sei, SizeOf(Sei), 0);
+  Sei.cbSize:= SizeOf(Sei);
+  Sei.Wnd:= AHWnd;
+  Sei.fMask:= SEE_MASK_FLAG_DDEWAIT or SEE_MASK_FLAG_NO_UI;
   // left side is pAnsiChar
-  sei.lpVerb:= 'runas';
-  sei.lpFile := pAnsiChar(AnsiString(aFile));
-  sei.lpParameters := pAnsiChar(AnsiString(aParameters));
-  sei.nShow:= SW_ShowNormal;
-  if ShellExecuteExA(@sei) then
+  Sei.lpVerb:= 'runas';
+  Sei.lpFile := PAnsiChar(AnsiString(AFile));
+  Sei.lpParameters := PAnsiChar(AnsiString(Parameters));
+  Sei.nShow:= SW_SHOWNORMAL;
+  if ShellExecuteExA(@Sei) then
     Result:= 33
   else begin
     ErrorMsg(SysErrorMessage(GetLastError));
@@ -2799,48 +2867,46 @@ procedure TFConfiguration.MakeControlStructureTemplates;
   const
     ControlStructure: array[1..10] of string =
       ('#if', '#while', '#for', '#do', '#switch', '#try', 'else', '} else', '#ifelse', '{ }');
-  var i: Integer;
 begin
-  for i:= 1 to 21 do begin
-    FreeAndNil(ControlStructureTemplates[i]);
-    ControlStructureTemplates[i]:= TStringList.Create;
+  for var I:= 1 to 21 do begin
+    FreeAndNil(FControlStructureTemplates[I]);
+    FControlStructureTemplates[I]:= TStringList.Create;
   end;
-  ControlStructureTemplates[1].Text:= 'if |:' + CrLf + Indent1 + CrLf;
-  ControlStructureTemplates[2].Text:= 'while |:' +  CrLf + Indent1;
-  ControlStructureTemplates[3].Text:= 'for | in range(n):' +  CrLf + Indent1 + CrLf;
-  ControlStructureTemplates[4].Text:= ''; // 'do:';
-  ControlStructureTemplates[5].Text:=
-         'if |:' + CrLf + Indent2 + CrLf +
-         'elif : ' + CrLf + Indent2 + CrLf +
-         'elif : ' + CrLf + Indent2 + CrLf +
-         'else: ' + CrLf + Indent2 + CrLf;
-  ControlStructureTemplates[6].Text:=
+  FControlStructureTemplates[1].Text:= 'if |:' + CrLf + FIndent1 + CrLf;
+  FControlStructureTemplates[2].Text:= 'while |:' +  CrLf + FIndent1;
+  FControlStructureTemplates[3].Text:= 'for | in range(n):' +  CrLf + FIndent1 + CrLf;
+  FControlStructureTemplates[4].Text:= ''; // 'do:';
+  FControlStructureTemplates[5].Text:=
+         'if |:' + CrLf + FIndent2 + CrLf +
+         'elif : ' + CrLf + FIndent2 + CrLf +
+         'elif : ' + CrLf + FIndent2 + CrLf +
+         'else: ' + CrLf + FIndent2 + CrLf;
+  FControlStructureTemplates[6].Text:=
          'try:' + CrLf +
-            Indent1 + '|' + CrLf +
+            FIndent1 + '|' + CrLf +
          'except:' + CrLf  +
-            Indent1 + CrLf +
+            FIndent1 + CrLf +
          'finally:' + CrLf +
-            Indent1 + CrLf;
-  ControlStructureTemplates[7].Text:=  'else: ' + CrLf + Indent1 + '|' + CrLf;
-  ControlStructureTemplates[8].Text:=  'else: ' + CrLf + Indent1 + '|' + CrLf;
-  ControlStructureTemplates[9].Text:=  'if |:' + CrLf + Indent1 + CrLf + 'else:' + CrLf + Indent1 + CrLf;
-  ControlStructureTemplates[10].Text:= CrLf + Indent1 + '|' + CrLf;
+            FIndent1 + CrLf;
+  FControlStructureTemplates[7].Text:=  'else: ' + CrLf + FIndent1 + '|' + CrLf;
+  FControlStructureTemplates[8].Text:=  'else: ' + CrLf + FIndent1 + '|' + CrLf;
+  FControlStructureTemplates[9].Text:=  'if |:' + CrLf + FIndent1 + CrLf + 'else:' + CrLf + FIndent1 + CrLf;
+  FControlStructureTemplates[10].Text:= CrLf + FIndent1 + '|' + CrLf;
 
-  ControlStructureTemplates[11].Text:= 'else if |:' + CrLf + Indent1 + CrLf;
-  ControlStructureTemplates[12].Text:= 'for i in range(10):' +  CrLf + Indent1 + CrLf;
-  ControlStructureTemplates[13].Text:= 'catch (Exception e):' +  CrLf + Indent1 + '|' + CrLf;
-  ControlStructureTemplates[14].Text:= 'finally:' +  CrLf + Indent1 + '|' + CrLf;
-  ControlStructureTemplates[15].Text:= 'def private |void name():' + CrLf + Indent1 + CrLf;
-  ControlStructureTemplates[16].Text:= 'def |void name():' + CrLf + Indent1 + CrLf;
-  ControlStructureTemplates[17].Text:= 'println(|)' + CrLf;
-  ControlStructureTemplates[18].Text:= '|type name = new type()' + CrLf;
-  ControlStructureTemplates[19].Text:= 'public static void main(String[] args) {' + CrLf + Indent1 + '|' + CrLf;
-  ControlStructureTemplates[20].Text:= 'def |void name():' + CrLf + Indent1 + CrLf;
-  ControlStructureTemplates[21].Text:= 'def |void name():' + CrLf + Indent1 + CrLf;
+  FControlStructureTemplates[11].Text:= 'else if |:' + CrLf + FIndent1 + CrLf;
+  FControlStructureTemplates[12].Text:= 'for I in range(10):' +  CrLf + FIndent1 + CrLf;
+  FControlStructureTemplates[13].Text:= 'catch (Exception e):' +  CrLf + FIndent1 + '|' + CrLf;
+  FControlStructureTemplates[14].Text:= 'finally:' +  CrLf + FIndent1 + '|' + CrLf;
+  FControlStructureTemplates[15].Text:= 'def private |void name():' + CrLf + FIndent1 + CrLf;
+  FControlStructureTemplates[16].Text:= 'def |void name():' + CrLf + FIndent1 + CrLf;
+  FControlStructureTemplates[17].Text:= 'println(|)' + CrLf;
+  FControlStructureTemplates[18].Text:= '|type name = new type()' + CrLf;
+  FControlStructureTemplates[19].Text:= 'public static void main(String[] args) {' + CrLf + FIndent1 + '|' + CrLf;
+  FControlStructureTemplates[20].Text:= 'def |void name():' + CrLf + FIndent1 + CrLf;
+  FControlStructureTemplates[21].Text:= 'def |void name():' + CrLf + FIndent1 + CrLf;
 end;
-{$WARN SYMBOL_PLATFORM OFF}
 
-class function TFConfiguration.isDark: Boolean;
+class function TFConfiguration.IsDark: Boolean;
   var BGColor, FGColor: TColor;
 begin
   if StyleServices.IsSystemStyle then begin
@@ -2860,46 +2926,46 @@ end;
 // https://stackoverflow.com/questions/9130945/delphi-xe2-disabling-vcl-style-on-a-component
 // https://theroadtodelphi.com/2012/02/06/changing-the-color-of-edit-controls-with-vcl-styles-enabled/
 
-procedure TFConfiguration.ShortenPath(WinControl: TWinControl; const s: string);
-  var s1, s2, s3: string; p{, w}: Integer;
+procedure TFConfiguration.ShortenPath(WinControl: TWinControl; const Str: string);
+  var Str1, Str2, Str3: string; Posi{, w}: Integer;
 begin
-  WinControl.Hint:= s;
+  WinControl.Hint:= Str;
   WinControl.ShowHint:= True;
 {  if WinControl is TEdit
     then w:= WinControl.Width
     else w:= WinControl.Width - 16;
     }
-  s1:= s; // GlobalMinimizeName(s, Canvas, w);
+  Str1:= Str;
   if WinControl is TEdit
-    then (WinControl as TEdit).Text:= s1
-    else (WinControl as TComboBox).Text:= s1;
-  p:= Pos('...', s1);
-  if p > 0 then begin
-    s2:= s;
-    Delete(s2, 1, p-1);
-    s3:= Copy(s1, p+3, Length(s1));
-    p:= Pos(s3, s2);
-    Delete(s2, p, Length(s1));
-    WinControl.HelpKeyword:= s2;
+    then (WinControl as TEdit).Text:= Str1
+    else (WinControl as TComboBox).Text:= Str1;
+  Posi:= Pos('...', Str1);
+  if Posi > 0 then begin
+    Str2:= Str;
+    Delete(Str2, 1, Posi-1);
+    Str3:= Copy(Str1, Posi+3, Length(Str1));
+    Posi:= Pos(Str3, Str2);
+    Delete(Str2, Posi, Length(Str1));
+    WinControl.HelpKeyword:= Str2;
   end else
     WinControl.HelpKeyword:= '';
 end;
 
 function TFConfiguration.ExtendPath(WinControl: TWinControl): string;
-  var s: string; p: Integer;
+  var Str: string; Posi: Integer;
 begin
   if WinControl is TEdit
-    then s:= (WinControl as TEdit).Text
-    else s:= (WinControl as TComboBox).Text;
-  p:= Pos('...', s);
-  if p > 0 then begin
-    Delete(s, p, 3);
-    insert(WinControl.HelpKeyword, s, p);
+    then Str:= (WinControl as TEdit).Text
+    else Str:= (WinControl as TComboBox).Text;
+  Posi:= Pos('...', Str);
+  if Posi > 0 then begin
+    Delete(Str, Posi, 3);
+    insert(WinControl.HelpKeyword, Str, Posi);
   end;
-  Result:= s;
+  Result:= Str;
 end;
 
-function TFConfiguration.getMultiLineComment(Indent: string): string;
+function TFConfiguration.GetMultiLineComment(Indent: string): string;
 begin
   if PyIDEOptions.MethodsWithComment then
     Result:=  Indent + '"""' + CrLf +
@@ -2935,7 +3001,7 @@ procedure TFConfiguration.actPVAddExecute(Sender: TObject);
 var
   PythonVersion: TPythonVersion;
   Directories: TArray<string>;
-  err: string;
+  Err: string;
 begin
   if SelectDirectory('', Directories, [], _('Select folder with Python installation (inlcuding virtualenv and venv)'))
   then begin
@@ -2949,11 +3015,11 @@ begin
       vtPythonVersions.Selected[vtPythonVersions.GetLast] := True;
     end else begin
       {$IFDEF WIN32}
-      err:= Format(_(SPythonFindError32), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
+      Err:= Format(_(SPythonFindError32), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
       {$ELSE}
-      err:= Format(_(SPythonFindError64), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
+      Err:= Format(_(SPythonFindError64), [PyControl.MinPyVersion, PyControl.MaxPyVersion]);
       {$ENDIF}
-      StyledMessageDlg(_(err), mtError, [mbOK], 0);
+      StyledMessageDlg(_(Err), mtError, [mbOK], 0);
     end;
   end;
 end;
@@ -3121,44 +3187,43 @@ end;
 
 {--- Editor Options -----------------------------------------------------------}
 
-procedure TFConfiguration.EditStrCallback(const S: string);
+procedure TFConfiguration.EditStrCallback(const Str: string);
 begin
   if FExtended
-    then cKeyCommand.Items.AddObject(_(S), TObject(ConvertExtendedToCommand(S)))
-    else cKeyCommand.Items.AddObject(S, TObject(ConvertCodeStringToCommand(S)));
+    then cKeyCommand.Items.AddObject(_(Str), TObject(ConvertExtendedToCommand(Str)))
+    else cKeyCommand.Items.AddObject(Str, TObject(ConvertCodeStringToCommand(Str)));
 end;
 
 procedure TFConfiguration.SynEditOptionsShow;
 var Commands: TStringList;
-    i : Integer;
 begin
   //We need to do this now because it will not have been assigned when create occurs
   cKeyCommand.Items.Clear;
-  //Start the callback to add the strings
+  //Start the callback to Add the strings
   if FExtended then
     GetEditorCommandExtended(EditStrCallback)
   else
-    GetEditorCommandValues(EditStrCallBack);
-  //Now add in the user defined ones if they have any
+    GetEditorCommandValues(EditStrCallback);
+  //Now Add in the CUser defined ones if they have any
   Commands := TStringList.Create;
   try
     CommandsDataModule.GetEditorAllUserCommands(Commands);
-    for i := 0 to Commands.Count - 1 do
-      if Commands.Objects[i] <> nil then
-        cKeyCommand.Items.AddObject(Commands[i], Commands.Objects[i]);
+    for var I := 0 to Commands.Count - 1 do
+      if Commands.Objects[I] <> nil then
+        cKeyCommand.Items.AddObject(Commands[I], Commands.Objects[I]);
   finally
     Commands.Free;
   end;
 
   if (KeyList.Items.Count > 0) then KeyList.Items[0].Selected:= True;
 
-  if cbHighlighters.Items.Count > 0 then
-    cbHighlighters.ItemIndex := 0;
+  if CBHighlighters.Items.Count > 0 then
+    CBHighlighters.ItemIndex := 0;
 
-  if cbHighlighters.ItemIndex = -1 then
+  if CBHighlighters.ItemIndex = -1 then
     EnableColorItems(False)  //If there is still no selected item then disable controls
   else
-    cbHighlightersChange(cbHighlighters);  //run OnChange handler (it wont be fired on setting the itemindex prop)
+    CBHighlightersChange(CBHighlighters);  //run OnChange handler (it wont be fired on setting the ItemIndex prop)
 end;
 
 {--- Editor Options Display ---------------------------------------------------}
@@ -3183,10 +3248,10 @@ begin
   end;
 end;
 
-procedure TFConfiguration.cbGutterFontClick(Sender: TObject);
+procedure TFConfiguration.CBGutterFontClick(Sender: TObject);
 begin
-  lblGutterFont.Enabled := cbGutterFont.Checked;
-  btnGutterFont.Enabled := cbGutterFont.Checked;
+  lblGutterFont.Enabled := CBGutterFont.Checked;
+  btnGutterFont.Enabled := CBGutterFont.Checked;
 end;
 
 {--- Options ------------------------------------------------------------------}
@@ -3197,7 +3262,7 @@ procedure TFConfiguration.BCodeCompletionFontClick(Sender: TObject);
 begin
   ResourcesDataModule.dlgFontDialog.Font.Assign(PyIDEOptions.AutoCompletionFont);
   if ResourcesDataModule.dlgFontDialog.Execute then
-    PyIDEOptions.AutoCompletionFont.assign(ResourcesDataModule.dlgFontDialog.Font);
+    PyIDEOptions.AutoCompletionFont.Assign(ResourcesDataModule.dlgFontDialog.Font);
 end;
 
 {--- Keystrokes ---------------------------------------------------------------}
@@ -3205,13 +3270,10 @@ end;
 procedure TFConfiguration.btnUpdateKeyClick(Sender: TObject);
 
 var
-//  Cmd          : Integer;
-//  KeyLoc       : Integer;
-//  TmpCommand   : string;
-  OldShortcut  : TShortcut;
-  OldShortcut2 : TShortcut;
+  OldShortcut  : TShortCut;
+  OldShortcut2 : TShortCut;
   Key : TSynEditKeyStroke;
-  S : string;
+  Str : string;
 begin
   if KeyList.Selected = nil then Exit;
   if cKeyCommand.ItemIndex < 0 then Exit;
@@ -3223,10 +3285,10 @@ begin
     UpdateKey(Key);
   except
      on E: ESynKeyError do begin
-       S := _(SDuplicateKey);
+       Str := _(SDuplicateKey);
        Key.ShortCut := OldShortcut;
        Key.ShortCut2 := OldShortcut2;
-       ErrorMsg(S);
+       ErrorMsg(Str);
      end;
   end;
   FillInKeystrokeInfo(TSynEditKeyStroke(KeyList.Selected.Data), KeyList.Selected);
@@ -3236,25 +3298,25 @@ procedure TFConfiguration.btnResetKeysClick(Sender: TObject);
 begin
   FSynEdit.Keystrokes.ResetDefaults;
   PrepareKeyStrokes;
-  KeyStrokesReset:= True;
+  FKeyStrokesReset:= True;
 end;
 
 procedure TFConfiguration.btnAddKeyClick(Sender: TObject);
 var
   Item : TListItem;
-  S : string;
+  Str : string;
 begin
   if cKeyCommand.ItemIndex < 0 then Exit;
   Item:= KeyList.Items.Add;
   try
     Item.Data:= FSynEdit.Keystrokes.Add;
-    UpdateKey(TSynEditKeystroke(Item.Data));
-    FillInKeystrokeInfo(TSynEditKeystroke(Item.Data), Item);
+    UpdateKey(TSynEditKeyStroke(Item.Data));
+    FillInKeystrokeInfo(TSynEditKeyStroke(Item.Data), Item);
     Item.Selected:= True;
   except
      on E: ESynKeyError do begin
-       S := _(SDuplicateKey);
-       ErrorMsg(S);
+       Str := _(SDuplicateKey);
+       ErrorMsg(Str);
        TSynEditKeyStroke(Item.Data).Free;
        Item.Delete;
      end;
@@ -3280,25 +3342,20 @@ begin
   EDigits.Enabled:= not ckGutterAutosize.Checked;
 end;
 
-procedure TFConfiguration.UpdateKey(AKey: TSynEditKeystroke);
+procedure TFConfiguration.UpdateKey(AKey: TSynEditKeyStroke);
 var
   Cmd: Integer;
 begin
   Cmd := Integer(cKeyCommand.Items.Objects[cKeyCommand.ItemIndex]);
-
   AKey.Command:= Cmd;
-
-  //if eKeyShort1.HotKey <> 0 then  Issue 304
-    AKey.ShortCut := eKeyShort1.HotKey;
-
-  //if eKeyShort2.HotKey <> 0 then
-    AKey.ShortCut2:= eKeyShort2.HotKey;
-
+  AKey.ShortCut := FEKeyShort1.HotKey;
+  AKey.ShortCut2:= FEKeyShort2.HotKey;
 end;
 
 procedure TFConfiguration.FillInKeystrokeInfo(
-  AKey: TSynEditKeystroke; AItem: TListItem);
-var TmpString: string;      begin
+  AKey: TSynEditKeyStroke; AItem: TListItem);
+var TmpString: string;
+begin
   with AKey do
   begin
     if Command >= ecUserFirst then
@@ -3316,10 +3373,10 @@ var TmpString: string;      begin
     AItem.SubItems.Clear;
 
     TmpString := '';
-    if Shortcut <> 0 then
+    if ShortCut <> 0 then
       TmpString := ShortCutToText(ShortCut);
 
-    if (TmpString <> '') and (Shortcut2 <> 0) then
+    if (TmpString <> '') and (ShortCut2 <> 0) then
       TmpString := TmpString + ' ' + ShortCutToText(ShortCut2);
 
     AItem.SubItems.Add(TmpString);
@@ -3327,17 +3384,17 @@ var TmpString: string;      begin
 end;
 
 procedure TFConfiguration.PrepareKeyStrokes;
-  var i: Integer;
+  var I: Integer;
       Item : TListItem;
 begin
   FHandleChanges := True;  //Normally true, can prevent unwanted execution of event handlers
 
   KeyList.OnSelectItem := KeyListSelectItem;
 
-  eKeyShort1:= TSynHotKey.Create(Self);
-  with eKeyShort1 do
+  FEKeyShort1:= TSynHotKey.Create(Self);
+  with FEKeyShort1 do
   begin
-    Parent := gbKeystrokes;
+    Parent := gbKeyStrokes;
     Left := PPIScale(185);
     Top := PPIScale(55);
     Width := PPIScale(185);
@@ -3350,10 +3407,10 @@ begin
     Color := StyleServices.GetSystemColor(clWindow);
   end;
 
-  eKeyShort2:= TSynHotKey.Create(Self);
-  with eKeyShort2 do
+  FEKeyShort2:= TSynHotKey.Create(Self);
+  with FEKeyShort2 do
   begin
-    Parent := gbKeystrokes;
+    Parent := gbKeyStrokes;
     Left := PPIScale(185);
     Top := PPIScale(87);
     Width := PPIScale(185);
@@ -3373,11 +3430,11 @@ begin
   KeyList.Items.BeginUpdate;
   try
     KeyList.Items.Clear;
-    for i:= 0 to FSynEdit.Keystrokes.Count-1 do
+    for I:= 0 to FSynEdit.Keystrokes.Count-1 do
     begin
       Item:= KeyList.Items.Add;
-      FillInKeystrokeInfo(FSynEdit.Keystrokes.Items[I], Item);
-      Item.Data:= FSynEdit.Keystrokes.Items[I];
+      FillInKeystrokeInfo(FSynEdit.Keystrokes[I], Item);
+      Item.Data:= FSynEdit.Keystrokes[I];
     end;
   finally
     KeyList.Items.EndUpdate;
@@ -3390,8 +3447,8 @@ begin
   if not (Selected and Assigned(Item)) then Exit;
   cKeyCommand.Text      := Item.Caption;
   cKeyCommand.ItemIndex := cKeyCommand.Items.IndexOf(Item.Caption);
-  eKeyShort1.HotKey     := TSynEditKeyStroke(Item.Data).ShortCut;
-  eKeyShort2.HotKey     := TSynEditKeyStroke(Item.Data).ShortCut2;
+  FEKeyShort1.HotKey     := TSynEditKeyStroke(Item.Data).ShortCut;
+  FEKeyShort2.HotKey     := TSynEditKeyStroke(Item.Data).ShortCut2;
 end;
 
 {--- Syntax Colors ------------------------------------------------------------}
@@ -3400,77 +3457,70 @@ procedure TFConfiguration.PrepareHighlighters;
 type
   TSynHClass = class of TSynCustomHighlighter;
 var
-   wCount : Integer;
-   loop : Integer;
-   wHighlighter : TSynCustomHighlighter;
-   wInternalSynH : TSynCustomHighlighter;
-   wSynHClass : TSynHClass;
+   WCount : Integer;
+   WHighlighter : TSynCustomHighlighter;
+   WInternalSynH : TSynCustomHighlighter;
+   WSynHClass : TSynHClass;
    FileName : string;
 begin
-  cbHighlighters.Items.Clear;
-  CommandsDataModule.SynEditOptionsDialogGetHighlighterCount(Self, wCount);
-  for loop := 0 to wCount - 1 do begin
-    CommandsDataModule.SynEditOptionsDialogGetHighlighter(Self, loop, wHighlighter);
-    if Assigned(wHighlighter) then begin
-       wSynHClass := TSynHClass(wHighlighter.classtype);
-       wInternalSynH := wSynHClass.Create(nil);
-       wInternalSynH.assign(wHighlighter);
-       fHighlighters.add(wInternalSynH);
-       cbHighlighters.Items.AddObject(_(wInternalSynH.FriendlyLanguageName), wInternalSynH);
+  CBHighlighters.Items.Clear;
+  CommandsDataModule.SynEditOptionsDialogGetHighlighterCount(Self, WCount);
+  for var I := 0 to WCount - 1 do begin
+    CommandsDataModule.SynEditOptionsDialogGetHighlighter(Self, I, WHighlighter);
+    if Assigned(WHighlighter) then begin
+       WSynHClass := TSynHClass(WHighlighter.ClassType);
+       WInternalSynH := WSynHClass.Create(nil);
+       WInternalSynH.Assign(WHighlighter);
+       FHighlighters.Add(WInternalSynH);
+       CBHighlighters.Items.AddObject(_(WInternalSynH.FriendlyLanguageName), WInternalSynH);
 
-       if (wInternalSynH.FriendlyLanguageName = 'Python') or
-          ((wInternalSynH.FriendlyLanguageName = 'Python Interpreter') and
-         not Assigned(fColorThemeHighlighter)) then
+       if (WInternalSynH.FriendlyLanguageName = 'Python') or
+          ((WInternalSynH.FriendlyLanguageName = 'Python Interpreter') and
+         not Assigned(FColorThemeHighlighter)) then
        begin
-         fColorThemeHighlighter := wSynHClass.Create(nil);
-         fColorThemeHighlighter.Assign(wHighlighter);
-         SynThemeSample.Highlighter := fColorThemeHighlighter;
-         SynThemeSample.Lines.Text := fColorThemeHighlighter.SampleSource;
+         FColorThemeHighlighter := WSynHClass.Create(nil);
+         FColorThemeHighlighter.Assign(WHighlighter);
+         SynThemeSample.Highlighter := FColorThemeHighlighter;
+         SynThemeSample.Lines.Text := FColorThemeHighlighter.SampleSource;
        end;
     end;
   end;
-  if cbHighlighters.Items.Count > 0 then begin
-    cbHighlighters.ItemIndex := 0;
-    cbHighlightersChange(cbHighlighters);
+  if CBHighlighters.Items.Count > 0 then begin
+    CBHighlighters.ItemIndex := 0;
+    CBHighlightersChange(CBHighlighters);
   end;
 
   lbColorThemes.Items.Clear;
-  HighlighterFileDir := TPyScripterSettings.ColorThemesFilesDir;
+  FHighlighterFileDir := TPyScripterSettings.ColorThemesFilesDir;
 
-  if HighlighterFileDir <> '' then
-    for FileName in TDirectory.GetFiles(HighlighterFileDir,'*.ini') do
+  if FHighlighterFileDir <> '' then
+    for FileName in TDirectory.GetFiles(FHighlighterFileDir,'*.ini') do
       lbColorThemes.Items.Add(TPath.GetFileNameWithoutExtension(FileName));
 end;
 
 procedure TFConfiguration.UpdateHighlighters;
-  var i: Integer;
 begin
-  for i:= 0 to fHighlighters.Count-1 do
-    CommandsDataModule.SynEditOptionsDialogSetHighlighter(Self, i, fHighlighters[i]);
-
-   {if assigned(fSetHighlighterEvent) then
-      for i := 0 to fHighlighters.Count-1 do
-         fSetHighlighterEvent(self, loop, fHighlighters[i]);}
+  for var I:= 0 to FHighlighters.Count-1 do
+    CommandsDataModule.SynEditOptionsDialogSetHighlighter(Self, I, FHighlighters[I]);
 end;
 
-procedure TFConfiguration.cbHighlightersChange(Sender: TObject);
+procedure TFConfiguration.CBHighlightersChange(Sender: TObject);
 var
-  loop : Integer;
-  wSynH : TSynCustomHighlighter;
+  WSynH : TSynCustomHighlighter;
 begin
   lbElements.Items.BeginUpdate;
   SynSyntaxSample.Lines.BeginUpdate;
   try
-    lbElements.itemindex := -1;
+    lbElements.ItemIndex := -1;
     lbElements.Items.Clear;
-    SynSyntaxSample.lines.clear;
-    if cbHighlighters.itemindex > -1 then
+    SynSyntaxSample.Lines.Clear;
+    if CBHighlighters.ItemIndex > -1 then
     begin
-      wSynH := SelectedHighlighter;
-      for loop := 0 to wSynH.AttrCount - 1 do
-        lbElements.Items.Add(wSynH.Attribute[loop].FriendlyName);
-      SynSyntaxSample.Highlighter := wSynH;
-      SynSyntaxSample.Lines.text := wSynH.SampleSource;
+      WSynH := SelectedHighlighter;
+      for var I := 0 to WSynH.AttrCount - 1 do
+        lbElements.Items.Add(WSynH.Attribute[I].FriendlyName);
+      SynSyntaxSample.Highlighter := WSynH;
+      SynSyntaxSample.Lines.Text := WSynH.SampleSource;
     end;
 
     //Select the first Element if avail to avoid exceptions
@@ -3491,25 +3541,25 @@ end;
 
 procedure TFConfiguration.lbElementsClick(Sender: TObject);
 var
-  wSynH : TSynCustomHighlighter;
-  wSynAttr : TSynHighlighterAttributes;
+  WSynH : TSynCustomHighlighter;
+  WSynAttr : TSynHighlighterAttributes;
 
 begin
   if 0 <= lbElements.ItemIndex then
   begin
-    wSynH := SelectedHighlighter;
-    if lbElements.ItemIndex < wSynH.AttrCount then begin
+    WSynH := SelectedHighlighter;
+    if lbElements.ItemIndex < WSynH.AttrCount then begin
       EnableColorItems(True);
-      wSynAttr := wSynH.Attribute[lbElements.ItemIndex];
+      WSynAttr := WSynH.Attribute[lbElements.ItemIndex];
 
       FHandleChanges := False;
       try
-        cbxElementBold.Checked := (fsBold in wSynAttr.Style);
-        cbxElementItalic.Checked := (fsItalic in wSynAttr.Style);
-        cbxElementUnderline.Checked := (fsUnderline in wSynAttr.Style);
-        cbxElementStrikeout.Checked := (fsStrikeOut in wSynAttr.Style);
-        cbElementForeground.SelectedColor := wSynAttr.Foreground;
-        cbElementBackground.SelectedColor := wSynAttr.Background;
+        cbxElementBold.Checked := (fsBold in WSynAttr.Style);
+        cbxElementItalic.Checked := (fsItalic in WSynAttr.Style);
+        cbxElementUnderline.Checked := (fsUnderline in WSynAttr.Style);
+        cbxElementStrikeout.Checked := (fsStrikeOut in WSynAttr.Style);
+        CBElementForeground.SelectedColor := WSynAttr.Foreground;
+        CBElementBackground.SelectedColor := WSynAttr.Background;
       finally
         FHandleChanges := True;
       end;
@@ -3519,26 +3569,26 @@ begin
     EnableColorItems(False);
 end;
 
-procedure TFConfiguration.cbElementForegroundSelectedColorChanged(
+procedure TFConfiguration.CBElementForegroundSelectedColorChanged(
   Sender: TObject);
 var
-  wSynH : TSynCustomHighlighter;
-  wSynAttr : TSynHighlighterAttributes;
+  WSynH : TSynCustomHighlighter;
+  WSynAttr : TSynHighlighterAttributes;
 begin
-  wSynH := SelectedHighlighter;
-  wSynAttr := wSynH.Attribute[lbElements.ItemIndex];
-  wSynAttr.Foreground := cbElementForeground.SelectedColor;
+  WSynH := SelectedHighlighter;
+  WSynAttr := WSynH.Attribute[lbElements.ItemIndex];
+  WSynAttr.Foreground := CBElementForeground.SelectedColor;
 end;
 
-procedure TFConfiguration.cbElementBackgroundSelectedColorChanged(
+procedure TFConfiguration.CBElementBackgroundSelectedColorChanged(
   Sender: TObject);
 var
-  wSynH : TSynCustomHighlighter;
-  wSynAttr : TSynHighlighterAttributes;
+  WSynH : TSynCustomHighlighter;
+  WSynAttr : TSynHighlighterAttributes;
 begin
-  wSynH := SelectedHighlighter;
-  wSynAttr := wSynH.Attribute[lbElements.ItemIndex];
-  wSynAttr.Background := cbElementBackground.SelectedColor;
+  WSynH := SelectedHighlighter;
+  WSynAttr := WSynH.Attribute[lbElements.ItemIndex];
+  WSynAttr.Background := CBElementBackground.SelectedColor;
 end;
 
 procedure TFConfiguration.cbxElementBoldClick(Sender: TObject);
@@ -3549,66 +3599,66 @@ end;
 
 procedure TFConfiguration.UpdateColorFontStyle;
 var
-  wfs : TFontStyles;
-  wSynH : TSynCustomHighlighter;
-  wSynAttr : TSynHighlighterAttributes;
+  Wfs : TFontStyles;
+  WSynH : TSynCustomHighlighter;
+  WSynAttr : TSynHighlighterAttributes;
 begin
-  wfs := [];
-  wSynH := SelectedHighlighter;
-  wSynAttr := wSynH.Attribute[lbElements.ItemIndex];
+  Wfs := [];
+  WSynH := SelectedHighlighter;
+  WSynAttr := WSynH.Attribute[lbElements.ItemIndex];
 
   if cbxElementBold.Checked then
-    include(wfs, fsBold);
+    Include(Wfs, fsBold);
 
   if cbxElementItalic.Checked then
-    include(wfs, fsItalic);
+    Include(Wfs, fsItalic);
 
   if cbxElementUnderline.Checked then
-    include(wfs, fsUnderline);
+    Include(Wfs, fsUnderline);
 
   if cbxElementStrikeout.Checked then
-    include(wfs, fsStrikeOut);
+    Include(Wfs, fsStrikeOut);
 
-  wSynAttr.style := wfs;
+  WSynAttr.Style := Wfs;
 end;
 
 procedure TFConfiguration.SynSyntaxSampleClick(Sender: TObject);
 var
-  i, TokenType, Start: Integer;
+  TokenType, Start: Integer;
   Token: string;
   Attri: TSynHighlighterAttributes;
 begin
   SynSyntaxSample.GetHighlighterAttriAtRowColEx(SynSyntaxSample.CaretXY, Token,
             TokenType, Start, Attri);
-  for i := 0 to lbElements.Count - 1 do
-    if Assigned(Attri) and (lbElements.Items[i] = Attri.FriendlyName) then begin
-      lbElements.ItemIndex := i;
+  for var I := 0 to lbElements.Count - 1 do
+    if Assigned(Attri) and (lbElements.Items[I] = Attri.FriendlyName) then begin
+      lbElements.ItemIndex := I;
       lbElementsClick(Self);
       Break;
     end;
 end;
 
-procedure TFConfiguration.EnableColorItems(aEnable : Boolean);
+procedure TFConfiguration.EnableColorItems(Enable : Boolean);
 begin
-  cbElementForeground.Enabled := aenable;
-  cbElementBackground.Enabled := aenable;
-  cbxElementBold.Enabled := aenable;
-  cbxElementItalic.Enabled := aenable;
-  cbxElementUnderline.Enabled := aenable;
-  cbxElementStrikeout.Enabled := aenable;
-  if aEnable then begin
-    cbElementForeground.HandleNeeded;
-    cbElementBackground.HandleNeeded;
+  CBElementForeground.Enabled := Enable;
+  CBElementBackground.Enabled := Enable;
+  cbxElementBold.Enabled := Enable;
+  cbxElementItalic.Enabled := Enable;
+  cbxElementUnderline.Enabled := Enable;
+  cbxElementStrikeout.Enabled := Enable;
+  if Enable then begin
+    CBElementForeground.HandleNeeded;
+    CBElementBackground.HandleNeeded;
   end;
 end;
 
-// https://www.slant.co/topics/358/~best-color-themes-for-text-editors#5
+// https://www.slant.co/topics/358/~best-color-themes-for-Text-editors#5
 
 function TFConfiguration.SelectedHighlighter : TSynCustomHighlighter;
 begin
   Result := nil;
-  if cbHighlighters.ItemIndex > -1 then
-    Result := cbHighlighters.Items.Objects[cbHighlighters.ItemIndex] as TSynCustomHighlighter;
+  if CBHighlighters.ItemIndex > -1 then
+    Result := CBHighlighters.Items.Objects[CBHighlighters.ItemIndex] as TSynCustomHighlighter;
 end;
 
 {--- Color Themes -------------------------------------------------------------}
@@ -3620,9 +3670,9 @@ var
 begin
   if lbColorThemes.ItemIndex >= 0 then
   begin
-    GuiPyOptions.fColorTheme:= lbColorThemes.Items[lbColorThemes.ItemIndex];
-    FileName := IncludeTrailingPathDelimiter(HighlighterFileDir) +
-                  GuiPyOptions.fColorTheme + '.ini';
+    GuiPyOptions.FColorTheme:= lbColorThemes.Items[lbColorThemes.ItemIndex];
+    FileName := IncludeTrailingPathDelimiter(FHighlighterFileDir) +
+                  GuiPyOptions.FColorTheme + '.ini';
     AppStorage := TJvAppIniFileStorage.Create(nil);
     try
       AppStorage.FlushOnDestroy := False;
@@ -3643,32 +3693,31 @@ end;
 
 procedure TFConfiguration.ApplyColorTheme;
 var
-  i : Integer;
   AppStorage : TJvAppIniFileStorage;
   FileName : string;
 begin
-  FileName := TPath.Combine(HighlighterFileDir, GuiPyOptions.ColorTheme + '.ini');
+  FileName := TPath.Combine(FHighlighterFileDir, GuiPyOptions.ColorTheme + '.ini');
   if FileExists(FileName) then begin
     AppStorage := TJvAppIniFileStorage.Create(nil);
     try
       AppStorage.FlushOnDestroy := False;
       AppStorage.Location := flCustom;
       AppStorage.FileName := FileName;
-      for i := 0 to cbHighlighters.Items.Count - 1 do
+      for var I := 0 to CBHighlighters.Items.Count - 1 do
       begin
-        TSynCustomHighlighter(cbHighlighters.Items.Objects[i]).BeginUpdate;
+        TSynCustomHighlighter(CBHighlighters.Items.Objects[I]).BeginUpdate;
         try
           AppStorage.ReadPersistent('Highlighters\'+
-            TSynCustomHighlighter(cbHighlighters.Items.Objects[i]).FriendlyLanguageName,
-            TPersistent(cbHighlighters.Items.Objects[i]));
+            TSynCustomHighlighter(CBHighlighters.Items.Objects[I]).FriendlyLanguageName,
+            TPersistent(CBHighlighters.Items.Objects[I]));
         finally
-          TSynCustomHighlighter(cbHighlighters.Items.Objects[i]).EndUpdate;
+          TSynCustomHighlighter(CBHighlighters.Items.Objects[I]).EndUpdate;
         end;
       end;
 
-      for i := 0 to cbHighlighters.Items.Count-1 do
+      for var I := 0 to CBHighlighters.Items.Count-1 do
         CommandsDataModule.SynEditOptionsDialogSetHighlighter(
-          Self, i, TSynCustomHighlighter(cbHighlighters.Items.Objects[i]));
+          Self, I, TSynCustomHighlighter(CBHighlighters.Items.Objects[I]));
 
     finally
         AppStorage.Free;
@@ -3682,62 +3731,59 @@ procedure TFConfiguration.CodeTemplatesInit;
 begin
   CodeTemplatesSetItems;
   CodeSynTemplate.Color := StyleServices.GetSystemColor(clWindow);
-  codeSynTemplate.Font.Color := StyleServices.GetSystemColor(clWindowText);
+  CodeSynTemplate.Font.Color := StyleServices.GetSystemColor(clWindowText);
 end;
 
 procedure TFConfiguration.edShortcutKeyPress(Sender: TObject; var Key: Char);
 begin
   if not CharInSet(Key, ['a'..'z', 'A'..'Z', '0'..'9', #8]) then
     Key := #0;
-  inherited;
 end;
 
 procedure TFConfiguration.CodeTemplatesGetItems;
-var
- i, j : Integer;
 begin
-  CodeTemplateText := '';
-  for i := 0 to CodeTemplatesLvItems.Items.Count - 1 do begin
-    CodeTemplateText := CodeTemplateText + CodeTemplatesLvItems.Items[i].Caption + sLineBreak;
-    if CodeTemplatesLvItems.Items[i].SubItems[0] <> '' then
-      CodeTemplateText := CodeTemplateText +'|' + CodeTemplatesLvItems.Items[i].SubItems[0] + sLineBreak;
-    for j := 0 to TStringList(CodeTemplatesLvItems.Items[i].Data).Count - 1 do
-      CodeTemplateText := CodeTemplateText + '=' +
-        TStringList(CodeTemplatesLvItems.Items[i].Data)[j] + sLineBreak;
+  FCodeTemplateText := '';
+  for var I := 0 to CodeTemplatesLvItems.Items.Count - 1 do begin
+    FCodeTemplateText := FCodeTemplateText + CodeTemplatesLvItems.Items[I].Caption + sLineBreak;
+    if CodeTemplatesLvItems.Items[I].SubItems[0] <> '' then
+      FCodeTemplateText := FCodeTemplateText +'|' + CodeTemplatesLvItems.Items[I].SubItems[0] + sLineBreak;
+    for var J := 0 to TStringList(CodeTemplatesLvItems.Items[I].Data).Count - 1 do
+      FCodeTemplateText := FCodeTemplateText + '=' +
+        TStringList(CodeTemplatesLvItems.Items[I].Data)[J] + sLineBreak;
   end;
-  ResourcesDataModule.CodeTemplatesCompletion.AutoCompleteList.Text:= CodeTemplateText;
+  ResourcesDataModule.CodeTemplatesCompletion.AutoCompleteList.Text:= FCodeTemplateText;
 end;
 
 procedure TFConfiguration.CodeTemplatesSetItems;
 var
- i, Count : Integer;
+ Int, Count : Integer;
  List : TStringList;
 begin
   CodeTemplatesLvItems.Items.Clear;
-  i := 0;
+  Int := 0;
   Count := 0;
   List := TStringList.Create;
   try
     List.Text := ResourcesDataModule.CodeTemplatesCompletion.AutoCompleteList.Text;
-    while i < List.Count do begin
-      if Length(List[i]) <= 0 then // Delphi's string list adds a blank line at the end
-        Inc(i)
-      else if not CharInSet(List[i][1], ['|', '=']) then begin
+    while Int < List.Count do begin
+      if Length(List[Int]) <= 0 then // Delphi'Str string list adds a blank line at the end
+        Inc(Int)
+      else if not CharInSet(List[Int][1], ['|', '=']) then begin
         Inc(Count);
-        with CodeTemplatesLvItems.Items.Add() do begin
-          Caption := List[i];
+        with CodeTemplatesLvItems.Items.Add do begin
+          Caption := List[Int];
           Data := TStringList.Create;
-          Inc(i);
-          if List[i][1] = '|' then begin
-            SubItems.Add(Copy(List[i], 2, MaxInt));
-            Inc(i);
+          Inc(Int);
+          if List[Int][1] = '|' then begin
+            SubItems.Add(Copy(List[Int], 2, MaxInt));
+            Inc(Int);
           end else
             SubItems.Add('');
         end;
       end else begin
-        if (Count > 0) and (List[i][1] = '=') then
-          TStringList(CodeTemplatesLvItems.Items[Count-1].Data).Add(Copy(List[i], 2, MaxInt));
-        Inc(i);
+        if (Count > 0) and (List[Int][1] = '=') then
+          TStringList(CodeTemplatesLvItems.Items[Count-1].Data).Add(Copy(List[Int], 2, MaxInt));
+        Inc(Int);
       end;
     end;
   finally
@@ -3748,22 +3794,21 @@ end;
 procedure TFConfiguration.actCodeAddItemExecute(Sender: TObject);
 var
   Item : TListItem;
-  i : Integer;
 begin
-  if edShortCut.Text <> '' then begin
+  if edShortcut.Text <> '' then begin
     CodeSynTemplate.Modified := False;
-    for i := 0 to CodeTemplatesLvItems.Items.Count - 1 do
-      if CompareText(CodeTemplatesLvItems.Items[i].Caption, edShortCut.Text) = 0 then begin
-        Item := CodeTemplatesLvItems.Items[i];
-        Item.Caption := edShortCut.Text;
+    for var I := 0 to CodeTemplatesLvItems.Items.Count - 1 do
+      if CompareText(CodeTemplatesLvItems.Items[I].Caption, edShortcut.Text) = 0 then begin
+        Item := CodeTemplatesLvItems.Items[I];
+        Item.Caption := edShortcut.Text;
         Item.SubItems[0] := edDescription.Text;
         TStringList(Item.Data).Assign(CodeSynTemplate.Lines);
         Item.Selected := True;
         Exit;
       end;
 
-    with CodeTemplatesLvItems.Items.Add() do begin
-      Caption := edShortCut.Text;
+    with CodeTemplatesLvItems.Items.Add do begin
+      Caption := edShortcut.Text;
       SubItems.Add(edDescription.Text);
       Data := Pointer(TStringList.Create);
       TStringList(Data).Assign(CodeSynTemplate.Lines);
@@ -3780,19 +3825,17 @@ begin
 end;
 
 procedure TFConfiguration.actCodeUpdateItemExecute(Sender: TObject);
-var
-  i : Integer;
 begin
-  if (edShortCut.Text <> '') and (CodeTemplatesLvItems.ItemIndex >= 0) then begin
-    for i := 0 to CodeTemplatesLvItems.Items.Count - 1 do
-      if (CompareText(CodeTemplatesLvItems.Items[i].Caption, edShortCut.Text) = 0) and
-         (i <> CodeTemplatesLvItems.ItemIndex) then
+  if (edShortcut.Text <> '') and (CodeTemplatesLvItems.ItemIndex >= 0) then begin
+    for var I := 0 to CodeTemplatesLvItems.Items.Count - 1 do
+      if (CompareText(CodeTemplatesLvItems.Items[I].Caption, edShortcut.Text) = 0) and
+         (I <> CodeTemplatesLvItems.ItemIndex) then
       begin
         StyledMessageDlg(_(SSameName), mtError, [mbOK], 0);
         Exit;
       end;
     with CodeTemplatesLvItems.Items[CodeTemplatesLvItems.ItemIndex] do begin
-      Caption := edShortCut.Text;
+      Caption := edShortcut.Text;
       SubItems[0] := edDescription.Text;
       TStringList(Data).Assign(CodeSynTemplate.Lines);
       CodeSynTemplate.Modified := False;
@@ -3803,7 +3846,7 @@ end;
 procedure TFConfiguration.actCodeMoveDownExecute(Sender: TObject);
 var
   Name, Value : string;
-  P : Pointer;
+  Posi : Pointer;
   Index : Integer;
 begin
   if CodeTemplatesLvItems.ItemIndex < CodeTemplatesLvItems.Items.Count - 1 then
@@ -3811,14 +3854,14 @@ begin
     Index := CodeTemplatesLvItems.ItemIndex;
     Name := CodeTemplatesLvItems.Items[Index].Caption;
     Value := CodeTemplatesLvItems.Items[Index].SubItems[0];
-    P := CodeTemplatesLvItems.Items[Index].Data;
+    Posi := CodeTemplatesLvItems.Items[Index].Data;
     CodeTemplatesLvItems.Items[Index].Data := nil;  // so that it does not get freed
     CodeTemplatesLvItems.Items.Delete(Index);
 
     with CodeTemplatesLvItems.Items.Insert(Index + 1) do begin
       Caption := Name;
       SubItems.Add(Value);
-      Data := P;
+      Data := Posi;
       Selected := True;
       MakeVisible(True);
     end;
@@ -3828,21 +3871,21 @@ end;
 procedure TFConfiguration.actCodeMoveUpExecute(Sender: TObject);
 var
   Name, Value : string;
-  P : Pointer;
+  Posi : Pointer;
   Index : Integer;
 begin
   if CodeTemplatesLvItems.ItemIndex > 0 then begin
     Index := CodeTemplatesLvItems.ItemIndex;
     Name := CodeTemplatesLvItems.Items[Index].Caption;
     Value := CodeTemplatesLvItems.Items[Index].SubItems[0];
-    P := CodeTemplatesLvItems.Items[Index].Data;
+    Posi := CodeTemplatesLvItems.Items[Index].Data;
     CodeTemplatesLvItems.Items[Index].Data := nil;  // so that it does not get freed
     CodeTemplatesLvItems.Items.Delete(Index);
 
     with CodeTemplatesLvItems.Items.Insert(Index - 1) do begin
       Caption := Name;
       SubItems.Add(Value);
-      Data := P;
+      Data := Posi;
       Selected := True;
       MakeVisible(True);
     end;
@@ -3859,25 +3902,24 @@ procedure TFConfiguration.CodeTemplatesLvItemsSelectItem(Sender: TObject; Item: 
   Selected: Boolean);
 begin
   if Selected then begin
-    edShortCut.Text := Item.Caption;
+    edShortcut.Text := Item.Caption;
     edDescription.Text := Item.SubItems[0];
     CodeSynTemplate.Lines.Assign(TStringList(Item.Data));
     CodeSynTemplate.Modified := False;
   end else begin
-    edShortCut.Text := '';
+    edShortcut.Text := '';
     edDescription.Text := '';
     CodeSynTemplate.Text := '';
   end;
 end;
 
-function TFConfiguration.getClassCodeTemplate: string;
-  var i: Integer;
+function TFConfiguration.GetClassCodeTemplate: string;
 begin
   Result:= '';
   CodeTemplatesSetItems;
-  for i := 0 to CodeTemplatesLvItems.Items.Count - 1 do
-    if CodeTemplatesLvItems.Items[i].Caption = 'cls' then begin
-      Result:= TStringList(CodeTemplatesLvItems.Items[i].Data).Text;
+  for var I := 0 to CodeTemplatesLvItems.Items.Count - 1 do
+    if CodeTemplatesLvItems.Items[I].Caption = 'cls' then begin
+      Result:= TStringList(CodeTemplatesLvItems.Items[I].Data).Text;
       Exit;
     end;
 end;
@@ -3887,10 +3929,10 @@ procedure TFConfiguration.PTemplatesActionListUpdate(Action: TBasicAction;
 begin
   actCodeDeleteItem.Enabled := CodeTemplatesLvItems.ItemIndex >= 0;
   actCodeMoveUp.Enabled := CodeTemplatesLvItems.ItemIndex >= 1;
-  actcodeMoveDown.Enabled := (CodeTemplatesLvItems.ItemIndex >= 0) and
+  actCodeMoveDown.Enabled := (CodeTemplatesLvItems.ItemIndex >= 0) and
                          (CodeTemplatesLvItems.ItemIndex < CodeTemplatesLvItems.Items.Count - 1);
-  actCodeAddItem.Enabled := edShortCut.Text <> '';
-  actcodeUpdateItem.Enabled := (edShortCut.Text <> '') and (CodeTemplatesLvItems.ItemIndex >= 0);
+  actCodeAddItem.Enabled := edShortcut.Text <> '';
+  actCodeUpdateItem.Enabled := (edShortcut.Text <> '') and (CodeTemplatesLvItems.ItemIndex >= 0);
 
   actFileDeleteItem.Enabled := FileTemplatesLvItems.ItemIndex >= 0;
   actFileMoveUp.Enabled := FileTemplatesLvItems.ItemIndex >= 1;
@@ -3906,17 +3948,17 @@ end;
 
 procedure TFConfiguration.FileTemplatesInit;
 begin
-  TempFileTemplates.Clear;
-  if cbFileTemplatesHighlighter.Items.Count = 0 then
+  FTempFileTemplates.Clear;
+  if CBFileTemplatesHighlighter.Items.Count = 0 then
     for var Highlighter in ResourcesDataModule.Highlighters do
-      cbHighlighters.Items.AddObject(_(Highlighter.FriendlyLanguageName),
+      CBHighlighters.Items.AddObject(_(Highlighter.FriendlyLanguageName),
         Highlighter);
   FileTemplatesSetItems;
 end;
 
 procedure TFConfiguration.FileTemplatesGetItems;
 begin
-  FileTemplates.Assign(TempFileTemplates);
+  FileTemplates.Assign(FTempFileTemplates);
 end;
 
 procedure TFConfiguration.StoreFieldsToFileTemplate(FileTemplate: TFileTemplate);
@@ -3930,15 +3972,15 @@ end;
 
 procedure TFConfiguration.FileTemplatesSetItems;
 begin
-  TempFileTemplates.Assign(FileTemplates);
+  FTempFileTemplates.Assign(FileTemplates);
   FileTemplatesLvItems.Items.BeginUpdate;
   try
     FileTemplatesLvItems.Items.Clear;
-    for var i := 0 to TempFileTemplates.Count - 1 do
-      with FileTemplatesLvItems.Items.Add() do begin
-        Caption := _((TempFileTemplates[i] as TFileTemplate).Name);
-        Data := TempFileTemplates[i];
-        SubItems.Add(TFileTemplate(TempFileTemplates[i]).Category);
+    for var I := 0 to FTempFileTemplates.Count - 1 do
+      with FileTemplatesLvItems.Items.Add do begin
+        Caption := _((FTempFileTemplates[I] as TFileTemplate).Name);
+        Data := FTempFileTemplates[I];
+        SubItems.Add(TFileTemplate(FTempFileTemplates[I]).Category);
       end;
   finally
     FileTemplatesLvItems.Items.EndUpdate;
@@ -3969,7 +4011,7 @@ begin
     edExtension.Text := FileTemplate.Extension;
     CBFileTemplatesHighlighter.ItemIndex := CBFileTemplatesHighlighter.Items.IndexOf(FileTemplate.Highlighter);
     FileSynTemplate.Text := FileTemplate.Template;
-    CBFileTemplatesHighlightersChange(Self);
+    cbFileTemplatesHighlightersChange(Self);
   end else begin
     edName.Text := '';
     edCategory.Text := '';
@@ -3983,14 +4025,13 @@ procedure TFConfiguration.actFileAddItemExecute(Sender: TObject);
 var
   Item : TListItem;
   FileTemplate : TFileTemplate;
-  i : Integer;
 begin
   if (edName.Text <> '') and (edCategory.Text <> '') then begin
-    for i := 0 to FileTemplatesLvItems.Items.Count - 1 do
-      if (CompareText(FileTemplatesLvItems.Items[i].Caption, edName.Text) = 0) and
-         (CompareText(FileTemplatesLvItems.Items[i].SubItems[0], edCategory.Text) = 0) then
+    for var I := 0 to FileTemplatesLvItems.Items.Count - 1 do
+      if (CompareText(FileTemplatesLvItems.Items[I].Caption, edName.Text) = 0) and
+         (CompareText(FileTemplatesLvItems.Items[I].SubItems[0], edCategory.Text) = 0) then
       begin
-        Item := FileTemplatesLvItems.Items[i];
+        Item := FileTemplatesLvItems.Items[I];
         FileTemplate := TFileTemplate(Item.Data);
         StoreFieldsToFileTemplate(FileTemplate);
         Item.Caption := edName.Text;
@@ -4001,9 +4042,9 @@ begin
       end;
 
     FileTemplate := TFileTemplate.Create;
-    TempFileTemplates.Add(FileTemplate);
+    FTempFileTemplates.Add(FileTemplate);
     StoreFieldsToFileTemplate(FileTemplate);
-    with FileTemplatesLvItems.Items.Add() do begin
+    with FileTemplatesLvItems.Items.Add do begin
       Caption := edName.Text;
       SubItems.Add(edCategory.Text);
       Data := FileTemplate;
@@ -4015,13 +4056,13 @@ end;
 
 procedure TFConfiguration.actFileDefaultAllExecute(Sender: TObject);
 begin
-  var i:= FileTemplatesLvItems.ItemIndex;
-  TempFileTemplates.Clear;
+  var Int:= FileTemplatesLvItems.ItemIndex;
+  FTempFileTemplates.Clear;
   FileTemplates.Clear;
   FileTemplates.AddDefaultTemplates(True);
   FileTemplatesInit;
-  if i > -1 then
-    FileTemplatesLvItems.ItemIndex:= i;
+  if Int > -1 then
+    FileTemplatesLvItems.ItemIndex:= Int;
 end;
 
 procedure TFConfiguration.actFileDefaultItemExecute(Sender: TObject);
@@ -4029,14 +4070,14 @@ begin
   if FileTemplatesLvItems.ItemIndex >= 0 then begin
     var Item := FileTemplatesLvItems.Items[FileTemplatesLvItems.ItemIndex];
     var FileTemplate := TFileTemplate(Item.Data);
-    var DefaultFileTemplate:= FileTemplates.getDefaultByName(Filetemplate.name);
+    var DefaultFileTemplate:= FileTemplates.getDefaultByName(FileTemplate.Name);
     if Assigned(DefaultFileTemplate) then begin
       edName.Text:= DefaultFileTemplate.Name;
       edExtension.Text:= DefaultFileTemplate.Extension;
       edCategory.Text:= DefaultFileTemplate.Category;
       CBHighlighters.Text:= DefaultFileTemplate.Highlighter;
       CBFileTemplatesHighlighter.ItemIndex := CBFileTemplatesHighlighter.Items.IndexOf(DefaultFileTemplate.Highlighter);
-      CBFileTemplatesHighlightersChange(Self);
+      cbFileTemplatesHighlightersChange(Self);
       FileSynTemplate.Text:= DefaultFileTemplate.Template;
       actFileUpdateItemExecute(nil);
     end;
@@ -4047,7 +4088,7 @@ end;
 procedure TFConfiguration.actFileDeleteItemExecute(Sender: TObject);
 begin
   if FileTemplatesLvItems.ItemIndex >= 0 then begin
-    TempFileTemplates.Delete(FileTemplatesLvItems.ItemIndex);
+    FTempFileTemplates.Delete(FileTemplatesLvItems.ItemIndex);
     FileTemplatesLvItems.Items.Delete(FileTemplatesLvItems.ItemIndex);
   end;
 end;
@@ -4055,10 +4096,10 @@ end;
 procedure TFConfiguration.actFileUpdateItemExecute(Sender: TObject);
 begin
   if (edName.Text <> '') and (FileTemplatesLvItems.ItemIndex >= 0) then begin
-    for var i := 0 to FileTemplatesLvItems.Items.Count - 1 do
-      if (CompareText(FileTemplatesLvItems.Items[i].Caption, edName.Text) = 0) and
-         (CompareText(FileTemplatesLvItems.Items[i].SubItems[0], edCategory.Text) = 0) and
-         (i <> FileTemplatesLvItems.ItemIndex) then
+    for var I := 0 to FileTemplatesLvItems.Items.Count - 1 do
+      if (CompareText(FileTemplatesLvItems.Items[I].Caption, edName.Text) = 0) and
+         (CompareText(FileTemplatesLvItems.Items[I].SubItems[0], edCategory.Text) = 0) and
+         (I <> FileTemplatesLvItems.ItemIndex) then
       begin
         StyledMessageDlg(_(SSameName), mtError, [mbOK], 0);
         Exit;
@@ -4077,52 +4118,52 @@ begin
     FileSynTemplate.Highlighter := nil
   else
     FileSynTemplate.Highlighter :=
-      CBFileTemplatesHighlighter.Items.Objects[CBfileTemplatesHighlighter.ItemIndex] as TSynCustomHighlighter;
+      CBFileTemplatesHighlighter.Items.Objects[CBFileTemplatesHighlighter.ItemIndex] as TSynCustomHighlighter;
 end;
 
 procedure TFConfiguration.actFileMoveUpExecute(Sender: TObject);
 var
   Name, Value : string;
-  P : Pointer;
+  Posi : Pointer;
   Index : Integer;
 begin
   if FileTemplatesLvItems.ItemIndex > 0 then begin
     Index := FileTemplatesLvItems.ItemIndex;
     Name := FileTemplatesLvItems.Items[Index].Caption;
     Value := FileTemplatesLvItems.Items[Index].SubItems[0];
-    P := FileTemplatesLvItems.Items[Index].Data;
+    Posi := FileTemplatesLvItems.Items[Index].Data;
     FileTemplatesLvItems.Items.Delete(Index);
 
     with FileTemplatesLvItems.Items.Insert(Index - 1) do begin
       Caption := Name;
       SubItems.Add(Value);
-      Data := P;
+      Data := Posi;
       Selected := True;
     end;
-    TempFileTemplates.Move(Index, Index - 1);
+    FTempFileTemplates.Move(Index, Index - 1);
   end;
 end;
 
 procedure TFConfiguration.actFileMoveDownExecute(Sender: TObject);
 var
   Name, Value : string;
-  P : Pointer;
+  Posi : Pointer;
   Index : Integer;
 begin
   if FileTemplatesLvItems.ItemIndex < FileTemplatesLvItems.Items.Count - 1 then begin
     Index := FileTemplatesLvItems.ItemIndex;
     Name := FileTemplatesLvItems.Items[Index].Caption;
     Value := FileTemplatesLvItems.Items[Index].SubItems[0];
-    P := FileTemplatesLvItems.Items[Index].Data;
+    Posi := FileTemplatesLvItems.Items[Index].Data;
     FileTemplatesLvItems.Items.Delete(Index);
 
     with FileTemplatesLvItems.Items.Insert(Index + 1) do begin
       Caption := Name;
       SubItems.Add(Value);
-      Data := P;
+      Data := Posi;
       Selected := True;
     end;
-    TempFileTemplates.Move(Index, Index + 1);
+    FTempFileTemplates.Move(Index, Index + 1);
   end;
 end;
 
@@ -4144,20 +4185,20 @@ end;
 
 procedure TFConfiguration.lbCommandsClick(Sender: TObject);
 var
-  A : TActionProxyItem;
+  Action : TActionProxyItem;
 begin
   if lbCommands.ItemIndex < 0 then Exit;
 
-  A := CurrentAction;
+  Action := CurrentAction;
 
-  edNewShortCut.HotKey := 0;
+  FEdNewShortcut.HotKey := 0;
   lbCurrentKeys.Items.Clear;
-  lblDescription.Caption := GetLongHint(A.Hint);
+  lblDescription.Caption := GetLongHint(Action.Hint);
 
-  if A.ShortCut <> 0 then
-    lbCurrentKeys.Items.AddObject(ShortCutToText(A.ShortCut), TObject(A.ShortCut));
+  if Action.ShortCut <> 0 then
+    lbCurrentKeys.Items.AddObject(ShortCutToText(Action.ShortCut), TObject(Action.ShortCut));
 
-  lbCurrentKeys.Items.AddStrings(A.SecondaryShortCuts);
+  lbCurrentKeys.Items.AddStrings(Action.SecondaryShortCuts);
 end;
 
 procedure TFConfiguration.actAssignShortcutExecute(Sender: TObject);
@@ -4166,27 +4207,27 @@ var
   CurAction : TActionProxyItem;
 begin
   if lbCommands.ItemIndex < 0 then Exit;
-  if edNewShortcut.HotKey <> 0 then begin
+  if FEdNewShortcut.HotKey <> 0 then begin
     try
-      ShortCut := edNewShortcut.HotKey;
+      ShortCut := FEdNewShortcut.HotKey;
 
       CurAction := CurrentAction;
 
-      if lbCurrentKeys.Items.IndexOf(ShortCutToText(edNewShortcut.HotKey)) < 0 then begin
+      if lbCurrentKeys.Items.IndexOf(ShortCutToText(FEdNewShortcut.HotKey)) < 0 then begin
         { show the keystroke }
-        lbCurrentKeys.Items.AddObject(ShortCutToText(edNewShortcut.HotKey), TObject(edNewShortcut.HotKey));
+        lbCurrentKeys.Items.AddObject(ShortCutToText(FEdNewShortcut.HotKey), TObject(FEdNewShortcut.HotKey));
 
         AssignKeysToActionProxy(CurAction);
 
         { track the keystroke assignment }
-        IDEKeyList.Add(ShortCutToText(ShortCut) + '=' + CurAction.DisplayName);
+        FIDEKeyList.Add(ShortCutToText(ShortCut) + '=' + CurAction.DisplayName);
 
       end else begin
         MessageBeep(MB_ICONEXCLAMATION);
       end;
     except
       MessageBeep(MB_ICONEXCLAMATION);
-      edNewShortcut.SetFocus;
+      FEdNewShortcut.SetFocus;
     end;
   end;
 end;
@@ -4199,10 +4240,10 @@ begin
   if (lbCurrentKeys.ItemIndex < 0) or (lbCommands.ItemIndex < 0) then Exit;
   CurAction := CurrentAction;
   { Remove shortcut from keylist }
-  Index := IDEKeyList.IndexOf(lbCurrentKeys.Items[lbCurrentKeys.ItemIndex]
+  Index := FIDEKeyList.IndexOf(lbCurrentKeys.Items[lbCurrentKeys.ItemIndex]
     + '=' + CurrentAction.DisplayName);
   if Index >= 0 then
-    IDEKeyList.Delete(Index);
+    FIDEKeyList.Delete(Index);
 
   { Remove shortcut from lbCurrentKeys }
   lbCurrentKeys.Items.Delete(lbCurrentKeys.ItemIndex);
@@ -4215,15 +4256,15 @@ var
   Enabled : Boolean;
 begin
   Enabled := False;
-  if edNewShortCut.HotKey = 0 then begin
+  if FEdNewShortcut.HotKey = 0 then begin
     lblAssignedTo.Visible := False;
     lblCurrent.Visible := False;
   end
   else begin
     lblAssignedTo.Visible := True;
-    if IDEKeyList.IndexOfName(ShortCutToText(edNewShortCut.HotKey)) > -1 then begin
+    if FIDEKeyList.IndexOfName(ShortCutToText(FEdNewShortcut.HotKey)) > -1 then begin
       lblCurrent.Visible := True;
-      lblAssignedTo.Caption := IDEKeyList.Values[ShortCutToText(edNewShortCut.HotKey)];
+      lblAssignedTo.Caption := FIDEKeyList.Values[ShortCutToText(FEdNewShortcut.HotKey)];
     end else begin
       Enabled := lbCommands.ItemIndex >= 0;
       lblCurrent.Visible := False;
@@ -4258,7 +4299,6 @@ begin
   actPVRename.Enabled := Assigned(Node) and (Level = 1) and (Node.Parent.Index = 1);
   actPVTest.Enabled :=Assigned(Node) and (Level = 1);
   actPVShow.Enabled :=Assigned(Node) and (Level = 1);
-  //actPVCommandShell.Enabled :=Assigned(Node) and (Level = 1);
   Handled := True;
 end;
 
@@ -4271,7 +4311,7 @@ end;
 
 procedure TFConfiguration.AssignKeysToActionProxy(var CurAction: TActionProxyItem);
 var
-  i: Integer;
+  I: Integer;
 begin
   if lbCurrentKeys.Count > 0 then
     CurAction.ShortCut := TShortCut(lbCurrentKeys.Items.Objects[0])
@@ -4279,35 +4319,35 @@ begin
     CurAction.ShortCut := 0;
   { Assign secondary shortcuts }
   CurAction.SecondaryShortCuts.Clear;
-  for i := 1 to lbCurrentKeys.Count - 1 do
-    CurAction.SecondaryShortCuts.AddObject(lbCurrentKeys.Items[i],
-      lbCurrentKeys.Items.Objects[i]);
+  for I := 1 to lbCurrentKeys.Count - 1 do
+    CurAction.SecondaryShortCuts.AddObject(lbCurrentKeys.Items[I],
+      lbCurrentKeys.Items.Objects[I]);
 end;
 
 procedure TFConfiguration.SelectItem(Idx: Integer);
 begin
-  edNewShortCut.HotKey := 0;
-  lbCurrentkeys.Items.Clear;
+  FEdNewShortcut.HotKey := 0;
+  lbCurrentKeys.Items.Clear;
   lbCommands.Items.Clear;
   lblDescription.Caption := '';
-  lbCommands.Items.AddStrings(FunctionList.Objects[Idx] as TStrings);
+  lbCommands.Items.AddStrings(FFunctionList.Objects[Idx] as TStrings);
 end;
 
 procedure TFConfiguration.CustomShortcutsCreate;
 begin
-  FunctionList            := TStringList.Create;
-  FunctionList.Sorted     := True;
-  FunctionList.Duplicates := dupIgnore;
+  FFunctionList            := TStringList.Create;
+  FFunctionList.Sorted     := True;
+  FFunctionList.Duplicates := dupIgnore;
 
-  IDEKeyList               := TStringList.Create;
-  IDEKeyList.Sorted        := True;
-  IDEKeyList.Duplicates    := dupIgnore;
+  FIDEKeyList               := TStringList.Create;
+  FIDEKeyList.Sorted        := True;
+  FIDEKeyList.Duplicates    := dupIgnore;
 
-  edNewShortcut := TSynHotKey.Create(Self);
-  with edNewShortcut do
+  FEdNewShortcut := TSynHotKey.Create(Self);
+  with FEdNewShortcut do
   begin
-    Name := 'edNewShortcut';
-    Parent := PIDEShortCuts;
+    Name := 'FEdNewShortcut';
+    Parent := PIDEShortcuts;
     Left := PPIScale(8);
     Top := PPIScale(224);
     Width := PPIScale(169);
@@ -4326,7 +4366,7 @@ begin
   lbCategories.Items.Clear;
   lbCommands.Items.Clear;
   lbCurrentKeys.Items.Clear;
-  edNewShortCut.HotKey := 0;
+  FEdNewShortcut.HotKey := 0;
   SetCategories;
   SelectItem(0);
   lbCategories.ItemIndex := 0;
@@ -4335,59 +4375,58 @@ end;
 procedure TFConfiguration.SetCategories;
 begin
   lbCategories.Items.Clear;
-  lbCategories.Items.AddStrings(FunctionList);
+  lbCategories.Items.AddStrings(FFunctionList);
   SelectItem(0);
 end;
 
 procedure TFConfiguration.DoneItems;
-  var i: Integer;
 begin
-  for i := Pred(FunctionList.Count) downto 0 do begin
-    (FunctionList.Objects[i] as TStringList).Free;
-    FunctionList.Delete(i);
+  for var I := Pred(FFunctionList.Count) downto 0 do begin
+    FFunctionList.Objects[I].Free;
+    FFunctionList.Delete(I);
   end;
-  for i := 0 to CodeTemplatesLvItems.Items.Count - 1 do
-    if Assigned(CodeTemplatesLvItems.Items[i].Data) then begin
-      var SL := TStringList(CodeTemplatesLvItems.Items[i].Data);
-      FreeAndNil(SL);
-      CodeTemplatesLvItems.Items[i].Data:= nil;
+  for var I := 0 to CodeTemplatesLvItems.Items.Count - 1 do
+    if Assigned(CodeTemplatesLvItems.Items[I].Data) then begin
+      var StringList := TStringList(CodeTemplatesLvItems.Items[I].Data);
+      FreeAndNil(StringList);
+      CodeTemplatesLvItems.Items[I].Data:= nil;
     end;
 end;
 
 procedure TFConfiguration.PrepActions;
 begin
-  ActionProxyCollection := TActionProxyCollection.Create(apcctAll);
+  FActionProxyCollection := TActionProxyCollection.Create(apcctAll);
   FillFunctionList;
   SetCategories;
 end;
 
 procedure TFConfiguration.FillFunctionList;
 var
-  i, j, Idx : Integer;
-  A : TActionProxyItem;
+  Idx : Integer;
+  Action : TActionProxyItem;
 begin
-  for i := 0 to ActionProxyCollection.Count - 1 do begin
-    A := TActionProxyItem(ActionProxyCollection.Items[i]);
+  for var I := 0 to FActionProxyCollection.Count - 1 do begin
+    Action := TActionProxyItem(FActionProxyCollection.Items[I]);
 
     { get category index }
-    Idx := FunctionList.IndexOf(_(A.Category));
+    Idx := FFunctionList.IndexOf(_(Action.Category));
 
-    { if category doesn't already exist, add it }
+    { if category doesn't already exist, Add it }
     if Idx < 0 then
-      Idx := FunctionList.AddObject(_(A.Category), TStringList.Create);
+      Idx := FFunctionList.AddObject(_(Action.Category), TStringList.Create);
 
-    { add keyboard function to list }
-    (FunctionList.Objects[Idx] as TStringList).AddObject(A.DisplayName, A);
+    { Add keyboard function to list }
+    (FFunctionList.Objects[Idx] as TStringList).AddObject(Action.DisplayName, Action);
 
-    { shortcut value already assigned }
-    if A.ShortCut <> 0 then begin
+    { shortcut Value already assigned }
+    if Action.ShortCut <> 0 then begin
       { track the keystroke }
-      IDEKeyList.Add(ShortCutToText(A.ShortCut) + '=' + A.DisplayName);
+      FIDEKeyList.Add(ShortCutToText(Action.ShortCut) + '=' + Action.DisplayName);
     end;
     { Deal with secondary shortcuts }
-    if Assigned(A.SecondaryShortCuts) and (A.SecondaryShortCuts.Count > 0) then
-      for j := 0 to A.SecondaryShortCuts.Count - 1 do
-        IDEKeyList.Add(ShortCutToText(A.SecondaryShortCuts.ShortCuts[j]) + '=' + A.DisplayName);
+    if Assigned(Action.SecondaryShortCuts) and (Action.SecondaryShortCuts.Count > 0) then
+      for var J := 0 to Action.SecondaryShortCuts.Count - 1 do
+        FIDEKeyList.Add(ShortCutToText(Action.SecondaryShortCuts.ShortCuts[J]) + '=' + Action.DisplayName);
   end;
 end;
 
@@ -4406,17 +4445,17 @@ begin
   if LBStyleNames.ItemIndex >= 0 then
   begin
     StyleName := LBStyleNames.Items[LBStyleNames.ItemIndex];
-    if Integer(LBStyleNames.Items.Objects[LbStylenames.ItemIndex]) = 1 then
+    if Integer(LBStyleNames.Items.Objects[LBStyleNames.ItemIndex]) = 1 then
     begin
       // FileName
-      if not Loading then
+      if not FLoading then
       begin
-        FileName := ExternalStyleFilesDict.Items[StyleName];
+        FileName := FExternalStyleFilesDict[StyleName];
         TStyleManager.LoadFromFile(FileName);
         LStyle := TStyleManager.Style[StyleName];
-        LoadedStylesDict.Add(StyleName, FileName);
+        FLoadedStylesDict.Add(StyleName, FileName);
         //  The Style is now loaded and registerd
-        LBStyleNames.Items.Objects[LbStylenames.ItemIndex] := nil;
+        LBStyleNames.Items.Objects[LBStyleNames.ItemIndex] := nil;
       end;
     end
     else
@@ -4426,7 +4465,7 @@ begin
     end;
   end;
 
-  if Assigned(LStyle) and not Loading  then
+  if Assigned(LStyle) and not FLoading  then
   begin
     FPreview.Caption:=StyleName;
     FPreview.Style:=LStyle;
@@ -4441,10 +4480,10 @@ var
 begin
   if LBStyleNames.ItemIndex >= 0 then begin
     StyleName := LBStyleNames.Items[LBStyleNames.ItemIndex];
-    if Integer(LBStyleNames.Items.Objects[LbStylenames.ItemIndex]) = 1 then
+    if Integer(LBStyleNames.Items.Objects[LBStyleNames.ItemIndex]) = 1 then
     begin
       // FileName
-      FileName := ExternalStyleFilesDict.Items[StyleName];
+      FileName := FExternalStyleFilesDict[StyleName];
       SetStyle(FileName);
     end
     else
@@ -4457,19 +4496,19 @@ procedure TFConfiguration.BApplyStyleClick(Sender: TObject);
 begin
   // for an unknown reason, the main window disappears when
   // the style is changed, which is why they are temporarily hidden
-  GI_FileFactory.ApplyToFiles(procedure(Fi: IFile)
+  GI_FileFactory.ApplyToFiles(procedure(AFile: IFile)
   begin
-    if Fi.GetFileKind = fkEditor then begin
-      if Assigned(TEditorForm(Fi.Form).Partner) then
-        TEditorForm(Fi.Form).Partner.Hide;
+    if AFile.GetFileKind = fkEditor then begin
+      if Assigned(TEditorForm(AFile.Form).Partner) then
+        TEditorForm(AFile.Form).Partner.Hide;
     end;
   end);
   ActionApplyStyleExecute(Self);
-  GI_FileFactory.ApplyToFiles(procedure(Fi: IFile)
+  GI_FileFactory.ApplyToFiles(procedure(AFile: IFile)
   begin
-    if Fi.GetFileKind = fkEditor then begin
-      if Assigned(TEditorForm(Fi.Form).Partner) then begin
-        TEditorForm(Fi.Form).Partner.Show;
+    if AFile.GetFileKind = fkEditor then begin
+      if Assigned(TEditorForm(AFile.Form).Partner) then begin
+        TEditorForm(AFile.Form).Partner.Show;
       end;
     end;
   end);
@@ -4493,7 +4532,7 @@ begin
       if not TStyleManager.TrySetStyle(StyleInfo.Name, False) then
       begin
         TStyleManager.LoadFromFile(StyleName);
-        LoadedStylesDict.Add(StyleInfo.Name, StyleName);
+        FLoadedStylesDict.Add(StyleInfo.Name, StyleName);
       end;
       TStyleManager.SetStyle(StyleInfo.Name);
       CurrentSkinName := StyleName;
@@ -4503,26 +4542,25 @@ begin
     begin
        // Resource style
       TStyleManager.SetStyle(StyleName);
-      if LoadedStylesDict.ContainsKey(StyleName) then
-        CurrentSkinName := LoadedStylesDict[StyleName]
+      if FLoadedStylesDict.ContainsKey(StyleName) then
+        CurrentSkinName := FLoadedStylesDict[StyleName]
       else
         CurrentSkinName := StyleName;
       Break;
     end;
   PyIDEMainForm.ThemeEditorGutter(FSynEdit.Gutter);
-  cbGutterColor.SelectedColor:= FSynEdit.Gutter.Color;
+  CBGutterColor.SelectedColor:= FSynEdit.Gutter.Color;
   lblGutterFont.Font.Color:= FSynEdit.Gutter.Font.Color;
 end;
 
 procedure TFConfiguration.StyleSelectorFormCreate;
 begin
-  inherited;
   CurrentSkinName := TStyleManager.ActiveStyle.Name;
-  LoadedStylesDict := TDictionary<string, string>.Create;
+  FLoadedStylesDict := TDictionary<string, string>.Create;
 
-  Loading:=False;
+  FLoading:=False;
   LBStyleNames.Sorted := True;
-  ExternalStyleFilesDict := TDictionary<string, string>.Create;
+  FExternalStyleFilesDict := TDictionary<string, string>.Create;
   FStylesPath := TPyScripterSettings.StylesFilesDir;
   FPreview:= TVclStylesPreview.Create(Self);
   FPreview.Parent:= StylesPreviewPanel;
@@ -4537,7 +4575,7 @@ var
 begin
   if LBStyleNames.Items.Count = 0 then
     FillVclStylesList;
-  if (LBStyleNames.Items.Count> 0) then
+  if LBStyleNames.Items.Count > 0 then
    begin
      Index := LBStyleNames.Items.IndexOf(TStyleManager.ActiveStyle.Name);
      if Index >= 0 then
@@ -4553,9 +4591,9 @@ var
   FileName : string;
   StyleInfo:  TStyleInfo;
 begin
-   Loading:=True;
+   FLoading:=True;
 
-   // First add resource styles
+   // First Add resource styles
    LBStyleNames.Items.AddStrings(TStyleManager.StyleNames);
    // Remove Windows
    // LBStyleNames.Items.Delete(LBStyleNames.Items.IndexOf('Windows'));
@@ -4570,14 +4608,13 @@ begin
           begin
             // TObject(1) denotes external file
             LBStyleNames.Items.AddObject(StyleInfo.Name, TObject(1));
-            ExternalStyleFilesDict.Add(StyleInfo.Name, FileName);
+            FExternalStyleFilesDict.Add(StyleInfo.Name, FileName);
           end;
        end;
-
-    except
+    except on E: Exception do
+      OutputDebugString(PChar('Exception: ' + E.ClassName + ' - ' + E.Message));
     end;
-
-   Loading:=False;
+   FLoading:=False;
 end;
 
 {--- Printer Margins & Options ------------------------------------------------}
@@ -4615,7 +4652,7 @@ begin
       RightHFTextIndent := StringToFloat(EditRightHFTextIndent);
       HFInternalMargin := StringToFloat(EditHFInternalMargin);
     except
-      StyledMessageDlg(_(SInvalidNumber), mtError, [mbOk], 0);
+      StyledMessageDlg(_(SInvalidNumber), mtError, [mbOK], 0);
       CurEdit.SetFocus;
     end;
     MirrorMargins := CBMirrorMargins.Checked;
@@ -4644,39 +4681,39 @@ end;
 
 procedure TFConfiguration.PageNumCmdExecute(Sender: TObject);
 begin
-  if Assigned(Editor) then
-    Editor.SelText := '$PAGENUM$';
+  if Assigned(FEditor) then
+    FEditor.SelText := '$PAGENUM$';
 end;
 
 procedure TFConfiguration.PagesCmdExecute(Sender: TObject);
 begin
-  if Assigned(Editor) then
-    Editor.SelText := '$PAGECOUNT$';
+  if Assigned(FEditor) then
+    FEditor.SelText := '$PAGECOUNT$';
 end;
 
 procedure TFConfiguration.TimeCmdExecute(Sender: TObject);
 begin
-  if Assigned(Editor) then
-    Editor.SelText := '$TIME$';
+  if Assigned(FEditor) then
+    FEditor.SelText := '$TIME$';
 end;
 
 procedure TFConfiguration.TitleCmdExecute(Sender: TObject);
 begin
-  if Assigned(Editor) then
-    Editor.SelText := '$TITLE$';
+  if Assigned(FEditor) then
+    FEditor.SelText := '$TITLE$';
 end;
 
 procedure TFConfiguration.DateCmdExecute(Sender: TObject);
 begin
-  if Assigned(Editor) then
-    Editor.SelText := '$DATE$';
+  if Assigned(FEditor) then
+    FEditor.SelText := '$DATE$';
 end;
 
 procedure TFConfiguration.FontCmdExecute(Sender: TObject);
 begin
-  if not Assigned(Editor) then Exit;
+  if not Assigned(FEditor) then Exit;
 
-  SelectLine(HeaderFooterCharPos.y);
+  SelectLine(FHeaderFooterCharPos.Y);
   FontDialog.Font.Assign(CurrText);
   if FontDialog.Execute then
     CurrText.Assign(FontDialog.Font);
@@ -4685,9 +4722,9 @@ end;
 
 procedure TFConfiguration.BoldCmdExecute(Sender: TObject);
 begin
-  if not Assigned(Editor) then Exit;
+  if not Assigned(FEditor) then Exit;
 
-  SelectLine(HeaderFooterCharPos.y);
+  SelectLine(FHeaderFooterCharPos.Y);
   if fsBold in CurrText.Style then
     CurrText.Style := CurrText.Style - [fsBold]
   else
@@ -4697,9 +4734,9 @@ end;
 
 procedure TFConfiguration.ItalicCmdExecute(Sender: TObject);
 begin
-  if not Assigned(Editor) then Exit;
+  if not Assigned(FEditor) then Exit;
 
-  SelectLine(HeaderFooterCharPos.y);
+  SelectLine(FHeaderFooterCharPos.Y);
   if fsItalic in CurrText.Style then
     CurrText.Style := CurrText.Style - [fsItalic]
   else
@@ -4709,19 +4746,19 @@ end;
 
 procedure TFConfiguration.UnderlineCmdExecute(Sender: TObject);
 begin
-  if not Assigned(Editor) then Exit;
+  if not Assigned(FEditor) then Exit;
 
-  SelectLine(HeaderFooterCharPos.y);
-  if fsUnderLine in CurrText.Style then
-    CurrText.Style := CurrText.Style - [fsUnderLine]
+  SelectLine(FHeaderFooterCharPos.Y);
+  if fsUnderline in CurrText.Style then
+    CurrText.Style := CurrText.Style - [fsUnderline]
   else
-    CurrText.Style := CurrText.Style + [fsUnderLine];
+    CurrText.Style := CurrText.Style + [fsUnderline];
   SelectNone;
 end;
 
 procedure TFConfiguration.REHeaderLeftEnter(Sender: TObject);
 begin
-  Editor := Sender as TCustomRichEdit;
+  FEditor := Sender as TCustomRichEdit;
   SetHeaderFooterOptions;
 end;
 
@@ -4733,11 +4770,11 @@ end;
 procedure TFConfiguration.RGLanguagesClick(Sender: TObject);
 begin
   LanguageOptionsToModel;
-  PyIDEMainForm.AppStorage.WritePersistent('GuiPy Language Options\' + CurrentLanguage,
+  PyIDEMainForm.AppStorage.WritePersistent('GuiPy Language Options\' + FCurrentLanguage,
     GuiPyLanguageOptions);
-  CurrentLanguage:= PyIDEMainForm.getLanguageCode(RGLanguages.ItemIndex);
-  GuiPyLanguageOptions.getInLanguage(CurrentLanguage);
-  PyIDEMainForm.AppStorage.ReadPersistent('GuiPy Language Options\' + CurrentLanguage,
+  FCurrentLanguage:= PyIDEMainForm.getLanguageCode(RGLanguages.ItemIndex);
+  GuiPyLanguageOptions.GetInLanguage(FCurrentLanguage);
+  PyIDEMainForm.AppStorage.ReadPersistent('GuiPy Language Options\' + FCurrentLanguage,
     GuiPyLanguageOptions);
   LanguageOptionsToView;
 end;
@@ -4783,65 +4820,64 @@ end;
 
 procedure TFConfiguration.SelectLine(LineNum: Integer);
 begin
-  if Assigned(Editor) then begin
-    HeaderFooterOldStart := Editor.SelStart;
-    Editor.SelStart := SendMessage(Editor.Handle, EM_LINEINDEX, LineNum, 0);
-    Editor.SelLength := Length(Editor.Lines[LineNum]);
+  if Assigned(FEditor) then begin
+    FHeaderFooterOldStart := FEditor.SelStart;
+    FEditor.SelStart := SendMessage(FEditor.Handle, EM_LINEINDEX, LineNum, 0);
+    FEditor.SelLength := Length(FEditor.Lines[LineNum]);
   end;
 end;
 
 procedure TFConfiguration.SetHeaderFooterOptions;
 begin
-  PageNumCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  PagesCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  TimeCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  DateCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  TitleCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  FontCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  BoldCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  ItalicCmd.Enabled := Assigned(Editor) and Editor.Focused;
-  UnderlineCmd.Enabled := Assigned(Editor) and Editor.Focused;
+  PageNumCmd.Enabled := Assigned(FEditor) and FEditor.Focused;
+  PagesCmd.Enabled := Assigned(FEditor) and FEditor.Focused;
+  TimeCmd.Enabled := Assigned(FEditor) and FEditor.Focused;
+  DateCmd.Enabled := Assigned(FEditor) and FEditor.Focused;
+  TitleCmd.Enabled := Assigned(FEditor) and FEditor.Focused;
+  FontCmd.Enabled := Assigned(FEditor) and FEditor.Focused;
+  BoldCmd.Enabled := Assigned(FEditor) and FEditor.Focused;
+  ItalicCmd.Enabled := Assigned(FEditor) and FEditor.Focused;
+  UnderlineCmd.Enabled := Assigned(FEditor) and FEditor.Focused;
 end;
 
 function TFConfiguration.CurrText: TTextAttributes;
 begin
-  Assert(Assigned(Editor));
-  Result := Editor.SelAttributes;
+  Assert(Assigned(FEditor), 'CurrText');
+  Result := FEditor.SelAttributes;
 end;
 
 procedure TFConfiguration.SelectNone;
 begin
-  if Assigned(Editor) then begin
-    Editor.SelStart := HeaderFooterOldStart;
-    Editor.SelLength := 0;
+  if Assigned(FEditor) then begin
+    FEditor.SelStart := FHeaderFooterOldStart;
+    FEditor.SelLength := 0;
   end;
 end;
 
 procedure TFConfiguration.UpdateHeaderFooterCursorPos;
 begin
-  if Assigned(Editor) and Editor.HandleAllocated then begin
-    HeaderFooterCharPos.Y := SendMessage(Editor.Handle, EM_EXLINEFROMCHAR, 0, Editor.SelStart);
-    HeaderFooterCharPos.X := (Editor.SelStart - SendMessage(Editor.Handle, EM_LINEINDEX, HeaderFooterCharPos.Y, 0));
+  if Assigned(FEditor) and FEditor.HandleAllocated then begin
+    FHeaderFooterCharPos.Y := SendMessage(FEditor.Handle, EM_EXLINEFROMCHAR, 0, FEditor.SelStart);
+    FHeaderFooterCharPos.X := (FEditor.SelStart - SendMessage(FEditor.Handle, EM_LINEINDEX, FHeaderFooterCharPos.Y, 0));
   end;
 end;
 
-procedure TFConfiguration.AddLines(HeadFoot: THeaderFooter; AEdit: TCustomRichEdit;
-  Al: TALignment);
+procedure TFConfiguration.AddLines(HeadFoot: THeaderFooter;
+  AEdit: TCustomRichEdit; Alig: TAlignment);
 var
-  i: Integer;
   AFont: TFont;
 begin
-  Editor := AEdit;
+  FEditor := AEdit;
   AFont := TFont.Create;
-  for i := 0 to Editor.Lines.Count - 1 do begin
-    SelectLine(i);
+  for var I := 0 to FEditor.Lines.Count - 1 do begin
+    SelectLine(I);
     AFont.Assign(CurrText);
     if not CBColors.Checked then
       AFont.Color := HeadFoot.DefaultFont.Color;
 
     // TrimRight is used to fix a long standing bug occurring because
     // TntRichEdit ads #$D at the end of the string!
-    HeadFoot.Add(TrimRight(Editor.Lines[i]), AFont, Al, i + 1);
+    HeadFoot.Add(TrimRight(FEditor.Lines[I]), AFont, Alig, I + 1);
   end;
   AFont.Free;
 end;
@@ -4890,7 +4926,6 @@ end;
 
 procedure TFConfiguration.SetValues(SynEditPrint: TSynEditPrint);
 var
-  i: Integer;
   AItem: THeaderFooterItem;
   LNum: Integer;
 begin
@@ -4929,28 +4964,28 @@ begin
   CBFooterMirror.Checked := SynEditPrint.Footer.MirrorPosition;
 
   SynEditPrint.Header.FixLines;
-  for i := 0 to SynEditPrint.Header.Count - 1 do begin
-    AItem := SynEditPrint.Header.Get(i);
+  for var I := 0 to SynEditPrint.Header.Count - 1 do begin
+    AItem := SynEditPrint.Header.Get(I);
     case AItem.Alignment of
-      taLeftJustify: Editor := REHeaderLeft;
-      taCenter: Editor := REHeaderCenter;
-      taRightJustify: Editor := REHeaderRight;
+      taLeftJustify: FEditor := REHeaderLeft;
+      taCenter: FEditor := REHeaderCenter;
+      taRightJustify: FEditor := REHeaderRight;
     end;
-    LNum := Editor.Lines.Add(AItem.Text);
+    LNum := FEditor.Lines.Add(AItem.Text);
     SelectLine(LNum);
     CurrText.Assign(AItem.Font);
     SelectNone;
   end;
 
   SynEditPrint.Footer.FixLines;
-  for i := 0 to SynEditPrint.Footer.Count - 1 do begin
-    AItem := SynEditPrint.Footer.Get(i);
+  for var I := 0 to SynEditPrint.Footer.Count - 1 do begin
+    AItem := SynEditPrint.Footer.Get(I);
     case AItem.Alignment of
-      taLeftJustify: Editor := REFooterLeft;
-      taCenter: Editor := REFooterCenter;
-      taRightJustify: Editor := REFooterRight;
+      taLeftJustify: FEditor := REFooterLeft;
+      taCenter: FEditor := REFooterCenter;
+      taRightJustify: FEditor := REFooterRight;
     end;
-    LNum := Editor.Lines.Add(AItem.Text);
+    LNum := FEditor.Lines.Add(AItem.Text);
     SelectLine(LNum);
     CurrText.Assign(AItem.Font);
     SelectNone;
@@ -4960,33 +4995,33 @@ end;
 {--- Associations -------------------------------------------------------------}
 
 procedure TFConfiguration.BFileExtensionsClick(Sender: TObject);
-  var s, s1, s2: string; p: Integer; b: byte;
+  var Str, Str1, Str2: string; Posi: Integer; Len: Byte;
 begin
   if VistaOrBetter then begin
-    s2:=      CBAssociationPython.Caption + ' ' + BoolToStr(CBAssociationPython.Checked) + ' ';
-    s2:= s2 + CBAssociationJfm.Caption  + ' ' + BoolToStr(CBAssociationJfm.Checked) + ' ';
-    s2:= s2 + CBAssociationUML.Caption  + ' ' + BoolToStr(CBAssociationUML.Checked) + ' ';
-    s2:= s2 + CBAssociationHtml.Caption + ' ' + BoolToStr(CBAssociationHtml.Checked) + ' ';
-    s2:= s2 + CBAssociationTxt.Caption  + ' ' + BoolToStr(CBAssociationTxt.Checked) + ' ';
-    s2:= s2 + CBAssociationJsp.Caption  + ' ' + BoolToStr(CBAssociationJsp.Checked) + ' ';
-    s2:= s2 + CBAssociationPhp.Caption  + ' ' + BoolToStr(CBAssociationPhp.Checked) + ' ';
-    s2:= s2 + CBAssociationCss.Caption  + ' ' + BoolToStr(CBAssociationCss.Checked) + ' ';
-    s2:= s2 + CBAssociationInc.Caption  + ' ' + BoolToStr(CBAssociationInc.Checked) + ' ';
-    s2:= s2 + CBAssociationJsg.Caption  + ' ' + BoolToStr(CBAssociationJsg.Checked) + ' ';
-    s2:= s2 + CBAssociationJsd.Caption  + ' ' + BoolToStr(CBAssociationJsd.Checked) + ' ';
+    Str2:=      CBAssociationPython.Caption + ' ' + BoolToStr(CBAssociationPython.Checked) + ' ';
+    Str2:= Str2 + CBAssociationPfm.Caption  + ' ' + BoolToStr(CBAssociationPfm.Checked) + ' ';
+    Str2:= Str2 + CBAssociationPuml.Caption  + ' ' + BoolToStr(CBAssociationPuml.Checked) + ' ';
+    Str2:= Str2 + CBAssociationHtml.Caption + ' ' + BoolToStr(CBAssociationHtml.Checked) + ' ';
+    Str2:= Str2 + CBAssociationTxt.Caption  + ' ' + BoolToStr(CBAssociationTxt.Checked) + ' ';
+    Str2:= Str2 + CBAssociationJsp.Caption  + ' ' + BoolToStr(CBAssociationJsp.Checked) + ' ';
+    Str2:= Str2 + CBAssociationPhp.Caption  + ' ' + BoolToStr(CBAssociationPhp.Checked) + ' ';
+    Str2:= Str2 + CBAssociationCss.Caption  + ' ' + BoolToStr(CBAssociationCss.Checked) + ' ';
+    Str2:= Str2 + CBAssociationInc.Caption  + ' ' + BoolToStr(CBAssociationInc.Checked) + ' ';
+    Str2:= Str2 + CBAssociationPsg.Caption  + ' ' + BoolToStr(CBAssociationPsg.Checked) + ' ';
+    Str2:= Str2 + CBAssociationPsd.Caption  + ' ' + BoolToStr(CBAssociationPsd.Checked) + ' ';
 
-    s:= GuiPyOptions.AdditionalAssociations + ';';
-    p:= Pos(';', s);
-    while p > 0 do begin
-      s1:= Copy(s, 1, p-1);
-      Delete(s, 1, p);
-      p:= Pos('.', s1);
-      if p > 0 then Delete(s1, 1, p);
-      b:= Length(s1);
-      if (s1 <> '') and (b in [2, 3, 4, 5]) then s2:= s2 + '.' + s1 + ' ' + BoolToStr(True)+ ' ';
-      p:= Pos(';', s);
+    Str:= GuiPyOptions.AdditionalAssociations + ';';
+    Posi:= Pos(';', Str);
+    while Posi > 0 do begin
+      Str1:= Copy(Str, 1, Posi-1);
+      Delete(Str, 1, Posi);
+      Posi:= Pos('.', Str1);
+      if Posi > 0 then Delete(Str1, 1, Posi);
+      Len:= Length(Str1);
+      if (Str1 <> '') and (Len in [2, 3, 4, 5]) then Str2:= Str2 + '.' + Str1 + ' ' + BoolToStr(True)+ ' ';
+      Posi:= Pos(';', Str);
     end;
-    CallUpdater(ParamStr(0), 'registry', s2);
+    CallUpdater(ParamStr(0), 'registry', Str2);
   end
   else
     MakeAssociations;
@@ -4995,23 +5030,23 @@ end;
 procedure TFConfiguration.BJEAssociationClick(Sender: TObject);
 begin
   CallUpdater(ParamStr(0), 'gpregistry',
-              HideBlanks(encodeQuotationMark(EGuiPyAssociation.Text)));
+              HideBlanks(EncodeQuotationMark(EGuiPyAssociation.Text)));
   SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nil, nil);
 end;
 
 procedure TFConfiguration.MakeAssociations;
-  var Reg: TRegistry; s, s1: string; p: Integer;
+  var Reg: TRegistry; Str, Str1: string; Posi: Integer;
 
-  procedure EditAssociation(const Extension: string; docreate: Boolean);
+  procedure EditAssociation(const Extension: string; DoCreate: Boolean);
   begin
     with Reg do begin
       try
         Access:= KEY_ALL_ACCESS;
         // HKEY_LOCAL_MACHINE\Software\Classes
         RootKey:= HKEY_LOCAL_MACHINE;
-        if docreate then begin
+        if DoCreate then begin
           if OpenKey('SOFTWARE\Classes\' + Extension, True) then
-            WriteString('', 'GuiPy')
+            WriteString('', 'GuiPy');
         end else begin
           if OpenKey('SOFTWARE\Classes\' + Extension, False) then
             if ReadString('') = 'GuiPy' then
@@ -5021,7 +5056,7 @@ procedure TFConfiguration.MakeAssociations;
 
         // HKEY_CURRENT_USER\Software\Classes
         RootKey:= HKEY_CURRENT_USER;
-        if docreate then begin
+        if DoCreate then begin
           if OpenKey('SOFTWARE\Classes\' + Extension, True) then
             WriteString('', 'GuiPy');
         end else begin
@@ -5033,7 +5068,7 @@ procedure TFConfiguration.MakeAssociations;
       except
         on E: Exception do
           ErrorMsg(E.Message);
-      end
+      end;
     end;
   end;
 
@@ -5043,24 +5078,25 @@ begin
   try
     with Reg do begin
       EditAssociation(CBAssociationPython.Caption, CBAssociationPython.Checked);
-      EditAssociation(CBAssociationJfm.Caption,  CBAssociationJfm.Checked);
-      EditAssociation(CBAssociationUml.Caption,  CBAssociationUml.Checked);
+      EditAssociation(CBAssociationPfm.Caption,  CBAssociationPfm.Checked);
+      EditAssociation(CBAssociationPuml.Caption,  CBAssociationPuml.Checked);
       EditAssociation(CBAssociationHtml.Caption, CBAssociationHtml.Checked);
       EditAssociation(CBAssociationTxt.Caption,  CBAssociationTxt.Checked);
       EditAssociation(CBAssociationJsp.Caption,  CBAssociationJsp.Checked);
       EditAssociation(CBAssociationPhp.Caption,  CBAssociationPhp.Checked);
       EditAssociation(CBAssociationCss.Caption,  CBAssociationCss.Checked);
       EditAssociation(CBAssociationInc.Caption,  CBAssociationInc.Checked);
-      EditAssociation(CBAssociationJsg.Caption,  CBAssociationJsg.Checked);
-      s:= GuiPyOptions.AdditionalAssociations + ';';
-      p:= Pos(';', s);
-      while p > 0 do begin
-        s1:= Copy(s, 1, p-1);
-        Delete(s, 1, p);
-        p:= Pos('.', s1);
-        if p > 0 then Delete(s1, 1, p);
-        if (s1 <> '') and (Pos(' ', s1) = 0) then EditAssociation('.' + s1, True);
-        p:= Pos(';', s);
+      EditAssociation(CBAssociationPsg.Caption,  CBAssociationPsg.Checked);
+      EditAssociation(CBAssociationPsd.Caption,  CBAssociationPsd.Checked);
+      Str:= GuiPyOptions.AdditionalAssociations + ';';
+      Posi:= Pos(';', Str);
+      while Posi > 0 do begin
+        Str1:= Copy(Str, 1, Posi-1);
+        Delete(Str, 1, Posi);
+        Posi:= Pos('.', Str1);
+        if Posi > 0 then Delete(Str1, 1, Posi);
+        if (Str1 <> '') and (Pos(' ', Str1) = 0) then EditAssociation('.' + Str1, True);
+        Posi:= Pos(';', Str);
       end;
     end;
   finally
@@ -5115,7 +5151,7 @@ end;
 
 procedure TFConfiguration.PatchConfiguration;
   // first used for version 3.2
-  var s: string;
+  var Str: string;
 begin
   var Reg:= TRegistry.Create;
   try
@@ -5123,23 +5159,23 @@ begin
       Access:= KEY_ALL_ACCESS;
       RootKey:= HKEY_LOCAL_MACHINE;
       if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', False) then
-        if readString('') = 'System' then
-          writeString('', 'DdeServerConv');
+        if ReadString('') = 'System' then
+          WriteString('', 'DdeServerConv');
       if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', False) then begin
-        s:= readstring('');
-        if Pos(' "%1"', s) = 0 then
-          writeString('', s + ' "%1"');
+        Str:= ReadString('');
+        if Pos(' "%1"', Str) = 0 then
+          WriteString('', Str + ' "%1"');
       end;
       CloseKey;
 
       RootKey:= HKEY_CURRENT_USER;
       if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\ddeexec\topic', False) then
-        if readString('') = 'System' then
-          writeString('', 'DdeServerConv');
+        if ReadString('') = 'System' then
+          WriteString('', 'DdeServerConv');
       if OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', False) then begin
-        s:= readstring('');
-        if Pos(' "%1"', s) = 0 then
-          writeString('', s + ' "%1"');
+        Str:= ReadString('');
+        if Pos(' "%1"', Str) = 0 then
+          WriteString('', Str + ' "%1"');
       end;
       CloseKey;
     end;
@@ -5154,12 +5190,10 @@ procedure TFConfiguration.BGitFolderClick(Sender: TObject);
   var Dir: string;
 begin
   Dir:= EGitFolder.Hint;
-  if not Sysutils.DirectoryExists(Dir) then Dir:= GuiPyOptions.SourcePath;
-  {$WARNINGS OFF}
+  if not SysUtils.DirectoryExists(Dir) then Dir:= GuiPyOptions.Sourcepath;
   FolderDialog.DefaultFolder:= Dir;
   if FolderDialog.Execute then
     ShortenPath(EGitFolder, FolderDialog.FileName);
-  {$WARNINGS ON}
   CheckFolder(EGitFolder, True);
 end;
 
@@ -5167,7 +5201,7 @@ procedure TFConfiguration.BGitRepositoryClick(Sender: TObject);
   var Dir: string;
 begin
   Dir:= CBLocalRepository.Text;
-  if not Sysutils.DirectoryExists(Dir) then Dir:= GuiPyOptions.SourcePath;
+  if not SysUtils.DirectoryExists(Dir) then Dir:= GuiPyOptions.Sourcepath;
   FolderDialog.DefaultFolder:= Dir;
   if FolderDialog.Execute then begin
     Dir:= FolderDialog.FileName;
@@ -5184,34 +5218,34 @@ end;
 procedure TFConfiguration.BGuiFontClick(Sender: TObject);
 begin
   var FontDialog:= TFontDialog.Create(Self);
-  FontDialog.Font.Size:= GuiPyOptions.GUIFontSize;
-  FontDialog.Font.Name:= GuiPyOptions.GUIFontName;
+  FontDialog.Font.Size:= GuiPyOptions.GuiFontSize;
+  FontDialog.Font.Name:= GuiPyOptions.GuiFontName;
   if FontDialog.Execute then begin
-    GuiPyOptions.GUIFontSize:= Max(FontDialog.Font.Size, 4);
-    GuiPyOptions.GUIFontName:= FontDialog.Font.Name;
+    GuiPyOptions.GuiFontSize:= Max(FontDialog.Font.Size, 4);
+    GuiPyOptions.GuiFontName:= FontDialog.Font.Name;
   end;
   FreeAndNil(FontDialog);
 end;
 
 procedure TFConfiguration.BGuiFontDefaultClick(Sender: TObject);
 begin
-  GuiPyOptions.GUIFontSize:= 9;
-  GuiPyOptions.GUIFontName:= 'Segoe UI';
+  GuiPyOptions.GuiFontSize:= 9;
+  GuiPyOptions.GuiFontName:= 'Segoe UI';
 end;
 
 procedure TFConfiguration.BGitCloneClick(Sender: TObject);
-  var Dir, Remote, aName: string;
+  var Dir, Remote, AName: string;
 begin
   Screen.Cursor:= crHourGlass;
   try
     Dir:= CBLocalRepository.Text;
     Remote:= CBRemoteRepository.Text;
-    if not Sysutils.DirectoryExists(Dir) then SysUtils.ForceDirectories(Dir);
+    if not SysUtils.DirectoryExists(Dir) then SysUtils.ForceDirectories(Dir);
     FGit.GitCall('clone ' + Remote + ' ', Dir);
-    aName:= ExtractFileNameEx(Remote);
-    aName:= ChangeFileExt(aName, '');
-    if not Dir.EndsWith('\' + aName) then
-      CBLocalRepository.Text:= Dir + '\' + aName;
+    AName:= ExtractFileNameEx(Remote);
+    AName:= ChangeFileExt(AName, '');
+    if not Dir.EndsWith('\' + AName) then
+      CBLocalRepository.Text:= Dir + '\' + AName;
     if CBRemoteRepository.Items.IndexOf(Remote) = -1 then
       CBRemoteRepository.Items.Insert(0, Remote);
   finally
@@ -5230,12 +5264,10 @@ procedure TFConfiguration.BSVNClick(Sender: TObject);
   var Dir: string;
 begin
   Dir:= ESVNFolder.Hint;
-  if not Sysutils.DirectoryExists(Dir) then Dir:= GuiPyOptions.SourcePath;
-  {$WARNINGS OFF}
+  if not SysUtils.DirectoryExists(Dir) then Dir:= GuiPyOptions.Sourcepath;
   FolderDialog.DefaultFolder:= Dir;
   if FolderDialog.Execute then
     ShortenPath(ESVNFolder, FolderDialog.FileName);
-  {$WARNINGS ON}
   CheckFolder(ESVNFolder, True);
 end;
 
@@ -5243,17 +5275,15 @@ procedure TFConfiguration.BRepositoryClick(Sender: TObject);
   var Dir: string;
 begin
   Dir:= CBRepository.Hint;
-  if not Sysutils.DirectoryExists(Dir) then Dir:= GuiPyOptions.SourcePath;
-  {$WARNINGS OFF}
+  if not SysUtils.DirectoryExists(Dir) then Dir:= GuiPyOptions.Sourcepath;
   FolderDialog.DefaultFolder:= Dir;
   if FolderDialog.Execute then begin
     Dir:= FolderDialog.FileName;
     ShortenPath(CBRepository, Dir);
-    Sysutils.ForceDirectories(Dir);
+    SysUtils.ForceDirectories(Dir);
     if not FSubversion.IsRepository(Dir) then
       FSubversion.CallSVN('\svnadmin.exe', 'create ' + HideBlanks(Dir));
   end;
-  {$WARNINGS ON}
   CheckFolderCB(CBRepository);
 end;
 
@@ -5269,7 +5299,7 @@ begin
     PrepareShow;
     TThread.ForceQueue(nil, procedure
       begin
-        TVConfiguration.Selected:= getTVConfigurationItem(_(Page));
+        TVConfiguration.Selected:= GetTVConfigurationItem(_(Page));
       end);
     ShowModal;
   end;
@@ -5278,210 +5308,210 @@ end;
 procedure TFConfiguration.AddScriptsPath;
 begin
   var ScriptsPath:= TPath.Combine(PyControl.PythonVersion.InstallPath, 'Scripts');
-  var path:= GetEnvironmentVariable('PATH');
-  if Pos(ScriptsPath, path) = 0 then begin
-    path:= path + ';' + ScriptsPath;
-    SetEnvironmentVariable('PATH', PChar(path));
+  var Path:= GetEnvironmentVariable('Path');
+  if Pos(ScriptsPath, Path) = 0 then begin
+    Path:= Path + ';' + ScriptsPath;
+    SetEnvironmentVariable('Path', PChar(Path));
   end;
 end;
 
-function TFConfiguration.getClassesAndFilename(Pathname: string): TStringList;
-  var SR: TSearchRec;
+function TFConfiguration.GetClassesAndFilename(Pathname: string): TStringList;
+  var SearchRec: TSearchRec;
 begin
   Result:= TStringList.Create;
-  var SL:= TStringList.Create;
+  var StringList:= TStringList.Create;
   try
-    var RegEx:= CompiledRegEx('\s*class\s+(\w*)(\(.*\))?\s*:');
+    var RegEx:= CompiledRegEx('\Str*class\Str+(\w*)(\(.*\))?\Str*:');
     // classes in the active source file
-    SL.LoadFromFile(Pathname);
-    var matches:= RegEx.Matches(SL.Text);
-    for var i:= 0 to matches.Count - 1 do
-       Result.Add(matches[i].groups[1].value + '=' + ExtractFilename(Pathname));
+    StringList.LoadFromFile(Pathname);
+    var Matches:= RegEx.Matches(StringList.Text);
+    for var I:= 0 to Matches.Count - 1 do
+       Result.Add(Matches[I].Groups[1].Value + '=' + ExtractFileName(Pathname));
     // classes in other files of the active directory
-    var path:= ExtractFilePath(Pathname);
-    if FindFirst(Path + '\*.py', faNormal, SR) = 0 then
+    var Path:= ExtractFilePath(Pathname);
+    if FindFirst(Path + '\*.py', faNormal, SearchRec) = 0 then
       repeat
-        SL.LoadFromFile(Path + '\' + SR.Name);
-        matches:= RegEx.Matches(SL.Text);
-        for var i:= 0 to matches.Count - 1 do begin
-          var key := matches[i].groups[1].value;
-          if Result.IndexOfName(key) = -1 then
-            Result.Add(key + '=' + SR.Name);
+        StringList.LoadFromFile(Path + '\' + SearchRec.Name);
+        Matches:= RegEx.Matches(StringList.Text);
+        for var I:= 0 to Matches.Count - 1 do begin
+          var Key := Matches[I].Groups[1].Value;
+          if Result.IndexOfName(Key) = -1 then
+            Result.Add(Key + '=' + SearchRec.Name);
         end;
-      until FindNext(SR) <> 0;
+      until FindNext(SearchRec) <> 0;
   finally
-    FindClose(SR);
-    FreeAndNil(SL);
+    FindClose(SearchRec);
+    FreeAndNil(StringList);
   end;
 end;
 
 procedure TFConfiguration.LoadVisibility;
-  var n: Integer;
+  var Num: Integer;
 
-  procedure StringVisibilityToArr1(s: string; var arr: TBoolArray);
+  procedure StringVisibilityToArr1(Str: string; var Arr: TBoolArray);
   begin
-    for var i:= 0 to high(arr) do
-      arr[i]:= (s[i+1] = '1');
+    for var I:= 0 to High(Arr) do
+      Arr[I]:= (Str[I+1] = '1');
   end;
 
-  procedure StringVisibilityToArr2(s: string; l, n: Integer);
+  procedure StringVisibilityToArr2(Str: string; Count, Num: Integer);
   begin
-    for var i:= 0 to l - 1 do
-      vis1[n, i]:= (s[i+1] = '1');
+    for var I:= 0 to Count - 1 do
+      FVis1[Num, I]:= (Str[I+1] = '1');
   end;
 
 begin
-  if Length(GuiPyOptions.VisTabs) <> VisTabsLen then
-    GuiPyOptions.VisTabs:= StringOfChar('1', VisTabsLen);
-  StringVisibilityToArr1(GuiPyOptions.VisTabs, VisTabs);
+  if Length(GuiPyOptions.FVisTabs) <> VisTabsLen then
+    GuiPyOptions.FVisTabs:= StringOfChar('1', VisTabsLen);
+  StringVisibilityToArr1(GuiPyOptions.FVisTabs, FVisTabs);
 
-  if Length(GuiPyOptions.VisMenus) <> VisMenusLen then
-    GuiPyOptions.VisMenus:= StringOfChar('1', VisMenusLen);
-  StringVisibilityToArr1(GuiPyOptions.VisMenus, VisMenus);
+  if Length(GuiPyOptions.FVisMenus) <> VisMenusLen then
+    GuiPyOptions.FVisMenus:= StringOfChar('1', VisMenusLen);
+  StringVisibilityToArr1(GuiPyOptions.FVisMenus, FVisMenus);
 
-  if Length(GuiPyOptions.VisToolbars) <> VisToolbarsLen then
-    GuiPyOptions.VisToolbars:= StringOfChar('1', VisToolbarsLen);
-  StringVisibilityToArr1(GuiPyOptions.VisToolbars, VisToolbars);
+  if Length(GuiPyOptions.FVisToolbars) <> VisToolbarsLen then
+    GuiPyOptions.FVisToolbars:= StringOfChar('1', VisToolbarsLen);
+  StringVisibilityToArr1(GuiPyOptions.FVisToolbars, FVisToolbars);
 
-  n:= PyIDEMainForm.ToolbarProgram.ButtonCount;
-  if Length(GuiPyOptions.VisProgram) <> n then
-    GuiPyOptions.VisProgram:= StringOfChar('1', n);
-  StringVisibilityToArr2(GuiPyOptions.VisProgram, n, 0);
+  Num:= PyIDEMainForm.ToolbarProgram.ButtonCount;
+  if Length(GuiPyOptions.VisProgram) <> Num then
+    GuiPyOptions.VisProgram:= StringOfChar('1', Num);
+  StringVisibilityToArr2(GuiPyOptions.VisProgram, Num, 0);
 
-  n:= PyIDEMainForm.ToolbarTkinter.ButtonCount;
-  if Length(GuiPyOptions.VisTkinter) <> n then
-    GuiPyOptions.VisTkinter:= StringOfChar('1', n);
-  StringVisibilityToArr2(GuiPyOptions.VisTkinter, n, 1);
+  Num:= PyIDEMainForm.ToolbarTkinter.ButtonCount;
+  if Length(GuiPyOptions.VisTkinter) <> Num then
+    GuiPyOptions.VisTkinter:= StringOfChar('1', Num);
+  StringVisibilityToArr2(GuiPyOptions.VisTkinter, Num, 1);
 
-  n:= PyIDEMainForm.ToolBarTTK.ButtonCount;
-  if Length(GuiPyOptions.VisTTK) <> n then
-    GuiPyOptions.VisTTK:= StringOfChar('1', n);
-  StringVisibilityToArr2(GuiPyOptions.VisTTK, n, 2);
+  Num:= PyIDEMainForm.ToolbarTTK.ButtonCount;
+  if Length(GuiPyOptions.VisTTK) <> Num then
+    GuiPyOptions.VisTTK:= StringOfChar('1', Num);
+  StringVisibilityToArr2(GuiPyOptions.VisTTK, Num, 2);
 
-  n:= PyIDEMainForm.ToolbarQtBase.ButtonCount;
-  if Length(GuiPyOptions.VisQtBase) <> n then
-    GuiPyOptions.VisQtBase:= StringOfChar('1', n);
-  StringVisibilityToArr2(GuiPyOptions.VisQtBase, n, 3);
+  Num:= PyIDEMainForm.ToolBarQtBase.ButtonCount;
+  if Length(GuiPyOptions.VisQtBase) <> Num then
+    GuiPyOptions.VisQtBase:= StringOfChar('1', Num);
+  StringVisibilityToArr2(GuiPyOptions.VisQtBase, Num, 3);
 
-  n:= PyIDEMainForm.ToolbarQtControls.ButtonCount;
-  if Length(GuiPyOptions.VisQtControls) <> n then
-    GuiPyOptions.VisQtControls:= StringOfChar('1', n);
-  StringVisibilityToArr2(GuiPyOptions.VisQtControls, n, 4);
+  Num:= PyIDEMainForm.ToolBarQtControls.ButtonCount;
+  if Length(GuiPyOptions.VisQtControls) <> Num then
+    GuiPyOptions.VisQtControls:= StringOfChar('1', Num);
+  StringVisibilityToArr2(GuiPyOptions.VisQtControls, Num, 4);
 
   // --- Menus
-  n:= Length(DefaultVisFileMenu);
-  if Length(GuiPyOptions.VisFileMenu) <> n then
+  Num:= Length(DefaultVisFileMenu);
+  if Length(GuiPyOptions.VisFileMenu) <> Num then
     GuiPyOptions.VisFileMenu:= DefaultVisFileMenu;
-  StringVisibilityToArr2(GuiPyOptions.VisFileMenu, n, 5);
+  StringVisibilityToArr2(GuiPyOptions.VisFileMenu, Num, 5);
 
-  n:= Length(DefaultVisEditMenu);
-  if Length(GuiPyOptions.VisEditMenu) <> n then
+  Num:= Length(DefaultVisEditMenu);
+  if Length(GuiPyOptions.VisEditMenu) <> Num then
     GuiPyOptions.VisEditMenu:= DefaultVisEditMenu;
-  StringVisibilityToArr2(GuiPyOptions.VisEditMenu, n, 6);
+  StringVisibilityToArr2(GuiPyOptions.VisEditMenu, Num, 6);
 
-  n:= Length(DefaultVisSearchMenu);
-  if Length(GuiPyOptions.VisSearchMenu) <> n then
+  Num:= Length(DefaultVisSearchMenu);
+  if Length(GuiPyOptions.VisSearchMenu) <> Num then
     GuiPyOptions.VisSearchMenu:= DefaultVisSearchMenu;
-  StringVisibilityToArr2(GuiPyOptions.VisSearchMenu, n, 7);
+  StringVisibilityToArr2(GuiPyOptions.VisSearchMenu, Num, 7);
 
-  n:= Length(DefaultVisViewMenu);
-  if Length(GuiPyOptions.VisViewMenu) <> n then
+  Num:= Length(DefaultVisViewMenu);
+  if Length(GuiPyOptions.VisViewMenu) <> Num then
     GuiPyOptions.VisViewMenu:= DefaultVisViewMenu
-  else if copy(GuiPyOptions.VisViewMenu, 23, 2) = '00' then   // fix visibility since version 6.06
-    GuiPyOptions.VisViewMenu:= copy(GuiPyOptions.VisViewMenu, 1, 22) + '11';
+  else if Copy(GuiPyOptions.VisViewMenu, 23, 2) = '00' then   // fix visibility since version 6.06
+    GuiPyOptions.VisViewMenu:= Copy(GuiPyOptions.VisViewMenu, 1, 22) + '11';
 
-  StringVisibilityToArr2(GuiPyOptions.VisViewMenu, n, 8);
+  StringVisibilityToArr2(GuiPyOptions.VisViewMenu, Num, 8);
 
-  n:= Length(DefaultVisProjectMenu);
-  if Length(GuiPyOptions.VisProjectMenu) <> n then
+  Num:= Length(DefaultVisProjectMenu);
+  if Length(GuiPyOptions.VisProjectMenu) <> Num then
     GuiPyOptions.VisProjectMenu:= DefaultVisProjectMenu;
-  StringVisibilityToArr2(GuiPyOptions.VisProjectMenu, n, 9);
+  StringVisibilityToArr2(GuiPyOptions.VisProjectMenu, Num, 9);
 
-  n:= Length(DefaultVisRunMenu);
-  if Length(GuiPyOptions.VisRunMenu) <> n then
+  Num:= Length(DefaultVisRunMenu);
+  if Length(GuiPyOptions.VisRunMenu) <> Num then
     GuiPyOptions.VisRunMenu:= DefaultVisRunMenu;
-  StringVisibilityToArr2(GuiPyOptions.VisRunMenu, n, 10);
+  StringVisibilityToArr2(GuiPyOptions.VisRunMenu, Num, 10);
 
-  n:= Length(DefaultVisUMLMenu);
-  if Length(GuiPyOptions.VisUMLMenu) <> n then
+  Num:= Length(DefaultVisUMLMenu);
+  if Length(GuiPyOptions.VisUMLMenu) <> Num then
     GuiPyOptions.VisUMLMenu:= DefaultVisUMLMenu;
-  StringVisibilityToArr2(GuiPyOptions.VisUMLMenu, n, 11);
+  StringVisibilityToArr2(GuiPyOptions.VisUMLMenu, Num, 11);
 
-  n:= Length(DefaultVisToolsMenu);
-  if Length(GuiPyOptions.VisToolsMenu) <> n then
+  Num:= Length(DefaultVisToolsMenu);
+  if Length(GuiPyOptions.VisToolsMenu) <> Num then
     GuiPyOptions.VisToolsMenu:= DefaultVisToolsMenu;
-  StringVisibilityToArr2(GuiPyOptions.VisToolsMenu, n, 12);
+  StringVisibilityToArr2(GuiPyOptions.VisToolsMenu, Num, 12);
 
-  n:= Length(DefaultVisHelpMenu);
-  if Length(GuiPyOptions.VisHelpMenu) <> n then
+  Num:= Length(DefaultVisHelpMenu);
+  if Length(GuiPyOptions.VisHelpMenu) <> Num then
     GuiPyOptions.VisHelpMenu:= DefaultVisHelpMenu;
-  StringVisibilityToArr2(GuiPyOptions.VisHelpMenu, n, 13);
+  StringVisibilityToArr2(GuiPyOptions.VisHelpMenu, Num, 13);
 
   // --- Toolbars
 
-  n:= PyIDEMainForm.MainToolbar.Items.Count;
-  if Length(GuiPyOptions.VisMainToolbar) <> n then
-    GuiPyOptions.VisMainToolbar:= StringOfChar('1', n);
-  StringVisibilityToArr2(GuiPyOptions.VisMainToolbar, n, 14);
+  Num:= PyIDEMainForm.MainToolBar.Items.Count;
+  if Length(GuiPyOptions.VisMainToolbar) <> Num then
+    GuiPyOptions.VisMainToolbar:= StringOfChar('1', Num);
+  StringVisibilityToArr2(GuiPyOptions.VisMainToolbar, Num, 14);
 
-  n:= PyIDEMainForm.DebugToolbar.Items.Count;
-  if Length(GuiPyOptions.VisDebugToolbar) <> n then
-    GuiPyOptions.VisDebugToolbar:= StringOfChar('1', n);
-  StringVisibilityToArr2(GuiPyOptions.VisDebugToolbar, n, 15);
+  Num:= PyIDEMainForm.DebugToolbar.Items.Count;
+  if Length(GuiPyOptions.VisDebugToolbar) <> Num then
+    GuiPyOptions.VisDebugToolbar:= StringOfChar('1', Num);
+  StringVisibilityToArr2(GuiPyOptions.VisDebugToolbar, Num, 15);
 
-  n:= TEditorForm.ToolbarCount;
-  if Length(GuiPyOptions.VisEditToolbar) <> n then
-    GuiPyOptions.VisEditToolbar:= StringOfChar('1', n);
-  StringVisibilityToArr2(GuiPyOptions.VisEditToolbar, n, 16);
+  Num:= TEditorForm.ToolbarCount;
+  if Length(GuiPyOptions.VisEditToolbar) <> Num then
+    GuiPyOptions.VisEditToolbar:= StringOfChar('1', Num);
+  StringVisibilityToArr2(GuiPyOptions.VisEditToolbar, Num, 16);
 
-  n:= TFUMLForm.ToolbarCount;
-  if Length(GuiPyOptions.VisUMLToolbar) <> n then
-    GuiPyOptions.VisUMLToolbar:= StringOfChar('1', n);
-  StringVisibilityToArr2(GuiPyOptions.VisUMLToolbar, n, 17);
+  Num:= TFUMLForm.ToolbarCount;
+  if Length(GuiPyOptions.VisUMLToolbar) <> Num then
+    GuiPyOptions.VisUMLToolbar:= StringOfChar('1', Num);
+  StringVisibilityToArr2(GuiPyOptions.VisUMLToolbar, Num, 17);
 
-  n:= TFStructogram.ToolbarCount;
-  if Length(GuiPyOptions.VisStructoToolbar) <> n then
-    GuiPyOptions.VisStructoToolbar:= StringOfChar('1', n);
-  StringVisibilityToArr2(GuiPyOptions.VisStructoToolbar, n, 18);
+  Num:= TFStructogram.ToolbarCount;
+  if Length(GuiPyOptions.VisStructoToolbar) <> Num then
+    GuiPyOptions.VisStructoToolbar:= StringOfChar('1', Num);
+  StringVisibilityToArr2(GuiPyOptions.VisStructoToolbar, Num, 18);
 
-  n:= TFSequenceForm.ToolbarCount;
-  if Length(GuiPyOptions.VisSequenceToolbar) <> n then
-    GuiPyOptions.VisSequenceToolbar:= StringOfChar('1', n);
-  StringVisibilityToArr2(GuiPyOptions.VisSequenceToolbar, n, 19);
+  Num:= TFSequenceForm.ToolbarCount;
+  if Length(GuiPyOptions.VisSequenceToolbar) <> Num then
+    GuiPyOptions.VisSequenceToolbar:= StringOfChar('1', Num);
+  StringVisibilityToArr2(GuiPyOptions.VisSequenceToolbar, Num, 19);
 end;
 
 procedure TFConfiguration.SaveVisibility;
 
-  function ArrVisibilityToString1(arr: array of Boolean): string;
+  function ArrVisibilityToString1(Arr: array of Boolean): string;
   begin
-    var s:= '';
-    for var i:= 0 to High(arr) do
-      if arr[i]
-        then s:= s + '1'
-        else s:= s + '0';
-    Result:= s;
+    var Str:= '';
+    for var I:= 0 to High(Arr) do
+      if Arr[I]
+        then Str:= Str + '1'
+        else Str:= Str + '0';
+    Result:= Str;
   end;
 
-  function ArrVisibilityToString2(Tab, n: Integer): string;
+  function ArrVisibilityToString2(Tab, Count: Integer): string;
   begin
-    var s:= '';
-    for var i:= 0 to n-1 do
-      if vis1[Tab, i]
-        then s:= s + '1'
-        else s:= s + '0';
-    Result:= s;
+    var Str:= '';
+    for var I:= 0 to Count-1 do
+      if FVis1[Tab, I]
+        then Str:= Str + '1'
+        else Str:= Str + '0';
+    Result:= Str;
   end;
 
 begin
-  GuiPyOptions.VisTabs      := ArrVisibilityToString1(VisTabs);
-  GuiPyOptions.VisMenus     := ArrVisibilityToString1(VisMenus);
-  GuiPyOptions.VisToolbars  := ArrVisibilityToString1(VisToolbars);
+  GuiPyOptions.FVisTabs      := ArrVisibilityToString1(FVisTabs);
+  GuiPyOptions.FVisMenus     := ArrVisibilityToString1(FVisMenus);
+  GuiPyOptions.FVisToolbars  := ArrVisibilityToString1(FVisToolbars);
 
   GuiPyOptions.VisProgram   := ArrVisibilityToString2(0, PyIDEMainForm.ToolbarProgram.ButtonCount);
   GuiPyOptions.VisTkinter   := ArrVisibilityToString2(1, PyIDEMainForm.ToolbarTkinter.ButtonCount);
   GuiPyOptions.VisTTK       := ArrVisibilityToString2(2, PyIDEMainForm.ToolbarTTK.ButtonCount);
-  GuiPyOptions.VisQtBase    := ArrVisibilityToString2(3, PyIDEMainForm.ToolbarQtBase.ButtonCount);
-  GuiPyOptions.VisQtControls:= ArrVisibilityToString2(4, PyIDEMainForm.ToolbarQtControls.ButtonCount);
+  GuiPyOptions.VisQtBase    := ArrVisibilityToString2(3, PyIDEMainForm.ToolBarQtBase.ButtonCount);
+  GuiPyOptions.VisQtControls:= ArrVisibilityToString2(4, PyIDEMainForm.ToolBarQtControls.ButtonCount);
 
   GuiPyOptions.VisFileMenu   := ArrVisibilityToString2( 5, CountMenuItems(PyIDEMainForm.MainMenu.Items[0]));
   GuiPyOptions.VisEditMenu   := ArrVisibilityToString2( 6, CountMenuItems(PyIDEMainForm.MainMenu.Items[1]));
@@ -5493,7 +5523,7 @@ begin
   GuiPyOptions.VisToolsMenu  := ArrVisibilityToString2(12, CountMenuItems(PyIDEMainForm.MainMenu.Items[7]));
   GuiPyOptions.VisHelpMenu   := ArrVisibilityToString2(13, CountMenuItems(PyIDEMainForm.MainMenu.Items[8]));
 
-  GuiPyOptions.VisMainToolbar    := ArrVisibilityToString2(14, PyIDEMainForm.MainToolbar.Items.Count);
+  GuiPyOptions.VisMainToolbar    := ArrVisibilityToString2(14, PyIDEMainForm.MainToolBar.Items.Count);
   GuiPyOptions.VisDebugToolbar   := ArrVisibilityToString2(15, PyIDEMainForm.DebugToolbar.Items.Count);
   GuiPyOptions.VisEditToolbar    := ArrVisibilityToString2(16, TEditorForm.ToolbarCount);
   GuiPyOptions.VisUMLToolbar     := ArrVisibilityToString2(17, TFUMLForm.ToolbarCount);
@@ -5502,95 +5532,94 @@ begin
 end;
 
 procedure TFConfiguration.SetVisibility;
-  var i, j: Integer; Menu: TTBCustomItem;
+  var Menu: TTBCustomItem;
 
   function IndexItemsToPages(Index: Integer): Integer;
   begin
     var Lookup:= PyIDEMainForm.TabControlWidgets.Items[Index].Caption;
-    for var i := 0 to PyIDEMainForm.TabControlWidgets.Items.Count - 1 do
-      if PyIDEMainForm.TabControlWidgets.Pages[i].Caption = Lookup then
-        Exit(i);
+    for var I := 0 to PyIDEMainForm.TabControlWidgets.Items.Count - 1 do
+      if PyIDEMainForm.TabControlWidgets.Pages[I].Caption = Lookup then
+        Exit(I);
     Result:= -1;
   end;
 
 begin
-  var allTabsClosed:= True;
-  for i:= 0 to High(VisTabs) do begin
-    allTabsClosed:= alltabsClosed and not VisTabs[i];
-    j:= IndexItemsToPages(i);
-    PyIDEMainForm.TabControlWidgets.Pages[j].TabVisible:= VisTabs[i];
-    var Toolbar:= TToolbar(PyIDEMainForm.TabControlWidgets.Pages[j].Controls[0]);
-    for j:= 0 to Toolbar.ButtonCount - 1 do
-      Toolbar.Buttons[j].Visible:= vis1[i, j];
+  var AllTabsClosed:= True;
+  for var I:= 0 to High(FVisTabs) do begin
+    AllTabsClosed:= AllTabsClosed and not FVisTabs[I];
+    var K:= IndexItemsToPages(I);
+    PyIDEMainForm.TabControlWidgets.Pages[K].TabVisible:= FVisTabs[I];
+    var Toolbar:= TToolBar(PyIDEMainForm.TabControlWidgets.Pages[K].Controls[0]);
+    for var J:= 0 to Toolbar.ButtonCount - 1 do
+      Toolbar.Buttons[J].Visible:= FVis1[I, J];
   end;
-  PyIDEMainForm.TabControlWidgets.Visible:= not allTabsClosed;
+  PyIDEMainForm.TabControlWidgets.Visible:= not AllTabsClosed;
 
-  PyIDEMainForm.FileMenu.Visible   := VisMenus[0];
-  PyIDEMainForm.EditMenu.Visible   := VisMenus[1];
-  PyIDEMainForm.SearchMenu.Visible := VisMenus[2];
-  PyIDEMainForm.ViewMenu.Visible   := VisMenus[3];
-  PyIDEMainForm.ProjectMenu.Visible:= VisMenus[4];
-  PyIDEMainForm.RunMenu.Visible    := VisMenus[5];
-  PyIDEMainForm.UMLMenu.Visible    := VisMenus[6];
-  PyIDEMainForm.ToolsMenu.Visible  := VisMenus[7];
-  PyIDEMainForm.HelpMenu.Visible   := VisMenus[8];
+  PyIDEMainForm.FileMenu.Visible   := FVisMenus[0];
+  PyIDEMainForm.EditMenu.Visible   := FVisMenus[1];
+  PyIDEMainForm.SearchMenu.Visible := FVisMenus[2];
+  PyIDEMainForm.ViewMenu.Visible   := FVisMenus[3];
+  PyIDEMainForm.ProjectMenu.Visible:= FVisMenus[4];
+  PyIDEMainForm.RunMenu.Visible    := FVisMenus[5];
+  PyIDEMainForm.UMLMenu.Visible    := FVisMenus[6];
+  PyIDEMainForm.ToolsMenu.Visible  := FVisMenus[7];
+  PyIDEMainForm.HelpMenu.Visible   := FVisMenus[8];
 
-  for i:= 0 to PyIDEMainForm.MainMenu.Items.Count - 1 do begin
-    Menu:= PyIDEMainForm.MainMenu.Items[i];
-    var k:= 0;
-    for j:= 0 to Menu.Count - 1 do
-      if Menu.Items[j].Tag = -1 then  // invalid menu item
-        Menu.Items[j].Visible:= False
-      else if Menu.Items[j].Tag = -2 then
-        Menu.Items[j].Visible:= True  // Separator
+  for var I:= 0 to PyIDEMainForm.MainMenu.Items.Count - 1 do begin
+    Menu:= PyIDEMainForm.MainMenu.Items[I];
+    var K:= 0;
+    for var J:= 0 to Menu.Count - 1 do
+      if Menu[J].Tag = -1 then  // invalid menu item
+        Menu[J].Visible:= False
+      else if Menu[J].Tag = -2 then
+        Menu[J].Visible:= True  // Separator
       else begin                      // Tag = 0 means valid menu item
-        Menu.Items[j].Visible:= vis1[VisTabsLen + i, k];
-        Inc(k);
+        Menu[J].Visible:= FVis1[VisTabsLen + I, K];
+        Inc(K);
       end;
   end;
-  PyIDEMainForm.mnToolsGit.Visible:= PyIDEMainForm.mnToolsGit.Visible and GitOK;
-  PyIDEMainForm.mnToolsSVN.Visible:= PyIDEMainForm.mnToolsSVN.Visible and SubversionOK;
+  PyIDEMainForm.mnToolsGit.Visible:= PyIDEMainForm.mnToolsGit.Visible and FGitOK;
+  PyIDEMainForm.mnToolsSVN.Visible:= PyIDEMainForm.mnToolsSVN.Visible and FSubversionOK;
 
-  PyIDEMainForm.MainToolbar.Visible:= VisToolbars[0];
-  setSpTBXToolbarVisibility(PyIDEMainForm.MainToolbar, 0);
-  PyIDEMainForm.DebugToolbar.Visible:= VisToolbars[1];
-  setSpTBXToolbarVisibility(PyIDEMainForm.DebugToolbar, 1);
+  PyIDEMainForm.MainToolBar.Visible:= FVisToolbars[0];
+  SetSpTBXToolbarVisibility(PyIDEMainForm.MainToolBar, 0);
+  PyIDEMainForm.DebugToolbar.Visible:= FVisToolbars[1];
+  SetSpTBXToolbarVisibility(PyIDEMainForm.DebugToolbar, 1);
 
   PyIDEMainForm.SetDockTopPanel;
 
-  GI_FileFactory.ApplyToFiles(procedure(aFile: IFile)
+  GI_FileFactory.ApplyToFiles(procedure(AFile: IFile)
     begin
-      (aFile as TFile).fForm.setOptions;
+      (AFile as TFile).fForm.SetOptions;
     end);
 end;
 
-procedure TFConfiguration.setSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Nr: Integer);
+procedure TFConfiguration.SetSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar; Num: Integer);
 begin
-  Toolbar.Visible:= VisToolbars[Nr];
-  for var i:= 0 to Toolbar.Items.Count - 1 do
-    Toolbar.Items[i].Visible:= vis1[VisTabsLen + VisMenusLen + Nr, i];
+  Toolbar.Visible:= FVisToolbars[Num];
+  for var I:= 0 to Toolbar.Items.Count - 1 do
+    Toolbar.Items[I].Visible:= FVis1[VisTabsLen + VisMenusLen + Num, I];
 end;
 
 procedure TFConfiguration.PrepareVisibilityPage;
-  var i: Integer;
-      TC: TSpTBXTabControl;
-      anItem: TListItem;
+  var TabControl: TSpTBXTabControl;
+      AItem: TListItem;
 begin
   LVVisibilityTabs.Items.BeginUpdate;
-  TC:= PyIDEMainForm.TabControlWidgets;
-  for i:= 0 to TC.Items.Count - 1 do begin
-    anItem:= LVVisibilityTabs.Items.Add;
-    anItem.Caption:= _(TC.Items[i].Caption);
+  TabControl:= PyIDEMainForm.TabControlWidgets;
+  for var I:= 0 to TabControl.Items.Count - 1 do begin
+    AItem:= LVVisibilityTabs.Items.Add;
+    AItem.Caption:= _(TabControl.Items[I].Caption);
   end;
   LVVisibilityTabs.Items.EndUpdate;
   LVVisibilityMenus.Items.BeginUpdate;
-  for i:= 0 to high(VisMenus) do begin
-    anItem:= LVVisibilityMenus.Items.Add;
-    anItem.Caption:= ReplaceStr(_(PyIDEMainForm.MainMenu.Items[i].Caption), '&', '');
+  for var I:= 0 to High(FVisMenus) do begin
+    AItem:= LVVisibilityMenus.Items.Add;
+    AItem.Caption:= ReplaceStr(_(PyIDEMainForm.MainMenu.Items[I].Caption), '&', '');
   end;
   LVVisibilityMenus.Items.EndUpdate;
   LVVisibilityToolbars.Items.BeginUpdate;
-  for i:= 0 to high(VisToolbars) do
+  for var I:= 0 to High(FVisToolbars) do
     LVVisibilityToolbars.Items.Add;
   LVVisibilityToolbars.Items[0].Caption:= ReplaceStr(_(PyIDEMainForm.MainMenu.Items[0].Caption), '&', '');
   LVVisibilityToolbars.Items[1].Caption:= ReplaceStr(_(PyIDEMainForm.MainMenu.Items[5].Caption), '&', '');
@@ -5603,135 +5632,137 @@ begin
 end;
 
 procedure TFConfiguration.VisibilityModelToView;
-  var i, j: Integer;
 begin
-  for i:= 0 to LVVisibilityTabs.Items.Count - 1 do
-    LVVisibilityTabs.Items[i].Checked:= VisTabs[i];
+  for var I:= 0 to LVVisibilityTabs.Items.Count - 1 do
+    LVVisibilityTabs.Items[I].Checked:= FVisTabs[I];
 
-  for i:= 0 to LVVisibilityMenus.Items.Count - 1 do
-    LVVisibilityMenus.Items[i].Checked:= VisMenus[i];
+  for var I:= 0 to LVVisibilityMenus.Items.Count - 1 do
+    LVVisibilityMenus.Items[I].Checked:= FVisMenus[I];
 
-  for i:= 0 to LVVisibilityToolbars.Items.Count - 1 do
-    LVVisibilityToolbars.Items[i].Checked:= VisToolbars[i];
+  for var I:= 0 to LVVisibilityToolbars.Items.Count - 1 do
+    LVVisibilityToolbars.Items[I].Checked:= FVisToolbars[I];
 
-  // save visibility settings in vis2 for changing
-  for i:= 0 to MaxVisLen - 1 do
-    for j:= 0 to MaxTabItem - 1 do
-      vis2[i, j]:= vis1[i, j];
+  // save visibility settings in FVis2 for changing
+  for var I:= 0 to MaxVisLen - 1 do
+    for var J:= 0 to MaxTabItem - 1 do
+      FVis2[I, J]:= FVis1[I, J];
 
-  LVVisibilityElements.onItemChecked:= nil;
-  for i:= 0 to LVVisibilityElements.Items.Count - 1 do
-    LVVisibilityElements.Items[i].Checked:= vis2[VisSelectedTabMenuToolbar, i];
-  LVVisibilityElements.onItemChecked:= LVVisibilityElementsItemChecked;
+  LVVisibilityElements.OnItemChecked:= nil;
+  for var I:= 0 to LVVisibilityElements.Items.Count - 1 do
+    LVVisibilityElements.Items[I].Checked:= FVis2[FVisSelectedTabMenuToolbar, I];
+  LVVisibilityElements.OnItemChecked:= LVVisibilityElementsItemChecked;
 end;
 
 procedure TFConfiguration.VisibilityViewToModel;
-  var i, j: Integer;
 begin
-  for i:= 0 to high(VisTabs) do
-    VisTabs[i]:= LVVisibilityTabs.Items[i].Checked;
+  for var I:= 0 to High(FVisTabs) do
+    FVisTabs[I]:= LVVisibilityTabs.Items[I].Checked;
 
   if Assigned(LVVisibilityMenus.Items[0]) then // due to unknown problem
-    for i:= 0 to high(VisMenus) do
-      VisMenus[i]:= LVVisibilityMenus.Items[i].Checked;
+    for var I:= 0 to High(FVisMenus) do
+      FVisMenus[I]:= LVVisibilityMenus.Items[I].Checked;
 
   if Assigned(LVVisibilityToolbars.Items[0]) then
-    for i:= 0 to high(VisToolbars) do
-      VisToolbars[i]:= LVVisibilityToolbars.Items[i].Checked;
+    for var I:= 0 to High(FVisToolbars) do
+      FVisToolbars[I]:= LVVisibilityToolbars.Items[I].Checked;
 
   // tab Visibility - view to model
-  for i:= 0 to MaxVisLen - 1 do
-    for j:= 0 to MaxTabItem - 1 do
-      vis1[i, j]:= vis2[i, j];
+  for var I:= 0 to MaxVisLen - 1 do
+    for var J:= 0 to MaxTabItem - 1 do
+      FVis1[I, J]:= FVis2[I, J];
 end;
 
 procedure TFConfiguration.LVVisibilityTabsClick(Sender: TObject);
-  var s: string; i, p, Tab: Integer;
-      TB: TToolBar; anItem: TListItem;
+  var Str: string; Posi, Tab: Integer;
+      ToolBar: TToolBar; AItem: TListItem;
 begin
-  TabsMenusToolbars:= 1;
+  FTabsMenusToolbars:= 1;
   Tab:= Max(LVVisibilityTabs.ItemIndex, 0);
   LVVisibilityElements.Clear;
   case Tab of
     0: begin
          LVVisibilityElements.SmallImages:= PyIDEMainForm.vilProgramLight;
-         TB:= PyIDEMainForm.ToolbarProgram;
+         ToolBar:= PyIDEMainForm.ToolbarProgram;
     end;
     1: begin
-         LVVisibilityElements.SmallImages:= PyIDEMainForm.vilTKinterLight;
-         TB:= PyIDEMainForm.ToolbarTkinter;
+         LVVisibilityElements.SmallImages:= PyIDEMainForm.vilTkInterLight;
+         ToolBar:= PyIDEMainForm.ToolbarTkinter;
     end;
     2: begin
          LVVisibilityElements.SmallImages:= PyIDEMainForm.vilTTKLight;
-         TB:= PyIDEMainForm.ToolbarTTK;
+         ToolBar:= PyIDEMainForm.ToolbarTTK;
     end;
     3: begin
          LVVisibilityElements.SmallImages:= PyIDEMainForm.vilQtBaseLight;
-         TB:= PyIDEMainForm.ToolbarQtBase;
+         ToolBar:= PyIDEMainForm.ToolBarQtBase;
     end;
     4: begin
          LVVisibilityElements.SmallImages:= PyIDEMainForm.vilQtControls;
-         TB:= PyIDEMainForm.ToolbarQtControls;
+         ToolBar:= PyIDEMainForm.ToolBarQtControls;
     end;
     else
       Exit;
   end;
 
-  LVVisibilityElements.onItemChecked:= nil;
-  if Assigned(TB) then begin
-    for i:= 0 to TB.ButtonCount - 1 do begin
-      s:= TB.Buttons[i].Hint;
-      p:= Pos('Tk ', s);
-      if p > 0 then s:= Copy(s, p + 3, Length(s));
-      p:= Pos('TTK ', s);
-      if p > 0 then s:= Copy(s, p + 4, Length(s));
-      anItem:= LVVisibilityElements.Items.Add;
-      anItem.Caption:= ' ' + s;
-      anItem.Checked:= vis2[Tab, i];
-      anItem.ImageIndex:= i;
+  LVVisibilityElements.OnItemChecked:= nil;
+  if Assigned(ToolBar) then begin
+    for var I:= 0 to ToolBar.ButtonCount - 1 do begin
+      Str:= ToolBar.Buttons[I].Hint;
+      Posi:= Pos('Tk ', Str);
+      if Posi > 0 then Str:= Copy(Str, Posi + 3, Length(Str));
+      Posi:= Pos('TTK ', Str);
+      if Posi > 0 then Str:= Copy(Str, Posi + 4, Length(Str));
+      AItem:= LVVisibilityElements.Items.Add;
+      AItem.Caption:= ' ' + Str;
+      AItem.Checked:= FVis2[Tab, I];
+      AItem.ImageIndex:= I;
     end;
   end;
-  VisSelectedTabMenuToolbar:= Tab;
-  LVVisibilityElements.onItemChecked:= LVVisibilityElementsItemChecked;
+  FVisSelectedTabMenuToolbar:= Tab;
+  LVVisibilityElements.OnItemChecked:= LVVisibilityElementsItemChecked;
 end;
 
 procedure TFConfiguration.LVVisibilityMenusClick(Sender: TObject);
-  var s: string; i, Tab: Integer;
-      Menu: TTBCustomItem; anItem: TListItem;
+  var Str: string; Tab: Integer;
+      Menu: TTBCustomItem; AItem: TListItem;
 begin
-  TabsMenusToolbars:= 2;
+  FTabsMenusToolbars:= 2;
   Tab:= LVVisibilityMenus.ItemIndex;
   if Tab = -1 then Exit;
   LVVisibilityElements.Clear;
-  LVVisibilityElements.SmallImages:= PyIDEMainForm.vilimages;
+  LVVisibilityElements.SmallImages:= PyIDEMainForm.vilImages;
   Menu:= PyIDEMainForm.MainMenu.Items[Tab];
-  var k:= 0;
-  LVVisibilityElements.onItemChecked:= nil;
-  for i:= 0 to Menu.Count - 1 do begin
-    s:= Menu.Items[i].Caption;
-    if Menu.Items[i].Tag = 0 then begin
-      s:= ReplaceStr(s, '&', '');
-      anItem:= LVVisibilityElements.Items.Add;
-      anItem.Caption:= ' ' + _(s);
-      anItem.Checked:= vis2[VisTabsLen + Tab, k];
-      anItem.ImageIndex:= Menu.Items[i].ImageIndex;
-      Inc(k);
+  var K:= 0;
+  LVVisibilityElements.OnItemChecked:= nil;
+  for var I:= 0 to Menu.Count - 1 do begin
+    Str:= Menu[I].Caption;
+    if Menu[I].Tag = 0 then begin
+      Str:= ReplaceStr(Str, '&', '');
+      AItem:= LVVisibilityElements.Items.Add;
+      AItem.Caption:= ' ' + _(Str);
+      AItem.Checked:= FVis2[VisTabsLen + Tab, K];
+      AItem.ImageIndex:= Menu[I].ImageIndex;
+      Inc(K);
     end;
   end;
-  VisSelectedTabMenuToolbar:= VisTabsLen + Tab;
-  LVVisibilityElements.onItemChecked:= LVVisibilityElementsItemChecked;
+  FVisSelectedTabMenuToolbar:= VisTabsLen + Tab;
+  LVVisibilityElements.OnItemChecked:= LVVisibilityElementsItemChecked;
 end;
 
 procedure TFConfiguration.LVVisibilityToolbarsClick(Sender: TObject);
-  var s: string; i, p, Tab: Integer;
-      TSpB: TSpTBXToolBar; TB: TToolbar;
-      anItem: TListItem;
-      EditForm: TEditorForm; UMLForm: TFUMLform;
-      StructogramForm: TFStructogram; SequencediagramForm: TFSequenceForm;
+  var Str: string;
+  Posi, Tab: Integer;
+      TSpB: TSpTBXToolbar;
+      ToolBar: TToolBar;
+      AItem: TListItem;
+      EditForm: TEditorForm;
+      UMLForm: TFUMLForm;
+      StructogramForm: TFStructogram;
+      SequencediagramForm: TFSequenceForm;
 begin
-  TabsMenusToolbars:= 3;
+  FTabsMenusToolbars:= 3;
   TSpB:= nil;
-  TB:= nil;
+  ToolBar:= nil;
   EditForm:= nil;
   UMLForm:= nil;
   StructogramForm:= nil;
@@ -5741,11 +5772,11 @@ begin
     LVVisibilityElements.Clear;
     case Tab of
       0: begin
-           LVVisibilityElements.SmallImages:= PyIDEMainForm.vilimages;
-           TSpB:= PyIDEMainForm.MainToolbar;
+           LVVisibilityElements.SmallImages:= PyIDEMainForm.vilImages;
+           TSpB:= PyIDEMainForm.MainToolBar;
       end;
       1: begin
-           LVVisibilityElements.SmallImages:= PyIDEMainForm.vilimages;
+           LVVisibilityElements.SmallImages:= PyIDEMainForm.vilImages;
            TSpB:= PyIDEMainForm.DebugToolbar;
       end;
       2: begin
@@ -5753,139 +5784,139 @@ begin
            if IsDark
              then LVVisibilityElements.SmallImages:= EditForm.vilEditorToolbarDark
              else LVVisibilityElements.SmallImages:= EditForm.vilEditorToolbarLight;
-           TB:= EditForm.EditformToolbar;
+           ToolBar:= EditForm.EditformToolbar;
       end;
       3: begin
            UMLForm:= TFUMLForm.Create(nil);
            if IsDark
              then LVVisibilityElements.SmallImages:= UMLForm.vilToolbarDark
              else LVVisibilityElements.SmallImages:= UMLForm.vilToolbarLight;
-           TB:= UMLForm.UMLToolbar;
+           ToolBar:= UMLForm.UMLToolbar;
       end;
       4: begin
            StructogramForm:= TFStructogram.Create(nil);
            if IsDark
              then LVVisibilityElements.SmallImages:= StructogramForm.vilToolbarDark
              else LVVisibilityElements.SmallImages:= StructogramForm.vilToolbarLight;
-           TB:= StructogramForm.StructogramToolbar;
+           ToolBar:= StructogramForm.StructogramToolbar;
       end;
       5: begin
            SequencediagramForm:= TFSequenceForm.Create(nil);
            if IsDark
              then LVVisibilityElements.SmallImages:= SequencediagramForm.vilToolbarDark
              else LVVisibilityElements.SmallImages:= SequencediagramForm.vilToolbarLight;
-           TB:= SequencediagramForm.SequenceToolbar;
+           ToolBar:= SequencediagramForm.SequenceToolbar;
       end;
       else
         Exit;
     end;
-    LVVisibilityElements.onItemChecked:= nil;
+    LVVisibilityElements.OnItemChecked:= nil;
     if Tab <= 1 then begin
-      for i:= 0 to TSpB.Items.Count - 1 do begin
-        s:= TSpB.Items[i].Hint;
-        p:= Pos('|', s);
-        if p > 0 then s:= Copy(s, 1, p-1);
-        anItem:= LVVisibilityElements.Items.Add;
-        anItem.Caption:= ' ' + _(s);
-        anItem.Checked:= vis2[VisTabsLen + VisMenusLen + Tab, i];
-        anItem.ImageIndex:= TSpB.Items[i].ImageIndex;
+      for var I:= 0 to TSpB.Items.Count - 1 do begin
+        Str:= TSpB.Items[I].Hint;
+        Posi:= Pos('|', Str);
+        if Posi > 0 then Str:= Copy(Str, 1, Posi-1);
+        AItem:= LVVisibilityElements.Items.Add;
+        AItem.Caption:= ' ' + _(Str);
+        AItem.Checked:= FVis2[VisTabsLen + VisMenusLen + Tab, I];
+        AItem.ImageIndex:= TSpB.Items[I].ImageIndex;
       end;
     end;
     if Tab >= 2 then begin
-      for i:= 0 to TB.ButtonCount - 1 do begin
-        s:= TB.Buttons[i].Hint;
-        p:= Pos('|', s);
-        if p > 0 then s:= Copy(s, 1, p-1);
-        anItem:= LVVisibilityElements.Items.Add;
-        anItem.Caption:= ' ' + _(s);
-        anItem.Checked:= vis2[VisTabsLen + VisMenusLen + Tab, i];
-        anItem.ImageIndex:= i;
+      for var I:= 0 to ToolBar.ButtonCount - 1 do begin
+        Str:= ToolBar.Buttons[I].Hint;
+        Posi:= Pos('|', Str);
+        if Posi > 0 then Str:= Copy(Str, 1, Posi-1);
+        AItem:= LVVisibilityElements.Items.Add;
+        AItem.Caption:= ' ' + _(Str);
+        AItem.Checked:= FVis2[VisTabsLen + VisMenusLen + Tab, I];
+        AItem.ImageIndex:= I;
       end;
     end;
-    VisSelectedTabMenuToolbar:= VisTabsLen + VisMenusLen + Tab;
-    LVVisibilityElements.onItemChecked:= LVVisibilityElementsItemChecked;
+    FVisSelectedTabMenuToolbar:= VisTabsLen + VisMenusLen + Tab;
+    LVVisibilityElements.OnItemChecked:= LVVisibilityElementsItemChecked;
   finally
     FreeAndNil(UMLForm);
     FreeAndNil(EditForm);
     FreeAndNil(StructogramForm);
-    FreeandNil(SequencediagramForm);
+    FreeAndNil(SequencediagramForm);
   end;
 end;
 
 procedure TFConfiguration.LVVisibilityElementsItemChecked(Sender: TObject;
   Item: TListItem);
 begin
-  vis2[VisSelectedTabMenuToolbar, Item.Index]:= Item.Checked;
+  FVis2[FVisSelectedTabMenuToolbar, Item.Index]:= Item.Checked;
 end;
 
 procedure TFConfiguration.BVisDefaultClick(Sender: TObject);
-  var i, j, n: Integer;
+  var  Num: Integer;
 
-  procedure DefaultVis(var arr: array of Boolean);
+  procedure DefaultVis(var Arr: array of Boolean);
   begin
-    for var i:= 0 to High(arr) do
-      arr[i]:= True;
+    for var I:= 0 to High(Arr) do
+      Arr[I]:= True;
   end;
 
-  procedure StringVisibilityToArr2(s: string; l, n: Integer);
+  procedure StringVisibilityToArr2(Str: string; Count, Num: Integer);
   begin
-    for var i:= 0 to l - 1 do
-      vis2[n, i]:= (s[i+1] = '1');
+    for var I:= 0 to Count - 1 do
+      FVis2[Num, I]:= (Str[I+1] = '1');
   end;
 
 begin
-  DefaultVis(VisTabs);
-  DefaultVis(VisMenus);
-  DefaultVis(VisToolbars);
+  DefaultVis(FVisTabs);
+  DefaultVis(FVisMenus);
+  DefaultVis(FVisToolbars);
 
-  for i:= 0 to high(VisTabs) do
-    LVVisibilityTabs.Items[i].Checked:= True;
-  for i:= 0 to high(VisMenus) do
-    LVVisibilityMenus.Items[i].Checked:= True;
-  for i:= 0 to high(VisToolbars) do
-    LVVisibilityToolbars.Items[i].Checked:= True;
+  for var I:= 0 to High(FVisTabs) do
+    LVVisibilityTabs.Items[I].Checked:= True;
+  for var I:= 0 to High(FVisMenus) do
+    LVVisibilityMenus.Items[I].Checked:= True;
+  for var I:= 0 to High(FVisToolbars) do
+    LVVisibilityToolbars.Items[I].Checked:= True;
 
   // details of tabs, menus and toolbars
-  for i:= 0 to MaxVisLen - 1 do
-    for j:= 0 to MaxTabItem - 1 do
-      vis2[i, j]:= True;
+  for var I:= 0 to MaxVisLen - 1 do
+    for var J:= 0 to MaxTabItem - 1 do
+      FVis2[I, J]:= True;
 
   // --- default menu visibility
-  n:= Length(DefaultVisFileMenu);
-  StringVisibilityToArr2(DefaultVisFileMenu, n, 5);
-  n:= Length(DefaultVisEditMenu);
-  StringVisibilityToArr2(DefaultVisEditMenu, n, 6);
-  n:= Length(DefaultVisSearchMenu);
-  StringVisibilityToArr2(DefaultVisSearchMenu, n, 7);
-  n:= Length(DefaultVisViewMenu);
-  StringVisibilityToArr2(DefaultVisViewMenu, n, 8);
-  n:= Length(DefaultVisProjectMenu);
-  StringVisibilityToArr2(DefaultVisProjectMenu, n, 9);
-  n:= Length(DefaultVisRunMenu);
-  StringVisibilityToArr2(DefaultVisRunMenu, n, 10);
-  n:= Length(DefaultVisUMLMenu);
-  StringVisibilityToArr2(DefaultVisUMLMenu, n, 11);
-  n:= Length(DefaultVisToolsMenu);
-  StringVisibilityToArr2(DefaultVisToolsMenu, n, 12);
-  n:= Length(DefaultVisHelpMenu);
-  StringVisibilityToArr2(DefaultVisHelpMenu, n, 13);
+  Num:= Length(DefaultVisFileMenu);
+  StringVisibilityToArr2(DefaultVisFileMenu, Num, 5);
+  Num:= Length(DefaultVisEditMenu);
+  StringVisibilityToArr2(DefaultVisEditMenu, Num, 6);
+  Num:= Length(DefaultVisSearchMenu);
+  StringVisibilityToArr2(DefaultVisSearchMenu, Num, 7);
+  Num:= Length(DefaultVisViewMenu);
+  StringVisibilityToArr2(DefaultVisViewMenu, Num, 8);
+  Num:= Length(DefaultVisProjectMenu);
+  StringVisibilityToArr2(DefaultVisProjectMenu, Num, 9);
+  Num:= Length(DefaultVisRunMenu);
+  StringVisibilityToArr2(DefaultVisRunMenu, Num, 10);
+  Num:= Length(DefaultVisUMLMenu);
+  StringVisibilityToArr2(DefaultVisUMLMenu, Num, 11);
+  Num:= Length(DefaultVisToolsMenu);
+  StringVisibilityToArr2(DefaultVisToolsMenu, Num, 12);
+  Num:= Length(DefaultVisHelpMenu);
+  StringVisibilityToArr2(DefaultVisHelpMenu, Num, 13);
 
-  for j:= 0 to LVVisibilityElements.Items.Count - 1 do
-    LVVisibilityElements.Items[j].Checked:= vis2[VisSelectedTabMenuToolbar, j];
+  for var J:= 0 to LVVisibilityElements.Items.Count - 1 do
+    LVVisibilityElements.Items[J].Checked:= FVis2[FVisSelectedTabMenuToolbar, J];
 end;
 
-procedure TFConfiguration.setToolbarVisibility(Toolbar: TToolbar; Nr: Integer);
+procedure TFConfiguration.SetToolbarVisibility(Toolbar: TToolBar; Num: Integer);
 begin
-  Toolbar.Visible:= VisToolbars[Nr];
-  for var i:= 0 to Toolbar.ButtonCount - 1 do
-    Toolbar.Buttons[i].Visible:= vis1[VisTabsLen + VisMenusLen + Nr, i];
+  Toolbar.Visible:= FVisToolbars[Num];
+  for var I:= 0 to Toolbar.ButtonCount - 1 do
+    Toolbar.Buttons[I].Visible:= FVis1[VisTabsLen + VisMenusLen + Num, I];
 end;
 
 function TFConfiguration.CountMenuItems(Menu: TTBCustomItem): Integer;
 begin
   Result:= 0;
-  for var i:= 0 to Menu.Count - 1 do
-    if Menu.Items[i].Tag = 0 then
+  for var I:= 0 to Menu.Count - 1 do
+    if Menu[I].Tag = 0 then
       Inc(Result);
 end;
 
@@ -5913,40 +5944,40 @@ procedure TFConfiguration.LLMAssistantModelToView;
   var Settings: TLLMSettings;
 begin
   case CBProvider.ItemIndex of
-    0: Settings := TempProviders.OpenAI;
-    1: Settings := TempProviders.Gemini;
-    2: Settings := TempProviders.Ollama;
-    3: Settings := TempProviders.DeepSeek;
-    4: Settings := TempProviders.Grok;
+    0: Settings := FTempProviders.OpenAI;
+    1: Settings := FTempProviders.Gemini;
+    2: Settings := FTempProviders.Ollama;
+    3: Settings := FTempProviders.DeepSeek;
+    4: Settings := FTempProviders.Grok;
   end;
-  EEndPoint.text:= Settings.EndPoint;
-  EModel.text:= Settings.Model;
-  EAPIKey.text:= Settings.ApiKey;
-  ESystemPrompt.text:= Settings.SystemPrompt;
-  EMaxTokens.text:= Settings.MaxTokens.toString;
-  ELLMTimeout.text:= (Settings.TimeOut div 1000).toString;
+  EEndPoint.Text:= Settings.EndPoint;
+  EModel.Text:= Settings.Model;
+  EAPIKey.Text:= Settings.ApiKey;
+  ESystemPrompt.Text:= Settings.SystemPrompt;
+  EMaxTokens.Text:= Settings.MaxTokens.ToString;
+  ELLMTimeout.Text:= (Settings.TimeOut div 1000).ToString;
 end;
 
 procedure TFConfiguration.LLMAssistantViewToModel;
-  var Settings: TLLMSettings; value: Integer;
+  var Settings: TLLMSettings; Value: Integer;
 begin
-  TempProviders.Provider:= TLLMProvider(CBProvider.ItemIndex);
-  Settings.EndPoint:= EEndPoint.text;
-  Settings.Model:= EModel.text;
-  Settings.ApiKey:= EAPIKey.text;
-  Settings.SystemPrompt:= ESystemPrompt.text;
-  if not TryStrToInt(EMaxTokens.text, value) then
-    value:= 1000;
-  Settings.MaxTokens:= value;
-  if not TryStrToInt(ELLMTimeout.text, value) then
-    value:= 20;
-  Settings.Timeout:= value*1000;
+  FTempProviders.Provider:= TLLMProvider(CBProvider.ItemIndex);
+  Settings.EndPoint:= EEndPoint.Text;
+  Settings.Model:= EModel.Text;
+  Settings.ApiKey:= EAPIKey.Text;
+  Settings.SystemPrompt:= ESystemPrompt.Text;
+  if not TryStrToInt(EMaxTokens.Text, Value) then
+    Value:= 1000;
+  Settings.MaxTokens:= Value;
+  if not TryStrToInt(ELLMTimeout.Text, Value) then
+    Value:= 20;
+  Settings.TimeOut:= Value*1000;
   case CBProvider.ItemIndex of
-    0: TempProviders.OpenAI := Settings;
-    1: TempProviders.Gemini := Settings;
-    2: TempProviders.Ollama := Settings;
-    3: TempProviders.DeepSeek := Settings;
-    4: TempProviders.Grok := Settings;
+    0: FTempProviders.OpenAI := Settings;
+    1: FTempProviders.Gemini := Settings;
+    2: FTempProviders.Ollama := Settings;
+    3: FTempProviders.DeepSeek := Settings;
+    4: FTempProviders.Grok := Settings;
   end;
 end;
 
@@ -5954,40 +5985,40 @@ procedure TFConfiguration.LLMChatModelToView;
   var Settings: TLLMSettings;
 begin
   case CBChatProvider.ItemIndex of
-    0: Settings := TempChatProviders.OpenAI;
-    1: Settings := TempChatProviders.Gemini;
-    2: Settings := TempChatProviders.Ollama;
-    3: Settings := TempChatProviders.DeepSeek;
-    4: Settings := TempChatProviders.Grok;
+    0: Settings := FTempChatProviders.OpenAI;
+    1: Settings := FTempChatProviders.Gemini;
+    2: Settings := FTempChatProviders.Ollama;
+    3: Settings := FTempChatProviders.DeepSeek;
+    4: Settings := FTempChatProviders.Grok;
   end;
-  EChatEndPoint.text:= Settings.EndPoint;
-  EChatModel.text:= Settings.Model;
-  EChatAPIKey.text:= Settings.ApiKey;
-  EChatSystemPrompt.text:= Settings.SystemPrompt;
-  EChatMaxTokens.text:= Settings.MaxTokens.toString;
-  EChatTimeout.text:= (Settings.TimeOut div 1000).toString;
+  EChatEndPoint.Text:= Settings.EndPoint;
+  EChatModel.Text:= Settings.Model;
+  EChatApiKey.Text:= Settings.ApiKey;
+  EChatSystemPrompt.Text:= Settings.SystemPrompt;
+  EChatMaxTokens.Text:= Settings.MaxTokens.ToString;
+  EChatTimeout.Text:= (Settings.TimeOut div 1000).ToString;
 end;
 
 procedure TFConfiguration.LLMChatViewToModel;
-  var Settings: TLLMSettings; value: Integer;
+  var Settings: TLLMSettings; Value: Integer;
 begin
-  TempChatProviders.Provider:= TLLMProvider(CBChatProvider.ItemIndex);
-  Settings.EndPoint:= EChatEndPoint.text;
-  Settings.Model:= EChatModel.text;
-  Settings.ApiKey:= EChatAPIKey.text;
-  Settings.SystemPrompt:= EChatSystemPrompt.text;
-  if not TryStrToInt(EChatMaxTokens.text, value) then
-    value:= 1000;
-  Settings.MaxTokens:= value;
-  if not TryStrToInt(EChatTimeout.text, value) then
-    value:= 20;
-  Settings.Timeout:= value*1000;
+  FTempChatProviders.Provider:= TLLMProvider(CBChatProvider.ItemIndex);
+  Settings.EndPoint:= EChatEndPoint.Text;
+  Settings.Model:= EChatModel.Text;
+  Settings.ApiKey:= EChatApiKey.Text;
+  Settings.SystemPrompt:= EChatSystemPrompt.Text;
+  if not TryStrToInt(EChatMaxTokens.Text, Value) then
+    Value:= 1000;
+  Settings.MaxTokens:= Value;
+  if not TryStrToInt(EChatTimeout.Text, Value) then
+    Value:= 20;
+  Settings.TimeOut:= Value*1000;
   case CBChatProvider.ItemIndex of
-    0: TempChatProviders.OpenAI:= Settings;
-    1: TempChatProviders.Gemini:= Settings;
-    2: TempChatProviders.Ollama:= Settings;
-    3: TempChatProviders.DeepSeek:= Settings;
-    4: TempChatProviders.Grok:= Settings;
+    0: FTempChatProviders.OpenAI:= Settings;
+    1: FTempChatProviders.Gemini:= Settings;
+    2: FTempChatProviders.Ollama:= Settings;
+    3: FTempChatProviders.DeepSeek:= Settings;
+    4: FTempChatProviders.Grok:= Settings;
   end;
 end;
 
@@ -5998,208 +6029,201 @@ end;
 constructor TGuiPyOptions.Create;
 begin
   inherited;
-  fColorTheme:= 'Obsidian';
+  FColorTheme:= 'Obsidian';
 
   // Class modeler
-  fShowGetSetMethods:= True;
-  fGetSetMethodsAsProperty:= False;
-  fGetMethodChecked:= True;
-  fSetMethodChecked:= False;
-  fShowTypeSelection:= True;
-  fShowWithWithoutReturnValue:= True;
-  fShowParameterTypeSelection:= True;
-  fFromFutureImport:= True;
+  FShowGetSetMethods:= True;
+  FGetSetMethodsAsProperty:= False;
+  FGetMethodChecked:= True;
+  FSetMethodChecked:= False;
+  FShowTypeSelection:= True;
+  FShowWithWithoutReturnValue:= True;
+  FShowParameterTypeSelection:= True;
+  FFromFutureImport:= True;
 
   // GUI designer
-  fNameFromText:= True;
-  fGuiDesignerHints:= True;
-  fSnapToGrid:= True;
-  fGridSize:= 8;
-  fZoomSteps:= 1;
-  fGUIFontSize:= 9;
-  fGUIFontName:= 'Segoe UI';
-  fFrameWidth:= 300;
-  fFrameHeight:= 300;
+  FNameFromText:= True;
+  FGuiDesignerHints:= True;
+  FSnapToGrid:= True;
+  FGridSize:= 8;
+  FZoomSteps:= 1;
+  FGUIFontSize:= 9;
+  FGUIFontName:= 'Segoe UI';
+  FFrameWidth:= 300;
+  FFrameHeight:= 300;
 
   // Structogram
-  fStructoDatatype:= 'int';
-  fSwitchWithCaseLine:= False;
-  fCaseCount:= 4;
-  fStructogramShadowWidth:= 3;
-  fStructogramShadowIntensity:= 8;
+  FStructoDatatype:= 'int';
+  FSwitchWithCaseLine:= False;
+  FCaseCount:= 4;
+  FStructogramShadowWidth:= 3;
+  FStructogramShadowIntensity:= 8;
 
   // Sequence diagram
-  fSDFillingcolor:= clYellow;
-  fSDNoFilling:= False;
-  fSDShowMainCall:= False;
-  fSDShowParameter:= True;
-  fSDShowReturn:= True;
+  FSDFillingColor:= clYellow;
+  FSDNoFilling:= False;
+  FSDShowMainCall:= False;
+  FSDShowParameter:= True;
+  FSDShowReturn:= True;
 
   // UML design
-  fValidClassColor:= clWhite;
-  fInvalidClassColor:= clFuchsia;
-  fClassHead:= 0;
-  fShadowWidth:= 3;
-  fShadowIntensity:= 8;
-  fObjectColor:= clYellow;
-  fObjectHead:= 1;
-  fObjectFooter:= 1;
-  fObjectCaption:= 0;
-  fObjectUnderline:= True;
-  fCommentColor:= clSkyBlue;
-  fDiVisibilityFilter:= 0;
-  fDiSortOrder:= 0;
-  fDIShowParameter:= 4;
-  fDiShowIcons:= 1;
+  FValidClassColor:= clWhite;
+  FInvalidClassColor:= clFuchsia;
+  FClassHead:= 0;
+  FShadowWidth:= 3;
+  FShadowIntensity:= 8;
+  FObjectColor:= clYellow;
+  FObjectHead:= 1;
+  FObjectFooter:= 1;
+  FObjectCaption:= 0;
+  FObjectUnderline:= True;
+  FCommentColor:= clSkyBlue;
+  FDiVisibilityFilter:= 0;
+  FDiSortOrder:= 0;
+  FDiShowParameter:= 4;
+  FDiShowIcons:= 1;
 
   // uml options
-  fShowEmptyRects:= False;
-  fIntegerInsteadofInt:= False;
-  fConstructorWithVisibility:= False;
-  fRelationshipAttributesBold:= True;
-  fShowClassparameterSeparately:= False;
-  fRoleHidesAttribute:= False;
-  fDefaultModifiers:= True;
-  fShowPublicOnly:= False;
-  fShowObjectsWithInheritedPrivateAttributes:= True;
-  fShowObjectsWithMethods:= False;
-  fObjectLowerCaseLetter:= True;
-  fShowAllNewObjects:= True;
-  fObjectsWithoutVisibility:= True;
-  fPrivateAttributEditable:= True;
-  fOpenFolderFormItems:= '';
+  FShowEmptyRects:= False;
+  FIntegerInsteadofInt:= False;
+  FConstructorWithVisibility:= False;
+  FRelationshipAttributesBold:= True;
+  FShowClassparameterSeparately:= False;
+  FRoleHidesAttribute:= False;
+  FDefaultModifiers:= True;
+  FShowPublicOnly:= False;
+  FShowObjectsWithInheritedPrivateAttributes:= True;
+  FShowObjectsWithMethods:= False;
+  FObjectLowerCaseLetter:= True;
+  FShowAllNewObjects:= True;
+  FObjectsWithoutVisibility:= True;
+  FPrivateAttributEditable:= True;
+  FOpenFolderFormItems:= '';
 
    // restrictions
-  fLockedDOSWindow:= False;
-  fLockedInternet:= False;
-  fLockedPaths:= False;
-  fLockedStructogram:= False;
-  fUsePredefinedLayouts:= False;
+  FLockedDOSWindow:= False;
+  FLockedInternet:= False;
+  FLockedPaths:= False;
+  FLockedStructogram:= False;
+  FUsePredefinedLayouts:= False;
 
   // Browser
-  fBrowserURLs:= '';
-  fCBWidth:= 200;
-  fUseIEinternForDocuments:= True;
+  FBrowserURLs:= '';
+  FCBWidth:= 200;
+  FUseIEinternForDocuments:= True;
 
   // Associations
-  fAdditionalAssociations:= '';
+  FAdditionalAssociations:= '';
 
   // LLMAssistant
-  fProviders:= TLLMProvidersClass.Create;
-  fProviders.setFromProviders(LLMAssistant.Providers);
-  fChatProviders:= TLLMProvidersClass.Create;
-  fChatProviders.setFromProviders(LLMChatForm.LLMChat.Providers);
+  FProviders:= TLLMProvidersClass.Create;
+  FProviders.setFromProviders(LLMAssistant.Providers);
+  FChatProviders:= TLLMProvidersClass.Create;
+  FChatProviders.setFromProviders(LLMChatForm.LLMChat.Providers);
 
   // Git
-  fGitFolder:= '';
-  fGitLocalRepository:= '';
-  fGitRemoteRepository:= '';
-  fGitUserName:= '';
-  fGitUserEMail:= '';
+  FGitFolder:= '';
+  FGitLocalRepository:= '';
+  FGitRemoteRepository:= '';
+  FGitUserName:= '';
+  FGitUserEMail:= '';
 
   // Subversion
-  fSVNFolder:= '';
-  fSVNRepository:= '';
+  FSVNFolder:= '';
+  FSVNRepository:= '';
 
   // Others
-  fLicence:= '';
-  fAuthor:= '';
+  FLicence:= '';
+  FAuthor:= '';
 
   // Others
-  fTextDiffState:= '';
-  fTextDiffIgnoreCase:= False;
-  fTextDiffIgnoreBlanks:= False;
-  fSourcepath:= GetDocumentsPath;
-  fTempDir:= IncludeTrailingPathDelimiter(GetEnvironmentVariable('TEMP'));
+  FTextDiffState:= '';
+  FTextDiffIgnoreCase:= False;
+  FTextDiffIgnoreBlanks:= False;
+  FSourcepath:= GetDocumentsPath;
+  FTempDir:= IncludeTrailingPathDelimiter(GetEnvironmentVariable('TEMP'));
 
-  fUMLFont:= TFont.Create;
-  fUMLFont.Name:= 'Segoe UI';
-  fUMLFont.Size:= 12;
-  fStructogramFont:= TFont.Create;
-  fStructogramFont.Name:= 'Segoe UI';
-  fStructogramFont.Size:= 12;
-  fSequenceFont:= TFont.Create;
-  fSequenceFont.Name:= 'Segoe UI';
-  fSequenceFont.Size:= 12;
+  FUMLFont:= TFont.Create;
+  FUMLFont.Name:= 'Segoe UI';
+  FUMLFont.Size:= 12;
+  FStructogramFont:= TFont.Create;
+  FStructogramFont.Name:= 'Segoe UI';
+  FStructogramFont.Size:= 12;
+  FSequenceFont:= TFont.Create;
+  FSequenceFont.Name:= 'Segoe UI';
+  FSequenceFont.Size:= 12;
 end;
 
-destructor TGuiPyOptions.destroy;
+destructor TGuiPyOptions.Destroy;
 begin
-  FreeAndNil(fUMLFont);
-  FreeAndNil(fStructogramFont);
-  FreeAndNil(fSequenceFont);
-  FreeAndNil(fProviders);
+  FreeAndNil(FUMLFont);
+  FreeAndNil(FStructogramFont);
+  FreeAndNil(FSequenceFont);
+  FreeAndNil(FProviders);
   FreeAndNil(FChatProviders);
+  inherited;
 end;
 
-procedure TGuiPyOptions.setUMLFont(Value: TFont);
+procedure TGuiPyOptions.SetUMLFont(Value: TFont);
 begin
-  fUMLFont.assign(Value);
+  FUMLFont.Assign(Value);
 end;
 
-procedure TGuiPyOptions.setStructogramFont(Value: TFont);
+procedure TGuiPyOptions.SetStructogramFont(Value: TFont);
 begin
-  fStructogramFont.assign(Value);
+  FStructogramFont.Assign(Value);
 end;
 
-procedure TGuiPyOptions.setSequenceFont(Value: TFont);
+procedure TGuiPyOptions.SetSequenceFont(Value: TFont);
 begin
-  fSequenceFont.assign(Value);
+  FSequenceFont.Assign(Value);
 end;
 
 procedure TGuiPyOptions.AddPortableDrives;
 begin
-  fTempDir:= AddPortableDrive(fTempDir);
-  fGitFolder:= AddPortableDrive(fGitFolder);
-  fGitLocalRepository:= AddPortableDrive(fGitLocalRepository);
-  fSVNFolder:= AddPortableDrive(fSVNFolder);
-  fSVNRepository:= AddPortableDrive(fSVNRepository);
-  fSourcePath:= AddPortableDrive(fSourcePath);
-  if not SysUtils.DirectoryExists(fSourcePath) then
-    fSourcePath:= GetDocumentsPath;
+  FTempDir:= AddPortableDrive(FTempDir);
+  FGitFolder:= AddPortableDrive(FGitFolder);
+  FGitLocalRepository:= AddPortableDrive(FGitLocalRepository);
+  FSVNFolder:= AddPortableDrive(FSVNFolder);
+  FSVNRepository:= AddPortableDrive(FSVNRepository);
+  FSourcepath:= AddPortableDrive(FSourcepath);
+  if not SysUtils.DirectoryExists(FSourcepath) then
+    FSourcepath:= GetDocumentsPath;
 end;
 
 procedure TGuiPyOptions.RemovePortableDrives;
 begin
-  fTempDir:= RemovePortableDrive(fTempDir);
-  fGitFolder:= RemovePortableDrive(fGitFolder);
-  fGitLocalRepository:= RemovePortableDrive(fGitLocalRepository);
-  fSVNFolder:= RemovePortableDrive(fSVNFolder);
-  fSVNRepository:= RemovePortableDrive(fSVNRepository);
-  fSourcePath:= RemovePortableDrive(fSourcePath);
+  FTempDir:= RemovePortableDrive(FTempDir);
+  FGitFolder:= RemovePortableDrive(FGitFolder);
+  FGitLocalRepository:= RemovePortableDrive(FGitLocalRepository);
+  FSVNFolder:= RemovePortableDrive(FSVNFolder);
+  FSVNRepository:= RemovePortableDrive(FSVNRepository);
+  FSourcepath:= RemovePortableDrive(FSourcepath);
 end;
 
 {--- TGuiPyLanguageOptions ----------------------------------------------------}
 
-procedure TGuiPyLanguageOptions.getInLanguage(Language: string);
-  var CurrentLanguage: string;
+procedure TGuiPyLanguageOptions.GetInLanguage(Language: string);
+  var FCurrentLanguage: string;
 begin
-  CurrentLanguage:= getCurrentLanguage;
+  FCurrentLanguage:= GetCurrentLanguage;
   UseLanguage(Language);
 
   // Structogram
-  fAlgorithm:=  _('Algorithm');
-  fInput:= _('Input:');
-  fOutput:= _('Output:');
-  fWhile:= _('repeat while');
-  fFor:= _('repeat for item in list');
-  fYes:= _('yes');
-  fNo:= _('no');
-  fOther:= _('else');
+  FAlgorithm:=  _('Algorithm');
+  FInput:= _('Input:');
+  FOutput:= _('Output:');
+  FWhile:= _('repeat while');
+  FFor:= _('repeat for item in list');
+  FYes:= _('yes');
+  FNo:= _('no');
+  FOther:= _('else');
 
   // Sequencediagram
-  fSDObject:= _('Object');
-  fSDNew:= _('new');
-  fSDClose:= _('close');
-  UseLanguage(CurrentLanguage);
+  FSDObject:= _('Object');
+  FSDNew:= _('new');
+  FSDClose:= _('close');
+  UseLanguage(FCurrentLanguage);
 end;
-
-
-
-initialization
-  //TStyleManager.Engine.RegisterStyleHook(TEdit, TEditStyleHookColor);
-
-//finalization
-  // TStyleManager.Engine.UnRegisterStyleHook(TEdit, TEditStyleHookColor);
 
 end.

@@ -1,215 +1,208 @@
-﻿{-------------------------------------------------------------------------------
- Unit:     UUtils
- Author:   Gerhard Röhner
- Date:     July 2000
- Purpose:  utility functions
--------------------------------------------------------------------------------}
+﻿{ -------------------------------------------------------------------------------
+  Unit:     UUtils
+  Author:   Gerhard Röhner
+  Date:     July 2000
+  Purpose:  utility functions
+  ------------------------------------------------------------------------------- }
 
 unit UUtils;
 
 interface
 
-uses Windows, Classes, StdCtrls, Forms, SysUtils, Controls, Graphics,
-     uEditAppIntfs;
+uses
+  Windows,
+  Classes,
+  StdCtrls,
+  Forms,
+  SysUtils,
+  Controls,
+  Graphics,
+  uEditAppIntfs;
 
 type
   TVisibility = (viPrivate, viProtected, viPublic);
 
-  TBoolEvent = procedure (Value: Boolean) of object;
+  TBoolEvent = procedure(Value: Boolean) of object;
 
 const
-  UTF8BOMString : RawByteString = AnsiChar($EF) + AnsiChar($BB) + AnsiChar($BF);
-
+  UTF8BOMString: RawByteString = AnsiChar($EF) + AnsiChar($BB) + AnsiChar($BF);
 
 function CtrlPressed: Boolean;
-procedure ErrorMsg(const s: string);
-function MyStringReplace(ImString: string; const DenString, DurchString: string): string;
-function HideCrLf(const s: string): string;
-function UnHideCrLf(const s: string): string;
+procedure ErrorMsg(const Str: string);
+function MyStringReplace(InString: string;
+  const TheString, NewString: string): string;
+function HideCrLf(const Str: string): string;
+function UnHideCrLf(const Str: string): string;
 function Split(Delimiter: Char; Input: string): TStringList;
 function IsWriteProtected(const FileName: string): Boolean;
-function dissolveUsername(const s: string): string;
-function IsHTTP(const Pathname: string): Boolean;
+function DissolveUsername(const Str: string): string;
+function IsHttp(const Pathname: string): Boolean;
 procedure ComboBoxAdd(ComboBox: TComboBox);
 procedure ComboBoxInsert(ComboBox: TComboBox);
-procedure ComboBoxInsert2(ComboBox: TComboBox; const s: string);
-procedure ComboBoxDelete2(ComboBox: TComboBox; const s: string);
-function ComboBoxItemsSpeichern(s: string): string;
-function ComboBoxItemsLaden(s: string): string;
+procedure ComboBoxInsert2(ComboBox: TComboBox; const Str: string);
+procedure ComboBoxDelete2(ComboBox: TComboBox; const Str: string);
 
-function withoutTrailingSlash(const s: string): string;
-function withTrailingSlash(const s: string): string;
+function WithoutTrailingSlash(const Str: string): string;
+function WithTrailingSlash(const Str: string): string;
 function VistaOrBetter: Boolean;
 function GetDocumentsPath: string;
-procedure ErweiterePath(const s: string);
-function  GetEnvironmentVar(const VarName: string): string;
-procedure SetEnvironmentVar(const VarName, VarValue: string);
 function GetTempDir: string;
-function ExtractFilePathEx(const s: string): string;
-function hasDefaultPrinter: Boolean;
-procedure CreateMyFile(const Path: string);
+function ExtractFilePathEx(const Str: string): string;
 function IsAdministrator: Boolean;
 function HasAssociationWithGuiPy(const Extension: string): Boolean;
-function getRegisteredGuiPy: string;
-function HideBlanks(const s: string): string;
-function UnHideBlanks(const s: string): string;
-function GetLongPathName(const PathName: string): string;
-function Left(const s: string; p: Integer): string;
-function Right(const s: string; p: Integer): string;
-function CountChar(c: char; const s: string): Integer;
-function HasWriteAccess(const Directory: string): Boolean;
-procedure SetPrinterIndex( i : Integer );
-procedure PrintBitmap(FormBitmap: TBitmap; PixelsPerInch: Integer; PrintScale: TPrintScale = poProportional);
-function ExplorerTest: Boolean;
-function UpperLower(const s: string): string;
-function IsWordBreakChar(C: Char): Boolean; overload;
-function IsWordInLine(Word, Line: string): Boolean;
-function IsDigit(c: char): Boolean;
-function WindowStateToStr(W: TWindowState): string;
-function StrToWindowState(const s: string): TWindowState;
-function WithoutGeneric(s: string): string;
-function GetShortType(s: string): string;
-function GetShortTypeWith(s: string): string;
-function GetShortMethod(s: string): string;
-function GenericOf(const s: string): string;
-function VisibilityAsString(vis: TVisibility) : string;
-function String2Visibility(const s: string): TVisibility;
-function IsPythonType(aType: string): Boolean;
-function hasClassExtension(const Pathname: string): Boolean;
-function hasPythonExtension(const Pathname: string): Boolean;
-function ValidFilename(s: string): Boolean;
-function max3(m1, m2, m3: Integer): Integer;
-function min3(m1, m2, m3: Integer): Integer;
-procedure LockFormUpdate(F: TForm);
-procedure UnlockFormUpdate(F: TForm);
-function WithoutArray(const s: string): string;
+function GetRegisteredGuiPy: string;
+function HideBlanks(const Str: string): string;
+function GetLongPathName(const Pathname: string): string;
+function Left(const Str: string; Num: Integer): string;
+function Right(const Str: string; Num: Integer): string;
+function CountChar(Chr: Char; const Str: string): Integer;
+procedure PrintBitmap(FormBitmap: TBitmap; PixelsPerInch: Integer;
+  PrintScale: TPrintScale = poProportional);
+function UpperLower(const Str: string): string;
+function IsWordBreakChar(Chr: Char): Boolean; overload;
+function IsDigit(Chr: Char): Boolean;
+function WindowStateToStr(WindowState: TWindowState): string;
+function StrToWindowState(const Str: string): TWindowState;
+function WithoutGeneric(Str: string): string;
+function GetShortType(Str: string): string;
+function GetShortTypeWith(Str: string): string;
+function GenericOf(const Str: string): string;
+function VisibilityAsString(Vis: TVisibility): string;
+function IsPythonType(AType: string): Boolean;
+function HasPythonExtension(const Pathname: string): Boolean;
+function ValidFilename(Str: string): Boolean;
+function Max3(Int1, Int2, Int3: Integer): Integer;
+function Min3(Int1, Int2, Int3: Integer): Integer;
+procedure LockFormUpdate(Form: TForm);
+procedure UnlockFormUpdate(Form: TForm);
+function WithoutArray(const Str: string): string;
 function IsUNC(const Pathname: string): Boolean;
-function ExtractFileNameEx(s: string): string;
-function StripHttpParams(const s: string): string;
-function ToWindows(s: string): string;
+function ExtractFileNameEx(Str: string): string;
+function StripHttpParams(const Str: string): string;
+function ToWindows(Str: string): string;
 function FileExistsCaseSensitive(const FileName: TFileName): Boolean;
-function getFirstWord(s: string): string;
 procedure SetAnimation(Value: Boolean);
-function einruecken(Einrueck, s: string): string;
-function isDunder(Name: string): Boolean;
-function StringTimesN(s: string; n: Integer): string;
+function IsDunder(Name: string): Boolean;
+function StringTimesN(Str: string; Num: Integer): string;
 function GetUniqueName(Control: TControl; Basename: string): string;
-function OnlyCharsAndDigits(const s: string): string;
-function ToWeb(const Browser: string; s: string): string;
+function OnlyCharsAndDigits(const Str: string): string;
+function ToWeb(const Browser: string; Str: string): string;
 function StartsWith(const Str, Substr: string): Boolean;
-function LowerUpper(const s: string): string;
-function isLower(c: char): Boolean;
-function WithoutSpaces(const s: string): string;
-function ChangeColor(Color: TColor; percent: real): TColor;
-function AsString(s: string): string;
-function isIdentifierChar(c: char): Boolean;
-function LeftSpaces(s: string; tabW: Integer): Integer;
-function RGB2Color(const R, G, B: Integer): Integer;
-procedure Color2RGB(const Color: TColor; var R, G, B: Integer);
-function WithoutLeadingUnderscores(s: string): string;
-function GetNextPart(var s: string): string; overload;
-function GetNextPart(var s: string; ch: char): string; overload;
-function Visibility2ImageNumber(vis: TVisibility): Integer;
-function IsVisibility(const s: string): Boolean;
-function IsModifier(const s: string): Boolean;
-function WithoutVisibility(s: string): string;
-function IsSimpleType(const s: string): Boolean;
-function ShellExecuteFile(const FileName, Params, DefaultDir: string; ShowCmd: Integer): THandle;
+function LowerUpper(const Str: string): string;
+function IsLower(Chr: Char): Boolean;
+function AsString(Str: string): string;
+function LeftSpaces(Str: string; TabW: Integer): Integer;
+function RGB2Color(const Red, Green, Blue: Integer): Integer;
+procedure Color2RGB(const Color: TColor; var Red, Green, Blue: Integer);
+function WithoutVisibility(Str: string): string;
+function IsSimpleType(const Str: string): Boolean;
+function ShellExecuteFile(const FileName, Params, DefaultDir: string;
+  ShowCmd: Integer): THandle;
 function FilenameToFileKind(const FileName: string): TFileKind;
-function RemovePortableDrive(const s: string; folder: string = ''): string;
-function AddPortableDrive(const s: string; folder: string = ''): string;
-function WriteLog(LogString: string): Integer;
-function getProtocolAndDomain(url: string): string;
+function RemovePortableDrive(const Str: string; Folder: string = ''): string;
+function AddPortableDrive(const Str: string; Folder: string = ''): string;
+function GetProtocolAndDomain(Url: string): string;
 function IsHTML(const Pathname: string): Boolean;
-function HttpToWeb(s: string): string;
-function DownloadURL(const aUrl, aFile: string): Boolean;
-procedure SetElevationRequiredState(aControl: TWinControl);
-function DownloadFile(const SourceFile, DestFile: string): Boolean;
-function MakeValidIdentifier(s: string): string;
+function HttpToWeb(Str: string): string;
+function DownloadURL(const Url, FileName: string): Boolean;
+procedure SetElevationRequiredState(AControl: TWinControl);
 function CanActuallyFocus(WinControl: TWinControl): Boolean;
-function isNumber(var s: string): Boolean;
-function isBool(s: string): Boolean;
-procedure ReplaceResourceString(RStringRec: PResStringRec; const AString: string);
-function DecToBase(nBase: Integer; nDecValue: double): string;
-function ConvertLtGt(s: string): string;
-function FloatToVal(x: real): string;
-function StringToSingle(S: string): Single;
-function PointToVal(P: TPoint): string;
-function IntToVal(x: Integer): string;
-function myColorToRGB(Color: TColor): string;
-function XYToVal(x, y: Integer): string;
-function CalcIndent(S : string; TabWidth : Integer = 4): Integer;
-function encodeQuotationMark(const s: string): string;
-function MyMulDiv(nNumber, nNumerator, nDenominator: Integer): Integer;
+function IsNumber(var Str: string): Boolean;
+function IsBool(Str: string): Boolean;
+function DecToBase(Base: Integer; DecValue: Double): string;
+function ConvertLtGt(Str: string): string;
+function FloatToVal(AFloat: Real): string;
+function PointToVal(Point: TPoint): string;
+function IntToVal(Int: Integer): string;
+function MyColorToRGB(Color: TColor): string;
+function XYToVal(Xpos, YPos: Integer): string;
+function CalcIndent(Str: string; TabWidth: Integer = 4): Integer;
+function EncodeQuotationMark(const Str: string): string;
+function MyMulDiv(Number, Numerator, Denominator: Integer): Integer;
 procedure LockWindow(Handle: THandle);
 procedure UnLockWindow;
 function IsColorDark(AColor: TColor): Boolean;
 
 implementation
 
-uses Dialogs, UITypes, WinInet, Winapi.SHFolder, Registry, Printers, Math, Messages,
-     ShellAPI, IOUtils, SHDocVw, URLMon, StrUtils,
-     cPyScripterSettings, uCommonFunctions;
+uses
+  Dialogs,
+  UITypes,
+  WinInet,
+  Winapi.SHFolder,
+  Registry,
+  Printers,
+  Math,
+  Messages,
+  ShellAPI,
+  IOUtils,
+  StrUtils,
+  cPyScripterSettings,
+  uCommonFunctions;
 
 function CtrlPressed: Boolean;
 begin
-  Result:= (GetAsyncKeyState(VK_CONTROL) and $f000) <> 0;
+  Result := (GetAsyncKeyState(VK_CONTROL) and $F000) <> 0;
 end;
 
-function HideCrLf(const s: string): string;
+function HideCrLf(const Str: string): string;
 begin
-  Result:= StringReplace(s, #13#10, '\r\n', [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Str, #13#10, '\r\n', [rfReplaceAll, rfIgnoreCase]);
 end;
 
-function UnhideCrLf(const s: string): string;
+function UnHideCrLf(const Str: string): string;
 begin
-  Result:= StringReplace(s, '\r\n', #13#10, [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Str, '\r\n', #13#10, [rfReplaceAll, rfIgnoreCase]);
 end;
 
-function MyStringReplace(ImString: string; const DenString, DurchString: string): string;
+function MyStringReplace(InString: string;
+  const TheString, NewString: string): string;
 begin
-  Result:= StringReplace(ImString, DenString, DurchString, [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(InString, TheString, NewString,
+    [rfReplaceAll, rfIgnoreCase]);
 end;
 
-procedure ErrorMsg(const s: string);
+procedure ErrorMsg(const Str: string);
 begin
-  StyledMessageDlg(s, mtError, [mbOK], 0);
+  StyledMessageDlg(Str, mtError, [mbOK], 0);
 end;
 
 function Split(Delimiter: Char; Input: string): TStringList;
-  var p: Integer; SL: TStringList;
+var
+  Posi: Integer;
+  StringList: TStringList;
 begin
-  SL:= TStringList.Create;
-  p:= Pos(Delimiter, Input);
-  while p > 0 do begin
-    SL.Add(Copy(Input, 1, p-1));
-    Delete(Input, 1, p);
-    p:= Pos(Delimiter, Input);
+  StringList := TStringList.Create;
+  Posi := Pos(Delimiter, Input);
+  while Posi > 0 do
+  begin
+    StringList.Add(Copy(Input, 1, Posi - 1));
+    Delete(Input, 1, Posi);
+    Posi := Pos(Delimiter, Input);
   end;
-  SL.Add(Input);
-  Result:= SL;
+  StringList.Add(Input);
+  Result := StringList;
 end;
 
 function HasAttr(const FileName: string; Attr: Word): Boolean;
-  var Fileattr: Integer;
+var
+  Fileattr: Integer;
 begin
-  Fileattr:= FileGetAttr(FileName);
-  Result := (FileAttr and Attr) = Attr;
+  Fileattr := FileGetAttr(FileName);
+  Result := (Fileattr and Attr) = Attr;
 end;
 
 function IsWriteProtected(const FileName: string): Boolean;
 begin
-  Result:= FileExists(FileName) and HasAttr(FileName, faReadOnly);
+  Result := FileExists(FileName) and HasAttr(FileName, faReadOnly);
 end;
 
-procedure StrResetLength(var S: string);
-var
-  I: Integer;
+procedure StrResetLength(var Str: string);
 begin
-  for I := 0 to Length(S) - 1 do
-    if S[I + 1] = #0 then
+  for var I := 0 to Length(Str) - 1 do
+    if Str[I + 1] = #0 then
     begin
-      SetLength(S, I);
+      SetLength(Str, I);
       Exit;
     end;
 end;
@@ -227,276 +220,219 @@ begin
     Result := '';
 end;
 
-function dissolveUsername(const s: string): string;
-  var p: Integer; Username: string;
+function DissolveUsername(const Str: string): string;
+var
+  Posi: Integer;
+  Username: string;
 begin
-  Result:= s;
-  p:= Pos('%USERNAME%', UpperCase(Result));
-  if p > 0 then begin
-    Delete(Result, p, 10);
-    Username:= GetLocalUsername;
-    Insert(Username, Result, p);
+  Result := Str;
+  Posi := Pos('%USERNAME%', UpperCase(Result));
+  if Posi > 0 then
+  begin
+    Delete(Result, Posi, 10);
+    Username := GetLocalUserName;
+    Insert(Username, Result, Posi);
   end;
 end;
 
-function IsHTTP(const Pathname: string): Boolean;
-  var aPath: string;
+function IsHttp(const Pathname: string): Boolean;
 begin
-  aPath:= UpperCase(Pathname);
-  Result:= (pos('HTTP://', aPath) + pos('RES://', aPath) + pos('HTTPS://', aPath) > 0);
+  var Path := UpperCase(Pathname);
+  Result := (Pos('HTTP://', Path) + Pos('RES://', Path) + Pos('HTTPS://',
+    Path) > 0);
 end;
 
 procedure ComboBoxAdd(ComboBox: TComboBox);
-  var s: string; i: Integer;
+var
+  Str: string;
+  Int: Integer;
 begin
-  s:= ComboBox.Text;
-  ComboBox.Hint:= s;
-  if s = '' then Exit;
-  i:= ComboBox.Items.IndexOf(s);
-  if i >= 0 then
-    ComboBox.Items.Delete(i);
-  ComboBox.Items.Insert(0, s);
+  Str := ComboBox.Text;
+  ComboBox.Hint := Str;
+  if Str = '' then
+    Exit;
+  Int := ComboBox.Items.IndexOf(Str);
+  if Int >= 0 then
+    ComboBox.Items.Delete(Int);
+  ComboBox.Items.Insert(0, Str);
   if ComboBox.Items.Count > 7 then
     ComboBox.Items.Delete(7);
-  ComboBox.ItemIndex:= 0;
+  ComboBox.ItemIndex := 0;
 end;
 
 procedure ComboBoxInsert(ComboBox: TComboBox);
-  var s: string;
+var
+  Str: string;
 begin
-  s:= Trim(ComboBox.Text);
-  if (s <> '') and (ComboBox.Items.IndexOf(s) = -1) then
-    ComboBox.Items.Add(s);
+  Str := Trim(ComboBox.Text);
+  if (Str <> '') and (ComboBox.Items.IndexOf(Str) = -1) then
+    ComboBox.Items.Add(Str);
 end;
 
-procedure ComboBoxInsert2(ComboBox: TComboBox; const s: string);
+procedure ComboBoxInsert2(ComboBox: TComboBox; const Str: string);
 begin
-  if (s <> '') and (ComboBox.Items.IndexOf(s) = -1) then
-    ComboBox.Items.Add(s);
+  if (Str <> '') and (ComboBox.Items.IndexOf(Str) = -1) then
+    ComboBox.Items.Add(Str);
 end;
 
-procedure ComboBoxDelete2(ComboBox: TComboBox; const s: string);
-  var i: Integer;
+procedure ComboBoxDelete2(ComboBox: TComboBox; const Str: string);
+var
+  Int: Integer;
 begin
-  i:= ComboBox.Items.IndexOf(s);
-  if i >= 0 then
-    ComboBox.Items.Delete(i);
+  Int := ComboBox.Items.IndexOf(Str);
+  if Int >= 0 then
+    ComboBox.Items.Delete(Int);
 end;
 
-function withoutTrailingSlash(const s: string): string;
+function WithoutTrailingSlash(const Str: string): string;
 begin
-  Result:= s;
-  if (Copy(Result, Length(Result), 1) = '/') or (Copy(Result, Length(Result), 1) = '\') then
-    SetLength(Result, Length(Result)-1);
+  Result := Str;
+  if (Copy(Result, Length(Result), 1) = '/') or
+    (Copy(Result, Length(Result), 1) = '\') then
+    SetLength(Result, Length(Result) - 1);
 end;
 
-{$WARNINGS OFF}
-function withTrailingSlash(const s: string): string;
+function WithTrailingSlash(const Str: string): string;
 begin
-  Result:= withoutTrailingSlash(s);
-  if IsHttp(Result)
-    then Result:= Result + '/'
-    else Result:= IncludeTrailingPathDelimiter(Result);
+  Result := WithoutTrailingSlash(Str);
+  if IsHTTP(Result) then
+    Result := Result + '/'
+  else
+    Result := IncludeTrailingPathDelimiter(Result);
 end;
-{$WARNINGS ON}
 
 function VistaOrBetter: Boolean;
 begin
-  result:= (Win32Platform = VER_PLATFORM_WIN32_NT) and (Win32MajorVersion >= 6);
+  Result := (Win32Platform = VER_PLATFORM_WIN32_NT) and
+    (Win32MajorVersion >= 6);
 end;
 
 function GetDocumentsPath: string;
 const
   CSIDL_PERSONAL = $0005;
 var
-  LStr: array[0 .. MAX_PATH] of Char;
+  LStr: array [0 .. MAX_PATH] of Char;
 begin
   SetLastError(ERROR_SUCCESS);
   if SHGetFolderPath(0, CSIDL_PERSONAL, 0, 0, @LStr) = S_OK then
     Result := LStr;
 end;
 
-procedure ErweiterePath(const s: string);
-  var path: string;
-begin
-  path:= GetEnvironmentVariable('PATH');
-  if pos(s, path) = 0 then
-    SetEnvironmentVariable('PATH', PChar(s + path));
-end;
-
-function GetEnvironmentVar(const VarName: string): string;
-  var BufSize: Integer;
-begin
-  BufSize:= GetEnvironmentVariable(PChar(VarName), nil, 0);
-  if BufSize > 0 then begin
-    SetLength(Result, BufSize - 1);
-    GetEnvironmentVariable(PChar(VarName), PChar(Result), BufSize);
-    end
-  else
-    Result := '';
-end;
-
-procedure SetEnvironmentVar(const VarName, VarValue: string);
-begin
-  SetEnvironmentVariable(PChar(VarName), PChar(VarValue));
-end;
-
-function ComboBoxItemsSpeichern(s: string): string;
-  var p: Integer;
-begin
-  p:= Pos(#13#10, s);
-  while p > 0 do begin
-    Delete(s, p, 2);
-    insert(';', s, p);
-    p:= Pos(#13#10, s);
-  end;
-  Result:= s;
-end;
-
-function ComboBoxItemsLaden(s: string): string;
-  var p: Integer;
-begin
-  p:= Pos(';', s);
-  while p > 0 do begin
-    Delete(s, p, 1);
-    insert(#13#10, s, p);
-    p:= Pos(';', s);
-  end;
-  Result:= s;
-end;
-
 function GetTempDir: string;
-  var P: PChar;
+var
+  PChr: PChar;
 begin
-  P:= StrAlloc(255);
-  GetTempPath(255, P);
-  Result:= string(P);
-  StrDispose(P);
+  PChr := StrAlloc(255);
+  GetTempPath(255, PChr);
+  Result := string(PChr);
+  StrDispose(PChr);
 end;
 
 function IsCHM(const Pathname: string): Boolean;
 begin
-  Result:= (pos('.CHM', UpperCase(Pathname)) > 0);
+  Result := (Pos('.CHM', UpperCase(Pathname)) > 0);
 end;
 
-function ExtractFilePathEx(const s: string): string;
-  var p: Integer;
+function ExtractFilePathEx(const Str: string): string;
+var
+  Posi: Integer;
 begin
-  if IsHttp(s) then begin
-    p:= Length(s);
-    while s[p] <> '/' do Dec(p);
-    Result:= Copy(s, 1, p);
-    end
+  if IsHTTP(Str) then
+  begin
+    Posi := Length(Str);
+    while Str[Posi] <> '/' do
+      Dec(Posi);
+    Result := Copy(Str, 1, Posi);
+  end
   else
-    Result:= ExtractFilePath(s);
-  Result:= withoutTrailingSlash(Result);
+    Result := ExtractFilePath(Str);
+  Result := WithoutTrailingSlash(Result);
 end;
 
 function GetExeForExtension(const Ext: string): string;
- var
-   reg: TRegistry;
-   s  : string;
-   p  : Integer;
- begin
-   s:= '';
-   reg:= TRegistry.Create;
-   reg.RootKey:= HKEY_LOCAL_MACHINE;
-   reg.Access:= KEY_READ;
-   try
-     if reg.OpenKey('SOFTWARE\Classes\' + ext + '\shell\open\command', False) then
-      begin
-       {The open command has been found}
-       s:= reg.ReadString('');
-       reg.CloseKey;
-     end
-     else begin
-       {perhaps there is a system file pointer}
-       if reg.OpenKey('SOFTWARE\Classes\' + ext, False) then begin
-         try
-           s:= reg.ReadString('');
-         except
-           s:= '';
-         end;
-         reg.CloseKey;
-         if s <> '' then begin
-           {A system file pointer was found}
-           if reg.OpenKey('SOFTWARE\Classes\' + s + '\Shell\Open\command', False) then
-             {The open command has been found}
-             s:= reg.ReadString('');
-           reg.CloseKey;
-         end;
-       end;
-     end;
-   except
-     s:= '';
-   end;
-   {Delete any command line, quotes and spaces}
-   if Pos('%', s) > 0 then
-     Delete(s, Pos('%', s), Length(s));
-   s:= Trim(s);
-   p:= Pos('.EXE', UpperCase(s));
-   if p > 0 then Delete(s, p + 4, Length(s));
-   p:= Pos('"', s);
-   if p = 1 then begin
-     Delete(s, 1, 1);
-     p:= Pos('"', s);
-     if p > 0 then Delete(s, p, Length(s));
-   end;
-   if FileExists(s)
-     then Result:= s
-     else Result:= '';
-   FreeAndNil(reg);
- end;
-
- function hasDefaultPrinter: Boolean;
 var
-  ResStr: array[0..255] of Char;
-  DefaultPrinter: string;
+  Reg: TRegistry;
+  Str: string;
+  Posi: Integer;
 begin
-  GetProfileString('Windows', 'device', '', ResStr, 255);
-  DefaultPrinter:= StrPas(ResStr);
-  Result:= (DefaultPrinter <> '');
-end;
-
-procedure CreateMyFile(const Path: string);
-  var SL: TStringList;
-begin
-  if (Path <> '') and not FileExists(Path) then begin
-    SL:= TStringList.Create;
-    try
-      try
-        Sysutils.ForceDirectories(ExtractFilePath(Path));
-        SL.SaveToFile(Path);
-      except
-        on e: Exception do
-         Errormsg(e.Message);
+  Str := '';
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_LOCAL_MACHINE;
+  Reg.Access := KEY_READ;
+  try
+    if Reg.OpenKey('SOFTWARE\Classes\' + Ext + '\shell\open\command', False)
+    then
+    begin
+      { The open command has been found }
+      Str := Reg.ReadString('');
+      Reg.CloseKey;
+    end
+    else
+    begin
+      { perhaps there is a system file pointer }
+      if Reg.OpenKey('SOFTWARE\Classes\' + Ext, False) then
+      begin
+        try
+          Str := Reg.ReadString('');
+        except
+          Str := '';
+        end;
+        Reg.CloseKey;
+        if Str <> '' then
+        begin
+          { A system file pointer was found }
+          if Reg.OpenKey('SOFTWARE\Classes\' + Str + '\Shell\Open\command',
+            False) then
+            { The open command has been found }
+            Str := Reg.ReadString('');
+          Reg.CloseKey;
+        end;
       end;
-    finally
-      FreeAndNil(SL);
     end;
+  except
+    Str := '';
   end;
+  { Delete any command line, quotes and spaces }
+  if Pos('%', Str) > 0 then
+    Delete(Str, Pos('%', Str), Length(Str));
+  Str := Trim(Str);
+  Posi := Pos('.EXE', UpperCase(Str));
+  if Posi > 0 then
+    Delete(Str, Posi + 4, Length(Str));
+  Posi := Pos('"', Str);
+  if Posi = 1 then
+  begin
+    Delete(Str, 1, 1);
+    Posi := Pos('"', Str);
+    if Posi > 0 then
+      Delete(Str, Posi, Length(Str));
+  end;
+  if FileExists(Str) then
+    Result := Str
+  else
+    Result := '';
+  FreeAndNil(Reg);
 end;
 
 const
-  SECURITY_NT_AUTHORITY: TSidIdentifierAuthority = (Value: (0, 0, 0, 0, 0, 5));
-  SECURITY_BUILTIN_DOMAIN_RID  = ($00000020);
-  DOMAIN_ALIAS_RID_ADMINS           = ($00000220);
+  SECURITY_NT_AUTHORITY: TSIDIdentifierAuthority = (Value: (0, 0, 0, 0, 0, 5));
+  SECURITY_BUILTIN_DOMAIN_RID = $00000020;
+  DOMAIN_ALIAS_RID_ADMINS = $00000220;
 
 function IsGroupMember(RelativeGroupID: DWORD): Boolean;
 var
-  psidAdmin: Pointer;
+  PsidAdmin: Pointer;
   Token: THandle;
   Count: DWORD;
   TokenInfo: PTokenGroups;
   HaveToken: Boolean;
-  I: Integer;
 const
   SE_GROUP_USE_FOR_DENY_ONLY = $00000010;
 begin
-  Result := not (Win32Platform = VER_PLATFORM_WIN32_NT);
+  Result := not(Win32Platform = VER_PLATFORM_WIN32_NT);
   if Result then // Win9x and ME don't have user groups
     Exit;
-  psidAdmin := nil;
+  PsidAdmin := nil;
   TokenInfo := nil;
   HaveToken := False;
   try
@@ -506,50 +442,50 @@ begin
       HaveToken := OpenProcessToken(GetCurrentProcess, TOKEN_QUERY, Token);
     if HaveToken then
     begin
-      {$IFDEF FPC}
+{$IFDEF FPC}
       Win32Check(AllocateAndInitializeSid(SECURITY_NT_AUTHORITY, 2,
         SECURITY_BUILTIN_DOMAIN_RID, RelativeGroupID, 0, 0, 0, 0, 0, 0,
-        psidAdmin));
+        PsidAdmin));
       if GetTokenInformation(Token, TokenGroups, nil, 0, @Count) or
-       (GetLastError <> ERROR_INSUFFICIENT_BUFFER) then
-         RaiseLastOSError;
+        (GetLastError <> ERROR_INSUFFICIENT_BUFFER) then
+        RaiseLastOSError;
       TokenInfo := PTokenGroups(AllocMem(Count));
-      Win32Check(GetTokenInformation(Token, TokenGroups, TokenInfo, Count, @Count));
-      {$ELSE FPC}
-      {$WARNINGS OFF}
+      Win32Check(GetTokenInformation(Token, TokenGroups, TokenInfo,
+        Count, @Count));
+{$ELSE FPC}
       Win32Check(AllocateAndInitializeSid(SECURITY_NT_AUTHORITY, 2,
         SECURITY_BUILTIN_DOMAIN_RID, RelativeGroupID, 0, 0, 0, 0, 0, 0,
-        psidAdmin));
+        PsidAdmin));
       if GetTokenInformation(Token, TokenGroups, nil, 0, Count) or
-       (GetLastError <> ERROR_INSUFFICIENT_BUFFER) then
-         RaiseLastOSError;
+        (GetLastError <> ERROR_INSUFFICIENT_BUFFER) then
+        RaiseLastOSError;
       TokenInfo := PTokenGroups(AllocMem(Count));
-      Win32Check(GetTokenInformation(Token, TokenGroups, TokenInfo, Count, Count));
-      {$WARNINGS ON}
-      {$ENDIF FPC}
-      for I := 0 to TokenInfo^.GroupCount - 1 do
+      Win32Check(GetTokenInformation(Token, TokenGroups, TokenInfo,
+        Count, Count));
+{$ENDIF FPC}
+      for var I := 0 to TokenInfo^.GroupCount - 1 do
       begin
-        {$RANGECHECKS OFF} // Groups is an array [0..0] of TSIDAndAttributes, ignore ERangeError
-        Result := EqualSid(psidAdmin, TokenInfo^.Groups[I].Sid);
+{$RANGECHECKS OFF} // Groups is an array [0..0] of TSIDAndAttributes, ignore ERangeError
+        Result := EqualSid(PsidAdmin, TokenInfo^.Groups[I].Sid);
         if Result then
         begin
-          //consider denied ACE with Administrator SID
-          Result := TokenInfo^.Groups[I].Attributes and SE_GROUP_USE_FOR_DENY_ONLY
-              <> SE_GROUP_USE_FOR_DENY_ONLY;
+          // consider denied ACE with Administrator SID
+          Result := TokenInfo^.Groups[I].Attributes and
+            SE_GROUP_USE_FOR_DENY_ONLY <> SE_GROUP_USE_FOR_DENY_ONLY;
           Break;
         end;
-        {$IFDEF RANGECHECKS_ON}
-        {$RANGECHECKS ON}
-        {$ENDIF RANGECHECKS_ON}
+{$IFDEF RANGECHECKS_ON}
+{$RANGECHECKS ON}
+{$ENDIF RANGECHECKS_ON}
       end;
     end;
   finally
-    if TokenInfo <> nil then
+    if Assigned(TokenInfo) then
       FreeMem(TokenInfo);
     if HaveToken then
       CloseHandle(Token);
-    if psidAdmin <> nil then
-      FreeSid(psidAdmin);
+    if Assigned(PsidAdmin) then
+      FreeSid(PsidAdmin);
   end;
 end;
 
@@ -559,137 +495,101 @@ begin
 end;
 
 function HasAssociationWithGuiPy(const Extension: string): Boolean;
-  var s: string;
+var
+  Str: string;
 begin
-  s:= UpperCase(GetExeForExtension(Extension));
-  Result:= Pos(UpperCase(ExtractFilename(ParamStr(0))), s) > 0;
+  Str := UpperCase(GetExeForExtension(Extension));
+  Result := Pos(UpperCase(ExtractFileName(ParamStr(0))), Str) > 0;
 end;
 
-function getRegisteredGuiPy: string;
- var reg: TRegistry;
+function GetRegisteredGuiPy: string;
+var
+  Reg: TRegistry;
 begin
-  reg:= TRegistry.Create;
-  reg.RootKey:= HKEY_LOCAL_MACHINE;
-  reg.Access:= KEY_READ;
-  if reg.OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', False)
-    then Result:= reg.ReadString('')
-    else Result:= '';
-  reg.CloseKey;
-  var p:= Pos(' "%1"', Result);
-  if p > 0 then
-    Result:= Copy(Result, 1, p-1);
-  FreeAndNil(reg);
+  Reg := TRegistry.Create;
+  Reg.RootKey := HKEY_LOCAL_MACHINE;
+  Reg.Access := KEY_READ;
+  if Reg.OpenKey('\SOFTWARE\Classes\GuiPy\Shell\Open\command', False) then
+    Result := Reg.ReadString('')
+  else
+    Result := '';
+  Reg.CloseKey;
+  var
+  Posi := Pos(' "%1"', Result);
+  if Posi > 0 then
+    Result := Copy(Result, 1, Posi - 1);
+  FreeAndNil(Reg);
 end;
 
-function HideBlanks(const s: string): string;
+function HideBlanks(const Str: string): string;
 begin
-  if (Pos(' ', s) > 0) and (Pos('"', s) <> 1)
-    then Result:= AnsiQuotedStr(s, '"')
-    else Result:= s;
+  if (Pos(' ', Str) > 0) and (Pos('"', Str) <> 1) then
+    Result := AnsiQuotedStr(Str, '"')
+  else
+    Result := Str;
 end;
 
-function UnHideBlanks(const s: string): string;
-begin
-  Result:= AnsiDequotedStr(s, '"');
-end;
-
-function GetLongPathName(const PathName: string): string;
+function GetLongPathName(const Pathname: string): string;
 var
   Drive: string;
   Path: string;
   SearchRec: TSearchRec;
 begin
-  if PathName = '' then
+  if Pathname = '' then
     Exit;
-  Drive := ExtractFileDrive(PathName);
-  Path := Copy(PathName, Length(Drive) + 1, Length(PathName));
+  Drive := ExtractFileDrive(Pathname);
+  Path := Copy(Pathname, Length(Drive) + 1, Length(Pathname));
   if (Path = '') or (Path = '\') then
   begin
-    Result := PathName;
+    Result := Pathname;
     if Result[Length(Result)] = '\' then
       Delete(Result, Length(Result), 1);
   end
   else
   begin
-    Path := GetLongPathName(ExtractFileDir(PathName));
-    if FindFirst(PathName, faAnyFile, SearchRec) = 0 then
+    Path := GetLongPathName(ExtractFileDir(Pathname));
+    if FindFirst(Pathname, faAnyFile, SearchRec) = 0 then
     begin
-      {$WARNINGS OFF}
       Result := Path + '\' + SearchRec.FindData.cFileName;
-      {$WARNINGS ON}
       SysUtils.FindClose(SearchRec);
     end
     else
-      Result := Path + '\' + ExtractFileName(PathName);
+      Result := Path + '\' + ExtractFileName(Pathname);
   end;
 end;
 
-function Left(const s: string; p: Integer): string;
+function Left(const Str: string; Num: Integer): string;
 begin
-  if p >= 0
-    then Result:= Copy(s, 1, p)
-    else Result:= Copy(s, 1, Length(s)+p);
+  if Num >= 0 then
+    Result := Copy(Str, 1, Num)
+  else
+    Result := Copy(Str, 1, Length(Str) + Num);
 end;
 
-function Right(const s: string; p: Integer): string;
+function Right(const Str: string; Num: Integer): string;
 begin
-  if p >= 0
-    then Result:= Copy(s, p, Length(s))
-    else Result:= Copy(s, Length(s)+p+1, Length(s));
+  if Num >= 0 then
+    Result := Copy(Str, Num, Length(Str))
+  else
+    Result := Copy(Str, Length(Str) + Num + 1, Length(Str));
 end;
 
-function CountChar(c: char; const s: string): Integer;
-  var i: Integer;
+function CountChar(Chr: Char; const Str: string): Integer;
 begin
-  Result:= 0;
-  for i:= 1 to Length(s) do
-    if s[i] = c then Inc(Result);
+  Result := 0;
+  for var I := 1 to Length(Str) do
+    if Str[I] = Chr then
+      Inc(Result);
 end;
 
-function HasWriteAccess(const Directory: string): Boolean;
-  var FS: TFileStream; s: string;
-begin
-  s:= withTrailingSlash(Directory) + 'wa_test.$$$';
-  try
-    FS:= TFileStream.Create(s, fmCreate or fmShareExclusive);
-    FreeAndNil(FS);
-    Result:= DeleteFile(PChar(s));
-  except
-    Result:= False;
-  end;
-end;
-
-
-procedure SetPrinterIndex(i: Integer);
-  var Device, Driver, Port: string;
-      Dest: PChar; DeviceMode: THandle;
-begin
-  try
-    Printer.PrinterIndex := i;
-
-    // TSetupPrinter only seems to look to the DeviceMode.dmDeviceName field
-    // when setting up the initial printer, hence we make sure this field
-    // contains the correct value.
-    // This is a bug fix around the error in the delphi library,
-    // as it does not use the DevNames structure correctly
-
-    Printer.GetPrinter(Device, Driver, Port, DeviceMode);
-    if DeviceMode <> 0 then begin
-      Dest:= GlobalLock(DeviceMode);
-      StrCopy(Dest, PChar(Device));
-      GlobalUnlock(DeviceMode);
-    end;
-  except
-  end;
-end;
-
-procedure PrintBitmap(FormBitmap: TBitmap; PixelsPerInch: Integer; PrintScale: TPrintScale = poProportional);
+procedure PrintBitmap(FormBitmap: TBitmap; PixelsPerInch: Integer;
+  PrintScale: TPrintScale = poProportional);
 var
   InfoSize: DWORD;
   ImageSize: DWORD;
   Bits: HBITMAP;
-  DIBWidth, DIBHeight: Longint;
-  PrintWidth, PrintHeight: Longint;
+  DIBWidth, DIBHeight: LongInt;
+  PrintWidth, PrintHeight: LongInt;
   Info: PBitmapInfo;
   Image: Pointer;
 begin
@@ -698,7 +598,8 @@ begin
   try
     FormBitmap.Canvas.Lock;
     try
-      with Printer do begin
+      with Printer do
+      begin
         Bits := FormBitmap.Handle;
         GetDIBSizes(Bits, InfoSize, ImageSize);
         Info := AllocMem(InfoSize);
@@ -706,34 +607,36 @@ begin
           Image := AllocMem(ImageSize);
           try
             GetDIB(Bits, 0, Info^, Image^);
-          with Info.bmiHeader do
-          begin
-            DIBWidth := biWidth;
-            DIBHeight := biHeight;
-          end;
-          case PrintScale of
-            poProportional:
-              begin
-                PrintWidth := MulDiv(DIBWidth, GetDeviceCaps(Handle,
-                  LOGPIXELSX), PixelsPerInch);
-                PrintHeight := MulDiv(DIBHeight, GetDeviceCaps(Handle,
-                  LOGPIXELSY), PixelsPerInch);
-              end;
-            poPrintToFit:
-              begin
-                PrintWidth := MulDiv(DIBWidth, PageHeight, DIBHeight);
-                if PrintWidth < PageWidth then
-                  PrintHeight := PageHeight
-                else
+            with Info.bmiHeader do
+            begin
+              DIBWidth := biWidth;
+              DIBHeight := biHeight;
+            end;
+            case PrintScale of
+              poProportional:
                 begin
-                  PrintWidth := PageWidth;
-                  PrintHeight := MulDiv(DIBHeight, PageWidth, DIBWidth);
+                  PrintWidth :=
+                    MulDiv(DIBWidth, GetDeviceCaps(Handle, LOGPIXELSX),
+                    PixelsPerInch);
+                  PrintHeight :=
+                    MulDiv(DIBHeight, GetDeviceCaps(Handle, LOGPIXELSY),
+                    PixelsPerInch);
                 end;
-              end;
-          else
-            PrintWidth := DIBWidth;
-            PrintHeight := DIBHeight;
-          end;
+              poPrintToFit:
+                begin
+                  PrintWidth := MulDiv(DIBWidth, PageHeight, DIBHeight);
+                  if PrintWidth < PageWidth then
+                    PrintHeight := PageHeight
+                  else
+                  begin
+                    PrintWidth := PageWidth;
+                    PrintHeight := MulDiv(DIBHeight, PageWidth, DIBWidth);
+                  end;
+                end;
+            else
+              PrintWidth := DIBWidth;
+              PrintHeight := DIBHeight;
+            end;
             StretchDIBits(Canvas.Handle, 0, 0, PrintWidth, PrintHeight, 0, 0,
               DIBWidth, DIBHeight, Image, Info^, DIB_RGB_COLORS, SRCCOPY);
           finally
@@ -751,777 +654,646 @@ begin
   end;
 end;
 
-function ExplorerTest: Boolean;
-  var Web: TWebBrowser;
+function UpperLower(const Str: string): string;
 begin
-  try
-    Web:= TWebBrowser.Create(nil);
-    try
-      Result:= Assigned(Web);
-    finally
-      FreeAndNil(Web);
-    end;
-  except
-    Result:= False;
-  end;
+  Result := UpperCase(Copy(Str, 1, 1)) + Copy(Str, 2, Length(Str));
 end;
 
-function UpperLower(const s: string): string;
+function IsWordBreakChar(Chr: Char): Boolean; // fromSyneditSearch
 begin
-  Result:= UpperCase(Copy(s, 1, 1)) + Copy(s, 2, Length(s));
-end;
-
-function IsWordBreakChar(C: Char): Boolean;  // fromSyneditSearch
-begin
-  case C of
-    #0..#32,
-    '.',
-    ',',
-    ';',
-    ':',
-    '"',
-    '''',
-    '´',
-    '`',
-    '°',
-    '^',
-    '!',
-    '?',
-    '&',
-    '$', '@', '§', '%', '#', '~', '[', ']', '(', ')', '{', '}', '<', '>',
-    '-', '=', '+', '*', '/', '\', '|':
+  case Chr of
+    #0 .. #32, '.', ',', ';', ':', '"', '''', '´', '`', '°', '^', '!', '?', '&',
+      '$', '@', '§', '%', '#', '~', '[', ']', '(', ')', '{', '}', '<', '>', '-',
+      '=', '+', '*', '/', '\', '|':
       Result := True;
-    else
-      Result := False;
+  else
+    Result := False;
   end;
 end;
 
-function IsWordInLine(Word, Line: string): Boolean;
-  var p, q: Integer;
+function IsDigit(Chr: Char): Boolean;
 begin
-  Result:= False;
-  p:= Pos(Word, Line);
-  if p > 0 then begin
-    q:= p + Length(Word);
-    Result:= ((p = 1) or (p > 1) and IsWordBreakChar(Line[p-1])) and
-             ((q > Length(Line)) or IsWordBreakChar(Line[q]));
+  Result := ('0' <= Chr) and (Chr <= '9');
+end;
+
+function WindowStateToStr(WindowState: TWindowState): string;
+begin
+  Result := IntToStr(Ord(WindowState));
+end;
+
+function StrToWindowState(const Str: string): TWindowState;
+begin
+  if Str = '0' then
+    Result := wsNormal
+  else if Str = '1' then
+    Result := wsMinimized
+  else
+    Result := wsMaximized;
+end;
+
+function WithoutGeneric(Str: string): string;
+var
+  Int1, Int2: Integer;
+begin
+  Int1 := Pos('<', Str);
+  if Int1 > 0 then
+  begin
+    Int2 := Length(Str);
+    while (Int2 > 0) and (Str[Int2] <> '>') do
+      Dec(Int2);
+    Delete(Str, Int1, Int2 - Int1 + 1);
+  end;
+  if Pos('...', Str) > 0 then
+    Str := Copy(Str, 1, Pos('...', Str) - 1);
+  Result := Str;
+end;
+
+function GetShortType(Str: string): string;
+var
+  Posi: Integer;
+begin
+  Posi := Pos('.', Str);
+  if Posi > 0 then
+    Delete(Str, 1, Posi);
+  Delete(Str, 1, LastDelimiter('.', Str));
+  Posi := Pos('<', Str);
+  if Posi > 1 then
+    Str := Copy(Str, 1, Posi - 1);
+  Result := Str;
+end;
+
+function GetShortTypeWith(Str: string): string;
+var
+  Posi: Integer;
+begin
+  Posi := Pos('.', Str);
+  if Posi > 0 then
+    Delete(Str, 1, Posi);
+  Delete(Str, 1, LastDelimiter('.', Str));
+  Result := Str;
+end;
+
+function GenericOf(const Str: string): string;
+var
+  Posi: Integer;
+begin
+  Result := '';
+  Posi := Pos('<', Str);
+  if Posi > 0 then
+    Result := Copy(Str, Posi + 1, Length(Str) - Posi - 1);
+end;
+
+function VisibilityAsString(Vis: TVisibility): string;
+begin
+  case Vis of
+    viPrivate:
+      Result := '__';
+    viProtected:
+      Result := '_';
+  else
+    Result := '';
   end;
 end;
 
-function IsDigit(C: Char): Boolean;
+function IsPythonType(AType: string): Boolean;
+const
+  PythonTypes: array [0 .. 39] of string = ('None', 'int', 'float', 'complex',
+    'str', 'bool', 'list', 'tuple', 'range', 'set', 'dict', 'bytes',
+    'bytearray', 'memoryview', 'frozenset', 'Optional', 'Callable', 'Type',
+    'Literal', 'ClassVar', 'Annotated', 'Generic', 'TypeVar', 'AnyStr',
+    'Protocol', 'Dict', 'List', 'Set', 'FrozenSet', 'DefaultDict',
+    'OrderedDict', 'ChainMap', 'Counter', 'Deque', 'IO', 'TextIO', 'BinaryIO',
+    'Pattern', 'Match', 'Text');
+var
+  Posi: Integer;
 begin
-  Result:= ('0' <= C) and (C <= '9');
-end;
-
-function WindowStateToStr(W: TWindowState): string;
-begin
-  Result:= IntToStr(Ord(W));
-end;
-
-function StrToWindowState(const s: string): TWindowState;
-begin
-  if s = '0' then Result:= wsNormal else
-  if s = '1' then Result:= wsMinimized else
-                  Result:= wsMaximized;
-end;
-
-function WithoutGeneric(s: string): string;
-  var p1, p2: Integer;
-begin
-  p1:= Pos('<', s);
-  if p1 > 0 then begin
-    p2:= Length(s);
-    while (p2 > 0) and (s[p2] <> '>') do
-      Dec(p2);
-    Delete(s, p1, p2-p1+1);
-  end;
-  if Pos('...', s) > 0
-    then s:= Copy(s, 1, Pos('...', s) -1);
-  Result:= s;
-end;
-
-function GetShortType(s: string): string;
-  var p: Integer;
-begin
-  p:= Pos('.', s);
-  if p > 0 then Delete(s, 1, p);
-  Delete(s, 1, LastDelimiter('.', s));
-  p:= Pos('<', s);
-  if p > 1 then
-    s:= Copy(s, 1, p-1);
-  Result:= s;
-end;
-
-function GetShortTypeWith(s: string): string;
-  var p: Integer;
-begin
-  p:= Pos('.', s);
-  if p > 0 then Delete(s, 1, p);
-  Delete(s, 1, LastDelimiter('.', s));
-  Result:= s;
-end;
-
-function GetShortMethod(s: string): string;
-  var p: Integer; s1: string;
-begin
-  p:= Pos('throws ', s);
-  if p > 0 then s:= Trim(Copy(s, 1, p-1));
-  p:= Pos('(', s);
-  s1:= getShortTypeWith(Left(s, p-1)) + '(';
-  s:= Copy(s, p+1, Length(s) - p -1) + ',';
-  p:= Pos(',', s);
-  while p > 0 do begin
-    s1:= s1 + GetShortTypeWith(Left(s, p-1)) + ', ';
-    Delete(s, 1, p);
-    p:= Pos(',', s);
-  end;
-  Result:= Left(s1, -2) + ')';
-end;
-
-function GenericOf(const s: string): string;
-  var p: Integer;
-begin
-  Result:= '';
-  p:= Pos('<', s);
-  if p > 0 then
-    Result:= Copy(s, p+1, Length(s) - p - 1);
-end;
-
-function VisibilityAsString(vis: TVisibility) : string;
-begin
-  case vis of
-    viPrivate:   Result:= '__';
-    viProtected: Result:= '_';
-  else           Result:= '';
-  end;
-end;
-
-function String2Visibility(const s: string): TVisibility;
-  var Underscores: Integer;
-begin
-  Underscores:= 0;
-  if (Length(s) > 0) and (s[1] = '_') then begin
-    Underscores:= 1;
-    if (Length(s) > 1) and (s[2] = '_') then
-      Underscores:= 2;
-  end;
-  case Underscores of
-    0: Result:= viPublic;
-    1: Result:= viProtected;
-  else Result:= viPrivate;
-  end;
-end;
-
-function IsPythonType(aType: string): Boolean;
-  const PythonTypes : array[0..39] of string =
-     ('None', 'int', 'float', 'complex', 'str', 'bool', 'list', 'tuple', 'range',
-      'set', 'dict', 'bytes', 'bytearray', 'memoryview', 'frozenset',
-      'Optional', 'Callable', 'Type', 'Literal', 'ClassVar',
-      'Annotated', 'Generic', 'TypeVar', 'AnyStr', 'Protocol', 'Dict', 'List',
-      'Set', 'FrozenSet', 'DefaultDict', 'OrderedDict', 'ChainMap', 'Counter',
-      'Deque', 'IO', 'TextIO', 'BinaryIO', 'Pattern', 'Match', 'Text' );
-  var p: Integer;
-begin
-  p:= Pos('[', aType); // GenericType?
-  if p > 0 then Delete(aType, p, Length(aType));
-  for p:= 0 to 39 do
-    if PythonTypes[p] = aType then
+  Posi := Pos('[', AType); // GenericType?
+  if Posi > 0 then
+    Delete(AType, Posi, Length(AType));
+  for Posi := 0 to 39 do
+    if PythonTypes[Posi] = AType then
       Exit(True);
-  Result:= False;
+  Result := False;
 end;
 
-function hasClassExtension(const Pathname: string): Boolean;
+function HasPythonExtension(const Pathname: string): Boolean;
 begin
-  Result:= (pos('.class', Pathname) > 0);
+  Result := (Pos('.py', Pathname) > 0);
 end;
 
-function hasPythonExtension(const Pathname: string): Boolean;
+function ValidFilename(Str: string): Boolean;
 begin
-  Result:= (pos('.py', Pathname) > 0);
+  Str := UpperCase(ChangeFileExt(ExtractFileName(Str), ''));
+  Result := (Str <> 'CON') and (Str <> 'PRN') and (Str <> 'AUX') and
+    (Str <> 'NUL');
 end;
 
-function ValidFilename(s: string): Boolean;
+function Max3(Int1, Int2, Int3: Integer): Integer;
 begin
-  s:= UpperCase(ChangeFileExt(ExtractFilename(s), ''));
-  Result:= (s <> 'CON') and (s <> 'PRN') and (s <> 'AUX') and (s <> 'NUL');
+  Result := Max(Int1, Max(Int2, Int3));
 end;
 
-function max3(m1, m2, m3: Integer): Integer;
+function Min3(Int1, Int2, Int3: Integer): Integer;
 begin
-  Result:= Max(m1, Max(m2, m3));
+  Result := Min(Int1, Min(Int2, Int3));
 end;
 
-function min3(m1, m2, m3: Integer): Integer;
-begin
-  Result:= Min(m1, Min(m2, m3));
-end;
+var
+  FLockFormUpdatePile: Integer;
 
-var FLockFormUpdatePile : Integer;
-
-procedure LockFormUpdate(F: TForm);
+procedure LockFormUpdate(Form: TForm);
 begin
-  if Assigned(F) then begin
+  if Assigned(Form) then
+  begin
     if FLockFormUpdatePile = 0 then
-      F.Perform(WM_SetRedraw, 0, 0);
+      Form.Perform(WM_SETREDRAW, 0, 0);
     Inc(FLockFormUpdatePile);
   end;
 end;
 
-procedure UnlockFormUpdate(F: TForm);
+procedure UnlockFormUpdate(Form: TForm);
 begin
-  if Assigned(F) then begin
+  if Assigned(Form) then
+  begin
     Dec(FLockFormUpdatePile);
-    if FLockFormUpdatePile = 0 then begin
-      F.Perform(WM_SetRedraw, 1, 0);
-      RedrawWindow(F.Handle, nil, 0, RDW_FRAME + RDW_INVALIDATE +
+    if FLockFormUpdatePile = 0 then
+    begin
+      Form.Perform(WM_SETREDRAW, 1, 0);
+      RedrawWindow(Form.Handle, nil, 0, RDW_FRAME + RDW_INVALIDATE +
         RDW_ALLCHILDREN + RDW_NOINTERNALPAINT);
     end;
   end;
 end;
 
-function WithoutArray(const s: string): string;
-  var i: Integer;
+function WithoutArray(const Str: string): string;
+var
+  Int: Integer;
 begin
-  Result:= s;
-  i:= Pos('[', Result) + Pos('...', Result);
-  if i > 0
-    then Result:= Copy(Result, 1, i-1)
+  Result := Str;
+  Int := Pos('[', Result) + Pos('...', Result);
+  if Int > 0 then
+    Result := Copy(Result, 1, Int - 1);
 end;
 
 function IsUNC(const Pathname: string): Boolean;
 begin
-  Result:= (pos('\\', Pathname) = 1);
+  Result := (Pos('\\', Pathname) = 1);
 end;
 
-function ExtractFileNameEx(s: string):string;
-  var i: Integer;
+function ExtractFileNameEx(Str: string): string;
+var
+  Posi: Integer;
 begin
-  if Pos('file:///', s) > 0 then begin
-    Delete(s, 1, 8);
-    s:= myStringReplace(s, '/', '\');
+  if Pos('file:///', Str) > 0 then
+  begin
+    Delete(Str, 1, 8);
+    Str := MyStringReplace(Str, '/', '\');
   end;
-  s:= StripHttpParams(s);
-  if IsHttp(s) then begin
-    i:= Length(s);
-    while (s[i] <> '/') do Dec(i);
-    Delete(s, 1, i);
-    if s = '' then s:= 'index.html';
+  Str := StripHttpParams(Str);
+  if IsHTTP(Str) then
+  begin
+    Posi := Length(Str);
+    while (Str[Posi] <> '/') do
+      Dec(Posi);
+    Delete(Str, 1, Posi);
+    if Str = '' then
+      Str := 'index.html';
   end
-  else if IsCHM(s) then begin
-    i:= Pos('.CHM', UpperCase(s));
-    Delete(s, 1, i+3);
-    if Copy(s, 1, 2) = '::' then
-      Delete(s, 1, 2);
-    s:= ExtractFileName(toWindows(s))
-    end
+  else if IsCHM(Str) then
+  begin
+    Posi := Pos('.CHM', UpperCase(Str));
+    Delete(Str, 1, Posi + 3);
+    if Copy(Str, 1, 2) = '::' then
+      Delete(Str, 1, 2);
+    Str := ExtractFileName(ToWindows(Str));
+  end
   else
-    s:= ExtractFileName(s);
-  Result:= s;
+    Str := ExtractFileName(Str);
+  Result := Str;
 end;
 
-function StripHttpParams(const s: string): string;
-    var i: Integer; fname: string;
+function StripHttpParams(const Str: string): string;
+var
+  Posi: Integer;
+  FNname: string;
 begin
-  fname:= ExtractFilename(s);
-  i:= Pos('?', fname);
-  if i > 0 then Delete(fname, i, Length(fname));
-  i:= Pos('#', fname);
-  if i > 0 then Delete(fname, i, Length(fname));
-  Result:= ExtractFilePath(s) + fname;
+  FNname := ExtractFileName(Str);
+  Posi := Pos('?', FNname);
+  if Posi > 0 then
+    Delete(FNname, Posi, Length(FNname));
+  Posi := Pos('#', FNname);
+  if Posi > 0 then
+    Delete(FNname, Posi, Length(FNname));
+  Result := ExtractFilePath(Str) + FNname;
 end;
 
-function ToWindows(s: string): string;
-  var p: Integer;
+function ToWindows(Str: string): string;
+var
+  Posi: Integer;
 begin
-  p:= pos('/', s);
-  while p > 0 do begin
-    s[p]:= '\';
-    p:= pos('/', s);
+  Posi := Pos('/', Str);
+  while Posi > 0 do
+  begin
+    Str[Posi] := '\';
+    Posi := Pos('/', Str);
   end;
-  Result:= s;
+  Result := Str;
 end;
 
 function FileExistsCaseSensitive(const FileName: TFileName): Boolean;
-  var SR: TSearchRec;
+var
+  SearchRec: TSearchRec;
 begin
-  Result:= FindFirst(FileName, faAnyFile, SR) = 0;
-  if Result then Sysutils.FindClose(SR);
-  Result:= Result and (SR.Attr and faDirectory = 0) and (SR.Name = ExtractFileName(FileName));
-end;
-
-function getFirstWord(s: string): string;
-  var i: Integer;
-begin
-  s:= Trim(s);
-  i:= 1;
-  while (i <= Length(s)) and not IsWordBreakChar(s[i]) do
-    Inc(i);
-  Result:= Copy(s, 1, i-1);
+  Result := FindFirst(FileName, faAnyFile, SearchRec) = 0;
+  if Result then
+    SysUtils.FindClose(SearchRec);
+  Result := Result and (SearchRec.Attr and faDirectory = 0) and
+    (SearchRec.Name = ExtractFileName(FileName));
 end;
 
 procedure SetAnimation(Value: Boolean);
-  var Info: TAnimationInfo;
+var
+  Info: TAnimationInfo;
 begin
-  Info.cbSize:= SizeOf(TAnimationInfo);
-  Bool(Info.iMinAnimate):= Value;
-  SystemParametersinfo(SPI_SETANIMATION, SizeOf(Info), @Info, 0);
+  Info.cbSize := SizeOf(TAnimationInfo);
+  BOOL(Info.iMinAnimate) := Value;
+  SystemParametersInfo(SPI_SETANIMATION, SizeOf(Info), @Info, 0);
 end;
 
-function einruecken(Einrueck, s: string): string;
-  var SL: TStringList; i: Integer;
+function IsDunder(Name: string): Boolean;
 begin
-  SL:= TStringList.Create;
-  SL.Text:= s;
-  for i:= 0 to SL.Count - 1 do
-    SL[i]:= Einrueck + SL[i];
-  Result:= SL.Text;
-  FreeandNil(SL);
+  Result := (Copy(Name, 1, 2) = '__') and
+    (Copy(Name, Length(Name) - 1, 2) = '__');
 end;
 
-function isDunder(Name: string): Boolean;
+function StringTimesN(Str: string; Num: Integer): string;
 begin
-  Result:= (Copy(Name, 1, 2) = '__') and
-           (Copy(Name, Length(Name) - 1, 2) = '__');
+  Result := '';
+  for var I := 1 to Num do
+    Result := Result + Str;
 end;
 
-function StringTimesN(s: string; n: Integer): string;
-  var i: Integer;
+function changeVowels(const Str: string): string;
+const
+  Vowels = 'ÄÖÜäöüß';
+  Nowels = 'AOUaous';
+var
+  Posi: Integer;
 begin
-  Result:= '';
-  for i:= 1 to n do
-    Result:= Result + s;
-end;
-
-function changeVowels(const s: string): string;
-  const Vowels = 'ÄÖÜäöüß';
-  const Nowels = 'AOUaous';
-  var i, p: Integer;
-begin
-  Result:= s;
-  for i:= 1 to Length(Vowels) do begin
-    p:= Pos(Vowels[i], Result);
-    while p > 0 do begin
-      Result[p]:= Nowels[i];
-      if i < 7
-        then insert('e', Result, p+1)
-        else insert('s', Result, p+1);
-      p:= Pos(Vowels[i], Result);
+  Result := Str;
+  for var I := 1 to Length(Vowels) do
+  begin
+    Posi := Pos(Vowels[I], Result);
+    while Posi > 0 do
+    begin
+      Result[Posi] := Nowels[I];
+      if I < 7 then
+        Insert('e', Result, Posi + 1)
+      else
+        Insert('Str', Result, Posi + 1);
+      Posi := Pos(Vowels[I], Result);
     end;
   end;
 end;
 
 function GetUniqueName(Control: TControl; Basename: string): string;
-  var i: Integer; s: string;
+var
+  Int: Integer;
+  Str: string;
 begin
-  BaseName:= OnlyCharsAndDigits(changeVowels(Basename));
-  if Control.FindComponent(BaseName) = nil then begin
-    Result:= BaseName;
+  Basename := OnlyCharsAndDigits(changeVowels(Basename));
+  if Control.FindComponent(Basename) = nil then
+  begin
+    Result := Basename;
     Exit;
   end;
-  s:= Right(BaseName, -1);
-  while (Pos(s, '0123456789') > 0) and (Length(BaseName) > 2) do begin
-    BaseName:= Left(Basename, Length(Basename) - 1);
-    s:= Right(BaseName, -1);
+  Str := Right(Basename, -1);
+  while (Pos(Str, '0123456789') > 0) and (Length(Basename) > 2) do
+  begin
+    Basename := Left(Basename, Length(Basename) - 1);
+    Str := Right(Basename, -1);
   end;
-  Result:= Basename;
-  i:= 0;
-  while Control.FindComponent(Result) <> nil do begin
-    Inc(i);
-    Result:= BaseName + IntToStr(i);
-  end;
-end;
-
-function OnlyCharsAndDigits(const s: string): string;
-  var i: Integer; c: char;
-begin
-  Result:= '';
-  for i:= 1 to Length(s) do begin
-    c:= s[i];
-    if not IsWordBreakChar(c) then
-      Result:= Result + c;
+  Result := Basename;
+  Int := 0;
+  while Control.FindComponent(Result) <> nil do
+  begin
+    Inc(Int);
+    Result := Basename + IntToStr(Int);
   end;
 end;
 
-function CodeSpaces(s: string): string;
-  var i: Integer;
+function OnlyCharsAndDigits(const Str: string): string;
+var
+  Chr: Char;
 begin
-  for i:= Length(s) downto 1 do
-    if s[i] = ' ' then begin
-      Delete(s, i, 1);
-      insert('%20', s, i);
+  Result := '';
+  for var I := 1 to Length(Str) do
+  begin
+    Chr := Str[I];
+    if not IsWordBreakChar(Chr) then
+      Result := Result + Chr;
+  end;
+end;
+
+function CodeSpaces(Str: string): string;
+begin
+  for var I := Length(Str) downto 1 do
+    if Str[I] = ' ' then
+    begin
+      Delete(Str, I, 1);
+      Insert('%20', Str, I);
     end;
-  Result:= s;
+  Result := Str;
 end;
 
-function toWeb(const Browser: string; s: string): string;
-  var p: Integer;
-      IsUNC, IsLaufwerk: Boolean;
+function ToWeb(const Browser: string; Str: string): string;
+var
+  Posi: Integer;
+  IsUNC, IsDrive: Boolean;
 begin
-  IsUNC:= (Copy(s, 1, 2) = '\\');
-  IsLaufwerk:= (Copy(s, 2, 1) = ':');
-  s:= CodeSpaces(s);
-  p:= pos('\', s);
-  while p > 0 do begin
-    s[p]:= '/';
-    p:= pos('\', s);
+  IsUNC := (Copy(Str, 1, 2) = '\\');
+  IsDrive := (Copy(Str, 2, 1) = ':');
+  Str := CodeSpaces(Str);
+  Posi := Pos('\', Str);
+  while Posi > 0 do
+  begin
+    Str[Posi] := '/';
+    Posi := Pos('\', Str);
   end;
   if IsUNC then
-    if Pos('OPERA', UpperCase(Browser)) > 0
-      then s:= 'file:' + s
-      else s:= 'file://localhost/' + s;
-  if isLaufwerk then
-    s:= 'file:///' + s;
-  Result:= s;
+    if Pos('OPERA', UpperCase(Browser)) > 0 then
+      Str := 'file:' + Str
+    else
+      Str := 'file://localhost/' + Str;
+  if IsDrive then
+    Str := 'file:///' + Str;
+  Result := Str;
 end;
 
 function StartsWith(const Str, Substr: string): Boolean;
 begin
-  if Str <> ''
-    then Result:= CompareStr(Copy(Str, 1, Length(SubStr)), SubStr) = 0
-    else Result:= False;
+  if Str <> '' then
+    Result := CompareStr(Copy(Str, 1, Length(Substr)), Substr) = 0
+  else
+    Result := False;
 end;
 
-function LowerUpper(const s: string): string;
+function LowerUpper(const Str: string): string;
 begin
-  Result:= LowerCase(Copy(s, 1, 1)) + Copy(s, 2, Length(s));
+  Result := LowerCase(Copy(Str, 1, 1)) + Copy(Str, 2, Length(Str));
 end;
 
-function isLower(c: char): Boolean;
+function IsLower(Chr: Char): Boolean;
 begin
-  Result:= CharInSet(c, ['a'..'z']);
+  Result := CharInSet(Chr, ['a' .. 'z']);
 end;
 
-function WithoutSpaces(const s: string): string;
-begin
-  Result:= myStringReplace(s, ' ', '');
-end;
-
-function RGB2Color(const R, G, B: Integer): Integer;
+function RGB2Color(const Red, Green, Blue: Integer): Integer;
 begin
   // convert hexa-decimal values to RGB
-  Result := R + G shl 8 + B shl 16;
+  Result := Red + Green shl 8 + Blue shl 16;
 end;
 
-procedure Color2RGB(const Color: TColor; var R, G, B: Integer);
+procedure Color2RGB(const Color: TColor; var Red, Green, Blue: Integer);
 begin
   // convert hexa-decimal values to RGB
-  R := Color and $FF;
-  G := (Color shr 8) and $FF;
-  B := (Color shr 16) and $FF;
+  Red := Color and $FF;
+  Green := (Color shr 8) and $FF;
+  Blue := (Color shr 16) and $FF;
 end;
 
-function ChangeColor(Color: TColor; percent: real): TColor;
-  var r, g, b: Integer;
+function AsString(Str: string): string;
 begin
-  r:= 0; g:= 0; b:= 0;
-  Color2RGB(Color, r, g, b);
-  r:= round(r * percent); if r > 255 then r:= 255;
-  g:= round(g * percent); if g > 255 then g:= 255;
-  b:= round(b * percent); if b > 255 then b:= 255;
-  Result:= RGB2Color(r, g, b);
+  Result := '''' + Str + '''';
 end;
 
-function AsString(s: string): string;
+function LeftSpaces(Str: string; TabW: Integer): Integer;
+var
+  PChr: PWideChar;
 begin
-  Result:= '''' + s + '''';
-end;
-
-function isIdentifierChar(c: char): Boolean;
-begin
-  Result:= CharInSet(c, ['a'..'z', 'A'..'Z', '0'..'9', '_']);
-end;
-
-function LeftSpaces(s: string; tabW: Integer): Integer;
-  var
-    p: PWideChar;
-begin
-  p := PWideChar(s);
-  if Assigned(p) then
+  PChr := PWideChar(Str);
+  if Assigned(PChr) then
   begin
     Result := 0;
-    while (p^ >= #1) and (p^ <= #32) do
+    while (PChr^ >= #1) and (PChr^ <= #32) do
     begin
-      if (p^ = #9) then
+      if (PChr^ = #9) then
         Inc(Result, TabW)
       else
         Inc(Result);
-      Inc(p);
+      Inc(PChr);
     end;
   end
   else
     Result := 0;
 end;
 
-function WithoutLeadingUnderscores(s: string): string;
-  var p: Integer;
+function WithoutVisibility(Str: string): string;
+var
+  Posi: Integer;
 begin
-  p:= 1;
-  while (p <= Length(s)) and (s[p] = '_') do
-    Inc(p);
-  Result:= Copy(s, p, Length(s));
+  while (Length(Str) > 0) and (Str[1] = '_') do
+    Delete(Str, 1, 1);
+  Posi := Pos('__', Str);
+  if Posi > 0 then
+    Delete(Str, 1, Posi + 1);
+  Result := Str;
 end;
 
-function GetNextPart(var s: string; ch: char): string;
-  var q, p, bracket: Integer;
-begin
-  p:= Pos(ch, s);
-  if p = 0 then p:= Length(s)+1;
-  q:= Pos('<', s); // generic part
-  if (0 < q) and (q < p) then begin
-    bracket:= 1;
-    Inc(q);
-    while (q <= Length(s)) and (bracket > 0) do begin
-      if s[q] = '<' then Inc(bracket) else
-      if s[q] = '>' then Dec(bracket);
-      Inc(q);
-    end;
-    while (q <= Length(s)) and (s[q] <> ch) do
-      Inc(q);
-    p:= q;
-  end;
-  Result:= Copy(s, 1, p-1);
-  Delete(s, 1, p);
-end;
-
-function GetNextPart(var s: string): string;
-begin
-  result:= GetNextPart(s, ' ');
-end;
-
-function Visibility2ImageNumber(vis: TVisibility): Integer;
-begin
-  case vis of
-    viPrivate:   Result:= 7;
-    viProtected: Result:= 8;
-  else           Result:= 10;
-  end;
-end;
-
-function IsVisibility(const s: string): Boolean;
-  const visibilities: array[1..3] of string = ('__', '_', '');
-  var i: Integer;
-begin
-  Result:= False;
-  for i:= 1 to 3 do
-    if s = visibilities[i] then begin
-      Result:= True;
-      Exit;
-    end;
-end;
-
-function IsModifier(const s: string): Boolean;
-  const Modifiers : array[1..3] of string =
-    ('static', 'abstract', 'final');
-  var i: Integer;
-begin
-  Result:= False;
-  for i:= 1 to 3 do
-    if s = Modifiers[i] then begin
-      Result:= True;
-      Exit;
-    end;
-end;
-
-function WithoutVisibility(s: string): string;
-  var p: Integer;
-begin
-  while (Length(s) > 0) and (s[1] = '_') do
-    Delete(s, 1, 1);
-  p:= Pos('__', s);
-  if p > 0 then
-    Delete(s, 1, p+1);
-  Result:= s;
-end;
-
-function IsSimpleType(const s: string): Boolean;
-  const simpleTypePython: array[1..4] of string =
+function IsSimpleType(const Str: string): Boolean;
+  const SimpleTypePython: array[1..4] of string =
           ('integer', 'boolean', 'float', 'string');
-  var i: Integer;
 begin
   Result:= True;
-  for i:= 1 to 4 do
-    if simpletypePython[i] = s then Exit;
+  for var I:= 1 to 4 do
+    if SimpletypePython[I] = Str then Exit;
   Result:= False;
 end;
 
-function ShellExecuteFile(const FileName, Params, DefaultDir: string; ShowCmd: Integer): THandle;
+function ShellExecuteFile(const FileName, Params, DefaultDir: string;
+  ShowCmd: Integer): THandle;
 begin
-  Result:= ShellExecute(Application.MainForm.Handle, 'open',
-             PChar(FileName), PChar(Params), PChar(DefaultDir), ShowCmd);
+  Result := ShellExecute(Application.MainForm.Handle, 'open', PChar(FileName),
+    PChar(Params), PChar(DefaultDir), ShowCmd);
 end;
 
 function FilenameToFileKind(const FileName: string): TFileKind;
-  var Extension: string;
+var
+  Extension: string;
 begin
-  Result:= fkEditor;
-  Extension:= TPath.GetExtension(FileName);
-  if isHttp(FileName) then
-    Result:= fkBrowser
+  Result := fkEditor;
+  Extension := TPath.GetExtension(FileName);
+  if IsHTTP(FileName) then
+    Result := fkBrowser
   else if Extension = '.puml' then
-    Result:= fkUML
+    Result := fkUML
   else if Extension = '.py' then
-    Result:= fkEditor
+    Result := fkEditor
   else if Extension = '.psd' then
-    Result:= fkSequencediagram
+    Result := fkSequencediagram
   else if Extension = '.psg' then
-    Result:= fkStructogram;
+    Result := fkStructogram;
 end;
 
-{--- Portable -----------------------------------------------------------------}
+{ --- Portable ----------------------------------------------------------------- }
 
-function RemovePortableDrive(const s: string; folder: string = ''): string;
-  // if folder is set then switch to relative paths, used in Store/FetchDiagram
-  var SL1, SL2: TStringList;
-      i, j: Integer; Basefolder: string;
+function RemovePortableDrive(const Str: string; Folder: string = ''): string;
+// if Folder is set then switch to relative paths, used in Store/FetchDiagram
+var
+  SL1, SL2: TStringList;
+  Int1, Int2: Integer;
+  Basefolder: string;
 begin
-  Result:= s;
-  if TPyScripterSettings.IsPortable
-    then Basefolder:= ExtractFilePath(Application.ExeName)
-    else Basefolder:= folder;
+  Result := Str;
+  if TPyScripterSettings.IsPortable then
+    Basefolder := ExtractFilePath(Application.ExeName)
+  else
+    Basefolder := Folder;
   // same drive
-  if TPath.isDriveRooted(Basefolder) and
-    (UpperCase(Copy(Basefolder, 1, 2)) = UpperCase(Copy(s, 1, 2)))
-  then begin
-    SL1:= Split('\', withoutTrailingSlash(Basefolder));
-    SL2:= Split('\', withoutTrailingSlash(s));
-    i:= 0;
-    while (i < SL1.Count) and (i < SL2.Count) and
-          (UpperCase(SL1[i]) = UpperCase(SL2[i])) do
-      Inc(i);
-    Result:= '';
-    j:= i;
-    while i < SL1.Count do begin
-      Result:= Result + '..\';
-      Inc(i);
+  if TPath.IsDriveRooted(Basefolder) and
+    (UpperCase(Copy(Basefolder, 1, 2)) = UpperCase(Copy(Str, 1, 2))) then
+  begin
+    SL1 := Split('\', WithoutTrailingSlash(Basefolder));
+    SL2 := Split('\', WithoutTrailingSlash(Str));
+    Int1 := 0;
+    while (Int1 < SL1.Count) and (Int1 < SL2.Count) and
+      (UpperCase(SL1[Int1]) = UpperCase(SL2[Int1])) do
+      Inc(Int1);
+    Result := '';
+    Int2 := Int1;
+    while Int1 < SL1.Count do
+    begin
+      Result := Result + '..\';
+      Inc(Int1);
     end;
-    while j < SL2.Count do begin
-      Result:= Result + SL2[j] + '\';
-      Inc(j);
+    while Int2 < SL2.Count do
+    begin
+      Result := Result + SL2[Int2] + '\';
+      Inc(Int2);
     end;
-    Result:= withoutTrailingSlash(Result);
+    Result := WithoutTrailingSlash(Result);
     FreeAndNil(SL1);
     FreeAndNil(SL2);
   end;
 end;
 
-function AddPortableDrive(const s: string; folder: string = ''): string;
-  // if folder is set then switch to relative paths, used in Store/FetchDiagram
-  var SL1, SL2: TStringList;
-      i, j: Integer; Basefolder: string;
+function AddPortableDrive(const Str: string; Folder: string = ''): string;
+// if Folder is set then switch to relative paths, used in Store/FetchDiagram
+var
+  SL1, SL2: TStringList;
+  Int1, Int2: Integer;
+  Basefolder: string;
 begin
-  Result:= s;
-  if (UUtils.Left(s, 4) = 'its:') or ( s = '') or
-     (Copy(s, 2, 2) = ':\') or (Copy(s, 1, 7) = 'file://') or // absolute path
-     (Pos('\\', s) = 1) or (Pos('://', s) > 1) then // UNC or https:// or http://
+  Result := Str;
+  if (UUtils.Left(Str, 4) = 'its:') or (Str = '') or (Copy(Str, 2, 2) = ':\') or
+    (Copy(Str, 1, 7) = 'file://') or // absolute path
+    (Pos('\\', Str) = 1) or (Pos('://', Str) > 1) then
+  // UNC or https:// or http://
     Exit;
 
-  if TPyScripterSettings.IsPortable
-    then Basefolder:= ExtractFilePath(Application.ExeName)
-    else Basefolder:= folder;
+  if TPyScripterSettings.IsPortable then
+    Basefolder := ExtractFilePath(Application.ExeName)
+  else
+    Basefolder := Folder;
 
-  if Basefolder <> '' then begin
-    SL1:= Split('\', withoutTrailingSlash(Basefolder));
-    SL2:= Split('\', withoutTrailingSlash(s));
-    i:= 0;
-    while (i < SL2.Count) and (SL2[i] = '..') do
-      Inc(i);
-    Result:= SL1[0];
-    for j:= 1 to SL1.Count - 1 - i do
-      Result:= Result + '\' + SL1[j];
-    for j:= i to SL2.Count - 1 do
-      Result:= Result + '\' + SL2[j];
+  if Basefolder <> '' then
+  begin
+    SL1 := Split('\', WithoutTrailingSlash(Basefolder));
+    SL2 := Split('\', WithoutTrailingSlash(Str));
+    Int1 := 0;
+    while (Int1 < SL2.Count) and (SL2[Int1] = '..') do
+      Inc(Int1);
+    Result := SL1[0];
+    for Int2 := 1 to SL1.Count - 1 - Int1 do
+      Result := Result + '\' + SL1[Int2];
+    for Int2 := Int1 to SL2.Count - 1 do
+      Result := Result + '\' + SL2[Int2];
     FreeAndNil(SL1);
     FreeAndNil(SL2);
   end;
 end;
 
-function WriteLog(LogString: string): Integer;
-const
- LOGFILE = 'LogFile.log';
+function GetProtocol(Url: string): string;
 var
-  f: TextFile;
+  Posi: Integer;
 begin
-{$IOChecks OFF}
-  AssignFile(f, ExtractFilePath(ParamStr(0))+LOGFILE);
-  if FileExists(ExtractFilePath(ParamStr(0))+LOGFILE) then
-    Append(f)
+  Posi := Pos('://', Url);
+  if Posi > 0 then
+    Result := Copy(Url, 1, Posi + 2)
   else
-    Rewrite(f);
-  Writeln(f, LogString);
-  CloseFile(f);
-  result := GetLastError();
-{$IOCHECKS ON}
+    Result := '';
 end;
 
-function getProtocol(url: string): string;
-  var p: Integer;
+function GetProtocolAndDomain(Url: string): string;
+var
+  Posi: Integer;
+  Protocol: string;
 begin
-  p:= Pos('://', url);
-  if p > 0
-    then Result:= Copy(url, 1, p + 2)
-    else Result:= '';
-end;
-
-function getProtocolAndDomain(url: string): string;
-  var p: Integer; protocol: string;
-begin
-  protocol:= getProtocol(url);
-  Delete(url, 1, Length(protocol));
-  p:= Pos('/', url);
-  if p > 0
-    then Result:= protocol + Copy(url, 1, p-1)
-    else Result:= protocol + url;
+  Protocol := GetProtocol(Url);
+  Delete(Url, 1, Length(Protocol));
+  Posi := Pos('/', Url);
+  if Posi > 0 then
+    Result := Protocol + Copy(Url, 1, Posi - 1)
+  else
+    Result := Protocol + Url;
 end;
 
 function IsHTML(const Pathname: string): Boolean;
 begin
-  Result:= (Pos('.HTM', UpperCase(ExtractFileExt(Pathname))) > 0);
+  Result := (Pos('.HTM', UpperCase(ExtractFileExt(Pathname))) > 0);
 end;
 
-function HttpToWeb(s: string): string;
-  var p: Integer;
+function HttpToWeb(Str: string): string;
+var
+  Posi: Integer;
 begin
-  p:= pos('\', s);
-  while p > 0 do begin
-    s[p]:= '/';
-    p:= pos('\', s);
+  Posi := Pos('\', Str);
+  while Posi > 0 do
+  begin
+    Str[Posi] := '/';
+    Posi := Pos('\', Str);
   end;
-  Result:= s;
+  Result := Str;
 end;
 
 // needs WinInet
-function DownloadURL(const aUrl, aFile: string): Boolean;
+function DownloadURL(const Url, FileName: string): Boolean;
 var
-  hSession: HINTERNET;
-  hService: HINTERNET;
-  lpBuffer: array[0..1024 + 1] of Char;
-  dwBytesRead: DWORD;
-  Datei: TFileStream;
+  HSession: HINTERNET;
+  HService: HINTERNET;
+  LpBuffer: array [0 .. 1024 + 1] of Char;
+  DwBytesRead: DWORD;
+  AFile: TFileStream;
 begin
-  Result:= False;
+  Result := False;
   try
-    Datei:= TFileStream.Create(aFile, fmCreate or fmShareExclusive);
-    hSession:= InternetOpen('Java-Editor', INTERNET_OPEN_TYPE_PRECONFIG, nil, nil, 0);
+    AFile := TFileStream.Create(FileName, fmCreate or fmShareExclusive);
+    HSession := InternetOpen('Java-Editor', INTERNET_OPEN_TYPE_PRECONFIG,
+      nil, nil, 0);
     try
-      if Assigned(hSession) then begin                                                       // keine Cache-Benutzung!
-        hService := InternetOpenUrl(hSession, PChar(aUrl), nil, 0, INTERNET_FLAG_RELOAD, 0);
-        if Assigned(hService) then
+      if Assigned(HSession) then
+      begin
+        HService := InternetOpenUrl(HSession, PChar(Url), nil, 0,
+          INTERNET_FLAG_RELOAD, 0);
+        if Assigned(HService) then
           try
-            while True do begin
-              dwBytesRead := 1024;
-              InternetReadFile(hService, @lpBuffer, 1024, dwBytesRead);
-              if dwBytesRead = 0 then Break;
+            while True do
+            begin
+              DwBytesRead := 1024;
+              InternetReadFile(HService, @LpBuffer, 1024, DwBytesRead);
+              if DwBytesRead = 0 then
+                Break;
               Application.ProcessMessages;
-              Datei.Write(lpBuffer[0], dwBytesRead);
+              AFile.Write(LpBuffer[0], DwBytesRead);
             end;
             Result := True;
           finally
-            InternetCloseHandle(hService);
+            InternetCloseHandle(HService);
           end;
       end;
     finally
-      InternetCloseHandle(hSession);
-      FreeAndNil(Datei);
+      InternetCloseHandle(HSession);
+      FreeAndNil(AFile);
     end;
   except
     on e: Exception do
@@ -1529,30 +1301,12 @@ begin
   end;
 end;
 
-procedure SetElevationRequiredState(aControl: TWinControl);
-  const BCM_FIRST = $1600;
-        BCM_SETSHIELD = BCM_FIRST + $000C;
+procedure SetElevationRequiredState(AControl: TWinControl);
+const
+  BCM_FIRST = $1600;
+  BCM_SETSHIELD = BCM_FIRST + $000C;
 begin
-  SendMessage(aControl.Handle, BCM_SETSHIELD, 0, Integer(True));
-end;
-
-// needs URLMon
-function DownloadFile(const SourceFile, DestFile: string): Boolean;
-begin
-  try
-    Result:= UrlDownloadToFile(nil, PChar(SourceFile), PChar(DestFile), 0, nil) = 0;
-  except
-    Result:= False;
-  end;
-end;
-
-function MakeValidIdentifier(s: string): string;
-  var i: Integer;
-begin
-  for i := Length(s) downto 1 do
-    if not CharInSet(s[i], ['a'..'z','A'..'Z', '0'..'9', '_']) then
-      Delete(s, i, 1);
-  Result:= s;
+  SendMessage(AControl.Handle, BCM_SETSHIELD, 0, Integer(True));
 end;
 
 function CanActuallyFocus(WinControl: TWinControl): Boolean;
@@ -1560,146 +1314,149 @@ var
   Form: TCustomForm;
 begin
   Result := False;
-  if Assigned(WinControl) and not WinControl.Focused then begin
+  if Assigned(WinControl) and not WinControl.Focused then
+  begin
     Form := GetParentForm(WinControl);
     if Assigned(Form) and Form.Enabled and Form.Visible then
       Result := WinControl.CanFocus;
   end;
 end;
 
-function isNumber(var s: string): Boolean;
-  var d: Double; p: Integer;
+function IsNumber(var Str: string): Boolean;
+var
+  Dou: Double;
+  Posi: Integer;
 begin
-  p:= Pos('.', s);
-  if p > 0 then
-    s[p]:= FormatSettings.DecimalSeparator;
-  Result:= TryStrToFloat(s, d);
-  p:= Pos(FormatSettings.DecimalSeparator, s);
-  if p > 0 then
-    s[p]:= '.';
+  Posi := Pos('.', Str);
+  if Posi > 0 then
+    Str[Posi] := FormatSettings.DecimalSeparator;
+  Result := TryStrToFloat(Str, Dou);
+  Posi := Pos(FormatSettings.DecimalSeparator, Str);
+  if Posi > 0 then
+    Str[Posi] := '.';
 end;
 
-function isBool(s: string): Boolean;
+function IsBool(Str: string): Boolean;
 begin
-  Result:= (s = 'True') or (s = 'False');
+  Result := (Str = 'True') or (Str = 'False');
 end;
 
-procedure ReplaceResourceString(RStringRec: PResStringRec; const AString: string);
-  var OldProtect: Cardinal;
+function DecToBase(Base: Integer; DecValue: Double): string;
+{ Function   : converts decimal integer to base n, max = Base36
+  Parameters : Base     = base number, ie. Hex is base 16
+  DecValue = decimal to be converted
+  LeadZeros = min number of digits if leading zeros required
+  Returns    : number in base n as string }
+var
+  BaseString, DecToStr, Frac: string;
+  Modulus, Posi, IntVal, FracVal: Integer;
+  Negative: Boolean;
 begin
-  if (RStringRec = nil) or (Length(AString) = 0) then Exit;
-  if VirtualProtect(RStringRec, SizeOf(RStringRec^), PAGE_EXECUTE_READWRITE, @OldProtect) then begin
-    RStringRec^.Identifier:= Integer(PChar(AString));
-    VirtualProtect(RStringRec, SizeOf(RStringRec^), OldProtect, @OldProtect);
+  Result := '';
+  BaseString := '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'; { max = Base36 }
+  if DecValue < 0 then
+  begin
+    Negative := True;
+    DecValue := -DecValue;
   end
-  else ErrorMsg(SysErrorMessage(GetLastError));
-end;
-
-function DecToBase(nBase: Integer; nDecValue: double): string;
-{Function   : converts decimal integer to base n, max = Base36
- Parameters : nBase     = base number, ie. Hex is base 16
-              nDecValue = decimal to be converted
-              LeadZeros = min number of digits if leading zeros required
- Returns    : number in base n as string}
-  var BaseString, DecToStr, f: string;
-      Modulus, p, IntVal, FracVal: Integer;
-      negative: Boolean;
-begin
-  Result:= '';
-  BaseString:= '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'; {max = Base36}
-  if nDecValue < 0 then begin
-    negative:= True;
-    nDecValue:= -nDecValue;
-  end else
-    negative:= False;
-  DecToStr:= FloatToStrF(nDecValue, ffGeneral, 15, 8);
-  p:= Pos('.', DecToStr);
-  if p > 0 then begin
-    IntVal:= StrToInt(Copy(DecToStr, 1, p-1));
-    FracVal:= StrToInt(Copy(DecToStr, p +1 , Length(DecToStr)));
-  end else begin
-    IntVal:= StrToInt(DecToStr);
-    FracVal:= 0;
+  else
+    Negative := False;
+  DecToStr := FloatToStrF(DecValue, ffGeneral, 15, 8);
+  Posi := Pos('.', DecToStr);
+  if Posi > 0 then
+  begin
+    IntVal := StrToInt(Copy(DecToStr, 1, Posi - 1));
+    FracVal := StrToInt(Copy(DecToStr, Posi + 1, Length(DecToStr)));
+  end
+  else
+  begin
+    IntVal := StrToInt(DecToStr);
+    FracVal := 0;
   end;
-  while IntVal > 0 do begin
-    Modulus:= IntVal mod nBase; {remainder is next digit}
-    Result:= BaseString[Modulus+1] + Result;
-    IntVal:= IntVal div nBase;
+  while IntVal > 0 do
+  begin
+    Modulus := IntVal mod Base; { remainder is next digit }
+    Result := BaseString[Modulus + 1] + Result;
+    IntVal := IntVal div Base;
   end;
-  if (FracVal > 0) and (nBase = 10) then begin
-    f:= '';
-    while FracVal > 0 do begin
-      Modulus:= FracVal mod nBase; {remainder is next digit}
-      f:= BaseString[Modulus+1] + f;
-      FracVal:= FracVal div nBase;
+  if (FracVal > 0) and (Base = 10) then
+  begin
+    Frac := '';
+    while FracVal > 0 do
+    begin
+      Modulus := FracVal mod Base; { remainder is next digit }
+      Frac := BaseString[Modulus + 1] + Frac;
+      FracVal := FracVal div Base;
     end;
-    Result:= Result + '.' + f;
+    Result := Result + '.' + Frac;
   end;
   if Result = '' then
-    Result:= '0';
-  if negative then Result:= '-' + Result;
+    Result := '0';
+  if Negative then
+    Result := '-' + Result;
 end;
 
-function ConvertLtGt(s: string): string;
+function ConvertLtGt(Str: string): string;
 begin
-  Result:= ReplaceStr(ReplaceStr(s, '<', '&lt;'), '>', '&gt;');
+  Result := ReplaceStr(ReplaceStr(Str, '<', '&lt;'), '>', '&gt;');
 end;
 
-function FloatToVal(x: real): string;
+function FloatToVal(AFloat: Real): string;
 begin
-  Result:= '"' + FloatToStr(x) + '"';
-  var p:= Pos(',', Result);
-  if p > 0 then
-    Result[p]:= '.';
+  Result := '"' + FloatToStr(AFloat) + '"';
+  var
+  Posi := Pos(',', Result);
+  if Posi > 0 then
+    Result[Posi] := '.';
 end;
 
-function PointToVal(P: TPoint): string;
+function PointToVal(Point: TPoint): string;
 begin
-  Result:= IntToStr(P.x) + ',' + IntToStr(P.y) + ' ';
+  Result := IntToStr(Point.X) + ',' + IntToStr(Point.Y) + ' ';
 end;
 
-function IntToVal(x: Integer): string;
+function IntToVal(Int: Integer): string;
 begin
-  Result:= '"' + IntToStr(x) + '"';
+  Result := '"' + IntToStr(Int) + '"';
 end;
 
-function myColorToRGB(Color: TColor): string;
-  var ColorInt, r, g, b: Integer;
-begin
-  ColorInt:= ColorToRGB(Color);
-  r:= GetRValue(ColorInt);
-  g:= GetGValue(ColorInt);
-  b:= GetBValue(ColorInt);
-  Result:= 'rgb(' + IntToStr(r) + ',' + IntToStr(g) + ',' + IntToStr(b) + ')';
-end;
-
-function XYToVal(x, y: Integer): string;
-begin
-  Result:= IntToStr(x) + ',' + IntToStr(y) + ' ';
-end;
-
-function CalcIndent(S : string; TabWidth : Integer = 4): Integer;
+function MyColorToRGB(Color: TColor): string;
 var
-  i : Integer;
+  ColorInt, Red, Green, Blue: Integer;
+begin
+  ColorInt := ColorToRGB(Color);
+  Red := GetRValue(ColorInt);
+  Green := GetGValue(ColorInt);
+  Blue := GetBValue(ColorInt);
+  Result := 'rgb(' + IntToStr(Red) + ',' + IntToStr(Green) + ',' +
+    IntToStr(Blue) + ')';
+end;
+
+function XYToVal(Xpos, YPos: Integer): string;
+begin
+  Result := IntToStr(Xpos) + ',' + IntToStr(YPos) + ' ';
+end;
+
+function CalcIndent(Str: string; TabWidth: Integer = 4): Integer;
 begin
   Result := 0;
-  for i := 1 to Length(S) do
-    if S[i] = WideChar(#9) then
+  for var I := 1 to Length(Str) do
+    if Str[I] = #9 then
       Inc(Result, TabWidth)
-    else if S[i] = ' ' then
+    else if Str[I] = ' ' then
       Inc(Result)
     else
       Break;
 end;
 
-function encodeQuotationMark(const s: string): string;
+function EncodeQuotationMark(const Str: string): string;
 begin
-  Result:= ReplaceStr(s, '"', '&quot;');
+  Result := ReplaceStr(Str, '"', '&quot;');
 end;
 
-function MyMulDiv(nNumber, nNumerator, nDenominator: Integer): Integer;
+function MyMulDiv(Number, Numerator, Denominator: Integer): Integer;
 begin
-  Result:= MulDiv(nNumber, nNumerator, nDenominator);
+  Result := MulDiv(Number, Numerator, Denominator);
 end;
 
 procedure LockWindow(Handle: THandle);
@@ -1707,24 +1464,9 @@ begin
   LockWindowUpdate(Handle);
 end;
 
-procedure UnlockWindow;
+procedure UnLockWindow;
 begin
   LockWindowUpdate(0);
-end;
-
-function StringToSingle(S: string): Single;
-var
-  FS: TFormatSettings;
-begin
-  FS := TFormatSettings.Create;
-  FS.DecimalSeparator := '.';
-  S := StringReplace(S, ',', '.', [rfReplaceAll]);
-  try
-    Result := StrToFloat(S, FS);
-  except
-    on E: EConvertError do
-      Result := 0.0;
-  end;
 end;
 
 function IsColorDark(AColor: TColor): Boolean;
@@ -1737,4 +1479,3 @@ begin
 end;
 
 end.
-
