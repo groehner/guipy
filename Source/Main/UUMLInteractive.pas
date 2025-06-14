@@ -87,9 +87,8 @@ uses
   System.Math,
   System.SysUtils,
   Vcl.Clipbrd,
-  dmResources,
   JvGnugettext,
-  cPyScripterSettings,
+  dmResources,
   uCommonFunctions,
   UUMLForm,
   UConfiguration;
@@ -182,7 +181,7 @@ begin
 end;
 
 procedure TFUMLInteractive.TBExecuteClick(Sender: TObject);
-  var Text: string; TSL: TStringList;  UMLForm: TFUMLForm;
+  var Text: string; StringList: TStringList;  UMLForm: TFUMLForm;
 begin
   if not Assigned(FMyForm) then
    Exit;
@@ -197,14 +196,14 @@ begin
   UMLForm.CollectClasses(nil);
   TBExecute.Enabled:= False;
   Screen.Cursor:= crHourGlass;
-  TSL := TStringList.Create;
+  StringList := TStringList.Create;
   try
     UMLForm.MainModul.Diagram.ExecutePython(Text);
     if GuiPyOptions.ShowAllNewObjects then
       UMLForm.MainModul.Diagram.ShowAllNewObjects(Self);
     UMLForm.MainModul.Diagram.ShowAll;
   finally
-    TSL.Free;
+    StringList.Free;
     Screen.Cursor:= crDefault;
     TBExecute.Enabled:= True;
   end;

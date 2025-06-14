@@ -805,7 +805,7 @@ begin
   Partner.DeleteAttribute(Str1);
   if Value = '' then
   begin
-    Str1 := 'self.' + LOldValue + ' = tk.Menu';
+    Str1 := 'self.' + GOldValue + ' = tk.Menu';
     Str2 := Str1 + '(tearoff=0)';
     SetAttributValue(Str1, Str2);
   end
@@ -919,7 +919,7 @@ begin
   begin
     Partner.DeleteAttribute(Name + 'VC');
     Partner.DeleteAttribute('self.' + Name + '[''validatecommand'']');
-    Partner.DeleteMethod(ULink.LOldValue);
+    Partner.DeleteMethod(ULink.GOldValue);
   end
   else
   begin
@@ -1018,7 +1018,7 @@ var
   end;
 
 begin
-  OldValue := ULink.LOldValue;
+  OldValue := ULink.GOldValue;
   ScrollbarName := 'self.' + Name + 'Scrollbar';
   Partner.ActiveSynEdit.BeginUpdate;
   WidthNoScrollbar := Width;

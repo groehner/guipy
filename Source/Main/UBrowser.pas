@@ -78,10 +78,10 @@ type
     procedure SetFontSize(Delta: Integer); override;
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
-    function OpenFile(const AFilename: string): Boolean; override;
+    function OpenFile(const Filename: string): Boolean; override;
     procedure OpenWindow(Sender: TObject); override;
     function GetAsStringList: TStringList; override;
-    procedure UploadFilesHttpPost(const URLstring: string;
+    procedure UploadFilesHttpPost(const UrlAsString: string;
       Names, Values, NFiles, VFiles: array of string);
     procedure ChangeStyle;
     procedure DPIChanged; override;
@@ -165,14 +165,14 @@ begin
       TBBack.Click;
 end;
 
-function TFBrowser.OpenFile(const AFilename: string): Boolean;
+function TFBrowser.OpenFile(const Filename: string): Boolean;
 begin
-  Pathname := getProtocolAndDomain(AFilename);
-  fFile.fFileName := Pathname;
+  Pathname := GetProtocolAndDomain(Filename);
+  FFile.fFileName := Pathname;
   PyIDEMainForm.UpdateCaption;
   Enter(Self);
   WebBrowser.OnCommandStateChange := WebBrowserCommandStateChange;
-  NavigateTo(AFilename);
+  NavigateTo(Filename);
   Result := True;
 end;
 
@@ -213,7 +213,7 @@ end;
 procedure TFBrowser.TBCloseClick(Sender: TObject);
 begin
   Close;
-  (fFile as IFileCommands).ExecClose;
+  (FFile as IFileCommands).ExecClose;
 end;
 
 procedure TFBrowser.TBShowSourceClick(Sender: TObject);
@@ -354,28 +354,28 @@ end;
 
 function TFBrowser.GetAsStringList: TStringList;
 var
-  FileName: string;
+  Filename: string;
 begin
   TBShowSource.Enabled := False;
   Result := TStringList.Create;
-  FileName := StripHttpParams(CBUrls.Text);
-  if not FileExists(FileName) then
+  Filename := StripHttpParams(CBUrls.Text);
+  if not FileExists(Filename) then
   begin
     Screen.Cursor := crHourGlass;
     try
-      FileName := TPath.Combine(GuiPyOptions.TempDir, 'download.html');
-      if not DownloadURL(CBUrls.Text, FileName) then
+      Filename := TPath.Combine(GuiPyOptions.TempDir, 'download.html');
+      if not DownloadURL(CBUrls.Text, Filename) then
         StyledMessageDlg(_('Download failed!'), mtError, [mbOK], 0);
     finally
       Screen.Cursor := crDefault;
     end;
   end;
-  if FileExists(FileName) then
-    Result.LoadFromFile(FileName);
+  if FileExists(Filename) then
+    Result.LoadFromFile(Filename);
   TBShowSource.Enabled := True;
 end;
 
-procedure TFBrowser.UploadFilesHttpPost(const URLstring: string;
+procedure TFBrowser.UploadFilesHttpPost(const UrlAsString: string;
 Names, Values, NFiles, VFiles: array of string);
 var
   StrData, Name, Value, Boundary: string;
@@ -420,7 +420,7 @@ begin
     Name := NFiles[Idx];
     Value := VFiles[Idx];
     StrData := StrData + '--' + Boundary + #13#10 +
-      'Content-Disposition: form-data; name="' + Name + '"; filename="' + Value
+      'Content-Disposition: form-data; name="' + Name + '"; Filename="' + Value
       + '"' + #13#10;
 
     if Value = '' then
@@ -471,7 +471,7 @@ begin
   Headers := 'Content-Type: multipart/form-data; Boundary=' + Boundary + #13#10;
 
   { 4. you must navigate to the URL with your script and send as parameters your array with POST-data and headers }
-  URL := URLstring;
+  URL := UrlAsString;
   WebBrowser.Navigate2(URL, Flags, EmptyParam, PostData, Headers);
   while WebBrowser.ReadyState < READYSTATE_INTERACTIVE do
     Application.ProcessMessages;
@@ -482,14 +482,14 @@ const PDisp: IDispatch; const URL, Flags, TargetFrameName, PostData,
   Headers: OleVariant; var Cancel: WordBool);
 var
   Posi: Integer;
-  Str, Str1, NUrl: string;
+  Str, Str1, UrlAsString: string;
 begin
   if URL = 'about:blank' then
   begin
     Cancel := True;
     Exit;
   end;
-  NUrl := URL;
+  UrlAsString := URL;
   Str := URL;
   if Pos('file:///', Str) = 1 then
   begin
@@ -502,7 +502,7 @@ begin
     end
     else
       Str1 := '';
-    NUrl := ToWindows(Str) + Str1;
+    UrlAsString := ToWindows(Str) + Str1;
   end
   else if Pos('file:', Str) = 1 then
   begin // UNC names
@@ -515,11 +515,11 @@ begin
     end
     else
       Str1 := '';
-    NUrl := ToWindows(Str) + Str1;
+    UrlAsString := ToWindows(Str) + Str1;
   end;
-  if not hasPythonExtension(NUrl) then
-    CBUrls.Text := NUrl;
-  if IsHTTP(URL) and GuiPyOptions.LockedInternet then
+  if not HasPythonExtension(UrlAsString) then
+    CBUrls.Text := UrlAsString;
+  if IsHttp(URL) and GuiPyOptions.LockedInternet then
     Cancel := True;
 end;
 
@@ -542,8 +542,8 @@ end;
 procedure TFBrowser.WebBrowserDownloadComplete(Sender: TObject);
 begin
   TBStop.ImageName := 'AbortOff';
-  Pathname := getProtocolAndDomain(CBUrls.Text);
-  fFile.fFileName := Pathname;
+  Pathname := GetProtocolAndDomain(CBUrls.Text);
+  FFile.fFileName := Pathname;
   PyIDEMainForm.UpdateCaption;
   DoUpdateCaption;
   if not FConfiguration.Visible then
@@ -558,7 +558,7 @@ end;
 
 procedure TFBrowser.ChangeStyle;
 begin
-  if FConfiguration.isDark then
+  if FConfiguration.IsDark then
     ToolBar.Images := vilBrowserDark
   else
     ToolBar.Images := vilBrowserLight;

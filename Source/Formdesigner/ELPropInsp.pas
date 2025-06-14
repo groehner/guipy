@@ -2522,7 +2522,7 @@ begin
   if Value <> FDisplayValue then
   begin
     LOldValue := FDisplayValue;
-    ULink.LOldValue := LOldValue;
+    ULink.GOldValue := LOldValue;
     LNewValue := Value;
     if (FCaption = 'Name') and (FEditor.ClassName = 'TELComponentNamePropEditor')
     then
@@ -4351,7 +4351,7 @@ end;
 procedure TELCursorPropEditor.GetValues(AValues: TStrings);
 begin
   FValues := AValues;
-  AValues.Text := ULink.PythonCursorText;
+  AValues.Text := ULink.GPythonCursorText;
 end;
 
 procedure TELCursorPropEditor.SetValue(const Value: string);

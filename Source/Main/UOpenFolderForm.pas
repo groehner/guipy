@@ -2,10 +2,13 @@ unit UOpenFolderForm;
 
 interface
 
-{$WARN UNIT_PLATFORM OFF}
-
 uses
-  System.Classes, Vcl.Controls, Forms, StdCtrls, ShellCtrls, dlgPyIDEBase;
+  System.Classes,
+  Vcl.Controls,
+  Forms,
+  StdCtrls,
+  ShellCtrls,
+  dlgPyIDEBase;
 
 type
 
@@ -18,26 +21,30 @@ type
     CBPath: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    FPathTreeView: TShellTreeView;
   public
-    PathTreeView: TShellTreeView;
     destructor Destroy; override;
+    property PathTreeView: TShellTreeView read FPathTreeView;
   end;
 
 implementation
 
-uses SysUtils, UConfiguration;
+uses
+  SysUtils,
+  UConfiguration;
 
 {$R *.dfm}
 
 procedure TFOpenFolderForm.FormCreate(Sender: TObject);
 begin
   inherited;
-  PathTreeView:= TShellTreeView.Create(Self);
+  FPathTreeView:= TShellTreeView.Create(Self);
   CBPath.Items.CommaText:= GuiPyOptions.OpenFolderFormItems;
   if (CBPath.Items.Count > 0) and DirectoryExists(CBPath.Items[0])
     then CBPath.Text:= CBPath.Items[0]
     else CBPath.Text:= GuiPyOptions.Sourcepath;
-  with PathTreeView do begin
+  with FPathTreeView do begin
     Parent:= Self;
     SetBounds(8, 8, 380, 270);
     HideSelection:= False;
@@ -48,14 +55,13 @@ end;
 
 procedure TFOpenFolderForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  inherited;
   Action:= caFree;
   GuiPyOptions.OpenFolderFormItems:= CBPath.Items.CommaText;
 end;
 
 destructor TFOpenFolderForm.Destroy;
 begin
-  FreeAndNil(PathTreeView);
+  FreeAndNil(FPathTreeView);
   inherited;
 end;
 

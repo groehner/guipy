@@ -20,7 +20,6 @@ uses
   System.Classes,
   Vcl.Graphics,
   Vcl.Forms,
-  uEditAppIntfs,
   ELEvents,
   frmEditor,
   UBaseWidgets;
@@ -35,7 +34,7 @@ type
   TTabShape = (Rounded, Triangular);
 
   TFGuiForm = class(TForm)
-    procedure FormClose(Sender: TObject; var AAction: TCloseAction);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormResize(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -92,6 +91,10 @@ type
     FWindowIconChanged: string;
     FWindowTitleChanged: string;
     FIconSizeChanged: string;
+    FModified: Boolean;
+    FPartner: TEditorForm;
+    FPathname: string;
+    FReadOnly: Boolean;
     FTabifiedDockWidgetActivated: string;
     FToolButtonStyleChanged: string;
 
@@ -104,32 +107,32 @@ type
     procedure SetGridOptions;
     procedure GetFontSize;
   public
-    ReadOnly: Boolean;
-    Pathname: string;
-    Partner: TEditorForm;
-    Modified: Boolean;
     constructor Create(AOwner: TComponent); override;
     procedure InitEvents;
     procedure Open(Pathname, State: string; WidthHeight: TPoint;
       Partner: TEditorForm);
     procedure EnterForm(Sender: TObject);
     procedure Save(MitBackup: Boolean);
-    procedure Print;
     procedure UpdateState;
     procedure EnsureOnDesktop;
     procedure SetAttribute(Attr, Value, Typ: string);
     function GetAttributes(ShowAttributes: Integer): string;
     function GetEvents(ShowEvents: Integer): string;
     procedure SetEvent(Event: string);
-    function HandlerName(Event: string): string;
+    function Handlername(Event: string): string;
     function MakeHandler(Event: string): string;
     procedure DeleteEventHandler(const Event: string);
     function MakeBinding(Eventname: string): string;
     procedure EndOfResizeMoveDetected(var Msg: TMessage);
       message WM_EXITSIZEMOVE;
     procedure Paint; override;
-    procedure Zoom(In_: Boolean);
+    procedure Zoom(ZoomIn: Boolean);
     procedure Scale(NewPPI, OldPPI: Integer);
+
+    property Modified: Boolean read FModified write FModified;
+    property Partner: TEditorForm read FPartner write FPartner;
+    property Pathname: string read FPathname write FPathname;
+    property ReadOnly: Boolean read FReadOnly;
   published
     property AlwaysOnTop: Boolean read FAlwaysOnTop write FAlwaysOnTop;
     property Background: TColor read GetBackground write SetBackground;
@@ -149,7 +152,6 @@ type
     property Width;
     // events
     // Tk
-{$WARNINGS OFF}
     property Activate: TEvent read FActivate write FActivate;
     property ButtonPress: TEvent read FButtonPress write FButtonPress;
     property ButtonRelease: TEvent read FButtonRelease write FButtonRelease;
@@ -166,7 +168,6 @@ type
     property Motion: TEvent read FMotion write FMotion;
     property MouseWheel: TEvent read FMouseWheel write FMouseWheel;
     property Visibility: TEvent read FVisibility write FVisibility;
-{$WARNINGS ON}
     // Qt
     // attributes
     property Animated: Boolean read FAnimated write FAnimated;
@@ -195,22 +196,21 @@ type
 implementation
 
 uses
-  Clipbrd,
   SysUtils,
   Controls,
   Math,
+  UxTheme,
   System.Generics.Collections,
   JvDockControlForm,
   frmPyIDEMain,
   cPyScripterSettings,
+  UQtWidgetDescendants,
+  UBaseTKWidgets,
   UGUIDesigner,
   UObjectGenerator,
   UObjectInspector,
   UUtils,
   UConfiguration,
-  UxTheme,
-  UQtWidgetDescendants,
-  UBaseTKWidgets,
   uCommonFunctions;
 
 {$R *.DFM}
@@ -272,27 +272,25 @@ end;
 procedure TFGuiForm.Open(Pathname, State: string; WidthHeight: TPoint;
   Partner: TEditorForm);
 begin
-  Self.Pathname := Pathname;
-  Self.Partner := Partner;
-{$WARNINGS OFF}
-  if Partner.FrameType < 3 then
+  FPathname := Pathname;
+  FPartner := Partner;
+  if FPartner.FrameType < 3 then
     FWidget := TKMainWindow.Create(nil)
   else
     FWidget := TQtMainWindow.Create(nil);
-  FWidget.Partner := Partner;
-{$WARNINGS ON}
+  FWidget.Partner := FPartner;
   SetAnimation(False);
   ClientWidth := PPIScale(WidthHeight.X);
   ClientHeight := PPIScale(WidthHeight.Y);
   Name := UUtils.GetUniqueName(PyIDEMainForm,
-    ChangeFileExt(ExtractFileName(Pathname), ''));
-  Modified := False;
+    ChangeFileExt(ExtractFileName(FPathname), ''));
+  FModified := False;
   SetWidgetPartners;
   OnActivate := EnterForm;
   PyIDEMainForm.ConnectGUIandPyWindow(Self);
   EnterForm(Self); // must stay!
   SetAnimation(True);
-  ReadOnly := IsWriteProtected(Pathname);
+  FReadOnly := IsWriteProtected(FPathname);
   if FontSize = 0 then
     GetFontSize;
 end;
@@ -308,17 +306,17 @@ begin
   CanClose := True;
 end;
 
-procedure TFGuiForm.FormClose(Sender: TObject; var AAction: TCloseAction);
+procedure TFGuiForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  if Assigned(Partner) then
+  if Assigned(FPartner) then
   begin
-    Partner.Partner := nil;
-    Partner.GetEditor.GUIFormOpen := False;
+    FPartner.Partner := nil;
+    FPartner.GetEditor.GUIFormOpen := False;
   end;
   for var I := 1 to 4 do
     PyIDEMainForm.TabControlWidgets.Items[I].Visible :=
-      FConfiguration.vistabs[I];
-  AAction := caFree;
+      FConfiguration.Vistabs[I];
+  Action := caFree;
 end;
 
 procedure TFGuiForm.FormDestroy(Sender: TObject);
@@ -358,36 +356,33 @@ begin
     FTransparency := Value;
 end;
 
-{$WARNINGS OFF}
-
 procedure TFGuiForm.Save(MitBackup: Boolean);
 var
-  BackupName: string;
+  Backupname: string;
 begin
-  if ReadOnly then
+  if FReadOnly then
     Exit;
   if MitBackup then
   begin
-    BackupName := Pathname;
-    BackupName := ChangeFileExt(BackupName, '.~fm');
-    if FileExists(BackupName) then
-      SysUtils.DeleteFile(BackupName);
-    if FileExists(Pathname) then
-      RenameFile(Pathname, BackupName);
+    Backupname := FPathname;
+    Backupname := ChangeFileExt(Backupname, '.~fm');
+    if FileExists(Backupname) then
+      SysUtils.DeleteFile(Backupname);
+    if FileExists(FPathname) then
+      RenameFile(FPathname, Backupname);
   end;
-  FGUIDesigner.Save(Pathname, Self);
-  Modified := False;
+  FGUIDesigner.Save(FPathname, Self);
+  FModified := False;
 end;
-{$WARNINGS ON}
 
 procedure TFGuiForm.EnterForm(Sender: TObject);
 begin
-  if Assigned(Partner) and not Partner.ParentTabItem.Checked then
-    // show connected partner
+  if Assigned(FPartner) and not FPartner.ParentTabItem.Checked then
+    // show connected FPartner
     TThread.ForceQueue(nil,
       procedure
       begin
-        Partner.ParentTabItem.Checked := True;
+        FPartner.ParentTabItem.Checked := True;
       end);
   if not FObjectInspector.Visible then
     TThread.ForceQueue(nil,
@@ -398,12 +393,12 @@ begin
   if (FGUIDesigner.ELDesigner.DesignControl <> Self) or
     not FGUIDesigner.ELDesigner.Active then
     FGUIDesigner.ChangeTo(Self);
-  Partner.SynEditEnter(Partner.ActiveSynEdit);
-  PyIDEMainForm.ShowTkOrQt(Partner.FrameType);
+  FPartner.SynEditEnter(FPartner.ActiveSynEdit);
+  PyIDEMainForm.ShowTkOrQt(FPartner.FrameType);
 end;
 
 procedure TFGuiForm.FormAfterMonitorDpiChanged(Sender: TObject;
-  OldDPI, NewDPI: Integer);
+OldDPI, NewDPI: Integer);
 begin
   FGUIDesigner.ScaleImages;
   Invalidate;
@@ -412,7 +407,7 @@ begin
 end;
 
 procedure TFGuiForm.FormBeforeMonitorDpiChanged(Sender: TObject;
-  OldDPI, NewDPI: Integer);
+OldDPI, NewDPI: Integer);
 begin
   OnResize := nil;
 end;
@@ -425,7 +420,7 @@ begin
 end;
 
 procedure TFGuiForm.FormCanResize(Sender: TObject;
-  var NewWidth, NewHeight: Integer; var Resize: Boolean);
+var NewWidth, NewHeight: Integer; var Resize: Boolean);
 begin
   if FGUIDesigner.ELDesigner.Active then
     FGUIDesigner.ELDesigner.Active := False;
@@ -434,23 +429,18 @@ end;
 procedure TFGuiForm.FormResize(Sender: TObject);
 begin
   FObjectInspector.ELPropertyInspector.Modified;
-  if Assigned(Partner) and not ReadOnly then
+  if Assigned(FPartner) and not FReadOnly then
   begin
-    FObjectGenerator.Partner := Partner;
+    FObjectGenerator.Partner := FPartner;
     FObjectGenerator.SetBoundsForFormular(Self);
   end;
-  Modified := True;
+  FModified := True;
   UpdateState;
 end;
 
 procedure TFGuiForm.EndOfResizeMoveDetected(var Msg: TMessage);
 begin
   FGUIDesigner.ELDesigner.Active := True;
-end;
-
-procedure TFGuiForm.Print;
-begin
-  inherited Print;
 end;
 
 procedure TFGuiForm.UpdateState;
@@ -460,19 +450,19 @@ end;
 
 procedure TFGuiForm.EnsureOnDesktop;
 var
-  Lef, Top1: Integer;
+  Lef1, Top1: Integer;
 begin
-  Lef := Left;
-  if Lef < 0 then
-    Lef := 0;
-  if Lef + Width > Screen.DesktopWidth then
-    Lef := Screen.DesktopWidth - Width;
+  Lef1 := Left;
+  if Lef1 < 0 then
+    Lef1 := 0;
+  if Lef1 + Width > Screen.DesktopWidth then
+    Lef1 := Screen.DesktopWidth - Width;
   Top1 := Top;
   if Top1 < 0 then
     Top1 := 0;
   if Top1 + Height > Screen.DesktopHeight then
     Top1 := Screen.DesktopHeight - Height;
-  SetBounds(Lef, Top1, Width, Height);
+  SetBounds(Lef1, Top1, Width, Height);
 end;
 
 procedure TFGuiForm.SetAttribute(Attr, Value, Typ: string);
@@ -514,17 +504,17 @@ end;
 procedure TFGuiForm.SetEvent(Event: string);
 begin
   Event := Without_(Event);
-  if not Partner.hasText('def ' + FWidget.HandlerNameAndParameter(Event)) then
-    Partner.InsertProcedure(CrLf + MakeHandler(Event));
-  if Partner.FrameType < 3 then
-    Partner.InsertTkBinding('root', Event, MakeBinding(Event))
+  if not FPartner.hasText('def ' + FWidget.HandlerNameAndParameter(Event)) then
+    FPartner.InsertProcedure(CrLf + MakeHandler(Event));
+  if FPartner.FrameType < 3 then
+    FPartner.InsertTkBinding('root', Event, MakeBinding(Event))
   else
-    Partner.InsertQtBinding(FIndent2 + 'self.', MakeBinding(Event));
+    FPartner.InsertQtBinding(FIndent2 + 'self.', MakeBinding(Event));
 end;
 
-function TFGuiForm.HandlerName(Event: string): string;
+function TFGuiForm.Handlername(Event: string): string;
 begin
-  if Partner.FrameType < 3 then
+  if FPartner.FrameType < 3 then
     Result := 'root_' + Without_(Event)
   else
     Result := 'MainWindow_' + Event;
@@ -534,7 +524,7 @@ function TFGuiForm.MakeBinding(Eventname: string): string;
 var
   Event: TEvent;
 begin
-  if Partner.FrameType < 3 then
+  if FPartner.FrameType < 3 then
   begin
     Eventname := Without_(Eventname);
     if Eventname = 'ButtonPress' then
@@ -569,8 +559,8 @@ begin
       Event := FExpose
     else
       Event := FVisibility;
-    Result := FIndent2 + 'self.root.bind(''<' + Event.getModifiers(Eventname) +
-      Eventname + Event.getDetail(Eventname) + '>'', self.' +
+    Result := FIndent2 + 'self.root.bind(''<' + Event.GetModifiers(Eventname) +
+      Eventname + Event.GetDetail(Eventname) + '>'', self.' +
       HandlerName(Eventname) + ')';
   end
   else
@@ -580,12 +570,12 @@ end;
 
 procedure TFGuiForm.DeleteEventHandler(const Event: string);
 begin
-  Partner.DeleteMethod(HandlerName(Event));
+  FPartner.DeleteMethod(HandlerName(Event));
   var
   Binding := MakeBinding(Event);
-  if Partner.FrameType >= 3 then
+  if FPartner.FrameType >= 3 then
     Binding := Copy(Binding, 1, Pos('(', Binding));
-  Partner.DeleteBinding(Binding);
+  FPartner.DeleteBinding(Binding);
 end;
 
 procedure TFGuiForm.Paint;
@@ -598,15 +588,15 @@ procedure TFGuiForm.SetWidgetPartners;
 begin
   for var I := 0 to ComponentCount - 1 do
     if Components[I] is TBaseWidget then
-      (Components[I] as TBaseWidget).Partner := Partner;
+      (Components[I] as TBaseWidget).Partner := FPartner;
 end;
 
-procedure TFGuiForm.Zoom(In_: Boolean);
+procedure TFGuiForm.Zoom(ZoomIn: Boolean);
 begin
   for var I := 0 to ComponentCount - 1 do
     if Components[I] is TBaseWidget then
-      (Components[I] as TBaseWidget).Zoom(In_);
-  if In_ then
+      (Components[I] as TBaseWidget).Zoom(ZoomIn);
+  if ZoomIn then
     FontSize := FontSize + GuiPyOptions.ZoomSteps
   else
     FontSize := Max(FontSize - GuiPyOptions.ZoomSteps, 6);

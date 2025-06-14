@@ -60,7 +60,7 @@ end;
 
 function TFGit.IsRepository(const Dir: string): Boolean;
 begin
-  Result := DirectoryExists(withTrailingSlash(Dir) + '.git');
+  Result := DirectoryExists(WithTrailingSlash(Dir) + '.git');
 end;
 
 procedure TFGit.LVRevisionsDblClick(Sender: TObject);

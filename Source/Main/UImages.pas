@@ -3,7 +3,11 @@ unit UImages;
 interface
 
 uses
-   Classes, Controls, ImgList, System.ImageList, Vcl.BaseImageCollection,
+  Classes,
+  Controls,
+  ImgList,
+  System.ImageList,
+  Vcl.BaseImageCollection,
   SVGIconImageCollection;
 
 type

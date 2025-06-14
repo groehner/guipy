@@ -26,9 +26,11 @@ uses
 
 type
   TInteger = class
+  private
+    FInt: Integer;
   public
-    AInteger: Integer;
-    constructor Create(AInteger: Integer);
+    constructor Create(Int: Integer);
+    property Int: Integer read FInt;
   end;
 
   TFFileStructure = class(TIDEDockWindow, IJvAppStorageHandler)
@@ -48,7 +50,7 @@ type
     procedure MIDefaulLayoutClick(Sender: TObject);
     procedure MICloseClick(Sender: TObject);
     procedure vilFileStructureGetText(Sender: TBaseVirtualTree;
-      Node: PVirtualNode; Column: TColumnIndex; TextType: TVstTextType;
+      Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
       var CellText: string);
     procedure vilFileStructureGetImageIndex(Sender: TBaseVirtualTree;
       Node: PVirtualNode; Kind: TVTImageKind; Column: TColumnIndex;
@@ -62,6 +64,7 @@ type
   private
     FLocked: Boolean;
     FLockShowSelected: Boolean;
+    FMyForm: TFileForm;
     function DifferentItems(Items: TTreeNodes): Boolean;
     procedure NavigateToVilNode(Node: PVirtualNode;
       ForceToMiddle: Boolean = True; Activate: Boolean = True);
@@ -71,11 +74,11 @@ type
     procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage;
       const BasePath: string);
   public
-    MyForm: TFileForm;
     procedure Init(Items: TTreeNodes; Form: TFileForm);
     procedure ShowEditorCodeElement(Line: Integer);
     procedure Clear(Form: TFileForm);
     procedure ChangeStyle;
+    property MyForm: TFileForm read FMyForm;
   end;
 
 var
@@ -110,10 +113,10 @@ type
     Caption: string;
   end;
 
-constructor TInteger.Create(AInteger: Integer);
+constructor TInteger.Create(Int: Integer);
 begin
   inherited Create;
-  Self.AInteger := AInteger;
+  FInt := Int;
 end;
 
 { --- TFFileStructure ---------------------------------------------------------- }
@@ -132,7 +135,7 @@ begin
   FLocked := False;
   FLockShowSelected := False;
   TranslateComponent(Self);
-  MyForm := nil;
+  FMyForm := nil;
   ChangeStyle;
 
   // Let the tree know how much data space we need.
@@ -152,10 +155,10 @@ end;
 
 procedure TFFileStructure.Clear(Form: TFileForm);
 begin
-  if Assigned(MyForm) and (Form.Pathname = MyForm.Pathname) then
+  if Assigned(FMyForm) and (Form.Pathname = FMyForm.Pathname) then
   begin
     vilFileStructure.Clear;
-    MyForm := nil;
+    FMyForm := nil;
   end;
 end;
 
@@ -172,7 +175,7 @@ procedure TFFileStructure.Init(Items: TTreeNodes; Form: TFileForm);
   begin
     Result := vilFileStructure.AddChild(Anchor);
     Data := vilFileStructure.GetNodeData(Result);
-    Data.LineNumber := TInteger(Node.Data).AInteger;
+    Data.LineNumber := TInteger(Node.Data).Int;
     Data.ImageIndex := Node.ImageIndex;
     Data.Caption := Node.Text;
     vilFileStructure.ValidateNode(Result, False);
@@ -201,7 +204,7 @@ procedure TFFileStructure.Init(Items: TTreeNodes; Form: TFileForm);
   end;
 
 begin
-  MyForm := Form;
+  FMyForm := Form;
   if DifferentItems(Items) then
   begin
     vilFileStructure.BeginUpdate;
@@ -391,14 +394,14 @@ begin
   EditForm := nil;
   IsWrapping := False;
 
-  if Assigned(MyForm) then
+  if Assigned(FMyForm) then
   begin
-    if MyForm.fFile.GetFileKind = fkEditor then
-      EditForm := MyForm as TEditorForm
-    else if MyForm.fFile.GetFileKind = fkUML then
+    if FMyForm.FFile.GetFileKind = fkEditor then
+      EditForm := FMyForm as TEditorForm
+    else if FMyForm.FFile.GetFileKind = fkUML then
     begin
       FLocked := True;
-      Files := (MyForm as TFUMLForm).MainModul.Model.ModelRoot.Files;
+      Files := (FMyForm as TFUMLForm).MainModul.Model.ModelRoot.Files;
       while vilFileStructure.NodeParent[Node] <> nil do
         Node := vilFileStructure.NodeParent[Node];
       Data := vilFileStructure.GetNodeData(Node);
@@ -443,7 +446,7 @@ begin
     if IsWrapping then
       EditForm.TBWordWrapClick(nil);
     with EditForm do
-      GI_PyIDEServices.ShowFilePosition(PathName, ActiveSynedit.CaretY, ActiveSynEdit.CaretX);
+      GI_PyIDEServices.ShowFilePosition(Pathname, ActiveSynedit.CaretY, ActiveSynEdit.CaretX);
   end;
 end;
 

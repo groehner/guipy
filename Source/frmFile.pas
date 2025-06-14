@@ -3,9 +3,16 @@ unit frmFile;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms,
-  SpTBXTabs, SpTBXSkins, uEditAppIntfs;
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  SpTBXTabs,
+  SpTBXSkins,
+  uEditAppIntfs;
 
 type
   TFile = class;
@@ -47,10 +54,13 @@ type
     procedure FormDestroy(Sender: TObject); virtual;
     procedure FormClose(Sender: TObject; var Action: TCloseAction); virtual;
   private
-    function getPathname: string;
-    procedure setPathname(aFilename: string);
+    FMyFile: TFile;
+    function GetPathname: string;
+    procedure SetPathname(Filename: string);
+
   protected
-    fModified: Boolean;
+    FModified: Boolean;
+
     procedure SetModified(Value: Boolean); virtual;
     function GetModified: Boolean; virtual;
     procedure DoActivate;
@@ -58,14 +68,14 @@ type
     function DoSaveFile: Boolean; virtual;
     function DoSaveAs: Boolean; virtual;
     function DoSaveAsRemote: Boolean; virtual;
-    function SaveToFile(const FileName: string): Boolean;
-    function LoadFromFile(const FileName: string): Boolean; virtual;
-    function OpenFile(const aFilename: string): Boolean; virtual;
+    function SaveToFile(const Filename: string): Boolean;
+    function LoadFromFile(const Filename: string): Boolean; virtual;
+    function OpenFile(const Filename: string): Boolean; virtual;
     procedure Enter(Sender: TObject); virtual;
     function DoAskSaveChanges: Boolean; virtual;
     procedure Print; virtual;
 
-    procedure SetFont(aFont: TFont); virtual;
+    procedure SetFont(Font: TFont); virtual;
     procedure SetFontSize(Delta: Integer); virtual;
     procedure SelectFont(FileKind: TFileKind);
 
@@ -74,15 +84,14 @@ type
     procedure CopyToClipboard; virtual;
     procedure PasteFromClipboard; virtual;
 
-    procedure DoAssignInterfacePointer(AActive: Boolean);
+    procedure DoAssignInterfacePointer(Active: Boolean);
     function GetState: string;
-    procedure SetState(var s: string);
-    function myActiveControl: TWinControl;
+    procedure SetState(var State: string);
+    function MyActiveControl: TWinControl;
     procedure WndProc(var Message: TMessage); override;
     procedure Retranslate; virtual;
     procedure DoOnIdle; virtual;
   public
-    FFile: TFile;
     ReadOnly: Boolean;
     FileTime: TDateTime;
     ParentTabItem: TSpTBXTabItem;
@@ -100,6 +109,7 @@ type
     procedure SetActiveControl(aControl: TWinControl);
 
     property Modified: Boolean read GetModified write SetModified;
+    property MyFile: TFile read FMyFile;
     property Pathname: string read GetPathname write SetPathname;
   end;
 
@@ -150,8 +160,8 @@ type
     function GetFromTemplate: Boolean;
     procedure SetFromTemplate(value: Boolean);
     procedure DoSetFileName(AFileName: string); virtual;
-    procedure OpenRemoteFile(const FileName, ServerName: string); virtual;
-    function SaveToRemoteFile(const FileName, ServerName: string) : Boolean; virtual;
+    procedure OpenRemoteFile(const Filename, ServerName: string); virtual;
+    function SaveToRemoteFile(const Filename, ServerName: string) : Boolean; virtual;
     function AskSaveChanges: Boolean;
     function DefaultFilename: Boolean;
     procedure ExecSave;
@@ -206,8 +216,8 @@ uses System.IOUtils, UITypes, Types, Vcl.Dialogs, JvGnugettext, StringResources,
 
 procedure TFileForm.FormCreate(Sender: TObject);
 begin
-  fModified:= False;
-  FFile:= nil;
+  FModified:= False;
+  FMyFile:= nil;
   TranslateComponent(Self);
   SkinManager.AddSkinNotification(Self);
 end;
@@ -222,9 +232,9 @@ procedure TFileForm.FormDestroy(Sender: TObject);
 begin
   // Unregister kernel notification
   ChangeNotifier.UnRegisterKernelChangeNotify(Self);
-  if Assigned(FFile) and Assigned(GI_FileFactory) then begin
-    FFile.fForm := nil;
-    GI_FileFactory.RemoveFile(FFile);
+  if Assigned(FMyFile) and Assigned(GI_FileFactory) then begin
+    FMyFile.fForm := nil;
+    GI_FileFactory.RemoveFile(FMyFile);
     if GI_FileFactory.Count = 0 then
       PyIDEMainForm.UpdateCaption;
   end;
@@ -233,19 +243,19 @@ end;
 function TFileForm.DoAskSaveChanges: Boolean;
 begin
   // this is necessary to prevent second confirmation when closing tabs
-  if fModified then
+  if FModified then
     if PyIDEOptions.SaveFilesAutomatically then begin
       Result:= DoSave;
       if not Result then begin
-        var s:= Format(_(SCloseWithoutSaving), [TPath.GetFileName(FFile.GetFileTitle)]);
+        var s:= Format(_(SCloseWithoutSaving), [TPath.GetFileName(FMyFile.GetFileTitle)]);
         if StyledMessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0, mbYes) = mrYes then
           Result:= True;
       end
     end else begin
       DoActivateFile;
       MessageBeep(MB_ICONQUESTION);
-      Assert(FFile <> nil);
-      var S := Format(_(SAskSaveChanges), [TPath.GetFileName(FFile.GetFileTitle)]);
+      Assert(FMyFile <> nil);
+      var S := Format(_(SAskSaveChanges), [TPath.GetFileName(FMyFile.GetFileTitle)]);
       case StyledMessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0, mbYes) of
         mrYes:
           Result := DoSave;
@@ -261,8 +271,8 @@ end;
 
 function TFileForm.DoSave: Boolean;
 begin
-  Assert(FFile <> nil);
-  if (FFile.fFileName <> '') or (FFile.fRemoteFileName <> '') then
+  Assert(FMyFile <> nil);
+  if (FMyFile.fFileName <> '') or (FMyFile.fRemoteFileName <> '') then
     Result := DoSaveFile
   else
     Result := DoSaveAs;
@@ -281,17 +291,17 @@ procedure TFileForm.DoUpdateCaption;
 var
   TabCaption : string;
 begin
-  Assert(FFile <> nil);
-  if FFile.fRemoteFileName <> '' then
-    TabCaption := TPath.GetFileName(FFile.fRemoteFileName)
+  Assert(FMyFile <> nil);
+  if FMyFile.fRemoteFileName <> '' then
+    TabCaption := TPath.GetFileName(FMyFile.fRemoteFileName)
   else
-    TabCaption := FFile.GetFileTitle;
+    TabCaption := FMyFile.GetFileTitle;
 
   if Assigned(ParentTabItem) then
     with ParentTabItem do
     begin
       Caption := StringReplace(TabCaption, '&', '&&', [rfReplaceAll]);
-      Hint := FFile.GetFileId;
+      Hint := FMyFile.GetFileId;
     end;
   PyIDEMainForm.UpdateCaption;
 end;
@@ -306,22 +316,22 @@ end;
 
 function TFileForm.DoSaveAsRemote: Boolean;
 var
-  FileName, Server : string;
+  Filename, Server : string;
   aFile : IFile;
 begin
-  Assert(FFile <> nil);
-  if ExecuteRemoteFileDialog(FileName, Server, rfdSave) then
+  Assert(FMyFile <> nil);
+  if ExecuteRemoteFileDialog(Filename, Server, rfdSave) then
   begin
-    aFile := GI_FileFactory.GetFileByName(TSSHFileName.Format(Server, FileName));
-    if Assigned(aFile) and (aFile <> Self.FFile as IFile) then
+    aFile := GI_FileFactory.GetFileByName(TSSHFileName.Format(Server, Filename));
+    if Assigned(aFile) and (aFile <> Self.FMyFile as IFile) then
     begin
       Vcl.Dialogs.MessageDlg(_(SFileAlreadyOpen), mtError, [mbAbort], 0);
       Result := False;
       Exit;
     end;
-    FFile.DoSetFileName('');
-    FFile.fRemoteFileName := FileName;
-    FFile.fSSHServer := Server;
+    FMyFile.DoSetFileName('');
+    FMyFile.fRemoteFileName := Filename;
+    FMyFile.fSSHServer := Server;
     DoUpdateCaption; // Do it twice in case the following statement fails
     Result := DoSaveFile;
     DoUpdateCaption;
@@ -330,15 +340,15 @@ begin
     Result := False;
 end;
 
-function TFileForm.OpenFile(const aFilename: string): Boolean;
+function TFileForm.OpenFile(const Filename: string): Boolean;
 begin
-  Result:= LoadFromFile(aFilename);
+  Result:= LoadFromFile(Filename);
   if Result then begin
-    Self.Pathname:= aFilename;
+    Self.Pathname:= Filename;
     Modified:= False;
     //Enter(Self); //  DoUpdateCaption??
     SetFocus;
-    ReadOnly:= IsWriteProtected(aFilename);
+    ReadOnly:= IsWriteProtected(Filename);
     PyIDEMainForm.ActiveTabControl := ParentTabControl;
   end else
     Close;
@@ -380,7 +390,7 @@ end;
 
 function TFileForm.GetFile: IFile;
 begin
-  Result := FFile;
+  Result := FMyFile;
 end;
 
 procedure TFileForm.DoActivateFile(Primary: Boolean = True);
@@ -391,8 +401,8 @@ end;
 
 procedure TFileForm.SetModified(Value: Boolean);
 begin
-  if fModified <> Value then begin
-    fModified:= Value;
+  if FModified <> Value then begin
+    FModified:= Value;
     PyIDEMainForm.UpdateCaption;
     if Assigned(ParentTabItem) then
       ParentTabItem.Invalidate;
@@ -401,24 +411,24 @@ end;
 
 function TFileForm.GetModified: Boolean;
 begin
-  Result:= fModified;
+  Result:= FModified;
 end;
 
-procedure TFileForm.DoAssignInterfacePointer(AActive: Boolean);
+procedure TFileForm.DoAssignInterfacePointer(Active: Boolean);
 begin
-  if AActive then
+  if Active then
   begin
-    GI_ActiveFile := FFile;
-    GI_FileCmds := FFile;
-    //GI_SearchCmds := FFile;
+    GI_ActiveFile := FMyFile;
+    GI_FileCmds := FMyFile;
+    //GI_SearchCmds := FMyFile;
   end
   else
   begin
-    if GI_ActiveFile = IFile(FFile) then
+    if GI_ActiveFile = IFile(FMyFile) then
       GI_ActiveFile := nil;
-    if GI_FileCmds = IFileCommands(FFile) then
+    if GI_FileCmds = IFileCommands(FMyFile) then
       GI_FileCmds := nil;
-    //if GI_SearchCmds = ISearchCommands(FFile) then
+    //if GI_SearchCmds = ISearchCommands(FMyFile) then
       GI_SearchCmds := nil;
   end;
 end;
@@ -428,9 +438,9 @@ var
   NewName: string;
   aFile: IFile;
 begin
-  Assert(FFile<> nil);
-  NewName := FFile.GetFileId;
-  if (FFile.GetFileName = '') and (ExtractFileExt(NewName) = '') then
+  Assert(FMyFile<> nil);
+  NewName := FMyFile.GetFileId;
+  if (FMyFile.GetFileName = '') and (ExtractFileExt(NewName) = '') then
     NewName := NewName + '.' + DefaultExtension;
   if IsHttp(NewName) and (Copy(Lowercase(ExtractFileExt(NewName)), 1, 4) <> '.htm') then
       NewName:= NewName + '.html';
@@ -438,13 +448,13 @@ begin
   if ResourcesDataModule.GetSaveFileName(NewName, nil, '.' + DefaultExtension) then
   begin
     aFile := GI_FileFactory.GetFileByName(NewName);
-    if Assigned(aFile) and (aFile <> Self.FFile as IFile) then
+    if Assigned(aFile) and (aFile <> Self.FMyFile as IFile) then
     begin
       StyledMessageDlg(_(SFileAlreadyOpen), mtError, [mbAbort], 0);
       Result := False;
       Exit;
     end;
-    FFile.DoSetFileName(NewName);
+    FMyFile.DoSetFileName(NewName);
     DoUpdateCaption; // Do it twice in case the following statement fails
     Result := DoSaveFile;
     DoUpdateCaption;
@@ -456,24 +466,24 @@ end;
 function TFileForm.DoSaveFile: Boolean;
 begin
   Result := False;
-  if FFile.fFileName <> '' then begin
-    Result := SaveToFile(FFile.fFilename);
+  if FMyFile.fFileName <> '' then begin
+    Result := SaveToFile(FMyFile.fFilename);
     if Result then
-      if not FileAge(FFile.fFileName, FileTime) then
+      if not FileAge(FMyFile.fFileName, FileTime) then
         FileTime := 0;
-  end else if FFile.fRemoteFileName <> '' then
-     Result := FFile.SaveToRemoteFile(FFile.fRemoteFileName, FFile.fSSHServer);
+  end else if FMyFile.fRemoteFileName <> '' then
+     Result := FMyFile.SaveToRemoteFile(FMyFile.fRemoteFileName, FMyFile.fSSHServer);
   if Result then
     Modified := False;
 end;
 
-function TFileForm.SaveToFile(const FileName: string): Boolean;
+function TFileForm.SaveToFile(const Filename: string): Boolean;
   var SL: TStringList;
 begin
   SL:= GetAsStringList;
   try
     try
-      SL.SaveToFile(FileName, TEncoding.UTF8);
+      SL.SaveToFile(Filename, TEncoding.UTF8);
       Result:= True;
     except
       on e: Exception do begin
@@ -486,7 +496,7 @@ begin
   end;
 end;
 
-function TFileForm.LoadfromFile(const FileName: string): Boolean;
+function TFileForm.LoadfromFile(const Filename: string): Boolean;
 begin
   Result:= False;
 end;
@@ -505,9 +515,9 @@ begin
   end;
 end;
 
-procedure TFileForm.SetFont(aFont: TFont);
+procedure TFileForm.SetFont(Font: TFont);
 begin
-  Font.assign(aFont);
+  Self.Font.assign(Font);
 end;
 
 procedure TFileForm.SetFontSize(Delta: Integer);
@@ -537,7 +547,7 @@ end;
 
 procedure TFileForm.WndProc(var Message: TMessage);
 begin
-  if Assigned(FFile) and (FFile.fFileKind <> fkEditor) then begin
+  if Assigned(FMyFile) and (FMyFile.fFileKind <> fkEditor) then begin
     if Message.Msg = CM_ENTER then
       DoAssignInterfacePointer(True)
     else if Message.Msg = CM_EXIT then
@@ -553,17 +563,17 @@ begin
                  WindowStateToStr(WindowState) + ')';
 end;
 
-procedure TFileForm.SetState(var s: string);
-  var {l, t, w, h,} p: Integer; WS: TWindowState;
+procedure TFileForm.SetState(var State: string);
+  var Posi: Integer; WindowState: TWindowState;
 begin
-  if s = '' then Exit;
-  if Copy(s, 1, 1) = 'W' then begin
-    p:= Pos(')', s); {l:= StrToInt(Copy(s, 2, p-2)); }Delete(s, 1, p);
-    p:= Pos(')', s);{ t:= StrToInt(Copy(s, 1, p-1)); }Delete(s, 1, p);
-    p:= Pos(')', s); {w:= StrToInt(Copy(s, 1, p-1)); }Delete(s, 1, p);
-    p:= Pos(')', s); {h:= StrToInt(Copy(s, 1, p-1));} Delete(s, 1, p);
-    p:= Pos(')', s); WS:= StrToWindowState(Copy(s, 1, p-1)); Delete(s, 1, p);
-    WindowState:= TWindowState(WS);
+  if State = '' then Exit;
+  if Copy(State, 1, 1) = 'W' then begin
+    Posi:= Pos(')', State); Delete(State, 1, Posi);
+    Posi:= Pos(')', State); Delete(State, 1, Posi);
+    Posi:= Pos(')', State); Delete(State, 1, Posi);
+    Posi:= Pos(')', State); Delete(State, 1, Posi);
+    Posi:= Pos(')', State);
+    WindowState:= StrToWindowState(Copy(State, 1, Posi-1));
   end;
 end;
 
@@ -573,23 +583,23 @@ begin
     Application.Mainform.ActiveControl:= aControl;
 end;
 
-function TFileForm.myActiveControl: TWinControl;
+function TFileForm.MyActiveControl: TWinControl;
 // https://de.comp.lang.delphi.misc.narkive.com/AU1p5kiy/activecontrol-nil
 begin
   Result:= Application.Mainform.ActiveControl;
 end;
 
-function TFileForm.getPathname: string;
+function TFileForm.GetPathname: string;
 begin
-  if Assigned(FFile)
-    then Result:= FFile.GetFilename
+  if Assigned(FMyFile)
+    then Result:= FMyFile.GetFilename
     else Result:= '';
 end;
 
-procedure TFileForm.setPathname(aFilename: string);
+procedure TFileForm.SetPathname(Filename: string);
 begin
-  if Assigned(FFile)
-    then FFile.DoSetFileName(aFilename);
+  if Assigned(FMyFile)
+    then FMyFile.DoSetFileName(Filename);
 end;
 
 procedure TFileForm.CollectClasses(SL: TStringList);
@@ -911,18 +921,18 @@ begin
   fForm.DoUpdateCaption;
 end;
 
-procedure TFile.OpenRemoteFile(const FileName, ServerName: string);
+procedure TFile.OpenRemoteFile(const Filename, ServerName: string);
 var
   TempFileName : string;
   ErrorMsg : string;
 begin
-  if (fForm = nil)  or (FileName = '') or (ServerName = '') then Exit;
+  if (fForm = nil)  or (Filename = '') or (ServerName = '') then Exit;
 
   DoSetFileName('');
 
-  TempFileName := ChangeFileExt(FileGetTempName('PyScripter'), ExtractFileExt(FileName));
-  if not GI_SSHServices.ScpDownload(ServerName, FileName, TempFileName, ErrorMsg) then begin
-    StyledMessageDlg(Format(_(SFileOpenError), [FileName, ErrorMsg]), mtError, [mbOK], 0);
+  TempFileName := ChangeFileExt(FileGetTempName('PyScripter'), ExtractFileExt(Filename));
+  if not GI_SSHServices.ScpDownload(ServerName, Filename, TempFileName, ErrorMsg) then begin
+    StyledMessageDlg(Format(_(SFileOpenError), [Filename, ErrorMsg]), mtError, [mbOK], 0);
     Abort;
   end else begin
     fForm.openFile(TempFilename);
@@ -933,25 +943,25 @@ begin
       DeleteFile(TempFileName);}
   end;
 
-  fRemoteFileName := FileName;
+  fRemoteFileName := Filename;
   fSSHServer := ServerName;
   fForm.DoUpdateCaption;
 end;
 
-function TFile.SaveToRemoteFile(const FileName, ServerName: string): Boolean;
+function TFile.SaveToRemoteFile(const Filename, ServerName: string): Boolean;
   var ErrorMsg : string;
 begin
   Result:= False;
-  if (fForm = nil)  or (FileName = '') or (ServerName = '') then Exit;    // ToDo was Abort
+  if (fForm = nil)  or (Filename = '') or (ServerName = '') then Exit;    // ToDo was Abort
 
   var TempFileName := FileGetTempName('PyScripter');
   var SL:= fForm.GetAsStringList;
   Result := SaveWideStringsToFile(TempFileName, SL, False);
   if Result then begin
-    Result := GI_SSHServices.ScpUpload(ServerName, TempFileName, FileName, ErrorMsg);
+    Result := GI_SSHServices.ScpUpload(ServerName, TempFileName, Filename, ErrorMsg);
     DeleteFile(TempFileName);
     if not Result then
-      Vcl.Dialogs.MessageDlg(Format(_(SFileSaveError), [FileName, ErrorMsg]), mtError, [mbOK], 0);
+      Vcl.Dialogs.MessageDlg(Format(_(SFileSaveError), [Filename, ErrorMsg]), mtError, [mbOK], 0);
   end;
   FreeAndNil(SL);
 end;
@@ -1086,12 +1096,12 @@ begin
       fkBrowser        : LForm:= TFBrowser.Create(Sheet);
     end;
     with LForm do begin
-      FFile:= TFile.Create(FileKind, LForm);
+      FMyFile:= TFile.Create(FileKind, LForm);
       ParentTabItem := TabItem;
       ParentTabControl := TabControl;
       ParentTabItem.OnTabClosing := PyIDEMainForm.TabControlTabClosing;
       ParentTabItem.OnDrawTabCloseButton := PyIDEMainForm.DrawCloseButton;
-      Result := FFile;
+      Result := FMyFile;
       BorderStyle := bsNone;
       Parent := Sheet;
       Align := alClient;
@@ -1162,7 +1172,7 @@ begin
   if not Assigned(Result) then
     for i := 0 to fFiles.Count - 1 do begin
       aFile := IFile(fFiles[i]);
-      if (aFile.FileName = '') and AnsiSameText(aFile.GetFileTitle, Name) then
+      if (aFile.Filename = '') and AnsiSameText(aFile.GetFileTitle, Name) then
       begin
         Result := aFile;
         Break;

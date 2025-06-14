@@ -70,13 +70,12 @@ begin
 end;
 
 procedure TFDownload.BDownloadClick(Sender: TObject);
-var
-  Dir: string;
 begin
   BDownload.Enabled := False;
   BCancel.Enabled := False;
   FFileURL := EUrl.Text;
   FFileName := EFile.Text;
+  var
   Dir := ExtractFilePath(FFileName);
   if not DirectoryExists(Dir) then
     ForceDirectories(Dir);
@@ -103,7 +102,7 @@ var
   AFile: TFileStream;
   KnowSize: Boolean;
 
-  function codeToString: string;
+  function CodeToString: string;
   begin
     Result := '';
     var
@@ -133,7 +132,7 @@ begin
           if HttpQueryInfo(HUrl, HTTP_QUERY_STATUS_CODE, @Code, CodeLen, Index)
           then
           begin
-            Codes := codeToString; // 200, 401, 404 or 500
+            Codes := CodeToString; // 200, 401, 404 or 500
             if Codes <> '200' then
               Exit(False);
           end;
@@ -147,7 +146,7 @@ begin
             CodeLen := Length(Code);
             HttpQueryInfo(HUrl, HTTP_QUERY_CONTENT_LENGTH, @Code,
               CodeLen, Index);
-            Codes := codeToString;
+            Codes := CodeToString;
             if TryStrToInt(Codes, Value) then
               Progress.Max := Value
             else
@@ -178,7 +177,7 @@ begin
       end;
     end
     else
-      ErrorMsg(_('No Internet connection') + ' ' +
+      ErrorMsg(_('No internet connection') + ' ' +
         SysErrorMessage(GetLastError));
   finally
     InternetCloseHandle(HSession);

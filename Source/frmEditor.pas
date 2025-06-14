@@ -425,8 +425,8 @@ type
     procedure DeleteItems(Name, Key: string);
 
     procedure MoveBlock(from, till, dest, desttill: Integer; const blanklines: string);
-    procedure toForeground(Control: TControl);
-    procedure toBackground(Control: TControl);
+    procedure ToForeground(Control: TControl);
+    procedure ToBackground(Control: TControl);
 
     procedure GoTo2(const s: string);
     function hasText(const s: string): Boolean;
@@ -4368,7 +4368,7 @@ begin
   ActiveSynEdit.EndUpdate;
 end;
 
-procedure TEditorForm.toBackground(Control: TControl);
+procedure TEditorForm.ToBackground(Control: TControl);
   var from, till: Integer; OP: TOperation;
 begin
   if Control is TBaseWidget then begin
@@ -4385,7 +4385,7 @@ begin
   end;
 end;
 
-procedure TEditorForm.toForeground(Control: TControl);
+procedure TEditorForm.ToForeground(Control: TControl);
   var from, till: Integer; OP: TOperation;
 begin
   if Control is TBaseWidget then begin

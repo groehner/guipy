@@ -2673,7 +2673,7 @@ begin
   App:= PyIDEMainForm.AppStorage.FileName;
   try
     Str:= 'Installation ' + CrLf;
-    Str1:= Format('Version %Str %Str', [ApplicationVersion, WinPlatform]);
+    Str1:= Format('Version %s %s', [ApplicationVersion, WinPlatform]);
     Str:= Str + '  GuiPy-Version: ' + Str1 + CrLf;
     if GI_PyControl.PythonLoaded then
       Str1:= PyControl.PythonVersion.DisplayName + _(EngineTypeName[PyControl.PythonEngineType])
@@ -2743,7 +2743,7 @@ begin
         ErrorMsg(e.Message);
     end
   else
-    ErrorMsg(Format(_('File \"%Str\" not found.'), [Updater]));
+    ErrorMsg(Format(_('File \"%s\" not found.'), [Updater]));
 end;
 
 function TFConfiguration.GetConfigurationAddress(const Str: string): string;

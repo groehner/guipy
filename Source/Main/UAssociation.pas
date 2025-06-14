@@ -50,13 +50,14 @@ type
     procedure CBReadingOrderBClick(Sender: TObject);
   private
     FILAssociations: TVirtualImageList;
+    FIsTurned: Boolean;
   public
-    isTurned: Boolean;
     procedure Init(IsConnecting: Boolean; Conn: TConnection;
       SelectedControls: Integer);
     function GetCorner: Integer;
-    procedure SetCorner(I: Integer);
+    procedure SetCorner(Num: Integer);
     function GetConnectionAttributes: TConnectionAttributes;
+    property IsTurned: Boolean read FIsTurned;
   end;
 
 implementation
@@ -124,11 +125,11 @@ begin
   end;
 end;
 
-procedure TFAssociation.SetCorner(I: Integer);
+procedure TFAssociation.SetCorner(Num: Integer);
 var
   Corner: Integer;
 begin
-  case I of
+  case Num of
     1:
       Corner := 2;
     2:
@@ -171,11 +172,11 @@ begin
     MMultiplicityB.Lines.Text := Conn.MultiplicityB;
     MRoleB.Lines.Text := Conn.RoleB;
     LBAssociations.ItemIndex := Ord(Conn.ArrowStyle);
-    if Conn.isRecursiv then
+    if Conn.IsRecursiv then
       SetCorner(Conn.RecursivCorner)
     else
       ClientHeight := Height;
-    isTurned := Conn.isTurned;
+    FIsTurned := Conn.IsTurned;
   end
   else
   begin
@@ -238,7 +239,7 @@ function TFAssociation.GetConnectionAttributes: TConnectionAttributes;
 begin
   var
   Attr := TConnectionAttributes.Create;
-  Attr.ArrowStyle := TessConnectionArrowStyle(LBAssociations.ItemIndex);
+  Attr.ArrowStyle := TEssConnectionArrowStyle(LBAssociations.ItemIndex);
   Attr.RoleA := MRoleA.Lines.Text;
   Attr.MultiplicityA := MMultiplicityA.Lines.Text;
   Attr.ReadingOrderA := CBReadingOrderA.Checked;
@@ -247,8 +248,8 @@ begin
   Attr.MultiplicityB := MMultiplicityB.Lines.Text;
   Attr.RoleB := MRoleB.Lines.Text;
   Attr.RecursivCorner := GetCorner;
-  Attr.isTurned := isTurned;
-  Attr.isEdited := True;
+  Attr.IsTurned := FIsTurned;
+  Attr.IsEdited := True;
   Attr.Visible := True;
   Result := Attr;
 end;

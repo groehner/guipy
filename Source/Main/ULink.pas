@@ -5,13 +5,6 @@ interface
 uses Graphics;
 
 const
-  PythonTkCursorText = 'default'#13#10'fleur'#13#10'hand2'#13#10'sb_h_double_arrow'#13#10'sb_v_double_arrow'#13#10 +
-                       'sizing'#13#10'tcross'#13#10'watch'#13#10'xterm'#13#10'question_arrow'#13#10'center_ptr';
-
-  PythonQtCursorText = 'ArrowCursor'#13#10'CrossCursor'#13#10'IBeamCursor'#13#10'WaitCursor'#13#10'WhatsThisCursor'#13#10 +
-                       'SizeVerCursor'#13#10'SizeHorCursor'#13#10'SizeBDiagCursor'#13#10'PointingHandCursor'#13#10 +
-                       'SizeAllCursor'#13#10'UpArrowCursor';
-
   PythonColorsText = 'white'#13#10'yellow'#13#10'cyan'#13#10'green'#13#10 +
                      'orange'#13#10'pink'#13#10'magenta'#13#10'red'#13#10'blue'#13#10 +
                      'light gray'#13#10'gray'#13#10'dim gray'#13#10'black'#13#10 +
@@ -23,39 +16,42 @@ const
                      'SystemMenu'#13#10'SystemMenuText'#13#10'SystemScrollbar'#13#10 +
                      'SystemWindow'#13#10'SystemWindowFrame'#13#10'SystemWindowText';
 
-  MouseEvents1    = '|ButtonPress|ButtonRelease|Motion';
-  MouseEvents2    = '|Enter|Leave|MouseWheel';
-  KeyboardEvents1 = '|KeyPress|KeyRelease';
-  MiscEvents      = '|Activate|Deactivate|Configure|FocusIn|FocusOut';
-  AllEvents       =  MouseEvents1 + MouseEvents2 + KeyboardEvents1 + MiscEvents + '|';
-
 var
-  ComponentNrToInsert: Integer;
-  PanelCanvasType: string;
-  LOldValue: string;
-  PythonCursorText:string;
+  GComponentNrToInsert: Integer;
+  GOldValue: string;
+  GPythonCursorText:string;
 
-  function Tag2PythonType(Tag: Integer): string;
+function Tag2PythonType(Tag: Integer): string;
 
-  function Python2DelphiColors(s: string): string;
-  function Delphi2PythonColors(s: string): string;
+function Python2DelphiColors(Str: string): string;
+function Delphi2PythonColors(Str: string): string;
 
-  function Python2DelphiCursor(s: string): string;
-  function Delphi2PythonCursor(s: string): string;
+function Python2DelphiCursor(Str: string): string;
+function Delphi2PythonCursor(Str: string): string;
 
-  function Delphi2PythonValues(s: string): string;
-  function Python2DelphiValues(s: string): string;
+function Delphi2PythonValues(Str: string): string;
 
-  function turnRGB(const s: string): string;
-  function TColorToString(Color: TColor): string;
-  function isEvent(s: string): Boolean;
+function TurnRGB(const Str: string): string;
+function TColorToString(Color: TColor): string;
 
-  procedure CreateTkCursors;
-  procedure CreateQtCursors;
+procedure CreateTkCursors;
+procedure CreateQtCursors;
+
 
 implementation
 
-uses SysUtils, System.Generics.Collections;
+uses
+  SysUtils,
+  System.Generics.Collections;
+
+const
+
+  PythonTkCursorText = 'default'#13#10'fleur'#13#10'hand2'#13#10'sb_h_double_arrow'#13#10'sb_v_double_arrow'#13#10 +
+                       'sizing'#13#10'tcross'#13#10'watch'#13#10'xterm'#13#10'question_arrow'#13#10'center_ptr';
+
+  PythonQtCursorText = 'ArrowCursor'#13#10'CrossCursor'#13#10'IBeamCursor'#13#10'WaitCursor'#13#10'WhatsThisCursor'#13#10 +
+                       'SizeVerCursor'#13#10'SizeHorCursor'#13#10'SizeBDiagCursor'#13#10'PointingHandCursor'#13#10 +
+                       'SizeAllCursor'#13#10'UpArrowCursor';
 
 var
   Delphi2PythonColorTranslate: TDictionary<string, string>;
@@ -162,10 +158,10 @@ end;
 
 procedure CreateColors;
 
-  procedure AddColor(s1, s2: string);
+  procedure AddColor(Str1, Str2: string);
   begin
-     Delphi2PythonColorTranslate.Add(s1, s2);
-     Python2DelphiColorTranslate.Add(s2, s1);
+     Delphi2PythonColorTranslate.Add(Str1, Str2);
+     Python2DelphiColorTranslate.Add(Str2, Str1);
   end;
 
 begin
@@ -205,12 +201,12 @@ begin
   AddColor('clYellow', 'yellow');
 end;
 
-procedure CreateTKCursors;
+procedure CreateTkCursors;
 
-  procedure AddTranslate(s1, s2: string);
+  procedure AddTranslate(Str1, Str2: string);
   begin
-     Delphi2PythonCursorTranslate.Add(s1, s2);
-     Python2DelphiCursorTranslate.Add(s2, s1);
+     Delphi2PythonCursorTranslate.Add(Str1, Str2);
+     Python2DelphiCursorTranslate.Add(Str2, Str1);
   end;
 
 begin
@@ -230,15 +226,15 @@ begin
   AddTranslate('crHandPoint', 'hand2');
   AddTranslate('crSizeAll', 'fleur');
   AddTranslate('crUpArrow', 'center_ptr');
-  PythonCursorText:= PythonTkCursorText;
+  GPythonCursorText:= PythonTkCursorText;
 end;
 
 procedure CreateQtCursors;
 
-  procedure AddTranslate(s1, s2: string);
+  procedure AddTranslate(Str1, Str2: string);
   begin
-     Delphi2PythonCursorTranslate.Add(s1, s2);
-     Python2DelphiCursorTranslate.Add(s2, s1);
+     Delphi2PythonCursorTranslate.Add(Str1, Str2);
+     Python2DelphiCursorTranslate.Add(Str2, Str1);
   end;
 
 begin
@@ -258,15 +254,15 @@ begin
   AddTranslate('crHandPoint', 'PointinHandCursor');
   AddTranslate('crSizeAll', 'SizeAllCursor');
   AddTranslate('crUpArrow', 'UpArrowCursor');
-  PythonCursorText:= PythonQtCursorText;
+  GPythonCursorText:= PythonQtCursorText;
 end;
 
 procedure CreateValuesAndNames;
 
-  procedure AddTranslate(s1, s2: string);
+  procedure AddTranslate(Str1, Str2: string);
   begin
-     Delphi2PythonValuesAndNamesTranslate.Add(s1, s2);
-     Python2DelphiValuesAndNamesTranslate.Add(s2, s1);
+     Delphi2PythonValuesAndNamesTranslate.Add(Str1, Str2);
+     Python2DelphiValuesAndNamesTranslate.Add(Str2, Str1);
   end;
 
 begin
@@ -278,69 +274,58 @@ begin
   AddTranslate('Top', 'Y');
 end;
 
-function Python2DelphiColors(s: string): string;
+function Python2DelphiColors(Str: string): string;
 begin // used to show color combo box
-  if not Python2DelphiColorTranslate.TryGetValue(s, Result) then
+  if not Python2DelphiColorTranslate.TryGetValue(Str, Result) then
     Result:= 'clBtnFace';
 end;
 
-function Delphi2PythonColors(s: string): string;
+function Delphi2PythonColors(Str: string): string;
 begin
-  if not Delphi2PythonColorTranslate.TryGetValue(s, Result) then begin
-    if Copy(s, 1, 3) = '$00' then
-      s:= '#' + Copy(s, 8, 2) + Copy(s, 6, 2) + Copy(s, 4, 2)
-    else if s = '' then
-      s:= 'SystemButtonFace';
-    Result:= s;
+  if not Delphi2PythonColorTranslate.TryGetValue(Str, Result) then begin
+    if Copy(Str, 1, 3) = '$00' then
+      Str:= '#' + Copy(Str, 8, 2) + Copy(Str, 6, 2) + Copy(Str, 4, 2)
+    else if Str = '' then
+      Str:= 'SystemButtonFace';
+    Result:= Str;
   end;
 end;
 
-function Python2DelphiCursor(s: string): string;
+function Python2DelphiCursor(Str: string): string;
 begin
-  if not Python2DelphiCursorTranslate.TryGetValue(s, Result) then
+  if not Python2DelphiCursorTranslate.TryGetValue(Str, Result) then
     Result:= 'crDefault';
 end;
 
-function Delphi2PythonCursor(s: string): string;
+function Delphi2PythonCursor(Str: string): string;
 begin
-  if not Delphi2PythonCursorTranslate.TryGetValue(s, Result) then
+  if not Delphi2PythonCursorTranslate.TryGetValue(Str, Result) then
     Result:= 'default';
 end;
 
-function Delphi2PythonValues(s: string): string;
+function Delphi2PythonValues(Str: string): string;
 begin
-  if not Delphi2PythonValuesAndNamesTranslate.TryGetValue(s, Result) then
-    Result:= s;
+  if not Delphi2PythonValuesAndNamesTranslate.TryGetValue(Str, Result) then
+    Result:= Str;
 end;
 
-function Python2DelphiValues(s: string): string;
+function TurnRGB(const Str: string): string;
 begin
-  if not Python2DelphiValuesAndNamesTranslate.TryGetValue(s, Result) then
-    Result:= s;
-end;
-
-function turnRGB(const s: string): string;
-begin
-  Result:= s;
-  if Copy(s, 1, 2) = '0x' then
-    Result:= '0x' + Copy(s, 7, 2) + Copy(s, 5, 2) + Copy(s, 3, 2);
+  Result:= Str;
+  if Copy(Str, 1, 2) = '0x' then
+    Result:= '0x' + Copy(Str, 7, 2) + Copy(Str, 5, 2) + Copy(Str, 3, 2);
 end;
 
 function TColorToString(Color: TColor): string;
-  var s: string;
+  var Str: string;
 begin
-  s:= ColorToString(Color);
-  s:= Delphi2PythonColors(s);
-  if Copy(s, 1, 2) = 'cl' then
-    FmtStr(s, '%s%.8x', [HexDisplayPrefix, Color]);
-  if Copy(s, 1, 2) = '$0' then
-    s:= '#' + Copy(s, 8, 2) + Copy(s, 6, 2) + Copy(s, 4, 2);
-  Result:= s;
-end;
-
-function isEvent(s: string): Boolean;
-begin      // Tk                   or  Qt
-  Result:= (Pos(s, AllEvents) > 0) or (s <> '') and (CharInSet(s[1], ['a'..'z']));
+  Str:= ColorToString(Color);
+  Str:= Delphi2PythonColors(Str);
+  if Copy(Str, 1, 2) = 'cl' then
+    FmtStr(Str, '%Str%.8x', [HexDisplayPrefix, Color]);
+  if Copy(Str, 1, 2) = '$0' then
+    Str:= '#' + Copy(Str, 8, 2) + Copy(Str, 6, 2) + Copy(Str, 4, 2);
+  Result:= Str;
 end;
 
 initialization

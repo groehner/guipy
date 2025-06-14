@@ -3,12 +3,17 @@ unit UUpdate;
 interface
 
 uses
-  Vcl.Controls, System.Classes, Forms, StdCtrls, ComCtrls, dlgPyIDEBase;
+  Vcl.Controls,
+  System.Classes,
+  Forms,
+  StdCtrls,
+  ComCtrls,
+  dlgPyIDEBase;
 
 const
   LastHandeldPyScripterCommit = 'Mar 7, 2025';
   Server  = 'https://guipy.de/download/';
-  Inffile = Server + 'version.txt';
+  InfFile = Server + 'version.txt';
   {$IFDEF WIN32}
   Zipfile = 'GuiPy.zip';   // update portable version
   Setupfile = 'GuiPy-%s-x86-Setup.exe';   // update default version
@@ -49,7 +54,7 @@ type
     procedure MakeUpdate;
     function GetNewVersion: Boolean;
     function ShowVersionDate(VersionDate: string): string;
-    function ExtractZipToDir(const FileName, Dir: string): Boolean;
+    function ExtractZipToDir(const Filename, Dir: string): Boolean;
   public
     class function GetVersionDate: string;
     procedure CheckAutomatically;
@@ -57,9 +62,18 @@ type
 
 implementation
 
-uses Windows, SysUtils, DateUtils, IOUtils, Zip,
-     frmPyIDEMain, JvGnugettext, cPyScripterSettings,
-     UUtils, UConfiguration, UDownload;
+uses
+  Windows,
+  SysUtils,
+  DateUtils,
+  IOUtils,
+  Zip,
+  JvGnugettext,
+  frmPyIDEMain,
+  cPyScripterSettings,
+  UUtils,
+  UConfiguration,
+  UDownload;
 
 {$R *.dfm}
 
@@ -90,18 +104,17 @@ begin
   Close;
 end;
 
-{.$WARN SYMBOL_PLATFORM OFF}
 procedure TFUpdate.BUpdateClick(Sender: TObject);
-  var FileName, Filepath: string;
+  var Filename, Filepath: string;
 begin
   Screen.Cursor:= crHourGlass;
   try
     if TPyScripterSettings.IsPortable
-      then FileName:= Zipfile
-      else FileName:= Format(Setupfile, [FNewVersion]);
-    Filepath:= TPath.Combine(FLocalTempDir, FileName);
+      then Filename:= Zipfile
+      else Filename:= Format(Setupfile, [FNewVersion]);
+    Filepath:= TPath.Combine(FLocalTempDir, Filename);
     with TFDownload.Create(Self) do begin
-      if GetInetFile(Server + FileName, Filepath, ProgressBar) then begin
+      if GetInetFile(Server + Filename, Filepath, ProgressBar) then begin
         if TPyScripterSettings.IsPortable then begin
           if ExtractZipToDir(Filepath, FLocalTempDir)
             then MakeUpdate
@@ -119,7 +132,6 @@ begin
     Screen.Cursor:= crDefault;
   end;
 end;
-{.$WARN SYMBOL_PLATFORM ON}
 
 procedure TFUpdate.MakeUpdate;
   var Updater, Params, SVersion: string;
@@ -127,7 +139,7 @@ begin
   Updater:= TPath.Combine(FLocalTempDir, 'setup.exe');
   SVersion:= Copy(Version, 1, Pos(',', Version) -1 );
   Params:= '-Update ' + HideBlanks(FConfiguration.EditorFolder) +  ' ' +
-                        HideBlanks(withTrailingSlash(FLocalTempDir)) + ' ' + SVersion;
+                        HideBlanks(WithTrailingSlash(FLocalTempDir)) + ' ' + SVersion;
   if FConfiguration.RunAsAdmin(Handle, Updater, Params) = 33 then begin
     Close;
     TThread.ForceQueue(nil, procedure
@@ -137,13 +149,13 @@ begin
   end;
 end;
 
-function TFUpdate.ExtractZipToDir(const FileName, Dir: string): Boolean;
+function TFUpdate.ExtractZipToDir(const Filename, Dir: string): Boolean;
 begin
   Result:= False;
   var ZipFile:= TZipFile.Create;
   try
     try
-      ZipFile.Open(FileName, zmRead);
+      ZipFile.Open(Filename, zmRead);
       ZipFile.ExtractAll(Dir);
       Result:= True;
     except on E: Exception do
@@ -155,7 +167,8 @@ begin
 end;
 
 function TFUpdate.GetNewVersion: Boolean;
-  var StrList: TStringList; OldVersion, s, Pathname: string;
+  var StrList: TStringList;
+  OldVersion, Str, Pathname: string;
 begin
   EOldVersion.Text:= Version + ', ' + GetVersionDate;
   ENewVersion.Text:= '';
@@ -163,16 +176,16 @@ begin
   Screen.Cursor:= crHourGlass;
   try
     Pathname:= TPath.Combine(FLocalTempDir, 'version.txt');
-    if DownloadURL(Inffile, Pathname) then begin
+    if DownloadURL(InfFile, Pathname) then begin
       StrList:= TStringList.Create;
       try
         StrList.LoadFromFile(Pathname);
-        s:= ShowVersionDate(StrList[0]);
-        insert(Bits + ' Bit, ', s, pos(', ', s) + 2);
-        ENewVersion.Text:= s;
+        Str:= ShowVersionDate(StrList[0]);
+        Insert(Bits + ' Bit, ', Str, pos(', ', Str) + 2);
+        ENewVersion.Text:= Str;
         Memo.Lines.AddStrings(StrList);
         OldVersion:= Copy(EOldVersion.Text, 1, Pos(',', EOldVersion.Text)-1);
-        FNewVersion:= Copy(ENewVersion.Text, 1, Pos(',', ENewVersion.text)-1);
+        FNewVersion:= Copy(ENewVersion.Text, 1, Pos(',', ENewVersion.Text)-1);
         if OldVersion = FNewVersion then begin
           ENewVersion.Text:= _('GuiPy is up to date.');
           Result:= False;
@@ -250,7 +263,7 @@ begin
   Result:= Version;
   if TryStrToInt(Copy(VersionDate, 1, Posi-1), Year) then begin
     Delete(VersionDate, 1, Posi);
-    Posi:= pos('.', VersionDate);
+    Posi:= Pos('.', VersionDate);
     if TryStrToInt(Copy(VersionDate, 1, Posi-1), Month) then begin
       Delete(VersionDate, 1, Posi);
       if TryStrToInt(VersionDate, Day) then

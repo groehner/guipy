@@ -21,6 +21,12 @@ const
   TagBoolean = 3;
   TagColor = 4;
   PickBoolean = 'true'#13#10'false';
+  MouseEvents1    = '|ButtonPress|ButtonRelease|Motion';
+  MouseEvents2    = '|Enter|Leave|MouseWheel';
+  KeyboardEvents1 = '|KeyPress|KeyRelease';
+  MiscEvents      = '|Activate|Deactivate|Configure|FocusIn|FocusOut';
+  AllEvents       =  MouseEvents1 + MouseEvents2 + KeyboardEvents1 + MiscEvents + '|';
+
 
 type
 
@@ -64,7 +70,7 @@ type
   public
     constructor Create(Owner: TComponent); override;
     procedure Rename(const OldName, NewName, Events: string); virtual;
-    function HandlerName(const Event: string): string; virtual;
+    function Handlername(const Event: string): string; virtual;
     function HandlerParameter(const Event: string): string; virtual;
     function HandlerNameAndParameter(const Event: string): string;
     // all abstract, needed for object inspector/generator
@@ -92,6 +98,8 @@ type
     function PPIUnScale(Size: Integer): Integer;
   end;
 
+function IsEvent(Str: string): Boolean;
+
 implementation
 
 uses
@@ -110,6 +118,11 @@ uses
 
 const
   CrLf = #13#10;
+
+function IsEvent(Str: string): Boolean;
+begin      // Tk                   or  Qt
+  Result:= (Pos(Str, AllEvents) > 0) or (Str <> '') and (CharInSet(Str[1], ['a'..'z']));
+end;
 
 constructor TBaseWidget.Create(Owner: TComponent);
 begin
@@ -252,7 +265,7 @@ begin
   Result := _('America') + #13#10 + _('Europe') + #13#10 + _('Asia');
 end;
 
-function TBaseWidget.HandlerName(const Event: string): string;
+function TBaseWidget.Handlername(const Event: string): string;
 begin
   Result := Name + '_' + Event;
 end;

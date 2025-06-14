@@ -3,13 +3,25 @@
 interface
 
 uses
-  Windows, Classes, Controls, Forms, ExtCtrls, ImgList, ActnList,
-  System.ImageList, Vcl.Menus,
-  dlgPyIDEBase, ELDsgnr, UGUIForm, frmEditor, SpTBXItem, TB2Item,
-  Vcl.VirtualImageList, Vcl.BaseImageCollection, SVGIconImageCollection;
+  Classes,
+  Controls,
+  Forms,
+  ExtCtrls,
+  ImgList,
+  System.ImageList,
+  Vcl.Menus,
+  Vcl.VirtualImageList,
+  Vcl.BaseImageCollection,
+  SVGIconImageCollection,
+  SpTBXItem,
+  TB2Item,
+  dlgPyIDEBase,
+  ELDsgnr,
+  UGUIForm,
+  frmEditor;
 
 type
-  TFGuiDesigner = class (TPyIDEDlgBase)
+  TFGuiDesigner = class(TPyIDEDlgBase)
     GUIDesignerTimer: TTimer;
     PopupMenu: TSpTBXPopupMenu;
     MIPaste: TSpTBXItem;
@@ -60,10 +72,11 @@ type
     procedure ELDesignerControlDeleting(Sender: TObject;
       SelectedControls: TELDesignerSelectedControls);
     procedure ELDesignerDblClick(Sender: TObject);
-    procedure ELDesignerGetUniqueName(Sender: TObject;
-      const ABaseName: string; var AUniqueName: string);
-    procedure ELDragDrop(Sender, ASource, ATarget: TObject; AX, AY: Integer);
-    procedure ELDragOver(Sender, ASource, ATarget: TObject; AX, AY: Integer;
+    procedure ELDesignerGetUniqueName(Sender: TObject; const ABaseName: string;
+      var AUniqueName: string);
+    procedure ELDragDrop(Sender, ASource, ATarget: TObject;
+      XPos, YPos: Integer);
+    procedure ELDragOver(Sender, ASource, ATarget: TObject; XPos, YPos: Integer;
       AState: TDragState; var Accept: Boolean);
     procedure MIDeleteClick(Sender: TObject);
     procedure MICloseClick(Sender: TObject);
@@ -81,26 +94,29 @@ type
     procedure MIZoomOutClick(Sender: TObject);
     procedure MIConfigurationClick(Sender: TObject);
   private
-    ComponentToInsert: TControlClass;
+    FComponentToInsert: TControlClass;
+    FDesignForm: TFGuiForm;
+    FELDesigner: TELDesigner;
     procedure SetEnabledMI(MenuItem: TSpTBXItem; Enabled: Boolean);
-    function GetPixelsPerInchOfFile(FileName: string): Integer;
-    procedure RemovePixelsPerInch0(FileName: string);
+    function GetPixelsPerInchOfFile(Filename: string): Integer;
+    procedure RemovePixelsPerInch0(Filename: string);
   public
-    ELDesigner: TELDesigner;
-    DesignForm: TFGuiForm;
-    procedure Save(const FileName: string; Formular: TFGUIForm);
-    function Open(const FileName: string): TFGUIForm;
-    procedure FindMethod(Reader: TReader; const MethodName: string;
-                         var Address: Pointer; var Error: Boolean);
-    procedure ErrorMethod(Reader: TReader; const Message: string; var Handled: Boolean);
+    procedure Save(const Filename: string; Formular: TFGuiForm);
+    function Open(const Filename: string): TFGuiForm;
+    procedure FindMethod(Reader: TReader; const Methodname: string;
+      var Address: Pointer; var Error: Boolean);
+    procedure ErrorMethod(Reader: TReader; const Message: string;
+      var Handled: Boolean);
     function Tag2Class(Tag: Integer): TControlClass;
     procedure SetToolButton(Tag: Integer);
-    procedure ChangeTo(Formular: TFGUIForm);
+    procedure ChangeTo(Formular: TFGuiForm);
     function GetEditForm: TEditorForm;
     procedure UpdateState(Modified: Boolean);
-    function getPath: string;
+    function GetPath: string;
     procedure ScaleImages;
     procedure ChangeStyle;
+    property DesignForm: TFGuiForm read FDesignForm write FDesignForm;
+    property ELDesigner: TELDesigner read FELDesigner;
   end;
 
   TMyDragObject = class(TDragControlObjectEx)
@@ -118,76 +134,95 @@ var
 
 implementation
 
-uses System.Types, TypInfo, SysUtils, Graphics,
-     UObjectInspector, UObjectGenerator, UConfiguration, UUtils, ULink,
-     UBaseWidgets, UTKButtonBase, UTKTextBase, UTKMiscBase,
-     UTTKButtonBase, UTTKTextBase, UTTKMiscBase,
-     UQtButtonBase, UQtWidgetDescendants, UQtFrameBased, UQtScrollable,
-     UQtItemViews, UQtSpinboxes,
-     uCommonFunctions, uEditAppIntfs;
+uses
+  System.Types,
+  SysUtils,
+  Graphics,
+  UBaseWidgets,
+  UTKButtonBase,
+  UTKTextBase,
+  UTKMiscBase,
+  UTTKButtonBase,
+  UTTKTextBase,
+  UTTKMiscBase,
+  UQtButtonBase,
+  UQtWidgetDescendants,
+  UQtFrameBased,
+  UQtScrollable,
+  UQtItemViews,
+  UQtSpinBoxes,
+  uCommonFunctions,
+  UUtils,
+  ULink,
+  uEditAppIntfs,
+  UObjectInspector,
+  UObjectGenerator,
+  UConfiguration;
 
 {$R *.dfm}
 
 type
-  TClassArray = array [1..81] of TPersistentClass;
+  TClassArray = array [1 .. 81] of TPersistentClass;
 
 const
   Modified = True;
 
-  ClassArray: TClassArray = (
-    TFGUIForm,
-    TKLabel, TKEntry, TKText, TKButton, TKCheckbutton, TKRadiobuttonGroup,
-    TKListbox, TKSpinbox, TKMessage, TKCanvas, TKScrollbar, TKFrame, TKLabelframe,
-    TKScale, TKPanedWindow, TKOptionMenu, TKMenu, TKPopupMenu, TKMenubutton,
+  ClassArray: TClassArray = (TFGuiForm, TKLabel, TKEntry, TKText, TKButton,
+    TKCheckbutton, TKRadiobuttonGroup, TKListbox, TKSpinbox, TKMessage,
+    TKCanvas, TKScrollbar, TKFrame, TKLabelframe, TKScale, TKPanedWindow,
+    TKOptionMenu, TKMenu, TKPopupMenu, TKMenubutton,
 
-    TTKLabel, TTKEntry, TTKButton, TTKCheckbutton, TTKRadiobuttonGroup, TTKCombobox,
-    TTKSpinbox, TTKFrame, TTKLabelframe, TTKScale, TTKLabeledScale, TTKPanedwindow, TTKScrollbar,
-    TTKMenubutton, TTKOptionMenu, TTKNotebook, TTKTreeview, TTKProgressbar, TTKSeparator, TTKSizegrip,
+    TTKLabel, TTKEntry, TTKButton, TTKCheckbutton, TTKRadiobuttonGroup,
+    TTKCombobox, TTKSpinbox, TTKFrame, TTKLabelframe, TTKScale, TTKLabeledScale,
+    TTKPanedWindow, TTKScrollbar, TTKMenubutton, TTKOptionMenu, TTKNotebook,
+    TTKTreeview, TTKProgressbar, TTKSeparator, TTKSizeGrip,
 
     TQtLabel, TQtLineEdit, TQtPlainTextEdit, TQtPushButton, TQtCheckBox,
     TQtButtonGroup, TQtListWidget, TQtComboBox, TQtSpinBox, TQtScrollBar,
     TQtCanvas, TQtFrame, TQtGroupBox, TQtSlider, TQtMenuBar, TQtMenu,
-    TQtTabWidget, TQtTreeWidget, TQtTableWidget, TQtProgressBar, TQtStatusBar,
+    TQtTabWidget, TQtTreeWidget, TQtTableWidget, TQtProgressbar, TQtStatusbar,
 
     TQtTextEdit, TQtTextBrowser, TQtToolButton, TQtCommandLinkButton,
     TQtFontComboBox, TQtDoubleSpinBox, TQtLCDNumber, TQtDateTimeEdit,
     TQtDateEdit, TQtTimeEdit, TQtDial, TQtLine, TQtScrollArea, TQtToolBox,
-    TQtStackedWidget, TQtListView, TQtColumnView, TQtTreeView,
-    TQtTableView, TQtGraphicsView
-  );
+    TQtStackedWidget, TQtListView, TQtColumnView, TQtTreeView, TQtTableView,
+    TQtGraphicsView);
 
 procedure TFGuiDesigner.FormCreate(Sender: TObject);
 begin
   inherited;
-  ELDesigner:= TELDesigner.Create(Self);
-  ELDesigner.PopupMenu:= PopupMenu;
-  with ELDesigner do begin
-    ShowingHints:= [htControl, htSize, htMove, htInsert];
-    ClipboardFormat:= 'Extension Library designer components';
-    OnModified:= ELDesignerModified;
-    OnGetUniqueName:= ELDesignerGetUniqueName;
-    OnControlInserting:= ELDesignerControlInserting;
-    OnDragDrop:= ELDragDrop;
-    OnDragOver:= ELDragOver;
-    OnControlInserted:= ELDesignerControlInserted;
-    OnControlDeleting:= ELDesignerControlDeleting;
-    OnChangeSelection:= ELDesignerChangeSelection;
-    OnDesignFormClose:= ELDesignerDesignFormClose;
-    OnDblClick       := ELDesignerDblClick;
+  FELDesigner := TELDesigner.Create(Self);
+  FELDesigner.PopupMenu := PopupMenu;
+  with FELDesigner do
+  begin
+    ShowingHints := [htControl, htSize, htMove, htInsert];
+    ClipboardFormat := 'Extension Library designer components';
+    OnModified := ELDesignerModified;
+    OnGetUniqueName := ELDesignerGetUniqueName;
+    OnControlInserting := ELDesignerControlInserting;
+    OnDragDrop := ELDragDrop;
+    OnDragOver := ELDragOver;
+    OnControlInserted := ELDesignerControlInserted;
+    OnControlDeleting := ELDesignerControlDeleting;
+    OnChangeSelection := ELDesignerChangeSelection;
+    OnDesignFormClose := ELDesignerDesignFormClose;
+    OnDblClick := ELDesignerDblClick;
   end;
-  ELDesigner.GuiDesignerHints:= GuiPyOptions.GuiDesignerHints;
+  FELDesigner.GuiDesignerHints := GuiPyOptions.GuiDesignerHints;
   ChangeStyle;
 end;
 
-procedure TFGuiDesigner.ChangeTo(Formular: TFGUIForm);
+procedure TFGuiDesigner.ChangeTo(Formular: TFGuiForm);
 begin
-  if Assigned(ELDesigner) then begin
-    if (ELDesigner.DesignControl <> Formular) or not ELDesigner.Active then begin
-      ELDesigner.Active:= False;
-      ELDesigner.DesignControl:= Formular;
-      DesignForm:= Formular;
+  if Assigned(FELDesigner) then
+  begin
+    if (FELDesigner.DesignControl <> Formular) or not FELDesigner.Active then
+    begin
+      FELDesigner.Active := False;
+      FELDesigner.DesignControl := Formular;
+      FDesignForm := Formular;
       if Assigned(Formular) then
-        ELDesigner.Active:= True;
+        FELDesigner.Active := True;
       if FObjectInspector.Visible then
         FObjectInspector.RefreshCBObjects;
     end;
@@ -196,92 +231,109 @@ end;
 
 procedure TFGuiDesigner.ELDesignerChangeSelection(Sender: TObject);
 begin
-  FObjectInspector.ChangeSelection(ELDesigner.SelectedControls);
+  FObjectInspector.ChangeSelection(FELDesigner.SelectedControls);
   UpdateState(not Modified);
 end;
 
 procedure TFGuiDesigner.ELDesignerModified(Sender: TObject);
-  var i: Integer; aControl: TControl;
+var
+  Control: TControl;
 begin
   FObjectInspector.ELPropertyInspector.Modified;
-  for i:= 0 to ELDesigner.SelectedControls.Count - 1 do begin
-    aControl:= ELDesigner.SelectedControls.Items[i];
-    FObjectGenerator.MoveOrSizeComponent(GetEditForm, aControl);
-    if aControl is TBaseWidget then
-      (aControl as TBaseWidget).Resize;
+  for var I := 0 to FELDesigner.SelectedControls.Count - 1 do
+  begin
+    Control := FELDesigner.SelectedControls[I];
+    FObjectGenerator.MoveOrSizeComponent(GetEditForm, Control);
+    if Control is TBaseWidget then
+      (Control as TBaseWidget).Resize;
   end;
   UpdateState(Modified);
 end;
 
 procedure TFGuiDesigner.UpdateState(Modified: Boolean);
 begin
-  if Modified and Assigned(ELDesigner.DesignControl) then
-    TFGUIForm(ELDesigner.DesignControl).Modified:= True;
+  if Modified and Assigned(FELDesigner.DesignControl) then
+    TFGuiForm(FELDesigner.DesignControl).Modified := True;
 end;
 
 procedure TFGuiDesigner.PopupMenuPopup(Sender: TObject);
-  var en: Boolean;
+var
+  Enable: Boolean;
 begin
-  SetEnabledMI(MICut, ELDesigner.CanCut);
-  SetEnabledMI(MICopy, ELDesigner.CanCopy);
-  SetEnabledMI(MIPaste, ELDesigner.CanPaste);
-  SetEnabledMI(MIAlign, ELDesigner.SelectedControls.Count > 1);
-  MISnapToGrid.Checked:= ELDesigner.SnapToGrid;
-  en:= (ELDesigner.SelectedControls.Count > 0) and
-       (ELDesigner.SelectedControls[0].ClassName <> 'TFGUIForm');
-  SetEnabledMI(MIDelete, en);
-  en:= Assigned(DesignForm.Partner);
-  SetEnabledMI(MIForeground, en);
-  SetEnabledMI(MIBackground, en);
+  SetEnabledMI(MICut, FELDesigner.CanCut);
+  SetEnabledMI(MICopy, FELDesigner.CanCopy);
+  SetEnabledMI(MIPaste, FELDesigner.CanPaste);
+  SetEnabledMI(MIAlign, FELDesigner.SelectedControls.Count > 1);
+  MISnapToGrid.Checked := FELDesigner.SnapToGrid;
+  Enable := (FELDesigner.SelectedControls.Count > 0) and
+    (FELDesigner.SelectedControls[0].ClassName <> 'TFGUIForm');
+  SetEnabledMI(MIDelete, Enable);
+  Enable := Assigned(FDesignForm.Partner);
+  SetEnabledMI(MIForeground, Enable);
+  SetEnabledMI(MIBackground, Enable);
 end;
 
 procedure TFGuiDesigner.MIDeleteClick(Sender: TObject);
 begin
-  if not DesignForm.ReadOnly then begin
-    ELDesigner.DeleteSelectedControls;
+  if not FDesignForm.ReadOnly then
+  begin
+    FELDesigner.DeleteSelectedControls;
     UpdateState(Modified);
   end;
 end;
 
 procedure TFGuiDesigner.MIForegroundClick(Sender: TObject);
 begin
-  for var i:= 0 to ELDesigner.SelectedControls.Count - 1 do
-    FObjectGenerator.ComponentToForeground(GetEditForm, ELDesigner.SelectedControls.Items[i]);
+  for var I := 0 to FELDesigner.SelectedControls.Count - 1 do
+    FObjectGenerator.ComponentToForeground(GetEditForm,
+      FELDesigner.SelectedControls[I]);
 end;
 
 procedure TFGuiDesigner.MIBackgroundClick(Sender: TObject);
 begin
-  for var i:= 0 to ELDesigner.SelectedControls.Count - 1 do
-    FObjectGenerator.ComponentToBackground(GetEditForm, ELDesigner.SelectedControls.Items[i]);
+  for var I := 0 to FELDesigner.SelectedControls.Count - 1 do
+    FObjectGenerator.ComponentToBackground(GetEditForm,
+      FELDesigner.SelectedControls[I]);
 end;
 
 procedure TFGuiDesigner.MIAlignClick(Sender: TObject);
-  var AHorzAlign, AVertAlign: TELDesignerAlignType;
-      Tag: Integer;
+var
+  AHorzAlign, AVertAlign: TELDesignerAlignType;
+  Tag: Integer;
 begin
-  Tag:= (Sender as TSpTBXItem).Tag;
-  AHorzAlign:= atNoChanges;
-  AVertAlign:= atNoChanges;
+  Tag := (Sender as TSpTBXItem).Tag;
+  AHorzAlign := atNoChanges;
+  AVertAlign := atNoChanges;
   case Tag of
-    1: AHorzAlign:= atLeftTop;
-    2: AHorzAlign:= atCenter;
-    3: AHorzAlign:= atRightBottom;
-    4: AHorzAlign:= atCenterInWindow;
-    5: AHorzAlign:= atSpaceEqually;
-    6: AVertAlign:= atLeftTop;
-    7: AVertAlign:= atCenter;
-    8: AVertAlign:= atRightBottom;
-    9: AVertAlign:= atCenterInWindow;
-   10: AVertAlign:= atSpaceEqually;
+    1:
+      AHorzAlign := atLeftTop;
+    2:
+      AHorzAlign := atCenter;
+    3:
+      AHorzAlign := atRightBottom;
+    4:
+      AHorzAlign := atCenterInWindow;
+    5:
+      AHorzAlign := atSpaceEqually;
+    6:
+      AVertAlign := atLeftTop;
+    7:
+      AVertAlign := atCenter;
+    8:
+      AVertAlign := atRightBottom;
+    9:
+      AVertAlign := atCenterInWindow;
+    10:
+      AVertAlign := atSpaceEqually;
   end;
-  ELDesigner.SelectedControls.Align(AHorzAlign, AVertAlign);
+  FELDesigner.SelectedControls.Align(AHorzAlign, AVertAlign);
 end;
 
 procedure TFGuiDesigner.ELDesignerControlInserting(Sender: TObject;
   var AControlClass: TControlClass);
 begin
-  if not DesignForm.ReadOnly then
-    AControlClass:= ComponentToInsert;
+  if not FDesignForm.ReadOnly then
+    AControlClass := FComponentToInsert;
 end;
 
 type
@@ -290,167 +342,254 @@ type
     FFont: TFont;
   end;
 
-procedure TFGuiDesigner.ELDragDrop(Sender, ASource, ATarget: TObject; AX, AY: Integer);
-  var LInsertingControl: TControl;
-      LName: string;
+procedure TFGuiDesigner.ELDragDrop(Sender, ASource, ATarget: TObject;
+  XPos, YPos: Integer);
+var
+  LInsertingControl: TControl;
+  LName: string;
 begin
-  if csAcceptsControls in (ATarget as TControl).ControlStyle then begin
-    LInsertingControl:= ASource as TControl;
-    ELDesigner.getUniqueName(Tag2PythonType(LInsertingControl.Tag), LName);
-    LInsertingControl.Name:= LName;
-    LInsertingControl.Parent:= ATarget as TWinControl;
-    LInsertingControl.SetBounds(AX-LInsertingControl.Width, AY-LInsertingControl.Height,
-                                   LInsertingControl.Width, LInsertingControl.Height);
-    TControlEx(LInsertingControl).Font.Size:= DesignForm.FontSize;
-    ELDesigner.SelectedControls.ClearExcept(LInsertingControl);
+  if csAcceptsControls in (ATarget as TControl).ControlStyle then
+  begin
+    LInsertingControl := ASource as TControl;
+    FELDesigner.GetUniqueName(Tag2PythonType(LInsertingControl.Tag), LName);
+    LInsertingControl.Name := LName;
+    LInsertingControl.Parent := ATarget as TWinControl;
+    LInsertingControl.SetBounds(XPos - LInsertingControl.Width,
+      YPos - LInsertingControl.Height, LInsertingControl.Width,
+      LInsertingControl.Height);
+    TControlEx(LInsertingControl).Font.Size := FDesignForm.FontSize;
+    FELDesigner.SelectedControls.ClearExcept(LInsertingControl);
     ELDesignerControlInserted(nil);
     UpdateState(Modified);
   end;
 end;
 
-procedure TFGuiDesigner.ELDragOver (Sender, ASource, ATarget: TObject; AX, AY: Integer;
-      AState: TDragState; var Accept: Boolean);
+procedure TFGuiDesigner.ELDragOver(Sender, ASource, ATarget: TObject;
+  XPos, YPos: Integer; AState: TDragState; var Accept: Boolean);
 begin
-  Accept:= csAcceptsControls in (ATarget as TControl).ControlStyle;
+  Accept := csAcceptsControls in (ATarget as TControl).ControlStyle;
 end;
 
 function TFGuiDesigner.Tag2Class(Tag: Integer): TControlClass;
 begin
   case Tag of
-     1: Result:= TKLabel;
-     2: Result:= TKEntry;
-     3: Result:= TKText;
-     4: Result:= TKButton;
-     5: Result:= TKCheckbutton;
-     7: Result:= TKRadiobuttonGroup;
-     8: Result:= TKListbox;
-     9: Result:= TKSpinbox;
-    10: Result:= TKMessage;
-    11: Result:= TKCanvas;
-    12: Result:= TKScrollbar;
-    13: Result:= TKFrame;
-    14: Result:= TKLabelFrame;
-    15: Result:= TKScale;
-    16: Result:= TKPanedWindow;
-    17: Result:= TKMenubutton;
-    18: Result:= TKOptionMenu;
-    19: Result:= TKMenu;
-    20: Result:= TKPopupMenu;
+    1:
+      Result := TKLabel;
+    2:
+      Result := TKEntry;
+    3:
+      Result := TKText;
+    4:
+      Result := TKButton;
+    5:
+      Result := TKCheckbutton;
+    7:
+      Result := TKRadiobuttonGroup;
+    8:
+      Result := TKListbox;
+    9:
+      Result := TKSpinbox;
+    10:
+      Result := TKMessage;
+    11:
+      Result := TKCanvas;
+    12:
+      Result := TKScrollbar;
+    13:
+      Result := TKFrame;
+    14:
+      Result := TKLabelframe;
+    15:
+      Result := TKScale;
+    16:
+      Result := TKPanedWindow;
+    17:
+      Result := TKMenubutton;
+    18:
+      Result := TKOptionMenu;
+    19:
+      Result := TKMenu;
+    20:
+      Result := TKPopupMenu;
 
-    31: Result:= TTKLabel;
-    32: Result:= TTKEntry;
-    34: Result:= TTKButton;
-    35: Result:= TTKCheckbutton;
-    37: Result:= TTKRadiobuttongroup;
-    38: Result:= TTKCombobox;
-    39: Result:= TTKSpinbox;
-    42: Result:= TTKScrollbar;
-    43: Result:= TTKFrame;
-    44: Result:= TTKLabelFrame;
-    45: Result:= TTKScale;
-    46: Result:= TTKLabeledScale;
-    47: Result:= TTKPanedwindow;
-    48: Result:= TTKMenuButton;
-    49: Result:= TTKOptionMenu;
-    50: Result:= TTKNotebook;
-    51: Result:= TTKTreeview;
-    52: Result:= TTKProgressbar;
-    53: Result:= TTKSeparator;
-    54: Result:= TTKSizegrip;
+    31:
+      Result := TTKLabel;
+    32:
+      Result := TTKEntry;
+    34:
+      Result := TTKButton;
+    35:
+      Result := TTKCheckbutton;
+    37:
+      Result := TTKRadiobuttonGroup;
+    38:
+      Result := TTKCombobox;
+    39:
+      Result := TTKSpinbox;
+    42:
+      Result := TTKScrollbar;
+    43:
+      Result := TTKFrame;
+    44:
+      Result := TTKLabelframe;
+    45:
+      Result := TTKScale;
+    46:
+      Result := TTKLabeledScale;
+    47:
+      Result := TTKPanedWindow;
+    48:
+      Result := TTKMenubutton;
+    49:
+      Result := TTKOptionMenu;
+    50:
+      Result := TTKNotebook;
+    51:
+      Result := TTKTreeview;
+    52:
+      Result := TTKProgressbar;
+    53:
+      Result := TTKSeparator;
+    54:
+      Result := TTKSizeGrip;
     // Qt Base
-    71: Result:= TQtLabel;
-    72: Result:= TQtLineEdit;
-    73: Result:= TQtPlainTextEdit;
-    74: Result:= TQtPushButton;
-    75: Result:= TQtCheckBox;
-    76: Result:= TQtButtonGroup;
-    77: Result:= TQtListWidget;
-    78: Result:= TQtComboBox;
-    79: Result:= TQtSpinBox;
-    80: Result:= TQtScrollBar;
-    81: Result:= TQtCanvas;
-    82: Result:= TQtFrame;
-    83: Result:= TQtGroupBox;
-    84: Result:= TQtSlider;
-    85: Result:= TQtMenuBar;
-    86: Result:= TQtMenu;
-    87: Result:= TQtTabWidget;
-    88: Result:= TQtTreeWidget;
-    89: Result:= TQtTableWidget;
-    90: Result:= TQtProgressBar;
-    91: Result:= TQtStatusBar;
+    71:
+      Result := TQtLabel;
+    72:
+      Result := TQtLineEdit;
+    73:
+      Result := TQtPlainTextEdit;
+    74:
+      Result := TQtPushButton;
+    75:
+      Result := TQtCheckBox;
+    76:
+      Result := TQtButtonGroup;
+    77:
+      Result := TQtListWidget;
+    78:
+      Result := TQtComboBox;
+    79:
+      Result := TQtSpinBox;
+    80:
+      Result := TQtScrollBar;
+    81:
+      Result := TQtCanvas;
+    82:
+      Result := TQtFrame;
+    83:
+      Result := TQtGroupBox;
+    84:
+      Result := TQtSlider;
+    85:
+      Result := TQtMenuBar;
+    86:
+      Result := TQtMenu;
+    87:
+      Result := TQtTabWidget;
+    88:
+      Result := TQtTreeWidget;
+    89:
+      Result := TQtTableWidget;
+    90:
+      Result := TQtProgressbar;
+    91:
+      Result := TQtStatusbar;
 
     // Qt Controls
-   101: Result:= TQtTextEdit;
-   102: Result:= TQtTextBrowser;
-   103: Result:= TQtToolButton;
-   104: Result:= TQtCommandLinkButton;
-   105: Result:= TQtFontComboBox;
-   106: Result:= TQtDoubleSpinBox;
-   107: Result:= TQtLCDNumber;
-   108: Result:= TQtDateTimeEdit;
-   109: Result:= TQtDateEdit;
-   110: Result:= TQtTimeEdit;
-   111: Result:= TQtDial;
-   112: Result:= TQtLine;
-   113: Result:= TQtScrollArea;
-   114: Result:= TQtToolBox;
-   115: Result:= TQtStackedWidget;
-   116: Result:= TQtListView;
-   117: Result:= TQtColumnView;
-   118: Result:= TQtTreeView;
-   119: Result:= TQtTableView;
-   120: Result:= TQtGraphicsView;
-   else Result:= nil;
+    101:
+      Result := TQtTextEdit;
+    102:
+      Result := TQtTextBrowser;
+    103:
+      Result := TQtToolButton;
+    104:
+      Result := TQtCommandLinkButton;
+    105:
+      Result := TQtFontComboBox;
+    106:
+      Result := TQtDoubleSpinBox;
+    107:
+      Result := TQtLCDNumber;
+    108:
+      Result := TQtDateTimeEdit;
+    109:
+      Result := TQtDateEdit;
+    110:
+      Result := TQtTimeEdit;
+    111:
+      Result := TQtDial;
+    112:
+      Result := TQtLine;
+    113:
+      Result := TQtScrollArea;
+    114:
+      Result := TQtToolBox;
+    115:
+      Result := TQtStackedWidget;
+    116:
+      Result := TQtListView;
+    117:
+      Result := TQtColumnView;
+    118:
+      Result := TQtTreeView;
+    119:
+      Result := TQtTableView;
+    120:
+      Result := TQtGraphicsView;
+  else
+    Result := nil;
   end;
 end;
 
 procedure TFGuiDesigner.SetToolButton(Tag: Integer);
 begin
-  ComponentToInsert:= nil;
-  var EditorForm:= GetEditForm;
-  if Assigned(EditorForm) then begin
-    ULink.ComponentNrToInsert:= Tag;
-    ComponentToInsert:= Tag2Class(Tag);
-    //ScaleImages;
+  FComponentToInsert := nil;
+  var
+  EditorForm := GetEditForm;
+  if Assigned(EditorForm) then
+  begin
+    GComponentNrToInsert := Tag;
+    FComponentToInsert := Tag2Class(Tag);
   end;
 end;
 
 procedure TFGuiDesigner.MIZoomOutClick(Sender: TObject);
 begin
-  DesignForm.Zoom(False);
+  FDesignForm.Zoom(False);
 end;
 
 procedure TFGuiDesigner.MIZoomInClick(Sender: TObject);
 begin
-  DesignForm.Zoom(True);
+  FDesignForm.Zoom(True);
 end;
 
 procedure TFGuiDesigner.ELDesignerControlInserted(Sender: TObject);
-  var Control: TControl;
+var
+  Control: TControl;
 begin
-  Control:= ELDesigner.SelectedControls[0];
-  Control.Tag:= ComponentNrToInsert;
-  Control.HelpType:= htContext;
+  Control := FELDesigner.SelectedControls[0];
+  Control.Tag := GComponentNrToInsert;
+  Control.HelpType := htContext;
   (Control as TBaseWidget).Resize;
-  Control.Hint:= Control.Name;
-  Control.ShowHint:= True;
+  Control.Hint := Control.Name;
+  Control.ShowHint := True;
   FObjectInspector.RefreshCBObjects;
   FObjectInspector.SetSelectedObject(Control);
-  ComponentToInsert:= nil;
+  FComponentToInsert := nil;
   FObjectGenerator.InsertComponent(GetEditForm, Control, False);
   UpdateState(Modified);
 end;
 
-procedure TFGuiDesigner.Save(const FileName: string; Formular: TFGUIForm);
-  var
-    BinStream: TMemoryStream;
-    FilStream: TFileStream;
+procedure TFGuiDesigner.Save(const Filename: string; Formular: TFGuiForm);
+var
+  BinStream: TMemoryStream;
+  FilStream: TFileStream;
 begin
   BinStream := TMemoryStream.Create;
   try
     try
-      FilStream := TFileStream.Create(FileName, fmCreate or fmShareExclusive);
+      FilStream := TFileStream.Create(Filename, fmCreate or fmShareExclusive);
       try
         BinStream.WriteComponent(Formular);
         BinStream.Seek(0, soFromBeginning);
@@ -459,132 +598,151 @@ begin
         FreeAndNil(FilStream);
       end;
     except
-      on e: Exception do
-        ErrorMsg(e.Message);
+      on E: Exception do
+        ErrorMsg(E.Message);
     end;
   finally
-    FreeAndNil(BinStream)
+    FreeAndNil(BinStream);
   end;
-  if Assigned(ELDesigner.DesignControl) then
-    TFGUIForm(ELDesigner.DesignControl).Modified:= False;
+  if Assigned(FELDesigner.DesignControl) then
+    TFGuiForm(FELDesigner.DesignControl).Modified := False;
 end;
 
-procedure TFGuiDesigner.RemovePixelsPerInch0(FileName: string);
+procedure TFGuiDesigner.RemovePixelsPerInch0(Filename: string);
 begin
-  var SL:= TStringList.Create;
+  var
+  StringList := TStringList.Create;
   try
-    SL.LoadFromFile(FileName);
-    for var i:= 0 to SL.Count -1 do begin
-      var s:= SL[i];
-      var p:= Pos('PixelsPerInch', s);
-      if p > 0 then begin
-        p:= Pos('=', s);
-        Delete(s, 1, p);
-        p:= StrToInt(Trim(s));
-        if p = 0 then begin
-          SL.Delete(i);
-          SL.SaveToFile(FileName);
+    StringList.LoadFromFile(Filename);
+    for var I := 0 to StringList.Count - 1 do
+    begin
+      var
+      Str := StringList[I];
+      var
+      Posi := Pos('PixelsPerInch', Str);
+      if Posi > 0 then
+      begin
+        Posi := Pos('=', Str);
+        Delete(Str, 1, Posi);
+        Posi := StrToInt(Trim(Str));
+        if Posi = 0 then
+        begin
+          StringList.Delete(I);
+          StringList.SaveToFile(Filename);
           Break;
-        end
-      end else if Pos('  object', s) > 0 then
+        end;
+      end
+      else if Pos('  object', Str) > 0 then
         Break;
     end;
   finally
-    FreeAndNil(SL);
+    FreeAndNil(StringList);
   end;
 end;
 
-function TFGuiDesigner.GetPixelsPerInchOfFile(FileName: string): Integer;
+function TFGuiDesigner.GetPixelsPerInchOfFile(Filename: string): Integer;
 begin
-  Result:= 96;
-  var SL:= TStringList.Create;
+  Result := 96;
+  var
+  StringList := TStringList.Create;
   try
-    SL.LoadFromFile(FileName);
-    for var i:= 0 to SL.Count -1 do begin
-      var s:= SL[i];
-      var p:= Pos('PixelsPerInch', s);
-      if p > 0 then begin
-        p:= Pos('=', s);
-        Delete(s, 1, p);
-        Exit(StrToInt(Trim(s)));
-      end else if Pos('  object', s) > 0 then
+    StringList.LoadFromFile(Filename);
+    for var I := 0 to StringList.Count - 1 do
+    begin
+      var
+      Str := StringList[I];
+      var
+      Posi := Pos('PixelsPerInch', Str);
+      if Posi > 0 then
+      begin
+        Posi := Pos('=', Str);
+        Delete(Str, 1, Posi);
+        Exit(StrToInt(Trim(Str)));
+      end
+      else if Pos('  object', Str) > 0 then
         Break;
     end;
   finally
-    FreeAndNil(SL);
+    FreeAndNil(StringList);
   end;
 end;
 
-function TFGuiDesigner.Open(const FileName: string): TFGUIForm;
+function TFGuiDesigner.Open(const Filename: string): TFGuiForm;
 var
   FilStream: TFileStream;
   BinStream: TMemoryStream;
-  Reader   : TReader;
+  Reader: TReader;
   PythonFilename: string;
-  aForm: TEditorForm;
+  AForm: TEditorForm;
   PPI: Integer;
   NewName: string;
 
-  function getName: string;
-    var SL: TStringList; i, index, Nr: Integer; s: string;
+  function GetName: string;
+  var
+    StringList: TStringList;
+    Index, Num: Integer;
+    Str: string;
   begin
-    SL:= TStringList.Create;
+    StringList := TStringList.Create;
     try
-      SL.Sorted:= True;
-      for i:= 0 to Screen.FormCount -1 do
-         if startsWith(Screen.Forms[I].Name, 'FGUIForm') then
-           SL.Add(Screen.Forms[i].Name);
-      if not SL.Find('FGUIForm', index) then Exit('FGUIForm');
-      Nr:= 1;
+      StringList.Sorted := True;
+      for var I := 0 to Screen.FormCount - 1 do
+        if StartsWith(Screen.Forms[I].Name, 'FGUIForm') then
+          StringList.Add(Screen.Forms[I].Name);
+      if not StringList.Find('FGUIForm', Index) then
+        Exit('FGUIForm');
+      Num := 1;
       repeat
-        s:= 'FGUIForm_' + IntToStr(Nr);
-        if not SL.Find(s, index) then Exit(s);
-        Inc(Nr);
+        Str := 'FGUIForm_' + IntToStr(Num);
+        if not StringList.Find(Str, Index) then
+          Exit(Str);
+        Inc(Num);
       until False;
     finally
-      FreeAndNil(SL);
+      FreeAndNil(StringList);
     end;
   end;
 
 begin
-  Result:= nil;
-  if not FileExists(FileName) then
+  Result := nil;
+  if not FileExists(Filename) then
     Exit;
-  PPI:= GetPixelsPerInchOfFile(FileName);
-  if PPI = 0 then begin
-    RemovePixelsPerInch0(FileName);
-    PPI:= 96;
+  PPI := GetPixelsPerInchOfFile(Filename);
+  if PPI = 0 then
+  begin
+    RemovePixelsPerInch0(Filename);
+    PPI := 96;
   end;
-  PythonFilename:= ChangeFileExt(FileName, '.pyw');
-  aForm:= TEditorForm(GI_EditorFactory.GetEditorByName(PythonFilename).Form);
-  FObjectGenerator.Partner:= aForm;
-  BinStream:= TMemoryStream.Create;
-  FilStream:= TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
-  Reader:= TReader.Create(BinStream, 4096);
-  Reader.OnFindMethod:= FindMethod;
-  Reader.OnError:= ErrorMethod;
+  PythonFilename := ChangeFileExt(Filename, '.pyw');
+  AForm := TEditorForm(GI_EditorFactory.GetEditorByName(PythonFilename).Form);
+  FObjectGenerator.Partner := AForm;
+  BinStream := TMemoryStream.Create;
+  FilStream := TFileStream.Create(Filename, fmOpenRead or fmShareDenyNone);
+  Reader := TReader.Create(BinStream, 4096);
+  Reader.OnFindMethod := FindMethod;
+  Reader.OnError := ErrorMethod;
   try
     try
-      NewName:= getName;
+      NewName := GetName;
       ObjectTextToResource(FilStream, BinStream);
       BinStream.Seek(0, soFromBeginning);
       BinStream.ReadResHeader;
-      DesignForm:= TFGuiForm.Create(Self);
-      DesignForm.Partner:= aForm;
-      Reader.ReadRootComponent(DesignForm);
-      DesignForm.Open(FileName, '', aForm.getGeometry, aForm);
-      DesignForm.Name:= NewName;
-      if DesignForm.Monitor.PixelsPerInch > PPI then
-        DesignForm.Scale(DesignForm.Monitor.PixelsPerInch, PPI);
+      FDesignForm := TFGuiForm.Create(Self);
+      FDesignForm.Partner := AForm;
+      Reader.ReadRootComponent(FDesignForm);
+      FDesignForm.Open(Filename, '', AForm.getGeometry, AForm);
+      FDesignForm.Name := NewName;
+      if FDesignForm.Monitor.PixelsPerInch > PPI then
+        FDesignForm.Scale(FDesignForm.Monitor.PixelsPerInch, PPI);
       ScaleImages;
-      DesignForm.Invalidate; // to paint correct image sizes
-      DesignForm.EnsureOnDesktop;
-      ChangeTo(DesignForm);
-      if not aForm.ActiveSynEdit.Modified and not DesignForm.Modified then
-        TEditorForm(DesignForm.Partner).Modified:= False;
-      Result:= DesignForm;
+      FDesignForm.Invalidate; // to paint correct image sizes
+      FDesignForm.EnsureOnDesktop;
+      ChangeTo(FDesignForm);
+      if not AForm.ActiveSynEdit.Modified and not FDesignForm.Modified then
+        FDesignForm.Partner.Modified := False;
+      Result := FDesignForm;
     except
-      on e: Exception do
+      on E: Exception do
         ErrorMsg(E.Message);
     end;
   finally
@@ -593,26 +751,28 @@ begin
     FreeAndNil(BinStream);
     FObjectInspector.RefreshCBObjects;
   end;
-  if Assigned(DesignForm) and DesignForm.ReadOnly then
-     ELDesigner.LockAll([lmNoMove, lmNoResize, lmNoDelete, lmNoInsertIn, lmNoCopy]);
+  if Assigned(FDesignForm) and FDesignForm.ReadOnly then
+    FELDesigner.LockAll([lmNoMove, lmNoResize, lmNoDelete, lmNoInsertIn,
+      lmNoCopy]);
 end;
 
-procedure TFGuiDesigner.FindMethod(Reader: TReader; const MethodName: string;
-    var Address: Pointer; var Error: Boolean);
+procedure TFGuiDesigner.FindMethod(Reader: TReader; const Methodname: string;
+  var Address: Pointer; var Error: Boolean);
 begin
-  Address:= nil;
-  Error:= False;
+  Address := nil;
+  Error := False;
 end;
 
-procedure TFGuiDesigner.ErrorMethod(Reader: TReader; const Message: string; var Handled: Boolean);
+procedure TFGuiDesigner.ErrorMethod(Reader: TReader; const Message: string;
+  var Handled: Boolean);
 begin
-  Handled:= (Pos('ShowName', Message) + Pos('Number', Message) > 0);
-  Handled:= True; // read form anyway
+  Handled := (Pos('ShowName', Message) + Pos('Number', Message) > 0);
+  Handled := True; // read form anyway
 end;
 
 procedure TFGuiDesigner.MICloseClick(Sender: TObject);
 begin
-  TForm(ELDesigner.DesignControl).Close;
+  TForm(FELDesigner.DesignControl).Close;
 end;
 
 procedure TFGuiDesigner.MIConfigurationClick(Sender: TObject);
@@ -623,21 +783,23 @@ end;
 procedure TFGuiDesigner.ELDesignerDesignFormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-  Action:= caFree;
-  if Assigned(ELDesigner.DesignControl)
-    then TForm(ELDesigner.DesignControl).Close;
+  Action := caFree;
+  if Assigned(FELDesigner.DesignControl) then
+    TForm(FELDesigner.DesignControl).Close;
 end;
 
 procedure TFGuiDesigner.ELDesignerControlDeleting(Sender: TObject;
   SelectedControls: TELDesignerSelectedControls);
-  var i: Integer;
+var
+  Int: Integer;
 begin
-  FObjectGenerator.Partner:= GetEditForm;
+  FObjectGenerator.Partner := GetEditForm;
   FObjectGenerator.Partner.ActiveSynEdit.BeginUpdate;
-  i:= SelectedControls.Count - 1;
-  while i > -1 do begin
-    FObjectGenerator.DeleteComponent(SelectedControls.Items[i]);
-    Dec(i);
+  Int := SelectedControls.Count - 1;
+  while Int > -1 do
+  begin
+    FObjectGenerator.DeleteComponent(SelectedControls[Int]);
+    Dec(Int);
   end;
   FObjectInspector.SetSelectedObject(nil);
   UpdateState(Modified);
@@ -646,39 +808,43 @@ end;
 
 procedure TFGuiDesigner.MIToSourceClick(Sender: TObject);
 begin
-  TFGUIForm(ELDesigner.DesignControl).Partner.BringToFront;
+  TFGuiForm(FELDesigner.DesignControl).Partner.BringToFront;
   ELDesignerDblClick(Self);
 end;
 
 procedure TFGuiDesigner.MISnapToGridClick(Sender: TObject);
 begin
-  ELDesigner.SelectedControls.AlignToGrid;
+  FELDesigner.SelectedControls.AlignToGrid;
   UpdateState(Modified);
-  MISnapToGrid.Checked:= not MISnapToGrid.Checked;
-  ELDesigner.SnapToGrid:= MISnapToGrid.Checked;
+  MISnapToGrid.Checked := not MISnapToGrid.Checked;
+  FELDesigner.SnapToGrid := MISnapToGrid.Checked;
 end;
 
 procedure TFGuiDesigner.ELDesignerDblClick(Sender: TObject);
-  var s: string;
+var
+  Str: string;
 begin
-  if ELDesigner.SelectedControls.Count = 1 then begin
-    if ELDesigner.SelectedControls[0].Tag in [4, 34] then
-      s:= 'def ' + ELDesigner.SelectedControls[0].Name + '_Command'
-    else if ELDesigner.SelectedControls[0].Tag in [74, 103, 104] then
-      s:= 'def ' + ELDesigner.SelectedControls[0].Name + '_clicked'
+  if FELDesigner.SelectedControls.Count = 1 then
+  begin
+    if FELDesigner.SelectedControls[0].Tag in [4, 34] then
+      Str := 'def ' + FELDesigner.SelectedControls[0].Name + '_Command'
+    else if FELDesigner.SelectedControls[0].Tag in [74, 103, 104] then
+      Str := 'def ' + FELDesigner.SelectedControls[0].Name + '_clicked'
     else
-      s:= ELDesigner.SelectedControls[0].Name;
-    GetEditForm.GoTo2(s);
-    GUIDesignerTimer.Enabled:= True;
+      Str := FELDesigner.SelectedControls[0].Name;
+    GetEditForm.GoTo2(Str);
+    GUIDesignerTimer.Enabled := True;
   end;
   UpdateState(not Modified);
 end;
 
 procedure TFGuiDesigner.GUIDesignerTimerTimer(Sender: TObject);
 begin
-  GUIDesignerTimer.Enabled:= False;
-  var EditForm:= GetEditForm;
-  if Assigned(EditForm) then begin
+  GUIDesignerTimer.Enabled := False;
+  var
+  EditForm := GetEditForm;
+  if Assigned(EditForm) then
+  begin
     EditForm.BringToFront;
     EditForm.Enter(Self);
     if EditForm.CanFocus then
@@ -688,106 +854,116 @@ end;
 
 procedure TFGuiDesigner.CutClick(Sender: TObject);
 begin
-  ELDesigner.Cut;
+  FELDesigner.Cut;
   UpdateState(Modified);
 end;
 
 procedure TFGuiDesigner.CopyClick(Sender: TObject);
 begin
-  ELDesigner.Copy;
+  FELDesigner.Copy;
   UpdateState(not Modified);
 end;
 
 procedure TFGuiDesigner.PasteClick(Sender: TObject);
-  var i, j: Integer;
-      PasteInContainer: Boolean;
-      Container, Control: TControl;
-      WinControl: TWinControl;
-      EditForm: TEditorForm;
+var
+  PasteInContainer: Boolean;
+  Container, Control: TControl;
+  WinControl: TWinControl;
+  EditForm: TEditorForm;
 begin
   // copy&paste ensures correct model, but source code must be generated
-  PasteInContainer:= (ELDesigner.SelectedControls.Count > 0);
-  if PasteInContainer
-    then Container:= ELDesigner.SelectedControls[0]
-    else Container:= nil;
-  ELDesigner.Paste;
-  EditForm:= GetEditForm;
+  PasteInContainer := (FELDesigner.SelectedControls.Count > 0);
+  if PasteInContainer then
+    Container := FELDesigner.SelectedControls[0]
+  else
+    Container := nil;
+  FELDesigner.Paste;
+  EditForm := GetEditForm;
   EditForm.ActiveSynEdit.BeginUpdate;
   // handle the pasted widgets
-  for i:= 0 to ELDesigner.SelectedControls.Count - 1 do begin
-    Control:= ELDesigner.SelectedControls[i];
-    if PasteInContainer then begin
+  for var I := 0 to FELDesigner.SelectedControls.Count - 1 do
+  begin
+    Control := FELDesigner.SelectedControls[I];
+    if PasteInContainer then
+    begin
       if Control.Left + Control.Width > Container.Width then
-        Control.Left:= Container.Width - Control.Width;
+        Control.Left := Container.Width - Control.Width;
       if Control.Top + Control.Height > Container.Height then
-        Control.Top:= Container.Height - Control.Height;
+        Control.Top := Container.Height - Control.Height;
     end;
     FObjectInspector.SetSelectedObject(Control);
-    ComponentNrToInsert:= ELDesigner.SelectedControls.Items[i].Tag;
+    GComponentNrToInsert := FELDesigner.SelectedControls[I].Tag;
     FObjectGenerator.InsertComponent(EditForm, Control, True);
-    FObjectGenerator.SetComponentValues(DesignForm, Control);
-    WinControl:= TWinControl(Control);
-    for j:= 0 to WinControl.ControlCount - 1 do begin
-      FObjectInspector.SetSelectedObject(WinControl.Controls[j]);
-      ComponentNrToInsert:= WinControl.Controls[j].Tag;
-      FObjectGenerator.InsertComponent(EditForm, WinControl.Controls[j], True);
-      FObjectGenerator.SetComponentValues(DesignForm, WinControl.Controls[j]);
+    FObjectGenerator.SetComponentValues(FDesignForm, Control);
+    WinControl := TWinControl(Control);
+    for var J := 0 to WinControl.ControlCount - 1 do
+    begin
+      FObjectInspector.SetSelectedObject(WinControl.Controls[J]);
+      GComponentNrToInsert := WinControl.Controls[J].Tag;
+      FObjectGenerator.InsertComponent(EditForm, WinControl.Controls[J], True);
+      FObjectGenerator.SetComponentValues(FDesignForm, WinControl.Controls[J]);
     end;
   end;
-  FObjectGenerator.setControlEvents(DesignForm, EditForm);
+  FObjectGenerator.setControlEvents(FDesignForm, EditForm);
   EditForm.ActiveSynEdit.EndUpdate;
   FObjectInspector.RefreshCBObjects;
   UpdateState(Modified);
 end;
 
 procedure TFGuiDesigner.ELDesignerGetUniqueName(Sender: TObject;
-           const ABaseName: string; var AUniqueName: string);
-  var i: Integer; s, b: string;
+  const ABaseName: string; var AUniqueName: string);
+var
+  Int: Integer;
+  Str, Basename: string;
 begin
-  b:= LowerUpper(aBaseName);
-  s:= UUtils.Right(b, -1);
-  while (Pos(s, '0123456789') > 0) and (Length(b) > 2) do begin
-    b:= UUtils.Left(b, Length(b) - 1);
-    s:= UUtils.Right(b, -1);
+  Basename := LowerUpper(ABaseName);
+  Str := UUtils.Right(Basename, -1);
+  while (Pos(Str, '0123456789') > 0) and (Length(Basename) > 2) do
+  begin
+    Basename := UUtils.Left(Basename, Length(Basename) - 1);
+    Str := UUtils.Right(Basename, -1);
   end;
-  i:= 1;
+  Int := 1;
   repeat
-    aUniqueName:= b + IntToStr(i);
-    Inc(i);
-  until ELDesigner.IsUniqueName(AUniqueName);
+    AUniqueName := Basename + IntToStr(Int);
+    Inc(Int);
+  until FELDesigner.IsUniqueName(AUniqueName);
 end;
 
 function TFGuiDesigner.GetEditForm: TEditorForm;
 begin
-  if Assigned(ELDesigner) and Assigned(ELDesigner.DesignControl)
-    then Result:= TEditorForm(TFGUIForm(ELDesigner.DesignControl).Partner)
-    else Result:= nil;
+  if Assigned(FELDesigner) and Assigned(FELDesigner.DesignControl) then
+    Result := TFGuiForm(FELDesigner.DesignControl).Partner
+  else
+    Result := nil;
 end;
 
-function TFGuiDesigner.getPath: string;
+function TFGuiDesigner.GetPath: string;
 begin
-  if Assigned(TFGUIForm(ELDesigner.DesignControl))
-    then Result:= ExtractFilePath(TFGuiForm(ELDesigner.DesignControl).Pathname)
-    else Result:= '';
+  if Assigned(TFGuiForm(FELDesigner.DesignControl)) then
+    Result := ExtractFilePath(TFGuiForm(FELDesigner.DesignControl).Pathname)
+  else
+    Result := '';
 end;
 
 procedure TFGuiDesigner.SetEnabledMI(MenuItem: TSpTBXItem; Enabled: Boolean);
 begin
   if Assigned(MenuItem) and (MenuItem.Enabled <> Enabled) then
-    MenuItem.Enabled:= Enabled;
+    MenuItem.Enabled := Enabled;
 end;
 
 procedure TFGuiDesigner.ScaleImages;
 begin
-  vilPythonControls.SetSize(DesignForm.PPIScale(16), DesignForm.PPIScale(16));
-  vilQtControls1616.SetSize(DesignForm.PPIScale(15), DesignForm.PPIScale(15));
+  vilPythonControls.SetSize(FDesignForm.PPIScale(16), FDesignForm.PPIScale(16));
+  vilQtControls1616.SetSize(FDesignForm.PPIScale(15), FDesignForm.PPIScale(15));
 end;
 
 procedure TFGuiDesigner.ChangeStyle;
 begin
-  if IsStyledWindowsColorDark
-    then PopupMenu.Images:= vilGuiDesignerDark
-    else PopupMenu.Images:= vilGuiDesignerLight;
+  if IsStyledWindowsColorDark then
+    PopupMenu.Images := vilGUIDesignerDark
+  else
+    PopupMenu.Images := vilGuiDesignerLight;
 end;
 
 { TMyDragObject }
@@ -824,6 +1000,7 @@ begin
 end;
 
 initialization
-  RegisterClasses(ClassArray);
+
+RegisterClasses(ClassArray);
 
 end.

@@ -24,8 +24,6 @@ object FObjectGenerator: TFObjectGenerator
     Width = 211
     Height = 31
     Panels = <>
-    ExplicitTop = 476
-    ExplicitWidth = 203
     DesignSize = (
       211
       31)
@@ -72,8 +70,6 @@ object FObjectGenerator: TFObjectGenerator
       'Attribute'
       'Value')
     OnKeyUp = ValueListEditorKeyUp
-    ExplicitWidth = 203
-    ExplicitHeight = 476
     ColWidths = (
       111
       94)
