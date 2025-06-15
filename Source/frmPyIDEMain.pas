@@ -1864,7 +1864,7 @@ begin
   GI_FileFactory.ApplyToFiles(procedure(aFile: IFile)
   begin
     if (aFile as TFile).GetFileKind = fkUML then
-      ((aFile as TFile).fForm as TFUmlForm).DeleteObjects;
+      ((aFile as TFile).Form as TFUmlForm).DeleteObjects;
   end);
 end;
 
@@ -2399,7 +2399,7 @@ begin
             LockFormUpdate(UML);
             UML.MainModul.AddToProject(Editor.FileName);
             UML.SaveAndReload;
-            RunFile(UML.fFile);
+            RunFile(UML.GetFile);
           finally
             UnlockFormUpdate(UML);
           end;

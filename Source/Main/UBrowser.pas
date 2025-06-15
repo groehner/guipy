@@ -168,7 +168,7 @@ end;
 function TFBrowser.OpenFile(const Filename: string): Boolean;
 begin
   Pathname := GetProtocolAndDomain(Filename);
-  FFile.fFileName := Pathname;
+  MyFile.FileName := Pathname;
   PyIDEMainForm.UpdateCaption;
   Enter(Self);
   WebBrowser.OnCommandStateChange := WebBrowserCommandStateChange;
@@ -213,7 +213,7 @@ end;
 procedure TFBrowser.TBCloseClick(Sender: TObject);
 begin
   Close;
-  (FFile as IFileCommands).ExecClose;
+  (MyFile as IFileCommands).ExecClose;
 end;
 
 procedure TFBrowser.TBShowSourceClick(Sender: TObject);
@@ -543,7 +543,7 @@ procedure TFBrowser.WebBrowserDownloadComplete(Sender: TObject);
 begin
   TBStop.ImageName := 'AbortOff';
   Pathname := GetProtocolAndDomain(CBUrls.Text);
-  FFile.fFileName := Pathname;
+  MyFile.FileName := Pathname;
   PyIDEMainForm.UpdateCaption;
   DoUpdateCaption;
   if not FConfiguration.Visible then

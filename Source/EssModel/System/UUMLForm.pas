@@ -264,7 +264,7 @@ begin
   end;
   SaveAndReload;
   if MainModul.Diagram.HasAInvalidClass then
-    PyIDEMainForm.RunFile(FFile);
+    PyIDEMainForm.RunFile(MyFile);
   FLockEnter:= False;
 end;
 
@@ -279,7 +279,7 @@ end;
 
 procedure TFUMLForm.SBCloseClick(Sender: TObject);
 begin
-  (FFile as IFileCommands).ExecClose;
+  (MyFile as IFileCommands).ExecClose;
 end;
 
 procedure TFUMLForm.TBShowConnectionsClick(Sender: TObject);
@@ -661,7 +661,7 @@ begin
   SaveAndReload;
   MainModul.Diagram.ResolveAssociations;
   MainModul.DoLayout;
-  PyIDEMainForm.RunFile(FFile);
+  PyIDEMainForm.RunFile(MyFile);
 end;
 
 procedure TFUMLForm.OpenFolder;
@@ -672,7 +672,7 @@ begin
     SaveAndReload;
     MainModul.Diagram.ResolveAssociations;
     MainModul.DoLayout;
-    PyIDEMainForm.RunFile(FFile);
+    PyIDEMainForm.RunFile(MyFile);
   end else
     CommandsDataModule.actFileCloseExecute(Self);
 end;

@@ -1888,7 +1888,7 @@ begin
 
   GI_FileFactory.ApplyToFiles(procedure(AFile: IFile)
   begin
-      (AFile as TFile).fForm.SetOptions;
+      (AFile as TFile).Form.SetOptions;
   end);
 end;
 
@@ -5590,7 +5590,7 @@ begin
 
   GI_FileFactory.ApplyToFiles(procedure(AFile: IFile)
     begin
-      (AFile as TFile).fForm.SetOptions;
+      (AFile as TFile).Form.SetOptions;
     end);
 end;
 

@@ -176,7 +176,7 @@ procedure TFSubversion.Commit;
   var AMessage: string;
 begin
   if InputQuery('Commit', _('Message'), AMessage) then
-    CallSVN('\svn.exe', 'commit -AMessage "' + AMessage + '"');
+    CallSVN('\svn.exe', 'commit -m "' + AMessage + '"');
 end;
 
 procedure TFSubversion.Add;

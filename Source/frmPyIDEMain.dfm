@@ -274,7 +274,6 @@ object PyIDEMainForm: TPyIDEMainForm
       Height = 113
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 624
       object DebugToolbar: TSpTBXToolbar
         Left = 2
         Top = 52

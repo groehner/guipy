@@ -797,7 +797,7 @@ end;
 
 procedure TFTextDiff.MICloseClick(Sender: TObject);
 begin
-  (FFile as IFileCommands).ExecClose;
+  (MyFile as IFileCommands).ExecClose;
 end;
 
 procedure TFTextDiff.Undo;
@@ -920,7 +920,7 @@ end;
 
 procedure TFTextDiff.TBCloseClick(Sender: TObject);
 begin
-  (FFile as IFileCommands).ExecClose;
+  (MyFile as IFileCommands).ExecClose;
 end;
 
 function TFTextDiff.GetCodeEdit: TSynEditExDiff;

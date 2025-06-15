@@ -396,9 +396,9 @@ begin
 
   if Assigned(FMyForm) then
   begin
-    if FMyForm.FFile.GetFileKind = fkEditor then
+    if FMyForm.MyFile.GetFileKind = fkEditor then
       EditForm := FMyForm as TEditorForm
-    else if FMyForm.FFile.GetFileKind = fkUML then
+    else if FMyForm.MyFile.GetFileKind = fkUML then
     begin
       FLocked := True;
       Files := (FMyForm as TFUMLForm).MainModul.Model.ModelRoot.Files;

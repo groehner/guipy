@@ -298,7 +298,7 @@ begin
   SetEvents(StrList.ListImage);
   StrList.ResizeAll;
   StrList.Paint;
-  FFile.ExecSave;
+  MyFile.ExecSave;
   Save;
   Enter(Self); // must stay!
   SetFocus;
@@ -1082,7 +1082,7 @@ end;
 
 procedure TFStructogram.BBCloseClick(Sender: TObject);
 begin
-  (FFile as IFileCommands).ExecClose;
+  (MyFile as IFileCommands).ExecClose;
 end;
 
 function TFStructogram.GetName(StrList: TStrList): string;

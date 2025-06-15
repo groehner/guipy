@@ -106,11 +106,11 @@ var
   begin
     Result := '';
     var
-    I := 1;
-    while (I <= 20) and (Code[I] <> #0) do
+    Int := 1;
+    while (Int <= 20) and (Code[Int] <> #0) do
     begin
-      Result := Result + Code[I];
-      Inc(I);
+      Result := Result + Code[Int];
+      Inc(Int);
     end;
   end;
 

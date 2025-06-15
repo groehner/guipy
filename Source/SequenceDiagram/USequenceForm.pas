@@ -601,7 +601,7 @@ end;
 procedure TFSequenceForm.MIPopupRefreshClick(Sender: TObject);
 begin
   FSequencePanel.IsLocked := True;
-  if Assigned(FFile) then
+  if Assigned(MyFile) then
     DoSave;
   FSequencePanel.ClearManagedObjects;
   FLifelines.Clear;
@@ -827,7 +827,7 @@ end;
 
 procedure TFSequenceForm.TBCloseClick(Sender: TObject);
 begin
-  (FFile as IFileCommands).ExecClose;
+  (MyFile as IFileCommands).ExecClose;
 end;
 
 procedure TFSequenceForm.AddLifeline(const Participant: string);
