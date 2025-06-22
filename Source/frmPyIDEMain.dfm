@@ -283,7 +283,7 @@ object PyIDEMainForm: TPyIDEMainForm
         DockRow = 2
         Images = vilImages
         ParentShowHint = False
-        ShowHint = False
+        ShowHint = True
         TabOrder = 0
         Caption = 'Debug Toolbar'
         object tbiRunRun: TSpTBXItem
@@ -1498,7 +1498,7 @@ object PyIDEMainForm: TPyIDEMainForm
         DockRow = 1
         Images = vilImages
         ParentShowHint = False
-        ShowHint = False
+        ShowHint = True
         TabOrder = 4
         Caption = 'Main Toolbar'
         object tbiFileOpen: TSpTBXItem
