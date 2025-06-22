@@ -120,7 +120,7 @@ begin
             then MakeUpdate
             else Memo.Lines.Add(_('Unpacking error'));
         end else
-          if FConfiguration.RunAsAdmin(Handle, Filepath, '') = 33 then begin
+          if FConfiguration.RunAsAdmin(Handle, Filepath, '') then begin
             Close;
             PyIDEMainForm.Close;
           end;
@@ -140,7 +140,7 @@ begin
   SVersion:= Copy(Version, 1, Pos(',', Version) -1 );
   Params:= '-Update ' + HideBlanks(FConfiguration.EditorFolder) +  ' ' +
                         HideBlanks(WithTrailingSlash(FLocalTempDir)) + ' ' + SVersion;
-  if FConfiguration.RunAsAdmin(Handle, Updater, Params) = 33 then begin
+  if FConfiguration.RunAsAdmin(Handle, Updater, Params) then begin
     Close;
     TThread.ForceQueue(nil, procedure
       begin

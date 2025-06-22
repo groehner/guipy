@@ -138,6 +138,8 @@ uses
   System.Types,
   SysUtils,
   Graphics,
+  JvGnugettext,
+  StringResources,
   UBaseWidgets,
   UTKButtonBase,
   UTKTextBase,
@@ -599,7 +601,7 @@ begin
       end;
     except
       on E: Exception do
-        ErrorMsg(E.Message);
+        ErrorMsg(Format(_(SFileSaveError), [FileName, E.Message]));
     end;
   finally
     FreeAndNil(BinStream);
@@ -743,7 +745,7 @@ begin
       Result := FDesignForm;
     except
       on E: Exception do
-        ErrorMsg(E.Message);
+        ErrorMsg(Format(_(SFileOpenError), [FileName, E.Message]));
     end;
   finally
     FreeAndNil(Reader);

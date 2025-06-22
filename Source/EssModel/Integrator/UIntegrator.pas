@@ -113,7 +113,12 @@ function Integrators: TIntegrators;
 
 implementation
 
-uses SysUtils, Dialogs;
+uses
+  SysUtils,
+  Dialogs,
+  JvGnugettext,
+  StringResources,
+  UUtils;
 
 var
   GIntegrators: TIntegrators = nil;
@@ -168,7 +173,7 @@ begin
       ImportOneFile(Filename, WithoutNeedSource);
     except
       on E: Exception do
-        ShowMessage(E.Message);
+        ErrorMsg(Format(_(SFileOpenError), [FileName, E.Message]));
     end;
   finally
     if Lock then

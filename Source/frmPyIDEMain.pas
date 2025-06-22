@@ -2151,7 +2151,7 @@ end;
 
 procedure TPyIDEMainForm.ChangeMenuSystem;
 begin
-  setLayoutMenus(GuiPyOptions.UsePredefinedLayouts);
+  SetLayoutMenus(GuiPyOptions.UsePredefinedLayouts);
   PythonIIForm.mnPythonVersions.Visible:= False;
   PythonIIForm.TBXPythonEngines.Visible:= False;
   var ViewMenuItem:= EditorViewsMenu.Items[2];

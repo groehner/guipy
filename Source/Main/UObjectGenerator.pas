@@ -240,7 +240,12 @@ procedure TFObjectGenerator.SetSlotForComponent(Attr, Value: string;
   Control: TControl);
 var
   CName, Str, Dest: string;
+  Widget: TBaseWidget;
 begin
+  if Control is TBaseWidget then
+    Widget := Control as TBaseWidget
+  else
+    Widget := nil;
   if Value = '' then
   begin
     if Control.Tag = 0 then
@@ -249,6 +254,8 @@ begin
       FPartner.DeleteMethod(Control.Name + '_' + Attr);
     FPartner.DeleteBinding(Attr + '.connect');
   end
+  else if Assigned(Widget) and (Widget.Name + '_' + Attr = Value) then
+    Widget.SetEvent(Attr)
   else
   begin
     Str := Attr + '.connect(self.' + Value + ')';

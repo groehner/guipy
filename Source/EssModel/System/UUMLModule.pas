@@ -81,6 +81,7 @@ uses Windows,
   UFileProvider,
   uEditAppIntfs,
   JvGnugettext,
+  StringResources,
   UOpenFolderForm,
   UUtils,
   URtfdDiagram;
@@ -193,7 +194,7 @@ begin
     end;
   except
     on E: Exception do
-      ErrorMsg('TDMUMLModule.AddToProject ');
+      ErrorMsg(Format(_(SFileOpenError), [FileName, E.Message]));
   end;
   Ext := LowerCase(ExtractFileExt(FileName));
   Imp := nil;

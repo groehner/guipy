@@ -245,6 +245,7 @@ uses
   cPyControl,
   cPySupportTypes,
   PythonEngine,
+  StringResources,
   uCommonFunctions,
   UIterators,
   URtfdDiagramFrame,
@@ -941,10 +942,8 @@ begin
 
       Ini.UpdateFile;
     except
-      on e: Exception do
-      begin
-        ErrorMsg(e.Message);
-      end;
+      on E: Exception do
+        ErrorMsg(Format(_(SFileSaveError), [FileName, E.Message]));
     end;
   finally
     FreeAndNil(Ini);
@@ -2285,8 +2284,8 @@ begin
         FreeAndNil(Parameter);
         FreeAndNil(ParamValues);
       except
-        on e: Exception do
-          ErrorMsg('TRtfdDiagram.CallMethod: ' + e.Message);
+        on E: Exception do
+          ErrorMsg('TRtfdDiagram.CallMethod: ' + E.Message);
       end;
     end;
   finally

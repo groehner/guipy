@@ -214,6 +214,7 @@ const
 
   SInternalError = 'Internal Error in %s';
   SNotFound = '"%s" not found';
+  SFileNotFound = 'File "%s" not found';
   SItemsReplaced = '%d items found and %d items replaced';
   SNotAvailable = 'n/a';
   SNotImplented = 'Not implemented';

@@ -139,8 +139,6 @@ begin
     DoPhases;
     ApplyNodes;
   except
-    on e: Exception do
-      ErrorMsg('TSugiyamaLayout.Execute');
   end;
 end;
 

@@ -195,7 +195,10 @@ uses
   Math,
   Clipbrd,
   UITypes,
+  Dialogs,
+  JvGnugettext,
   uEditAppIntfs,
+  StringResources,
   uCommonFunctions,
   UConfiguration,
   UUtils,
@@ -283,7 +286,8 @@ begin
       Result := True;
     except
       on e: Exception do
-        ErrorMsg(e.Message);
+        StyledMessageDlg(Format(_(SFileOpenError),
+          [FileName, E.Message]), mtWarning, [mbOK], 0);
     end;
   finally
     FreeAndNil(StringList);

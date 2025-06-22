@@ -2547,16 +2547,17 @@ begin
         FEditor.Value := ULink.turnRGB(LNewValue); // May raise an exception
         FDisplayValue := LNewValue; // FEditor.Value may be not equal with Value
       except
-        on e: Exception do
-          ErrorMsg(e.Message);
+        on E: Exception do
+          OutputDebugString(PChar('Exception: ' + E.ClassName + ' - ' +
+            E.Message));
       end;
     finally
       try
         TELPropertyInspector(Owner).FObjectsLocked := False;
       except
-        on e: Exception do
-          OutputDebugString(PChar('Exception: ' + e.ClassName + ' - ' +
-            e.Message));
+        on E: Exception do
+          OutputDebugString(PChar('Exception: ' + E.ClassName + ' - ' +
+            E.Message));
       end;
     end;
     if LOldValue <> FDisplayValue then
@@ -2571,14 +2572,14 @@ begin
             Expand;
           end;
         except
-          on e: Exception do
+          on E: Exception do
           begin
-            Str := 'TELPropertyInspectorItem.SetDisplayValue ';
+            Str := ' TELPropertyInspectorItem.SetDisplayValue ';
             if not Assigned(FEditor) then
               Str := Str + ' nil'
             else
               Str := Str + ' not nil';
-            ErrorMsg(e.Message + Str);
+            ErrorMsg(E.Message + Str);
           end;
         end;
       finally

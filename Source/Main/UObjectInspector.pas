@@ -44,6 +44,7 @@ type
 
     procedure ELEventInspectorModified(Sender: TObject);
     procedure ELEventInspectorClick(Sender: TObject);
+    procedure ELEventInspectorDblClick(Sender: TObject);
     procedure ELEventInspectorFilterProp(Sender: TObject;
       AInstance: TPersistent; APropInfo: PPropInfo; var AIncludeProp: Boolean);
 
@@ -75,7 +76,7 @@ type
     FShowAttributes: Integer;
     FShowEvents: Integer;
     procedure SetTabs;
-    procedure SetFont(Font: TFont);
+    procedure SetFont(AFont: TFont);
     procedure MyOnGetSelectStrings(Sender: TObject; Event: string;
       AResult: TStrings);
     procedure MyOnGetComponentNames(Sender: TObject; AClass: TComponentClass;
@@ -84,7 +85,8 @@ type
     procedure RefreshCB(NewName: string = '');
     procedure SetButtonCaption(Show: Integer);
     procedure UpdatePropertyInspector;
-    procedure UpdateEventInspector;  protected
+    procedure UpdateEventInspector;
+  protected
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
       const BasePath: string);
     procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage;
@@ -100,12 +102,13 @@ type
     procedure CopyToClipboard;
     procedure PasteFromClipboard;
     procedure ChangeStyle;
+
     property Attributes: string read FAttributes;
     property ELEventInspector: TELPropertyInspector read FELEventInspector;
     property ELPropertyInspector: TELPropertyInspector
       read FELPropertyInspector;
     property Events: string read FEvents;
-    property Str: Integer read FShowAttributes;
+    property ShowAttributes: Integer read FShowAttributes;
     property ShowEvents: Integer read FShowEvents;
   end;
 
@@ -162,6 +165,8 @@ begin
     Visible := False;
     ReadOnly := False;
     OnFilterProp := ELEventInspectorFilterProp;
+    OnClick := ELEventInspectorClick;
+    OnDblClick := ELEventInspectorDblClick;
     OnModified := ELEventInspectorModified;
     OnMouseDown := OnMouseDownEvent;
     OnGetSelectStrings := MyOnGetSelectStrings;
@@ -201,9 +206,6 @@ begin
   FELEventInspector.Splitter :=
     PPIScale(AppStorage.ReadInteger(BasePath +
     '\FELEventInspector.Splitter', 100));
-  AppStorage.ReadPersistent(BasePath + '\Font', Font);
-  Font.Size := PPIScale(Font.Size);
-  SetFont(Font);
 end;
 
 procedure TFObjectInspector.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
@@ -213,11 +215,6 @@ begin
     PPIUnScale(FELPropertyInspector.Splitter));
   AppStorage.WriteInteger(BasePath + '\FELEventInspector.Splitter',
     PPIUnScale(FELEventInspector.Splitter));
-  var
-  CurrentSize := Font.Size;
-  Font.Size := PPIUnScale(Font.Size);
-  AppStorage.WritePersistent(BasePath + '\Font', Font);
-  Font.Size := CurrentSize;
 end;
 
 procedure TFObjectInspector.CBChangeName(const OldName, NewName: string);
@@ -260,6 +257,7 @@ begin
   else
     Parametertypes := '';
   AResult.Add('');
+  AResult.Add(SourceWidget.Name + '_' + Event);
   GuiForm := TFGuiForm(FGUIDesigner.ELDesigner.DesignControl);
   for var I := 0 to GuiForm.ComponentCount - 1 do
     if GuiForm.Components[I] is TBaseQtWidget then
@@ -311,8 +309,6 @@ begin
     try
       SetSelectedObject(FGUIDesigner.ELDesigner.SelectedControls[0]);
     except
-      on E: Exception do
-        ErrorMsg(E.Message);
     end;
   end;
 end;
@@ -371,6 +367,9 @@ end;
 procedure TFObjectInspector.FormShow(Sender: TObject);
 begin
   SetButtonCaption(1);
+  Font.Assign(GuiPyOptions.InspectorFont);
+  Font.Size := PPIScale(Font.Size);
+  SetFont(Font);
   TCAttributesEvents.Height := Canvas.TextHeight('Attribute') + 10;
   CBObjects.Height := TCAttributesEvents.Height;
   if FELPropertyInspector.CanFocus then
@@ -402,14 +401,17 @@ begin
   PyIDEMainForm.mnViewDefaultLayoutClick(Self);
 end;
 
-procedure TFObjectInspector.SetFont(Font: TFont);
+procedure TFObjectInspector.SetFont(AFont: TFont);
 begin
-  FELPropertyInspector.Font.Size := Font.Size;
-  FELPropertyInspector.Font.Name := Font.Name;
-  FELEventInspector.Font.Size := Font.Size;
-  FELEventInspector.Font.Name := Font.Name;
+  FELPropertyInspector.Font.Size := AFont.Size;
+  FELPropertyInspector.Font.Name := AFont.Name;
+  FELEventInspector.Font.Size := AFont.Size;
+  FELEventInspector.Font.Name := AFont.Name;
+  Canvas.Font.Size := AFont.Size;
   TCAttributesEvents.Height := Canvas.TextHeight('Attribute') + 10;
   CBObjects.Height := TCAttributesEvents.Height;
+  AFont.Size := PPIUnScale(AFont.Size);
+  GuiPyOptions.InspectorFont.Assign(AFont);
 end;
 
 procedure TFObjectInspector.MIFontClick(Sender: TObject);
@@ -601,10 +603,9 @@ begin
   if not Assigned(PropertyItem) then
     Exit;
   Index := CBObjects.ItemIndex;
-  if Index > -1 then
-    Control := TControl(CBObjects.Items.Objects[Index])
-  else
+  if Index = -1 then
     Exit;
+  Control := TControl(CBObjects.Items.Objects[Index]);
   GuiForm := TFGuiForm(FGUIDesigner.ELDesigner.DesignControl);
   Partner := GuiForm.Partner;
   Partner.ActiveSynEdit.BeginUpdate;
@@ -742,6 +743,27 @@ end;
 procedure TFObjectInspector.ELEventInspectorClick(Sender: TObject);
 begin
   SetBNewDeleteCaption;
+end;
+
+procedure TFObjectInspector.ELEventInspectorDblClick(Sender: TObject);
+begin
+  if Assigned(ELEventInspector.ActiveItem) then
+  begin
+    var
+    Str := ELEventInspector.ActiveItem.DisplayValue;
+    if Str = '' then
+      BNewDeleteClick(Self)
+    else
+    begin
+      var
+      Partner := TEditorForm
+        (TFGuiForm(FGUIDesigner.ELDesigner.DesignControl).Partner);
+      Partner.GoTo2('def ' + Str);
+      if Assigned(FGUIDesigner) then
+        FGUIDesigner.GUIDesignerTimer.Enabled := True;
+    end;
+  end;
+  UpdateEventInspector;
 end;
 
 procedure TFObjectInspector.PMObjectInspectorPopup(Sender: TObject);

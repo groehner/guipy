@@ -1324,7 +1324,7 @@ begin
   Reg := TRegistry.Create(KEY_READ and not KEY_NOTIFY);
   try
     Reg.RootKey := HKEY_CLASSES_ROOT;
-    Key := 'Python.File\shell\Edit with PyScripter';
+    Key := 'Python.File\shell\Edit with GuiPy';
     IsRegistered := Reg.KeyExists(Key);
   except
   end;

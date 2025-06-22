@@ -390,8 +390,9 @@ begin
       SetAnimation(True);
       BringToFront;
       Enter(Self);
-    except on E: Exception do
-      ErrorMsg('OpenWindow: ' + Pathname);
+    except
+      on E: Exception do
+        ErrorMsg('OpenWindow: ' + Pathname);
     end;
   finally
     UnlockFormUpdate(Self);
@@ -507,7 +508,8 @@ begin
       Result:= True;
     except
       on E: Exception do begin
-        ErrorMsg(E.Message);
+        StyledMessageDlg(Format(_(SFileSaveError),
+          [FileName, E.Message]), mtWarning, [mbOK], 0);
         Result:= False;
       end;
     end;

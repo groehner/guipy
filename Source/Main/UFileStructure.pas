@@ -13,6 +13,7 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   Vcl.ComCtrls,
+  Vcl.Graphics,
   TB2Item,
   SpTBXItem,
   JvAppStorage,
@@ -33,7 +34,7 @@ type
     property Int: Integer read FInt;
   end;
 
-  TFFileStructure = class(TIDEDockWindow, IJvAppStorageHandler)
+  TFFileStructure = class(TIDEDockWindow)
     PMFileStructure: TSpTBXPopupMenu;
     MIClose: TSpTBXItem;
     MIDefaultLayout: TSpTBXItem;
@@ -68,9 +69,10 @@ type
     function DifferentItems(Items: TTreeNodes): Boolean;
     procedure NavigateToVilNode(Node: PVirtualNode;
       ForceToMiddle: Boolean = True; Activate: Boolean = True);
+    procedure SetFont(AFont: TFont);
   protected
-    procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
-      const BasePath: string);
+    //procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
+    //  const BasePath: string);
     procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage;
       const BasePath: string);
   public
@@ -102,7 +104,8 @@ uses
   frmEditor,
   UUMLForm,
   UUtils,
-  UGUIDesigner;
+  UGUIDesigner,
+  UConfiguration;
 
 type
   PMyRec = ^TMyRec;
@@ -145,7 +148,18 @@ end;
 
 procedure TFFileStructure.FormShow(Sender: TObject);
 begin
+  Font.Assign(GuiPyOptions.StructureFont);
+  Font.Size := PPIScale(Font.Size);
+  SetFont(Font);
   SetFocus;
+end;
+
+procedure TFFileStructure.SetFont(AFont: TFont);
+begin
+  vilFileStructure.Font.Size := AFont.Size;
+  vilFileStructure.Font.Name := AFont.Name;
+  AFont.Size := PPIUnScale(AFont.Size);
+  GuiPyOptions.StructureFont.Assign(AFont);
 end;
 
 procedure TFFileStructure.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -281,25 +295,19 @@ end;
 procedure TFFileStructure.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
 begin
-  var
-  CurrentSize := Font.Size;
-  Font.Size := PPIUnScale(Font.Size);
-  AppStorage.WritePersistent(BasePath + '\Font', Font);
-  Font.Size := CurrentSize;
 end;
 
-procedure TFFileStructure.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
-  const BasePath: string);
-begin
-  AppStorage.ReadPersistent(BasePath + '\Font', Font);
-  vilFileStructure.Font.Size := PPIScale(Font.Size);
-end;
+
 
 procedure TFFileStructure.MIFontClick(Sender: TObject);
 begin
-  ResourcesDataModule.dlgFontDialog.Font.Assign(vilFileStructure.Font);
+  ResourcesDataModule.dlgFontDialog.Font.Assign(Font);
+  ResourcesDataModule.dlgFontDialog.Options := [];
   if ResourcesDataModule.dlgFontDialog.Execute then
-    vilFileStructure.Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
+  begin
+    Font.Assign(ResourcesDataModule.dlgFontDialog.Font);
+    SetFont(Font);
+  end;
 end;
 
 procedure TFFileStructure.MIDefaulLayoutClick(Sender: TObject);

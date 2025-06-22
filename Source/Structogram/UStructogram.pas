@@ -402,7 +402,6 @@ begin
         Result:= Result and not StrList.LoadError;
         Reader.ReadLine;
       end;
-      GuiPyOptions.StructogramFont.Assign(Font);
       SetPuzzleMode(FPuzzleMode);
     finally
       FreeAndNil(Reader);

@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 361
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -129,8 +129,6 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
-    ExplicitWidth = 606
-    ExplicitHeight = 309
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -144,6 +142,7 @@ object PyIDEMainForm: TPyIDEMainForm
       TabDragReorder = True
       TabPosition = ttpBottom
       OnActiveTabChange = TabControlActiveTabChange
+      ExplicitLeft = -2
       HiddenItems = <>
       object tbiRightAlign: TSpTBXRightAlignSpacerItem
         CustomWidth = 883
@@ -283,6 +282,8 @@ object PyIDEMainForm: TPyIDEMainForm
         DockPos = 0
         DockRow = 2
         Images = vilImages
+        ParentShowHint = False
+        ShowHint = False
         TabOrder = 0
         Caption = 'Debug Toolbar'
         object tbiRunRun: TSpTBXItem
@@ -316,6 +317,8 @@ object PyIDEMainForm: TPyIDEMainForm
         DockPos = 574
         DockRow = 1
         Images = vilImages
+        ParentShowHint = False
+        ShowHint = False
         TabOrder = 1
         Visible = False
         Caption = 'Editor Toolbar'
@@ -368,6 +371,8 @@ object PyIDEMainForm: TPyIDEMainForm
         DockRow = 3
         Images = vilImages
         Options = [tboDropdownArrow]
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 2
         Visible = False
         OnVisibleChanged = FindToolbarVisibleChanged
@@ -1492,6 +1497,8 @@ object PyIDEMainForm: TPyIDEMainForm
         DockPos = 0
         DockRow = 1
         Images = vilImages
+        ParentShowHint = False
+        ShowHint = False
         TabOrder = 4
         Caption = 'Main Toolbar'
         object tbiFileOpen: TSpTBXItem

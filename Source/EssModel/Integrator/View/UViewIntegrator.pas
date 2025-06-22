@@ -182,6 +182,8 @@ uses
   Contnrs,
   Forms,
   Imaging.pngimage,
+  JvGnugettext,
+  StringResources,
   UConfiguration;
 
 var
@@ -286,8 +288,7 @@ var
       end;
     except
       on E: Exception do
-        OutputDebugString(PChar('Exception: ' + E.ClassName + ' - ' +
-          E.Message));
+        ErrorMsg(Format(_(SFileSaveError), [FileName, E.Message]));
     end;
   end;
 
