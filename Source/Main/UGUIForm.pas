@@ -17,6 +17,7 @@ interface
 uses
   Winapi.Windows,
   Winapi.Messages,
+  System.Generics.Collections,
   System.Classes,
   Vcl.Graphics,
   Vcl.Forms,
@@ -99,6 +100,7 @@ type
     FToolButtonStyleChanged: string;
 
     FWidget: TBaseWidget;
+    FEventMap: TDictionary<string, TEvent>;
     function GetBackground: TColor;
     procedure SetBackground(Value: TColor);
     procedure SetTransparency(Value: Real);
@@ -200,7 +202,6 @@ uses
   Controls,
   Math,
   UxTheme,
-  System.Generics.Collections,
   JvDockControlForm,
   frmPyIDEMain,
   cPyScripterSettings,
@@ -234,39 +235,39 @@ end;
 
 procedure TFGuiForm.InitEvents;
 begin
-  FButtonPress := TEvent.Create(Self);
-  FButtonRelease := TEvent.Create(Self);
-  FKeyPress := TEvent.Create(Self);
-  FKeyRelease := TEvent.Create(Self);
-  FActivate := TEvent.Create(Self);
-  FConfigure := TEvent.Create(Self);
-  FDeactivate := TEvent.Create(Self);
-  FDestroy := TEvent.Create(Self);
-  FEnter := TEvent.Create(Self);
-  FExpose := TEvent.Create(Self);
-  FFocusIn := TEvent.Create(Self);
-  FFocusOut := TEvent.Create(Self);
-  FLeave := TEvent.Create(Self);
-  FMouseWheel := TEvent.Create(Self);
-  FMotion := TEvent.Create(Self);
-  FVisibility := TEvent.Create(Self);
+  FButtonPress := TEvent.Create(Self, 'ButtonPress');
+  FButtonRelease := TEvent.Create(Self, 'ButtonRelease');
+  FKeyPress := TEvent.Create(Self, 'KeyPress');
+  FKeyRelease := TEvent.Create(Self, 'KeyRelease');
+  FActivate := TEvent.Create(Self, 'Activate');
+  FConfigure := TEvent.Create(Self, 'Configure');
+  FDeactivate := TEvent.Create(Self, 'Deactivate');
+  FDestroy := TEvent.Create(Self, 'Destroy');
+  FEnter := TEvent.Create(Self, 'Enter');
+  FExpose := TEvent.Create(Self, 'Expose');
+  FFocusIn := TEvent.Create(Self, 'FocusIn');
+  FFocusOut := TEvent.Create(Self, 'FocusOut');
+  FLeave := TEvent.Create(Self, 'Leave');
+  FMotion := TEvent.Create(Self, 'Motion');
+  FMouseWheel := TEvent.Create(Self, 'MouseWheel');
+  FVisibility := TEvent.Create(Self, 'Visibility');
 
-  FButtonPress.Name := 'ButtonPress';
-  FButtonRelease.Name := 'ButtonRelease';
-  FKeyPress.Name := 'KeyPressName';
-  FKeyRelease.Name := 'KeyRelease';
-  FActivate.Name := 'Activate';
-  FConfigure.Name := 'Configure';
-  FDeactivate.Name := 'Deactivate';
-  FDestroy.Name := 'Destroy';
-  FEnter.Name := 'Enter';
-  FExpose.Name := 'Expose';
-  FFocusIn.Name := 'FocusIn';
-  FFocusOut.Name := 'FocusOut';
-  FLeave.Name := 'Leave';
-  FMouseWheel.Name := 'MouseWheel';
-  FMotion.Name := 'Motion';
-  FVisibility.Name := 'Visibility';
+  FEventMap := TDictionary<string, TEvent>.Create;
+  FEventMap.Add('ButtonPress', FButtonPress);
+  FEventMap.Add('ButtonRelease', FButtonRelease);
+  FEventMap.Add('KeyPress', FKeyPress);
+  FEventMap.Add('KeyRelease', FKeyRelease);
+  FEventMap.Add('Activate', FActivate);
+  FEventMap.Add('Configure', FConfigure);
+  FEventMap.Add('Deactivate', FDeactivate);
+  FEventMap.Add('Destroy_', FDestroy);
+  FEventMap.Add('Enter', FEnter);
+  FEventMap.Add('Expose', FExpose);
+  FEventMap.Add('FocusIn', FFocusIn);
+  FEventMap.Add('FocusOut', FFocusOut);
+  FEventMap.Add('Leave', FLeave);
+  FEventMap.Add('Motion', FMotion);
+  FEventMap.Add('MouseWheel', FMouseWheel);
 end;
 
 procedure TFGuiForm.Open(Pathname, State: string; WidthHeight: TPoint;
@@ -342,6 +343,7 @@ begin
   FreeAndNil(FMouseWheel);
   FreeAndNil(FVisibility);
   FreeAndNil(FWidget);
+  FreeAndNil(FEventMap);
 end;
 
 function TFGuiForm.GetBackground: TColor;
@@ -397,10 +399,10 @@ begin
   FGUIDesigner.ChangeTo(Self);
   FPartner.SynEditEnter(FPartner.ActiveSynEdit);
   TThread.ForceQueue(nil,
-  procedure
-  begin
-    PyIDEMainForm.ShowTkOrQt(FPartner.FrameType);
-  end);
+    procedure
+    begin
+      PyIDEMainForm.ShowTkOrQt(FPartner.FrameType);
+    end);
 end;
 
 procedure TFGuiForm.FormAfterMonitorDpiChanged(Sender: TObject;
@@ -533,37 +535,7 @@ begin
   if FPartner.FrameType < 3 then
   begin
     Eventname := Without_(Eventname);
-    if Eventname = 'ButtonPress' then
-      Event := FButtonPress
-    else if Eventname = 'ButtonRelease' then
-      Event := FButtonRelease
-    else if Eventname = 'KeyPress' then
-      Event := FKeyPress
-    else if Eventname = 'KeyRelease' then
-      Event := FKeyRelease
-    else if Eventname = 'Activate' then
-      Event := FActivate
-    else if Eventname = 'Configure' then
-      Event := FConfigure
-    else if Eventname = 'Deactivate' then
-      Event := FDeactivate
-    else if Eventname = 'Enter' then
-      Event := FEnter
-    else if Eventname = 'FocusIn' then
-      Event := FFocusIn
-    else if Eventname = 'FocusOut' then
-      Event := FFocusOut
-    else if Eventname = 'Leave' then
-      Event := FLeave
-    else if Eventname = 'Motion' then
-      Event := FMotion
-    else if Eventname = 'MouseWheel' then
-      Event := FMouseWheel
-    else if Eventname = 'Destroy_' then
-      Event := FDestroy
-    else if Eventname = 'Expose' then
-      Event := FExpose
-    else
+    if not FEventMap.TryGetValue(Eventname, Event) then
       Event := FVisibility;
     Result := FIndent2 + 'self.root.bind(''<' + Event.GetModifiers(Eventname) +
       Eventname + Event.GetDetail(Eventname) + '>'', self.' +

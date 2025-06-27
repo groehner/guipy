@@ -32,7 +32,7 @@ type
     FKey: string;
     FButton: Integer;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent; Name: string);
     function GetModifiers(Eventname: string): string;
     function GetDetail(Eventname: string): string;
     procedure Clear;
@@ -115,9 +115,10 @@ end;
 
 {--- TEvent -------------------------------------------------------------------}
 
-constructor TEvent.Create(AOwner: TComponent);
+constructor TEvent.Create(AOwner: TComponent; Name: string);
 begin
   inherited Create(AOwner);
+  Self.Name:= Name;
   Clear;
   if AOwner is TBaseWidget then
     SetSubComponent(True);

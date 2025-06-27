@@ -218,19 +218,19 @@ begin
   HelpType := htContext;
   Sizeable := True;
 
-  FButtonPress := TEvent.Create(Self);
-  FButtonRelease := TEvent.Create(Self);
-  FKeyPress := TEvent.Create(Self);
-  FKeyRelease := TEvent.Create(Self);
-  FActivate := TEvent.Create(Self);
-  FConfigure := TEvent.Create(Self);
-  FDeactivate := TEvent.Create(Self);
-  FEnter := TEvent.Create(Self);
-  FFocusIn := TEvent.Create(Self);
-  FFocusOut := TEvent.Create(Self);
-  FLeave := TEvent.Create(Self);
-  FMouseWheel := TEvent.Create(Self);
-  FMotion := TEvent.Create(Self);
+  FButtonPress := TEvent.Create(Self, 'ButtonPress');
+  FButtonRelease := TEvent.Create(Self, 'ButtonRelease');
+  FKeyPress := TEvent.Create(Self, 'KeyPress');
+  FKeyRelease := TEvent.Create(Self, 'KeyRelease');
+  FActivate := TEvent.Create(Self, 'Activate');
+  FConfigure := TEvent.Create(Self, 'Configure');
+  FDeactivate := TEvent.Create(Self, 'Deactivate');
+  FEnter := TEvent.Create(Self, 'Enter');
+  FFocusIn := TEvent.Create(Self, 'FocusIn');
+  FFocusOut := TEvent.Create(Self, 'FocusOut');
+  FLeave := TEvent.Create(Self, 'Leave');
+  FMouseWheel := TEvent.Create(Self, 'MouseWheel');
+  FMotion := TEvent.Create(Self, 'Motion');
 end;
 
 destructor TBaseTkWidget.Destroy;
