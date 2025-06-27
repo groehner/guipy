@@ -81,8 +81,7 @@ type
     function OpenFile(const Filename: string): Boolean; override;
     procedure OpenWindow(Sender: TObject); override;
     function GetAsStringList: TStringList; override;
-    procedure UploadFilesHttpPost(const UrlAsString: string;
-      Names, Values, NFiles, VFiles: array of string);
+    procedure UploadFileHttpPost(const UrlAsString, Name, Path: string);
     procedure ChangeStyle;
     procedure DPIChanged; override;
   end;
@@ -168,7 +167,7 @@ end;
 function TFBrowser.OpenFile(const Filename: string): Boolean;
 begin
   Pathname := GetProtocolAndDomain(Filename);
-  MyFile.FileName := Pathname;
+  MyFile.Filename := Pathname;
   PyIDEMainForm.UpdateCaption;
   Enter(Self);
   WebBrowser.OnCommandStateChange := WebBrowserCommandStateChange;
@@ -375,104 +374,62 @@ begin
   TBShowSource.Enabled := True;
 end;
 
-procedure TFBrowser.UploadFilesHttpPost(const UrlAsString: string;
-Names, Values, NFiles, VFiles: array of string);
+procedure TFBrowser.UploadFileHttpPost(const UrlAsString, Name, Path: string);
 var
-  StrData, Name, Value, Boundary: string;
-  URL: OleVariant;
-  Flags: OleVariant;
-  PostData: OleVariant;
-  Headers: OleVariant;
-  Idx: Integer;
-
+  Data, Boundary, FileExt: string;
+  Flags, PostData, Headers: OleVariant;
   MemoryStream: TMemoryStream;
   StringStream: TStringStream;
 begin
-  if Length(Names) <> Length(Values) then
-    raise Exception.Create
-      ('UploadFilesHttpPost: Names and Values must have the same length.');
-  if Length(NFiles) <> Length(VFiles) then
-    raise Exception.Create
-      ('UploadFilesHttpPost: FileNames and FileValues must have the same length.');
-
-  URL := 'about:blank';
   Flags := navNoHistory or navNoReadFromCache or navNoWriteToCache or
     navAllowAutosearch;
-  WebBrowser.Navigate2(URL, Flags);
+  WebBrowser.Navigate2('about:blank', Flags);
   while WebBrowser.ReadyState < READYSTATE_INTERACTIVE do
     Application.ProcessMessages;
 
   // anything random that WILL NOT occur in the data.
   Boundary := '---------------------------123456789';
-
-  StrData := '';
-  for Idx := Low(Names) to High(Names) do
-  begin
-    Name := Names[Idx];
-    Value := Values[Idx];
-    StrData := StrData + '--' + Boundary + #13#10 +
-      'Content-Disposition: form-data; name="' + Name + '"' + #13#10#13#10 +
-      Value + #13#10;
-  end;
-
-  for Idx := Low(NFiles) to High(NFiles) do
-  begin
-    Name := NFiles[Idx];
-    Value := VFiles[Idx];
-    StrData := StrData + '--' + Boundary + #13#10 +
-      'Content-Disposition: form-data; name="' + Name + '"; Filename="' + Value
-      + '"' + #13#10;
-
-    if Value = '' then
-      StrData := StrData + 'Content-Transfer-Encoding: binary'#13#10#13#10
-    else
-    begin
-      if (CompareText(ExtractFileExt(Value), '.JPG') = 0) or
-        (CompareText(ExtractFileExt(Value), '.JPEG') = 0) then
-        StrData := StrData + 'Content-Type: image/pjpeg'#13#10#13#10
-      else if (CompareText(ExtractFileExt(Value), '.PNG') = 0) then
-        StrData := StrData + 'Content-Type: image/x-png'#13#10#13#10
-      else if (CompareText(ExtractFileExt(Value), '.PNG') = 0) then
-        StrData := StrData + 'Content-Type: image/x-png'#13#10#13#10
-      else if (CompareText(ExtractFileExt(Value), '.CSS') = 0) then
-        StrData := StrData + 'Content-Type: text/css'#13#10#13#10
-      else if (CompareText(ExtractFileExt(Value), '.HTML') = 0) then
-        StrData := StrData + 'Content-Type: text/html'#13#10#13#10;
-
-      MemoryStream := TMemoryStream.Create;
-      try
-        MemoryStream.LoadFromFile(Value);
-        StringStream := TStringStream.Create('');
-        try
-          StringStream.CopyFrom(MemoryStream, MemoryStream.Size);
-
-          StrData := StrData + StringStream.DataString + #13#10;
-        finally
-          FreeAndNil(StringStream);
-        end;
-      finally
-        FreeAndNil(MemoryStream);
-      end;
+  Data := '--' + Boundary + #13#10 + 'Content-Disposition: form-data; name="' +
+    Name + '"; Filename="' + Path + '"' + #13#10;
+  FileExt := UpperCase(ExtractFileExt(Path));
+  if (FileExt = '.JPG') or (FileExt = '.JPEG') then
+    Data := Data + 'Content-Type: image/pjpeg'#13#10#13#10;
+  if FileExt = '.PNG'  then
+    Data := Data + 'Content-Type: image/x-png'#13#10#13#10;
+  if FileExt = '.CSS' then
+    Data := Data + 'Content-Type: text/css'#13#10#13#10;
+  if FileExt = '.HTML' then
+    Data := Data + 'Content-Type: text/html'#13#10#13#10;
+  MemoryStream := TMemoryStream.Create;
+  try
+    MemoryStream.LoadFromFile(Path);
+    StringStream := TStringStream.Create('');
+    try
+      StringStream.CopyFrom(MemoryStream, MemoryStream.Size);
+      Data := Data + StringStream.DataString + #13#10;
+    finally
+      FreeAndNil(StringStream);
     end;
-
-    StrData := StrData + '--' + Boundary + '--'#13#10; // FOOTER
+  finally
+    FreeAndNil(MemoryStream);
   end;
+  Data := Data + '--' + Boundary + '--'#13#10; // FOOTER
+  Data := Data + #0;
 
-  StrData := StrData + #0;
-
-  { 2. you must convert a String into variant array of bytes and every character from String is a value in array }
-  PostData := VarArrayCreate([0, Length(StrData) - 1], varByte);
+  { 2. you must convert a String into variant array of bytes and
+    every character from String is a value in array }
+  PostData := VarArrayCreate([0, Length(Data) - 1], varByte);
 
   { copy the ordinal value of the character into the PostData array }
-  for Idx := 1 to Length(StrData) do
-    PostData[Idx - 1] := Ord(StrData[Idx]);
+  for var I := 1 to Length(Data) do
+    PostData[I - 1] := Ord(Data[I]);
 
   { 3. prepare headers which will be sent to remote web-server }
   Headers := 'Content-Type: multipart/form-data; Boundary=' + Boundary + #13#10;
 
-  { 4. you must navigate to the URL with your script and send as parameters your array with POST-data and headers }
-  URL := UrlAsString;
-  WebBrowser.Navigate2(URL, Flags, EmptyParam, PostData, Headers);
+  { 4. you must navigate to the URL with your script and
+    send as parameters your array with POST-data and headers }
+  WebBrowser.Navigate2(UrlAsString, Flags, EmptyParam, PostData, Headers);
   while WebBrowser.ReadyState < READYSTATE_INTERACTIVE do
     Application.ProcessMessages;
 end;
@@ -543,7 +500,7 @@ procedure TFBrowser.WebBrowserDownloadComplete(Sender: TObject);
 begin
   TBStop.ImageName := 'AbortOff';
   Pathname := GetProtocolAndDomain(CBUrls.Text);
-  MyFile.FileName := Pathname;
+  MyFile.Filename := Pathname;
   PyIDEMainForm.UpdateCaption;
   DoUpdateCaption;
   if not FConfiguration.Visible then
