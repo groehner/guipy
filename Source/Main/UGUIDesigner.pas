@@ -8,6 +8,7 @@ uses
   Forms,
   ExtCtrls,
   ImgList,
+  System.Generics.Collections,
   System.ImageList,
   Vcl.Menus,
   Vcl.VirtualImageList,
@@ -61,6 +62,7 @@ type
     vilQtControls1616: TVirtualImageList;
     SpTBXSeparatorItem6: TSpTBXSeparatorItem;
     MIConfiguration: TSpTBXItem;
+    procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ELDesignerControlInserting(Sender: TObject;
       var AControlClass: TControlClass);
@@ -97,9 +99,12 @@ type
     FComponentToInsert: TControlClass;
     FDesignForm: TFGuiForm;
     FELDesigner: TELDesigner;
+    FClassMap: TDictionary<Integer, TControlClass>;
     procedure SetEnabledMI(MenuItem: TSpTBXItem; Enabled: Boolean);
     function GetPixelsPerInchOfFile(Filename: string): Integer;
     procedure RemovePixelsPerInch0(Filename: string);
+    procedure AddTkToClassMap;
+    procedure AddQtToClassMap;
   public
     procedure Save(const Filename: string; Formular: TFGuiForm);
     function Open(const Filename: string): TFGuiForm;
@@ -211,6 +216,9 @@ begin
     OnDblClick := ELDesignerDblClick;
   end;
   FELDesigner.GuiDesignerHints := GuiPyOptions.GuiDesignerHints;
+  FClassMap := TDictionary<Integer, TControlClass>.Create;
+  AddTkToClassMap;
+  AddQtToClassMap;
   ChangeStyle;
 end;
 
@@ -301,7 +309,7 @@ end;
 procedure TFGuiDesigner.MIAlignClick(Sender: TObject);
 var
   AHorzAlign, AVertAlign: TELDesignerAlignType;
-  Tag: Integer;
+  Tag: NativeInt;
 begin
   Tag := (Sender as TSpTBXItem).Tag;
   AHorzAlign := atNoChanges;
@@ -344,6 +352,11 @@ type
     FFont: TFont;
   end;
 
+procedure TFGuiDesigner.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(FClassMap);
+end;
+
 procedure TFGuiDesigner.ELDragDrop(Sender, ASource, ATarget: TObject;
   XPos, YPos: Integer);
 var
@@ -374,174 +387,100 @@ end;
 
 function TFGuiDesigner.Tag2Class(Tag: Integer): TControlClass;
 begin
-  case Tag of
-    1:
-      Result := TKLabel;
-    2:
-      Result := TKEntry;
-    3:
-      Result := TKText;
-    4:
-      Result := TKButton;
-    5:
-      Result := TKCheckbutton;
-    7:
-      Result := TKRadiobuttonGroup;
-    8:
-      Result := TKListbox;
-    9:
-      Result := TKSpinbox;
-    10:
-      Result := TKMessage;
-    11:
-      Result := TKCanvas;
-    12:
-      Result := TKScrollbar;
-    13:
-      Result := TKFrame;
-    14:
-      Result := TKLabelframe;
-    15:
-      Result := TKScale;
-    16:
-      Result := TKPanedWindow;
-    17:
-      Result := TKMenubutton;
-    18:
-      Result := TKOptionMenu;
-    19:
-      Result := TKMenu;
-    20:
-      Result := TKPopupMenu;
-
-    31:
-      Result := TTKLabel;
-    32:
-      Result := TTKEntry;
-    34:
-      Result := TTKButton;
-    35:
-      Result := TTKCheckbutton;
-    37:
-      Result := TTKRadiobuttonGroup;
-    38:
-      Result := TTKCombobox;
-    39:
-      Result := TTKSpinbox;
-    42:
-      Result := TTKScrollbar;
-    43:
-      Result := TTKFrame;
-    44:
-      Result := TTKLabelframe;
-    45:
-      Result := TTKScale;
-    46:
-      Result := TTKLabeledScale;
-    47:
-      Result := TTKPanedWindow;
-    48:
-      Result := TTKMenubutton;
-    49:
-      Result := TTKOptionMenu;
-    50:
-      Result := TTKNotebook;
-    51:
-      Result := TTKTreeview;
-    52:
-      Result := TTKProgressbar;
-    53:
-      Result := TTKSeparator;
-    54:
-      Result := TTKSizeGrip;
-    // Qt Base
-    71:
-      Result := TQtLabel;
-    72:
-      Result := TQtLineEdit;
-    73:
-      Result := TQtPlainTextEdit;
-    74:
-      Result := TQtPushButton;
-    75:
-      Result := TQtCheckBox;
-    76:
-      Result := TQtButtonGroup;
-    77:
-      Result := TQtListWidget;
-    78:
-      Result := TQtComboBox;
-    79:
-      Result := TQtSpinBox;
-    80:
-      Result := TQtScrollBar;
-    81:
-      Result := TQtCanvas;
-    82:
-      Result := TQtFrame;
-    83:
-      Result := TQtGroupBox;
-    84:
-      Result := TQtSlider;
-    85:
-      Result := TQtMenuBar;
-    86:
-      Result := TQtMenu;
-    87:
-      Result := TQtTabWidget;
-    88:
-      Result := TQtTreeWidget;
-    89:
-      Result := TQtTableWidget;
-    90:
-      Result := TQtProgressbar;
-    91:
-      Result := TQtStatusbar;
-
-    // Qt Controls
-    101:
-      Result := TQtTextEdit;
-    102:
-      Result := TQtTextBrowser;
-    103:
-      Result := TQtToolButton;
-    104:
-      Result := TQtCommandLinkButton;
-    105:
-      Result := TQtFontComboBox;
-    106:
-      Result := TQtDoubleSpinBox;
-    107:
-      Result := TQtLCDNumber;
-    108:
-      Result := TQtDateTimeEdit;
-    109:
-      Result := TQtDateEdit;
-    110:
-      Result := TQtTimeEdit;
-    111:
-      Result := TQtDial;
-    112:
-      Result := TQtLine;
-    113:
-      Result := TQtScrollArea;
-    114:
-      Result := TQtToolBox;
-    115:
-      Result := TQtStackedWidget;
-    116:
-      Result := TQtListView;
-    117:
-      Result := TQtColumnView;
-    118:
-      Result := TQtTreeView;
-    119:
-      Result := TQtTableView;
-    120:
-      Result := TQtGraphicsView;
-  else
+  if not FClassMap.TryGetValue(Tag, Result) then
     Result := nil;
-  end;
+end;
+
+procedure TFGuiDesigner.AddTkToClassMap;
+begin
+  // Tk base components
+  FClassMap.Add(1, TKLabel);
+  FClassMap.Add(2, TKEntry);
+  FClassMap.Add(3, TKText);
+  FClassMap.Add(4, TKButton);
+  FClassMap.Add(5, TKCheckbutton);
+  FClassMap.Add(7, TKRadiobuttonGroup);
+  FClassMap.Add(8, TKListbox);
+  FClassMap.Add(9, TKSpinbox);
+  FClassMap.Add(10, TKMessage);
+  FClassMap.Add(11, TKCanvas);
+  FClassMap.Add(12, TKScrollbar);
+  FClassMap.Add(13, TKFrame);
+  FClassMap.Add(14, TKLabelframe);
+  FClassMap.Add(15, TKScale);
+  FClassMap.Add(16, TKPanedWindow);
+  FClassMap.Add(17, TKMenubutton);
+  FClassMap.Add(18, TKOptionMenu);
+  FClassMap.Add(19, TKMenu);
+  FClassMap.Add(20, TKPopupMenu);
+  // Ttk components
+  FClassMap.Add(31, TTKLabel);
+  FClassMap.Add(32, TTKEntry);
+  FClassMap.Add(34, TTKButton);
+  FClassMap.Add(35, TTKCheckbutton);
+  FClassMap.Add(37, TTKRadiobuttonGroup);
+  FClassMap.Add(38, TTKCombobox);
+  FClassMap.Add(39, TTKSpinbox);
+  FClassMap.Add(42, TTKScrollbar);
+  FClassMap.Add(43, TTKFrame);
+  FClassMap.Add(44, TTKLabelframe);
+  FClassMap.Add(45, TTKScale);
+  FClassMap.Add(46, TTKLabeledScale);
+  FClassMap.Add(47, TTKPanedWindow);
+  FClassMap.Add(48, TTKMenubutton);
+  FClassMap.Add(49, TTKOptionMenu);
+  FClassMap.Add(50, TTKNotebook);
+  FClassMap.Add(51, TTKTreeview);
+  FClassMap.Add(52, TTKProgressbar);
+  FClassMap.Add(53, TTKSeparator);
+  FClassMap.Add(54, TTKSizeGrip);
+end;
+
+procedure TFGuiDesigner.AddQtToClassMap;
+begin
+  // Qt base components
+  FClassMap.Add(71, TQtLabel);
+  FClassMap.Add(72, TQtLineEdit);
+  FClassMap.Add(73, TQtPlainTextEdit);
+  FClassMap.Add(74, TQtPushButton);
+  FClassMap.Add(75, TQtCheckBox);
+  FClassMap.Add(76, TQtButtonGroup);
+  FClassMap.Add(77, TQtListWidget);
+  FClassMap.Add(78, TQtComboBox);
+  FClassMap.Add(79, TQtSpinBox);
+  FClassMap.Add(80, TQtScrollBar);
+  FClassMap.Add(81, TQtCanvas);
+  FClassMap.Add(82, TQtFrame);
+  FClassMap.Add(83, TQtGroupBox);
+  FClassMap.Add(84, TQtSlider);
+  FClassMap.Add(85, TQtMenuBar);
+  FClassMap.Add(86, TQtMenu);
+  FClassMap.Add(87, TQtTabWidget);
+  FClassMap.Add(88, TQtTreeWidget);
+  FClassMap.Add(89, TQtTableWidget);
+  FClassMap.Add(90, TQtProgressbar);
+  FClassMap.Add(91, TQtStatusbar);
+  // Qt control components
+  FClassMap.Add(101, TQtTextEdit);
+  FClassMap.Add(102, TQtTextBrowser);
+  FClassMap.Add(103, TQtToolButton);
+  FClassMap.Add(104, TQtCommandLinkButton);
+  FClassMap.Add(105, TQtFontComboBox);
+  FClassMap.Add(106, TQtDoubleSpinBox);
+  FClassMap.Add(107, TQtLCDNumber);
+  FClassMap.Add(108, TQtDateTimeEdit);
+  FClassMap.Add(109, TQtDateEdit);
+  FClassMap.Add(110, TQtTimeEdit);
+  FClassMap.Add(111, TQtDial);
+  FClassMap.Add(112, TQtLine);
+  FClassMap.Add(113, TQtScrollArea);
+  FClassMap.Add(114, TQtToolBox);
+  FClassMap.Add(115, TQtStackedWidget);
+  FClassMap.Add(116, TQtListView);
+  FClassMap.Add(117, TQtColumnView);
+  FClassMap.Add(118, TQtTreeView);
+  FClassMap.Add(119, TQtTableView);
+  FClassMap.Add(120, TQtGraphicsView);
 end;
 
 procedure TFGuiDesigner.SetToolButton(Tag: Integer);
@@ -601,7 +540,7 @@ begin
       end;
     except
       on E: Exception do
-        ErrorMsg(Format(_(SFileSaveError), [FileName, E.Message]));
+        ErrorMsg(Format(_(SFileSaveError), [Filename, E.Message]));
     end;
   finally
     FreeAndNil(BinStream);
@@ -732,7 +671,7 @@ begin
       FDesignForm := TFGuiForm.Create(Self);
       FDesignForm.Partner := AForm;
       Reader.ReadRootComponent(FDesignForm);
-      FDesignForm.Open(Filename, '', AForm.getGeometry, AForm);
+      FDesignForm.Open(Filename, '', AForm.GetGeometry, AForm);
       FDesignForm.Name := NewName;
       if FDesignForm.Monitor.PixelsPerInch > PPI then
         FDesignForm.Scale(FDesignForm.Monitor.PixelsPerInch, PPI);
@@ -745,7 +684,7 @@ begin
       Result := FDesignForm;
     except
       on E: Exception do
-        ErrorMsg(Format(_(SFileOpenError), [FileName, E.Message]));
+        ErrorMsg(Format(_(SFileOpenError), [Filename, E.Message]));
     end;
   finally
     FreeAndNil(Reader);
@@ -906,7 +845,7 @@ begin
       FObjectGenerator.SetComponentValues(FDesignForm, WinControl.Controls[J]);
     end;
   end;
-  FObjectGenerator.setControlEvents(FDesignForm, EditForm);
+  FObjectGenerator.SetControlEvents(FDesignForm, EditForm);
   EditForm.ActiveSynEdit.EndUpdate;
   FObjectInspector.RefreshCBObjects;
   UpdateState(Modified);

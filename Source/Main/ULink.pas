@@ -17,11 +17,11 @@ const
                      'SystemWindow'#13#10'SystemWindowFrame'#13#10'SystemWindowText';
 
 var
-  GComponentNrToInsert: Integer;
+  GComponentNrToInsert: NativeInt;
   GOldValue: string;
   GPythonCursorText:string;
 
-function Tag2PythonType(Tag: Integer): string;
+function Tag2PythonType(Tag: NativeInt): string;
 
 function Python2DelphiColors(Str: string): string;
 function Delphi2PythonColors(Str: string): string;
@@ -64,7 +64,7 @@ var
   Python2DelphiValuesAndNamesTranslate: TDictionary<string, string>;
 
 
-function Tag2PythonType(Tag: Integer): string;
+function Tag2PythonType(Tag: NativeInt): string;
 begin
   Result:= '';
   case Tag of

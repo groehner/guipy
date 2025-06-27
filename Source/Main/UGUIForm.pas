@@ -289,11 +289,7 @@ begin
   SetWidgetPartners;
   OnActivate := EnterForm;
   PyIDEMainForm.ConnectGUIandPyWindow(Self);
-
-  // passed
-
-  EnterForm(Self); // must stay!  not passing!
-
+  EnterForm(Self); // must stay!
   SetAnimation(True);
   FReadOnly := IsWriteProtected(FPathname);
   if FontSize = 0 then
@@ -398,6 +394,7 @@ begin
       end);
   FGUIDesigner.ChangeTo(Self);
   FPartner.SynEditEnter(FPartner.ActiveSynEdit);
+  // without this in special scenarios controls couldn't be selected
   TThread.ForceQueue(nil,
     procedure
     begin

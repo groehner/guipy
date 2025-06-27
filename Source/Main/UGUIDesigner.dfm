@@ -13,6 +13,7 @@ object FGUIDesigner: TFGUIDesigner
   Font.Style = []
   WindowState = wsMaximized
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   TextHeight = 15
   object GUIDesignerTimer: TTimer
     Enabled = False
