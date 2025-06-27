@@ -48,6 +48,7 @@ uses
   System.SysUtils,
   Vcl.Forms,
   JvGnugettext,
+  StringResources,
   UUtils;
 
 procedure TFDownload.FormShow(Sender: TObject);
@@ -95,12 +96,9 @@ var
   HSession, HUrl: HINTERNET;
   Buffer: array [0 .. BufferSize + 1] of Byte;
   Code: array [1 .. 20] of Char;
-  Codes: string;
-  Value: Integer;
   BufferLen, Index, CodeLen: DWORD;
-  SAppName: string;
+  AppName: string;
   AFile: TFileStream;
-  KnowSize: Boolean;
 
   function CodeToString: string;
   begin
@@ -114,10 +112,31 @@ var
     end;
   end;
 
+  function GetHTTPStatus: string;
+  begin
+    Result := '';
+    Index := 0;
+    if HttpQueryInfo(HUrl, HTTP_QUERY_STATUS_CODE, @Code, CodeLen, Index) then
+      Result := CodeToString; // 200, 401, 404 or 500
+  end;
+
+  function GetFileSize: Integer;
+  var
+    Value: Integer;
+  begin
+    Result := 0;
+    Index := 0;
+    if HttpQueryInfo(HUrl, HTTP_QUERY_CONTENT_LENGTH, @Code, CodeLen, Index)
+    then
+      if TryStrToInt(CodeToString, Value) then
+        Result := Value;
+  end;
+
 begin
   Result := False;
-  SAppName := ExtractFileName(Application.ExeName);
-  HSession := InternetOpen(PChar(SAppName), INTERNET_OPEN_TYPE_PRECONFIG,
+  CodeLen := Length(Code);
+  AppName := ExtractFileName(Application.ExeName);
+  HSession := InternetOpen(PChar(AppName), INTERNET_OPEN_TYPE_PRECONFIG,
     nil, nil, 0);
   try
     HUrl := InternetOpenUrl(HSession, PChar(AFileURL), nil, 0,
@@ -126,52 +145,27 @@ begin
     begin
       try
         try
-          // get HTTP status
-          Index := 0;
-          CodeLen := Length(Code);
-          if HttpQueryInfo(HUrl, HTTP_QUERY_STATUS_CODE, @Code, CodeLen, Index)
-          then
-          begin
-            Codes := CodeToString; // 200, 401, 404 or 500
-            if Codes <> '200' then
-              Exit(False);
-          end;
-
-          // get file size
-          KnowSize := False;
-          if Assigned(Progress) then
-          begin
-            KnowSize := True;
-            Index := 0;
-            CodeLen := Length(Code);
-            HttpQueryInfo(HUrl, HTTP_QUERY_CONTENT_LENGTH, @Code,
-              CodeLen, Index);
-            Codes := CodeToString;
-            if TryStrToInt(Codes, Value) then
-              Progress.Max := Value
-            else
-              KnowSize := False;
-          end;
+          if GetHTTPStatus <> '200' then
+            Exit(False);
           BCancel.Enabled := True;
-
-          // get file
+          Progress.Max := GetFileSize;
           AFile := TFileStream.Create(AFileName, fmCreate or fmShareExclusive);
-          repeat
-            InternetReadFile(HUrl, @Buffer, SizeOf(Buffer), BufferLen);
-            AFile.Write(Buffer[0], BufferLen);
-            if Assigned(Progress) and KnowSize then
-              Progress.StepBy(SizeOf(Buffer));
-            Application.ProcessMessages;
-          until FCancel or (BufferLen = 0);
+          try
+            repeat
+              InternetReadFile(HUrl, @Buffer, SizeOf(Buffer), BufferLen);
+              AFile.Write(Buffer[0], BufferLen);
+              if Assigned(Progress) and (Progress.Max > 0) then
+                Progress.StepBy(SizeOf(Buffer));
+              Application.ProcessMessages;
+            until FCancel or (BufferLen = 0);
+          except
+            on E: Exception do
+              EFile.Text := Format(_(SFileSaveError), [AFileName, E.Message]);
+          end;
+        finally
           FreeAndNil(AFile);
-
-          Result := not FCancel;
-        except
-          on e: Exception do
-            EFile.Text :=
-              Format(_('Can''t create file %s!' + sLineBreak + 'Error: %s'),
-              [AFileName, e.Message]);
         end;
+        Result := not FCancel;
       finally
         InternetCloseHandle(HUrl);
       end;
