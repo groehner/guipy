@@ -466,36 +466,34 @@ begin
 end;
 
 function TFClassEditor.GetConstructorHead(Superclass: string): string;
+var
+  Filename: string;
+  Line, Posi: Integer;
+  StringList: TStringList;
+
+  procedure SearchInStringList;
+  begin
+    for var I := 0 to StringList.Count - 1 do
+      if StringList[I].Contains('class ' + Superclass) then
+        for var J := I + 1 to StringList.Count - 1 do
+          if StringList[J].Contains('def __init__(self') then
+            Result := Trim(StringList[J]);
+  end;
+
 begin
   Result := '';
-  var
-  Line := FMyEditor.getLineNumberWithWord('class ' + Superclass);
+  Line := FMyEditor.GetLineNumberWithWord('class ' + Superclass);
   if Line = -1 then
   begin
-    var
     StringList := FConfiguration.GetClassesAndFilename(FMyEditor.Pathname);
     try
-      var
       Posi := StringList.IndexOfName(Superclass);
       if Posi >= 0 then
       begin
-        var
-        FileName := StringList.ValueFromIndex[Posi];
+        Filename := StringList.ValueFromIndex[Posi];
         StringList.LoadFromFile
-          (TPath.Combine(ExtractFilePath(FMyEditor.Pathname), FileName));
-        for var I := 0 to StringList.Count - 1 do
-        begin
-          Posi := Pos('class ' + Superclass, StringList[I]);
-          if Posi > 0 then
-          begin
-            for var J := I + 1 to StringList.Count - 1 do
-            begin
-              Posi := Pos('def __init__(self', StringList[J]);
-              if Posi > 0 then
-                Exit(Trim(StringList[J]));
-            end;
-          end;
-        end;
+          (TPath.Combine(ExtractFilePath(FMyEditor.Pathname), Filename));
+        SearchInStringList;
       end;
     finally
       FreeAndNil(StringList);
@@ -503,7 +501,7 @@ begin
   end
   else
   begin
-    Line := FMyEditor.getLineNumberWithWordFromTill('def __init__(self', Line);
+    Line := FMyEditor.GetLineNumberWithWordFromTill('def __init__(self', Line);
     if Line > -1 then
       Result := Trim(FMyEditor.ActiveSynEdit.Lines[Line]);
   end;
@@ -681,10 +679,10 @@ begin
       if EExtends.Text <> '' then
       begin
         var
-        Line := FMyEditor.getLineNumberWithWord('class ' + NewClassname);
+        Line := FMyEditor.GetLineNumberWithWord('class ' + NewClassname);
         if Line > -1 then
         begin
-          Line := FMyEditor.getLineNumberWithWordFromTill
+          Line := FMyEditor.GetLineNumberWithWordFromTill
             ('def __init__(self', Line);
           if Line > -1 then
           begin
@@ -987,7 +985,7 @@ begin
         EClass.Text := Node.Text;
         CBClassInner.Checked := (Classifier.Level > 0);
         SetEditText(EExtends, (Classifier as TClass).AncestorsAsString);
-        Line := Classifier.LineS;
+        Line := Classifier.Lines;
       end;
     end
     else if IsAttributesNode(Node) or IsAttributesNodeLeaf(Node) then
@@ -1014,7 +1012,7 @@ begin
               Attribute.Name, Method);
           CBAttributeStatic.Checked := Attribute.Static;
           CBAttributeFinal.Checked := Attribute.IsFinal;
-          Line := Attribute.LineS;
+          Line := Attribute.Lines;
         end;
       end
       else
@@ -1050,7 +1048,7 @@ begin
           CBMethodClass.Checked := Method.IsClassMethod;
           CBMethodAbstract.Checked := Method.IsAbstract;
           GetParameter(LBParams, Method);
-          Line := Method.LineS;
+          Line := Method.Lines;
         end;
       end
       else
@@ -1291,7 +1289,7 @@ begin
   HasMethod(_(FLngGet), Attribute.Name, Method1);
   HasMethod(_(FLngSet), Attribute.Name, Method2);
   GetIsFirst := True;
-  if Assigned(Method1) and Assigned(Method2) and (Method1.LineS > Method2.LineS)
+  if Assigned(Method1) and Assigned(Method2) and (Method1.Lines > Method2.Lines)
   then
     GetIsFirst := False;
   ChangeAttribute(Attribute, Name);
@@ -1373,7 +1371,7 @@ begin
       ErrorMsg(Format(_('%s already exists'), [Attribute.Name]))
     else
     begin
-      Line := FMyEditor.getLastConstructorLine(ClassNumber);
+      Line := FMyEditor.GetLastConstructorLine(ClassNumber);
       AttributeToPython(Attribute, ClassNumber, Line);
       FMyEditor.RemovePass(ClassNumber);
     end;
@@ -1422,16 +1420,16 @@ begin
         if New <> Old then
         begin
           if OldStatic = Attribute.Static then
-            FMyEditor.ReplaceLineInLine(Attribute.LineS - 1, Old, New)
+            FMyEditor.ReplaceLineInLine(Attribute.Lines - 1, Old, New)
           else if Attribute.Static then
           begin
-            FMyEditor.DeleteLine(Attribute.LineS - 1);
-            FMyEditor.InsertLinesAt(TClassifier(Attribute.Owner).LineS, New);
+            FMyEditor.DeleteLine(Attribute.Lines - 1);
+            FMyEditor.InsertLinesAt(TClassifier(Attribute.Owner).Lines, New);
           end
           else if OldStatic then
           begin
             FMyEditor.InsertAttributeCE(New, ClassNumber);
-            FMyEditor.DeleteLine(Attribute.LineS - 1);
+            FMyEditor.DeleteLine(Attribute.Lines - 1);
           end;
           FMyEditor.ReplaceWord(OldName, Attribute.Name, True);
           FMyEditor.ReplaceWord('self.' + OldVisName,
@@ -1491,7 +1489,7 @@ var
   end;
 
 begin
-  AClass := FMyEditor.getClass(ClassNumber);
+  AClass := FMyEditor.GetClass(ClassNumber);
   if not Assigned(AClass) then
     Exit;
   Node := GetClassNode(ClassNumber);
@@ -1509,7 +1507,7 @@ begin
         MethodName := '';
     end;
     MethodName := MethodName + Copy(Node.Text, 1, Pos('(', Node.Text) - 1);
-    LineNr := FMyEditor.getLineNumberWithWordFromTill(MethodName, AClass.LineS,
+    LineNr := FMyEditor.GetLineNumberWithWordFromTill(MethodName, AClass.Lines,
       AClass.LineE);
     if LineNr > -1 then
     begin
@@ -1528,14 +1526,14 @@ end;
 procedure TFClassEditor.DeleteMethod(Method: TOperation);
 begin
   FMyEditor.ActiveSynEdit.BeginUpdate;
-  FMyEditor.DeleteBlock(Method.LineS - 1, Method.LineE - 1);
+  FMyEditor.DeleteBlock(Method.Lines - 1, Method.LineE - 1);
   var
-  Int := Method.LineS - 1;
+  Int := Method.Lines - 1;
   if Method.HasComment then
   begin
-    FMyEditor.DeleteBlock(Method.Documentation.LineS - 1,
+    FMyEditor.DeleteBlock(Method.Documentation.Lines - 1,
       Method.Documentation.LineE - 1);
-    Int := Method.Documentation.LineS - 1;
+    Int := Method.Documentation.Lines - 1;
   end;
   FMyEditor.DeleteEmptyLine(Int - 1);
   FMyEditor.ActiveSynEdit.EndUpdate;
@@ -1558,7 +1556,7 @@ begin
     HasMethod(_(FLngSet), Attribute.Name, Method2);
     if Assigned(Method1) and Assigned(Method2) then
     begin
-      if Method1.LineS < Method2.LineS then
+      if Method1.Lines < Method2.Lines then
       begin
         DeleteMethod(Method2);
         DeleteMethod(Method1);
@@ -1649,7 +1647,7 @@ begin
     begin
       StringList := TStringList.Create;
       try
-        StringList.Text := FMyEditor.getSource(Method.LineS, Method.LineE - 2);
+        StringList.Text := FMyEditor.GetSource(Method.Lines, Method.LineE - 2);
         for var I := StringList.Count - 1 downto 0 do
         begin
           Str := Trim(StringList[I]);
@@ -2871,7 +2869,7 @@ begin
     begin
       if Method.HasSourceCode then
       begin
-        From := Method.LineS;
+        From := Method.Lines;
         if Method.IsStaticMethod then
           Inc(From);
         if Method.IsClassMethod then
@@ -2880,7 +2878,7 @@ begin
           Inc(From);
         if Method.IsPropertyMethod then
           Inc(From);
-        Source := FMyEditor.getSource(From, Method.LineE - 1);
+        Source := FMyEditor.GetSource(From, Method.LineE - 1);
       end
       else
         Source := '';
@@ -2908,8 +2906,8 @@ procedure TFClassEditor.ReplaceMethod(var Method: TOperation;
 const New: string);
 begin
   FMyEditor.ActiveSynEdit.BeginUpdate;
-  FMyEditor.DeleteBlock(Method.LineS - 1, Method.LineE - 1);
-  FMyEditor.InsertLinesAt(Method.LineS - 1, New);
+  FMyEditor.DeleteBlock(Method.Lines - 1, Method.LineE - 1);
+  FMyEditor.InsertLinesAt(Method.Lines - 1, New);
   FMyEditor.ActiveSynEdit.EndUpdate;
 end;
 
@@ -3118,7 +3116,7 @@ begin
 
   if Assigned(SourceModelEntity) then
   begin
-    From := SourceModelEntity.LineS;
+    From := SourceModelEntity.Lines;
     Till := SourceModelEntity.LineE;
   end
   else
@@ -3126,7 +3124,7 @@ begin
 
   if Assigned(TargetModelEntity) then
   begin
-    ATo := TargetModelEntity.LineS;
+    ATo := TargetModelEntity.Lines;
     ToTill := TargetModelEntity.LineE;
   end
   else
