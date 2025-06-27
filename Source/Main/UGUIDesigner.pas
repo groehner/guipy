@@ -824,17 +824,17 @@ end;
 
 procedure TFGuiDesigner.ELDesignerDblClick(Sender: TObject);
 var
-  Str: string;
+  Destination: string;
 begin
   if FELDesigner.SelectedControls.Count = 1 then
   begin
     if FELDesigner.SelectedControls[0].Tag in [4, 34] then
-      Str := 'def ' + FELDesigner.SelectedControls[0].Name + '_Command'
+      Destination := 'def ' + FELDesigner.SelectedControls[0].Name + '_Command'
     else if FELDesigner.SelectedControls[0].Tag in [74, 103, 104] then
-      Str := 'def ' + FELDesigner.SelectedControls[0].Name + '_clicked'
+      Destination := 'def ' + FELDesigner.SelectedControls[0].Name + '_clicked'
     else
-      Str := FELDesigner.SelectedControls[0].Name;
-    GetEditForm.GoTo2(Str);
+      Destination := FELDesigner.SelectedControls[0].Name;
+    GetEditForm.GoTo2(Destination);
     GUIDesignerTimer.Enabled := True;
   end;
   UpdateState(not Modified);

@@ -17,18 +17,18 @@ type
 
   { // class(TFileForm) - working windows of GuiPy
     ChangeStyle with notifications
-    TEditorForm                        -             symbolleiste zu groß falls mit 200% gestartet wird
+    TEditorForm                        -             symbolleiste zu groÃŸ falls mit 200% gestartet wird
                                                      belibt unklar nach langer Suche
-    TFUMLForm                          DPIChanged    geprüft
-    TFTextDiff                         -             geprüft
-    TFBrowser                          -             geprüft, CBUrl ändert Größe nicht
-    TFStructogram                      DPIChanged    geprüft
-    TFSequenceForm                     DPIChanged    geprüft, zu starke Vergrößerung
+    TFUMLForm                          DPIChanged    geprÃ¼ft
+    TFTextDiff                         -             geprÃ¼ft
+    TFBrowser                          -             geprÃ¼ft, CBUrl Ã¤ndert GrÃ¶ÃŸe nicht
+    TFStructogram                      DPIChanged    geprÃ¼ft
+    TFSequenceForm                     DPIChanged    geprÃ¼ft, zu starke VergrÃ¶ÃŸerung
 
     TFGUIForm = class (TForm)          FormAfterMonitorDpiChanged
 
     // class(TIDEDockWindow) - dockable windows
-    TFFileStructure      ChangeStyle                 geprüft
+    TFFileStructure      ChangeStyle                 geprÃ¼ft
     TFObjectInspector    ChangeStyle
     TFUMLInteractive     ChangeStyle
 

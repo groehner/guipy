@@ -62,8 +62,10 @@ type
       Control: TControl);
     procedure SetSlotForComponent(Attr, Value: string; Control: TControl);
     procedure AddRow(Attribute: string; const Value: string);
+
     function Edit(Control: TControl; Attributes: TStringList;
       Row: Integer): Boolean;
+
     procedure InsertComponent(EditForm: TEditorForm; Control: TControl;
       Pasting: Boolean);
     procedure SetComponentValues(DesignForm: TFGuiForm; Control: TControl);

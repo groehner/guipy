@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 361
+      CustomWidth = 0
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -129,6 +129,8 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
+    ExplicitWidth = 606
+    ExplicitHeight = 309
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -142,7 +144,6 @@ object PyIDEMainForm: TPyIDEMainForm
       TabDragReorder = True
       TabPosition = ttpBottom
       OnActiveTabChange = TabControlActiveTabChange
-      ExplicitLeft = -2
       HiddenItems = <>
       object tbiRightAlign: TSpTBXRightAlignSpacerItem
         CustomWidth = 883
@@ -291,13 +292,17 @@ object PyIDEMainForm: TPyIDEMainForm
           ImageIndex = 33
           ImageName = 'Run1'
         end
+        object tbiRunForDebugging: TSpTBXItem
+          Caption = 'E&xternal run for debuggging'
+          Hint = 
+            'External run for debugging|Run active module in external Python ' +
+            'interpreter'
+          Action = actExternalRunForDebugging
+        end
         object tbiRunDebug: TSpTBXItem
           Action = actDebug
           ImageIndex = 34
           ImageName = 'Debug13'
-        end
-        object tbiRunRunToCursor: TSpTBXItem
-          Action = actRunToCursor
         end
         object tbiRunStepInto: TSpTBXItem
           Action = actStepInto
@@ -381,8 +386,7 @@ object PyIDEMainForm: TPyIDEMainForm
         object tbiFindClose: TSpTBXItem
           Caption = 'Close'
           Hint = 'Close'
-          ImageIndex = 107
-          ImageName = 'DiagramFromFiles'
+          ImageIndex = 120
           OnClick = tbiFindCloseClick
         end
         object tbiFindLabel: TSpTBXLabelItem
@@ -3995,6 +3999,16 @@ object PyIDEMainForm: TPyIDEMainForm
       Category = 'View'
       OnExecute = actViewUMLInteractiveExecute
     end
+    object actExternalRunForDebugging: TAction
+      Category = 'Run'
+      Caption = 'External Run for Debuggging'
+      Hint = 
+        'External Run for Debugging|Run active module in external Python ' +
+        'interpreter'
+      ImageIndex = 22
+      ImageName = 'ExternalRun'
+      OnExecute = actExternalRunForDebuggingExecute
+    end
   end
   object LocalAppStorage: TJvAppIniFileStorage
     StorageOptions.BooleanStringTrueValues = 'TRUE, YES, Y'
@@ -4609,6 +4623,9 @@ object PyIDEMainForm: TPyIDEMainForm
         CollectionIndex = 164
         CollectionName = 'Assistant'
         Name = 'Assistant'
+      end
+      item
+        CollectionIndex = 159
       end>
     ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True

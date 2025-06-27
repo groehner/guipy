@@ -451,7 +451,7 @@ const
 
 var
   PyIDEOptions : TPythonIDEOptions;
-  EditorOptions : TSynEditorOptionsContainer;
+  GEditorOptions : TSynEditorOptionsContainer;
   EditorSearchOptions : TEditorSearchOptions;
 
 implementation
@@ -1249,26 +1249,26 @@ begin
   PyIDEOptions.OnChange.AddHandler(ApplyPyIDEOptions);
   // Save Default editor keystrokes
   TPyScripterSettings.DefaultEditorKeyStrokes := TSynEditKeyStrokes.Create(nil);
-  TPyScripterSettings.DefaultEditorKeyStrokes.Assign(EditorOptions.Keystrokes);
+  TPyScripterSettings.DefaultEditorKeyStrokes.Assign(GEditorOptions.Keystrokes);
 end;
 
 class procedure TPyScripterSettings.ApplyPyIDEOptions;
 begin
-  EditorOptions.Gutter.TrackChanges.Assign(PyIDEOptions.TrackChanges);
-  EditorOptions.SelectedColor.Assign(PyIDEOptions.SelectionColor);
-  EditorOptions.IndentGuides.Assign(PyIDEOptions.IndentGuides);
-  EditorOptions.DisplayFlowControl.Assign(PyIDEOptions.DisplayFlowControl);
+  GEditorOptions.Gutter.TrackChanges.Assign(PyIDEOptions.TrackChanges);
+  GEditorOptions.SelectedColor.Assign(PyIDEOptions.SelectionColor);
+  GEditorOptions.IndentGuides.Assign(PyIDEOptions.IndentGuides);
+  GEditorOptions.DisplayFlowControl.Assign(PyIDEOptions.DisplayFlowControl);
   if PyIDEOptions.AccessibilitySupport then
-    EditorOptions.Options := EditorOptions.Options + [eoAccessibility]
+    GEditorOptions.Options := GEditorOptions.Options + [eoAccessibility]
   else
-    EditorOptions.Options := EditorOptions.Options - [eoAccessibility];
+    GEditorOptions.Options := GEditorOptions.Options - [eoAccessibility];
   EditorSearchOptions.SearchTextAtCaret := PyIDEOptions.SearchTextAtCaret;
 end;
 
 class procedure TPyScripterSettings.CreateEditorOptions;
 begin
-  EditorOptions := TSynEditorOptionsContainer.Create(nil);
-  with EditorOptions do begin
+  GEditorOptions := TSynEditorOptionsContainer.Create(nil);
+  with GEditorOptions do begin
     Font.Name := DefaultCodeFontName;
     Font.Size := 10;
     Gutter.Font.Name := Font.Name;
@@ -1291,7 +1291,7 @@ begin
     TabWidth := 4;
     MaxUndo := 0;
 
-    RegisterEditorUserCommands(EditorOptions.Keystrokes);
+    RegisterEditorUserCommands(GEditorOptions.Keystrokes);
   end;
 end;
 
@@ -1300,7 +1300,7 @@ begin
   PyIDEOptions.OnChange.RemoveHandler(ApplyPyIDEOptions);
   EditorSearchOptions.Free;
   PyIDEOptions.Free;
-  EditorOptions.Free;
+  GEditorOptions.Free;
   TPyScripterSettings.DefaultEditorKeyStrokes.Free;
 end;
 

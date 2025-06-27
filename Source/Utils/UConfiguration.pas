@@ -1611,7 +1611,7 @@ begin
   SetLength(FVisMenus, VisMenusLen);
   SetLength(FVisToolbars, VisToolbarsLen);
   FTabsMenusToolbars := 1;
-  FIndentWidth := EditorOptions.TabWidth;
+  FIndentWidth := GEditorOptions.TabWidth;
   FIndent1 := StringOfChar(' ', 1 * FIndentWidth);
   FIndent2 := StringOfChar(' ', 2 * FIndentWidth);
   FIndent3 := StringOfChar(' ', 3 * FIndentWidth);
@@ -1879,7 +1879,7 @@ begin
   SetVisibility;
 
   // tab Editor
-  FIndentWidth := EditorOptions.TabWidth;
+  FIndentWidth := GEditorOptions.TabWidth;
   FIndent1 := StringOfChar(' ', 1 * FIndentWidth);
   FIndent2 := StringOfChar(' ', 2 * FIndentWidth);
   FIndent3 := StringOfChar(' ', 3 * FIndentWidth);
@@ -1917,7 +1917,7 @@ begin
   if Assigned(GI_ActiveEditor) then
     FSynEdit.Assign(GI_ActiveEditor.ActiveSynEdit)
   else
-    FSynEdit.Assign(EditorOptions);
+    FSynEdit.Assign(GEditorOptions);
   PrepareKeyStrokes;
   DoneItems;
   PrepActions; // IDE commands
@@ -2624,7 +2624,7 @@ begin
   FActionProxyCollection.ApplyShortCuts;
   FileTemplatesGetItems;
   CodeTemplatesGetItems;
-  EditorOptions.Assign(FSynEdit);
+  GEditorOptions.Assign(FSynEdit);
   for var I := 0 to CBHighlighters.Items.Count - 1 do
     CommandsDataModule.SynEditOptionsDialogSetHighlighter(Self, I,
       TSynCustomHighlighter(CBHighlighters.Items.Objects[I]));

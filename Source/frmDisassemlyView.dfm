@@ -45,5 +45,6 @@ object DisForm: TDisForm
         Kind = gbkMargin
         Width = 3
       end>
+    ScrollbarAnnotations = <>
   end
 end

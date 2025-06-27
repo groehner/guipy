@@ -62,7 +62,7 @@ uses
 
 procedure TDisForm.FormCreate(Sender: TObject);
 begin
- DisSynEdit.Assign(EditorOptions);
+ DisSynEdit.Assign(GEditorOptions);
  DisSynEdit.Highlighter := ResourcesDataModule.SynPythonSyn;
 end;
 

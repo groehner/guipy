@@ -1060,7 +1060,7 @@ begin
           ActionProxyCollection.Free;
         end;
         AppStorage.DeleteSubTree('Editor Shortcuts');
-        AppStorage.WriteCollection('Editor Shortcuts', EditorOptions.Keystrokes);
+        AppStorage.WriteCollection('Editor Shortcuts', GEditorOptions.Keystrokes);
       finally
         AppStorage.Free;
       end;
@@ -1105,17 +1105,17 @@ begin
           TempKeyStrokes := TSmartPtr.Make(TSynEditKeyStrokes.Create(nil))();
           try
             AppStorage.ReadCollection('Editor Shortcuts', TempKeystrokes, True);
-            EditorOptions.Keystrokes.Assign(TempKeyStrokes);
+            GEditorOptions.Keystrokes.Assign(TempKeyStrokes);
           except
            on E: ESynKeyError do
              StyledMessageDlg(E.Message, mtError, [TMsgDlgBtn.mbOK], 0);
           end;
           GI_EditorFactory.ApplyToEditors(procedure(Editor: IEditor)
           begin
-            Editor.SynEdit.Keystrokes.Assign(EditorOptions.Keystrokes);
+            Editor.SynEdit.Keystrokes.Assign(GEditorOptions.Keystrokes);
           end);
 
-          GI_PyInterpreter.Editor.Keystrokes.Assign(EditorOptions.Keystrokes);
+          GI_PyInterpreter.Editor.Keystrokes.Assign(GEditorOptions.Keystrokes);
           PythonIIForm.RegisterHistoryCommands;
         end;
       finally

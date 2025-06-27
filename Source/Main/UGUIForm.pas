@@ -288,7 +288,11 @@ begin
   SetWidgetPartners;
   OnActivate := EnterForm;
   PyIDEMainForm.ConnectGUIandPyWindow(Self);
-  EnterForm(Self); // must stay!
+
+  // passed
+
+  EnterForm(Self); // must stay!  not passing!
+
   SetAnimation(True);
   FReadOnly := IsWriteProtected(FPathname);
   if FontSize = 0 then
@@ -315,7 +319,7 @@ begin
   end;
   for var I := 1 to 4 do
     PyIDEMainForm.TabControlWidgets.Items[I].Visible :=
-      FConfiguration.Vistabs[I];
+      FConfiguration.VisTabs[I];
   Action := caFree;
 end;
 
@@ -390,11 +394,13 @@ begin
       begin
         ShowDockForm(FObjectInspector);
       end);
-  if (FGUIDesigner.ELDesigner.DesignControl <> Self) or
-    not FGUIDesigner.ELDesigner.Active then
-    FGUIDesigner.ChangeTo(Self);
+  FGUIDesigner.ChangeTo(Self);
   FPartner.SynEditEnter(FPartner.ActiveSynEdit);
-  PyIDEMainForm.ShowTkOrQt(FPartner.FrameType);
+  TThread.ForceQueue(nil,
+  procedure
+  begin
+    PyIDEMainForm.ShowTkOrQt(FPartner.FrameType);
+  end);
 end;
 
 procedure TFGuiForm.FormAfterMonitorDpiChanged(Sender: TObject;
@@ -504,7 +510,7 @@ end;
 procedure TFGuiForm.SetEvent(Event: string);
 begin
   Event := Without_(Event);
-  if not FPartner.hasText('def ' + FWidget.HandlerNameAndParameter(Event)) then
+  if not FPartner.HasText('def ' + FWidget.HandlerNameAndParameter(Event)) then
     FPartner.InsertProcedure(CrLf + MakeHandler(Event));
   if FPartner.FrameType < 3 then
     FPartner.InsertTkBinding('root', Event, MakeBinding(Event))
@@ -561,16 +567,16 @@ begin
       Event := FVisibility;
     Result := FIndent2 + 'self.root.bind(''<' + Event.GetModifiers(Eventname) +
       Eventname + Event.GetDetail(Eventname) + '>'', self.' +
-      HandlerName(Eventname) + ')';
+      Handlername(Eventname) + ')';
   end
   else
     Result := FIndent2 + 'self.' + Eventname + '.connect(self.' +
-      HandlerName(Eventname) + ')';
+      Handlername(Eventname) + ')';
 end;
 
 procedure TFGuiForm.DeleteEventHandler(const Event: string);
 begin
-  FPartner.DeleteMethod(HandlerName(Event));
+  FPartner.DeleteMethod(Handlername(Event));
   var
   Binding := MakeBinding(Event);
   if FPartner.FrameType >= 3 then

@@ -121,7 +121,7 @@ begin
     eoTabsToSpaces, eoTrimTrailingSpaces, eoSmartTabDelete, eoGroupUndo,
     eoKeepCaretX, eoEnhanceHomeKey];
   ScrollOptions := [eoScrollPastEol, eoShowScrollHint];
-  Font.Assign(EditorOptions.Font);
+  Font.Assign(GEditorOptions.Font);
   OnKeyUp := CodeEditKeyUp;
   OnStatusChange := EditorStatusChange;
   OnEnter := Enter;

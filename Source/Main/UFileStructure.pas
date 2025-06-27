@@ -70,11 +70,6 @@ type
     procedure NavigateToVilNode(Node: PVirtualNode;
       ForceToMiddle: Boolean = True; Activate: Boolean = True);
     procedure SetFont(AFont: TFont);
-  protected
-    //procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
-    //  const BasePath: string);
-    procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage;
-      const BasePath: string);
   public
     procedure Init(Items: TTreeNodes; Form: TFileForm);
     procedure ShowEditorCodeElement(Line: Integer);
@@ -291,13 +286,6 @@ begin
   end;
   Result := False;
 end;
-
-procedure TFFileStructure.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
-  const BasePath: string);
-begin
-end;
-
-
 
 procedure TFFileStructure.MIFontClick(Sender: TObject);
 begin

@@ -77,6 +77,7 @@ type
     mnPythonVersions: TSpTBXSubmenuItem;
     vilCodeImages: TVirtualImageList;
     vilImages: TVirtualImageList;
+    mnPythonRestart: TSpTBXItem;
     procedure FormCreate(Sender: TObject);
     procedure SynEditProcessCommand(Sender: TObject;
       var Command: TSynEditorCommand; var AChar: WideChar; Data: Pointer);
@@ -102,6 +103,7 @@ type
     procedure SynCodeCompletionClose(Sender: TObject);
     procedure actCopyWithoutPromptsExecute(Sender: TObject);
     procedure actPasteAndExecuteExecute(Sender: TObject);
+    procedure mnPythonRestartClick(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
     procedure SynCodeCompletionAfterCodeCompletion(Sender: TObject;
@@ -573,7 +575,7 @@ begin
   var SynEditOptions := TSmartPtr.Make(TSynEditorOptionsContainer.Create(nil))();
 
   var OldWordWrap := SynEdit.WordWrap;
-  SynEditOptions.Assign(EditorOptions);
+  SynEditOptions.Assign(GEditorOptions);
   ValidateEditorOptions(SynEditOptions);
   SynEdit.Assign(SynEditOptions);
   SynEdit.WordWrap := OldWordWrap;
@@ -1687,6 +1689,12 @@ end;
 function TPythonIIForm.GetEditor: TCustomSynEdit;
 begin
   Result := SynEdit;
+end;
+
+procedure TPythonIIForm.mnPythonRestartClick(Sender: TObject);
+begin
+  PyControl.PythonEngineType := peRemote;
+  GI_PyInterpreter.PrintEngineType;
 end;
 
 procedure TPythonIIForm.RegisterHistoryCommands;

@@ -102,6 +102,10 @@ inherited PythonIIForm: TPythonIIForm
       Caption = 'Python Engine'
       LinkSubitems = PyIDEMainForm.mnPythonEngines
     end
+    object mnPythonRestart: TSpTBXItem
+      Caption = 'Python restart'
+      OnClick = mnPythonRestartClick
+    end
     object TBXSeparatorItem3: TSpTBXSeparatorItem
     end
     object mnEditCut: TSpTBXItem

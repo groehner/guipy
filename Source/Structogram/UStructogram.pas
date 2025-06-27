@@ -1527,7 +1527,7 @@ var
   end;
 
 begin
-  Indent1:= StringOfChar(' ', EditorOptions.TabWidth);
+  Indent1:= StringOfChar(' ', GEditorOptions.TabWidth);
   while Assigned(Element) do begin
     if Element is TStrStatement then begin
       Str:= withoutCrLf(Element.Text);

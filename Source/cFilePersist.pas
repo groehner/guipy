@@ -175,7 +175,7 @@ begin
      ReadOnly := AppStorage.ReadBoolean(BasePath+'\ReadOnly', False);
      GUIFormOpen:= AppStorage.ReadBoolean(BasePath+'\GUIFormOpen', False);
 
-     EditorOptions.Assign(cPyScripterSettings.EditorOptions);
+     EditorOptions.Assign(cPyScripterSettings.GEditorOptions);
      AppStorage.ReadPersistent(BasePath+'\Editor Options', EditorOptions, True, True);
      EditorOptions.Options := EditorOptions.Options + [eoBracketsHighlight];
 
@@ -187,7 +187,7 @@ begin
        SecondEditorUseCodeFolding := AppStorage.ReadBoolean(BasePath+'\Second Editor UseCodeFolding', False);
        if SecondEditorUseCodeFolding then
          FoldState2 := AppStorage.ReadString(BasePath+'\Second Editor FoldState', '');
-       EditorOptions2.Assign(cPyScripterSettings.EditorOptions);
+       EditorOptions2.Assign(cPyScripterSettings.GEditorOptions);
        AppStorage.ReadPersistent(BasePath+'\Second Editor Options', EditorOptions2, True, True);
      end;
    end;

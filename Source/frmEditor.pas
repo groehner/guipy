@@ -277,7 +277,6 @@ type
     FMouseIsInBorderOfStructure: Boolean;
     FMouseBorderOfStructure: Integer;
     FFrameType: Integer; // 3 = Qt, 2 = Tk, 1 = else, 0 unknown
-
     FBorderHighlight : TColor;
     FBorderNormal : TColor;
     FBreakPoints: TBreakpointList;
@@ -1562,7 +1561,7 @@ begin
         Exit;
     end;
   end;
-  // create a new file, add Ite to the file list, open the file
+  // create a new file, add it to the file list, open the file
   TabCtrl := PyIDEMainForm.TabControl(TabControlIndex);
   TabCtrl.Toolbar.BeginUpdate;
   try
@@ -2878,8 +2877,8 @@ end;
 
 procedure TEditorForm.ApplyEditorOptions;
 begin
-  SynEdit.Assign(EditorOptions);
-  SynEdit2.Assign(EditorOptions);
+  SynEdit.Assign(GEditorOptions);
+  SynEdit2.Assign(GEditorOptions);
 
   SynEdit.BracketsHighlight.SetFontColorsAndStyle(
     ResourcesDataModule.SynPythonSyn.MatchingBraceAttri.Foreground,
@@ -3455,22 +3454,14 @@ end;
 
 procedure TEditorForm.TBZoomMinusClick(Sender: TObject);
 begin
-  var Fontsize:= Max(SynEdit.Font.Size - 1, 6);
-  SynEdit.Font.Size:= Fontsize;
-  SynEdit.Gutter.Font.Size:= Fontsize - 2;
-  SynEdit2.Font.Size:= Fontsize;
-  SynEdit2.Gutter.Font.Size:= Fontsize - 2;
-  EditorOptions.Font.Size:= Fontsize;
+  SynEdit.Zoom(-1);
+  SynEdit2.Zoom(-1);
 end;
 
 procedure TEditorForm.TBZoomPlusClick(Sender: TObject);
 begin
-  var Fontsize:= SynEdit.Font.Size + 1;
-  SynEdit.Font.Size:= Fontsize;
-  SynEdit.Gutter.Font.Size:= Fontsize - 2;
-  SynEdit2.Font.Size:= Fontsize;
-  SynEdit2.Gutter.Font.Size:= Fontsize - 2;
-  EditorOptions.Font.Size:= Fontsize;
+  SynEdit.Zoom(+1);
+  SynEdit2.Zoom(+1);
 end;
 
 procedure TEditorForm.TBNumbersClick(Sender: TObject);
@@ -3633,7 +3624,7 @@ begin
       SelEnd:= SelStart;
       CaretX:= CarX - TabWidth;
     end;
-    TabWidth:= EditorOptions.TabWidth;
+    TabWidth:= GEditorOptions.TabWidth;
   end;
 end;
 
@@ -3653,7 +3644,7 @@ begin
       SelEnd:= SelStart;
       CaretX:= CarX + TabWidth;
     end;
-    TabWidth:= EditorOptions.TabWidth;
+    TabWidth:= GEditorOptions.TabWidth;
   end;
 end;
 

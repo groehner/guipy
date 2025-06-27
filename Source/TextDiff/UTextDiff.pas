@@ -238,7 +238,7 @@ begin
     Highlighter := ResourcesDataModule.Highlighters.
       HighlighterFromFileExt('.py');
   end;
-  FCodeEdit1.Assign(EditorOptions);
+  FCodeEdit1.Assign(GEditorOptions);
   FCodeEdit2 := TSynEditExDiff.Create(Self);
   with FCodeEdit2 do
   begin
@@ -257,11 +257,11 @@ begin
     Highlighter := ResourcesDataModule.Highlighters.
       HighlighterFromFileExt('.py');
   end;
-  FCodeEdit2.Assign(EditorOptions);
+  FCodeEdit2.Assign(GEditorOptions);
   FNumber := 1;
   OnClose := FormClose;
   FOnlyDifferences := False;
-  SetFont(EditorOptions.Font);
+  SetFont(GEditorOptions.Font);
   TBCopyBlockLeft.Hint := _('Copy block left');
   TBCopyBlockRight.Hint := _('Copy block right');
   ChangeStyle;

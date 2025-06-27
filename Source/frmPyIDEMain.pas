@@ -1220,7 +1220,7 @@ type
     TBControlItem3: TTBControlItem;
     tbitbiDiagramFromOpenFiles: TSpTBXItem;
     mnPopupFileOpen: TSpTBXItem;
-    tbiRunRunToCursor: TSpTBXItem;
+    tbiRunForDebugging: TSpTBXItem;
     SpTBXTabItem4: TSpTBXTabItem;
     SpTBXTabSheetQtBase: TSpTBXTabSheet;
     ToolBarQtBase: TToolBar;
@@ -1300,6 +1300,7 @@ type
     actPythonFreeThreaded: TAction;
     mnViewUMLInteractive: TSpTBXItem;
     actViewUMLInteractive: TAction;
+    actExternalRunForDebugging: TAction;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1458,6 +1459,7 @@ type
     procedure ToolButtonStartDrag(Sender: TObject; var DragObject: TDragObject);
     procedure TBQtApplicationClick(Sender: TObject);
     procedure actEditorZoomResetExecute(Sender: TObject);
+    procedure actExternalRunForDebuggingExecute(Sender: TObject);
     procedure DdeServerConvExecuteMacro(Sender: TObject; Msg: TStrings);
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
       NewDPI: Integer);
@@ -1471,6 +1473,7 @@ type
     ShellExtensionFiles: TStringList;
     DragRectangle: TButton;
     fLanguageList: TStringList;
+    FTabControlsShowing: Integer;
 
 //    function FindAction(var Key: Word; Shift: TShiftState): TCustomAction;
     procedure DebugActiveScript(ActiveEditor: IEditor;
@@ -1564,8 +1567,6 @@ type
     procedure RestoreApplicationData;
     procedure StoreLocalApplicationData;
     procedure RestoreLocalApplicationData;
-
-
     function NewFileFromTemplate(FileTemplate: TFileTemplate;
        TabControlIndex: Integer = 1; FileName: string = ''): IEditor;
     procedure UpdateDebugCommands(DebuggerState: TDebuggerState);
@@ -2135,6 +2136,7 @@ begin
   TabControl1.Toolbar.OnMouseDown := TabControlMouseDown;
   TabControl2.Toolbar.OnMouseDown := TabControlMouseDown;
   TabControlWidgets.ActiveTabIndex:= 0;
+  FTabControlsShowing:= 0;
 
   //Flicker
   MainMenu.DoubleBuffered := True;
@@ -3870,7 +3872,7 @@ begin
     GUIForm.Open(ChangeFileExt(aEditor.FileName, '.pfm'), '',
       Point(GuiPyOptions.FrameWidth, GuiPyOptions.FrameHeight), TEditorForm(aEditor.Form));
     GUIForm.Caption:= 'CAPTION';
-    GUIForm.initEvents;
+    GUIForm.InitEvents;
     FObjectInspector.ELPropertyInspector.SetByCaption('Title', 'CAPTION');
     aEditor.SynEdit.ClearUndo; // because GUIForm.Open changes geometry
   end;
@@ -4037,7 +4039,7 @@ begin
 
     TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides', 'DisplayFlowControl']);
     AppStorage.DeleteSubTree('Editor Options');
-    AppStorage.WritePersistent('Editor Options', EditorOptions, True, TempStringList);
+    AppStorage.WritePersistent('Editor Options', GEditorOptions, True, TempStringList);
     AppStorage.WritePersistent('Editor Search Options', EditorSearchOptions);
 
     // GuiPyOptions
@@ -4082,7 +4084,6 @@ begin
     AppStorage.WritePersistent('Class Editor Options', FClassEditor);
     AppStorage.WritePersistent('Object Generator Options', FObjectGenerator);
     AppStorage.WritePersistent('Object Inspector Options', FObjectInspector);
-    AppStorage.WritePersistent('File Structure Options', FFileStructure);
     AppStorage.WritePersistent('UMLInteractive Options', FUMLInteractive);
 
     AppStorage.WriteStringList('Custom Params', CustomParams);
@@ -4168,6 +4169,9 @@ begin
   // Remove since it is now stored in PyScripter.local.ini
   if AppStorage.PathExists('Layouts') then
     AppStorage.DeleteSubTree('Layouts');
+  // since version 6.07
+  if AppStorage.PathExists('File Structure Options') then
+    AppStorage.DeleteSubTree('File Structure Options');
 
   AppStorage.StorageOptions.SetAsString := True;
 
@@ -4200,11 +4204,11 @@ begin
   var TempStringList := TSmartPtr.Make(TStringList.Create)();
   TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides', 'DisplayFlowControl']);
   if AppStorage.PathExists('Editor Options') then
-    AppStorage.ReadPersistent('Editor Options', EditorOptions, True, True, TempStringList);
+    AppStorage.ReadPersistent('Editor Options', GEditorOptions, True, True, TempStringList);
   if MachineStorage.PathExists('Editor Options') then
-    MachineStorage.ReadPersistent('Editor Options', EditorOptions, True, True, TempStringList);
+    MachineStorage.ReadPersistent('Editor Options', GEditorOptions, True, True, TempStringList);
   if AppStorage.PathExists('Editor Options') or MachineStorage.PathExists('Editor Options') then
-    EditorOptions.Options := EditorOptions.Options + [eoBracketsHighlight, eoCopyPlainText];
+    GEditorOptions.Options := GEditorOptions.Options + [eoBracketsHighlight, eoCopyPlainText];
 
   if AppStorage.PathExists('Editor Search Options') then
     AppStorage.ReadPersistent('Editor Search Options', EditorSearchOptions);
@@ -4304,10 +4308,6 @@ begin
   AppStorage.ReadPersistent('Object Inspector Options', FObjectInspector);
   if MachineStorage.PathExists('Object Inspector Options') then
     MachineStorage.ReadPersistent('Object Inspector Options', FObjectInspector);
-
-  AppStorage.ReadPersistent('File Structure Options', FFileStructure);
-  if MachineStorage.PathExists('File Structure Options') then
-    MachineStorage.ReadPersistent('File Structure Options', FFileStructure);
 
   AppStorage.ReadPersistent('UMLInteractive Options', FUMLInteractive);
   if MachineStorage.PathExists('UMLInteractive Options') then
@@ -5379,6 +5379,27 @@ begin
   end;
 end;
 
+procedure TPyIDEMainForm.actExternalRunForDebuggingExecute(Sender: TObject);
+var
+  ActiveEditor: IEditor;
+  RunConfig: TRunConfiguration;
+begin
+  ActiveEditor := GetActiveEditor;
+  if Assigned(ActiveEditor) then begin
+    ActiveEditor.Activate;
+    RunConfig :=  TRunConfiguration.Create;
+    try
+      SetupRunConfiguration(RunConfig, ActiveEditor.FileId);
+      RunConfig.ExternalRun.ConsoleHidden := False;
+      RunConfig.ExternalRun.ParseTraceback := False;
+      PyControl.ExternalRun(RunConfig);
+    finally
+      RunConfig.Free;
+    end;
+  end;
+
+end;
+
 procedure TPyIDEMainForm.actExecSelectionExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile
@@ -5710,8 +5731,8 @@ end;
 procedure TPyIDEMainForm.WMSpSkinChange(var Message: TMessage);
 begin
   // Update EditorOptions
-  ThemeEditorGutter(EditorOptions.Gutter);
-  PyIDEOptions.CodeFolding.FolderBarLinesColor := EditorOptions.Gutter.Font.Color;
+  ThemeEditorGutter(GEditorOptions.Gutter);
+  PyIDEOptions.CodeFolding.FolderBarLinesColor := GEditorOptions.Gutter.Font.Color;
 
   // After updating to D11.3 Toolbar flicker was very visible on Style change
   // BeginUpdate/EndUpdate solved the problem
@@ -6541,23 +6562,26 @@ end;
 procedure TPyIDEMainForm.ShowTkOrQt(FrameType: integer);
 begin
   var PC:= PyIDEMainForm.TabControlWidgets;
-  PC.TabClick(TSpTBXTabItem(PC.Items[0]));
-  if FrameType in [0, 1] then begin
+  if (FrameType in [0, 1]) and (FTabControlsShowing <> 1) then begin
     PC.Items[1].Visible:= FConfiguration.VisTabs[1];
     PC.Items[2].Visible:= FConfiguration.VisTabs[2];
     PC.Items[3].Visible:= FConfiguration.VisTabs[3];
     PC.Items[4].Visible:= FConfiguration.VisTabs[4];
-  end else if FrameType = 2 then begin
+    FTabControlsShowing:= 1;
+    PC.TabClick(TSpTBXTabItem(PC.Items[0]));
+  end else if (FrameType = 2) and (FTabControlsShowing <> 2) then begin
     PC.Items[1].Visible:= FConfiguration.VisTabs[1];
     PC.Items[2].Visible:= FConfiguration.VisTabs[2];
     PC.Items[3].Visible:= False;
     PC.Items[4].Visible:= False;
+    FTabControlsShowing:= 2;
     PC.TabClick(TSpTBXTabItem(PC.Items[1]));
-  end else if FrameType = 3 then begin
+  end else if (FrameType = 3) and (FTabControlsShowing <> 3) then begin
     PC.Items[1].Visible:= False;
     PC.Items[2].Visible:= False;
     PC.Items[3].Visible:= FConfiguration.VisTabs[3];
     PC.Items[4].Visible:= FConfiguration.VisTabs[4];
+    FTabControlsShowing:= 3;
     PC.TabClick(TSpTBXTabItem(PC.Items[3]));
   end;
   case FrameType of
