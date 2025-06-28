@@ -836,7 +836,7 @@ begin
     FSolution:= '';
   end else begin
     if not ((ScrollBox.ControlCount = 1) and (TListImage(ScrollBox.Controls[0]).StrList is TStrAlgorithm)) then begin
-      ShowMessage(_('Switch to puzzle mode with the finished FSolution from a single algorithm structogram.'));
+      ShowMessage(_('Switch to puzzle mode with the finished solution from a single algorithm structogram.'));
       Exit;
     end;
     SetPuzzleMode(1);
@@ -1954,5 +1954,6 @@ class function TFStructogram.ToolbarCount: Integer;
 begin
   Result:= 13;
 end;
+
 
 end.

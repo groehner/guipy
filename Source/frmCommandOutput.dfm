@@ -102,7 +102,6 @@ inherited OutputWindow: TOutputWindow
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionIndex = 16
         CollectionName = 'Copy'
         Name = 'Copy'
       end
@@ -117,7 +116,6 @@ inherited OutputWindow: TOutputWindow
         Name = 'Stop'
       end
       item
-        CollectionIndex = 30
         CollectionName = 'Exit'
         Name = 'Exit'
       end

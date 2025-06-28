@@ -3911,7 +3911,6 @@ end;
 
 procedure TPyIDEMainForm.actFileOpenExecute(Sender: TObject);
 var
-  i: Integer;
   aFile: IFile;
 begin
   with ResourcesDataModule.dlgFileOpen do begin
@@ -3939,10 +3938,10 @@ begin
           then (aFile.Form as TFTextDiff).Open(Files[0], Files[1])
           else (aFile.Form as TFTextDiff).Open(FileName)
       else
-        for i := 0 to Files.Count - 1 do begin
-          GI_EditorFactory.OpenFile(Files[i], '', TabControlIndex(ActiveTabControl));
-          if (TPath.GetExtension(Files[i]) = '.pyw') then begin
-            var pfmFile:= TPath.ChangeExtension(Files[i], '.pfm');
+        for var I := 0 to Files.Count - 1 do begin
+          GI_EditorFactory.OpenFile(Files[I], '', TabControlIndex(ActiveTabControl));
+          if (TPath.GetExtension(Files[I]) = '.pyw') then begin
+            var pfmFile:= TPath.ChangeExtension(Files[I], '.pfm');
             GI_EditorFactory.OpenFile(pfmFile, '', TabControlIndex(ActiveTabControl));
           end;
         end;
@@ -4526,6 +4525,7 @@ begin
   actUMLNewComment.Enabled:= R;
   actUMLNewLayout.Enabled:= R;
   actUMLRefresh.Enabled:= R;
+  actUMLRecognizeAssociations.Enabled:= R;
   actUMLSaveAsPicture.Enabled:= R;
 
   actUMLDiagramFromOpenFiles.Enabled:= (GI_EditorFactory <> nil)
@@ -4585,14 +4585,16 @@ begin
     begin
       aFile.Retranslate;
     end);
-
+    // after some of these retranslations some icons in the main menu
+    // changed to ImageIndex = 0
+    // after renaming the icons with appendix 13 this error was fixed
     RetranslateComponent(FConfiguration);
     FConfiguration.Retranslate;
     RetranslateComponent(FGUIDesigner);
-    RetranslateComponent(FClassEditor);
-    RetranslateComponent(FObjectInspector);
-    RetranslateComponent(FFileStructure);
     RetranslateComponent(FUMLInteractive);
+    RetranslateComponent(FClassEditor);
+    RetranslateComponent(FFileStructure);
+    RetranslateComponent(FObjectInspector);
     RetranslateComponent(FObjectGenerator);
     if FConfiguration.GitOK and (FGit <> nil) then RetranslateComponent(FGit);
     if FConfiguration.SubversionOK and (FSubversion <> nil) then RetranslateComponent(FSubversion);
@@ -6623,6 +6625,7 @@ begin
   FreeAndNil(zOrder);
   inherited;
 end;
+
 
 end.
 

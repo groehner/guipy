@@ -119,7 +119,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpType = htContext
       Hint = 'Cut|Cuts the selection and puts it on the Clipboard'
       ImageIndex = 9
-      ImageName = 'Cut'
+      ImageName = 'Cut13'
       ShortCut = 16472
     end
     object actEditCopy: TEditCopy
@@ -130,7 +130,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpType = htContext
       Hint = 'Copy|Copies the selection and puts it on the Clipboard'
       ImageIndex = 10
-      ImageName = 'Copy'
+      ImageName = 'Copy13'
       ShortCut = 16451
     end
     object actEditCopyRTF: TAction
@@ -180,7 +180,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpType = htContext
       Hint = 'Paste|Inserts Clipboard contents'
       ImageIndex = 11
-      ImageName = 'Paste'
+      ImageName = 'Paste13'
       ShortCut = 16470
     end
     object actEditDelete: TEditDelete
@@ -234,7 +234,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 330
       Hint = 'Search|Search for a string'
       ImageIndex = 13
-      ImageName = 'Search'
+      ImageName = 'Search13'
       ShortCut = 16454
       OnExecute = actSearchFindExecute
     end
@@ -267,7 +267,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 330
       Hint = 'Replace|Search & Replace'
       ImageIndex = 15
-      ImageName = 'Replace'
+      ImageName = 'Replace13'
       ShortCut = 16456
       OnExecute = actSearchReplaceExecute
     end
@@ -287,7 +287,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 310
       Hint = 'Print|Print active file'
       ImageIndex = 6
-      ImageName = 'Print'
+      ImageName = 'Print13'
       ShortCut = 16464
       OnExecute = actFilePrintExecute
     end
@@ -324,7 +324,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 320
       Hint = 'Indent block|Indent selected block of code'
       ImageIndex = 45
-      ImageName = 'Indent'
+      ImageName = 'Indent13'
       ShortCut = 24649
       OnExecute = actEditIndentExecute
     end
@@ -515,7 +515,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 330
       Hint = 'Find Function|Find function from function list'
       ImageIndex = 21
-      ImageName = 'Function'
+      ImageName = 'Function13'
       ShortCut = 16455
       OnExecute = actFindFunctionExecute
     end
@@ -701,7 +701,6 @@ object CommandsDataModule: TCommandsDataModule
       Enabled = False
       HelpContext = 330
       Hint = 'Replace with existing settings'
-      ImageIndex = 15
       ImageName = 'Replace'
       OnExecute = actSearchReplaceNowExecute
     end
@@ -773,7 +772,6 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 320
       HelpType = htContext
       Hint = 'Copy file name of active file to clipboard'
-      ImageIndex = 10
       ImageName = 'Copy'
       OnExecute = actEditCopyFileNameExecute
     end

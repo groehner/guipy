@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 385
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -113,7 +113,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Visible = False
     end
     object ActivityIndicator: TActivityIndicator
-      Left = 1027
+      Left = 1039
       Top = 6
       FrameDelay = 150
       IndicatorSize = aisSmall
@@ -129,8 +129,6 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
-    ExplicitWidth = 606
-    ExplicitHeight = 309
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -144,6 +142,7 @@ object PyIDEMainForm: TPyIDEMainForm
       TabDragReorder = True
       TabPosition = ttpBottom
       OnActiveTabChange = TabControlActiveTabChange
+      ExplicitLeft = -2
       HiddenItems = <>
       object tbiRightAlign: TSpTBXRightAlignSpacerItem
         CustomWidth = 883
@@ -294,9 +293,6 @@ object PyIDEMainForm: TPyIDEMainForm
         end
         object tbiRunForDebugging: TSpTBXItem
           Caption = 'E&xternal run for debuggging'
-          Hint = 
-            'External run for debugging|Run active module in external Python ' +
-            'interpreter'
           Action = actExternalRunForDebugging
         end
         object tbiRunDebug: TSpTBXItem
@@ -369,7 +365,7 @@ object PyIDEMainForm: TPyIDEMainForm
       object FindToolbar: TSpTBXToolbar
         Left = 2
         Top = 83
-        Width = 524
+        Width = 548
         Height = 26
         CloseButtonWhenDocked = True
         DockPos = 0
@@ -1210,8 +1206,6 @@ object PyIDEMainForm: TPyIDEMainForm
           object mnEditClass: TSpTBXItem
             Hint = 'Edit class'
             Action = actUMLEditClass
-            ImageIndex = 113
-            ImageName = 'EditClass'
           end
           object mnNewComment: TSpTBXItem
             Hint = 'New comment'
@@ -1220,19 +1214,13 @@ object PyIDEMainForm: TPyIDEMainForm
           object mnNewLayout: TSpTBXItem
             Hint = 'New layout'
             Action = actUMLNewLayout
-            ImageIndex = 105
-            ImageName = 'NewLayout'
           end
           object mnRefresh: TSpTBXItem
             Hint = 'Refresh'
             Action = actUMLRefresh
-            ImageIndex = 106
-            ImageName = 'Update'
           end
           object mnRecognizeAssociations: TSpTBXItem
             Action = actUMLRecognizeAssociations
-            ImageIndex = 115
-            ImageName = 'RecognizeAssociations'
           end
           object mnDiagramFromOpenFiles: TSpTBXItem
             Hint = 'Diagram from open files'
@@ -1410,7 +1398,7 @@ object PyIDEMainForm: TPyIDEMainForm
             Caption = 'Tools'
             Hint = 'External Tools'
             ImageIndex = 55
-            ImageName = 'Tools'
+            ImageName = 'Tools13'
           end
           object mnConfigureTools: TSpTBXItem
             Action = CommandsDataModule.actConfigureTools
@@ -2994,18 +2982,18 @@ object PyIDEMainForm: TPyIDEMainForm
   object SpTBXCustomizer: TSpTBXCustomizer
     Images = vilImages
     OnGetCustomizeForm = SpTBXCustomizerGetCustomizeForm
-    Left = 328
+    Left = 368
     Top = 144
   end
   object ToolbarPopupMenu: TSpTBXPopupMenu
     Images = vilImages
     LinkSubitems = mnuToolbars
-    Left = 40
+    Left = 56
     Top = 224
   end
   object actlImmutable: TActionList
     Images = vilImages
-    Left = 216
+    Left = 240
     Top = 140
     object actViewNextEditor: TAction
       Category = 'View'
@@ -3030,7 +3018,7 @@ object PyIDEMainForm: TPyIDEMainForm
   end
   object actlStandard: TActionList
     Images = vilImages
-    Left = 122
+    Left = 130
     Top = 140
     object actViewMainMenu: TAction
       Category = 'View'
@@ -3142,7 +3130,7 @@ object PyIDEMainForm: TPyIDEMainForm
       HelpType = htContext
       Hint = 'Exit'
       ImageIndex = 32
-      ImageName = 'Exit'
+      ImageName = 'Exit13'
       ShortCut = 32883
       OnExecute = actFileExitExecute
     end
@@ -3739,7 +3727,7 @@ object PyIDEMainForm: TPyIDEMainForm
       HelpType = htContext
       Hint = 'Execute the editor selection'
       ImageIndex = 16
-      ImageName = 'Execute'
+      ImageName = 'Execute13'
       ShortCut = 16502
       OnExecute = actExecSelectionExecute
     end
@@ -3881,7 +3869,8 @@ object PyIDEMainForm: TPyIDEMainForm
     object actUMLEditClass: TAction
       Category = 'UML'
       Caption = 'Edit class'
-      ImageName = 'ClassEdit'
+      ImageIndex = 113
+      ImageName = 'EditClass'
       OnExecute = actUMLEditClassExecute
     end
     object actUMLNewComment: TAction
@@ -3894,14 +3883,15 @@ object PyIDEMainForm: TPyIDEMainForm
     object actUMLNewLayout: TAction
       Category = 'UML'
       Caption = 'New layout'
-      ImageName = 'Aktualisieren'
+      ImageIndex = 105
+      ImageName = 'NewLayout'
       OnExecute = actUMLNewLayoutExecute
     end
     object actUMLRefresh: TAction
       Category = 'UML'
       Caption = 'Refresh'
-      ImageIndex = 105
-      ImageName = 'NewLayout'
+      ImageIndex = 106
+      ImageName = 'Update13'
       OnExecute = actUMLRefreshExecute
     end
     object actUMLDiagramFromOpenFiles: TAction
@@ -3936,14 +3926,14 @@ object PyIDEMainForm: TPyIDEMainForm
       Category = 'Tools'
       Caption = 'Tools configuration'
       ImageIndex = 110
-      ImageName = 'Configuration'
+      ImageName = 'Configuration13'
       OnExecute = actToolsConfigurationExecute
     end
     object actToolsGit: TAction
       Category = 'Tools'
       Caption = 'Git'
-      ImageIndex = 109
-      ImageName = 'TextDiff'
+      ImageIndex = 111
+      ImageName = 'git'
     end
     object actViewObjectinspector: TAction
       Category = 'View'
@@ -3976,8 +3966,8 @@ object PyIDEMainForm: TPyIDEMainForm
     object actUMLRecognizeAssociations: TAction
       Category = 'UML'
       Caption = 'Recognize associations'
-      ImageIndex = 110
-      ImageName = 'Configuration'
+      ImageIndex = 115
+      ImageName = 'RecognizeAssociations'
       OnExecute = actUMLRecognizeAssociationsExecute
     end
     object actNavChat: TAction
@@ -4001,9 +3991,9 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object actExternalRunForDebugging: TAction
       Category = 'Run'
-      Caption = 'External Run for Debuggging'
+      Caption = 'External run for debuggging'
       Hint = 
-        'External Run for Debugging|Run active module in external Python ' +
+        'External run for debugging|Run active module in external Python ' +
         'interpreter'
       ImageIndex = 22
       ImageName = 'ExternalRun'
@@ -4056,8 +4046,8 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 70
-        CollectionName = 'Print'
-        Name = 'Print'
+        CollectionName = 'Print13'
+        Name = 'Print13'
       end
       item
         CollectionIndex = 128
@@ -4071,18 +4061,18 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 17
-        CollectionName = 'Cut'
-        Name = 'Cut'
+        CollectionName = 'Cut13'
+        Name = 'Cut13'
       end
       item
         CollectionIndex = 16
-        CollectionName = 'Copy'
-        Name = 'Copy'
+        CollectionName = 'Copy13'
+        Name = 'Copy13'
       end
       item
         CollectionIndex = 65
-        CollectionName = 'Paste'
-        Name = 'Paste'
+        CollectionName = 'Paste13'
+        Name = 'Paste13'
       end
       item
         CollectionIndex = 21
@@ -4091,8 +4081,8 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 101
-        CollectionName = 'Search'
-        Name = 'Search'
+        CollectionName = 'Search13'
+        Name = 'Search13'
       end
       item
         CollectionIndex = 41
@@ -4101,13 +4091,13 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 91
-        CollectionName = 'Replace'
-        Name = 'Replace'
+        CollectionName = 'Replace13'
+        Name = 'Replace13'
       end
       item
         CollectionIndex = 29
-        CollectionName = 'Execute'
-        Name = 'Execute'
+        CollectionName = 'Execute13'
+        Name = 'Execute13'
       end
       item
         CollectionIndex = 11
@@ -4131,8 +4121,8 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 49
-        CollectionName = 'Function'
-        Name = 'Function'
+        CollectionName = 'Function13'
+        Name = 'Function13'
       end
       item
         CollectionIndex = 32
@@ -4186,8 +4176,8 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 30
-        CollectionName = 'Exit'
-        Name = 'Exit'
+        CollectionName = 'Exit13'
+        Name = 'Exit13'
       end
       item
         CollectionIndex = 93
@@ -4251,8 +4241,8 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 54
-        CollectionName = 'Indent'
-        Name = 'Indent'
+        CollectionName = 'Indent13'
+        Name = 'Indent13'
       end
       item
         CollectionIndex = 20
@@ -4301,8 +4291,8 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 123
-        CollectionName = 'Tools'
-        Name = 'Tools'
+        CollectionName = 'Tools13'
+        Name = 'Tools13'
       end
       item
         CollectionIndex = 124
@@ -4556,8 +4546,8 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 152
-        CollectionName = 'Update'
-        Name = 'Update'
+        CollectionName = 'Update13'
+        Name = 'Update13'
       end
       item
         CollectionIndex = 153
@@ -4576,8 +4566,8 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 156
-        CollectionName = 'Configuration'
-        Name = 'Configuration'
+        CollectionName = 'Configuration13'
+        Name = 'Configuration13'
       end
       item
         CollectionIndex = 157

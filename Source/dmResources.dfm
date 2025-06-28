@@ -3347,7 +3347,7 @@ object ResourcesDataModule: TResourcesDataModule
           '.6h12.3L16,21L9.8,30.6z"/>'#13#10'</svg>'#13#10
       end
       item
-        IconName = 'Copy'
+        IconName = 'Copy13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10'<g transform="translate(69.2 -212)">'#13 +
           #10#9'<path d="M-46.8,212.2h-17.2c-1.6,0-2.9,1.2-2.9,2.9v20.1h2.9v-2' +
@@ -3357,7 +3357,7 @@ object ResourcesDataModule: TResourcesDataModule
           '.8V240.9z"/>'#13#10'</g>'#13#10'</svg>'#13#10
       end
       item
-        IconName = 'Cut'
+        IconName = 'Cut13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10#9'<path d="M12.5,9.5C12.8,8.7,13,7.9,1' +
           '3,7c0-3.3-2.7-6-6-6S1,3.7,1,7s2.7,6,6,6c0.9,0,1.7-0.2,2.5-0.5L13' +
@@ -3490,7 +3490,7 @@ object ResourcesDataModule: TResourcesDataModule
           '4V432a24,24,0,0,0,48,0Z"/>'#13#10'</svg>'
       end
       item
-        IconName = 'Execute'
+        IconName = 'Execute13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10#9'<path fill="#22AA22" d="M14.2,32h-1.' +
           '8l1.8-12.5H7.9c-1.5,0-0.6-1.3-0.6-1.4C9.6,14.1,13,8,17.7,0h1.8l-' +
@@ -3498,7 +3498,7 @@ object ResourcesDataModule: TResourcesDataModule
           'z"/>'#13#10'</svg>'
       end
       item
-        IconName = 'Exit'
+        IconName = 'Exit13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10#9'<path d="M24.3,9.4L22,11.7l2.7,2.7H1' +
           '1v3.3h13.6L22,20.3l2.3,2.3l6.6-6.6L24.3,9.4z M4.4,4.4H16V1.1H4.4' +
@@ -3737,7 +3737,7 @@ object ResourcesDataModule: TResourcesDataModule
           '22l6-6l-6-6V14.5z"/>'#13#10'</svg>'#13#10
       end
       item
-        IconName = 'Function'
+        IconName = 'Function13'
         SVGText = 
           '<svg viewBox="0 0 24 24">'#13#10'   <path d="M12.42,5.29C11.32,5.19 10' +
           '.35,6 10.25,7.11L10,10H12.82V12H9.82L9.38,17.07C9.18,19.27 7.24,' +
@@ -3821,7 +3821,7 @@ object ResourcesDataModule: TResourcesDataModule
           '.2-1.1l9.1,9.6L24.2,15.4z"/>'#13#10'</svg>'
       end
       item
-        IconName = 'Indent'
+        IconName = 'Indent13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10#9'<path d="M2.6,5.5v3h21v-3H2.6z M2.6,' +
           '26.5h21v-3h-21V26.5z M15.2,15.1h16.1v-3H15.2V15.1z M15.2,20.7h10' +
@@ -3954,7 +3954,7 @@ object ResourcesDataModule: TResourcesDataModule
           'h255v30h-255z"></path>'#13#10#9'</g>'#13#10'</svg>'
       end
       item
-        IconName = 'Paste'
+        IconName = 'Paste13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10'<g transform="translate(-180.6 -325.9' +
           ')">'#13#10#9'<path d="M206.8,329h-6.2c-0.9-2.3-3.3-3.4-5.6-2.6c-1.2,0.5' +
@@ -4015,7 +4015,7 @@ object ResourcesDataModule: TResourcesDataModule
           #13#10
       end
       item
-        IconName = 'Print'
+        IconName = 'Print13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10#9'<path d="M26.5,10H25V2.5H7V10H5.5C3,' +
           '10,1,11.9,1,14.5v9h6v6h18v-6h6v-9C31,11.9,28.9,10,26.5,10z M10,5' +
@@ -4462,7 +4462,7 @@ object ResourcesDataModule: TResourcesDataModule
           '2,7H13V9H4V15H13V17H2V7M20,15V9H17V15H20Z" />'#13#10'</svg>'
       end
       item
-        IconName = 'Replace'
+        IconName = 'Replace13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10#9'<path d="M29.8,4.7c-2.2-2.8-5.5-4.6-' +
           '9.5-4.6S13,1.7,10.8,4.7c-0.2,0.2-0.3,0.4-0.4,0.6l1.9,4.9c0.5-2.4' +
@@ -4621,7 +4621,7 @@ object ResourcesDataModule: TResourcesDataModule
           '3L589.3,381.6z"/>'#13#10'</g>'#13#10'</svg>'#13#10
       end
       item
-        IconName = 'Search'
+        IconName = 'Search13'
         SVGText = 
           '<svg viewBox="0 0 32 32">'#13#10#9'<path d="M-0.1,29.3l2.8,2.8l9.2-9.2v' +
           '-1.5l0.6-0.6c2,1.8,4.8,2.9,7.7,2.9c6.6,0,11.9-5.3,11.9-11.9s-5.4' +
@@ -4857,7 +4857,7 @@ object ResourcesDataModule: TResourcesDataModule
           '7,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z" />'#13#10'</svg>'
       end
       item
-        IconName = 'Tools'
+        IconName = 'Tools13'
         SVGText = 
           '<svg viewBox="0 0 512 512">'#13#10#9'<path d="m289.648 159.19c-3.136 3.' +
           '236-86.784 70.442-89.836 72.36l31.519 39.064 90.026-72.35z" />'#13#10 +
@@ -5310,7 +5310,7 @@ object ResourcesDataModule: TResourcesDataModule
           ' 20.661M83.345 35.656 65.322 66.804"/>'#10'</svg>'#10
       end
       item
-        IconName = 'Update'
+        IconName = 'Update13'
         SVGText = 
           '<svg viewBox="0 -0.5 16 16">'#13#10'<path stroke="#4b4b4b" d="M1 0h10M' +
           '1 1h1M10 1h2M1 2h1M10 2h1M12 2h1M1 3h1M10 3h4M1 4h1M13 4h1M1 5h1' +
@@ -5502,7 +5502,7 @@ object ResourcesDataModule: TResourcesDataModule
           '/svg>'#10
       end
       item
-        IconName = 'Configuration'
+        IconName = 'Configuration13'
         SVGText = 
           '<svg width="114mm" height="110mm" viewBox="0 0 114 110" xmlns="h' +
           'ttp://www.w3.org/2000/svg">'#10'    <path style="fill:#fff;stroke:#0' +
