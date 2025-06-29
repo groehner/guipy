@@ -38,7 +38,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FormResize(Sender: TObject);
     procedure ValueListEditorKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure MIFontClick(Sender: TObject);

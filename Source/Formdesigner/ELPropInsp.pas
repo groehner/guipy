@@ -3188,7 +3188,6 @@ begin
   if FObjectsLocked then
     raise EELPropsPage.Create('Property inspector is changing property value. '
       + 'Can not change objects');
-
 end;
 
 function TELCustomPropertyInspector.GetByCaption(const Caption: string): string;

@@ -19,6 +19,7 @@ object FObjectInspector: TFObjectInspector
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
   OnMouseActivate = FormMouseActivate
+  OnResize = FormResize
   OnShow = FormShow
   TextHeight = 15
   object TCAttributesEvents: TTabControl

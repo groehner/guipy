@@ -16,7 +16,6 @@ object FObjectGenerator: TFObjectGenerator
   Position = poDefault
   OnClose = FormClose
   OnCreate = FormCreate
-  OnResize = FormResize
   OnShow = FormShow
   TextHeight = 15
   object StatusBar: TStatusBar

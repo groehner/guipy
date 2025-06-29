@@ -64,17 +64,19 @@ type
     procedure FormMouseActivate(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y, HitTest: Integer;
       var MouseActivate: TMouseActivate);
+    procedure FormResize(Sender: TObject);
     procedure OnMouseDownEvent(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure TCAttributesEventsMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
   private
-    FAttributes: string;
     FELEventInspector: TELPropertyInspector;
     FELPropertyInspector: TELPropertyInspector;
+    FAttributes: string;
     FEvents: string;
     FShowAttributes: Integer;
     FShowEvents: Integer;
+    FSplitterChange: Integer;
     procedure SetTabs;
     procedure SetFont(AFont: TFont);
     procedure MyOnGetSelectStrings(Sender: TObject; Event: string;
@@ -82,6 +84,7 @@ type
     procedure MyOnGetComponentNames(Sender: TObject; AClass: TComponentClass;
       AResult: TStrings);
     procedure CBChangeName(const OldName, NewName: string);
+    procedure ChangeName(OldName, NewName: string; Control: TControl);
     procedure RefreshCB(NewName: string = '');
     procedure SetButtonCaption(Show: Integer);
     procedure UpdatePropertyInspector;
@@ -145,6 +148,7 @@ begin
   Visible := False;
   FShowEvents := 1;
   FShowAttributes := 1;
+  FSplitterChange := 1;
   FELPropertyInspector := TELPropertyInspector.Create(Self);
   with FELPropertyInspector do
   begin
@@ -271,26 +275,24 @@ var
   Typ, Nam, NamTyp: string;
   Form: TFGuiForm;
 begin
-  if not FGUIDesigner.ELDesigner.Active then
+  if not FGUIDesigner.ELDesigner.Active or
+    not Assigned(FGUIDesigner.ELDesigner.DesignControl) then
     Exit;
   Form := TFGuiForm(FGUIDesigner.ELDesigner.DesignControl);
   Index := CBObjects.ItemIndex;
-  if Assigned(Form) then
+  SetTabs;
+  CBObjects.Clear;
+  CBObjects.Items.AddObject(Form.Name + ': Frame', Form);
+  for var I := 0 to Form.ComponentCount - 1 do
   begin
-    SetTabs;
-    CBObjects.Clear;
-    CBObjects.Items.AddObject(Form.Name + ': Frame', Form);
-    for var I := 0 to Form.ComponentCount - 1 do
+    Nam := Form.Components[I].Name;
+    if Form.Components[I] is TBaseWidget then
     begin
-      Nam := Form.Components[I].Name;
-      if Form.Components[I] is TBaseWidget then
-      begin
-        Typ := (Form.Components[I] as TBaseWidget).GetType;
-        if (Nam <> '') and (Typ <> '') then
-          CBObjects.Items.AddObject(Nam + ': ' + Typ, Form.Components[I]);
-        if Nam = NewName then
-          NamTyp := Nam + ': ' + Typ;
-      end;
+      Typ := (Form.Components[I] as TBaseWidget).GetType;
+      if (Nam <> '') and (Typ <> '') then
+        CBObjects.Items.AddObject(Nam + ': ' + Typ, Form.Components[I]);
+      if Nam = NewName then
+        NamTyp := Nam + ': ' + Typ;
     end;
   end;
   if NewName = '' then
@@ -309,6 +311,9 @@ begin
     try
       SetSelectedObject(FGUIDesigner.ELDesigner.SelectedControls[0]);
     except
+      on E: Exception do
+        OutputDebugString(PChar('Exception: ' + E.ClassName + ' - ' +
+          E.Message));
     end;
   end;
 end;
@@ -327,18 +332,18 @@ end;
 
 procedure TFObjectInspector.SetSelectedObject(Control: TControl);
 begin
-  if not Assigned(Control) then
-  begin
-    CBObjects.ItemIndex := -1;
-    CBObjects.Repaint;
-  end
-  else
+  if Assigned(Control) then
   begin
     CBObjects.ItemIndex := CBObjects.Items.IndexOfObject(Control);
     FELPropertyInspector.Clear;
     FELEventInspector.Clear;
     FELPropertyInspector.Add(Control);
     FELEventInspector.Add(Control);
+  end
+  else
+  begin
+    CBObjects.ItemIndex := -1;
+    CBObjects.Repaint;
   end;
 end;
 
@@ -425,6 +430,19 @@ begin
   end;
 end;
 
+procedure TFObjectInspector.ChangeName(OldName, NewName: string;
+  Control: TControl);
+var
+  Widget: TBaseWidget;
+begin
+  Widget := TBaseWidget(Control);
+  Widget.Rename(OldName, NewName, Widget.GetEvents(3));
+  CBChangeName(OldName, NewName);
+  // update eventnames
+  FELEventInspector.Clear;
+  FELEventInspector.Add(Widget);
+end;
+
 // DPI awareness for object inspector
 // width, height, x, y are scaled to fit the real widget values
 // setPositionAndSize must unscale for correct values in the source code
@@ -434,59 +452,68 @@ end;
 
 procedure TFObjectInspector.ELPropertyInspectorModified(Sender: TObject);
 var
-  IValue: Integer;
+  IntValue: Integer;
   Partner: TEditorForm;
   OldName, NewName, Caption: string;
   PropertyItem: TELPropertyInspectorItem;
-  Control: TControl;
   Widget: TBaseWidget;
 
-  procedure ChangeName(OldName, NewName: string; Control: TControl);
+  procedure MoveOrSize;
   begin
-    Widget := TBaseWidget(Control);
-    Widget.Rename(OldName, NewName, Widget.GetEvents(3));
-    CBChangeName(OldName, NewName);
-    // update eventnames
-    FELEventInspector.Clear;
-    FELEventInspector.Add(Widget);
-  end;
-
-  function PPIScale(ASize: Integer): Integer;
-  begin
-    Result := MulDiv(ASize, FCurrentPPI, 96);
-  end;
-
-begin
-  PropertyItem := TELPropertyInspectorItem(FELPropertyInspector.ActiveItem);
-  if not Assigned(PropertyItem) then
-    Exit;
-  Caption := PropertyItem.Caption;
-  with FGUIDesigner.ELDesigner do
-  begin
-    TFGuiForm(DesignControl).Modified := True;
-    Partner := TFGuiForm(DesignControl).Partner;
-    if ((Caption = 'Width') or (Caption = 'Height') or (Caption = 'X') or
-      (Caption = 'Y')) and TryStrToInt(PropertyItem.Editor.Value, IValue) then
+    with FGUIDesigner.ELDesigner do begin
       for var I := 0 to SelectedControls.Count - 1 do
       begin
         if Caption = 'Width' then
-          SelectedControls[I].Width := PPIScale(IValue)
+          SelectedControls[I].Width := PPIScale(IntValue)
         else if Caption = 'Height' then
-          SelectedControls[I].Height := PPIScale(IValue)
+          SelectedControls[I].Height := PPIScale(IntValue)
         else if Caption = 'X' then
-          SelectedControls[I].Left := PPIScale(IValue)
+          SelectedControls[I].Left := PPIScale(IntValue)
         else if Caption = 'Y' then
-          SelectedControls[I].Top := PPIScale(IValue);
+          SelectedControls[I].Top := PPIScale(IntValue);
         FObjectGenerator.MoveOrSizeComponent(Partner, SelectedControls[I]);
-      end
-    else if (Caption = 'Name') and (PropertyItem.Level = 0) then
+      end;
+    end;
+  end;
+
+  procedure DoNameChange(I: Integer);
+  begin
+    with FGUIDesigner.ELDesigner do
     begin
-      OldName := CBObjects.Text;
-      Delete(OldName, Pos(':', OldName), Length(OldName));
-      Control := SelectedControls[0];
-      ChangeName(OldName, Control.Name, Control);
-    end
-    else
+      if SelectedControls[I].Tag in [1, 31, 71, 4, 34, 74, 5, 35, 75] then
+      begin
+        Widget := TBaseWidget(SelectedControls[I]);
+        Widget.SizeToText;
+        FObjectGenerator.MoveOrSizeComponent(Partner, Widget);
+      end;
+      case SelectedControls[I].Tag of
+        1, 31, 71:
+          NewName := 'l' + NewName; // Label
+        4, 34, 74:
+          NewName := 'b' + NewName; // Button
+        5, 35, 75:
+          NewName := 'cb' + NewName; // Checkbutton
+      else
+        NewName := '';
+      end;
+      if NewName <> '' then
+      begin
+        NewName := UUtils.GetUniqueName
+          (FGUIDesigner.ELDesigner.DesignControl, NewName);
+        FELPropertyInspector.SetByCaption('Name', NewName);
+        FELPropertyInspector.SelectByCaption('Name');
+        // make name to ActiveItem
+        ELPropertyInspectorModified(nil);
+        FELPropertyInspector.SelectByCaption('Text');
+        // make text to ActiveItem again
+        ChangeName(OldName, NewName, SelectedControls.Items[I]);
+      end;
+    end;
+  end;
+
+  procedure NameFromText;
+  begin
+    with FGUIDesigner.ELDesigner do
       for var I := 0 to SelectedControls.Count - 1 do
       begin
         OldName := SelectedControls[I].Name;
@@ -497,45 +524,37 @@ begin
           NewName := UpperLower(PropertyItem.Editor.Value);
           // get name from text
           if NewName <> '' then
-          begin
-            if SelectedControls[I].Tag in [1, 31, 71, 4, 34, 74, 5, 35, 75]
-            then
-            begin
-              Widget := TBaseWidget(SelectedControls[I]);
-              Widget.SizeToText;
-              FObjectGenerator.MoveOrSizeComponent(Partner, Widget);
-            end;
-            case SelectedControls[I].Tag of
-              1, 31, 71:
-                NewName := 'l' + NewName; // Label
-              4, 34, 74:
-                NewName := 'b' + NewName; // Button
-              5, 35, 75:
-                NewName := 'cb' + NewName; // Checkbutton
-            else
-              NewName := '';
-            end;
-            if NewName <> '' then
-            begin
-              NewName := UUtils.GetUniqueName
-                (FGUIDesigner.ELDesigner.DesignControl, NewName);
-              FELPropertyInspector.SetByCaption('Name', NewName);
-              FELPropertyInspector.SelectByCaption('Name');
-              // make name to ActiveItem
-              ELPropertyInspectorModified(nil);
-              FELPropertyInspector.SelectByCaption('Text');
-              // make text to ActiveItem again
-              ChangeName(OldName, NewName, SelectedControls.Items[I]);
-            end;
-          end;
+            DoNameChange(I);
         end;
         FObjectGenerator.SetAttributForComponent(PropertyItem.Caption,
           PropertyItem.Editor.Value,
-          string(PropertyItem.Editor.PropTypeInfo.Name),
-          SelectedControls[I]);
+          string(PropertyItem.Editor.PropTypeInfo.Name), SelectedControls[I]);
       end;
   end;
-  FELPropertyInspector.UpdateItems; // due to renaming of Images, Command, ...
+
+begin
+  if not Assigned(FELPropertyInspector.ActiveItem) then
+    Exit;
+  PropertyItem := TELPropertyInspectorItem(FELPropertyInspector.ActiveItem);
+  Caption := PropertyItem.Caption;
+  with FGUIDesigner.ELDesigner do
+  begin
+    TFGuiForm(DesignControl).Modified := True;
+    Partner := TFGuiForm(DesignControl).Partner;
+    if ((Caption = 'Width') or (Caption = 'Height') or (Caption = 'X') or
+      (Caption = 'Y')) and TryStrToInt(PropertyItem.Editor.Value, IntValue) then
+      MoveOrSize
+    else if (Caption = 'Name') and (PropertyItem.Level = 0) then
+    begin
+      OldName := CBObjects.Text;
+      Delete(OldName, Pos(':', OldName), Length(OldName));
+      ChangeName(OldName, SelectedControls[0].Name, SelectedControls[0]);
+    end
+    else
+      NameFromText;
+  end;
+  FELPropertyInspector.UpdateItems;
+  // due to renaming of Images, Command, ...
 end;
 
 procedure TFObjectInspector.ELPropertyInspectorFilterProp(Sender: TObject;
@@ -597,26 +616,8 @@ var
     FELEventInspector.OnModified := ELEventInspectorModified;
   end;
 
-begin
-  Event := nil;
-  PropertyItem := FELEventInspector.ActiveItem;
-  if not Assigned(PropertyItem) then
-    Exit;
-  Index := CBObjects.ItemIndex;
-  if Index = -1 then
-    Exit;
-  Control := TControl(CBObjects.Items.Objects[Index]);
-  GuiForm := TFGuiForm(FGUIDesigner.ELDesigner.DesignControl);
-  Partner := GuiForm.Partner;
-  Partner.ActiveSynEdit.BeginUpdate;
-  Eventname := PropertyItem.Caption;
-  GetEventProperties(Control, Eventname, Event);
-  if Control is TBaseWidget then
-    Widget := Control as TBaseWidget
-  else
-    Widget := nil;
-  if PropertyItem.DisplayValue <> '' then
-  begin // Delete
+  procedure DeleteEvent;
+  begin
     SetDisplayValue('');
     if Assigned(Widget) then
       Widget.DeleteEventHandler(Eventname)
@@ -624,9 +625,10 @@ begin
       GuiForm.DeleteEventHandler(Eventname);
     if Assigned(Event) then
       Event.Clear;
-  end
-  else
-  begin // Insert
+  end;
+
+  procedure NewEvent;
+  begin
     if Assigned(Widget) then
     begin
       SetDisplayValue(Widget.Handlername(Eventname));
@@ -640,6 +642,30 @@ begin
     if Assigned(Event) then
       Event.Active := True;
   end;
+
+begin
+  PropertyItem := FELEventInspector.ActiveItem;
+  if not Assigned(PropertyItem) then
+    Exit;
+  Index := CBObjects.ItemIndex;
+  if Index = -1 then
+    Exit;
+
+  Event := nil;
+  Control := TControl(CBObjects.Items.Objects[Index]);
+  GuiForm := TFGuiForm(FGUIDesigner.ELDesigner.DesignControl);
+  Partner := GuiForm.Partner;
+  Partner.ActiveSynEdit.BeginUpdate;
+  Eventname := PropertyItem.Caption;
+  GetEventProperties(Control, Eventname, Event);
+  if Control is TBaseWidget then
+    Widget := Control as TBaseWidget
+  else
+    Widget := nil;
+  if PropertyItem.DisplayValue <> '' then
+    DeleteEvent
+  else
+    NewEvent;
   if Assigned(Event) then
     SetEventProperties(Control, Eventname, Event);
   Partner.ActiveSynEdit.EndUpdate;
@@ -676,6 +702,7 @@ begin
           FELEventInspector.SetFocus;
       end;
   end;
+  FormResize(Self);
 end;
 
 procedure TFObjectInspector.TCAttributesEventsMouseDown(Sender: TObject;
@@ -756,8 +783,7 @@ begin
     else
     begin
       var
-      Partner := TEditorForm
-        (TFGuiForm(FGUIDesigner.ELDesigner.DesignControl).Partner);
+      Partner := TFGuiForm(FGUIDesigner.ELDesigner.DesignControl).Partner;
       Partner.GoTo2('def ' + Str);
       if Assigned(FGUIDesigner) then
         FGUIDesigner.GUIDesignerTimer.Enabled := True;
@@ -821,12 +847,14 @@ begin
     Str := FELPropertyInspector.ActiveItem.Caption
   else
     Str := '';
-  FELPropertyInspector.Clear;
-  FELEventInspector.Clear;
-  if SelectedControls.Count <> 1 then
-    CBObjects.ItemIndex := -1
-  else
-    CBObjects.ItemIndex := CBObjects.Items.IndexOfObject(SelectedControls[0]);
+  if SelectedControls.Count > 0 then begin
+    FELPropertyInspector.Clear;
+    FELEventInspector.Clear;
+  end;
+  if SelectedControls.Count = 1 then
+    CBObjects.ItemIndex := CBObjects.Items.IndexOfObject(SelectedControls[0])
+  else if SelectedControls.Count > 1 then
+    CBObjects.ItemIndex := -1;
   if SelectedControls.Count > 0 then
     Add(SelectedControls[0]);
   for var I := 0 to SelectedControls.Count - 1 do
@@ -836,7 +864,8 @@ begin
   end;
   if Str <> '' then
     FELPropertyInspector.SelectByCaption(Str);
-  SetBNewDeleteCaption;
+  if SelectedControls.Count > 0 then
+    SetBNewDeleteCaption;
 end;
 
 procedure TFObjectInspector.UpdatePropertyInspector;
@@ -900,6 +929,17 @@ begin
     FELEventInspector.ValuesColor := StyleServices.GetStyleFontColor
       (sfTabTextActiveNormal);
   end;
+end;
+
+procedure TFObjectInspector.FormResize(Sender: TObject);
+begin
+  // splitter change adjusts column widths
+  if FELPropertyInspector.Visible then
+    FELPropertyInspector.Splitter := FELPropertyInspector.Splitter +
+      FSplitterChange
+  else
+    FELEventInspector.Splitter := FELEventInspector.Splitter + FSplitterChange;
+  FSplitterChange := -FSplitterChange;
 end;
 
 end.
