@@ -16,7 +16,6 @@ uses
   Vcl.Graphics,
   TB2Item,
   SpTBXItem,
-  JvAppStorage,
   SVGIconImageCollection,
   VirtualTrees,
   VirtualTrees.AncestorVCL,
@@ -63,8 +62,6 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure vilFileStructureKeyPress(Sender: TObject; var Key: Char);
   private
-    FLocked: Boolean;
-    FLockShowSelected: Boolean;
     FMyForm: TFileForm;
     function DifferentItems(Items: TTreeNodes): Boolean;
     procedure NavigateToVilNode(Node: PVirtualNode;
@@ -87,7 +84,7 @@ implementation
 
 uses
   Winapi.Windows,
-  System.Math,
+  System.SysUtils,
   VirtualTrees.Types,
   JvGnugettext,
   SynEdit,
@@ -130,8 +127,6 @@ procedure TFFileStructure.FormCreate(Sender: TObject);
 begin
   inherited;
   Visible := False;
-  FLocked := False;
-  FLockShowSelected := False;
   TranslateComponent(Self);
   FMyForm := nil;
   ChangeStyle;
@@ -312,11 +307,6 @@ procedure TFFileStructure.vilFileStructureClick(Sender: TObject);
 var
   Data: PMyRec;
 begin
-  if FLocked then
-  begin
-    FLocked := False;
-    Exit;
-  end;
   var
   Node := vilFileStructure.GetFirstSelected;
   if not Assigned(Node) then
@@ -368,82 +358,60 @@ procedure TFFileStructure.NavigateToVilNode(Node: PVirtualNode;
   ForceToMiddle: Boolean = True; Activate: Boolean = True);
 var
   ANodeLine: Integer;
-  Line, AClassname, ANodeText: string;
+  ANodeText: string;
   EditForm: TEditorForm;
-  AEditor: IEditor;
-  IsWrapping: Boolean;
-  Files: TStringList;
+  ASynEdit: TSynEdit;
   Data: PMyRec;
 
-  function BufferCoord(AChar, ALine: Integer): TBufferCoord;
+  function GetEditFormForUMLFile: TEditorForm;
+    var
+      Files, FileContent: TStringList;
+      Filename: string;
+      AFile: IFile;
   begin
-    Result.Char := AChar;
-    Result.Line := ALine;
+    Files := (FMyForm as TFUMLForm).MainModul.Model.ModelRoot.Files;
+    while vilFileStructure.NodeParent[Node] <> nil do
+      Node := vilFileStructure.NodeParent[Node];
+    Data := vilFileStructure.GetNodeData(Node);
+    FileContent:= TStringList.Create;
+    try
+      for Filename in Files do
+      begin
+        if not FileExists(Filename) then
+          Continue;
+        FileContent.LoadFromFile(Filename);
+        if Pos('class ' + Data.Caption, FileContent.Text) > 0 then
+        begin
+          AFile:= GI_EditorFactory.OpenFile(Filename);
+          if Assigned(AFile) then
+            Exit(AFile.Form as TEditorForm);
+        end;
+      end;
+    finally
+      FreeAndNil(FileContent);
+    end;
   end;
 
 begin
-  if not Assigned(Node) then
+  if not Assigned(Node) or not Assigned(FMyForm) then
     Exit;
   Data := vilFileStructure.GetNodeData(Node);
   ANodeLine := Data.LineNumber;
   ANodeText := Data.Caption;
   EditForm := nil;
-  IsWrapping := False;
 
-  if Assigned(FMyForm) then
-  begin
-    if FMyForm.MyFile.GetFileKind = fkEditor then
-      EditForm := FMyForm as TEditorForm
-    else if FMyForm.MyFile.GetFileKind = fkUML then
-    begin
-      FLocked := True;
-      Files := (FMyForm as TFUMLForm).MainModul.Model.ModelRoot.Files;
-      while vilFileStructure.NodeParent[Node] <> nil do
-        Node := vilFileStructure.NodeParent[Node];
-      Data := vilFileStructure.GetNodeData(Node);
-      AClassname := WithoutGeneric(Data.Caption);
-      var
-      I := 0;
-      while I < Files.Count do
-      begin
-        AEditor := GI_EditorFactory.GetEditorByFileId(Files[I]);
-        if Assigned(AEditor) then
-        begin
-          EditForm := AEditor.Form as TEditorForm;
-          if Pos('class ' + AClassname, EditForm.ActiveSynEdit.Lines.Text) > 0
-          then
-            Break;
-        end;
-        Inc(I);
-      end;
-    end;
-    if Assigned(EditForm) then
-    begin
-      IsWrapping := EditForm.ActiveSynEdit.WordWrap;
-      with EditForm.ActiveSynEdit do
-      begin
-        // Changing TopLine/CaretXY calls indirect ShowSelected;
-        if IsWrapping then
-          EditForm.TBWordWrapClick(nil);
-        Line := Lines[ANodeLine - 1];
-        FLockShowSelected := True;
-        TopLine := ANodeLine;
-        FLockShowSelected := False;
-        CaretXY := BufferCoord(Max(1, Pos(ANodeText, Line)), ANodeLine);
-        if IsWrapping then
-          EditForm.TBWordWrapClick(nil);
-      end;
-    end;
-  end;
-  if Assigned(EditForm) then
-  begin
-    if Activate and CanActuallyFocus(EditForm.ActiveSynEdit) then
-      EditForm.ActiveSynEdit.SetFocus;
-    if IsWrapping then
-      EditForm.TBWordWrapClick(nil);
-    with EditForm do
-      GI_PyIDEServices.ShowFilePosition(Pathname, ActiveSynedit.CaretY, ActiveSynEdit.CaretX);
-  end;
+  if FMyForm.MyFile.GetFileKind = fkEditor then
+    EditForm := FMyForm as TEditorForm;
+  if FMyForm.MyFile.GetFileKind = fkUML then
+    EditForm:= GetEditFormForUMLFile;
+  if not Assigned(EditForm) then
+    Exit;
+
+  EditForm.ShowTopLine(ANodeLine, ANodeText);
+  ASynEdit:= EditForm.ActiveSynEdit;
+  if Activate and CanActuallyFocus(ASynEdit) then
+    ASynEdit.SetFocus;
+  GI_PyIDEServices.ShowFilePosition(EditForm.Pathname, ASynEdit.CaretY, ASynEdit.CaretX);
 end;
 
 procedure TFFileStructure.ChangeStyle;

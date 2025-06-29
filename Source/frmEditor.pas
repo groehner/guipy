@@ -414,6 +414,7 @@ type
     procedure ToBackground(Control: TControl);
 
     procedure GoTo2(const Text: string);
+    procedure ShowTopLine(LineNum: Integer; NodeText: string);
     function HasText(const Text: string): Boolean;
     function HasWidget(const Key: string; Line: Integer): Boolean;
 
@@ -4369,6 +4370,20 @@ begin
         CaretY:= Line + 1;
       end;
     end;
+end;
+
+procedure TEditorForm.ShowTopLine(LineNum: Integer; NodeText: string);
+  var IsWrapping: Boolean; Line: string;
+begin
+  IsWrapping := ActiveSynEdit.WordWrap;
+  // Changing TopLine/CaretXY calls indirect ShowSelected;
+  if IsWrapping then
+    TBWordWrapClick(nil);
+  Line := ActiveSynEdit.Lines[LineNum - 1];
+  ActiveSynEdit.TopLine := LineNum;
+  ActiveSynEdit.CaretXY := BufferCoord(Max(1, Pos(NodeText, Line)), LineNum);
+  if IsWrapping then
+    TBWordWrapClick(nil);
 end;
 
 function TEditorForm.HasText(const Text: string): Boolean;
