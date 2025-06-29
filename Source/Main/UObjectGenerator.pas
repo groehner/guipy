@@ -38,6 +38,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormResize(Sender: TObject);
     procedure ValueListEditorKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure MIFontClick(Sender: TObject);
@@ -150,7 +151,7 @@ procedure TFObjectGenerator.InsertComponent(EditForm: TEditorForm;
   Control: TControl; Pasting: Boolean);
 begin
   var
-  Collapsed := EditForm.isGUICreationCollapsed;
+  Collapsed := EditForm.IsGUICreationCollapsed;
   FPartner := EditForm;
   LockFormUpdate(EditForm);
   EditForm.ParseAndCreateModel;
@@ -383,7 +384,7 @@ var
   end;
 
 begin
-  Collapsed := FPartner.isGUICreationCollapsed;
+  Collapsed := FPartner.IsGUICreationCollapsed;
   LockFormUpdate(FPartner);
   DeleteAllComponents(Component);
   FPartner.NeedsParsing := True;
@@ -410,7 +411,7 @@ begin
   ValueListEditor.TitleCaptions.Text := Title;
   for var I := ValueListEditor.RowCount - 1 downto 2 do
     ValueListEditor.DeleteRow(I);
-  // it'Str not possible to delete row[1] now
+  // it's not possible to delete row[1] now
   ValueListEditor.Cells[0, 1] := 'Delete';
 end;
 
@@ -418,11 +419,44 @@ procedure TFObjectGenerator.SetControlEvents(DesignForm: TFGuiForm;
   EditorForm: TEditorForm);
 var
   Comp: TControl;
-  Event: TEvent;
   Eventname: string;
   PropInfos: PPropList;
-  Widget: TBaseWidget;
   Count: Integer;
+
+  procedure HandleWidgetOrForm;
+  var
+    Widget: TBaseWidget;
+  begin
+    if Comp is TBaseWidget then begin
+      Widget := Comp as TBaseWidget;
+      EditorForm.InsertProcedure(CrLf + Widget.MakeHandler(Eventname));
+      EditorForm.InsertTkBinding(Name, Eventname,
+      Widget.MakeBinding(Eventname));
+    end else if Comp = DesignForm then begin
+      EditorForm.InsertProcedure
+        (CrLf + DesignForm.MakeHandler(Eventname));
+      EditorForm.InsertTkBinding(Name, Eventname,
+        DesignForm.MakeBinding(Eventname));
+    end;
+  end;
+
+  procedure HandleControl;
+  var
+    Event: TEvent;
+  begin
+    for var J := 0 to Count - 1 do
+    begin
+      Eventname := string(PropInfos[J].Name);
+      if IsEvent('|' + Eventname + '|') then
+      begin
+        GetEventProperties(Comp, Eventname, Event);
+        if Event.Active and not(EditorForm.GetLineNumberOfBinding(Comp.Name,
+          Eventname) > 0) then
+         HandleWidgetOrForm;
+      end;
+    end;
+  end;
+
 begin
   // create source code for copy&paste of events
   EditorForm.ActiveSynEdit.BeginUpdate;
@@ -436,30 +470,7 @@ begin
     GetMem(PropInfos, Count * SizeOf(PPropInfo));
     try
       GetPropList(Comp.ClassInfo, tkAny, PropInfos);
-      for var J := 0 to Count - 1 do
-      begin
-        Eventname := string(PropInfos[J].Name);
-        if IsEvent('|' + Eventname + '|') then
-        begin
-          GetEventProperties(Comp, Eventname, Event);
-          if Event.Active and not(EditorForm.getLineNumberOfBinding(Comp.Name,
-            Eventname) > 0) then
-            if Comp is TBaseWidget then
-            begin
-              Widget := Comp as TBaseWidget;
-              EditorForm.InsertProcedure(CrLf + Widget.MakeHandler(Eventname));
-              EditorForm.InsertTkBinding(Name, Eventname,
-                Widget.MakeBinding(Eventname));
-            end
-            else if Comp = DesignForm then
-            begin
-              EditorForm.InsertProcedure
-                (CrLf + DesignForm.MakeHandler(Eventname));
-              EditorForm.InsertTkBinding(Name, Eventname,
-                DesignForm.MakeBinding(Eventname));
-            end;
-        end;
-      end;
+      HandleControl;
     finally
       FreeMem(PropInfos, Count * SizeOf(PPropInfo));
     end;
@@ -481,6 +492,30 @@ var
   PropEditor2: TELPropEditor;
   EditorClass: TELPropEditorClass;
   PropertyInspector: TELCustomPropertyInspector;
+
+  procedure SetAttributes;
+  begin
+    if PropEditor2.Value <> PropEditor1.Value then
+      SetAttributForComponent(Attr, PropEditor1.Value,
+        string(PropEditor1.PropTypeInfo.Name), Comp1)
+    else if (PropEditor1.PropTypeInfo.Name = 'TFont') then
+    begin
+      Font1 := (PropEditor1 as TELFontPropEditor).GetFont;
+      Font2 := (PropEditor2 as TELFontPropEditor).GetFont;
+      if (Font1.Name <> Font2.Name) or (Font1.Size <> Font2.Size) or
+        (Font1.Style <> Font2.Style) then
+        SetAttributForComponent(Attr, PropEditor1.Value,
+          string(PropEditor1.PropTypeInfo.Name), Comp1);
+    end
+    else if PropEditor1.PropTypeInfo.Name = 'TStrings' then
+    begin
+      if (PropEditor1 as TELStringsPropEditor).GetText <>
+        (PropEditor2 as TELStringsPropEditor).GetText then
+        SetAttributForComponent(Attr, PropEditor1.Value,
+          string(PropEditor1.PropTypeInfo.Name), Comp1);
+    end;
+  end;
+
 begin
   Comp1 := Control;
   Str := Comp1.ClassName;
@@ -499,41 +534,21 @@ begin
     for var I := 0 to Count - 1 do
     begin
       Attr := string(PropInfos1[I].Name);
-      if (Pos(' ' + Attr + ' ', ForbiddenAttributes) = 0) and
-        (Pos('|' + Attr + '|', AllowedAttributes) > 0) then
-      begin
-        EditorClass := PropertyInspector.GetEditorClass(Comp1, PropInfos1[I]);
-        if Assigned(EditorClass) then
-        begin
-          PropEditor1 := EditorClass.Create2(Comp1, PropInfos1[I]);
-          PropEditor2 := EditorClass.Create2(Comp2, PropInfos2[I]);
-          try
-            if PropEditor2.Value <> PropEditor1.Value then
-              SetAttributForComponent(Attr, PropEditor1.Value,
-                string(PropEditor1.PropTypeInfo.Name), Comp1)
-            else if (PropEditor1.PropTypeInfo.Name = 'TFont') then
-            begin
-              Font1 := (PropEditor1 as TELFontPropEditor).GetFont;
-              Font2 := (PropEditor2 as TELFontPropEditor).GetFont;
-              if (Font1.Name <> Font2.Name) or (Font1.Size <> Font2.Size) or
-                (Font1.Style <> Font2.Style) then
-                SetAttributForComponent(Attr, PropEditor1.Value,
-                  string(PropEditor1.PropTypeInfo.Name), Comp1);
-            end
-            else if PropEditor1.PropTypeInfo.Name = 'TStrings' then
-            begin
-              if (PropEditor1 as TELStringsPropEditor).GetText <>
-                (PropEditor2 as TELStringsPropEditor).GetText then
-                SetAttributForComponent(Attr, PropEditor1.Value,
-                  string(PropEditor1.PropTypeInfo.Name), Comp1);
-            end;
-          finally
-            FreeAndNil(PropEditor1);
-            FreeAndNil(PropEditor2);
-          end;
-        end;
+      if not ((Pos(' ' + Attr + ' ', ForbiddenAttributes) = 0) and
+        (Pos('|' + Attr + '|', AllowedAttributes) > 0)) then
+        Continue;
+      EditorClass := PropertyInspector.GetEditorClass(Comp1, PropInfos1[I]);
+      if not Assigned(EditorClass) then
+        Continue;
+      PropEditor1 := EditorClass.Create2(Comp1, PropInfos1[I]);
+      PropEditor2 := EditorClass.Create2(Comp2, PropInfos2[I]);
+      try
+        SetAttributes;
+      finally
+        FreeAndNil(PropEditor1);
+        FreeAndNil(PropEditor2);
       end;
-    end;
+  end;
   finally
     FreeMem(PropInfos1, Count * SizeOf(PPropInfo));
     FreeMem(PropInfos2, Count * SizeOf(PPropInfo));
