@@ -187,7 +187,7 @@ const
     TQtLabel, TQtLineEdit, TQtPlainTextEdit, TQtPushButton, TQtCheckBox,
     TQtButtonGroup, TQtListWidget, TQtComboBox, TQtSpinBox, TQtScrollBar,
     TQtCanvas, TQtFrame, TQtGroupBox, TQtSlider, TQtMenuBar, TQtMenu,
-    TQtTabWidget, TQtTreeWidget, TQtTableWidget, TQtProgressbar, TQtStatusbar,
+    TQtTabWidget, TQtTreeWidget, TQtTableWidget, TQtProgressBar, TQtStatusBar,
 
     TQtTextEdit, TQtTextBrowser, TQtToolButton, TQtCommandLinkButton,
     TQtFontComboBox, TQtDoubleSpinBox, TQtLCDNumber, TQtDateTimeEdit,
@@ -458,8 +458,8 @@ begin
   FClassMap.Add(87, TQtTabWidget);
   FClassMap.Add(88, TQtTreeWidget);
   FClassMap.Add(89, TQtTableWidget);
-  FClassMap.Add(90, TQtProgressbar);
-  FClassMap.Add(91, TQtStatusbar);
+  FClassMap.Add(90, TQtProgressBar);
+  FClassMap.Add(91, TQtStatusBar);
   // Qt control components
   FClassMap.Add(101, TQtTextEdit);
   FClassMap.Add(102, TQtTextBrowser);

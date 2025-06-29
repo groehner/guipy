@@ -218,7 +218,7 @@ type
       write FCurrentFontChanged;
   end;
 
-  TQtProgressbar = class(TBaseQtWidget)
+  TQtProgressBar = class(TBaseQtWidget)
   private
     FMinimum: Integer;
     FMaximum: Integer;
@@ -261,7 +261,7 @@ type
     property valueChanged: string read FValueChanged write FValueChanged;
   end;
 
-  TQtStatusbar = class(TBaseQtWidget)
+  TQtStatusBar = class(TBaseQtWidget)
   private
     FSizeGripEnabled: Boolean;
     FMessageChanged: string;
@@ -468,7 +468,7 @@ type
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
     procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    function HandlerName(const Event: string): string; override;
+    function Handlername(const Event: string): string; override;
   end;
 
 implementation
@@ -990,7 +990,7 @@ end;
 
 { --- TQtProgressBar ----------------------------------------------------------- }
 
-constructor TQtProgressbar.Create(Owner: TComponent);
+constructor TQtProgressBar.Create(Owner: TComponent);
 begin
   inherited Create(Owner);
   Tag := 90;
@@ -1004,7 +1004,7 @@ begin
   FFormat := '%p%';
 end;
 
-function TQtProgressbar.GetAttributes(ShowAttributes: Integer): string;
+function TQtProgressBar.GetAttributes(ShowAttributes: Integer): string;
 begin
   Result := '|Minimum|Maximum|Value|';
   if ShowAttributes >= 2 then
@@ -1012,7 +1012,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtProgressbar.SetAttribute(Attr, Value, Typ: string);
+procedure TQtProgressBar.SetAttribute(Attr, Value, Typ: string);
 begin
   if Attr = 'TextDirection' then
     MakeAttribut(Attr, 'QProgressBar.' + Value)
@@ -1022,13 +1022,13 @@ begin
     inherited;
 end;
 
-function TQtProgressbar.GetEvents(ShowEvents: Integer): string;
+function TQtProgressBar.GetEvents(ShowEvents: Integer): string;
 begin
   Result := '|valueChanged';
   Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtProgressbar.HandlerInfo(const Event: string): string;
+function TQtProgressBar.HandlerInfo(const Event: string): string;
 begin
   if Event = 'valueChanged' then
     Result := 'int;value'
@@ -1036,7 +1036,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtProgressbar.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtProgressBar.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'int' then
   begin
@@ -1051,20 +1051,20 @@ begin
   inherited;
 end;
 
-function TQtProgressbar.InnerRect: TRect;
+function TQtProgressBar.InnerRect: TRect;
 begin
   Result := inherited;
   if FTextVisible and (FOrientation = Horizontal) and (FMinimum < FMaximum) then
     Result.Right := Result.Right - Canvas.TextWidth(GetText);
 end;
 
-procedure TQtProgressbar.NewWidget(Widget: string = '');
+procedure TQtProgressBar.NewWidget(Widget: string = '');
 begin
   inherited NewWidget('QProgressBar');
   SetAttribute('Value', '24', '');
 end;
 
-procedure TQtProgressbar.Paint;
+procedure TQtProgressBar.Paint;
 var
   XPos, YPos: Integer;
   ARect: TRect;
@@ -1115,7 +1115,7 @@ begin
   Canvas.FillRect(ARect);
 end;
 
-function TQtProgressbar.GetText: string;
+function TQtProgressBar.GetText: string;
 var
   Str: string;
   Posi: Integer;
@@ -1143,7 +1143,7 @@ begin
   Result := '  ' + Str + '  ';
 end;
 
-procedure TQtProgressbar.SetMinimum(Value: Integer);
+procedure TQtProgressBar.SetMinimum(Value: Integer);
 begin
   if Value <> FMinimum then
   begin
@@ -1152,7 +1152,7 @@ begin
   end;
 end;
 
-procedure TQtProgressbar.SetMaximum(Value: Integer);
+procedure TQtProgressBar.SetMaximum(Value: Integer);
 begin
   if Value <> FMaximum then
   begin
@@ -1161,7 +1161,7 @@ begin
   end;
 end;
 
-procedure TQtProgressbar.SetValue(Value: Integer);
+procedure TQtProgressBar.SetValue(Value: Integer);
 begin
   if Value <> FValue then
   begin
@@ -1170,7 +1170,7 @@ begin
   end;
 end;
 
-procedure TQtProgressbar.SetTextVisible(Value: Boolean);
+procedure TQtProgressBar.SetTextVisible(Value: Boolean);
 begin
   if Value <> FTextVisible then
   begin
@@ -1179,7 +1179,7 @@ begin
   end;
 end;
 
-procedure TQtProgressbar.SetOrientation(Value: TOrientation);
+procedure TQtProgressBar.SetOrientation(Value: TOrientation);
 var
   Tmp: Integer;
 begin
@@ -1197,7 +1197,7 @@ begin
   end;
 end;
 
-procedure TQtProgressbar.SetInvertedAppearance(Value: Boolean);
+procedure TQtProgressBar.SetInvertedAppearance(Value: Boolean);
 begin
   if Value <> FInvertedAppearance then
   begin
@@ -1206,7 +1206,7 @@ begin
   end;
 end;
 
-procedure TQtProgressbar.SetFormat(Value: string);
+procedure TQtProgressBar.SetFormat(Value: string);
 begin
   if Value <> FFormat then
   begin
@@ -1217,7 +1217,7 @@ end;
 
 { --- TQtStatusBar ------------------------------------------------------------- }
 
-constructor TQtStatusbar.Create(Owner: TComponent);
+constructor TQtStatusBar.Create(Owner: TComponent);
 begin
   inherited Create(Owner);
   Tag := 91;
@@ -1225,19 +1225,19 @@ begin
   Height := 20;
 end;
 
-function TQtStatusbar.GetAttributes(ShowAttributes: Integer): string;
+function TQtStatusBar.GetAttributes(ShowAttributes: Integer): string;
 begin
   Result := '|SizeGripEnabled';
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-function TQtStatusbar.GetEvents(ShowEvents: Integer): string;
+function TQtStatusBar.GetEvents(ShowEvents: Integer): string;
 begin
   Result := '|messageChanged';
   Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-function TQtStatusbar.HandlerInfo(const Event: string): string;
+function TQtStatusBar.HandlerInfo(const Event: string): string;
 begin
   if Event = 'messageChanged' then
     Result := 'QString;message'
@@ -1245,7 +1245,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtStatusbar.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtStatusBar.GetSlots(Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
     Slots.Add(Name + '.clearMessage')
@@ -1254,17 +1254,17 @@ begin
   inherited;
 end;
 
-procedure TQtStatusbar.NewWidget(Widget: string = '');
+procedure TQtStatusBar.NewWidget(Widget: string = '');
 begin
   InsertValue('self.statusBar()');
 end;
 
-procedure TQtStatusbar.DeleteWidget;
+procedure TQtStatusBar.DeleteWidget;
 begin
   Partner.DeleteAttribute('self.statusBar');
 end;
 
-procedure TQtStatusbar.Paint;
+procedure TQtStatusBar.Paint;
 var
   ARect: TRect;
   Int3: Integer;
@@ -1289,12 +1289,12 @@ begin
   Canvas.FillRect(ARect);
 end;
 
-procedure TQtStatusbar.SetPositionAndSize;
+procedure TQtStatusBar.SetPositionAndSize;
 begin
   // do nothing
 end;
 
-procedure TQtStatusbar.SetSizeGripEnabled(Value: Boolean);
+procedure TQtStatusBar.SetSizeGripEnabled(Value: Boolean);
 begin
   if Value <> FSizeGripEnabled then
   begin

@@ -133,7 +133,7 @@ type
     procedure SetInteractive(OnInteractiveModified: TNotifyEvent); override;
     procedure SetFormMouseDown(OnFormMouseDown: TNotifyEvent); override;
     procedure AddToInteractive(const Source: string);
-    function GetSourcepath: string; override;
+    function GetSourcePath: string; override;
     procedure Reinitalize; override;
     procedure Run(Control: TControl); override;
     procedure ShowInheritedMethodsFromSystemClasses(Control: TControl;

@@ -4,9 +4,6 @@ interface
 
 uses
   Classes,
-  Controls,
-  ImgList,
-  System.ImageList,
   Vcl.BaseImageCollection,
   SVGIconImageCollection;
 

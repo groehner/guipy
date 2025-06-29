@@ -172,9 +172,9 @@ type
   TKMainWindow = class(TBaseWidget)
     function GetAttributes(ShowAttributes: Integer): string; override;
     procedure SetAttribute(Attr, Value, Typ: string); override;
-    function getEvents(ShowEvents: Integer): string; override;
+    function GetEvents(ShowEvents: Integer): string; override;
     function HandlerParameter(const Event: string): string; override;
-    function HandlerName(const Event: string): string; override;
+    function Handlername(const Event: string): string; override;
   end;
 
 implementation
