@@ -1,4 +1,4 @@
-unit frmFile;
+﻿unit frmFile;
 
 interface
 
@@ -116,8 +116,8 @@ type
   TFile = class(TInterfacedObject, IUnknown, IFile, IFileCommands)
   private
     FFileKind: TFileKind;
-    FFileName: string;
-    FRemoteFileName : string;
+    FFilename: string;
+    FRemoteFilename : string;
     FSSHServer : string;
     FForm: TFileForm;
     FFromTemplate: Boolean;
@@ -509,7 +509,7 @@ begin
     except
       on E: Exception do begin
         StyledMessageDlg(Format(_(SFileSaveError),
-          [FileName, E.Message]), mtWarning, [mbOK], 0);
+          [Filename, E.Message]), mtWarning, [mbOK], 0);
         Result:= False;
       end;
     end;

@@ -131,7 +131,7 @@ end;
 function TFSubversion.GetRepositoryURL(Str: string): string;
 begin
   Str:= WithoutTrailingSlash(ExtractFilePath(Str));
-  Result:= ToWeb('IE', GuiPyOptions.SVNRepository + '/' + toRepository(Str));
+  Result:= ToWeb('IE', GuiPyOptions.SVNRepository + '/' + ToRepository(Str));
 end;
 
 procedure TFSubversion.LVRevisionsDblClick(Sender: TObject);

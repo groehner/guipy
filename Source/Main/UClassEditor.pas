@@ -607,7 +607,7 @@ end;
 procedure TFClassEditor.BClassChangeClick(Sender: TObject);
 var
   Str, Searchtext, ReplaceText, Tail, NewClassname, OldClassname,
-    Indent: string;
+    AIndent: string;
   SkipUpdate: Boolean;
   Posi, NodeIndex: Integer;
   Node: TTreeNode;
@@ -622,9 +622,9 @@ begin
     Node := TreeView.Selected;
     if not Assigned(Node) then
       Exit;
-    Indent := GetIndent(2);
+    AIndent := GetIndent(2);
     if CBClassInner.Checked then
-      Indent := GetIndent(3);
+      AIndent := GetIndent(3);
     LockFormUpdate(FMyEditor);
     FMyEditor.ActiveSynEdit.BeginUpdate;
     OldClassname := Node.Text;
@@ -697,7 +697,7 @@ begin
             begin
               Head := PrepareParameter(Head);
 
-              Str := Indent + 'super().__init__(' + Head + ')';
+              Str := AIndent + 'super().__init__(' + Head + ')';
               Str := FConfiguration.Indent2 + 'super().__init__(' + Head + ')';
               FMyEditor.ActiveSynEdit.Lines.Insert(Line + 1, Str);
             end;
@@ -985,7 +985,7 @@ begin
         EClass.Text := Node.Text;
         CBClassInner.Checked := (Classifier.Level > 0);
         SetEditText(EExtends, (Classifier as TClass).AncestorsAsString);
-        Line := Classifier.Lines;
+        Line := Classifier.LineS;
       end;
     end
     else if IsAttributesNode(Node) or IsAttributesNodeLeaf(Node) then
@@ -1012,7 +1012,7 @@ begin
               Attribute.Name, Method);
           CBAttributeStatic.Checked := Attribute.Static;
           CBAttributeFinal.Checked := Attribute.IsFinal;
-          Line := Attribute.Lines;
+          Line := Attribute.LineS;
         end;
       end
       else
@@ -1048,7 +1048,7 @@ begin
           CBMethodClass.Checked := Method.IsClassMethod;
           CBMethodAbstract.Checked := Method.IsAbstract;
           GetParameter(LBParams, Method);
-          Line := Method.Lines;
+          Line := Method.LineS;
         end;
       end
       else
@@ -1289,7 +1289,7 @@ begin
   HasMethod(_(FLngGet), Attribute.Name, Method1);
   HasMethod(_(FLngSet), Attribute.Name, Method2);
   GetIsFirst := True;
-  if Assigned(Method1) and Assigned(Method2) and (Method1.Lines > Method2.Lines)
+  if Assigned(Method1) and Assigned(Method2) and (Method1.LineS > Method2.LineS)
   then
     GetIsFirst := False;
   ChangeAttribute(Attribute, Name);
@@ -1420,16 +1420,16 @@ begin
         if New <> Old then
         begin
           if OldStatic = Attribute.Static then
-            FMyEditor.ReplaceLineInLine(Attribute.Lines - 1, Old, New)
+            FMyEditor.ReplaceLineInLine(Attribute.LineS - 1, Old, New)
           else if Attribute.Static then
           begin
-            FMyEditor.DeleteLine(Attribute.Lines - 1);
-            FMyEditor.InsertLinesAt(TClassifier(Attribute.Owner).Lines, New);
+            FMyEditor.DeleteLine(Attribute.LineS - 1);
+            FMyEditor.InsertLinesAt(TClassifier(Attribute.Owner).LineS, New);
           end
           else if OldStatic then
           begin
             FMyEditor.InsertAttributeCE(New, ClassNumber);
-            FMyEditor.DeleteLine(Attribute.Lines - 1);
+            FMyEditor.DeleteLine(Attribute.LineS - 1);
           end;
           FMyEditor.ReplaceWord(OldName, Attribute.Name, True);
           FMyEditor.ReplaceWord('self.' + OldVisName,
@@ -1507,7 +1507,7 @@ begin
         MethodName := '';
     end;
     MethodName := MethodName + Copy(Node.Text, 1, Pos('(', Node.Text) - 1);
-    LineNr := FMyEditor.GetLineNumberWithWordFromTill(MethodName, AClass.Lines,
+    LineNr := FMyEditor.GetLineNumberWithWordFromTill(MethodName, AClass.LineS,
       AClass.LineE);
     if LineNr > -1 then
     begin
@@ -1526,14 +1526,14 @@ end;
 procedure TFClassEditor.DeleteMethod(Method: TOperation);
 begin
   FMyEditor.ActiveSynEdit.BeginUpdate;
-  FMyEditor.DeleteBlock(Method.Lines - 1, Method.LineE - 1);
+  FMyEditor.DeleteBlock(Method.LineS - 1, Method.LineE - 1);
   var
-  Int := Method.Lines - 1;
+  Int := Method.LineS - 1;
   if Method.HasComment then
   begin
-    FMyEditor.DeleteBlock(Method.Documentation.Lines - 1,
+    FMyEditor.DeleteBlock(Method.Documentation.LineS - 1,
       Method.Documentation.LineE - 1);
-    Int := Method.Documentation.Lines - 1;
+    Int := Method.Documentation.LineS - 1;
   end;
   FMyEditor.DeleteEmptyLine(Int - 1);
   FMyEditor.ActiveSynEdit.EndUpdate;
@@ -1556,7 +1556,7 @@ begin
     HasMethod(_(FLngSet), Attribute.Name, Method2);
     if Assigned(Method1) and Assigned(Method2) then
     begin
-      if Method1.Lines < Method2.Lines then
+      if Method1.LineS < Method2.LineS then
       begin
         DeleteMethod(Method2);
         DeleteMethod(Method1);
@@ -1647,7 +1647,7 @@ begin
     begin
       StringList := TStringList.Create;
       try
-        StringList.Text := FMyEditor.GetSource(Method.Lines, Method.LineE - 2);
+        StringList.Text := FMyEditor.GetSource(Method.LineS, Method.LineE - 2);
         for var I := StringList.Count - 1 downto 0 do
         begin
           Str := Trim(StringList[I]);
@@ -2869,7 +2869,7 @@ begin
     begin
       if Method.HasSourceCode then
       begin
-        From := Method.Lines;
+        From := Method.LineS;
         if Method.IsStaticMethod then
           Inc(From);
         if Method.IsClassMethod then
@@ -2906,8 +2906,8 @@ procedure TFClassEditor.ReplaceMethod(var Method: TOperation;
 const New: string);
 begin
   FMyEditor.ActiveSynEdit.BeginUpdate;
-  FMyEditor.DeleteBlock(Method.Lines - 1, Method.LineE - 1);
-  FMyEditor.InsertLinesAt(Method.Lines - 1, New);
+  FMyEditor.DeleteBlock(Method.LineS - 1, Method.LineE - 1);
+  FMyEditor.InsertLinesAt(Method.LineS - 1, New);
   FMyEditor.ActiveSynEdit.EndUpdate;
 end;
 
@@ -3116,7 +3116,7 @@ begin
 
   if Assigned(SourceModelEntity) then
   begin
-    From := SourceModelEntity.Lines;
+    From := SourceModelEntity.LineS;
     Till := SourceModelEntity.LineE;
   end
   else
@@ -3124,7 +3124,7 @@ begin
 
   if Assigned(TargetModelEntity) then
   begin
-    ATo := TargetModelEntity.Lines;
+    ATo := TargetModelEntity.LineS;
     ToTill := TargetModelEntity.LineE;
   end
   else

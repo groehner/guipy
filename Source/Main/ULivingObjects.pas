@@ -22,6 +22,7 @@ type
     // <Auto.Auto object at 0x03770658>=auto1
     // <TurtleIntern Sprite(in 771 groups)>
     FSLObjectsAddressName: TStringList;
+    FSLObjectsAddressNameDuplicat: TStringList;
 
     // path in the namespace
     // node4=linkedlist.head.next.next.next
@@ -33,6 +34,15 @@ type
     function IsAttribute(Node: TBaseNameSpaceItem): Boolean;
     function GetNameFromValue(Value, Parentname: string;
       Node: TBaseNameSpaceItem = nil): string;
+    procedure Add(Prefixname: string; NameSpace: TBaseNameSpaceItem);
+    function GetNameFromAddress(Address: string): string;
+    function GetObjectName(AObject: string): string;
+    function AddObject(Prefixname, AObject: string): string;
+    procedure AddObjectsFromString(Prefixname, Values: string);
+    procedure AddObjectsFromDictNames(Prefixname: string;
+      NameSpace: TBaseNameSpaceItem);
+    procedure AddObjectsFromDict(Prefixname: string;
+      NameSpace: TBaseNameSpaceItem);
   public
     constructor Create;
     destructor Destroy; override;
@@ -465,24 +475,30 @@ var
       var
       OType := NameSpaceItem.ObjectType;
       if (OType = 'list') or (OType = 'tuple') then
-        AddObjects(NameSpaceItem)
-      else if OType = 'dict' then
+      begin
+        AddObjects(NameSpaceItem);
+        Continue;
+      end;
+      if OType = 'dict' then
       begin
         AddObjectsFromDictNames(NameSpaceItem);
         AddObjects(NameSpaceItem);
-      end
-      else if OType = 'set' then
+        Continue;
+      end;
+      if OType = 'set' then
       begin
         Str := VarToStr(NameSpaceItem.PyObject);
         AddObjectsFromString(NameSpaceItem, Str);
-      end
-      else if IsObject(NameSpaceItem) then
+        Continue;
+      end;
+      if IsObject(NameSpaceItem) then
       begin
         Str := VarToStr(NameSpaceItem.PyObject);
         Str := GetNameFromValue(Str, NameSpace.Name, NameSpaceItem);
         StringList.Add(Str);
-      end
-      else if IsDunder(NameSpaceItem.Name) then
+        Continue;
+      end;
+      if IsDunder(NameSpaceItem.Name) then
         Break;
     end;
   end;
@@ -502,46 +518,44 @@ var
   Int, Pos1, Pos2: Integer;
   Classname, Objectname: string;
 begin
-  Result := Value;
+  if Pos('<', Value) = 0 then
+    Exit(Value);
   Int := FSLObjectsAddressName.IndexOfName(Value);
   if Int > -1 then
-    Result := FSLObjectsAddressName.ValueFromIndex[Int]
-  else if Pos('<', Value) > 0 then
+    Exit(FSLObjectsAddressName.ValueFromIndex[Int]);
+  if Copy(Value, 1, 1) = '<' then
   begin
-    if Copy(Value, 1, 1) = '<' then
-    begin
-      // for example: <TurtleIntern Sprite(in <xxx> groups)>
-      Value := GetHexAddress(Parentname + '.' + Node.Name, Value);
-      Int := FSLObjectsAddressName.IndexOfName(Value);
-      if Int > -1 then
-        Result := FSLObjectsAddressName.ValueFromIndex[Int]
-      else
-      begin
-        Classname := GetClassnameFromAddress(Value);
-        Result := GetNewObjectName(Classname);
-        FSLObjectsAddressName.Add(Value + '=' + Result);
-      end;
-    end
+    // for example: <TurtleIntern Sprite(in <xxx> groups)>
+    Value := GetHexAddress(Parentname + '.' + Node.Name, Value);
+    Int := FSLObjectsAddressName.IndexOfName(Value);
+    if Int > -1 then
+      Result := FSLObjectsAddressName.ValueFromIndex[Int]
     else
     begin
-      Pos1 := Pos('<', Value);
-      Pos2 := Pos('>', Value);
-      while (Pos1 > 0) and (Pos2 > Pos1) do
-      begin
-        Objectname := Copy(Value, Pos1, Pos2 - Pos1 + 1);
-        Int := FSLObjectsAddressName.IndexOfName(Objectname);
-        if Int > -1 then
-        begin
-          Delete(Value, Pos1, Pos2 - Pos1 + 1);
-          Insert(FSLObjectsAddressName.ValueFromIndex[Int], Value, Pos1);
-          Pos1 := Pos('<', Value);
-          Pos2 := Pos('>', Value);
-        end
-        else
-          Pos1 := 0;
-      end;
-      Result := Value;
+      Classname := GetClassnameFromAddress(Value);
+      Result := GetNewObjectName(Classname);
+      FSLObjectsAddressName.Add(Value + '=' + Result);
     end;
+  end
+  else
+  begin
+    Pos1 := Pos('<', Value);
+    Pos2 := Pos('>', Value);
+    while (Pos1 > 0) and (Pos2 > Pos1) do
+    begin
+      Objectname := Copy(Value, Pos1, Pos2 - Pos1 + 1);
+      Int := FSLObjectsAddressName.IndexOfName(Objectname);
+      if Int > -1 then
+      begin
+        Delete(Value, Pos1, Pos2 - Pos1 + 1);
+        Insert(FSLObjectsAddressName.ValueFromIndex[Int], Value, Pos1);
+        Pos1 := Pos('<', Value);
+        Pos2 := Pos('>', Value);
+      end
+      else
+        Pos1 := 0;
+    end;
+    Result := Value;
   end;
 end;
 
@@ -625,7 +639,6 @@ end;
 
 function TLivingObjects.GetClassMethods(const Classname: string): TStringList;
 var
-  I: Integer;
   StringList: TStringList;
   PyEngine: IPyEngineAndGIL;
   NameSpace, NameSpaceItem: TBaseNameSpaceItem;
@@ -633,7 +646,7 @@ begin
   StringList := TStringList.Create;
   PyEngine := SafePyEngine;
   NameSpace := GetNodeFromPath(Classname);
-  for I := 0 to NameSpace.ChildCount - 1 do
+  for var I := 0 to NameSpace.ChildCount - 1 do
   begin
     NameSpaceItem := NameSpace.ChildNode[I];
     if (NameSpaceItem.ObjectType = 'method') or
@@ -658,171 +671,168 @@ begin
   Result := Address;
 end;
 
-procedure TLivingObjects.MakeAllObjects;
+function TLivingObjects.GetNameFromAddress(Address: string): string;
 var
-  PyEngine: IPyEngineAndGIL;
-  FSLObjectsAddressNameDuplicat: TStringList;
-  Str, Name: string;
+  Classname, Objectname, Str: string;
+  StringList: TStringList;
+  Len, Max, Num: Integer;
+begin
+  StringList := TStringList.Create;
+  StringList.Assign(FSLObjectsAddressNameDuplicat);
+  StringList.Text := StringList.Text + FSLObjectsAddressName.Text;
+  Classname := GetClassnameFromAddress(Address);
+  Classname := GetShortType(Classname);
+  if GuiPyOptions.ObjectLowerCaseLetter then
+    Classname := LowerCase(Classname);
+  Num := 1;
+  for var I := 0 to StringList.Count - 1 do
+  begin
+    Str := StringList.ValueFromIndex[I];
+    Len := Length(Str);
+    // classnames can have digits too, example: Eval$5
+    while (Len > Length(Classname)) and CharInSet(Str[Len], ['0' .. '9']) do
+      Dec(Len);
+    if Len < Length(Str) then
+    begin
+      Max := StrToInt(Copy(Str, Len + 1, Length(Str)));
+      Str := Copy(Str, 1, Len);
+      if (Str = Classname) and (Num <= Max) then
+        Num := Max + 1;
+    end;
+  end;
+  Objectname := Classname + IntToStr(Num);
+  if FSLObjectsAddressName.IndexOfName(Address) = -1 then
+    FSLObjectsAddressName.Add(Address + '=' + Objectname);
+  Result := Objectname;
+  FreeAndNil(StringList);
+end;
+
+function TLivingObjects.GetObjectName(AObject: string): string;
+begin
+  var
+  Index := FSLObjectsAddressNameDuplicat.IndexOfName(AObject);
+  if Index > -1 then
+  begin
+    Result := FSLObjectsAddressNameDuplicat.ValueFromIndex[Index];
+    FSLObjectsAddressName.Add(AObject + '=' + Result);
+  end
+  else
+  begin
+    Index := FSLObjectsAddressName.IndexOfName(AObject);
+    if Index > -1 then
+      Result := FSLObjectsAddressName.ValueFromIndex[Index]
+    else
+      Result := GetNameFromAddress(AObject);
+  end;
+end;
+
+function TLivingObjects.AddObject(Prefixname, AObject: string): string;
+begin
+  Result := GetObjectName(AObject);
+  if FSLObjectsNamePath.IndexOfName(Result) = -1 then
+    FSLObjectsNamePath.Add(Result + '=' + Prefixname);
+end;
+
+procedure TLivingObjects.AddObjectsFromString(Prefixname, Values: string);
+// set or dict names
+var
+  Posi, PStart, PEnd: Integer;
+begin
+  Posi := Pos('object at 0x', Values);
+  while Posi > 0 do
+  begin
+    PStart := Posi - 1;
+    while Values[PStart] <> '<' do
+      Dec(PStart);
+    PEnd := Posi + Length('object at 0x');
+    while Values[PEnd] <> '>' do
+      Inc(PEnd);
+    AddObject(Prefixname, Copy(Values, PStart, PEnd - PStart + 1));
+    Values := Copy(Values, PEnd + 1, Length(Values));
+    Posi := Pos('object at 0x', Values);
+  end;
+end;
+
+procedure TLivingObjects.AddObjectsFromDictNames(Prefixname: string;
+  NameSpace: TBaseNameSpaceItem);
+// dict names must be hashable, I.e. simple, tuple, object
+begin
+  for var I := 0 to NameSpace.ChildCount - 1 do
+  begin
+    var
+    Str := NameSpace.ChildNode[I].Name;
+    if (Str[1] = '(') and (Str[Length(Str)] = ')') then // a tuple
+      AddObjectsFromString(Prefixname, Str)
+    else if Pos('object at 0x', Str) > 0 then // a object
+      AddObject(Prefixname + Str, Str);
+  end;
+end;
+
+procedure TLivingObjects.AddObjectsFromDict(Prefixname: string;
+  NameSpace: TBaseNameSpaceItem);
+begin
+  AddObjectsFromDictNames(Prefixname + '.' + NameSpace.Name, NameSpace);
+  Add(Prefixname + '.' + NameSpace.Name, NameSpace);
+end;
+
+procedure TLivingObjects.Add(Prefixname: string; NameSpace: TBaseNameSpaceItem);
+var
+  Str, Name, OType: string;
   NameSpaceItem: TBaseNameSpaceItem;
 
-  procedure Add(Prefixname: string; NameSpace: TBaseNameSpaceItem);
-
-    function GetNameFromAddress(Address: string): string;
-    var
-      Classname, Objectname, Str: string;
-      StringList: TStringList;
-      Len, Max, Num: Integer;
+  procedure AddObject;
+  begin
+    Str := VarToStr(NameSpaceItem.PyObject);
+    Name := GetObjectName(Str);
+    if FSLObjectsNamePath.IndexOfName(Name) = -1 then
     begin
-      StringList := TStringList.Create;
-      StringList.Assign(FSLObjectsAddressNameDuplicat);
-      StringList.Text := StringList.Text + FSLObjectsAddressName.Text;
-      Classname := GetClassnameFromAddress(Address);
-      Classname := GetShortType(Classname);
-      if GuiPyOptions.ObjectLowerCaseLetter then
-        Classname := LowerCase(Classname);
-      Num := 1;
-      for var I := 0 to StringList.Count - 1 do
-      begin
-        Str := StringList.ValueFromIndex[I];
-        Len := Length(Str);
-        // classnames can have digits too, example: Eval$5
-        while (Len > Length(Classname)) and CharInSet(Str[Len], ['0' .. '9']) do
-          Dec(Len);
-        if Len < Length(Str) then
-        begin
-          Max := StrToInt(Copy(Str, Len + 1, Length(Str)));
-          Str := Copy(Str, 1, Len);
-          if (Str = Classname) and (Num <= Max) then
-            Num := Max + 1;
-        end;
-      end;
-      Objectname := Classname + IntToStr(Num);
-      if FSLObjectsAddressName.IndexOfName(Address) = -1 then
-        FSLObjectsAddressName.Add(Address + '=' + Objectname);
-      Result := Objectname;
-      FreeAndNil(StringList);
-    end;
-
-    function GetObjectName(AObject: string): string;
-    var
-      Name: string;
-    begin
-      var
-      Index := FSLObjectsAddressNameDuplicat.IndexOfName(AObject);
-      if Index > -1 then
-      begin
-        Name := FSLObjectsAddressNameDuplicat.ValueFromIndex[Index];
-        FSLObjectsAddressName.Add(AObject + '=' + Name);
-      end
-      else
-      begin
-        Index := FSLObjectsAddressName.IndexOfName(AObject);
-        if Index > -1 then
-          Name := FSLObjectsAddressName.ValueFromIndex[Index]
-        else
-          Name := GetNameFromAddress(AObject);
-      end;
-      Result := Name;
-    end;
-
-    function AddObject(Prefixname, AObject: string): string;
-    var
-      Name: string;
-    begin
-      Name := GetObjectName(AObject);
-      if FSLObjectsNamePath.IndexOfName(Name) = -1 then
-        FSLObjectsNamePath.Add(Name + '=' + Prefixname);
-      Result := Name;
-    end;
-
-    procedure AddObjectsFromString(Prefixname, Values: string);
-    // set or dict names
-    var
-      Posi, PStart, PEnd: Integer;
-    begin
-      Posi := Pos('object at 0x', Values);
-      while Posi > 0 do
-      begin
-        PStart := Posi - 1;
-        while Values[PStart] <> '<' do
-          Dec(PStart);
-        PEnd := Posi + Length('object at 0x');
-        while Values[PEnd] <> '>' do
-          Inc(PEnd);
-        AddObject(Prefixname, Copy(Values, PStart, PEnd - PStart + 1));
-        Values := Copy(Values, PEnd + 1, Length(Values));
-        Posi := Pos('object at 0x', Values);
-      end;
-    end;
-
-    procedure AddObjectsFromDictNames(Prefixname: string;
-      NameSpace: TBaseNameSpaceItem);
-    // dict names must be hashable, I.e. simple, tuple, object
-    begin
-      for var I := 0 to NameSpace.ChildCount - 1 do
-      begin
-        var
-        Str := NameSpace.ChildNode[I].Name;
-        if (Str[1] = '(') and (Str[Length(Str)] = ')') then // a tuple
-          AddObjectsFromString(Prefixname, Str)
-        else if Pos('object at 0x', Str) > 0 then // a object
-          AddObject(Prefixname + Str, Str);
-      end;
-    end;
-
-    procedure AddObjectsFromDict(Prefixname: string;
-      NameSpace: TBaseNameSpaceItem);
-    begin
-      AddObjectsFromDictNames(Prefixname + '.' + NameSpace.Name, NameSpace);
-      Add(Prefixname + '.' + NameSpace.Name, NameSpace);
-    end;
-
-  begin // off add()
-    for var I := 0 to NameSpace.ChildCount - 1 do
-    begin
-      var
-      NameSpaceItem := NameSpace.ChildNode[I];
-      if NameSpaceItem.IsMethod or NameSpaceItem.IsFunction or
-        NameSpaceItem.IsClass or NameSpaceItem.IsModule then
-        Continue
-      else if IsDunder(NameSpaceItem.Name) then
-        Break
-      else
-      begin
-        var
-        OType := NameSpaceItem.ObjectType;
-        if (OType = 'list') or (OType = 'tuple') then
-          Add(Prefixname + '.' + NameSpaceItem.Name, NameSpaceItem)
-        else if OType = 'dict' then
-          AddObjectsFromDict(Prefixname, NameSpaceItem)
-        else if OType = 'set' then
-        begin
-          var
-          Str := VarToStr(NameSpaceItem.PyObject);
-          AddObjectsFromString(Prefixname + '.' + NameSpaceItem.Name, Str);
-        end
-        else if IsObject(NameSpaceItem) then
-        begin
-          Str := VarToStr(NameSpaceItem.PyObject);
-          Name := GetObjectName(Str);
-          if FSLObjectsNamePath.IndexOfName(Name) = -1 then
-          begin
-            FSLObjectsNamePath.Add(Name + '=' + Prefixname);
-            Add(Prefixname + '.' + NameSpaceItem.Name, NameSpaceItem);
-          end;
-        end
-        else
-        begin
-          // object with modified string representation by __repr__
-          // for example: <TurtleIntern Sprite(in 1039 groups)>
-          Str := VarToStr(NameSpaceItem.PyObject);
-          if Copy(Str, 1, 1) = '<' then
-            Name := GetHexAddress(Prefixname + '.' + NameSpaceItem.Name, Str);
-        end;
-      end;
+      FSLObjectsNamePath.Add(Name + '=' + Prefixname);
+      Add(Prefixname + '.' + NameSpaceItem.Name, NameSpaceItem);
     end;
   end;
 
+  procedure AddItem;
+  begin
+    OType := NameSpaceItem.ObjectType;
+    if (OType = 'list') or (OType = 'tuple') then
+      Add(Prefixname + '.' + NameSpaceItem.Name, NameSpaceItem)
+    else if OType = 'dict' then
+      AddObjectsFromDict(Prefixname, NameSpaceItem)
+    else if OType = 'set' then
+    begin
+      Str := VarToStr(NameSpaceItem.PyObject);
+      AddObjectsFromString(Prefixname + '.' + NameSpaceItem.Name, Str);
+    end
+    else if IsObject(NameSpaceItem) then
+      AddObject
+    else
+    begin
+      // object with modified string representation by __repr__
+      // for example: <TurtleIntern Sprite(in 1039 groups)>
+      Str := VarToStr(NameSpaceItem.PyObject);
+      if Copy(Str, 1, 1) = '<' then
+        Name := GetHexAddress(Prefixname + '.' + NameSpaceItem.Name, Str);
+    end;
+  end;
+
+begin
+  for var I := 0 to NameSpace.ChildCount - 1 do
+  begin
+    NameSpaceItem := NameSpace.ChildNode[I];
+    if IsDunder(NameSpaceItem.Name) then
+      Break;
+    if NameSpaceItem.IsMethod or NameSpaceItem.IsFunction or
+      NameSpaceItem.IsClass or NameSpaceItem.IsModule then
+      Continue;
+    AddItem;
+  end;
+end;
+
+procedure TLivingObjects.MakeAllObjects;
+var
+  PyEngine: IPyEngineAndGIL;
+  Str: string;
+  NameSpaceItem: TBaseNameSpaceItem;
 begin
   FSLObjectsAddressNameDuplicat := TStringList.Create; // remember names
   FSLObjectsAddressNameDuplicat.Assign(FSLObjectsAddressName);
@@ -874,9 +884,7 @@ end;
 procedure TLivingObjects.SimplifyPath(Objectname: string);
 begin
   FSLObjectsNamePath.Sorted := False;
-  var
-  I := FSLObjectsNamePath.IndexOfName(Objectname);
-  if I > -1 then
+  if FSLObjectsNamePath.IndexOfName(Objectname) > -1 then
     FSLObjectsNamePath.Values[Objectname] := Objectname;
   FSLObjectsNamePath.Sorted := True;
 end;
