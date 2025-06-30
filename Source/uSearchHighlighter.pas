@@ -14,20 +14,19 @@ uses
   SynEditMiscClasses,
   uEditAppIntfs;
 
-  procedure RegisterSearchHighlightIndicatorSpec(Editor: IEditor);
-  procedure HighligthtSearchTerm(ATerm : string; Editor: IEditor;
-    SearchEngine : TSynEditSearchCustom; SearchOptions : TSynSearchOptions);
-  procedure ClearSearchHighlight(Editor: IEditor);
-  procedure ClearAllHighlightedTerms;
+procedure RegisterSearchHighlightIndicatorSpec(Editor: IEditor);
+procedure HighligthtSearchTerm(ATerm : string; Editor: IEditor;
+  SearchEngine : TSynEditSearchCustom; SearchOptions : TSynSearchOptions);
+procedure ClearSearchHighlight(Editor: IEditor);
+procedure ClearAllHighlightedTerms;
+
+const SearchHighlightIndicatorId: TGUID  = '{A59BCD6A-02A6-4B34-B28C-D9EACA0C9F09}';
 
 implementation
 
 uses
   SynDWrite,
   cPyScripterSettings;
-
-const SearchHighlightIndicatorId: TGUID  = '{A59BCD6A-02A6-4B34-B28C-D9EACA0C9F09}';
-
 
 procedure ClearAllHighlightedTerms;
 begin
@@ -55,6 +54,8 @@ begin
     Editor.SynEdit.Indicators.Clear(SearchHighlightIndicatorId);
     Editor.SynEdit2.Indicators.Clear(SearchHighlightIndicatorId);
     Editor.HasSearchHighlight := False;
+    Editor.SynEdit.UpdateScrollBars;
+    Editor.SynEdit2.UpdateScrollBars;
   end;
 end;
 
@@ -84,6 +85,8 @@ begin
   end;
   Editor.HasSearchHighlight := True;
   SearchEngine.IsWordBreakFunction := nil;
+  Editor.SynEdit.UpdateScrollBars;
+  Editor.SynEdit2.UpdateScrollBars;
 end;
 
 end.
