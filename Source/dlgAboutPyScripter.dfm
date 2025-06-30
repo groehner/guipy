@@ -8,8 +8,8 @@ inherited AboutBox: TAboutBox
   KeyPreview = True
   StyleElements = [seFont, seBorder]
   OnKeyPress = FormKeyPress
-  ExplicitWidth = 542
-  ExplicitHeight = 465
+  ExplicitWidth = 546
+  ExplicitHeight = 466
   TextHeight = 15
   object SpTBXTabControl: TSpTBXTabControl
     Left = 0
@@ -27,8 +27,6 @@ inherited AboutBox: TAboutBox
     ActiveTabIndex = 0
     TabBackgroundBorders = True
     TabPosition = ttpBottom
-    ExplicitWidth = 526
-    ExplicitHeight = 426
     HiddenItems = <>
     object tbAbout: TSpTBXTabItem
       Caption = 'About'
@@ -47,8 +45,6 @@ inherited AboutBox: TAboutBox
       Height = 402
       Caption = 'Credits'
       ImageIndex = -1
-      ExplicitWidth = 526
-      ExplicitHeight = 401
       TabItem = 'tbCredits'
       object ScrollBox: TSpTBXPageScroller
         Left = 2
@@ -62,8 +58,6 @@ inherited AboutBox: TAboutBox
         ParentColor = False
         ParentCtl3D = False
         TabOrder = 0
-        ExplicitWidth = 520
-        ExplicitHeight = 397
         object Panel2: TPanel
           Left = 0
           Top = 0
@@ -88,7 +82,6 @@ inherited AboutBox: TAboutBox
             ParentFont = False
             TabOrder = 0
             OnResizeRequest = reCreditsResizeRequest
-            ExplicitWidth = 520
           end
         end
       end
@@ -100,8 +93,6 @@ inherited AboutBox: TAboutBox
       Height = 402
       Caption = 'Links'
       ImageIndex = -1
-      ExplicitWidth = 526
-      ExplicitHeight = 401
       TabItem = 'tbLinks'
       object reLinks: TRichEdit
         Left = 2
@@ -116,8 +107,6 @@ inherited AboutBox: TAboutBox
         Font.Style = []
         ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 520
-        ExplicitHeight = 397
       end
     end
     object SpTBXTabSheet1: TSpTBXTabSheet
@@ -127,8 +116,6 @@ inherited AboutBox: TAboutBox
       Height = 402
       Caption = 'About'
       ImageIndex = -1
-      ExplicitWidth = 526
-      ExplicitHeight = 401
       TabItem = 'tbAbout'
       object Panel1: TPanel
         AlignWithMargins = True
@@ -153,8 +140,6 @@ inherited AboutBox: TAboutBox
         ShowCaption = False
         TabOrder = 0
         OnClick = Panel1Click
-        ExplicitWidth = 480
-        ExplicitHeight = 357
         DesignSize = (
           484
           358)

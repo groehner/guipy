@@ -224,7 +224,7 @@ const
   SNoParameters = '** No/Unknown parameters **';
   SInvalidRegularExpression = 'Invalid Regular Expression: %s';
   SEmptyList = '(Empty List)';
-  SCommandLineMsg  = 'Command Line : %s' + sLineBreak;
+  SCommandLineMsg  = 'Command Line : %s';
   SEngineActive = '*** %s Python engine is active ***';
   SInterpreterNA = 'The internal Python interpreter is not available';
   SPythonLoadError = 'GuiPy could not load a Python engine.' + SLineBreak +
@@ -416,7 +416,6 @@ const
   SProcessTerminated         = 'Process "%s" terminated, ExitCode: %.8x';
   SDirNotFound               = 'Directory "%s" does not exists';
   SProcessRunning            = 'One process is still running, stop it first.';
-  SPrintCommandLine          = 'Command line: %s';
   SPrintWorkingDir           = 'Working directory: ';
   SExternalToolStillRunning  = 'The External Tool "%s" is still running. Do you want to terminate it?';
 
@@ -449,21 +448,6 @@ const
 
   // Tools
   SPackageName = 'Package Name';
-
-  // Refactoring
-  SCouldNotLoadModule = 'Could not load and parse module: "%s"';
-  SNoIdentifier = 'No Identifier at the given line and column';
-  SCouldNotFindScope = 'Could not find scope for the given line';
-  STypeOfSIsUnknown = 'Type of "%s" is unknown';
-  SCyclicImports = 'Cyclic imports encountered!';
-  SCyclicTypeDependency = 'Cyclic type dependency encountered!';
-  SCouldNotFindIdent = 'Could not find identifier "%s" in module "%s"';
-  SCouldNotAnalyseModule = 'Could not analyse module: "%s"';
-  SCouldNotFindModule = 'Could not find module: "%s"';
-  SSelfOutsideClassScope = '"self" or "cls" used outside a class scope';
-  SCouldNotFindIdentInScope = 'Could not find identifier "%s" in scope "%s"';
-  SCouldNotInferType = 'Could not infer type from expresson "%s"';
-  SCouldInferFunctionReturnType = 'Could not infer return type of function "%s"';
   SPythonKeyword = 'Python keyword';
 
   // File Templates

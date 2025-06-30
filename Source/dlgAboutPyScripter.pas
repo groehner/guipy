@@ -113,6 +113,7 @@ resourcestring
   SAboutBoxCreditsTranslationRussian = 'Russian: %s';
   SAboutBoxCreditsTranslationSlovak  = 'Slovak: %s';
   SAboutBoxCreditsTranslationSpanish = 'Spanish: %s';
+  SAboutBoxCreditsTranslationTurkish = 'Turkish: %s';
 
   SAboutBoxLinks =
     'The project home, Issue Tracker and source code repository are hosted at Github (www.github.com/groehner/GuiPy)'+
@@ -126,7 +127,7 @@ const
 type
   // in alphabetical order of the full English languages names!!
   // not in order of the gettext abbreviations.
-  TCreditLanguages = (ar,zh,fr,de,el,it,ja,kab,pt_BR,pt_PT,ru,sk,es);
+  TCreditLanguages = (ar,zh,fr,de,el,it,ja,kab,pt_BR,pt_PT,ru,sk,es,tr);
 
 const
   CAboutLanguages : array[TCreditLanguages] of string = (
@@ -142,7 +143,8 @@ const
     SAboutBoxCreditsTranslationPortuguesePT,
     SAboutBoxCreditsTranslationRussian,
     SAboutBoxCreditsTranslationSlovak,
-    SAboutBoxCreditsTranslationSpanish
+    SAboutBoxCreditsTranslationSpanish,
+    SAboutBoxCreditsTranslationTurkish
   );
   CAboutTranslationManager = 'Lübbe Onken';
   CAboutTranslators : array[TCreditLanguages] of string = (
@@ -158,7 +160,8 @@ const
     'Gustavo Carreno',
     'Aleksander Dragunkin, Andrei Aleksandrov, Dmitry Arefiev',
     'Marian Denes',
-    'Pedro Luis Larrosa, Victor Alberto Gil, Juan Carlos Cilleruelo'
+    'Pedro Luis Larrosa, Victor Alberto Gil, Juan Carlos Cilleruelo',
+    'Gökhan Cengiz'
   );
 
   CAboutBoxCreditsThemeDesign =
