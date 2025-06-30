@@ -104,7 +104,6 @@ uses
   System.Generics.Defaults,
   System.Math,
   PythonEngine,
-  frmVariables,
   uCommonFunctions,
   uEditAppIntfs,
   dmResources,
@@ -193,7 +192,7 @@ begin
   else
      ClearAll;
   // Now update dependent windows
-  if Assigned(VariablesWindow) then VariablesWindow.UpdateWindow;
+  if Assigned(GI_VariablesWindow) then GI_VariablesWindow.UpdateWindow;
   if Assigned(GI_WatchManager) then GI_WatchManager.UpdateWindow;
 end;
 
@@ -242,7 +241,7 @@ begin
     PyControl.ActiveDebugger.MakeFrameActive(fActiveThread.CallStack[Node.Index]);
 
     // Update the Variables Window
-    if Assigned(VariablesWindow) then VariablesWindow.UpdateWindow;
+    if Assigned(GI_VariablesWindow) then GI_VariablesWindow.UpdateWindow;
     if Assigned(GI_WatchManager) then GI_WatchManager.UpdateWindow;
   end;
 end;

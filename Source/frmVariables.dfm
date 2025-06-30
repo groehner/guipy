@@ -5,13 +5,19 @@ inherited VariablesWindow: TVariablesWindow
   Caption = 'Variables'
   ClientHeight = 247
   ClientWidth = 579
+  ExplicitWidth = 595
+  ExplicitHeight = 286
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 579
     Height = 247
+    ExplicitWidth = 579
+    ExplicitHeight = 247
     inherited FGPanel: TPanel
       Width = 575
       Height = 243
+      ExplicitWidth = 575
+      ExplicitHeight = 243
       object DocPanel: TSpTBXPageScroller
         Left = 200
         Top = 0
@@ -44,28 +50,12 @@ inherited VariablesWindow: TVariablesWindow
           Gutter.Font.Style = []
           Gutter.Font.Quality = fqClearTypeNatural
           Gutter.Visible = False
-          Gutter.Bands = <
-            item
-              Kind = gbkMarks
-              Width = 13
-            end
-            item
-              Kind = gbkLineNumbers
-            end
-            item
-              Kind = gbkFold
-            end
-            item
-              Kind = gbkTrackChanges
-            end
-            item
-              Kind = gbkMargin
-              Width = 3
-            end>
+          Gutter.Bands = <>
           HideSelection = True
           ReadOnly = True
           RightEdge = 0
           ScrollBars = ssNone
+          ScrollbarAnnotations = <>
           WordWrap = True
         end
       end
@@ -94,6 +84,7 @@ inherited VariablesWindow: TVariablesWindow
           Alignment = taRightJustify
           Anchors = [akLeft, akTop, akBottom]
           BorderStyle = bsNone
+          DefaultNodeHeight = 19
           Header.AutoSizeIndex = 2
           Header.Images = vilCodeImages
           Header.Options = [hoAutoResize, hoColumnResize, hoDblClickResize, hoHotTrack, hoOwnerDraw, hoShowImages, hoVisible]

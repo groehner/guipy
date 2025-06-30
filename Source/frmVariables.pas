@@ -1,4 +1,4 @@
-{-----------------------------------------------------------------------------
+﻿{-----------------------------------------------------------------------------
  Unit Name: frmVariables
  Author:    Kiriakos Vlahos
             Gerhard Röhner
@@ -44,10 +44,11 @@ uses
   SynEdit,
   SynEditMiscClasses,
   frmIDEDockWin,
+  cPySupportTypes,
   cPyBaseDebugger;
 
 type
-  TVariablesWindow = class(TIDEDockWindow)
+  TVariablesWindow = class(TIDEDockWindow, IVariablesWindow)
     VTHeaderPopupMenu: TVTHeaderPopupMenu;
     VariablesTree: TVirtualStringTree;
     DocPanel: TSpTBXPageScroller;
@@ -81,6 +82,8 @@ type
     CurrentModule, CurrentFunction : string;
     FGlobalsNameSpace, LocalsNameSpace : TBaseNameSpaceItem;
     class var DebugInspectorsRegister: TDictionary<string, string>;
+    // IVariablesWindow implementation
+    procedure UpdateWindow;
     var FOnNotify: TNotifyEvent;
   protected
     const FBasePath = 'Variables Window Options'; // Used for storing settings
@@ -90,7 +93,6 @@ type
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure ClearAll;
-    procedure UpdateWindow;
 
     class constructor Create;
     class destructor Destroy;
@@ -121,7 +123,6 @@ uses
   dmResources,
   frmCallStack,
   cPyControl,
-  cPySupportTypes,
   cPyScripterSettings;
 
 {$R *.dfm}
@@ -148,6 +149,8 @@ begin
   var FItalicIndicatorSpec := TSynIndicatorSpec.Create(sisTextDecoration,
     clNoneF, clNoneF, [fsItalic]);
   synInfo.Indicators.RegisterSpec(FItalicIndicatorId, FItalicIndicatorSpec);
+
+  GI_VariablesWindow := Self;
 end;
 
 procedure TVariablesWindow.VariablesTreeInitChildren(Sender: TBaseVirtualTree;

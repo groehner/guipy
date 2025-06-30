@@ -552,7 +552,6 @@ uses
   dlgSynPrintPreview,
   dlgRemoteFile,
   frmPyIDEMain,
-  frmPythonII,
   frmMessages,
   uSearchHighlighter,
   cPyDebugger,
@@ -1094,7 +1093,6 @@ begin
 
   GI_PyInterpreter.ShowWindow;
   GI_PyInterpreter.AppendText(sLineBreak);
-  PythonIIForm.SynEdit.ExecuteCommand(ecEditorBottom, ' ', nil);
   Source := CleanEOLs(Source);
 
   ThreadPythonExec(procedure
