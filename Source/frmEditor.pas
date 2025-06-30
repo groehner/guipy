@@ -553,7 +553,6 @@ uses
   dlgRemoteFile,
   frmPyIDEMain,
   frmPythonII,
-  frmWatches,
   frmMessages,
   uSearchHighlighter,
   cPyDebugger,
@@ -1101,7 +1100,7 @@ begin
   ThreadPythonExec(procedure
   begin
     // RunSource
-    case PyControl.DebuggerState of
+    case GI_PyControl.DebuggerState of
       dsInactive:
         PyControl.ActiveInterpreter.RunSource(Source, '<editor selection>',
           ExecType);
@@ -2846,8 +2845,8 @@ begin
           True, True, False, True);
         DottedIdent := DottedIdent + GetWordAtPos(LineTxt,
           LineCharPos.Char + 1, False, False, True);
-        if DottedIdent <> '' then
-          WatchesWindow.AddWatch(DottedIdent);
+        if (DottedIdent <> '') and Assigned(GI_WatchManager) then
+          GI_WatchManager.AddWatch(DottedIdent);
       end;
     end;
 end;
@@ -5263,7 +5262,7 @@ begin
   end
   else if FEditor.HasPythonFile and not SynEd.IsPointInSelection(BufferC) and
     SynEd.GetHighlighterAttriAtRowColEx(BufferC, Token, TokenType, Start, Attri) and
-    (((PyControl.DebuggerState in [dsPaused, dsPostMortem]) and
+    (((GI_PyControl.DebuggerState in [dsPaused, dsPostMortem]) and
        PyIDEOptions.ShowDebuggerHints) or
        (GI_PyControl.Inactive and PyIDEOptions.ShowCodeHints)) and
     ((Attri = Highlighter.IdentifierAttri) or
@@ -5271,7 +5270,7 @@ begin
      (Attri = Highlighter.SystemAttri) or
       // bracketed debugger expression
      ((Attri = Highlighter.SymbolAttri) and
-      (PyControl.DebuggerState in [dsPaused, dsPostMortem]) and
+      (GI_PyControl.DebuggerState in [dsPaused, dsPostMortem]) and
       ((Token = ')') or (Token = ']')))) then
   begin
     // LSP or debugger hints

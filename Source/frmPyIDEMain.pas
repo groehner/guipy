@@ -1570,7 +1570,7 @@ type
     procedure RestoreLocalApplicationData;
     function NewFileFromTemplate(FileTemplate: TFileTemplate;
        TabControlIndex: Integer = 1; FileName: string = ''): IEditor;
-    procedure UpdateDebugCommands(DebuggerState: TDebuggerState);
+    procedure UpdateDebugCommands;
     procedure DebuggerStateChange(Sender: TObject; OldState,
       NewState: TDebuggerState);
     procedure ApplicationOnIdle(Sender: TObject; var Done: Boolean);
@@ -2230,10 +2230,10 @@ begin
     CanClose := False;
     DelayedClose;
     Exit;
-  end else if PyControl.DebuggerState <> dsInactive then begin
+  end else if GI_PyControl.DebuggerState <> dsInactive then begin
     if StyledMessageDlg(_(SAbortDebugging), mtWarning, [mbYes, mbNo], 0) = mrYes then
     begin
-      if (PyControl.DebuggerState in [dsPaused, dsPostMortem]) or
+      if (GI_PyControl.DebuggerState in [dsPaused, dsPostMortem]) or
         (PyControl.ActiveDebugger is TPyInternalDebugger) then
       begin
         CanClose := False;
@@ -3032,7 +3032,7 @@ begin
   if Assigned(ActiveEditor) then begin
     if GI_PyControl.Inactive then
       DebugActiveScript(ActiveEditor)
-    else if PyControl.DebuggerState = dsPaused then
+    else if GI_PyControl.DebuggerState = dsPaused then
       PyControl.ActiveDebugger.Resume;
   end;
 end;
@@ -3057,7 +3057,7 @@ begin
   if Assigned(ActiveEditor) then begin
     if GI_PyControl.Inactive then
       DebugActiveScript(ActiveEditor, True)
-    else if PyControl.DebuggerState = dsPaused then
+    else if GI_PyControl.DebuggerState = dsPaused then
       PyControl.ActiveDebugger.StepInto;
   end;
 end;
@@ -3086,7 +3086,7 @@ begin
   if Assigned(ActiveEditor) then begin
     if GI_PyControl.Inactive then
       DebugActiveScript(ActiveEditor, False, ActiveEditor.SynEdit.CaretY)
-    else if PyControl.DebuggerState = dsPaused then
+    else if GI_PyControl.DebuggerState = dsPaused then
       PyControl.ActiveDebugger.RunToCursor(ActiveEditor, ActiveEditor.SynEdit.CaretY);
   end;
 end;
@@ -3133,26 +3133,24 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.UpdateDebugCommands(DebuggerState: TDebuggerState);
-var
-  Editor: IEditor; aFile: IFile;
-  PyFileActive: Boolean;
+procedure TPyIDEMainForm.UpdateDebugCommands;
 begin
-  Editor := GetActiveEditor;
-  aFile:= GetActiveFile;
-  PyFileActive := Assigned(Editor) and
+  var Editor := GetActiveEditor;
+  var aFile:= GetActiveFile;
+  var PyFileActive := Assigned(Editor) and
     (Editor.SynEdit.Highlighter = ResourcesDataModule.SynPythonSyn);
+  var DbgState := GI_PyControl.DebuggerState;
   actSyntaxCheck.Enabled := PyFileActive and GI_PyControl.Inactive;
   actRun.Enabled := (PyFileActive or Assigned(aFile) and (AFile.FileKind = fkUML)) and GI_PyControl.Inactive;
   actExternalRun.Enabled := PyFileActive and GI_PyControl.Inactive;
   actImportModule.Enabled := PyFileActive and GI_PyControl.Inactive;
-  actDebug.Enabled := PyFileActive and (GI_PyControl.Inactive or (DebuggerState = dsPaused));
-  actStepInto.Enabled := PyFileActive and (GI_PyControl.Inactive or (DebuggerState = dsPaused));
-  actStepOut.Enabled := DebuggerState = dsPaused;
-  actStepOver.Enabled := DebuggerState = dsPaused;
-  actDebugAbort.Enabled := DebuggerState in [dsPaused, dsDebugging, dsRunning, dsPostMortem];
-  actDebugPause.Enabled := DebuggerState = dsDebugging;
-  actRunToCursor.Enabled := PyFileActive and (GI_PyControl.Inactive or (DebuggerState = dsPaused))
+  actDebug.Enabled := PyFileActive and (GI_PyControl.Inactive or (DbgState = dsPaused));
+  actStepInto.Enabled := PyFileActive and (GI_PyControl.Inactive or (DbgState = dsPaused));
+  actStepOut.Enabled := DbgState = dsPaused;
+  actStepOver.Enabled := DbgState = dsPaused;
+  actDebugAbort.Enabled := DbgState in [dsPaused, dsDebugging, dsRunning, dsPostMortem];
+  actDebugPause.Enabled := DbgState = dsDebugging;
+  actRunToCursor.Enabled := PyFileActive and (GI_PyControl.Inactive or (DbgState = dsPaused))
     and TPyRegExpr.IsExecutableLine(Editor.SynEdit.LineText);
   actToggleBreakPoint.Enabled := PyFileActive;
   actClearAllBreakPoints.Enabled := PyFileActive;
@@ -3160,10 +3158,10 @@ begin
   actExecSelection.Enabled := GI_PyControl.PythonLoaded and not GI_PyControl.Running and PyFileActive;
   actPythonReinitialize.Enabled := Assigned(PyControl.ActiveInterpreter) and
     (icReInitialize in PyControl.ActiveInterpreter.InterpreterCapabilities) and
-    not (PyControl.DebuggerState in [dsPaused, dsPostMortem]);
+    not (DbgState in [dsPaused, dsPostMortem]);
   actPostMortem.Enabled := GI_PyControl.Inactive and
     Assigned(PyControl.ActiveDebugger) and PyControl.ActiveDebugger.PostMortemEnabled;
-  if DebuggerState = dsPaused then begin
+  if DbgState = dsPaused then begin
     actDebug.Caption := _(SResumeCaption);
     actDebug.Hint := _(SResumeHint);
   end else begin
@@ -3174,8 +3172,8 @@ begin
   actRunDebugLastScript.Enabled := actRunLastScript.Enabled;
   actRunLastScriptExternal.Enabled := actRunLastScript.Enabled;
 
-  CallStackWindow.actPreviousFrame.Enabled := (DebuggerState = dsPaused);
-  CallStackWindow.actNextFrame.Enabled := (DebuggerState = dsPaused);
+  CallStackWindow.actPreviousFrame.Enabled := (DbgState = dsPaused);
+  CallStackWindow.actNextFrame.Enabled := (DbgState = dsPaused);
 end;
 
 procedure TPyIDEMainForm.SetActiveTabControl(const Value: TSpTBXCustomTabControl);
@@ -3244,7 +3242,7 @@ begin
   StatusBar.Refresh;
 
   CallStackWindow.UpdateWindow(NewState, OldState);  // also updates Variables and Watches
-  UpdateDebugCommands(NewState);
+  UpdateDebugCommands;
 end;
 
 procedure TPyIDEMainForm.SaveFileModules;
@@ -3269,7 +3267,7 @@ begin
   CommandsDataModule.UpdateMainActions;
   PythonIIForm.UpdateInterpreterActions;
   UpdateStatusBarPanels;
-  UpdateDebugCommands(PyControl.DebuggerState);
+  UpdateDebugCommands;
   if Assigned(GI_PyIDEServices.ActiveFile) then
     (GI_PyIDEServices.ActiveFile as TFile).DoOnIdle;
 
@@ -5070,10 +5068,9 @@ end;
 procedure TPyIDEMainForm.mnPythonVersionsPopup(Sender: TTBCustomItem;
   FromLink: Boolean);
 begin
-  var PythonLoaded := GI_PyControl.PythonLoaded;
   for var i:= 0 to mnPythonVersions.Count - 3 do begin
-    mnPythonVersions.Items[i].Enabled := PyControl.DebuggerState = dsInactive;
-    mnPythonVersions.Items[i].Checked := PythonLoaded and
+    mnPythonVersions.Items[i].Enabled := GI_PyControl.DebuggerState = dsInactive;
+    mnPythonVersions.Items[i].Checked := GI_PyControl.PythonLoaded and
       (PyControl.PythonVersionIndex = mnPythonVersions.Items[i].Tag);
   end;
 end;
@@ -6137,7 +6134,7 @@ begin
   PyControl.OnStateChange := DebuggerStateChange;
 
   // This is needed to update the variables window
-  PyControl.DebuggerState := dsInactive;
+  GI_PyControl.DebuggerState := dsInactive;
 
   // DebuggerStateChange(PyControl);
 

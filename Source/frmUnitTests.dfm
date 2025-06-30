@@ -420,7 +420,6 @@ inherited UnitTestWindow: TUnitTestWindow
         Name = 'Abort'
       end
       item
-        CollectionIndex = 93
         CollectionName = 'Run'
         Name = 'Run'
       end
