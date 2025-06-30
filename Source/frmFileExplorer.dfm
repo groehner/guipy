@@ -4,15 +4,21 @@ inherited FileExplorerWindow: TFileExplorerWindow
   HelpContext = 420
   Caption = 'File Explorer'
   ClientHeight = 439
+  ExplicitHeight = 478
   TextHeight = 15
   inherited BGPanel: TPanel
     Height = 439
+    ExplicitWidth = 83
+    ExplicitHeight = 439
     inherited FGPanel: TPanel
+      Width = 79
       Height = 435
+      ExplicitWidth = 79
+      ExplicitHeight = 435
       object FileExplorerTree: TVirtualExplorerTree
         Left = 0
         Top = 30
-        Width = 223
+        Width = 79
         Height = 405
         Active = False
         Align = alClient
@@ -22,7 +28,7 @@ inherited FileExplorerWindow: TFileExplorerWindow
         BorderStyle = bsNone
         ColumnDetails = cdUser
         ColumnMenuItemCount = 8
-        DefaultNodeHeight = 17
+        DefaultNodeHeight = 19
         DragHeight = 250
         DragWidth = 150
         FileObjects = [foFolders, foNonFolders]
@@ -42,6 +48,7 @@ inherited FileExplorerWindow: TFileExplorerWindow
         TabOrder = 0
         TabStop = True
         TreeOptions.AnimationOptions = [toAnimatedToggle]
+        TreeOptions.AutoOptions = [toAutoDropExpand, toAutoScroll, toAutoScrollOnExpand, toAutoTristateTracking, toAutoHideButtons, toAutoDeleteMovedNodes, toAutoChangeScale]
         TreeOptions.MiscOptions = [toAcceptOLEDrop, toEditable, toFullRepaintOnResize, toInitOnSave, toToggleOnDblClick, toWheelPanning]
         TreeOptions.PaintOptions = [toHideSelection, toHotTrack, toShowButtons, toShowTreeLines, toThemeAware, toUseBlendedImages, toUseBlendedSelection]
         TreeOptions.SelectionOptions = [toRightClickSelect]
@@ -58,7 +65,7 @@ inherited FileExplorerWindow: TFileExplorerWindow
       object ExplorerDock: TSpTBXDock
         Left = 0
         Top = 0
-        Width = 223
+        Width = 79
         Height = 30
         AllowDrag = False
         DoubleBuffered = True
@@ -373,42 +380,42 @@ inherited FileExplorerWindow: TFileExplorerWindow
         Name = 'ArrowRight'
       end
       item
-        CollectionIndex = 97
+        CollectionIndex = 88
         CollectionName = 'Refresh'
         Name = 'Refresh'
       end
       item
-        CollectionIndex = 72
+        CollectionIndex = 63
         CollectionName = 'OpenFolder'
         Name = 'OpenFolder'
       end
       item
-        CollectionIndex = 49
+        CollectionIndex = 40
         CollectionName = 'Filter'
         Name = 'Filter'
       end
       item
-        CollectionIndex = 45
+        CollectionIndex = 36
         CollectionName = 'FileExplorer'
         Name = 'FileExplorer'
       end
       item
-        CollectionIndex = 111
+        CollectionIndex = 102
         CollectionName = 'SearchFolder'
         Name = 'SearchFolder'
       end
       item
-        CollectionIndex = 44
+        CollectionIndex = 35
         CollectionName = 'Favorite'
         Name = 'Favorite'
       end
       item
-        CollectionIndex = 54
+        CollectionIndex = 45
         CollectionName = 'FolderAdd'
         Name = 'FolderAdd'
       end
       item
-        CollectionIndex = 55
+        CollectionIndex = 46
         CollectionName = 'Folders'
         Name = 'Folders'
       end>
