@@ -1518,6 +1518,7 @@ type
     procedure NextClickHandler(Sender: TObject);
     procedure PrevMRUAdd(S: string);
     procedure NextMRUAdd(S: string);
+    procedure FormShowDelayedActions; virtual;
   private
     OldMonitorProfile: string;
     FShellImages: TCustomImageList;
@@ -6107,56 +6108,56 @@ begin
   DragAcceptFiles(TabControl1.Handle, True);
   DragAcceptFiles(TabControl2.Handle, True);
 
-  TThread.ForceQueue(nil, procedure
-  begin
-    // Activate File Explorer
-    FileExplorerWindow.FileExplorerTree.Active := True;
-    //Application.ProcessMessages;
-
-    // Load Python Engine and Assign Debugger Events
-    PyControl.LoadPythonEngine;
-    SetupPythonVersionsMenu;
-    if Length(PyControl.CustomPythonVersions) + Length(PyControl.RegPythonVersions) > 0 then
-      FConfiguration.AddScriptsPath;
-
-    // Update External Tools
-    SetupToolsMenu;  // After creating internal interpreter
-    FConfiguration.RestoreApplicationData; // After last change of main menu
-
-    SetupCustomizer; // After setting up the Tools menu
-    // Load Toolbar Items after setting up the Tools menu
-    if FileExists(AppStorage.IniFile.FileName) then
-      LoadToolbarItems('Toolbar Items');
-
-    PyControl.OnStateChange := DebuggerStateChange;
-
-    // This is needed to update the variables window
-    PyControl.DebuggerState := dsInactive;
-
-    // Open initial files after loading Python (#879)
-    OpenInitialFiles;
-
-    if Layouts.IndexOf('Default') < 0 then begin
-      SaveLayout('Default');
-      Layouts.Add('Default');
-    end;
-
-{    if PyIDEOptions.AutoCheckForUpdates and
-      (DaysBetween(Now, PyIDEOptions.DateLastCheckedForUpdates) >=
-        PyIDEOptions.DaysBetweenChecks) and ConnectedToInternet
-    then
-      PostMessage(Handle, WM_CHECKFORUPDATES, 0, 0);
-}
-    with TFUpdate.Create(Self) do begin
-      CheckAutomatically;
-      Free;
-    end;
-
-    if not GI_PyControl.PythonLoaded then
-      actPythonSetupExecute(Self);
-  end);
+  TThread.ForceQueue(nil, FormShowDelayedActions, 1000);
   //OutputDebugString(PWideChar(Format('%s ElapsedTime %d ms', ['FormShow end', StopWatch.ElapsedMilliseconds])));
 end;
+
+procedure TPyIDEMainForm.FormShowDelayedActions;
+begin
+  // Activate File Explorer
+  FileExplorerWindow.FileExplorerTree.Active := True;
+  //Application.ProcessMessages;
+
+  // Load Python Engine and Assign Debugger Events
+  PyControl.LoadPythonEngine;
+  SetupPythonVersionsMenu;
+
+  if Length(PyControl.CustomPythonVersions) + Length(PyControl.RegPythonVersions) > 0 then
+    FConfiguration.AddScriptsPath;
+
+  // Update External Tools
+  SetupToolsMenu;  // After creating internal interpreter
+  FConfiguration.RestoreApplicationData; // After last change of main menu
+
+  SetupCustomizer; // After setting up the Tools menu
+  // Load Toolbar Items after setting up the Tools menu
+  if FileExists(AppStorage.IniFile.FileName) then
+    LoadToolbarItems('Toolbar Items');
+
+  PyControl.OnStateChange := DebuggerStateChange;
+
+  // This is needed to update the variables window
+  PyControl.DebuggerState := dsInactive;
+
+  // DebuggerStateChange(PyControl);
+
+  // Open initial files after loading Python (#879)
+  OpenInitialFiles;
+
+  if Layouts.IndexOf('Default') < 0 then begin
+    SaveLayout('Default');
+    Layouts.Add('Default');
+  end;
+
+  with TFUpdate.Create(Self) do begin
+    CheckAutomatically;
+    Free;
+  end;
+
+  if not GI_PyControl.PythonLoaded then
+    actPythonSetupExecute(Self);
+end;
+
 
 procedure TPyIDEMainForm.JvAppInstancesCmdLineReceived(Sender: TObject;
   CmdLine: TStrings);
