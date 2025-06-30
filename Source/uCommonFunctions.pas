@@ -139,8 +139,8 @@ function LoadFileIntoWideStrings(const AFileName: string;
 function SaveWideStringsToFile(const AFileName: string;
   Lines : TStrings;  DoBackup : Boolean = True) : Boolean;
 
-(* Read File contents. Allows reading of locked files *)
-function FileToAnsiStr(const FileName: string): AnsiString;
+(* Copy (download) remote file to a local temp file. Return the name of the temp file *)
+function CopyRemoteFileToTemp(const AFileName, Server: string): string;
 
 (* Read File contents into encoded string. Takes into account Python encodings *)
 function FileToEncodedStr(const AFileName : string) : AnsiString;
@@ -738,7 +738,7 @@ function FileNameToModuleName(const FileName : string): string;
 var
   Path, Dir, Server : string;
 begin
-  Result := ChangeFileExt(TPath.GetFileName(FileName), '');
+  Result := TPath.GetFileNameWithoutExtension(FileName);
   if GI_SSHServices.ParseFileName(FileName, Server, Path) then Exit;
 
   Path := TPath.GetDirectoryName(FileName);
@@ -1287,39 +1287,30 @@ begin
   end;
 end;
 
-function FileToAnsiStr(const FileName: string): AnsiString;
-(* allows reading of locked files *)
+function CopyRemoteFileToTemp(const AFileName, Server: string): string;
+// Aborts on failure
 var
-  fs: TFileStream;
-  len: Integer;
+  ErrorMsg: string;
 begin
-  fs := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
-  try
-    len := fs.Size;
-    SetLength(Result, len);
-    if len > 0 then
-      fs.ReadBuffer(Result[1], len);
-  finally
-    fs.Free;
+  var AppName := TPath.GetFileNameWithoutExtension(Application.ExeName);
+  Result := ChangeFileExt(FileGetTempName(AppName), ExtractFileExt(AFileName));
+
+  if not GI_SSHServices.ScpDownload(Server, AFileName, Result, ErrorMsg) then
+  begin
+    StyledMessageDlg(Format(_(SFileOpenError), [AFileName, ErrorMsg]), mtError, [mbOK], 0);
+    Abort;
   end;
 end;
 
-function FileToEncodedStr(const AFileName : string) : AnsiString;
+function FileToEncodedStr(const AFileName: string): AnsiString;
 var
-  SL : TStrings;
-  Server, FName, TempFileName, ErrorMsg : string;
+  SL: TStrings;
+  Server, FName, TempFileName: string;
 begin
   if GI_SSHServices.ParseFileName(AFileName, Server, FName) then
-  begin
-    TempFileName := ChangeFileExt(FileGetTempName('PyScripter'), ExtractFileExt(AFileName));
-    if not GI_SSHServices.ScpDownload(Server, FName, TempFileName, ErrorMsg) then
-    begin
-      StyledMessageDlg(Format(_(SFileSaveError), [FName, ErrorMsg]), mtError, [mbOK], 0);
-      Abort;
-    end;
-  end
+    TempFileName := CopyRemoteFileToTemp(FName, Server)
   else
-     TempFileName := AFileName;
+    TempFileName := AFileName;
 
   SL := TStringList.Create;
   try
@@ -1331,23 +1322,15 @@ begin
   if Server <> '' then DeleteFile(TempFileName);
 end;
 
-
-function FileToStr(const AFileName : string) : string;
+function FileToStr(const AFileName: string): string;
 var
-  SL : TStrings;
-  Server, FName, TempFileName, ErrorMsg : string;
+  SL: TStrings;
+  Server, FName, TempFileName: string;
 begin
   if GI_SSHServices.ParseFileName(AFileName, Server, FName) then
-  begin
-    TempFileName := ChangeFileExt(FileGetTempName('PyScripter'), ExtractFileExt(AFileName));
-    if not GI_SSHServices.ScpDownload(Server, FName, TempFileName, ErrorMsg) then
-    begin
-      StyledMessageDlg(Format(_(SFileSaveError), [FName, ErrorMsg]), mtError, [mbOK], 0);
-      Abort;
-    end;
-  end
+    TempFileName := CopyRemoteFileToTemp(FName, Server)
   else
-     TempFileName := AFileName;
+    TempFileName := AFileName;
 
   SL := TStringList.Create;
   try
@@ -1358,7 +1341,6 @@ begin
   end;
   if Server <> '' then DeleteFile(TempFileName);
 end;
-
 
 function GetNthSourceLine(const AFileName : string; LineNo: Integer): string;
 var

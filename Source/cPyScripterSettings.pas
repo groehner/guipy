@@ -1210,11 +1210,10 @@ var
   PublicPath: string;
   AppName, AppININame, EXEPath: string;
 begin
-  AppName := 'GuiPy';
-  // uncomment the following if you want the options files to be named after the exe name
-  //  AppName := ChangeFileExt(ExtractFileName(Application.ExeName), '');
+  AppName := TPath.GetFileNameWithoutExtension(Application.ExeName);
   AppININame := AppName + '.ini';
-  EXEPath := ExtractFilePath(Application.ExeName);
+  EXEPath := TPath.GetDirectoryName(Application.ExeName);
+
   OptionsFileName := TPath.Combine(EXEPath, AppININame);
   UserDataPath:= '';
   HandlePortable;
@@ -1227,11 +1226,11 @@ begin
     LspServerPath :=  TPath.Combine(UserDataPath, 'Lsp');
     UserDebugInspectorsDir :=  TPath.Combine(UserDataPath, 'Variable Inspectors');
   end else begin
-    UserDataPath := TPath.Combine(GetHomePath, AppName + '\');
+    UserDataPath := TPath.Combine(GetHomePath, AppName);
     OptionsFileName := TPath.Combine(UserDataPath, AppININame);
     if not ForceDirectories(UserDataPath) then
       StyledMessageDlg(Format(SAccessAppDataDir, [UserDataPath]), mtWarning, [mbOK], 0);
-    PublicPath := TPath.Combine(TPath.GetPublicPath, AppName + '\');
+    PublicPath := TPath.Combine(TPath.GetPublicPath, AppName);
     ColorThemesFilesDir := TPath.Combine(PublicPath, 'Highlighters');
     StylesFilesDir := TPath.Combine(PublicPath, 'Styles');
     LspServerPath :=  TPath.Combine(PublicPath, 'Lsp');

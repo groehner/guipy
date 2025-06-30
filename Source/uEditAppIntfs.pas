@@ -135,7 +135,7 @@ type
     procedure RefreshSymbols;
 
     property FileName: string read GetFileName;
-    property RemoteFileName : string read GetRemoteFileName;
+    property RemoteFileName: string read GetRemoteFileName;
     property FileId: string read GetFileId;
     property SSHServer: string read GetSSHServer;
     property FileTitle: string read GetFileTitle;

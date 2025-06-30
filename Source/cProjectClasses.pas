@@ -365,7 +365,7 @@ end;
 function TProjectRootNode.GetName: string;
 begin
   if fFileName <> '' then
-    Result := ChangeFileExt(TPath.GetFileName(fFileName), '')
+    Result := TPath.GetFileNameWithoutExtension(FFileName)
   else
     Result := _('Untitled');
 end;
@@ -553,7 +553,7 @@ begin
   if fFileName <> '' then  begin
     Result := TPath.GetFileName(GI_PyIDEServices.ReplaceParams(fFileName));
     if not ActiveProject.ShowFileExtensions then
-      Result := ChangeFileExt(Result, '');
+      Result := TPath.GetFileNameWithoutExtension(Result);
   end else
     Result := _('Untitled');
 end;

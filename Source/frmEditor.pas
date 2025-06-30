@@ -960,46 +960,38 @@ begin
     FSynLsp.FileOpened(GetFileId, lidNone);
 end;
 
-procedure TEditor.OpenRemoteFile(const Filename, Servername: string);
-var
-  TempFileName : string;
-  ErrorMsg : string;
+procedure TEditor.OpenRemoteFile(const FileName, ServerName: string);
 begin
-  if not Assigned(FForm) or (Filename = '') or (Servername = '') then Abort;
+  if (FForm = nil) or (FileName = '') or (ServerName = '') then Abort;
 
-  DoSetFilename('');
+  // CopyRemoteFileToTemp aborts on failure
+  var TempFileName := CopyRemoteFileToTemp(FileName, ServerName);
 
-  TempFileName := ChangeFileExt(FileGetTempName('PyScripter'), ExtractFileExt(Filename));
-  if not GI_SSHServices.ScpDownload(Servername, Filename, TempFileName, ErrorMsg) then begin
-    StyledMessageDlg(Format(_(SFileOpenError), [Filename, ErrorMsg]), mtError, [mbOK], 0);
-    Abort;
-  end else
-  begin
-    FForm.SynEdit.LockUndo;
-    try
-      if not LoadFileIntoWideStrings(TempFileName, FForm.SynEdit.Lines) then
-        Abort
-      else
-        DeleteFile(TempFileName);
-    finally
-      FForm.SynEdit.UnlockUndo;
-    end;
+  FForm.SynEdit.LockUndo;
+  try
+    if not LoadFileIntoWideStrings(TempFileName, FForm.SynEdit.Lines) then
+      Abort;
+  finally
+    DeleteFile(TempFileName);
+    FForm.SynEdit.UnlockUndo;
   end;
 
-  RemoteFileName := Filename;
-  SSHServer := Servername;
+  RemoteFileName := FileName;
+  SSHServer := ServerName;
+  DoSetFileName('');
 
   FForm.SynEdit.Modified := False;
-  FForm.DoUpdateHighlighter('');
-  FForm.DoUpdateCaption;
   FForm.SynEdit.UseCodeFolding := PyIDEOptions.CodeFoldingEnabled;
   FForm.SynEdit2.UseCodeFolding := FForm.SynEdit.UseCodeFolding;
 
+  FForm.DoUpdateHighlighter('');
+  FForm.DoUpdateCaption;
   if HasPythonFile then
     FSynLsp.FileOpened(GetFileId, lidPython)
   else
     FSynLsp.FileOpened(GetFileId, lidNone);
 end;
+
 
 function TEditor.SaveToRemoteFile(const Filename, Servername: string): Boolean;
 var
@@ -1271,7 +1263,7 @@ begin
     begin
       // save module1 as 1.py etc.
       var FName := (Editor as TEditor).FUntitledNumber.ToString;
-      FName := TPath.Combine(RecoveryDir, TPath.ChangeExtension(FName, DefaultExtension));
+      FName := TPath.Combine(RecoveryDir, ChangeFileExt(FName, DefaultExtension));
       SaveWideStringsToFile(FName, SynEdit.Lines, False);
     end;
   end);
