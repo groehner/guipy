@@ -1571,8 +1571,7 @@ type
     function NewFileFromTemplate(FileTemplate: TFileTemplate;
        TabControlIndex: Integer = 1; FileName: string = ''): IEditor;
     procedure UpdateDebugCommands;
-    procedure DebuggerStateChange(Sender: TObject; OldState,
-      NewState: TDebuggerState);
+    procedure DebuggerStateChange(Sender: TObject);
     procedure ApplicationOnIdle(Sender: TObject; var Done: Boolean);
     procedure PyIDEOptionsChanged;
     procedure SetupCustomizer;
@@ -2421,9 +2420,9 @@ end;
 
 procedure TPyIDEMainForm.ClearPythonWindows;
 begin
-  VariablesWindow.ClearAll;
+  GI_VariablesWindow.ClearAll;
+  GI_CallStackWindow.ClearAll;
   UnitTestWindow.ClearAll;
-  CallStackWindow.ClearAll;
   RegExpTesterWindow.Clear;
 end;
 
@@ -3205,46 +3204,43 @@ begin
    actRunLastScriptExternal.Hint := _(sHintExternalRun) + S;
 end;
 
-procedure TPyIDEMainForm.DebuggerStateChange(Sender: TObject; OldState,
-  NewState: TDebuggerState);
+procedure TPyIDEMainForm.DebuggerStateChange(Sender: TObject);
 var
-  s: string;
+  StatusMsg: string;
 begin
   if GetIsClosing then Exit;
 
   if GI_PyControl.PythonLoaded then
-    case NewState of
+    case GI_PyControl.DebuggerState of
       dsDebugging,
       dsRunning: begin
-                   s := _('Running');
+                   StatusMsg := _('Running');
                    icIndicators.SVGIconItems[0].FixedColor := $4444E2;
                  end;
       dsPaused: begin
-                  s := _('Paused');
+                  StatusMsg := _('Paused');
                   icIndicators.SVGIconItems[0].FixedColor := $00CEFF;
                 end;
       dsInactive: begin
-                    s := _('Ready');
+                    StatusMsg := _('Ready');
                     icIndicators.SVGIconItems[0].FixedColor := $22AA22;
                   end;
       dsPostMortem: begin
-                       s := _('Post mortem');
+                       StatusMsg := _('Post mortem');
                        icIndicators.SVGIconItems[0].FixedColor := clPurple;
                      end;
     end
   else
   begin
-    s := _('Python not available');
+    StatusMsg := _('Python not available');
     icIndicators.SVGIconItems[0].FixedColor := clGray;
   end;
-  spiStatusLED.Hint := _('Debugger state: ') + s;
-  lbStatusMessage.Caption := ' ' + s;
+  spiStatusLED.Hint := _('Debugger state: ') + StatusMsg;
+  lbStatusMessage.Caption := ' ' + StatusMsg;
   StatusBar.Refresh;
 
-  CallStackWindow.UpdateWindow(NewState, OldState);  // also updates Variables and Watches
   UpdateDebugCommands;
 end;
-
 procedure TPyIDEMainForm.SaveFileModules;
 begin
   GI_FileFactory.ApplyToFiles(procedure(aFile: IFile)
@@ -3980,8 +3976,6 @@ begin
      (PyIDEOptions.PythonEngineType = peInternal)
   then
     PyIDEOptions.PythonEngineType := peRemote;
-
-  PyControl.PythonEngineType := PyIDEOptions.PythonEngineType;
 
   if PyIDEOptions.ShowTabCloseButton then begin
     TabControl1.TabCloseButton := tcbAll;
@@ -6133,10 +6127,7 @@ begin
 
   PyControl.OnStateChange := DebuggerStateChange;
 
-  // This is needed to update the variables window
-  GI_PyControl.DebuggerState := dsInactive;
-
-  // DebuggerStateChange(PyControl);
+  DebuggerStateChange(PyControl);
 
   // Open initial files after loading Python (#879)
   OpenInitialFiles;

@@ -43,7 +43,7 @@ uses
   cPyBaseDebugger;
 
 type
-  TCallStackWindow = class(TIDEDockWindow)
+  TCallStackWindow = class(TIDEDockWindow, ICallStackWindow)
     CallStackView: TVirtualStringTree;
     actlCallStack: TActionList;
     actPreviousFrame: TAction;
@@ -84,14 +84,15 @@ type
     procedure ThreadChangeNotify(Thread : TThreadInfo; ChangeType : TThreadChangeType);
     procedure UpdateCallStack;
     procedure SetActiveThread(const Value: TThreadInfo);
+    // ICallStackWindow Implementation
+    function GetSelectedStackFrame: TBaseFrameInfo;
+    procedure ClearAll(IncludeThreads: Boolean = True);
+    procedure UpdateWindow(NewState, OldState: TDebuggerState);
   public
     // AppStorage
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
 
-    procedure ClearAll(IncludeThreads : Boolean = True);
-    function GetSelectedStackFrame : TBaseFrameInfo;
-    procedure UpdateWindow(NewState, OldState : TDebuggerState);
     property ActiveThread: TThreadInfo read fActiveThread write SetActiveThread;
   end;
 
@@ -299,7 +300,9 @@ begin
           Result := CompareValue(L.Thread_ID, R.Thread_ID);
       end;
     end));
-    TPyBaseDebugger.ThreadChangeNotify := ThreadChangeNotify;
+  TPyBaseDebugger.ThreadChangeNotify := ThreadChangeNotify;
+
+  GI_CallStackWindow := Self;
 end;
 
 procedure TCallStackWindow.FormDestroy(Sender: TObject);

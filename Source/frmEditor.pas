@@ -3384,8 +3384,7 @@ begin
   if TPyInternalInterpreter(PyControl.InternalInterpreter).SyntaxCheck(FEditor, ErrorPos) then begin
     GI_PyIDEServices.Messages.AddMessage(Format(_(SSyntaxIsOK), [Pathname]));
     ShowDockForm(MessagesWindow);
-  end else
-    ShowDockForm(PythonIIForm);
+  end;
 end;
 
 procedure TEditorForm.TBClassEditClick(Sender: TObject);

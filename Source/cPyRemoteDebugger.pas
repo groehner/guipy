@@ -907,12 +907,12 @@ begin
           if Assigned(ActiveProject) then
             ActiveProject.AppendExtraPaths;
 
-          GI_PyControl.DebuggerState := dsInactive;
+          Initialize;
         end;
       end;
   else
     // Should not happen.  Reinitialise is not enabled for other states
-    Assert(False, Format(SInternalError, ['ShutdownServer']));
+    Assert(False, Format(SInternalError, ['ReInitialize']));
   end;
 end;
 
@@ -1158,8 +1158,6 @@ begin
 
     FPythonVersion := Conn.modules.sys.version;
     FPythonPlatform := Conn.modules.sys.platform;
-
-    Initialize;
   end;
 end;
 
@@ -1279,6 +1277,7 @@ begin
   ServerTask := nil;
   FServerIsAvailable := False;
   FConnected := False;
+  FInitialized := False;
 end;
 
 procedure TPyRemoteInterpreter.StoreServerProcessInfo(const ProcessInfo

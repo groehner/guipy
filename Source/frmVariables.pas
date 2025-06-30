@@ -83,6 +83,7 @@ type
     FGlobalsNameSpace, LocalsNameSpace : TBaseNameSpaceItem;
     class var DebugInspectorsRegister: TDictionary<string, string>;
     // IVariablesWindow implementation
+    procedure ClearAll;
     procedure UpdateWindow;
     var FOnNotify: TNotifyEvent;
   protected
@@ -92,7 +93,6 @@ type
   public
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
-    procedure ClearAll;
 
     class constructor Create;
     class destructor Destroy;
@@ -121,7 +121,6 @@ uses
   uEditAppIntfs,
   uCommonFunctions,
   dmResources,
-  frmCallStack,
   cPyControl,
   cPyScripterSettings;
 
@@ -345,7 +344,7 @@ var
 begin
   if ((PyControl.PythonEngineType = peSSH) and (PyIDEOptions.SSHDisableVariablesWin)) or
      not (GI_PyControl.PythonLoaded and
-          Assigned(CallStackWindow) and
+          Assigned(GI_CallStackWindow) and
           Assigned(PyControl.ActiveInterpreter) and
           Assigned(PyControl.ActiveDebugger)) then
   begin
@@ -363,7 +362,7 @@ begin
   Py := SafePyEngine;
 
   // Get the selected frame
-  CurrentFrame := CallStackWindow.GetSelectedStackFrame;
+  CurrentFrame := GI_CallStackWindow.GetSelectedStackFrame;
 
   SameFrame := (not Assigned(CurrentFrame) and
                 (CurrentModule = '') and
