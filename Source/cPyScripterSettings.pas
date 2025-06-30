@@ -1184,20 +1184,20 @@ class constructor TPyScripterSettings.CreateSettings;
   end;
 
   procedure HandlePortable;
-    var s, HomeDir: string; IniFile: TMemIniFile;
+    var IniFilename, HomeDir: string; IniFile: TMemIniFile;
   begin
     // you can call GuiPy with an ini file as parameter
-    s:= ParamStr(1);
-    if (s = '') or (UpperCase(ExtractFileExt(s)) <> '.ini')
-      then s:= TPath.Combine(ExtractFilePath(Application.ExeName), 'GuiPyMachine.ini')
-      else s:= ExpandFileName(s);
-    if FileExists(s) then begin
-      IniFile:= TMemIniFile.Create(s);
+    IniFilename:= ParamStr(1);
+    if (IniFilename = '') or (UpperCase(ExtractFileExt(IniFilename)) <> '.ini')
+      then IniFilename:= TPath.Combine(ExtractFilePath(Application.ExeName), 'GuiPyMachine.ini')
+      else IniFilename:= ExpandFileName(IniFilename);
+    if FileExists(IniFilename) then begin
+      IniFile:= TMemIniFile.Create(IniFilename);
       IsPortable:= IniFile.ReadBool('GuiPy', 'PortableApplication', False);
       HomeDir:= IniFile.ReadString('User', 'HomeDir', '');
-      if isPortable then
+      if IsPortable then
         HomeDir:= AddPortableDrive(HomeDir);
-      HomeDir:= dissolveUsername(HomeDir);
+      HomeDir:= DissolveUsername(HomeDir);
       if DirectoryExists(HomeDir) then
         UserDataPath:= HomeDir;
       FreeAndNil(IniFile);
@@ -1205,31 +1205,40 @@ class constructor TPyScripterSettings.CreateSettings;
       IsPortable:= False;
   end;
 
-  var Publicpath: string;
+var
+  PublicPath: string;
+  AppName, AppININame, EXEPath: string;
 begin
+  AppName := 'GuiPy';
+  // uncomment the following if you want the options files to be named after the exe name
+  //  AppName := ChangeFileExt(ExtractFileName(Application.ExeName), '');
+  AppININame := AppName + '.ini';
+  EXEPath := ExtractFilePath(Application.ExeName);
+  OptionsFileName := TPath.Combine(EXEPath, AppININame);
   UserDataPath:= '';
   HandlePortable;
   if IsPortable then begin
     // Portable version - nothing is stored in other directories
     if UserDataPath = '' then
-      UserDataPath := ExtractFilePath(Application.ExeName);
+      UserDataPath := EXEPath;
     ColorThemesFilesDir := TPath.Combine(UserDataPath, 'Highlighters');
     StylesFilesDir := TPath.Combine(UserDataPath, 'Styles');
     LspServerPath :=  TPath.Combine(UserDataPath, 'Lsp');
+    UserDebugInspectorsDir :=  TPath.Combine(UserDataPath, 'Variable Inspectors');
   end else begin
-    if UserDataPath = '' then
-      UserDataPath := TPath.Combine(GetHomePath,  'GuiPy\');
+    UserDataPath := TPath.Combine(GetHomePath, AppName + '\');
+    OptionsFileName := TPath.Combine(UserDataPath, AppININame);
     if not ForceDirectories(UserDataPath) then
       StyledMessageDlg(Format(SAccessAppDataDir, [UserDataPath]), mtWarning, [mbOK], 0);
-    PublicPath := TPath.Combine(TPath.GetPublicPath, 'GuiPy\');
+    PublicPath := TPath.Combine(TPath.GetPublicPath, AppName + '\');
     ColorThemesFilesDir := TPath.Combine(PublicPath, 'Highlighters');
     StylesFilesDir := TPath.Combine(PublicPath, 'Styles');
     LspServerPath :=  TPath.Combine(PublicPath, 'Lsp');
     UserDebugInspectorsDir :=  TPath.Combine(UserDataPath, 'Variable Inspectors');
     AppDebugInspectorsDir := TPath.Combine(PublicPath, 'Variable Inspectors');
+    // First use setup
+    CopyFileIfNeeded(TPath.Combine(PublicPath, AppININame), OptionsFileName);
   end;
-  OptionsFileName := TPath.Combine(UserDataPath, 'GuiPy.ini');
-  UserDebugInspectorsDir :=  TPath.Combine(UserDataPath, 'Variable Inspectors');
   ForceDirectories(UserDebugInspectorsDir);
 
   EngineInitFile := TPath.Combine(UserDataPath, 'python_init.py');

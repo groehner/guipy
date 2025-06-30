@@ -1978,8 +1978,6 @@ type
   TTBCustomItemAccess = class(TTBCustomItem);
 
 procedure TPyIDEMainForm.FormCreate(Sender: TObject);
-var
-  LocalOptionsFileName: string;
 begin
   // Shell Images
   FShellImages := TCommonVirtualImageList.Create(Self);
@@ -2016,8 +2014,7 @@ begin
   AppStorage.FileName := TPyScripterSettings.OptionsFileName;
 
   // LocalAppStorage
-  LocalOptionsFileName := ChangeFileExt(TPath.GetFileName(Application.ExeName), '.local.ini');
-  LocalAppStorage.FileName := TPath.Combine(TPyScripterSettings.UserDataPath, LocalOptionsFileName);
+  LocalAppStorage.FileName := TPath.Combine(TPyScripterSettings.OptionsFileName, '.local.ini');
 
   // Machine Storage
   MachineStorage.Encoding := TEncoding.UTF8;
