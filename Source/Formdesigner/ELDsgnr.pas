@@ -1396,6 +1396,7 @@ begin
             if htControl in FDesigner.ShowingHints then
             begin
               Typ := Tag2PythonType((Sender as TBaseWidget).Tag);
+              if (Sender as TBaseWidget).Tag > 70 then Typ:= 'Q' + Typ;
               Str := Sender.Name + ': ' + Typ + #13#10;
               Str := Str + _('Position') + ': ' +
                 IntToStr(Sender.PPIUnScale(Sender.Left)) + ', ' +

@@ -631,8 +631,7 @@ object ResourcesDataModule: TResourcesDataModule
           'del PythonInteractiveInterpreter'
           'del sys'
           'del os'
-          'del warnings'
-          '')
+          'del warnings')
       end
       item
         Name = 'RpyC_Init'
@@ -1347,30 +1346,39 @@ object ResourcesDataModule: TResourcesDataModule
           '    class ThreadWrapper(threading.Thread):'
           '        """ Wrapper class for threading.Thread. """'
           ''
-          '        def run(self):'
+          '        def wrap_run(self):'
+          '            def wrap(self):'
           
-            '            self.debug_manager.thread_status(self.ident, self.na' +
-            'me, self.debug_manager.thrdRunning)'
+            '                self.debug_manager.thread_status(self.ident, sel' +
+            'f.name, self.debug_manager.thrdRunning)'
           ''
-          '            debugger = self.debug_manager.main_debugger'
-          '            debugger.thread_init()'
-          '            debugger.reset()'
-          '            debugger.InitStepIn = False'
-          '            if debugger._sys.version_info < (3,13):'
-          '                debugger._sys.settrace(debugger.trace_dispatch)'
-          ''
-          '            try:'
-          '                super().run()'
-          '            except __import__("bdb").BdbQuit:'
-          '                pass'
-          '            finally:'
+          '                debugger = self.debug_manager.main_debugger'
+          '                debugger.thread_init()'
+          '                debugger.reset()'
+          '                debugger.InitStepIn = False'
           '                if debugger._sys.version_info < (3,13):'
-          '                    debugger._sys.settrace(None)'
-          '                if self.debug_manager:'
           
-            '                  self.debug_manager.thread_status(self.ident, s' +
-            'elf.name, self.debug_manager.thrdFinished)'
+            '                    debugger._sys.settrace(debugger.trace_dispat' +
+            'ch)'
           ''
+          '                try:'
+          '                    type(self).run(self)'
+          '                except __import__("bdb").BdbQuit:'
+          '                    pass'
+          '                finally:'
+          '                    if debugger._sys.version_info < (3,13):'
+          '                        debugger._sys.settrace(None)'
+          '                    if self.debug_manager:'
+          
+            '                      self.debug_manager.thread_status(self.iden' +
+            't, self.name, self.debug_manager.thrdFinished)'
+          '            self.run = wrap.__get__(self, type(self))'
+          ''
+          ''
+          '        def _bootstrap_inner(self):'
+          '            self.wrap_run()'
+          ''
+          '            super()._bootstrap_inner()'
           '    class IDEDebugger(debugger_base):'
           ''
           '        @staticmethod'
@@ -2260,8 +2268,7 @@ object ResourcesDataModule: TResourcesDataModule
           'del sys'
           'del os'
           'del threading'
-          'del builtins'
-          '')
+          'del builtins')
       end
       item
         Name = 'SimpleServer'
@@ -2362,8 +2369,7 @@ object ResourcesDataModule: TResourcesDataModule
           '        t.start()'
           ''
           'if __name__ == "__main__":'
-          '    main()'
-          '')
+          '    main()')
       end
       item
         Name = 'TkServer'
@@ -2537,8 +2543,7 @@ object ResourcesDataModule: TResourcesDataModule
           '    root.oldmainloop()'
           ''
           'if __name__ == "__main__":'
-          '    main()'
-          '')
+          '    main()')
       end
       item
         Name = 'WxServer'
@@ -2720,8 +2725,7 @@ object ResourcesDataModule: TResourcesDataModule
           '    app.OldMainLoop(app)'
           ''
           'if __name__ == "__main__":'
-          '    main()'
-          '')
+          '    main()')
       end>
     Left = 23
     Top = 82
@@ -5958,5 +5962,13 @@ object ResourcesDataModule: TResourcesDataModule
     Font.Style = []
     Left = 120
     Top = 88
+  end
+  object SynPasSyn: TSynPasSyn
+    Left = 688
+    Top = 224
+  end
+  object SynJavaSyn: TSynJavaSyn
+    Left = 488
+    Top = 288
   end
 end

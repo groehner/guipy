@@ -1223,8 +1223,8 @@ begin
       UserDataPath := EXEPath;
     ColorThemesFilesDir := TPath.Combine(UserDataPath, 'Highlighters');
     StylesFilesDir := TPath.Combine(UserDataPath, 'Styles');
-    LspServerPath :=  TPath.Combine(UserDataPath, 'Lsp');
-    UserDebugInspectorsDir :=  TPath.Combine(UserDataPath, 'Variable Inspectors');
+    LspServerPath := TPath.Combine(UserDataPath, 'Lsp');
+    UserDebugInspectorsDir := TPath.Combine(UserDataPath, 'Variable Inspectors');
   end else begin
     UserDataPath := TPath.Combine(GetHomePath, AppName);
     OptionsFileName := TPath.Combine(UserDataPath, AppININame);

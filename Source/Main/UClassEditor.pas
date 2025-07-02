@@ -271,6 +271,7 @@ uses
   RegularExpressions,
   uEditAppIntfs,
   uCommonFunctions,
+  StringResources,
   frmFile,
   UModelEntity,
   UConfiguration,
@@ -303,7 +304,7 @@ begin
   TreeView.Images := vilTreeViewLight;
   CBAttributeValue.Items.Text := Values;
   CBParamValue.Items.Text := Values;
-  FLngTODO := _('# TODO add your code here');
+  FLngTODO := LNGInsertSourceCodeHere;
   FLngSet := _('set');
   FLngGet := _('get');
   ChangeStyle;

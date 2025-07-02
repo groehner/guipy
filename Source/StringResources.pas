@@ -497,6 +497,7 @@ const
   LNGAll= 'all';
   LNGNone= 'none';
   LNGFileAlreadyExists= '%s already exists. Overwrite?';
+  LNGInsertSourceCodeHere = '# ToDo insert source code here';
 
   // Missing action categories
   SActionCategoryFile = 'File';

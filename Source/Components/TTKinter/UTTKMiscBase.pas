@@ -321,6 +321,7 @@ uses
   Graphics,
   SysUtils,
   JvGnugettext,
+  StringResources,
   UBaseTKWidgets,
   UUtils,
   UConfiguration;
@@ -1119,7 +1120,7 @@ begin
   Command := True;
   Nam := Name + '_Command';
   Func := CrLf + Indent1 + 'def ' + Nam + '(self):' + CrLf + Indent2 +
-    '# ToDo insert source code here' + CrLf + Indent2 + 'pass' + CrLf;
+    LNGInsertSourceCodeHere + CrLf + Indent2 + 'pass' + CrLf;
   Partner.InsertProcedure(Func);
   Str := '';
   for var I := 0 to FItems.Count - 1 do

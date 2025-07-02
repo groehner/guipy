@@ -1,6 +1,6 @@
 {-----------------------------------------------------------------------------
  Unit Name: frmCommandOutput
- Author:    Kiriakos Vlahos
+ Author:    Kiriakos Vlahos, Gerhard Röhner
  Date:      24-Apr-2008
  Purpose:
  History:
@@ -74,6 +74,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure lsbConsoleDblClick(Sender: TObject);
   private
     const FBasePath = 'Output Window Options'; // Used for storing settings
     var FTool : TExternalTool;
@@ -128,6 +129,7 @@ uses
   StringResources,
   dmResources,
   dmCommands,
+  cPyControl,
   uCommonFunctions;
 
 {$R *.dfm}
@@ -690,6 +692,32 @@ begin
     FOutputReader[OutType].OwnStream;
     FLastStreamPos[OutType] := 0;
     FNewLine[OutType] := True;
+  end;
+end;
+
+procedure TOutputWindow.lsbConsoleDblClick(Sender: TObject);
+var
+   RegExTraceback, RegExWarning: TRegEx;
+   Match: TMatch;
+   ErrLineNo, LineNo: Integer;
+   FileName: string;
+begin
+  RegExWarning := CompiledRegEx(STracebackFilePosExpr);
+  LineNo := lsbConsole.ItemIndex;
+  if LineNo < 0 then
+    Exit;
+  repeat
+    Match := RegExWarning.Match(lsbConsole.Items[LineNo]);
+    Dec(LineNo);
+  until Match.Success or (LineNo = -1);
+  if Match.Success then
+  begin
+    lsbConsole.ItemIndex := -1; // remove selection
+    ErrLineNo := StrToIntDef(Match.GroupValue(2), 0);
+    FileName := Match.GroupValue(1);
+    //if Assigned(PyControl.ActiveInterpreter) then
+    //  FileName := PyControl.ActiveInterpreter.FromPythonFileName(FileName);
+    GI_PyIDEServices.ShowFilePosition(FileName, ErrLineNo, 1);
   end;
 end;
 

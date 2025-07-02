@@ -1,6 +1,6 @@
 {-----------------------------------------------------------------------------
  Unit Name: cPyControl
- Author:    PyScripter
+ Author:    PyScripter, Gerhard Röhner
  Date:      09-Feb-2018
  Purpose:   PyControl is the main interface between Python classes
             and PyScripter GUI
@@ -430,7 +430,7 @@ begin
         end
         else
         begin
-          // failed to connect
+          // failed to connect - fall back to the internal engine
           FreeAndNil(RemoteInterpreter);
           ActiveInterpreter := FInternalInterpreter;
           ActiveDebugger := ActiveInterpreter.CreateDebugger;
@@ -652,7 +652,6 @@ begin
     FOnPythonVersionChange.Notify(Self);
 
     //  Set the current PythonEngine
-    PyControl.PythonEngineType := PyIDEOptions.PythonEngineType;
     if PyIDEOptions.PythonEngineType = peInternal then
       FInternalInterpreter.Initialize
     else

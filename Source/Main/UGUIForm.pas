@@ -204,6 +204,7 @@ uses
   UxTheme,
   JvDockControlForm,
   frmPyIDEMain,
+  StringResources,
   cPyScripterSettings,
   UBaseTKWidgets,
   UQtWidgetDescendants,
@@ -502,7 +503,7 @@ end;
 function TFGuiForm.MakeHandler(Event: string): string;
 begin
   Result := FIndent1 + 'def ' + FWidget.HandlerNameAndParameter(Event) + CrLf +
-    FIndent2 + '# ToDo insert source code here' + CrLf + FIndent2 +
+    FIndent2 + LNGInsertSourceCodeHere + CrLf + FIndent2 +
     'pass' + CrLf;
 end;
 

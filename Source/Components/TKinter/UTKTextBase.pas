@@ -594,9 +594,9 @@ procedure TKSpinbox.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('tk.Spinbox');
-  MakeControlVar('textvariable', Name + 'CV', FValue);
-  InsertValue('self.' + Name + '[' + AsString('to') + '] = ' + AsString('10'));
   InsertValue('self.' + Name + '[' + AsString('from') + '] = ' + AsString('1'));
+  InsertValue('self.' + Name + '[' + AsString('to') + '] = ' + AsString('10'));
+  MakeControlVar('textvariable', Name + 'CV', FValue);
   Partner.ActiveSynEdit.EndUpdate;
 end;
 

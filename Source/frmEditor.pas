@@ -413,7 +413,7 @@ type
     procedure ToForeground(Control: TControl);
     procedure ToBackground(Control: TControl);
 
-    procedure GoTo2(const Text: string);
+    procedure GoTo2(const Str: string);
     procedure ShowTopLine(LineNum: Integer; NodeText: string);
     function HasText(const Text: string): Boolean;
     function HasWidget(const Key: string; Line: Integer): Boolean;
@@ -4139,7 +4139,7 @@ begin
     Line:= GetLineNumberWithWord('def ' + Method);
     // don't delete implemented methods automatically
     if (Line > -1) and (Line + 2 < ActiveSynEdit.Lines.Count) and
-       (ActiveSynEdit.Lines[Line+1] = FIndent2 + '# ToDo Insert source code here') and
+       (ActiveSynEdit.Lines[Line+1] = FIndent2 + LNGInsertSourceCodeHere) and
        (ActiveSynEdit.Lines[Line+2] = FIndent2 + 'pass') then
     begin
       DeleteBlock(Line, Line+2);
@@ -4202,7 +4202,7 @@ begin
     if InMethodArray(NewMethods[I]) = -1 then begin
       Func:= CrLf +
              FIndent1 + 'def ' + NewMethods[I] + CrLf +
-             FIndent2 + '# ToDo Insert source code here' + CrLf +
+             FIndent2 + LNGInsertSourceCodeHere + CrLf +
              FIndent2 + 'pass';
       StringList.Add(Func);
     end;
@@ -4220,7 +4220,7 @@ begin
         Till:= MethodArray[Posi].Till;
         Str1:= GetSource(From, Till);
         Str2:= FIndent1 + 'def ' + OldMethods[I] + CrLf +
-             FIndent2 + '# ToDo Insert source code here' + CrLf +
+             FIndent2 + LNGInsertSourceCodeHere + CrLf +
              FIndent2 + 'pass' + CrLf;
         if Str1 = Str2 then
           StringList.Add(Copy(OldMethods[I], 1, Pos('(', OldMethods[I]) - 1));
@@ -4364,20 +4364,20 @@ begin
   end;
 end;
 
-procedure TEditorForm.GoTo2(const Text: string);
-  var Line: Integer;
+procedure TEditorForm.GoTo2(const Str: string);
+  var Line: Integer;  s: String;
 begin
   with ActiveSynEdit do begin
-    Line:= GetLineNumberWithWord(Text);
+    Line:= GetLineNumberWithWord(Str);
     if (0 <= Line) and (Line <= Lines.Count - 1) then
       if Pos('def ', Lines[Line]) > 0 then begin
         CaretY:= Line + 2;
         CaretX:= Length(FIndent2) + 1;
       end else begin
-        CaretX:= Pos(Text, Lines[Line]);
+        CaretX:= Pos(Str, Lines[Line]);
         CaretY:= Line + 1;
       end;
-    end;
+  end;
 end;
 
 procedure TEditorForm.ShowTopLine(LineNum: Integer; NodeText: string);

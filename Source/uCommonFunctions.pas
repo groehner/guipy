@@ -29,7 +29,7 @@ uses
 const
   SFileExpr = '((?:[a-zA-Z]:)?[^:*?"<>|]+)'; // fwd slash (/) is allowed
   STracebackFilePosExpr =  '"\<?' + SFileExpr + '\>?", line (\d+)(, in ([\<\>\?\w]+))?';
-  SWarningFilePosExpr = '^<?' +SFileExpr + '>?:(\d+):';
+  SWarningFilePosExpr = '^<?' + SFileExpr + '>?:(\d+):';
   WideLF = #$000A;
   WideNull = #$0000;
   WordBreakString = ',.;:"�`�^!?&$@�%#~[](){}<>-=+*/\| ';

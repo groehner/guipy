@@ -287,7 +287,7 @@ begin
   Width := 40;
   Height := 24;
   FFrom := '0';
-  FTo := '0';
+  FTo := '10';
   FValue := '0';
   FIncrement := '1';
   FValues := TStringList.Create;
@@ -357,6 +357,8 @@ procedure TTKSpinbox.NewWidget(Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('ttk.Spinbox');
+  InsertValue('self.' + Name + '[' + AsString('from') + '] = ' + AsString('1'));
+  InsertValue('self.' + Name + '[' + AsString('to') + '] = ' + AsString('10'));
   MakeControlVar('textvariable', Name + 'CV', FValue);
   Partner.ActiveSynEdit.EndUpdate;
 end;

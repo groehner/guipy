@@ -1694,7 +1694,11 @@ end;
 procedure TPythonIIForm.mnPythonRestartClick(Sender: TObject);
 begin
   PyControl.PythonEngineType := peRemote;
-  GI_PyInterpreter.PrintEngineType;
+  TThread.ForceQueue(nil, procedure
+  begin
+    GI_PyInterpreter.ReinitInterpreter;
+    GI_PyInterpreter.PrintEngineType;
+  end);
 end;
 
 procedure TPythonIIForm.RegisterHistoryCommands;

@@ -38,6 +38,7 @@ inherited OutputWindow: TOutputWindow
         ParentFont = False
         PopupMenu = OutputPopup
         TabOrder = 0
+        OnDblClick = lsbConsoleDblClick
       end
     end
   end

@@ -233,7 +233,7 @@ uses
 constructor TQtFrame.Create(Owner: TComponent);
 begin
   inherited Create(Owner);
-  Tag:= 83;
+  Tag:= 82;
   Width:= 120;
   Height:= 80;
   FLineWidth:= 1;

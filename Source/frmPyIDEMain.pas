@@ -2014,7 +2014,7 @@ begin
   AppStorage.FileName := TPyScripterSettings.OptionsFileName;
 
   // LocalAppStorage
-  LocalAppStorage.FileName := TPath.Combine(TPyScripterSettings.OptionsFileName, '.local.ini');
+  LocalAppStorage.FileName := TPath.ChangeExtension(TPyScripterSettings.OptionsFileName, '.local.ini');
 
   // Machine Storage
   MachineStorage.Encoding := TEncoding.UTF8;
@@ -5363,6 +5363,8 @@ begin
     RunConfig :=  TRunConfiguration.Create;
     try
       SetupRunConfiguration(RunConfig, ActiveEditor.FileId);
+      RunConfig.ExternalRun.ConsoleHidden := False;
+      RunConfig.ExternalRun.ParseTraceback := False;
       PyControl.ExternalRun(RunConfig);
     finally
       RunConfig.Free;
@@ -5378,7 +5380,7 @@ begin
   ActiveEditor := GetActiveEditor;
   if Assigned(ActiveEditor) then begin
     ActiveEditor.Activate;
-    RunConfig :=  TRunConfiguration.Create;
+    RunConfig := TRunConfiguration.Create;
     try
       SetupRunConfiguration(RunConfig, ActiveEditor.FileId);
       RunConfig.ExternalRun.ConsoleHidden := False;

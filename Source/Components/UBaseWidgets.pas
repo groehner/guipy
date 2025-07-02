@@ -110,6 +110,7 @@ uses
   Vcl.Imaging.jpeg,
   Vcl.Imaging.pngimage,
   JvGnugettext,
+  StringResources,
   UGUIForm,
   UGUIDesigner,
   UObjectInspector,
@@ -169,10 +170,12 @@ end;
 
 procedure TBaseWidget.MakeCommand(Attr, Value: string);
 begin
-  var
-  Func := CrLf + Indent1 + 'def ' + Value + '(self):' + CrLf + Indent2 +
-    '# ToDo insert source code here' + CrLf + Indent2 + 'pass' + CrLf;
-  Partner.InsertProcedure(Func);
+  if not Partner.HasText('def ' + Value + '(self):') then begin
+    var
+    Func := CrLf + Indent1 + 'def ' + Value + '(self):' + CrLf + Indent2 +
+      LNGInsertSourceCodeHere + CrLf + Indent2 + 'pass' + CrLf;
+    Partner.InsertProcedure(Func);
+  end;
 end;
 
 procedure TBaseWidget.Rename(const OldName, NewName, Events: string);

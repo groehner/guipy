@@ -184,6 +184,7 @@ uses
   Controls,
   SysUtils,
   UITypes,
+  StringResources,
   UGUIForm,
   UTKMiscBase,
   UTTKMiscBase,
@@ -875,7 +876,7 @@ end;
 function TBaseTkWidget.MakeHandler(const Event: string): string;
 begin
   Result := Indent1 + 'def ' + HandlerNameAndParameter(Event) + CrLf + Indent2 +
-    '# ToDo insert source code here' + CrLf + Indent2 + 'pass' + CrLf;
+    LNGInsertSourceCodeHere + CrLf + Indent2 + 'pass' + CrLf;
 end;
 
 procedure TBaseTkWidget.MakeImage(const Value: string);

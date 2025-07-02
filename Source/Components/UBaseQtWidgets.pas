@@ -54,6 +54,7 @@ type
     FCustomContextMenuRequested: string;
     FLeftSpace: Integer;
     FTopSpace: Integer;
+    FVisible: Boolean;
     FWindowIconChanged: string;
     FWindowTitleChanged: string;
     procedure MakeContextMenu(Value: string);
@@ -114,6 +115,7 @@ type
     property AutoFillBackground: Boolean read FAutoFillBackground
       write FAutoFillBackground;
     property StyleSheet: string read FStyleSheet write FStyleSheet;
+    property Visible: Boolean read FVIsible write FVisible;
     // signals
     property customContextMenuRequested: string read FCustomContextMenuRequested
       write FCustomContextMenuRequested;
@@ -131,6 +133,7 @@ uses
   Graphics,
   SysUtils,
   UITypes,
+  StringResources,
   UGUIForm,
   UUtils,
   UConfiguration;
@@ -150,6 +153,7 @@ begin
   Font.Style := [];
   HelpType := htContext;
   Sizeable := True;
+  FVisible := True;
 end;
 
 function TBaseQtWidget.GetAttributes(ShowAttributes: Integer): string;
@@ -160,7 +164,7 @@ begin
       '|MouseTracking|TabletTracking|FocusPolicy' +
       '|ContextMenuPolicy|ContextMenu|AcceptDrops|StatusTip|WhatsThis' +
       '|AccessibleName|AccessibleDescription|LayoutDirection' +
-      '|AutoFillBackground|StyleSheet|Cursor|Font|Enabled|';
+      '|AutoFillBackground|StyleSheet|Cursor|Font|Enabled|Visible|';
 end;
 
 function TBaseQtWidget.GetEvents(ShowEvents: Integer): string;
@@ -332,7 +336,7 @@ end;
 function TBaseQtWidget.MakeHandler(const Event: string): string;
 begin
   Result := Indent1 + 'def ' + HandlerNameAndParameter(Event) + CrLf + Indent2 +
-    '# ToDo insert source code here' + CrLf + Indent2 + 'pass' + CrLf;
+    LNGInsertSourceCodeHere + CrLf + Indent2 + 'pass' + CrLf;
 end;
 
 procedure TBaseQtWidget.DeleteWidget;

@@ -29,7 +29,7 @@ uses
   SynHighlighterIni,
   SynHighlighterWeb,
   SynHighlighterYAML,
-  uHighlighterProcs;
+  uHighlighterProcs, SynHighlighterJava, SynHighlighterPas;
 
 type
   TResourcesDataModule = class(TDataModule)
@@ -56,6 +56,8 @@ type
     SynJSONSyn: TSynJSONSyn;
     SynGeneralSyn: TSynGeneralSyn;
     dlgFontDialog: TFontDialog;
+    SynPasSyn: TSynPasSyn;
+    SynJavaSyn: TSynJavaSyn;
     procedure DataModuleDestroy(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
     procedure ModifierCompletionCodeCompletion(Sender: TObject; var Value: string;

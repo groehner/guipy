@@ -639,7 +639,7 @@ begin
     GI_PyIDEServices.Messages.ClearMessages;
     Editor := GI_ActiveEditor;
     ReturnFocusToEditor := Assigned(Editor);
-    // Set the layout to the Debug layout if it exists
+    // Set the layout to the Debug layout is it exists
     if GI_PyIDEServices.Layouts.LayoutExists('Debug') then begin
       GI_PyIDEServices.Layouts.SaveLayout('Current');
       GI_PyIDEServices.Layouts.LoadLayout('Debug');
@@ -1502,7 +1502,6 @@ begin
 end;
 
 end.
-
 
 
 
