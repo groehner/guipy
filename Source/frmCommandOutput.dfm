@@ -3,26 +3,20 @@ inherited OutputWindow: TOutputWindow
   Top = 173
   HelpContext = 450
   Caption = 'Output'
-  ClientHeight = 206
-  ClientWidth = 224
-  ExplicitWidth = 240
-  ExplicitHeight = 245
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 224
-    Height = 206
-    ExplicitWidth = 224
-    ExplicitHeight = 206
+    ExplicitWidth = 83
+    ExplicitHeight = 182
     inherited FGPanel: TPanel
-      Width = 220
-      Height = 202
-      ExplicitWidth = 220
-      ExplicitHeight = 202
+      Width = 79
+      Height = 178
+      ExplicitWidth = 79
+      ExplicitHeight = 178
       object lsbConsole: TListBox
         Left = 0
         Top = 0
-        Width = 220
-        Height = 202
+        Width = 79
+        Height = 178
         TabStop = False
         Align = alClient
         BevelInner = bvNone
@@ -52,7 +46,7 @@ inherited OutputWindow: TOutputWindow
         Action = actToolTerminate
       end
     end
-    object N1: TSpTBXSeparatorItem
+    object siSeparator1: TSpTBXSeparatorItem
     end
     object mnCopy: TSpTBXItem
       Action = actCopy
@@ -60,7 +54,7 @@ inherited OutputWindow: TOutputWindow
     object mnClear: TSpTBXItem
       Action = actClearOutput
     end
-    object N2: TSpTBXSeparatorItem
+    object siSeparator2: TSpTBXSeparatorItem
     end
     object mnFont: TSpTBXItem
       Action = actOutputFont

@@ -194,7 +194,6 @@ uses
   UQtSpinBoxes in 'Components\PyQt\UQtSpinBoxes.pas',
   UQtWidgetDescendants in 'Components\PyQt\UQtWidgetDescendants.pas',
   dmResources in 'dmResources.pas' {ResourcesDataModule: TDataModule},
-  uSysUtils in 'uSysUtils.pas',
   dlgSynEditOptions in 'dlgSynEditOptions.pas' {EditorOptionsDialog},
   UZOrderControl in 'Utils\UZOrderControl.pas',
   dlgCustomShortcuts in 'dlgCustomShortcuts.pas' {frmCustomKeyboard},
