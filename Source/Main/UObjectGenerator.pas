@@ -157,7 +157,7 @@ begin
   (Control as TBaseWidget).NewWidget;
   if PyIDEOptions.CodeFoldingForGuiElements and Collapsed then
     EditForm.CollapseGUICreation;
-  if GuiPyOptions.SnapToGrid then
+  if GuiPyOptions.SnapToGrid and not Pasting then
     FGUIDesigner.ELDesigner.SelectedControls.AlignToGrid;
   UnlockFormUpdate(EditForm);
 end;
