@@ -30,7 +30,11 @@
   If you do not delete the provisions above, a recipient may use your version
   of this file under either the MPL or the GPL.
 
- }
+  Gerhard Röhner
+  Expansion; GetAuthor, GetLicence, ...
+
+}
+
 unit uParams;
 
 interface
@@ -72,7 +76,8 @@ uses
   cParameters,
   cProjectClasses,
   cPyControl,
-  dlgCommandLine;
+  dlgCommandLine,
+  UConfiguration;
 
 function GetActiveDoc: string;
 var
@@ -547,6 +552,47 @@ begin
     Result := '';
 end;
 
+{--- expansions ---------------------------------------------------------------}
+
+function GetAuthor: string;
+begin
+  Result := GuiPyOptions.Author;
+end;
+
+function GetLicence: string;
+begin
+  Result := GuiPyOptions.Licence;
+end;
+
+function GetGeometry: string;
+begin
+  Result := IntToStr(GuiPyOptions.FrameWidth) + ',' +
+    IntToStr(GuiPyOptions.FrameHeight);
+end;
+
+function GetTkGeometry(const Geometry: string): string;
+begin
+  Result := '''' + StringReplace(Geometry, ',', 'x', [rfReplaceAll]) + '''';
+end;
+
+function GetQtGeometry(const Geometry: string): string;
+begin
+  Result := '''' + StringReplace(Geometry, ',', 'x', [rfReplaceAll]) + '''';
+end;
+
+function ExpandUNCFileName(const FileName: string): string;
+begin
+  { In the absense of a better solution use the ANSI function }
+  Result := ExpandUNCFileName(FileName);
+end;
+
+function ExtractFilenameNoExt(const AFileName: string): string;
+begin
+  Result := ChangeFileExt(ExtractFilename(AFileName), '');
+end;
+
+{ -----------------------------------------------------------------------------}
+
 function GetPhysicalDesktopFolder: string;
 begin
   Result := PhysicalDesktopFolder.NameForParsing;
@@ -633,6 +679,9 @@ begin
     // register parameters
     RegisterParameter('Paste', _('Clipboard as text'), GetClipboard);
     RegisterParameter('UserName', _('User name'), GetUserName);
+    RegisterParameter('Author', _('Author'), GetAuthor);
+    RegisterParameter('Licence', _('Licence'), GetLicence);
+    RegisterParameter('Geometry', _('Geometry'), GetGeometry);
     RegisterParameter('CurrentDir', _('Current directory'), GetCurrentDir);
     RegisterParameter('Exe', _('Executable name'), GetExe);
     RegisterParameter('CmdLineArgs', _('Python Command Line Arguments'),
@@ -642,6 +691,8 @@ begin
     RegisterModifier('Path', _('Path of file'), ExtractFilePath);
     RegisterModifier('Dir', _('Path without delimeter'), ExtractFileDir);
     RegisterModifier('Name', _('File name'), TPath.GetFileName);
+    RegisterModifier('NameNoExt', _('File name without extension'),
+      ExtractFilenameNoExt);
     RegisterModifier('Ext', _('File extension'), ExtractFileExt);
     RegisterModifier('ExtOnly', _('File extension without "."'), GetFileExt);
     RegisterModifier('NoExt', _('File name without extension'), StripExtension);
@@ -665,6 +716,8 @@ begin
       System.SysUtils.AnsiLowerCase);
     RegisterModifier('Quote', _('Quoted string'), StrDefQuote);
     RegisterModifier('UnQuote', _('Unquoted string'), StrUnQuote);
+    RegisterModifier('Tk', 'Tk', GetTkGeometry);
+    RegisterModifier('Qt', 'Qt', GetQtGeometry);
 
     (* parameters, specific for PyScripter *)
     RegisterParameter('SelectFile', '$[-SelectFile]', nil);
@@ -758,6 +811,7 @@ begin
     UnRegisterModifier('Path');
     UnRegisterModifier('Dir');
     UnRegisterModifier('Name');
+    UnRegisterModifier('NameNoExt');
     UnRegisterModifier('Ext');
     UnRegisterModifier('ExtOnly');
     UnRegisterModifier('NoExt');

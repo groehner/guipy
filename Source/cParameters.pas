@@ -32,6 +32,9 @@
 
   Simplified version for the purposes of PyScripter by Kiriakos Vlahos
 
+  Gerhard Röhner
+  Expansion:
+
 }
 
 unit cParameters;

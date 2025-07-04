@@ -103,7 +103,7 @@ type
     FMatchObject: Variant;
     FMatchList: TList<Variant>;
   protected
-    const FBasePath = 'FRegExp Tester Options'; // Used for storing settings
+    const FBasePath = 'RegExp Tester Options'; // Used for storing settings
     const FHighlightIndicatorID: TGUID = '{10FBEC66-4210-49F5-9F7D-189B6252080B}';
   public
     procedure Clear;
@@ -175,7 +175,7 @@ end;
 
 procedure TRegExpTesterWindow.FormCreate(Sender: TObject);
 begin
-  ImageName := 'FRegExp';
+  ImageName := 'RegExp';
   inherited;
   FMatchList := TList<Variant>.Create;
 
