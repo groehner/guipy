@@ -1,16 +1,29 @@
+{-----------------------------------------------------------------------------
+ Unit Name: dlgNewFile
+ Author:    Kiriakos Vlahos, Gerhard Röhner
+ Date:      08-Dec-2005
+ Purpose:   Classes to support code hints with HTML formating
+ History:
+ Expansion: without Manage File Templates button
+-----------------------------------------------------------------------------}
+
 unit dlgNewFile;
 
 interface
 
 uses
   System.Classes,
-  VirtualTrees,
-  cFileTemplates,
-  dlgPyIDEBase,
+  Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
-  Vcl.ComCtrls, Vcl.Controls, VirtualTrees.BaseAncestorVCL,
-  VirtualTrees.BaseTree, VirtualTrees.AncestorVCL;
+  Vcl.ComCtrls,
+  VirtualTrees.Types,
+  VirtualTrees.BaseTree,
+  VirtualTrees.BaseAncestorVCL,
+  VirtualTrees.AncestorVCL,
+  VirtualTrees,
+  cFileTemplates,
+  dlgPyIDEBase;
 
 type
   TNewFileDialog = class(TPyIDEDlgBase)
@@ -35,8 +48,9 @@ type
     procedure lvTemplatesSelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
     procedure lvTemplatesDblClick(Sender: TObject);
+  private
+    FCategories: TStringList;
   public
-    Categories : TStringList;
     SelectedTemplate : TFileTemplate;
     procedure SetUp;
   end;
@@ -44,13 +58,12 @@ type
 implementation
 
 uses
-  System.Contnrs,
-  System.SysUtils,
   Winapi.Windows,
-  Vcl.Forms,
-  VirtualTrees.Types,
   Winapi.ShellAPI,
-  MPCommonObjects;
+  System.SysUtils,
+  System.Contnrs,
+  MPCommonObjects,
+  dmCommands;
 
 {$R *.dfm}
 
@@ -65,14 +78,14 @@ end;
 procedure TNewFileDialog.FormCreate(Sender: TObject);
 begin
   inherited;
-  Categories := TStringList.Create;
-  Categories.CaseSensitive := False;
+  FCategories := TStringList.Create;
+  FCategories.CaseSensitive := False;
   lvTemplates.LargeImages := LargeSysImages;
 end;
 
 procedure TNewFileDialog.FormDestroy(Sender: TObject);
 begin
-  Categories.Free;
+  FCategories.Free;
 end;
 
 procedure TNewFileDialog.FormShow(Sender: TObject);
@@ -92,24 +105,22 @@ begin
 end;
 
 procedure TNewFileDialog.SetUp;
-var
-  I : Integer;
 begin
-  Categories.Clear;
+  FCategories.Clear;
   tvCategories.Clear;
   lvTemplates.Items.Clear;
-  for I := 0 to FileTemplates.Count - 1 do
-    if Categories.IndexOf(TFileTemplate(FileTemplates[I]).Category) < 0 then
-      Categories.Add(TFileTemplate(FileTemplates[I]).Category);
-  tvCategories.RootNodeCount := Categories.Count;
-  if Categories.Count > 0 then
+  for var I := 0 to FileTemplates.Count - 1 do
+    if FCategories.IndexOf(TFileTemplate(FileTemplates[I]).Category) < 0 then
+      FCategories.Add(TFileTemplate(FileTemplates[I]).Category);
+  tvCategories.RootNodeCount := FCategories.Count;
+  if FCategories.Count > 0 then
     tvCategories.Selected[tvCategories.RootNode.FirstChild] := True;
 end;
 
 procedure TNewFileDialog.tvCategoriesChange(Sender: TBaseVirtualTree;
   Node: PVirtualNode);
 var
-  I, Index : Integer;
+  Index : Integer;
   FileTemplate : TFileTemplate;
   FName : string;
   FileInfo: TSHFileInfo;
@@ -117,9 +128,9 @@ begin
   if Assigned(Node) and (vsSelected in Node.States) then begin
     lvTemplates.Items.Clear;
     Index := Node.Index;
-    for I := 0 to FileTemplates.Count - 1 do begin
+    for var I := 0 to FileTemplates.Count - 1 do begin
       FileTemplate := FileTemplates[I] as TFileTemplate;
-      if CompareText(Categories[Index], FileTemplate.Category) = 0 then begin
+      if CompareText(FCategories[Index], FileTemplate.Category) = 0 then begin
         with lvTemplates.Items.Add do begin
           Caption := FileTemplate.Name;
           Data := FileTemplate;
@@ -147,7 +158,7 @@ procedure TNewFileDialog.tvCategoriesGetText(Sender: TBaseVirtualTree;
   var CellText: string);
 begin
   if TextType = ttNormal then
-    CellText := Categories[Node.Index];
+    CellText := FCategories[Node.Index];
 end;
 
 end.

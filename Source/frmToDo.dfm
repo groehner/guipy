@@ -3,27 +3,25 @@ inherited ToDoWindow: TToDoWindow
   Top = 226
   HelpContext = 465
   Caption = 'To Do List'
-  ClientHeight = 257
-  ClientWidth = 468
-  StyleElements = [seFont, seClient, seBorder]
-  ExplicitWidth = 484
-  ExplicitHeight = 296
+  ClientHeight = 293
+  ClientWidth = 492
+  ExplicitWidth = 508
+  ExplicitHeight = 332
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 468
-    Height = 257
-    ExplicitWidth = 468
-    ExplicitHeight = 257
+    Width = 492
+    Height = 293
+    ExplicitWidth = 492
+    ExplicitHeight = 293
     inherited FGPanel: TPanel
-      Width = 464
-      Height = 253
-      StyleElements = [seFont, seClient, seBorder]
-      ExplicitWidth = 464
-      ExplicitHeight = 253
+      Width = 488
+      Height = 289
+      ExplicitWidth = 488
+      ExplicitHeight = 289
       object TBXDock1: TSpTBXDock
         Left = 0
         Top = 0
-        Width = 464
+        Width = 488
         Height = 30
         AllowDrag = False
         DoubleBuffered = True
@@ -66,8 +64,8 @@ inherited ToDoWindow: TToDoWindow
       object ToDoView: TVirtualStringTree
         Left = 0
         Top = 30
-        Width = 464
-        Height = 223
+        Width = 488
+        Height = 259
         Align = alClient
         Alignment = taRightJustify
         BevelInner = bvNone
@@ -113,7 +111,7 @@ inherited ToDoWindow: TToDoWindow
             MinWidth = 100
             Position = 1
             Text = 'Description'
-            Width = 179
+            Width = 203
           end
           item
             Layout = blGlyphRight
@@ -147,12 +145,12 @@ inherited ToDoWindow: TToDoWindow
     object mnRefresh: TSpTBXItem
       Action = actFileRefresh
     end
-    object N1: TSpTBXSeparatorItem
+    object mnSeparator1: TSpTBXSeparatorItem
     end
     object mnCopyAll: TSpTBXItem
       Action = actEditCopy
     end
-    object N2: TSpTBXSeparatorItem
+    object mnSeparator2: TSpTBXSeparatorItem
     end
     object mnPrint: TSpTBXItem
       Action = actFilePrint
@@ -262,32 +260,32 @@ inherited ToDoWindow: TToDoWindow
   object vicImages: TVirtualImageList
     Images = <
       item
-        CollectionIndex = 70
+        CollectionIndex = 79
         CollectionName = 'Print'
         Name = 'Print'
       end
       item
-        CollectionIndex = 16
+        CollectionIndex = 25
         CollectionName = 'Copy'
         Name = 'Copy'
       end
       item
-        CollectionIndex = 103
+        CollectionIndex = 112
         CollectionName = 'Setup'
         Name = 'Setup'
       end
       item
-        CollectionIndex = 51
+        CollectionIndex = 60
         CollectionName = 'GoToLine'
         Name = 'GoToLine'
       end
       item
-        CollectionIndex = 52
+        CollectionIndex = 61
         CollectionName = 'Help'
         Name = 'Help'
       end
       item
-        CollectionIndex = 88
+        CollectionIndex = 97
         CollectionName = 'Refresh'
         Name = 'Refresh'
       end

@@ -3,7 +3,7 @@
  Author:    Kiriakos Vlahos
             Gerhard Röhner
  Date:      20-Jan-2005
- Purpose:   Python Interactive Interperter using Python for Delphi and Synedit
+ Purpose:   Python Interactive Interperter using Python for Delphi and SynEdit
  Features:  Syntax Highlighting
             Brace Highlighting
             Command History
@@ -118,7 +118,7 @@ type
     FCriticalSection: TRTLCriticalSection;
     FOutputStream: TMemoryStream;
     FOutputMirror: TFileStream;
-    fOnExecuted: TNotifyEvent;
+    FOnExecuted: TNotifyEvent;
     procedure GetBlockBoundary(LineN: Integer; var StartLineN,
               EndLineN: Integer; var IsCode: Boolean);
     function GetPromptPrefix(Line: string): string;
@@ -183,7 +183,7 @@ type
     property CommandHistory: TStringList read FCommandHistory;
     property CommandHistoryPointer: Integer read FCommandHistoryPointer write FCommandHistoryPointer;
     property CommandHistorySize: Integer read FCommandHistorySize write SetCommandHistorySize;
-    property OnExecuted: TNotifyEvent read fOnExecuted write fOnExecuted;
+    property OnExecuted: TNotifyEvent read FOnExecuted write FOnExecuted;
   end;
 
 var
@@ -341,10 +341,10 @@ begin
   // Dedent
   Text := Dedent(Text);
 
-  var SL := TSmartPtr.Make(TStringList.Create)();
-    SL.Text := Text;
+  var StringList := TSmartPtr.Make(TStringList.Create)();
+    StringList.Text := Text;
 
-  for var Line in SL do begin
+  for var Line in StringList do begin
     if Line = '' then Continue;
 
     if LeftSpaces(Line, False) = 0 then
@@ -795,8 +795,8 @@ begin
         SynEdit.SelText := PS2 + Indent;
       end;
       SynEdit.EnsureCursorPosVisible;
-      if assigned(fOnExecuted) then
-        fOnExecuted(Self);
+      if assigned(FOnExecuted) then
+        FOnExecuted(Self);
     end, WaitToFinish);
 end;
 
@@ -952,10 +952,10 @@ end;
 
 procedure TPythonIIForm.SynEditDblClick(Sender: TObject);
 var
-   RegExTraceback, RegExWarning : TRegEx;
-   Match : TMatch;
-   ErrLineNo, LineNo : integer;
-   FileName : string;
+   RegExTraceback, RegExWarning: TRegEx;
+   Match: TMatch;
+   ErrLineNo, LineNo: Integer;
+   FileName: string;
    Token: string;
    Attr: TSynHighlighterAttributes;
 begin
@@ -972,13 +972,13 @@ begin
   then
   begin
     RegExTraceback := CompiledRegEx(STracebackFilePosExpr);
-    LineNo:= Synedit.CaretY;
-    if Synedit.LineText.StartsWith('Traceback') then
+    LineNo:= SynEdit.CaretY;
+    if SynEdit.LineText.StartsWith('Traceback') then
       Inc(LineNo);
 
     while Attr = TSynPythonInterpreterSyn(SynEdit.Highlighter).TracebackAttri do
     begin
-      Match := RegExTraceback.Match(Synedit.Lines[LineNo - 1]);
+      Match := RegExTraceback.Match(SynEdit.Lines[LineNo - 1]);
       if Match.Success then
         Break
       else
@@ -1366,58 +1366,58 @@ procedure TPythonIIForm.SynCodeCompletionExecute(Kind: SynCompletionType;
   Sender: TObject; var CurrentInput: string; var X, Y: Integer;
   var CanExecute: Boolean);
 begin
-  var CC := TIDECompletion.InterpreterCodeCompletion;
-  var CP := TSynCompletionProposal(Sender);
+  var CodeCompletion := TIDECompletion.InterpreterCodeCompletion;
+  var CompletionProposal := TSynCompletionProposal(Sender);
 
   CanExecute := False;
-  if CC.Lock.TryEnter then
+  if CodeCompletion.Lock.TryEnter then
   try
     CanExecute := Application.Active and
       (GetParentForm(SynEdit).ActiveControl = SynEdit) and
-      (CC.CompletionInfo.CaretXY = SynEdit.CaretXY);
+      (CodeCompletion.CompletionInfo.CaretXY = SynEdit.CaretXY);
 
     if CanExecute then
     begin
-      CP.Font := PyIDEOptions.AutoCompletionFont;
-      CP.ItemList.Text := CC.CompletionInfo.DisplayText;
-      CP.InsertList.Text := CC.CompletionInfo.InsertText;
-      CP.NbLinesInWindow := PyIDEOptions.CodeCompletionListSize;
-      CP.CurrentString := CurrentInput;
+      CompletionProposal.Font := PyIDEOptions.AutoCompletionFont;
+      CompletionProposal.ItemList.Text := CodeCompletion.CompletionInfo.DisplayText;
+      CompletionProposal.InsertList.Text := CodeCompletion.CompletionInfo.InsertText;
+      CompletionProposal.NbLinesInWindow := PyIDEOptions.CodeCompletionListSize;
+      CompletionProposal.CurrentString := CurrentInput;
 
-      if CP.Form.AssignedList.Count = 0 then
+      if CompletionProposal.Form.AssignedList.Count = 0 then
       begin
         CanExecute := False;
-        CC.CleanUp;
+        CodeCompletion.CleanUp;
       end
       else
-      if PyIDEOptions.CompleteWithOneEntry and (CP.Form.AssignedList.Count = 1) then
+      if PyIDEOptions.CompleteWithOneEntry and (CompletionProposal.Form.AssignedList.Count = 1) then
       begin
         // Auto-complete with one entry without showing the form
         CanExecute := False;
-        CP.OnValidate(CP.Form, [], #0);
-        CC.CleanUp;
+        CompletionProposal.OnValidate(CompletionProposal.Form, [], #0);
+        CodeCompletion.CleanUp;
       end;
     end else begin
-      CP.ItemList.Clear;
-      CP.InsertList.Clear;
-      CC.CleanUp;
+      CompletionProposal.ItemList.Clear;
+      CompletionProposal.InsertList.Clear;
+      CodeCompletion.CleanUp;
     end;
   finally
-    CC.Lock.Leave;
+    CodeCompletion.Lock.Leave;
   end;
 end;
 
 procedure TPythonIIForm.SynCodeCompletionCodeItemInfo(Sender: TObject;
   AIndex: Integer; var Info: string);
 begin
-  var CC := TIDECompletion.InterpreterCodeCompletion;
-  if not CC.Lock.TryEnter then Exit;
+  var CodeCompletion := TIDECompletion.InterpreterCodeCompletion;
+  if not CodeCompletion.Lock.TryEnter then Exit;
   try
-    if Assigned(CC.CompletionInfo.CompletionHandler) then
-      Info := CC.CompletionInfo.CompletionHandler.GetInfo(
+    if Assigned(CodeCompletion.CompletionInfo.CompletionHandler) then
+      Info := CodeCompletion.CompletionInfo.CompletionHandler.GetInfo(
         (Sender as TSynCompletionProposal).InsertList[AIndex]);
   finally
-    CC.Lock.Leave;
+    CodeCompletion.Lock.Leave;
   end;
 end;
 
@@ -1704,16 +1704,16 @@ end;
 procedure TPythonIIForm.RegisterHistoryCommands;
 // Register the Recall History Command
 
-  procedure AddEditorCommand(Cmd: TSynEditorCommand; SC: TShortCut);
+  procedure AddEditorCommand(Cmd: TSynEditorCommand; ShortCut: TShortCut);
   begin
     // Remove if it exists
-    var Index :=  SynEdit.Keystrokes.FindShortcut(SC);
+    var Index :=  SynEdit.Keystrokes.FindShortcut(ShortCut);
     if Index >= 0 then
       SynEdit.Keystrokes.Delete(Index);
     // Addit
     with SynEdit.Keystrokes.Add do
     begin
-      ShortCut := SC;
+      ShortCut := ShortCut;
       Command := Cmd;
     end;
   end;

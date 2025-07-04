@@ -10,12 +10,16 @@ unit dlgPickList;
 interface
 
 uses
+  System.Classes,
+  System.ImageList,
+  Vcl.Controls,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.CheckLst,
   Vcl.Menus,
+  Vcl.ImgList,
   Vcl.VirtualImageList,
-  dlgPyIDEBase, System.ImageList, Vcl.ImgList, Vcl.Controls, System.Classes;
+  dlgPyIDEBase;
 
 type
   TPickListDialog = class(TPyIDEDlgBase)
@@ -52,23 +56,20 @@ uses
 {$R *.dfm}
 
 procedure TPickListDialog.mnSelectAllClick(Sender: TObject);
-var
-  I: Integer;
 begin
-  for I:= 0 to CheckListBox.Items.Count - 1 do
+  for var I:= 0 to CheckListBox.Items.Count - 1 do
     CheckListBox.Checked[I]:= True;
 end;
 
 procedure TPickListDialog.SetScrollWidth;
 var
-  I: Integer;
   ItemMaxWidth: Integer;
 begin
   ItemMaxWidth := 0;
   with CheckListBox do
   begin
     //  Calculate the Max Length
-    for I := 0 to CheckListBox.Items.Count - 1 do
+    for var I := 0 to CheckListBox.Items.Count - 1 do
       ItemMaxWidth := Max(CheckListBox.Canvas.TextWidth(CheckListBox.Items[I]),
         ItemMaxWidth);
     ScrollWidth := ItemMaxWidth + 5;
@@ -82,10 +83,8 @@ begin
 end;
 
 procedure TPickListDialog.mnDeselectAllClick(Sender: TObject);
-var
-  I : Integer;
 begin
-  for I := 0 to CheckListBox.Items.Count - 1 do
+  for var I := 0 to CheckListBox.Items.Count - 1 do
     CheckListBox.Checked[I] := False;
 end;
 

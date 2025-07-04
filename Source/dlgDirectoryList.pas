@@ -127,22 +127,18 @@ begin
 end;
 
 procedure TDirectoryListDialog.btnDeleteClick(Sender: TObject);
-var
-  I: Integer;
 begin
   if DirectoryList.ItemIndex < 0 then
     Exit;
-  I := DirectoryList.ItemIndex;
-  DirectoryList.Items.Delete(I);
-  DirectoryList.ItemIndex := Max(0, I -1);
+  var Index := DirectoryList.ItemIndex;
+  DirectoryList.Items.Delete(Index);
+  DirectoryList.ItemIndex := Max(0, Index - 1);
   CheckButtons;
 end;
 
 procedure TDirectoryListDialog.btnMoveDownClick(Sender: TObject);
-var
-  Index : Integer;
 begin
-  Index := DirectoryList.ItemIndex;
+  var Index := DirectoryList.ItemIndex;
   if (Index >= 0) and (Index < DirectoryList.Items.Count - 1) then begin
     DirectoryList.Items.Move(Index, Index + 1);
     DirectoryList.ItemIndex := Index + 1;
@@ -151,10 +147,8 @@ begin
 end;
 
 procedure TDirectoryListDialog.btnMoveUpClick(Sender: TObject);
-var
-  Index : Integer;
 begin
-  Index := DirectoryList.ItemIndex;
+  var Index := DirectoryList.ItemIndex;
   if Index > 0 then begin
     DirectoryList.Items.Move(Index, Index - 1);
     DirectoryList.ItemIndex := Index - 1;
@@ -163,16 +157,14 @@ begin
 end;
 
 procedure TDirectoryListDialog.btnReplaceClick(Sender: TObject);
-var
-  I: Integer;
 begin
-  I := DirectoryList.ItemIndex;
-  if (I < 0) or (edPath.Text = '') or
+  var Index := DirectoryList.ItemIndex;
+  if (Index < 0) or (edPath.Text = '') or
     (DirectoryList.Items.IndexOf(edPath.Text) >= 0)
   then
     Exit;
 
-  DirectoryList.Items[I] := edPath.Text;
+  DirectoryList.Items[Index] := edPath.Text;
   CheckButtons;
 end;
 

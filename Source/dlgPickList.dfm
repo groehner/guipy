@@ -4,8 +4,8 @@ inherited PickListDialog: TPickListDialog
   Caption = 'PickListDialog'
   ClientHeight = 323
   ClientWidth = 461
-  ExplicitWidth = 473
-  ExplicitHeight = 361
+  ExplicitWidth = 477
+  ExplicitHeight = 362
   TextHeight = 15
   object Panel2: TPanel
     Left = 0
@@ -15,8 +15,6 @@ inherited PickListDialog: TPickListDialog
     Align = alBottom
     Anchors = [akLeft, akBottom]
     TabOrder = 1
-    ExplicitTop = 238
-    ExplicitWidth = 457
     DesignSize = (
       461
       84)
@@ -53,7 +51,6 @@ inherited PickListDialog: TPickListDialog
       Images = vilImages
       TabOrder = 1
       OnClick = mnDeselectAllClick
-      ExplicitLeft = 216
     end
     object btnOk: TButton
       Left = 255
@@ -65,7 +62,6 @@ inherited PickListDialog: TPickListDialog
       Default = True
       ModalResult = 1
       TabOrder = 2
-      ExplicitLeft = 251
     end
     object btnCancel: TButton
       Left = 352
@@ -77,7 +73,6 @@ inherited PickListDialog: TPickListDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 3
-      ExplicitLeft = 348
     end
   end
   object Panel1: TPanel
@@ -87,8 +82,6 @@ inherited PickListDialog: TPickListDialog
     Height = 239
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 457
-    ExplicitHeight = 238
     DesignSize = (
       461
       239)
@@ -125,8 +118,6 @@ inherited PickListDialog: TPickListDialog
       ItemHeight = 17
       PopupMenu = PickListPopUp
       TabOrder = 0
-      ExplicitWidth = 449
-      ExplicitHeight = 162
     end
   end
   object PickListPopUp: TPopupMenu

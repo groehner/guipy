@@ -320,7 +320,7 @@ type
     function DoSaveFile: Boolean; override;
     function DoSaveAs: Boolean; override;
     function DoSaveAsRemote: Boolean; override;
-    function OpenFile(const Filename: string): Boolean; override;
+    function OpenFile(const FileName: string): Boolean; override;
     function DoAskSaveChanges: Boolean; override;
     procedure SetModified(Value: Boolean); override;
     function GetModified: Boolean; override;
@@ -427,7 +427,7 @@ type
     procedure CopyRTFNumbered;
     procedure CopyHTML(AsText: Boolean);
     procedure CopyNumbered;
-    procedure ExportToFile(const Filename: string; Exporter: TSynCustomExporter);
+    procedure ExportToFile(const FileName: string; Exporter: TSynCustomExporter);
     procedure DoExport; override;
     procedure CollectClasses(StringList: TStringList); override;
     procedure DoUpdateCaption; override;
@@ -512,9 +512,9 @@ type
   public
     constructor Create(AForm: TFileForm); reintroduce;
     destructor Destroy; override;
-    procedure DoSetFilename(Filename: string); override;
-    procedure OpenRemoteFile(const Filename, Servername: string); override;
-    function SaveToRemoteFile(const Filename, Servername: string) : Boolean; override;
+    procedure DoSetFilename(FileName: string); override;
+    procedure OpenRemoteFile(const FileName, Servername: string); override;
+    function SaveToRemoteFile(const FileName, Servername: string) : Boolean; override;
   end;
 
 implementation
@@ -673,13 +673,12 @@ end;
 destructor TEditor.Destroy;
 begin
   // Kept for debugging
-  inherited;
 end;
 
-procedure TEditor.DoSetFilename(Filename: string);
+procedure TEditor.DoSetFilename(FileName: string);
 begin
   FForm.FNeedToParseModule := True;
-  inherited DoSetFilename(Filename);
+  inherited DoSetFilename(FileName);
 end;
 
 function TEditor.GetSynEdit: TSynEdit;
@@ -765,12 +764,12 @@ end;
 
 function TEditor.GetFileName: string;
 begin
-  Result := Filename;
+  Result := FileName;
 end;
 
 function TEditor.GetFileTitle: string;
 begin
-  if (Filename <> '') or (SSHServer <> '') then
+  if (FileName <> '') or (SSHServer <> '') then
     Result:= inherited
   else begin
     if FUntitledNumber = -1 then
@@ -976,7 +975,7 @@ begin
 
   RemoteFileName := FileName;
   SSHServer := ServerName;
-  DoSetFileName('');
+  DoSetFilename('');
 
   FForm.SynEdit.Modified := False;
   FForm.SynEdit.UseCodeFolding := PyIDEOptions.CodeFoldingEnabled;
@@ -991,20 +990,20 @@ begin
 end;
 
 
-function TEditor.SaveToRemoteFile(const Filename, Servername: string): Boolean;
+function TEditor.SaveToRemoteFile(const FileName, Servername: string): Boolean;
 var
   TempFileName : string;
   ErrorMsg : string;
 begin
-  if not Assigned(FForm)  or (Filename = '') or (Servername = '') then  Abort;
+  if not Assigned(FForm)  or (FileName = '') or (Servername = '') then  Abort;
 
   TempFileName := FileGetTempName('PyScripter');
   Result := SaveWideStringsToFile(TempFileName, FForm.SynEdit.Lines, False);
   if Result then begin
-    Result := GI_SSHServices.ScpUpload(Servername, TempFileName, Filename, ErrorMsg);
+    Result := GI_SSHServices.ScpUpload(Servername, TempFileName, FileName, ErrorMsg);
     DeleteFile(TempFileName);
     if not Result then
-      StyledMessageDlg(Format(_(SFileSaveError), [Filename, ErrorMsg]), mtError, [mbOK], 0);
+      StyledMessageDlg(Format(_(SFileSaveError), [FileName, ErrorMsg]), mtError, [mbOK], 0);
   end;
 end;
 
@@ -1791,10 +1790,6 @@ end;
 
 procedure TEditorForm.SynEditExit(Sender: TObject);
 begin
-  // The following create problems
-  // CommandsDataModule.ParameterCompletion.Editor := nil;
-  // CommandsDataModule.ModifierCompletion.Editor := nil;
-  // CommandsDataModule.CodeTemplatesCompletion.Editor := nil;
   DoAssignInterfacePointer(False);
 
   if FHotIdentInfo.HaveHotIdent then
@@ -1894,11 +1889,8 @@ begin
         Parent := TabSheet;
         Align := alClient;
         Visible := True;
-        // Form.SetFocus;
         Result := Form as IEditorView;
       end;
-      // fix for Delphi 4 (???)
-      // Form.Realign;
       Tab.Checked := True;
     except
       Tab.Free;
@@ -1976,7 +1968,7 @@ end;
 
 function TEditorForm.DoSave: Boolean;
 begin
-  if (FEditor.Filename <> '') or (FEditor.RemoteFileName <> '') then
+  if (FEditor.FileName <> '') or (FEditor.RemoteFileName <> '') then
   begin
     Result := DoSaveFile;
     if Result then
@@ -2006,18 +1998,18 @@ begin
       end;
 
       if (SynEdit.Lines.Count > 1) and (Pos('# Name:', SynEdit.Lines[1]) = 1) then
-        SynEdit.Lines[1]:= '# Name:         ' + ExtractFileName(FEditor.Filename);
+        SynEdit.Lines[1]:= '# Name:         ' + ExtractFileName(FEditor.FileName);
     finally
       SynEdit.EndUpdate;
     end;
   end;
   Result := False;
-  if FEditor.Filename <> '' then begin
-    Result := SaveWideStringsToFile(FEditor.Filename, SynEdit.Lines,
+  if FEditor.FileName <> '' then begin
+    Result := SaveWideStringsToFile(FEditor.FileName, SynEdit.Lines,
       PyIDEOptions.CreateBackupFiles);
     if Result then begin
       AFileTime:= FileTime;
-      if not FileAge(FEditor.Filename, AFileTime) then
+      if not FileAge(FEditor.FileName, AFileTime) then
         FileTime := 0
       else
         FileTime:= AFileTime;
@@ -2074,23 +2066,23 @@ end;
 
 function TEditorForm.DoSaveAsRemote: Boolean;
 var
-  Filename, Server : string;
+  FileName, Server : string;
   Edit : IEditor;
 begin
-  if FEditor.Filename <> '' then
-    Filename := TPath.GetFileName(FEditor.Filename)
+  if FEditor.FileName <> '' then
+    FileName := TPath.GetFileName(FEditor.FileName)
   else if FEditor.RemoteFileName <> '' then
-    Filename := FEditor.RemoteFileName;
-  if ExecuteRemoteFileDialog(Filename, Server, rfdSave) then
+    FileName := FEditor.RemoteFileName;
+  if ExecuteRemoteFileDialog(FileName, Server, rfdSave) then
   begin
-    Edit := GI_EditorFactory.GetEditorByName(TSSHFileName.Format(Server, Filename));
+    Edit := GI_EditorFactory.GetEditorByName(TSSHFileName.Format(Server, FileName));
     if Assigned(Edit) and (Edit <> Self.FEditor as IEditor) then
     begin
       StyledMessageDlg(_(SFileAlreadyOpen), mtError, [mbAbort], 0);
       Result := False;
       Exit;
     end;
-    FEditor.RemoteFileName := Filename;
+    FEditor.RemoteFileName := FileName;
     FEditor.SSHServer := Server;
     FEditor.DoSetFilename('');
     DoUpdateHighlighter;
@@ -2106,11 +2098,11 @@ begin
     Result := False;
 end;
 
-function TEditorForm.OpenFile(const Filename: string): Boolean;
+function TEditorForm.OpenFile(const FileName: string): Boolean;
 begin
   Result:= True;
   try
-    FEditor.OpenFile(Filename);
+    FEditor.OpenFile(FileName);
   except
     Result:= False;
   end;
@@ -2136,9 +2128,9 @@ begin
   if HighlighterName <> '' then
     SynEdit.Highlighter :=
       ResourcesDataModule.Highlighters.HighlighterFromFriendlyName(HighlighterName)
-  else if FEditor.Filename <> '' then
+  else if FEditor.FileName <> '' then
     SynEdit.Highlighter :=
-      ResourcesDataModule.Highlighters.HighlighterFromFileName(FEditor.Filename)
+      ResourcesDataModule.Highlighters.HighlighterFromFileName(FEditor.FileName)
   else if FEditor.RemoteFileName <> '' then
     SynEdit.Highlighter :=
       ResourcesDataModule.Highlighters.HighlighterFromFileName(FEditor.RemoteFileName)
@@ -2477,7 +2469,7 @@ begin
 end;
 
 procedure TEditorForm.CreateStructogram;
-  var Str, AText, Filename: string;
+  var Str, AText, FileName: string;
    BufB, BufE: TBufferCoord; Indent, Line: Integer;
       Scanner: TPythonScannerWithTokens;
 begin
@@ -2507,12 +2499,12 @@ begin
   if Trim(AText) <> '' then begin
     Scanner:= TPythonScannerWithTokens.Create;
     Scanner.Init(AText);
-    Filename:= Scanner.GetFilename;
+    FileName:= Scanner.GetFilename;
     FreeAndNil(Scanner);
-    if Filename <> ''
-      then Filename:= ExtractFilePath(Pathname) + Filename + '.psg'
-      else Filename:= ChangeFileExt(Pathname, '.psg');
-    PyIDEMainForm.StructogramFromText(AText, Filename);
+    if FileName <> ''
+      then FileName:= ExtractFilePath(Pathname) + FileName + '.psg'
+      else FileName:= ChangeFileExt(Pathname, '.psg');
+    PyIDEMainForm.StructogramFromText(AText, FileName);
   end;
 end;
 
@@ -2783,10 +2775,10 @@ end;
 
 procedure TEditorForm.mnEditAddImportsClick(Sender: TObject);
 begin
-  var Filename:= ExtractFileName(Pathname);
+  var FileName:= ExtractFileName(Pathname);
   var StringList:= FConfiguration.GetClassesAndFilename(Pathname);
   for var I:= 0 to StringList.Count - 1 do begin
-     if StringList.ValueFromIndex[I] <> Filename then begin
+     if StringList.ValueFromIndex[I] <> FileName then begin
        var RegEx:= CompiledRegEx('\W' + StringList.KeyNames[I] + '\W');
        if RegEx.IsMatch(ActiveSynEdit.Text) then
          InsertImport('From ' + ChangeFileExt(StringList.ValueFromIndex[I], '') +
@@ -2815,10 +2807,10 @@ end;
 
 procedure TEditorForm.WMFolderChangeNotify(var Msg: TMessage);
 begin
-  if FEditor.Filename <> '' then
+  if FEditor.FileName <> '' then
     TThread.ForceQueue(nil, procedure
     begin
-      CommandsDataModule.ProcessFolderChange(TPath.GetDirectoryName(FEditor.Filename));
+      CommandsDataModule.ProcessFolderChange(TPath.GetDirectoryName(FEditor.FileName));
     end, 200);
 end;
 
@@ -2959,7 +2951,6 @@ end;
 
 procedure TEditorForm.AutoCompleteBeforeExecute(Sender: TObject);
 begin
-  // Application.processMessages;
   FAutoCompleteActive := True;
 end;
 
@@ -3070,7 +3061,7 @@ var
   LocLine: string;
   Attr: TSynHighlighterAttributes;
   Highlighter: TSynCustomHighlighter;
-  Filename, DummyToken: string;
+  FileName, DummyToken: string;
 begin
   //Exit if cursor has moved
   if not Assigned(GI_ActiveEditor) or (GI_ActiveEditor.ActiveSynEdit <> Editor)
@@ -3085,7 +3076,7 @@ begin
     Exit;
 
   Highlighter := Editor.Highlighter;
-  Filename := GI_ActiveEditor.FileId;
+  FileName := GI_ActiveEditor.FileId;
 
   Dec(Caret.Char);
   Editor.GetHighlighterAttriAtRowCol(Caret, DummyToken, Attr);
@@ -3116,7 +3107,7 @@ begin
       for var I := 0 to CodeCompletion.SkipHandlers.Count -1 do
       begin
         var SkipHandler := CodeCompletion.SkipHandlers[I] as TBaseCodeCompletionSkipHandler;
-        Skipped := SkipHandler.SkipCodeCompletion(LocLine, Filename, Caret, Highlighter, Attr);
+        Skipped := SkipHandler.SkipCodeCompletion(LocLine, FileName, Caret, Highlighter, Attr);
         if Skipped then Break;
       end;
 
@@ -3128,7 +3119,7 @@ begin
           var CompletionHandler := CodeCompletion.CompletionHandlers[I] as TBaseCodeCompletionHandler;
           CompletionHandler.Initialize;
           try
-            Handled := CompletionHandler.HandleCodeCompletion(LocLine, Filename,
+            Handled := CompletionHandler.HandleCodeCompletion(LocLine, FileName,
               Caret, Highlighter, Attr, InsertText, DisplayText);
           except
             on E: Exception do
@@ -3149,7 +3140,7 @@ begin
       if not Skipped and Handled and (InsertText <> '') then
         TThread.Queue(nil, procedure
         begin
-          if Assigned(GI_ActiveEditor) and (GI_ActiveEditor.FileId = Filename) and
+          if Assigned(GI_ActiveEditor) and (GI_ActiveEditor.FileId = FileName) and
             (CommandsDataModule.SynCodeCompletion.Editor = GI_ActiveEditor.ActiveSynEdit)
           then
             CommandsDataModule.SynCodeCompletion.ActivateCompletion;
@@ -3588,11 +3579,11 @@ begin
 end;
 
 procedure TEditorForm.SBDesignformClick(Sender: TObject);
-  var Filename: string;
+  var FileName: string;
 begin
   if IsPython and (Partner = nil) then begin
-    Filename:= ChangeFileExt(Pathname, '.pfm');
-    PyIDEMainForm.DoOpen(Filename);
+    FileName:= ChangeFileExt(Pathname, '.pfm');
+    PyIDEMainForm.DoOpen(FileName);
   end;
 end;
 
@@ -4365,7 +4356,7 @@ begin
 end;
 
 procedure TEditorForm.GoTo2(const Str: string);
-  var Line: Integer;  s: String;
+  var Line: Integer;
 begin
   with ActiveSynEdit do begin
     Line:= GetLineNumberWithWord(Str);
@@ -4982,14 +4973,14 @@ begin
   FreeAndNil(Lines);
 end;
 
-procedure TEditorForm.ExportToFile(const Filename: string; Exporter: TSynCustomExporter);
+procedure TEditorForm.ExportToFile(const FileName: string; Exporter: TSynCustomExporter);
 begin
   with Exporter do begin
     Highlighter := ActiveSynEdit.Highlighter;
     ExportAsText := True;
     ExportAll(ActiveSynEdit.Lines);
     try
-      SaveToFile(Filename);
+      SaveToFile(FileName);
     except
       on E: Exception do
         ErrorMsg(E.Message);

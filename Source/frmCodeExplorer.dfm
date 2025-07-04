@@ -5,25 +5,32 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
   Caption = 'Code Explorer'
   TextHeight = 15
   inherited BGPanel: TPanel
+    ExplicitWidth = 83
+    ExplicitHeight = 182
     inherited FGPanel: TPanel
+      Width = 79
+      Height = 178
+      ExplicitWidth = 79
+      ExplicitHeight = 178
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 223
-        Height = 394
+        Width = 79
+        Height = 178
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 0
-          Width = 223
-          Height = 394
+          Width = 79
+          Height = 178
           Align = alClient
           BorderStyle = bsNone
           Colors.UnfocusedColor = clHighlightText
           Colors.UnfocusedSelectionColor = clGray
           Colors.UnfocusedSelectionBorderColor = clGray
+          DefaultNodeHeight = 19
           Header.AutoSizeIndex = -1
           Header.Options = [hoAutoResize, hoColumnResize, hoDrag]
           HintMode = hmHint
@@ -53,7 +60,7 @@ inherited CodeExplorerWindow: TCodeExplorerWindow
             item
               Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus, coStyleColor]
               Position = 0
-              Width = 223
+              Width = 79
             end>
         end
       end

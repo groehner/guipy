@@ -7,7 +7,9 @@
 
 GExperts License Agreement
 GExperts is copyright 1996-2005 by GExperts, Inc, Erik Berry, and several other
-authors who have submitted their code for inclusion. This license agreement only covers code written by GExperts, Inc and Erik Berry. You should contact the other authors concerning their respective copyrights and conditions.
+authors who have submitted their code for inclusion. This license agreement only
+covers code written by GExperts, Inc and Erik Berry. You should contact the other
+authors concerning their respective copyrights and conditions.
 
 The rules governing the use of GExperts and the GExperts source code are derived
 from the official Open Source Definition, available at http://www.opensource.org.
@@ -49,19 +51,14 @@ uses
   Winapi.Windows,
   Winapi.Messages,
   System.Types,
-  System.SysUtils,
-  System.Variants,
   System.Classes,
   System.Actions,
   System.ImageList,
   Vcl.Graphics,
   Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.Menus,
   Vcl.ActnList,
-  Vcl.ComCtrls,
   Vcl.StdCtrls,
   Vcl.ImgList,
   Vcl.VirtualImageList,
@@ -75,9 +72,7 @@ uses
   SpTBXItem,
   SpTBXEditors,
   SpTBXDkPanels,
-  SpTBXControls,
   SynEdit,
-  SynEditMiscClasses,
   frmIDEDockWin,
   cFindInFiles;
 
@@ -245,12 +240,16 @@ uses
   System.UITypes,
   System.RegularExpressions,
   System.Math,
+  System.SysUtils,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.ComCtrls,
   Vcl.Themes,
+  SynEditMiscClasses,
   JclFileUtils,
   JvJVCLUtils,
   JvGnugettext,
   StringResources,
-  dmResources,
   dlgFindInFiles,
   dlgReplaceInFiles,
   SynEditTypes,
@@ -275,9 +274,7 @@ end;
 
 procedure TFindResultsWindow.FormResize(Sender: TObject);
 begin
-  inherited;
   FGPanel.Realign;
-//  StatusBar.Panels.Items[0].Size := StatusBar.Width - 70;
   lbResults.Invalidate;
   lbResults.Refresh;
 end;
@@ -302,10 +299,8 @@ procedure TFindResultsWindow.lbResultsKeyPress(Sender: TObject;
   var Key: Char);
 begin
   case Key of
-
     '+', '-':
       ToggleFileResultExpanded(lbResults.ItemIndex);
-
     #13:
       GotoHighlightedListEntry;
   end;

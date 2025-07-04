@@ -4,6 +4,7 @@
   Date:
   Purpose:
   History:   Originally Based on SynEdit Demo
+  Expansion: settings classes
   -----------------------------------------------------------------------------}
 
 unit uLLMSupport;
@@ -11,21 +12,13 @@ unit uLLMSupport;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.UITypes,
-  System.SysUtils,
   System.Classes,
-  System.ImageList,
-  System.Actions,
-  System.Generics.Collections,
   System.JSON,
   System.JSON.Serializers,
   System.Net.HttpClient,
   System.Net.HttpClientComponent,
   SynEditTypes,
-  SynEdit,
-  uEditAppIntfs;
+  SynEdit;
 
 type
   TLLMProvider = (
@@ -76,43 +69,43 @@ type
 
   TLLMSettingsClass = class(TPersistent)
   private
-    fEndPoint: string;
-    fApiKey: string;
-    fModel: string;
-    fSystemPrompt: string;
-    fTimeOut: Integer;
-    fMaxTokens: Integer;
+    FEndPoint: string;
+    FApiKey: string;
+    FModel: string;
+    FSystemPrompt: string;
+    FTimeOut: Integer;
+    FMaxTokens: Integer;
     FTemperature: Single;
   published
-    property EndPoint: string read fEndPoint write fEndPoint;
-    property ApiKey: string read fApiKey write fApiKey;
-    property Model: string read fModel write fModel ;
-    property SystemPrompt: string read fSystemPrompt write fSystemPrompt;
-    property TimeOut: Integer read fTimeOut write fTimeOut;
-    property MaxTokens: Integer read fMaxTokens write fMaxTokens;
+    property EndPoint: string read FEndPoint write FEndPoint;
+    property ApiKey: string read FApiKey write FApiKey;
+    property Model: string read FModel write FModel ;
+    property SystemPrompt: string read FSystemPrompt write FSystemPrompt;
+    property TimeOut: Integer read FTimeOut write FTimeOut;
+    property MaxTokens: Integer read FMaxTokens write FMaxTokens;
     property Temperature: Single read FTemperature write FTemperature;
   end;
 
   TLLMProvidersClass = class(TPersistent)
   private
-    fProvider: integer;
-    fOpenAI: TLLMSettingsClass;
-    fGemini: TLLMSettingsClass;
-    fOllama: TLLMSettingsClass;
-    fDeepSeek: TLLMSettingsClass;
-    fGrok: TLLMSettingsClass;
+    FProvider: integer;
+    FOpenAI: TLLMSettingsClass;
+    FGemini: TLLMSettingsClass;
+    FOllama: TLLMSettingsClass;
+    FDeepSeek: TLLMSettingsClass;
+    FGrok: TLLMSettingsClass;
   public
     constructor Create;
     destructor Destroy; override;
-    procedure setFromProviders(Providers: TLLMProviders);
-    procedure setToProviders(var Providers: TLLMProviders);
+    procedure SetFromProviders(Providers: TLLMProviders);
+    procedure SetToProviders(var Providers: TLLMProviders);
   published
-    property Provider: Integer read fProvider write fProvider;
-    property OpenAI: TLLMSettingsClass read fOpenAI write fOpenAI;
-    property Gemini: TLLMSettingsClass read fGemini write fGemini;
-    property Ollama: TLLMSettingsClass read fOllama write fOllama;
-    property DeepSeek: TLLMSettingsClass read fDeepSeek write fDeepSeek;
-    property Grok: TLLMSettingsClass read fGrok write fGrok;
+    property Provider: Integer read FProvider write FProvider;
+    property OpenAI: TLLMSettingsClass read FOpenAI write FOpenAI;
+    property Gemini: TLLMSettingsClass read FGemini write FGemini;
+    property Ollama: TLLMSettingsClass read FOllama write FOllama;
+    property DeepSeek: TLLMSettingsClass read FDeepSeek write FDeepSeek;
+    property Grok: TLLMSettingsClass read FGrok write FGrok;
   end;
 
   TQAItem = record
@@ -152,9 +145,9 @@ type
     function RequestParams(const Prompt: string; const Suffix: string = ''): string; virtual; abstract;
     // Gemini support
     procedure AddGeminiSystemPrompt(Params: TJSONObject);
-    function GeminiMessage(const Role, Content: string): TJsonObject;
+    function GeminiMessage(const Role, Content: string): TJSONObject;
     // OpenAI support
-    function OpenAIMessage(const Role, Content: string): TJsonObject;
+    function OpenAIMessage(const Role, Content: string): TJSONObject;
   public
     Providers: TLLMProviders;
     ActiveTopicIndex: Integer;
@@ -312,12 +305,12 @@ const
 implementation
 
 uses
+  System.SysUtils,
   System.Math,
   System.IOUtils,
   JvGnugettext,
-  Vcl.Forms,
   frmSuggest,
-  cPyScripterSettings,
+  uEditAppIntfs,
   uCommonFunctions;
 
 resourcestring
@@ -652,7 +645,7 @@ function TLLMChat.RequestParams(const Prompt: string; const Suffix: string = '')
     JSON.AddPair('contents', Contents);
 
     // now add parameters
-    var GenerationConfig := TJSONObject.Create();
+    var GenerationConfig := TJSONObject.Create;
     GenerationConfig.AddPair('temperature', Settings.Temperature);
     GenerationConfig.AddPair('maxOutputTokens', Settings.MaxTokens);
     JSON.AddPair('generationConfig', GenerationConfig);
@@ -846,17 +839,17 @@ end;
 
 procedure TLLMAssistant.DoResponseOK(const Msg, Reason: string);
 
-  procedure RemoveLeadingLB(var S: string);
+  procedure RemoveLeadingLB(var Str: string);
   var
     Count: Integer;
   begin
     Count := 0;
-    if S.StartsWith(#13) then
+    if Str.StartsWith(#13) then
       Inc(Count);
-    if S.StartsWith(#10) then
+    if Str.StartsWith(#10) then
       Inc(Count);
     if Count > 0 then
-      S := Copy(S, Count + 1);
+      Str := Copy(Str, Count + 1);
   end;
 
 begin
@@ -882,7 +875,6 @@ begin
     Code := Copy(Code, 7);
     RemoveLeadingLB(Code);
   end;
-  //Code := Code.TrimLeft;
   if Code <> '' then
     ShowSuggestion(Code, GI_ActiveEditor.ActiveSynEdit);
 end;
@@ -1061,7 +1053,7 @@ begin
 
   if FSelText <> '' then Exit;
 
-  case Settings.EndPointType of
+  case Settings.EndpointType of
     etOpenAICompletion:
       begin
         var Prompt := Format(CompletionSuggestPrompt, [GetPrefix]);
@@ -1089,7 +1081,7 @@ function TLLMAssistant.ValidateSettings: TLLMSettingsValidation;
 begin
   Result := Settings.Validate;
   if (Result = svValid) and
-    not (Settings.EndPointType in 
+    not (Settings.EndpointType in
     [etOllamaGenerate, etOpenAICompletion, etOpenAIChatCompletion, etGemini])
   then
     Result := svInvalidEndpoint;
@@ -1111,9 +1103,10 @@ begin
   Ollama.Free;
   DeepSeek.Free;
   Grok.Free;
+  inherited;
 end;
 
-procedure TLLMProvidersClass.setFromProviders(Providers: TLLMProviders);
+procedure TLLMProvidersClass.SetFromProviders(Providers: TLLMProviders);
 
   procedure setFromProvider(Provider: TLLMSettingsClass; Settings: TLLMSettings);
   begin
@@ -1121,7 +1114,7 @@ procedure TLLMProvidersClass.setFromProviders(Providers: TLLMProviders);
     Provider.ApiKey:= Obfuscate(Settings.ApiKey);
     Provider.Model:= Settings.Model;
     Provider.SystemPrompt:= Settings.SystemPrompt;
-    Provider.Timeout:= Settings.Timeout;
+    Provider.TimeOut:= Settings.TimeOut;
     Provider.MaxTokens:= Settings.MaxTokens;
   end;
 
@@ -1134,7 +1127,7 @@ begin
   setFromProvider(Grok, Providers.Grok);
 end;
 
-procedure TLLMProvidersClass.setToProviders(var Providers: TLLMProviders);
+procedure TLLMProvidersClass.SetToProviders(var Providers: TLLMProviders);
 
   procedure setToProvider(Provider: TLLMSettingsClass; var Settings: TLLMSettings);
   begin
@@ -1142,7 +1135,7 @@ procedure TLLMProvidersClass.setToProviders(var Providers: TLLMProviders);
     Settings.ApiKey:= Obfuscate(Provider.ApiKey);
     Settings.Model:= Provider.Model;
     Settings.SystemPrompt:= Provider.SystemPrompt;
-    Settings.Timeout:= Provider.Timeout;
+    Settings.TimeOut:= Provider.TimeOut;
     Settings.MaxTokens:= Provider.MaxTokens;
   end;
 

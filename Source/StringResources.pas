@@ -51,7 +51,7 @@ const
   sPythonFormFileFilter = 'Python form (*.pfm)|*.pfm';
   sUMLFileFilter = 'UML (*.puml)|*.puml';
   sStructogramFileFilter = 'Structogram (*.psg)|*.psg';
-  sSequencediagramfileFilter = 'Sequence diagram (*.psd)|*.psd';
+  sSequencediagramFileFilter = 'Sequence diagram (*.psd)|*.psd';
   sAllFileFilter = 'All (*.*)|*.*';
 
   // Editor scroll hints

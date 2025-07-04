@@ -7,8 +7,8 @@ inherited ToDoOptionsDlg: TToDoOptionsDlg
   ClientWidth = 512
   Position = poScreenCenter
   OnShow = FormShow
-  ExplicitWidth = 524
-  ExplicitHeight = 321
+  ExplicitWidth = 528
+  ExplicitHeight = 322
   TextHeight = 15
   object pnlBG: TPanel
     Left = 0
@@ -17,8 +17,6 @@ inherited ToDoOptionsDlg: TToDoOptionsDlg
     Height = 283
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 508
-    ExplicitHeight = 282
     DesignSize = (
       512
       283)
@@ -220,8 +218,6 @@ inherited ToDoOptionsDlg: TToDoOptionsDlg
       Default = True
       ModalResult = 1
       TabOrder = 3
-      ExplicitLeft = 246
-      ExplicitTop = 250
     end
     object btnCancel: TButton
       Left = 338
@@ -233,8 +229,6 @@ inherited ToDoOptionsDlg: TToDoOptionsDlg
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 4
-      ExplicitLeft = 334
-      ExplicitTop = 250
     end
     object btnHelp: TButton
       Left = 426
@@ -245,8 +239,6 @@ inherited ToDoOptionsDlg: TToDoOptionsDlg
       Caption = '&Help'
       TabOrder = 5
       OnClick = btnHelpClick
-      ExplicitLeft = 422
-      ExplicitTop = 251
     end
   end
 end

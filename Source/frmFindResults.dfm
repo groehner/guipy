@@ -8,13 +8,19 @@ inherited FindResultsWindow: TFindResultsWindow
   OnKeyPress = FormKeyPress
   OnResize = FormResize
   OnShow = FormShow
+  ExplicitWidth = 619
+  ExplicitHeight = 397
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 603
     Height = 358
+    ExplicitWidth = 603
+    ExplicitHeight = 358
     inherited FGPanel: TPanel
       Width = 599
       Height = 354
+      ExplicitWidth = 599
+      ExplicitHeight = 354
       object pnlMain: TPanel
         Left = 0
         Top = 0
@@ -172,6 +178,7 @@ inherited FindResultsWindow: TFindResultsWindow
           IndentGuides.Visible = False
           ReadOnly = True
           RightEdge = 0
+          ScrollbarAnnotations = <>
           OnSpecialLineColors = reContextSpecialLineColors
         end
       end
@@ -186,7 +193,7 @@ inherited FindResultsWindow: TFindResultsWindow
           MinHeight = 20
         end
         object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-          CustomWidth = 583
+          CustomWidth = 0
         end
         object StatusRightLabel: TSpTBXLabelItem
           Alignment = taRightJustify
@@ -393,27 +400,22 @@ inherited FindResultsWindow: TFindResultsWindow
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionIndex = 99
         CollectionName = 'Save'
         Name = 'Save'
       end
       item
-        CollectionIndex = 70
         CollectionName = 'Print'
         Name = 'Print'
       end
       item
-        CollectionIndex = 16
         CollectionName = 'Copy'
         Name = 'Copy'
       end
       item
-        CollectionIndex = 101
         CollectionName = 'Search'
         Name = 'Search'
       end
       item
-        CollectionIndex = 91
         CollectionName = 'Replace'
         Name = 'Replace'
       end

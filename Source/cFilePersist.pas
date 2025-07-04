@@ -20,11 +20,11 @@ uses
 type
   TBookMarkInfo = class(TPersistent)
   private
-    fLine, fChar, fBookmarkNumber : Integer;
+    FLine, FChar, FBookmarkNumber: Integer;
   published
-    property Line : Integer read fLine write fLine;
-    property Char : Integer read fChar write fChar;
-    property BookmarkNumber : Integer read fBookmarkNumber write fBookmarkNumber;
+    property Line: Integer read FLine write FLine;
+    property Char: Integer read FChar write FChar;
+    property BookmarkNumber: Integer read FBookmarkNumber write FBookmarkNumber;
   end;
 
   TFilePersistInfo = class (TInterfacedPersistent, IJvAppStorageHandler)
@@ -65,7 +65,7 @@ type
   // Stores/loads open file information through the class methods
   // WriteToAppStorage and ReadFromAppStorage
   private
-    fFileInfoList : TObjectList;
+    FFileInfoList : TObjectList;
     function CreateListItem(Sender: TJvCustomAppStorage; const Path: string;
       Index: Integer): TPersistent;
   public
@@ -292,7 +292,7 @@ end;
 
 constructor TPersistFileInfo.Create;
 begin
-  fFileInfoList := TObjectList.Create(True);
+  FFileInfoList := TObjectList.Create(True);
 end;
 
 class procedure TPersistFileInfo.ReadFromAppStorage(
@@ -327,10 +327,10 @@ var
 begin
   PersistFileInfo := TPersistFileInfo.Create;
   try
-    AppStorage.ReadObjectList(Path, PersistFileInfo.fFileInfoList,
+    AppStorage.ReadObjectList(Path, PersistFileInfo.FFileInfoList,
       PersistFileInfo.CreateListItem,  True, 'File');
-    for var i := 0 to PersistFileInfo.fFileInfoList.Count - 1 do begin
-      FilePersistInfo := TFilePersistInfo(PersistFileInfo.fFileInfoList[i]);
+    for var i := 0 to PersistFileInfo.FFileInfoList.Count - 1 do begin
+      FilePersistInfo := TFilePersistInfo(PersistFileInfo.FFileInfoList[i]);
       if FileExists(FilePersistInfo.FileName) then
         try
           aFile := GI_EditorFactory.OpenFile(FilePersistInfo.FileName, '',
@@ -402,7 +402,7 @@ end;
 
 destructor TPersistFileInfo.Destroy;
 begin
-  fFileInfoList.Free;
+  FFileInfoList.Free;
   inherited;
 end;
 
@@ -416,7 +416,7 @@ begin
   PersistFileInfo := TPersistFileInfo.Create;
   try
     PersistFileInfo.GetFileInfo;
-    AppStorage.WriteObjectList(Path, PersistFileInfo.fFileInfoList, 'File');
+    AppStorage.WriteObjectList(Path, PersistFileInfo.FFileInfoList, 'File');
   finally
     PersistFileInfo.Free;
   end;
@@ -445,7 +445,7 @@ procedure TPersistFileInfo.GetFileInfo;
         aFile := PyIDEMainForm.FileFromTab(TSpTBXTabItem(IV.Item));
         if Assigned(aFile) and ((aFile.FileName <> '') or (aFile.RemoteFileName <> '')) then begin
           FilePersistInfo := TFilePersistInfo.CreateFromFile(aFile);
-          fFileInfoList.Add(FilePersistInfo);
+          FFileInfoList.Add(FilePersistInfo);
           // We need to do it here before we call SaveEnvironement
           GI_PyIDEServices.MRUAddFile(aFile);
         end;

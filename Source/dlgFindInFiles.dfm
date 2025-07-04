@@ -17,8 +17,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
     Height = 301
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 384
-    ExplicitHeight = 300
     DesignSize = (
       388
       301)
@@ -79,7 +77,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
       Anchors = [akRight]
       Caption = 'Where'
       TabOrder = 3
-      ExplicitLeft = 173
       object rbOpenFiles: TRadioButton
         Left = 11
         Top = 36
@@ -125,8 +122,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
       Anchors = [akLeft, akRight, akBottom]
       Caption = 'Directory Search'
       TabOrder = 1
-      ExplicitTop = 165
-      ExplicitWidth = 354
       DesignSize = (
         358
         97)
@@ -161,7 +156,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
         TabOrder = 1
         TabStop = False
         OnClick = btnBrowseClick
-        ExplicitLeft = 329
       end
       object cbInclude: TCheckBox
         Left = 96
@@ -171,7 +165,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
         Anchors = [akLeft, akTop, akRight]
         Caption = 'Include su&bdirectories'
         TabOrder = 3
-        ExplicitWidth = 180
       end
       object cbMasks: TComboBox
         Left = 96
@@ -204,8 +197,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
       ModalResult = 1
       TabOrder = 4
       OnClick = btnOKClick
-      ExplicitLeft = 126
-      ExplicitTop = 268
     end
     object btnCancel: TButton
       Left = 211
@@ -217,8 +208,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 5
-      ExplicitLeft = 207
-      ExplicitTop = 268
     end
     object btnHelp: TButton
       Left = 291
@@ -229,8 +218,6 @@ inherited FindInFilesDialog: TFindInFilesDialog
       Caption = '&Help'
       TabOrder = 6
       OnClick = btnHelpClick
-      ExplicitLeft = 287
-      ExplicitTop = 268
     end
     object cbText: TComboBox
       Left = 8

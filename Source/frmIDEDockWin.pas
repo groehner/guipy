@@ -13,19 +13,15 @@ interface
 uses
   Winapi.Windows,
   Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
   System.Classes,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.ExtCtrls,
   JvComponentBase,
   JvDockControlForm,
   JvAppStorage,
-  SpTBXSkins,
-  SpTBXItem;
+  SpTBXSkins;
 
 type
   TIDEDockWindow = class(TForm)
@@ -60,13 +56,12 @@ uses
   Vcl.Themes,
   Vcl.SysStyles,
   SVGInterfaces,
-  SVGIconImageCollection,
   dmResources,
   uCommonFunctions;
 
 {$R *.dfm}
 
-function SvgToIcon(SVG: ISVG; Size: Integer; FixedColor: TColor): HIcon;
+function SvgToIcon(SVG: ISVG; Size: Integer; FixedColor: TColor): HICON;
 begin
   var LBitmap := TSmartPtr.Make(TBitmap.Create)();
   LBitmap.PixelFormat := TPixelFormat.pf32bit;   // 32bit bitmap
@@ -170,7 +165,7 @@ begin
      var Color: TColor;
      if not StyleServices.GetElementColor(Details, ecTextColor, Color) then
        Color := StyleServices.GetSystemColor(clBtnText);
-     Icon.Handle := SvgToIcon(SVGItem.Svg, PPIScale(20), Color);
+     Icon.Handle := SvgToIcon(SVGItem.SVG, PPIScale(20), Color);
    end;
 end;
 

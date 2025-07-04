@@ -426,11 +426,13 @@ end;
 procedure TPageSetupDlg.GetMargins(SynEditMargins: TSynEditPrintMargins);
 var
   CurEdit: TEdit;
+
   function StringToFloat(Edit: TEdit): Double;
   begin
     CurEdit := Edit;
     Result := StrToFloat(Edit.Text);
   end;
+
 begin
   with SynEditMargins do begin
     if not FInternalCall then

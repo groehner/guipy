@@ -3,13 +3,19 @@ inherited UnitTestWindow: TUnitTestWindow
   Caption = 'Unit Tests'
   ClientHeight = 451
   ClientWidth = 262
+  ExplicitWidth = 278
+  ExplicitHeight = 490
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 262
     Height = 451
+    ExplicitWidth = 262
+    ExplicitHeight = 451
     inherited FGPanel: TPanel
       Width = 258
       Height = 447
+      ExplicitWidth = 258
+      ExplicitHeight = 447
       object ExplorerDock: TSpTBXDock
         Left = 0
         Top = 0
@@ -87,6 +93,7 @@ inherited UnitTestWindow: TUnitTestWindow
           Height = 237
           Align = alClient
           BorderStyle = bsNone
+          DefaultNodeHeight = 19
           Header.AutoSizeIndex = -1
           Header.Height = 15
           Header.MainColumn = -1
@@ -371,22 +378,22 @@ inherited UnitTestWindow: TUnitTestWindow
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionIndex = 30
+        CollectionIndex = 21
         CollectionName = 'Delete'
         Name = 'Delete'
       end
       item
-        CollectionIndex = 40
+        CollectionIndex = 31
         CollectionName = 'Expand'
         Name = 'Expand'
       end
       item
-        CollectionIndex = 24
+        CollectionIndex = 15
         CollectionName = 'Collapse'
         Name = 'Collapse'
       end
       item
-        CollectionIndex = 97
+        CollectionIndex = 88
         CollectionName = 'Refresh'
         Name = 'Refresh'
       end
@@ -396,22 +403,21 @@ inherited UnitTestWindow: TUnitTestWindow
         Name = 'Abort'
       end
       item
-        CollectionIndex = 102
         CollectionName = 'Run'
         Name = 'Run'
       end
       item
-        CollectionIndex = 136
+        CollectionIndex = 126
         CollectionName = 'TreeSelectAll'
         Name = 'TreeSelectAll'
       end
       item
-        CollectionIndex = 135
+        CollectionIndex = 125
         CollectionName = 'TreeDeselectAll'
         Name = 'TreeDeselectAll'
       end
       item
-        CollectionIndex = 127
+        CollectionIndex = 118
         CollectionName = 'TestsFailed'
         Name = 'TestsFailed'
       end>

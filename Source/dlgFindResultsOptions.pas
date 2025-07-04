@@ -84,7 +84,6 @@ implementation
 uses
   Vcl.Forms;
 
-
 {$R *.dfm}
 
 procedure TFindResultsOptionsDialog.pnlContextFontClick(Sender: TObject);

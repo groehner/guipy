@@ -46,7 +46,6 @@ unit dlgToDoOptions;
 
 interface
 
-
 uses
   System.Classes,
   Vcl.Controls,

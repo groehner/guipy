@@ -15,38 +15,6 @@ uses
 type
   TFile = class;
 
-  { // class(TFileForm) - working windows of GuiPy
-    ChangeStyle with notifications
-    TEditorForm                        -             symbolleiste zu groß falls mit 200% gestartet wird
-                                                     belibt unklar nach langer Suche
-    TFUMLForm                          DPIChanged    geprüft
-    TFTextDiff                         -             geprüft
-    TFBrowser                          -             geprüft, CBUrl ändert Größe nicht
-    TFStructogram                      DPIChanged    geprüft
-    TFSequenceForm                     DPIChanged    geprüft, zu starke Vergrößerung
-
-    TFGUIForm = class (TForm)          FormAfterMonitorDpiChanged
-
-    // class(TIDEDockWindow) - dockable windows
-    TFFileStructure      ChangeStyle                 geprüft
-    TFObjectInspector    ChangeStyle
-    TFUMLInteractive     ChangeStyle
-
-    // class(TPyIDEDlgBase) - dialog windows
-    TFAssociation        no need create/release on need
-    TFClassEditor        ChangeStyle   FormAfterMonitorDpiChanged
-    TFDownload           no need
-    TFGit                no need
-    TFGUIDesigner        no need
-    TFObjectGenerator    no need
-    TFOpenFolderForm     no need - temporary window
-    TFSubversion         no need
-    TFUpdate             no need
-    TFConnectForm        no need create/release on need
-    TFConfiguration      no need
-
-}
-
   TFileForm = class(TForm)
     procedure FormCreate(Sender: TObject); virtual;
     procedure FormDestroy(Sender: TObject); virtual;
@@ -59,8 +27,7 @@ type
     FParentTabItem: TSpTBXTabItem;
     FReadOnly: Boolean;
     function GetPathname: string;
-    procedure SetPathname(Filename: string);
-
+    procedure SetPathname(FileName: string);
   protected
     FModified: Boolean;
     procedure SetModified(Value: Boolean); virtual;
@@ -70,9 +37,9 @@ type
     function DoSaveFile: Boolean; virtual;
     function DoSaveAs: Boolean; virtual;
     function DoSaveAsRemote: Boolean; virtual;
-    function SaveToFile(const Filename: string): Boolean;
-    function LoadFromFile(const Filename: string): Boolean; virtual;
-    function OpenFile(const Filename: string): Boolean; virtual;
+    function SaveToFile(const FileName: string): Boolean;
+    function LoadFromFile(const FileName: string): Boolean; virtual;
+    function OpenFile(const FileName: string): Boolean; virtual;
     procedure Enter(Sender: TObject); virtual;
     function DoAskSaveChanges: Boolean; virtual;
     procedure Print; virtual;
@@ -116,8 +83,8 @@ type
   TFile = class(TInterfacedObject, IUnknown, IFile, IFileCommands)
   private
     FFileKind: TFileKind;
-    FFilename: string;
-    FRemoteFilename : string;
+    FFileName: string;
+    FRemoteFileName : string;
     FSSHServer : string;
     FForm: TFileForm;
     FFromTemplate: Boolean;
@@ -150,7 +117,7 @@ type
     procedure ExecPrint; virtual;
     procedure ExecPrintPreview; virtual;
     procedure ExecReload(Quiet: Boolean = False); virtual;
-    procedure OpenFile(const Filename: string);
+    procedure OpenFile(const FileName: string);
     procedure Translate; virtual;
   public
     class var UntitledNumbers: TBits;
@@ -161,8 +128,8 @@ type
     function GetFromTemplate: Boolean;
     procedure SetFromTemplate(Value: Boolean);
     procedure DoSetFilename(FileName: string); virtual;
-    procedure OpenRemoteFile(const Filename, ServerName: string); virtual;
-    function SaveToRemoteFile(const Filename, Servername: string) : Boolean; virtual;
+    procedure OpenRemoteFile(const FileName, ServerName: string); virtual;
+    function SaveToRemoteFile(const FileName, Servername: string) : Boolean; virtual;
     function AskSaveChanges: Boolean;
     function DefaultFilename: Boolean;
     procedure ExecSave;
@@ -173,7 +140,7 @@ type
     class constructor Create;
     class destructor Destroy;
 
-    property Filename: string read FFilename write FFilename;
+    property FileName: string read FFileName write FFileName;
     property RemoteFileName: string read FRemoteFileName write FRemoteFileName;
     property SSHServer: string read FSSHServer write FSSHServer;
     property Form: TFileForm read FForm write FForm;
@@ -339,12 +306,12 @@ end;
 
 function TFileForm.DoSaveAsRemote: Boolean;
 var
-  Filename, Server : string;
+  FileName, Server : string;
   AFile : IFile;
 begin
-  if ExecuteRemoteFileDialog(Filename, Server, rfdSave) then
+  if ExecuteRemoteFileDialog(FileName, Server, rfdSave) then
   begin
-    AFile := GI_FileFactory.GetFileByName(TSSHFileName.Format(Server, Filename));
+    AFile := GI_FileFactory.GetFileByName(TSSHFileName.Format(Server, FileName));
     if Assigned(AFile) and (AFile <> Self.FMyFile as IFile) then
     begin
       Vcl.Dialogs.MessageDlg(_(SFileAlreadyOpen), mtError, [mbAbort], 0);
@@ -352,7 +319,7 @@ begin
       Exit;
     end;
     FMyFile.DoSetFilename('');
-    FMyFile.FRemoteFileName := Filename;
+    FMyFile.FRemoteFileName := FileName;
     FMyFile.FSSHServer := Server;
     DoUpdateCaption; // Do it twice in case the following statement fails
     Result := DoSaveFile;
@@ -362,14 +329,14 @@ begin
     Result := False;
 end;
 
-function TFileForm.OpenFile(const Filename: string): Boolean;
+function TFileForm.OpenFile(const FileName: string): Boolean;
 begin
-  Result:= LoadFromFile(Filename);
+  Result:= LoadFromFile(FileName);
   if Result then begin
-    Self.Pathname:= Filename;
+    Self.Pathname:= FileName;
     Modified:= False;
     SetFocus;
-    FReadOnly:= IsWriteProtected(Filename);
+    FReadOnly:= IsWriteProtected(FileName);
     PyIDEMainForm.ActiveTabControl := FParentTabControl;
   end else
     Close;
@@ -498,18 +465,18 @@ begin
     Modified := False;
 end;
 
-function TFileForm.SaveToFile(const Filename: string): Boolean;
+function TFileForm.SaveToFile(const FileName: string): Boolean;
   var StringList: TStringList;
 begin
   StringList:= GetAsStringList;
   try
     try
-      StringList.SaveToFile(Filename, TEncoding.UTF8);
+      StringList.SaveToFile(FileName, TEncoding.UTF8);
       Result:= True;
     except
       on E: Exception do begin
         StyledMessageDlg(Format(_(SFileSaveError),
-          [Filename, E.Message]), mtWarning, [mbOK], 0);
+          [FileName, E.Message]), mtWarning, [mbOK], 0);
         Result:= False;
       end;
     end;
@@ -518,7 +485,7 @@ begin
   end;
 end;
 
-function TFileForm.LoadFromFile(const Filename: string): Boolean;
+function TFileForm.LoadFromFile(const FileName: string): Boolean;
 begin
   Result:= False;
 end;
@@ -618,10 +585,10 @@ begin
     else Result:= '';
 end;
 
-procedure TFileForm.SetPathname(Filename: string);
+procedure TFileForm.SetPathname(FileName: string);
 begin
   if Assigned(FMyFile)
-    then FMyFile.DoSetFilename(Filename);
+    then FMyFile.DoSetFilename(FileName);
 end;
 
 procedure TFileForm.CollectClasses(StringList: TStringList);
@@ -931,50 +898,50 @@ begin
   Result := FFileName <> '';
 end;
 
-procedure TFile.OpenFile(const Filename: string);
+procedure TFile.OpenFile(const FileName: string);
 begin
-  DoSetFilename(Filename);
-  if FileExists(Filename) or IsHttp(Filename) then
-    FForm.OpenFile(Filename);
-  if not FileAge(Filename, FForm.FFileTime) then
+  DoSetFilename(FileName);
+  if FileExists(FileName) or IsHttp(FileName) then
+    FForm.OpenFile(FileName);
+  if not FileAge(FileName, FForm.FFileTime) then
     FForm.FFileTime := 0;
   FForm.DoUpdateCaption;
 end;
 
-procedure TFile.OpenRemoteFile(const Filename, Servername: string);
+procedure TFile.OpenRemoteFile(const FileName, Servername: string);
 var
   TempFilename : string;
   ErrorMsg : string;
 begin
-  if not Assigned(FForm) or (Filename = '') or (Servername = '') then Exit;
+  if not Assigned(FForm) or (FileName = '') or (Servername = '') then Exit;
   DoSetFilename('');
-  TempFilename := ChangeFileExt(FileGetTempName('PyScripter'), ExtractFileExt(Filename));
-  if not GI_SSHServices.ScpDownload(Servername, Filename, TempFilename, ErrorMsg) then begin
-    StyledMessageDlg(Format(_(SFileOpenError), [Filename, ErrorMsg]), mtError, [mbOK], 0);
+  TempFilename := ChangeFileExt(FileGetTempName('PyScripter'), ExtractFileExt(FileName));
+  if not GI_SSHServices.ScpDownload(Servername, FileName, TempFilename, ErrorMsg) then begin
+    StyledMessageDlg(Format(_(SFileOpenError), [FileName, ErrorMsg]), mtError, [mbOK], 0);
     Abort;
   end else begin
     FForm.OpenFile(TempFilename);
     DeleteFile(PWideChar(TempFilename));
   end;
-  FRemoteFileName := Filename;
+  FRemoteFileName := FileName;
   FSSHServer := Servername;
   FForm.DoUpdateCaption;
 end;
 
-function TFile.SaveToRemoteFile(const Filename, Servername: string): Boolean;
+function TFile.SaveToRemoteFile(const FileName, Servername: string): Boolean;
   var ErrorMsg : string;
 begin
   Result:= False;
-  if not Assigned(FForm)  or (Filename = '') or (Servername = '') then Exit;    // ToDo was Abort
+  if not Assigned(FForm)  or (FileName = '') or (Servername = '') then Exit;    // ToDo was Abort
 
   var TempFilename := FileGetTempName('PyScripter');
   var StringList:= FForm.GetAsStringList;
   Result := SaveWideStringsToFile(TempFilename, StringList, False);
   if Result then begin
-    Result := GI_SSHServices.ScpUpload(Servername, TempFilename, Filename, ErrorMsg);
+    Result := GI_SSHServices.ScpUpload(Servername, TempFilename, FileName, ErrorMsg);
     DeleteFile(PWideChar(TempFilename));
     if not Result then
-      Vcl.Dialogs.MessageDlg(Format(_(SFileSaveError), [Filename, ErrorMsg]), mtError, [mbOK], 0);
+      Vcl.Dialogs.MessageDlg(Format(_(SFileSaveError), [FileName, ErrorMsg]), mtError, [mbOK], 0);
   end;
   FreeAndNil(StringList);
 end;

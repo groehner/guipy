@@ -1,31 +1,26 @@
-﻿{-----------------------------------------------------------------------------
+﻿{-------------------------------------------------------------------------------
  Unit Name: frmVariables
  Author:    Kiriakos Vlahos
             Gerhard Röhner
  Date:      09-Mar-2005
  Purpose:   Variables Window
  History:
------------------------------------------------------------------------------}
+ Expansion: var FOnNotify: TNotifyEvent;
+-------------------------------------------------------------------------------}
 
 unit frmVariables;
 
 interface
 
 uses
-  Winapi.Windows,
-  WinApi.Messages,
+  Winapi.Messages,
   System.UITypes,
-  System.SysUtils,
-  System.Variants,
   System.Classes,
   System.ImageList,
   System.Generics.Collections,
   Vcl.Controls,
-  Vcl.Dialogs,
-  Vcl.StdCtrls,
   Vcl.Menus,
   Vcl.ExtCtrls,
-  Vcl.ComCtrls,
   Vcl.ImgList,
   Vcl.VirtualImageList,
   JvComponentBase,
@@ -34,15 +29,12 @@ uses
   SpTBXDkPanels,
   SpTBXSkins,
   SpTBXPageScroller,
-  SpTBXItem,
-  SpTBXControls,
   VirtualTrees.BaseAncestorVCL,
   VirtualTrees.AncestorVCL,
   VirtualTrees.BaseTree,
   VirtualTrees.HeaderPopup,
   VirtualTrees,
   SynEdit,
-  SynEditMiscClasses,
   frmIDEDockWin,
   cPySupportTypes,
   cPyBaseDebugger;
@@ -79,13 +71,15 @@ type
         THitInfo);
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   private
-    CurrentModule, CurrentFunction : string;
-    FGlobalsNameSpace, LocalsNameSpace : TBaseNameSpaceItem;
+    FCurrentModule: string;
+    FCurrentFunction: string;
+    FGlobalsNameSpace: TBaseNameSpaceItem;
+    FLocalsNameSpace: TBaseNameSpaceItem;
+    var FOnNotify: TNotifyEvent;
     class var DebugInspectorsRegister: TDictionary<string, string>;
     // IVariablesWindow implementation
     procedure ClearAll;
     procedure UpdateWindow;
-    var FOnNotify: TNotifyEvent;
   protected
     const FBasePath = 'Variables Window Options'; // Used for storing settings
     const FBoldIndicatorID: TGUID = '{10FBEC66-4210-49F5-9F7D-189B6252080B}';
@@ -107,14 +101,18 @@ var
 implementation
 
 uses
-  WinApi.ShellAPI,
+  Winapi.Windows,
+  Winapi.ShellAPI,
   System.Math,
+  System.SysUtils,
   System.IOUtils,
+  Vcl.Dialogs,
   Vcl.Themes,
   Vcl.Forms,
   Vcl.Graphics,
   VirtualTrees.Types,
   JvGnugettext,
+  SynEditMiscClasses,
   SynDWrite,
   StringResources,
   PythonEngine,
@@ -128,11 +126,11 @@ uses
 type
   PNodeData = ^TNodeData;
   TNodeData = record
-    Name : string;
-    ObjectType : string;
-    Value : string;
-    ImageIndex : Integer;
-    NameSpaceItem : TBaseNameSpaceItem;
+    Name: string;
+    ObjectType: string;
+    Value: string;
+    ImageIndex: Integer;
+    NameSpaceItem: TBaseNameSpaceItem;
   end;
 
 procedure TVariablesWindow.FormCreate(Sender: TObject);
@@ -144,10 +142,10 @@ begin
 
   var FBoldIndicatorSpec := TSynIndicatorSpec.Create(sisTextDecoration,
     clNoneF, clNoneF, [fsBold]);
-  synInfo.Indicators.RegisterSpec(FBoldIndicatorId, FBoldIndicatorSpec);
+  synInfo.Indicators.RegisterSpec(FBoldIndicatorID, FBoldIndicatorSpec);
   var FItalicIndicatorSpec := TSynIndicatorSpec.Create(sisTextDecoration,
     clNoneF, clNoneF, [fsItalic]);
-  synInfo.Indicators.RegisterSpec(FItalicIndicatorId, FItalicIndicatorSpec);
+  synInfo.Indicators.RegisterSpec(FItalicIndicatorID, FItalicIndicatorSpec);
 
   GI_VariablesWindow := Self;
 end;
@@ -189,14 +187,14 @@ begin
   if ParentNode = nil then begin
     // Top level
     Assert(Node.Index <= 1);
-    if CurrentModule <> '' then begin
+    if FCurrentModule <> '' then begin
       if Node.Index = 0 then begin
         Assert(Assigned(GlobalsNameSpace));
         Data.NameSpaceItem := GlobalsNameSpace;
         InitialStates := [ivsHasChildren];
       end else if Node.Index = 1 then begin
-        Assert(Assigned(LocalsNameSpace));
-        Data.NameSpaceItem := LocalsNameSpace;
+        Assert(Assigned(FLocalsNameSpace));
+        Data.NameSpaceItem := FLocalsNameSpace;
         InitialStates := [ivsExpanded, ivsHasChildren];
       end;
     end else begin
@@ -253,7 +251,7 @@ procedure TVariablesWindow.VariablesTreePaintText(Sender: TBaseVirtualTree;
   const TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
   TextType: TVSTTextType);
 var
-  Data : PNodeData;
+  Data: PNodeData;
 begin
   Data := Node.GetData;
   if VariablesTree.Enabled and Assigned(Data) and Assigned(Data.NameSpaceItem) then
@@ -301,7 +299,7 @@ procedure TVariablesWindow.VariablesTreeGetImageIndex(
   Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
   Column: TColumnIndex; var Ghosted: Boolean; var ImageIndex: TImageIndex);
 var
-  Data : PNodeData;
+  Data: PNodeData;
   Folder: string;
 begin
   Data := Node.GetData;
@@ -320,15 +318,15 @@ end;
 procedure TVariablesWindow.VariablesTreeGetCellText(
   Sender: TCustomVirtualStringTree; var E: TVSTGetCellTextEventArgs);
 var
-  Data : PNodeData;
+  Data: PNodeData;
 begin
   Data := E.Node.GetData;
   if Assigned(Data) and Assigned(Data.NameSpaceItem) then
     case E.Column of
-      0 : E.CellText := Data.Name;
-      1 : E.CellText := Data.ObjectType;
-      2 : E.CellText := Data.Value;
-      3 : E.CellText := '';
+      0: E.CellText := Data.Name;
+      1: E.CellText := Data.ObjectType;
+      2: E.CellText := Data.Value;
+      3: E.CellText := '';
     end
   else
     E.CellText := 'NA';
@@ -337,12 +335,12 @@ end;
 procedure TVariablesWindow.UpdateWindow;
 var
   Py: IPyEngineAndGIL;
-  CurrentFrame : TBaseFrameInfo;
-  SameFrame : Boolean;
-  RootNodeCount : Cardinal;
-  OldGlobalsNameSpace, OldLocalsNamespace : TBaseNameSpaceItem;
+  CurrentFrame: TBaseFrameInfo;
+  SameFrame: Boolean;
+  RootNodeCount: Cardinal;
+  OldGlobalsNameSpace, OldFLocalsNameSpace: TBaseNameSpaceItem;
 begin
-  if ((PyControl.PythonEngineType = peSSH) and (PyIDEOptions.SSHDisableVariablesWin)) or
+  if (PyControl.PythonEngineType = peSSH) and (PyIDEOptions.SSHDisableVariablesWin) or
      not (GI_PyControl.PythonLoaded and
           Assigned(GI_CallStackWindow) and
           Assigned(PyControl.ActiveInterpreter) and
@@ -365,34 +363,34 @@ begin
   CurrentFrame := GI_CallStackWindow.GetSelectedStackFrame;
 
   SameFrame := (not Assigned(CurrentFrame) and
-                (CurrentModule = '') and
-                (CurrentFunction = '')) or
+                (FCurrentModule = '') and
+                (FCurrentFunction = '')) or
                 (Assigned(CurrentFrame) and
-                (CurrentModule = CurrentFrame.FileName) and
-                (CurrentFunction = CurrentFrame.FunctionName));
+                (FCurrentModule = CurrentFrame.FileName) and
+                (FCurrentFunction = CurrentFrame.FunctionName));
 
   OldGlobalsNameSpace := GlobalsNameSpace;
-  OldLocalsNamespace := LocalsNameSpace;
+  OldFLocalsNameSpace := FLocalsNameSpace;
   GlobalsNameSpace := nil;
-  LocalsNameSpace := nil;
+  FLocalsNameSpace := nil;
 
   // Turn off Animation to speed things up
   VariablesTree.TreeOptions.AnimationOptions :=
     VariablesTree.TreeOptions.AnimationOptions - [toAnimatedToggle];
 
   if Assigned(CurrentFrame) then begin
-    CurrentModule := CurrentFrame.FileName;
-    CurrentFunction := CurrentFrame.FunctionName;
+    FCurrentModule := CurrentFrame.FileName;
+    FCurrentFunction := CurrentFrame.FunctionName;
     // Set the initial number of nodes.
     GlobalsNameSpace := PyControl.ActiveDebugger.GetFrameGlobals(CurrentFrame);
-    LocalsNameSpace := PyControl.ActiveDebugger.GetFrameLocals(CurrentFrame);
-    if Assigned(GlobalsNameSpace) and Assigned(LocalsNameSpace) then
+    FLocalsNameSpace := PyControl.ActiveDebugger.GetFrameLocals(CurrentFrame);
+    if Assigned(GlobalsNameSpace) and Assigned(FLocalsNameSpace) then
       RootNodeCount := 2
     else
       RootNodeCount := 0;
   end else begin
-    CurrentModule := '';
-    CurrentFunction := '';
+    FCurrentModule := '';
+    FCurrentFunction := '';
     try
       GlobalsNameSpace := PyControl.ActiveInterpreter.GetGlobals;
       RootNodeCount := 1;
@@ -402,10 +400,10 @@ begin
   end;
 
   if (RootNodeCount > 0) and SameFrame and (RootNodeCount = VariablesTree.RootNodeCount) then begin
-    if Assigned(GlobalsNameSpace) and Assigned(OldGlobalsNameSpace) then
+    if Assigned(GlobalsNameSpace) and Assigned(OldGlobalsNamespace) then
       GlobalsNameSpace.CompareToOldItem(OldGlobalsNameSpace);
-    if Assigned(LocalsNameSpace) and Assigned(OldLocalsNameSpace) then
-      LocalsNameSpace.CompareToOldItem(OldLocalsNameSpace);
+    if Assigned(FLocalsNameSpace) and Assigned(OldFLocalsNamespace) then
+      FLocalsNameSpace.CompareToOldItem(OldFLocalsNameSpace);
     VariablesTree.BeginUpdate;
     try
       // The following will Reinitialize only initialized nodes
@@ -420,7 +418,7 @@ begin
     VariablesTree.RootNodeCount := RootNodeCount;
   end;
   FreeAndNil(OldGlobalsNameSpace);
-  FreeAndNil(OldLocalsNameSpace);
+  FreeAndNil(OldFLocalsNameSpace);
 
   VariablesTree.TreeOptions.AnimationOptions :=
     VariablesTree.TreeOptions.AnimationOptions + [toAnimatedToggle];
@@ -432,11 +430,11 @@ end;
 procedure TVariablesWindow.ClearAll;
 begin
   VariablesTree.Clear;
-  if Assigned(GlobalsNameSpace) or Assigned(LocalsNameSpace) then
+  if Assigned(GlobalsNameSpace) or Assigned(FLocalsNameSpace) then
   begin
     var Py := SafePyEngine;
     FreeAndNil(GlobalsNameSpace);
-    FreeAndNil(LocalsNameSpace);
+    FreeAndNil(FLocalsNameSpace);
   end;
 end;
 
@@ -445,10 +443,10 @@ class constructor TVariablesWindow.Create;
 
   procedure ProcessSubFolder(const SubFolder: string);
   begin
-    var SL := TSmartPtr.Make(TStringList.Create)();
+    var StringList := TSmartPtr.Make(TStringList.Create)();
     try
-      SL.LoadFromFile(TPath.Combine(SubFolder, 'handled_classes.txt'));
-      for var S in SL do
+      StringList.LoadFromFile(TPath.Combine(SubFolder, 'handled_classes.txt'));
+      for var S in StringList do
         DebugInspectorsRegister.TryAdd(S, SubFolder);
     except
     end;
@@ -498,7 +496,7 @@ procedure TVariablesWindow.VariablesTreeAddToSelection(Sender: TBaseVirtualTree;
   var
     Indicator: TSynIndicator;
   begin
-    var Lines := S.Split([SLineBreak]);
+    var Lines := S.Split([sLineBreak]);
     for var I := 0 to Length(Lines) - 1 do
     begin
       if (I > 0) or (ASynEdit.Lines.Count = 0) then
@@ -518,7 +516,7 @@ procedure TVariablesWindow.VariablesTreeAddToSelection(Sender: TBaseVirtualTree;
           else
             Indicator := TSynIndicator.Create(FBoldIndicatorID,
               OldLine.Length + 1, OldLine.Length + Lines[I].Length + 1);
-           ASynEdit.Indicators.Add(ASynEdit.Lines.Count, Indicator)
+           ASynEdit.Indicators.Add(ASynEdit.Lines.Count, Indicator);
         end;
       end;
     end;
@@ -535,8 +533,8 @@ begin
   if not Enabled then Exit;
 
   // Get the selected frame
-  if CurrentModule <> '' then
-    NameSpace := Format(_(SNamespaceFormat), [CurrentFunction, CurrentModule])
+  if FCurrentModule <> '' then
+    NameSpace := Format(_(SNamespaceFormat), [FCurrentFunction, FCurrentModule])
   else
     NameSpace := 'Interpreter globals';
 
@@ -553,16 +551,16 @@ begin
       ObjectValue := Data.Value;
       DocString :=  Data.NameSpaceItem.DocString;
 
-      AddFormatText(synInfo, SLineBreak+_('Name')+': ', [fsBold]);
+      AddFormatText(synInfo, sLineBreak+_('Name')+': ', [fsBold]);
       AddFormatText(synInfo, ObjectName, [fsItalic]);
-      AddFormatText(synInfo, SLineBreak + _('Type') + ': ', [fsBold]);
+      AddFormatText(synInfo, sLineBreak + _('Type') + ': ', [fsBold]);
       AddFormatText(synInfo, ObjectType);
       if ObjectValue <> '' then begin
-        AddFormatText(synInfo, SLineBreak + _('Value') + ':' + SLineBreak, [fsBold]);
+        AddFormatText(synInfo, sLineBreak + _('Value') + ':' + sLineBreak, [fsBold]);
         AddFormatText(synInfo, ObjectValue);
       end;
-      AddFormatText(synInfo, SLineBreak + _('DocString') + ':' + SLineBreak, [fsBold]);
-      AddFormatText(synInfo, AdjustLineBreaks(Docstring, System.tlbsCRLF));
+      AddFormatText(synInfo, sLineBreak + _('DocString') + ':' + sLineBreak, [fsBold]);
+      AddFormatText(synInfo, AdjustLineBreaks(DocString, System.tlbsCRLF));
     end;
   finally
     synInfo.EndUpdate;

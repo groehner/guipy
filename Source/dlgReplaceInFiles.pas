@@ -48,10 +48,11 @@ interface
 
 uses
   System.Classes,
+  Vcl.Controls,
   Vcl.ExtCtrls,
   Vcl.StdCtrls,
   cFindInFiles,
-  dlgPyIDEBase, Vcl.Controls;
+  dlgPyIDEBase;
 
 type
   TReplaceInFilesDialog = class(TPyIDEDlgBase)

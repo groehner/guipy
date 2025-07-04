@@ -10,10 +10,8 @@ unit frmBreakPoints;
 interface
 
 uses
-  System.SysUtils,
   System.Classes,
   System.ImageList,
-  System.Generics.Collections,
   Vcl.Controls,
   Vcl.Menus,
   Vcl.ExtCtrls,
@@ -83,14 +81,12 @@ uses
   System.Types,
   System.Math,
   System.Contnrs,
+  System.SysUtils,
   Vcl.Dialogs,
   Vcl.Clipbrd,
   uEditAppIntfs,
   uCommonFunctions,
-  cPyControl,
-  JvGnugettext,
-  StringResources,
-  dmResources;
+  JvGnugettext;
 
 {$R *.dfm}
 
@@ -373,7 +369,7 @@ begin
   end;
 end;
 
-function TBreakpointManager.GetBreakPointsChanged: Boolean;
+function TBreakpointManager.GetBreakpointsChanged: Boolean;
 begin
   Result := FBreakpointsChanged;
 end;
@@ -387,7 +383,7 @@ begin
   Editor := GI_EditorFactory.GetEditorByFileId(FileName);
   if Assigned(Editor) and (ALine > 0) then
   begin
-    (Editor.BreakPoints as TBreakpointList).SetBreakPoint(
+    (Editor.BreakPoints as TBreakpointList).SetBreakpoint(
       ALine, Disabled, Condition, IgnoreCount);
     DoBreakpointsChanged(FileName, ALine);
     if UpdateUI then DoUpdateUI;

@@ -6,24 +6,16 @@
  History:
 -----------------------------------------------------------------------------}
 
-unit frmDisassemlyView;         
+unit frmDisassemlyView;
 
-interface                          
+interface
 
 uses
-  Winapi.Windows,
-  WinApi.Messages,
-  System.SysUtils,
-  System.Variants,
+  Winapi.Messages,
   System.Classes,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
-  SynEditHighlighter,
-  SynHighlighterPython,
   SynEdit,
-  SynEditCodeFolding,
   uEditAppIntfs;
 
 type
@@ -31,25 +23,26 @@ type
     DisSynEdit: TSynEdit;
     procedure FormCreate(Sender: TObject);
   private
-    procedure UpdateView(Editor : IEditor);
+    procedure UpdateView(Editor: IEditor);
   end;
 
   TDisView = class(TInterfacedObject, IEditorViewFactory)
   private
-    function CreateForm(Editor: IEditor; AOwner : TComponent): TCustomForm;
-    function GetName : string;
-    function GetTabCaption : string;
-    function GetMenuCaption : string;
-    function GetHint : string;
-    function GetImageName : string;
-    function GetShortCut : TShortCut;
-    procedure GetContextHighlighters(List : TList);
+    function CreateForm(Editor: IEditor; AOwner: TComponent): TCustomForm;
+    function GetName: string;
+    function GetTabCaption: string;
+    function GetMenuCaption: string;
+    function GetHint: string;
+    function GetImageName: string;
+    function GetShortCut: TShortCut;
+    procedure GetContextHighlighters(List: TList);
   end;
 
 
 implementation
 
 uses
+  System.SysUtils,
   JvJVCLUtils,
   JvGnugettext,
   PythonEngine,
@@ -71,8 +64,8 @@ end;
 procedure TDisForm.UpdateView(Editor: IEditor);
 var
   Py: IPyEngineAndGIL;
-  getdis, module : Variant;
-  Cursor : IInterface;
+  GetDis, Module: Variant;
+  Cursor: IInterface;
 const
   Code =
   'def GetDis(m):'#10 +
@@ -92,11 +85,11 @@ begin
 
   Py := SafePyEngine;
 
-  module := PyControl.ActiveInterpreter.ImportModule(Editor);
+  Module := PyControl.ActiveInterpreter.ImportModule(Editor);
   PyControl.ActiveInterpreter.RunSource(Code, '<Getdis>', 'exec');
-  getdis := PyControl.ActiveInterpreter.EvalCode('GetDis');
+  GetDis := PyControl.ActiveInterpreter.EvalCode('GetDis');
 
-  DisSynEdit.Text := Format(Header,[Editor.FileTitle]) + getdis.__call__(module);
+  DisSynEdit.Text := Format(Header,[Editor.FileTitle]) + GetDis.__call__(Module);
 end;
 
 { TDisView }
@@ -129,7 +122,7 @@ end;
 
 function TDisView.GetName: string;
 begin
-  Result := 'Disassembly'
+  Result := 'Disassembly';
 end;
 
 function TDisView.GetShortCut: TShortCut;

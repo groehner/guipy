@@ -46,7 +46,6 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Add...'
       TabOrder = 0
       OnClick = AddBtnClick
-      ExplicitLeft = 192
     end
     object RemoveBtn: TButton
       Left = 188
@@ -57,7 +56,6 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Remove'
       TabOrder = 2
       OnClick = RemoveBtnClick
-      ExplicitLeft = 192
     end
     object ModifyBtn: TButton
       Left = 188
@@ -68,7 +66,6 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Modify..'
       TabOrder = 1
       OnClick = ModifyBtnClick
-      ExplicitLeft = 192
     end
     object OKBtn: TButton
       Left = 188
@@ -80,7 +77,6 @@ inherited CollectionEditor: TCollectionEditor
       Default = True
       ModalResult = 1
       TabOrder = 3
-      ExplicitLeft = 192
     end
     object CancelBtn: TButton
       Left = 188
@@ -92,7 +88,6 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 4
-      ExplicitLeft = 192
     end
     object MoveUpBtn: TButton
       Left = 188
@@ -103,7 +98,6 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Up'
       TabOrder = 6
       OnClick = MoveUpBtnClick
-      ExplicitLeft = 192
     end
     object MoveDownBtn: TButton
       Left = 188
@@ -114,7 +108,6 @@ inherited CollectionEditor: TCollectionEditor
       Caption = '&Down'
       TabOrder = 7
       OnClick = MoveDownBtnClick
-      ExplicitLeft = 192
     end
   end
 end

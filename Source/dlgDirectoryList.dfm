@@ -9,8 +9,8 @@ inherited DirectoryListDialog: TDirectoryListDialog
   Constraints.MinHeight = 208
   Constraints.MinWidth = 358
   OnShow = FormShow
-  ExplicitWidth = 391
-  ExplicitHeight = 380
+  ExplicitWidth = 395
+  ExplicitHeight = 381
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
@@ -19,8 +19,6 @@ inherited DirectoryListDialog: TDirectoryListDialog
     Height = 232
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 375
-    ExplicitHeight = 231
     DesignSize = (
       379
       232)
@@ -46,7 +44,6 @@ inherited DirectoryListDialog: TDirectoryListDialog
       Images = vilImages
       TabOrder = 1
       OnClick = btnMoveUpClick
-      ExplicitLeft = 325
     end
     object btnMoveDown: TButton
       Left = 329
@@ -61,7 +58,6 @@ inherited DirectoryListDialog: TDirectoryListDialog
       Images = vilImages
       TabOrder = 2
       OnClick = btnMoveDownClick
-      ExplicitLeft = 325
     end
     object DirectoryList: TListBox
       Left = 10
@@ -75,8 +71,6 @@ inherited DirectoryListDialog: TDirectoryListDialog
       OnClick = DirectoryListClick
       OnDragDrop = DirectoryListDragDrop
       OnDragOver = DirectoryListDragOver
-      ExplicitWidth = 312
-      ExplicitHeight = 188
     end
   end
   object Panel2: TPanel
@@ -86,8 +80,6 @@ inherited DirectoryListDialog: TDirectoryListDialog
     Height = 110
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 231
-    ExplicitWidth = 375
     DesignSize = (
       379
       110)
@@ -98,7 +90,6 @@ inherited DirectoryListDialog: TDirectoryListDialog
       Height = 42
       Align = alBottom
       TabOrder = 0
-      ExplicitWidth = 373
       DesignSize = (
         377
         42)
@@ -112,7 +103,6 @@ inherited DirectoryListDialog: TDirectoryListDialog
         Default = True
         ModalResult = 1
         TabOrder = 0
-        ExplicitLeft = 198
       end
       object CancelBtn: TButton
         Left = 290
@@ -124,7 +114,6 @@ inherited DirectoryListDialog: TDirectoryListDialog
         Caption = '&Cancel'
         ModalResult = 2
         TabOrder = 1
-        ExplicitLeft = 286
       end
     end
     object btnAdd: TButton
@@ -172,7 +161,6 @@ inherited DirectoryListDialog: TDirectoryListDialog
       TabOrder = 3
       OnChange = edPathChange
       OnRightButtonClick = BtnPathClick
-      ExplicitWidth = 312
     end
   end
   object vilImages: TVirtualImageList

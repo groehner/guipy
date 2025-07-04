@@ -1,10 +1,11 @@
-{-----------------------------------------------------------------------------
+﻿{-----------------------------------------------------------------------------
  Unit Name: cPyControl
- Author:    PyScripter, Gerhard R�hner
+ Author:    PyScripter, Gerhard Röhner
  Date:      09-Feb-2018
  Purpose:   PyControl is the main interface between Python classes
             and PyScripter GUI
  History:
+ Expansion: Add/RemovePortableDrive
 -----------------------------------------------------------------------------}
 
 unit cPyControl;

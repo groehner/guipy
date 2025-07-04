@@ -732,8 +732,7 @@ begin
 end;
 
 procedure TEditorOptionsDialog.GetData;
-var I: Integer;
-    Item: TListItem;
+var Item: TListItem;
 begin
   ckWordWrap.Checked := FSynEdit.WordWrap;
   //Gutter
@@ -793,7 +792,7 @@ begin
   KeyList.Items.BeginUpdate;
   try
     KeyList.Items.Clear;
-    for I:= 0 to FSynEdit.Keystrokes.Count-1 do
+    for var I:= 0 to FSynEdit.Keystrokes.Count-1 do
     begin
       Item:= KeyList.Items.Add;
       FillInKeystrokeInfo(FSynEdit.Keystrokes[I], Item);
@@ -1259,7 +1258,6 @@ procedure TEditorOptionsDialog.lbElementsClick(Sender: TObject);
 var
   SynH: TSynCustomHighlighter;
   SynAttr: TSynHighlighterAttributes;
-
 begin
   if lbElements.ItemIndex <> -1 then
   begin

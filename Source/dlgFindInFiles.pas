@@ -167,7 +167,6 @@ end;
 
 procedure TFindInFilesDialog.cbDirectoryDropDown(Sender: TObject);
 var
-  I: Integer;
   MaxWidth: Integer;
   Bitmap: Vcl.Graphics.TBitmap;
 begin
@@ -175,7 +174,7 @@ begin
   Bitmap := Vcl.Graphics.TBitmap.Create;
   try
     Bitmap.Canvas.Font.Assign(cbDirectory.Font);
-    for I := 0 to cbDirectory.Items.Count - 1 do
+    for var I := 0 to cbDirectory.Items.Count - 1 do
       MaxWidth := Max(MaxWidth, Bitmap.Canvas.TextWidth(cbDirectory.Items[I]) + 10);
   finally
     FreeAndNil(Bitmap);
@@ -254,7 +253,7 @@ procedure TFindInFilesDialog.LoadFormSettings;
   function RetrieveEditorBlockSelection: string;
   var
     Temp: string;
-    I: Integer;
+    Idx: Integer;
   begin
     if Assigned(GI_ActiveEditor) then
       Temp := GI_ActiveEditor.SynEdit.SelText
@@ -263,9 +262,9 @@ procedure TFindInFilesDialog.LoadFormSettings;
     // Only use the currently selected text if the length is between 1 and 80
     if (Length(Trim(Temp)) >= 1) and (Length(Trim(Temp)) <= 80) then
     begin
-      I := Min(Pos(#13, Temp), Pos(#10, Temp));
-      if I > 0 then
-        Temp := Copy(Temp, 1, I - 1);
+      Idx := Min(Pos(#13, Temp), Pos(#10, Temp));
+      if Idx > 0 then
+        Temp := Copy(Temp, 1, Idx - 1);
     end else
       Temp := '';
     Result := Temp;

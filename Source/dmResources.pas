@@ -5,6 +5,8 @@
  Date:      03-Jul-2023
  Purpose:   Stores project resources and non-visual components
  History:
+ Expansion: SynHighligtherJava, SynHighlighterPas, GuiPyOptions.Sourcepath
+            IsWriteProtected
 -----------------------------------------------------------------------------}
 
 unit dmResources;
@@ -29,7 +31,9 @@ uses
   SynHighlighterIni,
   SynHighlighterWeb,
   SynHighlighterYAML,
-  uHighlighterProcs, SynHighlighterJava, SynHighlighterPas;
+  SynHighlighterJava,
+  SynHighlighterPas,
+  uHighlighterProcs;
 
 type
   TResourcesDataModule = class(TDataModule)
@@ -80,7 +84,7 @@ type
     SynCythonSyn: TSynCythonSyn;
     DockStyle: TJvDockVSNetStyleSpTBX;
     function GetSaveFileName(var ANewName: string;
-      AHighlighter: TSynCustomHighlighter; DefaultExtension : string): Boolean;
+      AHighlighter: TSynCustomHighlighter; DefaultExtension: string): Boolean;
     procedure UpdateImageCollections;
     procedure ExportHighlighters;
     procedure ImportHighlighters;
@@ -339,20 +343,20 @@ procedure TResourcesDataModule.ModifierCompletionCodeCompletion(Sender:
     TObject; var Value: string; Shift: TShiftState; Index: Integer; EndToken:
     Char);
 var
-  L: Integer;
+  Len: Integer;
 begin
   if Assigned(ModifierCompletion.Form.CurrentEditor) then
     with ModifierCompletion.Form.CurrentEditor do begin
       SelText := '';
-      L:= Length(Parameters.StopMask);
-      if (CaretX > 0) and (Copy(LineText, CaretX-L, L) = Parameters.StopMask) then
+      Len:= Length(Parameters.StopMask);
+      if (CaretX > 0) and (Copy(LineText, CaretX-Len, Len) = Parameters.StopMask) then
       begin
-        CaretX:= CaretX - L;
+        CaretX:= CaretX - Len;
         Value := '-' + Value;
       end else if not ((CaretX > 1) and (Lines[CaretY-1][CaretX-1] = '-')) then
       begin
-        L:= LineText.LastIndexOf(Parameters.StopMask);
-        if L >= 0 then CaretX := L + 1;
+        Len:= LineText.LastIndexOf(Parameters.StopMask);
+        if Len >= 0 then CaretX := Len + 1;
         Value := '-' + Value;
       end;
     end;
@@ -362,7 +366,7 @@ procedure TResourcesDataModule.ModifierCompletionExecute(Kind:
     SynCompletionType; Sender: TObject; var CurrentInput: string; var x, y:
     Integer; var CanExecute: Boolean);
 var
-  ModName, ModComment : string;
+  ModName, ModComment: string;
 begin
   with ModifierCompletion do
   begin
@@ -395,7 +399,7 @@ procedure TResourcesDataModule.ParameterCompletionExecute(Kind:
     SynCompletionType; Sender: TObject; var CurrentInput: string; var x, y:
     Integer; var CanExecute: Boolean);
 var
-  ParamName, ParamValue : string;
+  ParamName, ParamValue: string;
 begin
   with ParameterCompletion do
   begin

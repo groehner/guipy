@@ -381,7 +381,7 @@ uses
   JvAppStorage,
   JvDSADialogs,
   JvJCLUtils,
-  JvDynControlEngineVCL, // necessary
+  JvDynControlEngineVCL,
   JvGnugettext,
   SynEditTypes,
   SynEditTextBuffer,
@@ -940,7 +940,7 @@ end;
 
 procedure TCommandsDataModule.actEditToggleCommentExecute(Sender: TObject);
 var
-  i, EndLine: Integer;
+  EndLine: Integer;
   BlockIsCommented: Boolean;
 begin
   if Assigned(GI_ActiveEditor) then
@@ -952,8 +952,8 @@ begin
         EndLine := BlockEnd.Line;
 
       BlockIsCommented := True;
-      for i := BlockBegin.Line to EndLine do
-        if Copy(Trim(Lines[i - 1]), 1, 2) <> '##' then
+      for var I := BlockBegin.Line to EndLine do
+        if Copy(Trim(Lines[I - 1]), 1, 2) <> '##' then
         begin
           BlockIsCommented := False;
           Break;
@@ -977,7 +977,7 @@ end;
 
 procedure TCommandsDataModule.actEditCommentOutExecute(Sender: TObject);
 var
-  S: string;
+  Str: string;
   Offset: Integer;
   OldBlockBegin, OldBlockEnd: TBufferCoord;
 begin
@@ -992,22 +992,22 @@ begin
         BlockBegin := OldBlockBegin;
         BlockEnd := OldBlockEnd;
         BeginUpdate;
-        S := '##' + SelText;
+        Str := '##' + SelText;
         Offset := 0;
-        if S[Length(S)] = #10 then
+        if Str[Length(Str)] = #10 then
         begin // if the selection ends with a newline, eliminate it
-          if S[Length(S) - 1] = #13 then // do we ignore 1 or 2 chars?
+          if Str[Length(Str) - 1] = #13 then // do we ignore 1 or 2 chars?
             Offset := 2
           else
             Offset := 1;
-          S := Copy(S, 1, Length(S) - Offset);
+          Str := Copy(Str, 1, Length(Str) - Offset);
         end;
-        S := StringReplace(S, #10, #10'##', [rfReplaceAll]);
+        Str := StringReplace(Str, #10, #10'##', [rfReplaceAll]);
         if Offset = 1 then
-          S := S + #10
+          Str := Str + #10
         else if Offset = 2 then
-          S := S + sLineBreak;
-        SelText := S;
+          Str := Str + sLineBreak;
+        SelText := Str;
         EndUpdate;
         BlockBegin := OldBlockBegin;
         if Offset = 0 then
@@ -1027,7 +1027,6 @@ begin
 end;
 
 procedure TCommandsDataModule.actEditUncommentExecute(Sender: TObject);
-
 var
   OldBlockBegin, OldBlockEnd: TBufferCoord;
 begin
@@ -1206,7 +1205,6 @@ end;
 
 procedure TCommandsDataModule.ProcessFolderChange(const FolderName: string);
 var
-  i: Integer;
   ModifiedCount: Integer;
   aFile: IFile;
   ChangedFiles: TStringList;
@@ -1247,9 +1245,9 @@ begin
     end);
 
   ModifiedCount := 0;
-  for i := 0 to ChangedFiles.Count - 1 do
+  for var I := 0 to ChangedFiles.Count - 1 do
   begin
-    aFile := TFileForm(ChangedFiles.Objects[i]).GetFile;
+    aFile := TFileForm(ChangedFiles.Objects[I]).GetFile;
     if aFile.Modified then
       Inc(ModifiedCount);
     aFile.Modified := True; // So that we are prompted to save changes
@@ -1258,9 +1256,9 @@ begin
   if ChangedFiles.Count > 0 then
     if PyIDEOptions.AutoReloadChangedFiles and (ModifiedCount = 0) then
     begin
-      for i := 0 to ChangedFiles.Count - 1 do
+      for var I := 0 to ChangedFiles.Count - 1 do
       begin
-        aFile := TFileForm(ChangedFiles.Objects[i]).GetFile;
+        aFile := TFileForm(ChangedFiles.Objects[I]).GetFile;
         (aFile as IFileCommands).ExecReload(True);
       end;
       MessageBeep(MB_ICONASTERISK);
@@ -1275,11 +1273,11 @@ begin
         SetScrollWidth;
         mnSelectAllClick(nil);
         if ShowModal = IdOK then
-          for i := CheckListBox.Count - 1 downto 0 do
+          for var I := CheckListBox.Count - 1 downto 0 do
           begin
-            if CheckListBox.Checked[i] then
+            if CheckListBox.Checked[I] then
             begin
-              aFile := TFileForm(CheckListBox.Items.Objects[i]).GetFile;
+              aFile := TFileForm(CheckListBox.Items.Objects[I]).GetFile;
               (aFile as IFileCommands).ExecReload(True);
             end;
           end;
@@ -1320,82 +1318,6 @@ begin
     begin
       ProcessFolderChange(Dir);
     end, 200);
-end;
-
-procedure GetMatchingBrackets(SynEdit: TSynEdit; var BracketPos: TBufferCoord;
-out MatchingBracketPos: TBufferCoord;
-out IsBracket, HasMatchingBracket: Boolean; out BracketCh, MatchCh: Char;
-out Attri: TSynHighlighterAttributes);
-
-  procedure GetMatchingBracketsInt(const P: TBufferCoord);
-  const
-    Brackets: array [0 .. 5] of Char = ('(', ')', '[', ']', '{', '}');
-
-  var
-    S: string;
-    i: Integer;
-  begin
-    IsBracket := False;
-    HasMatchingBracket := False;
-    SynEdit.GetHighlighterAttriAtRowCol(P, S, Attri);
-    if Assigned(Attri) and (SynEdit.Highlighter.SymbolAttribute = Attri) and
-      (SynEdit.CaretX <= Length(SynEdit.LineText) + 1) then
-    begin
-      for i := Low(Brackets) to High(Brackets) do
-        if S = Brackets[i] then
-        begin
-          BracketCh := Brackets[i];
-          IsBracket := True;
-          MatchingBracketPos := SynEdit.GetMatchingBracketEx(P);
-          if (MatchingBracketPos.Char > 0) then
-          begin
-            HasMatchingBracket := True;
-            MatchCh := Brackets[i xor 1];
-          end;
-          Break;
-        end;
-    end;
-  end;
-
-begin
-  MatchingBracketPos := BufferCoord(0, 0);
-  BracketPos := SynEdit.CaretXY;
-
-  // First Look at the previous character like Site
-  if BracketPos.Char > 1 then
-    Dec(BracketPos.Char);
-  GetMatchingBracketsInt(BracketPos);
-
-  // if it is not a bracket then look at the next character;
-  if not IsBracket and (SynEdit.CaretX > 1) then
-  begin
-    Inc(BracketPos.Char);
-    GetMatchingBracketsInt(BracketPos);
-  end;
-end;
-
-function GetMatchingBracket(SynEdit: TSynEdit): TBufferCoord;
-var
-  BracketPos: TBufferCoord;
-  BracketCh, MatchCh: Char;
-  IsBracket, HasMatchingBracket: Boolean;
-  Attri: TSynHighlighterAttributes;
-  IsOutside: Boolean;
-const
-  OpenChars = ['(', '{', '['];
-begin
-  GetMatchingBrackets(SynEdit, BracketPos, Result, IsBracket,
-    HasMatchingBracket, BracketCh, MatchCh, Attri);
-  if HasMatchingBracket then
-  begin
-    IsOutside := (CharInSet(BracketCh, OpenChars) and
-      (BracketPos.Char = SynEdit.CaretXY.Char)) or
-      not(CharInSet(BracketCh, OpenChars) or
-      (BracketPos.Char = SynEdit.CaretXY.Char));
-    if (IsOutside and not CharInSet(MatchCh, OpenChars)) or
-      (not IsOutside and CharInSet(MatchCh, OpenChars)) then
-      Inc(Result.Char);
-  end;
 end;
 
 procedure TCommandsDataModule.actIDEOptionsExecute(Sender: TObject);
@@ -1820,29 +1742,37 @@ end;
 procedure TCommandsDataModule.actReplaceParametersExecute(Sender: TObject);
 begin
   if Screen.ActiveControl is TCustomSynEdit then
-    with TCustomSynEdit(Screen.ActiveControl) do begin
-      var OldCaret := CaretXY;
+    with TCustomSynEdit(Screen.ActiveControl) do
+    begin
+      var
+      OldCaret := CaretXY;
       if SelAvail then
         SelText := Parameters.ReplaceInText(SelText)
-      else try
-        BeginUpdate;
-        for var Line:= 0 to Lines.Count - 1 do begin
-          var SLine := Lines[Line];
-          var MaskPos := AnsiPos(Parameters.StartMask, SLine);
-          if MaskPos > 0 then begin
-            BeginUndoBlock;
-            try
-              BlockBegin := BufferCoord(MaskPos, Line + 1);
-              BlockEnd := BufferCoord(Length(SLine) + 1, Line + 1);
-              SelText := Parameters.ReplaceInText(Copy(SLine, MaskPos, MaxInt));
-            finally
-              EndUndoBlock;
+      else
+        try
+          BeginUpdate;
+          for var Line := 0 to Lines.Count - 1 do
+          begin
+            var
+            SLine := Lines[Line];
+            var
+            MaskPos := AnsiPos(Parameters.StartMask, SLine);
+            if MaskPos > 0 then
+            begin
+              BeginUndoBlock;
+              try
+                BlockBegin := BufferCoord(MaskPos, Line + 1);
+                BlockEnd := BufferCoord(Length(SLine) + 1, Line + 1);
+                SelText := Parameters.ReplaceInText
+                  (Copy(SLine, MaskPos, MaxInt));
+              finally
+                EndUndoBlock;
+              end;
             end;
           end;
+        finally
+          EndUpdate;
         end;
-      finally
-        EndUpdate;
-      end;
       CaretXY := OldCaret;
     end;
 end;
@@ -2334,9 +2264,9 @@ begin
 end;
 
 procedure TCommandsDataModule.HighlightCheckedImg(Sender: TObject;
-ACanvas: TCanvas; State: TSpTBXSkinStatesType;
-const PaintStage: TSpTBXPaintStage; var AImageList: TCustomImageList;
-var AImageIndex: Integer; var ARect: TRect; var PaintDefault: Boolean);
+  ACanvas: TCanvas; State: TSpTBXSkinStatesType;
+  const PaintStage: TSpTBXPaintStage; var AImageList: TCustomImageList;
+  var AImageIndex: Integer; var ARect: TRect; var PaintDefault: Boolean);
 begin
   if (PaintStage = pstPrePaint) and (Sender as TSpTBXItem).Checked then
   begin
@@ -2438,7 +2368,7 @@ end;
 procedure TCommandsDataModule.ShowSearchReplaceDialog(SynEdit: TSynEdit;
 AReplace: Boolean);
 var
-  S: string;
+  Str: string;
 begin
   EditorSearchOptions.InitSearch;
   with PyIDEMainForm do
@@ -2465,9 +2395,9 @@ begin
         tbiSearchText.Text := SynEdit.SelText
       else
       begin
-        S := SynEdit.WordAtCursor;
-        if S <> '' then
-          tbiSearchText.Text := S;
+        Str := SynEdit.WordAtCursor;
+        if Str <> '' then
+          tbiSearchText.Text := Str;
       end;
     end;
     tbiSearchText.Items.CommaText := EditorSearchOptions.SearchTextHistory;
@@ -2583,10 +2513,10 @@ begin
     TimerInterval := 200;
     if PyIDEOptions.CompleteAsYouType then
     begin
-      for var i := ord('a') to ord('z') do
-        TriggerChars := TriggerChars + Chr(i);
-      for var i := ord('A') to ord('Z') do
-        TriggerChars := TriggerChars + Chr(i);
+      for var I := ord('a') to ord('z') do
+        TriggerChars := TriggerChars + Chr(I);
+      for var I := ord('A') to ord('Z') do
+        TriggerChars := TriggerChars + Chr(I);
       if PyIDEOptions.CompleteWithWordBreakChars or PyIDEOptions.CompleteWithOneEntry
       then
         TimerInterval := 500

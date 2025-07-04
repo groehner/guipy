@@ -22,16 +22,13 @@ uses
   System.RegularExpressions,
   Vcl.Graphics,
   Vcl.Controls,
-  Vcl.Forms,
   Vcl.Menus,
   Vcl.ExtCtrls,
   Vcl.Buttons,
   Vcl.ImgList,
   Vcl.VirtualImageList,
-  Vcl.WinXPanels,
   Vcl.WinXCtrls,
   Vcl.ActnList,
-  Vcl.AppEvnts,
   Vcl.BaseImageCollection,
   Vcl.Edge,
   SynEdit,
@@ -44,7 +41,6 @@ uses
   TB2Dock,
   TB2Toolbar,
   TB2Item,
-  SpTBXEditors,
   SpTBXSkins,
   frmIDEDockWin,
   MarkdownProcessor,
@@ -158,17 +154,14 @@ implementation
 uses
   System.UITypes,
   System.SysUtils,
-  System.Math,
   System.IOUtils,
   Vcl.Dialogs,
-  Vcl.StdCtrls,
   Vcl.Themes,
   Vcl.Clipbrd,
-  SpTBXControls,
+  Vcl.Forms,
   MarkdownUtils,
   SynEditMiscProcs,
   SynEditKeyCmds,
-  JvDockGlobals,
   JvGnugettext,
   StringResources,
   dmCommands,
@@ -293,7 +286,6 @@ const
 
 ''';
 
-const
   CodeStyleSheetTemplate = '''
     <style>
         .code-box {
@@ -676,7 +668,7 @@ end;
 procedure TLLMChatForm.ClearConversation;
 begin
   FBlockCount := 0;
-  EdgeBrowser.ExecuteScript('clearQA()')
+  EdgeBrowser.ExecuteScript('clearQA()');
 end;
 
 procedure TLLMChatForm.CopyToNewEditor(const Code: string);
@@ -734,7 +726,7 @@ begin
   for var QAItem in LLMChat.ActiveTopic.QAItems do
     DisplayQA(QAItem.Prompt, QAItem.Answer, QAItem.Reason);
 
-  if SynQuestion.HandleAllocated and HasFocus then
+  if synQuestion.HandleAllocated and HasFocus then
     synQuestion.SetFocus;
 end;
 
@@ -967,7 +959,7 @@ begin
     begin
       var TextBefore := Copy(MD, CodeEnd, Match.Index - CodeEnd);
       if TextBefore <> '' then
-        Result := Result + FMarkdownProcessor.process(TextBefore);
+        Result := Result + FMarkdownProcessor.Process(TextBefore);
       Inc(FBlockCount);
       var Lang := Match.Groups[1].Value;
       var Code := RemoveCommonIndentation(Match.Groups[2].Value);
@@ -994,7 +986,7 @@ begin
       Result := Result + FMarkdownProcessor.process(TextAfter);
   end
   else
-    Result := FMarkdownProcessor.process(MD);
+    Result := FMarkdownProcessor.Process(MD);
 
   if Result.StartsWith('<p>') then
     Delete(Result, 1, 3);
@@ -1034,7 +1026,7 @@ begin
   {$IF CompilerVersion >= 36}
   aiBusy.IndicatorColor := aicCustom;
   aiBusy.IndicatorCustomColor := StyleServices.GetSystemColor(clWindowText);
-  {$ENDIF};
+  {$ENDIF}
 end;
 
 procedure TLLMChatForm.StyleWebPage;
@@ -1046,7 +1038,7 @@ var
 begin
   if IsStyledWindowsColorDark then
   begin
-    LinkColor :=  TColors.LightBlue;
+    LinkColor :=  TColors.Lightblue;
     CodeHeaderBkg := '#2d2d2d';
     CodeHeaderFg := '#f4f4f4';
     ThumbColor := '#666';
@@ -1063,11 +1055,11 @@ begin
 
   // Style the main sheet
   MainStyleSheet := Format(MainStyleSheetTemplate, [
-    ColorToHtml(StyleServices.GetSystemColor(clWindow)),
+    ColorToHTML(StyleServices.GetSystemColor(clWindow)),
     ThumbColor,
     ThumbHoverColor,
-    ColorToHtml(StyleServices.GetSystemColor(clWindowText)),
-    ColorToHtml(LinkColor)]);
+    ColorToHTML(StyleServices.GetSystemColor(clWindowText)),
+    ColorToHTML(LinkColor)]);
 
 
   // style the display of code to make it compatible with the PyScripter Editor
@@ -1081,19 +1073,19 @@ begin
     CodeStyleSheet := Format(CodeStyleSheetTemplate,[
         CodeHeaderBkg,
         CodeHeaderFg,
-        ColorToHtml(SynPythonSyn.WhitespaceAttribute.Background),
-        ColorToHtml(SynPythonSyn.CommentAttri.Foreground),
-        ColorToHtml(SynPythonSyn.SymbolAttri.Foreground),
-        ColorToHtml(SynWebEngine.MLTagKeyAttri.Foreground),
-        ColorToHtml(SynWebEngine.MLTagNameAttri.Foreground),
-        ColorToHtml(SynPythonSyn.FunctionNameAttri.Foreground),
-        ColorToHtml(SynPythonSyn.NumberAttri.Foreground),
-        ColorToHtml(SynPythonSyn.ClassNameAttri.Foreground),
-        ColorToHtml(SynPythonSyn.KeyAttri.Foreground),
-        ColorToHtml(SynPythonSyn.StringAttri.Foreground),
-        ColorToHtml(SynPythonSyn.MultiLineStringAttri.Foreground),
-        ColorToHtml(SynWebEngine.MLEscapeAttri.Foreground),
-        ColorToHtml(TextColor)
+        ColorToHTML(SynPythonSyn.WhitespaceAttribute.Background),
+        ColorToHTML(SynPythonSyn.CommentAttri.Foreground),
+        ColorToHTML(SynPythonSyn.SymbolAttri.Foreground),
+        ColorToHTML(SynWebEngine.MLTagKeyAttri.Foreground),
+        ColorToHTML(SynWebEngine.MLTagNameAttri.Foreground),
+        ColorToHTML(SynPythonSyn.FunctionNameAttri.Foreground),
+        ColorToHTML(SynPythonSyn.NumberAttri.Foreground),
+        ColorToHTML(SynPythonSyn.ClassNameAttri.Foreground),
+        ColorToHTML(SynPythonSyn.KeyAttri.Foreground),
+        ColorToHTML(SynPythonSyn.StringAttri.Foreground),
+        ColorToHTML(SynPythonSyn.MultiLineStringAttri.Foreground),
+        ColorToHTML(SynWebEngine.MLEscapeAttri.Foreground),
+        ColorToHTML(TextColor)
       ]);
   end;
 end;

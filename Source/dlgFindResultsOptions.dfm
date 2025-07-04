@@ -7,8 +7,8 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
   ClientHeight = 307
   ClientWidth = 307
   Position = poScreenCenter
-  ExplicitWidth = 319
-  ExplicitHeight = 345
+  ExplicitWidth = 323
+  ExplicitHeight = 346
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
@@ -17,8 +17,6 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
     Height = 307
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 303
-    ExplicitHeight = 306
     DesignSize = (
       307
       307)
@@ -31,7 +29,6 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       Align = alTop
       Caption = 'Match Results List'
       TabOrder = 0
-      ExplicitWidth = 295
       DesignSize = (
         299
         103)
@@ -52,7 +49,6 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
         ParentFont = False
         TabOrder = 0
         OnClick = pnlListFontClick
-        ExplicitWidth = 239
       end
       object chkGrepMiddle: TCheckBox
         Left = 12
@@ -80,7 +76,6 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       Anchors = [akLeft, akTop, akRight]
       Caption = 'Match Context Display'
       TabOrder = 1
-      ExplicitWidth = 290
       DesignSize = (
         294
         153)
@@ -104,7 +99,6 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
         UseDockManager = False
         TabOrder = 0
         OnClick = pnlContextFontClick
-        ExplicitWidth = 236
       end
       object pnlMatchLineColor: TPanel
         Left = 28
@@ -118,7 +112,6 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
         TabOrder = 1
         StyleElements = [seClient, seBorder]
         OnClick = pnlMatchLineColorClick
-        ExplicitWidth = 236
       end
       object spnContextLines: TSpinEdit
         Left = 28
@@ -141,7 +134,6 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       Default = True
       ModalResult = 1
       TabOrder = 2
-      ExplicitTop = 273
     end
     object btnCancel: TButton
       Left = 116
@@ -153,7 +145,6 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 3
-      ExplicitTop = 273
     end
     object btnHelp: TButton
       Left = 200
@@ -164,7 +155,6 @@ inherited FindResultsOptionsDialog: TFindResultsOptionsDialog
       Caption = '&Help'
       TabOrder = 4
       OnClick = btnHelpClick
-      ExplicitTop = 273
     end
   end
   object dlgGrepListFont: TFontDialog

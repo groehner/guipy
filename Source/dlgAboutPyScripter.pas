@@ -11,10 +11,19 @@ unit dlgAboutPyScripter;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, Controls,
-  ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls,
-  dlgPyIDEBase, SpTBXTabs, SpTBXPageScroller, SVGIconImage,
-  TB2Item, SpTBXItem, System.Classes;
+  Winapi.Windows,
+  Winapi.Messages,
+  System.Classes,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
+  Vcl.StdCtrls,
+  Vcl.ComCtrls,
+  dlgPyIDEBase,
+  SpTBXItem,
+  SpTBXTabs,
+  TB2Item,
+  SpTBXPageScroller,
+  SVGIconImage;
 
 type
   TRichEdit = class(Vcl.ComCtrls.TRichEdit)
@@ -54,8 +63,14 @@ var
 implementation
 
 uses
-  Winapi.ShellAPI, Winapi.RichEdit, uCommonFunctions, JvGnugettext,
-  SysUtils, Graphics, Forms, UUpdate;
+  Winapi.ShellAPI,
+  Winapi.RichEdit,
+  System.SysUtils,
+  Vcl.Graphics,
+  Vcl.Forms,
+  uCommonFunctions,
+  JvGnugettext,
+  UUpdate;
 
 {$R *.dfm}
 
@@ -172,11 +187,11 @@ const
 
 procedure TRichEdit.CreateWnd;
 var
-  Mask: LResult;
+  Mask: LRESULT;
 begin
   inherited;
   Mask := SendMessage(Handle, EM_GETEVENTMASK, 0, 0);
-  SendMessage(Handle, EM_SETEVENTMASK, 0, mask or ENM_LINK);
+  SendMessage(Handle, EM_SETEVENTMASK, 0, Mask or ENM_LINK);
   SendMessage(Handle, EM_AUTOURLDETECT, AURL_ENABLEURL, 0);
 end;
 
@@ -185,12 +200,12 @@ type
   PENLink = ^TENLink;
 var
   PenLnk: PENLink;
-  TR: TEXTRANGE;
+  ATRange: TEXTRANGE;
   Url: array of Char;
 begin
   if (Message.NMHdr.code = EN_LINK) then begin
     PenLnk := PENLink(Message.NMHdr);
-    if (PenLnk.Msg = WM_LBUTTONDOWN) then begin
+    if (PenLnk.msg = WM_LBUTTONDOWN) then begin
       { optionally, enable this:
       if CheckWin32Version(6, 2) then begin
         // on Windows 8+, returning EN_LINK_DO_DEFAULT directs
@@ -200,11 +215,11 @@ begin
       end;
       }
       try
-        SetLength(url, PenLnk.chrg.cpMax - PenLnk.chrg.cpMin + 1);
-        TR.chrg := PenLnk.chrg;
-        TR.lpstrText := PChar(url);
-        SendMessage(Handle, EM_GETTEXTRANGE, 0, LPARAM(@tr));
-        ShellExecute(Handle, nil, PChar(url), nil, nil, SW_SHOWNORMAL);
+        SetLength(Url, PenLnk.chrg.cpMax - PenLnk.chrg.cpMin + 1);
+        ATRange.chrg := PenLnk.chrg;
+        ATRange.lpstrText := PChar(Url);
+        SendMessage(Handle, EM_GETTEXTRANGE, 0, LPARAM(@ATRange));
+        ShellExecute(Handle, nil, PChar(Url), nil, nil, SW_SHOWNORMAL);
       except
         {ignore}
       end;
@@ -237,8 +252,8 @@ var
 begin
   inherited;
   Copyright.Caption := #$00A9' Gerhard Röhner 2021-' + CurrentYear.ToString;
-  Version.Caption:= 'Version ' + UUpdate.Version + sLineBreak + TFUpdate.GetVersionDate;
-  Comments.Caption:= sComments;
+  Version.Caption := 'Version ' + UUpdate.Version + sLineBreak + TFUpdate.GetVersionDate;
+  Comments.Caption := SComments;
 
   AddFormatText(reLinks, _('Links') + sLineBreak, [fsBold]);
   reLinks.Paragraph.Numbering := nsBullet;
@@ -253,21 +268,21 @@ begin
   reCredits.Paragraph.Numbering := nsNone;
   AddFormatText(reCredits, sLineBreak + _('Translation manager') + ':' + sLineBreak, [fsItalic]);
   reCredits.Paragraph.Numbering := nsBullet;
-  AddFormatText(reCredits,cAboutTranslationManager + sLineBreak);
+  AddFormatText(reCredits, CAboutTranslationManager + sLineBreak);
 
   reCredits.Paragraph.Numbering := nsNone;
   AddFormatText(reCredits, sLineBreak + _('Translators') + ':' + sLineBreak, [fsItalic]);
 
   for Language := Low(TCreditLanguages) to High(TCreditLanguages) do
     AboutBoxCreditsTranslations := AboutBoxCreditsTranslations +
-      Format(cAboutLanguages[Language],[cAboutTranslators[Language]]) + sLineBreak;
+      Format(CAboutLanguages[Language], [CAboutTranslators[Language]]) + sLineBreak;
   reCredits.Paragraph.Numbering := nsBullet;
   AddFormatText(reCredits,AboutBoxCreditsTranslations);
 
   reCredits.Paragraph.Numbering := nsNone;
   AddFormatText(reCredits, sLineBreak + _('Artwork and theme design') + ':' + sLineBreak, [fsItalic]);
   reCredits.Paragraph.Numbering := nsBullet;
-  AddFormatText(reCredits, cAboutBoxCreditsThemeDesign + sLineBreak);
+  AddFormatText(reCredits, CAboutBoxCreditsThemeDesign + sLineBreak);
   reCredits.Paragraph.Numbering := nsNone;
   reCredits.SelStart := 0;
   reCredits.SelLength := 0;

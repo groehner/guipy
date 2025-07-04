@@ -112,7 +112,6 @@ uses
   Winapi.ShellAPI,
   System.Math,
   System.SyncObjs,
-  System.Threading,
   Vcl.Graphics,
   Vcl.Forms,
   Vcl.Dialogs,
@@ -122,7 +121,6 @@ uses
   SynEdit,
   StringResources,
   uEditAppIntfs,
-  dmResources,
   dmCommands,
   uCommonFunctions;
 
@@ -648,7 +646,7 @@ end;
 
 procedure TOutputWindow.lsbConsoleDblClick(Sender: TObject);
 var
-   RegExTraceback, RegExWarning: TRegEx;
+   RegExWarning: TRegEx;
    Match: TMatch;
    ErrLineNo, LineNo: Integer;
    FileName: string;

@@ -62,8 +62,6 @@ end;
 procedure HighligthtSearchTerm(ATerm : string; Editor: IEditor;
   SearchEngine : TSynEditSearchCustom; SearchOptions : TSynSearchOptions);
 var
-  I: Integer;
-  J: Integer;
   Indicator: TSynIndicator;
 begin
   ClearSearchHighlight(Editor);
@@ -73,10 +71,10 @@ begin
   SearchEngine.Options := SearchOptions;
   SearchEngine.Pattern := ATerm;
   SearchEngine.IsWordBreakFunction := Editor.SynEdit.IsWordBreakChar;
-  for I := 0 to Editor.SynEdit.Lines.Count - 1 do begin
+  for var I := 0 to Editor.SynEdit.Lines.Count - 1 do begin
     SearchEngine.FindAll(Editor.SynEdit.Lines[i]);
 
-    for J := 0 to SearchEngine.ResultCount - 1 do begin
+    for var J := 0 to SearchEngine.ResultCount - 1 do begin
       Indicator.CharStart := SearchEngine.Results[j];
       Indicator.CharEnd := Indicator.CharStart + SearchEngine.Lengths[j];
       Editor.SynEdit.Indicators.Add(I + 1, Indicator);

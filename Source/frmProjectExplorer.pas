@@ -14,19 +14,13 @@ interface
 
 uses
   Winapi.Windows,
-  WinApi.Messages,
-  WinApi.ActiveX,
+  Winapi.Messages,
+  Winapi.ActiveX,
   System.UITypes,
-  System.SysUtils,
-  System.Contnrs,
-  System.Variants,
   System.Classes,
   System.Actions,
   System.ImageList,
-  Vcl.Graphics,
   Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
   Vcl.ExtCtrls,
   Vcl.Menus,
   Vcl.ImgList,
@@ -39,17 +33,14 @@ uses
   TB2Dock,
   TB2Toolbar,
   SpTBXSkins,
-  SpTBXControls,
   JvComponentBase,
   JvDockControlForm,
-  MPCommonObjects,
   VirtualTrees.Types,
   VirtualTrees.BaseAncestorVCL,
   VirtualTrees.AncestorVCL,
   VirtualTrees.BaseTree,
   VirtualTrees,
-  frmIDEDockWin,
-  cProjectClasses;
+  frmIDEDockWin;
 
 type
   TProjectExplorerWindow = class(TIDEDockWindow)
@@ -200,11 +191,11 @@ type
     FileImageList: TStringList;
     FShellImages: TCustomImageList;
     procedure ProjectFileNodeEdit(Node: PVirtualNode);
-    procedure UpdatePopupActions(Node : PVirtualNode);
+    procedure UpdatePopupActions(Node: PVirtualNode);
   protected
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
-    procedure DoOpenProjectFile(FileName : string);
+    procedure DoOpenProjectFile(FileName: string);
     function DoSave: Boolean;
     function DoSaveFile: Boolean;
     function DoSaveAs: Boolean;
@@ -223,6 +214,11 @@ implementation
 
 uses
   System.IOUtils,
+  System.SysUtils,
+  System.Contnrs,
+  Vcl.Graphics,
+  Vcl.Forms,
+  Vcl.Dialogs,
   Vcl.Themes,
   MPDataObject,
   JclShell,
@@ -231,6 +227,7 @@ uses
   JvAppStorage,
   JvJVCLUtils,
   JvGnugettext,
+  MPCommonObjects,
   StringResources,
   dmResources,
   frmPyIDEMain,
@@ -239,8 +236,7 @@ uses
   dlgRunConfiguration,
   dlgDirectoryList,
   uEditAppIntfs,
-  uHighlighterProcs,
-  cPyBaseDebugger,
+  cProjectClasses,
   cPyScripterSettings,
   cPySupportTypes,
   cPyControl,
@@ -252,15 +248,15 @@ uses
 type
   PNodeDataRec = ^TNodeDataRec;
   TNodeDataRec = record
-    ProjectNode : TAbstractProjectNode;
+    ProjectNode: TAbstractProjectNode;
   end;
 
 procedure TProjectExplorerWindow.actProjectAddRemoteFileExecute(Sender: TObject);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
-  ProjectNode : TProjectFileNode;
-  FileName, FName, Server : string;
+  ProjectNode: TProjectFileNode;
+  FileName, FName, Server: string;
 begin
   Node := ExplorerTree.GetFirstSelected;
   if not Assigned(Node) then Exit;
@@ -284,11 +280,11 @@ end;
 procedure TProjectExplorerWindow.actProjectAddActiveFileExecute(
   Sender: TObject);
 var
-  Editor : IEditor;
-  Data : PNodeDataRec;
+  Editor: IEditor;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
-  ProjectNode : TProjectFileNode;
-  FName : string;
+  ProjectNode: TProjectFileNode;
+  FName: string;
 begin
   Node := ExplorerTree.GetFirstSelected;
   Editor := GI_PyIDEServices.ActiveEditor;
@@ -360,9 +356,9 @@ end;
 
 procedure TProjectExplorerWindow.actProjectAddFolderExecute(Sender: TObject);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
-  ProjectNode : TProjectFolderNode;
+  ProjectNode: TProjectFolderNode;
 begin
   Node := ExplorerTree.GetFirstSelected;
   if Assigned(Node) then begin
@@ -389,9 +385,9 @@ end;
 
 procedure TProjectExplorerWindow.actProjectAddRunConfigExecute(Sender: TObject);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
-  ProjectNode : TProjectRunConfiguationNode;
+  ProjectNode: TProjectRunConfiguationNode;
 begin
   Node := ExplorerTree.GetFirstSelected;
   if Assigned(Node) then begin
@@ -418,7 +414,7 @@ end;
 
 procedure TProjectExplorerWindow.actProjectCollapseAllExecute(Sender: TObject);
 var
-  Node : PVirtualNode;
+  Node: PVirtualNode;
 begin
   Node := ExplorerTree.RootNode.FirstChild;
   if Assigned(Node) then
@@ -429,7 +425,7 @@ end;
 
 procedure TProjectExplorerWindow.actProjectDebugExecute(Sender: TObject);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
 begin
   Node := ExplorerTree.GetFirstSelected;
@@ -442,7 +438,7 @@ end;
 
 procedure TProjectExplorerWindow.actProjectEditRunConfigExecute(Sender: TObject);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
 begin
   Node := ExplorerTree.GetFirstSelected;
@@ -456,12 +452,12 @@ end;
 
 procedure TProjectExplorerWindow.actProjectExpandAllExecute(Sender: TObject);
 begin
-  ExplorerTree.FullExpand();
+  ExplorerTree.FullExpand;
 end;
 
 procedure TProjectExplorerWindow.actProjectExternalRunExecute(Sender: TObject);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
 begin
   Node := ExplorerTree.GetFirstSelected;
@@ -494,12 +490,11 @@ end;
 procedure TProjectExplorerWindow.actProjectFileEditExecute(Sender: TObject);
 var
   Node: PVirtualNode;
-  i : Integer;
-  SelectedNodes : TNodeArray;
+  SelectedNodes: TNodeArray;
 begin
   SelectedNodes := ExplorerTree.GetSortedSelection(False);
-  for i := Low(SelectedNodes) to High(SelectedNodes) do begin
-    Node := SelectedNodes[i];
+  for var I := Low(SelectedNodes) to High(SelectedNodes) do begin
+    Node := SelectedNodes[I];
     ProjectFileNodeEdit(Node);
   end;
 end;
@@ -507,7 +502,7 @@ end;
 procedure TProjectExplorerWindow.actProjectFilePropertiesExecute(
   Sender: TObject);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
   Server, FName: string;
 begin
@@ -515,11 +510,11 @@ begin
   if Assigned(Node) then begin
     Data := ExplorerTree.GetNodeData(Node);
     if Data.ProjectNode is TProjectFileNode then begin
-      if (TProjectFilenode(Data.ProjectNode).FileName <> '') and not
-        TSSHFileName.Parse(TProjectFilenode(Data.ProjectNode).FileName, Server, FName)
+      if (TProjectFileNode(Data.ProjectNode).FileName <> '') and not
+        TSSHFileName.Parse(TProjectFileNode(Data.ProjectNode).FileName, Server, FName)
       then
         DisplayPropDialog(Handle,
-          GI_PyIDEServices.ReplaceParams(TProjectFilenode(Data.ProjectNode).FileName));
+          GI_PyIDEServices.ReplaceParams(TProjectFileNode(Data.ProjectNode).FileName));
     end;
   end;
 end;
@@ -527,9 +522,9 @@ end;
 procedure TProjectExplorerWindow.actProjectImportDirectoryExecute(
   Sender: TObject);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
-  TempCursor : IInterface;
+  TempCursor: IInterface;
 begin
   Node := ExplorerTree.GetFirstSelected;
   if Assigned(Node) then begin
@@ -560,7 +555,7 @@ end;
 
 procedure TProjectExplorerWindow.actProjectOpenExecute(Sender: TObject);
 var
-  Editor : IEditor;
+  Editor: IEditor;
 begin
   if CanClose then begin
     with ResourcesDataModule.dlgFileOpen do begin
@@ -589,10 +584,10 @@ end;
 procedure TProjectExplorerWindow.actProjectRemoveExecute(Sender: TObject);
 var
   Node, ParentNode: PVirtualNode;
-  Data : PNodeDataRec;
-  SelectedNodes : TNodeArray;
-  i : Integer;
-  CanDelete : Boolean;
+  Data: PNodeDataRec;
+  SelectedNodes: TNodeArray;
+  I: Integer;
+  CanDelete: Boolean;
 begin
   SelectedNodes := ExplorerTree.GetSortedSelection(False);
   ExplorerTree.BeginUpdate;
@@ -600,8 +595,8 @@ begin
     // Check the all have the same parent (they should given the selection constraint)
     ParentNode := nil;
     CanDelete := True;
-    for i := Low(SelectedNodes) to High(SelectedNodes) do begin
-      Node := SelectedNodes[i];
+    for I := Low(SelectedNodes) to High(SelectedNodes) do begin
+      Node := SelectedNodes[I];
       if not Assigned(ParentNode) then
         ParentNode := Node.Parent
       else if ParentNode <> Node.Parent then begin
@@ -612,8 +607,8 @@ begin
     CanDelete := CanDelete and Assigned(ParentNode);
 
     if CanDelete then begin
-      for i := Low(SelectedNodes) to High(SelectedNodes) do begin
-        Node := SelectedNodes[i];
+      for I := Low(SelectedNodes) to High(SelectedNodes) do begin
+        Node := SelectedNodes[I];
         Data := ExplorerTree.GetNodeData(Node);
         if (Data.ProjectNode is TProjectFolderNode) or
            (Data.ProjectNode is TProjectFileNode) or
@@ -633,7 +628,7 @@ end;
 
 procedure TProjectExplorerWindow.actProjectRenameExecute(Sender: TObject);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
 begin
   Node := ExplorerTree.GetFirstSelected;
@@ -641,13 +636,13 @@ begin
     Data := ExplorerTree.GetNodeData(Node);
     if (Data.ProjectNode is TProjectFolderNode) or
        (Data.ProjectNode is TProjectRunConfiguationNode) then
-      ExplorerTree.EditNode(Node, -1)
+      ExplorerTree.EditNode(Node, -1);
   end;
 end;
 
 procedure TProjectExplorerWindow.actProjectRunExecute(Sender: TObject);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
 begin
   Node := ExplorerTree.GetFirstSelected;
@@ -681,9 +676,9 @@ begin
   Result := not ActiveProject.Modified;
   if not Result then begin
     case StyledMessageDlg(_(SAskSaveProject), mtConfirmation, [mbYes, mbNo, mbCancel], 0) of
-      mrYes : Result := DoSave;
-      mrNo  : Result := True;
-      mrCancel :  Result := False;
+      mrYes: Result := DoSave;
+      mrNo : Result := True;
+      mrCancel:  Result := False;
     end;
   end;
 end;
@@ -711,7 +706,7 @@ begin
   actProjectShowFileExtensions.Checked := ActiveProject.ShowFileExtensions;
 end;
 
-procedure TProjectExplorerWindow.DoOpenProjectFile(FileName : string);
+procedure TProjectExplorerWindow.DoOpenProjectFile(FileName: string);
 var
   AppStorage: TJvAppIniFileStorage;
 begin
@@ -791,7 +786,7 @@ end;
 
 function TProjectExplorerWindow.DoSaveFile: Boolean;
 var
-  AppStorage : TJvAppIniFileStorage;
+  AppStorage: TJvAppIniFileStorage;
 begin
   // Create Backup
   if PyIDEOptions.CreateBackupFiles and
@@ -831,10 +826,10 @@ begin
   end;
 end;
 
-procedure TProjectExplorerWindow.UpdatePopupActions(Node : PVirtualNode);
+procedure TProjectExplorerWindow.UpdatePopupActions(Node: PVirtualNode);
 var
-  Data : PNodeDataRec;
-  SingleNodeSelected : Boolean;
+  Data: PNodeDataRec;
+  SingleNodeSelected: Boolean;
 begin
    actProjectExtraPythonPath.Enabled := GI_PyControl.PythonLoaded and not GI_PyControl.Running;
    // We update project actions here based on selection
@@ -894,11 +889,11 @@ end;
 procedure TProjectExplorerWindow.ExplorerTreeContextPopup(Sender: TObject;
   MousePos: TPoint; var Handled: Boolean);
 var
-  Data : PNodeDataRec;
-  Node : PVirtualNode;
-  PopUpMenu : TPopupMenu;
-  Pos : TPoint;
-  HitInfo : THitInfo;
+  Data: PNodeDataRec;
+  Node: PVirtualNode;
+  PopUpMenu: TPopupMenu;
+  Pos: TPoint;
+  HitInfo: THitInfo;
 begin
   PopUpMenu := nil;
   if (MousePos.X = -1) and (MousePos.Y = -1) then
@@ -915,7 +910,7 @@ begin
   if Assigned(Node) then begin
     Data := ExplorerTree.GetNodeData(Node);
     if (Data.ProjectNode is TProjectRootNode) then
-      PopUpMenu := ProjectMainPopupMenu
+      PopUpMenu := ProjectMainPopUpMenu
     else if (Data.ProjectNode is TProjectFileNode) then
       PopUpMenu := ProjectFilePopupMenu
     else if Data.ProjectNode is TProjectRunConfiguationsNode then
@@ -957,17 +952,17 @@ procedure TProjectExplorerWindow.ExplorerTreeDragDrop(Sender: TBaseVirtualTree;
   Source: TObject; DataObject: TVTDragDataObject; Formats: TFormatArray;
   Shift: TShiftState; Pt: TPoint; var Effect: Integer; Mode: TDropMode);
 var
-  HitInfo : THitInfo;
+  HitInfo: THitInfo;
   Node, ParentNode: PVirtualNode;
-  Data, SelectedData : PNodeDataRec;
-  FileNode : TProjectFileNode;
-  i: Integer;
-  CommonHDrop : TCommonHDrop;
-  FileName : string;
-  SelectedNodes : TNodeArray;
-  SelectedNode : TAbstractProjectNode;
-  CanMove : Boolean;
-  TempCursor : IInterface;
+  Data, SelectedData: PNodeDataRec;
+  FileNode: TProjectFileNode;
+  I: Integer;
+  CommonHDrop: TCommonHDrop;
+  FileName: string;
+  SelectedNodes: TNodeArray;
+  SelectedNode: TAbstractProjectNode;
+  CanMove: Boolean;
+  TempCursor: IInterface;
 begin
   ExplorerTree.GetHitTestInfoAt(Pt.X, Pt.Y, True, HitInfo);
   Node := HitInfo.HitNode;
@@ -984,12 +979,12 @@ begin
           ParentNode := nil;
           // Check the all have the same parent (they should given the selection constraint)
           CanMove := True;
-          for i := Low(SelectedNodes) to High(SelectedNodes) do begin
-            SelectedData := ExplorerTree.GetNodeData(SelectedNodes[i]);
+          for I := Low(SelectedNodes) to High(SelectedNodes) do begin
+            SelectedData := ExplorerTree.GetNodeData(SelectedNodes[I]);
             SelectedNode := SelectedData.ProjectNode;
             if not Assigned(ParentNode) then
-              ParentNode := SelectedNodes[i].Parent
-            else if ParentNode <> SelectedNodes[i].Parent then begin
+              ParentNode := SelectedNodes[I].Parent
+            else if ParentNode <> SelectedNodes[I].Parent then begin
               CanMove := False;
               Break;
             end;
@@ -1002,8 +997,8 @@ begin
           if CanMove then begin
             ExplorerTree.BeginUpdate;
             try
-              for i := Low(SelectedNodes) to High(SelectedNodes) do begin
-                SelectedData := ExplorerTree.GetNodeData(SelectedNodes[i]);
+              for I := Low(SelectedNodes) to High(SelectedNodes) do begin
+                SelectedData := ExplorerTree.GetNodeData(SelectedNodes[I]);
                 SelectedNode := SelectedData.ProjectNode;
                 SelectedNode.Parent := Data.ProjectNode;
               end;
@@ -1022,8 +1017,8 @@ begin
         ExplorerTree.BeginUpdate;
         try
           if CommonHDrop.LoadFromDataObject(DataObject) then begin
-            for i := 0 to CommonHDrop.FileCount - 1 do begin
-              FileName := CommonHDrop.FileName(i);
+            for I := 0 to CommonHDrop.FileCount - 1 do begin
+              FileName := CommonHDrop.FileName(I);
               with TProjectFilesNode(Data.ProjectNode) do
                 if DirectoryExists(FileName) then
                   ImportDirectory(FileName,
@@ -1078,7 +1073,7 @@ end;
 procedure TProjectExplorerWindow.ExplorerTreeEditing(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
 begin
   Data := ExplorerTree.GetNodeData(Node);
   Allowed := (Data.ProjectNode is TProjectFolderNode) or
@@ -1113,10 +1108,10 @@ procedure TProjectExplorerWindow.ExplorerTreeGetImageIndexEx(
   Column: TColumnIndex; var Ghosted: Boolean; var ImageIndex: TImageIndex;
   var ImageList: TCustomImageList);
 var
-  Data : PNodeDataRec;
-  Extension : string;
-  Index : Integer;
-  FileName : string;
+  Data: PNodeDataRec;
+  Extension: string;
+  Index: Integer;
+  FileName: string;
 begin
   if not (Kind in [ikNormal, ikSelected]) then Exit;
   ImageIndex := -1;
@@ -1151,7 +1146,7 @@ end;
 procedure TProjectExplorerWindow.ExplorerTreeGetCellText(
   Sender: TCustomVirtualStringTree; var E: TVSTGetCellTextEventArgs);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
 begin
   Data := ExplorerTree.GetNodeData(E.Node);
   if Assigned(Data) then
@@ -1162,7 +1157,7 @@ procedure TProjectExplorerWindow.ExplorerTreeIncrementalSearch(
   Sender: TBaseVirtualTree; Node: PVirtualNode; const SearchText: string;
   var Result: Integer);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
 begin
   Result := -1;
   Data := ExplorerTree.GetNodeData(Node);
@@ -1175,7 +1170,7 @@ end;
 procedure TProjectExplorerWindow.ExplorerTreeInitChildren(
   Sender: TBaseVirtualTree; Node: PVirtualNode; var ChildCount: Cardinal);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
 begin
   Data := ExplorerTree.GetNodeData(Node);
   ChildCount := Data.ProjectNode.Children.Count;
@@ -1213,8 +1208,8 @@ end;
 procedure TProjectExplorerWindow.ExplorerTreeNewText(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; NewText: string);
 var
-  Data, ParentData : PNodeDataRec;
-  ModifiedText : Boolean;
+  Data, ParentData: PNodeDataRec;
+  ModifiedText: Boolean;
 begin
   ModifiedText := False;
   Data := ExplorerTree.GetNodeData(Node);
@@ -1235,7 +1230,7 @@ begin
     ExplorerTree.BeginUpdate;
     try
       ParentData.ProjectNode.SortChildren;
-      ExplorerTree.ReInitNode(Node.Parent,True);
+      ExplorerTree.ReinitNode(Node.Parent,True);
     finally
       ExplorerTree.EndUpdate;
     end;
@@ -1245,7 +1240,7 @@ end;
 procedure TProjectExplorerWindow.ExplorerTreeNodeDblClick(Sender:
     TBaseVirtualTree; const HitInfo: THitInfo);
 var
-  Data : PNodeDataRec;
+  Data: PNodeDataRec;
   Node: PVirtualNode;
 begin
   Node := HitInfo.HitNode;
@@ -1299,7 +1294,6 @@ end;
 
 procedure TProjectExplorerWindow.FormShow(Sender: TObject);
 begin
-  inherited;
   ExplorerTree.RootNodeCount := 1;
 end;
 

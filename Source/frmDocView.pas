@@ -11,28 +11,20 @@ unit frmDocView;
 interface
 
 uses
-  Winapi.Windows,
-  WinApi.Messages,
-  WinApi.ActiveX,
-  Winapi.WebView2,
-  System.SysUtils,
-  System.Variants,
+  Winapi.Messages,
+  Winapi.ActiveX,
   System.Classes,
   System.ImageList,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.OleCtrls,
   Vcl.ImgList,
-  Vcl.BaseImageCollection,
   Vcl.VirtualImageList,
   Vcl.Edge,
   TB2Item,
   TB2Dock,
   TB2Toolbar,
   SpTBXItem,
-  uEditAppIntfs;
+  uEditAppIntfs, Winapi.WebView2;
 
 type
   TDocForm = class(TForm, IEditorView)
@@ -78,14 +70,16 @@ type
     procedure GetContextHighlighters(List : TList);
   end;
 
-  var
-    DocForm : TDocForm;
+var
+  DocForm : TDocForm;
 
 implementation
 
 uses
+  System.SysUtils,
   System.IOUtils,
   System.NetEncoding,
+  Vcl.Dialogs,
   JvJVCLUtils,
   JvGnugettext,
   PythonEngine,
@@ -132,7 +126,7 @@ end;
 procedure TDocForm.UpdateView(Editor: IEditor);
 var
   Py: IPyEngineAndGIL;
-  module : Variant;
+  Module : Variant;
   Cursor : IInterface;
 begin
   if not Assigned(Editor) then Exit;
@@ -140,7 +134,7 @@ begin
   Py := SafePyEngine;
   Cursor := WaitCursor;
 
-  module := PyControl.ActiveInterpreter.ImportModule(Editor);
+  Module := PyControl.ActiveInterpreter.ImportModule(Editor);
   FHtml := PyControl.ActiveInterpreter.PyInteractiveInterpreter.htmldoc(Module);
 
   WebBrowser.CreateWebView;
@@ -160,10 +154,10 @@ procedure TDocForm.WebBrowserExecuteScript(Sender: TCustomEdgeBrowser; AResult:
 begin
   if (FSaveFileName <> '') and (AResultObjectAsJson <> 'null') then
   begin
-    var SL := TSmartPtr.Make(TStringList.Create);
-    SL.Text := TNetEncoding.URL.Decode(AResultObjectAsJson.DeQuotedString('"'));
-    SL.WriteBOM := False;
-    SL.SaveToFile(FSaveFileName, TEncoding.UTF8);
+    var StringList := TSmartPtr.Make(TStringList.Create);
+    StringList.Text := TNetEncoding.URL.Decode(AResultObjectAsJson.DeQuotedString('"'));
+    StringList.WriteBOM := False;
+    StringList.SaveToFile(FSaveFileName, TEncoding.UTF8);
     FSaveFileName := '';
   end;
 end;
@@ -198,7 +192,7 @@ end;
 
 function TDocView.GetMenuCaption: string;
 begin
-  Result := _(SDocumentation)
+  Result := _(SDocumentation);
 end;
 
 function TDocView.GetName: string;

@@ -169,7 +169,6 @@ uses
   MPCommonObjects,
   JvGnugettext,
   StringResources,
-  dmResources,
   dmCommands,
   frmFindResults,
   dlgDirectoryList,
@@ -359,7 +358,6 @@ begin
   except
     FileExplorerTree.RootFolder := rfDrives;
   end;
-  //VirtualShellHistory.Clear;
 end;
 
 procedure TFileExplorerWindow.actGoBackExecute(Sender: TObject);

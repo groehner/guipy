@@ -13,8 +13,6 @@ inherited RemoteFileDialog: TRemoteFileDialog
     Height = 93
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 430
-    ExplicitHeight = 92
     object Label1: TLabel
       Left = 16
       Top = 16
@@ -68,8 +66,6 @@ inherited RemoteFileDialog: TRemoteFileDialog
     ParentColor = True
     ShowCaption = False
     TabOrder = 1
-    ExplicitTop = 92
-    ExplicitWidth = 430
     DesignSize = (
       434
       37)
@@ -83,7 +79,6 @@ inherited RemoteFileDialog: TRemoteFileDialog
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 119
     end
     object CancelButton: TButton
       Left = 219
@@ -95,7 +90,6 @@ inherited RemoteFileDialog: TRemoteFileDialog
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 215
     end
     object HelpButton: TButton
       Left = 315
@@ -106,7 +100,6 @@ inherited RemoteFileDialog: TRemoteFileDialog
       Caption = '&Help'
       TabOrder = 2
       OnClick = HelpButtonClick
-      ExplicitLeft = 311
     end
   end
   object vilImages: TVirtualImageList

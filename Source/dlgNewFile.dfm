@@ -5,8 +5,8 @@ inherited NewFileDialog: TNewFileDialog
   ClientWidth = 466
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ExplicitWidth = 478
-  ExplicitHeight = 335
+  ExplicitWidth = 482
+  ExplicitHeight = 336
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
@@ -15,8 +15,6 @@ inherited NewFileDialog: TNewFileDialog
     Height = 297
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 462
-    ExplicitHeight = 296
     object Panel2: TPanel
       Left = 1
       Top = 1
@@ -24,7 +22,6 @@ inherited NewFileDialog: TNewFileDialog
       Height = 255
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 460
       object Splitter1: TSplitter
         Left = 186
         Top = 1
@@ -55,7 +52,9 @@ inherited NewFileDialog: TNewFileDialog
           BevelInner = bvNone
           BevelOuter = bvNone
           BevelKind = bkFlat
+          DefaultNodeHeight = 19
           Header.AutoSizeIndex = 0
+          Header.Height = 15
           Header.MainColumn = -1
           Header.Options = [hoColumnResize, hoDrag]
           NodeDataSize = 0
@@ -76,7 +75,6 @@ inherited NewFileDialog: TNewFileDialog
         Height = 253
         Align = alClient
         TabOrder = 1
-        ExplicitWidth = 270
         object Label2: TLabel
           Left = 6
           Top = 7
@@ -96,7 +94,6 @@ inherited NewFileDialog: TNewFileDialog
           TabOrder = 0
           OnDblClick = lvTemplatesDblClick
           OnSelectItem = lvTemplatesSelectItem
-          ExplicitWidth = 268
         end
       end
     end

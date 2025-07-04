@@ -11,21 +11,11 @@ unit frmWebPreview;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  Winapi.ActiveX,
-  Winapi.WebView2,
-  System.SysUtils,
-  System.Variants,
   System.Classes,
   System.ImageList,
-  Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.OleCtrls,
   Vcl.VirtualImageList,
-  Vcl.BaseImageCollection,
   Vcl.ImgList,
   Vcl.Edge,
   TB2Item,
@@ -33,7 +23,7 @@ uses
   TB2Toolbar,
   SpTBXItem,
   uEditAppIntfs,
-  cTools;
+  cTools, Winapi.WebView2, Winapi.ActiveX;
 
 type
   TWebPreviewForm = class(TForm, IEditorView)
@@ -64,10 +54,9 @@ type
   private
     FEditor: IEditor;
     FSaveFileName: string;
-    procedure UpdateView(Editor: IEditor);
-  private
     FIsNotebook: Boolean;
     FHtml: string;
+    procedure UpdateView(Editor: IEditor);
     class var FExternalTool: TExternalTool;
     class constructor Create;
     class destructor Destroy;
@@ -78,29 +67,29 @@ type
 
   TWebPreviewView = class(TInterfacedObject, IEditorViewFactory)
   private
-    function CreateForm(Editor: IEditor; AOwner : TComponent): TCustomForm;
-    function GetName : string;
-    function GetTabCaption : string;
-    function GetMenuCaption : string;
-    function GetHint : string;
-    function GetImageName : string;
-    function GetShortCut : TShortCut;
-    procedure GetContextHighlighters(List : TList);
+    function CreateForm(Editor: IEditor; AOwner: TComponent): TCustomForm;
+    function GetName: string;
+    function GetTabCaption: string;
+    function GetMenuCaption: string;
+    function GetHint: string;
+    function GetImageName: string;
+    function GetShortCut: TShortCut;
+    procedure GetContextHighlighters(List: TList);
   end;
 
 var
-  WebPreviewFactoryIndex : Integer;
+  WebPreviewFactoryIndex: Integer;
 
 implementation
 
 uses
-  System.UITypes,
+  System.SysUtils,
   System.IOUtils,
   System.NetEncoding,
+  Vcl.Dialogs,
   JvGnugettext,
   uCommonFunctions,
   StringResources,
-  VarPyth,
   dmResources,
   frmCommandOutput,
   cPyScripterSettings;
@@ -137,7 +126,6 @@ end;
 
 procedure TWebPreviewForm.FormDestroy(Sender: TObject);
 begin
-  inherited;
   if OutputWindow.IsRunning and (OutputWindow.RunningTool = FExternalTool.Caption) then
     OutputWindow.actToolTerminate.Execute;
 end;
@@ -200,10 +188,10 @@ procedure TWebPreviewForm.WebBrowserExecuteScript(Sender: TCustomEdgeBrowser;
 begin
   if (FSaveFileName <> '') and (AResultObjectAsJson <> 'null') then
   begin
-    var SL := TSmartPtr.Make(TStringList.Create);
-    SL.Text := TNetEncoding.URL.Decode(AResultObjectAsJson.DeQuotedString('"'));
-    SL.WriteBOM := False;
-    SL.SaveToFile(FSaveFileName, TEncoding.UTF8);
+    var StringList := TSmartPtr.Make(TStringList.Create);
+    StringList.Text := TNetEncoding.URL.Decode(AResultObjectAsJson.DeQuotedString('"'));
+    StringList.WriteBOM := False;
+    StringList.SaveToFile(FSaveFileName, TEncoding.UTF8);
     FSaveFileName := '';
   end;
 end;
@@ -216,7 +204,7 @@ end;
 
 { TDocView }
 
-function TWebPreviewView.CreateForm(Editor: IEditor; AOwner : TComponent): TCustomForm;
+function TWebPreviewView.CreateForm(Editor: IEditor; AOwner: TComponent): TCustomForm;
 begin
   if Assigned(Editor.SynEdit.Highlighter) and
     (Editor.SynEdit.Highlighter = ResourcesDataModule.SynJSONSyn) then

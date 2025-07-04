@@ -65,36 +65,36 @@ end;
 procedure TSuggestWindow.WMNCHitTest(var Message: TWMNCHitTest);
 //  Makes the form resizable
 var
-  D: Integer;
-  P: TPoint;
+  XSize: Integer;
+  Point: TPoint;
 begin
-  D := GetSystemMetrics(SM_CXSIZEFRAME);
+  XSize := GetSystemMetrics(SM_CXSIZEFRAME);
 
-  P := ScreenToClient(Message.Pos);
+  Point := ScreenToClient(Message.Pos);
 
-  if P.Y < D then
+  if Point.Y < XSize then
   begin
-    if P.X < D then
+    if Point.X < XSize then
       Message.Result := HTTOPLEFT
-    else if P.X > ClientWidth - D then
+    else if Point.X > ClientWidth - XSize then
       Message.Result := HTTOPRIGHT
     else
       Message.Result := HTTOP;
   end
-  else if P.Y > ClientHeight - D then
+  else if Point.Y > ClientHeight - XSize then
   begin
-    if P.X < D then
+    if Point.X < XSize then
       Message.Result := HTBOTTOMLEFT
-    else if P.X > ClientWidth - D then
+    else if Point.X > ClientWidth - XSize then
       Message.Result := HTBOTTOMRIGHT
     else
       Message.Result := HTBOTTOM;
   end
   else
   begin
-    if P.X < D then
+    if Point.X < XSize then
       Message.Result := HTLEFT
-    else if P.X > ClientWidth - D then
+    else if Point.X > ClientWidth - XSize then
       Message.Result := HTRIGHT;
   end;
 
@@ -168,7 +168,6 @@ begin
   Close;
 end;
 
-
 procedure ShowSuggestion(const Suggestion: string; Editor: TCustomSynEdit);
 const
   MaxLines = 10;
@@ -185,7 +184,6 @@ begin
     SuggestWindow.spiAcceptLine.Visible := False;
     SuggestWindow.spiAcceptLine.Enabled := False;
   end;
-
 
   var Monitor := Screen.MonitorFromWindow(Editor.Handle);
   var BC := Editor.BlockBegin;

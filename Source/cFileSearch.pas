@@ -69,7 +69,7 @@ type
   protected
     BLine: string; // The current search line,
     FLineNo: Integer;
-    fSearchLines : TStrings;
+    FSearchLines : TStrings;
     FNoComments: Boolean;
     FSearchOptions: TSearchOptions;
     FPattern: string;
@@ -128,7 +128,7 @@ procedure TSearcher.SetFileName(const Value: string);
     Result := False;
     if not FileExists(FFileName) then
       Exit;
-    Result := LoadFileIntoWideStrings(fFileName, fSearchLines);
+    Result := LoadFileIntoWideStrings(fFileName, FSearchLines);
   end;
 
   function GetModuleInterface: Boolean;
@@ -138,7 +138,7 @@ procedure TSearcher.SetFileName(const Value: string);
     Result := False;
     Editor := GI_EditorFactory.GetEditorByFileId(FFileName);
     if Assigned(Editor) then begin
-      fSearchLines.Assign(Editor.SynEdit.Lines);
+      FSearchLines.Assign(Editor.SynEdit.Lines);
     //      FSearchStream := TStringStream.Create(Editor.SynEdit.Text);
       Result := True;
     end;
@@ -191,8 +191,8 @@ var
   PPos : PWideChar;
 begin
   SignalStartSearch;
-  for i := 0 to fSearchLines.Count - 1 do begin
-    BLine := fSearchLines[i];
+  for i := 0 to FSearchLines.Count - 1 do begin
+    BLine := FSearchLines[i];
 
     if BLine = '' then Continue;
 
