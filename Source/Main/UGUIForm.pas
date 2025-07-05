@@ -276,10 +276,13 @@ procedure TFGuiForm.Open(Pathname, State: string; WidthHeight: TPoint;
 begin
   FPathname := Pathname;
   FPartner := Partner;
+  {$WARNINGS OFF}
+  // creation of Widgets with abstract methods, but these methods are not used
   if FPartner.FrameType < 3 then
     FWidget := TKMainWindow.Create(nil)
   else
     FWidget := TQtMainWindow.Create(nil);
+  {$WARNINGS ON}
   FWidget.Partner := FPartner;
   SetAnimation(False);
   ClientWidth := PPIScale(WidthHeight.X);

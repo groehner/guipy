@@ -1,10 +1,9 @@
 {-----------------------------------------------------------------------------
  Unit Name: frmCommandOutput
- Author:    Kiriakos Vlahos, Gerhard Röhner
+ Author:    Kiriakos Vlahos
  Date:      24-Apr-2008
  Purpose:
  History:
- Expansion:  lsbConsoleDblClick
 -----------------------------------------------------------------------------}
 
 unit frmCommandOutput;
@@ -64,7 +63,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
-    procedure lsbConsoleDblClick(Sender: TObject);
   private
     const FBasePath = 'Output Window Options'; // Used for storing settings
     var FTool: TExternalTool;
@@ -500,10 +498,22 @@ begin
   FProcess.OnErrorRead := ProcessStdErr;
   FProcess.OnTerminate := ProcessTerminate;
 
-  if Tool.ConsoleHidden then
+  {if Tool.ConsoleHidden then
     FProcess.ShowWindow := swHide
   else
+    FProcess.ShowWindow := swShowNormal;}
+
+  if Tool.ConsoleHidden then
+  begin
+    FProcess.ShowWindow := swNotSet;
+    FProcess.CreationFlag := cfNoWindow;
+  end
+  else
+  begin
+    FProcess.CreationFlag := cfNewConsole;
     FProcess.ShowWindow := swShowNormal;
+  end;
+
   if Tool.UseCustomEnvironment then
     FProcess.Environment := Tool.Environment;
 
@@ -641,32 +651,6 @@ begin
     FOutputReader[OutType].OwnStream;
     FLastStreamPos[OutType] := 0;
     FNewLine[OutType] := True;
-  end;
-end;
-
-procedure TOutputWindow.lsbConsoleDblClick(Sender: TObject);
-var
-   RegExWarning: TRegEx;
-   Match: TMatch;
-   ErrLineNo, LineNo: Integer;
-   FileName: string;
-begin
-  RegExWarning := CompiledRegEx(STracebackFilePosExpr);
-  LineNo := lsbConsole.ItemIndex;
-  if LineNo < 0 then
-    Exit;
-  repeat
-    Match := RegExWarning.Match(lsbConsole.Items[LineNo]);
-    Dec(LineNo);
-  until Match.Success or (LineNo = -1);
-  if Match.Success then
-  begin
-    lsbConsole.ItemIndex := -1; // remove selection
-    ErrLineNo := StrToIntDef(Match.GroupValue(2), 0);
-    FileName := Match.GroupValue(1);
-    //if Assigned(PyControl.ActiveInterpreter) then
-    //  FileName := PyControl.ActiveInterpreter.FromPythonFileName(FileName);
-    GI_PyIDEServices.ShowFilePosition(FileName, ErrLineNo, 1);
   end;
 end;
 

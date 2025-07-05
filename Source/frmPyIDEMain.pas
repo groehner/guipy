@@ -773,6 +773,7 @@ type
     DebugToolbar: TSpTBXToolbar;
     tbiRunRun: TSpTBXItem;
     tbiRunDebug: TSpTBXItem;
+    tbiRunRunToCursor: TSpTBXItem;
     tbiRunStepInto: TSpTBXItem;
     tbiRunStepOver: TSpTBXItem;
     tbiRunAbort: TSpTBXItem;
@@ -1219,7 +1220,6 @@ type
     TBControlItem3: TTBControlItem;
     tbitbiDiagramFromOpenFiles: TSpTBXItem;
     mnPopupFileOpen: TSpTBXItem;
-    tbiRunForDebugging: TSpTBXItem;
     SpTBXTabItem4: TSpTBXTabItem;
     SpTBXTabSheetQtBase: TSpTBXTabSheet;
     ToolbarQtBase: TToolBar;
@@ -1299,7 +1299,6 @@ type
     actPythonFreeThreaded: TAction;
     mnViewUMLInteractive: TSpTBXItem;
     actViewUMLInteractive: TAction;
-    actExternalRunForDebugging: TAction;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1456,7 +1455,6 @@ type
     procedure ToolButtonStartDrag(Sender: TObject; var DragObject: TDragObject);
     procedure TBQtApplicationClick(Sender: TObject);
     procedure actEditorZoomResetExecute(Sender: TObject);
-    procedure actExternalRunForDebuggingExecute(Sender: TObject);
     procedure DdeServerConvExecuteMacro(Sender: TObject; Msg: TStrings);
     procedure FormAfterMonitorDpiChanged(Sender: TObject;
       OldDPI, NewDPI: Integer);
@@ -1473,8 +1471,7 @@ type
     FTabControlsShowing: Integer;
     procedure DebugActiveScript(ActiveEditor: IEditor;
       InitStepIn: Boolean = False; RunToCursorLine: Integer = -1);
-    procedure SetupRunConfiguration(var RunConfig: TRunConfiguration;
-      FileId: string);
+    procedure SetupRunConfiguration(var RunConfig: TRunConfiguration; ActiveEditor: IEditor);
     procedure TbiSearchTextAcceptText(const NewText: string);
     procedure TbiReplaceTextAcceptText(const NewText: string);
     function GetActiveTabControl: TSpTBXCustomTabControl;
@@ -3199,15 +3196,21 @@ begin
 end;
 
 procedure TPyIDEMainForm.RunEditor(ActiveEditor: IEditor);
+var
+  RunConfig: TRunConfiguration;
 begin
-  var
-  RunConfig := TRunConfiguration.Create;
+  Application.ProcessMessages;
+  ActiveEditor := GetActiveEditor;
+  if not Assigned(ActiveEditor) then Exit;
+
+  RunConfig :=  TRunConfiguration.Create;
   try
-    SetupRunConfiguration(RunConfig, ActiveEditor.FileId);
+    SetupRunConfiguration(RunConfig, ActiveEditor);
     PyControl.Run(RunConfig);
   finally
     RunConfig.Free;
   end;
+
   WriteStatusMsg(_(StrScriptRunOK));
 end;
 
@@ -3314,15 +3317,13 @@ begin
 end;
 
 procedure TPyIDEMainForm.SetupRunConfiguration(var RunConfig: TRunConfiguration;
-FileId: string);
+  ActiveEditor: IEditor);
 begin
-  RunConfig.ScriptName := FileId;
+  RunConfig.ScriptName := ActiveEditor.FileId;
   RunConfig.EngineType := PyControl.PythonEngineType;
-  RunConfig.Parameters := Iff(PyIDEOptions.UseCommandLine,
-    PyIDEOptions.CommandLine, '');
+  RunConfig.Parameters := CommandLineParams;
   RunConfig.ExternalRun.Assign(ExternalPython);
-  RunConfig.ExternalRun.Parameters := Parameters.ReplaceInText
-    (RunConfig.ExternalRun.Parameters);
+  RunConfig.ExternalRun.Parameters := Parameters.ReplaceInText(RunConfig.ExternalRun.Parameters);
   RunConfig.ReinitializeBeforeRun := PyIDEOptions.ReinitializeBeforeRun;
   RunConfig.WorkingDir := '';
 end;
@@ -3335,7 +3336,7 @@ begin
   Assert(GI_PyControl.Inactive);
   RunConfig := TRunConfiguration.Create;
   try
-    SetupRunConfiguration(RunConfig, ActiveEditor.FileId);
+    SetupRunConfiguration(RunConfig, ActiveEditor);
     PyControl.Debug(RunConfig, InitStepIn, RunToCursorLine);
   finally
     RunConfig.Free;
@@ -3420,14 +3421,14 @@ end;
 
 procedure TPyIDEMainForm.SetRunLastScriptHints(const ScriptName: string);
 var
-  Str: string;
+  FName: string;
 begin
-  Str := TPath.GetFileName(ScriptName);
-  if Str <> '' then
-    Str := Format(' - %Str ', [Str]);
-  actRunLastScript.Hint := _(SHintRun) + Str;
-  actRunDebugLastScript.Hint := _(SHintDebug) + Str;
-  actRunLastScriptExternal.Hint := _(SHintExternalRun) + Str;
+  FName := TPath.GetFileName(ScriptName);
+  if FName <> '' then
+    FName := Format(' - %s ', [FName]);
+  actRunLastScript.Hint := _(SHintRun) + FName;
+  actRunDebugLastScript.Hint := _(SHintDebug) + FName;
+  actRunLastScriptExternal.Hint := _(SHintExternalRun) + FName;
 end;
 
 procedure TPyIDEMainForm.DebuggerStateChange(Sender: TObject);
@@ -5783,36 +5784,12 @@ begin
     ActiveEditor.Activate;
     RunConfig := TRunConfiguration.Create;
     try
-      SetupRunConfiguration(RunConfig, ActiveEditor.FileId);
-      RunConfig.ExternalRun.ConsoleHidden := False;
-      RunConfig.ExternalRun.ParseTraceback := False;
+      SetupRunConfiguration(RunConfig, ActiveEditor);
       PyControl.ExternalRun(RunConfig);
     finally
       RunConfig.Free;
     end;
   end;
-end;
-
-procedure TPyIDEMainForm.actExternalRunForDebuggingExecute(Sender: TObject);
-var
-  ActiveEditor: IEditor;
-  RunConfig: TRunConfiguration;
-begin
-  ActiveEditor := GetActiveEditor;
-  if Assigned(ActiveEditor) then
-  begin
-    ActiveEditor.Activate;
-    RunConfig := TRunConfiguration.Create;
-    try
-      SetupRunConfiguration(RunConfig, ActiveEditor.FileId);
-      RunConfig.ExternalRun.ConsoleHidden := False;
-      RunConfig.ExternalRun.ParseTraceback := False;
-      PyControl.ExternalRun(RunConfig);
-    finally
-      RunConfig.Free;
-    end;
-  end;
-
 end;
 
 procedure TPyIDEMainForm.actExecSelectionExecute(Sender: TObject);

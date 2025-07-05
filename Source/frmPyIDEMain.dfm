@@ -290,14 +290,13 @@ object PyIDEMainForm: TPyIDEMainForm
           ImageIndex = 33
           ImageName = 'Run1'
         end
-        object tbiRunForDebugging: TSpTBXItem
-          Caption = 'E&xternal run for debuggging'
-          Action = actExternalRunForDebugging
-        end
         object tbiRunDebug: TSpTBXItem
           Action = actDebug
           ImageIndex = 34
           ImageName = 'Debug13'
+        end
+        object tbiRunRunToCursor: TSpTBXItem
+          Action = actRunToCursor
         end
         object tbiRunStepInto: TSpTBXItem
           Action = actStepInto
@@ -3996,7 +3995,6 @@ object PyIDEMainForm: TPyIDEMainForm
         'interpreter'
       ImageIndex = 22
       ImageName = 'ExternalRun'
-      OnExecute = actExternalRunForDebuggingExecute
     end
   end
   object LocalAppStorage: TJvAppIniFileStorage

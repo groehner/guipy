@@ -3,7 +3,7 @@ support for debugging of qt apps, look at innovations on guipy.de
 some smaller improvements of the GuiPy IDE
 Grok 3 support added
 added scrollbar annotation for highlighted search term
-
+fixed some minor issues
 
 6.06, 2025.03.09
 bugfix visibility view menu

@@ -1221,7 +1221,7 @@ begin
     LspServerPath :=  TPath.Combine(UserDataPath, 'Lib', 'Lsp');
     UserDebugInspectorsDir :=  TPath.Combine(UserDataPath, 'Variable Inspectors');
   end else begin
-    UserDataPath := TPath.Combine(GetHomePath,  AppName);
+    UserDataPath := TPath.Combine(GetHomePath, AppName);
     OptionsFileName := TPath.Combine(UserDataPath, AppININame);
     if not ForceDirectories(UserDataPath) then
       StyledMessageDlg(Format(SAccessAppDataDir, [UserDataPath]),

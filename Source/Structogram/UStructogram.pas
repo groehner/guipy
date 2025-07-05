@@ -177,7 +177,6 @@ type
     procedure SetPuzzleMode(Mode: Integer);
     procedure MakeVeryHard;
     procedure ChangeStyle;
-    procedure Debug(const Str: string);
   protected
     function OpenFile(const Pathname: string): Boolean; override;
     function LoadFromFile(const FileName: string): Boolean; override;
@@ -1871,11 +1870,6 @@ begin
       AList.Paint;
     AList.Dirty:= False;
   end;
-end;
-
-procedure TFStructogram.Debug(const Str: string);
-begin
-  MessagesWindow.AddMessage(Str);
 end;
 
 function TFStructogram.FitsIn(ACurList: TStrList; ACurElement: TStrElement): Boolean;

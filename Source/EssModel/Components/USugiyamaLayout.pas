@@ -34,6 +34,7 @@ uses Contnrs, Classes, Controls;
 type
   TEdgeList = class;
 
+  {$HINTS OFF}
   TNode = class
   private
     FId: Integer;

@@ -87,7 +87,6 @@ type
     procedure ChangeName(OldName, NewName: string; Control: TControl);
     procedure RefreshCB(NewName: string = '');
     procedure SetButtonCaption(Show: Integer);
-    procedure UpdatePropertyInspector;
     procedure UpdateEventInspector;
   protected
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
@@ -252,14 +251,12 @@ var
   Parametertypes: string;
   GuiForm: TFGuiForm;
 begin
-  if FGUIDesigner.ELDesigner.SelectedControls[0] is TBaseQtWidget then
-  begin
-    SourceWidget := FGUIDesigner.ELDesigner.SelectedControls[0]
-      as TBaseQtWidget;
-    Parametertypes := SourceWidget.Parametertypes(Event);
-  end
-  else
-    Parametertypes := '';
+  if (FGUIDesigner.ELDesigner.SelectedControls.Count = 0) or
+    not(FGUIDesigner.ELDesigner.SelectedControls[0] is TBaseQtWidget) then
+    Exit;
+
+  SourceWidget := FGUIDesigner.ELDesigner.SelectedControls[0] as TBaseQtWidget;
+  Parametertypes := SourceWidget.Parametertypes(Event);
   AResult.Add('');
   AResult.Add(SourceWidget.Name + '_' + Event);
   GuiForm := TFGuiForm(FGUIDesigner.ELDesigner.DesignControl);
@@ -460,7 +457,8 @@ var
 
   procedure MoveOrSize;
   begin
-    with FGUIDesigner.ELDesigner do begin
+    with FGUIDesigner.ELDesigner do
+    begin
       for var I := 0 to SelectedControls.Count - 1 do
       begin
         if Caption = 'Width' then
@@ -847,7 +845,8 @@ begin
     Str := FELPropertyInspector.ActiveItem.Caption
   else
     Str := '';
-  if SelectedControls.Count > 0 then begin
+  if SelectedControls.Count > 0 then
+  begin
     FELPropertyInspector.Clear;
     FELEventInspector.Clear;
   end;
@@ -866,15 +865,6 @@ begin
     FELPropertyInspector.SelectByCaption(Str);
   if SelectedControls.Count > 0 then
     SetBNewDeleteCaption;
-end;
-
-procedure TFObjectInspector.UpdatePropertyInspector;
-begin
-  TThread.ForceQueue(nil,
-    procedure
-    begin
-      FELPropertyInspector.UpdateItems;
-    end);
 end;
 
 procedure TFObjectInspector.UpdateEventInspector;

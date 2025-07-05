@@ -369,6 +369,7 @@ var
       Filename: string;
       AFile: IFile;
   begin
+    Result := nil;
     Files := (FMyForm as TFUMLForm).MainModul.Model.ModelRoot.Files;
     while vilFileStructure.NodeParent[Node] <> nil do
       Node := vilFileStructure.NodeParent[Node];
