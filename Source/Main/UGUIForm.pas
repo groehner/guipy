@@ -437,8 +437,6 @@ end;
 
 procedure TFGuiForm.FormResize(Sender: TObject);
 begin
-  if not FGUIDesigner.ELDesigner.Active then
-    Exit;
   FObjectInspector.ELPropertyInspector.Modified;
   if Assigned(FPartner) and not FReadOnly then
   begin

@@ -1,4 +1,4 @@
-﻿unit UTextDiff;
+unit UTextDiff;
 
 // -----------------------------------------------------------------------------
 // Application:     TextDiff                                                   .
@@ -183,7 +183,8 @@ type
 
 implementation
 
-uses SysUtils,
+uses
+  SysUtils,
   Themes,
   Dialogs,
   SynEditTypes,
@@ -705,7 +706,7 @@ var
   Clr: TColor;
   LinObj: TLineObj;
 begin
-  if (myActiveControl <> FCodeEdit1) or FOnlyDifferences or not FFilesCompared
+  if (MyActiveControl <> FCodeEdit1) or FOnlyDifferences or not FFilesCompared
   then
     Exit;
   with FCodeEdit1 do
@@ -741,7 +742,7 @@ var
   Clr: TColor;
   LinObj: TLineObj;
 begin
-  if (myActiveControl <> FCodeEdit2) or FOnlyDifferences or not FFilesCompared
+  if (MyActiveControl <> FCodeEdit2) or FOnlyDifferences or not FFilesCompared
   then
     Exit;
   with FCodeEdit2 do
@@ -925,7 +926,7 @@ end;
 
 function TFTextDiff.GetCodeEdit: TSynEditExDiff;
 begin
-  if myActiveControl = FCodeEdit1 then
+  if MyActiveControl = FCodeEdit1 then
     Result := FCodeEdit1
   else
     Result := FCodeEdit2;
@@ -1010,7 +1011,7 @@ procedure TFTextDiff.ChooseFiles(EditForm: TEditorForm);
   begin
     with ResourcesDataModule.dlgFileOpen do
     begin
-      InitialDir := GuiPyOptions.SourcePath;
+      InitialDir := GuiPyOptions.Sourcepath;
       if not SysUtils.DirectoryExists(InitialDir) then
         InitialDir := GetDocumentsPath;
     end;
@@ -1039,7 +1040,7 @@ begin
     try
       if Execute then
       begin
-        GuiPyOptions.SourcePath := ExtractFilePath(FileName);
+        GuiPyOptions.Sourcepath := ExtractFilePath(FileName);
         if Files.Count >= 2 then
           Open(Files[0], Files[1])
         else

@@ -3555,8 +3555,7 @@ end;
 
 procedure TEditorForm.TBBookmarkClick(Sender: TObject);
 begin
-  with ActiveSynEdit do
-    SetDeleteBookmark(CaretX, CaretY);
+  SetDeleteBookmark(ActiveSynEdit.CaretX, ActiveSynEdit.CaretY);
 end;
 
 procedure TEditorForm.TBBreakpointClick(Sender: TObject);
