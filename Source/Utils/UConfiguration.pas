@@ -1890,14 +1890,14 @@ begin
   GuiPyOptions.ChatProviders.setToProviders(LLMChatForm.LLMChat.Providers);
 
   // tab Git
-  FGitOK := FileExists(TPath.Combine(GuiPyOptions.GitFolder, '\bin\git.exe'));
+  FGitOK := FileExists(TPath.Combine(GuiPyOptions.GitFolder, 'bin\git.exe'));
   PyIDEMainForm.mnToolsGit.Visible := FGitOK and FVis1[VisTabsLen + 7, 4];
   if FGitOK and not Assigned(FGit) then
     FGit := TFGit.Create(Self);
 
   // tab Subversion
   FSubversionOK := FileExists(TPath.Combine(GuiPyOptions.SVNFolder,
-    '\svn.exe'));
+    'svn.exe'));
   PyIDEMainForm.mnToolsSVN.Visible := FSubversionOK and
     FVis1[VisTabsLen + 7, 5];
   if FSubversionOK and not Assigned(FSubversion) then
