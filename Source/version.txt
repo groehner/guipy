@@ -1,3 +1,8 @@
+7.01, 2025.07.17
+automatic installation of qt_message_handler
+bugfix GUI form resizing
+bugfix Git integration
+
 7.00, 2025.07.01
 support for debugging of qt apps, look at innovations on guipy.de
 some smaller improvements of the GuiPy IDE

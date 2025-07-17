@@ -1201,6 +1201,32 @@ class constructor TPyScripterSettings.CreateSettings;
       IsPortable:= False;
   end;
 
+  procedure InstallQtMessageHandler;
+  var StringList: TStringList;
+  begin
+    if IsWriteProtected(EngineInitFile) then
+      Exit;
+    StringList:= TStringList.Create;
+    StringList.LoadFromFile(EngineInitFile);
+    if Pos('qt_message_handler', StringList.Text) = 0 then begin
+      StringList.Add('');
+      StringList.Add('def qt_message_handler(mode, context, message):');
+      StringList.Add('    print(message)');
+      StringList.Add('');
+      StringList.Add('try:');
+      StringList.Add('    from PyQt6.QtCore import qInstallMessageHandler');
+      StringList.Add('    qInstallMessageHandler(qt_message_handler)');
+      StringList.Add('except:');
+      StringList.Add('    pass');
+      try
+        StringList.SaveToFile(EngineInitFile);
+      except
+        // no error message
+      end;
+    end;
+    FreeAndNil(StringList);
+  end;
+
 var
   PublicPath: string;
   AppName, AppININame, EXEPath: string;
@@ -1247,6 +1273,7 @@ begin
     CopyFileIfNeeded(TPath.Combine(PublicPath, 'guipy_init.py'), PyScripterInitFile);
   end;
 
+  InstallQtMessageHandler;
   CreateIDEOptions;
   CreateGEditorOptions;
   CreateSearchOptions;

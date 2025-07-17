@@ -114,33 +114,34 @@ end;
 
 procedure TFGit.Execute(Tag: Integer; AEditor: IEditor);
 var
-  Message, PathName, FileName: string;
+  AMessage, FileName: string;
 begin
-  if not Assigned(AEditor) and (Tag in [1, 2, 5, 6, 7]) then
+  if (Tag in [2, 5, 6, 7]) and not Assigned(AEditor) then
     Exit;
 
-  if AEditor.Modified then
-    TEditorForm(AEditor.Form).DoSave;
-  FileName := ExtractFileName(AEditor.FileName);
-  PathName := ExtractFilePath(AEditor.FileName);
+  if Assigned(AEditor) then begin
+    if AEditor.Modified then
+      TEditorForm(AEditor.Form).DoSave;
+    FileName := ExtractFileName(AEditor.FileName);
+  end;
 
   case Tag of
     1:
-      GitCall('status', PathName);
+      GitCall('status', GuiPyOptions.GitLocalRepository);
     2:
-      GitCall('add ' + FileName, PathName);
+      GitCall('add ' + FileName, GuiPyOptions.GitLocalRepository);
     3:
-      if InputQuery('Commit', 'Message', Message) then
-        FGit.GitCall('commit -m "' + Message + '"',
+      if InputQuery('Commit', 'Message', AMessage) then
+        FGit.GitCall('commit -m "' + AMessage + '"',
           GuiPyOptions.GitLocalRepository);
     4:
       GitCall('log --stat', GuiPyOptions.GitLocalRepository);
     5:
-      GitCall('reset HEAD ' + FileName, PathName);
+      GitCall('reset HEAD ' + FileName, GuiPyOptions.GitLocalRepository);
     6:
-      GitCall('checkout -- ' + FileName, PathName);
+      GitCall('checkout -- ' + FileName, GuiPyOptions.GitLocalRepository);
     7:
-      GitCall('rm ' + FileName, PathName);
+      GitCall('rm ' + FileName, GuiPyOptions.GitLocalRepository);
     8:
       GitCall('remote -v', GuiPyOptions.GitLocalRepository);
     9:
