@@ -1,4 +1,4 @@
-unit UTextDiff;
+﻿unit UTextDiff;
 
 // -----------------------------------------------------------------------------
 // Application:     TextDiff                                                   .
@@ -270,11 +270,11 @@ end;
 
 procedure TFTextDiff.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  FreeAndNil(FDiff);
-  FreeAndNil(FCodeEdit1);
-  FreeAndNil(FCodeEdit2);
-  FreeAndNil(FLines1);
-  FreeAndNil(FLines2);
+  FDiff.Free;
+  FCodeEdit1.Free;
+  FCodeEdit2.Free;
+  FLines1.Free;
+  FLines2.Free;
   Action := caFree;
   inherited;
 end;
@@ -473,7 +473,6 @@ begin
     SetFilesCompared(True);
     DisplayDiffs;
     LinkScroll(True);
-    SetActiveControl(CodeEdit);
     CodeEdit.CaretXY := Caret;
     SyncScroll(GetCodeEdit, sbVertical);
   finally
@@ -578,23 +577,18 @@ var
 
 procedure TFTextDiff.SyncScroll(Sender: TObject; ScrollBar: TScrollBarKind);
 begin
+  var Str := Sender.ClassName;
   if IsSyncing or not(FCodeEdit1.WithColoredLines and
     FCodeEdit2.WithColoredLines) then
     Exit;
   IsSyncing := True; // stops recursion
   try
-    if (Sender as TSynEditExDiff) = FCodeEdit1 then
+    if Sender = FCodeEdit1 then
       FCodeEdit2.TopLine := FCodeEdit1.TopLine
     else
       FCodeEdit1.TopLine := FCodeEdit2.TopLine;
-
-    // Workaround to force the scroll bars to show their actual position
-    var CurrMouse := Mouse.CursorPos;
-    SendMessage(FCodeEdit1.Handle, WM_MOUSEMOVE, 0,
-      MakeLParam(FCodeEdit1.Width - 10, FCodeEdit1.Height div 2));
-    SendMessage(FCodeEdit2.Handle, WM_MOUSEMOVE, 0,
-      MakeLParam(FCodeEdit2.Width - 10, FCodeEdit2.Height div 2));
-    Mouse.CursorPos := CurrMouse;
+    //FCodeEdit1.UpdateScrollBars;
+    //FCodeEdit2.UpdateScrollBars;
   finally
     IsSyncing := False;
   end;
@@ -900,7 +894,7 @@ begin
   DoSaveFile(1);
   DoSaveFile(2);
   CodeEdit.CaretXY := Caret;
-  SetActiveControl(CodeEdit);
+  //SetActiveControl(CodeEdit);
   SyncScroll(GetCodeEdit, sbVertical);
 end;
 

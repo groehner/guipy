@@ -271,7 +271,7 @@ begin
   FWithColoredLines := False;
   SetHighlighter;
   SetModified(False);
-  (FMyOwner as TFTextDiff).SetActiveControl(Self);
+  //(FMyOwner as TFTextDiff).SetActiveControl(Self);
 end;
 
 procedure TSynEditExDiff.Save;

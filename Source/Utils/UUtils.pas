@@ -35,6 +35,8 @@ function HideCrLf(const Str: string): string;
 function UnHideCrLf(const Str: string): string;
 function Split(Delimiter: Char; Input: string): TStringList;
 function IsWriteProtected(const FileName: string): Boolean;
+function RemoveReadOnlyAttribute(const FileName: string): Boolean;
+function SetReadOnlyAttribute(const FileName: string): Boolean;
 function DissolveUsername(const Str: string): string;
 function IsHttp(const Pathname: string): Boolean;
 procedure ComboBoxAdd(ComboBox: TComboBox);
@@ -195,6 +197,30 @@ end;
 function IsWriteProtected(const FileName: string): Boolean;
 begin
   Result := FileExists(FileName) and HasAttr(FileName, faReadOnly);
+end;
+
+function RemoveReadOnlyAttribute(const FileName: string): Boolean;
+var
+  Attr: Integer;
+begin
+  Result := False;
+  Attr := FileGetAttr(FileName);
+  if Attr <> -1 then // -1 bedeutet, dass die Datei nicht existiert
+  begin
+    Result := FileSetAttr(FileName, Attr and not faReadOnly) = 0;
+  end;
+end;
+
+function SetReadOnlyAttribute(const FileName: string): Boolean;
+var
+  Attr: Integer;
+begin
+  Result := False;
+  Attr := FileGetAttr(FileName);
+  if Attr <> -1 then
+  begin
+    Result := FileSetAttr(FileName, Attr or faReadOnly) = 0;
+  end;
 end;
 
 procedure StrResetLength(var Str: string);

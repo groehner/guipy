@@ -569,7 +569,17 @@ begin
         if Posi = 0 then
         begin
           StringList.Delete(I);
-          StringList.SaveToFile(Filename);
+          var WriteProtected:= IsWriteProtected(FileName);
+          if WriteProtected then
+            RemoveReadOnlyAttribute(FileName);
+          try
+            StringList.SaveToFile(FileName);
+            if WriteProtected then
+              SetReadOnlyAttribute(FileName);
+          except
+            ErrorMsg(Format(_('File %s contains invalid "PixelsPerInch = 0", ' +
+                    'but cannot delete due to write protection.'), [FileName]));
+          end;
           Break;
         end;
       end
