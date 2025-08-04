@@ -1,3 +1,7 @@
+7.02, 2025.08.04
+bugfix for insert import
+improved handling of subclasses in class editor
+
 7.01, 2025.07.17
 automatic installation of qt_message_handler
 bugfix GUI form resizing

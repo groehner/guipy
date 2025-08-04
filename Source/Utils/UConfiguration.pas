@@ -5722,7 +5722,7 @@ begin
   StringList := TStringList.Create;
   try
     var
-    RegEx := CompiledRegEx('\Str*class\Str+(\w*)(\(.*\))?\Str*:');
+    RegEx := CompiledRegEx('\s*class\s+(\w*)(\(.*\))?\s*:');
     // classes in the active source file
     StringList.LoadFromFile(Pathname);
     var

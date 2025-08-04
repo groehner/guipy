@@ -997,7 +997,7 @@ var
 begin
   if not Assigned(FForm)  or (FileName = '') or (Servername = '') then  Abort;
 
-  TempFileName := FileGetTempName('PyScripter');
+  TempFileName := FileGetTempName('GuiPy');
   Result := SaveWideStringsToFile(TempFileName, FForm.SynEdit.Lines, False);
   if Result then begin
     Result := GI_SSHServices.ScpUpload(Servername, TempFileName, FileName, ErrorMsg);
@@ -2781,7 +2781,7 @@ begin
      if StringList.ValueFromIndex[I] <> FileName then begin
        var RegEx:= CompiledRegEx('\W' + StringList.KeyNames[I] + '\W');
        if RegEx.IsMatch(ActiveSynEdit.Text) then
-         InsertImport('From ' + ChangeFileExt(StringList.ValueFromIndex[I], '') +
+         InsertImport('from ' + ChangeFileExt(StringList.ValueFromIndex[I], '') +
                       ' import ' + StringList.KeyNames[I]);
      end;
   end;
@@ -3361,9 +3361,8 @@ begin
     end;
     Int:= 0;
     while (Int < 10) and IsBookmark(Int) do Inc(Int);
-    if Int < 10 then begin
-      SetBookMark(Int, XPos, YPos);
-      end
+    if Int < 10 then
+      SetBookMark(Int, XPos, YPos)
     else
       Beep;
   end;
@@ -4051,7 +4050,6 @@ begin
     ParseAndCreateModel;
   end;
 end;
-
 
 procedure TEditorForm.DeleteEmptyLine(Line: Integer);
 begin
@@ -5380,12 +5378,12 @@ begin
   end;
 end;
 
-{$ENDREGION 'TEditorForm'}
-
 class function TEditorForm.ToolbarCount: Integer;
 begin
   Result:= 28;
 end;
+
+{$ENDREGION 'TEditorForm'}
 
 initialization
   GI_EditorFactory := TEditorFactory.Create;

@@ -704,6 +704,7 @@ begin
             end;
           end;
         end;
+        FMyEditor.mnEditAddImportsClick(Self);
       end;
       Modified := True;
       if not SkipUpdate then
@@ -853,10 +854,7 @@ begin
   else
     for var I := 0 to TreeView.Items.Count - 1 do
       if TreeView.Items[I].ImageIndex = 0 then
-      begin
-        Result := TreeView.Items[I];
-        Break;
-      end;
+        Exit(TreeView.Items[I]);
 end;
 
 function TFClassEditor.GetClassName(ClassNode: TTreeNode): string;
@@ -2266,13 +2264,14 @@ end;
 
 procedure TFClassEditor.AllAttributesAsParameters(Node: TTreeNode);
 var
-  Str, AClassname: string;
+  Str: string;
   CIte, Ite: IModelIterator;
   Cent: TClassifier;
   Attribute: TAttribute;
   Method: TOperation;
   Parameter: TParameter;
   Posi: Integer;
+  Ancestors: TStringList;
 
   procedure MakeParameterFromAttributes(Cent: TClassifier);
   begin
@@ -2289,7 +2288,7 @@ var
 
 begin
   CBParameter.Clear;
-  AClassname := GetClassName(GetClassNode);
+  Ancestors := TStringList.Create;
   Cent := GetClassifier(GetClassNode);
   if Assigned(Cent) then
   begin
@@ -2298,6 +2297,7 @@ begin
     begin // ToDo n ancestors
       Cent := (Cent as TClass).Ancestor[0];
       MakeParameterFromAttributes(Cent);
+      Ancestors.Add(Cent.Name);
     end;
   end;
 
@@ -2310,16 +2310,11 @@ begin
     while CIte.HasNext do
     begin
       Cent := TClassifier(CIte.Next);
-      if Cent.Name = AClassname then // ToDo check
-        Break;
+      if Ancestors.IndexOf(Cent.Name) > -1 then
+       MakeParameterFromAttributes(Cent);
     end;
-    if Cent.Name = AClassname then
-      while (Cent is TClass) and ((Cent as TClass).AncestorsCount > 0) do
-      begin // Todo n ancestors
-        Cent := (Cent as TClass).Ancestor[0];
-        MakeParameterFromAttributes(Cent);
-      end;
   end;
+  Ancestors.Free;
 
   if Assigned(Node) and IsMethodsNodeLeaf(Node) then
   begin
@@ -3157,7 +3152,8 @@ end;
 
 function TFClassEditor.IsAttributesNodeLeaf(Node: TTreeNode): Boolean;
 begin
-  Result := Assigned(Node) and (Node.Parent.ImageIndex = 8);
+  Result := Assigned(Node) and Assigned(Node.Parent) and
+    (Node.Parent.ImageIndex = 8);
 end;
 
 function TFClassEditor.IsAttributesNode(Node: TTreeNode): Boolean;
@@ -3167,7 +3163,8 @@ end;
 
 function TFClassEditor.IsMethodsNodeLeaf(Node: TTreeNode): Boolean;
 begin
-  Result := Assigned(Node) and (Node.Parent.ImageIndex = 9);
+  Result := Assigned(Node) and Assigned(Node.Parent) and
+    (Node.Parent.ImageIndex = 9);
 end;
 
 function TFClassEditor.IsMethodsNode(Node: TTreeNode): Boolean;

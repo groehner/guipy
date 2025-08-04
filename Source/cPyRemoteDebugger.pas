@@ -785,7 +785,6 @@ procedure TPyRemoteInterpreter.ReInitialize;
 var
   Py: IPyEngineAndGIL;
 begin
-  OutputDebugString('Reinitialize');
   FStoredServerOutput := [];
   Py := SafePyEngine;
   case GI_PyControl.DebuggerState of
@@ -1009,6 +1008,7 @@ begin
 
   if FUseNamedPipes then
     try
+      Sleep(500);  // Give the server some time to import pywin32 and create the pipe
       FNamedPipeStream := Rpyc.core.stream.NamedPipeStream.create_client(FSocketPort.ToString);
       Assert(VarIsPython(FNamedPipeStream), 'TPyRemoteInterpreter.ConnectToServer');
       FUseNamedPipes := True;
@@ -1269,7 +1269,7 @@ begin
   case GI_PyControl.DebuggerState of
     dsPostMortem: ExitPostMortem;
     dsDebugging,
-    dsRunning: RaiseKeyboardInterrupt(FRemotePython.ServerProcess.ProcessId);
+    dsRunning: FRemotePython.ServerProcess.RaiseKeyboardInterrupt;
     dsPaused:
       begin
         GI_PyInterpreter.RemovePrompt;
