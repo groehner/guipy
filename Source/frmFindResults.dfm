@@ -193,7 +193,7 @@ inherited FindResultsWindow: TFindResultsWindow
           MinHeight = 20
         end
         object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-          CustomWidth = 0
+          CustomWidth = 583
         end
         object StatusRightLabel: TSpTBXLabelItem
           Alignment = taRightJustify
@@ -400,23 +400,28 @@ inherited FindResultsWindow: TFindResultsWindow
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionName = 'Save'
+        CollectionIndex = 99
+        CollectionName = 'Save13'
         Name = 'Save'
       end
       item
-        CollectionName = 'Print'
+        CollectionIndex = 70
+        CollectionName = 'Print13'
         Name = 'Print'
       end
       item
-        CollectionName = 'Copy'
+        CollectionIndex = 16
+        CollectionName = 'Copy13'
         Name = 'Copy'
       end
       item
-        CollectionName = 'Search'
+        CollectionIndex = 101
+        CollectionName = 'Search13'
         Name = 'Search'
       end
       item
-        CollectionName = 'Replace'
+        CollectionIndex = 91
+        CollectionName = 'Replace13'
         Name = 'Replace'
       end
       item

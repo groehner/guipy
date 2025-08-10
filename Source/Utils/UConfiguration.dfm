@@ -118,7 +118,7 @@ object FConfiguration: TFConfiguration
         Align = alBottom
         TabOrder = 0
         object BSave: TButton
-          Left = 546
+          Left = 548
           Top = 9
           Width = 75
           Height = 25
@@ -167,7 +167,7 @@ object FConfiguration: TFConfiguration
         end
         object BHelp: TButton
           Tag = 4
-          Left = 209
+          Left = 207
           Top = 9
           Width = 75
           Height = 25
@@ -202,7 +202,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 641
         Height = 435
-        ActivePage = PLanguage
+        ActivePage = PCodeCompletion
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -495,8 +495,8 @@ object FConfiguration: TFConfiguration
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 72
-                Height = 8
+                Width = 179
+                Height = 25
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -506,6 +506,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 72
+                ExplicitHeight = 8
               end
             end
             object CBGutterColor: TSpTBXColorEdit
@@ -750,8 +752,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 91
-                Height = 15
+                Width = 188
+                Height = 28
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Consolas 10pt'
@@ -761,6 +763,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Consolas'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 91
+                ExplicitHeight = 15
               end
             end
             object btnFont: TButton
@@ -1589,6 +1593,16 @@ object FConfiguration: TFConfiguration
             Height = 23
             Associate = ECodeCompletionListSize
             TabOrder = 10
+          end
+          object CBLspDebug: TCheckBox
+            Left = 16
+            Top = 183
+            Width = 497
+            Height = 17
+            Caption = 
+              'Debug LSP-Server to C:\Users\%USERNAME%\AppData\Roaming\GuiPy\Ls' +
+              'pDebug.log'
+            TabOrder = 11
           end
         end
         object PKeystrokes: TTabSheet

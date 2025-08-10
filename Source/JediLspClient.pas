@@ -138,7 +138,6 @@ begin
     'jls\run-jedi-language-server.py');
   if not FileExists(ServerPath) then Exit;
 
-
   CmdLine := Format('"%s" -u "%s"',
     [GI_PyControl.PythonVersion.PythonExecutable, ServerPath]);
   if PyIDEOptions.LspDebug then

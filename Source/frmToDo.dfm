@@ -261,12 +261,12 @@ inherited ToDoWindow: TToDoWindow
     Images = <
       item
         CollectionIndex = 79
-        CollectionName = 'Print'
+        CollectionName = 'Print13'
         Name = 'Print'
       end
       item
         CollectionIndex = 25
-        CollectionName = 'Copy'
+        CollectionName = 'Copy13'
         Name = 'Copy'
       end
       item

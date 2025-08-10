@@ -729,7 +729,6 @@ begin
   FAutoCompletionFont.Assign(Value);
 end;
 
-
 procedure TPythonIDEOptions.SetCodeFolding(const Value: TSynCodeFolding);
 begin
   FCodeFolding.Assign(Value);

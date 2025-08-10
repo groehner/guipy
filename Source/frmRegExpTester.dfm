@@ -576,7 +576,7 @@ inherited RegExpTesterWindow: TRegExpTesterWindow
         Name = 'Delete'
       end
       item
-        CollectionName = 'Execute'
+        CollectionName = 'Execute13'
         Name = 'Execute'
       end
       item

@@ -321,7 +321,7 @@ inherited FunctionListWindow: TFunctionListWindow
       item
         CollectionIndex = 2
         CollectionName = 'CodeImages\Function'
-        Name = 'Function'
+        Name = 'Function13'
       end
       item
         CollectionIndex = 5
@@ -361,7 +361,7 @@ inherited FunctionListWindow: TFunctionListWindow
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionName = 'Copy'
+        CollectionName = 'Copy13'
         Name = 'Copy'
       end
       item

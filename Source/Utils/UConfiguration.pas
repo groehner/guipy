@@ -1130,6 +1130,7 @@ type
     LChatTemperature: TLabel;
     EChatTemperature: TEdit;
     CBAccessibilitySupport: TCheckBox;
+    CBLspDebug: TCheckBox;
 {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1484,6 +1485,7 @@ uses
   dmCommands,
   cPyScripterSettings,
   cPyControl,
+  JediLspClient,
   uEditAppIntfs,
   PythonVersions,
   StringResources,
@@ -2046,6 +2048,8 @@ begin
     CBCompleteWithWordBreakChars.Checked := CompleteWithWordBreakChars;
     CBEditorCodeCompletion.Checked := EditorCodeCompletion;
     CBInterpreterCodeCompletion.Checked := InterpreterCodeCompletion;
+    CBLspDebug.Checked := LspDebug;
+    CBLspDebug.Caption := 'Debug LSP-Server to ' + TPath.Combine(TPyScripterSettings.UserDataPath, 'LspDebug.log');
     UDCodeComletionListSize.Position := CodeCompletionListSize;
     ESpecialPackages.Text := SpecialPackages;
 
@@ -2444,6 +2448,7 @@ begin
     CompleteWithWordBreakChars := CBCompleteWithWordBreakChars.Checked;
     EditorCodeCompletion := CBEditorCodeCompletion.Checked;
     InterpreterCodeCompletion := CBInterpreterCodeCompletion.Checked;
+    LspDebug := CBLspDebug.Checked;
     CodeCompletionListSize := UDCodeComletionListSize.Position;
     SpecialPackages := ESpecialPackages.Text;
 
@@ -2631,6 +2636,7 @@ begin
 
   CommandsDataModule.ApplyEditorOptions;
   PythonIIForm.ApplyEditorOptions;
+  TJedi.CreateServer;
 end;
 
 procedure TFConfiguration.BTempFolderClick(Sender: TObject);
@@ -2803,9 +2809,23 @@ begin
     Str := Str + '  Windows-Version: ' + TOSVersion.ToString + CrLf;
     Str := Str + '  CmdLine: ' + CmdLine + CrLf;
     Str := Str + CrLf;
-    Str := Str + '  ' + CMachine + CrLf;
-    Str := Str + '  ' + App + CrLf;
+    Str := Str + '  MachineStorage: ' + CMachine + CrLf;
+    Str := Str + '  AppStorage: ' + App + CrLf;
     Str := Str + CrLf;
+    Str := Str + '  PublicPath: ' + TPath.Combine(TPath.GetPublicPath, 'GuiPy') + CrLf;
+    Str := Str + '  LspServerPath: ' + TPath.Combine(TPyScripterSettings.LspServerPath, 'jls') + CrLf;
+    Str := Str + '  StylesFilesDir: ' + TPyScripterSettings.StylesFilesDir + CrLf;
+    Str := Str + '  ColorThemesFilesDir: ' + TPyScripterSettings.ColorThemesFilesDir + CrLf;
+    Str := Str + '  AppDebugInspectorsDir: ' + TPyScripterSettings.AppDebugInspectorsDir + CrLf;
+    Str := Str + CrLf;
+    Str := Str + '  UserDataPath: ' + TPyScripterSettings.UserDataPath + CrLf;
+    Str := Str + '  UserDebugInspectorsDir: ' + TPyScripterSettings.UserDebugInspectorsDir + CrLf;
+    Str := Str + CrLf;
+    Str := Str + '  OptionsFileName: ' + TPyScripterSettings.OptionsFileName + CrLf;
+    Str := Str + '  EngineInitFile: ' + TPyScripterSettings.EngineInitFile + CrLf;
+    Str := Str + '  LspDebugLogFile: ' + TPath.Combine(TPyScripterSettings.UserDataPath, 'LspDebug.log') + CrLf;
+    Str := Str + '  LspServerFile: ' + TPath.Combine(TPyScripterSettings.LspServerPath, 'jls\run-jedi-language-server.py') + CrLf;
+
     Str := Str + StringOfChar('-', 80) + CrLf;
     Str := Str + '--- ' + CMachine + CrLf + CrLf;
     StringList := TStringList.Create;

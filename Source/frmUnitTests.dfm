@@ -273,7 +273,7 @@ inherited UnitTestWindow: TUnitTestWindow
       Caption = '&Run'
       Hint = 'Run selected tests'
       ImageIndex = 5
-      ImageName = 'Run'
+      ImageName = 'Run1'
       OnExecute = actRunExecute
     end
     object actStop: TAction

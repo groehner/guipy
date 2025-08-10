@@ -262,7 +262,9 @@ begin
     CreateDirectory(WorkDir);
     CopyFilesRecursive(TPath.Combine(FromDir, 'Variable Inspectors\dataframe'), WorkDir);
 
-    WorkDir:= TPath.Combine(ProgData, 'Lsp\jls');
+    if CBPortableApplication.Checked
+      then WorkDir:= TPath.Combine(ProgData, 'Lib\Lsp\jls')
+      else WorkDir:= TPath.Combine(ProgData, 'Lsp\jls');
     CreateDirectory(WorkDir);
     CopyFilesRecursive(TPath.Combine(FromDir, 'Lib\Lsp\jls'), WorkDir);
 

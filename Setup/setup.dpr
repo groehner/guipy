@@ -1,6 +1,11 @@
 program setup;
 
 uses
+  madExcept,
+  madLinkDisAsm,
+  madListHardware,
+  madListProcesses,
+  madListModules,
   Forms,
   Controls,
   SysUtils,
