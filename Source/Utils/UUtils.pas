@@ -54,7 +54,6 @@ function IsAdministrator: Boolean;
 function HasAssociationWithGuiPy(const Extension: string): Boolean;
 function GetRegisteredGuiPy: string;
 function HideBlanks(const Str: string): string;
-function GetLongPathName(const Pathname: string): string;
 function Left(const Str: string; Num: Integer): string;
 function Right(const Str: string; Num: Integer): string;
 function CountChar(Chr: Char; const Str: string): Integer;
@@ -82,7 +81,7 @@ function IsUNC(const Pathname: string): Boolean;
 function ExtractFileNameEx(Str: string): string;
 function StripHttpParams(const Str: string): string;
 function ToWindows(Str: string): string;
-function FileExistsCaseSensitive(const FileName: TFileName): Boolean;
+function FileExistsCaseSensitive(const Filepath: string): Boolean;
 procedure SetAnimation(Value: Boolean);
 function IsDunder(Name: string): Boolean;
 function StringTimesN(Str: string; Num: Integer): string;
@@ -555,35 +554,6 @@ begin
     Result := Str;
 end;
 
-function GetLongPathName(const Pathname: string): string;
-var
-  Drive: string;
-  Path: string;
-  SearchRec: TSearchRec;
-begin
-  if Pathname = '' then
-    Exit;
-  Drive := ExtractFileDrive(Pathname);
-  Path := Copy(Pathname, Length(Drive) + 1, Length(Pathname));
-  if (Path = '') or (Path = '\') then
-  begin
-    Result := Pathname;
-    if Result[Length(Result)] = '\' then
-      Delete(Result, Length(Result), 1);
-  end
-  else
-  begin
-    Path := GetLongPathName(ExtractFileDir(Pathname));
-    if FindFirst(Pathname, faAnyFile, SearchRec) = 0 then
-    begin
-      Result := Path + '\' + SearchRec.FindData.cFileName;
-      SysUtils.FindClose(SearchRec);
-    end
-    else
-      Result := Path + '\' + ExtractFileName(Pathname);
-  end;
-end;
-
 function Left(const Str: string; Num: Integer): string;
 begin
   if Num >= 0 then
@@ -926,15 +896,13 @@ begin
   Result := Str;
 end;
 
-function FileExistsCaseSensitive(const FileName: TFileName): Boolean;
-var
-  SearchRec: TSearchRec;
+function FileExistsCaseSensitive(const Filepath: string): Boolean;
 begin
-  Result := FindFirst(FileName, faAnyFile, SearchRec) = 0;
-  if Result then
-    SysUtils.FindClose(SearchRec);
-  Result := Result and (SearchRec.Attr and faDirectory = 0) and
-    (SearchRec.Name = ExtractFileName(FileName));
+  if not FileExists(Filepath) then
+    Exit(False);
+  var Filename := ExtractFileName(Filepath);
+  var FileNames := TDirectory.GetFiles(ExtractFilePath(Filepath), Filename);
+  Result:= (ExtractFilename(FileNames[0]) = Filename);
 end;
 
 procedure SetAnimation(Value: Boolean);

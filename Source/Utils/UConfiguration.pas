@@ -1384,7 +1384,7 @@ type
     procedure MakeAssociations;
     procedure RegisterGuiPy;
     procedure ShowPage(Page: Integer);
-    procedure FolderSelect(Edit: TEdit; const Foldername: string);
+    function FolderSelect(Edit: TEdit; const Foldername: string): string;
     function GetConfigurationAddress(const Str: string): string;
     function GetDumpText: string;
 
@@ -1472,6 +1472,7 @@ uses
   Registry,
   IOUtils,
   Winapi.RichEdit,
+  System.RegularExpressions,
   JvJCLUtils,
   JvGnugettext,
   JvAppStorage,
@@ -1863,15 +1864,13 @@ begin
   Close;
 end;
 
-procedure TFConfiguration.FolderSelect(Edit: TEdit; const Foldername: string);
-var
-  Str: string;
+function TFConfiguration.FolderSelect(Edit: TEdit; const Foldername: string): string;
 begin
+  Result:= Foldername;
   FolderDialog.DefaultFolder := Foldername;
-  if FolderDialog.Execute then
-  begin
-    Str := WithoutTrailingSlash(FolderDialog.FileName);
-    ShortenPath(Edit, Str);
+  if FolderDialog.Execute then begin
+    Result:= ExcludeTrailingPathDelimiter(FolderDialog.Filename);
+    ShortenPath(Edit, Result);
   end;
 end;
 
@@ -2641,33 +2640,27 @@ end;
 
 procedure TFConfiguration.BTempFolderClick(Sender: TObject);
 var
-  Str: string;
+  Path: string;
 begin
   if TPyScripterSettings.IsPortable then
-    Str := TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
+    Path := TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
   else
-  begin
-    Str := GetTempDir;
-    Str := IncludeTrailingPathDelimiter(GetLongPathName(Str));
-  end;
-  SysUtils.ForceDirectories(Str);
-  ShortenPath(ETempFolder, Str);
+    Path := TPath.GetTempPath;
+  SysUtils.ForceDirectories(Path);
+  ShortenPath(ETempFolder, Path);
 end;
 
 procedure TFConfiguration.SBTempSelectClick(Sender: TObject);
 var
-  Str: string;
+  Path: string;
 begin
   if TPyScripterSettings.IsPortable then
-    Str := TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
+    Path := TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
   else
-  begin
-    Str := GetTempDir;
-    Str := IncludeTrailingPathDelimiter(GetLongPathName(Str));
-  end;
-  FolderSelect(ETempFolder, Str);
-  SysUtils.ForceDirectories(Str);
-  ShortenPath(ETempFolder, Str);
+    Path := TPath.GetTempPath;
+  Path := FolderSelect(ETempFolder, Path);
+  SysUtils.ForceDirectories(Path);
+  ShortenPath(ETempFolder, Path);
 end;
 
 procedure TFConfiguration.DoHelp(Adresse: string);
@@ -5735,38 +5728,28 @@ end;
 
 function TFConfiguration.GetClassesAndFilename(Pathname: string): TStringList;
 var
-  SearchRec: TSearchRec;
+  Filename, Text, Path, Key: string;
+  RegEx: TRegEx;
+  Matches: TMatchCollection;
 begin
   Result := TStringList.Create;
-  var
-  StringList := TStringList.Create;
-  try
-    var
-    RegEx := CompiledRegEx('\s*class\s+(\w*)(\(.*\))?\s*:');
-    // classes in the active source file
-    StringList.LoadFromFile(Pathname);
-    var
-    Matches := RegEx.Matches(StringList.Text);
+  RegEx := CompiledRegEx('\s*class\s+(\w*)(\(.*\))?\s*:');
+  // classes in the active source file
+  Text := IOUtils.TFile.ReadAllText(Pathname);
+  Matches := RegEx.Matches(Text);
+  for var I := 0 to Matches.Count - 1 do
+    Result.Add(Matches[I].Groups[1].Value + '=' + ExtractFileName(Pathname));
+  // classes in other files of the active directory
+  Path := ExtractFilePath(Pathname);
+  for Filename in TDirectory.GetFiles(Path, '*.py') do begin
+    Text := IOUtils.TFile.ReadAllText(Filename);
+    Matches := RegEx.Matches(Text);
     for var I := 0 to Matches.Count - 1 do
-      Result.Add(Matches[I].Groups[1].Value + '=' + ExtractFileName(Pathname));
-    // classes in other files of the active directory
-    var
-    Path := ExtractFilePath(Pathname);
-    if FindFirst(Path + '\*.py', faNormal, SearchRec) = 0 then
-      repeat
-        StringList.LoadFromFile(Path + '\' + SearchRec.Name);
-        Matches := RegEx.Matches(StringList.Text);
-        for var I := 0 to Matches.Count - 1 do
-        begin
-          var
-          Key := Matches[I].Groups[1].Value;
-          if Result.IndexOfName(Key) = -1 then
-            Result.Add(Key + '=' + SearchRec.Name);
-        end;
-      until FindNext(SearchRec) <> 0;
-  finally
-    FindClose(SearchRec);
-    FreeAndNil(StringList);
+    begin
+      Key := Matches[I].Groups[1].Value;
+      if Result.IndexOfName(Key) = -1 then
+        Result.Add(Key + '=' + ExtractFilename(Filename));
+    end;
   end;
 end;
 

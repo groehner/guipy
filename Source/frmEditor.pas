@@ -1460,8 +1460,7 @@ begin
   var RecoveryDir := TPyScripterSettings.RecoveryDir;
   if not TDirectory.Exists(RecoveryDir) then Exit;
 
-  var RecoveredFiles := TDirectory.GetFiles(RecoveryDir);
-  for var RecoveredFile in RecoveredFiles do
+  for var RecoveredFile in TDirectory.GetFiles(RecoveryDir) do
   begin
     var FName := TPath.GetFileNameWithoutExtension(RecoveredFile);
     if not TryStrToInt(FName, UntitledNumber) then Continue;

@@ -69,8 +69,10 @@ type
 
 implementation
 
-uses Windows,
-  SysUtils,
+uses
+  Winapi.Windows,
+  System.IOUtils,
+  System.SysUtils,
   Graphics,
   Controls,
   Forms,
@@ -374,21 +376,14 @@ end;
 function TDMUMLModule.OpenFolderActionExecute(Sender: TObject): Boolean;
 
   procedure AddFileNames(Files: TStringList; const Path, Ext: string;
-    Rekursiv: Boolean);
+    Recursive: Boolean);
   var
-    SearchRec: TSearchRec;
+    SearchOption: TSearchOption;
   begin
-    if FindFirst(Path + '\*.*', faReadOnly or faDirectory, SearchRec) = 0 then
-    begin
-      repeat
-        if (SearchRec.Name <> '.') and (SearchRec.Name <> '..') then
-          if ((SearchRec.Attr and faDirectory) = faDirectory) and Rekursiv then
-            AddFileNames(Files, Path + '\' + SearchRec.Name, Ext, Rekursiv)
-          else if CompareText(ExtractFileExt(SearchRec.Name), Ext) = 0 then
-            Files.Add(Path + '\' + SearchRec.Name);
-      until FindNext(SearchRec) <> 0;
-      FindClose(SearchRec);
-    end;
+    if Recursive
+      then SearchOption := TSearchOption.soAllDirectories
+      else SearchOption := TSearchOption.soTopDirectoryOnly;
+    Files.AddStrings(TDirectory.GetFiles(Path, '*' + Ext, SearchOption));
   end;
 
 begin

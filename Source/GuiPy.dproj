@@ -130,7 +130,7 @@
         <MapFile>3</MapFile>
         <ILINK_MapFileType>DetailedSegments</ILINK_MapFileType>
         <DCC_Optimize>false</DCC_Optimize>
-        <DCC_Define>JVDOCK_DEBUG;madExcept;DROPWATCH;USE_TOOLBAR_TB2K;$(DCC_Define)</DCC_Define>
+        <DCC_Define>JVDOCK_DEBUG;madExcept;DROPWATCH;USE_TOOLBAR_TB2K;LeakChecking;$(DCC_Define)</DCC_Define>
         <VerInfo_Build>0</VerInfo_Build>
         <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=7.2.0.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>GuiPy_Icon.ico</Icon_MainIcon>
