@@ -1,3 +1,6 @@
+7.03, 2025.08.15
+eliminating exception at termination of GuiPy
+
 7.02, 2025.08.04
 bugfix for insert import
 improved handling of subclasses in class editor

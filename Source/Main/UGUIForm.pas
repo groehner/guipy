@@ -154,6 +154,7 @@ type
     property Width;
     // events
     // Tk
+    {$WARNINGS OFF}
     property Activate: TEvent read FActivate write FActivate;
     property ButtonPress: TEvent read FButtonPress write FButtonPress;
     property ButtonRelease: TEvent read FButtonRelease write FButtonRelease;
@@ -170,6 +171,7 @@ type
     property Motion: TEvent read FMotion write FMotion;
     property MouseWheel: TEvent read FMouseWheel write FMouseWheel;
     property Visibility: TEvent read FVisibility write FVisibility;
+    {$WARNINGS ON}
     // Qt
     // attributes
     property Animated: Boolean read FAnimated write FAnimated;

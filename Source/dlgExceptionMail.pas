@@ -722,10 +722,9 @@ end;
 //--------------------------------------------------------------------------------------------------
 
 initialization
-  // deactivate, use madexcept instead
-  // InitializeHandler;
+  InitializeHandler;
 
 finalization
-  // UnInitializeHandler;
+  UnInitializeHandler;
 
 end.

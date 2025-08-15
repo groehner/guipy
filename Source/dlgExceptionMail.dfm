@@ -14,8 +14,8 @@ inherited ExceptionDialogMail: TExceptionDialogMail
   OnPaint = FormPaint
   OnResize = FormResize
   OnShow = FormShow
-  ExplicitWidth = 434
-  ExplicitHeight = 283
+  ExplicitWidth = 438
+  ExplicitHeight = 284
   DesignSize = (
     422
     245)
@@ -47,8 +47,6 @@ inherited ExceptionDialogMail: TExceptionDialogMail
     TabOrder = 4
     WantReturns = False
     WordWrap = False
-    ExplicitWidth = 403
-    ExplicitHeight = 136
   end
   object TextMemo: TMemo
     Left = 56
@@ -64,7 +62,6 @@ inherited ExceptionDialogMail: TExceptionDialogMail
     ReadOnly = True
     TabOrder = 1
     WantReturns = False
-    ExplicitWidth = 263
   end
   object SendBtn: TButton
     Left = 337
@@ -76,7 +73,6 @@ inherited ExceptionDialogMail: TExceptionDialogMail
     Caption = '&Send'
     TabOrder = 0
     OnClick = SendBtnClick
-    ExplicitLeft = 333
   end
   object OkBtn: TButton
     Left = 338
@@ -88,7 +84,6 @@ inherited ExceptionDialogMail: TExceptionDialogMail
     Default = True
     ModalResult = 1
     TabOrder = 2
-    ExplicitLeft = 334
   end
   object DetailsBtn: TButton
     Left = 338
@@ -101,6 +96,5 @@ inherited ExceptionDialogMail: TExceptionDialogMail
     Enabled = False
     TabOrder = 3
     OnClick = DetailsBtnClick
-    ExplicitLeft = 334
   end
 end

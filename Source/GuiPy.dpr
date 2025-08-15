@@ -14,11 +14,6 @@ program GuiPy;
 {$RTTI EXPLICIT METHODS([]) PROPERTIES([]) FIELDS([])}
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
   WinApi.Windows,
   System.SysUtils,
   Vcl.HTMLHelpViewer,
@@ -202,7 +197,8 @@ uses
   uLLMSupport in 'uLLMSupport.pas',
   frmSuggest in 'frmSuggest.pas' {SuggestWindow},
   UUMLInteractive in 'Main\UUMLInteractive.pas' {FUMLInteractive},
-  ULifeline in 'SequenceDiagram\ULifeline.pas';
+  ULifeline in 'SequenceDiagram\ULifeline.pas',
+  dlgExceptionMail in 'dlgExceptionMail.pas' {ExceptionDialogMail};
 
 {$R *.RES}
 

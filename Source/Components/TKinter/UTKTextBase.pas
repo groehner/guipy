@@ -130,7 +130,9 @@ type
     property Justify;
     property ReadOnlyBackground;
     property Scrollbar;
+    {$WARNINGS OFF} // ancestor TControl has method Show
     property Show: Boolean read FShow write FShow default True;
+    {$WARNINGS ON}
     property State: TTextState3 read FState write SetState default normal;
     property TakeFocus;
     property Text: string read FText write SetText;

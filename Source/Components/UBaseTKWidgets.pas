@@ -162,7 +162,9 @@ type
     property Enter: TEvent read FEnter write FEnter;
     property FocusIn: TEvent read FFocusIn write FFocusIn;
     property FocusOut: TEvent read FFocusOut write FFocusOut;
+    {$WARNINGS OFF}
     property KeyPress: TEvent read FKeyPress write FKeyPress;
+    {$WARNINGS ON}
     property KeyRelease: TEvent read FKeyRelease write FKeyRelease;
     property Leave: TEvent read FLeave write FLeave;
     property Motion: TEvent read FMotion write FMotion;

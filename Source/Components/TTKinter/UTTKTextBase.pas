@@ -77,7 +77,9 @@ type
     procedure SetText(Value: string); override;
     procedure Paint; override;
   published
+    {$WARNINGS OFF} // ancestor TControl has method Show
     property Show: Boolean read FShow write FShow default True;
+    {$WARNINGS ON}
     property Text: string read FText write SetText;
     property TakeFocus;
   end;

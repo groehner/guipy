@@ -32,7 +32,9 @@ type
     FKey: string;
     FButton: Integer;
   public
+    {$WARNINGS OFF}
     constructor Create(AOwner: TComponent; Name: string);
+    {$WARNINGS ON}
     function GetModifiers(Eventname: string): string;
     function GetDetail(Eventname: string): string;
     procedure Clear;
