@@ -648,6 +648,7 @@ end;
 procedure TLLMChatForm.FormDestroy(Sender: TObject);
 begin
   ResourcesDataModule.SynPythonSyn.UnhookAttrChangeEvent(PythonHighlighterChange);
+  LLMChat.Free;
   FMarkdownProcessor.Free;
 end;
 

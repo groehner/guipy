@@ -155,7 +155,7 @@
         <DCC_ImportedDataReferences>false</DCC_ImportedDataReferences>
         <DCC_Optimize>false</DCC_Optimize>
         <VerInfo_MajorVer>7</VerInfo_MajorVer>
-        <DCC_UnitSearchPath>D:\GitProjekte\SVGIconImageList\Source;D:\GitProjekte\SVGIconImageList\Image32\source;D:\GitProjekte\jcl\jcl\source\include;D:\GitProjekte\jcl\jcl\source\common;D:\GitProjekte\jcl\jcl\source\windows;D:\GitProjekte\jvcl\jvcl\run;D:\GitProjekte\jvcl\jvcl\common;D:\GitProjekte\SpTBXLib\Source;D:\GitProjekte\SynEdit\Source;D:\GitProjekte\SynEdit\Source\Highlighters;D:\GitProjekte\MustangPeak\CommonLib\Source;D:\GitProjekte\SynWeb;D:\GitProjekte\VirtualTreeView\Source;D:\GitProjekte\MustangPeak\VirtualShellTools\Source;D:\GitProjekte\delphi-detours-library\Source;D:\GitProjekte\jvcl\jvcl\resources;D:\GitProjekte\delphi-markdown\source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>D:\GitProjekte\SVGIconImageList\Source;D:\GitProjekte\SVGIconImageList\Image32\source;D:\GitProjekte\jcl\jcl\source\include;D:\GitProjekte\jcl\jcl\source\common;D:\GitProjekte\jcl\jcl\source\windows;D:\GitProjekte\jvcl\jvcl\run;D:\GitProjekte\jvcl\jvcl\common;D:\GitProjekte\SpTBXLib\Source;D:\GitProjekte\SynEdit\Source;D:\GitProjekte\SynEdit\Source\Highlighters;D:\GitProjekte\MustangPeak\CommonLib\Source;D:\GitProjekte\SynWeb;D:\GitProjekte\VirtualTreeView\Source;D:\GitProjekte\MustangPeak\VirtualShellTools\Source;D:\GitProjekte\delphi-detours-library\Source;D:\GitProjekte\jvcl\jvcl\resources;D:\GitProjekte\delphi-markdown\source;D:\GitProjekte\FastMM5;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_DebugDCUs>true</DCC_DebugDCUs>
         <VerInfo_MinorVer>2</VerInfo_MinorVer>
     </PropertyGroup>
@@ -333,11 +333,9 @@
         <DCCReference Include="JvDockVSNetStyleSpTBX.pas"/>
         <DCCReference Include="frmFile.pas">
             <Form>FileForm</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SequenceDiagram\UConnectForm.pas">
             <Form>FConnectForm</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SequenceDiagram\USequenceForm.pas">
             <Form>FSequenceForm</Form>
@@ -468,7 +466,6 @@
         <DCCReference Include="Components\UBaseQtWidgets.pas"/>
         <DCCReference Include="Main\UGUIForm.pas">
             <Form>FGUIForm</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Components\PyQt\UQtButtonBase.pas"/>
         <DCCReference Include="Components\PyQt\UQtFrameBased.pas"/>
@@ -478,36 +475,29 @@
         <DCCReference Include="Components\PyQt\UQtWidgetDescendants.pas"/>
         <DCCReference Include="dmResources.pas">
             <Form>ResourcesDataModule</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="dlgSynEditOptions.pas">
             <Form>EditorOptionsDialog</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Utils\UZOrderControl.pas"/>
         <DCCReference Include="dlgCustomShortcuts.pas">
             <Form>frmCustomKeyboard</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SynHighlighterPython.pas"/>
         <DCCReference Include="frmLLMChat.pas">
             <Form>LLMChatForm</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uLLMSupport.pas"/>
         <DCCReference Include="frmSuggest.pas">
             <Form>SuggestWindow</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Main\UUMLInteractive.pas">
             <Form>FUMLInteractive</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SequenceDiagram\ULifeline.pas"/>
         <DCCReference Include="dlgExceptionMail.pas">
             <Form>ExceptionDialogMail</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <None Include="GuiPy.todo"/>
         <None Include="ModelSupport_PyScripter\default.txaPackage"/>

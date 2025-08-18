@@ -232,7 +232,6 @@ constructor TFilePersistInfo.CreateFromEditor(Editor: IEditor);
   end;
 
 begin
-  Create;
   FileKind:= fkEditor;
   FileName := Editor.FileId;
   TabControlIndex := Editor.TabControlIndex;

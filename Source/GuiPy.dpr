@@ -14,6 +14,7 @@ program GuiPy;
 {$RTTI EXPLICIT METHODS([]) PROPERTIES([]) FIELDS([])}
 
 uses
+  //FastMM5,
   WinApi.Windows,
   System.SysUtils,
   Vcl.HTMLHelpViewer,
@@ -224,6 +225,5 @@ begin
   Application.CreateForm(TCommandsDataModule, CommandsDataModule);
   Application.CreateForm(TPyIDEMainForm, PyIDEMainForm);
   Application.Run;
-
  end.
 

@@ -238,6 +238,7 @@ inherited PythonIIForm: TPythonIIForm
         CollectionName = 'CodeImages\Keyword'
         Name = 'Keyword'
       end>
+    ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True
     Left = 40
     Top = 160
@@ -245,40 +246,38 @@ inherited PythonIIForm: TPythonIIForm
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionIndex = 26
         CollectionName = 'Cut'
         Name = 'Cut'
       end
       item
-        CollectionIndex = 25
         CollectionName = 'Copy'
         Name = 'Copy'
       end
       item
-        CollectionIndex = 74
         CollectionName = 'Paste'
         Name = 'Paste'
       end
       item
-        CollectionIndex = 30
+        CollectionIndex = 21
         CollectionName = 'Delete'
         Name = 'Delete'
       end
       item
-        CollectionIndex = 36
+        CollectionIndex = 27
         CollectionName = 'EditOptions'
         Name = 'EditOptions'
       end
       item
-        CollectionIndex = 93
+        CollectionIndex = 84
         CollectionName = 'Python'
         Name = 'Python'
       end
       item
-        CollectionIndex = 90
+        CollectionIndex = 81
         CollectionName = 'PySetup'
         Name = 'PySetup'
       end>
+    ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True
     Width = 20
     Height = 20
