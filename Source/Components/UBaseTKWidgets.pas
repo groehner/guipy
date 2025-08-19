@@ -86,7 +86,7 @@ type
     function GetMouseEvents(ShowEvents: Integer): string; virtual;
     function GetKeyboardEvents(ShowEvents: Integer): string; virtual;
     function GetCompound: TUCompound; virtual; abstract;
-    function GetAttrAsKey(Attr: string): string;
+    function GetAttrAsKey(const Attr: string): string;
     procedure Calculate3DColors(var DarkColor, LightColor: TColor;
       Background: TColor);
     procedure CalculatePadding(var PaddingLeft, PaddingTop, PaddingRight,
@@ -94,12 +94,12 @@ type
     procedure CalculateText(var TextWidth, TextHeight: Integer;
       var StringList: TStringList); virtual; abstract;
     procedure AddParameter(const Value, Par: string);
-    procedure MakeControlVar(Variable, ControlVar: string; Value: string = '';
+    procedure MakeControlVar(const Variable, ControlVar: string; Value: string = '';
       Typ: string = 'String');
     procedure MakeImage(const Value: string);
-    procedure MakeValidateCommand(Attr, Value: string);
-    procedure MakeScrollbar(Value, TkTyp: string);
-    procedure MakeScrollbars(Value, TkTyp: string);
+    procedure MakeValidateCommand(const Attr, Value: string);
+    procedure MakeScrollbar(const Value, TkTyp: string);
+    procedure MakeScrollbars(const Value, TkTyp: string);
     procedure PaintAScrollbar(Value: Boolean);
     procedure PaintScrollbars(Scrollbar: TScrollbar);
     procedure SetScrollbar(Value: Boolean);
@@ -110,18 +110,18 @@ type
       virtual; abstract;
     procedure PaintScrollbar(Rect: TRect; Horizontal: Boolean;
       TTK: Boolean = False);
-    procedure ChangeCommand(Attr, Value: string);
+    procedure ChangeCommand(const Attr, Value: string);
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
-    procedure SetEvent(Event: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
+    procedure SetEvent(const Event: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
     procedure DeleteEvents; override;
     procedure DeleteWidget; override;
     procedure DeleteEventHandler(const Event: string); override;
-    procedure NewWidget(Widget: string = ''); override;
-    function MakeBinding(Eventname: string): string; override;
+    procedure NewWidget(const Widget: string = ''); override;
+    function MakeBinding(const Eventname: string): string; override;
     function MakeHandler(const Event: string): string; override;
     procedure Resize; override;
     procedure SetPositionAndSize; override;
@@ -173,7 +173,7 @@ type
 
   TKMainWindow = class(TBaseWidget)
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerParameter(const Event: string): string; override;
     function Handlername(const Event: string): string; override;
@@ -699,12 +699,12 @@ begin
     (Self as TTKPanedWindow).Resize;
 end;
 
-function TBaseTkWidget.GetAttrAsKey(Attr: string): string;
+function TBaseTkWidget.GetAttrAsKey(const Attr: string): string;
 begin
   Result := 'self.' + Name + FNameExtension + '[''' + LowerCase(Attr) + ''']';
 end;
 
-procedure TBaseTkWidget.SetAttribute(Attr, Value, Typ: string);
+procedure TBaseTkWidget.SetAttribute(const Attr, Value, Typ: string);
 var
   Key: string;
 begin
@@ -747,7 +747,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.SetEvent(Event: string);
+procedure TBaseTkWidget.SetEvent(const Event: string);
 begin
   if not Partner.hasText('def ' + HandlerNameAndParameter(Event)) then
     Partner.InsertProcedure(CrLf + MakeHandler(Event));
@@ -785,7 +785,7 @@ begin
   Partner.ReplaceWord(Old, New, False);
 end;
 
-procedure TBaseTkWidget.MakeControlVar(Variable, ControlVar: string;
+procedure TBaseTkWidget.MakeControlVar(const Variable, ControlVar: string;
   Value: string = ''; Typ: string = 'String');
 begin
   var
@@ -821,7 +821,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.ChangeCommand(Attr, Value: string);
+procedure TBaseTkWidget.ChangeCommand(const Attr, Value: string);
 var
   Nam, Key: string;
 begin
@@ -840,7 +840,7 @@ begin
   end;
 end;
 
-function TBaseTkWidget.MakeBinding(Eventname: string): string;
+function TBaseTkWidget.MakeBinding(const Eventname: string): string;
 var
   Event: TEvent;
 begin
@@ -914,7 +914,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.MakeValidateCommand(Attr, Value: string);
+procedure TBaseTkWidget.MakeValidateCommand(const Attr, Value: string);
 var
   Key: string;
 begin
@@ -954,7 +954,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.MakeScrollbar(Value, TkTyp: string);
+procedure TBaseTkWidget.MakeScrollbar(const Value, TkTyp: string);
 begin
   if Value = 'True' then
     MakeScrollbars('horizontal', TkTyp)
@@ -962,7 +962,7 @@ begin
     MakeScrollbars('none', TkTyp);
 end;
 
-procedure TBaseTkWidget.MakeScrollbars(Value, TkTyp: string);
+procedure TBaseTkWidget.MakeScrollbars(const Value, TkTyp: string);
 var
   ScrollbarName, OldValue: string;
   WidthNoScrollbar, HeightNoScrollbar, WidthScrollbar, HeightScrollbar: Integer;
@@ -1215,7 +1215,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TBaseTkWidget.NewWidget(Widget: string = '');
+procedure TBaseTkWidget.NewWidget(const Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   InsertValue('self.' + Name + ' = ' + Widget + '(' + GetContainer + ')');
@@ -1347,7 +1347,7 @@ begin
   end;
 end;
 
-procedure TKMainWindow.SetAttribute(Attr, Value, Typ: string);
+procedure TKMainWindow.SetAttribute(const Attr, Value, Typ: string);
 var
   Str1, Str2: string;
 begin

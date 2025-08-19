@@ -64,9 +64,9 @@ type
   TTKFrame = class(TTKMiscBaseWidget)
   public
     constructor Create(Owner: TComponent); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
   published
     property Background;
     property BorderWidth;
@@ -81,9 +81,9 @@ type
     procedure SetLabelAnchor(Value: TLabelAnchor);
   public
     constructor Create(Owner: TComponent); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     procedure Paint; override;
   published
     property LabelAnchor: TLabelAnchor read FLabelAnchor write SetLabelAnchor
@@ -102,10 +102,10 @@ type
     procedure SetRValue(Value: Real);
   public
     constructor Create(Owner: TComponent); override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
-    procedure MakeCommand(Attr, Value: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
+    procedure MakeCommand(const Attr, Value: string); override;
     function GetWidgetStylename: string; override;
     procedure Paint; override;
   published
@@ -130,10 +130,10 @@ type
     procedure SetConfiguration;
   public
     constructor Create(Owner: TComponent); override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
-    procedure MakeCommand(Attr, Value: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
+    procedure MakeCommand(const Attr, Value: string); override;
     procedure Paint; override;
   published
     property BorderWidth;
@@ -152,8 +152,8 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
-    procedure MakeCommand(Attr, Value: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
+    procedure MakeCommand(const Attr, Value: string); override;
     function GetWidgetStylename: string; override;
     procedure Paint; override;
   published
@@ -167,7 +167,7 @@ type
     function GetPos(Num: Integer): Integer;
   public
     constructor Create(Owner: TComponent); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
     procedure Resize; override;
     procedure Paint; override;
@@ -183,22 +183,22 @@ type
     FOldItems: TStrings;
     FCheckboxes: Boolean;
     procedure SetColumns(Value: Integer);
-    procedure SetLabel(Value: string);
+    procedure SetLabel(const Value: string);
     procedure SetItems(Value: TStrings);
     procedure SetCheckboxes(Value: Boolean);
-    procedure ChangeCommand(Value: string);
+    procedure ChangeCommand(const Value: string);
     procedure MakeButtongroupItems;
-    procedure MakeLabel(ALabel: string);
+    procedure MakeLabel(const ALabel: string);
     function ItemsInColumn(Num: Integer): Integer;
     function RBName(Num: Integer): string;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure DeleteWidget; override;
-    procedure MakeCommand(Attr, Value: string); override;
+    procedure MakeCommand(const Attr, Value: string); override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
   published
@@ -223,8 +223,8 @@ type
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
   published
@@ -242,7 +242,7 @@ type
     FSelectMode: TSelectMode;
     FShowHeadings: Boolean;
     procedure SetColumns(Value: TStrings);
-    procedure SetDisplayColumns(Value: string);
+    procedure SetDisplayColumns(const Value: string);
     procedure SetItems(Value: TStrings);
     procedure SetShowHeadings(Value: Boolean);
     procedure MakeColumns;
@@ -254,8 +254,8 @@ type
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure DeleteWidget; override;
     function GetWidgetStylename: string; override;
     procedure Paint; override;
@@ -281,9 +281,9 @@ type
     procedure SetRValue(Value: Real);
   public
     constructor Create(Owner: TComponent); override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
     function GetWidgetStylename: string; override;
   published
@@ -297,7 +297,7 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property Orient;
@@ -306,7 +306,7 @@ type
   TTKSizeGrip = class(TTKMiscBaseWidget)
   public
     constructor Create(Owner: TComponent); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
@@ -379,7 +379,7 @@ begin
   ControlStyle := [csAcceptsControls];
 end;
 
-procedure TTKFrame.NewWidget(Widget: string = '');
+procedure TTKFrame.NewWidget(const Widget: string = '');
 begin
   if Widget = '' then
     inherited NewWidget('ttk.Frame')
@@ -395,7 +395,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKFrame.SetAttribute(Attr, Value, Typ: string);
+procedure TTKFrame.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Background' then
   begin
@@ -421,7 +421,7 @@ begin
   Relief := _TR_solid;
 end;
 
-procedure TTKLabelframe.NewWidget(Widget: string = '');
+procedure TTKLabelframe.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('ttk.LabelFrame');
 end;
@@ -436,7 +436,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKLabelframe.SetAttribute(Attr, Value, Typ: string);
+procedure TTKLabelframe.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'LabelWidget' then
     inherited SetAttribute(Attr, Value, 'Source')
@@ -574,7 +574,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKScale.SetAttribute(Attr, Value, Typ: string);
+procedure TTKScale.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Value' then
     SetValue(Name + 'CV', AsString(Value))
@@ -584,14 +584,14 @@ begin
     inherited;
 end;
 
-procedure TTKScale.NewWidget(Widget: string = '');
+procedure TTKScale.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('ttk.Scale');
   MakeControlVar('variable', Name + 'CV', IntToStr(Round(FValue)), 'Int');
   SetAttribute('To', '100', '');
 end;
 
-procedure TTKScale.MakeCommand(Attr, Value: string);
+procedure TTKScale.MakeCommand(const Attr, Value: string);
 begin
   inherited;
   AddParameter(Value, 'x');
@@ -692,7 +692,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKLabeledScale.SetAttribute(Attr, Value, Typ: string);
+procedure TTKLabeledScale.SetAttribute(const Attr, Value, Typ: string);
 var
   Str: string;
   Posi: Integer;
@@ -728,14 +728,14 @@ begin
     + ', from_=' + FloatToStr(FFrom) + ', to=' + FloatToStr(FTo) + ')');
 end;
 
-procedure TTKLabeledScale.NewWidget(Widget: string = '');
+procedure TTKLabeledScale.NewWidget(const Widget: string = '');
 begin
   InsertValue('self.' + Name + 'CV = tk.IntVar()');
   inherited NewWidget('ttk.LabeledScale');
   SetConfiguration;
 end;
 
-procedure TTKLabeledScale.MakeCommand(Attr, Value: string);
+procedure TTKLabeledScale.MakeCommand(const Attr, Value: string);
 begin
   inherited;
   AddParameter(Value, 'x');
@@ -823,13 +823,13 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKScrollbar.MakeCommand(Attr, Value: string);
+procedure TTKScrollbar.MakeCommand(const Attr, Value: string);
 begin
   inherited;
   AddParameter(Value, 'x, y, z');
 end;
 
-procedure TTKScrollbar.NewWidget(Widget: string = '');
+procedure TTKScrollbar.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('ttk.Scrollbar');
   InsertValue('self.' + Name + '[''orient''] = ' + AsString('horizontal'));
@@ -858,7 +858,7 @@ begin
   Orient := vertical;
 end;
 
-procedure TTKPanedWindow.NewWidget(Widget: string = '');
+procedure TTKPanedWindow.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('ttk.PanedWindow');
 end;
@@ -972,7 +972,7 @@ begin
     Result := Result + '|Height|Width|Left|Top';
 end;
 
-procedure TTKRadiobuttonGroup.SetAttribute(Attr, Value, Typ: string);
+procedure TTKRadiobuttonGroup.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Command' then
     ChangeCommand(Value)
@@ -1113,7 +1113,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TTKRadiobuttonGroup.MakeCommand(Attr, Value: string);
+procedure TTKRadiobuttonGroup.MakeCommand(const Attr, Value: string);
 var
   Func, Nam, Str: string;
 begin
@@ -1128,7 +1128,7 @@ begin
   InsertValue(Str);
 end;
 
-procedure TTKRadiobuttonGroup.ChangeCommand(Value: string);
+procedure TTKRadiobuttonGroup.ChangeCommand(const Value: string);
 var
   Key: string;
 begin
@@ -1151,7 +1151,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TTKRadiobuttonGroup.MakeLabel(ALabel: string);
+procedure TTKRadiobuttonGroup.MakeLabel(const ALabel: string);
 begin
   FLabel := ALabel;
   var
@@ -1170,7 +1170,7 @@ begin
   SetPositionAndSize;
 end;
 
-procedure TTKRadiobuttonGroup.NewWidget(Widget: string = '');
+procedure TTKRadiobuttonGroup.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('ttk.Frame');
   MakeLabel(' ' + _('Continent') + ' ');
@@ -1209,7 +1209,7 @@ begin
   end;
 end;
 
-procedure TTKRadiobuttonGroup.SetLabel(Value: string);
+procedure TTKRadiobuttonGroup.SetLabel(const Value: string);
 begin
   if FLabel <> Value then
   begin
@@ -1326,7 +1326,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKNotebook.SetAttribute(Attr, Value, Typ: string);
+procedure TTKNotebook.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Tabs' then
     MakeTabs
@@ -1370,7 +1370,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TTKNotebook.NewWidget(Widget: string = '');
+procedure TTKNotebook.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('ttk.Notebook');
   MakeTabs;
@@ -1453,7 +1453,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKTreeview.SetAttribute(Attr, Value, Typ: string);
+procedure TTKTreeview.SetAttribute(const Attr, Value, Typ: string);
 var
   Key: string;
 begin
@@ -1608,7 +1608,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TTKTreeview.NewWidget(Widget: string = '');
+procedure TTKTreeview.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('ttk.Treeview');
   MakeColumns;
@@ -1634,7 +1634,7 @@ begin
   end;
 end;
 
-procedure TTKTreeview.SetDisplayColumns(Value: string);
+procedure TTKTreeview.SetDisplayColumns(const Value: string);
 begin
   if FDisplayColumns <> Value then
   begin
@@ -1754,7 +1754,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKProgressbar.SetAttribute(Attr, Value, Typ: string);
+procedure TTKProgressbar.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Value' then
     SetValue(Name + 'CV', AsString(Value))
@@ -1762,7 +1762,7 @@ begin
     inherited;
 end;
 
-procedure TTKProgressbar.NewWidget(Widget: string = '');
+procedure TTKProgressbar.NewWidget(const Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('ttk.Progressbar');
@@ -1829,7 +1829,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKSeparator.NewWidget(Widget: string = '');
+procedure TTKSeparator.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('ttk.Separator');
 end;
@@ -1865,7 +1865,7 @@ begin
   Height := 14;
 end;
 
-procedure TTKSizeGrip.NewWidget(Widget: string = '');
+procedure TTKSizeGrip.NewWidget(const Widget: string = '');
 begin
   InsertValue('self.' + Name + ' = ttk.Sizegrip(' + GetContainer + ')');
   InsertValue('self.' + Name + '.pack(side=' + AsString('right') + ', anchor=' +

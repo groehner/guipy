@@ -72,15 +72,6 @@ type
     SpTBXSeparatorItem6: TSpTBXSeparatorItem;
     SpTBXSeparatorItem7: TSpTBXSeparatorItem;
     mnExternalRun: TSpTBXItem;
-    SpTBXDock1: TSpTBXDock;
-    SpTBXToolbar1: TSpTBXToolbar;
-    tbiProjectNew: TSpTBXItem;
-    tbiProjectOpen: TSpTBXItem;
-    tbiProjectSave: TSpTBXItem;
-    SpTBXSeparatorItem8: TSpTBXSeparatorItem;
-    tbiRunLast: TSpTBXItem;
-    tbiDebugLast: TSpTBXItem;
-    tbiRunLastExternal: TSpTBXItem;
     mnRun: TSpTBXItem;
     mnDebug: TSpTBXItem;
     SpTBXSeparatorItem9: TSpTBXSeparatorItem;
@@ -88,9 +79,6 @@ type
     SpTBXSeparatorItem10: TSpTBXSeparatorItem;
     mnCollapseAll: TSpTBXItem;
     mnExpandAll: TSpTBXItem;
-    SpTBXSeparatorItem11: TSpTBXSeparatorItem;
-    tbiCollapseAll: TSpTBXItem;
-    tbiExpandAll: TSpTBXItem;
     mnShowFileExt: TSpTBXItem;
     ImmutableProjectActionList: TActionList;
     ProjectActionList: TActionList;
@@ -141,7 +129,7 @@ type
       Column: TColumnIndex; var Allowed: Boolean);
     procedure actProjectAddFolderExecute(Sender: TObject);
     procedure ExplorerTreeNewText(Sender: TBaseVirtualTree; Node: PVirtualNode;
-      Column: TColumnIndex; NewText: string);
+      Column: TColumnIndex; const NewText: string);
     procedure actProjectAddFilesExecute(Sender: TObject);
     procedure actProjectRenameExecute(Sender: TObject);
     procedure actProjectSaveExecute(Sender: TObject);
@@ -195,7 +183,7 @@ type
   protected
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
-    procedure DoOpenProjectFile(FileName: string);
+    procedure DoOpenProjectFile(const FileName: string);
     function DoSave: Boolean;
     function DoSaveFile: Boolean;
     function DoSaveAs: Boolean;
@@ -706,7 +694,7 @@ begin
   actProjectShowFileExtensions.Checked := ActiveProject.ShowFileExtensions;
 end;
 
-procedure TProjectExplorerWindow.DoOpenProjectFile(FileName: string);
+procedure TProjectExplorerWindow.DoOpenProjectFile(const FileName: string);
 var
   AppStorage: TJvAppIniFileStorage;
 begin
@@ -1206,7 +1194,7 @@ begin
 end;
 
 procedure TProjectExplorerWindow.ExplorerTreeNewText(Sender: TBaseVirtualTree;
-  Node: PVirtualNode; Column: TColumnIndex; NewText: string);
+  Node: PVirtualNode; Column: TColumnIndex; const NewText: string);
 var
   Data, ParentData: PNodeDataRec;
   ModifiedText: Boolean;

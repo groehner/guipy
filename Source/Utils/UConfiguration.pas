@@ -1327,10 +1327,10 @@ type
     procedure CheckFolderCB(ComboBox: TComboBox);
     procedure CheckUserFolder(Edit: TEdit);
     procedure CheckFile(WinControl: TWinControl; EmptyAllowed: Boolean);
-    function GetCheckColor(Str: string; EmptyAllowed: Boolean): TColor;
-    procedure ShortenPath(WinControl: TWinControl; const Str: string);
+    function GetCheckColor(const Filename: string; EmptyAllowed: Boolean): TColor;
+    procedure ShortenPath(WinControl: TWinControl; const Path: string);
     function ExtendPath(WinControl: TWinControl): string;
-    function BrowserProgToName(const Str: string): string;
+    function BrowserProgToName(const Browsername: string): string;
 
     function SelectedHighlighter: TSynCustomHighlighter;
     procedure UpdateColorFontStyle;
@@ -1415,19 +1415,19 @@ type
     procedure SetToolbarVisibility(Toolbar: TToolBar; Num: Integer);
     function GetEncoding(const Pathname: string): TEncoding;
     procedure PrepareShow;
-    function GetMultiLineComment(Indent: string): string;
+    function GetMultiLineComment(const Indent: string): string;
     function GetClassCodeTemplate: string;
-    function GetTVConfigurationItem(Text: string): TTreeNode;
+    function GetTVConfigurationItem(const Text: string): TTreeNode;
     function GetFileFilters: string;
-    procedure OpenAndShowPage(Page: string);
+    procedure OpenAndShowPage(const Page: string);
     function RunAsAdmin(AHWnd: HWND; const AFile, Parameters: string): Boolean;
     procedure AddScriptsPath;
     procedure PatchConfiguration;
     procedure LanguageOptionsToView;
     procedure LanguageOptionsToModel;
     procedure DoHelp(Adresse: string);
-    function GetClassesAndFilename(Pathname: string): TStringList;
-    procedure SetStyle(StyleName: string);
+    function GetClassesAndFilename(const Pathname: string): TStringList;
+    procedure SetStyle(const StyleName: string);
     procedure ApplyColorTheme;
     procedure Retranslate;
     class function IsDark: Boolean;
@@ -1785,15 +1785,15 @@ begin
   end;
 end;
 
-function TFConfiguration.GetCheckColor(Str: string;
+function TFConfiguration.GetCheckColor(const Filename: string;
   EmptyAllowed: Boolean): TColor;
 begin
   Result := clRed;
-  if Str = '' then
+  if Filename = '' then
     if EmptyAllowed then
       Result := StyleServices.GetSystemColor(clWindow)
     else
-  else if FileExists(DissolveUsername(Str)) then
+  else if FileExists(DissolveUsername(Filename)) then
     Result := StyleServices.GetSystemColor(clWindow);
 end;
 
@@ -1835,11 +1835,11 @@ begin
   FreeAndNil(ODSelect);
 end;
 
-function TFConfiguration.BrowserProgToName(const Str: string): string;
+function TFConfiguration.BrowserProgToName(const Browsername: string): string;
 var
   Browser: string;
 begin
-  Browser := UpperCase(Str);
+  Browser := UpperCase(Browsername);
   if Pos('NETSCAPE', Browser) > 0 then
     Result := 'Netscape'
   else if Pos('IEXPLORE', Browser) > 0 then
@@ -2911,7 +2911,7 @@ begin
   CheckAllFilesAndFolders;
 end;
 
-function TFConfiguration.GetTVConfigurationItem(Text: string): TTreeNode;
+function TFConfiguration.GetTVConfigurationItem(const Text: string): TTreeNode;
 begin
   for var I := 0 to TVConfiguration.Items.Count - 1 do
     if TVConfiguration.Items[I].Text = Text then
@@ -3076,18 +3076,18 @@ end;
 // https://theroadtodelphi.com/2012/02/06/changing-the-color-of-edit-controls-with-vcl-styles-enabled/
 
 procedure TFConfiguration.ShortenPath(WinControl: TWinControl;
-const Str: string);
+const Path: string);
 var
   Str1, Str2, Str3: string;
   Posi { , w } : Integer;
 begin
-  WinControl.Hint := Str;
+  WinControl.Hint := Path;
   WinControl.ShowHint := True;
   { if WinControl is TEdit
     then w:= WinControl.Width
     else w:= WinControl.Width - 16;
   }
-  Str1 := Str;
+  Str1 := Path;
   if WinControl is TEdit then
     (WinControl as TEdit).Text := Str1
   else
@@ -3095,7 +3095,7 @@ begin
   Posi := Pos('...', Str1);
   if Posi > 0 then
   begin
-    Str2 := Str;
+    Str2 := Path;
     Delete(Str2, 1, Posi - 1);
     Str3 := Copy(Str1, Posi + 3, Length(Str1));
     Posi := Pos(Str3, Str2);
@@ -3124,7 +3124,7 @@ begin
   Result := Str;
 end;
 
-function TFConfiguration.GetMultiLineComment(Indent: string): string;
+function TFConfiguration.GetMultiLineComment(const Indent: string): string;
 begin
   if PyIDEOptions.MethodsWithComment then
     Result := Indent + '"""' + CrLf + Indent + CrLf + Indent + '"""' + CrLf
@@ -4832,7 +4832,7 @@ begin
     end);
 end;
 
-procedure TFConfiguration.SetStyle(StyleName: string);
+procedure TFConfiguration.SetStyle(const StyleName: string);
 // StyleName can be either a resource or a file name
 var
   SName: string;
@@ -5691,7 +5691,7 @@ begin
   DoHelp('https://subversion.apache.org/');
 end;
 
-procedure TFConfiguration.OpenAndShowPage(Page: string);
+procedure TFConfiguration.OpenAndShowPage(const Page: string);
 begin
   // due to visible/modal-exception
   if not Visible then
@@ -5726,7 +5726,7 @@ begin
 
 end;
 
-function TFConfiguration.GetClassesAndFilename(Pathname: string): TStringList;
+function TFConfiguration.GetClassesAndFilename(const Pathname: string): TStringList;
 var
   Filename, Text, Path, Key: string;
   RegEx: TRegEx;

@@ -39,7 +39,7 @@ type
     function IsClientPutty: Boolean;
     function SSHOptionsPW: string;
     function ScpOptionsPW: string;
-    function ExtractHostKey(ErrorOutput: string): Boolean;
+    function ExtractHostKey(const ErrorOutput: string): Boolean;
   published
     property Name: string read FName write FName;
     property HostName: string read FHostName write FHostName;
@@ -68,7 +68,7 @@ type
   TSSHFileName = class
     class var UncRE: TRegEx;
     class constructor Create;
-    class function Format(Server, FileName: string): string;
+    class function Format(const Server, FileName: string): string;
     class function Parse(const Unc: string; out Server, FileName: string): Boolean;
   end;
 
@@ -82,7 +82,7 @@ type
     function ScpDownload(const ServerName, RemoteFile, LocalFile: string; out ErrorMsg: string): Boolean;
   end;
 
-function ServerFromName(ServerName: string): TSSHServer;
+function ServerFromName(const ServerName: string): TSSHServer;
 function EditSSHServers: Boolean;
 function SelectSSHServer: string;
 function EditSSHConfiguration(Item: TCollectionItem): Boolean;
@@ -146,7 +146,7 @@ begin
     Result := UserName + '@' + HostName;
 end;
 
-function TSSHServer.ExtractHostKey(ErrorOutput: string): Boolean;
+function TSSHServer.ExtractHostKey(const ErrorOutput: string): Boolean;
 var
   Match: TMatch;
 begin
@@ -279,7 +279,7 @@ begin
      Strings.Add(TSSHServerItem(Item).DisplayName);
 end;
 
-function ServerFromName(ServerName: string): TSSHServer;
+function ServerFromName(const ServerName: string): TSSHServer;
 var
   Item: TCollectionItem;
 begin
@@ -296,7 +296,7 @@ begin
   UncRE := CompiledRegEx('^ssh://([^/]+)/(.+)');
 end;
 
-class function TSSHFileName.Format(Server, FileName: string): string;
+class function TSSHFileName.Format(const Server, FileName: string): string;
 begin
   Result := System.SysUtils.Format('ssh://%s/%s', [Server, FileName]);
 end;

@@ -97,7 +97,7 @@ type
     procedure SourceEditSelectedDiagramElements(Control: TControl);
       virtual; abstract;
     procedure UnSelectAllElements; virtual; abstract;
-    procedure StoreDiagram(Filename: string); virtual; abstract;
+    procedure StoreDiagram(const Filename: string); virtual; abstract;
     procedure FetchDiagram(Filename: string); virtual; abstract;
     procedure RefreshDiagram; virtual; abstract;
     procedure ClearDiagram; virtual; abstract;
@@ -151,7 +151,7 @@ type
     procedure ChangeStyle; virtual; abstract;
     procedure DeleteComment; virtual; abstract;
     function GetSVG: string; virtual; abstract;
-    procedure ExecutePython(Source: string); virtual; abstract;
+    procedure ExecutePython(const Source: string); virtual; abstract;
     procedure Reinitalize; virtual; abstract;
     function PanelIsLocked: Boolean; virtual; abstract;
     procedure SetUMLFont; virtual; abstract;

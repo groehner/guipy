@@ -85,7 +85,7 @@ type
     procedure SystemCommand(const Cmd: string); override;
     function GetObjectType(Obj: Variant): string; override;
     function UnitTestResult: Variant; override;
-    function NameSpaceItemFromPyObject(AName: string; APyObject: Variant): TBaseNameSpaceItem; override;
+    function NameSpaceItemFromPyObject(const AName: string; APyObject: Variant): TBaseNameSpaceItem; override;
     procedure Pickle(AValue: Variant; const FileName: string); override;
     class procedure ExtractPyErrorInfo(E: Variant; var FileName: string;
       var LineNo: Integer; var Offset: Integer); static;
@@ -107,7 +107,7 @@ type
     function GetDocString: string; override;
     function GetChildCount: Integer; override;
   public
-    constructor Create(AName: string; const APyObject: Variant;
+    constructor Create(const AName: string; const APyObject: Variant;
       RemotePython: TPyRemoteInterpreter);
     procedure GetChildNodes; override;
     property IsProxy: Boolean read FIsProxy;
@@ -122,7 +122,7 @@ type
     FLineCache: Variant;
     FMainThread: TThreadInfo;
     FThreads: TObjectDictionary<Int64, TThreadInfo>;
-    procedure SyncThreadInfo(Thread_ID: Int64; ThreadName: string; ThreadStatus: Integer);
+    procedure SyncThreadInfo(Thread_ID: Int64; const ThreadName: string; ThreadStatus: Integer);
   protected
     FDebuggerCommand: TDebuggerCommand;
     FRemotePython: TPyRemoteInterpreter;
@@ -190,7 +190,7 @@ uses
   uCommonFunctions;
 
 { TRemNameSpaceItem }
-constructor TRemNameSpaceItem.Create(AName: string; const APyObject: Variant;
+constructor TRemNameSpaceItem.Create(const AName: string; const APyObject: Variant;
   RemotePython: TPyRemoteInterpreter);
 begin
   inherited Create(AName, APyObject);
@@ -716,7 +716,7 @@ begin
   end;
 end;
 
-function TPyRemoteInterpreter.NameSpaceItemFromPyObject(AName: string;
+function TPyRemoteInterpreter.NameSpaceItemFromPyObject(const AName: string;
   APyObject: Variant): TBaseNameSpaceItem;
 begin
   Result := TRemNameSpaceItem.Create(AName, APyObject, Self);
@@ -1932,7 +1932,7 @@ begin
     Result := Py.PythonEngine.ReturnFalse;
 end;
 
-procedure TPyRemDebugger.SyncThreadInfo(Thread_ID: Int64; ThreadName: string; ThreadStatus: Integer);
+procedure TPyRemDebugger.SyncThreadInfo(Thread_ID: Int64; const ThreadName: string; ThreadStatus: Integer);
 
   function HaveBrokenThread: Boolean;
   begin

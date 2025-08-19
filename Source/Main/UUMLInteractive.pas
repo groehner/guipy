@@ -71,7 +71,7 @@ type
   public
     procedure Init(Lines: TStrings; Form: TFileForm);
     procedure SaveInteractiveLines;
-    procedure Add(Line: string);
+    procedure Add(const Line: string);
     procedure Clear;
     procedure ChangeStyle;
   end;
@@ -256,7 +256,7 @@ begin
   FMyForm:= nil;
 end;
 
-procedure TFUMLInteractive.Add(Line: string);
+procedure TFUMLInteractive.Add(const Line: string);
 begin
   SynEdit.Lines.Add(Line);
   var LineNo:= SynEdit.Lines.Count - 1;

@@ -84,15 +84,15 @@ function ToWindows(Str: string): string;
 function FileExistsCaseSensitive(const Filepath: string): Boolean;
 procedure SetAnimation(Value: Boolean);
 function IsDunder(Name: string): Boolean;
-function StringTimesN(Str: string; Num: Integer): string;
+function StringTimesN(const Str: string; Num: Integer): string;
 function GetUniqueName(Control: TControl; Basename: string): string;
 function OnlyCharsAndDigits(const Str: string): string;
 function ToWeb(const Browser: string; Str: string): string;
 function StartsWith(const Str, Substr: string): Boolean;
 function LowerUpper(const Str: string): string;
 function IsLower(Chr: Char): Boolean;
-function AsString(Str: string): string;
-function LeftSpaces(Str: string; TabW: Integer): Integer;
+function AsString(const Str: string): string;
+function LeftSpaces(const Str: string; TabW: Integer): Integer;
 function RGB2Color(const Red, Green, Blue: Integer): Integer;
 procedure Color2RGB(const Color: TColor; var Red, Green, Blue: Integer);
 function WithoutVisibility(Str: string): string;
@@ -109,15 +109,15 @@ function DownloadURL(const Url, FileName: string): Boolean;
 procedure SetElevationRequiredState(AControl: TWinControl);
 function CanActuallyFocus(WinControl: TWinControl): Boolean;
 function IsNumber(var Str: string): Boolean;
-function IsBool(Str: string): Boolean;
+function IsBool(const Str: string): Boolean;
 function DecToBase(Base: Integer; DecValue: Double): string;
-function ConvertLtGt(Str: string): string;
+function ConvertLtGt(const Str: string): string;
 function FloatToVal(AFloat: Real): string;
 function PointToVal(Point: TPoint): string;
 function IntToVal(Int: Integer): string;
 function MyColorToRGB(Color: TColor): string;
 function XYToVal(Xpos, YPos: Integer): string;
-function CalcIndent(Str: string; TabWidth: Integer = 4): Integer;
+function CalcIndent(const Str: string; TabWidth: Integer = 4): Integer;
 function EncodeQuotationMark(const Str: string): string;
 function MyMulDiv(Number, Numerator, Denominator: Integer): Integer;
 procedure LockWindow(Handle: THandle);
@@ -920,7 +920,7 @@ begin
     (Copy(Name, Length(Name) - 1, 2) = '__');
 end;
 
-function StringTimesN(Str: string; Num: Integer): string;
+function StringTimesN(const Str: string; Num: Integer): string;
 begin
   Result := '';
   for var I := 1 to Num do
@@ -1056,12 +1056,12 @@ begin
   Blue := (Color shr 16) and $FF;
 end;
 
-function AsString(Str: string): string;
+function AsString(const Str: string): string;
 begin
   Result := '''' + Str + '''';
 end;
 
-function LeftSpaces(Str: string; TabW: Integer): Integer;
+function LeftSpaces(const Str: string; TabW: Integer): Integer;
 var
   PChr: PWideChar;
 begin
@@ -1330,7 +1330,7 @@ begin
     Str[Posi] := '.';
 end;
 
-function IsBool(Str: string): Boolean;
+function IsBool(const Str: string): Boolean;
 begin
   Result := (Str = 'True') or (Str = 'False');
 end;
@@ -1390,7 +1390,7 @@ begin
     Result := '-' + Result;
 end;
 
-function ConvertLtGt(Str: string): string;
+function ConvertLtGt(const Str: string): string;
 begin
   Result := ReplaceStr(ReplaceStr(Str, '<', '&lt;'), '>', '&gt;');
 end;
@@ -1431,7 +1431,7 @@ begin
   Result := IntToStr(Xpos) + ',' + IntToStr(YPos) + ' ';
 end;
 
-function CalcIndent(Str: string; TabWidth: Integer = 4): Integer;
+function CalcIndent(const Str: string; TabWidth: Integer = 4): Integer;
 begin
   Result := 0;
   for var I := 1 to Length(Str) do

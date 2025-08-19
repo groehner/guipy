@@ -27,7 +27,7 @@ type
     FParentTabItem: TSpTBXTabItem;
     FReadOnly: Boolean;
     function GetPathname: string;
-    procedure SetPathname(FileName: string);
+    procedure SetPathname(const FileName: string);
   protected
     FModified: Boolean;
     procedure SetModified(Value: Boolean); virtual;
@@ -84,8 +84,8 @@ type
   private
     FFileKind: TFileKind;
     FFileName: string;
-    FRemoteFileName : string;
-    FSSHServer : string;
+    FRemoteFileName: string;
+    FSSHServer: string;
     FForm: TFileForm;
     FFromTemplate: Boolean;
     // IFile implementation
@@ -127,9 +127,9 @@ type
     function GetFileId: string;
     function GetFromTemplate: Boolean;
     procedure SetFromTemplate(Value: Boolean);
-    procedure DoSetFilename(FileName: string); virtual;
+    procedure DoSetFilename(const FileName: string); virtual;
     procedure OpenRemoteFile(const FileName, ServerName: string); virtual;
-    function SaveToRemoteFile(const FileName, Servername: string) : Boolean; virtual;
+    function SaveToRemoteFile(const FileName, Servername: string): Boolean; virtual;
     function AskSaveChanges: Boolean;
     function DefaultFilename: Boolean;
     procedure ExecSave;
@@ -156,7 +156,7 @@ type
     function GetFileByName(const Name: string): IFile;
     function GetFileByNameAndType(const Name: string; Kind: TFileKind): IFile;
     function GetFileByType(Kind: TFileKind): IFile;
-    function GetFileByFileId(const Name : string): IFile;
+    function GetFileByFileId(const Name: string): IFile;
   protected
     procedure LockList;
     procedure UnlockList;
@@ -280,7 +280,7 @@ end;
 
 procedure TFileForm.DoUpdateCaption;
 var
-  TabCaption : string;
+  TabCaption: string;
 begin
   if FMyFile.FRemoteFileName <> '' then
     TabCaption := TPath.GetFileName(FMyFile.FRemoteFileName)
@@ -306,8 +306,8 @@ end;
 
 function TFileForm.DoSaveAsRemote: Boolean;
 var
-  FileName, Server : string;
-  AFile : IFile;
+  FileName, Server: string;
+  AFile: IFile;
 begin
   if ExecuteRemoteFileDialog(FileName, Server, rfdSave) then
   begin
@@ -585,7 +585,7 @@ begin
     else Result:= '';
 end;
 
-procedure TFileForm.SetPathname(FileName: string);
+procedure TFileForm.SetPathname(const FileName: string);
 begin
   if Assigned(FMyFile)
     then FMyFile.DoSetFilename(FileName);
@@ -663,7 +663,7 @@ begin
   end;
 end;
 
-procedure TFile.DoSetFilename(FileName: string);
+procedure TFile.DoSetFilename(const FileName: string);
 begin
   if ((FileName <> '') or (FRemoteFileName <> '')) and (FUntitledNumber <> -1) then
   begin
@@ -910,8 +910,8 @@ end;
 
 procedure TFile.OpenRemoteFile(const FileName, Servername: string);
 var
-  TempFilename : string;
-  ErrorMsg : string;
+  TempFilename: string;
+  ErrorMsg: string;
 begin
   if not Assigned(FForm) or (FileName = '') or (Servername = '') then Exit;
   DoSetFilename('');
@@ -929,7 +929,7 @@ begin
 end;
 
 function TFile.SaveToRemoteFile(const FileName, Servername: string): Boolean;
-  var ErrorMsg : string;
+  var ErrorMsg: string;
 begin
   Result:= False;
   if not Assigned(FForm)  or (FileName = '') or (Servername = '') then Exit;    // ToDo was Abort
@@ -1069,11 +1069,11 @@ begin
   try
     LForm:= nil;
     case FileKind of
-      fkUML            : LForm:= TFUMLForm.Create(Sheet);
-      fkStructogram    : LForm:= TFStructogram.Create(Sheet);
+      fkUML          : LForm:= TFUMLForm.Create(Sheet);
+      fkStructogram  : LForm:= TFStructogram.Create(Sheet);
       fkSequencediagram: LForm:= TFSequenceForm.Create(Sheet);
-      fkTextdiff       : LForm:= TFTextDiff.Create(Sheet);
-      fkBrowser        : LForm:= TFBrowser.Create(Sheet);
+      fkTextdiff     : LForm:= TFTextDiff.Create(Sheet);
+      fkBrowser      : LForm:= TFBrowser.Create(Sheet);
     end;
     with LForm do begin
       FMyFile:= TFile.Create(FileKind, LForm);
@@ -1142,7 +1142,7 @@ end;
 
 function TFileFactory.GetFileByFileId(const Name: string): IFile;
 var
-  AFile : IFile;
+  AFile: IFile;
 begin
   Result := GetFileByName(Name);
   if not Assigned(Result) then

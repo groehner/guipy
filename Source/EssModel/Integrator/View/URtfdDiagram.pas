@@ -118,7 +118,7 @@ type
     function GetSelectedRect: TRect; override;
     procedure ScreenCenterEntity(ModelEntity: TModelEntity); override;
     procedure SetFont(const AFont: TFont); override;
-    procedure StoreDiagram(Filename: string); override;
+    procedure StoreDiagram(const Filename: string); override;
     procedure FetchDiagram(Filename: string); override;
     procedure RefreshDiagram; override;
     procedure RecalcPanelSize; override;
@@ -160,11 +160,11 @@ type
     procedure CallMethodForClass(Sender: TObject);
     procedure CollectClasses;
     procedure EditObject(Control: TControl); override;
-    function HasAttributes(Objectname: string): Boolean;
+    function HasAttributes(const Objectname: string): Boolean;
     procedure UpdateAllObjects;
-    procedure ShowAttributes(Objectname: string; AClass: TClass;
+    procedure ShowAttributes(const Objectname: string; AClass: TClass;
       AModelObject: TObjekt);
-    procedure SetAttributeValues(ModelClass: TClass; Objectname: string;
+    procedure SetAttributeValues(ModelClass: TClass; const Objectname: string;
       Attributes: TStringList);
     function EditClass(const Caption, Title, ObjectNameOld: string;
       var ObjectNameNew: string; Control: TControl;
@@ -178,7 +178,7 @@ type
     function GetCommentBoxName: string;
     procedure AddCommentBoxTo(Control: TControl); override;
     function InsertParameterNames(Names: string): string;
-    function HasClass(Classname: string): Boolean;
+    function HasClass(const Classname: string): Boolean;
     procedure DoShowParameter(Control: TControl; Mode: Integer); override;
     procedure DoShowVisibility(Control: TControl; Mode: Integer); override;
     procedure DoShowVisibilityFilter(Control: TControl; Mode: Integer);
@@ -203,11 +203,11 @@ type
     function GetDebug: TStringList;
     function GetSVG: string; override;
     function GetParameterAsString(Parameter, ParamValues: TStringList): string;
-    function GetInternName(AClass: TClass; Name: string;
+    function GetInternName(AClass: TClass; const Name: string;
       Visibility: TVisibility): string;
-    function StrToPythonValue(Value: string): string;
-    function StrAndTypeToPythonValue(Value, PValue: string): string;
-    procedure ExecutePython(Source: string); override;
+    function StrToPythonValue(const Value: string): string;
+    function StrAndTypeToPythonValue(const Value, PValue: string): string;
+    procedure ExecutePython(const Source: string); override;
     procedure GetVisFromName(var Name: string; var Vis: TVisibility);
     procedure Retranslate; override;
     function PanelIsLocked: Boolean; override;
@@ -808,7 +808,7 @@ procedure TRtfdDiagram.UnitPackageAfterRemove(Sender: TModelEntity);
 begin
 end;
 
-procedure TRtfdDiagram.StoreDiagram(Filename: string);
+procedure TRtfdDiagram.StoreDiagram(const Filename: string);
 var
   Ini: TMemIniFile;
   Posi, Comments: Integer;
@@ -1938,10 +1938,10 @@ begin
   end;
 end;
 
-function TRtfdDiagram.GetInternName(AClass: TClass; Name: string;
+function TRtfdDiagram.GetInternName(AClass: TClass; const Name: string;
   Visibility: TVisibility): string;
 
-  function getAncestorInternName(AClass: TClass; Name: string): string;
+  function getAncestorInternName(AClass: TClass; const Name: string): string;
   begin
     Result := '';
     if AClass.AncestorsCount > 0 then
@@ -1973,7 +1973,7 @@ begin
   end;
 end;
 
-procedure TRtfdDiagram.ShowAttributes(Objectname: string; AClass: TClass;
+procedure TRtfdDiagram.ShowAttributes(const Objectname: string; AClass: TClass;
   AModelObject: TObjekt);
 // just create attributes, they will be shown by UpdateAllObjects
 
@@ -2087,7 +2087,7 @@ begin
   AModelObject.Locked := False;
 end;
 
-function TRtfdDiagram.StrToPythonValue(Value: string): string;
+function TRtfdDiagram.StrToPythonValue(const Value: string): string;
 begin
   Result := Trim(Value);
   if not((Result <> '') and (Pos(Result[1], '[({''') > 0) or isNumber(Result) or
@@ -2096,7 +2096,7 @@ begin
     Result := asString(Result);
 end;
 
-function TRtfdDiagram.StrAndTypeToPythonValue(Value, PValue: string): string;
+function TRtfdDiagram.StrAndTypeToPythonValue(const Value, PValue: string): string;
 begin
   Result := StrToPythonValue(Value);
   if (Result = asString('')) and (PValue <> '') then
@@ -2127,7 +2127,7 @@ begin
 end;
 
 procedure TRtfdDiagram.SetAttributeValues(ModelClass: TClass;
-  Objectname: string; Attributes: TStringList);
+  const Objectname: string; Attributes: TStringList);
 var
   OldAttributes: TStringList;
 
@@ -3413,7 +3413,7 @@ begin
   FFrame.MIConnectionRecursiv.Visible := Conn.IsRecursiv;
 end;
 
-function TRtfdDiagram.HasAttributes(Objectname: string): Boolean;
+function TRtfdDiagram.HasAttributes(const Objectname: string): Boolean;
 begin
   var
   StringList := FLivingObjects.getObjectMembers(Objectname);
@@ -3823,7 +3823,7 @@ begin
   CommentBox.SendToBack;
 end;
 
-function TRtfdDiagram.HasClass(Classname: string): Boolean;
+function TRtfdDiagram.HasClass(const Classname: string): Boolean;
 begin
   Result := False;
   for var I := 0 to FBoxNames.Count - 1 do
@@ -4081,7 +4081,7 @@ begin
   end;
 end;
 
-procedure TRtfdDiagram.ExecutePython(Source: string);
+procedure TRtfdDiagram.ExecutePython(const Source: string);
 begin
   FLivingObjects.ExecutePython(Source);
 end;

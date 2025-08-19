@@ -34,7 +34,6 @@ object EditorForm: TEditorForm
       OnEnter = FGPanelEnter
       OnExit = FGPanelExit
       ActiveTabIndex = 0
-      Images = PyIDEMainForm.vilImages
       OnActiveTabChange = ViewsTabControlActiveTabChange
       HiddenItems = <>
       object tabSource: TSpTBXTabItem
@@ -42,7 +41,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 558
+        CustomWidth = 433
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -65,6 +64,8 @@ object EditorForm: TEditorForm
         Height = 546
         Caption = 'Source'
         ImageIndex = -1
+        ExplicitTop = 30
+        ExplicitHeight = 541
         TabItem = 'tabSource'
         object SynEdit: TSynEdit
           Left = 48
@@ -651,8 +652,11 @@ object EditorForm: TEditorForm
       Action = CommandsDataModule.actEditSelectAll
     end
     object mnExecuteSelection: TSpTBXItem
-      Action = PyIDEMainForm.actExecSelection
+      Caption = 'E&xecute selection'
+      Hint = 'Execute the editor selection'
+      HelpContext = 320
       ImageIndex = 15
+      ShortCut = 16502
     end
     object TBXSeparatorItem9: TSpTBXSeparatorItem
     end
@@ -732,11 +736,12 @@ object EditorForm: TEditorForm
     object mnMaximizeEditor2: TSpTBXItem
       Caption = '&Maximize/Restore Editor'
       Hint = 'Maximize/Restore editor window'
-      Action = PyIDEMainForm.actMaximizeEditor
+      HelpContext = 270
+      ImageIndex = 74
+      ShortCut = 32858
     end
   end
   object pmnuViewsTab: TSpTBXPopupMenu
-    Images = PyIDEMainForm.vilImages
     Left = 232
     Top = 40
     object mnUpdateView: TSpTBXItem
@@ -786,7 +791,6 @@ object EditorForm: TEditorForm
         CollectionName = 'EditorGutter\BreakDisabled'
         Name = 'BreakDisabled'
       end>
-    ImageCollection = ResourcesDataModule.icGutterGlyphs
     PreserveItems = True
     Width = 11
     Height = 14
@@ -845,7 +849,6 @@ object EditorForm: TEditorForm
         CollectionName = 'CodeImages\Keyword'
         Name = 'Keyword'
       end>
-    ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True
     Left = 100
     Top = 417

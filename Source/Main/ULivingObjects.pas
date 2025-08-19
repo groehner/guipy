@@ -29,25 +29,25 @@ type
     // auto1=auto1
     FSLObjectsNamePath: TStringList;
 
-    function GetNodeFromPath(Path: string): TBaseNameSpaceItem;
+    function GetNodeFromPath(const Path: string): TBaseNameSpaceItem;
     function IsObject(Node: TBaseNameSpaceItem): Boolean;
     function IsAttribute(Node: TBaseNameSpaceItem): Boolean;
-    function GetNameFromValue(Value, Parentname: string;
+    function GetNameFromValue(Value: string; const Parentname: string;
       Node: TBaseNameSpaceItem = nil): string;
-    procedure Add(Prefixname: string; NameSpace: TBaseNameSpaceItem);
-    function GetNameFromAddress(Address: string): string;
-    function GetObjectName(AObject: string): string;
-    function AddObject(Prefixname, AObject: string): string;
-    procedure AddObjectsFromString(Prefixname, Values: string);
-    procedure AddObjectsFromDictNames(Prefixname: string;
+    procedure Add(const Prefixname: string; NameSpace: TBaseNameSpaceItem);
+    function GetNameFromAddress(const Address: string): string;
+    function GetObjectName(const AObject: string): string;
+    function AddObject(const Prefixname, AObject: string): string;
+    procedure AddObjectsFromString(const Prefixname: string; Values: string);
+    procedure AddObjectsFromDictNames(const Prefixname: string;
       NameSpace: TBaseNameSpaceItem);
-    procedure AddObjectsFromDict(Prefixname: string;
+    procedure AddObjectsFromDict(const Prefixname: string;
       NameSpace: TBaseNameSpaceItem);
   public
     constructor Create;
     destructor Destroy; override;
-    function ObjectExists(Objectname: string): Boolean;
-    function ClassExists(Classname: string): Boolean;
+    function ObjectExists(const Objectname: string): Boolean;
+    function ClassExists(const Classname: string): Boolean;
     function InsertObject(const Objectname: string): Boolean;
     procedure DeleteObject(const Objectname: string);
 
@@ -56,23 +56,23 @@ type
     function GetObjectObjectMembers(const Objectname: string): TStringList;
     function GetObjectAttributeValues(const Objectname: string): TStringList;
     function GetNodeFromName(const Objectname: string): TBaseNameSpaceItem;
-    function GetHexAddressFromName(Name: string): string;
-    function GetRealAddressFromName(Name: string): string;
-    function GetPathFromName(Name: string): string;
+    function GetHexAddressFromName(const Name: string): string;
+    function GetRealAddressFromName(const Name: string): string;
+    function GetPathFromName(const Name: string): string;
     function GetClassAttributes(const Classname: string): TStringList;
     function GetClassMethods(const Classname: string): TStringList;
     function GetClassnameOfObject(const Objectname: string): string;
     function GetClassnameFromAddress(Address: string): string;
-    procedure SimplifyPath(Objectname: string);
+    procedure SimplifyPath(const Objectname: string);
 
     // access to python
-    procedure Execute(Command: string);
+    procedure Execute(const Command: string);
     procedure ExecutePython(Source: string);
-    procedure LoadClassOfObject(Objectname, Classname: string);
-    function GetSignature(From: string): string;
-    function GetHexAddress(From, Value: string): string;
-    function GetMethods(From: string): TStringList;
-    function GetPathOf(Classname: string): string;
+    procedure LoadClassOfObject(const Objectname, Classname: string);
+    function GetSignature(const From: string): string;
+    function GetHexAddress(const From, Value: string): string;
+    function GetMethods(const From: string): TStringList;
+    function GetPathOf(const Classname: string): string;
 
     function GetAllObjects: TStringList;
     procedure MakeAllObjects;
@@ -116,7 +116,7 @@ begin
   inherited;
 end;
 
-procedure TLivingObjects.Execute(Command: string);
+procedure TLivingObjects.Execute(const Command: string);
 var
   Buffer: TStringDynArray;
 begin
@@ -170,7 +170,7 @@ begin
   GI_PyInterpreter.AppendPrompt;
 end;
 
-function TLivingObjects.GetSignature(From: string): string;
+function TLivingObjects.GetSignature(const From: string): string;
 var
   PyEngine: IPyEngineAndGIL;
   Vari: Variant;
@@ -185,7 +185,7 @@ begin
   Result := string(Vari);
 end;
 
-procedure TLivingObjects.LoadClassOfObject(Objectname, Classname: string);
+procedure TLivingObjects.LoadClassOfObject(const Objectname, Classname: string);
 var
   PyEngine: IPyEngineAndGIL;
   Vari: Variant;
@@ -198,7 +198,7 @@ begin
     Classname, '<interactive input>');
 end;
 
-function TLivingObjects.GetPathOf(Classname: string): string;
+function TLivingObjects.GetPathOf(const Classname: string): string;
 var
   PyEngine: IPyEngineAndGIL;
   Vari: Variant;
@@ -214,7 +214,7 @@ begin
   Result := Path + '\' + Filename + '.PyEngine';
 end;
 
-function TLivingObjects.GetHexAddress(From, Value: string): string;
+function TLivingObjects.GetHexAddress(const From, Value: string): string;
 var
   PyEngine: IPyEngineAndGIL;
   Hex: Variant;
@@ -233,7 +233,7 @@ begin
     Result := Copy(Value, 1, Posi) + 'object at ' + Hex + '>';
 end;
 
-function TLivingObjects.GetMethods(From: string): TStringList;
+function TLivingObjects.GetMethods(const From: string): TStringList;
 var
   PyEngine: IPyEngineAndGIL;
   Vari: Variant;
@@ -255,12 +255,12 @@ begin
   Result := StringList;
 end;
 
-function TLivingObjects.ObjectExists(Objectname: string): Boolean;
+function TLivingObjects.ObjectExists(const Objectname: string): Boolean;
 begin
   Result := Assigned(GetNodeFromName(Objectname));
 end;
 
-function TLivingObjects.ClassExists(Classname: string): Boolean;
+function TLivingObjects.ClassExists(const Classname: string): Boolean;
 begin
   Result := Assigned(GetNodeFromPath(Classname));
 end;
@@ -310,7 +310,7 @@ begin
     FSLObjectsNamePath.Delete(Int);
 end;
 
-function TLivingObjects.GetNodeFromPath(Path: string): TBaseNameSpaceItem;
+function TLivingObjects.GetNodeFromPath(const Path: string): TBaseNameSpaceItem;
 var
   StringList: TStringList;
   PyEngine: IPyEngineAndGIL;
@@ -512,7 +512,7 @@ begin
   Result := StringList;
 end;
 
-function TLivingObjects.GetNameFromValue(Value, Parentname: string;
+function TLivingObjects.GetNameFromValue(Value: string; const Parentname: string;
   Node: TBaseNameSpaceItem): string;
 var
   Int, Pos1, Pos2: Integer;
@@ -559,7 +559,7 @@ begin
   end;
 end;
 
-function TLivingObjects.GetHexAddressFromName(Name: string): string;
+function TLivingObjects.GetHexAddressFromName(const Name: string): string;
 begin
   Result := '';
   for var I := 0 to FSLObjectsAddressName.Count - 1 do
@@ -567,7 +567,7 @@ begin
       Exit(FSLObjectsAddressName.KeyNames[I]);
 end;
 
-function TLivingObjects.GetRealAddressFromName(Name: string): string;
+function TLivingObjects.GetRealAddressFromName(const Name: string): string;
 begin
   var
   Address := GetHexAddressFromName(Name);
@@ -580,7 +580,7 @@ begin
   Result := Address;
 end;
 
-function TLivingObjects.GetPathFromName(Name: string): string;
+function TLivingObjects.GetPathFromName(const Name: string): string;
 begin
   var
   I := FSLObjectsNamePath.IndexOfName(Name);
@@ -671,7 +671,7 @@ begin
   Result := Address;
 end;
 
-function TLivingObjects.GetNameFromAddress(Address: string): string;
+function TLivingObjects.GetNameFromAddress(const Address: string): string;
 var
   Classname, Objectname, Str: string;
   StringList: TStringList;
@@ -707,7 +707,7 @@ begin
   FreeAndNil(StringList);
 end;
 
-function TLivingObjects.GetObjectName(AObject: string): string;
+function TLivingObjects.GetObjectName(const AObject: string): string;
 begin
   var
   Index := FSLObjectsAddressNameDuplicat.IndexOfName(AObject);
@@ -726,14 +726,14 @@ begin
   end;
 end;
 
-function TLivingObjects.AddObject(Prefixname, AObject: string): string;
+function TLivingObjects.AddObject(const Prefixname, AObject: string): string;
 begin
   Result := GetObjectName(AObject);
   if FSLObjectsNamePath.IndexOfName(Result) = -1 then
     FSLObjectsNamePath.Add(Result + '=' + Prefixname);
 end;
 
-procedure TLivingObjects.AddObjectsFromString(Prefixname, Values: string);
+procedure TLivingObjects.AddObjectsFromString(const Prefixname: string; Values: string);
 // set or dict names
 var
   Posi, PStart, PEnd: Integer;
@@ -753,7 +753,7 @@ begin
   end;
 end;
 
-procedure TLivingObjects.AddObjectsFromDictNames(Prefixname: string;
+procedure TLivingObjects.AddObjectsFromDictNames(const Prefixname: string;
   NameSpace: TBaseNameSpaceItem);
 // dict names must be hashable, I.e. simple, tuple, object
 begin
@@ -768,14 +768,14 @@ begin
   end;
 end;
 
-procedure TLivingObjects.AddObjectsFromDict(Prefixname: string;
+procedure TLivingObjects.AddObjectsFromDict(const Prefixname: string;
   NameSpace: TBaseNameSpaceItem);
 begin
   AddObjectsFromDictNames(Prefixname + '.' + NameSpace.Name, NameSpace);
   Add(Prefixname + '.' + NameSpace.Name, NameSpace);
 end;
 
-procedure TLivingObjects.Add(Prefixname: string; NameSpace: TBaseNameSpaceItem);
+procedure TLivingObjects.Add(const Prefixname: string; NameSpace: TBaseNameSpaceItem);
 var
   Str, Name, OType: string;
   NameSpaceItem: TBaseNameSpaceItem;
@@ -881,7 +881,7 @@ begin
   FSLObjectsNamePath.Clear;
 end;
 
-procedure TLivingObjects.SimplifyPath(Objectname: string);
+procedure TLivingObjects.SimplifyPath(const Objectname: string);
 begin
   FSLObjectsNamePath.Sorted := False;
   if FSLObjectsNamePath.IndexOfName(Objectname) > -1 then

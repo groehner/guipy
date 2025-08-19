@@ -1478,11 +1478,11 @@ type
     procedure SetActiveTabControl(const Value: TSpTBXCustomTabControl);
     procedure OpenInitialFiles;
     procedure ChangeMenuSystem;
-    procedure ClassEdit(Editor: IEditor; Status: string; UML: TFUMLForm);
+    procedure ClassEdit(Editor: IEditor; const Status: string; UML: TFUMLForm);
   protected
     FCurrentBrowseInfo: string;
     function CmdLineOpenFiles: Boolean;
-    function OpenCmdLineFile(FileName: string): Boolean;
+    function OpenCmdLineFile(const FileName: string): Boolean;
     procedure UpdateStandardActions;
     procedure UpdateStatusBarPanels;
     procedure ApplicationOnHint(Sender: TObject);
@@ -1513,8 +1513,8 @@ type
     // Browse MRU stuff
     procedure PrevClickHandler(Sender: TObject);
     procedure NextClickHandler(Sender: TObject);
-    procedure PrevMRUAdd(Str: string);
-    procedure NextMRUAdd(Str: string);
+    procedure PrevMRUAdd(const Str: string);
+    procedure NextMRUAdd(const Str: string);
     procedure FormShowDelayedActions; virtual;
   private
     FActiveTabControlIndex: Integer;
@@ -1559,7 +1559,7 @@ type
     procedure MRUAddFile(AFile: IFile);
     procedure ChangeStyle;
     procedure DeleteObjectsInUMLForms;
-    function GetCachedPycFilename(FileName: string): string;
+    function GetCachedPycFilename(const FileName: string): string;
     procedure RemoveDefunctEditorOptions;
   public
     procedure StoreApplicationData;
@@ -1587,11 +1587,11 @@ type
     function JumpToFilePosInfo(const FilePosInfo: string): Boolean;
     procedure FindDefinition(Editor: IEditor; TextCoord: TBufferCoord;
       ShowMessages, Silent, JumpToFirstMatch: Boolean; var FilePosInfo: string);
-    procedure AdjustBrowserLists(FileName: string; Line: Integer; Col: Integer;
-      FilePosInfo: string);
+    procedure AdjustBrowserLists(const FileName: string; Line: Integer; Col: Integer;
+      const FilePosInfo: string);
     procedure ThemeEditorGutter(Gutter: TSynGutter);
     procedure UpdateCaption;
-    procedure ChangeLanguage(LangCode: string);
+    procedure ChangeLanguage(const LangCode: string);
     function GetLanguageCode(Index: Integer): string;
     function FileFromTab(Tab: TSpTBXTabItem): IFile;
     procedure SplitWorkspace(SecondTabsVisible: Boolean;
@@ -1606,11 +1606,11 @@ type
     function GetActiveFile: IFile;
     function GuiDesignerOpen: Boolean;
 
-    function DoOpen(AFilename: string): IFile;
-    function DoOpenAsEditor(AFilename: string): IEditor;
+    function DoOpen(const AFilename: string): IFile;
+    function DoOpenAsEditor(const AFilename: string): IEditor;
     procedure DoOpenInUMLWindow(const FileName: string);
-    procedure ActivateFile(FileName: string);
-    function CreateUMLForm(FileName: string): TFUMLForm;
+    procedure ActivateFile(const FileName: string);
+    function CreateUMLForm(const FileName: string): TFUMLForm;
     function GetFilename(const Extension: string; Path: string = ''): string;
     procedure PrepareClassEdit(Editor: IEditor; const Status: string;
       UML: TFUMLForm);
@@ -1622,7 +1622,7 @@ type
     procedure NewTextDiff(Form1, Form2: TEditorForm);
     function NewBrowser(Adresse: string): TFBrowser;
     procedure RunEditor(ActiveEditor: IEditor);
-    procedure ImportModule(Pathname: string);
+    procedure ImportModule(const Pathname: string);
     function IsAValidClass(const Pathname: string): Boolean;
     procedure CreatePycFilesForUMLWindows;
     procedure SetLayoutMenus(Predefined: Boolean);
@@ -1746,13 +1746,13 @@ const
 
   { TWorkbookMainForm }
 
-function TPyIDEMainForm.DoOpen(AFilename: string): IFile;
+function TPyIDEMainForm.DoOpen(const AFilename: string): IFile;
 begin
   Result := GI_EditorFactory.OpenFile(AFilename, '',
     TabControlIndex(ActiveTabControl));
 end;
 
-function TPyIDEMainForm.DoOpenAsEditor(AFilename: string): IEditor;
+function TPyIDEMainForm.DoOpenAsEditor(const AFilename: string): IEditor;
 begin
   Result := GI_EditorFactory.OpenFile(AFilename, '',
     TabControlIndex(ActiveTabControl), True) as IEditor;
@@ -1798,7 +1798,7 @@ begin
   UMLForm.CreateTVFileStructure;
 end;
 
-function TPyIDEMainForm.CreateUMLForm(FileName: string): TFUMLForm;
+function TPyIDEMainForm.CreateUMLForm(const FileName: string): TFUMLForm;
 begin
   Result := nil;
   var
@@ -1821,7 +1821,7 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.ActivateFile(FileName: string);
+procedure TPyIDEMainForm.ActivateFile(const FileName: string);
 var
   AFile: IFile;
   TabCtrl: TSpTBXTabControl;
@@ -2478,7 +2478,7 @@ begin
     end);
 end;
 
-procedure TPyIDEMainForm.ClassEdit(Editor: IEditor; Status: string;
+procedure TPyIDEMainForm.ClassEdit(Editor: IEditor; const Status: string;
 UML: TFUMLForm);
 begin
   var
@@ -3152,7 +3152,7 @@ begin
   end;
 end;
 
-function TPyIDEMainForm.GetCachedPycFilename(FileName: string): string;
+function TPyIDEMainForm.GetCachedPycFilename(const FileName: string): string;
 begin
   Result := TPath.Combine(ExtractFilePath(FileName),
     TPath.Combine('__pycache__', TPath.GetFileNameWithoutExtension(FileName) +
@@ -3160,7 +3160,7 @@ begin
     '') + '.pyc'));
 end;
 
-procedure TPyIDEMainForm.ImportModule(Pathname: string);
+procedure TPyIDEMainForm.ImportModule(const Pathname: string);
 var
   Path, Modul: string;
 begin
@@ -4896,7 +4896,7 @@ begin
   Handled := CommandsDataModule.actlMain.IsShortCut(Msg);
 end;
 
-procedure TPyIDEMainForm.ChangeLanguage(LangCode: string);
+procedure TPyIDEMainForm.ChangeLanguage(const LangCode: string);
 begin
   if CompareText(GetCurrentLanguage, LangCode) <> 0 then
   begin
@@ -5908,8 +5908,8 @@ begin
     end;
 end;
 
-procedure TPyIDEMainForm.AdjustBrowserLists(FileName: string; Line: Integer;
-Col: Integer; FilePosInfo: string);
+procedure TPyIDEMainForm.AdjustBrowserLists(const FileName: string; Line: Integer;
+Col: Integer; const FilePosInfo: string);
 begin
   if FilePosInfo <> '' then
   begin
@@ -6330,7 +6330,7 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.PrevMRUAdd(Str: string);
+procedure TPyIDEMainForm.PrevMRUAdd(const Str: string);
 begin
   mnPreviousList.MRUAdd(Str);
   mnPreviousList[0].OnClick := PrevClickHandler;
@@ -6445,13 +6445,13 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.NextMRUAdd(Str: string);
+procedure TPyIDEMainForm.NextMRUAdd(const Str: string);
 begin
   mnNextList.MRUAdd(Str);
   mnNextList[0].OnClick := NextClickHandler;
 end;
 
-function TPyIDEMainForm.OpenCmdLineFile(FileName: string): Boolean;
+function TPyIDEMainForm.OpenCmdLineFile(const FileName: string): Boolean;
 begin
   // Try to see whether it contains line/char info
   Result := JumpToFilePosInfo(FileName);

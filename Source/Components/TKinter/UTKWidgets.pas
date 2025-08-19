@@ -36,7 +36,7 @@ type
       PaddingB: Integer); override;
     function GetCompound: TUCompound; override;
     function GetText: string; virtual;
-    procedure SetText(Value: string); virtual;
+    procedure SetText(const Value: string); virtual;
     procedure Paint; override;
     procedure PaintBorder(ARect: TRect; Relief: TRelief;
       BorderWidth: Integer); override;
@@ -98,7 +98,7 @@ begin
   end;
 end;
 
-procedure TKWidget.SetText(Value: string);
+procedure TKWidget.SetText(const Value: string);
 begin
   if Value <> FText then
   begin

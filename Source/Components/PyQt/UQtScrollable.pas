@@ -101,7 +101,7 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     procedure Paint; override;
     function InnerRect: TRect; override;
     procedure PaintAScrollbar(Horizontal: Boolean);
@@ -123,7 +123,7 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
   published
     property WidgetResizable: Boolean read FWidgetResizable
       write FWidgetResizable;
@@ -158,17 +158,17 @@ type
     procedure SetTabChangesFocus(Value: Boolean);
     procedure SetLineWrapMode(Value: TPlainTextLineWrapMode);
     procedure SetPlainText(Value: TStrings);
-    procedure SetPlaceholderText(Value: string);
+    procedure SetPlaceholderText(const Value: string);
     procedure MakePlainText;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property TabChangesFocus: Boolean read FTabChangesFocus
@@ -237,18 +237,18 @@ type
     FWordWrapMode: TWordWrapMode;
     procedure SetLineWrapMode(Value: TTextEditLineWrapMode);
     procedure SetHTML(Value: TStrings);
-    procedure SetPlaceholderText(Value: string);
+    procedure SetPlaceholderText(const Value: string);
     procedure MakeAutoFormatting;
     procedure MakeHTML;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property AutoFormatting: TAutoFormatting read FAutoFormatting
@@ -305,11 +305,11 @@ type
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
   published
     property Source: string read FSource write FSource;
     property SearchPaths: TStrings read FSearchPaths write FSearchPaths;
@@ -351,11 +351,11 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property BackgroundColor: TColor read FBackgroundColor
@@ -409,10 +409,10 @@ type
     procedure SetInvertedAppearance(Value: Boolean);
   public
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
   published
     property Minimum: Integer read FMinimum write FMinimum;
     property Maximum: Integer read FMaximum write FMaximum;
@@ -439,7 +439,7 @@ type
   TQtScrollBar = class(TQtAbstractSlider)
   public
     constructor Create(Owner: TComponent); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   end;
 
@@ -452,8 +452,8 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property TickPosition: TTickPosition read FTickPosition
@@ -472,8 +472,8 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property Wrapping: Boolean read FWrapping write SetWrapping;
@@ -508,7 +508,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtAbstractScrollArea.SetAttribute(Attr, Value, Typ: string);
+procedure TQtAbstractScrollArea.SetAttribute(const Attr, Value, Typ: string);
 begin
   if (Attr = 'HorizontalScrollBarPolicy') or (Attr = 'VerticalScrollBarPolicy')
   then
@@ -634,7 +634,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtScrollArea.NewWidget(Widget: string = '');
+procedure TQtScrollArea.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QScrollArea');
 end;
@@ -678,7 +678,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtPlainTextEdit.SetAttribute(Attr, Value, Typ: string);
+procedure TQtPlainTextEdit.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'LineWrapMode' then
     MakeAttribut(Attr, 'QPlainTextEdit.LineWrapMode.' + Value)
@@ -714,7 +714,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtPlainTextEdit.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtPlainTextEdit.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
   begin
@@ -748,7 +748,7 @@ begin
     sLineBreak, '\n')));
 end;
 
-procedure TQtPlainTextEdit.NewWidget(Widget: string = '');
+procedure TQtPlainTextEdit.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QPlainTextEdit');
 end;
@@ -807,7 +807,7 @@ begin
   end;
 end;
 
-procedure TQtPlainTextEdit.SetPlaceholderText(Value: string);
+procedure TQtPlainTextEdit.SetPlaceholderText(const Value: string);
 begin
   if Value <> FPlaceHolderText then
   begin
@@ -863,7 +863,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtTextEdit.SetAttribute(Attr, Value, Typ: string);
+procedure TQtTextEdit.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'LineWrapMode' then
     MakeAttribut(Attr, 'QTextEdit.' + Value)
@@ -900,7 +900,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtTextEdit.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtTextEdit.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
   begin
@@ -965,7 +965,7 @@ begin
   MakeAttribut('Html', AsString(MyStringReplace(FHtml.Text, sLineBreak, '\n')));
 end;
 
-procedure TQtTextEdit.NewWidget(Widget: string = '');
+procedure TQtTextEdit.NewWidget(const Widget: string = '');
 begin
   if Widget = '' then
   begin
@@ -1020,7 +1020,7 @@ begin
   end;
 end;
 
-procedure TQtTextEdit.SetPlaceholderText(Value: string);
+procedure TQtTextEdit.SetPlaceholderText(const Value: string);
 begin
   if Value <> FPlaceHolderText then
   begin
@@ -1055,7 +1055,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtTextBrowser.SetAttribute(Attr, Value, Typ: string);
+procedure TQtTextBrowser.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'SearchPaths' then
     MakeAttribut(Attr, GetSearchPaths)
@@ -1093,7 +1093,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtTextBrowser.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtTextBrowser.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
   begin
@@ -1107,7 +1107,7 @@ begin
   inherited;
 end;
 
-procedure TQtTextBrowser.NewWidget(Widget: string = '');
+procedure TQtTextBrowser.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QTextBrowser');
 end;
@@ -1152,7 +1152,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtGraphicsView.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtGraphicsView.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'QRect, QGraphicsScene' then
     Slots.Add(Name + '.invalidateScene')
@@ -1163,7 +1163,7 @@ begin
   inherited;
 end;
 
-procedure TQtGraphicsView.SetAttribute(Attr, Value, Typ: string);
+procedure TQtGraphicsView.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'CacheMode' then
     MakeAttribut(Attr, 'QGraphicsView.CacheModeFlag.' + Value)
@@ -1250,7 +1250,7 @@ begin
   MakeAttribut(Attr + 'Brush', 'QBrush(' + Color + ', ' + Style + ')');
 end;
 
-procedure TQtGraphicsView.NewWidget(Widget: string = '');
+procedure TQtGraphicsView.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QGraphicsView');
 end;
@@ -1273,7 +1273,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtAbstractSlider.SetAttribute(Attr, Value, Typ: string);
+procedure TQtAbstractSlider.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Orientation' then
     MakeAttribut(Attr, 'Qt.Orientation.' + Value)
@@ -1300,7 +1300,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtAbstractSlider.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtAbstractSlider.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'Orientation' then
     Slots.Add(Name + '.setOrientation')
@@ -1363,7 +1363,7 @@ begin
   FInvertedControls := True;
 end;
 
-procedure TQtScrollBar.NewWidget(Widget: string = '');
+procedure TQtScrollBar.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QScrollBar');
   InsertValue('self.' + Name + '.setOrientation(Qt.Orientation.Horizontal)');
@@ -1390,7 +1390,7 @@ begin
   FInvertedControls := True;
 end;
 
-procedure TQtSlider.SetAttribute(Attr, Value, Typ: string);
+procedure TQtSlider.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'TickPosition' then
     MakeAttribut(Attr, 'QSlider.TickPosition.' + Value)
@@ -1404,7 +1404,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtSlider.NewWidget(Widget: string = '');
+procedure TQtSlider.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QSlider');
   InsertValue('self.' + Name + '.setOrientation(Qt.Orientation.Horizontal)');
@@ -1656,7 +1656,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtDial.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtDial.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'bool' then
   begin
@@ -1666,7 +1666,7 @@ begin
   inherited;
 end;
 
-procedure TQtDial.NewWidget(Widget: string = '');
+procedure TQtDial.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QDial');
 end;

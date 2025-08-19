@@ -42,13 +42,13 @@ type
     FState: TButtonState;
     procedure SetCompound(AValue: TCompound);
     procedure SetState(AValue: TButtonState);
-    procedure MakeDirection(Value: string);
+    procedure MakeDirection(const Value: string);
   protected
     function GetCompound: TUCompound; override;
   public
     constructor Create(AOwner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     procedure SizeToText; override;
   published
@@ -67,7 +67,7 @@ type
     procedure Paint; override;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure MakeFont; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
   published
@@ -88,8 +88,8 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure MakeFont; override;
     procedure Paint; override;
   published
@@ -108,7 +108,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure MakeFont; override;
     procedure SizeToText; override;
   published
@@ -124,9 +124,9 @@ type
     FMenu: string;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure MakeFont; override;
     procedure Paint; override;
   published
@@ -145,9 +145,9 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
     function GetText: string; override;
   published
@@ -175,7 +175,7 @@ begin
   Height := 24;
 end;
 
-procedure TTKButtonBaseWidget.SetAttribute(Attr, Value, Typ: string);
+procedure TTKButtonBaseWidget.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Image' then
     MakeImage(Value)
@@ -200,7 +200,7 @@ begin
   Result := GetMouseEvents(ShowEvents);
 end;
 
-procedure TTKButtonBaseWidget.MakeDirection(Value: string);
+procedure TTKButtonBaseWidget.MakeDirection(const Value: string);
 var
   Str: string;
 begin
@@ -280,7 +280,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKLabel.NewWidget(Widget: string = '');
+procedure TTKLabel.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('ttk.Label');
   InsertValue('self.' + Name + '[' + AsString('anchor') + '] = ' +
@@ -318,7 +318,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKButton.SetAttribute(Attr, Value, Typ: string);
+procedure TTKButton.SetAttribute(const Attr, Value, Typ: string);
 var
   Str: string;
 begin
@@ -334,7 +334,7 @@ begin
     inherited;
 end;
 
-procedure TTKButton.NewWidget(Widget: string = '');
+procedure TTKButton.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('ttk.Button');
   InsertValue('self.' + Name + '[' + AsString('text') + '] = ' +
@@ -393,7 +393,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKCheckbutton.NewWidget(Widget: string = '');
+procedure TTKCheckbutton.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('ttk.Checkbutton');
   InsertValue('self.' + Name + '[' + AsString('text') + '] = ' +
@@ -445,7 +445,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKMenubutton.SetAttribute(Attr, Value, Typ: string);
+procedure TTKMenubutton.SetAttribute(const Attr, Value, Typ: string);
 var
   Width1: Integer;
 begin
@@ -461,7 +461,7 @@ begin
   inherited;
 end;
 
-procedure TTKMenubutton.NewWidget(Widget: string = '');
+procedure TTKMenubutton.NewWidget(const Widget: string = '');
 begin
   // because TKOptionMenu inherits from TTKMenubutton
   if Widget = '' then
@@ -526,7 +526,7 @@ begin
     Delete(Result, Posi, 6);
 end;
 
-procedure TTKOptionMenu.SetAttribute(Attr, Value, Typ: string);
+procedure TTKOptionMenu.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'MenuItems' then
     MakeMenuItems
@@ -534,7 +534,7 @@ begin
     inherited;
 end;
 
-procedure TTKOptionMenu.NewWidget(Widget: string = '');
+procedure TTKOptionMenu.NewWidget(const Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   InsertValue('self.' + Name + 'CV = tk.StringVar()');

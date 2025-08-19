@@ -123,7 +123,7 @@ type
     procedure SetHasSearchHighlight(Value : Boolean);
     procedure SetFileEncoding(FileEncoding : TFileSaveFormat);
     procedure SetHighlighter(const HighlighterName: string);
-    procedure OpenLocalFile(const AFileName: string; HighlighterName : string = '');
+    procedure OpenLocalFile(const AFileName: string; const HighlighterName : string = '');
     procedure OpenRemoteFile(const FileName, ServerName: string);
     function SaveToRemoteFile(const FileName, ServerName: string) : Boolean;
     function HasPythonFile : Boolean;
@@ -180,7 +180,7 @@ type
   ['{FDAE7FBD-4B61-4D7C-BEE6-DB7740A225E8}']
     function CanCloseAll: Boolean;
     procedure CloseAll;
-    function OpenFile(AFileName: string; HighlighterName: string = '';
+    function OpenFile(AFileName: string; const HighlighterName: string = '';
        TabControlIndex: Integer = 1; AsEditor: Boolean = False): IFile;
     function GetEditorCount: Integer;
     function GetEditor(Index: Integer): IEditor;
@@ -191,7 +191,7 @@ type
     function RegisterViewFactory(ViewFactory : IEditorViewFactory): Integer;
     function GetViewFactoryCount: Integer;
     function GetViewFactory(Index: Integer): IEditorViewFactory;
-    procedure InvalidatePos(AFileName: string; ALine: Integer;
+    procedure InvalidatePos(const AFileName: string; ALine: Integer;
       AType: TInvalidationType);
     procedure SetupEditorViewsMenu(ViewsMenu: TSpTBXItem; IL: TCustomImageList);
     procedure UpdateEditorViewsMenu(ViewsMenu: TSpTBXItem);

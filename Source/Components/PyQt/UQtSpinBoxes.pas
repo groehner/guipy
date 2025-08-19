@@ -54,13 +54,13 @@ type
     procedure SetFrame(Value: Boolean);
     procedure SetButtonSymbols(Value: TButtonSymbols);
     procedure SetShowGroupSeparator(Value: Boolean);
-    procedure SetSpecialValueText(Value: string);
+    procedure SetSpecialValueText(const Value: string);
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
     procedure Paint; override;
     function InnerRect: TRect; override;
   published
@@ -96,8 +96,8 @@ type
     FDisplayIntegerBase: Integer;
     FTextChanged: string;
     FValueChanged: string;
-    procedure SetPrefix(Value: string);
-    procedure SetSuffix(Value: string);
+    procedure SetPrefix(const Value: string);
+    procedure SetSuffix(const Value: string);
     procedure SetValue(Value: Integer);
     procedure SetDisplayIntegerBase(Value: Integer);
   public
@@ -105,8 +105,8 @@ type
     function GetAttributes(ShowAttributes: Integer): string; override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property Prefix: string read FPrefix write SetPrefix;
@@ -135,16 +135,16 @@ type
     FValue: Double;
     FTextChanged: string;
     FValueChanged: string;
-    procedure SetPrefix(Value: string);
-    procedure SetSuffix(Value: string);
+    procedure SetPrefix(const Value: string);
+    procedure SetSuffix(const Value: string);
     procedure SetValue(Value: Double);
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property Prefix: string read FPrefix write SetPrefix;
@@ -193,11 +193,11 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property DateTime: string read FDateTime write SetDateTime;
@@ -231,7 +231,7 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
   end;
 
   TQtTimeEdit = class(TQtDateTimeEdit)
@@ -240,7 +240,7 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
   end;
 
 implementation
@@ -275,7 +275,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtAbstractSpinBox.SetAttribute(Attr, Value, Typ: string);
+procedure TQtAbstractSpinBox.SetAttribute(const Attr, Value, Typ: string);
 begin
   if (Attr = 'ButtonSymbols') or (Attr = 'CorrectionMode') or (Attr = 'StepType')
   then
@@ -294,7 +294,7 @@ begin
   Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-procedure TQtAbstractSpinBox.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtAbstractSpinBox.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
   begin
@@ -399,7 +399,7 @@ begin
   end;
 end;
 
-procedure TQtAbstractSpinBox.SetSpecialValueText(Value: string);
+procedure TQtAbstractSpinBox.SetSpecialValueText(const Value: string);
 begin
   if Value <> FSpecialValueText then
   begin
@@ -446,14 +446,14 @@ begin
     Result := inherited;
 end;
 
-procedure TQtSpinBox.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtSpinBox.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'int' then
     Slots.Add(Name + '.setValue');
   inherited;
 end;
 
-procedure TQtSpinBox.NewWidget(Widget: string = '');
+procedure TQtSpinBox.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QSpinBox');
 end;
@@ -501,7 +501,7 @@ begin
   DrawText(Canvas.Handle, PChar(Str), Length(Str), ARect, Align);
 end;
 
-procedure TQtSpinBox.SetPrefix(Value: string);
+procedure TQtSpinBox.SetPrefix(const Value: string);
 begin
   if Value <> FPrefix then
   begin
@@ -510,7 +510,7 @@ begin
   end;
 end;
 
-procedure TQtSpinBox.SetSuffix(Value: string);
+procedure TQtSpinBox.SetSuffix(const Value: string);
 begin
   if Value <> FSuffix then
   begin
@@ -572,14 +572,14 @@ begin
     Result := inherited;
 end;
 
-procedure TQtDoubleSpinBox.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtDoubleSpinBox.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'double' then
     Slots.Add(Name + '.setValue');
   inherited;
 end;
 
-procedure TQtDoubleSpinBox.NewWidget(Widget: string = '');
+procedure TQtDoubleSpinBox.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QDoubleSpinBox');
 end;
@@ -622,7 +622,7 @@ begin
   DrawText(Canvas.Handle, PChar(Str), Length(Str), ARect, Align);
 end;
 
-procedure TQtDoubleSpinBox.SetPrefix(Value: string);
+procedure TQtDoubleSpinBox.SetPrefix(const Value: string);
 begin
   if Value <> FPrefix then
   begin
@@ -631,7 +631,7 @@ begin
   end;
 end;
 
-procedure TQtDoubleSpinBox.SetSuffix(Value: string);
+procedure TQtDoubleSpinBox.SetSuffix(const Value: string);
 begin
   if Value <> FSuffix then
   begin
@@ -688,7 +688,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtDateTimeEdit.SetAttribute(Attr, Value, Typ: string);
+procedure TQtDateTimeEdit.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'DateTime' then
     MakeDateTime(Value)
@@ -722,7 +722,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtDateTimeEdit.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtDateTimeEdit.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'QDate' then
     Slots.Add(Name + '.setDate')
@@ -733,7 +733,7 @@ begin
   inherited;
 end;
 
-procedure TQtDateTimeEdit.NewWidget(Widget: string = '');
+procedure TQtDateTimeEdit.NewWidget(const Widget: string = '');
 begin
   if Widget = '' then
   begin
@@ -938,7 +938,7 @@ begin
   end;
 end;
 
-procedure TQtDateEdit.NewWidget(Widget: string = '');
+procedure TQtDateEdit.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QDateEdit');
   SetAttribute('DisplayFormat', FDisplayFormat, 'string');
@@ -987,7 +987,7 @@ begin
   end;
 end;
 
-procedure TQtTimeEdit.NewWidget(Widget: string = '');
+procedure TQtTimeEdit.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QTimeEdit');
   SetAttribute('DisplayFormat', FDisplayFormat, 'string');

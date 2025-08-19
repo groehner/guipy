@@ -76,10 +76,10 @@ function GetWordAtPos(const LineText: string; Start: Integer;
 function FormatDocString(const DocString: string): string;
 
 (* check if a directory is a Python Package *)
-function DirIsPythonPackage(Dir: string): Boolean;
+function DirIsPythonPackage(const Dir: string): Boolean;
 
 (* check if a directory is a Python Package *)
-function FileIsPythonPackage(FileName: string): Boolean;
+function FileIsPythonPackage(const FileName: string): Boolean;
 
 (* Get Python Package Root directory *)
 function GetPackageRootDir(const Dir: string): string;
@@ -95,14 +95,14 @@ function HTMLSafe(const Str: string): string;
 function GetParamStr(P: PChar; var Param: string): PChar;
 
 (* Parse a line for a Python encoding spec *)
-function ParsePySourceEncoding(TextLine: string): string;
+function ParsePySourceEncoding(const TextLine: string): string;
 
 (* Version of InputQuery that can be called from threads and executes in the main thread *)
 function SyncWideInputQuery(const ACaption, APrompt: string; var Value: string): Boolean;
 
 (* Covert all line breaks to #10 *)
-function CleanEOLs(Str: AnsiString): AnsiString; overload;
-function CleanEOLs(Str: string): string; overload;
+function CleanEOLs(const Str: AnsiString): AnsiString; overload;
+function CleanEOLs(const Str: string): string; overload;
 
 (* Similar to Delphi's IdentToInt but operating on sorted IdentMapEntries *)
 function SortedIdentToInt(const Ident: string; var Int: LongInt;
@@ -162,12 +162,12 @@ procedure WalkThroughDirectories(const Paths, Masks: string;
 (*
    Find files and place them in FileList. Paths and Masks are semi-colon delimited lists.
 *)
-procedure GetFilesInPaths(Paths, Masks: string; FileList: TStrings; Recursive: Boolean = True);
+procedure GetFilesInPaths(const Paths, Masks: string; FileList: TStrings; Recursive: Boolean = True);
 
 (*
    Find directories and place them in DirList. Paths and Masks are semi-colon delimited lists.
 *)
-procedure GetDirectoriesInPaths(Paths, Masks: string; DirList: TStrings; Recursive: Boolean = True);
+procedure GetDirectoriesInPaths(const Paths, Masks: string; DirList: TStrings; Recursive: Boolean = True);
 
 (* Extracts a token and returns the remainder of a string *)
 function StrToken(var Str: string; Separator: Char): string;
@@ -179,11 +179,11 @@ function StrStripChar(const Str: string; const AChar: Char): string;
 function CanActuallyFocus(WinControl: TWinControl): Boolean;
 
 (* Create a PCRE Regular Expression and compile it *)
-function CompiledRegEx(Expr: string; Options: TRegExOptions = [roNotEmpty];
+function CompiledRegEx(const Expr: string; Options: TRegExOptions = [roNotEmpty];
   UCP: Boolean = True): TRegEx;
 
 (* Checks whether S contains digits only *)
-function IsDigits(Str: string): Boolean;
+function IsDigits(const Str: string): Boolean;
 
 (* Remove the white space in front of the first line from all lines *)
 function Dedent (const Str: string): string;
@@ -223,10 +223,10 @@ function SvgFixedColor(Color: TColor): TColor;
 procedure FreeAndNilEncoding(var Encoding: TEncoding);
 
 {Create URI from FileName}
-function FilePathToURI(FilePath: string): string;
+function FilePathToURI(const FilePath: string): string;
 
 {Extract FileName from URI}
-function URIToFilePath(URI: string): string;
+function URIToFilePath(const URI: string): string;
 
 {RegisterApplicationRestart}
 function RegisterApplicationRestart(Flags: DWORD = 0): Boolean;
@@ -701,13 +701,13 @@ begin
   end;
 end;
 
-function DirIsPythonPackage(Dir: string): Boolean;
+function DirIsPythonPackage(const Dir: string): Boolean;
 begin
   Result :=  System.SysUtils.DirectoryExists(Dir) and
     FileExists(IncludeTrailingPathDelimiter(Dir) + '__init__.py');
 end;
 
-function FileIsPythonPackage(FileName: string): Boolean;
+function FileIsPythonPackage(const FileName: string): Boolean;
 begin
   Result := TPath.GetFileName(FileName) = '__init__.py';
 end;
@@ -827,7 +827,7 @@ begin
   Result := P;
 end;
 
-function ParsePySourceEncoding(TextLine: string): string;
+function ParsePySourceEncoding(const TextLine: string): string;
 begin
   Result := '';
   with TRegEx.Match(TextLine, 'coding[:=]\s*([-\w.]+)') do
@@ -899,12 +899,12 @@ begin
   end;
 end;
 
-function CleanEOLs(Str: AnsiString): AnsiString;
+function CleanEOLs(const Str: AnsiString): AnsiString;
 begin
   Result := System.AnsiStrings.AdjustLineBreaks(Str, System.tlbsLF);
 end;
 
-function CleanEOLs(Str: string): string;
+function CleanEOLs(const Str: string): string;
 begin
   Result := System.SysUtils.AdjustLineBreaks(Str, System.tlbsLF);
 end;
@@ -1429,7 +1429,7 @@ begin
   end;
 end;
 
-procedure GetFilesInPaths(Paths, Masks: string; FileList: TStrings; Recursive: Boolean = True);
+procedure GetFilesInPaths(const Paths, Masks: string; FileList: TStrings; Recursive: Boolean = True);
 var
   PreCallback: TDirectoryWalkProc;
 begin
@@ -1445,7 +1445,7 @@ begin
   WalkThroughDirectories(Paths, Masks, PreCallback, Recursive);
 end;
 
-procedure GetDirectoriesInPaths(Paths, Masks: string; DirList: TStrings; Recursive: Boolean = True);
+procedure GetDirectoriesInPaths(const Paths, Masks: string; DirList: TStrings; Recursive: Boolean = True);
 var
   PreCallback: TDirectoryWalkProc;
 begin
@@ -1513,7 +1513,7 @@ begin
   end;
 end;
 
-function IsDigits(Str: string): Boolean;
+function IsDigits(const Str: string): Boolean;
 begin
   Result := True;
   for var I := 1 to Str.Length do
@@ -1533,7 +1533,7 @@ begin
       Exit(Str);
 end;
 
-function CompiledRegEx(Expr: string; Options: TRegExOptions = [roNotEmpty];
+function CompiledRegEx(const Expr: string; Options: TRegExOptions = [roNotEmpty];
   UCP: Boolean = True): TRegEx;
 begin
   try
@@ -1860,7 +1860,7 @@ begin
   end;
 end;
 
-function FilePathToURI(FilePath: string): string;
+function FilePathToURI(const FilePath: string): string;
 const
   // The use of this flag in UrlCreateFromPath is undocumented.
   // It is used in URLEscape.  Its use fixes #1346.
@@ -1872,7 +1872,7 @@ begin
   SetLength(Result, BufferLen);
 end;
 
-function URIToFilePath(URI: string): string;
+function URIToFilePath(const URI: string): string;
 begin
   var DecodedURI := TURLEncoding.URL.Decode(URI);
   var BufferLen: DWORD := MAX_PATH;

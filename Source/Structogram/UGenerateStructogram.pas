@@ -22,7 +22,7 @@ type
     FScanner: TPythonScannerWithTokens;
 
     procedure SkipTo(Chr: Char);
-    procedure SkipToChars(Chr: string);
+    procedure SkipToChars(const Chr: string);
     procedure ParseDecorators;
     function GetNextToken: string;
     procedure SkipNewLines;
@@ -30,14 +30,14 @@ type
     function GetExpression(Token: Char): string;
     function GetSimpleExpression: string;
     function IsIdentifier(Expression: string): Boolean;
-    function CleanUp(Expression: string): string;
-    function WithoutTypes(Expression: string): string;
-    function WithoutLineJoining(Expression: string): string;
-    function WithoutLinefeeds(Expression: string): string;
-    function WithoutMultipleSpaces(Expression: string): string;
-    function WithoutComments(Expression: string): string;
-    function WithoutSelfAndVisibility(Expression: string): string;
-    function KnownStatement(Expression: string): Boolean;
+    function CleanUp(const Expression: string): string;
+    function WithoutTypes(const Expression: string): string;
+    function WithoutLineJoining(const Expression: string): string;
+    function WithoutLinefeeds(const Expression: string): string;
+    function WithoutMultipleSpaces(const Expression: string): string;
+    function WithoutComments(const Expression: string): string;
+    function WithoutSelfAndVisibility(const Expression: string): string;
+    function KnownStatement(const Expression: string): Boolean;
 
     procedure GenerateStatement;
     procedure GenerateIfStatement;
@@ -133,7 +133,7 @@ begin
   FScanner.SkipTo(Chr);
 end;
 
-procedure TGenerateStructogram.SkipToChars(Chr: string);
+procedure TGenerateStructogram.SkipToChars(const Chr: string);
 begin
   FScanner.SkipToChars(Chr);
 end;
@@ -168,7 +168,7 @@ begin
   SkipNewLines;
 end;
 
-function TGenerateStructogram.CleanUp(Expression: string): string;
+function TGenerateStructogram.CleanUp(const Expression: string): string;
 begin
   Result := Trim(WithoutSelfAndVisibility(WithoutMultipleSpaces
     (WithoutLinefeeds(WithoutLineJoining(WithoutComments(Expression))))));
@@ -194,27 +194,28 @@ begin
   Result := CleanUp(Result);
 end;
 
-function TGenerateStructogram.WithoutTypes(Expression: string): string;
+function TGenerateStructogram.WithoutTypes(const Expression: string): string;
 var
   Int, Pos1, Pos2: Integer;
 begin
+  Result := Expression;
   Int := 1;
-  while Int <= Length(Expression) do
+  while Int <= Length(Result) do
   begin
-    if Expression[Int] = ':' then
+    if Result[Int] = ':' then
     begin
       Pos1 := Int;
       Pos2 := Int + 1;
-      while Pos2 <= Length(Expression) do
+      while Pos2 <= Length(Result) do
       begin
-        if Expression[Pos2] = ',' then
+        if Result[Pos2] = ',' then
         begin
-          Delete(Expression, Pos1, Pos2 - Pos1);
+          Delete(Result, Pos1, Pos2 - Pos1);
           Break;
         end;
-        if Pos2 = Length(Expression) then
+        if Pos2 = Length(Result) then
         begin
-          Delete(Expression, Pos1, Pos2 - Pos1 + 1);
+          Delete(Result, Pos1, Pos2 - Pos1 + 1);
           Break;
         end;
         Inc(Pos2);
@@ -222,78 +223,78 @@ begin
     end;
     Inc(Int);
   end;
-  Result := Expression;
+
 end;
 
 function TGenerateStructogram.WithoutSelfAndVisibility
-  (Expression: string): string;
+  (const Expression: string): string;
 begin
   Result := myStringReplace(myStringReplace(Expression, 'self.', ''), '_', '');
 end;
 
-function TGenerateStructogram.WithoutLineJoining(Expression: string): string;
+function TGenerateStructogram.WithoutLineJoining(const Expression: string): string;
 begin
   Result := myStringReplace(Expression, '\'#10, '');
 end;
 
-function TGenerateStructogram.WithoutLinefeeds(Expression: string): string;
+function TGenerateStructogram.WithoutLinefeeds(const Expression: string): string;
 var
   Int: Integer;
 begin
+  Result := Expression;
   Int := 1;
-  while Int <= Length(Expression) do
+  while Int <= Length(Result) do
   begin
-    if Expression[Int] = #10 then
-      Delete(Expression, Int, 1)
+    if Result[Int] = #10 then
+      Delete(Result, Int, 1)
     else
       Inc(Int);
   end;
-  Result := Expression;
 end;
 
-function TGenerateStructogram.WithoutMultipleSpaces(Expression: string): string;
+function TGenerateStructogram.WithoutMultipleSpaces(const Expression: string): string;
 var
   Pos1, Pos2: Integer;
 begin
-  Pos1 := Pos('  ', Expression);
+  Result := Expression;
+  Pos1 := Pos('  ', Result);
   while Pos1 > 0 do
   begin
     Pos2 := Pos1 + 1;
-    while (Pos2 <= Length(Expression)) and (Expression[Pos2] = ' ') do
+    while (Pos2 <= Length(Result)) and (Result[Pos2] = ' ') do
       Inc(Pos2);
-    Delete(Expression, Pos1, Pos2 - Pos1 - 1);
-    Pos1 := Pos('  ', Expression);
+    Delete(Result, Pos1, Pos2 - Pos1 - 1);
+    Pos1 := Pos('  ', Result);
   end;
-  Result := Expression;
 end;
 
-function TGenerateStructogram.WithoutComments(Expression: string): string;
+function TGenerateStructogram.WithoutComments(const Expression: string): string;
 var
   Pos1, Pos2: Integer;
   Double, Single: Boolean;
 begin
+  Result := Expression;
   Double := False;
   Single := False;
   Pos1 := 1;
-  while Pos1 <= Length(Expression) do
+  while Pos1 <= Length(Result) do
   begin
-    if (Expression[Pos1] = '"') and not Single then
+    if (Result[Pos1] = '"') and not Single then
       Double := not Double
-    else if (Expression[Pos1] = '''') and not Double then
+    else if (Result[Pos1] = '''') and not Double then
       Single := not Single
-    else if (Expression[Pos1] = '#') and not Double and not Single then
+    else if (Result[Pos1] = '#') and not Double and not Single then
     begin
       Pos2 := Pos1 + 1;
-      while (Pos2 <= Length(Expression)) and (Expression[Pos2] <> #10) do
+      while (Pos2 <= Length(Result)) and (Result[Pos2] <> #10) do
         Inc(Pos2);
-      Delete(Expression, Pos1, Pos2 - Pos1);
+      Delete(Result, Pos1, Pos2 - Pos1);
     end;
     Inc(Pos1);
   end;
-  Result := Expression;
 end;
 
-function TGenerateStructogram.KnownStatement(Expression: string): Boolean;
+function TGenerateStructogram.KnownStatement(const Expression: string): Boolean;
 const
   Statements: array [1 .. 13] of string = ('assert', 'break', 'pass', 'del',
     'return', 'yield', 'raise', 'continue', 'import', 'from', 'future',

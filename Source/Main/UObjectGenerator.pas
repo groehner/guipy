@@ -58,14 +58,12 @@ type
     procedure MoveOrSizeComponent(APartner: TEditorForm; Control: TControl);
     procedure ComponentToBackground(APartner: TEditorForm; Control: TControl);
     procedure ComponentToForeground(APartner: TEditorForm; Control: TControl);
-    procedure SetAttributForComponent(Attr, Value: string; Typ: string;
+    procedure SetAttributForComponent(const Attr, Value, Typ: string;
       Control: TControl);
-    procedure SetSlotForComponent(Attr, Value: string; Control: TControl);
-    procedure AddRow(Attribute: string; const Value: string);
-
+    procedure SetSlotForComponent(const Attr, Value: string; Control: TControl);
+    procedure AddRow(const Attribute, Value: string);
     function Edit(Control: TControl; Attributes: TStringList;
       Row: Integer): Boolean;
-
     procedure InsertComponent(EditForm: TEditorForm; Control: TControl;
       Pasting: Boolean);
     procedure SetComponentValues(DesignForm: TFGuiForm; Control: TControl);
@@ -218,27 +216,27 @@ begin
   end;
 end;
 
-procedure TFObjectGenerator.SetAttributForComponent(Attr, Value, Typ: string;
+procedure TFObjectGenerator.SetAttributForComponent(const Attr, Value, Typ: string;
   Control: TControl);
 var
   Widget: TBaseWidget;
   GuiForm: TFGuiForm;
 begin
   FPartner := TFGuiForm(FGUIDesigner.ELDesigner.DesignControl).Partner;
-  Value := Delphi2PythonValues(Value);
+  var NValue := Delphi2PythonValues(Value);
   if Control is TBaseWidget then
   begin
     Widget := Control as TBaseWidget;
-    Widget.SetAttribute(Attr, Value, Typ);
+    Widget.SetAttribute(Attr, NValue, Typ);
   end
   else if Control is TFGuiForm then
   begin
     GuiForm := Control as TFGuiForm;
-    GuiForm.SetAttribute(Attr, Value, Typ);
+    GuiForm.SetAttribute(Attr, NValue, Typ);
   end;
 end;
 
-procedure TFObjectGenerator.SetSlotForComponent(Attr, Value: string;
+procedure TFObjectGenerator.SetSlotForComponent(const Attr, Value: string;
   Control: TControl);
 var
   CName, Str, Dest: string;
@@ -287,7 +285,7 @@ begin
       ModalResult := mrOk;
 end;
 
-procedure TFObjectGenerator.AddRow(Attribute: string; const Value: string);
+procedure TFObjectGenerator.AddRow(const Attribute, Value: string);
 begin
   ValueListEditor.InsertRow(Attribute, Value, True);
   FDefaults[ValueListEditor.RowCount - 1] := Value;

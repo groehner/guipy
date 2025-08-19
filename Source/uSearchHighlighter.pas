@@ -15,7 +15,7 @@ uses
   uEditAppIntfs;
 
 procedure RegisterSearchHighlightIndicatorSpec(Editor: IEditor);
-procedure HighligthtSearchTerm(ATerm : string; Editor: IEditor;
+procedure HighligthtSearchTerm(const ATerm : string; Editor: IEditor;
   SearchEngine : TSynEditSearchCustom; SearchOptions : TSynSearchOptions);
 procedure ClearSearchHighlight(Editor: IEditor);
 procedure ClearAllHighlightedTerms;
@@ -59,7 +59,7 @@ begin
   end;
 end;
 
-procedure HighligthtSearchTerm(ATerm : string; Editor: IEditor;
+procedure HighligthtSearchTerm(const ATerm : string; Editor: IEditor;
   SearchEngine : TSynEditSearchCustom; SearchOptions : TSynSearchOptions);
 var
   Indicator: TSynIndicator;

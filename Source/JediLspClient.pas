@@ -73,11 +73,11 @@ type
     // Lsp functionality
     class procedure FindDefinitionByCoordinates(const Filename: string;
       const BC: TBufferCoord; out DefFileName: string; out DefBC: TBufferCoord);
-    class function FindReferencesByCoordinates(Filename: string;
+    class function FindReferencesByCoordinates(const Filename: string;
       const BC: TBufferCoord): TArray<TDocPosition>;
     class function HandleCodeCompletion(const Filename: string;
       const BC: TBufferCoord; out InsertText, DisplayText: string): Boolean;
-    class function ResolveCompletionItem(CCItem: string): string;
+    class function ResolveCompletionItem(const CCItem: string): string;
     class procedure RequestParamCompletion(const AFileId: string; Editor:
         TCustomSynEdit);
     class function DocumentSymbols(const FileName: string): TJSONArray;
@@ -274,7 +274,7 @@ begin
   FreeAndNil(Error);
 end;
 
-class function TJedi.FindReferencesByCoordinates(Filename: string;
+class function TJedi.FindReferencesByCoordinates(const Filename: string;
   const BC: TBufferCoord): TArray<TDocPosition>;
 var
   Param: TJsonObject;
@@ -376,7 +376,7 @@ begin
   FreeAndNil(Error);
 end;
 
-class function TJedi.ResolveCompletionItem(CCItem: string): string;
+class function TJedi.ResolveCompletionItem(const CCItem: string): string;
 var
   AResult, Error: TJsonValue;
 begin

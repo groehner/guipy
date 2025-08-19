@@ -292,7 +292,7 @@ type
     procedure AutoCompleteAfterExecute(Sender: TObject);
     procedure WMFolderChangeNotify(var Msg: TMessage); message WM_FOLDERCHANGENOTIFY;
     procedure SynCodeCompletionCodeItemInfo(Sender: TObject;
-      AIndex: Integer; var Info : string);
+      AIndex: Integer; var Info: string);
     procedure DoAssignInterfacePointer(Active: Boolean);
     function DoSave: Boolean;
     procedure SetNeedsParsing(Value: Boolean);
@@ -370,8 +370,8 @@ type
     function GetLineNumberWith(const Text: string): Integer;
     function GetLineNumberWithFrom(From: Integer; const Text: string): Integer;
     function GetLineNumberWithWord(const Word: string): Integer;
-    function GetLineNumberWithWordFromTill(Word: string; From: Integer; Till: Integer=0): Integer;
-    function GetLineNumberOfBinding(Name, Attr: string): Integer;
+    function GetLineNumberWithWordFromTill(const Word: string; From: Integer; Till: Integer=0): Integer;
+    function GetLineNumberOfBinding(const Name, Attr: string): Integer;
     function GetSource(LineS, LineE: Integer): string;
     function GetLinesWithSelection: string;
 
@@ -401,26 +401,26 @@ type
     procedure DeleteAttributeValues(const Values: string);
     procedure DeleteEmptyLine(Line: Integer);
     procedure DeleteLine(Line: Integer); overload;
-    procedure DeleteLine(Line: string); overload;
+    procedure DeleteLine(const Line: string); overload;
     procedure DeleteBlock(StartLine, EndLine: Integer);
     procedure DeleteComponent(Control: TControl);
     procedure DeleteMethod(const Method: string);
     procedure DeleteOldAddNewMethods(OldMethods, NewMethods: TStringList);
     procedure DeleteBinding(const Binding: string);
-    procedure DeleteItems(Name, Key: string);
+    procedure DeleteItems(const Name, Key: string);
 
     procedure MoveBlock(From, Till, Dest, DestTill: Integer; const BlankLines: string);
     procedure ToForeground(Control: TControl);
     procedure ToBackground(Control: TControl);
 
     procedure GoTo2(const Str: string);
-    procedure ShowTopLine(LineNum: Integer; NodeText: string);
+    procedure ShowTopLine(LineNum: Integer; const NodeText: string);
     function HasText(const Text: string): Boolean;
     function HasWidget(const Key: string; Line: Integer): Boolean;
 
     procedure CreateModel;
     procedure ParseAndCreateModel;
-    procedure NewClass(Pathname: string);
+    procedure NewClass(const Pathname: string);
     procedure ExportToClipboard(Lines: TStringList; Exporter: TSynCustomExporter; AsText: Boolean);
     procedure CopySelected;
     procedure CopyRTF;
@@ -433,7 +433,7 @@ type
     procedure DoUpdateCaption; override;
     procedure CollapseGUICreation;
     function IsGUICreationCollapsed: Boolean;
-    procedure DoUpdateHighlighter(HighlighterName: string = '');
+    procedure DoUpdateHighlighter(const HighlighterName: string = '');
     function GetFileFormat: string;
     class function ToolbarCount: Integer;
 
@@ -465,7 +465,7 @@ type
     function GetFileEncoding: TFileSaveFormat;
     procedure SetFileEncoding(FileEncoding: TFileSaveFormat);
     function GetEncodedText: AnsiString;
-    procedure OpenLocalFile(const AFilename: string; HighlighterName: string = '');
+    procedure OpenLocalFile(const AFilename: string; const HighlighterName: string = '');
     function HasPythonFile: Boolean;
     function GetReadOnly : Boolean;
     procedure SetHasSearchHighlight(Value : Boolean);
@@ -512,7 +512,7 @@ type
   public
     constructor Create(AForm: TFileForm); reintroduce;
     destructor Destroy; override;
-    procedure DoSetFilename(FileName: string); override;
+    procedure DoSetFilename(const FileName: string); override;
     procedure OpenRemoteFile(const FileName, Servername: string); override;
     function SaveToRemoteFile(const FileName, Servername: string) : Boolean; override;
   end;
@@ -675,7 +675,7 @@ begin
   // Kept for debugging
 end;
 
-procedure TEditor.DoSetFilename(FileName: string);
+procedure TEditor.DoSetFilename(const FileName: string);
 begin
   FForm.FNeedToParseModule := True;
   inherited DoSetFilename(FileName);
@@ -914,7 +914,7 @@ begin
 end;
 
 procedure TEditor.OpenLocalFile(const AFilename: string;
-  HighlighterName: string = '');
+  const HighlighterName: string = '');
   var AFileTime: TDateTime;
 begin
   if not Assigned(FForm) then Abort;
@@ -1207,7 +1207,7 @@ type
   private
     FEditorViewFactories: TInterfaceList;
     // IEditorFactory implementation
-    function OpenFile(AFilename: string; HighlighterName: string = '';
+    function OpenFile(AFilename: string; const HighlighterName: string = '';
        TabControlIndex: Integer = 1; AsEditor: Boolean = False): IFile;
     function GetEditorCount: Integer;
     function GetEditorByName(const Name: string): IEditor;
@@ -1216,7 +1216,7 @@ type
     function GetViewFactoryCount: Integer;
     function GetViewFactory(Index: Integer): IEditorViewFactory;
     function NewEditor(TabControlIndex:Integer = 1): IEditor;
-    procedure InvalidatePos(AFilename: string; ALine: Integer;
+    procedure InvalidatePos(const AFilename: string; ALine: Integer;
       AType: TInvalidationType);
     procedure RemoveEditor(AEditor: IEditor);
     function RegisterViewFactory(ViewFactory: IEditorViewFactory): Integer;
@@ -1362,7 +1362,7 @@ begin
   Result := FEditorViewFactories.Count;
 end;
 
-procedure TEditorFactory.InvalidatePos(AFilename: string; ALine: Integer;
+procedure TEditorFactory.InvalidatePos(const AFilename: string; ALine: Integer;
   AType: TInvalidationType);
 
   procedure ProcessEditor(SynEd: TSynEdit);
@@ -1504,7 +1504,7 @@ begin
   end;
 end;
 
-function TEditorFactory.OpenFile(AFilename: string; HighlighterName: string = '';
+function TEditorFactory.OpenFile(AFilename: string; const HighlighterName: string = '';
        TabControlIndex: Integer = 1; AsEditor: Boolean = False): IFile;
 var
   IsRemote: Boolean;
@@ -2122,7 +2122,7 @@ begin
     else Result:= False;
 end;
 
-procedure TEditorForm.DoUpdateHighlighter(HighlighterName: string = '');
+procedure TEditorForm.DoUpdateHighlighter(const HighlighterName: string = '');
 begin
   if HighlighterName <> '' then
     SynEdit.Highlighter :=
@@ -3315,7 +3315,7 @@ procedure TEditorForm.SynWebCompletionAfterCodeCompletion(Sender: TObject;
 var
     SynEdit: TCustomSynEdit;
 
-  function CaretBetween(AStr: string): Boolean;
+  function CaretBetween(const AStr: string): Boolean;
   begin
     var Int := Pos(AStr, Value);
     Result := Int > 0;
@@ -3966,7 +3966,7 @@ begin
     InsertLinesAt(Operation.LineSE, Attribute);
 end;
 
-function TEditorForm.GetLineNumberOfBinding(Name, Attr: string): Integer;
+function TEditorForm.GetLineNumberOfBinding(const Name, Attr: string): Integer;
   var Line, Till, Posi: Integer; Key1, Key2: string;
 begin
   Result:= -1;
@@ -4074,7 +4074,7 @@ begin
   Modified:= True;
 end;
 
-procedure TEditorForm.DeleteLine(Line: string);
+procedure TEditorForm.DeleteLine(const Line: string);
 begin
   var Num:= GetLineNumberWith(Line);
   if Num > -1 then DeleteLine(Num);
@@ -4103,7 +4103,7 @@ begin
   ActiveSynEdit.EndUpdate;
 end;
 
-procedure TEditorForm.DeleteItems(Name, Key: string);
+procedure TEditorForm.DeleteItems(const Name, Key: string);
 begin
   ActiveSynEdit.BeginUpdate;
   var CreateWidget:= GetCreateWidgets;
@@ -4367,7 +4367,7 @@ begin
   end;
 end;
 
-procedure TEditorForm.ShowTopLine(LineNum: Integer; NodeText: string);
+procedure TEditorForm.ShowTopLine(LineNum: Integer; const NodeText: string);
   var IsWrapping: Boolean; Line: string;
 begin
   IsWrapping := ActiveSynEdit.WordWrap;
@@ -4701,7 +4701,7 @@ begin
   Result:= GetLineNumberWithWordFromTill(Word, 0);
 end;
 
-function TEditorForm.GetLineNumberWithWordFromTill(Word: string; From: Integer; Till: Integer=0): Integer;
+function TEditorForm.GetLineNumberWithWordFromTill(const Word: string; From: Integer; Till: Integer=0): Integer;
   var Int: Integer; RegEx: TRegEx;
 begin
   Result:= -1;
@@ -4860,7 +4860,7 @@ begin
   mnEditDelete.ImageIndex:= -1;
 end;
 
-procedure TEditorForm.NewClass(Pathname: string);
+procedure TEditorForm.NewClass(const Pathname: string);
   var Template, Name, Indent: string;
       Posi: Integer;
 begin

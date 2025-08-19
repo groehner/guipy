@@ -833,10 +833,10 @@ procedure SaveDockTreeToAppStorage(AppStorage: TJvCustomAppStorage; AppStoragePa
 // Load Layout from JvAppStorage:
 procedure LoadDockTreeFromAppStorage(AppStorage: TJvCustomAppStorage; AppStoragePath: string = '');
 
-procedure SaveDockTreeToFile(FileName: string);
-procedure LoadDockTreeFromFile(FileName: string);
-procedure SaveDockTreeToReg(ARootKey: DWORD; RegPatch: string);
-procedure LoadDockTreeFromReg(ARootKey: DWORD; RegPatch: string);
+procedure SaveDockTreeToFile(const FileName: string);
+procedure LoadDockTreeFromFile(const FileName: string);
+procedure SaveDockTreeToReg(ARootKey: DWORD; const RegPatch: string);
+procedure LoadDockTreeFromReg(ARootKey: DWORD; const RegPatch: string);
 
 function FindDockBaseControl(Client: TControl): TJvDockBaseControl;
 function FindDockClient(Client: TControl): TJvDockClient;
@@ -1458,7 +1458,7 @@ begin
   end;
 end;
 
-procedure LoadDockTreeFromFile(FileName: string);
+procedure LoadDockTreeFromFile(const FileName: string);
 var
   JvAppStorage: TJvAppIniFileStorage;
 begin
@@ -1473,7 +1473,7 @@ begin
   end;
 end;
 
-procedure LoadDockTreeFromReg(ARootKey: DWORD; RegPatch: string);
+procedure LoadDockTreeFromReg(ARootKey: DWORD; const RegPatch: string);
 var
   JvAppStorage: TJvAppRegistryStorage;
 begin
@@ -1791,7 +1791,7 @@ begin
   end;
 end;
 
-procedure SaveDockTreeToFile(FileName: string);
+procedure SaveDockTreeToFile(const FileName: string);
 var
   JvAppStorage: TJvAppIniFileStorage;
 begin
@@ -1807,7 +1807,7 @@ begin
   end;
 end;
 
-procedure SaveDockTreeToReg(ARootKey: DWORD; RegPatch: string);
+procedure SaveDockTreeToReg(ARootKey: DWORD; const RegPatch: string);
 var
   JvAppStorage: TJvAppRegistryStorage;
 begin

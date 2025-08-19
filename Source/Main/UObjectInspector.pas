@@ -84,8 +84,8 @@ type
     procedure MyOnGetComponentNames(Sender: TObject; AClass: TComponentClass;
       AResult: TStrings);
     procedure CBChangeName(const OldName, NewName: string);
-    procedure ChangeName(OldName, NewName: string; Control: TControl);
-    procedure RefreshCB(NewName: string = '');
+    procedure ChangeName(const OldName, NewName: string; Control: TControl);
+    procedure RefreshCB(const NewName: string = '');
     procedure SetButtonCaption(Show: Integer);
     procedure UpdateEventInspector;
   protected
@@ -266,7 +266,7 @@ begin
         AResult);
 end;
 
-procedure TFObjectInspector.RefreshCB(NewName: string = '');
+procedure TFObjectInspector.RefreshCB(const NewName: string = '');
 var
   Index: Integer;
   Typ, Nam, NamTyp: string;
@@ -427,7 +427,7 @@ begin
   end;
 end;
 
-procedure TFObjectInspector.ChangeName(OldName, NewName: string;
+procedure TFObjectInspector.ChangeName(const OldName, NewName: string;
   Control: TControl);
 var
   Widget: TBaseWidget;

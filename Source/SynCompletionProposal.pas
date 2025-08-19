@@ -335,7 +335,7 @@ type
       Data: Pointer; HandlerData: Pointer); virtual;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure Execute(CurrentInput: string; X, Y: Integer);
+    procedure Execute(const CurrentInput: string; X, Y: Integer);
     procedure ExecuteEx(CurrentInput: string; X, Y: Integer;
       Kind: SynCompletionType = ctCode); virtual;
     procedure Activate;
@@ -344,7 +344,7 @@ type
     procedure ClearList;
     function DisplayItem(AIndex: Integer): string;
     function InsertItem(AIndex: Integer): string;
-    procedure AddItemAt(Where: Integer; ADisplayText, AInsertText: string);
+    procedure AddItemAt(Where: Integer; const ADisplayText, AInsertText: string);
     procedure AddItem(ADisplayText, AInsertText: string);
     procedure ResetAssignedList;
 
@@ -490,7 +490,7 @@ type
     procedure Execute(Token: string; Editor: TCustomSynEdit);
     procedure ExecuteEx(Token: string; Editor: TCustomSynEdit; LookupIfNotExact: Boolean);
     function GetTokenList: string;
-    function GetTokenValue(Token: string): string;
+    function GetTokenValue(const Token: string): string;
     function GetPreviousToken(Editor: TCustomSynEdit): string;
     procedure CancelCompletion;
     property Executing: Boolean read GetExecuting;
@@ -2288,7 +2288,7 @@ begin
   FPaintFormShadow := True;
 end;
 
-procedure TSynBaseCompletionProposal.Execute(CurrentInput: string; X, Y: Integer);
+procedure TSynBaseCompletionProposal.Execute(const CurrentInput: string; X, Y: Integer);
 begin
   ExecuteEx(CurrentInput, X, Y, DefaultType);
 end;
@@ -2652,7 +2652,7 @@ begin
   GetItemList.Add(ADisplayText);
 end;
 
-procedure TSynBaseCompletionProposal.AddItemAt(Where: Integer; ADisplayText, AInsertText: string);
+procedure TSynBaseCompletionProposal.AddItemAt(Where: Integer; const ADisplayText, AInsertText: string);
 begin
   try
     GetInsertList.Insert(Where, AInsertText);
@@ -3691,7 +3691,7 @@ begin
   List.Free;
 end;
 
-function TSynAutoComplete.GetTokenValue(Token: string): string;
+function TSynAutoComplete.GetTokenValue(const Token: string): string;
 var
   I: Integer;
   List: TStringList;

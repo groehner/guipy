@@ -41,7 +41,7 @@ type
   public
     constructor Create(WithView: Boolean); virtual;
     procedure ParseModul(Module: TParsedModule; AModel: TAbstractPackage;
-      AOM: TObjectModel; Filename: string; Level: Integer;
+      AOM: TObjectModel; const Filename: string; Level: Integer;
       WithoutNeedSource: Boolean);
     procedure ParseClassDeclaration(ParsedClass: TParsedClass; Level: Integer;
       const ParentName: string = '');
@@ -118,7 +118,7 @@ begin
 end;
 
 procedure TPythonParser.ParseModul(Module: TParsedModule;
-  AModel: TAbstractPackage; AOM: TObjectModel; Filename: string; Level: Integer;
+  AModel: TAbstractPackage; AOM: TObjectModel; const Filename: string; Level: Integer;
   WithoutNeedSource: Boolean);
 var
   AClassifier: TClassifier;

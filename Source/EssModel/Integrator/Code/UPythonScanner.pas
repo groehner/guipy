@@ -51,7 +51,7 @@ type
     function GetNextToken: string;
     function LookAheadToken: string;
     procedure SkipTo(Chr: Char);
-    procedure SkipToChars(Chr: string);
+    procedure SkipToChars(const Chr: string);
 
     property CurrPos: PChar read FCurrPos;
     property LastCurrPos: PChar read FLastCurrPos;
@@ -409,7 +409,7 @@ begin
   end;
 end;
 
-procedure TPythonScannerWithTokens.SkipToChars(Chr: string);
+procedure TPythonScannerWithTokens.SkipToChars(const Chr: string);
 begin
   while (Pos(FToken, Chr) = 0) and (FToken <> '') do
   begin

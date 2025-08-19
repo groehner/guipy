@@ -79,11 +79,11 @@ type
     FViewportEntered: string;
     procedure SetAlternatingRowColors(Value: Boolean);
   public
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
   published
     property AutoScroll: Boolean read FAutoScroll write FAutoScroll;
     property AutoScrollMargin: Integer read FAutoScrollMargin
@@ -146,9 +146,9 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
   published
     property Movement: TMovement read FMovement write FMovement;
     property Flow: TFlow read FFlow write SetFlow;
@@ -192,11 +192,11 @@ type
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property CurrentRow: Integer read FCurrentRow write FCurrentRow;
@@ -233,12 +233,12 @@ type
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     procedure DeleteWidget; override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
     function InnerRect: TRect; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property ResizeGripsVisible: Boolean read FResizeGripsVisible
@@ -267,15 +267,15 @@ type
     procedure SetIndentation(Value: Integer);
     procedure SetColumnWidth(Value: Integer);
     procedure SetHeaderHidden(Value: Boolean);
-    procedure MakeColumWidth(Value: string);
+    procedure MakeColumWidth(const Value: string);
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
   published
     property AutoExpandDelay: Integer read FAutoExpandDelay
       write FAutoExpandDelay;
@@ -324,12 +324,12 @@ type
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     procedure DeleteWidget; override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property Header: TStrings read FHeader write SetHeader;
@@ -368,15 +368,15 @@ type
     procedure SetRowHeight(Value: Integer);
     procedure SetShowGrid(Value: Boolean);
     procedure SetGridStyle(Value: TGridStyle);
-    procedure MakeHeaderVisible(Attr, Value: string);
-    procedure MakeColumWidth(Value: string);
-    procedure MakeRowHeight(Value: string);
+    procedure MakeHeaderVisible(const Attr, Value: string);
+    procedure MakeColumWidth(const Value: string);
+    procedure MakeRowHeight(const Value: string);
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
   published
     property ShowGrid: Boolean read FShowGrid write SetShowGrid;
     property GridStyle: TGridStyle read FGridStyle write SetGridStyle;
@@ -426,11 +426,11 @@ type
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property RowCount: Integer read FRowCount write SetRowCount;
@@ -467,7 +467,7 @@ uses Controls, Graphics, SysUtils, Types, UITypes, Math, UQtFrameBased, UUtils;
 
 { --- TQtAbstractItemView ------------------------------------------------------ }
 
-procedure TQtAbstractItemView.SetAttribute(Attr, Value, Typ: string);
+procedure TQtAbstractItemView.SetAttribute(const Attr, Value, Typ: string);
 begin
   if (Attr = 'DragDropMode') or (Attr = 'SelectionMode') or
     (Attr = 'SelectionBehavior') then
@@ -514,7 +514,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtAbstractItemView.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtAbstractItemView.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
   begin
@@ -566,7 +566,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtListView.SetAttribute(Attr, Value, Typ: string);
+procedure TQtListView.SetAttribute(const Attr, Value, Typ: string);
 begin
   if (Attr = 'Movement') or (Attr = 'Flow') or (Attr = 'ViewMode') or
     (Attr = 'ResizeMode') or (Attr = 'LayoutMode') then
@@ -583,7 +583,7 @@ begin
   Result := Result + inherited GetEvents(ShowEvents);
 end;
 
-procedure TQtListView.NewWidget(Widget: string = '');
+procedure TQtListView.NewWidget(const Widget: string = '');
 begin
   if Widget = '' then
     inherited NewWidget('QListView')
@@ -633,7 +633,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtListWidget.SetAttribute(Attr, Value, Typ: string);
+procedure TQtListWidget.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Items' then
   begin
@@ -670,7 +670,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtListWidget.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtListWidget.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
     Slots.Add(Name + '.clear')
@@ -679,7 +679,7 @@ begin
   inherited;
 end;
 
-procedure TQtListWidget.NewWidget(Widget: string = '');
+procedure TQtListWidget.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QListWidget');
   SetAttribute('Items', GetItems, '');
@@ -813,7 +813,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtColumnView.SetAttribute(Attr, Value, Typ: string);
+procedure TQtColumnView.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Items' then
     MakeItems
@@ -841,7 +841,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtColumnView.NewWidget(Widget: string = '');
+procedure TQtColumnView.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QColumnView');
   InsertValue('self.' + Name + '.setModel(QStandardItemModel())');
@@ -1019,7 +1019,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtTableView.SetAttribute(Attr, Value, Typ: string);
+procedure TQtTableView.SetAttribute(const Attr, Value, Typ: string);
 begin
   if (Attr = 'HeaderHorzVisible') or (Attr = 'HeaderVertVisible') then
     MakeHeaderVisible(Attr, Value)
@@ -1033,7 +1033,7 @@ begin
     inherited;
 end;
 
-procedure TQtTableView.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtTableView.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
   begin
@@ -1059,7 +1059,7 @@ begin
   inherited;
 end;
 
-procedure TQtTableView.NewWidget(Widget: string = '');
+procedure TQtTableView.NewWidget(const Widget: string = '');
 begin
   if Widget = '' then
   begin
@@ -1070,7 +1070,7 @@ begin
     inherited NewWidget('QTableWidget');
 end;
 
-procedure TQtTableView.MakeHeaderVisible(Attr, Value: string);
+procedure TQtTableView.MakeHeaderVisible(const Attr, Value: string);
 var
   Key: string;
 begin
@@ -1081,14 +1081,14 @@ begin
   SetAttributValue(Key, Key + '().setVisible(' + Value + ')');
 end;
 
-procedure TQtTableView.MakeColumWidth(Value: string);
+procedure TQtTableView.MakeColumWidth(const Value: string);
 begin
   var
   Key := 'self.' + Name + '.horizontalHeader().setDefaultSectionSize';
   SetAttributValue(Key, Key + '(' + Value + ')');
 end;
 
-procedure TQtTableView.MakeRowHeight(Value: string);
+procedure TQtTableView.MakeRowHeight(const Value: string);
 begin
   var
   Key := 'self.' + Name + '.verticalHeader().setDefaultSectionSize';
@@ -1181,7 +1181,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtTableWidget.SetAttribute(Attr, Value, Typ: string);
+procedure TQtTableWidget.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'HeaderHorz' then
     MakeHorizontalHeader
@@ -1221,7 +1221,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtTableWidget.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtTableWidget.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
   begin
@@ -1307,7 +1307,7 @@ begin
   end;
 end;
 
-procedure TQtTableWidget.NewWidget(Widget: string = '');
+procedure TQtTableWidget.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QTableWidget');
   SetAttribute('RowCount', '2', '');
@@ -1532,7 +1532,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtTreeView.SetAttribute(Attr, Value, Typ: string);
+procedure TQtTreeView.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'ColumnWidth' then
     MakeColumWidth(Value)
@@ -1556,7 +1556,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtTreeView.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtTreeView.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
   begin
@@ -1582,7 +1582,7 @@ begin
   inherited;
 end;
 
-procedure TQtTreeView.NewWidget(Widget: string = '');
+procedure TQtTreeView.NewWidget(const Widget: string = '');
 begin
   if Widget = '' then
   begin
@@ -1593,7 +1593,7 @@ begin
     inherited NewWidget('QTreeWidget');
 end;
 
-procedure TQtTreeView.MakeColumWidth(Value: string);
+procedure TQtTreeView.MakeColumWidth(const Value: string);
 begin
   var
   Key := 'self.' + Name + '.header().setDefaultSectionSize';
@@ -1660,7 +1660,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtTreeWidget.SetAttribute(Attr, Value, Typ: string);
+procedure TQtTreeWidget.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Header' then
     MakeHeader
@@ -1694,7 +1694,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtTreeWidget.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtTreeWidget.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
     Slots.Add(Name + '.clear')
@@ -1789,7 +1789,7 @@ begin
   end;
 end;
 
-procedure TQtTreeWidget.NewWidget(Widget: string = '');
+procedure TQtTreeWidget.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QTreeWidget');
   MakeHeader;

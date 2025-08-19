@@ -69,7 +69,7 @@ type
     FZoom: OleVariant;
     procedure InvokeOleCMD(Value1, Value2: Integer);
     procedure ActivateBrowser;
-    procedure NavigateTo(URL: string);
+    procedure NavigateTo(const URL: string);
   protected
     procedure Print; override;
     procedure CutToClipboard;
@@ -175,7 +175,7 @@ begin
   Result := True;
 end;
 
-procedure TFBrowser.NavigateTo(URL: string);
+procedure TFBrowser.NavigateTo(const URL: string);
 begin
   WebBrowser.Navigate(URL);
 end;

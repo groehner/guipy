@@ -169,7 +169,7 @@ type
     procedure GrepCurrentSourceEditor;
     procedure GrepOpenFiles;
     procedure GrepProjectFiles;
-    procedure GrepDirectories(const Dir: string; const Mask: string);
+    procedure GrepDirectories(const Dir, Mask: string);
     function GetPreCallback: TDirectoryWalkProc;
   public
     constructor Create(const Settings: TGrepSettings; StorageTarget: TStrings);
@@ -446,7 +446,7 @@ begin
   ActiveProject.FirstThat(GrepProjectFile, Self);
 end;
 
-procedure TGrepSearchRunner.GrepDirectories(const Dir: string; const Mask: string);
+procedure TGrepSearchRunner.GrepDirectories(const Dir, Mask: string);
 var
   PreCallBack : TDirectoryWalkProc;
 begin

@@ -104,25 +104,25 @@ type
     function GetBackground: TColor;
     procedure SetBackground(Value: TColor);
     procedure SetTransparency(Value: Real);
-    function Without_(Str: string): string;
+    function Without_(const Str: string): string;
     procedure SetWidgetPartners;
     procedure SetGridOptions;
     procedure GetFontSize;
   public
     constructor Create(AOwner: TComponent); override;
     procedure InitEvents;
-    procedure Open(Pathname, State: string; WidthHeight: TPoint;
+    procedure Open(const Pathname, State: string; WidthHeight: TPoint;
       Partner: TEditorForm);
     procedure EnterForm(Sender: TObject);
     procedure Save(MitBackup: Boolean);
     procedure UpdateState;
     procedure EnsureOnDesktop;
-    procedure SetAttribute(Attr, Value, Typ: string);
+    procedure SetAttribute(const Attr, Value, Typ: string);
     function GetAttributes(ShowAttributes: Integer): string;
     function GetEvents(ShowEvents: Integer): string;
     procedure SetEvent(Event: string);
-    function Handlername(Event: string): string;
-    function MakeHandler(Event: string): string;
+    function Handlername(const Event: string): string;
+    function MakeHandler(const Event: string): string;
     procedure DeleteEventHandler(const Event: string);
     function MakeBinding(Eventname: string): string;
     procedure EndOfResizeMoveDetected(var Msg: TMessage);
@@ -273,7 +273,7 @@ begin
   FEventMap.Add('MouseWheel', FMouseWheel);
 end;
 
-procedure TFGuiForm.Open(Pathname, State: string; WidthHeight: TPoint;
+procedure TFGuiForm.Open(const Pathname, State: string; WidthHeight: TPoint;
   Partner: TEditorForm);
 begin
   FPathname := Pathname;
@@ -476,15 +476,16 @@ begin
   SetBounds(Lef1, Top1, Width, Height);
 end;
 
-procedure TFGuiForm.SetAttribute(Attr, Value, Typ: string);
+procedure TFGuiForm.SetAttribute(const Attr, Value, Typ: string);
+var NValue: string;
 begin
   if (Attr = 'MaxHeight') or (Attr = 'MaxWidth') then
-    Value := IntToStr(FMaxWidth) + ', ' + IntToStr(FMaxHeight)
+    NValue := IntToStr(FMaxWidth) + ', ' + IntToStr(FMaxHeight)
   else if (Attr = 'MinHeight') or (Attr = 'MinWidth') then
-    Value := IntToStr(FMinWidth) + ', ' + IntToStr(FMinHeight)
+    NValue := IntToStr(FMinWidth) + ', ' + IntToStr(FMinHeight)
   else if Attr = 'Title' then
     Caption := Value;
-  FWidget.SetAttribute(Attr, Value, Typ);
+  FWidget.SetAttribute(Attr, NValue, Typ);
 end;
 
 function TFGuiForm.GetAttributes(ShowAttributes: Integer): string;
@@ -497,7 +498,7 @@ begin
   Result := FWidget.GetEvents(ShowEvents) + '|';
 end;
 
-function TFGuiForm.Without_(Str: string): string;
+function TFGuiForm.Without_(const Str: string): string;
 begin
   if Str = 'Destroy_' then
     Result := 'Destroy'
@@ -505,7 +506,7 @@ begin
     Result := Str;
 end;
 
-function TFGuiForm.MakeHandler(Event: string): string;
+function TFGuiForm.MakeHandler(const Event: string): string;
 begin
   Result := FIndent1 + 'def ' + FWidget.HandlerNameAndParameter(Event) + CrLf +
     FIndent2 + LNGInsertSourceCodeHere + CrLf + FIndent2 +
@@ -523,7 +524,7 @@ begin
     FPartner.InsertQtBinding(FIndent2 + 'self.', MakeBinding(Event));
 end;
 
-function TFGuiForm.Handlername(Event: string): string;
+function TFGuiForm.Handlername(const Event: string): string;
 begin
   if FPartner.FrameType < 3 then
     Result := 'root_' + Without_(Event)

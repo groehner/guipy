@@ -92,7 +92,7 @@ type
     function AsValue: string;
     function AsType: string;
     function AsUMLType: string;
-    function ValueToType(Value: string): string;
+    function ValueToType(const Value: string): string;
     procedure SetCapacity(Capacity: Integer);
 
     property Anonym: Boolean read FAnonym write FAnonym;
@@ -336,7 +336,7 @@ type
     function AddDatatype(const NewName: string): TDataType;
     function AddObject(const NewName: string; AClass: TClass): TObjekt;
     procedure AddFunction(const Operation: TOperation);
-    procedure DeleteObject(AName: string);
+    procedure DeleteObject(const AName: string);
     function GetObject(const AName: string): TObjekt;
     function AddUnitDependency(UnitPackage: TUnitPackage; AVisibility : TVisibility): TUnitDependency;
     function FindClassifier(const CName: string; TheClass : TModelEntityClass = nil;
@@ -919,7 +919,7 @@ begin
   end;
 end;
 
-procedure TUnitPackage.DeleteObject(AName: string);
+procedure TUnitPackage.DeleteObject(const AName: string);
   var AObject: TClassifier;
 begin
   AObject:= FindClassifier(AName, nil, True);   // true wegen casesensitive
@@ -1902,7 +1902,7 @@ begin
     Result:= 'None';
 end;
 
-function TClassifier.ValueToType(Value: string): string;
+function TClassifier.ValueToType(const Value: string): string;
 begin
   if Value = '0' then
     Result:= 'int'

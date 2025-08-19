@@ -52,7 +52,7 @@ type
     propertyArray: array of TProperty;
     nameless: TStringArray;
     function FindProperty(Name: string): PProperty;
-    function DeclareProperty(Name, Description, Default: string; kind:
+    function DeclareProperty(const Name, Description, Default: string; Kind:
       TKindOfProperty): PProperty;
   public
     OnShowError: TCommandLineReaderShowError;
@@ -409,15 +409,15 @@ begin
   raise ECommandLineParseException.Create('Property not found: ' + Name);
 end;
 
-function TCommandLineReader.DeclareProperty(Name, Description, Default: string;
-  kind: TKindOfProperty): PProperty;
+function TCommandLineReader.DeclareProperty(const Name, Description, Default: string;
+  Kind: TKindOfProperty): PProperty;
 begin
   SetLength(propertyArray, length(propertyArray) + 1);
   Result := @propertyArray[high(propertyArray)];
   Result^.Name := LowerCase(Name);
   Result^.desc := Description;
   Result^.strvalue := Default;
-  Result^.kind := kind;
+  Result^.kind := Kind;
 end;
 
 procedure TCommandLineReader.DeclareFlag(const Name, Description: string;

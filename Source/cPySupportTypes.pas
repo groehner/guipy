@@ -52,12 +52,12 @@ type
     Char: Integer;
     IsSyntax: Boolean;
     ErrorMsg: string;
-    function PointsTo(AFileName: string; ALine: Integer): Boolean;
+    function PointsTo(const AFileName: string; ALine: Integer): Boolean;
     function IsValid: Boolean;
     procedure Clear;
     class function EmptyPos: TEditorPos; static;
-    class function New(FName: string; ALine: Integer; AChar: Integer = -1;
-      IsSyntaxError: Boolean = False; AErrorMsg: string = ''): TEditorPos; static;
+    class function New(const FName: string; ALine: Integer; AChar: Integer = -1;
+      IsSyntaxError: Boolean = False; const AErrorMsg: string = ''): TEditorPos; static;
   end;
 
   TBreakpoint = class(TPersistent)
@@ -81,7 +81,7 @@ type
   public
     function FindBreakpoint(ALine: Integer; out Breakpoint: TBreakpoint): Boolean;
     procedure SetBreakpoint(ALine: Integer; ADisabled: Boolean;
-      ACondition: string = ''; AIgnoreCount: Integer = 0);
+      const ACondition: string = ''; AIgnoreCount: Integer = 0);
     function HasBreakPoint(ALine: Integer): Boolean;
   end;
 
@@ -139,9 +139,9 @@ type
     class var NonExecutableLineRE: TRegEx;
     class var FunctionCallRE: TRegEx;
     class constructor Create;
-    class function IsBlockOpener(Line: string): Boolean;
-    class function IsBlockCloser(Line: string): Boolean;
-    class function IsExecutableLine(Line: string): Boolean;
+    class function IsBlockOpener(const Line: string): Boolean;
+    class function IsBlockCloser(const Line: string): Boolean;
+    class function IsExecutableLine(const Line: string): Boolean;
   end;
 
 {$REGION 'Python IDE Interfaces'}
@@ -226,7 +226,7 @@ type
 
   IWatchManager = interface
   ['{98C8EE88-8C29-436F-9CDC-730E7C7F0CA8}']
-    procedure AddWatch(Str: string);
+    procedure AddWatch(const Watch: string);
     procedure UpdateWindow;
   end;
 
@@ -330,17 +330,17 @@ begin
   FunctionCallRE := CompiledRegEx(Format('^[ \t]*(%s)(\(?)', [DottedIdentRE]));
 end;
 
-class function TPyRegExpr.IsBlockCloser(Line: string): Boolean;
+class function TPyRegExpr.IsBlockCloser(const Line: string): Boolean;
 begin
   Result := TPyRegExpr.BlockCloserRE.IsMatch(Line);
 end;
 
-class function TPyRegExpr.IsBlockOpener(Line: string): Boolean;
+class function TPyRegExpr.IsBlockOpener(const Line: string): Boolean;
 begin
   Result := TPyRegExpr.BlockOpenerRE.IsMatch(Line);
 end;
 
-class function TPyRegExpr.IsExecutableLine(Line: string): Boolean;
+class function TPyRegExpr.IsExecutableLine(const Line: string): Boolean;
 begin
   Result := not ((Line = '') or TPyRegExpr.NonExecutableLineRE.IsMatch(Line));
 end;
@@ -363,8 +363,8 @@ begin
   Result := FileName <> '';
 end;
 
-class function TEditorPos.New(FName: string; ALine: Integer; AChar: Integer =
-    -1; IsSyntaxError: Boolean = False; AErrorMsg: string = ''): TEditorPos;
+class function TEditorPos.New(const FName: string; ALine: Integer; AChar: Integer =
+    -1; IsSyntaxError: Boolean = False; const AErrorMsg: string = ''): TEditorPos;
 begin
   with Result do begin
     FileName := FName;
@@ -375,7 +375,7 @@ begin
   end;
 end;
 
-function TEditorPos.PointsTo(AFileName: string; ALine: Integer): Boolean;
+function TEditorPos.PointsTo(const AFileName: string; ALine: Integer): Boolean;
 begin
   Result := (ALine = Line) and (AnsiCompareText(AFileName, FileName) = 0);
 end;
@@ -446,7 +446,7 @@ begin
 end;
 
 procedure TBreakpointList.SetBreakpoint(ALine: Integer; ADisabled: Boolean;
-  ACondition: string; AIgnoreCount: Integer);
+  const ACondition: string; AIgnoreCount: Integer);
 var
   Index: Integer;
   BreakPoint: TBreakpoint;

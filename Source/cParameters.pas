@@ -53,7 +53,7 @@ type
   TParameterFunction = function (const AParameters: string): string;
 
   (* function, that will return property value for given oobject *)
-  TObjectPropertyFunction = function (AObject: TObject;const AObjectName,
+  TObjectPropertyFunction = function (AObject: TObject; const AObjectName,
                                       APropertyName: string): string;
 
   (* function, that will be called if parameter or modifier value is not found *)

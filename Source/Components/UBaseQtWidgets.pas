@@ -57,13 +57,13 @@ type
     FVisible: Boolean;
     FWindowIconChanged: string;
     FWindowTitleChanged: string;
-    procedure MakeContextMenu(Value: string);
+    procedure MakeContextMenu(const Value: string);
     function GetContainer: string;
-    function GetAttrAsKey(Attr: string): string;
+    function GetAttrAsKey(const Attr: string): string;
   protected
     function HalfX: Integer;
-    procedure MakeAttribut(Attr, Value: string);
-    procedure CalculateText(Text: string; var TextWidth, TextHeight: Integer;
+    procedure MakeAttribut(const Attr, Value: string);
+    procedure CalculateText(const Text: string; var TextWidth, TextHeight: Integer;
       var StringList: TStringList);
     function InnerRect: TRect; virtual;
     procedure PaintScrollbar(Rect: TRect; Horizontal: Boolean);
@@ -75,14 +75,14 @@ type
     function HandlerInfo(const Event: string): string; virtual;
     function HandlerParameter(const Event: string): string; override;
     function Parametertypes(const Event: string): string;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); virtual;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
-    procedure SetEvent(Attr: string); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); virtual;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
+    procedure SetEvent(const Attr: string); override;
     procedure DeleteEvents; override;
     procedure DeleteWidget; override;
     procedure DeleteEventHandler(const Event: string); override;
-    procedure NewWidget(Widget: string = ''); override;
-    function MakeBinding(Eventname: string): string; override;
+    procedure NewWidget(const Widget: string = ''); override;
+    function MakeBinding(const Eventname: string): string; override;
     function MakeHandler(const Event: string): string; override;
     procedure Paint; override;
     procedure Resize; override;
@@ -213,7 +213,7 @@ begin
     Result := '';
 end;
 
-procedure TBaseQtWidget.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TBaseQtWidget.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
   begin
@@ -256,12 +256,12 @@ begin
     IntToStr(PPIUnScale(Rect.Bottom)) + ')');
 end;
 
-function TBaseQtWidget.GetAttrAsKey(Attr: string): string;
+function TBaseQtWidget.GetAttrAsKey(const Attr: string): string;
 begin
   Result := 'self.' + Name + '.set' + Attr;
 end;
 
-procedure TBaseQtWidget.SetAttribute(Attr, Value, Typ: string);
+procedure TBaseQtWidget.SetAttribute(const Attr, Value, Typ: string);
 begin
   if IsFontAttribute(Attr) then
     MakeFont
@@ -284,14 +284,14 @@ begin
     MakeAttribut(Attr, Value);
 end;
 
-procedure TBaseQtWidget.SetEvent(Attr: string);
+procedure TBaseQtWidget.SetEvent(const Attr: string);
 begin
   if not Partner.hasText('def ' + HandlerNameAndParameter(Attr)) then
     Partner.InsertProcedure(CrLf + MakeHandler(Attr));
   Partner.InsertQtBinding(Name, MakeBinding(Attr));
 end;
 
-procedure TBaseQtWidget.MakeContextMenu(Value: string);
+procedure TBaseQtWidget.MakeContextMenu(const Value: string);
 begin
   var
   Str := 'self.' + Name + '.addActions';
@@ -305,7 +305,7 @@ begin
   end;
 end;
 
-procedure TBaseQtWidget.MakeAttribut(Attr, Value: string);
+procedure TBaseQtWidget.MakeAttribut(const Attr, Value: string);
 var
   Str: string;
 begin
@@ -327,7 +327,7 @@ procedure TBaseQtWidget.Resize;
 begin
 end;
 
-function TBaseQtWidget.MakeBinding(Eventname: string): string;
+function TBaseQtWidget.MakeBinding(const Eventname: string): string;
 begin
   Result := Indent2 + 'self.' + Name + '.' + Eventname + '.connect(self.' +
     HandlerName(Eventname) + ')';
@@ -382,7 +382,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TBaseQtWidget.NewWidget(Widget: string = '');
+procedure TBaseQtWidget.NewWidget(const Widget: string = '');
 begin
   SetAttributValue('self.' + Name, 'self.' + Name + ' = ' + Widget + '(' +
     GetContainer + ')');
@@ -435,7 +435,7 @@ begin
   Invalidate;
 end;
 
-procedure TBaseQtWidget.CalculateText(Text: string;
+procedure TBaseQtWidget.CalculateText(const Text: string;
   var TextWidth, TextHeight: Integer; var StringList: TStringList);
 begin
   StringList.Text := MyStringReplace(Text, '\n', CrLf);

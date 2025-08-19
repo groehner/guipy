@@ -1,4 +1,4 @@
-{-----------------------------------------------------------------------------
+﻿{-----------------------------------------------------------------------------
  Unit Name: cFileTemplates
  Author:    Kiriakos Vlahos, Gerhard Röhner
  Date:      08-Aug-2006
@@ -51,7 +51,7 @@ type
     function TemplateByName(const Name : string) : TFileTemplate;
     function TemplateByExt(const Ext : string) : TFileTemplate;
     procedure AddDefaultTemplates(NoCheck: Boolean = False);
-    function getDefaultByName(Templatename: string): TFileTemplate;
+    function getDefaultByName(const Templatename: string): TFileTemplate;
   end;
 
 var
@@ -323,7 +323,7 @@ begin
   Add(FileTemplate);
 end;
 
-function TFileTemplates.getDefaultByName(Templatename: string): TFileTemplate;
+function TFileTemplates.getDefaultByName(const Templatename: string): TFileTemplate;
   var found: Boolean;
 begin
   found:= True;

@@ -83,7 +83,7 @@ type
     var FWatchesList: TObjectList;
     // IWatchManager implementation
     procedure UpdateWindow;
-    procedure AddWatch(Str: string);
+    procedure AddWatch(const Watch: string);
   protected
     function CreateWatch(Sender: TJvCustomAppStorage; const Path: string;
       Index: Integer): TPersistent;
@@ -265,12 +265,12 @@ begin
     Data.ImageIndex := -1;
 end;
 
-procedure TWatchesWindow.AddWatch(Str: string);
+procedure TWatchesWindow.AddWatch(const Watch: string);
 var
   WatchInfo: TWatchInfo;
 begin
   WatchInfo := TWatchInfo.Create;
-  WatchInfo.Watch := Str;
+  WatchInfo.Watch := Watch;
   FWatchesList.Add(WatchInfo);
   UpdateWindow;
 end;

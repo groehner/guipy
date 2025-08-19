@@ -147,10 +147,10 @@ type
       : TEssConnectionStyle;
     procedure ChangeStyle(BlackAndWhite: Boolean = False);
     function CalcSVGBaseLine(Rect: TRect): Integer;
-    function GetSVGText(Rect: TRect; Str: string): string;
+    function GetSVGText(Rect: TRect; const Str: string): string;
     function GetSVGLine(X1Pos, Y1Pos, X2Pos, Y2Pos: Real): string;
     function GetSVGPolyline(Points: array of TPoint): string;
-    function GetSVGPolygon(Points: array of TPoint; Color: string): string;
+    function GetSVGPolygon(Points: array of TPoint; const Color: string): string;
 
     property Cutted: Boolean read FCutted write FCutted;
     property FromControl: TControl read FFromControl write FFromControl;
@@ -1857,7 +1857,7 @@ begin
   Result := Rect.Top + Round(1.0 * Abs(FCanvas.Font.Height));
 end;
 
-function TConnection.GetSVGText(Rect: TRect; Str: string): string;
+function TConnection.GetSVGText(Rect: TRect; const Str: string): string;
 begin
   Result := '  <text x=' + IntToVal(Rect.Left) + ' y=' +
     IntToVal(CalcSVGBaseLine(Rect)) + ' white-space="pre-line">' + Str +
@@ -1881,7 +1881,7 @@ begin
 end;
 
 function TConnection.GetSVGPolygon(Points: array of TPoint;
-  Color: string): string;
+  const Color: string): string;
 begin
   Result := '  <polygon points="';
   for var I := 0 to High(Points) do

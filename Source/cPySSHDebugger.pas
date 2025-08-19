@@ -32,7 +32,7 @@ type
     FSSHOptions: string;
     FPathSeparator: Char;
     FTempDir: string;
-    function ProcessPlatformInfo(Info: string; out Is3k: Boolean;
+    function ProcessPlatformInfo(const Info: string; out Is3k: Boolean;
       out Sep: Char; out TempDir: string): Boolean;
   protected
     function SystemTempFolder: string; override;
@@ -239,7 +239,7 @@ begin
     (FTunnelProcess.State = TPPState.Running);
 end;
 
-function TPySSHInterpreter.ProcessPlatformInfo(Info: string; out Is3k: Boolean;
+function TPySSHInterpreter.ProcessPlatformInfo(const Info: string; out Is3k: Boolean;
   out Sep: Char; out TempDir: string): Boolean;
 begin
   Result := True;

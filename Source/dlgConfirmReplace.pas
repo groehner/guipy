@@ -54,7 +54,7 @@ type
     procedure FormDestroy(Sender: TObject);
   public
     procedure PrepareShow(AEditorRect: TRect; X, Y1, Y2: Integer;
-      AReplaceText: string);
+      const AReplaceText: string);
   end;
 
 var
@@ -84,7 +84,7 @@ begin
 end;
 
 procedure TConfirmReplaceDialog.PrepareShow(AEditorRect: TRect;
-  X, Y1, Y2: Integer; AReplaceText: string);
+  X, Y1, Y2: Integer; const AReplaceText: string);
 var
   RectWidth, RectHeight: Integer;
 begin

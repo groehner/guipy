@@ -67,7 +67,7 @@ type
     constructor Create(Owner: TComponent); override;
     procedure DeleteWidget; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     property DisabledBackground: TColor read FDisabledBackground
       write FDisabledBackground default clBtnFace;
@@ -110,12 +110,12 @@ type
     procedure SetState(Value: TTextState3);
   public
     constructor Create(Owner: TComponent); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
-    procedure SetText(Value: string); override;
-    procedure MakeCommand(Attr, Value: string); override;
+    procedure SetText(const Value: string); override;
+    procedure MakeCommand(const Attr, Value: string); override;
     procedure Paint; override;
   published
     property ExportSelection;
@@ -159,15 +159,15 @@ type
     FWrap: Boolean;
     procedure SetItems(Items: TStrings);
     procedure SetState(Value: TTextState3);
-    procedure SetRValue(Value: string);
+    procedure SetRValue(const Value: string);
     procedure MakeValues;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
-    procedure MakeCommand(Attr, Value: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
+    procedure MakeCommand(const Attr, Value: string); override;
     procedure Paint; override;
   published
     property ActiveBackground;
@@ -219,12 +219,12 @@ type
     FXScrollIncrement: string;
     FYScrollIncrement: string;
     procedure SetState(Value: TTextState2);
-    procedure MakeScrollRegion(Value: string);
+    procedure MakeScrollRegion(const Value: string);
   public
     constructor Create(Owner: TComponent); override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure MakeFont; override;
     procedure Paint; override;
   published
@@ -269,10 +269,10 @@ type
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
     function GetEvents(ShowEvents: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property AutoSeparators: Boolean read FAutoSeparators write FAutoSeparators
@@ -322,9 +322,9 @@ type
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property ActiveStyle: TActiveStyle read FActiveStyle write FActiveStyle
@@ -401,7 +401,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TKTextBaseWidget.SetAttribute(Attr, Value, Typ: string);
+procedure TKTextBaseWidget.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Scrollbars' then
     MakeScrollbars(Value, 'tk.')
@@ -431,7 +431,7 @@ begin
   Relief := _TR_sunken;
 end;
 
-procedure TKEntry.NewWidget(Widget: string = '');
+procedure TKEntry.NewWidget(const Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('tk.Entry');
@@ -450,7 +450,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TKEntry.SetAttribute(Attr, Value, Typ: string);
+procedure TKEntry.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Text' then // different from Button.Text
     SetValue(Name + 'CV', AsString(Value))
@@ -465,7 +465,7 @@ begin
   Result := GetKeyboardEvents(ShowEvents);
 end;
 
-procedure TKEntry.SetText(Value: string);
+procedure TKEntry.SetText(const Value: string);
 begin
   if Value <> FText then
   begin
@@ -474,7 +474,7 @@ begin
   end;
 end;
 
-procedure TKEntry.MakeCommand(Attr, Value: string);
+procedure TKEntry.MakeCommand(const Attr, Value: string);
 begin
   inherited;
   if Attr = 'ValidateCommand' then
@@ -552,7 +552,7 @@ begin
   SetAttributValue(Str, Str + ' = ' + AllValues);
 end;
 
-procedure TKSpinbox.SetAttribute(Attr, Value, Typ: string);
+procedure TKSpinbox.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Values' then
     MakeValues
@@ -583,7 +583,7 @@ begin
   Invalidate;
 end;
 
-procedure TKSpinbox.SetRValue(Value: string);
+procedure TKSpinbox.SetRValue(const Value: string);
 begin
   if FValue <> Value then
   begin
@@ -592,7 +592,7 @@ begin
   end;
 end;
 
-procedure TKSpinbox.NewWidget(Widget: string = '');
+procedure TKSpinbox.NewWidget(const Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('tk.Spinbox');
@@ -602,7 +602,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TKSpinbox.MakeCommand(Attr, Value: string);
+procedure TKSpinbox.MakeCommand(const Attr, Value: string);
 begin
   inherited;
   if Attr = 'ValidateCommand' then
@@ -697,7 +697,7 @@ begin
   FYScrollIncrement := '0';
 end;
 
-procedure TKCanvas.SetAttribute(Attr, Value, Typ: string);
+procedure TKCanvas.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'ScrollRegion' then
     MakeScrollRegion(Value)
@@ -705,7 +705,7 @@ begin
     inherited;
 end;
 
-procedure TKCanvas.MakeScrollRegion(Value: string);
+procedure TKCanvas.MakeScrollRegion(const Value: string);
 var
   Key: string;
 begin
@@ -732,7 +732,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TKCanvas.NewWidget(Widget: string = '');
+procedure TKCanvas.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('tk.Canvas');
 end;
@@ -822,7 +822,7 @@ begin
   SetAttributValue(Str1, Str1 + '(''1.0'', ' + AsString(Str2) + ')');
 end;
 
-procedure TKText.SetAttribute(Attr, Value, Typ: string);
+procedure TKText.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Text' then
     MakeStrings
@@ -830,7 +830,7 @@ begin
     inherited;
 end;
 
-procedure TKText.NewWidget(Widget: string = '');
+procedure TKText.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('tk.Text');
 end;
@@ -989,7 +989,7 @@ begin
   Result := Str + ']';
 end;
 
-procedure TKListbox.SetAttribute(Attr, Value, Typ: string);
+procedure TKListbox.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'ListItems' then
     SetValue(Name + 'CV', GetListItems)
@@ -1003,7 +1003,7 @@ begin
   Invalidate;
 end;
 
-procedure TKListbox.NewWidget(Widget: string = '');
+procedure TKListbox.NewWidget(const Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('tk.Listbox');

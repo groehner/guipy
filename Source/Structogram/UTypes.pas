@@ -37,9 +37,9 @@ type
     FText: string;
     FVal: string;
     function NextLineIndent: Integer;
-    function GetKind(Kind: string): Byte;
+    function GetKind(const Kind: string): Byte;
   public
-    constructor Create(Filename: string);
+    constructor Create(const Filename: string);
     destructor Destroy; override;
     procedure LineBack;
     procedure ReadLine;
@@ -88,9 +88,9 @@ type
     procedure LoadFromStream(Stream: TStream; Version: Byte); virtual;
     procedure LoadFromReader(Reader: TStringListReader); virtual;
     procedure SaveToStream(Stream: TStream); virtual;
-    function GetText(Indent: string): string; virtual;
+    function GetText(const Indent: string): string; virtual;
     procedure RectToStream(Stream: TStream; Rect: TRect);
-    function GetRectPosAsText(Indent: string; Rect: TRect;
+    function GetRectPosAsText(const Indent: string; Rect: TRect;
       Point: TPoint): string;
     function RectFromStream(Stream: TStream): TRect;
     procedure IntegerToStream(Stream: TStream; Int: Integer);
@@ -154,7 +154,7 @@ type
     procedure LoadFromStream(Stream: TStream; Version: Byte); override;
     procedure LoadFromReader(Reader: TStringListReader); override;
     procedure SaveToStream(Stream: TStream); override;
-    function GetText(Indent: string): string; override;
+    function GetText(const Indent: string): string; override;
     function AppendToClipboard: string; override;
     procedure CreateFromClipboard(var ClipboardStr: string); override;
     procedure SetTextPos;
@@ -184,7 +184,7 @@ type
     procedure LoadFromStream(Stream: TStream; Version: Byte); override;
     procedure LoadFromReader(Reader: TStringListReader); override;
     procedure SaveToStream(Stream: TStream); override;
-    function GetText(Indent: string): string; override;
+    function GetText(const Indent: string): string; override;
     function AppendToClipboard: string; override;
     procedure CreateFromClipboard(var ClipboardStr: string); override;
     procedure SetList(List: TStrList); override;
@@ -248,7 +248,7 @@ type
     procedure LoadFromStream(Stream: TStream; Version: Byte); override;
     procedure LoadFromReader(Reader: TStringListReader); override;
     procedure SaveToStream(Stream: TStream); override;
-    function GetText(Indent: string): string; override;
+    function GetText(const Indent: string): string; override;
     function AppendToClipboard: string; override;
     procedure CreateFromClipboard(var ClipboardStr: string); override;
     procedure SetTextPos;
@@ -269,7 +269,7 @@ type
   private
     procedure Draw; override;
     procedure Resize(XPos, YPos: Integer); override;
-    function GetText(Indent: string): string; override;
+    function GetText(const Indent: string): string; override;
   public
     constructor Create(List: TStrList);
     function GetHeadHeight: Integer; override;
@@ -281,7 +281,7 @@ type
   private
     procedure Draw; override;
     procedure Resize(XPos, YPos: Integer); override;
-    function GetText(Indent: string): string; override;
+    function GetText(const Indent: string): string; override;
   public
     constructor Create(List: TStrList);
     function GetHeadHeight: Integer; override;
@@ -337,8 +337,8 @@ type
     procedure LoadFromStream(Stream: TStream; Version: Byte); override;
     procedure LoadFromReader(Reader: TStringListReader); override;
     procedure SaveToStream(Stream: TStream); override;
-    function GetText(Indent: string): string; override;
-    function GetRectPos(Indent: string): string;
+    function GetText(const Indent: string): string; override;
+    function GetRectPos(const Indent: string): string;
     procedure DeleteElem(Elem: TStrElement);
     procedure Insert(Position, Elem: TStrElement);
     function GetWidth: Integer;
@@ -411,15 +411,15 @@ const
   RECT_WIDTH = 75; { Minimal width of a rectangle }
   TOP_BOTTOM = 4; { Default top/bottom margin of element }
 
-constructor TStringListReader.Create(Filename: string);
+constructor TStringListReader.Create(const Filename: string);
 begin
   FStringList := TStringList.Create;
   FNum := 0;
   try
     FStringList.LoadFromFile(Filename);
   except
-    on e: Exception do
-      ErrorMsg(e.Message);
+    on E: Exception do
+      ErrorMsg(E.Message);
   end;
 end;
 
@@ -514,7 +514,7 @@ begin
     Delete(FText, 1, 1);
 end;
 
-function TStringListReader.GetKind(Kind: string): Byte;
+function TStringListReader.GetKind(const Kind: string): Byte;
 begin
   if Kind = 'Algorithm' then
     Result := Ord(nsAlgorithm)
@@ -875,7 +875,7 @@ begin
   IntegerToStream(Stream, FTextPos.Y);
 end;
 
-function TStrElement.GetText(Indent: string): string;
+function TStrElement.GetText(const Indent: string): string;
 begin
   var
   Str := HideCrLf(FText);
@@ -892,7 +892,7 @@ begin
   IntegerToStream(Stream, Rect.Bottom);
 end;
 
-function TStrElement.GetRectPosAsText(Indent: string; Rect: TRect;
+function TStrElement.GetRectPosAsText(const Indent: string; Rect: TRect;
   Point: TPoint): string;
 begin
   Result := '|' + IntToStr(Rect.Left) + ' ' + IntToStr(Rect.Top) + ' ' +
@@ -1462,7 +1462,7 @@ begin
   Stream.Write(Tag, 1); { write end Tag }
 end;
 
-function TStrIf.GetText(Indent: string): string;
+function TStrIf.GetText(const Indent: string): string;
 begin
   Result := Indent + 'if: ' + CrLf + inherited GetText(Indent + '  ');
   var
@@ -1751,7 +1751,7 @@ begin
   Stream.Write(Tag, 1); { write end Tag }
 end;
 
-function TStrWhile.GetText(Indent: string): string;
+function TStrWhile.GetText(const Indent: string): string;
 begin
   Result := Indent + GetKind + ': ' + CrLf + inherited GetText(Indent + '  ');
   var
@@ -2394,7 +2394,7 @@ begin
   Stream.Write(Tag, 1);
 end;
 
-function TStrSwitch.GetText(Indent: string): string;
+function TStrSwitch.GetText(const Indent: string): string;
 var
   Tmp: TStrElement;
 begin
@@ -2557,7 +2557,7 @@ begin
   Result := 'Sub(' + FText + ')';
 end;
 
-function TStrSubprogram.GetText(Indent: string): string;
+function TStrSubprogram.GetText(const Indent: string): string;
 begin
   Result := Indent + 'subprogram: ' + CrLf + inherited GetText(Indent + '  ');
 end;
@@ -2616,7 +2616,7 @@ begin
   Result := 'Break';
 end;
 
-function TStrBreak.GetText(Indent: string): string;
+function TStrBreak.GetText(const Indent: string): string;
 begin
   Result := Indent + 'break: ' + CrLf + inherited GetText(Indent + '  ');
 end;
@@ -2905,7 +2905,7 @@ begin
   Stream.Write(Tag, 1); { write end Tag }
 end;
 
-function TStrList.GetText(Indent: string): string;
+function TStrList.GetText(const Indent: string): string;
 begin
   Result := inherited GetText(Indent);
   var
@@ -2917,7 +2917,7 @@ begin
   end;
 end;
 
-function TStrList.GetRectPos(Indent: string): string;
+function TStrList.GetRectPos(const Indent: string): string;
 begin
   Result := GetRectPosAsText(Indent, RctList,
     Point(ListImage.PPIUnScale(ListImage.Left),

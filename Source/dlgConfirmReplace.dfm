@@ -6,8 +6,8 @@ inherited ConfirmReplaceDialog: TConfirmReplaceDialog
   ClientWidth = 328
   Position = poDefaultSizeOnly
   OnDestroy = FormDestroy
-  ExplicitWidth = 340
-  ExplicitHeight = 136
+  ExplicitWidth = 344
+  ExplicitHeight = 137
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
@@ -16,8 +16,6 @@ inherited ConfirmReplaceDialog: TConfirmReplaceDialog
     Height = 98
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 324
-    ExplicitHeight = 97
     object Image1: TImage
       Left = 16
       Top = 16

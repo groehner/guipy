@@ -121,7 +121,7 @@ type
     FOnExecuted: TNotifyEvent;
     procedure GetBlockBoundary(LineN: Integer; var StartLineN,
               EndLineN: Integer; var IsCode: Boolean);
-    function GetPromptPrefix(Line: string): string;
+    function GetPromptPrefix(const Line: string): string;
     procedure SetCommandHistorySize(const Value: Integer);
     procedure GetBlockCode(var Source: string;
       var Buffer: array of string; EndLineN: Integer; StartLineN: Integer);
@@ -696,7 +696,7 @@ begin
   end;
 end;
 
-function TPythonIIForm.GetPromptPrefix(Line: string): string;
+function TPythonIIForm.GetPromptPrefix(const Line: string): string;
 begin
   if Copy(Line, 1, Length(PS1)) = PS1 then
     Result := PS1

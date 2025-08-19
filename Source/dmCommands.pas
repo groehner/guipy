@@ -325,7 +325,7 @@ type
       Index: Integer; var SynHighlighter: TSynCustomHighlighter);
     procedure SynInterpreterOptionsDialogSetHighlighter(Sender: TObject;
       Index: Integer; SynHighlighter: TSynCustomHighlighter);
-    function ShowPythonKeywordHelp(KeyWord: string): Boolean;
+    function ShowPythonKeywordHelp(const KeyWord: string): Boolean;
     procedure GetEditorUserCommand(AUserCommand: Integer;
       var ADescription: string);
     procedure GetEditorAllUserCommands(ACommands: TStrings);
@@ -341,7 +341,7 @@ type
       ShellEvent: TVirtualShellEvent);
     procedure ProcessFolderChange(const FolderName: string);
     function FindSearchTarget: ISearchCommands;
-    procedure HighlightWordInActiveEditor(SearchWord: string);
+    procedure HighlightWordInActiveEditor(const SearchWord: string);
   end;
 
 var
@@ -489,7 +489,7 @@ begin
     GI_PyInterpreter.Editor.Highlighter.Assign(SynHighlighter);
 end;
 
-procedure TCommandsDataModule.HighlightWordInActiveEditor(SearchWord: string);
+procedure TCommandsDataModule.HighlightWordInActiveEditor(const SearchWord: string);
 var
   OldWholeWords: Boolean;
   OldSearchText: string;
@@ -1474,7 +1474,7 @@ begin
       SW_SHOWNORMAL);
 end;
 
-function TCommandsDataModule.ShowPythonKeywordHelp(KeyWord: string): Boolean;
+function TCommandsDataModule.ShowPythonKeywordHelp(const KeyWord: string): Boolean;
 begin
   Result := False;
   var

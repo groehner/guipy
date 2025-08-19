@@ -44,10 +44,10 @@ type
   public
     constructor Create(Owner: TComponent); override;
     procedure DeleteWidget; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
     function GetEvents(ShowEvents: Integer): string; override;
-    procedure MakeCommand(Attr, Value: string); override;
+    procedure MakeCommand(const Attr, Value: string); override;
     procedure Paint; override;
   published
     property ExportSelection: Boolean read FExportSelection
@@ -70,11 +70,11 @@ type
     FText: string;
   public
     constructor Create(Owner: TComponent); override;
-    procedure NewWidget(Widget: string = ''); override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
     function GetEvents(ShowEvents: Integer): string; override;
-    procedure SetText(Value: string); override;
+    procedure SetText(const Value: string); override;
     procedure Paint; override;
   published
     {$WARNINGS OFF} // ancestor TControl has method Show
@@ -93,14 +93,14 @@ type
     FValue: string;
     FValues: TStrings;
     procedure SetValues(Values: TStrings);
-    procedure SetRValue(Value: string);
+    procedure SetRValue(const Value: string);
     procedure MakeValues;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property Command;
@@ -118,15 +118,15 @@ type
     FPostCommand: Boolean;
     FValue: string;
     FValues: TStrings;
-    procedure SetRValue(Value: string);
+    procedure SetRValue(const Value: string);
     procedure SetValues(Values: TStrings);
     function GetListItems: string;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
   published
@@ -169,7 +169,7 @@ begin
     Partner.DeleteMethod(Name + '_ValidateCommand');
 end;
 
-procedure TTKTextBaseWidget.SetAttribute(Attr, Value, Typ: string);
+procedure TTKTextBaseWidget.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Scrollbar' then
     MakeScrollbar(Value, 'ttk.')
@@ -193,7 +193,7 @@ begin
   Result := GetMouseEvents(ShowEvents);
 end;
 
-procedure TTKTextBaseWidget.MakeCommand(Attr, Value: string);
+procedure TTKTextBaseWidget.MakeCommand(const Attr, Value: string);
 begin
   inherited;
   if Attr = 'ValidateCommand' then
@@ -229,7 +229,7 @@ begin
   FShow := True;
 end;
 
-procedure TTKEntry.NewWidget(Widget: string = '');
+procedure TTKEntry.NewWidget(const Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('ttk.Entry');
@@ -237,7 +237,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TTKEntry.SetAttribute(Attr, Value, Typ: string);
+procedure TTKEntry.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Text' then // different from Button.Text
     SetValue(Name + 'CV', AsString(Value))
@@ -257,7 +257,7 @@ begin
   Result := GetKeyboardEvents(ShowEvents);
 end;
 
-procedure TTKEntry.SetText(Value: string);
+procedure TTKEntry.SetText(const Value: string);
 begin
   if Value <> FText then
   begin
@@ -320,7 +320,7 @@ begin
   SetAttributValue(Str, Str + ' = ' + AllValues);
 end;
 
-procedure TTKSpinbox.SetAttribute(Attr, Value, Typ: string);
+procedure TTKSpinbox.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Value' then
     SetValue(Name + 'CV', AsString(Value))
@@ -346,7 +346,7 @@ begin
   Invalidate;
 end;
 
-procedure TTKSpinbox.SetRValue(Value: string);
+procedure TTKSpinbox.SetRValue(const Value: string);
 begin
   if FValue <> Value then
   begin
@@ -355,7 +355,7 @@ begin
   end;
 end;
 
-procedure TTKSpinbox.NewWidget(Widget: string = '');
+procedure TTKSpinbox.NewWidget(const Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('ttk.Spinbox');
@@ -461,7 +461,7 @@ begin
   Result := Str + ']';
 end;
 
-procedure TTKCombobox.SetAttribute(Attr, Value, Typ: string);
+procedure TTKCombobox.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Value' then
     SetValue(Name + 'CV', AsString(Value))
@@ -473,7 +473,7 @@ begin
     inherited;
 end;
 
-procedure TTKCombobox.SetRValue(Value: string);
+procedure TTKCombobox.SetRValue(const Value: string);
 begin
   if FValue <> Value then
   begin
@@ -488,7 +488,7 @@ begin
   Invalidate;
 end;
 
-procedure TTKCombobox.NewWidget(Widget: string = '');
+procedure TTKCombobox.NewWidget(const Widget: string = '');
 begin
   Partner.ActiveSynEdit.BeginUpdate;
   inherited NewWidget('ttk.Combobox');

@@ -46,8 +46,8 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
     function InnerRect: TRect; override;
   published
@@ -75,22 +75,22 @@ type
     FLinkHovered: string;
     procedure SetAlignmentHorizontal(Value: TAlignmentHorizontal);
     procedure SetAlignmentVertical(Value: TAlignmentVertical);
-    procedure SetText(Value: string);
-    procedure SetPixmap(Value: string);
+    procedure SetText(const Value: string);
+    procedure SetPixmap(const Value: string);
     procedure SetWordWrap(Value: Boolean);
     procedure SetIndent(Value: Integer);
     procedure SetMargin(Value: Integer);
     procedure SetScaledContents(Value: Boolean);
-    procedure MakePixmap(Value: string);
-    procedure MakeAlignment(Attr, Value: string);
+    procedure MakePixmap(const Value: string);
+    procedure MakeAlignment(const Attr, Value: string);
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure SizeToText; override;
     procedure Paint; override;
   published
@@ -114,7 +114,7 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
   end;
@@ -126,8 +126,8 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
+    procedure NewWidget(const Widget: string = ''); override;
   published
     property Orientation: TOrientation read FOrientation write SetOrientation;
   end;
@@ -142,17 +142,17 @@ type
     procedure SetCurrentIndex(Value: Integer);
     procedure SetTabSpacing(Value: Integer);
     procedure MakePages;
-    procedure MakeTabSpacing(Value: string);
+    procedure MakeTabSpacing(const Value: string);
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     procedure DeleteWidget; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property CurrentIndex: Integer read FCurrentIndex write SetCurrentIndex;
@@ -173,8 +173,8 @@ type
     function GetAttributes(ShowAttributes: Integer): string; override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
   published
     property CurrentIndex: Integer read FCurrentIndex write FCurrentIndex;
     property CurrentPageName: string read FCurrentPageName write FCurrentPageName;
@@ -197,15 +197,15 @@ type
     procedure SetDigitCount(Value: Integer);
     procedure SetSmallDecimalPoint(Value: Boolean);
     procedure SetMode(Value: TMode);
-    procedure MakeValue(Value: string);
-    procedure MakeIntValue(Value: string);
+    procedure MakeValue(const Value: string);
+    procedure MakeIntValue(const Value: string);
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property SmallDecimalPoint: Boolean read FSmallDecimalPoint write SetSmallDecimalPoint;
@@ -252,7 +252,7 @@ begin
   Result:= Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtFrame.SetAttribute(Attr, Value, Typ: string);
+procedure TQtFrame.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'FrameShape' then
     MakeAttribut(Attr, 'QFrame.Shape.' + Value)
@@ -262,7 +262,7 @@ begin
     inherited;
 end;
 
-procedure TQtFrame.NewWidget(Widget: string = '');
+procedure TQtFrame.NewWidget(const Widget: string = '');
 begin
   if Widget = ''
     then inherited NewWidget('QFrame')
@@ -472,7 +472,7 @@ begin
   Result:= Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtLabel.SetAttribute(Attr, Value, Typ: string);
+procedure TQtLabel.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'TextFormat'  then
     MakeAttribut(Attr, 'Qt.TextFormat.' + Value)
@@ -499,7 +499,7 @@ begin
     Result:= inherited;
 end;
 
-procedure TQtLabel.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtLabel.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
     Slots.Add(Name + '.clear')
@@ -516,7 +516,7 @@ begin
   inherited;
 end;
 
-procedure TQtLabel.NewWidget(Widget: string = '');
+procedure TQtLabel.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QLabel');
   if Widget = '' then
@@ -580,7 +580,7 @@ begin
   end;
 end;
 
-procedure TQtLabel.MakePixmap(Value: string);
+procedure TQtLabel.MakePixmap(const Value: string);
   var Str, Key, Dest, Filename, Path: string;
 begin
   // ToDo use PIL if png-file selected
@@ -604,7 +604,7 @@ begin
   end;
 end;
 
-procedure TQtLabel.MakeAlignment(Attr, Value: string);
+procedure TQtLabel.MakeAlignment(const Attr, Value: string);
   var Key: string;
 begin
   Key:= 'self.' + Name + '.setAlignment';
@@ -615,7 +615,7 @@ begin
            EnumToString(FAlignmentHorizontal) + ' | Qt.AlignmentFlag.' + Value + ')');
 end;
 
-procedure TQtLabel.SetText(Value: string);
+procedure TQtLabel.SetText(const Value: string);
 begin
   if Value <> FText then begin
     FText:= Value;
@@ -623,7 +623,7 @@ begin
   end;
 end;
 
-procedure TQtLabel.SetPixmap(Value: string);
+procedure TQtLabel.SetPixmap(const Value: string);
 begin
   if Value <> FPixmap then begin
     FPixmap:= Value;
@@ -697,7 +697,7 @@ begin
   Delete(Result, Posi, Posi + 17);
 end;
 
-procedure TQtCanvas.NewWidget(Widget: string = '');
+procedure TQtCanvas.NewWidget(const Widget: string = '');
   var Str: string;
 begin
   inherited NewWidget('QLabel');
@@ -746,7 +746,7 @@ begin
     Delete(Result, Posi, 11);
 end;
 
-procedure TQtLine.SetAttribute(Attr, Value, Typ: string);
+procedure TQtLine.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Orientation'  then begin
     if Value = 'Horizontal'
@@ -756,7 +756,7 @@ begin
     inherited;
 end;
 
-procedure TQtLine.NewWidget(Widget: string = '');
+procedure TQtLine.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget(Widget);
   SetAttribute('FrameShape', 'HLine', '');
@@ -812,7 +812,7 @@ begin
   Result:= Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtToolBox.SetAttribute(Attr, Value, Typ: string);
+procedure TQtToolBox.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Pages' then
     MakePages
@@ -836,7 +836,7 @@ begin
     Result:= inherited;
 end;
 
-procedure TQtToolBox.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtToolBox.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'int' then
     Slots.Add(Name + '.setCurrentIndex')
@@ -862,13 +862,13 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TQtToolBox.MakeTabSpacing(Value: string);
+procedure TQtToolBox.MakeTabSpacing(const Value: string);
 begin
   var Str:= 'self.' + Name  + '.layout' ;
   SetAttributValue(Str, Str + '().setSpacing(' + Value + ')');
 end;
 
-procedure TQtToolBox.NewWidget(Widget: string = '');
+procedure TQtToolBox.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QToolBox');
   MakePages;
@@ -971,7 +971,7 @@ begin
     Result:= inherited;
 end;
 
-procedure TQtStackedWidget.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtStackedWidget.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'int' then
     Slots.Add(Name + '.setCurrentIndex')
@@ -980,7 +980,7 @@ begin
   inherited;
 end;
 
-procedure TQtStackedWidget.NewWidget(Widget: string = '');
+procedure TQtStackedWidget.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QStackedWidget');
 end;
@@ -1007,7 +1007,7 @@ begin
   Result:= Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtLCDNumber.SetAttribute(Attr, Value, Typ: string);
+procedure TQtLCDNumber.SetAttribute(const Attr, Value, Typ: string);
 begin
   if (Attr = 'Mode') or (Attr = 'SegmentStyle') then
     MakeAttribut(Attr, 'QLCDNumber.' + Attr + '.' + Value)
@@ -1025,7 +1025,7 @@ begin
   Result:= Result + inherited GetEvents(ShowEvents);
 end;
 
-procedure TQtLCDNumber.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtLCDNumber.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then begin
     Slots.Add(Name + '.setBinMode');
@@ -1041,7 +1041,7 @@ begin
   inherited;
 end;
 
-procedure TQtLCDNumber.MakeValue(Value: string);
+procedure TQtLCDNumber.MakeValue(const Value: string);
 begin
   var Str:= 'self.' + Name + '.setProperty("Value';
   SetAttributValue(Str, Str + '", ' + Value + ')');
@@ -1049,7 +1049,7 @@ begin
   Partner.DeleteAttribute(Str);
 end;
 
-procedure TQtLCDNumber.MakeIntValue(Value: string);
+procedure TQtLCDNumber.MakeIntValue(const Value: string);
 begin
   var Str:= 'self.' + Name + '.setProperty("intValue';
   SetAttributValue(Str, Str + '", ' + Value + ')');
@@ -1057,7 +1057,7 @@ begin
   Partner.DeleteAttribute(Str);
 end;
 
-procedure TQtLCDNumber.NewWidget(Widget: string = '');
+procedure TQtLCDNumber.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QLCDNumber');
 end;

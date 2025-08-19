@@ -125,10 +125,10 @@ type
     procedure ClearConversation;
     procedure DisplayActiveChatTopic;
     procedure DisplayQA(const Prompt, Answer, Reason: string);
-    procedure DisplayTopicTitle(Title: string);
+    procedure DisplayTopicTitle(const Title: string);
     procedure LoadBoilerplate;
     function MarkdownToHTML(const MD: string): string;
-    function NavigateToString(Html: string): Boolean;
+    function NavigateToString(const Html: string): Boolean;
     procedure PythonHighlighterChange(Sender: TObject);
     procedure SetBrowserColorScheme;
     procedure SetQuestionTextHint;
@@ -711,7 +711,7 @@ begin
   EdgeBrowser.ExecuteScript(Format(QAScriptCode, [PromptHtml, AnswerHtml]));
 end;
 
-procedure TLLMChatForm.DisplayTopicTitle(Title: string);
+procedure TLLMChatForm.DisplayTopicTitle(const Title: string);
 begin
   if Title = '' then
     Caption := _('Chat')
@@ -940,7 +940,7 @@ begin
      SvgIcons, '', JSScripts]));
 end;
 
-function TLLMChatForm.NavigateToString(Html: string): Boolean;
+function TLLMChatForm.NavigateToString(const Html: string): Boolean;
 begin
   if not FBrowserReady then Exit(False);
 

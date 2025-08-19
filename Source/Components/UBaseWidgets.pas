@@ -40,17 +40,17 @@ type
     function GetY: Integer;
     function GetPartner: TEditorForm;
   protected
-    procedure SetAttributValue(Key, Value: string);
+    procedure SetAttributValue(const Key: string; Value: string);
     procedure InsertValue(Value: string);
-    function Surround(Source: string): string;
-    procedure SetValue(Variable, Value: string);
-    procedure MakeCommand(Attr, Value: string); virtual;
+    function Surround(const Source: string): string;
+    procedure SetValue(const Variable, Value: string);
+    procedure MakeCommand(const Attr, Value: string); virtual;
     procedure FormatItems(Items: TStrings);
     function IsFontAttribute(const Attr: string): Boolean;
     function EnumToString<T { : enum } >(AValue: T): string;
-    function BitmapFromRelativePath(RelPath: string): TBitmap;
+    function BitmapFromRelativePath(const RelPath: string): TBitmap;
     procedure UpdateObjectInspector;
-    procedure WrapText(Text: string; WrapWidth: Integer;
+    procedure WrapText(const Text: string; WrapWidth: Integer;
       var Textwidth, TextHeight: Integer; var StringList: TStringList);
     function Indent1: string;
     function Indent2: string;
@@ -76,18 +76,18 @@ type
     // all abstract, needed for object inspector/generator
     function GetAttributes(ShowAttributes: Integer): string; virtual; abstract;
     function GetEvents(ShowEvents: Integer): string; virtual; abstract;
-    procedure SetAttribute(Attr, Value, Typ: string); virtual; abstract;
+    procedure SetAttribute(const Attr, Value, Typ: string); virtual; abstract;
 
-    procedure NewWidget(Widget: string = ''); virtual; abstract;
+    procedure NewWidget(const Widget: string = ''); virtual; abstract;
     procedure SetPositionAndSize; virtual; abstract;
     function GetNameAndType: string; virtual; abstract;
     function GetType: string; virtual; abstract;
     procedure DeleteEvents; virtual; abstract;
     procedure Resize; override; abstract;
     procedure DeleteWidget; virtual; abstract;
-    procedure SetEvent(Attr: string); virtual; abstract;
+    procedure SetEvent(const Attr: string); virtual; abstract;
     procedure DeleteEventHandler(const Event: string); virtual; abstract;
-    function MakeBinding(Eventname: string): string; virtual; abstract;
+    function MakeBinding(const Eventname: string): string; virtual; abstract;
     function MakeHandler(const Event: string): string; virtual; abstract;
     procedure SizeToText; virtual;
     procedure MakeFont; virtual; abstract;
@@ -131,7 +131,7 @@ begin
   ParentFont := False;
 end;
 
-procedure TBaseWidget.SetAttributValue(Key, Value: string);
+procedure TBaseWidget.SetAttributValue(const Key: string; Value: string);
 begin
   if Pos(Indent2, Value) = 0 then
     Value := Indent2 + Value;
@@ -145,7 +145,7 @@ begin
   Partner.InsertValue(Indent2 + 'self.' + Name, Value, 1);
 end;
 
-function TBaseWidget.Surround(Source: string): string;
+function TBaseWidget.Surround(const Source: string): string;
 begin
   if Pos(Indent2, Source) = 0 then
     Result := Indent2 + Source + CrLf
@@ -158,7 +158,7 @@ begin
   Result := Pos(Attr, ' Font Name Size Bold Italic ') > 0;
 end;
 
-procedure TBaseWidget.SetValue(Variable, Value: string);
+procedure TBaseWidget.SetValue(const Variable, Value: string);
 begin
   if Variable <> '' then
   begin
@@ -168,7 +168,7 @@ begin
   end;
 end;
 
-procedure TBaseWidget.MakeCommand(Attr, Value: string);
+procedure TBaseWidget.MakeCommand(const Attr, Value: string);
 begin
   if not Partner.HasText('def ' + Value + '(self):') then begin
     var
@@ -288,7 +288,7 @@ begin
   FObjectInspector.Invalidate;
 end;
 
-function TBaseWidget.BitmapFromRelativePath(RelPath: string): TBitmap;
+function TBaseWidget.BitmapFromRelativePath(const RelPath: string): TBitmap;
 var
   Pathname, Ext: string;
   Png: TPngImage;
@@ -335,7 +335,7 @@ begin
   Result := Name;
 end;
 
-procedure TBaseWidget.WrapText(Text: string; WrapWidth: Integer;
+procedure TBaseWidget.WrapText(const Text: string; WrapWidth: Integer;
   var Textwidth, TextHeight: Integer; var StringList: TStringList);
 var
   Str, Str1, Str2: string;

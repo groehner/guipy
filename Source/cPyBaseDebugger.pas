@@ -62,7 +62,7 @@ type
     function IsFunction: Boolean; virtual; abstract;
     function IsMethod: Boolean; virtual; abstract;
     function Has__dict__: Boolean; virtual; abstract;
-    function IndexOfChild(AName: string): Integer; virtual; abstract;
+    function IndexOfChild(const AName: string): Integer; virtual; abstract;
     procedure GetChildNodes; virtual; abstract;
     procedure CompareToOldItem(OldItem: TBaseNameSpaceItem); virtual;
     property Name: string read GetName;
@@ -107,7 +107,7 @@ type
     function CallTipFromExpression(const Expr: string;
       var DisplayString, DocString: string): Boolean; virtual; abstract;
     // Service routines
-    procedure HandlePyException(Traceback: TPythonTraceback; ErrorMsg: string;
+    procedure HandlePyException(Traceback: TPythonTraceback; const ErrorMsg: string;
       SkipFrames: Integer = 1); virtual;
     procedure SetCommandLine(ARunConfig: TRunConfiguration); virtual; abstract;
     procedure RestoreCommandLine; virtual; abstract;
@@ -119,12 +119,12 @@ type
     function ImportModule(Editor: IEditor; AddToNameSpace: Boolean = False): Variant; virtual; abstract;
     procedure Run(ARunConfig: TRunConfiguration); virtual; abstract;
     function RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean; virtual; abstract;
-    procedure RunScript(FileName: string); virtual;
+    procedure RunScript(const FileName: string); virtual;
     function EvalCode(const Expr: string): Variant; virtual; abstract;
     procedure SystemCommand(const Cmd: string); virtual; abstract;
     function GetObjectType(Obj: Variant): string; virtual; abstract;
     function UnitTestResult: Variant; virtual; abstract;
-    function NameSpaceItemFromPyObject(AName: string; APyObject: Variant): TBaseNameSpaceItem; virtual; abstract;
+    function NameSpaceItemFromPyObject(const AName: string; APyObject: Variant): TBaseNameSpaceItem; virtual; abstract;
     procedure Pickle(AValue: Variant; const FileName: string); virtual; abstract;
     property Initialized: Boolean read FInitialized;
     property PythonVersion: string read FPythonVersion;
@@ -281,7 +281,7 @@ begin
 end;
 
 procedure TPyBaseInterpreter.HandlePyException(Traceback: TPythonTraceback;
-  ErrorMsg: string; SkipFrames: Integer = 1);
+  const ErrorMsg: string; SkipFrames: Integer = 1);
 var
   TBItem: TTracebackItem;
   FileName: string;
@@ -322,7 +322,7 @@ begin
   raise Exception.Create(_(SNotImplented));
 end;
 
-procedure TPyBaseInterpreter.RunScript(FileName: string);
+procedure TPyBaseInterpreter.RunScript(const FileName: string);
 var
   Source: string;
 begin

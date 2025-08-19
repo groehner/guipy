@@ -32,16 +32,16 @@ type
     procedure CalculateText(var Textwidth, TextHeight: Integer;
       var StringList: TStringList); override;
     function GetText: string; virtual;
-    procedure SetText(Value: string); virtual;
+    procedure SetText(const Value: string); virtual;
     function GetWidgetStylename: string; virtual;
-    procedure MakePadding(Value: string);
+    procedure MakePadding(const Value: string);
   public
     constructor Create(Owner: TComponent); override;
     procedure Rename(const OldName, NewName, Events: string); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     procedure DeleteWidget; override;
-    procedure MakeStyle(Value: string);
+    procedure MakeStyle(const Value: string);
     property Padding: string read FPadding write SetPadding;
     property Text: string read FText write SetText;
   published
@@ -73,7 +73,7 @@ begin
   end;
 end;
 
-procedure TTKWidget.SetText(Value: string);
+procedure TTKWidget.SetText(const Value: string);
 begin
   if Value <> FText then
   begin
@@ -247,7 +247,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TTKWidget.SetAttribute(Attr, Value, Typ: string);
+procedure TTKWidget.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Style' then
     MakeStyle(Value)
@@ -282,7 +282,7 @@ begin
   end;
 end;
 
-procedure TTKWidget.MakeStyle(Value: string);
+procedure TTKWidget.MakeStyle(const Value: string);
 var
   Str: string;
 begin
@@ -294,7 +294,7 @@ begin
   UpdateObjectInspector;
 end;
 
-procedure TTKWidget.MakePadding(Value: string);
+procedure TTKWidget.MakePadding(const Value: string);
 var
   Key: string;
   Int: Integer;

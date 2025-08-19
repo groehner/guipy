@@ -185,10 +185,10 @@ type
     procedure TVClass(Classifier: TClassifier);
     procedure TVAttribute(const Attribute: TAttribute);
     procedure TVMethod(Method: TOperation);
-    procedure ChangeAttribute(var Attribute: TAttribute; CName: string);
+    procedure ChangeAttribute(var Attribute: TAttribute; const CName: string);
     procedure ChangeGetSet(Attribute: TAttribute; ClassNumber: Integer;
       Name: string);
-    function MakeAttribute(CName: string): TAttribute;
+    function MakeAttribute(const CName: string): TAttribute;
     function MakeType(ComboBox: TComboBox): TClassifier; overload;
     function MakeType(const Name: string): TClassifier; overload;
     procedure GetParameter(ListBox: TListBox; Method: TOperation);
@@ -232,8 +232,8 @@ type
     function AttributeAlreadyExists(const Str: string): Boolean;
     function MethodAlreadyExists(const Str: string): Boolean;
     function NameTypeValueChanged: Boolean;
-    function StrToPythonValue(Str: string): string;
-    function GetConstructorHead(Superclass: string): string;
+    function StrToPythonValue(const Str: string): string;
+    function GetConstructorHead(const Superclass: string): string;
     function PrepareParameter(Head: string): string;
     procedure Init;
     procedure TakeParameter;
@@ -466,7 +466,7 @@ begin
   Node.SelectedIndex := ImageNr;
 end;
 
-function TFClassEditor.GetConstructorHead(Superclass: string): string;
+function TFClassEditor.GetConstructorHead(const Superclass: string): string;
 var
   Filename: string;
   Line, Posi: Integer;
@@ -2025,7 +2025,7 @@ begin
 end;
 
 procedure TFClassEditor.ChangeAttribute(var Attribute: TAttribute;
-  CName: string);
+  const CName: string);
 begin
   Attribute.Name := EAttributeName.Text;
   Attribute.TypeClassifier := MakeType(CBAttributeType);
@@ -2035,7 +2035,7 @@ begin
   Attribute.IsFinal := CBAttributeFinal.Checked;
 end;
 
-function TFClassEditor.MakeAttribute(CName: string): TAttribute;
+function TFClassEditor.MakeAttribute(const CName: string): TAttribute;
 begin
   Result := TAttribute.Create(nil);
   ChangeAttribute(Result, CName);
@@ -3002,7 +3002,7 @@ begin
   end;
 end;
 
-function TFClassEditor.StrToPythonValue(Str: string): string;
+function TFClassEditor.StrToPythonValue(const Str: string): string;
 begin
   Result := Trim(Str);
   if not(IsNumber(Result) or IsBool(Result) or (Result = 'None') or

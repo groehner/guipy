@@ -72,8 +72,8 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure GetFileInfo;
-    class procedure WriteToAppStorage(AppStorage : TJvCustomAppStorage; Path : string);
-    class procedure ReadFromAppStorage(AppStorage : TJvCustomAppStorage; Path : string);
+    class procedure WriteToAppStorage(AppStorage : TJvCustomAppStorage; const Path : string);
+    class procedure ReadFromAppStorage(AppStorage : TJvCustomAppStorage; const Path : string);
   end;
 
   TTabsPersistInfo = class (TInterfacedPersistent, IJvAppStorageHandler)
@@ -295,7 +295,7 @@ begin
 end;
 
 class procedure TPersistFileInfo.ReadFromAppStorage(
-  AppStorage: TJvCustomAppStorage; Path : string);
+  AppStorage: TJvCustomAppStorage; const Path : string);
 
   procedure RestoreFoldInfo(SynEdit: TSynEdit; UseCodeFolding: Boolean; FoldState: string);
   var
@@ -406,7 +406,7 @@ begin
 end;
 
 class procedure TPersistFileInfo.WriteToAppStorage(
-  AppStorage: TJvCustomAppStorage; Path : string);
+  AppStorage: TJvCustomAppStorage; const Path : string);
 var
   PersistFileInfo : TPersistFileInfo;
   ActiveFile : IFile;

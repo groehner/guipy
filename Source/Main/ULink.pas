@@ -23,13 +23,13 @@ var
 
 function Tag2PythonType(Tag: NativeInt): string;
 
-function Python2DelphiColors(Str: string): string;
+function Python2DelphiColors(const Str: string): string;
 function Delphi2PythonColors(Str: string): string;
 
-function Python2DelphiCursor(Str: string): string;
-function Delphi2PythonCursor(Str: string): string;
+function Python2DelphiCursor(const Str: string): string;
+function Delphi2PythonCursor(const Str: string): string;
 
-function Delphi2PythonValues(Str: string): string;
+function Delphi2PythonValues(const Str: string): string;
 
 function TurnRGB(const Str: string): string;
 function TColorToString(Color: TColor): string;
@@ -284,7 +284,7 @@ begin
   AddTranslate('Top', 'Y');
 end;
 
-function Python2DelphiColors(Str: string): string;
+function Python2DelphiColors(const Str: string): string;
 begin // used to show color combo box
   if not Python2DelphiColorTranslate.TryGetValue(Str, Result) then
     Result := 'clBtnFace';
@@ -302,19 +302,19 @@ begin
   end;
 end;
 
-function Python2DelphiCursor(Str: string): string;
+function Python2DelphiCursor(const Str: string): string;
 begin
   if not Python2DelphiCursorTranslate.TryGetValue(Str, Result) then
     Result := 'crDefault';
 end;
 
-function Delphi2PythonCursor(Str: string): string;
+function Delphi2PythonCursor(const Str: string): string;
 begin
   if not Delphi2PythonCursorTranslate.TryGetValue(Str, Result) then
     Result := 'default';
 end;
 
-function Delphi2PythonValues(Str: string): string;
+function Delphi2PythonValues(const Str: string): string;
 begin
   if not Delphi2PythonValuesAndNamesTranslate.TryGetValue(Str, Result) then
     Result := Str;

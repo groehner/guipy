@@ -82,11 +82,11 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property InputMask: string read FInputMask write FInputMask;
@@ -141,19 +141,19 @@ type
     FTextHighlighted: string;
     procedure SetListItems(Values: TStrings);
     function GetListItems: string;
-    procedure SetCurrentText(Value: string);
-    procedure SetPlaceholderText(Value: string);
+    procedure SetCurrentText(const Value: string);
+    procedure SetPlaceholderText(const Value: string);
     procedure SetEditable(Value: Boolean);
     procedure SetFrame(Value: Boolean);
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property Editable: Boolean read FEditable write SetEditable;
@@ -200,11 +200,11 @@ type
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
     procedure MakeFont; override;
   published
@@ -236,17 +236,17 @@ type
     procedure SetTextVisible(Value: Boolean);
     procedure SetOrientation(Value: TOrientation);
     procedure SetInvertedAppearance(Value: Boolean);
-    procedure SetFormat(Value: string);
+    procedure SetFormat(const Value: string);
     function GetText: string;
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
     function InnerRect: TRect; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property Minimum: Integer read FMinimum write SetMinimum;
@@ -271,8 +271,8 @@ type
     function GetAttributes(ShowAttributes: Integer): string; override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure DeleteWidget; override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
@@ -292,7 +292,7 @@ type
     FChecked: Boolean;
     FClicked: string;
     FToggled: string;
-    procedure SetTitle(Value: string);
+    procedure SetTitle(const Value: string);
     procedure SetFlat(Value: Boolean);
     procedure SetCheckable(Value: Boolean);
     procedure SetChecked(Value: Boolean);
@@ -301,8 +301,8 @@ type
     function GetAttributes(ShowAttributes: Integer): string; override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property Title: string read FTitle write SetTitle;
@@ -339,11 +339,11 @@ type
     destructor Destroy; override;
     procedure DeleteWidget; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property TabPosition: TTabPosition read FTabPosition write SetTabPosition;
@@ -374,18 +374,18 @@ type
     procedure SetItems(Items: TStrings);
     procedure MakeMenuItems;
     function HasSubMenu(MenuItems: TStrings; Num: Integer): Boolean;
-    function MakeMenuName(MenuStr, Str: string): string;
+    function MakeMenuName(MenuStr: string; const Str: string): string;
     procedure CalculateMenus(MenuItems, PyMenu, PyMethods: TStrings); virtual;
     function GetCreateMenu: string; virtual;
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
     procedure Rename(const OldName, NewName, Events: string); override;
     procedure SetPositionAndSize; override;
     procedure DeleteWidget; override;
@@ -403,7 +403,7 @@ type
     constructor Create(Owner: TComponent); override;
     procedure DeleteWidget; override;
     function GetCreateMenu: string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   end;
 
@@ -423,11 +423,11 @@ type
     FidReleased: string;
     FidToggled: string;
     procedure SetColumns(Value: Integer);
-    procedure SetTitle(Value: string);
+    procedure SetTitle(const Value: string);
     procedure SetItems(Value: TStrings);
     procedure SetCheckboxes(Value: Boolean);
     procedure MakeButtongroupItems;
-    procedure MakeTitle(Title: string);
+    procedure MakeTitle(const Title: string);
     function ItemsInColumn(Num: Integer): Integer;
     function RBName(Num: Integer): string;
   public
@@ -435,14 +435,14 @@ type
     destructor Destroy; override;
     procedure DeleteWidget; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
-    procedure SetEvent(Attr: string); override;
+    procedure SetEvent(const Attr: string); override;
     function HandlerInfo(const Event: string): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
-    function MakeBinding(Eventname: string): string; override;
+    function MakeBinding(const Eventname: string): string; override;
     procedure Rename(const OldName, NewName, Events: string); override;
   published
     property Items: TStrings read FItems write SetItems;
@@ -464,10 +464,10 @@ type
   TQtMainWindow = class(TBaseQtWidget)
   public
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
     function Handlername(const Event: string): string; override;
   end;
 
@@ -511,7 +511,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtLineEdit.SetAttribute(Attr, Value, Typ: string);
+procedure TQtLineEdit.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'EchoMode' then
     MakeAttribut(Attr, 'QLineEdit.EchoMode.' + Value)
@@ -538,7 +538,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtLineEdit.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtLineEdit.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
   begin
@@ -555,7 +555,7 @@ begin
   inherited;
 end;
 
-procedure TQtLineEdit.NewWidget(Widget: string = '');
+procedure TQtLineEdit.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QLineEdit');
 end;
@@ -676,7 +676,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtComboBox.SetAttribute(Attr, Value, Typ: string);
+procedure TQtComboBox.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'ListItems' then
   begin
@@ -711,7 +711,7 @@ begin
     inherited;
 end;
 
-procedure TQtComboBox.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtComboBox.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
   begin
@@ -728,7 +728,7 @@ begin
   inherited;
 end;
 
-procedure TQtComboBox.NewWidget(Widget: string = '');
+procedure TQtComboBox.NewWidget(const Widget: string = '');
 begin
   if Widget = '' then
   begin
@@ -819,7 +819,7 @@ begin
   Result := Str + ']';
 end;
 
-procedure TQtComboBox.SetCurrentText(Value: string);
+procedure TQtComboBox.SetCurrentText(const Value: string);
 begin
   if Value <> FCurrentText then
   begin
@@ -828,7 +828,7 @@ begin
   end;
 end;
 
-procedure TQtComboBox.SetPlaceholderText(Value: string);
+procedure TQtComboBox.SetPlaceholderText(const Value: string);
 begin
   if Value <> FPlaceholderText then
   begin
@@ -885,7 +885,7 @@ begin
     Delete(Result, Posi, 51);
 end;
 
-procedure TQtFontComboBox.SetAttribute(Attr, Value, Typ: string);
+procedure TQtFontComboBox.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Typ = 'TSetOfFontFilters' then
     MakeFontFilters
@@ -912,7 +912,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtFontComboBox.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtFontComboBox.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'QFont' then
     Slots.Add(Name + '.setCurrentFont');
@@ -968,7 +968,7 @@ begin
   SetAttribute('FontFilters', Str, '');
 end;
 
-procedure TQtFontComboBox.NewWidget(Widget: string = '');
+procedure TQtFontComboBox.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QFontComboBox');
 end;
@@ -1012,7 +1012,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtProgressBar.SetAttribute(Attr, Value, Typ: string);
+procedure TQtProgressBar.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'TextDirection' then
     MakeAttribut(Attr, 'QProgressBar.' + Value)
@@ -1036,7 +1036,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtProgressBar.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtProgressBar.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'int' then
   begin
@@ -1058,7 +1058,7 @@ begin
     Result.Right := Result.Right - Canvas.TextWidth(GetText);
 end;
 
-procedure TQtProgressBar.NewWidget(Widget: string = '');
+procedure TQtProgressBar.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QProgressBar');
   SetAttribute('Value', '24', '');
@@ -1206,7 +1206,7 @@ begin
   end;
 end;
 
-procedure TQtProgressBar.SetFormat(Value: string);
+procedure TQtProgressBar.SetFormat(const Value: string);
 begin
   if Value <> FFormat then
   begin
@@ -1245,7 +1245,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtStatusBar.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtStatusBar.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
     Slots.Add(Name + '.clearMessage')
@@ -1254,7 +1254,7 @@ begin
   inherited;
 end;
 
-procedure TQtStatusBar.NewWidget(Widget: string = '');
+procedure TQtStatusBar.NewWidget(const Widget: string = '');
 begin
   InsertValue('self.statusBar()');
 end;
@@ -1337,14 +1337,14 @@ begin
     Result := inherited;
 end;
 
-procedure TQtGroupBox.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtGroupBox.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'bool' then
     Slots.Add(Name + '.setChecked');
   inherited;
 end;
 
-procedure TQtGroupBox.NewWidget(Widget: string = '');
+procedure TQtGroupBox.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QGroupBox');
   SetAttribute('Title', 'GroupBox', 'Text');
@@ -1387,7 +1387,7 @@ begin
   DrawText(Canvas.Handle, PChar(FTitle), Length(FTitle), ARect, DT_LEFT);
 end;
 
-procedure TQtGroupBox.SetTitle(Value: string);
+procedure TQtGroupBox.SetTitle(const Value: string);
 begin
   if Value <> FTitle then
   begin
@@ -1459,7 +1459,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtTabWidget.SetAttribute(Attr, Value, Typ: string);
+procedure TQtTabWidget.SetAttribute(const Attr, Value, Typ: string);
 begin
   if (Attr = 'TabPosition') or (Attr = 'TabShape') then
     MakeAttribut(Attr, 'QTabWidget.' + Attr + '.' + Value)
@@ -1486,7 +1486,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtTabWidget.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtTabWidget.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'int' then
     Slots.Add(Name + '.setCurrentIndex')
@@ -1495,7 +1495,7 @@ begin
   inherited;
 end;
 
-procedure TQtTabWidget.NewWidget(Widget: string = '');
+procedure TQtTabWidget.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QTabWidget');
   MakeTabs;
@@ -1803,14 +1803,14 @@ begin
     Result := inherited;
 end;
 
-procedure TQtMenuBar.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtMenuBar.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'bool' then
     Slots.Add(Name + '.setVisible');
   inherited;
 end;
 
-procedure TQtMenuBar.NewWidget(Widget: string = '');
+procedure TQtMenuBar.NewWidget(const Widget: string = '');
 begin
   FMenuItemsOld.Text := '';
   MakeMenuItems;
@@ -1828,7 +1828,7 @@ begin
     FMenuItems.Assign(Items);
 end;
 
-procedure TQtMenuBar.SetAttribute(Attr, Value, Typ: string);
+procedure TQtMenuBar.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'MenuItems' then
     MakeMenuItems
@@ -1842,7 +1842,7 @@ begin
     (LeftSpaces(MenuItems[Num], 2) < LeftSpaces(MenuItems[Num + 1], 2));
 end;
 
-function TQtMenuBar.MakeMenuName(MenuStr, Str: string): string;
+function TQtMenuBar.MakeMenuName(MenuStr: string; const Str: string): string;
 begin
   if Right(MenuStr, -4) = 'Menu' then
     MenuStr := Copy(MenuStr, 1, Length(MenuStr) - 4);
@@ -2024,7 +2024,7 @@ begin
   Sizeable := False;
 end;
 
-procedure TQtMenu.NewWidget(Widget: string = '');
+procedure TQtMenu.NewWidget(const Widget: string = '');
 begin
   FMenuItemsOld.Text := '';
   MakeMenuItems;
@@ -2083,7 +2083,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtButtonGroup.SetAttribute(Attr, Value, Typ: string);
+procedure TQtButtonGroup.SetAttribute(const Attr, Value, Typ: string);
 begin
   if (Attr = 'Items') or (Attr = 'Checkboxes') then
     MakeButtongroupItems
@@ -2107,7 +2107,7 @@ begin
     '|idClicked|idPressed|idReleased|idToggled';
 end;
 
-procedure TQtButtonGroup.SetEvent(Attr: string);
+procedure TQtButtonGroup.SetEvent(const Attr: string);
 begin
   if not Partner.hasText('def ' + HandlerNameAndParameter(Attr)) then
     Partner.InsertProcedure(CrLf + MakeHandler(Attr));
@@ -2175,7 +2175,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-function TQtButtonGroup.MakeBinding(Eventname: string): string;
+function TQtButtonGroup.MakeBinding(const Eventname: string): string;
 begin
   Result := Indent2 + 'self.' + Name + 'BG.' + Eventname + '.connect(self.' +
     HandlerName(Eventname) + ')';
@@ -2258,14 +2258,14 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TQtButtonGroup.MakeTitle(Title: string);
+procedure TQtButtonGroup.MakeTitle(const Title: string);
 begin
   FTitle := Title;
   MakeAttribut('Title', AsString(FTitle));
   SetPositionAndSize;
 end;
 
-procedure TQtButtonGroup.NewWidget(Widget: string = '');
+procedure TQtButtonGroup.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QGroupBox');
   MakeTitle(' ' + _('Continent') + ' ');
@@ -2293,7 +2293,7 @@ begin
   end;
 end;
 
-procedure TQtButtonGroup.SetTitle(Value: string);
+procedure TQtButtonGroup.SetTitle(const Value: string);
 begin
   if FTitle <> Value then
   begin
@@ -2427,7 +2427,7 @@ begin
   Result := Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtMainWindow.SetAttribute(Attr, Value, Typ: string);
+procedure TQtMainWindow.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'TabShape' then
     MakeAttribut(Attr, 'QTabWidget.' + Value)
@@ -2462,7 +2462,7 @@ begin
     Result := inherited;
 end;
 
-procedure TQtMainWindow.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtMainWindow.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = 'bool' then
   begin

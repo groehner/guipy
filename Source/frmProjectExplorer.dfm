@@ -1,35 +1,37 @@
 inherited ProjectExplorerWindow: TProjectExplorerWindow
   HelpContext = 435
   Caption = 'Project Explorer'
-  ClientHeight = 249
-  ClientWidth = 99
+  ClientHeight = 375
+  ClientWidth = 425
   OnShow = FormShow
-  ExplicitWidth = 115
-  ExplicitHeight = 288
+  ExplicitWidth = 441
+  ExplicitHeight = 414
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 99
-    Height = 249
+    Width = 425
+    Height = 375
     ExplicitWidth = 99
     ExplicitHeight = 249
     inherited FGPanel: TPanel
-      Width = 95
-      Height = 245
+      Width = 421
+      Height = 371
       ExplicitWidth = 95
       ExplicitHeight = 245
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 95
-        Height = 245
+        Width = 421
+        Height = 371
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 95
+        ExplicitHeight = 245
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 30
-          Width = 95
-          Height = 215
+          Width = 421
+          Height = 341
           Align = alClient
           BorderStyle = bsNone
           DefaultNodeHeight = 19
@@ -61,15 +63,18 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           OnNodeDblClick = ExplorerTreeNodeDblClick
           Touch.InteractiveGestures = [igPan, igPressAndTap]
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
+          ExplicitWidth = 95
+          ExplicitHeight = 215
           Columns = <>
         end
         object SpTBXDock1: TSpTBXDock
           Left = 0
           Top = 0
-          Width = 95
+          Width = 421
           Height = 30
           AllowDrag = False
           DoubleBuffered = True
+          ExplicitWidth = 95
           object SpTBXToolbar1: TSpTBXToolbar
             Left = 0
             Top = 0

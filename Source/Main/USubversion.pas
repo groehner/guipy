@@ -21,7 +21,7 @@ type
     function GetRevision: string;
     function GetRepositoryURL(Str: string): string;
     function IsRepository(const Dir: string): Boolean;
-    procedure CallSVN(Programm: string; const Call: string);
+    procedure CallSVN(const Programm, Call: string);
     procedure Commit;
     procedure Add;
     procedure Compare;
@@ -139,7 +139,7 @@ begin
   ModalResult := mrOk;
 end;
 
-procedure TFSubversion.CallSVN(Programm: string; const Call: string);
+procedure TFSubversion.CallSVN(const Programm, Call: string);
   var ExternalTool: TExternalTool;
 begin
   ExternalTool:= TExternalTool.Create;

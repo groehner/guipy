@@ -160,7 +160,7 @@ type
     procedure UpdateState;
 
     procedure SetEvents(ListImage: TListImage);
-    procedure DoEdit(StrElement: TStrElement; Str: string);
+    procedure DoEdit(StrElement: TStrElement; const Str: string);
     procedure CloseEdit;
     procedure SetLeftBorderForEditMemo;
     function GetAlgorithmParameter(ParamList: TStringList): string;
@@ -982,7 +982,7 @@ begin
   SelectFont(fkStructogram);
 end;
 
-procedure TFStructogram.DoEdit(StrElement: TStrElement; Str: string);
+procedure TFStructogram.DoEdit(StrElement: TStrElement; const Str: string);
   var Left, Top, Width, Height: Integer;
       ListImage: TListImage;
 begin

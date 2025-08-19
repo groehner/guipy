@@ -60,7 +60,7 @@ type
     function GetObjectInfo: Integer;
     procedure FillObjectInfo; virtual;
   public
-    constructor Create(AName: string; const APyObject: Variant);
+    constructor Create(const AName: string; const APyObject: Variant);
     destructor Destroy; override;
     function IsClass: Boolean; override;
     function IsDict: Boolean; override;
@@ -68,7 +68,7 @@ type
     function IsFunction: Boolean; override;
     function IsMethod: Boolean; override;
     function Has__dict__: Boolean; override;
-    function IndexOfChild(AName: string): Integer; override;
+    function IndexOfChild(const AName: string): Integer; override;
     procedure GetChildNodes; override;
     property ObjectInfo: Integer read GetObjectInfo;
   end;
@@ -103,7 +103,7 @@ type
     procedure SystemCommand(const Cmd: string); override;
     function GetObjectType(Obj: Variant): string; override;
     function UnitTestResult: Variant; override;
-    function NameSpaceItemFromPyObject(AName: string; APyObject: Variant): TBaseNameSpaceItem; override;
+    function NameSpaceItemFromPyObject(const AName: string; APyObject: Variant): TBaseNameSpaceItem; override;
     procedure Pickle(AValue: Variant; const FileName: string); override;
     property Debugger: Variant read FDebugger;
   end;
@@ -206,7 +206,7 @@ end;
 
 { TNameSpaceItem }
 
-constructor TNameSpaceItem.Create(AName: string; const APyObject: Variant);
+constructor TNameSpaceItem.Create(const AName: string; const APyObject: Variant);
 begin
   Assert(VarIsPython(APyObject), 'TNameSpaceItem.Create');
   FName := AName;
@@ -351,7 +351,7 @@ begin
   Result := (ObjectInfo and oi_Has__dict__) = oi_Has__dict__;
 end;
 
-function TNameSpaceItem.IndexOfChild(AName: string): Integer;
+function TNameSpaceItem.IndexOfChild(const AName: string): Integer;
 var
   L, H, I, C: Integer;
   Found: Boolean;
@@ -1188,7 +1188,7 @@ begin
   end;
 end;
 
-function TPyInternalInterpreter.NameSpaceItemFromPyObject(AName: string;
+function TPyInternalInterpreter.NameSpaceItemFromPyObject(const AName: string;
   APyObject: Variant): TBaseNameSpaceItem;
 begin
   Result := TNameSpaceItem.Create(AName, APyObject);

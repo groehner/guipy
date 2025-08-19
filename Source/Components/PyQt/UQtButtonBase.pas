@@ -51,10 +51,10 @@ type
     FPressed: string;
     FReleased: string;
     FToggled: string;
-    procedure SetText(Value: string);
-    procedure SetIcon(Value: string);
+    procedure SetText(const Value: string);
+    procedure SetIcon(const Value: string);
     procedure SetChecked(Value: Boolean);
-    procedure SetClicked(Value: string);
+    procedure SetClicked(const Value: string);
     function GetIconAsBitmap: TBitmap;
   protected
     FPaintFlat: Boolean;
@@ -64,10 +64,10 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
     procedure Paint; override;
     procedure MakeIcon(const Value: string);
     procedure MakeShortcut(const Value: string);
@@ -99,9 +99,9 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property AutoDefault: Boolean read FAutoDefault write FAutoDefault;
@@ -122,11 +122,11 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure SetAttribute(Attr, Value, Typ: string); override;
+    procedure SetAttribute(const Attr, Value, Typ: string); override;
     function HandlerInfo(const Event: string): string; override;
-    procedure GetSlots(Parametertypes: string; Slots: TStrings); override;
+    procedure GetSlots(const Parametertypes: string; Slots: TStrings); override;
     function GetEvents(ShowEvents: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   published
     property PopupMode: TPopopMode read FPopupMode write FPopupMode;
@@ -141,7 +141,7 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
   end;
 
@@ -154,7 +154,7 @@ type
     function GetAttributes(ShowAttributes: Integer): string; override;
     function GetEvents(ShowEvents: Integer): string; override;
     function HandlerInfo(const Event: string): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
     procedure SizeToText; override;
   published
@@ -169,7 +169,7 @@ type
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
-    procedure NewWidget(Widget: string = ''); override;
+    procedure NewWidget(const Widget: string = ''); override;
   published
     property Description: string read FDescription write FDescription;
   end;
@@ -225,7 +225,7 @@ begin
     Result:= inherited;
 end;
 
-procedure TQtAbstractButton.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtAbstractButton.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then begin
     Slots.Add(Name + '.animateClick');
@@ -374,7 +374,7 @@ begin
   Result:= Bmp;
 end;
 
-procedure TQtAbstractButton.SetText(Value: string);
+procedure TQtAbstractButton.SetText(const Value: string);
 begin
   if Value <> FText then begin
     FText:= Value;
@@ -382,7 +382,7 @@ begin
   end;
 end;
 
-procedure TQtAbstractButton.SetIcon(Value: string);
+procedure TQtAbstractButton.SetIcon(const Value: string);
 begin
   if Value <> FIcon then begin
     FIcon:= Value;
@@ -398,7 +398,7 @@ begin
   end;
 end;
 
-procedure TQtAbstractButton.SetClicked(Value: string);
+procedure TQtAbstractButton.SetClicked(const Value: string);
 begin
   if Value <> FClicked then begin
     FClicked:= Value;
@@ -406,7 +406,7 @@ begin
   end;
 end;
 
-procedure TQtAbstractButton.SetAttribute(Attr, Value, Typ: string);
+procedure TQtAbstractButton.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Icon' then
     MakeIcon(Value)
@@ -488,21 +488,21 @@ begin
   Result:= Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtPushButton.SetAttribute(Attr, Value, Typ: string);
+procedure TQtPushButton.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Default_'
     then inherited SetAttribute('Default', Value, Typ)
     else inherited;
 end;
 
-procedure TQtPushButton.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtPushButton.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
     Slots.Add(Name + '.ShowMenu');
   inherited;
 end;
 
-procedure TQtPushButton.NewWidget(Widget: string = '');
+procedure TQtPushButton.NewWidget(const Widget: string = '');
 begin
   if Widget = ''
     then inherited NewWidget('QPushButton')
@@ -555,7 +555,7 @@ begin
   Result:= Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtToolButton.SetAttribute(Attr, Value, Typ: string);
+procedure TQtToolButton.SetAttribute(const Attr, Value, Typ: string);
 begin
   if (Attr = 'ToolButtonStyle') or (Attr = 'ArrowType') then
     MakeAttribut(Attr, 'Qt.' + Attr + '.' + Value)
@@ -579,7 +579,7 @@ begin
     Result:= inherited;
 end;
 
-procedure TQtToolButton.GetSlots(Parametertypes: string; Slots: TStrings);
+procedure TQtToolButton.GetSlots(const Parametertypes: string; Slots: TStrings);
 begin
   if Parametertypes = '' then
     Slots.Add(Name + '.showMenu')
@@ -602,7 +602,7 @@ begin
   FPaintArrow:= 0;
 end;
 
-procedure TQtToolButton.NewWidget(Widget: string = '');
+procedure TQtToolButton.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QToolButton');
   SetAttribute('Text', '...', 'Text');
@@ -664,7 +664,7 @@ begin
   FPaintStyle:= 0;
 end;
 
-procedure TQtRadioButton.NewWidget(Widget: string = '');
+procedure TQtRadioButton.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QRadioButton');
   SetAttribute('Text', 'RadioButton', 'Text');
@@ -701,7 +701,7 @@ begin
     Result:= inherited;
 end;
 
-procedure TQtCheckBox.NewWidget(Widget: string = '');
+procedure TQtCheckBox.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QCheckBox');
   SetAttribute('Text', 'CheckBox', 'Text');
@@ -748,7 +748,7 @@ begin
   Result:= Result + inherited GetAttributes(ShowAttributes);
 end;
 
-procedure TQtCommandLinkButton.NewWidget(Widget: string = '');
+procedure TQtCommandLinkButton.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QCommandLinkButton');
   SetAttribute('Text', 'CommandLinkButton', 'Text');

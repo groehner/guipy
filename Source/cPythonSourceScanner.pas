@@ -65,7 +65,7 @@ type
     property RealName : string read GetRealName;
     property PrefixDotCount : Integer read fPrefixDotCount;
     property CodeBlock : TCodeBlock read fCodeBlock;
-    constructor Create(AName : string; CB : TCodeBlock);
+    constructor Create(const AName : string; CB : TCodeBlock);
     destructor Destroy; override;
   end;
 
@@ -108,7 +108,7 @@ type
     procedure GetSortedFunctions(SortedFunctions : TObjectList);
     procedure GetNameSpace(SList : TStringList); virtual;
     function GetScopeForLine(LineNo : Integer) : TCodeElement;
-    function GetChildByName(ChildName : string): TCodeElement;
+    function GetChildByName(const ChildName : string): TCodeElement;
     property CodeBlock : TCodeBlock read fCodeBlock;
     property Indent : Integer read fIndent;
     property ChildCount : Integer read GetChildCount;
@@ -131,7 +131,7 @@ type
     constructor Create;
     destructor Destroy; override;
     function ArgumentsString : string; virtual;
-    function HasArgument(Name : string): Boolean;
+    function HasArgument(const Name : string): Boolean;
     procedure GetNameSpace(SList : TStringList); override;
     property Arguments : TObjectList read fArguments;
     property Locals : TObjectList read fLocals;
@@ -164,7 +164,7 @@ type
   public
     constructor Create; overload;
     constructor Create(const Source : string); overload;
-    constructor Create(const FName : string; const Source : string); overload;
+    constructor Create(const FName, Source : string); overload;
     destructor Destroy; override;
     procedure Clear;
     procedure GetSortedImports(ImportsList : TObjectList);
@@ -234,7 +234,7 @@ type
     function GetParsedModule : TParsedModule;
     procedure StopScanning;
   public
-    constructor Create(const FileName : string; const Source : string);
+    constructor Create(const FileName, Source : string);
     destructor Destroy; override;
   end;
 
@@ -246,7 +246,7 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure ReleaseScanner(Scanner : IAsyncSourceScanner);
-    function CreateAsynchSourceScanner(const FileName : string; const Source : string): IAsyncSourceScanner;
+    function CreateAsynchSourceScanner(const FileName, Source : string): IAsyncSourceScanner;
   end;
 
   var
@@ -408,7 +408,7 @@ begin
     Result := nil;
 end;
 
-function TCodeElement.GetChildByName(ChildName: string): TCodeElement;
+function TCodeElement.GetChildByName(const ChildName: string): TCodeElement;
 var
   i : Integer;
   CE : TCodeElement;
@@ -1358,7 +1358,7 @@ end;
 
 { TModuleImport }
 
-constructor TModuleImport.Create(AName : string; CB : TCodeBlock);
+constructor TModuleImport.Create(const AName : string; CB : TCodeBlock);
 begin
   inherited Create;
   Name := AName;
@@ -1436,7 +1436,7 @@ begin
     SList.AddObject(TVariable(fArguments[i]).Name, fArguments[i]);
 end;
 
-function TParsedFunction.HasArgument(Name: string): Boolean;
+function TParsedFunction.HasArgument(const Name: string): Boolean;
 var
   Variable : TObject;
 begin

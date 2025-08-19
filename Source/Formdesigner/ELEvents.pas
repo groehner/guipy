@@ -32,9 +32,9 @@ type
     FKey: string;
     FButton: Integer;
   public
-    constructor CreateWithName(AOwner: TComponent; Name: string);
-    function GetModifiers(Eventname: string): string;
-    function GetDetail(Eventname: string): string;
+    constructor CreateWithName(AOwner: TComponent; const Name: string);
+    function GetModifiers(const Eventname: string): string;
+    function GetDetail(const Eventname: string): string;
     procedure Clear;
   published
     property Control: Boolean read FControl write FControl default False;
@@ -72,8 +72,8 @@ type
     procedure GetEvent(var Event: TEvent);
   end;
 
-procedure GetEventProperties(Obj: TObject; PropName: string; var Event: TEvent);
-procedure SetEventProperties(Obj: TObject; PropName: string; Event: TEvent);
+procedure GetEventProperties(Obj: TObject; const PropName: string; var Event: TEvent);
+procedure SetEventProperties(Obj: TObject; const PropName: string; Event: TEvent);
 
 implementation
 
@@ -86,7 +86,7 @@ uses
 
 {$R *.dfm}
 
-procedure GetEventProperties(Obj: TObject; PropName: string; var Event: TEvent);
+procedure GetEventProperties(Obj: TObject; const PropName: string; var Event: TEvent);
 var
   FContext : TRttiContext;
   FType    : TRttiType;
@@ -98,7 +98,7 @@ begin
     Event:=  TEvent(FProp.GetValue(Obj).AsObject);
 end;
 
-procedure SetEventProperties(Obj: TObject; PropName: string; Event: TEvent);
+procedure SetEventProperties(Obj: TObject; const PropName: string; Event: TEvent);
 var
   FContext : TRttiContext;
   FType    : TRttiType;
@@ -115,7 +115,7 @@ end;
 
 {--- TEvent -------------------------------------------------------------------}
 
-constructor TEvent.CreateWithName(AOwner: TComponent; Name: string);
+constructor TEvent.CreateWithName(AOwner: TComponent; const Name: string);
 begin
   inherited Create(AOwner);
   Self.Name:= Name;
@@ -137,7 +137,7 @@ begin
   FButton:= 0;
 end;
 
-function TEvent.GetModifiers(Eventname: string): string;
+function TEvent.GetModifiers(const Eventname: string): string;
   var Str: string;
 begin
   Str:= '';
@@ -152,7 +152,7 @@ begin
   Result:= Str;
 end;
 
-function TEvent.GetDetail(Eventname: string): string;
+function TEvent.GetDetail(const Eventname: string): string;
 begin
   Result:= '';
   if (Pos('Button', Eventname) > 0) and (FButton > 0) then

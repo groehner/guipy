@@ -78,13 +78,13 @@ type
     procedure SynPythonSynChanged(Sender: TObject);
     procedure SynIniSynChanged(Sender: TObject);
     procedure PyIDEOptionsChanged;
-    function GetFileFilterFor(aNewName: string): string;
+    function GetFileFilterFor(const aNewName: string): string;
   public
     SynPythonSyn: TSynPythonSyn;
     SynCythonSyn: TSynCythonSyn;
     DockStyle: TJvDockVSNetStyleSpTBX;
     function GetSaveFileName(var ANewName: string;
-      AHighlighter: TSynCustomHighlighter; DefaultExtension: string): Boolean;
+      AHighlighter: TSynCustomHighlighter; const DefaultExtension: string): Boolean;
     procedure UpdateImageCollections;
     procedure ExportHighlighters;
     procedure ImportHighlighters;
@@ -171,7 +171,7 @@ begin
   end;
 end;
 
-function TResourcesDataModule.GetFileFilterFor(aNewName: string): string;
+function TResourcesDataModule.GetFileFilterFor(const aNewName: string): string;
   var Extension: string;
 begin
   if aNewName <> '' then begin
@@ -189,7 +189,7 @@ begin
 end;
 
 function TResourcesDataModule.GetSaveFileName(var ANewName: string;
-  AHighlighter: TSynCustomHighlighter; DefaultExtension: string): Boolean;
+  AHighlighter: TSynCustomHighlighter; const DefaultExtension: string): Boolean;
   var aFile: IFile;
 begin
   with dlgFileSave do begin

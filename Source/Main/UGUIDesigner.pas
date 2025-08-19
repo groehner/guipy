@@ -101,8 +101,8 @@ type
     FELDesigner: TELDesigner;
     FClassMap: TDictionary<Integer, TControlClass>;
     procedure SetEnabledMI(MenuItem: TSpTBXItem; Enabled: Boolean);
-    function GetPixelsPerInchOfFile(Filename: string): Integer;
-    procedure RemovePixelsPerInch0(Filename: string);
+    function GetPixelsPerInchOfFile(const Filename: string): Integer;
+    procedure RemovePixelsPerInch0(const Filename: string);
     procedure AddTkToClassMap;
     procedure AddQtToClassMap;
   public
@@ -549,7 +549,7 @@ begin
     TFGuiForm(FELDesigner.DesignControl).Modified := False;
 end;
 
-procedure TFGuiDesigner.RemovePixelsPerInch0(Filename: string);
+procedure TFGuiDesigner.RemovePixelsPerInch0(const Filename: string);
 begin
   var
   StringList := TStringList.Create;
@@ -591,7 +591,7 @@ begin
   end;
 end;
 
-function TFGuiDesigner.GetPixelsPerInchOfFile(Filename: string): Integer;
+function TFGuiDesigner.GetPixelsPerInchOfFile(const Filename: string): Integer;
 begin
   Result := 96;
   var
