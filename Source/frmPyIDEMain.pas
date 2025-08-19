@@ -2536,10 +2536,9 @@ end;
 
 procedure TPyIDEMainForm.CloseTextDiffsAndFromTemplate;
 var
-  I: Integer;
   AFile: IFile;
 begin
-  for I := GI_FileFactory.Count - 1 downto 0 do
+  for var I := GI_FileFactory.Count - 1 downto 0 do
   begin
     AFile := GI_FileFactory.GetFile(I);
     if (AFile.FileKind = fkTextdiff) { or

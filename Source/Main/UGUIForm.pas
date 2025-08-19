@@ -238,22 +238,22 @@ end;
 
 procedure TFGuiForm.InitEvents;
 begin
-  FButtonPress := TEvent.Create(Self, 'ButtonPress');
-  FButtonRelease := TEvent.Create(Self, 'ButtonRelease');
-  FKeyPress := TEvent.Create(Self, 'KeyPress');
-  FKeyRelease := TEvent.Create(Self, 'KeyRelease');
-  FActivate := TEvent.Create(Self, 'Activate');
-  FConfigure := TEvent.Create(Self, 'Configure');
-  FDeactivate := TEvent.Create(Self, 'Deactivate');
-  FDestroy := TEvent.Create(Self, 'Destroy');
-  FEnter := TEvent.Create(Self, 'Enter');
-  FExpose := TEvent.Create(Self, 'Expose');
-  FFocusIn := TEvent.Create(Self, 'FocusIn');
-  FFocusOut := TEvent.Create(Self, 'FocusOut');
-  FLeave := TEvent.Create(Self, 'Leave');
-  FMotion := TEvent.Create(Self, 'Motion');
-  FMouseWheel := TEvent.Create(Self, 'MouseWheel');
-  FVisibility := TEvent.Create(Self, 'Visibility');
+  FButtonPress := TEvent.CreateWithName(Self, 'ButtonPress');
+  FButtonRelease := TEvent.CreateWithName(Self, 'ButtonRelease');
+  FKeyPress := TEvent.CreateWithName(Self, 'KeyPress');
+  FKeyRelease := TEvent.CreateWithName(Self, 'KeyRelease');
+  FActivate := TEvent.CreateWithName(Self, 'Activate');
+  FConfigure := TEvent.CreateWithName(Self, 'Configure');
+  FDeactivate := TEvent.CreateWithName(Self, 'Deactivate');
+  FDestroy := TEvent.CreateWithName(Self, 'Destroy');
+  FEnter := TEvent.CreateWithName(Self, 'Enter');
+  FExpose := TEvent.CreateWithName(Self, 'Expose');
+  FFocusIn := TEvent.CreateWithName(Self, 'FocusIn');
+  FFocusOut := TEvent.CreateWithName(Self, 'FocusOut');
+  FLeave := TEvent.CreateWithName(Self, 'Leave');
+  FMotion := TEvent.CreateWithName(Self, 'Motion');
+  FMouseWheel := TEvent.CreateWithName(Self, 'MouseWheel');
+  FVisibility := TEvent.CreateWithName(Self, 'Visibility');
 
   FEventMap := TDictionary<string, TEvent>.Create;
   FEventMap.Add('ButtonPress', FButtonPress);

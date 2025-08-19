@@ -208,7 +208,7 @@ uses
   or IMAGE_FILE_NET_RUN_FROM_SWAP}
 
 begin
-  ReportMemoryLeaksOnShutdown :=  DebugHook <> 0;
+  ReportMemoryLeaksOnShutdown := DebugHook <> 0;
 
   TStyleManager.SystemHooks := TStyleManager.SystemHooks - [shMenus, shDialogs];
 

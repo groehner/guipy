@@ -32,9 +32,7 @@ type
     FKey: string;
     FButton: Integer;
   public
-    {$WARNINGS OFF}
-    constructor Create(AOwner: TComponent; Name: string);
-    {$WARNINGS ON}
+    constructor CreateWithName(AOwner: TComponent; Name: string);
     function GetModifiers(Eventname: string): string;
     function GetDetail(Eventname: string): string;
     procedure Clear;
@@ -117,7 +115,7 @@ end;
 
 {--- TEvent -------------------------------------------------------------------}
 
-constructor TEvent.Create(AOwner: TComponent; Name: string);
+constructor TEvent.CreateWithName(AOwner: TComponent; Name: string);
 begin
   inherited Create(AOwner);
   Self.Name:= Name;

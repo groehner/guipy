@@ -221,19 +221,19 @@ begin
   HelpType := htContext;
   Sizeable := True;
 
-  FButtonPress := TEvent.Create(Self, 'ButtonPress');
-  FButtonRelease := TEvent.Create(Self, 'ButtonRelease');
-  FKeyPress := TEvent.Create(Self, 'KeyPress');
-  FKeyRelease := TEvent.Create(Self, 'KeyRelease');
-  FActivate := TEvent.Create(Self, 'Activate');
-  FConfigure := TEvent.Create(Self, 'Configure');
-  FDeactivate := TEvent.Create(Self, 'Deactivate');
-  FEnter := TEvent.Create(Self, 'Enter');
-  FFocusIn := TEvent.Create(Self, 'FocusIn');
-  FFocusOut := TEvent.Create(Self, 'FocusOut');
-  FLeave := TEvent.Create(Self, 'Leave');
-  FMouseWheel := TEvent.Create(Self, 'MouseWheel');
-  FMotion := TEvent.Create(Self, 'Motion');
+  FButtonPress := TEvent.CreateWithName(Self, 'ButtonPress');
+  FButtonRelease := TEvent.CreateWithName(Self, 'ButtonRelease');
+  FKeyPress := TEvent.CreateWithName(Self, 'KeyPress');
+  FKeyRelease := TEvent.CreateWithName(Self, 'KeyRelease');
+  FActivate := TEvent.CreateWithName(Self, 'Activate');
+  FConfigure := TEvent.CreateWithName(Self, 'Configure');
+  FDeactivate := TEvent.CreateWithName(Self, 'Deactivate');
+  FEnter := TEvent.CreateWithName(Self, 'Enter');
+  FFocusIn := TEvent.CreateWithName(Self, 'FocusIn');
+  FFocusOut := TEvent.CreateWithName(Self, 'FocusOut');
+  FLeave := TEvent.CreateWithName(Self, 'Leave');
+  FMouseWheel := TEvent.CreateWithName(Self, 'MouseWheel');
+  FMotion := TEvent.CreateWithName(Self, 'Motion');
 end;
 
 destructor TBaseTkWidget.Destroy;
