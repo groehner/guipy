@@ -1054,12 +1054,10 @@ object PyIDEMainForm: TPyIDEMainForm
           Caption = '&Project'
           object mnProjectNew: TSpTBXItem
             Action = ProjectExplorerWindow.actProjectNew
-            ImageName = 'Print13'
             Images = ProjectExplorerWindow.vilImages
           end
           object mnProjectOpen: TSpTBXItem
             Action = ProjectExplorerWindow.actProjectOpen
-            ImageName = 'Undo13'
             Images = ProjectExplorerWindow.vilImages
           end
           object SpTBXSubmenuItem1: TSpTBXSubmenuItem
@@ -1075,7 +1073,6 @@ object PyIDEMainForm: TPyIDEMainForm
           end
           object mnProjectSave: TSpTBXItem
             Action = ProjectExplorerWindow.actProjectSave
-            ImageName = 'Delete'
             Images = ProjectExplorerWindow.vilImages
           end
           object mnProjectSaveAs: TSpTBXItem

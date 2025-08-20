@@ -180,15 +180,15 @@ type
     FDateChanged: string;
     FDateTimeChanged: string;
     FTimeChanged: string;
-    procedure SetDateTime(Value: string);
-    procedure SetDate(Value: string);
-    procedure SetTime(Value: string);
-    procedure SetDisplayFormat(Value: string);
-    procedure MakeDateTime(Value: string);
-    procedure MakeDate(Value: string);
-    procedure MakeTime(Value: string);
+    procedure SetDateTime(const Value: string);
+    procedure SetDate(const Value: string);
+    procedure SetTime(const Value: string);
+    procedure SetDisplayFormat(const Value: string);
+    procedure MakeDateTime(const Value: string);
+    procedure MakeDate(const Value: string);
+    procedure MakeTime(const Value: string);
   protected
-    procedure ShowValue(Value: string);
+    procedure ShowValue(const Value: string);
     function DateTimeFromDisplayFormat: string; virtual;
   public
     constructor Create(Owner: TComponent); override;
@@ -605,7 +605,7 @@ begin
   else
     Str := Format('%.' + IntToStr(FDecimals) + 'f', [FValue]);
   Str := FPrefix + Str + FSuffix;
-  if (FValue = FMinimum) and (FSpecialValueText <> '') then
+  if (Abs(FValue - FMinimum) < 0.000001) and (FSpecialValueText <> '') then
     Str := FSpecialValueText;
   ARect := InnerRect;
   ARect.Left := ARect.Left + HalfX;
@@ -654,7 +654,7 @@ end;
 constructor TQtDateTimeEdit.Create(Owner: TComponent);
 var
   FormatSet: TFormatSettings;
-  DateTime: TDateTime;
+  ADateTime: TDateTime;
 begin
   inherited Create(Owner);
   Tag := 108;
@@ -663,10 +663,10 @@ begin
   FFormat := MyStringReplace(FormatSet.ShortDateFormat + ' ' +
     FormatSet.LongTimeFormat, '/', FormatSet.DateSeparator);
   FDisplayFormat := FFormat;
-  DateTime := Now;
-  FDateTime := DateTimeToStr(DateTime);
-  FDate := DateToStr(DateTime);
-  FTime := TimeToStr(DateTime);
+  ADateTime := Now;
+  FDateTime := DateTimeToStr(ADateTime);
+  FDate := DateToStr(ADateTime);
+  FTime := TimeToStr(ADateTime);
   FMaximumDateTime := DateTimeToStr(EncodeDateTime(9999, 12, 31, 23,
     59, 59, 0));
   FMinimumDateTime := DateTimeToStr(EncodeDateTime(1752, 9, 14, 0, 0, 0, 0));
@@ -745,39 +745,32 @@ begin
     inherited NewWidget(Widget);
 end;
 
-procedure TQtDateTimeEdit.MakeDateTime(Value: string);
+procedure TQtDateTimeEdit.MakeDateTime(const Value: string);
 var
   Key, Str: string;
-  DateTime: TDateTime;
+  ADateTime: TDateTime;
 begin
-  try
-    DateTime := StrToDateTime(Value);
-  except
-    DateTime := Now;
-    FDateTime := DateTimeToStr(DateTime);
-    UpdateObjectInspector;
-  end;
-  FDate := DateToStr(DateTime);
-  FTime := TimeToStr(DateTime);
-  Key := 'self.' + Name + '.setDateTime';
-  Str := Key + '(QDateTime.fromString(' + AsString(FDateTime) + ', ' +
+  if not TryStrToDateTime(Value, ADateTime) then
+    ADateTime := Now;
+  FDateTime := DateTimeToStr(ADateTime);
+  FDate := DateToStr(ADateTime);
+  FTime := TimeToStr(ADateTime);
+  Key := 'self.' + Name + '.setADateTime';
+  Str := Key + '(QADateTime.fromString(' + AsString(FDateTime) + ', ' +
     AsString(FFormat) + '))';
   SetAttributValue(Key, Str);
   UpdateObjectInspector;
 end;
 
-procedure TQtDateTimeEdit.MakeDate(Value: string);
+procedure TQtDateTimeEdit.MakeDate(const Value: string);
 var
   Key, Str: string;
-  DateTime: TDateTime;
+  ADateTime: TDateTime;
   Posi: Integer;
 begin
-  try
-    DateTime := StrToDate(Value);
-  except
-    DateTime := Now;
-  end;
-  FDate := DateToStr(DateTime);
+  if not TryStrToDate(Value, ADateTime) then
+    ADateTime := Now;
+  FDate := DateToStr(ADateTime);
   Posi := Pos(' ', FDateTime);
   FDateTime := FDate + Copy(FDateTime, Posi, Length(FDateTime));
   Key := 'self.' + Name + '.setDateTime';
@@ -787,18 +780,15 @@ begin
   UpdateObjectInspector;
 end;
 
-procedure TQtDateTimeEdit.MakeTime(Value: string);
+procedure TQtDateTimeEdit.MakeTime(const Value: string);
 var
   Key, Str: string;
-  DateTime: TDateTime;
+  ADateTime: TDateTime;
   Posi: Integer;
 begin
-  try
-    DateTime := StrToTime(Value);
-  except
-    DateTime := Now;
-  end;
-  FTime := TimeToStr(DateTime);
+  if not TryStrToTime(Value, ADateTime) then
+    ADateTime := Now;
+  FTime := TimeToStr(ADateTime);
   Posi := Pos(' ', FDateTime);
   FDateTime := Copy(FDateTime, 1, Posi) + FTime;
   Key := 'self.' + Name + '.setDateTime';
@@ -810,7 +800,7 @@ end;
 
 function TQtDateTimeEdit.DateTimeFromDisplayFormat: string;
 var
-  DateTime: TDateTime;
+  ADateTime: TDateTime;
   FormatSet: TFormatSettings;
   Posi: Integer;
 begin
@@ -822,8 +812,8 @@ begin
     FormatSet.LongTimeFormat := Copy(FDisplayFormat, Posi + 1,
       Length(FDisplayFormat));
   end;
-  if TryStrToDateTime(FDateTime, DateTime, FormatSet) then
-    Result := DateTimeToStr(DateTime, FormatSet)
+  if TryStrToDateTime(FDateTime, ADateTime, FormatSet) then
+    Result := DateTimeToStr(ADateTime, FormatSet)
   else
     Result := _('invalid date time format');
 end;
@@ -840,7 +830,7 @@ begin
   ShowValue(DateTimeFromDisplayFormat);
 end;
 
-procedure TQtDateTimeEdit.ShowValue(Value: string);
+procedure TQtDateTimeEdit.ShowValue(const Value: string);
 var
   Align: Integer;
   ARect: TRect;
@@ -861,7 +851,7 @@ begin
   DrawText(Canvas.Handle, PChar(Value), Length(Value), ARect, Align);
 end;
 
-procedure TQtDateTimeEdit.SetDateTime(Value: string);
+procedure TQtDateTimeEdit.SetDateTime(const Value: string);
 var
   Posi: Integer;
 begin
@@ -878,7 +868,7 @@ begin
   end;
 end;
 
-procedure TQtDateTimeEdit.SetDate(Value: string);
+procedure TQtDateTimeEdit.SetDate(const Value: string);
 begin
   if Value <> FDate then
   begin
@@ -888,7 +878,7 @@ begin
   end;
 end;
 
-procedure TQtDateTimeEdit.SetTime(Value: string);
+procedure TQtDateTimeEdit.SetTime(const Value: string);
 begin
   if Value <> FTime then
   begin
@@ -898,7 +888,7 @@ begin
   end;
 end;
 
-procedure TQtDateTimeEdit.SetDisplayFormat(Value: string);
+procedure TQtDateTimeEdit.SetDisplayFormat(const Value: string);
 begin
   if Value <> FDisplayFormat then
   begin

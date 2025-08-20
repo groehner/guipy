@@ -2524,7 +2524,7 @@ begin
     LOldValue := FDisplayValue;
     ULink.GOldValue := LOldValue;
     LNewValue := Value;
-    if (FCaption = 'Name') and (FEditor.ClassName = 'TELComponentNamePropEditor')
+    if (FCaption = 'Name') and (FEditor.ClassType = TELComponentNamePropEditor)
     then
     begin
       if not isValid(LNewValue) then

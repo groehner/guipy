@@ -185,14 +185,14 @@ type
     procedure TVClass(Classifier: TClassifier);
     procedure TVAttribute(const Attribute: TAttribute);
     procedure TVMethod(Method: TOperation);
-    procedure ChangeAttribute(var Attribute: TAttribute; const CName: string);
+    procedure ChangeAttribute(var Attribute: TAttribute);
     procedure ChangeGetSet(Attribute: TAttribute; ClassNumber: Integer;
-      Name: string);
+      const Name: string);
     function MakeAttribute(const CName: string): TAttribute;
     function MakeType(ComboBox: TComboBox): TClassifier; overload;
     function MakeType(const Name: string): TClassifier; overload;
     procedure GetParameter(ListBox: TListBox; Method: TOperation);
-    function HasMethod(const GetSet: string; AttributeName: string;
+    function HasMethod(const GetSet, AttributeName: string;
       var Method: TOperation): Boolean;
     function MethodToPython(Method: TOperation; Source: string): string;
     procedure DeleteMethod(Method: TOperation);
@@ -202,7 +202,7 @@ type
     function MakeMethod: TOperation;
     function CreateMethod(const GetSet, Datatype: string;
       const Attribute: TAttribute): string;
-    function MakeConstructor(Method: TOperation; Source: string): string;
+    function MakeConstructor(Method: TOperation; const Source: string): string;
     function Typ2Value(const Typ: string): string;
     procedure MoveNode(TargetNode, SourceNode: TTreeNode);
     procedure EnableEvents(Enable: Boolean);
@@ -720,7 +720,7 @@ begin
   BClassApply.Enabled := False;
 end;
 
-function TFClassEditor.HasMethod(const GetSet: string; AttributeName: string;
+function TFClassEditor.HasMethod(const GetSet, AttributeName: string;
   var Method: TOperation): Boolean;
 var
   Cent: TClassifier;
@@ -1255,7 +1255,7 @@ begin
 end;
 
 procedure TFClassEditor.ChangeGetSet(Attribute: TAttribute;
-  ClassNumber: Integer; Name: string);
+  ClassNumber: Integer; const Name: string);
 var
   NewGet, NewSet, Datatype: string;
   Method1, Method2: TOperation;
@@ -1291,7 +1291,7 @@ begin
   if Assigned(Method1) and Assigned(Method2) and (Method1.LineS > Method2.LineS)
   then
     GetIsFirst := False;
-  ChangeAttribute(Attribute, Name);
+  ChangeAttribute(Attribute);
   if Assigned(Attribute.TypeClassifier) then
     Datatype := Attribute.TypeClassifier.AsType
   else
@@ -1778,7 +1778,7 @@ begin
 end;
 
 function TFClassEditor.MakeConstructor(Method: TOperation;
-  Source: string): string;
+  const Source: string): string;
 var
   Indent, Vis, Str, Head: string;
   Ite: IModelIterator;
@@ -2024,8 +2024,7 @@ begin
     Edit.SelStart := Length(Str);
 end;
 
-procedure TFClassEditor.ChangeAttribute(var Attribute: TAttribute;
-  const CName: string);
+procedure TFClassEditor.ChangeAttribute(var Attribute: TAttribute);
 begin
   Attribute.Name := EAttributeName.Text;
   Attribute.TypeClassifier := MakeType(CBAttributeType);
@@ -2038,7 +2037,7 @@ end;
 function TFClassEditor.MakeAttribute(const CName: string): TAttribute;
 begin
   Result := TAttribute.Create(nil);
-  ChangeAttribute(Result, CName);
+  ChangeAttribute(Result);
 end;
 
 function TFClassEditor.MakeType(ComboBox: TComboBox): TClassifier;

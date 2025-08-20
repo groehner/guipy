@@ -634,6 +634,7 @@ var
     Index, Num: Integer;
     Str: string;
   begin
+    Result:= '';
     StringList := TStringList.Create;
     try
       StringList.Sorted := True;
@@ -681,7 +682,7 @@ begin
       FDesignForm := TFGuiForm.Create(Self);
       FDesignForm.Partner := AForm;
       Reader.ReadRootComponent(FDesignForm);
-      FDesignForm.Open(Filename, '', AForm.GetGeometry, AForm);
+      FDesignForm.Open(Filename, AForm.GetGeometry, AForm);
       FDesignForm.Name := NewName;
       if FDesignForm.Monitor.PixelsPerInch > PPI then
         FDesignForm.Scale(FDesignForm.Monitor.PixelsPerInch, PPI);

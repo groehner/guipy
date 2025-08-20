@@ -303,16 +303,16 @@ end;
 
 procedure TTKSpinbox.MakeValues;
 var
-  Str, Value, AllValues: string;
+  Str, AValue, AllValues: string;
 begin
   Str := 'self.' + Name + '[''values'']';
   AllValues := '[';
   for var I := 0 to FValues.Count - 1 do
   begin
-    Value := Trim(FValues[I]);
-    if Value = '' then
+    AValue := Trim(FValues[I]);
+    if AValue = '' then
       Continue;
-    AllValues := AllValues + AsString(Value) + ', ';
+    AllValues := AllValues + AsString(AValue) + ', ';
   end;
   if Copy(AllValues, Length(AllValues) - 1, 2) = ', ' then
     Delete(AllValues, Length(AllValues) - 1, 2);

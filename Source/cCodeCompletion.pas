@@ -64,7 +64,7 @@ type
   private
     FCachedResults: TCachedResults;
   protected
-    AllowFunctionCalls: Boolean;
+    FAllowFunctionCalls: Boolean;
    function CallTipFromExpression(const Expr, FileName : string;
       const Line: Integer; var DisplayString, DocString : string): Boolean; virtual; abstract;
   public
@@ -229,6 +229,7 @@ var
   Index: Integer;
   NameSpaceItem: TBaseNameSpaceItem;
 begin
+  Result := '';
   Index := fNameSpace.IndexOf(CCItem);
   if Index >=0  then
   begin
@@ -509,6 +510,7 @@ begin
   Lock.Free;
   SkipHandlers.Free;
   CompletionHandlers.Free;
+  inherited;
 end;
 
 procedure TCodeCompletion.RegisterCompletionHandler(Handler : TBaseCodeCompletionHandler);
@@ -608,7 +610,7 @@ begin
           Lookup := 'str' + Lookup;
 
         FoundMatch :=
-          (AllowFunctionCalls or (Lookup.IndexOf(')') < 0)) // Issue 422  Do not evaluate functions
+          (FAllowFunctionCalls or (Lookup.IndexOf(')') < 0)) // Issue 422  Do not evaluate functions
           and (Lookup <> '');
 
         if FoundMatch then
@@ -671,7 +673,7 @@ end;
 constructor TInterpreterParamCompletion.Create;
 begin
   inherited;
-  AllowFunctionCalls := True;
+  FAllowFunctionCalls := True;
 end;
 
 { TIDECompletion }

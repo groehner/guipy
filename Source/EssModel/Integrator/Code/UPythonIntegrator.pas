@@ -52,7 +52,7 @@ type
     procedure DoOperation(ParsedFunction: TParsedFunction;
       Operation: TOperation; const ParentName: string; Level: Integer);
     procedure ParseFunction(ParsedFunction: TParsedFunction);
-    function NeedClassifier(const ParentClass, CName: string): TClassifier;
+    function NeedClassifier(const CName: string): TClassifier;
     procedure SetAttributeVisibility(Model: TModelEntity);
     procedure SetOperationVisibility(Model: TModelEntity);
     procedure SetVisibility(Model: TModelEntity);
@@ -182,7 +182,7 @@ begin
   if ParsedClass.SuperClasses.Count > 0 then // ToDo only one superclass
     for var I := 0 to ParsedClass.SuperClasses.Count - 1 do
     begin
-      AClassifier := NeedClassifier('', ParsedClass.SuperClasses[I]);
+      AClassifier := NeedClassifier(ParsedClass.SuperClasses[I]);
       if Assigned(AClassifier) and (AClassifier is TClass) then
         AClass.AddAncestors(AClassifier as TClass);
     end;
@@ -212,7 +212,7 @@ begin
       Attribute.Static := (vaClassAttribute in Variable.Attributes);
       Attribute.IsFinal := Variable.IsFinal;
       if Variable.Typ <> '' then
-        Attribute.TypeClassifier := NeedClassifier(AClass.Name, Variable.Typ);
+        Attribute.TypeClassifier := NeedClassifier(Variable.Typ);
       Variablename := WithoutVisibility(Variable.Name);
       if Variable.DefaultValue <> Variablename then
         Attribute.Value := Variable.DefaultValue
@@ -288,8 +288,7 @@ begin
   Operation.Level := Level;
   SetOperationVisibility(Operation);
   if ParsedFunction.ReturnType <> '' then
-    Operation.ReturnValue := NeedClassifier(ParentName,
-      ParsedFunction.ReturnType);
+    Operation.ReturnValue := NeedClassifier(ParsedFunction.ReturnType);
   if Operation.Name = '__init__' then
     Operation.OperationType := otConstructor
   else if (ParsedFunction.ReturnType <> '') or (ParsedFunction.ReturnValue <> '')
@@ -305,7 +304,7 @@ begin
     Variable := TVariable(Arguments[I]);
     Param := Operation.AddParameter(FormatVarArgument(Variable));
     if Variable.aType <> '' then
-      Param.TypeClassifier := NeedClassifier(ParentName, Variable.aType)
+      Param.TypeClassifier := NeedClassifier(Variable.aType)
     else
       Param.TypeClassifier := nil;
     Param.Value := Variable.DefaultValue;
@@ -323,7 +322,7 @@ begin
   FUnit.AddFunction(Operation);
 end;
 
-function TPythonParser.NeedClassifier(const ParentClass, CName: string)
+function TPythonParser.NeedClassifier(const CName: string)
   : TClassifier;
 
   function AddAClass(const CName: string): TClassifier;

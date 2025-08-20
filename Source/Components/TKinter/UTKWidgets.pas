@@ -27,8 +27,8 @@ type
     FPadX: string;
     FPadY: string;
     FText: string;
-    procedure SetPadX(Value: string);
-    procedure SetPadY(Value: string);
+    procedure SetPadX(const Value: string);
+    procedure SetPadY(const Value: string);
   protected
     procedure CalculateText(var TextWidth, TextHeight: Integer;
       var StringList: TStringList); override;
@@ -80,7 +80,7 @@ begin
   FPadY := '1';
 end;
 
-procedure TKWidget.SetPadX(Value: string);
+procedure TKWidget.SetPadX(const Value: string);
 begin
   if Value <> FPadX then
   begin
@@ -89,7 +89,7 @@ begin
   end;
 end;
 
-procedure TKWidget.SetPadY(Value: string);
+procedure TKWidget.SetPadY(const Value: string);
 begin
   if Value <> FPadY then
   begin

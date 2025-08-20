@@ -51,7 +51,7 @@ type
     function InsertObject(const Objectname: string): Boolean;
     procedure DeleteObject(const Objectname: string);
 
-    function GetNewObjectName(Classname: string): string;
+    function GetNewObjectName(AClassname: string): string;
     function GetObjectMembers(const Objectname: string): TStringList;
     function GetObjectObjectMembers(const Objectname: string): TStringList;
     function GetObjectAttributeValues(const Objectname: string): TStringList;
@@ -340,31 +340,31 @@ begin
   end;
 end;
 
-function TLivingObjects.GetNewObjectName(Classname: string): string;
+function TLivingObjects.GetNewObjectName(AClassname: string): string;
 var
   Len, KMax, Num: Integer;
   Str: string;
 begin
-  Classname := GetShortType(Classname);
+  AClassname := GetShortType(AClassname);
   if GuiPyOptions.ObjectLowerCaseLetter then
-    Classname := LowerCase(Classname);
+    AClassname := LowerCase(AClassname);
   Num := 1;
   for var I := 0 to FSLObjectsAddressName.Count - 1 do
   begin
     Str := FSLObjectsAddressName.ValueFromIndex[I];
     Len := Length(Str);
     // classnames can have digits too, example: Eval$5
-    while (Len > Length(Classname)) and CharInSet(Str[Len], ['0' .. '9']) do
+    while (Len > Length(AClassname)) and CharInSet(Str[Len], ['0' .. '9']) do
       Dec(Len);
     if Len < Length(Str) then
     begin
       KMax := StrToInt(Copy(Str, Len + 1, Length(Str)));
       Str := Copy(Str, 1, Len);
-      if (Str = Classname) and (Num <= KMax) then
+      if (Str = AClassname) and (Num <= KMax) then
         Num := KMax + 1;
     end;
   end;
-  Result := Classname + IntToStr(Num);
+  Result := AClassname + IntToStr(Num);
 end;
 
 function TLivingObjects.GetObjectMembers(const Objectname: string): TStringList;
@@ -673,34 +673,34 @@ end;
 
 function TLivingObjects.GetNameFromAddress(const Address: string): string;
 var
-  Classname, Objectname, Str: string;
+  AClassname, Objectname, Str: string;
   StringList: TStringList;
   Len, Max, Num: Integer;
 begin
   StringList := TStringList.Create;
   StringList.Assign(FSLObjectsAddressNameDuplicat);
   StringList.Text := StringList.Text + FSLObjectsAddressName.Text;
-  Classname := GetClassnameFromAddress(Address);
-  Classname := GetShortType(Classname);
+  AClassname := GetClassnameFromAddress(Address);
+  AClassname := GetShortType(AClassname);
   if GuiPyOptions.ObjectLowerCaseLetter then
-    Classname := LowerCase(Classname);
+    AClassname := LowerCase(AClassname);
   Num := 1;
   for var I := 0 to StringList.Count - 1 do
   begin
     Str := StringList.ValueFromIndex[I];
     Len := Length(Str);
     // classnames can have digits too, example: Eval$5
-    while (Len > Length(Classname)) and CharInSet(Str[Len], ['0' .. '9']) do
+    while (Len > Length(AClassname)) and CharInSet(Str[Len], ['0' .. '9']) do
       Dec(Len);
     if Len < Length(Str) then
     begin
       Max := StrToInt(Copy(Str, Len + 1, Length(Str)));
       Str := Copy(Str, 1, Len);
-      if (Str = Classname) and (Num <= Max) then
+      if (Str = AClassname) and (Num <= Max) then
         Num := Max + 1;
     end;
   end;
-  Objectname := Classname + IntToStr(Num);
+  Objectname := AClassname + IntToStr(Num);
   if FSLObjectsAddressName.IndexOfName(Address) = -1 then
     FSLObjectsAddressName.Add(Address + '=' + Objectname);
   Result := Objectname;

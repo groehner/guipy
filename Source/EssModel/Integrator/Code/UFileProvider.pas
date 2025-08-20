@@ -80,11 +80,10 @@ begin
       else if FileExists(AName) and ValidFilename(AName) then
       begin
         // used by ClassInsert
+        Lines := TXStringList.Create;
+        FStream := TFileStream.Create(AName, fmOpenRead or fmShareDenyWrite);
         try
           try
-            Lines := TXStringList.Create;
-            FStream := TFileStream.Create(AName, fmOpenRead or
-              fmShareDenyWrite);
             Lines.LoadFromStream(FStream, TEncoding.ANSI);
             // switches to UTF8 automatically
             SStream := TStringStream.Create(Lines.Text + #0,
@@ -135,7 +134,6 @@ end;
 procedure TFileProvider.HookChanges;
 begin
   { TODO : Attach a filesystem listener. }
-
 end;
 
 procedure TFileProvider.UnhookChanges;

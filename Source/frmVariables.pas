@@ -502,13 +502,13 @@ procedure TVariablesWindow.VariablesTreeAddToSelection(Sender: TBaseVirtualTree;
       if (I > 0) or (ASynEdit.Lines.Count = 0) then
         ASynEdit.Lines.Add('');
       var OldLine := ASynEdit.Lines[ASynEdit.Lines.Count - 1];
-      if (Lines[I] <> '')  then begin
+      if Lines[I] <> '' then begin
         // Save the old indicators and restore them after changing the line
         var OldIndicators := ASynEdit.Indicators.LineIndicators(ASynEdit.Lines.Count);
         ASynEdit.Lines[ASynEdit.Lines.Count - 1] := OldLine + Lines[I];
         for var OldIndicator in OldIndicators do
           ASynEdit.Indicators.Add(ASynEdit.Lines.Count, Indicator);
-        if (FontStyle <> []) then
+        if FontStyle <> [] then
         begin
           if fsItalic in FontStyle then
             Indicator := TSynIndicator.Create(FItalicIndicatorID,

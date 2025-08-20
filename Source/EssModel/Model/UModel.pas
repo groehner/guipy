@@ -40,7 +40,7 @@ type
   TLogicPackage = class;
   TUnitPackage = class;
 
-  TOperationType = (otConstructor, otFunction, otProcedure, otDestructor);
+  TOperationType = (otConstructor, otFunction, otProcedure);
 
   TObjectModel = class
   private
@@ -1009,7 +1009,7 @@ end;
 function TUnitPackage.GetClassifiers: IModelIterator;
 begin
   try
-    Result := TModelIterator.Create( FClassifiers );
+    Result := TModelIterator.Create(FClassifiers);
   except
     Result:= nil;
   end;
@@ -1018,7 +1018,7 @@ end;
 function TUnitPackage.GetFunctions: IModelIterator;
 begin
   try
-    Result := TModelIterator.Create( FFunctions );
+    Result := TModelIterator.Create(FFunctions);
   except
     Result:= nil;
   end;
@@ -1035,7 +1035,7 @@ end;
 
 function TUnitPackage.GetUnitDependencies: IModelIterator;
 begin
-  Result := TModelIterator.Create( FUnitDependencies );
+  Result := TModelIterator.Create(FUnitDependencies);
 end;
 
 function TUnitPackage.Debug: string;
@@ -1237,7 +1237,7 @@ end;
 
 function TClass.GetImplements: IModelIterator;
 begin
-  Result := TModelIterator.Create( FImplements );
+  Result := TModelIterator.Create(FImplements);
 end;
 
 //Returns a list of classes that inherits from this class.
@@ -1555,7 +1555,7 @@ end;
 
 function TOperation.GetParameters: IModelIterator;
 begin
-  Result := TModelIterator.Create( FParameters );
+  Result := TModelIterator.Create(FParameters);
 end;
 
 function TOperation.AddAttribute(const NewName: string; TypeClass: TClassifier): TAttribute;
@@ -1576,7 +1576,7 @@ end;
 
 function TOperation.GetAttributes: IModelIterator;
 begin
-  Result := TModelIterator.Create( FAttributes);
+  Result := TModelIterator.Create(FAttributes);
 end;
 
 function TOperation.HeadToPython: string;
@@ -1844,7 +1844,7 @@ end;
 
 function TClassifier.GetFeatures: IModelIterator;
 begin
-  Result := TModelIterator.Create( FFeatures );
+  Result := TModelIterator.Create(FFeatures);
 end;
 
 function TClassifier.GetShortType: string;
@@ -2010,7 +2010,7 @@ end;
 
 function TInterface.GetExtends: IModelIterator;
 begin
-  Result := TModelIterator.Create( FExtends );
+  Result := TModelIterator.Create(FExtends);
 end;
 
 procedure TInterface.SetAncestor(const Value: TInterface);

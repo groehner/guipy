@@ -4101,7 +4101,7 @@ begin
   if Assigned(AEditor) then
   begin
     GUIForm := TFGuiForm.Create(nil);
-    GUIForm.Open(ChangeFileExt(AEditor.FileName, '.pfm'), '',
+    GUIForm.Open(ChangeFileExt(AEditor.FileName, '.pfm'),
       Point(GuiPyOptions.FrameWidth, GuiPyOptions.FrameHeight),
       TEditorForm(AEditor.Form));
     GUIForm.Caption := 'CAPTION';

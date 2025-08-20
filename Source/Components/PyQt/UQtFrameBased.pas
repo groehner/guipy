@@ -245,7 +245,7 @@ end;
 function TQtFrame.GetAttributes(ShowAttributes: Integer): string;
 begin
   Result:= '';
-  if ClassName = 'TQtFrame' then
+  if ClassType = TQtFrame then
     Result:= '|FrameShape|FrameShadow|LineWidth|MidLineWidth'
   else if ShowAttributes >= 2 then
     Result:= '|FrameShape|FrameShadow|LineWidth|MidLineWidth';
@@ -351,7 +351,7 @@ begin
   Rect1:= ClientRect;
   Rect1.Inflate(-FLineWidth, -FLineWidth);
   case FFrameShape of
-    NoFrame: ;
+    NoFrame, Hline, Vline: ;
     Box:
       case FFrameShadow of
         Plain:  ARect:= Rect1;
@@ -532,7 +532,7 @@ begin
 end;
 
 procedure TQtLabel.Paint;
-  var AWidth, AHeight, Format, Indent, Taw: Integer; Pathname: string;
+  var AWidth, AHeight, Format, AIndent, Taw: Integer; Pathname: string;
       StringList: TStringList; ARect: TRect; Bmp: TBitmap;
 begin
   inherited;
@@ -548,9 +548,9 @@ begin
     FreeAndNil(Bmp);
   end else begin
     if FIndent <= 0
-      then Indent:= HalfX
-      else Indent:= FIndent;
-    ARect.Inflate(-Indent, 0);
+      then AIndent:= HalfX
+      else AIndent:= FIndent;
+    ARect.Inflate(-AIndent, 0);
     StringList:= TStringList.Create;
     Taw:= ARect.Right - ARect.Left;
     if FWordWrap

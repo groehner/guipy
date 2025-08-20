@@ -64,8 +64,7 @@ type
   private
     FMyForm: TFileForm;
     function DifferentItems(Items: TTreeNodes): Boolean;
-    procedure NavigateToVilNode(Node: PVirtualNode;
-      ForceToMiddle: Boolean = True; Activate: Boolean = True);
+    procedure NavigateToVilNode(Node: PVirtualNode);
     procedure SetFont(AFont: TFont);
   public
     procedure Init(Items: TTreeNodes; Form: TFileForm);
@@ -354,8 +353,7 @@ begin
     vilFileStructure.Selected[FoundNode] := True;
 end;
 
-procedure TFFileStructure.NavigateToVilNode(Node: PVirtualNode;
-  ForceToMiddle: Boolean = True; Activate: Boolean = True);
+procedure TFFileStructure.NavigateToVilNode(Node: PVirtualNode);
 var
   ANodeLine: Integer;
   ANodeText: string;
@@ -410,7 +408,7 @@ begin
 
   EditForm.ShowTopLine(ANodeLine, ANodeText);
   ASynEdit:= EditForm.ActiveSynEdit;
-  if Activate and CanActuallyFocus(ASynEdit) then
+  if CanActuallyFocus(ASynEdit) then
     ASynEdit.SetFocus;
   GI_PyIDEServices.ShowFilePosition(EditForm.Pathname, ASynEdit.CaretY, ASynEdit.CaretX);
 end;

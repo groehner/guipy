@@ -152,7 +152,7 @@ type
 
     function GetParentElement(Element: TStrElement): TStrElement;
     function GetToken(var Str: string; var Token: string): Integer;
-    procedure CalculateInsertionShape(DestList, InsertList: TStrList; X, Y: Integer);
+    procedure CalculateInsertionShape(DestList, InsertList: TStrList; Y: Integer);
     procedure InsertElement(DestList, InsertList: TStrList; ACurElement: TStrElement);
 
     procedure Save;
@@ -436,7 +436,7 @@ begin
     AList:= (ScrollBox.Controls[I] as TListImage).StrList;
     StringList.Add('- Kind: ' + AList.GetKind);
     StringList.Add('  SwitchWithCaseLine: ' + BoolToStr(AList.SwitchWithCaseLine, True));
-    StringList.Add('  RectPos' + AList.GetRectPos('  '));
+    StringList.Add('  RectPos' + AList.GetRectPos);
     StringList.Add(AList.GetText('  '));
   end;
   Result:= StringList;
@@ -444,28 +444,28 @@ end;
 
 procedure TFStructogram.ShowShape;
 begin
-  with FOldCanvas, FOldShape do begin
-    Pen.Color:= clRed;
+  with FOldShape do begin
+    FOldCanvas.Pen.Color:= clRed;
     if Top = Bottom then begin
-      MoveTo(Left+1, Top-2);
-      LineTo(Right, Top-2);
-      MoveTo(Left+1, Top-1);
-      LineTo(Right, Top-1);
-      MoveTo(Left+1, Top+1);
-      LineTo(Right, Top+1);
-      MoveTo(Left+1, Top+2);
-      LineTo(Right, Top+2);
+      FOldCanvas.MoveTo(Left+1, Top-2);
+      FOldCanvas.LineTo(Right, Top-2);
+      FOldCanvas.MoveTo(Left+1, Top-1);
+      FOldCanvas.LineTo(Right, Top-1);
+      FOldCanvas.MoveTo(Left+1, Top+1);
+      FOldCanvas.LineTo(Right, Top+1);
+      FOldCanvas.MoveTo(Left+1, Top+2);
+      FOldCanvas.LineTo(Right, Top+2);
     end else begin
-      MoveTo(Left, Top);
-      LineTo(Right, Top);
-      LineTo(Right, Bottom);
-      LineTo(Left,  Bottom);
-      LineTo(Left, Top);
-      MoveTo(Left+1, Top+1);
-      LineTo(Right-1, Top+1);
-      LineTo(Right-1, Bottom-1);
-      LineTo(Left+1,  Bottom-1);
-      LineTo(Left+1, Top+1);
+      FOldCanvas.MoveTo(Left, Top);
+      FOldCanvas.LineTo(Right, Top);
+      FOldCanvas.LineTo(Right, Bottom);
+      FOldCanvas.LineTo(Left,  Bottom);
+      FOldCanvas.LineTo(Left, Top);
+      FOldCanvas.MoveTo(Left+1, Top+1);
+      FOldCanvas.LineTo(Right-1, Top+1);
+      FOldCanvas.LineTo(Right-1, Bottom-1);
+      FOldCanvas.LineTo(Left+1,  Bottom-1);
+      FOldCanvas.LineTo(Left+1, Top+1);
     end;
   end;
 end;
@@ -473,28 +473,28 @@ end;
 procedure TFStructogram.HideShape;
 begin
   if FOldShape.Top > -1 then begin
-    with FOldCanvas, FOldShape do begin
-      Pen.Color:= StyleServices.GetStyleColor(scPanel);
+    with FOldShape do begin
+      FOldCanvas.Pen.Color:= StyleServices.GetStyleColor(scPanel);
       if Top = Bottom then begin
-        MoveTo(Left+1, Top-2);
-        LineTo(Right, Top-2);
-        MoveTo(Left+1, Top-1);
-        LineTo(Right, Top-1);
-        MoveTo(Left+1, Top+1);
-        LineTo(Right, Top+1);
-        MoveTo(Left+1, Top+2);
-        LineTo(Right, Top+2);
+        FOldCanvas.MoveTo(Left+1, Top-2);
+        FOldCanvas.LineTo(Right, Top-2);
+        FOldCanvas.MoveTo(Left+1, Top-1);
+        FOldCanvas.LineTo(Right, Top-1);
+        FOldCanvas.MoveTo(Left+1, Top+1);
+        FOldCanvas.LineTo(Right, Top+1);
+        FOldCanvas.MoveTo(Left+1, Top+2);
+        FOldCanvas.LineTo(Right, Top+2);
       end else begin
-        MoveTo(Left, Top);
-        LineTo(Right, Top);
-        LineTo(Right, Bottom);
-        LineTo(Left,  Bottom);
-        LineTo(Left, Top);
-        MoveTo(Left+1, Top+1);
-        LineTo(Right-1, Top+1);
-        LineTo(Right-1, Bottom-1);
-        LineTo(Left+1,  Bottom-1);
-        LineTo(Left+1, Top+1);
+        FOldCanvas.MoveTo(Left, Top);
+        FOldCanvas.LineTo(Right, Top);
+        FOldCanvas.LineTo(Right, Bottom);
+        FOldCanvas.LineTo(Left,  Bottom);
+        FOldCanvas.LineTo(Left, Top);
+        FOldCanvas.MoveTo(Left+1, Top+1);
+        FOldCanvas.LineTo(Right-1, Top+1);
+        FOldCanvas.LineTo(Right-1, Bottom-1);
+        FOldCanvas.LineTo(Left+1,  Bottom-1);
+        FOldCanvas.LineTo(Left+1, Top+1);
       end;
     end;
     FOldShape:= Rect(-1, -1, -1, -1);
@@ -683,7 +683,7 @@ begin
               if ARect.Contains(ScrollBoxPt) then begin
                 Image2Pt:= Image2.ScreenToClient(ScreenPt);
                 FCurElement:= FindElement(Image2.StrList, Image2Pt.X, Image2Pt.Y);
-                CalculateInsertionShape(Image2.StrList, FCurList, Image2Pt.X, Image2Pt.Y);
+                CalculateInsertionShape(Image2.StrList, FCurList, Image2Pt.Y);
               end;
             end;
           end;
@@ -693,7 +693,7 @@ begin
   end;
 end;
 
-procedure TFStructogram.CalculateInsertionShape(DestList, InsertList: TStrList; X, Y: Integer);
+procedure TFStructogram.CalculateInsertionShape(DestList, InsertList: TStrList; Y: Integer);
 begin
   // FCurElement.debug()
   if not Assigned(FCurElement) then Exit;
@@ -1085,6 +1085,7 @@ end;
 
 function TFStructogram.GetName(StrList: TStrList): string;
 begin
+  Result:= '';
   if StrList is TStrAlgorithm then
     Result:= (StrList as TStrAlgorithm).GetAlgorithmName;
   if Result = '' then

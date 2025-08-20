@@ -98,7 +98,7 @@ type
     function PPIUnScale(Size: Integer): Integer;
   end;
 
-function IsEvent(Str: string): Boolean;
+function IsEvent(const Str: string): Boolean;
 
 implementation
 
@@ -120,7 +120,7 @@ uses
 const
   CrLf = #13#10;
 
-function IsEvent(Str: string): Boolean;
+function IsEvent(const Str: string): Boolean;
 begin      // Tk                   or  Qt
   Result:= (Pos(Str, AllEvents) > 0) or (Str <> '') and (CharInSet(Str[1], ['a'..'z']));
 end;

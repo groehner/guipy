@@ -134,6 +134,7 @@ uses
   SysUtils,
   UITypes,
   StringResources,
+  UQtWidgetDescendants,
   UGUIForm,
   UUtils,
   UConfiguration;
@@ -170,7 +171,7 @@ end;
 function TBaseQtWidget.GetEvents(ShowEvents: Integer): string;
 begin
   Result := '';
-  if (ShowEvents = 3) or (ClassName = 'TQtMainWindow') then
+  if (ShowEvents = 3) or (ClassType = TQtMainWindow) then
     Result := '|customContextMenuRequested|windowIconChanged|windowTitleChanged';
   Result := Result + '|';
 end;
@@ -325,6 +326,7 @@ end;
 
 procedure TBaseQtWidget.Resize;
 begin
+  // nothing to do
 end;
 
 function TBaseQtWidget.MakeBinding(const Eventname: string): string;

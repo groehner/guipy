@@ -339,8 +339,8 @@ uses
 const
   CDefaultWidth = 150;
 
-function GetSVGRect(X, Y, Width, Height: Real; Color: string;
-  Attribute: string = ''): string;
+function GetSVGRect(X, Y, Width, Height: Real; const Color: string;
+  const Attribute: string = ''): string;
 begin
   Result := '  <rect x=' + FloatToVal(X) + ' y=' + FloatToVal(Y) + ' width=' +
     FloatToVal(Width) + ' height=' + FloatToVal(Height) + ' fill="' + Color +
@@ -353,7 +353,7 @@ begin
     FloatToVal(Radius) + ' fill="none" stroke="black" />'#13#10;
 end;
 
-function GetSVGText(X, Y: Real; Attribut, Text: string): string;
+function GetSVGText(X, Y: Real; const Attribut, Text: string): string;
 var
   StringList: TStringList;
   Dyr: Real;
@@ -398,7 +398,7 @@ begin
   FreeAndNil(StringList);
 end;
 
-function GetSVGPolyline(Points: array of TPoint; Color: string): string;
+function GetSVGPolyline(Points: array of TPoint; const Color: string): string;
 begin
   Result := '  <polyline points="';
   for var I := 0 to High(Points) do
@@ -408,7 +408,7 @@ begin
     '" stroke-width="2" />'#13#10;
 end;
 
-function GetSVGPolygon(Points: array of TPoint; Color: string): string;
+function GetSVGPolygon(Points: array of TPoint; const Color: string): string;
 begin
   Result := '  <polygon points="';
   for var I := 0 to High(Points) do
@@ -2134,9 +2134,8 @@ end;
 // show operation, show method
 procedure TRtfdOperation.EntityChange(Sender: TModelEntity);
 const
-  ColorMap: array [TOperationType] of TColor = (clGreen, clBlack,
-    clGray, clRed);
-  // otConstructor, otProcedure, otFunction, otDestructor,);
+  ColorMap: array [TOperationType] of TColor = (clGreen, clBlack, clGray);
+  // otConstructor, otProcedure, otFunction
 var
   Name: string;
   Ite: IModelIterator;

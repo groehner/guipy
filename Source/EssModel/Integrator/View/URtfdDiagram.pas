@@ -122,7 +122,7 @@ type
     procedure FetchDiagram(Filename: string); override;
     procedure RefreshDiagram; override;
     procedure RecalcPanelSize; override;
-    procedure SetConnections(const Value: Integer); override;
+    procedure SetShowConnections(const Value: Integer); override;
     procedure SelectAssociation; override;
     procedure DeleteSelectedControls(Sender: TObject);
     procedure DeleteSelectedControlsAndRefresh; override;
@@ -178,7 +178,7 @@ type
     function GetCommentBoxName: string;
     procedure AddCommentBoxTo(Control: TControl); override;
     function InsertParameterNames(Names: string): string;
-    function HasClass(const Classname: string): Boolean;
+    function HasClass(const AClassname: string): Boolean;
     procedure DoShowParameter(Control: TControl; Mode: Integer); override;
     procedure DoShowVisibility(Control: TControl; Mode: Integer); override;
     procedure DoShowVisibilityFilter(Control: TControl; Mode: Integer);
@@ -1691,12 +1691,12 @@ begin
   FPanel.RecalcSize;
 end;
 
-procedure TRtfdDiagram.SetConnections(const Value: Integer);
+procedure TRtfdDiagram.SetShowConnections(const Value: Integer);
 begin
   if Value <> ShowConnections then
   begin
     FPanel.IsModified := True;
-    inherited SetConnections(Value);
+    inherited SetShowConnections(Value);
     FPanel.SetConnections(Value);
   end;
   inherited;
@@ -3823,11 +3823,11 @@ begin
   CommentBox.SendToBack;
 end;
 
-function TRtfdDiagram.HasClass(const Classname: string): Boolean;
+function TRtfdDiagram.HasClass(const AClassname: string): Boolean;
 begin
   Result := False;
   for var I := 0 to FBoxNames.Count - 1 do
-    if FBoxNames[I] = Classname then
+    if FBoxNames[I] = AClassname then
     begin
       Result := True;
       Break;

@@ -464,6 +464,7 @@ end;
 
 function TPythonScannerWithTokens.GetFilename: string;
 begin
+  Result:= '';
   GetNextToken;
   while (FToken <> '') and (FToken <> 'def') do
     GetNextToken;

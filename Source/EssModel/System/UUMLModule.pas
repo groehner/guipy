@@ -490,11 +490,8 @@ begin
           Image := AllocMem(ImageSize);
           try
             GetDIB(Bits, 0, Info^, Image^);
-            with Info^.bmiHeader do
-            begin
-              DIBWidth := biWidth;
-              DIBHeight := biHeight;
-            end;
+            DIBWidth := Info.bmiHeader.biWidth;
+            DIBHeight := Info.bmiHeader.biHeight;
             PrintWidth := MulDiv(DIBWidth, GetDeviceCaps(Handle, LOGPIXELSX),
               Screen.PixelsPerInch);
             PrintHeight := MulDiv(DIBHeight, GetDeviceCaps(Handle, LOGPIXELSY),

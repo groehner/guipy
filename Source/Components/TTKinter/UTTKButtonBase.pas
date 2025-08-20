@@ -552,19 +552,19 @@ end;
 
 procedure TTKOptionMenu.MakeMenuItems;
 var
-  Str, MenuItems, NewMenuTitle: string;
+  Str, AMenuItems, NewMenuTitle: string;
 begin
-  MenuItems := '';
+  AMenuItems := '';
   for var I := 0 to FNewItems.Count - 1 do
   begin
     NewMenuTitle := Trim(FNewItems[I]);
     if NewMenuTitle = '' then
       Continue;
-    MenuItems := MenuItems + ', ' + AsString(NewMenuTitle);
+    AMenuItems := AMenuItems + ', ' + AsString(NewMenuTitle);
   end;
   Str := 'self.' + Name;
   SetAttributValue(Str, Str + ' = ttk.OptionMenu(self.root, self.' + Name + 'CV'
-    + MenuItems + ')');
+    + AMenuItems + ')');
 end;
 
 function TTKOptionMenu.GetText: string;

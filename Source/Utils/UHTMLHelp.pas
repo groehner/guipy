@@ -19,6 +19,7 @@ type
   TItsControlData = TITS_Control_Data;
 
   IItsStorage = interface (IUnknown)
+  ['{608EDF50-47A3-42F3-A834-D5C0C3536139}']
     function StgCreateDocFile(const PwcsName: PChar; GrfMode: DWORD;
       Reserved: DWORD; var PpstgOpen: IStorage): HRESULT; stdcall;
 

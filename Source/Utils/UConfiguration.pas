@@ -74,14 +74,11 @@ uses
   cFileTemplates,
   uLLMSupport;
 
-const
-  CrLf = #13#10;
-  Homepage = 'https://www.guipy.Deu';
-  VisTabsLen = 5; // Program, Tkinter, TTK, QtBase, QtControls
+const CrLf = #13#10; Homepage = 'https://www.guipy.Deu'; VisTabsLen = 5;
+  // Program, Tkinter, TTK, QtBase, QtControls
   VisMenusLen = 9; // all menus
   VisToolbarsLen = 6; // Main, Debug, Editor, UML, Structogram, Sequencediagram
-  MaxVisLen = VisTabsLen + VisMenusLen + VisToolbarsLen;
-  MaxTabItem = 28;
+  MaxVisLen = VisTabsLen + VisMenusLen + VisToolbarsLen; MaxTabItem = 28;
 
 type
   TBoolArray = array of Boolean;
@@ -483,7 +480,7 @@ type
     FSDNew: string;
     FSDClose: string;
   public
-    procedure GetInLanguage(Language: string);
+    procedure GetInLanguage(const Language: string);
   published
     property Algorithm: string read FAlgorithm write FAlgorithm;
     property Input: string read FInput write FInput;
@@ -1327,7 +1324,8 @@ type
     procedure CheckFolderCB(ComboBox: TComboBox);
     procedure CheckUserFolder(Edit: TEdit);
     procedure CheckFile(WinControl: TWinControl; EmptyAllowed: Boolean);
-    function GetCheckColor(const Filename: string; EmptyAllowed: Boolean): TColor;
+    function GetCheckColor(const Filename: string;
+      EmptyAllowed: Boolean): TColor;
     procedure ShortenPath(WinControl: TWinControl; const Path: string);
     function ExtendPath(WinControl: TWinControl): string;
     function BrowserProgToName(const Browsername: string): string;
@@ -1451,9 +1449,7 @@ type
     property VisToolbars: TBoolArray read FVisToolbars;
   end;
 
-var
-  FConfiguration: TFConfiguration = nil;
-  GuiPyOptions: TGuiPyOptions = nil;
+var FConfiguration: TFConfiguration = nil; GuiPyOptions: TGuiPyOptions = nil;
   GuiPyLanguageOptions: TGuiPyLanguageOptions = nil;
 
 implementation
@@ -1504,11 +1500,7 @@ uses
   UGit,
   USubversion;
 
-const
-  MaxPages = 33;
-  CMachine = 0;
-  CAllUsers = 1;
-  CUser = 2;
+const MaxPages = 33; CMachine = 0; CAllUsers = 1; CUser = 2;
 
   { --- TEditStyleHook ----------------------------------------------------------- }
 
@@ -1689,9 +1681,7 @@ begin
 end;
 
 function TFConfiguration.DirectoryFilesExists(Str: string): Boolean;
-var
-  Posi: Integer;
-  Dir: string;
+var Posi: Integer; Dir: string;
 begin
   Result := True;
   if Str <> '' then
@@ -1713,8 +1703,7 @@ begin
 end;
 
 procedure TFConfiguration.CheckFolder(Edit: TEdit; EmptyAllowed: Boolean);
-var
-  Str: string;
+var Str: string;
 begin
   Str := ExtendPath(Edit);
   ShortenPath(Edit, Str);
@@ -1726,8 +1715,7 @@ begin
 end;
 
 procedure TFConfiguration.CheckFolderCB(ComboBox: TComboBox);
-var
-  Str: string;
+var Str: string;
 begin
   Str := ExtendPath(ComboBox);
   ShortenPath(ComboBox, Str);
@@ -1739,8 +1727,7 @@ begin
 end;
 
 procedure TFConfiguration.CheckUserFolder(Edit: TEdit);
-var
-  Str: string;
+var Str: string;
 begin
   Str := ExtendPath(Edit);
   ShortenPath(Edit, Str);
@@ -1789,19 +1776,15 @@ function TFConfiguration.GetCheckColor(const Filename: string;
   EmptyAllowed: Boolean): TColor;
 begin
   Result := clRed;
-  if Filename = '' then
-    if EmptyAllowed then
-      Result := StyleServices.GetSystemColor(clWindow)
-    else
+  if (Filename = '') and EmptyAllowed then
+    Result := StyleServices.GetSystemColor(clWindow)
   else if FileExists(DissolveUsername(Filename)) then
     Result := StyleServices.GetSystemColor(clWindow);
 end;
 
 procedure TFConfiguration.CheckFile(WinControl: TWinControl;
   EmptyAllowed: Boolean);
-var
-  Str: string;
-  Edit: TEdit;
+var Str: string; Edit: TEdit;
 begin
   Str := ExtendPath(WinControl);
   ShortenPath(WinControl, Str);
@@ -1816,28 +1799,26 @@ begin
 end;
 
 procedure TFConfiguration.BSelectBrowserClick(Sender: TObject);
-var
-  ODSelect: TOpenDialog;
+var ODSelect: TOpenDialog;
 begin
   ODSelect := TOpenDialog.Create(Self);
   ODSelect.Options := [ofPathMustExist, ofFileMustExist, ofEnableSizing];
   with ODSelect do
   begin
     InitialDir := GetEnvironmentVariable('PROGRAMFILES');
-    FileName := '*.exe';
+    Filename := '*.exe';
     Filter := '*.exe|*.exe';
     if not SysUtils.DirectoryExists(InitialDir) then
       InitialDir := 'C:\';
     if Execute then
-      ShortenPath(EBrowserProgram, FileName);
+      ShortenPath(EBrowserProgram, Filename);
     CheckFile(EBrowserProgram, True);
   end;
   FreeAndNil(ODSelect);
 end;
 
 function TFConfiguration.BrowserProgToName(const Browsername: string): string;
-var
-  Browser: string;
+var Browser: string;
 begin
   Browser := UpperCase(Browsername);
   if Pos('NETSCAPE', Browser) > 0 then
@@ -1864,12 +1845,14 @@ begin
   Close;
 end;
 
-function TFConfiguration.FolderSelect(Edit: TEdit; const Foldername: string): string;
+function TFConfiguration.FolderSelect(Edit: TEdit;
+  const Foldername: string): string;
 begin
-  Result:= Foldername;
+  Result := Foldername;
   FolderDialog.DefaultFolder := Foldername;
-  if FolderDialog.Execute then begin
-    Result:= ExcludeTrailingPathDelimiter(FolderDialog.Filename);
+  if FolderDialog.Execute then
+  begin
+    Result := ExcludeTrailingPathDelimiter(FolderDialog.Filename);
     ShortenPath(Edit, Result);
   end;
 end;
@@ -1897,8 +1880,7 @@ begin
     FGit := TFGit.Create(Self);
 
   // tab Subversion
-  FSubversionOK := FileExists(TPath.Combine(GuiPyOptions.SVNFolder,
-    'svn.exe'));
+  FSubversionOK := FileExists(TPath.Combine(GuiPyOptions.SVNFolder, 'svn.exe'));
   PyIDEMainForm.mnToolsSVN.Visible := FSubversionOK and
     FVis1[VisTabsLen + 7, 5];
   if FSubversionOK and not Assigned(FSubversion) then
@@ -2048,7 +2030,8 @@ begin
     CBEditorCodeCompletion.Checked := EditorCodeCompletion;
     CBInterpreterCodeCompletion.Checked := InterpreterCodeCompletion;
     CBLspDebug.Checked := LspDebug;
-    CBLspDebug.Caption := 'Debug LSP-Server to ' + TPath.Combine(TPyScripterSettings.UserDataPath, 'LspDebug.log');
+    CBLspDebug.Caption := 'Debug LSP-Server to ' +
+      TPath.Combine(TPyScripterSettings.UserDataPath, 'LspDebug.log');
     UDCodeComletionListSize.Position := CodeCompletionListSize;
     ESpecialPackages.Text := SpecialPackages;
 
@@ -2292,11 +2275,8 @@ begin
 end;
 
 procedure TFConfiguration.ViewToModel;
-var
-  LanguageNr: Integer;
-  VOptions: TSynEditorOptions;
-  VScrollOptions: TSynEditorScrollOptions;
-  Digits: Integer;
+var LanguageNr: Integer; VOptions: TSynEditorOptions;
+  VScrollOptions: TSynEditorScrollOptions; Digits: Integer;
 
   procedure SetFlag(Option: TSynEditorOption; Value: Boolean);
   begin
@@ -2639,8 +2619,7 @@ begin
 end;
 
 procedure TFConfiguration.BTempFolderClick(Sender: TObject);
-var
-  Path: string;
+var Path: string;
 begin
   if TPyScripterSettings.IsPortable then
     Path := TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
@@ -2651,8 +2630,7 @@ begin
 end;
 
 procedure TFConfiguration.SBTempSelectClick(Sender: TObject);
-var
-  Path: string;
+var Path: string;
 begin
   if TPyScripterSettings.IsPortable then
     Path := TPath.Combine(ExtractFilePath(Application.ExeName), 'Temp')
@@ -2670,8 +2648,7 @@ begin
   OpenObject(Adresse);
 end;
 
-var
-  Eng: array [0 .. MaxPages] of string = (
+var Eng: array [0 .. MaxPages] of string = (
     'python',
     'interpreter',
     'editor',
@@ -2706,8 +2683,7 @@ var
     'tools',
     'git',
     'subversion'
-  );
-  Deu: array [0 .. MaxPages] of string = (
+  ); Deu: array [0 .. MaxPages] of string = (
     'python',
     'interpreter',
     'editor',
@@ -2745,9 +2721,7 @@ var
   );
 
 procedure TFConfiguration.BHelpClick(Sender: TObject);
-var
-  Count: Integer;
-  ANode: TTreeNode;
+var Count: Integer; ANode: TTreeNode;
 begin
   ANode := TVConfiguration.Items.GetFirstNode;
   Count := 0;
@@ -2769,10 +2743,8 @@ begin
 end;
 
 function TFConfiguration.GetDumpText: string;
-var
-  Pathname, CMachine, App, Str, Str1, WinPlatform: string;
-  StringList: TStringList;
-  AFile: IFile;
+var Pathname, CMachine, App, Str, Str1, WinPlatform: string;
+  StringList: TStringList; AFile: IFile;
 begin
 {$IFDEF WIN64}
   WinPlatform := 'x64';
@@ -2787,8 +2759,8 @@ begin
   Application.ProcessMessages;
   if FileExists(Pathname) then
     DeleteFile(Pathname);
-  CMachine := PyIDEMainForm.MachineStorage.FileName;
-  App := PyIDEMainForm.AppStorage.FileName;
+  CMachine := PyIDEMainForm.MachineStorage.Filename;
+  App := PyIDEMainForm.AppStorage.Filename;
   try
     Str := 'Installation ' + CrLf;
     Str1 := Format('Version %s %s', [ApplicationVersion, WinPlatform]);
@@ -2805,19 +2777,30 @@ begin
     Str := Str + '  MachineStorage: ' + CMachine + CrLf;
     Str := Str + '  AppStorage: ' + App + CrLf;
     Str := Str + CrLf;
-    Str := Str + '  PublicPath: ' + TPath.Combine(TPath.GetPublicPath, 'GuiPy') + CrLf;
-    Str := Str + '  LspServerPath: ' + TPath.Combine(TPyScripterSettings.LspServerPath, 'jls') + CrLf;
-    Str := Str + '  StylesFilesDir: ' + TPyScripterSettings.StylesFilesDir + CrLf;
-    Str := Str + '  ColorThemesFilesDir: ' + TPyScripterSettings.ColorThemesFilesDir + CrLf;
-    Str := Str + '  AppDebugInspectorsDir: ' + TPyScripterSettings.AppDebugInspectorsDir + CrLf;
+    Str := Str + '  PublicPath: ' + TPath.Combine(TPath.GetPublicPath,
+      'GuiPy') + CrLf;
+    Str := Str + '  LspServerPath: ' +
+      TPath.Combine(TPyScripterSettings.LspServerPath, 'jls') + CrLf;
+    Str := Str + '  StylesFilesDir: ' +
+      TPyScripterSettings.StylesFilesDir + CrLf;
+    Str := Str + '  ColorThemesFilesDir: ' +
+      TPyScripterSettings.ColorThemesFilesDir + CrLf;
+    Str := Str + '  AppDebugInspectorsDir: ' +
+      TPyScripterSettings.AppDebugInspectorsDir + CrLf;
     Str := Str + CrLf;
     Str := Str + '  UserDataPath: ' + TPyScripterSettings.UserDataPath + CrLf;
-    Str := Str + '  UserDebugInspectorsDir: ' + TPyScripterSettings.UserDebugInspectorsDir + CrLf;
+    Str := Str + '  UserDebugInspectorsDir: ' +
+      TPyScripterSettings.UserDebugInspectorsDir + CrLf;
     Str := Str + CrLf;
-    Str := Str + '  OptionsFileName: ' + TPyScripterSettings.OptionsFileName + CrLf;
-    Str := Str + '  EngineInitFile: ' + TPyScripterSettings.EngineInitFile + CrLf;
-    Str := Str + '  LspDebugLogFile: ' + TPath.Combine(TPyScripterSettings.UserDataPath, 'LspDebug.log') + CrLf;
-    Str := Str + '  LspServerFile: ' + TPath.Combine(TPyScripterSettings.LspServerPath, 'jls\run-jedi-language-server.py') + CrLf;
+    Str := Str + '  OptionsFileName: ' +
+      TPyScripterSettings.OptionsFileName + CrLf;
+    Str := Str + '  EngineInitFile: ' +
+      TPyScripterSettings.EngineInitFile + CrLf;
+    Str := Str + '  LspDebugLogFile: ' +
+      TPath.Combine(TPyScripterSettings.UserDataPath, 'LspDebug.log') + CrLf;
+    Str := Str + '  LspServerFile: ' +
+      TPath.Combine(TPyScripterSettings.LspServerPath,
+      'jls\run-jedi-language-server.py') + CrLf;
 
     Str := Str + StringOfChar('-', 80) + CrLf;
     Str := Str + '--- ' + CMachine + CrLf + CrLf;
@@ -2839,9 +2822,7 @@ begin
 end;
 
 procedure TFConfiguration.BDumpClick(Sender: TObject);
-var
-  Pathname: string;
-  StringList: TStringList;
+var Pathname: string; StringList: TStringList;
 begin
   StringList := TStringList.Create;
   StringList.Text := GetDumpText;
@@ -2867,7 +2848,8 @@ end;
 procedure TFConfiguration.CallUpdater(const Target, Source1: string;
 Source2: string);
 begin
-  var Updater := FEditorFolder + 'setup.exe';
+  var
+  Updater := FEditorFolder + 'setup.exe';
   if not FileExists(Updater) then
   begin
     ErrorMsg(Format(_(SFileNotFound), [Updater]));
@@ -2878,7 +2860,8 @@ begin
   var
   Params := '-Update ' + HideBlanks(Target) + ' ' + HideBlanks(Source1) + ' ' +
     HideBlanks(Source2);
-  Params := Params + ' -INI ' + HideBlanks(PyIDEMainForm.MachineStorage.FileName);
+  Params := Params + ' -INI ' +
+    HideBlanks(PyIDEMainForm.MachineStorage.Filename);
   if not RunAsAdmin(Handle, Updater, Params) then
     ErrorMsg(_('Can not execute file ') + Updater);
 end;
@@ -2893,9 +2876,7 @@ end;
 
 procedure TFConfiguration.TVConfigurationChange(Sender: TObject;
 Node: TTreeNode);
-var
-  ANode: TTreeNode;
-  Count: Integer;
+var ANode: TTreeNode; Count: Integer;
 begin
   ANode := TVConfiguration.Items.GetFirstNode;
   Count := 0;
@@ -2948,21 +2929,18 @@ begin
 end;
 
 function TFConfiguration.GetEncoding(const Pathname: string): TEncoding;
-var
-  Stream: TStream;
-  WithBOM: Boolean;
+var Stream: TStream; WithBOM: Boolean;
 begin
   Result := TEncoding.ANSI;
   if FileExists(Pathname) then
+  begin
+    Stream := TFileStream.Create(Pathname, fmOpenRead or fmShareDenyWrite);
     try
-      Stream := TFileStream.Create(Pathname, fmOpenRead or fmShareDenyWrite);
-      try
-        Result := SynUnicode.GetEncoding(Stream, WithBOM);
-      finally
-        FreeAndNil(Stream);
-      end;
-    except
+      Result := SynUnicode.GetEncoding(Stream, WithBOM);
+    finally
+      FreeAndNil(Stream);
     end;
+  end;
 end;
 
 function TFConfiguration.GetFileFilters: string;
@@ -2979,17 +2957,14 @@ begin
 end;
 
 procedure TFConfiguration.SetElevationRequiredState(Control: TWinControl);
-const
-  BCM_FIRST = $1600;
-  BCM_SETSHIELD = BCM_FIRST + $000C;
+const BCM_FIRST = $1600; BCM_SETSHIELD = BCM_FIRST + $000C;
 begin
   SendMessage(Control.Handle, BCM_SETSHIELD, 0, Integer(True));
 end;
 
 function TFConfiguration.RunAsAdmin(AHWnd: HWND;
 const AFile, Parameters: string): Boolean;
-var
-  Sei: TShellExecuteInfoA;
+var Sei: TShellExecuteInfoA;
 begin
   FillChar(Sei, SizeOf(Sei), 0);
   Sei.cbSize := SizeOf(Sei);
@@ -3004,9 +2979,8 @@ begin
 end;
 
 procedure TFConfiguration.MakeControlStructureTemplates;
-const
-  ControlStructure: array [1 .. 10] of string = ('#if', '#while', '#for', '#do',
-    '#switch', '#try', 'else', '} else', '#ifelse', '{ }');
+const ControlStructure: array [1 .. 10] of string = ('#if', '#while', '#for',
+    '#do', '#switch', '#try', 'else', '} else', '#ifelse', '{ }');
 begin
   for var I := 1 to 21 do
   begin
@@ -3051,8 +3025,7 @@ begin
 end;
 
 class function TFConfiguration.IsDark: Boolean;
-var
-  BGColor, FGColor: TColor;
+var BGColor, FGColor: TColor;
 begin
   if StyleServices.IsSystemStyle then
   begin
@@ -3077,9 +3050,7 @@ end;
 
 procedure TFConfiguration.ShortenPath(WinControl: TWinControl;
 const Path: string);
-var
-  Str1, Str2, Str3: string;
-  Posi { , w } : Integer;
+var Str1, Str2, Str3: string; Posi { , w } : Integer;
 begin
   WinControl.Hint := Path;
   WinControl.ShowHint := True;
@@ -3107,9 +3078,7 @@ begin
 end;
 
 function TFConfiguration.ExtendPath(WinControl: TWinControl): string;
-var
-  Str: string;
-  Posi: Integer;
+var Str: string; Posi: Integer;
 begin
   if WinControl is TEdit then
     Str := (WinControl as TEdit).Text
@@ -3135,9 +3104,7 @@ end;
 { --- Python ------------------------------------------------------------------- }
 
 procedure TFConfiguration.actPVActivateExecute(Sender: TObject);
-var
-  Node: PVirtualNode;
-  Level: Integer;
+var Node: PVirtualNode; Level: Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   if Assigned(Node) then
@@ -3156,10 +3123,7 @@ begin
 end;
 
 procedure TFConfiguration.actPVAddExecute(Sender: TObject);
-var
-  PythonVersion: TPythonVersion;
-  Directories: TArray<string>;
-  Err: string;
+var PythonVersion: TPythonVersion; Directories: TArray<string>; Err: string;
 begin
   if SelectDirectory('', Directories, [],
     _('Select folder with Python installation (including virtualenv and venv)'))
@@ -3190,9 +3154,7 @@ begin
 end;
 
 procedure TFConfiguration.actPVRemoveExecute(Sender: TObject);
-var
-  Node: PVirtualNode;
-  Level: Integer;
+var Node: PVirtualNode; Level: Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   if Assigned(Node) then
@@ -3208,10 +3170,7 @@ begin
 end;
 
 procedure TFConfiguration.actPVTestExecute(Sender: TObject);
-var
-  Node: PVirtualNode;
-  Level: Integer;
-  Version: TPythonVersion;
+var Node: PVirtualNode; Level: Integer; Version: TPythonVersion;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   if Assigned(Node) then
@@ -3230,10 +3189,7 @@ begin
 end;
 
 procedure TFConfiguration.actPVShowExecute(Sender: TObject);
-var
-  Node: PVirtualNode;
-  Level: Integer;
-  Version: TPythonVersion;
+var Node: PVirtualNode; Level: Integer; Version: TPythonVersion;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   if Assigned(Node) then
@@ -3263,9 +3219,7 @@ begin
 end;
 
 procedure TFConfiguration.actPVRenameExecute(Sender: TObject);
-var
-  Node: PVirtualNode;
-  Level: Integer;
+var Node: PVirtualNode; Level: Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   if Assigned(Node) then
@@ -3286,8 +3240,7 @@ end;
 
 procedure TFConfiguration.vtPythonVersionsGetCellText
   (Sender: TCustomVirtualStringTree; var E: TVSTGetCellTextEventArgs);
-var
-  Level: Integer;
+var Level: Integer;
 begin
   Level := vtPythonVersions.GetNodeLevel(E.Node);
   case Level of
@@ -3323,8 +3276,7 @@ procedure TFConfiguration.vtPythonVersionsGetImageIndex
   (Sender: TBaseVirtualTree; Node: PVirtualNode; Kind: TVTImageKind;
 Column: TColumnIndex; var Ghosted: Boolean;
 var ImageIndex: UITypes.TImageIndex);
-var
-  Level: Integer;
+var Level: Integer;
 begin
   ImageIndex := -1;
   if not(Kind in [ikNormal, ikSelected]) or (Column <> 0) then
@@ -3377,8 +3329,7 @@ begin
 end;
 
 procedure TFConfiguration.SynEditOptionsShow;
-var
-  Commands: TStringList;
+var Commands: TStringList;
 begin
   // We need to do this now because it will not have been assigned when create occurs
   cKeyCommand.Items.Clear;
@@ -3460,10 +3411,7 @@ end;
 
 procedure TFConfiguration.btnUpdateKeyClick(Sender: TObject);
 
-var
-  OldShortcut: TShortCut;
-  OldShortcut2: TShortCut;
-  Key: TSynEditKeyStroke;
+var OldShortcut: TShortCut; OldShortcut2: TShortCut; Key: TSynEditKeyStroke;
   Str: string;
 begin
   if KeyList.Selected = nil then
@@ -3497,9 +3445,7 @@ begin
 end;
 
 procedure TFConfiguration.btnAddKeyClick(Sender: TObject);
-var
-  Item: TListItem;
-  Str: string;
+var Item: TListItem; Str: string;
 begin
   if cKeyCommand.ItemIndex < 0 then
     Exit;
@@ -3542,8 +3488,7 @@ begin
 end;
 
 procedure TFConfiguration.UpdateKey(AKey: TSynEditKeyStroke);
-var
-  Cmd: Integer;
+var Cmd: Integer;
 begin
   Cmd := Integer(cKeyCommand.Items.Objects[cKeyCommand.ItemIndex]);
   AKey.Command := Cmd;
@@ -3553,8 +3498,7 @@ end;
 
 procedure TFConfiguration.FillInKeystrokeInfo(AKey: TSynEditKeyStroke;
 AItem: TListItem);
-var
-  TmpString: string;
+var TmpString: string;
 begin
   with AKey do
   begin
@@ -3588,9 +3532,7 @@ begin
 end;
 
 procedure TFConfiguration.PrepareKeyStrokes;
-var
-  I: Integer;
-  Item: TListItem;
+var I: Integer; Item: TListItem;
 begin
   FHandleChanges := True;
   // Normally true, can prevent unwanted execution of event handlers
@@ -3663,12 +3605,9 @@ end;
 procedure TFConfiguration.PrepareHighlighters;
 type
   TSynHClass = class of TSynCustomHighlighter;
-var
-  WCount: Integer;
-  WHighlighter: TSynCustomHighlighter;
-  WInternalSynH: TSynCustomHighlighter;
-  WSynHClass: TSynHClass;
-  FileName: string;
+var WCount: Integer; WHighlighter: TSynCustomHighlighter;
+  WInternalSynH: TSynCustomHighlighter; WSynHClass: TSynHClass;
+  Filename: string;
 begin
   CBHighlighters.Items.Clear;
   CommandsDataModule.SynEditOptionsDialogGetHighlighterCount(Self, WCount);
@@ -3706,8 +3645,8 @@ begin
   FHighlighterFileDir := TPyScripterSettings.ColorThemesFilesDir;
 
   if FHighlighterFileDir <> '' then
-    for FileName in TDirectory.GetFiles(FHighlighterFileDir, '*.ini') do
-      lbColorThemes.Items.Add(TPath.GetFileNameWithoutExtension(FileName));
+    for Filename in TDirectory.GetFiles(FHighlighterFileDir, '*.ini') do
+      lbColorThemes.Items.Add(TPath.GetFileNameWithoutExtension(Filename));
 end;
 
 procedure TFConfiguration.UpdateHighlighters;
@@ -3718,8 +3657,7 @@ begin
 end;
 
 procedure TFConfiguration.CBHighlightersChange(Sender: TObject);
-var
-  WSynH: TSynCustomHighlighter;
+var WSynH: TSynCustomHighlighter;
 begin
   lbElements.Items.BeginUpdate;
   SynSyntaxSample.Lines.BeginUpdate;
@@ -3755,9 +3693,7 @@ begin
 end;
 
 procedure TFConfiguration.lbElementsClick(Sender: TObject);
-var
-  WSynH: TSynCustomHighlighter;
-  WSynAttr: TSynHighlighterAttributes;
+var WSynH: TSynCustomHighlighter; WSynAttr: TSynHighlighterAttributes;
 
 begin
   if 0 <= lbElements.ItemIndex then
@@ -3787,9 +3723,7 @@ end;
 
 procedure TFConfiguration.CBElementForegroundSelectedColorChanged
   (Sender: TObject);
-var
-  WSynH: TSynCustomHighlighter;
-  WSynAttr: TSynHighlighterAttributes;
+var WSynH: TSynCustomHighlighter; WSynAttr: TSynHighlighterAttributes;
 begin
   WSynH := SelectedHighlighter;
   WSynAttr := WSynH.Attribute[lbElements.ItemIndex];
@@ -3798,9 +3732,7 @@ end;
 
 procedure TFConfiguration.CBElementBackgroundSelectedColorChanged
   (Sender: TObject);
-var
-  WSynH: TSynCustomHighlighter;
-  WSynAttr: TSynHighlighterAttributes;
+var WSynH: TSynCustomHighlighter; WSynAttr: TSynHighlighterAttributes;
 begin
   WSynH := SelectedHighlighter;
   WSynAttr := WSynH.Attribute[lbElements.ItemIndex];
@@ -3814,9 +3746,7 @@ begin
 end;
 
 procedure TFConfiguration.UpdateColorFontStyle;
-var
-  Wfs: TFontStyles;
-  WSynH: TSynCustomHighlighter;
+var Wfs: TFontStyles; WSynH: TSynCustomHighlighter;
   WSynAttr: TSynHighlighterAttributes;
 begin
   Wfs := [];
@@ -3839,10 +3769,7 @@ begin
 end;
 
 procedure TFConfiguration.SynSyntaxSampleClick(Sender: TObject);
-var
-  TokenType, Start: Integer;
-  Token: string;
-  Attri: TSynHighlighterAttributes;
+var TokenType, Start: Integer; Token: string; Attri: TSynHighlighterAttributes;
 begin
   SynSyntaxSample.GetHighlighterAttriAtRowColEx(SynSyntaxSample.CaretXY, Token,
     TokenType, Start, Attri);
@@ -3883,20 +3810,18 @@ end;
 { --- Color Themes ------------------------------------------------------------- }
 
 procedure TFConfiguration.lbColorThemesClick(Sender: TObject);
-var
-  AppStorage: TJvAppIniFileStorage;
-  FileName: string;
+var AppStorage: TJvAppIniFileStorage; Filename: string;
 begin
   if lbColorThemes.ItemIndex >= 0 then
   begin
     GuiPyOptions.FColorTheme := lbColorThemes.Items[lbColorThemes.ItemIndex];
-    FileName := IncludeTrailingPathDelimiter(FHighlighterFileDir) +
+    Filename := IncludeTrailingPathDelimiter(FHighlighterFileDir) +
       GuiPyOptions.FColorTheme + '.ini';
     AppStorage := TJvAppIniFileStorage.Create(nil);
     try
       AppStorage.FlushOnDestroy := False;
       AppStorage.Location := flCustom;
-      AppStorage.FileName := FileName;
+      AppStorage.Filename := Filename;
       SynThemeSample.Highlighter.BeginUpdate;
       try
         AppStorage.ReadPersistent('Highlighters\' +
@@ -3912,19 +3837,17 @@ begin
 end;
 
 procedure TFConfiguration.ApplyColorTheme;
-var
-  AppStorage: TJvAppIniFileStorage;
-  FileName: string;
+var AppStorage: TJvAppIniFileStorage; Filename: string;
 begin
-  FileName := TPath.Combine(FHighlighterFileDir, GuiPyOptions.ColorTheme
+  Filename := TPath.Combine(FHighlighterFileDir, GuiPyOptions.ColorTheme
     + '.ini');
-  if FileExists(FileName) then
+  if FileExists(Filename) then
   begin
     AppStorage := TJvAppIniFileStorage.Create(nil);
     try
       AppStorage.FlushOnDestroy := False;
       AppStorage.Location := flCustom;
-      AppStorage.FileName := FileName;
+      AppStorage.Filename := Filename;
       for var I := 0 to CBHighlighters.Items.Count - 1 do
       begin
         TSynCustomHighlighter(CBHighlighters.Items.Objects[I]).BeginUpdate;
@@ -3982,9 +3905,7 @@ begin
 end;
 
 procedure TFConfiguration.CodeTemplatesSetItems;
-var
-  Int, Count: Integer;
-  List: TStringList;
+var Int, Count: Integer; List: TStringList;
 begin
   CodeTemplatesLvItems.Items.Clear;
   Int := 0;
@@ -3996,7 +3917,7 @@ begin
     while Int < List.Count do
     begin
       if Length(List[Int]) <= 0 then
-      // Delphi'Str string list adds a blank line at the end
+        // Delphi'Str string list adds a blank line at the end
         Inc(Int)
       else if not CharInSet(List[Int][1], ['|', '=']) then
       begin
@@ -4029,8 +3950,7 @@ begin
 end;
 
 procedure TFConfiguration.actCodeAddItemExecute(Sender: TObject);
-var
-  Item: TListItem;
+var Item: TListItem;
 begin
   if edShortcut.Text <> '' then
   begin
@@ -4087,10 +4007,7 @@ begin
 end;
 
 procedure TFConfiguration.actCodeMoveDownExecute(Sender: TObject);
-var
-  Name, Value: string;
-  Posi: Pointer;
-  Index: Integer;
+var Name, Value: string; Posi: Pointer; Index: Integer;
 begin
   if CodeTemplatesLvItems.ItemIndex < CodeTemplatesLvItems.Items.Count - 1 then
   begin
@@ -4114,10 +4031,7 @@ begin
 end;
 
 procedure TFConfiguration.actCodeMoveUpExecute(Sender: TObject);
-var
-  Name, Value: string;
-  Posi: Pointer;
-  Index: Integer;
+var Name, Value: string; Posi: Pointer; Index: Integer;
 begin
   if CodeTemplatesLvItems.ItemIndex > 0 then
   begin
@@ -4246,8 +4160,7 @@ end;
 
 procedure TFConfiguration.FileTemplatesLvItemsSelectItem(Sender: TObject;
 Item: TListItem; Selected: Boolean);
-var
-  FileTemplate: TFileTemplate;
+var FileTemplate: TFileTemplate;
 begin
   if Selected then
   begin
@@ -4285,9 +4198,7 @@ begin
 end;
 
 procedure TFConfiguration.actFileAddItemExecute(Sender: TObject);
-var
-  Item: TListItem;
-  FileTemplate: TFileTemplate;
+var Item: TListItem; FileTemplate: TFileTemplate;
 begin
   if (edName.Text <> '') and (edCategory.Text <> '') then
   begin
@@ -4399,10 +4310,7 @@ begin
 end;
 
 procedure TFConfiguration.actFileMoveUpExecute(Sender: TObject);
-var
-  Name, Value: string;
-  Posi: Pointer;
-  Index: Integer;
+var Name, Value: string; Posi: Pointer; Index: Integer;
 begin
   if FileTemplatesLvItems.ItemIndex > 0 then
   begin
@@ -4424,10 +4332,7 @@ begin
 end;
 
 procedure TFConfiguration.actFileMoveDownExecute(Sender: TObject);
-var
-  Name, Value: string;
-  Posi: Pointer;
-  Index: Integer;
+var Name, Value: string; Posi: Pointer; Index: Integer;
 begin
   if FileTemplatesLvItems.ItemIndex < FileTemplatesLvItems.Items.Count - 1 then
   begin
@@ -4465,8 +4370,7 @@ begin
 end;
 
 procedure TFConfiguration.lbCommandsClick(Sender: TObject);
-var
-  Action: TActionProxyItem;
+var Action: TActionProxyItem;
 begin
   if lbCommands.ItemIndex < 0 then
     Exit;
@@ -4485,9 +4389,7 @@ begin
 end;
 
 procedure TFConfiguration.actAssignShortcutExecute(Sender: TObject);
-var
-  ShortCut: TShortCut;
-  CurAction: TActionProxyItem;
+var ShortCut: TShortCut; CurAction: TActionProxyItem;
 begin
   if lbCommands.ItemIndex < 0 then
     Exit;
@@ -4523,9 +4425,7 @@ begin
 end;
 
 procedure TFConfiguration.actRemoveShortcutExecute(Sender: TObject);
-var
-  CurAction: TActionProxyItem;
-  Index: Integer;
+var CurAction: TActionProxyItem; Index: Integer;
 begin
   if (lbCurrentKeys.ItemIndex < 0) or (lbCommands.ItemIndex < 0) then
     Exit;
@@ -4543,8 +4443,7 @@ begin
 end;
 
 procedure TFConfiguration.actAssignShortcutUpdate(Sender: TObject);
-var
-  Enabled: Boolean;
+var Enabled: Boolean;
 begin
   Enabled := False;
   if FEdNewShortcut.HotKey = 0 then
@@ -4579,9 +4478,7 @@ end;
 
 procedure TFConfiguration.actlPythonVersionsUpdate(Action: TBasicAction;
 var Handled: Boolean);
-var
-  Node: PVirtualNode;
-  Level: Integer;
+var Node: PVirtualNode; Level: Integer;
 begin
   Node := vtPythonVersions.GetFirstSelected;
   Level := -1; // to avoid compiler warning
@@ -4613,8 +4510,7 @@ end;
 
 procedure TFConfiguration.AssignKeysToActionProxy(var CurAction
   : TActionProxyItem);
-var
-  I: Integer;
+var I: Integer;
 begin
   if lbCurrentKeys.Count > 0 then
     CurAction.ShortCut := TShortCut(lbCurrentKeys.Items.Objects[0])
@@ -4707,9 +4603,7 @@ begin
 end;
 
 procedure TFConfiguration.FillFunctionList;
-var
-  Idx: Integer;
-  Action: TActionProxyItem;
+var Idx: Integer; Action: TActionProxyItem;
 begin
   for var I := 0 to FActionProxyCollection.Count - 1 do
   begin
@@ -4748,10 +4642,7 @@ type
   TVclStylesPreviewClass = class(TVclStylesPreview);
 
 procedure TFConfiguration.LBStyleNamesClick(Sender: TObject);
-var
-  LStyle: TCustomStyleServices;
-  FileName: string;
-  StyleName: string;
+var LStyle: TCustomStyleServices; Filename: string; StyleName: string;
 begin
   LStyle := nil;
   if LBStyleNames.ItemIndex >= 0 then
@@ -4762,10 +4653,10 @@ begin
       // FileName
       if not FLoading then
       begin
-        FileName := FExternalStyleFilesDict[StyleName];
-        TStyleManager.LoadFromFile(FileName);
+        Filename := FExternalStyleFilesDict[StyleName];
+        TStyleManager.LoadFromFile(Filename);
         LStyle := TStyleManager.Style[StyleName];
-        FLoadedStylesDict.Add(StyleName, FileName);
+        FLoadedStylesDict.Add(StyleName, Filename);
         // The Style is now loaded and registerd
         LBStyleNames.Items.Objects[LBStyleNames.ItemIndex] := nil;
       end;
@@ -4786,9 +4677,7 @@ begin
 end;
 
 procedure TFConfiguration.ActionApplyStyleExecute(Sender: TObject);
-var
-  StyleName: string;
-  FileName: string;
+var StyleName: string; Filename: string;
 begin
   if LBStyleNames.ItemIndex >= 0 then
   begin
@@ -4796,8 +4685,8 @@ begin
     if Integer(LBStyleNames.Items.Objects[LBStyleNames.ItemIndex]) = 1 then
     begin
       // FileName
-      FileName := FExternalStyleFilesDict[StyleName];
-      SetStyle(FileName);
+      Filename := FExternalStyleFilesDict[StyleName];
+      SetStyle(Filename);
     end
     else
       // Resource style
@@ -4834,9 +4723,7 @@ end;
 
 procedure TFConfiguration.SetStyle(const StyleName: string);
 // StyleName can be either a resource or a file name
-var
-  SName: string;
-  StyleInfo: TStyleInfo;
+var SName: string; StyleInfo: TStyleInfo;
 begin
   if CompareText(StyleName, TStyleManager.ActiveStyle.Name) = 0 then
     Exit;
@@ -4890,8 +4777,7 @@ end;
 
 procedure TFConfiguration.StyleSelectorFormShow;
 // Todo Select active style
-var
-  Index: Integer;
+var Index: Integer;
 begin
   if LBStyleNames.Items.Count = 0 then
     FillVclStylesList;
@@ -4907,9 +4793,7 @@ begin
 end;
 
 procedure TFConfiguration.FillVclStylesList;
-var
-  FileName: string;
-  StyleInfo: TStyleInfo;
+var Filename: string; StyleInfo: TStyleInfo;
 begin
   FLoading := True;
 
@@ -4920,14 +4804,14 @@ begin
 
   // Then styles in files
   try
-    for FileName in TDirectory.GetFiles(FStylesPath, '*.vsf') do
+    for Filename in TDirectory.GetFiles(FStylesPath, '*.vsf') do
     begin
-      if TStyleManager.IsValidStyle(FileName, StyleInfo) and
+      if TStyleManager.IsValidStyle(Filename, StyleInfo) and
         (LBStyleNames.Items.IndexOf(StyleInfo.Name) < 0) then
       begin
         // TObject(1) denotes external file
         LBStyleNames.Items.AddObject(StyleInfo.Name, TObject(1));
-        FExternalStyleFilesDict.Add(StyleInfo.Name, FileName);
+        FExternalStyleFilesDict.Add(StyleInfo.Name, Filename);
       end;
     end;
   except
@@ -4949,8 +4833,7 @@ begin
 end;
 
 procedure TFConfiguration.GetMargins(SynEditMargins: TSynEditPrintMargins);
-var
-  CurEdit: TEdit;
+var CurEdit: TEdit;
   function StringToFloat(Edit: TEdit): Double;
   begin
     CurEdit := Edit;
@@ -5197,8 +5080,7 @@ end;
 
 procedure TFConfiguration.AddLines(HeadFoot: THeaderFooter;
 AEdit: TCustomRichEdit; Alig: TAlignment);
-var
-  AFont: TFont;
+var AFont: TFont;
 begin
   FEditor := AEdit;
   AFont := TFont.Create;
@@ -5261,9 +5143,7 @@ begin
 end;
 
 procedure TFConfiguration.SetValues(SynEditPrint: TSynEditPrint);
-var
-  AItem: THeaderFooterItem;
-  LNum: Integer;
+var AItem: THeaderFooterItem; LNum: Integer;
 begin
   REHeaderLeft.Lines.Clear;
   REHeaderCenter.Lines.Clear;
@@ -5339,10 +5219,7 @@ end;
 { --- Associations ------------------------------------------------------------- }
 
 procedure TFConfiguration.BFileExtensionsClick(Sender: TObject);
-var
-  Str, Str1, Str2: string;
-  Posi: Integer;
-  Len: Byte;
+var Str, Str1, Str2: string; Posi: Integer; Len: Byte;
 begin
   if VistaOrBetter then
   begin
@@ -5397,10 +5274,7 @@ begin
 end;
 
 procedure TFConfiguration.MakeAssociations;
-var
-  Reg: TRegistry;
-  Str, Str1: string;
-  Posi: Integer;
+var Reg: TRegistry; Str, Str1: string; Posi: Integer;
 
   procedure EditAssociation(const Extension: string; DoCreate: Boolean);
   begin
@@ -5482,9 +5356,7 @@ begin
 end;
 
 procedure TFConfiguration.RegisterGuiPy;
-var
-  GuiPy, FileName: string;
-  Reg: TRegistry;
+var GuiPy, Filename: string; Reg: TRegistry;
 
   procedure WriteToRegistry(const Key: string);
   begin
@@ -5502,9 +5374,9 @@ var
       OpenKey(Key + '\Shell\Open\ddeexec', True);
       WriteString('', '[FileOpen("%1")]');
       OpenKey('Application', True);
-      FileName := ExtractFileName(ParamStr(0));
-      FileName := Copy(FileName, 1, Length(FileName) - 4);
-      WriteString('', FileName);
+      Filename := ExtractFileName(ParamStr(0));
+      Filename := Copy(Filename, 1, Length(Filename) - 4);
+      WriteString('', Filename);
       CloseKey;
       OpenKey(Key + '\Shell\Open\ddeexec\topic', True);
       WriteString('', 'DdeServerConv');
@@ -5531,8 +5403,7 @@ end;
 
 procedure TFConfiguration.PatchConfiguration;
 // first used for version 3.2
-var
-  Str: string;
+var Str: string;
 begin
   var
   Reg := TRegistry.Create;
@@ -5572,21 +5443,19 @@ end;
 { --- Git ---------------------------------------------------------------------- }
 
 procedure TFConfiguration.BGitFolderClick(Sender: TObject);
-var
-  Dir: string;
+var Dir: string;
 begin
   Dir := EGitFolder.Hint;
   if not SysUtils.DirectoryExists(Dir) then
     Dir := GuiPyOptions.Sourcepath;
   FolderDialog.DefaultFolder := Dir;
   if FolderDialog.Execute then
-    ShortenPath(EGitFolder, FolderDialog.FileName);
+    ShortenPath(EGitFolder, FolderDialog.Filename);
   CheckFolder(EGitFolder, True);
 end;
 
 procedure TFConfiguration.BGitRepositoryClick(Sender: TObject);
-var
-  Dir: string;
+var Dir: string;
 begin
   Dir := CBLocalRepository.Text;
   if not SysUtils.DirectoryExists(Dir) then
@@ -5594,7 +5463,7 @@ begin
   FolderDialog.DefaultFolder := Dir;
   if FolderDialog.Execute then
   begin
-    Dir := FolderDialog.FileName;
+    Dir := FolderDialog.Filename;
     SysUtils.ForceDirectories(Dir);
     if not FGit.IsRepository(Dir) then
       FGit.GitCall('init', Dir);
@@ -5607,8 +5476,6 @@ end;
 
 procedure TFConfiguration.BGuiFontClick(Sender: TObject);
 begin
-  var
-  FontDialog := TFontDialog.Create(Self);
   FontDialog.Font.Size := GuiPyOptions.GuiFontSize;
   FontDialog.Font.Name := GuiPyOptions.GuiFontName;
   if FontDialog.Execute then
@@ -5616,7 +5483,6 @@ begin
     GuiPyOptions.GuiFontSize := Max(FontDialog.Font.Size, 4);
     GuiPyOptions.GuiFontName := FontDialog.Font.Name;
   end;
-  FreeAndNil(FontDialog);
 end;
 
 procedure TFConfiguration.BGuiFontDefaultClick(Sender: TObject);
@@ -5626,8 +5492,7 @@ begin
 end;
 
 procedure TFConfiguration.BGitCloneClick(Sender: TObject);
-var
-  Dir, Remote, AName: string;
+var Dir, Remote, AName: string;
 begin
   Screen.Cursor := crHourGlass;
   try
@@ -5655,21 +5520,19 @@ end;
 { --- SVN ---------------------------------------------------------------------- }
 
 procedure TFConfiguration.BSVNClick(Sender: TObject);
-var
-  Dir: string;
+var Dir: string;
 begin
   Dir := ESVNFolder.Hint;
   if not SysUtils.DirectoryExists(Dir) then
     Dir := GuiPyOptions.Sourcepath;
   FolderDialog.DefaultFolder := Dir;
   if FolderDialog.Execute then
-    ShortenPath(ESVNFolder, FolderDialog.FileName);
+    ShortenPath(ESVNFolder, FolderDialog.Filename);
   CheckFolder(ESVNFolder, True);
 end;
 
 procedure TFConfiguration.BRepositoryClick(Sender: TObject);
-var
-  Dir: string;
+var Dir: string;
 begin
   Dir := CBRepository.Hint;
   if not SysUtils.DirectoryExists(Dir) then
@@ -5677,7 +5540,7 @@ begin
   FolderDialog.DefaultFolder := Dir;
   if FolderDialog.Execute then
   begin
-    Dir := FolderDialog.FileName;
+    Dir := FolderDialog.Filename;
     ShortenPath(CBRepository, Dir);
     SysUtils.ForceDirectories(Dir);
     if not FSubversion.IsRepository(Dir) then
@@ -5708,8 +5571,10 @@ end;
 
 procedure TFConfiguration.AddScriptsPath;
 begin
-  var ScriptsPath := PyControl.PythonVersion.InstallPath;
-  var Path := GetEnvironmentVariable('Path');
+  var
+  ScriptsPath := PyControl.PythonVersion.InstallPath;
+  var
+  Path := GetEnvironmentVariable('Path');
   if Pos(ScriptsPath, Path) = 0 then
   begin
     Path := ScriptsPath + ';' + Path;
@@ -5723,14 +5588,11 @@ begin
     SetEnvironmentVariable('Path', PChar(Path));
   end;
 
-
 end;
 
-function TFConfiguration.GetClassesAndFilename(const Pathname: string): TStringList;
-var
-  Filename, Text, Path, Key: string;
-  RegEx: TRegEx;
-  Matches: TMatchCollection;
+function TFConfiguration.GetClassesAndFilename(const Pathname: string)
+  : TStringList;
+var Filename, Text, Path, Key: string; RegEx: TRegEx; Matches: TMatchCollection;
 begin
   Result := TStringList.Create;
   RegEx := CompiledRegEx('\s*class\s+(\w*)(\(.*\))?\s*:');
@@ -5741,21 +5603,21 @@ begin
     Result.Add(Matches[I].Groups[1].Value + '=' + ExtractFileName(Pathname));
   // classes in other files of the active directory
   Path := ExtractFilePath(Pathname);
-  for Filename in TDirectory.GetFiles(Path, '*.py') do begin
+  for Filename in TDirectory.GetFiles(Path, '*.py') do
+  begin
     Text := IOUtils.TFile.ReadAllText(Filename);
     Matches := RegEx.Matches(Text);
     for var I := 0 to Matches.Count - 1 do
     begin
       Key := Matches[I].Groups[1].Value;
       if Result.IndexOfName(Key) = -1 then
-        Result.Add(Key + '=' + ExtractFilename(Filename));
+        Result.Add(Key + '=' + ExtractFileName(Filename));
     end;
   end;
 end;
 
 procedure TFConfiguration.LoadVisibility;
-var
-  Num: Integer;
+var Num: Integer;
 
   procedure StringVisibilityToArr1(Str: string; var Arr: TBoolArray);
   begin
@@ -5827,7 +5689,7 @@ begin
   if Length(GuiPyOptions.VisViewMenu) <> Num then
     GuiPyOptions.VisViewMenu := DefaultVisViewMenu
   else if Copy(GuiPyOptions.VisViewMenu, 23, 2) = '00' then
-  // fix visibility since version 6.06
+    // fix visibility since version 6.06
     GuiPyOptions.VisViewMenu := Copy(GuiPyOptions.VisViewMenu, 1, 22) + '11';
 
   StringVisibilityToArr2(GuiPyOptions.VisViewMenu, Num, 8);
@@ -5966,8 +5828,7 @@ begin
 end;
 
 procedure TFConfiguration.SetVisibility;
-var
-  Menu: TTBCustomItem;
+var Menu: TTBCustomItem;
 
   function IndexItemsToPages(Index: Integer): Integer;
   begin
@@ -5989,9 +5850,9 @@ begin
     K := IndexItemsToPages(I);
     PyIDEMainForm.TabControlWidgets.Pages[K].TabVisible := FVisTabs[I];
     var
-    Toolbar := TToolBar(PyIDEMainForm.TabControlWidgets.Pages[K].Controls[0]);
-    for var J := 0 to Toolbar.ButtonCount - 1 do
-      Toolbar.Buttons[J].Visible := FVis1[I, J];
+    AToolbar := TToolBar(PyIDEMainForm.TabControlWidgets.Pages[K].Controls[0]);
+    for var J := 0 to AToolbar.ButtonCount - 1 do
+      AToolbar.Buttons[J].Visible := FVis1[I, J];
   end;
   PyIDEMainForm.TabControlWidgets.Visible := not AllTabsClosed;
 
@@ -6049,9 +5910,7 @@ begin
 end;
 
 procedure TFConfiguration.PrepareVisibilityPage;
-var
-  TabControl: TSpTBXTabControl;
-  AItem: TListItem;
+var TabControl: TSpTBXTabControl; AItem: TListItem;
 begin
   LVVisibilityTabs.Items.BeginUpdate;
   TabControl := PyIDEMainForm.TabControlWidgets;
@@ -6127,11 +5986,7 @@ begin
 end;
 
 procedure TFConfiguration.LVVisibilityTabsClick(Sender: TObject);
-var
-  Str: string;
-  Posi, Tab: Integer;
-  Toolbar: TToolBar;
-  AItem: TListItem;
+var Str: string; Posi, Tab: Integer; AToolbar: TToolBar; AItem: TListItem;
 begin
   FTabsMenusToolbars := 1;
   Tab := Max(LVVisibilityTabs.ItemIndex, 0);
@@ -6140,38 +5995,38 @@ begin
     0:
       begin
         LVVisibilityElements.SmallImages := PyIDEMainForm.vilProgramLight;
-        Toolbar := PyIDEMainForm.ToolbarProgram;
+        AToolbar := PyIDEMainForm.ToolbarProgram;
       end;
     1:
       begin
         LVVisibilityElements.SmallImages := PyIDEMainForm.vilTkInterLight;
-        Toolbar := PyIDEMainForm.ToolbarTkinter;
+        AToolbar := PyIDEMainForm.ToolbarTkinter;
       end;
     2:
       begin
         LVVisibilityElements.SmallImages := PyIDEMainForm.vilTTKLight;
-        Toolbar := PyIDEMainForm.ToolbarTTK;
+        AToolbar := PyIDEMainForm.ToolbarTTK;
       end;
     3:
       begin
         LVVisibilityElements.SmallImages := PyIDEMainForm.vilQtBaseLight;
-        Toolbar := PyIDEMainForm.ToolBarQtBase;
+        AToolbar := PyIDEMainForm.ToolBarQtBase;
       end;
     4:
       begin
         LVVisibilityElements.SmallImages := PyIDEMainForm.vilQtControls;
-        Toolbar := PyIDEMainForm.ToolBarQtControls;
+        AToolbar := PyIDEMainForm.ToolBarQtControls;
       end;
   else
     Exit;
   end;
 
   LVVisibilityElements.OnItemChecked := nil;
-  if Assigned(Toolbar) then
+  if Assigned(AToolbar) then
   begin
-    for var I := 0 to Toolbar.ButtonCount - 1 do
+    for var I := 0 to AToolbar.ButtonCount - 1 do
     begin
-      Str := Toolbar.Buttons[I].Hint;
+      Str := AToolbar.Buttons[I].Hint;
       Posi := Pos('Tk ', Str);
       if Posi > 0 then
         Str := Copy(Str, Posi + 3, Length(Str));
@@ -6189,11 +6044,7 @@ begin
 end;
 
 procedure TFConfiguration.LVVisibilityMenusClick(Sender: TObject);
-var
-  Str: string;
-  Tab: Integer;
-  Menu: TTBCustomItem;
-  AItem: TListItem;
+var Str: string; Tab: Integer; Menu: TTBCustomItem; AItem: TListItem;
 begin
   FTabsMenusToolbars := 2;
   Tab := LVVisibilityMenus.ItemIndex;
@@ -6223,20 +6074,13 @@ begin
 end;
 
 procedure TFConfiguration.LVVisibilityToolbarsClick(Sender: TObject);
-var
-  Str: string;
-  Posi, Tab: Integer;
-  TSpB: TSpTBXToolbar;
-  Toolbar: TToolBar;
-  AItem: TListItem;
-  EditForm: TEditorForm;
-  UMLForm: TFUMLForm;
-  StructogramForm: TFStructogram;
-  SequencediagramForm: TFSequenceForm;
+var Str: string; Posi, Tab: Integer; TSpB: TSpTBXToolbar; AToolbar: TToolBar;
+  AItem: TListItem; EditForm: TEditorForm; UMLForm: TFUMLForm;
+  StructogramForm: TFStructogram; SequencediagramForm: TFSequenceForm;
 begin
   FTabsMenusToolbars := 3;
   TSpB := nil;
-  Toolbar := nil;
+  AToolbar := nil;
   EditForm := nil;
   UMLForm := nil;
   StructogramForm := nil;
@@ -6262,7 +6106,7 @@ begin
             LVVisibilityElements.SmallImages := EditForm.vilEditorToolbarDark
           else
             LVVisibilityElements.SmallImages := EditForm.vilEditorToolbarLight;
-          Toolbar := EditForm.EditformToolbar;
+          AToolbar := EditForm.EditformToolbar;
         end;
       3:
         begin
@@ -6271,7 +6115,7 @@ begin
             LVVisibilityElements.SmallImages := UMLForm.vilToolbarDark
           else
             LVVisibilityElements.SmallImages := UMLForm.vilToolbarLight;
-          Toolbar := UMLForm.UMLToolbar;
+          AToolbar := UMLForm.UMLToolbar;
         end;
       4:
         begin
@@ -6280,7 +6124,7 @@ begin
             LVVisibilityElements.SmallImages := StructogramForm.vilToolbarDark
           else
             LVVisibilityElements.SmallImages := StructogramForm.vilToolbarLight;
-          Toolbar := StructogramForm.StructogramToolbar;
+          AToolbar := StructogramForm.StructogramToolbar;
         end;
       5:
         begin
@@ -6291,7 +6135,7 @@ begin
           else
             LVVisibilityElements.SmallImages :=
               SequencediagramForm.vilToolbarLight;
-          Toolbar := SequencediagramForm.SequenceToolbar;
+          AToolbar := SequencediagramForm.SequenceToolbar;
         end;
     else
       Exit;
@@ -6313,9 +6157,9 @@ begin
     end;
     if Tab >= 2 then
     begin
-      for var I := 0 to Toolbar.ButtonCount - 1 do
+      for var I := 0 to AToolbar.ButtonCount - 1 do
       begin
-        Str := Toolbar.Buttons[I].Hint;
+        Str := AToolbar.Buttons[I].Hint;
         Posi := Pos('|', Str);
         if Posi > 0 then
           Str := Copy(Str, 1, Posi - 1);
@@ -6342,8 +6186,7 @@ begin
 end;
 
 procedure TFConfiguration.BVisDefaultClick(Sender: TObject);
-var
-  Num: Integer;
+var Num: Integer;
 
   procedure DefaultVis(var Arr: array of Boolean);
   begin
@@ -6435,8 +6278,7 @@ begin
 end;
 
 procedure TFConfiguration.LLMAssistantModelToView;
-var
-  Settings: TLLMSettings;
+var Settings: TLLMSettings;
 begin
   case CBProvider.ItemIndex of
     0:
@@ -6459,9 +6301,7 @@ begin
 end;
 
 procedure TFConfiguration.LLMAssistantViewToModel;
-var
-  Settings: TLLMSettings;
-  Value: Integer;
+var Settings: TLLMSettings; Value: Integer;
 begin
   FTempProviders.Provider := TLLMProvider(CBProvider.ItemIndex);
   Settings.EndPoint := EEndPoint.Text;
@@ -6489,8 +6329,7 @@ begin
 end;
 
 procedure TFConfiguration.LLMChatModelToView;
-var
-  Settings: TLLMSettings;
+var Settings: TLLMSettings;
 begin
   case CBChatProvider.ItemIndex of
     0:
@@ -6513,9 +6352,7 @@ begin
 end;
 
 procedure TFConfiguration.LLMChatViewToModel;
-var
-  Settings: TLLMSettings;
-  Value: Integer;
+var Settings: TLLMSettings; Value: Integer;
 begin
   FTempChatProviders.Provider := TLLMProvider(CBChatProvider.ItemIndex);
   Settings.EndPoint := EChatEndPoint.Text;
@@ -6741,9 +6578,8 @@ end;
 
 { --- TGuiPyLanguageOptions ---------------------------------------------------- }
 
-procedure TGuiPyLanguageOptions.GetInLanguage(Language: string);
-var
-  FCurrentLanguage: string;
+procedure TGuiPyLanguageOptions.GetInLanguage(const Language: string);
+var FCurrentLanguage: string;
 begin
   FCurrentLanguage := GetCurrentLanguage;
   UseLanguage(Language);

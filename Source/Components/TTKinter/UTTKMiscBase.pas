@@ -607,7 +607,7 @@ end;
 
 procedure TTKScale.Paint;
 var
-  XPos, YPos, Value, SliderWidth, SliderHeight, UsablePixels: Integer;
+  XPos, YPos, AValue, SliderWidth, SliderHeight, UsablePixels: Integer;
   ARect: TRect;
 begin
   inherited; // Length??
@@ -636,17 +636,17 @@ begin
   Canvas.Rectangle(ARect);
 
   // slider
-  Value := Round(UsablePixels * (FValue - FFrom) / (FTo - FFrom)) + 1;
+  AValue := Round(UsablePixels * (FValue - FFrom) / (FTo - FFrom)) + 1;
   if FOrient = horizontal then
   begin
-    XPos := Round(Value);
+    XPos := Round(AValue);
     YPos := Height div 2 - SliderHeight div 2;
     ARect := Rect(XPos, YPos, XPos + SliderWidth, YPos + SliderHeight);
   end
   else
   begin
     XPos := Width div 2 - SliderWidth div 2;
-    YPos := Round(Value);
+    YPos := Round(AValue);
     ARect := Rect(XPos, YPos, XPos + SliderWidth, YPos + SliderHeight);
   end;
   Canvas.Brush.Color := $D97A00;
@@ -743,7 +743,7 @@ end;
 
 procedure TTKLabeledScale.Paint;
 var
-  XPos, YPos, Value, SliderWidth, SliderHeight, UsablePixels, TextWidth,
+  XPos, YPos, AValue, SliderWidth, SliderHeight, UsablePixels, TextWidth,
     TextHeight: Integer;
   ARect: TRect;
   Str: string;
@@ -764,8 +764,8 @@ begin
   Canvas.Rectangle(ARect);
 
   // slider
-  Value := Round(UsablePixels * (FValue - FFrom) / (FTo - FFrom)) + 1;
-  XPos := Round(Value);
+  AValue := Round(UsablePixels * (FValue - FFrom) / (FTo - FFrom)) + 1;
+  XPos := Round(AValue);
   YPos := ARect.Top + 1 - SliderHeight div 2;
   ARect := Rect(XPos, YPos, XPos + SliderWidth, YPos + SliderHeight);
   Canvas.Brush.Color := $D97A00;

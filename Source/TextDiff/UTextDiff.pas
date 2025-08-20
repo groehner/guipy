@@ -628,12 +628,13 @@ begin
     repeat
       Inc(Int);
     until (Int = Lines.Count) or (GetLineObj(Int).BackClr <> Clr);
-    if (Int = Lines.Count) then // do nothing here
-    else if GetLineObj(Int).BackClr = Color then
+
+    if (Int <> Lines.Count) and (GetLineObj(Int).BackClr = Color) then
       repeat
         Inc(Int);
       until (Int = Lines.Count) or (GetLineObj(Int).BackClr <> Color);
-    if (Int = Lines.Count) then
+
+    if Int = Lines.Count then
     begin
       Beep; // not found
       Exit;

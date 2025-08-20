@@ -21,7 +21,7 @@ type
     FPadding: string;
     FStyle: string;
     FText: string;
-    procedure SetPadding(Value: string);
+    procedure SetPadding(const Value: string);
   protected
     function GetCompound: TUCompound; override;
     procedure Paint; override;
@@ -41,7 +41,7 @@ type
     function GetAttributes(ShowAttributes: Integer): string; override;
     procedure SetAttribute(const Attr, Value, Typ: string); override;
     procedure DeleteWidget; override;
-    procedure MakeStyle(const Value: string);
+    procedure MakeStyle;
     property Padding: string read FPadding write SetPadding;
     property Text: string read FText write SetText;
   published
@@ -64,7 +64,7 @@ begin
   BorderWidth := '0';
 end;
 
-procedure TTKWidget.SetPadding(Value: string);
+procedure TTKWidget.SetPadding(const Value: string);
 begin
   if Value <> FPadding then
   begin
@@ -90,18 +90,18 @@ end;
 procedure TTKWidget.CalculateText(var Textwidth, TextHeight: Integer;
   var StringList: TStringList);
 var
-  Text: string;
+  AText: string;
   Posi: Integer;
 begin
-  Text := GetText;
-  Posi := Pos('\n', Text);
+  AText := GetText;
+  Posi := Pos('\n', AText);
   while Posi > 0 do
   begin
-    StringList.Add(Copy(Text, 1, Posi - 1));
-    Delete(Text, 1, Posi + 1);
-    Posi := Pos('\n', Text);
+    StringList.Add(Copy(AText, 1, Posi - 1));
+    Delete(AText, 1, Posi + 1);
+    Posi := Pos('\n', AText);
   end;
-  StringList.Add(Text);
+  StringList.Add(AText);
   Textwidth := 0;
   for Posi := 0 to StringList.Count - 1 do
     Textwidth := Max(Textwidth, Canvas.Textwidth(StringList[Posi]));
@@ -116,16 +116,16 @@ end;
 procedure TTKWidget.CalculatePadding(var PaddingL, PaddingT, PaddingR,
   PaddingB: Integer);
 var
-  Padding: string;
+  APadding: string;
   StringList: TStringList;
 begin
-  Padding := Trim(FPadding);
-  if Padding = '' then
-    Padding := '0';
-  if (Padding[1] = '(') and (Padding[Length(Padding)] = ')') then
+  APadding := Trim(FPadding);
+  if APadding = '' then
+    APadding := '0';
+  if (APadding[1] = '(') and (APadding[Length(APadding)] = ')') then
   begin
-    Padding := Copy(Padding, 2, Length(Padding) - 2);
-    StringList := Split(',', Padding);
+    APadding := Copy(APadding, 2, Length(APadding) - 2);
+    StringList := Split(',', APadding);
     if StringList.Count = 2 then
     begin
       if not TryStrToInt(StringList[0], PaddingL) then
@@ -150,7 +150,7 @@ begin
   end
   else
   begin
-    if not TryStrToInt(Padding, PaddingL) then
+    if not TryStrToInt(APadding, PaddingL) then
       PaddingL := 0;
     PaddingR := PaddingL;
     PaddingT := PaddingL;
@@ -250,7 +250,7 @@ end;
 procedure TTKWidget.SetAttribute(const Attr, Value, Typ: string);
 begin
   if Attr = 'Style' then
-    MakeStyle(Value)
+    MakeStyle
   else if Attr = 'Padding' then
     MakePadding(Value)
   else
@@ -282,7 +282,7 @@ begin
   end;
 end;
 
-procedure TTKWidget.MakeStyle(const Value: string);
+procedure TTKWidget.MakeStyle;
 var
   Str: string;
 begin

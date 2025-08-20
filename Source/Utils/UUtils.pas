@@ -29,7 +29,7 @@ const
 
 function CtrlPressed: Boolean;
 procedure ErrorMsg(const Str: string);
-function MyStringReplace(InString: string;
+function MyStringReplace(const InString: string;
   const TheString, NewString: string): string;
 function HideCrLf(const Str: string): string;
 function UnHideCrLf(const Str: string): string;
@@ -83,7 +83,7 @@ function StripHttpParams(const Str: string): string;
 function ToWindows(Str: string): string;
 function FileExistsCaseSensitive(const Filepath: string): Boolean;
 procedure SetAnimation(Value: Boolean);
-function IsDunder(Name: string): Boolean;
+function IsDunder(const Name: string): Boolean;
 function StringTimesN(const Str: string; Num: Integer): string;
 function GetUniqueName(Control: TControl; Basename: string): string;
 function OnlyCharsAndDigits(const Str: string): string;
@@ -100,8 +100,8 @@ function IsSimpleType(const Str: string): Boolean;
 function ShellExecuteFile(const FileName, Params, DefaultDir: string;
   ShowCmd: Integer): THandle;
 function FilenameToFileKind(const FileName: string): TFileKind;
-function RemovePortableDrive(const Str: string; Folder: string = ''): string;
-function AddPortableDrive(const Str: string; Folder: string = ''): string;
+function RemovePortableDrive(const Str: string; const Folder: string = ''): string;
+function AddPortableDrive(const Str: string; const Folder: string = ''): string;
 function GetProtocolAndDomain(Url: string): string;
 function IsHTML(const Pathname: string): Boolean;
 function HttpToWeb(Str: string): string;
@@ -127,6 +127,8 @@ function IsColorDark(AColor: TColor): Boolean;
 implementation
 
 uses
+  System.StrUtils,
+  System.IOUtils,
   Dialogs,
   UITypes,
   WinInet,
@@ -136,8 +138,6 @@ uses
   Math,
   Messages,
   ShellAPI,
-  IOUtils,
-  StrUtils,
   cPyScripterSettings,
   uCommonFunctions;
 
@@ -156,7 +156,7 @@ begin
   Result := StringReplace(Str, '\r\n', #13#10, [rfReplaceAll, rfIgnoreCase]);
 end;
 
-function MyStringReplace(InString: string;
+function MyStringReplace(const InString: string;
   const TheString, NewString: string): string;
 begin
   Result := StringReplace(InString, TheString, NewString,
@@ -338,6 +338,7 @@ const
 var
   LStr: array [0 .. MAX_PATH] of Char;
 begin
+  Result := '';
   SetLastError(ERROR_SUCCESS);
   if SHGetFolderPath(0, CSIDL_PERSONAL, 0, 0, @LStr) = S_OK then
     Result := LStr;
@@ -603,11 +604,8 @@ begin
           Image := AllocMem(ImageSize);
           try
             GetDIB(Bits, 0, Info^, Image^);
-            with Info.bmiHeader do
-            begin
-              DIBWidth := biWidth;
-              DIBHeight := biHeight;
-            end;
+            DIBWidth := Info.bmiHeader.biWidth;
+            DIBHeight := Info.bmiHeader.biHeight;
             case PrintScale of
               poProportional:
                 begin
@@ -914,7 +912,7 @@ begin
   SystemParametersInfo(SPI_SETANIMATION, SizeOf(Info), @Info, 0);
 end;
 
-function IsDunder(Name: string): Boolean;
+function IsDunder(const Name: string): Boolean;
 begin
   Result := (Copy(Name, 1, 2) = '__') and
     (Copy(Name, Length(Name) - 1, 2) = '__');
@@ -1131,7 +1129,7 @@ end;
 
 { --- Portable ----------------------------------------------------------------- }
 
-function RemovePortableDrive(const Str: string; Folder: string = ''): string;
+function RemovePortableDrive(const Str: string; const Folder: string = ''): string;
 // if Folder is set then switch to relative paths, used in Store/FetchDiagram
 var
   SL1, SL2: TStringList;
@@ -1171,7 +1169,7 @@ begin
   end;
 end;
 
-function AddPortableDrive(const Str: string; Folder: string = ''): string;
+function AddPortableDrive(const Str: string; const Folder: string = ''): string;
 // if Folder is set then switch to relative paths, used in Store/FetchDiagram
 var
   SL1, SL2: TStringList;
@@ -1207,7 +1205,7 @@ begin
   end;
 end;
 
-function GetProtocol(Url: string): string;
+function GetProtocol(const Url: string): string;
 var
   Posi: Integer;
 begin

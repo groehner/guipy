@@ -524,10 +524,10 @@ begin
   Count := GetPropList(Comp1.ClassInfo, tkAny, nil);
   GetMem(PropInfos1, Count * SizeOf(PPropInfo));
   GetMem(PropInfos2, Count * SizeOf(PPropInfo));
+  GetPropList(Comp1.ClassInfo, tkAny, PropInfos1);
+  GetPropList(Comp2.ClassInfo, tkAny, PropInfos2);
+  PropertyInspector := TELCustomPropertyInspector.Create(nil);
   try
-    GetPropList(Comp1.ClassInfo, tkAny, PropInfos1);
-    GetPropList(Comp2.ClassInfo, tkAny, PropInfos2);
-    PropertyInspector := TELCustomPropertyInspector.Create(nil);
     for var I := 0 to Count - 1 do
     begin
       Attr := string(PropInfos1[I].Name);

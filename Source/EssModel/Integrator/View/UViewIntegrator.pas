@@ -68,7 +68,7 @@ type
     FPackage: TAbstractPackage;
     procedure SetVisibilityFilter(const Value: TVisibility); virtual;
     procedure SetPackage(const Value: TAbstractPackage); virtual;
-    procedure SetConnections(const Value: Integer); virtual;
+    procedure SetShowConnections(const Value: Integer); virtual;
     procedure SetShowView(Value: Integer); virtual;
     procedure SetShowParameter(const Value: Integer); virtual;
     procedure SetSortOrder(const Value: Integer); virtual;
@@ -162,7 +162,7 @@ type
     property VisibilityFilter: TVisibility read FVisibilityFilter
       write SetVisibilityFilter;
     property ShowConnections: Integer read FShowConnections
-      write SetConnections;
+      write SetShowConnections;
     property ShowView: Integer read FShowView write SetShowView;
     property ShowParameter: Integer read FShowParameter write SetShowParameter;
     property SortOrder: Integer read FSortOrder write SetSortOrder;
@@ -309,7 +309,7 @@ begin
     InToPng;
 end;
 
-procedure TDiagramIntegrator.SetConnections(const Value: Integer);
+procedure TDiagramIntegrator.SetShowConnections(const Value: Integer);
 begin
   FShowConnections := Value;
 end;

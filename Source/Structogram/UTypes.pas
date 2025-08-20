@@ -90,8 +90,7 @@ type
     procedure SaveToStream(Stream: TStream); virtual;
     function GetText(const Indent: string): string; virtual;
     procedure RectToStream(Stream: TStream; Rect: TRect);
-    function GetRectPosAsText(const Indent: string; Rect: TRect;
-      Point: TPoint): string;
+    function GetRectPosAsText(Rect: TRect; Point: TPoint): string;
     function RectFromStream(Stream: TStream): TRect;
     procedure IntegerToStream(Stream: TStream; Int: Integer);
     function IntegerFromStream(Stream: TStream): Integer;
@@ -161,7 +160,7 @@ type
     procedure SetList(List: TStrList); override;
   public
     constructor Create(List: TStrList);
-    constructor CreateStructogram(List: TStrList; Dummy: Boolean = True);
+    constructor CreateStructogram(List: TStrList);
     destructor Destroy; override;
     function GetHeadHeight: Integer; override;
     function AsString: string; override;
@@ -190,7 +189,7 @@ type
     procedure SetList(List: TStrList); override;
   public
     constructor Create(List: TStrList);
-    constructor CreateStructogram(List: TStrList; Dummy: Boolean = True);
+    constructor CreateStructogram(List: TStrList);
     destructor Destroy; override;
     function GetHeadHeight: Integer; override;
     function AsString: string; override;
@@ -206,7 +205,7 @@ type
     procedure Resize(XPos, YPos: Integer); override;
   public
     constructor Create(List: TStrList);
-    constructor CreateStructogram(List: TStrList; Dummy: Boolean = True);
+    constructor CreateStructogram(List: TStrList);
     procedure SetBottom(Bottom: Integer); override;
     function GetHeadHeight: Integer; override;
     function AsString: string; override;
@@ -216,7 +215,7 @@ type
   TStrFor = class(TStrWhile)
   public
     constructor Create(List: TStrList);
-    constructor CreateStructogram(List: TStrList; Dummy: Boolean = True);
+    constructor CreateStructogram(List: TStrList);
     function AsString: string; override;
     procedure Debug; override;
   end;
@@ -256,7 +255,7 @@ type
     procedure AdjustCaseElems(Count: Integer);
   public
     constructor Create(List: TStrList);
-    constructor CreateStructogram(List: TStrList; Dummy: Boolean = True);
+    constructor CreateStructogram(List: TStrList);
     destructor Destroy; override;
     function GetHeadHeight: Integer; override;
     function AsString: string; override;
@@ -297,8 +296,7 @@ type
     procedure SetList(List: TStrList); override;
   public
     constructor Create(List: TStrList; Parent: TStrElement);
-    constructor CreateStructogram(List: TStrList; Parent: TStrElement;
-      Dummy: Boolean = True);
+    constructor CreateStructogram(List: TStrList; Parent: TStrElement);
     procedure Resize(XPos, YPos: Integer); override;
     destructor Destroy; override;
     function AsString: string; override;
@@ -338,7 +336,7 @@ type
     procedure LoadFromReader(Reader: TStringListReader); override;
     procedure SaveToStream(Stream: TStream); override;
     function GetText(const Indent: string): string; override;
-    function GetRectPos(const Indent: string): string;
+    function GetRectPos: string;
     procedure DeleteElem(Elem: TStrElement);
     procedure Insert(Position, Elem: TStrElement);
     function GetWidth: Integer;
@@ -765,12 +763,12 @@ procedure TStrElement.ResizeList(XPos, YPos: Integer);
 var
   X1Pos, Y1Pos: Integer;
   Tmp: TStrElement;
-  Kind: Byte;
+  AKind: Byte;
 begin
   // calculate width
   Resize(XPos, YPos); // Listhead  or StrList
-  Kind := Ord(nsAlgorithm);
-  if FKind = Kind then
+  AKind := Ord(nsAlgorithm);
+  if FKind = AKind then
     X1Pos := GetDefaultRectWidth + FList.Canvas.Font.Size + 2 * LEFT_RIGHT
   else
     X1Pos := Self.FRct.Right;
@@ -881,7 +879,7 @@ begin
   Str := HideCrLf(FText);
   if (Str <> '') and (Str[1] = ' ') then
     Str := '|' + Str;
-  Result := Indent + Str + GetRectPosAsText(Indent, FRct, FTextPos) + CrLf;
+  Result := Indent + Str + GetRectPosAsText(FRct, FTextPos) + CrLf;
 end;
 
 procedure TStrElement.RectToStream(Stream: TStream; Rect: TRect);
@@ -892,8 +890,7 @@ begin
   IntegerToStream(Stream, Rect.Bottom);
 end;
 
-function TStrElement.GetRectPosAsText(const Indent: string; Rect: TRect;
-  Point: TPoint): string;
+function TStrElement.GetRectPosAsText(Rect: TRect; Point: TPoint): string;
 begin
   Result := '|' + IntToStr(Rect.Left) + ' ' + IntToStr(Rect.Top) + ' ' +
     IntToStr(Rect.Right) + ' ' + IntToStr(Rect.Bottom) + ' ' + IntToStr(Point.X)
@@ -1162,7 +1159,7 @@ begin
   FElseElem.FText := 'else list head';
 end;
 
-constructor TStrIf.CreateStructogram(List: TStrList; Dummy: Boolean = True);
+constructor TStrIf.CreateStructogram(List: TStrList);
 begin
   inherited Create(List);
   FKind := Ord(nsIf);
@@ -1594,7 +1591,7 @@ begin
   FDoElem.FText := 'while head';
 end;
 
-constructor TStrWhile.CreateStructogram(List: TStrList; Dummy: Boolean = True);
+constructor TStrWhile.CreateStructogram(List: TStrList);
 begin
   inherited Create(List);
   FKind := Ord(nsWhile);
@@ -1849,8 +1846,7 @@ begin
   FDoElem.FText := 'do-while head';
 end;
 
-constructor TStrDoWhile.CreateStructogram(List: TStrList;
-  Dummy: Boolean = True);
+constructor TStrDoWhile.CreateStructogram(List: TStrList);
 begin
   inherited CreateStructogram(List);
   FKind := Ord(nsDoWhile);
@@ -1950,7 +1946,7 @@ begin
   FDoElem.FText := 'for head';
 end;
 
-constructor TStrFor.CreateStructogram(List: TStrList; Dummy: Boolean = True);
+constructor TStrFor.CreateStructogram(List: TStrList);
 begin
   inherited CreateStructogram(List);
   FKind := Ord(nsFor);
@@ -2061,7 +2057,7 @@ begin
   FCaseElems[High(FCaseElems)].FNext.FText := GuiPyLanguageOptions.Other;
 end;
 
-constructor TStrSwitch.CreateStructogram(List: TStrList; Dummy: Boolean = True);
+constructor TStrSwitch.CreateStructogram(List: TStrList);
 begin
   inherited Create(List);
   FKind := Ord(nsSwitch);
@@ -2650,8 +2646,7 @@ begin
     FList.Insert(Self, TStrCase.Create(List));
 end;
 
-constructor TStrListHead.CreateStructogram(List: TStrList; Parent: TStrElement;
-  Dummy: Boolean = True);
+constructor TStrListHead.CreateStructogram(List: TStrList; Parent: TStrElement);
 begin
   inherited Create(List);
   FKind := Ord(nsListHead);
@@ -2917,9 +2912,9 @@ begin
   end;
 end;
 
-function TStrList.GetRectPos(const Indent: string): string;
+function TStrList.GetRectPos: string;
 begin
-  Result := GetRectPosAsText(Indent, RctList,
+  Result := GetRectPosAsText(RctList,
     Point(ListImage.PPIUnScale(ListImage.Left),
     ListImage.PPIUnScale(ListImage.Top)));
 end;

@@ -64,8 +64,6 @@ object EditorForm: TEditorForm
         Height = 546
         Caption = 'Source'
         ImageIndex = -1
-        ExplicitTop = 30
-        ExplicitHeight = 541
         TabItem = 'tabSource'
         object SynEdit: TSynEdit
           Left = 48
@@ -158,7 +156,6 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
-          ExplicitHeight = 537
         end
         object SynEdit2: TSynEdit
           Left = 490
@@ -231,7 +228,6 @@ object EditorForm: TEditorForm
           OnShowHint = EditorShowHint
           OnSpecialLineColors = SynEditSpecialLineColors
           OnStatusChange = SynEditStatusChange
-          ExplicitHeight = 537
         end
         object EditorSplitter: TSpTBXSplitter
           Left = 490
@@ -242,7 +238,6 @@ object EditorForm: TEditorForm
           ParentColor = False
           Visible = False
           GripSize = 80
-          ExplicitHeight = 537
         end
         object EditformToolbar: TToolBar
           Left = 2
@@ -253,7 +248,6 @@ object EditorForm: TEditorForm
           AutoSize = True
           Images = vilEditorToolbarLight
           TabOrder = 3
-          ExplicitHeight = 537
           object TBClose: TToolButton
             Left = 0
             Top = 0

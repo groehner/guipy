@@ -243,16 +243,16 @@ function TDiff.PopDiff: Boolean;
 var
   DiffVars: PDiffVars;
 begin
-  var Count := FDiffList.Count - 1;
-  Result := Count >= 0;
+  var ACount := FDiffList.Count - 1;
+  Result := ACount >= 0;
   if not Result then
     Exit;
-  DiffVars := PDiffVars(FDiffList[Count]);
+  DiffVars := PDiffVars(FDiffList[ACount]);
   with DiffVars^ do
     if FCompareInts then
       DiffInt(Offset1, Offset2, Len1, Len2);
   Dispose(DiffVars);
-  FDiffList.Delete(Count);
+  FDiffList.Delete(ACount);
 end;
 // ------------------------------------------------------------------------------
 

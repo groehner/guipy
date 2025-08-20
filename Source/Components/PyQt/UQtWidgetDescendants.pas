@@ -75,8 +75,8 @@ type
     FSelectionChanged: string;
     FTextChanged: string;
     FTextEdited: string;
-    procedure SetText(Value: string);
-    procedure SetPlaceholderText(Value: string);
+    procedure SetText(const Value: string);
+    procedure SetPlaceholderText(const Value: string);
     procedure SetEchoMode(Value: TEchoMode);
     procedure SetFrame(Value: Boolean);
   public
@@ -603,7 +603,7 @@ begin
       (ARect.Height - FGUIDesigner.vilQtControls1616.Height) div 2, 4);
 end;
 
-procedure TQtLineEdit.SetText(Value: string);
+procedure TQtLineEdit.SetText(const Value: string);
 begin
   if Value <> FText then
   begin
@@ -612,7 +612,7 @@ begin
   end;
 end;
 
-procedure TQtLineEdit.SetPlaceholderText(Value: string);
+procedure TQtLineEdit.SetPlaceholderText(const Value: string);
 begin
   if Value <> FPlaceholderText then
   begin

@@ -57,6 +57,7 @@ type
                fkTextdiff, fkBrowser);
 
   IFile = interface
+  ['{EB943FE7-6793-4B25-8B4E-C96A0B0EE631}']
     function GetFileName: string;
     function GetRemoteFileName: string;
     function GetFileTitle: string;
@@ -156,6 +157,7 @@ type
   end;
 
   IFileFactory = interface
+  ['{E6603597-EAC5-4776-97BC-1ECEEDD6660E}']
     function CreateFile(FileKind: TFileKind; TabControlIndex: Integer = 1): IFile;
     function CanCloseAll: Boolean;
     procedure CloseAll;

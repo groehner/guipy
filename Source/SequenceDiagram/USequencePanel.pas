@@ -22,13 +22,8 @@ uses
   Menus,
   SpTBXItem;
 
-const
-  CDistX: Integer = 30;
-  CDistY: Integer = 30;
-  CActivationWidth: Integer = 7;
-  CHeadLength: Integer = 10;
-  CMinWidth: Integer = 60;
-  CMinHeight: Integer = 30;
+const CDistX: Integer = 30; CDistY: Integer = 30; CActivationWidth: Integer = 7;
+  CHeadLength: Integer = 10; CMinWidth: Integer = 60; CMinHeight: Integer = 30;
 
 type
   // available linestyles
@@ -182,8 +177,8 @@ type
     FPopupMenuLifelineAndSequencePanel: TPopupMenu;
 
     procedure SetSelectedOnly(const Value: Boolean);
-    procedure SetModified(const Value: Boolean);
-    procedure SetLocked(const Value: Boolean);
+    procedure SetIsModified(const Value: Boolean);
+    procedure SetIsLocked(const Value: Boolean);
     procedure TurnConnection(Num: Integer);
   protected
     procedure DblClick; override;
@@ -257,23 +252,24 @@ type
     function GetEnclosingRect: TRect;
     property SelectedOnly: Boolean read FSelectedOnly write SetSelectedOnly;
     property BackBitmap: TBitmap read FBackBitmap write FBackBitmap;
-    property IsLocked: Boolean read FIsLocked write SetLocked;
-    property IsModified: Boolean read FIsModified write SetModified;
+    property IsLocked: Boolean read FIsLocked write SetIsLocked;
+    property IsModified: Boolean read FIsModified write SetIsModified;
     property IsMoving: Boolean read FIsMoving write FIsMoving;
-    property PopupMenuConnection: TSpTBXPopupMenu read FPopupMenuConnection write
-        FPopupMenuConnection;
-    property PopupMenuLifelineAndSequencePanel: TPopupMenu read
-        FPopupMenuLifelineAndSequencePanel write FPopupMenuLifelineAndSequencePanel;
+    property PopupMenuConnection: TSpTBXPopupMenu read FPopupMenuConnection
+      write FPopupMenuConnection;
+    property PopupMenuLifelineAndSequencePanel: TPopupMenu
+      read FPopupMenuLifelineAndSequencePanel
+      write FPopupMenuLifelineAndSequencePanel;
     property OnLifelineSequencePanel: TNotifyEvent read FOnLifelineSequencePanel
-        write FOnLifelineSequencePanel;
-    property OnBackgroundDblClicked: TBackgroundDblClicked read
-        FOnBackgroundDblClicked write FOnBackgroundDblClicked;
+      write FOnLifelineSequencePanel;
+    property OnBackgroundDblClicked: TBackgroundDblClicked
+      read FOnBackgroundDblClicked write FOnBackgroundDblClicked;
     property OnConnectionChanged: TConnectionChanged read FOnConnectionChanged
-        write FOnConnectionChanged;
-    property OnConnectionSet: TNotifyEvent read FOnConnectionSet write
-        FOnConnectionSet;
-    property OnContentChanged: TNotifyEvent read FOnContentChanged write
-        FOnContentChanged;
+      write FOnConnectionChanged;
+    property OnConnectionSet: TNotifyEvent read FOnConnectionSet
+      write FOnConnectionSet;
+    property OnContentChanged: TNotifyEvent read FOnContentChanged
+      write FOnContentChanged;
     property OnModified: TNotifyEvent read FOnModified write FOnModified;
     property OnShowAll: TNotifyEvent read FOnShowAll write FOnShowAll;
     property OnSelectionChanged: TNotifyEvent read FOnSelectionChanged;
@@ -366,21 +362,11 @@ begin
 end;
 
 procedure TConnection.Draw(Canvas: TCanvas);
-var
-  X1Pos, X2Pos: Integer;
-  Y1Pos, Y2Pos: Integer;
-  XBase: Integer;
-  YBase: Integer;
-  XLineDelta: Integer;
-  XLineUnitDelta: Double;
-  XNormalDelta: Integer;
-  XNormalUnitDelta: Double;
-  YLineDelta: Integer;
-  YLineUnitDelta: Double;
-  YNormalDelta: Integer;
-  YNormalUnitDelta: Double;
-  Tmp1: Double;
-  DeltaX, DeltaY, TextHeight, TextWidth: Integer;
+var X1Pos, X2Pos: Integer; Y1Pos, Y2Pos: Integer; XBase: Integer;
+  YBase: Integer; XLineDelta: Integer; XLineUnitDelta: Double;
+  XNormalDelta: Integer; XNormalUnitDelta: Double; YLineDelta: Integer;
+  YLineUnitDelta: Double; YNormalDelta: Integer; YNormalUnitDelta: Double;
+  Tmp1: Double; DeltaX, DeltaY, TextHeight, TextWidth: Integer;
   AbsXLineDelta, AbsYLineDelta: Integer;
 
   procedure DrawMessage;
@@ -394,8 +380,8 @@ var
       FTextRect := Bounds(X1Pos + FFromActivation * FActivationWidth + 5,
         Y1Pos - 1 - TextHeight, TextWidth, TextHeight)
     else
-      FTextRect := Bounds(X1Pos - FFromActivation * FActivationWidth - 5 - TextWidth,
-        Y1Pos - 1 - TextHeight, TextWidth, TextHeight);
+      FTextRect := Bounds(X1Pos - FFromActivation * FActivationWidth - 5 -
+        TextWidth, Y1Pos - 1 - TextHeight, TextWidth, TextHeight);
     SetBkColor(Canvas.Handle, FBackgroundColor);
     DrawText(Canvas.Handle, PChar(FMessage), -1, FTextRect, DT_CALCRECT);
     DrawText(Canvas.Handle, PChar(FMessage), -1, FTextRect, 0);
@@ -483,14 +469,14 @@ begin // of draw
     casSynchron, casNew, casClose:
       begin
         Canvas.Brush.Color := Canvas.Pen.Color;
-        Canvas.Polygon([Point(XBase + DeltaX, YBase + DeltaY), Point(X2Pos, Y2Pos),
-          Point(XBase - DeltaX, YBase - DeltaY)]);
+        Canvas.Polygon([Point(XBase + DeltaX, YBase + DeltaY),
+          Point(X2Pos, Y2Pos), Point(XBase - DeltaX, YBase - DeltaY)]);
       end;
     casAsynchron, casReturn:
       begin
         Canvas.Pen.Style := psSolid;
-        Canvas.Polyline([Point(XBase + DeltaX, YBase + DeltaY), Point(X2Pos, Y2Pos),
-          Point(XBase - DeltaX, YBase - DeltaY)]);
+        Canvas.Polyline([Point(XBase + DeltaX, YBase + DeltaY),
+          Point(X2Pos, Y2Pos), Point(XBase - DeltaX, YBase - DeltaY)]);
       end;
   end;
 
@@ -503,8 +489,8 @@ begin // of draw
     Canvas.LineTo(X2Pos, Y2Pos + FHeadLength);
   end;
   Canvas.Pen.Color := FForegroundColor;
-  FConRect := Rect(Min(X1Pos, X2Pos), Min(Y1Pos, Y2Pos) - Abs(DeltaY), Max(X1Pos, X2Pos),
-    Max(Y1Pos, Y2Pos) + Abs(DeltaY));
+  FConRect := Rect(Min(X1Pos, X2Pos), Min(Y1Pos, Y2Pos) - Abs(DeltaY),
+    Max(X1Pos, X2Pos), Max(Y1Pos, Y2Pos) + Abs(DeltaY));
   FConRect.Inflate(FStartControl.PPIScale(2), FStartControl.PPIScale(2));
   DrawMessage;
 
@@ -516,9 +502,7 @@ end;
 procedure TConnection.DrawRecursiv(Canvas: TCanvas);
 
   procedure DrawArrowHead(Point1, Point2: TPoint);
-  var
-    Point3, Point4: TPoint;
-    DeltaX: Integer;
+  var Point3, Point4: TPoint; DeltaX: Integer;
   begin
     DeltaX := Point2.X - Point1.X;
     Point3.X := Point1.X + Round(FHeadLength) * Sign(DeltaX);
@@ -549,9 +533,7 @@ begin
 end;
 
 procedure TConnection.DrawRecursivMessage(Canvas: TCanvas);
-var
-  X1Pos, Y1Pos: Integer;
-  Flags: LongInt;
+var X1Pos, Y1Pos: Integer; Flags: LongInt;
 begin
   // Relationname
   Flags := DT_EXPANDTABS or DT_WORDBREAK or DT_NOPREFIX;
@@ -568,8 +550,7 @@ begin
 end;
 
 procedure TConnection.CalcPolyline;
-var
-  X1Pos, Y1Pos: Integer;
+var X1Pos, Y1Pos: Integer;
 begin
   { FDistX
     P1----------P2
@@ -605,8 +586,7 @@ end;
 
 procedure TConnection.DrawSelection(Canvas: TCanvas;
   WithSelection: Boolean = True);
-var
-  X1Pos, Y1Pos, X2Pos, Y2Pos, SelSize, XLineDelta, YLineDelta: Integer;
+var X1Pos, Y1Pos, X2Pos, Y2Pos, SelSize, XLineDelta, YLineDelta: Integer;
 begin
   { --- show selection marks --------------------------------------------------- }
   if FSelected or not WithSelection then
@@ -714,9 +694,7 @@ begin
 end;
 
 procedure TConnection.Turn;
-var
-  Src: TControl;
-  Point: TPoint;
+var Src: TControl; Point: TPoint;
 begin
   if FIsRecursiv then
     CalcPolyline
@@ -732,13 +710,10 @@ begin
 end;
 
 function TConnection.IsClicked(Point: TPoint): Boolean;
-var
-  ARect: TRect;
-  X1Pos, X2Pos, Y1Pos, Y2Pos, Help: Integer;
+var ARect: TRect; X1Pos, X2Pos, Y1Pos, Y2Pos, Help: Integer;
 
   function makeRect(Point1, Point2: TPoint): TRect;
-  var
-    DeltaX, DeltaY: Integer;
+  var DeltaX, DeltaY: Integer;
   begin
     DeltaX := Point2.X - Point1.X;
     DeltaY := Point2.Y - Point1.Y;
@@ -845,9 +820,7 @@ end;
 { --- TSequencePanel ----------------------------------------------------------- }
 
 function TSequencePanel.AddManagedObject(AObject: TControl): TControl;
-var
-  CrkObj: TCrackControl;
-  NewObj: TManagedObject;
+var CrkObj: TCrackControl; NewObj: TManagedObject;
 begin
   Result := nil;
   if AObject.Left + AObject.Width > Width then
@@ -880,8 +853,7 @@ begin
 end;
 
 procedure TSequencePanel.ClearManagedObjects;
-var
-  ManagedObject: TManagedObject;
+var ManagedObject: TManagedObject;
 begin
   FConnections.Clear;
   try
@@ -940,13 +912,14 @@ begin
   for var I := 0 to FManagedObjects.Count - 1 do
     if TManagedObject(FManagedObjects[I]).FControl.Visible then
       TManagedObject(FManagedObjects[I]).FControl.Invalidate;
-  FChanged:= False;
+  FChanged := False;
   // calls Lifeline.Paint
 end;
 
 procedure TSequencePanel.WMEraseBkgnd(var Message: TWMEraseBkgnd);
 begin
-  var Canvas := TCanvas.Create;
+  var
+  Canvas := TCanvas.Create;
   try
     Canvas.Handle := Message.DC;
     if Assigned(FBackBitmap) then
@@ -964,7 +937,8 @@ function TSequencePanel.ConnectObjects(Src, Dst: TControl;
   Attributes: TConnectionAttributes): TConnection;
 begin
   Result := nil;
-  if Assigned(FindManagedControl(Src)) and Assigned(FindManagedControl(Dst)) then
+  if Assigned(FindManagedControl(Src)) and Assigned(FindManagedControl(Dst))
+  then
   begin
     Result := TConnection.Create(Src, Dst, Attributes, FOnConnectionChanged);
     Result.SetFont(Font);
@@ -977,7 +951,8 @@ function TSequencePanel.ConnectObjectsAt(Src, Dst: TControl;
   Attributes: TConnectionAttributes; Pos: Integer): TConnection;
 begin
   Result := nil;
-  if Assigned(FindManagedControl(Src)) and Assigned(FindManagedControl(Dst)) then
+  if Assigned(FindManagedControl(Src)) and Assigned(FindManagedControl(Dst))
+  then
   begin
     Result := TConnection.Create(Src, Dst, Attributes, FOnConnectionChanged);
     Result.SetFont(Font);
@@ -991,11 +966,13 @@ end;
 
 function TSequencePanel.GetClickedConnectionNr: Integer;
 begin
-  var Point := Self.ScreenToClient(Mouse.CursorPos);
+  var
+  Point := Self.ScreenToClient(Mouse.CursorPos);
   Result := 0;
   while Result < FConnections.Count do
   begin
-    var Conn := TConnection(FConnections[Result]);
+    var
+    Conn := TConnection(FConnections[Result]);
     if Conn.IsClicked(Point) then
     begin
       Conn.FSelected := True;
@@ -1027,8 +1004,7 @@ end;
 
 procedure TSequencePanel.DblClick;
 // on plain background
-var
-  Found: TControl;
+var Found: TControl;
 begin
   inherited;
   Found := FindVCLWindow(Mouse.CursorPos);
@@ -1045,10 +1021,7 @@ begin
 end;
 
 function TSequencePanel.GetConnectionOfClickedTextRect: TConnection;
-var
-  Int: Integer;
-  Point: TPoint;
-  Conn: TConnection;
+var Int: Integer; Point: TPoint; Conn: TConnection;
 begin
   Result := nil;
   Point := Self.ScreenToClient(Mouse.CursorPos);
@@ -1067,7 +1040,8 @@ end;
 
 function TSequencePanel.GetClickedConnection: TConnection;
 begin
-  var Num := GetClickedConnectionNr;
+  var
+  Num := GetClickedConnectionNr;
   if Num <> -1 then
     Result := TConnection(FConnections[Num])
   else
@@ -1080,27 +1054,19 @@ begin
 end;
 
 procedure TSequencePanel.SelectConnection;
-var
-  Tmp: TObjectList;
-  Attributes: TConnectionAttributes;
-  Conn: TConnection;
-  SelectedControls: Integer;
-  FConnectForm: TFConnectForm;
+var Tmp: TObjectList; Attributes: TConnectionAttributes; Conn: TConnection;
+  SelectedControls: Integer; FConnectForm: TFConnectForm;
 begin
   FConnectForm := TFConnectForm.Create(Self);
   Conn := GetSelectedConnection;
   SelectedControls := CountSelectedControls;
   if not Assigned(Conn) then
-    case SelectedControls of
-      1:
-        FConnectForm.Init(False, Conn, 1);
-      2:
-        FConnectForm.Init(False, Conn, 2);
+    if SelectedControls in [1, 2] then
+      FConnectForm.Init(False, Conn)
     else
-      Exit;
-    end
+      Exit
   else
-    FConnectForm.Init(False, Conn, SelectedControls);
+    FConnectForm.Init(False, Conn);
 
   case FConnectForm.ShowModal of
     mrOk:
@@ -1138,7 +1104,8 @@ end;
 
 procedure TSequencePanel.SelectClickedConnection;
 begin
-  var Conn := GetClickedConnection;
+  var
+  Conn := GetClickedConnection;
   if Assigned(Conn) then
   begin
     Conn.FSelected := True;
@@ -1146,22 +1113,17 @@ begin
   end;
 end;
 
-procedure TSequencePanel.ConnectBoxesAt(Src, Dest: TControl; AtPosition: Integer);
-var
-  Attributes: TConnectionAttributes;
-  SelectedControls, Int, Pos: Integer;
+procedure TSequencePanel.ConnectBoxesAt(Src, Dest: TControl;
+  AtPosition: Integer);
+var Attributes: TConnectionAttributes; SelectedControls, Int, Pos: Integer;
   FConnectForm: TFConnectForm;
 begin
   FConnectForm := TFConnectForm.Create(Self);
   SelectedControls := CountSelectedControls;
-  case SelectedControls of
-    1:
-      FConnectForm.Init(False, nil, 1);
-    2:
-      FConnectForm.Init(False, nil, 2);
+  if SelectedControls in [1, 2] then
+    FConnectForm.Init(False, nil)
   else
     Exit;
-  end;
   if FConnectForm.ShowModal = mrOk then
   begin
     Attributes := FConnectForm.GetConnectionAttributes;
@@ -1189,9 +1151,7 @@ begin
 end;
 
 procedure TSequencePanel.DoConnection(Item: Integer);
-var
-  Num: Integer;
-  Conn: TConnection;
+var Num: Integer; Conn: TConnection;
 begin
   Conn := nil;
   Num := -1;
@@ -1241,7 +1201,8 @@ begin
   Result := nil;
   for var I := 0 to FManagedObjects.Count - 1 do
   begin
-    var Curr := TManagedObject(FManagedObjects[I]);
+    var
+    Curr := TManagedObject(FManagedObjects[I]);
     if Curr.FControl = AControl then
     begin
       Result := Curr;
@@ -1321,7 +1282,8 @@ end;
 
 function TSequencePanel.CountSelectedControls: Integer;
 begin
-  var Num := 0;
+  var
+  Num := 0;
   for var I := 0 to FManagedObjects.Count - 1 do
     if TManagedObject(FManagedObjects[I]).FSelected then
       Inc(Num);
@@ -1348,10 +1310,7 @@ begin
 end;
 
 procedure TSequencePanel.DeleteSelectedControls;
-var
-  Control: TControl;
-  Conn: TConnection;
-  ManagedObject: TManagedObject;
+var Control: TControl; Conn: TConnection; ManagedObject: TManagedObject;
 begin
   for var I := FManagedObjects.Count - 1 downto 0 do
     if TManagedObject(FManagedObjects[I]).FSelected then
@@ -1376,10 +1335,7 @@ end;
 // central MouseDown routine for the TSequencePanel
 procedure TSequencePanel.MouseDown(Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
-var
-  Found: TControl;
-  MCont: TManagedObject;
-  CConn: TConnection;
+var Found: TControl; MCont: TManagedObject; CConn: TConnection;
 begin
   FMoved := False;
   if not FMouseDownOK then
@@ -1463,7 +1419,8 @@ begin
     Found := FindVCLWindow(Mouse.CursorPos);
     if Button = mbRight then
     begin
-      var Conn := GetClickedConnection;
+      var
+      Conn := GetClickedConnection;
       if Assigned(Conn) then
       begin
         Conn.FSelected := True;
@@ -1490,8 +1447,10 @@ begin
 
         if Assigned(TCrackControl(Found).OnMouseUp) then
         begin
-          var Point := Found.ScreenToClient(Mouse.CursorPos);
-          TCrackControl(Found).OnMouseUp(Found, Button, Shift, Point.X, Point.Y);
+          var
+          Point := Found.ScreenToClient(Mouse.CursorPos);
+          TCrackControl(Found).OnMouseUp(Found, Button, Shift, Point.X,
+            Point.Y);
         end;
       end
       else
@@ -1506,18 +1465,12 @@ end;
 
 procedure TSequencePanel.MouseMove(Shift: TShiftState; X, Y: Integer);
 
-const
-  MinTop = 20;
+const MinTop = 20;
 
-var
-  Point1, Point2, Point3: TPoint;
-  Found, Src, Dest: TControl;
-  MCont: TManagedObject;
-  DeltaX, DeltaY, Mdx, Mdy: Integer;
-  Curr: TCrackControl;
+var Point1, Point2, Point3: TPoint; Found, Src, Dest: TControl;
+  MCont: TManagedObject; DeltaX, DeltaY, Mdx, Mdy: Integer; Curr: TCrackControl;
   Rect1, Rect2, MovedRect, MovedRectWithoutConnections, MRectDxDy: TRect;
-  Resized: Boolean;
-  Connect: TConnection;
+  Resized: Boolean; Connect: TConnection;
 
   procedure InMakeVisible(Rect: TRect);
   begin
@@ -1534,7 +1487,8 @@ var
       TScrollBox(Parent).VertScrollBar.Position := Rect.BottomRight.Y -
         Parent.Height;
 
-    if (DeltaX < 0) and (Rect.Left <= TScrollBox(Parent).HorzScrollBar.Position) then
+    if (DeltaX < 0) and (Rect.Left <= TScrollBox(Parent).HorzScrollBar.Position)
+    then
       TScrollBox(Parent).HorzScrollBar.Position := Rect.Left;
 
     if (DeltaY < 0) and (Rect.Top <= TScrollBox(Parent).VertScrollBar.Position)
@@ -1622,8 +1576,8 @@ begin
             if DeltaY <> 0 then
               for var J := 0 to FManagedObjects.Count - 1 do
                 TManagedObject(FManagedObjects[J]).FControl.Top :=
-                  Min(Max(TManagedObject(FManagedObjects[J]).FControl.Top
-                  + DeltaY, MinTop), 500);
+                  Min(Max(TManagedObject(FManagedObjects[J]).FControl.Top +
+                  DeltaY, MinTop), 500);
             Rect2 := Curr.BoundsRect;
             MRectDxDy.Union(Rect2);
 
@@ -1705,9 +1659,7 @@ end;
 
 procedure TSequencePanel.MouseUp(Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
-var
-  Point: TPoint;
-  Rect: TRect;
+var Point: TPoint; Rect: TRect;
 begin
   inherited;
   FIsMoving := False;
@@ -1740,10 +1692,8 @@ end;
 function TSequencePanel.DoMouseWheel(Shift: TShiftState; WheelDelta: Integer;
   MousePos: TPoint): Boolean;
 
-const
-  WHEEL_DIVISOR = 120; // Mouse Wheel standard
-var
-  Mdy: Integer;
+const WHEEL_DIVISOR = 120; // Mouse Wheel standard
+var Mdy: Integer;
 begin
   Mdy := TScrollBox(Parent).VertScrollBar.Position - WheelDelta;
   TScrollBox(Parent).VertScrollBar.Position := Mdy;
@@ -1752,15 +1702,14 @@ end;
 
 procedure TSequencePanel.OnManagedObjectClick(Sender: TObject);
 begin
-  var Control := FindManagedControl(Sender as TControl);
+  var
+  Control := FindManagedControl(Sender as TControl);
   if Assigned(Control) and Assigned(Control.FOnClick) then
     Control.FOnClick(Sender);
 end;
 
 procedure TSequencePanel.OnManagedObjectDblClick(Sender: TObject);
-var
-  Control: TManagedObject;
-  Conn: TConnection;
+var Control: TManagedObject; Conn: TConnection;
 begin
   Control := FindManagedControl(Sender as TControl);
   if Assigned(Control) and Assigned(Control.FOnDblClick) then
@@ -1780,8 +1729,7 @@ end;
 
 procedure TSequencePanel.OnManagedObjectMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var
-  Point: TPoint;
+var Point: TPoint;
 begin
   if not Focused or (GetCaptureControl <> Self) then
   begin
@@ -1797,7 +1745,8 @@ end;
 procedure TSequencePanel.OnManagedObjectMouseMove(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
 begin
-  var Control := FindManagedControl(Sender as TControl);
+  var
+  Control := FindManagedControl(Sender as TControl);
   if Assigned(Control) and Assigned(Control.FOnMouseMove) then
     Control.FOnMouseMove(Sender, Shift, X, Y);
 end;
@@ -1806,7 +1755,8 @@ procedure TSequencePanel.OnManagedObjectMouseUp(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 
 begin
-  var Control := FindManagedControl(Sender as TControl);
+  var
+  Control := FindManagedControl(Sender as TControl);
   if Assigned(Control) and Assigned(Control.FOnMouseUp) then
     Control.FOnMouseUp(Sender, Button, Shift, X, Y);
 end;
@@ -1831,15 +1781,15 @@ procedure TSequencePanel.ShowConnections;
 begin
   for var I := 0 to FConnections.Count - 1 do
   begin
-    var Conn := (FConnections[I] as TConnection);
+    var
+    Conn := (FConnections[I] as TConnection);
     if Conn.FStartControl.Visible and Conn.FEndControl.Visible then
       Conn.Draw(Canvas);
   end;
 end;
 
 procedure TSequencePanel.RecalcSize;
-var
-  XMax, YMax: Integer;
+var XMax, YMax: Integer;
 begin
   if Assigned(Parent) then
   begin
@@ -1878,8 +1828,7 @@ begin
 end;
 
 procedure TSequencePanel.SelectObjectsInRect(SelRect: TRect);
-var
-  Rect1, Rect2: TRect;
+var Rect1, Rect2: TRect;
 begin
   Rect1 := SelRect;
   if SelRect.Top > SelRect.Bottom then
@@ -1910,9 +1859,7 @@ begin
 end;
 
 procedure TSequencePanel.SetFocus;
-var
-  Form: TCustomForm;
-  XPos, YPos: Integer;
+var Form: TCustomForm; XPos, YPos: Integer;
 begin
   Form := GetParentForm(Self);
 
@@ -1929,7 +1876,7 @@ begin
   end;
 end;
 
-procedure TSequencePanel.SetModified(const Value: Boolean);
+procedure TSequencePanel.SetIsModified(const Value: Boolean);
 begin
   if FIsModified <> Value then
   begin
@@ -1939,7 +1886,7 @@ begin
   end;
 end;
 
-procedure TSequencePanel.SetLocked(const Value: Boolean);
+procedure TSequencePanel.SetIsLocked(const Value: Boolean);
 begin
   if FIsLocked <> Value then
   begin
@@ -2020,10 +1967,7 @@ begin
 end;
 
 function TSequencePanel.GetEnclosingRect: TRect;
-var
-  Control: TControl;
-  Count: Integer;
-  ARect: TRect;
+var Control: TControl; Count: Integer; ARect: TRect;
 begin
   Count := 0;
   Result := Rect(MaxInt, MaxInt, 0, 0);

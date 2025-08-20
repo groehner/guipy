@@ -111,7 +111,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     procedure InitEvents;
-    procedure Open(const Pathname, State: string; WidthHeight: TPoint;
+    procedure Open(const Pathname: string; WidthHeight: TPoint;
       Partner: TEditorForm);
     procedure EnterForm(Sender: TObject);
     procedure Save(MitBackup: Boolean);
@@ -273,7 +273,7 @@ begin
   FEventMap.Add('MouseWheel', FMouseWheel);
 end;
 
-procedure TFGuiForm.Open(const Pathname, State: string; WidthHeight: TPoint;
+procedure TFGuiForm.Open(const Pathname: string; WidthHeight: TPoint;
   Partner: TEditorForm);
 begin
   FPathname := Pathname;

@@ -141,15 +141,16 @@ begin
   try
     HUrl := InternetOpenUrl(HSession, PChar(AFileURL), nil, 0,
       INTERNET_FLAG_DONT_CACHE, 0);
+
     if Assigned(HUrl) then
     begin
+      if GetHTTPStatus <> '200' then
+        Exit(False);
+      BCancel.Enabled := True;
+      Progress.Max := GetFileSize;
+      AFile := TFileStream.Create(AFileName, fmCreate or fmShareExclusive);
       try
         try
-          if GetHTTPStatus <> '200' then
-            Exit(False);
-          BCancel.Enabled := True;
-          Progress.Max := GetFileSize;
-          AFile := TFileStream.Create(AFileName, fmCreate or fmShareExclusive);
           try
             repeat
               InternetReadFile(HUrl, @Buffer, SizeOf(Buffer), BufferLen);

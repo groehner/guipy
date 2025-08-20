@@ -46,7 +46,7 @@ type
     FSelectColor: TColor;
     FSelectImage: string;
     FState: TButtonState;
-    procedure SetBitmap(Value: string);
+    procedure SetBitmap(const Value: string);
     procedure SetCompound(Value: TCompound);
     procedure SetIndicatorOn(Value: Boolean);
     procedure SetState(Value: TButtonState);
@@ -291,7 +291,7 @@ begin
     Height := Height + Delta;
 end;
 
-procedure TKButtonBaseWidget.SetBitmap(Value: string);
+procedure TKButtonBaseWidget.SetBitmap(const Value: string);
 begin
   if Value <> FBitmap then
   begin
@@ -589,19 +589,19 @@ end;
 
 procedure TKOptionMenu.MakeMenuItems;
 var
-  Str, MenuItems, NewMenuTitle: string;
+  Str, AMenuItems, NewMenuTitle: string;
 begin
-  MenuItems := '';
+  AMenuItems := '';
   for var I := 0 to FNewItems.Count - 1 do
   begin
     NewMenuTitle := Trim(FNewItems[I]);
     if NewMenuTitle = '' then
       Continue;
-    MenuItems := MenuItems + ', ' + AsString(NewMenuTitle);
+    AMenuItems := AMenuItems + ', ' + AsString(NewMenuTitle);
   end;
   Str := 'self.' + Name;
   SetAttributValue(Str, Str + ' = tk.OptionMenu(self.root, self.' + Name + 'CV'
-    + MenuItems + ')');
+    + AMenuItems + ')');
 end;
 
 procedure TKOptionMenu.Paint;

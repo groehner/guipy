@@ -68,15 +68,15 @@ type
     procedure SetAnchor(AValue: TAnchor);
     procedure SetBackground(AColor: TColor);
     procedure SetForeground(AColor: TColor);
-    procedure SetBorderWidth(AValue: string);
-    procedure SetMenu(Value: string);
-    procedure SetImage(AValue: string);
+    procedure SetBorderWidth(const AValue: string);
+    procedure SetMenu(const Value: string);
+    procedure SetImage(const AValue: string);
     procedure SetJustify(AValue: TJustify);
     procedure SetRelief(AValue: TRelief);
     procedure SetUnderline(AValue: Integer);
-    procedure SetWrapLength(AValue: string);
-    procedure MakeBoolean(Attr, Value: string);
-    procedure MakeShow(Value: string);
+    procedure SetWrapLength(const AValue: string);
+    procedure MakeBoolean(const Attr, Value: string);
+    procedure MakeShow(const Value: string);
   protected
     FNameExtension: string; // used by LabeledScale
     FBorderWidthInt: Integer;
@@ -94,8 +94,8 @@ type
     procedure CalculateText(var TextWidth, TextHeight: Integer;
       var StringList: TStringList); virtual; abstract;
     procedure AddParameter(const Value, Par: string);
-    procedure MakeControlVar(const Variable, ControlVar: string; Value: string = '';
-      Typ: string = 'String');
+    procedure MakeControlVar(const Variable, ControlVar: string; const Value: string = '';
+      const Typ: string = 'String');
     procedure MakeImage(const Value: string);
     procedure MakeValidateCommand(const Attr, Value: string);
     procedure MakeScrollbar(const Value, TkTyp: string);
@@ -104,7 +104,7 @@ type
     procedure PaintScrollbars(Scrollbar: TScrollbar);
     procedure SetScrollbar(Value: Boolean);
     procedure SetScrollbars(Value: TScrollbar);
-    procedure ShowText(Text: string; NewWidth, NewHeight: Integer);
+    procedure ShowText(const Text: string; NewWidth, NewHeight: Integer);
     procedure Paint; override;
     procedure PaintBorder(Rect: TRect; Relief: TRelief; BorderWidth: Integer);
       virtual; abstract;
@@ -754,7 +754,7 @@ begin
   Partner.InsertTkBinding(Name, Event, MakeBinding(Event));
 end;
 
-procedure TBaseTkWidget.MakeBoolean(Attr, Value: string);
+procedure TBaseTkWidget.MakeBoolean(const Attr, Value: string);
 var
   Key, Value2: string;
 begin
@@ -766,7 +766,7 @@ begin
   SetAttributValue(Key, Value2);
 end;
 
-procedure TBaseTkWidget.MakeShow(Value: string);
+procedure TBaseTkWidget.MakeShow(const Value: string);
 begin
   var
   Str := 'self.' + Name + '[''show'']';
@@ -786,7 +786,7 @@ begin
 end;
 
 procedure TBaseTkWidget.MakeControlVar(const Variable, ControlVar: string;
-  Value: string = ''; Typ: string = 'String');
+  const Value: string = ''; const Typ: string = 'String');
 begin
   var
   Str := Surround('self.' + ControlVar + ' = tk.' + Typ + 'Var()');
@@ -800,7 +800,7 @@ begin
   InsertValue(Str);
 end;
 
-procedure TBaseTkWidget.SetMenu(Value: string);
+procedure TBaseTkWidget.SetMenu(const Value: string);
 var
   Str1, Str2: string;
 begin
@@ -1079,7 +1079,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.ShowText(Text: string; NewWidth, NewHeight: Integer);
+procedure TBaseTkWidget.ShowText(const Text: string; NewWidth, NewHeight: Integer);
 var
   TextHeight, TextWidth, XPos, YPos: Integer;
 begin
@@ -1124,7 +1124,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.SetBorderWidth(AValue: string);
+procedure TBaseTkWidget.SetBorderWidth(const AValue: string);
 begin
   if AValue <> FBorderWidth then
   begin
@@ -1133,7 +1133,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.SetImage(AValue: string);
+procedure TBaseTkWidget.SetImage(const AValue: string);
 begin
   if AValue <> FImage then
   begin
@@ -1160,7 +1160,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.SetWrapLength(AValue: string);
+procedure TBaseTkWidget.SetWrapLength(const AValue: string);
 begin
   if AValue <> FWrapLength then
   begin

@@ -109,7 +109,7 @@ type
     // IJvAppStorageHandler implementation
   public
     procedure Open(const FileName: string; State: string);
-    procedure Save(MitBackup: Boolean);
+    procedure Save;
     procedure SetInteractive(Lines: TStrings);
     procedure ConfigureWindow(Sender: TObject);
     procedure Print; override;
@@ -132,7 +132,7 @@ type
     procedure DPIChanged; override;
     procedure OpenFolder;
     procedure OpenFiles;
-    procedure AddInteractiveLine(Line: string);
+    procedure AddInteractiveLine(const Line: string);
 
     class function ToolbarCount: Integer;
     property InteractiveLines: TStrings read FInteractiveLines write SetInteractiveLines;
@@ -381,7 +381,7 @@ begin
   end;
 end;
 
-procedure TFUMLForm.Save(MitBackup: Boolean);
+procedure TFUMLForm.Save;
 begin
   MainModul.SaveUML(Pathname);
   FUMLInteractive.SynEdit.Modified:= False;
@@ -622,7 +622,7 @@ end;
 
 function TFUMLForm.GetAsStringList: TStringList;
 begin
-  Save(False);
+  Save;
   Result:= TStringList.Create;
   Result.LoadFromFile(Pathname);
 end;
@@ -677,7 +677,7 @@ begin
     CommandsDataModule.actFileCloseExecute(Self);
 end;
 
-procedure TFUMLForm.AddInteractiveLine(Line: string);
+procedure TFUMLForm.AddInteractiveLine(const Line: string);
 begin
   InteractiveLines.Add(Line);
   FUMLInteractive.Add(Line);
