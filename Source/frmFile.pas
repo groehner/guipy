@@ -33,7 +33,7 @@ type
     procedure SetModified(Value: Boolean); virtual;
     function GetModified: Boolean; virtual;
     procedure DoActivate;
-    procedure DoActivateFile(Primary: Boolean = True); virtual;
+    procedure DoActivateFile; virtual;
     function DoSaveFile: Boolean; virtual;
     function DoSaveAs: Boolean; virtual;
     function DoSaveAsRemote: Boolean; virtual;
@@ -382,7 +382,7 @@ begin
   Result := FMyFile;
 end;
 
-procedure TFileForm.DoActivateFile(Primary: Boolean = True);
+procedure TFileForm.DoActivateFile;
 begin
   DoAssignInterfacePointer(True);
   DoActivate;
@@ -487,7 +487,7 @@ end;
 
 function TFileForm.LoadFromFile(const FileName: string): Boolean;
 begin
-  Result:= False;
+  Result:= False;  // override in every kind of file
 end;
 
 procedure TFileForm.SelectFont(FileKind: TFileKind);
@@ -616,7 +616,7 @@ end;
 procedure TFile.Activate(Primary: Boolean = True);
 begin
   if Assigned(FForm) then
-    FForm.DoActivateFile(Primary);
+    FForm.DoActivateFile;
 end;
 
 function TFile.AskSaveChanges: Boolean;

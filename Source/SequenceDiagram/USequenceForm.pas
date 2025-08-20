@@ -160,7 +160,7 @@ type
     function CanCopy: Boolean; override;
     procedure CopyToClipboard; override;
     procedure SetFontSize(Delta: Integer); override;
-    procedure DoActivateFile(Primary: Boolean = True); override;
+    procedure DoActivateFile; override;
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
   public
     class function ToolbarCount: Integer;
@@ -511,7 +511,7 @@ begin
   FreeAndNil(ConnList);
 end;
 
-procedure TFSequenceForm.DoActivateFile(Primary: Boolean = True);
+procedure TFSequenceForm.DoActivateFile;
 begin
   inherited;
   FSequencePanel.SetFocus;

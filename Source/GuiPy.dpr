@@ -14,7 +14,7 @@ program GuiPy;
 {$RTTI EXPLICIT METHODS([]) PROPERTIES([]) FIELDS([])}
 
 uses
-  FastMM5,
+  //FastMM5,
   WinApi.Windows,
   System.SysUtils,
   Vcl.HTMLHelpViewer,

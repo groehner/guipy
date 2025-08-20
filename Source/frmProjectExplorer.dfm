@@ -1,40 +1,25 @@
 inherited ProjectExplorerWindow: TProjectExplorerWindow
   HelpContext = 435
   Caption = 'Project Explorer'
-  ClientHeight = 375
-  ClientWidth = 425
   OnShow = FormShow
-  ExplicitWidth = 441
-  ExplicitHeight = 414
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 425
-    Height = 375
-    ExplicitWidth = 99
-    ExplicitHeight = 249
     inherited FGPanel: TPanel
-      Width = 421
-      Height = 371
-      ExplicitWidth = 95
-      ExplicitHeight = 245
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 421
-        Height = 371
+        Width = 223
+        Height = 394
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 95
-        ExplicitHeight = 245
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 30
-          Width = 421
-          Height = 341
+          Width = 223
+          Height = 364
           Align = alClient
           BorderStyle = bsNone
-          DefaultNodeHeight = 19
           Header.AutoSizeIndex = -1
           Header.Height = 15
           Header.MainColumn = -1
@@ -51,6 +36,7 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           OnContextPopup = ExplorerTreeContextPopup
           OnDragAllowed = ExplorerTreeDragAllowed
           OnDragOver = ExplorerTreeDragOver
+          OnDragDrop = ExplorerTreeDragDrop
           OnEditing = ExplorerTreeEditing
           OnGetCellText = ExplorerTreeGetCellText
           OnGetImageIndexEx = ExplorerTreeGetImageIndexEx
@@ -63,18 +49,15 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           OnNodeDblClick = ExplorerTreeNodeDblClick
           Touch.InteractiveGestures = [igPan, igPressAndTap]
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
-          ExplicitWidth = 95
-          ExplicitHeight = 215
           Columns = <>
         end
         object SpTBXDock1: TSpTBXDock
           Left = 0
           Top = 0
-          Width = 421
+          Width = 223
           Height = 30
           AllowDrag = False
           DoubleBuffered = True
-          ExplicitWidth = 95
           object SpTBXToolbar1: TSpTBXToolbar
             Left = 0
             Top = 0
@@ -185,7 +168,7 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     object actProjectExtraPythonPath: TAction
       Category = 'Project'
       Caption = 'Extra Python &Path...'
-      HelpKeyword = '435'
+      HelpContext = 435
       HelpType = htContext
       ImageIndex = 0
       ImageName = 'Folders'
@@ -496,100 +479,102 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionIndex = 46
+        CollectionIndex = 55
         CollectionName = 'Folders'
         Name = 'Folders'
       end
       item
-        CollectionIndex = 32
+        CollectionIndex = 41
         CollectionName = 'ExternalRun'
         Name = 'ExternalRun'
       end
       item
-        CollectionIndex = 31
+        CollectionIndex = 40
         CollectionName = 'Expand'
         Name = 'Expand'
       end
       item
-        CollectionIndex = 15
+        CollectionIndex = 24
         CollectionName = 'Collapse'
         Name = 'Collapse'
       end
       item
+        CollectionIndex = 102
         CollectionName = 'Run'
         Name = 'Run'
       end
       item
+        CollectionIndex = 27
         CollectionName = 'Debug'
         Name = 'Debug'
       end
       item
-        CollectionIndex = 75
+        CollectionIndex = 84
         CollectionName = 'ProjectFile'
         Name = 'ProjectFile'
       end
       item
-        CollectionIndex = 76
+        CollectionIndex = 85
         CollectionName = 'ProjectOpen'
         Name = 'ProjectOpen'
       end
       item
-        CollectionIndex = 73
+        CollectionIndex = 82
         CollectionName = 'ProjectAdd'
         Name = 'ProjectAdd'
       end
       item
-        CollectionIndex = 77
+        CollectionIndex = 86
         CollectionName = 'ProjectRemove'
         Name = 'ProjectRemove'
       end
       item
-        CollectionIndex = 45
+        CollectionIndex = 54
         CollectionName = 'FolderAdd'
         Name = 'FolderAdd'
       end
       item
-        CollectionIndex = 26
+        CollectionIndex = 35
         CollectionName = 'Editor'
         Name = 'Editor'
       end
       item
-        CollectionIndex = 78
+        CollectionIndex = 87
         CollectionName = 'ProjectSave'
         Name = 'ProjectSave'
       end
       item
-        CollectionIndex = 94
+        CollectionIndex = 103
         CollectionName = 'RunConfigAdd'
         Name = 'RunConfigAdd'
       end
       item
-        CollectionIndex = 95
+        CollectionIndex = 104
         CollectionName = 'RunConfigEdit'
         Name = 'RunConfigEdit'
       end
       item
-        CollectionIndex = 39
+        CollectionIndex = 48
         CollectionName = 'FileProperties'
         Name = 'FileProperties'
       end
       item
-        CollectionIndex = 23
+        CollectionIndex = 32
         CollectionName = 'Download'
         Name = 'Download'
       end
       item
-        CollectionIndex = 96
+        CollectionIndex = 105
         CollectionName = 'RunLast'
         Name = 'RunLast'
       end
       item
-        CollectionIndex = 19
+        CollectionIndex = 28
         CollectionName = 'DebugLast'
         Name = 'DebugLast'
       end
       item
-        CollectionIndex = 33
+        CollectionIndex = 42
         CollectionName = 'ExternalRunLast'
         Name = 'ExternalRunLast'
       end>

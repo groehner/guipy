@@ -184,7 +184,7 @@ type
     function CanCopy: Boolean; override;
     procedure CopyToClipboard; override;
     procedure PasteFromClipboard; override;
-    procedure DoActivateFile(Primary: Boolean = True); override;
+    procedure DoActivateFile; override;
     procedure SetFont(AFont: TFont); override;
     procedure Enter(Sender: TObject); override;
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
@@ -1931,7 +1931,7 @@ begin
     end;
 end;
 
-procedure TFStructogram.DoActivateFile(Primary: Boolean = True);
+procedure TFStructogram.DoActivateFile;
 begin
   inherited;
   Enter(Self);
