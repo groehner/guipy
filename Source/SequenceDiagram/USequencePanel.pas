@@ -853,19 +853,13 @@ begin
 end;
 
 procedure TSequencePanel.ClearManagedObjects;
-var ManagedObject: TManagedObject;
+var
+  AManagedObject: TManagedObject;
 begin
   FConnections.Clear;
-  try
-    for var I := 0 to FManagedObjects.Count - 1 do
-    begin
-      ManagedObject := TManagedObject(FManagedObjects[I]);
-      FreeAndNil(ManagedObject.FControl);
-      FreeAndNil(ManagedObject);
-    end;
-  except
-    on E: Exception do
-      ErrorMsg(E.Message);
+  for AManagedObject in FManagedObjects do begin
+    AManagedObject.FControl.Free;
+    AManagedObject.Free;
   end;
   FManagedObjects.Clear;
   SetBounds(0, 0, 0, 0);
@@ -928,7 +922,7 @@ begin
       Canvas.Brush.Color := Color;
     Canvas.FillRect(ClientRect);
   finally
-    FreeAndNil(Canvas);
+    Canvas.Free;
   end;
   Message.Result := 1;
 end;

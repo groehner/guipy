@@ -679,7 +679,10 @@ begin
   if Assigned(FForm) then
   begin
     FSynLsp.FileClosed;
+    FForm.DoAssignInterfacePointer(False);
     GI_EditorFactory.RemoveEditor(Self);
+    if GI_EditorFactory.Count = 0 then
+      PyIDEMainForm.UpdateCaption;
     inherited;
   end;
 end;
@@ -719,6 +722,9 @@ end;
 
 function TEditor.GetActiveSynEdit: TSynEdit;
 begin
+  if not Assigned(FForm) then
+    Exit(nil);
+
   if FForm.SynEdit2.Visible and (FForm.FActiveSynEdit = FForm.SynEdit2) then
     Result := FForm.SynEdit2
   else
@@ -2420,7 +2426,7 @@ begin
   begin
     var
     AInteger := TInteger(TVFileStructure.Items[I].Data);
-    FreeAndNil(AInteger);
+    AInteger.Free;
   end;
   if Assigned(FFileStructure) then
     FFileStructure.Clear(Self);
@@ -2795,7 +2801,7 @@ begin
         (Attri = TSynPythonSyn(Highlighter).NonKeyAttri) or
         (Attri = TSynPythonSyn(Highlighter).SystemAttri) then
       begin
-        Cursor := crHandPoint;
+        //Cursor := crHandPoint;
         FHotIdentInfo.HaveHotIdent := True;
         FHotIdentInfo.StartCoord := BufferCoord(Start, LineCharPos.Line);
       end;

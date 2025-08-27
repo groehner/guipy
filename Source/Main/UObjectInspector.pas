@@ -88,6 +88,7 @@ type
     procedure RefreshCB(const NewName: string = '');
     procedure SetButtonCaption(Show: Integer);
     procedure UpdateEventInspector;
+    procedure SetSlotForComponent(const Attr, Value: string; Control: TControl);
   protected
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
       const BasePath: string);
@@ -195,8 +196,8 @@ end;
 
 destructor TFObjectInspector.Destroy;
 begin
-  FreeAndNil(FELPropertyInspector);
-  FreeAndNil(FELEventInspector);
+  FELPropertyInspector.Free;
+  FELEventInspector.Free;
   inherited Destroy;
 end;
 
@@ -329,19 +330,17 @@ end;
 
 procedure TFObjectInspector.SetSelectedObject(Control: TControl);
 begin
+  FELPropertyInspector.Clear;
+  FELEventInspector.Clear;
   if Assigned(Control) then
   begin
     CBObjects.ItemIndex := CBObjects.Items.IndexOfObject(Control);
-    FELPropertyInspector.Clear;
-    FELEventInspector.Clear;
     FELPropertyInspector.Add(Control);
     FELEventInspector.Add(Control);
   end
   else
-  begin
     CBObjects.ItemIndex := -1;
-    CBObjects.Repaint;
-  end;
+  CBObjects.Invalidate;
 end;
 
 procedure TFObjectInspector.CBObjectsChange(Sender: TObject);
@@ -590,10 +589,37 @@ begin
   begin
     TFGuiForm(DesignControl).Modified := True;
     for var I := 0 to SelectedControls.Count - 1 do
-      FObjectGenerator.SetSlotForComponent(PropertyItem.Caption,
-        PropertyItem.DisplayValue, SelectedControls[I]);
+      SetSlotForComponent(PropertyItem.Caption, PropertyItem.DisplayValue,
+        SelectedControls[I]);
     SetBNewDeleteCaption;
   end;
+end;
+
+procedure TFObjectInspector.SetSlotForComponent(const Attr, Value: string;
+  Control: TControl);
+var Event: TEvent;
+begin
+  Event := nil;
+  GetEventProperties(Control, Attr, Event);
+  if Value = '' then begin
+    if Control is TBaseWidget then
+      TBaseWidget(Control).DeleteEventHandler(Attr)
+    else
+      TFGuiForm(Control).DeleteEventHandler(Attr);
+    if Assigned(Event) then
+      Event.Clear;
+  end
+  else
+  begin
+    if Control is TBaseWidget then
+      TBaseWidget(Control).SetEvent(Attr, Value)
+    else
+      TFGuiForm(Control).SetEvent(Attr);
+    if Assigned(Event) then
+      Event.Active := True;
+  end;
+  if Assigned(Event) then
+    SetEventProperties(Control, Attr, Event);
 end;
 
 procedure TFObjectInspector.BNewDeleteClick(Sender: TObject);
@@ -603,7 +629,6 @@ var
   GuiForm: TFGuiForm;
   Partner: TEditorForm;
   Control: TControl;
-  Widget: TBaseWidget;
   Event: TEvent;
   Index: Integer;
 
@@ -617,8 +642,8 @@ var
   procedure DeleteEvent;
   begin
     SetDisplayValue('');
-    if Assigned(Widget) then
-      Widget.DeleteEventHandler(Eventname)
+    if Control is TBaseWidget then
+      TBaseWidget(Control).DeleteEventHandler(Eventname)
     else
       GuiForm.DeleteEventHandler(Eventname);
     if Assigned(Event) then
@@ -627,10 +652,10 @@ var
 
   procedure NewEvent;
   begin
-    if Assigned(Widget) then
+    if Control is TBaseWidget then
     begin
-      SetDisplayValue(Widget.Handlername(Eventname));
-      Widget.SetEvent(Eventname);
+      SetDisplayValue(TBaseWidget(Control).Handlername(Eventname));
+      TBaseWidget(Control).SetEvent(Eventname);
     end
     else
     begin
@@ -656,10 +681,6 @@ begin
   Partner.ActiveSynEdit.BeginUpdate;
   Eventname := PropertyItem.Caption;
   GetEventProperties(Control, Eventname, Event);
-  if Control is TBaseWidget then
-    Widget := Control as TBaseWidget
-  else
-    Widget := nil;
   if PropertyItem.DisplayValue <> '' then
     DeleteEvent
   else

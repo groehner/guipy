@@ -437,12 +437,12 @@ type
     function GetAttributes(ShowAttributes: Integer): string; override;
     procedure SetAttribute(const Attr, Value, Typ: string); override;
     function GetEvents(ShowEvents: Integer): string; override;
-    procedure SetEvent(const Attr: string); override;
+    procedure SetEvent(const Attr: string; const Value: string = ''); override;
     function HandlerInfo(const Event: string): string; override;
     procedure NewWidget(const Widget: string = ''); override;
     procedure Paint; override;
     procedure SetPositionAndSize; override;
-    function MakeBinding(const Eventname: string): string; override;
+    function MakeBinding(const Eventname: string; const Value: string = ''): string; override;
     procedure Rename(const OldName, NewName, Events: string); override;
   published
     property Items: TStrings read FItems write SetItems;
@@ -2107,11 +2107,11 @@ begin
     '|idClicked|idPressed|idReleased|idToggled';
 end;
 
-procedure TQtButtonGroup.SetEvent(const Attr: string);
+procedure TQtButtonGroup.SetEvent(const Attr: string; const Value: string = '');
 begin
   if not Partner.hasText('def ' + HandlerNameAndParameter(Attr)) then
     Partner.InsertProcedure(CrLf + MakeHandler(Attr));
-  Partner.InsertQtBinding(Name + 'RB', MakeBinding(Attr));
+  Partner.InsertQtBinding(Name + 'RB', MakeBinding(Attr, Value));
 end;
 
 function TQtButtonGroup.HandlerInfo(const Event: string): string;
@@ -2175,7 +2175,7 @@ begin
   Partner.ActiveSynEdit.EndUpdate;
 end;
 
-function TQtButtonGroup.MakeBinding(const Eventname: string): string;
+function TQtButtonGroup.MakeBinding(const Eventname: string; const Value: string = ''): string;
 begin
   Result := Indent2 + 'self.' + Name + 'BG.' + Eventname + '.connect(self.' +
     HandlerName(Eventname) + ')';

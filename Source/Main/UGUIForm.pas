@@ -108,6 +108,7 @@ type
     procedure SetWidgetPartners;
     procedure SetGridOptions;
     procedure GetFontSize;
+    procedure CollectEvents;
   public
     constructor Create(AOwner: TComponent); override;
     procedure InitEvents;
@@ -254,7 +255,11 @@ begin
   FMotion := TEvent.CreateWithName(Self, 'Motion');
   FMouseWheel := TEvent.CreateWithName(Self, 'MouseWheel');
   FVisibility := TEvent.CreateWithName(Self, 'Visibility');
+  CollectEvents;
+end;
 
+procedure TFGuiForm.CollectEvents;
+begin
   FEventMap := TDictionary<string, TEvent>.Create;
   FEventMap.Add('ButtonPress', FButtonPress);
   FEventMap.Add('ButtonRelease', FButtonRelease);
@@ -300,6 +305,7 @@ begin
   FReadOnly := IsWriteProtected(FPathname);
   if FontSize = 0 then
     GetFontSize;
+  CollectEvents;
 end;
 
 procedure TFGuiForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -323,6 +329,7 @@ begin
   for var I := 1 to 4 do
     PyIDEMainForm.TabControlWidgets.Items[I].Visible :=
       FConfiguration.VisTabs[I];
+  FObjectInspector.SetSelectedObject(nil);
   Action := caFree;
 end;
 
@@ -439,9 +446,9 @@ end;
 
 procedure TFGuiForm.FormResize(Sender: TObject);
 begin
-  FObjectInspector.ELPropertyInspector.Modified;
   if Assigned(FPartner) and not FReadOnly then
   begin
+    FObjectInspector.ELPropertyInspector.Modified;
     FObjectGenerator.Partner := FPartner;
     FObjectGenerator.SetBoundsForFormular(Self);
   end;
@@ -570,7 +577,7 @@ procedure TFGuiForm.SetWidgetPartners;
 begin
   for var I := 0 to ComponentCount - 1 do
     if Components[I] is TBaseWidget then
-      (Components[I] as TBaseWidget).Partner := FPartner;
+      TBaseWidget(Components[I]).Partner := FPartner;
 end;
 
 procedure TFGuiForm.Zoom(ZoomIn: Boolean);

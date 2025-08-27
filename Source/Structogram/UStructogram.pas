@@ -415,31 +415,31 @@ begin
 end;
 
 function TFStructogram.GetAsStringList: TStringList;
-  var StringList: TStringList; AList: TStrList;
+  var AList: TStrList;
 begin
-  StringList:= TStringList.Create;
-  StringList.Add( 'PSG: true');
+  Result:= TStringList.Create;
+  Result.Add( 'PSG: true');
   if Font.Name = 'Arial' then
     Font.Name:= 'Segoe UI';
-  StringList.Add('FontName: ' + Font.Name);
-  StringList.Add('FontSize: ' + IntToStr(PPIUnScale(Font.Size)));
+  Result.Add('FontName: ' + Font.Name);
+  Result.Add('FontSize: ' + IntToStr(PPIUnScale(Font.Size)));
   if fsBold in Font.Style then
-    StringList.Add('FontBold: true');
+    Result.Add('FontBold: true');
   if fsItalic in Font.Style then
-    StringList.Add('FontItalic: true');
-  StringList.Add('FontColor: ' + IntToStr(Font.Color));
+    Result.Add('FontItalic: true');
+  Result.Add('FontColor: ' + IntToStr(Font.Color));
   if FPuzzleMode > 0 then begin
-    StringList.Add('FPuzzleMode: ' + IntToStr(FPuzzleMode));
-    StringList.Add('FSolution: ' + HideCrLf(FSolution));
+    Result.Add('FPuzzleMode: ' + IntToStr(FPuzzleMode));
+    Result.Add('FSolution: ' + HideCrLf(FSolution));
   end;
   for var I:= 0 to ScrollBox.ControlCount - 1 do begin
     AList:= (ScrollBox.Controls[I] as TListImage).StrList;
-    StringList.Add('- Kind: ' + AList.GetKind);
-    StringList.Add('  SwitchWithCaseLine: ' + BoolToStr(AList.SwitchWithCaseLine, True));
-    StringList.Add('  RectPos' + AList.GetRectPos);
-    StringList.Add(AList.GetText('  '));
+    Result.Add('- Kind: ' + AList.GetKind);
+    Result.Add('  SwitchWithCaseLine: ' + BoolToStr(AList.SwitchWithCaseLine, True));
+    Result.Add('  RectPos' + AList.GetRectPos);
+    Result.Add(AList.GetText('  '));
   end;
-  Result:= StringList;
+  Result:= Result;
 end;
 
 procedure TFStructogram.ShowShape;

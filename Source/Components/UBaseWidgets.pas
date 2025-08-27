@@ -85,9 +85,9 @@ type
     procedure DeleteEvents; virtual; abstract;
     procedure Resize; override; abstract;
     procedure DeleteWidget; virtual; abstract;
-    procedure SetEvent(const Attr: string); virtual; abstract;
+    procedure SetEvent(const Attr: string; const Value: string = ''); virtual; abstract;
     procedure DeleteEventHandler(const Event: string); virtual; abstract;
-    function MakeBinding(const Eventname: string): string; virtual; abstract;
+    function MakeBinding(const Eventname: string; const Value: string = ''): string; virtual; abstract;
     function MakeHandler(const Event: string): string; virtual; abstract;
     procedure SizeToText; virtual;
     procedure MakeFont; virtual; abstract;

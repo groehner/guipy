@@ -60,7 +60,6 @@ type
     procedure ComponentToForeground(APartner: TEditorForm; Control: TControl);
     procedure SetAttributForComponent(const Attr, Value, Typ: string;
       Control: TControl);
-    procedure SetSlotForComponent(const Attr, Value: string; Control: TControl);
     procedure AddRow(const Attribute, Value: string);
     function Edit(Control: TControl; Attributes: TStringList;
       Row: Integer): Boolean;
@@ -233,45 +232,6 @@ begin
   begin
     GuiForm := Control as TFGuiForm;
     GuiForm.SetAttribute(Attr, NValue, Typ);
-  end;
-end;
-
-procedure TFObjectGenerator.SetSlotForComponent(const Attr, Value: string;
-  Control: TControl);
-var
-  CName, Str, Dest: string;
-  Widget: TBaseWidget;
-begin
-  if Control is TBaseWidget then
-    Widget := Control as TBaseWidget
-  else
-    Widget := nil;
-  if Value = '' then
-  begin
-    if Control.Tag = 0 then
-      FPartner.DeleteMethod('MainWindow_' + Attr)
-    else
-      FPartner.DeleteMethod(Control.Name + '_' + Attr);
-    FPartner.DeleteBinding(Attr + '.connect');
-  end
-  else if Assigned(Widget) and (Widget.Name + '_' + Attr = Value) then
-    Widget.SetEvent(Attr)
-  else
-  begin
-    Str := Attr + '.connect(self.' + Value + ')';
-    if Control.Tag = 76 // TQtButtonGroup
-    then
-      CName := Control.Name + 'BG'
-    else
-      CName := Control.Name;
-    if Control.Tag = 0 then
-      Dest := Indent2 + 'self.'
-    else
-    begin
-      Str := CName + '.' + Str;
-      Dest := 'self.' + CName;
-    end;
-    FPartner.InsertQtBinding(Dest, Indent2 + 'self.' + Str);
   end;
 end;
 

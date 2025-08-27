@@ -115,13 +115,13 @@ type
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
     procedure SetAttribute(const Attr, Value, Typ: string); override;
-    procedure SetEvent(const Event: string); override;
+    procedure SetEvent(const Event: string; const Value: string = ''); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
     procedure DeleteEvents; override;
     procedure DeleteWidget; override;
     procedure DeleteEventHandler(const Event: string); override;
     procedure NewWidget(const Widget: string = ''); override;
-    function MakeBinding(const Eventname: string): string; override;
+    function MakeBinding(const Eventname: string; const Value: string = ''): string; override;
     function MakeHandler(const Event: string): string; override;
     procedure Resize; override;
     procedure SetPositionAndSize; override;
@@ -747,7 +747,7 @@ begin
   end;
 end;
 
-procedure TBaseTkWidget.SetEvent(const Event: string);
+procedure TBaseTkWidget.SetEvent(const Event: string; const Value: string = '');
 begin
   if not Partner.hasText('def ' + HandlerNameAndParameter(Event)) then
     Partner.InsertProcedure(CrLf + MakeHandler(Event));
@@ -840,7 +840,7 @@ begin
   end;
 end;
 
-function TBaseTkWidget.MakeBinding(const Eventname: string): string;
+function TBaseTkWidget.MakeBinding(const Eventname: string; const Value: string = ''): string;
 var
   Event: TEvent;
 begin

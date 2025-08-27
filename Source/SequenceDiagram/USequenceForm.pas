@@ -267,28 +267,22 @@ var
   StringList: TStringList;
 begin
   Result := False;
-  StringList := TStringList.Create;
   FSequencePanel.IsLocked := True;
+  StringList := TStringList.Create;
   Ini := TMemIniFile.Create(FileName, TEncoding.UTF8);
   try
-    try
-      FLifelinesTop :=
-        PPIScale(Min(Ini.ReadInteger('Diagram', 'Top', 30), 500));
-      Ini.ReadSectionValues('Participants', StringList);
-      for var I := 0 to StringList.Count - 1 do
-        AddLifeline(UnHideCrLf(StringList[I]));
-      Ini.ReadSectionValues('Messages', StringList);
-      for var I := 0 to StringList.Count - 1 do
-        AddConnection(StringList[I]);
-      Font.Name := Ini.ReadString('Diagram', 'FontName', 'Segoe UI');
-      Font.Size := PPIScale(Ini.ReadInteger('Diagram', 'FontSize', 12));
-      SetFont(Font);
-      Result := True;
-    except
-      on e: Exception do
-        StyledMessageDlg(Format(_(SFileOpenError),
-          [FileName, E.Message]), mtWarning, [mbOK], 0);
-    end;
+    FLifelinesTop :=
+      PPIScale(Min(Ini.ReadInteger('Diagram', 'Top', 30), 500));
+    Ini.ReadSectionValues('Participants', StringList);
+    for var I := 0 to StringList.Count - 1 do
+      AddLifeline(UnHideCrLf(StringList[I]));
+    Ini.ReadSectionValues('Messages', StringList);
+    for var I := 0 to StringList.Count - 1 do
+      AddConnection(StringList[I]);
+    Font.Name := Ini.ReadString('Diagram', 'FontName', 'Segoe UI');
+    Font.Size := PPIScale(Ini.ReadInteger('Diagram', 'FontSize', 12));
+    SetFont(Font);
+    Result := True;
   finally
     FreeAndNil(StringList);
     FreeAndNil(Ini);
@@ -299,20 +293,17 @@ end;
 function TFSequenceForm.GetAsStringList: TStringList;
 var
   Lifeline: TLifeline;
+  Conn: TConnection;
   ConnStr: string;
   Connections: TList;
-  Conn: TConnection;
   StringList: TStringList;
 begin
   StringList := TStringList.Create;
   StringList.Add('[Participants]');
   StringList.Add('# Object | x-position');
-  for var I := 0 to FLifelines.Count - 1 do
-  begin
-    Lifeline := TLifeline(FLifelines[I]);
+  for LifeLine in FLifelines do
     StringList.Add(HideCrLf(Lifeline.Participant) + ' | ' +
       IntToStr(PPIUnScale(Lifeline.Left)));
-  end;
 
   StringList.Add('');
   StringList.Add('[Messages]');
@@ -323,17 +314,16 @@ begin
   StringList.Add('# Object1 ->x Object2 | close message');
   Connections := FSequencePanel.GetConnections;
   try
-    for var I := 0 to Connections.Count - 1 do
-    begin
-      Conn := TConnection(Connections[I]);
-      with Conn do
-        ConnStr := HideCrLf((StartControl as TLifeline).Participant) +
-          GetArrowStyleAsString + HideCrLf((EndControl as TLifeline)
-          .Participant) + ' | ' + Conn.AMessage;
+    for Conn in Connections do begin
+      ConnStr :=
+        HideCrLf((Conn.StartControl as TLifeline).Participant) +
+        conn.GetArrowStyleAsString +
+        HideCrLf((Conn.EndControl as TLifeline)
+        .Participant) + ' | ' + Conn.AMessage;
       StringList.Add(ConnStr);
     end;
   finally
-    FreeAndNil(Connections);
+    Connections.Free;
   end;
   StringList.Add('');
   StringList.Add('[Diagram]');

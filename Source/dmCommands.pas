@@ -1532,17 +1532,8 @@ begin
   // actEditRedo.Enabled := (GI_EditCmds <> nil) and GI_EditCmds.CanRedo;
   // actEditCopyFileName.Enabled := Assigned(Editor);
 
-  var
-  ActiveEditor := Assigned(GI_ActiveEditor);
-  var
-  ActiveSynEdit := Assigned(GI_ActiveEditor) and
-    Assigned(GI_ActiveEditor.SynEdit);
-  var
-  ActiveActiveSynEdit := Assigned(GI_ActiveEditor) and
-    Assigned(GI_ActiveEditor.ActiveSynEdit);
-
-  actFoldVisible.Enabled := ActiveEditor;
-  actFoldVisible.Checked := ActiveSynEdit and
+  actFoldVisible.Enabled := Assigned(GI_ActiveEditor);
+  actFoldVisible.Checked := Assigned(GI_ActiveEditor) and
     GI_ActiveEditor.SynEdit.UseCodeFolding;
   actFoldAll.Enabled := actFoldVisible.Checked;
   actUnfoldAll.Enabled := actFoldVisible.Checked;
@@ -1561,50 +1552,48 @@ begin
   actFoldFunctions.Enabled := actFoldVisible.Checked;
   actUnfoldFunctions.Enabled := actFoldVisible.Checked;
 
-  actEditLBDos.Enabled := ActiveEditor;
-  actEditLBDos.Checked := ActiveSynEdit and
+  actEditLBDos.Enabled := Assigned(GI_ActiveEditor);
+  actEditLBDos.Checked := Assigned(GI_ActiveEditor) and
     ((GI_ActiveEditor.SynEdit.Lines as TSynEditStringList).FileFormat = sffDos);
-  actEditLBUnix.Enabled := ActiveEditor;
-  actEditLBUnix.Checked := ActiveSynEdit and
-    ((GI_ActiveEditor.SynEdit.Lines as TSynEditStringList)
-    .FileFormat = sffUnix);
-  actEditLBMac.Enabled := ActiveEditor;
-  actEditLBMac.Checked := ActiveSynEdit and
+  actEditLBUnix.Enabled := Assigned(GI_ActiveEditor);
+  actEditLBUnix.Checked := Assigned(GI_ActiveEditor) and
+    ((GI_ActiveEditor.SynEdit.Lines as TSynEditStringList).FileFormat = sffUnix);
+  actEditLBMac.Enabled := Assigned(GI_ActiveEditor);
+  actEditLBMac.Checked := Assigned(GI_ActiveEditor) and
     ((GI_ActiveEditor.SynEdit.Lines as TSynEditStringList).FileFormat = sffMac);
-  actEditAnsi.Enabled := ActiveEditor;
-  actEditAnsi.Checked := ActiveSynEdit and
+  actEditAnsi.Enabled := Assigned(GI_ActiveEditor);
+  actEditAnsi.Checked := Assigned(GI_ActiveEditor) and
     (GI_ActiveEditor.FileEncoding = sf_Ansi);
-  actEditUTF8.Enabled := ActiveEditor;
-  actEditUTF8.Checked := ActiveSynEdit and
+  actEditUTF8.Enabled := Assigned(GI_ActiveEditor);
+  actEditUTF8.Checked := Assigned(GI_ActiveEditor) and
     (GI_ActiveEditor.FileEncoding = sf_UTF8);
-  actEditUTF8NoBOM.Enabled := ActiveEditor;
-  actEditUTF8NoBOM.Checked := ActiveSynEdit and
+  actEditUTF8NoBOM.Enabled := Assigned(GI_ActiveEditor);
+  actEditUTF8NoBOM.Checked := Assigned(GI_ActiveEditor) and
     (GI_ActiveEditor.FileEncoding = sf_UTF8_NoBOM);
-  actEditUTF16LE.Enabled := ActiveEditor;
-  actEditUTF16LE.Checked := ActiveSynEdit and
+  actEditUTF16LE.Enabled := Assigned(GI_ActiveEditor);
+  actEditUTF16LE.Checked := Assigned(GI_ActiveEditor) and
     (GI_ActiveEditor.FileEncoding = sf_UTF16LE);
-  actEditUTF16BE.Enabled := ActiveEditor;
-  actEditUTF16BE.Checked := ActiveSynEdit and
+  actEditUTF16BE.Enabled := Assigned(GI_ActiveEditor);
+  actEditUTF16BE.Checked := Assigned(GI_ActiveEditor) and
     (GI_ActiveEditor.FileEncoding = sf_UTF16BE);
 
-  SelAvail := ActiveActiveSynEdit and GI_ActiveEditor.ActiveSynEdit.SelAvail;
+  SelAvail := Assigned(GI_ActiveEditor) and GI_ActiveEditor.ActiveSynEdit.SelAvail;
   // Source Code Actions
   actEditIndent.Enabled := SelAvail;
   actEditDedent.Enabled := SelAvail;
   actEditTabify.Enabled := SelAvail;
   actEditUntabify.Enabled := SelAvail;
-  actEditToggleComment.Enabled := ActiveEditor;
-  actEditCommentOut.Enabled := ActiveEditor;
-  actEditUncomment.Enabled := ActiveEditor;
-  actEditLineNumbers.Enabled := ActiveEditor;
-  actEditReadOnly.Enabled := ActiveEditor;
-  actEditReadOnly.Checked := ActiveEditor and GI_ActiveEditor.ReadOnly;
-  actEditWordWrap.Enabled := ActiveActiveSynEdit and
-    not GI_ActiveEditor.ActiveSynEdit.UseCodeFolding or
-    GI_PyInterpreter.Editor.Focused;
-  actEditShowSpecialChars.Enabled := ActiveEditor or
+  actEditToggleComment.Enabled := Assigned(GI_ActiveEditor);
+  actEditCommentOut.Enabled := Assigned(GI_ActiveEditor);
+  actEditUncomment.Enabled := Assigned(GI_ActiveEditor);
+  actEditLineNumbers.Enabled := Assigned(GI_ActiveEditor);
+  actEditReadOnly.Enabled := Assigned(GI_ActiveEditor);
+  actEditReadOnly.Checked := Assigned(GI_ActiveEditor) and GI_ActiveEditor.ReadOnly;
+  actEditWordWrap.Enabled := Assigned(GI_ActiveEditor) and not GI_ActiveEditor.ActiveSynEdit.UseCodeFolding
+    or GI_PyInterpreter.Editor.Focused;
+  actEditShowSpecialChars.Enabled := Assigned(GI_ActiveEditor) or
     GI_PyInterpreter.Editor.Focused;;
-  if ActiveActiveSynEdit then
+  if Assigned(GI_ActiveEditor) then
   begin
     actEditLineNumbers.Checked := GI_ActiveEditor.ActiveSynEdit.Gutter.
       ShowLineNumbers;
@@ -1653,15 +1642,15 @@ begin
   actSearchHighlight.Enabled := actSearchHighlight.Checked or Assigned(Editor)
     and (EditorSearchOptions.SearchText <> '');
 
-  actSearchMatchingBrace.Enabled := ActiveEditor;
-  actSearchGoToLine.Enabled := ActiveEditor;
-  actSearchGoToSyntaxError.Enabled := ActiveEditor and
+  actSearchMatchingBrace.Enabled := Assigned(GI_ActiveEditor);
+  actSearchGoToLine.Enabled := Assigned(GI_ActiveEditor);
+  actSearchGoToSyntaxError.Enabled := Assigned(GI_ActiveEditor) and
     TEditorForm(GI_ActiveEditor.Form).HasSyntaxError;
   actSearchGoToDebugLine.Enabled := (GI_PyControl.CurrentPos.Line >= 1) and
     GI_PyControl.PythonLoaded and not GI_PyControl.Running;
   actFindInFiles.Enabled := not FindResultsWindow.DoingSearchOrReplace;
 
-  if ActiveEditor and GI_ActiveEditor.HasPythonFile then
+  if Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile then
   begin
     actFindFunction.Enabled := True;
     actUnitTestWizard.Enabled := True;

@@ -77,12 +77,12 @@ type
     function Parametertypes(const Event: string): string;
     procedure GetSlots(const Parametertypes: string; Slots: TStrings); virtual;
     procedure SetAttribute(const Attr, Value, Typ: string); override;
-    procedure SetEvent(const Attr: string); override;
+    procedure SetEvent(const Attr: string; const Value: string = ''); override;
     procedure DeleteEvents; override;
     procedure DeleteWidget; override;
     procedure DeleteEventHandler(const Event: string); override;
     procedure NewWidget(const Widget: string = ''); override;
-    function MakeBinding(const Eventname: string): string; override;
+    function MakeBinding(const Eventname: string; const Value: string = ''): string; override;
     function MakeHandler(const Event: string): string; override;
     procedure Paint; override;
     procedure Resize; override;
@@ -285,11 +285,11 @@ begin
     MakeAttribut(Attr, Value);
 end;
 
-procedure TBaseQtWidget.SetEvent(const Attr: string);
+procedure TBaseQtWidget.SetEvent(const Attr: string; const Value: string = '');
 begin
   if not Partner.hasText('def ' + HandlerNameAndParameter(Attr)) then
     Partner.InsertProcedure(CrLf + MakeHandler(Attr));
-  Partner.InsertQtBinding(Name, MakeBinding(Attr));
+  Partner.InsertQtBinding(Name, MakeBinding(Attr, Value));
 end;
 
 procedure TBaseQtWidget.MakeContextMenu(const Value: string);
@@ -329,10 +329,13 @@ begin
   // nothing to do
 end;
 
-function TBaseQtWidget.MakeBinding(const Eventname: string): string;
+function TBaseQtWidget.MakeBinding(const Eventname: string; const Value: string = ''): string;
 begin
-  Result := Indent2 + 'self.' + Name + '.' + Eventname + '.connect(self.' +
-    HandlerName(Eventname) + ')';
+  Result := Indent2 + 'self.' + Name + '.' + Eventname + '.connect(self.';
+  if Value = '' then
+    Result:= Result  + HandlerName(Eventname) + ')'
+  else
+    Result:= Result + Value + ')';
 end;
 
 function TBaseQtWidget.MakeHandler(const Event: string): string;
