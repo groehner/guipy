@@ -4894,7 +4894,7 @@ end;
 procedure TPyIDEMainForm.FormShortCut(var Msg: TWMKey; var Handled: Boolean);
 begin
   Handled := CommandsDataModule.actlMain.IsShortCut(Msg);
-  if not Handled then
+  if not Handled and FGUIDesigner.ELDesigner.Active then
     Handled:= FGUIDesigner.ActionList.IsShortCut(Msg);
 end;
 

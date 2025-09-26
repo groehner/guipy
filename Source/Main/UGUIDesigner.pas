@@ -813,14 +813,18 @@ end;
 
 procedure TFGuiDesigner.CutClick(Sender: TObject);
 begin
-  FELDesigner.Cut;
-  UpdateState(Modified);
+  if ELDesigner.Active then begin
+    FELDesigner.Cut;
+    UpdateState(Modified);
+  end;
 end;
 
 procedure TFGuiDesigner.CopyClick(Sender: TObject);
 begin
-  FELDesigner.Copy;
-  UpdateState(not Modified);
+  if ELDesigner.Active then begin
+    FELDesigner.Copy;
+    UpdateState(not Modified);
+  end;
 end;
 
 procedure TFGuiDesigner.PasteClick(Sender: TObject);
@@ -830,6 +834,9 @@ var
   WinControl: TWinControl;
   EditForm: TEditorForm;
 begin
+  if not ELDesigner.Active or not FELDesigner.CanPaste then
+    Exit;
+
   // copy&paste ensures correct model, but source code must be generated
   PasteInContainer := (FELDesigner.SelectedControls.Count > 0);
   if PasteInContainer then
