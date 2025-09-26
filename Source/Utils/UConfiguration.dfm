@@ -4,7 +4,7 @@ object FConfiguration: TFConfiguration
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Configuration'
-  ClientHeight = 498
+  ClientHeight = 525
   ClientWidth = 832
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -23,15 +23,16 @@ object FConfiguration: TFConfiguration
     Left = 0
     Top = 0
     Width = 832
-    Height = 498
+    Height = 525
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitHeight = 498
     object TVConfiguration: TTreeView
       Left = 0
       Top = 0
       Width = 189
-      Height = 498
+      Height = 525
       Align = alLeft
       AutoExpand = True
       HideSelection = False
@@ -102,21 +103,26 @@ object FConfiguration: TFConfiguration
         00000000000000000000010A530075006200760065007200730069006F006E00
         00001F0000000000000000000000FFFFFFFFFFFFFFFF00000000000000000000
         0000000100}
+      ExplicitLeft = -6
+      ExplicitTop = 66
+      ExplicitHeight = 498
     end
     object PanelRight: TPanel
       Left = 189
       Top = 0
       Width = 643
-      Height = 498
+      Height = 525
       Align = alClient
       TabOrder = 1
+      ExplicitHeight = 498
       object PButtons: TPanel
         Left = 1
-        Top = 456
+        Top = 483
         Width = 641
         Height = 41
         Align = alBottom
         TabOrder = 0
+        ExplicitTop = 456
         object BSave: TButton
           Left = 548
           Top = 9
@@ -201,11 +207,12 @@ object FConfiguration: TFConfiguration
         Left = 1
         Top = 21
         Width = 641
-        Height = 435
-        ActivePage = PCodeCompletion
+        Height = 462
+        ActivePage = PStyles
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
+        ExplicitHeight = 435
         object PPython: TTabSheet
           Caption = 'Python'
           object vtPythonVersions: TVirtualStringTree
@@ -456,16 +463,17 @@ object FConfiguration: TFConfiguration
           ImageIndex = 27
           DesignSize = (
             633
-            402)
+            429)
           object gbGutter: TGroupBox
             AlignWithMargins = True
             Left = 8
-            Top = 206
+            Top = 233
             Width = 533
             Height = 193
             Anchors = [akLeft, akRight, akBottom]
             Caption = 'Gutter'
             TabOrder = 0
+            ExplicitTop = 206
             DesignSize = (
               533
               193)
@@ -495,8 +503,8 @@ object FConfiguration: TFConfiguration
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 72
-                Height = 8
+                Width = 179
+                Height = 25
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -506,6 +514,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 72
+                ExplicitHeight = 8
               end
             end
             object CBGutterColor: TSpTBXColorEdit
@@ -750,8 +760,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 91
-                Height = 15
+                Width = 188
+                Height = 28
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Consolas 10pt'
@@ -761,6 +771,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Consolas'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 91
+                ExplicitHeight = 15
               end
             end
             object btnFont: TButton
@@ -1718,7 +1730,7 @@ object FConfiguration: TFConfiguration
           Caption = 'Syntax colors'
           DesignSize = (
             633
-            402)
+            429)
           object Label13: TLabel
             Left = 8
             Top = 240
@@ -1911,7 +1923,7 @@ object FConfiguration: TFConfiguration
           ImageIndex = 24
           DesignSize = (
             633
-            402)
+            429)
           object SpTBXLabel1: TLabel
             Left = 199
             Top = 3
@@ -1997,7 +2009,7 @@ object FConfiguration: TFConfiguration
           Caption = 'Code templates'
           DesignSize = (
             633
-            402)
+            429)
           object GroupBox: TGroupBox
             AlignWithMargins = True
             Left = 8
@@ -2202,7 +2214,7 @@ object FConfiguration: TFConfiguration
           ImageIndex = 28
           DesignSize = (
             633
-            402)
+            429)
           object FileTemplatesLvItems: TListView
             Left = 14
             Top = 3
@@ -3423,7 +3435,7 @@ object FConfiguration: TFConfiguration
           ImageIndex = 27
           DesignSize = (
             633
-            402)
+            429)
           object lblAssignedTo: TLabel
             Left = 10
             Top = 270
@@ -3990,12 +4002,12 @@ object FConfiguration: TFConfiguration
           Caption = 'Printer'
           DesignSize = (
             633
-            402)
+            429)
           object Image1: TImage
             Left = 300
             Top = 10
             Width = 223
-            Height = 298
+            Height = 325
             Anchors = [akLeft, akTop, akBottom]
             Picture.Data = {
               07544269746D617036800000424D36800000000000007600000028000000DF00

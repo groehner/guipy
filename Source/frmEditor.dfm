@@ -785,6 +785,7 @@ object EditorForm: TEditorForm
         CollectionName = 'EditorGutter\BreakDisabled'
         Name = 'BreakDisabled'
       end>
+    ImageCollection = ResourcesDataModule.icGutterGlyphs
     PreserveItems = True
     Width = 11
     Height = 14

@@ -4695,30 +4695,26 @@ begin
 end;
 
 procedure TFConfiguration.BApplyStyleClick(Sender: TObject);
+  var Files: TStringList;
 begin
-  // for an unknown reason, the main window disappears when
-  // the style is changed, which is why they are temporarily hidden
-  GI_FileFactory.ApplyToFiles(
-    procedure(AFile: IFile)
+  Files:= TStringList.Create;
+  // gui form windows must temporarily been closed
+  GI_EditorFactory.ApplyToEditors(
+    procedure(AEditor: IEditor)
     begin
-      if AFile.GetFileKind = fkEditor then
-      begin
-        if Assigned(TEditorForm(AFile.Form).Partner) then
-          TEditorForm(AFile.Form).Partner.Hide;
+      var Editor := TEditorForm(AEditor.Form);
+      if Assigned(Editor.Partner) then begin
+        Files.Add(TPath.ChangeExtension(Editor.Pathname, '.pfm'));
+        Editor.Partner.Close;
       end;
     end);
   ActionApplyStyleExecute(Self);
-  GI_FileFactory.ApplyToFiles(
-    procedure(AFile: IFile)
-    begin
-      if AFile.GetFileKind = fkEditor then
-      begin
-        if Assigned(TEditorForm(AFile.Form).Partner) then
-        begin
-          TEditorForm(AFile.Form).Partner.Show;
-        end;
-      end;
-    end);
+  TThread.ForceQueue(nil, procedure
+  begin
+    for var Filename in Files do
+      PyIDEMainForm.DoOpen(Filename);
+    Files.Free;
+  end);
 end;
 
 procedure TFConfiguration.SetStyle(const StyleName: string);

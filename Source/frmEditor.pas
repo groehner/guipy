@@ -3755,8 +3755,11 @@ end;
 
 procedure TEditorForm.TBDesignformClick(Sender: TObject);
 begin
-  if IsPythonAndGUI and (Partner = nil) then
-    FGUIDesigner.Open(ChangeFileExt(Pathname, '.pfm'));
+  if IsPythonAndGUI then
+    if not Assigned(Partner) then
+      FGUIDesigner.Open(ChangeFileExt(Pathname, '.pfm'))
+    else
+      FGUIDesigner.DesignForm.Show;
 end;
 
 procedure TEditorForm.TBExplorerClick(Sender: TObject);
