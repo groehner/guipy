@@ -178,6 +178,8 @@ type
     FLngSet: string;
     FLngGet: string;
     procedure NewClass;
+    function NewAttribute(ClassNumber: Integer; Node: TTreeNode): Integer;
+    function ChangeAttribute(ClassNumber: Integer; Node: TTreeNode): Integer;
     procedure AttributeToPython(const Attribute: TAttribute;
       ClassNumber, Line: Integer);
     function RGMethodKindHasChanged: Boolean;
@@ -185,8 +187,8 @@ type
     procedure TVClass(Classifier: TClassifier);
     procedure TVAttribute(const Attribute: TAttribute);
     procedure TVMethod(Method: TOperation);
-    procedure ChangeAttribute(var Attribute: TAttribute);
-    procedure ChangeGetSet(Attribute: TAttribute; ClassNumber: Integer;
+    procedure ChangeAttributeValues(var Attribute: TAttribute);
+    procedure ChangeGetSetAttribute(Attribute: TAttribute; ClassNumber: Integer;
       const Name: string);
     function MakeAttribute(const CName: string): TAttribute;
     function MakeType(ComboBox: TComboBox): TClassifier; overload;
@@ -239,6 +241,7 @@ type
     procedure TakeParameter;
     procedure DeleteAttributeFromConstructorParameters(Node: TTreeNode;
       Attribute: TAttribute);
+    function AsUMLType(AType: string): string;
   protected
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
       const BasePath: string);
@@ -250,8 +253,7 @@ type
     procedure ChangeStyle;
   end;
 
-var
-  FClassEditor: TFClassEditor = nil;
+var FClassEditor: TFClassEditor = nil;
 
 implementation
 
@@ -277,8 +279,7 @@ uses
   UConfiguration,
   UUtils;
 
-const
-  CrLf = #13#10;
+const CrLf = #13#10;
 
 type
   TParamTyp = class(TObject)
@@ -295,8 +296,8 @@ begin
 end;
 
 procedure TFClassEditor.FormCreate(Sender: TObject);
-const
-  Values = '0'#$D#$A'0.0'#$D#$A''''''#$D#$A'True'#$D#$A'False'#$D#$A'None'#$D#$A'[]'#$D#$A'()'#$D#$A'{}'#$D#$A'set()';
+const Values =
+    '0'#$D#$A'0.0'#$D#$A''''''#$D#$A'True'#$D#$A'False'#$D#$A'None'#$D#$A'[]'#$D#$A'()'#$D#$A'{}'#$D#$A'set()';
 begin
   inherited;
   FMakeNewClass := False;
@@ -386,16 +387,10 @@ begin
 end;
 
 procedure TFClassEditor.TVClass(Classifier: TClassifier);
-var
-  Node, Anchor: TTreeNode;
-  Posi: Integer;
-  CName: string;
+var Node, Anchor: TTreeNode; Posi: Integer; CName: string;
 
   function GetAnchor(Str: string): TTreeNode;
-  var
-    Node: TTreeNode;
-    Str1: string;
-    Posi: Integer;
+  var Node: TTreeNode; Str1: string; Posi: Integer;
   begin
     Result := nil;
     Node := TreeView.Items.GetFirstNode;
@@ -453,8 +448,7 @@ begin
 end;
 
 procedure TFClassEditor.TVMethod(Method: TOperation);
-var
-  ImageNr: Integer;
+var ImageNr: Integer;
 begin
   var
   Node := TreeView.Items.AddChild(FMethodNode, Method.ToShortStringNode);
@@ -467,10 +461,7 @@ begin
 end;
 
 function TFClassEditor.GetConstructorHead(const Superclass: string): string;
-var
-  Filename: string;
-  Line, Posi: Integer;
-  StringList: TStringList;
+var Filename: string; Line, Posi: Integer; StringList: TStringList;
 
   procedure SearchInStringList;
   begin
@@ -536,9 +527,7 @@ begin
 end;
 
 procedure TFClassEditor.NewClass;
-var
-  Indent1, Indent2, Str: string;
-  Line, Posi1, Posi2, Posi3, Posi4: Integer;
+var Indent1, Indent2, Str: string; Line, Posi1, Posi2, Posi3, Posi4: Integer;
 
   function MakeInner(Str: string): string;
   begin
@@ -606,13 +595,9 @@ begin
 end;
 
 procedure TFClassEditor.BClassChangeClick(Sender: TObject);
-var
-  Str, Searchtext, ReplaceText, Tail, NewClassname, OldClassname,
-    AIndent: string;
-  SkipUpdate: Boolean;
-  Posi, NodeIndex: Integer;
-  Node: TTreeNode;
-  StringList: TStringList;
+var Str, Searchtext, ReplaceText, Tail, NewClassname, OldClassname,
+    AIndent: string; SkipUpdate: Boolean; Posi, NodeIndex: Integer;
+  Node: TTreeNode; StringList: TStringList;
 begin
   if Trim(EClass.Text) = '' then
     Exit;
@@ -722,10 +707,7 @@ end;
 
 function TFClassEditor.HasMethod(const GetSet, AttributeName: string;
   var Method: TOperation): Boolean;
-var
-  Cent: TClassifier;
-  MethodName: string;
-  Params1, Params2: Integer;
+var Cent: TClassifier; MethodName: string; Params1, Params2: Integer;
 begin
   Method := nil;
   if GuiPyOptions.GetSetMethodsAsProperty then
@@ -939,8 +921,7 @@ begin
 end;
 
 function TFClassEditor.GetLevel(Node: TTreeNode): Integer;
-var
-  ClassNode: TTreeNode;
+var ClassNode: TTreeNode;
 begin
   if not Assigned(Node) then
     Exit(0);
@@ -964,10 +945,7 @@ begin
 end;
 
 procedure TFClassEditor.TreeViewChange(Sender: TObject; Node: TTreeNode);
-var
-  Classifier: TClassifier;
-  Attribute: TAttribute;
-  Method: TOperation;
+var Classifier: TClassifier; Attribute: TAttribute; Method: TOperation;
   Line: Integer;
 begin
   if not Assigned(Node) then
@@ -1115,23 +1093,7 @@ begin
 end;
 
 procedure TFClassEditor.GetParameter(ListBox: TListBox; Method: TOperation);
-var
-  It2: IModelIterator;
-  Parameter: TParameter;
-  Str: string;
-  Int: Integer;
-
-  function AsUMLType(AType: string): string;
-  begin
-    Result := AType;
-    if AType = 'bool' then
-      Result := 'boolean'
-    else if AType = 'str' then
-      Result := 'String'
-    else if AType = 'int' then
-      Result := 'integer';
-  end;
-
+var It2: IModelIterator; Parameter: TParameter; Str: string; Int: Integer;
 begin
   ListBox.Clear;
   It2 := Method.GetParameters;
@@ -1157,8 +1119,7 @@ begin
 end;
 
 procedure TFClassEditor.PageControlChange(Sender: TObject);
-var
-  Node: TTreeNode;
+var Node: TTreeNode;
 begin
   var
   Tab := PageControl.TabIndex;
@@ -1232,9 +1193,7 @@ end;
 
 procedure TFClassEditor.AttributeToPython(const Attribute: TAttribute;
   ClassNumber, Line: Integer);
-var
-  Method: TOperation;
-  Datatype: string;
+var Method: TOperation; Datatype: string;
 begin
   // due to unexpected loss of Datatype when transferred with parameter Attribute
   if Assigned(Attribute.TypeClassifier) then
@@ -1254,11 +1213,9 @@ begin
   FMyEditor.ActiveSynEdit.EndUpdate;
 end;
 
-procedure TFClassEditor.ChangeGetSet(Attribute: TAttribute;
+procedure TFClassEditor.ChangeGetSetAttribute(Attribute: TAttribute;
   ClassNumber: Integer; const Name: string);
-var
-  NewGet, NewSet, Datatype: string;
-  Method1, Method2: TOperation;
+var NewGet, NewSet, Datatype: string; Method1, Method2: TOperation;
   GetIsFirst: Boolean;
 
   procedure DoGet;
@@ -1291,7 +1248,7 @@ begin
   if Assigned(Method1) and Assigned(Method2) and (Method1.LineS > Method2.LineS)
   then
     GetIsFirst := False;
-  ChangeAttribute(Attribute);
+  ChangeAttributeValues(Attribute);
   if Assigned(Attribute.TypeClassifier) then
     Datatype := Attribute.TypeClassifier.AsType
   else
@@ -1327,128 +1284,130 @@ begin
     Result := False;
 end;
 
-procedure TFClassEditor.BAttributeChangeClick(Sender: TObject);
-const
-  Values = '|0|0.0|''''|True|False|None|[]|()|{}|set()|';
+function TFClassEditor.NewAttribute(ClassNumber: Integer;
+  Node: TTreeNode): Integer;
+var Line: Integer;
+begin
+  var
+  Attribute := MakeAttribute(Node.Parent.Text);
+  Attribute.Level := GetLevel(Node);
+  if AttributeAlreadyExists(Attribute.Name) then begin
+    ErrorMsg(Format(_('%s already exists'), [Attribute.Name]));
+    Result := Node.AbsoluteIndex;
+  end
+  else
+  begin
+    FMyEditor.ActiveSynEdit.BeginUpdate;
+    Line := FMyEditor.GetLastConstructorLine(ClassNumber);
+    AttributeToPython(Attribute, ClassNumber, Line);
+    FMyEditor.RemovePass(ClassNumber);
+    FMyEditor.ActiveSynEdit.EndUpdate;
+    Result := Node.AbsoluteIndex + Node.Count + 1;
+  end;
+  Attribute.Free;
+end;
+
+function TFClassEditor.ChangeAttribute(ClassNumber: Integer;
+  Node: TTreeNode): Integer;
+
+const Values = '|0|0.0|''''|True|False|None|[]|()|{}|set()|';
   Types = '|int|integer|float|boolean|bool|str|String|string|list|tuple|dict|set|';
 
-var
-  Old, New, OldName, NewNameTypeUML, OldVisName, OldNameType, NewType: string;
-  ClassNumber, NodeIndex, TopItemIndex, Line: Integer;
-  Attribute: TAttribute;
-  Node: TTreeNode;
-  OldStatic, ValueChanged, TypeChanged: Boolean;
+var Old, OldName, OldVisName, OldNameType: string;
+    Attribute: TAttribute;
+    OldStatic, ValueChanged, TypeChanged: Boolean;
 
-  function AsUMLType(Str: string): string;
+  procedure DoChangeType(NewType: string);
   begin
-    Result := Str;
-    if Result = 'bool' then
-      Result := 'boolean'
-    else if Result = 'str' then
-      Result := 'String'
-    else if Result = 'int' then
-      Result := 'integer';
+    if NewType <> Attribute.TypeClassifier.AsType then
+    begin
+      if NewType = '' then
+        Attribute.TypeClassifier := nil
+      else
+        Attribute.TypeClassifier := MakeType(NewType);
+      CBAttributeType.Text := NewType;
+      TypeChanged := True;
+    end;
   end;
 
+  procedure DoAttribute;
+  var New: string;
+  begin
+    New := Attribute.ToPython(TypeChanged);
+    if CBAttributeValue.Text <> '' then
+      CBAttributeValue.Text := Attribute.Value;
+    if CBAttributeType.Text <> '' then
+      CBAttributeType.Text := Attribute.TypeClassifier.Name;
+    if New = Old then
+      Exit;
+
+    FMyEditor.ActiveSynEdit.BeginUpdate;
+    if OldStatic = Attribute.Static then
+      FMyEditor.ReplaceLineInLine(Attribute.LineS - 1, Old, New)
+    else if Attribute.Static then
+    begin
+      FMyEditor.DeleteLine(Attribute.LineS - 1);
+      FMyEditor.InsertLinesAt(TClassifier(Attribute.Owner).LineS, New);
+    end
+    else if OldStatic then
+    begin
+      FMyEditor.InsertAttributeCE(New, ClassNumber);
+      FMyEditor.DeleteLine(Attribute.LineS - 1);
+    end;
+    FMyEditor.ReplaceWord(OldName, Attribute.Name, True);
+    FMyEditor.ReplaceWord('self.' + OldVisName,
+      'self.' + Attribute.VisName, True);
+    ReplaceParameter(ClassNumber, OldNameType, Attribute.ToNameType);
+    FMyEditor.ActiveSynEdit.EndUpdate;
+  end;
+
+begin
+  Result := Node.AbsoluteIndex;
+  Attribute := GetAttribute(Node);
+  if not Assigned(Attribute) then
+    Exit;
+
+  if (Attribute.Name <> EAttributeName.Text) and
+    AttributeAlreadyExists(EAttributeName.Text) then
+  begin
+    ErrorMsg(Format(_('%s already exists'), [EAttributeName.Text]));
+    Exit;
+  end;
+
+  ValueChanged := CBAttributeValue.Text <> Attribute.Value;
+  TypeChanged := Assigned(Attribute.TypeClassifier) and
+    (AsUMLType(CBAttributeType.Text) <> Attribute.TypeClassifier.AsUMLType);
+  OldName := Attribute.Name;
+  OldVisName := Attribute.VisName;
+  OldNameType := Attribute.ToNameType;
+  OldStatic := Attribute.Static;
+  Old := Attribute.ToPython(False);
+  // changed to a value of another standard type then change type too
+  if ValueChanged and Assigned(Attribute.TypeClassifier) and
+    (Pos('|' + Attribute.TypeClassifier.AsType + '|', Types) > 0) then
+    DoChangeType(Attribute.TypeClassifier.ValueToType(CBAttributeValue.Text));
+  ChangeGetSetAttribute(Attribute, ClassNumber, Node.Parent.Parent.Text);
+  if TypeChanged then
+    DoChangeType(CBAttributeType.Text);
+  DoAttribute;
+end;
+
+procedure TFClassEditor.BAttributeChangeClick(Sender: TObject);
+var ClassNumber, TopItemIndex, NodeIndex: Integer;
+    Node: TTreeNode;
 begin
   Node := TreeView.Selected;
   if not Assigned(Node) or (EAttributeName.Text = '') or
     not MakeIdentifier(EAttributeName) then
     Exit;
+
   ClassNumber := GetClassNumber(Node);
   TopItemIndex := TreeView.TopItem.AbsoluteIndex;
-  NodeIndex := Node.AbsoluteIndex;
-
-  FMyEditor.ActiveSynEdit.BeginUpdate;
   if IsAttributesNode(Node) then
-  begin
-    NodeIndex := NodeIndex + Node.Count + 1;
-    Attribute := MakeAttribute(Node.Parent.Text);
-    Attribute.Level := GetLevel(Node);
-    NewNameTypeUML := Attribute.Name;
-    if AttributeAlreadyExists(Attribute.Name) then
-      ErrorMsg(Format(_('%s already exists'), [Attribute.Name]))
-    else
-    begin
-      Line := FMyEditor.GetLastConstructorLine(ClassNumber);
-      AttributeToPython(Attribute, ClassNumber, Line);
-      FMyEditor.RemovePass(ClassNumber);
-    end;
-    FreeAndNil(Attribute);
-  end
+    NodeIndex := NewAttribute(ClassNumber, Node)
   else
-  begin
-    Attribute := GetAttribute(Node);
-    if Assigned(Attribute) then
-    begin
-      ValueChanged := CBAttributeValue.Text <> Attribute.Value;
-      TypeChanged := Assigned(Attribute.TypeClassifier) and
-        (AsUMLType(CBAttributeType.Text) <> Attribute.TypeClassifier.AsUMLType);
-      OldName := Attribute.Name;
-      OldVisName := Attribute.VisName;
-      OldNameType := Attribute.ToNameType;
-      OldStatic := Attribute.Static;
-      Old := Attribute.ToPython(False);
-      // changed to a value of another standard type then change type too
-      if ValueChanged and Assigned(Attribute.TypeClassifier) and
-        (Pos('|' + Attribute.TypeClassifier.AsType + '|', Types) > 0) then
-      begin
-        NewType := Attribute.TypeClassifier.ValueToType(CBAttributeValue.Text);
-        if NewType <> Attribute.TypeClassifier.AsType then
-        begin
-          if NewType = '' then
-            Attribute.TypeClassifier := nil
-          else
-            Attribute.TypeClassifier := MakeType(NewType);
-          CBAttributeType.Text := NewType;
-          TypeChanged := True;
-        end;
-      end;
-      ChangeGetSet(Attribute, ClassNumber, Node.Parent.Parent.Text);
-      if (Attribute.Name <> OldName) and AttributeAlreadyExists(Attribute.Name)
-      then
-        ErrorMsg(Format(_('%s already exists'), [Attribute.Name]))
-      else
-      begin
-        New := Attribute.ToPython(TypeChanged);
-        NewNameTypeUML := Attribute.ToNameTypeUML;
-        if CBAttributeValue.Text <> '' then
-          CBAttributeValue.Text := Attribute.Value;
-        if CBAttributeType.Text <> '' then
-          CBAttributeType.Text := Attribute.TypeClassifier.Name;
-        if New <> Old then
-        begin
-          if OldStatic = Attribute.Static then
-            FMyEditor.ReplaceLineInLine(Attribute.LineS - 1, Old, New)
-          else if Attribute.Static then
-          begin
-            FMyEditor.DeleteLine(Attribute.LineS - 1);
-            FMyEditor.InsertLinesAt(TClassifier(Attribute.Owner).LineS, New);
-          end
-          else if OldStatic then
-          begin
-            FMyEditor.InsertAttributeCE(New, ClassNumber);
-            FMyEditor.DeleteLine(Attribute.LineS - 1);
-          end;
-          FMyEditor.ReplaceWord(OldName, Attribute.Name, True);
-          FMyEditor.ReplaceWord('self.' + OldVisName,
-            'self.' + Attribute.VisName, True);
-          ReplaceParameter(ClassNumber, OldNameType, Attribute.ToNameType);
-        end;
-      end;
-    end;
-  end;
-  FMyEditor.ActiveSynEdit.EndUpdate;
+    NodeIndex := ChangeAttribute(ClassNumber, Node);
   UpdateTreeView;
-  Node := GetClassNode(ClassNumber);
-  if Assigned(Node) then
-  begin
-    Node := Node.getFirstChild.getFirstChild;
-    while Assigned(Node) and (Node.Text <> NewNameTypeUML) do
-      Node := Node.GetNext;
-    if Assigned(Node) then
-      NodeIndex := Node.AbsoluteIndex;
-  end;
   if (0 <= TopItemIndex) and (TopItemIndex < TreeView.Items.Count) then
     TreeView.TopItem := TreeView.Items[TopItemIndex];
   if (0 <= NodeIndex) and (NodeIndex < TreeView.Items.Count) then
@@ -1458,17 +1417,10 @@ end;
 
 procedure TFClassEditor.ReplaceParameter(ClassNumber: Integer;
   const Str1, Str2: string);
-var
-  Node: TTreeNode;
-  MethodName, Str: string;
-  AClass: TClass;
-  LineNr: Integer;
+var Node: TTreeNode; MethodName, Str: string; AClass: TClass; LineNr: Integer;
 
   function ReplaceWord(Str, Str1, Str2: string): string;
-  var
-    WStr, RegExExpr: string;
-    RegEx: TRegEx;
-    Matches: TMatchCollection;
+  var WStr, RegExExpr: string; RegEx: TRegEx; Matches: TMatchCollection;
     Group: TGroup;
   begin
     RegExExpr := '\b(' + TRegEx.Escape(Str1) + ')';
@@ -1539,20 +1491,11 @@ begin
 end;
 
 procedure TFClassEditor.BAttributeDeleteClick(Sender: TObject);
-var
-  Attribute: TAttribute;
-  Method1, Method2: TOperation;
-  Posi1, Posi2, Posi3, ClassNumber: Integer;
-  Node: TTreeNode;
-begin
-  Node := TreeView.Selected;
-  if Assigned(Node) and IsAttributesNodeLeaf(Node) then
+var Attribute: TAttribute; Method1, Method2: TOperation;
+  Posi1, Posi2, Posi3, ClassNumber: Integer; Node: TTreeNode;
+
+  procedure DeleteGetSetMethods;
   begin
-    LockFormUpdate(FMyEditor);
-    FMyEditor.ActiveSynEdit.BeginUpdate;
-    Attribute := GetAttribute(Node);
-    HasMethod(_(FLngGet), Attribute.Name, Method1);
-    HasMethod(_(FLngSet), Attribute.Name, Method2);
     if Assigned(Method1) and Assigned(Method2) then
     begin
       if Method1.LineS < Method2.LineS then
@@ -1573,22 +1516,35 @@ begin
       if Assigned(Method2) then
         DeleteMethod(Method2);
     end;
-    ClassNumber := GetClassNumber(Node);
-    FMyEditor.DeleteAttributeCE('self.' + Attribute.VisName, ClassNumber);
-    DeleteAttributeFromConstructorParameters(Node, Attribute);
-    Posi1 := TreeView.Selected.AbsoluteIndex;
-    Posi2 := TreeView.FindNextToSelect.AbsoluteIndex;
-    Posi3 := TreeView.TopItem.AbsoluteIndex;
-    UpdateTreeView;
-    if (0 <= Posi3) and (Posi3 < TreeView.Items.Count) then
-      TreeView.TopItem := TreeView.Items[Posi3];
-    Posi1 := Min(Posi1, Posi2);
-    if (0 <= Posi1) and (Posi1 < TreeView.Items.Count) then
-      TreeView.Selected := TreeView.Items[Posi1];
-    BAttributeApply.Enabled := False;
-    FMyEditor.ActiveSynEdit.EndUpdate;
-    UnlockFormUpdate(FMyEditor);
+
   end;
+
+begin
+  Node := TreeView.Selected;
+  if not (Assigned(Node) and IsAttributesNodeLeaf(Node)) then
+    Exit;
+
+  LockFormUpdate(FMyEditor);
+  FMyEditor.ActiveSynEdit.BeginUpdate;
+  Attribute := GetAttribute(Node);
+  HasMethod(_(FLngGet), Attribute.Name, Method1);
+  HasMethod(_(FLngSet), Attribute.Name, Method2);
+  DeleteGetSetMethods;
+  ClassNumber := GetClassNumber(Node);
+  FMyEditor.DeleteAttributeCE('self.' + Attribute.VisName, ClassNumber);
+  DeleteAttributeFromConstructorParameters(Node, Attribute);
+  Posi1 := TreeView.Selected.AbsoluteIndex;
+  Posi2 := TreeView.FindNextToSelect.AbsoluteIndex;
+  Posi3 := TreeView.TopItem.AbsoluteIndex;
+  UpdateTreeView;
+  if (0 <= Posi3) and (Posi3 < TreeView.Items.Count) then
+    TreeView.TopItem := TreeView.Items[Posi3];
+  Posi1 := Min(Posi1, Posi2);
+  if (0 <= Posi1) and (Posi1 < TreeView.Items.Count) then
+    TreeView.Selected := TreeView.Items[Posi1];
+  BAttributeApply.Enabled := False;
+  FMyEditor.ActiveSynEdit.EndUpdate;
+  UnlockFormUpdate(FMyEditor);
 end;
 
 procedure TFClassEditor.DeleteAttributeFromConstructorParameters
@@ -1627,13 +1583,8 @@ begin
 end;
 
 procedure TFClassEditor.BMethodDeleteClick(Sender: TObject);
-var
-  Node: TTreeNode;
-  Method: TOperation;
-  StringList: TStringList;
-  Index: Integer;
-  Str: string;
-  HasSourceCode: Boolean;
+var Node: TTreeNode; Method: TOperation; StringList: TStringList;
+  Index: Integer; Str: string; HasSourceCode: Boolean;
 begin
   Node := TreeView.Selected;
   if Assigned(Node) and IsMethodsNodeLeaf(Node) then
@@ -1712,8 +1663,7 @@ end;
 
 function TFClassEditor.CreateMethod(const GetSet, Datatype: string;
   const Attribute: TAttribute): string;
-var
-  Str, Indent1, Indent2, AName: string;
+var Str, Indent1, Indent2, AName: string;
 begin
   Indent1 := GetIndent(Attribute.Level + 1);
   Indent2 := GetIndent(Attribute.Level + 2);
@@ -1762,8 +1712,7 @@ begin
 end;
 
 function TFClassEditor.Typ2Value(const Typ: string): string;
-const
-  Typs: array [1 .. 8] of string = ('int', 'integer', 'float', 'bool',
+const Typs: array [1 .. 8] of string = ('int', 'integer', 'float', 'bool',
     'boolean', 'String', 'str', 'None');
   Vals: array [1 .. 8] of string = ('0', '0', '0', 'false', 'false', '""',
     '""', 'None');
@@ -1779,14 +1728,8 @@ end;
 
 function TFClassEditor.MakeConstructor(Method: TOperation;
   const Source: string): string;
-var
-  Indent, Vis, Str, Head: string;
-  Ite: IModelIterator;
-  Parameter: TParameter;
-  Attribute: TAttribute;
-  Found: Boolean;
-  Posi: Integer;
-  Node: TTreeNode;
+var Indent, Vis, Str, Head: string; Ite: IModelIterator; Parameter: TParameter;
+  Attribute: TAttribute; Found: Boolean; Posi: Integer; Node: TTreeNode;
   SourceSL: TStringList;
 
   function GetSourceIndex(const Str: string): Integer;
@@ -1798,8 +1741,7 @@ var
   end;
 
   function GetSuperClass: TClass;
-  var
-    CIte: IModelIterator;
+  var CIte: IModelIterator;
   begin
     Result := nil;
     var
@@ -1950,8 +1892,7 @@ begin // MakeConstructor
 end;
 
 function TFClassEditor.MakeIdentifier(var Str: string): Integer;
-var
-  Int: Integer;
+var Int: Integer;
 begin
   Result := 0;
   // delete illegal chars at the beginning
@@ -1973,10 +1914,7 @@ begin
 end;
 
 function TFClassEditor.MakeIdentifier(ComboBox: TComboBox): Boolean;
-var
-  ErrPos, Len: Integer;
-  Str: string;
-  OnChange: TNotifyEvent;
+var ErrPos, Len: Integer; Str: string; OnChange: TNotifyEvent;
 begin
   Result := True;
   Str := ComboBox.Text;
@@ -2000,10 +1938,7 @@ begin
 end;
 
 function TFClassEditor.MakeIdentifier(Edit: TEdit): Boolean;
-var
-  ErrPos, ErrLen: Integer;
-  Str: string;
-  OnChange: TNotifyEvent;
+var ErrPos, ErrLen: Integer; Str: string; OnChange: TNotifyEvent;
 begin
   Result := True;
   Str := Edit.Text;
@@ -2024,7 +1959,7 @@ begin
     Edit.SelStart := Length(Str);
 end;
 
-procedure TFClassEditor.ChangeAttribute(var Attribute: TAttribute);
+procedure TFClassEditor.ChangeAttributeValues(var Attribute: TAttribute);
 begin
   Attribute.Name := EAttributeName.Text;
   Attribute.TypeClassifier := MakeType(CBAttributeType);
@@ -2037,7 +1972,7 @@ end;
 function TFClassEditor.MakeAttribute(const CName: string): TAttribute;
 begin
   Result := TAttribute.Create(nil);
-  ChangeAttribute(Result);
+  ChangeAttributeValues(Result);
 end;
 
 function TFClassEditor.MakeType(ComboBox: TComboBox): TClassifier;
@@ -2055,9 +1990,7 @@ begin
 end;
 
 function TFClassEditor.MakeType(const Name: string): TClassifier;
-var
-  MyUnit: TUnitPackage;
-  AClass: TClass;
+var MyUnit: TUnitPackage; AClass: TClass;
 begin
   Result := nil;
   MyUnit := FMyEditor.Model.ModelRoot.FindUnitPackage('Default');
@@ -2074,10 +2007,7 @@ begin
 end;
 
 procedure TFClassEditor.ChangeMethod(var Method: TOperation);
-var
-  Posi: Integer;
-  Typ, Str, Value: string;
-  Parameter: TParameter;
+var Posi: Integer; Typ, Str, Value: string; Parameter: TParameter;
 begin
   Method.Name := CBMethodName.Text;
   Method.ReturnValue := MakeType(CBMethodType);
@@ -2121,12 +2051,8 @@ begin
 end;
 
 procedure TFClassEditor.UpdateTreeView;
-var
-  CIte, Ite: IModelIterator;
-  Cent: TClassifier;
-  Attribute: TAttribute;
-  Method: TOperation;
-  IsFirstClass: Boolean;
+var CIte, Ite: IModelIterator; Cent: TClassifier; Attribute: TAttribute;
+  Method: TOperation; IsFirstClass: Boolean;
 begin
   if FTreeViewUpdating then
     Exit;
@@ -2187,8 +2113,7 @@ end;
 
 procedure TFClassEditor.ActionListUpdate(Action: TBasicAction;
   var Handled: Boolean);
-var
-  Vis: Boolean;
+var Vis: Boolean;
 begin
   if Action is TAction then
   begin
@@ -2243,8 +2168,7 @@ begin
 end;
 
 procedure TFClassEditor.CBParamNameSelect(Sender: TObject);
-var
-  Str: string;
+var Str: string;
 begin
   var
   Posi := CBParamName.ItemIndex;
@@ -2262,15 +2186,9 @@ begin
 end;
 
 procedure TFClassEditor.AllAttributesAsParameters(Node: TTreeNode);
-var
-  Str: string;
-  CIte, Ite: IModelIterator;
-  Cent: TClassifier;
-  Attribute: TAttribute;
-  Method: TOperation;
-  Parameter: TParameter;
-  Posi: Integer;
-  Ancestors: TStringList;
+var Str: string; CIte, Ite: IModelIterator; Cent: TClassifier;
+  Attribute: TAttribute; Method: TOperation; Parameter: TParameter;
+  Posi: Integer; Ancestors: TStringList;
 
   procedure MakeParameterFromAttributes(Cent: TClassifier);
   begin
@@ -2310,7 +2228,7 @@ begin
     begin
       Cent := TClassifier(CIte.Next);
       if Ancestors.IndexOf(Cent.Name) > -1 then
-       MakeParameterFromAttributes(Cent);
+        MakeParameterFromAttributes(Cent);
     end;
   end;
   Ancestors.Free;
@@ -2341,10 +2259,7 @@ begin
 end;
 
 procedure TFClassEditor.CBComboBoxEnter(Sender: TObject);
-var
-  ComboBox: TComboBox;
-  Rect: TRect;
-  LeftPart: Boolean;
+var ComboBox: TComboBox; Rect: TRect; LeftPart: Boolean;
 begin
   if Sender is TComboBox then
   begin
@@ -2370,8 +2285,7 @@ end;
 
 procedure TFClassEditor.ComboBoxKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
-var
-  ComboBox: TComboBox;
+var ComboBox: TComboBox;
 begin
   FComboBoxInvalid := True;
   if (Sender is TComboBox) and (Ord('0') <= Key) and (Key <= Ord('Z')) then
@@ -2435,9 +2349,7 @@ begin
 end;
 
 procedure TFClassEditor.CBAttributeValueSelect(Sender: TObject);
-var
-  Str: string;
-  Index: Integer;
+var Str: string; Index: Integer;
 begin
   Index := CBAttributeValue.ItemIndex;
   if (Index = -1) or (CBAttributeValue.Text <> CBAttributeValue.Items[Index])
@@ -2501,9 +2413,7 @@ begin
 end;
 
 procedure TFClassEditor.CBMethodnameSelect(Sender: TObject);
-var
-  Str: string;
-  Index: Integer;
+var Str: string; Index: Integer;
 begin
   Index := CBMethodName.ItemIndex;
   if (Index = -1) or (CBMethodName.Text <> CBMethodName.Items[Index]) then
@@ -2545,9 +2455,7 @@ begin
 end;
 
 procedure TFClassEditor.CBMethodTypeSelect(Sender: TObject);
-var
-  Str: string;
-  Index: Integer;
+var Str: string; Index: Integer;
 begin
   Index := CBMethodType.ItemIndex;
   if (Index = -1) or (CBMethodType.Text <> CBMethodType.Items[Index]) then
@@ -2600,9 +2508,7 @@ begin
 end;
 
 procedure TFClassEditor.CBParamTypeSelect(Sender: TObject);
-var
-  Str: string;
-  Index: Integer;
+var Str: string; Index: Integer;
 begin
   Index := CBParamType.ItemIndex;
   if (Index = -1) or (CBParamType.Text <> CBParamType.Items[Index]) then
@@ -2678,14 +2584,11 @@ end;
 
 function TFClassEditor.MethodToPython(Method: TOperation;
 Source: string): string;
-var
-  Str, Str2, Indent2, Comment: string;
-  Count: Integer;
+var Str, Str2, Indent2, Comment: string; Count: Integer;
   StringList: TStringList;
 
   procedure DelParam(const Param: string);
-  var
-    Int: Integer;
+  var Int: Integer;
   begin
     Int := 0;
     while Int < StringList.Count do
@@ -2696,11 +2599,9 @@ var
   end;
 
   procedure AdjustReturnValue;
-  const
-    ReturnValues: array [1 .. 5] of string = (' return 0', ' return ""',
+  const ReturnValues: array [1 .. 5] of string = (' return 0', ' return ""',
       ' return false', ' return ''\0''', ' return None');
-  var
-    Posi: Integer;
+  var Posi: Integer;
   begin
     for var I := 1 to 5 do
     begin
@@ -2805,11 +2706,8 @@ begin
 end;
 
 procedure TFClassEditor.BMethodChangeClick(Sender: TObject);
-var
-  New, Source: string;
-  Method: TOperation;
-  ClassNumber, NodeIndex, TopItemIndex, From: Integer;
-  Node: TTreeNode;
+var New, Source: string; Method: TOperation;
+  ClassNumber, NodeIndex, TopItemIndex, From: Integer; Node: TTreeNode;
 begin
   Node := TreeView.Selected;
   CBMethodType.Enabled := (RGMethodKind.ItemIndex = 1);
@@ -3082,9 +2980,7 @@ begin
 end;
 
 procedure TFClassEditor.MoveNode(TargetNode, SourceNode: TTreeNode);
-var
-  From, Till, ATo, ToTill, NodeIndex: Integer;
-  BlankLines: string;
+var From, Till, ATo, ToTill, NodeIndex: Integer; BlankLines: string;
   SourceModelEntity, TargetModelEntity: TModelEntity;
 begin
   if IsClassNode(SourceNode) or IsAttributesNode(SourceNode) or
@@ -3179,7 +3075,8 @@ begin
   begin
     var
     Posi := Pos(':', Node.Text);
-    if Copy(Node.Text, 1, Posi - 1) = Str then
+    if (Posi > 0) and (Copy(Node.Text, 1, Posi - 1) = Str) or (Node.Text = Str)
+    then
       Break;
     Node := Node.getNextSibling;
   end;
@@ -3193,6 +3090,17 @@ begin
   while Assigned(Node) and (Node.Text <> Str) do
     Node := Node.getNextSibling;
   Result := Assigned(Node);
+end;
+
+function TFClassEditor.AsUMLType(AType: string): string;
+begin
+  Result := AType;
+  if AType = 'bool' then
+    Result := 'boolean'
+  else if AType = 'str' then
+    Result := 'String'
+  else if AType = 'int' then
+    Result := 'integer';
 end;
 
 procedure TFClassEditor.ChangeStyle;

@@ -190,7 +190,8 @@ begin
     for var I := 0 to FileNames.Count - 1 do
       FCodeProvider.AddSearchPath(ExtractFilePath(FileNames[I]));
     Model.Clear;
-    Model.ModelRoot.SetConfigFile(FileNames[0]);
+    if FileNames.Count > 0 then
+      Model.ModelRoot.SetConfigFile(FileNames[0]);
     for var I := 0 to FileNames.Count - 1 do
       BuildModelFrom(FileNames[I], False, True, WithoutNeedSource);
   finally

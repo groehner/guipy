@@ -8,11 +8,14 @@ uses
   Forms,
   ExtCtrls,
   ImgList,
+  System.Actions,
   System.Generics.Collections,
   System.ImageList,
   Vcl.Menus,
   Vcl.VirtualImageList,
   Vcl.BaseImageCollection,
+  Vcl.StdCtrls,
+  Vcl.ActnList,
   SVGIconImageCollection,
   SpTBXItem,
   TB2Item,
@@ -62,6 +65,10 @@ type
     vilQtControls1616: TVirtualImageList;
     SpTBXSeparatorItem6: TSpTBXSeparatorItem;
     MIConfiguration: TSpTBXItem;
+    ActionList: TActionList;
+    actEditCopy: TAction;
+    actEditCut: TAction;
+    actEditPaste: TAction;
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ELDesignerControlInserting(Sender: TObject;

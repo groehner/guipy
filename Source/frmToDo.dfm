@@ -260,32 +260,32 @@ inherited ToDoWindow: TToDoWindow
   object vicImages: TVirtualImageList
     Images = <
       item
-        CollectionIndex = 79
+        CollectionIndex = 70
         CollectionName = 'Print13'
         Name = 'Print'
       end
       item
-        CollectionIndex = 25
+        CollectionIndex = 16
         CollectionName = 'Copy13'
         Name = 'Copy'
       end
       item
-        CollectionIndex = 112
+        CollectionIndex = 103
         CollectionName = 'Setup'
         Name = 'Setup'
       end
       item
-        CollectionIndex = 60
+        CollectionIndex = 51
         CollectionName = 'GoToLine'
         Name = 'GoToLine'
       end
       item
-        CollectionIndex = 61
+        CollectionIndex = 52
         CollectionName = 'Help'
         Name = 'Help'
       end
       item
-        CollectionIndex = 97
+        CollectionIndex = 88
         CollectionName = 'Refresh'
         Name = 'Refresh'
       end

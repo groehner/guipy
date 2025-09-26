@@ -2801,7 +2801,7 @@ begin
         (Attri = TSynPythonSyn(Highlighter).NonKeyAttri) or
         (Attri = TSynPythonSyn(Highlighter).SystemAttri) then
       begin
-        //Cursor := crHandPoint;
+        // Cursor := crHandPoint;
         FHotIdentInfo.HaveHotIdent := True;
         FHotIdentInfo.StartCoord := BufferCoord(Start, LineCharPos.Line);
       end;
@@ -2900,7 +2900,7 @@ begin
     ActiveSynEdit.Font.Assign(FontDialog.Font);
     FConfiguration.labFont.Font.Assign(ActiveSynEdit.Font);
   end;
-  FreeAndNil(FontDialog);
+  FontDialog.Free;
 end;
 
 procedure TEditorForm.mnGitExecute(Sender: TObject);
@@ -2910,13 +2910,13 @@ end;
 
 procedure TEditorForm.WMFolderChangeNotify(var Msg: TMessage);
 begin
-  if FEditor.FileName <> '' then
-    TThread.ForceQueue(nil,
-      procedure
-      begin
+  TThread.ForceQueue(nil,
+    procedure
+    begin
+      if FEditor.FileName <> '' then
         CommandsDataModule.ProcessFolderChange
           (TPath.GetDirectoryName(FEditor.FileName));
-      end, 200);
+    end, 200);
 end;
 
 procedure TEditorForm.AddWatchAtCursor;
@@ -3899,7 +3899,7 @@ begin
   if not ActiveSynEdit.SelAvail and (Trim(Line) <> '') then
     Delete(Str, 1, Length(AIndent));
   if (KTag = 1) and OnKey then
-  // FJava.scpJava.ActivateTimer(EditForm.Editor) ToDo
+    // FJava.scpJava.ActivateTimer(EditForm.Editor) ToDo
   else
     PutText(Str);
 end;

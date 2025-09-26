@@ -4894,6 +4894,8 @@ end;
 procedure TPyIDEMainForm.FormShortCut(var Msg: TWMKey; var Handled: Boolean);
 begin
   Handled := CommandsDataModule.actlMain.IsShortCut(Msg);
+  if not Handled then
+    Handled:= FGUIDesigner.ActionList.IsShortCut(Msg);
 end;
 
 procedure TPyIDEMainForm.ChangeLanguage(const LangCode: string);

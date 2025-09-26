@@ -85,7 +85,6 @@ inherited FunctionListWindow: TFunctionListWindow
       Font.Name = 'Segoe UI'
       Font.Style = []
       HideSelection = False
-      Items.ItemData = {050000000000000000}
       ReadOnly = True
       RowSelect = True
       ParentFont = False
@@ -219,8 +218,6 @@ inherited FunctionListWindow: TFunctionListWindow
     ParentShowHint = False
     ShowHint = True
     SizeGrip = False
-    ExplicitTop = 291
-    ExplicitWidth = 532
     object LeftStatusLabel: TSpTBXLabelItem
       Wrapping = twEndEllipsis
       Options = [tboShowHint]
@@ -228,7 +225,7 @@ inherited FunctionListWindow: TFunctionListWindow
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 514
     end
     object SpTBXSeparatorItem5: TSpTBXSeparatorItem
     end
@@ -361,6 +358,7 @@ inherited FunctionListWindow: TFunctionListWindow
   object vilImages: TVirtualImageList
     Images = <
       item
+        CollectionIndex = 16
         CollectionName = 'Copy13'
         Name = 'Copy'
       end

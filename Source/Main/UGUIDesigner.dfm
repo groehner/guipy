@@ -143,8 +143,6 @@ object FGUIDesigner: TFGUIDesigner
     end
     object MICopy: TSpTBXItem
       Caption = 'Copy'
-      ImageIndex = 7
-      ImageName = 'Copy1'
       ShortCut = 16451
       OnClick = CopyClick
     end
@@ -1967,5 +1965,24 @@ object FGUIDesigner: TFGUIDesigner
     ImageCollection = icQtControls
     Left = 272
     Top = 240
+  end
+  object ActionList: TActionList
+    Left = 24
+    Top = 168
+    object actEditCut: TAction
+      Caption = 'Cut'
+      ShortCut = 16472
+      OnExecute = CutClick
+    end
+    object actEditCopy: TAction
+      Caption = 'Copy'
+      ShortCut = 16451
+      OnExecute = CopyClick
+    end
+    object actEditPaste: TAction
+      Caption = 'Paste'
+      ShortCut = 16470
+      OnExecute = PasteClick
+    end
   end
 end
