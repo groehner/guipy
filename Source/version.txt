@@ -1,3 +1,8 @@
+7.05, 2025.09.26
+bugfix for class editor
+issue #12 at github
+icon for breakpoint reactivated
+
 7.04, 2025.08.27
 bugfix for object inspector
 
