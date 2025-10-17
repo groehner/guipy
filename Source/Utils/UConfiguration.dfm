@@ -27,7 +27,6 @@ object FConfiguration: TFConfiguration
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitHeight = 498
     object TVConfiguration: TTreeView
       Left = 0
       Top = 0
@@ -103,9 +102,6 @@ object FConfiguration: TFConfiguration
         00000000000000000000010A530075006200760065007200730069006F006E00
         00001F0000000000000000000000FFFFFFFFFFFFFFFF00000000000000000000
         0000000100}
-      ExplicitLeft = -6
-      ExplicitTop = 66
-      ExplicitHeight = 498
     end
     object PanelRight: TPanel
       Left = 189
@@ -114,7 +110,6 @@ object FConfiguration: TFConfiguration
       Height = 525
       Align = alClient
       TabOrder = 1
-      ExplicitHeight = 498
       object PButtons: TPanel
         Left = 1
         Top = 483
@@ -122,7 +117,6 @@ object FConfiguration: TFConfiguration
         Height = 41
         Align = alBottom
         TabOrder = 0
-        ExplicitTop = 456
         object BSave: TButton
           Left = 548
           Top = 9
@@ -208,11 +202,10 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 641
         Height = 462
-        ActivePage = PStyles
+        ActivePage = PUML2
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
-        ExplicitHeight = 435
         object PPython: TTabSheet
           Caption = 'Python'
           object vtPythonVersions: TVirtualStringTree
@@ -473,7 +466,6 @@ object FConfiguration: TFConfiguration
             Anchors = [akLeft, akRight, akBottom]
             Caption = 'Gutter'
             TabOrder = 0
-            ExplicitTop = 206
             DesignSize = (
               533
               193)
@@ -503,8 +495,8 @@ object FConfiguration: TFConfiguration
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 179
-                Height = 25
+                Width = 72
+                Height = 8
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -514,8 +506,6 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
-                ExplicitWidth = 72
-                ExplicitHeight = 8
               end
             end
             object CBGutterColor: TSpTBXColorEdit
@@ -760,8 +750,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 188
-                Height = 28
+                Width = 91
+                Height = 15
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Consolas 10pt'
@@ -771,8 +761,6 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Consolas'
                 Font.Style = []
                 ParentFont = False
-                ExplicitWidth = 91
-                ExplicitHeight = 15
               end
             end
             object btnFont: TButton
@@ -3275,7 +3263,7 @@ object FConfiguration: TFConfiguration
             Left = 16
             Top = 20
             Width = 300
-            Height = 189
+            Height = 237
             Caption = 'Class representation'
             TabOrder = 0
             object CBShowEmptyRects: TCheckBox
@@ -3336,12 +3324,28 @@ object FConfiguration: TFConfiguration
               Caption = 'Class name in uppercase'
               TabOrder = 6
             end
+            object CBUseAbstractForClass: TCheckBox
+              Left = 12
+              Top = 185
+              Width = 261
+              Height = 17
+              Caption = 'Use {abstract} for class'
+              TabOrder = 7
+            end
+            object CBUseAbstractForMethods: TCheckBox
+              Left = 12
+              Top = 208
+              Width = 261
+              Height = 17
+              Caption = 'Use {abstract} for methods'
+              TabOrder = 8
+            end
           end
           object GBObjectPresentation: TGroupBox
             Left = 334
             Top = 20
             Width = 300
-            Height = 189
+            Height = 237
             Caption = 'Object representation'
             TabOrder = 1
             object CBShowObjectsWithMethods: TCheckBox
@@ -3387,7 +3391,7 @@ object FConfiguration: TFConfiguration
           end
           object GBClassEditing: TGroupBox
             Left = 16
-            Top = 226
+            Top = 274
             Width = 300
             Height = 71
             Caption = 'Class editing'
@@ -3412,8 +3416,8 @@ object FConfiguration: TFConfiguration
             end
           end
           object GBObjectEditing: TGroupBox
-            Left = 338
-            Top = 226
+            Left = 340
+            Top = 274
             Width = 300
             Height = 71
             Caption = 'Object editing'
@@ -6602,8 +6606,8 @@ object FConfiguration: TFConfiguration
   end
   object actlPythonVersions: TActionList
     OnUpdate = actlPythonVersionsUpdate
-    Left = 672
-    Top = 272
+    Left = 600
+    Top = 224
     object actPVActivate: TAction
       Caption = 'Activate'
       HelpContext = 880

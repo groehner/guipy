@@ -16,10 +16,11 @@ unit UConfiguration;
   b) in variables (Model)
   c) in form (View)
 
-  RestoreApplicationData              ModelToView
+  #           RestoreApplicationData              ModelToView
   INI files  ----------------------->  model   -------------> view
+
   INI files <----------------------- variables <------------- gui-elements
-  StoreApplicationData                ViewToModel
+  #            StoreApplicationData                ViewToModel
 
 
   http://dxgettext.po.dk/documentation/how-to
@@ -159,6 +160,8 @@ type
     FShowClassparameterSeparately: Boolean;
     FRoleHidesAttribute: Boolean;
     FClassnameInUppercase: Boolean;
+    FUseAbstractForClass: Boolean;
+    FUseAbstractForMethods: Boolean;
     FDefaultModifiers: Boolean;
     FShowPublicOnly: Boolean;
     FShowObjectsWithInheritedPrivateAttributes: Boolean;
@@ -348,6 +351,10 @@ type
       write FRoleHidesAttribute;
     property ClassnameInUppercase: Boolean read FClassnameInUppercase
       write FClassnameInUppercase;
+    property UseAbstractForClass: Boolean read FUseAbstractForClass
+      write FUseAbstractForClass;
+    property UseAbstractForMethods: Boolean read FUseAbstractForMethods
+      write FUseAbstractForMethods;
     property DefaultModifiers: Boolean read FDefaultModifiers
       write FDefaultModifiers;
     property ShowPublicOnly: Boolean read FShowPublicOnly write FShowPublicOnly;
@@ -1128,6 +1135,8 @@ type
     EChatTemperature: TEdit;
     CBAccessibilitySupport: TCheckBox;
     CBLspDebug: TCheckBox;
+    CBUseAbstractForClass: TCheckBox;
+    CBUseAbstractForMethods: TCheckBox;
 {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1449,7 +1458,9 @@ type
     property VisToolbars: TBoolArray read FVisToolbars;
   end;
 
-var FConfiguration: TFConfiguration = nil; GuiPyOptions: TGuiPyOptions = nil;
+var
+  FConfiguration: TFConfiguration = nil;
+  GuiPyOptions: TGuiPyOptions = nil;
   GuiPyLanguageOptions: TGuiPyLanguageOptions = nil;
 
 implementation
@@ -2140,6 +2151,8 @@ begin
     CBShowClassparameterSeparately.Checked := ShowClassparameterSeparately;
     CBRoleHidesAttribute.Checked := RoleHidesAttribute;
     CBClassnameInUppercase.Checked := ClassnameInUppercase;
+    CBUseAbstractForClass.Checked := UseAbstractForClass;
+    CBUseAbstractForMethods.Checked := UseAbstractForMethods;
 
     // tab restrictions
     CBLockedDosWindow.Checked := LockedDOSWindow;
@@ -2539,6 +2552,8 @@ begin
     ShowClassparameterSeparately := CBShowClassparameterSeparately.Checked;
     RoleHidesAttribute := CBRoleHidesAttribute.Checked;
     ClassnameInUppercase := CBClassnameInUppercase.Checked;
+    UseAbstractForClass := CBUseAbstractForClass.Checked;
+    UseAbstractForMethods := CBUseAbstractForMethods.Checked;
 
     // tab restrictions
     LockedDOSWindow := CBLockedDosWindow.Checked;
@@ -6442,6 +6457,8 @@ begin
   FConstructorWithVisibility := False;
   FRelationshipAttributesBold := True;
   FShowClassparameterSeparately := False;
+  FUseAbstractForClass := True;
+  FUseAbstractForMethods := False;
   FRoleHidesAttribute := False;
   FDefaultModifiers := True;
   FShowPublicOnly := False;

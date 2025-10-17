@@ -52,7 +52,7 @@ object FClassEditor: TFClassEditor
     Top = 10
     Width = 364
     Height = 435
-    ActivePage = TSAttributes
+    ActivePage = TSClass
     TabOrder = 0
     OnChange = PageControlChange
     object TSClass: TTabSheet
@@ -119,11 +119,20 @@ object FClassEditor: TFClassEditor
       end
       object CBClassInner: TCheckBox
         Left = 96
-        Top = 80
+        Top = 103
         Width = 97
         Height = 17
         Caption = 'inner'
         TabOrder = 5
+      end
+      object CBClassAbstract: TCheckBox
+        Left = 96
+        Top = 80
+        Width = 97
+        Height = 17
+        Caption = 'abstract'
+        TabOrder = 6
+        OnMouseUp = CBClassAbstractMouseUp
       end
     end
     object TSAttributes: TTabSheet

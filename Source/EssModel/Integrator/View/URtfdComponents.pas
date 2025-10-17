@@ -1752,10 +1752,6 @@ begin
       Result := GetSVGText(Left, Top + Round(0.65 * Height) + 1,
         Fontstyle, Text);
   end;
-
-  // if GuiPyOptions.UseAbstract and FEntity.IsAbstract then
-  // Result:= Result + GetSVGText(OwnerRect.Width-8 - ShadowWidth, Top + Round(0.65*Height) + 1,
-  // ' font-style="italic" Text-anchor="end"', '{abstract}');'
 end;
 
 { TRtfdClassName }
@@ -1804,6 +1800,8 @@ begin
     FExtentY := 0;
     EntityChange(nil);
   end;
+  if Entity.IsAbstract and GuiPyOptions.UseAbstractForClass then
+    Caption := Caption + #13#10'{abstract}';
   Height := Height + 2 * FExtentY;
 end;
 
@@ -2184,6 +2182,9 @@ begin
     if Assigned(FOperation.ReturnValue) then
       Name := Name + ' ' + FOperation.ReturnValue.AsUMLType;
   end;
+
+  if FEntity.IsAbstract and GuiPyOptions.UseAbstractForMethods then
+    Name:= Name + ' {abstract}';
   Caption := Name;
   Font.Style := [];
   Font.Color := FForegroundColor;

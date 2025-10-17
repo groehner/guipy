@@ -182,6 +182,8 @@ begin
   if ParsedClass.SuperClasses.Count > 0 then // ToDo only one superclass
     for var I := 0 to ParsedClass.SuperClasses.Count - 1 do
     begin
+      if ParsedClass.SuperClasses[I] = 'ABC' then
+        AClass.IsAbstract := True;
       AClassifier := NeedClassifier(ParsedClass.SuperClasses[I]);
       if Assigned(AClassifier) and (AClassifier is TClass) then
         AClass.AddAncestors(AClassifier as TClass);
@@ -241,8 +243,6 @@ begin
       ParsedFunction := TParsedFunction(CodeEditor);
       OPTemp := AClass.MakeOperation(ParsedFunction.Name, nil);
       DoOperation(ParsedFunction, OPTemp, AClass.Name, Level);
-      if ParsedFunction.isAbstractMethod then
-        AClass.IsAbstract := True;
       Operation := AClass.FindOperation(OPTemp);
       if not Assigned(Operation) then
       begin

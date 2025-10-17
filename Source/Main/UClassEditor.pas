@@ -95,6 +95,7 @@ type
     icClassTreeView: TSVGIconImageCollection;
     vilTreeViewLight: TVirtualImageList;
     vilTreeViewDark: TVirtualImageList;
+    CBClassAbstract: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -156,7 +157,6 @@ type
     procedure EAttributeNameKeyPress(Sender: TObject; var Key: Char);
     procedure CBClassAbstractMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure CBClassAbstractClick(Sender: TObject);
     procedure CBAttributeValueKeyPress(Sender: TObject; var Key: Char);
     procedure CBAttributeValueDropDown(Sender: TObject);
     procedure CBAttributeValueKeyUp(Sender: TObject; var Key: Word;
@@ -596,8 +596,38 @@ end;
 
 procedure TFClassEditor.BClassChangeClick(Sender: TObject);
 var Str, Searchtext, ReplaceText, Tail, NewClassname, OldClassname,
-    AIndent: string; SkipUpdate: Boolean; Posi, NodeIndex: Integer;
+  AIndent: string; SkipUpdate: Boolean; Posi, NodeIndex: Integer;
   Node: TTreeNode; StringList: TStringList;
+
+  function GetClasses(const InheritanceString: string): TStringList;
+  begin
+    Result := TStringList.Create;
+    Result.Delimiter := ',';
+    Result.StrictDelimiter := True;
+    Result.DelimitedText := InheritanceString;
+    for var I := 0 to Result.Count - 1 do
+      Result[I] := Trim(Result[I]);
+  end;
+
+  function RemoveABCFromInheritance(const InheritanceString: string): string;
+  begin
+    var Classes := GetClasses(InheritanceString);
+    for var I := Classes.Count - 1 downto 0 do
+      if SameText(Classes[I], 'ABC') then
+        Classes.Delete(I);
+    Result := Classes.DelimitedText;
+    Classes.Free;
+  end;
+
+  function AddABCToInheritance(const InheritanceString: string): string;
+  begin
+    var Classes := GetClasses(InheritanceString);
+    if Classes.IndexOf('ABC') = -1 then
+      Classes.Insert(0, 'ABC');
+    Result := Classes.DelimitedText;
+    Classes.Free;
+  end;
+
 begin
   if Trim(EClass.Text) = '' then
     Exit;
@@ -623,6 +653,13 @@ begin
       GotoWord(Searchtext);
       Str := ActiveSynEdit.LineText;
       Str := MyStringReplace(Str, Searchtext, ReplaceText);
+
+      if not CBClassAbstract.Checked then
+        EExtends.Text := RemoveABCFromInheritance(EExtends.Text)
+      else if CBClassAbstract.Checked then begin
+        EExtends.Text:= AddABCToInheritance(EExtends.Text);
+        InsertImport('from abc import ABC');
+      end;
 
       Posi := Length(Str);
       while (Posi > 0) and (Str[Posi] <> ':') do
@@ -751,6 +788,8 @@ procedure TFClassEditor.EnableEvents(Enable: Boolean);
 begin
   if Enable and not FMyEditor.ActiveSynEdit.ReadOnly then
   begin
+    CBClassAbstract.OnClick := BClassChangeClick;
+
     RGAttributeAccess.OnClick := BAttributeChangeClick;
     CBAttributeStatic.OnClick := BAttributeChangeClick;
     CBAttributeFinal.OnClick := BAttributeChangeClick;
@@ -765,6 +804,8 @@ begin
   end
   else
   begin
+    CBClassAbstract.OnClick := nil;
+
     EClass.OnChange := nil;
     EExtends.OnChange := nil;
 
@@ -961,6 +1002,7 @@ begin
       begin
         EClass.Text := Node.Text;
         CBClassInner.Checked := (Classifier.Level > 0);
+        CBClassAbstract.Checked := Classifier.IsAbstract;
         SetEditText(EExtends, (Classifier as TClass).AncestorsAsString);
         Line := Classifier.LineS;
       end;
@@ -1183,6 +1225,7 @@ begin
     begin
       EClass.Text := '';
       EExtends.Text := '';
+      CBClassAbstract.Checked := False;
       CBClassInner.Checked := False;
       if Assigned(TreeView.Selected) then
         TreeView.Selected.Selected := False;
@@ -2366,11 +2409,6 @@ begin
   end;
 end;
 
-procedure TFClassEditor.CBClassAbstractClick(Sender: TObject);
-begin
-  BClassChangeClick(Self);
-end;
-
 procedure TFClassEditor.CBClassAbstractMouseUp(Sender: TObject;
 Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
@@ -2752,7 +2790,7 @@ begin
     else if (Sender = BMethodApply) then
       ErrorMsg(Format(_('%s already exists'), [Method.ToShortStringNode]));
     if Method.IsAbstract then
-      FMyEditor.InsertImport('From abc import abstractmethod');
+      FMyEditor.InsertImport('from abc import abstractmethod');
     FreeAndNil(Method);
   end
   else
@@ -2782,7 +2820,7 @@ begin
         New := MethodToPython(Method, Source);
       ReplaceMethod(Method, New);
       if Method.IsAbstract then
-        FMyEditor.InsertImport('From abc import abstractmethod');
+        FMyEditor.InsertImport('from abc import abstractmethod');
     end;
   end;
   FMyEditor.Modified := True;

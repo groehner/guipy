@@ -459,6 +459,7 @@ end;
 
 procedure TFUMLForm.SetOptions;
 begin
+  SaveAndReload;
   FConfiguration.setToolbarVisibility(UMLToolbar, 3);
 end;
 
