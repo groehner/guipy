@@ -1,3 +1,7 @@
+7.06, 2025.10.16
+class editor supports abstract classes, configuration options for {abstract}
+bugfix for Textdiff tool
+
 7.05, 2025.09.26
 bugfix for class editor
 issue #12 at github
