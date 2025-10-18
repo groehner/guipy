@@ -490,8 +490,10 @@ begin
     NValue := IntToStr(FMaxWidth) + ', ' + IntToStr(FMaxHeight)
   else if (Attr = 'MinHeight') or (Attr = 'MinWidth') then
     NValue := IntToStr(FMinWidth) + ', ' + IntToStr(FMinHeight)
-  else if Attr = 'Title' then
+  else if Attr = 'Title' then begin
     Caption := Value;
+    NValue:= Value;
+  end;
   FWidget.SetAttribute(Attr, NValue, Typ);
 end;
 
