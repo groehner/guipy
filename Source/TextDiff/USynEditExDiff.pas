@@ -218,7 +218,10 @@ end;
 procedure TSynEditExDiff.EditorStatusChange(Sender: TObject;
   Changes: TSynStatusChanges);
 begin
-  (FMyOwner as TFTextDiff).Number := FNumber;
+  if not Assigned(FMyOwner) then
+    Exit;
+
+  (FMyOwner as TFTextDiff).CodeEditNumber := FNumber;
   (FMyOwner as TFTextDiff).liLineColumn.Caption :=
     Format(' %4d : %3d ', [CaretY, CaretX]);
   if Changes * [scModified] <> [] then

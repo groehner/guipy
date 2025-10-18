@@ -632,34 +632,50 @@ procedure TFile.Close;
 var
   TabSheet: TSpTBXTabSheet;
   TabControl: TSpTBXCustomTabControl;
+  TextDiffPage: TSpTBXTabSheet;
 begin
-  if Assigned(FForm) then
-  begin
-    GI_PyIDEServices.MRUAddFile(Self);
-    if FUntitledNumber <> -1 then
-      UntitledNumbers[FUntitledNumber] := False;
+  if not Assigned(FForm) then
+    Exit;
 
-    GI_FileFactory.RemoveFile(Self);
-    if GI_FileFactory.Count = 0 then
-      PyIDEMainForm.UpdateCaption;
-
-    TabSheet := (FForm.Parent as TSpTBXTabSheet);
-    TabControl := TabSheet.TabControl;
-    TabControl.Toolbar.BeginUpdate;
-    try
-      (FForm.FParentTabControl as TSpTBXTabControl).zOrder.Remove(TabSheet.Item);
-      FForm.Close;
-      FForm:= nil;
-      TabSheet.Free;
-      if Assigned(TabControl) then begin
-        TabControl.Toolbar.MakeVisible(TabControl.ActiveTab);
-        var AFile:= GI_PyIDEServices.GetActiveFile;
-        if Assigned(AFile) then
-          AFile.Activate;
+  // issue #13
+  // switch to another page before closing a Textdiff
+  // otherwise you get unclear exceptions during closing
+  if FFileKind = fkTextdiff then begin
+    TextDiffPage := FForm.Parent as TSpTBXTabSheet;
+    TabControl := TextDiffPage.TabControl;
+    if TabControl.PagesCount = 1 then
+      PyIDEMainForm.actFileNewModuleExecute(Self);
+    for var I := 0 to TabControl.PagesCount - 1 do
+      if TabControl.Pages[I] <> TextDiffPage then begin
+        TabControl.ActivePage:= TabControl.Pages[I];
+        Break;
       end;
-    finally
-      TabControl.Toolbar.EndUpdate;
+  end;
+
+  GI_PyIDEServices.MRUAddFile(Self);
+  if FUntitledNumber <> -1 then
+    UntitledNumbers[FUntitledNumber] := False;
+
+  GI_FileFactory.RemoveFile(Self);
+  if GI_FileFactory.Count = 0 then
+    PyIDEMainForm.UpdateCaption;
+
+  TabSheet := (FForm.Parent as TSpTBXTabSheet);
+  TabControl := TabSheet.TabControl;
+  TabControl.Toolbar.BeginUpdate;
+  try
+    (FForm.FParentTabControl as TSpTBXTabControl).ZOrder.Remove(TabSheet.Item);
+    FForm.Close;
+    FForm:= nil;
+    TabSheet.Free;
+    if Assigned(TabControl) then begin
+      TabControl.Toolbar.MakeVisible(TabControl.ActiveTab);
+      var AFile:= GI_PyIDEServices.GetActiveFile;
+      if Assigned(AFile) then
+        AFile.Activate;
     end;
+  finally
+    TabControl.Toolbar.EndUpdate;
   end;
 end;
 

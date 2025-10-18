@@ -14,6 +14,7 @@ object FGUIForm: TFGUIForm
   FormStyle = fsStayOnTop
   Position = poDefault
   Visible = True
+  StyleName = 'Windows'
   OnAfterMonitorDpiChanged = FormAfterMonitorDpiChanged
   OnBeforeMonitorDpiChanged = FormBeforeMonitorDpiChanged
   OnCanResize = FormCanResize

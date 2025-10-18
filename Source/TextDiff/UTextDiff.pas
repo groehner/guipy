@@ -131,7 +131,7 @@ type
     FOnlyDifferences: Boolean;
     FIgnoreBlanks: Boolean;
     FIgnoreCase: Boolean;
-    FNumber: Integer;
+    FCodeEditNumber: Integer;
     procedure DoCompare;
     procedure DoSaveFile(Num: Integer); reintroduce;
     procedure DoLoadFile(const Filename: string; Num: Integer);
@@ -178,7 +178,7 @@ type
     procedure DPIChanged; override;
 
     property FilesCompared: Boolean read FFilesCompared;
-    property Number: Integer read FNumber write FNumber;
+    property CodeEditNumber: Integer read FCodeEditNumber write FCodeEditNumber;
   end;
 
 implementation
@@ -224,7 +224,7 @@ begin
   FCodeEdit1 := TSynEditExDiff.Create(Self);
   with FCodeEdit1 do
   begin
-    FNumber := 1;
+    Number := 1;
     Parent := PLeft;
     Align := alClient;
     PCaption := PCaptionLeft;
@@ -243,7 +243,7 @@ begin
   FCodeEdit2 := TSynEditExDiff.Create(Self);
   with FCodeEdit2 do
   begin
-    FNumber := 2;
+    Number := 2;
     Parent := PRight;
     Align := alClient;
     PCaption := PCaptionRight;
@@ -259,7 +259,7 @@ begin
       HighlighterFromFileExt('.py');
   end;
   FCodeEdit2.Assign(GEditorOptions);
-  FNumber := 1;
+  FCodeEditNumber := 1;
   OnClose := FormClose;
   FOnlyDifferences := False;
   SetFont(GEditorOptions.Font);
@@ -309,7 +309,7 @@ procedure TFTextDiff.SynEditEnter(Sender: TObject);
 begin
   GI_SearchCmds := Self;
   FActiveSynEdit := Sender as TSynEdit;
-  FNumber := (FActiveSynEdit as TSynEditExDiff).Number;
+  FCodeEditNumber := (FActiveSynEdit as TSynEditExDiff).Number;
   TBCopyBlockLeft.Hint := _('Copy block left');
   TBCopyBlockRight.Hint := _('Copy block right');
   EditorSearchOptions.TextDiffIsSearchTarget := True;
@@ -373,7 +373,7 @@ end;
 
 procedure TFTextDiff.Open(const Filename: string);
 begin
-  DoLoadFile(Filename, FNumber);
+  DoLoadFile(Filename, FCodeEditNumber);
 end;
 
 procedure TFTextDiff.DoLoadFile(const Filename: string; Num: Integer);
@@ -382,10 +382,16 @@ begin
     TBDiffsOnlyClick(Self);
   SetFilesCompared(False);
   LinkScroll(False);
-  if Num = 1 then
-    FCodeEdit1.Load(FLines1, Filename)
-  else
+  if Num = 1 then begin
+    FCodeEdit1.Load(FLines1, Filename);
+    FCodeEdit1.Highlighter := ResourcesDataModule.Highlighters.
+      HighlighterFromFileName(FileName);
+  end
+  else begin
     FCodeEdit2.Load(FLines2, Filename);
+    FCodeEdit2.Highlighter := ResourcesDataModule.Highlighters.
+      HighlighterFromFileName(FileName);
+  end;
 end;
 
 procedure TFTextDiff.Open(const Filename1, Filename2: string);
@@ -396,7 +402,10 @@ begin
   LinkScroll(False);
   FCodeEdit1.Load(FLines1, Filename1);
   FCodeEdit2.Load(FLines2, Filename2);
-  DoCompare;
+  FCodeEdit1.Highlighter := ResourcesDataModule.Highlighters.
+    HighlighterFromFileName(FileName1);
+  FCodeEdit2.Highlighter := ResourcesDataModule.Highlighters.
+    HighlighterFromFileName(FileName2);
 end;
 
 procedure TFTextDiff.HorzSplitClick(Sender: TObject);
@@ -447,7 +456,6 @@ begin
 
   FCodeEdit1.Color := FDefaultClr;
   FCodeEdit2.Color := FDefaultClr;
-
   // THIS PROCEDURE IS WHERE ALL THE HEAVY LIFTING (COMPARING) HAPPENS ...
 
   // Because it's SO MUCH EASIER AND FASTER comparing hashes (integers) than
@@ -470,7 +478,7 @@ begin
     then
       Exit;
 
-    SetFilesCompared(True);
+    FFilesCompared := True;
     DisplayDiffs;
     LinkScroll(True);
     CodeEdit.CaretXY := Caret;
@@ -553,6 +561,8 @@ begin
     end;
   FCodeEdit1.ClearUndo;
   FCodeEdit2.ClearUndo;
+  FCodeEdit1.Invalidate;
+  FCodeEdit2.Invalidate;
   ShowDiffState;
 end;
 
@@ -991,7 +1001,6 @@ begin
   PyIDEMainForm.ThemeEditorGutter(FCodeEdit1.Gutter);
   FCodeEdit1.InvalidateGutter;
   FCodeEdit1.CodeFolding.FolderBarLinesColor := FCodeEdit1.Gutter.Font.Color;
-
   PyIDEMainForm.ThemeEditorGutter(FCodeEdit2.Gutter);
   FCodeEdit2.CodeFolding.FolderBarLinesColor := FCodeEdit2.Gutter.Font.Color;
   FCodeEdit2.InvalidateGutter;
@@ -1018,12 +1027,12 @@ begin
     if Assigned(EditForm) then
     begin
       InitialDir := ExtractFilePath(EditForm.Pathname);
-      FNumber := 2;
+      FCodeEditNumber := 2;
     end
     else
     begin
       InitDir;
-      FNumber := 1;
+      FCodeEditNumber := 1;
     end;
     FileName := '';
     var TempFilter := Filter;
@@ -1137,9 +1146,9 @@ end;
 procedure TFTextDiff.PopUpEditorPopup(Sender: TObject);
 begin
   if PopUpEditor.PopupComponent = FCodeEdit1 then
-    FNumber := 1;
+    FCodeEditNumber := 1;
   if PopUpEditor.PopupComponent = FCodeEdit2 then
-    FNumber := 2;
+    FCodeEditNumber := 2;
 end;
 
 end.
