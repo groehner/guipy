@@ -105,8 +105,9 @@ type
     FGetSetMethodsAsProperty: Boolean;
     FGetMethodChecked: Boolean;
     FSetMethodChecked: Boolean;
-    FShowTypeSelection: Boolean;
+    FShowAttributeTypeSelection: Boolean;
     FShowWithWithoutReturnValue: Boolean;
+    FShowMethodTypeSelection: Boolean;
     FShowParameterTypeSelection: Boolean;
     FFromFutureImport: Boolean;
 
@@ -274,10 +275,12 @@ type
       write FSetMethodChecked;
     property GetMethodChecked: Boolean read FGetMethodChecked
       write FGetMethodChecked;
-    property ShowTypeSelection: Boolean read FShowTypeSelection
-      write FShowTypeSelection;
+    property ShowAttributeTypeSelection: Boolean read FShowAttributeTypeSelection
+      write FShowAttributeTypeSelection;
     property ShowWithWithoutReturnValue: Boolean
       read FShowWithWithoutReturnValue write FShowWithWithoutReturnValue;
+    property ShowMethodTypeSelection: Boolean read FShowMethodTypeSelection
+      write FShowMethodTypeSelection;
     property ShowParameterTypeSelection: Boolean
       read FShowParameterTypeSelection write FShowParameterTypeSelection;
     property FromFutureImport: Boolean read FFromFutureImport
@@ -1055,7 +1058,7 @@ type
     GBAttribuesOptions: TGroupBox;
     CBShowGetSetMethods: TCheckBox;
     CBGetSetMethodsAsProperty: TCheckBox;
-    CBShowTypeSelection: TCheckBox;
+    CBShowAttributeTypeSelection: TCheckBox;
     GBMethodsOptions: TGroupBox;
     CBShowWithWithoutReturnValue: TCheckBox;
     CBShowParameterTypeSelection: TCheckBox;
@@ -1137,6 +1140,7 @@ type
     CBLspDebug: TCheckBox;
     CBUseAbstractForClass: TCheckBox;
     CBUseAbstractForMethods: TCheckBox;
+    CBShowMethodTypeSelection: TCheckBox;
 {$WARNINGS ON}
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -2089,8 +2093,9 @@ begin
     CBGetSetMethodsAsProperty.Checked := GetSetMethodsAsProperty;
     CBGetMethodChecked.Checked := GetMethodChecked;
     CBSetMethodChecked.Checked := SetMethodChecked;
-    CBShowTypeSelection.Checked := ShowTypeSelection;
+    CBShowAttributeTypeSelection.Checked := ShowAttributeTypeSelection;
     CBShowWithWithoutReturnValue.Checked := ShowWithWithoutReturnValue;
+    CBShowMethodTypeSelection.Checked := ShowMethodTypeSelection;
     CBShowParameterTypeSelection.Checked := ShowParameterTypeSelection;
     CBFromFutureImport.Checked := FromFutureImport;
 
@@ -2490,8 +2495,9 @@ begin
     GetSetMethodsAsProperty := CBGetSetMethodsAsProperty.Checked;
     GetMethodChecked := CBGetMethodChecked.Checked;
     SetMethodChecked := CBSetMethodChecked.Checked;
-    ShowTypeSelection := CBShowTypeSelection.Checked;
+    ShowAttributeTypeSelection := CBShowAttributeTypeSelection.Checked;
     ShowWithWithoutReturnValue := CBShowWithWithoutReturnValue.Checked;
+    ShowMethodTypeSelection := CBShowMethodTypeSelection.Checked;
     ShowParameterTypeSelection := CBShowParameterTypeSelection.Checked;
     FromFutureImport := CBFromFutureImport.Checked;
 
@@ -6404,8 +6410,9 @@ begin
   FGetSetMethodsAsProperty := False;
   FGetMethodChecked := True;
   FSetMethodChecked := False;
-  FShowTypeSelection := True;
+  FShowAttributeTypeSelection := True;
   FShowWithWithoutReturnValue := True;
+  FShowMethodTypeSelection := True;
   FShowParameterTypeSelection := True;
   FFromFutureImport := True;
 

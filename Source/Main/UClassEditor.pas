@@ -335,8 +335,8 @@ begin
   end;
   CBGetMethod.Visible := GuiPyOptions.ShowGetSetMethods;
   CBSetMethod.Visible := GuiPyOptions.ShowGetSetMethods;
-  CBAttributeType.Visible := GuiPyOptions.ShowTypeSelection;
-  LAttributeType.Visible := GuiPyOptions.ShowTypeSelection;
+  CBAttributeType.Visible := GuiPyOptions.ShowAttributeTypeSelection;
+  LAttributeType.Visible := GuiPyOptions.ShowAttributeTypeSelection;
   if CBAttributeType.Visible then
   begin
     CBAttributeValue.Top := PPIScale(220);
@@ -347,6 +347,9 @@ begin
     CBAttributeValue.Top := PPIScale(184);
     LAttributeValue.Top := PPIScale(187);
   end;
+
+  LMethodType.Visible := GuiPyOptions.ShowMethodTypeSelection;
+  CBMethodType.Visible := GuiPyOptions.ShowMethodTypeSelection;
 
   CBParamType.Visible := GuiPyOptions.ShowParameterTypeSelection;
   LParameterType.Visible := GuiPyOptions.ShowParameterTypeSelection;
@@ -1680,12 +1683,14 @@ begin
     1:
       begin
         BAttributeChangeClick(Sender);
-        ActionNewExecute(Sender);
+        if not BAttributeApply.Enabled then
+          ActionNewExecute(Sender);
       end;
     2:
       begin
         BMethodChangeClick(Sender);
-        ActionNewExecute(Sender);
+        if not BMethodApply.Enabled then
+          ActionNewExecute(Sender);
       end;
   end;
 end;
@@ -1957,49 +1962,29 @@ begin
 end;
 
 function TFClassEditor.MakeIdentifier(ComboBox: TComboBox): Boolean;
-var ErrPos, Len: Integer; Str: string; OnChange: TNotifyEvent;
+var Str: string; OnChange: TNotifyEvent;
 begin
-  Result := True;
   Str := ComboBox.Text;
-  ErrPos := MakeIdentifier(Str);
-  if ErrPos = 0 then
-    Exit;
-  if ErrPos = -1 then
-  begin
-    Result := False;
-    Exit;
-  end;
-  Len := Length(ComboBox.Text) - Length(Str);
+  if MakeIdentifier(Str) = 0 then
+    Exit(True);
   OnChange := ComboBox.OnChange;
   ComboBox.OnChange := nil;
   ComboBox.Text := Str;
   ComboBox.OnChange := OnChange;
-  if Len = 1 then
-    ComboBox.SelStart := ErrPos - 1
-  else
-    ComboBox.SelStart := Length(Str);
+  Result := False;
 end;
 
 function TFClassEditor.MakeIdentifier(Edit: TEdit): Boolean;
-var ErrPos, ErrLen: Integer; Str: string; OnChange: TNotifyEvent;
+var Str: string; OnChange: TNotifyEvent;
 begin
-  Result := True;
   Str := Edit.Text;
-  ErrPos := MakeIdentifier(Str);
-  if ErrPos = 0 then
-    Exit;
-  Result := False;
-  if ErrPos = -1 then
-    Exit;
-  ErrLen := Length(Edit.Text) - Length(Str);
+  if MakeIdentifier(Str) = 0 then
+    Exit(True);
   OnChange := Edit.OnChange;
   Edit.OnChange := nil;
   Edit.Text := Str;
   Edit.OnChange := OnChange;
-  if ErrLen = 1 then
-    Edit.SelStart := ErrPos - 1
-  else
-    Edit.SelStart := Length(Str);
+  Result := False;
 end;
 
 procedure TFClassEditor.ChangeAttributeValues(var Attribute: TAttribute);
@@ -2599,24 +2584,10 @@ begin
       else
         EAttributeName.Color := clWindow;
     2:
-      begin
-        if CBMethodName.Enabled and (CBMethodName.Text = '') then
-          CBMethodName.Color := clInfoBk
-        else
-          CBMethodName.Color := clWindow;
-        if CBMethodType.Enabled and (CBMethodType.Text = '') then
-          CBMethodType.Color := clInfoBk
-        else
-          CBMethodType.Color := clWindow;
-        if (CBParamName.Text <> '') and (CBParamType.Text = '') then
-          CBParamType.Color := clInfoBk
-        else
-          CBParamType.Color := clWindow;
-        if (CBParamName.Text = '') and (CBParamType.Text <> '') then
-          CBParamName.Color := clInfoBk
-        else
-          CBParamName.Color := clWindow;
-      end;
+      if CBMethodName.Enabled and (CBMethodName.Text = '') then
+        CBMethodName.Color := clInfoBk
+      else
+        CBMethodName.Color := clWindow;
   end;
 end;
 
@@ -2747,20 +2718,27 @@ procedure TFClassEditor.BMethodChangeClick(Sender: TObject);
 var New, Source: string; Method: TOperation;
   ClassNumber, NodeIndex, TopItemIndex, From: Integer; Node: TTreeNode;
 begin
+  // a type is never necessary
   Node := TreeView.Selected;
+  if not Assigned(Node) then
+    Exit;
+  if RGMethodKind.ItemIndex = 0 then
+    Exit;
+  if (CBMethodName.Text = '') or not MakeIdentifier(CBMethodName) then
+    Exit;
   CBMethodType.Enabled := (RGMethodKind.ItemIndex = 1);
-  if (not(MakeIdentifier(CBMethodName) and MakeIdentifier(CBMethodType) and
-    MakeIdentifier(CBParamName) and MakeIdentifier(CBParamType)) or
-    (CBMethodName.Text = '')) and (RGMethodKind.ItemIndex > 0) or
-    not Assigned(Node) then
+  if CBMethodType.Enabled and not MakeIdentifier(CBMethodType) then
+    Exit;
+  MakeIdentifier(CBParamType);
+  if not MakeIdentifier(CBParamName) then
+    Exit;
+  if RGMethodKindHasChanged then
     Exit;
 
   ClassNumber := GetClassNumber(Node);
   NodeIndex := Node.AbsoluteIndex;
   TopItemIndex := TreeView.TopItem.AbsoluteIndex;
   TakeParameter;
-  if RGMethodKindHasChanged then
-    Exit;
 
   FMyEditor.ActiveSynEdit.BeginUpdate;
   if IsMethodsNode(Node) then

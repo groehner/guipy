@@ -202,7 +202,7 @@ object FConfiguration: TFConfiguration
         Top = 21
         Width = 641
         Height = 462
-        ActivePage = PUML2
+        ActivePage = PClassModeler
         Align = alClient
         Style = tsFlatButtons
         TabOrder = 2
@@ -495,8 +495,8 @@ object FConfiguration: TFConfiguration
               object lblGutterFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 72
-                Height = 8
+                Width = 179
+                Height = 25
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Terminal 8pt'
@@ -506,6 +506,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Terminal'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 72
+                ExplicitHeight = 8
               end
             end
             object CBGutterColor: TSpTBXColorEdit
@@ -750,8 +752,8 @@ object FConfiguration: TFConfiguration
               object labFont: TLabel
                 Left = 1
                 Top = 1
-                Width = 91
-                Height = 15
+                Width = 188
+                Height = 28
                 Align = alClient
                 Alignment = taCenter
                 Caption = 'Consolas 10pt'
@@ -761,6 +763,8 @@ object FConfiguration: TFConfiguration
                 Font.Name = 'Consolas'
                 Font.Style = []
                 ParentFont = False
+                ExplicitWidth = 91
+                ExplicitHeight = 15
               end
             end
             object btnFont: TButton
@@ -2456,7 +2460,7 @@ object FConfiguration: TFConfiguration
               Caption = 'Show get/set methods'
               TabOrder = 0
             end
-            object CBShowTypeSelection: TCheckBox
+            object CBShowAttributeTypeSelection: TCheckBox
               Left = 16
               Top = 120
               Width = 169
@@ -2493,7 +2497,7 @@ object FConfiguration: TFConfiguration
             Left = 16
             Top = 184
             Width = 305
-            Height = 73
+            Height = 97
             Caption = 'Methods options'
             TabOrder = 1
             object CBShowWithWithoutReturnValue: TCheckBox
@@ -2506,16 +2510,24 @@ object FConfiguration: TFConfiguration
             end
             object CBShowParameterTypeSelection: TCheckBox
               Left = 16
-              Top = 47
+              Top = 72
               Width = 206
               Height = 17
               Caption = 'Show parameter type selection'
               TabOrder = 1
             end
+            object CBShowMethodTypeSelection: TCheckBox
+              Left = 16
+              Top = 48
+              Width = 169
+              Height = 17
+              Caption = 'Show type selection'
+              TabOrder = 2
+            end
           end
           object GBClassOptions: TGroupBox
             Left = 16
-            Top = 280
+            Top = 296
             Width = 305
             Height = 57
             Caption = 'Class options'
