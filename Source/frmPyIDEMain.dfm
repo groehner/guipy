@@ -1051,11 +1051,11 @@ object PyIDEMainForm: TPyIDEMainForm
           Caption = '&Project'
           object mnProjectNew: TSpTBXItem
             Action = ProjectExplorerWindow.actProjectNew
-            Images = ProjectExplorerWindow.vilImages
+            ImageIndex = 121
           end
           object mnProjectOpen: TSpTBXItem
             Action = ProjectExplorerWindow.actProjectOpen
-            Images = ProjectExplorerWindow.vilImages
+            ImageIndex = 122
           end
           object SpTBXSubmenuItem1: TSpTBXSubmenuItem
             Caption = '&Recent Projects'
@@ -1070,7 +1070,7 @@ object PyIDEMainForm: TPyIDEMainForm
           end
           object mnProjectSave: TSpTBXItem
             Action = ProjectExplorerWindow.actProjectSave
-            Images = ProjectExplorerWindow.vilImages
+            ImageIndex = 123
           end
           object mnProjectSaveAs: TSpTBXItem
             Action = ProjectExplorerWindow.actProjectSaveAs
@@ -2922,8 +2922,8 @@ object PyIDEMainForm: TPyIDEMainForm
   end
   object TabControlPopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 408
-    Top = 226
+    Left = 416
+    Top = 234
     object mnNewModule2: TSpTBXItem
       Action = actFileNewModule
     end
@@ -4613,6 +4613,21 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 159
+      end
+      item
+        CollectionIndex = 75
+        CollectionName = 'ProjectFile'
+        Name = 'ProjectFile'
+      end
+      item
+        CollectionIndex = 76
+        CollectionName = 'ProjectOpen'
+        Name = 'ProjectOpen'
+      end
+      item
+        CollectionIndex = 78
+        CollectionName = 'ProjectSave'
+        Name = 'ProjectSave'
       end>
     ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True

@@ -1,25 +1,40 @@
 inherited ProjectExplorerWindow: TProjectExplorerWindow
   HelpContext = 435
   Caption = 'Project Explorer'
+  ClientHeight = 334
+  ClientWidth = 377
   OnShow = FormShow
+  ExplicitWidth = 393
+  ExplicitHeight = 373
   TextHeight = 15
   inherited BGPanel: TPanel
+    Width = 377
+    Height = 334
+    ExplicitWidth = 83
+    ExplicitHeight = 182
     inherited FGPanel: TPanel
+      Width = 373
+      Height = 330
+      ExplicitWidth = 79
+      ExplicitHeight = 178
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 223
-        Height = 394
+        Width = 373
+        Height = 330
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 79
+        ExplicitHeight = 178
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 30
-          Width = 223
-          Height = 364
+          Width = 373
+          Height = 300
           Align = alClient
           BorderStyle = bsNone
+          DefaultNodeHeight = 19
           Header.AutoSizeIndex = -1
           Header.Height = 15
           Header.MainColumn = -1
@@ -49,15 +64,18 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           OnNodeDblClick = ExplorerTreeNodeDblClick
           Touch.InteractiveGestures = [igPan, igPressAndTap]
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
+          ExplicitWidth = 79
+          ExplicitHeight = 148
           Columns = <>
         end
         object SpTBXDock1: TSpTBXDock
           Left = 0
           Top = 0
-          Width = 223
+          Width = 373
           Height = 30
           AllowDrag = False
           DoubleBuffered = True
+          ExplicitWidth = 79
           object SpTBXToolbar1: TSpTBXToolbar
             Left = 0
             Top = 0
@@ -468,113 +486,116 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
         CollectionIndex = 2
         CollectionName = 'Projects\RunConfig'
         Name = 'RunConfig'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = 'Projects\FolderAutoRefresh'
+        Name = 'FolderAutoRefresh'
       end>
     ImageCollection = icProjects
     PreserveItems = True
     Width = 18
     Height = 18
-    Left = 56
+    Left = 80
     Top = 160
   end
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionIndex = 55
+        CollectionIndex = 46
         CollectionName = 'Folders'
         Name = 'Folders'
       end
       item
-        CollectionIndex = 41
+        CollectionIndex = 32
         CollectionName = 'ExternalRun'
         Name = 'ExternalRun'
       end
       item
-        CollectionIndex = 40
+        CollectionIndex = 31
         CollectionName = 'Expand'
         Name = 'Expand'
       end
       item
-        CollectionIndex = 24
+        CollectionIndex = 15
         CollectionName = 'Collapse'
         Name = 'Collapse'
       end
       item
-        CollectionIndex = 102
         CollectionName = 'Run'
         Name = 'Run'
       end
       item
-        CollectionIndex = 27
         CollectionName = 'Debug'
         Name = 'Debug'
       end
       item
-        CollectionIndex = 84
+        CollectionIndex = 75
         CollectionName = 'ProjectFile'
         Name = 'ProjectFile'
       end
       item
-        CollectionIndex = 85
+        CollectionIndex = 76
         CollectionName = 'ProjectOpen'
         Name = 'ProjectOpen'
       end
       item
-        CollectionIndex = 82
+        CollectionIndex = 73
         CollectionName = 'ProjectAdd'
         Name = 'ProjectAdd'
       end
       item
-        CollectionIndex = 86
+        CollectionIndex = 77
         CollectionName = 'ProjectRemove'
         Name = 'ProjectRemove'
       end
       item
-        CollectionIndex = 54
+        CollectionIndex = 45
         CollectionName = 'FolderAdd'
         Name = 'FolderAdd'
       end
       item
-        CollectionIndex = 35
+        CollectionIndex = 26
         CollectionName = 'Editor'
         Name = 'Editor'
       end
       item
-        CollectionIndex = 87
+        CollectionIndex = 78
         CollectionName = 'ProjectSave'
         Name = 'ProjectSave'
       end
       item
-        CollectionIndex = 103
+        CollectionIndex = 94
         CollectionName = 'RunConfigAdd'
         Name = 'RunConfigAdd'
       end
       item
-        CollectionIndex = 104
+        CollectionIndex = 95
         CollectionName = 'RunConfigEdit'
         Name = 'RunConfigEdit'
       end
       item
-        CollectionIndex = 48
+        CollectionIndex = 39
         CollectionName = 'FileProperties'
         Name = 'FileProperties'
       end
       item
-        CollectionIndex = 32
+        CollectionIndex = 23
         CollectionName = 'Download'
         Name = 'Download'
       end
       item
-        CollectionIndex = 105
+        CollectionIndex = 96
         CollectionName = 'RunLast'
         Name = 'RunLast'
       end
       item
-        CollectionIndex = 28
+        CollectionIndex = 19
         CollectionName = 'DebugLast'
         Name = 'DebugLast'
       end
       item
-        CollectionIndex = 42
+        CollectionIndex = 33
         CollectionName = 'ExternalRunLast'
         Name = 'ExternalRunLast'
       end>
@@ -582,7 +603,7 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     PreserveItems = True
     Width = 20
     Height = 20
-    Left = 106
+    Left = 186
     Top = 160
   end
   object icProjects: TSVGIconImageCollection
@@ -633,6 +654,18 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           ',3.3-3.6v-18'#13#10#9'C34.5,8.8,33,7.2,31.2,7.2z M31.2,28.8H4.8v-18h26.' +
           '4V28.8z"/>'#13#10'<path d="M18.4,18h-7.6v3.6h7.6l-2.9,2.9L18,27l7.2-7.' +
           '2L18,12.6l-2.5,2.5L18.4,18z"/>'#13#10'</svg>'
+      end
+      item
+        IconName = 'Projects\FolderAutoRefresh'
+        SVGText = 
+          '<svg viewBox="0 0 24 24">'#13#10'  <path d="M18 14.5C19.11 14.5 20.11 ' +
+          '14.95 20.83 15.67L22 14.5V18.5H18L19.77 16.73C19.32 16.28 18.69 ' +
+          '16 18 16C16.62 16 15.5 17.12 15.5 18.5C15.5 19.88 16.62 21 18 21' +
+          'C18.82 21 19.54 20.61 20 20H21.71C21.12 21.47 19.68 22.5 18 22.5' +
+          'C15.79 22.5 14 20.71 14 18.5C14 16.29 15.79 14.5 18 14.5M20 8H4V' +
+          '18H12L12 18.5C12 19 12.06 19.5 12.17 20H4C2.89 20 2 19.1 2 18L2 ' +
+          '6C2 4.89 2.89 4 4 4H10L12 6H20C21.1 6 22 6.89 22 8V13C21.39 12.6' +
+          '3 20.72 12.34 20 12.17V8Z"/>'#13#10'</svg>'
       end>
     Left = 10
     Top = 160
