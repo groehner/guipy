@@ -461,7 +461,8 @@ var
   Node: PVirtualNode;
 begin
   Node := ExplorerTree.GetFirstSelected;
-  if Assigned(Node) then begin
+  if Assigned(Node) then
+  begin
     Data := ExplorerTree.GetNodeData(Node);
     if Data.ProjectNode is TProjectRunConfiguationNode then
       PyControl.ExternalRun(TProjectRunConfiguationNode(Data.ProjectNode).RunConfig);
@@ -470,21 +471,11 @@ end;
 
 procedure TProjectExplorerWindow.actProjectExtraPythonPathExecute(
   Sender: TObject);
-var
-  Paths: TStrings;
 begin
-  Paths := TStringList.Create;
+  var Paths := TSmartPtr.Make(TStringList.Create)();
   Paths.Assign(ActiveProject.ExtraPythonPath);
-  try
-    if EditFolderList(Paths, _(SProjectPythonPath), 0) then begin
-      ActiveProject.RemoveExtraPaths;
-      ActiveProject.ExtraPythonPath.Assign(Paths);
-      ActiveProject.AppendExtraPaths;
-      ActiveProject.Modified := True;
-    end;
-  finally
-    Paths.Free;
-  end;
+  if EditFolderList(Paths, _(SProjectPythonPath), 0) then
+    ActiveProject.ExtraPythonPath := Paths;
 end;
 
 procedure TProjectExplorerWindow.actProjectFileEditExecute(Sender: TObject);
@@ -502,9 +493,11 @@ var
   Server, FName: string;
 begin
   Node := ExplorerTree.GetFirstSelected;
-  if Assigned(Node) then begin
+  if Assigned(Node) then
+  begin
     Data := ExplorerTree.GetNodeData(Node);
-    if Data.ProjectNode is TProjectFileNode then begin
+    if Data.ProjectNode is TProjectFileNode then
+    begin
       if (TProjectFileNode(Data.ProjectNode).FileName <> '') and not
         TSSHFileName.Parse(TProjectFileNode(Data.ProjectNode).FileName, Server, FName)
       then
@@ -522,15 +515,28 @@ var
   TempCursor: IInterface;
 begin
   Node := ExplorerTree.GetFirstSelected;
-  if Assigned(Node) then begin
+  if Assigned(Node) then
+  begin
     Data := ExplorerTree.GetNodeData(Node);
-    if Data.ProjectNode is TProjectFilesNode then begin
-      with TImportDirectoryForm do
-        if Execute and (Directory<>'') then begin
-          TempCursor := WaitCursor;
-          TProjectFilesNode(Data.ProjectNode).ImportDirectory(Directory, FileMasks, Recursive);
-          ExplorerTree.ReinitNode(Node, True);
+    if Data.ProjectNode is TProjectFilesNode then
+    begin
+      if ActiveProject.FileName <> '' then
+        TImportDirectoryForm.Directory :=
+          TPath.GetDirectoryName(ActiveProject.FileName);
+      if TImportDirectoryForm.Execute and (TImportDirectoryForm.Directory <> '') then
+      begin
+        TempCursor := WaitCursor;
+        ExplorerTree.BeginUpdate;
+        try
+          TProjectFilesNode(Data.ProjectNode).ImportDirectory(
+            TImportDirectoryForm.Directory, TImportDirectoryForm.FileMasks,
+            TImportDirectoryForm.Recursive, TImportDirectoryForm.AutoUpdate,
+            TImportDirectoryForm.AddToPath);
+          ExplorerTree.ReInitNode(Node, True, True);
+        finally
+          ExplorerTree.EndUpdate;
         end;
+      end;
     end;
   end;
 end;
@@ -573,7 +579,6 @@ procedure TProjectExplorerWindow.actProjectRelativePathsExecute(
   Sender: TObject);
 begin
   ActiveProject.StoreRelativePaths := actProjectRelativePaths.Checked;
-  ActiveProject.Modified := True;
 end;
 
 procedure TProjectExplorerWindow.actProjectRemoveExecute(Sender: TObject);
@@ -663,7 +668,6 @@ procedure TProjectExplorerWindow.actProjectShowFileExtensionsExecute(
   Sender: TObject);
 begin
   ActiveProject.ShowFileExtensions := actProjectShowFileExtensions.Checked;
-  ActiveProject.Modified := True;
   ExplorerTree.Invalidate;
 end;
 
@@ -1029,7 +1033,7 @@ begin
                 if DirectoryExists(FileName) then
                   ImportDirectory(FileName,
                     PyIDEOptions.PythonFileExtensions,
-                    True)
+                    True, True, True)
                 else if FileExists(FileName) then
                 begin
                   if not Assigned(FileChild[FileName]) then
@@ -1221,17 +1225,20 @@ var
 begin
   ModifiedText := False;
   Data := ExplorerTree.GetNodeData(Node);
-  if Data.ProjectNode is TProjectFolderNode then begin
+  if Data.ProjectNode is TProjectFolderNode then
+  begin
     TProjectFolderNode(Data.ProjectNode).Name := NewText;
     Data.ProjectNode.Modified := True;
     ModifiedText := True;
-  end else if Data.ProjectNode is TProjectRunConfiguationNode then begin
+  end else if Data.ProjectNode is TProjectRunConfiguationNode then
+  begin
     TProjectRunConfiguationNode(Data.ProjectNode).Name := NewText;
     Data.ProjectNode.Modified := True;
     ModifiedText := True;
   end;
 
-  if ModifiedText then begin
+  if ModifiedText then
+  begin
     Assert(Assigned(Node.Parent), 'TProjectExplorerWindow.ExplorerTreeKeyPress');
     ParentData := ExplorerTree.GetNodeData(Node.Parent);
     Assert(Assigned(ParentData), 'TProjectExplorerWindow.ExplorerTreeKeyPress');

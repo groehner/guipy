@@ -26,6 +26,7 @@ uses
   System.Classes,
   System.Actions,
   System.ImageList,
+  System.Messaging,
   Vcl.Controls,
   Vcl.ExtCtrls,
   Vcl.Forms,
@@ -126,7 +127,8 @@ type
     procedure GetBlockCode(var Source: string;
       var Buffer: array of string; EndLineN: Integer; StartLineN: Integer);
     procedure DoCodeCompletion(Editor: TSynEdit; Caret: TBufferCoord);
-    procedure ApplyPyIDEOptions;
+    procedure ApplyPyIDEOptions(const Sender: TObject; const Msg:
+        System.Messaging.TMessage);
     // ISearchCommands implementation
     function CanFind: Boolean;
     function CanFindNext: Boolean;
@@ -602,7 +604,8 @@ begin
   RegisterHistoryCommands;
 end;
 
-procedure TPythonIIForm.ApplyPyIDEOptions;
+procedure TPythonIIForm.ApplyPyIDEOptions(const Sender: TObject; const Msg:
+  System.Messaging.TMessage);
 begin
   SynEdit.SelectedColor.Assign(PyIDEOptions.SelectionColor);
   if PyIDEOptions.AutoCompleteBrackets then
@@ -648,7 +651,8 @@ begin
   SetPyInterpreterPrompt(pipNormal);
 
   // PyIDEOptions change notification
-  PyIDEOptions.OnChange.AddHandler(ApplyPyIDEOptions);
+  TMessageManager.DefaultManager.SubscribeToMessage(TIDEOptionsChangedMessage,
+    ApplyPyIDEOptions);
 
   GI_PyInterpreter := Self;
 end;
@@ -656,7 +660,8 @@ end;
 procedure TPythonIIForm.FormDestroy(Sender: TObject);
 begin
   // PyIDEOptions change notification
-  PyIDEOptions.OnChange.RemoveHandler(ApplyPyIDEOptions);
+  TMessageManager.DefaultManager.Unsubscribe(TIDEOptionsChangedMessage,
+    ApplyPyIDEOptions);
 
   GI_PyInterpreter := nil;
   FreeAndNil(FCommandHistory);
@@ -1250,8 +1255,8 @@ begin
   if Value.EndsWith('()') then
   begin
     // if the next char is an opening bracket remove the added brackets
-    if (SynEdit.CaretX <= SynEdit.LineText.Length) and
-      IsOpeningBracket(SynEdit.LineText[SynEdit.CaretX], SynEdit.Brackets) then
+    if (EndToken = '(') or ((SynEdit.CaretX <= SynEdit.LineText.Length) and
+      IsOpeningBracket(SynEdit.LineText[SynEdit.CaretX], SynEdit.Brackets)) then
     begin
       SynEdit.BeginUpdate;
       try
@@ -1260,7 +1265,6 @@ begin
       finally
         SynEdit.EndUpdate;
       end;
-      EndToken := #0;
     end
     else
     begin

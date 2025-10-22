@@ -16,13 +16,15 @@ uses
   System.Classes,
   System.Contnrs,
   JvAppStorage,
+  FileSystemMonitor,
   cPySupportTypes;
 
 type
   TAbstractProjectNode = class;
   TAbstractProjectNodeClass = class of TAbstractProjectNode;
 
-  TProjectNodeAction = function (Node: TAbstractProjectNode; Data: Pointer): Boolean;
+  TProjectNodeAction = reference to function (Node: TAbstractProjectNode; Data: Pointer): Boolean;
+  TProjectOnFolderChange = procedure(const Path: string) of object;
 
   TAbstractProjectNode = class(TInterfacedPersistent, IJvAppStorageHandler, IJvAppStoragePublishedProps)
   private
@@ -34,6 +36,7 @@ type
     procedure SetModified(const Value: Boolean);
     procedure SetParent(const Value: TAbstractProjectNode);
   protected
+    function StoreChildren: Boolean; virtual;
     function GetCaption: string; virtual; abstract;
     // IJvAppStorageHandler implementation
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
@@ -43,6 +46,7 @@ type
     function CreateListItem(Sender: TJvCustomAppStorage; const Path: string;
       Index: Integer): TPersistent;
   public
+    class var OnFolderChange: TProjectOnFolderChange;
     constructor Create; virtual;
     destructor Destroy; override;
     procedure ClearChildren;
@@ -51,6 +55,7 @@ type
     procedure ForEach(Proc: TProjectNodeAction; Data:Pointer = nil);
     function FirstThat(Proc: TProjectNodeAction; Data:Pointer = nil): TAbstractProjectNode;
     procedure SortChildren; virtual;
+    function IsAutoUpdating: Boolean;
 
     property Parent: TAbstractProjectNode read FParent write SetParent;
     property Children: TObjectList read FChildren;
@@ -66,6 +71,10 @@ type
     FShowFileExtensions: Boolean;
     FExtraPythonPath: TStrings;
     function GetName: string;
+    procedure NotifyPythonPathChange;
+    procedure SetStoreRelativePaths(const Value: Boolean);
+    procedure SetShowFileExtensions(const Value: Boolean);
+    procedure SetExtraPythonPath(const Value: TStrings);
   protected
     function GetCaption: string; override;
     procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
@@ -76,14 +85,13 @@ type
     constructor Create; override;
     destructor Destroy; override;
     function HasFile(const FileName: string): Boolean;
-    procedure AppendExtraPaths;
-    procedure RemoveExtraPaths;
+    procedure AppendExtraPath(const APath: string);
     property Name: string read GetName;
     property FileName: string read FFileName write FFileName;
   published
-    property StoreRelativePaths: Boolean read FStoreRelativePaths write FStoreRelativePaths;
-    property ShowFileExtensions: Boolean read FShowFileExtensions write FShowFileExtensions;
-    property ExtraPythonPath: TStrings read FExtraPythonPath;
+    property StoreRelativePaths: Boolean read FStoreRelativePaths write SetStoreRelativePaths;
+    property ShowFileExtensions: Boolean read FShowFileExtensions write SetShowFileExtensions;
+    property ExtraPythonPath: TStrings read FExtraPythonPath write SetExtraPythonPath;
   end;
 
   TProjectFileNode = class;
@@ -98,7 +106,9 @@ type
     function GetCaption: string; override;
   public
     procedure SortChildren; override;
-    procedure ImportDirectory(const Directory, Masks: string; Recursive: Boolean);
+    procedure ImportDirectory(const Directory, Masks: string; Recursive: Boolean;
+        AutoUpdate, AddToPath: Boolean);
+    procedure ImportFiles(const Directory, Masks: string; Recursive: Boolean);
     property  FileChild[FileName: string]: TProjectFileNode read GetFileChild;
     property  FolderChild[FolderName: string]: TProjectFolderNode read GetFolderChild;
   end;
@@ -107,10 +117,31 @@ type
   {Like ProjectFilesNode but with a name that can be changed}
   private
     FName: string;
+    procedure SetName(const Value: string);
   protected
     function GetCaption: string; override;
   published
-    property Name: string read FName write FName;
+    property Name: string read FName write SetName;
+  end;
+
+  TProjectAutoUpdateFolderNode = class(TProjectFolderNode)
+  {Auto-updating folder node}
+  private
+    FPath: string;
+    FMasks: string;
+    FRecursive: Boolean;
+    procedure FolderChange(Sender: TObject; const Path: string; ChangeType: TFileChangeType);
+  protected
+    function StoreChildren: Boolean; override;
+    procedure ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
+      const BasePath: string); override;
+    procedure WriteToAppStorage(AppStorage: TJvCustomAppStorage;
+      const BasePath: string); override;
+  public
+    destructor Destroy; override;
+    property Path: string read FPath write FPath;
+    property Masks: string read FMasks write FMasks;
+    property Recursive: Boolean read FRecursive write FRecursive;
   end;
 
   TProjectFileNode = class(TAbstractProjectNode)
@@ -156,10 +187,27 @@ uses
   System.Types,
   System.SysUtils,
   System.IOUtils,
+  System.Messaging,
   JvGnugettext,
   uCommonFunctions,
-  cPyControl,
   uEditAppIntfs;
+
+{ Utility functions }
+
+function RelativePath(const APath: string): string;
+begin
+  Result := APath;
+  if ActiveProject.StoreRelativePaths then
+  begin
+    var BaseDir := ExtractFilePath(ActiveProject.FFileName);
+
+    if (BaseDir <> '') and  (Pos(BaseDir, APath) = 1) then begin
+      Delete(Result, 1, Length(BaseDir));
+      Result := '$[Project-Path]' + Result;
+    end;
+  end;
+end;
+
 
 { TAbstractProjectNode }
 
@@ -261,6 +309,18 @@ begin
     Result := FParent.RootNode;
 end;
 
+function TAbstractProjectNode.IsAutoUpdating: Boolean;
+begin
+  Result := False;
+  var Node := Self;
+  while Node <> nil do
+  begin
+    if Node is TProjectAutoUpdateFolderNode then
+      Exit(True);
+    Node := Node.Parent;
+  end;
+end;
+
 procedure TAbstractProjectNode.ReadFromAppStorage(
   AppStorage: TJvCustomAppStorage; const BasePath: string);
 begin
@@ -311,25 +371,27 @@ begin
   // Do nothing by default
 end;
 
+function TAbstractProjectNode.StoreChildren: Boolean;
+begin
+  Result := True;
+end;
+
 procedure TAbstractProjectNode.WriteToAppStorage(
   AppStorage: TJvCustomAppStorage; const BasePath: string);
 begin
   AppStorage.WriteString(BasePath+'\ClassName', Self.ClassName);
-  if FChildren.Count > 0 then
+  if StoreChildren and (FChildren.Count > 0) then
     AppStorage.WriteObjectList(BasePath+'\ChildNodes', FChildren, 'Node');
 end;
 
 { TProjectRootNode }
 
-procedure TProjectRootNode.AppendExtraPaths;
+procedure TProjectRootNode.AppendExtraPath(const APath: string);
 begin
-  if not (Assigned(PyControl) and Assigned(PyControl.ActiveInterpreter)) then Exit;
-
-  for var Path in FExtraPythonPath do
+  if FExtraPythonPath.IndexOf(APath) < 0 then
   begin
-    PyControl.InternalInterpreter.SysPathAdd(Path);
-    if PyControl.ActiveInterpreter <> PyControl.InternalInterpreter then
-      PyControl.ActiveInterpreter.SysPathAdd(Path);
+    FExtraPythonPath.Add(APath);
+    NotifyPythonPathChange;
   end;
 end;
 
@@ -345,8 +407,9 @@ end;
 
 destructor TProjectRootNode.Destroy;
 begin
-  RemoveExtraPaths;
-  FreeAndNil(FExtraPythonPath);
+  FExtraPythonPath.Clear;
+  NotifyPythonPathChange;
+  FExtraPythonPath.Free;
   inherited;
 end;
 
@@ -377,25 +440,43 @@ begin
   Result := FirstThat(NodeHasFile, PWideChar(FileName)) <> nil;
 end;
 
+procedure TProjectRootNode.NotifyPythonPathChange;
+begin
+  TMessageManager.DefaultManager.SendMessage(Self,
+    TProjectPythonPathChangeMessage.Create(FExtraPythonPath.ToStringArray));
+end;
+
 procedure TProjectRootNode.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
 begin
   inherited;
-  RemoveExtraPaths;
   FExtraPythonPath.Clear;
   AppStorage.ReadStringList(BasePath+'\ExtraPythonPath', FExtraPythonPath);
-  AppendExtraPaths;
+  NotifyPythonPathChange;
 end;
 
-procedure TProjectRootNode.RemoveExtraPaths;
+procedure TProjectRootNode.SetExtraPythonPath(const Value: TStrings);
 begin
-  if not (Assigned(PyControl) and Assigned(PyControl.ActiveInterpreter)) then Exit;
+  FExtraPythonPath.Assign(Value);
+  NotifyPythonPathChange;
+  Modified := True;
+end;
 
-  for var Path in FExtraPythonPath do
+procedure TProjectRootNode.SetShowFileExtensions(const Value: Boolean);
+begin
+  if Value <> FShowFileExtensions then
   begin
-    PyControl.InternalInterpreter.SysPathRemove(Path);
-    if PyControl.ActiveInterpreter <> PyControl.InternalInterpreter then
-      PyControl.ActiveInterpreter.SysPathRemove(Path);
+    FShowFileExtensions := Value;
+    FModified := True;
+  end;
+end;
+
+procedure TProjectRootNode.SetStoreRelativePaths(const Value: Boolean);
+begin
+  if Value <> FStoreRelativePaths then
+  begin
+    FStoreRelativePaths := Value;
+    FModified := True;
   end;
 end;
 
@@ -413,6 +494,15 @@ begin
   Result := FName;
 end;
 
+procedure TProjectFolderNode.SetName(const Value: string);
+begin
+  if FName <> Value then
+  begin
+    FName := Value;
+    FModified := True;
+  end;
+end;
+
 { TProjectFilesNode }
 
 function TProjectFilesNode.GetCaption: string;
@@ -420,6 +510,7 @@ begin
   Result := _('Files');
 end;
 
+{$HINTS OFF}
 function CompareFolderChildren(P1, P2: Pointer): Integer;
 var
   Node1, Node2: TAbstractProjectNode;
@@ -438,6 +529,7 @@ begin
   else
     Assert(False, 'Unexpected Child types in TProjectFilesNode');
 end;
+{$HINTS ON}
 
 function TProjectFilesNode.GetFileChild(FileName: string): TProjectFileNode;
 begin
@@ -459,53 +551,74 @@ begin
 end;
 
 procedure TProjectFilesNode.ImportDirectory(const Directory, Masks: string;
-  Recursive: Boolean);
-var
-  FileList: TStringList;
-  FileNode: TProjectFileNode;
-  FolderNode: TProjectFolderNode;
-  FolderName: string;
+    Recursive: Boolean; AutoUpdate, AddToPath: Boolean);
 begin
-  FolderName := TPath.GetFileName(Directory);
-  if (FolderName = '.') or (FolderName = '..') then
-    Exit;
+  if not TDirectory.Exists(Directory) then Exit;
+  var FolderName := TPath.GetFileNameWithoutExtension(Directory);
+  if (FolderName = '.') or (FolderName = '..') then Exit;
 
-  FolderNode := FolderChild[FolderName];
-  if not Assigned(FolderNode) then begin
+  var FolderNode := FolderChild[FolderName];
+  if Assigned(FolderNode) then
+    FolderNode.Free;
+
+  if AutoUpdate then
+  begin
+    FolderNode := TProjectAutoUpdateFolderNode.Create;
+    TProjectAutoUpdateFolderNode(FolderNode).FPath := Directory;
+    TProjectAutoUpdateFolderNode(FolderNode).FMasks := Masks;
+    TProjectAutoUpdateFolderNode(FolderNode).FRecursive := Recursive;
+    GI_FileSystemMonitor.AddDirectory(Directory, Recursive,
+      TProjectAutoUpdateFolderNode(FolderNode).FolderChange,
+      [nfFileName, nfDirName]);
+  end
+  else
     FolderNode := TProjectFolderNode.Create;
-    FolderNode.FName := FolderName;
-    AddChild(FolderNode);
+  FolderNode.FName := FolderName;
+  AddChild(FolderNode);
+
+  FolderNode.ImportFiles(Directory, Masks, Recursive);
+
+  if AddToPath then
+    ActiveProject.AppendExtraPath(Directory);
+end;
+
+procedure TProjectFilesNode.ImportFiles(const Directory, Masks: string;
+  Recursive: Boolean);
+begin
+  ClearChildren;
+
+  var FileList := TSmartPtr.Make(TStringList.Create)();
+
+  GetFilesInPaths(Directory, Masks, FileList, False);
+  for var FileName in FileList do
+  begin
+    if not Assigned(FileChild[FileName]) then begin
+      var FileNode := TProjectFileNode.Create;
+      FileNode.FFileName := FileName;
+      AddChild(FileNode);
+    end;
   end;
 
-  FileList := TStringList.Create;
-  try
-    GetFilesInPaths(Directory, Masks, FileList, False);
-    for var FileName in FileList do
+  if Recursive then begin
+    FileList.Clear;
+    GetDirectoriesInPaths(Directory, '*.*', FileList, False);
+    for var FolderName in FileList do
     begin
-      if not Assigned(FileChild[FileName]) then begin
-        FileNode := TProjectFileNode.Create;
-        FileNode.FFileName := FileName;
-        FolderNode.AddChild(FileNode);
-      end;
-    end;
+      if (FolderName = '.') or (FolderName = '..') then
+        Continue;
 
-    if Recursive then begin
-      FileList.Clear;
-      GetDirectoriesInPaths(Directory, '*.*', FileList, False);
-      for FolderName in FileList do
-      begin
-        if (FolderName = '.') or (FolderName = '..') then
-          Continue;
-        FolderNode.ImportDirectory(FolderName, Masks, Recursive);
+      var ChildFolder := FolderChild[FolderName];
+      if not Assigned(ChildFolder) then begin
+        ChildFolder := TProjectFolderNode.Create;
+        ChildFolder.FName := TPath.GetFileNameWithoutExtension(FolderName);
+        AddChild(ChildFolder);
       end;
+      ChildFolder.ImportFiles(FolderName, Masks, Recursive);
     end;
-
-  finally
-    FileList.Free;
   end;
 
-  if FolderNode.Children.Count = 0 then
-    FolderNode.Free;  //Delete empty nodes
+  if not (Self is TProjectAutoUpdateFolderNode) and (Children.Count = 0) then
+    Free;  //Delete empty nodes
 end;
 
 procedure TProjectFilesNode.SortChildren;
@@ -530,7 +643,7 @@ end;
 function TProjectFileNode.GetName: string;
 begin
   if FFileName <> '' then  begin
-    Result := TPath.GetFileName(GI_PyIDEServices.ReplaceParams(FFileName));
+    Result := TPath.GetFileName(FFileName);
     if not ActiveProject.ShowFileExtensions then
       Result := TPath.GetFileNameWithoutExtension(Result);
   end else
@@ -541,30 +654,15 @@ procedure TProjectFileNode.ReadFromAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
 begin
   inherited;
-  FileName := AppStorage.ReadString(BasePath + '\FileName');
+  FileName := GI_PyIDEServices.ReplaceParams(
+    AppStorage.ReadString(BasePath + '\FileName'));
 end;
 
 procedure TProjectFileNode.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
-var
-  BaseDir: string;
 begin
   inherited;
-
-  BaseDir := '';
-  if ActiveProject.StoreRelativePaths then begin
-    BaseDir := ExtractFilePath(ActiveProject.FFileName);
-
-    if BaseDir <> '' then begin
-      if Pos(BaseDir, FFileName) = 1 then begin
-        Delete(FFileName, 1, Length(BaseDir));
-        FFileName := '$[Project-Path]'+FFileName;
-      end;
-    end;
-  end else
-    FFileName := GI_PyIDEServices.ReplaceParams(FFileName);
-
-  AppStorage.WriteString(BasePath + '\FileName', FFileName);
+  AppStorage.WriteString(BasePath + '\FileName', RelativePath(FFileName));
 end;
 
 { TProjectRunConfiguationNode }
@@ -591,9 +689,57 @@ begin
   FRunConfig.Assign(Value);
 end;
 
+{ TProjectAutoUpdateFolderNode }
+
+destructor TProjectAutoUpdateFolderNode.Destroy;
+begin
+  GI_FileSystemMonitor.RemoveDirectory(FPath, FolderChange);
+  inherited;
+end;
+
+procedure TProjectAutoUpdateFolderNode.FolderChange(Sender: TObject;
+  const Path: string; ChangeType: TFileChangeType);
+begin
+  ImportFiles(FPath, FMasks, FRecursive);
+  Modified := False;
+  if Assigned(OnFolderChange) then
+    OnFolderChange(FPath);
+end;
+
+procedure TProjectAutoUpdateFolderNode.ReadFromAppStorage(
+  AppStorage: TJvCustomAppStorage; const BasePath: string);
+begin
+  inherited;
+  FPath :=
+    GI_PyIDEServices.ReplaceParams(AppStorage.ReadString(BasePath + '\Path'));
+  FMasks := AppStorage.ReadString(BasePath + '\Masks');
+  FRecursive := AppStorage.ReadBoolean(BasePath + '\Recursive');
+  if TDirectory.Exists(FPath) then
+  begin
+    ImportFiles(FPath, FMasks, FRecursive);
+    GI_FileSystemMonitor.AddDirectory(FPath, FRecursive, FolderChange,
+      [nfFileName, nfDirName]);
+  end;
+end;
+
+function TProjectAutoUpdateFolderNode.StoreChildren: Boolean;
+begin
+  Result := False;
+end;
+
+procedure TProjectAutoUpdateFolderNode.WriteToAppStorage(
+  AppStorage: TJvCustomAppStorage; const BasePath: string);
+begin
+  inherited;
+  AppStorage.WriteString(BasePath + '\Path', RelativePath(FPath));
+  AppStorage.WriteString(BasePath + '\Masks', FMasks);
+  AppStorage.WriteBoolean(BasePath + '\Recursive', FRecursive);
+end;
+
 initialization
   RegisterClasses([TProjectRootNode, TProjectFolderNode, TProjectFilesNode,
-                   TProjectFileNode, TProjectRunConfiguationsNode, TProjectRunConfiguationNode]);
+                   TProjectAutoUpdateFolderNode,  TProjectFileNode,
+                   TProjectRunConfiguationsNode, TProjectRunConfiguationNode]);
   ActiveProject := TProjectRootNode.Create;
 finalization
   FreeAndNil(ActiveProject);

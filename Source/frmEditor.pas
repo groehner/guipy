@@ -1253,7 +1253,7 @@ type
     FEditorViewFactories: TInterfaceList;
     // IEditorFactory implementation
     function OpenFile(AFilename: string; const HighlighterName: string = '';
-    TabControlIndex: Integer = 1; AsEditor: Boolean = False): IFile;
+      TabControlIndex: Integer = 0; AsEditor: Boolean = False): IFile;
     function GetEditorCount: Integer;
     function GetEditorByName(const Name: string): IEditor;
     function GetEditorByFileId(const Name: string): IEditor;
@@ -1262,7 +1262,7 @@ type
     function GetViewFactory(Index: Integer): IEditorViewFactory;
     function NewEditor(TabControlIndex: Integer = 1): IEditor;
     procedure InvalidatePos(const AFilename: string; ALine: Integer;
-    AType: TInvalidationType);
+      AType: TInvalidationType);
     procedure RemoveEditor(AEditor: IEditor);
     function RegisterViewFactory(ViewFactory: IEditorViewFactory): Integer;
     procedure SetupEditorViewsMenu(ViewsMenu: TSpTBXItem;
@@ -1568,10 +1568,10 @@ begin
 end;
 
 function TEditorFactory.OpenFile(AFilename: string;
-const HighlighterName: string = ''; TabControlIndex: Integer = 1;
+const HighlighterName: string = ''; TabControlIndex: Integer = 0;
 AsEditor: Boolean = False): IFile;
 var IsRemote: Boolean; Server, FName, GuiFormPath: string;
-  TabCtrl: TSpTBXTabControl; Editor: IEditor; FileKind: TFileKind;
+  TabCtrl: TSpTBXCustomTabControl; Editor: IEditor; FileKind: TFileKind;
 begin
   Result := nil;
   PyIDEMainForm.tbiRecentFileList.MRURemove(AFilename);
@@ -3104,8 +3104,8 @@ begin
   if Value.EndsWith('()') then
   begin
     // if the next char is an opening bracket remove the added brackets
-    if (Editor.CaretX <= Editor.LineText.Length) and
-      IsOpeningBracket(Editor.LineText[Editor.CaretX], Editor.Brackets) then
+    if (EndToken = '(') or ((Editor.CaretX <= Editor.LineText.Length) and
+      IsOpeningBracket(Editor.LineText[Editor.CaretX], Editor.Brackets)) then
     begin
       Editor.BeginUpdate;
       try
@@ -3114,7 +3114,6 @@ begin
       finally
         Editor.EndUpdate;
       end;
-      EndToken := #0;
     end
     else
     begin

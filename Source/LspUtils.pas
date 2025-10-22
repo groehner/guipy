@@ -9,8 +9,8 @@ unit LspUtils;
 interface
 
 uses
+  System.Messaging,
   System.JSON;
-
 
 type
 {$SCOPEDENUMS ON}
@@ -75,6 +75,9 @@ type
      Information = 3,
      Hint = 4);
 {$SCOPEDENUMS OFF}
+
+  TLspServerInitializedMessage = class(System.Messaging.TMessage);
+  TLspServerShutDownMessage = class(System.Messaging.TMessage);
 
   TCompletionItem = record
     (*

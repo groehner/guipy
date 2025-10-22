@@ -14,7 +14,7 @@ uses
   System.Classes,
   System.RegularExpressions,
   System.Contnrs,
-  JclNotify,
+  System.Messaging,
   SynEdit,
   PythonEngine,
   PythonVersions,
@@ -30,6 +30,10 @@ type
      peSSH);       // SSH Python engine
 
   TDebuggerState = (dsInactive, dsDebugging, dsPaused, dsRunning, dsPostMortem);
+
+  // Notification messages
+  TPythonVersionChangeMessage = class(System.Messaging.TMessage);
+  TProjectPythonPathChangeMessage = class(System.Messaging.TMessage<TArray<string>>);
 
 const
   // Defined DebugIDE events
@@ -156,11 +160,10 @@ type
     function GetErrorPos: TEditorPos;
     function GetPythonVersion: TPythonVersion;
     function GetActiveSSHServerName: string;
-    function GetOnPythonVersionChange: TJclNotifyEventBroadcast;
+    procedure AppendProjectPaths;
     procedure SetCurrentPos(const NewPos: TEditorPos);
     procedure SetDebuggerState(const NewState: TDebuggerState);
     procedure SetErrorPos(const NewPos: TEditorPos);
-    function AddPathToInternalPythonPath(const Path: string): IInterface;
     procedure Pickle(AValue: Variant; FileName: string);
     property CurrentPos: TEditorPos read GetCurrentPos write SetCurrentPos;
     property DebuggerState: TDebuggerState read GetDebuggerState
@@ -168,8 +171,6 @@ type
     property ErrorPos: TEditorPos read GetErrorPos write SetErrorPos;
     property PythonVersion: TPythonVersion read GetPythonVersion;
     property ActiveSSHServerName: string read GetActiveSSHServerName;
-    property OnPythonVersionChange: TJclNotifyEventBroadcast
-      read GetOnPythonVersionChange;
   end;
 
   TPyInterpreterPropmpt = (pipNormal, pipDebug, pipPostMortem);

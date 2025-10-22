@@ -5912,8 +5912,7 @@ object ResourcesDataModule: TResourcesDataModule
     ActiveHighlighterSwitch = False
     Engine = SynWebEngine
     Options.HtmlVersion = shvHtml401Transitional
-    Left = 496
-    Top = 152
+    Left = 560
   end
   object SynWebXmlSyn: TSynWebXmlSyn
     Brackets = '()[]{}<>'

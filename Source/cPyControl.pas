@@ -14,13 +14,14 @@ interface
 
 uses
   System.Classes,
-  JclNotify,
+  System.Messaging,
   JvAppStorage,
   PythonVersions,
   uEditAppIntfs,
   cPySupportTypes,
   cPyBaseDebugger,
-  cInternalPython;
+  cInternalPython,
+  UUtils;
 
 type
   TPythonControl = class(TComponent, IPyControl)
@@ -34,7 +35,6 @@ type
     FFinalizing: Boolean;
     FDebuggerState: TDebuggerState;
     FOnStateChange: TNotifyEvent;
-    FOnPythonVersionChange: TJclNotifyEventBroadcast;
     FActiveInterpreter: TPyBaseInterpreter;
     FActiveDebugger: TPyBaseDebugger ;
     FRunConfig: TRunConfiguration;
@@ -44,6 +44,7 @@ type
     FInternalInterpreter: TPyBaseInterpreter;
     FActiveSSHServerName: string;
     FPythonHelpFile: string;
+    FProjectPythonPath: TArray<string>;
     function InitPythonVersions: Boolean;
     procedure SetActiveDebugger(const Value: TPyBaseDebugger);
     procedure SetActiveInterpreter(const Value: TPyBaseInterpreter);
@@ -62,12 +63,14 @@ type
     function GetErrorPos: TEditorPos;
     function GetPythonVersion: TPythonVersion;
     function GetActiveSSHServerName: string;
-    function GetOnPythonVersionChange: TJclNotifyEventBroadcast;
+    procedure AppendProjectPaths;
     procedure SetCurrentPos(const NewPos: TEditorPos);
     procedure SetDebuggerState(const NewState: TDebuggerState);
     procedure SetErrorPos(const NewPos: TEditorPos);
-    function AddPathToInternalPythonPath(const Path: string): IInterface;
     procedure Pickle(AValue: Variant; FileName: string);
+
+    procedure HandleProjectPythonPathChange(const Sender: TObject;
+      const Msg: System.Messaging.TMessage);
   public
     const MinPyVersion = '3.8';
     const MaxPyVersion = '3.14';
@@ -114,7 +117,6 @@ type
     property Finalizing: Boolean read FFinalizing;
     property OnStateChange: TNotifyEvent read FOnStateChange
       write FOnStateChange;
-    property OnPythonVersionChange: TJclNotifyEventBroadcast read GetOnPythonVersionChange;
   end;
 
 var
@@ -128,6 +130,8 @@ uses
   System.Contnrs,
   System.UITypes,
   System.Math,
+  System.Generics.Collections,
+  System.Generics.Defaults,
   Vcl.Forms,
   Vcl.Dialogs,
   JvGnugettext,
@@ -142,10 +146,17 @@ uses
   cPyRemoteDebugger,
   cProjectClasses,
   cSSHSupport,
-  cPySSHDebugger,
-  UUtils;
+  cPySSHDebugger;
 
 { TPythonControl }
+
+procedure TPythonControl.AppendProjectPaths;
+begin
+  if ActiveInterpreter = nil then Exit;
+
+  for var Item in FProjectPythonPath do
+    ActiveInterpreter.SysPathAdd(Item);
+end;
 
 constructor TPythonControl.Create(AOwner: TComponent);
 begin
@@ -157,7 +168,8 @@ begin
   FRunConfig := TRunConfiguration.Create;
   FInternalPython := TInternalPython.Create;
   FRegPythonVersions := GetRegisteredPythonVersions(MinPyVersion, MaxPyVersion);
-  FOnPythonVersionChange := TJclNotifyEventBroadcast.Create;
+  TMessageManager.DefaultManager.SubscribeToMessage(TProjectPythonPathChangeMessage,
+    HandleProjectPythonPathChange);
 end;
 
 procedure TPythonControl.Debug(ARunConfig: TRunConfiguration;
@@ -182,10 +194,11 @@ end;
 
 destructor TPythonControl.Destroy;
 begin
+  TMessageManager.DefaultManager.Unsubscribe(TProjectPythonPathChangeMessage,
+    HandleProjectPythonPathChange);
   GI_PyControl := nil;
   FreeAndNil(FInternalInterpreter);
   FreeAndNil(FInternalPython);
-  FreeAndNil(FOnPythonVersionChange);
   FRunConfig.Free;
   inherited;
 end;
@@ -220,11 +233,6 @@ begin
   end;
 end;
 
-function TPythonControl.GetOnPythonVersionChange: TJclNotifyEventBroadcast;
-begin
-  Result := FOnPythonVersionChange;
-end;
-
 function TPythonControl.GetPythonEngineType: TPythonEngineType;
 begin
   if Assigned(ActiveInterpreter) then
@@ -241,6 +249,25 @@ begin
     Result := CustomPythonVersions[-FPythonVersionIndex -1]
   else
     Assert(False, 'Invalid PythonVersionIndex');
+end;
+
+procedure TPythonControl.HandleProjectPythonPathChange(const Sender: TObject;
+  const Msg: System.Messaging.TMessage);
+begin
+  var NewPath := TProjectPythonPathChangeMessage(Msg).Value;
+
+  if Assigned(ActiveInterpreter) then
+  begin
+    var Comparer: IComparer<string> := TIStringComparer.Ordinal;
+
+    // Remove old entries
+    for var Item in FProjectPythonPath do
+      if not TArray.Contains<string>(NewPath, Item, Comparer) then
+        ActiveInterpreter.SysPathRemove(Item);
+  end;
+  FProjectPythonPath := NewPath;
+  // Add the new entries
+  AppendProjectPaths;
 end;
 
 function TPythonControl.Inactive: Boolean;
@@ -424,10 +451,6 @@ begin
           ActiveInterpreter := RemoteInterpreter;
           ActiveDebugger := ActiveInterpreter.CreateDebugger;
           PyIDEOptions.PythonEngineType := Value;
-
-          // Add extra project paths
-          if Assigned(ActiveProject) then
-            ActiveProject.AppendExtraPaths;
         end
         else
         begin
@@ -440,6 +463,7 @@ begin
       end;
   end;
 
+  AppendProjectPaths;
   ActiveInterpreter.Initialize;
 end;
 
@@ -449,11 +473,6 @@ begin
     FPythonVersionIndex := Value;
     LoadPythonEngine(PythonVersion);
   end;
-end;
-
-function TPythonControl.AddPathToInternalPythonPath(const Path: string): IInterface;
-begin
-  Result := InternalInterpreter.AddPathToPythonPath(Path);
 end;
 
 procedure CurrentPosChanged(OldPos, NewPos: TEditorPos);
@@ -650,7 +669,8 @@ begin
     end;
 
     // Notify Python Version Change
-    FOnPythonVersionChange.Notify(Self);
+    TMessageManager.DefaultManager.SendMessage(Self,
+      TPythonVersionChangeMessage.Create);
 
     //  Set the current PythonEngine
     if PyIDEOptions.PythonEngineType = peInternal then

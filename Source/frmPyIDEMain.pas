@@ -610,6 +610,7 @@ uses
   System.Classes,
   System.Actions,
   System.ImageList,
+  System.Messaging,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
@@ -665,7 +666,7 @@ type
     FZOrderPos: Integer;
     FZOrderProcessing: Boolean;
   public
-    procedure WMDropFiles(var Msg: TMessage); message WM_DROPFILES;
+    procedure WMDropFiles(var Msg: WinApi.Messages.TMessage); message WM_DROPFILES;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property ZOrder: TList read FZOrder write FZOrder;
@@ -1495,12 +1496,12 @@ type
     procedure TabToolbarDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
     procedure TabToolbarlDragDrop(Sender, Source: TObject; X, Y: Integer);
-    procedure WMFindDefinition(var Msg: TMessage); message WM_FINDDEFINITION;
-    procedure WMSearchReplaceAction(var Msg: TMessage);
+    procedure WMFindDefinition(var Msg: WinApi.Messages.TMessage); message WM_FINDDEFINITION;
+    procedure WMSearchReplaceAction(var Msg: WinApi.Messages.TMessage);
       message WM_SEARCHREPLACEACTION;
-    procedure WMCheckForUpdates(var Msg: TMessage); message WM_CHECKFORUPDATES;
-    procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
-    procedure CMStyleChanged(var Message: TMessage); message CM_STYLECHANGED;
+    procedure WMCheckForUpdates(var Msg: WinApi.Messages.TMessage); message WM_CHECKFORUPDATES;
+    procedure WMSpSkinChange(var Message: WinApi.Messages.TMessage); message WM_SPSKINCHANGE;
+    procedure CMStyleChanged(var Message: WinApi.Messages.TMessage); message CM_STYLECHANGED;
     procedure SyntaxClick(Sender: TObject);
     procedure SelectEditor(Sender: TObject);
     // Remote Desktop
@@ -1508,7 +1509,7 @@ type
     procedure CreateWnd; override;
     procedure WMDestroy(var Message: TWMDestroy); message WM_DESTROY;
     procedure WMEndSession(var Msg: TWMEndSession); message WM_ENDSESSION;
-    procedure WMWTSSessionChange(var Message: TMessage);
+    procedure WMWTSSessionChange(var Message: WinApi.Messages.TMessage);
       message WM_WTSSESSION_CHANGE;
     // Browse MRU stuff
     procedure PrevClickHandler(Sender: TObject);
@@ -1571,7 +1572,8 @@ type
     procedure UpdateDebugCommands;
     procedure DebuggerStateChange(Sender: TObject);
     procedure ApplicationOnIdle(Sender: TObject; var Done: Boolean);
-    procedure PyIDEOptionsChanged;
+    procedure PyIDEOptionsChanged(const Sender: TObject; const Msg:
+        System.Messaging.TMessage);
     procedure SetupCustomizer;
     procedure SetupLanguageMenu;
     procedure SetupToolsMenu;
@@ -1596,9 +1598,9 @@ type
     function FileFromTab(Tab: TSpTBXTabItem): IFile;
     procedure SplitWorkspace(SecondTabsVisible: Boolean;
       Alignment: TAlign = alRight; Size: Integer = -1);
-    procedure MoveTab(Tab: TSpTBXTabItem; TabControl: TSpTBXTabControl;
+    procedure MoveTab(Tab: TSpTBXTabItem; TabControl: TSpTBXCustomTabControl;
       Index: Integer = -1);
-    function TabControl(TabControlIndex: Integer = 1): TSpTBXTabControl;
+    function TabControl(TabControlIndex: Integer = 1): TSpTBXCustomTabControl;
     function TabControlIndex(TabControl: TSpTBXCustomTabControl): Integer;
     procedure ShowIDEDockForm(Form: TForm);
     function GetActiveTextDiff: ISearchCommands;
@@ -2135,7 +2137,8 @@ begin
     CallStackWindow.actlCallStack];
 
   // Notifications
-  PyIDEOptions.OnChange.AddHandler(PyIDEOptionsChanged);
+  TMessageManager.DefaultManager.SubscribeToMessage(TIDEOptionsChangedMessage,
+    PyIDEOptionsChanged);
   SkinManager.AddSkinNotification(Self);
   SkinManager.BroadcastSkinNotification;
 
@@ -3567,8 +3570,7 @@ begin
       FileExists(FileName)) then
     begin
       try
-        GI_EditorFactory.OpenFile(FileName, '',
-          TabControlIndex(ActiveTabControl));
+        GI_EditorFactory.OpenFile(FileName);
       except
         Exit;
       end;
@@ -3939,9 +3941,12 @@ begin
   Result := UnitTestWindow;
 end;
 
-function TPyIDEMainForm.TabControl(TabControlIndex: Integer): TSpTBXTabControl;
+function TPyIDEMainForm.TabControl(TabControlIndex: Integer = 1):
+  TSpTBXCustomTabControl;
 begin
-  if TabControlIndex = 2 then
+  if TabControlIndex = 0 then
+    Result := ActiveTabControl
+  else if TabControlIndex = 2 then
     Result := TabControl2
   else
     Result := TabControl1;
@@ -4069,7 +4074,8 @@ procedure TPyIDEMainForm.FormDestroy(Sender: TObject);
 begin
   GI_PyIDEServices := nil;
   SkinManager.RemoveSkinNotification(Self);
-  PyIDEOptions.OnChange.RemoveHandler(PyIDEOptionsChanged);
+  TMessageManager.DefaultManager.Unsubscribe(TIDEOptionsChangedMessage,
+    PyIDEOptionsChanged);
   FreeAndNil(FLayouts);
   FreeAndNil(FLanguageList);
   FreeAndNil(FDSAAppStorage);
@@ -4182,14 +4188,12 @@ begin
         else
           for var I := 0 to Files.Count - 1 do
           begin
-            GI_EditorFactory.OpenFile(Files[I], '',
-              TabControlIndex(ActiveTabControl));
+            GI_EditorFactory.OpenFile(Files[I], '');
             if (TPath.GetExtension(Files[I]) = '.pyw') then
             begin
               var
               PfmFile := TPath.ChangeExtension(Files[I], '.pfm');
-              GI_EditorFactory.OpenFile(PfmFile, '',
-                TabControlIndex(ActiveTabControl));
+              GI_EditorFactory.OpenFile(PfmFile, '');
             end;
           end;
     end;
@@ -4216,7 +4220,8 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.PyIDEOptionsChanged;
+procedure TPyIDEMainForm.PyIDEOptionsChanged(const Sender: TObject; const Msg:
+   System.Messaging.TMessage);
 begin
   Application.DefaultFont.Size := PyIDEOptions.UIContentFontSize;
 
@@ -5354,7 +5359,7 @@ begin
 end;
 
 procedure TPyIDEMainForm.MoveTab(Tab: TSpTBXTabItem;
-TabControl: TSpTBXTabControl; Index: Integer);
+TabControl: TSpTBXCustomTabControl; Index: Integer = -1);
 var
   NewTab: TSpTBXTabItem;
   Sheet, NewSheet: TSpTBXTabSheet;
@@ -6162,7 +6167,7 @@ begin
     end;
 end;
 
-procedure TPyIDEMainForm.WMSpSkinChange(var Message: TMessage);
+procedure TPyIDEMainForm.WMSpSkinChange(var Message: WinApi.Messages.TMessage);
 begin
   // Update EditorOptions
   ThemeEditorGutter(GEditorOptions.Gutter);
@@ -6192,7 +6197,7 @@ begin
   // Application.HintColor := CurrentTheme.GetViewColor(VT_DOCKPANEL);
 end;
 
-procedure TPyIDEMainForm.WMWTSSessionChange(var Message: TMessage);
+procedure TPyIDEMainForm.WMWTSSessionChange(var Message: WinApi.Messages.TMessage);
 begin
   case Message.WParam of
     WTS_SESSION_LOCK, WTS_REMOTE_DISCONNECT:
@@ -6206,7 +6211,7 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.CMStyleChanged(var Message: TMessage);
+procedure TPyIDEMainForm.CMStyleChanged(var Message: WinApi.Messages.TMessage);
 begin
   SkinManager.BroadcastSkinNotification;
   FFileStructure.ChangeStyle;
@@ -6218,7 +6223,7 @@ begin
   ChangeStyle;
 end;
 
-procedure TPyIDEMainForm.WMFindDefinition(var Msg: TMessage);
+procedure TPyIDEMainForm.WMFindDefinition(var Msg: WinApi.Messages.TMessage);
 var
   FilePosInfo: string;
   FileName: string;
@@ -6235,7 +6240,7 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.WMSearchReplaceAction(var Msg: TMessage);
+procedure TPyIDEMainForm.WMSearchReplaceAction(var Msg: WinApi.Messages.TMessage);
 var
   Action: TCustomAction;
 begin
@@ -6353,7 +6358,7 @@ function TPyIDEMainForm.NewFileFromTemplate(FileTemplate: TFileTemplate;
 TabControlIndex: Integer; FileName: string): IEditor;
 var
   I, J: Integer;
-  TabCtrl: TSpTBXTabControl;
+  TabCtrl: TSpTBXCustomTabControl;
   Editor: IEditor;
   EditorView: IEditorView;
 begin
@@ -6458,8 +6463,7 @@ begin
   // Try to see whether it contains line/char info
   Result := JumpToFilePosInfo(FileName);
   if not Result and FileExists(FileName) then
-    Result := Assigned(GI_EditorFactory.OpenFile(FileName, '',
-      TabControlIndex(ActiveTabControl)));
+    Result := Assigned(GI_EditorFactory.OpenFile(FileName, ''));
 end;
 
 procedure TPyIDEMainForm.tbiBrowseNextClick(Sender: TObject);
@@ -6535,7 +6539,7 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.WMCheckForUpdates(var Msg: TMessage);
+procedure TPyIDEMainForm.WMCheckForUpdates(var Msg: WinApi.Messages.TMessage);
 begin
   try
     CommandsDataModule.actCheckForUpdatesExecute(nil);
@@ -6686,8 +6690,7 @@ var
   FileName, Server: string;
 begin
   if ExecuteRemoteFileDialog(FileName, Server, rfdOpen) then
-    GI_EditorFactory.OpenFile(TSSHFileName.Format(Server, FileName), '',
-      TabControlIndex(ActiveTabControl));
+    GI_EditorFactory.OpenFile(TSSHFileName.Format(Server, FileName), '');
 end;
 
 procedure TPyIDEMainForm.actRestoreEditorExecute(Sender: TObject);
@@ -6858,7 +6861,7 @@ end;
 procedure TPyIDEMainForm.tbiRecentFileListClick(Sender: TObject;
 const FileName: string);
 begin
-  GI_EditorFactory.OpenFile(FileName, '', TabControlIndex(ActiveTabControl));
+  GI_EditorFactory.OpenFile(FileName, '');
   TThread.ForceQueue(nil,
     procedure
     begin
@@ -6868,7 +6871,7 @@ begin
   begin
     var
     AFilename := ChangeFileExt(FileName, '.pfm');
-    GI_EditorFactory.OpenFile(AFilename, '', TabControlIndex(ActiveTabControl));
+    GI_EditorFactory.OpenFile(AFilename, '');
   end;
 end;
 
@@ -7059,7 +7062,7 @@ end;
 
 { TTSpTBXTabControl }
 
-procedure TSpTBXTabControl.WMDropFiles(var Msg: TMessage);
+procedure TSpTBXTabControl.WMDropFiles(var Msg: winApi.Messages.TMessage);
 var
   NumberDropped: Integer;
   FileName: array [0 .. MAX_PATH - 1] of Char;

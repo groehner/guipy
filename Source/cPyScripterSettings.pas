@@ -5,6 +5,7 @@
  Purpose:   Centralize the management of PyScripter settings
  History:
  Expansion: TPyScripterSettings.CreateSettings, more options
+            InstallQtMessageHandler
 -----------------------------------------------------------------------------}
 
 unit cPyScripterSettings;
@@ -14,7 +15,6 @@ uses
   System.Classes,
   System.Messaging,
   Vcl.Graphics,
-  JclNotify,
   SpTBXTabs,
   SynEditTypes,
   SynEditCodeFolding,
@@ -54,7 +54,6 @@ type
   TPythonIDEOptions = class(TBaseOptions, IFreeNotification)
   private
     FFreeNotifyImpl: IFreeNotification;
-    FOnChange: TJclProcedureEventBroadcast;
     FTimeOut: Integer;
     FUndoAfterSave: Boolean;
     FSaveFilesBeforeRun: Boolean;
@@ -175,7 +174,6 @@ type
     procedure Assign(Source: TPersistent); override;
     procedure Changed;
     property PythonFileExtensions: string read GetPythonFileExtensions;
-    property OnChange: TJclProcedureEventBroadcast read FOnChange;
   published
     property CodeFolding: TSynCodeFolding read FCodeFolding
       write SetCodeFolding;
@@ -592,14 +590,14 @@ end;
 
 procedure TPythonIDEOptions.Changed;
 begin
-  FOnChange.CallAllProcedures;
+  TPyScripterSettings.ApplyPyIDEOptions;
+  TMessageManager.DefaultManager.SendMessage(Self,
+  TIDEOptionsChangedMessage.Create);
 end;
 
 constructor TPythonIDEOptions.Create;
 begin
   FFreeNotifyImpl := TFreeNotificationImpl.Create(Self);
-  FOnChange := TJclProcedureEventBroadcast.Create;
-
   FTimeOut := 0; // 5000;
   FUndoAfterSave := True;
   FSaveFilesBeforeRun := True;
@@ -717,7 +715,6 @@ begin
   FreeAndNil(FSelectionColor);
   FreeAndNil(FIndentGuides);
   FreeAndNil(FDisplayFlowControl);
-  FreeAndNil(FOnChange);
   inherited;
 end;
 
@@ -1279,7 +1276,6 @@ begin
   CreateGEditorOptions;
   CreateSearchOptions;
   ApplyPyIDEOptions;
-  PyIDEOptions.OnChange.AddHandler(ApplyPyIDEOptions);
   // Save Default editor KeyStrokes
   TPyScripterSettings.DefaultEditorKeyStrokes := TSynEditKeyStrokes.Create(nil);
   TPyScripterSettings.DefaultEditorKeyStrokes.Assign(GEditorOptions.KeyStrokes);
@@ -1330,7 +1326,6 @@ end;
 
 class destructor TPyScripterSettings.Destroy;
 begin
-  PyIDEOptions.OnChange.RemoveHandler(ApplyPyIDEOptions);
   EditorSearchOptions.Free;
   PyIDEOptions.Free;
   GEditorOptions.Free;

@@ -14,13 +14,18 @@ uses
   Winapi.Windows,
   System.SyncObjs,
   System.JSON,
-  JclNotify,
+  System.Messaging,
   LspClient,
   SynEditTypes,
   SynEdit,
-  LspUtils;
+  LspUtils,
+  cPySupportTypes;
 
 type
+
+// Notifications
+  TLspServerInitializedMessage = class(System.Messaging.TMessage);
+  TLspServerShutDownMessage = class(System.Messaging.TMessage);
 
   TParamCompletionInfo = class
   private
@@ -60,9 +65,8 @@ type
     class var LspClient: TLspClient;
     class var SyncRequestTimeout: Integer;
     class var ParamCompletionInfo: TParamCompletionInfo;
-    class var OnInitialized: TJclNotifyEventBroadcast;
-    class var OnShutDown: TJclNotifyEventBroadcast;
-    class procedure PythonVersionChanged(Sender: TObject);
+    class procedure PythonVersionChanged(const Sender: TObject;
+      const Msg: System.Messaging.TMessage);
     class procedure OnLspClientInitialized(Sender: TObject);
     class procedure OnLspClientShutdown(Sender: TObject);
     class constructor Create;
@@ -103,8 +107,7 @@ uses
   cPyScripterSettings,
   cPyControl,
   StringResources,
-  JvGnugettext,
-  cPySupportTypes;
+  JvGnugettext;
 
 { TJedi }
 
@@ -112,10 +115,8 @@ class constructor TJedi.Create;
 begin
   ParamCompletionInfo := TParamCompletionInfo.Create;
   SyncRequestTimeout := 4000; // ms
-  OnInitialized := TJclNotifyEventBroadcast.Create;
-  OnShutDown := TJclNotifyEventBroadcast.Create;
-  OnShutDown.AddHandler(TLspSynEditPlugin.OnLspShutDown);
-  GI_PyControl.OnPythonVersionChange.AddHandler(PythonVersionChanged);
+  TMessageManager.DefaultManager.SubscribeToMessage(TPythonVersionChangeMessage,
+    PythonVersionChanged);
 end;
 
 class procedure TJedi.CreateServer;
@@ -157,10 +158,8 @@ end;
 
 class destructor TJedi.Destroy;
 begin
-  GI_PyControl.OnPythonVersionChange.RemoveHandler(PythonVersionChanged);
-  OnShutDown.RemoveHandler(TLspSynEditPlugin.OnLspShutDown);
-  OnInitialized.Free;
-  OnShutDown.Free;
+  TMessageManager.DefaultManager.Unsubscribe(TPythonVersionChangeMessage,
+    PythonVersionChanged);
   ParamCompletionInfo.Free;
   LspClient.Free;
 end;
@@ -221,20 +220,24 @@ end;
 
 class procedure TJedi.OnLspClientInitialized(Sender: TObject);
 begin
-  if Assigned(OnInitialized) and (OnInitialized.HandlerCount > 0) then
-    TThread.ForceQueue(nil, procedure
-    begin
-      OnInitialized.Notify(LspClient);
-    end);
+  TThread.ForceQueue(nil, procedure
+  begin
+    TMessageManager.DefaultManager.SendMessage(LspClient,
+      TLspServerInitializedMessage.Create);
+  end);
 end;
 
 class procedure TJedi.OnLspClientShutdown(Sender: TObject);
 begin
-  if Assigned(OnShutDown) and (OnShutDown.HandlerCount > 0) then
-    OnShutDown.Notify(LspClient);
+  TThread.ForceQueue(nil, procedure
+  begin
+    TMessageManager.DefaultManager.SendMessage(LspClient,
+      TLspServerShutDownMessage.Create);
+  end);
 end;
 
-class procedure TJedi.PythonVersionChanged(Sender: TObject);
+class procedure TJedi.PythonVersionChanged(const Sender: TObject; const Msg:
+    System.Messaging.TMessage);
 begin
   CreateServer;
 end;
