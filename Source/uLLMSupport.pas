@@ -266,7 +266,7 @@ const
   GrokChatSettings: TLLMSettings = (
     EndPoint: 'https://api.x.ai/v1/chat/completions';
     ApiKey: '';
-    Model: 'grok-3-mini-latest';
+    Model: 'grok-3-code-fast';
     TimeOut: 20000;
     MaxTokens: 3000;
     Temperature: 1.0;
@@ -275,7 +275,7 @@ const
   GrokAssistantSettings: TLLMSettings = (
     EndPoint: 'https://api.x.ai/v1/chat/completions';
     ApiKey: '';
-    Model: 'grok-3-latest';
+    Model: 'grok-3-code-fast';
     TimeOut: 20000;
     MaxTokens: 3000;
     Temperature: 0;
