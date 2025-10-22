@@ -12,6 +12,7 @@ unit cPyScripterSettings;
 interface
 uses
   System.Classes,
+  System.Messaging,
   Vcl.Graphics,
   JclNotify,
   SpTBXTabs,
@@ -35,6 +36,7 @@ const
 
 type
   TFileChangeNotificationType = (fcnFull, fcnNoMappedDrives, fcnDisabled);
+  TIDEOptionsChangedMessage = class(System.Messaging.TMessage);
 
 {$METHODINFO ON}
   TBaseOptionsClass = class of TBaseOptions;

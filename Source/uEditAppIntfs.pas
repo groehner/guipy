@@ -22,7 +22,8 @@ uses
   PythonEngine,
   PythonVersions,
   SynEdit,
-  SpTBXItem;
+  SpTBXItem,
+  FileSystemMonitor;
 
 type
 
@@ -330,7 +331,15 @@ var
   GI_PyIDEServices: IPyIDEServices;
   GI_SSHServices: ISSHServices;
 
+  GI_FileSystemMonitor: IFileSystemMonitor;
+
 implementation
+
+initialization
+  GI_FileSystemMonitor := CreateFileSystemMonitor;
+
+finalization
+  GI_FileSystemMonitor := nil;
 
 end.
 

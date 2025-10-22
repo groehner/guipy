@@ -337,9 +337,6 @@ type
       var Action: TSynReplaceAction);
     procedure IncrementalSearch;
     procedure ApplyEditorOptions;
-    procedure ProcessShellNotify(Sender: TCustomVirtualExplorerTree;
-      ShellEvent: TVirtualShellEvent);
-    procedure ProcessFolderChange(const FolderName: string);
     function FindSearchTarget: ISearchCommands;
     procedure HighlightWordInActiveEditor(const SearchWord: string);
   end;
@@ -1201,123 +1198,6 @@ procedure TCommandsDataModule.actSearchMatchingBraceExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
     GI_ActiveEditor.ActiveSynEdit.CommandProcessor(ecMatchBracket, #0, nil);
-end;
-
-procedure TCommandsDataModule.ProcessFolderChange(const FolderName: string);
-var
-  ModifiedCount: Integer;
-  aFile: IFile;
-  ChangedFiles: TStringList;
-  FTime: TDateTime;
-begin
-  if FolderName = '' then
-    Exit;
-
-  ChangedFiles := TSmartPtr.Make(TStringList.Create)();
-
-  GI_FileFactory.ApplyToFiles(
-    procedure(Fi: IFile)
-    begin
-      if (Fi.FileName <> '') and (ExtractFileDir(Fi.FileName) = FolderName) then
-      begin
-        FileAge(Fi.FileName, FTime);
-        if FTime > 0 then
-        begin
-          if not FileExists(Fi.FileName) and Assigned(Fi.Form) and
-            (TFileForm(Fi.Form).FileTime <> 0) then
-          begin
-            // File or directory has been moved or deleted
-            // Mark as modified so that we try to save it
-            Fi.Modified := True;
-            // Set FileTime to zero to prevent further notifications
-            TFileForm(Fi.Form).FileTime := 0;
-            StyledMessageDlg(Format(_(SFileRenamedOrDeleted), [Fi.FileName]),
-              mtWarning, [mbOK], 0);
-          end;
-        end
-        else if not SameDateTime(TFileForm(Fi.Form).FileTime, FTime) then
-        begin
-          ChangedFiles.AddObject(Fi.FileId, Fi.Form);
-          // Prevent further notifications on this file
-          TFileForm(Fi.Form).FileTime := FTime;
-        end;
-      end;
-    end);
-
-  ModifiedCount := 0;
-  for var I := 0 to ChangedFiles.Count - 1 do
-  begin
-    aFile := TFileForm(ChangedFiles.Objects[I]).GetFile;
-    if aFile.Modified then
-      Inc(ModifiedCount);
-    aFile.Modified := True; // So that we are prompted to save changes
-  end;
-
-  if ChangedFiles.Count > 0 then
-    if PyIDEOptions.AutoReloadChangedFiles and (ModifiedCount = 0) then
-    begin
-      for var I := 0 to ChangedFiles.Count - 1 do
-      begin
-        aFile := TFileForm(ChangedFiles.Objects[I]).GetFile;
-        (aFile as IFileCommands).ExecReload(True);
-      end;
-      MessageBeep(MB_ICONASTERISK);
-      GI_PyIDEServices.WriteStatusMsg(_(SChangedFilesReloaded));
-    end
-    else
-      with TPickListDialog.Create(Application.MainForm) do
-      begin
-        Caption := _(SFileChangeNotification);
-        lbMessage.Caption := _(SFileReloadWarning);
-        CheckListBox.Items.Assign(ChangedFiles);
-        SetScrollWidth;
-        mnSelectAllClick(nil);
-        if ShowModal = IdOK then
-          for var I := CheckListBox.Count - 1 downto 0 do
-          begin
-            if CheckListBox.Checked[I] then
-            begin
-              aFile := TFileForm(CheckListBox.Items.Objects[I]).GetFile;
-              (aFile as IFileCommands).ExecReload(True);
-            end;
-          end;
-        Release;
-      end;
-end;
-
-procedure TCommandsDataModule.ProcessShellNotify
-  (Sender: TCustomVirtualExplorerTree; ShellEvent: TVirtualShellEvent);
-var
-  NS: TNamespace;
-  WS: string;
-  Dir: string;
-begin
-  if not(ShellEvent.ShellNotifyEvent in [vsneUpdateDir, vsneRenameFolder]) then
-    Exit;
-
-  Dir := '';
-  NS := TNamespace.Create(ShellEvent.PIDL1, nil);
-  try
-    NS.FreePIDLOnDestroy := False;
-    Dir := NS.NameForParsing;
-    if PyIDEOptions.FileChangeNotification = fcnNoMappedDrives then
-    begin
-      // Do not process mapped drive
-      WS := WideExtractFileDrive(Dir);
-      if WideIsDrive(WS) and (GetDriveType(PWideChar(WS)) = DRIVE_REMOTE) then
-        Exit;
-    end;
-    if not NS.Folder then // UpdateItem notifications
-      Dir := TPath.GetDirectoryName(Dir);
-  finally
-    NS.Free;
-  end;
-
-  TThread.ForceQueue(nil,
-    procedure
-    begin
-      ProcessFolderChange(Dir);
-    end, 200);
 end;
 
 procedure TCommandsDataModule.actIDEOptionsExecute(Sender: TObject);

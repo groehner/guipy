@@ -19,6 +19,7 @@ uses
   System.Contnrs,
   System.ImageList,
   System.Threading,
+  System.Messaging,
   Vcl.ComCtrls,
   Vcl.Graphics,
   Vcl.Controls,
@@ -40,6 +41,7 @@ uses
   SynCompletionProposal,
   SynEditLsp,
   VirtualResources,
+  FileSystemMonitor,
   uEditAppIntfs,
   cPySupportTypes,
   cPythonSourceScanner,
@@ -290,8 +292,6 @@ type
 
     procedure AutoCompleteBeforeExecute(Sender: TObject);
     procedure AutoCompleteAfterExecute(Sender: TObject);
-    procedure WMFolderChangeNotify(var Msg: TMessage);
-      message WM_FOLDERCHANGENOTIFY;
     procedure SynCodeCompletionCodeItemInfo(Sender: TObject; AIndex: Integer;
       var Info: string);
     procedure DoAssignInterfacePointer(Active: Boolean);
@@ -310,7 +310,8 @@ type
     procedure ChangeStyle;
     function GetFrameType: Integer;
     function GetActiveSynEdit: TSynEdit;
-    procedure ApplyPyIDEOptions;
+    procedure ApplyPyIDEOptions(const Sender: TObject; const Msg:
+        System.Messaging.TMessage);
     procedure ScrollbarAnnotationGetInfo(Sender: TObject;
       AnnType: TSynScrollbarAnnType; var Rows: TArray<Integer>;
       var Colors: TArray<TColor>);
@@ -525,6 +526,7 @@ type
   public
     constructor Create(AForm: TFileForm); reintroduce;
     destructor Destroy; override;
+
     procedure DoSetFilename(const FileName: string); override;
     procedure OpenRemoteFile(const FileName, Servername: string); override;
     function SaveToRemoteFile(const FileName, Servername: string)
@@ -543,9 +545,10 @@ uses
 
   System.Math,
   RegularExpressions,
-  VirtualShellNotifier,
   PythonEngine,
   IOUtils,
+  System.DateUtils,
+  System.Generics.Collections,
   JclFileUtils,
   SynEditHighlighter,
   SynEditKeyCmds,
@@ -689,7 +692,9 @@ end;
 
 destructor TEditor.Destroy;
 begin
-  // Kept for debugging
+  // Unregister existing File Notification
+  if FileName <> '' then
+    GI_FileSystemMonitor.RemoveFile(FileName, FileChanged);
   inherited;
 end;
 
@@ -1374,7 +1379,7 @@ begin
       Visible := True;
       ScaleForPPI(Sheet.CurrentPPI);
       ApplyEditorOptions;
-      ApplyPyIDEOptions;
+      ApplyPyIDEOptions(PyIDEOptions, nil);
     end;
     if Assigned(Result) then
       Files.Add(Result);
@@ -1737,9 +1742,6 @@ begin
   FreeAndNil(TVFileStructure);
   FreeAndNil(FModel);
 
-  // PyIDEOptions change notification
-  PyIDEOptions.OnChange.RemoveHandler(ApplyPyIDEOptions);
-
   if SynEdit2.IsChained then
     SynEdit2.RemoveLinesPointer;
 
@@ -1747,13 +1749,13 @@ begin
     GI_BreakpointManager.BreakpointsChanged := True;
   FBreakPoints.Free;
 
+  // Remove notifications
+  TMessageManager.DefaultManager.Unsubscribe(TIDEOptionsChangedMessage,
+    ApplyPyIDEOptions);
+  SkinManager.RemoveSkinNotification(Self);
+
   GI_EditorFactory.RemoveFile(IEditor(FEditor));
   inherited;
-
-  // Unregister kernel notification
-  ChangeNotifier.UnRegisterKernelChangeNotify(Self);
-
-  SkinManager.RemoveSkinNotification(Self);
 end;
 
 procedure TEditorForm.SynEditChange(Sender: TObject);
@@ -2469,14 +2471,13 @@ begin
   SynEdit.Indicators.RegisterSpec(HotIdentIndicatorSpec, IndicatorSpec);
   SynEdit2.Indicators.RegisterSpec(HotIdentIndicatorSpec, IndicatorSpec);
 
-  // PyIDEOptions change notification
-  PyIDEOptions.OnChange.AddHandler(ApplyPyIDEOptions);
-
-  // Register Kernel Notification
-  ChangeNotifier.RegisterKernelChangeNotify(Self, [vkneFileName, vkneDirName,
-    vkneLastWrite, vkneCreation]);
-  SkinManager.AddSkinNotification(Self);
   PyIDEMainForm.ThemeEditorGutter(SynEdit.Gutter);
+
+  // Setup notifications
+  TMessageManager.DefaultManager.SubscribeToMessage(TIDEOptionsChangedMessage,
+    ApplyPyIDEOptions);
+  SkinManager.AddSkinNotification(Self);
+
   TranslateComponent(Self);
 
   // GuiPy
@@ -2908,17 +2909,6 @@ begin
   FGit.Execute(TSpTBXItem(Sender).Tag, GetEditor);
 end;
 
-procedure TEditorForm.WMFolderChangeNotify(var Msg: TMessage);
-begin
-  TThread.ForceQueue(nil,
-    procedure
-    begin
-      if FEditor.FileName <> '' then
-        CommandsDataModule.ProcessFolderChange
-          (TPath.GetDirectoryName(FEditor.FileName));
-    end, 200);
-end;
-
 procedure TEditorForm.AddWatchAtCursor;
 var Token, LineTxt, DottedIdent: string; Attri: TSynHighlighterAttributes;
   LineCharPos: TBufferCoord;
@@ -2982,7 +2972,8 @@ begin
     ResourcesDataModule.SynPythonSyn.UnbalancedBraceAttri.Foreground, [fsBold]);
 end;
 
-procedure TEditorForm.ApplyPyIDEOptions;
+procedure TEditorForm.ApplyPyIDEOptions(const Sender: TObject;
+  const Msg: System.Messaging.TMessage);
 
   procedure ApplyOptionsToEditor(Editor: TCustomSynEdit);
   begin

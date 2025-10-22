@@ -10,7 +10,8 @@ uses
   Vcl.Controls,
   Vcl.Forms,
   SpTBXTabs,
-  uEditAppIntfs;
+  uEditAppIntfs,
+  FileSystemMonitor;
 
 type
   TFile = class;
@@ -120,7 +121,6 @@ type
     procedure OpenFile(const FileName: string);
     procedure Translate; virtual;
   public
-    class var UntitledNumbers: TBits;
     constructor Create(FileKind: TFileKind; AForm: TFileForm); virtual;
     function GetFileKind: TFileKind;
     function GetFileName: string;
@@ -135,11 +135,15 @@ type
     procedure ExecSave;
     procedure ExecExport;
     procedure DoOnIdle; virtual;
+    procedure FileChanged(Sender: TObject; const Path: string;
+      ChangeType: TFileChangeType);
 
-    class function GetUntitledNumber: Integer;
     class constructor Create;
     class destructor Destroy;
-
+    class var UntitledNumbers: TBits;
+    class var FChangedFiles: TArray<string>;
+    class function GetUntitledNumber: Integer;
+  public
     property FileName: string read FFileName write FFileName;
     property RemoteFileName: string read FRemoteFileName write FRemoteFileName;
     property SSHServer: string read FSSHServer write FSSHServer;
@@ -179,10 +183,13 @@ implementation
 
 uses
   System.IOUtils,
+  System.DateUtils,
+  System.Generics.Collections,
   Winapi.Windows,
   UITypes,
   Types,
   Vcl.Dialogs,
+  Vcl.StdCtrls,
   VirtualShellNotifier,
   JvGnugettext,
   JclFileUtils,
@@ -689,23 +696,19 @@ begin
 
   if FileName <> FFileName then
   begin
+    // Unregister existing File Notification
+    if FFileName <> '' then
+      GI_FileSystemMonitor.RemoveFile(FFileName, FileChanged);
+
     FFileName := FileName;
     if FileName <> '' then
     begin
       FRemoteFileName := '';
       FSSHServer := '';
     end;
-    // Kernel change notification
-    if (FFileName <> '') and FileExists(FFileName) then
-    begin
-      // Register Kernel Notification
-      ChangeNotifier.RegisterKernelChangeNotify(FForm, [vkneFileName, vkneDirName,
-        vkneLastWrite, vkneCreation]);
-
-      ChangeNotifier.NotifyWatchFolder(FForm, TPath.GetDirectoryName(FFileName));
-    end
-    else
-      ChangeNotifier.UnRegisterKernelChangeNotify(FForm);  // just in case it was registered
+    // Register File Notification
+    if FFileName <> '' then
+      GI_FileSystemMonitor.AddFile(FFileName, FileChanged);
   end;
 end;
 
@@ -976,6 +979,75 @@ end;
 procedure TFile.DoOnIdle;
 begin
   FForm.DoOnIdle;
+end;
+
+procedure TFile.FileChanged(Sender: TObject; const Path: string;
+  ChangeType: TFileChangeType);
+var
+  FileTime: TDateTime;
+begin
+  if FileName = ''  then Exit;
+
+  if (ChangeType in [fcRemoved, fcRenamedOld]) and
+    not System.IOUtils.TFile.Exists(FileName) and (Form.FileTime <> 0) then
+  begin
+    Form.Modified := True;
+    // Set FileTime to zero to prevent further notifications
+    Form.FileTime := 0;
+    StyledMessageDlg(Format(_(SFileRenamedOrDeleted), [FileName]),
+      mtWarning, [mbOK], 0);
+  end
+  else if FileAge(FileName, FileTime) and not SameDateTime(FileTime, Form.FileTime) then
+  begin
+    // Prevent further notifications on this file
+    Form.FileTime := FileTime;
+    if PyIDEOptions.AutoReloadChangedFiles and not Form.Modified then
+      // Reload with a short delay
+      TThread.ForceQueue(nil,
+        procedure
+        begin
+          ExecReload(True);
+          MessageBeep(MB_ICONASTERISK);
+          GI_PyIDEServices.WriteStatusMsg(_(SChangedFilesReloaded));
+        end, 500)
+    else
+    begin
+      if TArray.IndexOf(FChangedFiles, FileName) < 0 then
+      begin
+        FChangedFiles := FChangedFiles + [FileName];
+        if Length(FChangedFiles) = 1 then
+          // Execute in the main thread with a delay in case more files
+          // are changed in the meantime.
+          TThread.ForceQueue(nil,
+            procedure
+            var
+              Editor: IEditor;
+            begin
+              with TPickListDialog.Create(Application.MainForm) do
+              begin
+                Caption := _(SFileChangeNotification);
+                lbMessage.Caption := _(SFileReloadWarning);
+                CheckListBox.Items.AddStrings(FChangedFiles);
+                SetScrollWidth;
+                CheckListBox.CheckAll(cbChecked);
+                if ShowModal = idOK then
+                  for var I := CheckListBox.Count - 1 downto 0 do
+                  begin
+                    if CheckListBox.Checked[I] then
+                    begin
+                      Editor := GI_EditorFactory.GetEditorByName(CheckListBox.Items[I]);
+                      if Assigned(Editor) then
+                        (Editor as IFileCommands).ExecReload(True);
+                    end;
+                  end;
+                Release;
+              end;
+              FChangedFiles := [];
+            end, 1000);  // 1 second delay
+      end;
+    end;
+    Form.Modified := True;  // so that we will be prompted to save changes
+  end;
 end;
 
 class function TFile.GetUntitledNumber: Integer;
