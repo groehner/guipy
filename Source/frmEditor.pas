@@ -3191,8 +3191,6 @@ begin
     Exit;
   try
     CC.CleanUp;
-    CC.CompletionInfo.Editor := Editor;
-    CC.CompletionInfo.CaretXY := Caret;
 
     var Skipped := False;
     for var I := 0 to CC.SkipHandlers.Count -1 do
@@ -3202,9 +3200,7 @@ begin
       if Skipped then Break;
     end;
 
-    if Skipped then
-      CC.CleanUp
-    else
+    if not Skipped then
       // There is one CompletionHandler (LSP) which will always fail!
       // Completion will be activated by the LSP completion handler
       for var I := 0 to CC.CompletionHandlers.Count - 1 do
@@ -3215,6 +3211,8 @@ begin
           Caret, Highlighter, Attr, InsertText, DisplayText);
         Assert(Handled = False, 'DoCodeCompletion');
         CC.CompletionInfo.CompletionHandler := CompletionHandler;
+        CC.CompletionInfo.Editor := Editor;
+        CC.CompletionInfo.CaretXY := Caret;
       end;
   finally
     CC.Lock.Leave;
@@ -3318,7 +3316,7 @@ begin
   Editor := GI_ActiveEditor;
   CompletionProposal := Sender as TSynCompletionProposal;
 
-  TJedi.ParamCompletionInfo.Lock;
+  TIDECompletion.SignatureHelpInfo.Lock;
   try
     CanExecute := Assigned(Editor) and Editor.HasPythonFile and TJedi.Ready and
       (Editor.ActiveSynEdit = CompletionProposal.Editor) and
@@ -3329,7 +3327,7 @@ begin
     // b) From TSynCompletionProposal.HookEditorCommand
     // c) from TJedi ParamCompletionHandler only then RequestId <> 0
 
-    if not TJedi.ParamCompletionInfo.Handled then
+    if not TIDECompletion.SignatureHelpInfo.Handled then
     begin
       TJedi.RequestParamCompletion(Editor.FileId, CompletionProposal.Editor);
 
@@ -3347,37 +3345,33 @@ begin
     end;
 
     // ParamCompletionInfo  request was handled.  Make sure is still valid
-    CanExecute := CanExecute and TJedi.ParamCompletionInfo.Succeeded and
-      (TJedi.ParamCompletionInfo.FileId = Editor.FileId) and
-      (TJedi.ParamCompletionInfo.CurrentLine = CompletionProposal.Editor.
-      LineText) and
-      (TJedi.ParamCompletionInfo.Caret = CompletionProposal.Editor.CaretXY);
+    CanExecute := CanExecute and TIDECompletion.SignatureHelpInfo.Succeeded and
+      (TIDECompletion.SignatureHelpInfo.FileId = Editor.FileId) and
+      (TIDECompletion.SignatureHelpInfo.CurrentLine = CompletionProposal.Editor.LineText) and
+      (TIDECompletion.SignatureHelpInfo.Caret = CompletionProposal.Editor.CaretXY);
 
     if CanExecute then
     begin
-      var
-      DisplayString := TJedi.ParamCompletionInfo.DisplayString;
+      var DisplayString := TIDECompletion.SignatureHelpInfo.DisplayString;
       CompletionProposal.FormatParams := not(DisplayString = '');
       if not CompletionProposal.FormatParams then
         DisplayString := '\style{~B}' + _(SNoParameters) + '\style{~B}';
 
-      var
-      DocString := TJedi.ParamCompletionInfo.DocString;
+      var DocString := TIDECompletion.SignatureHelpInfo.DocString;
       if (DocString <> '') then
       begin
         DisplayString := DisplayString + sLineBreak;
         DocString := GetLineRange(DocString, 1, 20); // 20 lines max
       end;
 
-      CompletionProposal.Form.CurrentIndex :=
-        TJedi.ParamCompletionInfo.ActiveParameter;
+      CompletionProposal.Form.CurrentIndex := TIDECompletion.SignatureHelpInfo.ActiveParameter;
       CompletionProposal.ItemList.Text := DisplayString + DocString;
 
       // position the hint window at and just below the opening bracket
       Point := CompletionProposal.Editor.ClientToScreen
         (CompletionProposal.Editor.RowColumnToPixels
         (CompletionProposal.Editor.BufferToDisplayPos
-        (BufferCoord(TJedi.ParamCompletionInfo.StartX,
+        (BufferCoord(TIDECompletion.SignatureHelpInfo.StartX,
         CompletionProposal.Editor.CaretY))));
       Inc(Point.Y, CompletionProposal.Editor.LineHeight);
       X := Point.X;
@@ -3388,10 +3382,10 @@ begin
 
     // Mark request as not handled even if you cannot execute
     // Ite will be marked again as handled by the asynchronous request handler
-    TJedi.ParamCompletionInfo.Handled := False;
+    TIDECompletion.SignatureHelpInfo.Handled := False;
 
   finally
-    TJedi.ParamCompletionInfo.Unlock;
+    TIDECompletion.SignatureHelpInfo.Unlock;
   end;
 end;
 
