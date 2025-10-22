@@ -1458,7 +1458,7 @@ begin
   then
     Exit;
 
-  CanExecute := TIDECompletion.InterpreterParamCompletion.HandleParamCompletion('',
+  CanExecute := TIDECompletion.InterpreterSignatureHelp.HandleParamCompletion('',
     SynEdit, DisplayString, DocString, StartX) and Application.Active and
     (GetParentForm(SynEdit).ActiveControl = SynEdit);
 

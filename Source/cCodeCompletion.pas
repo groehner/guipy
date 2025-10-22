@@ -55,7 +55,7 @@ type
     procedure RegisterCompletionHandler(Handler : TBaseCodeCompletionHandler);
   end;
 
-  TBaseParamCompletion = class
+  TBaseSignatureHelp = class
   private type
     TCachedResults = record
       Editor: TSynEdit;
@@ -74,7 +74,7 @@ type
       out StartX: Integer): Boolean;
   end;
 
-  TInterpreterParamCompletion = class(TBaseParamCompletion)
+  TInterpreterSignatureHelp = class(TBaseSignatureHelp)
   protected
     function CallTipFromExpression(const Expr, FileName : string;
         const Line: Integer; var DisplayString, DocString : string): Boolean; override;
@@ -107,7 +107,7 @@ type
   TIDECompletion = class
     class var EditorCodeCompletion: TCodeCompletion;
     class var InterpreterCodeCompletion: TCodeCompletion;
-    class var InterpreterParamCompletion: TBaseParamCompletion;
+    class var InterpreterSignatureHelp: TBaseSignatureHelp;
     class var SignatureHelpInfo: TSignatureHelpInfo;
     class constructor Create;
     class destructor Destroy;
@@ -558,9 +558,9 @@ procedure TBaseCodeCompletionHandler.Initialize;
 begin
 end;
 
-{ TBaseParamCompletion }
+{ TBaseSignatureHelp }
 
-function TBaseParamCompletion.HandleParamCompletion(const FileName: string;
+function TBaseSignatureHelp.HandleParamCompletion(const FileName: string;
   Editor: TSynEdit; out DisplayString, DocString: string;
   out StartX: Integer): Boolean;
 const
@@ -686,16 +686,16 @@ begin
   Result := FoundMatch;
 end;
 
-{ TInterpreterParamCompletion }
+{ TInterpreterSignatureHelp }
 
-function TInterpreterParamCompletion.CallTipFromExpression(const Expr, FileName : string;
+function TInterpreterSignatureHelp.CallTipFromExpression(const Expr, FileName : string;
   const Line: Integer; var DisplayString, DocString : string): Boolean;
 begin
   Result := PyControl.ActiveInterpreter.CallTipFromExpression(
     Expr, DisplayString, DocString);
 end;
 
-constructor TInterpreterParamCompletion.Create;
+constructor TInterpreterSignatureHelp.Create;
 begin
   inherited;
   FAllowFunctionCalls := True;
@@ -729,7 +729,7 @@ end;
 
 class constructor TIDECompletion.Create;
 begin
-  InterpreterParamCompletion := TInterpreterParamCompletion.Create;
+  InterpreterSignatureHelp  := TInterpreterSignatureHelp.Create;
 
   EditorCodeCompletion := TCodeCompletion.Create;
   InterpreterCodeCompletion := TCodeCompletion.Create;
@@ -756,7 +756,7 @@ class destructor TIDECompletion.Destroy;
 begin
   EditorCodeCompletion.Free;
   InterpreterCodeCompletion.Free;
-  InterpreterParamCompletion.Free;
+  InterpreterSignatureHelp.Free;
   SignatureHelpInfo.Free;
 end;
 
