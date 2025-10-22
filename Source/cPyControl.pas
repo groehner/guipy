@@ -254,17 +254,15 @@ end;
 procedure TPythonControl.HandleProjectPythonPathChange(const Sender: TObject;
   const Msg: System.Messaging.TMessage);
 begin
+  if ActiveInterpreter = nil then Exit;
+
   var NewPath := TProjectPythonPathChangeMessage(Msg).Value;
+  var Comparer: IComparer<string> := TIStringComparer.Ordinal;
 
-  if Assigned(ActiveInterpreter) then
-  begin
-    var Comparer: IComparer<string> := TIStringComparer.Ordinal;
-
-    // Remove old entries
-    for var Item in FProjectPythonPath do
-      if not TArray.Contains<string>(NewPath, Item, Comparer) then
-        ActiveInterpreter.SysPathRemove(Item);
-  end;
+  // First remove old entries
+  for var Item in FProjectPythonPath do
+    if not TArray.Contains<string>(NewPath, Item, Comparer) then
+      ActiveInterpreter.SysPathRemove(Item);
   FProjectPythonPath := NewPath;
   // Add the new entries
   AppendProjectPaths;

@@ -183,7 +183,6 @@ uses
   JvDSADialogs,
   JvGnugettext,
   StringResources,
-  cProjectClasses,
   cPyScripterSettings,
   cPyControl,
   cTools,
