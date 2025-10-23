@@ -315,6 +315,7 @@ type
     procedure ScrollbarAnnotationGetInfo(Sender: TObject;
       AnnType: TSynScrollbarAnnType; var Rows: TArray<Integer>;
       var Colors: TArray<TColor>);
+    procedure UpdateTabImage(Sender: TObject);
     class procedure DoCodeCompletion(Editor: TSynEdit; Caret: TBufferCoord);
     class procedure SymbolsChanged(Sender: TObject);
     class procedure CodeHintLinkHandler(Sender: TObject; LinkName: string);
@@ -492,7 +493,6 @@ type
     procedure SplitEditorHorizontally;
     procedure SplitEditorVertrically;
     procedure SplitEditorHide;
-    procedure RefreshSymbols;
     procedure Retranslate;
     function GetForm: TForm;
     function GetDocSymbols: TObject;
@@ -527,6 +527,12 @@ type
     constructor Create(AForm: TFileForm); reintroduce;
     destructor Destroy; override;
 
+    // Diagnostics
+    procedure PullDiagnostics;
+    procedure ClearDiagnostics;
+    procedure NextDiagnostic;
+    procedure PreviousDiagnostic;
+
     procedure DoSetFilename(const FileName: string); override;
     procedure OpenRemoteFile(const FileName, Servername: string); override;
     function SaveToRemoteFile(const FileName, Servername: string)
@@ -550,6 +556,7 @@ uses
   System.DateUtils,
   System.SyncObjs,
   System.Generics.Collections,
+  System.Generics.Defaults,
   JclFileUtils,
   SynEditHighlighter,
   SynEditKeyCmds,
@@ -659,6 +666,7 @@ begin
   FForm := TEditorForm(AForm);
   SetFileEncoding(PyIDEOptions.NewFileEncoding);
   FSynLsp := TLspSynEditPlugin.Create(FForm.SynEdit);
+  FSynLsp.OnDiagnosticsUpdate := FForm.UpdateTabImage;
   FSynLsp.DocSymbols.OnNotify := FForm.SymbolsChanged;
   CodeExplorerWindow.UpdateWindow(FSynLsp.DocSymbols, ceuEditorEnter);
 end;
@@ -675,6 +683,11 @@ begin
     Result := FForm.DoActivateView(ViewFactory)
   else
     Result := nil;
+end;
+
+procedure TEditor.ClearDiagnostics;
+begin
+  FSynLsp.ClearDiagnostics;
 end;
 
 procedure TEditor.Close;
@@ -904,6 +917,7 @@ procedure TEditor.SetReadOnly(Value: Boolean);
 begin
   GetSynEdit.ReadOnly := Value;
   GetSynEdit2.ReadOnly := Value;
+  FForm.UpdateTabImage(Self);
 end;
 
 procedure TEditor.SplitEditorHorizontally;
@@ -1028,6 +1042,42 @@ begin
     FSynLsp.FileOpened(GetFileId, lidNone);
 end;
 
+procedure TEditor.PreviousDiagnostic;
+var
+  Index: Integer;
+begin
+  if not (GetActiveSynEdit = FForm.SynEdit) then Exit;
+
+  var BCArray := FSynLsp.Diagnostics.ToBCArray;
+  if Length(BCArray) = 0 then Exit;
+
+  var Comparer := TComparer<TBufferCoord>.Construct(
+    function(const Left, Right: TBufferCoord): Integer
+    begin
+      if Left > Right then
+        Result := 1
+      else if Left = Right then
+        Result := 0
+      else
+        Result := -1;
+    end);
+
+  TArray.Sort<TBufferCoord>(BCArray, Comparer);
+
+  var Found := TArray.BinarySearch<TBufferCoord>(BCArray, FForm.SynEdit.CaretXY,
+                                                 Index, Comparer);
+  Dec(Index);
+  if Index = 0 then
+    Index := High(BCArray);
+  FForm.SynEdit.CaretXY := BCArray[Index];
+end;
+
+procedure TEditor.PullDiagnostics;
+begin
+  if HasPythonFile then
+    FSynLsp.PullDiagnostics;
+end;
+
 function TEditor.SaveToRemoteFile(const FileName, Servername: string): Boolean;
 var TempFileName: string; ErrorMsg: string;
 begin
@@ -1045,12 +1095,6 @@ begin
       StyledMessageDlg(Format(_(SFileSaveError), [FileName, ErrorMsg]), mtError,
         [mbOK], 0);
   end;
-end;
-
-procedure TEditor.RefreshSymbols;
-begin
-  if FSynLsp.NeedToRefreshSymbols then
-    FSynLsp.RefreshSymbols;
 end;
 
 procedure TEditor.Retranslate;
@@ -1243,6 +1287,36 @@ function TEditor.IsEmpty: Boolean;
 begin
   Result := (FForm.SynEdit.LineS.Count = 0) or
     ((FForm.SynEdit.LineS.Count = 1) and (FForm.SynEdit.LineS[0] = ''));
+end;
+
+procedure TEditor.NextDiagnostic;
+var
+  Index: Integer;
+begin
+  if not (GetActiveSynEdit = FForm.SynEdit) then Exit;
+
+  var BCArray := FSynLsp.Diagnostics.ToBCArray;
+  if Length(BCArray) = 0 then Exit;
+
+  var Comparer := TComparer<TBufferCoord>.Construct(
+    function(const Left, Right: TBufferCoord): Integer
+    begin
+      if Left > Right then
+        Result := 1
+      else if Left = Right then
+        Result := 0
+      else
+        Result := -1;
+    end);
+
+  TArray.Sort<TBufferCoord>(BCArray, Comparer);
+  var Found := TArray.BinarySearch<TBufferCoord>(BCArray, FForm.SynEdit.CaretXY,
+                                                 Index, Comparer);
+  if Found then
+    Inc(Index);
+  if Index = Length(BCArray) then
+    Index := 0;
+  FForm.SynEdit.CaretXY := BCArray[Index];
 end;
 
 {$ENDREGION 'TEditor'}
@@ -1879,10 +1953,17 @@ begin
   if scCaretY in Changes then
   begin
     FNeedToSyncCodeExplorer := True;
-    // We refresh symbols only when the user finishes editing a line
-    // and moves the cursor to another one.  This is so that
-    // there is no slow down while typing.
-    FEditor.RefreshSymbols;
+    // We refresh symbols and Pull Diagnostics only when the user finishes
+    // editing a line and moves the cursor to another one.  This is so that
+    // there is no slowdown while typing.
+    // Symbols and Diagnostics are actually updated only if needed
+    if FEditor.HasPythonFile then
+    begin
+      FEditor.FSynLsp.RefreshSymbols;
+      FEditor.FSynLsp.ApplyNewDiagnostics;
+      if PyIDEOptions.CheckSyntaxAsYouType then
+        FEditor.FSynLsp.PullDiagnostics;
+    end;
   end;
   if (scCaretY in Changes) and ASynEdit.Gutter.Visible
     and ASynEdit.Gutter.ShowLineNumbers
@@ -2352,12 +2433,9 @@ begin
   begin
     if HasSyntaxError then
     begin
-      var
-      List := FEditor.FSynLsp.Diagnostics;
-      if List.Count > 0 then
-      begin
-        Rows := [Editor.BufferToDisplayPos(List[0].BlockBegin).Row];
-      end;
+      var Errors := Editor.Indicators.GetById(FEditor.FSynLsp.DiagnosticsIndicatorIds);
+      for var Error in Errors do
+        Rows := Rows + [Error.Key];
       Colors := [$3C14DC];
     end;
   end
@@ -2537,20 +2615,15 @@ procedure TEditorForm.GoToSyntaxError;
 begin
   if HasSyntaxError then
   begin
-    var
-    List := FEditor.FSynLsp.Diagnostics;
-    if List.Count > 0 then
-    begin
-      var
-      BlockBegin := List[0].BlockBegin;
-      SynEdit.CaretXY := BufferCoord(BlockBegin.Char, BlockBegin.Line);
-    end;
+    var List := FEditor.FSynLsp.Diagnostics;
+    if Length(List) > 0 then
+      SynEdit.CaretXY := BufferCoordFromLspPosition(List[0].range.start);
   end;
 end;
 
 function TEditorForm.HasSyntaxError: Boolean;
 begin
-  Result := FEditor.HasPythonFile and (FEditor.FSynLsp.Diagnostics.Count > 0);
+  Result := FEditor.HasPythonFile and (Length(FEditor.FSynLsp.Diagnostics) > 0);
 end;
 
 procedure TEditorForm.CreateStructogram;
@@ -3001,7 +3074,7 @@ procedure TEditorForm.ApplyPyIDEOptions(const Sender: TObject;
       begin
         AnnType := sbaCustom1;
         AnnPos := sbpFullWidth;
-        FullRow := True;
+        FullRow := False;
         OnGetInfo := ScrollbarAnnotationGetInfo;
       end;
       // Search highlight
@@ -3925,6 +3998,8 @@ end;
 class procedure TEditorForm.CodeHintLinkHandler(Sender: TObject;
 LinkName: string);
 begin
+  if LinkName.StartsWith('http') then Exit; //already handled
+
   var
   Editor := GI_PyIDEServices.ActiveEditor;
   if Assigned(Editor) then
@@ -3948,17 +4023,6 @@ begin
   ReparseIfNeeded;
   SyncCodeExplorer;
   SyncFileStructure;
-  // if PyIDEOptions.CheckSyntaxAsYouType and FEditor.HasPythonFile then
-  // FEditor.FSynLsp.ApplyNewDiagnostics;
-
-  if SynEdit.ReadOnly then
-    ParentTabItem.ImageIndex := PyIDEMainForm.vilTabDecorators.
-      GetIndexByName('Lock')
-  else if HasSyntaxError then
-    ParentTabItem.ImageIndex := PyIDEMainForm.vilTabDecorators.
-      GetIndexByName('Bug')
-  else
-    ParentTabItem.ImageIndex := -1;
 end;
 
 procedure TEditorForm.SynEditDebugInfoPaintLines(RenderTarget
@@ -5502,9 +5566,9 @@ begin
   var BC := SynEd.DisplayToBufferPos(DC);
 
   // Diagnostic errors hints first
-  if (FEditor.FSynLsp.Diagnostics.Count > 0) and
+  if (Length(FEditor.FSynLsp.Diagnostics) > 0) and
     SynEd.Indicators.IndicatorAtPos(BC,
-    FEditor.FSynLsp.DiagnosticsErrorIndicatorSpec, Indicator)
+    FEditor.FSynLsp.DiagnosticsIndicatorIds, Indicator)
   then
   begin
     CanShow := True;
@@ -5513,7 +5577,7 @@ begin
     // Setting HintInfo.CursorRect is important.  Otherwise no other hint
     // will be shown unlessmouse leaves and reenters the control
     HintInfo.CursorRect := CursorRect(SynEd, BC1, BC2, HintInfo.HintPos);
-    HintStr := FEditor.FSynLsp.Diagnostics[Indicator.Tag].Msg;
+    HintStr := FEditor.FSynLsp.Diagnostics[Indicator.Tag].Hint;
   end
   else if FEditor.HasPythonFile and not SynEd.IsPointInSelection(BC) and
     SynEd.GetHighlighterAttriAtRowColEx(BC, Token, TokenType, Start, Attri) and
@@ -5643,6 +5707,18 @@ begin
     GI_BreakpointManager.SetBreakpoint(FEditor.GetFileId, Breakpoint.LineNo,
       Breakpoint.Disabled, Condition, IgnoreCount);
   end;
+end;
+
+procedure TEditorForm.UpdateTabImage(Sender: TObject);
+begin
+  if SynEdit.ReadOnly then
+    ParentTabItem.ImageIndex := PyIDEMainForm.vilTabDecorators.GetIndexByName('Lock')
+  else if FEditor.FSynLsp.Diagnostics.HasErrors then
+    ParentTabItem.ImageIndex := PyIDEMainForm.vilTabDecorators.GetIndexByName('Bug')
+  else if FEditor.FSynLsp.Diagnostics.HasWarnings then
+    ParentTabItem.ImageIndex := PyIDEMainForm.vilTabDecorators.GetIndexByName('Alert')
+  else
+    ParentTabItem.ImageIndex := -1;
 end;
 
 class function TEditorForm.ToolbarCount: Integer;

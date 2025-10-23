@@ -1009,6 +1009,32 @@ object CommandsDataModule: TCommandsDataModule
       ShortCut = 41030
       OnExecute = actFormatCodeExecute
     end
+    object actCodeCheck: TAction
+      Category = 'Source Code'
+      Caption = 'Code Check'
+      Hint = 'Perform a code check'
+      ShortCut = 16497
+      OnExecute = actCodeCheckExecute
+    end
+    object actClearIssues: TAction
+      Category = 'Source Code'
+      Caption = 'Clear Issues'
+      Hint = 'Clear code issues'
+      ShortCut = 24689
+      OnExecute = actClearIssuesExecute
+    end
+    object actNextIssue: TAction
+      Category = 'Source Code'
+      Caption = 'Next Issue'
+      Hint = 'Go to the next issue'
+      OnExecute = actNextIssueExecute
+    end
+    object actPreviousIssue: TAction
+      Category = 'Source Code'
+      Caption = 'Previous Issue'
+      Hint = 'Go to the previous issue'
+      OnExecute = actPreviousIssueExecute
+    end
   end
   object SynWebCompletion: TSynCompletionProposal
     Options = [scoLimitToMatchedText, scoUseInsertList, scoUsePrettyText, scoUseBuiltInTimer, scoEndCharCompletion, scoCompleteWithTab, scoCompleteWithEnter]

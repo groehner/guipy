@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 361
+      CustomWidth = 385
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -113,7 +113,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Visible = False
     end
     object ActivityIndicator: TActivityIndicator
-      Left = 1027
+      Left = 1039
       Top = 6
       FrameDelay = 150
       IndicatorSize = aisSmall
@@ -692,6 +692,20 @@ object PyIDEMainForm: TPyIDEMainForm
             end
             object mnUnTabify: TSpTBXItem
               Action = CommandsDataModule.actEditUntabify
+            end
+            object SpTBXSeparatorItem31: TSpTBXSeparatorItem
+            end
+            object mnCodeCheck: TSpTBXItem
+              Action = CommandsDataModule.actCodeCheck
+            end
+            object mnClearIssues: TSpTBXItem
+              Action = CommandsDataModule.actClearIssues
+            end
+            object mnPreviousIssue: TSpTBXItem
+              Action = CommandsDataModule.actPreviousIssue
+            end
+            object mnNextIssue: TSpTBXItem
+              Action = CommandsDataModule.actNextIssue
             end
           end
           object SpTBXSeparatorItem29: TSpTBXSeparatorItem

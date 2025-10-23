@@ -1301,6 +1301,11 @@ type
     mnViewUMLInteractive: TSpTBXItem;
     actViewUMLInteractive: TAction;
     mnFormatCode: TSpTBXItem;
+    mnCodeCheck: TSpTBXItem;
+    mnClearIssues: TSpTBXItem;
+    SpTBXSeparatorItem31: TSpTBXSeparatorItem;
+    mnPreviousIssue: TSpTBXItem;
+    mnNextIssue: TSpTBXItem;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -6394,7 +6399,6 @@ begin
 
       Result.SynEdit.ClearUndo;
       Result.SynEdit.Modified := False;
-      Result.RefreshSymbols;
 
       TEditorForm(Result.Form).DefaultExtension := FileTemplate.Extension;
       // Jupyter support

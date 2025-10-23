@@ -134,7 +134,6 @@ type
     procedure SplitEditorVertrically;
     procedure SplitEditorHide;
     procedure Retranslate;
-    procedure RefreshSymbols;
 
     property FileName: string read GetFileName;
     property RemoteFileName: string read GetRemoteFileName;

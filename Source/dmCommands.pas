@@ -203,6 +203,10 @@ type
     actAssistantExplain: TAction;
     actEditRedo: TSynEditRedo;
     actFormatCode: TAction;
+    actCodeCheck: TAction;
+    actClearIssues: TAction;
+    actNextIssue: TAction;
+    actPreviousIssue: TAction;
     function ProgramVersionHTTPLocationLoadFileFromRemote
       (AProgramVersionLocation: TJvProgramVersionHTTPLocation;
       const ARemotePath, ARemoteFileName, ALocalPath, ALocalFileName
@@ -237,6 +241,8 @@ type
     procedure actAssistantFixBugsExecute(Sender: TObject);
     procedure actAssistantOptimizeExecute(Sender: TObject);
     procedure actAssistantSuggestExecute(Sender: TObject);
+    procedure actClearIssuesExecute(Sender: TObject);
+    procedure actCodeCheckExecute(Sender: TObject);
     procedure actPythonManualsExecute(Sender: TObject);
     procedure UpdateMainActions;
     procedure actSearchGoToLineExecute(Sender: TObject);
@@ -307,6 +313,8 @@ type
     procedure actFileExportExecute(Sender: TObject);
     procedure actInterpreterEditorOptionsExecute(Sender: TObject);
     procedure actFormatCodeExecute(Sender: TObject);
+    procedure actNextIssueExecute(Sender: TObject);
+    procedure actPreviousIssueExecute(Sender: TObject);
     procedure actPythonPathExecute(Sender: TObject);
     procedure mnSpellingPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure SynSpellCheckChange(Sender: TObject);
@@ -1396,18 +1404,7 @@ begin
 end;
 
 procedure TCommandsDataModule.UpdateMainActions;
-var
-  SelAvail: Boolean;
-  ReadOnly: Boolean;
-  Editor: IEditor;
-  aFile: IFile;
-  SearchCommands: ISearchCommands;
 begin
-  Editor := GI_PyIDEServices.ActiveEditor;
-  aFile := GI_PyIDEServices.GetActiveFile;
-
-  ReadOnly := Assigned(Editor) and Editor.SynEdit.ReadOnly;
-
   // Edit actions
   // actEditCopyRTF.Enabled := (GI_EditCmds <> nil) and GI_EditCmds.CanCopy;
   // actEditCopyRTFNumbered.Enabled := (GI_EditCmds <> nil) and GI_EditCmds.CanCopy;
@@ -1463,19 +1460,28 @@ begin
   actEditUTF16BE.Checked := Assigned(GI_ActiveEditor) and
     (GI_ActiveEditor.FileEncoding = sf_UTF16BE);
 
-  SelAvail := Assigned(GI_ActiveEditor) and GI_ActiveEditor.ActiveSynEdit.SelAvail;
+
+  var Editor := GI_PyIDEServices.ActiveEditor;
+  var ReadOnly := Assigned(Editor) and Editor.SynEdit.ReadOnly;
+  var SelAvail := Assigned(GI_ActiveEditor) and GI_ActiveEditor.ActiveSynEdit.SelAvail;
+  var HasPython := Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile;
+
   // Source Code Actions
+  actCodeCheck.Enabled := HasPython;
+  actClearIssues.Enabled := HasPython;
+  actNextIssue.Enabled := HasPython;
+  actPreviousIssue.Enabled := HasPython;
   actEditIndent.Enabled := SelAvail and not ReadOnly;
   actEditDedent.Enabled := SelAvail and not ReadOnly;
   actEditTabify.Enabled := SelAvail and not ReadOnly;
   actEditUntabify.Enabled := SelAvail and not ReadOnly;
-  actFormatCode.Enabled := Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile;
+  actFormatCode.Enabled := HasPython;
   actEditToggleComment.Enabled := Assigned(GI_ActiveEditor) and not ReadOnly;;
   actEditCommentOut.Enabled := Assigned(GI_ActiveEditor) and not ReadOnly;;
   actEditUncomment.Enabled := Assigned(GI_ActiveEditor) and not ReadOnly;;
   actEditLineNumbers.Enabled := Assigned(GI_ActiveEditor);
   actEditReadOnly.Enabled := Assigned(GI_ActiveEditor);
-  actEditReadOnly.Checked := Assigned(GI_ActiveEditor) and ReadOnly;
+  actEditReadOnly.Checked := ReadOnly;
 
   actEditWordWrap.Enabled := Assigned(GI_ActiveEditor) and
     not GI_ActiveEditor.ActiveSynEdit.UseCodeFolding or
@@ -1498,6 +1504,7 @@ begin
   end;
 
   // File Actions
+  var aFile := GI_PyIDEServices.GetActiveFile;
   actFileReload.Enabled := (GI_FileCmds <> nil) and GI_FileCmds.CanReload;
   actFileClose.Enabled := Assigned(aFile) and (aFile as IFileCommands).CanClose;
   actFilePrint.Enabled := (GI_FileCmds <> nil) and GI_FileCmds.CanPrint;
@@ -1514,7 +1521,7 @@ begin
     end));
 
   // Search Actions
-  SearchCommands := FindSearchTarget;
+  var SearchCommands := FindSearchTarget;
   actSearchFind.Enabled := (SearchCommands <> nil) and SearchCommands.CanFind;
   actSearchFindNext.Enabled := (SearchCommands <> nil) and
     SearchCommands.CanFindNext;
@@ -1898,11 +1905,35 @@ begin
   end;
 end;
 
+procedure TCommandsDataModule.actClearIssuesExecute(Sender: TObject);
+begin
+  if Assigned(GI_ActiveEditor) then
+    (GI_ActiveEditor as TEditor).ClearDiagnostics;
+end;
+
+procedure TCommandsDataModule.actCodeCheckExecute(Sender: TObject);
+begin
+  if Assigned(GI_ActiveEditor) then
+    (GI_ActiveEditor as TEditor).PullDiagnostics;
+end;
+
 procedure TCommandsDataModule.actFormatCodeExecute(Sender: TObject);
 begin
    var Editor := GI_ActiveEditor;
   if Assigned(Editor) and Editor.HasPythonFile then
     TPyLspClient.FormatCode(Editor.FileId, Editor.ActiveSynEdit);
+end;
+
+procedure TCommandsDataModule.actNextIssueExecute(Sender: TObject);
+begin
+  if  Assigned(GI_ActiveEditor) then
+    (GI_ActiveEditor as TEditor).NextDiagnostic;
+end;
+
+procedure TCommandsDataModule.actPreviousIssueExecute(Sender: TObject);
+begin
+  if Assigned(GI_ActiveEditor) then
+    (GI_ActiveEditor as TEditor).PreviousDiagnostic;
 end;
 
 procedure TCommandsDataModule.actToolsRestartLSExecute(Sender: TObject);
