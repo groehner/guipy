@@ -47,6 +47,7 @@ uses
   SpTBXItem,
   SpTBXExtEditors,
   SpTBXTabs,
+  SynEditTypes,
   SynEdit,
   SynEditHighlighter,
   SynEditMiscClasses,

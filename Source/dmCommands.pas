@@ -404,7 +404,7 @@ uses
   frmFile,
   frmFindResults,
   frmFunctionList,
-  JediLspClient,
+  cLspClients,
   uParams,
   uCommonFunctions,
   uSearchHighlighter,
@@ -1892,7 +1892,7 @@ end;
 
 procedure TCommandsDataModule.actToolsRestartLSExecute(Sender: TObject);
 begin
-  TJedi.CreateServer;
+  TPyLspClient.MainLspClient.CreateAndRunServer;
 end;
 
 procedure TCommandsDataModule.GetEditorUserCommand(AUserCommand: Integer;

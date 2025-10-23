@@ -548,6 +548,7 @@ uses
   PythonEngine,
   IOUtils,
   System.DateUtils,
+  System.SyncObjs,
   System.Generics.Collections,
   JclFileUtils,
   SynEditHighlighter,
@@ -580,7 +581,7 @@ uses
   uCommonFunctions,
   UPythonIntegrator,
   frmCodeExplorer,
-  JediLspClient,
+  cLspClients,
   cPyControl,
   cCodeCompletion,
 
@@ -1049,7 +1050,7 @@ end;
 procedure TEditor.RefreshSymbols;
 begin
   if FSynLsp.NeedToRefreshSymbols then
-    FSynLsp.RefreshSymbols(GetFileId);
+    FSynLsp.RefreshSymbols;
 end;
 
 procedure TEditor.Retranslate;
@@ -1863,10 +1864,13 @@ begin
 end;
 
 procedure TEditorForm.SynEditStatusChange(Sender: TObject;
-Changes: TSynStatusChanges);
-var ASynEdit: TSynEdit; NewCaretY: Integer;
+  Changes: TSynStatusChanges);
+var
+  ASynEdit: TSynEdit;
+  NewCaretY: Integer;
 begin
   ASynEdit := Sender as TSynEdit;
+  Assert(FEditor <> nil, 'TEditorForm.SynEditStatusChange');
   if scModified in Changes then
   begin
     PyIDEMainForm.UpdateCaption;
@@ -1878,11 +1882,11 @@ begin
     // We refresh symbols only when the user finishes editing a line
     // and moves the cursor to another one.  This is so that
     // there is no slow down while typing.
-    FNeedToSyncFileStructure := True;
     FEditor.RefreshSymbols;
   end;
-  if (scCaretY in Changes) and ASynEdit.Gutter.Visible and
-    ASynEdit.Gutter.ShowLineNumbers and PyIDEOptions.CompactLineNumbers then
+  if (scCaretY in Changes) and ASynEdit.Gutter.Visible
+    and ASynEdit.Gutter.ShowLineNumbers
+    and PyIDEOptions.CompactLineNumbers then
   begin
     NewCaretY := ASynEdit.CaretY;
     ASynEdit.InvalidateGutterLine(FOldCaretY);
@@ -1892,7 +1896,7 @@ begin
   if scTopLine in Changes then
     Application.CancelHint;
   if ASynEdit.Selection.IsEmpty then
-    ClearSearchHighlight(FEditor);
+   ClearSearchHighlight(FEditor);
 end;
 
 procedure TEditorForm.DoActivate;
@@ -2308,18 +2312,15 @@ begin
       ecChar:
         // Trigger auto-complection on completion trigger chars
         begin
-          if PyIDEOptions.EditorCodeCompletion and (SynEd.Selections.Count = 1)
-          then
+          if PyIDEOptions.EditorCodeCompletion and (SynEd.Selections.Count = 1) then
           begin
-            if not Assigned(TIDECompletion.EditorCodeCompletion.CompletionInfo.
-              Editor) and
-              (Pos(AChar, CommandsDataModule.SynCodeCompletion.TriggerChars) >
-              0) and not ResourcesDataModule.CodeTemplatesCompletion.Executing
+            if (TIDECompletion.CompletionInfo.Editor = nil)
+              and (Pos(AChar, CommandsDataModule.SynCodeCompletion.TriggerChars) > 0)
+              and not ResourcesDataModule.CodeTemplatesCompletion.Executing
             then
             begin
               Caret := SynEd.CaretXY;
-              TThread.ForceQueue(nil,
-                procedure
+              TThread.ForceQueue(nil, procedure
                 begin
                   DoCodeCompletion(SynEd, Caret);
                 end, IfThen(AChar = '.', 200,
@@ -3138,42 +3139,42 @@ procedure TEditorForm.SynCodeCompletionClose(Sender: TObject);
 begin
   PyIDEOptions.CodeCompletionListSize :=
     CommandsDataModule.SynCodeCompletion.NbLinesInWindow;
-  TIDECompletion.EditorCodeCompletion.CleanUp;
+ TIDECompletion.CompletionInfo.CleanUp;
 end;
 
 procedure TEditorForm.SynCodeCompletionCodeItemInfo(Sender: TObject;
-AIndex: Integer; var Info: string);
+  AIndex: Integer; var Info: string);
 begin
-  var
-  CC := TIDECompletion.EditorCodeCompletion;
-  if not CC.Lock.TryEnter then
-    Exit;
+  if not TIDECompletion.CompletionLock.TryEnter then Exit;
   try
-    if Assigned(CC.CompletionInfo.CompletionHandler) then
+    if Assigned(TIDECompletion.CompletionInfo.CompletionHandler) then
     begin
       var CCItem := (Sender as TSynCompletionProposal).InsertList[AIndex];
-      if CCItem.EndsWith('()') then
-        CCItem := Copy(CCItem, 1, CCItem.Length - 2);
-      Info := CC.CompletionInfo.CompletionHandler.GetInfo(CCItem);
+      Info := TIDECompletion.CompletionInfo.CompletionHandler.GetInfo(CCItem);
     end;
   finally
-    CC.Lock.Leave;
+    TIDECompletion.CompletionLock.Leave;
   end;
 end;
 
-class procedure TEditorForm.DoCodeCompletion(Editor: TSynEdit;
-Caret: TBufferCoord);
-var LocLine: string; Attr: TSynHighlighterAttributes;
-  Highlighter: TSynCustomHighlighter; FileName, DummyToken: string;
+class procedure TEditorForm.DoCodeCompletion(Editor: TSynEdit; Caret: TBufferCoord);
+var
+  Locline: string;
+  Attr: TSynHighlighterAttributes;
+  Highlighter: TSynCustomHighlighter;
+  FileName, DummyToken: string;
   DisplayText, InsertText: string;
 begin
-  // Exit if cursor has moved
+  //Exit if cursor has moved
   if not Assigned(GI_ActiveEditor) or (GI_ActiveEditor.ActiveSynEdit <> Editor)
-    or Editor.ReadOnly or (Caret <> Editor.CaretXY) then
+    or Editor.ReadOnly or (Caret <> Editor.CaretXY)
+  then
     Exit;
 
-  if not(GI_ActiveEditor.HasPythonFile and GI_PyControl.PythonLoaded and
-    not GI_PyControl.Running and PyIDEOptions.EditorCodeCompletion) then
+  if not (GI_ActiveEditor.HasPythonFile and
+    GI_PyControl.PythonLoaded and not GI_PyControl.Running and
+    PyIDEOptions.EditorCodeCompletion)
+  then
     Exit;
 
   Highlighter := Editor.Highlighter;
@@ -3182,15 +3183,13 @@ begin
   Dec(Caret.Char);
   Editor.GetHighlighterAttriAtRowCol(Caret, DummyToken, Attr);
   // to deal with trim trailing spaces
-  LocLine := Editor.LineText.PadRight(Caret.Char);
+  Locline := Editor.LineText.PadRight(Caret.Char);
   Inc(Caret.Char);
 
-  var
-  CC := TIDECompletion.EditorCodeCompletion;
-  if not CC.Lock.TryEnter then
-    Exit;
+  var CC := TIDECompletion.EditorCodeCompletion;
+  if not TIDECompletion.CompletionLock.TryEnter then Exit;
   try
-    CC.CleanUp;
+    TIDECompletion.CompletionInfo.CleanUp;
 
     var Skipped := False;
     for var I := 0 to CC.SkipHandlers.Count -1 do
@@ -3201,24 +3200,23 @@ begin
     end;
 
     if not Skipped then
-      // There is one CompletionHandler (LSP) which will always fail!
-      // Completion will be activated by the LSP completion handler
+      // There is one CompletionHandler (LSP)!
+      // Completion will be activated by the LSP completion handler later
       for var I := 0 to CC.CompletionHandlers.Count - 1 do
       begin
         var CompletionHandler := CC.CompletionHandlers[I] as TBaseCodeCompletionHandler;
         CompletionHandler.Initialize;
-        var Handled := CompletionHandler.HandleCodeCompletion(Locline, FileName,
+        // We ignore the result of HandleCodeCompletion
+        CompletionHandler.HandleCodeCompletion(Locline, FileName,
           Caret, Highlighter, Attr, InsertText, DisplayText);
-        Assert(Handled = False, 'DoCodeCompletion');
-        CC.CompletionInfo.CompletionHandler := CompletionHandler;
-        CC.CompletionInfo.Editor := Editor;
-        CC.CompletionInfo.CaretXY := Caret;
+        TIDECompletion.CompletionInfo.CompletionHandler := CompletionHandler;
+        TIDECompletion.CompletionInfo.Editor := Editor;
+        TIDECompletion.CompletionInfo.CaretXY := Caret;
       end;
   finally
-    CC.Lock.Leave;
+    TIDECompletion.CompletionLock.Leave;
   end;
 end;
-
 procedure TEditorForm.SetNeedsParsing(Value: Boolean);
 begin
   if Value <> FNeedToParseModule then
@@ -3255,88 +3253,84 @@ begin
 end;
 
 procedure TEditorForm.SynCodeCompletionExecute(Kind: SynCompletionType;
-Sender: TObject; var CurrentInput: string; var X, Y: Integer;
-var CanExecute: Boolean);
+  Sender: TObject; var CurrentInput: string; var X, Y: Integer;
+  var CanExecute: Boolean);
 begin
-  var
-  EditorCC := TIDECompletion.EditorCodeCompletion;
-  var
-  CompletionProposal := TSynCompletionProposal(Sender);
+  var CI := TIDECompletion.CompletionInfo;
+  var CP := TSynCompletionProposal(Sender);
 
   CanExecute := False;
-  if EditorCC.Lock.TryEnter then
-    try
-      CanExecute := Assigned(GI_ActiveEditor) and
-        (GI_ActiveEditor.ActiveSynEdit = EditorCC.CompletionInfo.Editor) and
-        Application.Active and (GetParentForm(EditorCC.CompletionInfo.Editor)
-        .ActiveControl = EditorCC.CompletionInfo.Editor) and
-        (EditorCC.CompletionInfo.CaretXY = EditorCC.CompletionInfo.
-        Editor.CaretXY);
+  if TIDECompletion.CompletionLock.TryEnter then
+  try
+    CanExecute := Assigned(GI_ActiveEditor) and
+      (GI_ActiveEditor.ActiveSynEdit = CI.Editor) and
+      Application.Active and
+      (GetParentForm(CI.Editor).ActiveControl = CI.Editor) and
+      (TIDECompletion.CompletionInfo.CaretXY = TIDECompletion.CompletionInfo.Editor.CaretXY);
 
-      if CanExecute then
+    if CanExecute then
+    begin
+      CP.Font := PyIDEOptions.AutoCompletionFont;
+      CP.ItemList.Text := CI.DisplayText;
+      CP.InsertList.Text := CI.InsertText;
+      CP.NbLinesInWindow := PyIDEOptions.CodeCompletionListSize;
+      CP.CurrentString := CurrentInput;
+
+      if CP.Form.AssignedList.Count = 0 then
       begin
-        CompletionProposal.Font := PyIDEOptions.AutoCompletionFont;
-        CompletionProposal.ItemList.Text := EditorCC.CompletionInfo.DisplayText;
-        CompletionProposal.InsertList.Text :=
-          EditorCC.CompletionInfo.InsertText;
-        CompletionProposal.NbLinesInWindow :=
-          PyIDEOptions.CodeCompletionListSize;
-        CompletionProposal.CurrentString := CurrentInput;
-
-        if CompletionProposal.Form.AssignedList.Count = 0 then
-        begin
-          CanExecute := False;
-          EditorCC.CleanUp;
-        end
-        else if PyIDEOptions.CompleteWithOneEntry and
-          (CompletionProposal.Form.AssignedList.Count = 1) then
-        begin
-          // Auto-complete with one entry without showing the form
-          CanExecute := False;
-          CompletionProposal.OnValidate(CompletionProposal.Form, [], #0);
-          EditorCC.CleanUp;
-        end;
+        CanExecute := False;
+        TIDECompletion.CompletionInfo.CleanUp;
       end
       else
+      if PyIDEOptions.CompleteWithOneEntry and (CP.Form.AssignedList.Count = 1) then
       begin
-        CompletionProposal.ItemList.Clear;
-        CompletionProposal.InsertList.Clear;
-        EditorCC.CleanUp;
+        // Auto-complete with one entry without showing the form
+        CanExecute := False;
+        CP.OnValidate(CP.Form, [], #0);
+        TIDECompletion.CompletionInfo.CleanUp;
       end;
-    finally
-      EditorCC.Lock.Leave;
+    end
+    else
+    begin
+      CP.ItemList.Clear;
+      CP.InsertList.Clear;
+      TIDECompletion.CompletionInfo.CleanUp;
     end;
+  finally
+    TIDECompletion.CompletionLock.Leave;
+  end;
 end;
 
 class procedure TEditorForm.SynParamCompletionExecute(Kind: SynCompletionType;
-Sender: TObject; var CurrentInput: string; var X, Y: Integer;
-var CanExecute: Boolean);
-var Point: TPoint; CompletionProposal: TSynCompletionProposal; Editor: IEditor;
+    Sender: TObject; var CurrentInput: string; var X, Y: Integer; var
+    CanExecute: Boolean);
+var
+  P: TPoint;
+  CP: TSynCompletionProposal;
+  Editor: IEditor;
 begin
-  Editor := GI_ActiveEditor;
-  CompletionProposal := Sender as TSynCompletionProposal;
+   Editor := GI_ActiveEditor;
+   CP := Sender as TSynCompletionProposal;
 
   TIDECompletion.SignatureHelpInfo.Lock;
   try
-    CanExecute := Assigned(Editor) and Editor.HasPythonFile and TJedi.Ready and
-      (Editor.ActiveSynEdit = CompletionProposal.Editor) and
-      PyIDEOptions.EditorCodeCompletion;
+    CanExecute := Assigned(Editor) and Editor.HasPythonFile and TPyLspClient.MainLspClient.Ready
+      and (Editor.ActiveSynEdit = CP.Editor) and PyIDEOptions.EditorCodeCompletion;
 
     // This function is called
-    // a) From the editor using trigger char or editor command
+    // a) from the editor using trigger char or editor command
     // b) From TSynCompletionProposal.HookEditorCommand
     // c) from TJedi ParamCompletionHandler only then RequestId <> 0
 
     if not TIDECompletion.SignatureHelpInfo.Handled then
     begin
-      TJedi.RequestParamCompletion(Editor.FileId, CompletionProposal.Editor);
+      TPyLspClient.MainLspClient.SignatureHelp(Editor.FileId, CP.Editor);
 
-      if CanExecute and CompletionProposal.Form.Visible then
+      if CanExecute and CP.Form.Visible then
       begin
         // Keep showing the form at the same position
-        X := CompletionProposal.Form.Left;
-        Y := CompletionProposal.Form.Top - MulDiv(2, Editor.Form.CurrentPPI,
-          Screen.DefaultPixelsPerInch);
+        X := CP.Form.Left;
+        Y := CP.Form.Top - MulDiv(2, Editor.Form.CurrentPPI, Screen.DefaultPixelsPerInch);
       end
       else
         CanExecute := False;
@@ -3347,15 +3341,15 @@ begin
     // ParamCompletionInfo  request was handled.  Make sure is still valid
     CanExecute := CanExecute and TIDECompletion.SignatureHelpInfo.Succeeded and
       (TIDECompletion.SignatureHelpInfo.FileId = Editor.FileId) and
-      (TIDECompletion.SignatureHelpInfo.CurrentLine = CompletionProposal.Editor.LineText) and
-      (TIDECompletion.SignatureHelpInfo.Caret = CompletionProposal.Editor.CaretXY);
+      (TIDECompletion.SignatureHelpInfo.CurrentLine = CP.Editor.LineText) and
+      (TIDECompletion.SignatureHelpInfo.Caret = CP.Editor.CaretXY);
 
     if CanExecute then
     begin
       var DisplayString := TIDECompletion.SignatureHelpInfo.DisplayString;
-      CompletionProposal.FormatParams := not(DisplayString = '');
-      if not CompletionProposal.FormatParams then
-        DisplayString := '\style{~B}' + _(SNoParameters) + '\style{~B}';
+      CP.FormatParams := not (DisplayString = '');
+      if not CP.FormatParams then
+        DisplayString :=  '\style{~B}' + _(SNoParameters) + '\style{~B}';
 
       var DocString := TIDECompletion.SignatureHelpInfo.DocString;
       if (DocString <> '') then
@@ -3364,28 +3358,27 @@ begin
         DocString := GetLineRange(DocString, 1, 20); // 20 lines max
       end;
 
-      CompletionProposal.Form.CurrentIndex := TIDECompletion.SignatureHelpInfo.ActiveParameter;
-      CompletionProposal.ItemList.Text := DisplayString + DocString;
+      CP.Font := PyIDEOptions.AutoCompletionFont;
+      CP.Form.CurrentIndex := TIDECompletion.SignatureHelpInfo.ActiveParameter;
+      CP.ItemList.Text := DisplayString + DocString;
 
       // position the hint window at and just below the opening bracket
-      Point := CompletionProposal.Editor.ClientToScreen
-        (CompletionProposal.Editor.RowColumnToPixels
-        (CompletionProposal.Editor.BufferToDisplayPos
-        (BufferCoord(TIDECompletion.SignatureHelpInfo.StartX,
-        CompletionProposal.Editor.CaretY))));
-      Inc(Point.Y, CompletionProposal.Editor.LineHeight);
-      X := Point.X;
-      Y := Point.Y;
+      P := CP.Editor.ClientToScreen(CP.Editor.RowColumnToPixels(
+          CP.Editor.BufferToDisplayPos(
+          BufferCoord(TIDECompletion.SignatureHelpInfo.StartX, CP.Editor.CaretY))));
+      Inc(P.Y, CP.Editor.LineHeight);
+      X := P.X;
+      Y := P.Y;
     end
     else
-      CompletionProposal.ItemList.Clear;
+      CP.ItemList.Clear;
 
     // Mark request as not handled even if you cannot execute
-    // Ite will be marked again as handled by the asynchronous request handler
+    // It will be marked again as handled by the asynchronous request handler
     TIDECompletion.SignatureHelpInfo.Handled := False;
 
   finally
-    TIDECompletion.SignatureHelpInfo.Unlock;
+    TIDECompletion.SignatureHelpInfo.UnLock;
   end;
 end;
 
@@ -5473,84 +5466,83 @@ begin
   Result := FEditor.GetActiveSynEdit;
 end;
 
-procedure TEditorForm.EditorShowHint(var HintStr: string; var CanShow: Boolean;
-var HintInfo: Vcl.Controls.THintInfo);
+procedure TEditorForm.EditorShowHint(var HintStr: string; var CanShow:
+    Boolean; var HintInfo: Vcl.Controls.THintInfo);
 
   function CursorRect(SynEd: TCustomSynEdit; const BC1, BC2: TBufferCoord;
-  out HintPos: TPoint): TRect;
+    out HintPos: TPoint): TRect;
   begin
-    var
-    Point1 := SynEd.RowColumnToPixels(SynEd.BufferToDisplayPos(BC1));
-    var
-    Point2 := SynEd.RowColumnToPixels(SynEd.BufferToDisplayPos(BC2));
-    Inc(Point2.Y, SynEd.LineHeight);
+    var P1 := SynEd.RowColumnToPixels(SynEd.BufferToDisplayPos(BC1));
+    var P2 := SynEd.RowColumnToPixels(SynEd.BufferToDisplayPos(BC2));
+    Inc(P2.Y, SynEd.LineHeight);
 
-    HintPos := SynEd.ClientToScreen(Point(Point1.X, Point2.Y));
-    Result := TRect.Create(Point1, Point2);
+    HintPos := SynEd.ClientToScreen(Point(P1.X, P2.Y));
+    Result := TRect.Create(P1,P2);
   end;
 
-var Indicator: TSynIndicator; BC1, BC2: TBufferCoord; TokenType, Start: Integer;
-  Token, DottedIdent: string; Attri: TSynHighlighterAttributes;
+var
+  Indicator: TSynIndicator;
+  BC1, BC2: TBufferCoord;
+  TokenType, Start: Integer;
+  Token, DottedIdent: string;
+  Attri: TSynHighlighterAttributes;
 begin
   CanShow := False;
 
   // No hints for Gutter
-  var
-  SynEd := HintInfo.HintControl as TCustomSynEdit;
-  if SynEd.Gutter.Visible and (HintInfo.CursorPos.X < SynEd.GutterWidth) then
+  var SynEd := HintInfo.HintControl as TCustomSynEdit;
+  if (SynEd.Gutter.Visible) and (HintInfo.CursorPos.X < SynEd.GutterWidth) then
+    Exit;
+  if (HintInfo.CursorPos.Y div SynEd.LineHeight) > (SynEd.DisplayRowCount - SynEd.TopLine) then
     Exit;
 
-  if (HintInfo.CursorPos.Y div SynEd.LineHeight) >
-    (SynEd.DisplayRowCount - SynEd.TopLine) then
-    Exit;
+  var Highlighter := TSynPythonSyn(SynEd.Highlighter);
 
-  var
-  Highlighter := TSynPythonSyn(SynEd.Highlighter);
-
-  var
-  DisplayC := SynEd.PixelsToNearestRowColumn(HintInfo.CursorPos.X,
-    HintInfo.CursorPos.Y);
-  var
-  BufferC := SynEd.DisplayToBufferPos(DisplayC);
+  var DC := SynEd.PixelsToNearestRowColumn(HintInfo.CursorPos.X, HintInfo.CursorPos.Y);
+  var BC := SynEd.DisplayToBufferPos(DC);
 
   // Diagnostic errors hints first
-  if (FEditor.FSynLsp.Diagnostics.Count > 0) and SynEd.Indicators.IndicatorAtPos
-    (BufferC, FEditor.FSynLsp.DiagnosticsErrorIndicatorSpec, Indicator) then
+  if (FEditor.FSynLsp.Diagnostics.Count > 0) and
+    SynEd.Indicators.IndicatorAtPos(BC,
+    FEditor.FSynLsp.DiagnosticsErrorIndicatorSpec, Indicator)
+  then
   begin
     CanShow := True;
-    BC1 := BufferCoord(Indicator.CharStart, BufferC.Line);
-    BC2 := BufferCoord(Indicator.CharEnd, BufferC.Line);
+    BC1 := BufferCoord(Indicator.CharStart, BC.Line);
+    BC2 := BufferCoord(Indicator.CharEnd, BC.Line);
     // Setting HintInfo.CursorRect is important.  Otherwise no other hint
     // will be shown unlessmouse leaves and reenters the control
     HintInfo.CursorRect := CursorRect(SynEd, BC1, BC2, HintInfo.HintPos);
     HintStr := FEditor.FSynLsp.Diagnostics[Indicator.Tag].Msg;
   end
-  else if FEditor.HasPythonFile and not SynEd.IsPointInSelection(BufferC) and
-    SynEd.GetHighlighterAttriAtRowColEx(BufferC, Token, TokenType, Start, Attri)
-    and (((GI_PyControl.DebuggerState in [dsPaused, dsPostMortem]) and
-    PyIDEOptions.ShowDebuggerHints) or (GI_PyControl.Inactive and
-    PyIDEOptions.ShowCodeHints)) and ((Attri = Highlighter.IdentifierAttri) or
-    (Attri = Highlighter.NonKeyAttri) or (Attri = Highlighter.SystemAttri) or
-  // bracketed debugger expression
-    ((Attri = Highlighter.SymbolAttri) and (GI_PyControl.DebuggerState
-    in [dsPaused, dsPostMortem]) and ((Token = ')') or (Token = ']')))) then
+  else if FEditor.HasPythonFile and not SynEd.IsPointInSelection(BC) and
+    SynEd.GetHighlighterAttriAtRowColEx(BC, Token, TokenType, Start, Attri) and
+    (((GI_PyControl.DebuggerState in [dsPaused, dsPostMortem]) and
+       PyIDEOptions.ShowDebuggerHints) or
+       (GI_PyControl.Inactive and PyIDEOptions.ShowCodeHints)) and
+    ((Attri = Highlighter.IdentifierAttri) or
+     (Attri = Highlighter.NonKeyAttri) or
+     (Attri = Highlighter.SystemAttri) or
+      // bracketed debugger expression
+     ((Attri = Highlighter.SymbolAttri) and
+      (GI_PyControl.DebuggerState in [dsPaused, dsPostMortem]) and
+      ((Token = ')') or (Token = ']')))) then
   begin
     // LSP or debugger hints
     if GI_PyControl.Inactive then
     begin
-      BC1 := BufferCoord(Start, BufferC.Line);
-      BC2 := BufferCoord(Start + Token.Length, BufferC.Line);
+      BC1 := BufferCoord(Start, BC.Line);
+      BC2 := BufferCoord(Start + Token.Length, BC.Line);
     end
     else
     begin
-      var
-      LineTxt := SynEd.LineS[BufferC.Line - 1];
-      DottedIdent := GetWordAtPos(LineTxt, BufferC.Char, True, True,
-        False, True);
-      BC1 := BufferCoord(BufferC.Char - Length(DottedIdent) + 1, BufferC.Line);
-      DottedIdent := DottedIdent + GetWordAtPos(LineTxt, BufferC.Char + 1,
-        False, False, True);
-      BC2 := BufferCoord(BC1.Char + DottedIdent.Length, BufferC.Line);
+      var LineTxt := SynEd.Lines[BC.Line - 1];
+      DottedIdent := GetWordAtPos(LineTxt, BC.Char,
+        True, True, False, True);
+      BC1 := BufferCoord(BC.Char - Length(DottedIdent) + 1, BC.Line);
+      DottedIdent := DottedIdent + GetWordAtPos(LineTxt,
+        BC.Char + 1, False, False, True);
+      BC2 := BufferCoord(BC1.Char + DottedIdent.Length, BC.Line);
     end;
     HintInfo.CursorRect := CursorRect(SynEd, BC1, BC2, HintInfo.HintPos);
 
@@ -5573,8 +5565,8 @@ begin
         FHintFuture := TFuture<string>.Create(nil, nil,
           function: string
           begin
-            Result := TJedi.CodeHintAtCoordinates(FEditor.GetFileId,
-              BC1, Token);
+            Result := TPyLspClient.MainLspClient.CodeHintAtCoordinates(
+              FEditor.GetFileId, BC1, Token);
           end, TThreadPool.Default).Start;
       end
       else
@@ -5582,7 +5574,8 @@ begin
         // Debugger hints
         FHintFuture := TFuture<string>.Create(nil, nil,
           function: string
-          var ObjectValue, ObjectType: string;
+          var
+            ObjectValue, ObjectType: string;
           begin
             PyControl.ActiveDebugger.Evaluate(DottedIdent, ObjectType,
               ObjectValue);
@@ -5590,8 +5583,8 @@ begin
             begin
               ObjectValue := HTMLSafe(ObjectValue);
               ObjectType := HTMLSafe(ObjectType);
-              Result := Format(_(SDebuggerHintFormat), [DottedIdent, ObjectType,
-                ObjectValue]);
+              Result := Format(_(SDebuggerHintFormat),
+                [DottedIdent, ObjectType, ObjectValue]);
             end
             else
               Result := '';
@@ -5608,7 +5601,6 @@ begin
     HintInfo.HintWindowClass := TCodeHintWindow;
     FHintFuture := nil;
   end;
-
 end;
 
 procedure TEditorForm.BreakpointContextPopup(Sender: TObject; MousePos: TPoint;

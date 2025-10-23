@@ -1,7 +1,7 @@
 ﻿{ -----------------------------------------------------------------------------
   Unit Name: frmPyIDEMain
   Author:    Kiriakos Vlahos
-  Gerhard Röhner
+  #          Gerhard Röhner
   Date:      11-Feb-2005
   Purpose:   The main form of the Python IDE
 
@@ -1722,8 +1722,7 @@ uses
   dlgPythonVersions,
   dlgRemoteFile,
   cSSHSupport,
-  LspUtils,
-  JediLspClient,
+  cLspClients,
   dlgCustomShortcuts,
   UStructogram,
   UUtils,
@@ -2937,17 +2936,12 @@ var
   ErrorPos: TEditorPos;
 begin
   ActiveEditor := GetActiveEditor;
-  if not Assigned(ActiveEditor) then
-    Exit;
+  if not Assigned(ActiveEditor) then Exit;
 
-  if TPyInternalInterpreter(PyControl.InternalInterpreter)
-    .SyntaxCheck(ActiveEditor, ErrorPos) then
-  begin
-    GI_PyIDEServices.Messages.AddMessage(Format(_(SSyntaxIsOK),
-      [ActiveEditor.FileTitle]));
+  if TPyInternalInterpreter(PyControl.InternalInterpreter).SyntaxCheck(ActiveEditor, ErrorPos) then begin
+    GI_PyIDEServices.Messages.AddMessage(Format(_(SSyntaxIsOK), [ActiveEditor.FileTitle]));
     ShowDockForm(MessagesWindow);
-  end
-  else
+  end else
     ShowDockForm(PythonIIForm);
 end;
 
@@ -4005,7 +3999,7 @@ begin
     lbPythonEngine.Caption := ' ';
   end;
 
-  if TJedi.Ready then
+  if TPyLspClient.MainLspClient.Ready then
   begin
     spiLspLed.Hint := _('Language Server') + ': ' + _('Ready');
     icIndicators.SVGIconItems[2].FixedColor := $1F5FFF;
@@ -6008,7 +6002,7 @@ begin
               end;
 
               FileName := '';
-              TJedi.FindDefinitionByCoordinates(FName, TextCoord, FileName,
+              TPyLspClient.MainLspClient.FindDefinitionByCoordinates(FName, TextCoord, FileName,
                 BufferCord);
 
               if (FileName <> '') and ShowMessages then
@@ -6144,7 +6138,7 @@ begin
               GI_PyIDEServices.Messages.AddMessage
                 (_(SReferencesOf) + Token + '"');
 
-              References := TJedi.FindReferencesByCoordinates(FName, CaretXY);
+              References := TPyLspClient.MainLspClient.FindReferencesByCoordinates(FName, CaretXY);
               FoundReferences := Length(References) > 0;
               for var DocPosition in References do
               begin

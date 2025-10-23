@@ -178,14 +178,14 @@ uses
   System.Math,
   System.IOUtils,
   System.JSON,
-  Vcl.Clipbrd,
   Vcl.Graphics,
+  Vcl.Clipbrd,
   JvJVCLUtils,
   JvGnugettext,
   dmResources,
   uEditAppIntfs,
-  LspUtils,
-  JediLspClient,
+  XLSPTypes,
+  cLspClients,
   uCommonFunctions;
 
 resourcestring
@@ -212,33 +212,23 @@ end;
 
 procedure TFunctionListWindow.LoadProcs;
 
-  procedure ProcessSymbol(Symbol: TJSONValue; const ParentClass: string);
+  procedure ProcessSymbol(Symbol: TLSPDocumentSymbol; const ParentClass: string);
   var
     ProcInfo: TProcInfo;
-    LineNo,
-    Char,
-    Kind: Integer;
-    Name,
     KlassName: string;
   begin
-    if not (Symbol.TryGetValue<Integer>('selectionRange.start.line', LineNo) and
-      Symbol.TryGetValue<Integer>('selectionRange.start.character', Char) and
-      Symbol.TryGetValue<Integer>('kind', Kind) and
-      Symbol.TryGetValue<string>('name', Name))
-    then
-      Exit;
-
     KlassName := '';
-    case Kind of
-      Ord(TSymbolKind._Class):  KlassName := Name;
-      Ord(TSymbolKind._Function),
-      Ord(TSymbolKind.Method):
+    case Symbol.kind of
+      TLSPSymbolKind.symClass:  KlassName := Symbol.name;
+      TLSPSymbolKind.symFunction,
+      TLSPSymbolKind.symMethod:
         begin
           ProcInfo := TProcInfo.Create;
-          ProcInfo.ProcName := Name;
-          ProcInfo.LineNo := LineNo + 1;
-          ProcInfo.Char := Char + 1;
-          if ParentClass <> '' then begin
+          ProcInfo.ProcName := Symbol.name;
+          ProcInfo.LineNo := Symbol.selectionRange.start.line + 1;
+          ProcInfo.Char := Symbol.selectionRange.start.character + 1;
+          if ParentClass <> '' then
+          begin
             ProcInfo.FProcClass := ParentClass;
             ProcInfo.ProcIndex := Integer(TCodeImages.Method);
           end else
@@ -247,26 +237,20 @@ procedure TFunctionListWindow.LoadProcs;
         end;
     end;
 
-    if Symbol.P['children'] is TJSONArray then
-    begin
-      var Children := TJSONArray(Symbol.P['children']);
-      for var I := 0 to Children.Count - 1 do
-        ProcessSymbol(Children[I], KlassName);
-    end;
+    for var Child in Symbol.children do
+      ProcessSymbol(CHild, KlassName);
   end;
 
-  procedure ProcessSymbolArray(Symbols: TJSONArray);
+  procedure ProcessSymbolArray(Symbols: TLSPDocumentSymbols);
   begin
-    for var I := 0 to Symbols.Count - 1 do
-      ProcessSymbol(Symbols[I], '');
+    for var Symbol in Symbols do
+      ProcessSymbol(Symbol, '');
   end;
 
-var
-  DocSymbols: TJSONArray;
 begin
   Caption := Caption + ' - ' + TPath.GetFileName(FFileName);
-  DocSymbols := TSmartPtr.Make(TJedi.DocumentSymbols(FFileName))();
-  if not Assigned(DocSymbols) then Exit;
+  var DocSymbols := TPyLspClient.MainLspClient.DocumentSymbols(FFileName);
+  if Length(DocSymbols) = 0 then Exit;
 
   FProcList.Capacity := 200;
   ClearObjectStrings;
@@ -325,7 +309,9 @@ begin
     begin
       for var I := 0 to FProcList.Count - 1 do
         AddListItem(TProcInfo(FProcList.Objects[I]));
-    end else begin
+    end
+    else
+    begin
       for var I := 0 to FProcList.Count - 1 do
       begin
         ProcInfo := TProcInfo(FProcList.Objects[I]);
@@ -439,15 +425,13 @@ resourcestring
   SInvalidIndex = 'Invalid index number';
 
   function GetValue(Idx: Integer): string;
-  var
-    TabPos: Integer;
   begin
     if Idx >= FProcList.Count then
       raise Exception.Create(SInvalidIndex);
-    Result := FProcList.Strings[Idx];
+    Result := FProcList[Idx];
     for var I := 0 to FSortOnColumn - 1 do
     begin
-      TabPos := Pos(#9, Result);
+      var TabPos := Pos(#9, Result);
       if TabPos > 0 then
         Delete(Result, 1, TabPos)
       else
@@ -462,18 +446,18 @@ resourcestring
 
 var
   I, J: Integer;
-  P: string;
+  Value: string;
 begin
   if FProcList.Count = 0 then
     Exit;
   repeat
     I := L;
     J := R;
-    P := GetValue((L + R) shr 1);
+    Value := GetValue((L + R) shr 1);
     repeat
-      while AnsiCompareText(GetValue(I), P) < 0 do
+      while AnsiCompareText(GetValue(I), Value) < 0 do
         Inc(I);
-      while AnsiCompareText(GetValue(J), P) > 0 do
+      while AnsiCompareText(GetValue(J), Value) > 0 do
         Dec(J);
       if I <= J then
       begin
@@ -490,14 +474,14 @@ end;
 
 procedure TFunctionListWindow.lvProcsColumnClick(Sender: TObject; Column: TListColumn);
 var
-  I: Integer;
+  Idx: Integer;
   Cursor: IInterface;
 begin
-  I := Column.Index;
-  if I <> 0 then
+  Idx := Column.Index;
+  if Idx <> 0 then
   begin
     Cursor := WaitCursor;
-    FSortOnColumn := I;
+    FSortOnColumn := Idx;
     QuickSort(0, FProcList.Count - 1);
     FillListBox;
   end;
@@ -579,13 +563,12 @@ end;
 
 procedure TFunctionListWindow.actEditCopyExecute(Sender: TObject);
 var
-  I: Integer;
   Procs: TStringList;
   ProcInfo: TProcInfo;
 begin
   Procs := TStringList.Create;
   try
-    for I := 0 to lvProcs.Items.Count - 1 do
+    for var I := 0 to lvProcs.Items.Count - 1 do
     begin
       ProcInfo := TProcInfo(lvProcs.Items[I].Data);
       if ProcInfo <> nil then

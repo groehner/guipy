@@ -35,6 +35,7 @@ uses
   SpTBXItem,
   frmIDEDockWin,
   SynEditTypes,
+  XLSPTypes,
   SynEditLsp;
 
 type
@@ -42,41 +43,41 @@ type
   TCEExpandState = (esUnknown, esExpanded, esCollapsed);
 
   TCodeBlock = record
-    StartLine : Integer;
-    EndLine : Integer;
+    StartLine: Integer;
+    EndLine: Integer;
   end;
 
   TAbstractCENodeClass = class of TAbstractCENode;
   TAbstractCENode = class
   private
-    FChildren : TObjectList<TAbstractCENode>;
+    FChildren: TObjectList<TAbstractCENode>;
     function GetChildCount: Integer;
-    function GetChildren(Idx: Integer): TAbstractCENode;
+    function GetChildren(Index: Integer): TAbstractCENode;
     class var SortOrder: TCESortOrder;
     class var NodeComparer: IComparer<TAbstractCENode>;
     class var FileName: string;
   protected
     FName: string;
     FCodePos: TBufferCoord;
-    FExpanded : TCEExpandState;
-    FNode : PVirtualNode;
+    FExpanded: TCEExpandState;
+    FNode: PVirtualNode;
     function GetHint: string; virtual;
     function GetCaption: string; virtual;
-    function GetImageIndex : Integer; virtual;
+    function GetImageIndex: Integer; virtual;
   public
     class constructor Create;
-    constructor CreateFromSymbol(Symbol: TJSONObject); virtual;
+    constructor CreateFromSymbol(Symbol: TLSPDocumentSymbol); virtual;
     destructor Destroy; override;
     function AddChild(CENode: TAbstractCENode): Integer;
     procedure Sort(ASortOrder: TCESortOrder);
     property Name: string read FName;
     property CodePos: TBufferCoord read FCodePos;
-    property Hint : string read GetHint;
-    property Caption : string read GetCaption;
-    property ImageIndex : Integer read GetImageIndex;
-    property ChildCount : Integer read GetChildCount;
-    property Children[I : Integer] : TAbstractCENode read GetChildren;
-    property Expanded : TCEExpandState read FExpanded write FExpanded;
+    property Hint: string read GetHint;
+    property Caption: string read GetCaption;
+    property ImageIndex: Integer read GetImageIndex;
+    property ChildCount: Integer read GetChildCount;
+    property Children[Index: Integer]: TAbstractCENode read GetChildren;
+    property Expanded: TCEExpandState read FExpanded write FExpanded;
   end;
 
   TGroupCENode = class abstract(TAbstractCENode)
@@ -88,15 +89,15 @@ type
   protected
     function GetHint: string; override;
   public
-    constructor CreateFromSymbol(Symbol: TJSONObject); override;
+    constructor CreateFromSymbol(Symbol: TLSPDocumentSymbol); override;
     function GetScopeForLine(LineNo: Integer): TCodeElementCENode;
-    property CodeBlock : TCodeBlock read FCodeBlock;
+    property CodeBlock: TCodeBlock read FCodeBlock;
   end;
 
   TImportCENode = class(TAbstractCENode)
   protected
     function GetHint: string; override;
-    function GetImageIndex : Integer; override;
+    function GetImageIndex: Integer; override;
   end;
 
   TImportsCENode = class(TGroupCENode)
@@ -117,10 +118,11 @@ type
     FGlobals: TGlobalsCENode;
   protected
     function GetHint: string; override;
-    function GetImageIndex : Integer; override;
+    function GetImageIndex: Integer; override;
   public
-    constructor CreateFromSymbols(const AFileName: string; Symbols: TJSONArray);
-    property OffsetXY : TPoint read FOffsetXY write FOffsetXY;
+    constructor CreateFromSymbols(const AFileName: string; Symbols:
+        TList<TLSPDocumentSymbol>);
+    property OffsetXY: TPoint read FOffsetXY write FOffsetXY;
     property Imports: TImportsCENode read FImports;
     property Globals: TGlobalsCENode read FGlobals;
   end;
@@ -131,7 +133,7 @@ type
   TGlobalCENode = class(TVariableCENode)
   protected
     function GetHint: string; override;
-    function GetImageIndex : Integer; override;
+    function GetImageIndex: Integer; override;
   end;
 
   TAttributesCENode = class(TGroupCENode)
@@ -144,28 +146,27 @@ type
   private
     FAttributes: TAttributesCENode;
   protected
-    //function GetHint: string; override;
-    function GetImageIndex : Integer; override;
+    function GetImageIndex: Integer; override;
   public
-    constructor CreateFromSymbol(Symbol: TJSONObject); override;
+    constructor CreateFromSymbol(Symbol: TLSPDocumentSymbol); override;
   end;
 
   TAttributeCENode = class(TVariableCENode)
   protected
     function GetHint: string; override;
-    function GetImageIndex : Integer; override;
+    function GetImageIndex: Integer; override;
   end;
 
   TFunctionCENode = class(TCodeElementCENode)
   protected
-    function GetImageIndex : Integer; override;
+    function GetImageIndex: Integer; override;
   public
-    constructor CreateFromSymbol(Symbol: TJSONObject); override;
+    constructor CreateFromSymbol(Symbol: TLSPDocumentSymbol); override;
   end;
 
   TMethodCENode = class(TFunctionCENode)
   protected
-    function GetImageIndex : Integer; override;
+    function GetImageIndex: Integer; override;
   end;
 
   TCEUpdateReason = (ceuSymbolsChanged, ceuEditorEnter);
@@ -224,8 +225,9 @@ type
     var FFileId: string;
     FModuleNode: TModuleCENode;
     procedure NavigateToNodeElement(Node: PVirtualNode;
-      ForceToMiddle : Boolean = True; Activate : Boolean = True);
-    procedure UpdateModuleNode(const FileId: string; Symbols: TJSONArray);
+      ForceToMiddle: Boolean = True; Activate: Boolean = True);
+    procedure UpdateModuleNode(const FileId: string; Symbols:
+        TList<TLSPDocumentSymbol>);
     procedure UpdateTree(const FileId: string;
       UpdateReason: TCEUpdateReason; NewModuleNode: TModuleCENode);
   public
@@ -244,9 +246,9 @@ var
 implementation
 
 uses
+  System.SysUtils,
   System.Math,
   System.IOUtils,
-  System.SysUtils,
   System.Threading,
   JvGnugettext,
   SynEdit,
@@ -255,8 +257,7 @@ uses
   frmPyIDEMain,
   uEditAppIntfs,
   uCommonFunctions,
-  JediLspClient,
-  LspUtils,
+  cLSPClients,
   cPyScripterSettings;
 
 {$R *.dfm}
@@ -379,7 +380,7 @@ begin
   if CENode.ChildCount > 0 then
   begin
     Include(InitialStates, ivsHasChildren);
-    if (ivsReInit in InitialStates) then
+    if (ivsReInit in InitialStates) and not (CENode is TModuleCENode) then
     begin
       if vsExpanded in Node.States then
         CENode.Expanded := esExpanded
@@ -499,7 +500,8 @@ begin
     Node.GetData<TAbstractCENode>.Expanded := esExpanded;
 end;
 
-procedure TCodeExplorerWindow.UpdateModuleNode(const FileId: string; Symbols: TJSONArray);
+procedure TCodeExplorerWindow.UpdateModuleNode(const FileId: string;
+  Symbols: TList<TLSPDocumentSymbol>);
 var
   ModuleNode: TModuleCENode;
 begin
@@ -519,10 +521,10 @@ end;
 procedure TCodeExplorerWindow.UpdateWindow(DocSymbols: TDocSymbols;
   UpdateReason: TCEUpdateReason);
 var
-  Symbols: TJSONArray;
+  Symbols: TList<TLSPDocumentSymbol>;
   LFileId: string;
 begin
-  Assert(Assigned(DocSymbols));
+  Assert(Assigned(DocSymbols), 'TCodeExplorerWindow.UpdateWindow');
   LFileId := DocSymbols.FileId;
   case UpdateReason of
     ceuSymbolsChanged:
@@ -531,7 +533,7 @@ begin
         try
           if DocSymbols.Symbols = nil then
           begin
-            Assert(GetCurrentThreadId = MainThreadID);
+            Assert(GetCurrentThreadId = MainThreadID, 'TCodeExplorerWindow.UpdateWindow');
             if FFileId = LFileId then
             begin
               ExplorerTree.Clear;
@@ -580,8 +582,8 @@ end;
 
 procedure TCodeExplorerWindow.ShowEditorCodeElement;
 var
-  Editor : IEditor;
-  CodeElement : TCodeElementCENode;
+  Editor: IEditor;
+  CodeElement: TCodeElementCENode;
 begin
   if not mnFollowEditor.Checked then Exit;
 
@@ -592,8 +594,7 @@ begin
     (ExplorerTree.RootNodeCount > 0)
   then
   begin
-    CodeElement := TModuleCENode(FModuleNode).
-      GetScopeForLine(Editor.ActiveSynEdit.CaretY);
+    CodeElement := FModuleNode. GetScopeForLine(Editor.ActiveSynEdit.CaretY);
     if Assigned(CodeElement) and Assigned(CodeElement.FNode) then
     begin
       ExplorerTree.TreeOptions.AnimationOptions :=
@@ -610,12 +611,12 @@ begin
 end;
 
 procedure TCodeExplorerWindow.NavigateToNodeElement(Node: PVirtualNode;
-      ForceToMiddle : Boolean = True; Activate : Boolean = True);
+      ForceToMiddle: Boolean = True; Activate: Boolean = True);
 var
   CENode: TAbstractCENode;
-  CodePos : TBufferCoord;
-  Len : Integer;
-  Editor : IEditor;
+  CodePos: TBufferCoord;
+  Len: Integer;
+  Editor: IEditor;
 begin
   CodePos.Line := - 1;
   Len := 0;
@@ -674,7 +675,7 @@ end;
 
 procedure TCodeExplorerWindow.mnFindDefinitionClick(Sender: TObject);
 var
-  Node : PVirtualNode;
+  Node: PVirtualNode;
 begin
   Node := ExplorerTree.GetFirstSelected;
   if Assigned(Node) then
@@ -769,20 +770,20 @@ begin
 
 end;
 
-constructor TAbstractCENode.CreateFromSymbol(Symbol: TJSONObject);
+constructor TAbstractCENode.CreateFromSymbol(Symbol: TLSPDocumentSymbol);
 begin
   inherited Create;
-  FName := Symbol.GetValue<string>('name', '');
-  FCodePos.Line := Symbol.GetValue<Integer>('selectionRange.start.line', 0);
+  FName := Symbol.name;
+  FCodePos.Line := Symbol.selectionRange.start.line;
   Inc(FCodePos.Line);
-  FCodePos.Char := Symbol.GetValue<Integer>('selectionRange.start.character', 0);
+  FCodePos.Char := Symbol.selectionRange.start.character;
   Inc(FCodePos.Char);
 end;
 
-function TAbstractCENode.GetChildren(Idx: Integer): TAbstractCENode;
+function TAbstractCENode.GetChildren(Index: Integer): TAbstractCENode;
 begin
   if Assigned(FChildren) then
-    Result := FChildren[Idx]
+    Result := FChildren[Index]
   else
     Result := nil;
 end;
@@ -799,7 +800,7 @@ end;
 
 procedure TAbstractCENode.Sort(ASortOrder: TCESortOrder);
 var
-  Child : Pointer;
+  Child: Pointer;
 begin
   SortOrder := ASortOrder;
   if not Assigned(FChildren) then Exit;
@@ -836,9 +837,10 @@ begin
   Result := Integer(TCodeImages.Python);
 end;
 
-constructor TModuleCENode.CreateFromSymbols(const AFileName: string; Symbols: TJSONArray);
+constructor TModuleCENode.CreateFromSymbols(const AFileName: string;
+  Symbols: TList<TLSPDocumentSymbol>);
 var
-  Kind: Integer;
+  Kind: TLSPSymbolKind;
   NodeClass: TAbstractCENodeClass;
   Node: TAbstractCENode;
 begin
@@ -852,19 +854,18 @@ begin
 
   for var Symbol in Symbols do
   begin
-    if not Symbol.TryGetValue<Integer>('kind', Kind) then
-      Continue;
+    Kind := Symbol.kind;
 
-    case TSymbolKind(Kind) of
-      TSymbolKind.Module: NodeClass := TImportCENode;
-      TSymbolKind._Class: NodeClass := TClassCENode;
-      TSymbolKind._Function: NodeClass := TFunctionCENode;
-      TSymbolKind._Variable: NodeClass := TGlobalCENode;
+    case Kind of
+      TLSPSymbolKind.symModule: NodeClass := TImportCENode;
+      TLSPSymbolKind.symClass: NodeClass := TClassCENode;
+      TLSPSymbolKind.symFunction: NodeClass := TFunctionCENode;
+      TLSPSymbolKind.symVariable: NodeClass := TGlobalCENode;
     else
       Continue;
     end;
     try
-      Node := NodeClass.CreateFromSymbol(Symbol as TJSONObject);
+      Node := NodeClass.CreateFromSymbol(Symbol);
     except
       Continue;
     end;
@@ -963,34 +964,32 @@ begin
   Result := Integer(TCodeImages.Klass);
 end;
 
-constructor TClassCENode.CreateFromSymbol(Symbol: TJSONObject);
+constructor TClassCENode.CreateFromSymbol(Symbol: TLSPDocumentSymbol);
 var
-  Kind: Integer;
-  Symbols: TJSONValue;
+  Kind: TLSPSymbolKind;
+  Symbols: TLSPDocumentSymbols;
   NodeClass: TAbstractCENodeClass;
   Node: TAbstractCENode;
 begin
   inherited;
 
-  Symbol.TryGetValue('children', Symbols);
-  if not (Symbols is TJSONArray) then Exit;
+  Symbols := Symbol.children;
 
-  for var CE in TJSONArray(Symbols) do
+  for var CE in Symbols do
   begin
-    if not CE.TryGetValue<Integer>('kind', Kind) then
-      Continue;
+    Kind := CE.kind;
 
-    case TSymbolKind(Kind) of
-      TSymbolKind._Class: NodeClass := TClassCENode;
-      TSymbolKind.Method: NodeClass := TMethodCENode;
-      TSymbolKind._Function: NodeClass := TFunctionCENode;
-      TSymbolKind._Property,
-      TSymbolKind._Variable: NodeClass := TAttributeCENode;
+    case Kind of
+      TLSPSymbolKind.symClass: NodeClass := TClassCENode;
+      TLSPSymbolKind.symMethod: NodeClass := TMethodCENode;
+      TLSPSymbolKind.symFunction: NodeClass := TFunctionCENode;
+      TLSPSymbolKind.symProperty,
+      TLSPSymbolKind.SymVariable: NodeClass := TAttributeCENode;
     else
       Continue;
     end;
     try
-      Node := NodeClass.CreateFromSymbol(CE as TJSONObject);
+      Node := NodeClass.CreateFromSymbol(CE);
     except
       Continue;
     end;
@@ -1038,31 +1037,29 @@ end;
 
 { TFunctionCENode }
 
-constructor TFunctionCENode.CreateFromSymbol(Symbol: TJSONObject);
+constructor TFunctionCENode.CreateFromSymbol(Symbol: TLSPDocumentSymbol);
 var
-  Kind: Integer;
-  Symbols: TJSONValue;
+  Kind: TLSPSymbolKind;
+  Symbols: TLSPDocumentSymbols;
   NodeClass: TAbstractCENodeClass;
   Node: TAbstractCENode;
 begin
   inherited;
 
-  Symbol.TryGetValue('children', Symbols);
-  if not (Symbols is TJSONArray) then Exit;
+  Symbols := Symbol.children;
 
-  for var CE in TJSONArray(Symbols) do
+  for var CE in Symbols do
   begin
-    if not CE.TryGetValue<Integer>('kind', Kind) then
-      Continue;
+    Kind := CE.kind;
 
-    case TSymbolKind(Kind) of
-      TSymbolKind._Class: NodeClass := TClassCENode;
-      TSymbolKind._Function: NodeClass := TFunctionCENode;
+    case Kind of
+      TLSPSymbolKind.symClass: NodeClass := TClassCENode;
+      TLSPSymbolKind.symFunction: NodeClass := TFunctionCENode;
     else
       Continue;
     end;
     try
-      Node := NodeClass.CreateFromSymbol(CE as TJSONObject);
+      Node := NodeClass.CreateFromSymbol(CE);
     except
       Continue;
     end;
@@ -1084,12 +1081,12 @@ end;
 
 { TCodeElementCENode }
 
-constructor TCodeElementCENode.CreateFromSymbol(Symbol: TJSONObject);
+constructor TCodeElementCENode.CreateFromSymbol(Symbol: TLSPDocumentSymbol);
 begin
   inherited CreateFromSymbol(Symbol);
-  FCodeBlock.StartLine := Symbol.GetValue<Integer>('range.start.line', 0);
+  FCodeBlock.StartLine := Symbol.range.start.line;
   Inc(FCodeBlock.StartLine);
-  FCodeBlock.EndLine := Symbol.GetValue<Integer>('range.end.line', 0);
+  FCodeBlock.EndLine := Symbol.range.&end.line;
   Inc(FCodeBlock.EndLine);
 end;
 
@@ -1119,7 +1116,8 @@ end;
 
 function TCodeElementCENode.GetHint: string;
 begin
-  Result := TJedi.SimpleHintAtCoordinates(FileName, CodePos);
+  Result := TPyLspClient.MainLspClient.SimpleHintAtCoordinates(FileName, CodePos);
+  Result := StringReplace(Result, '<br>', SLineBreak, [rfReplaceAll]);
 end;
 
 

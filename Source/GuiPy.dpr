@@ -14,7 +14,6 @@ program GuiPy;
 {$RTTI EXPLICIT METHODS([]) PROPERTIES([]) FIELDS([])}
 
 uses
-  //FastMM5,
   WinApi.Windows,
   System.SysUtils,
   Vcl.HTMLHelpViewer,
@@ -171,9 +170,6 @@ uses
   UFileStructure in 'Main\UFileStructure.pas' {FFileStructure},
   UGit in 'Main\UGit.pas' {FGit},
   USubversion in 'Main\USubversion.pas' {FSubversion},
-  JediLspClient in 'JediLspClient.pas',
-  LspClient in 'LspClient.pas',
-  LspUtils in 'LspUtils.pas',
   SynEditLsp in 'SynEditLsp.pas',
   cPythonSourceScanner in 'cPythonSourceScanner.pas',
   UBrowser in 'Main\UBrowser.pas' {FBrowser},
@@ -199,7 +195,8 @@ uses
   frmSuggest in 'frmSuggest.pas' {SuggestWindow},
   UUMLInteractive in 'Main\UUMLInteractive.pas' {FUMLInteractive},
   ULifeline in 'SequenceDiagram\ULifeline.pas',
-  dlgExceptionMail in 'dlgExceptionMail.pas' {ExceptionDialogMail};
+  dlgExceptionMail in 'dlgExceptionMail.pas' {ExceptionDialogMail},
+  cLSPClients in 'cLSPClients.pas';
 
 {$R *.RES}
 

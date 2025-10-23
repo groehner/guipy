@@ -1497,7 +1497,7 @@ uses
   dmCommands,
   cPyScripterSettings,
   cPyControl,
-  JediLspClient,
+//  JediLspClient,
   uEditAppIntfs,
   PythonVersions,
   StringResources,
@@ -2636,7 +2636,7 @@ begin
 
   CommandsDataModule.ApplyEditorOptions;
   PythonIIForm.ApplyEditorOptions;
-  TJedi.CreateServer;
+  //TJedi.CreateServer;
 end;
 
 procedure TFConfiguration.BTempFolderClick(Sender: TObject);
