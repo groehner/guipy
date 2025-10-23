@@ -1,37 +1,33 @@
 inherited ProjectExplorerWindow: TProjectExplorerWindow
   HelpContext = 435
   Caption = 'Project Explorer'
-  ClientHeight = 334
-  ClientWidth = 377
+  ClientWidth = 531
   OnShow = FormShow
-  ExplicitWidth = 393
-  ExplicitHeight = 373
+  ExplicitWidth = 547
   TextHeight = 15
   inherited BGPanel: TPanel
-    Width = 377
-    Height = 334
+    Width = 531
     ExplicitWidth = 83
     ExplicitHeight = 182
     inherited FGPanel: TPanel
-      Width = 373
-      Height = 330
+      Width = 527
+      Height = 178
       ExplicitWidth = 79
       ExplicitHeight = 178
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 373
-        Height = 330
+        Width = 527
+        Height = 178
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         ExplicitWidth = 79
-        ExplicitHeight = 178
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 30
-          Width = 373
-          Height = 300
+          Width = 527
+          Height = 148
           Align = alClient
           BorderStyle = bsNone
           DefaultNodeHeight = 19
@@ -65,13 +61,12 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           Touch.InteractiveGestures = [igPan, igPressAndTap]
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
           ExplicitWidth = 79
-          ExplicitHeight = 148
           Columns = <>
         end
         object SpTBXDock1: TSpTBXDock
           Left = 0
           Top = 0
-          Width = 373
+          Width = 527
           Height = 30
           AllowDrag = False
           DoubleBuffered = True
@@ -496,7 +491,7 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     PreserveItems = True
     Width = 18
     Height = 18
-    Left = 80
+    Left = 56
     Top = 160
   end
   object vilImages: TVirtualImageList
@@ -603,7 +598,7 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     PreserveItems = True
     Width = 20
     Height = 20
-    Left = 186
+    Left = 106
     Top = 160
   end
   object icProjects: TSVGIconImageCollection
@@ -665,9 +660,22 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           'C15.79 22.5 14 20.71 14 18.5C14 16.29 15.79 14.5 18 14.5M20 8H4V' +
           '18H12L12 18.5C12 19 12.06 19.5 12.17 20H4C2.89 20 2 19.1 2 18L2 ' +
           '6C2 4.89 2.89 4 4 4H10L12 6H20C21.1 6 22 6.89 22 8V13C21.39 12.6' +
-          '3 20.72 12.34 20 12.17V8Z"/>'#13#10'</svg>'
+          '3 20.72 12.34 20 12.17V8Z"/>'#13#10'</svg>'#13#10
       end>
     Left = 10
     Top = 160
+  end
+  object ProjectAutoUpdateFolderPopupMenu: TSpTBXPopupMenu
+    Images = vilImages
+    Left = 168
+    Top = 109
+    object SpTBXItem8: TSpTBXItem
+      Action = actProjectRename
+    end
+    object SpTBXSeparatorItem14: TSpTBXSeparatorItem
+    end
+    object SpTBXItem9: TSpTBXItem
+      Action = actProjectRemove
+    end
   end
 end

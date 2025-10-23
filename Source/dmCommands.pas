@@ -202,6 +202,7 @@ type
     actAssistantFixBugs: TAction;
     actAssistantExplain: TAction;
     actEditRedo: TSynEditRedo;
+    actFormatCode: TAction;
     function ProgramVersionHTTPLocationLoadFileFromRemote
       (AProgramVersionLocation: TJvProgramVersionHTTPLocation;
       const ARemotePath, ARemoteFileName, ALocalPath, ALocalFileName
@@ -305,6 +306,7 @@ type
     procedure actEditCopyNumberedExecute(Sender: TObject);
     procedure actFileExportExecute(Sender: TObject);
     procedure actInterpreterEditorOptionsExecute(Sender: TObject);
+    procedure actFormatCodeExecute(Sender: TObject);
     procedure actPythonPathExecute(Sender: TObject);
     procedure mnSpellingPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure SynSpellCheckChange(Sender: TObject);
@@ -1460,6 +1462,7 @@ begin
 
   SelAvail := Assigned(GI_ActiveEditor) and GI_ActiveEditor.ActiveSynEdit.SelAvail;
   // Source Code Actions
+  actFormatCode.Enabled := Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile;
   actEditIndent.Enabled := SelAvail;
   actEditDedent.Enabled := SelAvail;
   actEditTabify.Enabled := SelAvail;
@@ -1888,6 +1891,13 @@ begin
     ProgressBar.Position := 0;
     ShowModal;
   end;
+end;
+
+procedure TCommandsDataModule.actFormatCodeExecute(Sender: TObject);
+begin
+   var Editor := GI_ActiveEditor;
+  if Assigned(Editor) and Editor.HasPythonFile then
+    TPyLspClient.FormatCode(Editor.FileId, Editor.ActiveSynEdit);
 end;
 
 procedure TCommandsDataModule.actToolsRestartLSExecute(Sender: TObject);

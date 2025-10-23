@@ -1300,6 +1300,7 @@ type
     actPythonFreeThreaded: TAction;
     mnViewUMLInteractive: TSpTBXItem;
     actViewUMLInteractive: TAction;
+    mnFormatCode: TSpTBXItem;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -6002,7 +6003,7 @@ begin
               end;
 
               FileName := '';
-              TPyLspClient.MainLspClient.FindDefinitionByCoordinates(FName, TextCoord, FileName,
+              TPyLspClient.FindDefinitionByCoordinates(FName, TextCoord, FileName,
                 BufferCord);
 
               if (FileName <> '') and ShowMessages then
@@ -6138,7 +6139,7 @@ begin
               GI_PyIDEServices.Messages.AddMessage
                 (_(SReferencesOf) + Token + '"');
 
-              References := TPyLspClient.MainLspClient.FindReferencesByCoordinates(FName, CaretXY);
+              References := TPyLspClient.FindReferencesByCoordinates(FName, CaretXY);
               FoundReferences := Length(References) > 0;
               for var DocPosition in References do
               begin

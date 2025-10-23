@@ -1000,6 +1000,15 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Export to RTF or HTML file'
       OnExecute = actFileExportExecute
     end
+    object actFormatCode: TAction
+      Category = 'Source Code'
+      Caption = 'Format Code'
+      Hint = 
+        'Format source code, either the selected text or the whole docume' +
+        'nt.'
+      ShortCut = 41030
+      OnExecute = actFormatCodeExecute
+    end
   end
   object SynWebCompletion: TSynCompletionProposal
     Options = [scoLimitToMatchedText, scoUseInsertList, scoUsePrettyText, scoUseBuiltInTimer, scoEndCharCompletion, scoCompleteWithTab, scoCompleteWithEnter]

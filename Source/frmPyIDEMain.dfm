@@ -660,6 +660,9 @@ object PyIDEMainForm: TPyIDEMainForm
           object SpTBXSeparatorItem19: TSpTBXSeparatorItem
             Tag = -2
           end
+          object mnFormatCode: TSpTBXItem
+            Action = CommandsDataModule.actFormatCode
+          end
           object mnIndentBlock: TSpTBXItem
             Action = CommandsDataModule.actEditIndent
           end
