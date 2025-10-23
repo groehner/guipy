@@ -127,6 +127,7 @@ begin
   FIncChanges := TJSONArray.Create;
   FIncChanges.Owned := False;
   FDiagnostics := TList<TDiagnostic>.Create;
+  FNewDiagnostics := TThreadList<TDiagnostic>.Create;
   TMessageManager.DefaultManager.SubscribeToMessage(TLspServerInitializedMessage,
     OnLspInitialized);
   Instances.Add(Self);
