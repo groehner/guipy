@@ -425,6 +425,10 @@ end;
 
 initialization
   GI_BreakpointManager := TBreakpointManager.Create;
+
+finalization
+  GI_BreakpointManager := nil;
+
 end.
 
 

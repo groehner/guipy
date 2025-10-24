@@ -1938,7 +1938,7 @@ end;
 
 procedure TCommandsDataModule.actToolsRestartLSExecute(Sender: TObject);
 begin
-  TPyLspClient.MainLspClient.CreateAndRunServer;
+  TPyLspClient.RestartServers;
 end;
 
 procedure TCommandsDataModule.GetEditorUserCommand(AUserCommand: Integer;
