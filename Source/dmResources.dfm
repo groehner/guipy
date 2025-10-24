@@ -5895,6 +5895,7 @@ object ResourcesDataModule: TResourcesDataModule
           '14H10V3M10 21V17H14V21H10Z" />'#13#10'</svg>'#13#10
       end
       item
+        IconName = 'BugFix'
         SVGText = 
           '<svg viewBox="0 0 24 24">'#13#10'  <path d="M19 7H16.19C15.74 6.2 15.1' +
           '2 5.5 14.37 5L16 3.41L14.59 2L12.42 4.17C11.96 4.06 11.5 4 11 4S' +

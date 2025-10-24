@@ -1306,6 +1306,9 @@ type
     SpTBXSeparatorItem31: TSpTBXSeparatorItem;
     mnPreviousIssue: TSpTBXItem;
     mnNextIssue: TSpTBXItem;
+    mnFixAll: TSpTBXItem;
+    mnOrganizeImports: TSpTBXItem;
+    SpTBXSeparatorItem32: TSpTBXSeparatorItem;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -2620,11 +2623,12 @@ end;
 
 procedure TPyIDEMainForm.actFileNewFileExecute(Sender: TObject);
 begin
-  with TNewFileDialog.Create(Self) do
-  begin
-    if ShowModal = mrOk then
-      NewFileFromTemplate(SelectedTemplate);
-    Free;
+  var NewFileDialog := TNewFileDialog.Create(Self);
+  try
+    if NewFileDialog.ShowModal = mrOk then
+      NewFileFromTemplate(NewFileDialog.SelectedTemplate);
+  finally
+    NewFileDialog.Free;
   end;
 end;
 
@@ -2948,7 +2952,7 @@ begin
   var ActiveEditor := GetActiveEditor;
   if not Assigned(ActiveEditor) then Exit;
 
-  (ActiveEditor as TEditor).PullDiagnostics;
+  ActiveEditor.PullDiagnostics;
 end;
 
 procedure TPyIDEMainForm.actToolsConfigurationExecute(Sender: TObject);

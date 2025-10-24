@@ -506,10 +506,12 @@ type
     procedure SplitEditorVertrically;
     procedure SplitEditorHide;
     procedure Retranslate;
+    procedure PullDiagnostics;
     function GetForm: TForm;
     function GetDocSymbols: TObject;
     function GetTabControlIndex: Integer;
     function GetSSHServer: string;
+    function GetVersion: Integer;
 
     // ISearchCommands implementation
     function CanFind: Boolean;
@@ -540,7 +542,6 @@ type
     destructor Destroy; override;
 
     // Diagnostics
-    procedure PullDiagnostics;
     procedure ClearDiagnostics;
     procedure NextDiagnostic;
     procedure PreviousDiagnostic;
@@ -769,6 +770,11 @@ end;
 function TEditor.GetTabControlIndex: Integer;
 begin
   Result := PyIDEMainForm.TabControlIndex(FForm.ParentTabControl);
+end;
+
+function TEditor.GetVersion: Integer;
+begin
+  Result := FSynLsp.Version;
 end;
 
 function TEditor.GetActiveSynEdit: TSynEdit;
@@ -1492,7 +1498,7 @@ begin
       ParentTabItem.OnDrawTabCloseButton := PyIDEMainForm.DrawCloseButton;
       ParentTabControl := TabControl;
       Result := FEditor;
-      Result.ApplyEditorOptions(EditorOptions);
+      Result.ApplyEditorOptions(GEditorOptions);
       BorderStyle := bsNone;
       Parent := Sheet;
       Align := alClient;

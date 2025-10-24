@@ -1605,18 +1605,6 @@ object EditorForm: TEditorForm
         CollectionIndex = 10
         CollectionName = 'Bulb'
         Name = 'Bulb'
-      end
-      item
-        CollectionName = 'Wrench'
-        Name = 'Wrench'
-      end
-      item
-        CollectionName = 'BugFix'
-        Name = 'BugFix'
-      end
-      item
-        CollectionName = 'QuickFix'
-        Name = 'QuickFix'
       end>
     ImageCollection = ResourcesDataModule.icEditorMarks
     PreserveItems = True

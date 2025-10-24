@@ -1035,6 +1035,19 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Go to the previous issue'
       OnExecute = actPreviousIssueExecute
     end
+    object actFixAll: TAction
+      Category = 'Refactoring'
+      Caption = 'Fix All'
+      Hint = 'Apply all available fixes'
+      ImageIndex = 124
+      OnExecute = actFixAllExecute
+    end
+    object actOrganizeImports: TAction
+      Category = 'Refactoring'
+      Caption = 'Organize Imports'
+      Hint = 'Organize import statements'
+      OnExecute = actOrganizeImportsExecute
+    end
   end
   object SynWebCompletion: TSynCompletionProposal
     Options = [scoLimitToMatchedText, scoUseInsertList, scoUsePrettyText, scoUseBuiltInTimer, scoEndCharCompletion, scoCompleteWithTab, scoCompleteWithEnter]

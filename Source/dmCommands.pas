@@ -207,6 +207,8 @@ type
     actClearIssues: TAction;
     actNextIssue: TAction;
     actPreviousIssue: TAction;
+    actFixAll: TAction;
+    actOrganizeImports: TAction;
     function ProgramVersionHTTPLocationLoadFileFromRemote
       (AProgramVersionLocation: TJvProgramVersionHTTPLocation;
       const ARemotePath, ARemoteFileName, ALocalPath, ALocalFileName
@@ -316,6 +318,8 @@ type
     procedure actNextIssueExecute(Sender: TObject);
     procedure actPreviousIssueExecute(Sender: TObject);
     procedure actPythonPathExecute(Sender: TObject);
+    procedure actFixAllExecute(Sender: TObject);
+    procedure actOrganizeImportsExecute(Sender: TObject);
     procedure mnSpellingPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure SynSpellCheckChange(Sender: TObject);
   private
@@ -902,7 +906,7 @@ begin
   GI_EditorFactory.ApplyToEditors(
     procedure(Editor: IEditor)
     begin
-      Editor.ApplyEditorOptions(EditorOptions);
+      Editor.ApplyEditorOptions(GEditorOptions);
     end);
 end;
 
@@ -1467,6 +1471,8 @@ begin
   var HasPython := Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile;
 
   // Source Code Actions
+  actOrganizeImports.Enabled := HasPython;
+  actFixAll.Enabled := HasPython;
   actCodeCheck.Enabled := HasPython;
   actClearIssues.Enabled := HasPython;
   actNextIssue.Enabled := HasPython;
@@ -1914,7 +1920,7 @@ end;
 procedure TCommandsDataModule.actCodeCheckExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
-    (GI_ActiveEditor as TEditor).PullDiagnostics;
+    GI_ActiveEditor.PullDiagnostics;
 end;
 
 procedure TCommandsDataModule.actFormatCodeExecute(Sender: TObject);
@@ -1939,6 +1945,22 @@ end;
 procedure TCommandsDataModule.actToolsRestartLSExecute(Sender: TObject);
 begin
   TPyLspClient.RestartServers;
+end;
+
+procedure TCommandsDataModule.actFixAllExecute(Sender: TObject);
+begin
+  var Editor := GI_ActiveEditor;
+  if Assigned(Editor) and Editor.HasPythonFile then
+    TPyLspClient.DiagnosticsLspClient.ExecuteCommand('ruff.applyAutofix',
+      Editor.FileId, Editor.Version);
+end;
+
+procedure TCommandsDataModule.actOrganizeImportsExecute(Sender: TObject);
+begin
+  var Editor := GI_ActiveEditor;
+  if Assigned(Editor) and Editor.HasPythonFile then
+    TPyLspClient.DiagnosticsLspClient.ExecuteCommand('ruff.applyOrganizeImports',
+      Editor.FileId, Editor.Version);
 end;
 
 procedure TCommandsDataModule.GetEditorUserCommand(AUserCommand: Integer;

@@ -695,6 +695,15 @@ object PyIDEMainForm: TPyIDEMainForm
             end
             object SpTBXSeparatorItem31: TSpTBXSeparatorItem
             end
+            object mnFixAll: TSpTBXItem
+              Action = CommandsDataModule.actFixAll
+              ShortCut = 49265
+            end
+            object mnOrganizeImports: TSpTBXItem
+              Action = CommandsDataModule.actOrganizeImports
+            end
+            object SpTBXSeparatorItem32: TSpTBXSeparatorItem
+            end
             object mnCodeCheck: TSpTBXItem
               Action = CommandsDataModule.actCodeCheck
             end
