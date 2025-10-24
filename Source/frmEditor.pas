@@ -173,6 +173,9 @@ type
     spiSeparatorItem: TSpTBXSeparatorItem;
     spiBreakpointClear: TSpTBXItem;
     vilEditorMarks: TVirtualImageList;
+    pmnuDiagnostics: TSpTBXPopupMenu;
+    mnFixIssue: TSpTBXItem;
+    mnIgnoreIssue: TSpTBXItem;
     procedure SynEditChange(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
@@ -254,10 +257,18 @@ type
     procedure TBValidateClick(Sender: TObject);
     procedure mnFontClick(Sender: TObject);
     procedure mnEditAddImportsClick(Sender: TObject);
-    procedure TBStructureIndentClick(Sender: TObject);
+    procedure mnFixIssueClick(Sender: TObject);
+    procedure mnIgnoreIssueClick(Sender: TObject);
+    procedure SynEditGutterMarksCLick(Sender: TObject; Button: TMouseButton;
+        X, Y, Row, Line: Integer);
+    procedure SynEditGutterMarksContextPopup(Sender: TObject; MousePos:
+        TPoint; Row, Line: Integer; var Handled: Boolean);
+    procedure SynEditGutterMarksMouseCursor(Sender: TObject; X, Y, Row, Line:
+        Integer; var Cursor: TCursor);
     class procedure SynParamCompletionExecute(Kind: SynCompletionType;
       Sender: TObject; var CurrentInput: string; var X, Y: Integer;
       var CanExecute: Boolean);
+    procedure TBStructureIndentClick(Sender: TObject);
   private const
     HotIdentIndicatorSpec: TGUID = '{8715589E-C990-4423-978F-F00F26041AEF}';
   private
@@ -689,16 +700,18 @@ end;
 
 procedure TEditor.ApplyEditorOptions(EditorOptions: TSynEditorOptionsContainer);
 begin
-  Form.SynEdit.Assign(EditorOptions);
-  Form.SynEdit2.Assign(EditorOptions);
+  var OldBookMarksFirst := FForm.SynEdit.BookmarkOptions.DrawBookmarksFirst;
+  FForm.SynEdit.Assign(EditorOptions);
+  FForm.SynEdit2.Assign(EditorOptions);
+  FForm.SynEdit.BookmarkOptions.DrawBookmarksFirst := OldBookMarksFirst;
 
-  Form.SynEdit.BookMarkOptions.BookmarkImages := Form.vilEditorMarks;
-  Form.SynEdit2.BookMarkOptions.BookmarkImages := Form.vilEditorMarks;
+  FForm.SynEdit.BookMarkOptions.BookmarkImages := FForm.vilEditorMarks;
+  FForm.SynEdit2.BookMarkOptions.BookmarkImages := FForm.vilEditorMarks;
 
-  Form.SynEdit.BracketsHighlight.SetFontColorsAndStyle(
+  FForm.SynEdit.BracketsHighlight.SetFontColorsAndStyle(
     ResourcesDataModule.SynPythonSyn.MatchingBraceAttri.Foreground,
     ResourcesDataModule.SynPythonSyn.UnbalancedBraceAttri.Foreground, [fsBold]);
-  Form.SynEdit2.BracketsHighlight.SetFontColorsAndStyle(
+  FForm.SynEdit2.BracketsHighlight.SetFontColorsAndStyle(
     ResourcesDataModule.SynPythonSyn.MatchingBraceAttri.Foreground,
     ResourcesDataModule.SynPythonSyn.UnbalancedBraceAttri.Foreground, [fsBold]);
 end;
@@ -5708,6 +5721,20 @@ begin
   end;
 end;
 
+procedure TEditorForm.mnFixIssueClick(Sender: TObject);
+begin
+  // Use the mechanism of the diagnostic hint
+  TLspSynEditPlugin.DiagnosticHintIndex := pmnuDiagnostics.Tag;
+  FEditor.FSynLsp.PerformQuickFix;
+end;
+
+procedure TEditorForm.mnIgnoreIssueClick(Sender: TObject);
+begin
+  // Use the mechanism of the diagnostic hint
+  TLspSynEditPlugin.DiagnosticHintIndex := pmnuDiagnostics.Tag;
+  FEditor.FSynLsp.PerformNoqaEdit;
+end;
+
 procedure TEditorForm.spiBreakpointClearClick(Sender: TObject);
 begin
   GI_BreakpointManager.ToggleBreakpoint(FEditor.GetFileId,
@@ -5733,6 +5760,60 @@ begin
   begin
     GI_BreakpointManager.SetBreakpoint(FEditor.GetFileId, Breakpoint.LineNo,
       Breakpoint.Disabled, Condition, IgnoreCount);
+  end;
+end;
+
+procedure TEditorForm.SynEditGutterMarksCLick(Sender: TObject; Button:
+    TMouseButton; X, Y, Row, Line: Integer);
+var
+  Marks: TSynEditMarks;
+  HasFix, HasIgnore: Boolean;
+  Title: string;
+begin
+  pmnuDiagnostics.Tag := -1;
+  SynEdit.Marks.GetMarksForLine(Line, Marks);
+
+  if (Length(Marks) = 0) or Marks[0].IsBookmark or
+    not InRange(Marks[0].Tag, 0, High(FEditor.FSynLsp.Diagnostics))
+  then
+    Exit;
+
+  var Diagnostic := FEditor.FSynLsp.Diagnostics[Marks[0].Tag];
+  Diagnostic.ProcessData(HasFix, HasIgnore, Title);
+
+  if HasFix or HasIgnore then
+  begin
+    pmnuDiagnostics.Tag := Marks[0].Tag;
+    mnFixIssue.Enabled := HasFix;
+    mnFixIssue.Hint := Title;
+    mnIgnoreIssue.Enabled := HasIgnore;
+    var ScreenP := ClientToScreen(Point(X, Y));
+    pmnuDiagnostics.Popup(ScreenP.X, ScreenP.Y);
+  end;
+end;
+
+procedure TEditorForm.SynEditGutterMarksContextPopup(Sender: TObject;
+    MousePos: TPoint; Row, Line: Integer; var Handled: Boolean);
+begin
+  SynEditGutterMarksCLick(Sender, TMouseButton.mbLeft, MousePos.X, MousePos.Y,
+    Row, Line);
+  Handled := pmnuDiagnostics.Tag >= 0;
+end;
+
+procedure TEditorForm.SynEditGutterMarksMouseCursor(Sender: TObject; X, Y,
+    Row, Line: Integer; var Cursor: TCursor);
+var
+  Marks: TSynEditMarks;
+begin
+  SynEdit.Marks.GetMarksForLine(Line, Marks);
+  for var I := Low(Marks) to High(Marks) do
+  begin
+    if Marks[I] = nil then Exit;
+    if not Marks[I].IsBookmark then
+    begin
+      Cursor := crHandPoint;
+      Exit;
+    end;
   end;
 end;
 

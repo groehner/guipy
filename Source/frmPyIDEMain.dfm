@@ -4645,6 +4645,9 @@ object PyIDEMainForm: TPyIDEMainForm
         CollectionIndex = 78
         CollectionName = 'ProjectSave'
         Name = 'ProjectSave'
+      end
+      item
+        CollectionIndex = 168
       end>
     ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True

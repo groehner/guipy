@@ -107,6 +107,9 @@ object EditorForm: TEditorForm
             item
               Kind = gbkMarks
               Width = 13
+              OnCLick = SynEditGutterMarksCLick
+              OnContextPopup = SynEditGutterMarksContextPopup
+              OnMouseCursor = SynEditGutterMarksMouseCursor
             end
             item
               Kind = gbkCustom
@@ -494,8 +497,8 @@ object EditorForm: TEditorForm
           end
         end
         object TVFileStructure: TTreeView
-          Left = 352
-          Top = 112
+          Left = 80
+          Top = 472
           Width = 121
           Height = 20
           Indent = 19
@@ -1602,12 +1605,39 @@ object EditorForm: TEditorForm
         CollectionIndex = 10
         CollectionName = 'Bulb'
         Name = 'Bulb'
+      end
+      item
+        CollectionName = 'Wrench'
+        Name = 'Wrench'
+      end
+      item
+        CollectionName = 'BugFix'
+        Name = 'BugFix'
+      end
+      item
+        CollectionName = 'QuickFix'
+        Name = 'QuickFix'
       end>
     ImageCollection = ResourcesDataModule.icEditorMarks
     PreserveItems = True
     Width = 11
     Height = 14
-    Left = 385
-    Top = 344
+    Left = 377
+    Top = 256
+  end
+  object pmnuDiagnostics: TSpTBXPopupMenu
+    Images = PyIDEMainForm.vilImages
+    Left = 368
+    Top = 112
+    object mnFixIssue: TSpTBXItem
+      Caption = 'Quick Fix Issue'
+      ImageName = 'BugFix'
+      OnClick = mnFixIssueClick
+    end
+    object mnIgnoreIssue: TSpTBXItem
+      Caption = 'Ignore Issue'
+      Hint = 'Flag the issue as ignored'
+      OnClick = mnIgnoreIssueClick
+    end
   end
 end
