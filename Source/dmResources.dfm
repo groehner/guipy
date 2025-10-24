@@ -5977,4 +5977,112 @@ object ResourcesDataModule: TResourcesDataModule
     Left = 488
     Top = 288
   end
+  object icEditorMarks: TSVGIconImageCollection
+    SVGIconItems = <
+      item
+        IconName = 'Mark0'
+        SVGText = 
+          '<svg viewBox="0 0 22 28" stroke="black">'#13#10'    <rect fill="none" ' +
+          'rx="2" ry="2" stroke-width="2"'#13#10'      x="1" y="1" width="20" hei' +
+          'ght="26" />      '#13#10'  <path stroke="none" transform="scale(2) tra' +
+          'nslate(-6.5, -5)" d="M11,7A2,2 0 0,0 9,9V15A2,2 0 0,0 11,17H13A2' +
+          ',2 0 0,0 15,15V9A2,2 0 0,0 13,7H11M11,9H13V15H11V9Z" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'Mark1'
+        SVGText = 
+          '<svg viewBox="0 0 22 28" stroke="black">'#13#10'    <rect fill="none" ' +
+          'rx="2" ry="2" stroke-width="2"'#13#10'      x="1" y="1" width="20" hei' +
+          'ght="26" />      '#13#10'  <path  stroke="none" transform="scale(2) tr' +
+          'anslate(-6.5, -5)" d="M10,7V9H12V17H14V7H10Z" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'Mark2'
+        SVGText = 
+          '<svg viewBox="0 0 22 28" stroke="black">'#13#10'    <rect fill="none" ' +
+          'rx="2" ry="2" stroke-width="2"'#13#10'      x="1" y="1" width="20" hei' +
+          'ght="26" />      '#13#10'  <path stroke="none" transform="scale(2) tra' +
+          'nslate(-6.5, -5)" d="M9,7V9H13V11H11A2,2 0 0,0 9,13V17H11L15,17V' +
+          '15H11V13H13A2,2 0 0,0 15,11V9A2,2 0 0,0 13,7H9Z" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'Mark3'
+        SVGText = 
+          '<svg viewBox="0 0 22 28" stroke="black">'#13#10'    <rect fill="none" ' +
+          'rx="2" ry="2" stroke-width="2"'#13#10'      x="1" y="1" width="20" hei' +
+          'ght="26" />      '#13#10'  <path stroke="None" transform="scale(2) tra' +
+          'nslate(-6.5, -5)" d="M15,15V13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0' +
+          ' 0,0 15,10.5V9C15,7.89 14.1,7 13,7H9V9H13V11H11V13H13V15H9V17H13' +
+          'A2,2 0 0,0 15,15" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'Mark4'
+        SVGText = 
+          '<svg viewBox="0 0 22 28" stroke="black">'#13#10'    <rect fill="none" ' +
+          'rx="2" ry="2" stroke-width="2"'#13#10'      x="1" y="1" width="20" hei' +
+          'ght="26" />      '#13#10'  <path stroke="none" transform="scale(2) tra' +
+          'nslate(-6.5, -5)" d="M9,7V13H13V17H15V7H13V11H11V7H9Z" />'#13#10'</svg' +
+          '>'
+      end
+      item
+        IconName = 'Mark5'
+        SVGText = 
+          '<svg viewBox="0 0 22 28" stroke="black">'#13#10'    <rect fill="none" ' +
+          'rx="2" ry="2" stroke-width="2"'#13#10'      x="1" y="1" width="20" hei' +
+          'ght="26" />      '#13#10'  <path stroke="none" transform="scale(2) tra' +
+          'nslate(-6.5, -5)" d="M9,7V13H13V15H9V17H13A2,2 0 0,0 15,15V13A2,' +
+          '2 0 0,0 13,11H11V9H15V7H9Z" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'Mark6'
+        SVGText = 
+          '<svg viewBox="0 0 22 28" stroke="black">'#13#10'    <rect fill="none" ' +
+          'rx="2" ry="2" stroke-width="2"'#13#10'      x="1" y="1" width="20" hei' +
+          'ght="26" />      '#13#10'  <path stroke="none" transform="scale(2) tra' +
+          'nslate(-6.5, -5)" d="M11,7A2,2 0 0,0 9,9V15A2,2 0 0,0 11,17H13A2' +
+          ',2 0 0,0 15,15V13A2,2 0 0,0 13,11H11V9H15V7H11M11,13H13V15H11V13' +
+          'Z" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'Mark7'
+        SVGText = 
+          '<svg viewBox="0 0 22 28" stroke="black">'#13#10'    <rect fill="none" ' +
+          'rx="2" ry="2" stroke-width="2"'#13#10'      x="1" y="1" width="20" hei' +
+          'ght="26" />      '#13#10'  <path stroke="none" transform="scale(2) tra' +
+          'nslate(-6.5, -5)" d="M11,17L15,9V7H9V9H13L9,17" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'Mark8'
+        SVGText = 
+          '<svg viewBox="0 0 22 28" stroke="black">'#13#10'    <rect fill="none" ' +
+          'rx="2" ry="2" stroke-width="2"'#13#10'      x="1" y="1" width="20" hei' +
+          'ght="26" />      '#13#10'  <path stroke="none" transform="scale(2) tra' +
+          'nslate(-6.5, -5)" d="M11,13H13V15H11M11,9H13V11H11M11,17H13A2,2 ' +
+          '0 0,0 15,15V13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 15,10.5V9C1' +
+          '5,7.89 14.1,7 13,7H11A2,2 0 0,0 9,9V10.5A1.5,1.5 0 0,0 10.5,12A1' +
+          '.5,1.5 0 0,0 9,13.5V15C9,16.11 9.9,17 11,17" />'#13#10'</svg>'
+      end
+      item
+        IconName = 'Mark9'
+        SVGText = 
+          '<svg viewBox="0 0 22 28" stroke="black">'#13#10'  <rect fill="none" rx' +
+          '="2" ry="2" stroke-width="2" x="1" y="1" width="20" height="26"/' +
+          '>'#13#10'  <path stroke="none" transform="scale(2) translate(-6.5, -5)' +
+          '" d="M13,17A2,2 0 0,0 15,15V9A2,2 0 0,0 13,7H11A2,2 0 0,0 9,9V11' +
+          'A2,2 0 0,0 11,13H13V15H9V17H13M13,11H11V9H13V11Z"/>'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'Bulb'
+        SVGText = 
+          '<svg viewBox="0 0 22 28">'#13#10'  <path fill="orangered" transform="s' +
+          'cale(1.35) translate(-4, -2)"'#13#10'    d="M12,2A7,7 0 0,0 5,9C5,11.3' +
+          '8 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C' +
+          '17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2M9,21A1,1 0 0,0 10,22H14' +
+          'A1,1 0 0,0 15,21V20H9V21Z" />'#13#10'</svg>'
+      end>
+    ApplyFixedColorToRootOnly = True
+    AntiAliasColor = clDefault
+    Left = 240
+    Top = 224
+  end
 end

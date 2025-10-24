@@ -15,7 +15,7 @@ uses
   Vcl.Controls,
   JvAppStorage,
   uEditAppIntfs,
-  dlgSynEditOptions;
+  SynEditMiscClasses;
 
 type
   TBookMarkInfo = class(TPersistent)
@@ -138,7 +138,8 @@ begin
      AppStorage.WriteBoolean(BasePath+'\SecondEditorVisible', SecondEditorVisible);
      IgnoreProperties := TStringList.Create;
      try
-       IgnoreProperties.AddStrings(['Keystrokes', 'TrackChanges', 'SelectedColor', 'IndentGuides']);
+       IgnoreProperties.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides',
+         'DisplayFlowControl', 'BookmarkOptions', 'Keystrokes']);
        AppStorage.WritePersistent(BasePath+'\Editor Options', EditorOptions,
          True, IgnoreProperties);
        if SecondEditorVisible then begin
@@ -360,7 +361,7 @@ begin
             Editor.SynEdit2.Highlighter := Editor.SynEdit.Highlighter;
           end;
           FilePersistInfo.EditorOptions.Options:= FilePersistInfo.EditorOptions.Options + [eoCopyPlainText];
-          Editor.SynEdit.Assign(FilePersistInfo.EditorOptions);
+          Editor.ApplyEditorOptions(FilePersistInfo.EditorOptions);
           RestoreFoldInfo(Editor.SynEdit, FilePersistInfo.UseCodeFolding, FilePersistInfo.FoldState);
           Editor.ReadOnly := FilePersistInfo.ReadOnly;
           if FilePersistInfo.SecondEditorVisible then begin

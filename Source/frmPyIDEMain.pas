@@ -4292,7 +4292,7 @@ begin
     AppStorage.WriteString('Language', GetCurrentLanguage);
 
     TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides',
-      'DisplayFlowControl']);
+      'DisplayFlowControl', 'BookmarkOptions']);
     AppStorage.DeleteSubTree('Editor Options');
     AppStorage.WritePersistent('Editor Options', GEditorOptions, True,
       TempStringList);

@@ -172,6 +172,7 @@ type
     spiBreakpointProperties: TSpTBXItem;
     spiSeparatorItem: TSpTBXSeparatorItem;
     spiBreakpointClear: TSpTBXItem;
+    vilEditorMarks: TVirtualImageList;
     procedure SynEditChange(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
@@ -330,7 +331,6 @@ type
     procedure SetModified(Value: Boolean); override;
     function GetModified: Boolean; override;
   public
-    procedure ApplyEditorOptions;
     procedure DoActivate;
     procedure DoActivateEditor(Primary: Boolean = True);
     function DoActivateView(ViewFactory: IEditorViewFactory): IEditorView;
@@ -467,6 +467,7 @@ type
 
     // IEditor implementation
     function ActivateView(ViewFactory: IEditorViewFactory): IEditorView;
+    procedure ApplyEditorOptions(EditorOptions: TSynEditorOptionsContainer);
     function GetCaretPos: TPoint;
     function GetSynEdit: TSynEdit;
     function GetSynEdit2: TSynEdit;
@@ -684,6 +685,22 @@ begin
     Result := FForm.DoActivateView(ViewFactory)
   else
     Result := nil;
+end;
+
+procedure TEditor.ApplyEditorOptions(EditorOptions: TSynEditorOptionsContainer);
+begin
+  Form.SynEdit.Assign(EditorOptions);
+  Form.SynEdit2.Assign(EditorOptions);
+
+  Form.SynEdit.BookMarkOptions.BookmarkImages := Form.vilEditorMarks;
+  Form.SynEdit2.BookMarkOptions.BookmarkImages := Form.vilEditorMarks;
+
+  Form.SynEdit.BracketsHighlight.SetFontColorsAndStyle(
+    ResourcesDataModule.SynPythonSyn.MatchingBraceAttri.Foreground,
+    ResourcesDataModule.SynPythonSyn.UnbalancedBraceAttri.Foreground, [fsBold]);
+  Form.SynEdit2.BracketsHighlight.SetFontColorsAndStyle(
+    ResourcesDataModule.SynPythonSyn.MatchingBraceAttri.Foreground,
+    ResourcesDataModule.SynPythonSyn.UnbalancedBraceAttri.Foreground, [fsBold]);
 end;
 
 procedure TEditor.ClearDiagnostics;
@@ -1462,12 +1479,12 @@ begin
       ParentTabItem.OnDrawTabCloseButton := PyIDEMainForm.DrawCloseButton;
       ParentTabControl := TabControl;
       Result := FEditor;
+      Result.ApplyEditorOptions(EditorOptions);
       BorderStyle := bsNone;
       Parent := Sheet;
       Align := alClient;
       Visible := True;
       ScaleForPPI(Sheet.CurrentPPI);
-      ApplyEditorOptions;
       ApplyPyIDEOptions(PyIDEOptions, nil);
     end;
     if Assigned(Result) then
@@ -3050,19 +3067,6 @@ begin
         EditorView.UpdateView(FEditor);
     end;
   end;
-end;
-
-procedure TEditorForm.ApplyEditorOptions;
-begin
-  SynEdit.Assign(GEditorOptions);
-  SynEdit2.Assign(GEditorOptions);
-
-  SynEdit.BracketsHighlight.SetFontColorsAndStyle
-    (ResourcesDataModule.SynPythonSyn.MatchingBraceAttri.Foreground,
-    ResourcesDataModule.SynPythonSyn.UnbalancedBraceAttri.Foreground, [fsBold]);
-  SynEdit2.BracketsHighlight.SetFontColorsAndStyle
-    (ResourcesDataModule.SynPythonSyn.MatchingBraceAttri.Foreground,
-    ResourcesDataModule.SynPythonSyn.UnbalancedBraceAttri.Foreground, [fsBold]);
 end;
 
 procedure TEditorForm.ApplyPyIDEOptions(const Sender: TObject;

@@ -363,6 +363,8 @@ begin
         procedure
         begin
           ApplyNewDiagnostics(Invoked);
+          if not GI_PyIDEServices.IsClosing then
+            ApplyNewDiagnostics(Invoked);
         end);
     end);
 
@@ -538,6 +540,8 @@ begin
     Params,
     procedure(AJson: TJSONObject)
     begin
+      if GI_PyIDEServices.IsClosing then Exit;
+
       FDocSymbolsLock.Enter;
       try
         FreeAndNil(FDocSymbols.Symbols);
@@ -588,6 +592,13 @@ begin
         2:     IndicatorId := DiagnosticsWarningIndicatorId;
       end;
       // TODO Deal with mult-line diagnostics
+      if Diagnostic.range.start.line <> Diagnostic.range.&end.line then
+      begin
+        // Limitation of indicators: Only work on single line
+        Diagnostic.range.&end.line := Diagnostic.range.start.line;
+        Diagnostic.range.&end.character :=
+          Editor.Lines[Diagnostic.range.start.line].Length;
+      end;
       Editor.Indicators.Add(Diagnostic.range.start.line + 1,
         TSynIndicator.New(IndicatorId,
         Diagnostic.range.start.character + 1,

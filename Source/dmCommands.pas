@@ -902,7 +902,7 @@ begin
   GI_EditorFactory.ApplyToEditors(
     procedure(Editor: IEditor)
     begin
-      TEditorForm(Editor.Form).ApplyEditorOptions;
+      Editor.ApplyEditorOptions(EditorOptions);
     end);
 end;
 

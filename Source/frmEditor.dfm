@@ -41,7 +41,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 558
+        CustomWidth = 433
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -1545,5 +1545,69 @@ object EditorForm: TEditorForm
       Hint = 'Clear breakpoint'
       OnClick = spiBreakpointClearClick
     end
+  end
+  object vilEditorMarks: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 0
+        CollectionName = 'Mark0'
+        Name = 'Mark0'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = 'Mark1'
+        Name = 'Mark1'
+      end
+      item
+        CollectionIndex = 2
+        CollectionName = 'Mark2'
+        Name = 'Mark2'
+      end
+      item
+        CollectionIndex = 3
+        CollectionName = 'Mark3'
+        Name = 'Mark3'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = 'Mark4'
+        Name = 'Mark4'
+      end
+      item
+        CollectionIndex = 5
+        CollectionName = 'Mark5'
+        Name = 'Mark5'
+      end
+      item
+        CollectionIndex = 6
+        CollectionName = 'Mark6'
+        Name = 'Mark6'
+      end
+      item
+        CollectionIndex = 7
+        CollectionName = 'Mark7'
+        Name = 'Mark7'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = 'Mark8'
+        Name = 'Mark8'
+      end
+      item
+        CollectionIndex = 9
+        CollectionName = 'Mark9'
+        Name = 'Mark9'
+      end
+      item
+        CollectionIndex = 10
+        CollectionName = 'Bulb'
+        Name = 'Bulb'
+      end>
+    ImageCollection = ResourcesDataModule.icEditorMarks
+    PreserveItems = True
+    Width = 11
+    Height = 14
+    Left = 385
+    Top = 344
   end
 end
