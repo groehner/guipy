@@ -100,7 +100,6 @@ implementation
 uses
   System.SysUtils,
   Vcl.Clipbrd,
-  frmPyIDEMain,
   uCommonFunctions,
   JvGnugettext,
   StringResources;
@@ -216,7 +215,7 @@ end;
 
 procedure TMessagesWindow.ShowWindow;
 begin
-  PyIDEMainForm.ShowIDEDockForm(Self);
+  GI_PyIDEServices.ShowIDEDockForm(Self, False);
 end;
 
 procedure TMessagesWindow.StoreTopNodeIndex;

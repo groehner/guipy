@@ -315,7 +315,7 @@ type
     procedure ScrollbarAnnotationGetInfo(Sender: TObject;
       AnnType: TSynScrollbarAnnType; var Rows: TArray<Integer>;
       var Colors: TArray<TColor>);
-    procedure UpdateTabImage(Sender: TObject);
+    procedure UpdateTabImage;
     class procedure DoCodeCompletion(Editor: TSynEdit; Caret: TBufferCoord);
     class procedure SymbolsChanged(Sender: TObject);
     class procedure CodeHintLinkHandler(Sender: TObject; LinkName: string);
@@ -532,6 +532,7 @@ type
     procedure ClearDiagnostics;
     procedure NextDiagnostic;
     procedure PreviousDiagnostic;
+    procedure OnDiagnosticsUpdate(Invoked: Boolean);
 
     procedure DoSetFilename(const FileName: string); override;
     procedure OpenRemoteFile(const FileName, Servername: string); override;
@@ -666,7 +667,7 @@ begin
   FForm := TEditorForm(AForm);
   SetFileEncoding(PyIDEOptions.NewFileEncoding);
   FSynLsp := TLspSynEditPlugin.Create(FForm.SynEdit);
-  FSynLsp.OnDiagnosticsUpdate := FForm.UpdateTabImage;
+  FSynLsp.OnDiagnosticsUpdate := OnDiagnosticsUpdate;
   FSynLsp.DocSymbols.OnNotify := FForm.SymbolsChanged;
   CodeExplorerWindow.UpdateWindow(FSynLsp.DocSymbols, ceuEditorEnter);
 end;
@@ -687,7 +688,8 @@ end;
 
 procedure TEditor.ClearDiagnostics;
 begin
-  FSynLsp.ClearDiagnostics;
+  FSynLsp.ClearDiagnostics(True);
+  GI_PyIDEServices.Messages.ClearMessages;
 end;
 
 procedure TEditor.Close;
@@ -917,7 +919,7 @@ procedure TEditor.SetReadOnly(Value: Boolean);
 begin
   GetSynEdit.ReadOnly := Value;
   GetSynEdit2.ReadOnly := Value;
-  FForm.UpdateTabImage(Self);
+  FForm.UpdateTabImage;
 end;
 
 procedure TEditor.SplitEditorHorizontally;
@@ -960,6 +962,18 @@ begin
     SynEdit2.Visible := False;
     if SynEdit2.IsChained then
       SynEdit2.RemoveLinesPointer;
+  end;
+end;
+
+procedure TEditor.OnDiagnosticsUpdate(Invoked: Boolean);
+begin
+  FForm.UpdateTabImage;
+  if Invoked then
+  begin
+   GI_PyIDEServices.WriteStatusMsg(FSynLsp.Diagnostics.Summary);
+   FSynLsp.Diagnostics.ShowInMessages(GetFileId);
+   if FForm.HasSyntaxError then
+     FForm.GoToSyntaxError;
   end;
 end;
 
@@ -1063,9 +1077,8 @@ begin
     end);
 
   TArray.Sort<TBufferCoord>(BCArray, Comparer);
-
-  var Found := TArray.BinarySearch<TBufferCoord>(BCArray, FForm.SynEdit.CaretXY,
-                                                 Index, Comparer);
+  TArray.BinarySearch<TBufferCoord>(BCArray, FForm.SynEdit.CaretXY,
+                                    Index, Comparer);
   Dec(Index);
   if Index = 0 then
     Index := High(BCArray);
@@ -1075,7 +1088,7 @@ end;
 procedure TEditor.PullDiagnostics;
 begin
   if HasPythonFile then
-    FSynLsp.PullDiagnostics;
+    FSynLsp.PullDiagnostics(True);
 end;
 
 function TEditor.SaveToRemoteFile(const FileName, Servername: string): Boolean;
@@ -1960,7 +1973,6 @@ begin
     if FEditor.HasPythonFile then
     begin
       FEditor.FSynLsp.RefreshSymbols;
-      FEditor.FSynLsp.ApplyNewDiagnostics;
       if PyIDEOptions.CheckSyntaxAsYouType then
         FEditor.FSynLsp.PullDiagnostics;
     end;
@@ -2614,16 +2626,13 @@ end;
 procedure TEditorForm.GoToSyntaxError;
 begin
   if HasSyntaxError then
-  begin
-    var List := FEditor.FSynLsp.Diagnostics;
-    if Length(List) > 0 then
-      SynEdit.CaretXY := BufferCoordFromLspPosition(List[0].range.start);
-  end;
+    SynEdit.CaretXY :=
+      BufferCoordFromLspPosition(FEditor.FSynLsp.Diagnostics[0].range.start);
 end;
 
 function TEditorForm.HasSyntaxError: Boolean;
 begin
-  Result := FEditor.HasPythonFile and (Length(FEditor.FSynLsp.Diagnostics) > 0);
+  Result := FEditor.HasPythonFile and FEditor.FSynLsp.Diagnostics.HasSyntaxError;
 end;
 
 procedure TEditorForm.CreateStructogram;
@@ -5709,7 +5718,7 @@ begin
   end;
 end;
 
-procedure TEditorForm.UpdateTabImage(Sender: TObject);
+procedure TEditorForm.UpdateTabImage;
 begin
   if SynEdit.ReadOnly then
     ParentTabItem.ImageIndex := PyIDEMainForm.vilTabDecorators.GetIndexByName('Lock')

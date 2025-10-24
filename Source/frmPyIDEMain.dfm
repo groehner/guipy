@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 385
+      CustomWidth = 361
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -113,7 +113,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Visible = False
     end
     object ActivityIndicator: TActivityIndicator
-      Left = 1039
+      Left = 1027
       Top = 6
       FrameDelay = 150
       IndicatorSize = aisSmall
@@ -3548,7 +3548,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Caption = 'Reinitiali&ze Python engine'
       HelpContext = 340
       HelpType = htContext
-      ShortCut = 16497
+      ShortCut = 16501
       OnExecute = actPythonReinitializeExecute
     end
     object actPythonInternal: TAction

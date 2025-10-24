@@ -296,6 +296,7 @@ type
     function GetLocalAppStorage: TJvCustomAppStorage;
     function GetLogger: TJclSimpleLog;
     procedure MRUAddFile(aFile: IFile);
+    procedure ShowIDEDockForm(Form: TForm; Activate: Boolean = True);
     property ActiveFile: IFile read GetActiveFile;
     property ActiveEditor: IEditor read GetActiveEditor;
     property IsClosing: Boolean read GetIsClosing;

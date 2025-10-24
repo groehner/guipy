@@ -839,8 +839,6 @@ var
   Code: Variant;
   Path, OldPath: string;
   PythonPathAdder: IInterface;
-  ReturnFocusToEditor: Boolean;
-  [Weak] Editor: IEditor;
 begin
   CheckConnected;
   CanDoPostMortem := False;
@@ -883,9 +881,7 @@ begin
   // Set the command line parameters
   SetCommandLine(ARunConfig);
 
-  Editor := GI_ActiveEditor;
-  ReturnFocusToEditor := Assigned(Editor);
-  GI_PyInterpreter.ShowWindow;
+  GI_PyInterpreter.ShowWindow(not Assigned(GI_ActiveEditor));
 
   ThreadPythonExec(
     procedure
@@ -917,7 +913,6 @@ begin
             var ExcInfo := RPI.traceback_exception;
             if not VarIsNone(ExcInfo) then begin
               HandleRemoteException(ExcInfo);
-              ReturnFocusToEditor := False;
               CanDoPostMortem := True;
             end;
           end;
@@ -947,8 +942,6 @@ begin
           RPI.rem_chdir(OldPath);
         end;
         GI_PyControl.DebuggerState := dsInactive;
-        if ReturnFocusToEditor and Assigned(Editor) then
-          Editor.Activate;
         PythonPathAdder := nil;
         if not Connected then begin
           GI_PyInterpreter.ClearPendingMessages;
@@ -1578,8 +1571,6 @@ var
   AsyncResult: Variant;
   Path, OldPath: string;
   PythonPathAdder: IInterface;
-  ReturnFocusToEditor: Boolean;
-  [Weak] Editor: IEditor;
   TerminateProc: TThreadProcedure;
 begin
   FRemotePython.CheckConnected;
@@ -1619,17 +1610,14 @@ begin
   GI_PyControl.DebuggerState := dsDebugging;
   TPyBaseDebugger.ThreadChangeNotify(FMainThread, tctAdded );
 
-
   GI_PyIDEServices.Messages.ClearMessages;
-  Editor := GI_ActiveEditor;
-  ReturnFocusToEditor := Assigned(Editor);
   // Set the layout to the Debug layout is it exists
   if GI_PyIDEServices.Layouts.LayoutExists('Debug') then begin
     GI_PyIDEServices.Layouts.SaveLayout('Current');
     GI_PyIDEServices.Layouts.LoadLayout('Debug');
     Application.ProcessMessages;
   end else
-    GI_PyInterpreter.ShowWindow;
+    GI_PyInterpreter.ShowWindow(not Assigned(GI_ActiveEditor));
 
   GI_PyInterpreter.SetPyInterpreterPrompt(pipDebug);
   // A prompt will be added when the debugger breaks
@@ -1672,7 +1660,6 @@ begin
           var ExcInfo: Variant := FRemotePython.RPI.traceback_exception;
           if not VarIsNone(ExcInfo) then begin
             FRemotePython.HandleRemoteException(ExcInfo);
-            ReturnFocusToEditor := False;
             FRemotePython.CanDoPostMortem := True;
           end;
         end;
@@ -1711,8 +1698,6 @@ begin
         GI_PyIDEServices.Layouts.LoadLayout('Current');
 
       GI_PyControl.DebuggerState := dsInactive;
-      if ReturnFocusToEditor and Assigned(Editor) then
-        Editor.Activate;
       PythonPathAdder := nil;
       if not FRemotePython.Connected then begin
         GI_PyInterpreter.ClearPendingMessages;
