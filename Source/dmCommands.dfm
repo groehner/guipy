@@ -1048,6 +1048,15 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Organize import statements'
       OnExecute = actOrganizeImportsExecute
     end
+    object actRefactorRename: TAction
+      Category = 'Refactoring'
+      Caption = 'Rename'
+      Hint = 'Rename the selected identifier '
+    end
+    object actCodeAction: TAction
+      Category = 'Refactoring'
+      OnExecute = actCodeActionExecute
+    end
   end
   object SynWebCompletion: TSynCompletionProposal
     Options = [scoLimitToMatchedText, scoUseInsertList, scoUsePrettyText, scoUseBuiltInTimer, scoEndCharCompletion, scoCompleteWithTab, scoCompleteWithEnter]

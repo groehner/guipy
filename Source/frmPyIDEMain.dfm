@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 361
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -129,8 +129,6 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
-    ExplicitWidth = 606
-    ExplicitHeight = 309
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -687,7 +685,6 @@ object PyIDEMainForm: TPyIDEMainForm
             Tag = -2
           end
           object mnSourceCode: TSpTBXSubmenuItem
-            Tag = -1
             Caption = '&Source Code'
             object mnTabify: TSpTBXItem
               Action = CommandsDataModule.actEditTabify
@@ -700,9 +697,6 @@ object PyIDEMainForm: TPyIDEMainForm
             object mnFixAll: TSpTBXItem
               Action = CommandsDataModule.actFixAll
               ShortCut = 49265
-            end
-            object mnOrganizeImports: TSpTBXItem
-              Action = CommandsDataModule.actOrganizeImports
             end
             object SpTBXSeparatorItem32: TSpTBXSeparatorItem
             end
@@ -717,6 +711,19 @@ object PyIDEMainForm: TPyIDEMainForm
             end
             object mnNextIssue: TSpTBXItem
               Action = CommandsDataModule.actNextIssue
+            end
+            object mnRefactor: TSpTBXSubmenuItem
+              Caption = 'Refactor'
+              OnClosePopup = mnRefactorClosePopup
+              OnInitPopup = mnRefactorInitPopup
+              object mnOrganizeImports: TSpTBXItem
+                Action = CommandsDataModule.actOrganizeImports
+              end
+              object SpTBXSeparatorItem33: TSpTBXSeparatorItem
+              end
+              object mnRefactorRename: TSpTBXItem
+                Action = CommandsDataModule.actRefactorRename
+              end
             end
           end
           object SpTBXSeparatorItem29: TSpTBXSeparatorItem

@@ -78,8 +78,7 @@ uses
 const
   CrLf = #13#10;
   Homepage = 'https://www.guipy.Deu';
-  VisTabsLen = 5;
-  // Program, Tkinter, TTK, QtBase, QtControls
+  VisTabsLen = 5;  // Program, Tkinter, TTK, QtBase, QtControls
   VisMenusLen = 9; // all menus
   VisToolbarsLen = 6; // Main, Debug, Editor, UML, Structogram, Sequencediagram
   MaxVisLen = VisTabsLen + VisMenusLen + VisToolbarsLen;
@@ -1272,7 +1271,7 @@ type
     procedure CBChatProviderSelect(Sender: TObject);
   private const
     DefaultVisFileMenu = '11100111011101011';  // len = 17
-    DefaultVisEditMenu = '111110011110001111'; // len = 18
+    DefaultVisEditMenu = '111110011110011111'; // len = 18
                       // '111110011110001111';
 
     DefaultVisSearchMenu = '100101111111011'; // len = 15
@@ -5869,11 +5868,9 @@ begin
   for var I := 0 to High(FVisTabsArr) do
   begin
     AllTabsClosed := AllTabsClosed and not FVisTabsArr[I];
-    var
-    K := IndexItemsToPages(I);
+    var K := IndexItemsToPages(I);
     PyIDEMainForm.TabControlWidgets.Pages[K].TabVisible := FVisTabsArr[I];
-    var
-    AToolbar := TToolBar(PyIDEMainForm.TabControlWidgets.Pages[K].Controls[0]);
+    var AToolbar := TToolBar(PyIDEMainForm.TabControlWidgets.Pages[K].Controls[0]);
     for var J := 0 to AToolbar.ButtonCount - 1 do
       AToolbar.Buttons[J].Visible := FVis1[I, J];
   end;
@@ -6067,7 +6064,7 @@ begin
 end;
 
 procedure TFConfiguration.LVVisibilityMenusClick(Sender: TObject);
-var Str: string; Tab: Integer; Menu: TTBCustomItem; AItem: TListItem;
+var Str: string; K, Tab: Integer; Menu: TTBCustomItem; AItem: TListItem;
 begin
   FTabsMenusToolbars := 2;
   Tab := LVVisibilityMenus.ItemIndex;
@@ -6076,15 +6073,13 @@ begin
   LVVisibilityElements.Clear;
   LVVisibilityElements.SmallImages := PyIDEMainForm.vilImages;
   Menu := PyIDEMainForm.MainMenu.Items[Tab];
-  var
   K := 0;
   LVVisibilityElements.OnItemChecked := nil;
   for var I := 0 to Menu.Count - 1 do
   begin
-    Str := Menu[I].Caption;
+    Str := ReplaceStr(Menu[I].Caption, '&', '');
     if Menu[I].Tag = 0 then
     begin
-      Str := ReplaceStr(Str, '&', '');
       AItem := LVVisibilityElements.Items.Add;
       AItem.Caption := ' ' + _(Str);
       AItem.Checked := FVis2[VisTabsLen + Tab, K];

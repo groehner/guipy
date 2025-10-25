@@ -209,6 +209,8 @@ type
     actPreviousIssue: TAction;
     actFixAll: TAction;
     actOrganizeImports: TAction;
+    actRefactorRename: TAction;
+    actCodeAction: TAction;
     function ProgramVersionHTTPLocationLoadFileFromRemote
       (AProgramVersionLocation: TJvProgramVersionHTTPLocation;
       const ARemotePath, ARemoteFileName, ALocalPath, ALocalFileName
@@ -244,6 +246,7 @@ type
     procedure actAssistantOptimizeExecute(Sender: TObject);
     procedure actAssistantSuggestExecute(Sender: TObject);
     procedure actClearIssuesExecute(Sender: TObject);
+    procedure actCodeActionExecute(Sender: TObject);
     procedure actCodeCheckExecute(Sender: TObject);
     procedure actPythonManualsExecute(Sender: TObject);
     procedure UpdateMainActions;
@@ -1917,6 +1920,15 @@ begin
     (GI_ActiveEditor as TEditor).ClearDiagnostics;
 end;
 
+procedure TCommandsDataModule.actCodeActionExecute(Sender: TObject);
+begin
+  Tag := (Sender as TSpTBXItem).Tag;
+  if Assigned(TPyLspClient.CodeActions) and
+    InRange(Tag, 0, High(TPyLspClient.CodeActions.codeActions))
+  then
+    ApplyWorkspaceEdit(TPyLspClient.CodeActions.codeActions[Tag].edit);
+end;
+
 procedure TCommandsDataModule.actCodeCheckExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
@@ -1925,7 +1937,7 @@ end;
 
 procedure TCommandsDataModule.actFormatCodeExecute(Sender: TObject);
 begin
-   var Editor := GI_ActiveEditor;
+  var Editor := GI_ActiveEditor;
   if Assigned(Editor) and Editor.HasPythonFile then
     TPyLspClient.FormatCode(Editor.FileId, Editor.ActiveSynEdit);
 end;
