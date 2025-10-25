@@ -75,11 +75,15 @@ uses
   cFileTemplates,
   uLLMSupport;
 
-const CrLf = #13#10; Homepage = 'https://www.guipy.Deu'; VisTabsLen = 5;
+const
+  CrLf = #13#10;
+  Homepage = 'https://www.guipy.Deu';
+  VisTabsLen = 5;
   // Program, Tkinter, TTK, QtBase, QtControls
   VisMenusLen = 9; // all menus
   VisToolbarsLen = 6; // Main, Debug, Editor, UML, Structogram, Sequencediagram
-  MaxVisLen = VisTabsLen + VisMenusLen + VisToolbarsLen; MaxTabItem = 28;
+  MaxVisLen = VisTabsLen + VisMenusLen + VisToolbarsLen;
+  MaxTabItem = 28;
 
 type
   TBoolArray = array of Boolean;
@@ -1267,8 +1271,10 @@ type
     procedure CBChatProviderDropDown(Sender: TObject);
     procedure CBChatProviderSelect(Sender: TObject);
   private const
-    DefaultVisFileMenu = '11100111011101011'; // len = 17
-    DefaultVisEditMenu = '111110011110001'; // len = 15
+    DefaultVisFileMenu = '11100111011101011';  // len = 17
+    DefaultVisEditMenu = '111110011110001111'; // len = 18
+                      // '111110011110001111';
+
     DefaultVisSearchMenu = '100101111111011'; // len = 15
     DefaultVisViewMenu = '110011000111111111111111'; // len = 22 + 2
     DefaultVisProjectMenu = '111111'; // len = 6
@@ -1328,9 +1334,9 @@ type
     FIndent3: string;
     FKeyStrokesReset: Boolean;
     FSubversionOK: Boolean;
-    FVisMenus: TBoolArray;
-    FVisTabs: TBoolArray;
-    FVisToolbars: TBoolArray;
+    FVisMenusArr: TBoolArray;
+    FVisTabsArr: TBoolArray;
+    FVisToolbarsArr: TBoolArray;
 
     function DirectoryFilesExists(Str: string): Boolean;
     procedure CheckFolder(Edit: TEdit; EmptyAllowed: Boolean);
@@ -1457,9 +1463,9 @@ type
     property Indent3: string read FIndent3;
     property KeyStrokesReset: Boolean read FKeyStrokesReset;
     property SubversionOK: Boolean read FSubversionOK;
-    property VisMenus: TBoolArray read FVisMenus;
-    property VisTabs: TBoolArray read FVisTabs;
-    property VisToolbars: TBoolArray read FVisToolbars;
+    property VisMenus: TBoolArray read FVisMenusArr;
+    property VisTabs: TBoolArray read FVisTabsArr;
+    property VisToolbars: TBoolArray read FVisToolbarsArr;
   end;
 
 var
@@ -1617,9 +1623,9 @@ begin
   FEditorFolder := ExtractFilePath(ParamStr(0));
   StyleSelectorFormCreate;
   FKeyStrokesReset := False;
-  SetLength(FVisTabs, VisTabsLen);
-  SetLength(FVisMenus, VisMenusLen);
-  SetLength(FVisToolbars, VisToolbarsLen);
+  SetLength(FVisTabsArr, VisTabsLen);
+  SetLength(FVisMenusArr, VisMenusLen);
+  SetLength(FVisToolbarsArr, VisToolbarsLen);
   FTabsMenusToolbars := 1;
   FIndentWidth := GEditorOptions.TabWidth;
   FIndent1 := StringOfChar(' ', 1 * FIndentWidth);
@@ -5651,15 +5657,15 @@ var Num: Integer;
 begin
   if Length(GuiPyOptions.FVisTabs) <> VisTabsLen then
     GuiPyOptions.FVisTabs := StringOfChar('1', VisTabsLen);
-  StringVisibilityToArr1(GuiPyOptions.FVisTabs, FVisTabs);
+  StringVisibilityToArr1(GuiPyOptions.FVisTabs, FVisTabsArr);
 
   if Length(GuiPyOptions.FVisMenus) <> VisMenusLen then
     GuiPyOptions.FVisMenus := StringOfChar('1', VisMenusLen);
-  StringVisibilityToArr1(GuiPyOptions.FVisMenus, FVisMenus);
+  StringVisibilityToArr1(GuiPyOptions.FVisMenus, FVisMenusArr);
 
   if Length(GuiPyOptions.FVisToolbars) <> VisToolbarsLen then
     GuiPyOptions.FVisToolbars := StringOfChar('1', VisToolbarsLen);
-  StringVisibilityToArr1(GuiPyOptions.FVisToolbars, FVisToolbars);
+  StringVisibilityToArr1(GuiPyOptions.FVisToolbars, FVisToolbarsArr);
 
   Num := PyIDEMainForm.ToolbarProgram.ButtonCount;
   if Length(GuiPyOptions.VisProgram) <> Num then
@@ -5796,9 +5802,9 @@ procedure TFConfiguration.SaveVisibility;
   end;
 
 begin
-  GuiPyOptions.FVisTabs := ArrVisibilityToString1(FVisTabs);
-  GuiPyOptions.FVisMenus := ArrVisibilityToString1(FVisMenus);
-  GuiPyOptions.FVisToolbars := ArrVisibilityToString1(FVisToolbars);
+  GuiPyOptions.FVisTabs := ArrVisibilityToString1(FVisTabsArr);
+  GuiPyOptions.FVisMenus := ArrVisibilityToString1(FVisMenusArr);
+  GuiPyOptions.FVisToolbars := ArrVisibilityToString1(FVisToolbarsArr);
 
   GuiPyOptions.VisProgram := ArrVisibilityToString2(0,
     PyIDEMainForm.ToolbarProgram.ButtonCount);
@@ -5860,12 +5866,12 @@ var Menu: TTBCustomItem;
 begin
   var
   AllTabsClosed := True;
-  for var I := 0 to High(FVisTabs) do
+  for var I := 0 to High(FVisTabsArr) do
   begin
-    AllTabsClosed := AllTabsClosed and not FVisTabs[I];
+    AllTabsClosed := AllTabsClosed and not FVisTabsArr[I];
     var
     K := IndexItemsToPages(I);
-    PyIDEMainForm.TabControlWidgets.Pages[K].TabVisible := FVisTabs[I];
+    PyIDEMainForm.TabControlWidgets.Pages[K].TabVisible := FVisTabsArr[I];
     var
     AToolbar := TToolBar(PyIDEMainForm.TabControlWidgets.Pages[K].Controls[0]);
     for var J := 0 to AToolbar.ButtonCount - 1 do
@@ -5873,15 +5879,15 @@ begin
   end;
   PyIDEMainForm.TabControlWidgets.Visible := not AllTabsClosed;
 
-  PyIDEMainForm.FileMenu.Visible := FVisMenus[0];
-  PyIDEMainForm.EditMenu.Visible := FVisMenus[1];
-  PyIDEMainForm.SearchMenu.Visible := FVisMenus[2];
-  PyIDEMainForm.ViewMenu.Visible := FVisMenus[3];
-  PyIDEMainForm.ProjectMenu.Visible := FVisMenus[4];
-  PyIDEMainForm.RunMenu.Visible := FVisMenus[5];
-  PyIDEMainForm.UMLMenu.Visible := FVisMenus[6];
-  PyIDEMainForm.ToolsMenu.Visible := FVisMenus[7];
-  PyIDEMainForm.HelpMenu.Visible := FVisMenus[8];
+  PyIDEMainForm.FileMenu.Visible := FVisMenusArr[0];
+  PyIDEMainForm.EditMenu.Visible := FVisMenusArr[1];
+  PyIDEMainForm.SearchMenu.Visible := FVisMenusArr[2];
+  PyIDEMainForm.ViewMenu.Visible := FVisMenusArr[3];
+  PyIDEMainForm.ProjectMenu.Visible := FVisMenusArr[4];
+  PyIDEMainForm.RunMenu.Visible := FVisMenusArr[5];
+  PyIDEMainForm.UMLMenu.Visible := FVisMenusArr[6];
+  PyIDEMainForm.ToolsMenu.Visible := FVisMenusArr[7];
+  PyIDEMainForm.HelpMenu.Visible := FVisMenusArr[8];
 
   for var I := 0 to PyIDEMainForm.MainMenu.Items.Count - 1 do
   begin
@@ -5904,9 +5910,9 @@ begin
   PyIDEMainForm.mnToolsSVN.Visible := PyIDEMainForm.mnToolsSVN.Visible and
     FSubversionOK;
 
-  PyIDEMainForm.MainToolBar.Visible := FVisToolbars[0];
+  PyIDEMainForm.MainToolBar.Visible := FVisToolbarsArr[0];
   SetSpTBXToolbarVisibility(PyIDEMainForm.MainToolBar, 0);
-  PyIDEMainForm.DebugToolbar.Visible := FVisToolbars[1];
+  PyIDEMainForm.DebugToolbar.Visible := FVisToolbarsArr[1];
   SetSpTBXToolbarVisibility(PyIDEMainForm.DebugToolbar, 1);
 
   PyIDEMainForm.SetDockTopPanel;
@@ -5921,7 +5927,7 @@ end;
 procedure TFConfiguration.SetSpTBXToolbarVisibility(Toolbar: TSpTBXToolbar;
 Num: Integer);
 begin
-  Toolbar.Visible := FVisToolbars[Num];
+  Toolbar.Visible := FVisToolbarsArr[Num];
   for var I := 0 to Toolbar.Items.Count - 1 do
     Toolbar.Items[I].Visible := FVis1[VisTabsLen + VisMenusLen + Num, I];
 end;
@@ -5938,7 +5944,7 @@ begin
   end;
   LVVisibilityTabs.Items.EndUpdate;
   LVVisibilityMenus.Items.BeginUpdate;
-  for var I := 0 to High(FVisMenus) do
+  for var I := 0 to High(FVisMenusArr) do
   begin
     AItem := LVVisibilityMenus.Items.Add;
     AItem.Caption :=
@@ -5946,7 +5952,7 @@ begin
   end;
   LVVisibilityMenus.Items.EndUpdate;
   LVVisibilityToolbars.Items.BeginUpdate;
-  for var I := 0 to High(FVisToolbars) do
+  for var I := 0 to High(FVisToolbarsArr) do
     LVVisibilityToolbars.Items.Add;
   LVVisibilityToolbars.Items[0].Caption :=
     ReplaceStr(_(PyIDEMainForm.MainMenu.Items[0].Caption), '&', '');
@@ -5963,13 +5969,13 @@ end;
 procedure TFConfiguration.VisibilityModelToView;
 begin
   for var I := 0 to LVVisibilityTabs.Items.Count - 1 do
-    LVVisibilityTabs.Items[I].Checked := FVisTabs[I];
+    LVVisibilityTabs.Items[I].Checked := FVisTabsArr[I];
 
   for var I := 0 to LVVisibilityMenus.Items.Count - 1 do
-    LVVisibilityMenus.Items[I].Checked := FVisMenus[I];
+    LVVisibilityMenus.Items[I].Checked := FVisMenusArr[I];
 
   for var I := 0 to LVVisibilityToolbars.Items.Count - 1 do
-    LVVisibilityToolbars.Items[I].Checked := FVisToolbars[I];
+    LVVisibilityToolbars.Items[I].Checked := FVisToolbarsArr[I];
 
   // save visibility settings in FVis2 for changing
   for var I := 0 to MaxVisLen - 1 do
@@ -5985,16 +5991,16 @@ end;
 
 procedure TFConfiguration.VisibilityViewToModel;
 begin
-  for var I := 0 to High(FVisTabs) do
-    FVisTabs[I] := LVVisibilityTabs.Items[I].Checked;
+  for var I := 0 to High(FVisTabsArr) do
+    FVisTabsArr[I] := LVVisibilityTabs.Items[I].Checked;
 
   if Assigned(LVVisibilityMenus.Items[0]) then // due to unknown problem
-    for var I := 0 to High(FVisMenus) do
-      FVisMenus[I] := LVVisibilityMenus.Items[I].Checked;
+    for var I := 0 to High(FVisMenusArr) do
+      FVisMenusArr[I] := LVVisibilityMenus.Items[I].Checked;
 
   if Assigned(LVVisibilityToolbars.Items[0]) then
-    for var I := 0 to High(FVisToolbars) do
-      FVisToolbars[I] := LVVisibilityToolbars.Items[I].Checked;
+    for var I := 0 to High(FVisToolbarsArr) do
+      FVisToolbarsArr[I] := LVVisibilityToolbars.Items[I].Checked;
 
   // tab Visibility - view to model
   for var I := 0 to MaxVisLen - 1 do
@@ -6218,15 +6224,15 @@ var Num: Integer;
   end;
 
 begin
-  DefaultVis(FVisTabs);
-  DefaultVis(FVisMenus);
-  DefaultVis(FVisToolbars);
+  DefaultVis(FVisTabsArr);
+  DefaultVis(FVisMenusArr);
+  DefaultVis(FVisToolbarsArr);
 
-  for var I := 0 to High(FVisTabs) do
+  for var I := 0 to High(FVisTabsArr) do
     LVVisibilityTabs.Items[I].Checked := True;
-  for var I := 0 to High(FVisMenus) do
+  for var I := 0 to High(FVisMenusArr) do
     LVVisibilityMenus.Items[I].Checked := True;
-  for var I := 0 to High(FVisToolbars) do
+  for var I := 0 to High(FVisToolbarsArr) do
     LVVisibilityToolbars.Items[I].Checked := True;
 
   // details of tabs, menus and toolbars
@@ -6261,7 +6267,7 @@ end;
 
 procedure TFConfiguration.SetToolbarVisibility(Toolbar: TToolBar; Num: Integer);
 begin
-  Toolbar.Visible := FVisToolbars[Num];
+  Toolbar.Visible := FVisToolbarsArr[Num];
   for var I := 0 to Toolbar.ButtonCount - 1 do
     Toolbar.Buttons[I].Visible := FVis1[VisTabsLen + VisMenusLen + Num, I];
 end;
