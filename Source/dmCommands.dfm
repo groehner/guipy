@@ -1052,6 +1052,8 @@ object CommandsDataModule: TCommandsDataModule
       Category = 'Refactoring'
       Caption = 'Rename'
       Hint = 'Rename the selected identifier '
+      ImageName = 'Rename'
+      OnExecute = actRefactorRenameExecute
     end
     object actCodeAction: TAction
       Category = 'Refactoring'

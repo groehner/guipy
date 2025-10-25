@@ -323,6 +323,7 @@ type
     procedure actPythonPathExecute(Sender: TObject);
     procedure actFixAllExecute(Sender: TObject);
     procedure actOrganizeImportsExecute(Sender: TObject);
+    procedure actRefactorRenameExecute(Sender: TObject);
     procedure mnSpellingPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure SynSpellCheckChange(Sender: TObject);
   private
@@ -403,6 +404,7 @@ uses
   SynEditTextBuffer,
   SynEditKeyCmds,
   cPyBaseDebugger,
+  XLSPTypes,
   dmResources,
   StringResources,
   dlgSynPageSetup,
@@ -1497,20 +1499,14 @@ begin
     GI_PyInterpreter.Editor.Focused;
   actEditShowSpecialChars.Enabled := Assigned(GI_ActiveEditor) or
     GI_PyInterpreter.Editor.Focused;
-  if Assigned(GI_ActiveEditor) then
-  begin
-    actEditLineNumbers.Checked := GI_ActiveEditor.ActiveSynEdit.Gutter.
-      ShowLineNumbers;
-    actEditWordWrap.Checked := GI_ActiveEditor.ActiveSynEdit.WordWrap;
-    actEditShowSpecialChars.Checked :=
-      not(GI_ActiveEditor.ActiveSynEdit.VisibleSpecialChars = []);
-  end
-  else
-  begin
-    actEditLineNumbers.Checked := False;
-    actEditWordWrap.Checked := False;
-    actEditShowSpecialChars.Checked := False;
-  end;
+
+  actEditLineNumbers.Checked := Assigned(GI_ActiveEditor) and
+    GI_ActiveEditor.ActiveSynEdit.Gutter.ShowLineNumbers;
+  actEditWordWrap.Checked := Assigned(GI_ActiveEditor) and
+    GI_ActiveEditor.ActiveSynEdit.WordWrap or
+    GI_PyInterpreter.Editor.Focused and GI_PyInterpreter.Editor.WordWrap;
+  actEditShowSpecialChars.Checked := Assigned(GI_ActiveEditor) and
+    not (GI_ActiveEditor.ActiveSynEdit.VisibleSpecialChars = []);
 
   // File Actions
   var aFile := GI_PyIDEServices.GetActiveFile;
@@ -1555,43 +1551,20 @@ begin
     GI_PyControl.PythonLoaded and not GI_PyControl.Running;
   actFindInFiles.Enabled := not FindResultsWindow.DoingSearchOrReplace;
 
-  if Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile then
-  begin
-    actFindFunction.Enabled := True;
-    actUnitTestWizard.Enabled := True;
-  end
-  else
-  begin
-    actFindFunction.Enabled := False;
-    actUnitTestWizard.Enabled := False;
-  end;
+  actFindFunction.Enabled := HasPython;
+  actUnitTestWizard.Enabled := HasPython;
 
   // Parameter and Code Template Actions
-  if Screen.ActiveControl is TCustomSynEdit then
-  begin
-    actParameterCompletion.Enabled := True;
-    actModifierCompletion.Enabled := True;
-    actReplaceParameters.Enabled := True;
-    actInsertTemplate.Enabled := Assigned(GI_ActiveEditor);
-  end
-  else
-  begin
-    actParameterCompletion.Enabled := False;
-    actModifierCompletion.Enabled := False;
-    actReplaceParameters.Enabled := False;
-    actInsertTemplate.Enabled := False;
-  end;
+  var ActiveSynEdit := Screen.ActiveControl is TCustomSynEdit;
+  actParameterCompletion.Enabled := ActiveSynEdit;
+  actModifierCompletion.Enabled := ActiveSynEdit;
+  actReplaceParameters.Enabled := ActiveSynEdit;
+  actInsertTemplate.Enabled := ActiveSynEdit and Assigned(GI_ActiveEditor);
   // Assistant actions
-  var
-  HasPythonFile := Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile;
-  actAssistantSuggest.Enabled := HasPythonFile and not SelAvail and
-    not LLMAssistant.IsBusy;
-  actAssistantOptimize.Enabled := HasPythonFile and SelAvail and
-    not LLMAssistant.IsBusy;
-  actAssistantFixBugs.Enabled := HasPythonFile and SelAvail and
-    not LLMAssistant.IsBusy;
-  actAssistantExplain.Enabled := HasPythonFile and SelAvail and
-    not LLMAssistant.IsBusy;
+  actAssistantSuggest.Enabled := HasPython and not SelAvail and not LLMAssistant.IsBusy;
+  actAssistantOptimize.Enabled := HasPython and SelAvail and not LLMAssistant.IsBusy;
+  actAssistantFixBugs.Enabled := HasPython and SelAvail and not LLMAssistant.IsBusy;
+  actAssistantExplain.Enabled := HasPython and SelAvail and not LLMAssistant.IsBusy;
   actAssistantCancel.Enabled := LLMAssistant.IsBusy;
   // Other actions
   actPythonPath.Enabled := GI_PyControl.PythonLoaded;
@@ -1973,6 +1946,47 @@ begin
   if Assigned(Editor) and Editor.HasPythonFile then
     TPyLspClient.DiagnosticsLspClient.ExecuteCommand('ruff.applyOrganizeImports',
       Editor.FileId, Editor.Version);
+end;
+
+procedure TCommandsDataModule.actRefactorRenameExecute(Sender: TObject);
+begin
+var
+  BB, BE: TBufferCoord;
+begin
+  var Editor := GI_ActiveEditor;
+  if not Assigned(Editor) or not Editor.HasPythonFile then Exit;
+  var SynEdit := Editor.ActiveSynEdit;
+
+  var Client := TPyLspClient.MainLspClient;
+  if Client.LspClient.IsRequestSupported(lspPrepareRename) then
+  begin
+    var PrepRenameRes := Client.PrepareRename(Editor.FileId, SynEdit.CaretXY);
+    if not Assigned(PrepRenameRes) then
+    begin
+      GI_PyIDEServices.WriteStatusMsg(_('Cannot perform rename'));
+      Exit;
+    end;
+    BufferCoordinatesFromLspRange(PrepRenameRes.range, BB, BE);
+    if BB <> BE then
+      SynEdit.SetCaretAndSelection(BE, BB, BE)
+    else
+      SynEdit.ExecuteCommand(ecSelWord);
+  end;
+
+  var NewName := SynEdit.WordAtCursor;
+  if not InputQuery(_('Rename'), _('New name')+':', NewName) then
+    Exit;
+
+  var Edit := Client.Rename(Editor.FileId, NewName, SynEdit.CaretXY);
+  if not Assigned(Edit) then
+    GI_PyIDEServices.WriteStatusMsg(_('Cannot perform rename'))
+  else
+    try
+      ApplyWorkspaceEdit(Edit);
+    finally
+      Edit.Free;
+    end;
+  end;
 end;
 
 procedure TCommandsDataModule.GetEditorUserCommand(AUserCommand: Integer;
