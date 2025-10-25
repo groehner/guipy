@@ -1633,7 +1633,7 @@ object EditorForm: TEditorForm
     OnPopup = pmnuRefactorPopup
     OnClosePopup = pmnuRefactorClosePopup
     Left = 216
-    Top = 120
+    Top = 112
     object mnOrganizeImports: TSpTBXItem
       Action = CommandsDataModule.actOrganizeImports
     end
@@ -1641,6 +1641,7 @@ object EditorForm: TEditorForm
     end
     object mnRename: TSpTBXItem
       Action = CommandsDataModule.actRefactorRename
+      ShortCut = 113
     end
   end
 end

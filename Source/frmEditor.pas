@@ -1995,6 +1995,10 @@ end;
 
 procedure TEditorForm.SynEditExit(Sender: TObject);
 begin
+  // To make sure Jedi has the latest version
+  if not (csDestroying in ComponentState) then
+    FEditor.FSynLsp.RefreshSymbols;
+
   DoAssignInterfacePointer(False);
 
   if FHotIdentInfo.HaveHotIdent then

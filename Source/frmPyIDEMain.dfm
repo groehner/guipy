@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 361
+      CustomWidth = 0
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -129,6 +129,8 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
+    ExplicitWidth = 606
+    ExplicitHeight = 309
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0

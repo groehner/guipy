@@ -115,7 +115,7 @@ inherited PickListDialog: TPickListDialog
       BevelInner = bvNone
       BevelOuter = bvNone
       BevelKind = bkSoft
-      ItemHeight = 17
+      ItemHeight = 15
       PopupMenu = PickListPopUp
       TabOrder = 0
     end
