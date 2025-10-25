@@ -1479,10 +1479,10 @@ type
     procedure mnRefactorClosePopup(Sender: TObject);
     procedure mnRefactorInitPopup(Sender: TObject; PopupView: TTBView);
   private
+    FLanguageList: TStringList;
     FDSAAppStorage: TDSAAppStorage;
     FShellExtensionFiles: TStringList;
     FDragRectangle: TButton;
-    FLanguageList: TStringList;
     FTabControlsShowing: Integer;
     procedure DebugActiveScript(ActiveEditor: IEditor;
       InitStepIn: Boolean = False; RunToCursorLine: Integer = -1);
@@ -7011,9 +7011,7 @@ end;
 
 procedure TPyIDEMainForm.mnRefactorClosePopup(Sender: TObject);
 begin
-  // Clear CadeAction menu items
-  while mnRefactor[mnRefactor.Count - 1].Action = CommandsDataModule.actCodeAction do
-    mnRefactor[mnRefactor.Count - 1].Free;
+  CleanUpRefactoringMenu(mnRefactor);
 end;
 
 procedure TPyIDEMainForm.mnRefactorInitPopup(Sender: TObject; PopupView:
@@ -7021,30 +7019,8 @@ procedure TPyIDEMainForm.mnRefactorInitPopup(Sender: TObject; PopupView:
 begin
   var Editor := GI_ActiveEditor;
   if Assigned(Editor) then
-  begin
-    TPyLspClient.MainLspClient.GetCodeActions(Editor.FileId,
-      Editor.ActiveSynEdit.BlockBegin, Editor.ActiveSynEdit.BlockEnd);
-    if not Assigned(TPyLspClient.CodeActions) or
-      (Length(TPyLspClient.CodeActions.codeActions) = 0)
-    then
-      Exit;
-    for var I := 0 to High(TPyLspClient.CodeActions.codeActions) do
-    begin
-      var CodeAction := TPyLspClient.CodeActions.codeActions[I];
-      if not Assigned(CodeAction.edit) then Continue;
-      var MenuItem := TSpTBXItem.Create(Self);
-      MenuItem.Action := CommandsDataModule.actCodeAction;
-      MenuItem.Hint :=  CodeAction.title;
-      if MenuItem.Hint.StartsWith('Inline') then
-        MenuItem.Caption := _('Inline')
-      else if MenuItem.Hint.StartsWith('Extract expression into function') then
-        MenuItem.Caption := _('Extract function')
-      else
-        MenuItem.Caption := _('Extract variable');
-      MenuItem.Tag := I;
-      mnRefactor.Add(MenuItem);
-    end;
-  end;
+    SetupRefactoringMenu(Editor.FileId, Editor.ActiveSynEdit.BlockBegin,
+      Editor.ActiveSynEdit.BlockEnd, mnRefactor);
 end;
 
 procedure TPyIDEMainForm.RemoveDefunctEditorOptions;

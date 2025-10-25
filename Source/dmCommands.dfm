@@ -1002,7 +1002,7 @@ object CommandsDataModule: TCommandsDataModule
     end
     object actFormatCode: TAction
       Category = 'Source Code'
-      Caption = 'Format Code'
+      Caption = 'Format'
       Hint = 
         'Format source code, either the selected text or the whole docume' +
         'nt.'
@@ -1011,7 +1011,7 @@ object CommandsDataModule: TCommandsDataModule
     end
     object actCodeCheck: TAction
       Category = 'Source Code'
-      Caption = 'Code Check'
+      Caption = 'Check Code'
       Hint = 'Perform a code check'
       ShortCut = 16497
       OnExecute = actCodeCheckExecute
@@ -1027,12 +1027,16 @@ object CommandsDataModule: TCommandsDataModule
       Category = 'Source Code'
       Caption = 'Next Issue'
       Hint = 'Go to the next issue'
+      ImageIndex = 65
+      ImageName = 'ArrowRight'
       OnExecute = actNextIssueExecute
     end
     object actPreviousIssue: TAction
       Category = 'Source Code'
       Caption = 'Previous Issue'
       Hint = 'Go to the previous issue'
+      ImageIndex = 64
+      ImageName = 'ArrowLeft'
       OnExecute = actPreviousIssueExecute
     end
     object actFixAll: TAction
@@ -1058,6 +1062,12 @@ object CommandsDataModule: TCommandsDataModule
     object actCodeAction: TAction
       Category = 'Refactoring'
       OnExecute = actCodeActionExecute
+    end
+    object actShowRefactorMenu: TAction
+      Category = 'Refactoring'
+      Caption = 'actShowRefactorMenu'
+      ShortCut = 8305
+      OnExecute = actShowRefactorMenuExecute
     end
   end
   object SynWebCompletion: TSynCompletionProposal

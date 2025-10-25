@@ -128,6 +128,7 @@ type
     procedure SetHasSearchHighlight(Value: Boolean);
     procedure SetFileEncoding(FileEncoding: TFileSaveFormat);
     procedure SetHighlighter(const HighlighterName: string);
+    procedure ShowRefactoringMenu;
     procedure OpenLocalFile(const AFileName: string; const HighlighterName: string = '');
     procedure OpenRemoteFile(const FileName, ServerName: string);
     function SaveToRemoteFile(const FileName, ServerName: string): Boolean;

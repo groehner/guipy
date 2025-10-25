@@ -176,6 +176,10 @@ type
     pmnuDiagnostics: TSpTBXPopupMenu;
     mnFixIssue: TSpTBXItem;
     mnIgnoreIssue: TSpTBXItem;
+    pmnuRefactor: TSpTBXPopupMenu;
+    mnOrganizeImports: TSpTBXItem;
+    SpTBXSeparatorItem9: TSpTBXSeparatorItem;
+    mnRename: TSpTBXItem;
     procedure SynEditChange(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
@@ -259,6 +263,8 @@ type
     procedure mnEditAddImportsClick(Sender: TObject);
     procedure mnFixIssueClick(Sender: TObject);
     procedure mnIgnoreIssueClick(Sender: TObject);
+    procedure pmnuRefactorClosePopup(Sender: TObject);
+    procedure pmnuRefactorPopup(Sender: TObject);
     procedure SynEditGutterMarksCLick(Sender: TObject; Button: TMouseButton;
         X, Y, Row, Line: Integer);
     procedure SynEditGutterMarksContextPopup(Sender: TObject; MousePos:
@@ -479,11 +485,11 @@ type
     // IEditor implementation
     function ActivateView(ViewFactory: IEditorViewFactory): IEditorView;
     procedure ApplyEditorOptions(EditorOptions: TSynEditorOptionsContainer);
-    function GetCaretPos: TPoint;
     function GetSynEdit: TSynEdit;
     function GetSynEdit2: TSynEdit;
     function GetActiveSynEdit: TSynEdit;
     function GetBreakPoints: TObjectList;
+    function GetCaretPos: TPoint;
     function GetFileFormat: string;
     function GetEditorState: string;
     function GetFileName: string;
@@ -497,7 +503,7 @@ type
     function GetReadOnly: Boolean;
     procedure SetHasSearchHighlight(Value: Boolean);
     procedure SetHighlighter(const HighlighterName: string);
-
+    procedure ShowRefactoringMenu;
     function GetGUIFormOpen: Boolean;
     procedure SetGuiFormOpen(Value: Boolean);
     procedure SetReadOnly(Value: Boolean);
@@ -956,6 +962,16 @@ begin
   GetSynEdit.ReadOnly := Value;
   GetSynEdit2.ReadOnly := Value;
   FForm.UpdateTabImage;
+end;
+
+procedure TEditor.ShowRefactoringMenu;
+begin
+  var Editor := GetActiveSynEdit;
+  Editor.EnsureCursorPosVisibleEx(True);
+  var P := Editor.BufferToPixels(Editor.CaretXY);
+  Inc(P.Y, Editor.LineHeight);
+  P := Editor.ClientToScreen(P);
+  FForm.pmnuRefactor.Popup(P.X, P.Y);
 end;
 
 procedure TEditor.SplitEditorHorizontally;
@@ -2618,6 +2634,12 @@ begin
   SynEdit2.Indicators.RegisterSpec(HotIdentIndicatorSpec, IndicatorSpec);
 
   PyIDEMainForm.ThemeEditorGutter(SynEdit.Gutter);
+
+  // Refactor munu
+//  pmnuRefactor.OnInitPopup := TSpTBXSubmenuItem(pmnuRefactor.LinkSubitems).OnInitPopup;
+//  pmnuRefactor.OnClosePopup := TSpTBXSubmenuItem(pmnuRefactor.LinkSubitems).OnClosePopup;
+
+
 
   // Setup notifications
   TMessageManager.DefaultManager.SubscribeToMessage(TIDEOptionsChangedMessage,
@@ -5748,6 +5770,17 @@ begin
   // Use the mechanism of the diagnostic hint
   TLspSynEditPlugin.DiagnosticHintIndex := pmnuDiagnostics.Tag;
   FEditor.FSynLsp.PerformNoqaEdit;
+end;
+
+procedure TEditorForm.pmnuRefactorClosePopup(Sender: TObject);
+begin
+  CleanUpRefactoringMenu(pmnuRefactor.Items);
+end;
+
+procedure TEditorForm.pmnuRefactorPopup(Sender: TObject);
+begin
+  SetupRefactoringMenu(FEditor.GetFileId, FEditor.GetActiveSynEdit.BlockBegin,
+    FEditor.GetActiveSynEdit.BlockEnd, pmnuRefactor.Items);
 end;
 
 procedure TEditorForm.spiBreakpointClearClick(Sender: TObject);

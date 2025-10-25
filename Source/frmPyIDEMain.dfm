@@ -701,6 +701,7 @@ object PyIDEMainForm: TPyIDEMainForm
             object SpTBXSeparatorItem32: TSpTBXSeparatorItem
             end
             object mnCodeCheck: TSpTBXItem
+              Caption = 'Check'
               Action = CommandsDataModule.actCodeCheck
             end
             object mnClearIssues: TSpTBXItem

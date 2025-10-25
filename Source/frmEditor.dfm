@@ -41,7 +41,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 558
+        CustomWidth = 433
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -1418,8 +1418,8 @@ object EditorForm: TEditorForm
         Name = 'Cancel'
       end>
     ImageCollection = DMImages.icEditorContextMenu
-    Left = 232
-    Top = 127
+    Left = 240
+    Top = 183
   end
   object vilContextMenuLight: TVirtualImageList
     Images = <
@@ -1524,8 +1524,8 @@ object EditorForm: TEditorForm
         Name = 'Cancel'
       end>
     ImageCollection = DMImages.icEditorContextMenu
-    Left = 112
-    Top = 127
+    Left = 96
+    Top = 183
   end
   object pmnuBreakpoint: TSpTBXPopupMenu
     Left = 336
@@ -1615,8 +1615,8 @@ object EditorForm: TEditorForm
   end
   object pmnuDiagnostics: TSpTBXPopupMenu
     Images = PyIDEMainForm.vilImages
-    Left = 368
-    Top = 112
+    Left = 104
+    Top = 104
     object mnFixIssue: TSpTBXItem
       Caption = 'Quick Fix Issue'
       ImageName = 'BugFix'
@@ -1626,6 +1626,21 @@ object EditorForm: TEditorForm
       Caption = 'Ignore Issue'
       Hint = 'Flag the issue as ignored'
       OnClick = mnIgnoreIssueClick
+    end
+  end
+  object pmnuRefactor: TSpTBXPopupMenu
+    Images = PyIDEMainForm.vilImages
+    OnPopup = pmnuRefactorPopup
+    OnClosePopup = pmnuRefactorClosePopup
+    Left = 216
+    Top = 120
+    object mnOrganizeImports: TSpTBXItem
+      Action = CommandsDataModule.actOrganizeImports
+    end
+    object SpTBXSeparatorItem9: TSpTBXSeparatorItem
+    end
+    object mnRename: TSpTBXItem
+      Action = CommandsDataModule.actRefactorRename
     end
   end
 end

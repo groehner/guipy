@@ -211,6 +211,7 @@ type
     actOrganizeImports: TAction;
     actRefactorRename: TAction;
     actCodeAction: TAction;
+    actShowRefactorMenu: TAction;
     function ProgramVersionHTTPLocationLoadFileFromRemote
       (AProgramVersionLocation: TJvProgramVersionHTTPLocation;
       const ARemotePath, ARemoteFileName, ALocalPath, ALocalFileName
@@ -324,6 +325,8 @@ type
     procedure actFixAllExecute(Sender: TObject);
     procedure actOrganizeImportsExecute(Sender: TObject);
     procedure actRefactorRenameExecute(Sender: TObject);
+    procedure actShowRefactorMenuExecute(Sender: TObject);
+    procedure UpdateRefactorActions(Sender: TObject);
     procedure mnSpellingPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure SynSpellCheckChange(Sender: TObject);
   private
@@ -1971,7 +1974,9 @@ begin
       SynEdit.SetCaretAndSelection(BE, BB, BE)
     else
       SynEdit.ExecuteCommand(ecSelWord);
-  end;
+  end
+  else
+    SynEdit.ExecuteCommand(ecSelWord);
 
   var NewName := SynEdit.WordAtCursor;
   if not InputQuery(_('Rename'), _('New name')+':', NewName) then
@@ -1987,6 +1992,18 @@ begin
       Edit.Free;
     end;
   end;
+end;
+
+procedure TCommandsDataModule.actShowRefactorMenuExecute(Sender: TObject);
+begin
+  if Assigned(GI_ActiveEditor) and GI_ActiveEditor.HasPythonFile then
+    GI_ActiveEditor.ShowRefactoringMenu;
+end;
+
+procedure TCommandsDataModule.UpdateRefactorActions(Sender: TObject);
+begin
+  TAction(Sender).Enabled := Assigned(GI_ActiveEditor)
+    and GI_ActiveEditor.HasPythonFile and not GI_ActiveEditor.SynEdit.ReadOnly;
 end;
 
 procedure TCommandsDataModule.GetEditorUserCommand(AUserCommand: Integer;
