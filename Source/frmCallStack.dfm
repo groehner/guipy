@@ -137,6 +137,7 @@ inherited CallStackWindow: TCallStackWindow
     Top = 33
   end
   object actlCallStack: TActionList
+    OnUpdate = actlCallStackUpdate
     Left = 492
     Top = 33
     object actPreviousFrame: TAction

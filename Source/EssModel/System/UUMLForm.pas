@@ -154,6 +154,8 @@ uses
   cPyScripterSettings,
   cPySupportTypes,
   cFileTemplates,
+  JvDockControlForm,
+  frmIDEDockWin,
   UModel,
   UModelEntity,
   URtfdDiagram,
@@ -326,7 +328,7 @@ end;
 
 procedure TFUMLForm.TBInteractiveClick(Sender: TObject);
 begin
-  PyIDEMainForm.actViewUMLInteractiveExecute(Self);
+  ShowDockForm(IDEDockForm(ideUMLInteractive));
 end;
 
 procedure TFUMLForm.PDiagramPanelResize(Sender: TObject);

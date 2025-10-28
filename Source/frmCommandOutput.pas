@@ -31,6 +31,7 @@ uses
   JvAppStorage,
   frmIDEDockWin,
   PascalProcess,
+  uEditAppIntfs,
   cTools;
 
 type
@@ -38,7 +39,7 @@ type
   TOutputType = (Normal, Error);
 {$SCOPEDENUMS OFF}
 
-  TOutputWindow = class(TIDEDockWindow)
+  TOutputWindow = class(TIDEDockWindow, ISystemCommandService)
     lsbConsole: TListBox;
     OutputPopup: TSpTBXPopupMenu;
     RunningProcess: TSpTBXSubmenuItem;
@@ -64,7 +65,8 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
   private
-    const FBasePath = 'Output Window Options'; // Used for storing settings
+    const FBasePath = 'Output Window Options';
+    // Used for storing settings
     var FTool: TExternalTool;
     FProcess: IPProcess;
     FRegEx: TRegEx;
@@ -88,7 +90,10 @@ type
         Cardinal);
     procedure ProcessTerminate(Sender: TObject);
     procedure WriteOutput(OutputType: TOutputType);
+    // ISystemCommandService implementation
     function GetIsRunning: Boolean;
+    function GetRunningTool: string;
+    procedure Terminate;
   public
     procedure AddNewLine(const Str: string; OutputType: TOutputType = TOutputType.Normal);
     procedure AppendToLastLine(const Str: string; OutputType: TOutputType);
@@ -98,7 +103,8 @@ type
     procedure StoreSettings(Storage: TJvCustomAppStorage); override;
     procedure RestoreSettings(Storage: TJvCustomAppStorage); override;
     property IsRunning: Boolean read GetIsRunning;
-    property RunningTool: string read FRunningTool;
+    property RunningTool: string read GetRunningTool;
+    class function CreateInstance: TIDEDockWindow; override;
   end;
 
 var
@@ -118,7 +124,6 @@ uses
   SynEditTypes,
   SynEdit,
   StringResources,
-  uEditAppIntfs,
   dmCommands,
   uCommonFunctions;
 
@@ -157,6 +162,12 @@ begin
   lsbConsole.Clear;
   lsbConsole.ScrollWidth := 0;
   FItemMaxWidth := 0;
+end;
+
+class function TOutputWindow.CreateInstance: TIDEDockWindow;
+begin
+  OutputWindow := TOutputWindow.Create(Application);
+  Result := OutputWindow;
 end;
 
 procedure TOutputWindow.actOutputFontExecute(Sender: TObject);
@@ -307,7 +318,7 @@ begin
     // ParseMessages
     if FTool.ParseMessages then
     begin
-      GI_PyIDEServices.Messages.ClearMessages;
+      GI_MessagesService.ClearMessages;
       //  Parse TraceBack and Syntax Errors from Python output
       var Strings := OutStr.Split([#10,#13], TStringSplitOptions.ExcludeEmpty);
 
@@ -342,11 +353,11 @@ begin
             else
               ColNo := -1;
            // add Message info (message, filename, linenumber)
-            GI_PyIDEServices.Messages.AddMessage(Groups[Groups.Count-1].Value, FileName, ErrLineNo, ColNo);
+            GI_MessagesService.AddMessage(Groups[Groups.Count-1].Value, FileName, ErrLineNo, ColNo);
           end;
         Inc(LineNo);
       end;
-      GI_PyIDEServices.Messages.ShowWindow;
+      GI_MessagesService.ShowWindow;
     end;
   end;
 
@@ -357,7 +368,7 @@ begin
     OutStr := FOutputReader[TOutputType.Error].ReadToEnd;
     if OutStr <> '' then
     begin
-      GI_PyIDEServices.Messages.ClearMessages;
+      GI_MessagesService.ClearMessages;
       var Strings := OutStr.Split([#10,#13], TStringSplitOptions.ExcludeEmpty);
       //  Parse TraceBack and Syntax Errors from Python output
       FRegEx := CompiledRegEx(STracebackFilePosExpr);
@@ -365,22 +376,22 @@ begin
       while LineNo < Length(Strings) do begin
         if Strings[LineNo].StartsWith('Traceback') then begin
           // Traceback found
-          GI_PyIDEServices.Messages.AddMessage('Traceback');
+          GI_MessagesService.AddMessage('Traceback');
           Inc(LineNo);
           while (LineNo < Length(Strings)) and (Strings[LineNo][1] = ' ') do begin
             with FRegEx.Match(Strings[LineNo]) do
               if Success then begin
                 ErrLineNo := StrToIntDef(GroupValue(2), 0);
                 // add traceback info (function name, filename, linenumber)
-                GI_PyIDEServices.Messages.AddMessage('    ' + GroupValue(4),
+                GI_MessagesService.AddMessage('    ' + GroupValue(4),
                   GetLongFileName(ExpandFileName(GroupValue(1))), ErrLineNo);
               end;
             Inc(LineNo);
           end;
           // Add the actual Error line
           if LineNo < Length(Strings) then
-            GI_PyIDEServices.Messages.AddMessage(Strings[LineNo]);
-          GI_PyIDEServices.Messages.ShowWindow;
+            GI_MessagesService.AddMessage(Strings[LineNo]);
+          GI_MessagesService.ShowWindow;
           Break;  // finished processing traceback
         end else if Strings[LineNo].StartsWith('SyntaxError:')
           and (LineNo > 2) then
@@ -394,11 +405,11 @@ begin
           if Success then begin
             ErrLineNo := StrToIntDef(GroupValue(3), 0);
             // add Syntax error info (error message, filename, linenumber)
-            GI_PyIDEServices.Messages.AddMessage(_(SSyntaxError));
-            GI_PyIDEServices.Messages.AddMessage(ErrorMsg + GroupValue(5),
+            GI_MessagesService.AddMessage(_(SSyntaxError));
+            GI_MessagesService.AddMessage(ErrorMsg + GroupValue(5),
               GetLongFileName(ExpandFileName(GroupValue(1))), ErrLineNo, ColNo);
           end;
-          GI_PyIDEServices.Messages.ShowWindow;
+          GI_MessagesService.ShowWindow;
           MessageBeep(MB_ICONEXCLAMATION);
           Break;  // finished processing Syntax Error
         end;
@@ -437,6 +448,12 @@ begin
   StoredFont.Height := lsbConsole.Font.Height;
   Storage.DeleteSubTree(FBasePath);
   Storage.WritePersistent(FBasePath, StoredFont);
+end;
+
+procedure TOutputWindow.Terminate;
+begin
+  if IsRunning then
+    FProcess.Terminate;
 end;
 
 procedure TOutputWindow.ExecuteTool(Tool: TExternalTool);
@@ -551,8 +568,7 @@ end;
 
 procedure TOutputWindow.actToolTerminateExecute(Sender: TObject);
 begin
-  if IsRunning then
-    FProcess.Terminate;
+  Terminate;
 end;
 
 procedure TOutputWindow.OutputActionsUpdate(Action: TBasicAction;
@@ -614,6 +630,8 @@ begin
   FOutputLock.Initialize;
 
   lsbConsole.Font.Name := DefaultCodeFontName;
+
+  GI_SystemCommandService := Self;
 end;
 
 procedure TOutputWindow.FormDestroy(Sender: TObject);
@@ -627,6 +645,11 @@ end;
 function TOutputWindow.GetIsRunning: Boolean;
 begin
   Result := Assigned(FProcess) and (FProcess.State = TPPState.Running);
+end;
+
+function TOutputWindow.GetRunningTool: string;
+begin
+  Result := FRunningTool;
 end;
 
 procedure TOutputWindow.InitializeOutput;
@@ -693,5 +716,8 @@ begin
     FOutputLock.Leave;
   end;
 end;
+
+initialization
+  TIDEDockWindow.RegisterDockWinClass(ideCommandOutput, TOutputWindow);
 
 end.

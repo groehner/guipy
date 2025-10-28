@@ -154,6 +154,7 @@ type
       BackgroundProcessing: Boolean);
     property Favorites: TStringList read FFavorites;
     property ExplorerPath: string read GetExplorerPath write SetExplorerPath;
+    class function CreateInstance: TIDEDockWindow; override;
   end;
 
 var
@@ -166,6 +167,7 @@ uses
   Winapi.ShlObj,
   System.SysUtils,
   System.IOUtils,
+  Vcl.Forms,
   Vcl.Dialogs,
   Vcl.FileCtrl,
   MPCommonObjects,
@@ -239,6 +241,12 @@ begin
     FileExplorerTree.RefreshTree;
 end;
 
+class function TFileExplorerWindow.CreateInstance: TIDEDockWindow;
+begin
+  FileExplorerWindow := TFileExplorerWindow.Create(Application);
+  Result := FileExplorerWindow;
+end;
+
 procedure TFileExplorerWindow.CurrentDirectoryClick(Sender: TObject);
 begin
   FileExplorerTree.RootFolderCustomPath := GetCurrentDir;
@@ -303,7 +311,7 @@ begin
   then begin
     AddMRUString(NameSpace.NameForParsing,
        FindResultsWindow.FindInFilesExpert.DirList, True);
-    FindResultsWindow.FindInFilesExpert.GrepSearch := 3;  //Directory
+    FindResultsWindow.FindInFilesExpert.GrepSearch := gaDirGrep;
     FindResultsWindow.Execute(False);
   end;
 end;
@@ -549,5 +557,8 @@ begin
   AppStorage.WriteString('File Explorer Path', ExplorerPath);
   AppStorage.WriteStringList('File Explorer Favorites', Favorites);
 end;
+
+initialization
+  TIDEDockWindow.RegisterDockWinClass(ideFileExplorer, TFileExplorerWindow);
 
 end.

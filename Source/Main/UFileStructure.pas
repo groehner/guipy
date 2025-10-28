@@ -72,6 +72,7 @@ type
     procedure Clear(Form: TFileForm);
     procedure ChangeStyle;
     property MyForm: TFileForm read FMyForm;
+    class function CreateInstance: TIDEDockWindow; override;
   end;
 
 var
@@ -420,5 +421,14 @@ begin
   else
     vilFileStructure.Images := vilFileStructureLight;
 end;
+
+class function TFFileStructure.CreateInstance: TIDEDockWindow;
+begin
+  FFileStructure := TFFileStructure.Create(Application);
+  Result := FFileStructure;
+end;
+
+initialization
+  TIDEDockWindow.RegisterDockWinClass(ideFileStructure, TFFileStructure);
 
 end.

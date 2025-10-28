@@ -148,6 +148,7 @@ inherited PythonIIForm: TPythonIIForm
   end
   object InterpreterActionList: TActionList
     Images = vilImages
+    OnUpdate = InterpreterActionListUpdate
     Left = 40
     Top = 109
     object actCopyHistory: TAction

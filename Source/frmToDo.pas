@@ -215,6 +215,7 @@ type
 
     procedure RefreshTodoList;
     property AbortSignalled: Boolean read FAbortSignalled write FAbortSignalled;
+    class function CreateInstance: TIDEDockWindow; override;
   end;
 
 var
@@ -414,6 +415,12 @@ procedure TToDoWindow.ClearDataListAndListView;
 begin
   ToDoView.Clear;
   FDataList.Clear;
+end;
+
+class function TToDoWindow.CreateInstance: TIDEDockWindow;
+begin
+  ToDoWindow := TToDoWindow.Create(Application);
+  Result := ToDoWindow;
 end;
 
 { TTokenList }
@@ -1001,6 +1008,9 @@ procedure TToDoWindow.actHelpHelpExecute(Sender: TObject);
 begin
   Application.HelpContext(HelpContext);
 end;
+
+initialization
+  TIDEDockWindow.RegisterDockWinClass(ideTodo, TToDoWindow);
 
 end.
 

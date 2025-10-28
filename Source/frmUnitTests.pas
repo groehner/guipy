@@ -29,13 +29,14 @@ uses
   SpTBXDkPanels,
   SpTBXItem,
   SpTBXSkins,
+  SynEdit,
   uEditAppIntfs,
-  frmIDEDockWin, SynEdit;
+  frmIDEDockWin;
 
 type
   TUnitTestWindowStatus = (utwEmpty, utwLoaded, utwRunning, utwRun);
 
-  TUnitTestWindow = class(TIDEDockWindow, IUnitTestServices)
+  TUnitTestWindow = class(TIDEDockWindow, IUnitTestsService)
     ExplorerDock: TSpTBXDock;
     ExplorerToolbar: TSpTBXToolbar;
     tbiRefresh: TSpTBXItem;
@@ -117,13 +118,14 @@ type
     procedure AddError(Test, Err: Variant);
     procedure AddFailure(Test, Err: Variant);
     procedure AddSuccess(Test: Variant);
+    procedure ClearAll;
   protected
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
     procedure UpdateActions; override;
   public
-    procedure ClearAll;
     function SelectedTestCount: Integer;
     function FindTestNode(Test: Variant): PVirtualNode;
+    class function CreateInstance: TIDEDockWindow; override;
   end;
 
 var
@@ -253,10 +255,13 @@ begin
   FTestClasses.Duplicates := dupError;
 
   FStatus := utwEmpty;
+
+  GI_UnitTestsService := Self;
 end;
 
 procedure TUnitTestWindow.FormDestroy(Sender: TObject);
 begin
+  GI_UnitTestsService := nil;
   ClearAll;
   FTestClasses.Free;
   inherited;
@@ -299,6 +304,12 @@ begin
   lbFoundTests.Caption := Format(FoundTestsLabel, [0, 's']);
 
   FStatus := utwEmpty;
+end;
+
+class function TUnitTestWindow.CreateInstance: TIDEDockWindow;
+begin
+  UnitTestWindow := TUnitTestWindow.Create(Application);
+  Result := UnitTestWindow;
 end;
 
 procedure TUnitTestWindow.UnitTestsInitNode(Sender: TBaseVirtualTree;
@@ -741,5 +752,8 @@ begin
     end;
   end;
 end;
+
+initialization
+  TIDEDockWindow.RegisterDockWinClass(ideUnitTests, TUnitTestWindow);
 
 end.

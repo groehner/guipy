@@ -608,6 +608,7 @@ uses
   uCommonFunctions,
   UPythonIntegrator,
   frmCodeExplorer,
+  frmIDEDockWin,
   cLspClients,
   cPyControl,
   cCodeCompletion,
@@ -726,7 +727,7 @@ end;
 procedure TEditor.ClearDiagnostics;
 begin
   FSynLsp.ClearDiagnostics;
-  GI_PyIDEServices.Messages.ClearMessages;
+  GI_MessagesService.ClearMessages;
 end;
 
 procedure TEditor.Close;
@@ -3595,7 +3596,7 @@ begin
   if TPyInternalInterpreter(PyControl.InternalInterpreter)
     .SyntaxCheck(FEditor, ErrorPos) then
   begin
-    GI_PyIDEServices.Messages.AddMessage(Format(_(SSyntaxIsOK), [Pathname]));
+    GI_MessagesService.AddMessage(Format(_(SSyntaxIsOK), [Pathname]));
     ShowDockForm(MessagesWindow);
   end;
 end;
@@ -3846,7 +3847,7 @@ end;
 
 procedure TEditorForm.TBExplorerClick(Sender: TObject);
 begin
-  PyIDEMainForm.actNavFileExplorerExecute(nil);
+  ShowDockForm(IDEDockForm(ideFileExplorer));
 end;
 
 function TEditorForm.BeginOfStructure(Line: string): Boolean;

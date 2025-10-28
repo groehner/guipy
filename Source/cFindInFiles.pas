@@ -192,7 +192,7 @@ type
     FDirList: TStrings;
     FGrepCaseSensitive: Boolean;
     FGrepNoComments: Boolean;
-    FGrepSearch: Integer;
+    FGrepSearch: TFindInFilesAction;
     FGrepSub: Boolean;
     FGrepWholeWord: Boolean;
     FGrepRegEx: Boolean;
@@ -218,7 +218,7 @@ type
     property BackupModified: Boolean read FBackupModified write FBackupModified;
     property GrepCaseSensitive: Boolean read FGrepCaseSensitive write FGrepCaseSensitive;
     property GrepNoComments: Boolean read FGrepNoComments write FGrepNoComments;
-    property GrepSearch: Integer read FGrepSearch write FGrepSearch;
+    property GrepSearch: TFindInFilesAction read FGrepSearch write FGrepSearch;
     property GrepSub: Boolean read FGrepSub write FGrepSub;
     property GrepWholeWord: Boolean read FGrepWholeWord write FGrepWholeWord;
     property GrepRegEx: Boolean read FGrepRegEx write FGrepRegEx;
@@ -654,7 +654,7 @@ begin
   FGrepExpandAll := False;
   FBackupModified := False;
   FGrepSub := True;
-  FGrepSearch := 1;
+  FGrepSearch := gaOpenFilesGrep;
   FGrepSave := True;
   FGrepWholeWord := False;
   FGrepMiddle := True;
@@ -682,7 +682,7 @@ begin
   with AppStorage do begin
     FGrepCaseSensitive := ReadBoolean(BasePath+'\CaseSensitive', False);
     FGrepNoComments := ReadBoolean(BasePath+'\NoComments', False);
-    FGrepSearch := ReadInteger(BasePath+'\Search', 1);
+    FGrepSearch := TFindInFilesAction(ReadInteger(BasePath+'\Search', 1));
     FGrepSub := ReadBoolean(BasePath+'\SubDirectories', True);
     FGrepSave := ReadBoolean(BasePath+'\Save', True);
     FGrepExpandAll := ReadBoolean(BasePath+'\ExpandAll', False);
@@ -714,7 +714,7 @@ begin
     DeleteSubTree(BasePath);
     WriteBoolean(BasePath+'\CaseSensitive', GrepCaseSensitive);
     WriteBoolean(BasePath+'\NoComments', GrepNoComments);
-    WriteInteger(BasePath+'\Search', GrepSearch);
+    WriteInteger(BasePath+'\Search', Ord(GrepSearch));
     WriteBoolean(BasePath+'\SubDirectories', GrepSub);
     WriteBoolean(BasePath+'\Save', GrepSave);
     WriteBoolean(BasePath+'\ExpandAll', GrepExpandAll);

@@ -97,10 +97,12 @@ uses
   Vcl.Dialogs,
   Vcl.Clipbrd,
   MSHTML,
+  JvDockControlForm,
   JvGnugettext,
   uEditAppIntfs,
   uCommonFunctions,
   frmPyIDEMain,
+  frmIDEDockWin,
   frmFileExplorer,
   UConfiguration,
   UUtils;
@@ -188,7 +190,7 @@ begin
     NavigateTo(Str)
   else if DirectoryExists(ExtractFilePathEx(Str)) then
   begin
-    PyIDEMainForm.actNavFileExplorerExecute(Self);
+    ShowDockForm(IDEDockForm(ideFileExplorer));
     FileExplorerWindow.ExplorerPath := ExtractFilePathEx(Str);
   end
   else if GuiPyOptions.LockedInternet then

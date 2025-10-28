@@ -651,7 +651,7 @@ uses
   frmEditor,
   UUMLForm,
   UGUIForm,
-  UBrowser;
+  UBrowser, SVGIconVirtualImageList;
 
 const
   WM_FINDDEFINITION = WM_USER + 100;
@@ -923,25 +923,11 @@ type
     actViewPreviousEditor: TAction;
     actViewNextEditor: TAction;
     actlStandard: TActionList;
-    actNavProjectExplorer: TAction;
-    actViewProjectExplorer: TAction;
     actViewCustomizeToolbars: TAction;
     actPostMortem: TAction;
     actViewHideSecondEditor: TAction;
     actViewSplitEditorHor: TAction;
     actExecSelection: TAction;
-    actNavEditor: TAction;
-    actNavOutput: TAction;
-    actNavUnitTests: TAction;
-    actNavTodo: TAction;
-    actNavCodeExplorer: TAction;
-    actNavFileExplorer: TAction;
-    actNavMessages: TAction;
-    actNavCallStack: TAction;
-    actNavVariables: TAction;
-    actNavInterpreter: TAction;
-    actNavBreakpoints: TAction;
-    actNavWatches: TAction;
     actFileNewFile: TAction;
     actPythonRemoteWx: TAction;
     actPythonRemoteTk: TAction;
@@ -956,21 +942,10 @@ type
     actLayoutDebug: TAction;
     actLayoutsDelete: TAction;
     actLayoutSave: TAction;
-    actViewRegExpTester: TAction;
     actBrowseForward: TAction;
     actBrowseBack: TAction;
     actFindReferences: TAction;
     actFindDefinition: TAction;
-    actViewUnitTests: TAction;
-    actViewOutput: TAction;
-    actViewFindResults: TAction;
-    actViewToDoList: TAction;
-    actViewFileExplorer: TAction;
-    actViewCodeExplorer: TAction;
-    actViewII: TAction;
-    actMessagesWin: TAction;
-    actWatchesWin: TAction;
-    actBreakPointsWin: TAction;
     actClearAllBreakpoints: TAction;
     actToggleBreakPoint: TAction;
     actRunLastScript: TAction;
@@ -987,7 +962,6 @@ type
     actExternalRunConfigure: TAction;
     actExternalRun: TAction;
     actViewStatusBar: TAction;
-    actFileExit: TAction;
     actFileCloseAll: TAction;
     actFileOpen: TAction;
     actFileNewModule: TAction;
@@ -995,8 +969,6 @@ type
     actCommandLine: TAction;
     actRun: TAction;
     actSyntaxCheck: TAction;
-    actVariablesWin: TAction;
-    actCallStackWin: TAction;
     actViewMainMenu: TAction;
     tbiRecentFileList: TSpTBXMRUListItem;
     mnPreviousList: TSpTBXMRUListItem;
@@ -1194,7 +1166,6 @@ type
     mnToolsSVNStatus: TSpTBXItem;
     mnToolsSVNTree: TSpTBXItem;
     mnToolsSVNUpdate: TSpTBXItem;
-    actViewObjectinspector: TAction;
     mnToolsBrowser: TSpTBXItem;
     mnViewUnitTests: TSpTBXItem;
     mnViewRegExpTester: TSpTBXItem;
@@ -1202,8 +1173,6 @@ type
     mnObjectInspector: TSpTBXItem;
     mnViewFileExplorer: TSpTBXItem;
     mnViewCodeExplorer: TSpTBXItem;
-    mnViewToDoList: TSpTBXItem;
-    mnViewFindResults: TSpTBXItem;
     mnViewOutput: TSpTBXItem;
     SpTBXSeparatorItem28: TSpTBXSeparatorItem;
     mnViewBreakpoints: TSpTBXItem;
@@ -1216,7 +1185,6 @@ type
     mnHelpProjectHome: TSpTBXItem;
     mnHelpWebSupport: TSpTBXItem;
     mnViewStructure: TSpTBXItem;
-    actNavStructure: TAction;
     TBControlItem1: TTBControlItem;
     TBControlItem3: TTBControlItem;
     tbitbiDiagramFromOpenFiles: TSpTBXItem;
@@ -1296,10 +1264,8 @@ type
     ActivityIndicator: TActivityIndicator;
     spiAssistant: TTBControlItem;
     mnViewChat: TSpTBXItem;
-    actNavChat: TAction;
     actPythonFreeThreaded: TAction;
     mnViewUMLInteractive: TSpTBXItem;
-    actViewUMLInteractive: TAction;
     mnFormatCode: TSpTBXItem;
     mnCodeCheck: TSpTBXItem;
     mnClearIssues: TSpTBXItem;
@@ -1312,6 +1278,9 @@ type
     mnRefactor: TSpTBXSubmenuItem;
     mnRefactorRename: TSpTBXItem;
     SpTBXSeparatorItem33: TSpTBXSeparatorItem;
+    mnTerminate: TSpTBXItem;
+    mnNavTodo: TSpTBXItem;
+    mnNavFindResults: TSpTBXItem;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1321,10 +1290,8 @@ type
     procedure actLayoutDebugExecute(Sender: TObject);
     procedure actLayoutsDeleteExecute(Sender: TObject);
     procedure actLayoutSaveExecute(Sender: TObject);
-    procedure actViewUnitTestsExecute(Sender: TObject);
     procedure actCommandLineExecute(Sender: TObject);
     procedure JvAppInstancesCmdLineReceived(Sender: TObject; CmdLine: TStrings);
-    procedure actViewRegExpTesterExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure TabContolContextPopup(Sender: TObject; MousePos: TPoint;
@@ -1339,22 +1306,13 @@ type
     procedure actStepOutExecute(Sender: TObject);
     procedure actRunToCursorExecute(Sender: TObject);
     procedure actDebugAbortExecute(Sender: TObject);
-    procedure actViewIIExecute(Sender: TObject);
-    procedure actMessagesWinExecute(Sender: TObject);
     procedure actNextEditorExecute(Sender: TObject);
     procedure actPreviousEditorExecute(Sender: TObject);
-    procedure actCallStackWinExecute(Sender: TObject);
-    procedure actVariablesWinExecute(Sender: TObject);
-    procedure actBreakPointsWinExecute(Sender: TObject);
-    procedure actWatchesWinExecute(Sender: TObject);
-    procedure actViewCodeExplorerExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure actViewStatusBarExecute(Sender: TObject);
-    procedure actFileExitExecute(Sender: TObject);
     procedure actFileNewModuleExecute(Sender: TObject);
     procedure actFileOpenExecute(Sender: TObject);
     procedure actFileCloseAllExecute(Sender: TObject);
-    procedure actViewFileExplorerExecute(Sender: TObject);
     procedure TabControlTabClosing(Sender: TObject;
       var Allow, CloseAndFree: Boolean);
     procedure DrawCloseButton(Sender: TObject; ACanvas: TCanvas;
@@ -1363,9 +1321,6 @@ type
       var ARect: TRect; var PaintDefault: Boolean);
     procedure FormShortCut(var Msg: TWMKey; var Handled: Boolean);
     procedure actImportModuleExecute(Sender: TObject);
-    procedure actViewToDoListExecute(Sender: TObject);
-    procedure actViewFindResultsExecute(Sender: TObject);
-    procedure actViewOutputExecute(Sender: TObject);
     procedure actExternalRunExecute(Sender: TObject);
     procedure actExternalRunConfigureExecute(Sender: TObject);
     procedure actFindDefinitionExecute(Sender: TObject);
@@ -1379,18 +1334,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure actAddWatchAtCursorExecute(Sender: TObject);
     procedure actFileNewFileExecute(Sender: TObject);
-    procedure actNavWatchesExecute(Sender: TObject);
-    procedure actNavBreakpointsExecute(Sender: TObject);
-    procedure actNavInterpreterExecute(Sender: TObject);
-    procedure actNavVariablesExecute(Sender: TObject);
-    procedure actNavCallStackExecute(Sender: TObject);
-    procedure actNavMessagesExecute(Sender: TObject);
-    procedure actNavFileExplorerExecute(Sender: TObject);
-    procedure actNavCodeExplorerExecute(Sender: TObject);
-    procedure actNavTodoExecute(Sender: TObject);
-    procedure actNavUnitTestsExecute(Sender: TObject);
-    procedure actNavOutputExecute(Sender: TObject);
-    procedure actNavRETesterExecute(Sender: TObject);
+    procedure actNavigateToDockWindow(Sender: TObject);
     procedure actNavEditorExecute(Sender: TObject);
     procedure actDebugPauseExecute(Sender: TObject);
     procedure actPythonReinitializeExecute(Sender: TObject);
@@ -1414,8 +1358,6 @@ type
     procedure actViewCustomizeToolbarsExecute(Sender: TObject);
     procedure SpTBXCustomizerGetCustomizeForm(Sender: TObject;
       var CustomizeFormClass: TSpTBXCustomizeFormClass);
-    procedure actViewProjectExplorerExecute(Sender: TObject);
-    procedure actNavProjectExplorerExecute(Sender: TObject);
     procedure actRunLastScriptExternalExecute(Sender: TObject);
     procedure actRunLastScriptExecute(Sender: TObject);
     procedure actRunDebugLastScriptExecute(Sender: TObject);
@@ -1460,7 +1402,6 @@ type
     procedure mnToolsGitClick(Sender: TObject);
     procedure mnToolsSVNClick(Sender: TObject);
     procedure mnLanguageClick(Sender: TObject);
-    procedure actViewObjectinspectorExecute(Sender: TObject);
     procedure mnToolsBrowserClick(Sender: TObject);
     procedure actNavStructureExecute(Sender: TObject);
     procedure ToolButtonMouseDown(Sender: TObject; Button: TMouseButton;
@@ -1471,13 +1412,14 @@ type
     procedure DdeServerConvExecuteMacro(Sender: TObject; Msg: TStrings);
     procedure FormAfterMonitorDpiChanged(Sender: TObject;
       OldDPI, NewDPI: Integer);
+
     procedure actUMLOpenFolderExecute(Sender: TObject);
     procedure actUMLRecognizeAssociationsExecute(Sender: TObject);
-    procedure actNavChatExecute(Sender: TObject);
     procedure actPythonFreeThreadedExecute(Sender: TObject);
-    procedure actViewUMLInteractiveExecute(Sender: TObject);
     procedure mnRefactorClosePopup(Sender: TObject);
     procedure mnRefactorInitPopup(Sender: TObject; PopupView: TTBView);
+    procedure mnTerminateClick(Sender: TObject);
+    procedure spiExternalToolsLEDClick(Sender: TObject);
   private
     FLanguageList: TStringList;
     FDSAAppStorage: TDSAAppStorage;
@@ -1565,8 +1507,6 @@ type
     procedure SetActivityIndicator(TurnOn: Boolean; Hint: string = '';
       OnClick: TNotifyEvent = nil);
     function GetStoredScript(const Name: string): TStrings;
-    function GetMessageServices: IMessageServices;
-    function GetUnitTestServices: IUnitTestServices;
     function GetIDELayouts: IIDELayouts;
     function GetAppStorage: TJvCustomAppStorage;
     function GetLocalAppStorage: TJvCustomAppStorage;
@@ -1707,21 +1647,10 @@ uses
   dlgPickList,
   frmFile,
   frmIDEDockWin,
-  frmCommandOutput,
-  frmPythonII,
   frmProjectExplorer,
-  frmMessages,
-  frmCallStack,
-  frmBreakPoints,
-  frmVariables,
-  frmWatches,
-  frmCodeExplorer,
   frmFileExplorer,
+  frmPythonII,
   frmRegExpTester,
-  frmUnitTests,
-  frmToDo,
-  frmFindResults,
-  frmLLMChat,
   frmWebPreview,
   frmModSpTBXCustomize,
   cTools,
@@ -2097,6 +2026,9 @@ begin
   LocalAppStorage.FileName := TPath.ChangeExtension
     (TPyScripterSettings.OptionsFileName, '.local.ini');
 
+  // ActionLists
+  TCommandsDataModule.RegisterActionList(actlStandard);
+
   // Machine Storage
   MachineStorage.Encoding := TEncoding.UTF8;
   MachineStorage.FileName := TPath.Combine(ExtractFilePath(Application.ExeName),
@@ -2104,31 +2036,14 @@ begin
 
   // OutputDebugString(PWideChar(Format('%s ElapsedTime %d ms', ['Before All Forms', StopWatch.ElapsedMilliseconds])));
   // Create and layout IDE windows
-  PythonIIForm := TPythonIIForm.Create(Self);
-  CallStackWindow := TCallStackWindow.Create(Self);
-  VariablesWindow := TVariablesWindow.Create(Self);
-  WatchesWindow := TWatchesWindow.Create(Self);
-  BreakPointsWindow := TBreakPointsWindow.Create(Self);
-  OutputWindow := TOutputWindow.Create(Self);
-  MessagesWindow := TMessagesWindow.Create(Self);
-  CodeExplorerWindow := TCodeExplorerWindow.Create(Self);
-  FileExplorerWindow := TFileExplorerWindow.Create(Self);
-  ToDoWindow := TToDoWindow.Create(Self);
-  RegExpTesterWindow := TRegExpTesterWindow.Create(Self);
-  UnitTestWindow := TUnitTestWindow.Create(Self);
-  FindResultsWindow := TFindResultsWindow.Create(Self);
-  ProjectExplorerWindow := TProjectExplorerWindow.Create(Self);
-  LLMChatForm := TLLMChatForm.Create(Self);
-  FUMLInteractive := TFUMLInteractive.Create(Self);
+  TIDEDockWindow.CreateDockForms(Self);
 
   FConfiguration := TFConfiguration.Create(Self);
   FConfiguration.PopupParent := Self;
   DMImages := TDMImages.Create(Self);
 
   FGUIDesigner := TFGuiDesigner.Create(Self);
-  FObjectInspector := TFObjectInspector.Create(Self);
   FObjectGenerator := TFObjectGenerator.Create(Self);
-  FFileStructure := TFFileStructure.Create(Self);
   FClassEditor := TFClassEditor.Create(Self);
   FDragRectangle := nil;
 
@@ -2142,12 +2057,6 @@ begin
   // Setup Languages
   FLanguageList := TStringList.Create;
   SetupLanguageMenu;
-
-  // ActionLists
-  TActionProxyCollection.ActionLists :=
-    [actlStandard, CommandsDataModule.actlMain,
-    PythonIIForm.InterpreterActionList, ProjectExplorerWindow.ProjectActionList,
-    CallStackWindow.actlCallStack];
 
   // Notifications
   TMessageManager.DefaultManager.SubscribeToMessage(TIDEOptionsChangedMessage,
@@ -2357,11 +2266,11 @@ begin
     end;
   end;
 
-  if OutputWindow.IsRunning then
+  if GI_SystemCommandService.IsRunning then
     if StyledMessageDlg(_(SKillExternalTool), mtConfirmation, [mbYes, mbCancel],
       0) = mrYes then
     begin
-      OutputWindow.actToolTerminateExecute(Self);
+      GI_SystemCommandService.Terminate;
       CanClose := True;
     end
     else
@@ -2419,6 +2328,7 @@ begin
     end;
 
     SkinManager.RemoveSkinNotification(Self);
+    TIDEDockWindow.FreeDockForms;
   end;
 end;
 
@@ -2435,36 +2345,7 @@ begin
   if Assigned(ItemViewer) and (ItemViewer.Item is TSpTBXTabItem) then
     ItemViewer.Item.Checked := True;
   // To update File Close
-  CommandsDataModule.UpdateMainActions;
   Handled := False;
-end;
-
-procedure TPyIDEMainForm.actNavBreakpointsExecute(Sender: TObject);
-begin
-  ShowDockForm(BreakPointsWindow);
-  BreakPointsWindow.FormActivate(Sender);
-end;
-
-procedure TPyIDEMainForm.actNavCallStackExecute(Sender: TObject);
-begin
-  ShowDockForm(CallStackWindow);
-  CallStackWindow.FormActivate(Sender);
-end;
-
-procedure TPyIDEMainForm.actNavChatExecute(Sender: TObject);
-begin
-  if not LLMChatForm.Visible then
-    ShowDockForm(LLMChatForm)
-  else
-    HideDockForm(LLMChatForm);
-end;
-
-procedure TPyIDEMainForm.actNavCodeExplorerExecute(Sender: TObject);
-begin
-  ShowDockForm(CodeExplorerWindow);
-  CodeExplorerWindow.FormActivate(Sender);
-  // only when activated by the menu or the keyboard - Will be reset by frmIDEDockWin
-  ResourcesDataModule.DockStyle.ChannelOption.MouseleaveHide := False;
 end;
 
 procedure TPyIDEMainForm.actNavEditorExecute(Sender: TObject);
@@ -2480,13 +2361,9 @@ begin
   if not Activate then
     DockServer.AutoFocusDockedForm := False;
   ShowDockForm(Form as TIDEDockWindow);
-  if Activate then
-  begin
-    if Assigned(Form.OnActivate) then
-      Form.OnActivate(Self);
-    // only when activated by the menu or the keyboard - Will be reset by frmIDEDockWin
-    //ResourcesDataModule.DockStyle.ChannelOption.MouseleaveHide := False;
-  end;
+  if Activate and Assigned(Form.OnActivate) then
+    Form.OnActivate(Self);
+  // only when activated by the menu or the keyboard - Will be reset by frmIDEDockWin
   ResourcesDataModule.DockStyle.ChannelOption.MouseleaveHide := False;
   DockServer.AutoFocusDockedForm := True;
 end;
@@ -2553,7 +2430,7 @@ procedure TPyIDEMainForm.ClearPythonWindows;
 begin
   GI_VariablesWindow.ClearAll;
   GI_CallStackWindow.ClearAll;
-  UnitTestWindow.ClearAll;
+  GI_UnitTestsService.ClearAll;
   RegExpTesterWindow.Clear;
 end;
 
@@ -2570,60 +2447,17 @@ begin
   end;
 end;
 
-procedure TPyIDEMainForm.actNavFileExplorerExecute(Sender: TObject);
-begin
-  ShowIDEDockForm(FileExplorerWindow);
-end;
-
-procedure TPyIDEMainForm.actNavInterpreterExecute(Sender: TObject);
-begin
-  ShowIDEDockForm(PythonIIForm);
-end;
-
-procedure TPyIDEMainForm.actNavMessagesExecute(Sender: TObject);
-begin
-  ShowIDEDockForm(MessagesWindow);
-end;
-
-procedure TPyIDEMainForm.actNavOutputExecute(Sender: TObject);
-begin
-  ShowIDEDockForm(OutputWindow);
-end;
-
-procedure TPyIDEMainForm.actNavProjectExplorerExecute(Sender: TObject);
-begin
-  ShowIDEDockForm(ProjectExplorerWindow);
-end;
-
-procedure TPyIDEMainForm.actNavRETesterExecute(Sender: TObject);
-begin
-  ShowIDEDockForm(RegExpTesterWindow);
-end;
-
 procedure TPyIDEMainForm.actNavStructureExecute(Sender: TObject);
 begin
   ShowIDEDockForm(FFileStructure);
-  CodeExplorerWindow.FormActivate(Sender);
+  IDEDockForm(ideCodeExplorer).FormActivate(Sender);
 end;
 
-procedure TPyIDEMainForm.actNavTodoExecute(Sender: TObject);
+procedure TPyIDEMainForm.actNavigateToDockWindow(Sender: TObject);
 begin
-  ShowIDEDockForm(ToDoWindow);
-end;
-
-procedure TPyIDEMainForm.actNavUnitTestsExecute(Sender: TObject);
-begin
-  ShowIDEDockForm(UnitTestWindow);
-end;
-
-procedure TPyIDEMainForm.actNavVariablesExecute(Sender: TObject);
-begin
-  ShowIDEDockForm(VariablesWindow);
-end;
-
-procedure TPyIDEMainForm.actNavWatchesExecute(Sender: TObject);
-begin
-  ShowIDEDockForm(WatchesWindow);
+  var DockForm := IDEDockForm(TIDEDockWindowKind((Sender as TAction).Tag));
+  if Assigned(DockForm) then
+    ShowIDEDockForm(DockForm);
 end;
 
 procedure TPyIDEMainForm.actFileNewFileExecute(Sender: TObject);
@@ -3065,9 +2899,9 @@ begin
   PyModule := PyControl.ActiveInterpreter.ImportModule(ActiveEditor, True);
   VarClear(PyModule);
 
-  GI_PyIDEServices.Messages.AddMessage(Format(_(SModuleImportedOK),
+  GI_MessagesService.AddMessage(Format(_(SModuleImportedOK),
     [ActiveEditor.FileTitle]));
-  ShowDockForm(MessagesWindow);
+  ShowDockForm(IDEDockForm(ideMessages));
 end;
 
 procedure TPyIDEMainForm.actToggleBreakPointExecute(Sender: TObject);
@@ -3356,12 +3190,9 @@ end;
 
 procedure TPyIDEMainForm.UpdateDebugCommands;
 begin
-  var
-  Editor := GetActiveEditor;
-  var
-  AFile := GetActiveFile;
-  var
-  PyFileActive := Assigned(Editor) and
+  var Editor := GetActiveEditor;
+  var AFile := GetActiveFile;
+  var PyFileActive := Assigned(Editor) and
     (Editor.SynEdit.Highlighter = ResourcesDataModule.SynPythonSyn);
   var
   DbgState := GI_PyControl.DebuggerState;
@@ -3407,9 +3238,6 @@ begin
     (PyControl.RunConfig.ScriptName <> '');
   actRunDebugLastScript.Enabled := actRunLastScript.Enabled;
   actRunLastScriptExternal.Enabled := actRunLastScript.Enabled;
-
-  CallStackWindow.actPreviousFrame.Enabled := (DbgState = dsPaused);
-  CallStackWindow.actNextFrame.Enabled := (DbgState = dsPaused);
 end;
 
 procedure TPyIDEMainForm.SetActiveTabControl(const Value
@@ -3505,8 +3333,6 @@ var
   I: Integer;
 begin
   UpdateStandardActions;
-  CommandsDataModule.UpdateMainActions;
-  PythonIIForm.UpdateInterpreterActions;
   UpdateStatusBarPanels;
   UpdateDebugCommands;
   if Assigned(GI_PyIDEServices.ActiveFile) then
@@ -3663,107 +3489,14 @@ begin
     StatusBar.Top := Height - StatusBar.Height;
 end;
 
-procedure TPyIDEMainForm.actViewIIExecute(Sender: TObject);
-begin
-  if not PythonIIForm.Visible then
-    ShowDockForm(PythonIIForm)
-  else
-    HideDockForm(PythonIIForm);
-end;
-
 procedure TPyIDEMainForm.actViewMainMenuExecute(Sender: TObject);
 begin
   MainMenu.Visible := not MainMenu.Visible;
 end;
 
-procedure TPyIDEMainForm.actViewCodeExplorerExecute(Sender: TObject);
-begin
-  if not CodeExplorerWindow.Visible then
-    ShowDockForm(CodeExplorerWindow)
-  else
-    HideDockForm(CodeExplorerWindow);
-end;
-
 procedure TPyIDEMainForm.actViewCustomizeToolbarsExecute(Sender: TObject);
 begin
   SpTBXCustomizer.Show;
-end;
-
-procedure TPyIDEMainForm.actViewFileExplorerExecute(Sender: TObject);
-begin
-  if not FileExplorerWindow.Visible then
-    ShowDockForm(FileExplorerWindow)
-  else
-    HideDockForm(FileExplorerWindow);
-end;
-
-procedure TPyIDEMainForm.actViewToDoListExecute(Sender: TObject);
-begin
-  if not ToDoWindow.Visible then
-  begin
-    ShowDockForm(ToDoWindow);
-    ToDoWindow.ToDoView.SetFocus;
-  end
-  else
-    HideDockForm(ToDoWindow);
-end;
-
-procedure TPyIDEMainForm.actViewRegExpTesterExecute(Sender: TObject);
-begin
-  if not RegExpTesterWindow.Visible then
-    ShowDockForm(RegExpTesterWindow)
-  else
-    HideDockForm(RegExpTesterWindow);
-end;
-
-procedure TPyIDEMainForm.actViewUMLInteractiveExecute(Sender: TObject);
-begin
-  if not FUMLInteractive.Visible then
-    ShowDockForm(FUMLInteractive)
-  else
-    HideDockForm(FUMLInteractive);
-end;
-
-procedure TPyIDEMainForm.actViewUnitTestsExecute(Sender: TObject);
-begin
-  if not UnitTestWindow.Visible then
-    ShowDockForm(UnitTestWindow)
-  else
-    HideDockForm(UnitTestWindow);
-end;
-
-procedure TPyIDEMainForm.actViewObjectinspectorExecute(Sender: TObject);
-begin
-  if not FObjectInspector.Visible then
-    ShowDockForm(FObjectInspector)
-  else
-    HideDockForm(FObjectInspector);
-end;
-
-procedure TPyIDEMainForm.actViewOutputExecute(Sender: TObject);
-begin
-  if not OutputWindow.Visible then
-    ShowDockForm(OutputWindow)
-  else
-    HideDockForm(OutputWindow);
-end;
-
-procedure TPyIDEMainForm.actViewProjectExplorerExecute(Sender: TObject);
-begin
-  if not ProjectExplorerWindow.Visible then
-    ShowDockForm(ProjectExplorerWindow)
-  else
-    HideDockForm(ProjectExplorerWindow);
-end;
-
-procedure TPyIDEMainForm.actViewFindResultsExecute(Sender: TObject);
-begin
-  if not FindResultsWindow.Visible then
-  begin
-    ShowDockForm(FindResultsWindow);
-  end
-  else
-    HideDockForm(FindResultsWindow);
 end;
 
 procedure TPyIDEMainForm.actViewHideSecondaryWorkspaceExecute(Sender: TObject);
@@ -3779,30 +3512,6 @@ begin
     Editor.SplitEditorHide;
 end;
 
-procedure TPyIDEMainForm.actMessagesWinExecute(Sender: TObject);
-begin
-  if not MessagesWindow.Visible then
-    ShowDockForm(MessagesWindow)
-  else
-    HideDockForm(MessagesWindow);
-end;
-
-procedure TPyIDEMainForm.actCallStackWinExecute(Sender: TObject);
-begin
-  if not CallStackWindow.Visible then
-    ShowDockForm(CallStackWindow)
-  else
-    HideDockForm(CallStackWindow);
-end;
-
-procedure TPyIDEMainForm.actVariablesWinExecute(Sender: TObject);
-begin
-  if not VariablesWindow.Visible then
-    ShowDockForm(VariablesWindow)
-  else
-    HideDockForm(VariablesWindow);
-end;
-
 procedure TPyIDEMainForm.actAddWatchAtCursorExecute(Sender: TObject);
 var
   Editor: IEditor;
@@ -3810,22 +3519,6 @@ begin
   Editor := GetActiveEditor;
   if Assigned(Editor) then
     TEditorForm(Editor.Form).AddWatchAtCursor;
-end;
-
-procedure TPyIDEMainForm.actBreakPointsWinExecute(Sender: TObject);
-begin
-  if not BreakPointsWindow.Visible then
-    ShowDockForm(BreakPointsWindow)
-  else
-    HideDockForm(BreakPointsWindow);
-end;
-
-procedure TPyIDEMainForm.actWatchesWinExecute(Sender: TObject);
-begin
-  if not WatchesWindow.Visible then
-    ShowDockForm(WatchesWindow)
-  else
-    HideDockForm(WatchesWindow);
 end;
 
 function TPyIDEMainForm.GetActiveEditor: IEditor;
@@ -3934,20 +3627,10 @@ begin
   Result := ResourcesDataModule.Logger;
 end;
 
-function TPyIDEMainForm.GetMessageServices: IMessageServices;
-begin
-  Result := MessagesWindow;
-end;
-
 function TPyIDEMainForm.GetStoredScript(const Name: string): TStrings;
 begin
   Result := ResourcesDataModule.PythonScripts.StringsByName[Name];
   Result.WriteBOM := False;
-end;
-
-function TPyIDEMainForm.GetUnitTestServices: IUnitTestServices;
-begin
-  Result := UnitTestWindow;
 end;
 
 function TPyIDEMainForm.TabControl(TabControlIndex: Integer = 1):
@@ -4025,7 +3708,7 @@ begin
     icIndicators.SVGIconItems[2].FixedColor := clGray;
   end;
 
-  spiExternalToolsLED.Visible := OutputWindow.IsRunning;
+  spiExternalToolsLED.Visible := GI_SystemCommandService.IsRunning;
 end;
 
 function TPyIDEMainForm.CmdLineOpenFiles: Boolean;
@@ -4091,11 +3774,6 @@ begin
   FreeAndNil(FShellExtensionFiles);
 end;
 
-procedure TPyIDEMainForm.actFileExitExecute(Sender: TObject);
-begin
-  Close;
-end;
-
 procedure TPyIDEMainForm.actFileNewSequencediagramExecute(Sender: TObject);
 begin
   GI_EditorFactory.OpenFile(GetFilename('.psd'));
@@ -4124,7 +3802,7 @@ begin
     FObjectInspector.ELPropertyInspector.SetByCaption('Title', 'CAPTION');
     AEditor.SynEdit.ClearUndo; // because GUIForm.Open changes geometry
   end;
-  ShowDockForm(FObjectInspector);
+  ShowDockForm(IDEDockForm(ideObjectInspector));
 end;
 
 procedure TPyIDEMainForm.actFileNewModuleExecute(Sender: TObject);
@@ -4317,9 +3995,7 @@ begin
 
     AppStorage.DeleteSubTree('Highlighters');
     // Store dock form settings
-    for var I := 0 to Screen.FormCount - 1 do
-      if Screen.Forms[I] is TIDEDockWindow then
-        TIDEDockWindow(Screen.Forms[I]).StoreSettings(AppStorage);
+    TIDEDockWindow.StoreFormSettings(AppStorage);
 
     // Store Highlighters
     for var Highlighter in ResourcesDataModule.Highlighters do
@@ -4510,12 +4186,8 @@ begin
   end;
 
   // Restore dock form settings
-  for var I := 0 to Screen.FormCount - 1 do
-    if Screen.Forms[I] is TIDEDockWindow then
-    begin
-      TIDEDockWindow(Screen.Forms[I]).RestoreSettings(AppStorage);
-      TIDEDockWindow(Screen.Forms[I]).RestoreSettings(MachineStorage);
-    end;
+  TIDEDockWindow.RestoreFormSettings(AppStorage);
+  TIDEDockWindow.RestoreFormSettings(MachineStorage);
 
   // Restore highlighters
   for var Highlighter in ResourcesDataModule.Highlighters do
@@ -4824,26 +4496,11 @@ procedure TPyIDEMainForm.UpdateStandardActions;
 var
   Left, Right: Boolean;
 begin
-  actBreakPointsWin.Checked := BreakPointsWindow.Visible;
-  actCallStackWin.Checked := CallStackWindow.Visible;
-  actMessagesWin.Checked := MessagesWindow.Visible;
-  actVariablesWin.Checked := VariablesWindow.Visible;
-  actViewCodeExplorer.Checked := CodeExplorerWindow.Visible;
-  actViewFileExplorer.Checked := FileExplorerWindow.Visible;
-  actViewToDoList.Checked := ToDoWindow.Visible;
-  actViewRegExpTester.Checked := RegExpTesterWindow.Visible;
-  actViewUnitTests.Checked := UnitTestWindow.Visible;
-  actViewOutput.Checked := OutputWindow.Visible;
-  actViewFindResults.Checked := FindResultsWindow.Visible;
-  actViewII.Checked := PythonIIForm.Visible;
-  actViewProjectExplorer.Checked := ProjectExplorerWindow.Visible;
   actViewSplitEditorHor.Enabled := Assigned(GI_ActiveEditor);
   actViewSplitEditorVer.Enabled := Assigned(GI_ActiveEditor);
   actViewHideSecondEditor.Enabled := Assigned(GI_ActiveEditor) and
     Assigned(GI_ActiveEditor.SynEdit2) and GI_ActiveEditor.SynEdit2.Visible;
   actViewHideSecondaryWorkspace.Enabled := TabControl2.Visible;
-
-  actWatchesWin.Checked := WatchesWindow.Visible;
 
   actViewStatusBar.Checked := StatusBar.Visible;
   actViewMainMenu.Checked := MainMenu.Visible;
@@ -5663,10 +5320,10 @@ begin
 
   var
   TabHost := ManualTabDock(DockServer.BottomDockPanel, PythonIIForm,
-    MessagesWindow);
+    IDEDockForm(ideMessages));
   DockServer.BottomDockPanel.Height := PPIScale(200);
-  ManualTabDockAddPage(TabHost, OutputWindow);
-  ManualTabDockAddPage(TabHost, VariablesWindow);
+  ManualTabDockAddPage(TabHost, IDEDockForm(ideCommandOutput));
+  ManualTabDockAddPage(TabHost, IDEDockForm(ideVariables));
   ShowDockForm(PythonIIForm);
 
   ManualConjoinDock(DockServer.BottomDockPanel, TabHost,
@@ -5884,7 +5541,7 @@ begin
   begin
     FGUIDesigner.SetToolButton(TToolButton(Sender).Tag);
     if not FObjectInspector.Visible then
-      ShowDockForm(FObjectInspector);
+      ShowDockForm(IDEDockForm(ideObjectInspector));
   end;
 end;
 
@@ -6011,8 +5668,8 @@ begin
 
               if ShowMessages then
               begin
-                GI_PyIDEServices.Messages.ClearMessages;
-                GI_PyIDEServices.Messages.AddMessage
+                GI_MessagesService.ClearMessages;
+                GI_MessagesService.AddMessage
                   (_(SDefinitionsOf) + Token + '"');
               end;
 
@@ -6021,11 +5678,11 @@ begin
                 BufferCord);
 
               if (FileName <> '') and ShowMessages then
-                GI_PyIDEServices.Messages.AddMessage(_(SDefinitionFound),
+                GI_MessagesService.AddMessage(_(SDefinitionFound),
                   FileName, BufferCord.Line, BufferCord.Char);
 
               if ShowMessages then
-                ShowDockForm(MessagesWindow);
+                ShowDockForm(IDEDockForm(ideMessages));
 
               if FileName <> '' then
               begin
@@ -6037,7 +5694,7 @@ begin
               else
               begin
                 if ShowMessages then
-                  GI_PyIDEServices.Messages.AddMessage(_(SDefinitionNotFound));
+                  GI_MessagesService.AddMessage(_(SDefinitionNotFound));
                 MessageBeep(MB_ICONASTERISK);
               end;
             end;
@@ -6149,8 +5806,8 @@ begin
               if FName = '' then
                 FName := GI_ActiveEditor.FileTitle;
 
-              GI_PyIDEServices.Messages.ClearMessages;
-              GI_PyIDEServices.Messages.AddMessage
+              GI_MessagesService.ClearMessages;
+              GI_MessagesService.AddMessage
                 (_(SReferencesOf) + Token + '"');
 
               References := TPyLspClient.FindReferencesByCoordinates(FName, CaretXY);
@@ -6158,14 +5815,14 @@ begin
               for var DocPosition in References do
               begin
                 Line := GetNthSourceLine(DocPosition.FileId, DocPosition.Line);
-                GI_PyIDEServices.Messages.AddMessage(Line, DocPosition.FileId,
+                GI_MessagesService.AddMessage(Line, DocPosition.FileId,
                   DocPosition.Line, DocPosition.Char, Token.Length);
               end;
 
-              ShowDockForm(MessagesWindow);
+              ShowDockForm(IDEDockForm(ideMessages));
               if not FoundReferences then
               begin
-                GI_PyIDEServices.Messages.AddMessage(_(SReferencesNotFound));
+                GI_MessagesService.AddMessage(_(SReferencesNotFound));
                 MessageBeep(MB_ICONASTERISK);
               end;
             end;
@@ -6411,8 +6068,8 @@ begin
 
       TEditorForm(Result.Form).DefaultExtension := FileTemplate.Extension;
       // Jupyter support
-      if (LowerCase(FileTemplate.Extension) = 'ipynb') and not OutputWindow.IsRunning
-      then
+      if (LowerCase(FileTemplate.Extension) = 'ipynb') and
+        not GI_SystemCommandService.IsRunning then
       begin
         Editor := Result;
         (Editor as IFileCommands).ExecSave;
@@ -6596,7 +6253,6 @@ procedure TPyIDEMainForm.FormShowDelayedActions;
 begin
   // Activate File Explorer
   FileExplorerWindow.FileExplorerTree.Active := True;
-  // Application.ProcessMessages;
 
   // Load Python Engine and Assign Debugger Events
   PyControl.LoadPythonEngine;
@@ -6849,7 +6505,6 @@ begin
   begin
     EditorSearchOptions.SearchText := tbiSearchText.Text;
     EditorSearchOptions.InitSearch;
-    CommandsDataModule.UpdateMainActions;
 
     ClearAllHighlightedTerms;
     if CommandsDataModule.actSearchHighlight.Enabled and
@@ -6923,7 +6578,6 @@ procedure TPyIDEMainForm.tbiReplaceTextChange(Sender: TObject);
 begin
   EditorSearchOptions.ReplaceText := tbiReplaceText.Text;
   EditorSearchOptions.InitSearch;
-  CommandsDataModule.UpdateMainActions;
 end;
 
 procedure TPyIDEMainForm.tbiReplaceTextExit(Sender: TObject);
@@ -7023,6 +6677,11 @@ begin
       Editor.ActiveSynEdit.BlockEnd, mnRefactor);
 end;
 
+procedure TPyIDEMainForm.mnTerminateClick(Sender: TObject);
+begin
+  GI_SystemCommandService.Terminate;
+end;
+
 procedure TPyIDEMainForm.RemoveDefunctEditorOptions;
 // since 5.11 to avoid an exception
 const
@@ -7080,6 +6739,15 @@ begin
     3:
       CreateQtCursors;
   end;
+end;
+
+procedure TPyIDEMainForm.spiExternalToolsLEDClick(Sender: TObject);
+var
+  MousePos: TPoint;
+begin
+  GetCursorPos(MousePos);
+  MousePos := ScreenToClient(MousePos);
+  RunningProcessesPopUpMenu.Popup(MousePos.X, MousePos.Y);
 end;
 
 { TTSpTBXTabControl }

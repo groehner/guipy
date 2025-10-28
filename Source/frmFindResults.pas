@@ -209,13 +209,14 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Execute(DoRefresh: Boolean);
-    function DoingSearchOrReplace: Boolean;
+    function IsBusy: Boolean;
     // Storage
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
 
     property ShowContext: Boolean read FShowContext write SetShowContext;
     property DoSearchReplace: Boolean read FDoSearchReplace write FDoSearchReplace;
+    class function CreateInstance: TIDEDockWindow; override;
   end;
 
 // Replace all matches in all files
@@ -500,7 +501,7 @@ var
   Processing: Boolean;
 begin
   HaveItems := (lbResults.Items.Count > 0);
-  Processing := DoingSearchOrReplace;
+  Processing := IsBusy;
   actFileSearch.Enabled := not Processing;
   actFileRefresh.Enabled := not Processing;
   actViewOptions.Enabled := not Processing;
@@ -559,7 +560,7 @@ var
   MatchesFound: Integer;
   Cursor: IInterface;
 begin
-  Assert(not DoingSearchOrReplace);
+  Assert(not IsBusy);
 
   if not QueryUserForReplaceOptions(_(SAllMatchedFiles)) then
     Exit;
@@ -588,7 +589,7 @@ var
   ResultObject: TObject;
   Cursor: IInterface;
 begin
-  Assert(not DoingSearchOrReplace);
+  Assert(not IsBusy);
 
   ResultIndex := lbResults.ItemIndex;
   if ResultIndex < 0 then
@@ -676,6 +677,12 @@ begin
   reContext.Indicators.RegisterSpec(FBoldIndicatorId, FBoldIndicatorSpec);
 end;
 
+class function TFindResultsWindow.CreateInstance: TIDEDockWindow;
+begin
+  FindResultsWindow := TFindResultsWindow.Create(Application);
+  Result := FindResultsWindow;
+end;
+
 destructor TFindResultsWindow.Destroy;
 begin
   Self.Abort;
@@ -689,7 +696,7 @@ begin
   FreeAndNil(FindInFilesExpert);
 end;
 
-function TFindResultsWindow.DoingSearchOrReplace: Boolean;
+function TFindResultsWindow.IsBusy: Boolean;
 begin
   Result := FSearchInProgress or FReplaceInProgress;
 end;
@@ -701,7 +708,8 @@ var
   MatchesFound: Cardinal;
   //Cursor: IInterface;
 begin
-  if DoingSearchOrReplace then begin
+  if IsBusy then
+  begin
     StyledMessageDlg(_(SGrepActive), mtError, [mbOK], 0);
     Exit;
   end;
@@ -1327,5 +1335,8 @@ begin
   else
     FG := clNone;
 end;
+
+initialization
+  TIDEDockWindow.RegisterDockWinClass(ideSearchResults, TFindResultsWindow);
 
 end.

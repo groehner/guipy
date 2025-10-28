@@ -247,7 +247,7 @@ type
     property SearchTarget: TSynEdit read GetSearchTarget;
   end;
 
-  IMessageServices = interface
+  IMessagesService = interface
   ['{CF747CB1-A5C0-48DC-BE8E-7857074887AD}']
     procedure ShowWindow;
     procedure AddMessage(const Msg: string; const FileName: string = '';
@@ -257,13 +257,23 @@ type
       SkipFrames: Integer = 1; ShowWindow: Boolean = False);
   end;
 
-  IUnitTestServices = interface
+  IUnitTestsService = interface
   ['{E78B808E-5BFA-4480-BC22-72DC5069BB8A}']
     procedure StartTest(Test: Variant);
     procedure StopTest(Test: Variant);
     procedure AddError(Test, Err: Variant);
     procedure AddFailure(Test, Err: Variant);
     procedure AddSuccess(Test: Variant);
+    procedure ClearAll;
+  end;
+
+  ISystemCommandService = interface
+  ['{7BD27760-9522-49D7-9315-85EC305E0082}']
+    function GetIsRunning: Boolean;
+    function GetRunningTool: string;
+    procedure Terminate;
+    property IsRunning: Boolean read GetIsRunning;
+    property RunningTool: string read GetRunningTool;
   end;
 
   IIDELayouts = interface
@@ -295,8 +305,6 @@ type
     procedure SetRunLastScriptHints(const ScriptName: string);
     procedure SetActivityIndicator(TurnOn: Boolean; Hint: string = ''; OnClick: TNotifyEvent = nil);
     function GetStoredScript(const Name: string): TStrings;
-    function GetMessageServices: IMessageServices;
-    function GetUnitTestServices: IUnitTestServices;
     function GetIDELayouts: IIDELayouts;
     function GetAppStorage: TJvCustomAppStorage;
     function GetLocalAppStorage: TJvCustomAppStorage;
@@ -306,8 +314,6 @@ type
     property ActiveFile: IFile read GetActiveFile;
     property ActiveEditor: IEditor read GetActiveEditor;
     property IsClosing: Boolean read GetIsClosing;
-    property Messages: IMessageServices read GetMessageServices;
-    property UnitTests: IUnitTestServices read GetUnitTestServices;
     property Layouts: IIDELayouts read GetIDELayouts;
     property AppStorage: TJvCustomAppStorage read GetAppStorage;
     property LocalAppStorage: TJvCustomAppStorage read GetLocalAppStorage;
@@ -335,6 +341,9 @@ var
   GI_SearchCmds: ISearchCommands;
 
   GI_PyIDEServices: IPyIDEServices;
+  GI_MessagesService: IMessagesService;
+  GI_UnitTestsService: IUnitTestsService;
+  GI_SystemCommandService: ISystemCommandService;
   GI_SSHServices: ISSHServices;
 
   GI_FileSystemMonitor: IFileSystemMonitor;

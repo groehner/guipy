@@ -272,7 +272,6 @@ inherited UnitTestWindow: TUnitTestWindow
       Category = 'Commands'
       Caption = '&Run'
       Hint = 'Run selected tests'
-      ImageIndex = 5
       ImageName = 'Run1'
       OnExecute = actRunExecute
     end

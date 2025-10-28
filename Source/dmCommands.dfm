@@ -91,25 +91,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'Save13'
       ShortCut = 16467
       OnExecute = actFileSaveExecute
-    end
-    object actFileSaveAs: TAction
-      Category = 'File'
-      Caption = 'Sav&e As...'
-      Enabled = False
-      HelpContext = 310
-      Hint = 'Save As|Save active file under different name'
-      OnExecute = actFileSaveAsExecute
-    end
-    object actFileClose: TAction
-      Category = 'File'
-      Caption = '&Close'
-      Enabled = False
-      HelpContext = 310
-      Hint = 'Close|Close active file'
-      ImageIndex = 92
-      ImageName = 'TabCLose'
-      ShortCut = 16499
-      OnExecute = actFileCloseExecute
+      OnUpdate = UpdateFileActions
     end
     object actEditCut: TEditCut
       Category = 'Edit'
@@ -121,6 +103,27 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 9
       ImageName = 'Cut13'
       ShortCut = 16472
+    end
+    object actFileSaveAs: TAction
+      Category = 'File'
+      Caption = 'Sav&e As...'
+      Enabled = False
+      HelpContext = 310
+      Hint = 'Save As|Save active file under different name'
+      OnExecute = actFileSaveAsExecute
+      OnUpdate = UpdateFileActions
+    end
+    object actFileClose: TAction
+      Category = 'File'
+      Caption = '&Close'
+      Enabled = False
+      HelpContext = 310
+      Hint = 'Close|Close active file'
+      ImageIndex = 92
+      ImageName = 'TabCLose'
+      ShortCut = 16499
+      OnExecute = actFileCloseExecute
+      OnUpdate = UpdateFileActions
     end
     object actEditCopy: TEditCopy
       Category = 'Edit'
@@ -220,12 +223,33 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Select All|Selects the entire document'
       ShortCut = 16449
     end
+    object actInsertTemplate: TAction
+      Category = 'Edit'
+      Caption = 'Insert &Template'
+      HelpContext = 320
+      Hint = 'Insert a Code Template'
+      ShortCut = 16458
+      OnExecute = actInsertTemplateExecute
+      OnUpdate = UpdateEditActions
+    end
+    object actEditCopyFileName: TAction
+      Category = 'Edit'
+      Caption = 'Copy File Name'
+      HelpContext = 320
+      HelpType = htContext
+      Hint = 'Copy file name of active file to clipboard'
+      ImageIndex = 10
+      ImageName = 'Copy13'
+      OnExecute = actEditCopyFileNameExecute
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
     object actEditReadOnly: TAction
       Category = 'Edit'
       Caption = 'Read Only'
       HelpContext = 320
       Hint = 'Enable/disable editing'
       OnExecute = actEditReadOnlyExecute
+      OnUpdate = UpdateEditActions
     end
     object actSearchFind: TAction
       Category = 'Search'
@@ -237,6 +261,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'Search13'
       ShortCut = 16454
       OnExecute = actSearchFindExecute
+      OnUpdate = UpdateSearchActions
     end
     object actSearchFindNext: TAction
       Category = 'Search'
@@ -248,6 +273,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'FindNext'
       ShortCut = 114
       OnExecute = actSearchFindNextExecute
+      OnUpdate = UpdateSearchActions
     end
     object actSearchFindPrev: TAction
       Category = 'Search'
@@ -259,6 +285,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'FindPrevious'
       ShortCut = 8306
       OnExecute = actSearchFindPrevExecute
+      OnUpdate = UpdateSearchActions
     end
     object actSearchReplace: TAction
       Category = 'Search'
@@ -270,6 +297,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'Replace13'
       ShortCut = 16456
       OnExecute = actSearchReplaceExecute
+      OnUpdate = UpdateSearchActions
     end
     object actFileSaveAll: TAction
       Category = 'File'
@@ -279,6 +307,27 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 3
       ImageName = 'SaveAll'
       OnExecute = actFileSaveAllExecute
+      OnUpdate = UpdateFileActions
+    end
+    object actFileSaveToRemote: TAction
+      Category = 'File'
+      Caption = 'Save to Remote File'
+      Hint = 'Save to remote file with SSH'
+      ImageIndex = 96
+      ImageName = 'Upload'
+      OnExecute = actFileSaveToRemoteExecute
+      OnUpdate = UpdateFileActions
+    end
+    object actFileReload: TAction
+      Category = 'File'
+      Caption = 'Re&load'
+      Enabled = False
+      HelpContext = 310
+      Hint = 'Reload|Reload active file'
+      ImageIndex = 29
+      ImageName = 'Refresh'
+      OnExecute = actFileReloadExecute
+      OnUpdate = UpdateFileActions
     end
     object actFilePrint: TAction
       Category = 'File'
@@ -290,6 +339,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'Print13'
       ShortCut = 16464
       OnExecute = actFilePrintExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actPrinterSetup: TAction
       Category = 'File'
@@ -299,6 +349,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 4
       ImageName = 'PrintSetup'
       OnExecute = actPrinterSetupExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actPrintPreview: TAction
       Category = 'File'
@@ -308,6 +359,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 5
       ImageName = 'PrintPreview'
       OnExecute = actPrintPreviewExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actPageSetup: TAction
       Category = 'File'
@@ -317,6 +369,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 52
       ImageName = 'PageSetup'
       OnExecute = actPageSetupExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actEditIndent: TAction
       Category = 'Source Code'
@@ -327,6 +380,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'Indent13'
       ShortCut = 24649
       OnExecute = actEditIndentExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actEditDedent: TAction
       Category = 'Source Code'
@@ -337,6 +391,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'Dedent'
       ShortCut = 24661
       OnExecute = actEditDedentExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actEditCommentOut: TAction
       Category = 'Source Code'
@@ -347,6 +402,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'CodeComment'
       ShortCut = 49342
       OnExecute = actEditCommentOutExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actEditUncomment: TAction
       Category = 'Source Code'
@@ -357,6 +413,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'UnCodeComment'
       ShortCut = 49340
       OnExecute = actEditUncommentExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actSearchMatchingBrace: TAction
       Category = 'Search'
@@ -365,6 +422,7 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Find Matching Brace'
       ShortCut = 16605
       OnExecute = actSearchMatchingBraceExecute
+      OnUpdate = UpdateSearchActions
     end
     object actEditTabify: TAction
       Category = 'Source Code'
@@ -373,6 +431,7 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Tabify|Convert spaces to tabs'
       ShortCut = 32990
       OnExecute = actEditTabifyExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actEditUntabify: TAction
       Category = 'Source Code'
@@ -381,6 +440,43 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Untabify|Convert tabs to spaces'
       ShortCut = 41182
       OnExecute = actEditUntabifyExecute
+      OnUpdate = UpdateSourceCodeActions
+    end
+    object actConfigureTools: TAction
+      Category = 'Tools'
+      Caption = 'Configure &Tools...'
+      HelpContext = 710
+      Hint = 'Configure Tools|Add/remove/edit command-line tools'
+      ImageIndex = 56
+      ImageName = 'ToolsSetup'
+      OnExecute = actConfigureToolsExecute
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actCheckForUpdates: TAction
+      Category = 'Tools'
+      Caption = 'Check For &Updates'
+      HelpContext = 350
+      Hint = 'Check whether a newer version of PyScripter is available'
+      OnExecute = actCheckForUpdatesExecute
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actToolsEditStartupScripts: TAction
+      Category = 'Tools'
+      Caption = 'Edit &Startup Scripts'
+      HelpContext = 350
+      HelpType = htContext
+      Hint = 'Edit PyScripter initialization files'
+      OnExecute = actToolsEditStartupScriptsExecute
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actToolsRestartLS: TAction
+      Category = 'Tools'
+      Caption = 'Restart &Language Server'
+      HelpContext = 350
+      HelpType = htContext
+      Hint = 'Restart the Language Server'
+      OnExecute = actToolsRestartLSExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actPythonPath: TAction
       Category = 'Tools'
@@ -390,6 +486,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 20
       ImageName = 'Folders'
       OnExecute = actPythonPathExecute
+      OnUpdate = UpdateToolsActions
     end
     object actHelpContents: THelpContents
       Category = 'Help'
@@ -421,6 +518,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 25
       ImageName = 'Info'
       OnExecute = actAboutExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actSearchGoToLine: TAction
       Category = 'Search'
@@ -431,6 +529,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'GoToLine'
       ShortCut = 32839
       OnExecute = actSearchGoToLineExecute
+      OnUpdate = UpdateSearchActions
     end
     object actSearchGoToSyntaxError: TAction
       Category = 'Search'
@@ -441,6 +540,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'GoToError'
       ShortCut = 24645
       OnExecute = actSearchGoToSyntaxErrorExecute
+      OnUpdate = UpdateSearchActions
     end
     object actFindInFiles: TAction
       Category = 'Search'
@@ -451,6 +551,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'SearchFolder'
       ShortCut = 24646
       OnExecute = actFindInFilesExecute
+      OnUpdate = UpdateSearchActions
     end
     object actParameterCompletion: TAction
       Category = 'Parameters'
@@ -459,6 +560,7 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Insert parameter to the edited file'
       ShortCut = 24656
       OnExecute = actParameterCompletionExecute
+      OnUpdate = UpdateParameterActions
     end
     object actModifierCompletion: TAction
       Category = 'Parameters'
@@ -467,6 +569,7 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Insert parameter to the edited file'
       ShortCut = 24653
       OnExecute = actModifierCompletionExecute
+      OnUpdate = UpdateParameterActions
     end
     object actReplaceParameters: TAction
       Category = 'Parameters'
@@ -475,6 +578,7 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Replace parameters with their values'
       ShortCut = 24658
       OnExecute = actReplaceParametersExecute
+      OnUpdate = UpdateParameterActions
     end
     object actHelpParameters: TAction
       Category = 'Help'
@@ -483,23 +587,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpType = htContext
       Hint = 'Help on custom parameters'
       OnExecute = actHelpParametersExecute
-    end
-    object actInsertTemplate: TAction
-      Category = 'Edit'
-      Caption = 'Insert &Template'
-      HelpContext = 320
-      Hint = 'Insert a Code Template'
-      ShortCut = 16458
-      OnExecute = actInsertTemplateExecute
-    end
-    object actConfigureTools: TAction
-      Category = 'Tools'
-      Caption = 'Configure &Tools...'
-      HelpContext = 710
-      Hint = 'Configure Tools|Add/remove/edit command-line tools'
-      ImageIndex = 56
-      ImageName = 'ToolsSetup'
-      OnExecute = actConfigureToolsExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actHelpExternalTools: TAction
       Category = 'Help'
@@ -508,6 +596,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpType = htContext
       Hint = 'Help on External Tools'
       OnExecute = actHelpExternalToolsExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actFindFunction: TAction
       Category = 'Search'
@@ -518,6 +607,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'Function13'
       ShortCut = 16455
       OnExecute = actFindFunctionExecute
+      OnUpdate = UpdateSearchActions
     end
     object actEditLineNumbers: TAction
       Category = 'Edit'
@@ -527,6 +617,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 31
       ImageName = 'LineNumbers'
       OnExecute = actEditLineNumbersExecute
+      OnUpdate = UpdateEditActions
     end
     object actEditShowSpecialChars: TAction
       Category = 'Edit'
@@ -536,6 +627,17 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 63
       ImageName = 'SpecialChars'
       OnExecute = actEditShowSpecialCharsExecute
+      OnUpdate = UpdateEditActions
+    end
+    object actEditWordWrap: TAction
+      Category = 'Edit'
+      Caption = 'Word &Wrap'
+      HelpContext = 320
+      Hint = 'Turn word wrap on/off (incompatible with code folding)'
+      ImageIndex = 79
+      ImageName = 'WordWrap'
+      OnExecute = actEditWordWrapExecute
+      OnUpdate = UpdateEditActions
     end
     object actFindPreviousReference: TAction
       Tag = 1
@@ -545,6 +647,7 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Find previous identifier reference'
       ShortCut = 49190
       OnExecute = actFindNextReferenceExecute
+      OnUpdate = UpdateSearchActions
     end
     object actFindNextReference: TAction
       Category = 'Search'
@@ -553,6 +656,7 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Find next identifier reference'
       ShortCut = 49192
       OnExecute = actFindNextReferenceExecute
+      OnUpdate = UpdateSearchActions
     end
     object actEditLBDos: TAction
       Category = 'Edit'
@@ -561,6 +665,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 320
       Hint = 'DOS/Windows|Convert to DOS line break'
       OnExecute = actEditLBExecute
+      OnUpdate = UpdateLineBreakActions
     end
     object actEditLBUnix: TAction
       Tag = 1
@@ -569,6 +674,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 320
       Hint = 'UNIX|Convert to UNIX line break'
       OnExecute = actEditLBExecute
+      OnUpdate = UpdateLineBreakActions
     end
     object actEditLBMac: TAction
       Tag = 2
@@ -577,6 +683,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 320
       Hint = 'Mac|Convert to Mac line break'
       OnExecute = actEditLBExecute
+      OnUpdate = UpdateLineBreakActions
     end
     object actEditAnsi: TAction
       Category = 'Edit'
@@ -585,6 +692,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 320
       Hint = 'Use ANSI encoding'
       OnExecute = actEditFileEncodingExecute
+      OnUpdate = UpdateEncodingActions
     end
     object actHelpEditorShortcuts: TAction
       Category = 'Help'
@@ -593,13 +701,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpType = htContext
       Hint = 'Help on editor shortcuts'
       OnExecute = actHelpEditorShortcutsExecute
-    end
-    object actCheckForUpdates: TAction
-      Category = 'Tools'
-      Caption = 'Check For &Updates'
-      HelpContext = 350
-      Hint = 'Check whether a newer version of PyScripter is available'
-      OnExecute = actCheckForUpdatesExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actUnitTestWizard: TAction
       Category = 'Tools'
@@ -609,6 +711,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 68
       ImageName = 'UnitTestWin'
       OnExecute = actUnitTestWizardExecute
+      OnUpdate = UpdateToolsActions
     end
     object actInterpreterEditorOptions: TAction
       Category = 'Options'
@@ -618,6 +721,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 18
       ImageName = 'EditOptions'
       OnExecute = actInterpreterEditorOptionsExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actEditToggleComment: TAction
       Category = 'Source Code'
@@ -628,6 +732,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'CodeComment'
       ShortCut = 16606
       OnExecute = actEditToggleCommentExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actEditUTF8: TAction
       Tag = 1
@@ -636,6 +741,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 320
       Hint = 'Use UTF-8 encoding when saving the file'
       OnExecute = actEditFileEncodingExecute
+      OnUpdate = UpdateEncodingActions
     end
     object actEditUTF8NoBOM: TAction
       Tag = 2
@@ -644,6 +750,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 320
       Hint = 'Use UTF-8 encoding without BOM'
       OnExecute = actEditFileEncodingExecute
+      OnUpdate = UpdateEncodingActions
     end
     object actEditUTF16LE: TAction
       Tag = 3
@@ -652,6 +759,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 320
       Hint = 'Use UTF-16LE encoding'
       OnExecute = actEditFileEncodingExecute
+      OnUpdate = UpdateEncodingActions
     end
     object actEditUTF16BE: TAction
       Tag = 4
@@ -660,40 +768,35 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 320
       Hint = 'Use UTF-16BE encoding'
       OnExecute = actEditFileEncodingExecute
-    end
-    object actFileReload: TAction
-      Category = 'File'
-      Caption = 'Re&load'
-      Enabled = False
-      HelpContext = 310
-      Hint = 'Reload|Reload active file'
-      ImageIndex = 29
-      ImageName = 'Refresh'
-      OnExecute = actFileReloadExecute
+      OnUpdate = UpdateEncodingActions
     end
     object actImportShortcuts: TAction
       Category = 'Import/Export'
       Caption = 'Import Shortcuts'
       Hint = 'Import Shortcuts'
       OnExecute = actImportShortcutsExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actExportShortCuts: TAction
       Category = 'Import/Export'
       Caption = 'Export Shortcuts'
       Hint = 'Export Shortcuts'
       OnExecute = actExportShortCutsExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actImportHighlighters: TAction
       Category = 'Import/Export'
       Caption = 'Import Highlighters'
       Hint = 'Import Syntax Highlighters'
       OnExecute = actImportHighlightersExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actExportHighlighters: TAction
       Category = 'Import/Export'
       Caption = 'Export Highlighters'
       Hint = 'Export Syntax Highlighters'
       OnExecute = actExportHighlightersExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actSearchReplaceNow: TAction
       Category = 'Search'
@@ -703,6 +806,7 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Replace with existing settings'
       ImageName = 'Replace'
       OnExecute = actSearchReplaceNowExecute
+      OnUpdate = UpdateSearchActions
     end
     object actSearchHighlight: TAction
       Category = 'Search'
@@ -714,15 +818,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageName = 'Highlight'
       ShortCut = 24648
       OnExecute = actSearchHighlightExecute
-    end
-    object actEditWordWrap: TAction
-      Category = 'Edit'
-      Caption = 'Word &Wrap'
-      HelpContext = 320
-      Hint = 'Turn word wrap on/off (incompatible with code folding)'
-      ImageIndex = 79
-      ImageName = 'WordWrap'
-      OnExecute = actEditWordWrapExecute
+      OnUpdate = UpdateSearchActions
     end
     object actSearchGoToDebugLine: TAction
       Category = 'Search'
@@ -730,6 +826,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 330
       Hint = 'Go to the current position of the debugger'
       OnExecute = actSearchGoToDebugLineExecute
+      OnUpdate = UpdateSearchActions
     end
     object actHelpWebProjectHome: TBrowseURL
       Category = 'Help'
@@ -758,6 +855,7 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 310
       Hint = 'Close all files except the active one'
       OnExecute = actFileCloseWorkspaceTabsExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actFileCloseAllToTheRight: TAction
       Category = 'File'
@@ -765,29 +863,14 @@ object CommandsDataModule: TCommandsDataModule
       HelpContext = 310
       Hint = 'Close all files to the right'
       OnExecute = actFileCloseWorkspaceTabsExecute
-    end
-    object actEditCopyFileName: TAction
-      Category = 'Edit'
-      Caption = 'Copy File Name'
-      HelpContext = 320
-      HelpType = htContext
-      Hint = 'Copy file name of active file to clipboard'
-      ImageName = 'Copy'
-      OnExecute = actEditCopyFileNameExecute
-    end
-    object actToolsEditStartupScripts: TAction
-      Category = 'Tools'
-      Caption = 'Edit &Startup Scripts'
-      HelpContext = 350
-      HelpType = htContext
-      Hint = 'Edit PyScripter initialization files'
-      OnExecute = actToolsEditStartupScriptsExecute
+      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actFoldVisible: TAction
       Category = 'Code Folding'
       Caption = 'Code Folding'
       Hint = 'Show/Hide Code Folding'
       OnExecute = actFoldVisibleExecute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actFoldAll: TAction
       Category = 'Code Folding'
@@ -796,6 +879,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 24
       ImageName = 'Collapse'
       OnExecute = actFoldAllExecute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actUnfoldAll: TAction
       Category = 'Code Folding'
@@ -804,112 +888,111 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 23
       ImageName = 'Expand'
       OnExecute = actUnfoldAllExecute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actFoldNearest: TAction
       Category = 'Code Folding'
       Caption = 'Nearest'
       Hint = 'Collapse nearest fold'
       OnExecute = actFoldNearestExecute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actUnfoldNearest: TAction
       Category = 'Code Folding'
       Caption = 'Nearest'
       Hint = 'Expand nearest fold'
       OnExecute = actUnfoldNearestExecute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actFoldRegions: TAction
       Category = 'Code Folding'
       Caption = 'Regions'
       Hint = 'Fold Ranges'
       OnExecute = actFoldRegionsExecute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actUnfoldRegions: TAction
       Category = 'Code Folding'
       Caption = 'Regions'
       Hint = 'Unfold ranges'
       OnExecute = actUnfoldRegionsExecute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actFoldLevel1: TAction
       Category = 'Code Folding'
       Caption = 'Level 1'
       Hint = 'Fold level 1'
       OnExecute = actFoldLevel1Execute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actUnfoldLevel1: TAction
       Category = 'Code Folding'
       Caption = 'Level 1'
       Hint = 'Unfold level 1'
       OnExecute = actUnfoldLevel1Execute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actFoldLevel2: TAction
       Category = 'Code Folding'
       Caption = 'Level 2'
       Hint = 'Fold level 2'
       OnExecute = actFoldLevel2Execute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actUnfoldLevel2: TAction
       Category = 'Code Folding'
       Caption = 'Level 2'
       Hint = 'Unfold level 2'
       OnExecute = actUnfoldLevel2Execute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actFoldLevel3: TAction
       Category = 'Code Folding'
       Caption = 'Level 3'
       Hint = 'Fold level 3'
       OnExecute = actFoldLevel3Execute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actUnfoldLevel3: TAction
       Category = 'Code Folding'
       Caption = 'Level 3'
       Hint = 'Unfold level 3'
       OnExecute = actUnfoldLevel3Execute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actFoldClasses: TAction
       Category = 'Code Folding'
       Caption = 'Classes'
       Hint = 'Fold classes'
       OnExecute = actFoldClassesExecute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actUnfoldClasses: TAction
       Category = 'Code Folding'
       Caption = 'Classes'
       Hint = 'Unfold classes'
       OnExecute = actUnfoldClassesExecute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actFoldFunctions: TAction
       Category = 'Code Folding'
       Caption = 'Functions'
       Hint = 'Fold functions'
       OnExecute = actFoldFunctionsExecute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actUnfoldFunctions: TAction
       Category = 'Code Folding'
       Caption = 'Functions'
       Hint = 'Unfold functions'
       OnExecute = actUnfoldFunctionsExecute
-    end
-    object actFileSaveToRemote: TAction
-      Category = 'File'
-      Caption = 'Save to Remote File'
-      Hint = 'Save to remote file with SSH'
-      ImageIndex = 96
-      ImageName = 'Upload'
-      OnExecute = actFileSaveToRemoteExecute
+      OnUpdate = UpdateCodeFoldingActions
     end
     object actEditCreateStructogram: TAction
       Category = 'Edit'
       Caption = 'Create structogram'
       Hint = 'Create a structogram from selected source code'
       OnExecute = actEditCreateStructogramExecute
-    end
-    object actToolsRestartLS: TAction
-      Category = 'Tools'
-      Caption = 'Restart &Language Server'
-      HelpContext = 350
-      HelpType = htContext
-      Hint = 'Restart the Language Server'
-      OnExecute = actToolsRestartLSExecute
     end
     object actSynSpellCheckFile: TSynSpellCheckFile
       Category = 'Spell Checking'
@@ -957,6 +1040,7 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Provide a suggestion for code completion'
       ShortCut = 49184
       OnExecute = actAssistantSuggestExecute
+      OnUpdate = UpdateAssistantActions
     end
     object actAssistantCancel: TAction
       Category = 'Assistant'
@@ -965,24 +1049,28 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 118
       ImageName = 'Cancel'
       OnExecute = actAssistantCancelExecute
+      OnUpdate = UpdateAssistantActions
     end
     object actAssistantOptimize: TAction
       Category = 'Assistant'
       Caption = 'Optimize'
       Hint = 'Optimize the selected code'
       OnExecute = actAssistantOptimizeExecute
+      OnUpdate = UpdateAssistantActions
     end
     object actAssistantFixBugs: TAction
       Category = 'Assistant'
       Caption = 'Fix Bugs'
       Hint = 'Fix bugs in the selected code'
       OnExecute = actAssistantFixBugsExecute
+      OnUpdate = UpdateAssistantActions
     end
     object actAssistantExplain: TAction
       Category = 'Assistant'
       Caption = 'Explain'
       Hint = 'Add comments explaining the selected code'
       OnExecute = actAssistantExplainExecute
+      OnUpdate = UpdateAssistantActions
     end
     object actDonate: TBrowseURL
       Category = 'Help'
@@ -999,6 +1087,7 @@ object CommandsDataModule: TCommandsDataModule
       Caption = 'Export'
       Hint = 'Export to RTF or HTML file'
       OnExecute = actFileExportExecute
+      OnUpdate = UpdateFileActions
     end
     object actFormatCode: TAction
       Category = 'Source Code'
@@ -1008,6 +1097,7 @@ object CommandsDataModule: TCommandsDataModule
         'nt.'
       ShortCut = 41030
       OnExecute = actFormatCodeExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actCodeCheck: TAction
       Category = 'Source Code'
@@ -1015,6 +1105,7 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Perform a code check'
       ShortCut = 16497
       OnExecute = actCodeCheckExecute
+      OnUpdate = UpdateIssuesActions
     end
     object actClearIssues: TAction
       Category = 'Source Code'
@@ -1022,6 +1113,7 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Clear code issues'
       ShortCut = 24689
       OnExecute = actClearIssuesExecute
+      OnUpdate = UpdateIssuesActions
     end
     object actNextIssue: TAction
       Category = 'Source Code'
@@ -1030,6 +1122,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 65
       ImageName = 'ArrowRight'
       OnExecute = actNextIssueExecute
+      OnUpdate = UpdateIssuesActions
     end
     object actPreviousIssue: TAction
       Category = 'Source Code'
@@ -1038,6 +1131,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 64
       ImageName = 'ArrowLeft'
       OnExecute = actPreviousIssueExecute
+      OnUpdate = UpdateIssuesActions
     end
     object actFixAll: TAction
       Category = 'Refactoring'
@@ -1045,12 +1139,14 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Apply all available fixes'
       ImageIndex = 124
       OnExecute = actFixAllExecute
+      OnUpdate = UpdateRefactorActions
     end
     object actOrganizeImports: TAction
       Category = 'Refactoring'
       Caption = 'Organize Imports'
       Hint = 'Organize import statements'
       OnExecute = actOrganizeImportsExecute
+      OnUpdate = UpdateRefactorActions
     end
     object actRefactorRename: TAction
       Category = 'Refactoring'
@@ -1058,16 +1154,244 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Rename the selected identifier '
       ImageName = 'Rename'
       OnExecute = actRefactorRenameExecute
+      OnUpdate = UpdateRefactorActions
     end
     object actCodeAction: TAction
       Category = 'Refactoring'
+      ImageIndex = 56
+      ImageName = 'ToolsSetup'
       OnExecute = actCodeActionExecute
+      OnUpdate = UpdateRefactorActions
     end
     object actShowRefactorMenu: TAction
       Category = 'Refactoring'
       Caption = 'actShowRefactorMenu'
       ShortCut = 8305
       OnExecute = actShowRefactorMenuExecute
+      OnUpdate = UpdateRefactorActions
+    end
+    object actFileExit: TAction
+      Category = 'File'
+      Caption = 'E&xit'
+      Hint = 'Exit'
+      ImageIndex = 32
+      ImageName = 'Exit13'
+      ShortCut = 32883
+      OnExecute = actFileExitExecute
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavEditor: TAction
+      Category = 'IDE Navigation'
+      Caption = '&Editor'
+      Hint = 'Activate the Editor'
+      ImageIndex = 86
+      ImageName = 'Editor'
+      ShortCut = 123
+      OnExecute = actNavEditorExecute
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavFindResults: TAction
+      Tag = 12
+      Category = 'IDE Navigation'
+      Caption = 'Find &in Files Results'
+      HelpContext = 360
+      HelpType = htContext
+      Hint = 'Activate the Find in Files Results window'
+      ImageIndex = 60
+      ImageName = 'FindResults'
+      ShortCut = 49222
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavWatches: TAction
+      Tag = 3
+      Category = 'IDE Navigation'
+      Caption = '&Watches'
+      HelpType = htContext
+      Hint = 'Activate the Watches window'
+      ImageIndex = 43
+      ImageName = 'WatchesWin'
+      ShortCut = 49239
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavBreakpoints: TAction
+      Tag = 4
+      Category = 'IDE Navigation'
+      Caption = '&BreakPoints'
+      HelpType = htContext
+      Hint = 'Activate the Breakpoints window'
+      ImageIndex = 44
+      ImageName = 'BreakpointsWin'
+      ShortCut = 49218
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavInterpreter: TAction
+      Category = 'IDE Navigation'
+      Caption = '&Interpreter'
+      HelpType = htContext
+      Hint = 'Activate the Interpreter window'
+      ImageIndex = 83
+      ImageName = 'Python'
+      ShortCut = 49225
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavVariables: TAction
+      Tag = 2
+      Category = 'IDE Navigation'
+      Caption = '&Variables'
+      HelpType = htContext
+      Hint = 'Activate the Variables window'
+      ImageIndex = 42
+      ImageName = 'VariablesWin'
+      ShortCut = 49238
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavCallStack: TAction
+      Tag = 1
+      Category = 'IDE Navigation'
+      Caption = '&Call Stack'
+      HelpType = htContext
+      Hint = 'Activate the Call Stack window'
+      ImageIndex = 41
+      ImageName = 'CallStack'
+      ShortCut = 49235
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavMessages: TAction
+      Tag = 6
+      Category = 'IDE Navigation'
+      Caption = '&Messages '
+      HelpType = htContext
+      Hint = 'Activate the Messages window'
+      ImageIndex = 49
+      ImageName = 'MessagesWin'
+      ShortCut = 49229
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavFileExplorer: TAction
+      Tag = 8
+      Category = 'IDE Navigation'
+      Caption = 'File E&xplorer'
+      HelpType = htContext
+      Hint = 'Activate the File Explorer window'
+      ImageIndex = 57
+      ImageName = 'FileExplorer'
+      ShortCut = 49240
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavCodeExplorer: TAction
+      Tag = 7
+      Category = 'IDE Navigation'
+      Caption = '&Code Explorer'
+      HelpType = htContext
+      Hint = 'Activate the Code Explorer window'
+      ImageIndex = 50
+      ImageName = 'CodeExplorer'
+      ShortCut = 49219
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavTodo: TAction
+      Tag = 9
+      Category = 'IDE Navigation'
+      Caption = '&Todo List'
+      HelpType = htContext
+      Hint = 'Activate the Todo List window'
+      ImageIndex = 58
+      ImageName = 'TodoWin'
+      ShortCut = 49236
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavUnitTests: TAction
+      Tag = 11
+      Category = 'IDE Navigation'
+      Caption = '&Unit Tests'
+      HelpType = htContext
+      Hint = 'Activate the Todo List window'
+      ImageIndex = 68
+      ImageName = 'UnitTestWin'
+      ShortCut = 49237
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavOutput: TAction
+      Tag = 5
+      Category = 'IDE Navigation'
+      Caption = 'Command &Output'
+      HelpType = htContext
+      Hint = 'Activate the Command Output window'
+      ImageIndex = 62
+      ImageName = 'CmdOuputWin'
+      ShortCut = 49231
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavProjectExplorer: TAction
+      Tag = 13
+      Category = 'IDE Navigation'
+      Caption = '&Project Explorer'
+      HelpContext = 360
+      HelpType = htContext
+      Hint = 'Activate the Project Explorer window'
+      ImageIndex = 85
+      ImageName = 'ProjectExplorer'
+      ShortCut = 49232
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavRegExp: TAction
+      Tag = 10
+      Category = 'IDE Navigation'
+      Caption = 'Regular Expression Tester'
+      Hint = 'Activate the Regular Expression Tester window'
+      ImageIndex = 66
+      ImageName = 'RegExp'
+      ShortCut = 49234
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavChat: TAction
+      Tag = 14
+      Category = 'IDE Navigation'
+      Caption = 'Chat'
+      Hint = 'Activate the Chat window'
+      ImageIndex = 104
+      ImageName = 'Chat'
+      ShortCut = 49217
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavObjectInspector: TAction
+      Tag = 15
+      Category = 'IDE Navigation'
+      Caption = 'Object inspector'
+      Hint = 'Activate the object inspector  window'
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavStructure: TAction
+      Tag = 16
+      Category = 'IDE Navigation'
+      Caption = 'Structure'
+      Hint = 'Activate the structure window'
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actNavUMLInteractive: TAction
+      Tag = 17
+      Category = 'IDE Navigation'
+      Caption = 'UML interactive'
+      Hint = 'Activate the UML interactive window'
+      OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
     end
   end
   object SynWebCompletion: TSynCompletionProposal

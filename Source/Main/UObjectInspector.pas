@@ -113,6 +113,7 @@ type
     property Events: string read FEvents;
     property ShowAttributes: Integer read FShowAttributes;
     property ShowEvents: Integer read FShowEvents;
+    class function CreateInstance: TIDEDockWindow; override;
   end;
 
 var
@@ -952,5 +953,14 @@ begin
     FELEventInspector.Splitter := FELEventInspector.Splitter + FSplitterChange;
   FSplitterChange := -FSplitterChange;
 end;
+
+class function TFObjectInspector.CreateInstance: TIDEDockWindow;
+begin
+  FObjectInspector := TFObjectInspector.Create(Application);
+  Result := FObjectInspector;
+end;
+
+initialization
+  TIDEDockWindow.RegisterDockWinClass(ideObjectInspector, TFObjectInspector);
 
 end.

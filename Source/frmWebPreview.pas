@@ -11,6 +11,8 @@ unit frmWebPreview;
 interface
 
 uses
+  Winapi.ActiveX,
+  Winapi.WebView2,
   System.Classes,
   System.ImageList,
   Vcl.Controls,
@@ -23,7 +25,7 @@ uses
   TB2Toolbar,
   SpTBXItem,
   uEditAppIntfs,
-  cTools, Winapi.WebView2, Winapi.ActiveX;
+  cTools;
 
 type
   TWebPreviewForm = class(TForm, IEditorView)
@@ -91,7 +93,6 @@ uses
   uCommonFunctions,
   StringResources,
   dmResources,
-  frmCommandOutput,
   cPyScripterSettings;
 
 {$R *.dfm}
@@ -126,8 +127,9 @@ end;
 
 procedure TWebPreviewForm.FormDestroy(Sender: TObject);
 begin
-  if OutputWindow.IsRunning and (OutputWindow.RunningTool = FExternalTool.Caption) then
-    OutputWindow.actToolTerminate.Execute;
+  if GI_SystemCommandService.IsRunning and
+   (GI_SystemCommandService.RunningTool = FExternalTool.Caption) then
+    GI_SystemCommandService.Terminate;
 end;
 
 procedure TWebPreviewForm.ToolButtonBackClick(Sender: TObject);
@@ -222,13 +224,13 @@ begin
       Abort;
     end;
 
-    if OutputWindow.IsRunning then begin
+    if GI_SystemCommandService.IsRunning then begin
       StyledMessageDlg(_(SExternalProcessRunning), mtError, [mbOK], 0);
       Abort;
     end;
 
     try
-      OutputWindow.ExecuteTool(TWebPreviewForm.FExternalTool);
+      TWebPreviewForm.FExternalTool.Execute;
     except
       Abort;
     end;

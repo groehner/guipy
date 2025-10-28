@@ -90,6 +90,7 @@ type
 
     class constructor Create;
     class destructor Destroy;
+     class function CreateInstance: TIDEDockWindow; override;
 
     property GlobalsNameSpace: TBaseNameSpaceItem read FGlobalsNameSpace write FGlobalsNameSpace;
     property OnNotify: TNotifyEvent read FOnNotify write FOnNotify;
@@ -466,6 +467,12 @@ begin
   ProcessFolder(TPyScripterSettings.AppDebugInspectorsDir);
 end;
 
+class function TVariablesWindow.CreateInstance: TIDEDockWindow;
+begin
+  VariablesWindow := TVariablesWindow.Create(Application);
+  Result := VariablesWindow;
+end;
+
 class destructor TVariablesWindow.Destroy;
 begin
   DebugInspectorsRegister.Free;
@@ -611,6 +618,9 @@ begin
     end;
   end;
 end;
+
+initialization
+  TIDEDockWindow.RegisterDockWinClass(ideVariables, TVariablesWindow);
 
 end.
 

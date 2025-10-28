@@ -142,6 +142,7 @@ type
   public
     LLMChat: TLLMChat;
     procedure ChangeStyle;
+    class function CreateInstance: TIDEDockWindow; override;
   end;
 
 var
@@ -1124,6 +1125,15 @@ begin
     sbAsk.Images:= vilImagesLight;
   end;
 end;
+
+class function TLLMChatForm.CreateInstance: TIDEDockWindow;
+begin
+  LLMChatForm := TLLMChatForm.Create(Application);
+  Result := LLMChatForm;
+end;
+
+initialization
+  TIDEDockWindow.RegisterDockWinClass(ideLLMChat, TLLMChatForm);
 
 end.
 

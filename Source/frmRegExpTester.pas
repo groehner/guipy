@@ -112,6 +112,7 @@ type
     // AppStorage
     procedure StoreSettings(AppStorage: TJvCustomAppStorage); override;
     procedure RestoreSettings(AppStorage: TJvCustomAppStorage); override;
+    class function CreateInstance: TIDEDockWindow; override;
   end;
 
 var
@@ -139,6 +140,12 @@ uses
 procedure TRegExpTesterWindow.ClearHighlight;
 begin
   SearchText.Indicators.Clear(FHighlightIndicatorID);
+end;
+
+class function TRegExpTesterWindow.CreateInstance: TIDEDockWindow;
+begin
+  RegExpTesterWindow := TRegExpTesterWindow.Create(Application);
+  Result := RegExpTesterWindow;
 end;
 
 procedure TRegExpTesterWindow.Clear;
@@ -495,5 +502,8 @@ begin
   SearchText.Clear;
   Clear;
 end;
+
+initialization
+  TIDEDockWindow.RegisterDockWinClass(ideRegExp, TRegExpTesterWindow);
 
 end.

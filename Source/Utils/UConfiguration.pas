@@ -2640,7 +2640,7 @@ begin
       TSynCustomHighlighter(CBHighlighters.Items.Objects[I]));
 
   CommandsDataModule.ApplyEditorOptions;
-  PythonIIForm.ApplyEditorOptions;
+  PythonIIForm.ApplyEditorOptions(GEditorOptions);
   //TJedi.CreateServer;
 end;
 

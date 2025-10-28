@@ -74,6 +74,7 @@ type
     procedure Add(const Line: string);
     procedure Clear;
     procedure ChangeStyle;
+    class function CreateInstance: TIDEDockWindow; override;
   end;
 
 var
@@ -263,5 +264,14 @@ begin
   if LineNo < 1 then LineNo:= 1;
   SynEdit.TopLine:= LineNo;
 end;
+
+class function TFUMLInteractive.CreateInstance: TIDEDockWindow;
+begin
+  FUMLInteractive := TFUMLInteractive.Create(Application);
+  Result := FUMLInteractive;
+end;
+
+initialization
+  TIDEDockWindow.RegisterDockWinClass(ideUMLInteractive, TFUMLInteractive);
 
 end.
