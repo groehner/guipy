@@ -1,33 +1,36 @@
 inherited ProjectExplorerWindow: TProjectExplorerWindow
   HelpContext = 435
   Caption = 'Project Explorer'
+  ClientHeight = 399
   ClientWidth = 531
   OnShow = FormShow
   ExplicitWidth = 547
+  ExplicitHeight = 438
   TextHeight = 15
   inherited BGPanel: TPanel
     Width = 531
-    ExplicitWidth = 83
+    Height = 399
+    ExplicitWidth = 531
     ExplicitHeight = 182
     inherited FGPanel: TPanel
       Width = 527
-      Height = 178
-      ExplicitWidth = 79
+      Height = 395
+      ExplicitWidth = 527
       ExplicitHeight = 178
       object Panel1: TPanel
         Left = 0
         Top = 0
         Width = 527
-        Height = 178
+        Height = 395
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 79
+        ExplicitHeight = 178
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 30
           Width = 527
-          Height = 148
+          Height = 365
           Align = alClient
           BorderStyle = bsNone
           DefaultNodeHeight = 19
@@ -60,7 +63,9 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           OnNodeDblClick = ExplorerTreeNodeDblClick
           Touch.InteractiveGestures = [igPan, igPressAndTap]
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
-          ExplicitWidth = 79
+          ExplicitLeft = -2
+          ExplicitTop = 22
+          ExplicitHeight = 148
           Columns = <>
         end
         object SpTBXDock1: TSpTBXDock
@@ -70,7 +75,6 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           Height = 30
           AllowDrag = False
           DoubleBuffered = True
-          ExplicitWidth = 79
           object SpTBXToolbar1: TSpTBXToolbar
             Left = 0
             Top = 0
@@ -83,13 +87,13 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
             Caption = 'Project Explorer Toolbar'
             Customizable = False
             object tbiProjectNew: TSpTBXItem
-              Action = actProjectNew
+              Action = CommandsDataModule.actProjectNew
             end
             object tbiProjectOpen: TSpTBXItem
-              Action = actProjectOpen
+              Action = CommandsDataModule.actProjectOpen
             end
             object tbiProjectSave: TSpTBXItem
-              Action = actProjectSave
+              Action = CommandsDataModule.actProjectSave
             end
             object SpTBXSeparatorItem8: TSpTBXSeparatorItem
             end
@@ -120,46 +124,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ProjectActionList: TActionList [1]
     Images = vilImages
-    Left = 41
-    Top = 76
-    object actProjectNew: TAction
-      Category = 'Project'
-      Caption = '&New Project'
-      HelpContext = 435
-      HelpType = htContext
-      Hint = 'Start a new project'
-      ImageIndex = 6
-      ImageName = 'ProjectFile'
-      OnExecute = actProjectNewExecute
-    end
-    object actProjectOpen: TAction
-      Category = 'Project'
-      Caption = '&Open Project...'
-      HelpContext = 435
-      HelpType = htContext
-      Hint = 'Open a project file'
-      ImageIndex = 7
-      ImageName = 'ProjectOpen'
-      OnExecute = actProjectOpenExecute
-    end
-    object actProjectSave: TAction
-      Category = 'Project'
-      Caption = '&Save Project'
-      HelpContext = 435
-      HelpType = htContext
-      Hint = 'Save the project'
-      ImageIndex = 12
-      ImageName = 'ProjectSave'
-      OnExecute = actProjectSaveExecute
-    end
-    object actProjectSaveAs: TAction
-      Category = 'Project'
-      Caption = 'Save Project &As...'
-      HelpContext = 435
-      HelpType = htContext
-      Hint = 'Save project with under a different name'
-      OnExecute = actProjectSaveAsExecute
-    end
+    Left = 225
+    Top = 44
     object actProjectRelativePaths: TAction
       Category = 'Project'
       AutoCheck = True
@@ -210,8 +176,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ImmutableProjectActionList: TActionList [2]
     Images = vilImages
-    Left = 8
-    Top = 76
+    Left = 72
+    Top = 44
     object actProjectAddFiles: TAction
       Category = 'Project'
       Caption = '&Add File(s)...'
@@ -334,24 +300,25 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     end
   end
   inherited DockClient: TJvDockClient
-    Top = 46
+    Left = 304
+    Top = 30
   end
   object ProjectMainPopUpMenu: TSpTBXPopupMenu
     Images = vilImages
     OnPopup = ProjectMainPopUpMenuPopup
-    Left = 8
-    Top = 108
+    Left = 264
+    Top = 260
     object mnProjectNew: TSpTBXItem
-      Action = actProjectNew
+      Action = CommandsDataModule.actProjectNew
     end
     object mnProjectOpen: TSpTBXItem
-      Action = actProjectOpen
+      Action = CommandsDataModule.actProjectOpen
     end
     object mnProjectSave: TSpTBXItem
-      Action = actProjectSave
+      Action = CommandsDataModule.actProjectSave
     end
     object mnProjectSaveAs: TSpTBXItem
-      Action = actProjectSaveAs
+      Action = CommandsDataModule.actProjectSaveAs
     end
     object SpTBXSeparatorItem10: TSpTBXSeparatorItem
     end
@@ -377,8 +344,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ProjectFolderPopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 40
-    Top = 109
+    Left = 288
+    Top = 205
     object mnAddFiles: TSpTBXItem
       Action = actProjectAddFiles
     end
@@ -407,8 +374,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ProjectFilePopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 72
-    Top = 108
+    Left = 424
+    Top = 212
     object mnFileEdit: TSpTBXItem
       Action = actProjectFileEdit
     end
@@ -425,16 +392,16 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ProjectRunSettingsPopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 104
-    Top = 109
+    Left = 424
+    Top = 37
     object mnAddRunConfig: TSpTBXItem
       Action = actProjectAddRunConfig
     end
   end
   object ProjectRunConfigPopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 135
-    Top = 109
+    Left = 287
+    Top = 125
     object mnRun: TSpTBXItem
       Action = actProjectRun
     end
@@ -667,8 +634,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ProjectAutoUpdateFolderPopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 168
-    Top = 109
+    Left = 424
+    Top = 117
     object SpTBXItem8: TSpTBXItem
       Action = actProjectRename
     end

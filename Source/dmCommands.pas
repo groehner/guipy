@@ -232,6 +232,10 @@ type
     actNavObjectInspector: TAction;
     actNavStructure: TAction;
     actNavUMLInteractive: TAction;
+    actProjectNew: TAction;
+    actProjectOpen: TAction;
+    actProjectSave: TAction;
+    actProjectSaveAs: TAction;
     procedure actAboutExecute(Sender: TObject);
     function ProgramVersionHTTPLocationLoadFileFromRemote
       (AProgramVersionLocation: TJvProgramVersionHTTPLocation;
@@ -352,6 +356,9 @@ type
     procedure UpdateRefactorActions(Sender: TObject);
     procedure mnSpellingPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure actProjectNewExecute(Sender: TObject);
+    procedure actProjectOpenExecute(Sender: TObject);
+    procedure actProjectSaveAsExecute(Sender: TObject);
+    procedure actProjectSaveExecute(Sender: TObject);
     procedure SynSpellCheckChange(Sender: TObject);
     procedure UpdateActionAlwaysEnabled(Sender: TObject);
     procedure UpdateAssistantActions(Sender: TObject);
@@ -2400,12 +2407,23 @@ end;
 
 procedure TCommandsDataModule.actProjectNewExecute(Sender: TObject);
 begin
-  var Editor := GI_ActiveEditor;
-  if Assigned(Editor) and Editor.HasPythonFile then
-    TPyLspClient.DiagnosticsLspClient.ExecuteCommand('ruff.applyOrganizeImports',
-      Editor.FileId, Editor.Version);
+  GI_ProjectService.NewProject;
 end;
 
+procedure TCommandsDataModule.actProjectOpenExecute(Sender: TObject);
+begin
+  GI_ProjectService.OpenProject;
+end;
+
+procedure TCommandsDataModule.actProjectSaveAsExecute(Sender: TObject);
+begin
+  GI_ProjectService.SaveProjectAs;
+end;
+
+procedure TCommandsDataModule.actProjectSaveExecute(Sender: TObject);
+begin
+  GI_ProjectService.SaveProject;
+end;
 
 procedure TCommandsDataModule.PyIDEOptionsChanged(const Sender: TObject;
   const Msg: System.Messaging.TMessage);

@@ -1363,7 +1363,7 @@ object CommandsDataModule: TCommandsDataModule
       Category = 'IDE Navigation'
       Caption = 'Chat'
       Hint = 'Activate the Chat window'
-      ImageIndex = 104
+      ImageIndex = 117
       ImageName = 'Chat'
       ShortCut = 49217
       OnExecute = actNavigateToDockWindow
@@ -1391,6 +1391,40 @@ object CommandsDataModule: TCommandsDataModule
       Caption = 'UML interactive'
       Hint = 'Activate the UML interactive window'
       OnExecute = actNavigateToDockWindow
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actProjectNew: TAction
+      Category = 'Project'
+      Caption = '&New Project'
+      Hint = 'Start a new project'
+      ImageIndex = 121
+      ImageName = 'ProjectFile'
+      OnExecute = actProjectNewExecute
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actProjectOpen: TAction
+      Category = 'Project'
+      Caption = '&Open Project...'
+      Hint = 'Open a project file'
+      ImageIndex = 122
+      ImageName = 'ProjectOpen'
+      OnExecute = actProjectOpenExecute
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actProjectSave: TAction
+      Category = 'Project'
+      Caption = '&Save Project'
+      Hint = 'Save the project'
+      ImageIndex = 123
+      ImageName = 'ProjectSave'
+      OnExecute = actProjectSaveExecute
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actProjectSaveAs: TAction
+      Category = 'Project'
+      Caption = 'Save Project &As...'
+      Hint = 'Save project with under a different name'
+      OnExecute = actProjectSaveAsExecute
       OnUpdate = UpdateActionAlwaysEnabled
     end
   end

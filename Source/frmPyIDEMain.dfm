@@ -21,9 +21,9 @@ object PyIDEMainForm: TPyIDEMainForm
   TextHeight = 15
   object StatusBar: TSpTBXStatusBar
     Left = 0
-    Top = 714
+    Top = 732
     Width = 1031
-    Height = 28
+    Height = 10
     SizeGrip = False
     object lbStatusMessage: TSpTBXLabelItem
       Wrapping = twEndEllipsis
@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 373
+      CustomWidth = 361
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -114,8 +114,8 @@ object PyIDEMainForm: TPyIDEMainForm
       OnClick = spiExternalToolsLEDClick
     end
     object ActivityIndicator: TActivityIndicator
-      Left = 965
-      Top = 0
+      Left = 1027
+      Top = 6
       FrameDelay = 150
       IndicatorSize = aisSmall
     end
@@ -124,7 +124,7 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 9
     Top = 113
     Width = 1013
-    Height = 592
+    Height = 610
     Align = alClient
     BevelEdges = []
     BevelOuter = bvNone
@@ -134,7 +134,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 0
       Top = 0
       Width = 1009
-      Height = 592
+      Height = 610
       Align = alClient
       PopupMenu = TabControlPopupMenu
       OnContextPopup = TabContolContextPopup
@@ -186,7 +186,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 1009
       Top = 0
       Width = 0
-      Height = 592
+      Height = 610
       Align = alRight
       PopupMenu = TabControlPopupMenu
       Visible = False
@@ -239,7 +239,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 1009
       Top = 0
       Width = 4
-      Height = 592
+      Height = 610
       Cursor = crSizeWE
       Align = alRight
       ParentColor = False
@@ -1015,7 +1015,6 @@ object PyIDEMainForm: TPyIDEMainForm
           end
           object mnViewChat: TSpTBXItem
             Action = CommandsDataModule.actNavChat
-            ImageName = 'NewComment'
           end
           object mnViewII: TSpTBXItem
             Action = CommandsDataModule.actNavInterpreter
@@ -1066,12 +1065,10 @@ object PyIDEMainForm: TPyIDEMainForm
         object ProjectMenu: TSpTBXSubmenuItem
           Caption = '&Project'
           object mnProjectNew: TSpTBXItem
-            Action = ProjectExplorerWindow.actProjectNew
-            ImageIndex = 121
+            Action = CommandsDataModule.actProjectNew
           end
           object mnProjectOpen: TSpTBXItem
-            Action = ProjectExplorerWindow.actProjectOpen
-            ImageIndex = 122
+            Action = CommandsDataModule.actProjectOpen
           end
           object SpTBXSubmenuItem1: TSpTBXSubmenuItem
             Caption = '&Recent Projects'
@@ -1085,23 +1082,16 @@ object PyIDEMainForm: TPyIDEMainForm
             Tag = -2
           end
           object mnProjectSave: TSpTBXItem
-            Action = ProjectExplorerWindow.actProjectSave
-            ImageIndex = 123
+            Action = CommandsDataModule.actProjectSave
           end
           object mnProjectSaveAs: TSpTBXItem
-            Action = ProjectExplorerWindow.actProjectSaveAs
+            Action = CommandsDataModule.actProjectSaveAs
           end
           object SpTBXSeparatorItem4: TSpTBXSeparatorItem
             Tag = -2
           end
           object mnNavProjectExplorer2: TSpTBXItem
-            Caption = '&Project Explorer'
-            Hint = 'Activate the Project Explorer window'
-            HelpContext = 360
-            ImageIndex = 85
-            ImageName = 'ProjectExplorer'
-            ShortCut = 49232
-            OnClick = actNavigateToDockWindow
+            Action = CommandsDataModule.actProjectSaveAs
           end
         end
         object RunMenu: TSpTBXSubmenuItem
@@ -2893,7 +2883,7 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 0
     Top = 113
     Width = 9
-    Height = 592
+    Height = 610
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpLeft
@@ -2902,14 +2892,14 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 1022
     Top = 113
     Width = 9
-    Height = 592
+    Height = 610
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpRight
   end
   object TBXDockBottom: TSpTBXDock
     Left = 0
-    Top = 705
+    Top = 723
     Width = 1031
     Height = 9
     FixAlign = True

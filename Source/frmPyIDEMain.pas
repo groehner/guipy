@@ -1647,7 +1647,6 @@ uses
   dlgPickList,
   frmFile,
   frmIDEDockWin,
-  frmProjectExplorer,
   frmFileExplorer,
   frmPythonII,
   frmRegExpTester,
@@ -2283,7 +2282,7 @@ begin
 
   // Ask about saving unsaved project
   if CanClose and not PyIDEOptions.SaveFilesAutomatically then
-    CanClose := CanClose and ProjectExplorerWindow.CanClose;
+    CanClose := CanClose and GI_ProjectService.CanClose;
 
   if CanClose then
   begin
@@ -3720,8 +3719,7 @@ begin
 
   // Project Filename
   if CmdLineReader.ReadString('PROJECT') <> '' then
-    ProjectExplorerWindow.DoOpenProjectFile
-      (CmdLineReader.ReadString('PROJECT'));
+    GI_ProjectService.OpenProjectFile(CmdLineReader.ReadString('PROJECT'));
 end;
 
 procedure TPyIDEMainForm.CreateWnd;
@@ -4317,7 +4315,7 @@ begin
     var
     FName := AppStorage.ReadString('Active Project');
     if FName <> '' then
-      ProjectExplorerWindow.DoOpenProjectFile(FName);
+      GI_ProjectService.OpenProjectFile(FName);
   end;
 
   if MachineStorage.PathExists('Restricted') then
@@ -6541,7 +6539,7 @@ end;
 procedure TPyIDEMainForm.tbiRecentProjectsClick(Sender: TObject;
 const FileName: string);
 begin
-  ProjectExplorerWindow.DoOpenProjectFile(FileName);
+  GI_ProjectService.OpenProjectFile(Filename);
   tbiRecentProjects.MRURemove(FileName);
 end;
 
