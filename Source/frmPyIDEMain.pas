@@ -1647,9 +1647,8 @@ uses
   dlgPickList,
   frmFile,
   frmIDEDockWin,
-  frmFileExplorer,
   frmPythonII,
-  frmRegExpTester,
+  // frmRegExpTester,
   frmWebPreview,
   frmModSpTBXCustomize,
   cTools,
@@ -2295,8 +2294,7 @@ begin
     end;
 
     // Disconnect ChangeNotify
-    FileExplorerWindow.FileExplorerTree.Active := False;
-    FileExplorerWindow.ConfigureThreads(fcnDisabled, False);
+    GI_FileExplorer.Active := False;
 
     // Stop accepting files
     DragAcceptFiles(TabControl1.Handle, False);
@@ -2430,7 +2428,7 @@ begin
   GI_VariablesWindow.ClearAll;
   GI_CallStackWindow.ClearAll;
   GI_UnitTestsService.ClearAll;
-  RegExpTesterWindow.Clear;
+  GI_RegExpService.Clear;
 end;
 
 procedure TPyIDEMainForm.CloseTextDiffsAndFromTemplate;
@@ -6250,7 +6248,7 @@ end;
 procedure TPyIDEMainForm.FormShowDelayedActions;
 begin
   // Activate File Explorer
-  FileExplorerWindow.FileExplorerTree.Active := True;
+  GI_FileExplorer.Active := True;
 
   // Load Python Engine and Assign Debugger Events
   PyControl.LoadPythonEngine;
