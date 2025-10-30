@@ -2873,12 +2873,11 @@ begin
 
   Py := SafePyEngine;
   var
-  PyModule := GI_PyControl.ActiveInterpreter.ImportModule(ActiveEditor, True);
+  PyModule := GI_PyControl.ActiveInterpreter.ImportModule(ActiveEditor.FileId, True);
   VarClear(PyModule);
 
-  GI_MessagesService.AddMessage(Format(_(SModuleImportedOK),
-    [ActiveEditor.FileTitle]));
-  ShowDockForm(IDEDockForm(ideMessages));
+  GI_MessagesService.AddMessage(Format(_(SModuleImportedOK), [ActiveEditor.FileId]));
+  ShowIDEDockForm(IDEDockForm(ideMessages), False);
 end;
 
 procedure TPyIDEMainForm.actToggleBreakPointExecute(Sender: TObject);
@@ -3094,7 +3093,8 @@ begin
     if GI_PyControl.Inactive then
       DebugActiveScript(ActiveEditor, False, ActiveEditor.SynEdit.CaretY)
     else if GI_PyControl.DebuggerState = dsPaused then
-      GI_PyControl.ActiveDebugger.RunToCursor(ActiveEditor, ActiveEditor.SynEdit.CaretY);
+      GI_PyControl.ActiveDebugger.RunToCursor(ActiveEditor.FileId,
+        ActiveEditor.SynEdit.CaretY);
   end;
 end;
 

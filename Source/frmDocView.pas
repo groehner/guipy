@@ -134,7 +134,7 @@ begin
   Py := SafePyEngine;
   Cursor := WaitCursor;
 
-  Module := GI_PyControl.ActiveInterpreter.ImportModule(Editor);
+  Module := GI_PyControl.ActiveInterpreter.ImportModule(Editor.FileId);
   FHtml := GI_PyControl.ActiveInterpreter.PyInteractiveInterpreter.htmldoc(Module);
 
   WebBrowser.CreateWebView;

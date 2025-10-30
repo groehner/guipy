@@ -85,7 +85,7 @@ begin
 
   Py := SafePyEngine;
 
-  Module := GI_PyControl.ActiveInterpreter.ImportModule(Editor);
+  Module := GI_PyControl.ActiveInterpreter.ImportModule(Editor.FileId);
   GI_PyControl.ActiveInterpreter.RunSource(Code, '<Getdis>', 'exec');
   GetDis := GI_PyControl.ActiveInterpreter.EvalCode('GetDis');
 

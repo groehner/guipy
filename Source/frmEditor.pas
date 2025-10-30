@@ -857,13 +857,20 @@ end;
 
 function TEditor.GetFileTitle: string;
 begin
-  if (FileName <> '') or (SSHServer <> '') then
-    Result := inherited
+  if FileName <> '' then
+  begin
+    if PyIDEOptions.DisplayPackageNames and FileIsPythonPackage(FileName) then
+      Result := FileNameToModuleName(FileName)
+    else
+      Result := TPath.GetFileName(FileName);
+  end
+  else if SSHServer <> '' then
+    Result := TSSHFileName.Format(SSHServer, RemoteFileName)
   else
   begin
     if FUntitledNumber = -1 then
       FUntitledNumber := GetUntitledNumber;
-    if FForm.SynEdit.Highlighter = ResourcesDataModule.SynPythonSyn then
+    if (Form as TEditorForm).SynEdit.Highlighter = ResourcesDataModule.SynPythonSyn then
       Result := _(SNonamePythonFileTitle) + IntToStr(FUntitledNumber)
     else
       Result := _(SNonameFileTitle) + IntToStr(FUntitledNumber);
@@ -3594,7 +3601,7 @@ procedure TEditorForm.TBCheckClick(Sender: TObject);
 var ErrorPos: TEditorPos;
 begin
   if TPyInternalInterpreter(GI_PyControl.InternalInterpreter)
-    .SyntaxCheck(FEditor, ErrorPos) then
+    .SyntaxCheck(FEditor.GetFileId, ErrorPos) then
   begin
     GI_MessagesService.AddMessage(Format(_(SSyntaxIsOK), [Pathname]));
     ShowDockForm(MessagesWindow);

@@ -18,7 +18,6 @@ uses
   System.Threading,
   PascalProcess,
   PythonEngine,
-  uEditAppIntfs,
   cPySupportTypes,
   cPyBaseDebugger,
   cPyDebugger;
@@ -78,7 +77,7 @@ type
     procedure SetCommandLine(ARunConfig: TRunConfiguration); override;
     procedure RestoreCommandLine; override;
     // Main interface
-    function ImportModule(Editor: IEditor; AddToNameSpace: Boolean = False): Variant; override;
+    function ImportModule(const FileId: string; AddToNameSpace: Boolean = False): Variant; override;
     procedure Run(ARunConfig: TRunConfiguration); override;
     function RunSource(const Source, FileName: string; const Symbol: string = 'single'): Boolean; override;
     function EvalCode(const Expr: string): Variant; override;
@@ -147,7 +146,7 @@ type
     // Debugging
     procedure Debug(ARunConfig: TRunConfiguration; InitStepIn: Boolean = False;
       RunToCursorLine: Integer = -1); override;
-    procedure RunToCursor(Editor: IEditor; ALine: Integer); override;
+    procedure RunToCursor(const FileId: string; ALine: Integer); override;
     procedure StepInto; override;
     procedure StepOver; override;
     procedure StepOut; override;
@@ -183,6 +182,7 @@ uses
   JvDSADialogs,
   JvGnugettext,
   StringResources,
+  uEditAppIntfs,
   uPythonItfs,
   cPyScripterSettings,
   cPyControl,
@@ -617,7 +617,7 @@ begin
   end;
 end;
 
-function TPyRemoteInterpreter.ImportModule(Editor: IEditor;
+function TPyRemoteInterpreter.ImportModule(const FileId: string;
   AddToNameSpace: Boolean = False): Variant;
 {
   Imports Editor text without saving the file.
@@ -632,13 +632,11 @@ var
   RunConfiguration: TRunConfiguration;
 begin
   Py := SafePyEngine;
-  Assert(Assigned(Editor), 'TPyRemoteInterpreter.ImportModule');
   CheckConnected;
   VarClear(Result);
   //Compile
-  RunConfiguration := TRunConfiguration.Create;
+  RunConfiguration := TRunConfiguration.CreateFromFileId(FileId);
   try
-    RunConfiguration.ScriptName := Editor.FileId;
     Code := Compile(RunConfiguration);
   finally
     RunConfiguration.Free;
@@ -648,7 +646,7 @@ begin
   Assert(VarIsPython(Code), 'TPyRemoteInterpreter.ImportModule');
 
   // Add the path of the imported script to the Python path
-  Path := ToPythonFileName(Editor.FileId);
+  Path := ToPythonFileName(FileId);
   if Path.StartsWith('<') then
     Path := ''
   else
@@ -658,10 +656,7 @@ begin
     SysPathRemove('');
   end;
 
-  if Editor.FileName <> '' then
-    NameOfModule := FileNameToModuleName(Editor.FileName)
-  else
-    NameOfModule := ChangeFileExt(Editor.FileTitle, '');
+  NameOfModule := FileNameToModuleName(FileId);
 
   GI_PyControl.DebuggerState := dsRunning;
   try
@@ -1774,7 +1769,7 @@ begin
   end;
 end;
 
-procedure TPyRemDebugger.RunToCursor(Editor: IEditor; ALine: Integer);
+procedure TPyRemDebugger.RunToCursor(const FileId: string; ALine: Integer);
 var
   Py: IPyEngineAndGIL;
   FName: string;
@@ -1784,7 +1779,7 @@ begin
   // Set Temporary breakpoint
   if GI_BreakpointManager.BreakpointsChanged then
     SetDebuggerBreakpoints;  // So that the temp one is not cleared
-  FName := FRemotePython.ToPythonFileName(Editor.FileId);
+  FName := FRemotePython.ToPythonFileName(FileId);
   Py := SafePyEngine;
   FMainDebugger.set_break(FName, ALine, True);
 

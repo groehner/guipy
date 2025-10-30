@@ -190,7 +190,7 @@ begin
     ModuleName.Caption := 'Module: ' + Editor.FileTitle;
     ModuleName.Hint := Editor.FileName;
 
-    Module := GI_PyControl.ActiveInterpreter.ImportModule(Editor);
+    Module := GI_PyControl.ActiveInterpreter.ImportModule(Editor.FileId);
     UnitTest := GI_PyControl.ActiveInterpreter.EvalCode('__import__("unittest")');
     FTestSuite := UnitTest.defaultTestLoader.loadTestsFromModule(Module);
     //  This FTestSuite contains a list of TestSuites
