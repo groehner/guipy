@@ -242,8 +242,7 @@ uses
   frmFile,
   frmPythonII,
   frmVariables,
-  cPyControl,
-  cPySupportTypes,
+  uPythonItfs,
   PythonEngine,
   StringResources,
   uCommonFunctions,
@@ -1574,7 +1573,7 @@ begin
           end;
           if FLivingObjects.ObjectExists(KIdx) then
           begin
-            PyControl.ActiveInterpreter.RunSource('del ' + KIdx,
+            GI_PyControl.ActiveInterpreter.RunSource('del ' + KIdx,
               '<interactive input>');
             FLivingObjects.DeleteObject(KIdx);
           end;
@@ -2141,7 +2140,7 @@ var
     begin
       NewValue := StrToPythonValue(Attributes.ValueFromIndex[I]);
       if NewValue <> OldAttributes.ValueFromIndex[I] then
-        PyControl.ActiveInterpreter.RunSource
+        GI_PyControl.ActiveInterpreter.RunSource
           (Objectname + '.' + OldAttributes.KeyNames[I] + ' = ' + NewValue,
           '<interactive input>');
     end;
@@ -3473,10 +3472,10 @@ begin
   if FLivingObjects.ObjectExists(Objectname) then
   begin
     // ToDo is this necessary?
-    PyControl.ActiveInterpreter.RunSource('import ctypes',
+    GI_PyControl.ActiveInterpreter.RunSource('import ctypes',
       '<interactive input>');
     Address := FLivingObjects.getRealAddressFromName(Objectname);
-    PyControl.ActiveInterpreter.RunSource(Objectname + ' = ctypes.cast(' +
+    GI_PyControl.ActiveInterpreter.RunSource(Objectname + ' = ctypes.cast(' +
       Address + ', ctypes.py_object).value', '<interactive input>');
     FLivingObjects.SimplifyPath(Objectname);
     ShowNewObject(Objectname);
@@ -3532,7 +3531,7 @@ var
   PyE: IPyEngineAndGIL;
   NewObject, Address: string;
 begin
-  PyControl.ActiveInterpreter.RunSource('import ctypes', '<interactive input>');
+  GI_PyControl.ActiveInterpreter.RunSource('import ctypes', '<interactive input>');
   SLObjects := FLivingObjects.GetAllObjects;
   PyE := SafePyEngine;
   for var I := 0 to SLObjects.Count - 1 do
@@ -3541,7 +3540,7 @@ begin
     if FBoxNames.IndexOf(NewObject) = -1 then
     begin
       Address := FLivingObjects.getRealAddressFromName(NewObject);
-      PyControl.ActiveInterpreter.RunSource(NewObject + ' = ctypes.cast(' +
+      GI_PyControl.ActiveInterpreter.RunSource(NewObject + ' = ctypes.cast(' +
         Address + ', ctypes.py_object).value', '<interactive input>');
       FLivingObjects.SimplifyPath(NewObject);
       ShowNewObject(NewObject);

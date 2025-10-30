@@ -43,8 +43,8 @@ uses
   StringResources,
   cSSHSupport,
   JvGnugettext,
-  uCommonFunctions,
-  cPySupportTypes;
+  uPythonItfs,
+  uCommonFunctions;
 
 {$R *.dfm}
 

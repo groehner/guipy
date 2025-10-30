@@ -106,15 +106,12 @@ inherited PythonIIForm: TPythonIIForm
     end
     object mnEditCut: TSpTBXItem
       Action = CommandsDataModule.actEditCut
-      ImageName = 'Cut'
     end
     object mnEditCopy: TSpTBXItem
       Action = CommandsDataModule.actEditCopy
-      ImageName = 'Copy'
     end
     object mnEditPaste: TSpTBXItem
       Action = CommandsDataModule.actEditPaste
-      ImageName = 'Paste'
     end
     object TBXSeparatorItem1: TSpTBXSeparatorItem
     end

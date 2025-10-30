@@ -244,7 +244,8 @@ procedure UnblockFile(const FileName: string);
 function HTMLEncode(const Str: string): string;
 
 (* Get the absolute path as stored in the file system *)
-function NormalizePath(const Path: string): string;
+function NormalizePath(const Path: string; LoCaseDrive: Boolean = False):
+    string;
 
 (* Convert spaces to tabs in a string *)
 function TabifyString(const S: string; TabWidth: Integer = 4): string;
@@ -369,7 +370,7 @@ uses
   PythonEngine,
   StringResources,
   uEditAppIntfs,
-  cPySupportTypes;
+  uPythonItfs;
 
 function GetIconIndexFromFile(const AFileName: string;
   const ASmall: Boolean): Integer;
@@ -400,7 +401,8 @@ function GetLongFileName(const APath: string): string;
 (* returns long file name even for nonexisting files *)
 begin
   if APath = '' then Result:= ''
-  else begin
+  else
+  begin
     Result:= PathGetLongName(APath);
     // if different - function is working
     if (Result = '') or
@@ -1964,7 +1966,7 @@ begin
   end;
 end;
 
-function NormalizePath(const Path: string): string;
+function NormalizePath(const Path: string; LoCaseDrive: Boolean = False): string;
 var
   LongPath: array[0..MAX_PATH - 1] of Char;
 begin
@@ -1978,7 +1980,7 @@ begin
     Result := LongPath;
 
   // Lowercase drive letter if present (required by Jedi LSP)
-  if (Length(Result) >= 2) and (Result[2] = DriveDelim) then
+  if LoCaseDrive and (Length(Result) >= 2) and (Result[2] = DriveDelim) then
     Result[1] := Result[1].ToLower;
 end;
 

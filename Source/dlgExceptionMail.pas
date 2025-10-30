@@ -94,10 +94,27 @@ implementation
 {$R *.dfm}
 
 uses
-  ClipBrd, Graphics, Forms, Dialogs, AppEvnts, JclSysUtils, JclMapi,
-  JclBase, JclFileUtils, JclHookExcept, JclPeImage, JclStrings,
-  JclSysInfo, JclWin32, uCommonFunctions, PythonEngine, TypInfo,
-  uEditAppIntfs, cPySupportTypes, cPyScripterSettings;
+  ClipBrd,
+  Graphics,
+  Forms,
+  Dialogs,
+  AppEvnts,
+  JclSysUtils,
+  JclMapi,
+  JclBase,
+  JclFileUtils,
+  JclHookExcept,
+  JclPeImage,
+  JclStrings,
+  JclSysInfo,
+  JclWin32,
+  uCommonFunctions,
+  PythonEngine,
+  TypInfo,
+  uEditAppIntfs,
+  uPythonItfs,
+  cPySupportTypes,
+  cPyScripterSettings;
 
 resourcestring
   RsAppError = '%s - application error';

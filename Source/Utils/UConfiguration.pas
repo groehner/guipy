@@ -1501,6 +1501,7 @@ uses
   dmResources,
   dmCommands,
   cPyScripterSettings,
+  uPythonItfs,
   cPyControl,
 //  JediLspClient,
   uEditAppIntfs,
@@ -1931,7 +1932,7 @@ begin
   FileTemplatesInit;
 
   // tab Python
-  RGEngineTypes.ItemIndex := Ord(PyControl.PythonEngineType) - 1;
+  RGEngineTypes.ItemIndex := Ord(GI_PyControl.PythonEngineType) - 1;
 
   // Gutter
   ckGutterVisible.Checked := FSynEdit.Gutter.Visible;
@@ -2320,7 +2321,7 @@ var LanguageNr: Integer; VOptions: TSynEditorOptions;
 begin
   RGLanguages.OnClick := nil;
   // tab Python
-  if RGEngineTypes.ItemIndex <> Ord(PyControl.PythonEngineType) - 1 then
+  if RGEngineTypes.ItemIndex <> Ord(GI_PyControl.PythonEngineType) - 1 then
   begin
     case RGEngineTypes.ItemIndex of
       0:
@@ -2332,7 +2333,7 @@ begin
     else
       PyIDEMainForm.actPythonEngineExecute(PyIDEMainForm.actPythonSSH);
     end;
-    if PyControl.PythonEngineType = peInternal then
+    if GI_PyControl.PythonEngineType = peInternal then
       PyIDEMainForm.actPythonEngineExecute(PyIDEMainForm.actPythonRemote);
   end;
 
@@ -2792,8 +2793,8 @@ begin
     Str1 := Format('Version %s %s', [ApplicationVersion, WinPlatform]);
     Str := Str + '  GuiPy-Version: ' + Str1 + CrLf;
     if GI_PyControl.PythonLoaded then
-      Str1 := PyControl.PythonVersion.DisplayName +
-        _(EngineTypeName[PyControl.PythonEngineType])
+      Str1 := GI_PyControl.PythonVersion.DisplayName +
+        _(EngineTypeName[GI_PyControl.PythonEngineType])
     else
       Str1 := '<not loaded>';
     Str := Str + '  Python-Version: ' + Str1 + CrLf;

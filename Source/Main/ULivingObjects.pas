@@ -89,7 +89,7 @@ uses
   Types,
   SynEditKeyCmds,
   System.RegularExpressions,
-  cPyControl,
+  uPythonItfs,
   cPySupportTypes,
   PythonEngine,
   frmVariables,
@@ -157,12 +157,12 @@ begin
   if ExecType = 'exec' then
     EncodedSource := EncodedSource + #10;
   // RunSource
-  case PyControl.DebuggerState of
+  case GI_PyControl.DebuggerState of
     dsInactive:
-      PyControl.ActiveInterpreter.RunSource(Source, '<editor selection>',
+      GI_PyControl.ActiveInterpreter.RunSource(Source, '<editor selection>',
         ExecType);
     dsPaused, dsPostMortem:
-      PyControl.ActiveDebugger.RunSource(Source, '<editor selection>',
+      GI_PyControl.ActiveDebugger.RunSource(Source, '<editor selection>',
         ExecType);
   end;
 
@@ -176,11 +176,11 @@ var
   Vari: Variant;
 begin
   if not ClassExists('inspect') then
-    PyControl.ActiveInterpreter.RunSource('import inspect',
+    GI_PyControl.ActiveInterpreter.RunSource('import inspect',
       '<interactive input>');
   PyEngine := SafePyEngine;
   Application.ProcessMessages;
-  Vari := PyControl.ActiveInterpreter.EvalCode('inspect.signature(' +
+  Vari := GI_PyControl.ActiveInterpreter.EvalCode('inspect.signature(' +
     From + ')');
   Result := string(Vari);
 end;
@@ -192,9 +192,9 @@ var
   Filepath: string;
 begin
   PyEngine := SafePyEngine;
-  Vari := PyControl.ActiveInterpreter.EvalCode(Objectname + '.__module__');
+  Vari := GI_PyControl.ActiveInterpreter.EvalCode(Objectname + '.__module__');
   Filepath := string(Vari);
-  PyControl.ActiveInterpreter.RunSource('From ' + Filepath + ' import ' +
+  GI_PyControl.ActiveInterpreter.RunSource('From ' + Filepath + ' import ' +
     Classname, '<interactive input>');
 end;
 
@@ -206,10 +206,10 @@ var
 begin
   PyEngine := SafePyEngine;
   if not ClassExists('os') then
-    PyControl.ActiveInterpreter.RunSource('import os', '<interactive input>');
-  Vari := PyControl.ActiveInterpreter.EvalCode('os.path.abspath(os.curdir)');
+    GI_PyControl.ActiveInterpreter.RunSource('import os', '<interactive input>');
+  Vari := GI_PyControl.ActiveInterpreter.EvalCode('os.path.abspath(os.curdir)');
   Path := string(Vari);
-  Vari := PyControl.ActiveInterpreter.EvalCode(Classname + '.__module__');
+  Vari := GI_PyControl.ActiveInterpreter.EvalCode(Classname + '.__module__');
   Filename := string(Vari);
   Result := Path + '\' + Filename + '.PyEngine';
 end;
@@ -221,7 +221,7 @@ var
 begin
   PyEngine := SafePyEngine;
   try
-    Hex := PyControl.ActiveInterpreter.EvalCode('Hex(id(' + From + '))');
+    Hex := GI_PyControl.ActiveInterpreter.EvalCode('Hex(id(' + From + '))');
   except
     Hex := '';
   end;
@@ -243,10 +243,10 @@ begin
   var
   StringList := TStringList.Create;
   if not ClassExists('inspect') then
-    PyControl.ActiveInterpreter.RunSource('import inspect',
+    GI_PyControl.ActiveInterpreter.RunSource('import inspect',
       '<interactive input>');
   PyEngine := SafePyEngine;
-  Vari := PyControl.ActiveInterpreter.EvalCode('inspect.Getmembers(' + From +
+  Vari := GI_PyControl.ActiveInterpreter.EvalCode('inspect.Getmembers(' + From +
     ', inspect.IsMethod)');
   RegEx := CompiledRegEx('''(\w+)''');
   Matches := RegEx.Matches(string(Vari));

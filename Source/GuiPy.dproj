@@ -497,6 +497,7 @@
             <Form>ExceptionDialogMail</Form>
         </DCCReference>
         <DCCReference Include="cLSPClients.pas"/>
+        <DCCReference Include="uPythonItfs.pas"/>
         <None Include="GuiPy.todo"/>
         <None Include="ModelSupport_PyScripter\default.txaPackage"/>
         <None Include="Main\_done.txt"/>

@@ -196,7 +196,8 @@ uses
   UUMLInteractive in 'Main\UUMLInteractive.pas' {FUMLInteractive},
   ULifeline in 'SequenceDiagram\ULifeline.pas',
   dlgExceptionMail in 'dlgExceptionMail.pas' {ExceptionDialogMail},
-  cLSPClients in 'cLSPClients.pas';
+  cLSPClients in 'cLSPClients.pas',
+  uPythonItfs in 'uPythonItfs.pas';
 
 {$R *.RES}
 

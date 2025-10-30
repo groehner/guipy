@@ -1426,6 +1426,13 @@ object CommandsDataModule: TCommandsDataModule
       OnExecute = actProjectSaveAsExecute
       OnUpdate = UpdateActionAlwaysEnabled
     end
+    object actCommandLine: TAction
+      Category = 'Run'
+      Caption = 'Command Line &Parameters...'
+      Hint = 'Set command line parameters'
+      OnExecute = actCommandLineExecute
+      OnUpdate = UpdateRunActions
+    end
   end
   object SynWebCompletion: TSynCompletionProposal
     Options = [scoLimitToMatchedText, scoUseInsertList, scoUsePrettyText, scoUseBuiltInTimer, scoEndCharCompletion, scoCompleteWithTab, scoCompleteWithEnter]

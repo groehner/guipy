@@ -87,6 +87,7 @@ uses
   Vcl.Dialogs,
   Vcl.Clipbrd,
   uEditAppIntfs,
+  uPythonItfs,
   uCommonFunctions,
   JvGnugettext;
 
@@ -128,8 +129,8 @@ begin
   if Assigned(Node) then
     with FBreakPoints[Node.Index] do
     begin
-      if FileName ='' then Exit; // No FileName or LineNumber
-      GI_PyIDEServices.ShowFilePosition(FileName, LineNo);
+      if FileId ='' then Exit; // No FileId or LineNumber
+      GI_PyIDEServices.ShowFilePosition(FileId, LineNo);
     end;
 end;
 
@@ -139,9 +140,9 @@ begin
   if Assigned(Node) then
     with FBreakPoints[Node.Index] do
     begin
-      if FileName <> '' then
+      if FileId <> '' then
       begin
-        GI_BreakpointManager.ToggleBreakpoint(FileName, LineNo, False);
+        GI_BreakpointManager.ToggleBreakpoint(FileId, LineNo, False);
         Delete(FBreakPoints, Node.Index, 1);
         BreakPointsView.DeleteNode(Node);
         Assert(Integer(BreakPointsView.RootNodeCount) = Length(FBreakPoints));
@@ -156,7 +157,7 @@ begin
     with FBreakPoints[Node.Index] do
       if GI_BreakpointManager.EditProperties(Condition, IgnoreCount) then
       begin
-        GI_BreakpointManager.SetBreakpoint(FileName, LineNo,
+        GI_BreakpointManager.SetBreakpoint(FileId, LineNo,
           Disabled, Condition, IgnoreCount, False);
       end;
 end;
@@ -202,7 +203,7 @@ begin
   Assert(Integer(Node.Index) < Length(FBreakPoints), 'BreakPointsViewGetText');
   with FBreakPoints[Node.Index] do
     case Column of
-      0:  CellText := FileName;
+      0:  CellText := FileId;
       1:  if LineNo > 0
             then CellText := LineNo.ToString
           else
@@ -221,7 +222,7 @@ begin
       Disabled := False
     else
       Disabled := True;
-    GI_BreakpointManager.SetBreakpoint(FileName, LineNo, Disabled, Condition,
+    GI_BreakpointManager.SetBreakpoint(FileId, LineNo, Disabled, Condition,
       IgnoreCount, False);
   end;
   BreakPointsView.InvalidateNode(Node);
@@ -248,7 +249,7 @@ begin
         2: IgnoreCount := StrToIntDef(NewText, IgnoreCount);
         3: Condition := NewText;
       end;
-      GI_BreakpointManager.SetBreakpoint(FileName, LineNo,
+      GI_BreakpointManager.SetBreakpoint(FileId, LineNo,
         Disabled, Condition, IgnoreCount, False);
       BreakPointsView.InvalidateNode(Node);
     end;
@@ -276,17 +277,17 @@ type
   private
     FBreakpointsChanged: Boolean;
     FIsUpdating: Boolean;
-    procedure DoBreakpointsChanged(const FileName: string; Line: Integer;
-    UpdateUI: Boolean = True);
+    procedure DoBreakpointsChanged(const FileId: string; Line: Integer; UpdateUI:
+        Boolean = True);
     procedure DoUpdateUI;
     {IBreakpointManager implementation}
     function GetBreakpointsChanged: Boolean;
     procedure SetBreakpointsChanged(Value: Boolean);
-    procedure ToggleBreakpoint(const FileName: string; ALine: Integer;
-      CtrlPressed: Boolean = False; UpdateUI: Boolean = True);
-    procedure SetBreakpoint(const FileName: string; ALine: Integer;
-      Disabled: Boolean; Condition: string = ''; IgnoreCount: Integer = 0;
-      UpdateUI: Boolean = True);
+    procedure ToggleBreakpoint(const FileId: string; ALine: Integer; CtrlPressed:
+        Boolean; UpdateUI: Boolean);
+    procedure SetBreakpoint(const FileId: string; ALine: Integer; Disabled:
+        Boolean; Condition: string = ''; IgnoreCount: Integer = 0; UpdateUI:
+        Boolean = True);
     function AllBreakPoints: TArray<TBreakpointInfo>;
     function EditProperties(var Condition: string; var IgnoreCount: Integer): Boolean;
     procedure ClearAllBreakpoints;
@@ -307,7 +308,7 @@ begin
     for var BP in Editor.BreakPoints do
     begin
       FillChar(BPInfo, SizeOf(TBreakpointInfo), 0);
-      BPInfo.FileName := Editor.FileId;
+      BPInfo.FileId := Editor.FileId;
       BPInfo.LineNo := TBreakpoint(BP).LineNo;
       BPInfo.Disabled := TBreakpoint(BP).Disabled;
       BPInfo.Condition := TBreakpoint(BP).Condition;
@@ -330,10 +331,10 @@ begin
   end);
 end;
 
-procedure TBreakpointManager.DoBreakpointsChanged(const FileName: string;
+procedure TBreakpointManager.DoBreakpointsChanged(const FileId: string;
   Line: Integer; UpdateUI: Boolean = True);
 begin
-  GI_EditorFactory.InvalidatePos(FileName, Line, itGutter);
+  GI_EditorFactory.InvalidatePos(FileId, Line, itGutter);
   FBreakpointsChanged := True;
 end;
 
@@ -382,18 +383,18 @@ begin
   Result := FBreakpointsChanged;
 end;
 
-procedure TBreakpointManager.SetBreakpoint(const FileName: string; ALine: Integer;
+procedure TBreakpointManager.SetBreakpoint(const FileId: string; ALine: Integer;
   Disabled: Boolean; Condition: string = ''; IgnoreCount: Integer = 0;
   UpdateUI: Boolean = True);
 var
   Editor: IEditor;
 begin
-  Editor := GI_EditorFactory.GetEditorByFileId(FileName);
+  Editor := GI_EditorFactory.GetEditorByFileId(FileId);
   if Assigned(Editor) and (ALine > 0) then
   begin
     (Editor.BreakPoints as TBreakpointList).SetBreakpoint(
       ALine, Disabled, Condition, IgnoreCount);
-    DoBreakpointsChanged(FileName, ALine);
+    DoBreakpointsChanged(FileId, ALine);
     if UpdateUI then DoUpdateUI;
   end;
 end;
@@ -404,14 +405,14 @@ begin
   if Value then DoUpdateUI;
 end;
 
-procedure TBreakpointManager.ToggleBreakpoint(const FileName: string;
+procedure TBreakpointManager.ToggleBreakpoint(const FileId: string;
   ALine: Integer; CtrlPressed: Boolean; UpdateUI: Boolean);
 var
   Breakpoint: TBreakpoint;
 begin
   if ALine <= 0 then Exit;
 
-  var Editor := GI_EditorFactory.GetEditorByFileId(FileName);
+  var Editor := GI_EditorFactory.GetEditorByFileId(FileId);
   if not Assigned(Editor) then Exit;
 
   var BPList := Editor.BreakPoints as TBreakpointList;
@@ -422,11 +423,11 @@ begin
       Breakpoint.Disabled := not Breakpoint.Disabled
     else
       BPList.Remove(Breakpoint);
-    DoBreakpointsChanged(FileName, ALine);
+    DoBreakpointsChanged(FileId, ALine);
     if UpdateUI then DoUpdateUI;
   end
   else
-    SetBreakpoint(FileName, ALine, CtrlPressed, '', 0, UpdateUI);
+    SetBreakpoint(FileId, ALine, CtrlPressed, '', 0, UpdateUI);
 end;
 
 {$ENDREGION 'TBreakpointManagement'}

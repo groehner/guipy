@@ -193,13 +193,13 @@ type
     function GetEditorCount: Integer;
     function GetEditor(Index: Integer): IEditor;
     function GetEditorByName(const Name: string): IEditor;
-    function GetEditorByFileId(const Name: string): IEditor;
+    function GetEditorByFileId(const FileId: string): IEditor;
     function NewEditor(TabControlIndex:Integer = 1): IEditor;
     procedure RemoveEditor(AEditor: IEditor);
     function RegisterViewFactory(ViewFactory: IEditorViewFactory): Integer;
     function GetViewFactoryCount: Integer;
     function GetViewFactory(Index: Integer): IEditorViewFactory;
-    procedure InvalidatePos(const AFileName: string; ALine: Integer;
+    procedure InvalidatePos(const AFileId: string; ALine: Integer;
       AType: TInvalidationType);
     procedure SetupEditorViewsMenu(ViewsMenu: TSpTBXItem; IL: TCustomImageList);
     procedure UpdateEditorViewsMenu(ViewsMenu: TSpTBXItem);
@@ -315,7 +315,7 @@ type
     function GetActiveFile: IFile;
     procedure WriteStatusMsg(const S: string);
     function FileIsPythonSource(const FileName: string): Boolean;
-    function ShowFilePosition(FileName: string; Line: Integer = 1;
+    function ShowFilePosition(const AFileId: string; Line: Integer = 1;
       Offset: Integer = 1; SelLen: Integer = 0;
       ForceToMiddle: Boolean = True; FocusEditor: Boolean = True): Boolean;
     procedure ClearPythonWindows;

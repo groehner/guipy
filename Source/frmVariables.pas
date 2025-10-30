@@ -35,6 +35,7 @@ uses
   VirtualTrees.HeaderPopup,
   VirtualTrees,
   SynEdit,
+  uPythonItfs,
   frmIDEDockWin,
   cPySupportTypes,
   cPyBaseDebugger;
@@ -120,7 +121,6 @@ uses
   uEditAppIntfs,
   uCommonFunctions,
   dmResources,
-  cPyControl,
   cPyScripterSettings;
 
 {$R *.dfm}
@@ -344,8 +344,8 @@ begin
   if ((GI_PyControl.PythonEngineType = peSSH) and PyIDEOptions.SSHDisableVariablesWin) or
      not (GI_PyControl.PythonLoaded and
           Assigned(GI_CallStackWindow) and
-          Assigned(PyControl.ActiveInterpreter) and
-          Assigned(PyControl.ActiveDebugger)) then
+          Assigned(GI_PyControl.ActiveInterpreter) and
+          Assigned(GI_PyControl.ActiveDebugger)) then
   begin
      ClearAll;
      Exit;
@@ -383,8 +383,8 @@ begin
     FCurrentModule := CurrentFrame.FileName;
     FCurrentFunction := CurrentFrame.FunctionName;
     // Set the initial number of nodes.
-    GlobalsNameSpace := PyControl.ActiveDebugger.GetFrameGlobals(CurrentFrame);
-    FLocalsNameSpace := PyControl.ActiveDebugger.GetFrameLocals(CurrentFrame);
+    GlobalsNameSpace := GI_PyControl.ActiveDebugger.GetFrameGlobals(CurrentFrame);
+    FLocalsNameSpace := GI_PyControl.ActiveDebugger.GetFrameLocals(CurrentFrame);
     if Assigned(GlobalsNameSpace) and Assigned(FLocalsNameSpace) then
       RootNodeCount := 2
     else
@@ -393,7 +393,7 @@ begin
     FCurrentModule := '';
     FCurrentFunction := '';
     try
-      GlobalsNameSpace := PyControl.ActiveInterpreter.GetGlobals;
+      GlobalsNameSpace := GI_PyControl.ActiveInterpreter.GetGlobals;
       RootNodeCount := 1;
     except
       RootNodeCount := 0;

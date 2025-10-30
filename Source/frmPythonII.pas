@@ -47,6 +47,7 @@ uses
   PythonEngine,
   frmIDEDockWin,
   uEditAppIntfs,
+  uPythonItfs,
   cPySupportTypes;
 
 type
@@ -214,7 +215,6 @@ uses
   dmCommands,
   uCommonFunctions,
   cPyScripterSettings,
-  cPyControl,
   cCodeCompletion;
 
 {$R *.dfm}
@@ -393,8 +393,8 @@ end;
 
 procedure TPythonIIForm.PrintInterpreterBanner(AVersion: string = ''; APlatform: string = '');
 begin
-  if AVersion = '' then AVersion := PyControl.ActiveInterpreter.PythonVersion;
-  if APlatform = '' then APlatform := PyControl.ActiveInterpreter.PythonPlatform;
+  if AVersion = '' then AVersion := GI_PyControl.ActiveInterpreter.PythonVersion;
+  if APlatform = '' then APlatform := GI_PyControl.ActiveInterpreter.PythonPlatform;
   AVersion := AVersion.Replace(Char($A), ' ');
   if SynEdit.Lines.Count > 0 then AppendText(sLineBreak);
   var Str := Format('*** Python %s on %s. ***', [AVersion, APlatform]);
@@ -774,10 +774,10 @@ begin
         case GI_PyControl.DebuggerState of
           dsInactive :
             NeedIndent :=
-              PyControl.ActiveInterpreter.RunSource(SourceCode, '<interactive input>');
+              GI_PyControl.ActiveInterpreter.RunSource(SourceCode, '<interactive input>');
           dsPaused, dsPostMortem :
             NeedIndent :=
-              PyControl.ActiveDebugger.RunSource(SourceCode, '<interactive input>');
+              GI_PyControl.ActiveDebugger.RunSource(SourceCode, '<interactive input>');
         end;
     end,
     procedure
@@ -896,7 +896,7 @@ begin
                 ThreadPythonExec(
                   procedure
                   begin
-                    PyControl.ActiveInterpreter.SystemCommand(GI_PyIDEServices.ReplaceParams(Match.Groups[1].Value));
+                    GI_PyControl.ActiveInterpreter.SystemCommand(GI_PyIDEServices.ReplaceParams(Match.Groups[1].Value));
                   end);
               end
               else
@@ -1031,8 +1031,8 @@ begin
     SynEdit.CaretXY := SynEdit.CaretXY; // remove selection
     ErrLineNo := StrToIntDef(Match.GroupValue(2), 0);
     FileName := Match.GroupValue(1);
-    if Assigned(PyControl.ActiveInterpreter) then
-      FileName := PyControl.ActiveInterpreter.FromPythonFileName(FileName);
+    if Assigned(GI_PyControl.ActiveInterpreter) then
+      FileName := GI_PyControl.ActiveInterpreter.FromPythonFileName(FileName);
     GI_PyIDEServices.ShowFilePosition(FileName, ErrLineNo, 1);
   end;
 end;

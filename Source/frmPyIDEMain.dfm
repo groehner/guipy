@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 361
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -130,8 +130,6 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
-    ExplicitWidth = 606
-    ExplicitHeight = 309
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -275,7 +273,6 @@ object PyIDEMainForm: TPyIDEMainForm
       Height = 113
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 624
       object DebugToolbar: TSpTBXToolbar
         Left = 2
         Top = 52
@@ -1114,7 +1111,7 @@ object PyIDEMainForm: TPyIDEMainForm
             Action = actRun
           end
           object mnCommandLineParams: TSpTBXItem
-            Action = actCommandLine
+            Action = CommandsDataModule.actCommandLine
           end
           object N22Sep: TSpTBXSeparatorItem
             Tag = -2
@@ -3076,14 +3073,6 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageName = 'Run1'
       ShortCut = 16504
       OnExecute = actRunExecute
-    end
-    object actCommandLine: TAction
-      Category = 'Run'
-      Caption = 'Command Line &Parameters...'
-      HelpContext = 340
-      HelpType = htContext
-      Hint = 'Set command line parameters'
-      OnExecute = actCommandLineExecute
     end
     object actImportModule: TAction
       Category = 'Run'

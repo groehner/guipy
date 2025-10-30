@@ -134,7 +134,7 @@ uses
   SynEditMiscClasses,
   dmCommands,
   PythonEngine,
-  cPySupportTypes,
+  uPythonItfs,
   uCommonFunctions;
 
 {$R *.dfm}

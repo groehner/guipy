@@ -11,12 +11,12 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
     Width = 531
     Height = 399
     ExplicitWidth = 531
-    ExplicitHeight = 182
+    ExplicitHeight = 399
     inherited FGPanel: TPanel
       Width = 527
       Height = 395
       ExplicitWidth = 527
-      ExplicitHeight = 178
+      ExplicitHeight = 395
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -25,7 +25,6 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitHeight = 178
         object ExplorerTree: TVirtualStringTree
           Left = 0
           Top = 30
@@ -63,9 +62,6 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
           OnNodeDblClick = ExplorerTreeNodeDblClick
           Touch.InteractiveGestures = [igPan, igPressAndTap]
           Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
-          ExplicitLeft = -2
-          ExplicitTop = 22
-          ExplicitHeight = 148
           Columns = <>
         end
         object SpTBXDock1: TSpTBXDock

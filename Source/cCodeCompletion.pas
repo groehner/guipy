@@ -136,13 +136,13 @@ uses
   SynHighlighterPython,
   StringResources,
   uEditAppIntfs,
+  uPythonItfs,
   uCommonFunctions,
   cPyBaseDebugger,
   cPyDebugger,
   PythonEngine,
   cPyScripterSettings,
   cPySupportTypes,
-  cPyControl,
   XLSPTypes,
   cLSPClients;
 
@@ -316,9 +316,9 @@ begin
   var Py := SafePyEngine;
   if (Index < 0) or (lookup <> '') then begin
     if GI_PyControl.Inactive then
-      fPyNameSpace := PyControl.ActiveInterpreter.NameSpaceFromExpression(lookup)
+      fPyNameSpace := GI_PyControl.ActiveInterpreter.NameSpaceFromExpression(lookup)
     else if GI_PyControl.PythonLoaded and not GI_PyControl.Running then
-      fPyNameSpace := PyControl.ActiveDebugger.NameSpaceFromExpression(lookup);
+      fPyNameSpace := GI_PyControl.ActiveDebugger.NameSpaceFromExpression(lookup);
   end;
 
   DisplayText := '';
@@ -672,7 +672,7 @@ end;
 function TInterpreterSignatureHelp.CallTipFromExpression(const Expr, FileName : string;
   const Line: Integer; var DisplayString, DocString : string): Boolean;
 begin
-  Result := PyControl.ActiveInterpreter.CallTipFromExpression(
+  Result := GI_PyControl.ActiveInterpreter.CallTipFromExpression(
     Expr, DisplayString, DocString);
 end;
 

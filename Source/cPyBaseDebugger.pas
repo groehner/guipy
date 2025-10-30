@@ -219,8 +219,8 @@ uses
   JvGnugettext,
   JclSysInfo,
   StringResources,
+  uPythonItfs,
   uCommonFunctions,
-  cPyControl,
   cPyScripterSettings,
   cSSHSupport;
 

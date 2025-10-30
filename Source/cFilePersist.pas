@@ -95,6 +95,7 @@ uses
   TB2Item,
   JvJCLUtils,
   dmResources,
+  uPythonItfs,
   frmPyIDEMain,
   uHighlighterProcs,
   cPyControl,

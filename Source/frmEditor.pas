@@ -594,6 +594,7 @@ uses
   StringResources,
   dmResources,
   dmCommands,
+  uPythonItfs,
   dlgSynPrintPreview,
   dlgRemoteFile,
   frmPyIDEMain,
@@ -610,7 +611,6 @@ uses
   frmCodeExplorer,
   frmIDEDockWin,
   cLspClients,
-  cPyControl,
   cCodeCompletion,
 
   UUtils,
@@ -689,7 +689,7 @@ begin
   FSynLsp := TLspSynEditPlugin.Create(FForm.SynEdit);
   FSynLsp.OnDiagnosticsUpdate := OnDiagnosticsUpdate;
   FSynLsp.DocSymbols.OnNotify := FForm.SymbolsChanged;
-  CodeExplorerWindow.UpdateWindow(FSynLsp.DocSymbols, ceuEditorEnter);
+ // CodeExplorerWindow.UpdateWindow(FSynLsp.DocSymbols, ceuEditorEnter);
 end;
 
 procedure TEditor.Activate(Primary: Boolean = True);
@@ -1254,10 +1254,10 @@ begin
       // RunSource
       case GI_PyControl.DebuggerState of
         dsInactive:
-          PyControl.ActiveInterpreter.RunSource(Source, '<editor selection>',
+          GI_PyControl.ActiveInterpreter.RunSource(Source, '<editor selection>',
             ExecType);
         dsPaused, dsPostMortem:
-          PyControl.ActiveDebugger.RunSource(Source, '<editor selection>',
+          GI_PyControl.ActiveDebugger.RunSource(Source, '<editor selection>',
             ExecType);
       end;
     end,
@@ -1407,12 +1407,12 @@ type
       TabControlIndex: Integer = 0; AsEditor: Boolean = False): IFile;
     function GetEditorCount: Integer;
     function GetEditorByName(const Name: string): IEditor;
-    function GetEditorByFileId(const Name: string): IEditor;
+    function GetEditorByFileId(const FileId: string): IEditor;
     function GetEditor(Index: Integer): IEditor;
     function GetViewFactoryCount: Integer;
     function GetViewFactory(Index: Integer): IEditorViewFactory;
     function NewEditor(TabControlIndex: Integer = 1): IEditor;
-    procedure InvalidatePos(const AFilename: string; ALine: Integer;
+    procedure InvalidatePos(const AFileId: string; ALine: Integer;
       AType: TInvalidationType);
     procedure RemoveEditor(AEditor: IEditor);
     function RegisterViewFactory(ViewFactory: IEditorViewFactory): Integer;
@@ -1562,7 +1562,7 @@ begin
   Result := FEditorViewFactories.Count;
 end;
 
-procedure TEditorFactory.InvalidatePos(const AFilename: string; ALine: Integer;
+procedure TEditorFactory.InvalidatePos(const AFileId: string; ALine: Integer;
 AType: TInvalidationType);
 
   procedure ProcessEditor(SynEd: TSynEdit);
@@ -1591,11 +1591,11 @@ AType: TInvalidationType);
   end;
 
 begin
-  if AFilename = '' then
+  if AFileId = '' then
     Exit;
 
   var
-  Editor := GetEditorByFileId(AFilename);
+  Editor := GetEditorByFileId(AFileId);
   if Assigned(Editor) then
   begin
     ProcessEditor(Editor.SynEdit);
@@ -1619,7 +1619,7 @@ begin
   // The Name may contain invalid characters and ExpandFileName will raise an
   // exception.  This is the case with exceptions raised by pywin32 COM objects
   try
-    FullName := GetLongFileName(ExpandFileName(Name));
+    FullName := NormalizePath(Name);
   except
     Exit(nil);
   end;
@@ -1630,15 +1630,15 @@ begin
     end);
 end;
 
-function TEditorFactory.GetEditorByFileId(const Name: string): IEditor;
+function TEditorFactory.GetEditorByFileId(const FileId: string): IEditor;
 begin
-  Result := GetEditorByName(Name);
+  Result := GetEditorByName(FileId);
   if not Assigned(Result) then
     Result := FirstEditorCond(
       function(Editor: IEditor): Boolean
       begin
         Result := (Editor.FileName = '') and
-          AnsiSameText(Editor.GetFileTitle, Name);
+          AnsiSameText(Editor.GetFileTitle, FileId);
       end);
 end;
 
@@ -1751,7 +1751,7 @@ begin
   else if AFilename <> '' then
   begin
     if not IsHttp(AFilename) then
-      AFilename := GetLongFileName(ExpandFileName(AFilename));
+      AFilename := NormalizePath(AFileName);
     Result := GI_FileFactory.GetFileByName(AFilename);
     if Assigned(Result) then
     begin
@@ -1911,7 +1911,7 @@ end;
 
 procedure TEditorForm.SynEditChange(Sender: TObject);
 begin
-  if GI_PyControl.ErrorPos.FileName = GetEditor.FileId then
+  if GI_PyControl.ErrorPos.FileId = GetEditor.FileId then
     GI_PyControl.ErrorPos := TEditorPos.EmptyPos;
 
   ClearSearchHighlight(FEditor);
@@ -2989,7 +2989,7 @@ procedure TEditorForm.SynEditMouseDown(Sender: TObject; Button: TMouseButton;
 Shift: TShiftState; X, Y: Integer);
 begin
   EditorSearchOptions.InitSearch;
-  if GI_PyControl.ErrorPos.FileName = GetEditor.FileId then
+  if GI_PyControl.ErrorPos.FileId = GetEditor.FileId then
     GI_PyControl.ErrorPos := TEditorPos.EmptyPos;
 
   if FHotIdentInfo.HaveHotIdent then
@@ -3593,7 +3593,7 @@ end;
 procedure TEditorForm.TBCheckClick(Sender: TObject);
 var ErrorPos: TEditorPos;
 begin
-  if TPyInternalInterpreter(PyControl.InternalInterpreter)
+  if TPyInternalInterpreter(GI_PyControl.InternalInterpreter)
     .SyntaxCheck(FEditor, ErrorPos) then
   begin
     GI_MessagesService.AddMessage(Format(_(SSyntaxIsOK), [Pathname]));
@@ -4116,7 +4116,7 @@ begin
   if not(SynEdit.Highlighter = ResourcesDataModule.SynPythonSyn) then
     Exit;
 
-  if (PyControl.ActiveDebugger <> nil) and SynEdit.Gutter.Visible then
+  if (GI_PyControl.ActiveDebugger <> nil) and SynEdit.Gutter.Visible then
   begin
     LineHeight := SynEdit.LineHeight;
 
@@ -4180,7 +4180,7 @@ var ASynEdit: TSynEdit;
 begin
   ASynEdit := Sender as TSynEdit;
   if (ASynEdit.Highlighter = ResourcesDataModule.SynPythonSyn) and
-    (PyControl.ActiveDebugger <> nil) then
+    (GI_PyControl.ActiveDebugger <> nil) then
     GI_BreakpointManager.ToggleBreakpoint(FEditor.GetFileId, Line,
       GetKeyState(VK_CONTROL) < 0);
 end;
@@ -5723,7 +5723,7 @@ begin
           var
             ObjectValue, ObjectType: string;
           begin
-            PyControl.ActiveDebugger.Evaluate(DottedIdent, ObjectType,
+            GI_PyControl.ActiveDebugger.Evaluate(DottedIdent, ObjectType,
               ObjectValue);
             if ObjectValue <> _(SNotAvailable) then
             begin
