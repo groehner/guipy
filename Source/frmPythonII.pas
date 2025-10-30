@@ -49,9 +49,6 @@ uses
   uEditAppIntfs,
   cPySupportTypes;
 
-const
-  WM_REINITINTERPRETER = WM_USER + 1030;
-
 type
   TPythonIIForm = class(TIDEDockWindow, ISearchCommands, IPyInterpreter)
     SynEdit: TSynEdit;
@@ -78,7 +75,6 @@ type
     mnPythonVersions: TSpTBXSubmenuItem;
     vilCodeImages: TVirtualImageList;
     vilImages: TVirtualImageList;
-    mnPythonRestart: TSpTBXItem;
     procedure FormCreate(Sender: TObject);
     procedure SynEditProcessCommand(Sender: TObject;
       var Command: TSynEditorCommand; var AChar: WideChar; Data: Pointer);
@@ -106,7 +102,6 @@ type
     procedure actPasteAndExecuteExecute(Sender: TObject);
     procedure InterpreterActionListUpdate(Action: TBasicAction; var Handled:
         Boolean);
-    procedure mnPythonRestartClick(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
     procedure SynCodeCompletionAfterCodeCompletion(Sender: TObject;
@@ -159,7 +154,6 @@ type
     procedure StopFileMirror;
     procedure UpdatePythonKeywords;
     procedure SetPyInterpreterPrompt(Pip: TPyInterpreterPropmpt);
-    procedure ReinitInterpreter;
     function GetEditor: TCustomSynEdit;
     function GetPythonIO: TPythonInputOutput;
     function GetShowOutput: Boolean;
@@ -167,7 +161,6 @@ type
   protected
     procedure PythonIOReceiveData(Sender: TObject; var Data: string);
     procedure WMSpSkinChange(var Message: TMessage); message WM_SPSKINCHANGE;
-    procedure WMREINITINTERPRETER(var Message: TMessage); message WM_REINITINTERPRETER;
   public
     { Public declarations }
     PS1, PS2: string;
@@ -1630,12 +1623,6 @@ begin
   SynEdit.InvalidateGutter;
 end;
 
-procedure TPythonIIForm.WMREINITINTERPRETER(var Message: TMessage);
-begin
-  if Assigned(PyControl.ActiveInterpreter) then
-    PyControl.ActiveInterpreter.ReInitialize;
-end;
-
 function TPythonIIForm.IsEmpty: Boolean;
 begin
   Result := (SynEdit.Lines.Count  = 0) or
@@ -1676,16 +1663,6 @@ end;
 procedure TPythonIIForm.ExecReplace;
 begin
   CommandsDataModule.ShowSearchReplaceDialog(SynEdit, True);
-end;
-
-procedure TPythonIIForm.ReinitInterpreter;
-begin
-  if Assigned(PyControl.ActiveInterpreter) then
-    TThread.ForceQueue(nil,
-    procedure
-    begin
-      PyControl.ActiveInterpreter.ReInitialize;
-    end, 500);
 end;
 
 procedure TPythonIIForm.RemovePrompt;
@@ -1736,16 +1713,6 @@ begin
   else if Action = actPasteAndExecute then
     actPasteAndExecute.Enabled := Clipboard.HasFormat(CF_UNICODETEXT);
   Handled := True;
-end;
-
-procedure TPythonIIForm.mnPythonRestartClick(Sender: TObject);
-begin
-  PyControl.PythonEngineType := peRemote;
-  TThread.ForceQueue(nil, procedure
-  begin
-    GI_PyInterpreter.ReinitInterpreter;
-    GI_PyInterpreter.PrintEngineType;
-  end);
 end;
 
 procedure TPythonIIForm.RegisterHistoryCommands;

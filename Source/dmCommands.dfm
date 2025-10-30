@@ -243,14 +243,6 @@ object CommandsDataModule: TCommandsDataModule
       OnExecute = actEditCopyFileNameExecute
       OnUpdate = UpdateActionAlwaysEnabled
     end
-    object actEditReadOnly: TAction
-      Category = 'Edit'
-      Caption = 'Read Only'
-      HelpContext = 320
-      Hint = 'Enable/disable editing'
-      OnExecute = actEditReadOnlyExecute
-      OnUpdate = UpdateEditActions
-    end
     object actSearchFind: TAction
       Category = 'Search'
       Caption = '&Find...'
@@ -478,16 +470,6 @@ object CommandsDataModule: TCommandsDataModule
       OnExecute = actToolsRestartLSExecute
       OnUpdate = UpdateActionAlwaysEnabled
     end
-    object actPythonPath: TAction
-      Category = 'Tools'
-      Caption = 'Python &Path...'
-      HelpContext = 870
-      Hint = 'Python Path|View or edit the Python path'
-      ImageIndex = 20
-      ImageName = 'Folders'
-      OnExecute = actPythonPathExecute
-      OnUpdate = UpdateToolsActions
-    end
     object actHelpContents: THelpContents
       Category = 'Help'
       Caption = '&Contents'
@@ -609,6 +591,13 @@ object CommandsDataModule: TCommandsDataModule
       OnExecute = actFindFunctionExecute
       OnUpdate = UpdateSearchActions
     end
+    object actEditReadOnly: TAction
+      Category = 'Edit'
+      Caption = 'Read Only'
+      Hint = 'Enable/disable editing'
+      OnExecute = actEditReadOnlyExecute
+      OnUpdate = UpdateEditActions
+    end
     object actEditLineNumbers: TAction
       Category = 'Edit'
       Caption = 'Line &Numbers'
@@ -702,6 +691,16 @@ object CommandsDataModule: TCommandsDataModule
       Hint = 'Help on editor shortcuts'
       OnExecute = actHelpEditorShortcutsExecute
       OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actPythonPath: TAction
+      Category = 'Tools'
+      Caption = 'Python &Path...'
+      HelpContext = 870
+      Hint = 'Python Path|View or edit the Python path'
+      ImageIndex = 20
+      ImageName = 'Folders'
+      OnExecute = actPythonPathExecute
+      OnUpdate = UpdateToolsActions
     end
     object actUnitTestWizard: TAction
       Category = 'Tools'

@@ -89,8 +89,8 @@ inherited PythonIIForm: TPythonIIForm
   end
   object InterpreterPopUp: TSpTBXPopupMenu
     Images = vilImages
-    Left = 37
-    Top = 60
+    Left = 157
+    Top = 36
     object mnPythonVersions: TSpTBXSubmenuItem
       Tag = 1
       Caption = 'Python Versions'
@@ -102,25 +102,18 @@ inherited PythonIIForm: TPythonIIForm
       Caption = 'Python Engine'
       LinkSubitems = PyIDEMainForm.mnPythonEngines
     end
-    object mnPythonRestart: TSpTBXItem
-      Caption = 'Python restart'
-      OnClick = mnPythonRestartClick
-    end
     object TBXSeparatorItem3: TSpTBXSeparatorItem
     end
     object mnEditCut: TSpTBXItem
       Action = CommandsDataModule.actEditCut
-      ImageIndex = 0
       ImageName = 'Cut'
     end
     object mnEditCopy: TSpTBXItem
       Action = CommandsDataModule.actEditCopy
-      ImageIndex = 1
       ImageName = 'Copy'
     end
     object mnEditPaste: TSpTBXItem
       Action = CommandsDataModule.actEditPaste
-      ImageIndex = 2
       ImageName = 'Paste'
     end
     object TBXSeparatorItem1: TSpTBXSeparatorItem
@@ -157,7 +150,7 @@ inherited PythonIIForm: TPythonIIForm
       HelpContext = 410
       Hint = 'Copy history to Clipboard'
       ImageIndex = 1
-      ImageName = 'Copy'
+      ImageName = 'Copy13'
       OnExecute = actCopyHistoryExecute
     end
     object actClearContents: TAction
@@ -175,7 +168,7 @@ inherited PythonIIForm: TPythonIIForm
       HelpContext = 410
       Hint = 'Copy selected text without the interpreter prompts'
       ImageIndex = 1
-      ImageName = 'Copy'
+      ImageName = 'Copy13'
       ShortCut = 24643
       OnExecute = actCopyWithoutPromptsExecute
     end
@@ -185,7 +178,7 @@ inherited PythonIIForm: TPythonIIForm
       HelpContext = 410
       Hint = 'Paste clipboard text with added interpreter prompts'
       ImageIndex = 2
-      ImageName = 'Paste'
+      ImageName = 'Paste13'
       ShortCut = 24662
       OnExecute = actPasteAndExecuteExecute
     end
@@ -244,22 +237,25 @@ inherited PythonIIForm: TPythonIIForm
       end>
     ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True
-    Left = 40
-    Top = 160
+    Left = 152
+    Top = 216
   end
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionName = 'Cut'
-        Name = 'Cut'
+        CollectionIndex = 17
+        CollectionName = 'Cut13'
+        Name = 'Cut13'
       end
       item
-        CollectionName = 'Copy'
-        Name = 'Copy'
+        CollectionIndex = 16
+        CollectionName = 'Copy13'
+        Name = 'Copy13'
       end
       item
-        CollectionName = 'Paste'
-        Name = 'Paste'
+        CollectionIndex = 65
+        CollectionName = 'Paste13'
+        Name = 'Paste13'
       end
       item
         CollectionIndex = 21

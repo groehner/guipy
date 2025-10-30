@@ -291,8 +291,6 @@ object PyIDEMainForm: TPyIDEMainForm
         Caption = 'Debug Toolbar'
         object tbiRunRun: TSpTBXItem
           Action = actRun
-          ImageIndex = 33
-          ImageName = 'Run1'
         end
         object tbiRunDebug: TSpTBXItem
           Action = actDebug
@@ -682,7 +680,9 @@ object PyIDEMainForm: TPyIDEMainForm
             Action = actExecSelection
           end
           object mnEditReadOnly: TSpTBXItem
-            Action = CommandsDataModule.actEditReadOnly
+            Caption = 'Read Only'
+            Hint = 'Enable/disable editing'
+            HelpContext = 320
           end
           object TBXSeparatorItem9: TSpTBXSeparatorItem
             Tag = -2
@@ -1093,14 +1093,19 @@ object PyIDEMainForm: TPyIDEMainForm
           object SpTBXSeparatorItem4: TSpTBXSeparatorItem
             Tag = -2
           end
-          object mnNavProjectExplorer2: TSpTBXItem
-            Action = CommandsDataModule.actProjectSaveAs
+          object SpTBXItem2: TSpTBXItem
+            Caption = '&Project Explorer'
+            Hint = 'Activate the Project Explorer window'
+            HelpContext = 360
+            ImageIndex = 85
+            ImageName = 'ProjectExplorer'
+            ShortCut = 49232
           end
         end
         object RunMenu: TSpTBXSubmenuItem
           Caption = '&Run'
           object mnSyntaxCheck: TSpTBXItem
-            Action = actSyntaxCheck
+            Action = CommandsDataModule.actCodeCheck
           end
           object mnImportModule: TSpTBXItem
             Action = actImportModule
@@ -1262,7 +1267,11 @@ object PyIDEMainForm: TPyIDEMainForm
             Action = actToolsTextDiff
           end
           object mnPythonPath: TSpTBXItem
-            Action = CommandsDataModule.actPythonPath
+            Caption = 'Python &Path...'
+            Hint = 'Python Path|View or edit the Python path'
+            HelpContext = 870
+            ImageIndex = 20
+            ImageName = 'Folders'
           end
           object mnToolsGit: TSpTBXSubmenuItem
             Caption = 'Git'
@@ -2967,7 +2976,9 @@ object PyIDEMainForm: TPyIDEMainForm
     object SpTBXSeparatorItem20: TSpTBXSeparatorItem
     end
     object SpTBXItem11: TSpTBXItem
-      Action = CommandsDataModule.actEditReadOnly
+      Caption = 'Read Only'
+      Hint = 'Enable/disable editing'
+      HelpContext = 320
     end
     object TBXSeparatorItem28: TSpTBXSeparatorItem
     end
@@ -3055,23 +3066,14 @@ object PyIDEMainForm: TPyIDEMainForm
       ShortCut = 16505
       OnExecute = actViewMainMenuExecute
     end
-    object actSyntaxCheck: TAction
-      Category = 'Run'
-      Caption = '&Syntax Check'
-      HelpContext = 340
-      HelpType = htContext
-      Hint = 'Syntax Check|Perform syntax check and load scripts'
-      ImageIndex = 17
-      ImageName = 'Check'
-      OnExecute = actSyntaxCheckExecute
-    end
     object actRun: TAction
       Category = 'Run'
       Caption = '&Run'
       HelpContext = 340
       HelpType = htContext
       Hint = 'Run|Run active module'
-      ImageName = 'Run'
+      ImageIndex = 33
+      ImageName = 'Run1'
       ShortCut = 16504
       OnExecute = actRunExecute
     end
@@ -3700,15 +3702,6 @@ object PyIDEMainForm: TPyIDEMainForm
       Caption = 'Free-Threaded'
       Hint = 'Use the free-trheaded version of Python'
       OnExecute = actPythonFreeThreadedExecute
-    end
-    object actExternalRunForDebugging: TAction
-      Category = 'Run'
-      Caption = 'External run for debuggging'
-      Hint = 
-        'External run for debugging|Run active module in external Python ' +
-        'interpreter'
-      ImageIndex = 22
-      ImageName = 'ExternalRun'
     end
   end
   object LocalAppStorage: TJvAppIniFileStorage

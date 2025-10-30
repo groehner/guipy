@@ -96,9 +96,7 @@ type
     function GetRemoteFileName: string;
     function GetSSHServer: string;
     // IFileCommands implementation
-    function CanPrint: Boolean;
     function CanSave: Boolean;
-    function CanSaveAs: Boolean;
     function CanReload: Boolean;
     procedure ExecSaveAs;
     procedure ExecSaveAsRemote;
@@ -820,11 +818,6 @@ end;
 
 // IFileCommands implementation
 
-function TFile.CanPrint: Boolean;
-begin
-  Result := True;
-end;
-
 procedure TFile.ExecPrint;
 begin
   if Assigned(FForm) then
@@ -853,11 +846,6 @@ end;
 function TFile.CanSave: Boolean;
 begin
   Result := Assigned(FForm) and (GetModified or ((FFileName = '') and (FRemoteFileName = '')));
-end;
-
-function TFile.CanSaveAs: Boolean;
-begin
-  Result := Assigned(FForm);
 end;
 
 function TFile.CanClose: Boolean;
