@@ -176,11 +176,11 @@ uses
   MPCommonObjects,
   JvGnugettext,
   StringResources,
-  uPythonItfs,
   dmCommands,
   frmFindResults,
   dlgDirectoryList,
-  cFindInFiles;
+  cFindInFiles,
+  cPyControl;
 
 {$R *.dfm}
 
@@ -512,11 +512,11 @@ var
   Paths: TStringList;
 begin
   mnPythonPath.Clear;
-  if not Assigned(GI_PyControl.ActiveInterpreter) then Exit;
+  if not Assigned(PyControl.ActiveInterpreter) then Exit;
 
   Paths := TStringList.Create;
   try
-    GI_PyControl.ActiveInterpreter.SysPathToStrings(Paths);
+    PyControl.ActiveInterpreter.SysPathToStrings(Paths);
     for var Path in Paths do
       if Path <> '' then
       begin
