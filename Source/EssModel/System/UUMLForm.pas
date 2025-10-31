@@ -482,7 +482,7 @@ begin
   // inhibit erasing of object background during delete
   LockFormUpdate(Self);
   DeleteObjects;
-  PyIDEMainForm.actPythonReinitializeExecute(Sender);
+  CommandsDataModule.actPythonReinitializeExecute(Sender);
   Loops:= 0;
   while GI_PyControl.Running and (Loops < 20) do begin
     Sleep(50);

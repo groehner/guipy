@@ -236,6 +236,7 @@ uses
   JvGnugettext,
   TB2Item,
   SpTBXItem,
+  dmCommands,
   dmResources,
   frmPyIDEMain,
   uEditAppIntfs,
@@ -1719,7 +1720,7 @@ end;
 procedure TRtfdDiagram.Run(Control: TControl);
 begin
   if Assigned(GetBox((Control as TRtfdBox).Entity.Fullname)) then
-    PyIDEMainForm.actRunExecute(nil);
+    CommandsDataModule.actRunExecute(nil);
   FPanel.ClearSelection;
 end;
 

@@ -657,9 +657,10 @@ begin
       end;
   end;
 
-  GI_PyIDEServices.MRUAddFile(Self);
   if FUntitledNumber <> -1 then
-    UntitledNumbers[FUntitledNumber] := False;
+    UntitledNumbers[FUntitledNumber] := False
+  else
+    GI_PyIDEServices.FilesMRUAdd(GetFileId);
 
   GI_FileFactory.RemoveFile(Self);
   if GI_FileFactory.Count = 0 then

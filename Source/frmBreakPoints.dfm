@@ -109,24 +109,20 @@ inherited BreakPointsWindow: TBreakPointsWindow
       OnClick = mnClearClick
     end
     object Breakpoints1: TSpTBXItem
-      Action = PyIDEMainForm.actClearAllBreakpoints
-      ImageIndex = 1
+      Action = CommandsDataModule.actClearAllBreakpoints
     end
     object TBXSeparatorItem2: TSpTBXSeparatorItem
     end
     object mnCopyToClipboard: TSpTBXItem
-      Caption = 'Co&py to Clipboard'
-      Hint = 'Copy to clipboard'
-      ImageIndex = 0
-      ImageName = 'Copy'
-      OnClick = mnCopyToClipboardClick
+      Action = CommandsDataModule.actClearAllBreakpoints
     end
   end
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionName = 'Copy'
-        Name = 'Copy'
+        CollectionIndex = 16
+        CollectionName = 'Copy13'
+        Name = 'Copy13'
       end
       item
         CollectionIndex = 7

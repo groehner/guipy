@@ -94,16 +94,13 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
             object SpTBXSeparatorItem8: TSpTBXSeparatorItem
             end
             object tbiRunLast: TSpTBXItem
-              Action = PyIDEMainForm.actRunLastScript
-              ImageIndex = 17
+              Action = CommandsDataModule.actRunLastScript
             end
             object tbiDebugLast: TSpTBXItem
-              Action = PyIDEMainForm.actRunDebugLastScript
-              ImageIndex = 18
+              Action = CommandsDataModule.actDebugLastScript
             end
             object tbiRunLastExternal: TSpTBXItem
-              Action = PyIDEMainForm.actRunLastScriptExternal
-              ImageIndex = 19
+              Action = CommandsDataModule.actExternalRunLastScript
             end
             object SpTBXSeparatorItem11: TSpTBXSeparatorItem
             end
@@ -340,8 +337,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ProjectFolderPopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 288
-    Top = 205
+    Left = 256
+    Top = 197
     object mnAddFiles: TSpTBXItem
       Action = actProjectAddFiles
     end
@@ -396,8 +393,8 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
   end
   object ProjectRunConfigPopupMenu: TSpTBXPopupMenu
     Images = vilImages
-    Left = 287
-    Top = 125
+    Left = 247
+    Top = 117
     object mnRun: TSpTBXItem
       Action = actProjectRun
     end

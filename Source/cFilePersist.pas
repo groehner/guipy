@@ -444,11 +444,12 @@ procedure TPersistFileInfo.GetFileInfo;
       IV := TabControl.View.Viewers[I];
       if IV.Item is TSpTBXTabItem then begin
         aFile := PyIDEMainForm.FileFromTab(TSpTBXTabItem(IV.Item));
-        if Assigned(aFile) and ((aFile.FileName <> '') or (aFile.RemoteFileName <> '')) then begin
+        if Assigned(aFile) and ((aFile.FileName <> '') or (aFile.RemoteFileName <> '')) then
+        begin
           FilePersistInfo := TFilePersistInfo.CreateFromFile(aFile);
           FFileInfoList.Add(FilePersistInfo);
           // We need to do it here before we call SaveEnvironement
-          GI_PyIDEServices.MRUAddFile(aFile);
+          GI_PyIDEServices.FilesMRUAdd(aFile.FileId);
         end;
       end;
     end;

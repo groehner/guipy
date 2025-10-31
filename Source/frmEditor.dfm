@@ -41,7 +41,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 421
+        CustomWidth = 558
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'

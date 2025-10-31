@@ -81,8 +81,8 @@ type
     procedure actPVRenameExecute(Sender: TObject);
   end;
 
-var
-  PythonVersionsDialog: TPythonVersionsDialog;
+//var
+//  PythonVersionsDialog: TPythonVersionsDialog;
 
 implementation
 {$R *.dfm}

@@ -2325,16 +2325,16 @@ begin
   begin
     case RGEngineTypes.ItemIndex of
       0:
-        PyIDEMainForm.actPythonEngineExecute(PyIDEMainForm.actPythonRemote);
+        CommandsDataModule.actPythonEngineExecute(CommandsDataModule.actPythonRemote);
       1:
-        PyIDEMainForm.actPythonEngineExecute(PyIDEMainForm.actPythonRemoteTk);
+        CommandsDataModule.actPythonEngineExecute(CommandsDataModule.actPythonRemoteTk);
       2:
-        PyIDEMainForm.actPythonEngineExecute(PyIDEMainForm.actPythonRemoteWx);
+        CommandsDataModule.actPythonEngineExecute(CommandsDataModule.actPythonRemoteWx);
     else
-      PyIDEMainForm.actPythonEngineExecute(PyIDEMainForm.actPythonSSH);
+      CommandsDataModule.actPythonEngineExecute(CommandsDataModule.actPythonSSH);
     end;
     if GI_PyControl.PythonEngineType = peInternal then
-      PyIDEMainForm.actPythonEngineExecute(PyIDEMainForm.actPythonRemote);
+      CommandsDataModule.actPythonEngineExecute(CommandsDataModule.actPythonRemote);
   end;
 
   // Gutter

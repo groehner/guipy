@@ -98,7 +98,7 @@ inherited WatchesWindow: TWatchesWindow
       OnClick = mnAddWatchClick
     end
     object TBXItem1: TSpTBXItem
-      Action = PyIDEMainForm.actAddWatchAtCursor
+      Action = CommandsDataModule.actAddWatchAtCursor
       ImageIndex = 4
       ImageName = 'Watch'
     end

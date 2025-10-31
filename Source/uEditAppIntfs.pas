@@ -321,14 +321,15 @@ type
     procedure ClearPythonWindows;
     procedure SaveEnvironment;
     procedure SaveFileModules;
-    procedure SetRunLastScriptHints(const ScriptName: string);
     procedure SetActivityIndicator(TurnOn: Boolean; Hint: string = ''; OnClick: TNotifyEvent = nil);
     function GetStoredScript(const Name: string): TStrings;
     function GetIDELayouts: IIDELayouts;
     function GetAppStorage: TJvCustomAppStorage;
     function GetLocalAppStorage: TJvCustomAppStorage;
     function GetLogger: TJclSimpleLog;
-    procedure MRUAddFile(aFile: IFile);
+    procedure FilesMRUAdd(const Name: string);
+    procedure ProjectsMRUAdd(const Name: string);
+    procedure ProjectsMRURemove(const Name: string);
     procedure ShowIDEDockForm(Form: TForm; Activate: Boolean = True);
     property ActiveFile: IFile read GetActiveFile;
     property ActiveEditor: IEditor read GetActiveEditor;
