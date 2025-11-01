@@ -2395,7 +2395,7 @@ begin
   then
     TAction(Sender).Enabled := Assigned(GI_ActiveEditor) and not ReadOnly
   else if Sender = actFormatCode then
-    actFormatCode.Enabled := not ReadOnly and GI_ActiveEditor.HasPythonFile;
+    actFormatCode.Enabled := Assigned(GI_ActiveEditor) and not ReadOnly and GI_ActiveEditor.HasPythonFile;
 end;
 
 procedure TCommandsDataModule.UpdateToolsActions(Sender: TObject);

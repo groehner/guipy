@@ -1251,7 +1251,10 @@ type
     mnTerminate: TSpTBXItem;
     mnNavTodo: TSpTBXItem;
     mnNavFindResults: TSpTBXItem;
-    SpTBXItem2: TSpTBXItem;
+    mnNavProjectExplorer2: TSpTBXItem;
+    actFileNewStructogram: TAction;
+    actFileNewSequencediagram: TAction;
+    actToolsBrowser: TAction;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1348,7 +1351,6 @@ type
     procedure mnToolsGitClick(Sender: TObject);
     procedure mnToolsSVNClick(Sender: TObject);
     procedure mnLanguageClick(Sender: TObject);
-    procedure mnToolsBrowserClick(Sender: TObject);
     procedure actNavStructureExecute(Sender: TObject);
     procedure ToolButtonMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -1356,6 +1358,9 @@ type
     procedure TBQtApplicationClick(Sender: TObject);
     procedure actEditorZoomResetExecute(Sender: TObject);
     procedure actFileNewQtAppExecute(Sender: TObject);
+    procedure actToolsBrowserExecute(Sender: TObject);
+    procedure UpdateToolsActions(Sender: TObject);
+    procedure UpdateUMLActions(Sender: TObject);
     procedure DdeServerConvExecuteMacro(Sender: TObject; Msg: TStrings);
     procedure FormAfterMonitorDpiChanged(Sender: TObject;
       OldDPI, NewDPI: Integer);
@@ -2557,7 +2562,7 @@ begin
   begin
     var
     AEditor := GI_PyIDEServices.GetActiveEditor;
-    if TEditorForm(AEditor.Form).IsPython then
+    if Assigned(AEditor) and TEditorForm(AEditor.Form).IsPython then
       PrepareClassEdit(AEditor, 'Edit', nil);
   end;
 end;
@@ -4356,11 +4361,6 @@ begin
     not Assigned(Editor.SynEdit.Highlighter);
 end;
 
-procedure TPyIDEMainForm.mnToolsBrowserClick(Sender: TObject);
-begin
-  NewBrowser('about:blank');
-end;
-
 procedure TPyIDEMainForm.mnToolsGitClick(Sender: TObject);
 begin
   FGit.Execute(TSpTBXItem(Sender).Tag, GetActiveEditor);
@@ -5916,6 +5916,18 @@ begin
   NewTkOrQTFile(FileTemplate);
 end;
 
+procedure TPyIDEMainForm.actToolsBrowserExecute(Sender: TObject);
+begin
+  NewBrowser('about:blank');
+end;
+
+procedure TPyIDEMainForm.UpdateToolsActions(Sender: TObject);
+begin
+  if (Sender = actToolsConfiguration) or (Sender = actToolsTextDiff) or
+    (Sender = actToolsBrowser) then
+    TAction(Sender).Enabled := True;
+end;
+
 procedure TPyIDEMainForm.mnFilesClick(Sender: TObject);
 // Fill in the Files submenu of the Tabs popup menu
 var
@@ -6319,6 +6331,24 @@ begin
       and GI_ActiveEditor.SynEdit2.Visible
   else if Sender = actViewHideSecondaryWorkspace then
     actViewHideSecondaryWorkspace.Enabled := TabControl2.Visible;
+end;
+
+procedure TPyIDEMainForm.UpdateUMLActions(Sender: TObject);
+begin
+  var AFile := GI_PyIDEServices.ActiveFile;
+  var IsUMLWindow:= Assigned(AFile) and (AFile.FileKind = fkUML);
+  var HasEditorWindows := (GI_EditorFactory.Count > 0);
+  if (Sender = actUMLNewUML) or (Sender = actUMLNewClass) or
+    (Sender = actUMLOpenClass) or (Sender = actUMLOpenFolder) then
+    TAction(Sender).Enabled := True
+  else if (Sender = actUMLNewComment) or (Sender = actUMLNewLayout) or
+    (Sender = actUMLRefresh) or (Sender = actUMLSaveAsPicture) or
+    (Sender = actUMLRecognizeAssociations) then
+    TAction(Sender).Enabled := IsUMLwindow
+  else if (Sender = actUMLDiagramFromOpenFiles) then
+    TAction(Sender).Enabled := HasEditorWindows
+  else if (Sender = actUMLEditClass) then
+    TAction(Sender).Enabled := IsUMLWindow or HasEditorWindows;
 end;
 
 { TTSpTBXTabControl }

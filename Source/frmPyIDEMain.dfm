@@ -21,9 +21,9 @@ object PyIDEMainForm: TPyIDEMainForm
   TextHeight = 15
   object StatusBar: TSpTBXStatusBar
     Left = 0
-    Top = 714
+    Top = 732
     Width = 1031
-    Height = 28
+    Height = 10
     SizeGrip = False
     object lbStatusMessage: TSpTBXLabelItem
       Wrapping = twEndEllipsis
@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 373
+      CustomWidth = 361
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -114,8 +114,8 @@ object PyIDEMainForm: TPyIDEMainForm
       OnClick = spiExternalToolsLEDClick
     end
     object ActivityIndicator: TActivityIndicator
-      Left = 965
-      Top = 0
+      Left = 1027
+      Top = 6
       FrameDelay = 150
       IndicatorSize = aisSmall
     end
@@ -124,7 +124,7 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 9
     Top = 113
     Width = 1013
-    Height = 592
+    Height = 610
     Align = alClient
     BevelEdges = []
     BevelOuter = bvNone
@@ -134,7 +134,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 0
       Top = 0
       Width = 1009
-      Height = 592
+      Height = 610
       Align = alClient
       PopupMenu = TabControlPopupMenu
       OnContextPopup = TabContolContextPopup
@@ -186,7 +186,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 1009
       Top = 0
       Width = 0
-      Height = 592
+      Height = 610
       Align = alRight
       PopupMenu = TabControlPopupMenu
       Visible = False
@@ -239,7 +239,7 @@ object PyIDEMainForm: TPyIDEMainForm
       Left = 1009
       Top = 0
       Width = 4
-      Height = 592
+      Height = 610
       Cursor = crSizeWE
       Align = alRight
       ParentColor = False
@@ -276,8 +276,8 @@ object PyIDEMainForm: TPyIDEMainForm
       object DebugToolbar: TSpTBXToolbar
         Left = 2
         Top = 52
-        Width = 36
-        Height = 21
+        Width = 162
+        Height = 26
         DockMode = dmCannotFloatOrChangeDocks
         DockPos = 0
         DockRow = 2
@@ -287,16 +287,22 @@ object PyIDEMainForm: TPyIDEMainForm
         TabOrder = 0
         Caption = 'Debug Toolbar'
         object tbiRunRun: TSpTBXItem
+          Action = CommandsDataModule.actRun
         end
         object tbiRunDebug: TSpTBXItem
+          Action = CommandsDataModule.actDebug
         end
         object tbiRunRunToCursor: TSpTBXItem
+          Action = CommandsDataModule.actRunToCursor
         end
         object tbiRunStepInto: TSpTBXItem
+          Action = CommandsDataModule.actStepInto
         end
         object tbiRunStepOver: TSpTBXItem
+          Action = CommandsDataModule.actStepOver
         end
         object tbiRunAbort: TSpTBXItem
+          Action = CommandsDataModule.actDebugAbort
         end
       end
       object EditorToolbar: TSpTBXToolbar
@@ -483,8 +489,8 @@ object PyIDEMainForm: TPyIDEMainForm
       object MainMenu: TSpTBXToolbar
         Left = 2
         Top = -4
-        Width = 369
-        Height = 26
+        Width = 377
+        Height = 21
         DockMode = dmCannotFloatOrChangeDocks
         DockPos = 0
         FullSize = True
@@ -508,28 +514,21 @@ object PyIDEMainForm: TPyIDEMainForm
               Action = actFileNewFile
             end
             object mnFileNewTkApplication: TSpTBXItem
-              Caption = '&Tk/Tkk Application'
-              Hint = 'New Tk/TKK Application'
-              OnClick = actFileNewTkinterExecute
+              Action = actFileNewTkApp
             end
             object mnFileNewQtApplication: TSpTBXItem
-              Caption = '&Qt-Application'
-              Hint = 'New QT Application'
-              OnClick = TBQtApplicationClick
+              Action = actFileNewQtApp
             end
             object TBXSeparatorItem23: TSpTBXSeparatorItem
             end
             object mnFileNewClass: TSpTBXItem
-              Caption = '&Class'
               Action = actUMLNewClass
             end
             object mnFileNewStrutogram: TSpTBXItem
-              Caption = '&Structogram'
-              OnClick = actFileNewStructogramExecute
+              Action = actFileNewStructogram
             end
             object mnFileNewSequencediagram: TSpTBXItem
-              Caption = 'Sequence &diagram'
-              OnClick = actFileNewSequencediagramExecute
+              Action = actFileNewSequencediagram
             end
           end
           object mnFileOpen: TSpTBXItem
@@ -652,6 +651,7 @@ object PyIDEMainForm: TPyIDEMainForm
             Tag = -2
           end
           object mnFormatCode: TSpTBXItem
+            Action = CommandsDataModule.actFormatCode
           end
           object mnIndentBlock: TSpTBXItem
             Action = CommandsDataModule.actEditIndent
@@ -670,6 +670,7 @@ object PyIDEMainForm: TPyIDEMainForm
             Hint = 'Execute the editor selection'
             ImageIndex = 16
             ImageName = 'Execute13'
+            ShortCut = 16502
           end
           object mnEditReadOnly: TSpTBXItem
             Action = CommandsDataModule.actEditReadOnly
@@ -693,10 +694,14 @@ object PyIDEMainForm: TPyIDEMainForm
             object SpTBXSeparatorItem32: TSpTBXSeparatorItem
             end
             object mnCodeCheck: TSpTBXItem
-              Caption = 'Check'
+              Action = CommandsDataModule.actCodeCheck
+              ImageIndex = 17
+              ImageName = 'Check'
             end
             object mnClearIssues: TSpTBXItem
               Action = CommandsDataModule.actClearIssues
+              ImageIndex = 12
+              ImageName = 'Delete'
             end
             object mnPreviousIssue: TSpTBXItem
               Action = CommandsDataModule.actPreviousIssue
@@ -1088,13 +1093,8 @@ object PyIDEMainForm: TPyIDEMainForm
           object SpTBXSeparatorItem4: TSpTBXSeparatorItem
             Tag = -2
           end
-          object SpTBXItem2: TSpTBXItem
-            Caption = '&Project Explorer'
-            Hint = 'Activate the Project Explorer window'
-            HelpContext = 360
-            ImageIndex = 85
-            ImageName = 'ProjectExplorer'
-            ShortCut = 49232
+          object mnNavProjectExplorer2: TSpTBXItem
+            Action = CommandsDataModule.actNavProjectExplorer
           end
         end
         object RunMenu: TSpTBXSubmenuItem
@@ -1162,7 +1162,7 @@ object PyIDEMainForm: TPyIDEMainForm
             Action = CommandsDataModule.actToggleBreakPoint
           end
           object mnClearAllBreakpoints: TSpTBXItem
-            Action = CommandsDataModule.actToggleBreakPoint
+            Action = CommandsDataModule.actClearAllBreakpoints
           end
           object mnAddWatchAtCursor: TSpTBXItem
             Action = CommandsDataModule.actAddWatchAtCursor
@@ -1179,25 +1179,36 @@ object PyIDEMainForm: TPyIDEMainForm
             object SpTBXSeparatorItem18: TSpTBXSeparatorItem
             end
             object SpTBXItem4: TSpTBXItem
+              Action = CommandsDataModule.actPythonSetup
               Images = vilImages
             end
           end
           object mnPythonEngines: TSpTBXSubmenuItem
             Tag = -1
             Caption = 'Python Engine'
+            Hint = 'Use internal Python Engine'
+            AutoCheck = True
+            Checked = True
+            HelpContext = 340
             object mnEngineInternal: TSpTBXItem
+              Action = CommandsDataModule.actPythonInternal
             end
             object mnEngineRemote: TSpTBXItem
+              Action = CommandsDataModule.actPythonRemote
             end
             object mnEngineRemoteTk: TSpTBXItem
+              Action = CommandsDataModule.actPythonRemoteTk
             end
             object mnEngineRemoteWx: TSpTBXItem
+              Action = CommandsDataModule.actPythonRemoteWx
             end
             object mnPythonEngineSSH: TSpTBXItem
+              Action = CommandsDataModule.actPythonSSH
             end
             object TBXSeparatorItem26: TSpTBXSeparatorItem
             end
             object mnReinitEngine: TSpTBXItem
+              Action = CommandsDataModule.actPythonReinitialize
             end
           end
         end
@@ -1231,6 +1242,7 @@ object PyIDEMainForm: TPyIDEMainForm
             Action = actUMLRefresh
           end
           object mnRecognizeAssociations: TSpTBXItem
+            Hint = 'Recognize associations from source code'
             Action = actUMLRecognizeAssociations
           end
           object mnDiagramFromOpenFiles: TSpTBXItem
@@ -1256,15 +1268,11 @@ object PyIDEMainForm: TPyIDEMainForm
             Action = actToolsConfiguration
           end
           object mnToolsTextCompare: TSpTBXItem
-            Hint = 'Textdiff'
+            Hint = 'Compare two source files'
             Action = actToolsTextDiff
           end
           object mnPythonPath: TSpTBXItem
-            Caption = 'Python &Path...'
-            Hint = 'Python Path|View or edit the Python path'
-            HelpContext = 870
-            ImageIndex = 20
-            ImageName = 'Folders'
+            Action = CommandsDataModule.actPythonPath
           end
           object mnToolsGit: TSpTBXSubmenuItem
             Caption = 'Git'
@@ -1388,11 +1396,7 @@ object PyIDEMainForm: TPyIDEMainForm
             Action = CommandsDataModule.actUnitTestWizard
           end
           object mnViewUnitTests: TSpTBXItem
-            Caption = '&Unit Tests'
-            Hint = 'View/Hide Unit Tests Window'
-            ImageIndex = 68
-            ImageName = 'UnitTestWin'
-            ShortCut = 49237
+            Action = CommandsDataModule.actNavUnitTests
           end
           object EditorViewsMenu: TSpTBXSubmenuItem
             Tag = -1
@@ -1400,18 +1404,10 @@ object PyIDEMainForm: TPyIDEMainForm
             OnClick = EditorViewsMenuClick
           end
           object mnViewRegExpTester: TSpTBXItem
-            Caption = '&Regular Expression Tester'
-            Hint = 'View/Hide Regular Expression Tester'
-            HelpContext = 360
-            ImageIndex = 66
-            ImageName = 'RegExp'
+            Action = CommandsDataModule.actNavRegExp
           end
           object mnToolsBrowser: TSpTBXItem
-            Caption = 'Browser'
-            Hint = 'Opens a browser window'
-            ImageIndex = 116
-            ImageName = 'Browser'
-            OnClick = mnToolsBrowserClick
+            Action = actToolsBrowser
           end
           object N13Sep: TSpTBXSeparatorItem
             Tag = -2
@@ -1462,7 +1458,8 @@ object PyIDEMainForm: TPyIDEMainForm
           end
         end
         object HelpMenu: TSpTBXSubmenuItem
-          Action = CommandsDataModule.actAddWatchAtCursor
+          Caption = '&Help'
+          HelpContext = 340
           object mnHelpPythonManuals: TSpTBXItem
             Action = CommandsDataModule.actPythonManuals
           end
@@ -2888,7 +2885,7 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 0
     Top = 113
     Width = 9
-    Height = 592
+    Height = 610
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpLeft
@@ -2897,14 +2894,14 @@ object PyIDEMainForm: TPyIDEMainForm
     Left = 1022
     Top = 113
     Width = 9
-    Height = 592
+    Height = 610
     FixAlign = True
     PopupMenu = ToolbarPopupMenu
     Position = dpRight
   end
   object TBXDockBottom: TSpTBXDock
     Left = 0
-    Top = 705
+    Top = 723
     Width = 1031
     Height = 9
     FixAlign = True
@@ -3318,6 +3315,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 0
       ImageName = 'FileNew'
       OnExecute = actUMLNewUMLExecute
+      OnUpdate = UpdateUMLActions
     end
     object actUMLNewClass: TAction
       Category = 'UML'
@@ -3325,6 +3323,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 102
       ImageName = 'UMLNew'
       OnExecute = actUMLNewClassExecute
+      OnUpdate = UpdateUMLActions
     end
     object actUMLOpenClass: TAction
       Category = 'UML'
@@ -3332,6 +3331,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 103
       ImageName = 'UMLOpen'
       OnExecute = actUMLOpenClassExecute
+      OnUpdate = UpdateUMLActions
     end
     object actUMLEditClass: TAction
       Category = 'UML'
@@ -3339,6 +3339,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 113
       ImageName = 'EditClass'
       OnExecute = actUMLEditClassExecute
+      OnUpdate = UpdateUMLActions
     end
     object actUMLNewComment: TAction
       Category = 'UML'
@@ -3346,6 +3347,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 104
       ImageName = 'NewComment'
       OnExecute = actUMLNewCommentExecute
+      OnUpdate = UpdateUMLActions
     end
     object actUMLNewLayout: TAction
       Category = 'UML'
@@ -3353,6 +3355,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 105
       ImageName = 'NewLayout'
       OnExecute = actUMLNewLayoutExecute
+      OnUpdate = UpdateUMLActions
     end
     object actUMLRefresh: TAction
       Category = 'UML'
@@ -3360,6 +3363,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 106
       ImageName = 'Update13'
       OnExecute = actUMLRefreshExecute
+      OnUpdate = UpdateUMLActions
     end
     object actUMLDiagramFromOpenFiles: TAction
       Category = 'UML'
@@ -3367,6 +3371,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 107
       ImageName = 'DiagramFromFiles'
       OnExecute = actUMLDiagramFromOpenFilesExecute
+      OnUpdate = UpdateUMLActions
     end
     object actUMLOpenFolder: TAction
       Category = 'UML'
@@ -3374,6 +3379,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 109
       ImageName = 'TextDiff'
       OnExecute = actUMLOpenFolderExecute
+      OnUpdate = UpdateUMLActions
     end
     object actUMLSaveAsPicture: TAction
       Category = 'UML'
@@ -3381,6 +3387,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 108
       ImageName = 'SaveAsPicture'
       OnExecute = actUMLSaveAsPictureExecute
+      OnUpdate = UpdateUMLActions
     end
     object actToolsTextDiff: TAction
       Category = 'Tools'
@@ -3388,6 +3395,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 109
       ImageName = 'TextDiff'
       OnExecute = actToolsTextDiffExecute
+      OnUpdate = UpdateToolsActions
     end
     object actToolsConfiguration: TAction
       Category = 'Tools'
@@ -3395,6 +3403,7 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 110
       ImageName = 'Configuration13'
       OnExecute = actToolsConfigurationExecute
+      OnUpdate = UpdateToolsActions
     end
     object actToolsGit: TAction
       Category = 'Tools'
@@ -3441,6 +3450,27 @@ object PyIDEMainForm: TPyIDEMainForm
       ImageIndex = 115
       ImageName = 'RecognizeAssociations'
       OnExecute = actUMLRecognizeAssociationsExecute
+      OnUpdate = UpdateUMLActions
+    end
+    object actFileNewStructogram: TAction
+      Category = 'File'
+      Caption = 'New structogram'
+      OnExecute = actFileNewStructogramExecute
+      OnUpdate = UpdateFileActions
+    end
+    object actFileNewSequencediagram: TAction
+      Category = 'File'
+      Caption = 'New sequence diagram'
+      OnExecute = actFileNewSequencediagramExecute
+      OnUpdate = UpdateFileActions
+    end
+    object actToolsBrowser: TAction
+      Category = 'Tools'
+      Caption = 'Browser'
+      ImageIndex = 116
+      ImageName = 'Browser'
+      OnExecute = actToolsBrowserExecute
+      OnUpdate = UpdateToolsActions
     end
   end
   object LocalAppStorage: TJvAppIniFileStorage
@@ -4077,6 +4107,8 @@ object PyIDEMainForm: TPyIDEMainForm
       end
       item
         CollectionIndex = 168
+        CollectionName = 'BugFix'
+        Name = 'BugFix'
       end>
     ImageCollection = ResourcesDataModule.icSVGImages
     PreserveItems = True

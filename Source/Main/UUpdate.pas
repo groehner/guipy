@@ -11,7 +11,7 @@ uses
   dlgPyIDEBase;
 
 const
-  LastHandeldPyScripterCommit = 'Aug 2, 2025';
+  LastHandeldPyScripterCommit = 'Oct 27, 2025';
   Server  = 'https://guipy.de/download/';
   InfFile = Server + 'version.txt';
   {$IFDEF WIN32}

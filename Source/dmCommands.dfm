@@ -93,17 +93,6 @@ object CommandsDataModule: TCommandsDataModule
       OnExecute = actFileSaveExecute
       OnUpdate = UpdateFileActions
     end
-    object actEditCut: TEditCut
-      Category = 'Edit'
-      Caption = 'Cu&t'
-      Enabled = False
-      HelpContext = 320
-      HelpType = htContext
-      Hint = 'Cut|Cuts the selection and puts it on the Clipboard'
-      ImageIndex = 9
-      ImageName = 'Cut13'
-      ShortCut = 16472
-    end
     object actFileSaveAs: TAction
       Category = 'File'
       Caption = 'Sav&e As...'
@@ -125,6 +114,17 @@ object CommandsDataModule: TCommandsDataModule
       OnExecute = actFileCloseExecute
       OnUpdate = UpdateFileActions
     end
+    object actEditCut: TEditCut
+      Category = 'Edit'
+      Caption = 'Cu&t'
+      Enabled = False
+      HelpContext = 320
+      HelpType = htContext
+      Hint = 'Cut|Cuts the selection and puts it on the Clipboard'
+      ImageIndex = 9
+      ImageName = 'Cut13'
+      ShortCut = 16472
+    end
     object actEditCopy: TEditCopy
       Category = 'Edit'
       Caption = '&Copy'
@@ -143,6 +143,7 @@ object CommandsDataModule: TCommandsDataModule
         'Copy RTF|Copies the selection as RTF and puts it on the Clipboar' +
         'd'
       OnExecute = actEditCopyRTFExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actEditCopyRTFNumbered: TAction
       Category = 'Edit'
@@ -151,6 +152,7 @@ object CommandsDataModule: TCommandsDataModule
         'Copy RTF numbered|Copies the selection as RTF numbered and puts ' +
         'it on the Clipboard'
       OnExecute = actEditCopyRTFNumberedExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actEditCopyHTML: TAction
       Category = 'Edit'
@@ -159,6 +161,7 @@ object CommandsDataModule: TCommandsDataModule
         'Copy HTML|Copies the selection as HTML and puts it on the Clipbo' +
         'ard'
       OnExecute = actEditCopyHTMLExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actEditCopyHTMLasText: TAction
       Category = 'Edit'
@@ -167,6 +170,7 @@ object CommandsDataModule: TCommandsDataModule
         'Copy|Copies the selection as HTML as text and puts it on the Cli' +
         'pboard'
       OnExecute = actEditCopyHTMLasTextExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actEditCopyNumbered: TAction
       Category = 'Edit'
@@ -175,6 +179,7 @@ object CommandsDataModule: TCommandsDataModule
         'Copy Numbered|Copies the selection numbered and puts it on the C' +
         'lipboard'
       OnExecute = actEditCopyNumberedExecute
+      OnUpdate = UpdateSourceCodeActions
     end
     object actEditPaste: TEditPaste
       Category = 'Edit'
@@ -222,26 +227,6 @@ object CommandsDataModule: TCommandsDataModule
       HelpType = htContext
       Hint = 'Select All|Selects the entire document'
       ShortCut = 16449
-    end
-    object actInsertTemplate: TAction
-      Category = 'Edit'
-      Caption = 'Insert &Template'
-      HelpContext = 320
-      Hint = 'Insert a Code Template'
-      ShortCut = 16458
-      OnExecute = actInsertTemplateExecute
-      OnUpdate = UpdateEditActions
-    end
-    object actEditCopyFileName: TAction
-      Category = 'Edit'
-      Caption = 'Copy File Name'
-      HelpContext = 320
-      HelpType = htContext
-      Hint = 'Copy file name of active file to clipboard'
-      ImageIndex = 10
-      ImageName = 'Copy13'
-      OnExecute = actEditCopyFileNameExecute
-      OnUpdate = UpdateActionAlwaysEnabled
     end
     object actSearchFind: TAction
       Category = 'Search'
@@ -361,6 +346,26 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 52
       ImageName = 'PageSetup'
       OnExecute = actPageSetupExecute
+      OnUpdate = UpdateActionAlwaysEnabled
+    end
+    object actInsertTemplate: TAction
+      Category = 'Edit'
+      Caption = 'Insert &Template'
+      HelpContext = 320
+      Hint = 'Insert a Code Template'
+      ShortCut = 16458
+      OnExecute = actInsertTemplateExecute
+      OnUpdate = UpdateEditActions
+    end
+    object actEditCopyFileName: TAction
+      Category = 'Edit'
+      Caption = 'Copy File Name'
+      HelpContext = 320
+      HelpType = htContext
+      Hint = 'Copy file name of active file to clipboard'
+      ImageIndex = 10
+      ImageName = 'Copy13'
+      OnExecute = actEditCopyFileNameExecute
       OnUpdate = UpdateActionAlwaysEnabled
     end
     object actEditIndent: TAction

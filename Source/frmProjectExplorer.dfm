@@ -84,23 +84,29 @@ inherited ProjectExplorerWindow: TProjectExplorerWindow
             Customizable = False
             object tbiProjectNew: TSpTBXItem
               Action = CommandsDataModule.actProjectNew
+              ImageIndex = 6
             end
             object tbiProjectOpen: TSpTBXItem
               Action = CommandsDataModule.actProjectOpen
+              ImageIndex = 7
             end
             object tbiProjectSave: TSpTBXItem
               Action = CommandsDataModule.actProjectSave
+              ImageIndex = 12
             end
             object SpTBXSeparatorItem8: TSpTBXSeparatorItem
             end
             object tbiRunLast: TSpTBXItem
               Action = CommandsDataModule.actRunLastScript
+              ImageIndex = 17
             end
             object tbiDebugLast: TSpTBXItem
               Action = CommandsDataModule.actDebugLastScript
+              ImageIndex = 18
             end
             object tbiRunLastExternal: TSpTBXItem
               Action = CommandsDataModule.actExternalRunLastScript
+              ImageIndex = 19
             end
             object SpTBXSeparatorItem11: TSpTBXSeparatorItem
             end
