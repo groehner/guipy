@@ -709,18 +709,10 @@ object PyIDEMainForm: TPyIDEMainForm
             object mnNextIssue: TSpTBXItem
               Action = CommandsDataModule.actNextIssue
             end
-            object mnRefactor: TSpTBXSubmenuItem
-              Caption = 'Refactor'
-              OnClosePopup = mnRefactorClosePopup
-              OnInitPopup = mnRefactorInitPopup
-              object mnOrganizeImports: TSpTBXItem
-                Action = CommandsDataModule.actOrganizeImports
-              end
-              object SpTBXSeparatorItem33: TSpTBXSeparatorItem
-              end
-              object mnRefactorRename: TSpTBXItem
-                Action = CommandsDataModule.actRefactorRename
-              end
+            object SpTBXSeparatorItem33: TSpTBXSeparatorItem
+            end
+            object mnRefactor: TSpTBXItem
+              Action = CommandsDataModule.actShowRefactorMenu
             end
           end
           object SpTBXSeparatorItem29: TSpTBXSeparatorItem
@@ -1215,6 +1207,7 @@ object PyIDEMainForm: TPyIDEMainForm
         object UMLMenu: TSpTBXSubmenuItem
           Caption = '&UML'
           object mnNewUML: TSpTBXItem
+            Caption = 'New UML window'
             Action = actUMLNewUML
           end
           object mnNewClass: TSpTBXItem
@@ -1256,6 +1249,7 @@ object PyIDEMainForm: TPyIDEMainForm
             ImageName = 'OpenFolder'
           end
           object mnSaveAsPicture: TSpTBXItem
+            Caption = 'Save uml diagram as picture'
             Hint = 'Save as picture'
             Action = actUMLSaveAsPicture
           end

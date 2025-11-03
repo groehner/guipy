@@ -1142,6 +1142,7 @@ object CommandsDataModule: TCommandsDataModule
       Caption = 'Fix All'
       Hint = 'Apply all available fixes'
       ImageIndex = 124
+      ImageName = 'BugFix'
       OnExecute = actFixAllExecute
       OnUpdate = UpdateRefactorActions
     end
@@ -1169,7 +1170,8 @@ object CommandsDataModule: TCommandsDataModule
     end
     object actShowRefactorMenu: TAction
       Category = 'Refactoring'
-      Caption = 'actShowRefactorMenu'
+      Caption = 'Refactoring'
+      Hint = 'Show refactoring menu'
       ShortCut = 8305
       OnExecute = actShowRefactorMenuExecute
       OnUpdate = UpdateRefactorActions

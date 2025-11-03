@@ -180,6 +180,7 @@ type
     mnOrganizeImports: TSpTBXItem;
     SpTBXSeparatorItem9: TSpTBXSeparatorItem;
     mnRename: TSpTBXItem;
+    TBFixAll: TToolButton;
     procedure SynEditChange(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure SynEditExit(Sender: TObject);
@@ -2647,12 +2648,6 @@ begin
 
   PyIDEMainForm.ThemeEditorGutter(SynEdit.Gutter);
 
-  // Refactor munu
-//  pmnuRefactor.OnInitPopup := TSpTBXSubmenuItem(pmnuRefactor.LinkSubitems).OnInitPopup;
-//  pmnuRefactor.OnClosePopup := TSpTBXSubmenuItem(pmnuRefactor.LinkSubitems).OnClosePopup;
-
-
-
   // Setup notifications
   TMessageManager.DefaultManager.SubscribeToMessage(TIDEOptionsChangedMessage,
     ApplyPyIDEOptions);
@@ -3606,6 +3601,9 @@ begin
     GI_MessagesService.AddMessage(Format(_(SSyntaxIsOK), [Pathname]));
     ShowDockForm(MessagesWindow);
   end;
+
+  if Assigned(GI_ActiveEditor) then
+    GI_ActiveEditor.PullDiagnostics;
 end;
 
 procedure TEditorForm.TBClassEditClick(Sender: TObject);

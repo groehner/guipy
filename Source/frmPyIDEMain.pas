@@ -1243,11 +1243,7 @@ type
     mnPreviousIssue: TSpTBXItem;
     mnNextIssue: TSpTBXItem;
     mnFixAll: TSpTBXItem;
-    mnOrganizeImports: TSpTBXItem;
     SpTBXSeparatorItem32: TSpTBXSeparatorItem;
-    mnRefactor: TSpTBXSubmenuItem;
-    mnRefactorRename: TSpTBXItem;
-    SpTBXSeparatorItem33: TSpTBXSeparatorItem;
     mnTerminate: TSpTBXItem;
     mnNavTodo: TSpTBXItem;
     mnNavFindResults: TSpTBXItem;
@@ -1255,6 +1251,8 @@ type
     actFileNewStructogram: TAction;
     actFileNewSequencediagram: TAction;
     actToolsBrowser: TAction;
+    mnRefactor: TSpTBXItem;
+    SpTBXSeparatorItem33: TSpTBXSeparatorItem;
     procedure mnFilesClick(Sender: TObject);
     procedure actEditorZoomInExecute(Sender: TObject);
     procedure actEditorZoomOutExecute(Sender: TObject);
@@ -1367,8 +1365,6 @@ type
 
     procedure actUMLOpenFolderExecute(Sender: TObject);
     procedure actUMLRecognizeAssociationsExecute(Sender: TObject);
-    procedure mnRefactorClosePopup(Sender: TObject);
-    procedure mnRefactorInitPopup(Sender: TObject; PopupView: TTBView);
     procedure mnTerminateClick(Sender: TObject);
     procedure spiExternalToolsLEDClick(Sender: TObject);
     procedure UpdateFileActions(Sender: TObject);
@@ -6205,20 +6201,6 @@ begin
   finally
     UnlockFormUpdate(Self);
   end;
-end;
-
-procedure TPyIDEMainForm.mnRefactorClosePopup(Sender: TObject);
-begin
-  CleanUpRefactoringMenu(mnRefactor);
-end;
-
-procedure TPyIDEMainForm.mnRefactorInitPopup(Sender: TObject; PopupView:
-    TTBView);
-begin
-  var Editor := GI_ActiveEditor;
-  if Assigned(Editor) then
-    SetupRefactoringMenu(Editor.FileId, Editor.ActiveSynEdit.BlockBegin,
-      Editor.ActiveSynEdit.BlockEnd, mnRefactor);
 end;
 
 procedure TPyIDEMainForm.mnTerminateClick(Sender: TObject);
