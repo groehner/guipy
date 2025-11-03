@@ -1144,7 +1144,7 @@ object CommandsDataModule: TCommandsDataModule
       ImageIndex = 124
       ImageName = 'BugFix'
       OnExecute = actFixAllExecute
-      OnUpdate = UpdateRefactorActions
+      OnUpdate = UpdateIssuesActions
     end
     object actOrganizeImports: TAction
       Category = 'Refactoring'
