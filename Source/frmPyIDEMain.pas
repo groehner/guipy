@@ -1287,8 +1287,6 @@ type
     procedure tbiBrowsePreviousClick(Sender: TObject);
     procedure NextListClick(Sender: TObject; Str: string);
     procedure tbiBrowseNextClick(Sender: TObject);
-    function ApplicationHelp(Command: Word; Data: THelpEventData;
-      var CallHelp: Boolean): Boolean;
     procedure FormShow(Sender: TObject);
     procedure actFileNewFileExecute(Sender: TObject);
     procedure actNavigateToDockWindow(Sender: TObject);
@@ -1371,6 +1369,7 @@ type
     procedure UpdateRefactoringActions(Sender: TObject);
     procedure UpdateViewActions(Sender: TObject);
   private
+    FIsClosing: Boolean;
     FLanguageList: TStringList;
     FDSAAppStorage: TDSAAppStorage;
     FShellExtensionFiles: TStringList;
@@ -1430,8 +1429,6 @@ type
     FShellImages: TCustomImageList;
     FLastLayout: string;
     FLayouts: TStringList;
-    FMenuHelpRequested: Boolean;
-    FPythonKeywordHelpRequested: Boolean;
     // IIDELayouts implementation
     function LayoutExists(const Layout: string): Boolean;
     procedure LoadLayout(const Layout: string);
@@ -1541,10 +1538,6 @@ type
     property ActiveTabControlIndex: Integer read FActiveTabControlIndex
       write FActiveTabControlIndex;
     property Layouts: TStringList read FLayouts;
-    property MenuHelpRequested: Boolean read FMenuHelpRequested
-      write FMenuHelpRequested;
-    property PythonKeywordHelpRequested: Boolean
-      read FPythonKeywordHelpRequested write FPythonKeywordHelpRequested;
   end;
 
 const
@@ -1944,8 +1937,6 @@ begin
   // Set the HelpFile
   Application.HelpFile := ExtractFilePath(Application.ExeName) +
     'PyScripter.chm';
-  Application.OnHelp := Self.ApplicationHelp;
-
   DockServer.DockStyle := ResourcesDataModule.DockStyle;
 
   // App Instances
@@ -2237,8 +2228,7 @@ begin
 
   if CanClose then
   begin
-    // Shut down help
-    Application.OnHelp := nil;
+    FIsClosing := True;
     // QC25183
     try
       Application.HelpCommand(HELP_QUIT, 0);
@@ -3254,9 +3244,7 @@ end;
 
 function TPyIDEMainForm.GetIsClosing: Boolean;
 begin
-  // Use Application.OnHelp to signal exit
-  // Application.Help is set to nil as soon as we are about to close
-  Result := not Assigned(Application.OnHelp);
+  Result := FIsClosing;
 end;
 
 function TPyIDEMainForm.GetLocalAppStorage: TJvCustomAppStorage;
@@ -5707,29 +5695,6 @@ begin
   end;
 end;
 
-function TPyIDEMainForm.ApplicationHelp(Command: Word; Data: THelpEventData;
-var CallHelp: Boolean): Boolean;
-var
-  KeyWord: string;
-begin
-  CallHelp := True;
-  Result := False;
-  // We are not going to show popup help
-  // if Command = HELP_SETPOPUP_POS then exit;
-  if not FPythonKeywordHelpRequested and not FMenuHelpRequested and Active and
-    (ActiveControl is TSynEdit) and
-    (TSynEdit(ActiveControl).Highlighter = ResourcesDataModule.SynPythonSyn)
-  then
-  begin
-    KeyWord := TSynEdit(ActiveControl).WordAtCursor;
-    if KeyWord <> '' then
-    begin
-      CallHelp := not CommandsDataModule.ShowPythonKeywordHelp(KeyWord);
-      Result := True;
-    end;
-  end;
-end;
-
 procedure TPyIDEMainForm.WMDestroy(var Message: TWMDestroy);
 begin
   inherited;
@@ -5800,11 +5765,14 @@ begin
     FLayouts.Add('Default');
   end;
 
-  with TFUpdate.Create(Self) do
+  TThread.ForceQueue(nil, procedure
   begin
-    CheckAutomatically;
-    Free;
-  end;
+    with TFUpdate.Create(Self) do
+    begin
+      CheckAutomatically;
+      Free;
+    end;
+  end);
 
   if not GI_PyControl.PythonLoaded then
     CommandsDataModule.actPythonSetup.Execute;

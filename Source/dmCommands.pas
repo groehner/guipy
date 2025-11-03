@@ -1523,12 +1523,10 @@ begin
     var
     OldHelpFile := Application.HelpFile;
     Application.HelpFile := PythonHelpFile;
-    PyIDEMainForm.MenuHelpRequested := True;
     try
       Application.HelpCommand(HELP_CONTENTS, 0);
     finally
       Application.HelpFile := OldHelpFile;
-      PyIDEMainForm.MenuHelpRequested := False;
     end;
   end
   else if ExtractFileExt(PythonHelpFile) = '.html' then // python 11
@@ -1549,11 +1547,9 @@ begin
     var
     OldHelpFile := Application.HelpFile;
     Application.HelpFile := GI_PyControl.PythonHelpFile;
-    PyIDEMainForm.PythonKeywordHelpRequested := True;
     try
       Result := Application.HelpKeyword(KeyWord);
     finally
-      PyIDEMainForm.PythonKeywordHelpRequested := False;
       Application.HelpFile := OldHelpFile;
     end;
   end
@@ -1576,9 +1572,7 @@ end;
 
 procedure TCommandsDataModule.actHelpContentsExecute(Sender: TObject);
 begin
-  PyIDEMainForm.MenuHelpRequested := True;
   Application.HelpCommand(HELP_CONTENTS, 0);
-  PyIDEMainForm.MenuHelpRequested := False;
 end;
 
 procedure TCommandsDataModule.ParameterCompletionCodeCompletion(Sender: TObject;
@@ -1662,23 +1656,17 @@ end;
 
 procedure TCommandsDataModule.actHelpParametersExecute(Sender: TObject);
 begin
-  PyIDEMainForm.MenuHelpRequested := True;
   Application.HelpJump('parameters');
-  PyIDEMainForm.MenuHelpRequested := False;
 end;
 
 procedure TCommandsDataModule.actHelpExternalToolsExecute(Sender: TObject);
 begin
-  PyIDEMainForm.MenuHelpRequested := True;
   Application.HelpJump('externaltools');
-  PyIDEMainForm.MenuHelpRequested := False;
 end;
 
 procedure TCommandsDataModule.actHelpEditorShortcutsExecute(Sender: TObject);
 begin
-  PyIDEMainForm.MenuHelpRequested := True;
   Application.HelpJump('editorshortcuts');
-  PyIDEMainForm.MenuHelpRequested := False;
 end;
 
 procedure TCommandsDataModule.actConfigureToolsExecute(Sender: TObject);
@@ -2146,7 +2134,6 @@ end;
 
 procedure TCommandsDataModule.UpdateEditActions(Sender: TObject);
 begin
-  var ReadOnly := Assigned(GI_ActiveEditor) and GI_ActiveEditor.SynEdit.ReadOnly;
   if Sender = actEditLineNumbers then
   begin
     actEditLineNumbers.Enabled := Assigned(GI_ActiveEditor);
@@ -2154,7 +2141,8 @@ begin
       GI_ActiveEditor.ActiveSynEdit.Gutter.ShowLineNumbers;
   end
   else if Sender = actEditReadOnly then
-    actEditReadOnly.Checked := ReadOnly
+    actEditReadOnly.Checked := Assigned(GI_ActiveEditor) and
+      GI_ActiveEditor.SynEdit.ReadOnly
   else if Sender = actEditWordWrap then
   begin
     actEditWordWrap.Enabled := Assigned(GI_ActiveEditor) and
@@ -2384,18 +2372,18 @@ end;
 
 procedure TCommandsDataModule.UpdateSourceCodeActions(Sender: TObject);
 begin
-  var ReadOnly := Assigned(GI_ActiveEditor) and GI_ActiveEditor.SynEdit.ReadOnly;
+  var NotReadOnly := Assigned(GI_ActiveEditor) and not GI_ActiveEditor.SynEdit.ReadOnly;
   var SelAvail := Assigned(GI_ActiveEditor) and GI_ActiveEditor.ActiveSynEdit.SelAvail;
   if (Sender = actEditIndent)  or (Sender = actEditDedent)then
-    TAction(Sender).Enabled := SelAvail and not ReadOnly
+    TAction(Sender).Enabled := SelAvail and NotReadOnly
   else if (Sender = actEditTabify)  or (Sender = actEditUntabify) then
-    TAction(Sender).Enabled := not ReadOnly
+    TAction(Sender).Enabled := NotReadOnly
   else if (Sender = actEditCommentOut)  or (Sender = actEditUncomment) or
     (Sender = actEditToggleComment)
   then
-    TAction(Sender).Enabled := Assigned(GI_ActiveEditor) and not ReadOnly
+    TAction(Sender).Enabled := Assigned(GI_ActiveEditor) and NotReadOnly
   else if Sender = actFormatCode then
-    actFormatCode.Enabled := Assigned(GI_ActiveEditor) and not ReadOnly and GI_ActiveEditor.HasPythonFile;
+    actFormatCode.Enabled := Assigned(GI_ActiveEditor) and NotReadOnly and GI_ActiveEditor.HasPythonFile;
 end;
 
 procedure TCommandsDataModule.UpdateToolsActions(Sender: TObject);

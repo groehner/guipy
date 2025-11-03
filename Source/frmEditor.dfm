@@ -10,6 +10,7 @@ object EditorForm: TEditorForm
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnHelp = FormHelp
   TextHeight = 15
   object BGPanel: TPanel
     Left = 0
@@ -41,7 +42,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 558
+        CustomWidth = 433
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'

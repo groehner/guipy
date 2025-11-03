@@ -1138,7 +1138,7 @@ object CommandsDataModule: TCommandsDataModule
       OnUpdate = UpdateIssuesActions
     end
     object actFixAll: TAction
-      Category = 'Refactoring'
+      Category = 'Source Code'
       Caption = 'Fix All'
       Hint = 'Apply all available fixes'
       ImageIndex = 124

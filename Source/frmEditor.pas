@@ -229,6 +229,8 @@ type
       var HintInfo: Vcl.Controls.THintInfo);
     procedure BreakpointContextPopup(Sender: TObject; MousePos: TPoint;
       Row, Line: Integer; var Handled: Boolean);
+    function FormHelp(Command: Word; Data: THelpEventData; var CallHelp: Boolean):
+        Boolean;
     procedure spiBreakpointEnabledClick(Sender: TObject);
     procedure spiBreakpointPropertiesClick(Sender: TObject);
     procedure spiBreakpointClearClick(Sender: TObject);
@@ -5765,6 +5767,23 @@ begin
     MousePos := ClientToScreen(MousePos);
     pmnuBreakpoint.Popup(MousePos.X, MousePos.Y);
     Handled := True;
+  end;
+end;
+
+function TEditorForm.FormHelp(Command: Word; Data: THelpEventData; var
+    CallHelp: Boolean): Boolean;
+begin
+  CallHelp := True;
+  Result := False;
+
+  if (Command = HELP_CONTEXT) and (Data = SynEdit.HelpContext) then
+  begin
+    var Keyword := SynEdit.WordAtCursor;
+    if Keyword <> '' then
+    begin
+      CallHelp := not CommandsDataModule.ShowPythonKeywordHelp(Keyword);
+      Result := True;
+    end
   end;
 end;
 
