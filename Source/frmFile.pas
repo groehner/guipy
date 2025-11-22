@@ -418,9 +418,9 @@ begin
   end
   else
   begin
-    if GI_ActiveFile = IFile(FMyFile) then
+    if GI_ActiveFile = FMyFile as IFile then
       GI_ActiveFile := nil;
-    if GI_FileCmds = IFileCommands(FMyFile) then
+    if GI_FileCmds = FMyFile as IFileCommands then
       GI_FileCmds := nil;
     //if GI_SearchCmds = ISearchCommands(FMyFile) then
       GI_SearchCmds := nil;
@@ -1126,7 +1126,7 @@ begin
     Count := FFiles.Count - 1;
     while Count >= 0 do
     begin
-      IFile(FFiles[Count]).Close;
+      (FFiles[Count] as IFile).Close;
       Dec(Count);
     end;
   finally
@@ -1178,9 +1178,9 @@ begin
   Result := nil;
   Fullname := GetLongFileName(ExpandFileName(Name));
   for var I := 0 to FFiles.Count - 1 do
-    if AnsiSameText(IFile(FFiles[I]).GetFileName, Fullname) then
+    if AnsiSameText((FFiles[I] as IFile).GetFileName, Fullname) then
     begin
-      Result := IFile(FFiles[I]);
+      Result := FFiles[I] as IFile;
       Break;
     end;
 end;
@@ -1193,7 +1193,7 @@ begin
   Result := nil;
   Fullname := GetLongFileName(ExpandFileName(Name));
   for var I := 0 to FFiles.Count - 1 do begin
-    AFile:= IFile(FFiles[I]);
+    AFile:= FFiles[I] as IFile;
     if AnsiSameText(AFile.GetFileName, Fullname) and (AFile.FileKind = Kind) then
     begin
       Result := AFile;
@@ -1208,7 +1208,7 @@ var
 begin
   Result := nil;
   for var I := 0 to FFiles.Count - 1 do begin
-    AFile:= IFile(FFiles[I]);
+    AFile:= FFiles[I] as IFile;
     if AFile.FileKind = Kind then
     begin
       Result := AFile;
@@ -1224,7 +1224,7 @@ begin
   Result := GetFileByName(Name);
   if not Assigned(Result) then
     for var I := 0 to FFiles.Count - 1 do begin
-      AFile := IFile(FFiles[I]);
+      AFile := FFiles[I] as IFile;
       if (AFile.FileName = '') and AnsiSameText(AFile.GetFileTitle, Name) then
       begin
         Result := AFile;
@@ -1235,7 +1235,7 @@ end;
 
 function TFileFactory.GetFile(Index: Integer): IFile;
 begin
-  Result := IFile(FFiles[Index]);
+  Result := FFiles[Index] as IFile;
 end;
 
 procedure TFileFactory.RemoveFile(AFile: IFile);
@@ -1256,7 +1256,7 @@ begin
   FFiles.Lock;
   try
     for var I:= 0 to FFiles.Count - 1 do
-      Proc(IFile(FFiles[I]));
+      Proc(FFiles[I] as IFile);
   finally
     FFiles.Unlock;
   end;
@@ -1270,7 +1270,7 @@ begin
   try
     Result := nil;
     for var I := 0 to FFiles.Count - 1 do begin
-      AFile := IFile(FFiles[I]);
+      AFile := FFiles[I] as IFile;
       if Predicate(AFile) then
         Exit(AFile);
     end;

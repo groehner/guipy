@@ -562,6 +562,8 @@ type
     procedure OpenRemoteFile(const FileName, Servername: string); override;
     function SaveToRemoteFile(const FileName, Servername: string)
       : Boolean; override;
+
+    class constructor Create;
   end;
 
 implementation
@@ -738,15 +740,44 @@ end;
 procedure TEditor.Close;
 // Closes without asking
 begin
-  if Assigned(FForm) then
+  FSynLsp.FileClosed;
+  if FUntitledNumber <> -1 then
+    UntitledNumbers[FUntitledNumber] := False
+  else
+    GI_PyIDEServices.FilesMRUAdd(GetFileId);
+  // Unregister existing File Notification
+  if FileName <> '' then
+    GI_FileSystemMonitor.RemoveFile(FileName, FileChanged);
+
+  if Assigned(Form) then
   begin
-    FSynLsp.FileClosed;
     FForm.DoAssignInterfacePointer(False);
     GI_EditorFactory.RemoveEditor(Self);
-    if GI_EditorFactory.Count = 0 then
-      PyIDEMainForm.UpdateCaption;
-    inherited;
+
+    var TabSheet := (Form.Parent as TSpTBXTabSheet);
+    var TabControl := TabSheet.TabControl;
+    TabControl.Toolbar.BeginUpdate;
+    try
+      (Form.ParentTabControl as TSpTBXTabControl).zOrder.Remove(TabSheet.Item);
+      Form := nil;
+      // The form is owned by the tabshhet and it is also destroyed
+      // The SynEdit plugin FSynLsp will also be destroyed
+      TabSheet.Free;
+      if not GI_PyIDEServices.IsClosing then
+        TabControl.Toolbar.MakeVisible(TabControl.ActiveTab);
+    finally
+      TabControl.Toolbar.EndUpdate;
+    end;
   end;
+
+  if GI_EditorFactory.Count = 0 then
+    PyIDEMainForm.UpdateCaption;
+end;
+
+class constructor TEditor.Create;
+begin
+  UntitledNumbers := TBits.Create;
+  UntitledNumbers[0] := True;  // do not use 0
 end;
 
 destructor TEditor.Destroy;
@@ -1513,8 +1544,8 @@ begin
   Files.Lock;
   try
     for var I := 0 to Files.Count - 1 do
-      if IFile(Files[I]).FileKind = fkEditor then
-        Proc(IEditor(Files[I]));
+      if (Files[I] as IFile).FileKind = fkEditor then
+        Proc(Files[I] as IEditor);
   finally
     Files.Unlock;
   end;
@@ -1528,9 +1559,9 @@ begin
   try
     Result := nil;
     for var I := 0 to Files.Count - 1 do
-      if IFile(Files[I]).FileKind = fkEditor then
+      if (Files[I] as IFile).FileKind = fkEditor then
       begin
-        Editor := IEditor(Files[I]);
+        Editor := Files[I] as IEditor;
         if Predicate(Editor) then
           Exit(Editor);
       end;
@@ -1689,7 +1720,7 @@ begin
       Inc(Num);
       if Num = Index then
       begin
-        Result := IEditor(GetFile(I));
+        Result := GetFile(I) as IEditor;
         Exit;
       end;
     end;
@@ -1941,7 +1972,7 @@ begin
     ApplyPyIDEOptions);
   SkinManager.RemoveSkinNotification(Self);
 
-  GI_EditorFactory.RemoveFile(IEditor(FEditor));
+  GI_EditorFactory.RemoveFile(FEditor as IEditor);
   inherited;
 end;
 
@@ -2167,14 +2198,11 @@ begin
     GI_FileCmds := FEditor;
     GI_SearchCmds := FEditor;
   end
-  else
+  else if GI_ActiveEditor = FEditor as IEditor then
   begin
-    if GI_ActiveEditor = IEditor(FEditor) then
-      GI_ActiveEditor := nil;
-    if GI_FileCmds = IFileCommands(FEditor) then
-      GI_FileCmds := nil;
-    if GI_SearchCmds = ISearchCommands(FEditor) then
-      GI_SearchCmds := nil;
+    GI_ActiveEditor := nil;
+    GI_FileCmds := nil;
+    GI_SearchCmds := nil;
   end;
 end;
 
