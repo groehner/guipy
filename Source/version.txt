@@ -1,3 +1,10 @@
+8.00, 2025.11.03
+added the ruff LSP server and used it for diagnostics
+fixable errors are shown with marks in the gutter
+organize imports
+rename refactoring
+improved file change notifications
+
 7.06, 2025.10.16
 class editor supports abstract classes, configuration options for {abstract}
 bugfix for Textdiff tool

@@ -792,7 +792,7 @@ end;
 procedure TEditor.GoToSyntaxError;
 begin
   if HasSyntaxError then
-    Form.SynEdit.CaretXY :=
+    FForm.SynEdit.CaretXY :=
       BufferCoordFromLspPosition(FSynLsp.Diagnostics[0].range.start);
 end;
 

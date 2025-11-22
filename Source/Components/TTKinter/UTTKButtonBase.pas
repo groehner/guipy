@@ -68,7 +68,6 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     procedure NewWidget(const Widget: string = ''); override;
-    procedure MakeFont; override;
     function GetAttributes(ShowAttributes: Integer): string; override;
   published
     property Anchor;
@@ -287,11 +286,6 @@ begin
     AsString('w'));
   InsertValue('self.' + Name + '[' + AsString('text') + '] = ' +
     AsString(Text));
-end;
-
-procedure TTKLabel.MakeFont;
-begin
-  // no font
 end;
 
 procedure TTKLabel.Paint;
