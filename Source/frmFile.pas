@@ -6,6 +6,7 @@ uses
   Winapi.Messages,
   System.SysUtils,
   System.Classes,
+  System.Generics.Collections,
   Vcl.Graphics,
   Vcl.Controls,
   Vcl.Forms,
@@ -151,7 +152,7 @@ type
 
   TFileFactory = class(TInterfacedObject, IFileFactory)
   private
-    FFiles: TInterfaceList;
+    FFiles: TList<IFile>;
     // IFileFactory implementation
     function CanCloseAll: Boolean;
     procedure CloseAll;
@@ -159,9 +160,6 @@ type
     function GetFileByNameAndType(const Name: string; Kind: TFileKind): IFile;
     function GetFileByType(Kind: TFileKind): IFile;
     function GetFileByFileId(const Name: string): IFile;
-  protected
-    procedure LockList;
-    procedure UnlockList;
   public
     constructor Create;
     destructor Destroy; override;
@@ -172,7 +170,7 @@ type
     procedure RemoveFile(AFile: IFile);
     procedure ApplyToFiles(const Proc: TProc<IFile>);
     function FirstFileCond(const Predicate: TPredicate<IFile>): IFile;
-    property Files: TInterfaceList read FFiles write FFiles;
+    property Files: TList<IFile> read FFiles write FFiles;
   end;
 
 var FileFactory: TFileFactory = nil;
@@ -182,7 +180,6 @@ implementation
 uses
   System.IOUtils,
   System.DateUtils,
-  System.Generics.Collections,
   Winapi.Windows,
   UITypes,
   Types,
@@ -1061,7 +1058,7 @@ end;
 constructor TFileFactory.Create;
 begin
   inherited Create;
-  FFiles := TInterfaceList.Create;
+  FFiles := TList<IFile>.Create;
 end;
 
 destructor TFileFactory.Destroy;
@@ -1118,19 +1115,12 @@ begin
 end;
 
 procedure TFileFactory.CloseAll;
-var
-  Count: Integer;
 begin
-  FFiles.Lock;
-  try
-    Count := FFiles.Count - 1;
-    while Count >= 0 do
-    begin
-      (FFiles[Count] as IFile).Close;
-      Dec(Count);
-    end;
-  finally
-    FFiles.Unlock;
+  var I := FFiles.Count - 1;
+  while I >= 0 do
+  begin
+    FFiles[I].Close;
+    Dec(I);
   end;
 end;
 
@@ -1253,40 +1243,18 @@ end;
 
 procedure TFileFactory.ApplyToFiles(const Proc: TProc<IFile>);
 begin
-  FFiles.Lock;
-  try
-    for var I:= 0 to FFiles.Count - 1 do
-      Proc(FFiles[I] as IFile);
-  finally
-    FFiles.Unlock;
-  end;
+  for var AFile in FFiles do
+    Proc(AFile);
 end;
 
 function TFileFactory.FirstFileCond(const Predicate: TPredicate<IFile>): IFile;
-var
-  AFile: IFile;
 begin
-  FFiles.Lock;
-  try
-    Result := nil;
-    for var I := 0 to FFiles.Count - 1 do begin
-      AFile := FFiles[I] as IFile;
-      if Predicate(AFile) then
-        Exit(AFile);
-    end;
-  finally
-    FFiles.Unlock;
+  Result := nil;
+  for var AFile in FFiles do
+  begin
+    if Predicate(AFile) then
+      Exit(AFile);
   end;
-end;
-
-procedure TFileFactory.LockList;
-begin
-  FFiles.Lock;
-end;
-
-procedure TFileFactory.UnlockList;
-begin
-  FFiles.Unlock;
 end;
 
 end.
