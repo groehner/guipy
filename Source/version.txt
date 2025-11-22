@@ -1,3 +1,6 @@
+8.01, 2025.11.22
+bugfix for the font attribute setting of the ttk label
+
 8.00, 2025.11.03
 added the ruff LSP server and used it for diagnostics
 fixable errors are shown with marks in the gutter
