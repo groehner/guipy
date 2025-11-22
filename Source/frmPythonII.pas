@@ -1757,7 +1757,8 @@ begin
   SynEditOptions.Assign(SynEdit);
 
   AppStorage.DeleteSubTree('Interpreter Editor Options');
-  TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides', 'KeyStrokes']);
+  TempStringList.AddStrings(['TrackChanges', 'SelectedColor', 'IndentGuides',
+    'DisplayFlowControl', 'BookmarkOptions', 'KeyStrokes']);
   AppStorage.WritePersistent('Interpreter Editor Options', SynEditOptions, True, TempStringList);
 
   //Save Highlighter
