@@ -1040,6 +1040,7 @@ end;
 procedure TEditor.OnDiagnosticsUpdate(UpdateTypes: TDiagnosticUpdateTypes);
 begin
   FForm.UpdateTabImage;
+  FForm.DoUpdateCaption;  // Update the hint
   FForm.SynEdit.UpdateScrollBars;
   if datInvoked in UpdateTypes then
   begin
@@ -5609,6 +5610,8 @@ begin
   begin
     Caption := StringReplace(TabCaption, '&', '&&', [rfReplaceAll]);
     Hint := FEditor.GetFileId;
+    if Length(FEditor.FSynLsp.Diagnostics) > 0 then
+      Hint := Hint + sLineBreak + FEditor.FSynLsp.Diagnostics.Summary;
   end;
   PyIDEMainForm.UpdateCaption;
 end;
