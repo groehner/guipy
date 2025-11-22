@@ -272,7 +272,8 @@ procedure TPythonIIForm.PythonIOSendData(Sender: TObject; const Data: string);
 begin
   if Data.Length = 0 then Exit;
 
-  if FShowOutput then begin
+  if FShowOutput then
+  begin
     FCriticalSection.Enter;
     try
       var IsPending := FOutputStream.Size > 0;
