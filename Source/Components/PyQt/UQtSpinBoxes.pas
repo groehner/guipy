@@ -185,8 +185,8 @@ type
     procedure SetTime(const Value: string);
     procedure SetDisplayFormat(const Value: string);
     procedure MakeDateTime(const Value: string);
-    procedure MakeDate(const Value: string);
-    procedure MakeTime(const Value: string);
+    procedure MakeDate(const Value: string); virtual;
+    procedure MakeTime(const Value: string); virtual;
   protected
     procedure ShowValue(const Value: string);
     function DateTimeFromDisplayFormat: string; virtual;
@@ -228,6 +228,7 @@ type
   TQtDateEdit = class(TQtDateTimeEdit)
   protected
     function DateTimeFromDisplayFormat: string; override;
+    procedure MakeDate(const Value: string); override;
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
@@ -237,6 +238,7 @@ type
   TQtTimeEdit = class(TQtDateTimeEdit)
   protected
     function DateTimeFromDisplayFormat: string; override;
+    procedure MakeTime(const Value: string); virtual;
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
@@ -653,15 +655,15 @@ end;
 
 constructor TQtDateTimeEdit.Create(Owner: TComponent);
 var
-  FormatSet: TFormatSettings;
   ADateTime: TDateTime;
+  Locale: LCID;
 begin
   inherited Create(Owner);
   Tag := 108;
-  Width := 128;
-  FormatSet := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-  FFormat := MyStringReplace(FormatSet.ShortDateFormat + ' ' +
-    FormatSet.LongTimeFormat, '/', FormatSet.DateSeparator);
+  Width := 144;
+  Locale := GetThreadLocale;
+  FFormat := GetLocaleStr(Locale, LOCALE_SSHORTDATE, 'm/d/yy') + ' ' +
+             GetLocaleStr(Locale, LOCALE_STIMEFORMAT, '');
   FDisplayFormat := FFormat;
   ADateTime := Now;
   FDateTime := DateTimeToStr(ADateTime);
@@ -739,7 +741,7 @@ begin
   begin
     inherited NewWidget('QDateTimeEdit');
     MakeDateTime(FDateTime);
-    SetAttribute('DisplayFormat', FDisplayFormat, 'string');
+    MakeAttribut('DisplayFormat', AsString(FDisplayFormat));
   end
   else
     inherited NewWidget(Widget);
@@ -755,8 +757,8 @@ begin
   FDateTime := DateTimeToStr(ADateTime);
   FDate := DateToStr(ADateTime);
   FTime := TimeToStr(ADateTime);
-  Key := 'self.' + Name + '.setADateTime';
-  Str := Key + '(QADateTime.fromString(' + AsString(FDateTime) + ', ' +
+  Key := 'self.' + Name + '.setDateTime';
+  Str := Key + '(QDateTime.fromString(' + AsString(FDateTime) + ', ' +
     AsString(FFormat) + '))';
   SetAttributValue(Key, Str);
   UpdateObjectInspector;
@@ -766,13 +768,11 @@ procedure TQtDateTimeEdit.MakeDate(const Value: string);
 var
   Key, Str: string;
   ADateTime: TDateTime;
-  Posi: Integer;
 begin
   if not TryStrToDate(Value, ADateTime) then
     ADateTime := Now;
   FDate := DateToStr(ADateTime);
-  Posi := Pos(' ', FDateTime);
-  FDateTime := FDate + Copy(FDateTime, Posi, Length(FDateTime));
+  FDateTime := FDate + Copy(FDateTime, Pos(' ', FDateTime), Length(FDateTime));
   Key := 'self.' + Name + '.setDateTime';
   Str := Key + '(QDateTime.fromString(' + AsString(FDateTime) + ', ' +
     AsString(FFormat) + '))';
@@ -784,13 +784,11 @@ procedure TQtDateTimeEdit.MakeTime(const Value: string);
 var
   Key, Str: string;
   ADateTime: TDateTime;
-  Posi: Integer;
 begin
   if not TryStrToTime(Value, ADateTime) then
     ADateTime := Now;
   FTime := TimeToStr(ADateTime);
-  Posi := Pos(' ', FDateTime);
-  FDateTime := Copy(FDateTime, 1, Posi) + FTime;
+  FDateTime := Copy(FDateTime, 1, Pos(' ', FDateTime)) + FTime;
   Key := 'self.' + Name + '.setDateTime';
   Str := Key + '(QDateTime.fromString(' + AsString(FDateTime) + ', ' +
     AsString(FFormat) + '))';
@@ -804,7 +802,7 @@ var
   FormatSet: TFormatSettings;
   Posi: Integer;
 begin
-  FormatSet := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
+  FormatSet := TFormatSettings.Create;
   Posi := Pos(' ', FDisplayFormat);
   if Posi > 0 then
   begin
@@ -900,15 +898,12 @@ end;
 { --- TQtDateEdit -------------------------------------------------------------- }
 
 constructor TQtDateEdit.Create(Owner: TComponent);
-var
-  FormatSet: TFormatSettings;
 begin
   inherited Create(Owner);
   Tag := 109;
-  Width := 80;
-  FormatSet := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-  FDisplayFormat := MyStringReplace(FormatSet.ShortDateFormat, '/',
-    FormatSet.DateSeparator);
+  Width := 104;
+  var Locale := GetThreadLocale;
+  FDisplayFormat := GetLocaleStr(Locale, LOCALE_SSHORTDATE, 'm/d/yy');
 end;
 
 function TQtDateEdit.GetAttributes(ShowAttributes: Integer): string;
@@ -921,17 +916,30 @@ begin
       '|CurrentSectionIndex|TimeSpec';
   Result := Result + inherited GetAttributes(ShowAttributes);
   if ShowAttributes = 1 then
-  begin
-    var
-    Posi := Pos('|DateTime', Result);
-    Delete(Result, Posi, 41);
-  end;
+    Delete(Result, Pos('|DateTime', Result), 41);
 end;
 
 procedure TQtDateEdit.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QDateEdit');
-  SetAttribute('DisplayFormat', FDisplayFormat, 'string');
+  MakeDate(FDate);
+  MakeAttribut('DisplayFormat', AsString(FDisplayFormat));
+end;
+
+procedure TQtDateEdit.MakeDate(const Value: string);
+var
+  Key, Str: string;
+  ADateTime: TDateTime;
+begin
+  if not TryStrToDate(Value, ADateTime) then
+    ADateTime := Now;
+  FDate := DateToStr(ADateTime);
+  FDateTime := FDate + Copy(FDateTime, Pos(' ', FDateTime), Length(FDateTime));
+  Key := 'self.' + Name + '.setDate';
+  Str := Key + '(QDate.fromString(' + AsString(FDate) + ', ' +
+    AsString(FDisplayFormat) + '))';
+  SetAttributValue(Key, Str);
+  UpdateObjectInspector;
 end;
 
 function TQtDateEdit.DateTimeFromDisplayFormat: string;
@@ -939,7 +947,7 @@ var
   DateTime: TDateTime;
   FormatSet: TFormatSettings;
 begin
-  FormatSet := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
+  FormatSet := TFormatSettings.Create;
   FormatSet.ShortDateFormat := FDisplayFormat;
   if TryStrToDate(FDate, DateTime, FormatSet) then
     Result := DateTimeToStr(DateTime, FormatSet)
@@ -950,14 +958,12 @@ end;
 { --- TQtTimeEdit -------------------------------------------------------------- }
 
 constructor TQtTimeEdit.Create(Owner: TComponent);
-var
-  FormatSet: TFormatSettings;
 begin
   inherited Create(Owner);
   Tag := 110;
-  Width := 80;
-  FormatSet := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
-  FDisplayFormat := FormatSet.LongTimeFormat;
+  Width := 88;
+  var Locale := GetThreadLocale;
+  FDisplayFormat := GetLocaleStr(Locale, LOCALE_STIMEFORMAT, '');
 end;
 
 function TQtTimeEdit.GetAttributes(ShowAttributes: Integer): string;
@@ -970,17 +976,30 @@ begin
       '|CurrentSectionIndex|TimeSpec';
   Result := Result + inherited GetAttributes(ShowAttributes);
   if ShowAttributes = 1 then
-  begin
-    var
-    Posi := Pos('|DateTime', Result);
-    Delete(Result, Posi, 41);
-  end;
+    Delete(Result, Pos('|DateTime', Result), 41);
 end;
 
 procedure TQtTimeEdit.NewWidget(const Widget: string = '');
 begin
   inherited NewWidget('QTimeEdit');
-  SetAttribute('DisplayFormat', FDisplayFormat, 'string');
+  MakeTime(FTime);
+  MakeAttribut('DisplayFormat', AsString(FDisplayFormat));
+end;
+
+procedure TQtTimeEdit.MakeTime(const Value: string);
+var
+  Key, Str: string;
+  ADateTime: TDateTime;
+begin
+  if not TryStrToTime(Value, ADateTime) then
+    ADateTime := Now;
+  FTime := TimeToStr(ADateTime);
+  FDateTime := Copy(FDateTime, 1, Pos(' ', FDateTime)) + FTime;
+  Key := 'self.' + Name + '.setTime';
+  Str := Key + '(QTime.fromString(' + AsString(FTime) + ', ' +
+    AsString(FDisplayFormat) + '))';
+  SetAttributValue(Key, Str);
+  UpdateObjectInspector;
 end;
 
 function TQtTimeEdit.DateTimeFromDisplayFormat: string;
@@ -989,7 +1008,7 @@ var
   FormatSet: TFormatSettings;
   Posi: Integer;
 begin
-  FormatSet := TFormatSettings.Create(LOCALE_SYSTEM_DEFAULT);
+  FormatSet := TFormatSettings.Create;
   FormatSet.LongTimeFormat := FDisplayFormat;
   if TryStrToTime(FTime, DateTime, FormatSet) then
   begin

@@ -1,3 +1,6 @@
+8.02, 2025.12.09
+bugfix for QDateTimeEdit
+
 8.01, 2025.11.22
 bugfix for the font attribute setting of the ttk label
 
