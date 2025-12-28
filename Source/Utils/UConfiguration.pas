@@ -1423,6 +1423,7 @@ type
     procedure LLMAssistantViewToModel;
     procedure LLMChatModelToView;
     procedure LLMChatViewToModel;
+    procedure AdjustActiveLine;
   public
     class var CurrentSkinName: string;
 
@@ -2288,6 +2289,10 @@ procedure TFConfiguration.RestoreApplicationData;
 begin
   LoadVisibility;
   Changed;
+  // temporaryly since 8.03
+  AdjustActiveLine;
+  FSynEdit.RightEdgeColor := cbRightEdgeColor.SelectedColor;
+  FSynEdit.ActiveLineColor := CBActiveLineColor.SelectedColor;
 end;
 
 procedure TFConfiguration.PrepareShow;
@@ -2353,8 +2358,11 @@ begin
 
   // Right Edge
   FSynEdit.RightEdge := StrToIntDef(eRightEdge.Text, 80);
+  AdjustActiveLine;
   FSynEdit.RightEdgeColor := cbRightEdgeColor.SelectedColor;
   FSynEdit.ActiveLineColor := CBActiveLineColor.SelectedColor;
+
+
   // Line Spacing
   FSynEdit.ExtraLineSpacing := StrToIntDef(eLineSpacing.Text, 0);
   FSynEdit.TabWidth := StrToIntDef(eTabWidth.Text, 8);
@@ -2931,7 +2939,7 @@ procedure TFConfiguration.ShowPage(Page: Integer);
 begin
   PageList.ActivePageIndex := Page;
   TVConfiguration.Selected := TVConfiguration.Items[Page];
-  LTitle.Caption := PageList.ActivePage.Caption;
+  LTitle.Caption := PageList.ActivePage.Caption + StringOfChar(' ', 8);  // issue #19
   PageListClose;
   if PageList.ActivePage.Caption = _('File templates') then
   begin
@@ -4729,7 +4737,7 @@ begin
   GI_EditorFactory.ApplyToEditors(
     procedure(AEditor: IEditor)
     begin
-      var Editor := TEditorForm(AEditor.Form);
+      var Editor := AEditor.Form as TEditorForm;
       if Assigned(Editor.Partner) then begin
         Files.Add(TPath.ChangeExtension(Editor.Pathname, '.pfm'));
         Editor.Partner.Close;
@@ -6621,6 +6629,33 @@ begin
   FSDNew := _('new');
   FSDClose := _('close');
   UseLanguage(FCurrentLanguage);
+end;
+
+procedure TFConfiguration.AdjustActiveLine;
+begin
+  // Adjust active line color and RightEdgeColor
+  if Assigned(SynThemeSample.Highlighter) then
+  begin
+    var LineColor := SynThemeSample.Highlighter.WhitespaceAttribute.Background;
+//      if IsColorDark(LineColor) xor IsColorDark(BgColor) then
+    begin
+      if FSynEdit.ActiveLineColor <> clNone then
+      begin
+        if IsColorDark(LineColor) then
+          cbActiveLineColor.SelectedColor := LightenColor(LineColor, 5)
+        else
+          cbActiveLineColor.SelectedColor := DarkenColor(LineColor, 5);
+      end;
+
+      if FSynEdit.RightEdgeColor <> clNone then
+      begin
+        if IsColorDark(LineColor) then
+          cbRightEdgeColor.SelectedColor := clWebDimGray
+        else
+          cbRightEdgeColor.SelectedColor := clLtGray;
+      end;
+    end;
+  end;
 end;
 
 end.

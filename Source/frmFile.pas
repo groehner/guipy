@@ -501,7 +501,7 @@ begin
     for var I:= 0 to GI_FileFactory.Count - 1 do begin
       AFile:= GI_FileFactory[I];
       if Assigned(AFile) and (AFile.FileKind = FileKind) then
-        TFileForm(AFile.Form).SetFont(Font);
+        (AFile.Form as TFileForm).SetFont(Font);
     end;
   end;
 end;
@@ -1094,7 +1094,7 @@ begin
     if CheckListBox.Items.Count = 0 then
       Result := True
     else if CheckListBox.Items.Count = 1 then
-      Result := TFileForm(CheckListBox.Items.Objects[0]).DoAskSaveChanges
+      Result := (CheckListBox.Items.Objects[0] as TFileForm).DoAskSaveChanges
     else if ShowModal = idOK then
     begin
       Result := True;
@@ -1102,7 +1102,7 @@ begin
       begin
         if CheckListBox.Checked[I] then
         begin
-          if not TFileForm(CheckListBox.Items.Objects[I]).DoSave then
+          if not (CheckListBox.Items.Objects[I] as TFileForm).DoSave then
           begin
             Result := False;
             Break;

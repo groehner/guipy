@@ -1,16 +1,15 @@
-{ ******************************************************* }
-{ }
-{ Extension Library }
-{ Property Inspector and }
-{ Standard property editors Unit }
-{ }
-{ (c) 2002, Balabuyev Yevgeny }
-{ E-mail: stalcer@rambler.ru }
-{ Licence: Freeware }
-{ https://torry.net/authorsmore.php?id=3588 }
-{ }
-{ Gerhard Röhner }
-{ ******************************************************* }
+{ *******************************************************
+Extension Library
+Property Inspector and
+Standard property editors Unit
+
+(c) 2002, Balabuyev Yevgeny
+E-mail: stalcer@rambler.ru
+Licence: Freeware
+https://torry.net/authorsmore.php?id=3588
+
+Gerhard Röhner
+********************************************************* }
 
 unit ELPropInsp;
 

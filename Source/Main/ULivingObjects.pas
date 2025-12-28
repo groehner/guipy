@@ -833,13 +833,15 @@ var
   PyEngine: IPyEngineAndGIL;
   Str: string;
   NameSpaceItem: TBaseNameSpaceItem;
+  NameSpace: TBaseNameSpaceItem;
 begin
   FSLObjectsAddressNameDuplicat := TStringList.Create; // remember names
   FSLObjectsAddressNameDuplicat.Assign(FSLObjectsAddressName);
   FSLObjectsAddressName.Clear;
   FSLObjectsNamePath.Clear;
   PyEngine := SafePyEngine;
-  var
+  if not VariablesWindow.VariablesTree.Enabled then
+    Exit;
   NameSpace := VariablesWindow.GlobalsNameSpace;
   if not Assigned(NameSpace) then
     Exit;

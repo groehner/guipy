@@ -2313,7 +2313,7 @@ procedure TPyIDEMainForm.ClassEdit(Editor: IEditor; const Status: string;
 UML: TFUMLForm);
 begin
   var
-  Editform := TEditorForm(Editor.Form);
+  Editform := Editor.Form as TEditorForm;
   if Assigned(UML) then
     ActivateFile(UML.Pathname);
 
@@ -2548,7 +2548,7 @@ begin
   begin
     var
     AEditor := GI_PyIDEServices.GetActiveEditor;
-    if Assigned(AEditor) and TEditorForm(AEditor.Form).IsPython then
+    if Assigned(AEditor) and (AEditor.Form as TEditorForm).IsPython then
       PrepareClassEdit(AEditor, 'Edit', nil);
   end;
 end;
@@ -3172,7 +3172,7 @@ begin
 
   if Assigned(ActivePage) and (ActivePage.ComponentCount > 0) and
     (ActivePage.Components[0] is TEditorForm) then
-    Result := TEditorForm(ActivePage.Components[0]).GetEditor
+    Result := (ActivePage.Components[0] as TEditorForm).GetEditor
   else
     Result := nil;
 end;
@@ -3219,7 +3219,7 @@ begin
 
   if Assigned(ActivePage) and (ActivePage.ComponentCount > 0) and
     (ActivePage.Components[0] is TFileForm) then
-    Result := TFileForm(ActivePage.Components[0]).GetFile
+    Result := (ActivePage.Components[0] as TFileForm).GetFile
   else
     Result := nil;
 end;
@@ -3425,7 +3425,7 @@ begin
     GUIForm := TFGuiForm.Create(nil);
     GUIForm.Open(ChangeFileExt(AEditor.FileName, '.pfm'),
       Point(GuiPyOptions.FrameWidth, GuiPyOptions.FrameHeight),
-      TEditorForm(AEditor.Form));
+      AEditor.Form as TEditorForm);
     GUIForm.Caption := 'CAPTION';
     GUIForm.InitEvents;
     FObjectInspector.ELPropertyInspector.SetByCaption('Title', 'CAPTION');
@@ -4029,7 +4029,7 @@ begin
     if AFile.FileKind = fkUML then
       TFUMLForm(AFile.Form).Enter(Self)
     else if AFile.FileKind = fkEditor then
-      TEditorForm(AFile.Form).Enter(Self);
+      (AFile.Form as TEditorForm).Enter(Self);
   end;
   UnLockWindow;
 end;
@@ -4996,7 +4996,7 @@ begin
   EditorForm := nil;
   AEditor := GI_PyIDEServices.GetActiveEditor;
   if Assigned(AEditor) then
-    EditorForm := TEditorForm(AEditor.Form)
+    EditorForm := AEditor.Form as TEditorForm
   else if Assigned(FGUIDesigner.DesignForm) then
     EditorForm := FGUIDesigner.DesignForm.Partner;
   if Assigned(EditorForm) and EditorForm.IsPython then
@@ -5563,7 +5563,7 @@ begin
       Result.SynEdit.Text := Parameters.ReplaceInText(FileTemplate.Template);
       if (FileTemplate.Name = SClassTemplateName) and GuiPyOptions.FromFutureImport
       then
-        TEditorForm(Result.Form).InsertImport
+        (Result.Form as TEditorForm).InsertImport
           ('from __future__ import annotations');
 
       // Locate the caret symbol |
@@ -5581,7 +5581,7 @@ begin
       Result.SynEdit.ClearUndo;
       Result.SynEdit.Modified := False;
 
-      TEditorForm(Result.Form).DefaultExtension := FileTemplate.Extension;
+      (Result.Form as TEditorForm).DefaultExtension := FileTemplate.Extension;
       // Jupyter support
       if (LowerCase(FileTemplate.Extension) = 'ipynb') and
         not GI_SystemCommandService.IsRunning then
@@ -5914,7 +5914,7 @@ begin
     ModifiedImageIndex := vilImages.GetIndexByName('Edit');
     for var I := 0 to List.Count - 1 do
     begin
-      AFile := TFileForm(List.Objects[I]).GetFile;
+      AFile := (List.Objects[I] as TFileForm).GetFile;
       MenuItem := TSpTBXItem.Create(Self);
       mnFiles.Add(MenuItem);
       MenuItem.Caption := List[I];

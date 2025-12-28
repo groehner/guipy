@@ -2722,8 +2722,6 @@ begin
   Node := TreeView.Selected;
   if not Assigned(Node) then
     Exit;
-  if RGMethodKind.ItemIndex = 0 then
-    Exit;
   if (CBMethodName.Text = '') or not MakeIdentifier(CBMethodName) then
     Exit;
   CBMethodType.Enabled := (RGMethodKind.ItemIndex = 1);

@@ -121,7 +121,7 @@ begin
 
   if Assigned(AEditor) then begin
     if AEditor.Modified then
-      TEditorForm(AEditor.Form).DoSave;
+      (AEditor.Form as TEditorForm).DoSave;
     FileName := ExtractFileName(AEditor.FileName);
   end;
 

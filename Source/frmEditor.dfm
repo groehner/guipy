@@ -42,7 +42,7 @@ object EditorForm: TEditorForm
         Checked = True
       end
       object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
-        CustomWidth = 558
+        CustomWidth = 433
       end
       object tbiUpdateView: TSpTBXItem
         Caption = 'Update View'
@@ -871,6 +871,7 @@ object EditorForm: TEditorForm
         CollectionName = 'CodeImages\Keyword'
         Name = 'Keyword'
       end>
+    ImageCollection = ResourcesDataModule.icCodeImages
     PreserveItems = True
     Left = 100
     Top = 417

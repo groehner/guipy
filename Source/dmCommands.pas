@@ -558,7 +558,7 @@ procedure TCommandsDataModule.actAddWatchAtCursorExecute(Sender: TObject);
 begin
   var Editor := GI_PyIDEServices.ActiveEditor;
   if Assigned(Editor) then
-    TEditorForm(Editor.Form).AddWatchAtCursor;
+    (Editor.Form as TEditorForm).AddWatchAtCursor;
 end;
 
 { TCommandsDataModule }
@@ -739,7 +739,7 @@ procedure TCommandsDataModule.actFileCloseWorkspaceTabsExecute(Sender: TObject);
     NextFile: IFile;
   begin
     repeat
-      NextTab := TFileForm(aFile.Form).ParentTabItem.GetNextTab(not Backwards,
+      NextTab := (aFile.Form as TFileForm).ParentTabItem.GetNextTab(not Backwards,
         sivtNormal);
       if Assigned(NextTab) then
       begin
@@ -1691,13 +1691,13 @@ end;
 procedure TCommandsDataModule.actEditCopyRTFExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
-    TEditorForm(GI_ActiveEditor.Form).CopyRTF;
+    (GI_ActiveEditor.Form as TEditorForm).CopyRTF;
 end;
 
 procedure TCommandsDataModule.actEditCopyRTFNumberedExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
-    TEditorForm(GI_ActiveEditor.Form).CopyRTFNumbered;
+    (GI_ActiveEditor.Form as TEditorForm).CopyRTFNumbered;
 end;
 
 procedure TCommandsDataModule.actEditCopyHTMLExecute(Sender: TObject);
@@ -1706,7 +1706,7 @@ begin
   begin
     GI_ActiveEditor.GetActiveSynEdit.Options :=
       GI_ActiveEditor.GetActiveSynEdit.Options - [eoCopyPlainText];
-    TEditorForm(GI_ActiveEditor.Form).CopySelected;
+    (GI_ActiveEditor.Form as TEditorForm).CopySelected;
     GI_ActiveEditor.GetActiveSynEdit.Options :=
       GI_ActiveEditor.GetActiveSynEdit.Options + [eoCopyPlainText];
   end;
@@ -1715,19 +1715,19 @@ end;
 procedure TCommandsDataModule.actEditCopyHTMLasTextExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
-    TEditorForm(GI_ActiveEditor.Form).CopyHTML(True);
+    (GI_ActiveEditor.Form as TEditorForm).CopyHTML(True);
 end;
 
 procedure TCommandsDataModule.actEditCopyNumberedExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
-    TEditorForm(GI_ActiveEditor.Form).CopyNumbered;
+    (GI_ActiveEditor.Form as TEditorForm).CopyNumbered;
 end;
 
 procedure TCommandsDataModule.actEditCreateStructogramExecute(Sender: TObject);
 begin
   if Assigned(GI_ActiveEditor) then
-    TEditorForm(GI_ActiveEditor.Form).CreateStructogram;
+    (GI_ActiveEditor.Form as TEditorForm).CreateStructogram;
 end;
 
 procedure TCommandsDataModule.actFindFunctionExecute(Sender: TObject);

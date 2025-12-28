@@ -673,7 +673,7 @@ begin
     PPI := 96;
   end;
   PythonFilename := ChangeFileExt(Filename, '.pyw');
-  AForm := TEditorForm(GI_EditorFactory.GetEditorByName(PythonFilename).Form);
+  AForm := GI_EditorFactory.GetEditorByName(PythonFilename).Form as TEditorForm;
   FObjectGenerator.Partner := AForm;
   BinStream := TMemoryStream.Create;
   FilStream := TFileStream.Create(Filename, fmOpenRead or fmShareDenyNone);

@@ -691,7 +691,7 @@ end;
 constructor TEditor.Create(AForm: TFileForm);
 begin
   inherited Create(fkEditor, AForm);
-  FForm := TEditorForm(AForm);
+  FForm := AForm as TEditorForm;
   SetFileEncoding(PyIDEOptions.NewFileEncoding);
   FSynLsp := TLspSynEditPlugin.Create(FForm.SynEdit);
   FSynLsp.OnDiagnosticsUpdate := OnDiagnosticsUpdate;
@@ -1519,7 +1519,7 @@ begin
       if (Editor.FileName <> '') or (Editor.RemoteFileName <> '') then
         (Editor as IFileCommands).ExecSave
       else
-        with TEditorForm(Editor.Form) do
+        with Editor.Form as TEditorForm do
         begin
           // save module1 as 1.py etc.
           var
@@ -1839,7 +1839,7 @@ begin
         not GI_FileFactory.GetFile(0).Modified then
         GI_FileFactory.GetFile(0).Close;
       if (AFilename = '') and (HighlighterName = 'Python') then
-        TEditorForm(Result.Form).DefaultExtension := 'py';
+        (Result.Form as TEditorForm).DefaultExtension := 'py';
     end;
   finally
     TabCtrl.Toolbar.EndUpdate;
@@ -4106,7 +4106,7 @@ begin
     var
     SynEd := Editor.ActiveSynEdit;
     var
-    Point := TEditorForm(Editor.Form).FHintCursorRect.TopLeft;
+    Point := (Editor.Form as TEditorForm).FHintCursorRect.TopLeft;
     var
     DisplayC := SynEd.PixelsToNearestRowColumn(Point.X, Point.Y);
     var

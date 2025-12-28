@@ -252,7 +252,8 @@ uses
   USugiyamaLayout,
   UIntegrator,
   UObjectGenerator,
-  UConfiguration;
+  UConfiguration,
+  FrmEditor;
 
 { TRtfdDiagram }
 
@@ -1460,11 +1461,11 @@ begin
   begin
     AFile := GI_PyIDEServices.GetActiveFile;
     Pathname := ChangeFileExt(Box.GetPathname, '.py');
-    Editor := IEditor(PyIDEMainForm.DoOpen(Pathname));
+    Editor := PyIDEMainForm.DoOpenAsEditor(Pathname);
     if Assigned(Editor) then
     begin
       if Editor.Modified then
-        TFileForm(Editor.Form).DoSave;
+        (Editor.Form as TFileForm).DoSave;
       if Assigned(AFile) and (AFile.FileKind = fkUML) then
         PyIDEMainForm.PrepareClassEdit(Editor, 'Edit', TFUMLForm(AFile.Form));
     end;

@@ -486,14 +486,13 @@ end;
 procedure TFGuiForm.SetAttribute(const Attr, Value, Typ: string);
 var NValue: string;
 begin
+  NValue := Value;
   if (Attr = 'MaxHeight') or (Attr = 'MaxWidth') then
     NValue := IntToStr(FMaxWidth) + ', ' + IntToStr(FMaxHeight)
   else if (Attr = 'MinHeight') or (Attr = 'MinWidth') then
     NValue := IntToStr(FMinWidth) + ', ' + IntToStr(FMinHeight)
-  else if Attr = 'Title' then begin
+  else if Attr = 'Title' then
     Caption := Value;
-    NValue:= Value;
-  end;
   FWidget.SetAttribute(Attr, NValue, Typ);
 end;
 

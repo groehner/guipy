@@ -67,7 +67,7 @@ begin
     if AName <> '' then
     begin
       if not Assigned(Form) then
-        EditForm := TEditorForm(GI_EditorFactory.GetEditorByName(AName))
+        EditForm := GI_EditorFactory.GetEditorByName(AName).Form as TEditorForm
       else
         EditForm := Form as TEditorForm;
       if Assigned(EditForm) then

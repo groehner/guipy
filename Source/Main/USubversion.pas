@@ -199,7 +199,7 @@ begin
     Str2:= TPath.Combine(GuiPyOptions.TempDir, Str2);
     AFile:= PyIDEMainForm.DoOpenAsEditor(Str2);
     if Assigned(AFile) then begin
-      Form:= TEditorForm(AFile.Form);
+      Form:= (AFile.Form as TEditorForm);
       Form.PutText(OutputWindow.lsbConsole.Items.Text, False);
       Form.DoSave;
     end;
