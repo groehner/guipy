@@ -6,7 +6,7 @@
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>GuiPy.dpr</MainSource>
-        <Platform Condition="'$(Platform)'==''">Win64</Platform>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectGuid>{FD7531E1-BDA2-4EF3-A3E8-074B952317EF}</ProjectGuid>
         <ProjectVersion>20.1</ProjectVersion>
         <TargetedPlatforms>3</TargetedPlatforms>
@@ -132,13 +132,13 @@
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_Define>JVDOCK_DEBUG;DROPWATCH;USE_TOOLBAR_TB2K;$(DCC_Define)</DCC_Define>
         <VerInfo_Build>0</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=8.3.0.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=8.4.0.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>GuiPy_Icon.ico</Icon_MainIcon>
         <DCC_ImportedDataReferences>false</DCC_ImportedDataReferences>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_MajorVer>8</VerInfo_MajorVer>
         <DCC_UnitSearchPath>D:\Sicherung\DelphiPipes\src;D:\GitProjekte\SpTBXLib\Source;D:\GitProjekte\jcl\jcl\source\include;D:\GitProjekte\jvcl\jvcl\run;D:\GitProjekte\jvcl\jvcl\common;D:\GitProjekte\jcl\jcl\source\common;D:\GitProjekte\jcl\jcl\source\windows;D:\GitProjekte\SVGIconImageList\Source;D:\GitProjekte\SVGIconImageList\Image32\source;D:\GitProjekte\MustangPeak\VirtualShellTools\Source;D:\GitProjekte\MustangPeak\CommonLib\Source;D:\GitProjekte\jvcl\jvcl\resources;D:\GitProjekte\delphi-markdown\source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <VerInfo_MinorVer>3</VerInfo_MinorVer>
+        <VerInfo_MinorVer>4</VerInfo_MinorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <DCC_ExeOutput>.\$(Config)\$(Platform)</DCC_ExeOutput>
@@ -147,7 +147,7 @@
         <MapFile>3</MapFile>
         <DCC_DcuOutput>.\$(Config)\$(Platform)\DCUs</DCC_DcuOutput>
         <VerInfo_Build>0</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=8.3.0.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=GuiPy;FileVersion=8.4.0.0;InternalName=;LegalCopyright=(c) Gerhard Röhner;LegalTrademarks=;OriginalFilename=GuiPy.exe;ProductName=GuiPy;ProductVersion=1.0.0;Comments=</VerInfo_Keys>
         <DCC_Define>USE_TOOLBAR_TB2K;$(DCC_Define)</DCC_Define>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -157,7 +157,7 @@
         <VerInfo_MajorVer>8</VerInfo_MajorVer>
         <DCC_UnitSearchPath>D:\GitProjekte\SpTBXLib\Source;D:\GitProjekte\SVGIconImageList\Source;D:\GitProjekte\SVGIconImageList\Image32\source;D:\GitProjekte\jcl\jcl\source\include;D:\GitProjekte\jcl\jcl\source\common;D:\GitProjekte\jcl\jcl\source\windows;D:\GitProjekte\jvcl\jvcl\run;D:\GitProjekte\jvcl\jvcl\common;D:\GitProjekte\SynEdit\Source;D:\GitProjekte\SynEdit\Source\Highlighters;D:\GitProjekte\MustangPeak\CommonLib\Source;D:\GitProjekte\SynWeb;D:\GitProjekte\VirtualTreeView\Source;D:\GitProjekte\MustangPeak\VirtualShellTools\Source;D:\GitProjekte\delphi-detours-library\Source;D:\GitProjekte\jvcl\jvcl\resources;D:\GitProjekte\delphi-markdown\source;D:\GitProjekte\FastMM5;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_DebugDCUs>true</DCC_DebugDCUs>
-        <VerInfo_MinorVer>3</VerInfo_MinorVer>
+        <VerInfo_MinorVer>4</VerInfo_MinorVer>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">

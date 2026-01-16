@@ -3,20 +3,26 @@ inherited OutputWindow: TOutputWindow
   Top = 173
   HelpContext = 450
   Caption = 'Output'
+  ClientHeight = 359
+  ClientWidth = 216
+  ExplicitWidth = 232
+  ExplicitHeight = 398
   TextHeight = 15
   inherited BGPanel: TPanel
+    Width = 216
+    Height = 359
     ExplicitWidth = 83
     ExplicitHeight = 182
     inherited FGPanel: TPanel
-      Width = 79
-      Height = 178
+      Width = 212
+      Height = 355
       ExplicitWidth = 79
       ExplicitHeight = 178
       object lsbConsole: TListBox
         Left = 0
         Top = 0
-        Width = 79
-        Height = 178
+        Width = 212
+        Height = 355
         TabStop = False
         Align = alClient
         BevelInner = bvNone
@@ -32,12 +38,18 @@ inherited OutputWindow: TOutputWindow
         ParentFont = False
         PopupMenu = OutputPopup
         TabOrder = 0
+        ExplicitWidth = 79
+        ExplicitHeight = 178
       end
     end
   end
+  inherited DockClient: TJvDockClient
+    Left = 40
+    Top = 2
+  end
   object OutputPopup: TSpTBXPopupMenu
     Images = vilImages
-    Left = 28
+    Left = 44
     Top = 76
     object RunningProcess: TSpTBXSubmenuItem
       Caption = 'Running Process'
@@ -62,12 +74,11 @@ inherited OutputWindow: TOutputWindow
   object OutputActions: TActionList
     Images = vilImages
     OnUpdate = OutputActionsUpdate
-    Left = 27
-    Top = 130
+    Left = 43
+    Top = 138
     object actCopy: TAction
       Caption = 'Co&py'
       Hint = 'Copy contents to Clipboard'
-      ImageIndex = 0
       ImageName = 'Copy'
       OnExecute = actCopyExecute
     end
@@ -96,8 +107,9 @@ inherited OutputWindow: TOutputWindow
   object vilImages: TVirtualImageList
     Images = <
       item
-        CollectionName = 'Copy'
-        Name = 'Copy'
+        CollectionIndex = 16
+        CollectionName = 'Copy13'
+        Name = 'Copy13'
       end
       item
         CollectionIndex = 21
@@ -110,8 +122,9 @@ inherited OutputWindow: TOutputWindow
         Name = 'Stop'
       end
       item
-        CollectionName = 'Exit'
-        Name = 'Exit'
+        CollectionIndex = 30
+        CollectionName = 'Exit13'
+        Name = 'Exit13'
       end
       item
         CollectionIndex = 86
@@ -127,7 +140,7 @@ inherited OutputWindow: TOutputWindow
     PreserveItems = True
     Width = 20
     Height = 20
-    Left = 24
-    Top = 240
+    Left = 48
+    Top = 208
   end
 end

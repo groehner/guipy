@@ -1461,7 +1461,7 @@ begin
   begin
     AFile := GI_PyIDEServices.GetActiveFile;
     Pathname := ChangeFileExt(Box.GetPathname, '.py');
-    Editor := PyIDEMainForm.DoOpenAsEditor(Pathname);
+    Editor := PyIDEMainForm.DoOpen(Pathname) as TEditor;
     if Assigned(Editor) then
     begin
       if Editor.Modified then
