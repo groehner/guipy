@@ -1546,7 +1546,6 @@ end;
 
 function TEditorFactory.FirstEditorCond(const Predicate
   : TPredicate<IEditor>): IEditor;
-var Editor: IEditor;
 begin
   Result := nil;
   for var AFile in Files do

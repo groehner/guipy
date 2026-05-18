@@ -17,6 +17,7 @@ uses
   //FastMM5,
   WinApi.Windows,
   System.SysUtils,
+  System.IOUtils,
   Vcl.HTMLHelpViewer,
   Vcl.Themes,
   Vcl.Styles,
@@ -202,9 +203,7 @@ uses
 
 {$R *.RES}
 
-{$SetPEFlags IMAGE_FILE_RELOCS_STRIPPED
-  or IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP
-  or IMAGE_FILE_NET_RUN_FROM_SWAP}
+{$SetPEFlags IMAGE_FILE_RELOCS_STRIPPED IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP IMAGE_FILE_NET_RUN_FROM_SWAP}
 
 begin
   ReportMemoryLeaksOnShutdown := DebugHook <> 0;
@@ -216,8 +215,18 @@ begin
 
   Application.MainFormOnTaskbar := True;
 
-  if TStyleManager.TrySetStyle('Windows11 MineShaft') then
-    TFConfiguration.CurrentSkinName := 'Windows11 MineShaft';
+  var Filepath := TPath.Combine(TPath.Combine(TPath.GetPublicPath, 'GuiPy'),
+                    'Styles\Windows11_MineShaft.vsf');
+  if not FileExists(Filepath) then
+    Filepath := TPath.Combine(TPath.GetDirectoryName(Application.ExeName),
+      'Styles\Windows11_MineShaft.vsf');
+
+  if FileExists(Filepath) then begin
+    TStyleManager.LoadFromFile(Filepath);
+    if TStyleManager.TrySetStyle('Windows11 MineShaft') then
+      TFConfiguration.CurrentSkinName := 'Windows11 MineShaft';
+  end;
+
 
   Application.Title := 'GuiPy';
   Application.CreateForm(TResourcesDataModule, ResourcesDataModule);

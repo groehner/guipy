@@ -186,10 +186,10 @@ type
     procedure SetDisplayFormat(const Value: string);
     procedure MakeDateTime(const Value: string);
     procedure MakeDate(const Value: string); virtual;
-    procedure MakeTime(const Value: string); virtual;
   protected
     procedure ShowValue(const Value: string);
     function DateTimeFromDisplayFormat: string; virtual;
+    procedure MakeTime(const Value: string); virtual;
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;
@@ -238,7 +238,7 @@ type
   TQtTimeEdit = class(TQtDateTimeEdit)
   protected
     function DateTimeFromDisplayFormat: string; override;
-    procedure MakeTime(const Value: string); virtual;
+    procedure MakeTime(const Value: string); override;
   public
     constructor Create(Owner: TComponent); override;
     function GetAttributes(ShowAttributes: Integer): string; override;

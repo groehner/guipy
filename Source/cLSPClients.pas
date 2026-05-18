@@ -1,4 +1,4 @@
-{-----------------------------------------------------------------------------
+﻿{-----------------------------------------------------------------------------
  Unit Name: cLSPClients
  Author:    PyScripter
  Date:      24-Sep-2025
@@ -781,6 +781,10 @@ begin
   if not (Ready and FLspClient.IsRequestSupported(lspCompletion)) then
     Exit(False);
 
+  // Cancel old requests that have not yet been processed
+  if TIDECompletion.CompletionInfo.Id <> 0 then
+    FLspClient.SendCancelRequest(TIDECompletion.CompletionInfo.Id);
+
   var Params := TSmartPtr.Make(TLSPCompletionParams.Create)();
   Params.textDocument.uri := FileIdToURI(FileId);
   Params.position := LspPosition(BC);
@@ -806,19 +810,18 @@ end;
 
 procedure TPyLspClient.CompletionHandler(AJson: TJsonObject);
 
-
   function KindToImageIndex(Kind: Integer): Integer;
   begin
     case Kind of
       TLspCompletionItemKind.cConstructor,
-      TLspCompletionItemKind.cMethod:     Result := Integer(TCodeImages.Method);
+      TLspCompletionItemKind.cMethod:    Result := Integer(TCodeImages.Method);
       TLspCompletionItemKind.cFunction:  Result := Integer(TCodeImages.Func);
-      TLspCompletionItemKind.cVariable:   Result := Integer(TCodeImages.Variable);
+      TLspCompletionItemKind.cVariable:  Result := Integer(TCodeImages.Variable);
       TLspCompletionItemKind.cClass:     Result := Integer(TCodeImages.Klass);
-      TLspCompletionItemKind.cModule:     Result := Integer(TCodeImages.Module);
+      TLspCompletionItemKind.cModule:    Result := Integer(TCodeImages.Module);
       TLspCompletionItemKind.cField,
       TLspCompletionItemKind.cProperty:  Result := Integer(TCodeImages.Field);
-      TLspCompletionItemKind.cKeyword:    Result := Integer(TCodeImages.Keyword);
+      TLspCompletionItemKind.cKeyword:   Result := Integer(TCodeImages.Keyword);
     else
       Result := -1;
     end;
@@ -838,12 +841,18 @@ procedure TPyLspClient.CompletionHandler(AJson: TJsonObject);
 
 var
   InsertText, DisplayText: string;
+  Id: Integer;
 begin
-  if ResponseError(AJson) then Exit;
   var JsonResult := AJson.Values['result'];
-  if JsonResult.Null then Exit;
+  Id := AJson.GetValue<Integer>('id', -1);
 
-  var Id := AJson.GetValue<Integer>('id', -1);
+  // Regardless of the reason for exiting, the ID must be cleared to prevent state leakage.
+  if ResponseError(AJson) or JsonResult.Null then
+  begin
+    if Id = TIDECompletion.CompletionInfo.Id then
+      TIDECompletion.CompletionInfo.CleanUp; // ← New
+    Exit;
+  end;
 
   var CompletionList :=
     TSmartPtr.Make(JsonCompletionResultToObject(JsonResult))();
@@ -875,6 +884,12 @@ begin
     begin
       CommandsDataModule.SynCodeCompletion.ActivateCompletion;
     end)
+  end
+  else
+  begin
+    // ← Added: Empty lists also need to be cleaned up.
+    if Id = TIDECompletion.CompletionInfo.Id then
+      TIDECompletion.CompletionInfo.CleanUp;
   end;
 end;
 

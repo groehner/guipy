@@ -948,12 +948,23 @@ begin
   end;
 end;
 
+function DontStartWithDigit(const Str: string): string;
+begin
+  if Str = '' then
+    Result := '_'
+  else if CharInSet(Str[1], ['0'..'9']) then
+    Result := '_' + Str
+  else
+    Result := Str;
+end;
+
 function GetUniqueName(Control: TControl; Basename: string): string;
 var
   Int: Integer;
   Str: string;
 begin
   Basename := OnlyCharsAndDigits(changeVowels(Basename));
+  Basename := DontStartWithDigit(Basename);
   if Control.FindComponent(Basename) = nil then
   begin
     Result := Basename;

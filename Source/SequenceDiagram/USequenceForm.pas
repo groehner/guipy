@@ -155,7 +155,7 @@ type
     function GetMinLifelineLeft: Integer;
   protected
     procedure SetModified(Value: Boolean); override;
-    function LoadFromFile(const FileName: string): Boolean; override;
+    function LoadFromFile(const FileName: string): boolean; override;
     procedure SetFont(AFont: TFont); override;
     function CanCopy: Boolean; override;
     procedure CopyToClipboard; override;
@@ -261,12 +261,11 @@ begin
   AAction := caFree;
 end;
 
-function TFSequenceForm.LoadFromFile(const FileName: string): Boolean;
+function TFSequenceForm.LoadFromFile(const FileName: string): boolean;
 var
   Ini: TMemIniFile;
   StringList: TStringList;
 begin
-  Result := False;
   FSequencePanel.IsLocked := True;
   StringList := TStringList.Create;
   Ini := TMemIniFile.Create(FileName, TEncoding.UTF8);
@@ -282,12 +281,12 @@ begin
     Font.Name := Ini.ReadString('Diagram', 'FontName', 'Segoe UI');
     Font.Size := PPIScale(Ini.ReadInteger('Diagram', 'FontSize', 12));
     SetFont(Font);
-    Result := True;
   finally
     FreeAndNil(StringList);
     FreeAndNil(Ini);
     FSequencePanel.IsLocked := False;
   end;
+  Result:= True;
 end;
 
 function TFSequenceForm.GetAsStringList: TStringList;
