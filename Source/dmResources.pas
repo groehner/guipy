@@ -234,7 +234,8 @@ begin
           then Exit(False)
           else begin
             var s:= ChangeFileExt(FileName, '.puml');
-            if FileExists(s) then DeleteFile(s);
+            if FileExists(s) then
+              DeleteFile(s);
           end;
       ANewName := FileName;
       GuiPyOptions.Sourcepath:= ExtractFilePath(aNewName);

@@ -1653,7 +1653,7 @@ begin
   AFile := GI_PyIDEServices.GetActiveFile;
   if Assigned(AFile) and (AFile.FileKind = fkUML) then
   begin
-    UMLForm := TFUMLForm(AFile.Form);
+    UMLForm := AFile.Form as TFUMLForm;
     UMLForm.MainModul.UnSelectAllElements;
     UMLForm.MainModul.AddToProject(FileName);
     UMLForm.Modified := True;
@@ -1668,7 +1668,7 @@ begin
     AFilename := ChangeFileExt(FileName, '.puml');
     if FileExists(AFilename) then
     begin
-      UMLForm := TFUMLForm(DoOpen(AFilename).Form);
+      UMLForm := DoOpen(AFilename).Form as TFUMLForm;
       UMLForm.MainModul.AddToProject(FileName);
     end
     else
@@ -1693,7 +1693,7 @@ begin
     AFile := GI_FileFactory.NewFile(fkUML, FActiveTabControlIndex);
     if Assigned(AFile) then
     begin
-      Result := TFUMLForm(AFile.Form);
+      Result := AFile.Form as TFUMLForm;
       Result.Pathname := FileName;
       Result.DoUpdateCaption;
       AFile.Activate;
@@ -2458,7 +2458,7 @@ var
 begin
   AFile := GI_PyIDEServices.GetActiveFile;
   if Assigned(AFile) and (AFile.FileKind = fkUML) then
-    TFUMLForm(AFile.Form).TBCommentClick(Self);
+    (AFile.Form as TFUMLForm).TBCommentClick(Self);
 end;
 
 procedure TPyIDEMainForm.actUMLNewLayoutExecute(Sender: TObject);
@@ -2467,7 +2467,7 @@ var
 begin
   AFile := GI_PyIDEServices.GetActiveFile;
   if Assigned(AFile) and (AFile.FileKind = fkUML) then
-    TFUMLForm(AFile.Form).MainModul.DoLayout;
+    (AFile.Form as TFUMLForm).MainModul.DoLayout;
 end;
 
 procedure TPyIDEMainForm.actUMLRefreshExecute(Sender: TObject);
@@ -2476,7 +2476,7 @@ var
 begin
   AFile := GI_PyIDEServices.GetActiveFile;
   if Assigned(AFile) and (AFile.FileKind = fkUML) then
-    TFUMLForm(AFile.Form).TBRefreshClick(Self);
+    (AFile.Form as TFUMLForm).TBRefreshClick(Self);
 end;
 
 procedure TPyIDEMainForm.actUMLSaveAsPictureExecute(Sender: TObject);
@@ -2484,7 +2484,7 @@ begin
   var
   AFile := GI_PyIDEServices.GetActiveFile;
   if Assigned(AFile) and (AFile.FileKind = fkUML) then
-    TFUMLForm(AFile.Form).MainModul.SaveDiagramActionExecute(Self);
+    (AFile.Form as TFUMLForm).MainModul.SaveDiagramActionExecute(Self);
 end;
 
 procedure TPyIDEMainForm.actUMLDiagramFromOpenFilesExecute(Sender: TObject);
@@ -2543,7 +2543,7 @@ begin
   var
   AFile := GI_PyIDEServices.GetActiveFile;
   if Assigned(AFile) and (AFile.FileKind = fkUML) then
-    TFUMLForm(AFile.Form).ClassEdit
+    (AFile.Form as TFUMLForm).ClassEdit
   else
   begin
     var
@@ -2564,8 +2564,8 @@ begin
   AFile := GI_PyIDEServices.GetActiveFile;
   if Assigned(AFile) and (AFile.FileKind = fkUML) then
   begin
-    TFUMLForm(AFile.Form).MainModul.UnSelectAllElements;
-    TFUMLForm(AFile.Form).TBClassDefinitionClick(Self);
+    (AFile.Form as TFUMLForm).MainModul.UnSelectAllElements;
+    (AFile.Form as TFUMLForm).TBClassDefinitionClick(Self);
   end
   else
   begin
@@ -2581,8 +2581,8 @@ begin
       end;
       Editor := NewFileFromTemplate(FileTemplate,
         TabControlIndex(ActiveTabControl), NewName);
-      UML := TFUMLForm(GI_EditorFactory.OpenFile(ChangeFileExt(NewName,
-        '.puml')).Form);
+      AFile := GI_EditorFactory.OpenFile(ChangeFileExt(NewName, '.puml'));
+      UML := (AFile.Form as TFUMLForm);
       PrepareClassEdit(Editor, 'New', UML);
     end;
   end;
@@ -4027,7 +4027,7 @@ begin
   if Assigned(AFile) then
   begin
     if AFile.FileKind = fkUML then
-      TFUMLForm(AFile.Form).Enter(Self)
+      (AFile.Form as TFUMLForm).Enter(Self)
     else if AFile.FileKind = fkEditor then
       (AFile.Form as TEditorForm).Enter(Self);
   end;
@@ -5830,7 +5830,7 @@ begin
   var
   AFile := GI_PyIDEServices.GetActiveFile;
   if Assigned(AFile) and (AFile.FileKind = fkUML) then
-    TFUMLForm(AFile.Form).TBRecognizeAssociationsClick(Self);
+    (AFile.Form as TFUMLForm).TBRecognizeAssociationsClick(Self);
 end;
 
 procedure TPyIDEMainForm.actRemoteFileOpenExecute(Sender: TObject);

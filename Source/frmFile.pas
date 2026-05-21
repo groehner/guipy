@@ -138,6 +138,7 @@ type
       ChangeType: TFileChangeType);
 
     class constructor Create;
+    destructor Destroy; override;
     class destructor Destroy;
     class var UntitledNumbers: TBits;
     class var FChangedFiles: TArray<string>;
@@ -1046,6 +1047,13 @@ class constructor TFile.Create;
 begin
   UntitledNumbers := TBits.Create;
   UntitledNumbers[0] := True;  // do not use 0
+end;
+
+destructor TFile.Destroy;
+begin
+  // Unregister existing File Notification
+  if FileName <> '' then
+    GI_FileSystemMonitor.RemoveFile(FileName, FileChanged);
 end;
 
 class destructor TFile.Destroy;

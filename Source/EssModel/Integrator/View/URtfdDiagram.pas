@@ -1467,7 +1467,7 @@ begin
       if Editor.Modified then
         (Editor.Form as TFileForm).DoSave;
       if Assigned(AFile) and (AFile.FileKind = fkUML) then
-        PyIDEMainForm.PrepareClassEdit(Editor, 'Edit', TFUMLForm(AFile.Form));
+        PyIDEMainForm.PrepareClassEdit(Editor, 'Edit', AFile.Form as TFUMLForm);
     end;
     AFile.Activate;
   end;

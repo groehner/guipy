@@ -1153,7 +1153,7 @@ end;
 
 procedure TFStructogram.Save;
   var FileName, APathname, Filepath: string;
-      FStructogram: TFileForm; AFile: IFile;
+      FStructogram: TFStructogram; AFile: IFile;
 begin
   CloseEdit;
   try
@@ -1178,9 +1178,9 @@ begin
 
       AFile:= GI_FileFactory.GetFileByNameAndType(APathname, fkStructogram);
       if Assigned(AFile) then begin
-        FStructogram:= TFStructogram(AFile.Form);
-        (FStructogram as TFStructogram).MakeVeryHard;
-        (FStructogram as TFStructogram).Save;
+        FStructogram:= (AFile.Form as TFStructogram);
+        FStructogram.MakeVeryHard;
+        FStructogram.Save;
       end;
 
       FPuzzleMode:= 1;

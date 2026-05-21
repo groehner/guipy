@@ -550,7 +550,6 @@ type
     procedure ExecReload(Quiet: Boolean = False); override;
   public
     constructor Create(AForm: TFileForm); reintroduce;
-    destructor Destroy; override;
 
     // Diagnostics
     procedure ClearDiagnostics;
@@ -778,14 +777,6 @@ class constructor TEditor.Create;
 begin
   UntitledNumbers := TBits.Create;
   UntitledNumbers[0] := True;  // do not use 0
-end;
-
-destructor TEditor.Destroy;
-begin
-  // Unregister existing File Notification
-  if FileName <> '' then
-    GI_FileSystemMonitor.RemoveFile(FileName, FileChanged);
-  inherited;
 end;
 
 procedure TEditor.DoSetFilename(const FileName: string);

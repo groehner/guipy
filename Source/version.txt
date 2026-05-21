@@ -1,8 +1,11 @@
+8.ß6, 2026.05.21
+bugfix opening uml windows
+
 8.05, 2026.05.18
 bugfix code completion
 
 8.04, 2026.01.16
-nonce more: bugfix calling class editor from uml window
+once more: bugfix calling class editor from uml window
 
 8.03, 2025.12.28
 bugfix calling class editor from uml window
