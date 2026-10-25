@@ -906,7 +906,7 @@ begin
       Ini.WriteInteger(Section, 'ShowIcons', ShowIcons);
       Ini.WriteInteger(Section, 'ShowConnections', ShowConnections);
       Ini.WriteString(Section, 'Fontname', Font.Name);
-      Ini.WriteInteger(Section, 'Fontsize', PPIUnScale(Font.Size));
+      Ini.WriteInteger(Section, 'Fontsize', Font.Size);
       Ini.WriteBool(Section, 'ShowObjectDiagram', ShowObjectDiagram);
 
       // Connections
@@ -999,7 +999,7 @@ begin
     ShowIcons := Ini.ReadInteger(Section, 'ShowIcons', ShowIcons);
     ShowObjectDiagram := Ini.ReadBool(Section, 'ShowObjectDiagram', False);
     Font.Name := Ini.ReadString(Section, 'Fontname', 'Segoe UI');
-    Font.Size := PPIScale(Ini.ReadInteger(Section, 'Fontsize', 11));
+    Font.Size := Ini.ReadInteger(Section, 'Fontsize', 11);
     SetFont(Font);
 
     // read files

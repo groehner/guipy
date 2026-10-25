@@ -2329,6 +2329,7 @@ procedure TFClassEditor.ComboBoxCloseUp(Sender: TObject);
 begin
   FComboBoxInvalid := False;
   (Sender as TComboBox).AutoComplete := True;
+  ActionApplyExecute(Sender);
 end;
 
 procedure TFClassEditor.CBComboBoxEnter(Sender: TObject);

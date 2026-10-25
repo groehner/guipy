@@ -1,3 +1,12 @@
+8.09, 2026.10.25
+new Delphi 13 CE compiler
+support for Python 3.15
+scaling of font sizes removed
+improved translations for tools
+
+8.08, 2026.09.10
+reactivating wine support
+
 8.07, 2026.07.22
 bugfix for inherited constructors
 improvement for abstract classes

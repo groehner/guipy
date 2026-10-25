@@ -370,7 +370,6 @@ procedure TFObjectInspector.FormShow(Sender: TObject);
 begin
   SetButtonCaption(1);
   Font.Assign(GuiPyOptions.InspectorFont);
-  Font.Size := PPIScale(Font.Size);
   SetFont(Font);
   TCAttributesEvents.Height := Canvas.TextHeight('Attribute') + 10;
   CBObjects.Height := TCAttributesEvents.Height;
@@ -412,7 +411,6 @@ begin
   Canvas.Font.Size := AFont.Size;
   TCAttributesEvents.Height := Canvas.TextHeight('Attribute') + 10;
   CBObjects.Height := TCAttributesEvents.Height;
-  AFont.Size := PPIUnScale(AFont.Size);
   GuiPyOptions.InspectorFont.Assign(AFont);
 end;
 

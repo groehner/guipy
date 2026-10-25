@@ -371,7 +371,7 @@ begin
         if Reader.Key = 'FontName' then
           Font.Name:= Reader.Val
         else if Reader.Key = 'FontSize' then
-          Font.Size:= PPIScale(StrToInt(Reader.Val))
+          Font.Size:= StrToInt(Reader.Val)
         else if Reader.Key = 'FontColor' then
           Font.Color:= StrToInt(Reader.Val)
         else if Reader.Key = 'FontBold' then
@@ -422,7 +422,7 @@ begin
   if Font.Name = 'Arial' then
     Font.Name:= 'Segoe UI';
   Result.Add('FontName: ' + Font.Name);
-  Result.Add('FontSize: ' + IntToStr(PPIUnScale(Font.Size)));
+  Result.Add('FontSize: ' + IntToStr(Font.Size));
   if fsBold in Font.Style then
     Result.Add('FontBold: true');
   if fsItalic in Font.Style then

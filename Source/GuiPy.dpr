@@ -199,17 +199,34 @@ uses
   ULifeline in 'SequenceDiagram\ULifeline.pas',
   dlgExceptionMail in 'dlgExceptionMail.pas' {ExceptionDialogMail},
   cLSPClients in 'cLSPClients.pas',
-  uPythonItfs in 'uPythonItfs.pas';
+  uPythonItfs in 'uPythonItfs.pas',
+  SVGInterfaces,
+  D2DSVGFactory,
+  Image32SVGFactory;
 
 {$R *.RES}
 
 {$SetPEFlags IMAGE_FILE_RELOCS_STRIPPED IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP IMAGE_FILE_NET_RUN_FROM_SWAP}
+
+procedure InitSVGEngine;
+var Svg: ISVG;
+begin
+  try
+    SetGlobalSVGFactory(GetD2DSVGFactory);   // Standard: nativ Direct2D
+    Svg := GlobalSVGFactory.NewSvg;
+    Svg.Source := '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>';
+    // kein Fehler -> Direct2D funktioniert (echtes Windows)
+  except
+    SetGlobalSVGFactory(GetImage32SVGFactory); // Fallback: Wine / altes Windows
+  end;
+end;
 
 begin
   ReportMemoryLeaksOnShutdown := DebugHook <> 0;
 
   TStyleManager.SystemHooks := TStyleManager.SystemHooks - [shMenus, shDialogs];
 
+  InitSVGEngine;
   Application.Initialize;
   SetDefaultUIFont(Application.DefaultFont);
 

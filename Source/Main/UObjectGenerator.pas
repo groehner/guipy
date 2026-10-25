@@ -290,7 +290,6 @@ begin
   AppStorage.ReadPersistent(BasePath + '\Font', Font);
   if Font.Size > 30 then
     Font.Size := 30;
-  Font.Size := PPIScale(Font.Size);
 end;
 
 procedure TFObjectGenerator.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
@@ -302,11 +301,7 @@ begin
   AppStorage.WriteInteger(BasePath + '\Height', PPIUnScale(Height));
   AppStorage.WriteInteger(BasePath + '\ValueListEditor.ColWidth',
     PPIUnScale(ValueListEditor.ColWidths[0]));
-  var
-  Str := Font.Size;
-  Font.Size := PPIUnScale(Font.Size);
   AppStorage.WritePersistent(BasePath + '\Font', Font);
-  Font.Size := Str;
 end;
 
 procedure TFObjectGenerator.MIFontClick(Sender: TObject);

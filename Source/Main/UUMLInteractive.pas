@@ -155,17 +155,13 @@ end;
 procedure TFUMLInteractive.WriteToAppStorage(AppStorage: TJvCustomAppStorage;
   const BasePath: string);
 begin
-  var CurrentSize:= SynEdit.Font.Size;
-  SynEdit.Font.Size:= PPIUnScale(SynEdit.Font.Size);
   AppStorage.WritePersistent(BasePath+'\Font', SynEdit.Font);
-  SynEdit.Font.Size:= CurrentSize;
 end;
 
 procedure TFUMLInteractive.ReadFromAppStorage(
   AppStorage: TJvCustomAppStorage; const BasePath: string);
 begin
   AppStorage.ReadPersistent(BasePath + '\Font', SynEdit.Font);
-  SynEdit.Font.Size:= PPIScale(SynEdit.Font.Size);
 end;
 
 procedure TFUMLInteractive.SynEditChange(Sender: TObject);

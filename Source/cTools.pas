@@ -359,8 +359,13 @@ initialization
   ToolsCollection := TCollection.Create(TToolItem);
   // Add a few standard tools to the collection
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
+    // to include it in the pot translation file
     Caption := _('Python &Interpreter');
+    // must be in english for translating in CreateExtToolAction
+    Caption := 'Python &Interpreter';
+
     Description := _('External Python Interpreter');
+    Description := 'External Python Interpreter';
     ApplicationName := '$[PythonExe]';
     WorkingDirectory := '$[ActiveDoc-Dir]';
     SaveFiles := sfAll;
@@ -371,7 +376,9 @@ initialization
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
     Caption := _('Install Packages with pip');
+    Caption := 'Install Packages with pip';
     Description := _('Install Python packages');
+    Description := 'Install Python packages';
     ApplicationName := '$[PythonExe]';
     Parameters := '-m pip install -U $[Package?Package Name]';
     ParseMessages := False;
@@ -381,7 +388,9 @@ initialization
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
     Caption := _('Create Virtual Environment');
+    Caption := 'Create Virtual Environment';
     Description := _('Create virtual environment using the venv module');
+    Description := 'Create virtual environment using the venv module';
     ApplicationName := '$[PythonExe]';
     Parameters := '-m venv $[''Select venv folder''-SelectDir]';
     ParseMessages := False;
@@ -391,7 +400,9 @@ initialization
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
     Caption := _('Python&Win help');
+    Caption := 'Python&Win help';
     Description := _('Show PythonWin Help');
+    Description := 'Show PythonWin Help';
     ApplicationName := '$[PythonExe-Path-Short]Lib\site-packages\PyWin32.chm';
     ParseMessages := False;
     CaptureOutput := False;
@@ -400,7 +411,9 @@ initialization
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
     Caption := _('Check &Indentation');
+    Caption := 'Check &Indentation';
     Description := _('Check the indentation of the Python program');
+    Description := 'Check the indentation of the Python program';
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '-m tabnanny "$[ActiveDoc]"';
     WorkingDirectory := '$[ActiveDoc-Dir]';
@@ -416,7 +429,9 @@ initialization
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
     Caption := _('Command Prompt');
+    Caption := 'Command Prompt';
     Description := _('Start a console at the directory of the active file');
+    Description := 'Start a console at the directory of the active file';
     ApplicationName := '%COMSPEC%';
     WorkingDirectory := '$[ActiveDoc-Dir]';
     SaveFiles := sfAll;
@@ -427,7 +442,9 @@ initialization
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
     Caption := _('Profile');
+    Caption := 'Profile';
     Description := _('Profile active file');
+    Description := 'Profile active file';
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '-m profile "$[ActiveDoc]" $[CmdLineArgs]';
     WorkingDirectory := '$[ActiveDoc-Dir]';
@@ -441,6 +458,7 @@ initialization
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
     Caption := 'Py&lint';
     Description := _('PyLint tool (www.pylint.org)');
+    Description := 'PyLint tool (www.pylint.org)';
     ApplicationName :=  '$[PythonDir-Short]Scripts\pylint.exe';
     Parameters := '-f parseable "$[ActiveDoc]"';
     ShortCut := Vcl.Menus.ShortCut(Ord('L'), [ssShift, ssCtrl]);
@@ -455,7 +473,9 @@ initialization
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
     Caption := _('Advanced Replace');
+    Caption := 'Advanced Replace';
     Description := _('Advanced Search and replace');
+    Description := 'Advanced Search and replace';
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '-c "import sys, re;l=sys.stdin.read();sys.stdout.write(re.sub(''$[st?Search Text:]'', ''$[rt?Replace Text:]'', l))"';
     Context := tcSelectionAvailable;
@@ -470,7 +490,9 @@ initialization
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
     Caption := _('Sort Selection');
+    Caption := 'Sort Selection';
     Description := _('Sort the selected editor block ("one-liner" demo)');
+    Description := 'Sort the selected editor block ("one-liner" demo)';
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '-c "import sys;l=sys.stdin.readlines();l.sort();sys.stdout.writelines(l)"';
     ShortCut := Vcl.Menus.ShortCut(Ord('S'), [ssShift, ssCtrl]);
@@ -486,7 +508,9 @@ initialization
 
   with (ToolsCollection.Add as TToolItem).ExternalTool do begin
     Caption := _('&Re-indent');
+    Caption := '&Re-indent';
     Description := _('Re-indent the active file');
+    Description := 'Re-indent the active file';
     ApplicationName := '$[PythonExe-Short]';
     Parameters := '$[PythonDir-Short]Tools\Scripts\reindent.py';
     Context := tcActivePythonFile;
@@ -502,7 +526,9 @@ initialization
   ExternalPython := TExternalRun.Create;
   with ExternalPython do begin
     Caption := _('Python Interpreter');
+    Caption := 'Python Interpreter';
     Description := _('External Python Interpreter');
+    Description := 'External Python Interpreter';
     ApplicationName := '$[PythonExe]';
     Parameters := '"$[ActiveDoc]" $[CmdLineArgs]';
     WorkingDirectory := '$[ActiveDoc-Dir]';

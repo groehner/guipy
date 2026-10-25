@@ -31,7 +31,7 @@ object PyIDEMainForm: TPyIDEMainForm
     end
     object SpTBXRightAlignSpacerItem1: TSpTBXRightAlignSpacerItem
       Wrapping = twNone
-      CustomWidth = 0
+      CustomWidth = 385
     end
     object SpTBXSeparatorItem22: TSpTBXSeparatorItem
     end
@@ -114,7 +114,7 @@ object PyIDEMainForm: TPyIDEMainForm
       OnClick = spiExternalToolsLEDClick
     end
     object ActivityIndicator: TActivityIndicator
-      Left = 1027
+      Left = 1039
       Top = 6
       FrameDelay = 150
       IndicatorSize = aisSmall
@@ -130,8 +130,6 @@ object PyIDEMainForm: TPyIDEMainForm
     BevelOuter = bvNone
     FullRepaint = False
     TabOrder = 2
-    ExplicitWidth = 606
-    ExplicitHeight = 309
     object TabControl1: TSpTBXTabControl
       Left = 0
       Top = 0
@@ -275,7 +273,6 @@ object PyIDEMainForm: TPyIDEMainForm
       Height = 113
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 624
       object DebugToolbar: TSpTBXToolbar
         Left = 2
         Top = 52

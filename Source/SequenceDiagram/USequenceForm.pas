@@ -279,7 +279,7 @@ begin
     for var I := 0 to StringList.Count - 1 do
       AddConnection(StringList[I]);
     Font.Name := Ini.ReadString('Diagram', 'FontName', 'Segoe UI');
-    Font.Size := PPIScale(Ini.ReadInteger('Diagram', 'FontSize', 12));
+    Font.Size := Ini.ReadInteger('Diagram', 'FontSize', 12);
     SetFont(Font);
   finally
     FreeAndNil(StringList);
@@ -331,7 +331,7 @@ begin
   else
     StringList.Add('Top=' + IntToStr(PPIUnScale(TLifeline(FLifelines[0]).Top)));
   StringList.Add('FontName=' + Font.Name);
-  StringList.Add('FontSize=' + IntToStr(PPIUnScale(Font.Size)));
+  StringList.Add('FontSize=' + IntToStr(Font.Size));
   Result := StringList;
 end;
 

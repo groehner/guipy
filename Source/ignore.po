@@ -135,11 +135,11 @@ msgstr ""
 
 #  Doesn't have any letters
 #. ResourcesDataModule..SynWebCssSyn..Brackets
-#: dmResources.dfm:5934
+#: dmResources.dfm:5939
 #. ResourcesDataModule..SynWebXmlSyn..Brackets
-#: dmResources.dfm:5941
+#: dmResources.dfm:5946
 #. ResourcesDataModule..SynWebHtmlSyn..Brackets
-#: dmResources.dfm:5952
+#: dmResources.dfm:5957
 msgid "()[]{}<>"
 msgstr ""
 
@@ -161,7 +161,7 @@ msgid "*"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..LAssociationsExample..Caption
-#: Utils/UConfiguration.dfm:5705
+#: Utils/UConfiguration.dfm:5716
 msgid "*.pywd;*.pas"
 msgstr ""
 
@@ -189,70 +189,70 @@ msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationCss..Caption
-#: Utils/UConfiguration.dfm:5775
+#: Utils/UConfiguration.dfm:5786
 msgid ".css"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationHtml..Caption
-#: Utils/UConfiguration.dfm:5735
+#: Utils/UConfiguration.dfm:5746
 msgid ".html"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationInc..Caption
-#: Utils/UConfiguration.dfm:5792
+#: Utils/UConfiguration.dfm:5803
 msgid ".inc"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationJsp..Caption
-#: Utils/UConfiguration.dfm:5759
+#: Utils/UConfiguration.dfm:5770
 msgid ".jsp"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationPfm..Caption
-#: Utils/UConfiguration.dfm:5727
+#: Utils/UConfiguration.dfm:5738
 msgid ".pfm"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationPhp..Caption
-#: Utils/UConfiguration.dfm:5767
+#: Utils/UConfiguration.dfm:5778
 msgid ".php"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationPsd..Caption
-#: Utils/UConfiguration.dfm:5833
+#: Utils/UConfiguration.dfm:5844
 msgid ".psd"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationPsg..Caption
-#: Utils/UConfiguration.dfm:5825
+#: Utils/UConfiguration.dfm:5836
 msgid ".psg"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationPuml..Caption
-#: Utils/UConfiguration.dfm:5743
+#: Utils/UConfiguration.dfm:5754
 msgid ".puml"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationPython..Caption
-#: Utils/UConfiguration.dfm:5719
+#: Utils/UConfiguration.dfm:5730
 msgid ".py"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationPyw..Caption
-#: Utils/UConfiguration.dfm:5841
+#: Utils/UConfiguration.dfm:5852
 msgid ".pyw"
 msgstr ""
 
 #  Looks like a file extension or file mask
 #. FConfiguration..PMain..PanelRight..PageList..PAssociations..CBAssociationTxt..Caption
-#: Utils/UConfiguration.dfm:5751
+#: Utils/UConfiguration.dfm:5762
 msgid ".txt"
 msgstr ""
 
@@ -505,9 +505,9 @@ msgstr ""
 
 #  Doesn't have any letters
 #. FConfiguration..PMain..PanelRight..PageList..PLLMAssistant..ELLMTemperature..Text
-#: Utils/UConfiguration.dfm:5972
+#: Utils/UConfiguration.dfm:5983
 #. FConfiguration..PMain..PanelRight..PageList..PLLMChat..EChatTemperature..Text
-#: Utils/UConfiguration.dfm:6102
+#: Utils/UConfiguration.dfm:6113
 msgid "1.0"
 msgstr ""
 
@@ -560,7 +560,7 @@ msgstr ""
 #. CommandsDataModule..actlMain..actEditAnsi..Caption
 #: dmCommands.dfm:684
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileEncoding....Items.Strings
-#: Utils/UConfiguration.dfm:922
+#: Utils/UConfiguration.dfm:925
 msgid "ANSI"
 msgstr ""
 
@@ -581,7 +581,7 @@ msgstr ""
 #. FStructogram..StructoPopupMenu..MIDatatype..MIBoolean..Caption
 #: Structogram/UStructogram.dfm:258
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBDataType....Items.Strings
-#: Utils/UConfiguration.dfm:2847
+#: Utils/UConfiguration.dfm:2856
 msgid "bool"
 msgstr ""
 
@@ -634,7 +634,7 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
 #: dlgSynPageSetup.dfm:1648
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
-#: Utils/UConfiguration.dfm:5144
+#: Utils/UConfiguration.dfm:5154
 msgid "cm"
 msgstr ""
 
@@ -642,13 +642,13 @@ msgstr ""
 #. ExceptionDialogMail..DetailsMemo..Font.Name
 #: dlgExceptionMail.dfm:41
 #. EditorOptionsDialog..Panel1..TabControl..Display..gbEditorFont..Panel3..labFont..Font.Name
-#: dlgSynEditOptions.dfm:474
+#: dlgSynEditOptions.dfm:472
 #. OutputWindow..BGPanel..FGPanel..lsbConsole..Font.Name
-#: frmCommandOutput.dfm:28
+#: frmCommandOutput.dfm:34
 #. ELStringsEditorDlg..memMain..Font.Name
 #: Formdesigner/ELStringsEdit.dfm:58
 #. FConfiguration..PMain..PanelRight..PageList..PDisplay..gbEditorFont..Panel3..labFont..Font.Name
-#: Utils/UConfiguration.dfm:761
+#: Utils/UConfiguration.dfm:764
 msgid "Consolas"
 msgstr ""
 
@@ -667,19 +667,10 @@ msgstr ""
 msgid "Courier New 10pt"
 msgstr ""
 
-#: cTools.pas:383
-msgid "Create Virtual Environment"
-msgstr ""
-
-#: cTools.pas:384
-msgid "Create virtual environment using the venv "
-"module"
-msgstr ""
-
 #. Programmer's name for it: SYNS_LangCython
-#: SynHighlighterPython.pas:1558
+#: SynHighlighterPython.pas:1567
 #. Programmer's name for it: SYNS_FriendlyLangCython
-#: SynHighlighterPython.pas:1559
+#: SynHighlighterPython.pas:1568
 msgid "Cython"
 msgstr ""
 
@@ -729,7 +720,7 @@ msgid "Display  : %dx%d pixels, %d bpp"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileLineBreaks....Items.Strings
-#: Utils/UConfiguration.dfm:936
+#: Utils/UConfiguration.dfm:939
 msgid "DOS"
 msgstr ""
 
@@ -873,14 +864,14 @@ msgstr ""
 #. FStructogram..StructoPopupMenu..MIDatatype..MIFloat..Caption
 #: Structogram/UStructogram.dfm:262
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBDataType....Items.Strings
-#: Utils/UConfiguration.dfm:2848
+#: Utils/UConfiguration.dfm:2857
 msgid "float"
 msgstr ""
 
 #. FStructogram..PanelLeft..StructogramToolbar..TBFor..Hint
 #: Structogram/UStructogram.dfm:129
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LFor..Caption
-#: Utils/UConfiguration.dfm:2715
+#: Utils/UConfiguration.dfm:2724
 msgid "for"
 msgstr ""
 
@@ -896,9 +887,9 @@ msgid "Free-Threaded"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PLLMAssistant..CBProvider....Items.Strings
-#: Utils/UConfiguration.dfm:5915
+#: Utils/UConfiguration.dfm:5926
 #. FConfiguration..PMain..PanelRight..PageList..PLLMChat..CBChatProvider....Items.Strings
-#: Utils/UConfiguration.dfm:6045
+#: Utils/UConfiguration.dfm:6056
 msgid "Gemini"
 msgstr ""
 
@@ -918,14 +909,14 @@ msgstr ""
 #. PyIDEMainForm..actlStandard..actToolsGit..Caption
 #: frmPyIDEMain.dfm:3404
 #. FConfiguration..PMain..PanelRight..PageList..PGit..Caption
-#: Utils/UConfiguration.dfm:6282
+#: Utils/UConfiguration.dfm:6293
 msgid "Git"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PLLMAssistant..CBProvider....Items.Strings
-#: Utils/UConfiguration.dfm:5918
+#: Utils/UConfiguration.dfm:5929
 #. FConfiguration..PMain..PanelRight..PageList..PLLMChat..CBChatProvider....Items.Strings
-#: Utils/UConfiguration.dfm:6048
+#: Utils/UConfiguration.dfm:6059
 msgid "Grok"
 msgstr ""
 
@@ -964,7 +955,7 @@ msgid "IDE Dock Window"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LIf..Caption
-#: Utils/UConfiguration.dfm:2778
+#: Utils/UConfiguration.dfm:2787
 msgid "if"
 msgstr ""
 
@@ -981,7 +972,7 @@ msgstr ""
 #. FStructogram..StructoPopupMenu..MIDatatype..MIInt..Caption
 #: Structogram/UStructogram.dfm:266
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBDataType....Items.Strings
-#: Utils/UConfiguration.dfm:2849
+#: Utils/UConfiguration.dfm:2858
 msgid "int"
 msgstr ""
 
@@ -1022,7 +1013,7 @@ msgstr ""
 #. frmCustomKeyboard..Panel1..lblAssignedTo..Caption
 #: dlgCustomShortcuts.dfm:79
 #. FConfiguration..PMain..PanelRight..PageList..PIDEShortcuts..lblAssignedTo..Caption
-#: Utils/UConfiguration.dfm:3456
+#: Utils/UConfiguration.dfm:3465
 msgid "lblAssignedTo"
 msgstr ""
 
@@ -1057,7 +1048,7 @@ msgstr ""
 #. FStructogram..StructoPopupMenu..MIDatatype..MILong..Caption
 #: Structogram/UStructogram.dfm:270
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBDataType....Items.Strings
-#: Utils/UConfiguration.dfm:2850
+#: Utils/UConfiguration.dfm:2859
 msgid "long"
 msgstr ""
 
@@ -1076,7 +1067,7 @@ msgstr ""
 #. PageSetupDlg..TabControl..tbMargins..CBUnits....Items.Strings
 #: dlgSynPageSetup.dfm:1647
 #. FConfiguration..PMain..PanelRight..PageList..PPrinter..CBUnits....Items.Strings
-#: Utils/UConfiguration.dfm:5143
+#: Utils/UConfiguration.dfm:5153
 msgid "mm"
 msgstr ""
 
@@ -1093,9 +1084,9 @@ msgstr ""
 #. FConfiguration..PMain..PanelRight..PTitle..LTitle..Font.Name
 #: Utils/UConfiguration.dfm:195
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LGitFolder..Font.Name
-#: Utils/UConfiguration.dfm:6292
+#: Utils/UConfiguration.dfm:6303
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..LSVN..Font.Name
-#: Utils/UConfiguration.dfm:6408
+#: Utils/UConfiguration.dfm:6419
 msgid "MS Sans Serif"
 msgstr ""
 
@@ -1120,7 +1111,7 @@ msgstr ""
 #. RunConfigurationForm..Panel1..gbRemoteEngine..cbEngineType..Font.Name
 #: dlgRunConfiguration.dfm:354
 #. EditorOptionsDialog..FontDialog..Font.Name
-#: dlgSynEditOptions.dfm:1316
+#: dlgSynEditOptions.dfm:1312
 #. PageSetupDlg..FontDialog..Font.Name
 #: dlgSynPageSetup.dfm:1678
 #. ToDoOptionsDlg..pnlBG..gbxSearchFiles..meDirectories..Font.Name
@@ -1142,11 +1133,11 @@ msgstr ""
 #. RegExpTesterWindow..BGPanel..FGPanel..pnlBackground..pnlMiddle..dpMatchText..SpTBXPanel3..lblMatch..Font.Name
 #: frmRegExpTester.dfm:479
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label17..Font.Name
-#: Utils/UConfiguration.dfm:2044
+#: Utils/UConfiguration.dfm:2050
 #. FConfiguration..PMain..PanelRight..PageList..PCodeTemplates..GroupBox..Label18..Font.Name
-#: Utils/UConfiguration.dfm:2058
+#: Utils/UConfiguration.dfm:2064
 #. FConfiguration..FontDialog..Font.Name
-#: Utils/UConfiguration.dfm:6473
+#: Utils/UConfiguration.dfm:6484
 msgid "MS Shell Dlg 2"
 msgstr ""
 
@@ -1175,23 +1166,23 @@ msgid "None"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..EScpOptions..Text
-#: Utils/UConfiguration.dfm:6259
+#: Utils/UConfiguration.dfm:6270
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..ESSHOptions..Text
-#: Utils/UConfiguration.dfm:6275
+#: Utils/UConfiguration.dfm:6286
 msgid "-o PasswordAuthentication=no -o StrictHostKeyChecking=no"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PLLMAssistant..CBProvider....Items.Strings
-#: Utils/UConfiguration.dfm:5916
+#: Utils/UConfiguration.dfm:5927
 #. FConfiguration..PMain..PanelRight..PageList..PLLMChat..CBChatProvider....Items.Strings
-#: Utils/UConfiguration.dfm:6046
+#: Utils/UConfiguration.dfm:6057
 msgid "Ollama"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PLLMAssistant..CBProvider....Items.Strings
-#: Utils/UConfiguration.dfm:5914
+#: Utils/UConfiguration.dfm:5925
 #. FConfiguration..PMain..PanelRight..PageList..PLLMChat..CBChatProvider....Items.Strings
-#: Utils/UConfiguration.dfm:6044
+#: Utils/UConfiguration.dfm:6055
 msgid "OpenAI"
 msgstr ""
 
@@ -1204,7 +1195,7 @@ msgid "Options Inspector"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PCodeCompletion..ESpecialPackages..Text
-#: Utils/UConfiguration.dfm:1574
+#: Utils/UConfiguration.dfm:1577
 msgid "os"
 msgstr ""
 
@@ -1246,7 +1237,7 @@ msgstr ""
 #. FClassEditor..PageControl..TSMethods..RGMethodAccess....Items.Strings
 #: Main/UClassEditor.dfm:380
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3224
+#: Utils/UConfiguration.dfm:3233
 msgid "protected"
 msgstr ""
 
@@ -1261,7 +1252,7 @@ msgstr ""
 #. FClassEditor..PageControl..TSMethods..RGMethodAccess....Items.Strings
 #: Main/UClassEditor.dfm:381
 #. FConfiguration..PMain..PanelRight..PageList..PUML..RGAttributsMethodsDisplay....Items.Strings
-#: Utils/UConfiguration.dfm:3223
+#: Utils/UConfiguration.dfm:3232
 msgid "public"
 msgstr ""
 
@@ -1527,7 +1518,7 @@ msgstr ""
 #. PyIDEMainForm..TBXDockTop..DockTopPanel..MainMenu..ToolsMenu..mnToolsGit..mnToolsGitReset..Caption
 #: frmPyIDEMain.dfm:1299
 #. FConfiguration..PMain..PanelRight..PageList..PKeystrokes..btnResetKeys..Caption
-#: Utils/UConfiguration.dfm:1712
+#: Utils/UConfiguration.dfm:1716
 msgid "Reset"
 msgstr ""
 
@@ -1537,13 +1528,13 @@ msgid "RTF"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..EScpCommand..Text
-#: Utils/UConfiguration.dfm:6251
+#: Utils/UConfiguration.dfm:6262
 msgid "scp"
 msgstr ""
 
 #  Seems like a Font.Name extract
 #. ResourcesDataModule..dlgFontDialog..Font.Name
-#: dmResources.dfm:5983
+#: dmResources.dfm:5988
 #. FunctionListWindow..pnHolder..lvProcs..Font.Name
 #: frmFunctionList.dfm:85
 #. IDEDockWindow..Font.Name
@@ -1596,7 +1587,7 @@ msgid "Segoe UI"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGUIDesigner..LDefault..Caption
-#: Utils/UConfiguration.dfm:2577
+#: Utils/UConfiguration.dfm:2586
 msgid "Segoe UI 9pt"
 msgstr ""
 
@@ -1620,7 +1611,7 @@ msgid "SpTBXToolbar1"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSSH..ESSHCommand..Text
-#: Utils/UConfiguration.dfm:6267
+#: Utils/UConfiguration.dfm:6278
 msgid "ssh"
 msgstr ""
 
@@ -1645,12 +1636,12 @@ msgstr ""
 #. FStructogram..StructoPopupMenu..MIDatatype..MIString..Caption
 #: Structogram/UStructogram.dfm:274
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..CBDataType....Items.Strings
-#: Utils/UConfiguration.dfm:2851
+#: Utils/UConfiguration.dfm:2860
 msgid "str"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PSubversion..Caption
-#: Utils/UConfiguration.dfm:6391
+#: Utils/UConfiguration.dfm:6402
 msgid "Subversion"
 msgstr ""
 
@@ -1708,19 +1699,19 @@ msgstr ""
 #. Fwait..Label1..Font.Name
 #: Setup/UWait.dfm:26
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..REHeaderLeft..Font.Name
-#: Utils/UConfiguration.dfm:5378
+#: Utils/UConfiguration.dfm:5388
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..REHeaderCenter..Font.Name
-#: Utils/UConfiguration.dfm:5396
+#: Utils/UConfiguration.dfm:5406
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox4..REHeaderRight..Font.Name
-#: Utils/UConfiguration.dfm:5414
+#: Utils/UConfiguration.dfm:5424
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..REFooterLeft..Font.Name
-#: Utils/UConfiguration.dfm:5532
+#: Utils/UConfiguration.dfm:5542
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..REFooterCenter..Font.Name
-#: Utils/UConfiguration.dfm:5550
+#: Utils/UConfiguration.dfm:5560
 #. FConfiguration..PMain..PanelRight..PageList..PHeaderFooter..GroupBox6..REFooterRight..Font.Name
-#: Utils/UConfiguration.dfm:5568
+#: Utils/UConfiguration.dfm:5578
 #. FConfiguration..PMain..PanelRight..PageList..PRestrictions..LRestrictions..Font.Name
-#: Utils/UConfiguration.dfm:5639
+#: Utils/UConfiguration.dfm:5650
 msgid "Tahoma"
 msgstr ""
 
@@ -1810,7 +1801,7 @@ msgid "Text (*.txt,*.*)|*.txt;*.*"
 msgstr ""
 
 #. ResourcesDataModule..SynGeneralSyn..DefaultFilter
-#: dmResources.dfm:5973
+#: dmResources.dfm:5978
 #. Programmer's name for it: sGeneralFileFilter
 #: StringResources.pas:18
 msgid "Text Files(*.txt,*.*)|*.txt;*.*"
@@ -2077,7 +2068,7 @@ msgstr ""
 
 #. FUMLForm..Caption
 #: EssModel/System/UUMLForm.dfm:4
-#: Utils/UConfiguration.pas:5960
+#: Utils/UConfiguration.pas:5968
 msgid "UML"
 msgstr ""
 
@@ -2087,7 +2078,7 @@ msgid "UML (*.puml)|*.puml"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileLineBreaks....Items.Strings
-#: Utils/UConfiguration.dfm:939
+#: Utils/UConfiguration.dfm:942
 msgid "Unicode"
 msgstr ""
 
@@ -2102,7 +2093,7 @@ msgid "Unit versioning information:"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileLineBreaks....Items.Strings
-#: Utils/UConfiguration.dfm:937
+#: Utils/UConfiguration.dfm:940
 msgid "Unix"
 msgstr ""
 
@@ -2117,17 +2108,17 @@ msgid "Use the free-trheaded version of Python"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..PGit..LUserEMail..Caption
-#: Utils/UConfiguration.dfm:6325
+#: Utils/UConfiguration.dfm:6336
 msgid "user.email"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileEncoding....Items.Strings
-#: Utils/UConfiguration.dfm:926
+#: Utils/UConfiguration.dfm:929
 msgid "UTF16 BE"
 msgstr ""
 
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileEncoding....Items.Strings
-#: Utils/UConfiguration.dfm:925
+#: Utils/UConfiguration.dfm:928
 msgid "UTF16 LE"
 msgstr ""
 
@@ -2149,7 +2140,7 @@ msgstr ""
 
 #  Doesn't look like text
 #. FConfiguration..PMain..PanelRight..PageList..POptions1..RGNewFileEncoding....Items.Strings
-#: Utils/UConfiguration.dfm:923
+#: Utils/UConfiguration.dfm:926
 msgid "UTF8"
 msgstr ""
 
@@ -2187,7 +2178,7 @@ msgstr ""
 #. FStructogram..PanelLeft..StructogramToolbar..TBWhile..Hint
 #: Structogram/UStructogram.dfm:119
 #. FConfiguration..PMain..PanelRight..PageList..PStructogram..LWhile..Caption
-#: Utils/UConfiguration.dfm:2708
+#: Utils/UConfiguration.dfm:2717
 msgid "while"
 msgstr ""
 

@@ -172,7 +172,7 @@ const
 
   // Multi-caret
   SEdCmdCancelSelections = 'Cancel Selections';
-  SEdCmdSelColumnLeft = 'Selelct Column Left';
+  SEdCmdSelColumnLeft = 'Select Column Left';
   SEdCmdSelColumnRight = 'Select Column Right';
   SEdCmdSelColumnUp = 'Select Column Up';
   SEdCmdSelColumnDown = 'Select Column Down';
@@ -303,7 +303,7 @@ const
   SRenameConfirmation =
     'The rename refactoring will change the following files.' + sLineBreak +
     'Please uncheck the files you want to keep unchanged and press OK to ' +
-    'confirm or Cancel to cancel the operation';
+    'confirm or Cancel to cancel the operation.';
   StrScriptRunOK = 'Script run OK';
   SDebuggingAborted = 'Debugging Aborted';
   SSyntaxError = 'Syntax Error';

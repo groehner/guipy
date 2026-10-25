@@ -1773,9 +1773,9 @@ begin
   if Background <> clBtnFace then
     CommonOptions := CommonOptions + 'background=''' +
       TColorToString(Background) + ''', ';
-  if (Font.Name <> 'Segoe UI') or (PPIUnScale(Font.Size) <> 9) then
+  if (Font.Name <> 'Segoe UI') or (Font.Size <> 9) then
     CommonOptions := CommonOptions + 'font = (' + AsString(Font.Name) + ', ' +
-      IntToStr(PPIUnScale(Font.Size)) + '), ';
+      IntToStr(Font.Size) + '), ';
   CommonOptions := CommonOptions + 'anchor=''w'', ';
   Str := '';
   for var I := 0 to FItems.Count - 1 do

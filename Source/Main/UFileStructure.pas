@@ -139,16 +139,15 @@ end;
 procedure TFFileStructure.FormShow(Sender: TObject);
 begin
   Font.Assign(GuiPyOptions.StructureFont);
-  Font.Size := PPIScale(Font.Size);
   SetFont(Font);
-  SetFocus;
+  if CanFocus then
+    SetFocus;
 end;
 
 procedure TFFileStructure.SetFont(AFont: TFont);
 begin
   vilFileStructure.Font.Size := AFont.Size;
   vilFileStructure.Font.Name := AFont.Name;
-  AFont.Size := PPIUnScale(AFont.Size);
   GuiPyOptions.StructureFont.Assign(AFont);
 end;
 
